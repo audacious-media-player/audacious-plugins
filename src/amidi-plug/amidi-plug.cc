@@ -143,6 +143,7 @@ Tuple AMIDIPlug::read_tuple (const char * filename, VFSFile & file)
     /* song title, get it from the filename */
     Tuple tuple;
     tuple.set_filename (filename);
+    tuple.set_str (Tuple::Codec, "MIDI");
 
     midifile_t mf;
 
