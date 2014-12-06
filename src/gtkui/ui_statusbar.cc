@@ -21,9 +21,13 @@
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/playlist.h>
+#include <libaudcore/runtime.h>
 
 #include "ui_statusbar.h"
+
+static QueuedFunc clear_timeout;
 
 static void ui_statusbar_update_playlist_length (void *, void * label)
 {
@@ -35,6 +39,9 @@ static void ui_statusbar_update_playlist_length (void *, void * label)
 
 static void ui_statusbar_info_change (void *, void * label)
 {
+    if (clear_timeout.running ())
+        return;
+
     Tuple tuple = aud_drct_get_tuple ();
     String codec = tuple.get_str (Tuple::Codec);
 
@@ -78,15 +85,50 @@ static void ui_statusbar_info_change (void *, void * label)
 
 static void ui_statusbar_playback_stop (void *, void * label)
 {
+    if (clear_timeout.running ())
+        return;
+
     gtk_label_set_text ((GtkLabel *) label, nullptr);
+}
+
+static void clear_message (void * label)
+{
+    clear_timeout.stop ();
+
+    if (aud_drct_get_ready ())
+        ui_statusbar_info_change (nullptr, label);
+    else
+        gtk_label_set_text ((GtkLabel *) label, nullptr);
+}
+
+static void no_advance_toggled (void *, void * label)
+{
+    if (aud_get_bool (nullptr, "no_playlist_advance"))
+        gtk_label_set_text ((GtkLabel *) label, _("Single mode."));
+    else
+        gtk_label_set_text ((GtkLabel *) label, _("Playlist mode."));
+
+    clear_timeout.start (1000, clear_message, label);
+}
+
+static void stop_after_song_toggled (void *, void * label)
+{
+    if (aud_get_bool (nullptr, "stop_after_current_song"))
+        gtk_label_set_text ((GtkLabel *) label, _("Stopping after song."));
+
+    clear_timeout.start (1000, clear_message, label);
 }
 
 static void ui_statusbar_destroy_cb ()
 {
+    clear_timeout.stop ();
+
     hook_dissociate ("playback ready", ui_statusbar_info_change);
     hook_dissociate ("info change", ui_statusbar_info_change);
     hook_dissociate ("tuple change", ui_statusbar_info_change);
     hook_dissociate ("playback stop", ui_statusbar_playback_stop);
+    hook_dissociate ("set no_playlist_advance", no_advance_toggled);
+    hook_dissociate ("set stop_after_current_song", stop_after_song_toggled);
     hook_dissociate ("playlist activate", ui_statusbar_update_playlist_length);
     hook_dissociate ("playlist update", ui_statusbar_update_playlist_length);
 }
@@ -107,6 +149,8 @@ GtkWidget * ui_statusbar_new ()
     hook_associate ("info change", ui_statusbar_info_change, status);
     hook_associate ("tuple change", ui_statusbar_info_change, status);
     hook_associate ("playback stop", ui_statusbar_playback_stop, status);
+    hook_associate ("set no_playlist_advance", no_advance_toggled, status);
+    hook_associate ("set stop_after_current_song", stop_after_song_toggled, status);
     hook_associate ("playlist activate", ui_statusbar_update_playlist_length, length);
     hook_associate ("playlist update", ui_statusbar_update_playlist_length, length);
 
