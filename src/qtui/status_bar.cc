@@ -29,7 +29,7 @@ StatusBar::StatusBar (QWidget * parent) :
     codec_label (new QLabel (this)),
     length_label (new QLabel (this))
 {
-    setStyleSheet ("QStatusBar::item { border: none; }");
+    setStyleSheet ("QStatusBar { background: transparent; } QStatusBar::item { border: none; }");
 
     addWidget (codec_label);
     addPermanentWidget (length_label);
