@@ -23,6 +23,7 @@
 
 #include <libaudcore/runtime.h>
 #include <libaudcore/hook.h>
+#include <string.h>
 
 #include "plugin.h"
 #include "plugin-window.h"
@@ -223,4 +224,35 @@ void view_set_show_remaining (bool remaining)
 void view_apply_show_remaining (void)
 {
     mainwin_update_song_info ();
+}
+
+void view_switch_type_default (void)
+{
+    aud_set_str ("skins", "window_type", "default");
+    skins_restart ();
+}
+
+void view_switch_type_desktop (void)
+{
+    String type = aud_get_str ("skins", "window_type");
+
+    if (strcmp (type, "desktop"))
+        aud_set_str ("skins", "window_type", "desktop");
+    else
+        aud_set_str ("skins", "window_type", "default");
+
+    skins_restart ();
+}
+
+void view_switch_type_dock (void)
+{
+    String type = aud_get_str ("skins", "window_type");
+
+    if (strcmp (type, "dock"))
+        aud_set_str ("skins", "window_type", "dock");
+    else
+        aud_set_str ("skins", "window_type", "default");
+
+    skins_restart ();
+    
 }

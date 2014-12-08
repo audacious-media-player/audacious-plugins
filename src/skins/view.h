@@ -51,4 +51,10 @@ void view_apply_sticky (void);
 void view_set_show_remaining (bool remaining);
 void view_apply_show_remaining (void);
 
+void view_switch_type_default (void);
+
+void view_switch_type_desktop (void);
+
+void view_switch_type_dock (void);
+
 #endif /* SKINS_VIEW_H */
