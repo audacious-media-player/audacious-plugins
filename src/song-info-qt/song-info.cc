@@ -29,7 +29,7 @@
 class SongInfo : public GeneralPlugin {
 public:
     static constexpr PluginInfo info = {
-        N_("Track Information"),
+        N_("Song Info"),
         PACKAGE
     };
 
