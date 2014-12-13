@@ -1,27 +1,28 @@
 /*
-* Status Icon Plugin for Audacious
-*
-* Copyright 2005-2007 Giacomo Lozito <james@develia.org>
-* Copyright 2010 Michał Lipski <tallica@o2.pl>
-*
-* This program is free software; you can redistribute it and/or modify it
-* under the terms of the GNU General Public License as published by the
-* Free Software Foundation; either version 2 of the License, or (at your
-* option) any later version.
-*
-* This program is distributed in the hope that it will be useful, but
-* WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License along
-* with this program; if not, write to the Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
-*
-*/
+ * Status Icon Plugin for Audacious
+ *
+ * Copyright 2005-2007 Giacomo Lozito <james@develia.org>
+ * Copyright 2010 Michał Lipski <tallica@o2.pl>
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ */
 
-#include "statusicon.h"
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
@@ -33,10 +34,6 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/menu.h>
-
-#include <glib.h>
-#include <gdk/gdk.h>
-#include <gtk/gtk.h>
 
 class StatusIcon : public GeneralPlugin
 {
@@ -61,13 +58,18 @@ public:
 
 EXPORT StatusIcon aud_plugin_instance;
 
-#define POPUP_IS_ACTIVE GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "popup_active"))
-#define TIMER_IS_ACTIVE GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "timer_active"))
+#define POPUP_IS_ACTIVE GPOINTER_TO_INT (g_object_get_data ((GObject *) icon, "popup_active"))
+#define TIMER_IS_ACTIVE GPOINTER_TO_INT (g_object_get_data ((GObject *) icon, "timer_active"))
 
-static void si_popup_timer_start(GtkStatusIcon *);
-static void si_popup_timer_stop(GtkStatusIcon *);
-static void si_smallmenu_show(int x, int y, unsigned button, uint32_t time, void *);
-static void si_popup_hide(void * icon);
+enum {
+    SI_CFG_SCROLL_ACTION_VOLUME,
+    SI_CFG_SCROLL_ACTION_SKIP
+};
+
+static void si_popup_timer_start (GtkStatusIcon * icon);
+static void si_popup_timer_stop (GtkStatusIcon * icon);
+static void si_menu_show (int x, int y, unsigned button, uint32_t time, void *);
+static void si_popup_hide (void * icon);
 
 const char * const StatusIcon::defaults[] = {
     "scroll_action", "0", /* SI_CFG_SCROLL_ACTION_VOLUME */
@@ -78,65 +80,64 @@ const char * const StatusIcon::defaults[] = {
     nullptr
 };
 
-static GtkStatusIcon *si_create(void)
+static GtkStatusIcon * si_create ()
 {
-    GtkStatusIcon *icon;
-    GtkIconTheme *theme;
+    GtkStatusIcon * icon;
+    GtkIconTheme * theme = gtk_icon_theme_get_default ();
 
-    theme = gtk_icon_theme_get_default();
-
-    if (gtk_icon_theme_has_icon(theme, "audacious-panel"))
-        icon = gtk_status_icon_new_from_icon_name("audacious-panel");
-    else if (gtk_icon_theme_has_icon(theme, "audacious"))
-        icon = gtk_status_icon_new_from_icon_name("audacious");
+    if (gtk_icon_theme_has_icon (theme, "audacious-panel"))
+        icon = gtk_status_icon_new_from_icon_name ("audacious-panel");
+    else if (gtk_icon_theme_has_icon (theme, "audacious"))
+        icon = gtk_status_icon_new_from_icon_name ("audacious");
     else
     {
-        char * path = g_strdup_printf ("%s/images/audacious.png",
-         aud_get_path (AudPath::DataDir));
+        const char * data_dir = aud_get_path (AudPath::DataDir);
+        const char * path = filename_build ({data_dir, "images", "audacious.png"});
+
         icon = gtk_status_icon_new_from_file (path);
-        g_free (path);
     }
 
     return icon;
 }
 
-static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, void * user_data)
+static void si_volume_change (int value)
+{
+    aud_drct_set_volume_main (aud_drct_get_volume_main () + value);
+}
+
+static gboolean si_cb_btpress (GtkStatusIcon * icon, GdkEventButton * event)
 {
     if (event->type != GDK_BUTTON_PRESS)
-        return FALSE;
+        return false;
 
-    si_popup_timer_stop(icon);
-    si_popup_hide(icon);
+    si_popup_timer_stop (icon);
+    si_popup_hide (icon);
 
     switch (event->button)
     {
       case 1:
-      {
           if (event->state & GDK_SHIFT_MASK)
-              aud_drct_pl_next();
+              aud_drct_pl_next ();
           else if (! aud_get_headless_mode ())
               aud_ui_show (! aud_ui_is_shown ());
           break;
-      }
 
       case 2:
-      {
-          aud_drct_pause();
+          aud_drct_pause ();
           break;
-      }
 
       case 3:
           if (event->state & GDK_SHIFT_MASK)
-              aud_drct_pl_prev();
+              aud_drct_pl_prev ();
           else
-              si_smallmenu_show(event->x_root, event->y_root, 3, event->time, icon);
+              si_menu_show (event->x_root, event->y_root, event->button, event->time, icon);
           break;
     }
 
-    return TRUE;
+    return true;
 }
 
-static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, void * user_data)
+static gboolean si_cb_btscroll (GtkStatusIcon * icon, GdkEventScroll * event)
 {
     switch (event->direction)
     {
@@ -159,31 +160,32 @@ static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, voi
 
       case GDK_SCROLL_DOWN:
       {
-          switch (aud_get_int ("statusicon", "scroll_action"))
-          {
-            case SI_CFG_SCROLL_ACTION_VOLUME:
-                si_volume_change (-aud_get_int ("statusicon", "volume_delta"));
-                break;
-            case SI_CFG_SCROLL_ACTION_SKIP:
-                if (aud_get_bool ("statusicon", "reverse_scroll"))
-                    aud_drct_pl_prev ();
-                else
-                    aud_drct_pl_next ();
-                break;
-          }
-          break;
+        switch (aud_get_int ("statusicon", "scroll_action"))
+        {
+          case SI_CFG_SCROLL_ACTION_VOLUME:
+              si_volume_change (-aud_get_int ("statusicon", "volume_delta"));
+              break;
+          case SI_CFG_SCROLL_ACTION_SKIP:
+              if (aud_get_bool ("statusicon", "reverse_scroll"))
+                  aud_drct_pl_prev ();
+              else
+                  aud_drct_pl_next ();
+              break;
+        }
+        break;
       }
 
-      default:;
+      default:
+        break;
     }
 
-    return FALSE;
+    return false;
 }
 
-static gboolean si_popup_show(void * icon)
+static gboolean si_popup_show (void * icon)
 {
-    GdkRectangle area;
     int x, y;
+    GdkRectangle area;
     static int count = 0;
 
     audgui_get_mouse_coords (gtk_status_icon_get_screen ((GtkStatusIcon *) icon), & x, & y);
@@ -195,85 +197,85 @@ static gboolean si_popup_show(void * icon)
         si_popup_hide ((GtkStatusIcon *) icon);
         count = 0;
 
-        return TRUE;
+        return true;
     }
 
-    if (!POPUP_IS_ACTIVE)
+    if (! POPUP_IS_ACTIVE)
     {
         if (count < 10)
         {
-            count++;
-            return TRUE;
+            count ++;
+            return true;
         }
         else
             count = 0;
 
-        audgui_infopopup_show_current();
-        g_object_set_data(G_OBJECT(icon), "popup_active", GINT_TO_POINTER(1));
+        audgui_infopopup_show_current ();
+        g_object_set_data ((GObject *) icon, "popup_active", GINT_TO_POINTER (1));
     }
 
-    return TRUE;
+    return true;
 }
 
-static void si_popup_hide(void * icon)
+static void si_popup_hide (void * icon)
 {
     if (POPUP_IS_ACTIVE)
     {
-        g_object_set_data(G_OBJECT(icon), "popup_active", GINT_TO_POINTER(0));
-        audgui_infopopup_hide();
+        g_object_set_data ((GObject *) icon, "popup_active", GINT_TO_POINTER (0));
+        audgui_infopopup_hide ();
     }
 }
 
-static void si_popup_reshow(void * data, void * icon)
+static void si_popup_reshow (void * data, void * icon)
 {
     if (POPUP_IS_ACTIVE)
     {
-        audgui_infopopup_hide();
-        audgui_infopopup_show_current();
+        audgui_infopopup_hide ();
+        audgui_infopopup_show_current ();
     }
 }
 
-static void si_popup_timer_start(GtkStatusIcon * icon)
+static void si_popup_timer_start (GtkStatusIcon * icon)
 {
-    int timer_id = g_timeout_add(100, si_popup_show, icon);
-    g_object_set_data(G_OBJECT(icon), "timer_id", GINT_TO_POINTER(timer_id));
-    g_object_set_data(G_OBJECT(icon), "timer_active", GINT_TO_POINTER(1));
+    int timer_id = g_timeout_add (100, si_popup_show, icon);
+    g_object_set_data ((GObject *) icon, "timer_id", GINT_TO_POINTER (timer_id));
+    g_object_set_data ((GObject *) icon, "timer_active", GINT_TO_POINTER (1));
 }
 
-static void si_popup_timer_stop(GtkStatusIcon * icon)
+static void si_popup_timer_stop (GtkStatusIcon * icon)
 {
     if (TIMER_IS_ACTIVE)
-        g_source_remove(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "timer_id")));
+        g_source_remove (GPOINTER_TO_INT (g_object_get_data ((GObject *) icon, "timer_id")));
 
-    g_object_set_data(G_OBJECT(icon), "timer_id", GINT_TO_POINTER(0));
-    g_object_set_data(G_OBJECT(icon), "timer_active", GINT_TO_POINTER(0));
+    g_object_set_data ((GObject *) icon, "timer_id", GINT_TO_POINTER (0));
+    g_object_set_data ((GObject *) icon, "timer_active", GINT_TO_POINTER (0));
 }
 
-static gboolean si_cb_tooltip(GtkStatusIcon * icon, int x, int y, gboolean keyboard_mode, GtkTooltip * tooltip, void * user_data)
+static gboolean si_cb_tooltip (GtkStatusIcon * icon, int x, int y, gboolean keyboard_mode, GtkTooltip * tooltip)
 {
-    GtkWidget *menu = (GtkWidget *) g_object_get_data(G_OBJECT(icon), "smenu");
+    GtkWidget * menu = (GtkWidget *) g_object_get_data ((GObject *) icon, "menu");
 
-    if (aud_get_bool("statusicon", "disable_popup") || gtk_widget_get_visible(menu))
-        return FALSE;
+    if (aud_get_bool ("statusicon", "disable_popup") || gtk_widget_get_visible (menu))
+        return false;
 
-    if (!POPUP_IS_ACTIVE && !TIMER_IS_ACTIVE)
-        si_popup_timer_start(icon);
+    if (! POPUP_IS_ACTIVE && ! TIMER_IS_ACTIVE)
+        si_popup_timer_start (icon);
 
-    return FALSE;
+    return false;
 }
 
-static void si_smallmenu_show(int x, int y, unsigned button, uint32_t time, void * evbox)
+static void si_menu_show (int x, int y, unsigned button, uint32_t time, void * evbox)
 {
-    GtkWidget *si_smenu = (GtkWidget *) g_object_get_data(G_OBJECT(evbox), "smenu");
-    gtk_menu_popup(GTK_MENU(si_smenu), nullptr, nullptr, nullptr, nullptr, button, time);
+    GtkWidget * si_menu = (GtkWidget *) g_object_get_data ((GObject *) evbox, "menu");
+    gtk_menu_popup ((GtkMenu *) si_menu, nullptr, nullptr, nullptr, nullptr, button, time);
 }
 
-static void open_files (void)
+static void open_files ()
 {
-    audgui_run_filebrowser (TRUE);
+    audgui_run_filebrowser (true);
 }
 
-static GtkWidget *si_smallmenu_create(void)
+static GtkWidget * si_menu_create ()
 {
     static const AudguiMenuItem items[] = {
         MenuCommand (N_("_Open Files ..."), "document-open", 0, (GdkModifierType) 0, open_files),
@@ -287,55 +289,52 @@ static GtkWidget *si_smallmenu_create(void)
         MenuCommand (N_("_Quit"), "application-exit", 0, (GdkModifierType) 0, aud_quit)
     };
 
-    GtkWidget *si_smenu = gtk_menu_new();
-    audgui_menu_init (si_smenu, {items}, nullptr);
-    return si_smenu;
+    GtkWidget * si_menu = gtk_menu_new ();
+    audgui_menu_init (si_menu, {items}, nullptr);
+    return si_menu;
 }
 
-static void si_window_close(void * data, void * user_data)
+static void si_window_close (void * data, void * user_data)
 {
-    gboolean *handle = (gboolean*) data;
+    bool * handle = (bool *) data;
 
     if (aud_get_bool ("statusicon", "close_to_tray"))
     {
-        *handle = TRUE;
-        aud_ui_show (FALSE);
+        * handle = true;
+        aud_ui_show (false);
     }
 }
 
-static void si_enable(gboolean enable)
+static void si_enable (bool enable)
 {
-    static GtkStatusIcon *si_applet = nullptr;
+    static GtkStatusIcon * si_applet = nullptr;
 
     if (enable && ! si_applet)
     {
-        GtkWidget *si_smenu;
+        si_applet = si_create ();
 
-        si_applet = si_create();
-
-        if (si_applet == nullptr)
+        if (! si_applet)
         {
-            g_warning("StatusIcon plugin: unable to create a status icon.\n");
+            AUDWARN ("StatusIcon plugin: unable to create a status icon.\n");
             return;
         }
 
-        g_object_set_data(G_OBJECT(si_applet), "timer_id", GINT_TO_POINTER(0));
-        g_object_set_data(G_OBJECT(si_applet), "timer_active", GINT_TO_POINTER(0));
-        g_object_set_data(G_OBJECT(si_applet), "popup_active", GINT_TO_POINTER(0));
+        g_object_set_data ((GObject *) si_applet, "timer_id", GINT_TO_POINTER (0));
+        g_object_set_data ((GObject *) si_applet, "timer_active", GINT_TO_POINTER (0));
+        g_object_set_data ((GObject *) si_applet, "popup_active", GINT_TO_POINTER (0));
 
-        g_signal_connect(G_OBJECT(si_applet), "button-press-event", G_CALLBACK(si_cb_btpress), nullptr);
-        g_signal_connect(G_OBJECT(si_applet), "scroll-event", G_CALLBACK(si_cb_btscroll), nullptr);
-        g_signal_connect(G_OBJECT(si_applet), "query-tooltip", G_CALLBACK(si_cb_tooltip), nullptr);
+        g_signal_connect (si_applet, "button-press-event", (GCallback) si_cb_btpress, nullptr);
+        g_signal_connect (si_applet, "scroll-event", (GCallback) si_cb_btscroll, nullptr);
+        g_signal_connect (si_applet, "query-tooltip", (GCallback) si_cb_tooltip, nullptr);
 
-        gtk_status_icon_set_has_tooltip(si_applet, TRUE);
-        gtk_status_icon_set_visible(si_applet, TRUE);
+        gtk_status_icon_set_has_tooltip (si_applet, true);
+        gtk_status_icon_set_visible (si_applet, true);
 
-        /* small menu that can be used in place of the audacious standard one */
-        si_smenu = si_smallmenu_create();
-        g_object_set_data(G_OBJECT(si_applet), "smenu", si_smenu);
+        GtkWidget * si_menu = si_menu_create ();
+        g_object_set_data ((GObject *) si_applet, "menu", si_menu);
 
-        hook_associate("title change", si_popup_reshow, si_applet);
-        hook_associate("window close", si_window_close, nullptr);
+        hook_associate ("title change", si_popup_reshow, si_applet);
+        hook_associate ("window close", si_window_close, nullptr);
     }
 
     if (! enable && si_applet)
@@ -343,17 +342,17 @@ static void si_enable(gboolean enable)
         /* Prevent accidentally hiding of the interface
          * by disabling the plugin while Audacious is closed to the tray. */
         PluginHandle * si = aud_plugin_by_header (& aud_plugin_instance);
-        if (! aud_plugin_get_enabled(si) && ! aud_get_headless_mode() && ! aud_ui_is_shown())
-            aud_ui_show(TRUE);
+        if (! aud_plugin_get_enabled (si) && ! aud_get_headless_mode () && ! aud_ui_is_shown ())
+            aud_ui_show (true);
 
-        GtkWidget *si_smenu = (GtkWidget *) g_object_get_data(G_OBJECT(si_applet), "smenu");
-        si_popup_timer_stop(si_applet);   /* just in case the timer is active */
-        gtk_widget_destroy(si_smenu);
-        g_object_unref(si_applet);
+        GtkWidget * si_menu = (GtkWidget *) g_object_get_data ((GObject *) si_applet, "menu");
+        si_popup_timer_stop (si_applet);  /* just in case the timer is active */
+        gtk_widget_destroy (si_menu);
+        g_object_unref (si_applet);
         si_applet = nullptr;
 
-        hook_dissociate("title change", si_popup_reshow);
-        hook_dissociate("window close", si_window_close);
+        hook_dissociate ("title change", si_popup_reshow);
+        hook_dissociate ("window close", si_window_close);
     }
 }
 
@@ -364,13 +363,13 @@ bool StatusIcon::init ()
 
     aud_config_set_defaults ("statusicon", defaults);
     audgui_init ();
-    si_enable(TRUE);
+    si_enable (true);
     return true;
 }
 
 void StatusIcon::cleanup ()
 {
-    si_enable(FALSE);
+    si_enable (false);
     audgui_cleanup ();
 }
 
