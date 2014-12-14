@@ -85,7 +85,7 @@ static void size_allocate_cb (GtkWidget * treeview)
     }
 }
 
-static void add_button_cb (GtkButton * button, void * unused)
+static void add_button_cb (GtkButton * button)
 {
     aud_playlist_insert (-1);
     aud_playlist_set_active (aud_playlist_count () - 1);
@@ -97,7 +97,7 @@ static void make_add_button (GtkWidget * notebook)
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
      ("list-add", GTK_ICON_SIZE_MENU));
-    gtk_widget_set_can_focus (button, FALSE);
+    gtk_widget_set_can_focus (button, false);
 
     g_signal_connect (button, "clicked", (GCallback) add_button_cb, nullptr);
     gtk_widget_show_all (button);
@@ -124,7 +124,7 @@ static GtkWidget * make_close_button (GtkWidget * ebox, int list)
     GtkWidget * image = gtk_image_new_from_icon_name ("window-close", GTK_ICON_SIZE_MENU);
     gtk_button_set_image ((GtkButton *) button, image);
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
-    gtk_button_set_focus_on_click ((GtkButton *) button, FALSE);
+    gtk_button_set_focus_on_click ((GtkButton *) button, false);
     gtk_widget_set_name (button, "gtkui-tab-close-button");
 
     g_signal_connect (button, "clicked", (GCallback) close_button_cb,
@@ -149,38 +149,38 @@ static GtkWidget * make_close_button (GtkWidget * ebox, int list)
     return button;
 }
 
-GtkNotebook *ui_playlist_get_notebook(void)
+GtkNotebook * ui_playlist_get_notebook ()
 {
-    return GTK_NOTEBOOK(notebook);
+    return (GtkNotebook *) notebook;
 }
 
-static void tab_title_reset(GtkWidget *ebox)
+static void tab_title_reset (GtkWidget * ebox)
 {
-    GtkWidget *label = (GtkWidget *) g_object_get_data(G_OBJECT(ebox), "label");
-    GtkWidget *entry = (GtkWidget *) g_object_get_data(G_OBJECT(ebox), "entry");
-    gtk_widget_hide(entry);
-    gtk_widget_show(label);
+    GtkWidget * label = (GtkWidget *) g_object_get_data ((GObject *) ebox, "label");
+    GtkWidget * entry = (GtkWidget *) g_object_get_data ((GObject *) ebox, "entry");
+    gtk_widget_hide (entry);
+    gtk_widget_show (label);
 }
 
-static void tab_title_save(GtkEntry *entry, void * ebox)
+static void tab_title_save (GtkEntry * entry, void * ebox)
 {
     int id = GPOINTER_TO_INT (g_object_get_data ((GObject *) ebox, "playlist-id"));
-    GtkWidget *label = (GtkWidget *) g_object_get_data(G_OBJECT(ebox), "label");
+    GtkWidget * label = (GtkWidget *) g_object_get_data ((GObject *) ebox, "label");
 
     aud_playlist_set_title (aud_playlist_by_unique_id (id), gtk_entry_get_text (entry));
-    gtk_widget_hide(GTK_WIDGET(entry));
-    gtk_widget_show(label);
+    gtk_widget_hide ((GtkWidget *) entry);
+    gtk_widget_show (label);
 }
 
-static gboolean tab_key_press_cb(GtkWidget *widget, GdkEventKey *event, void * user_data)
+static gboolean tab_key_press_cb (GtkWidget * widget, GdkEventKey * event)
 {
     if (event->keyval == GDK_KEY_Escape)
-        tab_title_reset(widget);
+        tab_title_reset (widget);
 
-    return FALSE;
+    return false;
 }
 
-static gboolean tab_button_press_cb(GtkWidget *ebox, GdkEventButton *event, void * user_data)
+static gboolean tab_button_press_cb (GtkWidget * ebox, GdkEventButton * event)
 {
     int id = GPOINTER_TO_INT (g_object_get_data ((GObject *) ebox, "playlist-id"));
     int playlist = aud_playlist_by_unique_id (id);
@@ -194,7 +194,7 @@ static gboolean tab_button_press_cb(GtkWidget *ebox, GdkEventButton *event, void
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
         popup_menu_tab (event->button, event->time, playlist);
 
-    return FALSE;
+    return false;
 }
 
 static gboolean scroll_cb (GtkWidget * widget, GdkEventScroll * event)
@@ -204,41 +204,40 @@ static gboolean scroll_cb (GtkWidget * widget, GdkEventScroll * event)
     case GDK_SCROLL_UP:
     case GDK_SCROLL_LEFT:
         aud_playlist_set_active (aud_playlist_get_active () - 1);
-        return TRUE;
+        return true;
 
     case GDK_SCROLL_DOWN:
     case GDK_SCROLL_RIGHT:
         aud_playlist_set_active (aud_playlist_get_active () + 1);
-        return TRUE;
+        return true;
 
     default:
-        return FALSE;
+        return false;
     }
 }
 
 static gboolean scroll_ignore_cb ()
 {
-    return TRUE;
+    return true;
 }
 
-static void tab_changed (GtkNotebook * notebook, GtkWidget * page, int
- page_num, void * unused)
+static void tab_changed (GtkNotebook * notebook, GtkWidget * page, unsigned page_num)
 {
     aud_playlist_set_active (page_num);
 }
 
-static void tab_reordered(GtkNotebook *notebook, GtkWidget *child, unsigned page_num, void * user_data)
+static void tab_reordered (GtkNotebook * notebook, GtkWidget * child, unsigned page_num)
 {
     GtkWidget * widget = (GtkWidget *) g_object_get_data ((GObject *) child, "treeview");
     g_return_if_fail (widget);
     aud_playlist_reorder (ui_playlist_widget_get_playlist (widget), page_num, 1);
 }
 
-static GtkLabel *get_tab_label(int playlist)
+static GtkLabel * get_tab_label (int playlist)
 {
-    GtkWidget *page = gtk_notebook_get_nth_page(UI_PLAYLIST_NOTEBOOK, playlist);
-    GtkWidget *ebox = gtk_notebook_get_tab_label(UI_PLAYLIST_NOTEBOOK, page);
-    return GTK_LABEL(g_object_get_data(G_OBJECT(ebox), "label"));
+    GtkWidget * page = gtk_notebook_get_nth_page (UI_PLAYLIST_NOTEBOOK, playlist);
+    GtkWidget * ebox = gtk_notebook_get_tab_label (UI_PLAYLIST_NOTEBOOK, page);
+    return (GtkLabel *) g_object_get_data ((GObject *) ebox, "label");
 }
 
 static void set_tab_label (int list, GtkLabel * label)
@@ -269,71 +268,68 @@ void start_rename_playlist (int playlist)
     GtkWidget * page = gtk_notebook_get_nth_page (UI_PLAYLIST_NOTEBOOK, playlist);
     GtkWidget * ebox = gtk_notebook_get_tab_label (UI_PLAYLIST_NOTEBOOK, page);
 
-    GtkWidget *label = (GtkWidget *) g_object_get_data(G_OBJECT(ebox), "label");
-    GtkWidget *entry = (GtkWidget *) g_object_get_data(G_OBJECT(ebox), "entry");
-    gtk_widget_hide(label);
+    GtkWidget * label = (GtkWidget *) g_object_get_data ((GObject *) ebox, "label");
+    GtkWidget * entry = (GtkWidget *) g_object_get_data ((GObject *) ebox, "entry");
+    gtk_widget_hide (label);
 
     gtk_entry_set_text ((GtkEntry *) entry, aud_playlist_get_title (playlist));
 
-    gtk_widget_grab_focus(entry);
-    gtk_editable_select_region(GTK_EDITABLE(entry), 0, -1);
-    gtk_widget_show(entry);
+    gtk_widget_grab_focus (entry);
+    gtk_editable_select_region ((GtkEditable *) entry, 0, -1);
+    gtk_widget_show (entry);
 }
 
-void ui_playlist_notebook_create_tab(int playlist)
+void ui_playlist_notebook_create_tab (int playlist)
 {
-    GtkWidget *scrollwin, *treeview;
-    GtkWidget *label, *entry, *ebox, *hbox;
-    GtkAdjustment *vscroll;
     int position = aud_playlist_get_position (playlist);
 
-    scrollwin = gtk_scrolled_window_new(nullptr, nullptr);
-    vscroll = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(scrollwin));
+    GtkWidget * scrollwin = gtk_scrolled_window_new (nullptr, nullptr);
+    GtkAdjustment * vscroll = gtk_scrolled_window_get_vadjustment ((GtkScrolledWindow *) scrollwin);
 
     /* do not allow scroll events to propagate up to the notebook */
     g_signal_connect_after (scrollwin, "scroll-event", (GCallback) scroll_ignore_cb, nullptr);
 
-    treeview = ui_playlist_widget_new (playlist);
+    GtkWidget * treeview = ui_playlist_widget_new (playlist);
 
     apply_column_widths (treeview);
     g_signal_connect (treeview, "size-allocate", (GCallback) size_allocate_cb, nullptr);
 
-    g_object_set_data(G_OBJECT(scrollwin), "treeview", treeview);
+    g_object_set_data ((GObject *) scrollwin, "treeview", treeview);
 
-    gtk_container_add(GTK_CONTAINER(scrollwin), treeview);
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollwin),
+    gtk_container_add ((GtkContainer *) scrollwin, treeview);
+    gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrollwin,
      GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-    gtk_widget_show_all(scrollwin);
+    gtk_widget_show_all (scrollwin);
 
-    ebox = gtk_event_box_new();
-    gtk_event_box_set_visible_window ((GtkEventBox *) ebox, FALSE);
+    GtkWidget * ebox = gtk_event_box_new ();
+    gtk_event_box_set_visible_window ((GtkEventBox *) ebox, false);
 
-    hbox = gtk_hbox_new (FALSE, 2);
+    GtkWidget * hbox = gtk_hbox_new (false, 2);
 
-    label = gtk_label_new ("");
+    GtkWidget * label = gtk_label_new ("");
     set_tab_label (playlist, (GtkLabel *) label);
-    gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, label, false, false, 0);
 
-    entry = gtk_entry_new();
-    gtk_box_pack_start(GTK_BOX(hbox), entry, FALSE, FALSE, 0);
-    gtk_container_add(GTK_CONTAINER(ebox), hbox);
-    gtk_widget_show_all(ebox);
-    gtk_widget_hide(entry);
+    GtkWidget * entry = gtk_entry_new ();
+    gtk_box_pack_start ((GtkBox *) hbox, entry, false, false, 0);
+    gtk_container_add ((GtkContainer *) ebox, hbox);
+    gtk_widget_show_all (ebox);
+    gtk_widget_hide (entry);
 
     GtkWidget * button = nullptr;
 
     if (aud_get_bool ("gtkui", "close_button_visible"))
     {
         button = make_close_button (ebox, playlist);
-        gtk_box_pack_end ((GtkBox *) hbox, button, FALSE, FALSE, 0);
+        gtk_box_pack_end ((GtkBox *) hbox, button, false, false, 0);
     }
 
-    g_object_set_data(G_OBJECT(ebox), "label", label);
-    g_object_set_data(G_OBJECT(ebox), "entry", entry);
-    g_object_set_data(G_OBJECT(ebox), "page", scrollwin);
+    g_object_set_data ((GObject *) ebox, "label", label);
+    g_object_set_data ((GObject *) ebox, "entry", entry);
+    g_object_set_data ((GObject *) ebox, "page", scrollwin);
 
     gtk_notebook_insert_page (UI_PLAYLIST_NOTEBOOK, scrollwin, ebox, playlist);
-    gtk_notebook_set_tab_reorderable(UI_PLAYLIST_NOTEBOOK, scrollwin, TRUE);
+    gtk_notebook_set_tab_reorderable (UI_PLAYLIST_NOTEBOOK, scrollwin, true);
 
     int id = aud_playlist_get_unique_id (playlist);
     g_object_set_data ((GObject *) ebox, "playlist-id", GINT_TO_POINTER (id));
@@ -341,18 +337,18 @@ void ui_playlist_notebook_create_tab(int playlist)
 
     if (position >= 0)
     {
-        aud_playlist_select_all (playlist, FALSE);
-        aud_playlist_entry_set_selected (playlist, position, TRUE);
+        aud_playlist_select_all (playlist, false);
+        aud_playlist_entry_set_selected (playlist, position, true);
         aud_playlist_set_focus (playlist, position);
         audgui_list_set_highlight (treeview, position);
         audgui_list_set_focus (treeview, position);
     }
 
-    g_signal_connect(ebox, "button-press-event", G_CALLBACK(tab_button_press_cb), nullptr);
-    g_signal_connect(ebox, "key-press-event", G_CALLBACK(tab_key_press_cb), nullptr);
-    g_signal_connect(entry, "activate", G_CALLBACK(tab_title_save), ebox);
+    g_signal_connect (ebox, "button-press-event", (GCallback) tab_button_press_cb, nullptr);
+    g_signal_connect (ebox, "key-press-event", (GCallback) tab_key_press_cb, nullptr);
+    g_signal_connect (entry, "activate", (GCallback) tab_title_save, ebox);
     g_signal_connect_swapped (vscroll, "value-changed",
-     G_CALLBACK(ui_playlist_widget_scroll), treeview);
+     (GCallback) ui_playlist_widget_scroll, treeview);
 
     /* we have to connect to "scroll-event" on the notebook, the tabs, AND the
      * close buttons (sigh) */
@@ -366,15 +362,14 @@ void ui_playlist_notebook_create_tab(int playlist)
     }
 }
 
-void ui_playlist_notebook_populate(void)
+void ui_playlist_notebook_populate ()
 {
-    int playlists = aud_playlist_count();
-    int count;
+    int playlist = aud_playlist_get_active ();
 
-    for (count = 0; count < playlists; count++)
-        ui_playlist_notebook_create_tab(count);
+    for (int count = 0; count < aud_playlist_count (); count ++)
+        ui_playlist_notebook_create_tab (count);
 
-    gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK, aud_playlist_get_active ());
+    gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK, playlist);
     highlighted = aud_playlist_get_unique_id (aud_playlist_get_playing ());
 
     if (! switch_handler)
@@ -384,10 +379,10 @@ void ui_playlist_notebook_populate(void)
         reorder_handler = g_signal_connect (notebook, "page-reordered",
          (GCallback) tab_reordered, nullptr);
 
-    gtk_widget_grab_focus (playlist_get_treeview (aud_playlist_get_active ()));
+    gtk_widget_grab_focus (playlist_get_treeview (playlist));
 }
 
-void ui_playlist_notebook_empty (void)
+void ui_playlist_notebook_empty ()
 {
     if (switch_handler)
         g_signal_handler_disconnect (notebook, switch_handler);
@@ -401,7 +396,7 @@ void ui_playlist_notebook_empty (void)
         gtk_notebook_remove_page ((GtkNotebook *) notebook, -- n_pages);
 }
 
-static void add_remove_pages (void)
+static void add_remove_pages ()
 {
     g_signal_handlers_block_by_func (notebook, (void *) tab_changed, nullptr);
     g_signal_handlers_block_by_func (notebook, (void *) tab_reordered, nullptr);
@@ -435,7 +430,7 @@ static void add_remove_pages (void)
         }
 
         /* look for the right treeview */
-        int found = FALSE;
+        int found = false;
 
         for (int j = i + 1; j < pages; j ++)
         {
@@ -447,7 +442,7 @@ static void add_remove_pages (void)
             if (tree_id == list_id)
             {
                 gtk_notebook_reorder_child ((GtkNotebook *) notebook, page, i);
-                found = TRUE;
+                found = true;
                 break;
             }
         }
@@ -510,8 +505,8 @@ void ui_playlist_notebook_position (void * data, void * user)
 
     if (aud_get_bool ("gtkui", "autoscroll"))
     {
-        aud_playlist_select_all (list, FALSE);
-        aud_playlist_entry_set_selected (list, row, TRUE);
+        aud_playlist_select_all (list, false);
+        aud_playlist_entry_set_selected (list, row, true);
         aud_playlist_set_focus (list, row);
     }
 
@@ -551,17 +546,17 @@ void ui_playlist_notebook_set_playing (void * data, void * user)
     highlighted = id;
 }
 
-static void destroy_cb (void)
+static void destroy_cb ()
 {
     notebook = nullptr;
     switch_handler = 0;
     reorder_handler = 0;
 }
 
-GtkWidget * ui_playlist_notebook_new (void)
+GtkWidget * ui_playlist_notebook_new ()
 {
     notebook = gtk_notebook_new ();
-    gtk_notebook_set_scrollable ((GtkNotebook *) notebook, TRUE);
+    gtk_notebook_set_scrollable ((GtkNotebook *) notebook, true);
     make_add_button (notebook);
 
     show_hide_playlist_tabs ();
@@ -573,7 +568,7 @@ GtkWidget * ui_playlist_notebook_new (void)
     return notebook;
 }
 
-void show_hide_playlist_tabs (void)
+void show_hide_playlist_tabs ()
 {
     gtk_notebook_set_show_tabs ((GtkNotebook *) notebook, aud_get_bool ("gtkui",
      "playlist_tabs_visible") || aud_playlist_count () > 1);

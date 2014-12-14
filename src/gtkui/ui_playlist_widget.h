@@ -53,9 +53,9 @@ extern int pw_num_cols;
 extern int pw_cols[PW_COLS];
 extern int pw_col_widths[PW_COLS];
 
-void pw_col_init (void);
-void * pw_col_create_chooser (void);
-void pw_col_save (void);
-void pw_col_cleanup (void);
+void pw_col_init ();
+void * pw_col_create_chooser ();
+void pw_col_save ();
+void pw_col_cleanup ();
 
 #endif

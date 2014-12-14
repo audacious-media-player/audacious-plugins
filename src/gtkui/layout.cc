@@ -31,7 +31,13 @@
 #define DEFAULT_WIDTH 300
 #define DEFAULT_HEIGHT 200
 
-enum {DOCK_LEFT, DOCK_RIGHT, DOCK_TOP, DOCK_BOTTOM, DOCKS};
+enum {
+    DOCK_LEFT,
+    DOCK_RIGHT,
+    DOCK_TOP,
+    DOCK_BOTTOM,
+    DOCKS
+};
 
 #define IS_VERTICAL(d) ((d) & 2)
 #define IS_AFTER(d) ((d) & 1)
@@ -88,7 +94,7 @@ static int item_by_name (Item * item, const char * name)
     return strcmp (item->name, name);
 }
 
-GtkWidget * layout_new (void)
+GtkWidget * layout_new ()
 {
     g_return_val_if_fail (! layout, nullptr);
     layout = gtk_alignment_new (0, 0, 1, 1);
@@ -142,15 +148,15 @@ static void layout_disable (GtkWidget * widget)
     Item * item = (Item *) node->data;
     g_return_if_fail (item->plugin);
 
-    aud_plugin_enable (item->plugin, FALSE);
+    aud_plugin_enable (item->plugin, false);
 }
 
 static gboolean menu_cb (GtkWidget * widget, GdkEventButton * event)
 {
-    g_return_val_if_fail (widget && event, FALSE);
+    g_return_val_if_fail (widget && event, false);
 
     if (event->type != GDK_BUTTON_PRESS || event->button != 3)
-        return FALSE;
+        return false;
 
     if (menu)
         gtk_widget_destroy (menu);
@@ -174,17 +180,17 @@ static gboolean menu_cb (GtkWidget * widget, GdkEventButton * event)
     gtk_widget_show_all (menu);
     gtk_menu_popup ((GtkMenu *) menu, nullptr, nullptr, nullptr, nullptr, event->button, event->time);
 
-    return TRUE;
+    return true;
 }
 
 static GtkWidget * vbox_new (GtkWidget * widget, const char * name)
 {
     g_return_val_if_fail (widget && name, nullptr);
 
-    GtkWidget * vbox = gtk_vbox_new (FALSE, 2);
+    GtkWidget * vbox = gtk_vbox_new (false, 2);
 
     GtkWidget * ebox = gtk_event_box_new ();
-    gtk_box_pack_start ((GtkBox *) vbox, ebox, FALSE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, ebox, false, false, 0);
     g_signal_connect_swapped (ebox, "button-press-event", (GCallback) menu_cb,
      widget);
 
@@ -195,7 +201,7 @@ static GtkWidget * vbox_new (GtkWidget * widget, const char * name)
     gtk_misc_set_alignment ((GtkMisc *) label, 0, 0);
     gtk_container_add ((GtkContainer *) ebox, label);
 
-    gtk_box_pack_start ((GtkBox *) vbox, widget, TRUE, TRUE, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, widget, true, true, 0);
 
     gtk_widget_show_all (vbox);
 
@@ -205,7 +211,7 @@ static GtkWidget * vbox_new (GtkWidget * widget, const char * name)
 typedef struct {
     GtkWidget * paned;
     GtkWidget * widget;
-    gboolean vertical;
+    bool vertical;
     int w, h;
 } RestoreSizeData;
 
@@ -218,17 +224,17 @@ static gboolean restore_size_cb (RestoreSizeData * d)
     gtk_paned_set_position ((GtkPaned *) d->paned, pos);
 
     g_slice_free (RestoreSizeData, d);
-    return FALSE;
+    return false;
 }
 
-static GtkWidget * paned_new (gboolean vertical, gboolean after, int w, int h)
+static GtkWidget * paned_new (bool vertical, bool after, int w, int h)
 {
     GtkWidget * paned = vertical ? gtk_vpaned_new () : gtk_hpaned_new ();
 
     GtkWidget * mine = gtk_alignment_new (0, 0, 1, 1);
     GtkWidget * next = gtk_alignment_new (0, 0, 1, 1);
-    gtk_paned_pack1 ((GtkPaned *) paned, after ? next : mine, after, FALSE);
-    gtk_paned_pack2 ((GtkPaned *) paned, after ? mine : next, ! after, FALSE);
+    gtk_paned_pack1 ((GtkPaned *) paned, after ? next : mine, after, false);
+    gtk_paned_pack2 ((GtkPaned *) paned, after ? mine : next, ! after, false);
 
     g_object_set_data ((GObject *) paned, "mine", mine);
     g_object_set_data ((GObject *) paned, "next", next);
@@ -258,7 +264,7 @@ static GtkWidget * paned_new (gboolean vertical, gboolean after, int w, int h)
 static gboolean delete_cb (GtkWidget * widget)
 {
     layout_disable (widget);
-    return TRUE;
+    return true;
 }
 
 static gboolean escape_cb (GtkWidget * widget, GdkEventKey * event)
@@ -266,10 +272,10 @@ static gboolean escape_cb (GtkWidget * widget, GdkEventKey * event)
     if (event->keyval == GDK_KEY_Escape)
     {
         layout_disable (widget);
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 static GtkWidget * dock_get_parent (int dock)
@@ -356,7 +362,7 @@ static void item_add (Item * item)
     {
         /* Screwy logic to figure out where we need to add a GtkPaned and which
          * widget goes in which pane of it. */
-        gboolean swap = FALSE;
+        bool swap = false;
         Item * where = item;
         GtkWidget * parent, * paned;
 
@@ -364,7 +370,7 @@ static void item_add (Item * item)
         {
             if (! item_get_next (item))
             {
-                swap = TRUE;
+                swap = true;
                 where = item_get_prev (item);
                 g_return_if_fail (where && ! where->paned);
             }
@@ -372,7 +378,7 @@ static void item_add (Item * item)
             parent = item_get_parent (where);
             g_return_if_fail (parent);
 
-            paned = paned_new (! IS_VERTICAL (where->dock), FALSE, where->w,
+            paned = paned_new (! IS_VERTICAL (where->dock), false, where->w,
              where->h);
             where->paned = paned;
             NULL_ON_DESTROY (where->paned);
@@ -416,7 +422,7 @@ static void item_remove (Item * item)
     {
         /* Screwy logic to figure out which GtkPaned we need to remove and which
          * pane of it has the widget we need to keep. */
-        gboolean swap = FALSE;
+        bool swap = false;
         Item * where = item;
         GtkWidget * parent, * paned;
 
@@ -425,7 +431,7 @@ static void item_remove (Item * item)
         {
             if (! item->paned)
             {
-                swap = TRUE;
+                swap = true;
                 where = item_get_prev (item);
                 g_return_if_fail (where && where->paned);
             }
@@ -551,7 +557,7 @@ void layout_focus (PluginHandle * plugin)
     aud_plugin_send_message (plugin, "grab focus", nullptr, 0);
 }
 
-void layout_save (void)
+void layout_save ()
 {
     int i = 0;
 
@@ -576,7 +582,7 @@ void layout_save (void)
     aud_set_int ("gtkui-layout", "item_count", i);
 }
 
-void layout_load (void)
+void layout_load ()
 {
     g_return_if_fail (! items);
 
@@ -596,7 +602,7 @@ void layout_load (void)
     }
 }
 
-void layout_cleanup (void)
+void layout_cleanup ()
 {
     for (GList * node = items; node; node = node->next)
     {

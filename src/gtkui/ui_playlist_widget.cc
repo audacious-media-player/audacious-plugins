@@ -47,12 +47,12 @@ static const GType pw_col_types[PW_COLS] =
     G_TYPE_STRING,  // queue position
     G_TYPE_STRING,  // length
     G_TYPE_STRING,  // path
-    G_TYPE_STRING,  // filename
+    G_TYPE_STRING,  // file name
     G_TYPE_STRING,  // custom title
     G_TYPE_STRING   // bitrate
 };
 
-static const gboolean pw_col_min_widths[PW_COLS] = {
+static const int pw_col_min_widths[PW_COLS] = {
     7,   // entry number
     10,  // title
     10,  // artist
@@ -64,33 +64,33 @@ static const gboolean pw_col_min_widths[PW_COLS] = {
     3,   // queue position
     7,   // length
     10,  // path
-    10,  // filename
+    10,  // file name
     10,  // custom title
     3    // bitrate
 };
 
-static const gboolean pw_col_label[PW_COLS] = {
-    FALSE,  // entry number
-    TRUE,   // title
-    TRUE,   // artist
-    TRUE,   // year
-    TRUE,   // album
-    TRUE,   // album artist
-    FALSE,  // track
-    TRUE,   // genre
-    FALSE,  // queue position
-    FALSE,  // length
-    TRUE,   // path
-    TRUE,   // filename
-    TRUE,   // custom title
-    FALSE   // bitrate
+static const bool pw_col_label[PW_COLS] = {
+    false,  // entry number
+    true,   // title
+    true,   // artist
+    true,   // year
+    true,   // album
+    true,   // album artist
+    false,  // track
+    true,   // genre
+    false,  // queue position
+    false,  // length
+    true,   // path
+    true,   // file name
+    true,   // custom title
+    false   // bitrate
 };
 
 typedef struct {
     int list;
     Index<int> queue;
     int popup_source, popup_pos;
-    gboolean popup_shown;
+    bool popup_shown;
 } PlaylistWidgetData;
 
 static void set_int_from_tuple (GValue * value, const Tuple & tuple, Tuple::Field field)
@@ -252,11 +252,11 @@ static void shift_rows (void * user, int row, int before)
 static gboolean popup_show (PlaylistWidgetData * data)
 {
     audgui_infopopup_show (data->list, data->popup_pos);
-    data->popup_shown = TRUE;
+    data->popup_shown = true;
 
     g_source_remove (data->popup_source);
     data->popup_source = 0;
-    return FALSE;
+    return false;
 }
 
 static void popup_hide (PlaylistWidgetData * data)
@@ -270,7 +270,7 @@ static void popup_hide (PlaylistWidgetData * data)
     if (data->popup_shown)
     {
         audgui_infopopup_hide ();
-        data->popup_shown = FALSE;
+        data->popup_shown = false;
     }
 
     data->popup_pos = -1;
@@ -336,9 +336,9 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * search
  GtkTreeIter * iter, void * user)
 {
     GtkTreePath * path = gtk_tree_model_get_path (model, iter);
-    g_return_val_if_fail (path, TRUE);
+    g_return_val_if_fail (path, true);
     int row = gtk_tree_path_get_indices (path)[0];
-    g_return_val_if_fail (row >= 0, TRUE);
+    g_return_val_if_fail (row >= 0, true);
     gtk_tree_path_free (path);
 
     Index<String> keys = str_list_to_index (search, " ");
@@ -384,7 +384,7 @@ GtkWidget * ui_playlist_widget_new (int playlist)
     data->list = playlist;
     data->popup_source = 0;
     data->popup_pos = -1;
-    data->popup_shown = FALSE;
+    data->popup_shown = false;
 
     GtkWidget * list = audgui_list_new (& callbacks, data,
      aud_playlist_entry_count (playlist));
@@ -398,7 +398,7 @@ GtkWidget * ui_playlist_widget_new (int playlist)
     /* Disable type-to-search because it blocks CTRL-V, causing URI's to be
      * pasted into the search box rather than added to the playlist.  The search
      * box can still be brought up with CTRL-F. */
-    gtk_tree_view_set_enable_search ((GtkTreeView *) list, FALSE);
+    gtk_tree_view_set_enable_search ((GtkTreeView *) list, false);
 
     for (int i = 0; i < pw_num_cols; i ++)
     {

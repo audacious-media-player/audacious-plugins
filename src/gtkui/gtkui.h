@@ -36,17 +36,17 @@ extern int menu_tab_playlist_id;
 extern const PluginPreferences gtkui_prefs;
 
 /* ui_gtk.c */
-void set_ab_repeat_a (void);
-void set_ab_repeat_b (void);
-void clear_ab_repeat (void);
-void show_hide_menu (void);
-void show_hide_infoarea (void);
-void show_hide_infoarea_vis (void);
-void show_hide_statusbar (void);
+void set_ab_repeat_a ();
+void set_ab_repeat_b ();
+void clear_ab_repeat ();
+void show_hide_menu ();
+void show_hide_infoarea ();
+void show_hide_infoarea_vis ();
+void show_hide_statusbar ();
 void popup_menu_rclick (unsigned button, uint32_t time);
 void popup_menu_tab (unsigned button, uint32_t time, int playlist);
-void activate_search_tool (void);
-void activate_playlist_manager (void);
-void update_step_size (void);
+void activate_search_tool ();
+void activate_playlist_manager ();
+void update_step_size ();
 
 #endif
