@@ -165,13 +165,15 @@ void MainWindow::updateToggles ()
 void MainWindow::action_play_pause_set_play ()
 {
     toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
-    toolButtonPlayPause->setText ("Play");
+    toolButtonPlayPause->setText (_("Play"));
+    toolButtonPlayPause->setToolTip (_("Play"));
 }
 
 void MainWindow::action_play_pause_set_pause ()
 {
     toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
-    toolButtonPlayPause->setText ("Pause");
+    toolButtonPlayPause->setText (_("Pause"));
+    toolButtonPlayPause->setToolTip (_("Pause"));
 }
 
 void MainWindow::show_buffering ()
