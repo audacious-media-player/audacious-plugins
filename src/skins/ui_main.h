@@ -66,8 +66,6 @@ void mainwin_set_song_title (const char * title);
 void mainwin_set_song_info(int rate, int freq, int nch);
 void mainwin_clear_song_info(void);
 
-void mainwin_set_shape (void);
-
 void mainwin_disable_seekbar(void);
 
 void mainwin_update_song_info (void);

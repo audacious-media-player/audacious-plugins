@@ -111,8 +111,6 @@ void view_apply_player_shaded (void)
     int width = shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
     int height = shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
     window_set_size (mainwin, width, height);
-
-    mainwin_set_shape ();
 }
 
 void view_set_playlist_shaded (bool shaded)
@@ -149,8 +147,6 @@ void view_apply_equalizer_shaded (void)
 
     window_set_shaded (equalizerwin, shaded);
     window_set_size (equalizerwin, 275, shaded ? 14 : 116);
-
-    equalizerwin_set_shape ();
 }
 
 void view_set_double_size (bool double_size)

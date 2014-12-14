@@ -27,6 +27,7 @@
 GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
  gboolean shaded, void (* draw) (GtkWidget * window, cairo_t * cr));
 void window_set_size (GtkWidget * window, int w, int h);
+void window_set_shapes (GtkWidget * window, GdkRegion * shape, GdkRegion * sshape);
 void window_set_shaded (GtkWidget * window, gboolean shaded);
 void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,
  int x, int y);

@@ -140,12 +140,6 @@ static void format_time (char buf[7], int time, int length)
     }
 }
 
-void mainwin_set_shape (void)
-{
-    int id = aud_get_bool ("skins", "player_shaded") ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN;
-    gtk_widget_shape_combine_mask (mainwin, active_skin->masks[id], 0, 0);
-}
-
 static void
 mainwin_menubtn_cb(void)
 {

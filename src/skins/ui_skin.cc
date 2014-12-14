@@ -162,12 +162,6 @@ skin_free(Skin * skin)
         }
     }
 
-    for (i = 0; i < SKIN_MASK_COUNT; i++) {
-        if (skin->masks[i])
-            g_object_unref (skin->masks[i]);
-        skin->masks[i] = nullptr;
-    }
-
     g_free(skin->path);
     skin->path = nullptr;
 }
@@ -445,7 +439,6 @@ skin_load_pixmaps(Skin * skin, const char * path)
         skin_numbers_generate_dash (skin);
 
     skin_load_pl_colors (skin, path);
-    skin_load_masks (skin, path);
     skin_load_viscolor (skin, path);
 
     return TRUE;
@@ -524,11 +517,13 @@ skin_load_nolock(Skin * skin, const char * path, gboolean force)
         return FALSE;
     }
 
+    GdkRegion * masks[SKIN_MASK_COUNT];
+    skin_load_masks (skin, skin_path, masks);
+    window_set_shapes (mainwin, masks[SKIN_MASK_MAIN], masks[SKIN_MASK_MAIN_SHADE]);
+    window_set_shapes (equalizerwin, masks[SKIN_MASK_EQ], masks[SKIN_MASK_EQ_SHADE]);
+
     if(archive) del_directory(skin_path);
     g_free(skin_path);
-
-    mainwin_set_shape ();
-    equalizerwin_set_shape ();
 
     return TRUE;
 }

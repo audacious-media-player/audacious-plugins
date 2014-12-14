@@ -248,64 +248,54 @@ private:
     }
 };
 
-static GdkBitmap * skin_create_mask (const GArray * num,
+static GdkRegion * skin_create_mask (const GArray * num,
  const GArray * point, int width, int height)
 {
+    if (! num || ! point)
+        return nullptr;
+
     width *= config.scale;
     height *= config.scale;
 
-    GdkBitmap * bitmap = gdk_pixmap_new (nullptr, width, height, 1);
-    cairo_t * cr = gdk_cairo_create (bitmap);
-    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+    GdkRegion * mask = nullptr;
 
-    cairo_set_source_rgba (cr, 0, 0, 0, 0);
-    cairo_rectangle (cr, 0, 0, width, height);
-    cairo_fill (cr);
-
-    cairo_set_source_rgba (cr, 0, 0, 0, 1);
-
-    gboolean created_mask = FALSE;
-
-    if (num && point)
+    unsigned j = 0;
+    for (unsigned i = 0; i < num->len; i ++)
     {
-        unsigned j = 0;
-        for (unsigned i = 0; i < num->len; i ++)
+        int n_points = g_array_index (num, int, i);
+        if (n_points <= 0 || j + 2 * n_points > point->len)
+            break;
+
+        int xmin = width, ymin = height, xmax = 0, ymax = 0;
+
+        for (int k = 0; k < n_points; k ++)
         {
-            int n_points = g_array_index (num, int, i);
-            if (n_points <= 0 || j + 2 * n_points > point->len)
-                break;
+            int x = g_array_index (point, int, j + k * 2) * config.scale;
+            int y = g_array_index (point, int, j + k * 2 + 1) * config.scale;
 
-            int xmin = width, ymin = height, xmax = 0, ymax = 0;
-
-            for (int k = 0; k < n_points; k ++)
-            {
-                int x = g_array_index (point, int, j + k * 2) * config.scale;
-                int y = g_array_index (point, int, j + k * 2 + 1) * config.scale;
-
-                xmin = aud::min (xmin, x);
-                ymin = aud::min (ymin, y);
-                xmax = aud::max (xmax, x);
-                ymax = aud::max (ymax, y);
-            }
-
-            if (xmax > xmin && ymax > ymin)
-                cairo_rectangle (cr, xmin, ymin, xmax - xmin, ymax - ymin);
-
-            created_mask = TRUE;
-            j += n_points * 2;
+            xmin = aud::min (xmin, x);
+            ymin = aud::min (ymin, y);
+            xmax = aud::max (xmax, x);
+            ymax = aud::max (ymax, y);
         }
+
+        if (xmax > xmin && ymax > ymin)
+        {
+            GdkRectangle rect = {xmin, ymin, xmax - xmin, ymax - ymin};
+
+            if (mask)
+                gdk_region_union_with_rect (mask, & rect);
+            else
+                mask = gdk_region_rectangle (& rect);
+        }
+
+        j += n_points * 2;
     }
 
-    if (! created_mask)
-        cairo_rectangle (cr, 0, 0, width, height);
-
-    cairo_fill (cr);
-
-    cairo_destroy (cr);
-    return bitmap;
+    return mask;
 }
 
-void skin_load_masks (Skin * skin, const char * path)
+void skin_load_masks (Skin * skin, const char * path, GdkRegion * masks[SKIN_MASK_COUNT])
 {
     int sizes[SKIN_MASK_COUNT][2] = {
         {skin->properties.mainwin_width, skin->properties.mainwin_height},
@@ -320,6 +310,6 @@ void skin_load_masks (Skin * skin, const char * path)
         parser.parse (file);
 
     for (int id = 0; id < SKIN_MASK_COUNT; id ++)
-        skin->masks[id] = skin_create_mask (parser.numpoints[id],
+        masks[id] = skin_create_mask (parser.numpoints[id],
          parser.pointlist[id], sizes[id][0], sizes[id][1]);
 }
