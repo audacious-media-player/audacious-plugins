@@ -92,7 +92,7 @@ static GtkStatusIcon * si_create ()
     else
     {
         const char * data_dir = aud_get_path (AudPath::DataDir);
-        const char * path = filename_build ({data_dir, "images", "audacious.png"});
+        const char * path = filename_build ({data_dir, "images", "audacious.svg"});
 
         icon = gtk_status_icon_new_from_file (path);
     }
