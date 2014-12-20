@@ -275,6 +275,17 @@ if test "x$enable_songchange" != "xno"; then
     )
 fi
 
+dnl Status Icon
+dnl ===========
+
+AC_ARG_ENABLE(statusicon,
+ [AS_HELP_STRING([--enable-statusicon], [enable X11 Status Icon plugin (default=disabled)])],
+ [have_statusicon=$enableval], [have_statusicon="no"])
+
+if test "x$have_statusicon" != "xno"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS statusicon"
+fi
+
 dnl *** Audacious OSD plugin (pangocairo-based)
 
 AC_ARG_ENABLE(aosd,
@@ -1174,6 +1185,7 @@ echo "  MPRIS 2 Server:                         $have_mpris2"
 echo "  Playlist Manager:                       $USE_GTK"
 echo "  Search Tool:                            $USE_GTK"
 echo "  Song Change:                            $have_songchange"
+echo "  Status Icon:                            $have_statusicon"
 echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  libnotify OSD:                          $have_notify"
