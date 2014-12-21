@@ -61,8 +61,10 @@ MainWindow::MainWindow () :
     auto slider = new TimeSlider (this);
 
     const ToolBarItem items[] = {
-        ToolBarAction ("document-open", N_("Open Files"), N_("Open Files"), [] () { audqt::fileopener_show(false); }),
-        ToolBarAction ("list-add", N_("Add Files"), N_("Add Files"), [] () { audqt::fileopener_show(true); }),
+        ToolBarAction ("document-open", N_("Open Files"), N_("Open Files"),
+            [] () { audqt::fileopener_show (audqt::FileMode::Open); }),
+        ToolBarAction ("list-add", N_("Add Files"), N_("Add Files"),
+            [] () { audqt::fileopener_show (audqt::FileMode::Add); }),
         ToolBarSeparator (),
         ToolBarAction ("media-playback-play", N_("Play"), N_("Play"), aud_drct_play_pause, & toolButtonPlayPause),
         ToolBarAction ("media-playback-stop", N_("Stop"), N_("Stop"), aud_drct_stop),
