@@ -26,7 +26,6 @@
 #include <libaudcore/playlist.h>
 
 #include "playlist.h"
-#include "playlist.moc"
 #include "playlist_model.h"
 
 PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (parent)

@@ -30,8 +30,6 @@ class QSortFilterProxyModel;
 
 class PlaylistWidget : public QTreeView
 {
-    Q_OBJECT
-
 public:
     PlaylistWidget (QTreeView * parent = nullptr, int uniqueId = -1);
     ~PlaylistWidget ();

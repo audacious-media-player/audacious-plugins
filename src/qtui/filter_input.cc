@@ -20,7 +20,6 @@
 #include <libaudcore/i18n.h>
 
 #include "filter_input.h"
-#include "filter_input.moc"
 
 #include <QKeyEvent>
 

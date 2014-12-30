@@ -24,8 +24,6 @@
 
 class FilterInput : public QLineEdit
 {
-    Q_OBJECT
-
 public:
     FilterInput (QWidget * parent = nullptr);
 

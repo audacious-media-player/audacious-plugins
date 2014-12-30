@@ -19,7 +19,6 @@
 
 #include "playlist.h"
 #include "playlist_tabs.h"
-#include "playlist_tabs.moc"
 
 #include <QKeyEvent>
 #include <QLineEdit>

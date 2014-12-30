@@ -27,7 +27,6 @@
 #include <libaudcore/tuple.h>
 
 #include "playlist_model.h"
-#include "playlist_model.moc"
 
 static inline QPixmap get_icon (const char * name)
 {

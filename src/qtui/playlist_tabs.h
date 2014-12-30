@@ -34,8 +34,6 @@ class QLineEdit;
 
 class PlaylistTabs : public QTabWidget
 {
-    Q_OBJECT
-
 public:
     PlaylistTabs (QWidget * parent = nullptr);
     ~PlaylistTabs ();
@@ -43,8 +41,6 @@ public:
     PlaylistWidget * activePlaylistWidget ();
 
     void editTab (int idx);
-
-public slots:
     void filterTrigger (const QString &text);
     void currentChangedTrigger (int idx);
     void tabEditedTrigger ();
@@ -75,12 +71,8 @@ private:
 
 class PlaylistTabBar : public QTabBar
 {
-    Q_OBJECT
-
 public:
     PlaylistTabBar (QWidget * parent = nullptr);
-
-public slots:
     void handleCloseRequest (int idx);
 
 protected:
