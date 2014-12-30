@@ -50,7 +50,7 @@ PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (p
     setColumnWidth (PL_COL_ALBUM, 200);
     resizeColumnToContents(PL_COL_QUEUED);
     resizeColumnToContents(PL_COL_LENGTH);
-    positionUpdate ();
+    scrollToCurrent ();
 }
 
 void PlaylistWidget::setFilter (const QString &text)
@@ -183,27 +183,53 @@ int PlaylistWidget::uniqueId () const
 
 void PlaylistWidget::scrollToCurrent ()
 {
-    auto index = rowToIndex (aud_playlist_get_position (playlist ()));
-    setCurrentIndex (index);
-    scrollTo (index);
+    int list = playlist ();
+    int entry = aud_playlist_get_position (list);
+
+    aud_playlist_select_all (list, false);
+    aud_playlist_entry_set_selected (list, entry, true);
+    aud_playlist_set_focus (list, entry);
+
+    // a playlist update should have been queued, unless the playlist is empty
+    if (aud_playlist_update_pending (list))
+        scrollQueued = true;
 }
 
 void PlaylistWidget::update (Playlist::Update level, int at, int count)
 {
     inUpdate = true;
 
+    int list = playlist ();
+
     if (level == Playlist::Structure)
     {
+        int entries = aud_playlist_entry_count (list);
         int old_entries = model->rowCount ();
-        int entries = aud_playlist_entry_count (playlist ());
+        int diff = entries - old_entries;
 
-        model->removeRows (at, old_entries - (entries - count));
+        if (previousEntry >= at + count - diff)
+            previousEntry += diff;
+        else if (previousEntry >= at)
+            previousEntry = -1;
+
+        model->removeRows (at, count - diff);
         model->insertRows (at, count);
     }
     else
         model->updateRows (at, count);
 
-    int list = playlist ();
+    int pos = aud_playlist_get_position (list);
+
+    if (previousEntry != pos)
+    {
+        if (previousEntry >= 0)
+            model->updateRow (previousEntry);
+        if (pos >= 0)
+            model->updateRow (pos);
+
+        previousEntry = pos;
+    }
+
     auto sel = selectionModel ();
 
     for (int row = at; row < at + count; row ++)
@@ -214,21 +240,16 @@ void PlaylistWidget::update (Playlist::Update level, int at, int count)
             sel->select (rowToIndex (row), sel->Deselect | sel->Rows);
     }
 
-    sel->setCurrentIndex (rowToIndex (aud_playlist_get_focus (list)), sel->NoUpdate);
+    auto current = rowToIndex (aud_playlist_get_focus (list));
+    sel->setCurrentIndex (current, sel->NoUpdate);
+
+    if (scrollQueued)
+    {
+        scrollTo (current);
+        scrollQueued = false;
+    }
 
     inUpdate = false;
-}
-
-void PlaylistWidget::positionUpdate ()
-{
-    int row = aud_playlist_get_position (playlist ());
-    if (! aud_playlist_update_pending ())
-    {
-        model->updateRow (previousEntry);
-        previousEntry = row;
-        setFocus ();
-        scrollToCurrent ();
-    }
 }
 
 void PlaylistWidget::playCurrentIndex ()

@@ -210,14 +210,14 @@ void MainWindow::pause_cb ()
     else
         action_play_pause_set_pause ();
 
-    playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
+    playlistTabs->activePlaylistWidget ()->scrollToCurrent (); /* updates indicator icon */
 }
 
 void MainWindow::playback_stop_cb ()
 {
     setWindowTitle ("Audacious");
     action_play_pause_set_play ();
-    playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
+    playlistTabs->activePlaylistWidget ()->scrollToCurrent (); /* updates indicator icon */
 }
 
 void MainWindow::update_toggles_cb ()

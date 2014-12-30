@@ -213,7 +213,7 @@ void PlaylistTabs::playlist_position_cb (int list)
 {
     auto widget = playlistWidget (list);
     if (widget)
-        widget->positionUpdate ();
+        widget->scrollToCurrent ();
 }
 
 PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)

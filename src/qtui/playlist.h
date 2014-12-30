@@ -35,7 +35,6 @@ public:
     ~PlaylistWidget ();
     void scrollToCurrent ();
     void update (Playlist::Update level, int at, int count);
-    void positionUpdate ();
     void playCurrentIndex ();
     void deleteCurrentSelection ();
     void setFilter (const QString &text);
@@ -48,6 +47,7 @@ private:
     QSortFilterProxyModel * proxyModel;
     int previousEntry = -1;
     bool inUpdate = false;
+    bool scrollQueued = false;
 
     QModelIndex rowToIndex (int row);
     int indexToRow (const QModelIndex & index);
