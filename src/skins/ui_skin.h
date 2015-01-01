@@ -174,7 +174,6 @@ typedef struct {
     cairo_surface_t * pixmaps[SKIN_PIXMAP_COUNT];
     uint32_t colors[SKIN_COLOR_COUNT];
     uint32_t vis_colors[24];
-    cairo_region_t * masks[SKIN_MASK_COUNT];
     SkinProperties properties;
 } Skin;
 
@@ -199,7 +198,7 @@ void skin_draw_mainwin_titlebar (cairo_t * cr, gboolean shaded, gboolean focus);
 /* ui_skin_load_ini.c */
 void skin_load_hints (Skin * skin, const char * path);
 void skin_load_pl_colors (Skin * skin, const char * path);
-void skin_load_masks (Skin * skin, const char * path);
+void skin_load_masks (Skin * skin, const char * path, cairo_region_t * masks[SKIN_MASK_COUNT]);
 
 static inline void set_cairo_color (cairo_t * cr, uint32_t c)
 {

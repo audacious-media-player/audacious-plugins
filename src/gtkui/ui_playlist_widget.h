@@ -26,7 +26,7 @@
 GtkWidget * ui_playlist_widget_new (int playlist);
 int ui_playlist_widget_get_playlist (GtkWidget * widget);
 void ui_playlist_widget_set_playlist (GtkWidget * widget, int playlist);
-void ui_playlist_widget_update (GtkWidget * widget, Playlist::Update level, int at, int count);
+void ui_playlist_widget_update (GtkWidget * widget, const Playlist::Update & update);
 void ui_playlist_widget_scroll (GtkWidget * widget);
 
 enum {
@@ -53,9 +53,9 @@ extern int pw_num_cols;
 extern int pw_cols[PW_COLS];
 extern int pw_col_widths[PW_COLS];
 
-void pw_col_init (void);
-void * pw_col_create_chooser (void);
-void pw_col_save (void);
-void pw_col_cleanup (void);
+void pw_col_init ();
+void * pw_col_create_chooser ();
+void pw_col_save ();
+void pw_col_cleanup ();
 
 #endif

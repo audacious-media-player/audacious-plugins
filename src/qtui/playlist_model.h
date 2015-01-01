@@ -34,8 +34,6 @@ enum {
 
 class PlaylistModel : public QAbstractListModel
 {
-    Q_OBJECT
-
 public:
     PlaylistModel (QObject * parent = nullptr, int id = -1);
     ~PlaylistModel ();

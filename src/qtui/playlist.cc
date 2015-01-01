@@ -26,7 +26,6 @@
 #include <libaudcore/playlist.h>
 
 #include "playlist.h"
-#include "playlist.moc"
 #include "playlist_model.h"
 
 PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (parent)
@@ -44,13 +43,14 @@ PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (p
     setIndentation (0);
     setUniformRowHeights (true);
     setFrameShape (QFrame::NoFrame);
+    setSelectionMode (ExtendedSelection);
     setColumnWidth (PL_COL_NOW_PLAYING, 25);
     setColumnWidth (PL_COL_TITLE, 300);
     setColumnWidth (PL_COL_ARTIST, 150);
     setColumnWidth (PL_COL_ALBUM, 200);
     resizeColumnToContents(PL_COL_QUEUED);
     resizeColumnToContents(PL_COL_LENGTH);
-    positionUpdate ();
+    scrollToCurrent ();
 }
 
 void PlaylistWidget::setFilter (const QString &text)
@@ -64,6 +64,22 @@ PlaylistWidget::~PlaylistWidget ()
     delete proxyModel;
 }
 
+QModelIndex PlaylistWidget::rowToIndex (int row)
+{
+    if (row < 0)
+        return QModelIndex ();
+
+    return proxyModel->mapFromSource (model->index (row));
+}
+
+int PlaylistWidget::indexToRow (const QModelIndex & index)
+{
+    if (! index.isValid ())
+        return -1;
+
+    return proxyModel->mapToSource (index).row ();
+}
+
 void PlaylistWidget::keyPressEvent (QKeyEvent * e)
 {
     switch (e->modifiers ())
@@ -71,6 +87,9 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * e)
     case Qt::NoModifier:
         switch (e->key ())
         {
+        case Qt::Key_Escape:
+            scrollToCurrent ();
+            break;
         case Qt::Key_Enter:
         case Qt::Key_Return:
             playCurrentIndex ();
@@ -90,35 +109,21 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * e)
         case Qt::Key_Z:
             aud_drct_pl_prev ();
             return;
-            break;
         case Qt::Key_X:
             aud_drct_play ();
             return;
-            break;
         case Qt::Key_C:
             aud_drct_pause ();
             return;
-            break;
         case Qt::Key_V:
             aud_drct_stop ();
             return;
-            break;
         case Qt::Key_B:
             aud_drct_pl_next ();
             return;
-            break;
         case Qt::Key_Q:
             toggleQueue ();
             return;
-            break;
-        }
-        break;
-    case Qt::ControlModifier:
-        switch (e->key ())
-        {
-        case Qt::Key_L:
-            scrollToCurrent ();
-            break;
         }
         break;
     }
@@ -129,6 +134,30 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * e)
 void PlaylistWidget::mouseDoubleClickEvent (QMouseEvent * event)
 {
     playCurrentIndex ();
+}
+
+void PlaylistWidget::currentChanged (const QModelIndex & current, const QModelIndex & previous)
+{
+    QTreeView::currentChanged (current, previous);
+
+    if (! inUpdate)
+        aud_playlist_set_focus (playlist (), indexToRow (current));
+}
+
+void PlaylistWidget::selectionChanged (const QItemSelection & selected,
+ const QItemSelection & deselected)
+{
+    QTreeView::selectionChanged (selected, deselected);
+
+    if (! inUpdate)
+    {
+        int list = playlist ();
+
+        for (const QModelIndex & idx : selected.indexes ())
+            aud_playlist_entry_set_selected (list, indexToRow (idx), true);
+        for (const QModelIndex & idx : deselected.indexes ())
+            aud_playlist_entry_set_selected (list, indexToRow (idx), false);
+    }
 }
 
 int PlaylistWidget::playlist () const
@@ -143,69 +172,104 @@ int PlaylistWidget::uniqueId () const
 
 void PlaylistWidget::scrollToCurrent ()
 {
-    int row = aud_playlist_get_position (playlist ());
-    auto index = proxyModel->mapFromSource (model->index (row));
-    setCurrentIndex (index);
-    scrollTo (index);
+    int list = playlist ();
+    int entry = aud_playlist_get_position (list);
+
+    aud_playlist_select_all (list, false);
+    aud_playlist_entry_set_selected (list, entry, true);
+    aud_playlist_set_focus (list, entry);
+
+    // a playlist update should have been queued, unless the playlist is empty
+    if (aud_playlist_update_pending (list))
+        scrollQueued = true;
 }
 
-void PlaylistWidget::update (Playlist::Update level, int at, int count)
+void PlaylistWidget::update (const Playlist::Update & update)
 {
-    if (level == Playlist::Structure)
+    inUpdate = true;
+
+    int list = playlist ();
+    int entries = aud_playlist_entry_count (list);
+    int changed = entries - update.before - update.after;
+
+    if (update.level == Playlist::Structure)
     {
         int old_entries = model->rowCount ();
-        int entries = aud_playlist_entry_count (playlist ());
+        int removed = old_entries - update.before - update.after;
 
-        model->removeRows (at, old_entries - (entries - count));
-        model->insertRows (at, count);
+        if (previousEntry >= old_entries - update.after)
+            previousEntry += entries - old_entries;
+        else if (previousEntry >= update.before)
+            previousEntry = -1;
+
+        model->removeRows (update.before, removed);
+        model->insertRows (update.before, changed);
     }
-    else if (level == Playlist::Metadata)
-        model->updateRows (at, count);
+    else if (update.level == Playlist::Metadata || update.queue_changed)
+        model->updateRows (update.before, changed);
 
-    updateQueue ();
-}
-
-void PlaylistWidget::positionUpdate ()
-{
-    int row = aud_playlist_get_position (playlist ());
-    if (! aud_playlist_update_pending ())
+    if (update.queue_changed)
     {
-        model->updateRow (previousEntry);
-        previousEntry = row;
-        setFocus ();
-        scrollToCurrent ();
-        updateQueue ();
+        for (int i = aud_playlist_queue_count (list); i --; )
+        {
+            int entry = aud_playlist_queue_get_entry (list, i);
+            if (entry < update.before || entry >= entries - update.after)
+                model->updateRows (entry, 1);
+        }
     }
+
+    int pos = aud_playlist_get_position (list);
+
+    if (previousEntry != pos)
+    {
+        if (previousEntry >= 0)
+            model->updateRow (previousEntry);
+        if (pos >= 0)
+            model->updateRow (pos);
+
+        previousEntry = pos;
+    }
+
+    auto sel = selectionModel ();
+
+    for (int row = update.before; row < entries - update.after; row ++)
+    {
+        if (aud_playlist_entry_get_selected (list, row))
+            sel->select (rowToIndex (row), sel->Select | sel->Rows);
+        else
+            sel->select (rowToIndex (row), sel->Deselect | sel->Rows);
+    }
+
+    auto current = rowToIndex (aud_playlist_get_focus (list));
+    sel->setCurrentIndex (current, sel->NoUpdate);
+
+    if (scrollQueued)
+    {
+        scrollTo (current);
+        scrollQueued = false;
+    }
+
+    inUpdate = false;
 }
 
 void PlaylistWidget::playCurrentIndex ()
 {
-    aud_playlist_set_position (playlist (), proxyModel->mapToSource (currentIndex ()).row ());
+    aud_playlist_set_position (playlist (), indexToRow (currentIndex ()));
     aud_playlist_play (playlist ());
 }
 
 void PlaylistWidget::deleteCurrentSelection ()
 {
-    aud_playlist_entry_delete (playlist (), proxyModel->mapToSource (currentIndex ()).row (), 1);
+    aud_playlist_delete_selected (playlist ());
 }
 
 void PlaylistWidget::toggleQueue ()
 {
-    int row = proxyModel->mapToSource (currentIndex ()).row ();
+    int row = indexToRow (currentIndex ());
     int at = aud_playlist_queue_find_entry (playlist (), row);
 
     if (at < 0)
         aud_playlist_queue_insert (playlist (), -1, row);
     else
         aud_playlist_queue_delete (playlist (), at, 1);
-    model->updateRow (row);
-}
-
-void PlaylistWidget::updateQueue ()
-{
-    for (int i = aud_playlist_queue_count (playlist ()); i --;)
-    {
-        int row = aud_playlist_queue_get_entry (playlist (), i);
-        model->updateRow (row);
-    }
 }

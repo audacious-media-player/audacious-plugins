@@ -17,27 +17,19 @@
  * the use of this software.
  */
 
-#include <glib.h>
-#include <libaudcore/i18n.h>
-#include <gdk/gdk.h>
-#include <gdk/gdkkeysyms.h>
-#include <gtk/gtk.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
-
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/playlist.h>
-#include <libaudcore/tuple.h>
-#include <libaudgui/libaudgui.h>
+#include <libaudcore/runtime.h>
 
 #include "ui_statusbar.h"
 
-#define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), __VA_ARGS__)
+static QueuedFunc clear_timeout;
 
-static void ui_statusbar_update_playlist_length (void * unused, GtkWidget * label)
+static void ui_statusbar_update_playlist_length (void *, void * label)
 {
     int playlist = aud_playlist_get_active ();
     StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
@@ -45,84 +37,122 @@ static void ui_statusbar_update_playlist_length (void * unused, GtkWidget * labe
     gtk_label_set_text ((GtkLabel *) label, str_concat ({s1, " / ", s2}));
 }
 
-static void ui_statusbar_info_change (void * unused, GtkWidget * label)
+static void ui_statusbar_info_change (void *, void * label)
 {
+    if (clear_timeout.running ())
+        return;
+
     Tuple tuple = aud_drct_get_tuple ();
     String codec = tuple.get_str (Tuple::Codec);
 
     int bitrate, samplerate, channels;
     aud_drct_get_info (bitrate, samplerate, channels);
 
-    char buf[256];
-    buf[0] = 0;
+    StringBuf buf;
 
     if (codec)
     {
-        APPEND (buf, "%s", (const char *) codec);
+        buf.insert (-1, codec);
         if (channels > 0 || samplerate > 0 || bitrate > 0)
-            APPEND (buf, ", ");
+            buf.insert (-1, ", ");
     }
 
     if (channels > 0)
     {
         if (channels == 1)
-            APPEND (buf, _("mono"));
+            buf.insert (-1, _("mono"));
         else if (channels == 2)
-            APPEND (buf, _("stereo"));
+            buf.insert (-1, _("stereo"));
         else
-            APPEND (buf, ngettext ("%d channel", "%d channels", channels),
-             channels);
+            buf.combine (str_printf (ngettext ("%d channel", "%d channels", channels), channels));
 
         if (samplerate > 0 || bitrate > 0)
-            APPEND (buf, ", ");
+            buf.insert (-1, ", ");
     }
 
     if (samplerate > 0)
     {
-        APPEND (buf, "%d kHz", samplerate / 1000);
+        buf.combine (str_printf ("%d kHz", samplerate / 1000));
         if (bitrate > 0)
-            APPEND (buf, ", ");
+            buf.insert (-1, ", ");
     }
 
     if (bitrate > 0)
-        APPEND (buf, _("%d kbps"), bitrate / 1000);
+        buf.combine (str_printf (_("%d kbps"), bitrate / 1000));
 
     gtk_label_set_text ((GtkLabel *) label, buf);
 }
 
-static void ui_statusbar_playback_stop (void * unused, GtkWidget * label)
+static void ui_statusbar_playback_stop (void *, void * label)
 {
+    if (clear_timeout.running ())
+        return;
+
     gtk_label_set_text ((GtkLabel *) label, nullptr);
 }
 
-static void ui_statusbar_destroy_cb (GtkWidget * widget, void * data)
+static void clear_message (void * label)
 {
-    hook_dissociate ("playback ready", (HookFunction) ui_statusbar_info_change);
-    hook_dissociate ("info change", (HookFunction) ui_statusbar_info_change);
-    hook_dissociate ("tuple change", (HookFunction) ui_statusbar_info_change);
-    hook_dissociate ("playback stop", (HookFunction) ui_statusbar_playback_stop);
-    hook_dissociate ("playlist activate", (HookFunction) ui_statusbar_update_playlist_length);
-    hook_dissociate ("playlist update", (HookFunction) ui_statusbar_update_playlist_length);
+    clear_timeout.stop ();
+
+    if (aud_drct_get_ready ())
+        ui_statusbar_info_change (nullptr, label);
+    else
+        gtk_label_set_text ((GtkLabel *) label, nullptr);
 }
 
-GtkWidget * ui_statusbar_new (void)
+static void no_advance_toggled (void *, void * label)
+{
+    if (aud_get_bool (nullptr, "no_playlist_advance"))
+        gtk_label_set_text ((GtkLabel *) label, _("Single mode."));
+    else
+        gtk_label_set_text ((GtkLabel *) label, _("Playlist mode."));
+
+    clear_timeout.start (1000, clear_message, label);
+}
+
+static void stop_after_song_toggled (void *, void * label)
+{
+    if (aud_get_bool (nullptr, "stop_after_current_song"))
+        gtk_label_set_text ((GtkLabel *) label, _("Stopping after song."));
+
+    clear_timeout.start (1000, clear_message, label);
+}
+
+static void ui_statusbar_destroy_cb ()
+{
+    clear_timeout.stop ();
+
+    hook_dissociate ("playback ready", ui_statusbar_info_change);
+    hook_dissociate ("info change", ui_statusbar_info_change);
+    hook_dissociate ("tuple change", ui_statusbar_info_change);
+    hook_dissociate ("playback stop", ui_statusbar_playback_stop);
+    hook_dissociate ("set no_playlist_advance", no_advance_toggled);
+    hook_dissociate ("set stop_after_current_song", stop_after_song_toggled);
+    hook_dissociate ("playlist activate", ui_statusbar_update_playlist_length);
+    hook_dissociate ("playlist update", ui_statusbar_update_playlist_length);
+}
+
+GtkWidget * ui_statusbar_new ()
 {
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
     GtkWidget * status = gtk_widget_new (GTK_TYPE_LABEL, "xalign", 0.0, nullptr);
     GtkWidget * length = gtk_widget_new (GTK_TYPE_LABEL, "xalign", 1.0, nullptr);
 
     gtk_label_set_ellipsize ((GtkLabel *) status, PANGO_ELLIPSIZE_END);
-    gtk_box_pack_start ((GtkBox *) hbox, status, TRUE, TRUE, 5);
-    gtk_box_pack_start ((GtkBox *) hbox, length, FALSE, FALSE, 5);
+    gtk_box_pack_start ((GtkBox *) hbox, status, true, true, 5);
+    gtk_box_pack_start ((GtkBox *) hbox, length, false, false, 5);
 
     ui_statusbar_update_playlist_length (nullptr, length);
 
-    hook_associate ("playback ready", (HookFunction) ui_statusbar_info_change, status);
-    hook_associate ("info change", (HookFunction) ui_statusbar_info_change, status);
-    hook_associate ("tuple change", (HookFunction) ui_statusbar_info_change, status);
-    hook_associate ("playback stop", (HookFunction) ui_statusbar_playback_stop, status);
-    hook_associate ("playlist activate", (HookFunction) ui_statusbar_update_playlist_length, length);
-    hook_associate ("playlist update", (HookFunction) ui_statusbar_update_playlist_length, length);
+    hook_associate ("playback ready", ui_statusbar_info_change, status);
+    hook_associate ("info change", ui_statusbar_info_change, status);
+    hook_associate ("tuple change", ui_statusbar_info_change, status);
+    hook_associate ("playback stop", ui_statusbar_playback_stop, status);
+    hook_associate ("set no_playlist_advance", no_advance_toggled, status);
+    hook_associate ("set stop_after_current_song", stop_after_song_toggled, status);
+    hook_associate ("playlist activate", ui_statusbar_update_playlist_length, length);
+    hook_associate ("playlist update", ui_statusbar_update_playlist_length, length);
 
     g_signal_connect (hbox, "destroy", (GCallback) ui_statusbar_destroy_cb, nullptr);
 

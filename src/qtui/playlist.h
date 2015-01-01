@@ -30,19 +30,15 @@ class QSortFilterProxyModel;
 
 class PlaylistWidget : public QTreeView
 {
-    Q_OBJECT
-
 public:
     PlaylistWidget (QTreeView * parent = nullptr, int uniqueId = -1);
     ~PlaylistWidget ();
     void scrollToCurrent ();
-    void update (Playlist::Update level, int at, int count);
-    void positionUpdate ();
+    void update (const Playlist::Update & update);
     void playCurrentIndex ();
     void deleteCurrentSelection ();
     void setFilter (const QString &text);
     void toggleQueue ();
-    void updateQueue ();
     int playlist () const;
     int uniqueId () const;
 
@@ -50,10 +46,16 @@ private:
     PlaylistModel * model;
     QSortFilterProxyModel * proxyModel;
     int previousEntry = -1;
+    bool inUpdate = false;
+    bool scrollQueued = false;
 
-protected:
+    QModelIndex rowToIndex (int row);
+    int indexToRow (const QModelIndex & index);
+
     void keyPressEvent (QKeyEvent * e); /* override default handler */
     void mouseDoubleClickEvent (QMouseEvent * event);
+    void currentChanged (const QModelIndex & current, const QModelIndex & previous);
+    void selectionChanged (const QItemSelection & selected, const QItemSelection & deselected);
 };
 
 #endif

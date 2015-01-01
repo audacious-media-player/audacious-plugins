@@ -34,8 +34,6 @@ class QLineEdit;
 
 class PlaylistTabs : public QTabWidget
 {
-    Q_OBJECT
-
 public:
     PlaylistTabs (QWidget * parent = nullptr);
     ~PlaylistTabs ();
@@ -43,8 +41,6 @@ public:
     PlaylistWidget * activePlaylistWidget ();
 
     void editTab (int idx);
-
-public slots:
     void filterTrigger (const QString &text);
     void currentChangedTrigger (int idx);
     void tabEditedTrigger ();
@@ -64,10 +60,10 @@ private:
     void cullPlaylists ();
     void cancelRename ();
 
-    void playlist_update_cb (Playlist::Update global_level);
+    void playlist_update_cb (Playlist::UpdateLevel global_level);
     void playlist_position_cb (int list);
 
-    const HookReceiver<PlaylistTabs, Playlist::Update>
+    const HookReceiver<PlaylistTabs, Playlist::UpdateLevel>
      update_hook {"playlist update", this, & PlaylistTabs::playlist_update_cb};
     const HookReceiver<PlaylistTabs, int>
      position_hook {"playlist position", this, & PlaylistTabs::playlist_position_cb};
@@ -75,12 +71,8 @@ private:
 
 class PlaylistTabBar : public QTabBar
 {
-    Q_OBJECT
-
 public:
     PlaylistTabBar (QWidget * parent = nullptr);
-
-public slots:
     void handleCloseRequest (int idx);
 
 protected:

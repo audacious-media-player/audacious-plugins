@@ -61,8 +61,10 @@ MainWindow::MainWindow () :
     auto slider = new TimeSlider (this);
 
     const ToolBarItem items[] = {
-        ToolBarAction ("document-open", N_("Open Files"), N_("Open Files"), [] () { audqt::fileopener_show(false); }),
-        ToolBarAction ("list-add", N_("Add Files"), N_("Add Files"), [] () { audqt::fileopener_show(true); }),
+        ToolBarAction ("document-open", N_("Open Files"), N_("Open Files"),
+            [] () { audqt::fileopener_show (audqt::FileMode::Open); }),
+        ToolBarAction ("list-add", N_("Add Files"), N_("Add Files"),
+            [] () { audqt::fileopener_show (audqt::FileMode::Add); }),
         ToolBarSeparator (),
         ToolBarAction ("media-playback-play", N_("Play"), N_("Play"), aud_drct_play_pause, & toolButtonPlayPause),
         ToolBarAction ("media-playback-stop", N_("Stop"), N_("Stop"), aud_drct_stop),
@@ -165,13 +167,15 @@ void MainWindow::updateToggles ()
 void MainWindow::action_play_pause_set_play ()
 {
     toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
-    toolButtonPlayPause->setText ("Play");
+    toolButtonPlayPause->setText (_("Play"));
+    toolButtonPlayPause->setToolTip (_("Play"));
 }
 
 void MainWindow::action_play_pause_set_pause ()
 {
     toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
-    toolButtonPlayPause->setText ("Pause");
+    toolButtonPlayPause->setText (_("Pause"));
+    toolButtonPlayPause->setToolTip (_("Pause"));
 }
 
 void MainWindow::show_buffering ()
@@ -206,14 +210,14 @@ void MainWindow::pause_cb ()
     else
         action_play_pause_set_pause ();
 
-    playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
+    playlistTabs->activePlaylistWidget ()->scrollToCurrent (); /* updates indicator icon */
 }
 
 void MainWindow::playback_stop_cb ()
 {
     setWindowTitle ("Audacious");
     action_play_pause_set_play ();
-    playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
+    playlistTabs->activePlaylistWidget ()->scrollToCurrent (); /* updates indicator icon */
 }
 
 void MainWindow::update_toggles_cb ()

@@ -46,7 +46,7 @@ typedef struct {
     String last_title, last_artist, last_album;
     float alpha, last_alpha;
 
-    gboolean stopped;
+    bool stopped;
     int fade_timeout;
 
     GdkPixbuf * pb, * last_pb;
@@ -116,7 +116,7 @@ void InfoAreaVis::render_freq (const float * freq)
         gtk_widget_queue_draw (widget);
 }
 
-void InfoAreaVis::clear (void)
+void InfoAreaVis::clear ()
 {
     memset (bars, 0, sizeof bars);
     memset (delay, 0, sizeof delay);
@@ -149,20 +149,20 @@ static void draw_text (GtkWidget * widget, cairo_t * cr, int x, int y, int
  width, float r, float g, float b, float a, const char * font,
  const char * text)
 {
-    cairo_move_to(cr, x, y);
-    cairo_set_source_rgba(cr, r, g, b, a);
+    cairo_move_to (cr, x, y);
+    cairo_set_source_rgba (cr, r, g, b, a);
 
     PangoFontDescription * desc = pango_font_description_from_string (font);
     PangoLayout * pl = gtk_widget_create_pango_layout (widget, nullptr);
     pango_layout_set_text (pl, text, -1);
-    pango_layout_set_font_description(pl, desc);
-    pango_font_description_free(desc);
+    pango_layout_set_font_description (pl, desc);
+    pango_font_description_free (desc);
     pango_layout_set_width (pl, width * PANGO_SCALE);
     pango_layout_set_ellipsize (pl, PANGO_ELLIPSIZE_END);
 
-    pango_cairo_show_layout(cr, pl);
+    pango_cairo_show_layout (cr, pl);
 
-    g_object_unref(pl);
+    g_object_unref (pl);
 }
 
 /****************************************************************************/
@@ -290,20 +290,20 @@ static gboolean draw_vis_cb (GtkWidget * widget, cairo_t * cr)
         cairo_fill (cr);
     }
 
-    return TRUE;
+    return true;
 }
 
 static void draw_album_art (cairo_t * cr)
 {
     g_return_if_fail (area);
 
-    if (area->pb != nullptr)
+    if (area->pb)
     {
         gdk_cairo_set_source_pixbuf (cr, area->pb, SPACING, SPACING);
         cairo_paint_with_alpha (cr, area->alpha);
     }
 
-    if (area->last_pb != nullptr)
+    if (area->last_pb)
     {
         gdk_cairo_set_source_pixbuf (cr, area->last_pb, SPACING, SPACING);
         cairo_paint_with_alpha (cr, area->last_alpha);
@@ -320,22 +320,22 @@ static void draw_title (cairo_t * cr)
     int x = ICON_SIZE + SPACING * 2;
     int width = alloc.width - x;
 
-    if (area->title != nullptr)
+    if (area->title)
         draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, area->alpha,
          "18", area->title);
-    if (area->last_title != nullptr)
+    if (area->last_title)
         draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, area->last_alpha,
          "18", area->last_title);
-    if (area->artist != nullptr)
+    if (area->artist)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE / 2, width, 1, 1, 1,
          area->alpha, "9", area->artist);
-    if (area->last_artist != nullptr)
+    if (area->last_artist)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE / 2, width, 1, 1, 1,
          area->last_alpha, "9", area->last_artist);
-    if (area->album != nullptr)
+    if (area->album)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE * 3 / 4, width, 0.7,
          0.7, 0.7, area->alpha, "9", area->album);
-    if (area->last_album != nullptr)
+    if (area->last_album)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE * 3 / 4, width, 0.7,
          0.7, 0.7, area->last_alpha, "9", area->last_album);
 }
@@ -349,24 +349,24 @@ static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
     draw_album_art (cr);
     draw_title (cr);
 
-    return TRUE;
+    return true;
 }
 
-static gboolean ui_infoarea_do_fade (void)
+static gboolean ui_infoarea_do_fade ()
 {
-    g_return_val_if_fail (area, FALSE);
-    gboolean ret = FALSE;
+    g_return_val_if_fail (area, false);
+    gboolean ret = false;
 
     if (aud_drct_get_playing () && area->alpha < 1)
     {
         area->alpha += 0.1;
-        ret = TRUE;
+        ret = true;
     }
 
     if (area->last_alpha > 0)
     {
         area->last_alpha -= 0.1;
-        ret = TRUE;
+        ret = true;
     }
 
     gtk_widget_queue_draw (area->main);
@@ -377,7 +377,7 @@ static gboolean ui_infoarea_do_fade (void)
     return ret;
 }
 
-static void ui_infoarea_set_title (void)
+static void ui_infoarea_set_title ()
 {
     g_return_if_fail (area);
 
@@ -397,7 +397,7 @@ static void ui_infoarea_set_title (void)
     gtk_widget_queue_draw (area->main);
 }
 
-static void set_album_art (void)
+static void set_album_art ()
 {
     g_return_if_fail (area);
 
@@ -411,7 +411,7 @@ static void set_album_art (void)
         audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
 }
 
-static void album_art_ready (void)
+static void album_art_ready ()
 {
     g_return_if_fail (area);
 
@@ -422,7 +422,7 @@ static void album_art_ready (void)
     gtk_widget_queue_draw (area->main);
 }
 
-static void infoarea_next (void)
+static void infoarea_next ()
 {
     g_return_if_fail (area);
 
@@ -441,13 +441,13 @@ static void infoarea_next (void)
     gtk_widget_queue_draw (area->main);
 }
 
-static void ui_infoarea_playback_start (void)
+static void ui_infoarea_playback_start ()
 {
     g_return_if_fail (area);
 
     if (! area->stopped) /* moved to the next song without stopping? */
         infoarea_next ();
-    area->stopped = FALSE;
+    area->stopped = false;
 
     ui_infoarea_set_title ();
     set_album_art ();
@@ -457,12 +457,12 @@ static void ui_infoarea_playback_start (void)
          ui_infoarea_do_fade, area);
 }
 
-static void ui_infoarea_playback_stop (void)
+static void ui_infoarea_playback_stop ()
 {
     g_return_if_fail (area);
 
     infoarea_next ();
-    area->stopped = TRUE;
+    area->stopped = true;
 
     if (! area->fade_timeout)
         area->fade_timeout = g_timeout_add (30, (GSourceFunc)
@@ -475,7 +475,7 @@ static void realize_cb (GtkWidget * widget)
     gdk_window_ensure_native (gtk_widget_get_window (widget));
 }
 
-void ui_infoarea_show_vis (gboolean show)
+void ui_infoarea_show_vis (bool show)
 {
     if (! area)
         return;
@@ -491,7 +491,7 @@ void ui_infoarea_show_vis (gboolean show)
         g_signal_connect (vis.widget, "realize", (GCallback) realize_cb, nullptr);
 
         gtk_widget_set_size_request (vis.widget, VIS_WIDTH + 2 * SPACING, HEIGHT);
-        gtk_box_pack_start ((GtkBox *) area->box, vis.widget, FALSE, FALSE, 0);
+        gtk_box_pack_start ((GtkBox *) area->box, vis.widget, false, false, 0);
 
         g_signal_connect (vis.widget, "draw", (GCallback) draw_vis_cb, nullptr);
         gtk_widget_show (vis.widget);
@@ -516,7 +516,7 @@ static void destroy_cb (GtkWidget * widget)
 {
     g_return_if_fail (area);
 
-    ui_infoarea_show_vis (FALSE);
+    ui_infoarea_show_vis (false);
 
     hook_dissociate ("tuple change", (HookFunction) ui_infoarea_set_title);
     hook_dissociate ("playback ready", (HookFunction) ui_infoarea_playback_start);
@@ -538,7 +538,7 @@ static void destroy_cb (GtkWidget * widget)
     area = nullptr;
 }
 
-GtkWidget * ui_infoarea_new (void)
+GtkWidget * ui_infoarea_new ()
 {
     g_return_val_if_fail (! area, nullptr);
     area = new UIInfoArea ();
@@ -547,7 +547,7 @@ GtkWidget * ui_infoarea_new (void)
 
     area->main = gtk_drawing_area_new ();
     gtk_widget_set_size_request (area->main, ICON_SIZE + 2 * SPACING, HEIGHT);
-    gtk_box_pack_start ((GtkBox *) area->box, area->main, TRUE, TRUE, 0);
+    gtk_box_pack_start ((GtkBox *) area->box, area->main, true, true, 0);
 
     g_signal_connect (area->main, "draw", (GCallback) draw_cb, nullptr);
 

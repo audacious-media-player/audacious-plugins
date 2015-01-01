@@ -44,81 +44,81 @@
 
 int menu_tab_playlist_id = -1; /* should really be stored in the menu somehow */
 
-static void open_files (void) {audgui_run_filebrowser (TRUE); }
-static void open_url (void) {audgui_show_add_url_window (TRUE); }
-static void add_files (void) {audgui_run_filebrowser (FALSE); }
-static void add_url (void) {audgui_show_add_url_window (FALSE); }
+static void open_files () { audgui_run_filebrowser (true); }
+static void open_url () { audgui_show_add_url_window (true); }
+static void add_files () { audgui_run_filebrowser (false); }
+static void add_url () { audgui_show_add_url_window (false); }
 
-static void configure_effects (void) {audgui_show_prefs_for_plugin_type (PluginType::Effect); }
-static void configure_visualizations (void) {audgui_show_prefs_for_plugin_type (PluginType::Vis); }
+static void configure_effects () { audgui_show_prefs_for_plugin_type (PluginType::Effect); }
+static void configure_visualizations () { audgui_show_prefs_for_plugin_type (PluginType::Vis); }
 
-static void pl_sort_track (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
-static void pl_sort_title (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void pl_sort_artist (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
-static void pl_sort_album (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
-static void pl_sort_album_artist (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
-static void pl_sort_date (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
-static void pl_sort_length (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
-static void pl_sort_path (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
-static void pl_sort_custom (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
-static void pl_reverse (void) {aud_playlist_reverse (aud_playlist_get_active ()); }
-static void pl_random (void) {aud_playlist_randomize (aud_playlist_get_active ()); }
+static void pl_sort_track () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
+static void pl_sort_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }
+static void pl_sort_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
+static void pl_sort_album () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
+static void pl_sort_album_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
+static void pl_sort_date () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
+static void pl_sort_length () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
+static void pl_sort_path () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
+static void pl_sort_custom () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
+static void pl_reverse () { aud_playlist_reverse (aud_playlist_get_active ()); }
+static void pl_random () { aud_playlist_randomize (aud_playlist_get_active ()); }
 
-static void pl_sort_selected_track (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Track); }
-static void pl_sort_selected_title (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void pl_sort_selected_artist (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
-static void pl_sort_selected_album (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Album); }
-static void pl_sort_selected_album_artist (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
-static void pl_sort_selected_date (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Date); }
-static void pl_sort_selected_length (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Length); }
-static void pl_sort_selected_path (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Path); }
-static void pl_sort_selected_custom (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
-static void pl_reverse_selected (void) {aud_playlist_reverse_selected (aud_playlist_get_active ()); }
-static void pl_random_selected (void) {aud_playlist_randomize_selected (aud_playlist_get_active ()); }
+static void pl_sort_selected_track () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Track); }
+static void pl_sort_selected_title () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Title); }
+static void pl_sort_selected_artist () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
+static void pl_sort_selected_album () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Album); }
+static void pl_sort_selected_album_artist () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
+static void pl_sort_selected_date () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Date); }
+static void pl_sort_selected_length () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Length); }
+static void pl_sort_selected_path () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Path); }
+static void pl_sort_selected_custom () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
+static void pl_reverse_selected () { aud_playlist_reverse_selected (aud_playlist_get_active ()); }
+static void pl_random_selected () { aud_playlist_randomize_selected (aud_playlist_get_active ()); }
 
-static void pl_new (void)
+static void pl_new ()
 {
     aud_playlist_insert (-1);
     aud_playlist_set_active (aud_playlist_count () - 1);
 }
 
-static void pl_play (void) {aud_playlist_play (aud_playlist_get_active ()); }
-static void pl_refresh (void) {aud_playlist_rescan (aud_playlist_get_active ()); }
-static void pl_remove_failed (void) {aud_playlist_remove_failed (aud_playlist_get_active ()); }
-static void pl_remove_dupes_by_title (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void pl_remove_dupes_by_filename (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Filename); }
-static void pl_remove_dupes_by_path (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Path); }
-static void pl_rename (void) {start_rename_playlist (aud_playlist_get_active ()); }
-static void pl_close (void) {audgui_confirm_playlist_delete (aud_playlist_get_active ()); }
-static void pl_refresh_sel (void) {aud_playlist_rescan_selected (aud_playlist_get_active ()); }
-static void pl_select_all (void) {aud_playlist_select_all (aud_playlist_get_active (), TRUE); }
+static void pl_play () { aud_playlist_play (aud_playlist_get_active ()); }
+static void pl_refresh () { aud_playlist_rescan (aud_playlist_get_active ()); }
+static void pl_remove_failed () { aud_playlist_remove_failed (aud_playlist_get_active ()); }
+static void pl_remove_dupes_by_title () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Title); }
+static void pl_remove_dupes_by_filename () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Filename); }
+static void pl_remove_dupes_by_path () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Path); }
+static void pl_rename () { start_rename_playlist (aud_playlist_get_active ()); }
+static void pl_close () { audgui_confirm_playlist_delete (aud_playlist_get_active ()); }
+static void pl_refresh_sel () { aud_playlist_rescan_selected (aud_playlist_get_active ()); }
+static void pl_select_all () { aud_playlist_select_all (aud_playlist_get_active (), true); }
 
-static void pl_tab_play (void)
+static void pl_tab_play ()
 {
     int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
     if (playlist >= 0)
         aud_playlist_play (playlist);
 }
 
-static void pl_tab_rename (void)
+static void pl_tab_rename ()
 {
     int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
     if (playlist >= 0)
         start_rename_playlist (playlist);
 }
 
-static void pl_tab_close (void)
+static void pl_tab_close ()
 {
     int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
     if (playlist >= 0)
         audgui_confirm_playlist_delete (playlist);
 }
 
-static GtkWidget * get_services_main (void) {return audgui_get_plugin_menu (AudMenuID::Main); }
-static GtkWidget * get_services_pl (void) {return audgui_get_plugin_menu (AudMenuID::Playlist); }
+static GtkWidget * get_services_main () { return audgui_get_plugin_menu (AudMenuID::Main); }
+static GtkWidget * get_services_pl () { return audgui_get_plugin_menu (AudMenuID::Playlist); }
 
-static void volume_up (void) {aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
-static void volume_down (void) {aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
+static void volume_up () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
+static void volume_down () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
 
 static const AudguiMenuItem file_items[] = {
     MenuCommand (N_("_Open Files ..."), "document-open", 'o', CTRL, open_files),
@@ -175,7 +175,7 @@ static const AudguiMenuItem sort_items[] = {
     MenuCommand (N_("_Random Order"), nullptr, NONE, pl_random)
 };
 
- static const AudguiMenuItem sort_selected_items[] = {
+static const AudguiMenuItem sort_selected_items[] = {
     MenuCommand (N_("By Track _Number"), nullptr, NONE, pl_sort_selected_track),
     MenuCommand (N_("By _Title"), nullptr, NONE, pl_sort_selected_title),
     MenuCommand (N_("By _Artist"), nullptr, NONE, pl_sort_selected_artist),
@@ -257,7 +257,6 @@ static const AudguiMenuItem tab_items[] = {
     MenuCommand (N_("_Rename ..."), "insert-text", NONE, pl_tab_rename),
     MenuCommand (N_("Remo_ve"), "edit-delete", NONE, pl_tab_close)
 };
-
 
 GtkWidget * make_menu_bar (GtkAccelGroup * accel)
 {

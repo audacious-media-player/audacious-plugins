@@ -38,8 +38,10 @@ static void DUMMY () { AUDDBG ("implement me\n"); }
 
 static QMenu * services_menu () { return audqt::menu_get_by_id (AudMenuID::Main); }
 
-static void open_files () { audqt::fileopener_show (false); }
-static void add_files () { audqt::fileopener_show (true); }
+static void open_files () { audqt::fileopener_show (audqt::FileMode::Open); }
+static void add_files () { audqt::fileopener_show (audqt::FileMode::Add); }
+static void open_folder () { audqt::fileopener_show (audqt::FileMode::OpenFolder); }
+static void add_folder () { audqt::fileopener_show (audqt::FileMode::AddFolder); }
 
 static void rm_dupes_title () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Title); }
 static void rm_dupes_filename () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Filename); }
@@ -89,7 +91,9 @@ void MainWindow::setupActions ()
 {
     static constexpr audqt::MenuItem file_items[] = {
         audqt::MenuCommand (N_("_Open Files ..."), open_files, "Ctrl+O", "document-open"),
+        audqt::MenuCommand (N_("_Open Folder ..."), open_folder, "document-open"),
         audqt::MenuCommand (N_("_Add Files ..."), add_files, "Ctrl+Shift+O", "list-add"),
+        audqt::MenuCommand (N_("_Add Folder ..."), add_folder, "list-add"),
         audqt::MenuSep (),
         audqt::MenuCommand (N_("A_bout ..."), aud_ui_show_about_window, nullptr, "help-about"),
         audqt::MenuCommand (N_("_Settings ..."), aud_ui_show_prefs_window, nullptr, "preferences-system"),

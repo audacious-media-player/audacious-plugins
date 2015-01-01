@@ -251,17 +251,13 @@ private:
 static cairo_region_t * skin_create_mask (const GArray * num,
  const GArray * point, int width, int height)
 {
+    if (! num || ! point)
+        return nullptr;
+
     width *= config.scale;
     height *= config.scale;
 
-    if (! num || ! point)
-    {
-        cairo_rectangle_int_t rect = {0, 0, width, height};
-        return cairo_region_create_rectangle (& rect);
-    }
-
-    cairo_region_t * mask = cairo_region_create ();
-    gboolean created_mask = FALSE;
+    cairo_region_t * mask = nullptr;
 
     unsigned j = 0;
     for (unsigned i = 0; i < num->len; i ++)
@@ -286,23 +282,20 @@ static cairo_region_t * skin_create_mask (const GArray * num,
         if (xmax > xmin && ymax > ymin)
         {
             cairo_rectangle_int_t rect = {xmin, ymin, xmax - xmin, ymax - ymin};
-            cairo_region_union_rectangle (mask, & rect);
+
+            if (mask)
+                cairo_region_union_rectangle (mask, & rect);
+            else
+                mask = cairo_region_create_rectangle (& rect);
         }
 
-        created_mask = TRUE;
         j += n_points * 2;
-    }
-
-    if (! created_mask)
-    {
-        cairo_rectangle_int_t rect = {0, 0, width, height};
-        cairo_region_union_rectangle (mask, & rect);
     }
 
     return mask;
 }
 
-void skin_load_masks (Skin * skin, const char * path)
+void skin_load_masks (Skin * skin, const char * path, cairo_region_t * masks[SKIN_MASK_COUNT])
 {
     int sizes[SKIN_MASK_COUNT][2] = {
         {skin->properties.mainwin_width, skin->properties.mainwin_height},
@@ -317,6 +310,6 @@ void skin_load_masks (Skin * skin, const char * path)
         parser.parse (file);
 
     for (int id = 0; id < SKIN_MASK_COUNT; id ++)
-        skin->masks[id] = skin_create_mask (parser.numpoints[id],
+        masks[id] = skin_create_mask (parser.numpoints[id],
          parser.pointlist[id], sizes[id][0], sizes[id][1]);
 }

@@ -28,7 +28,7 @@
 
 GtkWidget * playlist_get_treeview (int playlist)
 {
-    GtkWidget *page = gtk_notebook_get_nth_page(UI_PLAYLIST_NOTEBOOK, playlist);
+    GtkWidget * page = gtk_notebook_get_nth_page (UI_PLAYLIST_NOTEBOOK, playlist);
 
     if (!page)
         return nullptr;
@@ -39,9 +39,8 @@ GtkWidget * playlist_get_treeview (int playlist)
 int playlist_count_selected_in_range (int list, int top, int length)
 {
     int selected = 0;
-    int count;
 
-    for (count = 0; count < length; count ++)
+    for (int count = 0; count < length; count ++)
     {
         if (aud_playlist_entry_get_selected (list, top + count))
             selected ++;
@@ -50,7 +49,7 @@ int playlist_count_selected_in_range (int list, int top, int length)
     return selected;
 }
 
-void playlist_song_info (void)
+void playlist_song_info ()
 {
     int list = aud_playlist_get_active ();
     int focus = aud_playlist_get_focus (list);
@@ -61,7 +60,7 @@ void playlist_song_info (void)
     audgui_infowin_show (list, focus);
 }
 
-void playlist_queue_toggle (void)
+void playlist_queue_toggle ()
 {
     int list = aud_playlist_get_active ();
     int focus = aud_playlist_get_focus (list);
@@ -84,14 +83,14 @@ void playlist_queue_toggle (void)
         aud_playlist_queue_delete_selected (list);
 }
 
-void playlist_delete_selected (void)
+void playlist_delete_selected ()
 {
     int list = aud_playlist_get_active ();
     aud_playlist_delete_selected (list);
     aud_playlist_entry_set_selected (list, aud_playlist_get_focus (list), true);
 }
 
-void playlist_copy (void)
+void playlist_copy ()
 {
     Index<char> text = audgui_urilist_create_from_selected (aud_playlist_get_active ());
     if (! text.len ())
@@ -100,13 +99,13 @@ void playlist_copy (void)
     gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), text.begin (), text.len ());
 }
 
-void playlist_cut (void)
+void playlist_cut ()
 {
     playlist_copy ();
     playlist_delete_selected ();
 }
 
-void playlist_paste (void)
+void playlist_paste ()
 {
     char * text = gtk_clipboard_wait_for_text (gtk_clipboard_get
      (GDK_SELECTION_CLIPBOARD));

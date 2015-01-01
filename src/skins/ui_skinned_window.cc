@@ -27,6 +27,7 @@
 typedef struct {
     void (* draw) (GtkWidget * window, cairo_t * cr);
     GtkWidget * normal, * shaded;
+    cairo_region_t * shape, * sshape;
     gboolean is_shaded, is_moving;
 } WindowData;
 
@@ -37,6 +38,15 @@ DRAW_FUNC_BEGIN (window_draw)
     if (data->draw)
         data->draw (wid, cr);
 DRAW_FUNC_END
+
+static void window_apply_shape (GtkWidget * window)
+{
+    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
+    g_return_if_fail (data);
+
+    gdk_window_shape_combine_region (gtk_widget_get_window (window),
+     data->is_shaded ? data->sshape : data->shape, 0, 0);
+}
 
 static gboolean window_button_press (GtkWidget * window, GdkEventButton * event)
 {
@@ -94,6 +104,12 @@ static void window_destroy (GtkWidget * window)
 
     g_object_unref (data->normal);
     g_object_unref (data->shaded);
+
+    if (data->shape)
+        cairo_region_destroy (data->shape);
+    if (data->sshape)
+        cairo_region_destroy (data->sshape);
+
     g_free (data);
 }
 
@@ -115,6 +131,7 @@ GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
 
     DRAW_CONNECT (window, window_draw);
+    g_signal_connect (window, "realize", (GCallback) window_apply_shape, nullptr);
     g_signal_connect (window, "button-press-event", (GCallback) window_button_press, nullptr);
     g_signal_connect (window, "button-release-event", (GCallback) window_button_release, nullptr);
     g_signal_connect (window, "motion-notify-event", (GCallback) window_motion, nullptr);
@@ -151,6 +168,23 @@ void window_set_size (GtkWidget * window, int w, int h)
     dock_set_size (window, w, h);
 }
 
+void window_set_shapes (GtkWidget * window, cairo_region_t * shape, cairo_region_t * sshape)
+{
+    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
+    g_return_if_fail (data);
+
+    if (data->shape)
+        cairo_region_destroy (data->shape);
+    if (data->sshape)
+        cairo_region_destroy (data->sshape);
+
+    data->shape = shape;
+    data->sshape = sshape;
+
+    if (gtk_widget_get_realized (window))
+        window_apply_shape (window);
+}
+
 void window_set_shaded (GtkWidget * window, gboolean shaded)
 {
     WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
@@ -171,6 +205,9 @@ void window_set_shaded (GtkWidget * window, gboolean shaded)
     }
 
     data->is_shaded = shaded;
+
+    if (gtk_widget_get_realized (window))
+        window_apply_shape (window);
 }
 
 void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,

@@ -25,7 +25,7 @@
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 
-static void redisplay_playlists (void)
+static void redisplay_playlists ()
 {
     ui_playlist_notebook_empty ();
     ui_playlist_notebook_populate ();

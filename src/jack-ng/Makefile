@@ -9,5 +9,5 @@ plugindir := ${plugindir}/${OUTPUT_PLUGIN_DIR}
 
 LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${JACK_CFLAGS} -I../..
 LIBS += ${JACK_LIBS}

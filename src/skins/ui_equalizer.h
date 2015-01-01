@@ -33,7 +33,6 @@
 #define EQUALIZER_DEFAULT_DIR_PRESET "dir_default.preset"
 #define EQUALIZER_DEFAULT_PRESET_EXT "preset"
 
-void equalizerwin_set_shape (void);
 void equalizerwin_create(void);
 void equalizerwin_set_volume_slider(int percent);
 void equalizerwin_set_balance_slider(int percent);

@@ -5,13 +5,9 @@ SRCS = qtui.cc \
        main_window.cc \
        main_window_actions.cc \
        playlist.cc \
-       playlist.moc \
        playlist_model.cc \
-       playlist_model.moc \
        playlist_tabs.cc \
-       playlist_tabs.moc \
        filter_input.cc \
-       filter_input.moc \
        info_bar.cc \
        status_bar.cc \
        tool_bar.cc \
