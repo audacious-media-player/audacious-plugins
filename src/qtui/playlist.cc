@@ -213,7 +213,7 @@ void PlaylistWidget::update (const Playlist::Update & update)
         for (int i = aud_playlist_queue_count (list); i --; )
         {
             int entry = aud_playlist_queue_get_entry (list, i);
-            if (entry < update.before || entry >= update.after)
+            if (entry < update.before || entry >= entries - update.after)
                 model->updateRows (entry, 1);
         }
     }
