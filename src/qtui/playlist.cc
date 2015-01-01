@@ -184,28 +184,29 @@ void PlaylistWidget::scrollToCurrent ()
         scrollQueued = true;
 }
 
-void PlaylistWidget::update (Playlist::Update level, int at, int count)
+void PlaylistWidget::update (const Playlist::Update & update)
 {
     inUpdate = true;
 
     int list = playlist ();
+    int entries = aud_playlist_entry_count (list);
+    int changed = entries - update.before - update.after;
 
-    if (level == Playlist::Structure)
+    if (update.level == Playlist::Structure)
     {
-        int entries = aud_playlist_entry_count (list);
         int old_entries = model->rowCount ();
-        int diff = entries - old_entries;
+        int removed = old_entries - update.before - update.after;
 
-        if (previousEntry >= at + count - diff)
-            previousEntry += diff;
-        else if (previousEntry >= at)
+        if (previousEntry >= old_entries - update.after)
+            previousEntry += entries - old_entries;
+        else if (previousEntry >= update.before)
             previousEntry = -1;
 
-        model->removeRows (at, count - diff);
-        model->insertRows (at, count);
+        model->removeRows (update.before, removed);
+        model->insertRows (update.before, changed);
     }
     else
-        model->updateRows (at, count);
+        model->updateRows (update.before, changed);
 
     int pos = aud_playlist_get_position (list);
 
@@ -221,7 +222,7 @@ void PlaylistWidget::update (Playlist::Update level, int at, int count)
 
     auto sel = selectionModel ();
 
-    for (int row = at; row < at + count; row ++)
+    for (int row = update.before; row < entries - update.after; row ++)
     {
         if (aud_playlist_entry_get_selected (list, row))
             sel->select (rowToIndex (row), sel->Select | sel->Rows);

@@ -150,7 +150,7 @@ static gboolean playlist_activated = false;
 
 static void update_hook (void * data, void * list_)
 {
-    auto level = aud::from_ptr<Playlist::Update> (data);
+    auto level = aud::from_ptr<Playlist::UpdateLevel> (data);
     GtkWidget * list = (GtkWidget *) list_;
     int rows = aud_playlist_count ();
 

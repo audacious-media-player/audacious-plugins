@@ -424,7 +424,7 @@ void ui_playlist_widget_set_playlist (GtkWidget * widget, int list)
     data->list = list;
 }
 
-void ui_playlist_widget_update (GtkWidget * widget, Playlist::Update level, int at, int count)
+void ui_playlist_widget_update (GtkWidget * widget, const Playlist::Update & update)
 {
     PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
     g_return_if_fail (data);
@@ -434,26 +434,29 @@ void ui_playlist_widget_update (GtkWidget * widget, Playlist::Update level, int 
 
     data->queue.remove (0, -1);
 
-    if (level == Playlist::Structure)
+    int entries = aud_playlist_entry_count (data->list);
+    int changed = entries - update.before - update.after;
+
+    if (update.level == Playlist::Structure)
     {
         int old_entries = audgui_list_row_count (widget);
-        int entries = aud_playlist_entry_count (data->list);
+        int removed = old_entries - update.before - update.after;
 
-        audgui_list_delete_rows (widget, at, old_entries - (entries - count));
-        audgui_list_insert_rows (widget, at, count);
+        audgui_list_delete_rows (widget, update.before, removed);
+        audgui_list_insert_rows (widget, update.before, changed);
 
         /* scroll to end of playlist if entries were added there
            (but not if a newly added entry is playing) */
-        if (entries > old_entries && at + count == entries &&
+        if (entries > old_entries && ! update.after &&
          aud_playlist_get_focus (data->list) < old_entries)
             aud_playlist_set_focus (data->list, entries - 1);
 
         ui_playlist_widget_scroll (widget);
     }
-    else if (level == Playlist::Metadata)
-        audgui_list_update_rows (widget, at, count);
+    else if (update.level == Playlist::Metadata)
+        audgui_list_update_rows (widget, update.before, changed);
 
-    audgui_list_update_selection (widget, at, count);
+    audgui_list_update_selection (widget, update.before, changed);
     audgui_list_set_focus (widget, aud_playlist_get_focus (data->list));
 
     for (int i = aud_playlist_queue_count (data->list); i --; )

@@ -60,10 +60,10 @@ private:
     void cullPlaylists ();
     void cancelRename ();
 
-    void playlist_update_cb (Playlist::Update global_level);
+    void playlist_update_cb (Playlist::UpdateLevel global_level);
     void playlist_position_cb (int list);
 
-    const HookReceiver<PlaylistTabs, Playlist::Update>
+    const HookReceiver<PlaylistTabs, Playlist::UpdateLevel>
      update_hook {"playlist update", this, & PlaylistTabs::playlist_update_cb};
     const HookReceiver<PlaylistTabs, int>
      position_hook {"playlist position", this, & PlaylistTabs::playlist_position_cb};

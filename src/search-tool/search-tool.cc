@@ -441,25 +441,28 @@ static void update_database ()
 
 static void add_complete_cb (void * unused, void * unused2)
 {
+    int list = get_playlist (true, false);
+    if (list < 0)
+        return;
+
     if (adding)
     {
-        int list = get_playlist (true, false);
-
-        if (list >= 0 && ! aud_playlist_add_in_progress (list))
-        {
-            adding = false;
-            added_table.clear ();
-            aud_playlist_sort_by_scheme (list, Playlist::Path);
-        }
+        adding = false;
+        added_table.clear ();
+        aud_playlist_sort_by_scheme (list, Playlist::Path);
     }
 
-    if (! database_valid && ! aud_playlist_update_pending ())
+    if (! database_valid && ! aud_playlist_update_pending (list))
         update_database ();
 }
 
 static void scan_complete_cb (void * unused, void * unused2)
 {
-    if (! database_valid && ! aud_playlist_update_pending ())
+    int list = get_playlist (true, true);
+    if (list < 0)
+        return;
+
+    if (! database_valid && ! aud_playlist_update_pending (list))
         update_database ();
 }
 
@@ -470,10 +473,7 @@ static void playlist_update_cb (void * data, void * unused)
     else
     {
         int list = get_playlist (true, true);
-        int at, count;
-
-        if (list < 0 || aud_playlist_updated_range (list, & at, & count) >=
-         Playlist::Metadata)
+        if (list < 0 || aud_playlist_update_detail (list).level >= Playlist::Metadata)
             update_database ();
     }
 }

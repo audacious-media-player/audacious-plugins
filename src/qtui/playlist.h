@@ -34,7 +34,7 @@ public:
     PlaylistWidget (QTreeView * parent = nullptr, int uniqueId = -1);
     ~PlaylistWidget ();
     void scrollToCurrent ();
-    void update (Playlist::Update level, int at, int count);
+    void update (const Playlist::Update & update);
     void playCurrentIndex ();
     void deleteCurrentSelection ();
     void setFilter (const QString &text);

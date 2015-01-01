@@ -193,7 +193,7 @@ void PlaylistTabs::cancelRename ()
     }
 }
 
-void PlaylistTabs::playlist_update_cb (Playlist::Update global_level)
+void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)
 {
     if (global_level == Playlist::Structure)
         populatePlaylists ();
@@ -201,11 +201,9 @@ void PlaylistTabs::playlist_update_cb (Playlist::Update global_level)
     int lists = aud_playlist_count ();
     for (int list = 0; list < lists; list ++)
     {
-        int at, count;
-        Playlist::Update level;
-
-        if ((level = aud_playlist_updated_range (list, & at, & count)))
-            playlistWidget (list)->update (level, at, count);
+        auto update = aud_playlist_update_detail (list);
+        if (update.level)
+            playlistWidget (list)->update (update);
     }
 }
 
