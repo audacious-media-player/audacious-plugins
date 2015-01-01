@@ -205,8 +205,18 @@ void PlaylistWidget::update (const Playlist::Update & update)
         model->removeRows (update.before, removed);
         model->insertRows (update.before, changed);
     }
-    else
+    else if (update.level == Playlist::Metadata || update.queue_changed)
         model->updateRows (update.before, changed);
+
+    if (update.queue_changed)
+    {
+        for (int i = aud_playlist_queue_count (list); i --; )
+        {
+            int entry = aud_playlist_queue_get_entry (list, i);
+            if (entry < update.before || entry >= update.after)
+                model->updateRows (entry, 1);
+        }
+    }
 
     int pos = aud_playlist_get_position (list);
 

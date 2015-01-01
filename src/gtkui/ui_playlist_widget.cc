@@ -88,7 +88,6 @@ static const bool pw_col_label[PW_COLS] = {
 
 typedef struct {
     int list;
-    Index<int> queue;
     int popup_source, popup_pos;
     bool popup_shown;
 } PlaylistWidgetData;
@@ -429,11 +428,6 @@ void ui_playlist_widget_update (GtkWidget * widget, const Playlist::Update & upd
     PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
     g_return_if_fail (data);
 
-    for (int entry : data->queue)
-        audgui_list_update_rows (widget, entry, 1);
-
-    data->queue.remove (0, -1);
-
     int entries = aud_playlist_entry_count (data->list);
     int changed = entries - update.before - update.after;
 
@@ -453,18 +447,21 @@ void ui_playlist_widget_update (GtkWidget * widget, const Playlist::Update & upd
 
         ui_playlist_widget_scroll (widget);
     }
-    else if (update.level == Playlist::Metadata)
+    else if (update.level == Playlist::Metadata || update.queue_changed)
         audgui_list_update_rows (widget, update.before, changed);
+
+    if (update.queue_changed)
+    {
+        for (int i = aud_playlist_queue_count (data->list); i --; )
+        {
+            int entry = aud_playlist_queue_get_entry (data->list, i);
+            if (entry < update.before || entry >= update.after)
+                audgui_list_update_rows (widget, entry, 1);
+        }
+    }
 
     audgui_list_update_selection (widget, update.before, changed);
     audgui_list_set_focus (widget, aud_playlist_get_focus (data->list));
-
-    for (int i = aud_playlist_queue_count (data->list); i --; )
-    {
-        int entry = aud_playlist_queue_get_entry (data->list, i);
-        audgui_list_update_rows (widget, entry, 1);
-        data->queue.append (entry);
-    }
 }
 
 void ui_playlist_widget_scroll (GtkWidget * widget)
