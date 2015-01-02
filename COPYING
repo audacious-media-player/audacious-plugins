@@ -1,6 +1,6 @@
 The build system and framework for installing and managing plugins is:
 
-Copyright © 2001-2015 Audacious developers and others
+Copyright © 2001-2015 Audacious developers
 
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
@@ -19,4 +19,4 @@ Copyright © 2001-2015 Audacious developers and others
 ------------------------------------------------------------------------------
 
 The plugins themselves are distributed under their own distribution terms.
-Read the source code for plugin-specific licensing details.
+Read the source code for individual copyright holders and licensing details.
