@@ -19,6 +19,7 @@
 
 #include <gtk/gtk.h>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/playlist.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/list.h>
@@ -58,6 +59,26 @@ void playlist_song_info ()
         return;
 
     audgui_infowin_show (list, focus);
+}
+
+void playlist_open_folder ()
+{
+    int list = aud_playlist_get_active ();
+    int focus = aud_playlist_get_focus (list);
+
+    if (focus < 0)
+        return;
+
+    StringBuf filename = uri_to_filename (aud_playlist_entry_get_filename (list, focus));
+    if (! filename)
+        return;
+
+    char * dirname = g_path_get_dirname (filename);
+    StringBuf uri = filename_to_uri (dirname);
+    g_free (dirname);
+
+    GdkScreen * screen = gdk_screen_get_default ();
+    gtk_show_uri (screen, uri, GDK_CURRENT_TIME, nullptr);
 }
 
 void playlist_queue_toggle ()
