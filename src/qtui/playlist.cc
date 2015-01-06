@@ -133,7 +133,8 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * e)
 
 void PlaylistWidget::mouseDoubleClickEvent (QMouseEvent * event)
 {
-    playCurrentIndex ();
+    if (event->button () == Qt::LeftButton)
+        playCurrentIndex ();
 }
 
 void PlaylistWidget::currentChanged (const QModelIndex & current, const QModelIndex & previous)
