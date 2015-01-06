@@ -30,7 +30,7 @@
 
 PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (parent)
 {
-    model = new PlaylistModel (0, uniqueId);
+    model = new PlaylistModel (nullptr, uniqueId);
 
     /* setting up filtering model */
     proxyModel = new QSortFilterProxyModel (this);
@@ -48,12 +48,12 @@ PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (p
     setColumnWidth (PL_COL_TITLE, 300);
     setColumnWidth (PL_COL_ARTIST, 150);
     setColumnWidth (PL_COL_ALBUM, 200);
-    resizeColumnToContents(PL_COL_QUEUED);
-    resizeColumnToContents(PL_COL_LENGTH);
+    resizeColumnToContents (PL_COL_QUEUED);
+    resizeColumnToContents (PL_COL_LENGTH);
     scrollToCurrent ();
 }
 
-void PlaylistWidget::setFilter (const QString &text)
+void PlaylistWidget::setFilter (const QString & text)
 {
     proxyModel->setFilterRegExp (QRegExp (text, Qt::CaseInsensitive, QRegExp::FixedString));
 }
