@@ -64,9 +64,7 @@ private:
     void setupActions ();
     void readSettings ();
 
-    void action_play_pause_set_play ();
-    void action_play_pause_set_pause ();
-
+    void update_play_pause ();
     void show_buffering ();
 
     void add_dock_plugins ();
@@ -99,6 +97,7 @@ private:
      plugin_hook2 {"dock plugin disabled", this, & MainWindow::remove_dock_plugin_cb};
 
     Index<DockWidget> dock_widgets;
+    int playing_id = -1;
 };
 
 #endif

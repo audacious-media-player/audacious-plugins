@@ -44,7 +44,6 @@ public:
     bool insertRows (int row, int count, const QModelIndex & parent = QModelIndex ());
     bool removeRows (int row, int count, const QModelIndex & parent = QModelIndex ());
     void updateRows (int row, int count);
-    void updateRow (int row);
     QString getQueued (int row) const;
     int playlist () const;
     int uniqueId () const;
