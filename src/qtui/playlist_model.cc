@@ -171,11 +171,6 @@ void PlaylistModel::updateRows (int row, int count)
     emit dataChanged (topLeft, bottomRight);
 }
 
-void PlaylistModel::updateRow (int row)
-{
-    updateRows (row, 1);
-}
-
 QString PlaylistModel::getQueued (int row) const
 {
     int at = aud_playlist_queue_find_entry (playlist (), row);

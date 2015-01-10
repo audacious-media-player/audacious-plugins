@@ -98,15 +98,9 @@ PlaylistWidget * PlaylistTabs::playlistWidget (int num)
     return (PlaylistWidget *) widget (num);
 }
 
-PlaylistWidget * PlaylistTabs::activePlaylistWidget ()
-{
-    int num = aud_playlist_get_active ();
-    return (PlaylistWidget *) widget (num);
-}
-
 void PlaylistTabs::filterTrigger (const QString &text)
 {
-    activePlaylistWidget ()->setFilter (text);
+    ((PlaylistWidget *) currentWidget ())->setFilter (text);
 }
 
 void PlaylistTabs::currentChangedTrigger (int idx)

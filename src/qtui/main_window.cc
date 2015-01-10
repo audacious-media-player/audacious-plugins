@@ -164,18 +164,20 @@ void MainWindow::updateToggles ()
     toolButtonShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
 }
 
-void MainWindow::action_play_pause_set_play ()
+void MainWindow::update_play_pause ()
 {
-    toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
-    toolButtonPlayPause->setText (_("Play"));
-    toolButtonPlayPause->setToolTip (_("Play"));
-}
-
-void MainWindow::action_play_pause_set_pause ()
-{
-    toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
-    toolButtonPlayPause->setText (_("Pause"));
-    toolButtonPlayPause->setToolTip (_("Pause"));
+    if (! aud_drct_get_playing () || aud_drct_get_paused ())
+    {
+        toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
+        toolButtonPlayPause->setText (_("Play"));
+        toolButtonPlayPause->setToolTip (_("Play"));
+    }
+    else
+    {
+        toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
+        toolButtonPlayPause->setText (_("Pause"));
+        toolButtonPlayPause->setToolTip (_("Pause"));
+    }
 }
 
 void MainWindow::show_buffering ()
@@ -193,31 +195,51 @@ void MainWindow::title_change_cb ()
 
 void MainWindow::playback_begin_cb ()
 {
-    pause_cb ();
+    update_play_pause ();
+
+    int last_list = aud_playlist_by_unique_id (playing_id);
+    auto last_widget = playlistTabs->playlistWidget (last_list);
+    if (last_widget)
+        last_widget->updatePlaybackIndicator ();
+
+    int list = aud_playlist_get_playing ();
+    auto widget = playlistTabs->playlistWidget (list);
+    if (widget)
+        widget->scrollToCurrent ();
+    if (widget && widget != last_widget)
+        widget->updatePlaybackIndicator ();
+
+    playing_id = aud_playlist_get_unique_id (list);
+
     buffering_timer.start (250);
 }
 
 void MainWindow::playback_ready_cb ()
 {
     title_change_cb ();
-    pause_cb ();
 }
 
 void MainWindow::pause_cb ()
 {
-    if (aud_drct_get_paused ())
-        action_play_pause_set_play ();
-    else
-        action_play_pause_set_pause ();
+    update_play_pause ();
 
-    playlistTabs->activePlaylistWidget ()->scrollToCurrent (); /* updates indicator icon */
+    int list = aud_playlist_by_unique_id (playing_id);
+    auto widget = playlistTabs->playlistWidget (list);
+    if (widget)
+        widget->updatePlaybackIndicator ();
 }
 
 void MainWindow::playback_stop_cb ()
 {
     setWindowTitle ("Audacious");
-    action_play_pause_set_play ();
-    playlistTabs->activePlaylistWidget ()->scrollToCurrent (); /* updates indicator icon */
+    update_play_pause ();
+
+    int last_list = aud_playlist_by_unique_id (playing_id);
+    auto last_widget = playlistTabs->playlistWidget (last_list);
+    if (last_widget)
+        last_widget->updatePlaybackIndicator ();
+
+    playing_id = -1;
 }
 
 void MainWindow::update_toggles_cb ()

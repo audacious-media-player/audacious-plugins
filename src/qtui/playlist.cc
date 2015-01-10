@@ -30,7 +30,7 @@
 
 PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (parent)
 {
-    model = new PlaylistModel (0, uniqueId);
+    model = new PlaylistModel (nullptr, uniqueId);
 
     /* setting up filtering model */
     proxyModel = new QSortFilterProxyModel (this);
@@ -48,12 +48,12 @@ PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (p
     setColumnWidth (PL_COL_TITLE, 300);
     setColumnWidth (PL_COL_ARTIST, 150);
     setColumnWidth (PL_COL_ALBUM, 200);
-    resizeColumnToContents(PL_COL_QUEUED);
-    resizeColumnToContents(PL_COL_LENGTH);
+    resizeColumnToContents (PL_COL_QUEUED);
+    resizeColumnToContents (PL_COL_LENGTH);
     scrollToCurrent ();
 }
 
-void PlaylistWidget::setFilter (const QString &text)
+void PlaylistWidget::setFilter (const QString & text)
 {
     proxyModel->setFilterRegExp (QRegExp (text, Qt::CaseInsensitive, QRegExp::FixedString));
 }
@@ -133,7 +133,8 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * e)
 
 void PlaylistWidget::mouseDoubleClickEvent (QMouseEvent * event)
 {
-    playCurrentIndex ();
+    if (event->button () == Qt::LeftButton)
+        playCurrentIndex ();
 }
 
 void PlaylistWidget::currentChanged (const QModelIndex & current, const QModelIndex & previous)
@@ -184,6 +185,16 @@ void PlaylistWidget::scrollToCurrent ()
         scrollQueued = true;
 }
 
+void PlaylistWidget::updatePlaybackIndicator ()
+{
+    int list = playlist ();
+
+    if (aud_playlist_update_pending (list))
+        needIndicatorUpdate = true;
+    else if (currentPos >= 0)
+        model->updateRows (currentPos, 1);
+}
+
 void PlaylistWidget::update (const Playlist::Update & update)
 {
     inUpdate = true;
@@ -197,10 +208,10 @@ void PlaylistWidget::update (const Playlist::Update & update)
         int old_entries = model->rowCount ();
         int removed = old_entries - update.before - update.after;
 
-        if (previousEntry >= old_entries - update.after)
-            previousEntry += entries - old_entries;
-        else if (previousEntry >= update.before)
-            previousEntry = -1;
+        if (currentPos >= old_entries - update.after)
+            currentPos += entries - old_entries;
+        else if (currentPos >= update.before)
+            currentPos = -1;
 
         model->removeRows (update.before, removed);
         model->insertRows (update.before, changed);
@@ -220,14 +231,15 @@ void PlaylistWidget::update (const Playlist::Update & update)
 
     int pos = aud_playlist_get_position (list);
 
-    if (previousEntry != pos)
+    if (needIndicatorUpdate || pos != currentPos)
     {
-        if (previousEntry >= 0)
-            model->updateRow (previousEntry);
-        if (pos >= 0)
-            model->updateRow (pos);
+        if (currentPos >= 0)
+            model->updateRows (currentPos, 1);
+        if (pos >= 0 && pos != currentPos)
+            model->updateRows (pos, 1);
 
-        previousEntry = pos;
+        currentPos = pos;
+        needIndicatorUpdate = false;
     }
 
     auto sel = selectionModel ();

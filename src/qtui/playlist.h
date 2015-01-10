@@ -34,6 +34,7 @@ public:
     PlaylistWidget (QTreeView * parent = nullptr, int uniqueId = -1);
     ~PlaylistWidget ();
     void scrollToCurrent ();
+    void updatePlaybackIndicator ();
     void update (const Playlist::Update & update);
     void playCurrentIndex ();
     void deleteCurrentSelection ();
@@ -45,8 +46,9 @@ public:
 private:
     PlaylistModel * model;
     QSortFilterProxyModel * proxyModel;
-    int previousEntry = -1;
+    int currentPos = -1;
     bool inUpdate = false;
+    bool needIndicatorUpdate = false;
     bool scrollQueued = false;
 
     QModelIndex rowToIndex (int row);

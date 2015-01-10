@@ -37,8 +37,8 @@ class PlaylistTabs : public QTabWidget
 public:
     PlaylistTabs (QWidget * parent = nullptr);
     ~PlaylistTabs ();
+
     PlaylistWidget * playlistWidget (int num);
-    PlaylistWidget * activePlaylistWidget ();
 
     void editTab (int idx);
     void filterTrigger (const QString &text);

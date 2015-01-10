@@ -242,6 +242,8 @@ static const AudguiMenuItem main_items[] = {
 static const AudguiMenuItem rclick_items[] = {
     MenuCommand (N_("Song _Info ..."), "dialog-information", 'i', ALT, playlist_song_info),
     MenuCommand (N_("_Queue/Unqueue"), nullptr, 'q', ALT, playlist_queue_toggle),
+    MenuSep (),
+    MenuCommand (N_("_Open Containing Folder"), "folder", 'f', ALT, playlist_open_folder),
     MenuCommand (N_("_Refresh"), "view-refresh", GDK_KEY_F6, (GdkModifierType) 0, pl_refresh_sel),
     MenuSep (),
     MenuCommand (N_("Cu_t"), "edit-cut", NONE, playlist_cut),
