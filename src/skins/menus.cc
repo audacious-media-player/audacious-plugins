@@ -231,7 +231,7 @@ static const AudguiMenuItem eq_preset_items[] = {
 
 void menu_init (void)
 {
-    static const ArrayRef<const AudguiMenuItem> table[] = {
+    static const ArrayRef<AudguiMenuItem> table[] = {
         {main_items},
         {playback_items},
         {playlist_items},

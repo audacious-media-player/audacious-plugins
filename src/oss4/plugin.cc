@@ -57,7 +57,7 @@ FAILED:
     close(mixerfd);
 }
 
-ArrayRef<const ComboItem> combo_fill()
+ArrayRef<ComboItem> combo_fill()
 {
     return {oss_elements.begin(), oss_elements.len()};
 }
