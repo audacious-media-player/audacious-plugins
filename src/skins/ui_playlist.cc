@@ -893,9 +893,19 @@ void action_playlist_sort_by_date (void)
     aud_playlist_sort_by_scheme (active_playlist, Playlist::Date);
 }
 
+void action_playlist_sort_by_length (void)
+{
+    aud_playlist_sort_by_scheme (active_playlist, Playlist::Length);
+}
+
 void action_playlist_sort_by_filename (void)
 {
     aud_playlist_sort_by_scheme (active_playlist, Playlist::Filename);
+}
+
+void action_playlist_sort_by_custom_title (void)
+{
+    aud_playlist_sort_by_scheme (active_playlist, Playlist::FormattedTitle);
 }
 
 void action_playlist_sort_selected_by_track_number (void)
@@ -923,6 +933,11 @@ void action_playlist_sort_selected_by_album_artist (void)
     aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::AlbumArtist);
 }
 
+void action_playlist_sort_selected_by_length (void)
+{
+    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Length);
+}
+
 void action_playlist_sort_selected_by_full_path (void)
 {
     aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Path);
@@ -936,6 +951,11 @@ void action_playlist_sort_selected_by_date (void)
 void action_playlist_sort_selected_by_filename (void)
 {
     aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Filename);
+}
+
+void action_playlist_sort_selected_by_custom_title (void)
+{
+    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::FormattedTitle);
 }
 
 void action_playlist_randomize_list (void)
