@@ -898,6 +898,11 @@ void action_playlist_sort_by_length (void)
     aud_playlist_sort_by_scheme (active_playlist, Playlist::Length);
 }
 
+void action_playlist_sort_by_genre (void)
+{
+    aud_playlist_sort_by_scheme (active_playlist, Playlist::Genre);
+}
+
 void action_playlist_sort_by_filename (void)
 {
     aud_playlist_sort_by_scheme (active_playlist, Playlist::Filename);
@@ -936,6 +941,11 @@ void action_playlist_sort_selected_by_album_artist (void)
 void action_playlist_sort_selected_by_length (void)
 {
     aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Length);
+}
+
+void action_playlist_sort_selected_by_genre (void)
+{
+    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Genre);
 }
 
 void action_playlist_sort_selected_by_full_path (void)

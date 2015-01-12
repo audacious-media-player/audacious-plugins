@@ -51,6 +51,7 @@ static void sort_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_activ
 static void sort_album () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
 static void sort_album_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
 static void sort_date () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
+static void sort_genre () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Genre); }
 static void sort_length () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
 static void sort_path () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
 static void sort_custom_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
@@ -63,6 +64,7 @@ static void sort_sel_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_a
 static void sort_sel_album () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
 static void sort_sel_album_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
 static void sort_sel_date () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
+static void sort_sel_genre () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Genre); }
 static void sort_sel_length () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
 static void sort_sel_path () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
 static void sort_sel_custom_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
@@ -129,6 +131,7 @@ void MainWindow::setupActions ()
         audqt::MenuCommand ({N_("By Al_bum")}, sort_album),
         audqt::MenuCommand ({N_("By Albu_m Artist")}, sort_album_artist),
         audqt::MenuCommand ({N_("By Release _Date")}, sort_date),
+        audqt::MenuCommand ({N_("By _Genre")}, sort_genre),
         audqt::MenuCommand ({N_("By _Length")}, sort_length),
         audqt::MenuCommand ({N_("By _File Path")}, sort_path),
         audqt::MenuCommand ({N_("By _Custom Title")}, sort_custom_title),
@@ -144,6 +147,7 @@ void MainWindow::setupActions ()
         audqt::MenuCommand ({N_("By Al_bum")}, sort_sel_album),
         audqt::MenuCommand ({N_("By Albu_m Artist")}, sort_sel_album_artist),
         audqt::MenuCommand ({N_("By Release _Date")}, sort_sel_date),
+        audqt::MenuCommand ({N_("By _Genre")}, sort_sel_genre),
         audqt::MenuCommand ({N_("By _Length")}, sort_sel_length),
         audqt::MenuCommand ({N_("By _File Path")}, sort_sel_path),
         audqt::MenuCommand ({N_("By _Custom Title")}, sort_sel_custom_title),
