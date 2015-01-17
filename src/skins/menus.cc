@@ -98,7 +98,7 @@ static const AudguiMenuItem playback_items[] = {
 };
 
 static const AudguiMenuItem playlist_items[] = {
-    MenuCommand (N_("Play This Playlist"), "media-playback-start", GDK_KEY_Return, SHIFT, action_playlist_play),
+    MenuCommand (N_("Play/Resume"), "media-playback-start", GDK_KEY_Return, SHIFT, action_playlist_play),
     MenuSep (),
     MenuCommand (N_("New Playlist"), "document-new", 'n', SHIFT, action_playlist_new),
     MenuCommand (N_("Rename Playlist ..."), "insert-text", GDK_KEY_F2, NO_MOD, action_playlist_rename),

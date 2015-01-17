@@ -195,7 +195,7 @@ static const AudguiMenuItem sort_selected_items[] = {
 };
 
 static const AudguiMenuItem playlist_items[] = {
-    MenuCommand (N_("_Play This Playlist"), "media-playback-start", GDK_KEY_Return, SHIFT, pl_play),
+    MenuCommand (N_("_Play/Resume"), "media-playback-start", GDK_KEY_Return, SHIFT, pl_play),
     MenuCommand (N_("_Refresh"), "view-refresh", GDK_KEY_F5, (GdkModifierType) 0, pl_refresh),
     MenuSep (),
     MenuSub (N_("_Sort"), "view-sort-ascending", {sort_items}),
