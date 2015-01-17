@@ -58,6 +58,7 @@ static void pl_sort_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_ac
 static void pl_sort_album () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
 static void pl_sort_album_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
 static void pl_sort_date () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
+static void pl_sort_genre () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Genre); }
 static void pl_sort_length () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
 static void pl_sort_path () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
 static void pl_sort_custom () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
@@ -70,6 +71,7 @@ static void pl_sort_selected_artist () { aud_playlist_sort_selected_by_scheme (a
 static void pl_sort_selected_album () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Album); }
 static void pl_sort_selected_album_artist () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
 static void pl_sort_selected_date () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Date); }
+static void pl_sort_selected_genre () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Genre); }
 static void pl_sort_selected_length () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Length); }
 static void pl_sort_selected_path () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Path); }
 static void pl_sort_selected_custom () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
@@ -167,6 +169,7 @@ static const AudguiMenuItem sort_items[] = {
     MenuCommand (N_("By Al_bum"), nullptr, NONE, pl_sort_album),
     MenuCommand (N_("By Albu_m Artist"), nullptr, NONE, pl_sort_album_artist),
     MenuCommand (N_("By Release _Date"), nullptr, NONE, pl_sort_date),
+    MenuCommand (N_("By _Genre"), nullptr, NONE, pl_sort_genre),
     MenuCommand (N_("By _Length"), nullptr, NONE, pl_sort_length),
     MenuCommand (N_("By _File Path"), nullptr, NONE, pl_sort_path),
     MenuCommand (N_("By _Custom Title"), nullptr, NONE, pl_sort_custom),
@@ -182,6 +185,7 @@ static const AudguiMenuItem sort_selected_items[] = {
     MenuCommand (N_("By Al_bum"), nullptr, NONE, pl_sort_selected_album),
     MenuCommand (N_("By Albu_m Artist"), nullptr, NONE, pl_sort_selected_album_artist),
     MenuCommand (N_("By Release _Date"), nullptr, NONE, pl_sort_selected_date),
+    MenuCommand (N_("By _Genre"), nullptr, NONE, pl_sort_selected_genre),
     MenuCommand (N_("By _Length"), nullptr, NONE, pl_sort_selected_length),
     MenuCommand (N_("By _File Path"), nullptr, NONE, pl_sort_selected_path),
     MenuCommand (N_("By _Custom Title"), nullptr, NONE, pl_sort_selected_custom),

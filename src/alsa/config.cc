@@ -284,11 +284,11 @@ void ALSAPlugin::element_changed ()
     open_mixer ();
 }
 
-static ArrayRef<const ComboItem> pcm_combo_fill ()
+static ArrayRef<ComboItem> pcm_combo_fill ()
     { return {pcm_combo_items.begin (), pcm_combo_items.len ()}; }
-static ArrayRef<const ComboItem> mixer_combo_fill ()
+static ArrayRef<ComboItem> mixer_combo_fill ()
     { return {mixer_combo_items.begin (), mixer_combo_items.len ()}; }
-static ArrayRef<const ComboItem> element_combo_fill ()
+static ArrayRef<ComboItem> element_combo_fill ()
     { return {element_combo_items.begin (), element_combo_items.len ()}; }
 
 const PreferencesWidget ALSAPlugin::widgets[] = {
