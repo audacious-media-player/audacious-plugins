@@ -28,22 +28,25 @@
 
 #include "main_window.h"
 
+static char app_name[] = "audacious";
+static int dummy_argc = 1;
+static char * dummy_argv[] = {app_name, nullptr};
+
 class QtUI : public audqt::QtIfacePlugin
 {
 private:
-    int dummy_argc = 0;
-    QApplication * qapp;
-    MainWindow * window;
+    QApplication * qapp = nullptr;
+    MainWindow * window = nullptr;
 
 public:
-    QtUI () : audqt::QtIfacePlugin ({N_("Qt Interface"), PACKAGE}) {}
+    constexpr QtUI () : audqt::QtIfacePlugin ({N_("Qt Interface"), PACKAGE}) {}
 
     bool init ()
     {
         if (aud_get_mainloop_type () != MainloopType::Qt)
             return false;
 
-        qapp = new QApplication (dummy_argc, 0);
+        qapp = new QApplication (dummy_argc, dummy_argv);
         qapp->setAttribute(Qt::AA_UseHighDpiPixmaps);
         window = new MainWindow;
 
