@@ -5,6 +5,7 @@
 # Translators:
 # Alexandro Casanova <shorterfire@gmail.com>, 2013
 # Conservador Ressurge, 2014
+# Eudes Soares <eudes.sp2007@gmail.com>, 2014
 # Fuad Saud <fuadksd@gmail.com>, 2012
 # mcnd2 <glauber_gf@hotmail.com>, 2012
 # John_Norum <john.norum4@gmail.com>, 2012
@@ -16,10 +17,10 @@
 # Alexandro Casanova <shorterfire@gmail.com>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-12-04 18:18+0100\n"
-"PO-Revision-Date: 2014-12-01 19:59+0000\n"
+"POT-Creation-Date: 2015-01-24 13:17+0100\n"
+"PO-Revision-Date: 2015-01-17 22:08+0000\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
 "audacious/language/pt_BR/)\n"
@@ -31,7 +32,7 @@ msgstr ""
 
 #: src/aac-raw/aac.cc:18
 msgid "AAC (Raw) Decoder"
-msgstr ""
+msgstr "Decodificador AAC(Bruto)"
 
 #: src/adplug/adplug-xmms.cc:42
 msgid "AdPlug (AdLib Player)"
@@ -48,7 +49,7 @@ msgstr "Alarme"
 
 #: src/alarm/alarm.cc:782
 msgid "Set Alarm ..."
-msgstr ""
+msgstr "Definir Alarme ..."
 
 #: src/alarm/alarm.cc:810
 msgid ""
@@ -309,7 +310,7 @@ msgstr "Imagem do Álbum"
 
 #: src/albumart-qt/albumart.cc:33
 msgid "Album Art (Qt)"
-msgstr ""
+msgstr "Arte do Álbum (Qt)"
 
 #: src/alsa/alsa.h:70
 msgid "ALSA Output"
@@ -355,7 +356,7 @@ msgstr "Elemento mixer:"
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (Player MIDI)"
 
-#: src/amidi-plug/amidi-plug.cc:436
+#: src/amidi-plug/amidi-plug.cc:437
 msgid ""
 "AMIDI-Plug\n"
 "modular MIDI music player\n"
@@ -380,23 +381,23 @@ msgstr ""
 
 #: src/amidi-plug/i_configure.cc:94
 msgid "Override default gain:"
-msgstr ""
+msgstr "Sobrescrever ganho padrão:"
 
 #: src/amidi-plug/i_configure.cc:102
 msgid "Override default polyphony:"
-msgstr ""
+msgstr "Sobrescrever polifonia padrão:"
 
 #: src/amidi-plug/i_configure.cc:110
 msgid "Override default reverb:"
-msgstr ""
+msgstr "Sobrescrever reverberação padrão:"
 
 #: src/amidi-plug/i_configure.cc:112 src/amidi-plug/i_configure.cc:120
 msgid "On"
-msgstr ""
+msgstr "Ativo"
 
 #: src/amidi-plug/i_configure.cc:118
 msgid "Override default chorus:"
-msgstr ""
+msgstr "Sobrescrever coro padrão:"
 
 #: src/amidi-plug/i_configure.cc:128 src/console/plugin.cc:29
 msgid "<b>Playback</b>"
@@ -416,7 +417,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure.cc:134
 msgid "note numbers"
-msgstr ""
+msgstr "número de notas"
 
 #: src/amidi-plug/i_configure.cc:135
 msgid "Skip leading silence"
@@ -432,12 +433,12 @@ msgstr ""
 
 #: src/amidi-plug/i_configure.cc:143
 msgid "<b>Synthesizer</b>"
-msgstr ""
+msgstr "<b>Sintetizador</b>"
 
 #: src/amidi-plug/i_configure.cc:148 src/console/plugin.cc:45
 #: src/sid/xs_config.cc:65
 msgid "Sample rate:"
-msgstr ""
+msgstr "Taxa de amostragem:"
 
 #: src/amidi-plug/i_configure.cc:150 src/bs2b/plugin.cc:141
 #: src/console/plugin.cc:47 src/modplug/plugin_main.cc:78
@@ -457,11 +458,11 @@ msgstr "AMIDI-Plug - Selecione o arquivo SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.cc:55 src/filewriter/mp3.cc:658
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancelar"
 
 #: src/amidi-plug/i_configure-fluidsynth.cc:56
 msgid "_Open"
-msgstr ""
+msgstr "_Abrir"
 
 #: src/amidi-plug/i_configure-fluidsynth.cc:225 src/gtkui/columns.cc:46
 msgid "File name"
@@ -743,7 +744,7 @@ msgstr "Vários"
 
 #: src/aosd/aosd_ui.cc:878
 msgid "Test"
-msgstr ""
+msgstr "Teste"
 
 #: src/asx3/asx3.cc:35
 msgid "ASXv3 Playlists"
@@ -779,7 +780,7 @@ msgstr "Nível alimentar:"
 
 #: src/bs2b/plugin.cc:138
 msgid "x1/10 dB"
-msgstr ""
+msgstr "x1/10 dB"
 
 #: src/bs2b/plugin.cc:139
 msgid "Cut frequency:"
@@ -989,7 +990,7 @@ msgstr "Agudos:"
 
 #: src/console/plugin.cc:36
 msgid "Echo:"
-msgstr ""
+msgstr "Eco:"
 
 #: src/console/plugin.cc:39
 msgid "Default song length:"
@@ -1118,16 +1119,16 @@ msgstr ""
 #: src/delete-files/delete-files.cc:86
 #, c-format
 msgid "Error deleting %s: %s."
-msgstr ""
+msgstr "Erro apagando %s: %s."
 
 #: src/delete-files/delete-files.cc:117
 #, c-format
 msgid "Error deleting %s: not a local file."
-msgstr ""
+msgstr "Erro apagando %s: não é um arquivo local."
 
 #: src/delete-files/delete-files.cc:134
 msgid "Do you want to move the selected files to the trash?"
-msgstr ""
+msgstr "Deseja mover os arquivos selecionados para a lixeira?"
 
 #: src/delete-files/delete-files.cc:135
 msgid "Move to Trash"
@@ -1135,7 +1136,7 @@ msgstr "Mover para Lixeira"
 
 #: src/delete-files/delete-files.cc:140
 msgid "Do you want to permanently delete the selected files?"
-msgstr ""
+msgstr "Deseja excluir permanentemente os arquivos selecionados?"
 
 #: src/delete-files/delete-files.cc:141 src/skins/preset-list.cc:410
 #: src/skins/preset-list.cc:426
@@ -1244,15 +1245,15 @@ msgstr "Escolha uma pasta"
 
 #: src/filewriter/filewriter.cc:444
 msgid "Generate file name from:"
-msgstr ""
+msgstr "Gerar nome de arquivo a partir de:"
 
 #: src/filewriter/filewriter.cc:448
 msgid "Original file tag"
-msgstr ""
+msgstr "Etiqueta do arquivo original"
 
 #: src/filewriter/filewriter.cc:453
 msgid "Original file name"
-msgstr ""
+msgstr "Nome do arquivo original"
 
 #: src/filewriter/filewriter.cc:459
 msgid "Include original file name extension"
@@ -1317,7 +1318,7 @@ msgstr "Configuração MP3"
 
 #: src/filewriter/mp3.cc:658
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: src/filewriter/mp3.cc:681
 msgid "Algorithm Quality:"
@@ -1325,7 +1326,7 @@ msgstr "Qualidade do Algorítimo:"
 
 #: src/filewriter/mp3.cc:706
 msgid "Output Sample Rate:"
-msgstr ""
+msgstr "Taxa de Amostragem de Saída:"
 
 #: src/filewriter/mp3.cc:733
 msgid "(Hz)"
@@ -1333,7 +1334,7 @@ msgstr "(Hz)"
 
 #: src/filewriter/mp3.cc:740
 msgid "Bitrate / Compression Ratio:"
-msgstr ""
+msgstr "Taxa de compressão:"
 
 #: src/filewriter/mp3.cc:764
 msgid "Bitrate (kbps):"
@@ -1349,7 +1350,7 @@ msgstr "Modo de áudio:"
 
 #: src/filewriter/mp3.cc:845
 msgid "Miscellaneous:"
-msgstr ""
+msgstr "Diversos:"
 
 #: src/filewriter/mp3.cc:856
 msgid "Enforce strict ISO compliance"
@@ -1401,7 +1402,7 @@ msgstr "Nível de qualidade VBR:"
 
 #: src/filewriter/mp3.cc:1063
 msgid "Omit Xing VBR header"
-msgstr ""
+msgstr "Omitir cabeçalho Xing VBR"
 
 #: src/filewriter/mp3.cc:1076
 msgid "VBR/ABR"
@@ -1421,7 +1422,7 @@ msgstr "Assinalar como original"
 
 #: src/filewriter/mp3.cc:1120
 msgid "ID3 Parameters:"
-msgstr ""
+msgstr "Parâmetros ID3:"
 
 #: src/filewriter/mp3.cc:1131
 msgid "Force addition of version 2 tag"
@@ -1485,7 +1486,7 @@ msgstr ""
 
 #: src/gio/gio.cc:166
 msgid "Invalid open mode"
-msgstr ""
+msgstr "Modo de abertura inválido"
 
 #: src/gl-spectrum/gl-spectrum.cc:51
 msgid ""
@@ -1522,7 +1523,7 @@ msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:38
 msgid "GNOME Shortcuts"
-msgstr ""
+msgstr "Atalhos do GNOME"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:54
 msgid ""
@@ -1537,11 +1538,11 @@ msgid "Entry number"
 msgstr "Número de entrada"
 
 #: src/gtkui/columns.cc:36 src/playlist-manager/playlist-manager.cc:225
-#: src/qtui/playlist_model.cc:124
+#: src/qtui/playlist_model.cc:123
 msgid "Title"
 msgstr "Título"
 
-#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:126
+#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:125
 msgid "Artist"
 msgstr "Artista"
 
@@ -1549,7 +1550,7 @@ msgstr "Artista"
 msgid "Year"
 msgstr "Ano"
 
-#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:128
+#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:127
 msgid "Album"
 msgstr "Álbum"
 
@@ -1587,346 +1588,355 @@ msgstr "Taxa de dados"
 
 #: src/gtkui/columns.cc:308
 msgid "Available columns"
-msgstr ""
+msgstr "Colunas disponíveis"
 
 #: src/gtkui/columns.cc:334
 msgid "Displayed columns"
-msgstr ""
+msgstr "Colunas visíveis"
 
-#: src/gtkui/layout.cc:66 src/search-tool/search-tool.cc:40
+#: src/gtkui/layout.cc:72 src/search-tool/search-tool.cc:40
 msgid "Search Tool"
 msgstr "Ferramenta de Busca"
 
-#: src/gtkui/layout.cc:161
+#: src/gtkui/layout.cc:167
 msgid "Dock at Left"
 msgstr "Apontar na esquerda"
 
-#: src/gtkui/layout.cc:161
+#: src/gtkui/layout.cc:167
 msgid "Dock at Right"
 msgstr "Apontar na direita"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Dock at Top"
 msgstr "Apontar no topo"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Dock at Bottom"
 msgstr "Apontar na parte inferior"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Undock"
 msgstr "Desencaixar"
 
-#: src/gtkui/layout.cc:162 src/ladspa/plugin.cc:531
+#: src/gtkui/layout.cc:168 src/ladspa/plugin.cc:531
 msgid "Disable"
 msgstr "Desabilitar"
 
-#: src/gtkui/menus.cc:124 src/qtui/main_window_actions.cc:91
-#: src/statusicon/statusicon.cc:286
+#: src/gtkui/menus.cc:126 src/qtui/main_window_actions.cc:93
+#: src/statusicon/statusicon.cc:276
 msgid "_Open Files ..."
 msgstr "_Abrir Arquivo(s) ..."
 
-#: src/gtkui/menus.cc:125
+#: src/gtkui/menus.cc:127
 msgid "Open _URL ..."
 msgstr "Abrir _URL ..."
 
-#: src/gtkui/menus.cc:126 src/qtui/main_window_actions.cc:92
+#: src/gtkui/menus.cc:128 src/qtui/main_window_actions.cc:95
 msgid "_Add Files ..."
 msgstr "_Adicionar Arquivo(s) ..."
 
-#: src/gtkui/menus.cc:127
+#: src/gtkui/menus.cc:129
 msgid "Add U_RL ..."
 msgstr "Adicionar U_RL ..."
 
-#: src/gtkui/menus.cc:129
+#: src/gtkui/menus.cc:131
 msgid "Search _Library"
-msgstr ""
+msgstr "Pesquisar _Biblioteca"
 
-#: src/gtkui/menus.cc:131 src/qtui/main_window_actions.cc:94
+#: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:98
 msgid "A_bout ..."
 msgstr "S_obre ..."
 
-#: src/gtkui/menus.cc:132 src/qtui/main_window_actions.cc:95
+#: src/gtkui/menus.cc:134 src/qtui/main_window_actions.cc:99
 msgid "_Settings ..."
-msgstr ""
+msgstr "_Configurações ..."
 
-#: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:99
-#: src/statusicon/statusicon.cc:294
+#: src/gtkui/menus.cc:135 src/qtui/main_window_actions.cc:103
+#: src/statusicon/statusicon.cc:284
 msgid "_Quit"
 msgstr "_Sair"
 
-#: src/gtkui/menus.cc:137 src/gtkui/menus.cc:256
-#: src/qtui/main_window_actions.cc:103 src/search-tool/search-tool.cc:641
-#: src/statusicon/statusicon.cc:288
+#: src/gtkui/menus.cc:139 src/gtkui/menus.cc:262
+#: src/qtui/main_window_actions.cc:107 src/search-tool/search-tool.cc:641
+#: src/statusicon/statusicon.cc:278
 msgid "_Play"
 msgstr "_Reproduzir"
 
-#: src/gtkui/menus.cc:138 src/qtui/main_window_actions.cc:104
-#: src/statusicon/statusicon.cc:289
+#: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:108
+#: src/statusicon/statusicon.cc:279
 msgid "Paus_e"
 msgstr "Paus_ar"
 
-#: src/gtkui/menus.cc:139 src/qtui/main_window_actions.cc:105
-#: src/statusicon/statusicon.cc:290
+#: src/gtkui/menus.cc:141 src/qtui/main_window_actions.cc:109
+#: src/statusicon/statusicon.cc:280
 msgid "_Stop"
 msgstr "_Parar"
 
-#: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:106
-#: src/statusicon/statusicon.cc:287
+#: src/gtkui/menus.cc:142 src/qtui/main_window_actions.cc:110
+#: src/statusicon/statusicon.cc:277
 msgid "Pre_vious"
 msgstr "An_terior"
 
-#: src/gtkui/menus.cc:141 src/qtui/main_window_actions.cc:107
-#: src/statusicon/statusicon.cc:291
+#: src/gtkui/menus.cc:143 src/qtui/main_window_actions.cc:111
+#: src/statusicon/statusicon.cc:281
 msgid "_Next"
 msgstr "_Próxima"
 
-#: src/gtkui/menus.cc:143 src/qtui/main_window_actions.cc:109
+#: src/gtkui/menus.cc:145 src/qtui/main_window_actions.cc:113
 msgid "_Repeat"
 msgstr "_Repetir"
 
-#: src/gtkui/menus.cc:144 src/qtui/main_window_actions.cc:110
+#: src/gtkui/menus.cc:146 src/qtui/main_window_actions.cc:114
 msgid "S_huffle"
 msgstr "E_mbaralhar"
 
-#: src/gtkui/menus.cc:145 src/qtui/main_window_actions.cc:111
+#: src/gtkui/menus.cc:147 src/qtui/main_window_actions.cc:115
 msgid "N_o Playlist Advance"
 msgstr "N_ão avançar faixa"
 
-#: src/gtkui/menus.cc:146 src/qtui/main_window_actions.cc:112
+#: src/gtkui/menus.cc:148 src/qtui/main_window_actions.cc:116
 msgid "Stop A_fter This Song"
 msgstr "Parar D_epois Desta Faixa"
 
-#: src/gtkui/menus.cc:148 src/gtkui/menus.cc:243
-#: src/qtui/main_window_actions.cc:114
+#: src/gtkui/menus.cc:150 src/gtkui/menus.cc:247
+#: src/qtui/main_window_actions.cc:118
 msgid "Song _Info ..."
 msgstr "_Informações da faixa ..."
 
-#: src/gtkui/menus.cc:149
+#: src/gtkui/menus.cc:151
 msgid "Jump to _Time ..."
 msgstr "Ir para posição _temporal ..."
 
-#: src/gtkui/menus.cc:150
+#: src/gtkui/menus.cc:152
 msgid "_Jump to Song ..."
 msgstr "_Ir para a faixa ..."
 
-#: src/gtkui/menus.cc:152
+#: src/gtkui/menus.cc:154
 msgid "Set Repeat Point _A"
 msgstr "Definir Ponto de Repetição _A"
 
-#: src/gtkui/menus.cc:153
+#: src/gtkui/menus.cc:155
 msgid "Set Repeat Point _B"
 msgstr "Definir Ponto de Repetição _B"
 
-#: src/gtkui/menus.cc:154
+#: src/gtkui/menus.cc:156
 msgid "_Clear Repeat Points"
 msgstr "_Limpar Pontos de Repetição"
 
-#: src/gtkui/menus.cc:158 src/gtkui/menus.cc:165 src/gtkui/menus.cc:180
-#: src/qtui/main_window_actions.cc:118 src/qtui/main_window_actions.cc:125
-#: src/qtui/main_window_actions.cc:140
+#: src/gtkui/menus.cc:160 src/gtkui/menus.cc:167 src/gtkui/menus.cc:183
+#: src/qtui/main_window_actions.cc:122 src/qtui/main_window_actions.cc:129
+#: src/qtui/main_window_actions.cc:145
 msgid "By _Title"
 msgstr "Por _Título"
 
-#: src/gtkui/menus.cc:159 src/qtui/main_window_actions.cc:119
+#: src/gtkui/menus.cc:161 src/qtui/main_window_actions.cc:123
 msgid "By _File Name"
-msgstr ""
+msgstr "Por _Nome de Arquivo"
 
-#: src/gtkui/menus.cc:160 src/qtui/main_window_actions.cc:120
+#: src/gtkui/menus.cc:162 src/qtui/main_window_actions.cc:124
 msgid "By File _Path"
 msgstr "Por Arquivo de _Diretório"
 
-#: src/gtkui/menus.cc:164 src/gtkui/menus.cc:179
-#: src/qtui/main_window_actions.cc:124 src/qtui/main_window_actions.cc:139
+#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:182
+#: src/qtui/main_window_actions.cc:128 src/qtui/main_window_actions.cc:144
 msgid "By Track _Number"
 msgstr "Por _Número da Faixa"
 
-#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:181
-#: src/qtui/main_window_actions.cc:126 src/qtui/main_window_actions.cc:141
+#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:184
+#: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:146
 msgid "By _Artist"
 msgstr "Por _Artista"
 
-#: src/gtkui/menus.cc:167 src/gtkui/menus.cc:182
-#: src/qtui/main_window_actions.cc:127 src/qtui/main_window_actions.cc:142
+#: src/gtkui/menus.cc:169 src/gtkui/menus.cc:185
+#: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:147
 msgid "By Al_bum"
 msgstr "Por Ál_bum "
 
-#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:183
-#: src/qtui/main_window_actions.cc:128 src/qtui/main_window_actions.cc:143
+#: src/gtkui/menus.cc:170 src/gtkui/menus.cc:186
+#: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:148
 msgid "By Albu_m Artist"
-msgstr ""
+msgstr "Por _Artista de Álbum"
 
-#: src/gtkui/menus.cc:169 src/gtkui/menus.cc:184
-#: src/qtui/main_window_actions.cc:129 src/qtui/main_window_actions.cc:144
+#: src/gtkui/menus.cc:171 src/gtkui/menus.cc:187
+#: src/qtui/main_window_actions.cc:133 src/qtui/main_window_actions.cc:149
 msgid "By Release _Date"
 msgstr "Por _Data de Lançamento"
 
-#: src/gtkui/menus.cc:170 src/gtkui/menus.cc:185
-#: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:145
+#: src/gtkui/menus.cc:172 src/gtkui/menus.cc:188
+#: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:150
+msgid "By _Genre"
+msgstr ""
+
+#: src/gtkui/menus.cc:173 src/gtkui/menus.cc:189
+#: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:151
 msgid "By _Length"
 msgstr "Por _Duração"
 
-#: src/gtkui/menus.cc:171 src/gtkui/menus.cc:186
-#: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:146
+#: src/gtkui/menus.cc:174 src/gtkui/menus.cc:190
+#: src/qtui/main_window_actions.cc:136 src/qtui/main_window_actions.cc:152
 msgid "By _File Path"
 msgstr "Por _Arquivo de Diretório"
 
-#: src/gtkui/menus.cc:172 src/gtkui/menus.cc:187
-#: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:147
+#: src/gtkui/menus.cc:175 src/gtkui/menus.cc:191
+#: src/qtui/main_window_actions.cc:137 src/qtui/main_window_actions.cc:153
 msgid "By _Custom Title"
 msgstr "Por _Título Personalizado"
 
-#: src/gtkui/menus.cc:174 src/gtkui/menus.cc:189
-#: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:149
+#: src/gtkui/menus.cc:177 src/gtkui/menus.cc:193
+#: src/qtui/main_window_actions.cc:139 src/qtui/main_window_actions.cc:155
 msgid "R_everse Order"
 msgstr "I_nverter Ordem"
 
-#: src/gtkui/menus.cc:175 src/gtkui/menus.cc:190
-#: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:150
+#: src/gtkui/menus.cc:178 src/gtkui/menus.cc:194
+#: src/qtui/main_window_actions.cc:140 src/qtui/main_window_actions.cc:156
 msgid "_Random Order"
 msgstr "_Aleatório"
 
-#: src/gtkui/menus.cc:194 src/qtui/main_window_actions.cc:154
-msgid "_Play This Playlist"
-msgstr "_Reproduzir esta Lista de Reprodução"
+#: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:160
+msgid "_Play/Resume"
+msgstr ""
 
-#: src/gtkui/menus.cc:195 src/gtkui/menus.cc:245
-#: src/qtui/main_window_actions.cc:155
+#: src/gtkui/menus.cc:199 src/gtkui/menus.cc:251
+#: src/qtui/main_window_actions.cc:161
 msgid "_Refresh"
 msgstr "_Atualizar"
 
-#: src/gtkui/menus.cc:197 src/qtui/main_window_actions.cc:157
+#: src/gtkui/menus.cc:201 src/qtui/main_window_actions.cc:163
 msgid "_Sort"
 msgstr "_Organizar Lista de Reprodução"
 
-#: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:158
+#: src/gtkui/menus.cc:202 src/qtui/main_window_actions.cc:164
 msgid "Sort Se_lected"
 msgstr "Organizar Se_lecionado"
 
-#: src/gtkui/menus.cc:199 src/qtui/main_window_actions.cc:159
+#: src/gtkui/menus.cc:203 src/qtui/main_window_actions.cc:165
 msgid "Remove _Duplicates"
 msgstr "Remover _Duplicatas"
 
-#: src/gtkui/menus.cc:200 src/qtui/main_window_actions.cc:160
+#: src/gtkui/menus.cc:204 src/qtui/main_window_actions.cc:166
 msgid "Remove _Unavailable Files"
 msgstr "Remover _Arquivos Indisponíveis"
 
-#: src/gtkui/menus.cc:202 src/playlist-manager/playlist-manager.cc:244
-#: src/qtui/main_window_actions.cc:162
+#: src/gtkui/menus.cc:206 src/playlist-manager/playlist-manager.cc:244
+#: src/qtui/main_window_actions.cc:168
 msgid "_New"
 msgstr "_Novo"
 
-#: src/gtkui/menus.cc:203 src/qtui/main_window_actions.cc:163
+#: src/gtkui/menus.cc:207
 msgid "Ren_ame ..."
 msgstr "Re_nomear ..."
 
-#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:258
-#: src/qtui/main_window_actions.cc:164
+#: src/gtkui/menus.cc:208 src/gtkui/menus.cc:264
+#: src/qtui/main_window_actions.cc:170
 msgid "Remo_ve"
 msgstr ""
 
-#: src/gtkui/menus.cc:206 src/qtui/main_window_actions.cc:166
+#: src/gtkui/menus.cc:210
 msgid "_Import ..."
 msgstr "_Importar"
 
-#: src/gtkui/menus.cc:207 src/qtui/main_window_actions.cc:167
+#: src/gtkui/menus.cc:211
 msgid "_Export ..."
 msgstr "_Exportar"
 
-#: src/gtkui/menus.cc:209 src/qtui/main_window_actions.cc:169
+#: src/gtkui/menus.cc:213
 msgid "Playlist _Manager ..."
 msgstr "Gerenciador de _Lista de Reprodução ..."
 
-#: src/gtkui/menus.cc:210 src/qtui/main_window_actions.cc:170
+#: src/gtkui/menus.cc:214 src/qtui/main_window_actions.cc:176
 msgid "_Queue Manager ..."
 msgstr "Gerenciador de _Fila de Reprodução ..."
 
-#: src/gtkui/menus.cc:214 src/qtui/main_window_actions.cc:174
+#: src/gtkui/menus.cc:218 src/qtui/main_window_actions.cc:180
 msgid "Volume _Up"
 msgstr "Aumentar _Volume"
 
-#: src/gtkui/menus.cc:215 src/qtui/main_window_actions.cc:175
+#: src/gtkui/menus.cc:219 src/qtui/main_window_actions.cc:181
 msgid "Volume _Down"
 msgstr "Abaixar _Volume"
 
-#: src/gtkui/menus.cc:217 src/qtui/main_window_actions.cc:177
+#: src/gtkui/menus.cc:221 src/qtui/main_window_actions.cc:183
 msgid "_Equalizer"
 msgstr "_Equalizador"
 
-#: src/gtkui/menus.cc:219 src/qtui/main_window_actions.cc:179
+#: src/gtkui/menus.cc:223 src/qtui/main_window_actions.cc:185
 msgid "E_ffects ..."
-msgstr ""
+msgstr "E_feitos"
 
-#: src/gtkui/menus.cc:223
+#: src/gtkui/menus.cc:227
 msgid "Show _Menu Bar"
 msgstr "Mostrar Barra de _Menu"
 
-#: src/gtkui/menus.cc:224
+#: src/gtkui/menus.cc:228
 msgid "Show I_nfo Bar"
 msgstr "Mostrar Barra de _Informação"
 
-#: src/gtkui/menus.cc:225
+#: src/gtkui/menus.cc:229
 msgid "Show Info Bar Vis_ualization"
 msgstr "Mostrar vis_ualização da barra de informaçoes"
 
-#: src/gtkui/menus.cc:226
+#: src/gtkui/menus.cc:230
 msgid "Show _Status Bar"
 msgstr "Mostrar Barra de _Status"
 
-#: src/gtkui/menus.cc:228
+#: src/gtkui/menus.cc:232
 msgid "Show _Remaining Time"
 msgstr "Mostrar _Tempo Restante"
 
-#: src/gtkui/menus.cc:230
+#: src/gtkui/menus.cc:234
 msgid "_Visualizations ..."
-msgstr ""
+msgstr "_Visualizações"
 
-#: src/gtkui/menus.cc:234 src/qtui/main_window_actions.cc:183
+#: src/gtkui/menus.cc:238 src/qtui/main_window_actions.cc:189
 msgid "_File"
 msgstr "_Arquivo"
 
-#: src/gtkui/menus.cc:235 src/qtui/main_window_actions.cc:184
+#: src/gtkui/menus.cc:239 src/qtui/main_window_actions.cc:190
 msgid "_Playback"
 msgstr "_Reprodução"
 
-#: src/gtkui/menus.cc:236 src/qtui/main_window_actions.cc:185
+#: src/gtkui/menus.cc:240 src/qtui/main_window_actions.cc:191
 msgid "P_laylist"
 msgstr "_Lista de Reprodução"
 
-#: src/gtkui/menus.cc:237 src/gtkui/menus.cc:252
-#: src/qtui/main_window_actions.cc:186
+#: src/gtkui/menus.cc:241 src/gtkui/menus.cc:258
+#: src/qtui/main_window_actions.cc:192
 msgid "_Services"
 msgstr "_Serviços"
 
-#: src/gtkui/menus.cc:238 src/qtui/main_window_actions.cc:187
+#: src/gtkui/menus.cc:242 src/qtui/main_window_actions.cc:193
 msgid "_Output"
 msgstr "_Saída"
 
-#: src/gtkui/menus.cc:239
+#: src/gtkui/menus.cc:243
 msgid "_View"
 msgstr "_Visualizar"
 
-#: src/gtkui/menus.cc:244
+#: src/gtkui/menus.cc:248
 msgid "_Queue/Unqueue"
 msgstr "Colocar/Retirar da fila"
 
-#: src/gtkui/menus.cc:247
+#: src/gtkui/menus.cc:250
+msgid "_Open Containing Folder"
+msgstr ""
+
+#: src/gtkui/menus.cc:253
 msgid "Cu_t"
 msgstr "Recor_tar"
 
-#: src/gtkui/menus.cc:248
+#: src/gtkui/menus.cc:254
 msgid "_Copy"
 msgstr "_Copiar"
 
-#: src/gtkui/menus.cc:249
+#: src/gtkui/menus.cc:255
 msgid "_Paste"
 msgstr "_Colar"
 
-#: src/gtkui/menus.cc:250
+#: src/gtkui/menus.cc:256
 msgid "Select _All"
 msgstr "Selecionar _Tudo"
 
-#: src/gtkui/menus.cc:257
+#: src/gtkui/menus.cc:263
 msgid "_Rename ..."
 msgstr "_Renomear ..."
 
@@ -1944,7 +1954,7 @@ msgstr ""
 
 #: src/gtkui/settings.cc:40
 msgid "Show close buttons"
-msgstr ""
+msgstr "Mostrar botão fechar"
 
 #: src/gtkui/settings.cc:42
 msgid "<b>Playlist Columns</b>"
@@ -1952,7 +1962,7 @@ msgstr ""
 
 #: src/gtkui/settings.cc:44
 msgid "Show column headers"
-msgstr ""
+msgstr "Mostrar cabeçalho das colunas"
 
 #: src/gtkui/settings.cc:46 src/modplug/plugin_main.cc:106
 #: src/skins/skins_cfg.cc:263
@@ -1971,44 +1981,57 @@ msgstr ""
 msgid "GTK Interface"
 msgstr "Interface GTK"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:236
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:230
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:225 src/qtui/main_window.cc:180
+#: src/gtkui/ui_gtk.cc:225 src/qtui/main_window.cc:186
 msgid "Buffering ..."
 msgstr "A processar ..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:238 src/skins/ui_main.cc:1168
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:232 src/skins/ui_main.cc:1162
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_statusbar.cc:69 src/qtui/status_bar.cc:67
+#: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:67
 msgid "mono"
 msgstr "mono"
 
-#: src/gtkui/ui_statusbar.cc:71 src/qtui/status_bar.cc:69
+#: src/gtkui/ui_statusbar.cc:65 src/qtui/status_bar.cc:69
 msgid "stereo"
 msgstr "stereo"
 
-#: src/gtkui/ui_statusbar.cc:73 src/qtui/status_bar.cc:71
+#: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:71
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
 msgstr[0] "%d canal"
 msgstr[1] "%d canais"
 
-#: src/gtkui/ui_statusbar.cc:88 src/qtui/status_bar.cc:85
+#: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:85
 #, c-format
 msgid "%d kbps"
 msgstr "%d kbps"
+
+#: src/gtkui/ui_statusbar.cc:107 src/skins/ui_main_evlisteners.cc:103
+msgid "Single mode."
+msgstr "Modo simples."
+
+#: src/gtkui/ui_statusbar.cc:109 src/skins/ui_main_evlisteners.cc:105
+msgid "Playlist mode."
+msgstr "Modo Lista de Reprodução."
+
+#: src/gtkui/ui_statusbar.cc:117 src/skins/ui_main_evlisteners.cc:111
+msgid "Stopping after song."
+msgstr "Parar após faixa"
 
 #: src/hotkey/gui.cc:71
 msgid "Previous track"
 msgstr "Faixa anterior"
 
-#: src/hotkey/gui.cc:72 src/notify/osd.cc:69 src/qtui/main_window.cc:67
+#: src/hotkey/gui.cc:72 src/notify/osd.cc:69 src/qtui/main_window.cc:69
+#: src/qtui/main_window.cc:172 src/qtui/main_window.cc:173
 #: src/skins/menus.cc:87
 msgid "Play"
 msgstr "Reproduzir"
@@ -2017,7 +2040,7 @@ msgstr "Reproduzir"
 msgid "Pause/Resume"
 msgstr "Pausa/Retornar"
 
-#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:68 src/skins/menus.cc:89
+#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:70 src/skins/menus.cc:89
 msgid "Stop"
 msgstr "Parar"
 
@@ -2115,7 +2138,7 @@ msgstr "<b>Combinação de Teclas:</b>"
 
 #: src/hotkey/gui.cc:468
 msgid "_Add"
-msgstr ""
+msgstr "_Adicionar"
 
 #: src/hotkey/plugin.cc:61
 msgid "Global Hotkeys"
@@ -2163,7 +2186,7 @@ msgstr ""
 #: src/jack-ng/jack-ng.cc:164
 #, c-format
 msgid "Failed to connect to JACK port %s."
-msgstr ""
+msgstr "Falha ao conectar a porta JACK %s."
 
 #: src/jack-ng/jack-ng.cc:184
 msgid ""
@@ -2497,7 +2520,7 @@ msgstr "Plugin MPG 123"
 
 #: src/mpg123/mpg123.cc:83
 msgid "<b>Advanced</b>"
-msgstr ""
+msgstr "<b>Avançado</b>"
 
 #: src/mpg123/mpg123.cc:84
 msgid "Use accurate length calculation (slow)"
@@ -2521,15 +2544,15 @@ msgstr ""
 
 #: src/neon/neon.cc:535
 msgid "Unknown HTTP error"
-msgstr ""
+msgstr "Erro HTTP desconhecido"
 
 #: src/neon/neon.cc:569
 msgid "Error parsing URL"
-msgstr ""
+msgstr "Erro validando URL"
 
 #: src/neon/neon.cc:632
 msgid "Too many redirects"
-msgstr ""
+msgstr "Muitos redirecionamentos"
 
 #: src/notify/event.cc:62
 msgid "Stopped"
@@ -2594,11 +2617,12 @@ msgstr ""
 msgid "Show"
 msgstr "Exibir"
 
-#: src/notify/osd.cc:66 src/skins/menus.cc:88
+#: src/notify/osd.cc:66 src/qtui/main_window.cc:178
+#: src/qtui/main_window.cc:179 src/skins/menus.cc:88
 msgid "Pause"
 msgstr "Pausa"
 
-#: src/notify/osd.cc:73 src/qtui/main_window.cc:70 src/skins/menus.cc:91
+#: src/notify/osd.cc:73 src/qtui/main_window.cc:72 src/skins/menus.cc:91
 msgid "Next"
 msgstr "Próxima"
 
@@ -2608,11 +2632,11 @@ msgstr "Saída OSS4"
 
 #: src/oss4/oss.h:95
 msgid "OSS3 Output"
-msgstr ""
+msgstr "Saída OSS3"
 
 #: src/oss4/plugin.cc:35
 msgid "Default device"
-msgstr ""
+msgstr "Dispositivo padrão"
 
 #: src/oss4/plugin.cc:77
 msgid "Audio device:"
@@ -2654,15 +2678,15 @@ msgstr ""
 
 #: src/playlist-manager/playlist-manager.cc:226
 msgid "Entries"
-msgstr ""
+msgstr "Entradas"
 
 #: src/playlist-manager/playlist-manager.cc:245
 msgid "_Remove"
-msgstr ""
+msgstr "_Remover"
 
 #: src/playlist-manager/playlist-manager.cc:246
 msgid "Ren_ame"
-msgstr ""
+msgstr "Ren_omear"
 
 #: src/pls/pls.cc:35
 msgid "PLS Playlists"
@@ -2727,37 +2751,45 @@ msgstr ""
 
 #: src/qtui/dialog_windows.cc:31
 msgid "Working ..."
-msgstr ""
+msgstr "Processando ..."
 
-#: src/qtui/filter_input.cc:45 src/skins/ui_playlist.cc:221
+#: src/qtui/filter_input.cc:44 src/skins/ui_playlist.cc:221
 msgid "Search"
 msgstr "Pesquisar"
 
-#: src/qtui/main_window_actions.cc:97
+#: src/qtui/main_window_actions.cc:94
+msgid "_Open Folder ..."
+msgstr ""
+
+#: src/qtui/main_window_actions.cc:96
+msgid "_Add Folder ..."
+msgstr ""
+
+#: src/qtui/main_window_actions.cc:101
 msgid "_Log Inspector ..."
 msgstr ""
 
 #: src/qtui/main_window.cc:64
 msgid "Open Files"
-msgstr ""
+msgstr "Abrir arquivos"
 
-#: src/qtui/main_window.cc:65
+#: src/qtui/main_window.cc:66
 msgid "Add Files"
-msgstr ""
+msgstr "Adicionar arquivos"
 
-#: src/qtui/main_window.cc:69 src/skins/menus.cc:90
+#: src/qtui/main_window.cc:71 src/skins/menus.cc:90
 msgid "Previous"
 msgstr "Anterior"
 
-#: src/qtui/main_window.cc:75 src/skins/menus.cc:82
+#: src/qtui/main_window.cc:77 src/skins/menus.cc:82
 msgid "Repeat"
 msgstr "Repetir"
 
-#: src/qtui/main_window.cc:77 src/skins/menus.cc:83
+#: src/qtui/main_window.cc:79 src/skins/menus.cc:83
 msgid "Shuffle"
 msgstr "Embaralhar"
 
-#: src/qtui/qtui.cc:39
+#: src/qtui/qtui.cc:42
 msgid "Qt Interface"
 msgstr ""
 
@@ -2827,7 +2859,7 @@ msgstr "22.05 kHz:"
 
 #: src/resample/resample.cc:217
 msgid "32.0 kHz:"
-msgstr ""
+msgstr "32.0 kHz:"
 
 #: src/resample/resample.cc:221
 msgid "44.1 kHz:"
@@ -2839,7 +2871,7 @@ msgstr "48 kHz:"
 
 #: src/resample/resample.cc:229
 msgid "88.2 kHz:"
-msgstr ""
+msgstr "88.2 kHz:"
 
 #: src/resample/resample.cc:233
 msgid "96 kHz:"
@@ -2847,7 +2879,7 @@ msgstr "96 kHz:"
 
 #: src/resample/resample.cc:237
 msgid "176.4 kHz:"
-msgstr ""
+msgstr "176.4 kHz:"
 
 #: src/resample/resample.cc:241
 msgid "192 kHz:"
@@ -2995,7 +3027,7 @@ msgstr ""
 
 #: src/search-tool/search-tool.cc:607
 msgid "by"
-msgstr ""
+msgstr "por"
 
 #: src/search-tool/search-tool.cc:643
 msgid "_Create Playlist"
@@ -3031,15 +3063,15 @@ msgstr ""
 
 #: src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
-msgstr ""
+msgstr "<b>Saída</b>"
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
-msgstr ""
+msgstr "Canais:"
 
 #: src/sid/xs_config.cc:68
 msgid "<b>Emulation</b>"
-msgstr ""
+msgstr "<b>Emulação</b>"
 
 #: src/sid/xs_config.cc:69
 msgid "Emulate MOS 8580 (default: MOS 6581)"
@@ -3051,7 +3083,7 @@ msgstr ""
 
 #: src/sid/xs_config.cc:73
 msgid "Emulate filter"
-msgstr ""
+msgstr "Emular filtro"
 
 #: src/sid/xs_config.cc:75
 msgid "Clock speed:"
@@ -3140,7 +3172,7 @@ msgid "View"
 msgstr "Ver"
 
 #: src/skins/menus.cc:72 src/skins/menus.cc:136 src/skins/menus.cc:149
-#: src/skins/menus.cc:208
+#: src/skins/menus.cc:214
 msgid "Services"
 msgstr ""
 
@@ -3156,7 +3188,7 @@ msgstr ""
 msgid "Quit"
 msgstr "Sair"
 
-#: src/skins/menus.cc:80 src/skins/menus.cc:200
+#: src/skins/menus.cc:80 src/skins/menus.cc:206
 msgid "Song Info ..."
 msgstr ""
 
@@ -3185,7 +3217,7 @@ msgid "Jump to Time ..."
 msgstr ""
 
 #: src/skins/menus.cc:101
-msgid "Play This Playlist"
+msgid "Play/Resume"
 msgstr ""
 
 #: src/skins/menus.cc:103
@@ -3260,7 +3292,7 @@ msgstr ""
 msgid "Roll Up Equalizer"
 msgstr ""
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:858
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:852
 msgid "Double Size"
 msgstr ""
 
@@ -3272,15 +3304,15 @@ msgstr ""
 msgid "Add Files ..."
 msgstr ""
 
-#: src/skins/menus.cc:143 src/skins/menus.cc:170 src/skins/menus.cc:181
+#: src/skins/menus.cc:143 src/skins/menus.cc:171 src/skins/menus.cc:185
 msgid "By Title"
 msgstr "Por Título"
 
-#: src/skins/menus.cc:144 src/skins/menus.cc:174 src/skins/menus.cc:185
+#: src/skins/menus.cc:144 src/skins/menus.cc:178 src/skins/menus.cc:192
 msgid "By File Name"
 msgstr ""
 
-#: src/skins/menus.cc:145 src/skins/menus.cc:175 src/skins/menus.cc:186
+#: src/skins/menus.cc:145 src/skins/menus.cc:179 src/skins/menus.cc:193
 msgid "By File Path"
 msgstr ""
 
@@ -3324,111 +3356,123 @@ msgstr "Não Selecionar"
 msgid "Select All"
 msgstr "Selecionar Tudo"
 
-#: src/skins/menus.cc:171 src/skins/menus.cc:182
-msgid "By Album"
-msgstr "Por Album"
-
-#: src/skins/menus.cc:172 src/skins/menus.cc:183
-msgid "By Artist"
-msgstr "Por Artista"
-
-#: src/skins/menus.cc:173 src/skins/menus.cc:184
-msgid "By Album Artist"
-msgstr ""
-
-#: src/skins/menus.cc:176 src/skins/menus.cc:187
-msgid "By Release Date"
-msgstr ""
-
-#: src/skins/menus.cc:177 src/skins/menus.cc:188
+#: src/skins/menus.cc:170 src/skins/menus.cc:184
 msgid "By Track Number"
 msgstr "Por Número da Faixa"
 
-#: src/skins/menus.cc:192
+#: src/skins/menus.cc:172 src/skins/menus.cc:186
+msgid "By Artist"
+msgstr "Por Artista"
+
+#: src/skins/menus.cc:173 src/skins/menus.cc:187
+msgid "By Album"
+msgstr "Por Album"
+
+#: src/skins/menus.cc:174 src/skins/menus.cc:188
+msgid "By Album Artist"
+msgstr ""
+
+#: src/skins/menus.cc:175 src/skins/menus.cc:190
+msgid "By Release Date"
+msgstr ""
+
+#: src/skins/menus.cc:176 src/skins/menus.cc:189
+msgid "By Genre"
+msgstr ""
+
+#: src/skins/menus.cc:177 src/skins/menus.cc:191
+msgid "By Length"
+msgstr ""
+
+#: src/skins/menus.cc:180 src/skins/menus.cc:194
+msgid "By Custom Title"
+msgstr ""
+
+#: src/skins/menus.cc:198
 msgid "Randomize List"
 msgstr "Randomizar Lista"
 
-#: src/skins/menus.cc:193
+#: src/skins/menus.cc:199
 msgid "Reverse List"
 msgstr "Reverter Lista"
 
-#: src/skins/menus.cc:195
+#: src/skins/menus.cc:201
 msgid "Sort Selected"
 msgstr "Organizar Selecionado"
 
-#: src/skins/menus.cc:196
+#: src/skins/menus.cc:202
 msgid "Sort List"
 msgstr "Organizar Lista"
 
-#: src/skins/menus.cc:202
+#: src/skins/menus.cc:208
 msgid "Cut"
 msgstr "Cortar"
 
-#: src/skins/menus.cc:203
+#: src/skins/menus.cc:209
 msgid "Copy"
 msgstr "Copiar"
 
-#: src/skins/menus.cc:204
+#: src/skins/menus.cc:210
 msgid "Paste"
 msgstr "Colar"
 
-#: src/skins/menus.cc:206
+#: src/skins/menus.cc:212
 msgid "Queue/Unqueue"
 msgstr ""
 
-#: src/skins/menus.cc:212
+#: src/skins/menus.cc:218
 msgid "Load Preset ..."
 msgstr ""
 
-#: src/skins/menus.cc:213
+#: src/skins/menus.cc:219
 msgid "Load Auto Preset ..."
 msgstr ""
 
-#: src/skins/menus.cc:214
+#: src/skins/menus.cc:220
 msgid "Load Default"
 msgstr ""
 
-#: src/skins/menus.cc:215
+#: src/skins/menus.cc:221
 msgid "Load Preset File ..."
 msgstr ""
 
-#: src/skins/menus.cc:216
+#: src/skins/menus.cc:222
 msgid "Load EQF File ..."
 msgstr ""
 
-#: src/skins/menus.cc:218
+#: src/skins/menus.cc:224
 msgid "Save Preset ..."
 msgstr ""
 
-#: src/skins/menus.cc:219
+#: src/skins/menus.cc:225
 msgid "Save Auto Preset ..."
 msgstr ""
 
-#: src/skins/menus.cc:220
+#: src/skins/menus.cc:226
 msgid "Save Default"
 msgstr ""
 
-#: src/skins/menus.cc:221
+#: src/skins/menus.cc:227
 msgid "Save Preset File ..."
 msgstr ""
 
-#: src/skins/menus.cc:222
+#: src/skins/menus.cc:228
 msgid "Save EQF File ..."
 msgstr ""
 
-#: src/skins/menus.cc:224
+#: src/skins/menus.cc:230
 msgid "Delete Preset ..."
 msgstr ""
 
-#: src/skins/menus.cc:225
+#: src/skins/menus.cc:231
 msgid "Delete Auto Preset ..."
 msgstr ""
 
-#: src/skins/menus.cc:227
+#: src/skins/menus.cc:233
 msgid "Import Winamp Presets ..."
 msgstr ""
 
-#: src/skins/menus.cc:229
+#: src/skins/menus.cc:235
 msgid "Reset to Zero"
 msgstr ""
 
@@ -3659,121 +3703,109 @@ msgstr "Geral"
 msgid "Visualization"
 msgstr "Visualização"
 
-#: src/skins/ui_equalizer.cc:288
+#: src/skins/ui_equalizer.cc:282
 msgid "Preamp"
 msgstr "Amplificador"
 
-#: src/skins/ui_equalizer.cc:292
+#: src/skins/ui_equalizer.cc:286
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.cc:336
+#: src/skins/ui_equalizer.cc:330
 msgid "Audacious Equalizer"
 msgstr "Esqualizador do Audacious"
 
-#: src/skins/ui_main.cc:692
+#: src/skins/ui_main.cc:686
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Ir para %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:713
+#: src/skins/ui_main.cc:707
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Volume: %d%%"
 
-#: src/skins/ui_main.cc:736
+#: src/skins/ui_main.cc:730
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Equilíbrio: %d%% esquerda"
 
-#: src/skins/ui_main.cc:738
+#: src/skins/ui_main.cc:732
 msgid "Balance: center"
 msgstr "Equilíbrio centro"
 
-#: src/skins/ui_main.cc:740
+#: src/skins/ui_main.cc:734
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Equilíbrio: %d%% direita"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:840
 msgid "Options Menu"
 msgstr "Menu de Opções"
 
-#: src/skins/ui_main.cc:850
+#: src/skins/ui_main.cc:844
 msgid "Disable 'Always On Top'"
 msgstr "Desativar 'Sempre No Topo'"
 
-#: src/skins/ui_main.cc:852
+#: src/skins/ui_main.cc:846
 msgid "Enable 'Always On Top'"
 msgstr "Ativar 'Sempre No Topo'"
 
-#: src/skins/ui_main.cc:855
+#: src/skins/ui_main.cc:849
 msgid "File Info Box"
 msgstr "Caixa de Informações do Arquivo"
 
-#: src/skins/ui_main.cc:861
+#: src/skins/ui_main.cc:855
 msgid "Visualizations"
 msgstr ""
 
-#: src/skins/ui_main.cc:1325
+#: src/skins/ui_main.cc:1319
 msgid "Repeat point A set."
 msgstr "Repetir ponto de definição A."
 
-#: src/skins/ui_main.cc:1330
+#: src/skins/ui_main.cc:1324
 msgid "Repeat point B set."
 msgstr "Repetir ponto de definição B."
 
-#: src/skins/ui_main.cc:1339
+#: src/skins/ui_main.cc:1333
 msgid "Repeat points cleared."
 msgstr "Repetir pontos apagados."
-
-#: src/skins/ui_main_evlisteners.cc:103
-msgid "Single mode."
-msgstr "Modo simples."
-
-#: src/skins/ui_main_evlisteners.cc:105
-msgid "Playlist mode."
-msgstr "Modo Lista de Reprodução."
-
-#: src/skins/ui_main_evlisteners.cc:111
-msgid "Stopping after song."
-msgstr "Parar após faixa"
 
 #: src/skins/ui_playlist.cc:219
 msgid "Search entries in active playlist"
@@ -3967,7 +3999,7 @@ msgid ""
 msgstr ""
 
 #: src/song-info-qt/song-info.cc:32
-msgid "Track Information"
+msgid "Song Info (Qt)"
 msgstr ""
 
 #: src/sox-resampler/sox-resampler.cc:44
@@ -4024,15 +4056,15 @@ msgstr "Velocidade:"
 msgid "Pitch:"
 msgstr "Tom:"
 
-#: src/statusicon/statusicon.cc:50
+#: src/statusicon/statusicon.cc:47
 msgid "Status Icon"
 msgstr "Ícone de Status"
 
-#: src/statusicon/statusicon.cc:293
+#: src/statusicon/statusicon.cc:283
 msgid "Se_ttings ..."
 msgstr ""
 
-#: src/statusicon/statusicon.cc:394
+#: src/statusicon/statusicon.cc:372
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -4050,31 +4082,31 @@ msgstr ""
 "Esse plugin fornece um ícone de status, colocado na\n"
 "área de notificação do sistema no gerenciador de janelas."
 
-#: src/statusicon/statusicon.cc:401
+#: src/statusicon/statusicon.cc:379
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Ação do Mouse no botão do meio</b>"
 
-#: src/statusicon/statusicon.cc:402
+#: src/statusicon/statusicon.cc:380
 msgid "Change volume"
 msgstr "Alterar volume"
 
-#: src/statusicon/statusicon.cc:405
+#: src/statusicon/statusicon.cc:383
 msgid "Change playing song"
 msgstr "Mudar de faixa"
 
-#: src/statusicon/statusicon.cc:408
+#: src/statusicon/statusicon.cc:386
 msgid "<b>Other Settings</b>"
 msgstr "<b>Outras Configuraçoes</b>"
 
-#: src/statusicon/statusicon.cc:409
+#: src/statusicon/statusicon.cc:387
 msgid "Disable the popup window"
 msgstr "Desativar janelas pop-up"
 
-#: src/statusicon/statusicon.cc:411
+#: src/statusicon/statusicon.cc:389
 msgid "Close to the system tray"
 msgstr "Fechar para a bandeja do sistema"
 
-#: src/statusicon/statusicon.cc:413
+#: src/statusicon/statusicon.cc:391
 msgid "Advance in playlist when scrolling upward"
 msgstr "Avançar lista de reprodução ao rolar para cima"
 

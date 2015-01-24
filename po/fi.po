@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Jiri Grönroos <jiri.gronroos@iki.fi>, 2014
+# Jiri Grönroos <jiri.gronroos@iki.fi>, 2014-2015
 # J. S. Tuomisto <jstuomisto@gmail.com>, 2013
 # J. S. Tuomisto <jstuomisto@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-12-04 18:18+0100\n"
-"PO-Revision-Date: 2014-12-01 19:59+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2015-01-24 13:17+0100\n"
+"PO-Revision-Date: 2015-01-18 00:10+0000\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/audacious/"
 "language/fi/)\n"
 "Language: fi\n"
@@ -295,11 +295,11 @@ msgstr "Ohje"
 
 #: src/albumart/albumart.cc:31
 msgid "Album Art"
-msgstr "Levyn kansitaide"
+msgstr "Albumin kansikuvitus"
 
 #: src/albumart-qt/albumart.cc:33
 msgid "Album Art (Qt)"
-msgstr ""
+msgstr "Albumikuvitus (Qt)"
 
 #: src/alsa/alsa.h:70
 msgid "ALSA Output"
@@ -343,7 +343,7 @@ msgstr "Miksauskanava:"
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-liitännäinen (MIDI-soitin)"
 
-#: src/amidi-plug/amidi-plug.cc:436
+#: src/amidi-plug/amidi-plug.cc:437
 msgid ""
 "AMIDI-Plug\n"
 "modular MIDI music player\n"
@@ -388,7 +388,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure.cc:128 src/console/plugin.cc:29
 msgid "<b>Playback</b>"
-msgstr ""
+msgstr "<b>Toisto</b>"
 
 #: src/amidi-plug/i_configure.cc:129
 msgid "Transpose:"
@@ -1100,7 +1100,7 @@ msgstr "Poista tiedostot"
 #: src/delete-files/delete-files.cc:75
 #, c-format
 msgid "Error moving %s to trash: %s."
-msgstr ""
+msgstr "Virhe siirrettäessä kohdetta %s roskakoriin: %s."
 
 #: src/delete-files/delete-files.cc:86
 #, c-format
@@ -1408,7 +1408,7 @@ msgstr "Merkitse alkuperäiseksi"
 
 #: src/filewriter/mp3.cc:1120
 msgid "ID3 Parameters:"
-msgstr ""
+msgstr "ID3-parametrit:"
 
 #: src/filewriter/mp3.cc:1131
 msgid "Force addition of version 2 tag"
@@ -1509,7 +1509,7 @@ msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:38
 msgid "GNOME Shortcuts"
-msgstr ""
+msgstr "Gnome-pikanäppäimet"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:54
 msgid ""
@@ -1524,11 +1524,11 @@ msgid "Entry number"
 msgstr "Numero"
 
 #: src/gtkui/columns.cc:36 src/playlist-manager/playlist-manager.cc:225
-#: src/qtui/playlist_model.cc:124
+#: src/qtui/playlist_model.cc:123
 msgid "Title"
 msgstr "Nimi"
 
-#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:126
+#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:125
 msgid "Artist"
 msgstr "Esittäjä"
 
@@ -1536,7 +1536,7 @@ msgstr "Esittäjä"
 msgid "Year"
 msgstr "Vuosi"
 
-#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:128
+#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:127
 msgid "Album"
 msgstr "Albumi"
 
@@ -1580,340 +1580,349 @@ msgstr "Käytettävissä olevat sarakkeet"
 msgid "Displayed columns"
 msgstr "Näytettävät sarakkeet"
 
-#: src/gtkui/layout.cc:66 src/search-tool/search-tool.cc:40
+#: src/gtkui/layout.cc:72 src/search-tool/search-tool.cc:40
 msgid "Search Tool"
 msgstr "Etsintätyökalu"
 
-#: src/gtkui/layout.cc:161
+#: src/gtkui/layout.cc:167
 msgid "Dock at Left"
 msgstr "Telakoi vasemmalle"
 
-#: src/gtkui/layout.cc:161
+#: src/gtkui/layout.cc:167
 msgid "Dock at Right"
 msgstr "Telakoi oikealle"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Dock at Top"
 msgstr "Telakoi ylhäälle"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Dock at Bottom"
 msgstr "Telakoi alhaalle"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Undock"
 msgstr "Poista telakointi"
 
-#: src/gtkui/layout.cc:162 src/ladspa/plugin.cc:531
+#: src/gtkui/layout.cc:168 src/ladspa/plugin.cc:531
 msgid "Disable"
 msgstr "Poista käytöstä"
 
-#: src/gtkui/menus.cc:124 src/qtui/main_window_actions.cc:91
-#: src/statusicon/statusicon.cc:286
+#: src/gtkui/menus.cc:126 src/qtui/main_window_actions.cc:93
+#: src/statusicon/statusicon.cc:276
 msgid "_Open Files ..."
 msgstr "Avaa tied_ostot..."
 
-#: src/gtkui/menus.cc:125
+#: src/gtkui/menus.cc:127
 msgid "Open _URL ..."
 msgstr "Avaa _URL..."
 
-#: src/gtkui/menus.cc:126 src/qtui/main_window_actions.cc:92
+#: src/gtkui/menus.cc:128 src/qtui/main_window_actions.cc:95
 msgid "_Add Files ..."
 msgstr "_Lisää tiedostoja..."
 
-#: src/gtkui/menus.cc:127
+#: src/gtkui/menus.cc:129
 msgid "Add U_RL ..."
 msgstr "Lisää U_RL..."
 
-#: src/gtkui/menus.cc:129
+#: src/gtkui/menus.cc:131
 msgid "Search _Library"
 msgstr "_Etsi kirjastosta"
 
-#: src/gtkui/menus.cc:131 src/qtui/main_window_actions.cc:94
+#: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:98
 msgid "A_bout ..."
 msgstr "_Tietoja..."
 
-#: src/gtkui/menus.cc:132 src/qtui/main_window_actions.cc:95
+#: src/gtkui/menus.cc:134 src/qtui/main_window_actions.cc:99
 msgid "_Settings ..."
 msgstr "_Asetukset..."
 
-#: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:99
-#: src/statusicon/statusicon.cc:294
+#: src/gtkui/menus.cc:135 src/qtui/main_window_actions.cc:103
+#: src/statusicon/statusicon.cc:284
 msgid "_Quit"
 msgstr "_Sulje"
 
-#: src/gtkui/menus.cc:137 src/gtkui/menus.cc:256
-#: src/qtui/main_window_actions.cc:103 src/search-tool/search-tool.cc:641
-#: src/statusicon/statusicon.cc:288
+#: src/gtkui/menus.cc:139 src/gtkui/menus.cc:262
+#: src/qtui/main_window_actions.cc:107 src/search-tool/search-tool.cc:641
+#: src/statusicon/statusicon.cc:278
 msgid "_Play"
 msgstr "_Toista"
 
-#: src/gtkui/menus.cc:138 src/qtui/main_window_actions.cc:104
-#: src/statusicon/statusicon.cc:289
+#: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:108
+#: src/statusicon/statusicon.cc:279
 msgid "Paus_e"
 msgstr "_Keskeytä"
 
-#: src/gtkui/menus.cc:139 src/qtui/main_window_actions.cc:105
-#: src/statusicon/statusicon.cc:290
+#: src/gtkui/menus.cc:141 src/qtui/main_window_actions.cc:109
+#: src/statusicon/statusicon.cc:280
 msgid "_Stop"
 msgstr "_Pysäytä"
 
-#: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:106
-#: src/statusicon/statusicon.cc:287
+#: src/gtkui/menus.cc:142 src/qtui/main_window_actions.cc:110
+#: src/statusicon/statusicon.cc:277
 msgid "Pre_vious"
 msgstr "_Edellinen"
 
-#: src/gtkui/menus.cc:141 src/qtui/main_window_actions.cc:107
-#: src/statusicon/statusicon.cc:291
+#: src/gtkui/menus.cc:143 src/qtui/main_window_actions.cc:111
+#: src/statusicon/statusicon.cc:281
 msgid "_Next"
 msgstr "_Seuraava"
 
-#: src/gtkui/menus.cc:143 src/qtui/main_window_actions.cc:109
+#: src/gtkui/menus.cc:145 src/qtui/main_window_actions.cc:113
 msgid "_Repeat"
 msgstr "_Kertaus"
 
-#: src/gtkui/menus.cc:144 src/qtui/main_window_actions.cc:110
+#: src/gtkui/menus.cc:146 src/qtui/main_window_actions.cc:114
 msgid "S_huffle"
 msgstr "S_ekoitus"
 
-#: src/gtkui/menus.cc:145 src/qtui/main_window_actions.cc:111
+#: src/gtkui/menus.cc:147 src/qtui/main_window_actions.cc:115
 msgid "N_o Playlist Advance"
 msgstr "Älä _etene soittolistalla"
 
-#: src/gtkui/menus.cc:146 src/qtui/main_window_actions.cc:112
+#: src/gtkui/menus.cc:148 src/qtui/main_window_actions.cc:116
 msgid "Stop A_fter This Song"
 msgstr "_Pysäytä tämän kappaleen jälkeen"
 
-#: src/gtkui/menus.cc:148 src/gtkui/menus.cc:243
-#: src/qtui/main_window_actions.cc:114
+#: src/gtkui/menus.cc:150 src/gtkui/menus.cc:247
+#: src/qtui/main_window_actions.cc:118
 msgid "Song _Info ..."
 msgstr "K_appaleen tiedot..."
 
-#: src/gtkui/menus.cc:149
+#: src/gtkui/menus.cc:151
 msgid "Jump to _Time ..."
 msgstr "Hyppää _aikaan..."
 
-#: src/gtkui/menus.cc:150
+#: src/gtkui/menus.cc:152
 msgid "_Jump to Song ..."
 msgstr "_Hyppää kappaleeseen..."
 
-#: src/gtkui/menus.cc:152
+#: src/gtkui/menus.cc:154
 msgid "Set Repeat Point _A"
 msgstr "Aseta kertauksen alkupiste A"
 
-#: src/gtkui/menus.cc:153
+#: src/gtkui/menus.cc:155
 msgid "Set Repeat Point _B"
 msgstr "Aseta kertauksen loppupiste B"
 
-#: src/gtkui/menus.cc:154
+#: src/gtkui/menus.cc:156
 msgid "_Clear Repeat Points"
 msgstr "_Tyhjennä kertauspisteet"
 
-#: src/gtkui/menus.cc:158 src/gtkui/menus.cc:165 src/gtkui/menus.cc:180
-#: src/qtui/main_window_actions.cc:118 src/qtui/main_window_actions.cc:125
-#: src/qtui/main_window_actions.cc:140
+#: src/gtkui/menus.cc:160 src/gtkui/menus.cc:167 src/gtkui/menus.cc:183
+#: src/qtui/main_window_actions.cc:122 src/qtui/main_window_actions.cc:129
+#: src/qtui/main_window_actions.cc:145
 msgid "By _Title"
 msgstr "_Nimen mukaan"
 
-#: src/gtkui/menus.cc:159 src/qtui/main_window_actions.cc:119
+#: src/gtkui/menus.cc:161 src/qtui/main_window_actions.cc:123
 msgid "By _File Name"
 msgstr ""
 
-#: src/gtkui/menus.cc:160 src/qtui/main_window_actions.cc:120
+#: src/gtkui/menus.cc:162 src/qtui/main_window_actions.cc:124
 msgid "By File _Path"
 msgstr "Tiedosto_polun mukaan"
 
-#: src/gtkui/menus.cc:164 src/gtkui/menus.cc:179
-#: src/qtui/main_window_actions.cc:124 src/qtui/main_window_actions.cc:139
+#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:182
+#: src/qtui/main_window_actions.cc:128 src/qtui/main_window_actions.cc:144
 msgid "By Track _Number"
 msgstr "Ka_ppalenumeron mukaan"
 
-#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:181
-#: src/qtui/main_window_actions.cc:126 src/qtui/main_window_actions.cc:141
+#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:184
+#: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:146
 msgid "By _Artist"
 msgstr "_Esittäjän mukaan"
 
-#: src/gtkui/menus.cc:167 src/gtkui/menus.cc:182
-#: src/qtui/main_window_actions.cc:127 src/qtui/main_window_actions.cc:142
+#: src/gtkui/menus.cc:169 src/gtkui/menus.cc:185
+#: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:147
 msgid "By Al_bum"
 msgstr "Al_bumin mukaan"
 
-#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:183
-#: src/qtui/main_window_actions.cc:128 src/qtui/main_window_actions.cc:143
+#: src/gtkui/menus.cc:170 src/gtkui/menus.cc:186
+#: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:148
 msgid "By Albu_m Artist"
 msgstr ""
 
-#: src/gtkui/menus.cc:169 src/gtkui/menus.cc:184
-#: src/qtui/main_window_actions.cc:129 src/qtui/main_window_actions.cc:144
+#: src/gtkui/menus.cc:171 src/gtkui/menus.cc:187
+#: src/qtui/main_window_actions.cc:133 src/qtui/main_window_actions.cc:149
 msgid "By Release _Date"
 msgstr "_Julkaisupäivämäärän mukaan"
 
-#: src/gtkui/menus.cc:170 src/gtkui/menus.cc:185
-#: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:145
+#: src/gtkui/menus.cc:172 src/gtkui/menus.cc:188
+#: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:150
+msgid "By _Genre"
+msgstr ""
+
+#: src/gtkui/menus.cc:173 src/gtkui/menus.cc:189
+#: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:151
 msgid "By _Length"
 msgstr "_Keston mukaan"
 
-#: src/gtkui/menus.cc:171 src/gtkui/menus.cc:186
-#: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:146
+#: src/gtkui/menus.cc:174 src/gtkui/menus.cc:190
+#: src/qtui/main_window_actions.cc:136 src/qtui/main_window_actions.cc:152
 msgid "By _File Path"
 msgstr "_Tiedostopolun mukaan"
 
-#: src/gtkui/menus.cc:172 src/gtkui/menus.cc:187
-#: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:147
+#: src/gtkui/menus.cc:175 src/gtkui/menus.cc:191
+#: src/qtui/main_window_actions.cc:137 src/qtui/main_window_actions.cc:153
 msgid "By _Custom Title"
 msgstr "_Mukautetun nimen mukaan"
 
-#: src/gtkui/menus.cc:174 src/gtkui/menus.cc:189
-#: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:149
+#: src/gtkui/menus.cc:177 src/gtkui/menus.cc:193
+#: src/qtui/main_window_actions.cc:139 src/qtui/main_window_actions.cc:155
 msgid "R_everse Order"
 msgstr "_Käänteinen järjestys"
 
-#: src/gtkui/menus.cc:175 src/gtkui/menus.cc:190
-#: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:150
+#: src/gtkui/menus.cc:178 src/gtkui/menus.cc:194
+#: src/qtui/main_window_actions.cc:140 src/qtui/main_window_actions.cc:156
 msgid "_Random Order"
 msgstr "_Satunnainen järjestys"
 
-#: src/gtkui/menus.cc:194 src/qtui/main_window_actions.cc:154
-msgid "_Play This Playlist"
-msgstr "_Toista tämä soittolista"
+#: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:160
+msgid "_Play/Resume"
+msgstr "_Toista/jatka"
 
-#: src/gtkui/menus.cc:195 src/gtkui/menus.cc:245
-#: src/qtui/main_window_actions.cc:155
+#: src/gtkui/menus.cc:199 src/gtkui/menus.cc:251
+#: src/qtui/main_window_actions.cc:161
 msgid "_Refresh"
 msgstr "_Päivitä"
 
-#: src/gtkui/menus.cc:197 src/qtui/main_window_actions.cc:157
+#: src/gtkui/menus.cc:201 src/qtui/main_window_actions.cc:163
 msgid "_Sort"
 msgstr "_Lajittele"
 
-#: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:158
+#: src/gtkui/menus.cc:202 src/qtui/main_window_actions.cc:164
 msgid "Sort Se_lected"
 msgstr "Järjestä _valitut"
 
-#: src/gtkui/menus.cc:199 src/qtui/main_window_actions.cc:159
+#: src/gtkui/menus.cc:203 src/qtui/main_window_actions.cc:165
 msgid "Remove _Duplicates"
 msgstr "Poista _kopiot"
 
-#: src/gtkui/menus.cc:200 src/qtui/main_window_actions.cc:160
+#: src/gtkui/menus.cc:204 src/qtui/main_window_actions.cc:166
 msgid "Remove _Unavailable Files"
 msgstr "Poista _ei saatavilla olevat tiedostot"
 
-#: src/gtkui/menus.cc:202 src/playlist-manager/playlist-manager.cc:244
-#: src/qtui/main_window_actions.cc:162
+#: src/gtkui/menus.cc:206 src/playlist-manager/playlist-manager.cc:244
+#: src/qtui/main_window_actions.cc:168
 msgid "_New"
 msgstr "_Uusi"
 
-#: src/gtkui/menus.cc:203 src/qtui/main_window_actions.cc:163
+#: src/gtkui/menus.cc:207
 msgid "Ren_ame ..."
 msgstr "Nimeä _uudelleen..."
 
-#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:258
-#: src/qtui/main_window_actions.cc:164
+#: src/gtkui/menus.cc:208 src/gtkui/menus.cc:264
+#: src/qtui/main_window_actions.cc:170
 msgid "Remo_ve"
 msgstr "_Poista"
 
-#: src/gtkui/menus.cc:206 src/qtui/main_window_actions.cc:166
+#: src/gtkui/menus.cc:210
 msgid "_Import ..."
 msgstr "_Tuo..."
 
-#: src/gtkui/menus.cc:207 src/qtui/main_window_actions.cc:167
+#: src/gtkui/menus.cc:211
 msgid "_Export ..."
 msgstr "_Vie..."
 
-#: src/gtkui/menus.cc:209 src/qtui/main_window_actions.cc:169
+#: src/gtkui/menus.cc:213
 msgid "Playlist _Manager ..."
 msgstr "Soittolistojen _hallinta..."
 
-#: src/gtkui/menus.cc:210 src/qtui/main_window_actions.cc:170
+#: src/gtkui/menus.cc:214 src/qtui/main_window_actions.cc:176
 msgid "_Queue Manager ..."
 msgstr "_Jonomanageri..."
 
-#: src/gtkui/menus.cc:214 src/qtui/main_window_actions.cc:174
+#: src/gtkui/menus.cc:218 src/qtui/main_window_actions.cc:180
 msgid "Volume _Up"
 msgstr "_Nosta äänenvoimakkuutta"
 
-#: src/gtkui/menus.cc:215 src/qtui/main_window_actions.cc:175
+#: src/gtkui/menus.cc:219 src/qtui/main_window_actions.cc:181
 msgid "Volume _Down"
 msgstr "_Laske äänenvoimakkuutta"
 
-#: src/gtkui/menus.cc:217 src/qtui/main_window_actions.cc:177
+#: src/gtkui/menus.cc:221 src/qtui/main_window_actions.cc:183
 msgid "_Equalizer"
 msgstr "_Taajuuskorjain"
 
-#: src/gtkui/menus.cc:219 src/qtui/main_window_actions.cc:179
+#: src/gtkui/menus.cc:223 src/qtui/main_window_actions.cc:185
 msgid "E_ffects ..."
 msgstr "_Tehosteet..."
 
-#: src/gtkui/menus.cc:223
+#: src/gtkui/menus.cc:227
 msgid "Show _Menu Bar"
 msgstr "Näytä _valikkopalkki"
 
-#: src/gtkui/menus.cc:224
+#: src/gtkui/menus.cc:228
 msgid "Show I_nfo Bar"
 msgstr "Näytä _tietopalkki"
 
-#: src/gtkui/menus.cc:225
+#: src/gtkui/menus.cc:229
 msgid "Show Info Bar Vis_ualization"
 msgstr "Näytä tietopalkin vis_ualisaatio"
 
-#: src/gtkui/menus.cc:226
+#: src/gtkui/menus.cc:230
 msgid "Show _Status Bar"
 msgstr "Näytä tila_rivi"
 
-#: src/gtkui/menus.cc:228
+#: src/gtkui/menus.cc:232
 msgid "Show _Remaining Time"
 msgstr "Näytä _jäljellä oleva aika"
 
-#: src/gtkui/menus.cc:230
+#: src/gtkui/menus.cc:234
 msgid "_Visualizations ..."
 msgstr "_Visualisoinnit..."
 
-#: src/gtkui/menus.cc:234 src/qtui/main_window_actions.cc:183
+#: src/gtkui/menus.cc:238 src/qtui/main_window_actions.cc:189
 msgid "_File"
 msgstr "_Tiedosto"
 
-#: src/gtkui/menus.cc:235 src/qtui/main_window_actions.cc:184
+#: src/gtkui/menus.cc:239 src/qtui/main_window_actions.cc:190
 msgid "_Playback"
 msgstr "T_oisto"
 
-#: src/gtkui/menus.cc:236 src/qtui/main_window_actions.cc:185
+#: src/gtkui/menus.cc:240 src/qtui/main_window_actions.cc:191
 msgid "P_laylist"
 msgstr "_Soittolista"
 
-#: src/gtkui/menus.cc:237 src/gtkui/menus.cc:252
-#: src/qtui/main_window_actions.cc:186
+#: src/gtkui/menus.cc:241 src/gtkui/menus.cc:258
+#: src/qtui/main_window_actions.cc:192
 msgid "_Services"
 msgstr "_Palvelut"
 
-#: src/gtkui/menus.cc:238 src/qtui/main_window_actions.cc:187
+#: src/gtkui/menus.cc:242 src/qtui/main_window_actions.cc:193
 msgid "_Output"
 msgstr "_Ääni"
 
-#: src/gtkui/menus.cc:239
+#: src/gtkui/menus.cc:243
 msgid "_View"
 msgstr "_Näkymä"
 
-#: src/gtkui/menus.cc:244
+#: src/gtkui/menus.cc:248
 msgid "_Queue/Unqueue"
 msgstr "_Lisää jonoon/Poista jonosta"
 
-#: src/gtkui/menus.cc:247
+#: src/gtkui/menus.cc:250
+msgid "_Open Containing Folder"
+msgstr "_Avaa sisältävä kansio"
+
+#: src/gtkui/menus.cc:253
 msgid "Cu_t"
 msgstr "L_eikkaa"
 
-#: src/gtkui/menus.cc:248
+#: src/gtkui/menus.cc:254
 msgid "_Copy"
 msgstr "_Kopioi"
 
-#: src/gtkui/menus.cc:249
+#: src/gtkui/menus.cc:255
 msgid "_Paste"
 msgstr "_Liitä"
 
-#: src/gtkui/menus.cc:250
+#: src/gtkui/menus.cc:256
 msgid "Select _All"
 msgstr "Valitse _kaikki"
 
-#: src/gtkui/menus.cc:257
+#: src/gtkui/menus.cc:263
 msgid "_Rename ..."
 msgstr "_Nimeä uudelleen..."
 
@@ -1958,44 +1967,57 @@ msgstr "Vieritä kappaleen vaihtuessa"
 msgid "GTK Interface"
 msgstr "GTK-käyttöliittymä"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:236
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:230
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:225 src/qtui/main_window.cc:180
+#: src/gtkui/ui_gtk.cc:225 src/qtui/main_window.cc:186
 msgid "Buffering ..."
 msgstr "Puskuroidaan..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:238 src/skins/ui_main.cc:1168
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:232 src/skins/ui_main.cc:1162
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_statusbar.cc:69 src/qtui/status_bar.cc:67
+#: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:67
 msgid "mono"
 msgstr "mono"
 
-#: src/gtkui/ui_statusbar.cc:71 src/qtui/status_bar.cc:69
+#: src/gtkui/ui_statusbar.cc:65 src/qtui/status_bar.cc:69
 msgid "stereo"
 msgstr "stereo"
 
-#: src/gtkui/ui_statusbar.cc:73 src/qtui/status_bar.cc:71
+#: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:71
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
 msgstr[0] "%d kanava"
 msgstr[1] "%d kanavaa"
 
-#: src/gtkui/ui_statusbar.cc:88 src/qtui/status_bar.cc:85
+#: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:85
 #, c-format
 msgid "%d kbps"
 msgstr "%d kbps"
+
+#: src/gtkui/ui_statusbar.cc:107 src/skins/ui_main_evlisteners.cc:103
+msgid "Single mode."
+msgstr "Yksittäinen -tila."
+
+#: src/gtkui/ui_statusbar.cc:109 src/skins/ui_main_evlisteners.cc:105
+msgid "Playlist mode."
+msgstr "Soittolista -tila."
+
+#: src/gtkui/ui_statusbar.cc:117 src/skins/ui_main_evlisteners.cc:111
+msgid "Stopping after song."
+msgstr "Pysäytä kappaleen jälkeen."
 
 #: src/hotkey/gui.cc:71
 msgid "Previous track"
 msgstr "Edellinen raita"
 
-#: src/hotkey/gui.cc:72 src/notify/osd.cc:69 src/qtui/main_window.cc:67
+#: src/hotkey/gui.cc:72 src/notify/osd.cc:69 src/qtui/main_window.cc:69
+#: src/qtui/main_window.cc:172 src/qtui/main_window.cc:173
 #: src/skins/menus.cc:87
 msgid "Play"
 msgstr "Toista"
@@ -2004,7 +2026,7 @@ msgstr "Toista"
 msgid "Pause/Resume"
 msgstr "Keskeytä/Jatka"
 
-#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:68 src/skins/menus.cc:89
+#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:70 src/skins/menus.cc:89
 msgid "Stop"
 msgstr "Pysäytä"
 
@@ -2304,7 +2326,7 @@ msgstr "Yhdistetään lyrics.wikia.com..."
 
 #: src/lyricwiki-qt/lyricwiki.cc:55
 msgid "LyricWiki Plugin (Qt)"
-msgstr ""
+msgstr "LyricWiki-liitännäinen (Qt)"
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
@@ -2473,7 +2495,7 @@ msgstr "Jos haluat kerrata ikuisesti, aseta kertojen määräksi -1."
 
 #: src/modplug/plugin_main.cc:125 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
-msgstr ""
+msgstr "Nämä asetukset tulevat voimaan, kun Audacious käynnistetään uudelleen."
 
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
@@ -2573,17 +2595,18 @@ msgstr "Näytä ilmoitukset aina"
 
 #: src/notify/notify.cc:114
 msgid "Include album name in notification"
-msgstr "Sisällytä levyn nimi ilmoitukseen"
+msgstr "Sisällytä albumin nimi ilmoitukseen"
 
 #: src/notify/osd.cc:58
 msgid "Show"
 msgstr "Näytä"
 
-#: src/notify/osd.cc:66 src/skins/menus.cc:88
+#: src/notify/osd.cc:66 src/qtui/main_window.cc:178
+#: src/qtui/main_window.cc:179 src/skins/menus.cc:88
 msgid "Pause"
 msgstr "Keskeytä"
 
-#: src/notify/osd.cc:73 src/qtui/main_window.cc:70 src/skins/menus.cc:91
+#: src/notify/osd.cc:73 src/qtui/main_window.cc:72 src/skins/menus.cc:91
 msgid "Next"
 msgstr "Seuraava"
 
@@ -2714,11 +2737,19 @@ msgstr ""
 msgid "Working ..."
 msgstr ""
 
-#: src/qtui/filter_input.cc:45 src/skins/ui_playlist.cc:221
+#: src/qtui/filter_input.cc:44 src/skins/ui_playlist.cc:221
 msgid "Search"
 msgstr "Etsi"
 
-#: src/qtui/main_window_actions.cc:97
+#: src/qtui/main_window_actions.cc:94
+msgid "_Open Folder ..."
+msgstr "_Avaa kansio..."
+
+#: src/qtui/main_window_actions.cc:96
+msgid "_Add Folder ..."
+msgstr "_Lisää kansio..."
+
+#: src/qtui/main_window_actions.cc:101
 msgid "_Log Inspector ..."
 msgstr ""
 
@@ -2726,23 +2757,23 @@ msgstr ""
 msgid "Open Files"
 msgstr "Avaa tiedostoja"
 
-#: src/qtui/main_window.cc:65
+#: src/qtui/main_window.cc:66
 msgid "Add Files"
 msgstr "Lisää tiedostoja"
 
-#: src/qtui/main_window.cc:69 src/skins/menus.cc:90
+#: src/qtui/main_window.cc:71 src/skins/menus.cc:90
 msgid "Previous"
 msgstr "Edellinen"
 
-#: src/qtui/main_window.cc:75 src/skins/menus.cc:82
+#: src/qtui/main_window.cc:77 src/skins/menus.cc:82
 msgid "Repeat"
 msgstr "Kertaus"
 
-#: src/qtui/main_window.cc:77 src/skins/menus.cc:83
+#: src/qtui/main_window.cc:79 src/skins/menus.cc:83
 msgid "Shuffle"
 msgstr "Sekoitus"
 
-#: src/qtui/qtui.cc:39
+#: src/qtui/qtui.cc:42
 msgid "Qt Interface"
 msgstr "Qt-käyttöliittymä"
 
@@ -3015,7 +3046,7 @@ msgstr ""
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
-msgstr ""
+msgstr "Kanavat:"
 
 #: src/sid/xs_config.cc:68
 msgid "<b>Emulation</b>"
@@ -3120,7 +3151,7 @@ msgid "View"
 msgstr "Näkymä"
 
 #: src/skins/menus.cc:72 src/skins/menus.cc:136 src/skins/menus.cc:149
-#: src/skins/menus.cc:208
+#: src/skins/menus.cc:214
 msgid "Services"
 msgstr "Palvelut"
 
@@ -3136,7 +3167,7 @@ msgstr "Asetukset..."
 msgid "Quit"
 msgstr "Lopeta"
 
-#: src/skins/menus.cc:80 src/skins/menus.cc:200
+#: src/skins/menus.cc:80 src/skins/menus.cc:206
 msgid "Song Info ..."
 msgstr "Kappaleen tiedot..."
 
@@ -3165,8 +3196,8 @@ msgid "Jump to Time ..."
 msgstr "Siirry kohtaan..."
 
 #: src/skins/menus.cc:101
-msgid "Play This Playlist"
-msgstr "Toista tämä soittolista"
+msgid "Play/Resume"
+msgstr ""
 
 #: src/skins/menus.cc:103
 msgid "New Playlist"
@@ -3240,7 +3271,7 @@ msgstr ""
 msgid "Roll Up Equalizer"
 msgstr ""
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:858
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:852
 msgid "Double Size"
 msgstr ""
 
@@ -3252,15 +3283,15 @@ msgstr "Lisää URL..."
 msgid "Add Files ..."
 msgstr "Lisää tiedostoja..."
 
-#: src/skins/menus.cc:143 src/skins/menus.cc:170 src/skins/menus.cc:181
+#: src/skins/menus.cc:143 src/skins/menus.cc:171 src/skins/menus.cc:185
 msgid "By Title"
 msgstr "Nimen mukaan"
 
-#: src/skins/menus.cc:144 src/skins/menus.cc:174 src/skins/menus.cc:185
+#: src/skins/menus.cc:144 src/skins/menus.cc:178 src/skins/menus.cc:192
 msgid "By File Name"
 msgstr ""
 
-#: src/skins/menus.cc:145 src/skins/menus.cc:175 src/skins/menus.cc:186
+#: src/skins/menus.cc:145 src/skins/menus.cc:179 src/skins/menus.cc:193
 msgid "By File Path"
 msgstr ""
 
@@ -3304,111 +3335,123 @@ msgstr "Ei mitään"
 msgid "Select All"
 msgstr "Valitse kaikki"
 
-#: src/skins/menus.cc:171 src/skins/menus.cc:182
-msgid "By Album"
-msgstr "Albumin mukaan"
-
-#: src/skins/menus.cc:172 src/skins/menus.cc:183
-msgid "By Artist"
-msgstr "Esittäjän mukaan"
-
-#: src/skins/menus.cc:173 src/skins/menus.cc:184
-msgid "By Album Artist"
-msgstr ""
-
-#: src/skins/menus.cc:176 src/skins/menus.cc:187
-msgid "By Release Date"
-msgstr ""
-
-#: src/skins/menus.cc:177 src/skins/menus.cc:188
+#: src/skins/menus.cc:170 src/skins/menus.cc:184
 msgid "By Track Number"
 msgstr "Raidan mukaan"
 
-#: src/skins/menus.cc:192
+#: src/skins/menus.cc:172 src/skins/menus.cc:186
+msgid "By Artist"
+msgstr "Esittäjän mukaan"
+
+#: src/skins/menus.cc:173 src/skins/menus.cc:187
+msgid "By Album"
+msgstr "Albumin mukaan"
+
+#: src/skins/menus.cc:174 src/skins/menus.cc:188
+msgid "By Album Artist"
+msgstr ""
+
+#: src/skins/menus.cc:175 src/skins/menus.cc:190
+msgid "By Release Date"
+msgstr ""
+
+#: src/skins/menus.cc:176 src/skins/menus.cc:189
+msgid "By Genre"
+msgstr ""
+
+#: src/skins/menus.cc:177 src/skins/menus.cc:191
+msgid "By Length"
+msgstr ""
+
+#: src/skins/menus.cc:180 src/skins/menus.cc:194
+msgid "By Custom Title"
+msgstr ""
+
+#: src/skins/menus.cc:198
 msgid "Randomize List"
 msgstr "Sekoita lista"
 
-#: src/skins/menus.cc:193
+#: src/skins/menus.cc:199
 msgid "Reverse List"
 msgstr "Käännä lista"
 
-#: src/skins/menus.cc:195
+#: src/skins/menus.cc:201
 msgid "Sort Selected"
 msgstr "Järjestä valitut"
 
-#: src/skins/menus.cc:196
+#: src/skins/menus.cc:202
 msgid "Sort List"
 msgstr "Lajittele lista"
 
-#: src/skins/menus.cc:202
+#: src/skins/menus.cc:208
 msgid "Cut"
 msgstr "Leikkaa"
 
-#: src/skins/menus.cc:203
+#: src/skins/menus.cc:209
 msgid "Copy"
 msgstr "Kopioi"
 
-#: src/skins/menus.cc:204
+#: src/skins/menus.cc:210
 msgid "Paste"
 msgstr "Liitä"
 
-#: src/skins/menus.cc:206
+#: src/skins/menus.cc:212
 msgid "Queue/Unqueue"
 msgstr ""
 
-#: src/skins/menus.cc:212
+#: src/skins/menus.cc:218
 msgid "Load Preset ..."
 msgstr "Lataa esiasetus..."
 
-#: src/skins/menus.cc:213
+#: src/skins/menus.cc:219
 msgid "Load Auto Preset ..."
 msgstr ""
 
-#: src/skins/menus.cc:214
+#: src/skins/menus.cc:220
 msgid "Load Default"
 msgstr "Lataa oletus"
 
-#: src/skins/menus.cc:215
+#: src/skins/menus.cc:221
 msgid "Load Preset File ..."
 msgstr "Lataa esiasetustiedosto..."
 
-#: src/skins/menus.cc:216
+#: src/skins/menus.cc:222
 msgid "Load EQF File ..."
 msgstr "Lataa EQF-tiedosto..."
 
-#: src/skins/menus.cc:218
+#: src/skins/menus.cc:224
 msgid "Save Preset ..."
 msgstr "Tallenna esiasetus..."
 
-#: src/skins/menus.cc:219
+#: src/skins/menus.cc:225
 msgid "Save Auto Preset ..."
 msgstr ""
 
-#: src/skins/menus.cc:220
+#: src/skins/menus.cc:226
 msgid "Save Default"
 msgstr "Tallenna oletus"
 
-#: src/skins/menus.cc:221
+#: src/skins/menus.cc:227
 msgid "Save Preset File ..."
 msgstr "Tallenna esiasetustiedosto..."
 
-#: src/skins/menus.cc:222
+#: src/skins/menus.cc:228
 msgid "Save EQF File ..."
 msgstr "Tallenna EQF-tiedosto..."
 
-#: src/skins/menus.cc:224
+#: src/skins/menus.cc:230
 msgid "Delete Preset ..."
 msgstr "Poista esiasetus..."
 
-#: src/skins/menus.cc:225
+#: src/skins/menus.cc:231
 msgid "Delete Auto Preset ..."
 msgstr ""
 
-#: src/skins/menus.cc:227
+#: src/skins/menus.cc:233
 msgid "Import Winamp Presets ..."
 msgstr "Tuo Winamp-esiasetukset..."
 
-#: src/skins/menus.cc:229
+#: src/skins/menus.cc:235
 msgid "Reset to Zero"
 msgstr ""
 
@@ -3639,121 +3682,109 @@ msgstr "Yleiset"
 msgid "Visualization"
 msgstr "Visualisaatio"
 
-#: src/skins/ui_equalizer.cc:288
+#: src/skins/ui_equalizer.cc:282
 msgid "Preamp"
 msgstr "Esivahvistus"
 
-#: src/skins/ui_equalizer.cc:292
+#: src/skins/ui_equalizer.cc:286
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.cc:336
+#: src/skins/ui_equalizer.cc:330
 msgid "Audacious Equalizer"
 msgstr "Audaciouksen taajuuskorjain"
 
-#: src/skins/ui_main.cc:692
+#: src/skins/ui_main.cc:686
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Siirry kohtaan %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:713
+#: src/skins/ui_main.cc:707
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Äänenvoimakkuus: %d%%"
 
-#: src/skins/ui_main.cc:736
+#: src/skins/ui_main.cc:730
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Tasapaino: %d%% vasen"
 
-#: src/skins/ui_main.cc:738
+#: src/skins/ui_main.cc:732
 msgid "Balance: center"
 msgstr "Tasapaino: keskellä"
 
-#: src/skins/ui_main.cc:740
+#: src/skins/ui_main.cc:734
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Tasapaino: %d%% oikea"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:840
 msgid "Options Menu"
 msgstr "Asetusvalikko"
 
-#: src/skins/ui_main.cc:850
+#: src/skins/ui_main.cc:844
 msgid "Disable 'Always On Top'"
 msgstr "Poista käytöstä 'Aina päällimmäisenä'"
 
-#: src/skins/ui_main.cc:852
+#: src/skins/ui_main.cc:846
 msgid "Enable 'Always On Top'"
 msgstr "Käytä 'Aina päällimmäisenä'"
 
-#: src/skins/ui_main.cc:855
+#: src/skins/ui_main.cc:849
 msgid "File Info Box"
 msgstr "Tiedoston tietolaatikko"
 
-#: src/skins/ui_main.cc:861
+#: src/skins/ui_main.cc:855
 msgid "Visualizations"
 msgstr ""
 
-#: src/skins/ui_main.cc:1325
+#: src/skins/ui_main.cc:1319
 msgid "Repeat point A set."
 msgstr "Kertauksen alkupiste A asetettu."
 
-#: src/skins/ui_main.cc:1330
+#: src/skins/ui_main.cc:1324
 msgid "Repeat point B set."
 msgstr "Kertauksen loppupiste B asetettu."
 
-#: src/skins/ui_main.cc:1339
+#: src/skins/ui_main.cc:1333
 msgid "Repeat points cleared."
 msgstr "Kertauspisteet tyhjennetty."
-
-#: src/skins/ui_main_evlisteners.cc:103
-msgid "Single mode."
-msgstr "Yksittäinen -tila."
-
-#: src/skins/ui_main_evlisteners.cc:105
-msgid "Playlist mode."
-msgstr "Soittolista -tila."
-
-#: src/skins/ui_main_evlisteners.cc:111
-msgid "Stopping after song."
-msgstr "Pysäytä kappaleen jälkeen."
 
 #: src/skins/ui_playlist.cc:219
 msgid "Search entries in active playlist"
@@ -3777,7 +3808,7 @@ msgstr ""
 
 #: src/skins/ui_playlist.cc:241
 msgid "Album:"
-msgstr ""
+msgstr "Albumi:"
 
 #: src/skins/ui_playlist.cc:248
 msgid "Artist:"
@@ -3785,7 +3816,7 @@ msgstr "Esittäjä:"
 
 #: src/skins/ui_playlist.cc:255
 msgid "File Name:"
-msgstr ""
+msgstr "Tiedostonimi:"
 
 #: src/skins/ui_playlist.cc:263
 msgid "Clear previous selection before searching"
@@ -3871,7 +3902,7 @@ msgstr ""
 
 #: src/sndio-ng/sndio.cc:98
 msgid "Device (blank for default):"
-msgstr ""
+msgstr "Laite (tyhjä oletusta varten):"
 
 #: src/sndio-ng/sndio.cc:100
 msgid "Save and restore volume:"
@@ -3880,19 +3911,19 @@ msgstr ""
 #: src/sndio-ng/sndio.cc:181
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
-msgstr ""
+msgstr "Sndio-virhe: äänimuoto ei ole tuettu (%d)"
 
 #: src/sndio-ng/sndio.cc:192
 msgid "Sndio error: sio_open() failed"
-msgstr ""
+msgstr "Sndio-virhe: sio_open() epäonnistui"
 
 #: src/sndio-ng/sndio.cc:222
 msgid "Sndio error: sio_setpar() failed"
-msgstr ""
+msgstr "Sndio-virhe: sio_setpar() epäonnistui"
 
 #: src/sndio-ng/sndio.cc:234
 msgid "Sndio error: sio_start() failed"
-msgstr ""
+msgstr "Sndio-virhe: sio_start() epäonnistui"
 
 #: src/song_change/song_change.cc:33
 msgid "Song Change"
@@ -3926,6 +3957,8 @@ msgstr "Soittolistan päättyessä suoritettava komento:"
 #: src/song_change/song_change.cc:372
 msgid "Command to run when song title changes (for network streams):"
 msgstr ""
+"Suoritettava komento, kun kappaleen nimi muuttuu (verkon suoratoistoja "
+"varten):"
 
 #: src/song_change/song_change.cc:376
 msgid ""
@@ -3946,8 +3979,8 @@ msgid ""
 msgstr ""
 
 #: src/song-info-qt/song-info.cc:32
-msgid "Track Information"
-msgstr "Kappaletiedot"
+msgid "Song Info (Qt)"
+msgstr "Kappaletiedot (Qt)"
 
 #: src/sox-resampler/sox-resampler.cc:44
 msgid "SoX Resampler"
@@ -4003,15 +4036,15 @@ msgstr "Nopeus:"
 msgid "Pitch:"
 msgstr "Sävelkorkeus:"
 
-#: src/statusicon/statusicon.cc:50
+#: src/statusicon/statusicon.cc:47
 msgid "Status Icon"
 msgstr "Tilaikoni"
 
-#: src/statusicon/statusicon.cc:293
+#: src/statusicon/statusicon.cc:283
 msgid "Se_ttings ..."
 msgstr "Ase_tukset..."
 
-#: src/statusicon/statusicon.cc:394
+#: src/statusicon/statusicon.cc:372
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -4028,31 +4061,31 @@ msgstr ""
 "\n"
 "Tämä liitännäinen tarjoaa järjestelmäpalkkiin sijoitettavan ikonin."
 
-#: src/statusicon/statusicon.cc:401
+#: src/statusicon/statusicon.cc:379
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Hiiren rullan vieritystoiminto</b>"
 
-#: src/statusicon/statusicon.cc:402
+#: src/statusicon/statusicon.cc:380
 msgid "Change volume"
 msgstr "Muuta äänenvoimakkuutta"
 
-#: src/statusicon/statusicon.cc:405
+#: src/statusicon/statusicon.cc:383
 msgid "Change playing song"
 msgstr "Vaihda kappaletta"
 
-#: src/statusicon/statusicon.cc:408
+#: src/statusicon/statusicon.cc:386
 msgid "<b>Other Settings</b>"
 msgstr "<b>Muut asetukset</b>"
 
-#: src/statusicon/statusicon.cc:409
+#: src/statusicon/statusicon.cc:387
 msgid "Disable the popup window"
 msgstr "Poista ponnahdusikkuna käytöstä"
 
-#: src/statusicon/statusicon.cc:411
+#: src/statusicon/statusicon.cc:389
 msgid "Close to the system tray"
 msgstr "Sulje järjestelmäpalkkiin"
 
-#: src/statusicon/statusicon.cc:413
+#: src/statusicon/statusicon.cc:391
 msgid "Advance in playlist when scrolling upward"
 msgstr "Etene soittolistassa kun vieritetään ylöspäin"
 
