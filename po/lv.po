@@ -7,10 +7,10 @@
 # hairy_latvian <einars8@gmail.com>, 2009,2011-2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-12-04 18:18+0100\n"
-"PO-Revision-Date: 2014-12-01 19:59+0000\n"
+"POT-Creation-Date: 2015-01-24 13:17+0100\n"
+"PO-Revision-Date: 2015-01-17 22:08+0000\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: Latvian (http://www.transifex.com/projects/p/audacious/"
 "language/lv/)\n"
@@ -343,7 +343,7 @@ msgstr "Miksera elements:"
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (MIDI atskaņotājs)"
 
-#: src/amidi-plug/amidi-plug.cc:436
+#: src/amidi-plug/amidi-plug.cc:437
 msgid ""
 "AMIDI-Plug\n"
 "modular MIDI music player\n"
@@ -1581,11 +1581,11 @@ msgid "Entry number"
 msgstr "Ieraksta numurs"
 
 #: src/gtkui/columns.cc:36 src/playlist-manager/playlist-manager.cc:225
-#: src/qtui/playlist_model.cc:124
+#: src/qtui/playlist_model.cc:123
 msgid "Title"
 msgstr "Nosaukums"
 
-#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:126
+#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:125
 msgid "Artist"
 msgstr "Izpildītājs"
 
@@ -1593,7 +1593,7 @@ msgstr "Izpildītājs"
 msgid "Year"
 msgstr "Gads"
 
-#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:128
+#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:127
 msgid "Album"
 msgstr "Albums"
 
@@ -1637,340 +1637,349 @@ msgstr "Pieejamās kolonnas"
 msgid "Displayed columns"
 msgstr "Parādītās kolonnas"
 
-#: src/gtkui/layout.cc:66 src/search-tool/search-tool.cc:40
+#: src/gtkui/layout.cc:72 src/search-tool/search-tool.cc:40
 msgid "Search Tool"
 msgstr "Meklēšanas rīks"
 
-#: src/gtkui/layout.cc:161
+#: src/gtkui/layout.cc:167
 msgid "Dock at Left"
 msgstr "Pietauvot pa kreisi"
 
-#: src/gtkui/layout.cc:161
+#: src/gtkui/layout.cc:167
 msgid "Dock at Right"
 msgstr "Pietauvot pa labi"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Dock at Top"
 msgstr "Pietauvot augšā"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Dock at Bottom"
 msgstr "Pietauvot apakšā"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Undock"
 msgstr "Attauvot"
 
-#: src/gtkui/layout.cc:162 src/ladspa/plugin.cc:531
+#: src/gtkui/layout.cc:168 src/ladspa/plugin.cc:531
 msgid "Disable"
 msgstr "Atslēgt"
 
-#: src/gtkui/menus.cc:124 src/qtui/main_window_actions.cc:91
-#: src/statusicon/statusicon.cc:286
+#: src/gtkui/menus.cc:126 src/qtui/main_window_actions.cc:93
+#: src/statusicon/statusicon.cc:276
 msgid "_Open Files ..."
 msgstr "Atvērt _failus ..."
 
-#: src/gtkui/menus.cc:125
+#: src/gtkui/menus.cc:127
 msgid "Open _URL ..."
 msgstr "Atvērt _URL ..."
 
-#: src/gtkui/menus.cc:126 src/qtui/main_window_actions.cc:92
+#: src/gtkui/menus.cc:128 src/qtui/main_window_actions.cc:95
 msgid "_Add Files ..."
 msgstr "Pievienot f_ailus ..."
 
-#: src/gtkui/menus.cc:127
+#: src/gtkui/menus.cc:129
 msgid "Add U_RL ..."
 msgstr "Pievienot U_RL ..."
 
-#: src/gtkui/menus.cc:129
+#: src/gtkui/menus.cc:131
 msgid "Search _Library"
 msgstr "Meklēt _bibliotēkā"
 
-#: src/gtkui/menus.cc:131 src/qtui/main_window_actions.cc:94
+#: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:98
 msgid "A_bout ..."
 msgstr "_Par ..."
 
-#: src/gtkui/menus.cc:132 src/qtui/main_window_actions.cc:95
+#: src/gtkui/menus.cc:134 src/qtui/main_window_actions.cc:99
 msgid "_Settings ..."
 msgstr "I_estatījumi ..."
 
-#: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:99
-#: src/statusicon/statusicon.cc:294
+#: src/gtkui/menus.cc:135 src/qtui/main_window_actions.cc:103
+#: src/statusicon/statusicon.cc:284
 msgid "_Quit"
 msgstr "I_ziet"
 
-#: src/gtkui/menus.cc:137 src/gtkui/menus.cc:256
-#: src/qtui/main_window_actions.cc:103 src/search-tool/search-tool.cc:641
-#: src/statusicon/statusicon.cc:288
+#: src/gtkui/menus.cc:139 src/gtkui/menus.cc:262
+#: src/qtui/main_window_actions.cc:107 src/search-tool/search-tool.cc:641
+#: src/statusicon/statusicon.cc:278
 msgid "_Play"
 msgstr "A_tskaņot"
 
-#: src/gtkui/menus.cc:138 src/qtui/main_window_actions.cc:104
-#: src/statusicon/statusicon.cc:289
+#: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:108
+#: src/statusicon/statusicon.cc:279
 msgid "Paus_e"
 msgstr "Pauz_e"
 
-#: src/gtkui/menus.cc:139 src/qtui/main_window_actions.cc:105
-#: src/statusicon/statusicon.cc:290
+#: src/gtkui/menus.cc:141 src/qtui/main_window_actions.cc:109
+#: src/statusicon/statusicon.cc:280
 msgid "_Stop"
 msgstr "_Stop"
 
-#: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:106
-#: src/statusicon/statusicon.cc:287
+#: src/gtkui/menus.cc:142 src/qtui/main_window_actions.cc:110
+#: src/statusicon/statusicon.cc:277
 msgid "Pre_vious"
 msgstr "_Iepriekšējais"
 
-#: src/gtkui/menus.cc:141 src/qtui/main_window_actions.cc:107
-#: src/statusicon/statusicon.cc:291
+#: src/gtkui/menus.cc:143 src/qtui/main_window_actions.cc:111
+#: src/statusicon/statusicon.cc:281
 msgid "_Next"
 msgstr "_Nākamais"
 
-#: src/gtkui/menus.cc:143 src/qtui/main_window_actions.cc:109
+#: src/gtkui/menus.cc:145 src/qtui/main_window_actions.cc:113
 msgid "_Repeat"
 msgstr "_Atkārtot"
 
-#: src/gtkui/menus.cc:144 src/qtui/main_window_actions.cc:110
+#: src/gtkui/menus.cc:146 src/qtui/main_window_actions.cc:114
 msgid "S_huffle"
 msgstr "_Jaukt"
 
-#: src/gtkui/menus.cc:145 src/qtui/main_window_actions.cc:111
+#: src/gtkui/menus.cc:147 src/qtui/main_window_actions.cc:115
 msgid "N_o Playlist Advance"
 msgstr "Ne_virzīties uz priekšu repertuārā"
 
-#: src/gtkui/menus.cc:146 src/qtui/main_window_actions.cc:112
+#: src/gtkui/menus.cc:148 src/qtui/main_window_actions.cc:116
 msgid "Stop A_fter This Song"
 msgstr "Apt_urēt pēc šīs dziesmas"
 
-#: src/gtkui/menus.cc:148 src/gtkui/menus.cc:243
-#: src/qtui/main_window_actions.cc:114
+#: src/gtkui/menus.cc:150 src/gtkui/menus.cc:247
+#: src/qtui/main_window_actions.cc:118
 msgid "Song _Info ..."
 msgstr "Dziesmas _info ..."
 
-#: src/gtkui/menus.cc:149
+#: src/gtkui/menus.cc:151
 msgid "Jump to _Time ..."
 msgstr "Pāriet uz _laiku ..."
 
-#: src/gtkui/menus.cc:150
+#: src/gtkui/menus.cc:152
 msgid "_Jump to Song ..."
 msgstr "Pāriet uz _dziesmu ..."
 
-#: src/gtkui/menus.cc:152
+#: src/gtkui/menus.cc:154
 msgid "Set Repeat Point _A"
 msgstr "Iestatīt atkārtojuma punktu _A"
 
-#: src/gtkui/menus.cc:153
+#: src/gtkui/menus.cc:155
 msgid "Set Repeat Point _B"
 msgstr "Iestatīt atkārtojuma punktu _B"
 
-#: src/gtkui/menus.cc:154
+#: src/gtkui/menus.cc:156
 msgid "_Clear Repeat Points"
 msgstr "_Notīrīt atkārtojuma punktus"
 
-#: src/gtkui/menus.cc:158 src/gtkui/menus.cc:165 src/gtkui/menus.cc:180
-#: src/qtui/main_window_actions.cc:118 src/qtui/main_window_actions.cc:125
-#: src/qtui/main_window_actions.cc:140
+#: src/gtkui/menus.cc:160 src/gtkui/menus.cc:167 src/gtkui/menus.cc:183
+#: src/qtui/main_window_actions.cc:122 src/qtui/main_window_actions.cc:129
+#: src/qtui/main_window_actions.cc:145
 msgid "By _Title"
 msgstr "Pēc n_osaukuma"
 
-#: src/gtkui/menus.cc:159 src/qtui/main_window_actions.cc:119
+#: src/gtkui/menus.cc:161 src/qtui/main_window_actions.cc:123
 msgid "By _File Name"
 msgstr ""
 
-#: src/gtkui/menus.cc:160 src/qtui/main_window_actions.cc:120
+#: src/gtkui/menus.cc:162 src/qtui/main_window_actions.cc:124
 msgid "By File _Path"
 msgstr "Pēc faila _ceļa"
 
-#: src/gtkui/menus.cc:164 src/gtkui/menus.cc:179
-#: src/qtui/main_window_actions.cc:124 src/qtui/main_window_actions.cc:139
+#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:182
+#: src/qtui/main_window_actions.cc:128 src/qtui/main_window_actions.cc:144
 msgid "By Track _Number"
 msgstr "Pēc celiņa _numura"
 
-#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:181
-#: src/qtui/main_window_actions.cc:126 src/qtui/main_window_actions.cc:141
+#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:184
+#: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:146
 msgid "By _Artist"
 msgstr "Pēc _izpildītāja"
 
-#: src/gtkui/menus.cc:167 src/gtkui/menus.cc:182
-#: src/qtui/main_window_actions.cc:127 src/qtui/main_window_actions.cc:142
+#: src/gtkui/menus.cc:169 src/gtkui/menus.cc:185
+#: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:147
 msgid "By Al_bum"
 msgstr "Pēc a_lbuma"
 
-#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:183
-#: src/qtui/main_window_actions.cc:128 src/qtui/main_window_actions.cc:143
+#: src/gtkui/menus.cc:170 src/gtkui/menus.cc:186
+#: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:148
 msgid "By Albu_m Artist"
 msgstr "Pēc albu_ma izpildītāja"
 
-#: src/gtkui/menus.cc:169 src/gtkui/menus.cc:184
-#: src/qtui/main_window_actions.cc:129 src/qtui/main_window_actions.cc:144
+#: src/gtkui/menus.cc:171 src/gtkui/menus.cc:187
+#: src/qtui/main_window_actions.cc:133 src/qtui/main_window_actions.cc:149
 msgid "By Release _Date"
 msgstr "Pēc izlaišanas _datuma"
 
-#: src/gtkui/menus.cc:170 src/gtkui/menus.cc:185
-#: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:145
+#: src/gtkui/menus.cc:172 src/gtkui/menus.cc:188
+#: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:150
+msgid "By _Genre"
+msgstr ""
+
+#: src/gtkui/menus.cc:173 src/gtkui/menus.cc:189
+#: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:151
 msgid "By _Length"
 msgstr "Pēc _ilguma"
 
-#: src/gtkui/menus.cc:171 src/gtkui/menus.cc:186
-#: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:146
+#: src/gtkui/menus.cc:174 src/gtkui/menus.cc:190
+#: src/qtui/main_window_actions.cc:136 src/qtui/main_window_actions.cc:152
 msgid "By _File Path"
 msgstr "Pēc _faila ceļa"
 
-#: src/gtkui/menus.cc:172 src/gtkui/menus.cc:187
-#: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:147
+#: src/gtkui/menus.cc:175 src/gtkui/menus.cc:191
+#: src/qtui/main_window_actions.cc:137 src/qtui/main_window_actions.cc:153
 msgid "By _Custom Title"
 msgstr "Pēc _pielāgota nosaukuma"
 
-#: src/gtkui/menus.cc:174 src/gtkui/menus.cc:189
-#: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:149
+#: src/gtkui/menus.cc:177 src/gtkui/menus.cc:193
+#: src/qtui/main_window_actions.cc:139 src/qtui/main_window_actions.cc:155
 msgid "R_everse Order"
 msgstr "Apgri_eztā kārtībā"
 
-#: src/gtkui/menus.cc:175 src/gtkui/menus.cc:190
-#: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:150
+#: src/gtkui/menus.cc:178 src/gtkui/menus.cc:194
+#: src/qtui/main_window_actions.cc:140 src/qtui/main_window_actions.cc:156
 msgid "_Random Order"
 msgstr "Nejaušā _kārtībā"
 
-#: src/gtkui/menus.cc:194 src/qtui/main_window_actions.cc:154
-msgid "_Play This Playlist"
-msgstr "_Atskaņot šo repertuāru"
+#: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:160
+msgid "_Play/Resume"
+msgstr ""
 
-#: src/gtkui/menus.cc:195 src/gtkui/menus.cc:245
-#: src/qtui/main_window_actions.cc:155
+#: src/gtkui/menus.cc:199 src/gtkui/menus.cc:251
+#: src/qtui/main_window_actions.cc:161
 msgid "_Refresh"
 msgstr "A_tsvaidzināt"
 
-#: src/gtkui/menus.cc:197 src/qtui/main_window_actions.cc:157
+#: src/gtkui/menus.cc:201 src/qtui/main_window_actions.cc:163
 msgid "_Sort"
 msgstr "_Kārtot"
 
-#: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:158
+#: src/gtkui/menus.cc:202 src/qtui/main_window_actions.cc:164
 msgid "Sort Se_lected"
 msgstr "Kārtot izvē_lētos"
 
-#: src/gtkui/menus.cc:199 src/qtui/main_window_actions.cc:159
+#: src/gtkui/menus.cc:203 src/qtui/main_window_actions.cc:165
 msgid "Remove _Duplicates"
 msgstr "Izņemt _dublikātus"
 
-#: src/gtkui/menus.cc:200 src/qtui/main_window_actions.cc:160
+#: src/gtkui/menus.cc:204 src/qtui/main_window_actions.cc:166
 msgid "Remove _Unavailable Files"
 msgstr "Izņemt _nepieejamos failus"
 
-#: src/gtkui/menus.cc:202 src/playlist-manager/playlist-manager.cc:244
-#: src/qtui/main_window_actions.cc:162
+#: src/gtkui/menus.cc:206 src/playlist-manager/playlist-manager.cc:244
+#: src/qtui/main_window_actions.cc:168
 msgid "_New"
 msgstr "_Jauns"
 
-#: src/gtkui/menus.cc:203 src/qtui/main_window_actions.cc:163
+#: src/gtkui/menus.cc:207
 msgid "Ren_ame ..."
 msgstr "Pā_rdēvēt ..."
 
-#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:258
-#: src/qtui/main_window_actions.cc:164
+#: src/gtkui/menus.cc:208 src/gtkui/menus.cc:264
+#: src/qtui/main_window_actions.cc:170
 msgid "Remo_ve"
 msgstr "Izņe_mt"
 
-#: src/gtkui/menus.cc:206 src/qtui/main_window_actions.cc:166
+#: src/gtkui/menus.cc:210
 msgid "_Import ..."
 msgstr "_Importēt ..."
 
-#: src/gtkui/menus.cc:207 src/qtui/main_window_actions.cc:167
+#: src/gtkui/menus.cc:211
 msgid "_Export ..."
 msgstr "_Eksportēt ..."
 
-#: src/gtkui/menus.cc:209 src/qtui/main_window_actions.cc:169
+#: src/gtkui/menus.cc:213
 msgid "Playlist _Manager ..."
 msgstr "Reper_tuāru pārvaldnieks ..."
 
-#: src/gtkui/menus.cc:210 src/qtui/main_window_actions.cc:170
+#: src/gtkui/menus.cc:214 src/qtui/main_window_actions.cc:176
 msgid "_Queue Manager ..."
 msgstr "Ri_ndas pārvaldnieks ..."
 
-#: src/gtkui/menus.cc:214 src/qtui/main_window_actions.cc:174
+#: src/gtkui/menus.cc:218 src/qtui/main_window_actions.cc:180
 msgid "Volume _Up"
 msgstr "_Palielināt skaļumu"
 
-#: src/gtkui/menus.cc:215 src/qtui/main_window_actions.cc:175
+#: src/gtkui/menus.cc:219 src/qtui/main_window_actions.cc:181
 msgid "Volume _Down"
 msgstr "_Samazināt skaļumu"
 
-#: src/gtkui/menus.cc:217 src/qtui/main_window_actions.cc:177
+#: src/gtkui/menus.cc:221 src/qtui/main_window_actions.cc:183
 msgid "_Equalizer"
 msgstr "_Balansieris"
 
-#: src/gtkui/menus.cc:219 src/qtui/main_window_actions.cc:179
+#: src/gtkui/menus.cc:223 src/qtui/main_window_actions.cc:185
 msgid "E_ffects ..."
 msgstr "E_fekti ..."
 
-#: src/gtkui/menus.cc:223
+#: src/gtkui/menus.cc:227
 msgid "Show _Menu Bar"
 msgstr "Rādīt _izvēlnes joslu"
 
-#: src/gtkui/menus.cc:224
+#: src/gtkui/menus.cc:228
 msgid "Show I_nfo Bar"
 msgstr "Rādīt i_nfoapgabalu"
 
-#: src/gtkui/menus.cc:225
+#: src/gtkui/menus.cc:229
 msgid "Show Info Bar Vis_ualization"
 msgstr "Rādīt infoapgabala viz_ualizāciju"
 
-#: src/gtkui/menus.cc:226
+#: src/gtkui/menus.cc:230
 msgid "Show _Status Bar"
 msgstr "Rādīt _stāvokļjoslu"
 
-#: src/gtkui/menus.cc:228
+#: src/gtkui/menus.cc:232
 msgid "Show _Remaining Time"
 msgstr "Rādīt a_tlikušo laiku"
 
-#: src/gtkui/menus.cc:230
+#: src/gtkui/menus.cc:234
 msgid "_Visualizations ..."
 msgstr "_Vizualizācijas ..."
 
-#: src/gtkui/menus.cc:234 src/qtui/main_window_actions.cc:183
+#: src/gtkui/menus.cc:238 src/qtui/main_window_actions.cc:189
 msgid "_File"
 msgstr "_Fails"
 
-#: src/gtkui/menus.cc:235 src/qtui/main_window_actions.cc:184
+#: src/gtkui/menus.cc:239 src/qtui/main_window_actions.cc:190
 msgid "_Playback"
 msgstr "_Atskaņošana"
 
-#: src/gtkui/menus.cc:236 src/qtui/main_window_actions.cc:185
+#: src/gtkui/menus.cc:240 src/qtui/main_window_actions.cc:191
 msgid "P_laylist"
 msgstr "_Repertuārs"
 
-#: src/gtkui/menus.cc:237 src/gtkui/menus.cc:252
-#: src/qtui/main_window_actions.cc:186
+#: src/gtkui/menus.cc:241 src/gtkui/menus.cc:258
+#: src/qtui/main_window_actions.cc:192
 msgid "_Services"
 msgstr "_Servisi"
 
-#: src/gtkui/menus.cc:238 src/qtui/main_window_actions.cc:187
+#: src/gtkui/menus.cc:242 src/qtui/main_window_actions.cc:193
 msgid "_Output"
 msgstr "I_zvade"
 
-#: src/gtkui/menus.cc:239
+#: src/gtkui/menus.cc:243
 msgid "_View"
 msgstr "S_kats"
 
-#: src/gtkui/menus.cc:244
+#: src/gtkui/menus.cc:248
 msgid "_Queue/Unqueue"
 msgstr "Ie_rindot/Izņ. no rindas"
 
-#: src/gtkui/menus.cc:247
+#: src/gtkui/menus.cc:250
+msgid "_Open Containing Folder"
+msgstr ""
+
+#: src/gtkui/menus.cc:253
 msgid "Cu_t"
 msgstr "_Izgriezt"
 
-#: src/gtkui/menus.cc:248
+#: src/gtkui/menus.cc:254
 msgid "_Copy"
 msgstr "_Kopēt"
 
-#: src/gtkui/menus.cc:249
+#: src/gtkui/menus.cc:255
 msgid "_Paste"
 msgstr "I_elīmēt"
 
-#: src/gtkui/menus.cc:250
+#: src/gtkui/menus.cc:256
 msgid "Select _All"
 msgstr "Iezīmēt _visu"
 
-#: src/gtkui/menus.cc:257
+#: src/gtkui/menus.cc:263
 msgid "_Rename ..."
 msgstr "Pā_rdēvēt ..."
 
@@ -2015,28 +2024,28 @@ msgstr "Ritināt dziesmām mainoties"
 msgid "GTK Interface"
 msgstr "GTK saskarne"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:236
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:230
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:225 src/qtui/main_window.cc:180
+#: src/gtkui/ui_gtk.cc:225 src/qtui/main_window.cc:186
 msgid "Buffering ..."
 msgstr "Buferizācija ..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:238 src/skins/ui_main.cc:1168
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:232 src/skins/ui_main.cc:1162
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_statusbar.cc:69 src/qtui/status_bar.cc:67
+#: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:67
 msgid "mono"
 msgstr "mono"
 
-#: src/gtkui/ui_statusbar.cc:71 src/qtui/status_bar.cc:69
+#: src/gtkui/ui_statusbar.cc:65 src/qtui/status_bar.cc:69
 msgid "stereo"
 msgstr "stereo"
 
-#: src/gtkui/ui_statusbar.cc:73 src/qtui/status_bar.cc:71
+#: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:71
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
@@ -2044,16 +2053,29 @@ msgstr[0] "%d kanāls"
 msgstr[1] "%d kanāli"
 msgstr[2] "%d kanālu"
 
-#: src/gtkui/ui_statusbar.cc:88 src/qtui/status_bar.cc:85
+#: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:85
 #, c-format
 msgid "%d kbps"
 msgstr "%d kbps"
+
+#: src/gtkui/ui_statusbar.cc:107 src/skins/ui_main_evlisteners.cc:103
+msgid "Single mode."
+msgstr "Vieninstances režīms."
+
+#: src/gtkui/ui_statusbar.cc:109 src/skins/ui_main_evlisteners.cc:105
+msgid "Playlist mode."
+msgstr "Repertuāra režīms."
+
+#: src/gtkui/ui_statusbar.cc:117 src/skins/ui_main_evlisteners.cc:111
+msgid "Stopping after song."
+msgstr "Aptur pēc pašreizējās dziesmas."
 
 #: src/hotkey/gui.cc:71
 msgid "Previous track"
 msgstr "Iepriekšējais celiņš"
 
-#: src/hotkey/gui.cc:72 src/notify/osd.cc:69 src/qtui/main_window.cc:67
+#: src/hotkey/gui.cc:72 src/notify/osd.cc:69 src/qtui/main_window.cc:69
+#: src/qtui/main_window.cc:172 src/qtui/main_window.cc:173
 #: src/skins/menus.cc:87
 msgid "Play"
 msgstr "Atskaņot"
@@ -2062,7 +2084,7 @@ msgstr "Atskaņot"
 msgid "Pause/Resume"
 msgstr "Pauze/Atsākt"
 
-#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:68 src/skins/menus.cc:89
+#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:70 src/skins/menus.cc:89
 msgid "Stop"
 msgstr "Stop"
 
@@ -2643,11 +2665,12 @@ msgstr ""
 msgid "Show"
 msgstr "Rādīt"
 
-#: src/notify/osd.cc:66 src/skins/menus.cc:88
+#: src/notify/osd.cc:66 src/qtui/main_window.cc:178
+#: src/qtui/main_window.cc:179 src/skins/menus.cc:88
 msgid "Pause"
 msgstr "Pauze"
 
-#: src/notify/osd.cc:73 src/qtui/main_window.cc:70 src/skins/menus.cc:91
+#: src/notify/osd.cc:73 src/qtui/main_window.cc:72 src/skins/menus.cc:91
 msgid "Next"
 msgstr "Nākamais"
 
@@ -2776,11 +2799,19 @@ msgstr ""
 msgid "Working ..."
 msgstr ""
 
-#: src/qtui/filter_input.cc:45 src/skins/ui_playlist.cc:221
+#: src/qtui/filter_input.cc:44 src/skins/ui_playlist.cc:221
 msgid "Search"
 msgstr "Meklēt"
 
-#: src/qtui/main_window_actions.cc:97
+#: src/qtui/main_window_actions.cc:94
+msgid "_Open Folder ..."
+msgstr ""
+
+#: src/qtui/main_window_actions.cc:96
+msgid "_Add Folder ..."
+msgstr ""
+
+#: src/qtui/main_window_actions.cc:101
 msgid "_Log Inspector ..."
 msgstr ""
 
@@ -2788,23 +2819,23 @@ msgstr ""
 msgid "Open Files"
 msgstr ""
 
-#: src/qtui/main_window.cc:65
+#: src/qtui/main_window.cc:66
 msgid "Add Files"
 msgstr ""
 
-#: src/qtui/main_window.cc:69 src/skins/menus.cc:90
+#: src/qtui/main_window.cc:71 src/skins/menus.cc:90
 msgid "Previous"
 msgstr "Iepriekšējais"
 
-#: src/qtui/main_window.cc:75 src/skins/menus.cc:82
+#: src/qtui/main_window.cc:77 src/skins/menus.cc:82
 msgid "Repeat"
 msgstr "Atkārtot"
 
-#: src/qtui/main_window.cc:77 src/skins/menus.cc:83
+#: src/qtui/main_window.cc:79 src/skins/menus.cc:83
 msgid "Shuffle"
 msgstr "Jaukt"
 
-#: src/qtui/qtui.cc:39
+#: src/qtui/qtui.cc:42
 msgid "Qt Interface"
 msgstr ""
 
@@ -3186,7 +3217,7 @@ msgid "View"
 msgstr "Skatīt"
 
 #: src/skins/menus.cc:72 src/skins/menus.cc:136 src/skins/menus.cc:149
-#: src/skins/menus.cc:208
+#: src/skins/menus.cc:214
 msgid "Services"
 msgstr "Servisi"
 
@@ -3202,7 +3233,7 @@ msgstr "iestatījumi ..."
 msgid "Quit"
 msgstr "Iziet"
 
-#: src/skins/menus.cc:80 src/skins/menus.cc:200
+#: src/skins/menus.cc:80 src/skins/menus.cc:206
 msgid "Song Info ..."
 msgstr "Dziesmas info ..."
 
@@ -3231,8 +3262,8 @@ msgid "Jump to Time ..."
 msgstr "Pāriet uz laiku ..."
 
 #: src/skins/menus.cc:101
-msgid "Play This Playlist"
-msgstr "Atskaņot šo repertuāru"
+msgid "Play/Resume"
+msgstr ""
 
 #: src/skins/menus.cc:103
 msgid "New Playlist"
@@ -3306,7 +3337,7 @@ msgstr "Saritināt repertuāra redaktoru"
 msgid "Roll Up Equalizer"
 msgstr "Saritināt balansieri"
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:858
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:852
 msgid "Double Size"
 msgstr ""
 
@@ -3318,15 +3349,15 @@ msgstr "Pievienot URL ..."
 msgid "Add Files ..."
 msgstr "Pievienot failus ..."
 
-#: src/skins/menus.cc:143 src/skins/menus.cc:170 src/skins/menus.cc:181
+#: src/skins/menus.cc:143 src/skins/menus.cc:171 src/skins/menus.cc:185
 msgid "By Title"
 msgstr "Pēc nosaukuma"
 
-#: src/skins/menus.cc:144 src/skins/menus.cc:174 src/skins/menus.cc:185
+#: src/skins/menus.cc:144 src/skins/menus.cc:178 src/skins/menus.cc:192
 msgid "By File Name"
 msgstr ""
 
-#: src/skins/menus.cc:145 src/skins/menus.cc:175 src/skins/menus.cc:186
+#: src/skins/menus.cc:145 src/skins/menus.cc:179 src/skins/menus.cc:193
 msgid "By File Path"
 msgstr "Pēc faila ceļa"
 
@@ -3370,111 +3401,123 @@ msgstr "Notīrīt iezīmējumu"
 msgid "Select All"
 msgstr "Iezīmēt visus"
 
-#: src/skins/menus.cc:171 src/skins/menus.cc:182
-msgid "By Album"
-msgstr "Pēc albuma"
-
-#: src/skins/menus.cc:172 src/skins/menus.cc:183
-msgid "By Artist"
-msgstr "Pēc izpildītāja"
-
-#: src/skins/menus.cc:173 src/skins/menus.cc:184
-msgid "By Album Artist"
-msgstr ""
-
-#: src/skins/menus.cc:176 src/skins/menus.cc:187
-msgid "By Release Date"
-msgstr "Pēc izlaišanas datuma"
-
-#: src/skins/menus.cc:177 src/skins/menus.cc:188
+#: src/skins/menus.cc:170 src/skins/menus.cc:184
 msgid "By Track Number"
 msgstr "Pēc celiņa numura"
 
-#: src/skins/menus.cc:192
+#: src/skins/menus.cc:172 src/skins/menus.cc:186
+msgid "By Artist"
+msgstr "Pēc izpildītāja"
+
+#: src/skins/menus.cc:173 src/skins/menus.cc:187
+msgid "By Album"
+msgstr "Pēc albuma"
+
+#: src/skins/menus.cc:174 src/skins/menus.cc:188
+msgid "By Album Artist"
+msgstr ""
+
+#: src/skins/menus.cc:175 src/skins/menus.cc:190
+msgid "By Release Date"
+msgstr "Pēc izlaišanas datuma"
+
+#: src/skins/menus.cc:176 src/skins/menus.cc:189
+msgid "By Genre"
+msgstr ""
+
+#: src/skins/menus.cc:177 src/skins/menus.cc:191
+msgid "By Length"
+msgstr ""
+
+#: src/skins/menus.cc:180 src/skins/menus.cc:194
+msgid "By Custom Title"
+msgstr ""
+
+#: src/skins/menus.cc:198
 msgid "Randomize List"
 msgstr "Sajaukt repertuāru"
 
-#: src/skins/menus.cc:193
+#: src/skins/menus.cc:199
 msgid "Reverse List"
 msgstr "Apgriezt repertuāru"
 
-#: src/skins/menus.cc:195
+#: src/skins/menus.cc:201
 msgid "Sort Selected"
 msgstr "Kārtot iezīmētos"
 
-#: src/skins/menus.cc:196
+#: src/skins/menus.cc:202
 msgid "Sort List"
 msgstr "Kārtot repertuāru"
 
-#: src/skins/menus.cc:202
+#: src/skins/menus.cc:208
 msgid "Cut"
 msgstr "Izgriezt"
 
-#: src/skins/menus.cc:203
+#: src/skins/menus.cc:209
 msgid "Copy"
 msgstr "Kopēt"
 
-#: src/skins/menus.cc:204
+#: src/skins/menus.cc:210
 msgid "Paste"
 msgstr "Ielīmēt"
 
-#: src/skins/menus.cc:206
+#: src/skins/menus.cc:212
 msgid "Queue/Unqueue"
 msgstr "Ierindot/Izņemt no rindas"
 
-#: src/skins/menus.cc:212
+#: src/skins/menus.cc:218
 msgid "Load Preset ..."
 msgstr "Ielādēt sākumuzstādījumu ..."
 
-#: src/skins/menus.cc:213
+#: src/skins/menus.cc:219
 msgid "Load Auto Preset ..."
 msgstr "Ielādēt auto-sākumuzstādījumu ..."
 
-#: src/skins/menus.cc:214
+#: src/skins/menus.cc:220
 msgid "Load Default"
 msgstr "Ielādēt noklusēto"
 
-#: src/skins/menus.cc:215
+#: src/skins/menus.cc:221
 msgid "Load Preset File ..."
 msgstr "Ielādēt sākumuzstādījumu no faila ..."
 
-#: src/skins/menus.cc:216
+#: src/skins/menus.cc:222
 msgid "Load EQF File ..."
 msgstr "Ielādēt EQF failu ..."
 
-#: src/skins/menus.cc:218
+#: src/skins/menus.cc:224
 msgid "Save Preset ..."
 msgstr "Saglabāt sākumuzstādījumu ..."
 
-#: src/skins/menus.cc:219
+#: src/skins/menus.cc:225
 msgid "Save Auto Preset ..."
 msgstr "Saglabāt auto-sākumuzstādījumu ..."
 
-#: src/skins/menus.cc:220
+#: src/skins/menus.cc:226
 msgid "Save Default"
 msgstr "Saglabāt noklusēto"
 
-#: src/skins/menus.cc:221
+#: src/skins/menus.cc:227
 msgid "Save Preset File ..."
 msgstr "Saglabāt sākumuzstādījumu failā ..."
 
-#: src/skins/menus.cc:222
+#: src/skins/menus.cc:228
 msgid "Save EQF File ..."
 msgstr "Saglabāt EQF failu ..."
 
-#: src/skins/menus.cc:224
+#: src/skins/menus.cc:230
 msgid "Delete Preset ..."
 msgstr "Dzēst sākumuzstādījumu ..."
 
-#: src/skins/menus.cc:225
+#: src/skins/menus.cc:231
 msgid "Delete Auto Preset ..."
 msgstr "Dzēst auto-sākumuzstādījumu ..."
 
-#: src/skins/menus.cc:227
+#: src/skins/menus.cc:233
 msgid "Import Winamp Presets ..."
 msgstr "Importēt WinAMP sākumuzstādījumus ..."
 
-#: src/skins/menus.cc:229
+#: src/skins/menus.cc:235
 msgid "Reset to Zero"
 msgstr "Atstatīt uz nulli"
 
@@ -3705,121 +3748,109 @@ msgstr "Vispārīgi"
 msgid "Visualization"
 msgstr "Vizualizēšana"
 
-#: src/skins/ui_equalizer.cc:288
+#: src/skins/ui_equalizer.cc:282
 msgid "Preamp"
 msgstr "Priekšpastiprinājums"
 
-#: src/skins/ui_equalizer.cc:292
+#: src/skins/ui_equalizer.cc:286
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.cc:336
+#: src/skins/ui_equalizer.cc:330
 msgid "Audacious Equalizer"
 msgstr "Audacious balansieris"
 
-#: src/skins/ui_main.cc:692
+#: src/skins/ui_main.cc:686
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Pāriet uz %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:713
+#: src/skins/ui_main.cc:707
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Skaļums: %d%%"
 
-#: src/skins/ui_main.cc:736
+#: src/skins/ui_main.cc:730
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Balanss: %d%% pa kreisi"
 
-#: src/skins/ui_main.cc:738
+#: src/skins/ui_main.cc:732
 msgid "Balance: center"
 msgstr "Balanss: centrs"
 
-#: src/skins/ui_main.cc:740
+#: src/skins/ui_main.cc:734
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Balanss: %d%% pa labi"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:840
 msgid "Options Menu"
 msgstr "Iestatījumu izvēlne"
 
-#: src/skins/ui_main.cc:850
+#: src/skins/ui_main.cc:844
 msgid "Disable 'Always On Top'"
 msgstr "Izslēgt 'Vienmēr virspusē'"
 
-#: src/skins/ui_main.cc:852
+#: src/skins/ui_main.cc:846
 msgid "Enable 'Always On Top'"
 msgstr "Ieslēgt 'Vienmēr virspusē'"
 
-#: src/skins/ui_main.cc:855
+#: src/skins/ui_main.cc:849
 msgid "File Info Box"
 msgstr "Faila info lodziņš"
 
-#: src/skins/ui_main.cc:861
+#: src/skins/ui_main.cc:855
 msgid "Visualizations"
 msgstr ""
 
-#: src/skins/ui_main.cc:1325
+#: src/skins/ui_main.cc:1319
 msgid "Repeat point A set."
 msgstr "Atkārtošanas punkts A iestatīts."
 
-#: src/skins/ui_main.cc:1330
+#: src/skins/ui_main.cc:1324
 msgid "Repeat point B set."
 msgstr "Atkārtošanas punkts B iestatīts."
 
-#: src/skins/ui_main.cc:1339
+#: src/skins/ui_main.cc:1333
 msgid "Repeat points cleared."
 msgstr "Atkārtošanas punkti notīrīti."
-
-#: src/skins/ui_main_evlisteners.cc:103
-msgid "Single mode."
-msgstr "Vieninstances režīms."
-
-#: src/skins/ui_main_evlisteners.cc:105
-msgid "Playlist mode."
-msgstr "Repertuāra režīms."
-
-#: src/skins/ui_main_evlisteners.cc:111
-msgid "Stopping after song."
-msgstr "Aptur pēc pašreizējās dziesmas."
 
 #: src/skins/ui_playlist.cc:219
 msgid "Search entries in active playlist"
@@ -4009,7 +4040,7 @@ msgid ""
 msgstr ""
 
 #: src/song-info-qt/song-info.cc:32
-msgid "Track Information"
+msgid "Song Info (Qt)"
 msgstr ""
 
 #: src/sox-resampler/sox-resampler.cc:44
@@ -4066,15 +4097,15 @@ msgstr "Ātrums:"
 msgid "Pitch:"
 msgstr "Augstums:"
 
-#: src/statusicon/statusicon.cc:50
+#: src/statusicon/statusicon.cc:47
 msgid "Status Icon"
 msgstr "Statusa ikona"
 
-#: src/statusicon/statusicon.cc:293
+#: src/statusicon/statusicon.cc:283
 msgid "Se_ttings ..."
 msgstr "Ies_tatījumi ..."
 
-#: src/statusicon/statusicon.cc:394
+#: src/statusicon/statusicon.cc:372
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -4092,31 +4123,31 @@ msgstr ""
 "Šis spraudnis nodrošina ar statusa ikonu, kas novietota\n"
 "sistēmas ikonu joslas apgabalā."
 
-#: src/statusicon/statusicon.cc:401
+#: src/statusicon/statusicon.cc:379
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Peles rullīša darbība</b>"
 
-#: src/statusicon/statusicon.cc:402
+#: src/statusicon/statusicon.cc:380
 msgid "Change volume"
 msgstr "Mainīt skaļumu"
 
-#: src/statusicon/statusicon.cc:405
+#: src/statusicon/statusicon.cc:383
 msgid "Change playing song"
 msgstr "Mainīt atskaņojamo dziesmu"
 
-#: src/statusicon/statusicon.cc:408
+#: src/statusicon/statusicon.cc:386
 msgid "<b>Other Settings</b>"
 msgstr "<b>Citi iestatījumi</b>"
 
-#: src/statusicon/statusicon.cc:409
+#: src/statusicon/statusicon.cc:387
 msgid "Disable the popup window"
 msgstr "Atslēgt izlecošo logu"
 
-#: src/statusicon/statusicon.cc:411
+#: src/statusicon/statusicon.cc:389
 msgid "Close to the system tray"
 msgstr "Aizvērt sistēmas ikonu joslu"
 
-#: src/statusicon/statusicon.cc:413
+#: src/statusicon/statusicon.cc:391
 msgid "Advance in playlist when scrolling upward"
 msgstr "Tinot uz augšu, pāriet uz priekšu repertuārā"
 

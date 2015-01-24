@@ -14,10 +14,10 @@
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2012-2014
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-12-04 18:18+0100\n"
-"PO-Revision-Date: 2014-12-01 19:59+0000\n"
+"POT-Creation-Date: 2015-01-24 13:17+0100\n"
+"PO-Revision-Date: 2015-01-17 22:08+0000\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/audacious/"
 "language/ko/)\n"
@@ -351,7 +351,7 @@ msgstr "음량 조절기 요소:"
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (MIDI 재생기)"
 
-#: src/amidi-plug/amidi-plug.cc:436
+#: src/amidi-plug/amidi-plug.cc:437
 msgid ""
 "AMIDI-Plug\n"
 "modular MIDI music player\n"
@@ -1543,11 +1543,11 @@ msgid "Entry number"
 msgstr "항목 번호"
 
 #: src/gtkui/columns.cc:36 src/playlist-manager/playlist-manager.cc:225
-#: src/qtui/playlist_model.cc:124
+#: src/qtui/playlist_model.cc:123
 msgid "Title"
 msgstr "제목"
 
-#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:126
+#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:125
 msgid "Artist"
 msgstr "음악가"
 
@@ -1555,7 +1555,7 @@ msgstr "음악가"
 msgid "Year"
 msgstr "연도"
 
-#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:128
+#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:127
 msgid "Album"
 msgstr "앨범"
 
@@ -1599,340 +1599,349 @@ msgstr "존재하는 내용"
 msgid "Displayed columns"
 msgstr "표시한 내용"
 
-#: src/gtkui/layout.cc:66 src/search-tool/search-tool.cc:40
+#: src/gtkui/layout.cc:72 src/search-tool/search-tool.cc:40
 msgid "Search Tool"
 msgstr "검색 도구"
 
-#: src/gtkui/layout.cc:161
+#: src/gtkui/layout.cc:167
 msgid "Dock at Left"
 msgstr "왼편에 붙이기"
 
-#: src/gtkui/layout.cc:161
+#: src/gtkui/layout.cc:167
 msgid "Dock at Right"
 msgstr "오른편에 붙이기"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Dock at Top"
 msgstr "상단에 붙이기"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Dock at Bottom"
 msgstr "하단에 붙이기"
 
-#: src/gtkui/layout.cc:162
+#: src/gtkui/layout.cc:168
 msgid "Undock"
 msgstr "떼어내기"
 
-#: src/gtkui/layout.cc:162 src/ladspa/plugin.cc:531
+#: src/gtkui/layout.cc:168 src/ladspa/plugin.cc:531
 msgid "Disable"
 msgstr "비활성화"
 
-#: src/gtkui/menus.cc:124 src/qtui/main_window_actions.cc:91
-#: src/statusicon/statusicon.cc:286
+#: src/gtkui/menus.cc:126 src/qtui/main_window_actions.cc:93
+#: src/statusicon/statusicon.cc:276
 msgid "_Open Files ..."
 msgstr "파일 열기(_O) ..."
 
-#: src/gtkui/menus.cc:125
+#: src/gtkui/menus.cc:127
 msgid "Open _URL ..."
 msgstr "URL 열기(_U) ..."
 
-#: src/gtkui/menus.cc:126 src/qtui/main_window_actions.cc:92
+#: src/gtkui/menus.cc:128 src/qtui/main_window_actions.cc:95
 msgid "_Add Files ..."
 msgstr "파일 추가(_A) ..."
 
-#: src/gtkui/menus.cc:127
+#: src/gtkui/menus.cc:129
 msgid "Add U_RL ..."
 msgstr "URL 추가(_R) ..."
 
-#: src/gtkui/menus.cc:129
+#: src/gtkui/menus.cc:131
 msgid "Search _Library"
 msgstr "라이브러리 검색(_L)"
 
-#: src/gtkui/menus.cc:131 src/qtui/main_window_actions.cc:94
+#: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:98
 msgid "A_bout ..."
 msgstr "정보(_B) ..."
 
-#: src/gtkui/menus.cc:132 src/qtui/main_window_actions.cc:95
+#: src/gtkui/menus.cc:134 src/qtui/main_window_actions.cc:99
 msgid "_Settings ..."
 msgstr "설정(_S)..."
 
-#: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:99
-#: src/statusicon/statusicon.cc:294
+#: src/gtkui/menus.cc:135 src/qtui/main_window_actions.cc:103
+#: src/statusicon/statusicon.cc:284
 msgid "_Quit"
 msgstr "끝내기(_Q)"
 
-#: src/gtkui/menus.cc:137 src/gtkui/menus.cc:256
-#: src/qtui/main_window_actions.cc:103 src/search-tool/search-tool.cc:641
-#: src/statusicon/statusicon.cc:288
+#: src/gtkui/menus.cc:139 src/gtkui/menus.cc:262
+#: src/qtui/main_window_actions.cc:107 src/search-tool/search-tool.cc:641
+#: src/statusicon/statusicon.cc:278
 msgid "_Play"
 msgstr "재생(_P)"
 
-#: src/gtkui/menus.cc:138 src/qtui/main_window_actions.cc:104
-#: src/statusicon/statusicon.cc:289
+#: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:108
+#: src/statusicon/statusicon.cc:279
 msgid "Paus_e"
 msgstr "일시정지(_E)"
 
-#: src/gtkui/menus.cc:139 src/qtui/main_window_actions.cc:105
-#: src/statusicon/statusicon.cc:290
+#: src/gtkui/menus.cc:141 src/qtui/main_window_actions.cc:109
+#: src/statusicon/statusicon.cc:280
 msgid "_Stop"
 msgstr "정지(_S)"
 
-#: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:106
-#: src/statusicon/statusicon.cc:287
+#: src/gtkui/menus.cc:142 src/qtui/main_window_actions.cc:110
+#: src/statusicon/statusicon.cc:277
 msgid "Pre_vious"
 msgstr "이전(_V)"
 
-#: src/gtkui/menus.cc:141 src/qtui/main_window_actions.cc:107
-#: src/statusicon/statusicon.cc:291
+#: src/gtkui/menus.cc:143 src/qtui/main_window_actions.cc:111
+#: src/statusicon/statusicon.cc:281
 msgid "_Next"
 msgstr "다음(_N)"
 
-#: src/gtkui/menus.cc:143 src/qtui/main_window_actions.cc:109
+#: src/gtkui/menus.cc:145 src/qtui/main_window_actions.cc:113
 msgid "_Repeat"
 msgstr "반복(_R)"
 
-#: src/gtkui/menus.cc:144 src/qtui/main_window_actions.cc:110
+#: src/gtkui/menus.cc:146 src/qtui/main_window_actions.cc:114
 msgid "S_huffle"
 msgstr "뒤섞기(_H)"
 
-#: src/gtkui/menus.cc:145 src/qtui/main_window_actions.cc:111
+#: src/gtkui/menus.cc:147 src/qtui/main_window_actions.cc:115
 msgid "N_o Playlist Advance"
 msgstr "재생 목록 미리 알리지 않음(_O)"
 
-#: src/gtkui/menus.cc:146 src/qtui/main_window_actions.cc:112
+#: src/gtkui/menus.cc:148 src/qtui/main_window_actions.cc:116
 msgid "Stop A_fter This Song"
 msgstr "이 노래 다음 멈춤(_F)"
 
-#: src/gtkui/menus.cc:148 src/gtkui/menus.cc:243
-#: src/qtui/main_window_actions.cc:114
+#: src/gtkui/menus.cc:150 src/gtkui/menus.cc:247
+#: src/qtui/main_window_actions.cc:118
 msgid "Song _Info ..."
 msgstr "곡 정보(_I) ..."
 
-#: src/gtkui/menus.cc:149
+#: src/gtkui/menus.cc:151
 msgid "Jump to _Time ..."
 msgstr "시간 건너뛰기(_T) ..."
 
-#: src/gtkui/menus.cc:150
+#: src/gtkui/menus.cc:152
 msgid "_Jump to Song ..."
 msgstr "곡 건너뛰기(_J) ..."
 
-#: src/gtkui/menus.cc:152
+#: src/gtkui/menus.cc:154
 msgid "Set Repeat Point _A"
 msgstr "반복 시점 A 설정(_A)"
 
-#: src/gtkui/menus.cc:153
+#: src/gtkui/menus.cc:155
 msgid "Set Repeat Point _B"
 msgstr "반복 시점 B 설정(_B)"
 
-#: src/gtkui/menus.cc:154
+#: src/gtkui/menus.cc:156
 msgid "_Clear Repeat Points"
 msgstr "반복 시점 지우기(_C)"
 
-#: src/gtkui/menus.cc:158 src/gtkui/menus.cc:165 src/gtkui/menus.cc:180
-#: src/qtui/main_window_actions.cc:118 src/qtui/main_window_actions.cc:125
-#: src/qtui/main_window_actions.cc:140
+#: src/gtkui/menus.cc:160 src/gtkui/menus.cc:167 src/gtkui/menus.cc:183
+#: src/qtui/main_window_actions.cc:122 src/qtui/main_window_actions.cc:129
+#: src/qtui/main_window_actions.cc:145
 msgid "By _Title"
 msgstr "제목순(_T)"
 
-#: src/gtkui/menus.cc:159 src/qtui/main_window_actions.cc:119
+#: src/gtkui/menus.cc:161 src/qtui/main_window_actions.cc:123
 msgid "By _File Name"
 msgstr ""
 
-#: src/gtkui/menus.cc:160 src/qtui/main_window_actions.cc:120
+#: src/gtkui/menus.cc:162 src/qtui/main_window_actions.cc:124
 msgid "By File _Path"
 msgstr "파일 경로 순(_P)"
 
-#: src/gtkui/menus.cc:164 src/gtkui/menus.cc:179
-#: src/qtui/main_window_actions.cc:124 src/qtui/main_window_actions.cc:139
+#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:182
+#: src/qtui/main_window_actions.cc:128 src/qtui/main_window_actions.cc:144
 msgid "By Track _Number"
 msgstr "트랙 번호순(_N)"
 
-#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:181
-#: src/qtui/main_window_actions.cc:126 src/qtui/main_window_actions.cc:141
+#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:184
+#: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:146
 msgid "By _Artist"
 msgstr "음악가 이름순(_A)"
 
-#: src/gtkui/menus.cc:167 src/gtkui/menus.cc:182
-#: src/qtui/main_window_actions.cc:127 src/qtui/main_window_actions.cc:142
+#: src/gtkui/menus.cc:169 src/gtkui/menus.cc:185
+#: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:147
 msgid "By Al_bum"
 msgstr "앨범 이름순(_B)"
 
-#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:183
-#: src/qtui/main_window_actions.cc:128 src/qtui/main_window_actions.cc:143
+#: src/gtkui/menus.cc:170 src/gtkui/menus.cc:186
+#: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:148
 msgid "By Albu_m Artist"
 msgstr ""
 
-#: src/gtkui/menus.cc:169 src/gtkui/menus.cc:184
-#: src/qtui/main_window_actions.cc:129 src/qtui/main_window_actions.cc:144
+#: src/gtkui/menus.cc:171 src/gtkui/menus.cc:187
+#: src/qtui/main_window_actions.cc:133 src/qtui/main_window_actions.cc:149
 msgid "By Release _Date"
 msgstr "출시 일자순(_D)"
 
-#: src/gtkui/menus.cc:170 src/gtkui/menus.cc:185
-#: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:145
+#: src/gtkui/menus.cc:172 src/gtkui/menus.cc:188
+#: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:150
+msgid "By _Genre"
+msgstr ""
+
+#: src/gtkui/menus.cc:173 src/gtkui/menus.cc:189
+#: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:151
 msgid "By _Length"
 msgstr "길이순(_L)"
 
-#: src/gtkui/menus.cc:171 src/gtkui/menus.cc:186
-#: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:146
+#: src/gtkui/menus.cc:174 src/gtkui/menus.cc:190
+#: src/qtui/main_window_actions.cc:136 src/qtui/main_window_actions.cc:152
 msgid "By _File Path"
 msgstr "파일 경로순(_F)"
 
-#: src/gtkui/menus.cc:172 src/gtkui/menus.cc:187
-#: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:147
+#: src/gtkui/menus.cc:175 src/gtkui/menus.cc:191
+#: src/qtui/main_window_actions.cc:137 src/qtui/main_window_actions.cc:153
 msgid "By _Custom Title"
 msgstr "사용자 정의 제목순(_C)"
 
-#: src/gtkui/menus.cc:174 src/gtkui/menus.cc:189
-#: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:149
+#: src/gtkui/menus.cc:177 src/gtkui/menus.cc:193
+#: src/qtui/main_window_actions.cc:139 src/qtui/main_window_actions.cc:155
 msgid "R_everse Order"
 msgstr "순서 뒤집기(_E)"
 
-#: src/gtkui/menus.cc:175 src/gtkui/menus.cc:190
-#: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:150
+#: src/gtkui/menus.cc:178 src/gtkui/menus.cc:194
+#: src/qtui/main_window_actions.cc:140 src/qtui/main_window_actions.cc:156
 msgid "_Random Order"
 msgstr "임의 순서(_R)"
 
-#: src/gtkui/menus.cc:194 src/qtui/main_window_actions.cc:154
-msgid "_Play This Playlist"
-msgstr "이 재생 목록 재생(_P)"
+#: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:160
+msgid "_Play/Resume"
+msgstr ""
 
-#: src/gtkui/menus.cc:195 src/gtkui/menus.cc:245
-#: src/qtui/main_window_actions.cc:155
+#: src/gtkui/menus.cc:199 src/gtkui/menus.cc:251
+#: src/qtui/main_window_actions.cc:161
 msgid "_Refresh"
 msgstr "새로 고침(_R)"
 
-#: src/gtkui/menus.cc:197 src/qtui/main_window_actions.cc:157
+#: src/gtkui/menus.cc:201 src/qtui/main_window_actions.cc:163
 msgid "_Sort"
 msgstr "정렬(_S)"
 
-#: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:158
+#: src/gtkui/menus.cc:202 src/qtui/main_window_actions.cc:164
 msgid "Sort Se_lected"
 msgstr "선택한 항목 정렬(_L)"
 
-#: src/gtkui/menus.cc:199 src/qtui/main_window_actions.cc:159
+#: src/gtkui/menus.cc:203 src/qtui/main_window_actions.cc:165
 msgid "Remove _Duplicates"
 msgstr "중복 제거(_D)"
 
-#: src/gtkui/menus.cc:200 src/qtui/main_window_actions.cc:160
+#: src/gtkui/menus.cc:204 src/qtui/main_window_actions.cc:166
 msgid "Remove _Unavailable Files"
 msgstr "사용할 수 없는 파일 제거(_U)"
 
-#: src/gtkui/menus.cc:202 src/playlist-manager/playlist-manager.cc:244
-#: src/qtui/main_window_actions.cc:162
+#: src/gtkui/menus.cc:206 src/playlist-manager/playlist-manager.cc:244
+#: src/qtui/main_window_actions.cc:168
 msgid "_New"
 msgstr "새 파일(_N)"
 
-#: src/gtkui/menus.cc:203 src/qtui/main_window_actions.cc:163
+#: src/gtkui/menus.cc:207
 msgid "Ren_ame ..."
 msgstr "이름 바꾸기(_A)..."
 
-#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:258
-#: src/qtui/main_window_actions.cc:164
+#: src/gtkui/menus.cc:208 src/gtkui/menus.cc:264
+#: src/qtui/main_window_actions.cc:170
 msgid "Remo_ve"
 msgstr "제거(_V)"
 
-#: src/gtkui/menus.cc:206 src/qtui/main_window_actions.cc:166
+#: src/gtkui/menus.cc:210
 msgid "_Import ..."
 msgstr "가져오기(_I) ..."
 
-#: src/gtkui/menus.cc:207 src/qtui/main_window_actions.cc:167
+#: src/gtkui/menus.cc:211
 msgid "_Export ..."
 msgstr "내보내기(_E) ..."
 
-#: src/gtkui/menus.cc:209 src/qtui/main_window_actions.cc:169
+#: src/gtkui/menus.cc:213
 msgid "Playlist _Manager ..."
 msgstr "재생 목록 관리자(_M) ..."
 
-#: src/gtkui/menus.cc:210 src/qtui/main_window_actions.cc:170
+#: src/gtkui/menus.cc:214 src/qtui/main_window_actions.cc:176
 msgid "_Queue Manager ..."
 msgstr "대기 목록 관리자(_Q) ..."
 
-#: src/gtkui/menus.cc:214 src/qtui/main_window_actions.cc:174
+#: src/gtkui/menus.cc:218 src/qtui/main_window_actions.cc:180
 msgid "Volume _Up"
 msgstr "음량 크게(_U)"
 
-#: src/gtkui/menus.cc:215 src/qtui/main_window_actions.cc:175
+#: src/gtkui/menus.cc:219 src/qtui/main_window_actions.cc:181
 msgid "Volume _Down"
 msgstr "음량 작게(_D)"
 
-#: src/gtkui/menus.cc:217 src/qtui/main_window_actions.cc:177
+#: src/gtkui/menus.cc:221 src/qtui/main_window_actions.cc:183
 msgid "_Equalizer"
 msgstr "이퀄라이저(_E)"
 
-#: src/gtkui/menus.cc:219 src/qtui/main_window_actions.cc:179
+#: src/gtkui/menus.cc:223 src/qtui/main_window_actions.cc:185
 msgid "E_ffects ..."
 msgstr "효과(_F)..."
 
-#: src/gtkui/menus.cc:223
+#: src/gtkui/menus.cc:227
 msgid "Show _Menu Bar"
 msgstr "메뉴 표시줄 표시(_M)"
 
-#: src/gtkui/menus.cc:224
+#: src/gtkui/menus.cc:228
 msgid "Show I_nfo Bar"
 msgstr "정보 표시줄 표시(_N)"
 
-#: src/gtkui/menus.cc:225
+#: src/gtkui/menus.cc:229
 msgid "Show Info Bar Vis_ualization"
 msgstr "정보 표시줄 시각화 표시(_U)"
 
-#: src/gtkui/menus.cc:226
+#: src/gtkui/menus.cc:230
 msgid "Show _Status Bar"
 msgstr "상태 표시줄 표시(_S)"
 
-#: src/gtkui/menus.cc:228
+#: src/gtkui/menus.cc:232
 msgid "Show _Remaining Time"
 msgstr "남은 시간 표시(_R)"
 
-#: src/gtkui/menus.cc:230
+#: src/gtkui/menus.cc:234
 msgid "_Visualizations ..."
 msgstr "시각화(_V)..."
 
-#: src/gtkui/menus.cc:234 src/qtui/main_window_actions.cc:183
+#: src/gtkui/menus.cc:238 src/qtui/main_window_actions.cc:189
 msgid "_File"
 msgstr "파일(_F)"
 
-#: src/gtkui/menus.cc:235 src/qtui/main_window_actions.cc:184
+#: src/gtkui/menus.cc:239 src/qtui/main_window_actions.cc:190
 msgid "_Playback"
 msgstr "재생(_P)"
 
-#: src/gtkui/menus.cc:236 src/qtui/main_window_actions.cc:185
+#: src/gtkui/menus.cc:240 src/qtui/main_window_actions.cc:191
 msgid "P_laylist"
 msgstr "재생 목록(_L)"
 
-#: src/gtkui/menus.cc:237 src/gtkui/menus.cc:252
-#: src/qtui/main_window_actions.cc:186
+#: src/gtkui/menus.cc:241 src/gtkui/menus.cc:258
+#: src/qtui/main_window_actions.cc:192
 msgid "_Services"
 msgstr "서비스(_S)"
 
-#: src/gtkui/menus.cc:238 src/qtui/main_window_actions.cc:187
+#: src/gtkui/menus.cc:242 src/qtui/main_window_actions.cc:193
 msgid "_Output"
 msgstr "출력(_O)"
 
-#: src/gtkui/menus.cc:239
+#: src/gtkui/menus.cc:243
 msgid "_View"
 msgstr "보기(_V)"
 
-#: src/gtkui/menus.cc:244
+#: src/gtkui/menus.cc:248
 msgid "_Queue/Unqueue"
 msgstr "대기 목록에 넣기/빼기(_Q)"
 
-#: src/gtkui/menus.cc:247
+#: src/gtkui/menus.cc:250
+msgid "_Open Containing Folder"
+msgstr ""
+
+#: src/gtkui/menus.cc:253
 msgid "Cu_t"
 msgstr "잘라내기(_T)"
 
-#: src/gtkui/menus.cc:248
+#: src/gtkui/menus.cc:254
 msgid "_Copy"
 msgstr "복사(_C)"
 
-#: src/gtkui/menus.cc:249
+#: src/gtkui/menus.cc:255
 msgid "_Paste"
 msgstr "붙여넣기(_P)"
 
-#: src/gtkui/menus.cc:250
+#: src/gtkui/menus.cc:256
 msgid "Select _All"
 msgstr "모두 선택(_A)"
 
-#: src/gtkui/menus.cc:257
+#: src/gtkui/menus.cc:263
 msgid "_Rename ..."
 msgstr "이름 바꾸기(_R) ..."
 
@@ -1977,43 +1986,56 @@ msgstr "곡 바뀔 때 스크롤"
 msgid "GTK Interface"
 msgstr "GTK 인터페이스"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:236
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:230
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - 오데이셔스"
 
-#: src/gtkui/ui_gtk.cc:225 src/qtui/main_window.cc:180
+#: src/gtkui/ui_gtk.cc:225 src/qtui/main_window.cc:186
 msgid "Buffering ..."
 msgstr "버퍼링 ..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:238 src/skins/ui_main.cc:1168
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:232 src/skins/ui_main.cc:1162
 msgid "Audacious"
 msgstr "오데이셔스"
 
-#: src/gtkui/ui_statusbar.cc:69 src/qtui/status_bar.cc:67
+#: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:67
 msgid "mono"
 msgstr "모노"
 
-#: src/gtkui/ui_statusbar.cc:71 src/qtui/status_bar.cc:69
+#: src/gtkui/ui_statusbar.cc:65 src/qtui/status_bar.cc:69
 msgid "stereo"
 msgstr "스테레오"
 
-#: src/gtkui/ui_statusbar.cc:73 src/qtui/status_bar.cc:71
+#: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:71
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
 msgstr[0] "채널 %d개"
 
-#: src/gtkui/ui_statusbar.cc:88 src/qtui/status_bar.cc:85
+#: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:85
 #, c-format
 msgid "%d kbps"
 msgstr "%d kbps"
+
+#: src/gtkui/ui_statusbar.cc:107 src/skins/ui_main_evlisteners.cc:103
+msgid "Single mode."
+msgstr "싱글 모드입니다."
+
+#: src/gtkui/ui_statusbar.cc:109 src/skins/ui_main_evlisteners.cc:105
+msgid "Playlist mode."
+msgstr "재생 목록 모드입니다."
+
+#: src/gtkui/ui_statusbar.cc:117 src/skins/ui_main_evlisteners.cc:111
+msgid "Stopping after song."
+msgstr "곡 재생 후 멈추는 중입니다."
 
 #: src/hotkey/gui.cc:71
 msgid "Previous track"
 msgstr "이전 트랙"
 
-#: src/hotkey/gui.cc:72 src/notify/osd.cc:69 src/qtui/main_window.cc:67
+#: src/hotkey/gui.cc:72 src/notify/osd.cc:69 src/qtui/main_window.cc:69
+#: src/qtui/main_window.cc:172 src/qtui/main_window.cc:173
 #: src/skins/menus.cc:87
 msgid "Play"
 msgstr "재생"
@@ -2022,7 +2044,7 @@ msgstr "재생"
 msgid "Pause/Resume"
 msgstr "일시 정지/재개"
 
-#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:68 src/skins/menus.cc:89
+#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:70 src/skins/menus.cc:89
 msgid "Stop"
 msgstr "정지"
 
@@ -2593,11 +2615,12 @@ msgstr ""
 msgid "Show"
 msgstr "보이기"
 
-#: src/notify/osd.cc:66 src/skins/menus.cc:88
+#: src/notify/osd.cc:66 src/qtui/main_window.cc:178
+#: src/qtui/main_window.cc:179 src/skins/menus.cc:88
 msgid "Pause"
 msgstr "일시 정지"
 
-#: src/notify/osd.cc:73 src/qtui/main_window.cc:70 src/skins/menus.cc:91
+#: src/notify/osd.cc:73 src/qtui/main_window.cc:72 src/skins/menus.cc:91
 msgid "Next"
 msgstr "다음"
 
@@ -2725,11 +2748,19 @@ msgstr ""
 msgid "Working ..."
 msgstr ""
 
-#: src/qtui/filter_input.cc:45 src/skins/ui_playlist.cc:221
+#: src/qtui/filter_input.cc:44 src/skins/ui_playlist.cc:221
 msgid "Search"
 msgstr "검색"
 
-#: src/qtui/main_window_actions.cc:97
+#: src/qtui/main_window_actions.cc:94
+msgid "_Open Folder ..."
+msgstr ""
+
+#: src/qtui/main_window_actions.cc:96
+msgid "_Add Folder ..."
+msgstr ""
+
+#: src/qtui/main_window_actions.cc:101
 msgid "_Log Inspector ..."
 msgstr ""
 
@@ -2737,23 +2768,23 @@ msgstr ""
 msgid "Open Files"
 msgstr ""
 
-#: src/qtui/main_window.cc:65
+#: src/qtui/main_window.cc:66
 msgid "Add Files"
 msgstr ""
 
-#: src/qtui/main_window.cc:69 src/skins/menus.cc:90
+#: src/qtui/main_window.cc:71 src/skins/menus.cc:90
 msgid "Previous"
 msgstr "이전"
 
-#: src/qtui/main_window.cc:75 src/skins/menus.cc:82
+#: src/qtui/main_window.cc:77 src/skins/menus.cc:82
 msgid "Repeat"
 msgstr "반복"
 
-#: src/qtui/main_window.cc:77 src/skins/menus.cc:83
+#: src/qtui/main_window.cc:79 src/skins/menus.cc:83
 msgid "Shuffle"
 msgstr "뒤섞기"
 
-#: src/qtui/qtui.cc:39
+#: src/qtui/qtui.cc:42
 msgid "Qt Interface"
 msgstr ""
 
@@ -3126,7 +3157,7 @@ msgid "View"
 msgstr "보기"
 
 #: src/skins/menus.cc:72 src/skins/menus.cc:136 src/skins/menus.cc:149
-#: src/skins/menus.cc:208
+#: src/skins/menus.cc:214
 msgid "Services"
 msgstr "서비스"
 
@@ -3142,7 +3173,7 @@ msgstr "설정..."
 msgid "Quit"
 msgstr "끝내기"
 
-#: src/skins/menus.cc:80 src/skins/menus.cc:200
+#: src/skins/menus.cc:80 src/skins/menus.cc:206
 msgid "Song Info ..."
 msgstr "곡 정보..."
 
@@ -3171,8 +3202,8 @@ msgid "Jump to Time ..."
 msgstr "지정 시간으로 건너뛰기..."
 
 #: src/skins/menus.cc:101
-msgid "Play This Playlist"
-msgstr "이 재생 목록 재생"
+msgid "Play/Resume"
+msgstr ""
 
 #: src/skins/menus.cc:103
 msgid "New Playlist"
@@ -3246,7 +3277,7 @@ msgstr "재생 목록 편집기 말아 올리기"
 msgid "Roll Up Equalizer"
 msgstr "이퀄라이저 말아 올리기"
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:858
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:852
 msgid "Double Size"
 msgstr ""
 
@@ -3258,15 +3289,15 @@ msgstr "URL 추가..."
 msgid "Add Files ..."
 msgstr "파일 추가..."
 
-#: src/skins/menus.cc:143 src/skins/menus.cc:170 src/skins/menus.cc:181
+#: src/skins/menus.cc:143 src/skins/menus.cc:171 src/skins/menus.cc:185
 msgid "By Title"
 msgstr "제목별"
 
-#: src/skins/menus.cc:144 src/skins/menus.cc:174 src/skins/menus.cc:185
+#: src/skins/menus.cc:144 src/skins/menus.cc:178 src/skins/menus.cc:192
 msgid "By File Name"
 msgstr ""
 
-#: src/skins/menus.cc:145 src/skins/menus.cc:175 src/skins/menus.cc:186
+#: src/skins/menus.cc:145 src/skins/menus.cc:179 src/skins/menus.cc:193
 msgid "By File Path"
 msgstr "파일 경로순"
 
@@ -3310,111 +3341,123 @@ msgstr "선택하지 않음"
 msgid "Select All"
 msgstr "모두 선택"
 
-#: src/skins/menus.cc:171 src/skins/menus.cc:182
-msgid "By Album"
-msgstr "앨범 제목순"
-
-#: src/skins/menus.cc:172 src/skins/menus.cc:183
-msgid "By Artist"
-msgstr "음악가순"
-
-#: src/skins/menus.cc:173 src/skins/menus.cc:184
-msgid "By Album Artist"
-msgstr ""
-
-#: src/skins/menus.cc:176 src/skins/menus.cc:187
-msgid "By Release Date"
-msgstr "출시일자순"
-
-#: src/skins/menus.cc:177 src/skins/menus.cc:188
+#: src/skins/menus.cc:170 src/skins/menus.cc:184
 msgid "By Track Number"
 msgstr "트랙 번호순"
 
-#: src/skins/menus.cc:192
+#: src/skins/menus.cc:172 src/skins/menus.cc:186
+msgid "By Artist"
+msgstr "음악가순"
+
+#: src/skins/menus.cc:173 src/skins/menus.cc:187
+msgid "By Album"
+msgstr "앨범 제목순"
+
+#: src/skins/menus.cc:174 src/skins/menus.cc:188
+msgid "By Album Artist"
+msgstr ""
+
+#: src/skins/menus.cc:175 src/skins/menus.cc:190
+msgid "By Release Date"
+msgstr "출시일자순"
+
+#: src/skins/menus.cc:176 src/skins/menus.cc:189
+msgid "By Genre"
+msgstr ""
+
+#: src/skins/menus.cc:177 src/skins/menus.cc:191
+msgid "By Length"
+msgstr ""
+
+#: src/skins/menus.cc:180 src/skins/menus.cc:194
+msgid "By Custom Title"
+msgstr ""
+
+#: src/skins/menus.cc:198
 msgid "Randomize List"
 msgstr "목록 순서 뒤섞기"
 
-#: src/skins/menus.cc:193
+#: src/skins/menus.cc:199
 msgid "Reverse List"
 msgstr "목록 순서 뒤집기"
 
-#: src/skins/menus.cc:195
+#: src/skins/menus.cc:201
 msgid "Sort Selected"
 msgstr "선택한 항목 정렬"
 
-#: src/skins/menus.cc:196
+#: src/skins/menus.cc:202
 msgid "Sort List"
 msgstr "목록 정렬"
 
-#: src/skins/menus.cc:202
+#: src/skins/menus.cc:208
 msgid "Cut"
 msgstr "잘라내기"
 
-#: src/skins/menus.cc:203
+#: src/skins/menus.cc:209
 msgid "Copy"
 msgstr "복사"
 
-#: src/skins/menus.cc:204
+#: src/skins/menus.cc:210
 msgid "Paste"
 msgstr "붙여넣기"
 
-#: src/skins/menus.cc:206
+#: src/skins/menus.cc:212
 msgid "Queue/Unqueue"
 msgstr "큐에 넣기/큐에서 빼기"
 
-#: src/skins/menus.cc:212
+#: src/skins/menus.cc:218
 msgid "Load Preset ..."
 msgstr "설정 목록 불러오기..."
 
-#: src/skins/menus.cc:213
+#: src/skins/menus.cc:219
 msgid "Load Auto Preset ..."
 msgstr "자동 설정 목록 불러오기..."
 
-#: src/skins/menus.cc:214
+#: src/skins/menus.cc:220
 msgid "Load Default"
 msgstr "기본 설정 불러오기"
 
-#: src/skins/menus.cc:215
+#: src/skins/menus.cc:221
 msgid "Load Preset File ..."
 msgstr "설정 목록 파일 불러오기..."
 
-#: src/skins/menus.cc:216
+#: src/skins/menus.cc:222
 msgid "Load EQF File ..."
 msgstr "EQF 파일 불러오기..."
 
-#: src/skins/menus.cc:218
+#: src/skins/menus.cc:224
 msgid "Save Preset ..."
 msgstr "설정 목록 저장..."
 
-#: src/skins/menus.cc:219
+#: src/skins/menus.cc:225
 msgid "Save Auto Preset ..."
 msgstr "자동 설정 목록 저장..."
 
-#: src/skins/menus.cc:220
+#: src/skins/menus.cc:226
 msgid "Save Default"
 msgstr "기본 설정 저장"
 
-#: src/skins/menus.cc:221
+#: src/skins/menus.cc:227
 msgid "Save Preset File ..."
 msgstr "설정 목록 파일 저장..."
 
-#: src/skins/menus.cc:222
+#: src/skins/menus.cc:228
 msgid "Save EQF File ..."
 msgstr "EQF 파일 저장..."
 
-#: src/skins/menus.cc:224
+#: src/skins/menus.cc:230
 msgid "Delete Preset ..."
 msgstr "설정 목록 삭제..."
 
-#: src/skins/menus.cc:225
+#: src/skins/menus.cc:231
 msgid "Delete Auto Preset ..."
 msgstr "자동 설정 목록 삭제..."
 
-#: src/skins/menus.cc:227
+#: src/skins/menus.cc:233
 msgid "Import Winamp Presets ..."
 msgstr "윈앰프 설정 목록 가져오기..."
 
-#: src/skins/menus.cc:229
+#: src/skins/menus.cc:235
 msgid "Reset to Zero"
 msgstr "0 값으로 초기화"
 
@@ -3645,121 +3688,109 @@ msgstr "일반"
 msgid "Visualization"
 msgstr "시각화"
 
-#: src/skins/ui_equalizer.cc:288
+#: src/skins/ui_equalizer.cc:282
 msgid "Preamp"
 msgstr "프리앰프"
 
-#: src/skins/ui_equalizer.cc:292
+#: src/skins/ui_equalizer.cc:286
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.cc:293
+#: src/skins/ui_equalizer.cc:287
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.cc:294
+#: src/skins/ui_equalizer.cc:288
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.cc:336
+#: src/skins/ui_equalizer.cc:330
 msgid "Audacious Equalizer"
 msgstr "오데이셔스 이퀄라이저"
 
-#: src/skins/ui_main.cc:692
+#: src/skins/ui_main.cc:686
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "%d 탐색:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:713
+#: src/skins/ui_main.cc:707
 #, c-format
 msgid "Volume: %d%%"
 msgstr "음량: %d%%"
 
-#: src/skins/ui_main.cc:736
+#: src/skins/ui_main.cc:730
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "균형: %d%% 왼쪽"
 
-#: src/skins/ui_main.cc:738
+#: src/skins/ui_main.cc:732
 msgid "Balance: center"
 msgstr "균형: 가운데"
 
-#: src/skins/ui_main.cc:740
+#: src/skins/ui_main.cc:734
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "균형: %d%% 오른쪽"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:840
 msgid "Options Menu"
 msgstr "옵션 메뉴"
 
-#: src/skins/ui_main.cc:850
+#: src/skins/ui_main.cc:844
 msgid "Disable 'Always On Top'"
 msgstr "'항상 위' 비활성화"
 
-#: src/skins/ui_main.cc:852
+#: src/skins/ui_main.cc:846
 msgid "Enable 'Always On Top'"
 msgstr "'항상 위' 활성화"
 
-#: src/skins/ui_main.cc:855
+#: src/skins/ui_main.cc:849
 msgid "File Info Box"
 msgstr "파일 정보 상자"
 
-#: src/skins/ui_main.cc:861
+#: src/skins/ui_main.cc:855
 msgid "Visualizations"
 msgstr ""
 
-#: src/skins/ui_main.cc:1325
+#: src/skins/ui_main.cc:1319
 msgid "Repeat point A set."
 msgstr "A 반복 시점을 설정했습니다."
 
-#: src/skins/ui_main.cc:1330
+#: src/skins/ui_main.cc:1324
 msgid "Repeat point B set."
 msgstr "B 반복 시점을 설정했습니다."
 
-#: src/skins/ui_main.cc:1339
+#: src/skins/ui_main.cc:1333
 msgid "Repeat points cleared."
 msgstr "반복 시점을 지웠습니다."
-
-#: src/skins/ui_main_evlisteners.cc:103
-msgid "Single mode."
-msgstr "싱글 모드입니다."
-
-#: src/skins/ui_main_evlisteners.cc:105
-msgid "Playlist mode."
-msgstr "재생 목록 모드입니다."
-
-#: src/skins/ui_main_evlisteners.cc:111
-msgid "Stopping after song."
-msgstr "곡 재생 후 멈추는 중입니다."
 
 #: src/skins/ui_playlist.cc:219
 msgid "Search entries in active playlist"
@@ -3949,7 +3980,7 @@ msgid ""
 msgstr ""
 
 #: src/song-info-qt/song-info.cc:32
-msgid "Track Information"
+msgid "Song Info (Qt)"
 msgstr ""
 
 #: src/sox-resampler/sox-resampler.cc:44
@@ -4006,15 +4037,15 @@ msgstr "속도:"
 msgid "Pitch:"
 msgstr "피치:"
 
-#: src/statusicon/statusicon.cc:50
+#: src/statusicon/statusicon.cc:47
 msgid "Status Icon"
 msgstr "상태 아이콘"
 
-#: src/statusicon/statusicon.cc:293
+#: src/statusicon/statusicon.cc:283
 msgid "Se_ttings ..."
 msgstr "설정(_T)..."
 
-#: src/statusicon/statusicon.cc:394
+#: src/statusicon/statusicon.cc:372
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -4032,31 +4063,31 @@ msgstr ""
 "이 플러그인은 창 관리자의 시스템 표시줄 영역에\n"
 "뜨는 상태 아이콘을 제공합니다."
 
-#: src/statusicon/statusicon.cc:401
+#: src/statusicon/statusicon.cc:379
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>마우스 스크롤 동작</b>"
 
-#: src/statusicon/statusicon.cc:402
+#: src/statusicon/statusicon.cc:380
 msgid "Change volume"
 msgstr "음량 조절하기"
 
-#: src/statusicon/statusicon.cc:405
+#: src/statusicon/statusicon.cc:383
 msgid "Change playing song"
 msgstr "재생중인 곡 바꾸기"
 
-#: src/statusicon/statusicon.cc:408
+#: src/statusicon/statusicon.cc:386
 msgid "<b>Other Settings</b>"
 msgstr "<b>기타 설정</b>"
 
-#: src/statusicon/statusicon.cc:409
+#: src/statusicon/statusicon.cc:387
 msgid "Disable the popup window"
 msgstr "풍선 도움말 창 비활성화"
 
-#: src/statusicon/statusicon.cc:411
+#: src/statusicon/statusicon.cc:389
 msgid "Close to the system tray"
 msgstr "시스템 트레이로 전환"
 
-#: src/statusicon/statusicon.cc:413
+#: src/statusicon/statusicon.cc:391
 msgid "Advance in playlist when scrolling upward"
 msgstr "재생목록을 위로 스크롤 할 때 미리 알림"
 
