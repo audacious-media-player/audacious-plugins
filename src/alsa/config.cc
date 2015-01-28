@@ -57,7 +57,8 @@ static void get_defined_devices (const char * type,
             char * name = snd_device_name_get_hint (hints[i], "NAME");
             char * description = snd_device_name_get_hint (hints[i], "DESC");
 
-            found (name, description);
+            if (name && strcmp (name, "default"))
+                found (name, description ? description : _("(no description)"));
 
             free (name);
             free (description);
