@@ -42,6 +42,8 @@ static void clear_cache (void)
         g_object_unref (last_pixbuf);
         last_pixbuf = nullptr;
     }
+
+    osd_hide ();
 }
 
 static gboolean get_album_art (void)
@@ -157,5 +159,4 @@ void event_uninit (void)
     hook_dissociate ("aosd toggle", (HookFunction) force_show);
 
     clear_cache ();
-    osd_hide ();
 }
