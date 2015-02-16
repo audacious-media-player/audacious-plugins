@@ -70,7 +70,9 @@ public:
 
     static constexpr PluginInfo info = {
         N_("Audio CD Plugin"),
-        PACKAGE
+        PACKAGE,
+        about,
+        & prefs
     };
 
     static constexpr auto iinfo = InputInfo (FlagSubtunes)
