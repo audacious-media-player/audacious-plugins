@@ -75,7 +75,7 @@ static void do_load_file (const char * filename)
     if (! file || ! aud_load_preset_file (preset, file))
         return;
 
-    equalizerwin_apply_preset (preset);
+    aud_eq_apply_preset (preset);
 }
 
 void eq_preset_load_file (void)
@@ -92,7 +92,7 @@ static void do_load_eqf (const char * filename)
     Index<EqualizerPreset> presets = aud_import_winamp_presets (file);
 
     if (presets.len ())
-        equalizerwin_apply_preset (presets[0]);
+        aud_eq_apply_preset (presets[0]);
 }
 
 void eq_preset_load_eqf (void)
@@ -103,7 +103,7 @@ void eq_preset_load_eqf (void)
 static void do_save_file (const char * filename)
 {
     EqualizerPreset preset;
-    equalizerwin_update_preset (preset);
+    aud_eq_update_preset (preset);
 
     VFSFile file (filename, "w");
     if (file)
@@ -128,7 +128,7 @@ static void do_save_eqf (const char * filename)
     EqualizerPreset preset = EqualizerPreset ();
     preset.name = String ("Preset1");
 
-    equalizerwin_update_preset (preset);
+    aud_eq_update_preset (preset);
     aud_export_winamp_preset (preset, file);
 }
 

@@ -442,7 +442,7 @@ void eq_preset_save_default (void)
 
 void eq_preset_set_zero (void)
 {
-    equalizerwin_apply_preset (EqualizerPreset ());
+    aud_eq_apply_preset (EqualizerPreset ());
 }
 
 void eq_preset_list_cleanup (void)

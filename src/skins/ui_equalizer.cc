@@ -47,11 +47,6 @@
 #include "util.h"
 #include "view.h"
 
-static float equalizerwin_get_preamp (void);
-static float equalizerwin_get_band (int band);
-static void equalizerwin_set_preamp (float preamp);
-static void equalizerwin_set_band (int band, float value);
-
 static void playback_begin_cb (void *, void *);
 
 GtkWidget *equalizerwin;
@@ -76,27 +71,13 @@ equalizerwin_shade_toggle(void)
 void
 equalizerwin_eq_changed(void)
 {
-    aud_set_double (nullptr, "equalizer_preamp", equalizerwin_get_preamp ());
+    aud_set_double (nullptr, "equalizer_preamp", eq_slider_get_val (equalizerwin_preamp));
 
     double bands[AUD_EQ_NBANDS];
     for (int i = 0; i < AUD_EQ_NBANDS; i ++)
-        bands[i] = equalizerwin_get_band (i);
+        bands[i] = eq_slider_get_val (equalizerwin_bands[i]);
 
     aud_eq_set_bands (bands);
-}
-
-void equalizerwin_apply_preset (const EqualizerPreset & preset)
-{
-    equalizerwin_set_preamp (preset.preamp);
-    for (int i = 0; i < AUD_EQ_NBANDS; i ++)
-        equalizerwin_set_band (i, preset.bands[i]);
-}
-
-void equalizerwin_update_preset (EqualizerPreset & preset)
-{
-    preset.preamp = equalizerwin_get_preamp ();
-    for (int i = 0; i < AUD_EQ_NBANDS; i ++)
-        preset.bands[i] = equalizerwin_get_band (i);
 }
 
 void equalizerwin_import_presets (Index<EqualizerPreset> && presets)
@@ -399,7 +380,7 @@ gboolean equalizerwin_load_preset (Index<EqualizerPreset> & list, const char * n
     if (p < 0)
         return FALSE;
 
-    equalizerwin_apply_preset (list[p]);
+    aud_eq_apply_preset (list[p]);
     return TRUE;
 }
 
@@ -413,8 +394,7 @@ void equalizerwin_save_preset (Index<EqualizerPreset> & list, const char * name,
         p = list.len () - 1;
     }
 
-    equalizerwin_update_preset (list[p]);
-
+    aud_eq_update_preset (list[p]);
     aud_eq_write_presets (list, filename);
 }
 
@@ -436,32 +416,8 @@ static gboolean equalizerwin_read_aud_preset (const char * filename)
     if (! file || ! aud_load_preset_file (preset, file))
         return FALSE;
 
-    equalizerwin_apply_preset (preset);
+    aud_eq_apply_preset (preset);
     return TRUE;
-}
-
-static void equalizerwin_set_preamp (float preamp)
-{
-    eq_slider_set_val (equalizerwin_preamp, preamp);
-    equalizerwin_eq_changed();
-}
-
-static void equalizerwin_set_band (int band, float value)
-{
-    g_return_if_fail(band >= 0 && band < AUD_EQ_NBANDS);
-    eq_slider_set_val (equalizerwin_bands[band], value);
-    equalizerwin_eq_changed();
-}
-
-static float equalizerwin_get_preamp (void)
-{
-    return eq_slider_get_val (equalizerwin_preamp);
-}
-
-static float equalizerwin_get_band (int band)
-{
-    g_return_val_if_fail(band >= 0 && band < AUD_EQ_NBANDS, 0.0);
-    return eq_slider_get_val (equalizerwin_bands[band]);
 }
 
 static void load_auto_preset (const char * filename)
