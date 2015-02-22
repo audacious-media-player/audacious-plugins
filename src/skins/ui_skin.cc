@@ -530,19 +530,6 @@ skin_load_nolock(Skin * skin, const char * path, gboolean force)
 
 void skin_install_skin (const char * path)
 {
-#ifdef S_IRGRP
-    const mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-#else
-    const mode_t mode = S_IRWXU;
-#endif
-
-    if (g_mkdir_with_parents (skins_paths[SKINS_PATH_USER_SKIN_DIR], mode) < 0)
-    {
-        AUDERR ("Failed to create %s: %s\n",
-         skins_paths[SKINS_PATH_USER_SKIN_DIR], strerror (errno));
-        return;
-    }
-
     GError * err = 0;
     char * data;
     size_t len;
@@ -553,6 +540,8 @@ void skin_install_skin (const char * path)
         g_error_free (err);
         return;
     }
+
+    make_directory (skins_paths[SKINS_PATH_USER_SKIN_DIR]);
 
     char * base = g_path_get_basename (path);
     char * target = g_build_filename (skins_paths[SKINS_PATH_USER_SKIN_DIR], base, nullptr);

@@ -39,8 +39,10 @@
 
 #include "util.h"
 
-#ifndef HAVE_MKDTEMP
-static void make_directory(const char *path, mode_t mode);
+#ifdef S_IRGRP
+#define DIRMODE (S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
+#else
+#define DIRMODE (S_IRWXU)
 #endif
 
 char * find_file_case (const char * folder, const char * basename)
@@ -304,13 +306,6 @@ char *archive_decompress(const char *filename)
 {
     char *tmpdir, *cmd, *escaped_filename;
     ArchiveType type;
-#ifndef HAVE_MKDTEMP
-#ifdef S_IRGRP
-    mode_t mode755 = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-#else
-    mode_t mode755 = S_IRWXU;
-#endif
-#endif
 
     if ((type = archive_get_type(filename)) <= ARCHIVE_DIR)
         return nullptr;
@@ -326,7 +321,7 @@ char *archive_decompress(const char *filename)
     }
 #else
     tmpdir = g_strdup_printf("%s/audacious.%ld", g_get_tmp_dir(), (long)rand());
-    make_directory(tmpdir, mode755);
+    make_directory(tmpdir);
 #endif
 
     escaped_filename = escape_shell_chars(filename);
@@ -432,13 +427,11 @@ gboolean dir_foreach(const char *path, DirForeachFunc function,
     return TRUE;
 }
 
-#ifndef HAVE_MKDTEMP
-static void make_directory(const char *path, mode_t mode)
+void make_directory(const char *path)
 {
-    if (g_mkdir_with_parents(path, mode) == 0)
+    if (g_mkdir_with_parents(path, DIRMODE) == 0)
         return;
 
     g_printerr(_("Could not create directory (%s): %s\n"), path,
                g_strerror(errno));
 }
-#endif
