@@ -541,10 +541,11 @@ void skin_install_skin (const char * path)
         return;
     }
 
-    make_directory (skins_paths[SKINS_PATH_USER_SKIN_DIR]);
+    const char * user_skin_dir = skins_get_user_skin_dir ();
+    make_directory (user_skin_dir);
 
     char * base = g_path_get_basename (path);
-    char * target = g_build_filename (skins_paths[SKINS_PATH_USER_SKIN_DIR], base, nullptr);
+    char * target = g_build_filename (user_skin_dir, base, nullptr);
 
     if (! g_file_set_contents (target, data, len, & err))
     {

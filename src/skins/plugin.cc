@@ -20,6 +20,7 @@
 
 #include <stdlib.h>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
@@ -88,28 +89,25 @@ public:
 
 EXPORT SkinnedUI aud_plugin_instance;
 
-char * skins_paths[SKINS_PATH_COUNT];
+static String user_skin_dir;
+static String skin_thumb_dir;
 
 static int update_source;
 
-static void skins_free_paths(void) {
-    int i;
+const char * skins_get_user_skin_dir ()
+{
+    if (! user_skin_dir)
+        user_skin_dir = String (filename_build ({g_get_user_data_dir (), "audacious", "Skins"}));
 
-    for (i = 0; i < SKINS_PATH_COUNT; i++)  {
-        g_free(skins_paths[i]);
-        skins_paths[i] = nullptr;
-    }
+    return user_skin_dir;
 }
 
-static void skins_init_paths ()
+const char * skins_get_skin_thumb_dir ()
 {
-    const char * xdg_data_home = g_get_user_data_dir ();
-    const char * xdg_cache_home = g_get_user_cache_dir ();
+    if (! skin_thumb_dir)
+        skin_thumb_dir = String (filename_build ({g_get_user_cache_dir (), "audacious", "thumbs"}));
 
-    skins_paths[SKINS_PATH_USER_SKIN_DIR] =
-        g_build_filename(xdg_data_home, "audacious", "Skins", nullptr);
-    skins_paths[SKINS_PATH_SKIN_THUMB_DIR] =
-        g_build_filename(xdg_cache_home, "audacious", "thumbs", nullptr);
+    return skin_thumb_dir;
 }
 
 static gboolean update_cb (void *)
@@ -145,7 +143,6 @@ bool SkinnedUI::init ()
     audgui_init ();
 
     skins_cfg_load ();
-    skins_init_paths ();
 
     menu_init ();
     skins_init_main ();
@@ -176,9 +173,10 @@ void SkinnedUI::cleanup ()
     skins_cleanup_main ();
     menu_cleanup ();
 
-    skins_free_paths ();
-
     audgui_cleanup ();
+
+    user_skin_dir = String ();
+    skin_thumb_dir = String ();
 }
 
 void skins_restart (void)
