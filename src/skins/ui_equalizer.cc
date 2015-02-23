@@ -65,18 +65,6 @@ equalizerwin_shade_toggle(void)
     view_set_equalizer_shaded (! aud_get_bool ("skins", "equalizer_shaded"));
 }
 
-void
-equalizerwin_eq_changed(void)
-{
-    aud_set_double (nullptr, "equalizer_preamp", eq_slider_get_val (equalizerwin_preamp));
-
-    double bands[AUD_EQ_NBANDS];
-    for (int i = 0; i < AUD_EQ_NBANDS; i ++)
-        bands[i] = eq_slider_get_val (equalizerwin_bands[i]);
-
-    aud_eq_set_bands (bands);
-}
-
 static void eq_on_cb (GtkWidget * button, GdkEventButton * event)
  {aud_set_bool (nullptr, "equalizer_active", button_get_active (button)); }
 
@@ -242,7 +230,7 @@ equalizerwin_create_widgets(void)
     gtk_widget_set_no_show_all (equalizerwin_graph, TRUE);  // shown or hidden in skin_load()
     window_put_widget (equalizerwin, FALSE, equalizerwin_graph, 86, 17);
 
-    equalizerwin_preamp = eq_slider_new (_("Preamp"));
+    equalizerwin_preamp = eq_slider_new (_("Preamp"), -1);
     window_put_widget (equalizerwin, FALSE, equalizerwin_preamp, 21, 38);
     eq_slider_set_val (equalizerwin_preamp, aud_get_double (nullptr, "equalizer_preamp"));
 
@@ -254,7 +242,7 @@ equalizerwin_create_widgets(void)
 
     for (int i = 0; i < AUD_EQ_NBANDS; i ++)
     {
-        equalizerwin_bands[i] = eq_slider_new (_(bandnames[i]));
+        equalizerwin_bands[i] = eq_slider_new (_(bandnames[i]), i);
         window_put_widget (equalizerwin, FALSE, equalizerwin_bands[i], 78 + 18 * i, 38);
         eq_slider_set_val (equalizerwin_bands[i], bands[i]);
     }

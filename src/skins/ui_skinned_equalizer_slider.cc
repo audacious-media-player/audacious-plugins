@@ -24,16 +24,17 @@
 
 #include <libaudcore/equalizer.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/runtime.h>
 
 #include "draw-compat.h"
 #include "skins_cfg.h"
-#include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_skin.h"
 #include "ui_skinned_equalizer_slider.h"
 
 typedef struct {
     char * name;
+    int band;
     int pos;
     float val;
     gboolean pressed;
@@ -64,7 +65,10 @@ static void eq_slider_moved (EqSliderData * data, int pos)
 
     data->val = (float) (25 - data->pos) * AUD_EQ_MAX_GAIN / 25;
 
-    equalizerwin_eq_changed ();
+    if (data->band < 0)
+        aud_set_double (nullptr, "equalizer_preamp", data->val);
+    else
+        aud_eq_set_band (data->band, data->val);
 
     char buf[100];
     snprintf (buf, sizeof buf, "%s: %+.1f dB", data->name, data->val);
@@ -148,14 +152,6 @@ void eq_slider_set_val (GtkWidget * slider, float val)
     gtk_widget_queue_draw (slider);
 }
 
-float eq_slider_get_val (GtkWidget * slider)
-{
-    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
-    g_return_val_if_fail (data, 0);
-
-    return data->val;
-}
-
 static void eq_slider_destroy (GtkWidget * slider)
 {
     EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
@@ -165,7 +161,7 @@ static void eq_slider_destroy (GtkWidget * slider)
     g_free (data);
 }
 
-GtkWidget * eq_slider_new (const char * name)
+GtkWidget * eq_slider_new (const char * name, int band)
 {
     GtkWidget * slider = gtk_drawing_area_new ();
     gtk_widget_set_size_request (slider, 14 * config.scale, 63 * config.scale);

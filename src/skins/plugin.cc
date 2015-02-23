@@ -33,7 +33,6 @@
 #include "plugin.h"
 #include "plugin-window.h"
 #include "skins_cfg.h"
-#include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_main_evlisteners.h"
 #include "ui_playlist.h"

@@ -27,8 +27,7 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget * eq_slider_new (const char * name);
+GtkWidget * eq_slider_new (const char * name, int band);
 void eq_slider_set_val (GtkWidget * widget, float val);
-float eq_slider_get_val (GtkWidget * widget);
 
 #endif

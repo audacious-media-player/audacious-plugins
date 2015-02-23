@@ -31,7 +31,6 @@
 void equalizerwin_create(void);
 void equalizerwin_set_volume_slider(int percent);
 void equalizerwin_set_balance_slider(int percent);
-void equalizerwin_eq_changed(void);
 
 extern GtkWidget *equalizerwin;
 extern GtkWidget *equalizerwin_graph;
