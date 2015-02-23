@@ -71,6 +71,12 @@ GtkWidget *mainwin = nullptr;
 static int balance;
 static int seek_source = 0, seek_start, seek_time;
 
+static bool mainwin_info_text_locked = false;
+static String mainwin_tb_old_text;
+
+static int status_message_source = 0;
+static int mainwin_volume_release_timeout = 0;
+
 static GtkWidget *mainwin_menubtn, *mainwin_minimize, *mainwin_shade, *mainwin_close;
 static GtkWidget *mainwin_shaded_menubtn, *mainwin_shaded_minimize, *mainwin_shaded_shade, *mainwin_shaded_close;
 
@@ -103,9 +109,6 @@ GtkWidget *mainwin_position;
 static GtkWidget *mainwin_monostereo;
 static GtkWidget *mainwin_srew, *mainwin_splay, *mainwin_spause;
 static GtkWidget *mainwin_sstop, *mainwin_sfwd, *mainwin_seject, *mainwin_about;
-
-static gboolean mainwin_info_text_locked = FALSE;
-static unsigned mainwin_volume_release_timeout = 0;
 
 static void mainwin_position_motion_cb (void);
 static void mainwin_position_release_cb (void);
@@ -163,49 +166,48 @@ mainwin_shade_toggle(void)
     view_set_player_shaded (! aud_get_bool ("skins", "player_shaded"));
 }
 
-static char *mainwin_tb_old_text = nullptr;
-
 static void mainwin_lock_info_text (const char * text)
 {
-    if (mainwin_info_text_locked != TRUE)
-        mainwin_tb_old_text = g_strdup
-         (active_skin->properties.mainwin_othertext_is_status ?
-         textbox_get_text (mainwin_othertext) : textbox_get_text (mainwin_info));
+    GtkWidget * textbox =
+     active_skin->properties.mainwin_othertext_is_status ?
+     mainwin_othertext : mainwin_info;
 
-    mainwin_info_text_locked = TRUE;
-    if (active_skin->properties.mainwin_othertext_is_status)
-        textbox_set_text (mainwin_othertext, text);
-    else
-        textbox_set_text (mainwin_info, text);
+    if (! mainwin_info_text_locked)
+        mainwin_tb_old_text = String (textbox_get_text (textbox));
+
+    mainwin_info_text_locked = true;
+    textbox_set_text (textbox, text);
 }
 
 static void mainwin_release_info_text (void)
 {
-    mainwin_info_text_locked = FALSE;
+    if (! mainwin_info_text_locked)
+        return;
 
-    if (mainwin_tb_old_text != nullptr)
-    {
-        if (active_skin->properties.mainwin_othertext_is_status)
-            textbox_set_text (mainwin_othertext, mainwin_tb_old_text);
-        else
-            textbox_set_text (mainwin_info, mainwin_tb_old_text);
-        g_free(mainwin_tb_old_text);
-        mainwin_tb_old_text = nullptr;
-    }
+    if (active_skin->properties.mainwin_othertext_is_status)
+        textbox_set_text (mainwin_othertext, mainwin_tb_old_text);
+    else
+        textbox_set_text (mainwin_info, mainwin_tb_old_text);
+
+    mainwin_info_text_locked = false;
+    mainwin_tb_old_text = String ();
 }
 
 static void mainwin_set_info_text (const char * text)
 {
-    if (mainwin_info_text_locked)
-    {
-        g_free (mainwin_tb_old_text);
-        mainwin_tb_old_text = g_strdup (text);
-    }
+    if (mainwin_info_text_locked && ! active_skin->properties.mainwin_othertext_is_status)
+        mainwin_tb_old_text = String (text);
     else
         textbox_set_text (mainwin_info, text);
 }
 
-static int status_message_source = 0;
+static void mainwin_set_othertext (const char * text)
+{
+    if (mainwin_info_text_locked && active_skin->properties.mainwin_othertext_is_status)
+        mainwin_tb_old_text = String (text);
+    else
+        textbox_set_text (mainwin_othertext, text);
+}
 
 static gboolean clear_status_message (void *)
 {
@@ -361,7 +363,7 @@ void mainwin_set_song_info (int bitrate, int samplerate, int channels)
          ", " : "", channels > 2 ? "surround" : channels > 1 ? "stereo" : "mono");
     }
 
-    textbox_set_text (mainwin_othertext, scratch);
+    mainwin_set_othertext (scratch);
 }
 
 void
@@ -389,7 +391,7 @@ mainwin_clear_song_info(void)
     textbox_set_text (mainwin_rate_text, "   ");
     textbox_set_text (mainwin_freq_text, "  ");
     ui_skinned_monostereo_set_num_channels(mainwin_monostereo, 0);
-    textbox_set_text (mainwin_othertext, "");
+    mainwin_set_othertext ("");
 
     if (mainwin_playstatus != nullptr)
         ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_STOP);
@@ -1181,14 +1183,29 @@ mainwin_create_window(void)
 
 void mainwin_unhook (void)
 {
-    if (seek_source != 0)
+    if (seek_source)
     {
         g_source_remove (seek_source);
         seek_source = 0;
     }
 
+    if (status_message_source)
+    {
+        g_source_remove (status_message_source);
+        status_message_source = 0;
+    }
+
+    if (mainwin_volume_release_timeout)
+    {
+        g_source_remove (mainwin_volume_release_timeout);
+        mainwin_volume_release_timeout = 0;
+    }
+
     ui_main_evlistener_dissociate ();
     start_stop_visual (TRUE);
+
+    mainwin_info_text_locked = false;
+    mainwin_tb_old_text = String ();
 }
 
 void
