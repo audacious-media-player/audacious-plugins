@@ -4,8 +4,6 @@ SRCS = drag-handle.cc \
        menus.cc \
        plugin.cc \
        plugin-window.cc \
-       preset-browser.cc \
-       preset-list.cc \
        skins_cfg.cc \
        surface.cc \
        ui_skin.cc \

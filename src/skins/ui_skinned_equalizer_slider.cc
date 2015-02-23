@@ -22,6 +22,7 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses>.
  */
 
+#include <libaudcore/equalizer.h>
 #include <libaudcore/i18n.h>
 
 #include "draw-compat.h"

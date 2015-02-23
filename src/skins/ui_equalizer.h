@@ -28,25 +28,12 @@
 
 #include <gtk/gtk.h>
 
-#include <libaudcore/equalizer.h>
-
-#define EQUALIZER_DEFAULT_DIR_PRESET "dir_default.preset"
-#define EQUALIZER_DEFAULT_PRESET_EXT "preset"
-
 void equalizerwin_create(void);
 void equalizerwin_set_volume_slider(int percent);
 void equalizerwin_set_balance_slider(int percent);
 void equalizerwin_eq_changed(void);
 
-void equalizerwin_import_presets (Index<EqualizerPreset> && presets);
-
 extern GtkWidget *equalizerwin;
 extern GtkWidget *equalizerwin_graph;
-
-extern Index<EqualizerPreset> equalizer_presets, equalizer_auto_presets;
-
-gboolean equalizerwin_load_preset (Index<EqualizerPreset> & list, const char * name);
-void equalizerwin_save_preset (Index<EqualizerPreset> & list, const char * name, const char * filename);
-void equalizerwin_delete_preset (Index<EqualizerPreset> & list, const char * name, const char * filename);
 
 #endif /* SKINS_UI_EQUALIZER_H */

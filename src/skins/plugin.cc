@@ -32,8 +32,6 @@
 #include "menus.h"
 #include "plugin.h"
 #include "plugin-window.h"
-#include "preset-browser.h"
-#include "preset-list.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
@@ -159,9 +157,6 @@ static void skins_cleanup_main (void)
     g_source_remove (update_source);
 
     cleanup_skins ();
-
-    eq_preset_browser_cleanup ();
-    eq_preset_list_cleanup ();
 }
 
 void SkinnedUI::cleanup ()
