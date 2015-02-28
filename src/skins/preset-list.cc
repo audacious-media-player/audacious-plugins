@@ -75,6 +75,7 @@ equalizerwin_delete_selected_presets(GtkTreeView *view, const char *filename)
         GtkTreePath *path = gtk_tree_row_reference_get_path(ref);
         GtkTreeIter iter;
         gtk_tree_model_get_iter(model, &iter, path);
+        gtk_tree_path_free(path);
 
         gtk_tree_model_get(model, &iter, 0, &text, -1);
 

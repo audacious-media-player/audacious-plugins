@@ -19,10 +19,6 @@ AUD_COMMON_PROGS
 
 BUILDSYS_SHARED_LIB
 
-dnl Headers and functions
-dnl =====================
-AC_CHECK_FUNCS([mkdtemp])
-
 dnl gettext
 dnl =======
 AM_GNU_GETTEXT([external])

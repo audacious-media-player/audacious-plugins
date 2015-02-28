@@ -139,7 +139,10 @@ static GdkPixbuf * skin_get_thumbnail (const char * path)
     audgui_pixbuf_scale_within (& thumb, 128);
 
     if (thumb)
+    {
+        make_directory (skins_paths[SKINS_PATH_SKIN_THUMB_DIR]);
         gdk_pixbuf_save (thumb, thumbname, "png", nullptr, nullptr);
+    }
 
 DONE:
     g_free (thumbname);

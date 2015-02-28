@@ -101,24 +101,15 @@ static void skins_free_paths(void) {
     }
 }
 
-static void skins_init_paths() {
-    char *xdg_data_home;
-    char *xdg_cache_home;
-
-    xdg_data_home = (getenv("XDG_DATA_HOME") == nullptr
-        ? g_build_filename(g_get_home_dir(), ".local", "share", nullptr)
-        : g_strdup(getenv("XDG_DATA_HOME")));
-    xdg_cache_home = (getenv("XDG_CACHE_HOME") == nullptr
-        ? g_build_filename(g_get_home_dir(), ".cache", nullptr)
-        : g_strdup(getenv("XDG_CACHE_HOME")));
+static void skins_init_paths ()
+{
+    const char * xdg_data_home = g_get_user_data_dir ();
+    const char * xdg_cache_home = g_get_user_cache_dir ();
 
     skins_paths[SKINS_PATH_USER_SKIN_DIR] =
         g_build_filename(xdg_data_home, "audacious", "Skins", nullptr);
     skins_paths[SKINS_PATH_SKIN_THUMB_DIR] =
         g_build_filename(xdg_cache_home, "audacious", "thumbs", nullptr);
-
-    g_free(xdg_data_home);
-    g_free(xdg_cache_home);
 }
 
 static gboolean update_cb (void *)
