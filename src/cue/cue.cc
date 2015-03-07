@@ -107,9 +107,11 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
         if (! base_tuple_scanned)
         {
             base_tuple_scanned = true;
-            PluginHandle * decoder = aud_file_find_decoder (filename, false);
+
+            VFSFile file;
+            PluginHandle * decoder = aud_file_find_decoder (filename, false, file);
             if (decoder != nullptr)
-                base_tuple = aud_file_read_tuple (filename, decoder);
+                base_tuple = aud_file_read_tuple (filename, decoder, file);
         }
 
         Track * next = (track + 1 <= tracks) ? cd_get_track (cd, track + 1) : nullptr;
