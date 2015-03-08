@@ -187,6 +187,21 @@ err:
     return false;
 }
 
+// with better buffering in Audacious 3.7, this is now safe for streams
+static bool detect_id3 (VFSFile & file)
+{
+    bool is_id3 = false;
+    char id3buf[3];
+
+    if (file.fread (id3buf, 1, 3) == 3)
+        is_id3 = ! memcmp (id3buf, "ID3", 3);
+
+    if (file.fseek (0, VFS_SEEK_SET) < 0)
+        is_id3 = false;
+
+    return is_id3;
+}
+
 static StringBuf make_format_string (const mpg123_frameinfo * info)
 {
     static const char * vers[] = {"1", "2", "2.5"};
@@ -206,18 +221,8 @@ bool MPG123Plugin::is_our_file (const char * filename, VFSFile & file)
     /* Some MP3s begin with enormous ID3 tags, which fill up the whole probe
      * buffer and thus hide any MP3 content.  As a workaround, assume that an
      * ID3 tag means an MP3 file.  --jlindgren */
-    if (! stream)
-    {
-        char id3buf[3];
-        if (file.fread (id3buf, 1, 3) != 3)
-            return false;
-
-        if (! memcmp (id3buf, "ID3", 3))
-            return true;
-
-        if (file.fseek (0, VFS_SEEK_SET) < 0)
-            return false;
-    }
+    if (detect_id3 (file))
+        return true;
 
     DecodeState s;
     if (! s.init (filename, file, true, stream))
@@ -275,7 +280,11 @@ bool MPG123Plugin::play (const char * filename, VFSFile & file)
 
     Tuple tuple;
     if (stream)
+    {
         tuple = get_playback_tuple ();
+        if (detect_id3 (file) && audtag::tuple_read (tuple, file))
+            set_playback_tuple (tuple.ref ());
+    }
 
     DecodeState s;
     if (! s.init (filename, file, false, stream))
