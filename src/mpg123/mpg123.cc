@@ -126,7 +126,7 @@ struct DecodeState
 {
     mpg123_handle * dec = nullptr;
 
-    bool init (const char * filename, VFSFile & file, bool quiet, bool stream);
+    bool init (const char * filename, VFSFile & file, bool probing, bool stream);
 
     ~DecodeState()
         { mpg123_delete (dec); }
@@ -138,12 +138,16 @@ struct DecodeState
     float buf[4096];
 };
 
-bool DecodeState::init (const char * filename, VFSFile & file, bool quiet, bool stream)
+bool DecodeState::init (const char * filename, VFSFile & file, bool probing, bool stream)
 {
     dec = mpg123_new (nullptr, nullptr);
     mpg123_param (dec, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
     mpg123_replace_reader_handle (dec, replace_read,
      stream ? replace_lseek_dummy : replace_lseek, nullptr);
+
+    /* be strict about junk data in file during content probe */
+    if (probing)
+        mpg123_param (dec, MPG123_RESYNC_LIMIT, 0, 0);
 
     mpg123_format_none (dec);
 
@@ -175,7 +179,7 @@ bool DecodeState::init (const char * filename, VFSFile & file, bool quiet, bool 
     }
 
 err:
-    if (quiet)
+    if (probing)
         AUDDBG ("mpg123 error in %s: %s\n", filename, mpg123_strerror (dec));
     else
         AUDERR ("mpg123 error in %s: %s\n", filename, mpg123_strerror (dec));
@@ -209,12 +213,6 @@ static StringBuf make_format_string (const mpg123_frameinfo * info)
 
 bool MPG123Plugin::is_our_file (const char * filename, VFSFile & file)
 {
-    /* MPG123 likes to grab WMA streams, so blacklist anything that starts with
-     * mms://.  If there are mms:// streams out there carrying MP3, they will
-     * just have to play in ffaudio.  --jlindgren */
-    if (! strncmp (filename, "mms://", 6))
-        return false;
-
     bool stream = (file.fsize () < 0);
 
     /* Some MP3s begin with enormous ID3 tags, which fill up the whole probe
