@@ -59,7 +59,8 @@ EXPORT SndfilePlugin aud_plugin_instance;
 static sf_count_t
 sf_get_filelen (void *user_data)
 {
-    return ((VFSFile *) user_data)->fsize ();
+    int64_t size = ((VFSFile *) user_data)->fsize ();
+    return (size < 0) ? SF_COUNT_MAX : size;
 }
 
 static sf_count_t
