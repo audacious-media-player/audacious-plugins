@@ -100,12 +100,6 @@ static void playback_update (void)
     show_playing ();
 }
 
-static void art_ready (void)
-{
-    if (aud_drct_get_playing () && get_album_art ())
-        show_playing ();
-}
-
 static void playback_paused (void)
 {
     if (aud_get_bool ("notify", "resident"))
@@ -138,7 +132,6 @@ void event_init (void)
     hook_associate ("playback begin", (HookFunction) clear_cache, nullptr);
     hook_associate ("playback ready", (HookFunction) playback_update, nullptr);
     hook_associate ("tuple change", (HookFunction) playback_update, nullptr);
-    hook_associate ("current art ready", (HookFunction) art_ready, nullptr);
     hook_associate ("playback pause", (HookFunction) playback_paused, nullptr);
     hook_associate ("playback unpause", (HookFunction) playback_paused, nullptr);
     hook_associate ("playback stop", (HookFunction) playback_stopped, nullptr);
@@ -151,7 +144,6 @@ void event_uninit (void)
     hook_dissociate ("playback begin", (HookFunction) clear_cache);
     hook_dissociate ("playback ready", (HookFunction) playback_update);
     hook_dissociate ("tuple change", (HookFunction) playback_update);
-    hook_dissociate ("current art ready", (HookFunction) art_ready);
     hook_dissociate ("playback pause", (HookFunction) playback_paused);
     hook_dissociate ("playback unpause", (HookFunction) playback_paused);
     hook_dissociate ("playback stop", (HookFunction) playback_stopped);

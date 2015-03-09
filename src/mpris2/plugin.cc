@@ -24,7 +24,6 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/probe.h>
 #include <libaudcore/runtime.h>
@@ -52,7 +51,6 @@ static GObject * object_core, * object_player;
 static String last_title, last_artist, last_album, last_file;
 static int last_length;
 static const char * image_file;
-static gboolean recheck_image;
 static int update_timer;
 
 static gboolean quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
@@ -76,31 +74,27 @@ static void update_metadata (void * data, GObject * object)
     String title, artist, album, file;
     int length = 0;
 
-    int playlist = aud_playlist_get_playing ();
-    int entry = (playlist >= 0) ? aud_playlist_get_position (playlist) : -1;
-
-    if (entry >= 0)
+    if (aud_drct_get_ready ())
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (playlist, entry, Playlist::Guess);
+        Tuple tuple = aud_drct_get_tuple ();
 
         title = tuple.get_str (Tuple::Title);
         artist = tuple.get_str (Tuple::Artist);
         album = tuple.get_str (Tuple::Album);
         length = tuple.get_int (Tuple::Length);
 
-        file = aud_playlist_entry_get_filename (playlist, entry);
+        file = aud_drct_get_filename ();
     }
 
     if (title == last_title && artist == last_artist && album == last_album
-     && file == last_file && length == last_length && ! recheck_image)
+     && file == last_file && length == last_length)
         return;
 
-    if (file != last_file || recheck_image)
+    if (file != last_file)
     {
         if (image_file)
             aud_art_unref (last_file);
         image_file = file ? aud_art_request_file (file) : nullptr;
-        recheck_image = false;
     }
 
     last_title = title;
@@ -168,12 +162,6 @@ static void update_metadata (void * data, GObject * object)
 
     GVariant * array = g_variant_new_array (G_VARIANT_TYPE ("{sv}"), elems, nelems);
     g_object_set (object, "metadata", array, nullptr);
-}
-
-static void update_image (void * data, GObject * object)
-{
-    recheck_image = true;
-    update_metadata (data, object);
 }
 
 static void volume_changed (GObject * object)
@@ -294,11 +282,9 @@ void MPRIS2Plugin::cleanup ()
     hook_dissociate ("playback stop", (HookFunction) update_playback_status);
     hook_dissociate ("playback unpause", (HookFunction) update_playback_status);
 
-    hook_dissociate ("playlist set playing", (HookFunction) update_metadata);
-    hook_dissociate ("playlist position", (HookFunction) update_metadata);
-    hook_dissociate ("playlist update", (HookFunction) update_metadata);
-
-    hook_dissociate ("current art ready", (HookFunction) update_image);
+    hook_dissociate ("playback ready", (HookFunction) update_metadata);
+    hook_dissociate ("playback stop", (HookFunction) update_metadata);
+    hook_dissociate ("tuple change", (HookFunction) update_metadata);
 
     hook_dissociate ("playback ready", (HookFunction) emit_seek);
     hook_dissociate ("playback seek", (HookFunction) emit_seek);
@@ -378,11 +364,9 @@ bool MPRIS2Plugin::init ()
     hook_associate ("playback stop", (HookFunction) update_playback_status, object_player);
     hook_associate ("playback unpause", (HookFunction) update_playback_status, object_player);
 
-    hook_associate ("playlist set playing", (HookFunction) update_metadata, object_player);
-    hook_associate ("playlist position", (HookFunction) update_metadata, object_player);
-    hook_associate ("playlist update", (HookFunction) update_metadata, object_player);
-
-    hook_associate ("current art ready", (HookFunction) update_image, object_player);
+    hook_associate ("playback ready", (HookFunction) update_metadata, object_player);
+    hook_associate ("playback stop", (HookFunction) update_metadata, object_player);
+    hook_associate ("tuple change", (HookFunction) update_metadata, object_player);
 
     hook_associate ("playback ready", (HookFunction) emit_seek, object_player);
     hook_associate ("playback seek", (HookFunction) emit_seek, object_player);

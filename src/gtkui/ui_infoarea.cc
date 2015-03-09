@@ -398,17 +398,6 @@ static void set_album_art ()
         audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
 }
 
-static void album_art_ready ()
-{
-    g_return_if_fail (area);
-
-    if (! aud_drct_get_playing ())
-        return;
-
-    set_album_art ();
-    gtk_widget_queue_draw (area->main);
-}
-
 static void infoarea_next ()
 {
     g_return_if_fail (area);
@@ -508,7 +497,6 @@ static void destroy_cb (GtkWidget * widget)
     hook_dissociate ("tuple change", (HookFunction) ui_infoarea_set_title);
     hook_dissociate ("playback ready", (HookFunction) ui_infoarea_playback_start);
     hook_dissociate ("playback stop", (HookFunction) ui_infoarea_playback_stop);
-    hook_dissociate ("current art ready", (HookFunction) album_art_ready);
 
     if (area->fade_timeout)
     {
@@ -541,7 +529,6 @@ GtkWidget * ui_infoarea_new ()
     hook_associate ("tuple change", (HookFunction) ui_infoarea_set_title, nullptr);
     hook_associate ("playback ready", (HookFunction) ui_infoarea_playback_start, nullptr);
     hook_associate ("playback stop", (HookFunction) ui_infoarea_playback_stop, nullptr);
-    hook_associate ("current art ready", (HookFunction) album_art_ready, nullptr);
 
     g_signal_connect (area->box, "destroy", (GCallback) destroy_cb, nullptr);
 

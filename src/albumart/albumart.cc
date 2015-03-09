@@ -39,11 +39,8 @@ public:
 
 EXPORT AlbumArtPlugin aud_plugin_instance;
 
-static void album_update (void * unused, GtkWidget * widget)
+static void album_update (void *, GtkWidget * widget)
 {
-    if (! aud_drct_get_playing ())
-        return;
-
     GdkPixbuf * pixbuf = audgui_pixbuf_request_current ();
 
     if (! pixbuf)
@@ -55,15 +52,14 @@ static void album_update (void * unused, GtkWidget * widget)
         g_object_unref (pixbuf);
 }
 
-static void album_clear (void * unused, GtkWidget * widget)
+static void album_clear (void *, GtkWidget * widget)
 {
     audgui_scaled_image_set (widget, nullptr);
 }
 
 static void album_cleanup (GtkWidget * widget)
 {
-    hook_dissociate ("playback begin", (HookFunction) album_update, widget);
-    hook_dissociate ("current art ready", (HookFunction) album_update, widget);
+    hook_dissociate ("playback ready", (HookFunction) album_update, widget);
     hook_dissociate ("playback stop", (HookFunction) album_clear, widget);
 
     audgui_cleanup ();
@@ -78,11 +74,11 @@ void * AlbumArtPlugin::get_gtk_widget ()
 
     g_signal_connect (widget, "destroy", (GCallback) album_cleanup, nullptr);
 
-    hook_associate ("playback begin", (HookFunction) album_update, widget);
-    hook_associate ("current art ready", (HookFunction) album_update, widget);
+    hook_associate ("playback ready", (HookFunction) album_update, widget);
     hook_associate ("playback stop", (HookFunction) album_clear, widget);
 
-    album_update (nullptr, widget);
+    if (aud_drct_get_ready ())
+        album_update (nullptr, widget);
 
     return widget;
 }
