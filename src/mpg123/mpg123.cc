@@ -66,8 +66,7 @@ public:
     void cleanup ();
 
     bool is_our_file (const char * filename, VFSFile & file);
-    Tuple read_tuple (const char * filename, VFSFile & file);
-    Index<char> read_image (const char * filename, VFSFile & file);
+    bool read_tag (const char * filename, VFSFile & file, Tuple * tuple, Index<char> * image);
     bool write_tuple (const char * filename, VFSFile & file, const Tuple & tuple);
     bool play (const char * filename, VFSFile & file);
 };
@@ -232,17 +231,15 @@ bool MPG123Plugin::is_our_file (const char * filename, VFSFile & file)
     return true;
 }
 
-Tuple MPG123Plugin::read_tuple (const char * filename, VFSFile & file)
+static bool read_mpg123_info (const char * filename, VFSFile & file, Tuple & tuple)
 {
     int64_t size = file.fsize ();
     bool stream = (size < 0);
-    Tuple tuple;
 
     DecodeState s;
     if (! s.init (filename, file, false, stream))
-        return tuple;
+        return false;
 
-    tuple.set_filename (filename);
     tuple.set_str (Tuple::Codec, make_format_string (& s.info));
     tuple.set_str (Tuple::Quality, str_printf ("%s, %d Hz", (s.channels == 2) ?
      _("Stereo") : (s.channels > 2) ? _("Surround") : _("Mono"), (int) s.rate));
@@ -260,13 +257,29 @@ Tuple MPG123Plugin::read_tuple (const char * filename, VFSFile & file)
         }
     }
 
-    if (! stream && ! file.fseek (0, VFS_SEEK_SET))
-        audtag::tuple_read (tuple, file);
+    return true;
+}
 
-    if (stream)
-        tuple.fetch_stream_info (file);
+bool MPG123Plugin::read_tag (const char * filename, VFSFile & file, Tuple * tuple, Index<char> * image)
+{
+    bool stream = (file.fsize () < 0);
 
-    return tuple;
+    if (tuple)
+    {
+        if (! read_mpg123_info (filename, file, * tuple))
+            return false;
+
+        if (stream)
+            tuple->fetch_stream_info (file);
+
+        if (! stream && file.fseek (0, VFS_SEEK_SET) != 0)
+            return false;
+    }
+
+    if (! stream)
+        audtag::read_tag (file, tuple, image);
+
+    return true;
 }
 
 static void print_mpg123_error (const char * filename, mpg123_handle * decoder)
@@ -282,7 +295,7 @@ bool MPG123Plugin::play (const char * filename, VFSFile & file)
     if (stream)
     {
         tuple = get_playback_tuple ();
-        if (detect_id3 (file) && audtag::tuple_read (tuple, file))
+        if (detect_id3 (file) && audtag::read_tag (file, & tuple, nullptr))
             set_playback_tuple (tuple.ref ());
     }
 
@@ -362,14 +375,6 @@ bool MPG123Plugin::write_tuple (const char * filename, VFSFile & file, const Tup
         return false;
 
     return audtag::tuple_write (tuple, file, audtag::TagType::ID3v2);
-}
-
-Index<char> MPG123Plugin::read_image (const char * filename, VFSFile & file)
-{
-    if (file.fsize () < 0)  // stream?
-        return Index<char> ();
-
-    return audtag::image_read (file);
 }
 
 const char * const MPG123Plugin::exts[] = { "mp3", "mp2", "mp1", "bmu", nullptr };
