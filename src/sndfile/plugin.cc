@@ -66,7 +66,16 @@ sf_get_filelen (void *user_data)
 static sf_count_t
 sf_vseek (sf_count_t offset, int whence, void *user_data)
 {
-    return ((VFSFile *) user_data)->fseek (offset, to_vfs_seek_type (whence));
+    if (((VFSFile *) user_data)->fseek (offset, to_vfs_seek_type (whence)) != 0)
+        return -1;
+
+    return ((VFSFile *) user_data)->ftell ();
+}
+
+static sf_count_t
+sf_vseek_dummy (sf_count_t offset, int whence, void *user_data)
+{
+    return -1;
 }
 
 static sf_count_t
@@ -76,9 +85,9 @@ sf_vread (void *ptr, sf_count_t count, void *user_data)
 }
 
 static sf_count_t
-sf_vwrite (const void *ptr, sf_count_t count, void *user_data)
+sf_vwrite_dummy (const void *ptr, sf_count_t count, void *user_data)
 {
-    return ((VFSFile *) user_data)->fwrite (ptr, 1, count);
+    return 0;
 }
 
 static sf_count_t
@@ -92,7 +101,16 @@ static SF_VIRTUAL_IO sf_virtual_io =
     sf_get_filelen,
     sf_vseek,
     sf_vread,
-    sf_vwrite,
+    sf_vwrite_dummy,
+    sf_tell
+};
+
+static SF_VIRTUAL_IO sf_virtual_io_stream =
+{
+    sf_get_filelen,
+    sf_vseek_dummy,
+    sf_vread,
+    sf_vwrite_dummy,
     sf_tell
 };
 
@@ -112,12 +130,13 @@ static void copy_int (SNDFILE * sf, int sf_id, Tuple & tup, Tuple::Field field)
 
 Tuple SndfilePlugin::read_tuple (const char * filename, VFSFile & file)
 {
-    SNDFILE *sndfile;
     SF_INFO sfinfo;
     const char *format, *subformat;
     Tuple ti;
 
-    sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, & file);
+    bool stream = (file.fsize () < 0);
+    SNDFILE * sndfile = sf_open_virtual (stream ? & sf_virtual_io_stream :
+     & sf_virtual_io, SFM_READ, & sfinfo, & file);
 
     if (sndfile == nullptr)
         return ti;
@@ -288,7 +307,11 @@ Tuple SndfilePlugin::read_tuple (const char * filename, VFSFile & file)
 bool SndfilePlugin::play (const char * filename, VFSFile & file)
 {
     SF_INFO sfinfo;
-    SNDFILE * sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, & file);
+
+    bool stream = (file.fsize () < 0);
+    SNDFILE * sndfile = sf_open_virtual (stream ? & sf_virtual_io_stream :
+     & sf_virtual_io, SFM_READ, & sfinfo, & file);
+
     if (sndfile == nullptr)
         return false;
 
@@ -317,11 +340,12 @@ bool SndfilePlugin::play (const char * filename, VFSFile & file)
 
 bool SndfilePlugin::is_our_file (const char * filename, VFSFile & file)
 {
-    SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
 
     /* Have to open the file to see if libsndfile can handle it. */
-    tmp_sndfile = sf_open_virtual (&sf_virtual_io, SFM_READ, &tmp_sfinfo, &file);
+    bool stream = (file.fsize () < 0);
+    SNDFILE * tmp_sndfile = sf_open_virtual (stream ? & sf_virtual_io_stream :
+     & sf_virtual_io, SFM_READ, & tmp_sfinfo, & file);
 
     if (!tmp_sndfile)
         return false;
