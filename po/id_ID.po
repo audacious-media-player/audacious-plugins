@@ -5,7 +5,7 @@
 # Translators:
 # Rahman Yusri Aftian <aftian@yahoo.com>, 2012
 # Andika Triwidada <andika@gmail.com>, 2012
-# Ardjuna <Asyura.x@gmail.com>, 2013
+# Ardjuna <Asyura.x@gmail.com>, 2013,2015
 # Ardjuna <Asyura.x@gmail.com>, 2012
 # abd azis ws <astrojim.blankon@gmail.com>, 2012
 #  <bu0ncu3@yahoo.com>, 2012
@@ -22,11 +22,11 @@
 #  <yustrizal24@gmail.com>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-02-28 19:18+0100\n"
-"PO-Revision-Date: 2015-02-04 21:21+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2015-04-03 11:52+0200\n"
+"PO-Revision-Date: 2015-03-05 11:08+0000\n"
+"Last-Translator: Ardjuna <Asyura.x@gmail.com>\n"
 "Language-Team: Indonesian (Indonesia) (http://www.transifex.com/projects/p/"
 "audacious/language/id_ID/)\n"
 "Language: id_ID\n"
@@ -37,7 +37,7 @@ msgstr ""
 
 #: src/aac-raw/aac.cc:18
 msgid "AAC (Raw) Decoder"
-msgstr ""
+msgstr "Dekoder AAC (orisinal)"
 
 #: src/adplug/adplug-xmms.cc:42
 msgid "AdPlug (AdLib Player)"
@@ -54,7 +54,7 @@ msgstr "Alarm"
 
 #: src/alarm/alarm.cc:782
 msgid "Set Alarm ..."
-msgstr ""
+msgstr "Setel Alarm..."
 
 #: src/alarm/alarm.cc:810
 msgid ""
@@ -88,6 +88,26 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+"Waktu\n"
+"  Alarm pada:\n"
+"    Waktu saat alarm aktif.\n"
+"\n"
+"  Diam saat:\n"
+"    Hentikan alarm saat waktu ini tiba.\n"
+"       (jika dialog pengingat tidak ditutup)\n"
+"\n"
+"\n"
+"Hari\n"
+"  Hari aktif:\n"
+"    Pilih hari saat alarm akan aktif.\n"
+"\n"
+"  Waktu:\n"
+"    Pilih waktu aktif alarm pada hari H,\n"
+"    atau tekan tombol untuk menggunakan\n"
+"    waktu standar.\n"
+"\n"
+"\n"
+"\n"
 
 #: src/alarm/interface.cc:45
 msgid ""
@@ -291,7 +311,7 @@ msgstr ""
 
 #: src/alsa/config.cc:61
 msgid "(no description)"
-msgstr ""
+msgstr "(tidak ada deskripsi)"
 
 #: src/alsa/config.cc:166
 msgid "Default PCM device"
@@ -370,15 +390,15 @@ msgstr "Tukar tempat"
 
 #: src/amidi-plug/i_configure.cc:131
 msgid "semitones"
-msgstr ""
+msgstr "nada setengah"
 
 #: src/amidi-plug/i_configure.cc:132
 msgid "Drum shift:"
-msgstr ""
+msgstr "Perpindahan drum: "
 
 #: src/amidi-plug/i_configure.cc:134
 msgid "note numbers"
-msgstr ""
+msgstr "angka not"
 
 #: src/amidi-plug/i_configure.cc:135
 msgid "Skip leading silence"
@@ -745,7 +765,7 @@ msgstr "x1/10 dB"
 
 #: src/bs2b/plugin.cc:139
 msgid "Cut frequency:"
-msgstr ""
+msgstr "Frekuensi potong:"
 
 #: src/cairo-spectrum/cairo-spectrum.cc:41
 msgid "Spectrum Analyzer"

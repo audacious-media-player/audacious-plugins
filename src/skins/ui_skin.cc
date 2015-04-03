@@ -591,6 +591,10 @@ static gboolean skin_load (Skin * skin, const char * path)
         ui_skinned_playstatus_set_size (mainwin_playstatus, 11,
          cairo_image_surface_get_height (skin->pixmaps[SKIN_PLAYPAUSE]));
 
+    // hide the menurow if it is not present in the skin
+    if (cairo_image_surface_get_width (skin->pixmaps[SKIN_TITLEBAR]) < 344)
+        skin->properties.mainwin_menurow_visible = false;
+
     // hide the equalizer graph if we have a short eqmain.bmp
     gtk_widget_set_visible (equalizerwin_graph,
      cairo_image_surface_get_height (skin->pixmaps[SKIN_EQMAIN]) >= 315);

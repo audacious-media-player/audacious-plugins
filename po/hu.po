@@ -9,11 +9,11 @@
 # Péter Polonkai <polesz@nedudu.hu>, 2011-2012,2014-2015
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-02-28 19:18+0100\n"
-"PO-Revision-Date: 2015-02-12 22:09+0000\n"
-"Last-Translator: Ferenc Szabo <szaboferee@gmail.com>\n"
+"POT-Creation-Date: 2015-04-03 11:52+0200\n"
+"PO-Revision-Date: 2015-03-04 13:41+0000\n"
+"Last-Translator: Péter Polonkai <polesz@nedudu.hu>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/audacious/"
 "language/hu/)\n"
 "Language: hu\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: src/aac-raw/aac.cc:18
 msgid "AAC (Raw) Decoder"
-msgstr ""
+msgstr "AAC (Nyers) Dekóder"
 
 #: src/adplug/adplug-xmms.cc:42
 msgid "AdPlug (AdLib Player)"
@@ -272,7 +272,7 @@ msgstr ""
 
 #: src/alsa/config.cc:61
 msgid "(no description)"
-msgstr ""
+msgstr "(nincs leírás)"
 
 #: src/alsa/config.cc:166
 msgid "Default PCM device"
