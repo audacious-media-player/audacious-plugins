@@ -247,7 +247,7 @@ bool VorbisPlugin::play (const char * filename, VFSFile & file)
     vorbis_info *vi;
     OggVorbis_File vf;
     int last_section = -1;
-    Tuple tuple;
+    Tuple tuple = get_playback_tuple ();
     ReplayGainInfo rg_info;
     float pcmout[PCM_BUFSIZE*sizeof(float)], **pcm;
     int bytes, channels, samplerate, br;
