@@ -8,7 +8,7 @@
 # Francesc Gordillo i Cortínez <inactive+frangor@transifex.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2015-02-28 19:18+0100\n"
 "PO-Revision-Date: 2015-02-04 21:21+0000\n"

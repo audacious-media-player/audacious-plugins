@@ -10,10 +10,10 @@
 # yahoe.001, 2013-2015
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-02-28 19:18+0100\n"
-"PO-Revision-Date: 2015-02-05 18:12+0000\n"
+"POT-Creation-Date: 2015-04-03 11:52+0200\n"
+"PO-Revision-Date: 2015-03-15 20:32+0000\n"
 "Last-Translator: yahoe.001\n"
 "Language-Team: French (http://www.transifex.com/projects/p/audacious/"
 "language/fr/)\n"
@@ -3261,7 +3261,7 @@ msgstr "Services"
 
 #: src/skins/menus.cc:74
 msgid "About ..."
-msgstr "À propos de..."
+msgstr "À propos..."
 
 #: src/skins/menus.cc:75
 msgid "Settings ..."

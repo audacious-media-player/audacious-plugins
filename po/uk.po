@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Dennis <tymbood@gmail.com>, 2014
+# Dennis <tymbood@gmail.com>, 2014-2015
 # Kostyantyn Fedenko <fedenko@ukr.net>, 2011
 # Kostyantyn Fedenko <fedenko@ukr.net>, 2011
 # Oleg <kvantarium@gmail.com>, 2012
@@ -19,11 +19,11 @@
 # Yuri Chornoivan <yurchor@ukr.net>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-02-28 19:18+0100\n"
-"PO-Revision-Date: 2015-02-04 21:21+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2015-04-03 11:52+0200\n"
+"PO-Revision-Date: 2015-03-07 09:36+0000\n"
+"Last-Translator: Dennis <tymbood@gmail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/audacious/"
 "language/uk/)\n"
 "Language: uk\n"
@@ -1579,7 +1579,7 @@ msgstr "Альбом"
 
 #: src/gtkui/columns.cc:40
 msgid "Album artist"
-msgstr ""
+msgstr "Виконавець альбому"
 
 #: src/gtkui/columns.cc:41
 msgid "Track"
@@ -1817,7 +1817,7 @@ msgstr "У випадковому по_рядку"
 
 #: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:160
 msgid "_Play/Resume"
-msgstr ""
+msgstr "_Відтворити/продовжити"
 
 #: src/gtkui/menus.cc:199 src/gtkui/menus.cc:251
 #: src/qtui/main_window_actions.cc:161
@@ -3091,7 +3091,7 @@ msgstr "Вибрати теку"
 
 #: src/sid/xmms-sid.cc:43
 msgid "SID Player"
-msgstr ""
+msgstr "Програвач SID"
 
 #: src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
@@ -3250,7 +3250,7 @@ msgstr "Перейти до часу..."
 
 #: src/skins/menus.cc:101
 msgid "Play/Resume"
-msgstr ""
+msgstr "Відтворити/продовжити"
 
 #: src/skins/menus.cc:103
 msgid "New Playlist"
@@ -3572,7 +3572,7 @@ msgstr "Видалити відповідний доріжці пресет"
 
 #: src/skins/skins_cfg.cc:176
 msgid "Player:"
-msgstr ""
+msgstr "Програвач:"
 
 #: src/skins/skins_cfg.cc:178
 msgid "Select main player window font:"
@@ -3580,7 +3580,7 @@ msgstr "Шрифт основного вікна програвача"
 
 #: src/skins/skins_cfg.cc:179
 msgid "Playlist:"
-msgstr ""
+msgstr "Плейлист:"
 
 #: src/skins/skins_cfg.cc:181
 msgid "Select playlist font:"
