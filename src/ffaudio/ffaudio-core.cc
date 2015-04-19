@@ -615,6 +615,9 @@ const char * const FFaudio::exts[] = {
     /* Speex */
     "spx",
 
+    /* True Audio */
+    "tta",
+
     /* end of table */
     nullptr
 };
