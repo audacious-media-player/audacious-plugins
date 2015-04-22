@@ -130,7 +130,7 @@ static void copy_int (SNDFILE * sf, int sf_id, Tuple & tup, Tuple::Field field)
 
 Tuple SndfilePlugin::read_tuple (const char * filename, VFSFile & file)
 {
-    SF_INFO sfinfo;
+    SF_INFO sfinfo {}; // must be zeroed before sf_open()
     const char *format, *subformat;
     Tuple ti;
 
@@ -306,7 +306,7 @@ Tuple SndfilePlugin::read_tuple (const char * filename, VFSFile & file)
 
 bool SndfilePlugin::play (const char * filename, VFSFile & file)
 {
-    SF_INFO sfinfo;
+    SF_INFO sfinfo {}; // must be zeroed before sf_open()
 
     bool stream = (file.fsize () < 0);
     SNDFILE * sndfile = sf_open_virtual (stream ? & sf_virtual_io_stream :
@@ -340,7 +340,7 @@ bool SndfilePlugin::play (const char * filename, VFSFile & file)
 
 bool SndfilePlugin::is_our_file (const char * filename, VFSFile & file)
 {
-    SF_INFO tmp_sfinfo;
+    SF_INFO tmp_sfinfo {}; // must be zeroed before sf_open()
 
     /* Have to open the file to see if libsndfile can handle it. */
     bool stream = (file.fsize () < 0);
