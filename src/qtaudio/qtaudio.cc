@@ -104,7 +104,8 @@ struct FormatDescriptionMap {
     enum QAudioFormat::SampleType sample_type;
     enum QAudioFormat::Endian endian;    
 };
-static struct FormatDescriptionMap FormatMap[] = {
+
+static constexpr FormatDescriptionMap FormatMap[] = {
     {FMT_S16_LE, 16, QAudioFormat::SignedInt, QAudioFormat::LittleEndian},
     {FMT_S16_BE, 16, QAudioFormat::SignedInt, QAudioFormat::BigEndian},
     {FMT_U16_LE, 16, QAudioFormat::UnSignedInt, QAudioFormat::LittleEndian},
@@ -144,9 +145,9 @@ void QtAudio::set_volume (StereoVolume v)
 
 bool QtAudio::open_audio (int format, int rate, int chan)
 {
-    struct FormatDescriptionMap * m = nullptr;
+    const FormatDescriptionMap * m = nullptr;
 
-    for (struct FormatDescriptionMap it : FormatMap)
+    for (auto & it : FormatMap)
     {
         if (it.aud_format == format)
         {
