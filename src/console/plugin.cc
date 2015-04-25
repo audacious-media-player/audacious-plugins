@@ -38,7 +38,7 @@ const PreferencesWidget ConsolePlugin::widgets[] = {
         {0, 100, 1}),
     WidgetSpin (N_("Default song length:"),
         WidgetInt (audcfg.loop_length),
-        {-100, 100, 1, N_("seconds")}),
+        {1, 7200, 1, N_("seconds")}),
     WidgetLabel (N_("<b>Resampling</b>")),
     WidgetCheck (N_("Enable audio resampling"),
         WidgetBool (audcfg.resample)),
