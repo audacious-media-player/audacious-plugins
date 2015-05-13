@@ -383,7 +383,7 @@ static void widget_destroyed ()
 #ifdef GDK_WINDOWING_X11
     if (s_context)
     {
-		glXMakeCurrent (s_display, None, nullptr);
+        glXMakeCurrent (s_display, None, nullptr);
         glXDestroyContext (s_display, s_context);
         s_context = nullptr;
     }
