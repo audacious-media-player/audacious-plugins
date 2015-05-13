@@ -228,7 +228,6 @@ static void draw_bars ()
     glTranslatef (0.0f, -0.5f, -5.0f);
     glRotatef (38.0f, 1.0f, 0.0f, 0.0f);
     glRotatef (s_angle + 180.0f, 0.0f, 1.0f, 0.0f);
-    glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 
     for (int i = 0; i < NUM_BANDS; i ++)
     {
@@ -242,7 +241,6 @@ static void draw_bars ()
         }
     }
 
-    glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
     glPopMatrix ();
 }
 
