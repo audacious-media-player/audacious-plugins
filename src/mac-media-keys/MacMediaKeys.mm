@@ -1,6 +1,6 @@
 /*
  * MacMediaKeys.mm
- * Copyright 2014 Michał Lipski
+ * Copyright 2014-2015 Michał Lipski
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,17 +17,34 @@
  * the use of this software.
  */
 
-#include <thread>
-
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
-#import "MacMediaKeys.h"
+#import "SPMediaKeyTap.h"
 
-static MacMediaKeys * media;
+@interface MacMediaKeys : NSObject {
+    SPMediaKeyTap * keyTap;
+}
+- (void)cleanup;
+@end
 
-@implementation SPMediaKeyTapAppDelegate
+@implementation MacMediaKeys
+- (id)init
+{
+    keyTap = [[SPMediaKeyTap alloc] initWithDelegate:self];
+
+    // Register defaults for the whitelist of apps that want to use media keys
+    [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
+        [SPMediaKeyTap defaultMediaKeyUserBundleIdentifiers], kMediaKeyUsingBundleIdentifiersDefaultsKey,
+    nil]];
+
+    if ([SPMediaKeyTap usesGlobalMediaKeyTap])
+        [keyTap startWatchingMediaKeys];
+
+    return self;
+}
+
 - (void)mediaKeyTap:(SPMediaKeyTap *)keyTap receivedMediaKeyEvent:(NSEvent *)event;
 {
     assert([event type] == NSSystemDefined && [event subtype] == SPSystemDefinedEventMediaKeys);
@@ -57,47 +74,45 @@ static MacMediaKeys * media;
         }
     }
 }
+
+- (void)cleanup;
+{
+    if (keyTap)
+    {
+        [keyTap stopWatchingMediaKeys];
+        [keyTap release];
+    }
+}
 @end
 
-MacMediaKeys::MacMediaKeys ()
+class MacMediaKeysPlugin : public GeneralPlugin
 {
-    std::thread thread (&MacMediaKeys::run, this);
-    thread.detach ();
-}
+public:
+    static constexpr PluginInfo info = {
+        N_("Mac Media Keys"),
+        PACKAGE
+    };
 
-MacMediaKeys::~MacMediaKeys ()
+    constexpr MacMediaKeysPlugin () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+
+private:
+    MacMediaKeys * m_obj = nullptr;
+};
+
+EXPORT MacMediaKeysPlugin aud_plugin_instance;
+
+bool MacMediaKeysPlugin::init ()
 {
-    [keyTap stopWatchingMediaKeys];
-}
-
-void MacMediaKeys::run ()
-{
-    // Register defaults for the whitelist of apps that want to use media keys
-    [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
-        [SPMediaKeyTap defaultMediaKeyUserBundleIdentifiers], kMediaKeyUsingBundleIdentifiersDefaultsKey,
-    nil]];
-
-    delegate = [SPMediaKeyTapAppDelegate alloc];
-    keyTap   = [[SPMediaKeyTap alloc] initWithDelegate: delegate];
-
-    if ([SPMediaKeyTap usesGlobalMediaKeyTap])
-        [keyTap startWatchingMediaKeys];
-}
-
-bool mac_media_keys_init ()
-{
-    media = new MacMediaKeys;
+    m_obj = [[MacMediaKeys alloc] init];
     return true;
 }
 
-void mac_media_keys_cleanup ()
+void MacMediaKeysPlugin::cleanup ()
 {
-    delete media;
+    [m_obj cleanup];
+    [m_obj release];
+    m_obj = nullptr;
 }
-
-#define AUD_PLUGIN_NAME        N_("Mac Media Keys")
-#define AUD_PLUGIN_INIT        mac_media_keys_init
-#define AUD_PLUGIN_CLEANUP     mac_media_keys_cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
