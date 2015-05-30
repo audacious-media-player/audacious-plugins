@@ -228,7 +228,6 @@ static void draw_bars ()
     glTranslatef (0.0f, -0.5f, -5.0f);
     glRotatef (38.0f, 1.0f, 0.0f, 0.0f);
     glRotatef (s_angle + 180.0f, 0.0f, 1.0f, 0.0f);
-    glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 
     for (int i = 0; i < NUM_BANDS; i ++)
     {
@@ -242,7 +241,6 @@ static void draw_bars ()
         }
     }
 
-    glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
     glPopMatrix ();
 }
 
@@ -258,35 +256,9 @@ static gboolean draw_cb (GtkWidget * widget)
         return false;
 #endif
 
-    GtkAllocation alloc;
-    gtk_widget_get_allocation (widget, & alloc);
-    glViewport (0, 0, alloc.width, alloc.height);
-
-    glDisable (GL_BLEND);
-    glMatrixMode (GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glFrustum (-1.1f, 1, -1.5f, 1, 2, 10);
-    glMatrixMode (GL_MODELVIEW);
-    glPushMatrix ();
-    glLoadIdentity ();
-    glEnable (GL_DEPTH_TEST);
-    glDepthFunc (GL_LESS);
-    glPolygonMode (GL_FRONT, GL_FILL);
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glClearColor (0, 0, 0, 1);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     draw_bars ();
-
-    glPopMatrix ();
-    glMatrixMode (GL_PROJECTION);
-    glPopMatrix ();
-    glDisable (GL_DEPTH_TEST);
-    glDisable (GL_BLEND);
-    glDepthMask (GL_TRUE);
 
 #ifdef GDK_WINDOWING_X11
     glXSwapBuffers (s_display, s_xwindow);
@@ -297,6 +269,16 @@ static gboolean draw_cb (GtkWidget * widget)
 #endif
 
     return true;
+}
+
+static void aspect_viewport(GLint width, GLint height) 
+{
+    glViewport (0, 0, width, height);
+    glMatrixMode (GL_PROJECTION);
+    glLoadIdentity ();
+    glFrustum (-1.1f, 1, -1.5f, 1, 2, 10);
+    glMatrixMode (GL_MODELVIEW);
+    glLoadIdentity ();
 }
 
 static void widget_realized ()
@@ -374,6 +356,18 @@ static void widget_realized ()
 
     wglMakeCurrent (s_hdc, s_glrc);
 #endif
+
+    /* Initialize OpenGL */
+    GtkAllocation alloc;
+    gtk_widget_get_allocation (s_widget, & alloc);
+    
+    aspect_viewport (alloc.width, alloc.height);
+
+    glEnable (GL_DEPTH_TEST);
+    glDepthFunc (GL_LESS);
+    glDepthMask (GL_TRUE);
+    glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+    glClearColor (0, 0, 0, 1);
 }
 
 static void widget_destroyed ()
@@ -383,6 +377,7 @@ static void widget_destroyed ()
 #ifdef GDK_WINDOWING_X11
     if (s_context)
     {
+        glXMakeCurrent (s_display, None, nullptr);
         glXDestroyContext (s_display, s_context);
         s_context = nullptr;
     }
@@ -408,6 +403,11 @@ static void widget_destroyed ()
 #endif
 }
 
+static void widget_resize (GtkWidget * widget, GdkEvent * event, gpointer data)
+{
+    aspect_viewport (event->configure.width, event->configure.height);
+}
+
 void * GLSpectrum::get_gtk_widget ()
 {
     if (s_widget)
@@ -418,6 +418,7 @@ void * GLSpectrum::get_gtk_widget ()
     g_signal_connect (s_widget, "expose-event", (GCallback) draw_cb, nullptr);
     g_signal_connect (s_widget, "realize", (GCallback) widget_realized, nullptr);
     g_signal_connect (s_widget, "destroy", (GCallback) widget_destroyed, nullptr);
+    g_signal_connect (s_widget, "configure-event", (GCallback) widget_resize, nullptr);
 
     /* Disable GTK double buffering */
     gtk_widget_set_double_buffered (s_widget, false);
