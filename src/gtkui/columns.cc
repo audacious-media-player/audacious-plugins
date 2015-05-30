@@ -112,8 +112,13 @@ void pw_col_init ()
     }
 
     String widths = aud_get_str ("gtkui", "column_widths");
+
     if (! str_to_int_array (widths, pw_col_widths, PW_COLS))
-        memcpy (pw_col_widths, pw_default_widths, sizeof pw_col_widths);
+    {
+        int dpi = audgui_get_dpi ();
+        for (int i = 0; i < PW_COLS; i ++)
+            pw_col_widths[i] = pw_default_widths[i] * dpi / 96;
+    }
 }
 
 struct Column {
@@ -295,7 +300,7 @@ void * pw_col_create_chooser ()
     }
 
     GtkWidget * hbox = gtk_hbox_new (false, 6);
-    gtk_widget_set_size_request (hbox, -1, 160);
+    gtk_widget_set_size_request (hbox, -1, audgui_get_dpi () * 5 / 4);
 
     GtkWidget * scroll = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scroll,

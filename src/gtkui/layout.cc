@@ -25,11 +25,9 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugins.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "layout.h"
-
-#define DEFAULT_WIDTH 300
-#define DEFAULT_HEIGHT 200
 
 enum {
     DOCK_LEFT,
@@ -61,18 +59,20 @@ static GtkWidget * menu = nullptr;
 
 static Item * item_new (const char * name)
 {
+    int dpi = audgui_get_dpi ();
+
     Item * item = new Item ();
     item->name = String (name);
     item->plugin = nullptr;
     item->widget = item->vbox = item->paned = item->window = nullptr;
     item->dock = item->x = item->y = -1;
-    item->w = DEFAULT_WIDTH;
-    item->h = DEFAULT_HEIGHT;
+    item->w = 3 * dpi;
+    item->h = 2 * dpi;
 
     if (! strcmp (name, _("Search Tool")))
     {
         item->dock = DOCK_LEFT;
-        item->w = 200;
+        item->w = 2 * dpi;
     }
 
     items = g_list_append (items, item);

@@ -55,7 +55,7 @@ static gboolean get_album_art (void)
     if (! last_pixbuf)
         return FALSE;
 
-    audgui_pixbuf_scale_within (& last_pixbuf, 96);
+    audgui_pixbuf_scale_within (& last_pixbuf, audgui_get_dpi ());
     return TRUE;
 }
 

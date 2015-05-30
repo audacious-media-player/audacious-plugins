@@ -26,6 +26,7 @@
 #include <libaudcore/runtime.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "dnd.h"
 #include "skins_cfg.h"
@@ -131,8 +132,6 @@ void skins_cfg_load (void)
 
     for (auto & nument : skins_numents)
         * nument.ptr = aud_get_int ("skins", nument.name);
-
-    config.scale = aud_get_bool ("skins", "double_size") ? 2 : 1;
 }
 
 void skins_cfg_save (void)
@@ -324,7 +323,7 @@ static void * create_skin_view (void)
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrolled,
      GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
-    gtk_widget_set_size_request (scrolled, -1, 160);
+    gtk_widget_set_size_request (scrolled, -1, audgui_get_dpi () * 3 / 2);
 
     skin_view = gtk_tree_view_new ();
     skin_view_realize ((GtkTreeView *) skin_view);

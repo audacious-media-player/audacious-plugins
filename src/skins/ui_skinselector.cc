@@ -126,25 +126,22 @@ static GdkPixbuf * skin_get_thumbnail (const char * path)
     GdkPixbuf * thumb = nullptr;
 
     if (g_file_test (thumbname, G_FILE_TEST_EXISTS))
-    {
         thumb = gdk_pixbuf_new_from_file (thumbname, nullptr);
-        if (thumb)
-            goto DONE;
-    }
 
-    thumb = skin_get_preview (path);
     if (! thumb)
-        goto DONE;
+    {
+        thumb = skin_get_preview (path);
 
-    audgui_pixbuf_scale_within (& thumb, 128);
+        if (thumb)
+        {
+            make_directory (skins_get_skin_thumb_dir ());
+            gdk_pixbuf_save (thumb, thumbname, "png", nullptr, nullptr);
+        }
+    }
 
     if (thumb)
-    {
-        make_directory (skins_get_skin_thumb_dir ());
-        gdk_pixbuf_save (thumb, thumbname, "png", nullptr, nullptr);
-    }
+        audgui_pixbuf_scale_within (& thumb, audgui_get_dpi () * 3 / 2);
 
-DONE:
     g_free (thumbname);
     return thumb;
 }

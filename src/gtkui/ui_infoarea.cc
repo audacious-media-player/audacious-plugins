@@ -29,15 +29,25 @@
 
 #include "ui_infoarea.h"
 
-#define SPACING 8
-#define ICON_SIZE 64
-#define HEIGHT (ICON_SIZE + 2 * SPACING)
-
 #define VIS_BANDS 12
-#define VIS_WIDTH (8 * VIS_BANDS - 2)
-#define VIS_CENTER (ICON_SIZE * 5 / 8 + SPACING)
 #define VIS_DELAY 2 /* delay before falloff in frames */
-#define VIS_FALLOFF 2 /* falloff in pixels per frame */
+#define VIS_FALLOFF 2 /* falloff in decibels per frame */
+
+int SPACING, ICON_SIZE, HEIGHT, BAND_WIDTH, BAND_SPACING, VIS_WIDTH, VIS_SCALE, VIS_CENTER;
+
+static void compute_sizes ()
+{
+    int dpi = audgui_get_dpi ();
+
+    SPACING = aud::rescale (dpi, 12, 1);
+    ICON_SIZE = aud::rescale (dpi, 3, 2);
+    HEIGHT = ICON_SIZE + 2 * SPACING;
+    BAND_WIDTH = aud::rescale (dpi, 16, 1);
+    BAND_SPACING = aud::rescale (dpi, 48, 1);
+    VIS_WIDTH = VIS_BANDS * (BAND_WIDTH + BAND_SPACING) - BAND_SPACING;
+    VIS_SCALE = aud::rescale (ICON_SIZE, 8, 5);
+    VIS_CENTER = VIS_SCALE + SPACING;
+}
 
 typedef struct {
     GtkWidget * box, * main;
@@ -59,7 +69,7 @@ public:
         Visualizer (Freq) {}
 
     GtkWidget * widget = nullptr;
-    char bars[VIS_BANDS] {};
+    float bars[VIS_BANDS] {};
     char delay[VIS_BANDS] {};
 
     void clear ();
@@ -97,8 +107,7 @@ void InfoAreaVis::render_freq (const float * freq)
         }
 
         /* 40 dB range */
-        int x = 40 + 20 * log10f (n);
-        x = aud::clamp (x, 0, 40);
+        float x = 40 + 20 * log10f (n);
 
         bars[i] -= aud::max (0, VIS_FALLOFF - delay[i]);
 
@@ -259,19 +268,19 @@ static int expose_vis_cb (GtkWidget * widget, GdkEventExpose * event)
 
     for (int i = 0; i < VIS_BANDS; i++)
     {
-        int x = SPACING + 8 * i;
-        int t = VIS_CENTER - vis.bars[i];
-        int m = aud::min (VIS_CENTER + vis.bars[i], HEIGHT);
+        int x = SPACING + i * (BAND_WIDTH + BAND_SPACING);
+        int v = aud::clamp ((int) (vis.bars[i] * VIS_SCALE / 40), 0, VIS_SCALE);
+        int m = aud::min (VIS_CENTER + v, HEIGHT);
 
         float r, g, b;
         get_color (widget, i, & r, & g, & b);
 
         cairo_set_source_rgb (cr, r, g, b);
-        cairo_rectangle (cr, x, t, 6, VIS_CENTER - t);
+        cairo_rectangle (cr, x, VIS_CENTER - v, BAND_WIDTH, v);
         cairo_fill (cr);
 
         cairo_set_source_rgb (cr, r * 0.3, g * 0.3, b * 0.3);
-        cairo_rectangle (cr, x, VIS_CENTER, 6, m - VIS_CENTER);
+        cairo_rectangle (cr, x, VIS_CENTER, BAND_WIDTH, m - VIS_CENTER);
         cairo_fill (cr);
     }
 
@@ -285,13 +294,17 @@ static void draw_album_art (cairo_t * cr)
 
     if (area->pb)
     {
-        gdk_cairo_set_source_pixbuf (cr, area->pb, SPACING, SPACING);
+        int left = SPACING + (ICON_SIZE - gdk_pixbuf_get_width (area->pb)) / 2;
+        int top = SPACING + (ICON_SIZE - gdk_pixbuf_get_height (area->pb)) / 2;
+        gdk_cairo_set_source_pixbuf (cr, area->pb, left, top);
         cairo_paint_with_alpha (cr, area->alpha);
     }
 
     if (area->last_pb)
     {
-        gdk_cairo_set_source_pixbuf (cr, area->last_pb, SPACING, SPACING);
+        int left = SPACING + (ICON_SIZE - gdk_pixbuf_get_width (area->last_pb)) / 2;
+        int top = SPACING + (ICON_SIZE - gdk_pixbuf_get_height (area->last_pb)) / 2;
+        gdk_cairo_set_source_pixbuf (cr, area->last_pb, left, top);
         cairo_paint_with_alpha (cr, area->last_alpha);
     }
 }
@@ -303,7 +316,7 @@ static void draw_title (cairo_t * cr)
     GtkAllocation alloc;
     gtk_widget_get_allocation (area->main, & alloc);
 
-    int x = ICON_SIZE + SPACING * 2;
+    int x = HEIGHT;
     int width = alloc.width - x;
 
     if (area->title)
@@ -516,12 +529,14 @@ static void destroy_cb (GtkWidget * widget)
 GtkWidget * ui_infoarea_new ()
 {
     g_return_val_if_fail (! area, nullptr);
-    area = new UIInfoArea ();
 
+    compute_sizes ();
+
+    area = new UIInfoArea ();
     area->box = gtk_hbox_new (false, 0);
 
     area->main = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (area->main, ICON_SIZE + 2 * SPACING, HEIGHT);
+    gtk_widget_set_size_request (area->main, HEIGHT, HEIGHT);
     gtk_box_pack_start ((GtkBox *) area->box, area->main, true, true, 0);
 
     g_signal_connect (area->main, "expose-event", (GCallback) expose_cb, nullptr);

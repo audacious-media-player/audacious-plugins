@@ -70,7 +70,6 @@ void * AlbumArtPlugin::get_gtk_widget ()
     audgui_init ();
 
     GtkWidget * widget = audgui_scaled_image_new (nullptr);
-    gtk_widget_set_size_request (widget, 96, 96);
 
     g_signal_connect (widget, "destroy", (GCallback) album_cleanup, nullptr);
 

@@ -30,6 +30,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "plugin.h"
 
@@ -469,8 +470,10 @@ static void configure_selected ()
 
 static void * make_config_widget ()
 {
+    int dpi = audgui_get_dpi ();
+
     GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
-    gtk_widget_set_size_request (vbox, 480, 360);
+    gtk_widget_set_size_request (vbox, 5 * dpi, 4 * dpi);
 
     GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);

@@ -28,6 +28,7 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "menus.h"
 #include "plugin.h"
@@ -115,6 +116,11 @@ static gboolean update_cb (void *)
 
 static void skins_init_main (void)
 {
+    if (aud_get_bool ("skins", "double_size"))
+        config.scale = aud::rescale (audgui_get_dpi (), 48, 1);
+    else
+        config.scale = aud::rescale (audgui_get_dpi (), 96, 1);
+
     init_skins (aud_get_str ("skins", "skin"));
 
     view_apply_on_top ();
