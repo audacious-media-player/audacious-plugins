@@ -3,11 +3,12 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+# ABE Tsunehiko, 2015
 # natird zoto <dritan86@gmail.com>, 2012
 # ABE Tsunehiko, 2013
 # ABE Tsunehiko, 2012
 # Mika Kobayashi, 2014-2015
-# Shuuji Takahashi <shuuji3@gmail.com>, 2012-2014
+# TAKAHASHI Shuuji <shuuji3@gmail.com>, 2012-2014
 # Warui-chan  <>, 2012
 # ABE Tsunehiko, 2012
 # ABE Tsunehiko, 2013
@@ -15,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-02-28 19:18+0100\n"
-"PO-Revision-Date: 2015-02-20 17:34+0000\n"
-"Last-Translator: Mika Kobayashi\n"
+"POT-Creation-Date: 2015-05-30 15:51+0200\n"
+"PO-Revision-Date: 2015-05-27 14:24+0000\n"
+"Last-Translator: ABE Tsunehiko\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/audacious/"
 "language/ja/)\n"
 "Language: ja\n"
@@ -28,7 +29,7 @@ msgstr ""
 
 #: src/aac-raw/aac.cc:18
 msgid "AAC (Raw) Decoder"
-msgstr "AAC (Raw) デコーダ"
+msgstr "AAC (Raw) デコーダー"
 
 #: src/adplug/adplug-xmms.cc:42
 msgid "AdPlug (AdLib Player)"
@@ -154,9 +155,9 @@ msgstr ""
 "    現在使用しているものが使われます。\n"
 "    mp3/ogg のストリームのURL を入力することもできます。\n"
 "\n"
-"  リマインダ:\n"
+"  リマインダー:\n"
 "    アラーム再生時にリマインダを表示します。\n"
-"    表示たい場合には、テキストボックスにリマインダを入力し、\n"
+"    表示したい場合には、テキストボックスにリマインダーを入力し、\n"
 "    トグルボタンをオンにしてください。"
 
 #: src/alarm/interface.cc:81
@@ -165,11 +166,11 @@ msgstr "目覚ましです。"
 
 #: src/alarm/interface.cc:99
 msgid "Your reminder for today is..."
-msgstr "今日のリマインダ:"
+msgstr "今日のリマインダー:"
 
 #: src/alarm/interface.cc:101 src/alarm/interface.cc:386
 msgid "Reminder"
-msgstr "リマインダ"
+msgstr "リマインダー"
 
 #: src/alarm/interface.cc:132
 msgid "Monday"
@@ -332,7 +333,7 @@ msgstr "デフォルト PCM デバイス"
 
 #: src/alsa/config.cc:188
 msgid "Default mixer device"
-msgstr "デフォルトミキサデバイス"
+msgstr "デフォルトミキサーデバイス"
 
 #: src/alsa/config.cc:296
 msgid "PCM device:"
@@ -340,11 +341,11 @@ msgstr "PCM デバイス:"
 
 #: src/alsa/config.cc:299
 msgid "Mixer device:"
-msgstr "ミキサデバイス:"
+msgstr "ミキサーデバイス:"
 
 #: src/alsa/config.cc:302
 msgid "Mixer element:"
-msgstr "ミキサエレメント"
+msgstr "ミキサーエレメント"
 
 #: src/amidi-plug/amidi-plug.cc:41
 msgid "AMIDI-Plug (MIDI Player)"
@@ -373,7 +374,7 @@ msgid ""
 "for the good help with alpha testing"
 msgstr ""
 "AMIDI-Plug\n"
-"モジュラー MIDI 音楽プレイヤ\n"
+"モジュラー MIDI 音楽プレイヤー\n"
 "http://www.develia.org/projects.php?p=amidiplug\n"
 "\n"
 "作者: Giacomo Lozito\n"
@@ -434,11 +435,11 @@ msgstr "ノートナンバー"
 
 #: src/amidi-plug/i_configure.cc:135
 msgid "Skip leading silence"
-msgstr "先行する無音をスキップ"
+msgstr "先頭の無音をスキップ"
 
 #: src/amidi-plug/i_configure.cc:137
 msgid "Skip trailing silence"
-msgstr "後行する無音をスキップ"
+msgstr "末尾の無音をスキップ"
 
 #: src/amidi-plug/i_configure.cc:141
 msgid "<b>SoundFont</b>"
@@ -471,11 +472,11 @@ msgstr "AMIDI-Plug - サウンドフォント ファイルの選択"
 
 #: src/amidi-plug/i_configure-fluidsynth.cc:55 src/filewriter/mp3.cc:658
 msgid "_Cancel"
-msgstr "キャンセル (_C)"
+msgstr "キャンセル(_C)"
 
 #: src/amidi-plug/i_configure-fluidsynth.cc:56
 msgid "_Open"
-msgstr "開く (_O)"
+msgstr "開く(_O)"
 
 #: src/amidi-plug/i_configure-fluidsynth.cc:225 src/gtkui/columns.cc:46
 msgid "File name"
@@ -557,7 +558,7 @@ msgstr ""
 "\n"
 "作者 Giacomo Lozito <james@develia.org>\n"
 "\n"
-"Evan Martin 作の Ghosd ライブラリに一部を基づく:\n"
+"一部は Evan Martin 作の Ghosd ライブラリに基づきます:\n"
 "http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.h:37
@@ -595,7 +596,7 @@ msgstr "タイトル変更"
 #: src/aosd/aosd_trigger.cc:57
 msgid "Triggers OSD when the song title changes (for internet streams)."
 msgstr ""
-"曲タイトルが替わったらOSDを発動させる (インターネットストリーミング用)。"
+"曲タイトルが替わったら OSD を表示します (インターネットストリーミング用)。"
 
 #: src/aosd/aosd_trigger.cc:62
 msgid "Pause On"
@@ -631,20 +632,20 @@ msgstr "最大 OSD 幅:"
 
 #: src/aosd/aosd_ui.cc:221
 msgid "Multi-Monitor options"
-msgstr "マルチモニタ オプション"
+msgstr "マルチモニターオプション"
 
 #: src/aosd/aosd_ui.cc:225
 msgid "Display OSD using:"
-msgstr "OSD を表示するモニタ:"
+msgstr "OSD を表示するモニター:"
 
 #: src/aosd/aosd_ui.cc:227
 msgid "all monitors"
-msgstr "全てのモニタ"
+msgstr "全てのモニター"
 
 #: src/aosd/aosd_ui.cc:230
 #, c-format
 msgid "monitor %i"
-msgstr "モニタ %i"
+msgstr "モニター %i"
 
 #: src/aosd/aosd_ui.cc:282
 msgid "Timing (ms)"
@@ -698,7 +699,7 @@ msgstr "イベント"
 
 #: src/aosd/aosd_ui.cc:655
 msgid "Composite manager detected"
-msgstr "Composite マネージャが検出されました"
+msgstr "Composite マネージャーが検出されました"
 
 #: src/aosd/aosd_ui.cc:662
 msgid ""
@@ -706,13 +707,13 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Composite マネージャが検出されませんでした;\n"
-"動作させているかわからなければ, Composite マネージャを有効にしてください. そ"
-"うしなければ OSD は正常に動作しないでしょう."
+"Composite マネージャーが検出されませんでした;\n"
+"動作させているかわからなければ, Composite マネージャーを有効にしてください. "
+"そうしなければ OSD は正常に動作しないでしょう."
 
 #: src/aosd/aosd_ui.cc:670
 msgid "Composite manager not required for fake transparency"
-msgstr "Composite マネージャは偽の透明化には必要ではありません"
+msgstr "擬似的な透明化の場合 Composite マネージャーは不要です"
 
 #: src/aosd/aosd_ui.cc:706
 msgid "Transparency"
@@ -720,7 +721,7 @@ msgstr "透明化"
 
 #: src/aosd/aosd_ui.cc:712
 msgid "Fake transparency"
-msgstr "偽の透明化"
+msgstr "擬似的な透明化"
 
 #: src/aosd/aosd_ui.cc:714
 msgid "Real transparency (requires X Composite Ext.)"
@@ -785,7 +786,7 @@ msgstr "<b>色</b>"
 
 #: src/blur_scope/blur_scope.cc:58
 msgid "Blur Scope"
-msgstr "ブラー・スコープ"
+msgstr "ブラースコープ"
 
 #: src/bs2b/plugin.cc:38
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
@@ -805,11 +806,11 @@ msgstr "x1/10 dB"
 
 #: src/bs2b/plugin.cc:139
 msgid "Cut frequency:"
-msgstr "Cut 周波数"
+msgstr "カット周波数"
 
 #: src/cairo-spectrum/cairo-spectrum.cc:41
 msgid "Spectrum Analyzer"
-msgstr "スペクトラムアナライザ"
+msgstr "スペクトラムアナライザー"
 
 #: src/cdaudio-ng/cdaudio-ng.cc:72
 msgid "Audio CD Plugin"
@@ -832,7 +833,7 @@ msgstr ""
 "および libcddb developers <http://libcddb.sourceforge.net/>\n"
 "に感謝します。\n"
 "\n"
-"メンタとして導いてくれた Tony Vroon にも感謝します。\n"
+"メンターとして導いてくれた Tony Vroon にも感謝します。\n"
 "\n"
 "このプラグインは、Google Summer of Code 2007 のプロジェクトです。"
 
@@ -897,7 +898,7 @@ msgstr "トラック %d はデータトラックです。"
 
 #: src/cdaudio-ng/cdaudio-ng.cc:360
 msgid "Error reading audio CD."
-msgstr " オーディオCDの読み込みでエラーが発生しました。"
+msgstr " オーディオ CD の読み込み中にエラーが発生しました。"
 
 #: src/cdaudio-ng/cdaudio-ng.cc:429
 msgid "Audio CD"
@@ -906,19 +907,19 @@ msgstr "オーディオ CD"
 #: src/cdaudio-ng/cdaudio-ng.cc:460 src/cdaudio-ng/cdaudio-ng.cc:469
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr "CDデバイス %s のオープンに失敗しました。"
+msgstr "CD デバイス %s のオープンに失敗しました。"
 
 #: src/cdaudio-ng/cdaudio-ng.cc:472
 msgid "No audio capable CD drive found."
-msgstr "オーディオが利用可能なCDドライブが見つかりません。"
+msgstr "オーディオが利用可能な CD ドライブが見つかりません。"
 
 #: src/cdaudio-ng/cdaudio-ng.cc:497
 msgid "Failed to finish initializing opened CD drive."
-msgstr "オープンされたCDドライブの初期化が完了できませんでした。"
+msgstr "オープンされた CD ドライブの初期化が完了できませんでした。"
 
 #: src/cdaudio-ng/cdaudio-ng.cc:510
 msgid "Failed to retrieve first/last track number."
-msgstr "最初または最後のトラックナンバを取得できませんでした。"
+msgstr "最初または最後のトラックナンバーを取得できませんでした。"
 
 #: src/cdaudio-ng/cdaudio-ng.cc:531
 #, c-format
@@ -986,7 +987,7 @@ msgstr ""
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
-msgstr "ダイナミックレンジコンプレッサ"
+msgstr "ダイナミックレンジコンプレッサー"
 
 #: src/console/plugin.cc:15
 msgid ""
@@ -997,7 +998,7 @@ msgid ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 msgstr ""
-"コンソール音楽デーコーダエンジン based on Game_Music_Emu 0.5.2\n"
+"コンソール音楽デコーダーエンジン based on Game_Music_Emu 0.5.2\n"
 "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
 "\n"
 "Audacious plugin by:\n"
@@ -1010,7 +1011,7 @@ msgstr "ベース:"
 
 #: src/console/plugin.cc:33
 msgid "Treble:"
-msgstr "トリバル:"
+msgstr "トレブル:"
 
 #: src/console/plugin.cc:36
 msgid "Echo:"
@@ -1034,7 +1035,7 @@ msgstr "<b>SPC</b>"
 
 #: src/console/plugin.cc:50
 msgid "Ignore length from SPC tags"
-msgstr "SPC タグからの長さを無視する"
+msgstr "SPC タグの曲の長さを無視する"
 
 #: src/console/plugin.cc:52
 msgid "Increase reverb"
@@ -1042,7 +1043,7 @@ msgstr "リバーブを増やす"
 
 #: src/console/plugin.h:26
 msgid "Game Console Music Decoder"
-msgstr "ゲームコンソール音楽デコーダ"
+msgstr "ゲームコンソール音楽デコーダー"
 
 #: src/coreaudio/coreaudio.cc:50
 msgid "CoreAudio output"
@@ -1099,8 +1100,8 @@ msgid ""
 "For better crossfading, enable\n"
 "the Silence Removal effect."
 msgstr ""
-"より効果的なクロスフェードを実現するには\n"
-"無音部の除去プラグインも有効に"
+"より効果的なクロスフェードのために\n"
+"無音部の除去プラグインも有効にしてください。"
 
 #: src/crossfade/crossfade.cc:72
 msgid "Crossfade"
@@ -1112,21 +1113,20 @@ msgid ""
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"曲のチャンネル数が異なるため、クロスフェードが失敗しました。\n"
-"曲を同じチャンネル数にするためには、チャンネルミキサが利用できます。"
+"曲のチャンネル数が異なるため、クロスフェードに失敗しました。チャンネルミキ"
+"サーを利用して、曲のチャンネル数を変換することができます。"
 
 #: src/crossfade/crossfade.cc:168
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"曲のサンプリング周波数が異なるため、クロスフェードが失敗しました。\n"
-"曲を同じサンプリング周波数にするために、サンプリング周波数ミキサが利用できま"
-"す。"
+"曲のサンプリング周波数が異なるため、クロスフェードに失敗しました。サンプリン"
+"グ周波数コンバーターを利用してサンプリング周波数を揃えることができます。"
 
 #: src/crystalizer/crystalizer.cc:31
 msgid "<b>Crystalizer</b>"
-msgstr "<b>クリスタライザ</b>"
+msgstr "<b>クリスタライザー</b>"
 
 #: src/crystalizer/crystalizer.cc:32 src/stereo_plugin/stereo.cc:45
 msgid "Intensity:"
@@ -1134,7 +1134,7 @@ msgstr "明るさ:"
 
 #: src/crystalizer/crystalizer.cc:43
 msgid "Crystalizer"
-msgstr "クリスタライザ"
+msgstr "クリスタライザー"
 
 #: src/cue/cue.cc:37
 msgid "Cue Sheet Plugin"
@@ -1192,7 +1192,7 @@ msgstr "<b>削除の方法</b>"
 
 #: src/delete-files/delete-files.cc:182
 msgid "Move to trash instead of deleting immediately"
-msgstr "一時的に削除するかわりにゴミ箱に移動"
+msgstr "直ちに削除するかわりにゴミ箱に移動"
 
 #: src/echo_plugin/echo.cc:9
 msgid ""
@@ -1266,19 +1266,19 @@ msgstr "設定"
 
 #: src/filewriter/filewriter.cc:413
 msgid "Save into original directory"
-msgstr "元のディレクトリに保存する"
+msgstr "元のディレクトリーに保存する"
 
 #: src/filewriter/filewriter.cc:417
 msgid "Save into custom directory"
-msgstr "指定のディレクトリに保存する"
+msgstr "指定のディレクトリーに保存する"
 
 #: src/filewriter/filewriter.cc:427
 msgid "Output file folder:"
-msgstr "ファイル出力先ディレクトリ:"
+msgstr "ファイル出力先フォルダー:"
 
 #: src/filewriter/filewriter.cc:431
 msgid "Pick a folder"
-msgstr "ディレクトリの選択"
+msgstr "フォルダーの選択"
 
 #: src/filewriter/filewriter.cc:444
 msgid "Generate file name from:"
@@ -1355,7 +1355,7 @@ msgstr "MP3 設定"
 
 #: src/filewriter/mp3.cc:658
 msgid "_OK"
-msgstr "OK (_O)"
+msgstr "OK(_O)"
 
 #: src/filewriter/mp3.cc:681
 msgid "Algorithm Quality:"
@@ -1391,7 +1391,7 @@ msgstr "その他:"
 
 #: src/filewriter/mp3.cc:856
 msgid "Enforce strict ISO compliance"
-msgstr "厳密なISO適合を強制"
+msgstr "厳格な ISO 遵守を強制する"
 
 #: src/filewriter/mp3.cc:867
 msgid "Error protection"
@@ -1447,7 +1447,7 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.cc:1085
 msgid "Frame Parameters:"
-msgstr "フレームパラメータ:"
+msgstr "フレームパラメーター:"
 
 #: src/filewriter/mp3.cc:1097
 msgid "Mark as copyright"
@@ -1459,11 +1459,11 @@ msgstr "オリジナルとしてマーク"
 
 #: src/filewriter/mp3.cc:1120
 msgid "ID3 Parameters:"
-msgstr "ID3 パラメータ:"
+msgstr "ID3 パラメーター:"
 
 #: src/filewriter/mp3.cc:1131
 msgid "Force addition of version 2 tag"
-msgstr "バージョン 2 タグを強制的に付加する"
+msgstr "v2 タグを強制的に付加する"
 
 #: src/filewriter/mp3.cc:1141
 msgid "Only add v1 tag"
@@ -1479,7 +1479,7 @@ msgstr "タグ"
 
 #: src/filewriter/vorbis.cc:196
 msgid "Vorbis Encoder Configuration"
-msgstr "Vorbis エンコーダ設定"
+msgstr "Vorbis エンコーダーの設定"
 
 #: src/filewriter/vorbis.cc:219
 msgid "Quality level (0 - 10):"
@@ -1487,7 +1487,7 @@ msgstr "品質レベル (0 - 10):"
 
 #: src/flacng/flacng.h:35
 msgid "FLAC Decoder"
-msgstr "FLAC デコーダ"
+msgstr "FLAC デコーダー"
 
 #: src/flacng/metadata.cc:351 src/wavpack/wavpack.cc:209
 msgid "lossless"
@@ -1536,7 +1536,7 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
-"OpenGL スペクトラムアナライザ for Audacious\n"
+"OpenGL スペクトラムアナライザー for Audacious\n"
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
 "\n"
 "派生元: XMMS プラグイン:\n"
@@ -1547,7 +1547,7 @@ msgstr ""
 
 #: src/gl-spectrum/gl-spectrum.cc:62
 msgid "OpenGL Spectrum Analyzer"
-msgstr "OpenGL スペクトラムアナライザ"
+msgstr "OpenGL スペクトラムアナライザー"
 
 #: src/gl-spectrum-qt/gl-spectrum.cc:41
 msgid ""
@@ -1561,7 +1561,7 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
-"OpenGL スペクトラムアナライザ for Audacious\n"
+"OpenGL スペクトラムアナライザー for Audacious\n"
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
 "Copyright 2014 William Pitcock\n"
 "\n"
@@ -1573,7 +1573,7 @@ msgstr ""
 
 #: src/gl-spectrum-qt/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer (Qt)"
-msgstr "OpenGL スペクトラムアナライザ (Qt)"
+msgstr "OpenGL スペクトラムアナライザー (Qt)"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:38
 msgid "GNOME Shortcuts"
@@ -1626,7 +1626,7 @@ msgstr "ジャンル"
 
 #: src/gtkui/columns.cc:43
 msgid "Queue position"
-msgstr "キュー番号"
+msgstr "キューの位置"
 
 #: src/gtkui/columns.cc:44
 msgid "Length"
@@ -1699,7 +1699,7 @@ msgstr "URL を追加(_R)"
 
 #: src/gtkui/menus.cc:131
 msgid "Search _Library"
-msgstr "ライブラリを検索 (_L)"
+msgstr "ライブラリを検索(_L)"
 
 #: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:98
 msgid "A_bout ..."
@@ -1707,7 +1707,7 @@ msgstr "プログラムの情報(_B)"
 
 #: src/gtkui/menus.cc:134 src/qtui/main_window_actions.cc:99
 msgid "_Settings ..."
-msgstr "設定 (_S)"
+msgstr "設定(_S)"
 
 #: src/gtkui/menus.cc:135 src/qtui/main_window_actions.cc:103
 #: src/statusicon/statusicon.cc:284
@@ -1779,7 +1779,7 @@ msgstr "リピートポイントBを設定(_B)"
 
 #: src/gtkui/menus.cc:156
 msgid "_Clear Repeat Points"
-msgstr "リピートポイントをクリアする(_C)"
+msgstr "リピートポイントを解除する(_C)"
 
 #: src/gtkui/menus.cc:160 src/gtkui/menus.cc:167 src/gtkui/menus.cc:183
 #: src/qtui/main_window_actions.cc:122 src/qtui/main_window_actions.cc:129
@@ -1865,7 +1865,7 @@ msgstr "ソート(_S)"
 
 #: src/gtkui/menus.cc:202 src/qtui/main_window_actions.cc:164
 msgid "Sort Se_lected"
-msgstr "選択したトラックをソートする (_L)"
+msgstr "選択したトラックをソートする(_L)"
 
 #: src/gtkui/menus.cc:203 src/qtui/main_window_actions.cc:165
 msgid "Remove _Duplicates"
@@ -1887,7 +1887,7 @@ msgstr "名前の変更(_A)"
 #: src/gtkui/menus.cc:208 src/gtkui/menus.cc:264
 #: src/qtui/main_window_actions.cc:170
 msgid "Remo_ve"
-msgstr "削除 (_V)"
+msgstr "削除(_V)"
 
 #: src/gtkui/menus.cc:210
 msgid "_Import ..."
@@ -1899,11 +1899,11 @@ msgstr "エクスポート(_E)"
 
 #: src/gtkui/menus.cc:213
 msgid "Playlist _Manager ..."
-msgstr "プレイリストマネージャ(_M)"
+msgstr "プレイリストマネージャー(_M)"
 
 #: src/gtkui/menus.cc:214 src/qtui/main_window_actions.cc:176
 msgid "_Queue Manager ..."
-msgstr "キューマネージャ(_Q)"
+msgstr "キューマネージャー(_Q)"
 
 #: src/gtkui/menus.cc:218 src/qtui/main_window_actions.cc:180
 msgid "Volume _Up"
@@ -1915,11 +1915,11 @@ msgstr "音量を下げる(_D)"
 
 #: src/gtkui/menus.cc:221 src/qtui/main_window_actions.cc:183
 msgid "_Equalizer"
-msgstr "イコライザ(_E)"
+msgstr "イコライザー(_E)"
 
 #: src/gtkui/menus.cc:223 src/qtui/main_window_actions.cc:185
 msgid "E_ffects ..."
-msgstr "エフェクト (_E)"
+msgstr "エフェクト(_E)"
 
 #: src/gtkui/menus.cc:227
 msgid "Show _Menu Bar"
@@ -1931,7 +1931,7 @@ msgstr "情報バーを表示する(_N)"
 
 #: src/gtkui/menus.cc:229
 msgid "Show Info Bar Vis_ualization"
-msgstr "情報バーに視覚効果を表示"
+msgstr "情報バーに視覚効果を表示(_U)"
 
 #: src/gtkui/menus.cc:230
 msgid "Show _Status Bar"
@@ -1943,7 +1943,7 @@ msgstr "残り時間を表示する(_R)"
 
 #: src/gtkui/menus.cc:234
 msgid "_Visualizations ..."
-msgstr "視覚化 (_V)"
+msgstr "視覚化(_V)"
 
 #: src/gtkui/menus.cc:238 src/qtui/main_window_actions.cc:189
 msgid "_File"
@@ -1972,7 +1972,7 @@ msgstr "表示(_V)"
 
 #: src/gtkui/menus.cc:248
 msgid "_Queue/Unqueue"
-msgstr "キュー / アンキュー(_Q)"
+msgstr "キュー/アンキュー (_Q)"
 
 #: src/gtkui/menus.cc:250
 msgid "_Open Containing Folder"
@@ -2000,7 +2000,7 @@ msgstr "名前の変更(_R)"
 
 #: src/gtkui/settings.cc:35
 msgid "<b>Playlist Tabs</b>"
-msgstr "<b>プレイリストのタブ</b>"
+msgstr "<b>プレイリストタブ</b>"
 
 #: src/gtkui/settings.cc:36
 msgid "Always show tabs"
@@ -2008,7 +2008,7 @@ msgstr "常にタブを表示する"
 
 #: src/gtkui/settings.cc:38
 msgid "Show entry counts"
-msgstr "項目総数を表示"
+msgstr "項目の総数を表示する"
 
 #: src/gtkui/settings.cc:40
 msgid "Show close buttons"
@@ -2131,7 +2131,7 @@ msgstr "指定したファイルへ移動"
 
 #: src/hotkey/gui.cc:82
 msgid "Toggle player window(s)"
-msgstr "プレイヤウィンドウをトグル"
+msgstr "プレイヤーウィンドウをトグル"
 
 #: src/hotkey/gui.cc:83
 msgid "Show On-Screen-Display"
@@ -2164,7 +2164,7 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"修飾キーなしでプライマリ・マウスのボタンに割り当てるのはお勧めしません。\n"
+"修飾キーなしでプライマリーマウスのボタンに割り当てるのはお勧めしません。\n"
 "\n"
 "本当によろしいですか？"
 
@@ -2249,12 +2249,12 @@ msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
-"JACK は、浮動小数点のオーディオにしか対応していないのです。Audacious のオー"
-"ディオ出力の設定で、ビット深度を浮動小数点に変更する必要があります。"
+"JACK は浮動小数点のオーディオにしか対応していません。Audacious のオーディオ出"
+"力の設定で、ビット深度を浮動小数点に変更する必要があります。"
 
 #: src/jack-ng/jack-ng.cc:197
 msgid "Failed to connect to the JACK server; is it running?"
-msgstr "JACKサーバへの接続に失敗しました。JACKサーバは本当に動いていますか?"
+msgstr "JACK サーバへの接続に失敗しました。JACK サーバは本当に動いていますか?"
 
 #: src/jack-ng/jack-ng.cc:273
 #, c-format
@@ -2262,9 +2262,9 @@ msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
 "%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
 msgstr ""
-"JACK サーバには%d Hzのサンプリング周波数が必要です。ところが、 Audacious がい"
-"ま再生しているのは %d Hz です。サンプリング周波数コンバータのプラグインを用い"
-"て、出力する周波数を合わせるようにしてください。"
+"JACK サーバには%d Hzのサンプリング周波数が必要ですが、 Audacious は %d Hz で"
+"再生しています。サンプリング周波数コンバーターを用いて周波数を合わせてくださ"
+"い。"
 
 #: src/ladspa/plugin.cc:414
 #, c-format
@@ -2281,10 +2281,10 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>複数のパスはコロンで区切ってください。これらのパス\n"
-"が、LADSPA_PATH の他に検索されます。新しいパスを追\n"
-"加した後は、新しいプラグインをスキャンするために、\n"
-"Enter キーを押してください。</small>"
+"<small>複数のパスはコロンで区切ってください。\n"
+"これらのパスが、LADSPA_PATH の他に検索されます。\n"
+"パスを追加した後は、新しいプラグインをスキャンするためにEnter キーを押してく"
+"ださい。</small>"
 
 #: src/ladspa/plugin.cc:499
 msgid "Available plugins:"
@@ -2410,17 +2410,17 @@ msgstr "M3U プラグイン"
 
 #: src/metronom/metronom.cc:44
 msgid "Tact Generator"
-msgstr "タクトジェネレータ"
+msgstr "タクトジェネレーター"
 
 #: src/metronom/metronom.cc:147
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "タクトジェネレータ: %d bpm"
+msgstr "タクトジェネレーター: %d bpm"
 
 #: src/metronom/metronom.cc:149
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "タクトジェネレータ: %d bpm %d/%d"
+msgstr "タクトジェネレーター: %d bpm %d/%d"
 
 #: src/metronom/metronom.cc:237
 msgid ""
@@ -2430,7 +2430,7 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
-"タクトジェネレータ by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"タクトジェネレーター by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
 "このプラグインを使用するには、URL に次のフォーマットで文字列を入力してくださ"
 "い。\n"
@@ -2443,19 +2443,19 @@ msgstr ""
 
 #: src/mixer/mixer.cc:38
 msgid "Channel Mixer"
-msgstr "チャンネルミキサ"
+msgstr "チャンネルミキサー"
 
 #: src/mixer/mixer.cc:202
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
-"チャンネルミキサプラグイン for Audacious\n"
+"チャンネルミキサープラグイン for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 
 #: src/mixer/mixer.cc:206
 msgid "<b>Channel Mixer</b>"
-msgstr "<b>チャンネルミキサ</b>"
+msgstr "<b>チャンネルミキサー</b>"
 
 #: src/mixer/mixer.cc:207
 msgid "Output channels:"
@@ -2467,7 +2467,7 @@ msgstr "MMS プラグイン"
 
 #: src/mms/mms.cc:82
 msgid "Error connecting to MMS server"
-msgstr "MMS サーバへの接続エラー"
+msgstr "MMS サーバーへの接続エラー"
 
 #: src/modplug/modplugbmp.h:53
 msgid "ModPlug (Module Player)"
@@ -2560,7 +2560,7 @@ msgstr "ノイズリダクション"
 
 #: src/modplug/plugin_main.cc:109
 msgid "Play Amiga MODs"
-msgstr "Amiga MODを再生する"
+msgstr "Amiga MOD を再生する"
 
 #: src/modplug/plugin_main.cc:110
 msgid "<b>Repeat</b>"
@@ -2568,15 +2568,15 @@ msgstr "<b>リピート</b>"
 
 #: src/modplug/plugin_main.cc:111
 msgid "Repeat count:"
-msgstr "リピートカウント:"
+msgstr "リピート回数:"
 
 #: src/modplug/plugin_main.cc:112
 msgid "To repeat forever, set the repeat count to -1."
-msgstr "ずっとリピートするにはリピート回数を-1に設定してください。"
+msgstr "ずっとリピートするにはリピート回数を-1にしてください。"
 
 #: src/modplug/plugin_main.cc:125 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
-msgstr "これらの設定は、Audaciousの再起動後に反映されます。"
+msgstr "これらの設定は、Audacious の再起動後に反映されます。"
 
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
@@ -2584,7 +2584,7 @@ msgstr "MPG123 プラグイン"
 
 #: src/mpg123/mpg123.cc:83
 msgid "<b>Advanced</b>"
-msgstr "<b>高度</b>"
+msgstr "<b>高度な設定</b>"
 
 #: src/mpg123/mpg123.cc:84
 msgid "Use accurate length calculation (slow)"
@@ -2596,7 +2596,7 @@ msgstr "サラウンド"
 
 #: src/mpris2/plugin.cc:39
 msgid "MPRIS 2 Server"
-msgstr "MPRIS 2 サーバ"
+msgstr "MPRIS 2 サーバー"
 
 #: src/neon/neon.cc:97
 msgid "Neon HTTP/HTTPS Plugin"
@@ -2612,7 +2612,7 @@ msgstr "不明な HTTP エラー"
 
 #: src/neon/neon.cc:569
 msgid "Error parsing URL"
-msgstr "URL処理のエラー"
+msgstr "URL 処理のエラー"
 
 #: src/neon/neon.cc:632
 msgid "Too many redirects"
@@ -2743,11 +2743,11 @@ msgstr ""
 
 #: src/playlist-manager/playlist-manager.cc:37
 msgid "Playlist Manager"
-msgstr "プレイリストマネージャ"
+msgstr "プレイリストマネージャー"
 
 #: src/playlist-manager/playlist-manager.cc:226
 msgid "Entries"
-msgstr "エントリ"
+msgstr "項目数"
 
 #: src/playlist-manager/playlist-manager.cc:245
 msgid "_Remove"
@@ -2841,7 +2841,7 @@ msgstr "フォルダを追加(_A)"
 
 #: src/qtui/main_window_actions.cc:101
 msgid "_Log Inspector ..."
-msgstr "ログ検査 (_L)"
+msgstr "ログ検査(_L)"
 
 #: src/qtui/main_window.cc:64
 msgid "Open Files"
@@ -2869,14 +2869,14 @@ msgstr "Qt インターフェイス"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
-msgstr "サンプリング周波数コンバータ"
+msgstr "サンプリング周波数コンバーター"
 
 #: src/resample/resample.cc:183
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"サンプルレート変換プラグイン for Audacious\n"
+"サンプリング周波数コンバータープラグイン for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 
 #: src/resample/resample.cc:187
@@ -2993,7 +2993,7 @@ msgstr "ネットワークに問題があります。"
 
 #: src/scrobbler2/config_window.cc:78
 msgid "There was a problem contacting Last.fm. Please try again later."
-msgstr "Last.fmへの接続に問題が発生しました。あとでもう一度試してください。"
+msgstr "Last.fm への接続に問題が発生しました。あとでもう一度試してください。"
 
 #: src/scrobbler2/config_window.cc:110
 msgid "Checking..."
@@ -3062,13 +3062,13 @@ msgstr ""
 
 #: src/search-tool/search-tool.cc:116 src/search-tool/search-tool.cc:124
 msgid "Library"
-msgstr "ライブラリ"
+msgstr "ライブラリー"
 
 #: src/search-tool/search-tool.cc:394
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
-msgstr[0] "%d の結果"
+msgstr[0] "%d 件"
 
 #: src/search-tool/search-tool.cc:400
 #, c-format
@@ -3104,15 +3104,15 @@ msgstr "プレイリストに追加(_A)"
 
 #: src/search-tool/search-tool.cc:684
 msgid "Search library"
-msgstr "ライブラリを検索"
+msgstr "ライブラリーを検索"
 
 #: src/search-tool/search-tool.cc:688
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"音楽ライブラリを Audacious へインポートするには、フォルダを選択し、\"再読み込"
-"み\" アイコンをクリックしてください。"
+"音楽ライブラリーを Audacious へインポートするには、フォルダを選択し、\"再読み"
+"込み\" アイコンをクリックしてください。"
 
 #: src/search-tool/search-tool.cc:696
 msgid "Please wait ..."
@@ -3120,11 +3120,11 @@ msgstr "お待ちください..."
 
 #: src/search-tool/search-tool.cc:723
 msgid "Choose Folder"
-msgstr "フォルダを選択"
+msgstr "フォルダーを選択"
 
 #: src/sid/xmms-sid.cc:43
 msgid "SID Player"
-msgstr "SID "
+msgstr "SID プレイヤー"
 
 #: src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
@@ -3140,15 +3140,15 @@ msgstr "<b>エミュレーション</b>"
 
 #: src/sid/xs_config.cc:69
 msgid "Emulate MOS 8580 (default: MOS 6581)"
-msgstr "MOS 8580 をエミュレート (デフォルトは MOS 6581)"
+msgstr "MOS 8580 をエミュレート (デフォルト: MOS 6581)"
 
 #: src/sid/xs_config.cc:71
 msgid "Do not automatically select chip model"
-msgstr "チップ型式を自動選択させない"
+msgstr "チップ型式を自動選択しない"
 
 #: src/sid/xs_config.cc:73
 msgid "Emulate filter"
-msgstr "エミュレートフィルタ"
+msgstr "フィルターをエミュレートする"
 
 #: src/sid/xs_config.cc:75
 msgid "Clock speed:"
@@ -3156,7 +3156,7 @@ msgstr "クロック速度:"
 
 #: src/sid/xs_config.cc:78
 msgid "Do not automatically select clock speed"
-msgstr "クロック速度を自動選択させない"
+msgstr "クロック速度を自動選択しない"
 
 #: src/sid/xs_config.cc:80
 msgid "<b>Playback time</b>"
@@ -3164,7 +3164,7 @@ msgstr "<b>再生時間</b>"
 
 #: src/sid/xs_config.cc:81
 msgid "Set maximum playback time:"
-msgstr "再生時間の最長を設定"
+msgstr "最長の再生時間を設定"
 
 #: src/sid/xs_config.cc:87
 msgid "Use only when song length is unknown"
@@ -3172,7 +3172,7 @@ msgstr "曲の長さが不明なときのみ適用する"
 
 #: src/sid/xs_config.cc:90
 msgid "Set minimum playback time:"
-msgstr "再生時間の最短を設定"
+msgstr "最短の再生時間を設定"
 
 #: src/sid/xs_config.cc:96
 msgid "<b>Subtunes</b>"
@@ -3184,7 +3184,7 @@ msgstr "subtunes を有効にする"
 
 #: src/sid/xs_config.cc:99
 msgid "Ignore subtunes shorter than:"
-msgstr "次の時間よりも短いsubtunesを無視する"
+msgstr "次の時間よりも短い subtunes を無視する"
 
 #: src/sid/xs_config.cc:105
 msgid "<b>Note</b>"
@@ -3199,7 +3199,7 @@ msgid ""
 "Silence Removal Plugin for Audacious\n"
 "Copyright 2014 John Lindgren"
 msgstr ""
-"無音部除去プラグイン for Audacious\n"
+"無音部の除去プラグイン for Audacious\n"
 "Copyright 2014 John Lindgren"
 
 #: src/silence-removal/silence-removal.cc:67
@@ -3317,11 +3317,11 @@ msgstr "プレイリストのエクスポート"
 
 #: src/skins/menus.cc:113
 msgid "Playlist Manager ..."
-msgstr "プレイリストマネージャ"
+msgstr "プレイリストマネージャー"
 
 #: src/skins/menus.cc:114
 msgid "Queue Manager ..."
-msgstr "キューマネージャ"
+msgstr "キューマネージャー"
 
 #: src/skins/menus.cc:116
 msgid "Refresh Playlist"
@@ -3329,11 +3329,11 @@ msgstr "プレイリストの更新"
 
 #: src/skins/menus.cc:120
 msgid "Show Playlist Editor"
-msgstr "プレイリストエディタを表示する"
+msgstr "プレイリストエディターを表示する"
 
 #: src/skins/menus.cc:121
 msgid "Show Equalizer"
-msgstr "イコライザを表示する"
+msgstr "イコライザーを表示する"
 
 #: src/skins/menus.cc:123
 msgid "Show Remaining Time"
@@ -3465,11 +3465,11 @@ msgstr "プレイリストを逆順にする"
 
 #: src/skins/menus.cc:201
 msgid "Sort Selected"
-msgstr "選択範囲のソート"
+msgstr "選択範囲をソート"
 
 #: src/skins/menus.cc:202
 msgid "Sort List"
-msgstr "プレイリストのソート"
+msgstr "プレイリストをソート"
 
 #: src/skins/menus.cc:208
 msgid "Cut"
@@ -3607,7 +3607,7 @@ msgstr "自動プリセットの削除"
 
 #: src/skins/skins_cfg.cc:176
 msgid "Player:"
-msgstr "プレイヤ:"
+msgstr "プレイヤー:"
 
 #: src/skins/skins_cfg.cc:178
 msgid "Select main player window font:"
@@ -3643,7 +3643,7 @@ msgstr "曲のタイトルを両方向にスクロールする"
 
 #: src/skins/skins_cfg.cc:201
 msgid "Analyzer"
-msgstr "アナライザ"
+msgstr "アナライザー"
 
 #: src/skins/skins_cfg.cc:202
 msgid "Scope"
@@ -3728,7 +3728,7 @@ msgstr "視覚化タイプ:"
 
 #: src/skins/skins_cfg.cc:248
 msgid "<b>Analyzer</b>"
-msgstr "<b>アナライザ</b>"
+msgstr "<b>アナライザー</b>"
 
 #: src/skins/skins_cfg.cc:249
 msgid "Show peaks"
@@ -3816,7 +3816,7 @@ msgstr "16 kHz"
 
 #: src/skins/ui_equalizer.cc:330
 msgid "Audacious Equalizer"
-msgstr "Audacious イコライザ"
+msgstr "Audacious イコライザー"
 
 #: src/skins/ui_main.cc:688
 #, c-format
@@ -3911,15 +3911,15 @@ msgstr "検索前に前回の選択をクリアする"
 
 #: src/skins/ui_playlist.cc:266
 msgid "Automatically toggle queue for matching entries"
-msgstr "マッチしたエントリのキューを自動的にトグルする"
+msgstr "マッチした項目のキューを自動的にトグルする"
 
 #: src/skins/ui_playlist.cc:269
 msgid "Create a new playlist with matching entries"
-msgstr "マッチしたエントリで新しいプレイリストを作成する"
+msgstr "マッチした項目で新しいプレイリストを作成する"
 
 #: src/skins/ui_playlist.cc:717
 msgid "Audacious Playlist Editor"
-msgstr "Audacious プレイリストエディタ"
+msgstr "Audacious プレイリストエディター"
 
 #: src/skins/ui_playlist.cc:752
 #, c-format
@@ -3937,7 +3937,7 @@ msgstr "Unarchived Winamp 2.x スキン"
 #: src/skins/util.cc:430
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr "ディレクトリ (%s) を作成できませんでした: %s\n"
+msgstr "ディレクトリー (%s) を作成できませんでした: %s\n"
 
 #: src/sndfile/plugin.cc:39
 msgid "Sndfile Plugin"
@@ -4062,12 +4062,11 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"次の形式の文字列を、コマンド実行前に評価されるものとして使用することができま"
-"す（この全てがプレイリストの最後のコマンドとして有用であるとは限りません"
-"が）:\n"
+"次の形式の文字列を使うことで、コマンド実行前に値を置き換えることができます。"
+"（プレイリストの終了時に実行するコマンドでは意味のない項目もあります）:\n"
 "\n"
 "%F: 周波数 (ヘルツ)\n"
-"%c: チャネル数\n"
+"%c: チャンネル数\n"
 "%f: ファイル名 (フルパス)\n"
 "%l: 長さ (ミリ秒)\n"
 "%n または %s: 曲名\n"
@@ -4142,7 +4141,7 @@ msgstr "ステータスアイコン"
 
 #: src/statusicon/statusicon.cc:283
 msgid "Se_ttings ..."
-msgstr "設定 (_T)"
+msgstr "設定(_T)"
 
 #: src/statusicon/statusicon.cc:372
 msgid ""
@@ -4210,7 +4209,7 @@ msgstr "<b>エクストラステレオ</b>"
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
-msgstr "トーンジェネレータ"
+msgstr "トーンジェネレーター"
 
 #: src/tonegen/tonegen.cc:94
 #, c-format
@@ -4219,7 +4218,7 @@ msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.cc:94
 msgid "Tone Generator: "
-msgstr "トーンジェネレータ: "
+msgstr "トーンジェネレーター: "
 
 #: src/tonegen/tonegen.cc:160
 msgid ""
@@ -4264,7 +4263,7 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
-"Audacious Ogg Vorbis デコーダ\n"
+"Audacious Ogg Vorbis デコーダー\n"
 "\n"
 "派生元: Xiph.org Foundation の Ogg Vorbis プラグイン\n"
 "http://www.xiph.org/\n"
@@ -4284,7 +4283,7 @@ msgstr ""
 
 #: src/vorbis/vorbis.h:18
 msgid "Ogg Vorbis Decoder"
-msgstr "Ogg Vorbis デコーダ"
+msgstr "Ogg Vorbis デコーダー"
 
 #: src/vtx/info.cc:22
 #, c-format
@@ -4314,12 +4313,12 @@ msgstr ""
 "ステレオ: %s\n"
 "ループ: %l\n"
 "チップ周波数: %F\n"
-"プレイヤ周波数: %P\n"
+"プレイヤー周波数: %P\n"
 "年: %y"
 
 #: src/vtx/vtx.cc:38
 msgid "VTX Decoder"
-msgstr "VTX デコーダ"
+msgstr "VTX デコーダー"
 
 #: src/vtx/vtx.cc:184
 msgid ""
@@ -4327,17 +4326,18 @@ msgid ""
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
-"Sashnov Alexander <sashnov@ngs.ru> による Vortex ファイル形式プレイヤです。\n"
+"Sashnov Alexander <sashnov@ngs.ru> による Vortex ファイル形式プレイヤーで"
+"す。\n"
 "Roman Sherbakov <v_soft@microfor.ru> の in_vtx.dll を基にしています。\n"
 "Audacious への実装は、Pavel Vymetalek <pvymetalek@seznam.cz> が行いました。"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"
-msgstr "WavPack デコーダ"
+msgstr "WavPack デコーダー"
 
 #: src/wavpack/wavpack.cc:211
 msgid "lossy (hybrid)"
-msgstr "非可逆(ハイブリッド)"
+msgstr "非可逆 (ハイブリッド)"
 
 #: src/wavpack/wavpack.cc:213
 msgid "lossy"
@@ -4351,11 +4351,11 @@ msgid ""
 msgstr ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
-"プラグインのコードの一部は Miles Egan が書いた"
+"プラグインのコードの一部は Miles Egan によるものです。"
 
 #: src/xsf/plugin.cc:50
 msgid "2SF Decoder"
-msgstr "2SF デコーダ"
+msgstr "2SF デコーダー"
 
 #: src/xsf/plugin.cc:238
 msgid "<b>XSF Configuration</b>"
