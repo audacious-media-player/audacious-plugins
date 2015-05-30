@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-02-28 19:18+0100\n"
-"PO-Revision-Date: 2015-02-19 22:33+0000\n"
+"POT-Creation-Date: 2015-05-30 15:51+0200\n"
+"PO-Revision-Date: 2015-04-27 08:48+0000\n"
 "Last-Translator: Радослав Иванов <reckku@gmail.com>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/projects/p/audacious/"
 "language/bg/)\n"
@@ -304,11 +304,11 @@ msgstr "Обложка на албум"
 
 #: src/albumart-qt/albumart.cc:33
 msgid "Album Art (Qt)"
-msgstr "Албум Изп (Qt)"
+msgstr "Обложка (Qt)"
 
 #: src/alsa/alsa.h:70
 msgid "ALSA Output"
-msgstr "ALSA Изход"
+msgstr "ALSA изход"
 
 #: src/alsa/config.cc:28
 msgid ""
@@ -321,7 +321,7 @@ msgstr ""
 "Изходна приставка на ALSA за Audacious\n"
 "Всички права запазени 2009-2012 John Lindgren\n"
 "\n"
-"Искрени благодарности на William Pitcock, автор на изходната приставка ALSA "
+"Искрени благодарности на William Pitcock, автор на приставката за изход ALSA "
 "NG, чийто код служеше за справка, когато ръководството към ALSA не беше "
 "достатъчно."
 
@@ -375,6 +375,25 @@ msgid ""
 "Tony Vroon\n"
 "for the good help with alpha testing"
 msgstr ""
+"AMIDI-Вход\n"
+"модулен музикален плейър - MIDI\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"написан от Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"специални благодарности на...\n"
+"\n"
+"Clemens Ladisch и Jaroslav Kysela\n"
+"за техните яки програми aplaymidi и amixer; те бяха\n"
+"наистина полезни, редом с alsa-lib документи, в посока\n"
+"научаването на повече неща за ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"за специалното лого на midi клавиатура\n"
+"\n"
+"Tony Vroon\n"
+"за полезната помощ с алфа тестовете"
 
 #: src/amidi-plug/i_configure.cc:94
 msgid "Override default gain:"
@@ -414,15 +433,15 @@ msgstr "Промяна на барабана:"
 
 #: src/amidi-plug/i_configure.cc:134
 msgid "note numbers"
-msgstr ""
+msgstr "номера на бележките"
 
 #: src/amidi-plug/i_configure.cc:135
 msgid "Skip leading silence"
-msgstr ""
+msgstr "Пропусни водещото затишие"
 
 #: src/amidi-plug/i_configure.cc:137
 msgid "Skip trailing silence"
-msgstr ""
+msgstr "Пропусни последващото затишие"
 
 #: src/amidi-plug/i_configure.cc:141
 msgid "<b>SoundFont</b>"
@@ -435,7 +454,7 @@ msgstr "<b>Синтезатор</b>"
 #: src/amidi-plug/i_configure.cc:148 src/console/plugin.cc:45
 #: src/sid/xs_config.cc:65
 msgid "Sample rate:"
-msgstr ""
+msgstr "Честота на дискретизация"
 
 #: src/amidi-plug/i_configure.cc:150 src/bs2b/plugin.cc:141
 #: src/console/plugin.cc:47 src/modplug/plugin_main.cc:78
@@ -579,6 +598,7 @@ msgstr "Промяна на заглавие"
 #: src/aosd/aosd_trigger.cc:57
 msgid "Triggers OSD when the song title changes (for internet streams)."
 msgstr ""
+"Активира ЕИ, когато се смени заглавието на песента (за интернет потоци)."
 
 #: src/aosd/aosd_trigger.cc:62
 msgid "Pause On"
@@ -786,7 +806,7 @@ msgstr "Ниво на емисия:"
 
 #: src/bs2b/plugin.cc:138
 msgid "x1/10 dB"
-msgstr ""
+msgstr "x1/10 дБ"
 
 #: src/bs2b/plugin.cc:139
 msgid "Cut frequency:"
@@ -967,6 +987,8 @@ msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Приставка за динамична компресия на спектъра за Audacious\n"
+"Запазени права 2010-2014 John Lindgren"
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
@@ -1030,7 +1052,7 @@ msgstr "Звуково разкодиране за игрална конзола
 
 #: src/coreaudio/coreaudio.cc:50
 msgid "CoreAudio output"
-msgstr ""
+msgstr "CoreAudio изход"
 
 #: src/coreaudio/coreaudio.cc:131
 msgid ""
@@ -1040,16 +1062,23 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Приставка за CoreAudio изход за Audacious\n"
+"Запазени права 2014 William Pitcock\n"
+"\n"
+"Базирана на приставката за SDL изход за Audacious\n"
+"Запазени права 2010 John Lindgren"
 
 #: src/coreaudio/coreaudio.cc:143
 msgid "Use exclusive mode"
-msgstr ""
+msgstr "Използвай изключителен режим"
 
 #: src/crossfade/crossfade.cc:44
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Приставка за Застъпване за Audacious\n"
+"Запазени права 2010-2014 John Lindgren"
 
 #: src/crossfade/crossfade.cc:48
 msgid "<b>Crossfade</b>"
@@ -1057,7 +1086,7 @@ msgstr "<b>Плавно преминаване</b>"
 
 #: src/crossfade/crossfade.cc:49
 msgid "On automatic song change"
-msgstr ""
+msgstr "При автиматична смяна на песента"
 
 #: src/crossfade/crossfade.cc:51 src/crossfade/crossfade.cc:57
 msgid "Overlap:"
@@ -1065,17 +1094,19 @@ msgstr "Застъпване:"
 
 #: src/crossfade/crossfade.cc:55
 msgid "On seek or manual song change"
-msgstr ""
+msgstr "При превъртане или ръчна смяна на песен"
 
 #: src/crossfade/crossfade.cc:61
 msgid "<b>Tip</b>"
-msgstr ""
+msgstr "<b>Подсказка</b>"
 
 #: src/crossfade/crossfade.cc:62
 msgid ""
 "For better crossfading, enable\n"
 "the Silence Removal effect."
 msgstr ""
+"За по-добро застъпване, активирайте\n"
+"ефектът Премахване на затишето."
 
 #: src/crossfade/crossfade.cc:72
 msgid "Crossfade"
@@ -1176,6 +1207,10 @@ msgid ""
 "Surround echo by Carl van Schaik, 1999\n"
 "Updated for Audacious by William Pitcock and John Lindgren, 2010-2014"
 msgstr ""
+"Приставка за Ехо\n"
+"от Johan Levin, 1999\n"
+"Обграждащо ехо от Carl van Schaik, 1999\n"
+"Обновено за Audacious от William Pitcock и John Lindgren, 2010-2014"
 
 #: src/echo_plugin/echo.cc:21
 msgid "<b>Echo</b>"
@@ -1257,7 +1292,7 @@ msgstr "Генерирай име на файл от:"
 
 #: src/filewriter/filewriter.cc:448
 msgid "Original file tag"
-msgstr ""
+msgstr "Етикет на оригиналния файл"
 
 #: src/filewriter/filewriter.cc:453
 msgid "Original file name"
@@ -1265,11 +1300,11 @@ msgstr "Оригинално име на файл"
 
 #: src/filewriter/filewriter.cc:459
 msgid "Include original file name extension"
-msgstr ""
+msgstr "Включвай оригиналното разширение на файла"
 
 #: src/filewriter/filewriter.cc:468
 msgid "Prepend track number to file name"
-msgstr ""
+msgstr "Прикрепване на номера на записа към името на файла"
 
 #: src/filewriter/filewriter.cc:484
 msgid ""
@@ -1341,7 +1376,7 @@ msgstr "(Хц)"
 
 #: src/filewriter/mp3.cc:740
 msgid "Bitrate / Compression Ratio:"
-msgstr ""
+msgstr "Честота/Компресия:"
 
 #: src/filewriter/mp3.cc:764
 msgid "Bitrate (kbps):"
@@ -1361,7 +1396,7 @@ msgstr "Разни:"
 
 #: src/filewriter/mp3.cc:856
 msgid "Enforce strict ISO compliance"
-msgstr ""
+msgstr "Наложи придържане към ISO стандарт"
 
 #: src/filewriter/mp3.cc:867
 msgid "Error protection"
@@ -1409,7 +1444,7 @@ msgstr "Ниво на качеството на VBR:"
 
 #: src/filewriter/mp3.cc:1063
 msgid "Omit Xing VBR header"
-msgstr ""
+msgstr "Пропусни титула на Xing VBR"
 
 #: src/filewriter/mp3.cc:1076
 msgid "VBR/ABR"
@@ -1417,7 +1452,7 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.cc:1085
 msgid "Frame Parameters:"
-msgstr ""
+msgstr "Стойности на рамката:"
 
 #: src/filewriter/mp3.cc:1097
 msgid "Mark as copyright"
@@ -1429,7 +1464,7 @@ msgstr "Маркер „Оригинал“"
 
 #: src/filewriter/mp3.cc:1120
 msgid "ID3 Parameters:"
-msgstr ""
+msgstr "ID3 параметри:"
 
 #: src/filewriter/mp3.cc:1131
 msgid "Force addition of version 2 tag"
@@ -1489,11 +1524,11 @@ msgstr "Приставка GIO"
 
 #: src/gio/gio.cc:153
 msgid "Read-and-append mode not supported"
-msgstr ""
+msgstr "Не се поддържа режим на четене и прикрепяне"
 
 #: src/gio/gio.cc:166
 msgid "Invalid open mode"
-msgstr ""
+msgstr "Неправилен режим на отваряне"
 
 #: src/gl-spectrum/gl-spectrum.cc:51
 msgid ""
@@ -1531,14 +1566,23 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"OpenGL анализатор на спектъра за Audacious\n"
+"Запазени права 2013 Christophe Budé, John Lindgren, и Carlo Bramini\n"
+"Запазени права 2014 William Pitcock\n"
+"\n"
+"На основата на приставката за XMMS:\n"
+"Запазени права 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas "
+"Nilsson, и 4Front Technologies\n"
+"\n"
+"Лиценз: GPLv2+"
 
 #: src/gl-spectrum-qt/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer (Qt)"
-msgstr ""
+msgstr "OpenGL анализатор на спектъра (Qt)"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:38
 msgid "GNOME Shortcuts"
-msgstr "Бързи клавиши за Gnome"
+msgstr "Бързи клавиши за GNOME"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:54
 msgid ""
@@ -1547,6 +1591,10 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 msgstr ""
+"Приставка за преки пътища за GNOME\n"
+"Позволява Ви да управлявате плейъра, чрез преките пътища на GNOME.\n"
+"\n"
+"Запазени права (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
 #: src/gtkui/columns.cc:35
 msgid "Entry number"
@@ -1640,19 +1688,19 @@ msgstr "Деактивиране"
 #: src/gtkui/menus.cc:126 src/qtui/main_window_actions.cc:93
 #: src/statusicon/statusicon.cc:276
 msgid "_Open Files ..."
-msgstr "_Отворяне на файлове..."
+msgstr "_Отваряне на файлове..."
 
 #: src/gtkui/menus.cc:127
 msgid "Open _URL ..."
-msgstr "От_варяне на Интернет адрес..."
+msgstr "От_варяне на интернет адрес..."
 
 #: src/gtkui/menus.cc:128 src/qtui/main_window_actions.cc:95
 msgid "_Add Files ..."
-msgstr "_Добавяне на файлове..."
+msgstr "Доба_вяне на файлове..."
 
 #: src/gtkui/menus.cc:129
 msgid "Add U_RL ..."
-msgstr "_Добавяне на Интернет адрес..."
+msgstr "_Добавяне на интернет адрес..."
 
 #: src/gtkui/menus.cc:131
 msgid "Search _Library"
@@ -1660,7 +1708,7 @@ msgstr "_Библиотека за търсене"
 
 #: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:98
 msgid "A_bout ..."
-msgstr "О_тносно..."
+msgstr "От_носно..."
 
 #: src/gtkui/menus.cc:134 src/qtui/main_window_actions.cc:99
 msgid "_Settings ..."
@@ -1675,7 +1723,7 @@ msgstr "_Изход"
 #: src/qtui/main_window_actions.cc:107 src/search-tool/search-tool.cc:641
 #: src/statusicon/statusicon.cc:278
 msgid "_Play"
-msgstr "И_зпълнение"
+msgstr "Въ_зпроизвеждане"
 
 #: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:108
 #: src/statusicon/statusicon.cc:279
@@ -1742,15 +1790,15 @@ msgstr "Из_чистване на точките на повторение"
 #: src/qtui/main_window_actions.cc:122 src/qtui/main_window_actions.cc:129
 #: src/qtui/main_window_actions.cc:145
 msgid "By _Title"
-msgstr "По _Заглавие"
+msgstr "По _заглавие"
 
 #: src/gtkui/menus.cc:161 src/qtui/main_window_actions.cc:123
 msgid "By _File Name"
-msgstr "По Име на файл"
+msgstr "По _име на файл"
 
 #: src/gtkui/menus.cc:162 src/qtui/main_window_actions.cc:124
 msgid "By File _Path"
-msgstr "По _път до файл"
+msgstr "По _път до файла"
 
 #: src/gtkui/menus.cc:166 src/gtkui/menus.cc:182
 #: src/qtui/main_window_actions.cc:128 src/qtui/main_window_actions.cc:144
@@ -1760,7 +1808,7 @@ msgstr "По _номер на запис"
 #: src/gtkui/menus.cc:168 src/gtkui/menus.cc:184
 #: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:146
 msgid "By _Artist"
-msgstr "По _Изпълнител"
+msgstr "По _изпълнител"
 
 #: src/gtkui/menus.cc:169 src/gtkui/menus.cc:185
 #: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:147
@@ -1770,37 +1818,37 @@ msgstr "По ал_бум"
 #: src/gtkui/menus.cc:170 src/gtkui/menus.cc:186
 #: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:148
 msgid "By Albu_m Artist"
-msgstr "По Изпълнител на Албум"
+msgstr "По и_зпълнител на Албум"
 
 #: src/gtkui/menus.cc:171 src/gtkui/menus.cc:187
 #: src/qtui/main_window_actions.cc:133 src/qtui/main_window_actions.cc:149
 msgid "By Release _Date"
-msgstr "По _Дата на излизане"
+msgstr "По _дата на издаване"
 
 #: src/gtkui/menus.cc:172 src/gtkui/menus.cc:188
 #: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:150
 msgid "By _Genre"
-msgstr "По _Жанр"
+msgstr "По _жанр"
 
 #: src/gtkui/menus.cc:173 src/gtkui/menus.cc:189
 #: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:151
 msgid "By _Length"
-msgstr "По в_реметраене"
+msgstr "По _времетраене"
 
 #: src/gtkui/menus.cc:174 src/gtkui/menus.cc:190
 #: src/qtui/main_window_actions.cc:136 src/qtui/main_window_actions.cc:152
 msgid "By _File Path"
-msgstr "По _Път до файл"
+msgstr "По _път до файла"
 
 #: src/gtkui/menus.cc:175 src/gtkui/menus.cc:191
 #: src/qtui/main_window_actions.cc:137 src/qtui/main_window_actions.cc:153
 msgid "By _Custom Title"
-msgstr "По Избрано _заглавие"
+msgstr "По избрано з_аглавие"
 
 #: src/gtkui/menus.cc:177 src/gtkui/menus.cc:193
 #: src/qtui/main_window_actions.cc:139 src/qtui/main_window_actions.cc:155
 msgid "R_everse Order"
-msgstr "О_бръщане на подредбата"
+msgstr "Об_ръщане на подредбата"
 
 #: src/gtkui/menus.cc:178 src/gtkui/menus.cc:194
 #: src/qtui/main_window_actions.cc:140 src/qtui/main_window_actions.cc:156
@@ -1809,7 +1857,7 @@ msgstr "Сл_учаен ред"
 
 #: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:160
 msgid "_Play/Resume"
-msgstr "_Изпълнение/Подновяване"
+msgstr "_Възпроизвеждане/Възобновяване"
 
 #: src/gtkui/menus.cc:199 src/gtkui/menus.cc:251
 #: src/qtui/main_window_actions.cc:161
@@ -1835,7 +1883,7 @@ msgstr "Премахване на _липсващите файлове"
 #: src/gtkui/menus.cc:206 src/playlist-manager/playlist-manager.cc:244
 #: src/qtui/main_window_actions.cc:168
 msgid "_New"
-msgstr "_Нова"
+msgstr "_Нов"
 
 #: src/gtkui/menus.cc:207
 msgid "Ren_ame ..."
@@ -1908,7 +1956,7 @@ msgstr "_Файл"
 
 #: src/gtkui/menus.cc:239 src/qtui/main_window_actions.cc:190
 msgid "_Playback"
-msgstr "_Изпълнение"
+msgstr "Въ_зпроизвеждане"
 
 #: src/gtkui/menus.cc:240 src/qtui/main_window_actions.cc:191
 msgid "P_laylist"
@@ -1921,11 +1969,11 @@ msgstr "_Услуги"
 
 #: src/gtkui/menus.cc:242 src/qtui/main_window_actions.cc:193
 msgid "_Output"
-msgstr "_Изходящ поток"
+msgstr "Из_ходящ поток"
 
 #: src/gtkui/menus.cc:243
 msgid "_View"
-msgstr "_Изглед"
+msgstr "Из_глед"
 
 #: src/gtkui/menus.cc:248
 msgid "_Queue/Unqueue"
@@ -1933,11 +1981,11 @@ msgstr "_Промяна на състоянието в опашката"
 
 #: src/gtkui/menus.cc:250
 msgid "_Open Containing Folder"
-msgstr ""
+msgstr "_Отвори папката със съдържанието"
 
 #: src/gtkui/menus.cc:253
 msgid "Cu_t"
-msgstr "_Отрязване"
+msgstr "О_трязване"
 
 #: src/gtkui/menus.cc:254
 msgid "_Copy"
@@ -1945,7 +1993,7 @@ msgstr "_Копиране"
 
 #: src/gtkui/menus.cc:255
 msgid "_Paste"
-msgstr "_Поставяне"
+msgstr "По_ставяне"
 
 #: src/gtkui/menus.cc:256
 msgid "Select _All"
@@ -1994,7 +2042,7 @@ msgstr "Превъртане при смяна на песента"
 
 #: src/gtkui/ui_gtk.cc:71
 msgid "GTK Interface"
-msgstr "GTK Изглед"
+msgstr "GTK изглед"
 
 #: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:232
 #, c-format
@@ -2191,27 +2239,29 @@ msgstr "JACK Изход"
 
 #: src/jack-ng/jack-ng.cc:114
 msgid "Automatically connect to output ports"
-msgstr ""
+msgstr "Автоматично свързване към изходящите портове"
 
 #: src/jack-ng/jack-ng.cc:155
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
-msgstr ""
+msgstr "Намерени са само изходни портове %d JACK, но се изискват %d."
 
 #: src/jack-ng/jack-ng.cc:164
 #, c-format
 msgid "Failed to connect to JACK port %s."
-msgstr ""
+msgstr "Неуспешно свързване към JACK порт %s."
 
 #: src/jack-ng/jack-ng.cc:184
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
+"JACK поддържа само звук с плаваща запетая. Трябва да смените изходната "
+"побитова честота на плаваща запетая в настройките на Audacious."
 
 #: src/jack-ng/jack-ng.cc:197
 msgid "Failed to connect to the JACK server; is it running?"
-msgstr ""
+msgstr "Неуспех при свързването към сървър JACK. Стартиран ли е?"
 
 #: src/jack-ng/jack-ng.cc:273
 #, c-format
@@ -2219,6 +2269,9 @@ msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
 "%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
 msgstr ""
+"JACK-сървърът изисква честота на дискретизация от %d Хц, но Audacious "
+"възпроизвежда на %d Хц. Моля, използвайте ефектът за Промяна на честотата на "
+"дискретизация, за да поправите несъответствията."
 
 #: src/ladspa/plugin.cc:414
 #, c-format
@@ -2365,17 +2418,17 @@ msgstr "Списък M3U"
 
 #: src/metronom/metronom.cc:44
 msgid "Tact Generator"
-msgstr "Генератор на удари"
+msgstr "Генератор на тактове"
 
 #: src/metronom/metronom.cc:147
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "Генератор на удари: %d увм"
+msgstr "Генератор на тактове: %d увм"
 
 #: src/metronom/metronom.cc:149
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "Генератор на удари: %d увм %d/%d"
+msgstr "Генератор на тактове: %d увм %d/%d"
 
 #: src/metronom/metronom.cc:237
 msgid ""
@@ -2385,7 +2438,7 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
-"„Генератор на удари“ от Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"Генератор на тактове от Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
 "За да го използвате, добавете интернет адрес: tact://beats*num/den\n"
 "напр. tact://77 за изпълняване на 77 удара в минута\n"
@@ -2526,7 +2579,7 @@ msgstr "За непрекъснато повторение, задайте ст�
 
 #: src/modplug/plugin_main.cc:125 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
-msgstr ""
+msgstr "Тези настройки ще влязат в сила, когато Audacious бъде рестартиран."
 
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
@@ -2538,7 +2591,7 @@ msgstr "<b>Допълнителни</b>"
 
 #: src/mpg123/mpg123.cc:84
 msgid "Use accurate length calculation (slow)"
-msgstr ""
+msgstr "Използвай точна калкулация на продължителността (бавно)"
 
 #: src/mpg123/mpg123.cc:248
 msgid "Surround"
@@ -2562,7 +2615,7 @@ msgstr "Неизвестна HTTP грешка"
 
 #: src/neon/neon.cc:569
 msgid "Error parsing URL"
-msgstr "Грешка при зареждане на URL"
+msgstr "Грешка при онаследяване на интернет адрес"
 
 #: src/neon/neon.cc:632
 msgid "Too many redirects"
@@ -2625,7 +2678,7 @@ msgstr "Винаги да се показва известие"
 
 #: src/notify/notify.cc:114
 msgid "Include album name in notification"
-msgstr "Включи име на албум в уведомленията"
+msgstr "Включи името на албума в уведомленията"
 
 #: src/notify/osd.cc:58
 msgid "Show"
@@ -2642,11 +2695,11 @@ msgstr "Следващ"
 
 #: src/oss4/oss.h:93
 msgid "OSS4 Output"
-msgstr "Изход OSS4"
+msgstr "OSS4 изход"
 
 #: src/oss4/oss.h:95
 msgid "OSS3 Output"
-msgstr "Изход OSS3"
+msgstr "OSS3 изход"
 
 #: src/oss4/plugin.cc:35
 msgid "Default device"
@@ -2688,7 +2741,7 @@ msgstr ""
 
 #: src/playlist-manager/playlist-manager.cc:37
 msgid "Playlist Manager"
-msgstr "Мениджър на плейлиста"
+msgstr "Мениджър на списъка"
 
 #: src/playlist-manager/playlist-manager.cc:226
 msgid "Entries"
@@ -2712,7 +2765,7 @@ msgstr "Разкодиране OpenPSF PSF1/PSF2"
 
 #: src/pulse_audio/pulse_audio.cc:38
 msgid "PulseAudio Output"
-msgstr "Изход PulseAudio"
+msgstr "PulseAudio изход"
 
 #: src/pulse_audio/pulse_audio.cc:611
 msgid ""
@@ -2750,7 +2803,7 @@ msgstr ""
 
 #: src/qtaudio/qtaudio.cc:49
 msgid "QtMultimedia Output"
-msgstr "Изход QtMultimedia"
+msgstr "QtMultimedia изход"
 
 #: src/qtaudio/qtaudio.cc:77
 msgid ""
@@ -2760,6 +2813,11 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Приставка за изходен звук на QtMultimedia за Audacious\n"
+"Запазени права 2014 William Pitcock\n"
+"\n"
+"На основата на приставка за SDL изход за Audacious\n"
+"Запазени права 2010 John Lindgren"
 
 #: src/qtui/dialog_windows.cc:31
 msgid "Working ..."
@@ -2771,15 +2829,15 @@ msgstr "Търсене"
 
 #: src/qtui/main_window_actions.cc:94
 msgid "_Open Folder ..."
-msgstr "_Отваряне на Папка ..."
+msgstr "_Отвори папка..."
 
 #: src/qtui/main_window_actions.cc:96
 msgid "_Add Folder ..."
-msgstr "_Добавяне на Папка ..."
+msgstr "_Добави папка..."
 
 #: src/qtui/main_window_actions.cc:101
 msgid "_Log Inspector ..."
-msgstr "Проверка на лог ..."
+msgstr "Инспектор на от_чети..."
 
 #: src/qtui/main_window.cc:64
 msgid "Open Files"
@@ -2803,18 +2861,18 @@ msgstr "Прескачане"
 
 #: src/qtui/qtui.cc:42
 msgid "Qt Interface"
-msgstr "Qt Изглед"
+msgstr "Qt Интерфейс"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
-msgstr "Преобразувател на честоти"
+msgstr "Промяна на честотата на дискретизация"
 
 #: src/resample/resample.cc:183
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"Приставка за промяна на честотата за Audacious\n"
+"Приставка за промяна на честотата за дискретизация за Audacious\n"
 "Авторски права 2010-2012 John Lindgren"
 
 #: src/resample/resample.cc:187
@@ -2991,7 +3049,7 @@ msgstr ""
 
 #: src/sdlout/sdlout.cc:48
 msgid "SDL Output"
-msgstr "Изход SDL"
+msgstr "SDL изход"
 
 #: src/sdlout/sdlout.cc:77
 msgid ""
@@ -3068,7 +3126,7 @@ msgstr "Избор на папка"
 
 #: src/sid/xmms-sid.cc:43
 msgid "SID Player"
-msgstr "SID Плеър"
+msgstr "SID Плейър"
 
 #: src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
@@ -3096,11 +3154,11 @@ msgstr "Емулация на филтър"
 
 #: src/sid/xs_config.cc:75
 msgid "Clock speed:"
-msgstr "Скорост на часовника:"
+msgstr "Скорост на ускорение:"
 
 #: src/sid/xs_config.cc:78
 msgid "Do not automatically select clock speed"
-msgstr "Не избирай автоматично скорост на часовника"
+msgstr "Да не се изибира автоматична скорост на ускорение"
 
 #: src/sid/xs_config.cc:80
 msgid "<b>Playback time</b>"
@@ -3108,49 +3166,51 @@ msgstr "<b>Време на възпроизвеждане</b>"
 
 #: src/sid/xs_config.cc:81
 msgid "Set maximum playback time:"
-msgstr "Задай максимална продължителност на изпълнението:"
+msgstr "Задай максимална продължителност на възпроизвеждането:"
 
 #: src/sid/xs_config.cc:87
 msgid "Use only when song length is unknown"
-msgstr ""
+msgstr "Използвай само, когато не се знае времетраенето на песента"
 
 #: src/sid/xs_config.cc:90
 msgid "Set minimum playback time:"
-msgstr ""
+msgstr "Задай минимално времетраене:"
 
 #: src/sid/xs_config.cc:96
 msgid "<b>Subtunes</b>"
-msgstr ""
+msgstr "<b>Подтонове</b>"
 
 #: src/sid/xs_config.cc:97
 msgid "Enable subtunes"
-msgstr ""
+msgstr "Активирай подтонове"
 
 #: src/sid/xs_config.cc:99
 msgid "Ignore subtunes shorter than:"
-msgstr ""
+msgstr "Пренебрегни подтонове по-къси от:"
 
 #: src/sid/xs_config.cc:105
 msgid "<b>Note</b>"
-msgstr "<b>Уведомление</b>"
+msgstr "<b>Бележка</b>"
 
 #: src/silence-removal/silence-removal.cc:39
 msgid "Silence Removal"
-msgstr ""
+msgstr "Премахване на затишието"
 
 #: src/silence-removal/silence-removal.cc:58
 msgid ""
 "Silence Removal Plugin for Audacious\n"
 "Copyright 2014 John Lindgren"
 msgstr ""
+"Приставка за премахване на затишието за Audacious\n"
+"Запазени права "
 
 #: src/silence-removal/silence-removal.cc:67
 msgid "<b>Silence Removal</b>"
-msgstr ""
+msgstr "<b>Премахване на затишието</b>"
 
 #: src/silence-removal/silence-removal.cc:68
 msgid "Threshold:"
-msgstr "Таван:"
+msgstr "Праг:"
 
 #: src/silence-removal/silence-removal.cc:70
 msgid "dB"
@@ -3227,7 +3287,7 @@ msgstr "Прескачане до време..."
 
 #: src/skins/menus.cc:101
 msgid "Play/Resume"
-msgstr ""
+msgstr "Възпроизвеждане/Възобновяване"
 
 #: src/skins/menus.cc:103
 msgid "New Playlist"
@@ -3319,7 +3379,7 @@ msgstr "По заглавие"
 
 #: src/skins/menus.cc:144 src/skins/menus.cc:178 src/skins/menus.cc:192
 msgid "By File Name"
-msgstr "По Име на файл"
+msgstr "По име на файл"
 
 #: src/skins/menus.cc:145 src/skins/menus.cc:179 src/skins/menus.cc:193
 msgid "By File Path"
@@ -3371,7 +3431,7 @@ msgstr "По номер на записа"
 
 #: src/skins/menus.cc:172 src/skins/menus.cc:186
 msgid "By Artist"
-msgstr "По Изпълнител"
+msgstr "По изпълнител"
 
 #: src/skins/menus.cc:173 src/skins/menus.cc:187
 msgid "By Album"
@@ -3379,7 +3439,7 @@ msgstr "По Албум"
 
 #: src/skins/menus.cc:174 src/skins/menus.cc:188
 msgid "By Album Artist"
-msgstr "По Изпълнител на Албум"
+msgstr "По изпълнител на албум"
 
 #: src/skins/menus.cc:175 src/skins/menus.cc:190
 msgid "By Release Date"
@@ -3387,15 +3447,15 @@ msgstr "По дата на издаване"
 
 #: src/skins/menus.cc:176 src/skins/menus.cc:189
 msgid "By Genre"
-msgstr ""
+msgstr "По жанр"
 
 #: src/skins/menus.cc:177 src/skins/menus.cc:191
 msgid "By Length"
-msgstr ""
+msgstr "По времетраене"
 
 #: src/skins/menus.cc:180 src/skins/menus.cc:194
 msgid "By Custom Title"
-msgstr ""
+msgstr "По избрано заглавие"
 
 #: src/skins/menus.cc:198
 msgid "Randomize List"
@@ -3407,7 +3467,7 @@ msgstr "Обръщане на списъка"
 
 #: src/skins/menus.cc:201
 msgid "Sort Selected"
-msgstr "Подреждане на избраните"
+msgstr "Подреждане на избраното"
 
 #: src/skins/menus.cc:202
 msgid "Sort List"
@@ -3549,7 +3609,7 @@ msgstr "Изтриване на автоматично предложение"
 
 #: src/skins/skins_cfg.cc:176
 msgid "Player:"
-msgstr "Плеър:"
+msgstr "Плейър:"
 
 #: src/skins/skins_cfg.cc:178
 msgid "Select main player window font:"
@@ -3557,7 +3617,7 @@ msgstr "Избор на основен шрифт за прозореца на �
 
 #: src/skins/skins_cfg.cc:179
 msgid "Playlist:"
-msgstr "Плейлиста:"
+msgstr "Списък за изпълнение:"
 
 #: src/skins/skins_cfg.cc:181
 msgid "Select playlist font:"
@@ -3927,32 +3987,32 @@ msgstr ""
 
 #: src/sndio-ng/sndio.cc:44
 msgid "Sndio Output"
-msgstr ""
+msgstr "Sndio изход"
 
 #: src/sndio-ng/sndio.cc:98
 msgid "Device (blank for default):"
-msgstr ""
+msgstr "Устройство (празно - стойности по подразбиране):"
 
 #: src/sndio-ng/sndio.cc:100
 msgid "Save and restore volume:"
-msgstr "Запази и възтанови звука:"
+msgstr "Запази и възстанови силата на звука:"
 
 #: src/sndio-ng/sndio.cc:181
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
-msgstr ""
+msgstr "Sndio грешка: неподдържан звуков формат (%d)"
 
 #: src/sndio-ng/sndio.cc:192
 msgid "Sndio error: sio_open() failed"
-msgstr ""
+msgstr "Sndio грешка: sio_open() се провали"
 
 #: src/sndio-ng/sndio.cc:222
 msgid "Sndio error: sio_setpar() failed"
-msgstr ""
+msgstr "Sndio грешка: sio_setpar() се провали"
 
 #: src/sndio-ng/sndio.cc:234
 msgid "Sndio error: sio_start() failed"
-msgstr ""
+msgstr "Sndio грешка: sio_start() се провали"
 
 #: src/song_change/song_change.cc:33
 msgid "Song Change"
@@ -3980,11 +4040,13 @@ msgstr "Команда за изпълнение при край на песен
 
 #: src/song_change/song_change.cc:368
 msgid "Command to run at the end of the playlist:"
-msgstr "Команда за изпълнение при край на плейлиста."
+msgstr "Команда за изпълнение при край на списъка."
 
 #: src/song_change/song_change.cc:372
 msgid "Command to run when song title changes (for network streams):"
 msgstr ""
+"Команда за изпълнение, когато се смени заглавието на песента (за интернет "
+"потоци):"
 
 #: src/song_change/song_change.cc:376
 msgid ""
@@ -4003,6 +4065,21 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
+"Може да използвате следните променливи, които ще бъдат заменени преди "
+"извикването на командата (не всички са полезни като команда за край на "
+"списъка):\n"
+"\n"
+"%F: честота (в херцове)\n"
+"%c: брой канали\n"
+"%f: име на файл (с пълен път до него)\n"
+"%l: времетраене (в милисекунди)\n"
+"%n и %s: име на песен\n"
+"%r: честота (в битове в секунда)\n"
+"%t: позиция в списъка (%02d)\n"
+"%p: в момента се изпълнява (1 или 0)\n"
+"%a: изпълнител\n"
+"%b: албум\n"
+"%T: заглавие на записа"
 
 #: src/song-info-qt/song-info.cc:32
 msgid "Song Info (Qt)"
@@ -4136,7 +4213,7 @@ msgstr "<b>Допълнително многозвучие</b>"
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
-msgstr "Генератор на удари"
+msgstr "Генератор на тонове"
 
 #: src/tonegen/tonegen.cc:94
 #, c-format
@@ -4145,7 +4222,7 @@ msgstr "%s %.1f Хц"
 
 #: src/tonegen/tonegen.cc:94
 msgid "Tone Generator: "
-msgstr "Генератор на удари:"
+msgstr "Генератор на тонове:"
 
 #: src/tonegen/tonegen.cc:160
 msgid ""
@@ -4155,11 +4232,11 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 msgstr ""
-"Генератор на удари Sine от Håvard Kvålen <havardk@xmms.org>\n"
+"Генератор на тонове от Håvard Kvålen <havardk@xmms.org>\n"
 "Променена от Daniel J. Peng <danielpeng@bigfoot.com>\n"
 "\n"
 "За да я използвате, добавете адрес: tone://frequency1;frequency2;"
-"frequency3;...⏎\n"
+"frequency3;...\n"
 "напр. tone://2000;2005 за изпълняването на тон от 2000 Хц и тон от 2005 Хц"
 
 #: src/voice_removal/voice_removal.cc:28
@@ -4211,7 +4288,7 @@ msgstr "Разгодиране на Ogg Vorbis"
 #: src/vtx/info.cc:22
 #, c-format
 msgid "Details about %s"
-msgstr "Подробности за %s"
+msgstr "Данни за %s"
 
 #: src/vtx/info.cc:24
 msgid ""
@@ -4234,9 +4311,9 @@ msgstr ""
 "Коментар: %C\n"
 "Тип на чипа: %c\n"
 "Стерео: %s\n"
-"Контур: %l\n"
+"Повторение: %l\n"
 "Честота на чипа: %F\n"
-"Честота на плеъра: %P\n"
+"Честота на плейъра: %P\n"
 "Година: %y"
 
 #: src/vtx/vtx.cc:38

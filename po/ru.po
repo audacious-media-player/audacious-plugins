@@ -18,6 +18,7 @@
 # NaiLi (aka jamesjames) Rootaerc <theism@mail.ru>, 2012-2013
 # NaiLi (aka jamesjames) Rootaerc <theism@mail.ru>, 2012
 # Алексей <kvadrocu7@gmail.com>, 2013
+# Nikita <osbib2@gmail.com>, 2015
 # Lowrider <pams@imail.ru>, 2014-2015
 # Rax Garfield <admin@dvizho.ks.ua>, 2012
 #   <sejava@mail.ru>, 2012
@@ -34,17 +35,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-02-28 19:18+0100\n"
-"PO-Revision-Date: 2015-02-04 21:21+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2015-05-30 15:51+0200\n"
+"PO-Revision-Date: 2015-04-30 22:04+0000\n"
+"Last-Translator: Nikita <osbib2@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/audacious/"
 "language/ru/)\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: src/aac-raw/aac.cc:18
 msgid "AAC (Raw) Decoder"
@@ -344,7 +346,7 @@ msgstr ""
 
 #: src/alsa/config.cc:61
 msgid "(no description)"
-msgstr ""
+msgstr "(описание отсутствует)"
 
 #: src/alsa/config.cc:166
 msgid "Default PCM device"
@@ -1081,6 +1083,11 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Плагин вывода CoreAudio для Audacious\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"Основан на плагине вывода SDL для Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/coreaudio/coreaudio.cc:143
 msgid "Use exclusive mode"
@@ -2068,6 +2075,7 @@ msgid_plural "%d channels"
 msgstr[0] "%d канал"
 msgstr[1] "%d канала"
 msgstr[2] "%d каналов"
+msgstr[3] "%d каналов"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:85
 #, c-format
@@ -3066,6 +3074,7 @@ msgid_plural "%d results"
 msgstr[0] "%d результат"
 msgstr[1] "%d результатов"
 msgstr[2] "%d результатов"
+msgstr[3] "%d результатов"
 
 #: src/search-tool/search-tool.cc:400
 #, c-format
@@ -3074,6 +3083,7 @@ msgid_plural "(%d hidden)"
 msgstr[0] "(%d скрыто)"
 msgstr[1] "(%d скрыто)"
 msgstr[2] "(%d скрыто)"
+msgstr[3] "(%d скрыто)"
 
 #: src/search-tool/search-tool.cc:594
 #, c-format
@@ -3082,6 +3092,7 @@ msgid_plural "%d songs"
 msgstr[0] "%d песня"
 msgstr[1] "%d песен"
 msgstr[2] "%d песен"
+msgstr[3] "%d песен"
 
 #: src/search-tool/search-tool.cc:601
 msgid "of this genre"
@@ -3141,7 +3152,7 @@ msgstr "<b>Эмуляция</b>"
 
 #: src/sid/xs_config.cc:69
 msgid "Emulate MOS 8580 (default: MOS 6581)"
-msgstr ""
+msgstr "Эмулировать MOS 8580 (по-умолчанию: MOS 6581)"
 
 #: src/sid/xs_config.cc:71
 msgid "Do not automatically select chip model"
@@ -3991,7 +4002,7 @@ msgstr "Выход Sndio"
 
 #: src/sndio-ng/sndio.cc:98
 msgid "Device (blank for default):"
-msgstr ""
+msgstr "Устройство (по-умолчанию - оставить пустым):"
 
 #: src/sndio-ng/sndio.cc:100
 msgid "Save and restore volume:"
@@ -4287,6 +4298,17 @@ msgid ""
 "Player Freq: %P\n"
 "Year: %y"
 msgstr ""
+"Название: %t\n"
+"Автор: %a\n"
+"Из: %f\n"
+"Трекер: %T\n"
+"Комментарий: %C\n"
+"Тип чипа: %c\n"
+"Стерео: %s\n"
+"Зацикливание: %l\n"
+"Частота чипа: %F\n"
+"Частота плеера: %P\n"
+"Год: %y"
 
 #: src/vtx/vtx.cc:38
 msgid "VTX Decoder"
