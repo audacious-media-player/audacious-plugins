@@ -114,6 +114,12 @@ static const AudguiMenuItem playlist_items[] = {
     MenuCommand (N_("Refresh Playlist"), "view-refresh", GDK_KEY_F5, NO_MOD, action_playlist_refresh_list)
 };
 
+static const AudguiMenuItem view_window_type[] = {
+    MenuCommand (N_("Default"), nullptr, NO_KEY, view_switch_type_default),
+    MenuCommand (N_("Desktop"), nullptr, NO_KEY, view_switch_type_desktop),
+    MenuCommand (N_("Dock"), nullptr, NO_KEY, view_switch_type_dock)
+};
+
 static const AudguiMenuItem view_items[] = {
     MenuToggle (N_("Show Playlist Editor"), nullptr, 'e', ALT, "skins", "playlist_visible", view_apply_show_playlist, "skins set playlist_visible"),
     MenuToggle (N_("Show Equalizer"), nullptr, 'g', ALT, "skins", "equalizer_visible", view_apply_show_equalizer, "skins set equalizer_visible"),
@@ -122,6 +128,7 @@ static const AudguiMenuItem view_items[] = {
     MenuSep (),
     MenuToggle (N_("Always on Top"), nullptr, 'o', CTRL, "skins", "always_on_top", view_apply_on_top, "skins set always_on_top"),
     MenuToggle (N_("On All Workspaces"), nullptr, 's', CTRL, "skins", "sticky", view_apply_sticky, "skins set sticky"),
+    MenuSub (N_("Window Type"), nullptr, view_window_type),
     MenuSep (),
     MenuToggle (N_("Roll Up Player"), nullptr, 'w', CTRL, "skins", "player_shaded", view_apply_player_shaded, "skins set player_shaded"),
     MenuToggle (N_("Roll Up Playlist Editor"), nullptr, 'w', SHIFT_CTRL, "skins", "playlist_shaded", view_apply_playlist_shaded, "skins set playlist_shaded"),

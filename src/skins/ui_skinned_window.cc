@@ -19,6 +19,9 @@
  * using our public API to be a derived work.
  */
 
+#include <libaudcore/runtime.h>
+#include <string.h>
+
 #include "draw-compat.h"
 #include "skins_cfg.h"
 #include "ui_dock.h"
@@ -116,6 +119,8 @@ static void window_destroy (GtkWidget * window)
 GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
  gboolean shaded, void (* draw) (GtkWidget * window, cairo_t * cr))
 {
+    String type = aud_get_str ("skins", "window_type");
+
     w *= config.scale;
     h *= config.scale;
 
@@ -145,6 +150,19 @@ GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
 
     data->shaded = gtk_fixed_new ();
     g_object_ref (data->shaded);
+
+    if (!strcmp(type, "dock"))
+    {
+        gtk_window_set_type_hint ((GtkWindow *) window, GDK_WINDOW_TYPE_HINT_DOCK);
+        gtk_window_set_skip_taskbar_hint ((GtkWindow *) window, TRUE);
+        gtk_window_set_skip_pager_hint ((GtkWindow *) window, TRUE);
+    }
+    else if (!strcmp(type, "desktop"))
+    {
+        gtk_window_set_type_hint ((GtkWindow *) window, GDK_WINDOW_TYPE_HINT_DESKTOP);
+        gtk_window_set_skip_taskbar_hint ((GtkWindow *) window, TRUE);
+        gtk_window_set_skip_pager_hint ((GtkWindow *) window, TRUE);
+    }
 
     if (shaded)
         gtk_container_add ((GtkContainer *) window, data->shaded);
