@@ -182,6 +182,7 @@ GtkWidget * eq_slider_new (const char * name, int band)
 
     EqSliderData * data = g_new0 (EqSliderData, 1);
     data->name = g_strdup (name);
+    data->band = band;
     g_object_set_data ((GObject *) slider, "eqsliderdata", data);
 
     return slider;
