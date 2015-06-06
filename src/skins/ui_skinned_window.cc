@@ -49,11 +49,11 @@ static gboolean window_button_press (GtkWidget * window, GdkEventButton * event,
         return FALSE;
 
     if (data->is_moving)
-        return TRUE;
+        return FALSE;
 
     dock_move_start (window, event->x_root, event->y_root);
     data->is_moving = TRUE;
-    return TRUE;
+    return FALSE;
 }
 
 static gboolean window_button_release (GtkWidget * window,
@@ -63,16 +63,16 @@ static gboolean window_button_release (GtkWidget * window,
         return FALSE;
 
     data->is_moving = FALSE;
-    return TRUE;
+    return FALSE;
 }
 
 static gboolean window_motion (GtkWidget * window, GdkEventMotion * event, WindowData * data)
 {
     if (! data->is_moving)
-        return TRUE;
+        return FALSE;
 
     dock_move (event->x_root, event->y_root);
-    return TRUE;
+    return FALSE;
 }
 
 static void window_destroy (GtkWidget * window, WindowData * data)
