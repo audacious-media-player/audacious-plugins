@@ -42,12 +42,6 @@ static void window_apply_shape (GtkWidget * window, WindowData * data)
      data->is_shaded ? data->sshape : data->shape, 0, 0);
 }
 
-static void window_realize (GtkWidget * window, WindowData * data)
-{
-    gdk_window_set_back_pixmap (gtk_widget_get_window (window), nullptr, FALSE);
-    window_apply_shape (window, data);
-}
-
 static gboolean window_button_press (GtkWidget * window, GdkEventButton * event, WindowData * data)
 {
     /* pass double clicks through; they are handled elsewhere */
@@ -137,7 +131,7 @@ GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
     data->draw = draw;
 
     DRAW_CONNECT (window, window_draw, data);
-    g_signal_connect (window, "realize", (GCallback) window_realize, data);
+    g_signal_connect (window, "realize", (GCallback) window_apply_shape, data);
     g_signal_connect (window, "button-press-event", (GCallback) window_button_press, data);
     g_signal_connect (window, "button-release-event", (GCallback) window_button_release, data);
     g_signal_connect (window, "motion-notify-event", (GCallback) window_motion, data);

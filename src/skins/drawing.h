@@ -27,21 +27,11 @@
 /* Window-less drawable widget; allows partly transparent widgets */
 GtkWidget * drawing_area_new ();
 
-#define DRAW_FUNC_BEGIN(n,T) static int n (GtkWidget * wid, GdkEventExpose * ev, T * data) { \
- cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (wid)); \
- if (! gtk_widget_get_has_window (wid)) { \
-    GtkAllocation alloc; \
-    gtk_widget_get_allocation (wid, & alloc); \
-    cairo_translate (cr, alloc.x, alloc.y); \
-    cairo_rectangle (cr, 0, 0, alloc.width, alloc.height); \
-    cairo_clip (cr); \
- }
-
-#define DRAW_FUNC_END cairo_destroy (cr); \
- return FALSE; }
+#define DRAW_FUNC_BEGIN(n,T) static int n (GtkWidget * wid, cairo_t * cr, T * data) {
+#define DRAW_FUNC_END return FALSE; }
 
 #define DRAW_CONNECT(w,f,d) do { \
-    g_signal_connect (w, "expose-event", (GCallback) f, d); \
+    g_signal_connect (w, "draw", (GCallback) f, d); \
  } while (0)
 
 /* Adds a drawable widget to an input-only GtkEventBox */
@@ -49,7 +39,7 @@ GtkWidget * drawing_area_new ();
     GtkWidget * proxy = drawing_area_new (); \
     gtk_container_add ((GtkContainer *) w, proxy); \
     gtk_widget_show (proxy); \
-    g_signal_connect (proxy, "expose-event", (GCallback) f, d); \
+    g_signal_connect (proxy, "draw", (GCallback) f, d); \
  } while (0)
 
 #endif // SKINS_DRAWING_H
