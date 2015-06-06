@@ -159,8 +159,10 @@ playlist_font_set_cb()
 
 static void autoscroll_set_cb (void)
 {
-    textbox_set_scroll (mainwin_info, config.autoscroll);
-    textbox_set_scroll (playlistwin_sinfo, config.autoscroll);
+    if (! aud_get_bool ("skins", "mainwin_shaded"))
+        textbox_set_scroll (mainwin_info, config.autoscroll);
+    if (aud_get_bool ("skins", "playlist_shaded"))
+        textbox_set_scroll (playlistwin_sinfo, config.autoscroll);
 }
 
 static void vis_reset_cb (void)

@@ -985,9 +985,12 @@ mainwin_create_widgets(void)
     window_put_widget (mainwin, FALSE, mainwin_pl, 242, 58);
     button_on_release (mainwin_pl, mainwin_pl_cb);
 
-    String font = aud_get_str ("skins", "mainwin_font");
-    mainwin_info = textbox_new (153, "", config.mainwin_use_bitmapfont ? nullptr :
-     (const char *) font, config.autoscroll);
+    String font;
+    if (! config.mainwin_use_bitmapfont)
+        font = aud_get_str ("skins", "mainwin_font");
+
+    bool shaded = aud_get_bool ("skins", "mainwin_shaded");
+    mainwin_info = textbox_new (153, "", font, ! shaded && config.autoscroll);
 
     window_put_widget (mainwin, FALSE, mainwin_info, 112, 27);
     g_signal_connect (mainwin_info, "button-press-event", (GCallback)

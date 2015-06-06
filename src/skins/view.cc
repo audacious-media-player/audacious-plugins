@@ -32,6 +32,7 @@
 #include "ui_main_evlisteners.h"
 #include "ui_playlist.h"
 #include "ui_skinned_button.h"
+#include "ui_skinned_textbox.h"
 #include "ui_skinned_menurow.h"
 #include "ui_skinned_window.h"
 
@@ -111,6 +112,9 @@ void view_apply_player_shaded (void)
     int width = shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
     int height = shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
     window_set_size (mainwin, width, height);
+
+    if (config.autoscroll)
+        textbox_set_scroll (mainwin_info, ! shaded);
 }
 
 void view_set_playlist_shaded (bool shaded)
@@ -130,7 +134,8 @@ void view_apply_playlist_shaded (void)
     int height = shaded ? MAINWIN_SHADED_HEIGHT : config.playlist_height;
     window_set_size (playlistwin, config.playlist_width, height);
 
-    playlistwin_update ();
+    if (config.autoscroll)
+        textbox_set_scroll (playlistwin_sinfo, shaded);
 }
 
 void view_set_equalizer_shaded (bool shaded)
