@@ -103,7 +103,7 @@ const char * skins_get_user_skin_dir ()
 const char * skins_get_skin_thumb_dir ()
 {
     if (! skin_thumb_dir)
-        skin_thumb_dir = String (filename_build ({g_get_user_cache_dir (), "audacious", "thumbs"}));
+        skin_thumb_dir = String (filename_build ({g_get_user_cache_dir (), "audacious", "thumbs-unscaled"}));
 
     return skin_thumb_dir;
 }
