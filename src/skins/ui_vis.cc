@@ -320,7 +320,5 @@ void ui_vis_timeout_func (GtkWidget * widget, unsigned char * data)
     }
 
     vis.active = TRUE;
-
-    if (gtk_widget_is_drawable (widget))
-        ui_vis_draw (widget, nullptr, nullptr);
+    gtk_widget_queue_draw (widget);
 }
