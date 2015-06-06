@@ -322,33 +322,20 @@ static gboolean time_counter_cb ()
 
 static void do_seek (int time)
 {
-    int length = aud_drct_get_length ();
-    time = aud::clamp (time, 0, length);
-
-    set_slider (time);
-    set_time_label (time, length);
     aud_drct_seek (time);
-
-    // Trick: Unschedule and then schedule the update function.  This gives the
-    // player 1/4 second to perform the seek before we update the display again,
-    // in an attempt to reduce flickering.
-    if (update_song_timeout_source)
-    {
-        g_source_remove (update_song_timeout_source);
-        update_song_timeout_source = g_timeout_add (250, (GSourceFunc) time_counter_cb, nullptr);
-    }
+    time_counter_cb ();
 }
 
 static gboolean ui_slider_change_value_cb (GtkRange * range,
  GtkScrollType scroll, double value)
 {
-    int length = aud_drct_get_length ();
-    int time = aud::clamp ((int) value, 0, length);
-
-    set_time_label (time, length);
+    int time = value;
 
     if (slider_is_moving)
+    {
         slider_seek_time = time;
+        set_time_label (time, aud_drct_get_length ());
+    }
     else if (time != slider_seek_time)  // avoid seeking twice
         do_seek (time);
 
