@@ -27,6 +27,7 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
 #include <libaudgui/menu.h>
 
@@ -687,7 +688,8 @@ void * SearchTool::get_gtk_widget ()
 
     help_label = gtk_label_new (_("To import your music library into "
      "Audacious, choose a folder and then click the \"refresh\" icon."));
-    gtk_widget_set_size_request (help_label, 194, -1);
+    int label_width = aud::rescale (audgui_get_dpi (), 4, 7);
+    gtk_widget_set_size_request (help_label, label_width, -1);
     gtk_label_set_line_wrap ((GtkLabel *) help_label, TRUE);
     g_signal_connect (help_label, "destroy", (GCallback) gtk_widget_destroyed, & help_label);
     gtk_widget_set_no_show_all (help_label, TRUE);

@@ -67,7 +67,7 @@ get_thumbnail_filename(const char * path)
     basename = g_path_get_basename(path);
     pngname = g_strconcat(basename, ".png", nullptr);
 
-    thumbname = g_build_filename(skins_paths[SKINS_PATH_SKIN_THUMB_DIR],
+    thumbname = g_build_filename(skins_get_skin_thumb_dir (),
                                  pngname, nullptr);
 
     g_free(basename);
@@ -126,22 +126,22 @@ static GdkPixbuf * skin_get_thumbnail (const char * path)
     GdkPixbuf * thumb = nullptr;
 
     if (g_file_test (thumbname, G_FILE_TEST_EXISTS))
-    {
         thumb = gdk_pixbuf_new_from_file (thumbname, nullptr);
+
+    if (! thumb)
+    {
+        thumb = skin_get_preview (path);
+
         if (thumb)
-            goto DONE;
+        {
+            make_directory (skins_get_skin_thumb_dir ());
+            gdk_pixbuf_save (thumb, thumbname, "png", nullptr, nullptr);
+        }
     }
 
-    thumb = skin_get_preview (path);
-    if (! thumb)
-        goto DONE;
-
-    audgui_pixbuf_scale_within (& thumb, 128);
-
     if (thumb)
-        gdk_pixbuf_save (thumb, thumbname, "png", nullptr, nullptr);
+        audgui_pixbuf_scale_within (& thumb, audgui_get_dpi () * 3 / 2);
 
-DONE:
     g_free (thumbname);
     return thumb;
 }
@@ -240,8 +240,9 @@ skinlist_update(void)
 
     skinlist_clear();
 
-    if (g_file_test (skins_paths[SKINS_PATH_USER_SKIN_DIR], G_FILE_TEST_EXISTS))
-        scan_skindir (skins_paths[SKINS_PATH_USER_SKIN_DIR]);
+    const char * user_skin_dir = skins_get_user_skin_dir ();
+    if (g_file_test (user_skin_dir, G_FILE_TEST_EXISTS))
+        scan_skindir (user_skin_dir);
 
     char * path = g_strdup_printf ("%s/Skins", aud_get_path (AudPath::DataDir));
     scan_skindir (path);

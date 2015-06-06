@@ -25,7 +25,7 @@
 #include <libaudcore/equalizer.h>
 #include <libaudcore/runtime.h>
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_equalizer_graph.h"
@@ -79,7 +79,7 @@ double eval_spline (const double * xa, const double * ya, const double * y2a,
              (b * b * b - b) * y2a[khi]) * (h * h) / 6.0);
 }
 
-DRAW_FUNC_BEGIN (eq_graph_draw)
+DRAW_FUNC_BEGIN (eq_graph_draw, void)
     static const double x[10] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
 
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 294, 0, 0, 113, 19);
@@ -135,9 +135,9 @@ DRAW_FUNC_END
 
 GtkWidget * eq_graph_new (void)
 {
-    GtkWidget * graph = gtk_drawing_area_new ();
+    GtkWidget * graph = drawing_area_new ();
     gtk_widget_set_size_request (graph, 113 * config.scale, 19 * config.scale);
-    DRAW_CONNECT (graph, eq_graph_draw);
+    DRAW_CONNECT (graph, eq_graph_draw, nullptr);
     return graph;
 }
 

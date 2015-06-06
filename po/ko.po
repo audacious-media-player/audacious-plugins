@@ -11,14 +11,14 @@
 #       Sang-Jin Hwang <accel@accellinux.org>, 1999
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2012
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2012
-# Seong-ho Cho <darkcircle.0426@gmail.com>, 2012-2014
+# Seong-ho Cho <darkcircle.0426@gmail.com>, 2012-2015
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-01-24 13:17+0100\n"
-"PO-Revision-Date: 2015-01-17 22:08+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2015-02-28 19:18+0100\n"
+"PO-Revision-Date: 2015-02-14 15:07+0000\n"
+"Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/audacious/"
 "language/ko/)\n"
 "Language: ko\n"
@@ -238,7 +238,7 @@ msgid "Day"
 msgstr "요일"
 
 #: src/alarm/interface.cc:259 src/bs2b/plugin.cc:130
-#: src/skins/preset-list.cc:433 src/skins/preset-list.cc:439
+#: src/skins/preset-list.cc:434 src/skins/preset-list.cc:440
 msgid "Default"
 msgstr "기본값"
 
@@ -307,7 +307,7 @@ msgstr "앨범 표지"
 
 #: src/albumart-qt/albumart.cc:33
 msgid "Album Art (Qt)"
-msgstr ""
+msgstr "앨범 아트(Qt)"
 
 #: src/alsa/alsa.h:70
 msgid "ALSA Output"
@@ -327,23 +327,27 @@ msgstr ""
 "ALSA 메뉴얼이 충분히 도움이 되지 않았을 때, 코드 참고서가 되어준 ALSA 출력 플"
 "러그인 NG의 저작자인 William Pitcock에게 감사드립니다."
 
-#: src/alsa/config.cc:165
+#: src/alsa/config.cc:61
+msgid "(no description)"
+msgstr ""
+
+#: src/alsa/config.cc:166
 msgid "Default PCM device"
 msgstr "기본 PCM 장치"
 
-#: src/alsa/config.cc:187
+#: src/alsa/config.cc:188
 msgid "Default mixer device"
 msgstr "기본 음량 조절기 장치"
 
-#: src/alsa/config.cc:295
+#: src/alsa/config.cc:296
 msgid "PCM device:"
 msgstr "PCM 장치:"
 
-#: src/alsa/config.cc:298
+#: src/alsa/config.cc:299
 msgid "Mixer device:"
 msgstr "음량 조절기 장치:"
 
-#: src/alsa/config.cc:301
+#: src/alsa/config.cc:302
 msgid "Mixer element:"
 msgstr "음량 조절기 요소:"
 
@@ -782,7 +786,7 @@ msgstr "피드 수준:"
 
 #: src/bs2b/plugin.cc:138
 msgid "x1/10 dB"
-msgstr ""
+msgstr "x1/10 dB"
 
 #: src/bs2b/plugin.cc:139
 msgid "Cut frequency:"
@@ -796,7 +800,7 @@ msgstr "스펙트럼 분석기"
 msgid "Audio CD Plugin"
 msgstr "오디오 CD 플러그인"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:119
+#: src/cdaudio-ng/cdaudio-ng.cc:121
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -816,118 +820,118 @@ msgstr ""
 "\n"
 "이 프로젝트는 GSoC 2007에서 만들었습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:135
+#: src/cdaudio-ng/cdaudio-ng.cc:137
 msgid "<b>Device</b>"
 msgstr "<b>장치</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:136
+#: src/cdaudio-ng/cdaudio-ng.cc:138
 msgid "Read speed:"
 msgstr "읽기 속도:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:139
+#: src/cdaudio-ng/cdaudio-ng.cc:141
 msgid "Override device:"
 msgstr "장치 대체:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:141
+#: src/cdaudio-ng/cdaudio-ng.cc:143
 msgid "<b>Metadata</b>"
 msgstr "<b>메타데이터</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:142
+#: src/cdaudio-ng/cdaudio-ng.cc:144
 msgid "Use CD-Text"
 msgstr "CD-Text 사용하기"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:144
+#: src/cdaudio-ng/cdaudio-ng.cc:146
 msgid "Use CDDB"
 msgstr "CDDB 사용하기"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:146
+#: src/cdaudio-ng/cdaudio-ng.cc:148
 msgid "Use HTTP instead of CDDBP"
 msgstr "CDDBP 대신 HTTP 사용하기"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:149
+#: src/cdaudio-ng/cdaudio-ng.cc:151
 msgid "Server:"
 msgstr "서버:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:153
+#: src/cdaudio-ng/cdaudio-ng.cc:155
 msgid "Path:"
 msgstr "경로:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:157
+#: src/cdaudio-ng/cdaudio-ng.cc:159
 msgid "Port:"
 msgstr "포트:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:244
+#: src/cdaudio-ng/cdaudio-ng.cc:246
 msgid "Failed to initialize cdio subsystem."
 msgstr "cdio 하위 시스템을 초기화하는데 실패했습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:279
+#: src/cdaudio-ng/cdaudio-ng.cc:281
 #, c-format
 msgid "Invalid URI %s."
 msgstr "잘못된 %s URI 입니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:281
+#: src/cdaudio-ng/cdaudio-ng.cc:283
 #, c-format
 msgid "Track %d not found."
 msgstr "%d 트랙이 없습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:283
+#: src/cdaudio-ng/cdaudio-ng.cc:285
 #, c-format
 msgid "Track %d is a data track."
 msgstr "%d 트랙은 데이터 트랙입니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:358
+#: src/cdaudio-ng/cdaudio-ng.cc:360
 msgid "Error reading audio CD."
 msgstr "오디오 CD 읽는중 오류가 발생했습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:427
+#: src/cdaudio-ng/cdaudio-ng.cc:429
 msgid "Audio CD"
 msgstr "오디오 CD"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:458 src/cdaudio-ng/cdaudio-ng.cc:467
+#: src/cdaudio-ng/cdaudio-ng.cc:460 src/cdaudio-ng/cdaudio-ng.cc:469
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "%s CD 장치를 여는데 실패했습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:470
+#: src/cdaudio-ng/cdaudio-ng.cc:472
 msgid "No audio capable CD drive found."
 msgstr "오디오를 재생할 수 있는 CD 드라이브가 없습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:495
+#: src/cdaudio-ng/cdaudio-ng.cc:497
 msgid "Failed to finish initializing opened CD drive."
 msgstr "열려 있는 CD 드라이브 초기화를 끝내는데 실패했습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:508
+#: src/cdaudio-ng/cdaudio-ng.cc:510
 msgid "Failed to retrieve first/last track number."
 msgstr "첫번째/마지막 트랙 번호를 검색하는데 실패했습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:529
+#: src/cdaudio-ng/cdaudio-ng.cc:531
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "%d번 트랙에 대한 시작/끝 LSN을 읽을 수 없습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:611
+#: src/cdaudio-ng/cdaudio-ng.cc:613
 msgid "Failed to create the cddb connection."
 msgstr "cddb 연결을 만드는데 실패했습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:677
+#: src/cdaudio-ng/cdaudio-ng.cc:679
 msgid "Failed to query the CDDB server"
 msgstr "CDDB 서버에 요청하는데 실패했습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:679
+#: src/cdaudio-ng/cdaudio-ng.cc:681
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "CDDB 서버에 요청하는데 실패했습니다: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:703
+#: src/cdaudio-ng/cdaudio-ng.cc:705
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "cddb 정보를 읽는데 실패했습니다: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:763
+#: src/cdaudio-ng/cdaudio-ng.cc:765
 msgid "Drive is empty."
 msgstr "드라이브가 비어 있습니다."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:765
+#: src/cdaudio-ng/cdaudio-ng.cc:767
 msgid "Unsupported disk type."
 msgstr "지원하지 않는 디스크 형식입니다."
 
@@ -1138,13 +1142,13 @@ msgstr "휴지통으로 이동"
 msgid "Do you want to permanently delete the selected files?"
 msgstr "선택한 파일을 완전히 삭제하시겠습니까?"
 
-#: src/delete-files/delete-files.cc:141 src/skins/preset-list.cc:410
-#: src/skins/preset-list.cc:426
+#: src/delete-files/delete-files.cc:141 src/skins/preset-list.cc:411
+#: src/skins/preset-list.cc:427
 msgid "Delete"
 msgstr "삭제"
 
 #: src/delete-files/delete-files.cc:145 src/skins/preset-browser.cc:56
-#: src/skins/preset-list.cc:306 src/skins/ui_playlist.cc:221
+#: src/skins/preset-list.cc:307 src/skins/ui_playlist.cc:221
 msgid "Cancel"
 msgstr "취소"
 
@@ -1323,7 +1327,7 @@ msgstr "알고리즘 품질:"
 
 #: src/filewriter/mp3.cc:706
 msgid "Output Sample Rate:"
-msgstr ""
+msgstr "출력 샘플 주파수:"
 
 #: src/filewriter/mp3.cc:733
 msgid "(Hz)"
@@ -1331,7 +1335,7 @@ msgstr "(Hz)"
 
 #: src/filewriter/mp3.cc:740
 msgid "Bitrate / Compression Ratio:"
-msgstr ""
+msgstr "비트 전송률/압축율:"
 
 #: src/filewriter/mp3.cc:764
 msgid "Bitrate (kbps):"
@@ -1347,11 +1351,11 @@ msgstr "오디오 모드:"
 
 #: src/filewriter/mp3.cc:845
 msgid "Miscellaneous:"
-msgstr ""
+msgstr "기타:"
 
 #: src/filewriter/mp3.cc:856
 msgid "Enforce strict ISO compliance"
-msgstr ""
+msgstr "엄격한 ISO 규격 강제"
 
 #: src/filewriter/mp3.cc:867
 msgid "Error protection"
@@ -1407,7 +1411,7 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.cc:1085
 msgid "Frame Parameters:"
-msgstr ""
+msgstr "프레임 매개변수:"
 
 #: src/filewriter/mp3.cc:1097
 msgid "Mark as copyright"
@@ -1419,7 +1423,7 @@ msgstr "원본으로 표시"
 
 #: src/filewriter/mp3.cc:1120
 msgid "ID3 Parameters:"
-msgstr ""
+msgstr "ID3 매개변수:"
 
 #: src/filewriter/mp3.cc:1131
 msgid "Force addition of version 2 tag"
@@ -1483,7 +1487,7 @@ msgstr ""
 
 #: src/gio/gio.cc:166
 msgid "Invalid open mode"
-msgstr ""
+msgstr "잘못된 열기 모드"
 
 #: src/gl-spectrum/gl-spectrum.cc:51
 msgid ""
@@ -1528,7 +1532,7 @@ msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:38
 msgid "GNOME Shortcuts"
-msgstr ""
+msgstr "그놈 바로가기"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:54
 msgid ""
@@ -1537,6 +1541,10 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 msgstr ""
+"그놈 바로가기 플러그인\n"
+"그놈 바로가기로 플레이어를 제어할 수 있습니다.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
 #: src/gtkui/columns.cc:35
 msgid "Entry number"
@@ -1561,7 +1569,7 @@ msgstr "앨범"
 
 #: src/gtkui/columns.cc:40
 msgid "Album artist"
-msgstr ""
+msgstr "앨범 음악가"
 
 #: src/gtkui/columns.cc:41
 msgid "Track"
@@ -1736,7 +1744,7 @@ msgstr "제목순(_T)"
 
 #: src/gtkui/menus.cc:161 src/qtui/main_window_actions.cc:123
 msgid "By _File Name"
-msgstr ""
+msgstr "파일 이름순(_F)"
 
 #: src/gtkui/menus.cc:162 src/qtui/main_window_actions.cc:124
 msgid "By File _Path"
@@ -1760,7 +1768,7 @@ msgstr "앨범 이름순(_B)"
 #: src/gtkui/menus.cc:170 src/gtkui/menus.cc:186
 #: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:148
 msgid "By Albu_m Artist"
-msgstr ""
+msgstr "앨범 작곡가순(_M)"
 
 #: src/gtkui/menus.cc:171 src/gtkui/menus.cc:187
 #: src/qtui/main_window_actions.cc:133 src/qtui/main_window_actions.cc:149
@@ -1770,7 +1778,7 @@ msgstr "출시 일자순(_D)"
 #: src/gtkui/menus.cc:172 src/gtkui/menus.cc:188
 #: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:150
 msgid "By _Genre"
-msgstr ""
+msgstr "장르순(_G)"
 
 #: src/gtkui/menus.cc:173 src/gtkui/menus.cc:189
 #: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:151
@@ -1799,7 +1807,7 @@ msgstr "임의 순서(_R)"
 
 #: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:160
 msgid "_Play/Resume"
-msgstr ""
+msgstr "재생/복귀(_P)"
 
 #: src/gtkui/menus.cc:199 src/gtkui/menus.cc:251
 #: src/qtui/main_window_actions.cc:161
@@ -1923,7 +1931,7 @@ msgstr "대기 목록에 넣기/빼기(_Q)"
 
 #: src/gtkui/menus.cc:250
 msgid "_Open Containing Folder"
-msgstr ""
+msgstr "음악 포함 폴더 열기(_O)"
 
 #: src/gtkui/menus.cc:253
 msgid "Cu_t"
@@ -1986,7 +1994,7 @@ msgstr "곡 바뀔 때 스크롤"
 msgid "GTK Interface"
 msgstr "GTK 인터페이스"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:230
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:232
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - 오데이셔스"
@@ -1995,7 +2003,7 @@ msgstr "%s - 오데이셔스"
 msgid "Buffering ..."
 msgstr "버퍼링 ..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:232 src/skins/ui_main.cc:1162
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:234 src/skins/ui_main.cc:1164
 msgid "Audacious"
 msgstr "오데이셔스"
 
@@ -2179,7 +2187,7 @@ msgstr "JACK 출력"
 
 #: src/jack-ng/jack-ng.cc:114
 msgid "Automatically connect to output ports"
-msgstr ""
+msgstr "출력 포트로 자동 연결"
 
 #: src/jack-ng/jack-ng.cc:155
 #, c-format
@@ -2543,21 +2551,21 @@ msgstr ""
 
 #: src/neon/neon.cc:535
 msgid "Unknown HTTP error"
-msgstr ""
+msgstr "알 수 없는 HTTP 오류"
 
 #: src/neon/neon.cc:569
 msgid "Error parsing URL"
-msgstr ""
+msgstr "URL 해석 오류"
 
 #: src/neon/neon.cc:632
 msgid "Too many redirects"
 msgstr ""
 
-#: src/notify/event.cc:62
+#: src/notify/event.cc:64
 msgid "Stopped"
 msgstr "정지함"
 
-#: src/notify/event.cc:62
+#: src/notify/event.cc:64
 msgid "Audacious is not playing."
 msgstr "오데이셔스가 재생중이 아닙니다."
 
@@ -2630,11 +2638,11 @@ msgstr "OSS4 출력"
 
 #: src/oss4/oss.h:95
 msgid "OSS3 Output"
-msgstr ""
+msgstr "OSS3 출력"
 
 #: src/oss4/plugin.cc:35
 msgid "Default device"
-msgstr ""
+msgstr "기본 장치"
 
 #: src/oss4/plugin.cc:77
 msgid "Audio device:"
@@ -2672,19 +2680,19 @@ msgstr ""
 
 #: src/playlist-manager/playlist-manager.cc:37
 msgid "Playlist Manager"
-msgstr ""
+msgstr "재생 목록 관리자"
 
 #: src/playlist-manager/playlist-manager.cc:226
 msgid "Entries"
-msgstr ""
+msgstr "항목"
 
 #: src/playlist-manager/playlist-manager.cc:245
 msgid "_Remove"
-msgstr ""
+msgstr "제거(_R)"
 
 #: src/playlist-manager/playlist-manager.cc:246
 msgid "Ren_ame"
-msgstr ""
+msgstr "이름 바꾸기(_A)"
 
 #: src/pls/pls.cc:35
 msgid "PLS Playlists"
@@ -2733,7 +2741,7 @@ msgstr ""
 
 #: src/qtaudio/qtaudio.cc:49
 msgid "QtMultimedia Output"
-msgstr ""
+msgstr "QtMultimedia 출력"
 
 #: src/qtaudio/qtaudio.cc:77
 msgid ""
@@ -2743,10 +2751,15 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"오데이셔스용 QtMultimedia 음성 출력 플러그인\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"오데이셔스용 SDL 출력 플러그인 기반임\n"
+"Copyright 2010 John Lindgren"
 
 #: src/qtui/dialog_windows.cc:31
 msgid "Working ..."
-msgstr ""
+msgstr "동작중 ..."
 
 #: src/qtui/filter_input.cc:44 src/skins/ui_playlist.cc:221
 msgid "Search"
@@ -2754,23 +2767,23 @@ msgstr "검색"
 
 #: src/qtui/main_window_actions.cc:94
 msgid "_Open Folder ..."
-msgstr ""
+msgstr "폴더 열기(_O)..."
 
 #: src/qtui/main_window_actions.cc:96
 msgid "_Add Folder ..."
-msgstr ""
+msgstr "폴더 추가(_A)..."
 
 #: src/qtui/main_window_actions.cc:101
 msgid "_Log Inspector ..."
-msgstr ""
+msgstr "로그 감시기(_L)..."
 
 #: src/qtui/main_window.cc:64
 msgid "Open Files"
-msgstr ""
+msgstr "파일 열기"
 
 #: src/qtui/main_window.cc:66
 msgid "Add Files"
-msgstr ""
+msgstr "파일 추가"
 
 #: src/qtui/main_window.cc:71 src/skins/menus.cc:90
 msgid "Previous"
@@ -2786,7 +2799,7 @@ msgstr "뒤섞기"
 
 #: src/qtui/qtui.cc:42
 msgid "Qt Interface"
-msgstr ""
+msgstr "Qt 인터페이스"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -2988,23 +3001,23 @@ msgstr "라이브러리"
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
-msgstr[0] ""
+msgstr[0] "결과 %d개"
 
 #: src/search-tool/search-tool.cc:400
 #, c-format
 msgid "(%d hidden)"
 msgid_plural "(%d hidden)"
-msgstr[0] ""
+msgstr[0] "(숨긴 항목 %d개)"
 
 #: src/search-tool/search-tool.cc:594
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
-msgstr[0] ""
+msgstr[0] "노래 %d곡"
 
 #: src/search-tool/search-tool.cc:601
 msgid "of this genre"
-msgstr ""
+msgstr ": 이 장르에 해당"
 
 #: src/search-tool/search-tool.cc:607
 msgid "on"
@@ -3044,55 +3057,55 @@ msgstr "폴더 선택"
 
 #: src/sid/xmms-sid.cc:43
 msgid "SID Player"
-msgstr ""
+msgstr "SID 재생기"
 
 #: src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
-msgstr ""
+msgstr "<b>출력</b>"
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
-msgstr ""
+msgstr "채널:"
 
 #: src/sid/xs_config.cc:68
 msgid "<b>Emulation</b>"
-msgstr ""
+msgstr "<b>에뮬레이션</b>"
 
 #: src/sid/xs_config.cc:69
 msgid "Emulate MOS 8580 (default: MOS 6581)"
-msgstr ""
+msgstr "MOS 8580 에뮬레이션(기본: MOS 6581)"
 
 #: src/sid/xs_config.cc:71
 msgid "Do not automatically select chip model"
-msgstr ""
+msgstr "칩 모델 자동으로 선택하지 말 것"
 
 #: src/sid/xs_config.cc:73
 msgid "Emulate filter"
-msgstr ""
+msgstr "필터 에뮬레이션"
 
 #: src/sid/xs_config.cc:75
 msgid "Clock speed:"
-msgstr ""
+msgstr "클록 속도:"
 
 #: src/sid/xs_config.cc:78
 msgid "Do not automatically select clock speed"
-msgstr ""
+msgstr "클록 속도 자동으로 선택하지 말 것"
 
 #: src/sid/xs_config.cc:80
 msgid "<b>Playback time</b>"
-msgstr ""
+msgstr "<b>재생 시간</b>"
 
 #: src/sid/xs_config.cc:81
 msgid "Set maximum playback time:"
-msgstr ""
+msgstr "최대 재생 시간 설정:"
 
 #: src/sid/xs_config.cc:87
 msgid "Use only when song length is unknown"
-msgstr ""
+msgstr "곡 길이를 알 수 없을때만 사용"
 
 #: src/sid/xs_config.cc:90
 msgid "Set minimum playback time:"
-msgstr ""
+msgstr "최소 재생 시간 설정:"
 
 #: src/sid/xs_config.cc:96
 msgid "<b>Subtunes</b>"
@@ -3142,7 +3155,7 @@ msgstr "URL 열기..."
 
 #: src/skins/menus.cc:66
 msgid "Search Library"
-msgstr ""
+msgstr "라이브러리 검색"
 
 #: src/skins/menus.cc:68
 msgid "Playback"
@@ -3203,7 +3216,7 @@ msgstr "지정 시간으로 건너뛰기..."
 
 #: src/skins/menus.cc:101
 msgid "Play/Resume"
-msgstr ""
+msgstr "재생/재개"
 
 #: src/skins/menus.cc:103
 msgid "New Playlist"
@@ -3277,9 +3290,9 @@ msgstr "재생 목록 편집기 말아 올리기"
 msgid "Roll Up Equalizer"
 msgstr "이퀄라이저 말아 올리기"
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:852
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:854
 msgid "Double Size"
-msgstr ""
+msgstr "두배 길이"
 
 #: src/skins/menus.cc:138
 msgid "Add URL ..."
@@ -3295,7 +3308,7 @@ msgstr "제목별"
 
 #: src/skins/menus.cc:144 src/skins/menus.cc:178 src/skins/menus.cc:192
 msgid "By File Name"
-msgstr ""
+msgstr "파일 이름별"
 
 #: src/skins/menus.cc:145 src/skins/menus.cc:179 src/skins/menus.cc:193
 msgid "By File Path"
@@ -3355,7 +3368,7 @@ msgstr "앨범 제목순"
 
 #: src/skins/menus.cc:174 src/skins/menus.cc:188
 msgid "By Album Artist"
-msgstr ""
+msgstr "앨범 음악가별"
 
 #: src/skins/menus.cc:175 src/skins/menus.cc:190
 msgid "By Release Date"
@@ -3363,15 +3376,15 @@ msgstr "출시일자순"
 
 #: src/skins/menus.cc:176 src/skins/menus.cc:189
 msgid "By Genre"
-msgstr ""
+msgstr "장르별"
 
 #: src/skins/menus.cc:177 src/skins/menus.cc:191
 msgid "By Length"
-msgstr ""
+msgstr "길이별"
 
 #: src/skins/menus.cc:180 src/skins/menus.cc:194
 msgid "By Custom Title"
-msgstr ""
+msgstr "지정 제목별"
 
 #: src/skins/menus.cc:198
 msgid "Randomize List"
@@ -3465,13 +3478,13 @@ msgstr "0 값으로 초기화"
 msgid "Winamp Classic Interface"
 msgstr "Winamp 클래식 인터페이스"
 
-#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:370
-#: src/skins/preset-list.cc:385
+#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:371
+#: src/skins/preset-list.cc:386
 msgid "Save"
 msgstr "저장"
 
-#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:337
-#: src/skins/preset-list.cc:353
+#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:338
+#: src/skins/preset-list.cc:354
 msgid "Load"
 msgstr "불러오기"
 
@@ -3495,37 +3508,37 @@ msgstr "EQF 파일 저장"
 msgid "Import Winamp Presets"
 msgstr "윈앰프 설정 목록 불러오기"
 
-#: src/skins/preset-list.cc:284
+#: src/skins/preset-list.cc:285
 msgid "Presets"
 msgstr "설정 목록"
 
-#: src/skins/preset-list.cc:334
+#: src/skins/preset-list.cc:335
 msgid "Load preset"
 msgstr "설정 목록 불러오기"
 
-#: src/skins/preset-list.cc:350
+#: src/skins/preset-list.cc:351
 msgid "Load auto-preset"
 msgstr "자동 설정 목록 불러오기"
 
-#: src/skins/preset-list.cc:366
+#: src/skins/preset-list.cc:367
 msgid "Save preset"
 msgstr "설정 목록 저장"
 
-#: src/skins/preset-list.cc:381
+#: src/skins/preset-list.cc:382
 msgid "Save auto-preset"
 msgstr "자동 설정 목록 저장"
 
-#: src/skins/preset-list.cc:407
+#: src/skins/preset-list.cc:408
 msgid "Delete preset"
 msgstr "설정 목록 삭제"
 
-#: src/skins/preset-list.cc:423
+#: src/skins/preset-list.cc:424
 msgid "Delete auto-preset"
 msgstr "자동 설정 목록 삭제"
 
 #: src/skins/skins_cfg.cc:176
 msgid "Player:"
-msgstr ""
+msgstr "연주자:"
 
 #: src/skins/skins_cfg.cc:178
 msgid "Select main player window font:"
@@ -3533,7 +3546,7 @@ msgstr "주 재생기 창 글꼴 선택:"
 
 #: src/skins/skins_cfg.cc:179
 msgid "Playlist:"
-msgstr ""
+msgstr "재생목록:"
 
 #: src/skins/skins_cfg.cc:181
 msgid "Select playlist font:"
@@ -3736,59 +3749,59 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "오데이셔스 이퀄라이저"
 
-#: src/skins/ui_main.cc:686
+#: src/skins/ui_main.cc:688
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "%d 탐색:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:707
+#: src/skins/ui_main.cc:709
 #, c-format
 msgid "Volume: %d%%"
 msgstr "음량: %d%%"
 
-#: src/skins/ui_main.cc:730
+#: src/skins/ui_main.cc:732
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "균형: %d%% 왼쪽"
 
-#: src/skins/ui_main.cc:732
+#: src/skins/ui_main.cc:734
 msgid "Balance: center"
 msgstr "균형: 가운데"
 
-#: src/skins/ui_main.cc:734
+#: src/skins/ui_main.cc:736
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "균형: %d%% 오른쪽"
 
-#: src/skins/ui_main.cc:840
+#: src/skins/ui_main.cc:842
 msgid "Options Menu"
 msgstr "옵션 메뉴"
 
-#: src/skins/ui_main.cc:844
+#: src/skins/ui_main.cc:846
 msgid "Disable 'Always On Top'"
 msgstr "'항상 위' 비활성화"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:848
 msgid "Enable 'Always On Top'"
 msgstr "'항상 위' 활성화"
 
-#: src/skins/ui_main.cc:849
+#: src/skins/ui_main.cc:851
 msgid "File Info Box"
 msgstr "파일 정보 상자"
 
-#: src/skins/ui_main.cc:855
+#: src/skins/ui_main.cc:857
 msgid "Visualizations"
 msgstr ""
 
-#: src/skins/ui_main.cc:1319
+#: src/skins/ui_main.cc:1336
 msgid "Repeat point A set."
 msgstr "A 반복 시점을 설정했습니다."
 
-#: src/skins/ui_main.cc:1324
+#: src/skins/ui_main.cc:1341
 msgid "Repeat point B set."
 msgstr "B 반복 시점을 설정했습니다."
 
-#: src/skins/ui_main.cc:1333
+#: src/skins/ui_main.cc:1350
 msgid "Repeat points cleared."
 msgstr "반복 시점을 지웠습니다."
 
@@ -3844,15 +3857,15 @@ msgstr "오데이셔스 재생 목록 편집기"
 msgid "%s (%d of %d)"
 msgstr "%1$s (%3$d중 %2$d)"
 
-#: src/skins/ui_skinselector.cc:164
+#: src/skins/ui_skinselector.cc:167
 msgid "Archived Winamp 2.x skin"
 msgstr "압축한 Winamp 2.x 스킨"
 
-#: src/skins/ui_skinselector.cc:169
+#: src/skins/ui_skinselector.cc:172
 msgid "Unarchived Winamp 2.x skin"
 msgstr "압축하지 않은 Winamp 2.x 스킨"
 
-#: src/skins/util.cc:441
+#: src/skins/util.cc:430
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "(%s) 디렉터리를 만들 수 없습니다: %s\n"

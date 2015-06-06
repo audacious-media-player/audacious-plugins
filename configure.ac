@@ -5,7 +5,7 @@ dnl ***
 dnl Initialize
 dnl ==========
 AC_PREREQ([2.59])
-AC_INIT([audacious-plugins], [3.6-alpha1])
+AC_INIT([audacious-plugins], [3.7-devel])
 AC_COPYRIGHT([Copyright (C) 2001-2015 Audacious developers and others])
 
 AC_DEFINE_UNQUOTED([PACKAGE], "$PACKAGE_NAME", [Name of package])
@@ -18,10 +18,6 @@ AC_CONFIG_MACRO_DIR([m4])
 AUD_COMMON_PROGS
 
 BUILDSYS_SHARED_LIB
-
-dnl Headers and functions
-dnl =====================
-AC_CHECK_FUNCS([mkdtemp])
 
 dnl gettext
 dnl =======
@@ -208,11 +204,11 @@ AC_ARG_ENABLE(hotkey,
 
 have_hotkey=no
 if test "x$enable_hotkey" != "xno"; then
-    PKG_CHECK_MODULES(GDKX11, [gdk-x11-3.0],
+    PKG_CHECK_MODULES(GDKX11, [gdk-x11-2.0],
         [have_hotkey="yes"
          GENERAL_PLUGINS="$GENERAL_PLUGINS hotkey"],
         [if test "x$enable_hotkey" = "xyes"; then
-            AC_MSG_ERROR([Cannot find gdk-x11-3.0 development files, but compilation of X11 Global Hotkey plugin has been explicitly requested; please install gdk-x11-3.0 dev files and run configure again])
+            AC_MSG_ERROR([Cannot find gdk-x11-2.0 development files, but compilation of X11 Global Hotkey plugin has been explicitly requested; please install gdk-x11-2.0 dev files and run configure again])
          fi]
     )
 else

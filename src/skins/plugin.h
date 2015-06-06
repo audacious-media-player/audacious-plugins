@@ -23,13 +23,8 @@
 
 #include <glib.h>
 
-enum {
-    SKINS_PATH_USER_SKIN_DIR,
-    SKINS_PATH_SKIN_THUMB_DIR,
-    SKINS_PATH_COUNT
-};
-
-extern char * skins_paths[];
+const char * skins_get_user_skin_dir ();
+const char * skins_get_skin_thumb_dir ();
 
 void skins_restart (void);
 

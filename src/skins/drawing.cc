@@ -1,6 +1,6 @@
 /*
- * draw-compat.h
- * Copyright 2011 John Lindgren
+ * drawing.cc
+ * Copyright 2015 John Lindgren
  *
  * This file is part of Audacious.
  *
@@ -19,25 +19,21 @@
  * using our public API to be a derived work.
  */
 
-#ifndef SKINS_DRAW_COMPAT_H
-#define SKINS_DRAW_COMPAT_H
+#include "drawing.h"
 
-#include <gtk/gtk.h>
+typedef GtkWidget DrawingArea;
+typedef GtkWidgetClass DrawingAreaClass;
 
-static void widget_realized (GtkWidget * w)
+G_DEFINE_TYPE (DrawingArea, drawing_area, GTK_TYPE_WIDGET)
+
+static void drawing_area_class_init (DrawingAreaClass *) {}
+
+static void drawing_area_init (DrawingArea * widget)
 {
-    GdkWindow * window = gtk_widget_get_window (w);
-    gdk_window_set_background_pattern (window, nullptr);
+    gtk_widget_set_has_window ((GtkWidget *) widget, false);
 }
 
-#define DRAW_SIGNAL "draw"
-#define DRAW_FUNC_BEGIN(n) static gboolean n (GtkWidget * wid, cairo_t * cr) { \
- g_return_val_if_fail (wid && cr, FALSE);
-#define DRAW_FUNC_END return FALSE; }
-
-#define DRAW_CONNECT(w,f) do { \
-    g_signal_connect (w, "realize", (GCallback) widget_realized, nullptr); \
-    g_signal_connect (w, DRAW_SIGNAL, (GCallback) f, nullptr); \
- } while (0);
-
-#endif
+GtkWidget * drawing_area_new ()
+{
+    return (GtkWidget *) g_object_new (drawing_area_get_type (), nullptr);
+}

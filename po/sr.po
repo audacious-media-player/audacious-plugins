@@ -6,10 +6,10 @@
 # Мирослав Николић <miroslavnikolic@rocketmail.com>, 2014-2015
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-01-24 13:17+0100\n"
-"PO-Revision-Date: 2015-01-18 07:16+0000\n"
+"POT-Creation-Date: 2015-02-28 19:18+0100\n"
+"PO-Revision-Date: 2015-02-05 19:51+0000\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/projects/p/audacious/"
 "language/sr/)\n"
@@ -232,7 +232,7 @@ msgid "Day"
 msgstr "Дан"
 
 #: src/alarm/interface.cc:259 src/bs2b/plugin.cc:130
-#: src/skins/preset-list.cc:433 src/skins/preset-list.cc:439
+#: src/skins/preset-list.cc:434 src/skins/preset-list.cc:440
 msgid "Default"
 msgstr "Основно"
 
@@ -321,23 +321,27 @@ msgstr ""
 "Захваљујем се Вилијаму Питкоку, аутору НГ прикључка излаза АЛСА-е, чији је "
 "код служио као узор када упутство АЛСА-е није било довољно."
 
-#: src/alsa/config.cc:165
+#: src/alsa/config.cc:61
+msgid "(no description)"
+msgstr "(без описа)"
+
+#: src/alsa/config.cc:166
 msgid "Default PCM device"
 msgstr "Основни ПЦМ уређај"
 
-#: src/alsa/config.cc:187
+#: src/alsa/config.cc:188
 msgid "Default mixer device"
 msgstr "Основни уређај мешача"
 
-#: src/alsa/config.cc:295
+#: src/alsa/config.cc:296
 msgid "PCM device:"
 msgstr "ПЦМ уређај:"
 
-#: src/alsa/config.cc:298
+#: src/alsa/config.cc:299
 msgid "Mixer device:"
 msgstr "Уређај миксера:"
 
-#: src/alsa/config.cc:301
+#: src/alsa/config.cc:302
 msgid "Mixer element:"
 msgstr "Елемент мешача:"
 
@@ -809,7 +813,7 @@ msgstr "Анализатор спектра"
 msgid "Audio CD Plugin"
 msgstr "Прикључак звучног ЦД-а"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:119
+#: src/cdaudio-ng/cdaudio-ng.cc:121
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -829,118 +833,118 @@ msgstr ""
 "\n"
 "Беше то Гугл лето пројекта Кôд 2007."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:135
+#: src/cdaudio-ng/cdaudio-ng.cc:137
 msgid "<b>Device</b>"
 msgstr "<b>Уређај</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:136
+#: src/cdaudio-ng/cdaudio-ng.cc:138
 msgid "Read speed:"
 msgstr "Брзина читања:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:139
+#: src/cdaudio-ng/cdaudio-ng.cc:141
 msgid "Override device:"
 msgstr "Препиши уређај:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:141
+#: src/cdaudio-ng/cdaudio-ng.cc:143
 msgid "<b>Metadata</b>"
 msgstr "<b>Метаподаци</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:142
+#: src/cdaudio-ng/cdaudio-ng.cc:144
 msgid "Use CD-Text"
 msgstr "Користи ЦД-текст"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:144
+#: src/cdaudio-ng/cdaudio-ng.cc:146
 msgid "Use CDDB"
 msgstr "Користи ЦДБП"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:146
+#: src/cdaudio-ng/cdaudio-ng.cc:148
 msgid "Use HTTP instead of CDDBP"
 msgstr "Користи ХТТП уместо ЦДДБП-а"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:149
+#: src/cdaudio-ng/cdaudio-ng.cc:151
 msgid "Server:"
 msgstr "Сервер:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:153
+#: src/cdaudio-ng/cdaudio-ng.cc:155
 msgid "Path:"
 msgstr "Путања:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:157
+#: src/cdaudio-ng/cdaudio-ng.cc:159
 msgid "Port:"
 msgstr "Прикључник:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:244
+#: src/cdaudio-ng/cdaudio-ng.cc:246
 msgid "Failed to initialize cdio subsystem."
 msgstr "Нисам успео да започнем цдуи подсистем."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:279
+#: src/cdaudio-ng/cdaudio-ng.cc:281
 #, c-format
 msgid "Invalid URI %s."
 msgstr "Неисправна путања „%s“."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:281
+#: src/cdaudio-ng/cdaudio-ng.cc:283
 #, c-format
 msgid "Track %d not found."
 msgstr "Нисам пронашао нумеру „%d“."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:283
+#: src/cdaudio-ng/cdaudio-ng.cc:285
 #, c-format
 msgid "Track %d is a data track."
 msgstr "Нумера „%d“ је запис података."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:358
+#: src/cdaudio-ng/cdaudio-ng.cc:360
 msgid "Error reading audio CD."
 msgstr "Грешка читања звучног диска."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:427
+#: src/cdaudio-ng/cdaudio-ng.cc:429
 msgid "Audio CD"
 msgstr "Аудио ЦД"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:458 src/cdaudio-ng/cdaudio-ng.cc:467
+#: src/cdaudio-ng/cdaudio-ng.cc:460 src/cdaudio-ng/cdaudio-ng.cc:469
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Нисам успео да отворим ЦД уређај „%s“."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:470
+#: src/cdaudio-ng/cdaudio-ng.cc:472
 msgid "No audio capable CD drive found."
 msgstr "Нисам пронашао уређај за читање ЦД-а."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:495
+#: src/cdaudio-ng/cdaudio-ng.cc:497
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Нисам успео да завршим покретање отвореног ЦД уређаја."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:508
+#: src/cdaudio-ng/cdaudio-ng.cc:510
 msgid "Failed to retrieve first/last track number."
 msgstr "Нисам успео да пронађем број прве/последње нумере."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:529
+#: src/cdaudio-ng/cdaudio-ng.cc:531
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "Не могу да прочитам почетак/крај ЛСН-а за нумеру „%d“."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:611
+#: src/cdaudio-ng/cdaudio-ng.cc:613
 msgid "Failed to create the cddb connection."
 msgstr "Нисам успео да направим везу са цд базом података."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:677
+#: src/cdaudio-ng/cdaudio-ng.cc:679
 msgid "Failed to query the CDDB server"
 msgstr "Нисам успео да пропитам сервер базе података ЦД-а"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:679
+#: src/cdaudio-ng/cdaudio-ng.cc:681
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Нисам успео да пропитам сервер базе података ЦД-а: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:703
+#: src/cdaudio-ng/cdaudio-ng.cc:705
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Нисам успео да прочитам обавештење базе података цд-а: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:763
+#: src/cdaudio-ng/cdaudio-ng.cc:765
 msgid "Drive is empty."
 msgstr "Уређај је празан."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:765
+#: src/cdaudio-ng/cdaudio-ng.cc:767
 msgid "Unsupported disk type."
 msgstr "Неподржана врста диска."
 
@@ -1162,13 +1166,13 @@ msgstr "Премести у смеће"
 msgid "Do you want to permanently delete the selected files?"
 msgstr "Да ли желите трајно да обришете изабране датотеке?"
 
-#: src/delete-files/delete-files.cc:141 src/skins/preset-list.cc:410
-#: src/skins/preset-list.cc:426
+#: src/delete-files/delete-files.cc:141 src/skins/preset-list.cc:411
+#: src/skins/preset-list.cc:427
 msgid "Delete"
 msgstr "Обриши"
 
 #: src/delete-files/delete-files.cc:145 src/skins/preset-browser.cc:56
-#: src/skins/preset-list.cc:306 src/skins/ui_playlist.cc:221
+#: src/skins/preset-list.cc:307 src/skins/ui_playlist.cc:221
 msgid "Cancel"
 msgstr "Откажи"
 
@@ -2030,7 +2034,7 @@ msgstr "Клизај при промени песме"
 msgid "GTK Interface"
 msgstr "ГТК сучеље"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:230
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:232
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s — Безочник"
@@ -2039,7 +2043,7 @@ msgstr "%s — Безочник"
 msgid "Buffering ..."
 msgstr "Баферујем ..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:232 src/skins/ui_main.cc:1162
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:234 src/skins/ui_main.cc:1164
 msgid "Audacious"
 msgstr "Безочник"
 
@@ -2608,11 +2612,11 @@ msgstr "Грешка обраде адресе"
 msgid "Too many redirects"
 msgstr "Превише преусмерења"
 
-#: src/notify/event.cc:62
+#: src/notify/event.cc:64
 msgid "Stopped"
 msgstr "Заустављено"
 
-#: src/notify/event.cc:62
+#: src/notify/event.cc:64
 msgid "Audacious is not playing."
 msgstr "Безочник не пушта песме."
 
@@ -3354,7 +3358,7 @@ msgstr "Замотај уређивач списка нумера"
 msgid "Roll Up Equalizer"
 msgstr "Замотај уједначавач"
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:852
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:854
 msgid "Double Size"
 msgstr "Двострука величина"
 
@@ -3542,13 +3546,13 @@ msgstr "Врати на нулу"
 msgid "Winamp Classic Interface"
 msgstr "Винампово уобичајено сучеље"
 
-#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:370
-#: src/skins/preset-list.cc:385
+#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:371
+#: src/skins/preset-list.cc:386
 msgid "Save"
 msgstr "Сачувај"
 
-#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:337
-#: src/skins/preset-list.cc:353
+#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:338
+#: src/skins/preset-list.cc:354
 msgid "Load"
 msgstr "Учитај"
 
@@ -3572,31 +3576,31 @@ msgstr "Сачувај ЕКуФ датотеку"
 msgid "Import Winamp Presets"
 msgstr "Увези Винамп претподешавања"
 
-#: src/skins/preset-list.cc:284
+#: src/skins/preset-list.cc:285
 msgid "Presets"
 msgstr "Претподешавања"
 
-#: src/skins/preset-list.cc:334
+#: src/skins/preset-list.cc:335
 msgid "Load preset"
 msgstr "Учитава претподешавање"
 
-#: src/skins/preset-list.cc:350
+#: src/skins/preset-list.cc:351
 msgid "Load auto-preset"
 msgstr "Учитава самостално претподешавање"
 
-#: src/skins/preset-list.cc:366
+#: src/skins/preset-list.cc:367
 msgid "Save preset"
 msgstr "Чува претподешавање"
 
-#: src/skins/preset-list.cc:381
+#: src/skins/preset-list.cc:382
 msgid "Save auto-preset"
 msgstr "Чува самостално претподешавање"
 
-#: src/skins/preset-list.cc:407
+#: src/skins/preset-list.cc:408
 msgid "Delete preset"
 msgstr "Избриши претподешавање"
 
-#: src/skins/preset-list.cc:423
+#: src/skins/preset-list.cc:424
 msgid "Delete auto-preset"
 msgstr "Брише самостално претподешавање"
 
@@ -3813,59 +3817,59 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "Уједначавач Безочника"
 
-#: src/skins/ui_main.cc:686
+#: src/skins/ui_main.cc:688
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Тражи до: %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:707
+#: src/skins/ui_main.cc:709
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Јачина звука: %d%%"
 
-#: src/skins/ui_main.cc:730
+#: src/skins/ui_main.cc:732
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Уравнотеженост: %d%% леви"
 
-#: src/skins/ui_main.cc:732
+#: src/skins/ui_main.cc:734
 msgid "Balance: center"
 msgstr "Уравнотеженост: центрирано"
 
-#: src/skins/ui_main.cc:734
+#: src/skins/ui_main.cc:736
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Уравнотеженост: %d%% десни"
 
-#: src/skins/ui_main.cc:840
+#: src/skins/ui_main.cc:842
 msgid "Options Menu"
 msgstr "Изборник опција"
 
-#: src/skins/ui_main.cc:844
+#: src/skins/ui_main.cc:846
 msgid "Disable 'Always On Top'"
 msgstr "Искључи „Увек у првом плану“"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:848
 msgid "Enable 'Always On Top'"
 msgstr "Укључи „Увек у првом плану“"
 
-#: src/skins/ui_main.cc:849
+#: src/skins/ui_main.cc:851
 msgid "File Info Box"
 msgstr "Поље података датотеке"
 
-#: src/skins/ui_main.cc:855
+#: src/skins/ui_main.cc:857
 msgid "Visualizations"
 msgstr "Визуализације"
 
-#: src/skins/ui_main.cc:1319
+#: src/skins/ui_main.cc:1336
 msgid "Repeat point A set."
 msgstr "Понови скуп тачке А."
 
-#: src/skins/ui_main.cc:1324
+#: src/skins/ui_main.cc:1341
 msgid "Repeat point B set."
 msgstr "Понови скуп тачке Б."
 
-#: src/skins/ui_main.cc:1333
+#: src/skins/ui_main.cc:1350
 msgid "Repeat points cleared."
 msgstr "Понови очишћене тачке."
 
@@ -3922,15 +3926,15 @@ msgstr "Уређивач списка нумера"
 msgid "%s (%d of %d)"
 msgstr "%s (%d од %d)"
 
-#: src/skins/ui_skinselector.cc:164
+#: src/skins/ui_skinselector.cc:167
 msgid "Archived Winamp 2.x skin"
 msgstr "Архивирана Винамп 2.x маска"
 
-#: src/skins/ui_skinselector.cc:169
+#: src/skins/ui_skinselector.cc:172
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Неархивирана Винамп 2.x маска"
 
-#: src/skins/util.cc:441
+#: src/skins/util.cc:430
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "Не могу да направим фасциклу (%s): %s\n"

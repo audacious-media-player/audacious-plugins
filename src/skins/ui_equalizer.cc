@@ -28,14 +28,15 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
+#include <libaudcore/equalizer.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
+#include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "menus.h"
 #include "plugin.h"
-#include "preset-list.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
@@ -46,13 +47,6 @@
 #include "ui_skinned_window.h"
 #include "util.h"
 #include "view.h"
-
-static float equalizerwin_get_preamp (void);
-static float equalizerwin_get_band (int band);
-static void equalizerwin_set_preamp (float preamp);
-static void equalizerwin_set_band (int band, float value);
-
-static void playback_begin_cb (void *, void *);
 
 GtkWidget *equalizerwin;
 GtkWidget *equalizerwin_graph;
@@ -65,50 +59,14 @@ static GtkWidget *equalizerwin_presets;
 static GtkWidget *equalizerwin_preamp,*equalizerwin_bands[10];
 static GtkWidget *equalizerwin_volume, *equalizerwin_balance;
 
-Index<EqualizerPreset> equalizer_presets, equalizer_auto_presets;
-
 static void
 equalizerwin_shade_toggle(void)
 {
     view_set_equalizer_shaded (! aud_get_bool ("skins", "equalizer_shaded"));
 }
 
-void
-equalizerwin_eq_changed(void)
-{
-    aud_set_double (nullptr, "equalizer_preamp", equalizerwin_get_preamp ());
-
-    double bands[AUD_EQ_NBANDS];
-    for (int i = 0; i < AUD_EQ_NBANDS; i ++)
-        bands[i] = equalizerwin_get_band (i);
-
-    aud_eq_set_bands (bands);
-}
-
-void equalizerwin_apply_preset (const EqualizerPreset & preset)
-{
-    equalizerwin_set_preamp (preset.preamp);
-    for (int i = 0; i < AUD_EQ_NBANDS; i ++)
-        equalizerwin_set_band (i, preset.bands[i]);
-}
-
-void equalizerwin_update_preset (EqualizerPreset & preset)
-{
-    preset.preamp = equalizerwin_get_preamp ();
-    for (int i = 0; i < AUD_EQ_NBANDS; i ++)
-        preset.bands[i] = equalizerwin_get_band (i);
-}
-
-void equalizerwin_import_presets (Index<EqualizerPreset> && presets)
-{
-    equalizer_presets.move_from (presets, 0, -1, -1, true, true);
-    aud_eq_write_presets (equalizer_presets, "eq.preset");
-}
-
 static void eq_on_cb (GtkWidget * button, GdkEventButton * event)
  {aud_set_bool (nullptr, "equalizer_active", button_get_active (button)); }
-static void eq_auto_cb (GtkWidget * button, GdkEventButton * event)
- {aud_set_bool (nullptr, "equalizer_autoload", button_get_active (equalizerwin_auto)); }
 
 static void update_from_config (void * unused1, void * unused2)
 {
@@ -122,12 +80,6 @@ static void update_from_config (void * unused1, void * unused2)
         eq_slider_set_val (equalizerwin_bands[i], bands[i]);
 
     eq_graph_update (equalizerwin_graph);
-}
-
-static void eq_presets_cb (GtkWidget * button, GdkEventButton * event)
-{
-    menu_popup (UI_MENU_EQUALIZER_PRESET, event->x_root, event->y_root, FALSE,
-     FALSE, event->button, event->time);
 }
 
 static gboolean
@@ -250,14 +202,13 @@ equalizerwin_create_widgets(void)
     button_set_active (equalizerwin_on, aud_get_bool (nullptr, "equalizer_active"));
     button_on_release (equalizerwin_on, eq_on_cb);
 
+    // AUTO button currently does nothing
     equalizerwin_auto = button_new_toggle (33, 12, 35, 119, 153, 119, 94, 119, 212, 119, SKIN_EQMAIN, SKIN_EQMAIN);
     window_put_widget (equalizerwin, FALSE, equalizerwin_auto, 39, 18);
-    button_set_active (equalizerwin_auto, aud_get_bool (nullptr, "equalizer_autoload"));
-    button_on_release (equalizerwin_auto, eq_auto_cb);
 
     equalizerwin_presets = button_new (44, 12, 224, 164, 224, 176, SKIN_EQMAIN, SKIN_EQMAIN);
     window_put_widget (equalizerwin, FALSE, equalizerwin_presets, 217, 18);
-    button_on_release (equalizerwin_presets, eq_presets_cb);
+    button_on_release (equalizerwin_presets, (ButtonCB) audgui_show_eq_preset_window);
 
     equalizerwin_close = button_new (9, 9, 0, 116, 0, 125, SKIN_EQMAIN, SKIN_EQMAIN);
     window_put_widget (equalizerwin, FALSE, equalizerwin_close, 264, 3);
@@ -279,7 +230,7 @@ equalizerwin_create_widgets(void)
     gtk_widget_set_no_show_all (equalizerwin_graph, TRUE);  // shown or hidden in skin_load()
     window_put_widget (equalizerwin, FALSE, equalizerwin_graph, 86, 17);
 
-    equalizerwin_preamp = eq_slider_new (_("Preamp"));
+    equalizerwin_preamp = eq_slider_new (_("Preamp"), -1);
     window_put_widget (equalizerwin, FALSE, equalizerwin_preamp, 21, 38);
     eq_slider_set_val (equalizerwin_preamp, aud_get_double (nullptr, "equalizer_preamp"));
 
@@ -291,7 +242,7 @@ equalizerwin_create_widgets(void)
 
     for (int i = 0; i < AUD_EQ_NBANDS; i ++)
     {
-        equalizerwin_bands[i] = eq_slider_new (_(bandnames[i]));
+        equalizerwin_bands[i] = eq_slider_new (_(bandnames[i]), i);
         window_put_widget (equalizerwin, FALSE, equalizerwin_bands[i], 78 + 18 * i, 38);
         eq_slider_set_val (equalizerwin_bands[i], bands[i]);
     }
@@ -347,19 +298,11 @@ static void equalizerwin_destroyed (void)
     hook_dissociate ("set equalizer_active", (HookFunction) update_from_config);
     hook_dissociate ("set equalizer_bands", (HookFunction) update_from_config);
     hook_dissociate ("set equalizer_preamp", (HookFunction) update_from_config);
-
-    hook_dissociate ("playback begin", playback_begin_cb);
-
-    equalizer_presets.clear ();
-    equalizer_auto_presets.clear ();
 }
 
 void
 equalizerwin_create(void)
 {
-    equalizer_presets = aud_eq_read_presets("eq.preset");
-    equalizer_auto_presets = aud_eq_read_presets("eq.auto_preset");
-
     equalizerwin_create_window();
 
     gtk_window_add_accel_group ((GtkWindow *) equalizerwin, menu_get_accel_group ());
@@ -372,127 +315,4 @@ equalizerwin_create(void)
     hook_associate ("set equalizer_active", (HookFunction) update_from_config, nullptr);
     hook_associate ("set equalizer_bands", (HookFunction) update_from_config, nullptr);
     hook_associate ("set equalizer_preamp", (HookFunction) update_from_config, nullptr);
-
-    /* Load preset for the first song. FIXME: Doing this at interface load is
-     really too late as the song may already be started. Really, this stuff
-     shouldn't be in the interface plugin at all but in core. -jlindgren */
-    if (aud_drct_get_playing ())
-        playback_begin_cb (nullptr, nullptr);
-
-    hook_associate ("playback begin", playback_begin_cb, nullptr);
-}
-
-static int equalizerwin_find_preset (Index<EqualizerPreset> & list, const char * name)
-{
-    for (int p = 0; p < list.len (); p ++)
-    {
-        if (! g_ascii_strcasecmp (list[p].name, name))
-            return p;
-    }
-
-    return -1;
-}
-
-gboolean equalizerwin_load_preset (Index<EqualizerPreset> & list, const char * name)
-{
-    int p = equalizerwin_find_preset (list, name);
-    if (p < 0)
-        return FALSE;
-
-    equalizerwin_apply_preset (list[p]);
-    return TRUE;
-}
-
-void equalizerwin_save_preset (Index<EqualizerPreset> & list, const char * name, const char * filename)
-{
-    int p = equalizerwin_find_preset (list, name);
-
-    if (p < 0)
-    {
-        list.append (String (name));
-        p = list.len () - 1;
-    }
-
-    equalizerwin_update_preset (list[p]);
-
-    aud_eq_write_presets (list, filename);
-}
-
-void equalizerwin_delete_preset (Index<EqualizerPreset> & list, const char * name, const char * filename)
-{
-    int p = equalizerwin_find_preset (list, name);
-    if (p < 0)
-        return;
-
-    list.remove (p, 1);
-    aud_eq_write_presets (list, filename);
-}
-
-static gboolean equalizerwin_read_aud_preset (const char * filename)
-{
-    EqualizerPreset preset;
-
-    VFSFile file (filename, "r");
-    if (! file || ! aud_load_preset_file (preset, file))
-        return FALSE;
-
-    equalizerwin_apply_preset (preset);
-    return TRUE;
-}
-
-static void equalizerwin_set_preamp (float preamp)
-{
-    eq_slider_set_val (equalizerwin_preamp, preamp);
-    equalizerwin_eq_changed();
-}
-
-static void equalizerwin_set_band (int band, float value)
-{
-    g_return_if_fail(band >= 0 && band < AUD_EQ_NBANDS);
-    eq_slider_set_val (equalizerwin_bands[band], value);
-    equalizerwin_eq_changed();
-}
-
-static float equalizerwin_get_preamp (void)
-{
-    return eq_slider_get_val (equalizerwin_preamp);
-}
-
-static float equalizerwin_get_band (int band)
-{
-    g_return_val_if_fail(band >= 0 && band < AUD_EQ_NBANDS, 0.0);
-    return eq_slider_get_val (equalizerwin_bands[band]);
-}
-
-static void load_auto_preset (const char * filename)
-{
-    char * eq_file = g_strconcat (filename, ".", EQUALIZER_DEFAULT_PRESET_EXT, nullptr);
-    gboolean success = equalizerwin_read_aud_preset (eq_file);
-    g_free (eq_file);
-
-    if (success)
-        return;
-
-    char * folder = g_path_get_dirname (filename);
-    eq_file = g_build_filename (folder, EQUALIZER_DEFAULT_DIR_PRESET, nullptr);
-    success = equalizerwin_read_aud_preset (eq_file);
-
-    g_free (folder);
-    g_free (eq_file);
-
-    if (success)
-        return;
-
-    char * base = g_path_get_basename (filename);
-
-    if (! equalizerwin_load_preset (equalizer_auto_presets, base))
-        eq_preset_load_default ();
-
-    g_free (base);
-}
-
-static void playback_begin_cb (void *, void *)
-{
-    if (aud_get_bool (nullptr, "equalizer_autoload"))
-        load_auto_preset (aud_drct_get_filename ());
 }

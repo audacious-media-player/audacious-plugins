@@ -33,8 +33,6 @@
 
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
-#include "preset-browser.h"
-#include "preset-list.h"
 #include "view.h"
 
 #define SHIFT GDK_SHIFT_MASK
@@ -214,27 +212,6 @@ static const AudguiMenuItem playlist_context_items[] = {
     MenuSub (N_("Services"), nullptr, get_plugin_menu_playlist)
 };
 
-static const AudguiMenuItem eq_preset_items[] = {
-    MenuCommand (N_("Load Preset ..."), "document-open", NO_KEY, eq_preset_load),
-    MenuCommand (N_("Load Auto Preset ..."), nullptr, NO_KEY, eq_preset_load_auto),
-    MenuCommand (N_("Load Default"), nullptr, NO_KEY, eq_preset_load_default),
-    MenuCommand (N_("Load Preset File ..."), nullptr, NO_KEY, eq_preset_load_file),
-    MenuCommand (N_("Load EQF File ..."), nullptr, NO_KEY, eq_preset_load_eqf),
-    MenuSep (),
-    MenuCommand (N_("Save Preset ..."), "document-save", NO_KEY, eq_preset_save),
-    MenuCommand (N_("Save Auto Preset ..."), nullptr, NO_KEY, eq_preset_save_auto),
-    MenuCommand (N_("Save Default"), nullptr, NO_KEY, eq_preset_save_default),
-    MenuCommand (N_("Save Preset File ..."), nullptr, NO_KEY, eq_preset_save_file),
-    MenuCommand (N_("Save EQF File ..."), nullptr, NO_KEY, eq_preset_save_eqf),
-    MenuSep (),
-    MenuCommand (N_("Delete Preset ..."), "edit-delete", NO_KEY, eq_preset_delete),
-    MenuCommand (N_("Delete Auto Preset ..."), nullptr, NO_KEY, eq_preset_delete_auto),
-    MenuSep (),
-    MenuCommand (N_("Import Winamp Presets ..."), "document-open", NO_KEY, eq_preset_import_winamp),
-    MenuSep (),
-    MenuCommand (N_("Reset to Zero"), "edit-clear", NO_KEY, eq_preset_set_zero)
-};
-
 void menu_init (void)
 {
     static const ArrayRef<AudguiMenuItem> table[] = {
@@ -246,8 +223,7 @@ void menu_init (void)
         {playlist_remove_items},
         {playlist_select_items},
         {playlist_sort_items},
-        {playlist_context_items},
-        {eq_preset_items}
+        {playlist_context_items}
     };
 
     accel = gtk_accel_group_new ();

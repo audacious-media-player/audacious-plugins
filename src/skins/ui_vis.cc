@@ -27,7 +27,7 @@
 #include <string.h>
 #include <libaudcore/objects.h>
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "skins_cfg.h"
 #include "surface.h"
 #include "ui_skin.h"
@@ -99,7 +99,7 @@ void ui_vis_set_colors (void)
     }
 }
 
-DRAW_FUNC_BEGIN (ui_vis_draw)
+DRAW_FUNC_BEGIN (ui_vis_draw, void)
     uint32_t rgb[76 * 16];
     uint32_t * set;
 
@@ -244,10 +244,9 @@ DRAW_FUNC_END
 
 GtkWidget * ui_vis_new (void)
 {
-    GtkWidget * wid = gtk_drawing_area_new ();
+    GtkWidget * wid = drawing_area_new ();
     gtk_widget_set_size_request (wid, 76 * config.scale, 16 * config.scale);
-    gtk_widget_add_events (wid, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
-    DRAW_CONNECT (wid, ui_vis_draw);
+    DRAW_CONNECT (wid, ui_vis_draw, nullptr);
     return wid;
 }
 
@@ -321,5 +320,7 @@ void ui_vis_timeout_func (GtkWidget * widget, unsigned char * data)
     }
 
     vis.active = TRUE;
-    gtk_widget_queue_draw (widget);
+
+    if (gtk_widget_is_drawable (widget))
+        ui_vis_draw (widget, nullptr, nullptr);
 }

@@ -33,9 +33,6 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
-#define D_WIDTH 64
-#define D_HEIGHT 32
-
 static void /* GtkWidget */ * bscope_get_color_chooser (void);
 
 static const PreferencesWidget bscope_widgets[] = {
@@ -150,8 +147,6 @@ gboolean BlurScope::draw_cb (GtkWidget * widget, cairo_t * cr, void * user)
 void * BlurScope::get_gtk_widget ()
 {
     area = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (area, D_WIDTH, D_HEIGHT);
-    resize (D_WIDTH, D_HEIGHT);
 
     g_signal_connect (area, "draw_cb", (GCallback) draw_cb, this);
     g_signal_connect (area, "configure-event", (GCallback) configure_event, this);

@@ -52,8 +52,7 @@ private:
 
     const HookReceiver<AlbumArtItem>
      hook1 {"playback ready", this, & AlbumArtItem::update_cb},
-     hook2 {"playback stop", this, & AlbumArtItem::update_cb},
-     hook3 {"current art ready", this, & AlbumArtItem::update_cb};
+     hook2 {"playback stop", this, & AlbumArtItem::update_cb};
 };
 
 class InfoBar : public QGraphicsView {

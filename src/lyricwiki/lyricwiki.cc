@@ -205,7 +205,8 @@ static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t l
     return uri;
 }
 
-static void update_lyrics_window(const char *title, const char *artist, const char *lyrics);
+static void update_lyrics_window(const char *title, const char *artist,
+ const char *lyrics, bool edit_enabled);
 
 static void get_lyrics_step_3(const char *uri, const Index<char> &buf, void*)
 {
@@ -215,7 +216,7 @@ static void get_lyrics_step_3(const char *uri, const Index<char> &buf, void*)
     if (!buf.len())
     {
         update_lyrics_window (_("Error"), nullptr,
-         str_printf (_("Unable to fetch %s"), uri));
+         str_printf (_("Unable to fetch %s"), uri), true);
         return;
     }
 
@@ -224,11 +225,11 @@ static void get_lyrics_step_3(const char *uri, const Index<char> &buf, void*)
     if (!lyrics)
     {
         update_lyrics_window (_("Error"), nullptr,
-         str_printf (_("Unable to parse %s"), uri));
+         str_printf (_("Unable to parse %s"), uri), true);
         return;
     }
 
-    update_lyrics_window(state.title, state.artist, lyrics);
+    update_lyrics_window(state.title, state.artist, lyrics, true);
 
     g_free(lyrics);
 }
@@ -241,7 +242,7 @@ static void get_lyrics_step_2(const char *uri1, const Index<char> &buf, void*)
     if (!buf.len())
     {
         update_lyrics_window (_("Error"), nullptr,
-         str_printf (_("Unable to fetch %s"), uri1));
+         str_printf (_("Unable to fetch %s"), uri1), false);
         return;
     }
 
@@ -250,13 +251,13 @@ static void get_lyrics_step_2(const char *uri1, const Index<char> &buf, void*)
     if (!uri)
     {
         update_lyrics_window (_("Error"), nullptr,
-         str_printf (_("Unable to parse %s"), uri1));
+         str_printf (_("Unable to parse %s"), uri1), false);
         return;
     }
 
     state.uri = uri;
 
-    update_lyrics_window(state.title, state.artist, _("Looking for lyrics ..."));
+    update_lyrics_window(state.title, state.artist, _("Looking for lyrics ..."), true);
     vfs_async_file_get_contents(uri, get_lyrics_step_3, nullptr);
 }
 
@@ -264,7 +265,7 @@ static void get_lyrics_step_1(void)
 {
     if(!state.artist || !state.title)
     {
-        update_lyrics_window(_("Error"), nullptr, _("Missing song metadata"));
+        update_lyrics_window(_("Error"), nullptr, _("Missing song metadata"), false);
         return;
     }
 
@@ -275,13 +276,19 @@ static void get_lyrics_step_1(void)
      "action=lyrics&artist=%s&song=%s&fmt=xml", (const char *) artist_buf,
      (const char *) title_buf));
 
-    update_lyrics_window(state.title, state.artist, _("Connecting to lyrics.wikia.com ..."));
+    update_lyrics_window(state.title, state.artist, _("Connecting to lyrics.wikia.com ..."), false);
     vfs_async_file_get_contents(state.uri, get_lyrics_step_2, nullptr);
 }
 
 static GtkWidget *scrollview, *vbox;
-static GtkWidget *textview;
+static GtkWidget *textview, *edit_button;
 static GtkTextBuffer *textbuffer;
+
+static void launch_edit_page ()
+{
+    if (state.uri)
+        gtk_show_uri (nullptr, state.uri, GDK_CURRENT_TIME, nullptr);
+}
 
 static GtkWidget *build_widget(void)
 {
@@ -296,7 +303,7 @@ static GtkWidget *build_widget(void)
     scrollview = gtk_scrolled_window_new(nullptr, nullptr);
     gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrollview), GTK_SHADOW_IN);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollview), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
 
     gtk_container_add(GTK_CONTAINER(scrollview), textview);
 
@@ -310,11 +317,20 @@ static GtkWidget *build_widget(void)
     gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "size_x_large", "scale", PANGO_SCALE_X_LARGE, nullptr);
     gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "style_italic", "style", PANGO_STYLE_ITALIC, nullptr);
 
-    g_signal_connect (vbox, "destroy", (GCallback) gtk_widget_destroyed, & vbox);
+    GtkWidget * hbox = gtk_hbox_new (false, 6);
+    gtk_box_pack_start ((GtkBox *) vbox, hbox, false, false, 0);
+
+    edit_button = gtk_button_new_with_mnemonic (_("Edit lyrics ..."));
+    gtk_widget_set_sensitive (edit_button, false);
+    gtk_box_pack_end ((GtkBox *) hbox, edit_button, false, false, 0);
+
+    g_signal_connect (edit_button, "clicked", (GCallback) launch_edit_page, nullptr);
+
     return vbox;
 }
 
-static void update_lyrics_window(const char *title, const char *artist, const char *lyrics)
+static void update_lyrics_window(const char *title, const char *artist,
+ const char *lyrics, bool edit_enabled)
 {
     GtkTextIter iter;
 
@@ -340,6 +356,8 @@ static void update_lyrics_window(const char *title, const char *artist, const ch
 
     gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
     gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(textview), &iter, 0, TRUE, 0, 0);
+
+    gtk_widget_set_sensitive (edit_button, edit_enabled);
 }
 
 static void lyricwiki_playback_began(void)
@@ -367,6 +385,8 @@ static void destroy_cb ()
     hook_dissociate ("tuple change", (HookFunction) lyricwiki_playback_began);
     hook_dissociate ("playback ready", (HookFunction) lyricwiki_playback_began);
 
+    scrollview = vbox = nullptr;
+    textview = edit_button = nullptr;
     textbuffer = nullptr;
 }
 

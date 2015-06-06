@@ -32,6 +32,7 @@
 #include <libaudcore/plugins.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/runtime.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 static GList * windows;
 
@@ -76,7 +77,10 @@ static void add_dock_plugin (PluginHandle * plugin, void * unused)
             gtk_window_move ((GtkWindow *) window, pos[0], pos[1]);
         }
         else
-            gtk_window_set_default_size ((GtkWindow *) window, 300, 200);
+        {
+            int dpi = audgui_get_dpi ();
+            gtk_window_set_default_size ((GtkWindow *) window, 3 * dpi, 2 * dpi);
+        }
 
         if (aud_ui_is_shown ())
             gtk_widget_show_all (window);

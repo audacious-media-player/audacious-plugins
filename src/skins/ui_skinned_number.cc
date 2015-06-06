@@ -25,7 +25,7 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_number.h"
@@ -35,33 +35,24 @@ typedef struct {
     int num;
 } NumberData;
 
-DRAW_FUNC_BEGIN (number_draw)
-    NumberData * data = (NumberData *) g_object_get_data ((GObject *) wid, "numberdata");
-    g_return_val_if_fail (data, FALSE);
-
+DRAW_FUNC_BEGIN (number_draw, NumberData)
     skin_draw_pixbuf (cr, SKIN_NUMBERS, data->num * 9, 0, 0, 0, data->w, data->h);
 DRAW_FUNC_END
 
-static void number_destroy (GtkWidget * number)
-{
-    g_free (g_object_get_data ((GObject *) number, "numberdata"));
-}
-
 GtkWidget * ui_skinned_number_new (void)
 {
-    GtkWidget * number = gtk_drawing_area_new ();
+    GtkWidget * number = gtk_event_box_new ();
+    gtk_event_box_set_visible_window ((GtkEventBox *) number, false);
     gtk_widget_set_size_request (number, 9 * config.scale, 13 * config.scale);
-
     gtk_widget_add_events (number, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK);
-
-    DRAW_CONNECT (number, number_draw);
-    g_signal_connect (number, "destroy", (GCallback) number_destroy, nullptr);
 
     NumberData * data = g_new0 (NumberData, 1);
     data->w = 9;
     data->h = 13;
-    g_object_set_data ((GObject *) number, "numberdata", data);
+    g_object_set_data_full ((GObject *) number, "numberdata", data, g_free);
+
+    DRAW_CONNECT_PROXY (number, number_draw, data);
 
     return number;
 }
@@ -77,17 +68,5 @@ void ui_skinned_number_set (GtkWidget * number, char c)
         return;
 
     data->num = value;
-    gtk_widget_queue_draw (number);
-}
-
-void ui_skinned_number_set_size (GtkWidget * number, int width, int height)
-{
-    NumberData * data = (NumberData *) g_object_get_data ((GObject *) number, "numberdata");
-    g_return_if_fail (data);
-
-    data->w = width;
-    data->h = height;
-
-    gtk_widget_set_size_request (number, width * config.scale, height * config.scale);
     gtk_widget_queue_draw (number);
 }

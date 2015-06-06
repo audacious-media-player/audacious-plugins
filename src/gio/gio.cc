@@ -225,13 +225,24 @@ int64_t GIOFile::fread (void * buf, int64_t size, int64_t nitems)
         return 0;
     }
 
-    int64_t readed = g_input_stream_read (m_istream, buf, size * nitems, 0, & error);
-    CHECK_ERROR ("read from", m_filename);
+    int64_t total = 0;
+    int64_t remain = size * nitems;
 
-    return (size > 0) ? readed / size : 0;
+    while (remain > 0)
+    {
+        int64_t part = g_input_stream_read (m_istream, buf, remain, 0, & error);
+        CHECK_ERROR ("read from", m_filename);
+
+        if (part <= 0)
+            break;
+
+        buf = (char *) buf + part;
+        total += part;
+        remain -= part;
+    }
 
 FAILED:
-    return 0;
+    return (size > 0) ? total / size : 0;
 }
 
 int64_t GIOFile::fwrite (const void * buf, int64_t size, int64_t nitems)
@@ -244,13 +255,24 @@ int64_t GIOFile::fwrite (const void * buf, int64_t size, int64_t nitems)
         return 0;
     }
 
-    int64_t written = g_output_stream_write (m_ostream, buf, size * nitems, 0, & error);
-    CHECK_ERROR ("write to", m_filename);
+    int64_t total = 0;
+    int64_t remain = size * nitems;
 
-    return (size > 0) ? written / size : 0;
+    while (remain > 0)
+    {
+        int64_t part = g_output_stream_write (m_ostream, buf, remain, 0, & error);
+        CHECK_ERROR ("write to", m_filename);
+
+        if (part <= 0)
+            break;
+
+        buf = (const char *) buf + part;
+        total += part;
+        remain -= part;
+    }
 
 FAILED:
-    return 0;
+    return (size > 0) ? total / size : 0;
 }
 
 int GIOFile::fseek (int64_t offset, VFSSeekType whence)

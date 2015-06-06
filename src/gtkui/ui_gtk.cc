@@ -32,6 +32,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "gtkui.h"
 #include "layout.h"
@@ -58,8 +59,6 @@ static const char * const gtkui_defaults[] = {
 
     "player_x", "-1000",
     "player_y", "-1000",
-    "player_width", "760",
-    "player_height", "460",
 
     nullptr
 };
@@ -144,10 +143,16 @@ static void save_window_size ()
 
 static void restore_window_size ()
 {
+    int dpi = audgui_get_dpi ();
     int x = aud_get_int ("gtkui", "player_x");
     int y = aud_get_int ("gtkui", "player_y");
     int w = aud_get_int ("gtkui", "player_width");
     int h = aud_get_int ("gtkui", "player_height");
+
+    if (w < 1)
+        w = 8 * dpi;
+    if (h < 1)
+        h = 5 * dpi;
 
     gtk_window_set_default_size ((GtkWindow *) window, w, h);
 
@@ -802,6 +807,7 @@ bool GtkUI::init ()
 
     toolbar = gtk_toolbar_new ();
     gtk_toolbar_set_style ((GtkToolbar *) toolbar, GTK_TOOLBAR_ICONS);
+    gtk_toolbar_set_show_arrow ((GtkToolbar *) toolbar, false);
     GtkStyleContext * context = gtk_widget_get_style_context (toolbar);
     gtk_style_context_add_class (context, GTK_STYLE_CLASS_PRIMARY_TOOLBAR);
     gtk_box_pack_start ((GtkBox *) vbox_outer, toolbar, false, false, 0);
@@ -834,7 +840,7 @@ bool GtkUI::init ()
 
     slider = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, nullptr);
     gtk_scale_set_draw_value ((GtkScale *) slider, false);
-    gtk_widget_set_size_request (slider, 120, -1);
+    gtk_widget_set_size_request (slider, audgui_get_dpi () * 5 / 4, -1);
     gtk_widget_set_valign (slider, GTK_ALIGN_CENTER);
     gtk_widget_set_can_focus (slider, false);
     gtk_box_pack_start ((GtkBox *) box1, slider, true, true, 6);

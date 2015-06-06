@@ -25,14 +25,14 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_monostereo.h"
 
 static int monostereo_num_channels;
 
-DRAW_FUNC_BEGIN (monostereo_draw)
+DRAW_FUNC_BEGIN (monostereo_draw, void)
     switch (monostereo_num_channels)
     {
     case -1:
@@ -53,9 +53,9 @@ DRAW_FUNC_END
 
 GtkWidget * ui_skinned_monostereo_new (void)
 {
-    GtkWidget * monostereo = gtk_drawing_area_new ();
+    GtkWidget * monostereo = drawing_area_new ();
     gtk_widget_set_size_request (monostereo, 56 * config.scale, 12 * config.scale);
-    DRAW_CONNECT (monostereo, monostereo_draw);
+    DRAW_CONNECT (monostereo, monostereo_draw, nullptr);
     return monostereo;
 }
 

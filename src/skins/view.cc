@@ -159,7 +159,6 @@ void view_set_double_size (bool double_size)
 
 void view_apply_double_size (void)
 {
-    config.scale = aud_get_bool ("skins", "double_size") ? 2 : 1;
     skins_restart ();
 }
 

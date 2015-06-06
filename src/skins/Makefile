@@ -1,11 +1,10 @@
 PLUGIN = skins${PLUGIN_SUFFIX}
 
 SRCS = drag-handle.cc \
+       drawing.cc \
        menus.cc \
        plugin.cc \
        plugin-window.cc \
-       preset-browser.cc \
-       preset-list.cc \
        skins_cfg.cc \
        surface.cc \
        ui_skin.cc \

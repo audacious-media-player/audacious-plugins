@@ -40,7 +40,9 @@ VFSFile open_local_file_nocase (const char * folder, const char * basename);
 
 char * text_parse_line (char * text);
 
-void del_directory(const char *dirname);
+void make_directory(const char *path);
+void del_directory(const char *path);
+
 gboolean dir_foreach(const char *path, DirForeachFunc function,
                      void * user_data, GError **error);
 

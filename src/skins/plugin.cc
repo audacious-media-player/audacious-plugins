@@ -20,6 +20,7 @@
 
 #include <stdlib.h>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
@@ -27,14 +28,12 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "menus.h"
 #include "plugin.h"
 #include "plugin-window.h"
-#include "preset-browser.h"
-#include "preset-list.h"
 #include "skins_cfg.h"
-#include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_main_evlisteners.h"
 #include "ui_playlist.h"
@@ -88,37 +87,25 @@ public:
 
 EXPORT SkinnedUI aud_plugin_instance;
 
-char * skins_paths[SKINS_PATH_COUNT];
+static String user_skin_dir;
+static String skin_thumb_dir;
 
 static int update_source;
 
-static void skins_free_paths(void) {
-    int i;
+const char * skins_get_user_skin_dir ()
+{
+    if (! user_skin_dir)
+        user_skin_dir = String (filename_build ({g_get_user_data_dir (), "audacious", "Skins"}));
 
-    for (i = 0; i < SKINS_PATH_COUNT; i++)  {
-        g_free(skins_paths[i]);
-        skins_paths[i] = nullptr;
-    }
+    return user_skin_dir;
 }
 
-static void skins_init_paths() {
-    char *xdg_data_home;
-    char *xdg_cache_home;
+const char * skins_get_skin_thumb_dir ()
+{
+    if (! skin_thumb_dir)
+        skin_thumb_dir = String (filename_build ({g_get_user_cache_dir (), "audacious", "thumbs"}));
 
-    xdg_data_home = (getenv("XDG_DATA_HOME") == nullptr
-        ? g_build_filename(g_get_home_dir(), ".local", "share", nullptr)
-        : g_strdup(getenv("XDG_DATA_HOME")));
-    xdg_cache_home = (getenv("XDG_CACHE_HOME") == nullptr
-        ? g_build_filename(g_get_home_dir(), ".cache", nullptr)
-        : g_strdup(getenv("XDG_CACHE_HOME")));
-
-    skins_paths[SKINS_PATH_USER_SKIN_DIR] =
-        g_build_filename(xdg_data_home, "audacious", "Skins", nullptr);
-    skins_paths[SKINS_PATH_SKIN_THUMB_DIR] =
-        g_build_filename(xdg_cache_home, "audacious", "thumbs", nullptr);
-
-    g_free(xdg_data_home);
-    g_free(xdg_cache_home);
+    return skin_thumb_dir;
 }
 
 static gboolean update_cb (void *)
@@ -129,6 +116,11 @@ static gboolean update_cb (void *)
 
 static void skins_init_main (void)
 {
+    if (aud_get_bool ("skins", "double_size"))
+        config.scale = aud::rescale (audgui_get_dpi (), 48, 1);
+    else
+        config.scale = aud::rescale (audgui_get_dpi (), 96, 1);
+
     init_skins (aud_get_str ("skins", "skin"));
 
     view_apply_on_top ();
@@ -154,7 +146,6 @@ bool SkinnedUI::init ()
     audgui_init ();
 
     skins_cfg_load ();
-    skins_init_paths ();
 
     menu_init ();
     skins_init_main ();
@@ -171,9 +162,6 @@ static void skins_cleanup_main (void)
     g_source_remove (update_source);
 
     cleanup_skins ();
-
-    eq_preset_browser_cleanup ();
-    eq_preset_list_cleanup ();
 }
 
 void SkinnedUI::cleanup ()
@@ -185,9 +173,10 @@ void SkinnedUI::cleanup ()
     skins_cleanup_main ();
     menu_cleanup ();
 
-    skins_free_paths ();
-
     audgui_cleanup ();
+
+    user_skin_dir = String ();
+    skin_thumb_dir = String ();
 }
 
 void skins_restart (void)

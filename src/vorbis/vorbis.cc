@@ -4,7 +4,7 @@
  * Copyright (C) 2007 William Pitcock <nenolod@sacredspiral.co.uk>
  * Copyright (C) 2008 Cristi Măgherușan <majeru@gentoo.ro>
  * Copyright (C) 2008 Eugene Zagidullin <e.asphyx@gmail.com>
- * Copyright (C) 2009-2011 Audacious Developers
+ * Copyright (C) 2009-2015 Audacious Developers
  *
  * ReplayGain processing Copyright (C) 2002 Gian-Carlo Pascutto <gcp@sjeng.org>
  *
@@ -43,6 +43,8 @@
 #include "vorbis.h"
 
 EXPORT VorbisPlugin aud_plugin_instance;
+
+static Index<char> read_image_from_comment (const char * filename, vorbis_comment * comment);
 
 static size_t ovcb_read (void * buffer, size_t size, size_t count, void * file)
 {
@@ -130,42 +132,20 @@ set_tuple_str(Tuple &tuple, Tuple::Field field,
     tuple.set_str (field, vorbis_comment_query (comment, key, 0));
 }
 
-static Tuple
-get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const char *filename, bool stream)
+static void read_comment (vorbis_comment * comment, Tuple & tuple)
 {
-    Tuple tuple;
-    int length = -1;
-    vorbis_comment *comment = nullptr;
+    const char * tmps;
 
-    tuple.set_filename(filename);
+    set_tuple_str (tuple, Tuple::Title, comment, "title");
+    set_tuple_str (tuple, Tuple::Artist, comment, "artist");
+    set_tuple_str (tuple, Tuple::Album, comment, "album");
+    set_tuple_str (tuple, Tuple::Genre, comment, "genre");
+    set_tuple_str (tuple, Tuple::Comment, comment, "comment");
 
-    if (! stream)
-        length = ov_time_total (vorbisfile, -1) * 1000;
-
-    /* associate with tuple */
-    tuple.set_int (Tuple::Length, length);
-
-    if ((comment = ov_comment(vorbisfile, -1)) != nullptr) {
-        char *tmps;
-        set_tuple_str(tuple, Tuple::Title, comment, "title");
-        set_tuple_str(tuple, Tuple::Artist, comment, "artist");
-        set_tuple_str(tuple, Tuple::Album, comment, "album");
-        set_tuple_str(tuple, Tuple::Genre, comment, "genre");
-        set_tuple_str(tuple, Tuple::Comment, comment, "comment");
-
-        if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != nullptr)
-            tuple.set_int (Tuple::Track, atoi(tmps));
-
-        if ((tmps = vorbis_comment_query (comment, "date", 0)) != nullptr)
-            tuple.set_int (Tuple::Year, atoi (tmps));
-    }
-
-    vorbis_info * info = ov_info (vorbisfile, -1);
-    tuple.set_format ("Ogg Vorbis", info->channels, info->rate, info->bitrate_nominal / 1000);
-
-    tuple.set_str (Tuple::MIMEType, "application/ogg");
-
-    return tuple;
+    if ((tmps = vorbis_comment_query (comment, "tracknumber", 0)))
+        tuple.set_int (Tuple::Track, atoi (tmps));
+    if ((tmps = vorbis_comment_query (comment, "date", 0)))
+        tuple.set_int (Tuple::Year, atoi (tmps));
 }
 
 static float atof_no_locale (const char * string)
@@ -201,29 +181,29 @@ static float atof_no_locale (const char * string)
 }
 
 /* try to detect when metadata has changed */
-static bool vorbis_fetch_tuple (OggVorbis_File * vf, const char * filename, bool stream, Tuple & tuple)
+static bool update_tuple (OggVorbis_File * vf, Tuple & tuple)
 {
-    String old_title = tuple.get_str (Tuple::Title);
     vorbis_comment * comment = ov_comment (vf, -1);
-    const char * new_title = comment ? vorbis_comment_query (comment, "title", 0) : nullptr;
+    if (! comment)
+        return false;
+
+    String old_title = tuple.get_str (Tuple::Title);
+    const char * new_title = vorbis_comment_query (comment, "title", 0);
 
     if (! new_title || (old_title && ! strcmp (old_title, new_title)))
         return false;
 
-    tuple = get_tuple_for_vorbisfile (vf, filename, stream);
+    read_comment (comment, tuple);
     return true;
 }
 
-static bool vorbis_fetch_replaygain (OggVorbis_File * vf, ReplayGainInfo * rg_info)
+static bool update_replay_gain (OggVorbis_File * vf, ReplayGainInfo * rg_info)
 {
-    vorbis_comment *comment;
-    char *rg_gain, *rg_peak;
+    const char *rg_gain, *rg_peak;
 
-    if (vf == nullptr || rg_info == nullptr || (comment = ov_comment(vf, -1)) == nullptr)
-    {
-        AUDDBG ("No replay gain info.\n");
+    vorbis_comment * comment = ov_comment (vf, -1);
+    if (! comment)
         return false;
-    }
 
     rg_gain = vorbis_comment_query(comment, "replaygain_album_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_audiophile", 0);    /* Old */
@@ -267,7 +247,7 @@ bool VorbisPlugin::play (const char * filename, VFSFile & file)
     vorbis_info *vi;
     OggVorbis_File vf;
     int last_section = -1;
-    Tuple tuple;
+    Tuple tuple = get_playback_tuple ();
     ReplayGainInfo rg_info;
     float pcmout[PCM_BUFSIZE*sizeof(float)], **pcm;
     int bytes, channels, samplerate, br;
@@ -292,10 +272,10 @@ bool VorbisPlugin::play (const char * filename, VFSFile & file)
 
     set_stream_bitrate (br);
 
-    if (vorbis_fetch_tuple (& vf, filename, stream, tuple))
+    if (update_tuple (& vf, tuple))
         set_playback_tuple (tuple.ref ());
 
-    if (vorbis_fetch_replaygain (& vf, & rg_info))
+    if (update_replay_gain (& vf, & rg_info))
         set_replay_gain (rg_info);
 
     open_audio (FMT_FLOAT, samplerate, channels);
@@ -328,7 +308,7 @@ bool VorbisPlugin::play (const char * filename, VFSFile & file)
 
         bytes = vorbis_interleave_buffer (pcm, bytes, channels, pcmout);
 
-        if (vorbis_fetch_tuple (& vf, filename, stream, tuple))
+        if (update_tuple (& vf, tuple))
             set_playback_tuple (tuple.ref ());
 
         if (current_section != last_section)
@@ -345,7 +325,7 @@ bool VorbisPlugin::play (const char * filename, VFSFile & file)
                 samplerate = vi->rate;
                 channels = vi->channels;
 
-                if (vorbis_fetch_replaygain (& vf, & rg_info))
+                if (update_replay_gain (& vf, & rg_info))
                     set_replay_gain (rg_info);
 
                 open_audio (FMT_FLOAT, vi->rate, vi->channels);
@@ -367,9 +347,9 @@ play_cleanup:
     return ! error;
 }
 
-Tuple VorbisPlugin::read_tuple (const char * filename, VFSFile & file)
+bool VorbisPlugin::read_tag (const char * filename, VFSFile & file, Tuple * tuple, Index<char> * image)
 {
-    OggVorbis_File vfile;          /* avoid thread interaction */
+    OggVorbis_File vfile;
 
     bool stream = (file.fsize () < 0);
 
@@ -380,29 +360,33 @@ Tuple VorbisPlugin::read_tuple (const char * filename, VFSFile & file)
      */
     if (ov_open_callbacks (& file, & vfile, nullptr, 0, stream ?
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
-        return Tuple ();
-
-    Tuple tuple = get_tuple_for_vorbisfile(&vfile, filename, stream);
-    ov_clear(&vfile);
-    return tuple;
-}
-
-Index<char> VorbisPlugin::read_image (const char * filename, VFSFile & file)
-{
-    Index<char> data;
-
-    OggVorbis_File vfile;
-
-    bool stream = (file.fsize () < 0);
-
-    if (ov_open_callbacks (& file, & vfile, nullptr, 0, stream ?
-     vorbis_callbacks_stream : vorbis_callbacks) < 0)
-        return data;
+        return false;
 
     vorbis_comment * comment = ov_comment (& vfile, -1);
-    if (! comment)
-        goto ERR;
 
+    if (tuple)
+    {
+        vorbis_info * info = ov_info (& vfile, -1);
+        tuple->set_format ("Ogg Vorbis", info->channels, info->rate, info->bitrate_nominal / 1000);
+        tuple->set_str (Tuple::MIMEType, "application/ogg");
+
+        if (! stream)
+            tuple->set_int (Tuple::Length, ov_time_total (& vfile, -1) * 1000);
+
+        if (comment)
+            read_comment (comment, * tuple);
+    }
+
+    if (image && comment)
+        * image = read_image_from_comment (filename, comment);
+
+    ov_clear (& vfile);
+    return true;
+}
+
+static Index<char> read_image_from_comment (const char * filename, vorbis_comment * comment)
+{
+    Index<char> data;
     const char * s;
 
     if ((s = vorbis_comment_query (comment, "METADATA_BLOCK_PICTURE", 0)))
@@ -429,7 +413,6 @@ Index<char> VorbisPlugin::read_image (const char * filename, VFSFile & file)
         data.insert ((char *) data2 + 8 + mime_length + 4 + desc_length + 20, 0, length);
 
         g_free (data2);
-        ov_clear (& vfile);
         return data;
 
     PARSE_ERR:
@@ -442,22 +425,15 @@ Index<char> VorbisPlugin::read_image (const char * filename, VFSFile & file)
         size_t length2;
         void * data2 = g_base64_decode (s, & length2);
 
-        if (! data2 || ! length2)
-        {
+        if (data2 && length2)
+            data.insert ((const char *) data2, 0, length2);
+        else
             AUDERR ("Error parsing COVERART in %s.\n", filename);
-            g_free (data2);
-            goto ERR;
-        }
-
-        data.insert ((const char *) data2, 0, length2);
 
         g_free (data2);
-        ov_clear (& vfile);
         return data;
     }
 
-ERR:
-    ov_clear (& vfile);
     return data;
 }
 

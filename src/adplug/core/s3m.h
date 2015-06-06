@@ -90,7 +90,7 @@ protected:
 	unsigned char crow,ord,speed,tempo,del,songend,loopstart,loopcnt;
 
 private:
-	static const char chnresolv[];
+	static const signed char chnresolv[];
 	static const unsigned short notetable[12];
 	static const unsigned char vibratotab[32];
 

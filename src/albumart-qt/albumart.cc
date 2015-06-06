@@ -36,37 +36,22 @@ public:
 
     constexpr AlbumArtQt () : GeneralPlugin (info, false) {}
     void * get_qt_widget ();
-
-private:
-    static void update (void * unused, QLabel * widget);
-    static void clear (void * unused, QLabel * widget);
-    static void widget_cleanup (QObject * widget);
 };
 
-void AlbumArtQt::update (void * unused, QLabel * widget)
+static void update (void *, QLabel * widget)
 {
-    if (! aud_drct_get_playing ())
-        return;
-
-    if (! widget)
-        return;
-
     QSize size = widget->size ();
     widget->setPixmap (audqt::art_request_current (size.width (), size.height ()));
 }
 
-void AlbumArtQt::clear (void * unused, QLabel * widget)
+static void clear (void *, QLabel * widget)
 {
-    if (! widget)
-        return;
-
     widget->setPixmap (QPixmap ());
 }
 
-void AlbumArtQt::widget_cleanup (QObject * widget)
+static void widget_cleanup (QObject * widget)
 {
-    hook_dissociate ("playback begin", (HookFunction) update, widget);
-    hook_dissociate ("current art ready", (HookFunction) update, widget);
+    hook_dissociate ("playback ready", (HookFunction) update, widget);
     hook_dissociate ("playback stop", (HookFunction) clear, widget);
 }
 
@@ -76,12 +61,13 @@ void * AlbumArtQt::get_qt_widget ()
 
     QObject::connect (widget, &QObject::destroyed, widget_cleanup);
 
-    hook_associate ("playback begin", (HookFunction) update, widget);
-    hook_associate ("current art ready", (HookFunction) update, widget);
+    hook_associate ("playback ready", (HookFunction) update, widget);
     hook_associate ("playback stop", (HookFunction) clear, widget);
 
     widget->resize (96, 96);
-    update (nullptr, widget);
+
+    if (aud_drct_get_ready ())
+        update (nullptr, widget);
 
     return widget;
 }

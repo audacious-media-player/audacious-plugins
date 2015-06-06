@@ -19,6 +19,6 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
 
-CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-narrowing -Wno-sign-compare
+CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-sign-compare
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. -Ispu/ -I.
 LIBS += -lz
