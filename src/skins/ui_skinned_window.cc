@@ -85,11 +85,6 @@ static void window_destroy (GtkWidget * window, WindowData * data)
 {
     dock_remove_window (window);
 
-    if (data->is_shaded)
-        gtk_container_remove ((GtkContainer *) window, data->shaded);
-    else
-        gtk_container_remove ((GtkContainer *) window, data->normal);
-
     g_object_unref (data->normal);
     g_object_unref (data->shaded);
 
@@ -128,10 +123,10 @@ GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
     g_object_set_data ((GObject *) window, "windowdata", data);
 
     data->normal = gtk_fixed_new ();
-    g_object_ref (data->normal);
+    g_object_ref_sink (data->normal);
 
     data->shaded = gtk_fixed_new ();
-    g_object_ref (data->shaded);
+    g_object_ref_sink (data->shaded);
 
     if (shaded)
         gtk_container_add ((GtkContainer *) window, data->shaded);
