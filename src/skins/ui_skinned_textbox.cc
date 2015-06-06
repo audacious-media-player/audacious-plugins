@@ -26,6 +26,7 @@
  */
 
 #include <string.h>
+#include <libaudcore/hook.h>
 #include <libaudcore/objects.h>
 
 #include "drawing.h"
@@ -33,7 +34,6 @@
 #include "ui_skin.h"
 #include "ui_skinned_textbox.h"
 
-#define TIMEOUT 30
 #define DELAY 50
 
 typedef struct {
@@ -44,7 +44,6 @@ typedef struct {
     int buf_width;
     bool may_scroll, two_way;
     bool scrolling, backward;
-    int scroll_source;
     int offset, delay;
 } TextboxData;
 
@@ -70,15 +69,15 @@ DRAW_FUNC_BEGIN (textbox_draw, TextboxData)
     }
 DRAW_FUNC_END
 
-static gboolean textbox_scroll (void * textbox)
+static void textbox_scroll (void * textbox)
 {
     TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
-    g_return_val_if_fail (data, FALSE);
+    g_return_if_fail (data);
 
     if (data->delay < DELAY)
     {
         data->delay ++;
-        return G_SOURCE_CONTINUE;
+        return;
     }
 
     if (data->two_way && data->backward)
@@ -98,8 +97,6 @@ static gboolean textbox_scroll (void * textbox)
 
     if (gtk_widget_is_drawable ((GtkWidget *) textbox))
         textbox_draw ((GtkWidget *) textbox, nullptr, data);
-
-    return G_SOURCE_CONTINUE;
 }
 
 static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
@@ -272,18 +269,9 @@ static void textbox_render (GtkWidget * textbox, TextboxData * data)
     gtk_widget_queue_draw (textbox);
 
     if (data->scrolling)
-    {
-        if (! data->scroll_source)
-            data->scroll_source = g_timeout_add (TIMEOUT, textbox_scroll, textbox);
-    }
+        timer_add (TimerRate::Hz30, textbox_scroll, textbox);
     else
-    {
-        if (data->scroll_source)
-        {
-            g_source_remove (data->scroll_source);
-            data->scroll_source = 0;
-        }
-    }
+        timer_remove (TimerRate::Hz30, textbox_scroll, textbox);
 }
 
 void textbox_set_width (GtkWidget * textbox, int width)
@@ -354,12 +342,12 @@ void textbox_set_scroll (GtkWidget * textbox, gboolean scroll)
 
 static void textbox_destroy (GtkWidget * textbox, TextboxData * data)
 {
+    timer_remove (TimerRate::Hz30, textbox_scroll, textbox);
+
     if (data->font)
         pango_font_description_free (data->font);
     if (data->buf)
         cairo_surface_destroy (data->buf);
-    if (data->scroll_source)
-        g_source_remove (data->scroll_source);
 
     g_free (data->text);
     g_free (data);

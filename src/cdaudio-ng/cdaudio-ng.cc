@@ -46,7 +46,6 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
-#include <libaudcore/mainloop.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
@@ -109,7 +108,6 @@ static int lasttrackno = -1;
 static int n_audio_tracks;
 static cdrom_drive_t *pcdrom_drive = nullptr;
 static Index<trackinfo_t> trackinfo;
-static QueuedFunc monitor_source;
 
 static bool scan_cd ();
 static void refresh_trackinfo (bool warning);
@@ -223,7 +221,7 @@ static void monitor (void *)
         return;
     }
 
-    monitor_source.stop ();
+    timer_remove (TimerRate::Hz1, monitor);
     pthread_mutex_unlock (& mutex);
 
     purge_all_playlists ();
@@ -232,8 +230,7 @@ static void monitor (void *)
 /* mutex must be locked */
 static void trigger_monitor ()
 {
-    if (! monitor_source.running ())
-        monitor_source.start (1000, monitor, nullptr);
+    timer_add (TimerRate::Hz1, monitor);
 }
 
 /* main thread only */
@@ -785,7 +782,7 @@ static void refresh_trackinfo (bool warning)
 /* mutex must be locked */
 static void reset_trackinfo ()
 {
-    monitor_source.stop ();
+    timer_remove (TimerRate::Hz1, monitor);
 
     if (pcdrom_drive != nullptr)
     {

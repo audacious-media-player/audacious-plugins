@@ -33,6 +33,7 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
+#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
@@ -63,13 +64,14 @@
 #include "view.h"
 
 #define SEEK_THRESHOLD 200 /* milliseconds */
-#define SEEK_TIMEOUT 100 /* milliseconds */
 #define SEEK_SPEED 50 /* milliseconds per pixel */
 
 GtkWidget *mainwin = nullptr;
 
 static int balance;
-static int seek_source = 0, seek_start, seek_time;
+
+static bool seeking = false;
+static int seek_start, seek_time;
 
 static bool mainwin_info_text_locked = false;
 static String mainwin_tb_old_text;
@@ -113,6 +115,8 @@ static GtkWidget *mainwin_sstop, *mainwin_sfwd, *mainwin_seject, *mainwin_about;
 static void mainwin_position_motion_cb (void);
 static void mainwin_position_release_cb (void);
 static void mainwin_set_volume_diff (int diff);
+
+static void seek_timeout (void * rewind);
 
 static void format_time (char buf[7], int time, int length)
 {
@@ -369,6 +373,9 @@ void mainwin_set_song_info (int bitrate, int samplerate, int channels)
 void
 mainwin_clear_song_info(void)
 {
+    seeking = false;
+    timer_remove (TimerRate::Hz10, seek_timeout);
+
     mainwin_set_song_title (nullptr);
 
     ui_vis_clear_data (mainwin_vis);
@@ -564,17 +571,11 @@ static int time_diff (int a, int b)
     return (b > a) ? b - a : 0;
 }
 
-static gboolean seek_timeout (void * rewind)
+static void seek_timeout (void * rewind)
 {
-    if (! aud_drct_get_playing ())
-    {
-        seek_source = 0;
-        return G_SOURCE_REMOVE;
-    }
-
     int held = time_diff (seek_time, time_now ());
     if (held < SEEK_THRESHOLD)
-        return G_SOURCE_CONTINUE;
+        return;
 
     int position;
     if (GPOINTER_TO_INT (rewind))
@@ -585,26 +586,26 @@ static gboolean seek_timeout (void * rewind)
     position = aud::clamp (position, 0, 219);
     hslider_set_pos (mainwin_position, position);
     mainwin_position_motion_cb ();
-
-    return G_SOURCE_CONTINUE;
 }
 
 static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
  gboolean rewind)
 {
-    if (event->button != 1 || seek_source)
+    if (event->button != 1 || seeking)
         return FALSE;
 
+    seeking = true;
     seek_start = hslider_get_pos (mainwin_position);
     seek_time = time_now ();
-    seek_source = g_timeout_add (SEEK_TIMEOUT, seek_timeout, GINT_TO_POINTER (rewind));
+    timer_add (TimerRate::Hz10, seek_timeout, GINT_TO_POINTER (rewind));
+
     return FALSE;
 }
 
 static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
  gboolean rewind)
 {
-    if (event->button != 1 || ! seek_source)
+    if (event->button != 1 || ! seeking)
         return FALSE;
 
     if (! aud_drct_get_playing () || time_diff (seek_time, time_now ()) <
@@ -618,8 +619,8 @@ static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
     else
         mainwin_position_release_cb ();
 
-    g_source_remove (seek_source);
-    seek_source = 0;
+    seeking = false;
+    timer_remove (TimerRate::Hz10, seek_timeout);
     return FALSE;
 }
 
@@ -1186,11 +1187,8 @@ mainwin_create_window(void)
 
 void mainwin_unhook (void)
 {
-    if (seek_source)
-    {
-        g_source_remove (seek_source);
-        seek_source = 0;
-    }
+    seeking = false;
+    timer_remove (TimerRate::Hz10, seek_timeout);
 
     if (status_message_source)
     {
@@ -1258,7 +1256,7 @@ static void mainwin_update_time_slider (int time, int length)
     gtk_widget_set_visible (mainwin_position, length > 0);
     gtk_widget_set_visible (mainwin_sposition, length > 0);
 
-    if (length > 0 && seek_source == 0)
+    if (length > 0 && ! seeking)
     {
         if (time < length)
         {
