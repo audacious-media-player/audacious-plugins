@@ -185,8 +185,7 @@ static const PreferencesWidget skins_widgets_general[] = {
     WidgetLabel (N_("<b>Skin</b>")),
     WidgetCustomGTK (create_skin_view),
     WidgetLabel (N_("<b>Fonts</b>")),
-    WidgetTable ({{font_table_elements}},
-        WIDGET_CHILD),
+    WidgetTable ({{font_table_elements}}),
     WidgetCheck (N_("Use bitmap fonts (supports ASCII only)"),
         WidgetBool (config.mainwin_use_bitmapfont, mainwin_font_set_cb)),
     WidgetCheck (N_("Scroll song title"),
@@ -238,14 +237,7 @@ static ComboItem vu_mode_elements[] = {
     ComboItem (N_("Smooth"), VU_SMOOTH)
 };
 
-static const PreferencesWidget skins_widgets_vis[] = {
-    WidgetLabel (N_("<b>Type</b>")),
-    WidgetCombo (N_("Visualization type:"),
-        WidgetInt (config.vis_type, vis_reset_cb),
-        {{vis_mode_elements}}),
-    WidgetLabel (N_("<b>Analyzer</b>")),
-    WidgetCheck (N_("Show peaks"),
-        WidgetBool (config.analyzer_peaks, vis_reset_cb)),
+static const PreferencesWidget analyzer_table[] = {
     WidgetCombo (N_("Coloring:"),
         WidgetInt (config.analyzer_mode, vis_reset_cb),
         {{analyzer_mode_elements}}),
@@ -257,8 +249,10 @@ static const PreferencesWidget skins_widgets_vis[] = {
         {{falloff_elements}}),
     WidgetCombo (N_("Peak falloff:"),
         WidgetInt (config.peaks_falloff, vis_reset_cb),
-        {{falloff_elements}}),
-    WidgetLabel (N_("<b>Miscellaneous</b>")),
+        {{falloff_elements}})
+};
+
+static const PreferencesWidget misc_table[] = {
     WidgetCombo (N_("Scope Style:"),
         WidgetInt (config.scope_mode, vis_reset_cb),
         {{scope_mode_elements}}),
@@ -268,6 +262,19 @@ static const PreferencesWidget skins_widgets_vis[] = {
     WidgetCombo (N_("VU Meter Style:"),
         WidgetInt (config.vu_mode, vis_reset_cb),
         {{vu_mode_elements}})
+};
+
+static const PreferencesWidget skins_widgets_vis[] = {
+    WidgetLabel (N_("<b>Type</b>")),
+    WidgetCombo (N_("Visualization type:"),
+        WidgetInt (config.vis_type, vis_reset_cb),
+        {{vis_mode_elements}}),
+    WidgetLabel (N_("<b>Analyzer</b>")),
+    WidgetCheck (N_("Show peaks"),
+        WidgetBool (config.analyzer_peaks, vis_reset_cb)),
+    WidgetTable ({{analyzer_table}}),
+    WidgetLabel (N_("<b>Miscellaneous</b>")),
+    WidgetTable ({{misc_table}})
 };
 
 static const NotebookTab skins_notebook_tabs[] = {
