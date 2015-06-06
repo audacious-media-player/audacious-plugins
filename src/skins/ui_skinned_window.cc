@@ -19,7 +19,7 @@
  * using our public API to be a derived work.
  */
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_dock.h"
 #include "ui_skinned_window.h"
@@ -31,28 +31,25 @@ typedef struct {
     gboolean is_shaded, is_moving;
 } WindowData;
 
-DRAW_FUNC_BEGIN (window_draw)
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) wid, "windowdata");
-    g_return_val_if_fail (data, FALSE);
-
+DRAW_FUNC_BEGIN (window_draw, WindowData)
     if (data->draw)
         data->draw (wid, cr);
 DRAW_FUNC_END
 
-static void window_apply_shape (GtkWidget * window)
+static void window_apply_shape (GtkWidget * window, WindowData * data)
 {
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
-    g_return_if_fail (data);
-    
     gdk_window_shape_combine_region (gtk_widget_get_window (window),
      data->is_shaded ? data->sshape : data->shape, 0, 0);
 }
 
-static gboolean window_button_press (GtkWidget * window, GdkEventButton * event)
+static void window_realize (GtkWidget * window, WindowData * data)
 {
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
-    g_return_val_if_fail (data, FALSE);
+    gdk_window_set_back_pixmap (gtk_widget_get_window (window), nullptr, FALSE);
+    window_apply_shape (window, data);
+}
 
+static gboolean window_button_press (GtkWidget * window, GdkEventButton * event, WindowData * data)
+{
     /* pass double clicks through; they are handled elsewhere */
     if (event->button != 1 || event->type == GDK_2BUTTON_PRESS)
         return FALSE;
@@ -65,12 +62,9 @@ static gboolean window_button_press (GtkWidget * window, GdkEventButton * event)
     return TRUE;
 }
 
-static gboolean window_button_release (GtkWidget * window, GdkEventButton *
- event)
+static gboolean window_button_release (GtkWidget * window,
+ GdkEventButton * event, WindowData * data)
 {
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
-    g_return_val_if_fail (data, FALSE);
-
     if (event->button != 1)
         return FALSE;
 
@@ -78,11 +72,8 @@ static gboolean window_button_release (GtkWidget * window, GdkEventButton *
     return TRUE;
 }
 
-static gboolean window_motion (GtkWidget * window, GdkEventMotion * event)
+static gboolean window_motion (GtkWidget * window, GdkEventMotion * event, WindowData * data)
 {
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
-    g_return_val_if_fail (data, FALSE);
-
     if (! data->is_moving)
         return TRUE;
 
@@ -90,11 +81,8 @@ static gboolean window_motion (GtkWidget * window, GdkEventMotion * event)
     return TRUE;
 }
 
-static void window_destroy (GtkWidget * window)
+static void window_destroy (GtkWidget * window, WindowData * data)
 {
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
-    g_return_if_fail (data);
-
     dock_remove_window (window);
 
     if (data->is_shaded)
@@ -130,12 +118,11 @@ GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
     gtk_widget_add_events (window, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
 
-    DRAW_CONNECT (window, window_draw);
-    g_signal_connect (window, "realize", (GCallback) window_apply_shape, nullptr);
-    g_signal_connect (window, "button-press-event", (GCallback) window_button_press, nullptr);
-    g_signal_connect (window, "button-release-event", (GCallback) window_button_release, nullptr);
-    g_signal_connect (window, "motion-notify-event", (GCallback) window_motion, nullptr);
-    g_signal_connect (window, "destroy", (GCallback) window_destroy, nullptr);
+    /* We set None as the background pixmap in order to avoid flickering.
+     * Setting a blank GtkStyle prevents GTK 2.x from overriding this. */
+    GtkStyle * style = gtk_style_new ();
+    gtk_widget_set_style (window, style);
+    g_object_unref (style);
 
     WindowData * data = g_new0 (WindowData, 1);
     g_object_set_data ((GObject *) window, "windowdata", data);
@@ -153,6 +140,13 @@ GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
 
     data->is_shaded = shaded;
     data->draw = draw;
+
+    DRAW_CONNECT (window, window_draw, data);
+    g_signal_connect (window, "realize", (GCallback) window_realize, data);
+    g_signal_connect (window, "button-press-event", (GCallback) window_button_press, data);
+    g_signal_connect (window, "button-release-event", (GCallback) window_button_release, data);
+    g_signal_connect (window, "motion-notify-event", (GCallback) window_motion, data);
+    g_signal_connect (window, "destroy", (GCallback) window_destroy, data);
 
     dock_add_window (window, x, y, w, h, main);
     return window;
@@ -182,7 +176,7 @@ void window_set_shapes (GtkWidget * window, GdkRegion * shape, GdkRegion * sshap
     data->sshape = sshape;
     
     if (gtk_widget_get_realized (window))
-        window_apply_shape (window);
+        window_apply_shape (window, data);
 }
 
 void window_set_shaded (GtkWidget * window, gboolean shaded)
@@ -207,7 +201,7 @@ void window_set_shaded (GtkWidget * window, gboolean shaded)
     data->is_shaded = shaded;
     
     if (gtk_widget_get_realized (window))
-        window_apply_shape (window);
+        window_apply_shape (window, data);
 }
 
 void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,

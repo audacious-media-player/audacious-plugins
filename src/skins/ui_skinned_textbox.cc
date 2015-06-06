@@ -28,7 +28,7 @@
 #include <string.h>
 #include <libaudcore/objects.h>
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_textbox.h"
@@ -50,10 +50,7 @@ typedef struct {
 
 static GList * textboxes;
 
-DRAW_FUNC_BEGIN (textbox_draw)
-    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) wid, "textboxdata");
-    g_return_val_if_fail (data && data->buf, FALSE);
-
+DRAW_FUNC_BEGIN (textbox_draw, TextboxData)
     if (data->scrolling)
     {
         cairo_set_source_surface (cr, data->buf, -data->offset * config.scale, 0);
@@ -353,11 +350,8 @@ void textbox_set_scroll (GtkWidget * textbox, gboolean scroll)
     textbox_render (textbox, data);
 }
 
-static void textbox_destroy (GtkWidget * textbox)
+static void textbox_destroy (GtkWidget * textbox, TextboxData * data)
 {
-    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
-    g_return_if_fail (data);
-
     if (data->font)
         pango_font_description_free (data->font);
     if (data->buf)
@@ -374,13 +368,11 @@ static void textbox_destroy (GtkWidget * textbox)
 GtkWidget * textbox_new (int width, const char * text, const char * font,
  gboolean scroll)
 {
-    GtkWidget * textbox = gtk_drawing_area_new ();
+    GtkWidget * textbox = gtk_event_box_new ();
+    gtk_event_box_set_visible_window ((GtkEventBox *) textbox, false);
     gtk_widget_set_size_request (textbox, width, 0);
     gtk_widget_add_events (textbox, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK);
-
-    DRAW_CONNECT (textbox, textbox_draw);
-    g_signal_connect (textbox, "destroy", (GCallback) textbox_destroy, nullptr);
 
     TextboxData * data = g_new0 (TextboxData, 1);
     data->width = width;
@@ -391,6 +383,9 @@ GtkWidget * textbox_new (int width, const char * text, const char * font,
 
     if (font)
         data->font = pango_font_description_from_string (font);
+
+    DRAW_CONNECT_PROXY (textbox, textbox_draw, data);
+    g_signal_connect (textbox, "destroy", (GCallback) textbox_destroy, data);
 
     textboxes = g_list_prepend (textboxes, textbox);
 

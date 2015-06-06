@@ -27,7 +27,7 @@
 #include <string.h>
 #include <libaudcore/objects.h>
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "skins_cfg.h"
 #include "surface.h"
 #include "ui_skin.h"
@@ -48,7 +48,7 @@ static struct {
 #define RGB_SET_INDEX(c) RGB_SET (active_skin->vis_colors[c])
 #define RGB_SET_INDEX_Y(c) RGB_SET_Y (active_skin->vis_colors[c])
 
-DRAW_FUNC_BEGIN (ui_svis_draw)
+DRAW_FUNC_BEGIN (ui_svis_draw, void)
     uint32_t rgb[38 * 5];
     uint32_t * set;
 
@@ -184,10 +184,9 @@ DRAW_FUNC_END
 
 GtkWidget * ui_svis_new (void)
 {
-    GtkWidget * wid = gtk_drawing_area_new ();
+    GtkWidget * wid = drawing_area_new ();
     gtk_widget_set_size_request (wid, 38 * config.scale, 5 * config.scale);
-    gtk_widget_add_events (wid, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
-    DRAW_CONNECT (wid, ui_svis_draw);
+    DRAW_CONNECT (wid, ui_svis_draw, nullptr);
     return wid;
 }
 

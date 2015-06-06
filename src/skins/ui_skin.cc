@@ -463,8 +463,7 @@ skin_check_pixmaps(const Skin * skin, const char * skin_path)
     return TRUE;
 }
 
-static gboolean
-skin_load_nolock(Skin * skin, const char * path, gboolean force)
+static gboolean skin_load (Skin * skin, const char * path)
 {
     char *newpath, *skin_path;
     int archive = 0;
@@ -476,12 +475,6 @@ skin_load_nolock(Skin * skin, const char * path, gboolean force)
 
     if (! g_file_test (path, G_FILE_TEST_EXISTS))
         return FALSE;
-
-    if(force) AUDDBG("reloading forced!\n");
-    if (!force && skin->path && !strcmp(skin->path, path)) {
-        AUDDBG("skin %s already loaded\n", path);
-        return FALSE;
-    }
 
     if (file_is_archive(path)) {
         AUDDBG("Attempt to load archive\n");
@@ -522,6 +515,10 @@ skin_load_nolock(Skin * skin, const char * path, gboolean force)
     window_set_shapes (mainwin, masks[SKIN_MASK_MAIN], masks[SKIN_MASK_MAIN_SHADE]);
     window_set_shapes (equalizerwin, masks[SKIN_MASK_EQ], masks[SKIN_MASK_EQ_SHADE]);
 
+    // hide the equalizer graph if we have a short eqmain.bmp
+    gtk_widget_set_visible (equalizerwin_graph,
+     cairo_image_surface_get_height (skin->pixmaps[SKIN_EQMAIN]) >= 315);
+
     if(archive) del_directory(skin_path);
     g_free(skin_path);
 
@@ -560,47 +557,6 @@ void skin_install_skin (const char * path)
     g_free (data);
     g_free (base);
     g_free (target);
-}
-
-static gboolean skin_load (Skin * skin, const char * path)
-{
-    gboolean ret;
-
-    g_return_val_if_fail(skin != nullptr, FALSE);
-
-    if (!path)
-        return FALSE;
-
-    ret = skin_load_nolock(skin, path, FALSE);
-
-    if(!ret) {
-        AUDDBG("loading failed\n");
-        return FALSE; /* don't try to update anything if loading failed --asphyx */
-    }
-
-    if (skin->pixmaps[SKIN_NUMBERS])
-    {
-        int h = cairo_image_surface_get_height (skin->pixmaps[SKIN_NUMBERS]);
-        ui_skinned_number_set_size (mainwin_minus_num, 9, h);
-        ui_skinned_number_set_size (mainwin_10min_num, 9, h);
-        ui_skinned_number_set_size (mainwin_min_num, 9, h);
-        ui_skinned_number_set_size (mainwin_10sec_num, 9, h);
-        ui_skinned_number_set_size (mainwin_sec_num, 9, h);
-    }
-
-    if (skin->pixmaps[SKIN_PLAYPAUSE])
-        ui_skinned_playstatus_set_size (mainwin_playstatus, 11,
-         cairo_image_surface_get_height (skin->pixmaps[SKIN_PLAYPAUSE]));
-
-    // hide the menurow if it is not present in the skin
-    if (cairo_image_surface_get_width (skin->pixmaps[SKIN_TITLEBAR]) < 344)
-        skin->properties.mainwin_menurow_visible = false;
-
-    // hide the equalizer graph if we have a short eqmain.bmp
-    gtk_widget_set_visible (equalizerwin_graph,
-     cairo_image_surface_get_height (skin->pixmaps[SKIN_EQMAIN]) >= 315);
-
-    return TRUE;
 }
 
 void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc, int

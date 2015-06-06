@@ -26,6 +26,5 @@
 
 GtkWidget * ui_skinned_number_new ();
 void ui_skinned_number_set (GtkWidget * widget, char c);
-void ui_skinned_number_set_size(GtkWidget *widget, int width, int height);
 
 #endif

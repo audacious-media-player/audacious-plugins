@@ -27,7 +27,7 @@
 
 #include <libaudcore/runtime.h>
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_menurow.h"
@@ -37,7 +37,7 @@ static struct {
     gboolean pushed;
 } mr;
 
-DRAW_FUNC_BEGIN (menurow_draw)
+DRAW_FUNC_BEGIN (menurow_draw, void)
     if (mr.selected == MENUROW_NONE)
     {
         if (mr.pushed)
@@ -125,18 +125,16 @@ static gboolean menurow_motion_notify (GtkWidget * widget, GdkEventMotion *
 
 GtkWidget * ui_skinned_menurow_new (void)
 {
-    GtkWidget * wid = gtk_drawing_area_new ();
+    GtkWidget * wid = gtk_event_box_new ();
+    gtk_event_box_set_visible_window ((GtkEventBox *) wid, false);
     gtk_widget_set_size_request (wid, 8 * config.scale, 43 * config.scale);
     gtk_widget_add_events (wid, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
      | GDK_POINTER_MOTION_MASK);
 
-    DRAW_CONNECT (wid, menurow_draw);
-    g_signal_connect (wid, "button-press-event", (GCallback)
-     menurow_button_press, nullptr);
-    g_signal_connect (wid, "button-release-event", (GCallback)
-     menurow_button_release, nullptr);
-    g_signal_connect (wid, "motion-notify-event", (GCallback)
-     menurow_motion_notify, nullptr);
+    DRAW_CONNECT_PROXY (wid, menurow_draw, nullptr);
+    g_signal_connect (wid, "button-press-event", (GCallback) menurow_button_press, nullptr);
+    g_signal_connect (wid, "button-release-event", (GCallback) menurow_button_release, nullptr);
+    g_signal_connect (wid, "motion-notify-event", (GCallback) menurow_motion_notify, nullptr);
 
     return wid;
 }

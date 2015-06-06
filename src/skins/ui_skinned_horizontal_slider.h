@@ -33,8 +33,7 @@
 GtkWidget * hslider_new (int min, int max, SkinPixmapId si, int w, int h,
  int fx, int fy, int kw, int kh, int knx, int kny, int kpx, int kpy);
 void hslider_set_frame (GtkWidget * hslider, int fx, int fy);
-void hslider_set_knob (GtkWidget * hslider, int knx, int kny, int kpx, int
- kpy);
+void hslider_set_knob (GtkWidget * hslider, int knx, int kny, int kpx, int kpy);
 int hslider_get_pos (GtkWidget * hslider);
 void hslider_set_pos (GtkWidget * hslider, int pos);
 gboolean hslider_get_pressed (GtkWidget * hslider);

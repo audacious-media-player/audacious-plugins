@@ -26,7 +26,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_skin.h"
@@ -40,10 +40,7 @@ typedef struct {
     gboolean pressed;
 } EqSliderData;
 
-DRAW_FUNC_BEGIN (eq_slider_draw)
-    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) wid, "eqsliderdata");
-    g_return_val_if_fail (data, FALSE);
-
+DRAW_FUNC_BEGIN (eq_slider_draw, EqSliderData)
     int frame = 27 - data->pos * 27 / 50;
     if (frame < 14)
         skin_draw_pixbuf (cr, SKIN_EQMAIN, 13 + 15 * frame, 164, 0, 0, 14, 63);
@@ -75,12 +72,9 @@ static void eq_slider_moved (EqSliderData * data, int pos)
     mainwin_show_status_message (buf);
 }
 
-static gboolean eq_slider_button_press (GtkWidget * slider, GdkEventButton *
- event)
+static gboolean eq_slider_button_press (GtkWidget * slider,
+ GdkEventButton * event, EqSliderData * data)
 {
-    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
-    g_return_val_if_fail (data, FALSE);
-
     if (event->button != 1)
         return FALSE;
 
@@ -91,12 +85,9 @@ static gboolean eq_slider_button_press (GtkWidget * slider, GdkEventButton *
     return TRUE;
 }
 
-static gboolean eq_slider_button_release (GtkWidget * slider, GdkEventButton *
- event)
+static gboolean eq_slider_button_release (GtkWidget * slider,
+ GdkEventButton * event, EqSliderData * data)
 {
-    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
-    g_return_val_if_fail (data, FALSE);
-
     if (event->button != 1)
         return FALSE;
 
@@ -110,11 +101,8 @@ static gboolean eq_slider_button_release (GtkWidget * slider, GdkEventButton *
     return TRUE;
 }
 
-static gboolean eq_slider_motion (GtkWidget * slider, GdkEventMotion * event)
+static gboolean eq_slider_motion (GtkWidget * slider, GdkEventMotion * event, EqSliderData * data)
 {
-    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
-    g_return_val_if_fail (data, FALSE);
-
     if (! data->pressed)
         return TRUE;
 
@@ -123,11 +111,8 @@ static gboolean eq_slider_motion (GtkWidget * slider, GdkEventMotion * event)
     return TRUE;
 }
 
-static gboolean eq_slider_scroll (GtkWidget * slider, GdkEventScroll * event)
+static gboolean eq_slider_scroll (GtkWidget * slider, GdkEventScroll * event, EqSliderData * data)
 {
-    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
-    g_return_val_if_fail (data, FALSE);
-
     if (event->direction == GDK_SCROLL_UP)
         eq_slider_moved (data, data->pos - 2);
     else
@@ -152,38 +137,31 @@ void eq_slider_set_val (GtkWidget * slider, float val)
     gtk_widget_queue_draw (slider);
 }
 
-static void eq_slider_destroy (GtkWidget * slider)
+static void eq_slider_free (EqSliderData * data)
 {
-    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
-    g_return_if_fail (data);
-
     g_free (data->name);
     g_free (data);
 }
 
 GtkWidget * eq_slider_new (const char * name, int band)
 {
-    GtkWidget * slider = gtk_drawing_area_new ();
+    GtkWidget * slider = gtk_event_box_new ();
+    gtk_event_box_set_visible_window ((GtkEventBox *) slider, false);
     gtk_widget_set_size_request (slider, 14 * config.scale, 63 * config.scale);
     gtk_widget_add_events (slider, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
 
-    DRAW_CONNECT (slider, eq_slider_draw);
-
-    g_signal_connect (slider, "button-press-event", (GCallback)
-     eq_slider_button_press, nullptr);
-    g_signal_connect (slider, "button-release-event", (GCallback)
-     eq_slider_button_release, nullptr);
-    g_signal_connect (slider, "motion-notify-event", (GCallback)
-     eq_slider_motion, nullptr);
-    g_signal_connect (slider, "scroll-event", (GCallback) eq_slider_scroll,
-     nullptr);
-    g_signal_connect (slider, "destroy", (GCallback) eq_slider_destroy, nullptr);
-
     EqSliderData * data = g_new0 (EqSliderData, 1);
     data->name = g_strdup (name);
     data->band = band;
-    g_object_set_data ((GObject *) slider, "eqsliderdata", data);
+    g_object_set_data_full ((GObject *) slider, "eqsliderdata", data,
+     (GDestroyNotify) eq_slider_free);
+
+    DRAW_CONNECT_PROXY (slider, eq_slider_draw, data);
+    g_signal_connect (slider, "button-press-event", (GCallback) eq_slider_button_press, data);
+    g_signal_connect (slider, "button-release-event", (GCallback) eq_slider_button_release, data);
+    g_signal_connect (slider, "motion-notify-event", (GCallback) eq_slider_motion, data);
+    g_signal_connect (slider, "scroll-event", (GCallback) eq_slider_scroll, data);
 
     return slider;
 }

@@ -25,58 +25,43 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_playstatus.h"
 
-static int playstatus_width, playstatus_height;
 static PStatus playstatus_status;
 
-DRAW_FUNC_BEGIN (playstatus_draw)
-    if (! playstatus_width || ! playstatus_height)
-        goto DONE;
-
+DRAW_FUNC_BEGIN (playstatus_draw, void)
     if (playstatus_status == STATUS_PLAY)
-        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 36, 0, 0, 0, 3, playstatus_height);
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 36, 0, 0, 0, 3, 9);
     else
-        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 27, 0, 0, 0, 2, playstatus_height);
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 27, 0, 0, 0, 2, 9);
 
     switch (playstatus_status)
     {
     case STATUS_STOP:
-        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 18, 0, 2, 0, 9, playstatus_height);
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 18, 0, 2, 0, 9, 9);
         break;
     case STATUS_PAUSE:
-        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 9, 0, 2, 0, 9, playstatus_height);
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 9, 0, 2, 0, 9, 9);
         break;
     case STATUS_PLAY:
-        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 1, 0, 3, 0, 8, playstatus_height);
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 1, 0, 3, 0, 8, 9);
         break;
     }
-
-DONE:
 DRAW_FUNC_END
 
 GtkWidget * ui_skinned_playstatus_new (void)
 {
-    GtkWidget * playstatus = gtk_drawing_area_new ();
-    DRAW_CONNECT (playstatus, playstatus_draw);
+    GtkWidget * playstatus = drawing_area_new ();
+    gtk_widget_set_size_request (playstatus, 11 * config.scale, 9 * config.scale);
+    DRAW_CONNECT (playstatus, playstatus_draw, nullptr);
     return playstatus;
 }
 
 void ui_skinned_playstatus_set_status (GtkWidget * playstatus, PStatus status)
 {
     playstatus_status = status;
-    gtk_widget_queue_draw (playstatus);
-}
-
-void ui_skinned_playstatus_set_size (GtkWidget * playstatus, int width, int
- height)
-{
-    playstatus_width = width;
-    playstatus_height = height;
-
-    gtk_widget_set_size_request (playstatus, width * config.scale, height * config.scale);
     gtk_widget_queue_draw (playstatus);
 }

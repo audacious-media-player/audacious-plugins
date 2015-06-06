@@ -19,7 +19,7 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skinned_button.h"
 
@@ -35,10 +35,7 @@ typedef struct {
     ButtonCB on_press, on_release, on_rpress, on_rrelease;
 } ButtonData;
 
-DRAW_FUNC_BEGIN (button_draw)
-    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) wid, "buttondata");
-    g_return_val_if_fail (data, FALSE);
-
+DRAW_FUNC_BEGIN (button_draw, ButtonData)
     switch (data->type)
     {
     case BUTTON_TYPE_NORMAL:
@@ -66,11 +63,8 @@ DRAW_FUNC_BEGIN (button_draw)
     }
 DRAW_FUNC_END
 
-static gboolean button_press (GtkWidget * button, GdkEventButton * event)
+static gboolean button_press (GtkWidget * button, GdkEventButton * event, ButtonData * data)
 {
-    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
-    g_return_val_if_fail (data, FALSE);
-
     /* pass events through to the parent widget only if neither the press nor
      * release signals are connected; sending one and not the other causes
      * problems (in particular with dragging windows around) */
@@ -95,11 +89,8 @@ static gboolean button_press (GtkWidget * button, GdkEventButton * event)
     return TRUE;
 }
 
-static gboolean button_release (GtkWidget * button, GdkEventButton * event)
+static gboolean button_release (GtkWidget * button, GdkEventButton * event, ButtonData * data)
 {
-    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
-    g_return_val_if_fail (data, FALSE);
-
     if (event->button == 1 && (data->on_press || data->on_release))
     {
         if (! data->pressed)
@@ -129,41 +120,25 @@ static gboolean button_release (GtkWidget * button, GdkEventButton * event)
     return TRUE;
 }
 
-static void button_destroy (GtkWidget * button)
-{
-    g_free (g_object_get_data ((GObject *) button, "buttondata"));
-}
-
 static GtkWidget * button_new_base (int type, int w, int h)
 {
-    GtkWidget * button;
-
-    if (type == BUTTON_TYPE_SMALL)
-    {
-        button = gtk_event_box_new ();
-        gtk_event_box_set_visible_window ((GtkEventBox *) button, FALSE);
-    }
-    else
-        button = gtk_drawing_area_new ();
-
+    GtkWidget * button = gtk_event_box_new ();
+    gtk_event_box_set_visible_window ((GtkEventBox *) button, FALSE);
     gtk_widget_set_size_request (button, w * config.scale, h * config.scale);
     gtk_widget_add_events (button, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_LEAVE_NOTIFY_MASK);
-
-    if (type != BUTTON_TYPE_SMALL)
-        DRAW_CONNECT (button, button_draw);
-
-    g_signal_connect (button, "button-press-event", (GCallback) button_press,
-     nullptr);
-    g_signal_connect (button, "button-release-event", (GCallback)
-     button_release, nullptr);
-    g_signal_connect (button, "destroy", (GCallback) button_destroy, nullptr);
 
     ButtonData * data = g_new0 (ButtonData, 1);
     data->type = type;
     data->w = w;
     data->h = h;
-    g_object_set_data ((GObject *) button, "buttondata", data);
+    g_object_set_data_full ((GObject *) button, "buttondata", data, g_free);
+
+    if (type != BUTTON_TYPE_SMALL)
+        DRAW_CONNECT_PROXY (button, button_draw, data);
+
+    g_signal_connect (button, "button-press-event", (GCallback) button_press, data);
+    g_signal_connect (button, "button-release-event", (GCallback) button_release, data);
 
     return button;
 }

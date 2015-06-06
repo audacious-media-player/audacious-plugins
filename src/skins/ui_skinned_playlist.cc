@@ -29,7 +29,7 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#include "draw-compat.h"
+#include "drawing.h"
 #include "menus.h"
 #include "skins_cfg.h"
 #include "ui_playlist.h"
@@ -53,11 +53,10 @@ typedef struct {
     gboolean popup_shown;
 } PlaylistData;
 
-static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event);
-static gboolean playlist_button_release (GtkWidget * list, GdkEventButton *
- event);
-static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event);
-static gboolean playlist_leave (GtkWidget * list, GdkEventCrossing * event);
+static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event, PlaylistData * data);
+static gboolean playlist_button_release (GtkWidget * list, GdkEventButton * event, PlaylistData * data);
+static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event, PlaylistData * data);
+static gboolean playlist_leave (GtkWidget * list, GdkEventCrossing * event, PlaylistData * data);
 
 static void popup_trigger (GtkWidget * list, PlaylistData * data, int pos);
 static void popup_hide (GtkWidget * list, PlaylistData * data);
@@ -135,10 +134,7 @@ static void cancel_all (GtkWidget * list, PlaylistData * data)
     popup_hide (list, data);
 }
 
-DRAW_FUNC_BEGIN (playlist_draw)
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) wid, "playlistdata");
-    g_return_val_if_fail (data, FALSE);
-
+DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
     int active_entry = aud_playlist_get_position (active_playlist);
     int left = 3, right = 3;
     PangoLayout * layout;
@@ -322,11 +318,8 @@ DRAW_FUNC_BEGIN (playlist_draw)
     }
 DRAW_FUNC_END
 
-static void playlist_destroy (GtkWidget * list)
+static void playlist_destroy (GtkWidget * list, PlaylistData * data)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_if_fail (data);
-
     cancel_all (list, data);
 
     pango_font_description_free (data->font);
@@ -335,21 +328,11 @@ static void playlist_destroy (GtkWidget * list)
 
 GtkWidget * ui_skinned_playlist_new (int width, int height, const char * font)
 {
-    GtkWidget * list = gtk_drawing_area_new ();
+    GtkWidget * list = gtk_event_box_new ();
+    gtk_event_box_set_visible_window ((GtkEventBox *) list, false);
     gtk_widget_set_size_request (list, width * config.scale, height * config.scale);
     gtk_widget_add_events (list, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
      | GDK_LEAVE_NOTIFY_MASK | GDK_POINTER_MOTION_MASK);
-
-    DRAW_CONNECT (list, playlist_draw);
-    g_signal_connect (list, "button-press-event", (GCallback)
-     playlist_button_press, nullptr);
-    g_signal_connect (list, "button-release-event", (GCallback)
-     playlist_button_release, nullptr);
-    g_signal_connect (list, "leave-notify-event", (GCallback) playlist_leave,
-     nullptr);
-    g_signal_connect (list, "motion-notify-event", (GCallback) playlist_motion,
-     nullptr);
-    g_signal_connect (list, "destroy", (GCallback) playlist_destroy, nullptr);
 
     PlaylistData * data = g_new0 (PlaylistData, 1);
     data->width = width * config.scale;
@@ -357,6 +340,13 @@ GtkWidget * ui_skinned_playlist_new (int width, int height, const char * font)
     data->hover = -1;
     data->popup_pos = -1;
     g_object_set_data ((GObject *) list, "playlistdata", data);
+
+    DRAW_CONNECT_PROXY (list, playlist_draw, data);
+    g_signal_connect (list, "button-press-event", (GCallback) playlist_button_press, data);
+    g_signal_connect (list, "button-release-event", (GCallback) playlist_button_release, data);
+    g_signal_connect (list, "leave-notify-event", (GCallback) playlist_leave, data);
+    g_signal_connect (list, "motion-notify-event", (GCallback) playlist_motion, data);
+    g_signal_connect (list, "destroy", (GCallback) playlist_destroy, data);
 
     ui_skinned_playlist_set_font (list, font);
 
@@ -723,11 +713,9 @@ int ui_skinned_playlist_hover_end (GtkWidget * list)
     return temp;
 }
 
-static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event)
+static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event,
+ PlaylistData * data)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_val_if_fail (data, FALSE);
-
     int position = calc_position (data, event->y);
     int state = event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK |
      GDK_MOD1_MASK);
@@ -804,12 +792,9 @@ static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event)
     return TRUE;
 }
 
-static gboolean playlist_button_release (GtkWidget * list, GdkEventButton *
- event)
+static gboolean playlist_button_release (GtkWidget * list,
+ GdkEventButton * event, PlaylistData * data)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_val_if_fail (data, FALSE);
-
     cancel_all (list, data);
     return TRUE;
 }
@@ -836,11 +821,8 @@ static gboolean scroll_cb (void * data_)
     return G_SOURCE_CONTINUE;
 }
 
-static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event)
+static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event, PlaylistData * data)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_val_if_fail (data, FALSE);
-
     int position = calc_position (data, event->y);
     int new_scroll;
 
@@ -894,11 +876,8 @@ static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event)
     return TRUE;
 }
 
-static gboolean playlist_leave (GtkWidget * list, GdkEventCrossing * event)
+static gboolean playlist_leave (GtkWidget * list, GdkEventCrossing * event, PlaylistData * data)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_val_if_fail (data, FALSE);
-
     if (! data->drag)
         cancel_all (list, data);
 
