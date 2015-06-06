@@ -96,7 +96,9 @@ static gboolean textbox_scroll (void * textbox)
     if (! data->two_way && data->offset >= data->buf_width)
         data->offset = 0;
 
-    gtk_widget_queue_draw ((GtkWidget *) textbox);
+    if (gtk_widget_is_drawable ((GtkWidget *) textbox))
+        textbox_draw ((GtkWidget *) textbox, nullptr, data);
+
     return G_SOURCE_CONTINUE;
 }
 

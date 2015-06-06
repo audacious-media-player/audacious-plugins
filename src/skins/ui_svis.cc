@@ -210,5 +210,7 @@ void ui_svis_timeout_func (GtkWidget * widget, unsigned char * data)
     }
 
     svis.active = TRUE;
-    gtk_widget_queue_draw (widget);
+
+    if (gtk_widget_is_drawable (widget))
+        ui_svis_draw (widget, nullptr, nullptr);
 }
