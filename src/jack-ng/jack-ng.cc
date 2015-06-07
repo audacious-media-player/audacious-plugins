@@ -157,9 +157,16 @@ bool JACKOutput::connect_ports (int channels)
         goto fail;
     }
 
-    for (int i = 0; i < channels; i ++)
+    // upmix mono to stereo
+    // for all other arrangements, use a one-to-one mapping
+    if (channels == 1)
+        count = aud::min (count, 2);
+    else
+        count = aud::min (count, channels);
+
+    for (int i = 0; i < count; i ++)
     {
-        if (jack_connect (m_client, jack_port_name (m_ports[i]), ports[i]) != 0)
+        if (jack_connect (m_client, jack_port_name (m_ports[i % channels]), ports[i]) != 0)
         {
             aud_ui_show_error (str_printf (_("Failed to connect to JACK port %s."), ports[i]));
             goto fail;
