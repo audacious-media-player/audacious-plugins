@@ -90,8 +90,6 @@ EXPORT SkinnedUI aud_plugin_instance;
 static String user_skin_dir;
 static String skin_thumb_dir;
 
-static int update_source;
-
 const char * skins_get_user_skin_dir ()
 {
     if (! user_skin_dir)
@@ -103,15 +101,9 @@ const char * skins_get_user_skin_dir ()
 const char * skins_get_skin_thumb_dir ()
 {
     if (! skin_thumb_dir)
-        skin_thumb_dir = String (filename_build ({g_get_user_cache_dir (), "audacious", "thumbs"}));
+        skin_thumb_dir = String (filename_build ({g_get_user_cache_dir (), "audacious", "thumbs-unscaled"}));
 
     return skin_thumb_dir;
-}
-
-static gboolean update_cb (void *)
-{
-    mainwin_update_song_info ();
-    return G_SOURCE_CONTINUE;
 }
 
 static void skins_init_main (void)
@@ -135,7 +127,7 @@ static void skins_init_main (void)
     else
         mainwin_update_song_info ();
 
-    update_source = g_timeout_add (250, update_cb, nullptr);
+    timer_add (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
 }
 
 bool SkinnedUI::init ()
@@ -159,7 +151,8 @@ static void skins_cleanup_main (void)
 {
     mainwin_unhook ();
     playlistwin_unhook ();
-    g_source_remove (update_source);
+
+    timer_remove (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
 
     cleanup_skins ();
 }

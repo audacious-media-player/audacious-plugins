@@ -597,7 +597,8 @@ playlistwin_create_widgets(void)
 {
     int w = config.playlist_width, h = config.playlist_height;
 
-    playlistwin_sinfo = textbox_new (w - 35, "", nullptr, config.autoscroll);
+    bool shaded = aud_get_bool ("skins", "playlist_shaded");
+    playlistwin_sinfo = textbox_new (w - 35, "", nullptr, shaded && config.autoscroll);
     window_put_widget (playlistwin, TRUE, playlistwin_sinfo, 4, 4);
 
     playlistwin_shaded_shade = button_new (9, 9, 128, 45, 150, 42, SKIN_PLEDIT, SKIN_PLEDIT);

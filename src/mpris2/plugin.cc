@@ -51,7 +51,6 @@ static GObject * object_core, * object_player;
 static String last_title, last_artist, last_album, last_file;
 static int last_length;
 static const char * image_file;
-static int update_timer;
 
 static gboolean quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
  void * unused)
@@ -171,7 +170,7 @@ static void volume_changed (GObject * object)
     aud_drct_set_volume_main (round (vol * 100));
 }
 
-static gboolean update (GObject * object)
+static void update (void * object)
 {
     int64_t pos = 0;
     int vol = 0;
@@ -182,9 +181,8 @@ static gboolean update (GObject * object)
     vol = aud_drct_get_volume_main ();
 
     g_signal_handlers_block_by_func (object, (void *) volume_changed, nullptr);
-    g_object_set (object, "position", pos, "volume", (double) vol / 100, nullptr);
+    g_object_set ((GObject *) object, "position", pos, "volume", (double) vol / 100, nullptr);
     g_signal_handlers_unblock_by_func (object, (void *) volume_changed, nullptr);
-    return true;
 }
 
 static void update_playback_status (void * data, GObject * object)
@@ -289,11 +287,7 @@ void MPRIS2Plugin::cleanup ()
     hook_dissociate ("playback ready", (HookFunction) emit_seek);
     hook_dissociate ("playback seek", (HookFunction) emit_seek);
 
-    if (update_timer)
-    {
-        g_source_remove (update_timer);
-        update_timer = 0;
-    }
+    timer_remove (TimerRate::Hz4, update, object_player);
 
     g_object_unref (object_core);
     g_object_unref (object_player);
@@ -353,7 +347,6 @@ bool MPRIS2Plugin::init ()
      "can-seek", (gboolean) true,
      nullptr);
 
-    update_timer = g_timeout_add (250, (GSourceFunc) update, object_player);
     update_playback_status (nullptr, object_player);
 
     if (aud_drct_get_playing () && aud_drct_get_ready ())
@@ -370,6 +363,8 @@ bool MPRIS2Plugin::init ()
 
     hook_associate ("playback ready", (HookFunction) emit_seek, object_player);
     hook_associate ("playback seek", (HookFunction) emit_seek, object_player);
+
+    timer_add (TimerRate::Hz4, update, object_player);
 
     g_signal_connect (object_player, "handle-next", (GCallback) next_cb, nullptr);
     g_signal_connect (object_player, "handle-pause", (GCallback) pause_cb, nullptr);

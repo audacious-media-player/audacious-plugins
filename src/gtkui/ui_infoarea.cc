@@ -57,7 +57,6 @@ typedef struct {
     float alpha, last_alpha;
 
     bool stopped;
-    int fade_timeout;
 
     GdkPixbuf * pb, * last_pb;
 } UIInfoArea;
@@ -365,29 +364,27 @@ static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
     return true;
 }
 
-static gboolean ui_infoarea_do_fade ()
+static void ui_infoarea_do_fade (void *)
 {
-    g_return_val_if_fail (area, false);
-    gboolean ret = false;
+    g_return_if_fail (area);
+    bool done = true;
 
     if (aud_drct_get_playing () && area->alpha < 1)
     {
         area->alpha += 0.1;
-        ret = true;
+        done = false;
     }
 
     if (area->last_alpha > 0)
     {
         area->last_alpha -= 0.1;
-        ret = true;
+        done = false;
     }
 
     gtk_widget_queue_draw (area->main);
 
-    if (! ret)
-        area->fade_timeout = 0;
-
-    return ret;
+    if (done)
+        timer_remove (TimerRate::Hz30, ui_infoarea_do_fade);
 }
 
 static void ui_infoarea_set_title ()
@@ -454,9 +451,7 @@ static void ui_infoarea_playback_start ()
     ui_infoarea_set_title ();
     set_album_art ();
 
-    if (! area->fade_timeout)
-        area->fade_timeout = g_timeout_add (30, (GSourceFunc)
-         ui_infoarea_do_fade, area);
+    timer_add (TimerRate::Hz30, ui_infoarea_do_fade);
 }
 
 static void ui_infoarea_playback_stop ()
@@ -466,9 +461,7 @@ static void ui_infoarea_playback_stop ()
     infoarea_next ();
     area->stopped = true;
 
-    if (! area->fade_timeout)
-        area->fade_timeout = g_timeout_add (30, (GSourceFunc)
-         ui_infoarea_do_fade, area);
+    timer_add (TimerRate::Hz30, ui_infoarea_do_fade);
 }
 
 static void realize_cb (GtkWidget * widget)
@@ -524,11 +517,7 @@ static void destroy_cb (GtkWidget * widget)
     hook_dissociate ("playback ready", (HookFunction) ui_infoarea_playback_start);
     hook_dissociate ("playback stop", (HookFunction) ui_infoarea_playback_stop);
 
-    if (area->fade_timeout)
-    {
-        g_source_remove (area->fade_timeout);
-        area->fade_timeout = 0;
-    }
+    timer_remove (TimerRate::Hz30, ui_infoarea_do_fade);
 
     if (area->pb)
         g_object_unref (area->pb);
@@ -562,16 +551,11 @@ GtkWidget * ui_infoarea_new ()
 
     if (aud_drct_get_ready ())
     {
-        ui_infoarea_playback_start ();
+        ui_infoarea_set_title ();
+        set_album_art ();
 
         /* skip fade-in */
         area->alpha = 1;
-
-        if (area->fade_timeout)
-        {
-            g_source_remove (area->fade_timeout);
-            area->fade_timeout = 0;
-        }
     }
 
     GtkWidget * frame = gtk_frame_new (nullptr);

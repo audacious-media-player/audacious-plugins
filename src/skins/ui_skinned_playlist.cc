@@ -38,6 +38,7 @@
 #include "ui_skinned_playlist_slider.h"
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/hook.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/playlist.h>
 #include <libaudgui/libaudgui.h>
@@ -47,7 +48,7 @@ enum {DRAG_SELECT = 1, DRAG_MOVE};
 typedef struct {
     GtkWidget * slider;
     PangoFontDescription * font;
-    int width, height, row_height, offset, rows, first, scroll, scroll_source,
+    int width, height, row_height, offset, rows, first, scroll,
      hover, drag;
     int popup_pos, popup_source;
     gboolean popup_shown;
@@ -58,6 +59,7 @@ static gboolean playlist_button_release (GtkWidget * list, GdkEventButton * even
 static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event, PlaylistData * data);
 static gboolean playlist_leave (GtkWidget * list, GdkEventCrossing * event, PlaylistData * data);
 
+static void scroll_cb (void * data_);
 static void popup_trigger (GtkWidget * list, PlaylistData * data, int pos);
 static void popup_hide (GtkWidget * list, PlaylistData * data);
 
@@ -122,7 +124,7 @@ static void cancel_all (GtkWidget * list, PlaylistData * data)
     if (data->scroll)
     {
         data->scroll = 0;
-        g_source_remove (data->scroll_source);
+        timer_remove (TimerRate::Hz10, scroll_cb, data);
     }
 
     if (data->hover != -1)
@@ -799,13 +801,13 @@ static gboolean playlist_button_release (GtkWidget * list,
     return TRUE;
 }
 
-static gboolean scroll_cb (void * data_)
+static void scroll_cb (void * data_)
 {
     auto data = (PlaylistData *) data_;
     int position = adjust_position (data, TRUE, data->scroll);
 
     if (position == -1)
-        return G_SOURCE_CONTINUE;
+        return;
 
     switch (data->drag)
     {
@@ -818,35 +820,27 @@ static gboolean scroll_cb (void * data_)
     }
 
     playlistwin_update ();
-    return G_SOURCE_CONTINUE;
 }
 
 static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event, PlaylistData * data)
 {
     int position = calc_position (data, event->y);
-    int new_scroll;
 
     if (data->drag)
     {
         if (position == -1 || position == active_length)
         {
-            new_scroll = (position == -1 ? -1 : 1);
+            if (! data->scroll)
+                timer_add (TimerRate::Hz10, scroll_cb, data);
 
-            if (data->scroll != new_scroll)
-            {
-                if (data->scroll)
-                    g_source_remove (data->scroll_source);
-
-                data->scroll = new_scroll;
-                data->scroll_source = g_timeout_add (100, scroll_cb, data);
-            }
+            data->scroll = (position == -1 ? -1 : 1);
         }
         else
         {
             if (data->scroll)
             {
                 data->scroll = 0;
-                g_source_remove (data->scroll_source);
+                timer_remove (TimerRate::Hz10, scroll_cb, data);
             }
 
             switch (data->drag)

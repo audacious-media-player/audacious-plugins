@@ -112,7 +112,6 @@ static PluginHandle * search_tool;
 
 static GtkWidget * volume;
 static bool volume_slider_is_moving = false;
-static unsigned update_volume_timeout_source = 0;
 static unsigned long volume_change_handler_id;
 
 static GtkAccelGroup * accel;
@@ -127,7 +126,6 @@ static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 static gboolean slider_is_moving = false;
 static int slider_seek_time = -1;
 static unsigned delayed_title_change_source = 0;
-static unsigned update_song_timeout_source = 0;
 
 static void save_window_size ()
 {
@@ -302,10 +300,10 @@ static void set_slider (int time)
     gtk_range_set_value ((GtkRange *) slider, time);
 }
 
-static gboolean time_counter_cb ()
+static void time_counter_cb (void * = nullptr)
 {
     if (slider_is_moving)
-        return true;
+        return;
 
     slider_seek_time = -1;  // delayed reset to avoid seeking twice
 
@@ -316,39 +314,24 @@ static gboolean time_counter_cb ()
         set_slider (time);
 
     set_time_label (time, length);
-
-    return true;
 }
 
 static void do_seek (int time)
 {
-    int length = aud_drct_get_length ();
-    time = aud::clamp (time, 0, length);
-
-    set_slider (time);
-    set_time_label (time, length);
     aud_drct_seek (time);
-
-    // Trick: Unschedule and then schedule the update function.  This gives the
-    // player 1/4 second to perform the seek before we update the display again,
-    // in an attempt to reduce flickering.
-    if (update_song_timeout_source)
-    {
-        g_source_remove (update_song_timeout_source);
-        update_song_timeout_source = g_timeout_add (250, (GSourceFunc) time_counter_cb, nullptr);
-    }
+    time_counter_cb ();
 }
 
 static gboolean ui_slider_change_value_cb (GtkRange * range,
  GtkScrollType scroll, double value)
 {
-    int length = aud_drct_get_length ();
-    int time = aud::clamp ((int) value, 0, length);
-
-    set_time_label (time, length);
+    int time = value;
 
     if (slider_is_moving)
+    {
         slider_seek_time = time;
+        set_time_label (time, aud_drct_get_length ());
+    }
     else if (time != slider_seek_time)  // avoid seeking twice
         do_seek (time);
 
@@ -400,21 +383,19 @@ static void ui_volume_released_cb (GtkButton * button)
     volume_slider_is_moving = false;
 }
 
-static gboolean ui_volume_slider_update (void * button)
+static void ui_volume_slider_update (void * button)
 {
-    if (volume_slider_is_moving || ! button)
-        return true;
+    if (volume_slider_is_moving)
+        return;
 
     int volume = aud_drct_get_volume_main ();
 
     if (volume == (int) gtk_scale_button_get_value ((GtkScaleButton *) button))
-        return true;
+        return;
 
     g_signal_handler_block (button, volume_change_handler_id);
     gtk_scale_button_set_value ((GtkScaleButton *) button, volume);
     g_signal_handler_unblock (button, volume_change_handler_id);
-
-    return true;
 }
 
 static void set_slider_length (int length)
@@ -461,20 +442,14 @@ static void ui_playback_ready ()
     time_counter_cb ();
 
     /* update time counter 4 times a second */
-    if (! update_song_timeout_source)
-        update_song_timeout_source = g_timeout_add (250, (GSourceFunc)
-         time_counter_cb, nullptr);
+    timer_add (TimerRate::Hz4, time_counter_cb);
 
     gtk_widget_show (label_time);
 }
 
 static void ui_playback_stop ()
 {
-    if (update_song_timeout_source)
-    {
-        g_source_remove (update_song_timeout_source);
-        update_song_timeout_source = 0;
-    }
+    timer_remove (TimerRate::Hz4, time_counter_cb);
 
     if (delayed_title_change_source)
         g_source_remove (delayed_title_change_source);
@@ -907,7 +882,8 @@ bool GtkUI::init ()
     volume_change_handler_id = g_signal_connect (volume, "value-changed", (GCallback) ui_volume_value_changed_cb, nullptr);
     g_signal_connect (volume, "pressed", (GCallback) ui_volume_pressed_cb, nullptr);
     g_signal_connect (volume, "released", (GCallback) ui_volume_released_cb, nullptr);
-    update_volume_timeout_source = g_timeout_add (250, (GSourceFunc) ui_volume_slider_update, volume);
+
+    timer_add (TimerRate::Hz4, ui_volume_slider_update, volume);
 
     g_signal_connect (window, "map-event", (GCallback) window_mapped_cb, nullptr);
     g_signal_connect (window, "delete-event", (GCallback) window_delete, nullptr);
@@ -947,17 +923,8 @@ void GtkUI::cleanup ()
     gtk_widget_destroy (menu_rclick);
     gtk_widget_destroy (menu_tab);
 
-    if (update_song_timeout_source)
-    {
-        g_source_remove (update_song_timeout_source);
-        update_song_timeout_source = 0;
-    }
-
-    if (update_volume_timeout_source)
-    {
-        g_source_remove (update_volume_timeout_source);
-        update_volume_timeout_source = 0;
-    }
+    timer_remove (TimerRate::Hz4, time_counter_cb);
+    timer_remove (TimerRate::Hz4, ui_volume_slider_update);
 
     if (delayed_title_change_source)
     {
