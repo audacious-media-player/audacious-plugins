@@ -34,6 +34,7 @@
 #include "plugin.h"
 #include "plugin-window.h"
 #include "skins_cfg.h"
+#include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_main_evlisteners.h"
 #include "ui_playlist.h"
@@ -107,6 +108,20 @@ const char * skins_get_skin_thumb_dir ()
     return skin_thumb_dir;
 }
 
+static bool load_initial_skin ()
+{
+    String path = aud_get_str ("skins", "skin");
+    if (path[0] && skin_load (path))
+        return true;
+
+    StringBuf def = filename_build ({aud_get_path (AudPath::DataDir), "Skins", "Default"});
+    if (skin_load (def))
+        return true;
+
+    AUDERR ("Unable to load any skin; giving up!\n");
+    return false;
+}
+
 static void skins_init_main (bool restart)
 {
     int old_scale = config.scale;
@@ -119,8 +134,11 @@ static void skins_init_main (bool restart)
     if (restart && config.scale != old_scale)
         dock_change_scale (old_scale, config.scale);
 
-    init_skins (aud_get_str ("skins", "skin"));
+    mainwin_create ();
+    equalizerwin_create ();
+    playlistwin_create ();
 
+    view_apply_skin ();
     view_apply_on_top ();
     view_apply_sticky ();
 
@@ -141,10 +159,12 @@ bool SkinnedUI::init ()
     if (aud_get_mainloop_type () != MainloopType::GLib)
         return false;
 
-    audgui_init ();
-
     skins_cfg_load ();
 
+    if (! load_initial_skin ())
+        return false;
+
+    audgui_init ();
     menu_init ();
     skins_init_main (false);
 
@@ -160,7 +180,9 @@ static void skins_cleanup_main (void)
 
     timer_remove (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
 
-    cleanup_skins ();
+    gtk_widget_destroy (mainwin); mainwin = nullptr;
+    gtk_widget_destroy (playlistwin); playlistwin = nullptr;
+    gtk_widget_destroy (equalizerwin); equalizerwin = nullptr;
 }
 
 void SkinnedUI::cleanup ()
@@ -171,8 +193,9 @@ void SkinnedUI::cleanup ()
 
     skins_cleanup_main ();
     menu_cleanup ();
-
     audgui_cleanup ();
+
+    skin = Skin ();
 
     user_skin_dir = String ();
     skin_thumb_dir = String ();

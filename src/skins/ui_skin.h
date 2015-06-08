@@ -70,7 +70,7 @@ typedef enum {
     SKIN_COLOR_COUNT
 } SkinColorId;
 
-struct SkinProperties {
+struct SkinHints {
     /* Vis properties */
     int mainwin_vis_x = 24;
     int mainwin_vis_y = 43;
@@ -167,38 +167,62 @@ struct SkinProperties {
     int textbox_bitmap_font_height = 6;
 };
 
-extern const SkinProperties skin_default_hints;
+struct Skin
+{
+    SkinHints hints;
+    uint32_t colors[SKIN_COLOR_COUNT] {};
+    uint32_t vis_colors[24] {};
 
-typedef struct {
-    char *path;
-    cairo_surface_t * pixmaps[SKIN_PIXMAP_COUNT];
-    uint32_t colors[SKIN_COLOR_COUNT];
-    uint32_t vis_colors[24];
-    SkinProperties properties;
-} Skin;
+    cairo_surface_t * pixmaps[SKIN_PIXMAP_COUNT] {};
+    GArray * masks[SKIN_MASK_COUNT] {};  // array of GdkRectangle
 
-extern Skin * active_skin;
+    Skin () = default;
+    ~Skin () { destroy (); }
 
-gboolean init_skins(const char * path);
-void cleanup_skins(void);
+    Skin (Skin && other)
+    {
+        * this = (const Skin &) other;
+        other = (const Skin &) Skin ();
+    }
 
-gboolean active_skin_load(const char * path);
+    Skin & operator= (Skin && other)
+    {
+        if (this != & other)
+        {
+            destroy ();
+            * this = (const Skin &) other;
+            other = (const Skin &) Skin ();
+        }
+
+        return * this;
+    }
+
+private:
+    // shallow copy
+    Skin (const Skin &) = default;
+    Skin & operator= (const Skin &) = default;
+
+    void destroy ();
+};
+
+extern Skin skin;
+
+bool skin_load (const char * path);
 
 void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc,
  int xdest, int ydest, int width, int height);
 
-void skin_get_eq_spline_colors(Skin * skin, uint32_t colors[19]);
-void skin_install_skin(const char * path);
+void skin_get_eq_spline_colors (uint32_t colors[19]);
+void skin_install_skin (const char * path);
 
-void skin_draw_playlistwin_shaded (cairo_t * cr, int width, gboolean focus);
-void skin_draw_playlistwin_frame (cairo_t * cr, int width, int height,
- gboolean focus);
-void skin_draw_mainwin_titlebar (cairo_t * cr, gboolean shaded, gboolean focus);
+void skin_draw_playlistwin_shaded (cairo_t * cr, int width, bool focus);
+void skin_draw_playlistwin_frame (cairo_t * cr, int width, int height, bool focus);
+void skin_draw_mainwin_titlebar (cairo_t * cr, bool shaded, bool focus);
 
 /* ui_skin_load_ini.c */
-void skin_load_hints (Skin * skin, const char * path);
-void skin_load_pl_colors (Skin * skin, const char * path);
-void skin_load_masks (Skin * skin, const char * path, GdkRegion * masks[SKIN_MASK_COUNT]);
+void skin_load_hints (const char * path);
+void skin_load_pl_colors (const char * path);
+void skin_load_masks (const char * path);
 
 static inline void set_cairo_color (cairo_t * cr, uint32_t c)
 {

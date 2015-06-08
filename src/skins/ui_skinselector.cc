@@ -33,6 +33,7 @@
 #include "ui_skin.h"
 #include "ui_skinselector.h"
 #include "util.h"
+#include "view.h"
 
 #define EXTENSION_TARGETS 7
 
@@ -284,6 +285,8 @@ void skin_view_update (GtkTreeView * treeview)
 
     skinlist_update();
 
+    String current_path = aud_get_str ("skins", "skin");
+
     for (entry = skinlist; entry; entry = entry->next)
     {
         SkinNode * node = (SkinNode *) entry->data;
@@ -302,8 +305,8 @@ void skin_view_update (GtkTreeView * treeview)
             g_object_unref(thumbnail);
         g_free(formattedname);
 
-        if (g_strstr_len(active_skin->path,
-                         strlen(active_skin->path), name) ) {
+        if (g_strstr_len(current_path,
+                         strlen(current_path), name) ) {
             iter_current_skin = iter;
             have_current_skin = TRUE;
         }
@@ -350,7 +353,8 @@ skin_view_on_cursor_changed(GtkTreeView * treeview,
 
     g_free(name);
 
-    active_skin_load (comp);
+    if (skin_load (comp))
+        view_apply_skin ();
 }
 
 

@@ -123,11 +123,11 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
 
     cairo_t * cr = cairo_create (data->buf);
 
-    set_cairo_color (cr, active_skin->colors[SKIN_TEXTBG]);
+    set_cairo_color (cr, skin.colors[SKIN_TEXTBG]);
     cairo_paint (cr);
 
     cairo_move_to (cr, -logical.x, -ink.y);
-    set_cairo_color (cr, active_skin->colors[SKIN_TEXTFG]);
+    set_cairo_color (cr, skin.colors[SKIN_TEXTFG]);
     pango_cairo_show_layout (cr, layout);
 
     cairo_destroy (cr);
@@ -174,8 +174,8 @@ static void lookup_char (const char c, int * x, int * y)
     default: tx = 3; ty = 2; break; /* '?' */
     }
 
-    * x = tx * active_skin->properties.textbox_bitmap_font_width;
-    * y = ty * active_skin->properties.textbox_bitmap_font_height;
+    * x = tx * skin.hints.textbox_bitmap_font_width;
+    * y = ty * skin.hints.textbox_bitmap_font_height;
 }
 
 static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
@@ -183,8 +183,8 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
 {
     g_return_if_fail (! data->font && ! data->buf && text);
 
-    int cw = active_skin->properties.textbox_bitmap_font_width;
-    int ch = active_skin->properties.textbox_bitmap_font_height;
+    int cw = skin.hints.textbox_bitmap_font_width;
+    int ch = skin.hints.textbox_bitmap_font_height;
 
     gtk_widget_set_size_request (textbox, data->width * config.scale, ch * config.scale);
 

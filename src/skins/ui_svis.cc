@@ -45,8 +45,8 @@ static struct {
 #define RGB_SEEK(x,y) (set = rgb + 38 * (y) + (x))
 #define RGB_SET(c) (* set ++ = (c))
 #define RGB_SET_Y(c) do {* set = (c); set += 38;} while (0)
-#define RGB_SET_INDEX(c) RGB_SET (active_skin->vis_colors[c])
-#define RGB_SET_INDEX_Y(c) RGB_SET_Y (active_skin->vis_colors[c])
+#define RGB_SET_INDEX(c) RGB_SET (skin.vis_colors[c])
+#define RGB_SET_INDEX_Y(c) RGB_SET_Y (skin.vis_colors[c])
 
 DRAW_FUNC_BEGIN (ui_svis_draw, void)
     uint32_t rgb[38 * 5];

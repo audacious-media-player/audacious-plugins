@@ -1,6 +1,6 @@
 /*
  * view.c
- * Copyright 2014 John Lindgren
+ * Copyright 2014-2015 John Lindgren
  *
  * This file is part of Audacious.
  *
@@ -35,6 +35,7 @@
 #include "ui_skinned_textbox.h"
 #include "ui_skinned_menurow.h"
 #include "ui_skinned_window.h"
+#include "ui_vis.h"
 
 void view_show_player (bool show)
 {
@@ -63,7 +64,7 @@ void view_set_show_playlist (bool show)
     view_apply_show_playlist ();
 }
 
-void view_apply_show_playlist (void)
+void view_apply_show_playlist ()
 {
     bool show = aud_get_bool ("skins", "playlist_visible");
 
@@ -83,7 +84,7 @@ void view_set_show_equalizer (bool show)
     view_apply_show_equalizer ();
 }
 
-void view_apply_show_equalizer (void)
+void view_apply_show_equalizer ()
 {
     bool show = aud_get_bool ("skins", "equalizer_visible");
 
@@ -103,14 +104,14 @@ void view_set_player_shaded (bool shaded)
     view_apply_player_shaded ();
 }
 
-void view_apply_player_shaded (void)
+void view_apply_player_shaded ()
 {
     bool shaded = aud_get_bool ("skins", "player_shaded");
 
     window_set_shaded (mainwin, shaded);
 
-    int width = shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
-    int height = shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
+    int width = shaded ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width;
+    int height = shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height;
     window_set_size (mainwin, width, height);
 
     if (config.autoscroll)
@@ -125,7 +126,7 @@ void view_set_playlist_shaded (bool shaded)
     view_apply_playlist_shaded ();
 }
 
-void view_apply_playlist_shaded (void)
+void view_apply_playlist_shaded ()
 {
     bool shaded = aud_get_bool ("skins", "playlist_shaded");
 
@@ -146,7 +147,7 @@ void view_set_equalizer_shaded (bool shaded)
     view_apply_equalizer_shaded ();
 }
 
-void view_apply_equalizer_shaded (void)
+void view_apply_equalizer_shaded ()
 {
     bool shaded = aud_get_bool ("skins", "equalizer_shaded");
 
@@ -162,7 +163,7 @@ void view_set_double_size (bool double_size)
     view_apply_double_size ();
 }
 
-void view_apply_double_size (void)
+void view_apply_double_size ()
 {
     skins_restart ();
 }
@@ -175,7 +176,7 @@ void view_set_on_top (bool on_top)
     view_apply_on_top ();
 }
 
-void view_apply_on_top (void)
+void view_apply_on_top ()
 {
     bool on_top = aud_get_bool ("skins", "always_on_top");
 
@@ -194,7 +195,7 @@ void view_set_sticky (bool sticky)
     view_apply_sticky ();
 }
 
-void view_apply_sticky (void)
+void view_apply_sticky ()
 {
     bool sticky = aud_get_bool ("skins", "sticky");
 
@@ -220,7 +221,56 @@ void view_set_show_remaining (bool remaining)
     view_apply_show_remaining ();
 }
 
-void view_apply_show_remaining (void)
+void view_apply_show_remaining ()
 {
     mainwin_update_song_info ();
+}
+
+static GdkRegion * scale_mask (GArray * mask, int scale)
+{
+    GdkRegion * region = nullptr;
+
+    if (mask)
+    {
+        for (unsigned i = 0; i < mask->len; i ++)
+        {
+            const GdkRectangle & rect = g_array_index (mask, GdkRectangle, i);
+
+            GdkRectangle scaled = {
+                rect.x * scale,
+                rect.y * scale,
+                rect.width * scale,
+                rect.height * scale
+            };
+
+            if (region)
+                gdk_region_union_with_rect (region, & scaled);
+            else
+                region = gdk_region_rectangle (& scaled);
+        }
+    }
+
+    return region;
+}
+
+void view_apply_skin ()
+{
+    window_set_shapes (mainwin,
+     scale_mask (skin.masks[SKIN_MASK_MAIN], config.scale),
+     scale_mask (skin.masks[SKIN_MASK_MAIN_SHADE], config.scale));
+    window_set_shapes (equalizerwin,
+     scale_mask (skin.masks[SKIN_MASK_EQ], config.scale),
+     scale_mask (skin.masks[SKIN_MASK_EQ_SHADE], config.scale));
+
+    // hide the equalizer graph if we have a short eqmain.bmp
+    gtk_widget_set_visible (equalizerwin_graph,
+     cairo_image_surface_get_height (skin.pixmaps[SKIN_EQMAIN]) >= 315);
+
+    mainwin_refresh_hints ();
+    textbox_update_all ();
+    ui_vis_set_colors ();
+
+    gtk_widget_queue_draw (mainwin);
+    gtk_widget_queue_draw (equalizerwin);
+    gtk_widget_queue_draw (playlistwin);
 }

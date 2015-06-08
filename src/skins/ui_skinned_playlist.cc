@@ -144,7 +144,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
 
     /* background */
 
-    set_cairo_color (cr, active_skin->colors[SKIN_PLEDIT_NORMALBG]);
+    set_cairo_color (cr, skin.colors[SKIN_PLEDIT_NORMALBG]);
     cairo_paint (cr);
 
     /* playlist title */
@@ -159,7 +159,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
         pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_MIDDLE);
 
         cairo_move_to (cr, left, 0);
-        set_cairo_color (cr, active_skin->colors[SKIN_PLEDIT_NORMAL]);
+        set_cairo_color (cr, skin.colors[SKIN_PLEDIT_NORMAL]);
         pango_cairo_show_layout (cr, layout);
         g_object_unref (layout);
     }
@@ -174,7 +174,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
 
         cairo_rectangle (cr, 0, data->offset + data->row_height * (i -
          data->first), data->width, data->row_height);
-        set_cairo_color (cr, active_skin->colors[SKIN_PLEDIT_SELECTEDBG]);
+        set_cairo_color (cr, skin.colors[SKIN_PLEDIT_SELECTEDBG]);
         cairo_fill (cr);
     }
 
@@ -199,7 +199,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
 
             cairo_move_to (cr, left, data->offset + data->row_height * (i -
              data->first));
-            set_cairo_color (cr, active_skin->colors[(i == active_entry) ?
+            set_cairo_color (cr, skin.colors[(i == active_entry) ?
              SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
             pango_cairo_show_layout (cr, layout);
             g_object_unref (layout);
@@ -229,7 +229,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
 
         cairo_move_to (cr, data->width - right - rect.width, data->offset +
          data->row_height * (i - data->first));
-        set_cairo_color (cr, active_skin->colors[(i == active_entry) ?
+        set_cairo_color (cr, skin.colors[(i == active_entry) ?
          SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
         pango_cairo_show_layout (cr, layout);
         g_object_unref (layout);
@@ -262,7 +262,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
 
             cairo_move_to (cr, data->width - right - rect.width, data->offset +
              data->row_height * (i - data->first));
-            set_cairo_color (cr, active_skin->colors[(i == active_entry) ?
+            set_cairo_color (cr, skin.colors[(i == active_entry) ?
              SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
             pango_cairo_show_layout (cr, layout);
             g_object_unref (layout);
@@ -287,7 +287,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
 
         cairo_move_to (cr, left, data->offset + data->row_height * (i -
          data->first));
-        set_cairo_color (cr, active_skin->colors[(i == active_entry) ?
+        set_cairo_color (cr, skin.colors[(i == active_entry) ?
          SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
         pango_cairo_show_layout (cr, layout);
         g_object_unref (layout);
@@ -302,7 +302,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
         cairo_set_line_width (cr, 1);
         cairo_rectangle (cr, 0.5, data->offset + data->row_height * (focus -
          data->first) + 0.5, data->width - 1, data->row_height - 1);
-        set_cairo_color (cr, active_skin->colors[SKIN_PLEDIT_NORMAL]);
+        set_cairo_color (cr, skin.colors[SKIN_PLEDIT_NORMAL]);
         cairo_stroke (cr);
     }
 
@@ -315,7 +315,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
         cairo_move_to (cr, 0, data->offset + data->row_height * (data->hover -
          data->first));
         cairo_rel_line_to (cr, data->width, 0);
-        set_cairo_color (cr, active_skin->colors[SKIN_PLEDIT_NORMAL]);
+        set_cairo_color (cr, skin.colors[SKIN_PLEDIT_NORMAL]);
         cairo_stroke (cr);
     }
 DRAW_FUNC_END

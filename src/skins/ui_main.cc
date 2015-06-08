@@ -173,7 +173,7 @@ mainwin_shade_toggle(void)
 static void mainwin_lock_info_text (const char * text)
 {
     GtkWidget * textbox =
-     active_skin->properties.mainwin_othertext_is_status ?
+     skin.hints.mainwin_othertext_is_status ?
      mainwin_othertext : mainwin_info;
 
     if (! mainwin_info_text_locked)
@@ -188,7 +188,7 @@ static void mainwin_release_info_text (void)
     if (! mainwin_info_text_locked)
         return;
 
-    if (active_skin->properties.mainwin_othertext_is_status)
+    if (skin.hints.mainwin_othertext_is_status)
         textbox_set_text (mainwin_othertext, mainwin_tb_old_text);
     else
         textbox_set_text (mainwin_info, mainwin_tb_old_text);
@@ -199,7 +199,7 @@ static void mainwin_release_info_text (void)
 
 static void mainwin_set_info_text (const char * text)
 {
-    if (mainwin_info_text_locked && ! active_skin->properties.mainwin_othertext_is_status)
+    if (mainwin_info_text_locked && ! skin.hints.mainwin_othertext_is_status)
         mainwin_tb_old_text = String (text);
     else
         textbox_set_text (mainwin_info, text);
@@ -207,7 +207,7 @@ static void mainwin_set_info_text (const char * text)
 
 static void mainwin_set_othertext (const char * text)
 {
-    if (mainwin_info_text_locked && active_skin->properties.mainwin_othertext_is_status)
+    if (mainwin_info_text_locked && skin.hints.mainwin_othertext_is_status)
         mainwin_tb_old_text = String (text);
     else
         textbox_set_text (mainwin_othertext, text);
@@ -263,8 +263,8 @@ static void setup_widget (GtkWidget * widget, int x, int y, gboolean show)
         height /= config.scale;
 
         /* hide widgets that are outside the window boundary */
-        if (x < 0 || x + width > active_skin->properties.mainwin_width ||
-         y < 0 || y + height > active_skin->properties.mainwin_height)
+        if (x < 0 || x + width > skin.hints.mainwin_width ||
+         y < 0 || y + height > skin.hints.mainwin_height)
             show = FALSE;
 
         gtk_widget_set_visible (widget, show);
@@ -275,7 +275,7 @@ static void setup_widget (GtkWidget * widget, int x, int y, gboolean show)
 
 void mainwin_refresh_hints (void)
 {
-    const SkinProperties * p = & active_skin->properties;
+    const SkinHints * p = & skin.hints;
 
     gtk_widget_set_visible (mainwin_menurow, p->mainwin_menurow_visible);
     gtk_widget_set_visible (mainwin_rate_text, p->mainwin_streaminfo_visible);
@@ -1148,8 +1148,8 @@ static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
 static void mainwin_draw (GtkWidget * window, cairo_t * cr)
 {
     gboolean shaded = aud_get_bool ("skins", "player_shaded");
-    int width = shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
-    int height = shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
+    int width = shaded ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width;
+    int height = shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height;
 
     skin_draw_pixbuf (cr, SKIN_MAIN, 0, 0, 0, 0, width, height);
     skin_draw_mainwin_titlebar (cr, shaded, TRUE);
@@ -1159,8 +1159,8 @@ static void
 mainwin_create_window(void)
 {
     bool shaded = aud_get_bool ("skins", "player_shaded");
-    int width = shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
-    int height = shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
+    int width = shaded ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width;
+    int height = shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height;
 
     mainwin = window_new (WINDOW_MAIN, & config.player_x, & config.player_y,
      width, height, shaded, mainwin_draw);

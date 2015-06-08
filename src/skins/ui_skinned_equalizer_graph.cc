@@ -89,7 +89,7 @@ DRAW_FUNC_BEGIN (eq_graph_draw, void)
     cairo_scale (cr, config.scale, config.scale);
 
     uint32_t cols[19];
-    skin_get_eq_spline_colors(active_skin, cols);
+    skin_get_eq_spline_colors (cols);
 
     double bands[AUD_EQ_NBANDS];
     aud_eq_get_bands (bands);
