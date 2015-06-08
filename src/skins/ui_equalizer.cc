@@ -273,10 +273,10 @@ static void eq_win_draw (GtkWidget * window, cairo_t * cr)
 static void
 equalizerwin_create_window(void)
 {
-    gboolean shaded = aud_get_bool ("skins", "equalizer_shaded");
+    bool shaded = aud_get_bool ("skins", "equalizer_shaded");
 
-    equalizerwin = window_new (& config.equalizer_x, & config.equalizer_y, 275,
-     shaded ? 14 : 116, FALSE, shaded, eq_win_draw);
+    equalizerwin = window_new (WINDOW_EQ, & config.equalizer_x,
+     & config.equalizer_y, 275, shaded ? 14 : 116, shaded, eq_win_draw);
 
     gtk_window_set_title(GTK_WINDOW(equalizerwin), _("Audacious Equalizer"));
 

@@ -709,11 +709,11 @@ static void pl_win_draw (GtkWidget * window, cairo_t * cr)
 static void
 playlistwin_create_window(void)
 {
-    gboolean shaded = aud_get_bool ("skins", "playlist_shaded");
+    bool shaded = aud_get_bool ("skins", "playlist_shaded");
+    int height = shaded ? PLAYLISTWIN_SHADED_HEIGHT : config.playlist_height;
 
-    playlistwin = window_new (& config.playlist_x, & config.playlist_y,
-     config.playlist_width, shaded ? PLAYLISTWIN_SHADED_HEIGHT :
-     config.playlist_height, FALSE, shaded, pl_win_draw);
+    playlistwin = window_new (WINDOW_PLAYLIST, & config.playlist_x,
+     & config.playlist_y, config.playlist_width, height, shaded, pl_win_draw);
 
     gtk_window_set_title(GTK_WINDOW(playlistwin), _("Audacious Playlist Editor"));
 

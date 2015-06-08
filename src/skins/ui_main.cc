@@ -1158,12 +1158,12 @@ static void mainwin_draw (GtkWidget * window, cairo_t * cr)
 static void
 mainwin_create_window(void)
 {
-    gboolean shaded = aud_get_bool ("skins", "player_shaded");
+    bool shaded = aud_get_bool ("skins", "player_shaded");
     int width = shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
     int height = shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
 
-    mainwin = window_new (& config.player_x, & config.player_y, width, height,
-     TRUE, shaded, mainwin_draw);
+    mainwin = window_new (WINDOW_MAIN, & config.player_x, & config.player_y,
+     width, height, shaded, mainwin_draw);
 
     gtk_window_set_title(GTK_WINDOW(mainwin), _("Audacious"));
 

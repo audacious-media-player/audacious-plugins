@@ -38,7 +38,7 @@
 
 #include <stdlib.h>
 
-#include "ui_dock.h"
+#include "ui_skinned_window.h"
 
 #define SNAP_DISTANCE 10
 
@@ -55,11 +55,10 @@ typedef struct {
     GtkWidget * window;
     int * x, * y;
     int w, h;
-    gboolean main;
-    gboolean docked;
+    bool docked;
 } DockWindow;
 
-static GSList * windows;
+static DockWindow windows[N_WINDOWS];
 static int last_x, last_y;
 
 static inline int least_abs (int a, int b)
@@ -67,111 +66,78 @@ static inline int least_abs (int a, int b)
     return (abs (a) < abs (b)) ? a : b;
 }
 
-static DockWindow * find_window (GSList * list, GtkWidget * window)
+void dock_add_window (int id, GtkWidget * window, int * x, int * y, int w, int h)
 {
-    for (GSList * node = list; node; node = node->next)
+    DockWindow & dw = windows[id];
+
+    dw.window = window;
+    dw.x = x;
+    dw.y = y;
+    dw.w = w;
+    dw.h = h;
+}
+
+void dock_remove_window (int id)
+{
+    windows[id].window = nullptr;
+}
+
+static void dock_sync ()
+{
+    for (DockWindow & dw : windows)
     {
-        DockWindow * dw = (DockWindow *) node->data;
-        if (dw->window == window)
-            return dw;
-    }
-
-    return nullptr;
-}
-
-void dock_add_window (GtkWidget * window, int * x, int * y, int w, int h,
- gboolean main)
-{
-    DockWindow * dw = g_slice_new0 (DockWindow);
-    dw->window = window;
-    dw->x = x;
-    dw->y = y;
-    dw->w = w;
-    dw->h = h;
-    dw->main = main;
-
-    windows = g_slist_prepend (windows, dw);
-}
-
-void dock_remove_window (GtkWidget * window)
-{
-    DockWindow * dw = find_window (windows, window);
-    g_return_if_fail (dw);
-
-    windows = g_slist_remove (windows, dw);
-    g_slice_free (DockWindow, dw);
-}
-
-static void dock_sync (void)
-{
-    for (GSList * node = windows; node; node = node->next)
-    {
-        DockWindow * dw = (DockWindow *) node->data;
-        gtk_window_get_position ((GtkWindow *) dw->window, dw->x, dw->y);
+        if (dw.window)
+            gtk_window_get_position ((GtkWindow *) dw.window, dw.x, dw.y);
     }
 }
 
-static void clear_docked (void)
+static void clear_docked ()
 {
-    for (GSList * node = windows; node; node = node->next)
-    {
-        DockWindow * dw = (DockWindow *) node->data;
-        dw->docked = FALSE;
-    }
+    for (DockWindow & dw : windows)
+        dw.docked = false;
 }
 
-static gboolean is_docked (DockWindow * dw, DockWindow * base, int type)
+static bool is_docked (DockWindow & dw, DockWindow & base, int type)
 {
-    if ((type & DOCK_TYPE_LEFT) && * dw->x + dw->w == * base->x)
-        return TRUE;
-    if ((type & DOCK_TYPE_RIGHT) && * dw->x == * base->x + base->w)
-        return TRUE;
-    if ((type & DOCK_TYPE_TOP) && * dw->y + dw->h == * base->y)
-        return TRUE;
-    if ((type & DOCK_TYPE_BOTTOM) && * dw->y == * base->y + base->h)
-        return TRUE;
-
-    return FALSE;
+    return ((type & DOCK_TYPE_LEFT) && * dw.x + dw.w == * base.x) ||
+           ((type & DOCK_TYPE_RIGHT) && * dw.x == * base.x + base.w) ||
+           ((type & DOCK_TYPE_TOP) && * dw.y + dw.h == * base.y) ||
+           ((type & DOCK_TYPE_BOTTOM) && * dw.y == * base.y + base.h);
 }
 
-static void find_docked (DockWindow * base, int type)
+static void find_docked (DockWindow & base, int type)
 {
-    for (GSList * node = windows; node; node = node->next)
+    for (DockWindow & dw : windows)
     {
-        DockWindow * dw = (DockWindow *) node->data;
-        if (dw->docked || dw == base)
+        if (dw.docked || & dw == & base)
             continue;
 
-        dw->docked = is_docked (dw, base, type);
-        if (dw->docked)
+        dw.docked = is_docked (dw, base, type);
+        if (dw.docked)
             find_docked (dw, type);
     }
 }
 
-static void invert_docked (void)
+static void invert_docked ()
 {
-    for (GSList * node = windows; node; node = node->next)
-    {
-        DockWindow * dw = (DockWindow *) node->data;
-        dw->docked = ! dw->docked;
-    }
+    for (DockWindow & dw : windows)
+        dw.docked = ! dw.docked;
 }
 
-void dock_set_size (GtkWidget * window, int w, int h)
+void dock_set_size (int id, int w, int h)
 {
-    DockWindow * base = find_window (windows, window);
-    g_return_if_fail (base);
+    DockWindow & base = windows[id];
 
     dock_sync ();
 
-    if (h != base->h)
+    if (h != base.h)
     {
         /* 1. Find the windows docked below this one. */
 
         clear_docked ();
         find_docked (base, DOCK_TYPE_BOTTOM);
 
-        if (h < base->h)
+        if (h < base.h)
         {
             /* 2. This part is tricky.  By flipping the docked flag on all the
                   windows, we consider the windows not docked to this one as a
@@ -185,10 +151,9 @@ void dock_set_size (GtkWidget * window, int w, int h)
 
             invert_docked ();
 
-            for (GSList * node = windows; node; node = node->next)
+            for (DockWindow & dw : windows)
             {
-                DockWindow * dw = (DockWindow *) node->data;
-                if (! dw->docked || dw == base)
+                if (! dw.docked || & dw == & base)
                     continue;
 
                 find_docked (dw, DOCK_TYPE_BOTTOM);
@@ -199,32 +164,31 @@ void dock_set_size (GtkWidget * window, int w, int h)
 
         /* 3. Move the docked windows by the difference in height. */
 
-        for (GSList * node = windows; node; node = node->next)
+        for (DockWindow & dw : windows)
         {
-            DockWindow * dw = (DockWindow *) node->data;
-            if (! dw->docked)
+            if (! dw.docked)
                 continue;
 
-            * dw->y += h - base->h;
-            gtk_window_move ((GtkWindow *) dw->window, * dw->x, * dw->y);
+            * dw.y += h - base.h;
+            if (dw.window)
+                gtk_window_move ((GtkWindow *) dw.window, * dw.x, * dw.y);
         }
     }
 
-    if (w != base->w)
+    if (w != base.w)
     {
         /* 4. Repeat the process for the windows docked to the right. */
 
         clear_docked ();
         find_docked (base, DOCK_TYPE_RIGHT);
 
-        if (w < base->w)
+        if (w < base.w)
         {
             invert_docked ();
 
-            for (GSList * node = windows; node; node = node->next)
+            for (DockWindow & dw : windows)
             {
-                DockWindow * dw = (DockWindow *) node->data;
-                if (! dw->docked || dw == base)
+                if (! dw.docked || & dw == & base)
                     continue;
 
                 find_docked (dw, DOCK_TYPE_RIGHT);
@@ -233,27 +197,26 @@ void dock_set_size (GtkWidget * window, int w, int h)
             invert_docked ();
         }
 
-        for (GSList * node = windows; node; node = node->next)
+        for (DockWindow & dw : windows)
         {
-            DockWindow * dw = (DockWindow *) node->data;
-            if (! dw->docked)
+            if (! dw.docked)
                 continue;
 
-            * dw->x += w - base->w;
-            gtk_window_move ((GtkWindow *) dw->window, * dw->x, * dw->y);
+            * dw.x += w - base.w;
+            if (dw.window)
+                gtk_window_move ((GtkWindow *) dw.window, * dw.x, * dw.y);
         }
     }
 
     /* 5. Set the window size.  (The actual resize is done by the caller.) */
 
-    base->w = w;
-    base->h = h;
+    base.w = w;
+    base.h = h;
 }
 
-void dock_move_start (GtkWidget * window, int x, int y)
+void dock_move_start (int id, int x, int y)
 {
-    DockWindow * dw = find_window (windows, window);
-    g_return_if_fail (dw);
+    DockWindow & dw = windows[id];
 
     dock_sync ();
 
@@ -263,8 +226,8 @@ void dock_move_start (GtkWidget * window, int x, int y)
     /* 1. If this is the main window, find the windows docked to it. */
 
     clear_docked ();
-    dw->docked = TRUE;
-    if (dw->main)
+    dw.docked = true;
+    if (id == WINDOW_MAIN)
         find_docked (dw, DOCK_TYPE_ANY);
 }
 
@@ -281,14 +244,13 @@ void dock_move (int x, int y)
     hori = x - last_x;
     vert = y - last_y;
 
-    for (GSList * node = windows; node; node = node->next)
+    for (DockWindow & dw : windows)
     {
-        DockWindow * dw = (DockWindow *) node->data;
-        if (! dw->docked)
+        if (! dw.docked)
             continue;
 
-        * dw->x += hori;
-        * dw->y += vert;
+        * dw.x += hori;
+        * dw.y += vert;
     }
 
     last_x = x;
@@ -310,43 +272,40 @@ void dock_move (int x, int y)
         GdkRectangle rect;
         gdk_screen_get_monitor_geometry (screen, m, & rect);
 
-        for (GSList * node = windows; node; node = node->next)
+        for (DockWindow & dw : windows)
         {
-            DockWindow * dw = (DockWindow *) node->data;
-            if (! dw->docked)
+            if (! dw.docked)
                 continue;
 
             /* We only test half the combinations here, as it is not very
                helpful to have e.g. the right edge of a window touching the left
                edge of a monitor (think about it). */
 
-            hori = least_abs (hori, rect.x - * dw->x);
-            hori = least_abs (hori, (rect.x + rect.width) - (* dw->x + dw->w));
-            vert = least_abs (vert, rect.y - * dw->y);
-            vert = least_abs (vert, (rect.y + rect.height) - (* dw->y + dw->h));
+            hori = least_abs (hori, rect.x - * dw.x);
+            hori = least_abs (hori, (rect.x + rect.width) - (* dw.x + dw.w));
+            vert = least_abs (vert, rect.y - * dw.y);
+            vert = least_abs (vert, (rect.y + rect.height) - (* dw.y + dw.h));
         }
     }
 
-    for (GSList * node = windows; node; node = node->next)
+    for (DockWindow & dw : windows)
     {
-        DockWindow * dw = (DockWindow *) node->data;
-        if (! dw->docked)
+        if (! dw.docked)
             continue;
 
-        for (GSList * node2 = windows; node2; node2 = node2->next)
+        for (DockWindow & dw2 : windows)
         {
-            DockWindow * dw2 = (DockWindow *) node2->data;
-            if (dw2->docked)
+            if (dw2.docked)
                 continue;
 
-            hori = least_abs (hori, * dw2->x - * dw->x);
-            hori = least_abs (hori, * dw2->x - (* dw->x + dw->w));
-            hori = least_abs (hori, (* dw2->x + dw2->w) - * dw->x);
-            hori = least_abs (hori, (* dw2->x + dw2->w) - (* dw->x + dw->w));
-            vert = least_abs (vert, * dw2->y - * dw->y);
-            vert = least_abs (vert, * dw2->y - (* dw->y + dw->h));
-            vert = least_abs (vert, (* dw2->y + dw2->h) - * dw->y);
-            vert = least_abs (vert, (* dw2->y + dw2->h) - (* dw->y + dw->h));
+            hori = least_abs (hori, * dw2.x - * dw.x);
+            hori = least_abs (hori, * dw2.x - (* dw.x + dw.w));
+            hori = least_abs (hori, (* dw2.x + dw2.w) - * dw.x);
+            hori = least_abs (hori, (* dw2.x + dw2.w) - (* dw.x + dw.w));
+            vert = least_abs (vert, * dw2.y - * dw.y);
+            vert = least_abs (vert, * dw2.y - (* dw.y + dw.h));
+            vert = least_abs (vert, (* dw2.y + dw2.h) - * dw.y);
+            vert = least_abs (vert, (* dw2.y + dw2.h) - (* dw.y + dw.h));
         }
     }
 
@@ -358,14 +317,13 @@ void dock_move (int x, int y)
     if (abs (vert) > SNAP_DISTANCE)
         vert = 0;
 
-    for (GSList * node = windows; node; node = node->next)
+    for (DockWindow & dw : windows)
     {
-        DockWindow * dw = (DockWindow *) node->data;
-        if (! dw->docked)
+        if (! dw.docked)
             continue;
 
-        * dw->x += hori;
-        * dw->y += vert;
+        * dw.x += hori;
+        * dw.y += vert;
     }
 
     last_x += hori;
@@ -373,12 +331,9 @@ void dock_move (int x, int y)
 
     /* 5. Really move the windows. */
 
-    for (GSList * node = windows; node; node = node->next)
+    for (DockWindow & dw : windows)
     {
-        DockWindow * dw = (DockWindow *) node->data;
-        if (! dw->docked)
-            continue;
-
-        gtk_window_move ((GtkWindow *) dw->window, * dw->x, * dw->y);
+        if (dw.docked && dw.window)
+            gtk_window_move ((GtkWindow *) dw.window, * dw.x, * dw.y);
     }
 }
