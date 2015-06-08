@@ -337,3 +337,20 @@ void dock_move (int x, int y)
             gtk_window_move ((GtkWindow *) dw.window, * dw.x, * dw.y);
     }
 }
+
+void dock_change_scale (int old_scale, int new_scale)
+{
+    DockWindow & main = windows[WINDOW_MAIN];
+
+    for (DockWindow & dw : windows)
+    {
+        dw.w = dw.w * new_scale / old_scale;
+        dw.h = dw.h * new_scale / old_scale;
+
+        if (& dw != & main)
+        {
+            * dw.x = * main.x + (* dw.x - * main.x) * new_scale / old_scale;
+            * dw.y = * main.y + (* dw.y - * main.y) * new_scale / old_scale;
+        }
+    }
+}

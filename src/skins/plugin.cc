@@ -38,6 +38,7 @@
 #include "ui_main_evlisteners.h"
 #include "ui_playlist.h"
 #include "ui_skin.h"
+#include "ui_skinned_window.h"
 #include "view.h"
 
 class SkinnedUI : public IfacePlugin
@@ -106,12 +107,17 @@ const char * skins_get_skin_thumb_dir ()
     return skin_thumb_dir;
 }
 
-static void skins_init_main (void)
+static void skins_init_main (bool restart)
 {
+    int old_scale = config.scale;
+
     if (aud_get_bool ("skins", "double_size"))
         config.scale = aud::rescale (audgui_get_dpi (), 48, 1);
     else
         config.scale = aud::rescale (audgui_get_dpi (), 96, 1);
+
+    if (restart && config.scale != old_scale)
+        dock_change_scale (old_scale, config.scale);
 
     init_skins (aud_get_str ("skins", "skin"));
 
@@ -140,7 +146,7 @@ bool SkinnedUI::init ()
     skins_cfg_load ();
 
     menu_init ();
-    skins_init_main ();
+    skins_init_main (false);
 
     create_plugin_windows ();
 
@@ -175,7 +181,7 @@ void SkinnedUI::cleanup ()
 void skins_restart (void)
 {
     skins_cleanup_main ();
-    skins_init_main ();
+    skins_init_main (true);
 
     if (aud_ui_is_shown ())
         view_show_player (true);
