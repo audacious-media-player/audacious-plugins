@@ -35,76 +35,71 @@ typedef struct {
     int * value_ptr;
 } HintPair;
 
-const SkinProperties skin_default_hints = SkinProperties ();
-
-/* so we can use static addresses in the table below */
-static SkinProperties static_hints;
-
 /* in alphabetical order to allow binary search */
 static const HintPair hint_pairs[] = {
-    {"mainwinaboutx", & static_hints.mainwin_about_x},
-    {"mainwinabouty", & static_hints.mainwin_about_y},
-    {"mainwinbalancex", & static_hints.mainwin_balance_x},
-    {"mainwinbalancey", & static_hints.mainwin_balance_y},
-    {"mainwinclosex", & static_hints.mainwin_close_x},
-    {"mainwinclosey", & static_hints.mainwin_close_y},
-    {"mainwinejectx", & static_hints.mainwin_eject_x},
-    {"mainwinejecty", & static_hints.mainwin_eject_y},
-    {"mainwineqbuttonx", & static_hints.mainwin_eqbutton_x},
-    {"mainwineqbuttony", & static_hints.mainwin_eqbutton_y},
-    {"mainwinheight", & static_hints.mainwin_height},
-    {"mainwininfobarx", & static_hints.mainwin_infobar_x},
-    {"mainwininfobary", & static_hints.mainwin_infobar_y},
-    {"mainwinmenurowvisible", & static_hints.mainwin_menurow_visible},
-    {"mainwinminimizex", & static_hints.mainwin_minimize_x},
-    {"mainwinminimizey", & static_hints.mainwin_minimize_y},
-    {"mainwinnextx", & static_hints.mainwin_next_x},
-    {"mainwinnexty", & static_hints.mainwin_next_y},
-    {"mainwinnumber0x", & static_hints.mainwin_number_0_x},
-    {"mainwinnumber0y", & static_hints.mainwin_number_0_y},
-    {"mainwinnumber1x", & static_hints.mainwin_number_1_x},
-    {"mainwinnumber1y", & static_hints.mainwin_number_1_y},
-    {"mainwinnumber2x", & static_hints.mainwin_number_2_x},
-    {"mainwinnumber2y", & static_hints.mainwin_number_2_y},
-    {"mainwinnumber3x", & static_hints.mainwin_number_3_x},
-    {"mainwinnumber3y", & static_hints.mainwin_number_3_y},
-    {"mainwinnumber4x", & static_hints.mainwin_number_4_x},
-    {"mainwinnumber4y", & static_hints.mainwin_number_4_y},
-    {"mainwinothertextisstatus", & static_hints.mainwin_othertext_is_status},
-    {"mainwinothertextvisible", & static_hints.mainwin_othertext_visible},
-    {"mainwinpausex", & static_hints.mainwin_pause_x},
-    {"mainwinpausey", & static_hints.mainwin_pause_y},
-    {"mainwinplaystatusx", & static_hints.mainwin_playstatus_x},
-    {"mainwinplaystatusy", & static_hints.mainwin_playstatus_y},
-    {"mainwinplayx", & static_hints.mainwin_play_x},
-    {"mainwinplayy", & static_hints.mainwin_play_y},
-    {"mainwinplbuttonx", & static_hints.mainwin_plbutton_x},
-    {"mainwinplbuttony", & static_hints.mainwin_plbutton_y},
-    {"mainwinpositionx", & static_hints.mainwin_position_x},
-    {"mainwinpositiony", & static_hints.mainwin_position_y},
-    {"mainwinpreviousx", & static_hints.mainwin_previous_x},
-    {"mainwinpreviousy", & static_hints.mainwin_previous_y},
-    {"mainwinrepeatx", & static_hints.mainwin_repeat_x},
-    {"mainwinrepeaty", & static_hints.mainwin_repeat_y},
-    {"mainwinshadex", & static_hints.mainwin_shade_x},
-    {"mainwinshadey", & static_hints.mainwin_shade_y},
-    {"mainwinshufflex", & static_hints.mainwin_shuffle_x},
-    {"mainwinshuffley", & static_hints.mainwin_shuffle_y},
-    {"mainwinstopx", & static_hints.mainwin_stop_x},
-    {"mainwinstopy", & static_hints.mainwin_stop_y},
-    {"mainwinstreaminfovisible", & static_hints.mainwin_streaminfo_visible},
-    {"mainwintextvisible", & static_hints.mainwin_text_visible},
-    {"mainwintextwidth", & static_hints.mainwin_text_width},
-    {"mainwintextx", & static_hints.mainwin_text_x},
-    {"mainwintexty", & static_hints.mainwin_text_y},
-    {"mainwinvisvisible", & static_hints.mainwin_vis_visible},
-    {"mainwinvisx", & static_hints.mainwin_vis_x},
-    {"mainwinvisy", & static_hints.mainwin_vis_y},
-    {"mainwinvolumex", & static_hints.mainwin_volume_x},
-    {"mainwinvolumey", & static_hints.mainwin_volume_y},
-    {"mainwinwidth", & static_hints.mainwin_width},
-    {"textboxbitmapfontheight", & static_hints.textbox_bitmap_font_height},
-    {"textboxbitmapfontwidth", & static_hints.textbox_bitmap_font_width},
+    {"mainwinaboutx", & skin.hints.mainwin_about_x},
+    {"mainwinabouty", & skin.hints.mainwin_about_y},
+    {"mainwinbalancex", & skin.hints.mainwin_balance_x},
+    {"mainwinbalancey", & skin.hints.mainwin_balance_y},
+    {"mainwinclosex", & skin.hints.mainwin_close_x},
+    {"mainwinclosey", & skin.hints.mainwin_close_y},
+    {"mainwinejectx", & skin.hints.mainwin_eject_x},
+    {"mainwinejecty", & skin.hints.mainwin_eject_y},
+    {"mainwineqbuttonx", & skin.hints.mainwin_eqbutton_x},
+    {"mainwineqbuttony", & skin.hints.mainwin_eqbutton_y},
+    {"mainwinheight", & skin.hints.mainwin_height},
+    {"mainwininfobarx", & skin.hints.mainwin_infobar_x},
+    {"mainwininfobary", & skin.hints.mainwin_infobar_y},
+    {"mainwinmenurowvisible", & skin.hints.mainwin_menurow_visible},
+    {"mainwinminimizex", & skin.hints.mainwin_minimize_x},
+    {"mainwinminimizey", & skin.hints.mainwin_minimize_y},
+    {"mainwinnextx", & skin.hints.mainwin_next_x},
+    {"mainwinnexty", & skin.hints.mainwin_next_y},
+    {"mainwinnumber0x", & skin.hints.mainwin_number_0_x},
+    {"mainwinnumber0y", & skin.hints.mainwin_number_0_y},
+    {"mainwinnumber1x", & skin.hints.mainwin_number_1_x},
+    {"mainwinnumber1y", & skin.hints.mainwin_number_1_y},
+    {"mainwinnumber2x", & skin.hints.mainwin_number_2_x},
+    {"mainwinnumber2y", & skin.hints.mainwin_number_2_y},
+    {"mainwinnumber3x", & skin.hints.mainwin_number_3_x},
+    {"mainwinnumber3y", & skin.hints.mainwin_number_3_y},
+    {"mainwinnumber4x", & skin.hints.mainwin_number_4_x},
+    {"mainwinnumber4y", & skin.hints.mainwin_number_4_y},
+    {"mainwinothertextisstatus", & skin.hints.mainwin_othertext_is_status},
+    {"mainwinothertextvisible", & skin.hints.mainwin_othertext_visible},
+    {"mainwinpausex", & skin.hints.mainwin_pause_x},
+    {"mainwinpausey", & skin.hints.mainwin_pause_y},
+    {"mainwinplaystatusx", & skin.hints.mainwin_playstatus_x},
+    {"mainwinplaystatusy", & skin.hints.mainwin_playstatus_y},
+    {"mainwinplayx", & skin.hints.mainwin_play_x},
+    {"mainwinplayy", & skin.hints.mainwin_play_y},
+    {"mainwinplbuttonx", & skin.hints.mainwin_plbutton_x},
+    {"mainwinplbuttony", & skin.hints.mainwin_plbutton_y},
+    {"mainwinpositionx", & skin.hints.mainwin_position_x},
+    {"mainwinpositiony", & skin.hints.mainwin_position_y},
+    {"mainwinpreviousx", & skin.hints.mainwin_previous_x},
+    {"mainwinpreviousy", & skin.hints.mainwin_previous_y},
+    {"mainwinrepeatx", & skin.hints.mainwin_repeat_x},
+    {"mainwinrepeaty", & skin.hints.mainwin_repeat_y},
+    {"mainwinshadex", & skin.hints.mainwin_shade_x},
+    {"mainwinshadey", & skin.hints.mainwin_shade_y},
+    {"mainwinshufflex", & skin.hints.mainwin_shuffle_x},
+    {"mainwinshuffley", & skin.hints.mainwin_shuffle_y},
+    {"mainwinstopx", & skin.hints.mainwin_stop_x},
+    {"mainwinstopy", & skin.hints.mainwin_stop_y},
+    {"mainwinstreaminfovisible", & skin.hints.mainwin_streaminfo_visible},
+    {"mainwintextvisible", & skin.hints.mainwin_text_visible},
+    {"mainwintextwidth", & skin.hints.mainwin_text_width},
+    {"mainwintextx", & skin.hints.mainwin_text_x},
+    {"mainwintexty", & skin.hints.mainwin_text_y},
+    {"mainwinvisvisible", & skin.hints.mainwin_vis_visible},
+    {"mainwinvisx", & skin.hints.mainwin_vis_x},
+    {"mainwinvisy", & skin.hints.mainwin_vis_y},
+    {"mainwinvolumex", & skin.hints.mainwin_volume_x},
+    {"mainwinvolumey", & skin.hints.mainwin_volume_y},
+    {"mainwinwidth", & skin.hints.mainwin_width},
+    {"textboxbitmapfontheight", & skin.hints.textbox_bitmap_font_height},
+    {"textboxbitmapfontwidth", & skin.hints.textbox_bitmap_font_width},
 };
 
 static int hint_pair_compare (const void * key, const void * pair)
@@ -133,15 +128,11 @@ private:
     }
 };
 
-void skin_load_hints (Skin * skin, const char * path)
+void skin_load_hints (const char * path)
 {
-    static_hints = skin_default_hints;
-
     VFSFile file = open_local_file_nocase (path, "skin.hints");
     if (file)
         HintsParser ().parse (file);
-
-    skin->properties = static_hints;
 }
 
 /*
@@ -151,12 +142,10 @@ void skin_load_hints (Skin * skin, const char * path)
 class PLColorsParser : public IniParser
 {
 public:
-    PLColorsParser (Skin & skin) :
-        skin (skin),
+    PLColorsParser () :
         valid_heading (false) {}
 
 private:
-    Skin & skin;
     bool valid_heading;
 
     void handle_heading (const char * heading)
@@ -183,16 +172,16 @@ private:
     }
 };
 
-void skin_load_pl_colors (Skin * skin, const char * path)
+void skin_load_pl_colors (const char * path)
 {
-    skin->colors[SKIN_PLEDIT_NORMAL] = 0x2499ff;
-    skin->colors[SKIN_PLEDIT_CURRENT] = 0xffeeff;
-    skin->colors[SKIN_PLEDIT_NORMALBG] = 0x0a120a;
-    skin->colors[SKIN_PLEDIT_SELECTEDBG] = 0x0a124a;
+    skin.colors[SKIN_PLEDIT_NORMAL] = 0x2499ff;
+    skin.colors[SKIN_PLEDIT_CURRENT] = 0xffeeff;
+    skin.colors[SKIN_PLEDIT_NORMALBG] = 0x0a120a;
+    skin.colors[SKIN_PLEDIT_SELECTEDBG] = 0x0a124a;
 
     VFSFile file = open_local_file_nocase (path, "pledit.txt");
     if (file)
-        PLColorsParser (* skin).parse (file);
+        PLColorsParser ().parse (file);
 }
 
 /*
@@ -202,16 +191,8 @@ void skin_load_pl_colors (Skin * skin, const char * path)
 class MaskParser : public IniParser
 {
 public:
-    GArray * numpoints[SKIN_MASK_COUNT] {};
-    GArray * pointlist[SKIN_MASK_COUNT] {};
-
-    ~MaskParser ()
-    {
-        for (GArray * array : numpoints)
-            if (array) g_array_free (array, true);
-        for (GArray * array : pointlist)
-            if (array) g_array_free (array, true);
-    }
+    Index<int> numpoints[SKIN_MASK_COUNT];
+    Index<int> pointlist[SKIN_MASK_COUNT];
 
 private:
     SkinMaskId current_id = SkinMaskId (-1);
@@ -236,42 +217,30 @@ private:
             return;
 
         if (! g_ascii_strcasecmp (key, "numpoints"))
-        {
-            if (! numpoints[current_id])
-                numpoints[current_id] = string_to_garray (value);
-        }
+            numpoints[current_id] = string_to_int_array (value);
         else if (! g_ascii_strcasecmp (key, "pointlist"))
-        {
-            if (! pointlist[current_id])
-                pointlist[current_id] = string_to_garray (value);
-        }
+            pointlist[current_id] = string_to_int_array (value);
     }
 };
 
-static cairo_region_t * skin_create_mask (const GArray * num,
- const GArray * point, int width, int height)
+static Index<GdkRectangle> skin_create_mask (const Index<int> & num,
+ const Index<int> & point, int width, int height)
 {
-    if (! num || ! point)
-        return nullptr;
+    Index<GdkRectangle> mask;
 
-    width *= config.scale;
-    height *= config.scale;
-
-    cairo_region_t * mask = nullptr;
-
-    unsigned j = 0;
-    for (unsigned i = 0; i < num->len; i ++)
+    int j = 0;
+    for (int i = 0; i < num.len (); i ++)
     {
-        int n_points = g_array_index (num, int, i);
-        if (n_points <= 0 || j + 2 * n_points > point->len)
+        int n_points = num[i];
+        if (n_points <= 0 || j + 2 * n_points > point.len ())
             break;
 
         int xmin = width, ymin = height, xmax = 0, ymax = 0;
 
         for (int k = 0; k < n_points; k ++)
         {
-            int x = g_array_index (point, int, j + k * 2) * config.scale;
-            int y = g_array_index (point, int, j + k * 2 + 1) * config.scale;
+            int x = point[j + k * 2];
+            int y = point[j + k * 2 + 1];
 
             xmin = aud::min (xmin, x);
             ymin = aud::min (ymin, y);
@@ -280,14 +249,7 @@ static cairo_region_t * skin_create_mask (const GArray * num,
         }
 
         if (xmax > xmin && ymax > ymin)
-        {
-            cairo_rectangle_int_t rect = {xmin, ymin, xmax - xmin, ymax - ymin};
-
-            if (mask)
-                cairo_region_union_rectangle (mask, & rect);
-            else
-                mask = cairo_region_create_rectangle (& rect);
-        }
+            mask.append (xmin, ymin, xmax - xmin, ymax - ymin);
 
         j += n_points * 2;
     }
@@ -295,10 +257,10 @@ static cairo_region_t * skin_create_mask (const GArray * num,
     return mask;
 }
 
-void skin_load_masks (Skin * skin, const char * path, cairo_region_t * masks[SKIN_MASK_COUNT])
+void skin_load_masks (const char * path)
 {
     int sizes[SKIN_MASK_COUNT][2] = {
-        {skin->properties.mainwin_width, skin->properties.mainwin_height},
+        {skin.hints.mainwin_width, skin.hints.mainwin_height},
         {275, 16},
         {275, 116},
         {275, 16}
@@ -310,6 +272,6 @@ void skin_load_masks (Skin * skin, const char * path, cairo_region_t * masks[SKI
         parser.parse (file);
 
     for (int id = 0; id < SKIN_MASK_COUNT; id ++)
-        masks[id] = skin_create_mask (parser.numpoints[id],
+        skin.masks[id] = skin_create_mask (parser.numpoints[id],
          parser.pointlist[id], sizes[id][0], sizes[id][1]);
 }

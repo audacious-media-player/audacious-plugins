@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#include <string.h>
 #include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
@@ -66,19 +67,17 @@ void playlist_open_folder ()
     int list = aud_playlist_get_active ();
     int focus = aud_playlist_get_focus (list);
 
-    if (focus < 0)
-        return;
-
-    StringBuf filename = uri_to_filename (aud_playlist_entry_get_filename (list, focus));
+    String filename = aud_playlist_entry_get_filename (list, focus);
     if (! filename)
         return;
 
-    char * dirname = g_path_get_dirname (filename);
-    StringBuf uri = filename_to_uri (dirname);
-    g_free (dirname);
+    const char * slash = strrchr (filename, '/');
+    if (! slash)
+        return;
 
-    GdkScreen * screen = gdk_screen_get_default ();
-    gtk_show_uri (screen, uri, GDK_CURRENT_TIME, nullptr);
+    /* don't trim trailing slash, it may be important */
+    StringBuf folder = str_copy (filename, slash + 1 - filename);
+    gtk_show_uri (gdk_screen_get_default (), folder, GDK_CURRENT_TIME, nullptr);
 }
 
 void playlist_queue_toggle ()

@@ -53,15 +53,13 @@ static struct {
 #define RGB_SEEK(x,y) (set = rgb + 76 * (y) + (x))
 #define RGB_SET(c) (* set ++ = (c))
 #define RGB_SET_Y(c) do {* set = (c); set += 76;} while (0)
-#define RGB_SET_INDEX(c) RGB_SET (active_skin->vis_colors[c])
-#define RGB_SET_INDEX_Y(c) RGB_SET_Y (active_skin->vis_colors[c])
+#define RGB_SET_INDEX(c) RGB_SET (skin.vis_colors[c])
+#define RGB_SET_INDEX_Y(c) RGB_SET_Y (skin.vis_colors[c])
 
 void ui_vis_set_colors (void)
 {
-    g_return_if_fail (active_skin != nullptr);
-
-    uint32_t fgc = active_skin->colors[SKIN_TEXTFG];
-    uint32_t bgc = active_skin->colors[SKIN_TEXTBG];
+    uint32_t fgc = skin.colors[SKIN_TEXTFG];
+    uint32_t bgc = skin.colors[SKIN_TEXTBG];
     int fg[3] = {COLOR_R (fgc), COLOR_G (fgc), COLOR_B (fgc)};
     int bg[3] = {COLOR_R (bgc), COLOR_G (bgc), COLOR_B (bgc)};
 

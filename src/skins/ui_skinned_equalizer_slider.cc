@@ -22,6 +22,7 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses>.
  */
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/equalizer.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
@@ -32,21 +33,20 @@
 #include "ui_skin.h"
 #include "ui_skinned_equalizer_slider.h"
 
-typedef struct {
-    char * name;
+struct EqSliderData {
+    String name;
     int band;
     int pos;
     float val;
-    gboolean pressed;
-} EqSliderData;
+    bool pressed;
+};
 
 DRAW_FUNC_BEGIN (eq_slider_draw, EqSliderData)
     int frame = 27 - data->pos * 27 / 50;
     if (frame < 14)
         skin_draw_pixbuf (cr, SKIN_EQMAIN, 13 + 15 * frame, 164, 0, 0, 14, 63);
     else
-        skin_draw_pixbuf (cr, SKIN_EQMAIN, 13 + 15 * (frame - 14), 229, 0, 0,
-         14, 63);
+        skin_draw_pixbuf (cr, SKIN_EQMAIN, 13 + 15 * (frame - 14), 229, 0, 0, 14, 63);
 
     if (data->pressed)
         skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 176, 1, data->pos, 11, 11);
@@ -67,48 +67,46 @@ static void eq_slider_moved (EqSliderData * data, int pos)
     else
         aud_eq_set_band (data->band, data->val);
 
-    char buf[100];
-    snprintf (buf, sizeof buf, "%s: %+.1f dB", data->name, data->val);
-    mainwin_show_status_message (buf);
+    mainwin_show_status_message (str_printf ("%s: %+.1f dB", (const char *) data->name, data->val));
 }
 
 static gboolean eq_slider_button_press (GtkWidget * slider,
  GdkEventButton * event, EqSliderData * data)
 {
     if (event->button != 1)
-        return FALSE;
+        return false;
 
-    data->pressed = TRUE;
+    data->pressed = true;
 
     eq_slider_moved (data, event->y / config.scale - 5);
     gtk_widget_queue_draw (slider);
-    return TRUE;
+    return true;
 }
 
 static gboolean eq_slider_button_release (GtkWidget * slider,
  GdkEventButton * event, EqSliderData * data)
 {
     if (event->button != 1)
-        return FALSE;
+        return false;
 
     if (! data->pressed)
-        return TRUE;
+        return true;
 
-    data->pressed = FALSE;
+    data->pressed = false;
 
     eq_slider_moved (data, event->y / config.scale - 5);
     gtk_widget_queue_draw (slider);
-    return TRUE;
+    return true;
 }
 
 static gboolean eq_slider_motion (GtkWidget * slider, GdkEventMotion * event, EqSliderData * data)
 {
     if (! data->pressed)
-        return TRUE;
+        return true;
 
     eq_slider_moved (data, event->y / config.scale - 5);
     gtk_widget_queue_draw (slider);
-    return TRUE;
+    return true;
 }
 
 static gboolean eq_slider_scroll (GtkWidget * slider, GdkEventScroll * event, EqSliderData * data)
@@ -119,7 +117,7 @@ static gboolean eq_slider_scroll (GtkWidget * slider, GdkEventScroll * event, Eq
         eq_slider_moved (data, data->pos + 2);
 
     gtk_widget_queue_draw (slider);
-    return TRUE;
+    return true;
 }
 
 void eq_slider_set_val (GtkWidget * slider, float val)
@@ -139,8 +137,7 @@ void eq_slider_set_val (GtkWidget * slider, float val)
 
 static void eq_slider_free (EqSliderData * data)
 {
-    g_free (data->name);
-    g_free (data);
+    delete data;
 }
 
 GtkWidget * eq_slider_new (const char * name, int band)
@@ -151,8 +148,8 @@ GtkWidget * eq_slider_new (const char * name, int band)
     gtk_widget_add_events (slider, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
 
-    EqSliderData * data = g_new0 (EqSliderData, 1);
-    data->name = g_strdup (name);
+    EqSliderData * data = new EqSliderData ();
+    data->name = String (name);
     data->band = band;
     g_object_set_data_full ((GObject *) slider, "eqsliderdata", data,
      (GDestroyNotify) eq_slider_free);

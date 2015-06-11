@@ -24,15 +24,28 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
- gboolean shaded, void (* draw) (GtkWidget * window, cairo_t * cr));
+enum {
+    WINDOW_MAIN,
+    WINDOW_EQ,
+    WINDOW_PLAYLIST,
+    N_WINDOWS
+};
+
+typedef void (* DrawFunc) (GtkWidget *, cairo_t *);
+
+GtkWidget * window_new (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc draw);
 void window_set_size (GtkWidget * window, int w, int h);
 void window_set_shapes (GtkWidget * window, cairo_region_t * shape, cairo_region_t * sshape);
-void window_set_shaded (GtkWidget * window, gboolean shaded);
-void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,
- int x, int y);
-void window_move_widget (GtkWidget * window, gboolean shaded, GtkWidget *
- widget, int x, int y);
+void window_set_shaded (GtkWidget * window, bool shaded);
+void window_put_widget (GtkWidget * window, bool shaded, GtkWidget * widget, int x, int y);
+void window_move_widget (GtkWidget * window, bool shaded, GtkWidget * widget, int x, int y);
 void window_show_all (GtkWidget * window);
+
+void dock_add_window (int id, GtkWidget * window, int * x, int * y, int w, int h);
+void dock_remove_window (int id);
+void dock_set_size (int id, int w, int h);
+void dock_move_start (int id, int x, int y);
+void dock_move (int x, int y);
+void dock_change_scale (int old_scale, int new_scale);
 
 #endif

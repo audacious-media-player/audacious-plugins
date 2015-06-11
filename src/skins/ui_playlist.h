@@ -32,7 +32,6 @@ void playlistwin_hide_timer(void);
 void playlistwin_set_time (const char * minutes, const char * seconds);
 
 extern int active_playlist, active_length;
-extern char * active_title;
 extern GtkWidget * playlistwin, * playlistwin_list, * playlistwin_sinfo;
 
 #endif /* SKINS_UI_PLAYLIST_H */

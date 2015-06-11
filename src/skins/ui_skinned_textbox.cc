@@ -26,6 +26,8 @@
  */
 
 #include <string.h>
+
+#include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/objects.h>
 
@@ -36,35 +38,36 @@
 
 #define DELAY 50
 
-typedef struct {
-    int width;
-    char * text;
-    PangoFontDescription * font;
-    cairo_surface_t * buf;
-    int buf_width;
+struct TextboxData
+{
+    String text;
+    PangoFontDescPtr font;
+    CairoSurfacePtr buf;
+
+    int width, buf_width;
     bool may_scroll, two_way;
     bool scrolling, backward;
     int offset, delay;
-} TextboxData;
+};
 
 static GList * textboxes;
 
 DRAW_FUNC_BEGIN (textbox_draw, TextboxData)
     if (data->scrolling)
     {
-        cairo_set_source_surface (cr, data->buf, -data->offset * config.scale, 0);
+        cairo_set_source_surface (cr, data->buf.get (), -data->offset * config.scale, 0);
         cairo_paint (cr);
 
         if (-data->offset + data->buf_width < data->width)
         {
-            cairo_set_source_surface (cr, data->buf, (-data->offset +
-             data->buf_width) * config.scale, 0);
+            cairo_set_source_surface (cr, data->buf.get (),
+             (-data->offset + data->buf_width) * config.scale, 0);
             cairo_paint (cr);
         }
     }
     else
     {
-        cairo_set_source_surface (cr, data->buf, 0, 0);
+        cairo_set_source_surface (cr, data->buf.get (), 0, 0);
         cairo_paint (cr);
     }
 DRAW_FUNC_END
@@ -104,7 +107,7 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
     g_return_if_fail (data->font && ! data->buf && text);
 
     PangoLayout * layout = gtk_widget_create_pango_layout (textbox, text);
-    pango_layout_set_font_description (layout, data->font);
+    pango_layout_set_font_description (layout, data->font.get ());
 
     PangoRectangle ink, logical;
     pango_layout_get_pixel_extents (layout, & ink, & logical);
@@ -117,16 +120,16 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
     gtk_widget_set_size_request (textbox, data->width * config.scale, ink.height);
 
     data->buf_width = aud::max ((logical.width + config.scale - 1) / config.scale, data->width);
-    data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width * config.scale, ink.height);
+    data->buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+     data->buf_width * config.scale, ink.height));
 
-    cairo_t * cr = cairo_create (data->buf);
+    cairo_t * cr = cairo_create (data->buf.get ());
 
-    set_cairo_color (cr, active_skin->colors[SKIN_TEXTBG]);
+    set_cairo_color (cr, skin.colors[SKIN_TEXTBG]);
     cairo_paint (cr);
 
     cairo_move_to (cr, -logical.x, -ink.y);
-    set_cairo_color (cr, active_skin->colors[SKIN_TEXTFG]);
+    set_cairo_color (cr, skin.colors[SKIN_TEXTFG]);
     pango_cairo_show_layout (cr, layout);
 
     cairo_destroy (cr);
@@ -173,8 +176,8 @@ static void lookup_char (const char c, int * x, int * y)
     default: tx = 3; ty = 2; break; /* '?' */
     }
 
-    * x = tx * active_skin->properties.textbox_bitmap_font_width;
-    * y = ty * active_skin->properties.textbox_bitmap_font_height;
+    * x = tx * skin.hints.textbox_bitmap_font_width;
+    * y = ty * skin.hints.textbox_bitmap_font_height;
 }
 
 static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
@@ -182,8 +185,8 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
 {
     g_return_if_fail (! data->font && ! data->buf && text);
 
-    int cw = active_skin->properties.textbox_bitmap_font_width;
-    int ch = active_skin->properties.textbox_bitmap_font_height;
+    int cw = skin.hints.textbox_bitmap_font_width;
+    int ch = skin.hints.textbox_bitmap_font_height;
 
     gtk_widget_set_size_request (textbox, data->width * config.scale, ch * config.scale);
 
@@ -192,10 +195,10 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
     g_return_if_fail (utf32);
 
     data->buf_width = aud::max (cw * (int) len, data->width);
-    data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width * config.scale, ch * config.scale);
+    data->buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+     data->buf_width * config.scale, ch * config.scale));
 
-    cairo_t * cr = cairo_create (data->buf);
+    cairo_t * cr = cairo_create (data->buf.get ());
 
     gunichar * s = utf32;
     for (int x = 0; x < data->buf_width; x += cw)
@@ -226,12 +229,6 @@ static void textbox_render (GtkWidget * textbox, TextboxData * data)
 {
     g_return_if_fail (data->text);
 
-    if (data->buf)
-    {
-        cairo_surface_destroy (data->buf);
-        data->buf = nullptr;
-    }
-
     data->scrolling = FALSE;
     data->backward = FALSE;
     data->offset = 0;
@@ -248,20 +245,12 @@ static void textbox_render (GtkWidget * textbox, TextboxData * data)
 
         if (! data->two_way)
         {
-            if (data->buf)
-            {
-                cairo_surface_destroy (data->buf);
-                data->buf = nullptr;
-            }
-
-            char * temp = g_strdup_printf ("%s --- ", data->text);
+            StringBuf temp = str_printf ("%s --- ", (const char *) data->text);
 
             if (data->font)
                 textbox_render_vector (textbox, data, temp);
             else
                 textbox_render_bitmap (textbox, data, temp);
-
-            g_free (temp);
         }
     }
 
@@ -304,8 +293,7 @@ void textbox_set_text (GtkWidget * textbox, const char * text)
     if (data->text && ! strcmp (data->text, text))
         return;
 
-    g_free (data->text);
-    data->text = g_strdup (text);
+    data->text = String (text);
     textbox_render (textbox, data);
 }
 
@@ -314,14 +302,10 @@ void textbox_set_font (GtkWidget * textbox, const char * font)
     TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
 
-    if (data->font)
-    {
-        pango_font_description_free (data->font);
-        data->font = nullptr;
-    }
-
     if (font)
-        data->font = pango_font_description_from_string (font);
+        data->font.capture (pango_font_description_from_string (font));
+    else
+        data->font.clear ();
 
     textbox_render (textbox, data);
 }
@@ -342,16 +326,8 @@ void textbox_set_scroll (GtkWidget * textbox, gboolean scroll)
 static void textbox_destroy (GtkWidget * textbox, TextboxData * data)
 {
     timer_remove (TimerRate::Hz30, textbox_scroll, textbox);
-
-    if (data->font)
-        pango_font_description_free (data->font);
-    if (data->buf)
-        cairo_surface_destroy (data->buf);
-
-    g_free (data->text);
-    g_free (data);
-
     textboxes = g_list_remove (textboxes, textbox);
+    delete data;
 }
 
 GtkWidget * textbox_new (int width, const char * text, const char * font,
@@ -363,15 +339,15 @@ GtkWidget * textbox_new (int width, const char * text, const char * font,
     gtk_widget_add_events (textbox, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK);
 
-    TextboxData * data = g_new0 (TextboxData, 1);
+    TextboxData * data = new TextboxData ();
     data->width = width;
-    data->text = g_strdup (text);
+    data->text = String (text);
     data->may_scroll = scroll;
     data->two_way = config.twoway_scroll;
     g_object_set_data ((GObject *) textbox, "textboxdata", data);
 
     if (font)
-        data->font = pango_font_description_from_string (font);
+        data->font.capture (pango_font_description_from_string (font));
 
     DRAW_CONNECT_PROXY (textbox, textbox_draw, data);
     g_signal_connect (textbox, "destroy", (GCallback) textbox_destroy, data);

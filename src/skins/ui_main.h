@@ -28,9 +28,8 @@
 /* yes, main window size is fixed */
 #define MAINWIN_WIDTH            (int)275
 #define MAINWIN_HEIGHT           (int)116
-#define MAINWIN_TITLEBAR_HEIGHT  (int)14
 #define MAINWIN_SHADED_WIDTH     MAINWIN_WIDTH
-#define MAINWIN_SHADED_HEIGHT    MAINWIN_TITLEBAR_HEIGHT
+#define MAINWIN_SHADED_HEIGHT    (int)14
 
 extern GtkWidget *mainwin;
 

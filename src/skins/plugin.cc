@@ -34,10 +34,12 @@
 #include "plugin.h"
 #include "plugin-window.h"
 #include "skins_cfg.h"
+#include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_main_evlisteners.h"
 #include "ui_playlist.h"
 #include "ui_skin.h"
+#include "ui_skinned_window.h"
 #include "view.h"
 
 class SkinnedUI : public IfacePlugin
@@ -106,15 +108,37 @@ const char * skins_get_skin_thumb_dir ()
     return skin_thumb_dir;
 }
 
-static void skins_init_main (void)
+static bool load_initial_skin ()
 {
+    String path = aud_get_str ("skins", "skin");
+    if (path[0] && skin_load (path))
+        return true;
+
+    StringBuf def = filename_build ({aud_get_path (AudPath::DataDir), "Skins", "Default"});
+    if (skin_load (def))
+        return true;
+
+    AUDERR ("Unable to load any skin; giving up!\n");
+    return false;
+}
+
+static void skins_init_main (bool restart)
+{
+    int old_scale = config.scale;
+
     if (aud_get_bool ("skins", "double_size"))
         config.scale = aud::rescale (audgui_get_dpi (), 48, 1);
     else
         config.scale = aud::rescale (audgui_get_dpi (), 96, 1);
 
-    init_skins (aud_get_str ("skins", "skin"));
+    if (restart && config.scale != old_scale)
+        dock_change_scale (old_scale, config.scale);
 
+    mainwin_create ();
+    equalizerwin_create ();
+    playlistwin_create ();
+
+    view_apply_skin ();
     view_apply_on_top ();
     view_apply_sticky ();
 
@@ -135,12 +159,14 @@ bool SkinnedUI::init ()
     if (aud_get_mainloop_type () != MainloopType::GLib)
         return false;
 
-    audgui_init ();
-
     skins_cfg_load ();
 
+    if (! load_initial_skin ())
+        return false;
+
+    audgui_init ();
     menu_init ();
-    skins_init_main ();
+    skins_init_main (false);
 
     create_plugin_windows ();
 
@@ -154,7 +180,9 @@ static void skins_cleanup_main (void)
 
     timer_remove (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
 
-    cleanup_skins ();
+    gtk_widget_destroy (mainwin); mainwin = nullptr;
+    gtk_widget_destroy (playlistwin); playlistwin = nullptr;
+    gtk_widget_destroy (equalizerwin); equalizerwin = nullptr;
 }
 
 void SkinnedUI::cleanup ()
@@ -165,8 +193,9 @@ void SkinnedUI::cleanup ()
 
     skins_cleanup_main ();
     menu_cleanup ();
-
     audgui_cleanup ();
+
+    skin = Skin ();
 
     user_skin_dir = String ();
     skin_thumb_dir = String ();
@@ -175,7 +204,7 @@ void SkinnedUI::cleanup ()
 void skins_restart (void)
 {
     skins_cleanup_main ();
-    skins_init_main ();
+    skins_init_main (true);
 
     if (aud_ui_is_shown ())
         view_show_player (true);

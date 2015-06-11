@@ -25,30 +25,32 @@
 void view_show_player (bool show);
 
 void view_set_show_playlist (bool show);
-void view_apply_show_playlist (void);
+void view_apply_show_playlist ();
 
 void view_set_show_equalizer (bool show);
-void view_apply_show_equalizer (void);
+void view_apply_show_equalizer ();
 
 void view_set_player_shaded (bool shaded);
-void view_apply_player_shaded (void);
+void view_apply_player_shaded ();
 
 void view_set_playlist_shaded (bool shaded);
-void view_apply_playlist_shaded (void);
+void view_apply_playlist_shaded ();
 
 void view_set_equalizer_shaded (bool shaded);
-void view_apply_equalizer_shaded (void);
+void view_apply_equalizer_shaded ();
 
 void view_set_double_size (bool double_size);
-void view_apply_double_size (void);
+void view_apply_double_size ();
 
 void view_set_on_top (bool on_top);
-void view_apply_on_top (void);
+void view_apply_on_top ();
 
 void view_set_sticky (bool sticky);
-void view_apply_sticky (void);
+void view_apply_sticky ();
 
 void view_set_show_remaining (bool remaining);
-void view_apply_show_remaining (void);
+void view_apply_show_remaining ();
+
+void view_apply_skin ();
 
 #endif /* SKINS_VIEW_H */

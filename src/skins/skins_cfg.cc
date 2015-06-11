@@ -39,6 +39,7 @@
 #include "ui_skinselector.h"
 #include "ui_vis.h"
 #include "util.h"
+#include "view.h"
 
 static const char * const skins_defaults[] = {
  /* general */
@@ -316,9 +317,10 @@ on_skin_view_drag_data_received(GtkWidget * widget,
 
     if (file_is_archive(path))
     {
-        if (! active_skin_load (path))
+        if (! skin_load (path))
             return;
 
+        view_apply_skin ();
         skin_install_skin(path);
 
         if (skin_view)
