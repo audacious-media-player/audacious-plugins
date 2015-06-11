@@ -71,8 +71,8 @@ GtkWidget *mainwin = nullptr;
 static int balance;
 static int seek_source = 0, seek_start, seek_time;
 
-static bool mainwin_info_text_locked = false;
-static String mainwin_tb_old_text;
+static GtkWidget * locked_textbox = nullptr;
+static String locked_old_text;
 
 static int status_message_source = 0;
 static int mainwin_volume_release_timeout = 0;
@@ -168,46 +168,36 @@ mainwin_shade_toggle(void)
 
 static void mainwin_lock_info_text (const char * text)
 {
-    GtkWidget * textbox =
-     active_skin->properties.mainwin_othertext_is_status ?
-     mainwin_othertext : mainwin_info;
+    if (! locked_textbox)
+    {
+        locked_textbox = active_skin->properties.mainwin_othertext_is_status ?
+	 mainwin_othertext : mainwin_info;
+        locked_old_text = String (textbox_get_text (locked_textbox));
+    }
 
-    if (! mainwin_info_text_locked)
-        mainwin_tb_old_text = String (textbox_get_text (textbox));
-
-    mainwin_info_text_locked = true;
-    textbox_set_text (textbox, text);
+    textbox_set_text (locked_textbox, text);
 }
 
 static void mainwin_release_info_text (void)
 {
-    if (! mainwin_info_text_locked)
-        return;
-
-    if (active_skin->properties.mainwin_othertext_is_status)
-        textbox_set_text (mainwin_othertext, mainwin_tb_old_text);
-    else
-        textbox_set_text (mainwin_info, mainwin_tb_old_text);
-
-    mainwin_info_text_locked = false;
-    mainwin_tb_old_text = String ();
+    if (locked_textbox)
+    {
+        textbox_set_text (locked_textbox, locked_old_text);
+        locked_textbox = nullptr;
+        locked_old_text = String ();
+    }
 }
 
-static void mainwin_set_info_text (const char * text)
+static void set_info_text (GtkWidget * textbox, const char * text)
 {
-    if (mainwin_info_text_locked && ! active_skin->properties.mainwin_othertext_is_status)
-        mainwin_tb_old_text = String (text);
+    if (textbox == locked_textbox)
+        locked_old_text = String (text);
     else
-        textbox_set_text (mainwin_info, text);
+        textbox_set_text (textbox, text);
 }
 
-static void mainwin_set_othertext (const char * text)
-{
-    if (mainwin_info_text_locked && active_skin->properties.mainwin_othertext_is_status)
-        mainwin_tb_old_text = String (text);
-    else
-        textbox_set_text (mainwin_othertext, text);
-}
+#define mainwin_set_info_text(t) set_info_text (mainwin_info, (t))
+#define mainwin_set_othertext(t) set_info_text (mainwin_othertext, (t))
 
 static gboolean clear_status_message (void *)
 {
@@ -1204,8 +1194,8 @@ void mainwin_unhook (void)
     ui_main_evlistener_dissociate ();
     start_stop_visual (TRUE);
 
-    mainwin_info_text_locked = false;
-    mainwin_tb_old_text = String ();
+    locked_textbox = nullptr;
+    locked_old_text = String ();
 }
 
 void
