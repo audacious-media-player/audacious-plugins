@@ -26,8 +26,6 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <glib.h>
-
 #include <libaudcore/vfs.h>
 
 typedef void (* DirForeachFunc) (const char * path, const char * basename);
@@ -45,7 +43,7 @@ void del_directory (const char * path);
 
 bool dir_foreach (const char * path, DirForeachFunc func);
 
-GArray *string_to_garray(const char *str);
+Index<int> string_to_int_array (const char *str);
 
 bool file_is_archive (const char * filename);
 StringBuf archive_basename (const char * str);

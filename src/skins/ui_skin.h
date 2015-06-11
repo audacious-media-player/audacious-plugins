@@ -29,6 +29,12 @@
 #include <stdint.h>
 #include <gtk/gtk.h>
 
+#include <libaudcore/index.h>
+#include <libaudcore/objects.h>
+
+typedef SmartPtr<cairo_surface_t, cairo_surface_destroy> CairoSurfacePtr;
+typedef SmartPtr<PangoFontDescription, pango_font_description_free> PangoFontDescPtr;
+
 #define COLOR(r,g,b) (((uint32_t) (r) << 16) | ((uint32_t) (g) << 8) | (uint32_t) (b))
 #define COLOR_R(c) ((int) (((c) & 0xff0000) >> 16))
 #define COLOR_G(c) ((int) (((c) & 0xff00) >> 8))
@@ -173,36 +179,23 @@ struct Skin
     uint32_t colors[SKIN_COLOR_COUNT] {};
     uint32_t vis_colors[24] {};
 
-    cairo_surface_t * pixmaps[SKIN_PIXMAP_COUNT] {};
-    GArray * masks[SKIN_MASK_COUNT] {};  // array of GdkRectangle
+    CairoSurfacePtr pixmaps[SKIN_PIXMAP_COUNT];
+    Index<GdkRectangle> masks[SKIN_MASK_COUNT];
 
     Skin () = default;
-    ~Skin () { destroy (); }
+    Skin (Skin && b) = default;
 
-    Skin (Skin && other)
+    /* GCC 5.1 generates the default move assignment incorrectly;
+     * see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66501 */
+    Skin & operator= (Skin && b)
     {
-        * this = (const Skin &) other;
-        other = (const Skin &) Skin ();
-    }
-
-    Skin & operator= (Skin && other)
-    {
-        if (this != & other)
+        if (this != & b)
         {
-            destroy ();
-            * this = (const Skin &) other;
-            other = (const Skin &) Skin ();
+            this->~Skin ();
+            new (this) Skin (std::move (b));
         }
-
         return * this;
     }
-
-private:
-    // shallow copy
-    Skin (const Skin &) = default;
-    Skin & operator= (const Skin &) = default;
-
-    void destroy ();
 };
 
 extern Skin skin;

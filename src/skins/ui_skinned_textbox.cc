@@ -41,21 +41,13 @@
 struct TextboxData
 {
     String text;
-    PangoFontDescription * font = nullptr;
-    cairo_surface_t * buf = nullptr;
+    PangoFontDescPtr font;
+    CairoSurfacePtr buf;
 
     int width, buf_width;
     bool may_scroll, two_way;
     bool scrolling, backward;
     int offset, delay;
-
-    ~TextboxData ()
-    {
-        if (font)
-            pango_font_description_free (font);
-        if (buf)
-            cairo_surface_destroy (buf);
-    }
 };
 
 static GList * textboxes;
@@ -63,19 +55,19 @@ static GList * textboxes;
 DRAW_FUNC_BEGIN (textbox_draw, TextboxData)
     if (data->scrolling)
     {
-        cairo_set_source_surface (cr, data->buf, -data->offset * config.scale, 0);
+        cairo_set_source_surface (cr, data->buf.get (), -data->offset * config.scale, 0);
         cairo_paint (cr);
 
         if (-data->offset + data->buf_width < data->width)
         {
-            cairo_set_source_surface (cr, data->buf, (-data->offset +
-             data->buf_width) * config.scale, 0);
+            cairo_set_source_surface (cr, data->buf.get (),
+             (-data->offset + data->buf_width) * config.scale, 0);
             cairo_paint (cr);
         }
     }
     else
     {
-        cairo_set_source_surface (cr, data->buf, 0, 0);
+        cairo_set_source_surface (cr, data->buf.get (), 0, 0);
         cairo_paint (cr);
     }
 DRAW_FUNC_END
@@ -116,7 +108,7 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
     g_return_if_fail (data->font && ! data->buf && text);
 
     PangoLayout * layout = gtk_widget_create_pango_layout (textbox, text);
-    pango_layout_set_font_description (layout, data->font);
+    pango_layout_set_font_description (layout, data->font.get ());
 
     PangoRectangle ink, logical;
     pango_layout_get_pixel_extents (layout, & ink, & logical);
@@ -129,10 +121,10 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
     gtk_widget_set_size_request (textbox, data->width * config.scale, ink.height);
 
     data->buf_width = aud::max ((logical.width + config.scale - 1) / config.scale, data->width);
-    data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width * config.scale, ink.height);
+    data->buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+     data->buf_width * config.scale, ink.height));
 
-    cairo_t * cr = cairo_create (data->buf);
+    cairo_t * cr = cairo_create (data->buf.get ());
 
     set_cairo_color (cr, skin.colors[SKIN_TEXTBG]);
     cairo_paint (cr);
@@ -204,10 +196,10 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
     g_return_if_fail (utf32);
 
     data->buf_width = aud::max (cw * (int) len, data->width);
-    data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width * config.scale, ch * config.scale);
+    data->buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+     data->buf_width * config.scale, ch * config.scale));
 
-    cairo_t * cr = cairo_create (data->buf);
+    cairo_t * cr = cairo_create (data->buf.get ());
 
     gunichar * s = utf32;
     for (int x = 0; x < data->buf_width; x += cw)
@@ -238,12 +230,6 @@ static void textbox_render (GtkWidget * textbox, TextboxData * data)
 {
     g_return_if_fail (data->text);
 
-    if (data->buf)
-    {
-        cairo_surface_destroy (data->buf);
-        data->buf = nullptr;
-    }
-
     data->scrolling = FALSE;
     data->backward = FALSE;
     data->offset = 0;
@@ -260,12 +246,6 @@ static void textbox_render (GtkWidget * textbox, TextboxData * data)
 
         if (! data->two_way)
         {
-            if (data->buf)
-            {
-                cairo_surface_destroy (data->buf);
-                data->buf = nullptr;
-            }
-
             StringBuf temp = str_printf ("%s --- ", (const char *) data->text);
 
             if (data->font)
@@ -323,14 +303,10 @@ void textbox_set_font (GtkWidget * textbox, const char * font)
     TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
 
-    if (data->font)
-    {
-        pango_font_description_free (data->font);
-        data->font = nullptr;
-    }
-
     if (font)
-        data->font = pango_font_description_from_string (font);
+        data->font.capture (pango_font_description_from_string (font));
+    else
+        data->font.clear ();
 
     textbox_render (textbox, data);
 }
@@ -372,7 +348,7 @@ GtkWidget * textbox_new (int width, const char * text, const char * font,
     g_object_set_data ((GObject *) textbox, "textboxdata", data);
 
     if (font)
-        data->font = pango_font_description_from_string (font);
+        data->font.capture (pango_font_description_from_string (font));
 
     DRAW_CONNECT_PROXY (textbox, textbox_draw, data);
     g_signal_connect (textbox, "destroy", (GCallback) textbox_destroy, data);

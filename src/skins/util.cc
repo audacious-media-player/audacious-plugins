@@ -312,20 +312,19 @@ void del_directory (const char * path)
     g_rmdir (path);
 }
 
-GArray *string_to_garray(const char *str)
+Index<int> string_to_int_array (const char * str)
 {
-    GArray *array;
+    Index<int> array;
     int temp;
     const char *ptr = str;
     char *endptr;
 
-    array = g_array_new(FALSE, TRUE, sizeof(int));
     for (;;)
     {
         temp = strtol(ptr, &endptr, 10);
         if (ptr == endptr)
             break;
-        g_array_append_val(array, temp);
+        array.append (temp);
         ptr = endptr;
         while (!g_ascii_isdigit((int)*ptr) && (*ptr) != '\0')
             ptr++;

@@ -191,16 +191,8 @@ void skin_load_pl_colors (const char * path)
 class MaskParser : public IniParser
 {
 public:
-    GArray * numpoints[SKIN_MASK_COUNT] {};
-    GArray * pointlist[SKIN_MASK_COUNT] {};
-
-    ~MaskParser ()
-    {
-        for (GArray * array : numpoints)
-            if (array) g_array_free (array, true);
-        for (GArray * array : pointlist)
-            if (array) g_array_free (array, true);
-    }
+    Index<int> numpoints[SKIN_MASK_COUNT];
+    Index<int> pointlist[SKIN_MASK_COUNT];
 
 private:
     SkinMaskId current_id = SkinMaskId (-1);
@@ -225,38 +217,30 @@ private:
             return;
 
         if (! g_ascii_strcasecmp (key, "numpoints"))
-        {
-            if (! numpoints[current_id])
-                numpoints[current_id] = string_to_garray (value);
-        }
+            numpoints[current_id] = string_to_int_array (value);
         else if (! g_ascii_strcasecmp (key, "pointlist"))
-        {
-            if (! pointlist[current_id])
-                pointlist[current_id] = string_to_garray (value);
-        }
+            pointlist[current_id] = string_to_int_array (value);
     }
 };
 
-static GArray * skin_create_mask (const GArray * num, const GArray * point, int width, int height)
+static Index<GdkRectangle> skin_create_mask (const Index<int> & num,
+ const Index<int> & point, int width, int height)
 {
-    if (! num || ! point)
-        return nullptr;
+    Index<GdkRectangle> mask;
 
-    GArray * mask = nullptr;
-
-    unsigned j = 0;
-    for (unsigned i = 0; i < num->len; i ++)
+    int j = 0;
+    for (int i = 0; i < num.len (); i ++)
     {
-        int n_points = g_array_index (num, int, i);
-        if (n_points <= 0 || j + 2 * n_points > point->len)
+        int n_points = num[i];
+        if (n_points <= 0 || j + 2 * n_points > point.len ())
             break;
 
         int xmin = width, ymin = height, xmax = 0, ymax = 0;
 
         for (int k = 0; k < n_points; k ++)
         {
-            int x = g_array_index (point, int, j + k * 2);
-            int y = g_array_index (point, int, j + k * 2 + 1);
+            int x = point[j + k * 2];
+            int y = point[j + k * 2 + 1];
 
             xmin = aud::min (xmin, x);
             ymin = aud::min (ymin, y);
@@ -265,13 +249,7 @@ static GArray * skin_create_mask (const GArray * num, const GArray * point, int 
         }
 
         if (xmax > xmin && ymax > ymin)
-        {
-            if (! mask)
-                mask = g_array_new (false, false, sizeof (GdkRectangle));
-
-            GdkRectangle rect = {xmin, ymin, xmax - xmin, ymax - ymin};
-            g_array_append_val (mask, rect);
-        }
+            mask.append (xmin, ymin, xmax - xmin, ymax - ymin);
 
         j += n_points * 2;
     }

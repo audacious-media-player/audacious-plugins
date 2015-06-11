@@ -226,28 +226,23 @@ void view_apply_show_remaining ()
     mainwin_update_song_info ();
 }
 
-static GdkRegion * scale_mask (GArray * mask, int scale)
+static GdkRegion * scale_mask (const Index<GdkRectangle> & mask, int scale)
 {
     GdkRegion * region = nullptr;
 
-    if (mask)
+    for (auto & rect : mask)
     {
-        for (unsigned i = 0; i < mask->len; i ++)
-        {
-            const GdkRectangle & rect = g_array_index (mask, GdkRectangle, i);
+        GdkRectangle scaled = {
+            rect.x * scale,
+            rect.y * scale,
+            rect.width * scale,
+            rect.height * scale
+        };
 
-            GdkRectangle scaled = {
-                rect.x * scale,
-                rect.y * scale,
-                rect.width * scale,
-                rect.height * scale
-            };
-
-            if (region)
-                gdk_region_union_with_rect (region, & scaled);
-            else
-                region = gdk_region_rectangle (& scaled);
-        }
+        if (region)
+            gdk_region_union_with_rect (region, & scaled);
+        else
+            region = gdk_region_rectangle (& scaled);
     }
 
     return region;
@@ -263,8 +258,8 @@ void view_apply_skin ()
      scale_mask (skin.masks[SKIN_MASK_EQ_SHADE], config.scale));
 
     // hide the equalizer graph if we have a short eqmain.bmp
-    gtk_widget_set_visible (equalizerwin_graph,
-     cairo_image_surface_get_height (skin.pixmaps[SKIN_EQMAIN]) >= 315);
+    int h = cairo_image_surface_get_height (skin.pixmaps[SKIN_EQMAIN].get ());
+    gtk_widget_set_visible (equalizerwin_graph, h >= 315);
 
     mainwin_refresh_hints ();
     textbox_update_all ();

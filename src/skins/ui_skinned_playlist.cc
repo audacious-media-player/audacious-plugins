@@ -49,17 +49,11 @@ enum {DRAG_SELECT = 1, DRAG_MOVE};
 struct PlaylistData
 {
     GtkWidget * slider;
-    PangoFontDescription * font = nullptr;
+    PangoFontDescPtr font;
     String title_text;
     int width, height, row_height, offset, rows, first, scroll, hover, drag;
     int popup_pos, popup_source;
     bool popup_shown;
-
-    ~PlaylistData ()
-    {
-        if (font)
-            pango_font_description_free (font);
-    }
 
     void update_title ();
     void calc_layout ();
@@ -175,9 +169,8 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
     if (data->offset)
     {
         layout = gtk_widget_create_pango_layout (wid, data->title_text);
-        pango_layout_set_font_description (layout, data->font);
-        pango_layout_set_width (layout, PANGO_SCALE * (data->width - left -
-         right));
+        pango_layout_set_font_description (layout, data->font.get ());
+        pango_layout_set_width (layout, PANGO_SCALE * (data->width - left - right));
         pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
         pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_MIDDLE);
 
@@ -214,7 +207,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
             snprintf (buf, sizeof buf, "%d.", 1 + i);
 
             layout = gtk_widget_create_pango_layout (wid, buf);
-            pango_layout_set_font_description (layout, data->font);
+            pango_layout_set_font_description (layout, data->font.get ());
 
             PangoRectangle rect;
             pango_layout_get_pixel_extents (layout, nullptr, & rect);
@@ -244,7 +237,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
             continue;
 
         layout = gtk_widget_create_pango_layout (wid, str_format_time (len));
-        pango_layout_set_font_description (layout, data->font);
+        pango_layout_set_font_description (layout, data->font.get ());
 
         PangoRectangle rect;
         pango_layout_get_pixel_extents (layout, nullptr, & rect);
@@ -277,7 +270,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
             snprintf (buf, sizeof buf, "(#%d)", 1 + pos);
 
             layout = gtk_widget_create_pango_layout (wid, buf);
-            pango_layout_set_font_description (layout, data->font);
+            pango_layout_set_font_description (layout, data->font.get ());
 
             PangoRectangle rect;
             pango_layout_get_pixel_extents (layout, nullptr, & rect);
@@ -303,9 +296,8 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
         String title = tuple.get_str (Tuple::FormattedTitle);
 
         layout = gtk_widget_create_pango_layout (wid, title);
-        pango_layout_set_font_description (layout, data->font);
-        pango_layout_set_width (layout, PANGO_SCALE * (data->width - left -
-         right));
+        pango_layout_set_font_description (layout, data->font.get ());
+        pango_layout_set_width (layout, PANGO_SCALE * (data->width - left - right));
         pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_END);
 
         cairo_move_to (cr, left, data->offset + data->row_height * (i -
@@ -407,11 +399,10 @@ void ui_skinned_playlist_set_font (GtkWidget * list, const char * font)
     PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
-    pango_font_description_free (data->font);
-    data->font = pango_font_description_from_string (font);
+    data->font.capture (pango_font_description_from_string (font));
 
     PangoLayout * layout = gtk_widget_create_pango_layout (list, "A");
-    pango_layout_set_font_description (layout, data->font);
+    pango_layout_set_font_description (layout, data->font.get ());
 
     PangoRectangle rect;
     pango_layout_get_pixel_extents (layout, nullptr, & rect);

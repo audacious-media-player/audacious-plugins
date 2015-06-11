@@ -93,14 +93,6 @@ static const uint32_t default_vis_colors[24] = {
 
 Skin skin;
 
-void Skin::destroy ()
-{
-    for (auto p : pixmaps)
-        if (p) cairo_surface_destroy (p);
-    for (auto m : masks)
-        if (m) g_array_free (m, true);
-}
-
 static bool skin_load_pixmap_id (SkinPixmapId id, const char * path)
 {
     StringBuf filename = skin_pixmap_locate (path, skin_pixmap_id_map[id].name,
@@ -112,7 +104,7 @@ static bool skin_load_pixmap_id (SkinPixmapId id, const char * path)
         return false;
     }
 
-    skin.pixmaps[id] = surface_new_from_file (filename);
+    skin.pixmaps[id].capture (surface_new_from_file (filename));
     return skin.pixmaps[id] ? true : false;
 }
 
@@ -164,13 +156,11 @@ static void skin_load_viscolor (const char * path)
     for (int line = 0; string && line < 24; line ++)
     {
         char * next = text_parse_line (string);
-        GArray * array = string_to_garray (string);
+        Index<int> array = string_to_int_array (string);
 
-        if (array->len >= 3)
-            skin.vis_colors[line] = COLOR (g_array_index (array, int, 0),
-             g_array_index (array, int, 1), g_array_index (array, int, 2));
+        if (array.len () >= 3)
+            skin.vis_colors[line] = COLOR (array[0], array[1], array[2]);
 
-        g_array_free (array, true);
         string = next;
     }
 }
@@ -178,7 +168,7 @@ static void skin_load_viscolor (const char * path)
 static void
 skin_numbers_generate_dash ()
 {
-    cairo_surface_t * old = skin.pixmaps[SKIN_NUMBERS];
+    cairo_surface_t * old = skin.pixmaps[SKIN_NUMBERS].get ();
     if (! old || cairo_image_surface_get_width (old) < 99)
         return;
 
@@ -189,8 +179,7 @@ skin_numbers_generate_dash ()
     surface_copy_rect (old, 90, 0, 9, h, surface, 99, 0);
     surface_copy_rect (old, 20, 6, 5, 1, surface, 101, 6);
 
-    cairo_surface_destroy (old);
-    skin.pixmaps[SKIN_NUMBERS] = surface;
+    skin.pixmaps[SKIN_NUMBERS].capture (surface);
 }
 
 static bool
@@ -203,10 +192,10 @@ skin_load_pixmaps(const char * path)
             return false;
 
     if (skin.pixmaps[SKIN_TEXT])
-        skin_get_textcolors (skin.pixmaps[SKIN_TEXT]);
+        skin_get_textcolors (skin.pixmaps[SKIN_TEXT].get ());
 
     if (skin.pixmaps[SKIN_NUMBERS] && cairo_image_surface_get_width
-     (skin.pixmaps[SKIN_NUMBERS]) < 108)
+     (skin.pixmaps[SKIN_NUMBERS].get ()) < 108)
         skin_numbers_generate_dash ();
 
     return true;
@@ -257,6 +246,9 @@ bool skin_load (const char * path)
     /* save current skin data */
     Skin old_skin (std::move (skin));
 
+    /* reset to defaults */
+    skin = Skin ();
+
     if (skin_load_data (path))
     {
         aud_set_str ("skins", "skin", path);
@@ -306,7 +298,7 @@ void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc, int
 
     cairo_save (cr);
     cairo_scale (cr, config.scale, config.scale);
-    cairo_set_source_surface (cr, skin.pixmaps[id], xdest - xsrc, ydest - ysrc);
+    cairo_set_source_surface (cr, skin.pixmaps[id].get (), xdest - xsrc, ydest - ysrc);
     cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
     cairo_rectangle (cr, xdest, ydest, width, height);
     cairo_fill (cr);
@@ -322,7 +314,7 @@ void skin_get_eq_spline_colors (uint32_t colors[19])
     }
 
     for (int i = 0; i < 19; i ++)
-        colors[i] = surface_get_pixel (skin.pixmaps[SKIN_EQMAIN], 115, i + 294);
+        colors[i] = surface_get_pixel (skin.pixmaps[SKIN_EQMAIN].get (), 115, i + 294);
 }
 
 static void skin_draw_playlistwin_frame_top (cairo_t * cr, int width, bool focus)
