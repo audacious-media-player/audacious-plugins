@@ -39,11 +39,6 @@
 #include "ui_skin.h"
 #include "util.h"
 
-#define EXTENSION_TARGETS 7
-
-static const char *ext_targets[EXTENSION_TARGETS] =
-{ "bmp", "xpm", "png", "svg", "gif", "jpg", "jpeg" };
-
 struct SkinPixmapIdMapping {
     const char *name;
     const char *alt_name;
@@ -106,77 +101,18 @@ void Skin::destroy ()
         if (m) g_array_free (m, true);
 }
 
-static char * skin_pixmap_locate (const char * dirname, char * * basenames)
+static bool skin_load_pixmap_id (SkinPixmapId id, const char * path)
 {
-    char * filename = nullptr;
-
-    for (int i = 0; basenames[i] != nullptr; i ++)
-    {
-        if ((filename = find_file_case_path (dirname, basenames[i])) != nullptr)
-            break;
-    }
-
-    return filename;
-}
-
-/**
- * Creates possible file names for a pixmap.
- *
- * Basically this makes list of all possible file names that pixmap data
- * can be found from by using the static ext_targets variable to get all
- * possible extensions that pixmap file might have.
- */
-static char **
-skin_pixmap_create_basenames(const SkinPixmapIdMapping * pixmap_id_mapping)
-{
-    char **basenames = g_new0 (char *, EXTENSION_TARGETS * 2 + 1);
-
-    // Create list of all possible image formats that can be loaded
-    for (int i = 0, y = 0; i < EXTENSION_TARGETS; i++, y++)
-    {
-        basenames[y] =
-            g_strdup_printf("%s.%s", pixmap_id_mapping->name, ext_targets[i]);
-
-        if (pixmap_id_mapping->alt_name)
-            basenames[++y] =
-                g_strdup_printf("%s.%s", pixmap_id_mapping->alt_name,
-                                ext_targets[i]);
-    }
-
-    return basenames;
-}
-
-/**
- * Locates a pixmap file for skin.
- */
-static char *
-skin_pixmap_locate_basenames(const SkinPixmapIdMapping * pixmap_id_mapping,
-                             const char * path)
-{
-    char *filename = nullptr;
-    char **basenames = skin_pixmap_create_basenames(pixmap_id_mapping);
-
-    filename = skin_pixmap_locate(path, basenames);
-
-    g_strfreev(basenames);
+    StringBuf filename = skin_pixmap_locate (path, skin_pixmap_id_map[id].name,
+     skin_pixmap_id_map[id].alt_name);
 
     if (! filename)
-        AUDERR ("Skin does not contain a \"%s\" pixmap.\n",
-         pixmap_id_mapping->name);
-
-    return filename;
-}
-
-static bool
-skin_load_pixmap_id(SkinPixmapId id, const char * path)
-{
-    char * filename = skin_pixmap_locate_basenames (& skin_pixmap_id_map[id], path);
-    if (! filename)
+    {
+        AUDERR ("Skin does not contain a \"%s\" pixmap.\n", skin_pixmap_id_map[id].name);
         return false;
+    }
 
     skin.pixmaps[id] = surface_new_from_file (filename);
-
-    g_free (filename);
     return skin.pixmaps[id] ? true : false;
 }
 
@@ -273,48 +209,47 @@ skin_load_pixmaps(const char * path)
      (skin.pixmaps[SKIN_NUMBERS]) < 108)
         skin_numbers_generate_dash ();
 
-    skin_load_pl_colors (path);
-    skin_load_viscolor (path);
-
     return true;
 }
 
 static bool skin_load_data (const char * path)
 {
-    char *skin_path;
-    int archive = 0;
-
-    AUDDBG("Attempt to load skin \"%s\"\n", path);
+    AUDDBG ("Attempt to load skin \"%s\"\n", path);
 
     if (! g_file_test (path, G_FILE_TEST_EXISTS))
         return false;
 
-    if (file_is_archive(path)) {
-        AUDDBG("Attempt to load archive\n");
-        if (!(skin_path = archive_decompress(path))) {
-            AUDDBG("Unable to extract skin archive (%s)\n", path);
+    StringBuf archive_path;
+    if (file_is_archive (path))
+    {
+        AUDDBG ("Attempt to load archive\n");
+        archive_path.steal (archive_decompress (path));
+
+        if (! archive_path)
+        {
+            AUDDBG ("Unable to extract skin archive (%s)\n", path);
             return false;
         }
-        archive = 1;
-    } else {
-        skin_path = g_strdup(path);
+
+        path = archive_path;
     }
 
-    skin_load_hints (skin_path);
+    bool success = skin_load_pixmaps (path);
 
-    if (!skin_load_pixmaps(skin_path)) {
-        if(archive) del_directory(skin_path);
-        g_free(skin_path);
-        AUDDBG("Skin loading failed\n");
-        return false;
+    if (success)
+    {
+        skin_load_hints (path);
+        skin_load_pl_colors (path);
+        skin_load_viscolor (path);
+        skin_load_masks (path);
     }
+    else
+        AUDDBG ("Skin loading failed\n");
 
-    skin_load_masks (skin_path);
+    if (archive_path)
+        del_directory (archive_path);
 
-    if(archive) del_directory(skin_path);
-    g_free(skin_path);
-
-    return true;
+    return success;
 }
 
 bool skin_load (const char * path)
@@ -351,22 +286,16 @@ void skin_install_skin (const char * path)
     const char * user_skin_dir = skins_get_user_skin_dir ();
     make_directory (user_skin_dir);
 
-    char * base = g_path_get_basename (path);
-    char * target = g_build_filename (user_skin_dir, base, nullptr);
+    StringBuf base = filename_get_base (path);
+    StringBuf target = filename_build ({user_skin_dir, base});
 
     if (! g_file_set_contents (target, data, len, & err))
     {
         AUDERR ("Failed to write %s: %s\n", path, err->message);
         g_error_free (err);
-        g_free (data);
-        g_free (base);
-        g_free (target);
-        return;
     }
 
     g_free (data);
-    g_free (base);
-    g_free (target);
 }
 
 void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc, int

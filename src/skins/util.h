@@ -30,26 +30,25 @@
 
 #include <libaudcore/vfs.h>
 
-typedef gboolean(*DirForeachFunc) (const char *path, const char *basename,
-                                   void * user_data);
+typedef void (* DirForeachFunc) (const char * path, const char * basename);
 
-char * find_file_case (const char * folder, const char * basename);
-char * find_file_case_path (const char * folder, const char * basename);
+StringBuf find_file_case_path (const char * folder, const char * basename);
 
 VFSFile open_local_file_nocase (const char * folder, const char * basename);
+StringBuf skin_pixmap_locate (const char * folder, const char * basename,
+ const char * altname = nullptr);
 
 char * text_parse_line (char * text);
 
-void make_directory(const char *path);
-void del_directory(const char *path);
+void make_directory (const char * path);
+void del_directory (const char * path);
 
-gboolean dir_foreach(const char *path, DirForeachFunc function,
-                     void * user_data, GError **error);
+bool dir_foreach (const char * path, DirForeachFunc func);
 
 GArray *string_to_garray(const char *str);
 
-gboolean file_is_archive(const char *filename);
-char *archive_decompress(const char *path);
-char *archive_basename(const char *path);
+bool file_is_archive (const char * filename);
+StringBuf archive_basename (const char * str);
+StringBuf archive_decompress (const char * path);
 
 #endif

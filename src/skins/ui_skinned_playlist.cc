@@ -39,20 +39,32 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/playlist.h>
 #include <libaudgui/libaudgui.h>
 
 enum {DRAG_SELECT = 1, DRAG_MOVE};
 
-typedef struct {
+struct PlaylistData
+{
     GtkWidget * slider;
-    PangoFontDescription * font;
-    int width, height, row_height, offset, rows, first, scroll,
-     hover, drag;
+    PangoFontDescription * font = nullptr;
+    String title_text;
+    int width, height, row_height, offset, rows, first, scroll, hover, drag;
     int popup_pos, popup_source;
-    gboolean popup_shown;
-} PlaylistData;
+    bool popup_shown;
+
+    ~PlaylistData ()
+    {
+        if (font)
+            pango_font_description_free (font);
+    }
+
+    void update_title ();
+    void calc_layout ();
+    int calc_position (int y) const;
+};
 
 static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event, PlaylistData * data);
 static gboolean playlist_button_release (GtkWidget * list, GdkEventButton * event, PlaylistData * data);
@@ -63,39 +75,50 @@ static void scroll_cb (void * data_);
 static void popup_trigger (GtkWidget * list, PlaylistData * data, int pos);
 static void popup_hide (GtkWidget * list, PlaylistData * data);
 
-static void calc_layout (PlaylistData * data)
+void PlaylistData::update_title ()
 {
-    data->rows = data->height / data->row_height;
-
-    if (data->rows && active_title)
+    if (aud_playlist_count () > 1)
     {
-        data->offset = data->row_height;
-        data->rows --;
+        String title = aud_playlist_get_title (active_playlist);
+        title_text = String (str_printf (_("%s (%d of %d)"),
+         (const char *) title, 1 + active_playlist, aud_playlist_count ()));
     }
     else
-        data->offset = 0;
-
-    if (data->first + data->rows > active_length)
-        data->first = active_length - data->rows;
-    if (data->first < 0)
-        data->first = 0;
+        title_text = String ();
 }
 
-static int calc_position (PlaylistData * data, int y)
+void PlaylistData::calc_layout ()
 {
-    if (y < data->offset)
+    rows = height / row_height;
+
+    if (rows && title_text)
+    {
+        offset = row_height;
+        rows --;
+    }
+    else
+        offset = 0;
+
+    if (first + rows > active_length)
+        first = active_length - rows;
+    if (first < 0)
+        first = 0;
+}
+
+int PlaylistData::calc_position (int y) const
+{
+    if (y < offset)
         return -1;
 
-    int position = data->first + (y - data->offset) / data->row_height;
+    int position = first + (y - offset) / row_height;
 
-    if (position >= data->first + data->rows || position >= active_length)
+    if (position >= first + rows || position >= active_length)
         return active_length;
 
     return position;
 }
 
-static int adjust_position (PlaylistData * data, gboolean relative, int
- position)
+static int adjust_position (bool relative, int position)
 {
     if (active_length == 0)
         return -1;
@@ -151,7 +174,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
 
     if (data->offset)
     {
-        layout = gtk_widget_create_pango_layout (wid, active_title);
+        layout = gtk_widget_create_pango_layout (wid, data->title_text);
         pango_layout_set_font_description (layout, data->font);
         pango_layout_set_width (layout, PANGO_SCALE * (data->width - left -
          right));
@@ -323,9 +346,7 @@ DRAW_FUNC_END
 static void playlist_destroy (GtkWidget * list, PlaylistData * data)
 {
     cancel_all (list, data);
-
-    pango_font_description_free (data->font);
-    g_free (data);
+    delete data;
 }
 
 GtkWidget * ui_skinned_playlist_new (int width, int height, const char * font)
@@ -336,11 +357,12 @@ GtkWidget * ui_skinned_playlist_new (int width, int height, const char * font)
     gtk_widget_add_events (list, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
      | GDK_LEAVE_NOTIFY_MASK | GDK_POINTER_MOTION_MASK);
 
-    PlaylistData * data = g_new0 (PlaylistData, 1);
+    PlaylistData * data = new PlaylistData ();
     data->width = width * config.scale;
     data->height = height * config.scale;
     data->hover = -1;
     data->popup_pos = -1;
+    data->update_title ();
     g_object_set_data ((GObject *) list, "playlistdata", data);
 
     DRAW_CONNECT_PROXY (list, playlist_draw, data);
@@ -372,8 +394,8 @@ void ui_skinned_playlist_resize (GtkWidget * list, int width, int height)
 
     data->width = width * config.scale;
     data->height = height * config.scale;
+    data->calc_layout ();
 
-    calc_layout (data);
     gtk_widget_queue_draw (list);
 
     if (data->slider)
@@ -396,10 +418,9 @@ void ui_skinned_playlist_set_font (GtkWidget * list, const char * font)
 
     /* make sure row_height is non-zero; we divide by it */
     data->row_height = aud::max (rect.height, 1);
+    data->calc_layout ();
 
     g_object_unref (layout);
-
-    calc_layout (data);
     gtk_widget_queue_draw (list);
 
     if (data->slider)
@@ -411,7 +432,8 @@ void ui_skinned_playlist_update (GtkWidget * list)
     PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
-    calc_layout (data);
+    data->update_title ();
+    data->calc_layout ();
 
     gtk_widget_queue_draw (list);
 
@@ -424,12 +446,12 @@ static void scroll_to (PlaylistData * data, int position)
     if (position < data->first || position >= data->first + data->rows)
         data->first = position - data->rows / 2;
 
-    calc_layout (data);
+    data->calc_layout ();
 }
 
 static void select_single (PlaylistData * data, gboolean relative, int position)
 {
-    position = adjust_position (data, relative, position);
+    position = adjust_position (relative, position);
 
     if (position == -1)
         return;
@@ -442,12 +464,12 @@ static void select_single (PlaylistData * data, gboolean relative, int position)
 
 static void select_extend (PlaylistData * data, gboolean relative, int position)
 {
-    position = adjust_position (data, relative, position);
+    position = adjust_position (relative, position);
 
     if (position == -1)
         return;
 
-    int count = adjust_position (data, TRUE, 0);
+    int count = adjust_position (TRUE, 0);
     int sign = (position > count) ? 1 : -1;
 
     for (; count != position; count += sign)
@@ -461,7 +483,7 @@ static void select_extend (PlaylistData * data, gboolean relative, int position)
 
 static void select_slide (PlaylistData * data, gboolean relative, int position)
 {
-    position = adjust_position (data, relative, position);
+    position = adjust_position (relative, position);
 
     if (position == -1)
         return;
@@ -472,7 +494,7 @@ static void select_slide (PlaylistData * data, gboolean relative, int position)
 
 static void select_toggle (PlaylistData * data, gboolean relative, int position)
 {
-    position = adjust_position (data, relative, position);
+    position = adjust_position (relative, position);
 
     if (position == -1)
         return;
@@ -486,7 +508,7 @@ static void select_toggle (PlaylistData * data, gboolean relative, int position)
 static void select_move (PlaylistData * data, gboolean relative, int position)
 {
     int focus = aud_playlist_get_focus (active_playlist);
-    position = adjust_position (data, relative, position);
+    position = adjust_position (relative, position);
 
     if (focus == -1 || position == -1 || position == focus)
         return;
@@ -658,7 +680,7 @@ void ui_skinned_playlist_scroll_to (GtkWidget * list, int row)
 
     cancel_all (list, data);
     data->first = row;
-    calc_layout (data);
+    data->calc_layout ();
 
     gtk_widget_queue_draw (list);
 
@@ -718,7 +740,7 @@ int ui_skinned_playlist_hover_end (GtkWidget * list)
 static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event,
  PlaylistData * data)
 {
-    int position = calc_position (data, event->y);
+    int position = data->calc_position (event->y);
     int state = event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK |
      GDK_MOD1_MASK);
 
@@ -804,7 +826,7 @@ static gboolean playlist_button_release (GtkWidget * list,
 static void scroll_cb (void * data_)
 {
     auto data = (PlaylistData *) data_;
-    int position = adjust_position (data, TRUE, data->scroll);
+    int position = adjust_position (TRUE, data->scroll);
 
     if (position == -1)
         return;
@@ -824,7 +846,7 @@ static void scroll_cb (void * data_)
 
 static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event, PlaylistData * data)
 {
-    int position = calc_position (data, event->y);
+    int position = data->calc_position (event->y);
 
     if (data->drag)
     {

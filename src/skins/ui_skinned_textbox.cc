@@ -26,6 +26,8 @@
  */
 
 #include <string.h>
+
+#include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/objects.h>
 
@@ -36,16 +38,25 @@
 
 #define DELAY 50
 
-typedef struct {
-    int width;
-    char * text;
-    PangoFontDescription * font;
-    cairo_surface_t * buf;
-    int buf_width;
+struct TextboxData
+{
+    String text;
+    PangoFontDescription * font = nullptr;
+    cairo_surface_t * buf = nullptr;
+
+    int width, buf_width;
     bool may_scroll, two_way;
     bool scrolling, backward;
     int offset, delay;
-} TextboxData;
+
+    ~TextboxData ()
+    {
+        if (font)
+            pango_font_description_free (font);
+        if (buf)
+            cairo_surface_destroy (buf);
+    }
+};
 
 static GList * textboxes;
 
@@ -255,14 +266,12 @@ static void textbox_render (GtkWidget * textbox, TextboxData * data)
                 data->buf = nullptr;
             }
 
-            char * temp = g_strdup_printf ("%s --- ", data->text);
+            StringBuf temp = str_printf ("%s --- ", (const char *) data->text);
 
             if (data->font)
                 textbox_render_vector (textbox, data, temp);
             else
                 textbox_render_bitmap (textbox, data, temp);
-
-            g_free (temp);
         }
     }
 
@@ -305,8 +314,7 @@ void textbox_set_text (GtkWidget * textbox, const char * text)
     if (data->text && ! strcmp (data->text, text))
         return;
 
-    g_free (data->text);
-    data->text = g_strdup (text);
+    data->text = String (text);
     textbox_render (textbox, data);
 }
 
@@ -343,16 +351,8 @@ void textbox_set_scroll (GtkWidget * textbox, gboolean scroll)
 static void textbox_destroy (GtkWidget * textbox, TextboxData * data)
 {
     timer_remove (TimerRate::Hz30, textbox_scroll, textbox);
-
-    if (data->font)
-        pango_font_description_free (data->font);
-    if (data->buf)
-        cairo_surface_destroy (data->buf);
-
-    g_free (data->text);
-    g_free (data);
-
     textboxes = g_list_remove (textboxes, textbox);
+    delete data;
 }
 
 GtkWidget * textbox_new (int width, const char * text, const char * font,
@@ -364,9 +364,9 @@ GtkWidget * textbox_new (int width, const char * text, const char * font,
     gtk_widget_add_events (textbox, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK);
 
-    TextboxData * data = g_new0 (TextboxData, 1);
+    TextboxData * data = new TextboxData ();
     data->width = width;
-    data->text = g_strdup (text);
+    data->text = String (text);
     data->may_scroll = scroll;
     data->two_way = config.twoway_scroll;
     g_object_set_data ((GObject *) textbox, "textboxdata", data);

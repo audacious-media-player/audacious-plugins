@@ -30,16 +30,18 @@
 #include "ui_skin.h"
 #include "ui_skinned_equalizer_graph.h"
 
-static void init_spline (const double * x, const double * y, int n, double * y2)
+#define N 10
+static_assert (N == AUD_EQ_NBANDS, "only a 10-band EQ is supported");
+
+static void init_spline (const double * x, const double * y, double * y2)
 {
     int i, k;
-    double p, qn, sig, un, *u;
-
-    u = (double *) g_malloc(n * sizeof(double));
+    double p, qn, sig, un;
+    double u[N];
 
     y2[0] = u[0] = 0.0;
 
-    for (i = 1; i < n - 1; i++) {
+    for (i = 1; i < N - 1; i++) {
         sig = ((double) x[i] - x[i - 1]) / ((double) x[i + 1] - x[i - 1]);
         p = sig * y2[i - 1] + 2.0;
         y2[i] = (sig - 1.0) / p;
@@ -50,20 +52,18 @@ static void init_spline (const double * x, const double * y, int n, double * y2)
     }
     qn = un = 0.0;
 
-    y2[n - 1] = (un - qn * u[n - 2]) / (qn * y2[n - 2] + 1.0);
-    for (k = n - 2; k >= 0; k--)
+    y2[N - 1] = (un - qn * u[N - 2]) / (qn * y2[N - 2] + 1.0);
+    for (k = N - 2; k >= 0; k--)
         y2[k] = y2[k] * y2[k + 1] + u[k];
-    g_free(u);
 }
 
-double eval_spline (const double * xa, const double * ya, const double * y2a,
- int n, double x)
+static double eval_spline (const double * xa, const double * ya, const double * y2a, double x)
 {
     int klo, khi, k;
     double h, b, a;
 
     klo = 0;
-    khi = n - 1;
+    khi = N - 1;
     while (khi - klo > 1) {
         k = (khi + klo) >> 1;
         if (xa[k] > x)
@@ -80,7 +80,7 @@ double eval_spline (const double * xa, const double * ya, const double * y2a,
 }
 
 DRAW_FUNC_BEGIN (eq_graph_draw, void)
-    static const double x[10] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
+    static const double x[N] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
 
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 294, 0, 0, 113, 19);
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_get_double (nullptr,
@@ -91,17 +91,17 @@ DRAW_FUNC_BEGIN (eq_graph_draw, void)
     uint32_t cols[19];
     skin_get_eq_spline_colors (cols);
 
-    double bands[AUD_EQ_NBANDS];
+    double bands[N];
     aud_eq_get_bands (bands);
 
-    double yf[10];
-    init_spline (x, bands, 10, yf);
+    double yf[N];
+    init_spline (x, bands, yf);
 
     /* now draw a pixelated line with vector graphics ... -- jlindgren */
     int py = 0;
     for (int i = 0; i < 109; i ++)
     {
-        int y = 9.5 - eval_spline (x, bands, yf, 10, i) * 9 / AUD_EQ_MAX_GAIN;
+        int y = 9.5 - eval_spline (x, bands, yf, i) * 9 / AUD_EQ_MAX_GAIN;
         y = aud::clamp (y, 0, 18);
 
         if (!i)

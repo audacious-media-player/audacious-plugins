@@ -31,10 +31,11 @@
 
 #include <glib/gstdio.h>
 
-#include <libaudcore/runtime.h>
-#include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/multihash.h>
+#include <libaudcore/runtime.h>
 #include <libaudcore/vfs.h>
 
 #include "util.h"
@@ -45,65 +46,64 @@
 #define DIRMODE (S_IRWXU)
 #endif
 
-char * find_file_case (const char * folder, const char * basename)
+StringBuf find_file_case_path (const char * folder, const char * basename)
 {
-    static GHashTable * cache = nullptr;
-    GList * list = nullptr;
-    void * vlist;
+    static SimpleHash<String, Index<String>> cache;
 
-    if (cache == nullptr)
-        cache = g_hash_table_new ((GHashFunc) str_calc_hash, g_str_equal);
+    String key (folder);
+    Index<String> * list = cache.lookup (key);
 
-    if (g_hash_table_lookup_extended (cache, folder, nullptr, & vlist))
-        list = (GList *) vlist;
-    else
+    if (! list)
     {
         GDir * handle = g_dir_open (folder, 0, nullptr);
         if (! handle)
-            return nullptr;
+            return StringBuf ();
+
+        list = cache.add (key, Index<String> ());
 
         const char * name;
         while ((name = g_dir_read_name (handle)))
-            list = g_list_prepend (list, g_strdup (name));
+            list->append (name);
 
-        g_hash_table_insert (cache, g_strdup (folder), list);
         g_dir_close (handle);
     }
 
-    for (; list != nullptr; list = list->next)
+    for (const String & entry : * list)
     {
-        if (! g_ascii_strcasecmp ((char *) list->data, basename))
-            return g_strdup ((char *) list->data);
+        if (! strcmp_nocase (entry, basename))
+            return filename_build ({folder, entry});
     }
 
-    return nullptr;
-}
-
-char * find_file_case_path (const char * folder, const char * basename)
-{
-    char * found, * path;
-
-    if ((found = find_file_case (folder, basename)) == nullptr)
-        return nullptr;
-
-    path = g_strdup_printf ("%s/%s", folder, found);
-    g_free (found);
-    return path;
+    return StringBuf ();
 }
 
 VFSFile open_local_file_nocase (const char * folder, const char * basename)
 {
-    char * path = find_file_case_path (folder, basename);
+    StringBuf path = find_file_case_path (folder, basename);
     if (! path)
         return VFSFile ();
 
     StringBuf uri = filename_to_uri (path);
-    g_free (path);
-
     if (! uri)
         return VFSFile ();
 
     return VFSFile (uri, "r");
+}
+
+StringBuf skin_pixmap_locate (const char * folder, const char * basename, const char * altname)
+{
+    static const char * const exts[] = {".bmp", ".png", ".xpm"};
+
+    for (const char * ext : exts)
+    {
+        StringBuf name = str_concat({basename, ext});
+        name.steal (find_file_case_path (folder, name));
+
+        if (name)
+            return name;
+    }
+
+    return altname ? skin_pixmap_locate (folder, altname) : StringBuf ();
 }
 
 char * text_parse_line (char * text)
@@ -117,23 +117,22 @@ char * text_parse_line (char * text)
     return newline + 1;
 }
 
-typedef enum
+enum ArchiveType
 {
     ARCHIVE_UNKNOWN = 0,
-    ARCHIVE_DIR,
     ARCHIVE_TAR,
     ARCHIVE_TGZ,
     ARCHIVE_ZIP,
     ARCHIVE_TBZ2
-} ArchiveType;
+};
 
-typedef char *(*ArchiveExtractFunc) (const char *, const char *);
+typedef StringBuf (* ArchiveExtractFunc) (const char *, const char *);
 
-typedef struct
+struct ArchiveExtensionType
 {
     ArchiveType type;
     const char *ext;
-} ArchiveExtensionType;
+};
 
 static ArchiveExtensionType archive_extensions[] = {
     {ARCHIVE_TAR, ".tar"},
@@ -142,17 +141,15 @@ static ArchiveExtensionType archive_extensions[] = {
     {ARCHIVE_TGZ, ".tar.gz"},
     {ARCHIVE_TGZ, ".tgz"},
     {ARCHIVE_TBZ2, ".tar.bz2"},
-    {ARCHIVE_TBZ2, ".bz2"},
-    {ARCHIVE_UNKNOWN, nullptr}
+    {ARCHIVE_TBZ2, ".bz2"}
 };
 
-static char *archive_extract_tar(const char *archive, const char *dest);
-static char *archive_extract_zip(const char *archive, const char *dest);
-static char *archive_extract_tgz(const char *archive, const char *dest);
-static char *archive_extract_tbz2(const char *archive, const char *dest);
+static StringBuf archive_extract_tar (const char * archive, const char * dest);
+static StringBuf archive_extract_zip (const char * archive, const char * dest);
+static StringBuf archive_extract_tgz (const char * archive, const char * dest);
+static StringBuf archive_extract_tbz2 (const char * archive, const char * dest);
 
 static ArchiveExtractFunc archive_extract_funcs[] = {
-    nullptr,
     nullptr,
     archive_extract_tar,
     archive_extract_tgz,
@@ -191,180 +188,128 @@ static const char *get_unzip_command(void)
 }
 
 
-static char *archive_extract_tar(const char *archive, const char *dest)
+static StringBuf archive_extract_tar (const char * archive, const char * dest)
 {
-    return g_strdup_printf("%s >/dev/null xf \"%s\" -C %s", get_tar_command(),
-                           archive, dest);
+    return str_printf ("%s >/dev/null xf \"%s\" -C %s", get_tar_command (), archive, dest);
 }
 
-static char *archive_extract_zip(const char *archive, const char *dest)
+static StringBuf archive_extract_zip (const char * archive, const char * dest)
 {
-    return g_strdup_printf("%s >/dev/null -o -j \"%s\" -d %s",
-                           get_unzip_command(), archive, dest);
+    return str_printf ("%s >/dev/null -o -j \"%s\" -d %s", get_unzip_command (), archive, dest);
 }
 
-static char *archive_extract_tgz(const char *archive, const char *dest)
+static StringBuf archive_extract_tgz (const char * archive, const char * dest)
 {
-    return g_strdup_printf("%s >/dev/null xzf \"%s\" -C %s", get_tar_command(),
-                           archive, dest);
+    return str_printf ("%s >/dev/null xzf \"%s\" -C %s", get_tar_command (), archive, dest);
 }
 
-static char *archive_extract_tbz2(const char *archive, const char *dest)
+static StringBuf archive_extract_tbz2 (const char * archive, const char * dest)
 {
-    return g_strdup_printf("bzip2 -dc \"%s\" | %s >/dev/null xf - -C %s",
-                           archive, get_tar_command(), dest);
+    return str_printf ("bzip2 -dc \"%s\" | %s >/dev/null xf - -C %s", archive,
+     get_tar_command (), dest);
 }
 
-
-static ArchiveType archive_get_type(const char *filename)
+static ArchiveType archive_get_type (const char * filename)
 {
-    int i = 0;
-
-    if (g_file_test(filename, G_FILE_TEST_IS_DIR))
-        return ARCHIVE_DIR;
-
-    while (archive_extensions[i].ext)
+    for (int i = 0; archive_extensions[i].ext; i ++)
     {
-        if (g_str_has_suffix(filename, archive_extensions[i].ext))
-        {
+        if (str_has_suffix_nocase (filename, archive_extensions[i].ext))
             return archive_extensions[i].type;
-        }
-        i++;
     }
 
     return ARCHIVE_UNKNOWN;
 }
 
-gboolean file_is_archive(const char *filename)
+bool file_is_archive (const char * filename)
 {
-    return (archive_get_type(filename) > ARCHIVE_DIR);
+    return (archive_get_type (filename) != ARCHIVE_UNKNOWN);
 }
 
-char *archive_basename(const char *str)
+StringBuf archive_basename (const char * str)
 {
-    int i = 0;
-
-    while (archive_extensions[i].ext)
+    for (int i = 0; archive_extensions[i].ext; i ++)
     {
-        if (str_has_suffix_nocase(str, archive_extensions[i].ext))
-        {
-            const char *end = g_strrstr(str, archive_extensions[i].ext);
-            if (end)
-            {
-                return g_strndup(str, end - str);
-            }
-            break;
-        }
-        i++;
+        if (str_has_suffix_nocase (str, archive_extensions[i].ext))
+            return str_copy (str, strlen (str) - strlen (archive_extensions[i].ext));
     }
 
-    return nullptr;
+    return StringBuf ();
 }
 
 /**
  * Escapes characters that are special to the shell inside double quotes.
  *
  * @param string String to be escaped.
- * @return Given string with special characters escaped. Must be freed with g_free().
+ * @return Given string with special characters escaped.
  */
-static char *
-escape_shell_chars(const char * string)
+static StringBuf escape_shell_chars (const char * string)
 {
     const char *special = "$`\"\\";    /* Characters to escape */
-    const char *in = string;
-    char *out, *escaped;
+
     int num = 0;
-
-    while (*in != '\0')
-        if (strchr(special, *in++))
-            num++;
-
-    escaped = g_new (char, strlen(string) + num + 1);
-
-    in = string;
-    out = escaped;
-
-    while (*in != '\0') {
-        if (strchr(special, *in))
-            *out++ = '\\';
-        *out++ = *in++;
+    for (const char * in = string; * in; in ++)
+    {
+        if (strchr (special, * in))
+            num ++;
     }
-    *out = '\0';
+
+    StringBuf escaped (strlen (string) + num);
+
+    char * out = escaped;
+    for (const char * in = string; * in; in ++)
+    {
+        if (strchr (special, * in))
+            * out ++ = '\\';
+        * out ++ = * in;
+    }
 
     return escaped;
 }
 
 /*
-   decompress_archive
-
    Decompresses the archive "filename" to a temporary directory,
-   returns the path to the temp dir, or nullptr if failed,
-   watch out tho, doesn't actually check if the system command succeeds :-|
+   returns the path to the temp dir, or nullptr if failed
 */
 
-char *archive_decompress(const char *filename)
+StringBuf archive_decompress (const char * filename)
 {
-    char *tmpdir, *cmd, *escaped_filename;
-    ArchiveType type;
+    ArchiveType type = archive_get_type (filename);
+    if (type == ARCHIVE_UNKNOWN)
+        return StringBuf ();
 
-    if ((type = archive_get_type(filename)) <= ARCHIVE_DIR)
-        return nullptr;
-
-    tmpdir = g_build_filename(g_get_tmp_dir(), "audacious.XXXXXX", nullptr);
-    if (!g_mkdtemp(tmpdir))
+    StringBuf tmpdir = filename_build ({g_get_tmp_dir (), "audacious.XXXXXX"});
+    if (! g_mkdtemp (tmpdir))
     {
-        g_free(tmpdir);
-        AUDDBG("Unable to load skin: Failed to create temporary "
-               "directory: %s\n", g_strerror(errno));
-        return nullptr;
+        AUDWARN ("Error creating %s: %s\n", strerror (errno));
+        return StringBuf ();
     }
 
-    escaped_filename = escape_shell_chars(filename);
-    cmd = archive_extract_funcs[type] (escaped_filename, tmpdir);
-    g_free(escaped_filename);
+    StringBuf escaped_filename = escape_shell_chars (filename);
+    StringBuf cmd = archive_extract_funcs[type] (escaped_filename, tmpdir);
 
-    if (!cmd)
+    AUDDBG("Executing \"%s\"\n", (const char *) cmd);
+    int ret = system (cmd);
+    if (ret != 0)
     {
-        AUDDBG("extraction function is nullptr!\n");
-        g_free(tmpdir);
-        return nullptr;
+        AUDDBG("Command \"%s\" returned error %d\n", (const char *) cmd, ret);
+        return StringBuf ();
     }
-
-    AUDDBG("Attempt to execute \"%s\"\n", cmd);
-
-    if (system(cmd) != 0)
-    {
-        AUDDBG("could not execute cmd %s\n", cmd);
-        g_free(cmd);
-        return nullptr;
-    }
-    g_free(cmd);
 
     return tmpdir;
 }
 
-static gboolean del_directory_func(const char *path, const char *basename,
-                                   void *params)
+static void del_directory_func (const char * path, const char *)
 {
-    if (!strcmp(basename, ".") || !strcmp(path, ".."))
-        return FALSE;
-
-    if (g_file_test(path, G_FILE_TEST_IS_DIR))
-    {
-        dir_foreach(path, del_directory_func, nullptr, nullptr);
-        g_rmdir(path);
-        return FALSE;
-    }
-
-    g_unlink(path);
-
-    return FALSE;
+    if (g_file_test (path, G_FILE_TEST_IS_DIR))
+        del_directory (path);
+    else
+        g_unlink (path);
 }
 
-void del_directory(const char *path)
+void del_directory (const char * path)
 {
-    dir_foreach(path, del_directory_func, nullptr, nullptr);
-    g_rmdir(path);
+    dir_foreach (path, del_directory_func);
+    g_rmdir (path);
 }
 
 GArray *string_to_garray(const char *str)
@@ -390,43 +335,27 @@ GArray *string_to_garray(const char *str)
     return (array);
 }
 
-gboolean dir_foreach(const char *path, DirForeachFunc function,
-                     void * user_data, GError **error)
+bool dir_foreach (const char * path, DirForeachFunc func)
 {
-    GError *error_out = nullptr;
-    GDir *dir;
-    const char *entry;
-    char *entry_fullpath;
-
-    if (!(dir = g_dir_open(path, 0, &error_out)))
+    GError * error = nullptr;
+    GDir * dir = g_dir_open (path, 0, & error);
+    if (! dir)
     {
-        g_propagate_error(error, error_out);
-        return FALSE;
+        AUDWARN ("Error reading %s: %s\n", path, error->message);
+        g_error_free (error);
+        return false;
     }
 
-    while ((entry = g_dir_read_name(dir)))
-    {
-        entry_fullpath = g_build_filename(path, entry, nullptr);
+    const char * entry;
+    while ((entry = g_dir_read_name (dir)))
+        func (filename_build ({path, entry}), entry);
 
-        if ((*function) (entry_fullpath, entry, user_data))
-        {
-            g_free(entry_fullpath);
-            break;
-        }
-
-        g_free(entry_fullpath);
-    }
-
-    g_dir_close(dir);
-
-    return TRUE;
+    g_dir_close (dir);
+    return true;
 }
 
 void make_directory(const char *path)
 {
-    if (g_mkdir_with_parents(path, DIRMODE) == 0)
-        return;
-
-    g_printerr(_("Could not create directory (%s): %s\n"), path,
-               g_strerror(errno));
+    if (g_mkdir_with_parents (path, DIRMODE) != 0)
+        AUDWARN ("Error creating %s: %s\n", strerror (errno));
 }

@@ -68,8 +68,6 @@
 
 GtkWidget *mainwin = nullptr;
 
-static int balance;
-
 static bool seeking = false;
 static int seek_start, seek_time;
 
@@ -229,21 +227,12 @@ void mainwin_show_status_message (const char * message)
     status_message_source = g_timeout_add (1000, clear_status_message, nullptr);
 }
 
-static char *
-make_mainwin_title(const char * title)
+void mainwin_set_song_title (const char * title)
 {
-    if (title != nullptr)
-        return g_strdup_printf(_("%s - Audacious"), title);
+    if (title)
+        gtk_window_set_title ((GtkWindow *) mainwin, str_printf (_("%s - Audacious"), title));
     else
-        return g_strdup(_("Audacious"));
-}
-
-void
-mainwin_set_song_title(const char * title)
-{
-    char *mainwin_title_text = make_mainwin_title(title);
-    gtk_window_set_title(GTK_WINDOW(mainwin), mainwin_title_text);
-    g_free(mainwin_title_text);
+        gtk_window_set_title ((GtkWindow *) mainwin, _("Audacious"));
 
     mainwin_set_info_text (title ? title : "");
 }
@@ -686,10 +675,8 @@ static void mainwin_position_motion_cb (void)
     int pos = hslider_get_pos (mainwin_position);
     int time = pos * length / 219;
 
-    char * seek_msg = g_strdup_printf (_("Seek to %d:%-2.2d / %d:%-2.2d"), time
-     / 60, time % 60, length / 60, length % 60);
-    mainwin_lock_info_text(seek_msg);
-    g_free(seek_msg);
+    mainwin_lock_info_text (str_printf (_("Seek to %d:%-2.2d / %d:%-2.2d"),
+     time / 60, time % 60, length / 60, length % 60));
 }
 
 static void mainwin_position_release_cb (void)
@@ -702,48 +689,32 @@ static void mainwin_position_release_cb (void)
     mainwin_release_info_text();
 }
 
-void
-mainwin_adjust_volume_motion(int v)
+void mainwin_adjust_volume_motion (int v)
 {
-    char *volume_msg;
-
-    volume_msg = g_strdup_printf(_("Volume: %d%%"), v);
-    mainwin_lock_info_text(volume_msg);
-    g_free(volume_msg);
-
     aud_drct_set_volume_main (v);
-    aud_drct_set_volume_balance (balance);
+    mainwin_lock_info_text (str_printf (_("Volume: %d%%"), v));
 }
 
-void
-mainwin_adjust_volume_release(void)
+void mainwin_adjust_volume_release ()
 {
-    mainwin_release_info_text();
+    mainwin_release_info_text ();
 }
 
-void
-mainwin_adjust_balance_motion(int b)
+void mainwin_adjust_balance_motion (int b)
 {
-    char *balance_msg;
-
-    balance = b;
     aud_drct_set_volume_balance (b);
 
     if (b < 0)
-        balance_msg = g_strdup_printf(_("Balance: %d%% left"), -b);
+        mainwin_lock_info_text (str_printf (_("Balance: %d%% left"), -b));
     else if (b == 0)
-        balance_msg = g_strdup_printf(_("Balance: center"));
+        mainwin_lock_info_text (_("Balance: center"));
     else
-        balance_msg = g_strdup_printf(_("Balance: %d%% right"), b);
-
-    mainwin_lock_info_text(balance_msg);
-    g_free(balance_msg);
+        mainwin_lock_info_text (str_printf (_("Balance: %d%% right"), b));
 }
 
-void
-mainwin_adjust_balance_release(void)
+void mainwin_adjust_balance_release ()
 {
-    mainwin_release_info_text();
+    mainwin_release_info_text ();
 }
 
 static void mainwin_volume_set_frame (void)

@@ -62,7 +62,6 @@
 #define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), __VA_ARGS__)
 
 int active_playlist = -1, active_length = 0;
-char * active_title = nullptr;
 
 GtkWidget * playlistwin, * playlistwin_list, * playlistwin_sinfo;
 
@@ -741,29 +740,12 @@ playlistwin_create_window(void)
     g_signal_connect (playlistwin, "drag-data-received", (GCallback) drag_data_received, nullptr);
 }
 
-static void get_title (void)
-{
-    int playlists = aud_playlist_count ();
-
-    g_free (active_title);
-
-    if (playlists > 1)
-    {
-        String title = aud_playlist_get_title (active_playlist);
-        active_title = g_strdup_printf (_("%s (%d of %d)"),
-         (const char *) title, 1 + active_playlist, playlists);
-    }
-    else
-        active_title = nullptr;
-}
-
 static void update_cb (void * unused, void * another)
 {
     int old = active_playlist;
 
     active_playlist = aud_playlist_get_active ();
     active_length = aud_playlist_entry_count (active_playlist);
-    get_title ();
 
     if (active_playlist != old)
     {
@@ -799,8 +781,6 @@ playlistwin_create(void)
 {
     active_playlist = aud_playlist_get_active ();
     active_length = aud_playlist_entry_count (active_playlist);
-    active_title = nullptr;
-    get_title ();
 
     playlistwin_create_window();
 
@@ -829,8 +809,6 @@ void playlistwin_unhook (void)
     hook_dissociate ("playlist position", follow_cb);
     hook_dissociate ("playlist activate", update_cb);
     hook_dissociate ("playlist update", update_cb);
-    g_free (active_title);
-    active_title = nullptr;
 }
 
 void action_playlist_track_info(void)
