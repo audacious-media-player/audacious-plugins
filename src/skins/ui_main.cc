@@ -962,19 +962,19 @@ mainwin_create_widgets(void)
         font = aud_get_str ("skins", "mainwin_font");
 
     bool shaded = aud_get_bool ("skins", "mainwin_shaded");
-    mainwin_info = textbox_new (153, "", font, ! shaded && config.autoscroll);
+    mainwin_info = textbox_new (153, font, ! shaded && config.autoscroll);
 
     window_put_widget (mainwin, FALSE, mainwin_info, 112, 27);
     g_signal_connect (mainwin_info, "button-press-event", (GCallback)
      mainwin_info_button_press, nullptr);
 
-    mainwin_othertext = textbox_new (153, "", nullptr, FALSE);
+    mainwin_othertext = textbox_new (153, nullptr, false);
     window_put_widget (mainwin, FALSE, mainwin_othertext, 112, 43);
 
-    mainwin_rate_text = textbox_new (15, "", nullptr, FALSE);
+    mainwin_rate_text = textbox_new (15, nullptr, false);
     window_put_widget (mainwin, FALSE, mainwin_rate_text, 111, 43);
 
-    mainwin_freq_text = textbox_new (10, "", nullptr, FALSE);
+    mainwin_freq_text = textbox_new (10, nullptr, false);
     window_put_widget (mainwin, FALSE, mainwin_freq_text, 156, 43);
 
     mainwin_menurow = ui_skinned_menurow_new ();
@@ -1078,10 +1078,10 @@ mainwin_create_widgets(void)
     hslider_on_motion (mainwin_sposition, mainwin_spos_motion_cb);
     hslider_on_release (mainwin_sposition, mainwin_spos_release_cb);
 
-    mainwin_stime_min = textbox_new (15, "", nullptr, FALSE);
+    mainwin_stime_min = textbox_new (15, nullptr, false);
     window_put_widget (mainwin, TRUE, mainwin_stime_min, 130, 4);
 
-    mainwin_stime_sec = textbox_new (10, "", nullptr, FALSE);
+    mainwin_stime_sec = textbox_new (10, nullptr, false);
     window_put_widget (mainwin, TRUE, mainwin_stime_sec, 147, 4);
 
     g_signal_connect(mainwin_stime_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
