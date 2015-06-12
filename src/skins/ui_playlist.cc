@@ -597,7 +597,7 @@ playlistwin_create_widgets(void)
     int w = config.playlist_width, h = config.playlist_height;
 
     bool shaded = aud_get_bool ("skins", "playlist_shaded");
-    playlistwin_sinfo = textbox_new (w - 35, "", nullptr, shaded && config.autoscroll);
+    playlistwin_sinfo = textbox_new (w - 35, nullptr, shaded && config.autoscroll);
     window_put_widget (playlistwin, TRUE, playlistwin_sinfo, 4, 4);
 
     playlistwin_shaded_shade = button_new (9, 9, 128, 45, 150, 42, SKIN_PLEDIT, SKIN_PLEDIT);
@@ -625,16 +625,16 @@ playlistwin_create_widgets(void)
     window_put_widget (playlistwin, FALSE, playlistwin_slider, w - 15, 20);
     ui_skinned_playlist_set_slider (playlistwin_list, playlistwin_slider);
 
-    playlistwin_time_min = textbox_new (15, "", nullptr, FALSE);
+    playlistwin_time_min = textbox_new (15, nullptr, false);
     window_put_widget (playlistwin, FALSE, playlistwin_time_min, w - 82, h - 15);
 
-    playlistwin_time_sec = textbox_new (10, "", nullptr, FALSE);
+    playlistwin_time_sec = textbox_new (10, nullptr, false);
     window_put_widget (playlistwin, FALSE, playlistwin_time_sec, w - 64, h - 15);
 
     g_signal_connect(playlistwin_time_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
     g_signal_connect(playlistwin_time_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
 
-    playlistwin_info = textbox_new (90, "", nullptr, FALSE);
+    playlistwin_info = textbox_new (90, nullptr, false);
     window_put_widget (playlistwin, FALSE, playlistwin_info, w - 143, h - 28);
 
     /* mini play control buttons at right bottom corner */

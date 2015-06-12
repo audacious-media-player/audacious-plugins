@@ -71,8 +71,8 @@ GtkWidget *mainwin = nullptr;
 static bool seeking = false;
 static int seek_start, seek_time;
 
-static bool mainwin_info_text_locked = false;
-static String mainwin_tb_old_text;
+static GtkWidget * locked_textbox = nullptr;
+static String locked_old_text;
 
 static int status_message_source = 0;
 static int mainwin_volume_release_timeout = 0;
@@ -170,46 +170,35 @@ mainwin_shade_toggle(void)
 
 static void mainwin_lock_info_text (const char * text)
 {
-    GtkWidget * textbox =
-     skin.hints.mainwin_othertext_is_status ?
-     mainwin_othertext : mainwin_info;
+    if (! locked_textbox)
+    {
+        locked_textbox = skin.hints.mainwin_othertext_is_status ? mainwin_othertext : mainwin_info;
+        locked_old_text = String (textbox_get_text (locked_textbox));
+    }
 
-    if (! mainwin_info_text_locked)
-        mainwin_tb_old_text = String (textbox_get_text (textbox));
-
-    mainwin_info_text_locked = true;
-    textbox_set_text (textbox, text);
+    textbox_set_text (locked_textbox, text);
 }
 
 static void mainwin_release_info_text (void)
 {
-    if (! mainwin_info_text_locked)
-        return;
-
-    if (skin.hints.mainwin_othertext_is_status)
-        textbox_set_text (mainwin_othertext, mainwin_tb_old_text);
-    else
-        textbox_set_text (mainwin_info, mainwin_tb_old_text);
-
-    mainwin_info_text_locked = false;
-    mainwin_tb_old_text = String ();
+    if (locked_textbox)
+    {
+        textbox_set_text (locked_textbox, locked_old_text);
+        locked_textbox = nullptr;
+        locked_old_text = String ();
+    }
 }
 
-static void mainwin_set_info_text (const char * text)
+static void set_info_text (GtkWidget * textbox, const char * text)
 {
-    if (mainwin_info_text_locked && ! skin.hints.mainwin_othertext_is_status)
-        mainwin_tb_old_text = String (text);
+    if (textbox == locked_textbox)
+        locked_old_text = String (text);
     else
-        textbox_set_text (mainwin_info, text);
+        textbox_set_text (textbox, text);
 }
 
-static void mainwin_set_othertext (const char * text)
-{
-    if (mainwin_info_text_locked && skin.hints.mainwin_othertext_is_status)
-        mainwin_tb_old_text = String (text);
-    else
-        textbox_set_text (mainwin_othertext, text);
-}
+#define mainwin_set_info_text(t) set_info_text (mainwin_info, (t))
+#define mainwin_set_othertext(t) set_info_text (mainwin_othertext, (t))
 
 static gboolean clear_status_message (void *)
 {
@@ -962,19 +951,19 @@ mainwin_create_widgets(void)
         font = aud_get_str ("skins", "mainwin_font");
 
     bool shaded = aud_get_bool ("skins", "mainwin_shaded");
-    mainwin_info = textbox_new (153, "", font, ! shaded && config.autoscroll);
+    mainwin_info = textbox_new (153, font, ! shaded && config.autoscroll);
 
     window_put_widget (mainwin, FALSE, mainwin_info, 112, 27);
     g_signal_connect (mainwin_info, "button-press-event", (GCallback)
      mainwin_info_button_press, nullptr);
 
-    mainwin_othertext = textbox_new (153, "", nullptr, FALSE);
+    mainwin_othertext = textbox_new (153, nullptr, false);
     window_put_widget (mainwin, FALSE, mainwin_othertext, 112, 43);
 
-    mainwin_rate_text = textbox_new (15, "", nullptr, FALSE);
+    mainwin_rate_text = textbox_new (15, nullptr, false);
     window_put_widget (mainwin, FALSE, mainwin_rate_text, 111, 43);
 
-    mainwin_freq_text = textbox_new (10, "", nullptr, FALSE);
+    mainwin_freq_text = textbox_new (10, nullptr, false);
     window_put_widget (mainwin, FALSE, mainwin_freq_text, 156, 43);
 
     mainwin_menurow = ui_skinned_menurow_new ();
@@ -1078,10 +1067,10 @@ mainwin_create_widgets(void)
     hslider_on_motion (mainwin_sposition, mainwin_spos_motion_cb);
     hslider_on_release (mainwin_sposition, mainwin_spos_release_cb);
 
-    mainwin_stime_min = textbox_new (15, "", nullptr, FALSE);
+    mainwin_stime_min = textbox_new (15, nullptr, false);
     window_put_widget (mainwin, TRUE, mainwin_stime_min, 130, 4);
 
-    mainwin_stime_sec = textbox_new (10, "", nullptr, FALSE);
+    mainwin_stime_sec = textbox_new (10, nullptr, false);
     window_put_widget (mainwin, TRUE, mainwin_stime_sec, 147, 4);
 
     g_signal_connect(mainwin_stime_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
@@ -1176,8 +1165,8 @@ void mainwin_unhook (void)
     ui_main_evlistener_dissociate ();
     start_stop_visual (TRUE);
 
-    mainwin_info_text_locked = false;
-    mainwin_tb_old_text = String ();
+    locked_textbox = nullptr;
+    locked_old_text = String ();
 }
 
 void

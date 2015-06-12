@@ -104,8 +104,6 @@ static void textbox_scroll (void * textbox)
 static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
  const char * text)
 {
-    g_return_if_fail (data->font && ! data->buf && text);
-
     PangoLayout * layout = gtk_widget_create_pango_layout (textbox, text);
     pango_layout_set_font_description (layout, data->font.get ());
 
@@ -183,8 +181,6 @@ static void lookup_char (const char c, int * x, int * y)
 static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
  const char * text)
 {
-    g_return_if_fail (! data->font && ! data->buf && text);
-
     int cw = skin.hints.textbox_bitmap_font_width;
     int ch = skin.hints.textbox_bitmap_font_height;
 
@@ -227,17 +223,17 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
 
 static void textbox_render (GtkWidget * textbox, TextboxData * data)
 {
-    g_return_if_fail (data->text);
-
     data->scrolling = FALSE;
     data->backward = FALSE;
     data->offset = 0;
     data->delay = 0;
 
+    const char * text = data->text ? data->text : "";
+
     if (data->font)
-        textbox_render_vector (textbox, data, data->text);
+        textbox_render_vector (textbox, data, text);
     else
-        textbox_render_bitmap (textbox, data, data->text);
+        textbox_render_bitmap (textbox, data, text);
 
     if (data->may_scroll && data->buf_width > data->width)
     {
@@ -245,7 +241,7 @@ static void textbox_render (GtkWidget * textbox, TextboxData * data)
 
         if (! data->two_way)
         {
-            StringBuf temp = str_printf ("%s --- ", (const char *) data->text);
+            StringBuf temp = str_printf ("%s --- ", text);
 
             if (data->font)
                 textbox_render_vector (textbox, data, temp);
@@ -287,10 +283,7 @@ void textbox_set_text (GtkWidget * textbox, const char * text)
     TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
 
-    if (! text)
-        text = "";
-
-    if (data->text && ! strcmp (data->text, text))
+    if (! strcmp_safe (data->text, text))
         return;
 
     data->text = String (text);
@@ -310,7 +303,7 @@ void textbox_set_font (GtkWidget * textbox, const char * font)
     textbox_render (textbox, data);
 }
 
-void textbox_set_scroll (GtkWidget * textbox, gboolean scroll)
+void textbox_set_scroll (GtkWidget * textbox, bool scroll)
 {
     TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
@@ -330,8 +323,7 @@ static void textbox_destroy (GtkWidget * textbox, TextboxData * data)
     delete data;
 }
 
-GtkWidget * textbox_new (int width, const char * text, const char * font,
- gboolean scroll)
+GtkWidget * textbox_new (int width, const char * font, bool scroll)
 {
     GtkWidget * textbox = gtk_event_box_new ();
     gtk_event_box_set_visible_window ((GtkEventBox *) textbox, false);
@@ -341,7 +333,6 @@ GtkWidget * textbox_new (int width, const char * text, const char * font,
 
     TextboxData * data = new TextboxData ();
     data->width = width;
-    data->text = String (text);
     data->may_scroll = scroll;
     data->two_way = config.twoway_scroll;
     g_object_set_data ((GObject *) textbox, "textboxdata", data);
