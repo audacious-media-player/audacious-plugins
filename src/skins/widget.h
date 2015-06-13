@@ -33,6 +33,7 @@ public:
 
 protected:
     void set_gtk (GtkWidget * widget);
+    void draw_now ();
 
     virtual void draw (cairo_t * cr) {}
 

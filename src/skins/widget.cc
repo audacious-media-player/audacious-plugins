@@ -29,6 +29,12 @@ void Widget::set_gtk (GtkWidget * widget)
     m_widget = widget;
 }
 
+void Widget::draw_now ()
+{
+    if (m_widget && gtk_widget_is_drawable (m_widget))
+        draw_cb (m_widget, nullptr, this);
+}
+
 void Widget::destroy_cb (GtkWidget * widget, Widget * me)
 {
     delete me;

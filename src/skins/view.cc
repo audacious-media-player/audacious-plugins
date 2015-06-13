@@ -263,7 +263,7 @@ void view_apply_skin ()
 
     mainwin_refresh_hints ();
     textbox_update_all ();
-    ui_vis_set_colors ();
+    mainwin_vis->set_colors ();
 
     gtk_widget_queue_draw (mainwin);
     gtk_widget_queue_draw (equalizerwin);

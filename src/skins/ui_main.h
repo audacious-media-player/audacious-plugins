@@ -31,6 +31,9 @@
 #define MAINWIN_SHADED_WIDTH     MAINWIN_WIDTH
 #define MAINWIN_SHADED_HEIGHT    (int)14
 
+class SkinnedVis;
+class SmallVis;
+
 extern GtkWidget *mainwin;
 
 extern GtkWidget *mainwin_shuffle, *mainwin_repeat;
@@ -39,8 +42,8 @@ extern GtkWidget *mainwin_info;
 
 extern GtkWidget *mainwin_stime_min, *mainwin_stime_sec;
 
-extern GtkWidget *mainwin_vis;
-extern GtkWidget *mainwin_svis;
+extern SkinnedVis * mainwin_vis;
+extern SmallVis * mainwin_svis;
 
 extern GtkWidget *mainwin_playstatus;
 

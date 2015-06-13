@@ -97,8 +97,8 @@ GtkWidget *mainwin_playstatus;
 GtkWidget *mainwin_minus_num, *mainwin_10min_num, *mainwin_min_num;
 GtkWidget *mainwin_10sec_num, *mainwin_sec_num;
 
-GtkWidget *mainwin_vis;
-GtkWidget *mainwin_svis;
+SkinnedVis * mainwin_vis;
+SmallVis * mainwin_svis;
 
 GtkWidget *mainwin_sposition = nullptr;
 
@@ -262,7 +262,7 @@ void mainwin_refresh_hints (void)
 
     textbox_set_width (mainwin_info, p->mainwin_text_width);
 
-    setup_widget (mainwin_vis, p->mainwin_vis_x, p->mainwin_vis_y, p->mainwin_vis_visible);
+    setup_widget (mainwin_vis->gtk (), p->mainwin_vis_x, p->mainwin_vis_y, p->mainwin_vis_visible);
     setup_widget (mainwin_info, p->mainwin_text_x, p->mainwin_text_y, p->mainwin_text_visible);
     setup_widget (mainwin_othertext, p->mainwin_infobar_x, p->mainwin_infobar_y, p->mainwin_othertext_visible);
 
@@ -356,8 +356,8 @@ mainwin_clear_song_info(void)
 
     mainwin_set_song_title (nullptr);
 
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
+    mainwin_vis->clear ();
+    mainwin_svis->clear ();
 
     gtk_widget_hide (mainwin_minus_num);
     gtk_widget_hide (mainwin_10min_num);
@@ -1009,8 +1009,8 @@ mainwin_create_widgets(void)
     window_put_widget (mainwin, FALSE, mainwin_about, 247, 83);
     button_on_release (mainwin_about, (ButtonCB) audgui_show_about_window);
 
-    mainwin_vis = ui_vis_new ();
-    window_put_widget (mainwin, FALSE, mainwin_vis, 24, 43);
+    mainwin_vis = new SkinnedVis;
+    window_put_widget (mainwin, FALSE, mainwin_vis->gtk (), 24, 43);
 
     mainwin_position = hslider_new (0, 219, SKIN_POSBAR, 248, 10, 0, 0, 29, 10, 248, 0, 278, 0);
     window_put_widget (mainwin, FALSE, mainwin_position, 16, 72);
@@ -1059,8 +1059,8 @@ mainwin_create_widgets(void)
     window_put_widget (mainwin, TRUE, mainwin_seject, 216, 4);
     button_on_release (mainwin_seject, (ButtonCB) action_play_file);
 
-    mainwin_svis = ui_svis_new ();
-    window_put_widget (mainwin, TRUE, mainwin_svis, 79, 5);
+    mainwin_svis = new SmallVis ();
+    window_put_widget (mainwin, TRUE, mainwin_svis->gtk (), 79, 5);
 
     mainwin_sposition = hslider_new (1, 13, SKIN_TITLEBAR, 17, 7, 0, 36, 3, 7, 17, 36, 17, 36);
     window_put_widget (mainwin, TRUE, mainwin_sposition, 226, 4);

@@ -168,8 +168,8 @@ static void autoscroll_set_cb (void)
 
 static void vis_reset_cb (void)
 {
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
+    mainwin_vis->clear ();
+    mainwin_svis->clear ();
     start_stop_visual (FALSE);
 }
 

@@ -136,8 +136,8 @@ public:
 
 void VisCallbacks::clear ()
 {
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
+    mainwin_vis->clear ();
+    mainwin_svis->clear ();
 }
 
 void VisCallbacks::render_mono_pcm (const float * pcm)
@@ -156,9 +156,9 @@ void VisCallbacks::render_mono_pcm (const float * pcm)
     }
 
     if (aud_get_bool ("skins", "player_shaded"))
-        ui_svis_timeout_func (mainwin_svis, data);
+        mainwin_svis->render (data);
     else
-        ui_vis_timeout_func (mainwin_vis, data);
+        mainwin_vis->render (data);
 }
 
 /* calculate peak dB level, where 1 is 0 dB */
@@ -194,7 +194,7 @@ void VisCallbacks::render_multi_pcm (const float * pcm, int channels)
     else
         data[1] = data[0];
 
-    ui_svis_timeout_func (mainwin_svis, data);
+    mainwin_svis->render (data);
 }
 
 /* convert linear frequency graph to logarithmic one */
@@ -277,9 +277,9 @@ void VisCallbacks::render_freq (const float * freq)
         return;
 
     if (shaded)
-        ui_svis_timeout_func (mainwin_svis, data);
+        mainwin_svis->render (data);
     else
-        ui_vis_timeout_func (mainwin_vis, data);
+        mainwin_vis->render (data);
 }
 
 void
