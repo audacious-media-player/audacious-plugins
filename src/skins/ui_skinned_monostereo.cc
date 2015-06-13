@@ -30,12 +30,10 @@
 #include "ui_skin.h"
 #include "ui_skinned_monostereo.h"
 
-static int monostereo_num_channels;
-
-DRAW_FUNC_BEGIN (monostereo_draw, void)
-    switch (monostereo_num_channels)
+void MonoStereo::draw (cairo_t * cr)
+{
+    switch (m_num_channels)
     {
-    case -1:
     case 0:
         skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 29, 12, 0, 0, 27, 12);
         skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 0, 12, 27, 0, 29, 12);
@@ -49,18 +47,17 @@ DRAW_FUNC_BEGIN (monostereo_draw, void)
         skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 0, 0, 27, 0, 29, 12);
         break;
     }
-DRAW_FUNC_END
-
-GtkWidget * ui_skinned_monostereo_new (void)
-{
-    GtkWidget * monostereo = drawing_area_new ();
-    gtk_widget_set_size_request (monostereo, 56 * config.scale, 12 * config.scale);
-    DRAW_CONNECT (monostereo, monostereo_draw, nullptr);
-    return monostereo;
 }
 
-void ui_skinned_monostereo_set_num_channels (GtkWidget * monostereo, int nch)
+MonoStereo::MonoStereo ()
 {
-    monostereo_num_channels = nch;
-    gtk_widget_queue_draw (monostereo);
+    GtkWidget * widget = drawing_area_new ();
+    gtk_widget_set_size_request (widget, 56 * config.scale, 12 * config.scale);
+    set_gtk (widget);
+}
+
+void MonoStereo::set_num_channels (int num_channels)
+{
+    m_num_channels = num_channels;
+    gtk_widget_queue_draw (gtk ());
 }

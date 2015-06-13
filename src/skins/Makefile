@@ -30,7 +30,8 @@ SRCS = drag-handle.cc \
        ui_playlist.cc \
        ui_main_evlisteners.cc \
        ui_skinselector.cc \
-       view.cc
+       view.cc \
+       widget.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

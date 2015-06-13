@@ -106,7 +106,7 @@ GtkWidget *mainwin_menurow;
 static GtkWidget *mainwin_volume, *mainwin_balance;
 GtkWidget *mainwin_position;
 
-static GtkWidget *mainwin_monostereo;
+static MonoStereo * mainwin_monostereo;
 static GtkWidget *mainwin_srew, *mainwin_splay, *mainwin_spause;
 static GtkWidget *mainwin_sstop, *mainwin_sfwd, *mainwin_seject, *mainwin_about;
 
@@ -258,7 +258,7 @@ void mainwin_refresh_hints (void)
     gtk_widget_set_visible (mainwin_menurow, p->mainwin_menurow_visible);
     gtk_widget_set_visible (mainwin_rate_text, p->mainwin_streaminfo_visible);
     gtk_widget_set_visible (mainwin_freq_text, p->mainwin_streaminfo_visible);
-    gtk_widget_set_visible (mainwin_monostereo, p->mainwin_streaminfo_visible);
+    gtk_widget_set_visible (mainwin_monostereo->gtk (), p->mainwin_streaminfo_visible);
 
     textbox_set_width (mainwin_info, p->mainwin_text_width);
 
@@ -324,7 +324,7 @@ void mainwin_set_song_info (int bitrate, int samplerate, int channels)
     else
         textbox_set_text (mainwin_freq_text, "");
 
-    ui_skinned_monostereo_set_num_channels (mainwin_monostereo, channels);
+    mainwin_monostereo->set_num_channels (channels);
 
     if (bitrate > 0)
         snprintf (scratch, sizeof scratch, "%d kbps", bitrate / 1000);
@@ -375,7 +375,7 @@ mainwin_clear_song_info(void)
     /* clear sampling parameter displays */
     textbox_set_text (mainwin_rate_text, "   ");
     textbox_set_text (mainwin_freq_text, "  ");
-    ui_skinned_monostereo_set_num_channels(mainwin_monostereo, 0);
+    mainwin_monostereo->set_num_channels (0);
     mainwin_set_othertext ("");
 
     if (mainwin_playstatus != nullptr)
@@ -979,8 +979,8 @@ mainwin_create_widgets(void)
     hslider_on_motion (mainwin_balance, mainwin_balance_motion_cb);
     hslider_on_release (mainwin_balance, mainwin_balance_release_cb);
 
-    mainwin_monostereo = ui_skinned_monostereo_new ();
-    window_put_widget (mainwin, FALSE, mainwin_monostereo, 212, 41);
+    mainwin_monostereo = new MonoStereo;
+    window_put_widget (mainwin, FALSE, mainwin_monostereo->gtk (), 212, 41);
 
     mainwin_playstatus = ui_skinned_playstatus_new ();
     window_put_widget (mainwin, FALSE, mainwin_playstatus, 24, 28);
