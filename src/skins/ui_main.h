@@ -32,6 +32,7 @@
 #define MAINWIN_SHADED_HEIGHT    (int)14
 
 class Button;
+class HSlider;
 class PlayStatus;
 class SkinnedVis;
 class SmallVis;
@@ -53,7 +54,7 @@ extern GtkWidget *mainwin_minus_num, *mainwin_10min_num, *mainwin_min_num;
 extern GtkWidget *mainwin_10sec_num, *mainwin_sec_num;
 
 extern GtkWidget *mainwin_menurow;
-extern GtkWidget *mainwin_position, *mainwin_sposition;
+extern HSlider * mainwin_position, * mainwin_sposition;
 
 void mainwin_create(void);
 void mainwin_unhook (void);

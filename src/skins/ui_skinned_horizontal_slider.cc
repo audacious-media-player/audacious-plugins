@@ -27,193 +27,107 @@
 
 #include <libaudcore/objects.h>
 
-#include "drawing.h"
 #include "skins_cfg.h"
-#include "ui_skin.h"
 #include "ui_skinned_horizontal_slider.h"
 
-typedef struct {
-    int min, max, pos;
-    gboolean pressed;
-    SkinPixmapId si;
-    int w, h;
-    int fx, fy;
-    int kw, kh;
-    int knx, kny, kpx, kpy;
-    void (* on_motion) (void);
-    void (* on_release) (void);
-} HSliderData;
+void HSlider::draw (cairo_t * cr)
+{
+    skin_draw_pixbuf (cr, m_si, m_fx, m_fy, 0, 0, m_w, m_h);
 
-DRAW_FUNC_BEGIN (hslider_draw, HSliderData)
-    skin_draw_pixbuf (cr, data->si, data->fx, data->fy, 0, 0, data->w, data->h);
-
-    if (data->pressed)
-        skin_draw_pixbuf (cr, data->si, data->kpx, data->kpy, data->pos,
-         (data->h - data->kh) / 2, data->kw, data->kh);
+    if (m_pressed)
+        skin_draw_pixbuf (cr, m_si, m_kpx, m_kpy, m_pos, (m_h - m_kh) / 2, m_kw, m_kh);
     else
-        skin_draw_pixbuf (cr, data->si, data->knx, data->kny, data->pos,
-         (data->h - data->kh) / 2, data->kw, data->kh);
-DRAW_FUNC_END
+        skin_draw_pixbuf (cr, m_si, m_knx, m_kny, m_pos, (m_h - m_kh) / 2, m_kw, m_kh);
+}
 
-static gboolean hslider_button_press (GtkWidget * hslider,
- GdkEventButton * event, HSliderData * data)
+bool HSlider::button_press (GdkEventButton * event)
 {
     if (event->button != 1)
-        return FALSE;
+        return false;
 
-    data->pressed = TRUE;
-    data->pos = event->x / config.scale - data->kw / 2;
-    data->pos = aud::clamp (data->pos, data->min, data->max);
+    m_pressed = true;
+    m_pos = aud::clamp ((int) event->x / config.scale - m_kw / 2, m_min, m_max);
 
-    if (data->on_motion)
-        data->on_motion ();
+    if (move)
+        move ();
 
-    gtk_widget_queue_draw (hslider);
-    return TRUE;
+    gtk_widget_queue_draw (gtk ());
+    return true;
 }
 
-static gboolean hslider_button_release (GtkWidget * hslider,
- GdkEventButton * event, HSliderData * data)
+bool HSlider::button_release (GdkEventButton * event)
 {
     if (event->button != 1)
-        return FALSE;
+        return false;
 
-    if (! data->pressed)
-        return TRUE;
+    if (! m_pressed)
+        return true;
 
-    data->pressed = FALSE;
-    data->pos = event->x / config.scale - data->kw / 2;
-    data->pos = aud::clamp (data->pos, data->min, data->max);
+    m_pressed = false;
+    m_pos = aud::clamp ((int) event->x / config.scale - m_kw / 2, m_min, m_max);
 
-    if (data->on_release)
-        data->on_release ();
+    if (release)
+        release ();
 
-    gtk_widget_queue_draw (hslider);
-    return TRUE;
+    gtk_widget_queue_draw (gtk ());
+    return true;
 }
 
-static gboolean hslider_motion_notify (GtkWidget * hslider,
- GdkEventMotion * event, HSliderData * data)
+bool HSlider::motion (GdkEventMotion * event)
 {
-    if (! data->pressed)
-        return TRUE;
+    if (! m_pressed)
+        return true;
 
-    data->pressed = TRUE;
-    data->pos = event->x / config.scale - data->kw / 2;
-    data->pos = aud::clamp (data->pos, data->min, data->max);
+    m_pressed = true;
+    m_pos = aud::clamp ((int) event->x / config.scale - m_kw / 2, m_min, m_max);
 
-    if (data->on_motion)
-        data->on_motion ();
+    if (move)
+        move ();
 
-    gtk_widget_queue_draw (hslider);
-    return TRUE;
+    gtk_widget_queue_draw (gtk ());
+    return true;
 }
 
-GtkWidget * hslider_new (int min, int max, SkinPixmapId si, int w, int h,
- int fx, int fy, int kw, int kh, int knx, int kny, int kpx, int kpy)
+HSlider::HSlider (int min, int max, SkinPixmapId si, int w, int h, int fx,
+ int fy, int kw, int kh, int knx, int kny, int kpx, int kpy) :
+    m_min (min), m_max (max), m_si (si), m_w (w), m_h (h), m_fx (fx), m_fy (fy),
+     m_kw (kw), m_kh (kh), m_knx (knx), m_kny (kny), m_kpx (kpx), m_kpy (kpy)
 {
     GtkWidget * hslider = gtk_event_box_new ();
     gtk_event_box_set_visible_window ((GtkEventBox *) hslider, false);
     gtk_widget_set_size_request (hslider, w * config.scale, h * config.scale);
     gtk_widget_add_events (hslider, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
-
-    HSliderData * data = g_new0 (HSliderData, 1);
-    data->min = min;
-    data->max = max;
-    data->pos = min;
-    data->si = si;
-    data->w = w;
-    data->h = h;
-    data->fx = fx;
-    data->fy = fy;
-    data->kw = kw;
-    data->kh = kh;
-    data->knx = knx;
-    data->kny = kny;
-    data->kpx = kpx;
-    data->kpy = kpy;
-    g_object_set_data_full ((GObject *) hslider, "hsliderdata", data, g_free);
-
-    DRAW_CONNECT_PROXY (hslider, hslider_draw, data);
-    g_signal_connect (hslider, "button-press-event", (GCallback) hslider_button_press, data);
-    g_signal_connect (hslider, "button-release-event", (GCallback) hslider_button_release, data);
-    g_signal_connect (hslider, "motion-notify-event", (GCallback) hslider_motion_notify, data);
-
-    return hslider;
+    set_gtk (hslider, true);
 }
 
-void hslider_set_frame (GtkWidget * hslider, int fx, int fy)
+void HSlider::set_frame (int fx, int fy)
 {
-    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
-    g_return_if_fail (data);
-
-    data->fx = fx;
-    data->fy = fy;
-    gtk_widget_queue_draw (hslider);
+    m_fx = fx;
+    m_fy = fy;
+    gtk_widget_queue_draw (gtk ());
 }
 
-void hslider_set_knob (GtkWidget * hslider, int knx, int kny, int kpx, int kpy)
+void HSlider::set_knob (int knx, int kny, int kpx, int kpy)
 {
-    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
-    g_return_if_fail (data);
-
-    data->knx = knx;
-    data->kny = kny;
-    data->kpx = kpx;
-    data->kpy = kpy;
-    gtk_widget_queue_draw (hslider);
+    m_knx = knx;
+    m_kny = kny;
+    m_kpx = kpx;
+    m_kpy = kpy;
+    gtk_widget_queue_draw (gtk ());
 }
 
-int hslider_get_pos (GtkWidget * hslider)
+void HSlider::set_pos (int pos)
 {
-    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
-    g_return_val_if_fail (data, 0);
-
-    return data->pos;
-}
-
-void hslider_set_pos (GtkWidget * hslider, int pos)
-{
-    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
-    g_return_if_fail (data);
-
-    if (data->pressed)
+    if (m_pressed)
         return;
 
-    data->pos = aud::clamp (pos, data->min, data->max);
-    gtk_widget_queue_draw (hslider);
+    m_pos = aud::clamp (pos, m_min, m_max);
+    gtk_widget_queue_draw (gtk ());
 }
 
-gboolean hslider_get_pressed (GtkWidget * hslider)
+void HSlider::set_pressed (bool pressed)
 {
-    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
-    g_return_val_if_fail (data, FALSE);
-
-    return data->pressed;
-}
-
-void hslider_set_pressed (GtkWidget * hslider, gboolean pressed)
-{
-    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
-    g_return_if_fail (data);
-
-    data->pressed = pressed;
-    gtk_widget_queue_draw (hslider);
-}
-
-void hslider_on_motion (GtkWidget * hslider, void (* callback) (void))
-{
-    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
-    g_return_if_fail (data);
-
-    data->on_motion = callback;
-}
-
-void hslider_on_release (GtkWidget * hslider, void (* callback) (void))
-{
-    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
-    g_return_if_fail (data);
-
-    data->on_release = callback;
+    m_pressed = pressed;
+    gtk_widget_queue_draw (gtk ());
 }

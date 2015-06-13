@@ -55,8 +55,8 @@ static Button * equalizerwin_on, * equalizerwin_auto;
 static Button * equalizerwin_close, * equalizerwin_shade;
 static Button * equalizerwin_shaded_close, * equalizerwin_shaded_shade;
 static Button * equalizerwin_presets;
-static GtkWidget *equalizerwin_preamp,*equalizerwin_bands[10];
-static GtkWidget *equalizerwin_volume, *equalizerwin_balance;
+static EqSlider * equalizerwin_preamp, * equalizerwin_bands[10];
+static HSlider * equalizerwin_volume, * equalizerwin_balance;
 
 static void
 equalizerwin_shade_toggle(void)
@@ -67,16 +67,16 @@ equalizerwin_shade_toggle(void)
 static void eq_on_cb (Button * button, GdkEventButton * event)
  {aud_set_bool (nullptr, "equalizer_active", button->get_active ()); }
 
-static void update_from_config (void * unused1, void * unused2)
+static void update_from_config (void *, void *)
 {
     equalizerwin_on->set_active (aud_get_bool (nullptr, "equalizer_active"));
-    eq_slider_set_val (equalizerwin_preamp, aud_get_double (nullptr, "equalizer_preamp"));
+    equalizerwin_preamp->set_value (aud_get_double (nullptr, "equalizer_preamp"));
 
     double bands[AUD_EQ_NBANDS];
     aud_eq_get_bands (bands);
 
     for (int i = 0; i < AUD_EQ_NBANDS; i ++)
-        eq_slider_set_val (equalizerwin_bands[i], bands[i]);
+        equalizerwin_bands[i]->set_value (bands[i]);
 
     equalizerwin_graph->update ();
 }
@@ -111,29 +111,21 @@ equalizerwin_close_cb(void)
 
 static void eqwin_volume_set_knob (void)
 {
-    int pos = hslider_get_pos (equalizerwin_volume);
-
-    int x;
-    if (pos < 32)
-        x = 1;
-    else if (pos < 63)
-        x = 4;
-    else
-        x = 7;
-
-    hslider_set_knob (equalizerwin_volume, x, 30, x, 30);
+    int pos = equalizerwin_volume->get_pos ();
+    int x = (pos < 32) ? 1 : (pos < 63) ? 4 : 7;
+    equalizerwin_volume->set_knob (x, 30, x, 30);
 }
 
 void equalizerwin_set_volume_slider (int percent)
 {
-    hslider_set_pos (equalizerwin_volume, (percent * 94 + 50) / 100);
+    equalizerwin_volume->set_pos ((percent * 94 + 50) / 100);
     eqwin_volume_set_knob ();
 }
 
 static void eqwin_volume_motion_cb (void)
 {
     eqwin_volume_set_knob ();
-    int pos = hslider_get_pos (equalizerwin_volume);
+    int pos = equalizerwin_volume->get_pos ();
     int v = (pos * 100 + 47) / 94;
 
     mainwin_adjust_volume_motion(v);
@@ -148,25 +140,17 @@ static void eqwin_volume_release_cb (void)
 
 static void eqwin_balance_set_knob (void)
 {
-    int pos = hslider_get_pos (equalizerwin_balance);
-
-    int x;
-    if (pos < 13)
-        x = 11;
-    else if (pos < 26)
-        x = 14;
-    else
-        x = 17;
-
-    hslider_set_knob (equalizerwin_balance, x, 30, x, 30);
+    int pos = equalizerwin_balance->get_pos ();
+    int x = (pos < 13) ? 11 : (pos < 26) ? 14 : 17;
+    equalizerwin_balance->set_knob (x, 30, x, 30);
 }
 
 void equalizerwin_set_balance_slider (int percent)
 {
     if (percent > 0)
-        hslider_set_pos (equalizerwin_balance, 19 + (percent * 19 + 50) / 100);
+        equalizerwin_balance->set_pos (19 + (percent * 19 + 50) / 100);
     else
-        hslider_set_pos (equalizerwin_balance, 19 + (percent * 19 - 50) / 100);
+        equalizerwin_balance->set_pos (19 + (percent * 19 - 50) / 100);
 
     eqwin_balance_set_knob ();
 }
@@ -174,7 +158,7 @@ void equalizerwin_set_balance_slider (int percent)
 static void eqwin_balance_motion_cb (void)
 {
     eqwin_balance_set_knob ();
-    int pos = hslider_get_pos (equalizerwin_balance);
+    int pos = equalizerwin_balance->get_pos ();
     pos = aud::min(pos, 38);         /* The skin uses a even number of pixels
                                    for the balance-slider *sigh* */
     int b;
@@ -229,9 +213,9 @@ equalizerwin_create_widgets(void)
     gtk_widget_set_no_show_all (equalizerwin_graph->gtk (), TRUE);  // shown or hidden in skin_load()
     window_put_widget (equalizerwin, FALSE, equalizerwin_graph->gtk (), 86, 17);
 
-    equalizerwin_preamp = eq_slider_new (_("Preamp"), -1);
-    window_put_widget (equalizerwin, FALSE, equalizerwin_preamp, 21, 38);
-    eq_slider_set_val (equalizerwin_preamp, aud_get_double (nullptr, "equalizer_preamp"));
+    equalizerwin_preamp = new EqSlider (_("Preamp"), -1);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_preamp->gtk (), 21, 38);
+    equalizerwin_preamp->set_value (aud_get_double (nullptr, "equalizer_preamp"));
 
     const char * const bandnames[AUD_EQ_NBANDS] = {N_("31 Hz"),
      N_("63 Hz"), N_("125 Hz"), N_("250 Hz"), N_("500 Hz"), N_("1 kHz"),
@@ -241,20 +225,20 @@ equalizerwin_create_widgets(void)
 
     for (int i = 0; i < AUD_EQ_NBANDS; i ++)
     {
-        equalizerwin_bands[i] = eq_slider_new (_(bandnames[i]), i);
-        window_put_widget (equalizerwin, FALSE, equalizerwin_bands[i], 78 + 18 * i, 38);
-        eq_slider_set_val (equalizerwin_bands[i], bands[i]);
+        equalizerwin_bands[i] = new EqSlider (_(bandnames[i]), i);
+        window_put_widget (equalizerwin, FALSE, equalizerwin_bands[i]->gtk (), 78 + 18 * i, 38);
+        equalizerwin_bands[i]->set_value (bands[i]);
     }
 
-    equalizerwin_volume = hslider_new (0, 94, SKIN_EQ_EX, 97, 8, 61, 4, 3, 7, 1, 30, 1, 30);
-    window_put_widget (equalizerwin, TRUE, equalizerwin_volume, 61, 4);
-    hslider_on_motion (equalizerwin_volume, eqwin_volume_motion_cb);
-    hslider_on_release (equalizerwin_volume, eqwin_volume_release_cb);
+    equalizerwin_volume = new HSlider (0, 94, SKIN_EQ_EX, 97, 8, 61, 4, 3, 7, 1, 30, 1, 30);
+    window_put_widget (equalizerwin, TRUE, equalizerwin_volume->gtk (), 61, 4);
+    equalizerwin_volume->on_move (eqwin_volume_motion_cb);
+    equalizerwin_volume->on_release (eqwin_volume_release_cb);
 
-    equalizerwin_balance = hslider_new (0, 39, SKIN_EQ_EX, 42, 8, 164, 4, 3, 7, 11, 30, 11, 30);
-    window_put_widget (equalizerwin, TRUE, equalizerwin_balance, 164, 4);
-    hslider_on_motion (equalizerwin_balance, eqwin_balance_motion_cb);
-    hslider_on_release (equalizerwin_balance, eqwin_balance_release_cb);
+    equalizerwin_balance = new HSlider (0, 39, SKIN_EQ_EX, 42, 8, 164, 4, 3, 7, 11, 30, 11, 30);
+    window_put_widget (equalizerwin, TRUE, equalizerwin_balance->gtk (), 164, 4);
+    equalizerwin_balance->on_move (eqwin_balance_motion_cb);
+    equalizerwin_balance->on_release (eqwin_balance_release_cb);
 }
 
 static void eq_win_draw (GtkWidget * window, cairo_t * cr)

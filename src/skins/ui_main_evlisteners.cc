@@ -31,6 +31,7 @@
 #include "ui_main_evlisteners.h"
 #include "ui_skin.h"
 #include "ui_skinned_button.h"
+#include "ui_skinned_horizontal_slider.h"
 #include "ui_skinned_playstatus.h"
 #include "ui_vis.h"
 #include "util.h"
@@ -71,8 +72,8 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
 
     if (aud_drct_get_ready () && aud_drct_get_length () > 0)
     {
-        gtk_widget_show (mainwin_position);
-        gtk_widget_show (mainwin_sposition);
+        gtk_widget_show (mainwin_position->gtk ());
+        gtk_widget_show (mainwin_sposition->gtk ());
     }
 
     mainwin_playstatus->set_status (STATUS_PLAY);
