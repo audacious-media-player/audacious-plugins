@@ -51,11 +51,10 @@
 GtkWidget *equalizerwin;
 EqGraph * equalizerwin_graph;
 
-static GtkWidget *equalizerwin_on, *equalizerwin_auto;
-
-static GtkWidget *equalizerwin_close, *equalizerwin_shade;
-static GtkWidget *equalizerwin_shaded_close, *equalizerwin_shaded_shade;
-static GtkWidget *equalizerwin_presets;
+static Button * equalizerwin_on, * equalizerwin_auto;
+static Button * equalizerwin_close, * equalizerwin_shade;
+static Button * equalizerwin_shaded_close, * equalizerwin_shaded_shade;
+static Button * equalizerwin_presets;
 static GtkWidget *equalizerwin_preamp,*equalizerwin_bands[10];
 static GtkWidget *equalizerwin_volume, *equalizerwin_balance;
 
@@ -65,12 +64,12 @@ equalizerwin_shade_toggle(void)
     view_set_equalizer_shaded (! aud_get_bool ("skins", "equalizer_shaded"));
 }
 
-static void eq_on_cb (GtkWidget * button, GdkEventButton * event)
- {aud_set_bool (nullptr, "equalizer_active", button_get_active (button)); }
+static void eq_on_cb (Button * button, GdkEventButton * event)
+ {aud_set_bool (nullptr, "equalizer_active", button->get_active ()); }
 
 static void update_from_config (void * unused1, void * unused2)
 {
-    button_set_active (equalizerwin_on, aud_get_bool (nullptr, "equalizer_active"));
+    equalizerwin_on->set_active (aud_get_bool (nullptr, "equalizer_active"));
     eq_slider_set_val (equalizerwin_preamp, aud_get_double (nullptr, "equalizer_preamp"));
 
     double bands[AUD_EQ_NBANDS];
@@ -197,34 +196,34 @@ static void eqwin_balance_release_cb (void)
 static void
 equalizerwin_create_widgets(void)
 {
-    equalizerwin_on = button_new_toggle (25, 12, 10, 119, 128, 119, 69, 119, 187, 119, SKIN_EQMAIN, SKIN_EQMAIN);
-    window_put_widget (equalizerwin, FALSE, equalizerwin_on, 14, 18);
-    button_set_active (equalizerwin_on, aud_get_bool (nullptr, "equalizer_active"));
-    button_on_release (equalizerwin_on, eq_on_cb);
+    equalizerwin_on = new Button (25, 12, 10, 119, 128, 119, 69, 119, 187, 119, SKIN_EQMAIN, SKIN_EQMAIN);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_on->gtk (), 14, 18);
+    equalizerwin_on->set_active (aud_get_bool (nullptr, "equalizer_active"));
+    equalizerwin_on->on_release (eq_on_cb);
 
     // AUTO button currently does nothing
-    equalizerwin_auto = button_new_toggle (33, 12, 35, 119, 153, 119, 94, 119, 212, 119, SKIN_EQMAIN, SKIN_EQMAIN);
-    window_put_widget (equalizerwin, FALSE, equalizerwin_auto, 39, 18);
+    equalizerwin_auto = new Button (33, 12, 35, 119, 153, 119, 94, 119, 212, 119, SKIN_EQMAIN, SKIN_EQMAIN);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_auto->gtk (), 39, 18);
 
-    equalizerwin_presets = button_new (44, 12, 224, 164, 224, 176, SKIN_EQMAIN, SKIN_EQMAIN);
-    window_put_widget (equalizerwin, FALSE, equalizerwin_presets, 217, 18);
-    button_on_release (equalizerwin_presets, (ButtonCB) audgui_show_eq_preset_window);
+    equalizerwin_presets = new Button (44, 12, 224, 164, 224, 176, SKIN_EQMAIN, SKIN_EQMAIN);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_presets->gtk (), 217, 18);
+    equalizerwin_presets->on_release ((ButtonCB) audgui_show_eq_preset_window);
 
-    equalizerwin_close = button_new (9, 9, 0, 116, 0, 125, SKIN_EQMAIN, SKIN_EQMAIN);
-    window_put_widget (equalizerwin, FALSE, equalizerwin_close, 264, 3);
-    button_on_release (equalizerwin_close, (ButtonCB) equalizerwin_close_cb);
+    equalizerwin_close = new Button (9, 9, 0, 116, 0, 125, SKIN_EQMAIN, SKIN_EQMAIN);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_close->gtk (), 264, 3);
+    equalizerwin_close->on_release ((ButtonCB) equalizerwin_close_cb);
 
-    equalizerwin_shade = button_new (9, 9, 254, 137, 1, 38, SKIN_EQMAIN, SKIN_EQ_EX);
-    window_put_widget (equalizerwin, FALSE, equalizerwin_shade, 254, 3);
-    button_on_release (equalizerwin_shade, (ButtonCB) equalizerwin_shade_toggle);
+    equalizerwin_shade = new Button (9, 9, 254, 137, 1, 38, SKIN_EQMAIN, SKIN_EQ_EX);
+    window_put_widget (equalizerwin, FALSE, equalizerwin_shade->gtk (), 254, 3);
+    equalizerwin_shade->on_release ((ButtonCB) equalizerwin_shade_toggle);
 
-    equalizerwin_shaded_close = button_new (9, 9, 11, 38, 11, 47, SKIN_EQ_EX, SKIN_EQ_EX);
-    window_put_widget (equalizerwin, TRUE, equalizerwin_shaded_close, 264, 3);
-    button_on_release (equalizerwin_shaded_close, (ButtonCB) equalizerwin_close_cb);
+    equalizerwin_shaded_close = new Button (9, 9, 11, 38, 11, 47, SKIN_EQ_EX, SKIN_EQ_EX);
+    window_put_widget (equalizerwin, TRUE, equalizerwin_shaded_close->gtk (), 264, 3);
+    equalizerwin_shaded_close->on_release ((ButtonCB) equalizerwin_close_cb);
 
-    equalizerwin_shaded_shade = button_new (9, 9, 254, 3, 1, 47, SKIN_EQ_EX, SKIN_EQ_EX);
-    window_put_widget (equalizerwin, TRUE, equalizerwin_shaded_shade, 254, 3);
-    button_on_release (equalizerwin_shaded_shade, (ButtonCB) equalizerwin_shade_toggle);
+    equalizerwin_shaded_shade = new Button (9, 9, 254, 3, 1, 47, SKIN_EQ_EX, SKIN_EQ_EX);
+    window_put_widget (equalizerwin, TRUE, equalizerwin_shaded_shade->gtk (), 254, 3);
+    equalizerwin_shaded_shade->on_release ((ButtonCB) equalizerwin_shade_toggle);
 
     equalizerwin_graph = new EqGraph;
     gtk_widget_set_no_show_all (equalizerwin_graph->gtk (), TRUE);  // shown or hidden in skin_load()

@@ -32,14 +32,18 @@ public:
     GtkWidget * gtk () { return m_widget; }
 
 protected:
-    void set_gtk (GtkWidget * widget);
+    void set_gtk (GtkWidget * widget, bool use_drawing_proxy = false);
     void draw_now ();
 
     virtual void draw (cairo_t * cr) {}
+    virtual bool button_press (GdkEventButton * event) { return false; }
+    virtual bool button_release (GdkEventButton * event) { return false; }
 
 private:
     static void destroy_cb (GtkWidget * widget, Widget * me);
     static gboolean draw_cb (GtkWidget * widget, GdkEventExpose * event, Widget * me);
+    static gboolean button_press_cb (GtkWidget * widget, GdkEventButton * event, Widget * me);
+    static gboolean button_release_cb (GtkWidget * widget, GdkEventButton * event, Widget * me);
 
     GtkWidget * m_widget = nullptr;
 };

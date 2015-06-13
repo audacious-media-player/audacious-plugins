@@ -89,12 +89,12 @@ ui_main_evlistener_playback_stop(void * hook_data, void * user_data)
 
 static void repeat_toggled (void * data, void * user)
 {
-    button_set_active (mainwin_repeat, aud_get_bool (nullptr, "repeat"));
+    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
 }
 
 static void shuffle_toggled (void * data, void * user)
 {
-    button_set_active (mainwin_shuffle, aud_get_bool (nullptr, "shuffle"));
+    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
 }
 
 static void no_advance_toggled (void * data, void * user)

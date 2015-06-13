@@ -20,11 +20,23 @@
  */
 
 #include "widget.h"
+#include "drawing.h"
 
-void Widget::set_gtk (GtkWidget * widget)
+void Widget::set_gtk (GtkWidget * widget, bool use_drawing_proxy)
 {
+    GtkWidget * drawable = widget;
+
+    if (use_drawing_proxy)
+    {
+        drawable = drawing_area_new ();
+        gtk_container_add ((GtkContainer *) widget, drawable);
+        gtk_widget_show (drawable);
+    }
+
     g_signal_connect (widget, "destroy", (GCallback) Widget::destroy_cb, this);
-    g_signal_connect (widget, "expose-event", (GCallback) Widget::draw_cb, this);
+    g_signal_connect (drawable, "expose-event", (GCallback) Widget::draw_cb, this);
+    g_signal_connect (widget, "button-press-event", (GCallback) Widget::button_press_cb, this);
+    g_signal_connect (widget, "button-release-event", (GCallback) Widget::button_release_cb, this);
 
     m_widget = widget;
 }
@@ -57,4 +69,14 @@ gboolean Widget::draw_cb (GtkWidget * widget, GdkEventExpose * event, Widget * m
 
     cairo_destroy (cr);
     return false;
+}
+
+gboolean Widget::button_press_cb (GtkWidget * widget, GdkEventButton * event, Widget * me)
+{
+    return me->button_press (event);
+}
+
+gboolean Widget::button_release_cb (GtkWidget * widget, GdkEventButton * event, Widget * me)
+{
+    return me->button_release (event);
 }

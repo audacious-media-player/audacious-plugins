@@ -77,15 +77,15 @@ static String locked_old_text;
 static int status_message_source = 0;
 static int mainwin_volume_release_timeout = 0;
 
-static GtkWidget *mainwin_menubtn, *mainwin_minimize, *mainwin_shade, *mainwin_close;
-static GtkWidget *mainwin_shaded_menubtn, *mainwin_shaded_minimize, *mainwin_shaded_shade, *mainwin_shaded_close;
+static Button * mainwin_menubtn, * mainwin_minimize, * mainwin_shade, * mainwin_close;
+static Button * mainwin_shaded_menubtn, * mainwin_shaded_minimize, * mainwin_shaded_shade, * mainwin_shaded_close;
 
-static GtkWidget *mainwin_rew, *mainwin_fwd;
-static GtkWidget *mainwin_eject;
-static GtkWidget *mainwin_play, *mainwin_pause, *mainwin_stop;
+static Button * mainwin_rew, * mainwin_fwd;
+static Button * mainwin_eject;
+static Button * mainwin_play, * mainwin_pause, * mainwin_stop;
 
-GtkWidget *mainwin_shuffle, *mainwin_repeat;
-GtkWidget *mainwin_eq, *mainwin_pl;
+Button * mainwin_shuffle, * mainwin_repeat;
+Button * mainwin_eq, * mainwin_pl;
 
 GtkWidget *mainwin_info;
 GtkWidget *mainwin_stime_min, *mainwin_stime_sec;
@@ -107,8 +107,8 @@ static GtkWidget *mainwin_volume, *mainwin_balance;
 GtkWidget *mainwin_position;
 
 static MonoStereo * mainwin_monostereo;
-static GtkWidget *mainwin_srew, *mainwin_splay, *mainwin_spause;
-static GtkWidget *mainwin_sstop, *mainwin_sfwd, *mainwin_seject, *mainwin_about;
+static Button * mainwin_srew, * mainwin_splay, * mainwin_spause;
+static Button * mainwin_sstop, * mainwin_sfwd, * mainwin_seject, * mainwin_about;
 
 static void mainwin_position_motion_cb (void);
 static void mainwin_position_release_cb (void);
@@ -276,20 +276,20 @@ void mainwin_refresh_hints (void)
     setup_widget (mainwin_playstatus->gtk (), p->mainwin_playstatus_x, p->mainwin_playstatus_y, TRUE);
     setup_widget (mainwin_volume, p->mainwin_volume_x, p->mainwin_volume_y, TRUE);
     setup_widget (mainwin_balance, p->mainwin_balance_x, p->mainwin_balance_y, TRUE);
-    setup_widget (mainwin_rew, p->mainwin_previous_x, p->mainwin_previous_y, TRUE);
-    setup_widget (mainwin_play, p->mainwin_play_x, p->mainwin_play_y, TRUE);
-    setup_widget (mainwin_pause, p->mainwin_pause_x, p->mainwin_pause_y, TRUE);
-    setup_widget (mainwin_stop, p->mainwin_stop_x, p->mainwin_stop_y, TRUE);
-    setup_widget (mainwin_fwd, p->mainwin_next_x, p->mainwin_next_y, TRUE);
-    setup_widget (mainwin_eject, p->mainwin_eject_x, p->mainwin_eject_y, TRUE);
-    setup_widget (mainwin_eq, p->mainwin_eqbutton_x, p->mainwin_eqbutton_y, TRUE);
-    setup_widget (mainwin_pl, p->mainwin_plbutton_x, p->mainwin_plbutton_y, TRUE);
-    setup_widget (mainwin_shuffle, p->mainwin_shuffle_x, p->mainwin_shuffle_y, TRUE);
-    setup_widget (mainwin_repeat, p->mainwin_repeat_x, p->mainwin_repeat_y, TRUE);
-    setup_widget (mainwin_about, p->mainwin_about_x, p->mainwin_about_y, TRUE);
-    setup_widget (mainwin_minimize, p->mainwin_minimize_x, p->mainwin_minimize_y, TRUE);
-    setup_widget (mainwin_shade, p->mainwin_shade_x, p->mainwin_shade_y, TRUE);
-    setup_widget (mainwin_close, p->mainwin_close_x, p->mainwin_close_y, TRUE);
+    setup_widget (mainwin_rew->gtk (), p->mainwin_previous_x, p->mainwin_previous_y, TRUE);
+    setup_widget (mainwin_play->gtk (), p->mainwin_play_x, p->mainwin_play_y, TRUE);
+    setup_widget (mainwin_pause->gtk (), p->mainwin_pause_x, p->mainwin_pause_y, TRUE);
+    setup_widget (mainwin_stop->gtk (), p->mainwin_stop_x, p->mainwin_stop_y, TRUE);
+    setup_widget (mainwin_fwd->gtk (), p->mainwin_next_x, p->mainwin_next_y, TRUE);
+    setup_widget (mainwin_eject->gtk (), p->mainwin_eject_x, p->mainwin_eject_y, TRUE);
+    setup_widget (mainwin_eq->gtk (), p->mainwin_eqbutton_x, p->mainwin_eqbutton_y, TRUE);
+    setup_widget (mainwin_pl->gtk (), p->mainwin_plbutton_x, p->mainwin_plbutton_y, TRUE);
+    setup_widget (mainwin_shuffle->gtk (), p->mainwin_shuffle_x, p->mainwin_shuffle_y, TRUE);
+    setup_widget (mainwin_repeat->gtk (), p->mainwin_repeat_x, p->mainwin_repeat_y, TRUE);
+    setup_widget (mainwin_about->gtk (), p->mainwin_about_x, p->mainwin_about_y, TRUE);
+    setup_widget (mainwin_minimize->gtk (), p->mainwin_minimize_x, p->mainwin_minimize_y, TRUE);
+    setup_widget (mainwin_shade->gtk (), p->mainwin_shade_x, p->mainwin_shade_y, TRUE);
+    setup_widget (mainwin_close->gtk (), p->mainwin_close_x, p->mainwin_close_y, TRUE);
 
     if (aud_get_bool ("skins", "player_shaded"))
         window_set_size (mainwin, MAINWIN_SHADED_WIDTH, MAINWIN_SHADED_HEIGHT);
@@ -437,7 +437,7 @@ mainwin_mouse_button_press(GtkWidget * widget,
     return FALSE;
 }
 
-static void mainwin_playback_rpress (GtkWidget * button, GdkEventButton * event)
+static void mainwin_playback_rpress (Button * button, GdkEventButton * event)
 {
     menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, FALSE, FALSE,
      event->button, event->time);
@@ -565,25 +565,21 @@ static void seek_timeout (void * rewind)
     mainwin_position_motion_cb ();
 }
 
-static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
- gboolean rewind)
+static void seek_press (GdkEventButton * event, bool rewind)
 {
     if (event->button != 1 || seeking)
-        return FALSE;
+        return;
 
     seeking = true;
     seek_start = hslider_get_pos (mainwin_position);
     seek_time = time_now ();
     timer_add (TimerRate::Hz10, seek_timeout, GINT_TO_POINTER (rewind));
-
-    return FALSE;
 }
 
-static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
- gboolean rewind)
+static void seek_release (GdkEventButton * event, bool rewind)
 {
     if (event->button != 1 || ! seeking)
-        return FALSE;
+        return;
 
     if (! aud_drct_get_playing () || time_diff (seek_time, time_now ()) <
      SEEK_THRESHOLD)
@@ -598,26 +594,25 @@ static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
 
     seeking = false;
     timer_remove (TimerRate::Hz10, seek_timeout);
-    return FALSE;
 }
 
-static void mainwin_rew_press (GtkWidget * button, GdkEventButton * event)
- {seek_press (button, event, TRUE); }
-static void mainwin_rew_release (GtkWidget * button, GdkEventButton * event)
- {seek_release (button, event, TRUE); }
-static void mainwin_fwd_press (GtkWidget * button, GdkEventButton * event)
- {seek_press (button, event, FALSE); }
-static void mainwin_fwd_release (GtkWidget * button, GdkEventButton * event)
- {seek_release (button, event, FALSE); }
+static void mainwin_rew_press (Button * button, GdkEventButton * event)
+ {seek_press (event, true); }
+static void mainwin_rew_release (Button * button, GdkEventButton * event)
+ {seek_release (event, true); }
+static void mainwin_fwd_press (Button * button, GdkEventButton * event)
+ {seek_press (event, false); }
+static void mainwin_fwd_release (Button * button, GdkEventButton * event)
+ {seek_release (event, false); }
 
-static void mainwin_shuffle_cb (GtkWidget * button, GdkEventButton * event)
- {aud_set_bool (nullptr, "shuffle", button_get_active (button)); }
-static void mainwin_repeat_cb (GtkWidget * button, GdkEventButton * event)
- {aud_set_bool (nullptr, "repeat", button_get_active (button)); }
-static void mainwin_eq_cb (GtkWidget * button, GdkEventButton * event)
- {view_set_show_equalizer (button_get_active (button)); }
-static void mainwin_pl_cb (GtkWidget * button, GdkEventButton * event)
- {view_set_show_playlist (button_get_active (button)); }
+static void mainwin_shuffle_cb (Button * button, GdkEventButton * event)
+ {aud_set_bool (nullptr, "shuffle", button->get_active ()); }
+static void mainwin_repeat_cb (Button * button, GdkEventButton * event)
+ {aud_set_bool (nullptr, "repeat", button->get_active ()); }
+static void mainwin_eq_cb (Button * button, GdkEventButton * event)
+ {view_set_show_equalizer (button->get_active ()); }
+static void mainwin_pl_cb (Button * button, GdkEventButton * event)
+ {view_set_show_playlist (button->get_active ()); }
 
 static void mainwin_spos_set_knob (void)
 {
@@ -880,70 +875,70 @@ static gboolean mainwin_info_button_press (GtkWidget * widget, GdkEventButton *
 static void
 mainwin_create_widgets(void)
 {
-    mainwin_menubtn = button_new (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, FALSE, mainwin_menubtn, 6, 3);
-    button_on_release (mainwin_menubtn, (ButtonCB) mainwin_menubtn_cb);
+    mainwin_menubtn = new Button (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    window_put_widget (mainwin, FALSE, mainwin_menubtn->gtk (), 6, 3);
+    mainwin_menubtn->on_release ((ButtonCB) mainwin_menubtn_cb);
 
-    mainwin_minimize = button_new (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, FALSE, mainwin_minimize, 244, 3);
-    button_on_release (mainwin_minimize, (ButtonCB) mainwin_minimize_cb);
+    mainwin_minimize = new Button (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    window_put_widget (mainwin, FALSE, mainwin_minimize->gtk (), 244, 3);
+    mainwin_minimize->on_release ((ButtonCB) mainwin_minimize_cb);
 
-    mainwin_shade = button_new (9, 9, 0, 18, 9, 18, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, FALSE, mainwin_shade, 254, 3);
-    button_on_release (mainwin_shade, (ButtonCB) mainwin_shade_toggle);
+    mainwin_shade = new Button (9, 9, 0, 18, 9, 18, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    window_put_widget (mainwin, FALSE, mainwin_shade->gtk (), 254, 3);
+    mainwin_shade->on_release ((ButtonCB) mainwin_shade_toggle);
 
-    mainwin_close = button_new (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, FALSE, mainwin_close, 264, 3);
-    button_on_release (mainwin_close, (ButtonCB) handle_window_close);
+    mainwin_close = new Button (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    window_put_widget (mainwin, FALSE, mainwin_close->gtk (), 264, 3);
+    mainwin_close->on_release ((ButtonCB) handle_window_close);
 
-    mainwin_rew = button_new (23, 18, 0, 0, 0, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_rew, 16, 88);
-    button_on_press (mainwin_rew, mainwin_rew_press);
-    button_on_release (mainwin_rew, mainwin_rew_release);
-    button_on_rpress (mainwin_rew, mainwin_playback_rpress);
+    mainwin_rew = new Button (23, 18, 0, 0, 0, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    window_put_widget (mainwin, FALSE, mainwin_rew->gtk (), 16, 88);
+    mainwin_rew->on_press (mainwin_rew_press);
+    mainwin_rew->on_release (mainwin_rew_release);
+    mainwin_rew->on_rpress (mainwin_playback_rpress);
 
-    mainwin_fwd = button_new (22, 18, 92, 0, 92, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_fwd, 108, 88);
-    button_on_press (mainwin_fwd, mainwin_fwd_press);
-    button_on_release (mainwin_fwd, mainwin_fwd_release);
-    button_on_rpress (mainwin_fwd, mainwin_playback_rpress);
+    mainwin_fwd = new Button (22, 18, 92, 0, 92, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    window_put_widget (mainwin, FALSE, mainwin_fwd->gtk (), 108, 88);
+    mainwin_fwd->on_press (mainwin_fwd_press);
+    mainwin_fwd->on_release (mainwin_fwd_release);
+    mainwin_fwd->on_rpress (mainwin_playback_rpress);
 
-    mainwin_play = button_new (23, 18, 23, 0, 23, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_play, 39, 88);
-    button_on_release (mainwin_play, (ButtonCB) aud_drct_play);
-    button_on_rpress (mainwin_play, mainwin_playback_rpress);
+    mainwin_play = new Button (23, 18, 23, 0, 23, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    window_put_widget (mainwin, FALSE, mainwin_play->gtk (), 39, 88);
+    mainwin_play->on_release ((ButtonCB) aud_drct_play);
+    mainwin_play->on_rpress (mainwin_playback_rpress);
 
-    mainwin_pause = button_new (23, 18, 46, 0, 46, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_pause, 62, 88);
-    button_on_release (mainwin_pause, (ButtonCB) aud_drct_pause);
-    button_on_rpress (mainwin_pause, mainwin_playback_rpress);
+    mainwin_pause = new Button (23, 18, 46, 0, 46, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    window_put_widget (mainwin, FALSE, mainwin_pause->gtk (), 62, 88);
+    mainwin_pause->on_release ((ButtonCB) aud_drct_pause);
+    mainwin_pause->on_rpress (mainwin_playback_rpress);
 
-    mainwin_stop = button_new (23, 18, 69, 0, 69, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_stop, 85, 88);
-    button_on_release (mainwin_stop, (ButtonCB) aud_drct_stop);
-    button_on_rpress (mainwin_stop, mainwin_playback_rpress);
+    mainwin_stop = new Button (23, 18, 69, 0, 69, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    window_put_widget (mainwin, FALSE, mainwin_stop->gtk (), 85, 88);
+    mainwin_stop->on_release ((ButtonCB) aud_drct_stop);
+    mainwin_stop->on_rpress (mainwin_playback_rpress);
 
-    mainwin_eject = button_new (22, 16, 114, 0, 114, 16, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_eject, 136, 89);
-    button_on_release (mainwin_eject, (ButtonCB) action_play_file);
+    mainwin_eject = new Button (22, 16, 114, 0, 114, 16, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    window_put_widget (mainwin, FALSE, mainwin_eject->gtk (), 136, 89);
+    mainwin_eject->on_release ((ButtonCB) action_play_file);
 
-    mainwin_shuffle = button_new_toggle (46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP, SKIN_SHUFREP);
-    window_put_widget (mainwin, FALSE, mainwin_shuffle, 164, 89);
-    button_set_active (mainwin_shuffle, aud_get_bool (nullptr, "shuffle"));
-    button_on_release (mainwin_shuffle, mainwin_shuffle_cb);
+    mainwin_shuffle = new Button (46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP, SKIN_SHUFREP);
+    window_put_widget (mainwin, FALSE, mainwin_shuffle->gtk (), 164, 89);
+    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
+    mainwin_shuffle->on_release (mainwin_shuffle_cb);
 
-    mainwin_repeat = button_new_toggle (28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP, SKIN_SHUFREP);
-    window_put_widget (mainwin, FALSE, mainwin_repeat, 210, 89);
-    button_set_active (mainwin_repeat, aud_get_bool (nullptr, "repeat"));
-    button_on_release (mainwin_repeat, mainwin_repeat_cb);
+    mainwin_repeat = new Button (28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP, SKIN_SHUFREP);
+    window_put_widget (mainwin, FALSE, mainwin_repeat->gtk (), 210, 89);
+    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
+    mainwin_repeat->on_release (mainwin_repeat_cb);
 
-    mainwin_eq = button_new_toggle (23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP, SKIN_SHUFREP);
-    window_put_widget (mainwin, FALSE, mainwin_eq, 219, 58);
-    button_on_release (mainwin_eq, mainwin_eq_cb);
+    mainwin_eq = new Button (23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP, SKIN_SHUFREP);
+    window_put_widget (mainwin, FALSE, mainwin_eq->gtk (), 219, 58);
+    mainwin_eq->on_release (mainwin_eq_cb);
 
-    mainwin_pl = button_new_toggle (23, 12, 23, 61, 69, 61, 23, 73, 69, 73, SKIN_SHUFREP, SKIN_SHUFREP);
-    window_put_widget (mainwin, FALSE, mainwin_pl, 242, 58);
-    button_on_release (mainwin_pl, mainwin_pl_cb);
+    mainwin_pl = new Button (23, 12, 23, 61, 69, 61, 23, 73, 69, 73, SKIN_SHUFREP, SKIN_SHUFREP);
+    window_put_widget (mainwin, FALSE, mainwin_pl->gtk (), 242, 58);
+    mainwin_pl->on_release (mainwin_pl_cb);
 
     String font;
     if (! config.mainwin_use_bitmapfont)
@@ -1004,9 +999,9 @@ mainwin_create_widgets(void)
     window_put_widget (mainwin, FALSE, mainwin_sec_num, 90, 26);
     g_signal_connect(mainwin_sec_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
 
-    mainwin_about = button_new_small (20, 25);
-    window_put_widget (mainwin, FALSE, mainwin_about, 247, 83);
-    button_on_release (mainwin_about, (ButtonCB) audgui_show_about_window);
+    mainwin_about = new Button (20, 25);
+    window_put_widget (mainwin, FALSE, mainwin_about->gtk (), 247, 83);
+    mainwin_about->on_release ((ButtonCB) audgui_show_about_window);
 
     mainwin_vis = new SkinnedVis;
     window_put_widget (mainwin, FALSE, mainwin_vis->gtk (), 24, 43);
@@ -1018,45 +1013,45 @@ mainwin_create_widgets(void)
 
     /* shaded */
 
-    mainwin_shaded_menubtn = button_new (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, TRUE, mainwin_shaded_menubtn, 6, 3);
-    button_on_release (mainwin_shaded_menubtn, (ButtonCB) mainwin_menubtn_cb);
+    mainwin_shaded_menubtn = new Button (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    window_put_widget (mainwin, TRUE, mainwin_shaded_menubtn->gtk (), 6, 3);
+    mainwin_shaded_menubtn->on_release ((ButtonCB) mainwin_menubtn_cb);
 
-    mainwin_shaded_minimize = button_new (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, TRUE, mainwin_shaded_minimize, 244, 3);
-    button_on_release (mainwin_shaded_minimize, (ButtonCB) mainwin_minimize_cb);
+    mainwin_shaded_minimize = new Button (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    window_put_widget (mainwin, TRUE, mainwin_shaded_minimize->gtk (), 244, 3);
+    mainwin_shaded_minimize->on_release ((ButtonCB) mainwin_minimize_cb);
 
-    mainwin_shaded_shade = button_new (9, 9, 0, 27, 9, 27, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, TRUE, mainwin_shaded_shade, 254, 3);
-    button_on_release (mainwin_shaded_shade, (ButtonCB) mainwin_shade_toggle);
+    mainwin_shaded_shade = new Button (9, 9, 0, 27, 9, 27, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    window_put_widget (mainwin, TRUE, mainwin_shaded_shade->gtk (), 254, 3);
+    mainwin_shaded_shade->on_release ((ButtonCB) mainwin_shade_toggle);
 
-    mainwin_shaded_close = button_new (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, TRUE, mainwin_shaded_close, 264, 3);
-    button_on_release (mainwin_shaded_close, (ButtonCB) handle_window_close);
+    mainwin_shaded_close = new Button (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    window_put_widget (mainwin, TRUE, mainwin_shaded_close->gtk (), 264, 3);
+    mainwin_shaded_close->on_release ((ButtonCB) handle_window_close);
 
-    mainwin_srew = button_new_small (8, 7);
-    window_put_widget (mainwin, TRUE, mainwin_srew, 169, 4);
-    button_on_release (mainwin_srew, (ButtonCB) aud_drct_pl_prev);
+    mainwin_srew = new Button (8, 7);
+    window_put_widget (mainwin, TRUE, mainwin_srew->gtk (), 169, 4);
+    mainwin_srew->on_release ((ButtonCB) aud_drct_pl_prev);
 
-    mainwin_splay = button_new_small (10, 7);
-    window_put_widget (mainwin, TRUE, mainwin_splay, 177, 4);
-    button_on_release (mainwin_splay, (ButtonCB) aud_drct_play);
+    mainwin_splay = new Button (10, 7);
+    window_put_widget (mainwin, TRUE, mainwin_splay->gtk (), 177, 4);
+    mainwin_splay->on_release ((ButtonCB) aud_drct_play);
 
-    mainwin_spause = button_new_small (10, 7);
-    window_put_widget (mainwin, TRUE, mainwin_spause, 187, 4);
-    button_on_release (mainwin_spause, (ButtonCB) aud_drct_pause);
+    mainwin_spause = new Button (10, 7);
+    window_put_widget (mainwin, TRUE, mainwin_spause->gtk (), 187, 4);
+    mainwin_spause->on_release ((ButtonCB) aud_drct_pause);
 
-    mainwin_sstop = button_new_small (9, 7);
-    window_put_widget (mainwin, TRUE, mainwin_sstop, 197, 4);
-    button_on_release (mainwin_sstop, (ButtonCB) aud_drct_stop);
+    mainwin_sstop = new Button (9, 7);
+    window_put_widget (mainwin, TRUE, mainwin_sstop->gtk (), 197, 4);
+    mainwin_sstop->on_release ((ButtonCB) aud_drct_stop);
 
-    mainwin_sfwd = button_new_small (8, 7);
-    window_put_widget (mainwin, TRUE, mainwin_sfwd, 206, 4);
-    button_on_release (mainwin_sfwd, (ButtonCB) aud_drct_pl_next);
+    mainwin_sfwd = new Button (8, 7);
+    window_put_widget (mainwin, TRUE, mainwin_sfwd->gtk (), 206, 4);
+    mainwin_sfwd->on_release ((ButtonCB) aud_drct_pl_next);
 
-    mainwin_seject = button_new_small (9, 7);
-    window_put_widget (mainwin, TRUE, mainwin_seject, 216, 4);
-    button_on_release (mainwin_seject, (ButtonCB) action_play_file);
+    mainwin_seject = new Button (9, 7);
+    window_put_widget (mainwin, TRUE, mainwin_seject->gtk (), 216, 4);
+    mainwin_seject->on_release ((ButtonCB) action_play_file);
 
     mainwin_svis = new SmallVis ();
     window_put_widget (mainwin, TRUE, mainwin_svis->gtk (), 79, 5);

@@ -74,7 +74,7 @@ void view_apply_show_playlist ()
     else
         gtk_widget_hide (playlistwin);
 
-    button_set_active (mainwin_pl, show);
+    mainwin_pl->set_active (show);
 }
 
 void view_set_show_equalizer (bool show)
@@ -94,7 +94,7 @@ void view_apply_show_equalizer ()
     else
         gtk_widget_hide (equalizerwin);
 
-    button_set_active (mainwin_eq, show);
+    mainwin_eq->set_active (show);
 }
 
 void view_set_player_shaded (bool shaded)
