@@ -92,7 +92,7 @@ GtkWidget *mainwin_stime_min, *mainwin_stime_sec;
 
 static GtkWidget *mainwin_rate_text, *mainwin_freq_text, *mainwin_othertext;
 
-GtkWidget *mainwin_playstatus;
+PlayStatus * mainwin_playstatus;
 
 GtkWidget *mainwin_minus_num, *mainwin_10min_num, *mainwin_min_num;
 GtkWidget *mainwin_10sec_num, *mainwin_sec_num;
@@ -273,7 +273,7 @@ void mainwin_refresh_hints (void)
     setup_widget (mainwin_sec_num, p->mainwin_number_4_x, p->mainwin_number_4_y, TRUE);
     setup_widget (mainwin_position, p->mainwin_position_x, p->mainwin_position_y, TRUE);
 
-    setup_widget (mainwin_playstatus, p->mainwin_playstatus_x, p->mainwin_playstatus_y, TRUE);
+    setup_widget (mainwin_playstatus->gtk (), p->mainwin_playstatus_x, p->mainwin_playstatus_y, TRUE);
     setup_widget (mainwin_volume, p->mainwin_volume_x, p->mainwin_volume_y, TRUE);
     setup_widget (mainwin_balance, p->mainwin_balance_x, p->mainwin_balance_y, TRUE);
     setup_widget (mainwin_rew, p->mainwin_previous_x, p->mainwin_previous_y, TRUE);
@@ -378,8 +378,7 @@ mainwin_clear_song_info(void)
     mainwin_monostereo->set_num_channels (0);
     mainwin_set_othertext ("");
 
-    if (mainwin_playstatus != nullptr)
-        ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_STOP);
+    mainwin_playstatus->set_status (STATUS_STOP);
 
     playlistwin_hide_timer();
 }
@@ -982,8 +981,8 @@ mainwin_create_widgets(void)
     mainwin_monostereo = new MonoStereo;
     window_put_widget (mainwin, FALSE, mainwin_monostereo->gtk (), 212, 41);
 
-    mainwin_playstatus = ui_skinned_playstatus_new ();
-    window_put_widget (mainwin, FALSE, mainwin_playstatus, 24, 28);
+    mainwin_playstatus = new PlayStatus;
+    window_put_widget (mainwin, FALSE, mainwin_playstatus->gtk (), 24, 28);
 
     mainwin_minus_num = ui_skinned_number_new ();
     window_put_widget (mainwin, FALSE, mainwin_minus_num, 36, 26);

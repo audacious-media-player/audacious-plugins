@@ -79,7 +79,8 @@ static double eval_spline (const double * xa, const double * ya, const double * 
              (b * b * b - b) * y2a[khi]) * (h * h) / 6.0);
 }
 
-DRAW_FUNC_BEGIN (eq_graph_draw, void)
+void EqGraph::draw (cairo_t * cr)
+{
     static const double x[N] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
 
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 294, 0, 0, 113, 19);
@@ -131,17 +132,16 @@ DRAW_FUNC_BEGIN (eq_graph_draw, void)
             cairo_fill (cr);
         }
     }
-DRAW_FUNC_END
+}
 
-GtkWidget * eq_graph_new (void)
+EqGraph::EqGraph ()
 {
     GtkWidget * graph = drawing_area_new ();
     gtk_widget_set_size_request (graph, 113 * config.scale, 19 * config.scale);
-    DRAW_CONNECT (graph, eq_graph_draw, nullptr);
-    return graph;
+    set_gtk (graph);
 }
 
-void eq_graph_update (GtkWidget * graph)
+void EqGraph::update ()
 {
-    gtk_widget_queue_draw (graph);
+    gtk_widget_queue_draw (gtk ());
 }

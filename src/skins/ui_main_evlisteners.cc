@@ -75,7 +75,7 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
         gtk_widget_show (mainwin_sposition);
     }
 
-    ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
+    mainwin_playstatus->set_status (STATUS_PLAY);
 
     title_change ();
     info_change ();
@@ -113,13 +113,13 @@ static void stop_after_song_toggled (void * hook_data, void * user_data)
 
 void ui_main_evlistener_playback_pause (void * hook_data, void * user_data)
 {
-    ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PAUSE);
+    mainwin_playstatus->set_status (STATUS_PAUSE);
 }
 
 static void
 ui_main_evlistener_playback_unpause(void * hook_data, void * user_data)
 {
-    ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
+    mainwin_playstatus->set_status (STATUS_PLAY);
 }
 
 class VisCallbacks : public Visualizer

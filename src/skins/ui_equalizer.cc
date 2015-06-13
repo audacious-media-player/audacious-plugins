@@ -49,7 +49,7 @@
 #include "view.h"
 
 GtkWidget *equalizerwin;
-GtkWidget *equalizerwin_graph;
+EqGraph * equalizerwin_graph;
 
 static GtkWidget *equalizerwin_on, *equalizerwin_auto;
 
@@ -79,7 +79,7 @@ static void update_from_config (void * unused1, void * unused2)
     for (int i = 0; i < AUD_EQ_NBANDS; i ++)
         eq_slider_set_val (equalizerwin_bands[i], bands[i]);
 
-    eq_graph_update (equalizerwin_graph);
+    equalizerwin_graph->update ();
 }
 
 static gboolean
@@ -226,9 +226,9 @@ equalizerwin_create_widgets(void)
     window_put_widget (equalizerwin, TRUE, equalizerwin_shaded_shade, 254, 3);
     button_on_release (equalizerwin_shaded_shade, (ButtonCB) equalizerwin_shade_toggle);
 
-    equalizerwin_graph = eq_graph_new ();
-    gtk_widget_set_no_show_all (equalizerwin_graph, TRUE);  // shown or hidden in skin_load()
-    window_put_widget (equalizerwin, FALSE, equalizerwin_graph, 86, 17);
+    equalizerwin_graph = new EqGraph;
+    gtk_widget_set_no_show_all (equalizerwin_graph->gtk (), TRUE);  // shown or hidden in skin_load()
+    window_put_widget (equalizerwin, FALSE, equalizerwin_graph->gtk (), 86, 17);
 
     equalizerwin_preamp = eq_slider_new (_("Preamp"), -1);
     window_put_widget (equalizerwin, FALSE, equalizerwin_preamp, 21, 38);

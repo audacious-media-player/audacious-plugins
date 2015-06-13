@@ -30,15 +30,14 @@
 #include "ui_skin.h"
 #include "ui_skinned_playstatus.h"
 
-static PStatus playstatus_status;
-
-DRAW_FUNC_BEGIN (playstatus_draw, void)
-    if (playstatus_status == STATUS_PLAY)
+void PlayStatus::draw (cairo_t * cr)
+{
+    if (m_status == STATUS_PLAY)
         skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 36, 0, 0, 0, 3, 9);
     else
         skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 27, 0, 0, 0, 2, 9);
 
-    switch (playstatus_status)
+    switch (m_status)
     {
     case STATUS_STOP:
         skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 18, 0, 2, 0, 9, 9);
@@ -50,18 +49,17 @@ DRAW_FUNC_BEGIN (playstatus_draw, void)
         skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 1, 0, 3, 0, 8, 9);
         break;
     }
-DRAW_FUNC_END
+}
 
-GtkWidget * ui_skinned_playstatus_new (void)
+PlayStatus::PlayStatus ()
 {
     GtkWidget * playstatus = drawing_area_new ();
     gtk_widget_set_size_request (playstatus, 11 * config.scale, 9 * config.scale);
-    DRAW_CONNECT (playstatus, playstatus_draw, nullptr);
-    return playstatus;
+    set_gtk (playstatus);
 }
 
-void ui_skinned_playstatus_set_status (GtkWidget * playstatus, PStatus status)
+void PlayStatus::set_status (PStatus status)
 {
-    playstatus_status = status;
-    gtk_widget_queue_draw (playstatus);
+    m_status = status;
+    gtk_widget_queue_draw (gtk ());
 }

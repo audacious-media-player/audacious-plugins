@@ -32,6 +32,7 @@
 #include "ui_main_evlisteners.h"
 #include "ui_playlist.h"
 #include "ui_skinned_button.h"
+#include "ui_skinned_equalizer_graph.h"
 #include "ui_skinned_textbox.h"
 #include "ui_skinned_menurow.h"
 #include "ui_skinned_window.h"
@@ -259,7 +260,7 @@ void view_apply_skin ()
 
     // hide the equalizer graph if we have a short eqmain.bmp
     int h = cairo_image_surface_get_height (skin.pixmaps[SKIN_EQMAIN].get ());
-    gtk_widget_set_visible (equalizerwin_graph, h >= 315);
+    gtk_widget_set_visible (equalizerwin_graph->gtk (), h >= 315);
 
     mainwin_refresh_hints ();
     textbox_update_all ();

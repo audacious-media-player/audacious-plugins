@@ -28,11 +28,13 @@
 
 #include <gtk/gtk.h>
 
+class EqGraph;
+
 void equalizerwin_create(void);
 void equalizerwin_set_volume_slider(int percent);
 void equalizerwin_set_balance_slider(int percent);
 
 extern GtkWidget *equalizerwin;
-extern GtkWidget *equalizerwin_graph;
+extern EqGraph * equalizerwin_graph;
 
 #endif /* SKINS_UI_EQUALIZER_H */
