@@ -25,6 +25,8 @@
 
 #include <gtk/gtk.h>
 
+class TextBox;
+
 void playlistwin_update (void);
 void playlistwin_create(void);
 void playlistwin_unhook (void);
@@ -32,6 +34,7 @@ void playlistwin_hide_timer(void);
 void playlistwin_set_time (const char * minutes, const char * seconds);
 
 extern int active_playlist, active_length;
-extern GtkWidget * playlistwin, * playlistwin_list, * playlistwin_sinfo;
+extern GtkWidget * playlistwin, * playlistwin_list;
+extern TextBox * playlistwin_sinfo;
 
 #endif /* SKINS_UI_PLAYLIST_H */

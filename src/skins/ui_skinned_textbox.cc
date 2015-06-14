@@ -38,75 +38,63 @@
 
 #define DELAY 50
 
-struct TextboxData
+static Index<TextBox *> textboxes;
+
+void TextBox::draw (cairo_t * cr)
 {
-    String text;
-    PangoFontDescPtr font;
-    CairoSurfacePtr buf;
-
-    int width, buf_width;
-    bool may_scroll, two_way;
-    bool scrolling, backward;
-    int offset, delay;
-};
-
-static GList * textboxes;
-
-DRAW_FUNC_BEGIN (textbox_draw, TextboxData)
-    if (data->scrolling)
+    if (m_scrolling)
     {
-        cairo_set_source_surface (cr, data->buf.get (), -data->offset * config.scale, 0);
+        cairo_set_source_surface (cr, m_buf.get (), -m_offset * config.scale, 0);
         cairo_paint (cr);
 
-        if (-data->offset + data->buf_width < data->width)
+        if (-m_offset + m_buf_width < m_width)
         {
-            cairo_set_source_surface (cr, data->buf.get (),
-             (-data->offset + data->buf_width) * config.scale, 0);
+            cairo_set_source_surface (cr, m_buf.get (),
+             (-m_offset + m_buf_width) * config.scale, 0);
             cairo_paint (cr);
         }
     }
     else
     {
-        cairo_set_source_surface (cr, data->buf.get (), 0, 0);
+        cairo_set_source_surface (cr, m_buf.get (), 0, 0);
         cairo_paint (cr);
     }
-DRAW_FUNC_END
+}
 
-static void textbox_scroll (void * textbox)
+bool TextBox::button_press (GdkEventButton * event)
 {
-    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
-    g_return_if_fail (data);
+    return press ? press (event) : false;
+}
 
-    if (data->delay < DELAY)
+void TextBox::scroll_timeout ()
+{
+    if (m_delay < DELAY)
     {
-        data->delay ++;
+        m_delay ++;
         return;
     }
 
-    if (data->two_way && data->backward)
-        data->offset --;
+    if (m_two_way && m_backward)
+        m_offset --;
     else
-        data->offset ++;
+        m_offset ++;
 
-    if (data->two_way && (data->backward ? (data->offset <= 0) :
-     (data->offset + data->width >= data->buf_width)))
+    if (m_two_way && (m_backward ? (m_offset <= 0) : (m_offset + m_width >= m_buf_width)))
     {
-        data->backward = ! data->backward;
-        data->delay = 0;
+        m_backward = ! m_backward;
+        m_delay = 0;
     }
 
-    if (! data->two_way && data->offset >= data->buf_width)
-        data->offset = 0;
+    if (! m_two_way && m_offset >= m_buf_width)
+        m_offset = 0;
 
-    if (gtk_widget_is_drawable ((GtkWidget *) textbox))
-        textbox_draw ((GtkWidget *) textbox, nullptr, data);
+    draw_now ();
 }
 
-static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
- const char * text)
+void TextBox::render_vector (const char * text)
 {
-    PangoLayout * layout = gtk_widget_create_pango_layout (textbox, text);
-    pango_layout_set_font_description (layout, data->font.get ());
+    PangoLayout * layout = gtk_widget_create_pango_layout (gtk (), text);
+    pango_layout_set_font_description (layout, m_font.get ());
 
     PangoRectangle ink, logical;
     pango_layout_get_pixel_extents (layout, & ink, & logical);
@@ -116,13 +104,13 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
     logical.width = aud::max (logical.width, 1);
     ink.height = aud::max (ink.height, 1);
 
-    gtk_widget_set_size_request (textbox, data->width * config.scale, ink.height);
+    gtk_widget_set_size_request (gtk (), m_width * config.scale, ink.height);
 
-    data->buf_width = aud::max ((logical.width + config.scale - 1) / config.scale, data->width);
-    data->buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width * config.scale, ink.height));
+    m_buf_width = aud::max ((logical.width + config.scale - 1) / config.scale, m_width);
+    m_buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+     m_buf_width * config.scale, ink.height));
 
-    cairo_t * cr = cairo_create (data->buf.get ());
+    cairo_t * cr = cairo_create (m_buf.get ());
 
     set_cairo_color (cr, skin.colors[SKIN_TEXTBG]);
     cairo_paint (cr);
@@ -179,26 +167,25 @@ static void lookup_char (const char c, int * x, int * y)
     * y = ty * skin.hints.textbox_bitmap_font_height;
 }
 
-static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
- const char * text)
+void TextBox::render_bitmap (const char * text)
 {
     int cw = skin.hints.textbox_bitmap_font_width;
     int ch = skin.hints.textbox_bitmap_font_height;
 
-    gtk_widget_set_size_request (textbox, data->width * config.scale, ch * config.scale);
+    gtk_widget_set_size_request (gtk (), m_width * config.scale, ch * config.scale);
 
     long len;
     gunichar * utf32 = g_utf8_to_ucs4 (text, -1, nullptr, & len, nullptr);
     g_return_if_fail (utf32);
 
-    data->buf_width = aud::max (cw * (int) len, data->width);
-    data->buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width * config.scale, ch * config.scale));
+    m_buf_width = aud::max (cw * (int) len, m_width);
+    m_buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+     m_buf_width * config.scale, ch * config.scale));
 
-    cairo_t * cr = cairo_create (data->buf.get ());
+    cairo_t * cr = cairo_create (m_buf.get ());
 
     gunichar * s = utf32;
-    for (int x = 0; x < data->buf_width; x += cw)
+    for (int x = 0; x < m_buf_width; x += cw)
     {
         gunichar c = * s ? * s ++ : ' ';
         int cx = 0, cy = 0;
@@ -222,143 +209,109 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
     g_free (utf32);
 }
 
-static void textbox_render (GtkWidget * textbox, TextboxData * data)
+void TextBox::render ()
 {
-    data->scrolling = FALSE;
-    data->backward = FALSE;
-    data->offset = 0;
-    data->delay = 0;
+    m_scrolling = false;
+    m_backward = false;
+    m_offset = 0;
+    m_delay = 0;
 
-    const char * text = data->text ? data->text : "";
+    const char * text = m_text ? m_text : "";
 
-    if (data->font)
-        textbox_render_vector (textbox, data, text);
+    if (m_font)
+        render_vector (text);
     else
-        textbox_render_bitmap (textbox, data, text);
+        render_bitmap (text);
 
-    if (data->may_scroll && data->buf_width > data->width)
+    if (m_may_scroll && m_buf_width > m_width)
     {
-        data->scrolling = TRUE;
+        m_scrolling = true;
 
-        if (! data->two_way)
+        if (! m_two_way)
         {
             StringBuf temp = str_printf ("%s --- ", text);
 
-            if (data->font)
-                textbox_render_vector (textbox, data, temp);
+            if (m_font)
+                render_vector (temp);
             else
-                textbox_render_bitmap (textbox, data, temp);
+                render_bitmap (temp);
         }
     }
 
-    gtk_widget_queue_draw (textbox);
+    gtk_widget_queue_draw (gtk ());
 
-    if (data->scrolling)
-        timer_add (TimerRate::Hz30, textbox_scroll, textbox);
+    if (m_scrolling)
+        timer_add (TimerRate::Hz30, TextBox::scroll_timeout_cb, this);
     else
-        timer_remove (TimerRate::Hz30, textbox_scroll, textbox);
+        timer_remove (TimerRate::Hz30, TextBox::scroll_timeout_cb, this);
 }
 
-void textbox_set_width (GtkWidget * textbox, int width)
+void TextBox::set_width (int width)
 {
-    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
-    g_return_if_fail (data);
-
-    if (data->width == width)
-        return;
-
-    data->width = width;
-    textbox_render (textbox, data);
+    if (m_width != width)
+    {
+        m_width = width;
+        render ();
+    }
 }
 
-const char * textbox_get_text (GtkWidget * textbox)
+void TextBox::set_text (const char * text)
 {
-    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
-    g_return_val_if_fail (data, nullptr);
-
-    return data->text;
+    if (strcmp_safe (m_text, text))
+    {
+        m_text = String (text);
+        render ();
+    }
 }
 
-void textbox_set_text (GtkWidget * textbox, const char * text)
+void TextBox::set_font (const char * font)
 {
-    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
-    g_return_if_fail (data);
-
-    if (! strcmp_safe (data->text, text))
-        return;
-
-    data->text = String (text);
-    textbox_render (textbox, data);
-}
-
-void textbox_set_font (GtkWidget * textbox, const char * font)
-{
-    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
-    g_return_if_fail (data);
-
     if (font)
-        data->font.capture (pango_font_description_from_string (font));
+        m_font.capture (pango_font_description_from_string (font));
     else
-        data->font.clear ();
+        m_font.clear ();
 
-    textbox_render (textbox, data);
+    render ();
 }
 
-void textbox_set_scroll (GtkWidget * textbox, bool scroll)
+void TextBox::set_scroll (bool scroll)
 {
-    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
-    g_return_if_fail (data);
-
-    if (data->may_scroll == scroll && data->two_way == config.twoway_scroll)
-        return;
-
-    data->may_scroll = scroll;
-    data->two_way = config.twoway_scroll;
-    textbox_render (textbox, data);
+    if (m_may_scroll != scroll || m_two_way != config.twoway_scroll)
+    {
+        m_may_scroll = scroll;
+        m_two_way = config.twoway_scroll;
+        render ();
+    }
 }
 
-static void textbox_destroy (GtkWidget * textbox, TextboxData * data)
+TextBox::~TextBox ()
 {
-    timer_remove (TimerRate::Hz30, textbox_scroll, textbox);
-    textboxes = g_list_remove (textboxes, textbox);
-    delete data;
+    timer_remove (TimerRate::Hz30, TextBox::scroll_timeout_cb, this);
+
+    int idx = textboxes.find (this);
+    if (idx >= 0)
+        textboxes.remove (idx, 1);
 }
 
-GtkWidget * textbox_new (int width, const char * font, bool scroll)
+TextBox::TextBox (int width, const char * font, bool scroll) :
+    m_width (width),
+    m_may_scroll (scroll),
+    m_two_way (config.twoway_scroll)
 {
     GtkWidget * textbox = gtk_event_box_new ();
     gtk_event_box_set_visible_window ((GtkEventBox *) textbox, false);
-    gtk_widget_set_size_request (textbox, width, 0);
-    gtk_widget_add_events (textbox, GDK_BUTTON_PRESS_MASK |
-     GDK_BUTTON_RELEASE_MASK);
-
-    TextboxData * data = new TextboxData ();
-    data->width = width;
-    data->may_scroll = scroll;
-    data->two_way = config.twoway_scroll;
-    g_object_set_data ((GObject *) textbox, "textboxdata", data);
+    gtk_widget_add_events (textbox, GDK_BUTTON_PRESS_MASK);
+    set_gtk (textbox, true);
 
     if (font)
-        data->font.capture (pango_font_description_from_string (font));
+        m_font.capture (pango_font_description_from_string (font));
 
-    DRAW_CONNECT_PROXY (textbox, textbox_draw, data);
-    g_signal_connect (textbox, "destroy", (GCallback) textbox_destroy, data);
-
-    textboxes = g_list_prepend (textboxes, textbox);
-
-    textbox_render (textbox, data);
-    return textbox;
+    textboxes.append (this);
+    render ();
 }
 
-void textbox_update_all (void)
+void TextBox::update_all ()
 {
-    for (GList * node = textboxes; node; node = node->next)
-    {
-        GtkWidget * textbox = (GtkWidget *) node->data;
-        g_return_if_fail (textbox);
-        TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
-        g_return_if_fail (data);
-
-        textbox_render (textbox, data);
-    }
+    for (TextBox * textbox : textboxes)
+        textbox->render ();
 }

@@ -71,7 +71,7 @@ GtkWidget *mainwin = nullptr;
 static bool seeking = false;
 static int seek_start, seek_time;
 
-static GtkWidget * locked_textbox = nullptr;
+static TextBox * locked_textbox = nullptr;
 static String locked_old_text;
 
 static int status_message_source = 0;
@@ -87,10 +87,10 @@ static Button * mainwin_play, * mainwin_pause, * mainwin_stop;
 Button * mainwin_shuffle, * mainwin_repeat;
 Button * mainwin_eq, * mainwin_pl;
 
-GtkWidget *mainwin_info;
-GtkWidget *mainwin_stime_min, *mainwin_stime_sec;
+TextBox * mainwin_info;
+TextBox * mainwin_stime_min, * mainwin_stime_sec;
 
-static GtkWidget *mainwin_rate_text, *mainwin_freq_text, *mainwin_othertext;
+static TextBox * mainwin_rate_text, * mainwin_freq_text, * mainwin_othertext;
 
 PlayStatus * mainwin_playstatus;
 
@@ -172,28 +172,28 @@ static void mainwin_lock_info_text (const char * text)
     if (! locked_textbox)
     {
         locked_textbox = skin.hints.mainwin_othertext_is_status ? mainwin_othertext : mainwin_info;
-        locked_old_text = String (textbox_get_text (locked_textbox));
+        locked_old_text = locked_textbox->get_text ();
     }
 
-    textbox_set_text (locked_textbox, text);
+    locked_textbox->set_text (text);
 }
 
 static void mainwin_release_info_text (void)
 {
     if (locked_textbox)
     {
-        textbox_set_text (locked_textbox, locked_old_text);
+        locked_textbox->set_text (locked_old_text);
         locked_textbox = nullptr;
         locked_old_text = String ();
     }
 }
 
-static void set_info_text (GtkWidget * textbox, const char * text)
+static void set_info_text (TextBox * textbox, const char * text)
 {
     if (textbox == locked_textbox)
         locked_old_text = String (text);
     else
-        textbox_set_text (textbox, text);
+        textbox->set_text (text);
 }
 
 #define mainwin_set_info_text(t) set_info_text (mainwin_info, (t))
@@ -255,15 +255,15 @@ void mainwin_refresh_hints (void)
     const SkinHints * p = & skin.hints;
 
     gtk_widget_set_visible (mainwin_menurow->gtk (), p->mainwin_menurow_visible);
-    gtk_widget_set_visible (mainwin_rate_text, p->mainwin_streaminfo_visible);
-    gtk_widget_set_visible (mainwin_freq_text, p->mainwin_streaminfo_visible);
+    gtk_widget_set_visible (mainwin_rate_text->gtk (), p->mainwin_streaminfo_visible);
+    gtk_widget_set_visible (mainwin_freq_text->gtk (), p->mainwin_streaminfo_visible);
     gtk_widget_set_visible (mainwin_monostereo->gtk (), p->mainwin_streaminfo_visible);
 
-    textbox_set_width (mainwin_info, p->mainwin_text_width);
+    mainwin_info->set_width (p->mainwin_text_width);
 
     setup_widget (mainwin_vis->gtk (), p->mainwin_vis_x, p->mainwin_vis_y, p->mainwin_vis_visible);
-    setup_widget (mainwin_info, p->mainwin_text_x, p->mainwin_text_y, p->mainwin_text_visible);
-    setup_widget (mainwin_othertext, p->mainwin_infobar_x, p->mainwin_infobar_y, p->mainwin_othertext_visible);
+    setup_widget (mainwin_info->gtk (), p->mainwin_text_x, p->mainwin_text_y, p->mainwin_text_visible);
+    setup_widget (mainwin_othertext->gtk (), p->mainwin_infobar_x, p->mainwin_infobar_y, p->mainwin_othertext_visible);
 
     setup_widget (mainwin_minus_num->gtk (), p->mainwin_number_0_x, p->mainwin_number_0_y, TRUE);
     setup_widget (mainwin_10min_num->gtk (), p->mainwin_number_1_x, p->mainwin_number_1_y, TRUE);
@@ -310,18 +310,18 @@ void mainwin_set_song_info (int bitrate, int samplerate, int channels)
         else
             snprintf (scratch, sizeof scratch, "%2dH", bitrate / 100000);
 
-        textbox_set_text (mainwin_rate_text, scratch);
+        mainwin_rate_text->set_text (scratch);
     }
     else
-        textbox_set_text (mainwin_rate_text, "");
+        mainwin_rate_text->set_text (nullptr);
 
     if (samplerate > 0)
     {
         snprintf (scratch, sizeof scratch, "%2d", samplerate / 1000);
-        textbox_set_text (mainwin_freq_text, scratch);
+        mainwin_freq_text->set_text (scratch);
     }
     else
-        textbox_set_text (mainwin_freq_text, "");
+        mainwin_freq_text->set_text (nullptr);
 
     mainwin_monostereo->set_num_channels (channels);
 
@@ -363,8 +363,8 @@ mainwin_clear_song_info(void)
     gtk_widget_hide (mainwin_min_num->gtk ());
     gtk_widget_hide (mainwin_10sec_num->gtk ());
     gtk_widget_hide (mainwin_sec_num->gtk ());
-    gtk_widget_hide (mainwin_stime_min);
-    gtk_widget_hide (mainwin_stime_sec);
+    gtk_widget_hide (mainwin_stime_min->gtk ());
+    gtk_widget_hide (mainwin_stime_sec->gtk ());
     gtk_widget_hide (mainwin_position->gtk ());
     gtk_widget_hide (mainwin_sposition->gtk ());
 
@@ -372,8 +372,8 @@ mainwin_clear_song_info(void)
     mainwin_sposition->set_pressed (false);
 
     /* clear sampling parameter displays */
-    textbox_set_text (mainwin_rate_text, "   ");
-    textbox_set_text (mainwin_freq_text, "  ");
+    mainwin_rate_text->set_text (nullptr);
+    mainwin_freq_text->set_text (nullptr);
     mainwin_monostereo->set_num_channels (0);
     mainwin_set_othertext ("");
 
@@ -628,8 +628,8 @@ static void mainwin_spos_motion_cb (void)
     char buf[7];
     format_time (buf, time, length);
 
-    textbox_set_text (mainwin_stime_min, buf);
-    textbox_set_text (mainwin_stime_sec, buf + 4);
+    mainwin_stime_min->set_text (buf);
+    mainwin_stime_sec->set_text (buf + 4);
 }
 
 static void mainwin_spos_release_cb (void)
@@ -830,34 +830,31 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
     mainwin_release_info_text();
 }
 
-gboolean
-change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event)
+bool change_timer_mode_cb (GdkEventButton * event)
 {
-    if (event->button == 1)
-        view_set_show_remaining (! aud_get_bool ("skins", "show_remaining_time"));
-    else if (event->button == 3)
-        return FALSE;
+    if (event->type != GDK_BUTTON_PRESS || event->button != 1)
+        return false;
 
-    return TRUE;
+    view_set_show_remaining (! aud_get_bool ("skins", "show_remaining_time"));
+    return true;
 }
 
-static gboolean mainwin_info_button_press (GtkWidget * widget, GdkEventButton *
- event)
+static bool mainwin_info_button_press (GdkEventButton * event)
 {
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
     {
-        menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, FALSE,
-         FALSE, event->button, event->time);
-        return TRUE;
+        menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, false,
+         false, event->button, event->time);
+        return true;
     }
 
     if (event->type == GDK_2BUTTON_PRESS && event->button == 1)
     {
         audgui_infowin_show_current ();
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 static void
@@ -933,20 +930,18 @@ mainwin_create_widgets(void)
         font = aud_get_str ("skins", "mainwin_font");
 
     bool shaded = aud_get_bool ("skins", "mainwin_shaded");
-    mainwin_info = textbox_new (153, font, ! shaded && config.autoscroll);
+    mainwin_info = new TextBox (153, font, ! shaded && config.autoscroll);
+    window_put_widget (mainwin, FALSE, mainwin_info->gtk (), 112, 27);
+    mainwin_info->on_press (mainwin_info_button_press);
 
-    window_put_widget (mainwin, FALSE, mainwin_info, 112, 27);
-    g_signal_connect (mainwin_info, "button-press-event", (GCallback)
-     mainwin_info_button_press, nullptr);
+    mainwin_othertext = new TextBox (153, nullptr, false);
+    window_put_widget (mainwin, FALSE, mainwin_othertext->gtk (), 112, 43);
 
-    mainwin_othertext = textbox_new (153, nullptr, false);
-    window_put_widget (mainwin, FALSE, mainwin_othertext, 112, 43);
+    mainwin_rate_text = new TextBox (15, nullptr, false);
+    window_put_widget (mainwin, FALSE, mainwin_rate_text->gtk (), 111, 43);
 
-    mainwin_rate_text = textbox_new (15, nullptr, false);
-    window_put_widget (mainwin, FALSE, mainwin_rate_text, 111, 43);
-
-    mainwin_freq_text = textbox_new (10, nullptr, false);
-    window_put_widget (mainwin, FALSE, mainwin_freq_text, 156, 43);
+    mainwin_freq_text = new TextBox (10, nullptr, false);
+    window_put_widget (mainwin, FALSE, mainwin_freq_text->gtk (), 156, 43);
 
     mainwin_menurow = new MenuRow;
     window_put_widget (mainwin, FALSE, mainwin_menurow->gtk (), 10, 22);
@@ -1044,14 +1039,13 @@ mainwin_create_widgets(void)
     mainwin_sposition->on_move (mainwin_spos_motion_cb);
     mainwin_sposition->on_release (mainwin_spos_release_cb);
 
-    mainwin_stime_min = textbox_new (15, nullptr, false);
-    window_put_widget (mainwin, TRUE, mainwin_stime_min, 130, 4);
+    mainwin_stime_min = new TextBox (15, nullptr, false);
+    window_put_widget (mainwin, TRUE, mainwin_stime_min->gtk (), 130, 4);
+    mainwin_stime_min->on_press (change_timer_mode_cb);
 
-    mainwin_stime_sec = textbox_new (10, nullptr, false);
-    window_put_widget (mainwin, TRUE, mainwin_stime_sec, 147, 4);
-
-    g_signal_connect(mainwin_stime_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
-    g_signal_connect(mainwin_stime_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_stime_sec = new TextBox (10, nullptr, false);
+    window_put_widget (mainwin, TRUE, mainwin_stime_sec->gtk (), 147, 4);
+    mainwin_stime_sec->on_press (change_timer_mode_cb);
 }
 
 static void show_widgets (void)
@@ -1061,8 +1055,8 @@ static void show_widgets (void)
     gtk_widget_set_no_show_all (mainwin_min_num->gtk (), TRUE);
     gtk_widget_set_no_show_all (mainwin_10sec_num->gtk (), TRUE);
     gtk_widget_set_no_show_all (mainwin_sec_num->gtk (), TRUE);
-    gtk_widget_set_no_show_all (mainwin_stime_min, TRUE);
-    gtk_widget_set_no_show_all (mainwin_stime_sec, TRUE);
+    gtk_widget_set_no_show_all (mainwin_stime_min->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_stime_sec->gtk (), TRUE);
     gtk_widget_set_no_show_all (mainwin_position->gtk (), TRUE);
     gtk_widget_set_no_show_all (mainwin_sposition->gtk (), TRUE);
 
@@ -1181,8 +1175,8 @@ static void mainwin_update_time_display (int time, int length)
 
     if (! mainwin_sposition->get_pressed ())
     {
-        textbox_set_text (mainwin_stime_min, scratch);
-        textbox_set_text (mainwin_stime_sec, scratch + 4);
+        mainwin_stime_min->set_text (scratch);
+        mainwin_stime_sec->set_text (scratch + 4);
     }
 
     playlistwin_set_time (scratch, scratch + 4);

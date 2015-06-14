@@ -34,6 +34,7 @@
 #include "ui_skinned_horizontal_slider.h"
 #include "ui_skinned_number.h"
 #include "ui_skinned_playstatus.h"
+#include "ui_skinned_textbox.h"
 #include "ui_vis.h"
 #include "util.h"
 
@@ -63,8 +64,8 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
     mainwin_disable_seekbar();
     mainwin_update_song_info();
 
-    gtk_widget_show (mainwin_stime_min);
-    gtk_widget_show (mainwin_stime_sec);
+    gtk_widget_show (mainwin_stime_min->gtk ());
+    gtk_widget_show (mainwin_stime_sec->gtk ());
     gtk_widget_show (mainwin_minus_num->gtk ());
     gtk_widget_show (mainwin_10min_num->gtk ());
     gtk_widget_show (mainwin_min_num->gtk ());

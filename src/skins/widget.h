@@ -55,6 +55,7 @@ private:
         { return me->motion (event); }
 
     GtkWidget * m_widget = nullptr;
+    GtkWidget * m_drawable = nullptr;
 };
 
 #endif // SKINS_WIDGET_H

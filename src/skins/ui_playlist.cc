@@ -63,14 +63,15 @@
 
 int active_playlist = -1, active_length = 0;
 
-GtkWidget * playlistwin, * playlistwin_list, * playlistwin_sinfo;
+GtkWidget * playlistwin, * playlistwin_list;
+TextBox * playlistwin_sinfo;
 
 static Button * playlistwin_shade, * playlistwin_close;
 static Button * playlistwin_shaded_shade, * playlistwin_shaded_close;
 
 static GtkWidget *playlistwin_slider;
-static GtkWidget *playlistwin_time_min, *playlistwin_time_sec;
-static GtkWidget *playlistwin_info;
+static TextBox * playlistwin_time_min, * playlistwin_time_sec;
+static TextBox * playlistwin_info;
 static Button * playlistwin_srew, * playlistwin_splay;
 static Button * playlistwin_spause, * playlistwin_sstop;
 static Button * playlistwin_sfwd, * playlistwin_seject;
@@ -92,7 +93,7 @@ static void playlistwin_update_info (void)
 {
     StringBuf s1 = str_format_time (aud_playlist_get_selected_length (active_playlist));
     StringBuf s2 = str_format_time (aud_playlist_get_total_length (active_playlist));
-    textbox_set_text (playlistwin_info, str_concat ({s1, "/", s2}));
+    playlistwin_info->set_text (str_concat ({s1, "/", s2}));
 }
 
 static void update_rollup_text (void)
@@ -121,7 +122,7 @@ static void update_rollup_text (void)
         }
     }
 
-    textbox_set_text (playlistwin_sinfo, scratch);
+    playlistwin_sinfo->set_text (scratch);
 }
 
 static void real_update (void)
@@ -405,9 +406,9 @@ static void playlistwin_resize (int w, int h)
     window_move_widget (playlistwin, FALSE, playlistwin_shade->gtk (), w - 21, 3);
     window_move_widget (playlistwin, FALSE, playlistwin_close->gtk (), w - 11, 3);
 
-    window_move_widget (playlistwin, FALSE, playlistwin_time_min, w - 82, h - 15);
-    window_move_widget (playlistwin, FALSE, playlistwin_time_sec, w - 64, h - 15);
-    window_move_widget (playlistwin, FALSE, playlistwin_info, w - 143, h - 28);
+    window_move_widget (playlistwin, FALSE, playlistwin_time_min->gtk (), w - 82, h - 15);
+    window_move_widget (playlistwin, FALSE, playlistwin_time_sec->gtk (), w - 64, h - 15);
+    window_move_widget (playlistwin, FALSE, playlistwin_info->gtk (), w - 143, h - 28);
 
     window_move_widget (playlistwin, FALSE, playlistwin_srew->gtk (), w - 144, h - 16);
     window_move_widget (playlistwin, FALSE, playlistwin_splay->gtk (), w - 138, h - 16);
@@ -421,7 +422,7 @@ static void playlistwin_resize (int w, int h)
     window_move_widget (playlistwin, FALSE, resize_handle, w - 20, h - 20);
     window_move_widget (playlistwin, TRUE, sresize_handle, w - 31, 0);
 
-    textbox_set_width (playlistwin_sinfo, w - 35);
+    playlistwin_sinfo->set_width (w - 35);
 
     window_move_widget (playlistwin, FALSE, button_add->gtk (), 12, h - 29);
     window_move_widget (playlistwin, FALSE, button_sub->gtk (), 40, h - 29);
@@ -471,14 +472,14 @@ playlistwin_press(GtkWidget * widget,
 void
 playlistwin_hide_timer(void)
 {
-    textbox_set_text (playlistwin_time_min, "   ");
-    textbox_set_text (playlistwin_time_sec, "  ");
+    playlistwin_time_min->set_text (nullptr);
+    playlistwin_time_sec->set_text (nullptr);
 }
 
 void playlistwin_set_time (const char * minutes, const char * seconds)
 {
-    textbox_set_text (playlistwin_time_min, minutes);
-    textbox_set_text (playlistwin_time_sec, seconds);
+    playlistwin_time_min->set_text (minutes);
+    playlistwin_time_sec->set_text (seconds);
 }
 
 static void drag_motion (GtkWidget * widget, GdkDragContext * context, int x,
@@ -590,8 +591,8 @@ playlistwin_create_widgets(void)
     int w = config.playlist_width, h = config.playlist_height;
 
     bool shaded = aud_get_bool ("skins", "playlist_shaded");
-    playlistwin_sinfo = textbox_new (w - 35, nullptr, shaded && config.autoscroll);
-    window_put_widget (playlistwin, TRUE, playlistwin_sinfo, 4, 4);
+    playlistwin_sinfo = new TextBox (w - 35, nullptr, shaded && config.autoscroll);
+    window_put_widget (playlistwin, TRUE, playlistwin_sinfo->gtk (), 4, 4);
 
     playlistwin_shaded_shade = new Button (9, 9, 128, 45, 150, 42, SKIN_PLEDIT, SKIN_PLEDIT);
     window_put_widget (playlistwin, TRUE, playlistwin_shaded_shade->gtk (), w - 21, 3);
@@ -618,17 +619,16 @@ playlistwin_create_widgets(void)
     window_put_widget (playlistwin, FALSE, playlistwin_slider, w - 15, 20);
     ui_skinned_playlist_set_slider (playlistwin_list, playlistwin_slider);
 
-    playlistwin_time_min = textbox_new (15, nullptr, false);
-    window_put_widget (playlistwin, FALSE, playlistwin_time_min, w - 82, h - 15);
+    playlistwin_time_min = new TextBox (15, nullptr, false);
+    window_put_widget (playlistwin, FALSE, playlistwin_time_min->gtk (), w - 82, h - 15);
+    playlistwin_time_min->on_press (change_timer_mode_cb);
 
-    playlistwin_time_sec = textbox_new (10, nullptr, false);
-    window_put_widget (playlistwin, FALSE, playlistwin_time_sec, w - 64, h - 15);
+    playlistwin_time_sec = new TextBox (10, nullptr, false);
+    window_put_widget (playlistwin, FALSE, playlistwin_time_sec->gtk (), w - 64, h - 15);
+    playlistwin_time_sec->on_press (change_timer_mode_cb);
 
-    g_signal_connect(playlistwin_time_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
-    g_signal_connect(playlistwin_time_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
-
-    playlistwin_info = textbox_new (90, nullptr, false);
-    window_put_widget (playlistwin, FALSE, playlistwin_info, w - 143, h - 28);
+    playlistwin_info = new TextBox (90, nullptr, false);
+    window_put_widget (playlistwin, FALSE, playlistwin_info->gtk (), w - 143, h - 28);
 
     /* mini play control buttons at right bottom corner */
 

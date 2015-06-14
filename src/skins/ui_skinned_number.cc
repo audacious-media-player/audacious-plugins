@@ -39,7 +39,7 @@ void SkinnedNumber::draw (cairo_t * cr)
 
 bool SkinnedNumber::button_press (GdkEventButton * event)
 {
-    return change_timer_mode_cb (gtk (), event);
+    return change_timer_mode_cb (event);
 }
 
 SkinnedNumber::SkinnedNumber ()

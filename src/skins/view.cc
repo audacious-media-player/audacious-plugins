@@ -116,7 +116,7 @@ void view_apply_player_shaded ()
     window_set_size (mainwin, width, height);
 
     if (config.autoscroll)
-        textbox_set_scroll (mainwin_info, ! shaded);
+        mainwin_info->set_scroll (! shaded);
 }
 
 void view_set_playlist_shaded (bool shaded)
@@ -137,7 +137,7 @@ void view_apply_playlist_shaded ()
     window_set_size (playlistwin, config.playlist_width, height);
 
     if (config.autoscroll)
-        textbox_set_scroll (playlistwin_sinfo, shaded);
+        playlistwin_sinfo->set_scroll (shaded);
 }
 
 void view_set_equalizer_shaded (bool shaded)
@@ -263,7 +263,7 @@ void view_apply_skin ()
     gtk_widget_set_visible (equalizerwin_graph->gtk (), h >= 315);
 
     mainwin_refresh_hints ();
-    textbox_update_all ();
+    TextBox::update_all ();
     mainwin_vis->set_colors ();
 
     gtk_widget_queue_draw (mainwin);

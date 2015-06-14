@@ -147,8 +147,10 @@ void skins_cfg_save (void)
 static void
 mainwin_font_set_cb()
 {
-    String font = aud_get_str ("skins", "mainwin_font");
-    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? nullptr : (const char *) font);
+    if (config.mainwin_use_bitmapfont)
+        mainwin_info->set_font (aud_get_str ("skins", "mainwin_font"));
+    else
+        mainwin_info->set_font (nullptr);
 }
 
 static void
@@ -161,9 +163,9 @@ playlist_font_set_cb()
 static void autoscroll_set_cb (void)
 {
     if (! aud_get_bool ("skins", "mainwin_shaded"))
-        textbox_set_scroll (mainwin_info, config.autoscroll);
+        mainwin_info->set_scroll (config.autoscroll);
     if (aud_get_bool ("skins", "playlist_shaded"))
-        textbox_set_scroll (playlistwin_sinfo, config.autoscroll);
+        playlistwin_sinfo->set_scroll (config.autoscroll);
 }
 
 static void vis_reset_cb (void)

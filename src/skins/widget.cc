@@ -41,12 +41,13 @@ void Widget::set_gtk (GtkWidget * widget, bool use_drawing_proxy)
     g_signal_connect (widget, "scroll-event", (GCallback) Widget::scroll_cb, this);
 
     m_widget = widget;
+    m_drawable = drawable;
 }
 
 void Widget::draw_now ()
 {
-    if (m_widget && gtk_widget_is_drawable (m_widget))
-        draw_cb (m_widget, nullptr, this);
+    if (m_drawable && gtk_widget_is_drawable (m_drawable))
+        draw_cb (m_drawable, nullptr, this);
 }
 
 void Widget::destroy_cb (GtkWidget * widget, Widget * me)

@@ -38,14 +38,15 @@ class PlayStatus;
 class SkinnedNumber;
 class SkinnedVis;
 class SmallVis;
+class TextBox;
 
 extern GtkWidget *mainwin;
 
 extern Button * mainwin_shuffle, * mainwin_repeat;
 extern Button * mainwin_eq, * mainwin_pl;
-extern GtkWidget *mainwin_info;
 
-extern GtkWidget *mainwin_stime_min, *mainwin_stime_sec;
+extern TextBox * mainwin_info;
+extern TextBox * mainwin_stime_min, * mainwin_stime_sec;
 
 extern SkinnedVis * mainwin_vis;
 extern SmallVis * mainwin_svis;
@@ -87,7 +88,7 @@ void mainwin_drag_data_received(GtkWidget * widget,
                                 unsigned time,
                                 void * user_data);
 
-gboolean change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event);
+bool change_timer_mode_cb (GdkEventButton * event);
 
 /* widget should be null if called manually. */
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
