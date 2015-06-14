@@ -185,7 +185,7 @@ void view_apply_on_top ()
     gtk_window_set_keep_above ((GtkWindow *) equalizerwin, on_top);
     gtk_window_set_keep_above ((GtkWindow *) playlistwin, on_top);
 
-    ui_skinned_menurow_update (mainwin_menurow);
+    mainwin_menurow->update ();
 }
 
 void view_set_sticky (bool sticky)

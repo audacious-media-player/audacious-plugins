@@ -33,7 +33,9 @@
 
 class Button;
 class HSlider;
+class MenuRow;
 class PlayStatus;
+class SkinnedNumber;
 class SkinnedVis;
 class SmallVis;
 
@@ -50,10 +52,10 @@ extern SmallVis * mainwin_svis;
 
 extern PlayStatus * mainwin_playstatus;
 
-extern GtkWidget *mainwin_minus_num, *mainwin_10min_num, *mainwin_min_num;
-extern GtkWidget *mainwin_10sec_num, *mainwin_sec_num;
+extern SkinnedNumber * mainwin_minus_num, * mainwin_10min_num, * mainwin_min_num;
+extern SkinnedNumber * mainwin_10sec_num, * mainwin_sec_num;
 
-extern GtkWidget *mainwin_menurow;
+extern MenuRow * mainwin_menurow;
 extern HSlider * mainwin_position, * mainwin_sposition;
 
 void mainwin_create(void);

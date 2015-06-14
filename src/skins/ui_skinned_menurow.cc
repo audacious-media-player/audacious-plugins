@@ -32,31 +32,26 @@
 #include "ui_skin.h"
 #include "ui_skinned_menurow.h"
 
-static struct {
-    MenuRowItem selected;
-    gboolean pushed;
-} mr;
-
-DRAW_FUNC_BEGIN (menurow_draw, void)
-    if (mr.selected == MENUROW_NONE)
+void MenuRow::draw (cairo_t * cr)
+{
+    if (m_selected == MENUROW_NONE)
     {
-        if (mr.pushed)
+        if (m_pushed)
             skin_draw_pixbuf (cr, SKIN_TITLEBAR, 304, 0, 0, 0, 8, 43);
         else
             skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 0, 0, 0, 8, 43);
     }
     else
-        skin_draw_pixbuf (cr, SKIN_TITLEBAR, 304 + 8 * (mr.selected - 1), 44, 0,
-         0, 8, 43);
+        skin_draw_pixbuf (cr, SKIN_TITLEBAR, 304 + 8 * (m_selected - 1), 44, 0, 0, 8, 43);
 
-    if (mr.pushed)
+    if (m_pushed)
     {
         if (aud_get_bool ("skins", "always_on_top"))
             skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 54, 0, 10, 8, 8);
         if (aud_get_bool ("skins", "double_size"))
             skin_draw_pixbuf (cr, SKIN_TITLEBAR, 328, 70, 0, 26, 8, 8);
     }
-DRAW_FUNC_END
+}
 
 static MenuRowItem menurow_find_selected (int x, int y)
 {
@@ -77,69 +72,61 @@ static MenuRowItem menurow_find_selected (int x, int y)
     return MENUROW_NONE;
 }
 
-static gboolean menurow_button_press (GtkWidget * widget, GdkEventButton * event)
+bool MenuRow::button_press (GdkEventButton * event)
 {
     if (event->button != 1)
-        return FALSE;
+        return false;
 
-    mr.pushed = TRUE;
-    mr.selected = menurow_find_selected (event->x / config.scale, event->y / config.scale);
+    m_pushed = true;
+    m_selected = menurow_find_selected (event->x / config.scale, event->y / config.scale);
 
-    mainwin_mr_change (mr.selected);
+    mainwin_mr_change (m_selected);
 
-    gtk_widget_queue_draw (widget);
-    return TRUE;
+    gtk_widget_queue_draw (gtk ());
+    return true;
 }
 
-static gboolean menurow_button_release (GtkWidget * widget, GdkEventButton *
- event)
+bool MenuRow::button_release (GdkEventButton * event)
 {
     if (event->button != 1)
-        return FALSE;
+        return false;
 
-    if (! mr.pushed)
-        return TRUE;
+    if (! m_pushed)
+        return true;
 
-    mainwin_mr_release (mr.selected, event);
+    mainwin_mr_release (m_selected, event);
 
-    mr.pushed = FALSE;
-    mr.selected = MENUROW_NONE;
+    m_pushed = false;
+    m_selected = MENUROW_NONE;
 
-    gtk_widget_queue_draw (widget);
-    return TRUE;
+    gtk_widget_queue_draw (gtk ());
+    return true;
 }
 
-static gboolean menurow_motion_notify (GtkWidget * widget, GdkEventMotion *
- event)
+bool MenuRow::motion (GdkEventMotion * event)
 {
-    if (! mr.pushed)
-        return TRUE;
+    if (! m_pushed)
+        return true;
 
-    mr.selected = menurow_find_selected (event->x / config.scale, event->y / config.scale);
+    m_selected = menurow_find_selected (event->x / config.scale, event->y / config.scale);
 
-    mainwin_mr_change (mr.selected);
+    mainwin_mr_change (m_selected);
 
-    gtk_widget_queue_draw (widget);
-    return TRUE;
+    gtk_widget_queue_draw (gtk ());
+    return true;
 }
 
-GtkWidget * ui_skinned_menurow_new (void)
+MenuRow::MenuRow ()
 {
-    GtkWidget * wid = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) wid, false);
-    gtk_widget_set_size_request (wid, 8 * config.scale, 43 * config.scale);
-    gtk_widget_add_events (wid, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
+    GtkWidget * widget = gtk_event_box_new ();
+    gtk_event_box_set_visible_window ((GtkEventBox *) widget, false);
+    gtk_widget_set_size_request (widget, 8 * config.scale, 43 * config.scale);
+    gtk_widget_add_events (widget, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
      | GDK_POINTER_MOTION_MASK);
-
-    DRAW_CONNECT_PROXY (wid, menurow_draw, nullptr);
-    g_signal_connect (wid, "button-press-event", (GCallback) menurow_button_press, nullptr);
-    g_signal_connect (wid, "button-release-event", (GCallback) menurow_button_release, nullptr);
-    g_signal_connect (wid, "motion-notify-event", (GCallback) menurow_motion_notify, nullptr);
-
-    return wid;
+    set_gtk (widget, true);
 }
 
-void ui_skinned_menurow_update (GtkWidget * menurow)
+void MenuRow::update ()
 {
-    gtk_widget_queue_draw (menurow);
+    gtk_widget_queue_draw (gtk ());
 }

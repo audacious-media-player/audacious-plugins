@@ -94,15 +94,15 @@ static GtkWidget *mainwin_rate_text, *mainwin_freq_text, *mainwin_othertext;
 
 PlayStatus * mainwin_playstatus;
 
-GtkWidget *mainwin_minus_num, *mainwin_10min_num, *mainwin_min_num;
-GtkWidget *mainwin_10sec_num, *mainwin_sec_num;
+SkinnedNumber * mainwin_minus_num, * mainwin_10min_num, * mainwin_min_num;
+SkinnedNumber * mainwin_10sec_num, * mainwin_sec_num;
 
 SkinnedVis * mainwin_vis;
 SmallVis * mainwin_svis;
 
+MenuRow * mainwin_menurow;
 HSlider * mainwin_position, * mainwin_sposition;
 
-GtkWidget *mainwin_menurow;
 static HSlider * mainwin_volume, * mainwin_balance;
 
 static MonoStereo * mainwin_monostereo;
@@ -254,7 +254,7 @@ void mainwin_refresh_hints (void)
 {
     const SkinHints * p = & skin.hints;
 
-    gtk_widget_set_visible (mainwin_menurow, p->mainwin_menurow_visible);
+    gtk_widget_set_visible (mainwin_menurow->gtk (), p->mainwin_menurow_visible);
     gtk_widget_set_visible (mainwin_rate_text, p->mainwin_streaminfo_visible);
     gtk_widget_set_visible (mainwin_freq_text, p->mainwin_streaminfo_visible);
     gtk_widget_set_visible (mainwin_monostereo->gtk (), p->mainwin_streaminfo_visible);
@@ -265,11 +265,11 @@ void mainwin_refresh_hints (void)
     setup_widget (mainwin_info, p->mainwin_text_x, p->mainwin_text_y, p->mainwin_text_visible);
     setup_widget (mainwin_othertext, p->mainwin_infobar_x, p->mainwin_infobar_y, p->mainwin_othertext_visible);
 
-    setup_widget (mainwin_minus_num, p->mainwin_number_0_x, p->mainwin_number_0_y, TRUE);
-    setup_widget (mainwin_10min_num, p->mainwin_number_1_x, p->mainwin_number_1_y, TRUE);
-    setup_widget (mainwin_min_num, p->mainwin_number_2_x, p->mainwin_number_2_y, TRUE);
-    setup_widget (mainwin_10sec_num, p->mainwin_number_3_x, p->mainwin_number_3_y, TRUE);
-    setup_widget (mainwin_sec_num, p->mainwin_number_4_x, p->mainwin_number_4_y, TRUE);
+    setup_widget (mainwin_minus_num->gtk (), p->mainwin_number_0_x, p->mainwin_number_0_y, TRUE);
+    setup_widget (mainwin_10min_num->gtk (), p->mainwin_number_1_x, p->mainwin_number_1_y, TRUE);
+    setup_widget (mainwin_min_num->gtk (), p->mainwin_number_2_x, p->mainwin_number_2_y, TRUE);
+    setup_widget (mainwin_10sec_num->gtk (), p->mainwin_number_3_x, p->mainwin_number_3_y, TRUE);
+    setup_widget (mainwin_sec_num->gtk (), p->mainwin_number_4_x, p->mainwin_number_4_y, TRUE);
     setup_widget (mainwin_position->gtk (), p->mainwin_position_x, p->mainwin_position_y, TRUE);
 
     setup_widget (mainwin_playstatus->gtk (), p->mainwin_playstatus_x, p->mainwin_playstatus_y, TRUE);
@@ -358,11 +358,11 @@ mainwin_clear_song_info(void)
     mainwin_vis->clear ();
     mainwin_svis->clear ();
 
-    gtk_widget_hide (mainwin_minus_num);
-    gtk_widget_hide (mainwin_10min_num);
-    gtk_widget_hide (mainwin_min_num);
-    gtk_widget_hide (mainwin_10sec_num);
-    gtk_widget_hide (mainwin_sec_num);
+    gtk_widget_hide (mainwin_minus_num->gtk ());
+    gtk_widget_hide (mainwin_10min_num->gtk ());
+    gtk_widget_hide (mainwin_min_num->gtk ());
+    gtk_widget_hide (mainwin_10sec_num->gtk ());
+    gtk_widget_hide (mainwin_sec_num->gtk ());
     gtk_widget_hide (mainwin_stime_min);
     gtk_widget_hide (mainwin_stime_sec);
     gtk_widget_hide (mainwin_position->gtk ());
@@ -948,8 +948,8 @@ mainwin_create_widgets(void)
     mainwin_freq_text = textbox_new (10, nullptr, false);
     window_put_widget (mainwin, FALSE, mainwin_freq_text, 156, 43);
 
-    mainwin_menurow = ui_skinned_menurow_new ();
-    window_put_widget (mainwin, FALSE, mainwin_menurow, 10, 22);
+    mainwin_menurow = new MenuRow;
+    window_put_widget (mainwin, FALSE, mainwin_menurow->gtk (), 10, 22);
 
     mainwin_volume = new HSlider (0, 51, SKIN_VOLUME, 68, 13, 0, 0, 14, 11, 15, 422, 0, 422);
     window_put_widget (mainwin, FALSE, mainwin_volume->gtk (), 107, 57);
@@ -967,25 +967,20 @@ mainwin_create_widgets(void)
     mainwin_playstatus = new PlayStatus;
     window_put_widget (mainwin, FALSE, mainwin_playstatus->gtk (), 24, 28);
 
-    mainwin_minus_num = ui_skinned_number_new ();
-    window_put_widget (mainwin, FALSE, mainwin_minus_num, 36, 26);
-    g_signal_connect(mainwin_minus_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_minus_num = new SkinnedNumber;
+    window_put_widget (mainwin, FALSE, mainwin_minus_num->gtk (), 36, 26);
 
-    mainwin_10min_num = ui_skinned_number_new ();
-    window_put_widget (mainwin, FALSE, mainwin_10min_num, 48, 26);
-    g_signal_connect(mainwin_10min_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_10min_num = new SkinnedNumber;
+    window_put_widget (mainwin, FALSE, mainwin_10min_num->gtk (), 48, 26);
 
-    mainwin_min_num = ui_skinned_number_new ();
-    window_put_widget (mainwin, FALSE, mainwin_min_num, 60, 26);
-    g_signal_connect(mainwin_min_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_min_num = new SkinnedNumber;
+    window_put_widget (mainwin, FALSE, mainwin_min_num->gtk (), 60, 26);
 
-    mainwin_10sec_num = ui_skinned_number_new ();
-    window_put_widget (mainwin, FALSE, mainwin_10sec_num, 78, 26);
-    g_signal_connect(mainwin_10sec_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_10sec_num = new SkinnedNumber;
+    window_put_widget (mainwin, FALSE, mainwin_10sec_num->gtk (), 78, 26);
 
-    mainwin_sec_num = ui_skinned_number_new ();
-    window_put_widget (mainwin, FALSE, mainwin_sec_num, 90, 26);
-    g_signal_connect(mainwin_sec_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_sec_num = new SkinnedNumber;
+    window_put_widget (mainwin, FALSE, mainwin_sec_num->gtk (), 90, 26);
 
     mainwin_about = new Button (20, 25);
     window_put_widget (mainwin, FALSE, mainwin_about->gtk (), 247, 83);
@@ -1061,11 +1056,11 @@ mainwin_create_widgets(void)
 
 static void show_widgets (void)
 {
-    gtk_widget_set_no_show_all (mainwin_minus_num, TRUE);
-    gtk_widget_set_no_show_all (mainwin_10min_num, TRUE);
-    gtk_widget_set_no_show_all (mainwin_min_num, TRUE);
-    gtk_widget_set_no_show_all (mainwin_10sec_num, TRUE);
-    gtk_widget_set_no_show_all (mainwin_sec_num, TRUE);
+    gtk_widget_set_no_show_all (mainwin_minus_num->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_10min_num->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_min_num->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_10sec_num->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_sec_num->gtk (), TRUE);
     gtk_widget_set_no_show_all (mainwin_stime_min, TRUE);
     gtk_widget_set_no_show_all (mainwin_stime_sec, TRUE);
     gtk_widget_set_no_show_all (mainwin_position->gtk (), TRUE);
@@ -1178,11 +1173,11 @@ static void mainwin_update_time_display (int time, int length)
     char scratch[7];
     format_time (scratch, time, length);
 
-    ui_skinned_number_set (mainwin_minus_num, scratch[0]);
-    ui_skinned_number_set (mainwin_10min_num, scratch[1]);
-    ui_skinned_number_set (mainwin_min_num, scratch[2]);
-    ui_skinned_number_set (mainwin_10sec_num, scratch[4]);
-    ui_skinned_number_set (mainwin_sec_num, scratch[5]);
+    mainwin_minus_num->set (scratch[0]);
+    mainwin_10min_num->set (scratch[1]);
+    mainwin_min_num->set (scratch[2]);
+    mainwin_10sec_num->set (scratch[4]);
+    mainwin_sec_num->set (scratch[5]);
 
     if (! mainwin_sposition->get_pressed ())
     {

@@ -25,48 +25,40 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "drawing.h"
+#include <libaudcore/runtime.h>
+
 #include "skins_cfg.h"
+#include "ui_main.h"
 #include "ui_skin.h"
 #include "ui_skinned_number.h"
 
-typedef struct {
-    int w, h;
-    int num;
-} NumberData;
+void SkinnedNumber::draw (cairo_t * cr)
+{
+    skin_draw_pixbuf (cr, SKIN_NUMBERS, m_num * 9, 0, 0, 0, 9, 13);
+}
 
-DRAW_FUNC_BEGIN (number_draw, NumberData)
-    skin_draw_pixbuf (cr, SKIN_NUMBERS, data->num * 9, 0, 0, 0, data->w, data->h);
-DRAW_FUNC_END
+bool SkinnedNumber::button_press (GdkEventButton * event)
+{
+    return change_timer_mode_cb (gtk (), event);
+}
 
-GtkWidget * ui_skinned_number_new (void)
+SkinnedNumber::SkinnedNumber ()
 {
     GtkWidget * number = gtk_event_box_new ();
     gtk_event_box_set_visible_window ((GtkEventBox *) number, false);
     gtk_widget_set_size_request (number, 9 * config.scale, 13 * config.scale);
     gtk_widget_add_events (number, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK);
-
-    NumberData * data = g_new0 (NumberData, 1);
-    data->w = 9;
-    data->h = 13;
-    g_object_set_data_full ((GObject *) number, "numberdata", data, g_free);
-
-    DRAW_CONNECT_PROXY (number, number_draw, data);
-
-    return number;
+    set_gtk (number, true);
 }
 
-void ui_skinned_number_set (GtkWidget * number, char c)
+void SkinnedNumber::set (char c)
 {
-    NumberData * data = (NumberData *) g_object_get_data ((GObject *) number, "numberdata");
-    g_return_if_fail (data);
-
     int value = (c >= '0' && c <= '9') ? c - '0' : (c == '-') ? 11 : 10;
 
-    if (data->num == value)
-        return;
-
-    data->num = value;
-    gtk_widget_queue_draw (number);
+    if (m_num != value)
+    {
+        m_num = value;
+        gtk_widget_queue_draw (gtk ());
+    }
 }
