@@ -93,7 +93,7 @@ void TextBox::scroll_timeout ()
 
 void TextBox::render_vector (const char * text)
 {
-    PangoLayout * layout = gtk_widget_create_pango_layout (gtk (), text);
+    PangoLayout * layout = gtk_widget_create_pango_layout (gtk_dr (), text);
     pango_layout_set_font_description (layout, m_font.get ());
 
     PangoRectangle ink, logical;
@@ -238,7 +238,7 @@ void TextBox::render ()
         }
     }
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 
     if (m_scrolling)
         timer_add (TimerRate::Hz30, TextBox::scroll_timeout_cb, this);

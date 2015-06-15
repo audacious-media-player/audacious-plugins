@@ -34,6 +34,7 @@ void Widget::set_gtk (GtkWidget * widget, bool use_drawing_proxy)
     }
 
     g_signal_connect (widget, "destroy", (GCallback) Widget::destroy_cb, this);
+    g_signal_connect (drawable, "realize", (GCallback) Widget::realize_cb, this);
     g_signal_connect (drawable, "expose-event", (GCallback) Widget::draw_cb, this);
     g_signal_connect (widget, "button-press-event", (GCallback) Widget::button_press_cb, this);
     g_signal_connect (widget, "button-release-event", (GCallback) Widget::button_release_cb, this);
@@ -49,11 +50,6 @@ void Widget::draw_now ()
 {
     if (m_drawable && gtk_widget_is_drawable (m_drawable))
         draw_cb (m_drawable, nullptr, this);
-}
-
-void Widget::destroy_cb (GtkWidget * widget, Widget * me)
-{
-    delete me;
 }
 
 gboolean Widget::draw_cb (GtkWidget * widget, GdkEventExpose * event, Widget * me)

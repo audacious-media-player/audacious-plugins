@@ -248,7 +248,7 @@ void SkinnedVis::clear ()
     memset (m_peak_speed, 0, sizeof m_peak_speed);
     memset (m_voiceprint_data, 0, sizeof m_voiceprint_data);
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }
 
 void SkinnedVis::render (const unsigned char * data)

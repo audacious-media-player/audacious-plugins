@@ -51,7 +51,7 @@ bool HSlider::button_press (GdkEventButton * event)
     if (move)
         move ();
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -69,7 +69,7 @@ bool HSlider::button_release (GdkEventButton * event)
     if (release)
         release ();
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -84,7 +84,7 @@ bool HSlider::motion (GdkEventMotion * event)
     if (move)
         move ();
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -105,7 +105,7 @@ void HSlider::set_frame (int fx, int fy)
 {
     m_fx = fx;
     m_fy = fy;
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }
 
 void HSlider::set_knob (int knx, int kny, int kpx, int kpy)
@@ -114,7 +114,7 @@ void HSlider::set_knob (int knx, int kny, int kpx, int kpy)
     m_kny = kny;
     m_kpx = kpx;
     m_kpy = kpy;
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }
 
 void HSlider::set_pos (int pos)
@@ -123,11 +123,11 @@ void HSlider::set_pos (int pos)
         return;
 
     m_pos = aud::clamp (pos, m_min, m_max);
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }
 
 void HSlider::set_pressed (bool pressed)
 {
     m_pressed = pressed;
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }

@@ -70,7 +70,7 @@ bool EqSlider::button_press (GdkEventButton * event)
 
     m_pressed = true;
     moved (event->y / config.scale - 5);
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -84,7 +84,7 @@ bool EqSlider::button_release (GdkEventButton * event)
 
     m_pressed = false;
     moved (event->y / config.scale - 5);
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -94,7 +94,7 @@ bool EqSlider::motion (GdkEventMotion * event)
         return true;
 
     moved (event->y / config.scale - 5);
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -105,7 +105,7 @@ bool EqSlider::scroll (GdkEventScroll * event)
     else if (event->direction == GDK_SCROLL_DOWN)
         moved (m_pos + 2);
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -116,7 +116,7 @@ void EqSlider::set_value (float value)
 
     m_value = value;
     m_pos = aud::clamp (25 - (int) (value * 25 / AUD_EQ_MAX_GAIN), 0, 50);
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }
 
 EqSlider::EqSlider (const char * name, int band) :

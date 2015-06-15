@@ -192,7 +192,7 @@ void SmallVis::clear ()
     m_active = false;
     memset (m_data, 0, sizeof m_data);
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }
 
 void SmallVis::render (const unsigned char * data)

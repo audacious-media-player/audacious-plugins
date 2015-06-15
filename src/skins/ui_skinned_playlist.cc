@@ -124,7 +124,7 @@ void PlaylistWidget::cancel_all ()
     if (m_hover != -1)
     {
         m_hover = -1;
-        gtk_widget_queue_draw (gtk ());
+        gtk_widget_queue_draw (gtk_dr ());
     }
 
     popup_hide ();
@@ -146,7 +146,7 @@ void PlaylistWidget::draw (cairo_t * cr)
 
     if (m_offset)
     {
-        layout = gtk_widget_create_pango_layout (gtk (), title_text);
+        layout = gtk_widget_create_pango_layout (gtk_dr (), title_text);
         pango_layout_set_font_description (layout, m_font.get ());
         pango_layout_set_width (layout, PANGO_SCALE * (m_width - left - right));
         pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
@@ -181,7 +181,7 @@ void PlaylistWidget::draw (cairo_t * cr)
             char buf[16];
             snprintf (buf, sizeof buf, "%d.", 1 + i);
 
-            layout = gtk_widget_create_pango_layout (gtk (), buf);
+            layout = gtk_widget_create_pango_layout (gtk_dr (), buf);
             pango_layout_set_font_description (layout, m_font.get ());
 
             PangoRectangle rect;
@@ -209,7 +209,7 @@ void PlaylistWidget::draw (cairo_t * cr)
         if (len < 0)
             continue;
 
-        layout = gtk_widget_create_pango_layout (gtk (), str_format_time (len));
+        layout = gtk_widget_create_pango_layout (gtk_dr (), str_format_time (len));
         pango_layout_set_font_description (layout, m_font.get ());
 
         PangoRectangle rect;
@@ -240,7 +240,7 @@ void PlaylistWidget::draw (cairo_t * cr)
             char buf[16];
             snprintf (buf, sizeof buf, "(#%d)", 1 + pos);
 
-            layout = gtk_widget_create_pango_layout (gtk (), buf);
+            layout = gtk_widget_create_pango_layout (gtk_dr (), buf);
             pango_layout_set_font_description (layout, m_font.get ());
 
             PangoRectangle rect;
@@ -265,7 +265,7 @@ void PlaylistWidget::draw (cairo_t * cr)
         Tuple tuple = aud_playlist_entry_get_tuple (active_playlist, i, Playlist::Guess);
         String title = tuple.get_str (Tuple::FormattedTitle);
 
-        layout = gtk_widget_create_pango_layout (gtk (), title);
+        layout = gtk_widget_create_pango_layout (gtk_dr (), title);
         pango_layout_set_font_description (layout, m_font.get ());
         pango_layout_set_width (layout, PANGO_SCALE * (m_width - left - right));
         pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_END);
@@ -326,7 +326,7 @@ void PlaylistWidget::resize (int width, int height)
     calc_layout ();
 
     gtk_widget_set_size_request (gtk (), m_width, m_height);
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 
     if (m_slider)
         m_slider->update ();
@@ -336,7 +336,7 @@ void PlaylistWidget::set_font (const char * font)
 {
     m_font.capture (pango_font_description_from_string (font));
 
-    PangoLayout * layout = gtk_widget_create_pango_layout (gtk (), "A");
+    PangoLayout * layout = gtk_widget_create_pango_layout (gtk_dr (), "A");
     pango_layout_set_font_description (layout, m_font.get ());
 
     PangoRectangle rect;
@@ -347,7 +347,7 @@ void PlaylistWidget::set_font (const char * font)
     calc_layout ();
 
     g_object_unref (layout);
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 
     if (m_slider)
         m_slider->update ();
@@ -358,7 +358,7 @@ void PlaylistWidget::update ()
     update_title ();
     calc_layout ();
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 
     if (m_slider)
         m_slider->update ();
@@ -596,7 +596,7 @@ void PlaylistWidget::scroll_to (int row)
     m_first = row;
     calc_layout ();
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 
     if (m_slider)
         m_slider->update ();
@@ -608,7 +608,7 @@ void PlaylistWidget::set_focused (int row)
     aud_playlist_set_focus (active_playlist, row);
     ensure_visible (row);
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 
     if (m_slider)
         m_slider->update ();
@@ -631,7 +631,7 @@ void PlaylistWidget::hover (int x, int y)
     if (row != m_hover)
     {
         m_hover = row;
-        gtk_widget_queue_draw (gtk ());
+        gtk_widget_queue_draw (gtk_dr ());
     }
 }
 
@@ -640,7 +640,7 @@ int PlaylistWidget::hover_end ()
     int temp = m_hover;
     m_hover = -1;
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return temp;
 }
 

@@ -61,5 +61,5 @@ PlayStatus::PlayStatus ()
 void PlayStatus::set_status (PStatus status)
 {
     m_status = status;
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }

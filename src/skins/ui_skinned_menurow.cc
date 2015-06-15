@@ -82,7 +82,7 @@ bool MenuRow::button_press (GdkEventButton * event)
 
     mainwin_mr_change (m_selected);
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -99,7 +99,7 @@ bool MenuRow::button_release (GdkEventButton * event)
     m_pushed = false;
     m_selected = MENUROW_NONE;
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -112,7 +112,7 @@ bool MenuRow::motion (GdkEventMotion * event)
 
     mainwin_mr_change (m_selected);
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -128,5 +128,5 @@ MenuRow::MenuRow ()
 
 void MenuRow::update ()
 {
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }

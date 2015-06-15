@@ -59,5 +59,5 @@ MonoStereo::MonoStereo ()
 void MonoStereo::set_num_channels (int num_channels)
 {
     m_num_channels = num_channels;
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }

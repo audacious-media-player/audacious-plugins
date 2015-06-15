@@ -75,7 +75,7 @@ bool Button::button_press (GdkEventButton * event)
         return false;
 
     if (m_type != Small)
-        gtk_widget_queue_draw (gtk ());
+        gtk_widget_queue_draw (gtk_dr ());
 
     return true;
 }
@@ -106,7 +106,7 @@ bool Button::button_release (GdkEventButton * event)
         return false;
 
     if (m_type != Small)
-        gtk_widget_queue_draw (gtk ());
+        gtk_widget_queue_draw (gtk_dr ());
 
     return true;
 }
@@ -131,6 +131,6 @@ void Button::set_active (bool active)
     if (m_active != active)
     {
         m_active = active;
-        gtk_widget_queue_draw (gtk ());
+        gtk_widget_queue_draw (gtk_dr ());
     }
 }

@@ -72,7 +72,7 @@ bool PlaylistSlider::button_press (GdkEventButton * event)
     m_pressed = true;
     set_pos (event->y / config.scale - 9);
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -87,7 +87,7 @@ bool PlaylistSlider::button_release (GdkEventButton * event)
     m_pressed = false;
     set_pos (event->y / config.scale - 9);
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -98,7 +98,7 @@ bool PlaylistSlider::motion (GdkEventMotion * event)
 
     set_pos (event->y / config.scale - 9);
 
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
     return true;
 }
 
@@ -117,10 +117,10 @@ void PlaylistSlider::resize (int height)
 {
     m_height = height;
     gtk_widget_set_size_request (gtk (), 8 * config.scale, height * config.scale);
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }
 
 void PlaylistSlider::update ()
 {
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }

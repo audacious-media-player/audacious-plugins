@@ -30,11 +30,13 @@ public:
     virtual ~Widget () {}
 
     GtkWidget * gtk () { return m_widget; }
+    GtkWidget * gtk_dr () { return m_drawable; }
 
 protected:
     void set_gtk (GtkWidget * widget, bool use_drawing_proxy = false);
     void draw_now ();
 
+    virtual void realize () {}
     virtual void draw (cairo_t * cr) {}
     virtual bool button_press (GdkEventButton * event) { return false; }
     virtual bool button_release (GdkEventButton * event) { return false; }
@@ -43,7 +45,11 @@ protected:
     virtual bool leave (GdkEventCrossing * event) { return false; }
 
 private:
-    static void destroy_cb (GtkWidget * widget, Widget * me);
+    static void destroy_cb (GtkWidget * widget, Widget * me)
+        { delete me; }
+    static void realize_cb (GtkWidget * widget, Widget * me)
+        { me->realize (); }
+
     static gboolean draw_cb (GtkWidget * widget, GdkEventExpose * event, Widget * me);
 
     static gboolean button_press_cb (GtkWidget * widget, GdkEventButton * event, Widget * me)

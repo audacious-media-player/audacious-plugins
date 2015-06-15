@@ -143,5 +143,5 @@ EqGraph::EqGraph ()
 
 void EqGraph::update ()
 {
-    gtk_widget_queue_draw (gtk ());
+    gtk_widget_queue_draw (gtk_dr ());
 }
