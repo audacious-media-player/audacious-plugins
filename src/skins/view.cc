@@ -54,7 +54,7 @@ void view_show_player (bool show)
     view_apply_show_playlist ();
     view_apply_show_equalizer ();
 
-    start_stop_visual (FALSE);
+    start_stop_visual (false);
 }
 
 void view_set_show_playlist (bool show)

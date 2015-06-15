@@ -43,22 +43,12 @@ class Window;
 
 extern Window * mainwin;
 
-extern Button * mainwin_shuffle, * mainwin_repeat;
 extern Button * mainwin_eq, * mainwin_pl;
-
 extern TextBox * mainwin_info;
-extern TextBox * mainwin_stime_min, * mainwin_stime_sec;
+extern MenuRow * mainwin_menurow;
 
 extern SkinnedVis * mainwin_vis;
 extern SmallVis * mainwin_svis;
-
-extern PlayStatus * mainwin_playstatus;
-
-extern SkinnedNumber * mainwin_minus_num, * mainwin_10min_num, * mainwin_min_num;
-extern SkinnedNumber * mainwin_10sec_num, * mainwin_sec_num;
-
-extern MenuRow * mainwin_menurow;
-extern HSlider * mainwin_position, * mainwin_sposition;
 
 void mainwin_create(void);
 void mainwin_unhook (void);
@@ -71,11 +61,7 @@ void mainwin_set_volume_slider(int percent);
 void mainwin_set_balance_slider(int percent);
 
 void mainwin_refresh_hints(void);
-void mainwin_set_song_title (const char * title);
-void mainwin_set_song_info(int rate, int freq, int nch);
-void mainwin_clear_song_info(void);
-
-void mainwin_disable_seekbar(void);
+void mainwin_playback_begin ();
 
 void mainwin_update_song_info (void);
 void mainwin_show_status_message (const char * message);

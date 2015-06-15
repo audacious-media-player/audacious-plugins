@@ -68,6 +68,13 @@
 
 Window * mainwin;
 
+Button * mainwin_eq, * mainwin_pl;
+TextBox * mainwin_info;
+MenuRow * mainwin_menurow;
+
+SkinnedVis * mainwin_vis;
+SmallVis * mainwin_svis;
+
 static bool seeking = false;
 static int seek_start, seek_time;
 
@@ -83,29 +90,19 @@ static Button * mainwin_shaded_menubtn, * mainwin_shaded_minimize, * mainwin_sha
 static Button * mainwin_rew, * mainwin_fwd;
 static Button * mainwin_eject;
 static Button * mainwin_play, * mainwin_pause, * mainwin_stop;
+static Button * mainwin_shuffle, * mainwin_repeat;
 
-Button * mainwin_shuffle, * mainwin_repeat;
-Button * mainwin_eq, * mainwin_pl;
-
-TextBox * mainwin_info;
-TextBox * mainwin_stime_min, * mainwin_stime_sec;
-
+static TextBox * mainwin_stime_min, * mainwin_stime_sec;
 static TextBox * mainwin_rate_text, * mainwin_freq_text, * mainwin_othertext;
 
-PlayStatus * mainwin_playstatus;
-
-SkinnedNumber * mainwin_minus_num, * mainwin_10min_num, * mainwin_min_num;
-SkinnedNumber * mainwin_10sec_num, * mainwin_sec_num;
-
-SkinnedVis * mainwin_vis;
-SmallVis * mainwin_svis;
-
-MenuRow * mainwin_menurow;
-HSlider * mainwin_position, * mainwin_sposition;
+static PlayStatus * mainwin_playstatus;
+static SkinnedNumber * mainwin_minus_num, * mainwin_10min_num, * mainwin_min_num;
+static SkinnedNumber * mainwin_10sec_num, * mainwin_sec_num;
+static HSlider * mainwin_position, * mainwin_sposition;
 
 static HSlider * mainwin_volume, * mainwin_balance;
-
 static MonoStereo * mainwin_monostereo;
+
 static Button * mainwin_srew, * mainwin_splay, * mainwin_spause;
 static Button * mainwin_sstop, * mainwin_sfwd, * mainwin_seject, * mainwin_about;
 
@@ -212,7 +209,7 @@ void mainwin_show_status_message (const char * message)
     status_message_source = g_timeout_add (1000, clear_status_message, nullptr);
 }
 
-void mainwin_set_song_title (const char * title)
+static void mainwin_set_song_title (const char * title)
 {
     if (title)
         gtk_window_set_title ((GtkWindow *) mainwin->gtk (), str_printf (_("%s - Audacious"), title));
@@ -220,6 +217,14 @@ void mainwin_set_song_title (const char * title)
         gtk_window_set_title ((GtkWindow *) mainwin->gtk (), _("Audacious"));
 
     mainwin_set_info_text (title ? title : "");
+}
+
+static void title_change ()
+{
+    if (aud_drct_get_ready ())
+        mainwin_set_song_title (aud_drct_get_title ());
+    else
+        mainwin_set_song_title ("Buffering ...");
 }
 
 static void setup_widget (Widget * widget, int x, int y, gboolean show)
@@ -295,7 +300,7 @@ void mainwin_refresh_hints (void)
 
 /* note that the song info is not translated since it is displayed using
  * the skinned bitmap font, which supports only the English alphabet */
-void mainwin_set_song_info (int bitrate, int samplerate, int channels)
+static void mainwin_set_song_info (int bitrate, int samplerate, int channels)
 {
     char scratch[32];
     int length;
@@ -344,8 +349,51 @@ void mainwin_set_song_info (int bitrate, int samplerate, int channels)
     mainwin_set_othertext (scratch);
 }
 
-void
-mainwin_clear_song_info(void)
+static void info_change ()
+{
+    int bitrate, samplerate, channels;
+    aud_drct_get_info (bitrate, samplerate, channels);
+    mainwin_set_song_info (bitrate, samplerate, channels);
+}
+
+static void playback_pause ()
+{
+    mainwin_playstatus->set_status (STATUS_PAUSE);
+}
+
+static void playback_unpause ()
+{
+    mainwin_playstatus->set_status (STATUS_PLAY);
+}
+
+void mainwin_playback_begin ()
+{
+    mainwin_update_song_info ();
+
+    gtk_widget_show (mainwin_stime_min->gtk ());
+    gtk_widget_show (mainwin_stime_sec->gtk ());
+    gtk_widget_show (mainwin_minus_num->gtk ());
+    gtk_widget_show (mainwin_10min_num->gtk ());
+    gtk_widget_show (mainwin_min_num->gtk ());
+    gtk_widget_show (mainwin_10sec_num->gtk ());
+    gtk_widget_show (mainwin_sec_num->gtk ());
+
+    if (aud_drct_get_ready () && aud_drct_get_length () > 0)
+    {
+        gtk_widget_show (mainwin_position->gtk ());
+        gtk_widget_show (mainwin_sposition->gtk ());
+    }
+
+    if (aud_drct_get_paused ())
+        playback_pause ();
+    else
+        playback_unpause ();
+
+    title_change ();
+    info_change ();
+}
+
+static void mainwin_playback_stop ()
 {
     seeking = false;
     timer_remove (TimerRate::Hz10, seek_timeout);
@@ -379,11 +427,28 @@ mainwin_clear_song_info(void)
     playlistwin_hide_timer();
 }
 
-void
-mainwin_disable_seekbar(void)
+static void repeat_toggled ()
 {
-    gtk_widget_hide (mainwin_position->gtk ());
-    gtk_widget_hide (mainwin_sposition->gtk ());
+    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
+}
+
+static void shuffle_toggled ()
+{
+    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
+}
+
+static void no_advance_toggled ()
+{
+    if (aud_get_bool (nullptr, "no_playlist_advance"))
+        mainwin_show_status_message (_("Single mode."));
+    else
+        mainwin_show_status_message (_("Playlist mode."));
+}
+
+static void stop_after_song_toggled ()
+{
+    if (aud_get_bool (nullptr, "stop_after_current_song"))
+        mainwin_show_status_message (_("Stopping after song."));
 }
 
 static void mainwin_scrolled (GtkWidget * widget, GdkEventScroll * event, void *
@@ -1105,7 +1170,18 @@ mainwin_create_window(void)
     g_signal_connect (w, "window-state-event", (GCallback) state_cb, nullptr);
     g_signal_connect (w, "delete-event", (GCallback) handle_window_close, nullptr);
 
-    ui_main_evlistener_init();
+    hook_associate ("playback begin", (HookFunction) mainwin_playback_begin, nullptr);
+    hook_associate ("playback ready", (HookFunction) mainwin_playback_begin, nullptr);
+    hook_associate ("playback seek", (HookFunction) mainwin_update_song_info, nullptr);
+    hook_associate ("playback stop", (HookFunction) mainwin_playback_stop, nullptr);
+    hook_associate ("playback pause", (HookFunction) playback_pause, nullptr);
+    hook_associate ("playback unpause", (HookFunction) playback_unpause, nullptr);
+    hook_associate ("title change", (HookFunction) title_change, nullptr);
+    hook_associate ("info change", (HookFunction) info_change, nullptr);
+    hook_associate ("set repeat", (HookFunction) repeat_toggled, nullptr);
+    hook_associate ("set shuffle", (HookFunction) shuffle_toggled, nullptr);
+    hook_associate ("set no_playlist_advance", (HookFunction) no_advance_toggled, nullptr);
+    hook_associate ("set stop_after_current_song", (HookFunction) stop_after_song_toggled, nullptr);
 }
 
 void mainwin_unhook (void)
@@ -1125,8 +1201,20 @@ void mainwin_unhook (void)
         mainwin_volume_release_timeout = 0;
     }
 
-    ui_main_evlistener_dissociate ();
-    start_stop_visual (TRUE);
+    hook_dissociate ("playback begin", (HookFunction) mainwin_playback_begin);
+    hook_dissociate ("playback ready", (HookFunction) mainwin_playback_begin);
+    hook_dissociate ("playback seek", (HookFunction) mainwin_update_song_info);
+    hook_dissociate ("playback stop", (HookFunction) mainwin_playback_stop);
+    hook_dissociate ("playback pause", (HookFunction) playback_pause);
+    hook_dissociate ("playback unpause", (HookFunction) playback_unpause);
+    hook_dissociate ("title change", (HookFunction) title_change);
+    hook_dissociate ("info change", (HookFunction) info_change);
+    hook_dissociate ("set repeat", (HookFunction) repeat_toggled);
+    hook_dissociate ("set shuffle", (HookFunction) shuffle_toggled);
+    hook_dissociate ("set no_playlist_advance", (HookFunction) no_advance_toggled);
+    hook_dissociate ("set stop_after_current_song", (HookFunction) stop_after_song_toggled);
+
+    start_stop_visual (true);
 
     locked_textbox = nullptr;
     locked_old_text = String ();

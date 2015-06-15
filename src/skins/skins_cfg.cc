@@ -171,7 +171,7 @@ static void vis_reset_cb (void)
 {
     mainwin_vis->clear ();
     mainwin_svis->clear ();
-    start_stop_visual (FALSE);
+    start_stop_visual (false);
 }
 
 static const PreferencesWidget font_table_elements[] = {
