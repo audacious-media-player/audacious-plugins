@@ -30,8 +30,8 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "plugin.h"
-#include "ui_skin.h"
-#include "ui_skinselector.h"
+#include "skin.h"
+#include "skinselector.h"
 #include "util.h"
 #include "view.h"
 

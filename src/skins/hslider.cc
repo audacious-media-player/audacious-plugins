@@ -28,7 +28,7 @@
 #include <libaudcore/objects.h>
 
 #include "skins_cfg.h"
-#include "ui_skinned_horizontal_slider.h"
+#include "hslider.h"
 
 void HSlider::draw (cairo_t * cr)
 {

@@ -34,12 +34,12 @@
 #include "plugin.h"
 #include "plugin-window.h"
 #include "skins_cfg.h"
-#include "ui_equalizer.h"
-#include "ui_main.h"
-#include "ui_main_evlisteners.h"
-#include "ui_playlist.h"
-#include "ui_skin.h"
-#include "ui_skinned_window.h"
+#include "equalizer.h"
+#include "main.h"
+#include "vis-callbacks.h"
+#include "playlist.h"
+#include "skin.h"
+#include "window.h"
 #include "view.h"
 
 class SkinnedUI : public IfacePlugin

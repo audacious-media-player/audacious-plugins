@@ -23,7 +23,7 @@
 #include <libaudcore/inifile.h>
 
 #include "skins_cfg.h"
-#include "ui_skin.h"
+#include "skin.h"
 #include "util.h"
 
 /*

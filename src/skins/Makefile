@@ -1,36 +1,36 @@
 PLUGIN = skins${PLUGIN_SUFFIX}
 
-SRCS = drag-handle.cc \
+SRCS = button.cc \
+       dock.cc \
+       drag-handle.cc \
+       eq-graph.cc \
+       eq-slider.cc \
+       equalizer.cc \
+       hslider.cc \
+       main.cc \
+       menurow.cc \
        menus.cc \
+       monostereo.cc \
+       number.cc \
+       playlist.cc \
+       playlist-slider.cc \
+       playlist-widget.cc \
+       playstatus.cc \
        plugin.cc \
        plugin-window.cc \
+       skin.cc \
+       skin-ini.cc \
        skins_cfg.cc \
+       skinselector.cc \
        surface.cc \
-       ui_skin.cc \
-       ui_skin_load_ini.cc \
-       ui_skinned_window.cc \
-       ui_dock.cc \
+       svis.cc \
+       textbox.cc \
        util.cc \
-       ui_vis.cc \
-       ui_svis.cc \
-       ui_skinned_menurow.cc \
-       ui_skinned_button.cc \
-       ui_skinned_textbox.cc \
-       ui_skinned_playstatus.cc \
-       ui_skinned_monostereo.cc \
-       ui_skinned_number.cc \
-       ui_skinned_horizontal_slider.cc \
-       ui_skinned_equalizer_graph.cc \
-       ui_skinned_equalizer_slider.cc \
-       ui_skinned_playlist.cc \
-       ui_skinned_playlist_slider.cc \
-       ui_main.cc \
-       ui_equalizer.cc \
-       ui_playlist.cc \
-       ui_main_evlisteners.cc \
-       ui_skinselector.cc \
        view.cc \
-       widget.cc
+       vis-callbacks.cc \
+       vis.cc \
+       widget.cc \
+       window.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

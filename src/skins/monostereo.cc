@@ -26,37 +26,35 @@
  */
 
 #include "skins_cfg.h"
-#include "ui_skin.h"
-#include "ui_skinned_playstatus.h"
+#include "skin.h"
+#include "monostereo.h"
 
-void PlayStatus::draw (cairo_t * cr)
+void MonoStereo::draw (cairo_t * cr)
 {
-    if (m_status == STATUS_PLAY)
-        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 36, 0, 0, 0, 3, 9);
-    else
-        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 27, 0, 0, 0, 2, 9);
-
-    switch (m_status)
+    switch (m_num_channels)
     {
-    case STATUS_STOP:
-        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 18, 0, 2, 0, 9, 9);
+    case 0:
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 29, 12, 0, 0, 27, 12);
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 0, 12, 27, 0, 29, 12);
         break;
-    case STATUS_PAUSE:
-        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 9, 0, 2, 0, 9, 9);
+    case 1:
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 29, 0, 0, 0, 27, 12);
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 0, 12, 27, 0, 29, 12);
         break;
-    case STATUS_PLAY:
-        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 1, 0, 3, 0, 8, 9);
+    default:
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 29, 12, 0, 0, 27, 12);
+        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 0, 0, 27, 0, 29, 12);
         break;
     }
 }
 
-PlayStatus::PlayStatus ()
+MonoStereo::MonoStereo ()
 {
-    add_drawable (11 * config.scale, 9 * config.scale);
+    add_drawable (56 * config.scale, 12 * config.scale);
 }
 
-void PlayStatus::set_status (PStatus status)
+void MonoStereo::set_num_channels (int num_channels)
 {
-    m_status = status;
+    m_num_channels = num_channels;
     queue_draw ();
 }

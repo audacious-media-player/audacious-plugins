@@ -36,7 +36,7 @@
 #include "plugin.h"
 #include "skins_cfg.h"
 #include "surface.h"
-#include "ui_skin.h"
+#include "skin.h"
 #include "util.h"
 
 struct SkinPixmapIdMapping {

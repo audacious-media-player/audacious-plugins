@@ -29,7 +29,7 @@
 #define SKINS_UI_SKINNED_HORIZONTAL_SLIDER_H
 
 #include "widget.h"
-#include "ui_skin.h"
+#include "skin.h"
 
 class HSlider : public Widget
 {

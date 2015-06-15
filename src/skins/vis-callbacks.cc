@@ -27,15 +27,15 @@
 #include <libaudcore/runtime.h>
 
 #include "skins_cfg.h"
-#include "ui_main.h"
-#include "ui_main_evlisteners.h"
-#include "ui_skin.h"
-#include "ui_skinned_button.h"
-#include "ui_skinned_horizontal_slider.h"
-#include "ui_skinned_number.h"
-#include "ui_skinned_playstatus.h"
-#include "ui_skinned_textbox.h"
-#include "ui_vis.h"
+#include "main.h"
+#include "vis-callbacks.h"
+#include "skin.h"
+#include "button.h"
+#include "hslider.h"
+#include "number.h"
+#include "playstatus.h"
+#include "textbox.h"
+#include "vis.h"
 #include "util.h"
 
 class VisCallbacks : public Visualizer

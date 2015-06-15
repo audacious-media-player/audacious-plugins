@@ -34,8 +34,8 @@
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "ui_main.h"
-#include "ui_skinned_window.h"
+#include "main.h"
+#include "window.h"
 
 static GList * windows;
 

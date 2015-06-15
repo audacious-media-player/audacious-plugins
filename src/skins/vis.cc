@@ -29,8 +29,8 @@
 
 #include "skins_cfg.h"
 #include "surface.h"
-#include "ui_skin.h"
-#include "ui_vis.h"
+#include "skin.h"
+#include "vis.h"
 
 static const float vis_afalloff_speeds[] = {0.34, 0.5, 1.0, 1.3, 1.6};
 static const float vis_pfalloff_speeds[] = {1.2, 1.3, 1.4, 1.5, 1.6};

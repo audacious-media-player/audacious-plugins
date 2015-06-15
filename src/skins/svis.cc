@@ -29,8 +29,8 @@
 
 #include "skins_cfg.h"
 #include "surface.h"
-#include "ui_skin.h"
-#include "ui_vis.h"
+#include "skin.h"
+#include "vis.h"
 
 static const int svis_analyzer_colors[] = {14, 11, 8, 5, 2};
 static const int svis_scope_colors[] = {20, 19, 18, 19, 20};

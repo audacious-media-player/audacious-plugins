@@ -25,36 +25,35 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include <libaudcore/runtime.h>
+
 #include "skins_cfg.h"
-#include "ui_skin.h"
-#include "ui_skinned_monostereo.h"
+#include "main.h"
+#include "skin.h"
+#include "number.h"
 
-void MonoStereo::draw (cairo_t * cr)
+void SkinnedNumber::draw (cairo_t * cr)
 {
-    switch (m_num_channels)
+    skin_draw_pixbuf (cr, SKIN_NUMBERS, m_num * 9, 0, 0, 0, 9, 13);
+}
+
+bool SkinnedNumber::button_press (GdkEventButton * event)
+{
+    return change_timer_mode_cb (event);
+}
+
+SkinnedNumber::SkinnedNumber ()
+{
+    add_input (9 * config.scale, 13 * config.scale, false, true);
+}
+
+void SkinnedNumber::set (char c)
+{
+    int value = (c >= '0' && c <= '9') ? c - '0' : (c == '-') ? 11 : 10;
+
+    if (m_num != value)
     {
-    case 0:
-        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 29, 12, 0, 0, 27, 12);
-        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 0, 12, 27, 0, 29, 12);
-        break;
-    case 1:
-        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 29, 0, 0, 0, 27, 12);
-        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 0, 12, 27, 0, 29, 12);
-        break;
-    default:
-        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 29, 12, 0, 0, 27, 12);
-        skin_draw_pixbuf (cr, SKIN_MONOSTEREO, 0, 0, 27, 0, 29, 12);
-        break;
+        m_num = value;
+        queue_draw ();
     }
-}
-
-MonoStereo::MonoStereo ()
-{
-    add_drawable (56 * config.scale, 12 * config.scale);
-}
-
-void MonoStereo::set_num_channels (int num_channels)
-{
-    m_num_channels = num_channels;
-    queue_draw ();
 }

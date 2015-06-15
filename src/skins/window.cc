@@ -20,7 +20,7 @@
  */
 
 #include "skins_cfg.h"
-#include "ui_skinned_window.h"
+#include "window.h"
 
 void Window::draw (cairo_t * cr)
 {

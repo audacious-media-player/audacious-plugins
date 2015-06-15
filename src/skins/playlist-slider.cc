@@ -28,10 +28,10 @@
 #include <libaudcore/objects.h>
 
 #include "skins_cfg.h"
-#include "ui_playlist.h"
-#include "ui_skin.h"
-#include "ui_skinned_playlist.h"
-#include "ui_skinned_playlist_slider.h"
+#include "playlist.h"
+#include "skin.h"
+#include "playlist-widget.h"
+#include "playlist-slider.h"
 
 void PlaylistSlider::draw (cairo_t * cr)
 {

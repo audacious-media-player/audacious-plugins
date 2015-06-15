@@ -32,8 +32,8 @@
 #include <libaudcore/objects.h>
 
 #include "skins_cfg.h"
-#include "ui_skin.h"
-#include "ui_skinned_textbox.h"
+#include "skin.h"
+#include "textbox.h"
 
 #define DELAY 50
 
