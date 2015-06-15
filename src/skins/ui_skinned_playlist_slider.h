@@ -28,10 +28,28 @@
 #ifndef SKINS_UI_SKINNED_PLAYLIST_SLIDER_H
 #define SKINS_UI_SKINNED_PLAYLIST_SLIDER_H
 
-#include <gtk/gtk.h>
+#include "widget.h"
 
-GtkWidget * ui_skinned_playlist_slider_new (GtkWidget * list, int height);
-void ui_skinned_playlist_slider_resize (GtkWidget * slider, int height);
-void ui_skinned_playlist_slider_update (GtkWidget * slider);
+class PlaylistWidget;
+
+class PlaylistSlider : public Widget
+{
+public:
+    PlaylistSlider (PlaylistWidget * list, int height);
+    void resize (int height);
+    void update ();
+
+private:
+    void draw (cairo_t * cr);
+    bool button_press (GdkEventButton * event);
+    bool button_release (GdkEventButton * event);
+    bool motion (GdkEventMotion * event);
+
+    void set_pos (int y);
+
+    PlaylistWidget * m_list;
+    int m_height;
+    bool m_pressed = false;
+};
 
 #endif

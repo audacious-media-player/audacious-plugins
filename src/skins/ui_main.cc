@@ -442,7 +442,7 @@ static void mainwin_playback_rpress (Button * button, GdkEventButton * event)
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
  void * unused)
 {
-    if (ui_skinned_playlist_key (playlistwin_list, event))
+    if (playlistwin_list->handle_keypress (event))
         return 1;
 
     switch (event->keyval)

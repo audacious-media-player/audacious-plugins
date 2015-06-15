@@ -46,30 +46,7 @@
 
 enum {DRAG_SELECT = 1, DRAG_MOVE};
 
-struct PlaylistData
-{
-    GtkWidget * slider;
-    PangoFontDescPtr font;
-    String title_text;
-    int width, height, row_height, offset, rows, first, scroll, hover, drag;
-    int popup_pos, popup_source;
-    bool popup_shown;
-
-    void update_title ();
-    void calc_layout ();
-    int calc_position (int y) const;
-};
-
-static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event, PlaylistData * data);
-static gboolean playlist_button_release (GtkWidget * list, GdkEventButton * event, PlaylistData * data);
-static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event, PlaylistData * data);
-static gboolean playlist_leave (GtkWidget * list, GdkEventCrossing * event, PlaylistData * data);
-
-static void scroll_cb (void * data_);
-static void popup_trigger (GtkWidget * list, PlaylistData * data, int pos);
-static void popup_hide (GtkWidget * list, PlaylistData * data);
-
-void PlaylistData::update_title ()
+void PlaylistWidget::update_title ()
 {
     if (aud_playlist_count () > 1)
     {
@@ -81,38 +58,38 @@ void PlaylistData::update_title ()
         title_text = String ();
 }
 
-void PlaylistData::calc_layout ()
+void PlaylistWidget::calc_layout ()
 {
-    rows = height / row_height;
+    m_rows = m_height / m_row_height;
 
-    if (rows && title_text)
+    if (m_rows && title_text)
     {
-        offset = row_height;
-        rows --;
+        m_offset = m_row_height;
+        m_rows --;
     }
     else
-        offset = 0;
+        m_offset = 0;
 
-    if (first + rows > active_length)
-        first = active_length - rows;
-    if (first < 0)
-        first = 0;
+    if (m_first + m_rows > active_length)
+        m_first = active_length - m_rows;
+    if (m_first < 0)
+        m_first = 0;
 }
 
-int PlaylistData::calc_position (int y) const
+int PlaylistWidget::calc_position (int y) const
 {
-    if (y < offset)
+    if (y < m_offset)
         return -1;
 
-    int position = first + (y - offset) / row_height;
+    int position = m_first + (y - m_offset) / m_row_height;
 
-    if (position >= first + rows || position >= active_length)
+    if (position >= m_first + m_rows || position >= active_length)
         return active_length;
 
     return position;
 }
 
-static int adjust_position (bool relative, int position)
+int PlaylistWidget::adjust_position (bool relative, int position) const
 {
     if (active_length == 0)
         return -1;
@@ -134,26 +111,27 @@ static int adjust_position (bool relative, int position)
     return position;
 }
 
-static void cancel_all (GtkWidget * list, PlaylistData * data)
+void PlaylistWidget::cancel_all ()
 {
-    data->drag = FALSE;
+    m_drag = false;
 
-    if (data->scroll)
+    if (m_scroll)
     {
-        data->scroll = 0;
-        timer_remove (TimerRate::Hz10, scroll_cb, data);
+        m_scroll = 0;
+        timer_remove (TimerRate::Hz10, PlaylistWidget::scroll_timeout_cb, this);
     }
 
-    if (data->hover != -1)
+    if (m_hover != -1)
     {
-        data->hover = -1;
-        gtk_widget_queue_draw (list);
+        m_hover = -1;
+        gtk_widget_queue_draw (gtk ());
     }
 
-    popup_hide (list, data);
+    popup_hide ();
 }
 
-DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
+void PlaylistWidget::draw (cairo_t * cr)
+{
     int active_entry = aud_playlist_get_position (active_playlist);
     int left = 3, right = 3;
     PangoLayout * layout;
@@ -166,11 +144,11 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
 
     /* playlist title */
 
-    if (data->offset)
+    if (m_offset)
     {
-        layout = gtk_widget_create_pango_layout (wid, data->title_text);
-        pango_layout_set_font_description (layout, data->font.get ());
-        pango_layout_set_width (layout, PANGO_SCALE * (data->width - left - right));
+        layout = gtk_widget_create_pango_layout (gtk (), title_text);
+        pango_layout_set_font_description (layout, m_font.get ());
+        pango_layout_set_width (layout, PANGO_SCALE * (m_width - left - right));
         pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
         pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_MIDDLE);
 
@@ -182,14 +160,12 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
 
     /* selection highlight */
 
-    for (int i = data->first; i < data->first + data->rows && i <
-     active_length; i ++)
+    for (int i = m_first; i < m_first + m_rows && i < active_length; i ++)
     {
         if (! aud_playlist_entry_get_selected (active_playlist, i))
             continue;
 
-        cairo_rectangle (cr, 0, data->offset + data->row_height * (i -
-         data->first), data->width, data->row_height);
+        cairo_rectangle (cr, 0, m_offset + m_row_height * (i - m_first), m_width, m_row_height);
         set_cairo_color (cr, skin.colors[SKIN_PLEDIT_SELECTEDBG]);
         cairo_fill (cr);
     }
@@ -200,21 +176,19 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
     {
         width = 0;
 
-        for (int i = data->first; i < data->first + data->rows && i <
-         active_length; i ++)
+        for (int i = m_first; i < m_first + m_rows && i < active_length; i ++)
         {
             char buf[16];
             snprintf (buf, sizeof buf, "%d.", 1 + i);
 
-            layout = gtk_widget_create_pango_layout (wid, buf);
-            pango_layout_set_font_description (layout, data->font.get ());
+            layout = gtk_widget_create_pango_layout (gtk (), buf);
+            pango_layout_set_font_description (layout, m_font.get ());
 
             PangoRectangle rect;
             pango_layout_get_pixel_extents (layout, nullptr, & rect);
             width = aud::max (width, rect.width);
 
-            cairo_move_to (cr, left, data->offset + data->row_height * (i -
-             data->first));
+            cairo_move_to (cr, left, m_offset + m_row_height * (i - m_first));
             set_cairo_color (cr, skin.colors[(i == active_entry) ?
              SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
             pango_cairo_show_layout (cr, layout);
@@ -228,23 +202,21 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
 
     width = 0;
 
-    for (int i = data->first; i < data->first + data->rows && i <
-     active_length; i ++)
+    for (int i = m_first; i < m_first + m_rows && i < active_length; i ++)
     {
         Tuple tuple = aud_playlist_entry_get_tuple (active_playlist, i, Playlist::Guess);
         int len = tuple.get_int (Tuple::Length);
         if (len < 0)
             continue;
 
-        layout = gtk_widget_create_pango_layout (wid, str_format_time (len));
-        pango_layout_set_font_description (layout, data->font.get ());
+        layout = gtk_widget_create_pango_layout (gtk (), str_format_time (len));
+        pango_layout_set_font_description (layout, m_font.get ());
 
         PangoRectangle rect;
         pango_layout_get_pixel_extents (layout, nullptr, & rect);
         width = aud::max (width, rect.width);
 
-        cairo_move_to (cr, data->width - right - rect.width, data->offset +
-         data->row_height * (i - data->first));
+        cairo_move_to (cr, m_width - right - rect.width, m_offset + m_row_height * (i - m_first));
         set_cairo_color (cr, skin.colors[(i == active_entry) ?
          SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
         pango_cairo_show_layout (cr, layout);
@@ -259,8 +231,7 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
     {
         width = 0;
 
-        for (int i = data->first; i < data->first + data->rows && i <
-         active_length; i ++)
+        for (int i = m_first; i < m_first + m_rows && i < active_length; i ++)
         {
             int pos = aud_playlist_queue_find_entry (active_playlist, i);
             if (pos < 0)
@@ -269,15 +240,15 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
             char buf[16];
             snprintf (buf, sizeof buf, "(#%d)", 1 + pos);
 
-            layout = gtk_widget_create_pango_layout (wid, buf);
-            pango_layout_set_font_description (layout, data->font.get ());
+            layout = gtk_widget_create_pango_layout (gtk (), buf);
+            pango_layout_set_font_description (layout, m_font.get ());
 
             PangoRectangle rect;
             pango_layout_get_pixel_extents (layout, nullptr, & rect);
             width = aud::max (width, rect.width);
 
-            cairo_move_to (cr, data->width - right - rect.width, data->offset +
-             data->row_height * (i - data->first));
+            cairo_move_to (cr, m_width - right - rect.width, m_offset +
+             m_row_height * (i - m_first));
             set_cairo_color (cr, skin.colors[(i == active_entry) ?
              SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
             pango_cairo_show_layout (cr, layout);
@@ -289,19 +260,17 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
 
     /* titles */
 
-    for (int i = data->first; i < data->first + data->rows && i <
-     active_length; i ++)
+    for (int i = m_first; i < m_first + m_rows && i < active_length; i ++)
     {
         Tuple tuple = aud_playlist_entry_get_tuple (active_playlist, i, Playlist::Guess);
         String title = tuple.get_str (Tuple::FormattedTitle);
 
-        layout = gtk_widget_create_pango_layout (wid, title);
-        pango_layout_set_font_description (layout, data->font.get ());
-        pango_layout_set_width (layout, PANGO_SCALE * (data->width - left - right));
+        layout = gtk_widget_create_pango_layout (gtk (), title);
+        pango_layout_set_font_description (layout, m_font.get ());
+        pango_layout_set_width (layout, PANGO_SCALE * (m_width - left - right));
         pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_END);
 
-        cairo_move_to (cr, left, data->offset + data->row_height * (i -
-         data->first));
+        cairo_move_to (cr, left, m_offset + m_row_height * (i - m_first));
         set_cairo_color (cr, skin.colors[(i == active_entry) ?
          SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
         pango_cairo_show_layout (cr, layout);
@@ -311,168 +280,131 @@ DRAW_FUNC_BEGIN (playlist_draw, PlaylistData)
     /* focus rectangle */
 
     int focus = aud_playlist_get_focus (active_playlist);
-    if (focus >= data->first && focus <= data->first + data->rows - 1)
+    if (focus >= m_first && focus <= m_first + m_rows - 1)
     {
         cairo_new_path (cr);
         cairo_set_line_width (cr, 1);
-        cairo_rectangle (cr, 0.5, data->offset + data->row_height * (focus -
-         data->first) + 0.5, data->width - 1, data->row_height - 1);
+        cairo_rectangle (cr, 0.5, m_offset + m_row_height * (focus - m_first) +
+         0.5, m_width - 1, m_row_height - 1);
         set_cairo_color (cr, skin.colors[SKIN_PLEDIT_NORMAL]);
         cairo_stroke (cr);
     }
 
     /* hover line */
 
-    if (data->hover >= data->first && data->hover <= data->first + data->rows)
+    if (m_hover >= m_first && m_hover <= m_first + m_rows)
     {
         cairo_new_path (cr);
         cairo_set_line_width (cr, 2);
-        cairo_move_to (cr, 0, data->offset + data->row_height * (data->hover -
-         data->first));
-        cairo_rel_line_to (cr, data->width, 0);
+        cairo_move_to (cr, 0, m_offset + m_row_height * (m_hover - m_first));
+        cairo_rel_line_to (cr, m_width, 0);
         set_cairo_color (cr, skin.colors[SKIN_PLEDIT_NORMAL]);
         cairo_stroke (cr);
     }
-DRAW_FUNC_END
-
-static void playlist_destroy (GtkWidget * list, PlaylistData * data)
-{
-    cancel_all (list, data);
-    delete data;
 }
 
-GtkWidget * ui_skinned_playlist_new (int width, int height, const char * font)
+PlaylistWidget::PlaylistWidget (int width, int height, const char * font) :
+    m_width (width * config.scale),
+    m_height (height * config.scale)
 {
     GtkWidget * list = gtk_event_box_new ();
     gtk_event_box_set_visible_window ((GtkEventBox *) list, false);
-    gtk_widget_set_size_request (list, width * config.scale, height * config.scale);
+    gtk_widget_set_size_request (list, m_width, m_height);
     gtk_widget_add_events (list, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
      | GDK_LEAVE_NOTIFY_MASK | GDK_POINTER_MOTION_MASK);
+    set_gtk (list, true);
 
-    PlaylistData * data = new PlaylistData ();
-    data->width = width * config.scale;
-    data->height = height * config.scale;
-    data->hover = -1;
-    data->popup_pos = -1;
-    data->update_title ();
-    g_object_set_data ((GObject *) list, "playlistdata", data);
-
-    DRAW_CONNECT_PROXY (list, playlist_draw, data);
-    g_signal_connect (list, "button-press-event", (GCallback) playlist_button_press, data);
-    g_signal_connect (list, "button-release-event", (GCallback) playlist_button_release, data);
-    g_signal_connect (list, "leave-notify-event", (GCallback) playlist_leave, data);
-    g_signal_connect (list, "motion-notify-event", (GCallback) playlist_motion, data);
-    g_signal_connect (list, "destroy", (GCallback) playlist_destroy, data);
-
-    ui_skinned_playlist_set_font (list, font);
-
-    return list;
+    update_title ();
+    set_font (font);
 }
 
-void ui_skinned_playlist_set_slider (GtkWidget * list, GtkWidget * slider)
+void PlaylistWidget::resize (int width, int height)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_if_fail (data);
+    m_width = width * config.scale;
+    m_height = height * config.scale;
 
-    data->slider = slider;
+    calc_layout ();
+
+    gtk_widget_set_size_request (gtk (), m_width, m_height);
+    gtk_widget_queue_draw (gtk ());
+
+    if (m_slider)
+        m_slider->update ();
 }
 
-void ui_skinned_playlist_resize (GtkWidget * list, int width, int height)
+void PlaylistWidget::set_font (const char * font)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_if_fail (data);
+    m_font.capture (pango_font_description_from_string (font));
 
-    gtk_widget_set_size_request (list, width * config.scale, height * config.scale);
-
-    data->width = width * config.scale;
-    data->height = height * config.scale;
-    data->calc_layout ();
-
-    gtk_widget_queue_draw (list);
-
-    if (data->slider)
-        ui_skinned_playlist_slider_update (data->slider);
-}
-
-void ui_skinned_playlist_set_font (GtkWidget * list, const char * font)
-{
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_if_fail (data);
-
-    data->font.capture (pango_font_description_from_string (font));
-
-    PangoLayout * layout = gtk_widget_create_pango_layout (list, "A");
-    pango_layout_set_font_description (layout, data->font.get ());
+    PangoLayout * layout = gtk_widget_create_pango_layout (gtk (), "A");
+    pango_layout_set_font_description (layout, m_font.get ());
 
     PangoRectangle rect;
     pango_layout_get_pixel_extents (layout, nullptr, & rect);
 
     /* make sure row_height is non-zero; we divide by it */
-    data->row_height = aud::max (rect.height, 1);
-    data->calc_layout ();
+    m_row_height = aud::max (rect.height, 1);
+    calc_layout ();
 
     g_object_unref (layout);
-    gtk_widget_queue_draw (list);
+    gtk_widget_queue_draw (gtk ());
 
-    if (data->slider)
-        ui_skinned_playlist_slider_update (data->slider);
+    if (m_slider)
+        m_slider->update ();
 }
 
-void ui_skinned_playlist_update (GtkWidget * list)
+void PlaylistWidget::update ()
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_if_fail (data);
+    update_title ();
+    calc_layout ();
 
-    data->update_title ();
-    data->calc_layout ();
+    gtk_widget_queue_draw (gtk ());
 
-    gtk_widget_queue_draw (list);
-
-    if (data->slider != nullptr)
-        ui_skinned_playlist_slider_update (data->slider);
+    if (m_slider)
+        m_slider->update ();
 }
 
-static void scroll_to (PlaylistData * data, int position)
+void PlaylistWidget::ensure_visible (int position)
 {
-    if (position < data->first || position >= data->first + data->rows)
-        data->first = position - data->rows / 2;
+    if (position < m_first || position >= m_first + m_rows)
+        m_first = position - m_rows / 2;
 
-    data->calc_layout ();
+    calc_layout ();
 }
 
-static void select_single (PlaylistData * data, gboolean relative, int position)
+void PlaylistWidget::select_single (bool relative, int position)
 {
     position = adjust_position (relative, position);
 
     if (position == -1)
         return;
 
-    aud_playlist_select_all (active_playlist, FALSE);
-    aud_playlist_entry_set_selected (active_playlist, position, TRUE);
+    aud_playlist_select_all (active_playlist, false);
+    aud_playlist_entry_set_selected (active_playlist, position, true);
     aud_playlist_set_focus (active_playlist, position);
-    scroll_to (data, position);
+    ensure_visible (position);
 }
 
-static void select_extend (PlaylistData * data, gboolean relative, int position)
+void PlaylistWidget::select_extend (bool relative, int position)
 {
     position = adjust_position (relative, position);
 
     if (position == -1)
         return;
 
-    int count = adjust_position (TRUE, 0);
+    int count = adjust_position (true, 0);
     int sign = (position > count) ? 1 : -1;
 
     for (; count != position; count += sign)
         aud_playlist_entry_set_selected (active_playlist, count,
          ! aud_playlist_entry_get_selected (active_playlist, count + sign));
 
-    aud_playlist_entry_set_selected (active_playlist, position, TRUE);
+    aud_playlist_entry_set_selected (active_playlist, position, true);
     aud_playlist_set_focus (active_playlist, position);
-    scroll_to (data, position);
+    ensure_visible (position);
 }
 
-static void select_slide (PlaylistData * data, gboolean relative, int position)
+void PlaylistWidget::select_slide (bool relative, int position)
 {
     position = adjust_position (relative, position);
 
@@ -480,10 +412,10 @@ static void select_slide (PlaylistData * data, gboolean relative, int position)
         return;
 
     aud_playlist_set_focus (active_playlist, position);
-    scroll_to (data, position);
+    ensure_visible (position);
 }
 
-static void select_toggle (PlaylistData * data, gboolean relative, int position)
+void PlaylistWidget::select_toggle (bool relative, int position)
 {
     position = adjust_position (relative, position);
 
@@ -493,10 +425,10 @@ static void select_toggle (PlaylistData * data, gboolean relative, int position)
     aud_playlist_entry_set_selected (active_playlist, position,
      ! aud_playlist_entry_get_selected (active_playlist, position));
     aud_playlist_set_focus (active_playlist, position);
-    scroll_to (data, position);
+    ensure_visible (position);
 }
 
-static void select_move (PlaylistData * data, gboolean relative, int position)
+void PlaylistWidget::select_move (bool relative, int position)
 {
     int focus = aud_playlist_get_focus (active_playlist);
     position = adjust_position (relative, position);
@@ -505,10 +437,10 @@ static void select_move (PlaylistData * data, gboolean relative, int position)
         return;
 
     focus += aud_playlist_shift (active_playlist, focus, position - focus);
-    scroll_to (data, focus);
+    ensure_visible (focus);
 }
 
-static void delete_selected (PlaylistData * data)
+void PlaylistWidget::delete_selected ()
 {
     aud_playlist_delete_selected (active_playlist);
 
@@ -517,17 +449,14 @@ static void delete_selected (PlaylistData * data)
 
     if (focus != -1)
     {
-        aud_playlist_entry_set_selected (active_playlist, focus, TRUE);
-        scroll_to (data, focus);
+        aud_playlist_entry_set_selected (active_playlist, focus, true);
+        ensure_visible (focus);
     }
 }
 
-gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
+bool PlaylistWidget::handle_keypress (GdkEventKey * event)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_val_if_fail (data, FALSE);
-
-    cancel_all (list, data);
+    cancel_all ();
 
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
@@ -535,207 +464,193 @@ gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
         switch (event->keyval)
         {
           case GDK_KEY_Up:
-            select_single (data, TRUE, -1);
+            select_single (true, -1);
             break;
           case GDK_KEY_Down:
-            select_single (data, TRUE, 1);
+            select_single (true, 1);
             break;
           case GDK_KEY_Page_Up:
-            select_single (data, TRUE, - data->rows);
+            select_single (true, -m_rows);
             break;
           case GDK_KEY_Page_Down:
-            select_single (data, TRUE, data->rows);
+            select_single (true, m_rows);
             break;
           case GDK_KEY_Home:
-            select_single (data, FALSE, 0);
+            select_single (false, 0);
             break;
           case GDK_KEY_End:
-            select_single (data, FALSE, active_length - 1);
+            select_single (false, active_length - 1);
             break;
           case GDK_KEY_Return:
-            select_single (data, TRUE, 0);
+            select_single (true, 0);
             aud_playlist_set_position (active_playlist,
              aud_playlist_get_focus (active_playlist));
             aud_playlist_play (active_playlist);
             break;
           case GDK_KEY_Escape:
-            select_single (data, FALSE, aud_playlist_get_position
+            select_single (false, aud_playlist_get_position
              (active_playlist));
             break;
           case GDK_KEY_Delete:
-            delete_selected (data);
+            delete_selected ();
             break;
           default:
-            return FALSE;
+            return false;
         }
         break;
       case GDK_SHIFT_MASK:
         switch (event->keyval)
         {
           case GDK_KEY_Up:
-            select_extend (data, TRUE, -1);
+            select_extend (true, -1);
             break;
           case GDK_KEY_Down:
-            select_extend (data, TRUE, 1);
+            select_extend (true, 1);
             break;
           case GDK_KEY_Page_Up:
-            select_extend (data, TRUE, -data->rows);
+            select_extend (true, -m_rows);
             break;
           case GDK_KEY_Page_Down:
-            select_extend (data, TRUE, data->rows);
+            select_extend (true, m_rows);
             break;
           case GDK_KEY_Home:
-            select_extend (data, FALSE, 0);
+            select_extend (false, 0);
             break;
           case GDK_KEY_End:
-            select_extend (data, FALSE, active_length - 1);
+            select_extend (false, active_length - 1);
             break;
           default:
-            return FALSE;
+            return false;
         }
         break;
       case GDK_CONTROL_MASK:
         switch (event->keyval)
         {
           case GDK_KEY_space:
-            select_toggle (data, TRUE, 0);
+            select_toggle (true, 0);
             break;
           case GDK_KEY_Up:
-            select_slide (data, TRUE, -1);
+            select_slide (true, -1);
             break;
           case GDK_KEY_Down:
-            select_slide (data, TRUE, 1);
+            select_slide (true, 1);
             break;
           case GDK_KEY_Page_Up:
-            select_slide (data, TRUE, -data->rows);
+            select_slide (true, -m_rows);
             break;
           case GDK_KEY_Page_Down:
-            select_slide (data, TRUE, data->rows);
+            select_slide (true, m_rows);
             break;
           case GDK_KEY_Home:
-            select_slide (data, FALSE, 0);
+            select_slide (false, 0);
             break;
           case GDK_KEY_End:
-            select_slide (data, FALSE, active_length - 1);
+            select_slide (false, active_length - 1);
             break;
           default:
-            return FALSE;
+            return false;
         }
         break;
       case GDK_MOD1_MASK:
         switch (event->keyval)
         {
           case GDK_KEY_Up:
-            select_move (data, TRUE, -1);
+            select_move (true, -1);
             break;
           case GDK_KEY_Down:
-            select_move (data, TRUE, 1);
+            select_move (true, 1);
             break;
           case GDK_KEY_Page_Up:
-            select_move (data, TRUE, -data->rows);
+            select_move (true, -m_rows);
             break;
           case GDK_KEY_Page_Down:
-            select_move (data, TRUE, data->rows);
+            select_move (true, m_rows);
             break;
           case GDK_KEY_Home:
-            select_move (data, FALSE, 0);
+            select_move (false, 0);
             break;
           case GDK_KEY_End:
-            select_move (data, FALSE, active_length - 1);
+            select_move (false, active_length - 1);
             break;
           default:
-            return FALSE;
+            return false;
         }
         break;
       default:
-        return FALSE;
+        return false;
     }
 
     playlistwin_update ();
-    return TRUE;
+    return true;
 }
 
-void ui_skinned_playlist_row_info (GtkWidget * list, int * rows, int * first)
+void PlaylistWidget::row_info (int * rows, int * first)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_if_fail (data);
-
-    * rows = data->rows;
-    * first = data->first;
+    * rows = m_rows;
+    * first = m_first;
 }
 
-void ui_skinned_playlist_scroll_to (GtkWidget * list, int row)
+void PlaylistWidget::scroll_to (int row)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_if_fail (data);
+    cancel_all ();
+    m_first = row;
+    calc_layout ();
 
-    cancel_all (list, data);
-    data->first = row;
-    data->calc_layout ();
+    gtk_widget_queue_draw (gtk ());
 
-    gtk_widget_queue_draw (list);
-
-    if (data->slider)
-        ui_skinned_playlist_slider_update (data->slider);
+    if (m_slider)
+        m_slider->update ();
 }
 
-void ui_skinned_playlist_set_focused (GtkWidget * list, int row)
+void PlaylistWidget::set_focused (int row)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_if_fail (data);
-
-    cancel_all (list, data);
+    cancel_all ();
     aud_playlist_set_focus (active_playlist, row);
-    scroll_to (data, row);
+    ensure_visible (row);
 
-    gtk_widget_queue_draw (list);
+    gtk_widget_queue_draw (gtk ());
+
+    if (m_slider)
+        m_slider->update ();
 }
 
-void ui_skinned_playlist_hover (GtkWidget * list, int x, int y)
+void PlaylistWidget::hover (int x, int y)
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_if_fail (data);
-
     int row;
 
-    if (y < data->offset)
-        row = data->first;
-    else if (y > data->offset + data->row_height * data->rows)
-        row = data->first + data->rows;
+    if (y < m_offset)
+        row = m_first;
+    else if (y > m_offset + m_row_height * m_rows)
+        row = m_first + m_rows;
     else
-        row = data->first + (y - data->offset + data->row_height / 2) /
-         data->row_height;
+        row = m_first + (y - m_offset + m_row_height / 2) / m_row_height;
 
     if (row > active_length)
         row = active_length;
 
-    if (row != data->hover)
+    if (row != m_hover)
     {
-        data->hover = row;
-        gtk_widget_queue_draw (list);
+        m_hover = row;
+        gtk_widget_queue_draw (gtk ());
     }
 }
 
-int ui_skinned_playlist_hover_end (GtkWidget * list)
+int PlaylistWidget::hover_end ()
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_val_if_fail (data, -1);
+    int temp = m_hover;
+    m_hover = -1;
 
-    int temp = data->hover;
-    data->hover = -1;
-
-    gtk_widget_queue_draw (list);
+    gtk_widget_queue_draw (gtk ());
     return temp;
 }
 
-static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event,
- PlaylistData * data)
+bool PlaylistWidget::button_press (GdkEventButton * event)
 {
-    int position = data->calc_position (event->y);
+    int position = calc_position (event->y);
     int state = event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK |
      GDK_MOD1_MASK);
 
-    cancel_all (list, data);
+    cancel_all ();
 
     switch (event->type)
     {
@@ -744,55 +659,55 @@ static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event,
         {
           case 1:
             if (position == -1 || position == active_length)
-                return TRUE;
+                return true;
 
             switch (state)
             {
               case 0:
                 if (aud_playlist_entry_get_selected (active_playlist, position))
-                    select_slide (data, FALSE, position);
+                    select_slide (false, position);
                 else
-                    select_single (data, FALSE, position);
+                    select_single (false, position);
 
-                data->drag = DRAG_MOVE;
+                m_drag = DRAG_MOVE;
                 break;
               case GDK_SHIFT_MASK:
-                select_extend (data, FALSE, position);
-                data->drag = DRAG_SELECT;
+                select_extend (false, position);
+                m_drag = DRAG_SELECT;
                 break;
               case GDK_CONTROL_MASK:
-                select_toggle (data, FALSE, position);
-                data->drag = DRAG_SELECT;
+                select_toggle (false, position);
+                m_drag = DRAG_SELECT;
                 break;
               default:
-                return TRUE;
+                return true;
             }
 
             break;
           case 3:
             if (state)
-                return TRUE;
+                return true;
 
             if (position != -1 && position != active_length)
             {
                 if (aud_playlist_entry_get_selected (active_playlist, position))
-                    select_slide (data, FALSE, position);
+                    select_slide (false, position);
                 else
-                    select_single (data, FALSE, position);
+                    select_single (false, position);
             }
 
             menu_popup ((position == -1) ? UI_MENU_PLAYLIST :
-             UI_MENU_PLAYLIST_CONTEXT, event->x_root, event->y_root, FALSE,
-             FALSE, 3, event->time);
+             UI_MENU_PLAYLIST_CONTEXT, event->x_root, event->y_root, false,
+             false, 3, event->time);
             break;
           default:
-            return FALSE;
+            return false;
         }
 
         break;
       case GDK_2BUTTON_PRESS:
         if (event->button != 1 || state || position == active_length)
-            return TRUE;
+            return true;
 
         if (position != -1)
             aud_playlist_set_position (active_playlist, position);
@@ -800,69 +715,66 @@ static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event,
         aud_playlist_play (active_playlist);
         break;
       default:
-        return TRUE;
+        return true;
     }
 
     playlistwin_update ();
-    return TRUE;
+    return true;
 }
 
-static gboolean playlist_button_release (GtkWidget * list,
- GdkEventButton * event, PlaylistData * data)
+bool PlaylistWidget::button_release (GdkEventButton * event)
 {
-    cancel_all (list, data);
-    return TRUE;
+    cancel_all ();
+    return true;
 }
 
-static void scroll_cb (void * data_)
+void PlaylistWidget::scroll_timeout ()
 {
-    auto data = (PlaylistData *) data_;
-    int position = adjust_position (TRUE, data->scroll);
-
+    int position = adjust_position (true, m_scroll);
     if (position == -1)
         return;
 
-    switch (data->drag)
+    switch (m_drag)
     {
       case DRAG_SELECT:
-        select_extend (data, FALSE, position);
+        select_extend (false, position);
         break;
       case DRAG_MOVE:
-        select_move (data, FALSE, position);
+        select_move (false, position);
         break;
     }
 
     playlistwin_update ();
 }
 
-static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event, PlaylistData * data)
+bool PlaylistWidget::motion (GdkEventMotion * event)
 {
-    int position = data->calc_position (event->y);
+    int position = calc_position (event->y);
 
-    if (data->drag)
+    if (m_drag)
     {
         if (position == -1 || position == active_length)
         {
-            if (! data->scroll)
-                timer_add (TimerRate::Hz10, scroll_cb, data);
+            if (! m_scroll)
+                timer_add (TimerRate::Hz10, PlaylistWidget::scroll_timeout_cb, this);
 
-            data->scroll = (position == -1 ? -1 : 1);
+            m_scroll = (position == -1 ? -1 : 1);
         }
         else
         {
-            if (data->scroll)
+            if (m_scroll)
             {
-                data->scroll = 0;
-                timer_remove (TimerRate::Hz10, scroll_cb, data);
+                m_scroll = 0;
+                timer_remove (TimerRate::Hz10, PlaylistWidget::scroll_timeout_cb, this);
             }
 
-            switch (data->drag)
+            switch (m_drag)
             {
               case DRAG_SELECT:
-                select_extend (data, FALSE, position);
+                select_extend (false, position);
                 break;
               case DRAG_MOVE:
-                select_move (data, FALSE, position);
+                select_move (false, position);
                 break;
             }
 
@@ -872,60 +784,56 @@ static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event, Playl
     else
     {
         if (position == -1 || position == active_length)
-            cancel_all (list, data);
-        else if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && data->popup_pos != position)
+            cancel_all ();
+        else if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && m_popup_pos != position)
         {
-            cancel_all (list, data);
-            popup_trigger (list, data, position);
+            cancel_all ();
+            popup_trigger (position);
         }
     }
 
-    return TRUE;
+    return true;
 }
 
-static gboolean playlist_leave (GtkWidget * list, GdkEventCrossing * event, PlaylistData * data)
+bool PlaylistWidget::leave (GdkEventCrossing * event)
 {
-    if (! data->drag)
-        cancel_all (list, data);
+    if (! m_drag)
+        cancel_all ();
 
-    return TRUE;
+    return true;
 }
 
-static gboolean popup_show (void * list)
+void PlaylistWidget::popup_show ()
 {
-    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
-    g_return_val_if_fail (data, FALSE);
+    audgui_infopopup_show (active_playlist, m_popup_pos);
+    popup_shown = true;
 
-    audgui_infopopup_show (active_playlist, data->popup_pos);
-    data->popup_shown = TRUE;
-
-    g_source_remove (data->popup_source);
-    data->popup_source = 0;
-    return G_SOURCE_REMOVE;
+    g_source_remove (m_popup_source);
+    m_popup_source = 0;
 }
 
-static void popup_trigger (GtkWidget * list, PlaylistData * data, int pos)
+void PlaylistWidget::popup_trigger (int pos)
 {
-    popup_hide (list, data);
+    popup_hide ();
 
-    data->popup_pos = pos;
-    data->popup_source = g_timeout_add (aud_get_int (nullptr, "filepopup_delay") *
-     100, popup_show, list);
+    m_popup_pos = pos;
+    m_popup_source = g_timeout_add (aud_get_int (nullptr, "filepopup_delay") *
+     100, PlaylistWidget::popup_show_cb, this);
 }
 
-static void popup_hide (GtkWidget * list, PlaylistData * data)
+void PlaylistWidget::popup_hide ()
 {
-    if (data->popup_source)
+    if (m_popup_source)
     {
-        g_source_remove (data->popup_source);
-        data->popup_source = 0;
+        g_source_remove (m_popup_source);
+        m_popup_source = 0;
     }
 
-    if (data->popup_shown)
+    if (popup_shown)
     {
         audgui_infopopup_hide ();
-        data->popup_shown = FALSE;
+        popup_shown = false;
     }
 
-    data->popup_pos = -1;
+    m_popup_pos = -1;
 }

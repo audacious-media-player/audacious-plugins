@@ -156,8 +156,7 @@ mainwin_font_set_cb()
 static void
 playlist_font_set_cb()
 {
-    String font = aud_get_str ("skins", "playlist_font");
-    ui_skinned_playlist_set_font (playlistwin_list, font);
+    playlistwin_list->set_font (aud_get_str ("skins", "playlist_font"));
 }
 
 static void autoscroll_set_cb (void)

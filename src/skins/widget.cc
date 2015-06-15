@@ -37,8 +37,9 @@ void Widget::set_gtk (GtkWidget * widget, bool use_drawing_proxy)
     g_signal_connect (drawable, "expose-event", (GCallback) Widget::draw_cb, this);
     g_signal_connect (widget, "button-press-event", (GCallback) Widget::button_press_cb, this);
     g_signal_connect (widget, "button-release-event", (GCallback) Widget::button_release_cb, this);
-    g_signal_connect (widget, "motion-notify-event", (GCallback) Widget::motion_cb, this);
     g_signal_connect (widget, "scroll-event", (GCallback) Widget::scroll_cb, this);
+    g_signal_connect (widget, "motion-notify-event", (GCallback) Widget::motion_cb, this);
+    g_signal_connect (widget, "leave-notify-event", (GCallback) Widget::leave_cb, this);
 
     m_widget = widget;
     m_drawable = drawable;

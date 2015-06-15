@@ -63,13 +63,14 @@
 
 int active_playlist = -1, active_length = 0;
 
-GtkWidget * playlistwin, * playlistwin_list;
+GtkWidget * playlistwin;
+PlaylistWidget * playlistwin_list;
 TextBox * playlistwin_sinfo;
 
 static Button * playlistwin_shade, * playlistwin_close;
 static Button * playlistwin_shaded_shade, * playlistwin_shaded_close;
 
-static GtkWidget *playlistwin_slider;
+static PlaylistSlider * playlistwin_slider;
 static TextBox * playlistwin_time_min, * playlistwin_time_sec;
 static TextBox * playlistwin_info;
 static Button * playlistwin_srew, * playlistwin_splay;
@@ -127,7 +128,7 @@ static void update_rollup_text (void)
 
 static void real_update (void)
 {
-    ui_skinned_playlist_update (playlistwin_list);
+    playlistwin_list->update ();
     playlistwin_update_info ();
     update_rollup_text ();
 }
@@ -148,9 +149,8 @@ static void playlistwin_scroll (gboolean up)
 {
     int rows, first;
 
-    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first);
-    ui_skinned_playlist_scroll_to (playlistwin_list, first + (up ? -1 : 1) *
-     rows / 3);
+    playlistwin_list->row_info (& rows, & first);
+    playlistwin_list->scroll_to (first + (up ? -1 : 1) * rows / 3);
 }
 
 static void playlistwin_scroll_up_pushed (void)
@@ -338,7 +338,7 @@ playlistwin_select_search(void)
              {
                  if (aud_playlist_entry_get_selected (active_playlist, count))
                  {
-                     ui_skinned_playlist_set_focused (playlistwin_list, count);
+                     playlistwin_list->set_focused (count);
                      break;
                  }
              }
@@ -397,9 +397,9 @@ static void playlistwin_resize (int w, int h)
     config.playlist_width = w = tx;
     config.playlist_height = h = ty;
 
-    ui_skinned_playlist_resize (playlistwin_list, w - 31, h - 58);
-    window_move_widget (playlistwin, FALSE, playlistwin_slider, w - 15, 20);
-    ui_skinned_playlist_slider_resize (playlistwin_slider, h - 58);
+    playlistwin_list->resize (w - 31, h - 58);
+    window_move_widget (playlistwin, FALSE, playlistwin_slider->gtk (), w - 15, 20);
+    playlistwin_slider->resize (h - 58);
 
     window_move_widget (playlistwin, TRUE, playlistwin_shaded_shade->gtk (), w - 21, 3);
     window_move_widget (playlistwin, TRUE, playlistwin_shaded_close->gtk (), w - 11, 3);
@@ -486,14 +486,14 @@ static void drag_motion (GtkWidget * widget, GdkDragContext * context, int x,
  int y, unsigned time, void * unused)
 {
     if (! aud_get_bool ("skins", "playlist_shaded"))
-        ui_skinned_playlist_hover (playlistwin_list, x - 12, y - 20);
+        playlistwin_list->hover (x - 12, y - 20);
 }
 
 static void drag_leave (GtkWidget * widget, GdkDragContext * context, unsigned time,
  void * unused)
 {
     if (! aud_get_bool ("skins", "playlist_shaded"))
-        ui_skinned_playlist_hover_end (playlistwin_list);
+        playlistwin_list->hover_end ();
 }
 
 static void drag_drop (GtkWidget * widget, GdkDragContext * context, int x,
@@ -503,8 +503,8 @@ static void drag_drop (GtkWidget * widget, GdkDragContext * context, int x,
         drop_position = -1;
     else
     {
-        ui_skinned_playlist_hover (playlistwin_list, x - 12, y - 20);
-        drop_position = ui_skinned_playlist_hover_end (playlistwin_list);
+        playlistwin_list->hover (x - 12, y - 20);
+        drop_position = playlistwin_list->hover_end ();
     }
 }
 
@@ -611,13 +611,13 @@ playlistwin_create_widgets(void)
     playlistwin_close->on_release ((ButtonCB) playlistwin_hide);
 
     String font = aud_get_str ("skins", "playlist_font");
-    playlistwin_list = ui_skinned_playlist_new (w - 31, h - 58, font);
-    window_put_widget (playlistwin, FALSE, playlistwin_list, 12, 20);
+    playlistwin_list = new PlaylistWidget (w - 31, h - 58, font);
+    window_put_widget (playlistwin, FALSE, playlistwin_list->gtk (), 12, 20);
 
     /* playlist list box slider */
-    playlistwin_slider = ui_skinned_playlist_slider_new (playlistwin_list, h - 58);
-    window_put_widget (playlistwin, FALSE, playlistwin_slider, w - 15, 20);
-    ui_skinned_playlist_set_slider (playlistwin_list, playlistwin_slider);
+    playlistwin_slider = new PlaylistSlider (playlistwin_list, h - 58);
+    window_put_widget (playlistwin, FALSE, playlistwin_slider->gtk (), w - 15, 20);
+    playlistwin_list->set_slider (playlistwin_slider);
 
     playlistwin_time_min = new TextBox (15, nullptr, false);
     window_put_widget (playlistwin, FALSE, playlistwin_time_min->gtk (), w - 82, h - 15);
@@ -748,14 +748,13 @@ static void update_cb (void * unused, void * another)
 
     if (active_playlist != old)
     {
-        ui_skinned_playlist_scroll_to (playlistwin_list, 0);
+        playlistwin_list->scroll_to (0);
         song_changed = TRUE;
     }
 
     if (song_changed)
     {
-        ui_skinned_playlist_set_focused (playlistwin_list,
-         aud_playlist_get_position (active_playlist));
+        playlistwin_list->set_focused (aud_playlist_get_position (active_playlist));
         song_changed = FALSE;
     }
 
@@ -794,7 +793,7 @@ playlistwin_create(void)
     if (row >= 0)
         aud_playlist_entry_set_selected (active_playlist, row, TRUE);
 
-    ui_skinned_playlist_set_focused (playlistwin_list, row);
+    playlistwin_list->set_focused (row);
 
     song_changed = FALSE;
 
