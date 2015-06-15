@@ -53,7 +53,7 @@ void Widget::set_drawable (GtkWidget * widget)
 {
     m_drawable = widget;
     g_signal_connect (widget, "realize", (GCallback) Widget::realize_cb, this);
-    g_signal_connect (widget, "expose-event", (GCallback) Widget::draw_cb, this);
+    g_signal_connect (widget, "draw", (GCallback) Widget::draw_cb, this);
 
     if (! m_widget)
     {
@@ -92,25 +92,21 @@ void Widget::add_drawable (int width, int height)
 
 void Widget::draw_now ()
 {
-    if (m_drawable && gtk_widget_is_drawable (m_drawable))
-        draw_cb (m_drawable, nullptr, this);
-}
+    if (! m_drawable || ! gtk_widget_is_drawable (m_drawable))
+        return;
 
-gboolean Widget::draw_cb (GtkWidget * widget, GdkEventExpose * event, Widget * me)
-{
-    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (m_drawable));
 
-    if (! gtk_widget_get_has_window (widget))
+    if (! gtk_widget_get_has_window (m_drawable))
     {
         GtkAllocation alloc;
-        gtk_widget_get_allocation (widget, & alloc);
+        gtk_widget_get_allocation (m_drawable, & alloc);
         cairo_translate (cr, alloc.x, alloc.y);
         cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
         cairo_clip (cr);
     }
 
-    me->draw (cr);
+    draw (cr);
 
     cairo_destroy (cr);
-    return false;
 }

@@ -58,9 +58,8 @@ private:
         { delete me; }
     static void realize_cb (GtkWidget * widget, Widget * me)
         { me->realize (); }
-
-    static gboolean draw_cb (GtkWidget * widget, GdkEventExpose * event, Widget * me);
-
+    static gboolean draw_cb (GtkWidget * widget, cairo_t * cr, Widget * me)
+        { me->draw (cr); return false; }
     static gboolean button_press_cb (GtkWidget * widget, GdkEventButton * event, Widget * me)
         { return me->button_press (event); }
     static gboolean button_release_cb (GtkWidget * widget, GdkEventButton * event, Widget * me)
