@@ -775,10 +775,8 @@ playlistwin_create(void)
     active_playlist = aud_playlist_get_active ();
     active_length = aud_playlist_entry_count (active_playlist);
 
-    playlistwin_create_window();
-
-    playlistwin_create_widgets();
-    playlistwin->show_all ();
+    playlistwin_create_window ();
+    playlistwin_create_widgets ();
 
     gtk_window_add_accel_group ((GtkWindow *) playlistwin->gtk (), menu_get_accel_group ());
 

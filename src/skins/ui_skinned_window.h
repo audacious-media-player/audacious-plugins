@@ -44,7 +44,6 @@ public:
     void set_shaded (bool shaded);
     void put_widget (bool shaded, Widget * widget, int x, int y);
     void move_widget (bool shaded, Widget * widget, int x, int y);
-    void show_all ();
 
 private:
     void realize ();

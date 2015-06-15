@@ -47,7 +47,7 @@ void view_show_player (bool show)
     }
     else
     {
-        gtk_widget_hide (mainwin->gtk ());
+        mainwin->show (false);
         hide_plugin_windows ();
     }
 
@@ -72,7 +72,7 @@ void view_apply_show_playlist ()
     if (show && gtk_widget_get_visible (mainwin->gtk ()))
         gtk_window_present ((GtkWindow *) playlistwin->gtk ());
     else
-        gtk_widget_hide (playlistwin->gtk ());
+        playlistwin->show (false);
 
     mainwin_pl->set_active (show);
 }
@@ -92,7 +92,7 @@ void view_apply_show_equalizer ()
     if (show && gtk_widget_get_visible (mainwin->gtk ()))
         gtk_window_present ((GtkWindow *) equalizerwin->gtk ());
     else
-        gtk_widget_hide (equalizerwin->gtk ());
+        equalizerwin->show (false);
 
     mainwin_eq->set_active (show);
 }
@@ -260,11 +260,10 @@ void view_apply_skin ()
 
     // hide the equalizer graph if we have a short eqmain.bmp
     int h = cairo_image_surface_get_height (skin.pixmaps[SKIN_EQMAIN].get ());
-    gtk_widget_set_visible (equalizerwin_graph->gtk (), h >= 315);
+    equalizerwin_graph->show (h >= 315);
 
     mainwin_refresh_hints ();
     TextBox::update_all ();
-    mainwin_vis->set_colors ();
 
     gtk_widget_queue_draw (mainwin->gtk ());
     gtk_widget_queue_draw (equalizerwin->gtk ());

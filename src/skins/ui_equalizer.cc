@@ -210,7 +210,6 @@ equalizerwin_create_widgets(void)
     equalizerwin_shaded_shade->on_release ((ButtonCB) equalizerwin_shade_toggle);
 
     equalizerwin_graph = new EqGraph;
-    gtk_widget_set_no_show_all (equalizerwin_graph->gtk (), TRUE);  // shown or hidden in skin_load()
     equalizerwin->put_widget (false, equalizerwin_graph, 86, 17);
 
     equalizerwin_preamp = new EqSlider (_("Preamp"), -1);
@@ -282,12 +281,10 @@ static void equalizerwin_destroyed (void)
 void
 equalizerwin_create(void)
 {
-    equalizerwin_create_window();
+    equalizerwin_create_window ();
+    equalizerwin_create_widgets ();
 
     gtk_window_add_accel_group ((GtkWindow *) equalizerwin->gtk (), menu_get_accel_group ());
-
-    equalizerwin_create_widgets();
-    equalizerwin->show_all ();
 
     g_signal_connect (equalizerwin->gtk (), "destroy", (GCallback) equalizerwin_destroyed, nullptr);
 

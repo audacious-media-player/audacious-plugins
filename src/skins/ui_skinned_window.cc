@@ -115,9 +115,11 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc dr
 
     m_normal = gtk_fixed_new ();
     g_object_ref_sink (m_normal);
+    gtk_widget_show (m_normal);
 
     m_shaded = gtk_fixed_new ();
     g_object_ref_sink (m_shaded);
+    gtk_widget_show (m_shaded);
 
     if (shaded)
         gtk_container_add ((GtkContainer *) window, m_shaded);
@@ -191,8 +193,3 @@ void Window::move_widget (bool shaded, Widget * widget, int x, int y)
     gtk_fixed_move ((GtkFixed *) fixed, widget->gtk (), x, y);
 }
 
-void Window::show_all ()
-{
-    gtk_widget_show_all (m_normal);
-    gtk_widget_show_all (m_shaded);
-}
