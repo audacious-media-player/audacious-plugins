@@ -191,7 +191,7 @@ static void copy_selected_to_new (int playlist)
         {
             items.append (
                 aud_playlist_entry_get_filename (playlist, entry),
-                aud_playlist_entry_get_tuple (playlist, entry, Playlist::Guess)
+                aud_playlist_entry_get_tuple (playlist, entry, Playlist::Nothing)
             );
         }
     }
