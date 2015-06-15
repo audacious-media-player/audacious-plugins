@@ -22,7 +22,7 @@
 #ifndef SKINS_UI_SKINNED_WINDOW_H
 #define SKINS_UI_SKINNED_WINDOW_H
 
-#include <gtk/gtk.h>
+#include "widget.h"
 
 enum {
     WINDOW_MAIN,
@@ -33,13 +33,36 @@ enum {
 
 typedef void (* DrawFunc) (GtkWidget *, cairo_t *);
 
-GtkWidget * window_new (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc draw);
-void window_set_size (GtkWidget * window, int w, int h);
-void window_set_shapes (GtkWidget * window, GdkRegion * shape, GdkRegion * sshape);
-void window_set_shaded (GtkWidget * window, bool shaded);
-void window_put_widget (GtkWidget * window, bool shaded, GtkWidget * widget, int x, int y);
-void window_move_widget (GtkWidget * window, bool shaded, GtkWidget * widget, int x, int y);
-void window_show_all (GtkWidget * window);
+class Window : public Widget
+{
+public:
+    Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc draw);
+    ~Window ();
+
+    void resize (int w, int h);
+    void set_shapes (GdkRegion * shape, GdkRegion * sshape);
+    void set_shaded (bool shaded);
+    void put_widget (bool shaded, Widget * widget, int x, int y);
+    void move_widget (bool shaded, Widget * widget, int x, int y);
+    void show_all ();
+
+private:
+    void realize ();
+    void draw (cairo_t * cr);
+    bool button_press (GdkEventButton * event);
+    bool button_release (GdkEventButton * event);
+    bool motion (GdkEventMotion * event);
+
+    void apply_shape ();
+
+    int m_id;
+    bool m_is_shaded;
+    DrawFunc draw_func;
+
+    bool m_is_moving = false;
+    GtkWidget * m_normal = nullptr, * m_shaded = nullptr;
+    GdkRegion * m_shape = nullptr, * m_sshape = nullptr;
+};
 
 void dock_add_window (int id, GtkWidget * window, int * x, int * y, int w, int h);
 void dock_remove_window (int id);

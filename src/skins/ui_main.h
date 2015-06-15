@@ -39,8 +39,9 @@ class SkinnedNumber;
 class SkinnedVis;
 class SmallVis;
 class TextBox;
+class Window;
 
-extern GtkWidget *mainwin;
+extern Window * mainwin;
 
 extern Button * mainwin_shuffle, * mainwin_repeat;
 extern Button * mainwin_eq, * mainwin_pl;

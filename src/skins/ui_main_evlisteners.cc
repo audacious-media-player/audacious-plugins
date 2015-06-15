@@ -330,7 +330,7 @@ void start_stop_visual (gboolean exiting)
     static VisCallbacks callbacks;
     static bool started = false;
 
-    if (config.vis_type != VIS_OFF && ! exiting && gtk_widget_get_visible (mainwin))
+    if (config.vis_type != VIS_OFF && ! exiting && aud_ui_is_shown ())
     {
         if (! started)
         {

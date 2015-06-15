@@ -23,80 +23,73 @@
 #include "skins_cfg.h"
 #include "ui_skinned_window.h"
 
-typedef struct {
-    int id;
-    bool is_shaded, is_moving;
-    DrawFunc draw;
-    GtkWidget * normal, * shaded;
-    GdkRegion * shape, * sshape;
-} WindowData;
-
-DRAW_FUNC_BEGIN (window_draw, WindowData)
-    if (data->draw)
-        data->draw (wid, cr);
-DRAW_FUNC_END
-
-static void window_apply_shape (GtkWidget * window, WindowData * data)
+void Window::draw (cairo_t * cr)
 {
-    gdk_window_shape_combine_region (gtk_widget_get_window (window),
-     data->is_shaded ? data->sshape : data->shape, 0, 0);
+    if (draw_func)
+        draw_func (gtk (), cr);
 }
 
-static void window_realize (GtkWidget * window, WindowData * data)
+void Window::apply_shape ()
 {
-    gdk_window_set_back_pixmap (gtk_widget_get_window (window), nullptr, false);
-    window_apply_shape (window, data);
+    gdk_window_shape_combine_region (gtk_widget_get_window (gtk ()),
+     m_is_shaded ? m_sshape : m_shape, 0, 0);
 }
 
-static gboolean window_button_press (GtkWidget * window, GdkEventButton * event, WindowData * data)
+void Window::realize ()
+{
+    gdk_window_set_back_pixmap (gtk_widget_get_window (gtk ()), nullptr, false);
+    apply_shape ();
+}
+
+bool Window::button_press (GdkEventButton * event)
 {
     /* pass double clicks through; they are handled elsewhere */
     if (event->button != 1 || event->type == GDK_2BUTTON_PRESS)
         return false;
 
-    if (data->is_moving)
+    if (m_is_moving)
         return true;
 
-    dock_move_start (data->id, event->x_root, event->y_root);
-    data->is_moving = true;
+    dock_move_start (m_id, event->x_root, event->y_root);
+    m_is_moving = true;
     return true;
 }
 
-static gboolean window_button_release (GtkWidget * window,
- GdkEventButton * event, WindowData * data)
+bool Window::button_release (GdkEventButton * event)
 {
     if (event->button != 1)
         return false;
 
-    data->is_moving = false;
+    m_is_moving = false;
     return true;
 }
 
-static gboolean window_motion (GtkWidget * window, GdkEventMotion * event, WindowData * data)
+bool Window::motion (GdkEventMotion * event)
 {
-    if (! data->is_moving)
+    if (! m_is_moving)
         return true;
 
     dock_move (event->x_root, event->y_root);
     return true;
 }
 
-static void window_destroy (GtkWidget * window, WindowData * data)
+Window::~Window ()
 {
-    dock_remove_window (data->id);
+    dock_remove_window (m_id);
 
-    g_object_unref (data->normal);
-    g_object_unref (data->shaded);
+    g_object_unref (m_normal);
+    g_object_unref (m_shaded);
 
-    if (data->shape)
-        gdk_region_destroy (data->shape);
-    if (data->sshape)
-        gdk_region_destroy (data->sshape);
-
-    g_free (data);
+    if (m_shape)
+        gdk_region_destroy (m_shape);
+    if (m_sshape)
+        gdk_region_destroy (m_sshape);
 }
 
-GtkWidget * window_new (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc draw)
+Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc draw) :
+    m_id (id),
+    m_is_shaded (shaded),
+    draw_func (draw)
 {
     w *= config.scale;
     h *= config.scale;
@@ -118,119 +111,88 @@ GtkWidget * window_new (int id, int * x, int * y, int w, int h, bool shaded, Dra
     gtk_widget_set_style (window, style);
     g_object_unref (style);
 
-    WindowData * data = g_new0 (WindowData, 1);
-    g_object_set_data ((GObject *) window, "windowdata", data);
+    set_gtk (window);
 
-    data->id = id;
-    data->is_shaded = shaded;
-    data->draw = draw;
+    m_normal = gtk_fixed_new ();
+    g_object_ref_sink (m_normal);
 
-    data->normal = gtk_fixed_new ();
-    g_object_ref_sink (data->normal);
-
-    data->shaded = gtk_fixed_new ();
-    g_object_ref_sink (data->shaded);
+    m_shaded = gtk_fixed_new ();
+    g_object_ref_sink (m_shaded);
 
     if (shaded)
-        gtk_container_add ((GtkContainer *) window, data->shaded);
+        gtk_container_add ((GtkContainer *) window, m_shaded);
     else
-        gtk_container_add ((GtkContainer *) window, data->normal);
-
-    DRAW_CONNECT (window, window_draw, data);
-    g_signal_connect (window, "realize", (GCallback) window_realize, data);
-    g_signal_connect (window, "button-press-event", (GCallback) window_button_press, data);
-    g_signal_connect (window, "button-release-event", (GCallback) window_button_release, data);
-    g_signal_connect (window, "motion-notify-event", (GCallback) window_motion, data);
-    g_signal_connect (window, "destroy", (GCallback) window_destroy, data);
+        gtk_container_add ((GtkContainer *) window, m_normal);
 
     dock_add_window (id, window, x, y, w, h);
-    return window;
 }
 
-void window_set_size (GtkWidget * window, int w, int h)
+void Window::resize (int w, int h)
 {
     w *= config.scale;
     h *= config.scale;
 
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
-    g_return_if_fail (data);
-
-    gtk_widget_set_size_request (window, w, h);
-    gtk_window_resize ((GtkWindow *) window, w, h);
-    dock_set_size (data->id, w, h);
+    gtk_widget_set_size_request (gtk (), w, h);
+    gtk_window_resize ((GtkWindow *) gtk (), w, h);
+    dock_set_size (m_id, w, h);
 }
 
-void window_set_shapes (GtkWidget * window, GdkRegion * shape, GdkRegion * sshape)
+void Window::set_shapes (GdkRegion * shape, GdkRegion * sshape)
 {
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
-    g_return_if_fail (data);
+    if (m_shape)
+        gdk_region_destroy (m_shape);
+    if (m_sshape)
+        gdk_region_destroy (m_sshape);
 
-    if (data->shape)
-        gdk_region_destroy (data->shape);
-    if (data->sshape)
-        gdk_region_destroy (data->sshape);
-
-    data->shape = shape;
-    data->sshape = sshape;
+    m_shape = shape;
+    m_sshape = sshape;
     
-    if (gtk_widget_get_realized (window))
-        window_apply_shape (window, data);
+    if (gtk_widget_get_realized (gtk ()))
+        apply_shape ();
 }
 
-void window_set_shaded (GtkWidget * window, bool shaded)
+void Window::set_shaded (bool shaded)
 {
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
-    g_return_if_fail (data);
-
-    if (data->is_shaded == shaded)
+    if (m_is_shaded == shaded)
         return;
 
     if (shaded)
     {
-        gtk_container_remove ((GtkContainer *) window, data->normal);
-        gtk_container_add ((GtkContainer *) window, data->shaded);
+        gtk_container_remove ((GtkContainer *) gtk (), m_normal);
+        gtk_container_add ((GtkContainer *) gtk (), m_shaded);
     }
     else
     {
-        gtk_container_remove ((GtkContainer *) window, data->shaded);
-        gtk_container_add ((GtkContainer *) window, data->normal);
+        gtk_container_remove ((GtkContainer *) gtk (), m_shaded);
+        gtk_container_add ((GtkContainer *) gtk (), m_normal);
     }
 
-    data->is_shaded = shaded;
+    m_is_shaded = shaded;
     
-    if (gtk_widget_get_realized (window))
-        window_apply_shape (window, data);
+    if (gtk_widget_get_realized (gtk ()))
+        apply_shape ();
 }
 
-void window_put_widget (GtkWidget * window, bool shaded, GtkWidget * widget, int x, int y)
+void Window::put_widget (bool shaded, Widget * widget, int x, int y)
 {
     x *= config.scale;
     y *= config.scale;
 
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
-    g_return_if_fail (data);
-
-    GtkWidget * fixed = shaded ? data->shaded : data->normal;
-    gtk_fixed_put ((GtkFixed *) fixed, widget, x, y);
+    GtkWidget * fixed = shaded ? m_shaded : m_normal;
+    gtk_fixed_put ((GtkFixed *) fixed, widget->gtk (), x, y);
 }
 
-void window_move_widget (GtkWidget * window, bool shaded, GtkWidget * widget, int x, int y)
+void Window::move_widget (bool shaded, Widget * widget, int x, int y)
 {
     x *= config.scale;
     y *= config.scale;
 
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
-    g_return_if_fail (data);
-
-    GtkWidget * fixed = shaded ? data->shaded : data->normal;
-    gtk_fixed_move ((GtkFixed *) fixed, widget, x, y);
+    GtkWidget * fixed = shaded ? m_shaded : m_normal;
+    gtk_fixed_move ((GtkFixed *) fixed, widget->gtk (), x, y);
 }
 
-void window_show_all (GtkWidget * window)
+void Window::show_all ()
 {
-    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
-    g_return_if_fail (data);
-
-    gtk_widget_show_all (data->normal);
-    gtk_widget_show_all (data->shaded);
+    gtk_widget_show_all (m_normal);
+    gtk_widget_show_all (m_shaded);
 }

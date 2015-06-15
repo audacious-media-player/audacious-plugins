@@ -35,6 +35,7 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "ui_main.h"
+#include "ui_skinned_window.h"
 
 static GList * windows;
 
@@ -61,7 +62,7 @@ static void add_dock_plugin (PluginHandle * plugin, void * unused)
     {
         GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
         gtk_window_set_title ((GtkWindow *) window, aud_plugin_get_name (plugin));
-        gtk_window_set_transient_for ((GtkWindow *) window, (GtkWindow *) mainwin);
+        gtk_window_set_transient_for ((GtkWindow *) window, (GtkWindow *) mainwin->gtk ());
         gtk_container_set_border_width ((GtkContainer *) window, 2);
         gtk_container_add ((GtkContainer *) window, widget);
 

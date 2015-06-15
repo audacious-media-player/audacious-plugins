@@ -22,8 +22,23 @@
 #ifndef SKINS_DRAG_HANDLE_H
 #define SKINS_DRAG_HANDLE_H
 
-#include <gtk/gtk.h>
+#include "widget.h"
 
-GtkWidget * drag_handle_new (int w, int h, void (* press) (), void (* drag) (int x, int y));
+class DragHandle : public Widget
+{
+public:
+    DragHandle (int w, int h, void (* press) (), void (* drag) (int x, int y));
+
+private:
+    bool button_press (GdkEventButton * event);
+    bool button_release (GdkEventButton * event);
+    bool motion (GdkEventMotion * event);
+
+    void (* press) ();
+    void (* drag) (int x_offset, int y_offset);
+
+    bool m_held = false;
+    int m_x_origin = 0, m_y_origin = 0;
+};
 
 #endif

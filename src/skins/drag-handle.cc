@@ -22,74 +22,49 @@
 #include "drag-handle.h"
 #include "skins_cfg.h"
 
-typedef struct {
-    bool held;
-    int x_origin, y_origin;
-    void (* press) ();
-    void (* drag) (int x_offset, int y_offset);
-} DHandleData;
-
-static gboolean handle_button_press (GtkWidget * handle, GdkEventButton * event)
+bool DragHandle::button_press (GdkEventButton * event)
 {
-    auto data = (DHandleData *) g_object_get_data ((GObject *) handle, "dhandledata");
-    g_return_val_if_fail (data, false);
-
     if (event->button != 1)
         return false;
 
-    data->held = true;
-    data->x_origin = event->x_root;
-    data->y_origin = event->y_root;
+    m_held = true;
+    m_x_origin = event->x_root;
+    m_y_origin = event->y_root;
 
-    if (data->press)
-        data->press ();
+    if (press)
+        press ();
 
     return true;
 }
 
-static gboolean handle_button_release (GtkWidget * handle, GdkEventButton * event)
+bool DragHandle::button_release (GdkEventButton * event)
 {
-    auto data = (DHandleData *) g_object_get_data ((GObject *) handle, "dhandledata");
-    g_return_val_if_fail (data, false);
-
     if (event->button != 1)
         return false;
 
-    data->held = false;
+    m_held = false;
     return true;
 }
 
-static gboolean handle_motion (GtkWidget * handle, GdkEventMotion * event)
+bool DragHandle::motion (GdkEventMotion * event)
 {
-    DHandleData * data = (DHandleData *) g_object_get_data ((GObject *) handle, "dhandledata");
-    g_return_val_if_fail (data, false);
-
-    if (! data->held)
+    if (! m_held)
         return true;
 
-    if (data->drag)
-        data->drag ((event->x_root - data->x_origin) / config.scale,
-         (event->y_root - data->y_origin) / config.scale);
+    if (drag)
+        drag ((event->x_root - m_x_origin) / config.scale,
+         (event->y_root - m_y_origin) / config.scale);
 
     return true;
 }
 
-GtkWidget * drag_handle_new (int w, int h, void (* press) (), void (* drag) (int x, int y))
+DragHandle::DragHandle (int w, int h, void (* press) (), void (* drag) (int x, int y)) :
+    press (press), drag (drag)
 {
     GtkWidget * handle = gtk_event_box_new ();
     gtk_event_box_set_visible_window ((GtkEventBox *) handle, false);
     gtk_widget_set_size_request (handle, w * config.scale, h * config.scale);
     gtk_widget_add_events (handle, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
-
-    g_signal_connect (handle, "button-press-event", (GCallback) handle_button_press, nullptr);
-    g_signal_connect (handle, "button-release-event", (GCallback) handle_button_release, nullptr);
-    g_signal_connect (handle, "motion-notify-event", (GCallback) handle_motion, nullptr);
-
-    DHandleData * data = g_new0 (DHandleData, 1);
-    data->press = press;
-    data->drag = drag;
-    g_object_set_data_full ((GObject *) handle, "dhandledata", data, g_free);
-
-    return handle;
+    set_gtk (handle);
 }
