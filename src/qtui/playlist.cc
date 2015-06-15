@@ -50,7 +50,11 @@ PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (p
     setColumnWidth (PL_COL_ALBUM, 200);
     resizeColumnToContents (PL_COL_QUEUED);
     resizeColumnToContents (PL_COL_LENGTH);
-    scrollToCurrent ();
+
+    /* get initial selection and focus from core */
+    Playlist::Update upd {};
+    upd.level = Playlist::Selection;
+    update (upd);
 }
 
 void PlaylistWidget::setFilter (const QString & text)

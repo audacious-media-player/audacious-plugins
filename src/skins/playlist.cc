@@ -533,18 +533,6 @@ static void follow_cb (void * data, void *)
 void
 playlistwin_create(void)
 {
-    /* this should really be done in core */
-    int playlists = aud_playlist_count ();
-    for (int list = 0; list < playlists; list ++)
-    {
-        int row = aud_playlist_get_position (list);
-        if (row >= 0)
-        {
-            aud_playlist_set_focus (list, row);
-            aud_playlist_entry_set_selected (list, row, true);
-        }
-    }
-
     playlistwin_create_window ();
     playlistwin_create_widgets ();
 
