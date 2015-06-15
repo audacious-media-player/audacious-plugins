@@ -211,10 +211,10 @@ static StringBuf archive_extract_tbz2 (const char * archive, const char * dest)
 
 static ArchiveType archive_get_type (const char * filename)
 {
-    for (int i = 0; archive_extensions[i].ext; i ++)
+    for (auto & ext : archive_extensions)
     {
-        if (str_has_suffix_nocase (filename, archive_extensions[i].ext))
-            return archive_extensions[i].type;
+        if (str_has_suffix_nocase (filename, ext.ext))
+            return ext.type;
     }
 
     return ARCHIVE_UNKNOWN;
@@ -227,10 +227,10 @@ bool file_is_archive (const char * filename)
 
 StringBuf archive_basename (const char * str)
 {
-    for (int i = 0; archive_extensions[i].ext; i ++)
+    for (auto & ext : archive_extensions)
     {
-        if (str_has_suffix_nocase (str, archive_extensions[i].ext))
-            return str_copy (str, strlen (str) - strlen (archive_extensions[i].ext));
+        if (str_has_suffix_nocase (str, ext.ext))
+            return str_copy (str, strlen (str) - strlen (ext.ext));
     }
 
     return StringBuf ();
