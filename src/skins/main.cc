@@ -44,7 +44,6 @@
 #include "dnd.h"
 #include "menus.h"
 #include "plugin.h"
-#include "plugin-window.h"
 #include "skins_cfg.h"
 #include "equalizer.h"
 #include "main.h"
@@ -1282,65 +1281,4 @@ void mainwin_update_song_info (void)
 
     mainwin_update_time_display (time, length);
     mainwin_update_time_slider (time, length);
-}
-
-/* actionentries actions */
-
-void action_play_file (void)
-{
-    audgui_run_filebrowser(TRUE); /* TRUE = PLAY_BUTTON */
-}
-
-void action_play_location (void)
-{
-    audgui_show_add_url_window (TRUE);
-}
-
-void action_playlist_manager (void)
-{
-    PluginHandle * manager = aud_plugin_lookup_basename ("playlist-manager");
-    if (manager)
-    {
-        aud_plugin_enable (manager, true);
-        focus_plugin_window (manager);
-    }
-}
-
-void action_search_tool (void)
-{
-    PluginHandle * search = aud_plugin_lookup_basename ("search-tool");
-    if (search)
-    {
-        aud_plugin_enable (search, true);
-        focus_plugin_window (search);
-    }
-}
-
-void action_ab_set (void)
-{
-    if (aud_drct_get_length () > 0)
-    {
-        int a, b;
-        aud_drct_get_ab_repeat (a, b);
-
-        if (a < 0 || b >= 0)
-        {
-            a = aud_drct_get_time ();
-            b = -1;
-            mainwin_show_status_message (_("Repeat point A set."));
-        }
-        else
-        {
-            b = aud_drct_get_time ();
-            mainwin_show_status_message (_("Repeat point B set."));
-        }
-
-        aud_drct_set_ab_repeat (a, b);
-    }
-}
-
-void action_ab_clear (void)
-{
-    mainwin_show_status_message (_("Repeat points cleared."));
-    aud_drct_set_ab_repeat (-1, -1);
 }

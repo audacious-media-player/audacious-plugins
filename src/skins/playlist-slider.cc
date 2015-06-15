@@ -26,9 +26,9 @@
  */
 
 #include <libaudcore/objects.h>
+#include <libaudcore/playlist.h>
 
 #include "skins_cfg.h"
-#include "playlist.h"
 #include "skin.h"
 #include "playlist-widget.h"
 #include "playlist-slider.h"
@@ -38,10 +38,10 @@ void PlaylistSlider::draw (cairo_t * cr)
     int rows, first;
     m_list->row_info (& rows, & first);
 
-    int range = active_length - rows;
+    int range = m_length - rows;
 
     int y;
-    if (active_length > rows)
+    if (m_length > rows)
         y = (first * (m_height - 19) + range / 2) / range;
     else
         y = 0;
@@ -60,7 +60,7 @@ void PlaylistSlider::set_pos (int y)
     m_list->row_info (& rows, & first);
 
     int range = m_height - 19;
-    m_list->scroll_to ((y * (active_length - rows) + range / 2) / range);
+    m_list->scroll_to ((y * (m_length - rows) + range / 2) / range);
 }
 
 bool PlaylistSlider::button_press (GdkEventButton * event)
@@ -102,7 +102,8 @@ bool PlaylistSlider::motion (GdkEventMotion * event)
 }
 
 PlaylistSlider::PlaylistSlider (PlaylistWidget * list, int height) :
-    m_list (list), m_height (height)
+    m_list (list), m_height (height),
+    m_length (aud_playlist_entry_count (aud_playlist_get_active ()))
 {
     add_input (8 * config.scale, height * config.scale, true, true);
 }
@@ -116,5 +117,6 @@ void PlaylistSlider::resize (int height)
 
 void PlaylistSlider::update ()
 {
+    m_length = aud_playlist_entry_count (aud_playlist_get_active ());
     queue_draw ();
 }

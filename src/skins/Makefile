@@ -1,6 +1,7 @@
 PLUGIN = skins${PLUGIN_SUFFIX}
 
-SRCS = button.cc \
+SRCS = actions.cc \
+       button.cc \
        dock.cc \
        drag-handle.cc \
        eq-graph.cc \
@@ -18,6 +19,7 @@ SRCS = button.cc \
        playstatus.cc \
        plugin.cc \
        plugin-window.cc \
+       search-select.cc \
        skin.cc \
        skin-ini.cc \
        skins_cfg.cc \

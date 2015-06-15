@@ -61,8 +61,6 @@
 
 #define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), __VA_ARGS__)
 
-int active_playlist = -1, active_length = 0;
-
 Window * playlistwin;
 PlaylistWidget * playlistwin_list;
 TextBox * playlistwin_sinfo;
@@ -80,20 +78,15 @@ static Button * playlistwin_sscroll_up, *playlistwin_sscroll_down;
 static DragHandle * resize_handle, * sresize_handle;
 static Button * button_add, * button_sub, * button_sel, * button_misc, * button_list;
 
-static void playlistwin_select_search_cbt_cb(GtkWidget *called_cbt,
-                                             void * other_cbt);
-static gboolean playlistwin_select_search_kp_cb(GtkWidget *entry,
-                                                GdkEventKey *event,
-                                                void * searchdlg_win);
-
 static int resize_base_width, resize_base_height;
 static int drop_position;
-static gboolean song_changed;
+static bool song_changed;
 
-static void playlistwin_update_info (void)
+static void update_info (void)
 {
-    StringBuf s1 = str_format_time (aud_playlist_get_selected_length (active_playlist));
-    StringBuf s2 = str_format_time (aud_playlist_get_total_length (active_playlist));
+    int playlist = aud_playlist_get_active ();
+    StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
+    StringBuf s2 = str_format_time (aud_playlist_get_total_length (playlist));
     playlistwin_info->set_text (str_concat ({s1, "/", s2}));
 }
 
@@ -126,19 +119,6 @@ static void update_rollup_text (void)
     playlistwin_sinfo->set_text (scratch);
 }
 
-static void real_update (void)
-{
-    playlistwin_list->update ();
-    playlistwin_update_info ();
-    update_rollup_text ();
-}
-
-void playlistwin_update (void)
-{
-    if (! aud_playlist_update_pending ())
-        real_update ();
-}
-
 static void
 playlistwin_shade_toggle(void)
 {
@@ -155,223 +135,12 @@ static void playlistwin_scroll (gboolean up)
 
 static void playlistwin_scroll_up_pushed (void)
 {
-    playlistwin_scroll (TRUE);
+    playlistwin_scroll (true);
 }
 
 static void playlistwin_scroll_down_pushed (void)
 {
-    playlistwin_scroll (FALSE);
-}
-
-static void
-playlistwin_select_all(void)
-{
-    aud_playlist_select_all (active_playlist, 1);
-}
-
-static void
-playlistwin_select_none(void)
-{
-    aud_playlist_select_all (active_playlist, 0);
-}
-
-static void copy_selected_to_new (int playlist)
-{
-    int entries = aud_playlist_entry_count (playlist);
-    int new_list = aud_playlist_count ();
-    Index<PlaylistAddItem> items;
-    int entry;
-
-    aud_playlist_insert (new_list);
-
-    for (entry = 0; entry < entries; entry ++)
-    {
-        if (aud_playlist_entry_get_selected (playlist, entry))
-        {
-            items.append (
-                aud_playlist_entry_get_filename (playlist, entry),
-                aud_playlist_entry_get_tuple (playlist, entry, Playlist::Guess)
-            );
-        }
-    }
-
-    aud_playlist_entry_insert_batch (new_list, 0, std::move (items), FALSE);
-    aud_playlist_set_active (new_list);
-}
-
-static void
-playlistwin_select_search(void)
-{
-    GtkWidget *searchdlg_win, *searchdlg_grid;
-    GtkWidget *searchdlg_hbox, *searchdlg_logo, *searchdlg_helptext;
-    GtkWidget *searchdlg_entry_title, *searchdlg_label_title;
-    GtkWidget *searchdlg_entry_album, *searchdlg_label_album;
-    GtkWidget *searchdlg_entry_file_name, *searchdlg_label_file_name;
-    GtkWidget *searchdlg_entry_performer, *searchdlg_label_performer;
-    GtkWidget *searchdlg_checkbt_clearprevsel;
-    GtkWidget *searchdlg_checkbt_newplaylist;
-    GtkWidget *searchdlg_checkbt_autoenqueue;
-    int result;
-
-    /* create dialog */
-    searchdlg_win = gtk_dialog_new_with_buttons(
-      _("Search entries in active playlist") , nullptr, (GtkDialogFlags) 0 ,
-      _("Cancel") , GTK_RESPONSE_REJECT , _("Search") , GTK_RESPONSE_ACCEPT , nullptr );
-
-    /* help text and logo */
-    searchdlg_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
-    searchdlg_logo = gtk_image_new_from_icon_name( "edit-find" , GTK_ICON_SIZE_DIALOG );
-    searchdlg_helptext = gtk_label_new( _("Select entries in playlist by filling one or more "
-      "fields. Fields use regular expressions syntax, case-insensitive. If you don't know how "
-      "regular expressions work, simply insert a literal portion of what you're searching for.") );
-    gtk_label_set_max_width_chars( GTK_LABEL(searchdlg_helptext), 70 );
-    gtk_label_set_line_wrap( GTK_LABEL(searchdlg_helptext) , TRUE );
-    gtk_box_pack_start( GTK_BOX(searchdlg_hbox) , searchdlg_logo , FALSE , FALSE , 0 );
-    gtk_box_pack_start( GTK_BOX(searchdlg_hbox) , searchdlg_helptext , FALSE , FALSE , 0 );
-
-    /* title */
-    searchdlg_label_title = gtk_label_new( _("Title:") );
-    searchdlg_entry_title = gtk_entry_new();
-    gtk_widget_set_hexpand( searchdlg_entry_title , TRUE );
-    gtk_widget_set_halign( searchdlg_label_title , GTK_ALIGN_START );
-    g_signal_connect( searchdlg_entry_title , "key-press-event" ,
-      G_CALLBACK(playlistwin_select_search_kp_cb) , searchdlg_win );
-
-    /* album */
-    searchdlg_label_album= gtk_label_new( _("Album:") );
-    searchdlg_entry_album= gtk_entry_new();
-    gtk_widget_set_hexpand( searchdlg_entry_album , TRUE );
-    gtk_widget_set_halign( searchdlg_label_album , GTK_ALIGN_START );
-    g_signal_connect( searchdlg_entry_album , "key-press-event" ,
-      G_CALLBACK(playlistwin_select_search_kp_cb) , searchdlg_win );
-
-    /* artist */
-    searchdlg_label_performer = gtk_label_new( _("Artist:") );
-    searchdlg_entry_performer = gtk_entry_new();
-    gtk_widget_set_hexpand( searchdlg_entry_performer , TRUE );
-    gtk_widget_set_halign( searchdlg_label_performer , GTK_ALIGN_START );
-    g_signal_connect( searchdlg_entry_performer , "key-press-event" ,
-      G_CALLBACK(playlistwin_select_search_kp_cb) , searchdlg_win );
-
-    /* file name */
-    searchdlg_label_file_name = gtk_label_new( _("File Name:") );
-    searchdlg_entry_file_name = gtk_entry_new();
-    gtk_widget_set_hexpand( searchdlg_entry_file_name , TRUE );
-    gtk_widget_set_halign( searchdlg_label_file_name , GTK_ALIGN_START );
-    g_signal_connect( searchdlg_entry_file_name , "key-press-event" ,
-      G_CALLBACK(playlistwin_select_search_kp_cb) , searchdlg_win );
-
-    /* some options that control behaviour */
-    searchdlg_checkbt_clearprevsel = gtk_check_button_new_with_label(
-      _("Clear previous selection before searching") );
-    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(searchdlg_checkbt_clearprevsel) , TRUE );
-    searchdlg_checkbt_autoenqueue = gtk_check_button_new_with_label(
-      _("Automatically toggle queue for matching entries") );
-    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(searchdlg_checkbt_autoenqueue) , FALSE );
-    searchdlg_checkbt_newplaylist = gtk_check_button_new_with_label(
-      _("Create a new playlist with matching entries") );
-    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(searchdlg_checkbt_newplaylist) , FALSE );
-    g_signal_connect( searchdlg_checkbt_autoenqueue , "clicked" ,
-      G_CALLBACK(playlistwin_select_search_cbt_cb) , searchdlg_checkbt_newplaylist );
-    g_signal_connect( searchdlg_checkbt_newplaylist , "clicked" ,
-      G_CALLBACK(playlistwin_select_search_cbt_cb) , searchdlg_checkbt_autoenqueue );
-
-    /* place fields in searchdlg_grid */
-    searchdlg_grid = gtk_grid_new();
-    gtk_grid_set_row_spacing( GTK_GRID(searchdlg_grid) , 2 );
-    gtk_widget_set_margin_bottom( searchdlg_hbox , 8 );
-    gtk_widget_set_margin_top( searchdlg_checkbt_clearprevsel , 8 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_hbox , 0 , 0 , 2 , 1 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_label_title , 0 , 1 , 1 , 1 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_entry_title , 1 , 1 , 1 , 1 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_label_album , 0 , 2 , 1 , 1 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_entry_album , 1 , 2 , 1 , 1 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_label_performer , 0 , 3 , 1 , 1 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_entry_performer , 1 , 3 , 1 , 1 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_label_file_name , 0 , 4 , 1 , 1 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_entry_file_name , 1 , 4 , 1 , 1 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_checkbt_clearprevsel , 0 , 5 , 2 , 1 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_checkbt_autoenqueue , 0 , 6 , 2 , 1 );
-    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_checkbt_newplaylist , 0 , 7 , 2 , 1 );
-
-    gtk_container_set_border_width( GTK_CONTAINER(searchdlg_grid) , 5 );
-    gtk_container_add ( GTK_CONTAINER(gtk_dialog_get_content_area
-     (GTK_DIALOG(searchdlg_win))) , searchdlg_grid );
-    gtk_widget_show_all( searchdlg_win );
-    result = gtk_dialog_run( GTK_DIALOG(searchdlg_win) );
-
-    switch(result)
-    {
-      case GTK_RESPONSE_ACCEPT:
-      {
-         /* create a TitleInput tuple with user search data */
-         Tuple tuple;
-         char *searchdata = nullptr;
-
-         searchdata = (char*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_title) );
-         AUDDBG("title=\"%s\"\n", searchdata);
-         tuple.set_str (Tuple::Title, searchdata);
-
-         searchdata = (char*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_album) );
-         AUDDBG("album=\"%s\"\n", searchdata);
-         tuple.set_str (Tuple::Album, searchdata);
-
-         searchdata = (char*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_performer) );
-         AUDDBG("performer=\"%s\"\n", searchdata);
-         tuple.set_str (Tuple::Artist, searchdata);
-
-         searchdata = (char*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_file_name) );
-         AUDDBG("filename=\"%s\"\n", searchdata);
-         tuple.set_str (Tuple::Basename, searchdata);
-
-         /* check if previous selection should be cleared before searching */
-         if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(searchdlg_checkbt_clearprevsel)) == TRUE )
-             playlistwin_select_none();
-
-         aud_playlist_select_by_patterns (active_playlist, tuple);
-
-         /* check if a new playlist should be created after searching */
-         if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(searchdlg_checkbt_newplaylist)) == TRUE )
-             copy_selected_to_new (active_playlist);
-         else
-         {
-             /* set focus on the first entry found */
-             int entries = aud_playlist_entry_count (active_playlist);
-             int count;
-
-             for (count = 0; count < entries; count ++)
-             {
-                 if (aud_playlist_entry_get_selected (active_playlist, count))
-                 {
-                     playlistwin_list->set_focused (count);
-                     break;
-                 }
-             }
-
-             /* check if matched entries should be queued */
-             if (gtk_toggle_button_get_active ((GtkToggleButton *)
-              searchdlg_checkbt_autoenqueue))
-                 aud_playlist_queue_insert_selected (active_playlist, -1);
-         }
-
-         playlistwin_update ();
-         break;
-      }
-      default:
-         break;
-    }
-    /* done here :) */
-    gtk_widget_destroy( searchdlg_win );
-}
-
-static void playlistwin_inverse_selection (void)
-{
-    int entries = aud_playlist_entry_count (active_playlist);
-    int entry;
-
-    for (entry = 0; entry < entries; entry ++)
-        aud_playlist_entry_set_selected (active_playlist, entry,
-         ! aud_playlist_entry_get_selected (active_playlist, entry));
+    playlistwin_scroll (false);
 }
 
 /* note: height is ignored if the window is shaded */
@@ -437,12 +206,6 @@ static void playlistwin_resize (int w, int h)
 }
 
 static void
-playlistwin_fileinfo(void)
-{
-    audgui_infowin_show (active_playlist, aud_playlist_get_focus (active_playlist));
-}
-
-static void
 playlistwin_scrolled(GtkWidget * widget,
                      GdkEventScroll * event,
                      void * callback_data)
@@ -450,10 +213,10 @@ playlistwin_scrolled(GtkWidget * widget,
     switch (event->direction)
     {
     case GDK_SCROLL_DOWN:
-        playlistwin_scroll (FALSE);
+        playlistwin_scroll (false);
         break;
     case GDK_SCROLL_UP:
-        playlistwin_scroll (TRUE);
+        playlistwin_scroll (true);
         break;
     default:
         break;
@@ -469,9 +232,9 @@ playlistwin_press(GtkWidget * widget,
      event->window == gtk_widget_get_window (widget) && event->y < 14)
         playlistwin_shade_toggle();
     else if (event->button == 3)
-        menu_popup (UI_MENU_PLAYLIST, event->x_root, event->y_root, FALSE, FALSE, 3, event->time);
+        menu_popup (UI_MENU_PLAYLIST, event->x_root, event->y_root, false, false, 3, event->time);
 
-    return TRUE;
+    return true;
 }
 
 void
@@ -516,14 +279,14 @@ static void drag_drop (GtkWidget * widget, GdkDragContext * context, int x,
 static void drag_data_received (GtkWidget * widget, GdkDragContext * context,
  int x, int y, GtkSelectionData * data, unsigned info, unsigned time, void * unused)
 {
-    audgui_urilist_insert (active_playlist, drop_position, (const char *)
-     gtk_selection_data_get_data (data));
+    audgui_urilist_insert (aud_playlist_get_active (), drop_position,
+     (const char *) gtk_selection_data_get_data (data));
     drop_position = -1;
 }
 
 static void playlistwin_hide (void)
 {
-    view_set_show_playlist (FALSE);
+    view_set_show_playlist (false);
 }
 
 static void resize_press (void)
@@ -549,7 +312,7 @@ static void button_add_cb (Button * button, GdkEventButton * event)
     int xpos, ypos;
     gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_ADD, xpos + 12 * config.scale,
-     ypos + (config.playlist_height - 8) * config.scale, FALSE, TRUE,
+     ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
 }
 
@@ -558,7 +321,7 @@ static void button_sub_cb (Button * button, GdkEventButton * event)
     int xpos, ypos;
     gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_REMOVE, xpos + 40 * config.scale,
-     ypos + (config.playlist_height - 8) * config.scale, FALSE, TRUE,
+     ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
 }
 
@@ -567,7 +330,7 @@ static void button_sel_cb (Button * button, GdkEventButton * event)
     int xpos, ypos;
     gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_SELECT, xpos + 68 * config.scale,
-     ypos + (config.playlist_height - 8) * config.scale, FALSE, TRUE,
+     ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
 }
 
@@ -576,7 +339,7 @@ static void button_misc_cb (Button * button, GdkEventButton * event)
     int xpos, ypos;
     gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_SORT, xpos + 100 * config.scale,
-     ypos + (config.playlist_height - 8) * config.scale, FALSE, TRUE,
+     ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
 }
 
@@ -586,7 +349,7 @@ static void button_list_cb (Button * button, GdkEventButton * event)
     gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST,
      xpos + (config.playlist_width - 12) * config.scale,
-     ypos + (config.playlist_height - 8) * config.scale, TRUE, TRUE,
+     ypos + (config.playlist_height - 8) * config.scale, true, true,
      event->button, event->time);
 }
 
@@ -703,10 +466,10 @@ playlistwin_create_widgets(void)
 static void pl_win_draw (GtkWidget * window, cairo_t * cr)
 {
     if (aud_get_bool ("skins", "playlist_shaded"))
-        skin_draw_playlistwin_shaded (cr, config.playlist_width, TRUE);
+        skin_draw_playlistwin_shaded (cr, config.playlist_width, true);
     else
         skin_draw_playlistwin_frame (cr, config.playlist_width,
-         config.playlist_height, TRUE);
+         config.playlist_height, true);
 }
 
 static void
@@ -740,61 +503,45 @@ playlistwin_create_window(void)
     g_signal_connect (w, "drag-data-received", (GCallback) drag_data_received, nullptr);
 }
 
-static void update_cb (void * unused, void * another)
+static void update_cb (void *, void *)
 {
-    int old = active_playlist;
-
-    active_playlist = aud_playlist_get_active ();
-    active_length = aud_playlist_entry_count (active_playlist);
-
-    if (active_playlist != old)
-    {
-        playlistwin_list->scroll_to (0);
-        song_changed = TRUE;
-    }
+    playlistwin_list->update ();
 
     if (song_changed)
     {
-        playlistwin_list->set_focused (aud_playlist_get_position (active_playlist));
-        song_changed = FALSE;
+        playlistwin_list->set_focused (aud_playlist_get_position (aud_playlist_get_active ()));
+        song_changed = false;
     }
 
-    real_update ();
+    update_info ();
+    update_rollup_text ();
 }
 
-static void follow_cb (void * data, void * another)
+static void follow_cb (void * data, void *)
 {
     int list = aud::from_ptr<int> (data);
-    aud_playlist_select_all (list, FALSE);
+    aud_playlist_select_all (list, false);
 
     int row = aud_playlist_get_position (list);
     if (row >= 0)
-        aud_playlist_entry_set_selected (list, row, TRUE);
+        aud_playlist_entry_set_selected (list, row, true);
 
-    if (list == active_playlist)
-        song_changed = TRUE;
+    if (list == aud_playlist_get_active ())
+        song_changed = true;
 }
 
 void
 playlistwin_create(void)
 {
-    active_playlist = aud_playlist_get_active ();
-    active_length = aud_playlist_entry_count (active_playlist);
-
     playlistwin_create_window ();
     playlistwin_create_widgets ();
 
     gtk_window_add_accel_group ((GtkWindow *) playlistwin->gtk (), menu_get_accel_group ());
 
-    aud_playlist_select_all (active_playlist, FALSE);
+    update_info ();
+    update_rollup_text ();
 
-    int row = aud_playlist_get_position (active_playlist);
-    if (row >= 0)
-        aud_playlist_entry_set_selected (active_playlist, row, TRUE);
-
-    playlistwin_list->set_focused (row);
-
-    song_changed = FALSE;
+    song_changed = false;
 
     hook_associate ("playlist position", follow_cb, nullptr);
     hook_associate ("playlist activate", update_cb, nullptr);
@@ -806,334 +553,4 @@ void playlistwin_unhook (void)
     hook_dissociate ("playlist position", follow_cb);
     hook_dissociate ("playlist activate", update_cb);
     hook_dissociate ("playlist update", update_cb);
-}
-
-void action_playlist_track_info(void)
-{
-    playlistwin_fileinfo();
-}
-
-void action_queue_toggle (void)
-{
-    int focus = aud_playlist_get_focus (active_playlist);
-    if (focus == -1)
-        return;
-
-    /* make sure focused row is selected */
-    if (! aud_playlist_entry_get_selected (active_playlist, focus))
-    {
-        aud_playlist_select_all (active_playlist, false);
-        aud_playlist_entry_set_selected (active_playlist, focus, true);
-    }
-
-    int at = aud_playlist_queue_find_entry (active_playlist, focus);
-
-    if (at == -1)
-        aud_playlist_queue_insert_selected (active_playlist, -1);
-    else
-        aud_playlist_queue_delete_selected (active_playlist);
-}
-
-void action_playlist_sort_by_track_number (void)
-{
-    aud_playlist_sort_by_scheme (active_playlist, Playlist::Track);
-}
-
-void action_playlist_sort_by_title (void)
-{
-    aud_playlist_sort_by_scheme (active_playlist, Playlist::Title);
-}
-
-void action_playlist_sort_by_album (void)
-{
-    aud_playlist_sort_by_scheme (active_playlist, Playlist::Album);
-}
-
-void action_playlist_sort_by_artist (void)
-{
-    aud_playlist_sort_by_scheme (active_playlist, Playlist::Artist);
-}
-
-void action_playlist_sort_by_album_artist (void)
-{
-    aud_playlist_sort_by_scheme (active_playlist, Playlist::AlbumArtist);
-}
-
-void action_playlist_sort_by_full_path (void)
-{
-    aud_playlist_sort_by_scheme (active_playlist, Playlist::Path);
-}
-
-void action_playlist_sort_by_date (void)
-{
-    aud_playlist_sort_by_scheme (active_playlist, Playlist::Date);
-}
-
-void action_playlist_sort_by_length (void)
-{
-    aud_playlist_sort_by_scheme (active_playlist, Playlist::Length);
-}
-
-void action_playlist_sort_by_genre (void)
-{
-    aud_playlist_sort_by_scheme (active_playlist, Playlist::Genre);
-}
-
-void action_playlist_sort_by_filename (void)
-{
-    aud_playlist_sort_by_scheme (active_playlist, Playlist::Filename);
-}
-
-void action_playlist_sort_by_custom_title (void)
-{
-    aud_playlist_sort_by_scheme (active_playlist, Playlist::FormattedTitle);
-}
-
-void action_playlist_sort_selected_by_track_number (void)
-{
-    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Track);
-}
-
-void action_playlist_sort_selected_by_title (void)
-{
-    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Title);
-}
-
-void action_playlist_sort_selected_by_album (void)
-{
-    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Album);
-}
-
-void action_playlist_sort_selected_by_artist (void)
-{
-    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Artist);
-}
-
-void action_playlist_sort_selected_by_album_artist (void)
-{
-    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::AlbumArtist);
-}
-
-void action_playlist_sort_selected_by_length (void)
-{
-    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Length);
-}
-
-void action_playlist_sort_selected_by_genre (void)
-{
-    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Genre);
-}
-
-void action_playlist_sort_selected_by_full_path (void)
-{
-    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Path);
-}
-
-void action_playlist_sort_selected_by_date (void)
-{
-    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Date);
-}
-
-void action_playlist_sort_selected_by_filename (void)
-{
-    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Filename);
-}
-
-void action_playlist_sort_selected_by_custom_title (void)
-{
-    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::FormattedTitle);
-}
-
-void action_playlist_randomize_list (void)
-{
-    aud_playlist_randomize (active_playlist);
-}
-
-void action_playlist_reverse_list (void)
-{
-    aud_playlist_reverse (active_playlist);
-}
-
-void action_playlist_clear_queue (void)
-{
-    aud_playlist_queue_delete (active_playlist, 0, aud_playlist_queue_count
-     (active_playlist));
-}
-
-void action_playlist_remove_unavailable (void)
-{
-    aud_playlist_remove_failed (active_playlist);
-}
-
-void action_playlist_remove_dupes_by_title (void)
-{
-    aud_playlist_remove_duplicates_by_scheme (active_playlist, Playlist::Title);
-}
-
-void action_playlist_remove_dupes_by_filename (void)
-{
-    aud_playlist_remove_duplicates_by_scheme (active_playlist, Playlist::Filename);
-}
-
-void action_playlist_remove_dupes_by_full_path (void)
-{
-    aud_playlist_remove_duplicates_by_scheme (active_playlist, Playlist::Path);
-}
-
-void action_playlist_remove_all (void)
-{
-    aud_playlist_entry_delete (active_playlist, 0, aud_playlist_entry_count
-     (active_playlist));
-}
-
-void action_playlist_remove_selected (void)
-{
-    aud_playlist_delete_selected (active_playlist);
-}
-
-void action_playlist_remove_unselected (void)
-{
-    playlistwin_inverse_selection ();
-    aud_playlist_delete_selected (active_playlist);
-    aud_playlist_select_all (active_playlist, TRUE);
-}
-
-void action_playlist_copy (void)
-{
-    GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    Index<char> list = audgui_urilist_create_from_selected (active_playlist);
-
-    if (! list.len ())
-        return;
-
-    gtk_clipboard_set_text (clip, list.begin (), list.len ());
-}
-
-void action_playlist_cut (void)
-{
-    action_playlist_copy ();
-    action_playlist_remove_selected ();
-}
-
-void action_playlist_paste (void)
-{
-    GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    char * list = gtk_clipboard_wait_for_text (clip);
-
-    if (list == nullptr)
-        return;
-
-    audgui_urilist_insert (active_playlist,
-     aud_playlist_get_focus (active_playlist), list);
-    g_free (list);
-}
-
-void
-action_playlist_add_files(void)
-{
-    audgui_run_filebrowser(FALSE); /* FALSE = NO_PLAY_BUTTON */
-}
-
-void
-action_playlist_add_url(void)
-{
-    audgui_show_add_url_window (FALSE);
-}
-
-void action_playlist_play (void)
-{
-    aud_playlist_play (aud_playlist_get_active ());
-}
-
-void action_playlist_new (void)
-{
-    int playlist = aud_playlist_count ();
-
-    aud_playlist_insert (playlist);
-    aud_playlist_set_active (playlist);
-}
-
-void action_playlist_prev (void)
-{
-    if (active_playlist > 0)
-        aud_playlist_set_active (active_playlist - 1);
-    else
-    {
-        int count = aud_playlist_count ();
-        if (count > 1)
-            aud_playlist_set_active (count - 1);
-    }
-}
-
-void action_playlist_next (void)
-{
-    int count = aud_playlist_count ();
-
-    if (active_playlist + 1 < count)
-        aud_playlist_set_active (active_playlist + 1);
-    else if (count > 1)
-        aud_playlist_set_active (0);
-}
-
-void action_playlist_rename (void)
-{
-    audgui_show_playlist_rename (active_playlist);
-}
-
-void action_playlist_delete (void)
-{
-    audgui_confirm_playlist_delete (active_playlist);
-}
-
-void
-action_playlist_refresh_list(void)
-{
-    aud_playlist_rescan (active_playlist);
-}
-
-void
-action_playlist_search_and_select(void)
-{
-    playlistwin_select_search();
-}
-
-void
-action_playlist_invert_selection(void)
-{
-    playlistwin_inverse_selection();
-}
-
-void
-action_playlist_select_none(void)
-{
-    playlistwin_select_none();
-}
-
-void
-action_playlist_select_all(void)
-{
-    playlistwin_select_all();
-}
-
-
-static void
-playlistwin_select_search_cbt_cb(GtkWidget *called_cbt, void * other_cbt)
-{
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(called_cbt)) == TRUE)
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(other_cbt), FALSE);
-    return;
-}
-
-static gboolean
-playlistwin_select_search_kp_cb(GtkWidget *entry, GdkEventKey *event,
-                                void * searchdlg_win)
-{
-    switch (event->keyval)
-    {
-        case GDK_KEY_Return:
-            gtk_dialog_response(GTK_DIALOG(searchdlg_win), GTK_RESPONSE_ACCEPT);
-            return TRUE;
-        default:
-            return FALSE;
-    }
 }

@@ -277,8 +277,6 @@ void start_rename_playlist (int playlist)
 
 void ui_playlist_notebook_create_tab (int playlist)
 {
-    int position = aud_playlist_get_position (playlist);
-
     GtkWidget * scrollwin = gtk_scrolled_window_new (nullptr, nullptr);
     GtkAdjustment * vscroll = gtk_scrolled_window_get_vadjustment ((GtkScrolledWindow *) scrollwin);
 
@@ -331,14 +329,13 @@ void ui_playlist_notebook_create_tab (int playlist)
     g_object_set_data ((GObject *) ebox, "playlist-id", GINT_TO_POINTER (id));
     g_object_set_data ((GObject *) treeview, "playlist-id", GINT_TO_POINTER (id));
 
+    int position = aud_playlist_get_position (playlist);
     if (position >= 0)
-    {
-        aud_playlist_select_all (playlist, false);
-        aud_playlist_entry_set_selected (playlist, position, true);
-        aud_playlist_set_focus (playlist, position);
         audgui_list_set_highlight (treeview, position);
+
+    int focus = aud_playlist_get_focus (playlist);
+    if (focus >= 0)
         audgui_list_set_focus (treeview, position);
-    }
 
     g_signal_connect (ebox, "button-press-event", (GCallback) tab_button_press_cb, nullptr);
     g_signal_connect (ebox, "key-press-event", (GCallback) tab_key_press_cb, nullptr);

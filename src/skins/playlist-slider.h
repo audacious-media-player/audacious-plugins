@@ -48,7 +48,7 @@ private:
     void set_pos (int y);
 
     PlaylistWidget * m_list;
-    int m_height;
+    int m_height, m_length;
     bool m_pressed = false;
 };
 
