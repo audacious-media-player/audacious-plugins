@@ -1,7 +1,6 @@
 PLUGIN = skins${PLUGIN_SUFFIX}
 
 SRCS = drag-handle.cc \
-       drawing.cc \
        menus.cc \
        plugin.cc \
        plugin-window.cc \
@@ -30,7 +29,8 @@ SRCS = drag-handle.cc \
        ui_playlist.cc \
        ui_main_evlisteners.cc \
        ui_skinselector.cc \
-       view.cc
+       view.cc \
+       widget.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

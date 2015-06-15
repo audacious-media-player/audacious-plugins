@@ -31,7 +31,10 @@
 #include "ui_main_evlisteners.h"
 #include "ui_skin.h"
 #include "ui_skinned_button.h"
+#include "ui_skinned_horizontal_slider.h"
+#include "ui_skinned_number.h"
 #include "ui_skinned_playstatus.h"
+#include "ui_skinned_textbox.h"
 #include "ui_vis.h"
 #include "util.h"
 
@@ -61,21 +64,21 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
     mainwin_disable_seekbar();
     mainwin_update_song_info();
 
-    gtk_widget_show (mainwin_stime_min);
-    gtk_widget_show (mainwin_stime_sec);
-    gtk_widget_show (mainwin_minus_num);
-    gtk_widget_show (mainwin_10min_num);
-    gtk_widget_show (mainwin_min_num);
-    gtk_widget_show (mainwin_10sec_num);
-    gtk_widget_show (mainwin_sec_num);
+    gtk_widget_show (mainwin_stime_min->gtk ());
+    gtk_widget_show (mainwin_stime_sec->gtk ());
+    gtk_widget_show (mainwin_minus_num->gtk ());
+    gtk_widget_show (mainwin_10min_num->gtk ());
+    gtk_widget_show (mainwin_min_num->gtk ());
+    gtk_widget_show (mainwin_10sec_num->gtk ());
+    gtk_widget_show (mainwin_sec_num->gtk ());
 
     if (aud_drct_get_ready () && aud_drct_get_length () > 0)
     {
-        gtk_widget_show (mainwin_position);
-        gtk_widget_show (mainwin_sposition);
+        gtk_widget_show (mainwin_position->gtk ());
+        gtk_widget_show (mainwin_sposition->gtk ());
     }
 
-    ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
+    mainwin_playstatus->set_status (STATUS_PLAY);
 
     title_change ();
     info_change ();
@@ -89,12 +92,12 @@ ui_main_evlistener_playback_stop(void * hook_data, void * user_data)
 
 static void repeat_toggled (void * data, void * user)
 {
-    button_set_active (mainwin_repeat, aud_get_bool (nullptr, "repeat"));
+    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
 }
 
 static void shuffle_toggled (void * data, void * user)
 {
-    button_set_active (mainwin_shuffle, aud_get_bool (nullptr, "shuffle"));
+    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
 }
 
 static void no_advance_toggled (void * data, void * user)
@@ -113,13 +116,13 @@ static void stop_after_song_toggled (void * hook_data, void * user_data)
 
 void ui_main_evlistener_playback_pause (void * hook_data, void * user_data)
 {
-    ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PAUSE);
+    mainwin_playstatus->set_status (STATUS_PAUSE);
 }
 
 static void
 ui_main_evlistener_playback_unpause(void * hook_data, void * user_data)
 {
-    ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
+    mainwin_playstatus->set_status (STATUS_PLAY);
 }
 
 class VisCallbacks : public Visualizer
@@ -136,8 +139,8 @@ public:
 
 void VisCallbacks::clear ()
 {
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
+    mainwin_vis->clear ();
+    mainwin_svis->clear ();
 }
 
 void VisCallbacks::render_mono_pcm (const float * pcm)
@@ -156,9 +159,9 @@ void VisCallbacks::render_mono_pcm (const float * pcm)
     }
 
     if (aud_get_bool ("skins", "player_shaded"))
-        ui_svis_timeout_func (mainwin_svis, data);
+        mainwin_svis->render (data);
     else
-        ui_vis_timeout_func (mainwin_vis, data);
+        mainwin_vis->render (data);
 }
 
 /* calculate peak dB level, where 1 is 0 dB */
@@ -194,7 +197,7 @@ void VisCallbacks::render_multi_pcm (const float * pcm, int channels)
     else
         data[1] = data[0];
 
-    ui_svis_timeout_func (mainwin_svis, data);
+    mainwin_svis->render (data);
 }
 
 /* convert linear frequency graph to logarithmic one */
@@ -277,9 +280,9 @@ void VisCallbacks::render_freq (const float * freq)
         return;
 
     if (shaded)
-        ui_svis_timeout_func (mainwin_svis, data);
+        mainwin_svis->render (data);
     else
-        ui_vis_timeout_func (mainwin_vis, data);
+        mainwin_vis->render (data);
 }
 
 void
@@ -327,7 +330,7 @@ void start_stop_visual (gboolean exiting)
     static VisCallbacks callbacks;
     static bool started = false;
 
-    if (config.vis_type != VIS_OFF && ! exiting && gtk_widget_get_visible (mainwin))
+    if (config.vis_type != VIS_OFF && ! exiting && aud_ui_is_shown ())
     {
         if (! started)
         {

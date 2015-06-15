@@ -66,49 +66,48 @@
 #define SEEK_THRESHOLD 200 /* milliseconds */
 #define SEEK_SPEED 50 /* milliseconds per pixel */
 
-GtkWidget *mainwin = nullptr;
+Window * mainwin;
 
 static bool seeking = false;
 static int seek_start, seek_time;
 
-static GtkWidget * locked_textbox = nullptr;
+static TextBox * locked_textbox = nullptr;
 static String locked_old_text;
 
 static int status_message_source = 0;
 static int mainwin_volume_release_timeout = 0;
 
-static GtkWidget *mainwin_menubtn, *mainwin_minimize, *mainwin_shade, *mainwin_close;
-static GtkWidget *mainwin_shaded_menubtn, *mainwin_shaded_minimize, *mainwin_shaded_shade, *mainwin_shaded_close;
+static Button * mainwin_menubtn, * mainwin_minimize, * mainwin_shade, * mainwin_close;
+static Button * mainwin_shaded_menubtn, * mainwin_shaded_minimize, * mainwin_shaded_shade, * mainwin_shaded_close;
 
-static GtkWidget *mainwin_rew, *mainwin_fwd;
-static GtkWidget *mainwin_eject;
-static GtkWidget *mainwin_play, *mainwin_pause, *mainwin_stop;
+static Button * mainwin_rew, * mainwin_fwd;
+static Button * mainwin_eject;
+static Button * mainwin_play, * mainwin_pause, * mainwin_stop;
 
-GtkWidget *mainwin_shuffle, *mainwin_repeat;
-GtkWidget *mainwin_eq, *mainwin_pl;
+Button * mainwin_shuffle, * mainwin_repeat;
+Button * mainwin_eq, * mainwin_pl;
 
-GtkWidget *mainwin_info;
-GtkWidget *mainwin_stime_min, *mainwin_stime_sec;
+TextBox * mainwin_info;
+TextBox * mainwin_stime_min, * mainwin_stime_sec;
 
-static GtkWidget *mainwin_rate_text, *mainwin_freq_text, *mainwin_othertext;
+static TextBox * mainwin_rate_text, * mainwin_freq_text, * mainwin_othertext;
 
-GtkWidget *mainwin_playstatus;
+PlayStatus * mainwin_playstatus;
 
-GtkWidget *mainwin_minus_num, *mainwin_10min_num, *mainwin_min_num;
-GtkWidget *mainwin_10sec_num, *mainwin_sec_num;
+SkinnedNumber * mainwin_minus_num, * mainwin_10min_num, * mainwin_min_num;
+SkinnedNumber * mainwin_10sec_num, * mainwin_sec_num;
 
-GtkWidget *mainwin_vis;
-GtkWidget *mainwin_svis;
+SkinnedVis * mainwin_vis;
+SmallVis * mainwin_svis;
 
-GtkWidget *mainwin_sposition = nullptr;
+MenuRow * mainwin_menurow;
+HSlider * mainwin_position, * mainwin_sposition;
 
-GtkWidget *mainwin_menurow;
-static GtkWidget *mainwin_volume, *mainwin_balance;
-GtkWidget *mainwin_position;
+static HSlider * mainwin_volume, * mainwin_balance;
 
-static GtkWidget *mainwin_monostereo;
-static GtkWidget *mainwin_srew, *mainwin_splay, *mainwin_spause;
-static GtkWidget *mainwin_sstop, *mainwin_sfwd, *mainwin_seject, *mainwin_about;
+static MonoStereo * mainwin_monostereo;
+static Button * mainwin_srew, * mainwin_splay, * mainwin_spause;
+static Button * mainwin_sstop, * mainwin_sfwd, * mainwin_seject, * mainwin_about;
 
 static void mainwin_position_motion_cb (void);
 static void mainwin_position_release_cb (void);
@@ -149,17 +148,14 @@ static void
 mainwin_menubtn_cb(void)
 {
     int x, y;
-    gtk_window_get_position(GTK_WINDOW(mainwin), &x, &y);
+    gtk_window_get_position ((GtkWindow *) mainwin->gtk (), &x, &y);
     menu_popup (UI_MENU_MAIN, x + 6 * config.scale,
      y + MAINWIN_SHADED_HEIGHT * config.scale, FALSE, FALSE, 1, GDK_CURRENT_TIME);
 }
 
 static void mainwin_minimize_cb (void)
 {
-    if (!mainwin)
-        return;
-
-    gtk_window_iconify(GTK_WINDOW(mainwin));
+    gtk_window_iconify ((GtkWindow *) mainwin->gtk ());
 }
 
 static void
@@ -173,28 +169,28 @@ static void mainwin_lock_info_text (const char * text)
     if (! locked_textbox)
     {
         locked_textbox = skin.hints.mainwin_othertext_is_status ? mainwin_othertext : mainwin_info;
-        locked_old_text = String (textbox_get_text (locked_textbox));
+        locked_old_text = locked_textbox->get_text ();
     }
 
-    textbox_set_text (locked_textbox, text);
+    locked_textbox->set_text (text);
 }
 
 static void mainwin_release_info_text (void)
 {
     if (locked_textbox)
     {
-        textbox_set_text (locked_textbox, locked_old_text);
+        locked_textbox->set_text (locked_old_text);
         locked_textbox = nullptr;
         locked_old_text = String ();
     }
 }
 
-static void set_info_text (GtkWidget * textbox, const char * text)
+static void set_info_text (TextBox * textbox, const char * text)
 {
     if (textbox == locked_textbox)
         locked_old_text = String (text);
     else
-        textbox_set_text (textbox, text);
+        textbox->set_text (text);
 }
 
 #define mainwin_set_info_text(t) set_info_text (mainwin_info, (t))
@@ -219,23 +215,23 @@ void mainwin_show_status_message (const char * message)
 void mainwin_set_song_title (const char * title)
 {
     if (title)
-        gtk_window_set_title ((GtkWindow *) mainwin, str_printf (_("%s - Audacious"), title));
+        gtk_window_set_title ((GtkWindow *) mainwin->gtk (), str_printf (_("%s - Audacious"), title));
     else
-        gtk_window_set_title ((GtkWindow *) mainwin, _("Audacious"));
+        gtk_window_set_title ((GtkWindow *) mainwin->gtk (), _("Audacious"));
 
     mainwin_set_info_text (title ? title : "");
 }
 
-static void setup_widget (GtkWidget * widget, int x, int y, gboolean show)
+static void setup_widget (Widget * widget, int x, int y, gboolean show)
 {
     /* leave no-show-all widgets alone (they are shown/hidden elsewhere) */
-    if (! gtk_widget_get_no_show_all (widget))
+    if (! gtk_widget_get_no_show_all (widget->gtk ()))
     {
         int width, height;
 
         /* use get_size_request(), not get_preferred_size() */
         /* get_preferred_size() will return 0x0 for hidden widgets */
-        gtk_widget_get_size_request (widget, & width, & height);
+        gtk_widget_get_size_request (widget->gtk (), & width, & height);
 
         width /= config.scale;
         height /= config.scale;
@@ -245,22 +241,22 @@ static void setup_widget (GtkWidget * widget, int x, int y, gboolean show)
          y < 0 || y + height > skin.hints.mainwin_height)
             show = FALSE;
 
-        gtk_widget_set_visible (widget, show);
+        gtk_widget_set_visible (widget->gtk (), show);
     }
 
-    window_move_widget (mainwin, FALSE, widget, x, y);
+    mainwin->move_widget (false, widget, x, y);
 }
 
 void mainwin_refresh_hints (void)
 {
     const SkinHints * p = & skin.hints;
 
-    gtk_widget_set_visible (mainwin_menurow, p->mainwin_menurow_visible);
-    gtk_widget_set_visible (mainwin_rate_text, p->mainwin_streaminfo_visible);
-    gtk_widget_set_visible (mainwin_freq_text, p->mainwin_streaminfo_visible);
-    gtk_widget_set_visible (mainwin_monostereo, p->mainwin_streaminfo_visible);
+    gtk_widget_set_visible (mainwin_menurow->gtk (), p->mainwin_menurow_visible);
+    gtk_widget_set_visible (mainwin_rate_text->gtk (), p->mainwin_streaminfo_visible);
+    gtk_widget_set_visible (mainwin_freq_text->gtk (), p->mainwin_streaminfo_visible);
+    gtk_widget_set_visible (mainwin_monostereo->gtk (), p->mainwin_streaminfo_visible);
 
-    textbox_set_width (mainwin_info, p->mainwin_text_width);
+    mainwin_info->set_width (p->mainwin_text_width);
 
     setup_widget (mainwin_vis, p->mainwin_vis_x, p->mainwin_vis_y, p->mainwin_vis_visible);
     setup_widget (mainwin_info, p->mainwin_text_x, p->mainwin_text_y, p->mainwin_text_visible);
@@ -292,9 +288,9 @@ void mainwin_refresh_hints (void)
     setup_widget (mainwin_close, p->mainwin_close_x, p->mainwin_close_y, TRUE);
 
     if (aud_get_bool ("skins", "player_shaded"))
-        window_set_size (mainwin, MAINWIN_SHADED_WIDTH, MAINWIN_SHADED_HEIGHT);
+        mainwin->resize (MAINWIN_SHADED_WIDTH, MAINWIN_SHADED_HEIGHT);
     else
-        window_set_size (mainwin, p->mainwin_width, p->mainwin_height);
+        mainwin->resize (p->mainwin_width, p->mainwin_height);
 }
 
 /* note that the song info is not translated since it is displayed using
@@ -311,20 +307,20 @@ void mainwin_set_song_info (int bitrate, int samplerate, int channels)
         else
             snprintf (scratch, sizeof scratch, "%2dH", bitrate / 100000);
 
-        textbox_set_text (mainwin_rate_text, scratch);
+        mainwin_rate_text->set_text (scratch);
     }
     else
-        textbox_set_text (mainwin_rate_text, "");
+        mainwin_rate_text->set_text (nullptr);
 
     if (samplerate > 0)
     {
         snprintf (scratch, sizeof scratch, "%2d", samplerate / 1000);
-        textbox_set_text (mainwin_freq_text, scratch);
+        mainwin_freq_text->set_text (scratch);
     }
     else
-        textbox_set_text (mainwin_freq_text, "");
+        mainwin_freq_text->set_text (nullptr);
 
-    ui_skinned_monostereo_set_num_channels (mainwin_monostereo, channels);
+    mainwin_monostereo->set_num_channels (channels);
 
     if (bitrate > 0)
         snprintf (scratch, sizeof scratch, "%d kbps", bitrate / 1000);
@@ -356,30 +352,29 @@ mainwin_clear_song_info(void)
 
     mainwin_set_song_title (nullptr);
 
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
+    mainwin_vis->clear ();
+    mainwin_svis->clear ();
 
-    gtk_widget_hide (mainwin_minus_num);
-    gtk_widget_hide (mainwin_10min_num);
-    gtk_widget_hide (mainwin_min_num);
-    gtk_widget_hide (mainwin_10sec_num);
-    gtk_widget_hide (mainwin_sec_num);
-    gtk_widget_hide (mainwin_stime_min);
-    gtk_widget_hide (mainwin_stime_sec);
-    gtk_widget_hide (mainwin_position);
-    gtk_widget_hide (mainwin_sposition);
+    gtk_widget_hide (mainwin_minus_num->gtk ());
+    gtk_widget_hide (mainwin_10min_num->gtk ());
+    gtk_widget_hide (mainwin_min_num->gtk ());
+    gtk_widget_hide (mainwin_10sec_num->gtk ());
+    gtk_widget_hide (mainwin_sec_num->gtk ());
+    gtk_widget_hide (mainwin_stime_min->gtk ());
+    gtk_widget_hide (mainwin_stime_sec->gtk ());
+    gtk_widget_hide (mainwin_position->gtk ());
+    gtk_widget_hide (mainwin_sposition->gtk ());
 
-    hslider_set_pressed (mainwin_position, FALSE);
-    hslider_set_pressed (mainwin_sposition, FALSE);
+    mainwin_position->set_pressed (false);
+    mainwin_sposition->set_pressed (false);
 
     /* clear sampling parameter displays */
-    textbox_set_text (mainwin_rate_text, "   ");
-    textbox_set_text (mainwin_freq_text, "  ");
-    ui_skinned_monostereo_set_num_channels(mainwin_monostereo, 0);
+    mainwin_rate_text->set_text (nullptr);
+    mainwin_freq_text->set_text (nullptr);
+    mainwin_monostereo->set_num_channels (0);
     mainwin_set_othertext ("");
 
-    if (mainwin_playstatus != nullptr)
-        ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_STOP);
+    mainwin_playstatus->set_status (STATUS_STOP);
 
     playlistwin_hide_timer();
 }
@@ -387,11 +382,8 @@ mainwin_clear_song_info(void)
 void
 mainwin_disable_seekbar(void)
 {
-    if (!mainwin)
-        return;
-
-    gtk_widget_hide(mainwin_position);
-    gtk_widget_hide(mainwin_sposition);
+    gtk_widget_hide (mainwin_position->gtk ());
+    gtk_widget_hide (mainwin_sposition->gtk ());
 }
 
 static void mainwin_scrolled (GtkWidget * widget, GdkEventScroll * event, void *
@@ -438,7 +430,7 @@ mainwin_mouse_button_press(GtkWidget * widget,
     return FALSE;
 }
 
-static void mainwin_playback_rpress (GtkWidget * button, GdkEventButton * event)
+static void mainwin_playback_rpress (Button * button, GdkEventButton * event)
 {
     menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, FALSE, FALSE,
      event->button, event->time);
@@ -447,7 +439,7 @@ static void mainwin_playback_rpress (GtkWidget * button, GdkEventButton * event)
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
  void * unused)
 {
-    if (ui_skinned_playlist_key (playlistwin_list, event))
+    if (playlistwin_list->handle_keypress (event))
         return 1;
 
     switch (event->keyval)
@@ -562,29 +554,25 @@ static void seek_timeout (void * rewind)
         position = seek_start + held / SEEK_SPEED;
 
     position = aud::clamp (position, 0, 219);
-    hslider_set_pos (mainwin_position, position);
+    mainwin_position->set_pos (position);
     mainwin_position_motion_cb ();
 }
 
-static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
- gboolean rewind)
+static void seek_press (GdkEventButton * event, bool rewind)
 {
     if (event->button != 1 || seeking)
-        return FALSE;
+        return;
 
     seeking = true;
-    seek_start = hslider_get_pos (mainwin_position);
+    seek_start = mainwin_position->get_pos ();
     seek_time = time_now ();
     timer_add (TimerRate::Hz10, seek_timeout, GINT_TO_POINTER (rewind));
-
-    return FALSE;
 }
 
-static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
- gboolean rewind)
+static void seek_release (GdkEventButton * event, bool rewind)
 {
     if (event->button != 1 || ! seeking)
-        return FALSE;
+        return;
 
     if (! aud_drct_get_playing () || time_diff (seek_time, time_now ()) <
      SEEK_THRESHOLD)
@@ -599,69 +587,60 @@ static gboolean seek_release (GtkWidget * widget, GdkEventButton * event,
 
     seeking = false;
     timer_remove (TimerRate::Hz10, seek_timeout);
-    return FALSE;
 }
 
-static void mainwin_rew_press (GtkWidget * button, GdkEventButton * event)
- {seek_press (button, event, TRUE); }
-static void mainwin_rew_release (GtkWidget * button, GdkEventButton * event)
- {seek_release (button, event, TRUE); }
-static void mainwin_fwd_press (GtkWidget * button, GdkEventButton * event)
- {seek_press (button, event, FALSE); }
-static void mainwin_fwd_release (GtkWidget * button, GdkEventButton * event)
- {seek_release (button, event, FALSE); }
+static void mainwin_rew_press (Button * button, GdkEventButton * event)
+ {seek_press (event, true); }
+static void mainwin_rew_release (Button * button, GdkEventButton * event)
+ {seek_release (event, true); }
+static void mainwin_fwd_press (Button * button, GdkEventButton * event)
+ {seek_press (event, false); }
+static void mainwin_fwd_release (Button * button, GdkEventButton * event)
+ {seek_release (event, false); }
 
-static void mainwin_shuffle_cb (GtkWidget * button, GdkEventButton * event)
- {aud_set_bool (nullptr, "shuffle", button_get_active (button)); }
-static void mainwin_repeat_cb (GtkWidget * button, GdkEventButton * event)
- {aud_set_bool (nullptr, "repeat", button_get_active (button)); }
-static void mainwin_eq_cb (GtkWidget * button, GdkEventButton * event)
- {view_set_show_equalizer (button_get_active (button)); }
-static void mainwin_pl_cb (GtkWidget * button, GdkEventButton * event)
- {view_set_show_playlist (button_get_active (button)); }
+static void mainwin_shuffle_cb (Button * button, GdkEventButton * event)
+ {aud_set_bool (nullptr, "shuffle", button->get_active ()); }
+static void mainwin_repeat_cb (Button * button, GdkEventButton * event)
+ {aud_set_bool (nullptr, "repeat", button->get_active ()); }
+static void mainwin_eq_cb (Button * button, GdkEventButton * event)
+ {view_set_show_equalizer (button->get_active ()); }
+static void mainwin_pl_cb (Button * button, GdkEventButton * event)
+ {view_set_show_playlist (button->get_active ()); }
 
 static void mainwin_spos_set_knob (void)
 {
-    int pos = hslider_get_pos (mainwin_sposition);
-
-    int x;
-    if (pos < 6)
-        x = 17;
-    else if (pos < 9)
-        x = 20;
-    else
-        x = 23;
-
-    hslider_set_knob (mainwin_sposition, x, 36, x, 36);
+    int pos = mainwin_sposition->get_pos ();
+    int x = (pos < 6) ? 17 : (pos < 9) ? 20 : 23;
+    mainwin_sposition->set_knob (x, 36, x, 36);
 }
 
 static void mainwin_spos_motion_cb (void)
 {
     mainwin_spos_set_knob ();
 
-    int pos = hslider_get_pos (mainwin_sposition);
+    int pos = mainwin_sposition->get_pos ();
     int length = aud_drct_get_length ();
     int time = (pos - 1) * length / 12;
 
     char buf[7];
     format_time (buf, time, length);
 
-    textbox_set_text (mainwin_stime_min, buf);
-    textbox_set_text (mainwin_stime_sec, buf + 4);
+    mainwin_stime_min->set_text (buf);
+    mainwin_stime_sec->set_text (buf + 4);
 }
 
 static void mainwin_spos_release_cb (void)
 {
     mainwin_spos_set_knob ();
 
-    int pos = hslider_get_pos (mainwin_sposition);
+    int pos = mainwin_sposition->get_pos ();
     aud_drct_seek (aud_drct_get_length () * (pos - 1) / 12);
 }
 
 static void mainwin_position_motion_cb (void)
 {
     int length = aud_drct_get_length () / 1000;
-    int pos = hslider_get_pos (mainwin_position);
+    int pos = mainwin_position->get_pos ();
     int time = pos * length / 219;
 
     mainwin_lock_info_text (str_printf (_("Seek to %d:%-2.2d / %d:%-2.2d"),
@@ -671,7 +650,7 @@ static void mainwin_position_motion_cb (void)
 static void mainwin_position_release_cb (void)
 {
     int length = aud_drct_get_length ();
-    int pos = hslider_get_pos (mainwin_position);
+    int pos = mainwin_position->get_pos ();
     int time = (int64_t) pos * length / 219;
 
     aud_drct_seek(time);
@@ -708,21 +687,21 @@ void mainwin_adjust_balance_release ()
 
 static void mainwin_volume_set_frame (void)
 {
-    int pos = hslider_get_pos (mainwin_volume);
+    int pos = mainwin_volume->get_pos ();
     int frame = (pos * 27 + 25) / 51;
-    hslider_set_frame (mainwin_volume, 0, 15 * frame);
+    mainwin_volume->set_frame (0, 15 * frame);
 }
 
 void mainwin_set_volume_slider (int percent)
 {
-    hslider_set_pos (mainwin_volume, (percent * 51 + 50) / 100);
+    mainwin_volume->set_pos ((percent * 51 + 50) / 100);
     mainwin_volume_set_frame ();
 }
 
 static void mainwin_volume_motion_cb (void)
 {
     mainwin_volume_set_frame ();
-    int pos = hslider_get_pos (mainwin_volume);
+    int pos = mainwin_volume->get_pos ();
     int vol = (pos * 100 + 25) / 51;
 
     mainwin_adjust_volume_motion(vol);
@@ -744,17 +723,17 @@ static gboolean mainwin_volume_timeout_cb (void *)
 
 static void mainwin_balance_set_frame (void)
 {
-    int pos = hslider_get_pos (mainwin_balance);
+    int pos = mainwin_balance->get_pos ();
     int frame = (abs (pos - 12) * 27 + 6) / 12;
-    hslider_set_frame (mainwin_balance, 9, 15 * frame);
+    mainwin_balance->set_frame (9, 15 * frame);
 }
 
 void mainwin_set_balance_slider (int percent)
 {
     if (percent > 0)
-        hslider_set_pos (mainwin_balance, 12 + (percent * 12 + 50) / 100);
+        mainwin_balance->set_pos (12 + (percent * 12 + 50) / 100);
     else
-        hslider_set_pos (mainwin_balance, 12 + (percent * 12 - 50) / 100);
+        mainwin_balance->set_pos (12 + (percent * 12 - 50) / 100);
 
     mainwin_balance_set_frame ();
 }
@@ -762,7 +741,7 @@ void mainwin_set_balance_slider (int percent)
 static void mainwin_balance_motion_cb (void)
 {
     mainwin_balance_set_frame ();
-    int pos = hslider_get_pos (mainwin_balance);
+    int pos = mainwin_balance->get_pos ();
 
     int bal;
     if (pos > 12)
@@ -848,249 +827,238 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
     mainwin_release_info_text();
 }
 
-gboolean
-change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event)
+bool change_timer_mode_cb (GdkEventButton * event)
 {
-    if (event->button == 1)
-        view_set_show_remaining (! aud_get_bool ("skins", "show_remaining_time"));
-    else if (event->button == 3)
-        return FALSE;
+    if (event->type != GDK_BUTTON_PRESS || event->button != 1)
+        return false;
 
-    return TRUE;
+    view_set_show_remaining (! aud_get_bool ("skins", "show_remaining_time"));
+    return true;
 }
 
-static gboolean mainwin_info_button_press (GtkWidget * widget, GdkEventButton *
- event)
+static bool mainwin_info_button_press (GdkEventButton * event)
 {
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
     {
-        menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, FALSE,
-         FALSE, event->button, event->time);
-        return TRUE;
+        menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, false,
+         false, event->button, event->time);
+        return true;
     }
 
     if (event->type == GDK_2BUTTON_PRESS && event->button == 1)
     {
         audgui_infowin_show_current ();
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 static void
 mainwin_create_widgets(void)
 {
-    mainwin_menubtn = button_new (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, FALSE, mainwin_menubtn, 6, 3);
-    button_on_release (mainwin_menubtn, (ButtonCB) mainwin_menubtn_cb);
+    mainwin_menubtn = new Button (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    mainwin->put_widget (false, mainwin_menubtn, 6, 3);
+    mainwin_menubtn->on_release ((ButtonCB) mainwin_menubtn_cb);
 
-    mainwin_minimize = button_new (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, FALSE, mainwin_minimize, 244, 3);
-    button_on_release (mainwin_minimize, (ButtonCB) mainwin_minimize_cb);
+    mainwin_minimize = new Button (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    mainwin->put_widget (false, mainwin_minimize, 244, 3);
+    mainwin_minimize->on_release ((ButtonCB) mainwin_minimize_cb);
 
-    mainwin_shade = button_new (9, 9, 0, 18, 9, 18, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, FALSE, mainwin_shade, 254, 3);
-    button_on_release (mainwin_shade, (ButtonCB) mainwin_shade_toggle);
+    mainwin_shade = new Button (9, 9, 0, 18, 9, 18, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    mainwin->put_widget (false, mainwin_shade, 254, 3);
+    mainwin_shade->on_release ((ButtonCB) mainwin_shade_toggle);
 
-    mainwin_close = button_new (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, FALSE, mainwin_close, 264, 3);
-    button_on_release (mainwin_close, (ButtonCB) handle_window_close);
+    mainwin_close = new Button (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    mainwin->put_widget (false, mainwin_close, 264, 3);
+    mainwin_close->on_release ((ButtonCB) handle_window_close);
 
-    mainwin_rew = button_new (23, 18, 0, 0, 0, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_rew, 16, 88);
-    button_on_press (mainwin_rew, mainwin_rew_press);
-    button_on_release (mainwin_rew, mainwin_rew_release);
-    button_on_rpress (mainwin_rew, mainwin_playback_rpress);
+    mainwin_rew = new Button (23, 18, 0, 0, 0, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    mainwin->put_widget (false, mainwin_rew, 16, 88);
+    mainwin_rew->on_press (mainwin_rew_press);
+    mainwin_rew->on_release (mainwin_rew_release);
+    mainwin_rew->on_rpress (mainwin_playback_rpress);
 
-    mainwin_fwd = button_new (22, 18, 92, 0, 92, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_fwd, 108, 88);
-    button_on_press (mainwin_fwd, mainwin_fwd_press);
-    button_on_release (mainwin_fwd, mainwin_fwd_release);
-    button_on_rpress (mainwin_fwd, mainwin_playback_rpress);
+    mainwin_fwd = new Button (22, 18, 92, 0, 92, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    mainwin->put_widget (false, mainwin_fwd, 108, 88);
+    mainwin_fwd->on_press (mainwin_fwd_press);
+    mainwin_fwd->on_release (mainwin_fwd_release);
+    mainwin_fwd->on_rpress (mainwin_playback_rpress);
 
-    mainwin_play = button_new (23, 18, 23, 0, 23, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_play, 39, 88);
-    button_on_release (mainwin_play, (ButtonCB) aud_drct_play);
-    button_on_rpress (mainwin_play, mainwin_playback_rpress);
+    mainwin_play = new Button (23, 18, 23, 0, 23, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    mainwin->put_widget (false, mainwin_play, 39, 88);
+    mainwin_play->on_release ((ButtonCB) aud_drct_play);
+    mainwin_play->on_rpress (mainwin_playback_rpress);
 
-    mainwin_pause = button_new (23, 18, 46, 0, 46, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_pause, 62, 88);
-    button_on_release (mainwin_pause, (ButtonCB) aud_drct_pause);
-    button_on_rpress (mainwin_pause, mainwin_playback_rpress);
+    mainwin_pause = new Button (23, 18, 46, 0, 46, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    mainwin->put_widget (false, mainwin_pause, 62, 88);
+    mainwin_pause->on_release ((ButtonCB) aud_drct_pause);
+    mainwin_pause->on_rpress (mainwin_playback_rpress);
 
-    mainwin_stop = button_new (23, 18, 69, 0, 69, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_stop, 85, 88);
-    button_on_release (mainwin_stop, (ButtonCB) aud_drct_stop);
-    button_on_rpress (mainwin_stop, mainwin_playback_rpress);
+    mainwin_stop = new Button (23, 18, 69, 0, 69, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    mainwin->put_widget (false, mainwin_stop, 85, 88);
+    mainwin_stop->on_release ((ButtonCB) aud_drct_stop);
+    mainwin_stop->on_rpress (mainwin_playback_rpress);
 
-    mainwin_eject = button_new (22, 16, 114, 0, 114, 16, SKIN_CBUTTONS, SKIN_CBUTTONS);
-    window_put_widget (mainwin, FALSE, mainwin_eject, 136, 89);
-    button_on_release (mainwin_eject, (ButtonCB) action_play_file);
+    mainwin_eject = new Button (22, 16, 114, 0, 114, 16, SKIN_CBUTTONS, SKIN_CBUTTONS);
+    mainwin->put_widget (false, mainwin_eject, 136, 89);
+    mainwin_eject->on_release ((ButtonCB) action_play_file);
 
-    mainwin_shuffle = button_new_toggle (46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP, SKIN_SHUFREP);
-    window_put_widget (mainwin, FALSE, mainwin_shuffle, 164, 89);
-    button_set_active (mainwin_shuffle, aud_get_bool (nullptr, "shuffle"));
-    button_on_release (mainwin_shuffle, mainwin_shuffle_cb);
+    mainwin_shuffle = new Button (46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP, SKIN_SHUFREP);
+    mainwin->put_widget (false, mainwin_shuffle, 164, 89);
+    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
+    mainwin_shuffle->on_release (mainwin_shuffle_cb);
 
-    mainwin_repeat = button_new_toggle (28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP, SKIN_SHUFREP);
-    window_put_widget (mainwin, FALSE, mainwin_repeat, 210, 89);
-    button_set_active (mainwin_repeat, aud_get_bool (nullptr, "repeat"));
-    button_on_release (mainwin_repeat, mainwin_repeat_cb);
+    mainwin_repeat = new Button (28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP, SKIN_SHUFREP);
+    mainwin->put_widget (false, mainwin_repeat, 210, 89);
+    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
+    mainwin_repeat->on_release (mainwin_repeat_cb);
 
-    mainwin_eq = button_new_toggle (23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP, SKIN_SHUFREP);
-    window_put_widget (mainwin, FALSE, mainwin_eq, 219, 58);
-    button_on_release (mainwin_eq, mainwin_eq_cb);
+    mainwin_eq = new Button (23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP, SKIN_SHUFREP);
+    mainwin->put_widget (false, mainwin_eq, 219, 58);
+    mainwin_eq->on_release (mainwin_eq_cb);
 
-    mainwin_pl = button_new_toggle (23, 12, 23, 61, 69, 61, 23, 73, 69, 73, SKIN_SHUFREP, SKIN_SHUFREP);
-    window_put_widget (mainwin, FALSE, mainwin_pl, 242, 58);
-    button_on_release (mainwin_pl, mainwin_pl_cb);
+    mainwin_pl = new Button (23, 12, 23, 61, 69, 61, 23, 73, 69, 73, SKIN_SHUFREP, SKIN_SHUFREP);
+    mainwin->put_widget (false, mainwin_pl, 242, 58);
+    mainwin_pl->on_release (mainwin_pl_cb);
 
     String font;
     if (! config.mainwin_use_bitmapfont)
         font = aud_get_str ("skins", "mainwin_font");
 
     bool shaded = aud_get_bool ("skins", "mainwin_shaded");
-    mainwin_info = textbox_new (153, font, ! shaded && config.autoscroll);
+    mainwin_info = new TextBox (153, font, ! shaded && config.autoscroll);
+    mainwin->put_widget (false, mainwin_info, 112, 27);
+    mainwin_info->on_press (mainwin_info_button_press);
 
-    window_put_widget (mainwin, FALSE, mainwin_info, 112, 27);
-    g_signal_connect (mainwin_info, "button-press-event", (GCallback)
-     mainwin_info_button_press, nullptr);
+    mainwin_othertext = new TextBox (153, nullptr, false);
+    mainwin->put_widget (false, mainwin_othertext, 112, 43);
 
-    mainwin_othertext = textbox_new (153, nullptr, false);
-    window_put_widget (mainwin, FALSE, mainwin_othertext, 112, 43);
+    mainwin_rate_text = new TextBox (15, nullptr, false);
+    mainwin->put_widget (false, mainwin_rate_text, 111, 43);
 
-    mainwin_rate_text = textbox_new (15, nullptr, false);
-    window_put_widget (mainwin, FALSE, mainwin_rate_text, 111, 43);
+    mainwin_freq_text = new TextBox (10, nullptr, false);
+    mainwin->put_widget (false, mainwin_freq_text, 156, 43);
 
-    mainwin_freq_text = textbox_new (10, nullptr, false);
-    window_put_widget (mainwin, FALSE, mainwin_freq_text, 156, 43);
+    mainwin_menurow = new MenuRow;
+    mainwin->put_widget (false, mainwin_menurow, 10, 22);
 
-    mainwin_menurow = ui_skinned_menurow_new ();
-    window_put_widget (mainwin, FALSE, mainwin_menurow, 10, 22);
+    mainwin_volume = new HSlider (0, 51, SKIN_VOLUME, 68, 13, 0, 0, 14, 11, 15, 422, 0, 422);
+    mainwin->put_widget (false, mainwin_volume, 107, 57);
+    mainwin_volume->on_move (mainwin_volume_motion_cb);
+    mainwin_volume->on_release (mainwin_volume_release_cb);
 
-    mainwin_volume = hslider_new (0, 51, SKIN_VOLUME, 68, 13, 0, 0, 14, 11, 15, 422, 0, 422);
-    window_put_widget (mainwin, FALSE, mainwin_volume, 107, 57);
-    hslider_on_motion (mainwin_volume, mainwin_volume_motion_cb);
-    hslider_on_release (mainwin_volume, mainwin_volume_release_cb);
+    mainwin_balance = new HSlider (0, 24, SKIN_BALANCE, 38, 13, 9, 0, 14, 11, 15, 422, 0, 422);
+    mainwin->put_widget (false, mainwin_balance, 177, 57);
+    mainwin_balance->on_move (mainwin_balance_motion_cb);
+    mainwin_balance->on_release (mainwin_balance_release_cb);
 
-    mainwin_balance = hslider_new (0, 24, SKIN_BALANCE, 38, 13, 9, 0, 14, 11, 15, 422, 0, 422);
-    window_put_widget (mainwin, FALSE, mainwin_balance, 177, 57);
-    hslider_on_motion (mainwin_balance, mainwin_balance_motion_cb);
-    hslider_on_release (mainwin_balance, mainwin_balance_release_cb);
+    mainwin_monostereo = new MonoStereo;
+    mainwin->put_widget (false, mainwin_monostereo, 212, 41);
 
-    mainwin_monostereo = ui_skinned_monostereo_new ();
-    window_put_widget (mainwin, FALSE, mainwin_monostereo, 212, 41);
+    mainwin_playstatus = new PlayStatus;
+    mainwin->put_widget (false, mainwin_playstatus, 24, 28);
 
-    mainwin_playstatus = ui_skinned_playstatus_new ();
-    window_put_widget (mainwin, FALSE, mainwin_playstatus, 24, 28);
+    mainwin_minus_num = new SkinnedNumber;
+    mainwin->put_widget (false, mainwin_minus_num, 36, 26);
 
-    mainwin_minus_num = ui_skinned_number_new ();
-    window_put_widget (mainwin, FALSE, mainwin_minus_num, 36, 26);
-    g_signal_connect(mainwin_minus_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_10min_num = new SkinnedNumber;
+    mainwin->put_widget (false, mainwin_10min_num, 48, 26);
 
-    mainwin_10min_num = ui_skinned_number_new ();
-    window_put_widget (mainwin, FALSE, mainwin_10min_num, 48, 26);
-    g_signal_connect(mainwin_10min_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_min_num = new SkinnedNumber;
+    mainwin->put_widget (false, mainwin_min_num, 60, 26);
 
-    mainwin_min_num = ui_skinned_number_new ();
-    window_put_widget (mainwin, FALSE, mainwin_min_num, 60, 26);
-    g_signal_connect(mainwin_min_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_10sec_num = new SkinnedNumber;
+    mainwin->put_widget (false, mainwin_10sec_num, 78, 26);
 
-    mainwin_10sec_num = ui_skinned_number_new ();
-    window_put_widget (mainwin, FALSE, mainwin_10sec_num, 78, 26);
-    g_signal_connect(mainwin_10sec_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_sec_num = new SkinnedNumber;
+    mainwin->put_widget (false, mainwin_sec_num, 90, 26);
 
-    mainwin_sec_num = ui_skinned_number_new ();
-    window_put_widget (mainwin, FALSE, mainwin_sec_num, 90, 26);
-    g_signal_connect(mainwin_sec_num, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_about = new Button (20, 25);
+    mainwin->put_widget (false, mainwin_about, 247, 83);
+    mainwin_about->on_release ((ButtonCB) audgui_show_about_window);
 
-    mainwin_about = button_new_small (20, 25);
-    window_put_widget (mainwin, FALSE, mainwin_about, 247, 83);
-    button_on_release (mainwin_about, (ButtonCB) audgui_show_about_window);
+    mainwin_vis = new SkinnedVis;
+    mainwin->put_widget (false, mainwin_vis, 24, 43);
 
-    mainwin_vis = ui_vis_new ();
-    window_put_widget (mainwin, FALSE, mainwin_vis, 24, 43);
-
-    mainwin_position = hslider_new (0, 219, SKIN_POSBAR, 248, 10, 0, 0, 29, 10, 248, 0, 278, 0);
-    window_put_widget (mainwin, FALSE, mainwin_position, 16, 72);
-    hslider_on_motion (mainwin_position, mainwin_position_motion_cb);
-    hslider_on_release (mainwin_position, mainwin_position_release_cb);
+    mainwin_position = new HSlider (0, 219, SKIN_POSBAR, 248, 10, 0, 0, 29, 10, 248, 0, 278, 0);
+    mainwin->put_widget (false, mainwin_position, 16, 72);
+    mainwin_position->on_move (mainwin_position_motion_cb);
+    mainwin_position->on_release (mainwin_position_release_cb);
 
     /* shaded */
 
-    mainwin_shaded_menubtn = button_new (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, TRUE, mainwin_shaded_menubtn, 6, 3);
-    button_on_release (mainwin_shaded_menubtn, (ButtonCB) mainwin_menubtn_cb);
+    mainwin_shaded_menubtn = new Button (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    mainwin->put_widget (true, mainwin_shaded_menubtn, 6, 3);
+    mainwin_shaded_menubtn->on_release ((ButtonCB) mainwin_menubtn_cb);
 
-    mainwin_shaded_minimize = button_new (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, TRUE, mainwin_shaded_minimize, 244, 3);
-    button_on_release (mainwin_shaded_minimize, (ButtonCB) mainwin_minimize_cb);
+    mainwin_shaded_minimize = new Button (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    mainwin->put_widget (true, mainwin_shaded_minimize, 244, 3);
+    mainwin_shaded_minimize->on_release ((ButtonCB) mainwin_minimize_cb);
 
-    mainwin_shaded_shade = button_new (9, 9, 0, 27, 9, 27, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, TRUE, mainwin_shaded_shade, 254, 3);
-    button_on_release (mainwin_shaded_shade, (ButtonCB) mainwin_shade_toggle);
+    mainwin_shaded_shade = new Button (9, 9, 0, 27, 9, 27, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    mainwin->put_widget (true, mainwin_shaded_shade, 254, 3);
+    mainwin_shaded_shade->on_release ((ButtonCB) mainwin_shade_toggle);
 
-    mainwin_shaded_close = button_new (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
-    window_put_widget (mainwin, TRUE, mainwin_shaded_close, 264, 3);
-    button_on_release (mainwin_shaded_close, (ButtonCB) handle_window_close);
+    mainwin_shaded_close = new Button (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
+    mainwin->put_widget (true, mainwin_shaded_close, 264, 3);
+    mainwin_shaded_close->on_release ((ButtonCB) handle_window_close);
 
-    mainwin_srew = button_new_small (8, 7);
-    window_put_widget (mainwin, TRUE, mainwin_srew, 169, 4);
-    button_on_release (mainwin_srew, (ButtonCB) aud_drct_pl_prev);
+    mainwin_srew = new Button (8, 7);
+    mainwin->put_widget (true, mainwin_srew, 169, 4);
+    mainwin_srew->on_release ((ButtonCB) aud_drct_pl_prev);
 
-    mainwin_splay = button_new_small (10, 7);
-    window_put_widget (mainwin, TRUE, mainwin_splay, 177, 4);
-    button_on_release (mainwin_splay, (ButtonCB) aud_drct_play);
+    mainwin_splay = new Button (10, 7);
+    mainwin->put_widget (true, mainwin_splay, 177, 4);
+    mainwin_splay->on_release ((ButtonCB) aud_drct_play);
 
-    mainwin_spause = button_new_small (10, 7);
-    window_put_widget (mainwin, TRUE, mainwin_spause, 187, 4);
-    button_on_release (mainwin_spause, (ButtonCB) aud_drct_pause);
+    mainwin_spause = new Button (10, 7);
+    mainwin->put_widget (true, mainwin_spause, 187, 4);
+    mainwin_spause->on_release ((ButtonCB) aud_drct_pause);
 
-    mainwin_sstop = button_new_small (9, 7);
-    window_put_widget (mainwin, TRUE, mainwin_sstop, 197, 4);
-    button_on_release (mainwin_sstop, (ButtonCB) aud_drct_stop);
+    mainwin_sstop = new Button (9, 7);
+    mainwin->put_widget (true, mainwin_sstop, 197, 4);
+    mainwin_sstop->on_release ((ButtonCB) aud_drct_stop);
 
-    mainwin_sfwd = button_new_small (8, 7);
-    window_put_widget (mainwin, TRUE, mainwin_sfwd, 206, 4);
-    button_on_release (mainwin_sfwd, (ButtonCB) aud_drct_pl_next);
+    mainwin_sfwd = new Button (8, 7);
+    mainwin->put_widget (true, mainwin_sfwd, 206, 4);
+    mainwin_sfwd->on_release ((ButtonCB) aud_drct_pl_next);
 
-    mainwin_seject = button_new_small (9, 7);
-    window_put_widget (mainwin, TRUE, mainwin_seject, 216, 4);
-    button_on_release (mainwin_seject, (ButtonCB) action_play_file);
+    mainwin_seject = new Button (9, 7);
+    mainwin->put_widget (true, mainwin_seject, 216, 4);
+    mainwin_seject->on_release ((ButtonCB) action_play_file);
 
-    mainwin_svis = ui_svis_new ();
-    window_put_widget (mainwin, TRUE, mainwin_svis, 79, 5);
+    mainwin_svis = new SmallVis ();
+    mainwin->put_widget (true, mainwin_svis, 79, 5);
 
-    mainwin_sposition = hslider_new (1, 13, SKIN_TITLEBAR, 17, 7, 0, 36, 3, 7, 17, 36, 17, 36);
-    window_put_widget (mainwin, TRUE, mainwin_sposition, 226, 4);
-    hslider_on_motion (mainwin_sposition, mainwin_spos_motion_cb);
-    hslider_on_release (mainwin_sposition, mainwin_spos_release_cb);
+    mainwin_sposition = new HSlider (1, 13, SKIN_TITLEBAR, 17, 7, 0, 36, 3, 7, 17, 36, 17, 36);
+    mainwin->put_widget (true, mainwin_sposition, 226, 4);
+    mainwin_sposition->on_move (mainwin_spos_motion_cb);
+    mainwin_sposition->on_release (mainwin_spos_release_cb);
 
-    mainwin_stime_min = textbox_new (15, nullptr, false);
-    window_put_widget (mainwin, TRUE, mainwin_stime_min, 130, 4);
+    mainwin_stime_min = new TextBox (15, nullptr, false);
+    mainwin->put_widget (true, mainwin_stime_min, 130, 4);
+    mainwin_stime_min->on_press (change_timer_mode_cb);
 
-    mainwin_stime_sec = textbox_new (10, nullptr, false);
-    window_put_widget (mainwin, TRUE, mainwin_stime_sec, 147, 4);
-
-    g_signal_connect(mainwin_stime_min, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
-    g_signal_connect(mainwin_stime_sec, "button-press-event", G_CALLBACK(change_timer_mode_cb), nullptr);
+    mainwin_stime_sec = new TextBox (10, nullptr, false);
+    mainwin->put_widget (true, mainwin_stime_sec, 147, 4);
+    mainwin_stime_sec->on_press (change_timer_mode_cb);
 }
 
 static void show_widgets (void)
 {
-    gtk_widget_set_no_show_all (mainwin_minus_num, TRUE);
-    gtk_widget_set_no_show_all (mainwin_10min_num, TRUE);
-    gtk_widget_set_no_show_all (mainwin_min_num, TRUE);
-    gtk_widget_set_no_show_all (mainwin_10sec_num, TRUE);
-    gtk_widget_set_no_show_all (mainwin_sec_num, TRUE);
-    gtk_widget_set_no_show_all (mainwin_stime_min, TRUE);
-    gtk_widget_set_no_show_all (mainwin_stime_sec, TRUE);
-    gtk_widget_set_no_show_all (mainwin_position, TRUE);
-    gtk_widget_set_no_show_all (mainwin_sposition, TRUE);
+    gtk_widget_set_no_show_all (mainwin_minus_num->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_10min_num->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_min_num->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_10sec_num->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_sec_num->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_stime_min->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_stime_sec->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_position->gtk (), TRUE);
+    gtk_widget_set_no_show_all (mainwin_sposition->gtk (), TRUE);
 
-    window_set_shaded (mainwin, aud_get_bool ("skins", "player_shaded"));
-    window_show_all (mainwin);
+    mainwin->set_shaded (aud_get_bool ("skins", "player_shaded"));
+    mainwin->show_all ();
 }
 
 static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
@@ -1122,27 +1090,22 @@ mainwin_create_window(void)
     int width = shaded ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width;
     int height = shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height;
 
-    mainwin = window_new (WINDOW_MAIN, & config.player_x, & config.player_y,
+    mainwin = new Window (WINDOW_MAIN, & config.player_x, & config.player_y,
      width, height, shaded, mainwin_draw);
 
-    gtk_window_set_title(GTK_WINDOW(mainwin), _("Audacious"));
+    GtkWidget * w = mainwin->gtk ();
+    gtk_window_set_title ((GtkWindow *) w, _("Audacious"));
 
-    g_signal_connect(mainwin, "button_press_event",
-                     G_CALLBACK(mainwin_mouse_button_press), nullptr);
-    g_signal_connect(mainwin, "scroll_event",
-                     G_CALLBACK(mainwin_scrolled), nullptr);
+    drag_dest_set (w);
 
-    drag_dest_set(mainwin);
-    g_signal_connect ((GObject *) mainwin, "drag-data-received", (GCallback)
-     mainwin_drag_data_received, 0);
-
-    g_signal_connect(mainwin, "key_press_event",
-                     G_CALLBACK(mainwin_keypress), nullptr);
+    g_signal_connect (w, "button_press_event", (GCallback) mainwin_mouse_button_press, nullptr);
+    g_signal_connect (w, "scroll_event", (GCallback) mainwin_scrolled, nullptr);
+    g_signal_connect (w, "drag-data-received", (GCallback) mainwin_drag_data_received, nullptr);
+    g_signal_connect (w, "key_press_event", (GCallback) mainwin_keypress, nullptr);
+    g_signal_connect (w, "window-state-event", (GCallback) state_cb, nullptr);
+    g_signal_connect (w, "delete-event", (GCallback) handle_window_close, nullptr);
 
     ui_main_evlistener_init();
-
-    g_signal_connect ((GObject *) mainwin, "window-state-event", (GCallback) state_cb, nullptr);
-    g_signal_connect ((GObject *) mainwin, "delete-event", (GCallback) handle_window_close, nullptr);
 }
 
 void mainwin_unhook (void)
@@ -1174,7 +1137,7 @@ mainwin_create(void)
 {
     mainwin_create_window();
 
-    gtk_window_add_accel_group ((GtkWindow *) mainwin, menu_get_accel_group ());
+    gtk_window_add_accel_group ((GtkWindow *) mainwin->gtk (), menu_get_accel_group ());
 
     mainwin_create_widgets();
     show_widgets ();
@@ -1196,16 +1159,16 @@ static void mainwin_update_time_display (int time, int length)
     char scratch[7];
     format_time (scratch, time, length);
 
-    ui_skinned_number_set (mainwin_minus_num, scratch[0]);
-    ui_skinned_number_set (mainwin_10min_num, scratch[1]);
-    ui_skinned_number_set (mainwin_min_num, scratch[2]);
-    ui_skinned_number_set (mainwin_10sec_num, scratch[4]);
-    ui_skinned_number_set (mainwin_sec_num, scratch[5]);
+    mainwin_minus_num->set (scratch[0]);
+    mainwin_10min_num->set (scratch[1]);
+    mainwin_min_num->set (scratch[2]);
+    mainwin_10sec_num->set (scratch[4]);
+    mainwin_sec_num->set (scratch[5]);
 
-    if (! hslider_get_pressed (mainwin_sposition))
+    if (! mainwin_sposition->get_pressed ())
     {
-        textbox_set_text (mainwin_stime_min, scratch);
-        textbox_set_text (mainwin_stime_sec, scratch + 4);
+        mainwin_stime_min->set_text (scratch);
+        mainwin_stime_sec->set_text (scratch + 4);
     }
 
     playlistwin_set_time (scratch, scratch + 4);
@@ -1213,20 +1176,20 @@ static void mainwin_update_time_display (int time, int length)
 
 static void mainwin_update_time_slider (int time, int length)
 {
-    gtk_widget_set_visible (mainwin_position, length > 0);
-    gtk_widget_set_visible (mainwin_sposition, length > 0);
+    gtk_widget_set_visible (mainwin_position->gtk (), length > 0);
+    gtk_widget_set_visible (mainwin_sposition->gtk (), length > 0);
 
     if (length > 0 && ! seeking)
     {
         if (time < length)
         {
-            hslider_set_pos (mainwin_position, time * (int64_t) 219 / length);
-            hslider_set_pos (mainwin_sposition, 1 + time * (int64_t) 12 / length);
+            mainwin_position->set_pos (time * (int64_t) 219 / length);
+            mainwin_sposition->set_pos (1 + time * (int64_t) 12 / length);
         }
         else
         {
-            hslider_set_pos (mainwin_position, 219);
-            hslider_set_pos (mainwin_sposition, 13);
+            mainwin_position->set_pos (219);
+            mainwin_sposition->set_pos (13);
         }
 
         mainwin_spos_set_knob ();

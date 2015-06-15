@@ -22,25 +22,57 @@
 #ifndef SKINS_UI_SKINNED_BUTTON_H
 #define SKINS_UI_SKINNED_BUTTON_H
 
-#include <gtk/gtk.h>
-
+#include "widget.h"
 #include "ui_skin.h"
 
-typedef void (* ButtonCB) (GtkWidget * button, GdkEventButton * event);
+class Button;
 
-GtkWidget * button_new (int w, int h, int nx, int ny, int px,
- int py, SkinPixmapId si1, SkinPixmapId si2);
-GtkWidget * button_new_toggle (int w, int h, int nx, int ny,
- int px, int py, int pnx, int pny, int ppx, int ppy, SkinPixmapId si1,
- SkinPixmapId si2);
-GtkWidget * button_new_small (int w, int h);
+typedef void (* ButtonCB) (Button * button, GdkEventButton * event);
 
-void button_on_press (GtkWidget * button, ButtonCB callback);
-void button_on_release (GtkWidget * button, ButtonCB callback);
-void button_on_rpress (GtkWidget * button, ButtonCB callback);
-void button_on_rrelease (GtkWidget * button, ButtonCB callback);
+class Button : public Widget
+{
+public:
+    // transparent button
+    Button (int w, int h) :
+        Button (Small, w, h, 0, 0, 0, 0, 0, 0, 0, 0, SKIN_MAIN, SKIN_MAIN) {}
 
-gboolean button_get_active (GtkWidget * button);
-void button_set_active (GtkWidget * button, gboolean active);
+    // basic skinned button
+    Button (int w, int h, int nx, int ny, int px, int py, SkinPixmapId si1, SkinPixmapId si2) :
+        Button (Normal, w, h, nx, ny, px, py, 0, 0, 0, 0, si1, si1) {}
+
+    // skinned toggle button
+    Button (int w, int h, int nx, int ny, int px, int py, int pnx, int pny,
+     int ppx, int ppy, SkinPixmapId si1, SkinPixmapId si2) :
+        Button (Toggle, w, h, nx, ny, px, py, pnx, pny, ppx, ppy, si1, si2) {}
+
+    void on_press (ButtonCB callback) { press = callback; }
+    void on_release (ButtonCB callback) { release = callback; }
+    void on_rpress (ButtonCB callback) { rpress = callback; }
+    void on_rrelease (ButtonCB callback) { rrelease = callback; }
+
+    bool get_active () { return m_active; }
+    void set_active (bool active);
+
+private:
+    enum Type {Normal, Toggle, Small};
+
+    Button (Type type, int w, int h, int nx, int ny, int px, int py, int pnx,
+     int pny, int ppx, int ppy, SkinPixmapId si1, SkinPixmapId si2);
+
+    void draw (cairo_t * cr);
+    bool button_press (GdkEventButton * event);
+    bool button_release (GdkEventButton * event);
+
+    Type m_type;
+    int m_w, m_h;
+    int m_nx, m_ny, m_px, m_py;
+    int m_pnx, m_pny, m_ppx, m_ppy;
+    SkinPixmapId m_si1, m_si2;
+
+    bool m_pressed = false, m_rpressed = false, m_active = false;
+
+    ButtonCB press = nullptr, release = nullptr;
+    ButtonCB rpress = nullptr, rrelease = nullptr;
+};
 
 #endif

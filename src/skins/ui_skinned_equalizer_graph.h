@@ -28,9 +28,16 @@
 #ifndef SKINS_UI_SKINNED_EQUALIZER_GRAPH_H
 #define SKINS_UI_SKINNED_EQUALIZER_GRAPH_H
 
-#include <gtk/gtk.h>
+#include "widget.h"
 
-GtkWidget * eq_graph_new ();
-void eq_graph_update (GtkWidget * graph);
+class EqGraph : public Widget
+{
+public:
+    EqGraph ();
+    void update () { queue_draw (); }
+
+private:
+    void draw (cairo_t * cr);
+};
 
 #endif

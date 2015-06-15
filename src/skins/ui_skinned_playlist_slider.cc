@@ -27,113 +27,94 @@
 
 #include <libaudcore/objects.h>
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_playlist.h"
 #include "ui_skin.h"
 #include "ui_skinned_playlist.h"
 #include "ui_skinned_playlist_slider.h"
 
-static GtkWidget * pl_slider_list;
-static int pl_slider_height;
-static gboolean pl_slider_pressed;
-
-DRAW_FUNC_BEGIN (pl_slider_draw, void)
+void PlaylistSlider::draw (cairo_t * cr)
+{
     int rows, first;
-    ui_skinned_playlist_row_info (pl_slider_list, & rows, & first);
+    m_list->row_info (& rows, & first);
 
     int range = active_length - rows;
 
     int y;
     if (active_length > rows)
-        y = (first * (pl_slider_height - 19) + range / 2) / range;
+        y = (first * (m_height - 19) + range / 2) / range;
     else
         y = 0;
 
-    for (int i = 0; i < pl_slider_height / 29; i ++)
+    for (int i = 0; i < m_height / 29; i ++)
         skin_draw_pixbuf (cr, SKIN_PLEDIT, 36, 42, 0, 29 * i, 8, 29);
 
-    skin_draw_pixbuf (cr, SKIN_PLEDIT, pl_slider_pressed ? 61 : 52, 53, 0, y, 8, 18);
-DRAW_FUNC_END
+    skin_draw_pixbuf (cr, SKIN_PLEDIT, m_pressed ? 61 : 52, 53, 0, y, 8, 18);
+}
 
-static void pl_slider_set_pos (int y)
+void PlaylistSlider::set_pos (int y)
 {
-    y = aud::clamp (y, 0, pl_slider_height - 19);
+    y = aud::clamp (y, 0, m_height - 19);
 
     int rows, first;
-    ui_skinned_playlist_row_info (pl_slider_list, & rows, & first);
+    m_list->row_info (& rows, & first);
 
-    int range = pl_slider_height - 19;
-
-    ui_skinned_playlist_scroll_to (pl_slider_list, (y * (active_length - rows) +
-     range / 2) / range);
+    int range = m_height - 19;
+    m_list->scroll_to ((y * (active_length - rows) + range / 2) / range);
 }
 
-static gboolean pl_slider_button_press (GtkWidget * slider, GdkEventButton * event)
+bool PlaylistSlider::button_press (GdkEventButton * event)
 {
     if (event->button != 1)
-        return FALSE;
+        return false;
 
-    pl_slider_pressed = TRUE;
-    pl_slider_set_pos (event->y / config.scale - 9);
+    m_pressed = true;
+    set_pos (event->y / config.scale - 9);
 
-    gtk_widget_queue_draw (slider);
-    return TRUE;
+    queue_draw ();
+    return true;
 }
 
-static gboolean pl_slider_button_release (GtkWidget * slider, GdkEventButton * event)
+bool PlaylistSlider::button_release (GdkEventButton * event)
 {
     if (event->button != 1)
-        return FALSE;
+        return false;
 
-    if (! pl_slider_pressed)
-        return TRUE;
+    if (! m_pressed)
+        return true;
 
-    pl_slider_pressed = FALSE;
-    pl_slider_set_pos (event->y / config.scale - 9);
+    m_pressed = false;
+    set_pos (event->y / config.scale - 9);
 
-    gtk_widget_queue_draw (slider);
-    return TRUE;
+    queue_draw ();
+    return true;
 }
 
-static gboolean pl_slider_motion (GtkWidget * slider, GdkEventMotion * event)
+bool PlaylistSlider::motion (GdkEventMotion * event)
 {
-    if (! pl_slider_pressed)
-        return TRUE;
+    if (! m_pressed)
+        return true;
 
-    pl_slider_set_pos (event->y / config.scale - 9);
+    set_pos (event->y / config.scale - 9);
 
-    gtk_widget_queue_draw (slider);
-    return TRUE;
+    queue_draw ();
+    return true;
 }
 
-GtkWidget * ui_skinned_playlist_slider_new (GtkWidget * list, int height)
+PlaylistSlider::PlaylistSlider (PlaylistWidget * list, int height) :
+    m_list (list), m_height (height)
 {
-    GtkWidget * slider = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) slider, false);
-    gtk_widget_set_size_request (slider, 8 * config.scale, height * config.scale);
-    gtk_widget_add_events (slider, GDK_BUTTON_PRESS_MASK |
-     GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
-
-    pl_slider_list = list;
-    pl_slider_height = height;
-
-    DRAW_CONNECT_PROXY (slider, pl_slider_draw, nullptr);
-    g_signal_connect (slider, "button-press-event", (GCallback) pl_slider_button_press, nullptr);
-    g_signal_connect (slider, "button-release-event", (GCallback) pl_slider_button_release, nullptr);
-    g_signal_connect (slider, "motion-notify-event", (GCallback) pl_slider_motion, nullptr);
-
-    return slider;
+    add_input (8 * config.scale, height * config.scale, true, true);
 }
 
-void ui_skinned_playlist_slider_resize (GtkWidget * slider, int height)
+void PlaylistSlider::resize (int height)
 {
-    pl_slider_height = height;
-    gtk_widget_set_size_request (slider, 8 * config.scale, height * config.scale);
-    gtk_widget_queue_draw (slider);
+    m_height = height;
+    set_size (8 * config.scale, height * config.scale);
+    queue_draw ();
 }
 
-void ui_skinned_playlist_slider_update (GtkWidget * slider)
+void PlaylistSlider::update ()
 {
-    gtk_widget_queue_draw (slider);
+    queue_draw ();
 }

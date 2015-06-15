@@ -28,18 +28,70 @@
 #ifndef SKINS_UI_SKINNED_PLAYLIST_H
 #define SKINS_UI_SKINNED_PLAYLIST_H
 
-#include <gtk/gtk.h>
+#include <libaudcore/objects.h>
 
-GtkWidget * ui_skinned_playlist_new (int width, int height, const char * font);
-void ui_skinned_playlist_set_slider (GtkWidget * list, GtkWidget * slider);
-void ui_skinned_playlist_resize (GtkWidget * list, int w, int h);
-void ui_skinned_playlist_set_font (GtkWidget * list, const char * font);
-void ui_skinned_playlist_update (GtkWidget * list);
-gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event);
-void ui_skinned_playlist_row_info (GtkWidget * list, int * rows, int * first);
-void ui_skinned_playlist_scroll_to (GtkWidget * list, int row);
-void ui_skinned_playlist_set_focused (GtkWidget * list, int row);
-void ui_skinned_playlist_hover (GtkWidget * list, int x, int y);
-int ui_skinned_playlist_hover_end (GtkWidget * list);
+#include "widget.h"
+
+class PlaylistSlider;
+
+typedef SmartPtr<PangoFontDescription, pango_font_description_free> PangoFontDescPtr;
+
+class PlaylistWidget : public Widget
+{
+public:
+    PlaylistWidget (int m_width, int m_height, const char * m_font);
+    ~PlaylistWidget () { cancel_all (); }
+
+    void set_slider (PlaylistSlider * slider) { m_slider = slider; }
+    void resize (int width, int height);
+    void set_font (const char * m_font);
+    void update ();
+    bool handle_keypress (GdkEventKey * event);
+    void row_info (int * m_rows, int * m_first);
+    void scroll_to (int row);
+    void set_focused (int row);
+    void hover (int x, int y);
+    int hover_end ();
+
+private:
+    void draw (cairo_t * cr);
+    bool button_press (GdkEventButton * event);
+    bool button_release (GdkEventButton * event);
+    bool motion (GdkEventMotion * event);
+    bool leave (GdkEventCrossing * event);
+
+    void update_title ();
+    void calc_layout ();
+
+    int calc_position (int y) const;
+    int adjust_position (bool relative, int position) const;
+
+    void ensure_visible (int position);
+    void select_single (bool relative, int position);
+    void select_extend (bool relative, int position);
+    void select_slide (bool relative, int position);
+    void select_toggle (bool relative, int position);
+    void select_move (bool relative, int position);
+    void delete_selected ();
+
+    void cancel_all ();
+    void scroll_timeout ();
+    void popup_trigger (int pos);
+    void popup_show ();
+    void popup_hide ();
+
+    static void scroll_timeout_cb (void * me)
+        { ((PlaylistWidget *) me)->scroll_timeout (); }
+    static gboolean popup_show_cb (void * me)
+        { ((PlaylistWidget *) me)->popup_show (); return G_SOURCE_REMOVE; }
+
+    PlaylistSlider * m_slider = nullptr;
+    PangoFontDescPtr m_font;
+    String title_text;
+
+    int m_width = 0, m_height = 0, m_row_height = 0, m_offset = 0, m_rows = 0, m_first = 0;
+    int m_scroll = 0, m_hover = -1, m_drag = 0, m_popup_pos = -1, m_popup_source = 0;
+    bool popup_shown = false;
+};
 
 #endif

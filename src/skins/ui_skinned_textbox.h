@@ -28,15 +28,52 @@
 #ifndef SKINS_UI_SKINNED_TEXTBOX_H
 #define SKINS_UI_SKINNED_TEXTBOX_H
 
-#include <gtk/gtk.h>
+#include <libaudcore/objects.h>
 
-GtkWidget * textbox_new (int width, const char * font, bool scroll);
-void textbox_set_width (GtkWidget * textbox, int width);
-const char * textbox_get_text (GtkWidget * textbox);
-void textbox_set_text (GtkWidget * textbox, const char * text);
-void textbox_set_font (GtkWidget * textbox, const char * font);
-void textbox_set_scroll (GtkWidget * textbox, bool scroll);
+#include "widget.h"
 
-void textbox_update_all (void);
+typedef SmartPtr<cairo_surface_t, cairo_surface_destroy> CairoSurfacePtr;
+typedef SmartPtr<PangoFontDescription, pango_font_description_free> PangoFontDescPtr;
+
+class TextBox : public Widget
+{
+public:
+    TextBox (int width, const char * font, bool scroll);
+    ~TextBox ();
+
+    void set_width (int width);
+    const String & get_text () { return m_text; }
+    void set_text (const char * text);
+    void set_font (const char * font);
+    void set_scroll (bool scroll);
+
+    typedef bool (* PressCB) (GdkEventButton *);
+    void on_press (PressCB callback) { press = callback; }
+
+    static void update_all ();
+
+private:
+    virtual void draw (cairo_t * cr);
+    virtual bool button_press (GdkEventButton * event);
+
+    void scroll_timeout ();
+    static void scroll_timeout_cb (void * me)
+        { ((TextBox *) me)->scroll_timeout (); }
+
+    void render_vector (const char * text);
+    void render_bitmap (const char * text);
+    void render ();
+
+    String m_text;
+    PangoFontDescPtr m_font;
+    CairoSurfacePtr m_buf;
+
+    int m_width = 0, m_buf_width = 0;
+    bool m_may_scroll = false, m_two_way = false;
+    bool m_scrolling = false, m_backward = false;
+    int m_offset = 0, m_delay = 0;
+
+    PressCB press = nullptr;
+};
 
 #endif

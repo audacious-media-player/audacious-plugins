@@ -28,15 +28,28 @@
 #ifndef SKINS_UI_SKINNED_MENUROW_H
 #define SKINS_UI_SKINNED_MENUROW_H
 
-#include <gtk/gtk.h>
+#include "widget.h"
 
-typedef enum {
+enum MenuRowItem {
     MENUROW_NONE, MENUROW_OPTIONS, MENUROW_ALWAYS, MENUROW_FILEINFOBOX,
     MENUROW_SCALE, MENUROW_VISUALIZATION
-} MenuRowItem;
+};
 
-GtkWidget * ui_skinned_menurow_new (void);
-void ui_skinned_menurow_update (GtkWidget * menurow);
+class MenuRow : public Widget
+{
+public:
+    MenuRow ();
+    void update () { queue_draw (); }
+
+private:
+    virtual void draw (cairo_t * cr);
+    virtual bool button_press (GdkEventButton * event);
+    virtual bool button_release (GdkEventButton * event);
+    virtual bool motion (GdkEventMotion * event);
+
+    MenuRowItem m_selected = MENUROW_NONE;
+    bool m_pushed = false;
+};
 
 /* callbacks in ui_main.c */
 void mainwin_mr_change (MenuRowItem i);

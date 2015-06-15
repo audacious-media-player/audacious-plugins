@@ -28,17 +28,43 @@
 #ifndef SKINS_UI_SKINNED_HORIZONTAL_SLIDER_H
 #define SKINS_UI_SKINNED_HORIZONTAL_SLIDER_H
 
-#include <gtk/gtk.h>
+#include "widget.h"
+#include "ui_skin.h"
 
-GtkWidget * hslider_new (int min, int max, SkinPixmapId si, int w, int h,
- int fx, int fy, int kw, int kh, int knx, int kny, int kpx, int kpy);
-void hslider_set_frame (GtkWidget * hslider, int fx, int fy);
-void hslider_set_knob (GtkWidget * hslider, int knx, int kny, int kpx, int kpy);
-int hslider_get_pos (GtkWidget * hslider);
-void hslider_set_pos (GtkWidget * hslider, int pos);
-gboolean hslider_get_pressed (GtkWidget * hslider);
-void hslider_set_pressed (GtkWidget * hslider, gboolean pressed);
-void hslider_on_motion (GtkWidget * hslider, void (* callback) (void));
-void hslider_on_release (GtkWidget * hslider, void (* callback) (void));
+class HSlider : public Widget
+{
+public:
+    HSlider (int min, int max, SkinPixmapId si, int w, int h, int fx, int fy,
+     int kw, int kh, int knx, int kny, int kpx, int kpy);
+
+    void set_frame (int fx, int fy);
+    void set_knob (int knx, int kny, int kpx, int kpy);
+    int get_pos () { return m_pos; }
+    void set_pos (int pos);
+    bool get_pressed () { return m_pressed; }
+    void set_pressed (bool pressed);
+
+    void on_move (void (* callback) ()) { move = callback; }
+    void on_release (void (* callback) ()) { release = callback; }
+
+private:
+    void draw (cairo_t * cr);
+    bool button_press (GdkEventButton * event);
+    bool button_release (GdkEventButton * event);
+    bool motion (GdkEventMotion * event);
+
+    int m_min, m_max;
+    SkinPixmapId m_si;
+    int m_w, m_h;
+    int m_fx, m_fy;
+    int m_kw, m_kh;
+    int m_knx, m_kny, m_kpx, m_kpy;
+
+    int m_pos = 0;
+    bool m_pressed = false;
+
+    void (* move) () = nullptr;
+    void (* release) () = nullptr;
+};
 
 #endif

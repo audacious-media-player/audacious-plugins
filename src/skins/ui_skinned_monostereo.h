@@ -28,9 +28,18 @@
 #ifndef SKINS_UI_SKINNED_MONOSTEREO_H
 #define SKINS_UI_SKINNED_MONOSTEREO_H
 
-#include <gtk/gtk.h>
+#include "widget.h"
 
-GtkWidget * ui_skinned_monostereo_new (void);
-void ui_skinned_monostereo_set_num_channels(GtkWidget *widget, int nch);
+class MonoStereo : public Widget
+{
+public:
+    MonoStereo ();
+    void set_num_channels (int num_channels);
+
+private:
+    void draw (cairo_t * cr);
+
+    int m_num_channels = 0;
+};
 
 #endif

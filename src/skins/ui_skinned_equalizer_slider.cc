@@ -27,138 +27,100 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_skin.h"
 #include "ui_skinned_equalizer_slider.h"
 
-struct EqSliderData {
-    String name;
-    int band;
-    int pos;
-    float val;
-    bool pressed;
-};
-
-DRAW_FUNC_BEGIN (eq_slider_draw, EqSliderData)
-    int frame = 27 - data->pos * 27 / 50;
+void EqSlider::draw (cairo_t * cr)
+{
+    int frame = 27 - m_pos * 27 / 50;
     if (frame < 14)
         skin_draw_pixbuf (cr, SKIN_EQMAIN, 13 + 15 * frame, 164, 0, 0, 14, 63);
     else
         skin_draw_pixbuf (cr, SKIN_EQMAIN, 13 + 15 * (frame - 14), 229, 0, 0, 14, 63);
 
-    if (data->pressed)
-        skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 176, 1, data->pos, 11, 11);
+    if (m_pressed)
+        skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 176, 1, m_pos, 11, 11);
     else
-        skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 164, 1, data->pos, 11, 11);
-DRAW_FUNC_END
-
-static void eq_slider_moved (EqSliderData * data, int pos)
-{
-    data->pos = aud::clamp (pos, 0, 50);
-    if (data->pos == 24 || data->pos == 26)
-        data->pos = 25;
-
-    data->val = (float) (25 - data->pos) * AUD_EQ_MAX_GAIN / 25;
-
-    if (data->band < 0)
-        aud_set_double (nullptr, "equalizer_preamp", data->val);
-    else
-        aud_eq_set_band (data->band, data->val);
-
-    mainwin_show_status_message (str_printf ("%s: %+.1f dB", (const char *) data->name, data->val));
+        skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 164, 1, m_pos, 11, 11);
 }
 
-static gboolean eq_slider_button_press (GtkWidget * slider,
- GdkEventButton * event, EqSliderData * data)
+void EqSlider::moved (int pos)
+{
+    m_pos = aud::clamp (pos, 0, 50);
+    if (m_pos == 24 || m_pos == 26)
+        m_pos = 25;
+
+    m_value = (float) (25 - m_pos) * AUD_EQ_MAX_GAIN / 25;
+
+    if (m_band < 0)
+        aud_set_double (nullptr, "equalizer_preamp", m_value);
+    else
+        aud_eq_set_band (m_band, m_value);
+
+    mainwin_show_status_message (str_printf ("%s: %+.1f dB", (const char *) m_name, m_value));
+}
+
+bool EqSlider::button_press (GdkEventButton * event)
 {
     if (event->button != 1)
         return false;
 
-    data->pressed = true;
-
-    eq_slider_moved (data, event->y / config.scale - 5);
-    gtk_widget_queue_draw (slider);
+    m_pressed = true;
+    moved (event->y / config.scale - 5);
+    queue_draw ();
     return true;
 }
 
-static gboolean eq_slider_button_release (GtkWidget * slider,
- GdkEventButton * event, EqSliderData * data)
+bool EqSlider::button_release (GdkEventButton * event)
 {
     if (event->button != 1)
         return false;
 
-    if (! data->pressed)
+    if (! m_pressed)
         return true;
 
-    data->pressed = false;
-
-    eq_slider_moved (data, event->y / config.scale - 5);
-    gtk_widget_queue_draw (slider);
+    m_pressed = false;
+    moved (event->y / config.scale - 5);
+    queue_draw ();
     return true;
 }
 
-static gboolean eq_slider_motion (GtkWidget * slider, GdkEventMotion * event, EqSliderData * data)
+bool EqSlider::motion (GdkEventMotion * event)
 {
-    if (! data->pressed)
+    if (! m_pressed)
         return true;
 
-    eq_slider_moved (data, event->y / config.scale - 5);
-    gtk_widget_queue_draw (slider);
+    moved (event->y / config.scale - 5);
+    queue_draw ();
     return true;
 }
 
-static gboolean eq_slider_scroll (GtkWidget * slider, GdkEventScroll * event, EqSliderData * data)
+bool EqSlider::scroll (GdkEventScroll * event)
 {
     if (event->direction == GDK_SCROLL_UP)
-        eq_slider_moved (data, data->pos - 2);
-    else
-        eq_slider_moved (data, data->pos + 2);
+        moved (m_pos - 2);
+    else if (event->direction == GDK_SCROLL_DOWN)
+        moved (m_pos + 2);
 
-    gtk_widget_queue_draw (slider);
+    queue_draw ();
     return true;
 }
 
-void eq_slider_set_val (GtkWidget * slider, float val)
+void EqSlider::set_value (float value)
 {
-    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
-    g_return_if_fail (data);
-
-    if (data->pressed)
+    if (m_pressed)
         return;
 
-    data->val = val;
-    data->pos = 25 - (int) (val * 25 / AUD_EQ_MAX_GAIN);
-    data->pos = aud::clamp (data->pos, 0, 50);
-
-    gtk_widget_queue_draw (slider);
+    m_value = value;
+    m_pos = aud::clamp (25 - (int) (value * 25 / AUD_EQ_MAX_GAIN), 0, 50);
+    queue_draw ();
 }
 
-static void eq_slider_free (EqSliderData * data)
+EqSlider::EqSlider (const char * name, int band) :
+    m_name (name),
+    m_band (band)
 {
-    delete data;
-}
-
-GtkWidget * eq_slider_new (const char * name, int band)
-{
-    GtkWidget * slider = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) slider, false);
-    gtk_widget_set_size_request (slider, 14 * config.scale, 63 * config.scale);
-    gtk_widget_add_events (slider, GDK_BUTTON_PRESS_MASK |
-     GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
-
-    EqSliderData * data = new EqSliderData ();
-    data->name = String (name);
-    data->band = band;
-    g_object_set_data_full ((GObject *) slider, "eqsliderdata", data,
-     (GDestroyNotify) eq_slider_free);
-
-    DRAW_CONNECT_PROXY (slider, eq_slider_draw, data);
-    g_signal_connect (slider, "button-press-event", (GCallback) eq_slider_button_press, data);
-    g_signal_connect (slider, "button-release-event", (GCallback) eq_slider_button_release, data);
-    g_signal_connect (slider, "motion-notify-event", (GCallback) eq_slider_motion, data);
-    g_signal_connect (slider, "scroll-event", (GCallback) eq_slider_scroll, data);
-
-    return slider;
+    add_input (14 * config.scale, 63 * config.scale, true, true);
 }

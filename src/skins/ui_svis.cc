@@ -27,20 +27,14 @@
 #include <string.h>
 #include <libaudcore/objects.h>
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "surface.h"
 #include "ui_skin.h"
 #include "ui_vis.h"
 
-static int svis_analyzer_colors[] = {14, 11, 8, 5, 2};
-static int svis_scope_colors[] = {20, 19, 18, 19, 20};
-static int svis_vu_normal_colors[] = {16, 14, 12, 10, 8, 6, 4, 2};
-
-static struct {
-    gboolean active;
-    int data[75];
-} svis;
+static const int svis_analyzer_colors[] = {14, 11, 8, 5, 2};
+static const int svis_scope_colors[] = {20, 19, 18, 19, 20};
+static const int svis_vu_normal_colors[] = {16, 14, 12, 10, 8, 6, 4, 2};
 
 #define RGB_SEEK(x,y) (set = rgb + 38 * (y) + (x))
 #define RGB_SET(c) (* set ++ = (c))
@@ -48,7 +42,8 @@ static struct {
 #define RGB_SET_INDEX(c) RGB_SET (skin.vis_colors[c])
 #define RGB_SET_INDEX_Y(c) RGB_SET_Y (skin.vis_colors[c])
 
-DRAW_FUNC_BEGIN (ui_svis_draw, void)
+void SmallVis::draw (cairo_t * cr)
+{
     uint32_t rgb[38 * 5];
     uint32_t * set;
 
@@ -60,14 +55,14 @@ DRAW_FUNC_BEGIN (ui_svis_draw, void)
     {
     case VIS_ANALYZER:
     {
-        gboolean bars = (config.analyzer_type == ANALYZER_BARS);
+        bool bars = (config.analyzer_type == ANALYZER_BARS);
 
         for (int x = 0; x < 38; x ++)
         {
             if (bars && (x % 3) == 2)
                 continue;
 
-            int h = svis.data[bars ? (x / 3) : x];
+            int h = m_data[bars ? (x / 3) : x];
             h = aud::clamp (h, 0, 5);
             RGB_SEEK (x, 5 - h);
 
@@ -86,7 +81,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw, void)
                 if (y == 2)
                     continue;
 
-                int h = (svis.data[y / 3] * 8 + 19) / 38;
+                int h = (m_data[y / 3] * 8 + 19) / 38;
                 h = aud::clamp (h, 0, 8);
                 RGB_SEEK (0, y);
 
@@ -105,7 +100,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw, void)
                 if (y == 2)
                     continue;
 
-                int h = svis.data[y / 3];
+                int h = m_data[y / 3];
                 h = aud::clamp (h, 0, 38);
                 RGB_SEEK (0, y);
 
@@ -120,7 +115,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw, void)
         static const int scale[17] = {0, 0, 0, 0, 0, 0, 1, 1, 2, 3, 3, 4,
          4, 4, 4, 4, 4};
 
-        if (! svis.active)
+        if (! m_active)
             goto DRAW;
 
         switch (config.scope_mode)
@@ -128,7 +123,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw, void)
         case SCOPE_DOT:
             for (int x = 0; x < 38; x ++)
             {
-                int h = scale[aud::clamp (svis.data[2 * x], 0, 16)];
+                int h = scale[aud::clamp (m_data[2 * x], 0, 16)];
                 RGB_SEEK (x, h);
                 RGB_SET_INDEX (svis_scope_colors[h]);
             }
@@ -137,8 +132,8 @@ DRAW_FUNC_BEGIN (ui_svis_draw, void)
         {
             for (int x = 0; x < 37; x++)
             {
-                int h = scale[aud::clamp (svis.data[2 * x], 0, 16)];
-                int h2 = scale[aud::clamp (svis.data[2 * (x + 1)], 0, 16)];
+                int h = scale[aud::clamp (m_data[2 * x], 0, 16)];
+                int h2 = scale[aud::clamp (m_data[2 * (x + 1)], 0, 16)];
 
                 if (h < h2) h2 --;
                 else if (h > h2) {int temp = h; h = h2 + 1; h2 = temp;}
@@ -148,7 +143,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw, void)
                     RGB_SET_INDEX_Y (svis_scope_colors[y]);
             }
 
-            int h = scale[aud::clamp (svis.data[74], 0, 16)];
+            int h = scale[aud::clamp (m_data[74], 0, 16)];
             RGB_SEEK (37, h);
             RGB_SET_INDEX (svis_scope_colors[h]);
             break;
@@ -156,7 +151,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw, void)
         default: /* SCOPE_SOLID */
             for (int x = 0; x < 38; x++)
             {
-                int h = scale[aud::clamp (svis.data[2 * x], 0, 16)];
+                int h = scale[aud::clamp (m_data[2 * x], 0, 16)];
                 int h2;
 
                 if (h < 2) h2 = 2;
@@ -180,35 +175,34 @@ DRAW:;
     cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
     cairo_paint (cr);
     cairo_surface_destroy (surf);
-DRAW_FUNC_END
-
-GtkWidget * ui_svis_new (void)
-{
-    GtkWidget * wid = drawing_area_new ();
-    gtk_widget_set_size_request (wid, 38 * config.scale, 5 * config.scale);
-    DRAW_CONNECT (wid, ui_svis_draw, nullptr);
-    return wid;
 }
 
-void ui_svis_clear_data (GtkWidget * widget)
+SmallVis::SmallVis ()
 {
-    memset (& svis, 0, sizeof svis);
-    gtk_widget_queue_draw (widget);
+    add_drawable (38 * config.scale, 5 * config.scale);
+    clear ();
 }
 
-void ui_svis_timeout_func (GtkWidget * widget, unsigned char * data)
+void SmallVis::clear ()
+{
+    m_active = false;
+    memset (m_data, 0, sizeof m_data);
+    queue_draw ();
+}
+
+void SmallVis::render (const unsigned char * data)
 {
     if (config.vis_type == VIS_VOICEPRINT)
     {
         for (int i = 0; i < 2; i ++)
-            svis.data[i] = data[i];
+            m_data[i] = data[i];
     }
     else
     {
         for (int i = 0; i < 75; i ++)
-            svis.data[i] = data[i];
+            m_data[i] = data[i];
     }
 
-    svis.active = TRUE;
-    gtk_widget_queue_draw (widget);
+    m_active = true;
+    draw_now ();
 }

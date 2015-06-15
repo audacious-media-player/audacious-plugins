@@ -31,24 +31,34 @@
 #define MAINWIN_SHADED_WIDTH     MAINWIN_WIDTH
 #define MAINWIN_SHADED_HEIGHT    (int)14
 
-extern GtkWidget *mainwin;
+class Button;
+class HSlider;
+class MenuRow;
+class PlayStatus;
+class SkinnedNumber;
+class SkinnedVis;
+class SmallVis;
+class TextBox;
+class Window;
 
-extern GtkWidget *mainwin_shuffle, *mainwin_repeat;
-extern GtkWidget *mainwin_eq, *mainwin_pl;
-extern GtkWidget *mainwin_info;
+extern Window * mainwin;
 
-extern GtkWidget *mainwin_stime_min, *mainwin_stime_sec;
+extern Button * mainwin_shuffle, * mainwin_repeat;
+extern Button * mainwin_eq, * mainwin_pl;
 
-extern GtkWidget *mainwin_vis;
-extern GtkWidget *mainwin_svis;
+extern TextBox * mainwin_info;
+extern TextBox * mainwin_stime_min, * mainwin_stime_sec;
 
-extern GtkWidget *mainwin_playstatus;
+extern SkinnedVis * mainwin_vis;
+extern SmallVis * mainwin_svis;
 
-extern GtkWidget *mainwin_minus_num, *mainwin_10min_num, *mainwin_min_num;
-extern GtkWidget *mainwin_10sec_num, *mainwin_sec_num;
+extern PlayStatus * mainwin_playstatus;
 
-extern GtkWidget *mainwin_menurow;
-extern GtkWidget *mainwin_position, *mainwin_sposition;
+extern SkinnedNumber * mainwin_minus_num, * mainwin_10min_num, * mainwin_min_num;
+extern SkinnedNumber * mainwin_10sec_num, * mainwin_sec_num;
+
+extern MenuRow * mainwin_menurow;
+extern HSlider * mainwin_position, * mainwin_sposition;
 
 void mainwin_create(void);
 void mainwin_unhook (void);
@@ -79,7 +89,7 @@ void mainwin_drag_data_received(GtkWidget * widget,
                                 unsigned time,
                                 void * user_data);
 
-gboolean change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event);
+bool change_timer_mode_cb (GdkEventButton * event);
 
 /* widget should be null if called manually. */
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,

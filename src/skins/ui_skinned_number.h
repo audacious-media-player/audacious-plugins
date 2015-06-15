@@ -22,7 +22,20 @@
 #ifndef SKINS_UI_SKINNED_NUMBER_H
 #define SKINS_UI_SKINNED_NUMBER_H
 
-#include <gtk/gtk.h>
+#include "widget.h"
+
+class SkinnedNumber : public Widget
+{
+public:
+    SkinnedNumber ();
+    void set (char c);
+
+private:
+    virtual void draw (cairo_t * cr);
+    virtual bool button_press (GdkEventButton * event);
+
+    int m_num = 0;
+};
 
 GtkWidget * ui_skinned_number_new ();
 void ui_skinned_number_set (GtkWidget * widget, char c);

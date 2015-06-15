@@ -28,13 +28,22 @@
 #ifndef SKINS_UI_SKINNED_PLAYSTATUS_H
 #define SKINS_UI_SKINNED_PLAYSTATUS_H
 
-#include <gtk/gtk.h>
+#include "widget.h"
 
 typedef enum {
     STATUS_STOP, STATUS_PAUSE, STATUS_PLAY
 } PStatus;
 
-GtkWidget * ui_skinned_playstatus_new (void);
-void ui_skinned_playstatus_set_status(GtkWidget *widget, PStatus status);
+class PlayStatus : public Widget
+{
+public:
+    PlayStatus ();
+    void set_status (PStatus status);
+
+private:
+    void draw (cairo_t * cr);
+
+    PStatus m_status = STATUS_STOP;
+};
 
 #endif

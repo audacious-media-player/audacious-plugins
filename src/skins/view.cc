@@ -32,6 +32,7 @@
 #include "ui_main_evlisteners.h"
 #include "ui_playlist.h"
 #include "ui_skinned_button.h"
+#include "ui_skinned_equalizer_graph.h"
 #include "ui_skinned_textbox.h"
 #include "ui_skinned_menurow.h"
 #include "ui_skinned_window.h"
@@ -41,12 +42,12 @@ void view_show_player (bool show)
 {
     if (show)
     {
-        gtk_window_present ((GtkWindow *) mainwin);
+        gtk_window_present ((GtkWindow *) mainwin->gtk ());
         show_plugin_windows ();
     }
     else
     {
-        gtk_widget_hide (mainwin);
+        gtk_widget_hide (mainwin->gtk ());
         hide_plugin_windows ();
     }
 
@@ -68,12 +69,12 @@ void view_apply_show_playlist ()
 {
     bool show = aud_get_bool ("skins", "playlist_visible");
 
-    if (show && gtk_widget_get_visible (mainwin))
-        gtk_window_present ((GtkWindow *) playlistwin);
+    if (show && gtk_widget_get_visible (mainwin->gtk ()))
+        gtk_window_present ((GtkWindow *) playlistwin->gtk ());
     else
-        gtk_widget_hide (playlistwin);
+        gtk_widget_hide (playlistwin->gtk ());
 
-    button_set_active (mainwin_pl, show);
+    mainwin_pl->set_active (show);
 }
 
 void view_set_show_equalizer (bool show)
@@ -88,12 +89,12 @@ void view_apply_show_equalizer ()
 {
     bool show = aud_get_bool ("skins", "equalizer_visible");
 
-    if (show && gtk_widget_get_visible (mainwin))
-        gtk_window_present ((GtkWindow *) equalizerwin);
+    if (show && gtk_widget_get_visible (mainwin->gtk ()))
+        gtk_window_present ((GtkWindow *) equalizerwin->gtk ());
     else
-        gtk_widget_hide (equalizerwin);
+        gtk_widget_hide (equalizerwin->gtk ());
 
-    button_set_active (mainwin_eq, show);
+    mainwin_eq->set_active (show);
 }
 
 void view_set_player_shaded (bool shaded)
@@ -108,14 +109,14 @@ void view_apply_player_shaded ()
 {
     bool shaded = aud_get_bool ("skins", "player_shaded");
 
-    window_set_shaded (mainwin, shaded);
+    mainwin->set_shaded (shaded);
 
     int width = shaded ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width;
     int height = shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height;
-    window_set_size (mainwin, width, height);
+    mainwin->resize (width, height);
 
     if (config.autoscroll)
-        textbox_set_scroll (mainwin_info, ! shaded);
+        mainwin_info->set_scroll (! shaded);
 }
 
 void view_set_playlist_shaded (bool shaded)
@@ -130,13 +131,13 @@ void view_apply_playlist_shaded ()
 {
     bool shaded = aud_get_bool ("skins", "playlist_shaded");
 
-    window_set_shaded (playlistwin, shaded);
+    playlistwin->set_shaded (shaded);
 
     int height = shaded ? MAINWIN_SHADED_HEIGHT : config.playlist_height;
-    window_set_size (playlistwin, config.playlist_width, height);
+    playlistwin->resize (config.playlist_width, height);
 
     if (config.autoscroll)
-        textbox_set_scroll (playlistwin_sinfo, shaded);
+        playlistwin_sinfo->set_scroll (shaded);
 }
 
 void view_set_equalizer_shaded (bool shaded)
@@ -151,8 +152,8 @@ void view_apply_equalizer_shaded ()
 {
     bool shaded = aud_get_bool ("skins", "equalizer_shaded");
 
-    window_set_shaded (equalizerwin, shaded);
-    window_set_size (equalizerwin, 275, shaded ? 14 : 116);
+    equalizerwin->set_shaded (shaded);
+    equalizerwin->resize (275, shaded ? 14 : 116);
 }
 
 void view_set_double_size (bool double_size)
@@ -180,11 +181,11 @@ void view_apply_on_top ()
 {
     bool on_top = aud_get_bool ("skins", "always_on_top");
 
-    gtk_window_set_keep_above ((GtkWindow *) mainwin, on_top);
-    gtk_window_set_keep_above ((GtkWindow *) equalizerwin, on_top);
-    gtk_window_set_keep_above ((GtkWindow *) playlistwin, on_top);
+    gtk_window_set_keep_above ((GtkWindow *) mainwin->gtk (), on_top);
+    gtk_window_set_keep_above ((GtkWindow *) equalizerwin->gtk (), on_top);
+    gtk_window_set_keep_above ((GtkWindow *) playlistwin->gtk (), on_top);
 
-    ui_skinned_menurow_update (mainwin_menurow);
+    mainwin_menurow->update ();
 }
 
 void view_set_sticky (bool sticky)
@@ -201,15 +202,15 @@ void view_apply_sticky ()
 
     if (sticky)
     {
-        gtk_window_stick ((GtkWindow *) mainwin);
-        gtk_window_stick ((GtkWindow *) equalizerwin);
-        gtk_window_stick ((GtkWindow *) playlistwin);
+        gtk_window_stick ((GtkWindow *) mainwin->gtk ());
+        gtk_window_stick ((GtkWindow *) equalizerwin->gtk ());
+        gtk_window_stick ((GtkWindow *) playlistwin->gtk ());
     }
     else
     {
-        gtk_window_unstick ((GtkWindow *) mainwin);
-        gtk_window_unstick ((GtkWindow *) equalizerwin);
-        gtk_window_unstick ((GtkWindow *) playlistwin);
+        gtk_window_unstick ((GtkWindow *) mainwin->gtk ());
+        gtk_window_unstick ((GtkWindow *) equalizerwin->gtk ());
+        gtk_window_unstick ((GtkWindow *) playlistwin->gtk ());
     }
 }
 
@@ -250,22 +251,22 @@ static cairo_region_t * scale_mask (const Index<GdkRectangle> & mask, int scale)
 
 void view_apply_skin ()
 {
-    window_set_shapes (mainwin,
-     scale_mask (skin.masks[SKIN_MASK_MAIN], config.scale),
-     scale_mask (skin.masks[SKIN_MASK_MAIN_SHADE], config.scale));
-    window_set_shapes (equalizerwin,
-     scale_mask (skin.masks[SKIN_MASK_EQ], config.scale),
-     scale_mask (skin.masks[SKIN_MASK_EQ_SHADE], config.scale));
+    mainwin->set_shapes
+     (scale_mask (skin.masks[SKIN_MASK_MAIN], config.scale),
+      scale_mask (skin.masks[SKIN_MASK_MAIN_SHADE], config.scale));
+    equalizerwin->set_shapes
+     (scale_mask (skin.masks[SKIN_MASK_EQ], config.scale),
+      scale_mask (skin.masks[SKIN_MASK_EQ_SHADE], config.scale));
 
     // hide the equalizer graph if we have a short eqmain.bmp
     int h = cairo_image_surface_get_height (skin.pixmaps[SKIN_EQMAIN].get ());
-    gtk_widget_set_visible (equalizerwin_graph, h >= 315);
+    gtk_widget_set_visible (equalizerwin_graph->gtk (), h >= 315);
 
     mainwin_refresh_hints ();
-    textbox_update_all ();
-    ui_vis_set_colors ();
+    TextBox::update_all ();
+    mainwin_vis->set_colors ();
 
-    gtk_widget_queue_draw (mainwin);
-    gtk_widget_queue_draw (equalizerwin);
-    gtk_widget_queue_draw (playlistwin);
+    gtk_widget_queue_draw (mainwin->gtk ());
+    gtk_widget_queue_draw (equalizerwin->gtk ());
+    gtk_widget_queue_draw (playlistwin->gtk ());
 }

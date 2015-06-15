@@ -181,9 +181,9 @@ static void skins_cleanup_main (void)
 
     timer_remove (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
 
-    gtk_widget_destroy (mainwin); mainwin = nullptr;
-    gtk_widget_destroy (playlistwin); playlistwin = nullptr;
-    gtk_widget_destroy (equalizerwin); equalizerwin = nullptr;
+    gtk_widget_destroy (mainwin->gtk ()); mainwin = nullptr;
+    gtk_widget_destroy (playlistwin->gtk ()); playlistwin = nullptr;
+    gtk_widget_destroy (equalizerwin->gtk ()); equalizerwin = nullptr;
 }
 
 void SkinnedUI::cleanup ()

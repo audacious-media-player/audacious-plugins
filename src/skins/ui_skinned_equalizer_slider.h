@@ -25,9 +25,31 @@
 #ifndef SKINS_UI_SKINNED_EQUALIZER_SLIDER_H
 #define SKINS_UI_SKINNED_EQUALIZER_SLIDER_H
 
-#include <gtk/gtk.h>
+#include <libaudcore/objects.h>
 
-GtkWidget * eq_slider_new (const char * name, int band);
-void eq_slider_set_val (GtkWidget * widget, float val);
+#include "widget.h"
+
+class EqSlider : public Widget
+{
+public:
+    EqSlider (const char * name, int band);
+    void set_value (float value);
+
+private:
+    void draw (cairo_t * cr);
+    bool button_press (GdkEventButton * event);
+    bool button_release (GdkEventButton * event);
+    bool scroll (GdkEventScroll * event);
+    bool motion (GdkEventMotion * event);
+
+    void moved (int pos);
+
+    String m_name;
+    int m_band;
+
+    int m_pos = 0;
+    float m_value = 0;
+    bool m_pressed = false;
+};
 
 #endif

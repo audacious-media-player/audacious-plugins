@@ -21,7 +21,8 @@
 #ifndef SKINS_UI_VIS_H
 #define SKINS_UI_VIS_H
 
-#include <gtk/gtk.h>
+#include <stdint.h>
+#include "widget.h"
 
 typedef enum {
     VIS_ANALYZER, VIS_SCOPE, VIS_VOICEPRINT, VIS_OFF
@@ -51,13 +52,39 @@ typedef enum {
     FALLOFF_SLOWEST, FALLOFF_SLOW, FALLOFF_MEDIUM, FALLOFF_FAST, FALLOFF_FASTEST
 } FalloffSpeed;
 
-GtkWidget * ui_vis_new (void);
-void ui_vis_set_colors (void);
-void ui_vis_clear_data (GtkWidget * widget);
-void ui_vis_timeout_func (GtkWidget * widget, unsigned char * data);
+class SkinnedVis : public Widget
+{
+public:
+    SkinnedVis ();
+    void set_colors ();
+    void clear ();
+    void render (const unsigned char * data);
 
-GtkWidget * ui_svis_new (void);
-void ui_svis_clear_data (GtkWidget * widget);
-void ui_svis_timeout_func (GtkWidget * widget, unsigned char * data);
+private:
+    void draw (cairo_t * cr);
+
+    uint32_t m_voice_color[256];
+    uint32_t m_voice_color_fire[256];
+    uint32_t m_voice_color_ice[256];
+    uint32_t m_pattern_fill[76 * 2];
+
+    bool m_active, m_voiceprint_advance;
+    float m_data[75], m_peak[75], m_peak_speed[75];
+    unsigned char m_voiceprint_data[76 * 16];
+};
+
+class SmallVis : public Widget
+{
+public:
+    SmallVis ();
+    void clear ();
+    void render (const unsigned char * data);
+
+private:
+    void draw (cairo_t * cr);
+
+    bool m_active;
+    int m_data[75];
+};
 
 #endif
