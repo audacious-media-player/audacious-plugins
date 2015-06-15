@@ -20,7 +20,7 @@
  */
 
 #include "skins_cfg.h"
-#include "ui_skinned_button.h"
+#include "button.h"
 
 void Button::draw (cairo_t * cr)
 {

@@ -38,7 +38,7 @@
 
 #include <stdlib.h>
 
-#include "ui_skinned_window.h"
+#include "window.h"
 
 #define SNAP_DISTANCE 10
 

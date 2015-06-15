@@ -28,9 +28,9 @@
 #include <libaudcore/runtime.h>
 
 #include "skins_cfg.h"
-#include "ui_main.h"
-#include "ui_skin.h"
-#include "ui_skinned_equalizer_slider.h"
+#include "main.h"
+#include "skin.h"
+#include "eq-slider.h"
 
 void EqSlider::draw (cairo_t * cr)
 {

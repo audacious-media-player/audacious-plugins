@@ -27,16 +27,16 @@
 #include "plugin.h"
 #include "plugin-window.h"
 #include "skins_cfg.h"
-#include "ui_equalizer.h"
-#include "ui_main.h"
-#include "ui_main_evlisteners.h"
-#include "ui_playlist.h"
-#include "ui_skinned_button.h"
-#include "ui_skinned_equalizer_graph.h"
-#include "ui_skinned_textbox.h"
-#include "ui_skinned_menurow.h"
-#include "ui_skinned_window.h"
-#include "ui_vis.h"
+#include "equalizer.h"
+#include "main.h"
+#include "vis-callbacks.h"
+#include "playlist.h"
+#include "button.h"
+#include "eq-graph.h"
+#include "textbox.h"
+#include "menurow.h"
+#include "window.h"
+#include "vis.h"
 
 void view_show_player (bool show)
 {
@@ -47,14 +47,14 @@ void view_show_player (bool show)
     }
     else
     {
-        gtk_widget_hide (mainwin->gtk ());
+        mainwin->show (false);
         hide_plugin_windows ();
     }
 
     view_apply_show_playlist ();
     view_apply_show_equalizer ();
 
-    start_stop_visual (FALSE);
+    start_stop_visual (false);
 }
 
 void view_set_show_playlist (bool show)
@@ -72,7 +72,7 @@ void view_apply_show_playlist ()
     if (show && gtk_widget_get_visible (mainwin->gtk ()))
         gtk_window_present ((GtkWindow *) playlistwin->gtk ());
     else
-        gtk_widget_hide (playlistwin->gtk ());
+        playlistwin->show (false);
 
     mainwin_pl->set_active (show);
 }
@@ -92,7 +92,7 @@ void view_apply_show_equalizer ()
     if (show && gtk_widget_get_visible (mainwin->gtk ()))
         gtk_window_present ((GtkWindow *) equalizerwin->gtk ());
     else
-        gtk_widget_hide (equalizerwin->gtk ());
+        equalizerwin->show (false);
 
     mainwin_eq->set_active (show);
 }
@@ -260,11 +260,10 @@ void view_apply_skin ()
 
     // hide the equalizer graph if we have a short eqmain.bmp
     int h = cairo_image_surface_get_height (skin.pixmaps[SKIN_EQMAIN].get ());
-    gtk_widget_set_visible (equalizerwin_graph->gtk (), h >= 315);
+    equalizerwin_graph->show (h >= 315);
 
     mainwin_refresh_hints ();
     TextBox::update_all ();
-    mainwin_vis->set_colors ();
 
     gtk_widget_queue_draw (mainwin->gtk ());
     gtk_widget_queue_draw (equalizerwin->gtk ());

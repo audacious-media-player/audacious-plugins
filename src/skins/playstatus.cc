@@ -25,35 +25,38 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include <libaudcore/runtime.h>
-
 #include "skins_cfg.h"
-#include "ui_main.h"
-#include "ui_skin.h"
-#include "ui_skinned_number.h"
+#include "skin.h"
+#include "playstatus.h"
 
-void SkinnedNumber::draw (cairo_t * cr)
+void PlayStatus::draw (cairo_t * cr)
 {
-    skin_draw_pixbuf (cr, SKIN_NUMBERS, m_num * 9, 0, 0, 0, 9, 13);
-}
+    if (m_status == STATUS_PLAY)
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 36, 0, 0, 0, 3, 9);
+    else
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 27, 0, 0, 0, 2, 9);
 
-bool SkinnedNumber::button_press (GdkEventButton * event)
-{
-    return change_timer_mode_cb (event);
-}
-
-SkinnedNumber::SkinnedNumber ()
-{
-    add_input (9 * config.scale, 13 * config.scale, false, true);
-}
-
-void SkinnedNumber::set (char c)
-{
-    int value = (c >= '0' && c <= '9') ? c - '0' : (c == '-') ? 11 : 10;
-
-    if (m_num != value)
+    switch (m_status)
     {
-        m_num = value;
-        queue_draw ();
+    case STATUS_STOP:
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 18, 0, 2, 0, 9, 9);
+        break;
+    case STATUS_PAUSE:
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 9, 0, 2, 0, 9, 9);
+        break;
+    case STATUS_PLAY:
+        skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 1, 0, 3, 0, 8, 9);
+        break;
     }
+}
+
+PlayStatus::PlayStatus ()
+{
+    add_drawable (11 * config.scale, 9 * config.scale);
+}
+
+void PlayStatus::set_status (PStatus status)
+{
+    m_status = status;
+    queue_draw ();
 }

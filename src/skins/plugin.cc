@@ -34,12 +34,12 @@
 #include "plugin.h"
 #include "plugin-window.h"
 #include "skins_cfg.h"
-#include "ui_equalizer.h"
-#include "ui_main.h"
-#include "ui_main_evlisteners.h"
-#include "ui_playlist.h"
-#include "ui_skin.h"
-#include "ui_skinned_window.h"
+#include "equalizer.h"
+#include "main.h"
+#include "vis-callbacks.h"
+#include "playlist.h"
+#include "skin.h"
+#include "window.h"
 #include "view.h"
 
 class SkinnedUI : public IfacePlugin
@@ -143,11 +143,7 @@ static void skins_init_main (bool restart)
     view_apply_sticky ();
 
     if (aud_drct_get_playing ())
-    {
-        ui_main_evlistener_playback_begin (nullptr, nullptr);
-        if (aud_drct_get_paused ())
-            ui_main_evlistener_playback_pause (nullptr, nullptr);
-    }
+        mainwin_playback_begin ();
     else
         mainwin_update_song_info ();
 

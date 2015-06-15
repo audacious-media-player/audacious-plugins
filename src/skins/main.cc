@@ -46,20 +46,20 @@
 #include "plugin.h"
 #include "plugin-window.h"
 #include "skins_cfg.h"
-#include "ui_equalizer.h"
-#include "ui_main.h"
-#include "ui_main_evlisteners.h"
-#include "ui_playlist.h"
-#include "ui_skinned_button.h"
-#include "ui_skinned_horizontal_slider.h"
-#include "ui_skinned_menurow.h"
-#include "ui_skinned_monostereo.h"
-#include "ui_skinned_number.h"
-#include "ui_skinned_playlist.h"
-#include "ui_skinned_playstatus.h"
-#include "ui_skinned_textbox.h"
-#include "ui_skinned_window.h"
-#include "ui_vis.h"
+#include "equalizer.h"
+#include "main.h"
+#include "vis-callbacks.h"
+#include "playlist.h"
+#include "button.h"
+#include "hslider.h"
+#include "menurow.h"
+#include "monostereo.h"
+#include "number.h"
+#include "playlist-widget.h"
+#include "playstatus.h"
+#include "textbox.h"
+#include "window.h"
+#include "vis.h"
 #include "util.h"
 #include "view.h"
 
@@ -67,6 +67,13 @@
 #define SEEK_SPEED 50 /* milliseconds per pixel */
 
 Window * mainwin;
+
+Button * mainwin_eq, * mainwin_pl;
+TextBox * mainwin_info;
+MenuRow * mainwin_menurow;
+
+SkinnedVis * mainwin_vis;
+SmallVis * mainwin_svis;
 
 static bool seeking = false;
 static int seek_start, seek_time;
@@ -83,29 +90,19 @@ static Button * mainwin_shaded_menubtn, * mainwin_shaded_minimize, * mainwin_sha
 static Button * mainwin_rew, * mainwin_fwd;
 static Button * mainwin_eject;
 static Button * mainwin_play, * mainwin_pause, * mainwin_stop;
+static Button * mainwin_shuffle, * mainwin_repeat;
 
-Button * mainwin_shuffle, * mainwin_repeat;
-Button * mainwin_eq, * mainwin_pl;
-
-TextBox * mainwin_info;
-TextBox * mainwin_stime_min, * mainwin_stime_sec;
-
+static TextBox * mainwin_stime_min, * mainwin_stime_sec;
 static TextBox * mainwin_rate_text, * mainwin_freq_text, * mainwin_othertext;
 
-PlayStatus * mainwin_playstatus;
-
-SkinnedNumber * mainwin_minus_num, * mainwin_10min_num, * mainwin_min_num;
-SkinnedNumber * mainwin_10sec_num, * mainwin_sec_num;
-
-SkinnedVis * mainwin_vis;
-SmallVis * mainwin_svis;
-
-MenuRow * mainwin_menurow;
-HSlider * mainwin_position, * mainwin_sposition;
+static PlayStatus * mainwin_playstatus;
+static SkinnedNumber * mainwin_minus_num, * mainwin_10min_num, * mainwin_min_num;
+static SkinnedNumber * mainwin_10sec_num, * mainwin_sec_num;
+static HSlider * mainwin_position, * mainwin_sposition;
 
 static HSlider * mainwin_volume, * mainwin_balance;
-
 static MonoStereo * mainwin_monostereo;
+
 static Button * mainwin_srew, * mainwin_splay, * mainwin_spause;
 static Button * mainwin_sstop, * mainwin_sfwd, * mainwin_seject, * mainwin_about;
 
@@ -212,7 +209,7 @@ void mainwin_show_status_message (const char * message)
     status_message_source = g_timeout_add (1000, clear_status_message, nullptr);
 }
 
-void mainwin_set_song_title (const char * title)
+static void mainwin_set_song_title (const char * title)
 {
     if (title)
         gtk_window_set_title ((GtkWindow *) mainwin->gtk (), str_printf (_("%s - Audacious"), title));
@@ -222,28 +219,31 @@ void mainwin_set_song_title (const char * title)
     mainwin_set_info_text (title ? title : "");
 }
 
-static void setup_widget (Widget * widget, int x, int y, gboolean show)
+static void title_change ()
 {
-    /* leave no-show-all widgets alone (they are shown/hidden elsewhere) */
-    if (! gtk_widget_get_no_show_all (widget->gtk ()))
-    {
-        int width, height;
+    if (aud_drct_get_ready ())
+        mainwin_set_song_title (aud_drct_get_title ());
+    else
+        mainwin_set_song_title ("Buffering ...");
+}
 
-        /* use get_size_request(), not get_preferred_size() */
-        /* get_preferred_size() will return 0x0 for hidden widgets */
-        gtk_widget_get_size_request (widget->gtk (), & width, & height);
+static void setup_widget (Widget * widget, int x, int y, bool show)
+{
+    int width, height;
 
-        width /= config.scale;
-        height /= config.scale;
+    /* use get_size_request(), not get_preferred_size() */
+    /* get_preferred_size() will return 0x0 for hidden widgets */
+    gtk_widget_get_size_request (widget->gtk (), & width, & height);
 
-        /* hide widgets that are outside the window boundary */
-        if (x < 0 || x + width > skin.hints.mainwin_width ||
-         y < 0 || y + height > skin.hints.mainwin_height)
-            show = FALSE;
+    width /= config.scale;
+    height /= config.scale;
 
-        gtk_widget_set_visible (widget->gtk (), show);
-    }
+    /* hide widgets that are outside the window boundary */
+    if (x < 0 || x + width > skin.hints.mainwin_width ||
+     y < 0 || y + height > skin.hints.mainwin_height)
+        show = false;
 
+    widget->show (show);
     mainwin->move_widget (false, widget, x, y);
 }
 
@@ -251,10 +251,10 @@ void mainwin_refresh_hints (void)
 {
     const SkinHints * p = & skin.hints;
 
-    gtk_widget_set_visible (mainwin_menurow->gtk (), p->mainwin_menurow_visible);
-    gtk_widget_set_visible (mainwin_rate_text->gtk (), p->mainwin_streaminfo_visible);
-    gtk_widget_set_visible (mainwin_freq_text->gtk (), p->mainwin_streaminfo_visible);
-    gtk_widget_set_visible (mainwin_monostereo->gtk (), p->mainwin_streaminfo_visible);
+    mainwin_menurow->show (p->mainwin_menurow_visible);
+    mainwin_rate_text->show (p->mainwin_streaminfo_visible);
+    mainwin_freq_text->show (p->mainwin_streaminfo_visible);
+    mainwin_monostereo->show (p->mainwin_streaminfo_visible);
 
     mainwin_info->set_width (p->mainwin_text_width);
 
@@ -262,40 +262,45 @@ void mainwin_refresh_hints (void)
     setup_widget (mainwin_info, p->mainwin_text_x, p->mainwin_text_y, p->mainwin_text_visible);
     setup_widget (mainwin_othertext, p->mainwin_infobar_x, p->mainwin_infobar_y, p->mainwin_othertext_visible);
 
-    setup_widget (mainwin_minus_num, p->mainwin_number_0_x, p->mainwin_number_0_y, TRUE);
-    setup_widget (mainwin_10min_num, p->mainwin_number_1_x, p->mainwin_number_1_y, TRUE);
-    setup_widget (mainwin_min_num, p->mainwin_number_2_x, p->mainwin_number_2_y, TRUE);
-    setup_widget (mainwin_10sec_num, p->mainwin_number_3_x, p->mainwin_number_3_y, TRUE);
-    setup_widget (mainwin_sec_num, p->mainwin_number_4_x, p->mainwin_number_4_y, TRUE);
-    setup_widget (mainwin_position, p->mainwin_position_x, p->mainwin_position_y, TRUE);
+    bool playing = aud_drct_get_playing ();
+    bool can_seek = aud_drct_get_length () > 0;
 
-    setup_widget (mainwin_playstatus, p->mainwin_playstatus_x, p->mainwin_playstatus_y, TRUE);
-    setup_widget (mainwin_volume, p->mainwin_volume_x, p->mainwin_volume_y, TRUE);
-    setup_widget (mainwin_balance, p->mainwin_balance_x, p->mainwin_balance_y, TRUE);
-    setup_widget (mainwin_rew, p->mainwin_previous_x, p->mainwin_previous_y, TRUE);
-    setup_widget (mainwin_play, p->mainwin_play_x, p->mainwin_play_y, TRUE);
-    setup_widget (mainwin_pause, p->mainwin_pause_x, p->mainwin_pause_y, TRUE);
-    setup_widget (mainwin_stop, p->mainwin_stop_x, p->mainwin_stop_y, TRUE);
-    setup_widget (mainwin_fwd, p->mainwin_next_x, p->mainwin_next_y, TRUE);
-    setup_widget (mainwin_eject, p->mainwin_eject_x, p->mainwin_eject_y, TRUE);
-    setup_widget (mainwin_eq, p->mainwin_eqbutton_x, p->mainwin_eqbutton_y, TRUE);
-    setup_widget (mainwin_pl, p->mainwin_plbutton_x, p->mainwin_plbutton_y, TRUE);
-    setup_widget (mainwin_shuffle, p->mainwin_shuffle_x, p->mainwin_shuffle_y, TRUE);
-    setup_widget (mainwin_repeat, p->mainwin_repeat_x, p->mainwin_repeat_y, TRUE);
-    setup_widget (mainwin_about, p->mainwin_about_x, p->mainwin_about_y, TRUE);
-    setup_widget (mainwin_minimize, p->mainwin_minimize_x, p->mainwin_minimize_y, TRUE);
-    setup_widget (mainwin_shade, p->mainwin_shade_x, p->mainwin_shade_y, TRUE);
-    setup_widget (mainwin_close, p->mainwin_close_x, p->mainwin_close_y, TRUE);
+    setup_widget (mainwin_minus_num, p->mainwin_number_0_x, p->mainwin_number_0_y, playing);
+    setup_widget (mainwin_10min_num, p->mainwin_number_1_x, p->mainwin_number_1_y, playing);
+    setup_widget (mainwin_min_num, p->mainwin_number_2_x, p->mainwin_number_2_y, playing);
+    setup_widget (mainwin_10sec_num, p->mainwin_number_3_x, p->mainwin_number_3_y, playing);
+    setup_widget (mainwin_sec_num, p->mainwin_number_4_x, p->mainwin_number_4_y, playing);
+    setup_widget (mainwin_position, p->mainwin_position_x, p->mainwin_position_y, can_seek);
+
+    setup_widget (mainwin_playstatus, p->mainwin_playstatus_x, p->mainwin_playstatus_y, true);
+    setup_widget (mainwin_volume, p->mainwin_volume_x, p->mainwin_volume_y, true);
+    setup_widget (mainwin_balance, p->mainwin_balance_x, p->mainwin_balance_y, true);
+    setup_widget (mainwin_rew, p->mainwin_previous_x, p->mainwin_previous_y, true);
+    setup_widget (mainwin_play, p->mainwin_play_x, p->mainwin_play_y, true);
+    setup_widget (mainwin_pause, p->mainwin_pause_x, p->mainwin_pause_y, true);
+    setup_widget (mainwin_stop, p->mainwin_stop_x, p->mainwin_stop_y, true);
+    setup_widget (mainwin_fwd, p->mainwin_next_x, p->mainwin_next_y, true);
+    setup_widget (mainwin_eject, p->mainwin_eject_x, p->mainwin_eject_y, true);
+    setup_widget (mainwin_eq, p->mainwin_eqbutton_x, p->mainwin_eqbutton_y, true);
+    setup_widget (mainwin_pl, p->mainwin_plbutton_x, p->mainwin_plbutton_y, true);
+    setup_widget (mainwin_shuffle, p->mainwin_shuffle_x, p->mainwin_shuffle_y, true);
+    setup_widget (mainwin_repeat, p->mainwin_repeat_x, p->mainwin_repeat_y, true);
+    setup_widget (mainwin_about, p->mainwin_about_x, p->mainwin_about_y, true);
+    setup_widget (mainwin_minimize, p->mainwin_minimize_x, p->mainwin_minimize_y, true);
+    setup_widget (mainwin_shade, p->mainwin_shade_x, p->mainwin_shade_y, true);
+    setup_widget (mainwin_close, p->mainwin_close_x, p->mainwin_close_y, true);
 
     if (aud_get_bool ("skins", "player_shaded"))
         mainwin->resize (MAINWIN_SHADED_WIDTH, MAINWIN_SHADED_HEIGHT);
     else
         mainwin->resize (p->mainwin_width, p->mainwin_height);
+
+    mainwin_vis->set_colors ();
 }
 
 /* note that the song info is not translated since it is displayed using
  * the skinned bitmap font, which supports only the English alphabet */
-void mainwin_set_song_info (int bitrate, int samplerate, int channels)
+static void mainwin_set_song_info (int bitrate, int samplerate, int channels)
 {
     char scratch[32];
     int length;
@@ -344,8 +349,51 @@ void mainwin_set_song_info (int bitrate, int samplerate, int channels)
     mainwin_set_othertext (scratch);
 }
 
-void
-mainwin_clear_song_info(void)
+static void info_change ()
+{
+    int bitrate, samplerate, channels;
+    aud_drct_get_info (bitrate, samplerate, channels);
+    mainwin_set_song_info (bitrate, samplerate, channels);
+}
+
+static void playback_pause ()
+{
+    mainwin_playstatus->set_status (STATUS_PAUSE);
+}
+
+static void playback_unpause ()
+{
+    mainwin_playstatus->set_status (STATUS_PLAY);
+}
+
+void mainwin_playback_begin ()
+{
+    mainwin_update_song_info ();
+
+    mainwin_stime_min->show (true);
+    mainwin_stime_sec->show (true);
+    mainwin_minus_num->show (true);
+    mainwin_10min_num->show (true);
+    mainwin_min_num->show (true);
+    mainwin_10sec_num->show (true);
+    mainwin_sec_num->show (true);
+
+    if (aud_drct_get_length () > 0)
+    {
+        mainwin_position->show (true);
+        mainwin_sposition->show (true);
+    }
+
+    if (aud_drct_get_paused ())
+        playback_pause ();
+    else
+        playback_unpause ();
+
+    title_change ();
+    info_change ();
+}
+
+static void mainwin_playback_stop ()
 {
     seeking = false;
     timer_remove (TimerRate::Hz10, seek_timeout);
@@ -355,15 +403,15 @@ mainwin_clear_song_info(void)
     mainwin_vis->clear ();
     mainwin_svis->clear ();
 
-    gtk_widget_hide (mainwin_minus_num->gtk ());
-    gtk_widget_hide (mainwin_10min_num->gtk ());
-    gtk_widget_hide (mainwin_min_num->gtk ());
-    gtk_widget_hide (mainwin_10sec_num->gtk ());
-    gtk_widget_hide (mainwin_sec_num->gtk ());
-    gtk_widget_hide (mainwin_stime_min->gtk ());
-    gtk_widget_hide (mainwin_stime_sec->gtk ());
-    gtk_widget_hide (mainwin_position->gtk ());
-    gtk_widget_hide (mainwin_sposition->gtk ());
+    mainwin_minus_num->show (false);
+    mainwin_10min_num->show (false);
+    mainwin_min_num->show (false);
+    mainwin_10sec_num->show (false);
+    mainwin_sec_num->show (false);
+    mainwin_stime_min->show (false);
+    mainwin_stime_sec->show (false);
+    mainwin_position->show (false);
+    mainwin_sposition->show (false);
 
     mainwin_position->set_pressed (false);
     mainwin_sposition->set_pressed (false);
@@ -379,11 +427,28 @@ mainwin_clear_song_info(void)
     playlistwin_hide_timer();
 }
 
-void
-mainwin_disable_seekbar(void)
+static void repeat_toggled ()
 {
-    gtk_widget_hide (mainwin_position->gtk ());
-    gtk_widget_hide (mainwin_sposition->gtk ());
+    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
+}
+
+static void shuffle_toggled ()
+{
+    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
+}
+
+static void no_advance_toggled ()
+{
+    if (aud_get_bool (nullptr, "no_playlist_advance"))
+        mainwin_show_status_message (_("Single mode."));
+    else
+        mainwin_show_status_message (_("Playlist mode."));
+}
+
+static void stop_after_song_toggled ()
+{
+    if (aud_get_bool (nullptr, "stop_after_current_song"))
+        mainwin_show_status_message (_("Stopping after song."));
 }
 
 static void mainwin_scrolled (GtkWidget * widget, GdkEventScroll * event, void *
@@ -1045,22 +1110,6 @@ mainwin_create_widgets(void)
     mainwin_stime_sec->on_press (change_timer_mode_cb);
 }
 
-static void show_widgets (void)
-{
-    gtk_widget_set_no_show_all (mainwin_minus_num->gtk (), TRUE);
-    gtk_widget_set_no_show_all (mainwin_10min_num->gtk (), TRUE);
-    gtk_widget_set_no_show_all (mainwin_min_num->gtk (), TRUE);
-    gtk_widget_set_no_show_all (mainwin_10sec_num->gtk (), TRUE);
-    gtk_widget_set_no_show_all (mainwin_sec_num->gtk (), TRUE);
-    gtk_widget_set_no_show_all (mainwin_stime_min->gtk (), TRUE);
-    gtk_widget_set_no_show_all (mainwin_stime_sec->gtk (), TRUE);
-    gtk_widget_set_no_show_all (mainwin_position->gtk (), TRUE);
-    gtk_widget_set_no_show_all (mainwin_sposition->gtk (), TRUE);
-
-    mainwin->set_shaded (aud_get_bool ("skins", "player_shaded"));
-    mainwin->show_all ();
-}
-
 static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
  void * unused)
 {
@@ -1105,7 +1154,18 @@ mainwin_create_window(void)
     g_signal_connect (w, "window-state-event", (GCallback) state_cb, nullptr);
     g_signal_connect (w, "delete-event", (GCallback) handle_window_close, nullptr);
 
-    ui_main_evlistener_init();
+    hook_associate ("playback begin", (HookFunction) mainwin_playback_begin, nullptr);
+    hook_associate ("playback ready", (HookFunction) mainwin_playback_begin, nullptr);
+    hook_associate ("playback seek", (HookFunction) mainwin_update_song_info, nullptr);
+    hook_associate ("playback stop", (HookFunction) mainwin_playback_stop, nullptr);
+    hook_associate ("playback pause", (HookFunction) playback_pause, nullptr);
+    hook_associate ("playback unpause", (HookFunction) playback_unpause, nullptr);
+    hook_associate ("title change", (HookFunction) title_change, nullptr);
+    hook_associate ("info change", (HookFunction) info_change, nullptr);
+    hook_associate ("set repeat", (HookFunction) repeat_toggled, nullptr);
+    hook_associate ("set shuffle", (HookFunction) shuffle_toggled, nullptr);
+    hook_associate ("set no_playlist_advance", (HookFunction) no_advance_toggled, nullptr);
+    hook_associate ("set stop_after_current_song", (HookFunction) stop_after_song_toggled, nullptr);
 }
 
 void mainwin_unhook (void)
@@ -1125,8 +1185,20 @@ void mainwin_unhook (void)
         mainwin_volume_release_timeout = 0;
     }
 
-    ui_main_evlistener_dissociate ();
-    start_stop_visual (TRUE);
+    hook_dissociate ("playback begin", (HookFunction) mainwin_playback_begin);
+    hook_dissociate ("playback ready", (HookFunction) mainwin_playback_begin);
+    hook_dissociate ("playback seek", (HookFunction) mainwin_update_song_info);
+    hook_dissociate ("playback stop", (HookFunction) mainwin_playback_stop);
+    hook_dissociate ("playback pause", (HookFunction) playback_pause);
+    hook_dissociate ("playback unpause", (HookFunction) playback_unpause);
+    hook_dissociate ("title change", (HookFunction) title_change);
+    hook_dissociate ("info change", (HookFunction) info_change);
+    hook_dissociate ("set repeat", (HookFunction) repeat_toggled);
+    hook_dissociate ("set shuffle", (HookFunction) shuffle_toggled);
+    hook_dissociate ("set no_playlist_advance", (HookFunction) no_advance_toggled);
+    hook_dissociate ("set stop_after_current_song", (HookFunction) stop_after_song_toggled);
+
+    start_stop_visual (true);
 
     locked_textbox = nullptr;
     locked_old_text = String ();
@@ -1135,12 +1207,10 @@ void mainwin_unhook (void)
 void
 mainwin_create(void)
 {
-    mainwin_create_window();
+    mainwin_create_window ();
+    mainwin_create_widgets ();
 
     gtk_window_add_accel_group ((GtkWindow *) mainwin->gtk (), menu_get_accel_group ());
-
-    mainwin_create_widgets();
-    show_widgets ();
 }
 
 static void mainwin_update_volume (void)
@@ -1176,8 +1246,8 @@ static void mainwin_update_time_display (int time, int length)
 
 static void mainwin_update_time_slider (int time, int length)
 {
-    gtk_widget_set_visible (mainwin_position->gtk (), length > 0);
-    gtk_widget_set_visible (mainwin_sposition->gtk (), length > 0);
+    mainwin_position->show (length > 0);
+    mainwin_sposition->show (length > 0);
 
     if (length > 0 && ! seeking)
     {

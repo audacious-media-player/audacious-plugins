@@ -31,10 +31,10 @@
 
 #include "menus.h"
 #include "skins_cfg.h"
-#include "ui_playlist.h"
-#include "ui_skin.h"
-#include "ui_skinned_playlist.h"
-#include "ui_skinned_playlist_slider.h"
+#include "playlist.h"
+#include "skin.h"
+#include "playlist-widget.h"
+#include "playlist-slider.h"
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>

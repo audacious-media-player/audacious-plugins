@@ -26,8 +26,8 @@
 #include <libaudcore/runtime.h>
 
 #include "skins_cfg.h"
-#include "ui_skin.h"
-#include "ui_skinned_equalizer_graph.h"
+#include "skin.h"
+#include "eq-graph.h"
 
 #define N 10
 static_assert (N == AUD_EQ_NBANDS, "only a 10-band EQ is supported");

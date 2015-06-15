@@ -44,13 +44,13 @@
 #include "menus.h"
 #include "plugin.h"
 #include "skins_cfg.h"
-#include "ui_main.h"
-#include "ui_playlist.h"
-#include "ui_skinned_button.h"
-#include "ui_skinned_playlist.h"
-#include "ui_skinned_playlist_slider.h"
-#include "ui_skinned_textbox.h"
-#include "ui_skinned_window.h"
+#include "main.h"
+#include "playlist.h"
+#include "button.h"
+#include "playlist-widget.h"
+#include "playlist-slider.h"
+#include "textbox.h"
+#include "window.h"
 #include "view.h"
 
 #define PLAYLISTWIN_MIN_WIDTH           MAINWIN_WIDTH
@@ -781,10 +781,8 @@ playlistwin_create(void)
     active_playlist = aud_playlist_get_active ();
     active_length = aud_playlist_entry_count (active_playlist);
 
-    playlistwin_create_window();
-
-    playlistwin_create_widgets();
-    playlistwin->show_all ();
+    playlistwin_create_window ();
+    playlistwin_create_widgets ();
 
     gtk_window_add_accel_group ((GtkWindow *) playlistwin->gtk (), menu_get_accel_group ());
 

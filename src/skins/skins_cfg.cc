@@ -30,14 +30,14 @@
 
 #include "dnd.h"
 #include "skins_cfg.h"
-#include "ui_main.h"
-#include "ui_main_evlisteners.h"
-#include "ui_playlist.h"
-#include "ui_skin.h"
-#include "ui_skinned_playlist.h"
-#include "ui_skinned_textbox.h"
-#include "ui_skinselector.h"
-#include "ui_vis.h"
+#include "main.h"
+#include "vis-callbacks.h"
+#include "playlist.h"
+#include "skin.h"
+#include "playlist-widget.h"
+#include "textbox.h"
+#include "skinselector.h"
+#include "vis.h"
 #include "util.h"
 #include "view.h"
 
@@ -171,7 +171,7 @@ static void vis_reset_cb (void)
 {
     mainwin_vis->clear ();
     mainwin_svis->clear ();
-    start_stop_visual (FALSE);
+    start_stop_visual (false);
 }
 
 static const PreferencesWidget font_table_elements[] = {

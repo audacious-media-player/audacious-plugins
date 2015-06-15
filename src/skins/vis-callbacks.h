@@ -18,17 +18,9 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include <glib.h>
-
 #ifndef SKINS_UI_MAIN_EVLISTENERS_H
 #define SKINS_UI_MAIN_EVLISTENERS_H
 
-void ui_main_evlistener_init(void);
-void ui_main_evlistener_dissociate(void);
-
-void ui_main_evlistener_playback_begin (void * hook_data, void * user_data);
-void ui_main_evlistener_playback_pause (void * hook_data, void * user_data);
-
-void start_stop_visual (gboolean exiting);
+void start_stop_visual (bool exiting);
 
 #endif /* SKINS_UI_MAIN_EVLISTENERS_H */

@@ -23,7 +23,7 @@
 #define SKINS_UI_SKINNED_BUTTON_H
 
 #include "widget.h"
-#include "ui_skin.h"
+#include "skin.h"
 
 class Button;
 

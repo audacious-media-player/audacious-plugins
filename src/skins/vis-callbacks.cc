@@ -27,103 +27,16 @@
 #include <libaudcore/runtime.h>
 
 #include "skins_cfg.h"
-#include "ui_main.h"
-#include "ui_main_evlisteners.h"
-#include "ui_skin.h"
-#include "ui_skinned_button.h"
-#include "ui_skinned_horizontal_slider.h"
-#include "ui_skinned_number.h"
-#include "ui_skinned_playstatus.h"
-#include "ui_skinned_textbox.h"
-#include "ui_vis.h"
+#include "main.h"
+#include "vis-callbacks.h"
+#include "skin.h"
+#include "button.h"
+#include "hslider.h"
+#include "number.h"
+#include "playstatus.h"
+#include "textbox.h"
+#include "vis.h"
 #include "util.h"
-
-static void title_change (void)
-{
-    if (aud_drct_get_ready ())
-        mainwin_set_song_title (aud_drct_get_title ());
-    else
-        mainwin_set_song_title ("Buffering ...");
-}
-
-static void info_change (void)
-{
-    int bitrate, samplerate, channels;
-    aud_drct_get_info (bitrate, samplerate, channels);
-    mainwin_set_song_info (bitrate, samplerate, channels);
-}
-
-static void
-ui_main_evlistener_hide_seekbar(void * hook_data, void * user_data)
-{
-    mainwin_disable_seekbar();
-}
-
-void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
-{
-    mainwin_disable_seekbar();
-    mainwin_update_song_info();
-
-    gtk_widget_show (mainwin_stime_min->gtk ());
-    gtk_widget_show (mainwin_stime_sec->gtk ());
-    gtk_widget_show (mainwin_minus_num->gtk ());
-    gtk_widget_show (mainwin_10min_num->gtk ());
-    gtk_widget_show (mainwin_min_num->gtk ());
-    gtk_widget_show (mainwin_10sec_num->gtk ());
-    gtk_widget_show (mainwin_sec_num->gtk ());
-
-    if (aud_drct_get_ready () && aud_drct_get_length () > 0)
-    {
-        gtk_widget_show (mainwin_position->gtk ());
-        gtk_widget_show (mainwin_sposition->gtk ());
-    }
-
-    mainwin_playstatus->set_status (STATUS_PLAY);
-
-    title_change ();
-    info_change ();
-}
-
-static void
-ui_main_evlistener_playback_stop(void * hook_data, void * user_data)
-{
-    mainwin_clear_song_info ();
-}
-
-static void repeat_toggled (void * data, void * user)
-{
-    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
-}
-
-static void shuffle_toggled (void * data, void * user)
-{
-    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
-}
-
-static void no_advance_toggled (void * data, void * user)
-{
-    if (aud_get_bool (nullptr, "no_playlist_advance"))
-        mainwin_show_status_message (_("Single mode."));
-    else
-        mainwin_show_status_message (_("Playlist mode."));
-}
-
-static void stop_after_song_toggled (void * hook_data, void * user_data)
-{
-    if (aud_get_bool (nullptr, "stop_after_current_song"))
-        mainwin_show_status_message (_("Stopping after song."));
-}
-
-void ui_main_evlistener_playback_pause (void * hook_data, void * user_data)
-{
-    mainwin_playstatus->set_status (STATUS_PAUSE);
-}
-
-static void
-ui_main_evlistener_playback_unpause(void * hook_data, void * user_data)
-{
-    mainwin_playstatus->set_status (STATUS_PLAY);
-}
 
 class VisCallbacks : public Visualizer
 {
@@ -285,47 +198,7 @@ void VisCallbacks::render_freq (const float * freq)
         mainwin_vis->render (data);
 }
 
-void
-ui_main_evlistener_init(void)
-{
-    hook_associate("hide seekbar", ui_main_evlistener_hide_seekbar, nullptr);
-    hook_associate("playback begin", ui_main_evlistener_playback_begin, nullptr);
-    hook_associate("playback ready", ui_main_evlistener_playback_begin, nullptr);
-    hook_associate("playback stop", ui_main_evlistener_playback_stop, nullptr);
-    hook_associate("playback pause", ui_main_evlistener_playback_pause, nullptr);
-    hook_associate("playback unpause", ui_main_evlistener_playback_unpause, nullptr);
-    hook_associate ("title change", (HookFunction) title_change, nullptr);
-    hook_associate ("info change", (HookFunction) info_change, nullptr);
-
-    hook_associate("playback seek", (HookFunction) mainwin_update_song_info, nullptr);
-
-    hook_associate ("set repeat", repeat_toggled, nullptr);
-    hook_associate ("set shuffle", shuffle_toggled, nullptr);
-    hook_associate ("set no_playlist_advance", no_advance_toggled, nullptr);
-    hook_associate ("set stop_after_current_song", stop_after_song_toggled, nullptr);
-}
-
-void
-ui_main_evlistener_dissociate(void)
-{
-    hook_dissociate("hide seekbar", ui_main_evlistener_hide_seekbar);
-    hook_dissociate("playback begin", ui_main_evlistener_playback_begin);
-    hook_dissociate("playback ready", ui_main_evlistener_playback_begin);
-    hook_dissociate("playback stop", ui_main_evlistener_playback_stop);
-    hook_dissociate("playback pause", ui_main_evlistener_playback_pause);
-    hook_dissociate("playback unpause", ui_main_evlistener_playback_unpause);
-    hook_dissociate ("title change", (HookFunction) title_change);
-    hook_dissociate ("info change", (HookFunction) info_change);
-
-    hook_dissociate("playback seek", (HookFunction) mainwin_update_song_info);
-
-    hook_dissociate ("set repeat", repeat_toggled);
-    hook_dissociate ("set shuffle", shuffle_toggled);
-    hook_dissociate ("set no_playlist_advance", no_advance_toggled);
-    hook_dissociate ("set stop_after_current_song", stop_after_song_toggled);
-}
-
-void start_stop_visual (gboolean exiting)
+void start_stop_visual (bool exiting)
 {
     static VisCallbacks callbacks;
     static bool started = false;

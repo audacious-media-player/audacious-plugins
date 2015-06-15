@@ -28,8 +28,8 @@
 #include <libaudcore/runtime.h>
 
 #include "skins_cfg.h"
-#include "ui_skin.h"
-#include "ui_skinned_menurow.h"
+#include "skin.h"
+#include "menurow.h"
 
 void MenuRow::draw (cairo_t * cr)
 {
