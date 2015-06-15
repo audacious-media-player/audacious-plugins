@@ -31,7 +31,6 @@
 
 #include "menus.h"
 #include "skins_cfg.h"
-#include "playlist.h"
 #include "skin.h"
 #include "playlist-widget.h"
 #include "playlist-slider.h"
@@ -49,9 +48,9 @@ void PlaylistWidget::update_title ()
 {
     if (aud_playlist_count () > 1)
     {
-        String title = aud_playlist_get_title (active_playlist);
+        String title = aud_playlist_get_title (m_playlist);
         title_text = String (str_printf (_("%s (%d of %d)"),
-         (const char *) title, 1 + active_playlist, aud_playlist_count ()));
+         (const char *) title, 1 + m_playlist, aud_playlist_count ()));
     }
     else
         title_text = String ();
@@ -69,8 +68,8 @@ void PlaylistWidget::calc_layout ()
     else
         m_offset = 0;
 
-    if (m_first + m_rows > active_length)
-        m_first = active_length - m_rows;
+    if (m_first + m_rows > m_length)
+        m_first = m_length - m_rows;
     if (m_first < 0)
         m_first = 0;
 }
@@ -81,21 +80,20 @@ int PlaylistWidget::calc_position (int y) const
         return -1;
 
     int position = m_first + (y - m_offset) / m_row_height;
-
-    if (position >= m_first + m_rows || position >= active_length)
-        return active_length;
+    if (position >= m_first + m_rows || position >= m_length)
+        return m_length;
 
     return position;
 }
 
 int PlaylistWidget::adjust_position (bool relative, int position) const
 {
-    if (active_length == 0)
+    if (m_length == 0)
         return -1;
 
     if (relative)
     {
-        int focus = aud_playlist_get_focus (active_playlist);
+        int focus = aud_playlist_get_focus (m_playlist);
         if (focus == -1)
             return 0;
 
@@ -104,8 +102,8 @@ int PlaylistWidget::adjust_position (bool relative, int position) const
 
     if (position < 0)
         return 0;
-    if (position >= active_length)
-        return active_length - 1;
+    if (position >= m_length)
+        return m_length - 1;
 
     return position;
 }
@@ -131,7 +129,7 @@ void PlaylistWidget::cancel_all ()
 
 void PlaylistWidget::draw (cairo_t * cr)
 {
-    int active_entry = aud_playlist_get_position (active_playlist);
+    int active_entry = aud_playlist_get_position (m_playlist);
     int left = 3, right = 3;
     PangoLayout * layout;
     int width;
@@ -159,9 +157,9 @@ void PlaylistWidget::draw (cairo_t * cr)
 
     /* selection highlight */
 
-    for (int i = m_first; i < m_first + m_rows && i < active_length; i ++)
+    for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
     {
-        if (! aud_playlist_entry_get_selected (active_playlist, i))
+        if (! aud_playlist_entry_get_selected (m_playlist, i))
             continue;
 
         cairo_rectangle (cr, 0, m_offset + m_row_height * (i - m_first), m_width, m_row_height);
@@ -175,7 +173,7 @@ void PlaylistWidget::draw (cairo_t * cr)
     {
         width = 0;
 
-        for (int i = m_first; i < m_first + m_rows && i < active_length; i ++)
+        for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
         {
             char buf[16];
             snprintf (buf, sizeof buf, "%d.", 1 + i);
@@ -201,9 +199,9 @@ void PlaylistWidget::draw (cairo_t * cr)
 
     width = 0;
 
-    for (int i = m_first; i < m_first + m_rows && i < active_length; i ++)
+    for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (active_playlist, i, Playlist::Guess);
+        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::Guess);
         int len = tuple.get_int (Tuple::Length);
         if (len < 0)
             continue;
@@ -226,13 +224,13 @@ void PlaylistWidget::draw (cairo_t * cr)
 
     /* queue positions */
 
-    if (aud_playlist_queue_count (active_playlist))
+    if (aud_playlist_queue_count (m_playlist))
     {
         width = 0;
 
-        for (int i = m_first; i < m_first + m_rows && i < active_length; i ++)
+        for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
         {
-            int pos = aud_playlist_queue_find_entry (active_playlist, i);
+            int pos = aud_playlist_queue_find_entry (m_playlist, i);
             if (pos < 0)
                 continue;
 
@@ -259,9 +257,9 @@ void PlaylistWidget::draw (cairo_t * cr)
 
     /* titles */
 
-    for (int i = m_first; i < m_first + m_rows && i < active_length; i ++)
+    for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (active_playlist, i, Playlist::Guess);
+        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::Guess);
         String title = tuple.get_str (Tuple::FormattedTitle);
 
         layout = gtk_widget_create_pango_layout (gtk_dr (), title);
@@ -278,7 +276,7 @@ void PlaylistWidget::draw (cairo_t * cr)
 
     /* focus rectangle */
 
-    int focus = aud_playlist_get_focus (active_playlist);
+    int focus = aud_playlist_get_focus (m_playlist);
     if (focus >= m_first && focus <= m_first + m_rows - 1)
     {
         cairo_new_path (cr);
@@ -307,9 +305,7 @@ PlaylistWidget::PlaylistWidget (int width, int height, const char * font) :
     m_height (height * config.scale)
 {
     add_input (m_width, m_height, true, true);
-
-    update_title ();
-    set_font (font);
+    set_font (font);  /* calls update() */
 }
 
 void PlaylistWidget::resize (int width, int height)
@@ -317,13 +313,8 @@ void PlaylistWidget::resize (int width, int height)
     m_width = width * config.scale;
     m_height = height * config.scale;
 
-    calc_layout ();
-
     set_size (m_width, m_height);
-    queue_draw ();
-
-    if (m_slider)
-        m_slider->update ();
+    update ();
 }
 
 void PlaylistWidget::set_font (const char * font)
@@ -338,19 +329,26 @@ void PlaylistWidget::set_font (const char * font)
 
     /* make sure row_height is non-zero; we divide by it */
     m_row_height = aud::max (rect.height, 1);
-    calc_layout ();
 
     g_object_unref (layout);
-    queue_draw ();
-
-    if (m_slider)
-        m_slider->update ();
+    update ();
 }
 
 void PlaylistWidget::update ()
 {
+    m_playlist = aud_playlist_get_active ();
+    m_length = aud_playlist_entry_count (m_playlist);
     update_title ();
     calc_layout ();
+
+    int id = aud_playlist_get_unique_id (m_playlist);
+    if (m_playlist_id != id)
+    {
+        cancel_all ();
+        m_playlist_id = id;
+        m_first = 0;
+        ensure_visible (aud_playlist_get_focus (m_playlist));
+    }
 
     queue_draw ();
 
@@ -373,9 +371,9 @@ void PlaylistWidget::select_single (bool relative, int position)
     if (position == -1)
         return;
 
-    aud_playlist_select_all (active_playlist, false);
-    aud_playlist_entry_set_selected (active_playlist, position, true);
-    aud_playlist_set_focus (active_playlist, position);
+    aud_playlist_select_all (m_playlist, false);
+    aud_playlist_entry_set_selected (m_playlist, position, true);
+    aud_playlist_set_focus (m_playlist, position);
     ensure_visible (position);
 }
 
@@ -390,11 +388,11 @@ void PlaylistWidget::select_extend (bool relative, int position)
     int sign = (position > count) ? 1 : -1;
 
     for (; count != position; count += sign)
-        aud_playlist_entry_set_selected (active_playlist, count,
-         ! aud_playlist_entry_get_selected (active_playlist, count + sign));
+        aud_playlist_entry_set_selected (m_playlist, count,
+         ! aud_playlist_entry_get_selected (m_playlist, count + sign));
 
-    aud_playlist_entry_set_selected (active_playlist, position, true);
-    aud_playlist_set_focus (active_playlist, position);
+    aud_playlist_entry_set_selected (m_playlist, position, true);
+    aud_playlist_set_focus (m_playlist, position);
     ensure_visible (position);
 }
 
@@ -405,7 +403,7 @@ void PlaylistWidget::select_slide (bool relative, int position)
     if (position == -1)
         return;
 
-    aud_playlist_set_focus (active_playlist, position);
+    aud_playlist_set_focus (m_playlist, position);
     ensure_visible (position);
 }
 
@@ -416,34 +414,34 @@ void PlaylistWidget::select_toggle (bool relative, int position)
     if (position == -1)
         return;
 
-    aud_playlist_entry_set_selected (active_playlist, position,
-     ! aud_playlist_entry_get_selected (active_playlist, position));
-    aud_playlist_set_focus (active_playlist, position);
+    aud_playlist_entry_set_selected (m_playlist, position,
+     ! aud_playlist_entry_get_selected (m_playlist, position));
+    aud_playlist_set_focus (m_playlist, position);
     ensure_visible (position);
 }
 
 void PlaylistWidget::select_move (bool relative, int position)
 {
-    int focus = aud_playlist_get_focus (active_playlist);
+    int focus = aud_playlist_get_focus (m_playlist);
     position = adjust_position (relative, position);
 
     if (focus == -1 || position == -1 || position == focus)
         return;
 
-    focus += aud_playlist_shift (active_playlist, focus, position - focus);
+    focus += aud_playlist_shift (m_playlist, focus, position - focus);
     ensure_visible (focus);
 }
 
 void PlaylistWidget::delete_selected ()
 {
-    aud_playlist_delete_selected (active_playlist);
+    aud_playlist_delete_selected (m_playlist);
 
-    active_length = aud_playlist_entry_count (active_playlist);
-    int focus = aud_playlist_get_focus (active_playlist);
+    m_length = aud_playlist_entry_count (m_playlist);
+    int focus = aud_playlist_get_focus (m_playlist);
 
     if (focus != -1)
     {
-        aud_playlist_entry_set_selected (active_playlist, focus, true);
+        aud_playlist_entry_set_selected (m_playlist, focus, true);
         ensure_visible (focus);
     }
 }
@@ -473,17 +471,15 @@ bool PlaylistWidget::handle_keypress (GdkEventKey * event)
             select_single (false, 0);
             break;
           case GDK_KEY_End:
-            select_single (false, active_length - 1);
+            select_single (false, m_length - 1);
             break;
           case GDK_KEY_Return:
             select_single (true, 0);
-            aud_playlist_set_position (active_playlist,
-             aud_playlist_get_focus (active_playlist));
-            aud_playlist_play (active_playlist);
+            aud_playlist_set_position (m_playlist, aud_playlist_get_focus (m_playlist));
+            aud_playlist_play (m_playlist);
             break;
           case GDK_KEY_Escape:
-            select_single (false, aud_playlist_get_position
-             (active_playlist));
+            select_single (false, aud_playlist_get_position (m_playlist));
             break;
           case GDK_KEY_Delete:
             delete_selected ();
@@ -511,7 +507,7 @@ bool PlaylistWidget::handle_keypress (GdkEventKey * event)
             select_extend (false, 0);
             break;
           case GDK_KEY_End:
-            select_extend (false, active_length - 1);
+            select_extend (false, m_length - 1);
             break;
           default:
             return false;
@@ -539,7 +535,7 @@ bool PlaylistWidget::handle_keypress (GdkEventKey * event)
             select_slide (false, 0);
             break;
           case GDK_KEY_End:
-            select_slide (false, active_length - 1);
+            select_slide (false, m_length - 1);
             break;
           default:
             return false;
@@ -564,7 +560,7 @@ bool PlaylistWidget::handle_keypress (GdkEventKey * event)
             select_move (false, 0);
             break;
           case GDK_KEY_End:
-            select_move (false, active_length - 1);
+            select_move (false, m_length - 1);
             break;
           default:
             return false;
@@ -574,7 +570,7 @@ bool PlaylistWidget::handle_keypress (GdkEventKey * event)
         return false;
     }
 
-    playlistwin_update ();
+    update ();
     return true;
 }
 
@@ -588,24 +584,15 @@ void PlaylistWidget::scroll_to (int row)
 {
     cancel_all ();
     m_first = row;
-    calc_layout ();
-
-    queue_draw ();
-
-    if (m_slider)
-        m_slider->update ();
+    update ();
 }
 
 void PlaylistWidget::set_focused (int row)
 {
     cancel_all ();
-    aud_playlist_set_focus (active_playlist, row);
+    aud_playlist_set_focus (m_playlist, row);
     ensure_visible (row);
-
-    queue_draw ();
-
-    if (m_slider)
-        m_slider->update ();
+    update ();
 }
 
 void PlaylistWidget::hover (int x, int y)
@@ -619,8 +606,8 @@ void PlaylistWidget::hover (int x, int y)
     else
         row = m_first + (y - m_offset + m_row_height / 2) / m_row_height;
 
-    if (row > active_length)
-        row = active_length;
+    if (row > m_length)
+        row = m_length;
 
     if (row != m_hover)
     {
@@ -652,13 +639,13 @@ bool PlaylistWidget::button_press (GdkEventButton * event)
         switch (event->button)
         {
           case 1:
-            if (position == -1 || position == active_length)
+            if (position == -1 || position == m_length)
                 return true;
 
             switch (state)
             {
               case 0:
-                if (aud_playlist_entry_get_selected (active_playlist, position))
+                if (aud_playlist_entry_get_selected (m_playlist, position))
                     select_slide (false, position);
                 else
                     select_single (false, position);
@@ -682,9 +669,9 @@ bool PlaylistWidget::button_press (GdkEventButton * event)
             if (state)
                 return true;
 
-            if (position != -1 && position != active_length)
+            if (position != -1 && position != m_length)
             {
-                if (aud_playlist_entry_get_selected (active_playlist, position))
+                if (aud_playlist_entry_get_selected (m_playlist, position))
                     select_slide (false, position);
                 else
                     select_single (false, position);
@@ -700,19 +687,19 @@ bool PlaylistWidget::button_press (GdkEventButton * event)
 
         break;
       case GDK_2BUTTON_PRESS:
-        if (event->button != 1 || state || position == active_length)
+        if (event->button != 1 || state || position == m_length)
             return true;
 
         if (position != -1)
-            aud_playlist_set_position (active_playlist, position);
+            aud_playlist_set_position (m_playlist, position);
 
-        aud_playlist_play (active_playlist);
+        aud_playlist_play (m_playlist);
         break;
       default:
         return true;
     }
 
-    playlistwin_update ();
+    update ();
     return true;
 }
 
@@ -738,7 +725,7 @@ void PlaylistWidget::scroll_timeout ()
         break;
     }
 
-    playlistwin_update ();
+    update ();
 }
 
 bool PlaylistWidget::motion (GdkEventMotion * event)
@@ -747,7 +734,7 @@ bool PlaylistWidget::motion (GdkEventMotion * event)
 
     if (m_drag)
     {
-        if (position == -1 || position == active_length)
+        if (position == -1 || position == m_length)
         {
             if (! m_scroll)
                 timer_add (TimerRate::Hz10, PlaylistWidget::scroll_timeout_cb, this);
@@ -772,12 +759,12 @@ bool PlaylistWidget::motion (GdkEventMotion * event)
                 break;
             }
 
-            playlistwin_update ();
+            update ();
         }
     }
     else
     {
-        if (position == -1 || position == active_length)
+        if (position == -1 || position == m_length)
             cancel_all ();
         else if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && m_popup_pos != position)
         {
@@ -799,7 +786,7 @@ bool PlaylistWidget::leave (GdkEventCrossing * event)
 
 void PlaylistWidget::popup_show ()
 {
-    audgui_infopopup_show (active_playlist, m_popup_pos);
+    audgui_infopopup_show (m_playlist, m_popup_pos);
     popup_shown = true;
 
     g_source_remove (m_popup_source);

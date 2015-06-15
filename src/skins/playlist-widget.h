@@ -39,7 +39,7 @@ typedef SmartPtr<PangoFontDescription, pango_font_description_free> PangoFontDes
 class PlaylistWidget : public Widget
 {
 public:
-    PlaylistWidget (int m_width, int m_height, const char * m_font);
+    PlaylistWidget (int width, int height, const char * font);
     ~PlaylistWidget () { cancel_all (); }
 
     void set_slider (PlaylistSlider * slider) { m_slider = slider; }
@@ -89,6 +89,7 @@ private:
     PangoFontDescPtr m_font;
     String title_text;
 
+    int m_playlist = -1, m_playlist_id = -1, m_length = 0;
     int m_width = 0, m_height = 0, m_row_height = 0, m_offset = 0, m_rows = 0, m_first = 0;
     int m_scroll = 0, m_hover = -1, m_drag = 0, m_popup_pos = -1, m_popup_source = 0;
     bool popup_shown = false;

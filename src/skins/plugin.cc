@@ -148,7 +148,6 @@ static void skins_init_main (bool restart)
         mainwin_update_song_info ();
 
     timer_add (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
-    playlistwin_update ();
 }
 
 bool SkinnedUI::init ()

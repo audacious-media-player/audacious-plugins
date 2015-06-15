@@ -168,6 +168,7 @@ void action_playlist_search_and_select ()
         /* create a TitleInput tuple with user search data */
         Tuple tuple;
         char *searchdata = nullptr;
+        int active_playlist = aud_playlist_get_active ();
 
         searchdata = (char*)gtk_entry_get_text (GTK_ENTRY(searchdlg_entry_title));
         AUDDBG("title=\"%s\"\n", searchdata);
@@ -212,8 +213,6 @@ void action_playlist_search_and_select ()
              searchdlg_checkbt_autoenqueue))
                 aud_playlist_queue_insert_selected (active_playlist, -1);
         }
-
-        playlistwin_update ();
     }
 
     /* done here :) */

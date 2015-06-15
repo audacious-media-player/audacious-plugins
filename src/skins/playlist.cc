@@ -61,8 +61,6 @@
 
 #define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), __VA_ARGS__)
 
-int active_playlist = -1, active_length = 0;
-
 Window * playlistwin;
 PlaylistWidget * playlistwin_list;
 TextBox * playlistwin_sinfo;
@@ -82,12 +80,13 @@ static Button * button_add, * button_sub, * button_sel, * button_misc, * button_
 
 static int resize_base_width, resize_base_height;
 static int drop_position;
-static gboolean song_changed;
+static bool song_changed;
 
-static void playlistwin_update_info (void)
+static void update_info (void)
 {
-    StringBuf s1 = str_format_time (aud_playlist_get_selected_length (active_playlist));
-    StringBuf s2 = str_format_time (aud_playlist_get_total_length (active_playlist));
+    int playlist = aud_playlist_get_active ();
+    StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
+    StringBuf s2 = str_format_time (aud_playlist_get_total_length (playlist));
     playlistwin_info->set_text (str_concat ({s1, "/", s2}));
 }
 
@@ -120,19 +119,6 @@ static void update_rollup_text (void)
     playlistwin_sinfo->set_text (scratch);
 }
 
-static void real_update (void)
-{
-    playlistwin_list->update ();
-    playlistwin_update_info ();
-    update_rollup_text ();
-}
-
-void playlistwin_update (void)
-{
-    if (! aud_playlist_update_pending ())
-        real_update ();
-}
-
 static void
 playlistwin_shade_toggle(void)
 {
@@ -149,12 +135,12 @@ static void playlistwin_scroll (gboolean up)
 
 static void playlistwin_scroll_up_pushed (void)
 {
-    playlistwin_scroll (TRUE);
+    playlistwin_scroll (true);
 }
 
 static void playlistwin_scroll_down_pushed (void)
 {
-    playlistwin_scroll (FALSE);
+    playlistwin_scroll (false);
 }
 
 /* note: height is ignored if the window is shaded */
@@ -227,10 +213,10 @@ playlistwin_scrolled(GtkWidget * widget,
     switch (event->direction)
     {
     case GDK_SCROLL_DOWN:
-        playlistwin_scroll (FALSE);
+        playlistwin_scroll (false);
         break;
     case GDK_SCROLL_UP:
-        playlistwin_scroll (TRUE);
+        playlistwin_scroll (true);
         break;
     default:
         break;
@@ -246,9 +232,9 @@ playlistwin_press(GtkWidget * widget,
      event->window == gtk_widget_get_window (widget) && event->y < 14)
         playlistwin_shade_toggle();
     else if (event->button == 3)
-        menu_popup (UI_MENU_PLAYLIST, event->x_root, event->y_root, FALSE, FALSE, 3, event->time);
+        menu_popup (UI_MENU_PLAYLIST, event->x_root, event->y_root, false, false, 3, event->time);
 
-    return TRUE;
+    return true;
 }
 
 void
@@ -293,14 +279,14 @@ static void drag_drop (GtkWidget * widget, GdkDragContext * context, int x,
 static void drag_data_received (GtkWidget * widget, GdkDragContext * context,
  int x, int y, GtkSelectionData * data, unsigned info, unsigned time, void * unused)
 {
-    audgui_urilist_insert (active_playlist, drop_position, (const char *)
-     gtk_selection_data_get_data (data));
+    audgui_urilist_insert (aud_playlist_get_active (), drop_position,
+     (const char *) gtk_selection_data_get_data (data));
     drop_position = -1;
 }
 
 static void playlistwin_hide (void)
 {
-    view_set_show_playlist (FALSE);
+    view_set_show_playlist (false);
 }
 
 static void resize_press (void)
@@ -326,7 +312,7 @@ static void button_add_cb (Button * button, GdkEventButton * event)
     int xpos, ypos;
     gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_ADD, xpos + 12 * config.scale,
-     ypos + (config.playlist_height - 8) * config.scale, FALSE, TRUE,
+     ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
 }
 
@@ -335,7 +321,7 @@ static void button_sub_cb (Button * button, GdkEventButton * event)
     int xpos, ypos;
     gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_REMOVE, xpos + 40 * config.scale,
-     ypos + (config.playlist_height - 8) * config.scale, FALSE, TRUE,
+     ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
 }
 
@@ -344,7 +330,7 @@ static void button_sel_cb (Button * button, GdkEventButton * event)
     int xpos, ypos;
     gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_SELECT, xpos + 68 * config.scale,
-     ypos + (config.playlist_height - 8) * config.scale, FALSE, TRUE,
+     ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
 }
 
@@ -353,7 +339,7 @@ static void button_misc_cb (Button * button, GdkEventButton * event)
     int xpos, ypos;
     gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_SORT, xpos + 100 * config.scale,
-     ypos + (config.playlist_height - 8) * config.scale, FALSE, TRUE,
+     ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
 }
 
@@ -363,7 +349,7 @@ static void button_list_cb (Button * button, GdkEventButton * event)
     gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST,
      xpos + (config.playlist_width - 12) * config.scale,
-     ypos + (config.playlist_height - 8) * config.scale, TRUE, TRUE,
+     ypos + (config.playlist_height - 8) * config.scale, true, true,
      event->button, event->time);
 }
 
@@ -480,10 +466,10 @@ playlistwin_create_widgets(void)
 static void pl_win_draw (GtkWidget * window, cairo_t * cr)
 {
     if (aud_get_bool ("skins", "playlist_shaded"))
-        skin_draw_playlistwin_shaded (cr, config.playlist_width, TRUE);
+        skin_draw_playlistwin_shaded (cr, config.playlist_width, true);
     else
         skin_draw_playlistwin_frame (cr, config.playlist_width,
-         config.playlist_height, TRUE);
+         config.playlist_height, true);
 }
 
 static void
@@ -517,61 +503,57 @@ playlistwin_create_window(void)
     g_signal_connect (w, "drag-data-received", (GCallback) drag_data_received, nullptr);
 }
 
-static void update_cb (void * unused, void * another)
+static void update_cb (void *, void *)
 {
-    int old = active_playlist;
-
-    active_playlist = aud_playlist_get_active ();
-    active_length = aud_playlist_entry_count (active_playlist);
-
-    if (active_playlist != old)
-    {
-        playlistwin_list->scroll_to (0);
-        song_changed = TRUE;
-    }
+    playlistwin_list->update ();
 
     if (song_changed)
     {
-        playlistwin_list->set_focused (aud_playlist_get_position (active_playlist));
-        song_changed = FALSE;
+        playlistwin_list->set_focused (aud_playlist_get_position (aud_playlist_get_active ()));
+        song_changed = false;
     }
 
-    real_update ();
+    update_info ();
+    update_rollup_text ();
 }
 
-static void follow_cb (void * data, void * another)
+static void follow_cb (void * data, void *)
 {
     int list = aud::from_ptr<int> (data);
-    aud_playlist_select_all (list, FALSE);
+    aud_playlist_select_all (list, false);
 
     int row = aud_playlist_get_position (list);
     if (row >= 0)
-        aud_playlist_entry_set_selected (list, row, TRUE);
+        aud_playlist_entry_set_selected (list, row, true);
 
-    if (list == active_playlist)
-        song_changed = TRUE;
+    if (list == aud_playlist_get_active ())
+        song_changed = true;
 }
 
 void
 playlistwin_create(void)
 {
-    active_playlist = aud_playlist_get_active ();
-    active_length = aud_playlist_entry_count (active_playlist);
+    /* this should really be done in core */
+    int playlists = aud_playlist_count ();
+    for (int list = 0; list < playlists; list ++)
+    {
+        int row = aud_playlist_get_position (list);
+        if (row >= 0)
+        {
+            aud_playlist_set_focus (list, row);
+            aud_playlist_entry_set_selected (list, row, true);
+        }
+    }
 
     playlistwin_create_window ();
     playlistwin_create_widgets ();
 
     gtk_window_add_accel_group ((GtkWindow *) playlistwin->gtk (), menu_get_accel_group ());
 
-    aud_playlist_select_all (active_playlist, FALSE);
+    update_info ();
+    update_rollup_text ();
 
-    int row = aud_playlist_get_position (active_playlist);
-    if (row >= 0)
-        aud_playlist_entry_set_selected (active_playlist, row, TRUE);
-
-    playlistwin_list->set_focused (row);
-
-    song_changed = FALSE;
+    song_changed = false;
 
     hook_associate ("playlist position", follow_cb, nullptr);
     hook_associate ("playlist activate", update_cb, nullptr);

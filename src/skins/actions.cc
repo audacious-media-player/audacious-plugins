@@ -26,7 +26,6 @@
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
 #include "main.h"
-#include "playlist.h"
 #include "plugin-window.h"
 
 #include <gtk/gtk.h>
@@ -36,6 +35,8 @@
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugins.h>
 #include <libaudgui/libaudgui.h>
+
+#define ACTIVE (aud_playlist_get_active ())
 
 void action_ab_clear ()
 {
@@ -92,9 +93,9 @@ void action_search_tool ()
 }
 
 void action_playlist_refresh_list ()
-    { aud_playlist_rescan (active_playlist); }
+    { aud_playlist_rescan (ACTIVE); }
 void action_playlist_play ()
-    { aud_playlist_play (active_playlist); }
+    { aud_playlist_play (ACTIVE); }
 
 void action_playlist_new ()
 {
@@ -105,8 +106,9 @@ void action_playlist_new ()
 
 void action_playlist_prev ()
 {
-    if (active_playlist > 0)
-        aud_playlist_set_active (active_playlist - 1);
+    int playlist = ACTIVE;
+    if (playlist > 0)
+        aud_playlist_set_active (playlist - 1);
     else
     {
         int count = aud_playlist_count ();
@@ -117,45 +119,56 @@ void action_playlist_prev ()
 
 void action_playlist_next ()
 {
+    int playlist = ACTIVE;
     int count = aud_playlist_count ();
-    if (active_playlist + 1 < count)
-        aud_playlist_set_active (active_playlist + 1);
+    if (playlist + 1 < count)
+        aud_playlist_set_active (playlist + 1);
     else if (count > 1)
         aud_playlist_set_active (0);
 }
 
 void action_playlist_rename ()
-    { audgui_show_playlist_rename (active_playlist); }
+    { audgui_show_playlist_rename (ACTIVE); }
 void action_playlist_delete ()
-    { audgui_confirm_playlist_delete (active_playlist); }
+    { audgui_confirm_playlist_delete (ACTIVE); }
 
 void action_playlist_invert_selection ()
 {
-    int entries = aud_playlist_entry_count (active_playlist);
+    int playlist = ACTIVE;
+    int entries = aud_playlist_entry_count (playlist);
     for (int entry = 0; entry < entries; entry ++)
-        aud_playlist_entry_set_selected (active_playlist, entry,
-         ! aud_playlist_entry_get_selected (active_playlist, entry));
+        aud_playlist_entry_set_selected (playlist, entry,
+         ! aud_playlist_entry_get_selected (playlist, entry));
 }
 
 void action_playlist_select_all ()
-    { aud_playlist_select_all (active_playlist, true); }
+    { aud_playlist_select_all (ACTIVE, true); }
 void action_playlist_select_none ()
-    { aud_playlist_select_all (active_playlist, false); }
+    { aud_playlist_select_all (ACTIVE, false); }
 
 void action_playlist_clear_queue ()
-    { aud_playlist_queue_delete (active_playlist, 0, aud_playlist_queue_count (active_playlist)); }
+{
+    int playlist = ACTIVE;
+    aud_playlist_queue_delete (playlist, 0, aud_playlist_queue_count (playlist));
+}
+
 void action_playlist_remove_unavailable ()
-    { aud_playlist_remove_failed (active_playlist); }
+    { aud_playlist_remove_failed (ACTIVE); }
 void action_playlist_remove_dupes_by_title ()
-    { aud_playlist_remove_duplicates_by_scheme (active_playlist, Playlist::Title); }
+    { aud_playlist_remove_duplicates_by_scheme (ACTIVE, Playlist::Title); }
 void action_playlist_remove_dupes_by_filename ()
-    { aud_playlist_remove_duplicates_by_scheme (active_playlist, Playlist::Filename); }
+    { aud_playlist_remove_duplicates_by_scheme (ACTIVE, Playlist::Filename); }
 void action_playlist_remove_dupes_by_full_path ()
-    { aud_playlist_remove_duplicates_by_scheme (active_playlist, Playlist::Path); }
+    { aud_playlist_remove_duplicates_by_scheme (ACTIVE, Playlist::Path); }
+
 void action_playlist_remove_all ()
-    { aud_playlist_entry_delete (active_playlist, 0, aud_playlist_entry_count (active_playlist)); }
+{
+    int playlist = ACTIVE;
+    aud_playlist_entry_delete (playlist, 0, aud_playlist_entry_count (playlist));
+}
+
 void action_playlist_remove_selected ()
-    { aud_playlist_delete_selected (active_playlist); }
+    { aud_playlist_delete_selected (ACTIVE); }
 
 void action_playlist_remove_unselected ()
 {
@@ -167,7 +180,7 @@ void action_playlist_remove_unselected ()
 void action_playlist_copy ()
 {
     GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    Index<char> list = audgui_urilist_create_from_selected (active_playlist);
+    Index<char> list = audgui_urilist_create_from_selected (ACTIVE);
 
     if (list.len ())
         gtk_clipboard_set_text (clip, list.begin (), list.len ());
@@ -186,7 +199,8 @@ void action_playlist_paste ()
 
     if (list)
     {
-        audgui_urilist_insert (active_playlist, aud_playlist_get_focus (active_playlist), list);
+        int playlist = ACTIVE;
+        audgui_urilist_insert (playlist, aud_playlist_get_focus (playlist), list);
         g_free (list);
     }
 }
@@ -197,75 +211,79 @@ void action_playlist_add_files ()
     { audgui_run_filebrowser (false); }
 
 void action_playlist_randomize_list ()
-    { aud_playlist_randomize (active_playlist); }
+    { aud_playlist_randomize (ACTIVE); }
 void action_playlist_reverse_list ()
-    { aud_playlist_reverse (active_playlist); }
+    { aud_playlist_reverse (ACTIVE); }
 
 void action_playlist_sort_by_title ()
-    { aud_playlist_sort_by_scheme (active_playlist, Playlist::Title); }
+    { aud_playlist_sort_by_scheme (ACTIVE, Playlist::Title); }
 void action_playlist_sort_by_album ()
-    { aud_playlist_sort_by_scheme (active_playlist, Playlist::Album); }
+    { aud_playlist_sort_by_scheme (ACTIVE, Playlist::Album); }
 void action_playlist_sort_by_artist ()
-    { aud_playlist_sort_by_scheme (active_playlist, Playlist::Artist); }
+    { aud_playlist_sort_by_scheme (ACTIVE, Playlist::Artist); }
 void action_playlist_sort_by_album_artist ()
-    { aud_playlist_sort_by_scheme (active_playlist, Playlist::AlbumArtist); }
+    { aud_playlist_sort_by_scheme (ACTIVE, Playlist::AlbumArtist); }
 void action_playlist_sort_by_length ()
-    { aud_playlist_sort_by_scheme (active_playlist, Playlist::Length); }
+    { aud_playlist_sort_by_scheme (ACTIVE, Playlist::Length); }
 void action_playlist_sort_by_genre ()
-    { aud_playlist_sort_by_scheme (active_playlist, Playlist::Genre); }
+    { aud_playlist_sort_by_scheme (ACTIVE, Playlist::Genre); }
 void action_playlist_sort_by_filename ()
-    { aud_playlist_sort_by_scheme (active_playlist, Playlist::Filename); }
+    { aud_playlist_sort_by_scheme (ACTIVE, Playlist::Filename); }
 void action_playlist_sort_by_full_path ()
-    { aud_playlist_sort_by_scheme (active_playlist, Playlist::Path); }
+    { aud_playlist_sort_by_scheme (ACTIVE, Playlist::Path); }
 void action_playlist_sort_by_date ()
-    { aud_playlist_sort_by_scheme (active_playlist, Playlist::Date); }
+    { aud_playlist_sort_by_scheme (ACTIVE, Playlist::Date); }
 void action_playlist_sort_by_track_number ()
-    { aud_playlist_sort_by_scheme (active_playlist, Playlist::Track); }
+    { aud_playlist_sort_by_scheme (ACTIVE, Playlist::Track); }
 void action_playlist_sort_by_custom_title ()
-    { aud_playlist_sort_by_scheme (active_playlist, Playlist::FormattedTitle); }
+    { aud_playlist_sort_by_scheme (ACTIVE, Playlist::FormattedTitle); }
 
 void action_playlist_sort_selected_by_title ()
-    { aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Title); }
+    { aud_playlist_sort_selected_by_scheme (ACTIVE, Playlist::Title); }
 void action_playlist_sort_selected_by_album ()
-    { aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Album); }
+    { aud_playlist_sort_selected_by_scheme (ACTIVE, Playlist::Album); }
 void action_playlist_sort_selected_by_artist ()
-    { aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Artist); }
+    { aud_playlist_sort_selected_by_scheme (ACTIVE, Playlist::Artist); }
 void action_playlist_sort_selected_by_album_artist ()
-    { aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::AlbumArtist); }
+    { aud_playlist_sort_selected_by_scheme (ACTIVE, Playlist::AlbumArtist); }
 void action_playlist_sort_selected_by_length ()
-    { aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Length); }
+    { aud_playlist_sort_selected_by_scheme (ACTIVE, Playlist::Length); }
 void action_playlist_sort_selected_by_genre ()
-    { aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Genre); }
+    { aud_playlist_sort_selected_by_scheme (ACTIVE, Playlist::Genre); }
 void action_playlist_sort_selected_by_filename ()
-    { aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Filename); }
+    { aud_playlist_sort_selected_by_scheme (ACTIVE, Playlist::Filename); }
 void action_playlist_sort_selected_by_full_path ()
-    { aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Path); }
+    { aud_playlist_sort_selected_by_scheme (ACTIVE, Playlist::Path); }
 void action_playlist_sort_selected_by_date ()
-    { aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Date); }
+    { aud_playlist_sort_selected_by_scheme (ACTIVE, Playlist::Date); }
 void action_playlist_sort_selected_by_track_number ()
-    { aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Track); }
+    { aud_playlist_sort_selected_by_scheme (ACTIVE, Playlist::Track); }
 void action_playlist_sort_selected_by_custom_title ()
-    { aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::FormattedTitle); }
+    { aud_playlist_sort_selected_by_scheme (ACTIVE, Playlist::FormattedTitle); }
 
 void action_playlist_track_info ()
-    { audgui_infowin_show (active_playlist, aud_playlist_get_focus (active_playlist)); }
+{
+    int playlist = ACTIVE;
+    audgui_infowin_show (playlist, aud_playlist_get_focus (playlist));
+}
 
 void action_queue_toggle ()
 {
-    int focus = aud_playlist_get_focus (active_playlist);
+    int playlist = ACTIVE;
+    int focus = aud_playlist_get_focus (playlist);
     if (focus == -1)
         return;
 
     /* make sure focused row is selected */
-    if (! aud_playlist_entry_get_selected (active_playlist, focus))
+    if (! aud_playlist_entry_get_selected (playlist, focus))
     {
-        aud_playlist_select_all (active_playlist, false);
-        aud_playlist_entry_set_selected (active_playlist, focus, true);
+        aud_playlist_select_all (playlist, false);
+        aud_playlist_entry_set_selected (playlist, focus, true);
     }
 
-    int at = aud_playlist_queue_find_entry (active_playlist, focus);
+    int at = aud_playlist_queue_find_entry (playlist, focus);
     if (at == -1)
-        aud_playlist_queue_insert_selected (active_playlist, -1);
+        aud_playlist_queue_insert_selected (playlist, -1);
     else
-        aud_playlist_queue_delete_selected (active_playlist);
+        aud_playlist_queue_delete_selected (playlist);
 }
