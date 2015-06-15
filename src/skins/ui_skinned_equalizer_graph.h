@@ -34,7 +34,7 @@ class EqGraph : public Widget
 {
 public:
     EqGraph ();
-    void update ();
+    void update () { queue_draw (); }
 
 private:
     void draw (cairo_t * cr);

@@ -19,7 +19,6 @@
  * using our public API to be a derived work.
  */
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skinned_window.h"
 
@@ -111,7 +110,8 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc dr
     gtk_widget_set_style (window, style);
     g_object_unref (style);
 
-    set_gtk (window);
+    set_input (window);
+    set_drawable (window);
 
     m_normal = gtk_fixed_new ();
     g_object_ref_sink (m_normal);
@@ -146,7 +146,7 @@ void Window::set_shapes (GdkRegion * shape, GdkRegion * sshape)
 
     m_shape = shape;
     m_sshape = sshape;
-    
+
     if (gtk_widget_get_realized (gtk ()))
         apply_shape ();
 }
@@ -168,7 +168,7 @@ void Window::set_shaded (bool shaded)
     }
 
     m_is_shaded = shaded;
-    
+
     if (gtk_widget_get_realized (gtk ()))
         apply_shape ();
 }

@@ -25,7 +25,6 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_playstatus.h"
@@ -53,13 +52,11 @@ void PlayStatus::draw (cairo_t * cr)
 
 PlayStatus::PlayStatus ()
 {
-    GtkWidget * playstatus = drawing_area_new ();
-    gtk_widget_set_size_request (playstatus, 11 * config.scale, 9 * config.scale);
-    set_gtk (playstatus);
+    add_drawable (11 * config.scale, 9 * config.scale);
 }
 
 void PlayStatus::set_status (PStatus status)
 {
     m_status = status;
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
 }

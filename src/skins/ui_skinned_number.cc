@@ -44,12 +44,7 @@ bool SkinnedNumber::button_press (GdkEventButton * event)
 
 SkinnedNumber::SkinnedNumber ()
 {
-    GtkWidget * number = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) number, false);
-    gtk_widget_set_size_request (number, 9 * config.scale, 13 * config.scale);
-    gtk_widget_add_events (number, GDK_BUTTON_PRESS_MASK |
-     GDK_BUTTON_RELEASE_MASK);
-    set_gtk (number, true);
+    add_input (9 * config.scale, 13 * config.scale, false, true);
 }
 
 void SkinnedNumber::set (char c)
@@ -59,6 +54,6 @@ void SkinnedNumber::set (char c)
     if (m_num != value)
     {
         m_num = value;
-        gtk_widget_queue_draw (gtk_dr ());
+        queue_draw ();
     }
 }

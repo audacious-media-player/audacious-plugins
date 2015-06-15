@@ -19,7 +19,6 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skinned_button.h"
 
@@ -75,7 +74,7 @@ bool Button::button_press (GdkEventButton * event)
         return false;
 
     if (m_type != Small)
-        gtk_widget_queue_draw (gtk_dr ());
+        queue_draw ();
 
     return true;
 }
@@ -106,7 +105,7 @@ bool Button::button_release (GdkEventButton * event)
         return false;
 
     if (m_type != Small)
-        gtk_widget_queue_draw (gtk_dr ());
+        queue_draw ();
 
     return true;
 }
@@ -119,11 +118,7 @@ Button::Button (Type type, int w, int h, int nx, int ny, int px, int py,
     m_pnx (pnx), m_pny (pny), m_ppx (ppx), m_ppy (ppy),
     m_si1 (si1), m_si2 (si2)
 {
-    GtkWidget * button = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) button, false);
-    gtk_widget_set_size_request (button, w * config.scale, h * config.scale);
-    gtk_widget_add_events (button, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
-    set_gtk (button, type != Small);
+    add_input (w * config.scale, h * config.scale, false, type != Small);
 }
 
 void Button::set_active (bool active)
@@ -131,6 +126,6 @@ void Button::set_active (bool active)
     if (m_active != active)
     {
         m_active = active;
-        gtk_widget_queue_draw (gtk_dr ());
+        queue_draw ();
     }
 }

@@ -25,7 +25,6 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_monostereo.h"
@@ -51,13 +50,11 @@ void MonoStereo::draw (cairo_t * cr)
 
 MonoStereo::MonoStereo ()
 {
-    GtkWidget * widget = drawing_area_new ();
-    gtk_widget_set_size_request (widget, 56 * config.scale, 12 * config.scale);
-    set_gtk (widget);
+    add_drawable (56 * config.scale, 12 * config.scale);
 }
 
 void MonoStereo::set_num_channels (int num_channels)
 {
     m_num_channels = num_channels;
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
 }

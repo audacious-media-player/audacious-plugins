@@ -29,7 +29,6 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#include "drawing.h"
 #include "menus.h"
 #include "skins_cfg.h"
 #include "ui_playlist.h"
@@ -124,7 +123,7 @@ void PlaylistWidget::cancel_all ()
     if (m_hover != -1)
     {
         m_hover = -1;
-        gtk_widget_queue_draw (gtk_dr ());
+        queue_draw ();
     }
 
     popup_hide ();
@@ -307,12 +306,7 @@ PlaylistWidget::PlaylistWidget (int width, int height, const char * font) :
     m_width (width * config.scale),
     m_height (height * config.scale)
 {
-    GtkWidget * list = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) list, false);
-    gtk_widget_set_size_request (list, m_width, m_height);
-    gtk_widget_add_events (list, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
-     | GDK_LEAVE_NOTIFY_MASK | GDK_POINTER_MOTION_MASK);
-    set_gtk (list, true);
+    add_input (m_width, m_height, true, true);
 
     update_title ();
     set_font (font);
@@ -325,8 +319,8 @@ void PlaylistWidget::resize (int width, int height)
 
     calc_layout ();
 
-    gtk_widget_set_size_request (gtk (), m_width, m_height);
-    gtk_widget_queue_draw (gtk_dr ());
+    set_size (m_width, m_height);
+    queue_draw ();
 
     if (m_slider)
         m_slider->update ();
@@ -347,7 +341,7 @@ void PlaylistWidget::set_font (const char * font)
     calc_layout ();
 
     g_object_unref (layout);
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
 
     if (m_slider)
         m_slider->update ();
@@ -358,7 +352,7 @@ void PlaylistWidget::update ()
     update_title ();
     calc_layout ();
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
 
     if (m_slider)
         m_slider->update ();
@@ -596,7 +590,7 @@ void PlaylistWidget::scroll_to (int row)
     m_first = row;
     calc_layout ();
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
 
     if (m_slider)
         m_slider->update ();
@@ -608,7 +602,7 @@ void PlaylistWidget::set_focused (int row)
     aud_playlist_set_focus (active_playlist, row);
     ensure_visible (row);
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
 
     if (m_slider)
         m_slider->update ();
@@ -631,7 +625,7 @@ void PlaylistWidget::hover (int x, int y)
     if (row != m_hover)
     {
         m_hover = row;
-        gtk_widget_queue_draw (gtk_dr ());
+        queue_draw ();
     }
 }
 
@@ -640,7 +634,7 @@ int PlaylistWidget::hover_end ()
     int temp = m_hover;
     m_hover = -1;
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
     return temp;
 }
 

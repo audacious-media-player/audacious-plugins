@@ -20,30 +20,74 @@
  */
 
 #include "widget.h"
-#include "drawing.h"
 
-void Widget::set_gtk (GtkWidget * widget, bool use_drawing_proxy)
+typedef GtkWidget DrawingArea;
+typedef GtkWidgetClass DrawingAreaClass;
+
+G_DEFINE_TYPE (DrawingArea, drawing_area, GTK_TYPE_WIDGET)
+
+static void drawing_area_class_init (DrawingAreaClass *) {}
+
+static void drawing_area_init (DrawingArea * widget)
 {
-    GtkWidget * drawable = widget;
+    gtk_widget_set_has_window ((GtkWidget *) widget, false);
+}
 
-    if (use_drawing_proxy)
-    {
-        drawable = drawing_area_new ();
-        gtk_container_add ((GtkContainer *) widget, drawable);
-        gtk_widget_show (drawable);
-    }
+static GtkWidget * drawing_area_new ()
+{
+    return (GtkWidget *) g_object_new (drawing_area_get_type (), nullptr);
+}
 
+void Widget::set_input (GtkWidget * widget)
+{
+    m_widget = widget;
     g_signal_connect (widget, "destroy", (GCallback) Widget::destroy_cb, this);
-    g_signal_connect (drawable, "realize", (GCallback) Widget::realize_cb, this);
-    g_signal_connect (drawable, "expose-event", (GCallback) Widget::draw_cb, this);
     g_signal_connect (widget, "button-press-event", (GCallback) Widget::button_press_cb, this);
     g_signal_connect (widget, "button-release-event", (GCallback) Widget::button_release_cb, this);
     g_signal_connect (widget, "scroll-event", (GCallback) Widget::scroll_cb, this);
     g_signal_connect (widget, "motion-notify-event", (GCallback) Widget::motion_cb, this);
     g_signal_connect (widget, "leave-notify-event", (GCallback) Widget::leave_cb, this);
+}
 
-    m_widget = widget;
-    m_drawable = drawable;
+void Widget::set_drawable (GtkWidget * widget)
+{
+    m_drawable = widget;
+    g_signal_connect (widget, "realize", (GCallback) Widget::realize_cb, this);
+    g_signal_connect (widget, "expose-event", (GCallback) Widget::draw_cb, this);
+
+    if (! m_widget)
+    {
+        m_widget = widget;
+        g_signal_connect (widget, "destroy", (GCallback) Widget::destroy_cb, this);
+    }
+}
+
+void Widget::add_input (int width, int height, bool track_motion, bool drawable)
+{
+    int events = GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_SCROLL_MASK;
+    if (track_motion)
+        events |= GDK_POINTER_MOTION_MASK | GDK_LEAVE_NOTIFY_MASK;
+
+    GtkWidget * widget = gtk_event_box_new ();
+    gtk_event_box_set_visible_window ((GtkEventBox *) widget, false);
+    gtk_widget_set_size_request (widget, width, height);
+    gtk_widget_add_events (widget, events);
+    set_input (widget);
+
+    if (drawable)
+    {
+        GtkWidget * area = drawing_area_new ();
+        gtk_container_add ((GtkContainer *) widget, area);
+        gtk_widget_show (area);
+        set_drawable (area);
+    }
+}
+
+void Widget::add_drawable (int width, int height)
+{
+    GtkWidget * widget = drawing_area_new ();
+    gtk_widget_set_size_request (widget, width, height);
+    set_drawable (widget);
 }
 
 void Widget::draw_now ()

@@ -39,7 +39,7 @@ class MenuRow : public Widget
 {
 public:
     MenuRow ();
-    void update ();
+    void update () { queue_draw (); }
 
 private:
     virtual void draw (cairo_t * cr);

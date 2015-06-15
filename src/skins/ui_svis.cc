@@ -27,7 +27,6 @@
 #include <string.h>
 #include <libaudcore/objects.h>
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "surface.h"
 #include "ui_skin.h"
@@ -180,10 +179,7 @@ DRAW:;
 
 SmallVis::SmallVis ()
 {
-    GtkWidget * widget = drawing_area_new ();
-    gtk_widget_set_size_request (widget, 38 * config.scale, 5 * config.scale);
-    set_gtk (widget);
-
+    add_drawable (38 * config.scale, 5 * config.scale);
     clear ();
 }
 
@@ -191,8 +187,7 @@ void SmallVis::clear ()
 {
     m_active = false;
     memset (m_data, 0, sizeof m_data);
-
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
 }
 
 void SmallVis::render (const unsigned char * data)

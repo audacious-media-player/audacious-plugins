@@ -33,7 +33,16 @@ public:
     GtkWidget * gtk_dr () { return m_drawable; }
 
 protected:
-    void set_gtk (GtkWidget * widget, bool use_drawing_proxy = false);
+    void set_input (GtkWidget * widget);
+    void set_drawable (GtkWidget * widget);
+    void add_input (int width, int height, bool track_motion, bool drawable);
+    void add_drawable (int width, int height);
+
+    void set_size (int width, int height)
+        { gtk_widget_set_size_request (m_widget, width, height); }
+    void queue_draw ()
+        { gtk_widget_queue_draw (m_drawable); }
+
     void draw_now ();
 
     virtual void realize () {}

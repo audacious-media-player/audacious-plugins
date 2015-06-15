@@ -27,7 +27,6 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_skin.h"
@@ -70,7 +69,7 @@ bool EqSlider::button_press (GdkEventButton * event)
 
     m_pressed = true;
     moved (event->y / config.scale - 5);
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
     return true;
 }
 
@@ -84,7 +83,7 @@ bool EqSlider::button_release (GdkEventButton * event)
 
     m_pressed = false;
     moved (event->y / config.scale - 5);
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
     return true;
 }
 
@@ -94,7 +93,7 @@ bool EqSlider::motion (GdkEventMotion * event)
         return true;
 
     moved (event->y / config.scale - 5);
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
     return true;
 }
 
@@ -105,7 +104,7 @@ bool EqSlider::scroll (GdkEventScroll * event)
     else if (event->direction == GDK_SCROLL_DOWN)
         moved (m_pos + 2);
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
     return true;
 }
 
@@ -116,17 +115,12 @@ void EqSlider::set_value (float value)
 
     m_value = value;
     m_pos = aud::clamp (25 - (int) (value * 25 / AUD_EQ_MAX_GAIN), 0, 50);
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
 }
 
 EqSlider::EqSlider (const char * name, int band) :
     m_name (name),
     m_band (band)
 {
-    GtkWidget * slider = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) slider, false);
-    gtk_widget_set_size_request (slider, 14 * config.scale, 63 * config.scale);
-    gtk_widget_add_events (slider, GDK_BUTTON_PRESS_MASK |
-     GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
-    set_gtk (slider, true);
+    add_input (14 * config.scale, 63 * config.scale, true, true);
 }

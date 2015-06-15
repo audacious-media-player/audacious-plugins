@@ -61,10 +61,5 @@ bool DragHandle::motion (GdkEventMotion * event)
 DragHandle::DragHandle (int w, int h, void (* press) (), void (* drag) (int x, int y)) :
     press (press), drag (drag)
 {
-    GtkWidget * handle = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) handle, false);
-    gtk_widget_set_size_request (handle, w * config.scale, h * config.scale);
-    gtk_widget_add_events (handle, GDK_BUTTON_PRESS_MASK |
-     GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
-    set_gtk (handle);
+    add_input (w * config.scale, h * config.scale, true, false);
 }

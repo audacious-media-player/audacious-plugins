@@ -27,7 +27,6 @@
 #include <string.h>
 #include <libaudcore/objects.h>
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "surface.h"
 #include "ui_skin.h"
@@ -231,10 +230,7 @@ DRAW:;
 
 SkinnedVis::SkinnedVis ()
 {
-    GtkWidget * widget = drawing_area_new ();
-    gtk_widget_set_size_request (widget, 76 * config.scale, 16 * config.scale);
-    set_gtk (widget);
-
+    add_drawable (76 * config.scale, 16 * config.scale);
     clear ();
 }
 
@@ -248,7 +244,7 @@ void SkinnedVis::clear ()
     memset (m_peak_speed, 0, sizeof m_peak_speed);
     memset (m_voiceprint_data, 0, sizeof m_voiceprint_data);
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
 }
 
 void SkinnedVis::render (const unsigned char * data)

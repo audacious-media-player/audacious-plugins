@@ -27,7 +27,6 @@
 
 #include <libaudcore/runtime.h>
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_menurow.h"
@@ -82,7 +81,7 @@ bool MenuRow::button_press (GdkEventButton * event)
 
     mainwin_mr_change (m_selected);
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
     return true;
 }
 
@@ -99,7 +98,7 @@ bool MenuRow::button_release (GdkEventButton * event)
     m_pushed = false;
     m_selected = MENUROW_NONE;
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
     return true;
 }
 
@@ -112,21 +111,11 @@ bool MenuRow::motion (GdkEventMotion * event)
 
     mainwin_mr_change (m_selected);
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
     return true;
 }
 
 MenuRow::MenuRow ()
 {
-    GtkWidget * widget = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) widget, false);
-    gtk_widget_set_size_request (widget, 8 * config.scale, 43 * config.scale);
-    gtk_widget_add_events (widget, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
-     | GDK_POINTER_MOTION_MASK);
-    set_gtk (widget, true);
-}
-
-void MenuRow::update ()
-{
-    gtk_widget_queue_draw (gtk_dr ());
+    add_input (8 * config.scale, 43 * config.scale, true, true);
 }

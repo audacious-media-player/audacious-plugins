@@ -25,7 +25,6 @@
 #include <libaudcore/equalizer.h>
 #include <libaudcore/runtime.h>
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_equalizer_graph.h"
@@ -136,12 +135,5 @@ void EqGraph::draw (cairo_t * cr)
 
 EqGraph::EqGraph ()
 {
-    GtkWidget * graph = drawing_area_new ();
-    gtk_widget_set_size_request (graph, 113 * config.scale, 19 * config.scale);
-    set_gtk (graph);
-}
-
-void EqGraph::update ()
-{
-    gtk_widget_queue_draw (gtk_dr ());
+    add_drawable (113 * config.scale, 19 * config.scale);
 }

@@ -31,7 +31,6 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/objects.h>
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_textbox.h"
@@ -104,7 +103,7 @@ void TextBox::render_vector (const char * text)
     logical.width = aud::max (logical.width, 1);
     ink.height = aud::max (ink.height, 1);
 
-    gtk_widget_set_size_request (gtk (), m_width * config.scale, ink.height);
+    set_size (m_width * config.scale, ink.height);
 
     m_buf_width = aud::max ((logical.width + config.scale - 1) / config.scale, m_width);
     m_buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
@@ -172,7 +171,7 @@ void TextBox::render_bitmap (const char * text)
     int cw = skin.hints.textbox_bitmap_font_width;
     int ch = skin.hints.textbox_bitmap_font_height;
 
-    gtk_widget_set_size_request (gtk (), m_width * config.scale, ch * config.scale);
+    set_size (m_width * config.scale, ch * config.scale);
 
     long len;
     gunichar * utf32 = g_utf8_to_ucs4 (text, -1, nullptr, & len, nullptr);
@@ -238,7 +237,7 @@ void TextBox::render ()
         }
     }
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
 
     if (m_scrolling)
         timer_add (TimerRate::Hz30, TextBox::scroll_timeout_cb, this);
@@ -298,10 +297,8 @@ TextBox::TextBox (int width, const char * font, bool scroll) :
     m_may_scroll (scroll),
     m_two_way (config.twoway_scroll)
 {
-    GtkWidget * textbox = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) textbox, false);
-    gtk_widget_add_events (textbox, GDK_BUTTON_PRESS_MASK);
-    set_gtk (textbox, true);
+    /* size is computed later */
+    add_input (1, 1, false, true);
 
     if (font)
         m_font.capture (pango_font_description_from_string (font));

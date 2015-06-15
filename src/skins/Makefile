@@ -1,7 +1,6 @@
 PLUGIN = skins${PLUGIN_SUFFIX}
 
 SRCS = drag-handle.cc \
-       drawing.cc \
        menus.cc \
        plugin.cc \
        plugin-window.cc \

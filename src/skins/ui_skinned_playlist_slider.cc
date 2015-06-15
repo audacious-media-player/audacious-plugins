@@ -27,7 +27,6 @@
 
 #include <libaudcore/objects.h>
 
-#include "drawing.h"
 #include "skins_cfg.h"
 #include "ui_playlist.h"
 #include "ui_skin.h"
@@ -72,7 +71,7 @@ bool PlaylistSlider::button_press (GdkEventButton * event)
     m_pressed = true;
     set_pos (event->y / config.scale - 9);
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
     return true;
 }
 
@@ -87,7 +86,7 @@ bool PlaylistSlider::button_release (GdkEventButton * event)
     m_pressed = false;
     set_pos (event->y / config.scale - 9);
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
     return true;
 }
 
@@ -98,29 +97,24 @@ bool PlaylistSlider::motion (GdkEventMotion * event)
 
     set_pos (event->y / config.scale - 9);
 
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
     return true;
 }
 
 PlaylistSlider::PlaylistSlider (PlaylistWidget * list, int height) :
     m_list (list), m_height (height)
 {
-    GtkWidget * slider = gtk_event_box_new ();
-    gtk_event_box_set_visible_window ((GtkEventBox *) slider, false);
-    gtk_widget_set_size_request (slider, 8 * config.scale, height * config.scale);
-    gtk_widget_add_events (slider, GDK_BUTTON_PRESS_MASK |
-     GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
-    set_gtk (slider, true);
+    add_input (8 * config.scale, height * config.scale, true, true);
 }
 
 void PlaylistSlider::resize (int height)
 {
     m_height = height;
-    gtk_widget_set_size_request (gtk (), 8 * config.scale, height * config.scale);
-    gtk_widget_queue_draw (gtk_dr ());
+    set_size (8 * config.scale, height * config.scale);
+    queue_draw ();
 }
 
 void PlaylistSlider::update ()
 {
-    gtk_widget_queue_draw (gtk_dr ());
+    queue_draw ();
 }
