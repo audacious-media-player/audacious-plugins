@@ -480,15 +480,9 @@ playlistwin_create_window(void)
 
     playlistwin = new Window (WINDOW_PLAYLIST, & config.playlist_x,
      & config.playlist_y, config.playlist_width, height, shaded, pl_win_draw);
+    playlistwin->setWindowTitle (_("Audacious Playlist Editor"));
 
     GtkWidget * w = playlistwin->gtk ();
-    gtk_window_set_title ((GtkWindow *) w, _("Audacious Playlist Editor"));
-    gtk_window_set_transient_for ((GtkWindow *) w, (GtkWindow *) mainwin->gtk ());
-    gtk_window_set_skip_pager_hint ((GtkWindow *) w, true);
-    gtk_window_set_skip_taskbar_hint ((GtkWindow *) w, true);
-    gtk_widget_add_events (w, GDK_POINTER_MOTION_MASK | GDK_BUTTON_PRESS_MASK |
-     GDK_BUTTON_RELEASE_MASK | GDK_SCROLL_MASK);
-
     g_signal_connect (w, "delete-event", (GCallback) handle_window_close, nullptr);
     g_signal_connect (w, "button-press-event", (GCallback) playlistwin_press, nullptr);
     g_signal_connect (w, "scroll-event", (GCallback) playlistwin_scrolled, nullptr);
@@ -505,7 +499,7 @@ playlistwin_create_window(void)
 
 static void update_cb (void *, void *)
 {
-    playlistwin_list->update ();
+    playlistwin_list->refresh ();
 
     if (song_changed)
     {

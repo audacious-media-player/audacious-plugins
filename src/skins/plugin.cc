@@ -172,6 +172,7 @@ bool SkinnedUI::init ()
 static void skins_cleanup_main (void)
 {
     mainwin_unhook ();
+    equalizerwin_unhook ();
     playlistwin_unhook ();
 
     timer_remove (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);

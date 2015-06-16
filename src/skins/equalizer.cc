@@ -78,7 +78,7 @@ static void update_from_config (void *, void *)
     for (int i = 0; i < AUD_EQ_NBANDS; i ++)
         equalizerwin_bands[i]->set_value (bands[i]);
 
-    equalizerwin_graph->update ();
+    equalizerwin_graph->refresh ();
 }
 
 static gboolean
@@ -242,7 +242,7 @@ equalizerwin_create_widgets(void)
 
 static void eq_win_draw (GtkWidget * window, cairo_t * cr)
 {
-    gboolean shaded = aud_get_bool ("skins", "equalizer_shaded");
+    bool shaded = aud_get_bool ("skins", "equalizer_shaded");
 
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, shaded ? 14 : 116);
 
@@ -259,34 +259,27 @@ equalizerwin_create_window(void)
 
     equalizerwin = new Window (WINDOW_EQ, & config.equalizer_x,
      & config.equalizer_y, 275, shaded ? 14 : 116, shaded, eq_win_draw);
+    equalizerwin->setWindowTitle (_("Audacious Equalizer"));
 
     GtkWidget * w = equalizerwin->gtk ();
-    gtk_window_set_title ((GtkWindow *) w, _("Audacious Equalizer"));
-    gtk_window_set_transient_for ((GtkWindow *) w, (GtkWindow *) mainwin->gtk ());
-    gtk_window_set_skip_pager_hint ((GtkWindow *) w, true);
-    gtk_window_set_skip_taskbar_hint ((GtkWindow *) w, true);
-
     g_signal_connect (w, "delete-event", (GCallback) handle_window_close, nullptr);
     g_signal_connect (w, "button-press-event", (GCallback) equalizerwin_press, nullptr);
     g_signal_connect (w, "key-press-event", (GCallback) mainwin_keypress, nullptr);
 }
 
-static void equalizerwin_destroyed (void)
+void equalizerwin_unhook ()
 {
     hook_dissociate ("set equalizer_active", (HookFunction) update_from_config);
     hook_dissociate ("set equalizer_bands", (HookFunction) update_from_config);
     hook_dissociate ("set equalizer_preamp", (HookFunction) update_from_config);
 }
 
-void
-equalizerwin_create(void)
+void equalizerwin_create ()
 {
     equalizerwin_create_window ();
     equalizerwin_create_widgets ();
 
     gtk_window_add_accel_group ((GtkWindow *) equalizerwin->gtk (), menu_get_accel_group ());
-
-    g_signal_connect (equalizerwin->gtk (), "destroy", (GCallback) equalizerwin_destroyed, nullptr);
 
     hook_associate ("set equalizer_active", (HookFunction) update_from_config, nullptr);
     hook_associate ("set equalizer_bands", (HookFunction) update_from_config, nullptr);

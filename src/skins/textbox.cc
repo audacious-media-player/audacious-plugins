@@ -103,7 +103,7 @@ void TextBox::render_vector (const char * text)
     logical.width = aud::max (logical.width, 1);
     ink.height = aud::max (ink.height, 1);
 
-    set_size (m_width * config.scale, ink.height);
+    resize (m_width * config.scale, ink.height);
 
     m_buf_width = aud::max ((logical.width + config.scale - 1) / config.scale, m_width);
     m_buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
@@ -171,7 +171,7 @@ void TextBox::render_bitmap (const char * text)
     int cw = skin.hints.textbox_bitmap_font_width;
     int ch = skin.hints.textbox_bitmap_font_height;
 
-    set_size (m_width * config.scale, ch * config.scale);
+    resize (m_width * config.scale, ch * config.scale);
 
     long len;
     gunichar * utf32 = g_utf8_to_ucs4 (text, -1, nullptr, & len, nullptr);

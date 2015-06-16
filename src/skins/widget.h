@@ -35,16 +35,22 @@ public:
     GtkWidget * gtk () { return m_widget; }
     GtkWidget * gtk_dr () { return m_drawable; }
 
+    void show () { gtk_widget_show (m_widget); }
+    void hide () { gtk_widget_hide (m_widget); }
+
+    void setVisible (bool visible)
+        { gtk_widget_set_visible (m_widget, visible); }
+    void queue_draw ()
+        { gtk_widget_queue_draw (m_drawable); }
+
 protected:
     void set_input (GtkWidget * widget);
     void set_drawable (GtkWidget * widget);
     void add_input (int width, int height, bool track_motion, bool drawable);
     void add_drawable (int width, int height);
 
-    void set_size (int width, int height)
+    void resize (int width, int height)
         { gtk_widget_set_size_request (m_widget, width, height); }
-    void queue_draw ()
-        { gtk_widget_queue_draw (m_drawable); }
 
     void draw_now ();
 

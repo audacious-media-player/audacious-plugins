@@ -29,7 +29,8 @@
 class EqGraph;
 class Window;
 
-void equalizerwin_create(void);
+void equalizerwin_create ();
+void equalizerwin_unhook ();
 void equalizerwin_set_volume_slider(int percent);
 void equalizerwin_set_balance_slider(int percent);
 

@@ -111,11 +111,11 @@ PlaylistSlider::PlaylistSlider (PlaylistWidget * list, int height) :
 void PlaylistSlider::resize (int height)
 {
     m_height = height;
-    set_size (8 * config.scale, height * config.scale);
+    Widget::resize (8 * config.scale, height * config.scale);
     queue_draw ();
 }
 
-void PlaylistSlider::update ()
+void PlaylistSlider::refresh ()
 {
     m_length = aud_playlist_entry_count (aud_playlist_get_active ());
     queue_draw ();

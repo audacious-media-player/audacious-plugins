@@ -45,6 +45,9 @@ public:
     void put_widget (bool shaded, Widget * widget, int x, int y);
     void move_widget (bool shaded, Widget * widget, int x, int y);
 
+    void setWindowTitle (const char * title)
+        { gtk_window_set_title ((GtkWindow *) gtk (), title); }
+
 private:
     void realize ();
     void draw (cairo_t * cr);

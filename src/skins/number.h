@@ -37,7 +37,4 @@ private:
     int m_num = 0;
 };
 
-GtkWidget * ui_skinned_number_new ();
-void ui_skinned_number_set (GtkWidget * widget, char c);
-
 #endif

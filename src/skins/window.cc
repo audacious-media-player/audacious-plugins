@@ -100,6 +100,12 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc dr
     gtk_widget_set_size_request (window, w, h);
     gtk_window_resize ((GtkWindow *) window, w, h);
 
+    if (id != WINDOW_MAIN)
+    {
+        gtk_window_set_skip_pager_hint ((GtkWindow *) window, true);
+        gtk_window_set_skip_taskbar_hint ((GtkWindow *) window, true);
+    }
+
     gtk_widget_set_app_paintable (window, true);
     gtk_widget_add_events (window, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
@@ -192,4 +198,3 @@ void Window::move_widget (bool shaded, Widget * widget, int x, int y)
     GtkWidget * fixed = shaded ? m_shaded : m_normal;
     gtk_fixed_move ((GtkFixed *) fixed, widget->gtk (), x, y);
 }
-

@@ -19,6 +19,7 @@
  */
 
 #include <stdlib.h>
+#include <glib.h>
 
 #include <libaudcore/inifile.h>
 

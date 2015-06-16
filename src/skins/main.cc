@@ -211,9 +211,9 @@ void mainwin_show_status_message (const char * message)
 static void mainwin_set_song_title (const char * title)
 {
     if (title)
-        gtk_window_set_title ((GtkWindow *) mainwin->gtk (), str_printf (_("%s - Audacious"), title));
+        mainwin->setWindowTitle ((const char *) str_printf (_("%s - Audacious"), title));
     else
-        gtk_window_set_title ((GtkWindow *) mainwin->gtk (), _("Audacious"));
+        mainwin->setWindowTitle (_("Audacious"));
 
     mainwin_set_info_text (title ? title : "");
 }
@@ -242,7 +242,7 @@ static void setup_widget (Widget * widget, int x, int y, bool show)
      y < 0 || y + height > skin.hints.mainwin_height)
         show = false;
 
-    widget->show (show);
+    widget->setVisible (show);
     mainwin->move_widget (false, widget, x, y);
 }
 
@@ -250,10 +250,10 @@ void mainwin_refresh_hints (void)
 {
     const SkinHints * p = & skin.hints;
 
-    mainwin_menurow->show (p->mainwin_menurow_visible);
-    mainwin_rate_text->show (p->mainwin_streaminfo_visible);
-    mainwin_freq_text->show (p->mainwin_streaminfo_visible);
-    mainwin_monostereo->show (p->mainwin_streaminfo_visible);
+    mainwin_menurow->setVisible (p->mainwin_menurow_visible);
+    mainwin_rate_text->setVisible (p->mainwin_streaminfo_visible);
+    mainwin_freq_text->setVisible (p->mainwin_streaminfo_visible);
+    mainwin_monostereo->setVisible (p->mainwin_streaminfo_visible);
 
     mainwin_info->set_width (p->mainwin_text_width);
 
@@ -369,18 +369,18 @@ void mainwin_playback_begin ()
 {
     mainwin_update_song_info ();
 
-    mainwin_stime_min->show (true);
-    mainwin_stime_sec->show (true);
-    mainwin_minus_num->show (true);
-    mainwin_10min_num->show (true);
-    mainwin_min_num->show (true);
-    mainwin_10sec_num->show (true);
-    mainwin_sec_num->show (true);
+    mainwin_stime_min->show ();
+    mainwin_stime_sec->show ();
+    mainwin_minus_num->show ();
+    mainwin_10min_num->show ();
+    mainwin_min_num->show ();
+    mainwin_10sec_num->show ();
+    mainwin_sec_num->show ();
 
     if (aud_drct_get_length () > 0)
     {
-        mainwin_position->show (true);
-        mainwin_sposition->show (true);
+        mainwin_position->show ();
+        mainwin_sposition->show ();
     }
 
     if (aud_drct_get_paused ())
@@ -402,15 +402,15 @@ static void mainwin_playback_stop ()
     mainwin_vis->clear ();
     mainwin_svis->clear ();
 
-    mainwin_minus_num->show (false);
-    mainwin_10min_num->show (false);
-    mainwin_min_num->show (false);
-    mainwin_10sec_num->show (false);
-    mainwin_sec_num->show (false);
-    mainwin_stime_min->show (false);
-    mainwin_stime_sec->show (false);
-    mainwin_position->show (false);
-    mainwin_sposition->show (false);
+    mainwin_minus_num->hide ();
+    mainwin_10min_num->hide ();
+    mainwin_min_num->hide ();
+    mainwin_10sec_num->hide ();
+    mainwin_sec_num->hide ();
+    mainwin_stime_min->hide ();
+    mainwin_stime_sec->hide ();
+    mainwin_position->hide ();
+    mainwin_sposition->hide ();
 
     mainwin_position->set_pressed (false);
     mainwin_sposition->set_pressed (false);
@@ -1123,7 +1123,7 @@ static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
 
 static void mainwin_draw (GtkWidget * window, cairo_t * cr)
 {
-    gboolean shaded = aud_get_bool ("skins", "player_shaded");
+    bool shaded = aud_get_bool ("skins", "player_shaded");
     int width = shaded ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width;
     int height = shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height;
 
@@ -1140,10 +1140,9 @@ mainwin_create_window(void)
 
     mainwin = new Window (WINDOW_MAIN, & config.player_x, & config.player_y,
      width, height, shaded, mainwin_draw);
+    mainwin->setWindowTitle (_("Audacious"));
 
     GtkWidget * w = mainwin->gtk ();
-    gtk_window_set_title ((GtkWindow *) w, _("Audacious"));
-
     drag_dest_set (w);
 
     g_signal_connect (w, "button_press_event", (GCallback) mainwin_mouse_button_press, nullptr);
@@ -1245,8 +1244,8 @@ static void mainwin_update_time_display (int time, int length)
 
 static void mainwin_update_time_slider (int time, int length)
 {
-    mainwin_position->show (length > 0);
-    mainwin_sposition->show (length > 0);
+    mainwin_position->setVisible (length > 0);
+    mainwin_sposition->setVisible (length > 0);
 
     if (length > 0 && ! seeking)
     {
