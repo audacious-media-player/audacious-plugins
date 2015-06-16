@@ -129,7 +129,7 @@ static void skin_get_textcolors (cairo_surface_t * s)
     {
         for (int x = 1; x < 150; x ++)
         {
-            int c = surface_get_pixel (s, x, y);
+            uint32_t c = surface_get_pixel (s, x, y);
             int d = color_diff (skin.colors[SKIN_TEXTBG], c);
             if (d > max_d)
             {
@@ -138,6 +138,12 @@ static void skin_get_textcolors (cairo_surface_t * s)
             }
         }
     }
+}
+
+static void skin_get_eq_spline_colors (cairo_surface_t * s)
+{
+    for (int i = 0; i < 19; i ++)
+        skin.eq_spline_colors[i] = surface_get_pixel (s, 115, i + 294);
 }
 
 static void skin_load_viscolor (const char * path)
@@ -193,6 +199,9 @@ skin_load_pixmaps(const char * path)
 
     if (skin.pixmaps[SKIN_TEXT])
         skin_get_textcolors (skin.pixmaps[SKIN_TEXT].get ());
+
+    if (skin.pixmaps[SKIN_EQMAIN])
+        skin_get_eq_spline_colors (skin.pixmaps[SKIN_EQMAIN].get ());
 
     if (skin.pixmaps[SKIN_NUMBERS] && cairo_image_surface_get_width
      (skin.pixmaps[SKIN_NUMBERS].get ()) < 108)
@@ -303,18 +312,6 @@ void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc, int
     cairo_rectangle (cr, xdest, ydest, width, height);
     cairo_fill (cr);
     cairo_restore (cr);
-}
-
-void skin_get_eq_spline_colors (uint32_t colors[19])
-{
-    if (! skin.pixmaps[SKIN_EQMAIN])
-    {
-        memset (colors, 0, sizeof (uint32_t) * 19);
-        return;
-    }
-
-    for (int i = 0; i < 19; i ++)
-        colors[i] = surface_get_pixel (skin.pixmaps[SKIN_EQMAIN].get (), 115, i + 294);
 }
 
 static void skin_draw_playlistwin_frame_top (cairo_t * cr, int width, bool focus)

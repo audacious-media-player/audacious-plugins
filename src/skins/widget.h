@@ -29,9 +29,6 @@ class Widget
 public:
     virtual ~Widget () {}
 
-    void show (bool visible)
-        { gtk_widget_set_visible (m_widget, visible); }
-
     GtkWidget * gtk () { return m_widget; }
     GtkWidget * gtk_dr () { return m_drawable; }
 
