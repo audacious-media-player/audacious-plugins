@@ -22,8 +22,6 @@
 #ifndef SKINS_MENUS_H
 #define SKINS_MENUS_H
 
-#include <gtk/gtk.h>
-
 enum
 {
     UI_MENU_MAIN,
@@ -41,7 +39,9 @@ enum
 void menu_init ();
 void menu_cleanup ();
 
+#if 0
 GtkAccelGroup * menu_get_accel_group (void);
 void menu_popup (int id, int x, int y, gboolean leftward, gboolean upward, int button, int time);
+#endif
 
 #endif /* SKINS_MENUS_H */

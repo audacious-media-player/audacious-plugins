@@ -19,40 +19,11 @@
  * using our public API to be a derived work.
  */
 
-#include <gdk/gdk.h>
-
 #include "surface.h"
 
 #include <libaudcore/runtime.h>
 
-cairo_surface_t * surface_new (int w, int h)
-{
-    return cairo_image_surface_create (CAIRO_FORMAT_RGB24, w, h);
-}
-
-cairo_surface_t * surface_new_from_file (const char * name)
-{
-    GError * error = nullptr;
-    GdkPixbuf * p = gdk_pixbuf_new_from_file (name, & error);
-    if (error) {
-        AUDERR ("Error loading %s: %s.\n", name, error->message);
-        g_error_free (error);
-    }
-    if (! p)
-        return nullptr;
-
-    cairo_surface_t * surface = surface_new (gdk_pixbuf_get_width (p),
-     gdk_pixbuf_get_height (p));
-    cairo_t * cr = cairo_create (surface);
-
-    gdk_cairo_set_source_pixbuf (cr, p, 0, 0);
-    cairo_paint (cr);
-
-    cairo_destroy (cr);
-    g_object_unref (p);
-    return surface;
-}
-
+#if 0
 uint32_t surface_get_pixel (cairo_surface_t * s, int x, int y)
 {
     if (x < 0 || x >= cairo_image_surface_get_width (s) ||
@@ -72,3 +43,4 @@ void surface_copy_rect (cairo_surface_t * a, int ax, int ay, int w, int h,
     cairo_fill (cr);
     cairo_destroy (cr);
 }
+#endif

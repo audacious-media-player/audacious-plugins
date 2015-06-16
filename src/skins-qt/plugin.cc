@@ -19,6 +19,7 @@
  */
 
 #include <stdlib.h>
+#include <QApplication>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
@@ -27,8 +28,8 @@
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/hook.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
+#include <libaudqt/iface.h>
+#include <libaudqt/libaudqt.h>
 
 #include "menus.h"
 #include "plugin.h"
@@ -42,52 +43,31 @@
 #include "window.h"
 #include "view.h"
 
-class SkinnedUI : public IfacePlugin
+static char app_name[] = "audacious";
+static int dummy_argc = 1;
+static char * dummy_argv[] = {app_name, nullptr};
+
+class QtSkins : public audqt::QtIfacePlugin
 {
 public:
-    static constexpr PluginInfo info = {
-        N_("Winamp Classic Interface"),
-        PACKAGE,
-        nullptr,
-        & skins_prefs
-    };
-
-    constexpr SkinnedUI () : IfacePlugin (info) {}
+    constexpr QtSkins () : audqt::QtIfacePlugin ({N_("Winamp Classic Interface (Qt)"), PACKAGE}) {}
 
     bool init ();
     void cleanup ();
 
     void run ()
-        { gtk_main (); }
+        { qapp->exec (); }
     void quit ()
-        { gtk_main_quit (); }
+        { qapp->quit (); }
 
     void show (bool show)
         { view_show_player (show); }
 
-    void show_about_window ()
-        { audgui_show_about_window (); }
-    void hide_about_window ()
-        { audgui_hide_about_window (); }
-    void show_filebrowser (bool open)
-        { audgui_run_filebrowser (open); }
-    void hide_filebrowser ()
-        { audgui_hide_filebrowser (); }
-    void show_jump_to_song ()
-        { audgui_jump_to_track (); }
-    void hide_jump_to_song ()
-        { audgui_jump_to_track_hide (); }
-    void show_prefs_window ()
-        { audgui_show_prefs_window (); }
-    void hide_prefs_window ()
-        { audgui_hide_prefs_window (); }
-    void plugin_menu_add (AudMenuID id, void func (), const char * name, const char * icon)
-        { audgui_plugin_menu_add (id, func, name, icon); }
-    void plugin_menu_remove (AudMenuID id, void func ())
-        { audgui_plugin_menu_remove (id, func); }
+private:
+    QApplication * qapp = nullptr;
 };
 
-EXPORT SkinnedUI aud_plugin_instance;
+EXPORT QtSkins aud_plugin_instance;
 
 static String user_skin_dir;
 static String skin_thumb_dir;
@@ -127,9 +107,9 @@ static void skins_init_main (bool restart)
     int old_scale = config.scale;
 
     if (aud_get_bool ("skins", "double_size"))
-        config.scale = aud::rescale (audgui_get_dpi (), 48, 1);
+        config.scale = 2; //aud::rescale (audgui_get_dpi (), 48, 1);
     else
-        config.scale = aud::rescale (audgui_get_dpi (), 96, 1);
+        config.scale = 1; //aud::rescale (audgui_get_dpi (), 96, 1);
 
     if (restart && config.scale != old_scale)
         dock_change_scale (old_scale, config.scale);
@@ -150,17 +130,21 @@ static void skins_init_main (bool restart)
     timer_add (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
 }
 
-bool SkinnedUI::init ()
+bool QtSkins::init ()
 {
-    if (aud_get_mainloop_type () != MainloopType::GLib)
+    if (aud_get_mainloop_type () != MainloopType::Qt)
         return false;
+
+    qapp = new QApplication (dummy_argc, dummy_argv);
 
     skins_cfg_load ();
 
     if (! load_initial_skin ())
+    {
+        delete qapp;
         return false;
+    }
 
-    audgui_init ();
     menu_init ();
     skins_init_main (false);
 
@@ -172,16 +156,17 @@ bool SkinnedUI::init ()
 static void skins_cleanup_main (void)
 {
     mainwin_unhook ();
+    equalizerwin_unhook ();
     playlistwin_unhook ();
 
     timer_remove (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
 
-    gtk_widget_destroy (mainwin->gtk ()); mainwin = nullptr;
-    gtk_widget_destroy (playlistwin->gtk ()); playlistwin = nullptr;
-    gtk_widget_destroy (equalizerwin->gtk ()); equalizerwin = nullptr;
+    delete mainwin; mainwin = nullptr;
+    delete playlistwin; playlistwin = nullptr;
+    delete equalizerwin; equalizerwin = nullptr;
 }
 
-void SkinnedUI::cleanup ()
+void QtSkins::cleanup ()
 {
     skins_cfg_save ();
 
@@ -189,12 +174,16 @@ void SkinnedUI::cleanup ()
 
     skins_cleanup_main ();
     menu_cleanup ();
-    audgui_cleanup ();
 
     skin = Skin ();
 
     user_skin_dir = String ();
     skin_thumb_dir = String ();
+
+    audqt::cleanup ();
+
+    delete qapp;
+    qapp = nullptr;
 }
 
 void skins_restart (void)

@@ -19,6 +19,7 @@
  */
 
 #include <math.h>
+#include <glib.h>
 
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>

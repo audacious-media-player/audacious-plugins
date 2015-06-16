@@ -23,9 +23,9 @@
 #ifndef SKINS_UI_SKINSELECTOR_H
 #define SKINS_UI_SKINSELECTOR_H
 
-#include <gtk/gtk.h>
-
+#if 0
 void skin_view_realize(GtkTreeView * treeview);
 void skin_view_update (GtkTreeView * treeview);
+#endif
 
 #endif /* SKINS_UI_SKINSELECTOR_H */

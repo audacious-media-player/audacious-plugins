@@ -36,11 +36,13 @@ public:
     void set_value (float value);
 
 private:
-    void draw (cairo_t * cr);
+    void draw (QPainter & cr);
+#if 0
     bool button_press (GdkEventButton * event);
     bool button_release (GdkEventButton * event);
     bool scroll (GdkEventScroll * event);
     bool motion (GdkEventMotion * event);
+#endif
 
     void moved (int pos);
 

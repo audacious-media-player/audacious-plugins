@@ -32,8 +32,10 @@
 
 #include "widget.h"
 
+#if 0
 typedef SmartPtr<cairo_surface_t, cairo_surface_destroy> CairoSurfacePtr;
 typedef SmartPtr<PangoFontDescription, pango_font_description_free> PangoFontDescPtr;
+#endif
 
 class TextBox : public Widget
 {
@@ -47,14 +49,18 @@ public:
     void set_font (const char * font);
     void set_scroll (bool scroll);
 
+#if 0
     typedef bool (* PressCB) (GdkEventButton *);
     void on_press (PressCB callback) { press = callback; }
+#endif
 
     static void update_all ();
 
 private:
-    virtual void draw (cairo_t * cr);
+#if 0
+    virtual void draw (QPainter & cr);
     virtual bool button_press (GdkEventButton * event);
+#endif
 
     void scroll_timeout ();
     static void scroll_timeout_cb (void * me)
@@ -65,15 +71,19 @@ private:
     void render ();
 
     String m_text;
+#if 0
     PangoFontDescPtr m_font;
     CairoSurfacePtr m_buf;
+#endif
 
     int m_width = 0, m_buf_width = 0;
     bool m_may_scroll = false, m_two_way = false;
     bool m_scrolling = false, m_backward = false;
     int m_offset = 0, m_delay = 0;
 
+#if 0
     PressCB press = nullptr;
+#endif
 };
 
 #endif

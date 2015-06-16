@@ -48,10 +48,12 @@ public:
     void on_release (void (* callback) ()) { release = callback; }
 
 private:
-    void draw (cairo_t * cr);
+    void draw (QPainter & cr);
+#if 0
     bool button_press (GdkEventButton * event);
     bool button_release (GdkEventButton * event);
     bool motion (GdkEventMotion * event);
+#endif
 
     int m_min, m_max;
     SkinPixmapId m_si;

@@ -22,12 +22,13 @@
 #include "skins_cfg.h"
 #include "window.h"
 
-void Window::draw (cairo_t * cr)
+void Window::draw (QPainter & cr)
 {
     if (draw_func)
-        draw_func (gtk (), cr);
+        draw_func (cr);
 }
 
+#if 0
 void Window::apply_shape ()
 {
     gdk_window_shape_combine_region (gtk_widget_get_window (gtk ()),
@@ -71,18 +72,18 @@ bool Window::motion (GdkEventMotion * event)
     dock_move (event->x_root, event->y_root);
     return true;
 }
+#endif
 
 Window::~Window ()
 {
     dock_remove_window (m_id);
 
-    g_object_unref (m_normal);
-    g_object_unref (m_shaded);
-
+#if 0
     if (m_shape)
         gdk_region_destroy (m_shape);
     if (m_sshape)
         gdk_region_destroy (m_sshape);
+#endif
 }
 
 Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc draw) :
@@ -93,40 +94,28 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc dr
     w *= config.scale;
     h *= config.scale;
 
-    GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_decorated ((GtkWindow *) window, false);
-    gtk_window_set_resizable ((GtkWindow *) window, false);
-    gtk_window_move ((GtkWindow *) window, * x, * y);
-    gtk_widget_set_size_request (window, w, h);
-    gtk_window_resize ((GtkWindow *) window, w, h);
+    if (id == WINDOW_MAIN)
+        setWindowFlags (Qt::Window | Qt::FramelessWindowHint);
+    else
+        setWindowFlags (Qt::Dialog | Qt::FramelessWindowHint);
 
-    gtk_widget_set_app_paintable (window, true);
-    gtk_widget_add_events (window, GDK_BUTTON_PRESS_MASK |
-     GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
+    move (* x, * y);
+    QWidget::resize (w, h);
+    setFixedSize (w, h);
 
-    /* We set None as the background pixmap in order to avoid flickering.
-     * Setting a blank GtkStyle prevents GTK 2.x from overriding this. */
-    GtkStyle * style = gtk_style_new ();
-    gtk_widget_set_style (window, style);
-    g_object_unref (style);
+    setAttribute (Qt::WA_NoSystemBackground);
 
-    set_input (window);
-    set_drawable (window);
-
-    m_normal = gtk_fixed_new ();
-    g_object_ref_sink (m_normal);
-    gtk_widget_show (m_normal);
-
-    m_shaded = gtk_fixed_new ();
-    g_object_ref_sink (m_shaded);
-    gtk_widget_show (m_shaded);
+    m_normal = new QWidget (this);
+    m_normal->resize (w, h);
+    m_shaded = new QWidget (this);
+    m_shaded->resize (w, h);
 
     if (shaded)
-        gtk_container_add ((GtkContainer *) window, m_shaded);
+        m_normal->hide ();
     else
-        gtk_container_add ((GtkContainer *) window, m_normal);
+        m_shaded->hide ();
 
-    dock_add_window (id, window, x, y, w, h);
+    dock_add_window (id, this, x, y, w, h);
 }
 
 void Window::resize (int w, int h)
@@ -134,11 +123,16 @@ void Window::resize (int w, int h)
     w *= config.scale;
     h *= config.scale;
 
-    gtk_widget_set_size_request (gtk (), w, h);
-    gtk_window_resize ((GtkWindow *) gtk (), w, h);
+    QWidget::resize (w, h);
+    setFixedSize (w, h);
+
+    m_normal->resize (w, h);
+    m_shaded->resize (w, h);
+
     dock_set_size (m_id, w, h);
 }
 
+#if 0
 void Window::set_shapes (GdkRegion * shape, GdkRegion * sshape)
 {
     if (m_shape)
@@ -152,6 +146,7 @@ void Window::set_shapes (GdkRegion * shape, GdkRegion * sshape)
     if (gtk_widget_get_realized (gtk ()))
         apply_shape ();
 }
+#endif
 
 void Window::set_shaded (bool shaded)
 {
@@ -160,19 +155,21 @@ void Window::set_shaded (bool shaded)
 
     if (shaded)
     {
-        gtk_container_remove ((GtkContainer *) gtk (), m_normal);
-        gtk_container_add ((GtkContainer *) gtk (), m_shaded);
+        m_normal->hide ();
+        m_shaded->show ();
     }
     else
     {
-        gtk_container_remove ((GtkContainer *) gtk (), m_shaded);
-        gtk_container_add ((GtkContainer *) gtk (), m_normal);
+        m_shaded->hide ();
+        m_normal->show ();
     }
 
     m_is_shaded = shaded;
 
+#if 0
     if (gtk_widget_get_realized (gtk ()))
         apply_shape ();
+#endif
 }
 
 void Window::put_widget (bool shaded, Widget * widget, int x, int y)
@@ -180,8 +177,8 @@ void Window::put_widget (bool shaded, Widget * widget, int x, int y)
     x *= config.scale;
     y *= config.scale;
 
-    GtkWidget * fixed = shaded ? m_shaded : m_normal;
-    gtk_fixed_put ((GtkFixed *) fixed, widget->gtk (), x, y);
+    widget->setParent (shaded ? m_shaded : m_normal);
+    widget->move (x, y);
 }
 
 void Window::move_widget (bool shaded, Widget * widget, int x, int y)
@@ -189,7 +186,5 @@ void Window::move_widget (bool shaded, Widget * widget, int x, int y)
     x *= config.scale;
     y *= config.scale;
 
-    GtkWidget * fixed = shaded ? m_shaded : m_normal;
-    gtk_fixed_move ((GtkFixed *) fixed, widget->gtk (), x, y);
+    widget->move (x, y);
 }
-

@@ -22,61 +22,32 @@
 #ifndef SKINS_WIDGET_H
 #define SKINS_WIDGET_H
 
-#include <gtk/gtk.h>
+#include <QPainter>
+#include <QWidget>
 
-class Widget
+class Widget : public QWidget
 {
 public:
-    virtual ~Widget () {}
-
-    void show (bool visible)
-        { gtk_widget_set_visible (m_widget, visible); }
-
-    GtkWidget * gtk () { return m_widget; }
-    GtkWidget * gtk_dr () { return m_drawable; }
+    void queue_draw () { update (); }
 
 protected:
-    void set_input (GtkWidget * widget);
-    void set_drawable (GtkWidget * widget);
     void add_input (int width, int height, bool track_motion, bool drawable);
     void add_drawable (int width, int height);
 
-    void set_size (int width, int height)
-        { gtk_widget_set_size_request (m_widget, width, height); }
-    void queue_draw ()
-        { gtk_widget_queue_draw (m_drawable); }
+    void draw_now () { repaint (); }
 
-    void draw_now ();
-
+    virtual void draw (QPainter & cr) {}
+#if 0
     virtual void realize () {}
-    virtual void draw (cairo_t * cr) {}
     virtual bool button_press (GdkEventButton * event) { return false; }
     virtual bool button_release (GdkEventButton * event) { return false; }
     virtual bool scroll (GdkEventScroll * event) { return false; }
     virtual bool motion (GdkEventMotion * event) { return false; }
     virtual bool leave (GdkEventCrossing * event) { return false; }
+#endif
 
 private:
-    static void destroy_cb (GtkWidget * widget, Widget * me)
-        { delete me; }
-    static void realize_cb (GtkWidget * widget, Widget * me)
-        { me->realize (); }
-
-    static gboolean draw_cb (GtkWidget * widget, GdkEventExpose * event, Widget * me);
-
-    static gboolean button_press_cb (GtkWidget * widget, GdkEventButton * event, Widget * me)
-        { return me->button_press (event); }
-    static gboolean button_release_cb (GtkWidget * widget, GdkEventButton * event, Widget * me)
-        { return me->button_release (event); }
-    static gboolean scroll_cb (GtkWidget * widget, GdkEventScroll * event, Widget * me)
-        { return me->scroll (event); }
-    static gboolean motion_cb (GtkWidget * widget, GdkEventMotion * event, Widget * me)
-        { return me->motion (event); }
-    static gboolean leave_cb (GtkWidget * widget, GdkEventCrossing * event, Widget * me)
-        { return me->leave (event); }
-
-    GtkWidget * m_widget = nullptr;
-    GtkWidget * m_drawable = nullptr;
+    void paintEvent (QPaintEvent *);
 };
 
 #endif // SKINS_WIDGET_H

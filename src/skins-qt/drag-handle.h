@@ -30,9 +30,11 @@ public:
     DragHandle (int w, int h, void (* press) (), void (* drag) (int x, int y));
 
 private:
+#if 0
     bool button_press (GdkEventButton * event);
     bool button_release (GdkEventButton * event);
     bool motion (GdkEventMotion * event);
+#endif
 
     void (* press) ();
     void (* drag) (int x_offset, int y_offset);

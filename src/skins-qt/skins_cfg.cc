@@ -20,13 +20,11 @@
  */
 
 #include <string.h>
-#include <gtk/gtk.h>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "dnd.h"
 #include "skins_cfg.h"
@@ -82,7 +80,9 @@ static const char * const skins_defaults[] = {
 
 skins_cfg_t config;
 
+#if 0
 static GtkWidget * skin_view;
+#endif
 
 static const struct skins_cfg_boolent_t {
     const char * name;
@@ -183,11 +183,15 @@ static const PreferencesWidget font_table_elements[] = {
         {N_("Select playlist font:")})
 };
 
+#if 0
 static void * create_skin_view (void);
+#endif
 
 static const PreferencesWidget skins_widgets_general[] = {
     WidgetLabel (N_("<b>Skin</b>")),
+#if 0
     WidgetCustomGTK (create_skin_view),
+#endif
     WidgetLabel (N_("<b>Fonts</b>")),
     WidgetTable ({{font_table_elements}}),
     WidgetCheck (N_("Use bitmap fonts (supports ASCII only)"),
@@ -292,6 +296,7 @@ static const PreferencesWidget skins_widgets[] = {
 
 const PluginPreferences skins_prefs = {{skins_widgets}};
 
+#if 0
 void
 on_skin_view_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
@@ -350,3 +355,4 @@ static void * create_skin_view (void)
 
     return scrolled;
 }
+#endif

@@ -29,7 +29,7 @@
 #include "skin.h"
 #include "monostereo.h"
 
-void MonoStereo::draw (cairo_t * cr)
+void MonoStereo::draw (QPainter & cr)
 {
     switch (m_num_channels)
     {

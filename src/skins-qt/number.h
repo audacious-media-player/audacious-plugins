@@ -31,13 +31,12 @@ public:
     void set (char c);
 
 private:
-    virtual void draw (cairo_t * cr);
+    virtual void draw (QPainter & cr);
+#if 0
     virtual bool button_press (GdkEventButton * event);
+#endif
 
     int m_num = 0;
 };
-
-GtkWidget * ui_skinned_number_new ();
-void ui_skinned_number_set (GtkWidget * widget, char c);
 
 #endif

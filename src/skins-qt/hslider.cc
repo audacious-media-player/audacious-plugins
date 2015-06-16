@@ -30,7 +30,7 @@
 #include "skins_cfg.h"
 #include "hslider.h"
 
-void HSlider::draw (cairo_t * cr)
+void HSlider::draw (QPainter & cr)
 {
     skin_draw_pixbuf (cr, m_si, m_fx, m_fy, 0, 0, m_w, m_h);
 
@@ -40,6 +40,7 @@ void HSlider::draw (cairo_t * cr)
         skin_draw_pixbuf (cr, m_si, m_knx, m_kny, m_pos, (m_h - m_kh) / 2, m_kw, m_kh);
 }
 
+#if 0
 bool HSlider::button_press (GdkEventButton * event)
 {
     if (event->button != 1)
@@ -87,6 +88,7 @@ bool HSlider::motion (GdkEventMotion * event)
     queue_draw ();
     return true;
 }
+#endif
 
 HSlider::HSlider (int min, int max, SkinPixmapId si, int w, int h, int fx,
  int fy, int kw, int kh, int knx, int kny, int kpx, int kpy) :

@@ -19,7 +19,6 @@ SRCS = actions.cc \
        playstatus.cc \
        plugin.cc \
        plugin-window.cc \
-       search-select.cc \
        skin.cc \
        skin-ini.cc \
        skins_cfg.cc \
@@ -41,6 +40,6 @@ plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
 LD = ${CXX}
 
-CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${GTK_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${GLIB_CFLAGS} ${QT_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBS += -lm ${GTK_LIBS} -laudgui
+LIBS += -lm ${GLIB_LIBS} ${QT_LIBS} -laudqt

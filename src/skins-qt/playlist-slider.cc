@@ -33,7 +33,7 @@
 #include "playlist-widget.h"
 #include "playlist-slider.h"
 
-void PlaylistSlider::draw (cairo_t * cr)
+void PlaylistSlider::draw (QPainter & cr)
 {
     int rows, first;
     m_list->row_info (& rows, & first);
@@ -63,6 +63,7 @@ void PlaylistSlider::set_pos (int y)
     m_list->scroll_to ((y * (m_length - rows) + range / 2) / range);
 }
 
+#if 0
 bool PlaylistSlider::button_press (GdkEventButton * event)
 {
     if (event->button != 1)
@@ -100,6 +101,7 @@ bool PlaylistSlider::motion (GdkEventMotion * event)
     queue_draw ();
     return true;
 }
+#endif
 
 PlaylistSlider::PlaylistSlider (PlaylistWidget * list, int height) :
     m_list (list), m_height (height),
@@ -111,11 +113,11 @@ PlaylistSlider::PlaylistSlider (PlaylistWidget * list, int height) :
 void PlaylistSlider::resize (int height)
 {
     m_height = height;
-    set_size (8 * config.scale, height * config.scale);
+    Widget::resize (8 * config.scale, height * config.scale);
     queue_draw ();
 }
 
-void PlaylistSlider::update ()
+void PlaylistSlider::refresh ()
 {
     m_length = aud_playlist_entry_count (aud_playlist_get_active ());
     queue_draw ();

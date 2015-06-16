@@ -34,10 +34,10 @@ class EqGraph : public Widget
 {
 public:
     EqGraph ();
-    void update () { queue_draw (); }
+    void refresh () { queue_draw (); }
 
 private:
-    void draw (cairo_t * cr);
+    void draw (QPainter & cr);
 };
 
 #endif

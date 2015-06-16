@@ -61,7 +61,9 @@ public:
     void render (const unsigned char * data);
 
 private:
-    void draw (cairo_t * cr);
+#if 0
+    void draw (QPainter & cr);
+#endif
 
     uint32_t m_voice_color[256];
     uint32_t m_voice_color_fire[256];
@@ -81,7 +83,9 @@ public:
     void render (const unsigned char * data);
 
 private:
-    void draw (cairo_t * cr);
+#if 0
+    void draw (QPainter & cr);
+#endif
 
     bool m_active;
     int m_data[75];

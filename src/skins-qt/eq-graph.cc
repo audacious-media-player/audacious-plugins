@@ -32,6 +32,7 @@
 #define N 10
 static_assert (N == AUD_EQ_NBANDS, "only a 10-band EQ is supported");
 
+#if 0
 static void init_spline (const double * x, const double * y, double * y2)
 {
     int i, k;
@@ -77,15 +78,19 @@ static double eval_spline (const double * xa, const double * ya, const double * 
             ((a * a * a - a) * y2a[klo] +
              (b * b * b - b) * y2a[khi]) * (h * h) / 6.0);
 }
+#endif
 
-void EqGraph::draw (cairo_t * cr)
+void EqGraph::draw (QPainter & cr)
 {
+#if 0
     static const double x[N] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
+#endif
 
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 294, 0, 0, 113, 19);
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_get_double (nullptr,
      "equalizer_preamp") * 9 + AUD_EQ_MAX_GAIN / 2) / AUD_EQ_MAX_GAIN, 113, 1);
 
+#if 0
     cairo_scale (cr, config.scale, config.scale);
 
     uint32_t cols[19];
@@ -131,6 +136,7 @@ void EqGraph::draw (cairo_t * cr)
             cairo_fill (cr);
         }
     }
+#endif
 }
 
 EqGraph::EqGraph ()

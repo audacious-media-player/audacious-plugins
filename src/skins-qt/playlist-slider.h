@@ -37,13 +37,15 @@ class PlaylistSlider : public Widget
 public:
     PlaylistSlider (PlaylistWidget * list, int height);
     void resize (int height);
-    void update ();
+    void refresh ();
 
 private:
-    void draw (cairo_t * cr);
+    void draw (QPainter & cr);
+#if 0
     bool button_press (GdkEventButton * event);
     bool button_release (GdkEventButton * event);
     bool motion (GdkEventMotion * event);
+#endif
 
     void set_pos (int y);
 

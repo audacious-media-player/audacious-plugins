@@ -28,13 +28,10 @@
 #include "main.h"
 #include "plugin-window.h"
 
-#include <gtk/gtk.h>
-
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugins.h>
-#include <libaudgui/libaudgui.h>
 
 #define ACTIVE (aud_playlist_get_active ())
 
@@ -68,9 +65,9 @@ void action_ab_set ()
 }
 
 void action_play_file ()
-    { audgui_run_filebrowser (true); }
+    {}
 void action_play_location ()
-    { audgui_show_add_url_window (true); }
+    {}
 
 void action_playlist_manager ()
 {
@@ -128,9 +125,9 @@ void action_playlist_next ()
 }
 
 void action_playlist_rename ()
-    { audgui_show_playlist_rename (ACTIVE); }
+    {}
 void action_playlist_delete ()
-    { audgui_confirm_playlist_delete (ACTIVE); }
+    {}
 
 void action_playlist_invert_selection ()
 {
@@ -179,11 +176,13 @@ void action_playlist_remove_unselected ()
 
 void action_playlist_copy ()
 {
+#if 0
     GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
     Index<char> list = audgui_urilist_create_from_selected (ACTIVE);
 
     if (list.len ())
         gtk_clipboard_set_text (clip, list.begin (), list.len ());
+#endif
 }
 
 void action_playlist_cut ()
@@ -194,6 +193,7 @@ void action_playlist_cut ()
 
 void action_playlist_paste ()
 {
+#if 0
     GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
     char * list = gtk_clipboard_wait_for_text (clip);
 
@@ -203,12 +203,13 @@ void action_playlist_paste ()
         audgui_urilist_insert (playlist, aud_playlist_get_focus (playlist), list);
         g_free (list);
     }
+#endif
 }
 
 void action_playlist_add_url ()
-    { audgui_show_add_url_window (false); }
+    {}
 void action_playlist_add_files ()
-    { audgui_run_filebrowser (false); }
+    {}
 
 void action_playlist_randomize_list ()
     { aud_playlist_randomize (ACTIVE); }
@@ -263,8 +264,10 @@ void action_playlist_sort_selected_by_custom_title ()
 
 void action_playlist_track_info ()
 {
+#if 0
     int playlist = ACTIVE;
     audgui_infowin_show (playlist, aud_playlist_get_focus (playlist));
+#endif
 }
 
 void action_queue_toggle ()

@@ -31,7 +31,7 @@
 #include "skin.h"
 #include "menurow.h"
 
-void MenuRow::draw (cairo_t * cr)
+void MenuRow::draw (QPainter & cr)
 {
     if (m_selected == MENUROW_NONE)
     {
@@ -52,6 +52,7 @@ void MenuRow::draw (cairo_t * cr)
     }
 }
 
+#if 0
 static MenuRowItem menurow_find_selected (int x, int y)
 {
     if (x >= 0 && x < 8)
@@ -114,6 +115,7 @@ bool MenuRow::motion (GdkEventMotion * event)
     queue_draw ();
     return true;
 }
+#endif
 
 MenuRow::MenuRow ()
 {

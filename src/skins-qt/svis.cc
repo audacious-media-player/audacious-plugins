@@ -42,7 +42,8 @@ static const int svis_vu_normal_colors[] = {16, 14, 12, 10, 8, 6, 4, 2};
 #define RGB_SET_INDEX(c) RGB_SET (skin.vis_colors[c])
 #define RGB_SET_INDEX_Y(c) RGB_SET_Y (skin.vis_colors[c])
 
-void SmallVis::draw (cairo_t * cr)
+#if 0
+void SmallVis::draw (QPainter & cr)
 {
     uint32_t rgb[38 * 5];
     uint32_t * set;
@@ -176,6 +177,7 @@ DRAW:;
     cairo_paint (cr);
     cairo_surface_destroy (surf);
 }
+#endif
 
 SmallVis::SmallVis ()
 {

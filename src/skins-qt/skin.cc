@@ -28,7 +28,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#include <gtk/gtk.h>
+#include <QPainter>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
@@ -104,10 +104,17 @@ static bool skin_load_pixmap_id (SkinPixmapId id, const char * path)
         return false;
     }
 
-    skin.pixmaps[id].capture (surface_new_from_file (filename));
-    return skin.pixmaps[id] ? true : false;
+    skin.pixmaps[id].capture (new QPixmap ((const char *) filename));
+    if (skin.pixmaps[id]->isNull ())
+    {
+        AUDERR ("Error loading pixmap: %s\n", (const char *) filename);
+        return false;
+    }
+
+    return true;
 }
 
+#if 0
 static int color_diff (uint32_t a, uint32_t b)
 {
     return abs (COLOR_R (a) - COLOR_R (b)) + abs (COLOR_G (a) - COLOR_G (b)) +
@@ -139,6 +146,7 @@ static void skin_get_textcolors (cairo_surface_t * s)
         }
     }
 }
+#endif
 
 static void skin_load_viscolor (const char * path)
 {
@@ -165,6 +173,7 @@ static void skin_load_viscolor (const char * path)
     }
 }
 
+#if 0
 static void
 skin_numbers_generate_dash ()
 {
@@ -181,6 +190,7 @@ skin_numbers_generate_dash ()
 
     skin.pixmaps[SKIN_NUMBERS].capture (surface);
 }
+#endif
 
 static bool
 skin_load_pixmaps(const char * path)
@@ -191,12 +201,14 @@ skin_load_pixmaps(const char * path)
         if (! skin_load_pixmap_id ((SkinPixmapId) i, path))
             return false;
 
+#if 0
     if (skin.pixmaps[SKIN_TEXT])
         skin_get_textcolors (skin.pixmaps[SKIN_TEXT].get ());
 
     if (skin.pixmaps[SKIN_NUMBERS] && cairo_image_surface_get_width
      (skin.pixmaps[SKIN_NUMBERS].get ()) < 108)
         skin_numbers_generate_dash ();
+#endif
 
     return true;
 }
@@ -290,23 +302,21 @@ void skin_install_skin (const char * path)
     g_free (data);
 }
 
-void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc, int
+void skin_draw_pixbuf (QPainter & p, SkinPixmapId id, int xsrc, int ysrc, int
  xdest, int ydest, int width, int height)
 {
     if (! skin.pixmaps[id])
         return;
 
-    cairo_save (cr);
-    cairo_scale (cr, config.scale, config.scale);
-    cairo_set_source_surface (cr, skin.pixmaps[id].get (), xdest - xsrc, ydest - ysrc);
-    cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
-    cairo_rectangle (cr, xdest, ydest, width, height);
-    cairo_fill (cr);
-    cairo_restore (cr);
+    p.save ();
+    p.setTransform (QTransform ().scale (config.scale, config.scale));
+    p.drawPixmap (xdest, ydest, * skin.pixmaps[id], xsrc, ysrc, width, height);
+    p.restore ();
 }
 
 void skin_get_eq_spline_colors (uint32_t colors[19])
 {
+#if 0
     if (! skin.pixmaps[SKIN_EQMAIN])
     {
         memset (colors, 0, sizeof (uint32_t) * 19);
@@ -315,9 +325,10 @@ void skin_get_eq_spline_colors (uint32_t colors[19])
 
     for (int i = 0; i < 19; i ++)
         colors[i] = surface_get_pixel (skin.pixmaps[SKIN_EQMAIN].get (), 115, i + 294);
+#endif
 }
 
-static void skin_draw_playlistwin_frame_top (cairo_t * cr, int width, bool focus)
+static void skin_draw_playlistwin_frame_top (QPainter & cr, int width, bool focus)
 {
     /* The title bar skin consists of 2 sets of 4 images, 1 set
      * for focused state and the other for unfocused. The 4 images
@@ -364,7 +375,7 @@ static void skin_draw_playlistwin_frame_top (cairo_t * cr, int width, bool focus
     }
 }
 
-static void skin_draw_playlistwin_frame_bottom (cairo_t * cr, int width, int height)
+static void skin_draw_playlistwin_frame_bottom (QPainter & cr, int width, int height)
 {
     /* The bottom frame skin consists of 1 set of 4 images. The 4
      * images are:
@@ -396,7 +407,7 @@ static void skin_draw_playlistwin_frame_bottom (cairo_t * cr, int width, int hei
         skin_draw_pixbuf (cr, SKIN_PLEDIT, 179, 0, 125 + i * 25, height - 38, 25, 38);
 }
 
-static void skin_draw_playlistwin_frame_sides (cairo_t * cr, int width, int height)
+static void skin_draw_playlistwin_frame_sides (QPainter & cr, int width, int height)
 {
     /* The side frames consist of 2 tile images. 1 for the left, 1 for
      * the right.
@@ -414,14 +425,14 @@ static void skin_draw_playlistwin_frame_sides (cairo_t * cr, int width, int heig
     }
 }
 
-void skin_draw_playlistwin_frame (cairo_t * cr, int width, int height, bool focus)
+void skin_draw_playlistwin_frame (QPainter & cr, int width, int height, bool focus)
 {
     skin_draw_playlistwin_frame_top (cr, width, focus);
     skin_draw_playlistwin_frame_bottom (cr, width, height);
     skin_draw_playlistwin_frame_sides (cr, width, height);
 }
 
-void skin_draw_playlistwin_shaded (cairo_t * cr, int width, bool focus)
+void skin_draw_playlistwin_shaded (QPainter & cr, int width, bool focus)
 {
     /* The shade mode titlebar skin consists of 4 images:
      * a) left corner               offset (72,42) size (25,14)
@@ -441,7 +452,7 @@ void skin_draw_playlistwin_shaded (cairo_t * cr, int width, bool focus)
     skin_draw_pixbuf (cr, SKIN_PLEDIT, 99, focus ? 42 : 57, width - 50, 0, 50, 14);
 }
 
-void skin_draw_mainwin_titlebar (cairo_t * cr, bool shaded, bool focus)
+void skin_draw_mainwin_titlebar (QPainter & cr, bool shaded, bool focus)
 {
     /* The titlebar skin consists of 2 sets of 2 images, one for for
      * shaded and the other for unshaded mode, giving a total of 4.

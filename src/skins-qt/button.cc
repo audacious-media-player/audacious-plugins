@@ -22,7 +22,7 @@
 #include "skins_cfg.h"
 #include "button.h"
 
-void Button::draw (cairo_t * cr)
+void Button::draw (QPainter & cr)
 {
     switch (m_type)
     {
@@ -53,6 +53,7 @@ void Button::draw (cairo_t * cr)
     }
 }
 
+#if 0
 bool Button::button_press (GdkEventButton * event)
 {
     /* pass events through to the parent widget only if neither the press nor
@@ -109,6 +110,7 @@ bool Button::button_release (GdkEventButton * event)
 
     return true;
 }
+#endif
 
 Button::Button (Type type, int w, int h, int nx, int ny, int px, int py,
  int pnx, int pny, int ppx, int ppy, SkinPixmapId si1, SkinPixmapId si2) :

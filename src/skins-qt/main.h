@@ -23,8 +23,6 @@
 #ifndef SKINS_UI_MAIN_H
 #define SKINS_UI_MAIN_H
 
-#include <gtk/gtk.h>
-
 /* yes, main window size is fixed */
 #define MAINWIN_WIDTH            (int)275
 #define MAINWIN_HEIGHT           (int)116
@@ -66,6 +64,7 @@ void mainwin_playback_begin ();
 void mainwin_update_song_info (void);
 void mainwin_show_status_message (const char * message);
 
+#if 0
 void mainwin_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
                                 int x,
@@ -80,5 +79,6 @@ bool change_timer_mode_cb (GdkEventButton * event);
 /* widget should be null if called manually. */
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
  void * unused);
+#endif
 
 #endif /* SKINS_UI_MAIN_H */

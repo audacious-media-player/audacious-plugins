@@ -19,6 +19,7 @@
  */
 
 #include <stdlib.h>
+#include <glib.h>
 
 #include <libaudcore/inifile.h>
 
@@ -223,6 +224,7 @@ private:
     }
 };
 
+#if 0
 static Index<GdkRectangle> skin_create_mask (const Index<int> & num,
  const Index<int> & point, int width, int height)
 {
@@ -256,9 +258,11 @@ static Index<GdkRectangle> skin_create_mask (const Index<int> & num,
 
     return mask;
 }
+#endif
 
 void skin_load_masks (const char * path)
 {
+#if 0
     int sizes[SKIN_MASK_COUNT][2] = {
         {skin.hints.mainwin_width, skin.hints.mainwin_height},
         {275, 16},
@@ -274,4 +278,5 @@ void skin_load_masks (const char * path)
     for (int id = 0; id < SKIN_MASK_COUNT; id ++)
         skin.masks[id] = skin_create_mask (parser.numpoints[id],
          parser.pointlist[id], sizes[id][0], sizes[id][1]);
+#endif
 }

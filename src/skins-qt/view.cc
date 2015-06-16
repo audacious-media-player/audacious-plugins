@@ -24,6 +24,8 @@
 #include <libaudcore/runtime.h>
 #include <libaudcore/hook.h>
 
+#include <QWindow>
+
 #include "plugin.h"
 #include "plugin-window.h"
 #include "skins_cfg.h"
@@ -42,12 +44,13 @@ void view_show_player (bool show)
 {
     if (show)
     {
-        gtk_window_present ((GtkWindow *) mainwin->gtk ());
+        mainwin->show ();
+        mainwin->activateWindow ();
         show_plugin_windows ();
     }
     else
     {
-        mainwin->show (false);
+        mainwin->hide ();
         hide_plugin_windows ();
     }
 
@@ -69,10 +72,15 @@ void view_apply_show_playlist ()
 {
     bool show = aud_get_bool ("skins", "playlist_visible");
 
-    if (show && gtk_widget_get_visible (mainwin->gtk ()))
-        gtk_window_present ((GtkWindow *) playlistwin->gtk ());
+    if (show && mainwin->isVisible ())
+    {
+        playlistwin->winId ();
+        playlistwin->windowHandle ()->setTransientParent (mainwin->windowHandle ());
+        playlistwin->show ();
+        playlistwin->activateWindow ();
+    }
     else
-        playlistwin->show (false);
+        playlistwin->hide ();
 
     mainwin_pl->set_active (show);
 }
@@ -89,10 +97,15 @@ void view_apply_show_equalizer ()
 {
     bool show = aud_get_bool ("skins", "equalizer_visible");
 
-    if (show && gtk_widget_get_visible (mainwin->gtk ()))
-        gtk_window_present ((GtkWindow *) equalizerwin->gtk ());
+    if (show && mainwin->isVisible ())
+    {
+        equalizerwin->winId ();
+        equalizerwin->windowHandle ()->setTransientParent (mainwin->windowHandle ());
+        equalizerwin->show ();
+        equalizerwin->activateWindow ();
+    }
     else
-        equalizerwin->show (false);
+        equalizerwin->hide ();
 
     mainwin_eq->set_active (show);
 }
@@ -179,13 +192,15 @@ void view_set_on_top (bool on_top)
 
 void view_apply_on_top ()
 {
+#if 0
     bool on_top = aud_get_bool ("skins", "always_on_top");
 
     gtk_window_set_keep_above ((GtkWindow *) mainwin->gtk (), on_top);
     gtk_window_set_keep_above ((GtkWindow *) equalizerwin->gtk (), on_top);
     gtk_window_set_keep_above ((GtkWindow *) playlistwin->gtk (), on_top);
+#endif
 
-    mainwin_menurow->update ();
+    mainwin_menurow->refresh ();
 }
 
 void view_set_sticky (bool sticky)
@@ -198,6 +213,7 @@ void view_set_sticky (bool sticky)
 
 void view_apply_sticky ()
 {
+#if 0
     bool sticky = aud_get_bool ("skins", "sticky");
 
     if (sticky)
@@ -212,6 +228,7 @@ void view_apply_sticky ()
         gtk_window_unstick ((GtkWindow *) equalizerwin->gtk ());
         gtk_window_unstick ((GtkWindow *) playlistwin->gtk ());
     }
+#endif
 }
 
 void view_set_show_remaining (bool remaining)
@@ -227,6 +244,7 @@ void view_apply_show_remaining ()
     mainwin_update_song_info ();
 }
 
+#if 0
 static GdkRegion * scale_mask (const Index<GdkRectangle> & mask, int scale)
 {
     GdkRegion * region = nullptr;
@@ -248,9 +266,11 @@ static GdkRegion * scale_mask (const Index<GdkRectangle> & mask, int scale)
 
     return region;
 }
+#endif
 
 void view_apply_skin ()
 {
+#if 0
     mainwin->set_shapes
      (scale_mask (skin.masks[SKIN_MASK_MAIN], config.scale),
       scale_mask (skin.masks[SKIN_MASK_MAIN_SHADE], config.scale));
@@ -261,11 +281,12 @@ void view_apply_skin ()
     // hide the equalizer graph if we have a short eqmain.bmp
     int h = cairo_image_surface_get_height (skin.pixmaps[SKIN_EQMAIN].get ());
     equalizerwin_graph->show (h >= 315);
+#endif
 
     mainwin_refresh_hints ();
     TextBox::update_all ();
 
-    gtk_widget_queue_draw (mainwin->gtk ());
-    gtk_widget_queue_draw (equalizerwin->gtk ());
-    gtk_widget_queue_draw (playlistwin->gtk ());
+    mainwin->queue_draw ();
+    equalizerwin->queue_draw ();
+    playlistwin->queue_draw ();
 }

@@ -21,20 +21,16 @@
 
 #include "menus.h"
 
-#include <gdk/gdkkeysyms.h>
-
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/runtime.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
-#include <libaudgui/menu.h>
 
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
 #include "view.h"
 
+#if 0
 #define SHIFT GDK_SHIFT_MASK
 #define CTRL GDK_CONTROL_MASK
 #define ALT GDK_MOD1_MASK
@@ -211,9 +207,11 @@ static const AudguiMenuItem playlist_context_items[] = {
     MenuSep (),
     MenuSub (N_("Services"), nullptr, get_plugin_menu_playlist)
 };
+#endif
 
 void menu_init (void)
 {
+#if 0
     static const ArrayRef<AudguiMenuItem> table[] = {
         {main_items},
         {playback_items},
@@ -234,10 +232,12 @@ void menu_init (void)
         audgui_menu_init (menus[i], table[i], accel);
         g_signal_connect (menus[i], "destroy", (GCallback) gtk_widget_destroyed, & menus[i]);
     }
+#endif
 }
 
 void menu_cleanup (void)
 {
+#if 0
     for (int i = 0; i < UI_MENUS; i ++)
     {
         if (menus[i])
@@ -246,8 +246,10 @@ void menu_cleanup (void)
 
     g_object_unref (accel);
     accel = nullptr;
+#endif
 }
 
+#if 0
 GtkAccelGroup * menu_get_accel_group (void)
 {
     return accel;
@@ -285,3 +287,4 @@ void menu_popup (int id, int x, int y, gboolean leftward, gboolean upward,
     const MenuPosition pos = {x, y, leftward, upward};
     gtk_menu_popup ((GtkMenu *) menus[id], nullptr, nullptr, position_menu, (void *) & pos, button, time);
 }
+#endif

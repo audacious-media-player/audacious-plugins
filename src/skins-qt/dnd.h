@@ -26,8 +26,6 @@
 #ifndef SKINS_DND_H
 #define SKINS_DND_H
 
-#include <gtk/gtk.h>
-
 /* Designate dropped data types that we know and care about */
 enum {
     DROP_STRING,
@@ -37,6 +35,7 @@ enum {
     DROP_FONT
 };
 
+#if 0
 /* Drag data format listing for gtk_drag_dest_set() */
 static const GtkTargetEntry drop_types[] = {
     {(char *) "text/plain", 0, DROP_PLAINTEXT},
@@ -52,5 +51,6 @@ static inline void drag_dest_set (GtkWidget * widget)
      GTK_DEST_DEFAULT_DROP), drop_types, aud::n_elems (drop_types),
      (GdkDragAction) (GDK_ACTION_COPY | GDK_ACTION_MOVE));
 }
+#endif
 
 #endif /* SKINS_DND_H */

@@ -32,15 +32,17 @@
 #include "skin.h"
 #include "number.h"
 
-void SkinnedNumber::draw (cairo_t * cr)
+void SkinnedNumber::draw (QPainter & cr)
 {
     skin_draw_pixbuf (cr, SKIN_NUMBERS, m_num * 9, 0, 0, 0, 9, 13);
 }
 
+#if 0
 bool SkinnedNumber::button_press (GdkEventButton * event)
 {
     return change_timer_mode_cb (event);
 }
+#endif
 
 SkinnedNumber::SkinnedNumber ()
 {

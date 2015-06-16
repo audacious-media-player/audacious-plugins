@@ -84,7 +84,8 @@ void SkinnedVis::set_colors ()
     }
 }
 
-void SkinnedVis::draw (cairo_t * cr)
+#if 0
+void SkinnedVis::draw (QPainter & cr)
 {
     uint32_t rgb[76 * 16];
     uint32_t * set;
@@ -227,6 +228,7 @@ DRAW:;
     cairo_paint (cr);
     cairo_surface_destroy (surf);
 }
+#endif
 
 SkinnedVis::SkinnedVis ()
 {

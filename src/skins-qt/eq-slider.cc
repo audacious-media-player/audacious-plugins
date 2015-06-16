@@ -32,7 +32,7 @@
 #include "skin.h"
 #include "eq-slider.h"
 
-void EqSlider::draw (cairo_t * cr)
+void EqSlider::draw (QPainter & cr)
 {
     int frame = 27 - m_pos * 27 / 50;
     if (frame < 14)
@@ -46,6 +46,7 @@ void EqSlider::draw (cairo_t * cr)
         skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 164, 1, m_pos, 11, 11);
 }
 
+#if 0
 void EqSlider::moved (int pos)
 {
     m_pos = aud::clamp (pos, 0, 50);
@@ -107,6 +108,7 @@ bool EqSlider::scroll (GdkEventScroll * event)
     queue_draw ();
     return true;
 }
+#endif
 
 void EqSlider::set_value (float value)
 {

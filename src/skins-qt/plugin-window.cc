@@ -23,8 +23,7 @@
 
 #include "plugin-window.h"
 
-#include <gdk/gdkkeysyms.h>
-#include <gtk/gtk.h>
+#include <glib.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/interface.h>
@@ -32,13 +31,13 @@
 #include <libaudcore/plugins.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/runtime.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "main.h"
 #include "window.h"
 
 static GList * windows;
 
+#if 0
 static gboolean delete_cb (GtkWidget * window, GdkEvent * event, PluginHandle * plugin)
 {
     aud_plugin_enable (plugin, false);
@@ -124,9 +123,11 @@ static void remove_dock_plugin (PluginHandle * plugin, void * unused)
         windows = g_list_delete_link (windows, node);
     }
 }
+#endif
 
 void create_plugin_windows (void)
 {
+#if 0
     for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
@@ -141,30 +142,38 @@ void create_plugin_windows (void)
 
     hook_associate ("dock plugin enabled", (HookFunction) add_dock_plugin, nullptr);
     hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin, nullptr);
+#endif
 }
 
 void show_plugin_windows (void)
 {
+#if 0
     g_list_foreach (windows, (GFunc) gtk_widget_show_all, nullptr);
+#endif
 }
 
 void focus_plugin_window (PluginHandle * plugin)
 {
+#if 0
     GList * node = g_list_find_custom (windows, plugin, (GCompareFunc) find_cb);
     if (node)
         gtk_window_present ((GtkWindow *) node->data);
 
     aud_plugin_send_message (plugin, "grab focus", nullptr, 0);
+#endif
 }
 
 void hide_plugin_windows (void)
 {
+#if 0
     g_list_foreach (windows, (GFunc) save_window_size, nullptr);
     g_list_foreach (windows, (GFunc) gtk_widget_hide, nullptr);
+#endif
 }
 
 void destroy_plugin_windows (void)
 {
+#if 0
     for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
@@ -179,6 +188,7 @@ void destroy_plugin_windows (void)
 
     hook_dissociate ("dock plugin enabled", (HookFunction) add_dock_plugin);
     hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin);
+#endif
 
     g_warn_if_fail (! windows);
 }

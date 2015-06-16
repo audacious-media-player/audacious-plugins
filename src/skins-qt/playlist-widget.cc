@@ -27,8 +27,6 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include <gdk/gdkkeysyms.h>
-
 #include "menus.h"
 #include "skins_cfg.h"
 #include "skin.h"
@@ -40,7 +38,6 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/playlist.h>
-#include <libaudgui/libaudgui.h>
 
 enum {DRAG_SELECT = 1, DRAG_MOVE};
 
@@ -127,7 +124,8 @@ void PlaylistWidget::cancel_all ()
     popup_hide ();
 }
 
-void PlaylistWidget::draw (cairo_t * cr)
+#if 0
+void PlaylistWidget::draw (QPainter & cr)
 {
     int active_entry = aud_playlist_get_position (m_playlist);
     int left = 3, right = 3;
@@ -299,13 +297,14 @@ void PlaylistWidget::draw (cairo_t * cr)
         cairo_stroke (cr);
     }
 }
+#endif
 
 PlaylistWidget::PlaylistWidget (int width, int height, const char * font) :
     m_width (width * config.scale),
     m_height (height * config.scale)
 {
     add_input (m_width, m_height, true, true);
-    set_font (font);  /* calls update() */
+    set_font (font);  /* calls refresh() */
 }
 
 void PlaylistWidget::resize (int width, int height)
@@ -313,12 +312,13 @@ void PlaylistWidget::resize (int width, int height)
     m_width = width * config.scale;
     m_height = height * config.scale;
 
-    set_size (m_width, m_height);
-    update ();
+    resize (m_width, m_height);
+    refresh ();
 }
 
 void PlaylistWidget::set_font (const char * font)
 {
+#if 0
     m_font.capture (pango_font_description_from_string (font));
 
     PangoLayout * layout = gtk_widget_create_pango_layout (gtk_dr (), "A");
@@ -331,10 +331,11 @@ void PlaylistWidget::set_font (const char * font)
     m_row_height = aud::max (rect.height, 1);
 
     g_object_unref (layout);
-    update ();
+    refresh ();
+#endif
 }
 
-void PlaylistWidget::update ()
+void PlaylistWidget::refresh ()
 {
     m_playlist = aud_playlist_get_active ();
     m_length = aud_playlist_entry_count (m_playlist);
@@ -353,7 +354,7 @@ void PlaylistWidget::update ()
     queue_draw ();
 
     if (m_slider)
-        m_slider->update ();
+        m_slider->refresh ();
 }
 
 void PlaylistWidget::ensure_visible (int position)
@@ -446,6 +447,7 @@ void PlaylistWidget::delete_selected ()
     }
 }
 
+#if 0
 bool PlaylistWidget::handle_keypress (GdkEventKey * event)
 {
     cancel_all ();
@@ -570,9 +572,10 @@ bool PlaylistWidget::handle_keypress (GdkEventKey * event)
         return false;
     }
 
-    update ();
+    refresh ();
     return true;
 }
+#endif
 
 void PlaylistWidget::row_info (int * rows, int * first)
 {
@@ -584,7 +587,7 @@ void PlaylistWidget::scroll_to (int row)
 {
     cancel_all ();
     m_first = row;
-    update ();
+    refresh ();
 }
 
 void PlaylistWidget::set_focused (int row)
@@ -592,7 +595,7 @@ void PlaylistWidget::set_focused (int row)
     cancel_all ();
     aud_playlist_set_focus (m_playlist, row);
     ensure_visible (row);
-    update ();
+    refresh ();
 }
 
 void PlaylistWidget::hover (int x, int y)
@@ -625,6 +628,7 @@ int PlaylistWidget::hover_end ()
     return temp;
 }
 
+#if 0
 bool PlaylistWidget::button_press (GdkEventButton * event)
 {
     int position = calc_position (event->y);
@@ -699,7 +703,7 @@ bool PlaylistWidget::button_press (GdkEventButton * event)
         return true;
     }
 
-    update ();
+    refresh ();
     return true;
 }
 
@@ -708,6 +712,7 @@ bool PlaylistWidget::button_release (GdkEventButton * event)
     cancel_all ();
     return true;
 }
+#endif
 
 void PlaylistWidget::scroll_timeout ()
 {
@@ -725,9 +730,10 @@ void PlaylistWidget::scroll_timeout ()
         break;
     }
 
-    update ();
+    refresh ();
 }
 
+#if 0
 bool PlaylistWidget::motion (GdkEventMotion * event)
 {
     int position = calc_position (event->y);
@@ -759,7 +765,7 @@ bool PlaylistWidget::motion (GdkEventMotion * event)
                 break;
             }
 
-            update ();
+            refresh ();
         }
     }
     else
@@ -783,10 +789,13 @@ bool PlaylistWidget::leave (GdkEventCrossing * event)
 
     return true;
 }
+#endif
 
 void PlaylistWidget::popup_show ()
 {
+#if 0
     audgui_infopopup_show (m_playlist, m_popup_pos);
+#endif
     popup_shown = true;
 
     g_source_remove (m_popup_source);
@@ -812,7 +821,9 @@ void PlaylistWidget::popup_hide ()
 
     if (popup_shown)
     {
+#if 0
         audgui_infopopup_hide ();
+#endif
         popup_shown = false;
     }
 

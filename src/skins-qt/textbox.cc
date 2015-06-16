@@ -39,7 +39,8 @@
 
 static Index<TextBox *> textboxes;
 
-void TextBox::draw (cairo_t * cr)
+#if 0
+void TextBox::draw (QPainter & cr)
 {
     if (m_scrolling)
     {
@@ -64,6 +65,7 @@ bool TextBox::button_press (GdkEventButton * event)
 {
     return press ? press (event) : false;
 }
+#endif
 
 void TextBox::scroll_timeout ()
 {
@@ -90,6 +92,7 @@ void TextBox::scroll_timeout ()
     draw_now ();
 }
 
+#if 0
 void TextBox::render_vector (const char * text)
 {
     PangoLayout * layout = gtk_widget_create_pango_layout (gtk_dr (), text);
@@ -103,7 +106,7 @@ void TextBox::render_vector (const char * text)
     logical.width = aud::max (logical.width, 1);
     ink.height = aud::max (ink.height, 1);
 
-    set_size (m_width * config.scale, ink.height);
+    resize (m_width * config.scale, ink.height);
 
     m_buf_width = aud::max ((logical.width + config.scale - 1) / config.scale, m_width);
     m_buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
@@ -171,7 +174,7 @@ void TextBox::render_bitmap (const char * text)
     int cw = skin.hints.textbox_bitmap_font_width;
     int ch = skin.hints.textbox_bitmap_font_height;
 
-    set_size (m_width * config.scale, ch * config.scale);
+    resize (m_width * config.scale, ch * config.scale);
 
     long len;
     gunichar * utf32 = g_utf8_to_ucs4 (text, -1, nullptr, & len, nullptr);
@@ -207,6 +210,7 @@ void TextBox::render_bitmap (const char * text)
     cairo_destroy (cr);
     g_free (utf32);
 }
+#endif
 
 void TextBox::render ()
 {
@@ -217,10 +221,12 @@ void TextBox::render ()
 
     const char * text = m_text ? m_text : "";
 
+#if 0
     if (m_font)
         render_vector (text);
     else
         render_bitmap (text);
+#endif
 
     if (m_may_scroll && m_buf_width > m_width)
     {
@@ -230,10 +236,12 @@ void TextBox::render ()
         {
             StringBuf temp = str_printf ("%s --- ", text);
 
+#if 0
             if (m_font)
                 render_vector (temp);
             else
                 render_bitmap (temp);
+#endif
         }
     }
 
@@ -265,10 +273,12 @@ void TextBox::set_text (const char * text)
 
 void TextBox::set_font (const char * font)
 {
+#if 0
     if (font)
         m_font.capture (pango_font_description_from_string (font));
     else
         m_font.clear ();
+#endif
 
     render ();
 }
@@ -300,8 +310,10 @@ TextBox::TextBox (int width, const char * font, bool scroll) :
     /* size is computed later */
     add_input (1, 1, false, true);
 
+#if 0
     if (font)
         m_font.capture (pango_font_description_from_string (font));
+#endif
 
     textboxes.append (this);
     render ();

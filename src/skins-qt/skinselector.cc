@@ -27,7 +27,6 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "plugin.h"
 #include "skin.h"
@@ -35,6 +34,7 @@
 #include "util.h"
 #include "view.h"
 
+#if 0
 enum SkinViewCols {
     SKIN_VIEW_COL_PREVIEW,
     SKIN_VIEW_COL_FORMATTEDNAME,
@@ -241,3 +241,4 @@ void skin_view_realize (GtkTreeView * treeview)
     g_signal_connect(treeview, "cursor-changed",
                      G_CALLBACK(skin_view_on_cursor_changed), nullptr);
 }
+#endif

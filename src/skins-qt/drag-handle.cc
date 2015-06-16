@@ -22,6 +22,7 @@
 #include "drag-handle.h"
 #include "skins_cfg.h"
 
+#if 0
 bool DragHandle::button_press (GdkEventButton * event)
 {
     if (event->button != 1)
@@ -57,6 +58,7 @@ bool DragHandle::motion (GdkEventMotion * event)
 
     return true;
 }
+#endif
 
 DragHandle::DragHandle (int w, int h, void (* press) (), void (* drag) (int x, int y)) :
     press (press), drag (drag)

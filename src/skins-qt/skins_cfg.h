@@ -21,8 +21,6 @@
 #ifndef SKINS_CFG_H
 #define SKINS_CFG_H
 
-#include <gtk/gtk.h>
-
 struct PluginPreferences;
 
 typedef struct {
@@ -48,12 +46,14 @@ extern skins_cfg_t config;
 void skins_cfg_load();
 void skins_cfg_save();
 
+#if 0
 void on_skin_view_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
                                 int x, int y,
                                 GtkSelectionData * selection_data,
                                 unsigned info, unsigned time,
                                 void * user_data);
+#endif
 
 extern const PluginPreferences skins_prefs;
 

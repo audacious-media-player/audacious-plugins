@@ -24,7 +24,6 @@
  */
 
 #include <string.h>
-#include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
@@ -32,8 +31,6 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "menus.h"
 #include "plugin.h"
@@ -58,6 +55,7 @@ static Button * equalizerwin_presets;
 static EqSlider * equalizerwin_preamp, * equalizerwin_bands[10];
 static HSlider * equalizerwin_volume, * equalizerwin_balance;
 
+#if 0
 static void
 equalizerwin_shade_toggle(void)
 {
@@ -66,6 +64,7 @@ equalizerwin_shade_toggle(void)
 
 static void eq_on_cb (Button * button, GdkEventButton * event)
  {aud_set_bool (nullptr, "equalizer_active", button->get_active ()); }
+#endif
 
 static void update_from_config (void *, void *)
 {
@@ -78,9 +77,10 @@ static void update_from_config (void *, void *)
     for (int i = 0; i < AUD_EQ_NBANDS; i ++)
         equalizerwin_bands[i]->set_value (bands[i]);
 
-    equalizerwin_graph->update ();
+    equalizerwin_graph->refresh ();
 }
 
+#if 0
 static gboolean
 equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
                    void * callback_data)
@@ -108,6 +108,7 @@ equalizerwin_close_cb(void)
 {
     view_set_show_equalizer (FALSE);
 }
+#endif
 
 static void eqwin_volume_set_knob (void)
 {
@@ -183,7 +184,7 @@ equalizerwin_create_widgets(void)
     equalizerwin_on = new Button (25, 12, 10, 119, 128, 119, 69, 119, 187, 119, SKIN_EQMAIN, SKIN_EQMAIN);
     equalizerwin->put_widget (false, equalizerwin_on, 14, 18);
     equalizerwin_on->set_active (aud_get_bool (nullptr, "equalizer_active"));
-    equalizerwin_on->on_release (eq_on_cb);
+//    equalizerwin_on->on_release (eq_on_cb);
 
     // AUTO button currently does nothing
     equalizerwin_auto = new Button (33, 12, 35, 119, 153, 119, 94, 119, 212, 119, SKIN_EQMAIN, SKIN_EQMAIN);
@@ -191,23 +192,23 @@ equalizerwin_create_widgets(void)
 
     equalizerwin_presets = new Button (44, 12, 224, 164, 224, 176, SKIN_EQMAIN, SKIN_EQMAIN);
     equalizerwin->put_widget (false, equalizerwin_presets, 217, 18);
-    equalizerwin_presets->on_release ((ButtonCB) audgui_show_eq_preset_window);
+//    equalizerwin_presets->on_release ((ButtonCB) audgui_show_eq_preset_window);
 
     equalizerwin_close = new Button (9, 9, 0, 116, 0, 125, SKIN_EQMAIN, SKIN_EQMAIN);
     equalizerwin->put_widget (false, equalizerwin_close, 264, 3);
-    equalizerwin_close->on_release ((ButtonCB) equalizerwin_close_cb);
+//    equalizerwin_close->on_release ((ButtonCB) equalizerwin_close_cb);
 
     equalizerwin_shade = new Button (9, 9, 254, 137, 1, 38, SKIN_EQMAIN, SKIN_EQ_EX);
     equalizerwin->put_widget (false, equalizerwin_shade, 254, 3);
-    equalizerwin_shade->on_release ((ButtonCB) equalizerwin_shade_toggle);
+//    equalizerwin_shade->on_release ((ButtonCB) equalizerwin_shade_toggle);
 
     equalizerwin_shaded_close = new Button (9, 9, 11, 38, 11, 47, SKIN_EQ_EX, SKIN_EQ_EX);
     equalizerwin->put_widget (true, equalizerwin_shaded_close, 264, 3);
-    equalizerwin_shaded_close->on_release ((ButtonCB) equalizerwin_close_cb);
+//    equalizerwin_shaded_close->on_release ((ButtonCB) equalizerwin_close_cb);
 
     equalizerwin_shaded_shade = new Button (9, 9, 254, 3, 1, 47, SKIN_EQ_EX, SKIN_EQ_EX);
     equalizerwin->put_widget (true, equalizerwin_shaded_shade, 254, 3);
-    equalizerwin_shaded_shade->on_release ((ButtonCB) equalizerwin_shade_toggle);
+//    equalizerwin_shaded_shade->on_release ((ButtonCB) equalizerwin_shade_toggle);
 
     equalizerwin_graph = new EqGraph;
     equalizerwin->put_widget (false, equalizerwin_graph, 86, 17);
@@ -240,9 +241,9 @@ equalizerwin_create_widgets(void)
     equalizerwin_balance->on_release (eqwin_balance_release_cb);
 }
 
-static void eq_win_draw (GtkWidget * window, cairo_t * cr)
+static void eq_win_draw (QPainter & cr)
 {
-    gboolean shaded = aud_get_bool ("skins", "equalizer_shaded");
+    bool shaded = aud_get_bool ("skins", "equalizer_shaded");
 
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, shaded ? 14 : 116);
 
@@ -259,34 +260,30 @@ equalizerwin_create_window(void)
 
     equalizerwin = new Window (WINDOW_EQ, & config.equalizer_x,
      & config.equalizer_y, 275, shaded ? 14 : 116, shaded, eq_win_draw);
+    equalizerwin->setWindowTitle (_("Audacious Equalizer"));
 
-    GtkWidget * w = equalizerwin->gtk ();
-    gtk_window_set_title ((GtkWindow *) w, _("Audacious Equalizer"));
-    gtk_window_set_transient_for ((GtkWindow *) w, (GtkWindow *) mainwin->gtk ());
-    gtk_window_set_skip_pager_hint ((GtkWindow *) w, true);
-    gtk_window_set_skip_taskbar_hint ((GtkWindow *) w, true);
-
+#if 0
     g_signal_connect (w, "delete-event", (GCallback) handle_window_close, nullptr);
     g_signal_connect (w, "button-press-event", (GCallback) equalizerwin_press, nullptr);
     g_signal_connect (w, "key-press-event", (GCallback) mainwin_keypress, nullptr);
+#endif
 }
 
-static void equalizerwin_destroyed (void)
+void equalizerwin_unhook ()
 {
     hook_dissociate ("set equalizer_active", (HookFunction) update_from_config);
     hook_dissociate ("set equalizer_bands", (HookFunction) update_from_config);
     hook_dissociate ("set equalizer_preamp", (HookFunction) update_from_config);
 }
 
-void
-equalizerwin_create(void)
+void equalizerwin_create ()
 {
     equalizerwin_create_window ();
     equalizerwin_create_widgets ();
 
+#if 0
     gtk_window_add_accel_group ((GtkWindow *) equalizerwin->gtk (), menu_get_accel_group ());
-
-    g_signal_connect (equalizerwin->gtk (), "destroy", (GCallback) equalizerwin_destroyed, nullptr);
+#endif
 
     hook_associate ("set equalizer_active", (HookFunction) update_from_config, nullptr);
     hook_associate ("set equalizer_bands", (HookFunction) update_from_config, nullptr);

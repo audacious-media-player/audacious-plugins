@@ -29,7 +29,7 @@
 #include "skin.h"
 #include "playstatus.h"
 
-void PlayStatus::draw (cairo_t * cr)
+void PlayStatus::draw (QPainter & cr)
 {
     if (m_status == STATUS_PLAY)
         skin_draw_pixbuf (cr, SKIN_PLAYPAUSE, 36, 0, 0, 0, 3, 9);
