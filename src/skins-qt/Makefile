@@ -23,7 +23,6 @@ SRCS = actions.cc \
        skin-ini.cc \
        skins_cfg.cc \
        skinselector.cc \
-       surface.cc \
        svis.cc \
        textbox.cc \
        util.cc \

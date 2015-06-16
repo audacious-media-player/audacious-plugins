@@ -32,7 +32,6 @@
 #define N 10
 static_assert (N == AUD_EQ_NBANDS, "only a 10-band EQ is supported");
 
-#if 0
 static void init_spline (const double * x, const double * y, double * y2)
 {
     int i, k;
@@ -78,23 +77,17 @@ static double eval_spline (const double * xa, const double * ya, const double * 
             ((a * a * a - a) * y2a[klo] +
              (b * b * b - b) * y2a[khi]) * (h * h) / 6.0);
 }
-#endif
 
 void EqGraph::draw (QPainter & cr)
 {
-#if 0
     static const double x[N] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
-#endif
 
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 294, 0, 0, 113, 19);
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_get_double (nullptr,
      "equalizer_preamp") * 9 + AUD_EQ_MAX_GAIN / 2) / AUD_EQ_MAX_GAIN, 113, 1);
 
-#if 0
-    cairo_scale (cr, config.scale, config.scale);
-
-    uint32_t cols[19];
-    skin_get_eq_spline_colors (cols);
+    cr.setTransform (QTransform ().scale (config.scale, config.scale));
+    cr.setPen (Qt::NoPen);
 
     double bands[N];
     aud_eq_get_bands (bands);
@@ -102,7 +95,6 @@ void EqGraph::draw (QPainter & cr)
     double yf[N];
     init_spline (x, bands, yf);
 
-    /* now draw a pixelated line with vector graphics ... -- jlindgren */
     int py = 0;
     for (int i = 0; i < 109; i ++)
     {
@@ -131,12 +123,10 @@ void EqGraph::draw (QPainter & cr)
 
         for (y = ymin; y <= ymax; y++)
         {
-            cairo_rectangle (cr, i + 2, y, 1, 1);
-            set_cairo_color (cr, cols[y]);
-            cairo_fill (cr);
+            cr.setBrush (QColor (skin.eq_spline_colors[y]));
+            cr.drawRect (i + 2, y, 1, 1);
         }
     }
-#endif
 }
 
 EqGraph::EqGraph ()

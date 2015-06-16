@@ -279,11 +279,11 @@ void view_apply_skin ()
     equalizerwin->set_shapes
      (scale_mask (skin.masks[SKIN_MASK_EQ], config.scale),
       scale_mask (skin.masks[SKIN_MASK_EQ_SHADE], config.scale));
+#endif
 
     // hide the equalizer graph if we have a short eqmain.bmp
-    int h = cairo_image_surface_get_height (skin.pixmaps[SKIN_EQMAIN].get ());
-    equalizerwin_graph->show (h >= 315);
-#endif
+    int h = skin.pixmaps[SKIN_EQMAIN]->height ();
+    equalizerwin_graph->setVisible (h >= 315);
 
     mainwin_refresh_hints ();
     TextBox::update_all ();

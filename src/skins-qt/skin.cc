@@ -36,7 +36,6 @@
 
 #include "plugin.h"
 #include "skins_cfg.h"
-#include "surface.h"
 #include "skin.h"
 #include "util.h"
 
@@ -66,30 +65,30 @@ static_assert (aud::n_elems (skin_pixmap_id_map) == SKIN_PIXMAP_COUNT,
  "update skin_pixmap_id_map!");
 
 static const uint32_t default_vis_colors[24] = {
-    COLOR (9, 34, 53),
-    COLOR (10, 18, 26),
-    COLOR (0, 54, 108),
-    COLOR (0, 58, 116),
-    COLOR (0, 62, 124),
-    COLOR (0, 66, 132),
-    COLOR (0, 70, 140),
-    COLOR (0, 74, 148),
-    COLOR (0, 78, 156),
-    COLOR (0, 82, 164),
-    COLOR (0, 86, 172),
-    COLOR (0, 92, 184),
-    COLOR (0, 98, 196),
-    COLOR (0, 104, 208),
-    COLOR (0, 110, 220),
-    COLOR (0, 116, 232),
-    COLOR (0, 122, 244),
-    COLOR (0, 128, 255),
-    COLOR (0, 128, 255),
-    COLOR (0, 104, 208),
-    COLOR (0, 80, 160),
-    COLOR (0, 56, 112),
-    COLOR (0, 32, 64),
-    COLOR (200, 200, 200)
+    qRgb (9, 34, 53),
+    qRgb (10, 18, 26),
+    qRgb (0, 54, 108),
+    qRgb (0, 58, 116),
+    qRgb (0, 62, 124),
+    qRgb (0, 66, 132),
+    qRgb (0, 70, 140),
+    qRgb (0, 74, 148),
+    qRgb (0, 78, 156),
+    qRgb (0, 82, 164),
+    qRgb (0, 86, 172),
+    qRgb (0, 92, 184),
+    qRgb (0, 98, 196),
+    qRgb (0, 104, 208),
+    qRgb (0, 110, 220),
+    qRgb (0, 116, 232),
+    qRgb (0, 122, 244),
+    qRgb (0, 128, 255),
+    qRgb (0, 128, 255),
+    qRgb (0, 104, 208),
+    qRgb (0, 80, 160),
+    qRgb (0, 56, 112),
+    qRgb (0, 32, 64),
+    qRgb (200, 200, 200)
 };
 
 Skin skin;
@@ -105,24 +104,26 @@ static bool skin_load_pixmap_id (SkinPixmapId id, const char * path)
         return false;
     }
 
-    skin.pixmaps[id].capture (new QPixmap ((const char *) filename));
-    if (skin.pixmaps[id]->isNull ())
+    auto image = SmartNew<QImage> ((const char *) filename);
+    if (! image->isNull () && image->format () != QImage::Format_RGB32)
+        * image = image->convertToFormat (QImage::Format_RGB32);
+
+    if (image->isNull ())
     {
         AUDERR ("Error loading pixmap: %s\n", (const char *) filename);
         return false;
     }
 
+    skin.pixmaps[id] = std::move (image);
     return true;
 }
 
-#if 0
 static int color_diff (uint32_t a, uint32_t b)
 {
-    return abs (COLOR_R (a) - COLOR_R (b)) + abs (COLOR_G (a) - COLOR_G (b)) +
-     abs (COLOR_B (a) - COLOR_B (b));
+    return abs (qRed (a) - qRed (b)) + abs (qGreen (a) - qGreen (b)) + abs (qBlue (a) - qBlue (b));
 }
 
-static void skin_get_textcolors (cairo_surface_t * s)
+static void skin_get_textcolors (const QImage & image)
 {
     /*
      * Try to extract reasonable background and foreground colors
@@ -130,14 +131,14 @@ static void skin_get_textcolors (cairo_surface_t * s)
      */
 
     /* Get a pixel from the middle of the space character */
-    skin.colors[SKIN_TEXTBG] = surface_get_pixel (s, 152, 3);
+    skin.colors[SKIN_TEXTBG] = image.pixel (152, 3);
 
     int max_d = -1;
     for (int y = 0; y < 6; y ++)
     {
         for (int x = 1; x < 150; x ++)
         {
-            int c = surface_get_pixel (s, x, y);
+            uint32_t c = image.pixel (x, y);
             int d = color_diff (skin.colors[SKIN_TEXTBG], c);
             if (d > max_d)
             {
@@ -147,7 +148,12 @@ static void skin_get_textcolors (cairo_surface_t * s)
         }
     }
 }
-#endif
+
+static void skin_get_eq_spline_colors (const QImage & image)
+{
+    for (int i = 0; i < 19; i ++)
+        skin.eq_spline_colors[i] = image.pixel (115, i + 294);
+}
 
 static void skin_load_viscolor (const char * path)
 {
@@ -168,30 +174,30 @@ static void skin_load_viscolor (const char * path)
         Index<int> array = string_to_int_array (string);
 
         if (array.len () >= 3)
-            skin.vis_colors[line] = COLOR (array[0], array[1], array[2]);
+            skin.vis_colors[line] = qRgb (array[0], array[1], array[2]);
 
         string = next;
     }
 }
 
-#if 0
-static void
-skin_numbers_generate_dash ()
+static void skin_numbers_generate_dash ()
 {
-    cairo_surface_t * old = skin.pixmaps[SKIN_NUMBERS].get ();
-    if (! old || cairo_image_surface_get_width (old) < 99)
+    QImage * old = skin.pixmaps[SKIN_NUMBERS].get ();
+    if (! old || old->width () < 99)
         return;
 
-    int h = cairo_image_surface_get_height (old);
-    cairo_surface_t * surface = surface_new (108, h);
+    int h = old->height ();
+    auto image = new QImage (108, h, QImage::Format_RGB32);
 
-    surface_copy_rect (old, 0, 0, 99, h, surface, 0, 0);
-    surface_copy_rect (old, 90, 0, 9, h, surface, 99, 0);
-    surface_copy_rect (old, 20, 6, 5, 1, surface, 101, 6);
+    {
+        QPainter p (image);
+        p.drawImage (0, 0, * old, 0, 0, 99, h);
+        p.drawImage (99, 0, * old, 90, 0, 9, h);
+        p.drawImage (101, 6, * old, 20, 6, 5, 1);
+    }
 
-    skin.pixmaps[SKIN_NUMBERS].capture (surface);
+    skin.pixmaps[SKIN_NUMBERS].capture (image);
 }
-#endif
 
 static bool
 skin_load_pixmaps(const char * path)
@@ -202,14 +208,14 @@ skin_load_pixmaps(const char * path)
         if (! skin_load_pixmap_id ((SkinPixmapId) i, path))
             return false;
 
-#if 0
     if (skin.pixmaps[SKIN_TEXT])
-        skin_get_textcolors (skin.pixmaps[SKIN_TEXT].get ());
+        skin_get_textcolors (* skin.pixmaps[SKIN_TEXT]);
 
-    if (skin.pixmaps[SKIN_NUMBERS] && cairo_image_surface_get_width
-     (skin.pixmaps[SKIN_NUMBERS].get ()) < 108)
+    if (skin.pixmaps[SKIN_EQMAIN])
+        skin_get_eq_spline_colors (* skin.pixmaps[SKIN_EQMAIN]);
+
+    if (skin.pixmaps[SKIN_NUMBERS] && skin.pixmaps[SKIN_NUMBERS]->width () < 108)
         skin_numbers_generate_dash ();
-#endif
 
     return true;
 }
@@ -311,22 +317,8 @@ void skin_draw_pixbuf (QPainter & p, SkinPixmapId id, int xsrc, int ysrc, int
 
     p.save ();
     p.setTransform (QTransform ().scale (config.scale, config.scale));
-    p.drawPixmap (xdest, ydest, * skin.pixmaps[id], xsrc, ysrc, width, height);
+    p.drawImage (xdest, ydest, * skin.pixmaps[id], xsrc, ysrc, width, height);
     p.restore ();
-}
-
-void skin_get_eq_spline_colors (uint32_t colors[19])
-{
-#if 0
-    if (! skin.pixmaps[SKIN_EQMAIN])
-    {
-        memset (colors, 0, sizeof (uint32_t) * 19);
-        return;
-    }
-
-    for (int i = 0; i < 19; i ++)
-        colors[i] = surface_get_pixel (skin.pixmaps[SKIN_EQMAIN].get (), 115, i + 294);
-#endif
 }
 
 static void skin_draw_playlistwin_frame_top (QPainter & cr, int width, bool focus)

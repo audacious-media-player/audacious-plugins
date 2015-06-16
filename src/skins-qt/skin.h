@@ -31,13 +31,8 @@
 #include <libaudcore/index.h>
 #include <libaudcore/objects.h>
 
+class QImage;
 class QPainter;
-class QPixmap;
-
-#define COLOR(r,g,b) (((uint32_t) (r) << 16) | ((uint32_t) (g) << 8) | (uint32_t) (b))
-#define COLOR_R(c) ((int) (((c) & 0xff0000) >> 16))
-#define COLOR_G(c) ((int) (((c) & 0xff00) >> 8))
-#define COLOR_B(c) ((int) ((c) & 0xff))
 
 typedef enum {
     SKIN_MAIN = 0,
@@ -176,9 +171,10 @@ struct Skin
 {
     SkinHints hints;
     uint32_t colors[SKIN_COLOR_COUNT] {};
+    uint32_t eq_spline_colors[19] {};
     uint32_t vis_colors[24] {};
 
-    SmartPtr<QPixmap> pixmaps[SKIN_PIXMAP_COUNT];
+    SmartPtr<QImage> pixmaps[SKIN_PIXMAP_COUNT];
 #if 0
     Index<GdkRectangle> masks[SKIN_MASK_COUNT];
 #endif
@@ -206,7 +202,6 @@ bool skin_load (const char * path);
 void skin_draw_pixbuf (QPainter & p, SkinPixmapId id, int xsrc, int ysrc,
  int xdest, int ydest, int width, int height);
 
-void skin_get_eq_spline_colors (uint32_t colors[19]);
 void skin_install_skin (const char * path);
 
 void skin_draw_playlistwin_shaded (QPainter & cr, int width, bool focus);
@@ -217,13 +212,5 @@ void skin_draw_mainwin_titlebar (QPainter & cr, bool shaded, bool focus);
 void skin_load_hints (const char * path);
 void skin_load_pl_colors (const char * path);
 void skin_load_masks (const char * path);
-
-#if 0
-static inline void set_cairo_color (cairo_t * cr, uint32_t c)
-{
-    cairo_set_source_rgb (cr, COLOR_R(c) / 255.0, COLOR_G(c) / 255.0, COLOR_B(c)
-     / 255.0);
-}
-#endif
 
 #endif

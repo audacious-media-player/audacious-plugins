@@ -28,7 +28,6 @@
 #include <libaudcore/objects.h>
 
 #include "skins_cfg.h"
-#include "surface.h"
 #include "skin.h"
 #include "vis.h"
 
@@ -42,7 +41,6 @@ static const int svis_vu_normal_colors[] = {16, 14, 12, 10, 8, 6, 4, 2};
 #define RGB_SET_INDEX(c) RGB_SET (skin.vis_colors[c])
 #define RGB_SET_INDEX_Y(c) RGB_SET_Y (skin.vis_colors[c])
 
-#if 0
 void SmallVis::draw (QPainter & cr)
 {
     uint32_t rgb[38 * 5];
@@ -169,15 +167,10 @@ void SmallVis::draw (QPainter & cr)
     }
 
 DRAW:;
-    cairo_surface_t * surf = cairo_image_surface_create_for_data
-     ((unsigned char *) rgb, CAIRO_FORMAT_RGB24, 38, 5, 4 * 38);
-    cairo_scale (cr, config.scale, config.scale);
-    cairo_set_source_surface (cr, surf, 0, 0);
-    cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
-    cairo_paint (cr);
-    cairo_surface_destroy (surf);
+    QImage image ((unsigned char *) rgb, 38, 5, 4 * 38, QImage::Format_RGB32);
+    cr.setTransform (QTransform ().scale (config.scale, config.scale));
+    cr.drawImage (0, 0, image);
 }
-#endif
 
 SmallVis::SmallVis ()
 {

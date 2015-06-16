@@ -28,7 +28,6 @@
 #include <libaudcore/objects.h>
 
 #include "skins_cfg.h"
-#include "surface.h"
 #include "skin.h"
 #include "vis.h"
 
@@ -47,15 +46,15 @@ void SkinnedVis::set_colors ()
 {
     uint32_t fgc = skin.colors[SKIN_TEXTFG];
     uint32_t bgc = skin.colors[SKIN_TEXTBG];
-    int fg[3] = {COLOR_R (fgc), COLOR_G (fgc), COLOR_B (fgc)};
-    int bg[3] = {COLOR_R (bgc), COLOR_G (bgc), COLOR_B (bgc)};
+    int fg[3] = {qRed (fgc), qGreen (fgc), qBlue (fgc)};
+    int bg[3] = {qRed (bgc), qGreen (bgc), qBlue (bgc)};
 
     for (int x = 0; x < 256; x ++)
     {
         unsigned char c[3];
         for (int n = 0; n < 3; n ++)
             c[n] = bg[n] + (fg[n] - bg[n]) * x / 255;
-        m_voice_color[x] = COLOR (c[0], c[1], c[2]);
+        m_voice_color[x] = qRgb (c[0], c[1], c[2]);
     }
 
     for (int x = 0; x < 256; x ++)
@@ -63,11 +62,11 @@ void SkinnedVis::set_colors ()
         unsigned char r = aud::min (x, 127) * 2;
         unsigned char g = aud::clamp (x - 64, 0, 127) * 2;
         unsigned char b = aud::max (x - 128, 0) * 2;
-        m_voice_color_fire[x] = COLOR (r, g, b);
+        m_voice_color_fire[x] = qRgb (r, g, b);
     }
 
     for (int x = 0; x < 256; x ++)
-        m_voice_color_ice[x] = COLOR (x / 2, x, aud::min (x * 2, 255));
+        m_voice_color_ice[x] = qRgb (x / 2, x, aud::min (x * 2, 255));
 
     uint32_t * set = m_pattern_fill;
     uint32_t * end = set + 76;
@@ -84,7 +83,6 @@ void SkinnedVis::set_colors ()
     }
 }
 
-#if 0
 void SkinnedVis::draw (QPainter & cr)
 {
     uint32_t rgb[76 * 16];
@@ -220,15 +218,10 @@ void SkinnedVis::draw (QPainter & cr)
     }
 
 DRAW:;
-    cairo_surface_t * surf = cairo_image_surface_create_for_data
-     ((unsigned char *) rgb, CAIRO_FORMAT_RGB24, 76, 16, 4 * 76);
-    cairo_scale (cr, config.scale, config.scale);
-    cairo_set_source_surface (cr, surf, 0, 0);
-    cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
-    cairo_paint (cr);
-    cairo_surface_destroy (surf);
+    QImage image ((unsigned char *) rgb, 76, 16, 4 * 76, QImage::Format_RGB32);
+    cr.setTransform (QTransform ().scale (config.scale, config.scale));
+    cr.drawImage (0, 0, image);
 }
-#endif
 
 SkinnedVis::SkinnedVis ()
 {
