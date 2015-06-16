@@ -313,7 +313,7 @@ void PlaylistWidget::resize (int width, int height)
     m_width = width * config.scale;
     m_height = height * config.scale;
 
-    resize (m_width, m_height);
+    Widget::resize (m_width, m_height);
     refresh ();
 }
 
