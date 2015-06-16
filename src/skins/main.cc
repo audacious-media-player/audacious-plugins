@@ -65,6 +65,20 @@
 #define SEEK_THRESHOLD 200 /* milliseconds */
 #define SEEK_SPEED 50 /* milliseconds per pixel */
 
+class MainWindow : public Window
+{
+public:
+    MainWindow (bool shaded) :
+        Window (WINDOW_MAIN, & config.player_x, & config.player_y,
+         shaded ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width,
+         shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height, shaded) {}
+
+private:
+    void draw (cairo_t * cr);
+    bool button_press (GdkEventButton * event);
+    bool scroll (GdkEventScroll * event);
+};
+
 Window * mainwin;
 
 Button * mainwin_eq, * mainwin_pl;
@@ -450,10 +464,10 @@ static void stop_after_song_toggled ()
         mainwin_show_status_message (_("Stopping after song."));
 }
 
-static void mainwin_scrolled (GtkWidget * widget, GdkEventScroll * event, void *
- unused)
+bool MainWindow::scroll (GdkEventScroll * event)
 {
-    switch (event->direction) {
+    switch (event->direction)
+    {
         case GDK_SCROLL_UP:
             mainwin_set_volume_diff (5);
             break;
@@ -469,29 +483,28 @@ static void mainwin_scrolled (GtkWidget * widget, GdkEventScroll * event, void *
         default:
             break;
     }
+
+    return true;
 }
 
-static gboolean
-mainwin_mouse_button_press(GtkWidget * widget,
-                           GdkEventButton * event,
-                           void * callback_data)
+bool MainWindow::button_press (GdkEventButton * event)
 {
     if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
-     event->window == gtk_widget_get_window (widget)&&
+     event->window == gtk_widget_get_window (gtk ()) &&
      event->y < 14 * config.scale)
     {
         mainwin_shade_toggle ();
-        return TRUE;
+        return true;
     }
 
-    if (event->button == 3)
+    if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
     {
-        menu_popup (UI_MENU_MAIN, event->x_root, event->y_root, FALSE, FALSE,
+        menu_popup (UI_MENU_MAIN, event->x_root, event->y_root, false, false,
          event->button, event->time);
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return Window::button_press (event);
 }
 
 static void mainwin_playback_rpress (Button * button, GdkEventButton * event)
@@ -935,7 +948,7 @@ mainwin_create_widgets(void)
 
     mainwin_close = new Button (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
     mainwin->put_widget (false, mainwin_close, 264, 3);
-    mainwin_close->on_release ((ButtonCB) handle_window_close);
+    mainwin_close->on_release ((ButtonCB) skins_close);
 
     mainwin_rew = new Button (23, 18, 0, 0, 0, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     mainwin->put_widget (false, mainwin_rew, 16, 88);
@@ -1066,7 +1079,7 @@ mainwin_create_widgets(void)
 
     mainwin_shaded_close = new Button (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
     mainwin->put_widget (true, mainwin_shaded_close, 264, 3);
-    mainwin_shaded_close->on_release ((ButtonCB) handle_window_close);
+    mainwin_shaded_close->on_release ((ButtonCB) skins_close);
 
     mainwin_srew = new Button (8, 7);
     mainwin->put_widget (true, mainwin_srew, 169, 4);
@@ -1121,36 +1134,29 @@ static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
     return TRUE;
 }
 
-static void mainwin_draw (GtkWidget * window, cairo_t * cr)
+void MainWindow::draw (cairo_t * cr)
 {
-    bool shaded = aud_get_bool ("skins", "player_shaded");
-    int width = shaded ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width;
-    int height = shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height;
+    int width = is_shaded () ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width;
+    int height = is_shaded () ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height;
 
     skin_draw_pixbuf (cr, SKIN_MAIN, 0, 0, 0, 0, width, height);
-    skin_draw_mainwin_titlebar (cr, shaded, TRUE);
+    skin_draw_mainwin_titlebar (cr, is_shaded (), true);
 }
 
 static void
 mainwin_create_window(void)
 {
     bool shaded = aud_get_bool ("skins", "player_shaded");
-    int width = shaded ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width;
-    int height = shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height;
 
-    mainwin = new Window (WINDOW_MAIN, & config.player_x, & config.player_y,
-     width, height, shaded, mainwin_draw);
+    mainwin = new MainWindow (shaded);
     mainwin->setWindowTitle (_("Audacious"));
 
     GtkWidget * w = mainwin->gtk ();
     drag_dest_set (w);
 
-    g_signal_connect (w, "button_press_event", (GCallback) mainwin_mouse_button_press, nullptr);
-    g_signal_connect (w, "scroll_event", (GCallback) mainwin_scrolled, nullptr);
     g_signal_connect (w, "drag-data-received", (GCallback) mainwin_drag_data_received, nullptr);
     g_signal_connect (w, "key_press_event", (GCallback) mainwin_keypress, nullptr);
     g_signal_connect (w, "window-state-event", (GCallback) state_cb, nullptr);
-    g_signal_connect (w, "delete-event", (GCallback) handle_window_close, nullptr);
 
     hook_associate ("playback begin", (HookFunction) mainwin_playback_begin, nullptr);
     hook_associate ("playback ready", (HookFunction) mainwin_playback_begin, nullptr);

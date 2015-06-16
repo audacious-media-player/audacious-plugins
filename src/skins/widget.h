@@ -60,7 +60,8 @@ protected:
     virtual bool button_release (GdkEventButton * event) { return false; }
     virtual bool scroll (GdkEventScroll * event) { return false; }
     virtual bool motion (GdkEventMotion * event) { return false; }
-    virtual bool leave (GdkEventCrossing * event) { return false; }
+    virtual bool leave () { return false; }
+    virtual bool close () { return false; }
 
 private:
     static void destroy_cb (GtkWidget * widget, Widget * me)
@@ -79,7 +80,9 @@ private:
     static gboolean motion_cb (GtkWidget * widget, GdkEventMotion * event, Widget * me)
         { return me->motion (event); }
     static gboolean leave_cb (GtkWidget * widget, GdkEventCrossing * event, Widget * me)
-        { return me->leave (event); }
+        { return me->leave (); }
+    static gboolean close_cb (GtkWidget * widget, GdkEvent * event, Widget * me)
+        { return me->close (); }
 
     GtkWidget * m_widget = nullptr;
     GtkWidget * m_drawable = nullptr;

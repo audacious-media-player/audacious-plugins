@@ -776,7 +776,7 @@ bool PlaylistWidget::motion (GdkEventMotion * event)
     return true;
 }
 
-bool PlaylistWidget::leave (GdkEventCrossing * event)
+bool PlaylistWidget::leave ()
 {
     if (! m_drag)
         cancel_all ();

@@ -59,7 +59,7 @@ private:
     bool button_press (GdkEventButton * event);
     bool button_release (GdkEventButton * event);
     bool motion (GdkEventMotion * event);
-    bool leave (GdkEventCrossing * event);
+    bool leave ();
 
     void update_title ();
     void calc_layout ();

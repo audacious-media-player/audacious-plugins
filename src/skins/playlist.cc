@@ -61,6 +61,20 @@
 
 #define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), __VA_ARGS__)
 
+class PlWindow : public Window
+{
+public:
+    PlWindow (bool shaded) :
+    Window (WINDOW_PLAYLIST, & config.playlist_x, & config.playlist_y,
+     config.playlist_width, shaded ? PLAYLISTWIN_SHADED_HEIGHT :
+     config.playlist_height, shaded) {}
+
+private:
+    void draw (cairo_t * cr);
+    bool button_press (GdkEventButton * event);
+    bool scroll (GdkEventScroll * event);
+};
+
 Window * playlistwin;
 PlaylistWidget * playlistwin_list;
 TextBox * playlistwin_sinfo;
@@ -125,22 +139,22 @@ playlistwin_shade_toggle(void)
     view_set_playlist_shaded (! aud_get_bool ("skins", "playlist_shaded"));
 }
 
-static void playlistwin_scroll (gboolean up)
+static void playlistwin_scroll (int dir)
 {
     int rows, first;
 
     playlistwin_list->row_info (& rows, & first);
-    playlistwin_list->scroll_to (first + (up ? -1 : 1) * rows / 3);
+    playlistwin_list->scroll_to (first + dir * rows / 3);
 }
 
 static void playlistwin_scroll_up_pushed (void)
 {
-    playlistwin_scroll (true);
+    playlistwin_scroll (-1);
 }
 
 static void playlistwin_scroll_down_pushed (void)
 {
-    playlistwin_scroll (false);
+    playlistwin_scroll (1);
 }
 
 /* note: height is ignored if the window is shaded */
@@ -205,36 +219,39 @@ static void playlistwin_resize (int w, int h)
     playlistwin->move_widget (false, button_list, w - 46, h - 29);
 }
 
-static void
-playlistwin_scrolled(GtkWidget * widget,
-                     GdkEventScroll * event,
-                     void * callback_data)
+bool PlWindow::scroll (GdkEventScroll * event)
 {
     switch (event->direction)
     {
     case GDK_SCROLL_DOWN:
-        playlistwin_scroll (false);
+        playlistwin_scroll (1);
         break;
     case GDK_SCROLL_UP:
-        playlistwin_scroll (true);
+        playlistwin_scroll (-1);
         break;
     default:
         break;
     }
-}
-
-static gboolean
-playlistwin_press(GtkWidget * widget,
-                  GdkEventButton * event,
-                  void * callback_data)
-{
-    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
-     event->window == gtk_widget_get_window (widget) && event->y < 14)
-        playlistwin_shade_toggle();
-    else if (event->button == 3)
-        menu_popup (UI_MENU_PLAYLIST, event->x_root, event->y_root, false, false, 3, event->time);
 
     return true;
+}
+
+bool PlWindow::button_press (GdkEventButton * event)
+{
+    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
+     event->window == gtk_widget_get_window (gtk ()) && event->y < 14)
+    {
+        playlistwin_shade_toggle();
+        return true;
+    }
+
+    if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
+    {
+        menu_popup (UI_MENU_PLAYLIST, event->x_root, event->y_root, false, false, 3, event->time);
+        return true;
+    }
+
+    return Window::button_press (event);
 }
 
 void
@@ -463,9 +480,9 @@ playlistwin_create_widgets(void)
     button_list->on_press (button_list_cb);
 }
 
-static void pl_win_draw (GtkWidget * window, cairo_t * cr)
+void PlWindow::draw (cairo_t * cr)
 {
-    if (aud_get_bool ("skins", "playlist_shaded"))
+    if (is_shaded ())
         skin_draw_playlistwin_shaded (cr, config.playlist_width, true);
     else
         skin_draw_playlistwin_frame (cr, config.playlist_width,
@@ -476,16 +493,11 @@ static void
 playlistwin_create_window(void)
 {
     bool shaded = aud_get_bool ("skins", "playlist_shaded");
-    int height = shaded ? PLAYLISTWIN_SHADED_HEIGHT : config.playlist_height;
 
-    playlistwin = new Window (WINDOW_PLAYLIST, & config.playlist_x,
-     & config.playlist_y, config.playlist_width, height, shaded, pl_win_draw);
+    playlistwin = new PlWindow (shaded);
     playlistwin->setWindowTitle (_("Audacious Playlist Editor"));
 
     GtkWidget * w = playlistwin->gtk ();
-    g_signal_connect (w, "delete-event", (GCallback) handle_window_close, nullptr);
-    g_signal_connect (w, "button-press-event", (GCallback) playlistwin_press, nullptr);
-    g_signal_connect (w, "scroll-event", (GCallback) playlistwin_scrolled, nullptr);
     g_signal_connect (w, "key-press-event", (GCallback) mainwin_keypress, nullptr);
 
     drag_dest_set (w);

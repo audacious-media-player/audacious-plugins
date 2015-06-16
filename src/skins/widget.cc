@@ -47,6 +47,7 @@ void Widget::set_input (GtkWidget * widget)
     g_signal_connect (widget, "scroll-event", (GCallback) Widget::scroll_cb, this);
     g_signal_connect (widget, "motion-notify-event", (GCallback) Widget::motion_cb, this);
     g_signal_connect (widget, "leave-notify-event", (GCallback) Widget::leave_cb, this);
+    g_signal_connect (widget, "delete-event", (GCallback) Widget::close_cb, this);
 }
 
 void Widget::set_drawable (GtkWidget * widget)
