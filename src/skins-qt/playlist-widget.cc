@@ -46,18 +46,18 @@ void PlaylistWidget::update_title ()
     if (aud_playlist_count () > 1)
     {
         String title = aud_playlist_get_title (m_playlist);
-        title_text = String (str_printf (_("%s (%d of %d)"),
+        m_title_text = String (str_printf (_("%s (%d of %d)"),
          (const char *) title, 1 + m_playlist, aud_playlist_count ()));
     }
     else
-        title_text = String ();
+        m_title_text = String ();
 }
 
 void PlaylistWidget::calc_layout ()
 {
     m_rows = m_height / m_row_height;
 
-    if (m_rows && title_text)
+    if (m_rows && m_title_text)
     {
         m_offset = m_row_height;
         m_rows --;
@@ -124,45 +124,35 @@ void PlaylistWidget::cancel_all ()
     popup_hide ();
 }
 
-#if 0
 void PlaylistWidget::draw (QPainter & cr)
 {
     int active_entry = aud_playlist_get_position (m_playlist);
     int left = 3, right = 3;
-    PangoLayout * layout;
     int width;
+    QRect rect;
+
+    cr.setFont (* m_font);
 
     /* background */
 
-    set_cairo_color (cr, skin.colors[SKIN_PLEDIT_NORMALBG]);
-    cairo_paint (cr);
+    cr.fillRect (cr.window (), QColor (skin.colors[SKIN_PLEDIT_NORMALBG]));
 
     /* playlist title */
 
     if (m_offset)
     {
-        layout = gtk_widget_create_pango_layout (gtk_dr (), title_text);
-        pango_layout_set_font_description (layout, m_font.get ());
-        pango_layout_set_width (layout, PANGO_SCALE * (m_width - left - right));
-        pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
-        pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_MIDDLE);
-
-        cairo_move_to (cr, left, 0);
-        set_cairo_color (cr, skin.colors[SKIN_PLEDIT_NORMAL]);
-        pango_cairo_show_layout (cr, layout);
-        g_object_unref (layout);
+        cr.setPen (QColor (skin.colors[SKIN_PLEDIT_NORMAL]));
+        cr.drawText (left, 0, m_width - left - right, m_row_height,
+         Qt::AlignCenter, (const char *) m_title_text);
     }
 
     /* selection highlight */
 
     for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
     {
-        if (! aud_playlist_entry_get_selected (m_playlist, i))
-            continue;
-
-        cairo_rectangle (cr, 0, m_offset + m_row_height * (i - m_first), m_width, m_row_height);
-        set_cairo_color (cr, skin.colors[SKIN_PLEDIT_SELECTEDBG]);
-        cairo_fill (cr);
+        if (aud_playlist_entry_get_selected (m_playlist, i))
+            cr.fillRect (0, m_offset + m_row_height * (i - m_first), m_width,
+             m_row_height, QColor (skin.colors[SKIN_PLEDIT_SELECTEDBG]));
     }
 
     /* entry numbers */
@@ -176,18 +166,13 @@ void PlaylistWidget::draw (QPainter & cr)
             char buf[16];
             snprintf (buf, sizeof buf, "%d.", 1 + i);
 
-            layout = gtk_widget_create_pango_layout (gtk_dr (), buf);
-            pango_layout_set_font_description (layout, m_font.get ());
+            cr.setPen (QColor (skin.colors[(i == active_entry) ?
+             SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]));
+            cr.drawText (left, m_offset + m_row_height * (i - m_first),
+             m_width - left - right, m_row_height,
+             Qt::AlignLeft | Qt::AlignVCenter, buf, & rect);
 
-            PangoRectangle rect;
-            pango_layout_get_pixel_extents (layout, nullptr, & rect);
-            width = aud::max (width, rect.width);
-
-            cairo_move_to (cr, left, m_offset + m_row_height * (i - m_first));
-            set_cairo_color (cr, skin.colors[(i == active_entry) ?
-             SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
-            pango_cairo_show_layout (cr, layout);
-            g_object_unref (layout);
+            width = aud::max (width, rect.width ());
         }
 
         left += width + 4;
@@ -204,18 +189,14 @@ void PlaylistWidget::draw (QPainter & cr)
         if (len < 0)
             continue;
 
-        layout = gtk_widget_create_pango_layout (gtk_dr (), str_format_time (len));
-        pango_layout_set_font_description (layout, m_font.get ());
+        cr.setPen (QColor (skin.colors[(i == active_entry) ?
+         SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]));
+        cr.drawText (left, m_offset + m_row_height * (i - m_first),
+         m_width - left - right, m_row_height,
+         Qt::AlignRight | Qt::AlignVCenter,
+         (const char *) str_format_time (len), & rect);
 
-        PangoRectangle rect;
-        pango_layout_get_pixel_extents (layout, nullptr, & rect);
-        width = aud::max (width, rect.width);
-
-        cairo_move_to (cr, m_width - right - rect.width, m_offset + m_row_height * (i - m_first));
-        set_cairo_color (cr, skin.colors[(i == active_entry) ?
-         SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
-        pango_cairo_show_layout (cr, layout);
-        g_object_unref (layout);
+        width = aud::max (width, rect.width ());
     }
 
     right += width + 6;
@@ -235,19 +216,13 @@ void PlaylistWidget::draw (QPainter & cr)
             char buf[16];
             snprintf (buf, sizeof buf, "(#%d)", 1 + pos);
 
-            layout = gtk_widget_create_pango_layout (gtk_dr (), buf);
-            pango_layout_set_font_description (layout, m_font.get ());
+            cr.setPen (QColor (skin.colors[(i == active_entry) ?
+             SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]));
+            cr.drawText (left, m_offset + m_row_height * (i - m_first),
+             m_width - left - right, m_row_height,
+             Qt::AlignRight | Qt::AlignVCenter, buf, & rect);
 
-            PangoRectangle rect;
-            pango_layout_get_pixel_extents (layout, nullptr, & rect);
-            width = aud::max (width, rect.width);
-
-            cairo_move_to (cr, m_width - right - rect.width, m_offset +
-             m_row_height * (i - m_first));
-            set_cairo_color (cr, skin.colors[(i == active_entry) ?
-             SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
-            pango_cairo_show_layout (cr, layout);
-            g_object_unref (layout);
+            width = aud::max (width, rect.width ());
         }
 
         right += width + 6;
@@ -260,16 +235,11 @@ void PlaylistWidget::draw (QPainter & cr)
         Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::Guess);
         String title = tuple.get_str (Tuple::FormattedTitle);
 
-        layout = gtk_widget_create_pango_layout (gtk_dr (), title);
-        pango_layout_set_font_description (layout, m_font.get ());
-        pango_layout_set_width (layout, PANGO_SCALE * (m_width - left - right));
-        pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_END);
-
-        cairo_move_to (cr, left, m_offset + m_row_height * (i - m_first));
-        set_cairo_color (cr, skin.colors[(i == active_entry) ?
-         SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]);
-        pango_cairo_show_layout (cr, layout);
-        g_object_unref (layout);
+        cr.setPen (QColor (skin.colors[(i == active_entry) ?
+         SKIN_PLEDIT_CURRENT : SKIN_PLEDIT_NORMAL]));
+        cr.drawText (left, m_offset + m_row_height * (i - m_first),
+         m_width - left - right, m_row_height,
+         Qt::AlignLeft | Qt::AlignVCenter, (const char *) title);
     }
 
     /* focus rectangle */
@@ -277,14 +247,11 @@ void PlaylistWidget::draw (QPainter & cr)
     int focus = aud_playlist_get_focus (m_playlist);
     if (focus >= m_first && focus <= m_first + m_rows - 1)
     {
-        cairo_new_path (cr);
-        cairo_set_line_width (cr, 1);
-        cairo_rectangle (cr, 0.5, m_offset + m_row_height * (focus - m_first) +
-         0.5, m_width - 1, m_row_height - 1);
-        set_cairo_color (cr, skin.colors[SKIN_PLEDIT_NORMAL]);
-        cairo_stroke (cr);
+        cr.setPen (QColor (skin.colors[SKIN_PLEDIT_NORMAL]));
+        cr.drawRect (0, m_offset + m_row_height * (focus - m_first), m_width - 1, m_row_height - 1);
     }
 
+#if 0
     /* hover line */
 
     if (m_hover >= m_first && m_hover <= m_first + m_rows)
@@ -296,8 +263,8 @@ void PlaylistWidget::draw (QPainter & cr)
         set_cairo_color (cr, skin.colors[SKIN_PLEDIT_NORMAL]);
         cairo_stroke (cr);
     }
-}
 #endif
+}
 
 PlaylistWidget::PlaylistWidget (int width, int height, const char * font) :
     m_width (width * config.scale),
@@ -318,21 +285,9 @@ void PlaylistWidget::resize (int width, int height)
 
 void PlaylistWidget::set_font (const char * font)
 {
-#if 0
-    m_font.capture (pango_font_description_from_string (font));
-
-    PangoLayout * layout = gtk_widget_create_pango_layout (gtk_dr (), "A");
-    pango_layout_set_font_description (layout, m_font.get ());
-
-    PangoRectangle rect;
-    pango_layout_get_pixel_extents (layout, nullptr, & rect);
-
-    /* make sure row_height is non-zero; we divide by it */
-    m_row_height = aud::max (rect.height, 1);
-
-    g_object_unref (layout);
-#endif
-    m_row_height = 16;
+    m_font.capture (qfont_from_string (font));
+    m_metrics.capture (new QFontMetrics (* m_font, this));
+    m_row_height = m_metrics->height ();
     refresh ();
 }
 
@@ -629,21 +584,19 @@ int PlaylistWidget::hover_end ()
     return temp;
 }
 
-#if 0
 bool PlaylistWidget::button_press (QMouseEvent * event)
 {
     int position = calc_position (event->y ());
-    int state = event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK |
-     GDK_MOD1_MASK);
+    int state = event->modifiers () & (Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier);
 
     cancel_all ();
 
-    switch (event->type)
+    switch (event->type ())
     {
-      case GDK_BUTTON_PRESS:
-        switch (event->button)
+      case QEvent::MouseButtonPress:
+        switch (event->button ())
         {
-          case 1:
+          case Qt::LeftButton:
             if (position == -1 || position == m_length)
                 return true;
 
@@ -657,11 +610,11 @@ bool PlaylistWidget::button_press (QMouseEvent * event)
 
                 m_drag = DRAG_MOVE;
                 break;
-              case GDK_SHIFT_MASK:
+              case Qt::ShiftModifier:
                 select_extend (false, position);
                 m_drag = DRAG_SELECT;
                 break;
-              case GDK_CONTROL_MASK:
+              case Qt::ControlModifier:
                 select_toggle (false, position);
                 m_drag = DRAG_SELECT;
                 break;
@@ -670,7 +623,7 @@ bool PlaylistWidget::button_press (QMouseEvent * event)
             }
 
             break;
-          case 3:
+          case Qt::RightButton:
             if (state)
                 return true;
 
@@ -682,16 +635,18 @@ bool PlaylistWidget::button_press (QMouseEvent * event)
                     select_single (false, position);
             }
 
+#if 0
             menu_popup ((position == -1) ? UI_MENU_PLAYLIST :
              UI_MENU_PLAYLIST_CONTEXT, event->globalX (), event->globalY (), false,
              false, 3, event->time);
+#endif
             break;
           default:
             return false;
         }
 
         break;
-      case GDK_2BUTTON_PRESS:
+      case QEvent::MouseButtonDblClick:
         if (event->button () != Qt::LeftButton || state || position == m_length)
             return true;
 
@@ -713,7 +668,6 @@ bool PlaylistWidget::button_release (QMouseEvent * event)
     cancel_all ();
     return true;
 }
-#endif
 
 void PlaylistWidget::scroll_timeout ()
 {
@@ -734,7 +688,6 @@ void PlaylistWidget::scroll_timeout ()
     refresh ();
 }
 
-#if 0
 bool PlaylistWidget::motion (QMouseEvent * event)
 {
     int position = calc_position (event->y ());
@@ -783,14 +736,13 @@ bool PlaylistWidget::motion (QMouseEvent * event)
     return true;
 }
 
-bool PlaylistWidget::leave (GdkEventCrossing * event)
+bool PlaylistWidget::leave ()
 {
     if (! m_drag)
         cancel_all ();
 
     return true;
 }
-#endif
 
 void PlaylistWidget::popup_show ()
 {

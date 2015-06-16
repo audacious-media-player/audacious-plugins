@@ -463,3 +463,60 @@ void skin_draw_mainwin_titlebar (QPainter & cr, bool shaded, bool focus)
     skin_draw_pixbuf (cr, SKIN_TITLEBAR, 27, y_offset, 0, 0,
      skin.hints.mainwin_width, 14);
 }
+
+/* parse a subset of Pango font descriptions */
+QFont * qfont_from_string (const char * name)
+{
+    auto family = str_copy (name);
+    int size = 0;
+    QFont::Weight weight = QFont::Normal;
+    QFont::Style style = QFont::StyleNormal;
+    QFont::Stretch stretch = QFont::Unstretched;
+
+    while (1)
+    {
+        QFont test ((const char *) family);
+
+        /* check for a recognized font family */
+        if (test.exactMatch ())
+        {
+            auto font = new QFont (test);
+
+            if (size > 0)
+                font->setPointSize (size);
+            if (weight != QFont::Normal)
+                font->setWeight (weight);
+            if (style != QFont::StyleNormal)
+                font->setStyle (style);
+            if (stretch != QFont::Unstretched)
+                font->setStretch (stretch);
+
+            return font;
+        }
+
+        /* check for attributes */
+        const char * space = strrchr (family, ' ');
+        if (! space)
+            return nullptr;
+
+        const char * attr = space + 1;
+        int num = str_to_int (attr);
+
+        if (num > 0)
+            size = num;
+        else if (! strcmp (attr, "Light"))
+            weight = QFont::Light;
+        else if (! strcmp (attr, "Bold"))
+            weight = QFont::Bold;
+        else if (! strcmp (attr, "Oblique"))
+            style = QFont::StyleOblique;
+        else if (! strcmp (attr, "Italic"))
+            style = QFont::StyleItalic;
+        else if (! strcmp (attr, "Condensed"))
+            stretch = QFont::Condensed;
+        else if (! strcmp (attr, "Expanded"))
+            stretch = QFont::Expanded;
+
+        family.resize (space - family);
+    }
+}

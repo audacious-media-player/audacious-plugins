@@ -34,6 +34,8 @@
 #include "widget.h"
 
 class PlaylistSlider;
+class QFont;
+class QFontMetrics;
 
 class PlaylistWidget : public Widget
 {
@@ -53,13 +55,11 @@ public:
     int hover_end ();
 
 private:
-#if 0
     void draw (QPainter & cr);
     bool button_press (QMouseEvent * event);
     bool button_release (QMouseEvent * event);
     bool motion (QMouseEvent * event);
-    bool leave (GdkEventCrossing * event);
-#endif
+    bool leave ();
 
     void update_title ();
     void calc_layout ();
@@ -87,8 +87,9 @@ private:
         { ((PlaylistWidget *) me)->popup_show (); return G_SOURCE_REMOVE; }
 
     PlaylistSlider * m_slider = nullptr;
-//    PangoFontDescPtr m_font;
-    String title_text;
+    SmartPtr<QFont> m_font;
+    SmartPtr<QFontMetrics> m_metrics;
+    String m_title_text;
 
     int m_playlist = -1, m_playlist_id = -1, m_length = 0;
     int m_width = 0, m_height = 0, m_row_height = 1, m_offset = 0, m_rows = 0, m_first = 0;

@@ -87,7 +87,6 @@ void EqGraph::draw (QPainter & cr)
      "equalizer_preamp") * 9 + AUD_EQ_MAX_GAIN / 2) / AUD_EQ_MAX_GAIN, 113, 1);
 
     cr.setTransform (QTransform ().scale (config.scale, config.scale));
-    cr.setPen (Qt::NoPen);
 
     double bands[N];
     aud_eq_get_bands (bands);
@@ -122,10 +121,7 @@ void EqGraph::draw (QPainter & cr)
         py = y;
 
         for (y = ymin; y <= ymax; y++)
-        {
-            cr.setBrush (QColor (skin.eq_spline_colors[y]));
-            cr.drawRect (i + 2, y, 1, 1);
-        }
+            cr.fillRect (i + 2, y, 1, 1, QColor (skin.eq_spline_colors[y]));
     }
 }
 
