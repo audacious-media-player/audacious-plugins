@@ -47,6 +47,10 @@ public:
 
     void setWindowTitle (const char * title)
         { gtk_window_set_title ((GtkWindow *) gtk (), title); }
+    void getPosition (int * x, int * y)
+        { gtk_window_get_position ((GtkWindow *) gtk (), x, y); }
+    void move (int x, int y)
+        { gtk_window_move ((GtkWindow *) gtk (), x, y); }
 
 private:
     void realize ();
@@ -66,7 +70,7 @@ private:
     GdkRegion * m_shape = nullptr, * m_sshape = nullptr;
 };
 
-void dock_add_window (int id, GtkWidget * window, int * x, int * y, int w, int h);
+void dock_add_window (int id, Window * window, int * x, int * y, int w, int h);
 void dock_remove_window (int id);
 void dock_set_size (int id, int w, int h);
 void dock_move_start (int id, int x, int y);

@@ -297,7 +297,7 @@ static void resize_press (void)
 
 static void resize_drag (int x_offset, int y_offset)
 {
-    gboolean shaded = aud_get_bool ("skins", "playlist_shaded");
+    bool shaded = aud_get_bool ("skins", "playlist_shaded");
 
     /* compromise between rounding and truncating; this has no real
      * justification at all other than it "looks about right". */
@@ -310,7 +310,7 @@ static void resize_drag (int x_offset, int y_offset)
 static void button_add_cb (Button * button, GdkEventButton * event)
 {
     int xpos, ypos;
-    gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
+    playlistwin->getPosition (& xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_ADD, xpos + 12 * config.scale,
      ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
@@ -319,7 +319,7 @@ static void button_add_cb (Button * button, GdkEventButton * event)
 static void button_sub_cb (Button * button, GdkEventButton * event)
 {
     int xpos, ypos;
-    gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
+    playlistwin->getPosition (& xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_REMOVE, xpos + 40 * config.scale,
      ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
@@ -328,7 +328,7 @@ static void button_sub_cb (Button * button, GdkEventButton * event)
 static void button_sel_cb (Button * button, GdkEventButton * event)
 {
     int xpos, ypos;
-    gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
+    playlistwin->getPosition (& xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_SELECT, xpos + 68 * config.scale,
      ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
@@ -337,7 +337,7 @@ static void button_sel_cb (Button * button, GdkEventButton * event)
 static void button_misc_cb (Button * button, GdkEventButton * event)
 {
     int xpos, ypos;
-    gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
+    playlistwin->getPosition (& xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST_SORT, xpos + 100 * config.scale,
      ypos + (config.playlist_height - 8) * config.scale, false, true,
      event->button, event->time);
@@ -346,7 +346,7 @@ static void button_misc_cb (Button * button, GdkEventButton * event)
 static void button_list_cb (Button * button, GdkEventButton * event)
 {
     int xpos, ypos;
-    gtk_window_get_position ((GtkWindow *) playlistwin->gtk (), & xpos, & ypos);
+    playlistwin->getPosition (& xpos, & ypos);
     menu_popup (UI_MENU_PLAYLIST,
      xpos + (config.playlist_width - 12) * config.scale,
      ypos + (config.playlist_height - 8) * config.scale, true, true,

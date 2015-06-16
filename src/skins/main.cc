@@ -144,7 +144,7 @@ static void
 mainwin_menubtn_cb(void)
 {
     int x, y;
-    gtk_window_get_position ((GtkWindow *) mainwin->gtk (), &x, &y);
+    mainwin->getPosition (& x, & y);
     menu_popup (UI_MENU_MAIN, x + 6 * config.scale,
      y + MAINWIN_SHADED_HEIGHT * config.scale, FALSE, FALSE, 1, GDK_CURRENT_TIME);
 }

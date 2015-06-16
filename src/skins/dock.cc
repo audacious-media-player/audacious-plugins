@@ -52,7 +52,7 @@ enum {
 #define DOCK_TYPE_ANY (DOCK_TYPE_LEFT | DOCK_TYPE_RIGHT | DOCK_TYPE_TOP | DOCK_TYPE_BOTTOM)
 
 typedef struct {
-    GtkWidget * window;
+    Window * window;
     int * x, * y;
     int w, h;
     bool docked;
@@ -66,7 +66,7 @@ static inline int least_abs (int a, int b)
     return (abs (a) < abs (b)) ? a : b;
 }
 
-void dock_add_window (int id, GtkWidget * window, int * x, int * y, int w, int h)
+void dock_add_window (int id, Window * window, int * x, int * y, int w, int h)
 {
     DockWindow & dw = windows[id];
 
@@ -87,7 +87,7 @@ static void dock_sync ()
     for (DockWindow & dw : windows)
     {
         if (dw.window)
-            gtk_window_get_position ((GtkWindow *) dw.window, dw.x, dw.y);
+            dw.window->getPosition (dw.x, dw.y);
     }
 }
 
@@ -171,7 +171,7 @@ void dock_set_size (int id, int w, int h)
 
             * dw.y += h - base.h;
             if (dw.window)
-                gtk_window_move ((GtkWindow *) dw.window, * dw.x, * dw.y);
+                dw.window->move (* dw.x, * dw.y);
         }
     }
 
@@ -204,7 +204,7 @@ void dock_set_size (int id, int w, int h)
 
             * dw.x += w - base.w;
             if (dw.window)
-                gtk_window_move ((GtkWindow *) dw.window, * dw.x, * dw.y);
+                dw.window->move (* dw.x, * dw.y);
         }
     }
 
@@ -334,7 +334,7 @@ void dock_move (int x, int y)
     for (DockWindow & dw : windows)
     {
         if (dw.docked && dw.window)
-            gtk_window_move ((GtkWindow *) dw.window, * dw.x, * dw.y);
+            dw.window->move (* dw.x, * dw.y);
     }
 }
 

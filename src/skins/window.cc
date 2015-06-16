@@ -132,7 +132,7 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc dr
     else
         gtk_container_add ((GtkContainer *) window, m_normal);
 
-    dock_add_window (id, window, x, y, w, h);
+    dock_add_window (id, this, x, y, w, h);
 }
 
 void Window::resize (int w, int h)
