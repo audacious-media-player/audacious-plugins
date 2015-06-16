@@ -26,6 +26,7 @@
  */
 
 #include <string.h>
+#include <glib.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
@@ -39,28 +40,17 @@
 
 static Index<TextBox *> textboxes;
 
-#if 0
 void TextBox::draw (QPainter & cr)
 {
     if (m_scrolling)
     {
-        cairo_set_source_surface (cr, m_buf.get (), -m_offset * config.scale, 0);
-        cairo_paint (cr);
-
+        cr.drawImage (-m_offset * config.scale, 0, * m_buf);
         if (-m_offset + m_buf_width < m_width)
-        {
-            cairo_set_source_surface (cr, m_buf.get (),
-             (-m_offset + m_buf_width) * config.scale, 0);
-            cairo_paint (cr);
-        }
+            cr.drawImage ((-m_offset + m_buf_width) * config.scale, 0, * m_buf);
     }
     else
-    {
-        cairo_set_source_surface (cr, m_buf.get (), 0, 0);
-        cairo_paint (cr);
-    }
+        cr.drawImage (0, 0, * m_buf);
 }
-#endif
 
 bool TextBox::button_press (QMouseEvent * event)
 {
@@ -92,37 +82,28 @@ void TextBox::scroll_timeout ()
     draw_now ();
 }
 
-#if 0
 void TextBox::render_vector (const char * text)
 {
-    PangoLayout * layout = gtk_widget_create_pango_layout (gtk_dr (), text);
-    pango_layout_set_font_description (layout, m_font.get ());
-
-    PangoRectangle ink, logical;
-    pango_layout_get_pixel_extents (layout, & ink, & logical);
+    QRect ink = m_metrics->tightBoundingRect (text);
+    int logical_width = m_metrics->width (text);
 
     /* use logical width so as not to trim off the trailing space of the " --- " */
     /* use ink height since vertical space is quite limited */
-    logical.width = aud::max (logical.width, 1);
-    ink.height = aud::max (ink.height, 1);
+    int width = aud::max (-ink.x () + logical_width, 1);
+    int height = aud::max (ink.height (), 1);
 
-    resize (m_width * config.scale, ink.height);
+    resize (m_width * config.scale, height);
 
-    m_buf_width = aud::max ((logical.width + config.scale - 1) / config.scale, m_width);
-    m_buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     m_buf_width * config.scale, ink.height));
+    m_buf_width = aud::max ((width + config.scale - 1) / config.scale, m_width);
+    m_buf.capture (new QImage (m_buf_width * config.scale, height, QImage::Format_RGB32));
 
-    cairo_t * cr = cairo_create (m_buf.get ());
+    QPainter cr (m_buf.get ());
 
-    set_cairo_color (cr, skin.colors[SKIN_TEXTBG]);
-    cairo_paint (cr);
+    cr.fillRect (cr.window (), QColor (skin.colors[SKIN_TEXTBG]));
 
-    cairo_move_to (cr, -logical.x, -ink.y);
-    set_cairo_color (cr, skin.colors[SKIN_TEXTFG]);
-    pango_cairo_show_layout (cr, layout);
-
-    cairo_destroy (cr);
-    g_object_unref (layout);
+    cr.setFont (* m_font);
+    cr.setPen (QColor (skin.colors[SKIN_TEXTFG]));
+    cr.drawText (-ink.x (), -ink.y (), text);
 }
 
 static void lookup_char (const char c, int * x, int * y)
@@ -181,10 +162,10 @@ void TextBox::render_bitmap (const char * text)
     g_return_if_fail (utf32);
 
     m_buf_width = aud::max (cw * (int) len, m_width);
-    m_buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     m_buf_width * config.scale, ch * config.scale));
+    m_buf.capture (new QImage (m_buf_width * config.scale, ch * config.scale,
+     QImage::Format_RGB32));
 
-    cairo_t * cr = cairo_create (m_buf.get ());
+    QPainter cr (m_buf.get ());
 
     gunichar * s = utf32;
     for (int x = 0; x < m_buf_width; x += cw)
@@ -207,10 +188,8 @@ void TextBox::render_bitmap (const char * text)
         skin_draw_pixbuf (cr, SKIN_TEXT, cx, cy, x, 0, cw, ch);
     }
 
-    cairo_destroy (cr);
     g_free (utf32);
 }
-#endif
 
 void TextBox::render ()
 {
@@ -221,12 +200,10 @@ void TextBox::render ()
 
     const char * text = m_text ? m_text : "";
 
-#if 0
     if (m_font)
         render_vector (text);
     else
         render_bitmap (text);
-#endif
 
     if (m_may_scroll && m_buf_width > m_width)
     {
@@ -236,12 +213,10 @@ void TextBox::render ()
         {
             StringBuf temp = str_printf ("%s --- ", text);
 
-#if 0
             if (m_font)
                 render_vector (temp);
             else
                 render_bitmap (temp);
-#endif
         }
     }
 
@@ -273,12 +248,16 @@ void TextBox::set_text (const char * text)
 
 void TextBox::set_font (const char * font)
 {
-#if 0
     if (font)
-        m_font.capture (pango_font_description_from_string (font));
+    {
+        m_font.capture (qfont_from_string (font));
+        m_metrics.capture (new QFontMetrics (* m_font, this));
+    }
     else
+    {
         m_font.clear ();
-#endif
+        m_metrics.clear ();
+    }
 
     render ();
 }
@@ -307,16 +286,11 @@ TextBox::TextBox (int width, const char * font, bool scroll) :
     m_may_scroll (scroll),
     m_two_way (config.twoway_scroll)
 {
-    /* size is computed later */
+    /* size is computed by set_font() */
     add_input (1, 1, false, true);
-
-#if 0
-    if (font)
-        m_font.capture (pango_font_description_from_string (font));
-#endif
+    set_font (font);
 
     textboxes.append (this);
-    render ();
 }
 
 void TextBox::update_all ()

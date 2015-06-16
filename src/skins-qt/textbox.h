@@ -32,10 +32,9 @@
 
 #include "widget.h"
 
-#if 0
-typedef SmartPtr<cairo_surface_t, cairo_surface_destroy> CairoSurfacePtr;
-typedef SmartPtr<PangoFontDescription, pango_font_description_free> PangoFontDescPtr;
-#endif
+class QFont;
+class QFontMetrics;
+class QImage;
 
 class TextBox : public Widget
 {
@@ -55,7 +54,7 @@ public:
     static void update_all ();
 
 private:
-//    virtual void draw (QPainter & cr);
+    virtual void draw (QPainter & cr);
     virtual bool button_press (QMouseEvent * event);
 
     void scroll_timeout ();
@@ -67,10 +66,9 @@ private:
     void render ();
 
     String m_text;
-#if 0
-    PangoFontDescPtr m_font;
-    CairoSurfacePtr m_buf;
-#endif
+    SmartPtr<QFont> m_font;
+    SmartPtr<QFontMetrics> m_metrics;
+    SmartPtr<QImage> m_buf;
 
     int m_width = 0, m_buf_width = 0;
     bool m_may_scroll = false, m_two_way = false;

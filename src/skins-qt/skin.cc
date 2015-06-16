@@ -497,7 +497,7 @@ QFont * qfont_from_string (const char * name)
         /* check for attributes */
         const char * space = strrchr (family, ' ');
         if (! space)
-            return nullptr;
+            return new QFont;
 
         const char * attr = space + 1;
         int num = str_to_int (attr);
