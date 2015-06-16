@@ -37,42 +37,41 @@ void Window::apply_shape ()
 
 void Window::realize ()
 {
-    gdk_window_set_back_pixmap (gtk_widget_get_window (gtk ()), nullptr, false);
     apply_shape ();
 }
+#endif
 
-bool Window::button_press (GdkEventButton * event)
+bool Window::button_press (QMouseEvent * event)
 {
     /* pass double clicks through; they are handled elsewhere */
-    if (event->button != 1 || event->type == GDK_2BUTTON_PRESS)
+    if (event->button () != Qt::LeftButton || event->type () == QEvent::MouseButtonDblClick)
         return false;
 
     if (m_is_moving)
         return true;
 
-    dock_move_start (m_id, event->x_root, event->y_root);
+    dock_move_start (m_id, event->globalX (), event->globalY ());
     m_is_moving = true;
     return true;
 }
 
-bool Window::button_release (GdkEventButton * event)
+bool Window::button_release (QMouseEvent * event)
 {
-    if (event->button != 1)
+    if (event->button () != Qt::LeftButton)
         return false;
 
     m_is_moving = false;
     return true;
 }
 
-bool Window::motion (GdkEventMotion * event)
+bool Window::motion (QMouseEvent * event)
 {
     if (! m_is_moving)
         return true;
 
-    dock_move (event->x_root, event->y_root);
+    dock_move (event->globalX (), event->globalY ());
     return true;
 }
-#endif
 
 Window::~Window ()
 {
@@ -100,9 +99,8 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc dr
         setWindowFlags (Qt::Dialog | Qt::FramelessWindowHint);
 
     move (* x, * y);
-    QWidget::resize (w, h);
+    add_input (w, h, true, true);
     setFixedSize (w, h);
-
     setAttribute (Qt::WA_NoSystemBackground);
 
     m_normal = new QWidget (this);
@@ -123,7 +121,7 @@ void Window::resize (int w, int h)
     w *= config.scale;
     h *= config.scale;
 
-    QWidget::resize (w, h);
+    Widget::resize (w, h);
     setFixedSize (w, h);
 
     m_normal->resize (w, h);

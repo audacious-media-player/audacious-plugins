@@ -49,18 +49,14 @@ public:
     void set_font (const char * font);
     void set_scroll (bool scroll);
 
-#if 0
-    typedef bool (* PressCB) (GdkEventButton *);
+    typedef bool (* PressCB) (QMouseEvent *);
     void on_press (PressCB callback) { press = callback; }
-#endif
 
     static void update_all ();
 
 private:
-#if 0
-    virtual void draw (QPainter & cr);
-    virtual bool button_press (GdkEventButton * event);
-#endif
+//    virtual void draw (QPainter & cr);
+    virtual bool button_press (QMouseEvent * event);
 
     void scroll_timeout ();
     static void scroll_timeout_cb (void * me)
@@ -81,9 +77,7 @@ private:
     bool m_scrolling = false, m_backward = false;
     int m_offset = 0, m_delay = 0;
 
-#if 0
     PressCB press = nullptr;
-#endif
 };
 
 #endif

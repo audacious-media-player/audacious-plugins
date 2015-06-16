@@ -45,9 +45,7 @@ public:
     void resize (int width, int height);
     void set_font (const char * m_font);
     void refresh ();
-#if 0
-    bool handle_keypress (GdkEventKey * event);
-#endif
+//    bool handle_keypress (GdkEventKey * event);
     void row_info (int * m_rows, int * m_first);
     void scroll_to (int row);
     void set_focused (int row);
@@ -57,9 +55,9 @@ public:
 private:
 #if 0
     void draw (QPainter & cr);
-    bool button_press (GdkEventButton * event);
-    bool button_release (GdkEventButton * event);
-    bool motion (GdkEventMotion * event);
+    bool button_press (QMouseEvent * event);
+    bool button_release (QMouseEvent * event);
+    bool motion (QMouseEvent * event);
     bool leave (GdkEventCrossing * event);
 #endif
 
@@ -89,9 +87,7 @@ private:
         { ((PlaylistWidget *) me)->popup_show (); return G_SOURCE_REMOVE; }
 
     PlaylistSlider * m_slider = nullptr;
-#if 0
-    PangoFontDescPtr m_font;
-#endif
+//    PangoFontDescPtr m_font;
     String title_text;
 
     int m_playlist = -1, m_playlist_id = -1, m_length = 0;

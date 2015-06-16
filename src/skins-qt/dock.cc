@@ -52,7 +52,7 @@ enum {
 #define DOCK_TYPE_ANY (DOCK_TYPE_LEFT | DOCK_TYPE_RIGHT | DOCK_TYPE_TOP | DOCK_TYPE_BOTTOM)
 
 typedef struct {
-    QWidget * window;
+    Window * window;
     int * x, * y;
     int w, h;
     bool docked;
@@ -66,7 +66,7 @@ static inline int least_abs (int a, int b)
     return (abs (a) < abs (b)) ? a : b;
 }
 
-void dock_add_window (int id, QWidget * window, int * x, int * y, int w, int h)
+void dock_add_window (int id, Window * window, int * x, int * y, int w, int h)
 {
     DockWindow & dw = windows[id];
 
@@ -84,13 +84,11 @@ void dock_remove_window (int id)
 
 static void dock_sync ()
 {
-#if 0
     for (DockWindow & dw : windows)
     {
         if (dw.window)
-            gtk_window_get_position ((GtkWindow *) dw.window, dw.x, dw.y);
+            dw.window->getPosition (dw.x, dw.y);
     }
-#endif
 }
 
 static void clear_docked ()
@@ -172,10 +170,8 @@ void dock_set_size (int id, int w, int h)
                 continue;
 
             * dw.y += h - base.h;
-#if 0
             if (dw.window)
-                gtk_window_move ((GtkWindow *) dw.window, * dw.x, * dw.y);
-#endif
+                dw.window->move (* dw.x, * dw.y);
         }
     }
 
@@ -207,10 +203,8 @@ void dock_set_size (int id, int w, int h)
                 continue;
 
             * dw.x += w - base.w;
-#if 0
             if (dw.window)
-                gtk_window_move ((GtkWindow *) dw.window, * dw.x, * dw.y);
-#endif
+                dw.window->move (* dw.x, * dw.y);
         }
     }
 
@@ -294,6 +288,7 @@ void dock_move (int x, int y)
             vert = least_abs (vert, (rect.y + rect.height) - (* dw.y + dw.h));
         }
     }
+#endif
 
     for (DockWindow & dw : windows)
     {
@@ -315,7 +310,6 @@ void dock_move (int x, int y)
             vert = least_abs (vert, (* dw2.y + dw2.h) - (* dw.y + dw.h));
         }
     }
-#endif
 
     /* 4. If the snap distances are within range, nominally move all the windows
           in the group, and update the reference point again. */
@@ -339,13 +333,11 @@ void dock_move (int x, int y)
 
     /* 5. Really move the windows. */
 
-#if 0
     for (DockWindow & dw : windows)
     {
         if (dw.docked && dw.window)
-            gtk_window_move ((GtkWindow *) dw.window, * dw.x, * dw.y);
+            dw.window->move (* dw.x, * dw.y);
     }
-#endif
 }
 
 void dock_change_scale (int old_scale, int new_scale)

@@ -138,19 +138,20 @@ static void format_time (char buf[7], int time, int length)
     }
 }
 
-#if 0
 static void
 mainwin_menubtn_cb(void)
 {
     int x, y;
-    gtk_window_get_position ((GtkWindow *) mainwin->gtk (), &x, &y);
+    mainwin->getPosition (& x, & y);
+#if 0
     menu_popup (UI_MENU_MAIN, x + 6 * config.scale,
      y + MAINWIN_SHADED_HEIGHT * config.scale, FALSE, FALSE, 1, GDK_CURRENT_TIME);
+#endif
 }
 
 static void mainwin_minimize_cb (void)
 {
-    gtk_window_iconify ((GtkWindow *) mainwin->gtk ());
+    mainwin->showMinimized ();
 }
 
 static void
@@ -158,7 +159,6 @@ mainwin_shade_toggle(void)
 {
     view_set_player_shaded (! aud_get_bool ("skins", "player_shaded"));
 }
-#endif
 
 static void mainwin_lock_info_text (const char * text)
 {
@@ -228,22 +228,6 @@ static void title_change ()
 
 static void setup_widget (Widget * widget, int x, int y, bool show)
 {
-#if 0
-    int width, height;
-
-    /* use get_size_request(), not get_preferred_size() */
-    /* get_preferred_size() will return 0x0 for hidden widgets */
-    gtk_widget_get_size_request (widget->gtk (), & width, & height);
-
-    width /= config.scale;
-    height /= config.scale;
-
-    /* hide widgets that are outside the window boundary */
-    if (x < 0 || x + width > skin.hints.mainwin_width ||
-     y < 0 || y + height > skin.hints.mainwin_height)
-        show = false;
-#endif
-
     widget->setVisible (show);
     mainwin->move_widget (false, widget, x, y);
 }
@@ -453,7 +437,7 @@ static void stop_after_song_toggled ()
 }
 
 #if 0
-static void mainwin_scrolled (GtkWidget * widget, GdkEventScroll * event, void *
+static void mainwin_scrolled (GtkWidget * widget, QWheelEvent * event, void *
  unused)
 {
     switch (event->direction) {
@@ -476,33 +460,37 @@ static void mainwin_scrolled (GtkWidget * widget, GdkEventScroll * event, void *
 
 static gboolean
 mainwin_mouse_button_press(GtkWidget * widget,
-                           GdkEventButton * event,
+                           QMouseEvent * event,
                            void * callback_data)
 {
-    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
+    if (event->button () == Qt::LeftButton && event->type () == QEvent::MouseButtonDblClick &&
      event->window == gtk_widget_get_window (widget)&&
-     event->y < 14 * config.scale)
+     event->y () < 14 * config.scale)
     {
         mainwin_shade_toggle ();
         return TRUE;
     }
 
-    if (event->button == 3)
+    if (event->button () == Qt::RightButton)
     {
-        menu_popup (UI_MENU_MAIN, event->x_root, event->y_root, FALSE, FALSE,
+        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), FALSE, FALSE,
          event->button, event->time);
         return TRUE;
     }
 
     return FALSE;
 }
+#endif
 
-static void mainwin_playback_rpress (Button * button, GdkEventButton * event)
+static void mainwin_playback_rpress (Button * button, QMouseEvent * event)
 {
-    menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, FALSE, FALSE,
+#if 0
+    menu_popup (UI_MENU_PLAYBACK, event->globalX (), event->globalY (), FALSE, FALSE,
      event->button, event->time);
+#endif
 }
 
+#if 0
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
  void * unused)
 {
@@ -626,10 +614,9 @@ static void seek_timeout (void * rewind)
     mainwin_position_motion_cb ();
 }
 
-#if 0
-static void seek_press (GdkEventButton * event, bool rewind)
+static void seek_press (QMouseEvent * event, bool rewind)
 {
-    if (event->button != 1 || seeking)
+    if (event->button () != Qt::LeftButton || seeking)
         return;
 
     seeking = true;
@@ -638,9 +625,9 @@ static void seek_press (GdkEventButton * event, bool rewind)
     timer_add (TimerRate::Hz10, seek_timeout, GINT_TO_POINTER (rewind));
 }
 
-static void seek_release (GdkEventButton * event, bool rewind)
+static void seek_release (QMouseEvent * event, bool rewind)
 {
-    if (event->button != 1 || ! seeking)
+    if (event->button () != Qt::LeftButton || ! seeking)
         return;
 
     if (! aud_drct_get_playing () || time_diff (seek_time, time_now ()) <
@@ -658,24 +645,23 @@ static void seek_release (GdkEventButton * event, bool rewind)
     timer_remove (TimerRate::Hz10, seek_timeout);
 }
 
-static void mainwin_rew_press (Button * button, GdkEventButton * event)
+static void mainwin_rew_press (Button * button, QMouseEvent * event)
  {seek_press (event, true); }
-static void mainwin_rew_release (Button * button, GdkEventButton * event)
+static void mainwin_rew_release (Button * button, QMouseEvent * event)
  {seek_release (event, true); }
-static void mainwin_fwd_press (Button * button, GdkEventButton * event)
+static void mainwin_fwd_press (Button * button, QMouseEvent * event)
  {seek_press (event, false); }
-static void mainwin_fwd_release (Button * button, GdkEventButton * event)
+static void mainwin_fwd_release (Button * button, QMouseEvent * event)
  {seek_release (event, false); }
 
-static void mainwin_shuffle_cb (Button * button, GdkEventButton * event)
+static void mainwin_shuffle_cb (Button * button, QMouseEvent * event)
  {aud_set_bool (nullptr, "shuffle", button->get_active ()); }
-static void mainwin_repeat_cb (Button * button, GdkEventButton * event)
+static void mainwin_repeat_cb (Button * button, QMouseEvent * event)
  {aud_set_bool (nullptr, "repeat", button->get_active ()); }
-static void mainwin_eq_cb (Button * button, GdkEventButton * event)
+static void mainwin_eq_cb (Button * button, QMouseEvent * event)
  {view_set_show_equalizer (button->get_active ()); }
-static void mainwin_pl_cb (Button * button, GdkEventButton * event)
+static void mainwin_pl_cb (Button * button, QMouseEvent * event)
  {view_set_show_playlist (button->get_active ()); }
-#endif
 
 static void mainwin_spos_set_knob (void)
 {
@@ -875,25 +861,24 @@ void mainwin_mr_change (MenuRowItem i)
     }
 }
 
-#if 0
-void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
+void mainwin_mr_release (MenuRowItem i, QMouseEvent * event)
 {
     switch (i)
     {
         case MENUROW_OPTIONS:
-            menu_popup (UI_MENU_VIEW, event->x_root, event->y_root, FALSE, FALSE, 1, event->time);
+//            menu_popup (UI_MENU_VIEW, event->globalX (), event->globalY (), FALSE, FALSE, 1, event->time);
             break;
         case MENUROW_ALWAYS:
             view_set_on_top (! aud_get_bool ("skins", "always_on_top"));
             break;
         case MENUROW_FILEINFOBOX:
-            audgui_infowin_show_current ();
+//            audgui_infowin_show_current ();
             break;
         case MENUROW_SCALE:
             view_set_double_size (! aud_get_bool ("skins", "double_size"));
             break;
         case MENUROW_VISUALIZATION:
-            audgui_show_prefs_for_plugin_type (PluginType::Vis);
+//            audgui_show_prefs_for_plugin_type (PluginType::Vis);
             break;
         default:
             break;
@@ -902,101 +887,100 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
     mainwin_release_info_text();
 }
 
-bool change_timer_mode_cb (GdkEventButton * event)
+bool change_timer_mode_cb (QMouseEvent * event)
 {
-    if (event->type != GDK_BUTTON_PRESS || event->button != 1)
+    if (event->type () != QEvent::MouseButtonPress || event->button () != Qt::LeftButton)
         return false;
 
     view_set_show_remaining (! aud_get_bool ("skins", "show_remaining_time"));
     return true;
 }
 
-static bool mainwin_info_button_press (GdkEventButton * event)
+static bool mainwin_info_button_press (QMouseEvent * event)
 {
-    if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+    if (event->type () == QEvent::MouseButtonPress && event->button () == Qt::RightButton)
     {
-        menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, false,
-         false, event->button, event->time);
+//        menu_popup (UI_MENU_PLAYBACK, event->globalX (), event->globalY (), false,
+//         false, event->button, event->time);
         return true;
     }
 
-    if (event->type == GDK_2BUTTON_PRESS && event->button == 1)
+    if (event->type () == QEvent::MouseButtonDblClick && event->button () == Qt::LeftButton)
     {
-        audgui_infowin_show_current ();
+//        audgui_infowin_show_current ();
         return true;
     }
 
     return false;
 }
-#endif
 
 static void
 mainwin_create_widgets(void)
 {
     mainwin_menubtn = new Button (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
     mainwin->put_widget (false, mainwin_menubtn, 6, 3);
-//    mainwin_menubtn->on_release ((ButtonCB) mainwin_menubtn_cb);
+    mainwin_menubtn->on_release ((ButtonCB) mainwin_menubtn_cb);
 
     mainwin_minimize = new Button (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
     mainwin->put_widget (false, mainwin_minimize, 244, 3);
-//    mainwin_minimize->on_release ((ButtonCB) mainwin_minimize_cb);
+    mainwin_minimize->on_release ((ButtonCB) mainwin_minimize_cb);
 
     mainwin_shade = new Button (9, 9, 0, 18, 9, 18, SKIN_TITLEBAR, SKIN_TITLEBAR);
     mainwin->put_widget (false, mainwin_shade, 254, 3);
-//    mainwin_shade->on_release ((ButtonCB) mainwin_shade_toggle);
+    mainwin_shade->on_release ((ButtonCB) mainwin_shade_toggle);
 
     mainwin_close = new Button (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
     mainwin->put_widget (false, mainwin_close, 264, 3);
-//    mainwin_close->on_release ((ButtonCB) handle_window_close);
+    mainwin_close->on_release ((ButtonCB) handle_window_close);
 
     mainwin_rew = new Button (23, 18, 0, 0, 0, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     mainwin->put_widget (false, mainwin_rew, 16, 88);
-//    mainwin_rew->on_press (mainwin_rew_press);
-//    mainwin_rew->on_release (mainwin_rew_release);
-//    mainwin_rew->on_rpress (mainwin_playback_rpress);
+    mainwin_rew->on_press (mainwin_rew_press);
+    mainwin_rew->on_release (mainwin_rew_release);
+    mainwin_rew->on_rpress (mainwin_playback_rpress);
 
     mainwin_fwd = new Button (22, 18, 92, 0, 92, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     mainwin->put_widget (false, mainwin_fwd, 108, 88);
-//    mainwin_fwd->on_press (mainwin_fwd_press);
-//    mainwin_fwd->on_release (mainwin_fwd_release);
-//    mainwin_fwd->on_rpress (mainwin_playback_rpress);
+    mainwin_fwd->on_press (mainwin_fwd_press);
+    mainwin_fwd->on_release (mainwin_fwd_release);
+    mainwin_fwd->on_rpress (mainwin_playback_rpress);
 
     mainwin_play = new Button (23, 18, 23, 0, 23, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     mainwin->put_widget (false, mainwin_play, 39, 88);
-//    mainwin_play->on_release ((ButtonCB) aud_drct_play);
-//    mainwin_play->on_rpress (mainwin_playback_rpress);
+    mainwin_play->on_release ((ButtonCB) aud_drct_play);
+    mainwin_play->on_rpress (mainwin_playback_rpress);
 
     mainwin_pause = new Button (23, 18, 46, 0, 46, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     mainwin->put_widget (false, mainwin_pause, 62, 88);
-//    mainwin_pause->on_release ((ButtonCB) aud_drct_pause);
-//    mainwin_pause->on_rpress (mainwin_playback_rpress);
+    mainwin_pause->on_release ((ButtonCB) aud_drct_pause);
+    mainwin_pause->on_rpress (mainwin_playback_rpress);
 
     mainwin_stop = new Button (23, 18, 69, 0, 69, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     mainwin->put_widget (false, mainwin_stop, 85, 88);
-//    mainwin_stop->on_release ((ButtonCB) aud_drct_stop);
-//    mainwin_stop->on_rpress (mainwin_playback_rpress);
+    mainwin_stop->on_release ((ButtonCB) aud_drct_stop);
+    mainwin_stop->on_rpress (mainwin_playback_rpress);
 
     mainwin_eject = new Button (22, 16, 114, 0, 114, 16, SKIN_CBUTTONS, SKIN_CBUTTONS);
     mainwin->put_widget (false, mainwin_eject, 136, 89);
-//    mainwin_eject->on_release ((ButtonCB) action_play_file);
+    mainwin_eject->on_release ((ButtonCB) action_play_file);
 
     mainwin_shuffle = new Button (46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP, SKIN_SHUFREP);
     mainwin->put_widget (false, mainwin_shuffle, 164, 89);
     mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
-//    mainwin_shuffle->on_release (mainwin_shuffle_cb);
+    mainwin_shuffle->on_release (mainwin_shuffle_cb);
 
     mainwin_repeat = new Button (28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP, SKIN_SHUFREP);
     mainwin->put_widget (false, mainwin_repeat, 210, 89);
     mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
-//    mainwin_repeat->on_release (mainwin_repeat_cb);
+    mainwin_repeat->on_release (mainwin_repeat_cb);
 
     mainwin_eq = new Button (23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP, SKIN_SHUFREP);
     mainwin->put_widget (false, mainwin_eq, 219, 58);
-//    mainwin_eq->on_release (mainwin_eq_cb);
+    mainwin_eq->on_release (mainwin_eq_cb);
 
     mainwin_pl = new Button (23, 12, 23, 61, 69, 61, 23, 73, 69, 73, SKIN_SHUFREP, SKIN_SHUFREP);
     mainwin->put_widget (false, mainwin_pl, 242, 58);
-//    mainwin_pl->on_release (mainwin_pl_cb);
+    mainwin_pl->on_release (mainwin_pl_cb);
 
     String font;
     if (! config.mainwin_use_bitmapfont)
@@ -1005,7 +989,7 @@ mainwin_create_widgets(void)
     bool shaded = aud_get_bool ("skins", "mainwin_shaded");
     mainwin_info = new TextBox (153, font, ! shaded && config.autoscroll);
     mainwin->put_widget (false, mainwin_info, 112, 27);
-//    mainwin_info->on_press (mainwin_info_button_press);
+    mainwin_info->on_press (mainwin_info_button_press);
 
     mainwin_othertext = new TextBox (153, nullptr, false);
     mainwin->put_widget (false, mainwin_othertext, 112, 43);
@@ -1066,43 +1050,43 @@ mainwin_create_widgets(void)
 
     mainwin_shaded_menubtn = new Button (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
     mainwin->put_widget (true, mainwin_shaded_menubtn, 6, 3);
-//    mainwin_shaded_menubtn->on_release ((ButtonCB) mainwin_menubtn_cb);
+    mainwin_shaded_menubtn->on_release ((ButtonCB) mainwin_menubtn_cb);
 
     mainwin_shaded_minimize = new Button (9, 9, 9, 0, 9, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
     mainwin->put_widget (true, mainwin_shaded_minimize, 244, 3);
-//    mainwin_shaded_minimize->on_release ((ButtonCB) mainwin_minimize_cb);
+    mainwin_shaded_minimize->on_release ((ButtonCB) mainwin_minimize_cb);
 
     mainwin_shaded_shade = new Button (9, 9, 0, 27, 9, 27, SKIN_TITLEBAR, SKIN_TITLEBAR);
     mainwin->put_widget (true, mainwin_shaded_shade, 254, 3);
-//    mainwin_shaded_shade->on_release ((ButtonCB) mainwin_shade_toggle);
+    mainwin_shaded_shade->on_release ((ButtonCB) mainwin_shade_toggle);
 
     mainwin_shaded_close = new Button (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
     mainwin->put_widget (true, mainwin_shaded_close, 264, 3);
-//    mainwin_shaded_close->on_release ((ButtonCB) handle_window_close);
+    mainwin_shaded_close->on_release ((ButtonCB) handle_window_close);
 
     mainwin_srew = new Button (8, 7);
     mainwin->put_widget (true, mainwin_srew, 169, 4);
-//    mainwin_srew->on_release ((ButtonCB) aud_drct_pl_prev);
+    mainwin_srew->on_release ((ButtonCB) aud_drct_pl_prev);
 
     mainwin_splay = new Button (10, 7);
     mainwin->put_widget (true, mainwin_splay, 177, 4);
-//    mainwin_splay->on_release ((ButtonCB) aud_drct_play);
+    mainwin_splay->on_release ((ButtonCB) aud_drct_play);
 
     mainwin_spause = new Button (10, 7);
     mainwin->put_widget (true, mainwin_spause, 187, 4);
-//    mainwin_spause->on_release ((ButtonCB) aud_drct_pause);
+    mainwin_spause->on_release ((ButtonCB) aud_drct_pause);
 
     mainwin_sstop = new Button (9, 7);
     mainwin->put_widget (true, mainwin_sstop, 197, 4);
-//    mainwin_sstop->on_release ((ButtonCB) aud_drct_stop);
+    mainwin_sstop->on_release ((ButtonCB) aud_drct_stop);
 
     mainwin_sfwd = new Button (8, 7);
     mainwin->put_widget (true, mainwin_sfwd, 206, 4);
-//    mainwin_sfwd->on_release ((ButtonCB) aud_drct_pl_next);
+    mainwin_sfwd->on_release ((ButtonCB) aud_drct_pl_next);
 
     mainwin_seject = new Button (9, 7);
     mainwin->put_widget (true, mainwin_seject, 216, 4);
-//    mainwin_seject->on_release ((ButtonCB) action_play_file);
+    mainwin_seject->on_release ((ButtonCB) action_play_file);
 
     mainwin_svis = new SmallVis ();
     mainwin->put_widget (true, mainwin_svis, 79, 5);
@@ -1224,9 +1208,7 @@ mainwin_create(void)
     mainwin_create_window ();
     mainwin_create_widgets ();
 
-#if 0
-    gtk_window_add_accel_group ((GtkWindow *) mainwin->gtk (), menu_get_accel_group ());
-#endif
+//    gtk_window_add_accel_group ((GtkWindow *) mainwin->gtk (), menu_get_accel_group ());
 }
 
 static void mainwin_update_volume (void)

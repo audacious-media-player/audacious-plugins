@@ -41,11 +41,9 @@ public:
 
 private:
     void draw (QPainter & cr);
-#if 0
-    bool button_press (GdkEventButton * event);
-    bool button_release (GdkEventButton * event);
-    bool motion (GdkEventMotion * event);
-#endif
+    bool button_press (QMouseEvent * event);
+    bool button_release (QMouseEvent * event);
+    bool motion (QMouseEvent * event);
 
     void set_pos (int y);
 

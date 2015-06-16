@@ -60,12 +60,12 @@ void TextBox::draw (QPainter & cr)
         cairo_paint (cr);
     }
 }
+#endif
 
-bool TextBox::button_press (GdkEventButton * event)
+bool TextBox::button_press (QMouseEvent * event)
 {
     return press ? press (event) : false;
 }
-#endif
 
 void TextBox::scroll_timeout ()
 {

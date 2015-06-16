@@ -52,7 +52,6 @@ void MenuRow::draw (QPainter & cr)
     }
 }
 
-#if 0
 static MenuRowItem menurow_find_selected (int x, int y)
 {
     if (x >= 0 && x < 8)
@@ -72,13 +71,13 @@ static MenuRowItem menurow_find_selected (int x, int y)
     return MENUROW_NONE;
 }
 
-bool MenuRow::button_press (GdkEventButton * event)
+bool MenuRow::button_press (QMouseEvent * event)
 {
-    if (event->button != 1)
+    if (event->button () != Qt::LeftButton)
         return false;
 
     m_pushed = true;
-    m_selected = menurow_find_selected (event->x / config.scale, event->y / config.scale);
+    m_selected = menurow_find_selected (event->x () / config.scale, event->y () / config.scale);
 
     mainwin_mr_change (m_selected);
 
@@ -86,9 +85,9 @@ bool MenuRow::button_press (GdkEventButton * event)
     return true;
 }
 
-bool MenuRow::button_release (GdkEventButton * event)
+bool MenuRow::button_release (QMouseEvent * event)
 {
-    if (event->button != 1)
+    if (event->button () != Qt::LeftButton)
         return false;
 
     if (! m_pushed)
@@ -103,19 +102,18 @@ bool MenuRow::button_release (GdkEventButton * event)
     return true;
 }
 
-bool MenuRow::motion (GdkEventMotion * event)
+bool MenuRow::motion (QMouseEvent * event)
 {
     if (! m_pushed)
         return true;
 
-    m_selected = menurow_find_selected (event->x / config.scale, event->y / config.scale);
+    m_selected = menurow_find_selected (event->x () / config.scale, event->y () / config.scale);
 
     mainwin_mr_change (m_selected);
 
     queue_draw ();
     return true;
 }
-#endif
 
 MenuRow::MenuRow ()
 {

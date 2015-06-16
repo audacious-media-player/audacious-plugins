@@ -27,9 +27,7 @@
 
 class Button;
 
-#if 0
-typedef void (* ButtonCB) (Button * button, GdkEventButton * event);
-#endif
+typedef void (* ButtonCB) (Button * button, QMouseEvent * event);
 
 class Button : public Widget
 {
@@ -47,12 +45,10 @@ public:
      int ppx, int ppy, SkinPixmapId si1, SkinPixmapId si2) :
         Button (Toggle, w, h, nx, ny, px, py, pnx, pny, ppx, ppy, si1, si2) {}
 
-#if 0
     void on_press (ButtonCB callback) { press = callback; }
     void on_release (ButtonCB callback) { release = callback; }
     void on_rpress (ButtonCB callback) { rpress = callback; }
     void on_rrelease (ButtonCB callback) { rrelease = callback; }
-#endif
 
     bool get_active () { return m_active; }
     void set_active (bool active);
@@ -64,10 +60,8 @@ private:
      int pny, int ppx, int ppy, SkinPixmapId si1, SkinPixmapId si2);
 
     void draw (QPainter & cr);
-#if 0
-    bool button_press (GdkEventButton * event);
-    bool button_release (GdkEventButton * event);
-#endif
+    bool button_press (QMouseEvent * event);
+    bool button_release (QMouseEvent * event);
 
     Type m_type;
     int m_w, m_h;
@@ -77,10 +71,8 @@ private:
 
     bool m_pressed = false, m_rpressed = false, m_active = false;
 
-#if 0
     ButtonCB press = nullptr, release = nullptr;
     ButtonCB rpress = nullptr, rrelease = nullptr;
-#endif
 };
 
 #endif

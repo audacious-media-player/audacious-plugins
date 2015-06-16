@@ -53,19 +53,18 @@ void Button::draw (QPainter & cr)
     }
 }
 
-#if 0
-bool Button::button_press (GdkEventButton * event)
+bool Button::button_press (QMouseEvent * event)
 {
     /* pass events through to the parent widget only if neither the press nor
      * release signals are connected; sending one and not the other causes
      * problems (in particular with dragging windows around) */
-    if (event->button == 1 && (press || release))
+    if (event->button () == Qt::LeftButton && (press || release))
     {
         m_pressed = true;
         if (press)
             press (this, event);
     }
-    else if (event->button == 3 && (rpress || rrelease))
+    else if (event->button () == Qt::RightButton && (rpress || rrelease))
     {
         m_rpressed = true;
         if (rpress)
@@ -80,9 +79,9 @@ bool Button::button_press (GdkEventButton * event)
     return true;
 }
 
-bool Button::button_release (GdkEventButton * event)
+bool Button::button_release (QMouseEvent * event)
 {
-    if (event->button == 1 && (press || release))
+    if (event->button () == Qt::LeftButton && (press || release))
     {
         if (! m_pressed)
             return true;
@@ -93,7 +92,7 @@ bool Button::button_release (GdkEventButton * event)
         if (release)
             release (this, event);
     }
-    else if (event->button == 3 && (rpress || rrelease))
+    else if (event->button () == Qt::RightButton && (rpress || rrelease))
     {
         if (! m_rpressed)
             return true;
@@ -110,7 +109,6 @@ bool Button::button_release (GdkEventButton * event)
 
     return true;
 }
-#endif
 
 Button::Button (Type type, int w, int h, int nx, int ny, int px, int py,
  int pnx, int pny, int ppx, int ppy, SkinPixmapId si1, SkinPixmapId si2) :

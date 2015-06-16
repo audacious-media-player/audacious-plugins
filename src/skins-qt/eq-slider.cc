@@ -46,7 +46,6 @@ void EqSlider::draw (QPainter & cr)
         skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 164, 1, m_pos, 11, 11);
 }
 
-#if 0
 void EqSlider::moved (int pos)
 {
     m_pos = aud::clamp (pos, 0, 50);
@@ -63,52 +62,48 @@ void EqSlider::moved (int pos)
     mainwin_show_status_message (str_printf ("%s: %+.1f dB", (const char *) m_name, m_value));
 }
 
-bool EqSlider::button_press (GdkEventButton * event)
+bool EqSlider::button_press (QMouseEvent * event)
 {
-    if (event->button != 1)
+    if (event->button () != Qt::LeftButton)
         return false;
 
     m_pressed = true;
-    moved (event->y / config.scale - 5);
+    moved (event->y () / config.scale - 5);
     queue_draw ();
     return true;
 }
 
-bool EqSlider::button_release (GdkEventButton * event)
+bool EqSlider::button_release (QMouseEvent * event)
 {
-    if (event->button != 1)
+    if (event->button () != Qt::LeftButton)
         return false;
 
     if (! m_pressed)
         return true;
 
     m_pressed = false;
-    moved (event->y / config.scale - 5);
+    moved (event->y () / config.scale - 5);
     queue_draw ();
     return true;
 }
 
-bool EqSlider::motion (GdkEventMotion * event)
+bool EqSlider::motion (QMouseEvent * event)
 {
     if (! m_pressed)
         return true;
 
-    moved (event->y / config.scale - 5);
+    moved (event->y () / config.scale - 5);
     queue_draw ();
     return true;
 }
 
-bool EqSlider::scroll (GdkEventScroll * event)
+bool EqSlider::scroll (QWheelEvent * event)
 {
-    if (event->direction == GDK_SCROLL_UP)
-        moved (m_pos - 2);
-    else if (event->direction == GDK_SCROLL_DOWN)
-        moved (m_pos + 2);
-
+    int delta = event->angleDelta ().y () / 60;
+    moved (m_pos - delta);
     queue_draw ();
     return true;
 }
-#endif
 
 void EqSlider::set_value (float value)
 {

@@ -312,7 +312,7 @@ void PlaylistWidget::resize (int width, int height)
     m_width = width * config.scale;
     m_height = height * config.scale;
 
-    resize (m_width, m_height);
+    Widget::resize (m_width, m_height);
     refresh ();
 }
 
@@ -331,8 +331,8 @@ void PlaylistWidget::set_font (const char * font)
     m_row_height = aud::max (rect.height, 1);
 
     g_object_unref (layout);
-    refresh ();
 #endif
+    refresh ();
 }
 
 void PlaylistWidget::refresh ()
@@ -629,9 +629,9 @@ int PlaylistWidget::hover_end ()
 }
 
 #if 0
-bool PlaylistWidget::button_press (GdkEventButton * event)
+bool PlaylistWidget::button_press (QMouseEvent * event)
 {
-    int position = calc_position (event->y);
+    int position = calc_position (event->y ());
     int state = event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK |
      GDK_MOD1_MASK);
 
@@ -682,7 +682,7 @@ bool PlaylistWidget::button_press (GdkEventButton * event)
             }
 
             menu_popup ((position == -1) ? UI_MENU_PLAYLIST :
-             UI_MENU_PLAYLIST_CONTEXT, event->x_root, event->y_root, false,
+             UI_MENU_PLAYLIST_CONTEXT, event->globalX (), event->globalY (), false,
              false, 3, event->time);
             break;
           default:
@@ -691,7 +691,7 @@ bool PlaylistWidget::button_press (GdkEventButton * event)
 
         break;
       case GDK_2BUTTON_PRESS:
-        if (event->button != 1 || state || position == m_length)
+        if (event->button () != Qt::LeftButton || state || position == m_length)
             return true;
 
         if (position != -1)
@@ -707,7 +707,7 @@ bool PlaylistWidget::button_press (GdkEventButton * event)
     return true;
 }
 
-bool PlaylistWidget::button_release (GdkEventButton * event)
+bool PlaylistWidget::button_release (QMouseEvent * event)
 {
     cancel_all ();
     return true;
@@ -734,9 +734,9 @@ void PlaylistWidget::scroll_timeout ()
 }
 
 #if 0
-bool PlaylistWidget::motion (GdkEventMotion * event)
+bool PlaylistWidget::motion (QMouseEvent * event)
 {
-    int position = calc_position (event->y);
+    int position = calc_position (event->y ());
 
     if (m_drag)
     {
@@ -793,9 +793,7 @@ bool PlaylistWidget::leave (GdkEventCrossing * event)
 
 void PlaylistWidget::popup_show ()
 {
-#if 0
-    audgui_infopopup_show (m_playlist, m_popup_pos);
-#endif
+//    audgui_infopopup_show (m_playlist, m_popup_pos);
     popup_shown = true;
 
     g_source_remove (m_popup_source);
@@ -821,9 +819,7 @@ void PlaylistWidget::popup_hide ()
 
     if (popup_shown)
     {
-#if 0
-        audgui_infopopup_hide ();
-#endif
+//        audgui_infopopup_hide ();
         popup_shown = false;
     }
 

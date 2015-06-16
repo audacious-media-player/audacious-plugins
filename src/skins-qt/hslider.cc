@@ -40,14 +40,13 @@ void HSlider::draw (QPainter & cr)
         skin_draw_pixbuf (cr, m_si, m_knx, m_kny, m_pos, (m_h - m_kh) / 2, m_kw, m_kh);
 }
 
-#if 0
-bool HSlider::button_press (GdkEventButton * event)
+bool HSlider::button_press (QMouseEvent * event)
 {
-    if (event->button != 1)
+    if (event->button () != Qt::LeftButton)
         return false;
 
     m_pressed = true;
-    m_pos = aud::clamp ((int) event->x / config.scale - m_kw / 2, m_min, m_max);
+    m_pos = aud::clamp ((int) event->x () / config.scale - m_kw / 2, m_min, m_max);
 
     if (move)
         move ();
@@ -56,16 +55,16 @@ bool HSlider::button_press (GdkEventButton * event)
     return true;
 }
 
-bool HSlider::button_release (GdkEventButton * event)
+bool HSlider::button_release (QMouseEvent * event)
 {
-    if (event->button != 1)
+    if (event->button () != Qt::LeftButton)
         return false;
 
     if (! m_pressed)
         return true;
 
     m_pressed = false;
-    m_pos = aud::clamp ((int) event->x / config.scale - m_kw / 2, m_min, m_max);
+    m_pos = aud::clamp ((int) event->x () / config.scale - m_kw / 2, m_min, m_max);
 
     if (release)
         release ();
@@ -74,13 +73,13 @@ bool HSlider::button_release (GdkEventButton * event)
     return true;
 }
 
-bool HSlider::motion (GdkEventMotion * event)
+bool HSlider::motion (QMouseEvent * event)
 {
     if (! m_pressed)
         return true;
 
     m_pressed = true;
-    m_pos = aud::clamp ((int) event->x / config.scale - m_kw / 2, m_min, m_max);
+    m_pos = aud::clamp ((int) event->x () / config.scale - m_kw / 2, m_min, m_max);
 
     if (move)
         move ();
@@ -88,7 +87,6 @@ bool HSlider::motion (GdkEventMotion * event)
     queue_draw ();
     return true;
 }
-#endif
 
 HSlider::HSlider (int min, int max, SkinPixmapId si, int w, int h, int fx,
  int fy, int kw, int kh, int knx, int kny, int kpx, int kpy) :

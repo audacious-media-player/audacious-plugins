@@ -63,45 +63,43 @@ void PlaylistSlider::set_pos (int y)
     m_list->scroll_to ((y * (m_length - rows) + range / 2) / range);
 }
 
-#if 0
-bool PlaylistSlider::button_press (GdkEventButton * event)
+bool PlaylistSlider::button_press (QMouseEvent * event)
 {
-    if (event->button != 1)
+    if (event->button () != Qt::LeftButton)
         return false;
 
     m_pressed = true;
-    set_pos (event->y / config.scale - 9);
+    set_pos (event->y () / config.scale - 9);
 
     queue_draw ();
     return true;
 }
 
-bool PlaylistSlider::button_release (GdkEventButton * event)
+bool PlaylistSlider::button_release (QMouseEvent * event)
 {
-    if (event->button != 1)
+    if (event->button () != Qt::LeftButton)
         return false;
 
     if (! m_pressed)
         return true;
 
     m_pressed = false;
-    set_pos (event->y / config.scale - 9);
+    set_pos (event->y () / config.scale - 9);
 
     queue_draw ();
     return true;
 }
 
-bool PlaylistSlider::motion (GdkEventMotion * event)
+bool PlaylistSlider::motion (QMouseEvent * event)
 {
     if (! m_pressed)
         return true;
 
-    set_pos (event->y / config.scale - 9);
+    set_pos (event->y () / config.scale - 9);
 
     queue_draw ();
     return true;
 }
-#endif
 
 PlaylistSlider::PlaylistSlider (PlaylistWidget * list, int height) :
     m_list (list), m_height (height),

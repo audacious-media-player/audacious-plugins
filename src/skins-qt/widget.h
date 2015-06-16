@@ -22,7 +22,9 @@
 #ifndef SKINS_WIDGET_H
 #define SKINS_WIDGET_H
 
+#include <QMouseEvent>
 #include <QPainter>
+#include <QWheelEvent>
 #include <QWidget>
 
 class Widget : public QWidget
@@ -37,17 +39,27 @@ protected:
     void draw_now () { repaint (); }
 
     virtual void draw (QPainter & cr) {}
-#if 0
-    virtual void realize () {}
-    virtual bool button_press (GdkEventButton * event) { return false; }
-    virtual bool button_release (GdkEventButton * event) { return false; }
-    virtual bool scroll (GdkEventScroll * event) { return false; }
-    virtual bool motion (GdkEventMotion * event) { return false; }
-    virtual bool leave (GdkEventCrossing * event) { return false; }
-#endif
+    virtual bool button_press (QMouseEvent * event) { return false; }
+    virtual bool button_release (QMouseEvent * event) { return false; }
+    virtual bool scroll (QWheelEvent * event) { return false; }
+    virtual bool motion (QMouseEvent * event) { return false; }
+    virtual bool leave () { return false; }
 
 private:
     void paintEvent (QPaintEvent *);
+
+    void mousePressEvent (QMouseEvent * event)
+        { event->setAccepted (button_press (event)); }
+    void mouseReleaseEvent (QMouseEvent * event)
+        { event->setAccepted (button_release (event)); }
+    void wheelEvent (QWheelEvent * event)
+        { event->setAccepted (scroll (event)); }
+    void mouseMoveEvent (QMouseEvent * event)
+        { event->setAccepted (motion (event)); }
+    void leaveEvent (QEvent * event)
+        { event->setAccepted (leave ()); }
+
+    bool m_drawable = false;
 };
 
 #endif // SKINS_WIDGET_H

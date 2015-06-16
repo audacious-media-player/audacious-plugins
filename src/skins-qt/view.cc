@@ -21,8 +21,9 @@
 
 #include "view.h"
 
-#include <libaudcore/runtime.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/mainloop.h>
+#include <libaudcore/runtime.h>
 
 #include <QWindow>
 
@@ -179,7 +180,8 @@ void view_set_double_size (bool double_size)
 
 void view_apply_double_size ()
 {
-    skins_restart ();
+    static QueuedFunc restart;
+    restart.queue ((QueuedFunc::Func) skins_restart, nullptr);
 }
 
 void view_set_on_top (bool on_top)

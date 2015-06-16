@@ -22,15 +22,14 @@
 #include "drag-handle.h"
 #include "skins_cfg.h"
 
-#if 0
-bool DragHandle::button_press (GdkEventButton * event)
+bool DragHandle::button_press (QMouseEvent * event)
 {
-    if (event->button != 1)
+    if (event->button () != Qt::LeftButton)
         return false;
 
     m_held = true;
-    m_x_origin = event->x_root;
-    m_y_origin = event->y_root;
+    m_x_origin = event->globalX ();
+    m_y_origin = event->globalY ();
 
     if (press)
         press ();
@@ -38,27 +37,26 @@ bool DragHandle::button_press (GdkEventButton * event)
     return true;
 }
 
-bool DragHandle::button_release (GdkEventButton * event)
+bool DragHandle::button_release (QMouseEvent * event)
 {
-    if (event->button != 1)
+    if (event->button () != Qt::LeftButton)
         return false;
 
     m_held = false;
     return true;
 }
 
-bool DragHandle::motion (GdkEventMotion * event)
+bool DragHandle::motion (QMouseEvent * event)
 {
     if (! m_held)
         return true;
 
     if (drag)
-        drag ((event->x_root - m_x_origin) / config.scale,
-         (event->y_root - m_y_origin) / config.scale);
+        drag ((event->globalX () - m_x_origin) / config.scale,
+         (event->globalY () - m_y_origin) / config.scale);
 
     return true;
 }
-#endif
 
 DragHandle::DragHandle (int w, int h, void (* press) (), void (* drag) (int x, int y)) :
     press (press), drag (drag)

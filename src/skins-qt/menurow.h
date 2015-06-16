@@ -43,11 +43,9 @@ public:
 
 private:
     virtual void draw (QPainter & cr);
-#if 0
-    virtual bool button_press (GdkEventButton * event);
-    virtual bool button_release (GdkEventButton * event);
-    virtual bool motion (GdkEventMotion * event);
-#endif
+    virtual bool button_press (QMouseEvent * event);
+    virtual bool button_release (QMouseEvent * event);
+    virtual bool motion (QMouseEvent * event);
 
     MenuRowItem m_selected = MENUROW_NONE;
     bool m_pushed = false;
@@ -55,8 +53,6 @@ private:
 
 /* callbacks in ui_main.c */
 void mainwin_mr_change (MenuRowItem i);
-#if 0
-void mainwin_mr_release (MenuRowItem i, GdkEventButton * event);
-#endif
+void mainwin_mr_release (MenuRowItem i, QMouseEvent * event);
 
 #endif

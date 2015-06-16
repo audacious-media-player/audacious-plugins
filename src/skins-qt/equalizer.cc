@@ -55,16 +55,14 @@ static Button * equalizerwin_presets;
 static EqSlider * equalizerwin_preamp, * equalizerwin_bands[10];
 static HSlider * equalizerwin_volume, * equalizerwin_balance;
 
-#if 0
 static void
 equalizerwin_shade_toggle(void)
 {
     view_set_equalizer_shaded (! aud_get_bool ("skins", "equalizer_shaded"));
 }
 
-static void eq_on_cb (Button * button, GdkEventButton * event)
+static void eq_on_cb (Button * button, QMouseEvent * event)
  {aud_set_bool (nullptr, "equalizer_active", button->get_active ()); }
-#endif
 
 static void update_from_config (void *, void *)
 {
@@ -82,33 +80,33 @@ static void update_from_config (void *, void *)
 
 #if 0
 static gboolean
-equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
+equalizerwin_press(GtkWidget * widget, QMouseEvent * event,
                    void * callback_data)
 {
-    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
+    if (event->button () == Qt::LeftButton && event->type () == QEvent::MouseButtonDblClick &&
      event->window == gtk_widget_get_window (widget) &&
-     event->y < 14 * config.scale)
+     event->y () < 14 * config.scale)
     {
         equalizerwin_shade_toggle ();
         return TRUE;
     }
 
-    if (event->button == 3)
+    if (event->button () == Qt::RightButton)
     {
-        menu_popup (UI_MENU_MAIN, event->x_root, event->y_root, FALSE, FALSE,
+        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), FALSE, FALSE,
          event->button, event->time);
         return TRUE;
     }
 
     return FALSE;
 }
+#endif
 
 static void
 equalizerwin_close_cb(void)
 {
     view_set_show_equalizer (FALSE);
 }
-#endif
 
 static void eqwin_volume_set_knob (void)
 {
@@ -184,7 +182,7 @@ equalizerwin_create_widgets(void)
     equalizerwin_on = new Button (25, 12, 10, 119, 128, 119, 69, 119, 187, 119, SKIN_EQMAIN, SKIN_EQMAIN);
     equalizerwin->put_widget (false, equalizerwin_on, 14, 18);
     equalizerwin_on->set_active (aud_get_bool (nullptr, "equalizer_active"));
-//    equalizerwin_on->on_release (eq_on_cb);
+    equalizerwin_on->on_release (eq_on_cb);
 
     // AUTO button currently does nothing
     equalizerwin_auto = new Button (33, 12, 35, 119, 153, 119, 94, 119, 212, 119, SKIN_EQMAIN, SKIN_EQMAIN);
@@ -196,19 +194,19 @@ equalizerwin_create_widgets(void)
 
     equalizerwin_close = new Button (9, 9, 0, 116, 0, 125, SKIN_EQMAIN, SKIN_EQMAIN);
     equalizerwin->put_widget (false, equalizerwin_close, 264, 3);
-//    equalizerwin_close->on_release ((ButtonCB) equalizerwin_close_cb);
+    equalizerwin_close->on_release ((ButtonCB) equalizerwin_close_cb);
 
     equalizerwin_shade = new Button (9, 9, 254, 137, 1, 38, SKIN_EQMAIN, SKIN_EQ_EX);
     equalizerwin->put_widget (false, equalizerwin_shade, 254, 3);
-//    equalizerwin_shade->on_release ((ButtonCB) equalizerwin_shade_toggle);
+    equalizerwin_shade->on_release ((ButtonCB) equalizerwin_shade_toggle);
 
     equalizerwin_shaded_close = new Button (9, 9, 11, 38, 11, 47, SKIN_EQ_EX, SKIN_EQ_EX);
     equalizerwin->put_widget (true, equalizerwin_shaded_close, 264, 3);
-//    equalizerwin_shaded_close->on_release ((ButtonCB) equalizerwin_close_cb);
+    equalizerwin_shaded_close->on_release ((ButtonCB) equalizerwin_close_cb);
 
     equalizerwin_shaded_shade = new Button (9, 9, 254, 3, 1, 47, SKIN_EQ_EX, SKIN_EQ_EX);
     equalizerwin->put_widget (true, equalizerwin_shaded_shade, 254, 3);
-//    equalizerwin_shaded_shade->on_release ((ButtonCB) equalizerwin_shade_toggle);
+    equalizerwin_shaded_shade->on_release ((ButtonCB) equalizerwin_shade_toggle);
 
     equalizerwin_graph = new EqGraph;
     equalizerwin->put_widget (false, equalizerwin_graph, 86, 17);

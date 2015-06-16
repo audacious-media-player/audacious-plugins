@@ -32,9 +32,7 @@ public:
 
 private:
     virtual void draw (QPainter & cr);
-#if 0
-    virtual bool button_press (GdkEventButton * event);
-#endif
+    virtual bool button_press (QMouseEvent * event);
 
     int m_num = 0;
 };

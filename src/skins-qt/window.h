@@ -40,21 +40,19 @@ public:
     ~Window ();
 
     void resize (int w, int h);
-#if 0
-    void set_shapes (GdkRegion * shape, GdkRegion * sshape);
-#endif
+//    void set_shapes (GdkRegion * shape, GdkRegion * sshape);
     void set_shaded (bool shaded);
     void put_widget (bool shaded, Widget * widget, int x, int y);
     void move_widget (bool shaded, Widget * widget, int x, int y);
 
+    void getPosition (int * xp, int * yp)
+        { * xp = x (); * yp = y (); }
+
 private:
     void draw (QPainter & cr);
-#if 0
-    void realize ();
-    bool button_press (GdkEventButton * event);
-    bool button_release (GdkEventButton * event);
-    bool motion (GdkEventMotion * event);
-#endif
+    bool button_press (QMouseEvent * event);
+    bool button_release (QMouseEvent * event);
+    bool motion (QMouseEvent * event);
 
     void apply_shape ();
 
@@ -64,12 +62,10 @@ private:
 
     bool m_is_moving = false;
     QWidget * m_normal = nullptr, * m_shaded = nullptr;
-#if 0
-    GdkRegion * m_shape = nullptr, * m_sshape = nullptr;
-#endif
+//    GdkRegion * m_shape = nullptr, * m_sshape = nullptr;
 };
 
-void dock_add_window (int id, QWidget * window, int * x, int * y, int w, int h);
+void dock_add_window (int id, Window * window, int * x, int * y, int w, int h);
 void dock_remove_window (int id);
 void dock_set_size (int id, int w, int h);
 void dock_move_start (int id, int x, int y);

@@ -24,15 +24,21 @@
 void Widget::add_input (int width, int height, bool track_motion, bool drawable)
 {
     resize (width, height);
+    setMouseTracking (track_motion);
+    m_drawable = drawable;
 }
 
 void Widget::add_drawable (int width, int height)
 {
     resize (width, height);
+    m_drawable = true;
 }
 
 void Widget::paintEvent (QPaintEvent *)
 {
-    QPainter p (this);
-    draw (p);
+    if (m_drawable)
+    {
+        QPainter p (this);
+        draw (p);
+    }
 }
