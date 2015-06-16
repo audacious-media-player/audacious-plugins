@@ -31,16 +31,15 @@ enum {
     N_WINDOWS
 };
 
-typedef void (* DrawFunc) (QPainter &);
-
 class Window : public Widget
 {
 public:
-    Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc draw);
+    Window (int id, int * x, int * y, int w, int h, bool shaded);
     ~Window ();
 
     void resize (int w, int h);
 //    void set_shapes (GdkRegion * shape, GdkRegion * sshape);
+    bool is_shaded () { return m_is_shaded; }
     void set_shaded (bool shaded);
     void put_widget (bool shaded, Widget * widget, int x, int y);
     void move_widget (bool shaded, Widget * widget, int x, int y);
@@ -48,18 +47,17 @@ public:
     void getPosition (int * xp, int * yp)
         { * xp = x (); * yp = y (); }
 
-private:
-    void draw (QPainter & cr);
+protected:
     bool button_press (QMouseEvent * event);
     bool button_release (QMouseEvent * event);
     bool motion (QMouseEvent * event);
+    bool close ();
 
+private:
     void apply_shape ();
 
-    int m_id;
-    bool m_is_shaded;
-    DrawFunc draw_func;
-
+    const int m_id;
+    bool m_is_shaded = false;
     bool m_is_moving = false;
     QWidget * m_normal = nullptr, * m_shaded = nullptr;
 //    GdkRegion * m_shape = nullptr, * m_sshape = nullptr;

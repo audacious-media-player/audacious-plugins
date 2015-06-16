@@ -22,6 +22,7 @@
 #ifndef SKINS_WIDGET_H
 #define SKINS_WIDGET_H
 
+#include <QCloseEvent>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QWheelEvent>
@@ -44,6 +45,7 @@ protected:
     virtual bool scroll (QWheelEvent * event) { return false; }
     virtual bool motion (QMouseEvent * event) { return false; }
     virtual bool leave () { return false; }
+    virtual bool close () { return false; }
 
 private:
     void paintEvent (QPaintEvent *);
@@ -58,6 +60,8 @@ private:
         { event->setAccepted (motion (event)); }
     void leaveEvent (QEvent * event)
         { event->setAccepted (leave ()); }
+    void closeEvent (QCloseEvent * event)
+        { event->setAccepted (close ()); }
 
     bool m_drawable = false;
 };

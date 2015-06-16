@@ -45,6 +45,18 @@
 #include "util.h"
 #include "view.h"
 
+class EqWindow : public Window
+{
+public:
+    EqWindow (bool shaded) :
+        Window (WINDOW_EQ, & config.equalizer_x, & config.equalizer_y, 275,
+         shaded ? 14 : 116, shaded) {}
+
+private:
+    void draw (QPainter & cr);
+    bool button_press (QMouseEvent * event);
+};
+
 Window * equalizerwin;
 EqGraph * equalizerwin_graph;
 
@@ -78,34 +90,30 @@ static void update_from_config (void *, void *)
     equalizerwin_graph->refresh ();
 }
 
-#if 0
-static gboolean
-equalizerwin_press(GtkWidget * widget, QMouseEvent * event,
-                   void * callback_data)
+bool EqWindow::button_press (QMouseEvent * event)
 {
-    if (event->button () == Qt::LeftButton && event->type () == QEvent::MouseButtonDblClick &&
-     event->window == gtk_widget_get_window (widget) &&
+    if (event->button () == Qt::LeftButton &&
+     event->type () == QEvent::MouseButtonDblClick &&
      event->y () < 14 * config.scale)
     {
         equalizerwin_shade_toggle ();
-        return TRUE;
+        return true;
     }
 
-    if (event->button () == Qt::RightButton)
+    if (event->button () == Qt::RightButton && event->type () == QEvent::MouseButtonPress)
     {
-        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), FALSE, FALSE,
-         event->button, event->time);
-        return TRUE;
+//        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), false, false,
+//         event->button, event->time);
+        return true;
     }
 
-    return FALSE;
+    return Window::button_press (event);
 }
-#endif
 
 static void
 equalizerwin_close_cb(void)
 {
-    view_set_show_equalizer (FALSE);
+    view_set_show_equalizer (false);
 }
 
 static void eqwin_volume_set_knob (void)
@@ -239,13 +247,11 @@ equalizerwin_create_widgets(void)
     equalizerwin_balance->on_release (eqwin_balance_release_cb);
 }
 
-static void eq_win_draw (QPainter & cr)
+void EqWindow::draw (QPainter & cr)
 {
-    bool shaded = aud_get_bool ("skins", "equalizer_shaded");
+    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, is_shaded () ? 14 : 116);
 
-    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, shaded ? 14 : 116);
-
-    if (shaded)
+    if (is_shaded ())
         skin_draw_pixbuf (cr, SKIN_EQ_EX, 0, 0, 0, 0, 275, 14);
     else
         skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 134, 0, 0, 275, 14);
@@ -256,13 +262,11 @@ equalizerwin_create_window(void)
 {
     bool shaded = aud_get_bool ("skins", "equalizer_shaded");
 
-    equalizerwin = new Window (WINDOW_EQ, & config.equalizer_x,
-     & config.equalizer_y, 275, shaded ? 14 : 116, shaded, eq_win_draw);
+    equalizerwin = new EqWindow (shaded);
     equalizerwin->setWindowTitle (_("Audacious Equalizer"));
 
 #if 0
-    g_signal_connect (w, "delete-event", (GCallback) handle_window_close, nullptr);
-    g_signal_connect (w, "button-press-event", (GCallback) equalizerwin_press, nullptr);
+    GtkWidget * w = equalizerwin->gtk ();
     g_signal_connect (w, "key-press-event", (GCallback) mainwin_keypress, nullptr);
 #endif
 }
@@ -279,9 +283,7 @@ void equalizerwin_create ()
     equalizerwin_create_window ();
     equalizerwin_create_widgets ();
 
-#if 0
-    gtk_window_add_accel_group ((GtkWindow *) equalizerwin->gtk (), menu_get_accel_group ());
-#endif
+//    gtk_window_add_accel_group ((GtkWindow *) equalizerwin->gtk (), menu_get_accel_group ());
 
     hook_associate ("set equalizer_active", (HookFunction) update_from_config, nullptr);
     hook_associate ("set equalizer_bands", (HookFunction) update_from_config, nullptr);

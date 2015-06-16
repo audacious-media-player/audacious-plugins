@@ -19,6 +19,7 @@
  */
 
 #include <stdlib.h>
+#include <glib.h>
 #include <QApplication>
 
 #include <libaudcore/audstrings.h>
@@ -186,7 +187,7 @@ void QtSkins::cleanup ()
     qapp = nullptr;
 }
 
-void skins_restart (void)
+void skins_restart ()
 {
     skins_cleanup_main ();
     skins_init_main (true);
@@ -195,13 +196,11 @@ void skins_restart (void)
         view_show_player (true);
 }
 
-gboolean handle_window_close (void)
+void skins_close ()
 {
-    gboolean handled = FALSE;
+    bool handled = false;
     hook_call ("window close", & handled);
 
     if (! handled)
         aud_quit ();
-
-    return TRUE;
 }

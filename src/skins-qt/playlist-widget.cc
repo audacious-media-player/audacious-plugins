@@ -332,6 +332,7 @@ void PlaylistWidget::set_font (const char * font)
 
     g_object_unref (layout);
 #endif
+    m_row_height = 16;
     refresh ();
 }
 

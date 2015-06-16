@@ -28,6 +28,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#include <glib.h>
 #include <QPainter>
 
 #include <libaudcore/audstrings.h>

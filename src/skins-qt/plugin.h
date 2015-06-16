@@ -21,13 +21,10 @@
 #ifndef PLUGIN_SKINS_H
 #define PLUGIN_SKINS_H
 
-#include <glib.h>
-
 const char * skins_get_user_skin_dir ();
 const char * skins_get_skin_thumb_dir ();
 
-void skins_restart (void);
-
-gboolean handle_window_close (void);
+void skins_restart ();
+void skins_close ();
 
 #endif

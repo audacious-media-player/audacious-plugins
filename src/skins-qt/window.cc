@@ -19,14 +19,9 @@
  * using our public API to be a derived work.
  */
 
-#include "skins_cfg.h"
 #include "window.h"
-
-void Window::draw (QPainter & cr)
-{
-    if (draw_func)
-        draw_func (cr);
-}
+#include "plugin.h"
+#include "skins_cfg.h"
 
 #if 0
 void Window::apply_shape ()
@@ -73,6 +68,12 @@ bool Window::motion (QMouseEvent * event)
     return true;
 }
 
+bool Window::close ()
+{
+    skins_close ();
+    return true;
+}
+
 Window::~Window ()
 {
     dock_remove_window (m_id);
@@ -85,10 +86,9 @@ Window::~Window ()
 #endif
 }
 
-Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc draw) :
+Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
     m_id (id),
-    m_is_shaded (shaded),
-    draw_func (draw)
+    m_is_shaded (shaded)
 {
     w *= config.scale;
     h *= config.scale;
