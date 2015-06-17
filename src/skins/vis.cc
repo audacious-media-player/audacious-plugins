@@ -28,7 +28,6 @@
 #include <libaudcore/objects.h>
 
 #include "skins_cfg.h"
-#include "surface.h"
 #include "skin.h"
 #include "vis.h"
 

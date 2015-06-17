@@ -176,9 +176,7 @@ struct Skin
     uint32_t vis_colors[24] {};
 
     SmartPtr<QImage> pixmaps[SKIN_PIXMAP_COUNT];
-#if 0
-    Index<GdkRectangle> masks[SKIN_MASK_COUNT];
-#endif
+//    Index<GdkRectangle> masks[SKIN_MASK_COUNT];
 
     Skin () = default;
     Skin (Skin && b) = default;

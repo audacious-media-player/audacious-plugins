@@ -396,11 +396,11 @@ playlistwin_create_widgets(void)
 
     playlistwin_time_min = new TextBox (15, nullptr, false);
     playlistwin->put_widget (false, playlistwin_time_min, w - 82, h - 15);
-//    playlistwin_time_min->on_press (change_timer_mode_cb);
+    playlistwin_time_min->on_press (change_timer_mode_cb);
 
     playlistwin_time_sec = new TextBox (10, nullptr, false);
     playlistwin->put_widget (false, playlistwin_time_sec, w - 64, h - 15);
-//    playlistwin_time_sec->on_press (change_timer_mode_cb);
+    playlistwin_time_sec->on_press (change_timer_mode_cb);
 
     playlistwin_info = new TextBox (90, nullptr, false);
     playlistwin->put_widget (false, playlistwin_info, w - 143, h - 28);

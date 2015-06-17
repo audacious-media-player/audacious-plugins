@@ -88,7 +88,7 @@ private:
 
     PlaylistSlider * m_slider = nullptr;
     PangoFontDescPtr m_font;
-    String title_text;
+    String m_title_text;
 
     int m_playlist = -1, m_playlist_id = -1, m_length = 0;
     int m_width = 0, m_height = 0, m_row_height = 1, m_offset = 0, m_rows = 0, m_first = 0;

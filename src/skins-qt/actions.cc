@@ -32,6 +32,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugins.h>
+#include <libaudqt/libaudqt.h>
 
 #define ACTIVE (aud_playlist_get_active ())
 
@@ -65,9 +66,9 @@ void action_ab_set ()
 }
 
 void action_play_file ()
-    {}
+    { audqt::fileopener_show (audqt::FileMode::Open); }
 void action_play_location ()
-    {}
+    { /* TODO */ }
 
 void action_playlist_manager ()
 {
@@ -125,9 +126,9 @@ void action_playlist_next ()
 }
 
 void action_playlist_rename ()
-    {}
+    { /* TODO */ }
 void action_playlist_delete ()
-    {}
+    { audqt::playlist_confirm_delete (ACTIVE); }
 
 void action_playlist_invert_selection ()
 {
@@ -207,9 +208,9 @@ void action_playlist_paste ()
 }
 
 void action_playlist_add_url ()
-    {}
+    { /* TODO */ }
 void action_playlist_add_files ()
-    {}
+    { audqt::fileopener_show (audqt::FileMode::Add ); }
 
 void action_playlist_randomize_list ()
     { aud_playlist_randomize (ACTIVE); }
@@ -264,10 +265,8 @@ void action_playlist_sort_selected_by_custom_title ()
 
 void action_playlist_track_info ()
 {
-#if 0
     int playlist = ACTIVE;
-    audgui_infowin_show (playlist, aud_playlist_get_focus (playlist));
-#endif
+    audqt::infowin_show (playlist, aud_playlist_get_focus (playlist));
 }
 
 void action_queue_toggle ()

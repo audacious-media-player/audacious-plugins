@@ -147,7 +147,7 @@ void skins_cfg_save (void)
 static void
 mainwin_font_set_cb()
 {
-    if (config.mainwin_use_bitmapfont)
+    if (! config.mainwin_use_bitmapfont)
         mainwin_info->set_font (aud_get_str ("skins", "mainwin_font"));
     else
         mainwin_info->set_font (nullptr);

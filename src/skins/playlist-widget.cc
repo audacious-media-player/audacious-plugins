@@ -49,18 +49,18 @@ void PlaylistWidget::update_title ()
     if (aud_playlist_count () > 1)
     {
         String title = aud_playlist_get_title (m_playlist);
-        title_text = String (str_printf (_("%s (%d of %d)"),
+        m_title_text = String (str_printf (_("%s (%d of %d)"),
          (const char *) title, 1 + m_playlist, aud_playlist_count ()));
     }
     else
-        title_text = String ();
+        m_title_text = String ();
 }
 
 void PlaylistWidget::calc_layout ()
 {
     m_rows = m_height / m_row_height;
 
-    if (m_rows && title_text)
+    if (m_rows && m_title_text)
     {
         m_offset = m_row_height;
         m_rows --;
@@ -143,7 +143,7 @@ void PlaylistWidget::draw (cairo_t * cr)
 
     if (m_offset)
     {
-        layout = gtk_widget_create_pango_layout (gtk_dr (), title_text);
+        layout = gtk_widget_create_pango_layout (gtk_dr (), m_title_text);
         pango_layout_set_font_description (layout, m_font.get ());
         pango_layout_set_width (layout, PANGO_SCALE * (m_width - left - right));
         pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);

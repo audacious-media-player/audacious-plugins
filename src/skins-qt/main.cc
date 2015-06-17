@@ -34,6 +34,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
+#include <libaudqt/libaudqt.h>
 
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
@@ -868,13 +869,13 @@ void mainwin_mr_release (MenuRowItem i, QMouseEvent * event)
             view_set_on_top (! aud_get_bool ("skins", "always_on_top"));
             break;
         case MENUROW_FILEINFOBOX:
-//            audgui_infowin_show_current ();
+            audqt::infowin_show_current ();
             break;
         case MENUROW_SCALE:
             view_set_double_size (! aud_get_bool ("skins", "double_size"));
             break;
         case MENUROW_VISUALIZATION:
-//            audgui_show_prefs_for_plugin_type (PluginType::Vis);
+            audqt::prefswin_show_plugin_page (PluginType::Vis);
             break;
         default:
             break;
@@ -903,7 +904,7 @@ static bool mainwin_info_button_press (QMouseEvent * event)
 
     if (event->type () == QEvent::MouseButtonDblClick && event->button () == Qt::LeftButton)
     {
-//        audgui_infowin_show_current ();
+        audqt::infowin_show_current ();
         return true;
     }
 
@@ -1032,7 +1033,7 @@ mainwin_create_widgets(void)
 
     mainwin_about = new Button (20, 25);
     mainwin->put_widget (false, mainwin_about, 247, 83);
-//    mainwin_about->on_release ((ButtonCB) audgui_show_about_window);
+    mainwin_about->on_release ((ButtonCB) audqt::aboutwindow_show);
 
     mainwin_vis = new SkinnedVis;
     mainwin->put_widget (false, mainwin_vis, 24, 43);
@@ -1094,11 +1095,11 @@ mainwin_create_widgets(void)
 
     mainwin_stime_min = new TextBox (15, nullptr, false);
     mainwin->put_widget (true, mainwin_stime_min, 130, 4);
-//    mainwin_stime_min->on_press (change_timer_mode_cb);
+    mainwin_stime_min->on_press (change_timer_mode_cb);
 
     mainwin_stime_sec = new TextBox (10, nullptr, false);
     mainwin->put_widget (true, mainwin_stime_sec, 147, 4);
-//    mainwin_stime_sec->on_press (change_timer_mode_cb);
+    mainwin_stime_sec->on_press (change_timer_mode_cb);
 }
 
 #if 0
