@@ -171,21 +171,20 @@ static void skin_load_viscolor (const char * path)
     }
 }
 
-static void
-skin_numbers_generate_dash ()
+static void skin_numbers_generate_dash (CairoSurfacePtr & s)
 {
-    cairo_surface_t * old = skin.pixmaps[SKIN_NUMBERS].get ();
-    if (! old || cairo_image_surface_get_width (old) < 99)
+    int w = cairo_image_surface_get_width (s.get ());
+    if (w < 99 || w >= 108)
         return;
 
-    int h = cairo_image_surface_get_height (old);
+    int h = cairo_image_surface_get_height (s.get ());
     cairo_surface_t * surface = surface_new (108, h);
 
-    surface_copy_rect (old, 0, 0, 99, h, surface, 0, 0);
-    surface_copy_rect (old, 90, 0, 9, h, surface, 99, 0);
-    surface_copy_rect (old, 20, 6, 5, 1, surface, 101, 6);
+    surface_copy_rect (s.get (), 0, 0, 99, h, surface, 0, 0);
+    surface_copy_rect (s.get (), 90, 0, 9, h, surface, 99, 0);
+    surface_copy_rect (s.get (), 20, 6, 5, 1, surface, 101, 6);
 
-    skin.pixmaps[SKIN_NUMBERS].capture (surface);
+    s.capture (surface);
 }
 
 static bool
@@ -197,15 +196,9 @@ skin_load_pixmaps(const char * path)
         if (! skin_load_pixmap_id ((SkinPixmapId) i, path))
             return false;
 
-    if (skin.pixmaps[SKIN_TEXT])
-        skin_get_textcolors (skin.pixmaps[SKIN_TEXT].get ());
-
-    if (skin.pixmaps[SKIN_EQMAIN])
-        skin_get_eq_spline_colors (skin.pixmaps[SKIN_EQMAIN].get ());
-
-    if (skin.pixmaps[SKIN_NUMBERS] && cairo_image_surface_get_width
-     (skin.pixmaps[SKIN_NUMBERS].get ()) < 108)
-        skin_numbers_generate_dash ();
+    skin_get_textcolors (skin.pixmaps[SKIN_TEXT].get ());
+    skin_get_eq_spline_colors (skin.pixmaps[SKIN_EQMAIN].get ());
+    skin_numbers_generate_dash (skin.pixmaps[SKIN_NUMBERS]);
 
     return true;
 }
@@ -302,9 +295,6 @@ void skin_install_skin (const char * path)
 void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc, int
  xdest, int ydest, int width, int height)
 {
-    if (! skin.pixmaps[id])
-        return;
-
     cairo_save (cr);
     cairo_scale (cr, config.scale, config.scale);
     cairo_set_source_surface (cr, skin.pixmaps[id].get (), xdest - xsrc, ydest - ysrc);

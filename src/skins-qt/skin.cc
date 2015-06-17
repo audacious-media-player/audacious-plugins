@@ -104,17 +104,18 @@ static bool skin_load_pixmap_id (SkinPixmapId id, const char * path)
         return false;
     }
 
-    auto image = SmartNew<QImage> ((const char *) filename);
-    if (! image->isNull () && image->format () != QImage::Format_RGB32)
-        * image = image->convertToFormat (QImage::Format_RGB32);
+    QImage & image = skin.pixmaps[id];
+    image.load ((const char *) filename);
 
-    if (image->isNull ())
+    if (! image.isNull () && image.format () != QImage::Format_RGB32)
+        image = image.convertToFormat (QImage::Format_RGB32);
+
+    if (image.isNull ())
     {
         AUDERR ("Error loading pixmap: %s\n", (const char *) filename);
         return false;
     }
 
-    skin.pixmaps[id] = std::move (image);
     return true;
 }
 
@@ -180,23 +181,23 @@ static void skin_load_viscolor (const char * path)
     }
 }
 
-static void skin_numbers_generate_dash ()
+static void skin_numbers_generate_dash (QImage & image)
 {
-    QImage * old = skin.pixmaps[SKIN_NUMBERS].get ();
-    if (! old || old->width () < 99)
+    int w = image.width ();
+    if (w < 99 || w >= 108)
         return;
 
-    int h = old->height ();
-    auto image = new QImage (108, h, QImage::Format_RGB32);
+    int h = image.height ();
+    QImage temp (108, h, QImage::Format_RGB32);
 
     {
-        QPainter p (image);
-        p.drawImage (0, 0, * old, 0, 0, 99, h);
-        p.drawImage (99, 0, * old, 90, 0, 9, h);
-        p.drawImage (101, 6, * old, 20, 6, 5, 1);
+        QPainter p (& temp);
+        p.drawImage (0, 0, image, 0, 0, 99, h);
+        p.drawImage (99, 0, image, 90, 0, 9, h);
+        p.drawImage (101, 6, image, 20, 6, 5, 1);
     }
 
-    skin.pixmaps[SKIN_NUMBERS].capture (image);
+    image = std::move (temp);
 }
 
 static bool
@@ -208,14 +209,9 @@ skin_load_pixmaps(const char * path)
         if (! skin_load_pixmap_id ((SkinPixmapId) i, path))
             return false;
 
-    if (skin.pixmaps[SKIN_TEXT])
-        skin_get_textcolors (* skin.pixmaps[SKIN_TEXT]);
-
-    if (skin.pixmaps[SKIN_EQMAIN])
-        skin_get_eq_spline_colors (* skin.pixmaps[SKIN_EQMAIN]);
-
-    if (skin.pixmaps[SKIN_NUMBERS] && skin.pixmaps[SKIN_NUMBERS]->width () < 108)
-        skin_numbers_generate_dash ();
+    skin_get_textcolors (skin.pixmaps[SKIN_TEXT]);
+    skin_get_eq_spline_colors (skin.pixmaps[SKIN_EQMAIN]);
+    skin_numbers_generate_dash (skin.pixmaps[SKIN_NUMBERS]);
 
     return true;
 }
@@ -312,12 +308,9 @@ void skin_install_skin (const char * path)
 void skin_draw_pixbuf (QPainter & p, SkinPixmapId id, int xsrc, int ysrc, int
  xdest, int ydest, int width, int height)
 {
-    if (! skin.pixmaps[id])
-        return;
-
     p.save ();
     p.setTransform (QTransform ().scale (config.scale, config.scale));
-    p.drawImage (xdest, ydest, * skin.pixmaps[id], xsrc, ysrc, width, height);
+    p.drawImage (xdest, ydest, skin.pixmaps[id], xsrc, ysrc, width, height);
     p.restore ();
 }
 

@@ -27,13 +27,10 @@
 #define SKIN_H
 
 #include <stdint.h>
+#include <QImage>
 
 #include <libaudcore/index.h>
 #include <libaudcore/objects.h>
-
-class QFont;
-class QImage;
-class QPainter;
 
 typedef enum {
     SKIN_MAIN = 0,
@@ -175,7 +172,7 @@ struct Skin
     uint32_t eq_spline_colors[19] {};
     uint32_t vis_colors[24] {};
 
-    SmartPtr<QImage> pixmaps[SKIN_PIXMAP_COUNT];
+    QImage pixmaps[SKIN_PIXMAP_COUNT];
 //    Index<GdkRectangle> masks[SKIN_MASK_COUNT];
 
     Skin () = default;
