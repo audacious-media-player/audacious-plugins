@@ -403,121 +403,120 @@ void PlaylistWidget::delete_selected ()
     }
 }
 
-#if 0
-bool PlaylistWidget::handle_keypress (GdkEventKey * event)
+bool PlaylistWidget::handle_keypress (QKeyEvent * event)
 {
     cancel_all ();
 
-    switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
+    switch (event->modifiers () & (Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier))
     {
       case 0:
-        switch (event->keyval)
+        switch (event->key ())
         {
-          case GDK_KEY_Up:
+          case Qt::Key_Up:
             select_single (true, -1);
             break;
-          case GDK_KEY_Down:
+          case Qt::Key_Down:
             select_single (true, 1);
             break;
-          case GDK_KEY_Page_Up:
+          case Qt::Key_PageUp:
             select_single (true, -m_rows);
             break;
-          case GDK_KEY_Page_Down:
+          case Qt::Key_PageDown:
             select_single (true, m_rows);
             break;
-          case GDK_KEY_Home:
+          case Qt::Key_Home:
             select_single (false, 0);
             break;
-          case GDK_KEY_End:
+          case Qt::Key_End:
             select_single (false, m_length - 1);
             break;
-          case GDK_KEY_Return:
+          case Qt::Key_Return:
             select_single (true, 0);
             aud_playlist_set_position (m_playlist, aud_playlist_get_focus (m_playlist));
             aud_playlist_play (m_playlist);
             break;
-          case GDK_KEY_Escape:
+          case Qt::Key_Escape:
             select_single (false, aud_playlist_get_position (m_playlist));
             break;
-          case GDK_KEY_Delete:
+          case Qt::Key_Delete:
             delete_selected ();
             break;
           default:
             return false;
         }
         break;
-      case GDK_SHIFT_MASK:
-        switch (event->keyval)
+      case Qt::ShiftModifier:
+        switch (event->key ())
         {
-          case GDK_KEY_Up:
+          case Qt::Key_Up:
             select_extend (true, -1);
             break;
-          case GDK_KEY_Down:
+          case Qt::Key_Down:
             select_extend (true, 1);
             break;
-          case GDK_KEY_Page_Up:
+          case Qt::Key_PageUp:
             select_extend (true, -m_rows);
             break;
-          case GDK_KEY_Page_Down:
+          case Qt::Key_PageDown:
             select_extend (true, m_rows);
             break;
-          case GDK_KEY_Home:
+          case Qt::Key_Home:
             select_extend (false, 0);
             break;
-          case GDK_KEY_End:
+          case Qt::Key_End:
             select_extend (false, m_length - 1);
             break;
           default:
             return false;
         }
         break;
-      case GDK_CONTROL_MASK:
-        switch (event->keyval)
+      case Qt::ControlModifier:
+        switch (event->key ())
         {
-          case GDK_KEY_space:
+          case Qt::Key_Space:
             select_toggle (true, 0);
             break;
-          case GDK_KEY_Up:
+          case Qt::Key_Up:
             select_slide (true, -1);
             break;
-          case GDK_KEY_Down:
+          case Qt::Key_Down:
             select_slide (true, 1);
             break;
-          case GDK_KEY_Page_Up:
+          case Qt::Key_PageUp:
             select_slide (true, -m_rows);
             break;
-          case GDK_KEY_Page_Down:
+          case Qt::Key_PageDown:
             select_slide (true, m_rows);
             break;
-          case GDK_KEY_Home:
+          case Qt::Key_Home:
             select_slide (false, 0);
             break;
-          case GDK_KEY_End:
+          case Qt::Key_End:
             select_slide (false, m_length - 1);
             break;
           default:
             return false;
         }
         break;
-      case GDK_MOD1_MASK:
-        switch (event->keyval)
+      case Qt::AltModifier:
+        switch (event->key ())
         {
-          case GDK_KEY_Up:
+          case Qt::Key_Up:
             select_move (true, -1);
             break;
-          case GDK_KEY_Down:
+          case Qt::Key_Down:
             select_move (true, 1);
             break;
-          case GDK_KEY_Page_Up:
+          case Qt::Key_PageUp:
             select_move (true, -m_rows);
             break;
-          case GDK_KEY_Page_Down:
+          case Qt::Key_PageDown:
             select_move (true, m_rows);
             break;
-          case GDK_KEY_Home:
+          case Qt::Key_Home:
             select_move (false, 0);
             break;
-          case GDK_KEY_End:
+          case Qt::Key_End:
             select_move (false, m_length - 1);
             break;
           default:
@@ -531,7 +530,6 @@ bool PlaylistWidget::handle_keypress (GdkEventKey * event)
     refresh ();
     return true;
 }
-#endif
 
 void PlaylistWidget::row_info (int * rows, int * first)
 {

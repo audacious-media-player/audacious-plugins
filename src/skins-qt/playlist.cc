@@ -489,8 +489,6 @@ playlistwin_create_window(void)
 
 #if 0
     GtkWidget * w = playlistwin->gtk ();
-    g_signal_connect (w, "key-press-event", (GCallback) mainwin_keypress, nullptr);
-
     drag_dest_set (w);
     drop_position = -1;
 

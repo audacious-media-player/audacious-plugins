@@ -23,6 +23,7 @@
 #define SKINS_WIDGET_H
 
 #include <QCloseEvent>
+#include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QWheelEvent>
@@ -40,6 +41,7 @@ protected:
     void draw_now () { repaint (); }
 
     virtual void draw (QPainter & cr) {}
+    virtual bool keypress (QKeyEvent * event) { return false; }
     virtual bool button_press (QMouseEvent * event) { return false; }
     virtual bool button_release (QMouseEvent * event) { return false; }
     virtual bool scroll (QWheelEvent * event) { return false; }
@@ -50,6 +52,8 @@ protected:
 private:
     void paintEvent (QPaintEvent *);
 
+    void keyPressEvent (QKeyEvent * event)
+        { event->setAccepted (keypress (event)); }
     void mousePressEvent (QMouseEvent * event)
         { event->setAccepted (button_press (event)); }
     void mouseReleaseEvent (QMouseEvent * event)

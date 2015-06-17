@@ -47,7 +47,7 @@ public:
     void resize (int width, int height);
     void set_font (const char * m_font);
     void refresh ();
-//    bool handle_keypress (GdkEventKey * event);
+    bool handle_keypress (QKeyEvent * event);
     void row_info (int * m_rows, int * m_first);
     void scroll_to (int row);
     void set_focused (int row);

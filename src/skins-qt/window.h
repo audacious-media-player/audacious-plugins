@@ -48,6 +48,7 @@ public:
         { * xp = x (); * yp = y (); }
 
 protected:
+    bool keypress (QKeyEvent * event);
     bool button_press (QMouseEvent * event);
     bool button_release (QMouseEvent * event);
     bool motion (QMouseEvent * event);

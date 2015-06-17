@@ -491,60 +491,43 @@ static void mainwin_playback_rpress (Button * button, QMouseEvent * event)
 //     event->button, event->time);
 }
 
-#if 0
-gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
- void * unused)
+bool Window::keypress (QKeyEvent * event)
 {
     if (playlistwin_list->handle_keypress (event))
-        return 1;
+        return true;
 
-    switch (event->keyval)
+    switch (event->key ())
     {
-        case GDK_KEY_minus:
+        case Qt::Key_Minus:
             mainwin_set_volume_diff (-5);
             break;
-        case GDK_KEY_plus:
+        case Qt::Key_Plus:
             mainwin_set_volume_diff (5);
             break;
-        case GDK_KEY_Left:
-        case GDK_KEY_KP_Left:
-        case GDK_KEY_KP_7:
+        case Qt::Key_Left:
             aud_drct_seek (aud_drct_get_time () - 5000);
             break;
-        case GDK_KEY_Right:
-        case GDK_KEY_KP_Right:
-        case GDK_KEY_KP_9:
+        case Qt::Key_Right:
             aud_drct_seek (aud_drct_get_time () + 5000);
             break;
-        case GDK_KEY_KP_4:
-            aud_drct_pl_prev ();
+        case Qt::Key_Space:
+            aud_drct_pause ();
             break;
-        case GDK_KEY_KP_6:
-            aud_drct_pl_next ();
-            break;
-        case GDK_KEY_KP_Insert:
-            audgui_jump_to_track ();
-            break;
-        case GDK_KEY_space:
-            aud_drct_pause();
-            break;
-        case GDK_KEY_Tab: /* GtkUIManager does not handle tab, apparently. */
-            if (event->state & GDK_SHIFT_MASK)
+        case Qt::Key_Tab:
+            if (event->modifiers () & Qt::ShiftModifier)
                 action_playlist_prev ();
             else
                 action_playlist_next ();
 
             break;
-        case GDK_KEY_ISO_Left_Tab:
-            action_playlist_prev ();
-            break;
         default:
-            return FALSE;
+            return false;
     }
 
-    return TRUE;
+    return true;
 }
 
+#if 0
 /*
  * Rewritten 09/13/06:
  *
@@ -1138,7 +1121,6 @@ mainwin_create_window(void)
     drag_dest_set (w);
 
     g_signal_connect (w, "drag-data-received", (GCallback) mainwin_drag_data_received, nullptr);
-    g_signal_connect (w, "key_press_event", (GCallback) mainwin_keypress, nullptr);
     g_signal_connect (w, "window-state-event", (GCallback) state_cb, nullptr);
 #endif
 

@@ -75,10 +75,4 @@ void mainwin_drag_data_received(GtkWidget * widget,
 
 bool change_timer_mode_cb (QMouseEvent * event);
 
-#if 0
-/* widget should be null if called manually. */
-gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
- void * unused);
-#endif
-
 #endif /* SKINS_UI_MAIN_H */
