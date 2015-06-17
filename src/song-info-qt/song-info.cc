@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -29,7 +30,7 @@
 class SongInfo : public GeneralPlugin {
 public:
     static constexpr PluginInfo info = {
-        N_("Song Info (Qt)"),
+        N_("Song Info"),
         PACKAGE
     };
 

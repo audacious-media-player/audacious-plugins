@@ -30,6 +30,7 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/xpath.h>
 
+#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
@@ -52,7 +53,7 @@ static LyricsState state;
 class LyricWikiQt : public GeneralPlugin {
 public:
     static constexpr PluginInfo info = {
-        N_("LyricWiki Plugin (Qt)"),
+        N_("LyricWiki Plugin"),
         PACKAGE
     };
 

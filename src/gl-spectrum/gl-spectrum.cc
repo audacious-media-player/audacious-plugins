@@ -24,6 +24,7 @@
 #include <math.h>
 #include <string.h>
 
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
@@ -271,7 +272,7 @@ static gboolean draw_cb (GtkWidget * widget)
     return true;
 }
 
-static void aspect_viewport(GLint width, GLint height) 
+static void aspect_viewport(GLint width, GLint height)
 {
     glViewport (0, 0, width, height);
     glMatrixMode (GL_PROJECTION);
@@ -360,7 +361,7 @@ static void widget_realized ()
     /* Initialize OpenGL */
     GtkAllocation alloc;
     gtk_widget_get_allocation (s_widget, & alloc);
-    
+
     aspect_viewport (alloc.width, alloc.height);
 
     glEnable (GL_DEPTH_TEST);

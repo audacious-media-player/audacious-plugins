@@ -20,6 +20,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>

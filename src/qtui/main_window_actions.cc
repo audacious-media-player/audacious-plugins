@@ -25,7 +25,6 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/plugins.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/interface.h>

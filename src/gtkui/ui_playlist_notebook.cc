@@ -24,7 +24,6 @@
 
 #include <libaudcore/runtime.h>
 #include <libaudcore/playlist.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/list.h>

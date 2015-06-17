@@ -19,6 +19,7 @@
 
 #include <QApplication>
 
+#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
@@ -43,9 +44,6 @@ public:
 
     bool init ()
     {
-        if (aud_get_mainloop_type () != MainloopType::Qt)
-            return false;
-
         qapp = new QApplication (dummy_argc, dummy_argv);
         qapp->setAttribute(Qt::AA_UseHighDpiPixmaps);
         window = new MainWindow;

@@ -21,6 +21,7 @@
 #ifndef _I_AOSD_H
 #define _I_AOSD_H 1
 
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/plugin.h>
 
 struct PreferencesWidget;

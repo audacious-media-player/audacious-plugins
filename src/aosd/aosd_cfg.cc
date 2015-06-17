@@ -27,7 +27,6 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
-#include <libaudcore/plugin.h>
 
 static aosd_color_t str_to_color (const char * str)
 {

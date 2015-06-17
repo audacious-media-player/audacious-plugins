@@ -20,6 +20,7 @@
 
 #include <stdlib.h>
 
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -152,9 +153,6 @@ static void skins_init_main (bool restart)
 
 bool SkinnedUI::init ()
 {
-    if (aud_get_mainloop_type () != MainloopType::GLib)
-        return false;
-
     skins_cfg_load ();
 
     if (! load_initial_skin ())

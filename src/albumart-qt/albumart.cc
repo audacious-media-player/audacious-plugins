@@ -20,6 +20,7 @@
 #include <QLabel>
 #include <QPixmap>
 
+#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
@@ -30,7 +31,7 @@
 class AlbumArtQt : public GeneralPlugin {
 public:
     static constexpr PluginInfo info = {
-        N_("Album Art (Qt)"),
+        N_("Album Art"),
         PACKAGE
     };
 

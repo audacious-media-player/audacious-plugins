@@ -22,6 +22,7 @@
 #include <glib.h>
 #include <QApplication>
 
+#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -51,7 +52,7 @@ static char * dummy_argv[] = {app_name, nullptr};
 class QtSkins : public audqt::QtIfacePlugin
 {
 public:
-    constexpr QtSkins () : audqt::QtIfacePlugin ({N_("Winamp Classic Interface (Qt)"), PACKAGE}) {}
+    constexpr QtSkins () : audqt::QtIfacePlugin ({N_("Winamp Classic Interface"), PACKAGE}) {}
 
     bool init ();
     void cleanup ();
@@ -133,9 +134,6 @@ static void skins_init_main (bool restart)
 
 bool QtSkins::init ()
 {
-    if (aud_get_mainloop_type () != MainloopType::Qt)
-        return false;
-
     qapp = new QApplication (dummy_argc, dummy_argv);
 
     skins_cfg_load ();

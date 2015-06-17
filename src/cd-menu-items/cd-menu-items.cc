@@ -17,8 +17,6 @@
  * the use of this software.
  */
 
-#include <gtk/gtk.h>
-
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -62,7 +60,7 @@ bool CDMenuItems::init ()
         for (int i = 0; i < N_ITEMS; i ++)
             aud_plugin_menu_add (menus[m], funcs[i], _(titles[i]), "media-optical");
 
-    return TRUE;
+    return true;
 }
 
 void CDMenuItems::cleanup ()
