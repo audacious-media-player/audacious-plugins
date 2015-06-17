@@ -282,7 +282,7 @@ void view_apply_skin ()
 #endif
 
     // hide the equalizer graph if we have a short eqmain.bmp
-    int h = skin.pixmaps[SKIN_EQMAIN]->height ();
+    int h = skin.pixmaps[SKIN_EQMAIN].height ();
     equalizerwin_graph->setVisible (h >= 315);
 
     mainwin_refresh_hints ();
