@@ -12,7 +12,7 @@
 
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
-#include <libaudcore/plugin.h>
+#include <libaudcore/vfs.h>
 
 typedef struct {
 	ogg_sync_state	 *oy;

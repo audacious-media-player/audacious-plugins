@@ -23,7 +23,6 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 

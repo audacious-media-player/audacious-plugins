@@ -25,6 +25,7 @@
 #include <math.h>
 #include <string.h>
 
+#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
@@ -50,7 +51,7 @@ class GLSpectrumQt : public VisPlugin
 {
 public:
     static constexpr PluginInfo info = {
-        N_("OpenGL Spectrum Analyzer (Qt)"),
+        N_("OpenGL Spectrum Analyzer"),
         PACKAGE,
         gl_about
     };

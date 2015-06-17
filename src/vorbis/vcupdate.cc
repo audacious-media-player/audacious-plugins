@@ -33,7 +33,6 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/multihash.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
 #include "vorbis.h"

@@ -88,16 +88,12 @@ void EqGraph::draw (cairo_t * cr)
 
     cairo_scale (cr, config.scale, config.scale);
 
-    uint32_t cols[19];
-    skin_get_eq_spline_colors (cols);
-
     double bands[N];
     aud_eq_get_bands (bands);
 
     double yf[N];
     init_spline (x, bands, yf);
 
-    /* now draw a pixelated line with vector graphics ... -- jlindgren */
     int py = 0;
     for (int i = 0; i < 109; i ++)
     {
@@ -127,7 +123,7 @@ void EqGraph::draw (cairo_t * cr)
         for (y = ymin; y <= ymax; y++)
         {
             cairo_rectangle (cr, i + 2, y, 1, 1);
-            set_cairo_color (cr, cols[y]);
+            set_cairo_color (cr, skin.eq_spline_colors[y]);
             cairo_fill (cr);
         }
     }

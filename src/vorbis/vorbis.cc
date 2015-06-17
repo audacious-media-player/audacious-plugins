@@ -37,7 +37,6 @@
 #define WANT_AUD_BSWAP
 #define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/audstrings.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
 #include "vorbis.h"

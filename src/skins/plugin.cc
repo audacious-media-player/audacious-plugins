@@ -20,6 +20,7 @@
 
 #include <stdlib.h>
 
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -152,9 +153,6 @@ static void skins_init_main (bool restart)
 
 bool SkinnedUI::init ()
 {
-    if (aud_get_mainloop_type () != MainloopType::GLib)
-        return false;
-
     skins_cfg_load ();
 
     if (! load_initial_skin ())
@@ -172,6 +170,7 @@ bool SkinnedUI::init ()
 static void skins_cleanup_main (void)
 {
     mainwin_unhook ();
+    equalizerwin_unhook ();
     playlistwin_unhook ();
 
     timer_remove (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
@@ -197,7 +196,7 @@ void SkinnedUI::cleanup ()
     skin_thumb_dir = String ();
 }
 
-void skins_restart (void)
+void skins_restart ()
 {
     skins_cleanup_main ();
     skins_init_main (true);
@@ -206,13 +205,11 @@ void skins_restart (void)
         view_show_player (true);
 }
 
-gboolean handle_window_close (void)
+void skins_close ()
 {
-    gboolean handled = FALSE;
+    bool handled = false;
     hook_call ("window close", & handled);
 
     if (! handled)
         aud_quit ();
-
-    return TRUE;
 }

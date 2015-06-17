@@ -100,21 +100,21 @@ void TextBox::render_vector (const char * text)
 
     /* use logical width so as not to trim off the trailing space of the " --- " */
     /* use ink height since vertical space is quite limited */
-    logical.width = aud::max (logical.width, 1);
-    ink.height = aud::max (ink.height, 1);
+    int width = aud::max (-ink.x + logical.width, 1);
+    int height = aud::max (ink.height, 1);
 
-    set_size (m_width * config.scale, ink.height);
+    resize (m_width * config.scale, height);
 
-    m_buf_width = aud::max ((logical.width + config.scale - 1) / config.scale, m_width);
+    m_buf_width = aud::max ((width + config.scale - 1) / config.scale, m_width);
     m_buf.capture (cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     m_buf_width * config.scale, ink.height));
+     m_buf_width * config.scale, height));
 
     cairo_t * cr = cairo_create (m_buf.get ());
 
     set_cairo_color (cr, skin.colors[SKIN_TEXTBG]);
     cairo_paint (cr);
 
-    cairo_move_to (cr, -logical.x, -ink.y);
+    cairo_move_to (cr, -ink.x, -ink.y);
     set_cairo_color (cr, skin.colors[SKIN_TEXTFG]);
     pango_cairo_show_layout (cr, layout);
 
@@ -171,7 +171,7 @@ void TextBox::render_bitmap (const char * text)
     int cw = skin.hints.textbox_bitmap_font_width;
     int ch = skin.hints.textbox_bitmap_font_height;
 
-    set_size (m_width * config.scale, ch * config.scale);
+    resize (m_width * config.scale, ch * config.scale);
 
     long len;
     gunichar * utf32 = g_utf8_to_ucs4 (text, -1, nullptr, & len, nullptr);
@@ -297,14 +297,11 @@ TextBox::TextBox (int width, const char * font, bool scroll) :
     m_may_scroll (scroll),
     m_two_way (config.twoway_scroll)
 {
-    /* size is computed later */
+    /* size is computed by set_font() */
     add_input (1, 1, false, true);
-
-    if (font)
-        m_font.capture (pango_font_description_from_string (font));
+    set_font (font);
 
     textboxes.append (this);
-    render ();
 }
 
 void TextBox::update_all ()

@@ -21,8 +21,9 @@
 
 #include "view.h"
 
-#include <libaudcore/runtime.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/mainloop.h>
+#include <libaudcore/runtime.h>
 
 #include "plugin.h"
 #include "plugin-window.h"
@@ -47,7 +48,7 @@ void view_show_player (bool show)
     }
     else
     {
-        mainwin->show (false);
+        mainwin->hide ();
         hide_plugin_windows ();
     }
 
@@ -69,10 +70,16 @@ void view_apply_show_playlist ()
 {
     bool show = aud_get_bool ("skins", "playlist_visible");
 
-    if (show && gtk_widget_get_visible (mainwin->gtk ()))
-        gtk_window_present ((GtkWindow *) playlistwin->gtk ());
+    GtkWidget * main = mainwin->gtk ();
+    GtkWidget * pl = playlistwin->gtk ();
+
+    if (show && gtk_widget_get_visible (main))
+    {
+        gtk_window_set_transient_for ((GtkWindow *) pl, (GtkWindow *) main);
+        gtk_window_present ((GtkWindow *) pl);
+    }
     else
-        playlistwin->show (false);
+        playlistwin->hide ();
 
     mainwin_pl->set_active (show);
 }
@@ -89,10 +96,16 @@ void view_apply_show_equalizer ()
 {
     bool show = aud_get_bool ("skins", "equalizer_visible");
 
-    if (show && gtk_widget_get_visible (mainwin->gtk ()))
-        gtk_window_present ((GtkWindow *) equalizerwin->gtk ());
+    GtkWidget * main = mainwin->gtk ();
+    GtkWidget * eq = equalizerwin->gtk ();
+
+    if (show && gtk_widget_get_visible (main))
+    {
+        gtk_window_set_transient_for ((GtkWindow *) eq, (GtkWindow *) main);
+        gtk_window_present ((GtkWindow *) eq);
+    }
     else
-        equalizerwin->show (false);
+        equalizerwin->hide ();
 
     mainwin_eq->set_active (show);
 }
@@ -166,7 +179,8 @@ void view_set_double_size (bool double_size)
 
 void view_apply_double_size ()
 {
-    skins_restart ();
+    static QueuedFunc restart;
+    restart.queue ((QueuedFunc::Func) skins_restart, nullptr);
 }
 
 void view_set_on_top (bool on_top)
@@ -185,7 +199,7 @@ void view_apply_on_top ()
     gtk_window_set_keep_above ((GtkWindow *) equalizerwin->gtk (), on_top);
     gtk_window_set_keep_above ((GtkWindow *) playlistwin->gtk (), on_top);
 
-    mainwin_menurow->update ();
+    mainwin_menurow->refresh ();
 }
 
 void view_set_sticky (bool sticky)
@@ -260,12 +274,12 @@ void view_apply_skin ()
 
     // hide the equalizer graph if we have a short eqmain.bmp
     int h = cairo_image_surface_get_height (skin.pixmaps[SKIN_EQMAIN].get ());
-    equalizerwin_graph->show (h >= 315);
+    equalizerwin_graph->setVisible (h >= 315);
 
     mainwin_refresh_hints ();
     TextBox::update_all ();
 
-    gtk_widget_queue_draw (mainwin->gtk ());
-    gtk_widget_queue_draw (equalizerwin->gtk ());
-    gtk_widget_queue_draw (playlistwin->gtk ());
+    mainwin->queue_draw ();
+    equalizerwin->queue_draw ();
+    playlistwin->queue_draw ();
 }

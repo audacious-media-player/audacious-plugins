@@ -29,11 +29,16 @@ class Widget
 public:
     virtual ~Widget () {}
 
-    void show (bool visible)
-        { gtk_widget_set_visible (m_widget, visible); }
-
     GtkWidget * gtk () { return m_widget; }
     GtkWidget * gtk_dr () { return m_drawable; }
+
+    void show () { gtk_widget_show (m_widget); }
+    void hide () { gtk_widget_hide (m_widget); }
+
+    void setVisible (bool visible)
+        { gtk_widget_set_visible (m_widget, visible); }
+    void queue_draw ()
+        { gtk_widget_queue_draw (m_drawable); }
 
 protected:
     void set_input (GtkWidget * widget);
@@ -41,20 +46,20 @@ protected:
     void add_input (int width, int height, bool track_motion, bool drawable);
     void add_drawable (int width, int height);
 
-    void set_size (int width, int height)
+    void resize (int width, int height)
         { gtk_widget_set_size_request (m_widget, width, height); }
-    void queue_draw ()
-        { gtk_widget_queue_draw (m_drawable); }
 
     void draw_now ();
 
     virtual void realize () {}
     virtual void draw (cairo_t * cr) {}
+    virtual bool keypress (GdkEventKey * event) { return false; }
     virtual bool button_press (GdkEventButton * event) { return false; }
     virtual bool button_release (GdkEventButton * event) { return false; }
     virtual bool scroll (GdkEventScroll * event) { return false; }
     virtual bool motion (GdkEventMotion * event) { return false; }
-    virtual bool leave (GdkEventCrossing * event) { return false; }
+    virtual bool leave () { return false; }
+    virtual bool close () { return false; }
 
 private:
     static void destroy_cb (GtkWidget * widget, Widget * me)
@@ -63,6 +68,8 @@ private:
         { me->realize (); }
     static gboolean draw_cb (GtkWidget * widget, cairo_t * cr, Widget * me)
         { me->draw (cr); return false; }
+    static gboolean keypress_cb (GtkWidget * widget, GdkEventKey * event, Widget * me)
+        { return me->keypress (event); }
     static gboolean button_press_cb (GtkWidget * widget, GdkEventButton * event, Widget * me)
         { return me->button_press (event); }
     static gboolean button_release_cb (GtkWidget * widget, GdkEventButton * event, Widget * me)
@@ -72,7 +79,9 @@ private:
     static gboolean motion_cb (GtkWidget * widget, GdkEventMotion * event, Widget * me)
         { return me->motion (event); }
     static gboolean leave_cb (GtkWidget * widget, GdkEventCrossing * event, Widget * me)
-        { return me->leave (event); }
+        { return me->leave (); }
+    static gboolean close_cb (GtkWidget * widget, GdkEvent * event, Widget * me)
+        { return me->close (); }
 
     GtkWidget * m_widget = nullptr;
     GtkWidget * m_drawable = nullptr;

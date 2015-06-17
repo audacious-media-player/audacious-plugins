@@ -78,7 +78,7 @@ fi
 
 if test "x$USE_QT" = "xyes" ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt song-info-qt"
-    GENERAL_PLUGINS="$GENERAL_PLUGINS qtui"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
 fi
 
 dnl Console
@@ -1234,4 +1234,5 @@ echo "  ----------"
 echo "  GTK (gtkui):                            $USE_GTK"
 echo "  Qt (qtui):                              $USE_QT"
 echo "  Winamp Classic (skins):                 $USE_GTK"
+echo "  Winamp Classic (skins, Qt):             $USE_QT"
 echo

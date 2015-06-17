@@ -22,6 +22,7 @@
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -353,9 +354,6 @@ static void si_enable (bool enable)
 
 bool StatusIcon::init ()
 {
-    if (aud_get_mainloop_type () != MainloopType::GLib)
-        return false;
-
     aud_config_set_defaults ("statusicon", defaults);
     audgui_init ();
     si_enable (true);

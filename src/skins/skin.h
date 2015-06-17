@@ -177,6 +177,7 @@ struct Skin
 {
     SkinHints hints;
     uint32_t colors[SKIN_COLOR_COUNT] {};
+    uint32_t eq_spline_colors[19] {};
     uint32_t vis_colors[24] {};
 
     CairoSurfacePtr pixmaps[SKIN_PIXMAP_COUNT];
@@ -205,7 +206,6 @@ bool skin_load (const char * path);
 void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc,
  int xdest, int ydest, int width, int height);
 
-void skin_get_eq_spline_colors (uint32_t colors[19]);
 void skin_install_skin (const char * path);
 
 void skin_draw_playlistwin_shaded (cairo_t * cr, int width, bool focus);

@@ -28,6 +28,7 @@
 #include <assert.h>
 #include <math.h>
 
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>

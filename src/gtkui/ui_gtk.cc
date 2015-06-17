@@ -22,6 +22,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/runtime.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -758,9 +759,6 @@ static void remove_dock_plugins ()
 
 bool GtkUI::init ()
 {
-    if (aud_get_mainloop_type () != MainloopType::GLib)
-        return false;
-
     audgui_init ();
 
     search_tool = aud_plugin_lookup_basename ("search-tool");

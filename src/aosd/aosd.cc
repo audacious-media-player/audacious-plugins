@@ -19,7 +19,6 @@
 */
 
 #include <libaudcore/i18n.h>
-#include <libaudcore/plugin.h>
 
 #include "aosd.h"
 #include "aosd_osd.h"

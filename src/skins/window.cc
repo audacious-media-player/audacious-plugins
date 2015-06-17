@@ -19,14 +19,9 @@
  * using our public API to be a derived work.
  */
 
-#include "skins_cfg.h"
 #include "window.h"
-
-void Window::draw (cairo_t * cr)
-{
-    if (draw_func)
-        draw_func (gtk (), cr);
-}
+#include "plugin.h"
+#include "skins_cfg.h"
 
 void Window::apply_shape ()
 {
@@ -71,6 +66,12 @@ bool Window::motion (GdkEventMotion * event)
     return false;
 }
 
+bool Window::close ()
+{
+    skins_close ();
+    return true;
+}
+
 Window::~Window ()
 {
     dock_remove_window (m_id);
@@ -84,10 +85,9 @@ Window::~Window ()
         cairo_region_destroy (m_sshape);
 }
 
-Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc draw) :
+Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
     m_id (id),
-    m_is_shaded (shaded),
-    draw_func (draw)
+    m_is_shaded (shaded)
 {
     w *= config.scale;
     h *= config.scale;
@@ -98,6 +98,12 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc dr
     gtk_window_move ((GtkWindow *) window, * x, * y);
     gtk_widget_set_size_request (window, w, h);
     gtk_window_resize ((GtkWindow *) window, w, h);
+
+    if (id != WINDOW_MAIN)
+    {
+        gtk_window_set_skip_pager_hint ((GtkWindow *) window, true);
+        gtk_window_set_skip_taskbar_hint ((GtkWindow *) window, true);
+    }
 
     gtk_widget_set_app_paintable (window, true);
     gtk_widget_add_events (window, GDK_BUTTON_PRESS_MASK |
@@ -119,7 +125,7 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded, DrawFunc dr
     else
         gtk_container_add ((GtkContainer *) window, m_normal);
 
-    dock_add_window (id, window, x, y, w, h);
+    dock_add_window (id, this, x, y, w, h);
 }
 
 void Window::resize (int w, int h)
@@ -185,4 +191,3 @@ void Window::move_widget (bool shaded, Widget * widget, int x, int y)
     GtkWidget * fixed = shaded ? m_shaded : m_normal;
     gtk_fixed_move ((GtkFixed *) fixed, widget->gtk (), x, y);
 }
-

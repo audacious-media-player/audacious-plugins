@@ -5,7 +5,7 @@
 #include <inttypes.h>
 
 #include <libaudcore/audstrings.h>
-#include <libaudcore/plugin.h>
+#include <libaudcore/vfs.h>
 #include <libaudcore/runtime.h>
 
 #include "ayemu.h"

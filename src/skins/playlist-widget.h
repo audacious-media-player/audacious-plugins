@@ -28,6 +28,7 @@
 #ifndef SKINS_UI_SKINNED_PLAYLIST_H
 #define SKINS_UI_SKINNED_PLAYLIST_H
 
+#include <glib.h>
 #include <libaudcore/objects.h>
 
 #include "widget.h"
@@ -45,7 +46,7 @@ public:
     void set_slider (PlaylistSlider * slider) { m_slider = slider; }
     void resize (int width, int height);
     void set_font (const char * m_font);
-    void update ();
+    void refresh ();
     bool handle_keypress (GdkEventKey * event);
     void row_info (int * m_rows, int * m_first);
     void scroll_to (int row);
@@ -58,7 +59,7 @@ private:
     bool button_press (GdkEventButton * event);
     bool button_release (GdkEventButton * event);
     bool motion (GdkEventMotion * event);
-    bool leave (GdkEventCrossing * event);
+    bool leave ();
 
     void update_title ();
     void calc_layout ();
@@ -87,10 +88,10 @@ private:
 
     PlaylistSlider * m_slider = nullptr;
     PangoFontDescPtr m_font;
-    String title_text;
+    String m_title_text;
 
     int m_playlist = -1, m_playlist_id = -1, m_length = 0;
-    int m_width = 0, m_height = 0, m_row_height = 0, m_offset = 0, m_rows = 0, m_first = 0;
+    int m_width = 0, m_height = 0, m_row_height = 1, m_offset = 0, m_rows = 0, m_first = 0;
     int m_scroll = 0, m_hover = -1, m_drag = 0, m_popup_pos = -1, m_popup_source = 0;
     bool popup_shown = false;
 };

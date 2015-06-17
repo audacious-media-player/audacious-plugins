@@ -26,6 +26,7 @@
 #include <glib/gstdio.h>
 #include <gtk/gtk.h>
 
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>

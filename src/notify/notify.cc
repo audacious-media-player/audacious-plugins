@@ -22,6 +22,7 @@
 
 #include <libnotify/notify.h>
 
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/i18n.h>
@@ -80,9 +81,6 @@ const char * const NotifyPlugin::defaults[] = {
 
 bool NotifyPlugin::init ()
 {
-    if (aud_get_mainloop_type () != MainloopType::GLib)
-        return false;
-
     aud_config_set_defaults ("notify", defaults);
 
     if (! notify_init ("Audacious"))

@@ -41,6 +41,7 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -97,9 +98,6 @@ PluginConfig* get_config(void)
  */
 bool GlobalHotkeys::init ()
 {
-    if (aud_get_mainloop_type () != MainloopType::GLib)
-        return false;
-
     if (! gtk_init_check (nullptr, nullptr))
     {
         AUDERR ("GTK+ initialization failed.\n");

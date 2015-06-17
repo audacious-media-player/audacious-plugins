@@ -37,7 +37,7 @@ class PlaylistSlider : public Widget
 public:
     PlaylistSlider (PlaylistWidget * list, int height);
     void resize (int height);
-    void update ();
+    void refresh ();
 
 private:
     void draw (cairo_t * cr);
