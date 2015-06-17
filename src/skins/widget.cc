@@ -42,6 +42,7 @@ void Widget::set_input (GtkWidget * widget)
 {
     m_widget = widget;
     g_signal_connect (widget, "destroy", (GCallback) Widget::destroy_cb, this);
+    g_signal_connect (widget, "key-press-event", (GCallback) Widget::keypress_cb, this);
     g_signal_connect (widget, "button-press-event", (GCallback) Widget::button_press_cb, this);
     g_signal_connect (widget, "button-release-event", (GCallback) Widget::button_release_cb, this);
     g_signal_connect (widget, "scroll-event", (GCallback) Widget::scroll_cb, this);
@@ -65,7 +66,9 @@ void Widget::set_drawable (GtkWidget * widget)
 
 void Widget::add_input (int width, int height, bool track_motion, bool drawable)
 {
-    int events = GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_SCROLL_MASK;
+    int events = GDK_KEY_PRESS_MASK | GDK_BUTTON_PRESS_MASK |
+     GDK_BUTTON_RELEASE_MASK | GDK_SCROLL_MASK;
+
     if (track_motion)
         events |= GDK_POINTER_MOTION_MASK | GDK_LEAVE_NOTIFY_MASK;
 

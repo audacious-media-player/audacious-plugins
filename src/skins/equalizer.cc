@@ -267,9 +267,6 @@ equalizerwin_create_window(void)
 
     equalizerwin = new EqWindow (shaded);
     equalizerwin->setWindowTitle (_("Audacious Equalizer"));
-
-    GtkWidget * w = equalizerwin->gtk ();
-    g_signal_connect (w, "key-press-event", (GCallback) mainwin_keypress, nullptr);
 }
 
 void equalizerwin_unhook ()

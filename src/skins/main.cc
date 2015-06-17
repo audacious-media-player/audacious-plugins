@@ -513,11 +513,10 @@ static void mainwin_playback_rpress (Button * button, GdkEventButton * event)
      event->button, event->time);
 }
 
-gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
- void * unused)
+bool Window::keypress (GdkEventKey * event)
 {
     if (playlistwin_list->handle_keypress (event))
-        return 1;
+        return true;
 
     switch (event->keyval)
     {
@@ -547,7 +546,7 @@ gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
             audgui_jump_to_track ();
             break;
         case GDK_KEY_space:
-            aud_drct_pause();
+            aud_drct_pause ();
             break;
         case GDK_KEY_Tab: /* GtkUIManager does not handle tab, apparently. */
             if (event->state & GDK_SHIFT_MASK)
@@ -560,10 +559,10 @@ gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
             action_playlist_prev ();
             break;
         default:
-            return FALSE;
+            return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 /*
@@ -1155,7 +1154,6 @@ mainwin_create_window(void)
     drag_dest_set (w);
 
     g_signal_connect (w, "drag-data-received", (GCallback) mainwin_drag_data_received, nullptr);
-    g_signal_connect (w, "key_press_event", (GCallback) mainwin_keypress, nullptr);
     g_signal_connect (w, "window-state-event", (GCallback) state_cb, nullptr);
 
     hook_associate ("playback begin", (HookFunction) mainwin_playback_begin, nullptr);

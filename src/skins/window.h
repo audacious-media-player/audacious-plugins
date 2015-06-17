@@ -53,6 +53,7 @@ public:
 
 protected:
     void realize ();
+    bool keypress (GdkEventKey * event);  // in main.cc
     bool button_press (GdkEventButton * event);
     bool button_release (GdkEventButton * event);
     bool motion (GdkEventMotion * event);
