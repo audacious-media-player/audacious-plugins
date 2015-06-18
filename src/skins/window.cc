@@ -20,6 +20,7 @@
  */
 
 #include "window.h"
+#include "menus.h"
 #include "plugin.h"
 #include "skins_cfg.h"
 
@@ -105,6 +106,7 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
     gtk_widget_set_app_paintable (window, true);
     gtk_widget_add_events (window, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
+    gtk_window_add_accel_group ((GtkWindow *) window, menu_get_accel_group ());
 
     /* We set None as the background pixmap in order to avoid flickering.
      * Setting a blank GtkStyle prevents GTK 2.x from overriding this. */
