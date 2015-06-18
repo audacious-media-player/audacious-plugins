@@ -246,40 +246,36 @@ void view_apply_show_remaining ()
     mainwin_update_song_info ();
 }
 
-#if 0
-static GdkRegion * scale_mask (const Index<GdkRectangle> & mask, int scale)
+static QRegion * scale_mask (const Index<QRect> & mask, int scale)
 {
-    GdkRegion * region = nullptr;
+    QRegion * region = nullptr;
 
     for (auto & rect : mask)
     {
-        GdkRectangle scaled = {
-            rect.x * scale,
-            rect.y * scale,
-            rect.width * scale,
-            rect.height * scale
-        };
+        QRect scaled (
+            rect.x () * scale,
+            rect.y () * scale,
+            rect.width () * scale,
+            rect.height () * scale
+        );
 
         if (region)
-            gdk_region_union_with_rect (region, & scaled);
+            * region |= scaled;
         else
-            region = gdk_region_rectangle (& scaled);
+            region = new QRegion (scaled);
     }
 
     return region;
 }
-#endif
 
 void view_apply_skin ()
 {
-#if 0
     mainwin->set_shapes
      (scale_mask (skin.masks[SKIN_MASK_MAIN], config.scale),
       scale_mask (skin.masks[SKIN_MASK_MAIN_SHADE], config.scale));
     equalizerwin->set_shapes
      (scale_mask (skin.masks[SKIN_MASK_EQ], config.scale),
       scale_mask (skin.masks[SKIN_MASK_EQ_SHADE], config.scale));
-#endif
 
     mainwin_refresh_hints ();
     TextBox::update_all ();

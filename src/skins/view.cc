@@ -272,7 +272,6 @@ void view_apply_skin ()
      (scale_mask (skin.masks[SKIN_MASK_EQ], config.scale),
       scale_mask (skin.masks[SKIN_MASK_EQ_SHADE], config.scale));
 
-
     mainwin_refresh_hints ();
     TextBox::update_all ();
 

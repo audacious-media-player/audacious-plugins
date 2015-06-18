@@ -24,6 +24,8 @@
 
 #include "widget.h"
 
+#include <libaudcore/objects.h>
+
 enum {
     WINDOW_MAIN,
     WINDOW_EQ,
@@ -66,7 +68,7 @@ private:
     bool m_is_shaded = false;
     bool m_is_moving = false;
     GtkWidget * m_normal = nullptr, * m_shaded = nullptr;
-    GdkRegion * m_shape = nullptr, * m_sshape = nullptr;
+    SmartPtr<GdkRegion, gdk_region_destroy> m_shape, m_sshape;
 };
 
 void dock_add_window (int id, Window * window, int * x, int * y, int w, int h);

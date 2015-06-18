@@ -23,18 +23,14 @@
 #include "plugin.h"
 #include "skins_cfg.h"
 
-#if 0
 void Window::apply_shape ()
 {
-    gdk_window_shape_combine_region (gtk_widget_get_window (gtk ()),
-     m_is_shaded ? m_sshape : m_shape, 0, 0);
+    QRegion * mask = m_is_shaded ? m_sshape.get () : m_shape.get ();
+    if (mask)
+        setMask (* mask);
+    else
+        clearMask ();
 }
-
-void Window::realize ()
-{
-    apply_shape ();
-}
-#endif
 
 bool Window::button_press (QMouseEvent * event)
 {
@@ -77,13 +73,6 @@ bool Window::close ()
 Window::~Window ()
 {
     dock_remove_window (m_id);
-
-#if 0
-    if (m_shape)
-        gdk_region_destroy (m_shape);
-    if (m_sshape)
-        gdk_region_destroy (m_sshape);
-#endif
 }
 
 Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
@@ -130,21 +119,12 @@ void Window::resize (int w, int h)
     dock_set_size (m_id, w, h);
 }
 
-#if 0
-void Window::set_shapes (GdkRegion * shape, GdkRegion * sshape)
+void Window::set_shapes (QRegion * shape, QRegion * sshape)
 {
-    if (m_shape)
-        gdk_region_destroy (m_shape);
-    if (m_sshape)
-        gdk_region_destroy (m_sshape);
-
-    m_shape = shape;
-    m_sshape = sshape;
-
-    if (gtk_widget_get_realized (gtk ()))
-        apply_shape ();
+    m_shape.capture (shape);
+    m_sshape.capture (sshape);
+    apply_shape ();
 }
-#endif
 
 void Window::set_shaded (bool shaded)
 {
@@ -163,11 +143,7 @@ void Window::set_shaded (bool shaded)
     }
 
     m_is_shaded = shaded;
-
-#if 0
-    if (gtk_widget_get_realized (gtk ()))
-        apply_shape ();
-#endif
+    apply_shape ();
 }
 
 void Window::put_widget (bool shaded, Widget * widget, int x, int y)

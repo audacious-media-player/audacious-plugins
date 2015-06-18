@@ -25,8 +25,9 @@
 
 void Window::apply_shape ()
 {
-    gdk_window_shape_combine_region (gtk_widget_get_window (gtk ()),
-     m_is_shaded ? m_sshape : m_shape, 0, 0);
+    if (gtk_widget_get_realized (gtk ()))
+        gdk_window_shape_combine_region (gtk_widget_get_window (gtk ()),
+         m_is_shaded ? m_sshape.get () : m_shape.get (), 0, 0);
 }
 
 void Window::realize ()
@@ -79,11 +80,6 @@ Window::~Window ()
 
     g_object_unref (m_normal);
     g_object_unref (m_shaded);
-
-    if (m_shape)
-        gdk_region_destroy (m_shape);
-    if (m_sshape)
-        gdk_region_destroy (m_sshape);
 }
 
 Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
@@ -147,16 +143,9 @@ void Window::resize (int w, int h)
 
 void Window::set_shapes (GdkRegion * shape, GdkRegion * sshape)
 {
-    if (m_shape)
-        gdk_region_destroy (m_shape);
-    if (m_sshape)
-        gdk_region_destroy (m_sshape);
-
-    m_shape = shape;
-    m_sshape = sshape;
-
-    if (gtk_widget_get_realized (gtk ()))
-        apply_shape ();
+    m_shape.capture (shape);
+    m_sshape.capture (sshape);
+    apply_shape ();
 }
 
 void Window::set_shaded (bool shaded)
@@ -176,9 +165,7 @@ void Window::set_shaded (bool shaded)
     }
 
     m_is_shaded = shaded;
-
-    if (gtk_widget_get_realized (gtk ()))
-        apply_shape ();
+    apply_shape ();
 }
 
 void Window::put_widget (bool shaded, Widget * widget, int x, int y)
