@@ -22,7 +22,7 @@
  */
 
 #include <stdlib.h>
-#include <string.h>
+#include <glib.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
@@ -32,24 +32,10 @@
 #include "skin.h"
 #include "skinselector.h"
 #include "util.h"
-#include "view.h"
+
+Index<SkinNode> skinlist;
 
 #if 0
-enum SkinViewCols {
-    SKIN_VIEW_COL_PREVIEW,
-    SKIN_VIEW_COL_FORMATTEDNAME,
-    SKIN_VIEW_COL_NAME,
-    SKIN_VIEW_N_COLS
-};
-
-struct SkinNode {
-    String name, desc, path;
-};
-
-static Index<SkinNode> skinlist;
-
-static void skin_view_on_cursor_changed (GtkTreeView * treeview);
-
 static GdkPixbuf * skin_get_preview (const char * path)
 {
     GdkPixbuf * preview = nullptr;
@@ -101,6 +87,7 @@ static GdkPixbuf * skin_get_thumbnail (const char * path)
 
     return thumb;
 }
+#endif
 
 static void scan_skindir_func (const char * path, const char * basename)
 {
@@ -120,7 +107,7 @@ static int skinlist_compare_func (const SkinNode & a, const SkinNode & b, void *
     return str_compare (a.name, b.name);
 }
 
-static void skinlist_update ()
+void skinlist_update ()
 {
     skinlist.clear ();
 
@@ -140,105 +127,3 @@ static void skinlist_update ()
 
     skinlist.sort (skinlist_compare_func, nullptr);
 }
-
-void skin_view_update (GtkTreeView * treeview)
-{
-    g_signal_handlers_block_by_func (treeview, (void *) skin_view_on_cursor_changed, nullptr);
-
-    auto store = (GtkListStore *) gtk_tree_view_get_model (treeview);
-    gtk_list_store_clear (store);
-
-    skinlist_update ();
-
-    String current_path = aud_get_str ("skins", "skin");
-    GtkTreePath * current_skin = nullptr;
-
-    for (const SkinNode & node : skinlist)
-    {
-        GdkPixbuf * thumbnail = skin_get_thumbnail (node.path);
-        StringBuf formattedname = str_concat ({"<big><b>", node.name,
-         "</b></big>\n<i>", node.desc, "</i>"});
-
-        GtkTreeIter iter;
-        gtk_list_store_append (store, & iter);
-        gtk_list_store_set (store, & iter,
-         SKIN_VIEW_COL_PREVIEW, thumbnail,
-         SKIN_VIEW_COL_FORMATTEDNAME, (const char *) formattedname,
-         SKIN_VIEW_COL_NAME, (const char *) node.name, -1);
-
-        if (thumbnail)
-            g_object_unref (thumbnail);
-
-        if (! current_skin && strstr (current_path, node.name))
-            current_skin = gtk_tree_model_get_path ((GtkTreeModel *) store, & iter);
-    }
-
-    if (current_skin)
-    {
-        auto selection = gtk_tree_view_get_selection (treeview);
-        gtk_tree_selection_select_path (selection, current_skin);
-        gtk_tree_view_scroll_to_cell (treeview, current_skin, nullptr, true, 0.5, 0.5);
-        gtk_tree_path_free (current_skin);
-    }
-
-    g_signal_handlers_unblock_by_func (treeview, (void *) skin_view_on_cursor_changed, nullptr);
-}
-
-static void skin_view_on_cursor_changed (GtkTreeView * treeview)
-{
-    GtkTreeModel * model;
-    GtkTreeIter iter;
-
-    auto selection = gtk_tree_view_get_selection (treeview);
-    if (! gtk_tree_selection_get_selected (selection, & model, & iter))
-        return;
-
-    GtkTreePath * path = gtk_tree_model_get_path (model, & iter);
-    int row = gtk_tree_path_get_indices (path)[0];
-    g_return_if_fail (row >= 0 && row < skinlist.len ());
-    gtk_tree_path_free (path);
-
-    if (skin_load (skinlist[row].path))
-        view_apply_skin ();
-}
-
-void skin_view_realize (GtkTreeView * treeview)
-{
-    GtkListStore *store;
-    GtkTreeViewColumn *column;
-    GtkCellRenderer *renderer;
-    GtkTreeSelection *selection;
-
-    gtk_widget_show_all(GTK_WIDGET(treeview));
-
-    gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), TRUE);
-    gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), FALSE);
-
-    store = gtk_list_store_new(SKIN_VIEW_N_COLS, GDK_TYPE_PIXBUF,
-                               G_TYPE_STRING , G_TYPE_STRING);
-    gtk_tree_view_set_model(treeview, GTK_TREE_MODEL(store));
-    g_object_unref (store);
-
-    column = gtk_tree_view_column_new();
-    gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-    gtk_tree_view_column_set_spacing(column, 16);
-    gtk_tree_view_append_column(GTK_TREE_VIEW(treeview),
-                                GTK_TREE_VIEW_COLUMN(column));
-
-    renderer = gtk_cell_renderer_pixbuf_new();
-    gtk_tree_view_column_pack_start(column, renderer, FALSE);
-    gtk_tree_view_column_set_attributes(column, renderer, "pixbuf",
-                                        SKIN_VIEW_COL_PREVIEW, nullptr);
-
-    renderer = gtk_cell_renderer_text_new();
-    gtk_tree_view_column_pack_start(column, renderer, TRUE);
-    gtk_tree_view_column_set_attributes(column, renderer, "markup",
-                                        SKIN_VIEW_COL_FORMATTEDNAME, nullptr);
-
-    selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
-    gtk_tree_selection_set_mode(selection, GTK_SELECTION_BROWSE);
-
-    g_signal_connect(treeview, "cursor-changed",
-                     G_CALLBACK(skin_view_on_cursor_changed), nullptr);
-}
-#endif

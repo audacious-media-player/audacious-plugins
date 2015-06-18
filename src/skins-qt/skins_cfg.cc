@@ -80,10 +80,6 @@ static const char * const skins_defaults[] = {
 
 skins_cfg_t config;
 
-#if 0
-static GtkWidget * skin_view;
-#endif
-
 static const struct skins_cfg_boolent_t {
     const char * name;
     bool * ptr;
@@ -124,6 +120,9 @@ static const struct {
     {"playlist_height", & config.playlist_height}
 };
 
+static String selected_skin;
+static Index<ComboItem> skin_combo;
+
 void skins_cfg_load (void)
 {
     aud_config_set_defaults ("skins", skins_defaults);
@@ -142,6 +141,25 @@ void skins_cfg_save (void)
 
     for (auto & nument : skins_numents)
         aud_set_int ("skins", nument.name, * nument.ptr);
+}
+
+static ArrayRef<ComboItem> skin_combo_fill ()
+{
+    selected_skin = aud_get_str ("skins", "skin");
+
+    skin_combo.clear ();
+    skinlist_update ();
+
+    for (auto & node : skinlist)
+        skin_combo.append (node.name, node.path);
+
+    return {skin_combo.begin (), skin_combo.len ()};
+}
+
+static void skin_select_cb ()
+{
+    if (skin_load (selected_skin))
+        view_apply_skin ();
 }
 
 static void
@@ -183,15 +201,11 @@ static const PreferencesWidget font_table_elements[] = {
         {N_("Select playlist font:")})
 };
 
-#if 0
-static void * create_skin_view (void);
-#endif
-
 static const PreferencesWidget skins_widgets_general[] = {
     WidgetLabel (N_("<b>Skin</b>")),
-#if 0
-    WidgetCustomGTK (create_skin_view),
-#endif
+    WidgetCombo (nullptr,
+        WidgetString (selected_skin, skin_select_cb),
+        {nullptr, skin_combo_fill}),
     WidgetLabel (N_("<b>Fonts</b>")),
     WidgetTable ({{font_table_elements}}),
     WidgetCheck (N_("Use bitmap fonts (supports ASCII only)"),
@@ -332,27 +346,5 @@ on_skin_view_drag_data_received(GtkWidget * widget,
         if (skin_view)
             skin_view_update ((GtkTreeView *) skin_view);
     }
-}
-
-static void * create_skin_view (void)
-{
-    GtkWidget * scrolled = gtk_scrolled_window_new (nullptr, nullptr);
-    gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrolled,
-     GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
-    gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
-    gtk_widget_set_size_request (scrolled, -1, audgui_get_dpi () * 3 / 2);
-
-    skin_view = gtk_tree_view_new ();
-    skin_view_realize ((GtkTreeView *) skin_view);
-    skin_view_update ((GtkTreeView *) skin_view);
-    gtk_container_add ((GtkContainer *) scrolled, skin_view);
-
-    drag_dest_set (skin_view);
-
-    g_signal_connect (skin_view, "drag-data-received",
-     (GCallback) on_skin_view_drag_data_received, nullptr);
-    g_signal_connect (skin_view, "destroy", (GCallback) gtk_widget_destroyed, & skin_view);
-
-    return scrolled;
 }
 #endif

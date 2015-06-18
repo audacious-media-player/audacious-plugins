@@ -23,9 +23,15 @@
 #ifndef SKINS_UI_SKINSELECTOR_H
 #define SKINS_UI_SKINSELECTOR_H
 
-#if 0
-void skin_view_realize(GtkTreeView * treeview);
-void skin_view_update (GtkTreeView * treeview);
-#endif
+#include <libaudcore/index.h>
+#include <libaudcore/objects.h>
+
+struct SkinNode {
+    String name, desc, path;
+};
+
+extern Index<SkinNode> skinlist;
+
+void skinlist_update ();
 
 #endif /* SKINS_UI_SKINSELECTOR_H */
