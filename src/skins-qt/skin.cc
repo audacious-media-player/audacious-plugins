@@ -299,7 +299,9 @@ void skin_install_skin (const char * path)
     StringBuf base = filename_get_base (path);
     StringBuf target = filename_build ({user_skin_dir, base});
 
-    if (! g_file_set_contents (target, data, len, & err))
+    if (g_file_set_contents (target, data, len, & err))
+        aud_set_str ("skins", "skin", target);
+    else
     {
         AUDERR ("Failed to write %s: %s\n", path, err->message);
         g_error_free (err);
