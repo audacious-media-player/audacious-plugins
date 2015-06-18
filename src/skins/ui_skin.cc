@@ -556,6 +556,8 @@ void skin_install_skin (const char * path)
         return;
     }
 
+    aud_set_str ("skins", "skin", target);
+
     g_free (data);
     g_free (base);
     g_free (target);
