@@ -22,6 +22,8 @@
 #ifndef SKINS_MENUS_H
 #define SKINS_MENUS_H
 
+class QWidget;
+
 enum
 {
     UI_MENU_MAIN,
@@ -36,10 +38,7 @@ enum
     UI_MENUS
 };
 
-void menu_init ();
-void menu_cleanup ();
-
-//GtkAccelGroup * menu_get_accel_group (void);
+void menu_init (QWidget * parent);
 void menu_popup (int id, int x, int y, bool leftward, bool upward);
 
 #endif /* SKINS_MENUS_H */

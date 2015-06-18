@@ -34,7 +34,6 @@
 #include "view.h"
 
 static QMenu * menus[UI_MENUS];
-//static GtkAccelGroup * accel;
 
 /* note: playback, playlist, and view menus must be created before main menu */
 static QMenu * get_menu_playback () {return menus[UI_MENU_PLAYBACK]; }
@@ -202,7 +201,7 @@ static const audqt::MenuItem playlist_context_items[] = {
     audqt::MenuSub ({N_("Services")}, get_plugin_menu_playlist)
 };
 
-void menu_init ()
+void menu_init (QWidget * parent)
 {
     static const ArrayRef<audqt::MenuItem> table[] = {
         {main_items},
@@ -216,29 +215,9 @@ void menu_init ()
         {playlist_context_items}
     };
 
-//    accel = gtk_accel_group_new ();
-
     for (int i = UI_MENUS; i --; )
-        menus[i] = audqt::menu_build (table[i]);
+        menus[i] = audqt::menu_build (table[i], parent);
 }
-
-void menu_cleanup ()
-{
-    for (int i = 0; i < UI_MENUS; i ++)
-        delete menus[i];
-
-#if 0
-    g_object_unref (accel);
-    accel = nullptr;
-#endif
-}
-
-#if 0
-GtkAccelGroup * menu_get_accel_group ()
-{
-    return accel;
-}
-#endif
 
 void menu_popup (int id, int x, int y, bool leftward, bool upward)
 {

@@ -527,8 +527,6 @@ playlistwin_create(void)
     playlistwin_create_window ();
     playlistwin_create_widgets ();
 
-//    gtk_window_add_accel_group ((GtkWindow *) playlistwin->gtk (), menu_get_accel_group ());
-
     update_info ();
     update_rollup_text ();
 

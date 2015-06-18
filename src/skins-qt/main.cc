@@ -511,13 +511,6 @@ bool Window::keypress (QKeyEvent * event)
         case Qt::Key_Space:
             aud_drct_pause ();
             break;
-        case Qt::Key_Tab:
-            if (event->modifiers () & Qt::ShiftModifier)
-                action_playlist_prev ();
-            else
-                action_playlist_next ();
-
-            break;
         default:
             return false;
     }
@@ -1176,8 +1169,6 @@ mainwin_create(void)
 {
     mainwin_create_window ();
     mainwin_create_widgets ();
-
-//    gtk_window_add_accel_group ((GtkWindow *) mainwin->gtk (), menu_get_accel_group ());
 }
 
 static void mainwin_update_volume (void)

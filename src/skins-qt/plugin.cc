@@ -118,6 +118,15 @@ static void skins_init_main (bool restart)
     equalizerwin_create ();
     playlistwin_create ();
 
+    menu_init (mainwin);
+
+    /* copy menu shortcuts to the two other windows */
+    for (QAction * action : mainwin->actions ())
+    {
+        equalizerwin->addAction (action);
+        playlistwin->addAction (action);
+    }
+
     view_apply_skin ();
     view_apply_on_top ();
     view_apply_sticky ();
@@ -139,9 +148,7 @@ bool QtSkins::init ()
 
     audqt::init ();
 
-    menu_init ();
     skins_init_main (false);
-
     create_plugin_windows ();
 
     return true;
@@ -165,9 +172,7 @@ void QtSkins::cleanup ()
     skins_cfg_save ();
 
     destroy_plugin_windows ();
-
     skins_cleanup_main ();
-    menu_cleanup ();
 
     skin = Skin ();
 
