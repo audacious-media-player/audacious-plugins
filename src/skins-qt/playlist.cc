@@ -235,7 +235,7 @@ bool PlWindow::button_press (QMouseEvent * event)
 
     if (event->button () == Qt::RightButton && event->type () == QEvent::MouseButtonPress)
     {
-//        menu_popup (UI_MENU_PLAYLIST, event->globalX (), event->globalY (), false, false, 3, event->time);
+        menu_popup (UI_MENU_PLAYLIST, event->globalX (), event->globalY (), false, false);
         return true;
     }
 
@@ -318,46 +318,41 @@ static void button_add_cb (Button * button, QMouseEvent * event)
 {
     int xpos, ypos;
     playlistwin->getPosition (& xpos, & ypos);
-//    menu_popup (UI_MENU_PLAYLIST_ADD, xpos + 12 * config.scale,
-//     ypos + (config.playlist_height - 8) * config.scale, false, true,
-//     event->button, event->time);
+    menu_popup (UI_MENU_PLAYLIST_ADD, xpos + 12 * config.scale,
+     ypos + (config.playlist_height - 8) * config.scale, false, true);
 }
 
 static void button_sub_cb (Button * button, QMouseEvent * event)
 {
     int xpos, ypos;
     playlistwin->getPosition (& xpos, & ypos);
-//    menu_popup (UI_MENU_PLAYLIST_REMOVE, xpos + 40 * config.scale,
-//     ypos + (config.playlist_height - 8) * config.scale, false, true,
-//     event->button, event->time);
+    menu_popup (UI_MENU_PLAYLIST_REMOVE, xpos + 40 * config.scale,
+     ypos + (config.playlist_height - 8) * config.scale, false, true);
 }
 
 static void button_sel_cb (Button * button, QMouseEvent * event)
 {
     int xpos, ypos;
     playlistwin->getPosition (& xpos, & ypos);
-//    menu_popup (UI_MENU_PLAYLIST_SELECT, xpos + 68 * config.scale,
-//     ypos + (config.playlist_height - 8) * config.scale, false, true,
-//     event->button, event->time);
+    menu_popup (UI_MENU_PLAYLIST_SELECT, xpos + 68 * config.scale,
+     ypos + (config.playlist_height - 8) * config.scale, false, true);
 }
 
 static void button_misc_cb (Button * button, QMouseEvent * event)
 {
     int xpos, ypos;
     playlistwin->getPosition (& xpos, & ypos);
-//    menu_popup (UI_MENU_PLAYLIST_SORT, xpos + 100 * config.scale,
-//     ypos + (config.playlist_height - 8) * config.scale, false, true,
-//     event->button, event->time);
+    menu_popup (UI_MENU_PLAYLIST_SORT, xpos + 100 * config.scale,
+     ypos + (config.playlist_height - 8) * config.scale, false, true);
 }
 
 static void button_list_cb (Button * button, QMouseEvent * event)
 {
     int xpos, ypos;
     playlistwin->getPosition (& xpos, & ypos);
-//    menu_popup (UI_MENU_PLAYLIST,
-//     xpos + (config.playlist_width - 12) * config.scale,
-//     ypos + (config.playlist_height - 8) * config.scale, true, true,
-//     event->button, event->time);
+    menu_popup (UI_MENU_PLAYLIST,
+     xpos + (config.playlist_width - 12) * config.scale,
+     ypos + (config.playlist_height - 8) * config.scale, true, true);
 }
 
 static void
@@ -531,8 +526,6 @@ playlistwin_create(void)
 {
     playlistwin_create_window ();
     playlistwin_create_widgets ();
-
-//    gtk_window_add_accel_group ((GtkWindow *) playlistwin->gtk (), menu_get_accel_group ());
 
     update_info ();
     update_rollup_text ();

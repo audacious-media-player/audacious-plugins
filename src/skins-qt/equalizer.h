@@ -26,7 +26,6 @@
 #ifndef SKINS_UI_EQUALIZER_H
 #define SKINS_UI_EQUALIZER_H
 
-class EqGraph;
 class Window;
 
 void equalizerwin_create ();
@@ -35,6 +34,5 @@ void equalizerwin_set_volume_slider(int percent);
 void equalizerwin_set_balance_slider(int percent);
 
 extern Window * equalizerwin;
-extern EqGraph * equalizerwin_graph;
 
 #endif /* SKINS_UI_EQUALIZER_H */

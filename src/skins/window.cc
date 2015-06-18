@@ -20,13 +20,15 @@
  */
 
 #include "window.h"
+#include "menus.h"
 #include "plugin.h"
 #include "skins_cfg.h"
 
 void Window::apply_shape ()
 {
-    gdk_window_shape_combine_region (gtk_widget_get_window (gtk ()),
-     m_is_shaded ? m_sshape : m_shape, 0, 0);
+    if (gtk_widget_get_realized (gtk ()))
+        gdk_window_shape_combine_region (gtk_widget_get_window (gtk ()),
+         m_is_shaded ? m_sshape.get () : m_shape.get (), 0, 0);
 }
 
 void Window::realize ()
@@ -78,11 +80,6 @@ Window::~Window ()
 
     g_object_unref (m_normal);
     g_object_unref (m_shaded);
-
-    if (m_shape)
-        cairo_region_destroy (m_shape);
-    if (m_sshape)
-        cairo_region_destroy (m_sshape);
 }
 
 Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
@@ -108,6 +105,7 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
     gtk_widget_set_app_paintable (window, true);
     gtk_widget_add_events (window, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
+    gtk_window_add_accel_group ((GtkWindow *) window, menu_get_accel_group ());
 
     set_input (window);
     set_drawable (window);
@@ -140,16 +138,9 @@ void Window::resize (int w, int h)
 
 void Window::set_shapes (cairo_region_t * shape, cairo_region_t * sshape)
 {
-    if (m_shape)
-        cairo_region_destroy (m_shape);
-    if (m_sshape)
-        cairo_region_destroy (m_sshape);
-
-    m_shape = shape;
-    m_sshape = sshape;
-
-    if (gtk_widget_get_realized (gtk ()))
-        apply_shape ();
+    m_shape.capture (shape);
+    m_sshape.capture (sshape);
+    apply_shape ();
 }
 
 void Window::set_shaded (bool shaded)
@@ -169,9 +160,7 @@ void Window::set_shaded (bool shaded)
     }
 
     m_is_shaded = shaded;
-
-    if (gtk_widget_get_realized (gtk ()))
-        apply_shape ();
+    apply_shape ();
 }
 
 void Window::put_widget (bool shaded, Widget * widget, int x, int y)

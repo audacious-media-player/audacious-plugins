@@ -45,28 +45,26 @@
 #include "window.h"
 #include "view.h"
 
-static char app_name[] = "audacious";
-static int dummy_argc = 1;
-static char * dummy_argv[] = {app_name, nullptr};
-
 class QtSkins : public audqt::QtIfacePlugin
 {
 public:
-    constexpr QtSkins () : audqt::QtIfacePlugin ({N_("Winamp Classic Interface"), PACKAGE}) {}
+    static constexpr PluginInfo info = {
+        N_("Winamp Classic Interface"),
+        PACKAGE,
+        nullptr,
+        & skins_prefs
+    };
+
+    constexpr QtSkins () : audqt::QtIfacePlugin (info) {}
 
     bool init ();
     void cleanup ();
 
-    void run ()
-        { qapp->exec (); }
-    void quit ()
-        { qapp->quit (); }
+    void run () { audqt::run (); }
+    void quit () { audqt::quit (); }
 
     void show (bool show)
         { view_show_player (show); }
-
-private:
-    QApplication * qapp = nullptr;
 };
 
 EXPORT QtSkins aud_plugin_instance;
@@ -120,6 +118,15 @@ static void skins_init_main (bool restart)
     equalizerwin_create ();
     playlistwin_create ();
 
+    menu_init (mainwin);
+
+    /* copy menu shortcuts to the two other windows */
+    for (QAction * action : mainwin->actions ())
+    {
+        equalizerwin->addAction (action);
+        playlistwin->addAction (action);
+    }
+
     view_apply_skin ();
     view_apply_on_top ();
     view_apply_sticky ();
@@ -134,19 +141,14 @@ static void skins_init_main (bool restart)
 
 bool QtSkins::init ()
 {
-    qapp = new QApplication (dummy_argc, dummy_argv);
-
     skins_cfg_load ();
 
     if (! load_initial_skin ())
-    {
-        delete qapp;
         return false;
-    }
 
-    menu_init ();
+    audqt::init ();
+
     skins_init_main (false);
-
     create_plugin_windows ();
 
     return true;
@@ -170,9 +172,7 @@ void QtSkins::cleanup ()
     skins_cfg_save ();
 
     destroy_plugin_windows ();
-
     skins_cleanup_main ();
-    menu_cleanup ();
 
     skin = Skin ();
 
@@ -180,9 +180,6 @@ void QtSkins::cleanup ()
     skin_thumb_dir = String ();
 
     audqt::cleanup ();
-
-    delete qapp;
-    qapp = nullptr;
 }
 
 void skins_restart ()

@@ -1211,8 +1211,6 @@ mainwin_create(void)
 {
     mainwin_create_window ();
     mainwin_create_widgets ();
-
-    gtk_window_add_accel_group ((GtkWindow *) mainwin->gtk (), menu_get_accel_group ());
 }
 
 static void mainwin_update_volume (void)

@@ -29,14 +29,9 @@
 
 #include "main_window.h"
 
-static char app_name[] = "audacious";
-static int dummy_argc = 1;
-static char * dummy_argv[] = {app_name, nullptr};
-
 class QtUI : public audqt::QtIfacePlugin
 {
 private:
-    QApplication * qapp = nullptr;
     MainWindow * window = nullptr;
 
 public:
@@ -44,10 +39,8 @@ public:
 
     bool init ()
     {
-        qapp = new QApplication (dummy_argc, dummy_argv);
-        qapp->setAttribute(Qt::AA_UseHighDpiPixmaps);
+        audqt::init ();
         window = new MainWindow;
-
         return true;
     }
 
@@ -55,16 +48,12 @@ public:
     {
         delete window;
         window = nullptr;
-
         audqt::cleanup ();
-
-        delete qapp;
-        qapp = nullptr;
     }
 
     void run ()
     {
-        qapp->exec ();
+        audqt::run ();
     }
 
     void show (bool show)
@@ -74,7 +63,7 @@ public:
 
     void quit ()
     {
-        qapp->quit();
+        audqt::quit ();
     }
 };
 

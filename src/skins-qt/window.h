@@ -24,6 +24,8 @@
 
 #include "widget.h"
 
+#include <libaudcore/objects.h>
+
 enum {
     WINDOW_MAIN,
     WINDOW_EQ,
@@ -38,7 +40,7 @@ public:
     ~Window ();
 
     void resize (int w, int h);
-//    void set_shapes (GdkRegion * shape, GdkRegion * sshape);
+    void set_shapes (QRegion * shape, QRegion * sshape);
     bool is_shaded () { return m_is_shaded; }
     void set_shaded (bool shaded);
     void put_widget (bool shaded, Widget * widget, int x, int y);
@@ -61,7 +63,7 @@ private:
     bool m_is_shaded = false;
     bool m_is_moving = false;
     QWidget * m_normal = nullptr, * m_shaded = nullptr;
-//    GdkRegion * m_shape = nullptr, * m_sshape = nullptr;
+    SmartPtr<QRegion> m_shape, m_sshape;
 };
 
 void dock_add_window (int id, Window * window, int * x, int * y, int w, int h);

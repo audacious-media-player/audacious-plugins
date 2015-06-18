@@ -58,8 +58,8 @@ private:
 };
 
 Window * equalizerwin;
-EqGraph * equalizerwin_graph;
 
+static EqGraph * equalizerwin_graph;
 static Button * equalizerwin_on, * equalizerwin_auto;
 static Button * equalizerwin_close, * equalizerwin_shade;
 static Button * equalizerwin_shaded_close, * equalizerwin_shaded_shade;
@@ -102,8 +102,7 @@ bool EqWindow::button_press (QMouseEvent * event)
 
     if (event->button () == Qt::RightButton && event->type () == QEvent::MouseButtonPress)
     {
-//        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), false, false,
-//         event->button, event->time);
+        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), false, false);
         return true;
     }
 
@@ -277,8 +276,6 @@ void equalizerwin_create ()
 {
     equalizerwin_create_window ();
     equalizerwin_create_widgets ();
-
-//    gtk_window_add_accel_group ((GtkWindow *) equalizerwin->gtk (), menu_get_accel_group ());
 
     hook_associate ("set equalizer_active", (HookFunction) update_from_config, nullptr);
     hook_associate ("set equalizer_bands", (HookFunction) update_from_config, nullptr);
