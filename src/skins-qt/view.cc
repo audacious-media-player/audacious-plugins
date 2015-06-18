@@ -281,10 +281,6 @@ void view_apply_skin ()
       scale_mask (skin.masks[SKIN_MASK_EQ_SHADE], config.scale));
 #endif
 
-    // hide the equalizer graph if we have a short eqmain.bmp
-    int h = skin.pixmaps[SKIN_EQMAIN].height ();
-    equalizerwin_graph->setVisible (h >= 315);
-
     mainwin_refresh_hints ();
     TextBox::update_all ();
 

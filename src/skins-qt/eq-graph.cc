@@ -82,6 +82,9 @@ void EqGraph::draw (QPainter & cr)
 {
     static const double x[N] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
 
+    if (skin.pixmaps[SKIN_EQMAIN].height () < 313)
+        return;
+
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 294, 0, 0, 113, 19);
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_get_double (nullptr,
      "equalizer_preamp") * 9 + AUD_EQ_MAX_GAIN / 2) / AUD_EQ_MAX_GAIN, 113, 1);

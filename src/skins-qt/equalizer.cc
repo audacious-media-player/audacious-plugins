@@ -58,8 +58,8 @@ private:
 };
 
 Window * equalizerwin;
-EqGraph * equalizerwin_graph;
 
+static EqGraph * equalizerwin_graph;
 static Button * equalizerwin_on, * equalizerwin_auto;
 static Button * equalizerwin_close, * equalizerwin_shade;
 static Button * equalizerwin_shaded_close, * equalizerwin_shaded_shade;

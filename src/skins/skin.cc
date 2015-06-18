@@ -142,6 +142,9 @@ static void skin_get_textcolors (cairo_surface_t * s)
 
 static void skin_get_eq_spline_colors (cairo_surface_t * s)
 {
+    if (cairo_image_surface_get_height (s) < 313)
+        return;
+
     for (int i = 0; i < 19; i ++)
         skin.eq_spline_colors[i] = surface_get_pixel (s, 115, i + 294);
 }

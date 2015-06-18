@@ -152,6 +152,9 @@ static void skin_get_textcolors (const QImage & image)
 
 static void skin_get_eq_spline_colors (const QImage & image)
 {
+    if (image.height () < 313)
+        return;
+
     for (int i = 0; i < 19; i ++)
         skin.eq_spline_colors[i] = image.pixel (115, i + 294);
 }
