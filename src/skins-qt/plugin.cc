@@ -52,7 +52,14 @@ static char * dummy_argv[] = {app_name, nullptr};
 class QtSkins : public audqt::QtIfacePlugin
 {
 public:
-    constexpr QtSkins () : audqt::QtIfacePlugin ({N_("Winamp Classic Interface"), PACKAGE}) {}
+    static constexpr PluginInfo info = {
+        N_("Winamp Classic Interface"),
+        PACKAGE,
+        nullptr,
+        & skins_prefs
+    };
+
+    constexpr QtSkins () : audqt::QtIfacePlugin (info) {}
 
     bool init ();
     void cleanup ();
