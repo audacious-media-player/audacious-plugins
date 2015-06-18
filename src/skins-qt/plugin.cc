@@ -45,10 +45,6 @@
 #include "window.h"
 #include "view.h"
 
-static char app_name[] = "audacious";
-static int dummy_argc = 1;
-static char * dummy_argv[] = {app_name, nullptr};
-
 class QtSkins : public audqt::QtIfacePlugin
 {
 public:
@@ -64,16 +60,11 @@ public:
     bool init ();
     void cleanup ();
 
-    void run ()
-        { qapp->exec (); }
-    void quit ()
-        { qapp->quit (); }
+    void run () { audqt::run (); }
+    void quit () { audqt::quit (); }
 
     void show (bool show)
         { view_show_player (show); }
-
-private:
-    QApplication * qapp = nullptr;
 };
 
 EXPORT QtSkins aud_plugin_instance;
@@ -141,15 +132,12 @@ static void skins_init_main (bool restart)
 
 bool QtSkins::init ()
 {
-    qapp = new QApplication (dummy_argc, dummy_argv);
-
     skins_cfg_load ();
 
     if (! load_initial_skin ())
-    {
-        delete qapp;
         return false;
-    }
+
+    audqt::init ();
 
     menu_init ();
     skins_init_main (false);
@@ -187,9 +175,6 @@ void QtSkins::cleanup ()
     skin_thumb_dir = String ();
 
     audqt::cleanup ();
-
-    delete qapp;
-    qapp = nullptr;
 }
 
 void skins_restart ()
