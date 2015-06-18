@@ -29,7 +29,6 @@ void action_playlist_next(void);
 void action_playlist_rename(void);
 void action_playlist_delete(void);
 
-void action_playlist_search_and_select(void);
 void action_playlist_invert_selection(void);
 void action_playlist_select_all(void);
 void action_playlist_select_none(void);

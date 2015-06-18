@@ -39,9 +39,7 @@ enum
 void menu_init ();
 void menu_cleanup ();
 
-#if 0
-GtkAccelGroup * menu_get_accel_group (void);
-void menu_popup (int id, int x, int y, gboolean leftward, gboolean upward, int button, int time);
-#endif
+//GtkAccelGroup * menu_get_accel_group (void);
+void menu_popup (int id, int x, int y, bool leftward, bool upward);
 
 #endif /* SKINS_MENUS_H */

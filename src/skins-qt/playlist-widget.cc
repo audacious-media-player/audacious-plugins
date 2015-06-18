@@ -633,11 +633,9 @@ bool PlaylistWidget::button_press (QMouseEvent * event)
                     select_single (false, position);
             }
 
-#if 0
             menu_popup ((position == -1) ? UI_MENU_PLAYLIST :
-             UI_MENU_PLAYLIST_CONTEXT, event->globalX (), event->globalY (), false,
-             false, 3, event->time);
-#endif
+             UI_MENU_PLAYLIST_CONTEXT, event->globalX (), event->globalY (),
+             false, false);
             break;
           default:
             return false;

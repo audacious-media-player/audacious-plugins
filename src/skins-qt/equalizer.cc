@@ -102,8 +102,7 @@ bool EqWindow::button_press (QMouseEvent * event)
 
     if (event->button () == Qt::RightButton && event->type () == QEvent::MouseButtonPress)
     {
-//        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), false, false,
-//         event->button, event->time);
+        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), false, false);
         return true;
     }
 

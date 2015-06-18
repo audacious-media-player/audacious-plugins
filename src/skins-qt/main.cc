@@ -156,8 +156,8 @@ mainwin_menubtn_cb(void)
 {
     int x, y;
     mainwin->getPosition (& x, & y);
-//    menu_popup (UI_MENU_MAIN, x + 6 * config.scale,
-//     y + MAINWIN_SHADED_HEIGHT * config.scale, FALSE, FALSE, 1, GDK_CURRENT_TIME);
+    menu_popup (UI_MENU_MAIN, x + 6 * config.scale,
+     y + MAINWIN_SHADED_HEIGHT * config.scale, false, false);
 }
 
 static void mainwin_minimize_cb (void)
@@ -477,8 +477,7 @@ bool MainWindow::button_press (QMouseEvent * event)
 
     if (event->button () == Qt::RightButton && event->type () == QEvent::MouseButtonPress)
     {
-//        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), false, false,
-//         event->button, event->time);
+        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), false, false);
         return true;
     }
 
@@ -487,8 +486,7 @@ bool MainWindow::button_press (QMouseEvent * event)
 
 static void mainwin_playback_rpress (Button * button, QMouseEvent * event)
 {
-//    menu_popup (UI_MENU_PLAYBACK, event->globalX (), event->globalY (), FALSE, FALSE,
-//     event->button, event->time);
+    menu_popup (UI_MENU_PLAYBACK, event->globalX (), event->globalY (), false, false);
 }
 
 bool Window::keypress (QKeyEvent * event)
@@ -846,7 +844,7 @@ void mainwin_mr_release (MenuRowItem i, QMouseEvent * event)
     switch (i)
     {
         case MENUROW_OPTIONS:
-//            menu_popup (UI_MENU_VIEW, event->globalX (), event->globalY (), FALSE, FALSE, 1, event->time);
+            menu_popup (UI_MENU_VIEW, event->globalX (), event->globalY (), false, false);
             break;
         case MENUROW_ALWAYS:
             view_set_on_top (! aud_get_bool ("skins", "always_on_top"));
@@ -880,8 +878,7 @@ static bool mainwin_info_button_press (QMouseEvent * event)
 {
     if (event->type () == QEvent::MouseButtonPress && event->button () == Qt::RightButton)
     {
-//        menu_popup (UI_MENU_PLAYBACK, event->globalX (), event->globalY (), false,
-//         false, event->button, event->time);
+        menu_popup (UI_MENU_PLAYBACK, event->globalX (), event->globalY (), false, false);
         return true;
     }
 
