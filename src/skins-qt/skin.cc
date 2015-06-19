@@ -473,29 +473,10 @@ QFont * qfont_from_string (const char * name)
 
     while (1)
     {
-        QFont test ((const char *) family);
-
-        /* check for a recognized font family */
-        if (test.exactMatch ())
-        {
-            auto font = new QFont (test);
-
-            if (size > 0)
-                font->setPointSize (size);
-            if (weight != QFont::Normal)
-                font->setWeight (weight);
-            if (style != QFont::StyleNormal)
-                font->setStyle (style);
-            if (stretch != QFont::Unstretched)
-                font->setStretch (stretch);
-
-            return font;
-        }
-
         /* check for attributes */
         const char * space = strrchr (family, ' ');
         if (! space)
-            return new QFont;
+            break;
 
         const char * attr = space + 1;
         int num = str_to_int (attr);
@@ -514,7 +495,22 @@ QFont * qfont_from_string (const char * name)
             stretch = QFont::Condensed;
         else if (! strcmp (attr, "Expanded"))
             stretch = QFont::Expanded;
+        else
+            break;
 
         family.resize (space - family);
     }
+
+    auto font = new QFont ((const char *) family);
+
+    if (size > 0)
+        font->setPointSize (size);
+    if (weight != QFont::Normal)
+        font->setWeight (weight);
+    if (style != QFont::StyleNormal)
+        font->setStyle (style);
+    if (stretch != QFont::Unstretched)
+        font->setStretch (stretch);
+
+    return font;
 }
