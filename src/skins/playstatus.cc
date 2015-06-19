@@ -52,7 +52,8 @@ void PlayStatus::draw (cairo_t * cr)
 
 PlayStatus::PlayStatus ()
 {
-    add_drawable (11 * config.scale, 9 * config.scale);
+    set_scale (config.scale);
+    add_drawable (11, 9);
 }
 
 void PlayStatus::set_status (PStatus status)

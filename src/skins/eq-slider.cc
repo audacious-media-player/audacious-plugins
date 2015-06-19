@@ -122,5 +122,6 @@ EqSlider::EqSlider (const char * name, int band) :
     m_name (name),
     m_band (band)
 {
-    add_input (14 * config.scale, 63 * config.scale, true, true);
+    set_scale (config.scale);
+    add_input (14, 63, true, true);
 }

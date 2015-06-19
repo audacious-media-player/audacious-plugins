@@ -117,5 +117,6 @@ bool MenuRow::motion (GdkEventMotion * event)
 
 MenuRow::MenuRow ()
 {
-    add_input (8 * config.scale, 43 * config.scale, true, true);
+    set_scale (config.scale);
+    add_input (8, 43, true, true);
 }

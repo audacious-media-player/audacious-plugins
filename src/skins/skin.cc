@@ -300,13 +300,10 @@ void skin_install_skin (const char * path)
 void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc, int
  xdest, int ydest, int width, int height)
 {
-    cairo_save (cr);
-    cairo_scale (cr, config.scale, config.scale);
     cairo_set_source_surface (cr, skin.pixmaps[id].get (), xdest - xsrc, ydest - ysrc);
     cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
     cairo_rectangle (cr, xdest, ydest, width, height);
     cairo_fill (cr);
-    cairo_restore (cr);
 }
 
 static void skin_draw_playlistwin_frame_top (cairo_t * cr, int width, bool focus)
