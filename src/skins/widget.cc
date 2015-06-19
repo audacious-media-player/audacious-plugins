@@ -74,7 +74,7 @@ void Widget::add_input (int width, int height, bool track_motion, bool drawable)
 
     GtkWidget * widget = gtk_event_box_new ();
     gtk_event_box_set_visible_window ((GtkEventBox *) widget, false);
-    gtk_widget_set_size_request (widget, width, height);
+    gtk_widget_set_size_request (widget, width * m_scale, height * m_scale);
     gtk_widget_add_events (widget, events);
     gtk_widget_show (widget);
     set_input (widget);
@@ -91,7 +91,7 @@ void Widget::add_input (int width, int height, bool track_motion, bool drawable)
 void Widget::add_drawable (int width, int height)
 {
     GtkWidget * widget = drawing_area_new ();
-    gtk_widget_set_size_request (widget, width, height);
+    gtk_widget_set_size_request (widget, width * m_scale, height * m_scale);
     gtk_widget_show (widget);
     set_drawable (widget);
 }
@@ -112,7 +112,16 @@ void Widget::draw_now ()
         cairo_clip (cr);
     }
 
-    draw (cr);
+    draw_cb (m_drawable, cr, this);
 
     cairo_destroy (cr);
+}
+
+gboolean Widget::draw_cb (GtkWidget * widget, cairo_t * cr, Widget * me)
+{
+    if (me->m_scale != 1)
+        cairo_scale (cr, me->m_scale, me->m_scale);
+
+    me->draw (cr);
+    return false;
 }

@@ -182,6 +182,8 @@ void TextBox::render_bitmap (const char * text)
      m_buf_width * config.scale, ch * config.scale));
 
     cairo_t * cr = cairo_create (m_buf.get ());
+    if (config.scale != 1)
+        cairo_scale (cr, config.scale, config.scale);
 
     gunichar * s = utf32;
     for (int x = 0; x < m_buf_width; x += cw)

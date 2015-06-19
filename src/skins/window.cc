@@ -109,6 +109,7 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
 
     set_input (window);
     set_drawable (window);
+    set_scale (config.scale);
 
     m_normal = gtk_fixed_new ();
     g_object_ref_sink (m_normal);
@@ -165,18 +166,12 @@ void Window::set_shaded (bool shaded)
 
 void Window::put_widget (bool shaded, Widget * widget, int x, int y)
 {
-    x *= config.scale;
-    y *= config.scale;
-
     GtkWidget * fixed = shaded ? m_shaded : m_normal;
-    gtk_fixed_put ((GtkFixed *) fixed, widget->gtk (), x, y);
+    gtk_fixed_put ((GtkFixed *) fixed, widget->gtk (), x * config.scale, y * config.scale);
 }
 
 void Window::move_widget (bool shaded, Widget * widget, int x, int y)
 {
-    x *= config.scale;
-    y *= config.scale;
-
     GtkWidget * fixed = shaded ? m_shaded : m_normal;
-    gtk_fixed_move ((GtkFixed *) fixed, widget->gtk (), x, y);
+    gtk_fixed_move ((GtkFixed *) fixed, widget->gtk (), x * config.scale, y * config.scale);
 }

@@ -46,8 +46,9 @@ protected:
     void add_input (int width, int height, bool track_motion, bool drawable);
     void add_drawable (int width, int height);
 
+    void set_scale (int scale) { m_scale = scale; }
     void resize (int width, int height)
-        { gtk_widget_set_size_request (m_widget, width, height); }
+        { gtk_widget_set_size_request (m_widget, width * m_scale, height * m_scale); }
 
     void draw_now ();
 
@@ -66,8 +67,9 @@ private:
         { delete me; }
     static void realize_cb (GtkWidget * widget, Widget * me)
         { me->realize (); }
-    static gboolean draw_cb (GtkWidget * widget, cairo_t * cr, Widget * me)
-        { me->draw (cr); return false; }
+
+    static gboolean draw_cb (GtkWidget * widget, cairo_t * cr, Widget * me);
+
     static gboolean keypress_cb (GtkWidget * widget, GdkEventKey * event, Widget * me)
         { return me->keypress (event); }
     static gboolean button_press_cb (GtkWidget * widget, GdkEventButton * event, Widget * me)
@@ -85,6 +87,7 @@ private:
 
     GtkWidget * m_widget = nullptr;
     GtkWidget * m_drawable = nullptr;
+    int m_scale = 1;
 };
 
 #endif // SKINS_WIDGET_H

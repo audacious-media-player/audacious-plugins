@@ -89,8 +89,6 @@ void EqGraph::draw (cairo_t * cr)
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_get_double (nullptr,
      "equalizer_preamp") * 9 + AUD_EQ_MAX_GAIN / 2) / AUD_EQ_MAX_GAIN, 113, 1);
 
-    cairo_scale (cr, config.scale, config.scale);
-
     double bands[N];
     aud_eq_get_bands (bands);
 
@@ -134,5 +132,6 @@ void EqGraph::draw (cairo_t * cr)
 
 EqGraph::EqGraph ()
 {
-    add_drawable (113 * config.scale, 19 * config.scale);
+    set_scale (config.scale);
+    add_drawable (113, 19);
 }

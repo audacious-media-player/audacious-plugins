@@ -220,7 +220,6 @@ void SkinnedVis::draw (cairo_t * cr)
 DRAW:;
     cairo_surface_t * surf = cairo_image_surface_create_for_data
      ((unsigned char *) rgb, CAIRO_FORMAT_RGB24, 76, 16, 4 * 76);
-    cairo_scale (cr, config.scale, config.scale);
     cairo_set_source_surface (cr, surf, 0, 0);
     cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
     cairo_paint (cr);
@@ -229,7 +228,8 @@ DRAW:;
 
 SkinnedVis::SkinnedVis ()
 {
-    add_drawable (76 * config.scale, 16 * config.scale);
+    set_scale (config.scale);
+    add_drawable (76, 16);
     clear ();
 }
 

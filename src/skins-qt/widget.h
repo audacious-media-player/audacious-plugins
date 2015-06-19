@@ -38,6 +38,8 @@ protected:
     void add_input (int width, int height, bool track_motion, bool drawable);
     void add_drawable (int width, int height);
 
+    void set_scale (int scale) { m_scale = scale; }
+    void resize (int w, int h) { QWidget::resize (w * m_scale, h * m_scale); }
     void draw_now () { repaint (); }
 
     virtual void draw (QPainter & cr) {}
@@ -68,6 +70,7 @@ private:
         { event->setAccepted (close ()); }
 
     bool m_drawable = false;
+    int m_scale = 1;
 };
 
 #endif // SKINS_WIDGET_H

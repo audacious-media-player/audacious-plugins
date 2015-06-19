@@ -61,5 +61,6 @@ bool DragHandle::motion (QMouseEvent * event)
 DragHandle::DragHandle (int w, int h, void (* press) (), void (* drag) (int x, int y)) :
     press (press), drag (drag)
 {
-    add_input (w * config.scale, h * config.scale, true, false);
+    set_scale (config.scale);
+    add_input (w, h, true, false);
 }

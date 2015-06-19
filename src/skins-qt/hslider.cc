@@ -93,7 +93,8 @@ HSlider::HSlider (int min, int max, SkinPixmapId si, int w, int h, int fx,
     m_min (min), m_max (max), m_si (si), m_w (w), m_h (h), m_fx (fx), m_fy (fy),
      m_kw (kw), m_kh (kh), m_knx (knx), m_kny (kny), m_kpx (kpx), m_kpy (kpy)
 {
-    add_input (w * config.scale, h * config.scale, true, true);
+    set_scale (config.scale);
+    add_input (w, h, true, true);
 }
 
 void HSlider::set_frame (int fx, int fy)

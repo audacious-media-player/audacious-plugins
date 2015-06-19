@@ -118,7 +118,8 @@ Button::Button (Type type, int w, int h, int nx, int ny, int px, int py,
     m_pnx (pnx), m_pny (pny), m_ppx (ppx), m_ppy (ppy),
     m_si1 (si1), m_si2 (si2)
 {
-    add_input (w * config.scale, h * config.scale, false, type != Small);
+    set_scale (config.scale);
+    add_input (w, h, false, type != Small);
 }
 
 void Button::set_active (bool active)

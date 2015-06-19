@@ -44,7 +44,8 @@ bool SkinnedNumber::button_press (GdkEventButton * event)
 
 SkinnedNumber::SkinnedNumber ()
 {
-    add_input (9 * config.scale, 13 * config.scale, false, true);
+    set_scale (config.scale);
+    add_input (9, 13, false, true);
 }
 
 void SkinnedNumber::set (char c)

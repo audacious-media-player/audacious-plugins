@@ -50,7 +50,8 @@ void MonoStereo::draw (cairo_t * cr)
 
 MonoStereo::MonoStereo ()
 {
-    add_drawable (56 * config.scale, 12 * config.scale);
+    set_scale (config.scale);
+    add_drawable (56, 12);
 }
 
 void MonoStereo::set_num_channels (int num_channels)
