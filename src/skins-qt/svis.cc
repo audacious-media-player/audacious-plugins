@@ -168,13 +168,13 @@ void SmallVis::draw (QPainter & cr)
 
 DRAW:;
     QImage image ((unsigned char *) rgb, 38, 5, 4 * 38, QImage::Format_RGB32);
-    cr.setTransform (QTransform ().scale (config.scale, config.scale));
     cr.drawImage (0, 0, image);
 }
 
 SmallVis::SmallVis ()
 {
-    add_drawable (38 * config.scale, 5 * config.scale);
+    set_scale (config.scale);
+    add_drawable (38, 5);
     clear ();
 }
 

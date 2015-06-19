@@ -219,13 +219,13 @@ void SkinnedVis::draw (QPainter & cr)
 
 DRAW:;
     QImage image ((unsigned char *) rgb, 76, 16, 4 * 76, QImage::Format_RGB32);
-    cr.setTransform (QTransform ().scale (config.scale, config.scale));
     cr.drawImage (0, 0, image);
 }
 
 SkinnedVis::SkinnedVis ()
 {
-    add_drawable (76 * config.scale, 16 * config.scale);
+    set_scale (config.scale);
+    add_drawable (76, 16);
     clear ();
 }
 

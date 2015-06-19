@@ -166,6 +166,8 @@ void TextBox::render_bitmap (const char * text)
      QImage::Format_RGB32));
 
     QPainter cr (m_buf.get ());
+    if (config.scale != 1)
+        cr.setTransform (QTransform ().scale (config.scale, config.scale));
 
     gunichar * s = utf32;
     for (int x = 0; x < m_buf_width; x += cw)

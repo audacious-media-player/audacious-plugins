@@ -105,13 +105,14 @@ PlaylistSlider::PlaylistSlider (PlaylistWidget * list, int height) :
     m_list (list), m_height (height),
     m_length (aud_playlist_entry_count (aud_playlist_get_active ()))
 {
-    add_input (8 * config.scale, height * config.scale, true, true);
+    set_scale (config.scale);
+    add_input (8, height, true, true);
 }
 
 void PlaylistSlider::resize (int height)
 {
     m_height = height;
-    Widget::resize (8 * config.scale, height * config.scale);
+    Widget::resize (8, height);
     queue_draw ();
 }
 

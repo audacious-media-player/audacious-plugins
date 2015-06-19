@@ -39,6 +39,9 @@ void Widget::paintEvent (QPaintEvent *)
     if (m_drawable)
     {
         QPainter p (this);
+        if (m_scale != 1)
+            p.setTransform (QTransform ().scale (m_scale, m_scale));
+
         draw (p);
     }
 }

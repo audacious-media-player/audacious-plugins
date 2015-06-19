@@ -313,10 +313,7 @@ void skin_install_skin (const char * path)
 void skin_draw_pixbuf (QPainter & p, SkinPixmapId id, int xsrc, int ysrc, int
  xdest, int ydest, int width, int height)
 {
-    p.save ();
-    p.setTransform (QTransform ().scale (config.scale, config.scale));
     p.drawImage (xdest, ydest, skin.pixmaps[id], xsrc, ysrc, width, height);
-    p.restore ();
 }
 
 static void skin_draw_playlistwin_frame_top (QPainter & cr, int width, bool focus)

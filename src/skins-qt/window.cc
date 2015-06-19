@@ -79,17 +79,20 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
     m_id (id),
     m_is_shaded (shaded)
 {
-    w *= config.scale;
-    h *= config.scale;
-
     if (id == WINDOW_MAIN)
         setWindowFlags (Qt::Window | Qt::FramelessWindowHint);
     else
         setWindowFlags (Qt::Dialog | Qt::FramelessWindowHint);
 
     move (* x, * y);
+
+    set_scale (config.scale);
     add_input (w, h, true, true);
+
+    w *= config.scale;
+    h *= config.scale;
     setFixedSize (w, h);
+
     setAttribute (Qt::WA_NoSystemBackground);
 
     m_normal = new QWidget (this);
@@ -107,10 +110,10 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
 
 void Window::resize (int w, int h)
 {
+    Widget::resize (w, h);
+
     w *= config.scale;
     h *= config.scale;
-
-    Widget::resize (w, h);
     setFixedSize (w, h);
 
     m_normal->resize (w, h);
@@ -148,17 +151,11 @@ void Window::set_shaded (bool shaded)
 
 void Window::put_widget (bool shaded, Widget * widget, int x, int y)
 {
-    x *= config.scale;
-    y *= config.scale;
-
     widget->setParent (shaded ? m_shaded : m_normal);
-    widget->move (x, y);
+    widget->move (x * config.scale, y * config.scale);
 }
 
 void Window::move_widget (bool shaded, Widget * widget, int x, int y)
 {
-    x *= config.scale;
-    y *= config.scale;
-
-    widget->move (x, y);
+    widget->move (x * config.scale, y * config.scale);
 }
