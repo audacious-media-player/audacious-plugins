@@ -471,43 +471,56 @@ QFont * qfont_from_string (const char * name)
     while (1)
     {
         /* check for attributes */
+        bool attr_found = false;
         const char * space = strrchr (family, ' ');
-        if (! space)
-            break;
 
-        const char * attr = space + 1;
-        int num = str_to_int (attr);
+        if (space)
+        {
+            const char * attr = space + 1;
+            int num = str_to_int (attr);
 
-        if (num > 0)
-            size = num;
-        else if (! strcmp (attr, "Light"))
-            weight = QFont::Light;
-        else if (! strcmp (attr, "Bold"))
-            weight = QFont::Bold;
-        else if (! strcmp (attr, "Oblique"))
-            style = QFont::StyleOblique;
-        else if (! strcmp (attr, "Italic"))
-            style = QFont::StyleItalic;
-        else if (! strcmp (attr, "Condensed"))
-            stretch = QFont::Condensed;
-        else if (! strcmp (attr, "Expanded"))
-            stretch = QFont::Expanded;
-        else
-            break;
+            attr_found = true;
+
+            if (num > 0)
+                size = num;
+            else if (! strcmp (attr, "Light"))
+                weight = QFont::Light;
+            else if (! strcmp (attr, "Bold"))
+                weight = QFont::Bold;
+            else if (! strcmp (attr, "Oblique"))
+                style = QFont::StyleOblique;
+            else if (! strcmp (attr, "Italic"))
+                style = QFont::StyleItalic;
+            else if (! strcmp (attr, "Condensed"))
+                stretch = QFont::Condensed;
+            else if (! strcmp (attr, "Expanded"))
+                stretch = QFont::Expanded;
+            else
+                attr_found = false;
+        }
+
+        if (! attr_found)
+        {
+            auto font = new QFont ((const char *) family);
+
+            /* check for a recognized font family */
+            if (! space || font->exactMatch ())
+            {
+                if (size > 0)
+                    font->setPointSize (size);
+                if (weight != QFont::Normal)
+                    font->setWeight (weight);
+                if (style != QFont::StyleNormal)
+                    font->setStyle (style);
+                if (stretch != QFont::Unstretched)
+                    font->setStretch (stretch);
+
+                return font;
+            }
+
+            delete font;
+        }
 
         family.resize (space - family);
     }
-
-    auto font = new QFont ((const char *) family);
-
-    if (size > 0)
-        font->setPointSize (size);
-    if (weight != QFont::Normal)
-        font->setWeight (weight);
-    if (style != QFont::StyleNormal)
-        font->setStyle (style);
-    if (stretch != QFont::Unstretched)
-        font->setStretch (stretch);
-
-    return font;
 }
