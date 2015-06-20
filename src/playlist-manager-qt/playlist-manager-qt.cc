@@ -18,7 +18,10 @@
  */
 
 #include <QAbstractListModel>
+#include <QFont>
+#include <QGuiApplication>
 #include <QHeaderView>
+#include <QMouseEvent>
 #include <QTreeView>
 
 #define AUD_PLUGIN_QT_ONLY
@@ -52,7 +55,12 @@ public:
     };
 
     PlaylistsModel () :
-        m_rows (aud_playlist_count ()) {}
+        m_rows (aud_playlist_count ()),
+        m_playing (aud_playlist_get_playing ()),
+        m_bold (QGuiApplication::font ())
+    {
+        m_bold.setBold (true);
+    }
 
     void update (Playlist::UpdateLevel level);
 
@@ -64,7 +72,14 @@ protected:
     QVariant headerData (int section, Qt::Orientation orientation, int role) const;
 
 private:
-    int m_rows;
+    void update_rows (int row, int count);
+    void update_playing ();
+
+    const HookReceiver<PlaylistsModel>
+     activate_hook {"playlist set playing", this, & PlaylistsModel::update_playing};
+
+    int m_rows, m_playing;
+    QFont m_bold;
 };
 
 class PlaylistsView : public QTreeView
@@ -74,6 +89,7 @@ public:
 
 protected:
     void currentChanged (const QModelIndex & current, const QModelIndex & previous);
+    void mouseDoubleClickEvent (QMouseEvent * event);
 
 private:
     PlaylistsModel m_model;
@@ -102,6 +118,10 @@ QVariant PlaylistsModel::data (const QModelIndex & index, int role) const
             return aud_playlist_entry_count (index.row ());
         }
 
+    case Qt::FontRole:
+        if (index.row () == m_playing)
+            return m_bold;
+
     case Qt::TextAlignmentRole:
         if (index.column () == ColumnEntries)
             return Qt::AlignRight;
@@ -126,6 +146,34 @@ QVariant PlaylistsModel::headerData (int section, Qt::Orientation orientation, i
     return QVariant ();
 }
 
+void PlaylistsModel::update_rows (int row, int count)
+{
+    if (count < 1)
+        return;
+
+    auto topLeft = createIndex (row, 0);
+    auto bottomRight = createIndex (row + count - 1, NColumns - 1);
+    emit dataChanged (topLeft, bottomRight);
+}
+
+void PlaylistsModel::update_playing ()
+{
+    if (aud_playlist_update_pending ())
+        return;
+
+    int playing = aud_playlist_get_playing ();
+
+    if (playing != m_playing)
+    {
+        if (m_playing >= 0)
+            update_rows (m_playing, 1);
+        if (playing >= 0)
+            update_rows (playing, 1);
+
+        m_playing = playing;
+    }
+}
+
 void PlaylistsModel::update (const Playlist::UpdateLevel level)
 {
     int rows = aud_playlist_count ();
@@ -148,10 +196,11 @@ void PlaylistsModel::update (const Playlist::UpdateLevel level)
 
     if (level >= Playlist::Metadata)
     {
-        auto topLeft = createIndex (0, 0);
-        auto bottomRight = createIndex (m_rows - 1, NColumns - 1);
-        emit dataChanged (topLeft, bottomRight);
+        update_rows (0, m_rows);
+        m_playing = aud_playlist_get_playing ();
     }
+    else
+        update_playing ();
 }
 
 PlaylistsView::PlaylistsView ()
@@ -175,6 +224,12 @@ void PlaylistsView::currentChanged (const QModelIndex & current, const QModelInd
     QTreeView::currentChanged (current, previous);
     if (! m_in_update)
         aud_playlist_set_active (current.row ());
+}
+
+void PlaylistsView::mouseDoubleClickEvent (QMouseEvent * event)
+{
+    if (event->button () == Qt::LeftButton)
+        aud_playlist_play (currentIndex ().row ());
 }
 
 void PlaylistsView::update (Playlist::UpdateLevel level)
