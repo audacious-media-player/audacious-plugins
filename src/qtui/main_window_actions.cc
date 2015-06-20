@@ -79,6 +79,7 @@ static void pl_new ()
 static void pl_play () { aud_playlist_play (aud_playlist_get_active ()); }
 static void pl_refresh () { aud_playlist_rescan (aud_playlist_get_active ()); }
 static void pl_remove_failed () { aud_playlist_remove_failed (aud_playlist_get_active ()); }
+static void pl_rename () { hook_call ("qtui rename playlist", nullptr); }
 static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_active ()); }
 
 static void volume_up () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
@@ -165,7 +166,7 @@ void MainWindow::setupActions ()
         audqt::MenuCommand ({N_("Remove _Unavailable Files"), "dialog-warning"}, pl_remove_failed),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("_New"), "document-new", "Ctrl+T"}, pl_new),
-        //audqt::MenuCommand ({N_("Ren_ame ..."), "insert-text", "F2"}, TODO),
+        audqt::MenuCommand ({N_("Ren_ame ..."), "insert-text", "F2"}, pl_rename),
         audqt::MenuCommand ({N_("Remo_ve"), "edit-delete", "Ctrl+W"}, pl_close),
         audqt::MenuSep (),
         //audqt::MenuCommand ({N_("_Import ..."), "document-open"}, TODO),

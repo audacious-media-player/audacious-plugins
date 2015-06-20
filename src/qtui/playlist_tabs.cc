@@ -174,6 +174,13 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
     return QTabWidget::eventFilter(obj, e);
 }
 
+void PlaylistTabs::renameCurrent ()
+{
+    int idx = currentIndex ();
+    if (idx >= 0)
+        editTab (idx);
+}
+
 void PlaylistTabs::cancelRename ()
 {
     for (int i = 0; i < count (); i ++)

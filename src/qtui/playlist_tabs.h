@@ -58,6 +58,7 @@ private:
     void populatePlaylists ();
     void maybeCreateTab (int count_, int uniq_id);
     void cullPlaylists ();
+    void renameCurrent ();
     void cancelRename ();
 
     void playlist_update_cb (Playlist::UpdateLevel global_level);
@@ -67,6 +68,8 @@ private:
      update_hook {"playlist update", this, & PlaylistTabs::playlist_update_cb};
     const HookReceiver<PlaylistTabs, int>
      position_hook {"playlist position", this, & PlaylistTabs::playlist_position_cb};
+    const HookReceiver<PlaylistTabs>
+     rename_hook {"qtui rename playlist", this, & PlaylistTabs::renameCurrent};
 };
 
 class PlaylistTabBar : public QTabBar
