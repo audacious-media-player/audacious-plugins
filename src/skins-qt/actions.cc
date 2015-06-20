@@ -126,7 +126,7 @@ void action_playlist_next ()
 }
 
 void action_playlist_rename ()
-    { /* TODO */ }
+    { audqt::playlist_show_rename (ACTIVE); }
 void action_playlist_delete ()
     { audqt::playlist_confirm_delete (ACTIVE); }
 
