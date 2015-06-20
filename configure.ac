@@ -81,6 +81,10 @@ if test "x$USE_QT" = "xyes" ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
 fi
 
+if test "x$USE_GTK" = "xyes" -o "x$USE_QT" = "xyes" ; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS skins-data"
+fi
+
 dnl Console
 dnl =======
 
