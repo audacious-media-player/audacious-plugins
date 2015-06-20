@@ -51,9 +51,10 @@ public:
         NColumns
     };
 
-    PlaylistsModel (QObject * parent = nullptr) :
-        QAbstractListModel (parent),
+    PlaylistsModel () :
         m_rows (aud_playlist_count ()) {}
+
+    void update (Playlist::UpdateLevel level);
 
 protected:
     int rowCount (const QModelIndex & parent) const { return m_rows; }
@@ -63,11 +64,29 @@ protected:
     QVariant headerData (int section, Qt::Orientation orientation, int role) const;
 
 private:
-    void update (const Playlist::UpdateLevel level);
-    const HookReceiver<PlaylistsModel, Playlist::UpdateLevel>
-     update_hook {"playlist update", this, & PlaylistsModel::update};
-
     int m_rows;
+};
+
+class PlaylistsView : public QTreeView
+{
+public:
+    PlaylistsView ();
+
+protected:
+    void currentChanged (const QModelIndex & current, const QModelIndex & previous);
+
+private:
+    PlaylistsModel m_model;
+
+    void update (Playlist::UpdateLevel level);
+    void update_sel ();
+
+    const HookReceiver<PlaylistsView, Playlist::UpdateLevel>
+     update_hook {"playlist update", this, & PlaylistsView::update};
+    const HookReceiver<PlaylistsView>
+     activate_hook {"playlist activate", this, & PlaylistsView::update_sel};
+
+    int m_in_update = 0;
 };
 
 QVariant PlaylistsModel::data (const QModelIndex & index, int role) const
@@ -135,18 +154,50 @@ void PlaylistsModel::update (const Playlist::UpdateLevel level)
     }
 }
 
+PlaylistsView::PlaylistsView ()
+{
+    m_in_update ++;
+    setModel (& m_model);
+    update_sel ();
+    m_in_update --;
+
+    auto hdr = header ();
+    hdr->setStretchLastSection (false);
+    hdr->setSectionResizeMode (PlaylistsModel::ColumnTitle, QHeaderView::Stretch);
+    hdr->setSectionResizeMode (PlaylistsModel::ColumnEntries, QHeaderView::Interactive);
+    hdr->resizeSection (PlaylistsModel::ColumnEntries, 64);
+
+    setIndentation (0);
+}
+
+void PlaylistsView::currentChanged (const QModelIndex & current, const QModelIndex & previous)
+{
+    QTreeView::currentChanged (current, previous);
+    if (! m_in_update)
+        aud_playlist_set_active (current.row ());
+}
+
+void PlaylistsView::update (Playlist::UpdateLevel level)
+{
+    m_in_update ++;
+    m_model.update (level);
+    update_sel ();
+    m_in_update --;
+}
+
+void PlaylistsView::update_sel ()
+{
+    if (aud_playlist_update_pending ())
+        return;
+
+    m_in_update ++;
+    auto sel = selectionModel ();
+    auto current = m_model.index (aud_playlist_get_active (), 0);
+    sel->setCurrentIndex (current, sel->SelectCurrent | sel->Rows);
+    m_in_update --;
+}
+
 void * PlaylistManagerQt::get_qt_widget ()
 {
-    auto treeview = new QTreeView;
-    auto model = new PlaylistsModel (treeview);
-
-    treeview->setModel (model);
-
-    auto header = treeview->header ();
-    header->setStretchLastSection (false);
-    header->setSectionResizeMode (PlaylistsModel::ColumnTitle, QHeaderView::Stretch);
-    header->setSectionResizeMode (PlaylistsModel::ColumnEntries, QHeaderView::Interactive);
-    header->resizeSection (PlaylistsModel::ColumnEntries, 64);
-
-    return treeview;
+    return new PlaylistsView;
 }
