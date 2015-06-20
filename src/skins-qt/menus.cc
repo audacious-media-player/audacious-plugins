@@ -47,8 +47,8 @@ static QMenu * get_plugin_menu_playlist_remove () {return audqt::menu_get_by_id 
 
 static const audqt::MenuItem main_items[] = {
     audqt::MenuCommand ({N_("Open Files ..."), "document-open", "L"}, action_play_file),
-    audqt::MenuCommand ({N_("Open URL ..."), "folder-remote", "Ctrl+L"}, action_play_location),
-    audqt::MenuCommand ({N_("Search Library"), "edit-find", "Y"}, action_search_tool),
+//    audqt::MenuCommand ({N_("Open URL ..."), "folder-remote", "Ctrl+L"}, action_play_location),
+//    audqt::MenuCommand ({N_("Search Library"), "edit-find", "Y"}, action_search_tool),
     audqt::MenuSep (),
     audqt::MenuSub ({N_("Playback")}, get_menu_playback),
     audqt::MenuSub ({N_("Playlist")}, get_menu_playlist),
@@ -98,8 +98,8 @@ static const audqt::MenuItem playlist_items[] = {
     audqt::MenuCommand ({N_("Import Playlist ..."), "document-open", "O"}, audgui_import_playlist),
     audqt::MenuCommand ({N_("Export Playlist ..."), "document-save", "Shift+S"}, audgui_export_playlist),
     audqt::MenuSep (),
-#endif
     audqt::MenuCommand ({N_("Playlist Manager ..."), "audio-x-generic", "P"}, action_playlist_manager),
+#endif
     audqt::MenuCommand ({N_("Queue Manager ..."), nullptr, "Ctrl+U"}, audqt::queue_manager_show),
     audqt::MenuSep (),
     audqt::MenuCommand ({N_("Refresh Playlist"), "view-refresh", "F5"}, action_playlist_refresh_list)
@@ -111,9 +111,11 @@ static const audqt::MenuItem view_items[] = {
     audqt::MenuSep (),
     audqt::MenuToggle ({N_("Show Remaining Time"), nullptr, "Ctrl+R"}, {"skins", "show_remaining_time", "skins set show_remaining_time"}, view_apply_show_remaining),
     audqt::MenuSep (),
+#if 0
     audqt::MenuToggle ({N_("Always on Top"), nullptr, "Ctrl+O"}, {"skins", "always_on_top", "skins set always_on_top"}, view_apply_on_top),
     audqt::MenuToggle ({N_("On All Workspaces"), nullptr, "Ctrl+S"}, {"skins", "sticky", "skins set sticky"}, view_apply_sticky),
     audqt::MenuSep (),
+#endif
     audqt::MenuToggle ({N_("Roll Up Player"), nullptr, "Ctrl+W"}, {"skins", "player_shaded", "skins set player_shaded"}, view_apply_player_shaded),
     audqt::MenuToggle ({N_("Roll Up Playlist Editor"), nullptr, "Shift+Ctrl+W"}, {"skins", "playlist_shaded", "skins set playlist_shaded"}, view_apply_playlist_shaded),
     audqt::MenuToggle ({N_("Roll Up Equalizer"), nullptr, "Ctrl+Alt+W"}, {"skins", "equalizer_shaded", "skins set equalizer_shaded"}, view_apply_equalizer_shaded),
@@ -124,7 +126,7 @@ static const audqt::MenuItem view_items[] = {
 static const audqt::MenuItem playlist_add_items[] = {
     audqt::MenuSub ({N_("Services")}, get_plugin_menu_playlist_add),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Add URL ..."), "folder-remote", "Ctrl+H"}, action_playlist_add_url),
+//    audqt::MenuCommand ({N_("Add URL ..."), "folder-remote", "Ctrl+H"}, action_playlist_add_url),
     audqt::MenuCommand ({N_("Add Files ..."), "list-add", "F"}, action_playlist_add_files)
 };
 
@@ -192,10 +194,12 @@ static const audqt::MenuItem playlist_sort_items[] = {
 static const audqt::MenuItem playlist_context_items[] = {
     audqt::MenuCommand ({N_("Song Info ..."), "dialog-information", "Alt+I"}, action_playlist_track_info),
     audqt::MenuSep (),
+#if 0
     audqt::MenuCommand ({N_("Cut"), "edit-cut", "Ctrl+X"}, action_playlist_cut),
     audqt::MenuCommand ({N_("Copy"), "edit-copy", "Ctrl+C"}, action_playlist_copy),
     audqt::MenuCommand ({N_("Paste"), "edit-paste", "Ctrl+V"}, action_playlist_paste),
     audqt::MenuSep (),
+#endif
     audqt::MenuCommand ({N_("Queue/Unqueue"), nullptr, "Q"}, action_queue_toggle),
     audqt::MenuSep (),
     audqt::MenuSub ({N_("Services")}, get_plugin_menu_playlist)
