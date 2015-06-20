@@ -194,6 +194,12 @@ void PlaylistTabs::cancelRename ()
     }
 }
 
+void PlaylistTabs::playlist_activate_cb ()
+{
+    if (! aud_playlist_update_pending ())
+        setCurrentIndex (aud_playlist_get_active ());
+}
+
 void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)
 {
     if (global_level == Playlist::Structure)
@@ -206,6 +212,8 @@ void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)
         if (update.level)
             playlistWidget (list)->update (update);
     }
+
+    setCurrentIndex (aud_playlist_get_active ());
 }
 
 void PlaylistTabs::playlist_position_cb (int list)

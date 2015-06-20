@@ -61,9 +61,12 @@ private:
     void renameCurrent ();
     void cancelRename ();
 
+    void playlist_activate_cb ();
     void playlist_update_cb (Playlist::UpdateLevel global_level);
     void playlist_position_cb (int list);
 
+    const HookReceiver<PlaylistTabs>
+     activate_hook {"playlist activate", this, & PlaylistTabs::playlist_activate_cb};
     const HookReceiver<PlaylistTabs, Playlist::UpdateLevel>
      update_hook {"playlist update", this, & PlaylistTabs::playlist_update_cb};
     const HookReceiver<PlaylistTabs, int>
