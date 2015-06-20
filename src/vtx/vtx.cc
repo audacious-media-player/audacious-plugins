@@ -49,8 +49,10 @@ public:
     Tuple read_tuple(const char *filename, VFSFile &file);
     bool play(const char *filename, VFSFile &file);
 
+#ifdef USE_GTK
     bool file_info_box(const char *filename, VFSFile &file)
         { vtx_file_info(filename, file); return true; }
+#endif
 };
 
 EXPORT VTXPlugin aud_plugin_instance;

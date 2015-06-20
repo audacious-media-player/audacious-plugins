@@ -14,5 +14,9 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 LD = ${CXX}
 
 CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I../.. -I.
-LIBS += ${GTK_LIBS} ${GLIB_LIBS} -laudgui
+CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..
+
+ifeq ($(USE_GTK),yes)
+CPPFLAGS += ${GTK_CFLAGS}
+LIBS += ${GTK_LIBS} -laudgui
+endif

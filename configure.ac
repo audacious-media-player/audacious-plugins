@@ -63,7 +63,7 @@ fi
 dnl Default Set of Plugins
 dnl ======================
 
-INPUT_PLUGINS="tonegen metronom"
+INPUT_PLUGINS="metronom tonegen vtx"
 OUTPUT_PLUGINS=""
 EFFECT_PLUGINS="compressor crossfade crystalizer mixer silence-removal stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS=""
@@ -72,8 +72,10 @@ CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
 TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files playlist-manager search-tool statusicon"
+    EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files lyricwiki playlist-manager search-tool statusicon"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
+    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope cairo-spectrum"
 fi
 
 if test "x$USE_QT" = "xyes" ; then
@@ -207,7 +209,12 @@ AC_ARG_ENABLE(hotkey,
 )
 
 have_hotkey=no
-if test "x$enable_hotkey" != "xno"; then
+
+if test $enable_hotkey = yes -a $USE_GTK != yes ; then
+    AC_MSG_ERROR([--enable-hotkey cannot be used without --enable-gtk])
+fi
+
+if test $enable_hotkey != no -a $USE_GTK = yes ; then
     PKG_CHECK_MODULES(GDKX11, [gdk-x11-2.0],
         [have_hotkey="yes"
          GENERAL_PLUGINS="$GENERAL_PLUGINS hotkey"],
@@ -215,8 +222,6 @@ if test "x$enable_hotkey" != "xno"; then
             AC_MSG_ERROR([Cannot find gdk-x11-2.0 development files, but compilation of X11 Global Hotkey plugin has been explicitly requested; please install gdk-x11-2.0 dev files and run configure again])
          fi]
     )
-else
-    AC_MSG_RESULT([*** X11 Global Hotkey plugin disabled per user request ***])
 fi
 
 dnl *** Gnome Shortcuts Plugin
@@ -265,7 +270,12 @@ AC_ARG_ENABLE(songchange,
  [enable_songchange=$enableval], [enable_songchange=auto])
 
 have_songchange=no
-if test "x$enable_songchange" != "xno"; then
+
+if test $enable_songchange = yes -a $USE_GTK != yes ; then
+    AC_MSG_ERROR([--enable-songchange cannot be used without --enable-gtk])
+fi
+
+if test $enable_songchange != no -a $USE_GTK = yes ; then
     AC_CHECK_HEADERS([sys/wait.h],
         [have_songchange=yes
          GENERAL_PLUGINS="$GENERAL_PLUGINS song_change"],
@@ -284,7 +294,12 @@ AC_ARG_ENABLE(aosd,
 )
 
 have_aosd=no
-if test "x$enable_aosd" != "xno"; then
+
+if test $enable_aosd = yes -a $USE_GTK != yes ; then
+    AC_MSG_ERROR([--enable-aosd cannot be used without --enable-gtk])
+fi
+
+if test $enable_aosd != no -a $USE_GTK = yes ; then
     PKG_CHECK_MODULES(XRENDER, [xrender],
         [have_aosd=yes
          GENERAL_PLUGINS="$GENERAL_PLUGINS aosd"],
@@ -294,8 +309,6 @@ if test "x$enable_aosd" != "xno"; then
     if test "x$enable_aosd" = "xyes" -a "x$have_aosd" != "xyes"; then
         AC_MSG_ERROR([Compilation of OSD plugin has been explicitly requested; please install required dev files and run configure again])
     fi
-else
-    AC_MSG_RESULT([*** Audacious OSD plugin disabled per user request ***])
 fi
 
 AC_ARG_ENABLE(aosd_xcomp,
@@ -333,7 +346,12 @@ AC_ARG_ENABLE(notify,
  [enable_notify=$enableval], [enable_notify=auto])
 
 have_notify=no
-if test "x$enable_notify" != "xno"; then
+
+if test $enable_notify = yes -a $USE_GTK != yes ; then
+    AC_MSG_ERROR([--enable-notify cannot be used without --enable-gtk])
+fi
+
+if test $enable_notify != no -a $USE_GTK = yes ; then
     PKG_CHECK_MODULES(NOTIFY, [libnotify >= 0.7],
         [have_notify=yes
          GENERAL_PLUGINS="$GENERAL_PLUGINS notify"],
@@ -737,7 +755,12 @@ AC_ARG_ENABLE(scrobbler2,
  [enable_scrobbler2=$enableval], [enable_scrobbler2=auto])
 
 have_scrobbler2=no
-if test "x$enable_scrobbler2" != "xno"; then
+
+if test $enable_scrobbler2 = yes -a $USE_GTK != yes ; then
+    AC_MSG_ERROR([--enable-scrobbler2 cannot be used without --enable-gtk])
+fi
+
+if test $enable_scrobbler2 != no -a $USE_GTK = yes ; then
     PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
         [have_scrobbler2=yes
          AC_SUBST(CURL_CFLAGS)
@@ -809,11 +832,14 @@ dnl ==========
 AC_ARG_ENABLE(filewriter,
     [AS_HELP_STRING([--disable-filewriter], [disable FileWriter output plugin (default=enabled)])],
     [enable_filewriter=$enableval],
-    [enable_filewriter=yes]
+    [enable_filewriter=$USE_GTK]
 )
 
 have_filewriter=no
 if test "x$enable_filewriter" != "xno"; then
+    if test "x$USE_GTK" != "xyes"; then
+        AC_MSG_ERROR([--enable-filewriter cannot be used without --enable-gtk])
+    fi
     have_filewriter=yes
     OUTPUT_PLUGINS="$OUTPUT_PLUGINS filewriter"
 fi
@@ -943,24 +969,6 @@ if test "x$enable_soxr" != "xno"; then
     )
 fi
 
-dnl LyricWiki
-dnl =========
-
-AC_ARG_ENABLE(lyricwiki,
- [AS_HELP_STRING([--disable-lyricwiki], [disable LyricWiki plugin (default=enabled)])],
- [enable_lyricwiki=$enableval], [enable_lyricwiki=auto])
-
-have_lyricwiki=no
-if test "x$enable_lyricwiki" != "xno"; then
-    PKG_CHECK_MODULES(GLIB214, [glib-2.0 >= 2.14],
-        [have_lyricwiki=yes
-         GENERAL_PLUGINS="$GENERAL_PLUGINS lyricwiki"],
-        [if test "x$enable_lyricwiki" = "xyes"; then
-            AC_MSG_ERROR([Cannot find GLib development files (ver >= 2.14), but compilation of LyricWiki plugin has been explicitly requested; please install GLib dev files and run configure again])
-         fi]
-    )
-fi
-
 dnl OpenGL Spectrum Analyzer
 dnl ========================
 
@@ -970,7 +978,11 @@ AC_ARG_ENABLE(glspectrum,
 
 have_glspectrum=no
 
-if test $enable_glspectrum != no ; then
+if test $enable_glspectrum = yes -a $USE_GTK != yes ; then
+    AC_MSG_ERROR([--enable-glspectrum cannot be used without --enable-gtk])
+fi
+
+if test $enable_glspectrum != no -a $USE_GTK = yes ; then
     if test $HAVE_MSWINDOWS = yes ; then
         have_glspectrum=yes
         GL_LIBS="-lopengl32"
@@ -1001,61 +1013,34 @@ AC_ARG_ENABLE(qtglspectrum,
     [enable_qtglspectrum=auto])
 
 have_qtglspectrum=no
+
 if test "x$USE_QT" = "xno" -a "x$enable_qtglspectrum" = "xyes"; then
     AC_MSG_ERROR([--enable-qtglspectrum cannot be used without --enable-qt])
 fi
+
 if test "x$USE_QT" = "xyes" -a "x$enable_qtglspectrum" != "xno"; then
-    PKG_CHECK_MODULES(QTOPENGL, [Qt5OpenGL], [have_qtglspectrum=yes], [have_qtglspectrum=no])
+    if test $have_glspectrum = yes ; then
+        have_qtglspectrum=yes
+    elif test $HAVE_MSWINDOWS = yes ; then
+        have_qtglspectrum=yes
+        GL_LIBS="-lopengl32"
+    else
+        AC_CHECK_LIB(GL, glBegin, [have_qtglspectrum=yes], [have_qtglspectrum=no])
+        if test $have_qtglspectrum = yes ; then
+            GL_LIBS="-lGL"
+        fi
+    fi
+
+    if test "x$have_qtglspectrum" = "xyes"; then
+        PKG_CHECK_MODULES(QTOPENGL, [Qt5OpenGL], [have_qtglspectrum=yes], [have_qtglspectrum=no])
+    fi
+
     if test "x$have_qtglspectrum" = "xyes"; then
         QTOPENGL_CFLAGS="$QTOPENGL_CFLAGS -fPIC"
         VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS gl-spectrum-qt"
     elif test "x$enable_qtglspectrum" = "xyes"; then
-        AC_MSG_ERROR([Qt OpenGL Spectrum Analyzer plugin requested but QtOpenGL not found!])
+        AC_MSG_ERROR([Qt OpenGL Spectrum Analyzer could not be enabled; check config.log])
     fi
-fi
-
-dnl VTX Decoder
-dnl =============
-
-AC_ARG_ENABLE(vtx,
- [AS_HELP_STRING([--disable-vtx], [disable VTX Decoder])],
- [enable_vtx=$enableval], [enable_vtx="yes"])
-
-if test "x$enable_vtx" != "xno"; then
-    INPUT_PLUGINS="$INPUT_PLUGINS vtx"
-fi
-
-dnl LADSPA Host
-dnl =============
-
-AC_ARG_ENABLE(ladspa,
- [AS_HELP_STRING([--disable-ladspa], [disable LADSPA Host])],
- [enable_ladspa=$enableval], [enable_ladspa="yes"])
-
-if test "x$enable_ladspa" != "xno"; then
-    EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
-fi
-
-dnl Blur Scope
-dnl =============
-
-AC_ARG_ENABLE(blur_scope,
- [AS_HELP_STRING([--disable-blur-scope], [disable Blur Scope])],
- [enable_blur_scope=$enableval], [enable_blur_scope="yes"])
-
-if test "x$enable_blur_scope" != "xno"; then
-    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope"
-fi
-
-dnl Cairo Spectrum Analyzer
-dnl =============
-
-AC_ARG_ENABLE(cairo_spectrum,
- [AS_HELP_STRING([--disable-cairo-spectrum], [disable Cairo Spectrum Analyzer])],
- [enable_cairo_spectrum=$enableval], [enable_cairo_spectrum="yes"])
-
-if test "x$enable_cairo_spectrum" != "xno"; then
-    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS cairo-spectrum"
 fi
 
 dnl Mac Media Keys
@@ -1162,7 +1147,7 @@ echo "  Nintendo DS audio (xsf):                $enable_xsf"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
 echo "  Metronom:                               yes"
-echo "  VTX Decoder:                            $enable_vtx"
+echo "  VTX Decoder:                            yes"
 echo
 echo "  General"
 echo "  -------"
@@ -1181,7 +1166,7 @@ echo "  libnotify OSD:                          $have_notify"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  Scrobbler 2.0:                          $have_scrobbler2"
-echo "  LyricWiki viewer:                       $have_lyricwiki"
+echo "  LyricWiki viewer:                       $USE_GTK"
 echo "  Mac Media Keys:                         $enable_mac_media_keys"
 echo
 echo "  Effect"
@@ -1191,7 +1176,7 @@ echo "  Crystalizer:                            yes"
 echo "  Dynamic Range Compressor:               yes"
 echo "  Echo/Surround:                          yes"
 echo "  Extra Stereo:                           yes"
-echo "  LADSPA Host:                            $enable_ladspa"
+echo "  LADSPA Host:                            $USE_GTK"
 echo "  Voice Removal:                          yes"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
 echo "  Sample Rate Converter (resample):       $have_resample"
@@ -1201,8 +1186,8 @@ echo "  SoX Resampler:                          $have_soxr"
 echo
 echo "  Visualization"
 echo "  -------------"
-echo "  Blur Scope:                             $enable_blur_scope"
-echo "  Cairo Spectrum Analyzer:                $enable_cairo_spectrum"
+echo "  Blur Scope:                             $USE_GTK"
+echo "  Cairo Spectrum Analyzer:                $USE_GTK"
 echo "  GTK+ OpenGL Spectrum Analyzer:          $have_glspectrum"
 echo "  Qt OpenGL Spectrum Analyzer:            $have_qtglspectrum"
 echo

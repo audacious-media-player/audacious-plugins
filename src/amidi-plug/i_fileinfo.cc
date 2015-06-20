@@ -20,6 +20,8 @@
 
 #include "i_fileinfo.h"
 
+#ifdef USE_GTK
+
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
@@ -338,3 +340,5 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     gtk_widget_grab_focus (GTK_WIDGET (footer_bclose));
     gtk_widget_show_all (fileinfowin);
 }
+
+#endif // USE_GTK

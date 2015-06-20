@@ -20,6 +20,8 @@
 
 #include "i_configure-fluidsynth.h"
 
+#ifdef USE_GTK
+
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -273,3 +275,5 @@ void * create_soundfont_list (void)
 
         return soundfont_file_hbox;
 }
+
+#endif // USE_GTK
