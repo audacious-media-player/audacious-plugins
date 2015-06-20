@@ -48,6 +48,7 @@ void action_playlist_paste (void);
 
 void action_playlist_add_url(void);
 void action_playlist_add_files(void);
+void action_playlist_add_folder(void);
 
 void action_playlist_randomize_list(void);
 void action_playlist_reverse_list(void);

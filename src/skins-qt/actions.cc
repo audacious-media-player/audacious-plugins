@@ -67,6 +67,8 @@ void action_ab_set ()
 
 void action_play_file ()
     { audqt::fileopener_show (audqt::FileMode::Open); }
+void action_play_folder ()
+    { audqt::fileopener_show (audqt::FileMode::OpenFolder); }
 void action_play_location ()
     { /* TODO */ }
 
@@ -211,6 +213,8 @@ void action_playlist_add_url ()
     { /* TODO */ }
 void action_playlist_add_files ()
     { audqt::fileopener_show (audqt::FileMode::Add ); }
+void action_playlist_add_folder ()
+    { audqt::fileopener_show (audqt::FileMode::AddFolder ); }
 
 void action_playlist_randomize_list ()
     { aud_playlist_randomize (ACTIVE); }
