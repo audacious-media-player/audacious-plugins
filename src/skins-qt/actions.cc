@@ -99,7 +99,7 @@ void action_playlist_play ()
 
 void action_playlist_new ()
 {
-    int playlist = aud_playlist_count ();
+    int playlist = aud_playlist_get_active () + 1;
     aud_playlist_insert (playlist);
     aud_playlist_set_active (playlist);
 }

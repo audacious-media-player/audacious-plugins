@@ -282,7 +282,7 @@ void PlaylistsView::update_sel ()
     m_in_update ++;
     auto sel = selectionModel ();
     auto current = m_model.index (aud_playlist_get_active (), 0);
-    sel->setCurrentIndex (current, sel->SelectCurrent | sel->Rows);
+    sel->setCurrentIndex (current, sel->ClearAndSelect | sel->Rows);
     m_in_update --;
 }
 
