@@ -38,7 +38,8 @@ public:
     PlaylistTabs (QWidget * parent = nullptr);
     ~PlaylistTabs ();
 
-    PlaylistWidget * playlistWidget (int num);
+    PlaylistWidget * playlistWidget (int num)
+        { return (PlaylistWidget *) widget (num); }
 
     void editTab (int idx);
     void filterTrigger (const QString &text);
@@ -55,9 +56,8 @@ private:
     QLineEdit * getTabEdit (int idx);
     void setupTab (int idx, QWidget * button, const QString & text, QWidget * * oldp);
 
-    void populatePlaylists ();
-    void maybeCreateTab (int count_, int uniq_id);
-    void cullPlaylists ();
+    void addRemovePlaylists ();
+    void updateTitles ();
     void renameCurrent ();
     void cancelRename ();
 

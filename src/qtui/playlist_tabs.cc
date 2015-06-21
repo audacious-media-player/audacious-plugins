@@ -39,7 +39,8 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
     m_tabbar->setFocusPolicy (Qt::NoFocus);
     setTabBar (m_tabbar);
 
-    populatePlaylists ();
+    addRemovePlaylists ();
+    updateTitles ();
     setCurrentIndex (aud_playlist_get_active ());
 
     connect (this, &QTabWidget::currentChanged, this, &PlaylistTabs::currentChangedTrigger);
@@ -47,55 +48,71 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
 
 PlaylistTabs::~PlaylistTabs ()
 {
-    // TODO: cleanup playlists
-}
-
-void PlaylistTabs::maybeCreateTab (int count_, int uniq_id)
-{
-    int tabs = count ();
-
-    for (int i = 0; i < tabs; i++)
+    while (count ())
     {
-        PlaylistWidget * playlistWidget = (PlaylistWidget *) widget (i);
-        if (uniq_id == playlistWidget->uniqueId())
-            return;
-    }
-
-    auto playlistWidget = new PlaylistWidget (0, uniq_id);
-    addTab ((QWidget *) playlistWidget, QString (aud_playlist_get_title (count_)));
-}
-
-void PlaylistTabs::cullPlaylists ()
-{
-    int tabs = count ();
-
-    for (int i = 0; i < tabs; i++)
-    {
-         PlaylistWidget * playlistWidget = (PlaylistWidget *) widget (i);
-
-         if (playlistWidget == nullptr || playlistWidget->playlist() < 0)
-         {
-             removeTab(i);
-             delete playlistWidget;
-         }
-         else
-             setTabText(i, QString (aud_playlist_get_title (playlistWidget->playlist())));
+        auto widget = playlistWidget (0);
+        removeTab (0);
+        delete widget;
     }
 }
 
-void PlaylistTabs::populatePlaylists ()
+void PlaylistTabs::addRemovePlaylists ()
 {
+    int tabs = count ();
     int playlists = aud_playlist_count ();
 
-    for (int count = 0; count < playlists; count++)
-        maybeCreateTab(count, aud_playlist_get_unique_id (count));
+    for (int i = 0; i < tabs; i ++)
+    {
+        auto widget = playlistWidget (i);
+        int playlist = widget->playlist ();
 
-    cullPlaylists();
+        if (playlist < 0)
+        {
+            removeTab (i);
+            delete widget;
+            tabs --;
+            i --;
+        }
+        else if (playlist != i)
+        {
+            bool found = false;
+
+            for (int j = i + 1; j < tabs; j ++)
+            {
+                widget = playlistWidget (j);
+                playlist = widget->playlist ();
+
+                if (playlist == i)
+                {
+                    removeTab (j);
+                    insertTab (i, widget, QString ());
+                    found = true;
+                    break;
+                }
+            }
+
+            if (! found)
+            {
+                int id = aud_playlist_get_unique_id (i);
+                insertTab (i, new PlaylistWidget (0, id), QString ());
+                tabs ++;
+            }
+        }
+    }
+
+    while (tabs < playlists)
+    {
+        int id = aud_playlist_get_unique_id (tabs);
+        addTab (new PlaylistWidget (0, id), QString ());
+        tabs ++;
+    }
 }
 
-PlaylistWidget * PlaylistTabs::playlistWidget (int num)
+void PlaylistTabs::updateTitles ()
 {
-    return (PlaylistWidget *) widget (num);
+    int tabs = count ();
+    for (int i = 0; i < tabs; i ++)
+        setTabText (i, (const char *) aud_playlist_get_title (i));
 }
 
 void PlaylistTabs::filterTrigger (const QString &text)
@@ -203,7 +220,9 @@ void PlaylistTabs::playlist_activate_cb ()
 void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)
 {
     if (global_level == Playlist::Structure)
-        populatePlaylists ();
+        addRemovePlaylists ();
+    if (global_level >= Playlist::Metadata)
+        updateTitles ();
 
     int lists = aud_playlist_count ();
     for (int list = 0; list < lists; list ++)
