@@ -21,14 +21,18 @@
 #include <QFont>
 #include <QGuiApplication>
 #include <QHeaderView>
+#include <QIcon>
 #include <QMouseEvent>
+#include <QToolButton>
 #include <QTreeView>
+#include <QVBoxLayout>
 
 #define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
+#include <libaudqt/libaudqt.h>
 
 class PlaylistManagerQt : public GeneralPlugin
 {
@@ -286,7 +290,48 @@ void PlaylistsView::update_sel ()
     m_in_update --;
 }
 
+static QToolButton * new_tool_button (const char * text, const char * icon)
+{
+    auto button = new QToolButton;
+    button->setIcon (QIcon::fromTheme (icon));
+    button->setText (text);
+    button->setToolButtonStyle (Qt::ToolButtonTextBesideIcon);
+    return button;
+}
+
 void * PlaylistManagerQt::get_qt_widget ()
 {
-    return new PlaylistsView;
+    auto widget = new QWidget;
+    auto vbox = new QVBoxLayout (widget);
+    vbox->setContentsMargins (0, 0, 0, 0);
+
+    auto view = new PlaylistsView;
+    vbox->addWidget (view, 1);
+
+    auto hbox = new QHBoxLayout;
+    vbox->addLayout (hbox);
+
+    auto new_button = new_tool_button (_("New"), "document-new");
+    QObject::connect (new_button, & QToolButton::clicked, [] () {
+        int playlist = aud_playlist_get_active () + 1;
+        aud_playlist_insert (playlist);
+        aud_playlist_set_active (playlist);
+    });
+
+    auto rename_button = new_tool_button (_("Rename"), "insert-text");
+    QObject::connect (rename_button, & QToolButton::clicked, [] () {
+        audqt::playlist_show_rename (aud_playlist_get_active ());
+    });
+
+    auto remove_button = new_tool_button (_("Remove"), "edit-delete");
+    QObject::connect (remove_button, & QToolButton::clicked, [] () {
+        audqt::playlist_confirm_delete (aud_playlist_get_active ());
+    });
+
+    hbox->addWidget (new_button);
+    hbox->addWidget (rename_button);
+    hbox->addStretch (1);
+    hbox->addWidget (remove_button);
+
+    return widget;
 }
