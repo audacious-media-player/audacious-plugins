@@ -68,6 +68,16 @@ protected:
     int rowCount (const QModelIndex & parent) const { return m_rows; }
     int columnCount (const QModelIndex & parent) const { return NColumns; }
 
+    Qt::DropActions supportedDropActions () const { return Qt::MoveAction; }
+
+    Qt::ItemFlags flags (const QModelIndex & index) const
+    {
+        if (index.isValid ())
+            return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+        else
+            return Qt::ItemIsSelectable | Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
+    }
+
     QVariant data (const QModelIndex & index, int role) const;
     QVariant headerData (int section, Qt::Orientation orientation, int role) const;
 
@@ -90,6 +100,7 @@ public:
 protected:
     void currentChanged (const QModelIndex & current, const QModelIndex & previous);
     void mouseDoubleClickEvent (QMouseEvent * event);
+    void dropEvent (QDropEvent * event);
 
 private:
     PlaylistsModel m_model;
@@ -216,6 +227,7 @@ PlaylistsView::PlaylistsView ()
     hdr->setSectionResizeMode (PlaylistsModel::ColumnEntries, QHeaderView::Interactive);
     hdr->resizeSection (PlaylistsModel::ColumnEntries, 64);
 
+    setDragDropMode (InternalMove);
     setIndentation (0);
 }
 
@@ -230,6 +242,28 @@ void PlaylistsView::mouseDoubleClickEvent (QMouseEvent * event)
 {
     if (event->button () == Qt::LeftButton)
         aud_playlist_play (currentIndex ().row ());
+}
+
+void PlaylistsView::dropEvent (QDropEvent * event)
+{
+    if (event->source () != this || event->proposedAction () != Qt::MoveAction)
+        return;
+
+    int from = currentIndex ().row ();
+    if (from < 0)
+        return;
+
+    int to;
+    switch (dropIndicatorPosition ())
+    {
+        case AboveItem: to = indexAt (event->pos ()).row (); break;
+        case BelowItem: to = indexAt (event->pos ()).row () + 1; break;
+        case OnViewport: to = aud_playlist_count (); break;
+        default: return;
+    }
+
+    aud_playlist_reorder (from, (to > from) ? to - 1 : to, 1);
+    event->acceptProposedAction ();
 }
 
 void PlaylistsView::update (Playlist::UpdateLevel level)
