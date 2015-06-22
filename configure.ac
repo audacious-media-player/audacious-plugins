@@ -79,7 +79,7 @@ if test "x$USE_GTK" = "xyes" ; then
 fi
 
 if test "x$USE_QT" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt song-info-qt"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt song-info-qt"
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
 fi
 
@@ -1153,12 +1153,15 @@ echo "  General"
 echo "  -------"
 echo "  Alarm:                                  $USE_GTK"
 echo "  Album Art:                              $USE_GTK"
+echo "  Album Art (Qt):                         $USE_QT"
 echo "  Delete from Filesystem:                 $USE_GTK"
 echo "  Linux Infrared Remote Control (LIRC)    $have_lirc"
 echo "  MPRIS 2 Server:                         $have_mpris2"
 echo "  Playlist Manager:                       $USE_GTK"
+echo "  Playlist Manager (Qt):                  $USE_QT"
 echo "  Search Tool:                            $USE_GTK"
 echo "  Song Change:                            $have_songchange"
+echo "  Song Info (Qt):                         $USE_QT"
 echo "  Status Icon:                            $USE_GTK"
 echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
@@ -1167,6 +1170,7 @@ echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  Scrobbler 2.0:                          $have_scrobbler2"
 echo "  LyricWiki viewer:                       $USE_GTK"
+echo "  LyricWiki viewer (Qt):                  $USE_QT"
 echo "  Mac Media Keys:                         $enable_mac_media_keys"
 echo
 echo "  Effect"
