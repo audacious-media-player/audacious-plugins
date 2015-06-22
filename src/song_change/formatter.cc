@@ -22,57 +22,20 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#include <glib.h>
+#include <assert.h>
 #include <string.h>
 #include "formatter.h"
 
-Formatter *
-formatter_new(void)
-{
-    Formatter *formatter = g_slice_new0(Formatter);
-
-    formatter_associate(formatter, '%', "%");
-    return formatter;
-}
-
-void
-formatter_destroy(Formatter * formatter)
-{
-    int i;
-
-    for (i = 0; i < 256; i++)
-        if (formatter->values[i])
-            g_free(formatter->values[i]);
-
-    g_slice_free(Formatter, formatter);
-}
-
-void
-formatter_associate(Formatter * formatter, const unsigned char id, const char *value)
-{
-    formatter_dissociate(formatter, id);
-    formatter->values[id] = g_strdup(value);
-}
-
-void
-formatter_dissociate(Formatter * formatter, const unsigned char id)
-{
-    if (formatter->values[id])
-        g_free(formatter->values[id]);
-    formatter->values[id] = 0;
-}
-
-char *
-formatter_format(Formatter * formatter, const char *format)
+StringBuf Formatter::format (const char * format) const
 {
     const char *p;
-    char *q, *buffer;
+    char *q;
     int len;
 
-    for (p = format, len = 0; *p; p++)
+    for (p = format, len = 0; *p; p++) {
         if (*p == '%') {
-            if (formatter->values[(int) *++p])
-                len += strlen(formatter->values[(int) *p]);
+            if (values[(int) *++p])
+                len += strlen(values[(int) *p]);
             else if (!*p) {
                 len += 1;
                 p--;
@@ -82,11 +45,14 @@ formatter_format(Formatter * formatter, const char *format)
         }
         else
             len++;
-    buffer = g_new(char, len + 1);
-    for (p = format, q = buffer; *p; p++)
+    }
+
+    StringBuf buffer (len);
+
+    for (p = format, q = buffer; *p; p++) {
         if (*p == '%') {
-            if (formatter->values[(int) *++p]) {
-                g_strlcpy(q, formatter->values[(int) *p], len - 1);
+            if (values[(int) *++p]) {
+                strcpy(q, values[(int) *p]);
                 q += strlen(q);
             }
             else {
@@ -99,6 +65,10 @@ formatter_format(Formatter * formatter, const char *format)
         }
         else
             *q++ = *p;
-    *q = 0;
+    }
+
+    // sanity check
+    assert (q == buffer + buffer.len ());
+
     return buffer;
 }

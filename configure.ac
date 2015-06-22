@@ -271,11 +271,7 @@ AC_ARG_ENABLE(songchange,
 
 have_songchange=no
 
-if test $enable_songchange = yes -a $USE_GTK != yes ; then
-    AC_MSG_ERROR([--enable-songchange cannot be used without --enable-gtk])
-fi
-
-if test $enable_songchange != no -a $USE_GTK = yes ; then
+if test $enable_songchange != no ; then
     AC_CHECK_HEADERS([sys/wait.h],
         [have_songchange=yes
          GENERAL_PLUGINS="$GENERAL_PLUGINS song_change"],
