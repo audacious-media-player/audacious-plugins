@@ -143,15 +143,15 @@ MainWindow::MainWindow () :
 
 MainWindow::~MainWindow ()
 {
+    QSettings settings ("audacious", "QtUi");
+    settings.setValue ("geometry", saveGeometry());
+    settings.setValue ("windowState", saveState());
+
     remove_dock_plugins ();
 }
 
 void MainWindow::closeEvent (QCloseEvent * e)
 {
-    QSettings settings ("audacious", "QtUi");
-    settings.setValue ("geometry", saveGeometry());
-    settings.setValue ("windowState", saveState());
-
     aud_quit ();
     e->ignore ();
 }
