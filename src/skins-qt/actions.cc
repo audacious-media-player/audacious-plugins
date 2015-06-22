@@ -74,7 +74,7 @@ void action_play_location ()
 
 void action_playlist_manager ()
 {
-    PluginHandle * manager = aud_plugin_lookup_basename ("playlist-manager");
+    PluginHandle * manager = aud_plugin_lookup_basename ("playlist-manager-qt");
     if (manager)
     {
         aud_plugin_enable (manager, true);

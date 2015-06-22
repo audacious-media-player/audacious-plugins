@@ -99,8 +99,8 @@ static const audqt::MenuItem playlist_items[] = {
     audqt::MenuCommand ({N_("Import Playlist ..."), "document-open", "O"}, audgui_import_playlist),
     audqt::MenuCommand ({N_("Export Playlist ..."), "document-save", "Shift+S"}, audgui_export_playlist),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Playlist Manager ..."), "audio-x-generic", "P"}, action_playlist_manager),
 #endif
+    audqt::MenuCommand ({N_("Playlist Manager ..."), "audio-x-generic", "P"}, action_playlist_manager),
     audqt::MenuCommand ({N_("Queue Manager ..."), nullptr, "Ctrl+U"}, audqt::queue_manager_show),
     audqt::MenuSep (),
     audqt::MenuCommand ({N_("Refresh Playlist"), "view-refresh", "F5"}, action_playlist_refresh_list)
