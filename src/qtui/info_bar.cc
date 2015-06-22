@@ -162,6 +162,8 @@ InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
     f = m_album_text->font ();
     f.setPointSize (9);
     m_album_text->setFont (f);
+
+    update_metadata_cb ();
 }
 
 QSize InfoBar::minimumSizeHint () const

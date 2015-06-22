@@ -47,6 +47,10 @@ private:
 };
 
 class AlbumArtItem : public QGraphicsPixmapItem {
+public:
+    AlbumArtItem ()
+        { update_cb (); }
+
 private:
     void update_cb ();
 
