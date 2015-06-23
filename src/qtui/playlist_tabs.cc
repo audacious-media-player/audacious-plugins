@@ -46,16 +46,6 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
     connect (this, &QTabWidget::currentChanged, this, &PlaylistTabs::currentChangedTrigger);
 }
 
-PlaylistTabs::~PlaylistTabs ()
-{
-    while (count ())
-    {
-        auto widget = playlistWidget (0);
-        removeTab (0);
-        delete widget;
-    }
-}
-
 void PlaylistTabs::addRemovePlaylists ()
 {
     int tabs = count ();
