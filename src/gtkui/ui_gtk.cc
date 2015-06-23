@@ -263,12 +263,12 @@ static void set_time_label (int time, int len)
 {
     char s[128] = "<b>";
 
-    if (len && aud_get_bool ("gtkui", "show_remaining_time"))
+    if (len > 0 && aud_get_bool ("gtkui", "show_remaining_time"))
         append_str (s, sizeof s, str_format_time (len - time));
     else
         append_str (s, sizeof s, str_format_time (time));
 
-    if (len)
+    if (len > 0)
     {
         append_str (s, sizeof s, " / ");
         append_str (s, sizeof s, str_format_time (len));
