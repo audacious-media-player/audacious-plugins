@@ -147,6 +147,9 @@ int PlaylistModel::uniqueId () const
 
 bool PlaylistModel::insertRows (int row, int count, const QModelIndex & parent)
 {
+    if (count < 1)
+        return true;
+
     int last = row + count - 1;
     beginInsertRows (parent, row, last);
     m_rows = aud_playlist_entry_count (playlist ());
@@ -156,6 +159,9 @@ bool PlaylistModel::insertRows (int row, int count, const QModelIndex & parent)
 
 bool PlaylistModel::removeRows (int row, int count, const QModelIndex & parent)
 {
+    if (count < 1)
+        return true;
+
     int last = row + count - 1;
     beginRemoveRows (parent, row, last);
     m_rows = aud_playlist_entry_count (playlist ());
@@ -165,6 +171,9 @@ bool PlaylistModel::removeRows (int row, int count, const QModelIndex & parent)
 
 void PlaylistModel::updateRows (int row, int count)
 {
+    if (count < 1)
+        return;
+
     int bottom = row + count - 1;
     auto topLeft = createIndex (row, 0);
     auto bottomRight = createIndex (bottom, columnCount () - 1);

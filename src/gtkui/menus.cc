@@ -80,8 +80,9 @@ static void pl_random_selected () { aud_playlist_randomize_selected (aud_playlis
 
 static void pl_new ()
 {
-    aud_playlist_insert (-1);
-    aud_playlist_set_active (aud_playlist_count () - 1);
+    int playlist = aud_playlist_get_active () + 1;
+    aud_playlist_insert (playlist);
+    aud_playlist_set_active (playlist);
 }
 
 static void pl_play () { aud_playlist_play (aud_playlist_get_active ()); }

@@ -1,6 +1,8 @@
 #include "ayemu.h"
 #include "vtx.h"
 
+#ifdef USE_GTK
+
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
@@ -36,3 +38,5 @@ void vtx_file_info(const char *filename, VFSFile &file)
       audgui_simple_message (& box, GTK_MESSAGE_INFO, head, body);
     }
 }
+
+#endif // USE_GTK

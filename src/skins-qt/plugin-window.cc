@@ -23,7 +23,9 @@
 
 #include "plugin-window.h"
 
-#include <glib.h>
+#include <QVBoxLayout>
+#include <QWidget>
+#include <QWindow>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/interface.h>
@@ -35,99 +37,118 @@
 #include "main.h"
 #include "window.h"
 
-static GList * windows;
-
-#if 0
-static gboolean delete_cb (GtkWidget * window, GdkEvent * event, PluginHandle * plugin)
+class PluginWindow : public QWidget
 {
-    aud_plugin_enable (plugin, false);
-    return true;
-}
-
-static gboolean escape_cb (GtkWidget * widget, GdkEventKey * event, PluginHandle * plugin)
-{
-    if (event->keyval != GDK_KEY_Escape)
-        return false;
-
-    aud_plugin_enable (plugin, false);
-    return true;
-}
-
-static void add_dock_plugin (PluginHandle * plugin, void * unused)
-{
-    GtkWidget * widget = (GtkWidget *) aud_plugin_get_gtk_widget (plugin);
-
-    if (widget)
+public:
+    PluginWindow (PluginHandle * plugin, QWidget * widget) :
+        m_plugin (plugin),
+        m_widget (widget)
     {
-        GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_title ((GtkWindow *) window, aud_plugin_get_name (plugin));
-        gtk_window_set_transient_for ((GtkWindow *) window, (GtkWindow *) mainwin->gtk ());
-        gtk_container_set_border_width ((GtkContainer *) window, 2);
-        gtk_container_add ((GtkContainer *) window, widget);
-
-        g_object_set_data ((GObject *) window, "skins-plugin-id", plugin);
-        g_signal_connect (window, "delete-event", (GCallback) delete_cb, plugin);
-        g_signal_connect (widget, "key-press-event", (GCallback) escape_cb, plugin);
-
-        windows = g_list_prepend (windows, window);
+        setWindowFlags (Qt::Dialog);
+        setWindowTitle (aud_plugin_get_name (plugin));
 
         const char * basename = aud_plugin_get_basename (plugin);
         String pos_str = aud_get_str ("skins-layout", basename);
         int pos[4];
 
-        if (pos_str && str_to_int_array (pos_str, pos, aud::n_elems (pos)))
+        if (pos_str && str_to_int_array (pos_str, pos, 4))
         {
-            gtk_window_set_default_size ((GtkWindow *) window, pos[2], pos[3]);
-            gtk_window_move ((GtkWindow *) window, pos[0], pos[1]);
+            move (pos[0], pos[1]);
+            resize (pos[2], pos[3]);
         }
         else
+            resize (320, 240);
+
+        auto vbox = new QVBoxLayout (this);
+        vbox->setContentsMargins (2, 2, 2, 2);
+        vbox->addWidget (widget);
+    }
+
+    PluginHandle * plugin () const { return m_plugin; }
+    QWidget * widget () const { return m_widget; }
+
+    void show ()
+    {
+        winId ();
+        windowHandle ()->setTransientParent (mainwin->windowHandle ());
+        QWidget::show ();
+    }
+
+    void save_size ()
+    {
+        if (! isVisible ())
+            return;
+
+        const char * basename = aud_plugin_get_basename (m_plugin);
+        int pos[4] = {x (), y (), width (), height ()};
+        aud_set_str ("skins-layout", basename, int_array_to_str (pos, 4));
+    }
+
+protected:
+    void closeEvent (QCloseEvent * event)
+    {
+        aud_plugin_enable (m_plugin, false);
+        event->ignore ();
+    }
+
+    void keyPressEvent (QKeyEvent * event)
+    {
+        if (event->key () == Qt::Key_Escape)
         {
-            int dpi = audgui_get_dpi ();
-            gtk_window_set_default_size ((GtkWindow *) window, 3 * dpi, 2 * dpi);
+            aud_plugin_enable (m_plugin, false);
+            event->accept ();
         }
+    }
+
+private:
+    PluginHandle * m_plugin;
+    QWidget * m_widget;
+};
+
+static Index<PluginWindow *> windows;
+
+static void add_dock_plugin (PluginHandle * plugin, void *)
+{
+    auto widget = (QWidget *) aud_plugin_get_qt_widget (plugin);
+
+    if (widget)
+    {
+        auto window = new PluginWindow (plugin, widget);
+        windows.append (window);
 
         if (aud_ui_is_shown ())
-            gtk_widget_show_all (window);
+            window->show ();
     }
 }
 
-static void save_window_size (GtkWidget * window)
+static int find_dock_plugin (PluginHandle * plugin)
 {
-    auto plugin = (PluginHandle *) g_object_get_data ((GObject *) window, "skins-plugin-id");
+    int count = windows.len ();
+    for (int i = 0; i < count; i ++)
+    {
+        if (windows[i]->plugin () == plugin)
+            return i;
+    }
 
-    if (! plugin || ! gtk_widget_get_visible (window))
-        return;
-
-    int pos[4];
-    gtk_window_get_position ((GtkWindow *) window, & pos[0], & pos[1]);
-    gtk_window_get_size ((GtkWindow *) window, & pos[2], & pos[3]);
-
-    const char * basename = aud_plugin_get_basename (plugin);
-    StringBuf pos_str = int_array_to_str (pos, aud::n_elems (pos));
-    aud_set_str ("skins-layout", basename, pos_str);
-}
-
-static int find_cb (GtkWidget * window, PluginHandle * plugin)
-{
-    return (g_object_get_data ((GObject *) window, "skins-plugin-id") != plugin);
+    return -1;
 }
 
 static void remove_dock_plugin (PluginHandle * plugin, void * unused)
 {
-    GList * node = g_list_find_custom (windows, plugin, (GCompareFunc) find_cb);
+    int idx = find_dock_plugin (plugin);
+    if (idx < 0)
+        return;
 
-    if (node)
-    {
-        save_window_size ((GtkWidget *) node->data);
-        gtk_widget_destroy ((GtkWidget *) node->data);
-        windows = g_list_delete_link (windows, node);
-    }
+    auto window = windows[idx];
+    windows.remove (idx, 1);
+
+    window->save_size ();
+    delete window->widget ();
+    window->deleteLater ();
 }
-#endif
 
-void create_plugin_windows (void)
+void create_plugin_windows ()
 {
-#if 0
     for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
@@ -142,38 +163,34 @@ void create_plugin_windows (void)
 
     hook_associate ("dock plugin enabled", (HookFunction) add_dock_plugin, nullptr);
     hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin, nullptr);
-#endif
 }
 
-void show_plugin_windows (void)
+void show_plugin_windows ()
 {
-#if 0
-    g_list_foreach (windows, (GFunc) gtk_widget_show_all, nullptr);
-#endif
+    for (auto window : windows)
+        window->show ();
 }
 
 void focus_plugin_window (PluginHandle * plugin)
 {
-#if 0
-    GList * node = g_list_find_custom (windows, plugin, (GCompareFunc) find_cb);
-    if (node)
-        gtk_window_present ((GtkWindow *) node->data);
+    int idx = find_dock_plugin (plugin);
+    if (idx >= 0)
+        windows[idx]->activateWindow ();
 
     aud_plugin_send_message (plugin, "grab focus", nullptr, 0);
-#endif
 }
 
-void hide_plugin_windows (void)
+void hide_plugin_windows ()
 {
-#if 0
-    g_list_foreach (windows, (GFunc) save_window_size, nullptr);
-    g_list_foreach (windows, (GFunc) gtk_widget_hide, nullptr);
-#endif
+    for (auto window : windows)
+    {
+        window->save_size ();
+        window->hide ();
+    }
 }
 
-void destroy_plugin_windows (void)
+void destroy_plugin_windows ()
 {
-#if 0
     for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
@@ -188,7 +205,4 @@ void destroy_plugin_windows (void)
 
     hook_dissociate ("dock plugin enabled", (HookFunction) add_dock_plugin);
     hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin);
-#endif
-
-    g_warn_if_fail (! windows);
 }

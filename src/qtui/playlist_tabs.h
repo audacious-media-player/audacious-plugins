@@ -38,7 +38,8 @@ public:
     PlaylistTabs (QWidget * parent = nullptr);
     ~PlaylistTabs ();
 
-    PlaylistWidget * playlistWidget (int num);
+    PlaylistWidget * playlistWidget (int num)
+        { return (PlaylistWidget *) widget (num); }
 
     void editTab (int idx);
     void filterTrigger (const QString &text);
@@ -55,18 +56,23 @@ private:
     QLineEdit * getTabEdit (int idx);
     void setupTab (int idx, QWidget * button, const QString & text, QWidget * * oldp);
 
-    void populatePlaylists ();
-    void maybeCreateTab (int count_, int uniq_id);
-    void cullPlaylists ();
+    void addRemovePlaylists ();
+    void updateTitles ();
+    void renameCurrent ();
     void cancelRename ();
 
+    void playlist_activate_cb ();
     void playlist_update_cb (Playlist::UpdateLevel global_level);
     void playlist_position_cb (int list);
 
+    const HookReceiver<PlaylistTabs>
+     activate_hook {"playlist activate", this, & PlaylistTabs::playlist_activate_cb};
     const HookReceiver<PlaylistTabs, Playlist::UpdateLevel>
      update_hook {"playlist update", this, & PlaylistTabs::playlist_update_cb};
     const HookReceiver<PlaylistTabs, int>
      position_hook {"playlist position", this, & PlaylistTabs::playlist_position_cb};
+    const HookReceiver<PlaylistTabs>
+     rename_hook {"qtui rename playlist", this, & PlaylistTabs::renameCurrent};
 };
 
 class PlaylistTabBar : public QTabBar

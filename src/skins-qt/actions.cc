@@ -67,12 +67,14 @@ void action_ab_set ()
 
 void action_play_file ()
     { audqt::fileopener_show (audqt::FileMode::Open); }
+void action_play_folder ()
+    { audqt::fileopener_show (audqt::FileMode::OpenFolder); }
 void action_play_location ()
     { /* TODO */ }
 
 void action_playlist_manager ()
 {
-    PluginHandle * manager = aud_plugin_lookup_basename ("playlist-manager");
+    PluginHandle * manager = aud_plugin_lookup_basename ("playlist-manager-qt");
     if (manager)
     {
         aud_plugin_enable (manager, true);
@@ -97,7 +99,7 @@ void action_playlist_play ()
 
 void action_playlist_new ()
 {
-    int playlist = aud_playlist_count ();
+    int playlist = aud_playlist_get_active () + 1;
     aud_playlist_insert (playlist);
     aud_playlist_set_active (playlist);
 }
@@ -126,7 +128,7 @@ void action_playlist_next ()
 }
 
 void action_playlist_rename ()
-    { /* TODO */ }
+    { audqt::playlist_show_rename (ACTIVE); }
 void action_playlist_delete ()
     { audqt::playlist_confirm_delete (ACTIVE); }
 
@@ -211,6 +213,8 @@ void action_playlist_add_url ()
     { /* TODO */ }
 void action_playlist_add_files ()
     { audqt::fileopener_show (audqt::FileMode::Add ); }
+void action_playlist_add_folder ()
+    { audqt::fileopener_show (audqt::FileMode::AddFolder ); }
 
 void action_playlist_randomize_list ()
     { aud_playlist_randomize (ACTIVE); }

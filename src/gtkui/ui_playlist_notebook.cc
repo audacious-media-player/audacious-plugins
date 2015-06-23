@@ -87,8 +87,9 @@ static void size_allocate_cb (GtkWidget * treeview)
 
 static void add_button_cb (GtkButton * button)
 {
-    aud_playlist_insert (-1);
-    aud_playlist_set_active (aud_playlist_count () - 1);
+    int playlist = aud_playlist_get_active () + 1;
+    aud_playlist_insert (playlist);
+    aud_playlist_set_active (playlist);
 }
 
 static void make_add_button (GtkWidget * notebook)

@@ -23,6 +23,7 @@
 void action_ab_clear(void);
 void action_ab_set(void);
 void action_play_file(void);
+void action_play_folder(void);
 void action_play_location(void);
 void action_playlist_manager(void);
 void action_search_tool(void);

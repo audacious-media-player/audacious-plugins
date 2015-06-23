@@ -564,14 +564,15 @@ static void action_play ()
 
 static void action_create_playlist ()
 {
-    aud_playlist_insert (-1);
-    aud_playlist_set_active (aud_playlist_count () - 1);
+    int playlist = aud_playlist_get_active () + 1;
+    aud_playlist_insert (playlist);
+    aud_playlist_set_active (playlist);
 
     String title;
     do_add (false, title);
 
     if (title)
-        aud_playlist_set_title (aud_playlist_count () - 1, title);
+        aud_playlist_set_title (playlist, title);
 }
 
 static void action_add_to_playlist ()

@@ -34,8 +34,7 @@
 class FilterInput;
 class PlaylistTabs;
 class PluginHandle;
-
-struct DockWidget;
+class PluginWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -77,6 +76,7 @@ private:
     void playback_stop_cb ();
     void update_toggles_cb ();
 
+    PluginWidget * find_dock_plugin (PluginHandle * plugin);
     void add_dock_plugin_cb (PluginHandle * plugin);
     void remove_dock_plugin_cb (PluginHandle * plugin);
 
@@ -96,7 +96,7 @@ private:
      plugin_hook1 {"dock plugin enabled", this, & MainWindow::add_dock_plugin_cb},
      plugin_hook2 {"dock plugin disabled", this, & MainWindow::remove_dock_plugin_cb};
 
-    Index<DockWidget> dock_widgets;
+    Index<PluginWidget *> dock_widgets;
     int playing_id = -1;
 };
 

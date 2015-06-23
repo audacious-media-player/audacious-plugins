@@ -2,14 +2,13 @@
  * Audacious: A cross-platform multimedia player.
  * Copyright (c) 2005  Audacious Team
  */
-#include <glib.h>
-#include <gtk/gtk.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
 #include <signal.h>
 #include <unistd.h>
 
+#include <assert.h>
 #include <string.h>
 
 #include <libaudcore/runtime.h>
@@ -54,26 +53,24 @@ static String cmd_line_after;
 static String cmd_line_end;
 static String cmd_line_ttc;
 
-static GtkWidget *cmd_warn_label, *cmd_warn_img;
-
 /**
  * Escapes characters that are special to the shell inside double quotes.
  *
  * @param string String to be escaped.
  * @return Given string with special characters escaped. Must be freed with g_free().
  */
-static char *escape_shell_chars(const char * string)
+static StringBuf escape_shell_chars (const char * string)
 {
     const char *special = "$`\"\\";    /* Characters to escape */
     const char *in = string;
-    char *out, *escaped;
+    char *out;
     int num = 0;
 
     while (*in != '\0')
         if (strchr(special, *in++))
             num++;
 
-    escaped = g_new(char, strlen(string) + num + 1);
+    StringBuf escaped (strlen (string) + num);
 
     in = string;
     out = escaped;
@@ -83,7 +80,9 @@ static char *escape_shell_chars(const char * string)
             *out++ = '\\';
         *out++ = *in++;
     }
-    *out = '\0';
+
+    // sanity check
+    assert (out == escaped + escaped.len ());
 
     return escaped;
 }
@@ -127,15 +126,10 @@ static void execute_command(char *cmd)
    @cmd: command to run */
 static void do_command (const char * cmd)
 {
-    char *shstring = nullptr, *temp;
-    gboolean playing;
-    Formatter *formatter;
-
     if (cmd && strlen(cmd) > 0)
     {
-        formatter = formatter_new();
-
-        playing = aud_drct_get_ready();
+        Formatter formatter;
+        bool playing = aud_drct_get_ready ();
 
         Tuple tuple;
         if (playing)
@@ -144,79 +138,68 @@ static void do_command (const char * cmd)
         String ctitle = tuple.get_str (Tuple::FormattedTitle);
         if (ctitle)
         {
-            temp = escape_shell_chars (ctitle);
-            formatter_associate(formatter, 's', temp);
-            formatter_associate(formatter, 'n', temp);
-            g_free(temp);
+            StringBuf temp = escape_shell_chars (ctitle);
+            formatter.set ('s', temp);
+            formatter.set ('n', temp);
         }
         else
         {
-            formatter_associate(formatter, 's', "");
-            formatter_associate(formatter, 'n', "");
+            formatter.set ('s', "");
+            formatter.set ('n', "");
         }
 
         String filename = aud_drct_get_filename ();
         if (filename)
-        {
-            temp = escape_shell_chars (filename);
-            formatter_associate(formatter, 'f', temp);
-            g_free(temp);
-        }
+            formatter.set ('f', escape_shell_chars (filename));
         else
-            formatter_associate(formatter, 'f', "");
+            formatter.set ('f', "");
 
         if (playing)
         {
             int pos = aud_drct_get_position ();
-            formatter_associate (formatter, 't', str_printf ("%02d", pos + 1));
+            formatter.set ('t', str_printf ("%02d", pos + 1));
         }
         else
-            formatter_associate (formatter, 't', "");
+            formatter.set ('t', "");
 
         int length = tuple.get_int (Tuple::Length);
         if (length > 0)
-            formatter_associate(formatter, 'l', int_to_str (length));
+            formatter.set ('l', int_to_str (length));
         else
-            formatter_associate(formatter, 'l', "0");
+            formatter.set ('l', "0");
 
-        formatter_associate(formatter, 'p', int_to_str (playing));
+        formatter.set ('p', int_to_str (playing));
 
         if (playing)
         {
             int brate, srate, chans;
             aud_drct_get_info (brate, srate, chans);
-            formatter_associate (formatter, 'r', int_to_str (brate));
-            formatter_associate (formatter, 'F', int_to_str (srate));
-            formatter_associate (formatter, 'c', int_to_str (chans));
+            formatter.set ('r', int_to_str (brate));
+            formatter.set ('F', int_to_str (srate));
+            formatter.set ('c', int_to_str (chans));
         }
 
         String artist = tuple.get_str (Tuple::Artist);
         if (artist)
-            formatter_associate(formatter, 'a', artist);
+            formatter.set ('a', artist);
         else
-            formatter_associate(formatter, 'a', "");
+            formatter.set ('a', "");
 
         String album = tuple.get_str (Tuple::Album);
         if (album)
-            formatter_associate(formatter, 'b', album);
+            formatter.set ('b', album);
         else
-            formatter_associate(formatter, 'b', "");
+            formatter.set ('b', "");
 
         String title = tuple.get_str (Tuple::Title);
         if (title)
-            formatter_associate(formatter, 'T', title);
+            formatter.set ('T', title);
         else
-            formatter_associate(formatter, 'T', "");
+            formatter.set ('T', "");
 
-        shstring = formatter_format(formatter, cmd);
-        formatter_destroy(formatter);
-
+        StringBuf shstring = formatter.format (cmd);
         if (shstring)
-        {
             execute_command(shstring);
-            /* FIXME: This can possibly be freed too early */
-            g_free(shstring);
-        }
     }
 }
 
@@ -243,22 +226,6 @@ void SongChange::cleanup ()
     signal(SIGCHLD, SIG_DFL);
 }
 
-static int check_command(const char *command)
-{
-    const char *dangerous = "fns";
-    const char *c;
-    int qu = 0;
-
-    for (c = command; *c != '\0'; c++)
-    {
-        if (*c == '"' && (c == command || *(c - 1) != '\\'))
-            qu = !qu;
-        else if (*c == '%' && !qu && strchr(dangerous, *(c + 1)))
-            return -1;
-    }
-    return 0;
-}
-
 bool SongChange::init ()
 {
     read_config();
@@ -268,7 +235,7 @@ bool SongChange::init ()
     hook_associate("playlist end reached", songchange_playlist_eof, nullptr);
     hook_associate("title change", songchange_playback_ttc, nullptr);
 
-    return TRUE;
+    return true;
 }
 
 static void songchange_playback_begin(void *, void *)
@@ -300,21 +267,6 @@ typedef struct {
 
 static SongChangeConfig config;
 
-static void edit_cb()
-{
-    if (check_command(config.cmd) < 0 || check_command(config.cmd_after) < 0 ||
-     check_command(config.cmd_end) < 0 || check_command(config.cmd_ttc) < 0)
-    {
-        gtk_widget_show(cmd_warn_img);
-        gtk_widget_show(cmd_warn_label);
-    }
-    else
-    {
-        gtk_widget_hide(cmd_warn_img);
-        gtk_widget_hide(cmd_warn_label);
-    }
-}
-
 static void configure_ok_cb()
 {
     aud_set_str("song_change", "cmd_line", config.cmd);
@@ -328,67 +280,38 @@ static void configure_ok_cb()
     cmd_line_ttc = config.cmd_ttc;
 }
 
-/* static GtkWidget * custom_warning (void) */
-static void * custom_warning (void)
-{
-    GtkWidget *bbox_hbox;
-    char * temp;
-
-    bbox_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
-
-    cmd_warn_img = gtk_image_new_from_icon_name("dialog-warning", GTK_ICON_SIZE_MENU);
-    gtk_box_pack_start(GTK_BOX(bbox_hbox), cmd_warn_img, FALSE, FALSE, 0);
-
-    temp = g_strdup_printf(_("<span size='small'>Parameters passed to the shell should be encapsulated in quotes. Doing otherwise is a security risk.</span>"));
-    cmd_warn_label = gtk_label_new(temp);
-    gtk_label_set_markup(GTK_LABEL(cmd_warn_label), temp);
-    gtk_label_set_line_wrap(GTK_LABEL(cmd_warn_label), TRUE);
-    gtk_box_pack_start(GTK_BOX(bbox_hbox), cmd_warn_label, FALSE, FALSE, 0);
-    g_free(temp);
-
-    gtk_widget_set_no_show_all(cmd_warn_img, TRUE);
-    gtk_widget_set_no_show_all(cmd_warn_label, TRUE);
-
-    edit_cb();
-
-    return bbox_hbox;
-}
-
 const PreferencesWidget SongChange::widgets[] = {
     WidgetLabel (N_("<b>Commands</b>")),
 
     WidgetLabel (N_("Command to run when starting a new song:")),
-    WidgetEntry (0, WidgetString (config.cmd, edit_cb)),
-    WidgetSeparator ({true}),
+    WidgetEntry (0, WidgetString (config.cmd)),
 
     WidgetLabel (N_("Command to run at the end of a song:")),
-    WidgetEntry (0, WidgetString (config.cmd_after, edit_cb)),
-    WidgetSeparator ({true}),
+    WidgetEntry (0, WidgetString (config.cmd_after)),
 
     WidgetLabel (N_("Command to run at the end of the playlist:")),
-    WidgetEntry (0, WidgetString (config.cmd_end, edit_cb)),
-    WidgetSeparator ({true}),
+    WidgetEntry (0, WidgetString (config.cmd_end)),
 
     WidgetLabel (N_("Command to run when song title changes (for network streams):")),
-    WidgetEntry (0, WidgetString (config.cmd_ttc, edit_cb)),
-    WidgetSeparator ({true}),
+    WidgetEntry (0, WidgetString (config.cmd_ttc)),
 
-    WidgetLabel (N_("You can use the following format strings which "
-                    "will be substituted before calling the command "
-                    "(not all are useful for the end-of-playlist command):\n\n"
-                    "%F: Frequency (in hertz)\n"
+    WidgetLabel (N_("You can use the following format codes, which will be "
+                    "replaced before running the command (not all are useful "
+                    "for the end-of-playlist command):")),
+    WidgetLabel (N_("%a: Artist\n"
+                    "%b: Album\n"
                     "%c: Number of channels\n"
                     "%f: File name (full path)\n"
-                    "%l: Length (in milliseconds)\n"
-                    "%n or %s: Song name\n"
-                    "%r: Rate (in bits per second)\n"
-                    "%t: Playlist position (%02d)\n"
+                    "%F: Frequency (Hertz)\n"
+                    "%l: Length (milliseconds)\n"
+                    "%n or %s: Formatted title (see playlist settings)\n"
                     "%p: Currently playing (1 or 0)\n"
-                    "%a: Artist\n"
-                    "%b: Album\n"
-                    "%T: Track title")),
-
-    WidgetCustomGTK (custom_warning)
+                    "%r: Rate (bits per second)\n"
+                    "%t: Playlist position\n"
+                    "%T: Title (unformatted)")),
+    WidgetLabel (N_("Parameters passed to the shell should be enclosed in "
+                    "quotation marks.  Unquoted parameters may lead to "
+                    "unexpected results."))
 };
 
 static void configure_init(void)

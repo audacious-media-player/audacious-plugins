@@ -39,6 +39,29 @@
 #include <QAction>
 #include <QSettings>
 
+class PluginWidget : public QDockWidget
+{
+public:
+    PluginWidget (PluginHandle * plugin) :
+        m_plugin (plugin)
+    {
+        setObjectName (aud_plugin_get_basename (plugin));
+        setWindowTitle (aud_plugin_get_name (plugin));
+    }
+
+    PluginHandle * plugin () const { return m_plugin; }
+
+protected:
+    void closeEvent (QCloseEvent * event)
+    {
+        aud_plugin_enable (m_plugin, false);
+        event->ignore ();
+    }
+
+private:
+    PluginHandle * m_plugin;
+};
+
 MainWindow::MainWindow () :
     m_dialogs (this),
     filterInput (new FilterInput (this)),
@@ -120,15 +143,15 @@ MainWindow::MainWindow () :
 
 MainWindow::~MainWindow ()
 {
+    QSettings settings ("audacious", "QtUi");
+    settings.setValue ("geometry", saveGeometry());
+    settings.setValue ("windowState", saveState());
+
     remove_dock_plugins ();
 }
 
 void MainWindow::closeEvent (QCloseEvent * e)
 {
-    QSettings settings ("audacious", "QtUi");
-    settings.setValue ("geometry", saveGeometry());
-    settings.setValue ("windowState", saveState());
-
     aud_quit ();
     e->ignore ();
 }
@@ -246,43 +269,43 @@ void MainWindow::update_toggles_cb ()
     updateToggles ();
 }
 
-struct DockWidget {
-    QDockWidget * w;
-    PluginHandle * pl;
-};
+PluginWidget * MainWindow::find_dock_plugin (PluginHandle * plugin)
+{
+    for (PluginWidget * w : dock_widgets)
+    {
+        if (w->plugin () == plugin)
+            return w;
+    }
+
+    return nullptr;
+}
 
 void MainWindow::add_dock_plugin_cb (PluginHandle * plugin)
 {
     QWidget * widget = (QWidget *) aud_plugin_get_qt_widget (plugin);
+    if (! widget)
+        return;
 
-    if (widget)
+    auto w = find_dock_plugin (plugin);
+    if (! w)
     {
-        widget->resize (320, 240);
-
-        auto w = new QDockWidget;
-        w->setWindowTitle (aud_plugin_get_name (plugin));
-        w->setObjectName (aud_plugin_get_basename (plugin));
-        w->setWidget (widget);
-        addDockWidget (Qt::LeftDockWidgetArea, w);
-
-        dock_widgets.append (w, plugin);
+        w = new PluginWidget (plugin);
+        dock_widgets.append (w);
     }
+
+    w->setWidget (widget);
+
+    if (! restoreDockWidget (w))
+        addDockWidget (Qt::LeftDockWidgetArea, w);
 }
 
 void MainWindow::remove_dock_plugin_cb (PluginHandle * plugin)
 {
-    auto remove_cb = [&] (DockWidget & dw)
+    if (auto w = find_dock_plugin (plugin))
     {
-        if (dw.pl != plugin)
-            return false;
-
-        removeDockWidget (dw.w);
-
-        delete dw.w;
-        return true;
-    };
-
-    dock_widgets.remove_if (remove_cb);
+        removeDockWidget (w);
+        delete w->widget ();
+    }
 }
 
 void MainWindow::add_dock_plugins ()

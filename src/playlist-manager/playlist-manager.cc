@@ -58,8 +58,9 @@ static void rename_cb (void * unused)
 
 static void new_cb (void * unused)
 {
-    aud_playlist_insert (aud_playlist_get_active () + 1);
-    aud_playlist_set_active (aud_playlist_get_active () + 1);
+    int playlist = aud_playlist_get_active () + 1;
+    aud_playlist_insert (playlist);
+    aud_playlist_set_active (playlist);
 }
 
 static void delete_cb (void * unused)
