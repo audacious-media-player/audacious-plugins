@@ -88,6 +88,7 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         case PL_COL_LENGTH:
             return QString (str_format_time (tuple.get_int (Tuple::Length)));
         }
+        break;
 
     case Qt::TextAlignmentRole:
         switch (index.column ())
@@ -95,6 +96,7 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         case PL_COL_LENGTH:
             return Qt::AlignRight;
         }
+        break;
 
     case Qt::DecorationRole:
         if (index.column () == 0 && index.row () == aud_playlist_get_position (playlist ()))
@@ -107,6 +109,7 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
             else
                 return get_icon ("media-playback-stop");
         }
+        break;
     }
     return QVariant ();
 }
