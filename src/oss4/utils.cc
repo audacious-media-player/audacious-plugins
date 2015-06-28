@@ -199,6 +199,7 @@ bool oss_hardware_present()
     return true;
 
 FAILED:
-    close(mixerfd);
+    if (mixerfd >= 0)
+        close(mixerfd);
     return false;
 }

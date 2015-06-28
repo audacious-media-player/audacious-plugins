@@ -54,7 +54,8 @@ static void combo_init()
 #endif
 
 FAILED:
-    close(mixerfd);
+    if (mixerfd >= 0)
+        close(mixerfd);
 }
 
 ArrayRef<ComboItem> combo_fill()

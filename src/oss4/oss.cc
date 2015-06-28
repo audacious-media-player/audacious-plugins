@@ -206,11 +206,14 @@ bool OSSPlugin::open_audio(int aud_format, int rate, int channels)
 
     int format;
     audio_buf_info buf_info;
+    bool poll_was_setup = false;
 
     CHECK_NOISY(m_fd = open_device);
 
-    if (!poll_setup(m_fd))
-        goto CLOSE;
+    if (poll_setup(m_fd))
+        poll_was_setup = true;
+    else
+        goto FAILED;
 
     format = oss_convert_aud_format(aud_format);
 
@@ -237,9 +240,10 @@ bool OSSPlugin::open_audio(int aud_format, int rate, int channels)
     return true;
 
 FAILED:
-    poll_cleanup();
-CLOSE:
-    close_device(m_fd);
+    if (poll_was_setup)
+        poll_cleanup();
+    if (m_fd >= 0)
+        close_device(m_fd);
     return false;
 }
 
