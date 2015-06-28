@@ -20,7 +20,7 @@ typedef struct {
 
 static CURL *curlHandle = nullptr;     //global handle holding cURL options
 
-gboolean scrobbling_enabled = TRUE;
+gboolean scrobbling_enabled = true;
 
 //shared variables
 char *received_data = nullptr;   //Holds the result of the last request made to last.fm
@@ -126,10 +126,10 @@ static gboolean send_message_to_lastfm (const char * data)
 
     if (curl_requests_result != CURLE_OK) {
         AUDDBG("Could not communicate with last.fm: %s.\n", curl_easy_strerror(curl_requests_result));
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 //returns:
@@ -139,17 +139,17 @@ static gboolean scrobbler_request_token ()
 {
     String tokenmsg = create_message_to_lastfm ("auth.getToken", 1, "api_key", SCROBBLER_API_KEY);
 
-    if (send_message_to_lastfm(tokenmsg) == FALSE) {
+    if (send_message_to_lastfm(tokenmsg) == false) {
         AUDDBG("Could not send token request to last.fm.\n");
-        return FALSE;
+        return false;
     }
 
-    gboolean success = TRUE;
+    gboolean success = true;
     String error_code;
     String error_detail;
 
-    if (read_token(error_code, error_detail) == FALSE) {
-        success = FALSE;
+    if (read_token(error_code, error_detail) == false) {
+        success = false;
         if (error_code != nullptr && g_strcmp0(error_code, "8")) {
             //error code 8: There was an error granting the request token. Please try again later
             request_token = String();
@@ -161,11 +161,11 @@ static gboolean scrobbler_request_token ()
 
 
 static gboolean update_session_key() {
-    gboolean result = TRUE;
+    gboolean result = true;
     String error_code;
     String error_detail;
 
-    if (read_session_key(error_code, error_detail) == FALSE) {
+    if (read_session_key(error_code, error_detail) == false) {
         if (error_code != nullptr && (
                 g_strcmp0(error_code,  "4") == 0 || //invalid token
                 g_strcmp0(error_code, "14") == 0 || //token not authorized
@@ -173,9 +173,9 @@ static gboolean update_session_key() {
             )) {
             AUDDBG("error code CAUGHT: %s\n", (const char *)error_code);
             session_key = String();
-            result = TRUE;
+            result = true;
         } else {
-            result= FALSE;
+            result= false;
         }
     }
 
@@ -192,8 +192,8 @@ static gboolean scrobbler_request_session ()
     String sessionmsg = create_message_to_lastfm ("auth.getSession", 2,
      "token", (const char *) request_token, "api_key", SCROBBLER_API_KEY);
 
-    if (send_message_to_lastfm(sessionmsg) == FALSE)
-        return FALSE;
+    if (send_message_to_lastfm(sessionmsg) == false)
+        return false;
 
     //the token can only be sent once
     request_token = String();
@@ -209,8 +209,8 @@ static gboolean scrobbler_request_session ()
 static gboolean scrobbler_test_connection() {
 
     if (!session_key || !session_key[0]) {
-        scrobbling_enabled = FALSE;
-        return TRUE;
+        scrobbling_enabled = false;
+        return true;
     }
 
     String testmsg = create_message_to_lastfm ("user.getRecommendedArtists", 3,
@@ -219,19 +219,19 @@ static gboolean scrobbler_test_connection() {
 
     gboolean success = send_message_to_lastfm(testmsg);
 
-    if (success == FALSE) {
+    if (success == false) {
         AUDDBG("Network problems. Will not scrobble any tracks.\n");
-        scrobbling_enabled = FALSE;
+        scrobbling_enabled = false;
         if (permission_check_requested) {
             perm_result = PERMISSION_NONET;
         }
-        return FALSE;
+        return false;
     }
 
     String error_code;
     String error_detail;
 
-    if (read_authentication_test_result(error_code, error_detail) == FALSE) {
+    if (read_authentication_test_result(error_code, error_detail) == false) {
         AUDDBG("Error code: %s. Detail: %s.\n", (const char *)error_code,
          (const char *)error_detail);
         if (error_code != nullptr && (
@@ -240,16 +240,16 @@ static gboolean scrobbler_test_connection() {
             )) {
             session_key = String();
             aud_set_str("scrobbler", "session_key", "");
-            scrobbling_enabled = FALSE;
+            scrobbling_enabled = false;
         } else {
             //network problem.
-            scrobbling_enabled = FALSE;
+            scrobbling_enabled = false;
             AUDDBG("Connection NOT OK. Scrobbling disabled\n");
-            success = FALSE;
+            success = false;
         }
     } else {
         //THIS IS THE ONLY PLACE WHERE SCROBBLING IS SET TO ENABLED IN RUN-TIME
-        scrobbling_enabled = TRUE;
+        scrobbling_enabled = true;
         AUDDBG("Connection OK. Scrobbling enabled.\n");
     }
 
@@ -261,28 +261,28 @@ gboolean scrobbler_communication_init() {
     CURLcode curl_requests_result = curl_global_init(CURL_GLOBAL_DEFAULT);
     if (curl_requests_result != CURLE_OK) {
         AUDDBG("Could not initialize libCURL: %s.\n", curl_easy_strerror(curl_requests_result));
-        return FALSE;
+        return false;
     }
 
     curlHandle = curl_easy_init();
     if (curlHandle == nullptr) {
         AUDDBG("Could not initialize libCURL.\n");
-        return FALSE;
+        return false;
     }
 
     curl_requests_result = curl_easy_setopt(curlHandle, CURLOPT_URL, SCROBBLER_URL);
     if (curl_requests_result != CURLE_OK) {
         AUDDBG("Could not define scrobbler destination URL: %s.\n", curl_easy_strerror(curl_requests_result));
-        return FALSE;
+        return false;
     }
 
     curl_requests_result = curl_easy_setopt(curlHandle, CURLOPT_WRITEFUNCTION, result_callback);
     if (curl_requests_result != CURLE_OK) {
         AUDDBG("Could not register scrobbler callback function: %s.\n", curl_easy_strerror(curl_requests_result));
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 static void set_timestamp_to_current(char **line) {
@@ -405,23 +405,23 @@ static void scrobble_cached_queue() {
                  "timestamp", line[6], "api_key", SCROBBLER_API_KEY,
                  "sk", (const char *) session_key);
 
-                if (send_message_to_lastfm(scrobblemsg) == TRUE) {
+                if (send_message_to_lastfm(scrobblemsg) == true) {
                     String error_code;
                     String error_detail;
-                    gboolean ignored = FALSE;
+                    gboolean ignored = false;
                     String ignored_code;
 
-                    if (read_scrobble_result(error_code, error_detail, &ignored, ignored_code) == TRUE) {
+                    if (read_scrobble_result(error_code, error_detail, &ignored, ignored_code) == true) {
                         AUDDBG("SCROBBLE OK. Error code: %s. Error detail: %s\n",
                          (const char *)error_code, (const char *)error_detail);
                         AUDDBG("SCROBBLE OK. ignored: %i.\n", ignored);
                         AUDDBG("SCROBBLE OK. ignored code: %s.\n",
                          (const char *)ignored_code);
-                        if (ignored == TRUE && g_strcmp0(ignored_code, "3") == 0) { //3: Timestamp was too old
+                        if (ignored == true && g_strcmp0(ignored_code, "3") == 0) { //3: Timestamp was too old
                             AUDDBG("SCROBBLE IGNORED!!! %i, detail: %s\n",
                              ignored, (const char *)ignored_code);
                             save_line_to_remove(&lines_to_retry, i);
-                        } else if (ignored == TRUE && g_strcmp0(ignored_code, "") == 0) { //5: Daily scrobble limit reached
+                        } else if (ignored == true && g_strcmp0(ignored_code, "") == 0) { //5: Daily scrobble limit reached
                            //TODO: a track might not be scrobbled due to "daily scrobble limit exeeded".
                            //This message comes on the ignoredMessage attribute, inside the XML of the response.
                            //We are not dealing with this case currently and are losing that scrobble.
@@ -446,7 +446,7 @@ static void scrobble_cached_queue() {
                         }
                         else if (g_strcmp0(error_code,  "9") == 0) {
                             //Bad Session. Reauth.
-                            scrobbling_enabled = FALSE;
+                            scrobbling_enabled = false;
                             session_key = String();
                             aud_set_str("scrobbler", "session_key", "");
                         }
@@ -457,7 +457,7 @@ static void scrobble_cached_queue() {
                 } else {
                     AUDDBG("Could not scrobble a track on the queue. Network problem?\n");
                     //scrobble to be retried
-                    scrobbling_enabled = FALSE;
+                    scrobbling_enabled = false;
                 }
 
                 //TODO: Avoid spamming last.fm --- It's not as simple as just adding a wait here:
@@ -492,7 +492,7 @@ static void send_now_playing() {
 
   String error_code;
   String error_detail;
-  gboolean ignored = FALSE;
+  gboolean ignored = false;
   String ignored_code;
   /*
    * now_playing_track can be set to something else while we this method is
@@ -522,10 +522,10 @@ static void send_now_playing() {
 
     gboolean success = send_message_to_lastfm(playingmsg);
 
-    if (success == FALSE) {
+    if (success == false) {
       AUDDBG("Network problems. Could not send \"now playing\" to last.fm\n");
-      scrobbling_enabled = FALSE;
-    } else if (read_scrobble_result(error_code, error_detail, &ignored, ignored_code) == TRUE) {
+      scrobbling_enabled = false;
+    } else if (read_scrobble_result(error_code, error_detail, &ignored, ignored_code) == true) {
       //see scrobble_cached_queue()
       AUDDBG("NOW PLAYING OK.\n");
     } else {
@@ -536,7 +536,7 @@ static void send_now_playing() {
       if (g_strcmp0(error_code, "9") == 0) {
         //Bad Session. Reauth.
         //We don't really care about any other errors.
-        scrobbling_enabled = FALSE;
+        scrobbling_enabled = false;
         session_key = String();
         aud_set_str("scrobbler", "session_key", "");
       }
@@ -552,28 +552,28 @@ static void treat_permission_check_request() {
         perm_result = PERMISSION_DENIED;
 
         if (!request_token || !request_token[0]) {
-            if (scrobbler_request_token() == FALSE || !request_token || !request_token[0]) {
+            if (scrobbler_request_token() == false || !request_token || !request_token[0]) {
                 perm_result = PERMISSION_NONET;
             } //else PERMISSION_DENIED
 
-        } else if (scrobbler_request_session() == FALSE) {
+        } else if (scrobbler_request_session() == false) {
             perm_result = PERMISSION_NONET;
 
         } else if (!session_key || !session_key[0]) {
             //This means we had a token, a session was requested now,
             //but the token was not accepted or expired.
             //Ask for a new token now.
-            if (scrobbler_request_token() == FALSE || !request_token || !request_token[0]) {
+            if (scrobbler_request_token() == false || !request_token || !request_token[0]) {
                 perm_result = PERMISSION_NONET;
             } //else PERMISSION_DENIED
         }
     }
     if (session_key && session_key[0]) {
-        if (scrobbler_test_connection() == FALSE) {
+        if (scrobbler_test_connection() == false) {
             perm_result = PERMISSION_NONET;
 
             if (!session_key || !session_key[0]) {
-                if (scrobbler_request_token() != FALSE && request_token && request_token[0]) {
+                if (scrobbler_request_token() != false && request_token && request_token[0]) {
                     perm_result = PERMISSION_DENIED;
                 } //else PERMISSION_NONET
             }
@@ -590,7 +590,7 @@ static void treat_permission_check_request() {
               * c) the user fiddled with the audacious config file and
               * the key is now invalid
               */
-                if (scrobbler_request_token() != FALSE && request_token && request_token[0]) {
+                if (scrobbler_request_token() != false && request_token && request_token[0]) {
                     perm_result = PERMISSION_DENIED;
                 } else {
                     perm_result = PERMISSION_NONET;
@@ -610,7 +610,7 @@ static gboolean treat_migrate_config() {
     String password = aud_get_str("audioscrobbler","password");
     String username = aud_get_str("audioscrobbler","username");
     if (!password[0] || !username[0])
-        return FALSE;
+        return false;
 
     char *checksumThis = g_strdup_printf("%s%s", (const char *)username, (const char *)password);
     char *authToken = g_compute_checksum_for_string(G_CHECKSUM_MD5, checksumThis, -1);
@@ -622,11 +622,11 @@ static gboolean treat_migrate_config() {
     g_free(checksumThis);
     g_free(authToken);
 
-    if (send_message_to_lastfm(sessionmsg) == FALSE)
-        return FALSE;
+    if (send_message_to_lastfm(sessionmsg) == false)
+        return false;
 
     if (!update_session_key())
-        return FALSE;
+        return false;
 
     return (session_key && session_key[0]);
 }
@@ -638,26 +638,26 @@ void * scrobbling_thread (void * input_data) {
     while (scrobbler_running) {
 
         if (migrate_config_requested) {
-          if (treat_migrate_config() == FALSE) {
+          if (treat_migrate_config() == false) {
             aud_ui_show_error(_("Audacious is now using an improved version of the Last.fm Scrobbler.\nPlease check the Preferences for the Scrobbler plugin."));
           }
           aud_set_str("scrobbler", "migrated", "true");
-          migrate_config_requested = FALSE;
+          migrate_config_requested = false;
 
         } else if (permission_check_requested) {
             treat_permission_check_request();
-            permission_check_requested = FALSE;
+            permission_check_requested = false;
 
         } else if (invalidate_session_requested) {
             session_key = String();
             aud_set_str("scrobbler", "session_key", "");
-            invalidate_session_requested = FALSE;
+            invalidate_session_requested = false;
 
         } else if (now_playing_requested) {
             if (scrobbling_enabled) {
               send_now_playing();
             }
-            now_playing_requested = FALSE;
+            now_playing_requested = false;
 
         } else {
             if (scrobbling_enabled) {
@@ -675,7 +675,7 @@ void * scrobbling_thread (void * input_data) {
                 //if submitting the cache failed due to network problems
                 pthread_mutex_unlock(&communication_mutex);
 
-                if (scrobbler_test_connection() == FALSE || !scrobbling_enabled) {
+                if (scrobbler_test_connection() == false || !scrobbling_enabled) {
                     struct timeval curtime;
                     struct timespec timeout;
                     pthread_mutex_lock(&communication_mutex);
@@ -697,7 +697,7 @@ void * scrobbling_thread (void * input_data) {
     curl_easy_cleanup(curlHandle);
     curlHandle = nullptr;
 
-    scrobbling_enabled = TRUE;
+    scrobbling_enabled = true;
     return nullptr;
 }
 

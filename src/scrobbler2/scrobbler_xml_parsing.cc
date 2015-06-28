@@ -14,7 +14,7 @@ static gboolean prepare_data () {
     received_data_size = 0;
     if (doc == nullptr) {
         AUDDBG("Document not parsed successfully.\n");
-        return FALSE;
+        return false;
     }
 
     context = xmlXPathNewContext(doc);
@@ -22,9 +22,9 @@ static gboolean prepare_data () {
         AUDDBG("Error in xmlXPathNewContext\n");
         xmlFreeDoc(doc);
         doc = nullptr;
-        return FALSE;
+        return false;
     }
-    return TRUE;
+    return true;
 }
 
 static void clean_data() {
@@ -144,13 +144,13 @@ static String check_status (String &error_code, String &error_detail) {
 gboolean read_scrobble_result(String &error_code, String &error_detail,
  gboolean *ignored, String &ignored_code) {
 
-    *ignored = FALSE;
+    *ignored = false;
 
-    gboolean result = TRUE;
+    gboolean result = true;
 
     if (!prepare_data()) {
         AUDDBG("Could not read received data from last.fm. What's up?\n");
-        return FALSE;
+        return false;
     }
 
     String status = check_status(error_code, error_detail);
@@ -158,13 +158,13 @@ gboolean read_scrobble_result(String &error_code, String &error_detail,
     if (!status) {
         AUDDBG("Status was nullptr. Invalid API answer.\n");
         clean_data();
-        return FALSE;
+        return false;
     }
 
     if (!strcmp(status, "failed")) {
         AUDDBG("Error code: %s. Detail: %s.\n", (const char *)error_code,
          (const char *)error_detail);
-        result = FALSE;
+        result = false;
 
     } else {
         //TODO: We are assuming that only one track is scrobbled per request! This will have to be
@@ -174,7 +174,7 @@ gboolean read_scrobble_result(String &error_code, String &error_detail,
         if (ignored_scrobble && strcmp(ignored_scrobble, "0")) {
           //The track was ignored
           //TODO: this assumes ignored_scrobble == 1!!!
-          *ignored = TRUE;
+          *ignored = true;
           ignored_code = get_attribute_value("/lfm/scrobbles/scrobble/ignoredMessage[@code]", "code");
         }
 
@@ -189,11 +189,11 @@ gboolean read_scrobble_result(String &error_code, String &error_detail,
 //FALSE if there was an error with the connection
 gboolean read_authentication_test_result (String &error_code, String &error_detail) {
 
-    gboolean result = TRUE;
+    gboolean result = true;
 
     if (!prepare_data()) {
         AUDDBG("Could not read received data from last.fm. What's up?\n");
-        return FALSE;
+        return false;
     }
 
     String status = check_status(error_code, error_detail);
@@ -201,17 +201,17 @@ gboolean read_authentication_test_result (String &error_code, String &error_deta
     if (!status) {
         AUDDBG("Status was nullptr. Invalid API answer.\n");
         clean_data();
-        return FALSE;
+        return false;
     }
 
     if (!strcmp(status, "failed")) {
-        result = FALSE;
+        result = false;
 
     } else {
         username = get_attribute_value("/lfm/recommendations[@user]", "user");
         if (!username) {
           AUDDBG("last.fm not answering according to the API.\n");
-          result = FALSE;
+          result = false;
         }
     }
 
@@ -223,11 +223,11 @@ gboolean read_authentication_test_result (String &error_code, String &error_deta
 
 gboolean read_token (String &error_code, String &error_detail) {
 
-    gboolean result = TRUE;
+    gboolean result = true;
 
     if (!prepare_data()) {
         AUDDBG("Could not read received data from last.fm. What's up?\n");
-        return FALSE;
+        return false;
     }
 
     String status = check_status(error_code, error_detail);
@@ -235,20 +235,20 @@ gboolean read_token (String &error_code, String &error_detail) {
     if (!status) {
         AUDDBG("Status was nullptr. Invalid API answer.\n");
         clean_data();
-        return FALSE;
+        return false;
     }
 
     if (!strcmp(status, "failed")) {
         AUDDBG("Error code: %s. Detail: %s.\n", (const char *)error_code,
          (const char *)error_detail);
-        result = FALSE;
+        result = false;
     }
     else {
         request_token = get_node_string("/lfm/token");
 
         if (!request_token || !request_token[0]) {
             AUDDBG("Could not read the received token. Something's wrong with the API?\n");
-            result = FALSE;
+            result = false;
         }
         else {
             AUDDBG("This is the token: %s.\nNice? Nice.\n", (const char *)request_token);
@@ -263,11 +263,11 @@ gboolean read_token (String &error_code, String &error_detail) {
 
 gboolean read_session_key(String &error_code, String &error_detail) {
 
-    gboolean result = TRUE;
+    gboolean result = true;
 
     if (!prepare_data()) {
         AUDDBG("Could not read received data from last.fm. What's up?\n");
-        return FALSE;
+        return false;
     }
 
     String status = check_status(error_code, error_detail);
@@ -275,20 +275,20 @@ gboolean read_session_key(String &error_code, String &error_detail) {
     if (!status) {
         AUDDBG("Status was nullptr or empty. Invalid API answer.\n");
         clean_data();
-        return FALSE;
+        return false;
     }
 
     if (!strcmp(status, "failed")) {
         AUDDBG("Error code: %s. Detail: %s.\n", (const char *)error_code,
          (const char *)error_detail);
-        result = FALSE;
+        result = false;
 
     } else {
         session_key = get_node_string("/lfm/session/key");
 
         if (!session_key || !session_key[0]) {
             AUDDBG("Could not read the received session key. Something's wrong with the API?\n");
-            result = FALSE;
+            result = false;
         } else {
             AUDDBG("This is the session key: %s.\n", (const char *)session_key);
         }

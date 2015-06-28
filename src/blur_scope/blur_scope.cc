@@ -92,7 +92,7 @@ bool BlurScope::init ()
     aud_config_set_defaults ("BlurScope", bscope_defaults);
     bscope_color = aud_get_int ("BlurScope", "color");
 
-    return TRUE;
+    return true;
 }
 
 void BlurScope::cleanup ()
@@ -136,7 +136,7 @@ void BlurScope::draw ()
 gboolean BlurScope::configure_event (GtkWidget * widget, GdkEventConfigure * event, void * user)
 {
     ((BlurScope *) user)->resize (event->width, event->height);
-    return TRUE;
+    return true;
 }
 
 gboolean BlurScope::draw_cb (GtkWidget * widget, cairo_t * cr, void * user)

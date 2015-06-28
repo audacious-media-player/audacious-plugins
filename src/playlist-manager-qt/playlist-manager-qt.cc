@@ -132,14 +132,17 @@ QVariant PlaylistsModel::data (const QModelIndex & index, int role) const
         case ColumnEntries:
             return aud_playlist_entry_count (index.row ());
         }
+        break;
 
     case Qt::FontRole:
         if (index.row () == m_playing)
             return m_bold;
+        break;
 
     case Qt::TextAlignmentRole:
         if (index.column () == ColumnEntries)
             return Qt::AlignRight;
+        break;
     }
 
     return QVariant ();
@@ -294,7 +297,7 @@ static QToolButton * new_tool_button (const char * text, const char * icon)
 {
     auto button = new QToolButton;
     button->setIcon (QIcon::fromTheme (icon));
-    button->setText (text);
+    button->setText (audqt::translate_str (text));
     button->setToolButtonStyle (Qt::ToolButtonTextBesideIcon);
     return button;
 }
@@ -311,19 +314,19 @@ void * PlaylistManagerQt::get_qt_widget ()
     auto hbox = new QHBoxLayout;
     vbox->addLayout (hbox);
 
-    auto new_button = new_tool_button (_("New"), "document-new");
+    auto new_button = new_tool_button (N_("_New"), "document-new");
     QObject::connect (new_button, & QToolButton::clicked, [] () {
         int playlist = aud_playlist_get_active () + 1;
         aud_playlist_insert (playlist);
         aud_playlist_set_active (playlist);
     });
 
-    auto rename_button = new_tool_button (_("Rename"), "insert-text");
+    auto rename_button = new_tool_button (N_("Ren_ame"), "insert-text");
     QObject::connect (rename_button, & QToolButton::clicked, [] () {
         audqt::playlist_show_rename (aud_playlist_get_active ());
     });
 
-    auto remove_button = new_tool_button (_("Remove"), "edit-delete");
+    auto remove_button = new_tool_button (N_("_Remove"), "edit-delete");
     QObject::connect (remove_button, & QToolButton::clicked, [] () {
         audqt::playlist_confirm_delete (aud_playlist_get_active ());
     });

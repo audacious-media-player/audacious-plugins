@@ -230,12 +230,12 @@ void skin_view_realize (GtkTreeView * treeview)
                                 GTK_TREE_VIEW_COLUMN(column));
 
     renderer = gtk_cell_renderer_pixbuf_new();
-    gtk_tree_view_column_pack_start(column, renderer, FALSE);
+    gtk_tree_view_column_pack_start(column, renderer, false);
     gtk_tree_view_column_set_attributes(column, renderer, "pixbuf",
                                         SKIN_VIEW_COL_PREVIEW, nullptr);
 
     renderer = gtk_cell_renderer_text_new();
-    gtk_tree_view_column_pack_start(column, renderer, TRUE);
+    gtk_tree_view_column_pack_start(column, renderer, true);
     gtk_tree_view_column_set_attributes(column, renderer, "markup",
                                         SKIN_VIEW_COL_FORMATTEDNAME, nullptr);
 

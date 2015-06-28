@@ -255,7 +255,7 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
     bands = aud::clamp(bands, 12, MAX_BANDS);
     calculate_xscale ();
 
-    return TRUE;
+    return true;
 }
 
 static gboolean draw_event (GtkWidget * widget, cairo_t * cr, GtkWidget * area)

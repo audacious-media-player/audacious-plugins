@@ -143,16 +143,16 @@ on_entry_key_press_event(GtkWidget * widget,
     int is_mod;
     int mod;
 
-    if (event->keyval == GDK_Tab) return FALSE;
-    if (event->keyval == GDK_Escape && ((event->state & ~GDK_LOCK_MASK) == 0)) return FALSE;
-    if (event->keyval == GDK_Return && ((event->state & ~GDK_LOCK_MASK) == 0)) return FALSE;
+    if (event->keyval == GDK_Tab) return false;
+    if (event->keyval == GDK_Escape && ((event->state & ~GDK_LOCK_MASK) == 0)) return false;
+    if (event->keyval == GDK_Return && ((event->state & ~GDK_LOCK_MASK) == 0)) return false;
     if (event->keyval == GDK_ISO_Left_Tab)
     {
         set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
-        return FALSE;
+        return false;
     }
-    if (event->keyval == GDK_Up && ((event->state & ~GDK_LOCK_MASK) == 0)) return FALSE;
-    if (event->keyval == GDK_Down && ((event->state & ~GDK_LOCK_MASK) == 0)) return FALSE;
+    if (event->keyval == GDK_Up && ((event->state & ~GDK_LOCK_MASK) == 0)) return false;
+    if (event->keyval == GDK_Down && ((event->state & ~GDK_LOCK_MASK) == 0)) return false;
 
     mod = 0;
     is_mod = 0;
@@ -182,7 +182,7 @@ on_entry_key_press_event(GtkWidget * widget,
     }
 
     set_keytext(controls->keytext, is_mod ? 0 : event->hardware_keycode, mod, TYPE_KEY);
-    return TRUE;
+    return true;
 }
 
 static gboolean
@@ -191,10 +191,10 @@ on_entry_key_release_event(GtkWidget * widget,
                            void * user_data)
 {
     KeyControls *controls = (KeyControls*) user_data;
-    if (!gtk_widget_is_focus(widget)) return FALSE;
+    if (!gtk_widget_is_focus(widget)) return false;
     set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
 
-    return TRUE;
+    return true;
 }
 
 static gboolean
@@ -205,7 +205,7 @@ on_entry_button_press_event(GtkWidget * widget,
     KeyControls *controls = (KeyControls*) user_data;
     int mod;
 
-    if (!gtk_widget_is_focus(widget)) return FALSE;
+    if (!gtk_widget_is_focus(widget)) return false;
 
     mod = 0;
     if (event->state & GDK_CONTROL_MASK)
@@ -236,7 +236,7 @@ on_entry_button_press_event(GtkWidget * widget,
         gtk_window_set_title(GTK_WINDOW(dialog), _("Binding mouse buttons"));
         response = gtk_dialog_run(GTK_DIALOG(dialog));
         gtk_widget_destroy (dialog);
-        if (response != GTK_RESPONSE_YES) return TRUE;
+        if (response != GTK_RESPONSE_YES) return true;
     }
 
     controls->hotkey.key = event->button;
@@ -246,7 +246,7 @@ on_entry_button_press_event(GtkWidget * widget,
     if (controls->next == nullptr)
         add_callback (nullptr, (void *) controls);
 
-    return TRUE;
+    return true;
 }
 
 static gboolean
@@ -257,7 +257,7 @@ on_entry_scroll_event(GtkWidget * widget,
     KeyControls *controls = (KeyControls*) user_data;
     int mod;
 
-    if (!gtk_widget_is_focus(widget)) return FALSE;
+    if (!gtk_widget_is_focus(widget)) return false;
 
     mod = 0;
     if (event->state & GDK_CONTROL_MASK)
@@ -283,14 +283,14 @@ on_entry_scroll_event(GtkWidget * widget,
         controls->hotkey.key = 6;
     else if (event->direction == GDK_SCROLL_RIGHT)
         controls->hotkey.key = 7;
-    else return FALSE;
+    else return false;
 
     controls->hotkey.mask = mod;
         controls->hotkey.type = TYPE_MOUSE;
     set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
     if (controls->next == nullptr)
         add_callback (nullptr, (void *) controls);
-    return TRUE;
+    return true;
 }
 
 KeyControls* add_event_controls(KeyControls* list,
@@ -385,7 +385,7 @@ void *make_config_widget ()
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
     gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, TRUE, 0);
     image = gtk_image_new_from_icon_name ("dialog-information", GTK_ICON_SIZE_DIALOG);
-    gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), image, false, true, 0);
     label = gtk_label_new (_("Press a key combination inside a text field.\nYou can also bind mouse buttons."));
     gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
     gtk_widget_set_halign (label, GTK_ALIGN_START);
@@ -394,7 +394,7 @@ void *make_config_widget ()
     gtk_label_set_markup (GTK_LABEL (label), _("Hotkeys:"));
     frame = gtk_frame_new (nullptr);
     gtk_frame_set_label_widget (GTK_FRAME (frame), label);
-    gtk_box_pack_start (GTK_BOX (main_vbox), frame, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (main_vbox), frame, true, true, 0);
     gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
 
     grid = gtk_grid_new ();

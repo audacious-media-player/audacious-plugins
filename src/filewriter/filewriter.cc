@@ -342,8 +342,8 @@ static void saveplace_original_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {
-        gtk_widget_set_sensitive(path_hbox, FALSE);
-        save_original = TRUE;
+        gtk_widget_set_sensitive(path_hbox, false);
+        save_original = true;
     }
 }
 
@@ -351,8 +351,8 @@ static void saveplace_custom_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {
-        gtk_widget_set_sensitive(path_hbox, TRUE);
-        save_original = FALSE;
+        gtk_widget_set_sensitive(path_hbox, true);
+        save_original = false;
     }
 }
 
@@ -360,10 +360,10 @@ static void filenamefromtags_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {
-        gtk_widget_set_sensitive(use_suffix_toggle, FALSE);
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), FALSE);
-        use_suffix = FALSE;
-        filenamefromtags = TRUE;
+        gtk_widget_set_sensitive(use_suffix_toggle, false);
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), false);
+        use_suffix = false;
+        filenamefromtags = true;
     }
 }
 
@@ -371,8 +371,8 @@ static void filenamefromfilename_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {
-        gtk_widget_set_sensitive(use_suffix_toggle, TRUE);
-        filenamefromtags = FALSE;
+        gtk_widget_set_sensitive(use_suffix_toggle, true);
+        filenamefromtags = false;
     }
 }
 
@@ -384,7 +384,7 @@ static void * file_configure (void)
         gtk_box_pack_start(GTK_BOX(configure_vbox), fileext_hbox, FALSE, FALSE, 0);
 
         GtkWidget * fileext_label = gtk_label_new (_("Output file format:"));
-        gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_label, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_label, false, false, 0);
 
         fileext_combo = gtk_combo_box_text_new ();
         gtk_combo_box_text_append_text ((GtkComboBoxText *) fileext_combo, "WAV");
@@ -397,12 +397,12 @@ static void * file_configure (void)
 #ifdef FILEWRITER_FLAC
         gtk_combo_box_text_append_text ((GtkComboBoxText *) fileext_combo, "FLAC");
 #endif
-        gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_combo, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_combo, false, false, 0);
         gtk_combo_box_set_active(GTK_COMBO_BOX(fileext_combo), fileext);
 
         plugin_button = gtk_button_new_with_label(_("Configure"));
         gtk_widget_set_sensitive(plugin_button, plugin->configure != nullptr);
-        gtk_box_pack_end(GTK_BOX(fileext_hbox), plugin_button, FALSE, FALSE, 0);
+        gtk_box_pack_end(GTK_BOX(fileext_hbox), plugin_button, false, false, 0);
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
 
@@ -411,30 +411,30 @@ static void * file_configure (void)
 
         GtkWidget * saveplace1 = gtk_radio_button_new_with_label (nullptr,
          _("Save into original directory"));
-        gtk_box_pack_start ((GtkBox *) saveplace_hbox, saveplace1, FALSE, FALSE, 0);
+        gtk_box_pack_start ((GtkBox *) saveplace_hbox, saveplace1, false, false, 0);
 
         GtkWidget * saveplace2 = gtk_radio_button_new_with_label_from_widget
          ((GtkRadioButton *) saveplace1, _("Save into custom directory"));
 
         if (!save_original)
-            gtk_toggle_button_set_active ((GtkToggleButton *) saveplace2, TRUE);
+            gtk_toggle_button_set_active ((GtkToggleButton *) saveplace2, true);
 
-        gtk_box_pack_start ((GtkBox *) saveplace_hbox, saveplace2, FALSE, FALSE, 0);
+        gtk_box_pack_start ((GtkBox *) saveplace_hbox, saveplace2, false, false, 0);
 
         path_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), path_hbox, FALSE, FALSE, 0);
 
         GtkWidget * path_label = gtk_label_new (_("Output file folder:"));
-        gtk_box_pack_start ((GtkBox *) path_hbox, path_label, FALSE, FALSE, 0);
+        gtk_box_pack_start ((GtkBox *) path_hbox, path_label, false, false, 0);
 
         path_dirbrowser =
             gtk_file_chooser_button_new (_("Pick a folder"),
                                          GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
         gtk_file_chooser_set_uri ((GtkFileChooser *) path_dirbrowser, file_path);
-        gtk_box_pack_start(GTK_BOX(path_hbox), path_dirbrowser, TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(path_hbox), path_dirbrowser, true, true, 0);
 
         if (save_original)
-            gtk_widget_set_sensitive(path_hbox, FALSE);
+            gtk_widget_set_sensitive(path_hbox, false);
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
 
@@ -442,32 +442,32 @@ static void * file_configure (void)
         gtk_container_add(GTK_CONTAINER(configure_vbox), filenamefrom_hbox);
 
         filenamefrom_label = gtk_label_new(_("Generate file name from:"));
-        gtk_box_pack_start(GTK_BOX(filenamefrom_hbox), filenamefrom_label, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(filenamefrom_hbox), filenamefrom_label, false, false, 0);
 
         GtkWidget * filenamefrom_toggle1 = gtk_radio_button_new_with_label
          (nullptr, _("Original file tag"));
-        gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle1, FALSE, FALSE, 0);
+        gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle1, false, false, 0);
 
         GtkWidget * filenamefrom_toggle2 =
          gtk_radio_button_new_with_label_from_widget
          ((GtkRadioButton *) filenamefrom_toggle1, _("Original file name"));
-        gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle2, FALSE, FALSE, 0);
+        gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle2, false, false, 0);
 
         if (!filenamefromtags)
-            gtk_toggle_button_set_active ((GtkToggleButton *) filenamefrom_toggle2, TRUE);
+            gtk_toggle_button_set_active ((GtkToggleButton *) filenamefrom_toggle2, true);
 
         use_suffix_toggle = gtk_check_button_new_with_label(_("Include original file name extension"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), use_suffix);
-        gtk_box_pack_start(GTK_BOX(configure_vbox), use_suffix_toggle, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), use_suffix_toggle, false, false, 0);
 
         if (filenamefromtags)
-            gtk_widget_set_sensitive(use_suffix_toggle, FALSE);
+            gtk_widget_set_sensitive(use_suffix_toggle, false);
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
 
         prependnumber_toggle = gtk_check_button_new_with_label(_("Prepend track number to file name"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prependnumber_toggle), prependnumber);
-        gtk_box_pack_start(GTK_BOX(configure_vbox), prependnumber_toggle, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), prependnumber_toggle, false, false, 0);
 
         g_signal_connect (fileext_combo, "changed", (GCallback) fileext_cb, nullptr);
         g_signal_connect (plugin_button, "clicked", (GCallback) plugin_configure_cb, nullptr);

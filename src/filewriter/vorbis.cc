@@ -205,7 +205,7 @@ static void vorbis_configure(void)
         /* quality options */
         quality_frame = gtk_frame_new(_("Quality"));
         gtk_container_set_border_width(GTK_CONTAINER(quality_frame), 5);
-        gtk_box_pack_start(GTK_BOX(vbox), quality_frame, FALSE, FALSE, 2);
+        gtk_box_pack_start(GTK_BOX(vbox), quality_frame, false, false, 2);
 
         quality_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
         gtk_container_set_border_width(GTK_CONTAINER(quality_vbox), 10);
@@ -222,7 +222,7 @@ static void vorbis_configure(void)
 
         quality_adj = (GtkAdjustment *) gtk_adjustment_new (5, 0, 10, 0.1, 1, 0);
         quality_spin = gtk_spin_button_new(GTK_ADJUSTMENT(quality_adj), 1, 2);
-        gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_spin, TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_spin, true, true, 0);
         g_signal_connect(G_OBJECT(quality_adj), "value-changed", G_CALLBACK(quality_change), nullptr);
 
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(quality_spin), (v_base_quality * 10));

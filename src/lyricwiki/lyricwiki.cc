@@ -294,8 +294,8 @@ static void launch_edit_page ()
 static GtkWidget *build_widget(void)
 {
     textview = gtk_text_view_new();
-    gtk_text_view_set_editable(GTK_TEXT_VIEW(textview), FALSE);
-    gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(textview), FALSE);
+    gtk_text_view_set_editable(GTK_TEXT_VIEW(textview), false);
+    gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(textview), false);
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(textview), 4);
     gtk_text_view_set_right_margin(GTK_TEXT_VIEW(textview), 4);
     gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(textview), GTK_WRAP_WORD);
@@ -308,7 +308,7 @@ static GtkWidget *build_widget(void)
 
     gtk_container_add(GTK_CONTAINER(scrollview), textview);
 
-    gtk_box_pack_start(GTK_BOX(vbox), scrollview, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox), scrollview, true, true, 0);
 
     gtk_widget_show(textview);
     gtk_widget_show(scrollview);
@@ -356,7 +356,7 @@ static void update_lyrics_window(const char *title, const char *artist,
     gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, lyrics, -1);
 
     gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
-    gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(textview), &iter, 0, TRUE, 0, 0);
+    gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(textview), &iter, 0, true, 0, 0);
 
     gtk_widget_set_sensitive (edit_button, edit_enabled);
 }

@@ -6,8 +6,8 @@
 
 
 //shared variables
-gboolean          permission_check_requested   = FALSE;
-gboolean          invalidate_session_requested = FALSE;
+gboolean          permission_check_requested   = false;
+gboolean          invalidate_session_requested = false;
 enum permission perm_result                  = PERMISSION_UNKNOWN;
 String          username;
 
@@ -27,9 +27,9 @@ static GtkWidget *additional_details_label;
 
 
 static gboolean permission_checker_thread (void * data) {
-    if (permission_check_requested == TRUE) {
+    if (permission_check_requested == true) {
         //the answer hasn't arrived yet
-        return TRUE;
+        return true;
 
     } else {
         //the answer has arrived
@@ -42,7 +42,7 @@ static gboolean permission_checker_thread (void * data) {
              (const char *)username);
 
             gtk_label_set_markup(GTK_LABEL(permission_status_label), markup);
-            gtk_widget_set_sensitive(revoke_button, TRUE);
+            gtk_widget_set_sensitive(revoke_button, true);
             g_free(markup);
 
         } else if (perm_result == PERMISSION_DENIED) {
@@ -82,16 +82,16 @@ static gboolean permission_checker_thread (void * data) {
         }
 
         perm_result = PERMISSION_UNKNOWN;
-        gtk_widget_set_sensitive(button, TRUE);
+        gtk_widget_set_sensitive(button, true);
 
-        return FALSE;
+        return false;
     }
 }
 
 
 static void cleanup_window() {
-    gtk_widget_set_sensitive(button, FALSE);
-    gtk_widget_set_sensitive(revoke_button, FALSE);
+    gtk_widget_set_sensitive(button, false);
+    gtk_widget_set_sensitive(revoke_button, false);
 
     gtk_image_clear(GTK_IMAGE(permission_status_icon));
     gtk_image_clear(GTK_IMAGE(additional_details_icon));
@@ -111,11 +111,11 @@ static void permission_checker (GtkButton *button12, void * data) {
 
     //This will make the communication thread check the permission
     //and set the current status on the perm_result enum
-    permission_check_requested = TRUE;
+    permission_check_requested = true;
 
     //This is only to accelerate the check.
     //If scrobbles are being made, they are stopped for the request to be done sooner.
-    scrobbling_enabled = FALSE;
+    scrobbling_enabled = false;
 
     //Wake up the communication thread in case it's waiting for track plays
     pthread_mutex_lock(&communication_mutex);
@@ -130,13 +130,13 @@ static void revoke_permissions (GtkButton *revoke_button2, void * data) {
     cleanup_window();
 
     pthread_mutex_lock(&communication_mutex);
-    invalidate_session_requested = TRUE;
+    invalidate_session_requested = true;
 
-    scrobbling_enabled = FALSE;
+    scrobbling_enabled = false;
     pthread_cond_signal(&communication_signal);
     pthread_mutex_unlock(&communication_mutex);
 
-    gtk_widget_set_sensitive(button, TRUE);
+    gtk_widget_set_sensitive(button, true);
 }
 
 /*
@@ -175,7 +175,7 @@ static void *config_status_checker () {
 
     button                  = gtk_button_new_with_mnemonic(_("C_heck Permission"));
     revoke_button           = gtk_button_new_with_mnemonic(_("_Revoke Permission"));
-    gtk_widget_set_sensitive(revoke_button, FALSE);
+    gtk_widget_set_sensitive(revoke_button, false);
 
     permission_status_icon  = gtk_image_new();
     permission_status_label = gtk_label_new("");
@@ -188,7 +188,7 @@ static void *config_status_checker () {
     gtk_widget_set_halign(details_label_second, GTK_ALIGN_CENTER);
 
     gtk_widget_hide(url_button);
-    gtk_widget_set_no_show_all(url_button, TRUE);
+    gtk_widget_set_no_show_all(url_button, true);
 
     additional_details_icon  = gtk_image_new();
     additional_details_label = gtk_label_new("");
@@ -197,23 +197,23 @@ static void *config_status_checker () {
     g_signal_connect (button,        "clicked", G_CALLBACK (permission_checker), nullptr);
     g_signal_connect (revoke_button, "clicked", G_CALLBACK (revoke_permissions), nullptr);
 
-    gtk_box_pack_start(GTK_BOX(permission_box), buttons_box,             FALSE, FALSE, 20);
-    gtk_box_pack_start(GTK_BOX(permission_box), permission_status_icon,  FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(permission_box), permission_status_label, FALSE, FALSE, 5);
+    gtk_box_pack_start(GTK_BOX(permission_box), buttons_box,             false, false, 20);
+    gtk_box_pack_start(GTK_BOX(permission_box), permission_status_icon,  false, false, 0);
+    gtk_box_pack_start(GTK_BOX(permission_box), permission_status_label, false, false, 5);
 
-    gtk_box_pack_start(GTK_BOX(buttons_box), button,        FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(buttons_box), revoke_button, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(buttons_box), button,        false, false, 0);
+    gtk_box_pack_start(GTK_BOX(buttons_box), revoke_button, false, false, 0);
 
-    gtk_box_pack_start(GTK_BOX(details_box), details_label_first,  FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(details_box), url_button,           FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(details_box), details_label_second, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(details_box), details_label_first,  false, false, 0);
+    gtk_box_pack_start(GTK_BOX(details_box), url_button,           false, false, 0);
+    gtk_box_pack_start(GTK_BOX(details_box), details_label_second, false, false, 0);
 
-    gtk_box_pack_start(GTK_BOX(additional_details_box), additional_details_icon,  FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(additional_details_box), additional_details_label, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(additional_details_box), additional_details_icon,  false, false, 0);
+    gtk_box_pack_start(GTK_BOX(additional_details_box), additional_details_label, false, false, 0);
 
-    gtk_box_pack_start(GTK_BOX(config_box), permission_box,         FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(config_box), details_box,            FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(config_box), additional_details_box, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(config_box), permission_box,         false, false, 0);
+    gtk_box_pack_start(GTK_BOX(config_box), details_box,            false, false, 0);
+    gtk_box_pack_start(GTK_BOX(config_box), additional_details_box, false, false, 0);
 
     return config_box;
 }

@@ -161,7 +161,7 @@ aosd_deco_rfunc_rect( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t * data
     (double)color1.blue / 65535 , (double)color1.alpha / 65535 );
   cairo_stroke( cr );
 
-  if ( draw_shadow == TRUE )
+  if ( draw_shadow == true )
   {
     /* draw text shadow */
     cairo_set_source_rgba( cr , (double)shadowcolor0.red / 65535 , (double)shadowcolor0.green / 65535 ,
@@ -222,7 +222,7 @@ aosd_deco_rfunc_roundrect ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t 
     (double)color1.blue / 65535 , (double)color1.alpha / 65535 );
   cairo_stroke( cr );
 
-  if ( draw_shadow == TRUE )
+  if ( draw_shadow == true )
   {
     /* draw text shadow */
     cairo_set_source_rgba( cr , (double)shadowcolor0.red / 65535 , (double)shadowcolor0.green / 65535 ,
@@ -283,7 +283,7 @@ aosd_deco_rfunc_concaverect ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_
     (double)color1.blue / 65535 , (double)color1.alpha / 65535 );
   cairo_stroke( cr );
 
-  if ( draw_shadow == TRUE )
+  if ( draw_shadow == true )
   {
     /* draw text shadow */
     cairo_set_source_rgba( cr , (double)shadowcolor0.red / 65535 , (double)shadowcolor0.green / 65535 ,
@@ -320,7 +320,7 @@ aosd_deco_rfunc_none ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t * dat
 
   aosd_layout_size( osd_layout , &width , &height , &bearing );
 
-  if ( draw_shadow == TRUE )
+  if ( draw_shadow == true )
   {
     /* draw text shadow */
     cairo_set_source_rgba( cr , (double)shadowcolor0.red / 65535 , (double)shadowcolor0.green / 65535 ,

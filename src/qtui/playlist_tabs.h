@@ -36,7 +36,6 @@ class PlaylistTabs : public QTabWidget
 {
 public:
     PlaylistTabs (QWidget * parent = nullptr);
-    ~PlaylistTabs ();
 
     PlaylistWidget * playlistWidget (int num)
         { return (PlaylistWidget *) widget (num); }

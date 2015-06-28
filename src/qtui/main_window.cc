@@ -131,12 +131,10 @@ MainWindow::MainWindow () :
     {
         playback_begin_cb ();
         if (aud_drct_get_ready ())
-            playback_ready_cb ();
+            title_change_cb ();
     }
     else
         playback_stop_cb ();
-
-    title_change_cb ();
 
     readSettings ();
 }
@@ -234,11 +232,6 @@ void MainWindow::playback_begin_cb ()
     playing_id = aud_playlist_get_unique_id (list);
 
     buffering_timer.start (250);
-}
-
-void MainWindow::playback_ready_cb ()
-{
-    title_change_cb ();
 }
 
 void MainWindow::pause_cb ()

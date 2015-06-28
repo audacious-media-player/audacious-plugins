@@ -194,7 +194,7 @@ aosd_osd_create ( void )
   osd_data->pango_layout = pango_layout_new(osd_data->pango_context);
   pango_layout_set_markup( osd_data->pango_layout, osd_data->markup_message , -1 );
   pango_layout_set_ellipsize( osd_data->pango_layout , PANGO_ELLIPSIZE_NONE );
-  pango_layout_set_justify( osd_data->pango_layout , FALSE );
+  pango_layout_set_justify( osd_data->pango_layout , false );
   pango_layout_set_width( osd_data->pango_layout , PANGO_SCALE * max_width );
   pango_layout_get_pixel_extents( osd_data->pango_layout , &ink , &log );
   layout_width = ink.width;
@@ -296,7 +296,7 @@ aosd_timer_func ( void * none )
         ghosd_render( osd );
         ghosd_main_iterations( osd );
       }
-      return TRUE;
+      return true;
     }
 
     case AOSD_STATUS_SHOW:
@@ -311,7 +311,7 @@ aosd_timer_func ( void * none )
       {
         ghosd_main_iterations( osd );
       }
-      return TRUE;
+      return true;
     }
 
     case AOSD_STATUS_FADEOUT:
@@ -330,7 +330,7 @@ aosd_timer_func ( void * none )
         ghosd_render( osd );
         ghosd_main_iterations( osd );
       }
-      return TRUE;
+      return true;
     }
 
     case AOSD_STATUS_DESTROY:
@@ -340,11 +340,11 @@ aosd_timer_func ( void * none )
 
       osd_status = AOSD_STATUS_HIDDEN; /* reset status */
       osd_source_id = 0;
-      return FALSE;
+      return false;
     }
   }
 
-  return TRUE;
+  return true;
 }
 
 
@@ -482,7 +482,7 @@ aosd_osd_check_composite_mgr ( void )
     int exit_status;
 
     if ( g_spawn_command_line_sync( "ps -eo comm" ,
-           &soutput , &serror , &exit_status , nullptr ) == TRUE )
+           &soutput , &serror , &exit_status , nullptr ) == true )
     {
       if (( soutput != nullptr ) && ( strstr( soutput , "\nxcompmgr\n" ) != nullptr ))
       {

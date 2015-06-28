@@ -262,7 +262,7 @@ GtkWidget *create_config_notebook (void)
         gtk_widget_set_valign (widget[i], GTK_ALIGN_CENTER);
         gtk_grid_attach (GTK_GRID (grid), widget[i], 0, i + 1, 1, 1);
     }
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget[6]), FALSE);
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget[6]), false);
 
     for (i = 0; i < 7; i ++)
     {
@@ -311,7 +311,7 @@ GtkWidget *create_config_notebook (void)
     adjustment = gtk_adjustment_new (120, 0, 3600, 1, 10, 0);
     fading_spin = gtk_spin_button_new (adjustment, 1, 0);
     g_object_set_data (G_OBJECT (notebook), "fading_spin", fading_spin);
-    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fading_spin), TRUE);
+    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fading_spin), true);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (fading_spin), GTK_UPDATE_IF_VALID);
     label = gtk_label_new (_("seconds"));
 
@@ -422,8 +422,8 @@ GtkWidget *create_config_notebook (void)
     frame = gtk_frame_new (_("What do these options mean?"));
     gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
     view = gtk_text_view_new ();
-    gtk_text_view_set_editable (GTK_TEXT_VIEW (view), FALSE);
-    gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (view), FALSE);
+    gtk_text_view_set_editable (GTK_TEXT_VIEW (view), false);
+    gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (view), false);
     text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
     help_text = g_strconcat (_(help[0]), _(help[1]), _(help[2]), nullptr);
     gtk_text_buffer_set_text (text_buffer, help_text, -1);

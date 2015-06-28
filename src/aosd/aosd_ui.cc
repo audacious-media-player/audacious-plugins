@@ -93,7 +93,7 @@ aosd_cb_configure_position_expose ( GtkWidget * darea ,
   cairo_rectangle ( cr , (coord % 3) * 10 , (coord / 3) * 16 , 20 , 8 );
   cairo_fill ( cr );
 
-  return FALSE;
+  return false;
 }
 
 
@@ -106,7 +106,7 @@ aosd_cb_configure_position_placement_commit ( GtkWidget * grid , aosd_cfg_t * cf
   while ( list_iter != nullptr )
   {
     GtkWidget *placbt = (GtkWidget *) list_iter->data;
-    if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(placbt) ) == TRUE )
+    if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(placbt) ) == true )
     {
       cfg->position.placement = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(placbt),"value"));
       break;
@@ -166,7 +166,7 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg )
   pos_placement_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 0 );
   gtk_container_set_border_width( GTK_CONTAINER(pos_placement_hbox) , 6 );
   gtk_container_add( GTK_CONTAINER(pos_placement_frame) , pos_placement_hbox );
-  gtk_box_pack_start( GTK_BOX(pos_vbox) , pos_placement_frame , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(pos_vbox) , pos_placement_frame , false , false , 0 );
 
   pos_placement_grid = gtk_grid_new();
   for ( i = 0 ; i < 9 ; i++ )
@@ -175,7 +175,7 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg )
       pos_placement_bt[i] = gtk_radio_button_new( nullptr );
     else
       pos_placement_bt[i] = gtk_radio_button_new_from_widget( GTK_RADIO_BUTTON(pos_placement_bt[0]) );
-    gtk_toggle_button_set_mode( GTK_TOGGLE_BUTTON(pos_placement_bt[i]) , FALSE );
+    gtk_toggle_button_set_mode( GTK_TOGGLE_BUTTON(pos_placement_bt[i]) , false );
     pos_placement_bt_darea[i] = gtk_drawing_area_new();
     gtk_widget_set_size_request( pos_placement_bt_darea[i] , 40 , 40 );
     gtk_container_add( GTK_CONTAINER(pos_placement_bt[i]) , pos_placement_bt_darea[i] );
@@ -184,9 +184,9 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg )
     gtk_grid_attach( GTK_GRID(pos_placement_grid) , pos_placement_bt[i] , (i % 3) , (i / 3) , 1 , 1 );
     g_object_set_data( G_OBJECT(pos_placement_bt[i]) , "value" , GINT_TO_POINTER(i+1) );
     if ( cfg->position.placement == (i+1) )
-      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(pos_placement_bt[i]) , TRUE );
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(pos_placement_bt[i]) , true );
   }
-  gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_placement_grid , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_placement_grid , false , false , 0 );
   aosd_cb_list.append( pos_placement_grid , aosd_cb_configure_position_placement_commit );
 
   gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , gtk_separator_new(GTK_ORIENTATION_VERTICAL) , FALSE , FALSE , 6 );
@@ -234,9 +234,9 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg )
   }
   gtk_combo_box_set_active( GTK_COMBO_BOX(pos_multimon_combobox) , (cfg->position.multimon_id + 1) );
   aosd_cb_list.append( pos_multimon_combobox , aosd_cb_configure_position_multimon_commit );
-  gtk_box_pack_start( GTK_BOX(pos_multimon_hbox) , pos_multimon_label , FALSE , FALSE , 0 );
-  gtk_box_pack_start( GTK_BOX(pos_multimon_hbox) , pos_multimon_combobox , FALSE , FALSE , 0 );
-  gtk_box_pack_start( GTK_BOX(pos_vbox) , pos_multimon_frame , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(pos_multimon_hbox) , pos_multimon_label , false , false , 0 );
+  gtk_box_pack_start( GTK_BOX(pos_multimon_hbox) , pos_multimon_combobox , false , false , 0 );
+  gtk_box_pack_start( GTK_BOX(pos_vbox) , pos_multimon_frame , false , false , 0 );
 
   return pos_vbox;
 }
@@ -249,8 +249,8 @@ aosd_ui_configure_animation_timing ( char * label_string )
   hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
   desc_label = gtk_label_new( label_string );
   spinbt = gtk_spin_button_new_with_range( 0 , 99999 , 1 );
-  gtk_box_pack_start( GTK_BOX(hbox) , desc_label , FALSE , FALSE , 0 );
-  gtk_box_pack_start( GTK_BOX(hbox) , spinbt , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(hbox) , desc_label , false , false , 0 );
+  gtk_box_pack_start( GTK_BOX(hbox) , spinbt , false , false , 0 );
   g_object_set_data( G_OBJECT(hbox) , "spinbt" , spinbt );
   return hbox;
 }
@@ -283,7 +283,7 @@ aosd_ui_configure_animation ( aosd_cfg_t * cfg )
   ani_timing_frame = gtk_frame_new( _("Timing (ms)") );
   gtk_container_set_border_width( GTK_CONTAINER(ani_timing_hbox) , 6 );
   gtk_container_add( GTK_CONTAINER(ani_timing_frame) , ani_timing_hbox );
-  gtk_box_pack_start( GTK_BOX(ani_vbox) , ani_timing_frame , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(ani_vbox) , ani_timing_frame , false , false , 0 );
 
   ani_timing_stay_widget = aosd_ui_configure_animation_timing( _("Display:") );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(g_object_get_data(
@@ -298,7 +298,7 @@ aosd_ui_configure_animation ( aosd_cfg_t * cfg )
   ani_timing_fadeout_widget = aosd_ui_configure_animation_timing( _("Fade out:") );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(g_object_get_data(
     G_OBJECT(ani_timing_fadeout_widget),"spinbt")) , cfg->animation.timing_fadeout );
-  gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , ani_timing_fadeout_widget , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , ani_timing_fadeout_widget , true , true , 0 );
   g_object_set_data( G_OBJECT(ani_timing_hbox) , "display" ,
     g_object_get_data(G_OBJECT(ani_timing_stay_widget),"spinbt") );
   g_object_set_data( G_OBJECT(ani_timing_hbox) , "fadein" ,
@@ -319,10 +319,10 @@ static void
 aosd_cb_configure_text_font_shadow_toggle ( GtkToggleButton * shadow_togglebt ,
                                             void * shadow_colorbt )
 {
-  if ( gtk_toggle_button_get_active( shadow_togglebt ) == TRUE )
-    gtk_widget_set_sensitive( GTK_WIDGET(shadow_colorbt) , TRUE );
+  if ( gtk_toggle_button_get_active( shadow_togglebt ) == true )
+    gtk_widget_set_sensitive( GTK_WIDGET(shadow_colorbt) , true );
   else
-    gtk_widget_set_sensitive( GTK_WIDGET(shadow_colorbt) , FALSE );
+    gtk_widget_set_sensitive( GTK_WIDGET(shadow_colorbt) , false );
 }
 
 
@@ -370,10 +370,10 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg )
     tex_font_label[i] = gtk_label_new( label_str );
     g_free( label_str );
     tex_font_fontbt[i] = gtk_font_button_new();
-    gtk_font_button_set_show_style( GTK_FONT_BUTTON(tex_font_fontbt[i]) , TRUE );
-    gtk_font_button_set_show_size( GTK_FONT_BUTTON(tex_font_fontbt[i]) , TRUE );
-    gtk_font_button_set_use_font( GTK_FONT_BUTTON(tex_font_fontbt[i]) , FALSE );
-    gtk_font_button_set_use_size( GTK_FONT_BUTTON(tex_font_fontbt[i]) , FALSE );
+    gtk_font_button_set_show_style( GTK_FONT_BUTTON(tex_font_fontbt[i]) , true );
+    gtk_font_button_set_show_size( GTK_FONT_BUTTON(tex_font_fontbt[i]) , true );
+    gtk_font_button_set_use_font( GTK_FONT_BUTTON(tex_font_fontbt[i]) , false );
+    gtk_font_button_set_use_size( GTK_FONT_BUTTON(tex_font_fontbt[i]) , false );
     gtk_font_button_set_font_name( GTK_FONT_BUTTON(tex_font_fontbt[i]) , cfg->text.fonts_name[i] );
     gtk_widget_set_hexpand( tex_font_fontbt[i] , TRUE );
 
@@ -382,13 +382,13 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg )
      & cfg->text.fonts_color[i]);
 
     tex_font_shadow_togglebt[i] = gtk_toggle_button_new_with_label( _("Shadow") );
-    gtk_toggle_button_set_mode( GTK_TOGGLE_BUTTON(tex_font_shadow_togglebt[i]) , FALSE );
+    gtk_toggle_button_set_mode( GTK_TOGGLE_BUTTON(tex_font_shadow_togglebt[i]) , false );
 
     tex_font_shadow_colorbt[i] = gtk_color_button_new ();
     chooser_set_aosd_color ((GtkColorChooser *) tex_font_shadow_colorbt[i],
      & cfg->text.fonts_shadow_color[i]);
 
-    gtk_widget_set_sensitive( tex_font_shadow_colorbt[i] , FALSE );
+    gtk_widget_set_sensitive( tex_font_shadow_colorbt[i] , false );
     g_signal_connect( G_OBJECT(tex_font_shadow_togglebt[i]) , "toggled" ,
                       G_CALLBACK(aosd_cb_configure_text_font_shadow_toggle) ,
                       tex_font_shadow_colorbt[i] );
@@ -406,7 +406,7 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg )
     aosd_cb_list.append( tex_font_fontbt[i] , aosd_cb_configure_text_font_commit );
   }
   gtk_container_add( GTK_CONTAINER(tex_font_frame) , tex_font_grid );
-  gtk_box_pack_start( GTK_BOX(tex_vbox) , tex_font_frame , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(tex_vbox) , tex_font_frame , false , false , 0 );
 
   return tex_vbox;
 }
@@ -419,7 +419,7 @@ aosd_cb_configure_decoration_style_commit ( GtkWidget * lv , aosd_cfg_t * cfg )
   GtkTreeModel *model;
   GtkTreeIter iter;
 
-  if ( gtk_tree_selection_get_selected( sel , &model , &iter ) == TRUE )
+  if ( gtk_tree_selection_get_selected( sel , &model , &iter ) == true )
   {
     int deco_code = 0;
     gtk_tree_model_get( model , &iter , 1 , &deco_code , -1 );
@@ -494,7 +494,7 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg )
   gtk_container_add( GTK_CONTAINER(dec_rstyle_lv_frame) , dec_rstyle_lv_sw );
 
   gtk_tree_selection_select_iter( dec_rstyle_lv_sel , &iter_sel );
-  gtk_box_pack_start( GTK_BOX(dec_hbox) , dec_rstyle_lv_frame , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(dec_hbox) , dec_rstyle_lv_frame , false , false , 0 );
   aosd_cb_list.append( dec_rstyle_lv , aosd_cb_configure_decoration_style_commit );
 
   dec_rstyle_hbox = gtk_box_new( GTK_ORIENTATION_VERTICAL , 4 );
@@ -525,7 +525,7 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg )
     g_object_set_data( G_OBJECT(colorbt) , "colnum" , GINT_TO_POINTER(i) );
     aosd_cb_list.append( colorbt , aosd_cb_configure_decoration_color_commit );
   }
-  gtk_box_pack_start( GTK_BOX(dec_rstyle_hbox) , dec_rstyleopts_frame , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(dec_rstyle_hbox) , dec_rstyleopts_frame , false , false , 0 );
 
   return dec_hbox;
 }
@@ -537,7 +537,7 @@ aosd_cb_configure_trigger_lvchanged ( GtkTreeSelection *sel , void * nb )
   GtkTreeModel *model;
   GtkTreeIter iter;
 
-  if ( gtk_tree_selection_get_selected( sel , &model , &iter ) == TRUE )
+  if ( gtk_tree_selection_get_selected( sel , &model , &iter ) == true )
   {
     int page_num = 0;
     gtk_tree_model_get( model , &iter , 2 , &page_num , -1 );
@@ -549,7 +549,7 @@ aosd_cb_configure_trigger_lvchanged ( GtkTreeSelection *sel , void * nb )
 static void
 aosd_cb_configure_trigger_commit ( GtkWidget * cbt , aosd_cfg_t * cfg )
 {
-  if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(cbt) ) == TRUE )
+  if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(cbt) ) == true )
   {
     int value = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(cbt),"code"));
     cfg->trigger.enabled[value] = true;
@@ -572,8 +572,8 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg )
 
   tri_event_nb = gtk_notebook_new();
   gtk_notebook_set_tab_pos( GTK_NOTEBOOK(tri_event_nb) , GTK_POS_LEFT );
-  gtk_notebook_set_show_tabs( GTK_NOTEBOOK(tri_event_nb) , FALSE );
-  gtk_notebook_set_show_border( GTK_NOTEBOOK(tri_event_nb) , FALSE );
+  gtk_notebook_set_show_tabs( GTK_NOTEBOOK(tri_event_nb) , false );
+  gtk_notebook_set_show_border( GTK_NOTEBOOK(tri_event_nb) , false );
 
   tri_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
   gtk_container_set_border_width( GTK_CONTAINER(tri_hbox) , 6 );
@@ -596,12 +596,12 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg )
     vbox = gtk_box_new( GTK_ORIENTATION_VERTICAL , 0 );
     gtk_container_set_border_width( GTK_CONTAINER(vbox) , 6 );
     label = gtk_label_new( _(aosd_trigger_get_desc( i )) );
-    gtk_label_set_line_wrap( GTK_LABEL(label) , TRUE );
+    gtk_label_set_line_wrap( GTK_LABEL(label) , true );
     gtk_label_set_max_width_chars( GTK_LABEL(label), 40 );
     gtk_widget_set_halign( label , GTK_ALIGN_START );
     checkbt = gtk_check_button_new_with_label( _("Enable trigger") );
     if ( cfg->trigger.enabled[i] )
-      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(checkbt) , TRUE );
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(checkbt) , true );
     else
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(checkbt) , FALSE );
     gtk_box_pack_start( GTK_BOX(vbox) , checkbt , FALSE , FALSE , 0 );
@@ -621,7 +621,7 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg )
   gtk_tree_selection_set_mode( tri_event_lv_sel , GTK_SELECTION_BROWSE );
   g_signal_connect( G_OBJECT(tri_event_lv_sel) , "changed" ,
                     G_CALLBACK(aosd_cb_configure_trigger_lvchanged) , tri_event_nb );
-  if ( gtk_tree_model_get_iter_first( GTK_TREE_MODEL(tri_event_store) , &iter ) == TRUE )
+  if ( gtk_tree_model_get_iter_first( GTK_TREE_MODEL(tri_event_store) , &iter ) == true )
     gtk_tree_selection_select_iter( tri_event_lv_sel , &iter );
 
   tri_event_lv_rndr_text = gtk_cell_renderer_text_new();
@@ -635,9 +635,9 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg )
   gtk_container_add( GTK_CONTAINER(tri_event_lv_frame) , tri_event_lv_sw );
   gtk_tree_selection_select_iter( tri_event_lv_sel , &iter );
 
-  gtk_box_pack_start( GTK_BOX(tri_hbox) , tri_event_lv_frame , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(tri_hbox) , tri_event_lv_frame , false , false , 0 );
 
-  gtk_box_pack_start( GTK_BOX(tri_hbox) , tri_event_nb , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(tri_hbox) , tri_event_nb , true , true , 0 );
 
   return tri_hbox;
 }
@@ -655,7 +655,7 @@ aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , void *
     {
       gtk_image_set_from_icon_name( GTK_IMAGE(img) , "face-smile" , GTK_ICON_SIZE_MENU );
       gtk_label_set_text( GTK_LABEL(label) , _("Composite manager detected") );
-      gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , TRUE );
+      gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , true );
     }
     else
     {
@@ -663,14 +663,14 @@ aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , void *
       gtk_label_set_text( GTK_LABEL(label) ,
         _("Composite manager not detected;\nunless you know that you have one running, "
           "please activate a composite manager otherwise the OSD won't work properly") );
-      gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , TRUE );
+      gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , true );
     }
   }
   else
   {
     gtk_image_set_from_icon_name( GTK_IMAGE(img) , "dialog-information" , GTK_ICON_SIZE_MENU );
     gtk_label_set_text( GTK_LABEL(label) , _("Composite manager not required for fake transparency") );
-    gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , FALSE );
+    gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , false );
   }
 }
 #endif
@@ -708,7 +708,7 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg )
   mis_transp_frame = gtk_frame_new( _("Transparency") );
   gtk_container_set_border_width( GTK_CONTAINER(mis_transp_vbox) , 6 );
   gtk_container_add( GTK_CONTAINER(mis_transp_frame) , mis_transp_vbox );
-  gtk_box_pack_start( GTK_BOX(mis_vbox) , mis_transp_frame , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(mis_vbox) , mis_transp_frame , false , false , 0 );
 
   mis_transp_fake_rbt = gtk_radio_button_new_with_label( nullptr ,
                           _("Fake transparency") );
@@ -718,14 +718,14 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg )
                      GINT_TO_POINTER(AOSD_MISC_TRANSPARENCY_FAKE) );
   g_object_set_data( G_OBJECT(mis_transp_real_rbt) , "val" ,
                      GINT_TO_POINTER(AOSD_MISC_TRANSPARENCY_REAL) );
-  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_fake_rbt , TRUE , TRUE , 0 );
-  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_real_rbt , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_fake_rbt , true , true , 0 );
+  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_real_rbt , true , true , 0 );
 
   mis_transp_status_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
   mis_transp_status_frame = gtk_frame_new( nullptr );
   gtk_container_set_border_width( GTK_CONTAINER(mis_transp_status_hbox) , 3 );
   gtk_container_add( GTK_CONTAINER(mis_transp_status_frame) , mis_transp_status_hbox );
-  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_status_frame , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_status_frame , true , true , 0 );
 
   mis_transp_status_img = gtk_image_new();
   mis_transp_status_label = gtk_label_new( "" );
@@ -744,26 +744,26 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg )
   if ( aosd_osd_check_composite_ext() )
   {
     if ( cfg->misc.transparency_mode == AOSD_MISC_TRANSPARENCY_FAKE )
-      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , true );
     else
-      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_real_rbt) , TRUE );
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_real_rbt) , true );
   }
   else
   {
-    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
-    gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_real_rbt) , FALSE );
+    gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , true );
+    gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_real_rbt) , false );
     gtk_image_set_from_icon_name( GTK_IMAGE(mis_transp_status_img) ,
       "dialog-error" , GTK_ICON_SIZE_MENU );
     gtk_label_set_text( GTK_LABEL(mis_transp_status_label) , _("Composite extension not loaded") );
-    gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_status_hbox) , FALSE );
+    gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_status_hbox) , false );
   }
 #else
-  gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
-  gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_real_rbt) , FALSE );
+  gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , true );
+  gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_real_rbt) , false );
   gtk_image_set_from_icon_name( GTK_IMAGE(mis_transp_status_img) ,
     "dialog-error" , GTK_ICON_SIZE_MENU );
   gtk_label_set_text( GTK_LABEL(mis_transp_status_label) , _("Composite extension not available") );
-  gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_status_hbox) , FALSE );
+  gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_status_hbox) , false );
 #endif
 
   aosd_cb_list.append( mis_transp_vbox , aosd_cb_configure_misc_transp_commit );
