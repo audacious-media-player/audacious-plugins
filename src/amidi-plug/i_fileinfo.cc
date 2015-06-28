@@ -157,12 +157,12 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     /******************
      *** TITLE LINE ***/
     title_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
-    gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), title_hbox, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), title_hbox, false, false, 0);
 
     title_icon_pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) amidiplug_xpm_midiicon);
     title_icon_image = gtk_image_new_from_pixbuf (title_icon_pixbuf);
     g_object_unref (title_icon_pixbuf);
-    gtk_box_pack_start (GTK_BOX (title_hbox), title_icon_image, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (title_hbox), title_icon_image, false, false, 0);
 
     title_name_f_label = gtk_label_new (_("Name:"));
     gtk_label_set_attributes (GTK_LABEL (title_name_f_label), pangoattrlist);
@@ -174,19 +174,19 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     gtk_box_pack_start (GTK_BOX (title_hbox), title_name_v_entry, true, true, 0);
 
     fileinfowin_columns_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-    gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), fileinfowin_columns_hbox, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), fileinfowin_columns_hbox, true, true, 0);
 
     /*********************
      *** MIDI INFO BOX ***/
     midiinfoboxes_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-    gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, false, false, 0);
 
     info_frame_tl = gtk_label_new ("");
     gtk_label_set_markup (GTK_LABEL (info_frame_tl), _("<span size=\"smaller\"> MIDI Info </span>"));
     gtk_box_pack_start (GTK_BOX (midiinfoboxes_vbox), info_frame_tl, false, false, 0);
 
     info_frame = gtk_frame_new (nullptr);
-    gtk_box_pack_start (GTK_BOX (midiinfoboxes_vbox), info_frame, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (midiinfoboxes_vbox), info_frame, true, true, 0);
     info_grid = gtk_grid_new();
     gtk_grid_set_row_spacing (GTK_GRID (info_grid), 4);
     gtk_grid_set_column_spacing (GTK_GRID (info_grid), 10);
@@ -228,7 +228,7 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     /**********************************
      *** MIDI COMMENTS/LYRICS BOXES ***/
     miditextboxes_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-    gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), miditextboxes_vbox, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), miditextboxes_vbox, true, true, 0);
 
     text_frame_tl = gtk_label_new ("");
     gtk_label_set_markup (GTK_LABEL (text_frame_tl),
@@ -236,7 +236,7 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     gtk_box_pack_start (GTK_BOX (miditextboxes_vbox), text_frame_tl, false, false, 0);
 
     miditextboxes_paned = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
-    gtk_box_pack_start (GTK_BOX (miditextboxes_vbox), miditextboxes_paned, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (miditextboxes_vbox), miditextboxes_paned, true, true, 0);
 
     text_frame = gtk_frame_new (nullptr);
     gtk_paned_pack1 (GTK_PANED (miditextboxes_paned), text_frame, true, true);

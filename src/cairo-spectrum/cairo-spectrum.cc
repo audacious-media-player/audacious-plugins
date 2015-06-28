@@ -187,7 +187,7 @@ static void hsv_to_rgb (float h, float s, float v, float * r, float * g, float *
 static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
 {
     static GdkRGBA c;
-    static gboolean valid = FALSE;
+    static gboolean valid = false;
     gfloat h, s, v, n;
 
     if (! valid)
@@ -203,7 +203,7 @@ static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
         gtk_style_context_get_background_color (style,
          (GtkStateFlags) (GTK_STATE_FLAG_FOCUSED | GTK_STATE_FLAG_SELECTED), & c);
         g_object_unref (style);
-        valid = TRUE;
+        valid = true;
     }
 
     rgb_to_hsv (c.red, c.green, c.blue, & h, & s, & v);
@@ -263,7 +263,7 @@ static gboolean draw_event (GtkWidget * widget, cairo_t * cr, GtkWidget * area)
     draw_background (widget, cr);
     draw_visualizer (widget, cr);
 
-    return TRUE;
+    return true;
 }
 
 void * CairoSpectrum::get_gtk_widget ()

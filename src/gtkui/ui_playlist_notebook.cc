@@ -47,7 +47,7 @@ void apply_column_widths (GtkWidget * treeview)
     {
         GtkTreeViewColumn * col = gtk_tree_view_get_column ((GtkTreeView *) treeview, i);
         gtk_tree_view_column_set_fixed_width (col, pw_col_widths[pw_cols[i]]);
-        gtk_tree_view_column_set_expand (col, FALSE);
+        gtk_tree_view_column_set_expand (col, false);
     }
 }
 

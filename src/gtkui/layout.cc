@@ -97,7 +97,7 @@ static int item_by_name (Item * item, const char * name)
 GtkWidget * layout_new ()
 {
     g_return_val_if_fail (! layout, nullptr);
-    layout = gtk_frame_new (NULL);
+    layout = gtk_frame_new (nullptr);
     gtk_frame_set_shadow_type ((GtkFrame *) layout, GTK_SHADOW_NONE);
     gtk_container_set_border_width ((GtkContainer *) layout, 3);
     NULL_ON_DESTROY (layout);

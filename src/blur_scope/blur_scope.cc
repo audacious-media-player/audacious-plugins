@@ -142,7 +142,7 @@ gboolean BlurScope::configure_event (GtkWidget * widget, GdkEventConfigure * eve
 gboolean BlurScope::draw_cb (GtkWidget * widget, cairo_t * cr, void * user)
 {
     ((BlurScope *) user)->draw_to_cairo (cr);
-    return TRUE;
+    return true;
 }
 
 void * BlurScope::get_gtk_widget ()

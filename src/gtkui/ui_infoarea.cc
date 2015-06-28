@@ -243,7 +243,7 @@ static void hsv_to_rgb (float h, float s, float v, float * r, float * g,
 static void get_color (int i, float * r, float * g, float * b)
 {
     static GdkRGBA c;
-    static gboolean valid = FALSE;
+    static gboolean valid = false;
 
     if (! valid)
     {
@@ -258,7 +258,7 @@ static void get_color (int i, float * r, float * g, float * b)
         gtk_style_context_get_background_color (style,
          (GtkStateFlags) (GTK_STATE_FLAG_FOCUSED | GTK_STATE_FLAG_SELECTED), & c);
         g_object_unref (style);
-        valid = TRUE;
+        valid = true;
     }
 
     float h, s, v;
@@ -354,7 +354,7 @@ static void draw_title (cairo_t * cr)
 
 static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
 {
-    g_return_val_if_fail (area, FALSE);
+    g_return_val_if_fail (area, false);
 
     clear (widget, cr);
 

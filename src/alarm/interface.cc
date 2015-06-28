@@ -176,7 +176,7 @@ GtkWidget *create_config_notebook (void)
     gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
     grid = gtk_grid_new ();
     gtk_grid_set_column_spacing (GTK_GRID (grid), 3);
-    gtk_grid_set_row_homogeneous (GTK_GRID (grid), TRUE);
+    gtk_grid_set_row_homogeneous (GTK_GRID (grid), true);
     gtk_container_set_border_width (GTK_CONTAINER (grid), 5);
 
     label = gtk_label_new (_("Alarm at (default):"));
@@ -187,8 +187,8 @@ GtkWidget *create_config_notebook (void)
     alarm_h_spin = gtk_spin_button_new (adjustment, 1, 0);
     g_object_set_data (G_OBJECT (notebook), "alarm_h_spin", alarm_h_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (alarm_h_spin), GTK_UPDATE_IF_VALID);
-    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (alarm_h_spin), TRUE);
-    gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (alarm_h_spin), TRUE);
+    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (alarm_h_spin), true);
+    gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (alarm_h_spin), true);
     gtk_grid_attach (GTK_GRID (grid), alarm_h_spin, 1, 0, 1, 1);
 
     label = gtk_label_new (":");
@@ -198,8 +198,8 @@ GtkWidget *create_config_notebook (void)
     alarm_m_spin = gtk_spin_button_new (adjustment, 1, 0);
     g_object_set_data (G_OBJECT (notebook), "alarm_m_spin", alarm_m_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (alarm_m_spin), GTK_UPDATE_IF_VALID);
-    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (alarm_m_spin), TRUE);
-    gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (alarm_m_spin), TRUE);
+    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (alarm_m_spin), true);
+    gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (alarm_m_spin), true);
     gtk_grid_attach (GTK_GRID (grid), alarm_m_spin, 3, 0, 1, 1);
 
     label = gtk_label_new (_("h"));
@@ -216,8 +216,8 @@ GtkWidget *create_config_notebook (void)
     stop_h_spin = gtk_spin_button_new (adjustment, 1, 0);
     g_object_set_data (G_OBJECT (notebook), "stop_h_spin", stop_h_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (stop_h_spin), GTK_UPDATE_IF_VALID);
-    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (stop_h_spin), TRUE);
-    gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (stop_h_spin), TRUE);
+    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (stop_h_spin), true);
+    gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (stop_h_spin), true);
     gtk_grid_attach (GTK_GRID (grid), stop_h_spin, 1, 1, 1, 1);
 
     label = gtk_label_new (_("hours"));
@@ -228,8 +228,8 @@ GtkWidget *create_config_notebook (void)
     stop_m_spin = gtk_spin_button_new (adjustment, 1, 0);
     g_object_set_data (G_OBJECT (notebook), "stop_m_spin", stop_m_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (stop_m_spin), GTK_UPDATE_IF_VALID);
-    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (stop_m_spin), TRUE);
-    gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (stop_m_spin), TRUE);
+    gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (stop_m_spin), true);
+    gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (stop_m_spin), true);
     gtk_grid_attach (GTK_GRID (grid), stop_m_spin, 3, 1, 1, 1);
 
     label = gtk_label_new (_("minutes"));
@@ -245,7 +245,7 @@ GtkWidget *create_config_notebook (void)
     gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
     grid = gtk_grid_new ();
     gtk_grid_set_column_spacing (GTK_GRID (grid), 15);
-    gtk_grid_set_row_homogeneous (GTK_GRID (grid), TRUE);
+    gtk_grid_set_row_homogeneous (GTK_GRID (grid), true);
     gtk_container_set_border_width (GTK_CONTAINER (grid), 5);
 
     label = gtk_label_new (_("Day"));
@@ -258,7 +258,7 @@ GtkWidget *create_config_notebook (void)
     {
         widget[i] = gtk_check_button_new_with_label (weekdays[i]);
         g_object_set_data (G_OBJECT (notebook), day_cb[i], widget[i]);
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget[i]), TRUE);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget[i]), true);
         gtk_widget_set_valign (widget[i], GTK_ALIGN_CENTER);
         gtk_grid_attach (GTK_GRID (grid), widget[i], 0, i + 1, 1, 1);
     }
@@ -268,7 +268,7 @@ GtkWidget *create_config_notebook (void)
     {
         checkbutton = gtk_check_button_new_with_label (_("Default"));
         g_object_set_data (G_OBJECT (notebook), day_def[i], checkbutton);
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton), TRUE);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton), true);
         gtk_widget_set_valign (checkbutton, GTK_ALIGN_CENTER);
         g_signal_connect (checkbutton, "toggled", G_CALLBACK (cb_def[i]), nullptr);
         gtk_grid_attach (GTK_GRID (grid), checkbutton, 1, i + 1, 1, 1);
@@ -316,7 +316,7 @@ GtkWidget *create_config_notebook (void)
     label = gtk_label_new (_("seconds"));
 
     gtk_container_add (GTK_CONTAINER (hbox), fading_spin);
-    gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 3);
+    gtk_box_pack_start (GTK_BOX (hbox), label, false, false, 3);
     gtk_container_add (GTK_CONTAINER (frame), hbox);
     gtk_container_add (GTK_CONTAINER (vbox), frame);
 
@@ -336,12 +336,12 @@ GtkWidget *create_config_notebook (void)
     gtk_scale_set_digits (GTK_SCALE (quiet_vol_scale), 0);
     label = gtk_label_new ("%");
     hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-    gtk_box_pack_start (GTK_BOX (hbox2), quiet_vol_scale, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox2), quiet_vol_scale, true, true, 0);
     gtk_container_add (GTK_CONTAINER (hbox2), label);
     gtk_container_add (GTK_CONTAINER (vbox2), hbox2);
 
     separator = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
-    gtk_box_pack_start (GTK_BOX (vbox2), separator, FALSE, FALSE, 10);
+    gtk_box_pack_start (GTK_BOX (vbox2), separator, false, false, 10);
 
     label = gtk_label_new (_("Final"));
     gtk_widget_set_margin_bottom (label, 2);
@@ -354,7 +354,7 @@ GtkWidget *create_config_notebook (void)
     gtk_scale_set_digits (GTK_SCALE (vol_scale), 0);
     label = gtk_label_new ("%");
     hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-    gtk_box_pack_start (GTK_BOX (hbox2), vol_scale, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox2), vol_scale, true, true, 0);
     gtk_container_add (GTK_CONTAINER (hbox2), label);
     gtk_container_add (GTK_CONTAINER (vbox2), hbox2);
 
@@ -381,7 +381,7 @@ GtkWidget *create_config_notebook (void)
     g_object_set_data (G_OBJECT (notebook), "cmd_entry", cmd_entry);
     cmd_checkb = gtk_check_button_new_with_label (_("enable"));
     g_object_set_data (G_OBJECT (notebook), "cmd_checkb", cmd_checkb);
-    gtk_box_pack_start (GTK_BOX (hbox), cmd_entry, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), cmd_entry, true, true, 0);
     gtk_container_add (GTK_CONTAINER (hbox), cmd_checkb);
     gtk_container_add (GTK_CONTAINER (frame), hbox);
     gtk_container_add (GTK_CONTAINER (vbox), frame);
@@ -396,7 +396,7 @@ GtkWidget *create_config_notebook (void)
     file_chooser_button = gtk_file_chooser_button_new (_("Select a playlist"), GTK_FILE_CHOOSER_ACTION_OPEN);
     gtk_widget_set_valign (file_chooser_button, GTK_ALIGN_CENTER);
     g_signal_connect (file_chooser_button, "file-set", G_CALLBACK (file_set_cb), playlist_entry);
-    gtk_box_pack_start (GTK_BOX (hbox), playlist_entry, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), playlist_entry, true, true, 0);
     gtk_container_add (GTK_CONTAINER (hbox), file_chooser_button);
     gtk_container_add (GTK_CONTAINER (frame), hbox);
     gtk_container_add (GTK_CONTAINER (vbox), frame);
@@ -409,7 +409,7 @@ GtkWidget *create_config_notebook (void)
     reminder_checkb = gtk_check_button_new_with_label (_("enable"));
     g_object_set_data (G_OBJECT (notebook), "reminder_text", reminder_text);
     g_object_set_data (G_OBJECT (notebook), "reminder_cb", reminder_checkb);
-    gtk_box_pack_start (GTK_BOX (hbox), reminder_text, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), reminder_text, true, true, 0);
     gtk_container_add (GTK_CONTAINER (hbox), reminder_checkb);
     gtk_container_add (GTK_CONTAINER (frame), hbox);
     gtk_container_add (GTK_CONTAINER (vbox), frame);

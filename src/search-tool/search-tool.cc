@@ -722,7 +722,7 @@ void * SearchTool::get_gtk_widget ()
     gtk_box_pack_start ((GtkBox *) vbox, stats_label, false, false, 0);
 
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_box_pack_end ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
+    gtk_box_pack_end ((GtkBox *) vbox, hbox, false, false, 0);
 
     GtkWidget * chooser = gtk_file_chooser_button_new (_("Choose Folder"),
      GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);

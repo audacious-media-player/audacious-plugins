@@ -673,8 +673,8 @@ static void mp3_configure(void)
         gtk_container_set_border_width(GTK_CONTAINER(quality_vbox), 5);
 
         quality_hbox1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
-        gtk_box_pack_start(GTK_BOX(quality_vbox), quality_hbox1, FALSE,
-                           FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(quality_vbox), quality_hbox1, false,
+                           false, 0);
 
         /* Algorithm Quality */
 
@@ -946,8 +946,8 @@ static void mp3_configure(void)
 
         vbr_min_label = gtk_label_new(_("Minimum bitrate (kbps):"));
         gtk_widget_set_halign(vbr_min_label, GTK_ALIGN_START);
-        gtk_box_pack_start(GTK_BOX(vbr_options_hbox1), vbr_min_label, TRUE,
-                           TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(vbr_options_hbox1), vbr_min_label, true,
+                           true, 0);
 
         combo = gtk_combo_box_text_new ();
 
@@ -972,8 +972,8 @@ static void mp3_configure(void)
 
         vbr_max_label = gtk_label_new(_("Maximum bitrate (kbps):"));
         gtk_widget_set_halign(vbr_max_label, GTK_ALIGN_START);
-        gtk_box_pack_start(GTK_BOX(vbr_options_hbox2), vbr_max_label, TRUE,
-                           TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(vbr_options_hbox2), vbr_max_label, true,
+                           true, 0);
 
         combo = gtk_combo_box_text_new ();
 
@@ -1016,7 +1016,7 @@ static void mp3_configure(void)
 
         abr_label = gtk_label_new(_("Average bitrate (kbps):"));
         gtk_widget_set_halign(abr_label, GTK_ALIGN_START);
-        gtk_box_pack_start(GTK_BOX(abr_hbox), abr_label, TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(abr_hbox), abr_label, true, true, 0);
 
         combo = gtk_combo_box_text_new ();
 

@@ -324,7 +324,7 @@ KeyControls* add_event_controls(KeyControls* list,
     }
 
     controls->combobox = gtk_combo_box_text_new();
-    gtk_widget_set_hexpand(controls->combobox, TRUE);
+    gtk_widget_set_hexpand(controls->combobox, true);
     for (i=0;i<EVENT_MAX;i++)
     {
         gtk_combo_box_text_append_text((GtkComboBoxText *) controls->combobox, _(event_desc[i]));
@@ -334,9 +334,9 @@ KeyControls* add_event_controls(KeyControls* list,
 
 
     controls->keytext = gtk_entry_new ();
-    gtk_widget_set_hexpand (controls->keytext, TRUE);
+    gtk_widget_set_hexpand (controls->keytext, true);
     gtk_grid_attach (GTK_GRID (grid), controls->keytext, 1, row, 1, 1);
-    gtk_editable_set_editable(GTK_EDITABLE(controls->keytext), FALSE);
+    gtk_editable_set_editable(GTK_EDITABLE(controls->keytext), false);
 
 
     set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
@@ -383,11 +383,11 @@ void *make_config_widget ()
     main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
 
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-    gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (main_vbox), hbox, false, true, 0);
     image = gtk_image_new_from_icon_name ("dialog-information", GTK_ICON_SIZE_DIALOG);
     gtk_box_pack_start (GTK_BOX (hbox), image, false, true, 0);
     label = gtk_label_new (_("Press a key combination inside a text field.\nYou can also bind mouse buttons."));
-    gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), label, true, true, 0);
     gtk_widget_set_halign (label, GTK_ALIGN_START);
 
     label = gtk_label_new (nullptr);
@@ -452,10 +452,10 @@ void *make_config_widget ()
 
 
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (main_vbox), hbox, false, true, 0);
 
     button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
-    gtk_box_pack_start (GTK_BOX (hbox), button_box, FALSE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), button_box, false, true, 0);
     gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_START);
     gtk_box_set_spacing (GTK_BOX (button_box), 4);
 

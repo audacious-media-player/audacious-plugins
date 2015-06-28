@@ -266,7 +266,7 @@ static void position_menu (GtkMenu * menu, int * x, int * y, gboolean * push_in,
     audgui_get_monitor_geometry (gtk_widget_get_screen ((GtkWidget *) menu), pos->x, pos->y, & geom);
 
     GtkRequisition request;
-    gtk_widget_get_preferred_size ((GtkWidget *) menu, NULL, & request);
+    gtk_widget_get_preferred_size ((GtkWidget *) menu, nullptr, & request);
 
     if (pos->leftward)
         * x = aud::max (pos->x - request.width, geom.x);

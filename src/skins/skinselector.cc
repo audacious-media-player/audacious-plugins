@@ -216,7 +216,7 @@ void skin_view_realize (GtkTreeView * treeview)
 
     gtk_widget_show_all(GTK_WIDGET(treeview));
 
-    gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), FALSE);
+    gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), false);
 
     store = gtk_list_store_new(SKIN_VIEW_N_COLS, GDK_TYPE_PIXBUF,
                                G_TYPE_STRING , G_TYPE_STRING);

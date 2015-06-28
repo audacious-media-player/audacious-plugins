@@ -54,7 +54,7 @@ static void chooser_set_aosd_color (GtkColorChooser * chooser, const aosd_color_
       color->alpha / 65535.0
   };
 
-  gtk_color_chooser_set_use_alpha (chooser, TRUE);
+  gtk_color_chooser_set_use_alpha (chooser, true);
   gtk_color_chooser_set_rgba (chooser, & rgba);
 }
 
@@ -189,7 +189,7 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg )
   gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_placement_grid , false , false , 0 );
   aosd_cb_list.append( pos_placement_grid , aosd_cb_configure_position_placement_commit );
 
-  gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , gtk_separator_new(GTK_ORIENTATION_VERTICAL) , FALSE , FALSE , 6 );
+  gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , gtk_separator_new(GTK_ORIENTATION_VERTICAL) , false , false , 6 );
 
   pos_offset_grid = gtk_grid_new();
   gtk_grid_set_row_spacing( GTK_GRID(pos_offset_grid) , 4 );
@@ -215,7 +215,7 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg )
   g_object_set_data( G_OBJECT(pos_offset_grid) , "maxsize_width" , pos_maxsize_width_spinbt );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_maxsize_width_spinbt) , cfg->position.maxsize_width );
   gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_maxsize_width_spinbt , 1 , 2 , 1 , 1 );
-  gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_offset_grid , FALSE , FALSE , 0 );
+  gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_offset_grid , false , false , 0 );
   aosd_cb_list.append( pos_offset_grid , aosd_cb_configure_position_offset_commit );
   aosd_cb_list.append( pos_offset_grid , aosd_cb_configure_position_maxsize_commit );
 
@@ -288,13 +288,13 @@ aosd_ui_configure_animation ( aosd_cfg_t * cfg )
   ani_timing_stay_widget = aosd_ui_configure_animation_timing( _("Display:") );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(g_object_get_data(
     G_OBJECT(ani_timing_stay_widget),"spinbt")) , cfg->animation.timing_display );
-  gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , ani_timing_stay_widget , TRUE , TRUE , 0 );
-  gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , gtk_separator_new(GTK_ORIENTATION_VERTICAL) , FALSE , FALSE , 4 );
+  gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , ani_timing_stay_widget , true , true , 0 );
+  gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , gtk_separator_new(GTK_ORIENTATION_VERTICAL) , false , false , 4 );
   ani_timing_fadein_widget = aosd_ui_configure_animation_timing( _("Fade in:") );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(g_object_get_data(
     G_OBJECT(ani_timing_fadein_widget),"spinbt")) , cfg->animation.timing_fadein );
-  gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , ani_timing_fadein_widget , TRUE , TRUE , 0 );
-  gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , gtk_separator_new(GTK_ORIENTATION_VERTICAL) , FALSE , FALSE , 4 );
+  gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , ani_timing_fadein_widget , true , true , 0 );
+  gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , gtk_separator_new(GTK_ORIENTATION_VERTICAL) , false , false , 4 );
   ani_timing_fadeout_widget = aosd_ui_configure_animation_timing( _("Fade out:") );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(g_object_get_data(
     G_OBJECT(ani_timing_fadeout_widget),"spinbt")) , cfg->animation.timing_fadeout );
@@ -375,7 +375,7 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg )
     gtk_font_button_set_use_font( GTK_FONT_BUTTON(tex_font_fontbt[i]) , false );
     gtk_font_button_set_use_size( GTK_FONT_BUTTON(tex_font_fontbt[i]) , false );
     gtk_font_button_set_font_name( GTK_FONT_BUTTON(tex_font_fontbt[i]) , cfg->text.fonts_name[i] );
-    gtk_widget_set_hexpand( tex_font_fontbt[i] , TRUE );
+    gtk_widget_set_hexpand( tex_font_fontbt[i] , true );
 
     tex_font_colorbt[i] = gtk_color_button_new ();
     chooser_set_aosd_color ((GtkColorChooser *) tex_font_colorbt[i],
@@ -498,7 +498,7 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg )
   aosd_cb_list.append( dec_rstyle_lv , aosd_cb_configure_decoration_style_commit );
 
   dec_rstyle_hbox = gtk_box_new( GTK_ORIENTATION_VERTICAL , 4 );
-  gtk_box_pack_start( GTK_BOX(dec_hbox) , dec_rstyle_hbox , TRUE , TRUE , 0 );
+  gtk_box_pack_start( GTK_BOX(dec_hbox) , dec_rstyle_hbox , true , true , 0 );
 
   /* in colors_max_num now there's the maximum number of colors used by decoration styles */
   dec_rstyleopts_frame = gtk_frame_new( _("Colors") );
@@ -519,8 +519,8 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg )
     GtkWidget * colorbt = gtk_color_button_new ();
     chooser_set_aosd_color ((GtkColorChooser *) colorbt, & cfg->decoration.colors[i]);
 
-    gtk_box_pack_start( GTK_BOX(hbox) , label , FALSE , FALSE , 0 );
-    gtk_box_pack_start( GTK_BOX(hbox) , colorbt , FALSE , FALSE , 0 );
+    gtk_box_pack_start( GTK_BOX(hbox) , label , false , false , 0 );
+    gtk_box_pack_start( GTK_BOX(hbox) , colorbt , false , false , 0 );
     gtk_grid_attach( GTK_GRID(dec_rstyleopts_grid) , hbox , (i % 3) , (i / 3) , 1 , 1 );
     g_object_set_data( G_OBJECT(colorbt) , "colnum" , GINT_TO_POINTER(i) );
     aosd_cb_list.append( colorbt , aosd_cb_configure_decoration_color_commit );
@@ -603,10 +603,10 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg )
     if ( cfg->trigger.enabled[i] )
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(checkbt) , true );
     else
-      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(checkbt) , FALSE );
-    gtk_box_pack_start( GTK_BOX(vbox) , checkbt , FALSE , FALSE , 0 );
-    gtk_box_pack_start( GTK_BOX(vbox) , gtk_separator_new(GTK_ORIENTATION_HORIZONTAL) , FALSE , FALSE , 4 );
-    gtk_box_pack_start( GTK_BOX(vbox) , label , FALSE , FALSE , 0 );
+      gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(checkbt) , false );
+    gtk_box_pack_start( GTK_BOX(vbox) , checkbt , false , false , 0 );
+    gtk_box_pack_start( GTK_BOX(vbox) , gtk_separator_new(GTK_ORIENTATION_HORIZONTAL) , false , false , 4 );
+    gtk_box_pack_start( GTK_BOX(vbox) , label , false , false , 0 );
     frame = gtk_frame_new( nullptr );
     gtk_container_add( GTK_CONTAINER(frame) , vbox );
     gtk_notebook_append_page( GTK_NOTEBOOK(tri_event_nb) , frame , nullptr );
@@ -730,9 +730,9 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg )
   mis_transp_status_img = gtk_image_new();
   mis_transp_status_label = gtk_label_new( "" );
   gtk_widget_set_halign( mis_transp_status_label , GTK_ALIGN_START );
-  gtk_label_set_line_wrap( GTK_LABEL(mis_transp_status_label) , TRUE );
-  gtk_box_pack_start( GTK_BOX(mis_transp_status_hbox) , mis_transp_status_img , FALSE , FALSE , 0 );
-  gtk_box_pack_start( GTK_BOX(mis_transp_status_hbox) , mis_transp_status_label , TRUE , TRUE , 0 );
+  gtk_label_set_line_wrap( GTK_LABEL(mis_transp_status_label) , true );
+  gtk_box_pack_start( GTK_BOX(mis_transp_status_hbox) , mis_transp_status_img , false , false , 0 );
+  gtk_box_pack_start( GTK_BOX(mis_transp_status_hbox) , mis_transp_status_label , true , true , 0 );
   g_object_set_data( G_OBJECT(mis_transp_status_hbox) , "img" , mis_transp_status_img );
   g_object_set_data( G_OBJECT(mis_transp_status_hbox) , "label" , mis_transp_status_label );
 
