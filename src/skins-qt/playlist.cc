@@ -217,7 +217,7 @@ static void playlistwin_resize (int w, int h)
 
 bool PlWindow::scroll (QWheelEvent * event)
 {
-    float delta = -event->angleDelta ().y () / 120;
+    float delta = -event->angleDelta ().y () / 120.0f;
     if (delta)
         playlistwin_scroll (delta);
 
