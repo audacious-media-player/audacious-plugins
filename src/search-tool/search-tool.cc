@@ -680,53 +680,53 @@ static void refresh_cb (GtkButton * button, GtkWidget * chooser)
 
 void * SearchTool::get_gtk_widget ()
 {
-    GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
+    GtkWidget * vbox = gtk_vbox_new (false, 6);
 
     entry = gtk_entry_new ();
     gtk_entry_set_icon_from_icon_name ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, "edit-find");
     (void) _("Search library");  // translated string is used in GTK3 branch
     g_signal_connect (entry, "destroy", (GCallback) gtk_widget_destroyed, & entry);
-    gtk_box_pack_start ((GtkBox *) vbox, entry, FALSE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, entry, false, false, 0);
 
     help_label = gtk_label_new (_("To import your music library into "
      "Audacious, choose a folder and then click the \"refresh\" icon."));
     int label_width = aud::rescale (audgui_get_dpi (), 4, 7);
     gtk_widget_set_size_request (help_label, label_width, -1);
-    gtk_label_set_line_wrap ((GtkLabel *) help_label, TRUE);
+    gtk_label_set_line_wrap ((GtkLabel *) help_label, true);
     g_signal_connect (help_label, "destroy", (GCallback) gtk_widget_destroyed, & help_label);
-    gtk_widget_set_no_show_all (help_label, TRUE);
-    gtk_box_pack_start ((GtkBox *) vbox, help_label, TRUE, FALSE, 0);
+    gtk_widget_set_no_show_all (help_label, true);
+    gtk_box_pack_start ((GtkBox *) vbox, help_label, true, false, 0);
 
     wait_label = gtk_label_new (_("Please wait ..."));
     g_signal_connect (wait_label, "destroy", (GCallback) gtk_widget_destroyed, & wait_label);
-    gtk_widget_set_no_show_all (wait_label, TRUE);
-    gtk_box_pack_start ((GtkBox *) vbox, wait_label, TRUE, FALSE, 0);
+    gtk_widget_set_no_show_all (wait_label, true);
+    gtk_box_pack_start ((GtkBox *) vbox, wait_label, true, false, 0);
 
     scrolled = gtk_scrolled_window_new (nullptr, nullptr);
     g_signal_connect (scrolled, "destroy", (GCallback) gtk_widget_destroyed, & scrolled);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrolled,
      GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-    gtk_widget_set_no_show_all (scrolled, TRUE);
-    gtk_box_pack_start ((GtkBox *) vbox, scrolled, TRUE, TRUE, 0);
+    gtk_widget_set_no_show_all (scrolled, true);
+    gtk_box_pack_start ((GtkBox *) vbox, scrolled, true, true, 0);
 
     results_list = audgui_list_new (& list_callbacks, nullptr, items.len ());
     g_signal_connect (results_list, "destroy", (GCallback) gtk_widget_destroyed, & results_list);
-    gtk_tree_view_set_headers_visible ((GtkTreeView *) results_list, FALSE);
+    gtk_tree_view_set_headers_visible ((GtkTreeView *) results_list, false);
     audgui_list_add_column (results_list, nullptr, 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scrolled, results_list);
 
     stats_label = gtk_label_new ("");
     g_signal_connect (stats_label, "destroy", (GCallback) gtk_widget_destroyed, & stats_label);
-    gtk_widget_set_no_show_all (stats_label, TRUE);
-    gtk_box_pack_start ((GtkBox *) vbox, stats_label, FALSE, FALSE, 0);
+    gtk_widget_set_no_show_all (stats_label, true);
+    gtk_box_pack_start ((GtkBox *) vbox, stats_label, false, false, 0);
 
-    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
-    gtk_box_pack_end ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
+    GtkWidget * hbox = gtk_hbox_new (false, 6);
+    gtk_box_pack_end ((GtkBox *) vbox, hbox, false, false, 0);
 
     GtkWidget * chooser = gtk_file_chooser_button_new (_("Choose Folder"),
      GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-    gtk_box_pack_start ((GtkBox *) hbox, chooser, TRUE, TRUE, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, chooser, true, true, 0);
 
     gtk_file_chooser_set_filename ((GtkFileChooser *) chooser, get_path ());
 
@@ -734,7 +734,7 @@ void * SearchTool::get_gtk_widget ()
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
      ("view-refresh", GTK_ICON_SIZE_BUTTON));
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
-    gtk_box_pack_start ((GtkBox *) hbox, button, FALSE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, button, false, false, 0);
 
     search_init ();
 

@@ -166,7 +166,7 @@ bool DeleteFiles::init (void)
     for (AudMenuID menu : menus)
         aud_plugin_menu_add (menu, start_delete, _("Delete Selected Files"), "edit-delete");
 
-    return TRUE;
+    return true;
 }
 
 void DeleteFiles::cleanup (void)

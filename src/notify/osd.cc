@@ -29,7 +29,7 @@
 
 static void show_cb (void)
 {
-    aud_ui_show (TRUE);
+    aud_ui_show (true);
 }
 
 static void osd_setup (NotifyNotification *notification)
@@ -39,7 +39,7 @@ static void osd_setup (NotifyNotification *notification)
     notify_notification_set_hint (notification, "desktop-entry",
      g_variant_new_string ("audacious"));
 
-    notify_notification_set_hint (notification, "action-icons", g_variant_new_boolean (TRUE));
+    notify_notification_set_hint (notification, "action-icons", g_variant_new_boolean (true));
     notify_notification_set_hint (notification, "resident", g_variant_new_boolean (resident));
     notify_notification_set_hint (notification, "transient", g_variant_new_boolean (! resident));
 

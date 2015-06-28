@@ -326,10 +326,10 @@ bool GIOFile::feof ()
     int test = getc ();
 
     if (test < 0)
-        return TRUE;
+        return true;
 
     ungetc (test);
-    return FALSE;
+    return false;
 }
 
 int GIOFile::ftruncate (int64_t length)

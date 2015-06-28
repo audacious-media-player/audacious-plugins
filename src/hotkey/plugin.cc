@@ -124,10 +124,10 @@ gboolean handle_keyevent (EVENT event)
     if (current_volume)
     {
         /* volume is not mute */
-        mute = FALSE;
+        mute = false;
     } else {
         /* volume is mute */
-        mute = TRUE;
+        mute = true;
     }
 
     /* mute the playback */
@@ -137,12 +137,12 @@ gboolean handle_keyevent (EVENT event)
         {
             volume_static = current_volume;
             aud_drct_set_volume_main (0);
-            mute = TRUE;
+            mute = true;
         } else {
             aud_drct_set_volume_main (volume_static);
-            mute = FALSE;
+            mute = false;
         }
-        return TRUE;
+        return true;
     }
 
     /* decreace volume */
@@ -152,7 +152,7 @@ gboolean handle_keyevent (EVENT event)
         {
             current_volume = old_volume;
             old_volume = 0;
-            mute = FALSE;
+            mute = false;
         }
 
         if ((current_volume -= plugin_cfg.vol_decrement) < 0)
@@ -166,7 +166,7 @@ gboolean handle_keyevent (EVENT event)
         }
 
         old_volume = current_volume;
-        return TRUE;
+        return true;
     }
 
     /* increase volume */
@@ -176,7 +176,7 @@ gboolean handle_keyevent (EVENT event)
         {
             current_volume = old_volume;
             old_volume = 0;
-            mute = FALSE;
+            mute = false;
         }
 
         if ((current_volume += plugin_cfg.vol_increment) > 100)
@@ -190,49 +190,49 @@ gboolean handle_keyevent (EVENT event)
         }
 
         old_volume = current_volume;
-        return TRUE;
+        return true;
     }
 
     /* play */
     if (event == EVENT_PLAY)
     {
         aud_drct_play ();
-        return TRUE;
+        return true;
     }
 
     /* pause */
     if (event == EVENT_PAUSE)
     {
         aud_drct_play_pause ();
-        return TRUE;
+        return true;
     }
 
     /* stop */
     if (event == EVENT_STOP)
     {
         aud_drct_stop ();
-        return TRUE;
+        return true;
     }
 
     /* prev track */
     if (event == EVENT_PREV_TRACK)
     {
         aud_drct_pl_prev ();
-        return TRUE;
+        return true;
     }
 
     /* next track */
     if (event == EVENT_NEXT_TRACK)
     {
         aud_drct_pl_next ();
-        return TRUE;
+        return true;
     }
 
     /* forward */
     if (event == EVENT_FORWARD)
     {
         aud_drct_seek (aud_drct_get_time () + 5000);
-        return TRUE;
+        return true;
     }
 
     /* backward */
@@ -242,55 +242,55 @@ gboolean handle_keyevent (EVENT event)
         if (time > 5000) time -= 5000; /* Jump 5s back */
             else time = 0;
         aud_drct_seek (time);
-        return TRUE;
+        return true;
     }
 
     /* Open Jump-To-File dialog */
     if (event == EVENT_JUMP_TO_FILE && ! aud_get_headless_mode ())
     {
         aud_ui_show_jump_to_song ();
-        return TRUE;
+        return true;
     }
 
     /* Toggle Windows */
     if (event == EVENT_TOGGLE_WIN && ! aud_get_headless_mode ())
     {
         aud_ui_show (! aud_ui_is_shown ());
-        return TRUE;
+        return true;
     }
 
     /* Show OSD through AOSD plugin*/
     if (event == EVENT_SHOW_AOSD)
     {
         hook_call("aosd toggle", nullptr);
-        return TRUE;
+        return true;
     }
 
     if (event == EVENT_TOGGLE_REPEAT)
     {
         aud_set_bool (nullptr, "repeat", ! aud_get_bool (nullptr, "repeat"));
-        return TRUE;
+        return true;
     }
 
     if (event == EVENT_TOGGLE_SHUFFLE)
     {
         aud_set_bool (nullptr, "shuffle", ! aud_get_bool (nullptr, "shuffle"));
-        return TRUE;
+        return true;
     }
 
     if (event == EVENT_TOGGLE_STOP)
     {
         aud_set_bool (nullptr, "stop_after_current_song", ! aud_get_bool (nullptr, "stop_after_current_song"));
-        return TRUE;
+        return true;
     }
 
     if (event == EVENT_RAISE)
     {
-        aud_ui_show (TRUE);
-        return TRUE;
+        aud_ui_show (true);
+        return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 void add_hotkey(HotkeyConfiguration** pphotkey, KeySym keysym, int mask, int type, EVENT event)

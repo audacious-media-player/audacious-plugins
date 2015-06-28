@@ -237,7 +237,7 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
     bands = aud::clamp(bands, 12, MAX_BANDS);
     calculate_xscale ();
 
-    return TRUE;
+    return true;
 }
 
 static gboolean draw_event (GtkWidget * widget)
@@ -248,7 +248,7 @@ static gboolean draw_event (GtkWidget * widget)
     draw_visualizer (widget, cr);
 
     cairo_destroy (cr);
-    return TRUE;
+    return true;
 }
 
 void * CairoSpectrum::get_gtk_widget ()

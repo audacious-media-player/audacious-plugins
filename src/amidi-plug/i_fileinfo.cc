@@ -141,7 +141,7 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     g_signal_connect (G_OBJECT (fileinfowin), "destroy", G_CALLBACK (gtk_widget_destroyed), &fileinfowin);
     gtk_container_set_border_width (GTK_CONTAINER (fileinfowin), 10);
 
-    fileinfowin_vbox = gtk_vbox_new (FALSE, 10);
+    fileinfowin_vbox = gtk_vbox_new (false, 10);
     gtk_container_add (GTK_CONTAINER (fileinfowin), fileinfowin_vbox);
 
     /* pango attributes */
@@ -153,39 +153,39 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
 
     /******************
      *** TITLE LINE ***/
-    title_hbox = gtk_hbox_new (FALSE, 5);
-    gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), title_hbox, FALSE, FALSE, 0);
+    title_hbox = gtk_hbox_new (false, 5);
+    gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), title_hbox, false, false, 0);
 
     title_icon_pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) amidiplug_xpm_midiicon);
     title_icon_image = gtk_image_new_from_pixbuf (title_icon_pixbuf);
     g_object_unref (title_icon_pixbuf);
     gtk_misc_set_alignment (GTK_MISC (title_icon_image), 0, 0);
-    gtk_box_pack_start (GTK_BOX (title_hbox), title_icon_image, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (title_hbox), title_icon_image, false, false, 0);
 
     title_name_f_label = gtk_label_new (_("Name:"));
     gtk_label_set_attributes (GTK_LABEL (title_name_f_label), pangoattrlist);
-    gtk_box_pack_start (GTK_BOX (title_hbox), title_name_f_label, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (title_hbox), title_name_f_label, false, false, 0);
 
     title_name_v_entry = gtk_entry_new();
-    gtk_editable_set_editable (GTK_EDITABLE (title_name_v_entry), FALSE);
+    gtk_editable_set_editable (GTK_EDITABLE (title_name_v_entry), false);
     gtk_widget_set_size_request (GTK_WIDGET (title_name_v_entry), 200, -1);
-    gtk_box_pack_start (GTK_BOX (title_hbox), title_name_v_entry, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (title_hbox), title_name_v_entry, true, true, 0);
 
-    fileinfowin_columns_hbox = gtk_hbox_new (FALSE, 2);
-    gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), fileinfowin_columns_hbox, TRUE, TRUE, 0);
+    fileinfowin_columns_hbox = gtk_hbox_new (false, 2);
+    gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), fileinfowin_columns_hbox, true, true, 0);
 
     /*********************
      *** MIDI INFO BOX ***/
-    midiinfoboxes_vbox = gtk_vbox_new (FALSE, 2);
-    gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, FALSE, FALSE, 0);
+    midiinfoboxes_vbox = gtk_vbox_new (false, 2);
+    gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, false, false, 0);
 
     info_frame_tl = gtk_label_new ("");
     gtk_label_set_markup (GTK_LABEL (info_frame_tl), _("<span size=\"smaller\"> MIDI Info </span>"));
-    gtk_box_pack_start (GTK_BOX (midiinfoboxes_vbox), info_frame_tl, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (midiinfoboxes_vbox), info_frame_tl, false, false, 0);
 
     info_frame = gtk_frame_new (nullptr);
-    gtk_box_pack_start (GTK_BOX (midiinfoboxes_vbox), info_frame, TRUE, TRUE, 0);
-    info_grid = gtk_table_new (0, 0, FALSE);
+    gtk_box_pack_start (GTK_BOX (midiinfoboxes_vbox), info_frame, true, true, 0);
+    info_grid = gtk_table_new (0, 0, false);
     gtk_table_set_row_spacings (GTK_TABLE (info_grid), 2);
     gtk_table_set_col_spacings (GTK_TABLE (info_grid), 6);
     gtk_container_set_border_width (GTK_CONTAINER (info_grid), 6);
@@ -221,26 +221,26 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     g_string_printf (value_gstring, "%i", mf.time_division);
     i_fileinfo_grid_add_entry (_("Time Div:"), value_gstring->str, info_grid, 5, pangoattrlist);
 
-    g_string_free (value_gstring, TRUE);
+    g_string_free (value_gstring, true);
 
     /**********************************
      *** MIDI COMMENTS/LYRICS BOXES ***/
-    miditextboxes_vbox = gtk_vbox_new (FALSE, 2);
-    gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), miditextboxes_vbox, TRUE, TRUE, 0);
+    miditextboxes_vbox = gtk_vbox_new (false, 2);
+    gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), miditextboxes_vbox, true, true, 0);
 
     text_frame_tl = gtk_label_new ("");
     gtk_label_set_markup (GTK_LABEL (text_frame_tl),
                           _("<span size=\"smaller\"> MIDI Comments and Lyrics </span>"));
-    gtk_box_pack_start (GTK_BOX (miditextboxes_vbox), text_frame_tl, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (miditextboxes_vbox), text_frame_tl, false, false, 0);
 
     miditextboxes_paned = gtk_vpaned_new ();
-    gtk_box_pack_start (GTK_BOX (miditextboxes_vbox), miditextboxes_paned, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (miditextboxes_vbox), miditextboxes_paned, true, true, 0);
 
     text_frame = gtk_frame_new (nullptr);
-    gtk_paned_pack1 (GTK_PANED (miditextboxes_paned), text_frame, TRUE, TRUE);
+    gtk_paned_pack1 (GTK_PANED (miditextboxes_paned), text_frame, true, true);
     text_tv = gtk_text_view_new();
-    gtk_text_view_set_editable (GTK_TEXT_VIEW (text_tv), FALSE);
-    gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (text_tv), FALSE);
+    gtk_text_view_set_editable (GTK_TEXT_VIEW (text_tv), false);
+    gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (text_tv), false);
     gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (text_tv), GTK_WRAP_WORD);
     gtk_text_view_set_right_margin (GTK_TEXT_VIEW (text_tv), 4);
     gtk_text_view_set_left_margin (GTK_TEXT_VIEW (text_tv), 4);
@@ -252,10 +252,10 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     gtk_container_add (GTK_CONTAINER (text_tv_sw), text_tv);
 
     lyrics_frame = gtk_frame_new (nullptr);
-    gtk_paned_pack2 (GTK_PANED (miditextboxes_paned), lyrics_frame, TRUE, TRUE);
+    gtk_paned_pack2 (GTK_PANED (miditextboxes_paned), lyrics_frame, true, true);
     lyrics_tv = gtk_text_view_new();
-    gtk_text_view_set_editable (GTK_TEXT_VIEW (lyrics_tv), FALSE);
-    gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (lyrics_tv), FALSE);
+    gtk_text_view_set_editable (GTK_TEXT_VIEW (lyrics_tv), false);
+    gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (lyrics_tv), false);
     gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (lyrics_tv), GTK_WRAP_WORD);
     gtk_text_view_set_right_margin (GTK_TEXT_VIEW (lyrics_tv), 4);
     gtk_text_view_set_left_margin (GTK_TEXT_VIEW (lyrics_tv), 4);
@@ -302,7 +302,7 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     footer_bclose = gtk_button_new_with_mnemonic (_("_Close"));
     g_signal_connect (G_OBJECT (footer_bclose), "clicked", G_CALLBACK (i_fileinfo_ev_close), fileinfowin);
     gtk_container_add (GTK_CONTAINER (footer_hbbox), footer_bclose);
-    gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), footer_hbbox, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), footer_hbbox, false, false, 0);
 
 
     /* utf8-ize filename and set window title */

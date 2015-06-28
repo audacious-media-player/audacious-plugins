@@ -123,7 +123,7 @@ void aosd_trigger_stop (const aosd_cfg_osd_trigger_t & cfg_trigger)
 static void
 aosd_trigger_func_pb_start_onoff ( bool turn_on )
 {
-  if (turn_on == TRUE)
+  if (turn_on == true)
     hook_associate("playback ready", aosd_trigger_func_pb_start_cb, nullptr);
   else
     hook_dissociate("playback ready", aosd_trigger_func_pb_start_cb);
@@ -136,7 +136,7 @@ aosd_trigger_func_pb_start_cb(void * hook_data, void * user_data)
   char * markup = g_markup_printf_escaped ("<span font_desc='%s'>%s</span>",
    (const char *) global_config.text.fonts_name[0], (const char *) title);
 
-  aosd_osd_display (markup, & global_config, FALSE);
+  aosd_osd_display (markup, & global_config, false);
   g_free (markup);
 }
 
@@ -152,7 +152,7 @@ aosd_trigger_func_pb_titlechange_onoff ( bool turn_on )
 {
   static aosd_pb_titlechange_prevs_t *prevs = nullptr;
 
-  if ( turn_on == TRUE )
+  if ( turn_on == true )
   {
     prevs = new aosd_pb_titlechange_prevs_t;
     hook_associate( "title change" , aosd_trigger_func_pb_titlechange_cb , prevs );
@@ -192,7 +192,7 @@ aosd_trigger_func_pb_titlechange_cb ( void * plentry_gp , void * prevs_gp )
            (const char *) global_config.text.fonts_name[0],
            (const char *) pl_entry_title);
 
-          aosd_osd_display (markup, & global_config, FALSE);
+          aosd_osd_display (markup, & global_config, false);
           g_free (markup);
 
           prevs->title = pl_entry_title;
@@ -216,7 +216,7 @@ aosd_trigger_func_pb_titlechange_cb ( void * plentry_gp , void * prevs_gp )
 static void
 aosd_trigger_func_pb_pauseon_onoff ( bool turn_on )
 {
-  if ( turn_on == TRUE )
+  if ( turn_on == true )
     hook_associate( "playback pause" , aosd_trigger_func_pb_pauseon_cb , nullptr );
   else
     hook_dissociate( "playback pause" , aosd_trigger_func_pb_pauseon_cb );
@@ -227,7 +227,7 @@ aosd_trigger_func_pb_pauseon_cb ( void * unused1 , void * unused2 )
 {
   char * markup = g_markup_printf_escaped ("<span font_desc='%s'>Paused</span>",
    (const char *) global_config.text.fonts_name[0]);
-  aosd_osd_display (markup, & global_config, FALSE);
+  aosd_osd_display (markup, & global_config, false);
   g_free (markup);
 }
 
@@ -235,7 +235,7 @@ aosd_trigger_func_pb_pauseon_cb ( void * unused1 , void * unused2 )
 static void
 aosd_trigger_func_pb_pauseoff_onoff ( bool turn_on )
 {
-  if ( turn_on == TRUE )
+  if ( turn_on == true )
     hook_associate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb , nullptr );
   else
     hook_dissociate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb );
@@ -261,7 +261,7 @@ aosd_trigger_func_pb_pauseoff_cb ( void * unused1 , void * unused2 )
    (const char *) global_config.text.fonts_name[0], (const char *) title,
    time_cur_m, time_cur_s, time_tot_m, time_tot_s);
 
-  aosd_osd_display (markup, & global_config, FALSE);
+  aosd_osd_display (markup, & global_config, false);
   g_free (markup);
 }
 
@@ -275,7 +275,7 @@ aosd_trigger_func_hook_cb ( void * markup_text , void * unused )
   if ( markup_text != nullptr )
   {
     /* Display text from caller */
-    aosd_osd_display ((char *) markup_text, & global_config, FALSE);
+    aosd_osd_display ((char *) markup_text, & global_config, false);
   } else {
     /* Display currently playing song */
     aosd_trigger_func_pb_start_cb (nullptr, nullptr);

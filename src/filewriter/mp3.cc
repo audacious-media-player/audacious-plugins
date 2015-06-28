@@ -403,7 +403,7 @@ static void toggle_enforce_iso(GtkToggleButton * togglebutton,
 {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(enforce_iso_toggle))
-        == TRUE)
+        == true)
         enforce_iso_val = 1;
     else
         enforce_iso_val = 0;
@@ -415,7 +415,7 @@ static void toggle_error_protect(GtkToggleButton * togglebutton,
 {
 
     if (gtk_toggle_button_get_active
-        (GTK_TOGGLE_BUTTON(error_protection_toggle)) == TRUE)
+        (GTK_TOGGLE_BUTTON(error_protection_toggle)) == true)
         error_protect_val = 1;
     else
         error_protect_val = 0;
@@ -425,28 +425,28 @@ static void toggle_error_protect(GtkToggleButton * togglebutton,
 static void toggle_vbr(GtkToggleButton * togglebutton, void * user_data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(vbr_toggle)) ==
-        TRUE) {
-        gtk_widget_set_sensitive(vbr_options_vbox, TRUE);
-        gtk_widget_set_sensitive(enc_quality_frame, FALSE);
+        true) {
+        gtk_widget_set_sensitive(vbr_options_vbox, true);
+        gtk_widget_set_sensitive(enc_quality_frame, false);
         vbr_on = 1;
 
         if (vbr_type == 0) {
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (vbr_type_radio1), TRUE);
-            gtk_widget_set_sensitive(abr_frame, FALSE);
-            gtk_widget_set_sensitive(vbr_frame, TRUE);
+                                         (vbr_type_radio1), true);
+            gtk_widget_set_sensitive(abr_frame, false);
+            gtk_widget_set_sensitive(vbr_frame, true);
         }
         else if (vbr_type == 1) {
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (vbr_type_radio2), TRUE);
-            gtk_widget_set_sensitive(abr_frame, TRUE);
-            gtk_widget_set_sensitive(vbr_frame, FALSE);
+                                         (vbr_type_radio2), true);
+            gtk_widget_set_sensitive(abr_frame, true);
+            gtk_widget_set_sensitive(vbr_frame, false);
         }
 
     }
     else {
-        gtk_widget_set_sensitive(vbr_options_vbox, FALSE);
-        gtk_widget_set_sensitive(enc_quality_frame, TRUE);
+        gtk_widget_set_sensitive(vbr_options_vbox, false);
+        gtk_widget_set_sensitive(enc_quality_frame, true);
         vbr_on = 0;
     }
 }
@@ -455,13 +455,13 @@ static void vbr_abr_toggle(GtkToggleButton * togglebutton,
                            void * user_data)
 {
     if (!strcmp((char *) user_data, "VBR")) {
-        gtk_widget_set_sensitive(abr_frame, FALSE);
-        gtk_widget_set_sensitive(vbr_frame, TRUE);
+        gtk_widget_set_sensitive(abr_frame, false);
+        gtk_widget_set_sensitive(vbr_frame, true);
         vbr_type = 0;
     }
     else if (!strcmp((char *) user_data, "ABR")) {
-        gtk_widget_set_sensitive(abr_frame, TRUE);
-        gtk_widget_set_sensitive(vbr_frame, FALSE);
+        gtk_widget_set_sensitive(abr_frame, true);
+        gtk_widget_set_sensitive(vbr_frame, false);
         vbr_type = 1;
     }
 }
@@ -491,7 +491,7 @@ static void toggle_enforce_min(GtkToggleButton * togglebutton,
 {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(enforce_min_toggle))
-        == TRUE)
+        == true)
         enforce_min_val = 1;
     else
         enforce_min_val = 0;
@@ -520,7 +520,7 @@ static void abr_changed (GtkComboBox * combo)
 static void toggle_xing(GtkToggleButton * togglebutton, void * user_data)
 {
 
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(xing_header_toggle)) == TRUE)
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(xing_header_toggle)) == true)
         toggle_xing_val = 0;
     else
         toggle_xing_val = 1;
@@ -532,7 +532,7 @@ static void toggle_original(GtkToggleButton * togglebutton,
 {
 
     if (gtk_toggle_button_get_active
-        (GTK_TOGGLE_BUTTON(tags_original_toggle)) == TRUE)
+        (GTK_TOGGLE_BUTTON(tags_original_toggle)) == true)
         mark_original_val = 1;
     else
         mark_original_val = 0;
@@ -544,7 +544,7 @@ static void toggle_copyright(GtkToggleButton * togglebutton,
 {
 
     if (gtk_toggle_button_get_active
-        (GTK_TOGGLE_BUTTON(tags_copyright_toggle)) == TRUE)
+        (GTK_TOGGLE_BUTTON(tags_copyright_toggle)) == true)
         mark_copyright_val = 1;
     else
         mark_copyright_val = 0;
@@ -556,13 +556,13 @@ static void force_v2_toggle(GtkToggleButton * togglebutton,
 {
 
     if (gtk_toggle_button_get_active
-        (GTK_TOGGLE_BUTTON(tags_force_id3v2_toggle)) == TRUE) {
+        (GTK_TOGGLE_BUTTON(tags_force_id3v2_toggle)) == true) {
         force_v2_val = 1;
         if (gtk_toggle_button_get_active
-            (GTK_TOGGLE_BUTTON(tags_only_v1_toggle)) == TRUE) {
+            (GTK_TOGGLE_BUTTON(tags_only_v1_toggle)) == true) {
             inside = 1;
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (tags_only_v1_toggle), FALSE);
+                                         (tags_only_v1_toggle), false);
             only_v1_val = 0;
             inside = 0;
         }
@@ -577,25 +577,25 @@ static void id3_only_version(GtkToggleButton * togglebutton,
 {
     if (!strcmp((char *) user_data, "v1") && inside != 1) {
         if (gtk_toggle_button_get_active
-            (GTK_TOGGLE_BUTTON(tags_only_v1_toggle)) == TRUE)
+            (GTK_TOGGLE_BUTTON(tags_only_v1_toggle)) == true)
         {
             inside = 1;
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (tags_only_v2_toggle), FALSE);
+                                         (tags_only_v2_toggle), false);
             only_v1_val = 1;
             only_v2_val = 0;
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (tags_force_id3v2_toggle), FALSE);
+                                         (tags_force_id3v2_toggle), false);
             inside = 0;
         }
     }
     else if (!strcmp((char *) user_data, "v2") && inside != 1) {
         if (gtk_toggle_button_get_active
-            (GTK_TOGGLE_BUTTON(tags_only_v2_toggle)) == TRUE)
+            (GTK_TOGGLE_BUTTON(tags_only_v2_toggle)) == true)
         {
             inside = 1;
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (tags_only_v1_toggle), FALSE);
+                                         (tags_only_v1_toggle), false);
             only_v1_val = 0;
             only_v2_val = 1;
             inside = 0;
@@ -665,16 +665,16 @@ static void mp3_configure(void)
         vbox = gtk_dialog_get_content_area ((GtkDialog *) configure_win);
 
         notebook = gtk_notebook_new();
-        gtk_box_pack_start(GTK_BOX(vbox), notebook, TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(vbox), notebook, true, true, 0);
 
         /* Quality */
 
-        quality_vbox = gtk_vbox_new (FALSE, 5);
+        quality_vbox = gtk_vbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(quality_vbox), 5);
 
-        quality_hbox1 = gtk_hbox_new (FALSE, 5);
-        gtk_box_pack_start(GTK_BOX(quality_vbox), quality_hbox1, FALSE,
-                           FALSE, 0);
+        quality_hbox1 = gtk_hbox_new (false, 5);
+        gtk_box_pack_start(GTK_BOX(quality_vbox), quality_hbox1, false,
+                           false, 0);
 
         /* Algorithm Quality */
 
@@ -682,9 +682,9 @@ static void mp3_configure(void)
         gtk_container_set_border_width(GTK_CONTAINER(alg_quality_frame),
                                        5);
         gtk_box_pack_start(GTK_BOX(quality_hbox1), alg_quality_frame,
-                           FALSE, FALSE, 0);
+                           false, false, 0);
 
-        alg_quality_hbox = gtk_hbox_new (FALSE, 5);
+        alg_quality_hbox = gtk_hbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(alg_quality_hbox),
                                        10);
         gtk_container_add(GTK_CONTAINER(alg_quality_frame),
@@ -694,7 +694,7 @@ static void mp3_configure(void)
         alg_quality_spin =
             gtk_spin_button_new(GTK_ADJUSTMENT(alg_quality_adj), 8, 0);
         gtk_box_pack_start(GTK_BOX(alg_quality_hbox), alg_quality_spin,
-                           TRUE, TRUE, 0);
+                           true, true, 0);
         g_signal_connect (alg_quality_adj, "value-changed", (GCallback)
          algo_qual, nullptr);
 
@@ -705,10 +705,10 @@ static void mp3_configure(void)
 
         samplerate_frame = gtk_frame_new(_("Output Sample Rate:"));
         gtk_container_set_border_width(GTK_CONTAINER(samplerate_frame), 5);
-        gtk_box_pack_start(GTK_BOX(quality_hbox1), samplerate_frame, FALSE,
-                           FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(quality_hbox1), samplerate_frame, false,
+                           false, 0);
 
-        samplerate_hbox = gtk_hbox_new (FALSE, 5);
+        samplerate_hbox = gtk_hbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(samplerate_hbox), 10);
         gtk_container_add(GTK_CONTAINER(samplerate_frame),
                           samplerate_hbox);
@@ -727,42 +727,42 @@ static void mp3_configure(void)
                 gtk_combo_box_set_active ((GtkComboBox *) combo, 1 + i);
         }
 
-        gtk_box_pack_start ((GtkBox *) samplerate_hbox, combo, FALSE, FALSE, 0);
+        gtk_box_pack_start ((GtkBox *) samplerate_hbox, combo, false, false, 0);
         g_signal_connect (combo, "changed", (GCallback) samplerate_changed, nullptr);
 
         samplerate_label = gtk_label_new(_("(Hz)"));
         gtk_misc_set_alignment(GTK_MISC(samplerate_label), 0, 0.5);
         gtk_box_pack_start(GTK_BOX(samplerate_hbox), samplerate_label,
-                           FALSE, FALSE, 0);
+                           false, false, 0);
 
         /* Encoder Quality */
 
         enc_quality_frame = gtk_frame_new(_("Bitrate / Compression Ratio:"));
         gtk_container_set_border_width(GTK_CONTAINER(enc_quality_frame),
                                        5);
-        gtk_box_pack_start(GTK_BOX(quality_vbox), enc_quality_frame, FALSE,
-                           FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(quality_vbox), enc_quality_frame, false,
+                           false, 0);
 
         // vbox sorrounding hbox1 and hbox2
-        enc_quality_vbox = gtk_vbox_new (FALSE, 5);
+        enc_quality_vbox = gtk_vbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(enc_quality_vbox), 10);
 
         // pack vbox to frame
         gtk_container_add(GTK_CONTAINER(enc_quality_frame), enc_quality_vbox);
 
         // hbox1 for bitrate
-        hbox1 = gtk_hbox_new (FALSE, 5);
+        hbox1 = gtk_hbox_new (false, 5);
         gtk_container_add(GTK_CONTAINER(enc_quality_vbox), hbox1);
 
         // radio 1
         enc_radio1 = gtk_radio_button_new(nullptr);
         if (enc_toggle_val == 0)
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(enc_radio1), TRUE);
-        gtk_box_pack_start(GTK_BOX(hbox1), enc_radio1, FALSE, FALSE, 0);
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(enc_radio1), true);
+        gtk_box_pack_start(GTK_BOX(hbox1), enc_radio1, false, false, 0);
 
         // label 1
         enc_quality_label1 = gtk_label_new(_("Bitrate (kbps):"));
-        gtk_box_pack_start(GTK_BOX(hbox1), enc_quality_label1, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(hbox1), enc_quality_label1, false, false, 0);
 
         // bitrate menu
 
@@ -777,31 +777,31 @@ static void mp3_configure(void)
                 gtk_combo_box_set_active ((GtkComboBox *) combo, i);
         }
 
-        gtk_box_pack_start ((GtkBox *) hbox1, combo, FALSE, FALSE, 0);
+        gtk_box_pack_start ((GtkBox *) hbox1, combo, false, false, 0);
         g_signal_connect (combo, "changed", (GCallback) bitrate_changed, nullptr);
 
         // hbox2 for compression ratio
-        hbox2 = gtk_hbox_new (FALSE, 5);
+        hbox2 = gtk_hbox_new (false, 5);
         gtk_container_add(GTK_CONTAINER(enc_quality_vbox), hbox2);
 
         // radio 2
         enc_radio2 = gtk_radio_button_new_from_widget(GTK_RADIO_BUTTON(enc_radio1));
         if (enc_toggle_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(enc_radio2),
-                                         TRUE);
+                                         true);
         // pack radio 2
-        gtk_box_pack_start(GTK_BOX(hbox2), enc_radio2, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(hbox2), enc_radio2, false, false, 0);
 
         // label
         enc_quality_label2 = gtk_label_new(_("Compression ratio:"));
-        gtk_box_pack_start(GTK_BOX(hbox2), enc_quality_label2, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(hbox2), enc_quality_label2, false, false, 0);
 
         // comp-ratio spin
         compression_adj = (GtkAdjustment *) gtk_adjustment_new (11, 0, 100, 1,
          1, 0);
         compression_spin =
             gtk_spin_button_new(GTK_ADJUSTMENT(compression_adj), 8, 0);
-        gtk_box_pack_end(GTK_BOX(hbox2), compression_spin, FALSE, FALSE, 0);
+        gtk_box_pack_end(GTK_BOX(hbox2), compression_spin, false, false, 0);
 
         g_signal_connect (compression_adj, "value-changed", (GCallback)
          compression_change, nullptr);
@@ -819,10 +819,10 @@ static void mp3_configure(void)
 
         mode_frame = gtk_frame_new(_("Audio Mode:"));
         gtk_container_set_border_width(GTK_CONTAINER(mode_frame), 5);
-        gtk_box_pack_start(GTK_BOX(quality_vbox), mode_frame, FALSE, FALSE,
+        gtk_box_pack_start(GTK_BOX(quality_vbox), mode_frame, false, false,
                            0);
 
-        mode_hbox = gtk_hbox_new (FALSE, 10);
+        mode_hbox = gtk_hbox_new (false, 10);
         gtk_container_set_border_width(GTK_CONTAINER(mode_hbox), 10);
         gtk_container_add(GTK_CONTAINER(mode_frame), mode_hbox);
 
@@ -837,42 +837,42 @@ static void mp3_configure(void)
                 gtk_combo_box_set_active ((GtkComboBox *) combo, i);
         }
 
-        gtk_box_pack_start ((GtkBox *) mode_hbox, combo, FALSE, FALSE, 0);
+        gtk_box_pack_start ((GtkBox *) mode_hbox, combo, false, false, 0);
         g_signal_connect (combo, "changed", (GCallback) mode_changed, nullptr);
 
         /* Misc */
 
         misc_frame = gtk_frame_new(_("Miscellaneous:"));
         gtk_container_set_border_width(GTK_CONTAINER(misc_frame), 5);
-        gtk_box_pack_start(GTK_BOX(quality_vbox), misc_frame, FALSE, FALSE,
+        gtk_box_pack_start(GTK_BOX(quality_vbox), misc_frame, false, false,
                            0);
 
-        misc_vbox = gtk_vbox_new (FALSE, 5);
+        misc_vbox = gtk_vbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(misc_vbox), 5);
         gtk_container_add(GTK_CONTAINER(misc_frame), misc_vbox);
 
         enforce_iso_toggle =
             gtk_check_button_new_with_label
             (_("Enforce strict ISO compliance"));
-        gtk_box_pack_start(GTK_BOX(misc_vbox), enforce_iso_toggle, TRUE,
-                           TRUE, 2);
+        gtk_box_pack_start(GTK_BOX(misc_vbox), enforce_iso_toggle, true,
+                           true, 2);
         g_signal_connect (enforce_iso_toggle, "toggled", (GCallback)
          toggle_enforce_iso, nullptr);
 
         if (enforce_iso_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (enforce_iso_toggle), TRUE);
+                                         (enforce_iso_toggle), true);
 
         error_protection_toggle =
             gtk_check_button_new_with_label(_("Error protection"));
         gtk_box_pack_start(GTK_BOX(misc_vbox), error_protection_toggle,
-                           TRUE, TRUE, 2);
+                           true, true, 2);
         g_signal_connect (error_protection_toggle, "toggled", (GCallback)
          toggle_error_protect, nullptr);
 
         if (error_protect_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (error_protection_toggle), TRUE);
+                                         (error_protection_toggle), true);
 
         /* Add the Notebook */
         gtk_notebook_append_page(GTK_NOTEBOOK(notebook), quality_vbox,
@@ -880,46 +880,46 @@ static void mp3_configure(void)
 
         /* VBR/ABR */
 
-        vbr_vbox = gtk_vbox_new (FALSE, 5);
+        vbr_vbox = gtk_vbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(vbr_vbox), 5);
 
         /* Toggle VBR */
 
         vbr_toggle = gtk_check_button_new_with_label(_("Enable VBR/ABR"));
-        gtk_box_pack_start(GTK_BOX(vbr_vbox), vbr_toggle, FALSE, FALSE, 2);
+        gtk_box_pack_start(GTK_BOX(vbr_vbox), vbr_toggle, false, false, 2);
         g_signal_connect (vbr_toggle, "toggled", (GCallback) toggle_vbr, nullptr);
 
-        vbr_options_vbox = gtk_vbox_new (FALSE, 0);
+        vbr_options_vbox = gtk_vbox_new (false, 0);
         gtk_container_add(GTK_CONTAINER(vbr_vbox), vbr_options_vbox);
-        gtk_widget_set_sensitive(vbr_options_vbox, FALSE);
+        gtk_widget_set_sensitive(vbr_options_vbox, false);
 
         /* Choose VBR/ABR */
 
         vbr_type_frame = gtk_frame_new(_("Type:"));
         gtk_container_set_border_width(GTK_CONTAINER(vbr_type_frame), 5);
         gtk_box_pack_start(GTK_BOX(vbr_options_vbox), vbr_type_frame,
-                           FALSE, FALSE, 2);
+                           false, false, 2);
 
-        vbr_type_hbox = gtk_hbox_new (FALSE, 5);
+        vbr_type_hbox = gtk_hbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(vbr_type_hbox), 5);
         gtk_container_add(GTK_CONTAINER(vbr_type_frame), vbr_type_hbox);
 
         vbr_type_radio1 = gtk_radio_button_new_with_label(nullptr, "VBR");
-        gtk_box_pack_start(GTK_BOX(vbr_type_hbox), vbr_type_radio1, TRUE,
-                           TRUE, 2);
+        gtk_box_pack_start(GTK_BOX(vbr_type_hbox), vbr_type_radio1, true,
+                           true, 2);
         if (vbr_type == 0)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (vbr_type_radio1), TRUE);
+                                         (vbr_type_radio1), true);
 
         vbr_type_radio2 =
             gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON
                                                         (vbr_type_radio1),
                                                         "ABR");
-        gtk_box_pack_start(GTK_BOX(vbr_type_hbox), vbr_type_radio2, TRUE,
-                           TRUE, 2);
+        gtk_box_pack_start(GTK_BOX(vbr_type_hbox), vbr_type_radio2, true,
+                           true, 2);
         if (vbr_type == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (vbr_type_radio2), TRUE);
+                                         (vbr_type_radio2), true);
 
         g_signal_connect (vbr_type_radio1, "toggled", (GCallback)
          vbr_abr_toggle, (void *) "VBR");
@@ -930,15 +930,15 @@ static void mp3_configure(void)
 
         vbr_frame = gtk_frame_new(_("VBR Options:"));
         gtk_container_set_border_width(GTK_CONTAINER(vbr_frame), 5);
-        gtk_box_pack_start(GTK_BOX(vbr_options_vbox), vbr_frame, FALSE,
-                           FALSE, 2);
+        gtk_box_pack_start(GTK_BOX(vbr_options_vbox), vbr_frame, false,
+                           false, 2);
 
-        vbr_options_vbox2 = gtk_vbox_new (FALSE, 5);
+        vbr_options_vbox2 = gtk_vbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(vbr_options_vbox2),
                                        5);
         gtk_container_add(GTK_CONTAINER(vbr_frame), vbr_options_vbox2);
 
-        vbr_options_hbox1 = gtk_hbox_new (FALSE, 5);
+        vbr_options_hbox1 = gtk_hbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(vbr_options_hbox1),
                                        5);
         gtk_container_add(GTK_CONTAINER(vbr_options_vbox2),
@@ -946,8 +946,8 @@ static void mp3_configure(void)
 
         vbr_min_label = gtk_label_new(_("Minimum bitrate (kbps):"));
         gtk_misc_set_alignment(GTK_MISC(vbr_min_label), 0, 0.5);
-        gtk_box_pack_start(GTK_BOX(vbr_options_hbox1), vbr_min_label, TRUE,
-                           TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(vbr_options_hbox1), vbr_min_label, true,
+                           true, 0);
 
         combo = gtk_combo_box_text_new ();
 
@@ -960,11 +960,11 @@ static void mp3_configure(void)
                 gtk_combo_box_set_active ((GtkComboBox *) combo, i);
         }
 
-        gtk_box_pack_start ((GtkBox *) vbr_options_hbox1, combo, FALSE, FALSE,
+        gtk_box_pack_start ((GtkBox *) vbr_options_hbox1, combo, false, false,
          0);
         g_signal_connect (combo, "changed", (GCallback) vbr_min_changed, nullptr);
 
-        vbr_options_hbox2 = gtk_hbox_new (FALSE, 5);
+        vbr_options_hbox2 = gtk_hbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(vbr_options_hbox2),
                                        5);
         gtk_container_add(GTK_CONTAINER(vbr_options_vbox2),
@@ -972,8 +972,8 @@ static void mp3_configure(void)
 
         vbr_max_label = gtk_label_new(_("Maximum bitrate (kbps):"));
         gtk_misc_set_alignment(GTK_MISC(vbr_max_label), 0, 0.5);
-        gtk_box_pack_start(GTK_BOX(vbr_options_hbox2), vbr_max_label, TRUE,
-                           TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(vbr_options_hbox2), vbr_max_label, true,
+                           true, 0);
 
         combo = gtk_combo_box_text_new ();
 
@@ -986,7 +986,7 @@ static void mp3_configure(void)
                 gtk_combo_box_set_active ((GtkComboBox *) combo, i);
         }
 
-        gtk_box_pack_start ((GtkBox *) vbr_options_hbox2, combo, FALSE, FALSE,
+        gtk_box_pack_start ((GtkBox *) vbr_options_hbox2, combo, false, false,
          0);
         g_signal_connect (combo, "changed", (GCallback) vbr_max_changed, nullptr);
 
@@ -994,29 +994,29 @@ static void mp3_configure(void)
             gtk_check_button_new_with_label
             (_("Strictly enforce minimum bitrate"));
         gtk_box_pack_start(GTK_BOX(vbr_options_vbox2), enforce_min_toggle,
-                           FALSE, FALSE, 2);
+                           false, false, 2);
         g_signal_connect (enforce_min_toggle, "toggled", (GCallback)
          toggle_enforce_min, nullptr);
 
         if (enforce_min_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (enforce_min_toggle), TRUE);
+                                         (enforce_min_toggle), true);
 
         /* ABR Options */
 
         abr_frame = gtk_frame_new(_("ABR Options:"));
         gtk_container_set_border_width(GTK_CONTAINER(abr_frame), 5);
-        gtk_box_pack_start(GTK_BOX(vbr_options_vbox), abr_frame, FALSE,
-                           FALSE, 2);
-        gtk_widget_set_sensitive(abr_frame, FALSE);
+        gtk_box_pack_start(GTK_BOX(vbr_options_vbox), abr_frame, false,
+                           false, 2);
+        gtk_widget_set_sensitive(abr_frame, false);
 
-        abr_hbox = gtk_hbox_new (FALSE, 5);
+        abr_hbox = gtk_hbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(abr_hbox), 5);
         gtk_container_add(GTK_CONTAINER(abr_frame), abr_hbox);
 
         abr_label = gtk_label_new(_("Average bitrate (kbps):"));
         gtk_misc_set_alignment(GTK_MISC(abr_label), 0, 0.5);
-        gtk_box_pack_start(GTK_BOX(abr_hbox), abr_label, TRUE, TRUE, 0);
+        gtk_box_pack_start(GTK_BOX(abr_hbox), abr_label, true, true, 0);
 
         combo = gtk_combo_box_text_new ();
 
@@ -1029,13 +1029,13 @@ static void mp3_configure(void)
                 gtk_combo_box_set_active ((GtkComboBox *) combo, i);
         }
 
-        gtk_box_pack_start ((GtkBox *) abr_hbox, combo, FALSE, FALSE,
+        gtk_box_pack_start ((GtkBox *) abr_hbox, combo, false, false,
          0);
         g_signal_connect (combo, "changed", (GCallback) abr_changed, nullptr);
 
         /* Quality Level */
 
-        vbr_options_hbox3 = gtk_hbox_new (FALSE, 5);
+        vbr_options_hbox3 = gtk_hbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(vbr_options_hbox3),
                                        5);
         gtk_container_add(GTK_CONTAINER(vbr_options_vbox),
@@ -1044,13 +1044,13 @@ static void mp3_configure(void)
         vbr_quality_label = gtk_label_new(_("VBR quality level:"));
         gtk_misc_set_alignment(GTK_MISC(vbr_quality_label), 0, 0.5);
         gtk_box_pack_start(GTK_BOX(vbr_options_hbox3), vbr_quality_label,
-                           TRUE, TRUE, 0);
+                           true, true, 0);
 
         vbr_quality_adj = (GtkAdjustment *) gtk_adjustment_new (4, 0, 9, 1, 1, 0);
         vbr_quality_spin =
             gtk_spin_button_new(GTK_ADJUSTMENT(vbr_quality_adj), 8, 0);
         gtk_box_pack_start(GTK_BOX(vbr_options_hbox3), vbr_quality_spin,
-                           TRUE, TRUE, 0);
+                           true, true, 0);
         g_signal_connect (vbr_quality_adj, "value-changed", (GCallback)
          vbr_qual, nullptr);
 
@@ -1062,13 +1062,13 @@ static void mp3_configure(void)
         xing_header_toggle =
             gtk_check_button_new_with_label(_("Omit Xing VBR header"));
         gtk_box_pack_start(GTK_BOX(vbr_options_vbox), xing_header_toggle,
-                           FALSE, FALSE, 2);
+                           false, false, 2);
         g_signal_connect (xing_header_toggle, "toggled", (GCallback)
          toggle_xing, nullptr);
 
         if (toggle_xing_val == 0)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (xing_header_toggle), TRUE);
+                                         (xing_header_toggle), true);
 
         /* Add the Notebook */
 
@@ -1077,7 +1077,7 @@ static void mp3_configure(void)
 
         /* Tags */
 
-        tags_vbox = gtk_vbox_new (FALSE, 5);
+        tags_vbox = gtk_vbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(tags_vbox), 5);
 
         /* Frame Params */
@@ -1085,10 +1085,10 @@ static void mp3_configure(void)
         tags_frames_frame = gtk_frame_new(_("Frame Parameters:"));
         gtk_container_set_border_width(GTK_CONTAINER(tags_frames_frame),
                                        5);
-        gtk_box_pack_start(GTK_BOX(tags_vbox), tags_frames_frame, FALSE,
-                           FALSE, 2);
+        gtk_box_pack_start(GTK_BOX(tags_vbox), tags_frames_frame, false,
+                           false, 2);
 
-        tags_frames_hbox = gtk_hbox_new (FALSE, 5);
+        tags_frames_hbox = gtk_hbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(tags_frames_hbox), 5);
         gtk_container_add(GTK_CONTAINER(tags_frames_frame),
                           tags_frames_hbox);
@@ -1096,33 +1096,33 @@ static void mp3_configure(void)
         tags_copyright_toggle =
             gtk_check_button_new_with_label(_("Mark as copyright"));
         gtk_box_pack_start(GTK_BOX(tags_frames_hbox),
-                           tags_copyright_toggle, FALSE, FALSE, 2);
+                           tags_copyright_toggle, false, false, 2);
         g_signal_connect (tags_copyright_toggle, "toggled", (GCallback)
          toggle_copyright, nullptr);
 
         if (mark_copyright_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (tags_copyright_toggle), TRUE);
+                                         (tags_copyright_toggle), true);
 
         tags_original_toggle =
             gtk_check_button_new_with_label(_("Mark as original"));
         gtk_box_pack_start(GTK_BOX(tags_frames_hbox), tags_original_toggle,
-                           FALSE, FALSE, 2);
+                           false, false, 2);
         g_signal_connect (tags_original_toggle, "toggled", (GCallback)
          toggle_original, nullptr);
 
         if (mark_original_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (tags_original_toggle), TRUE);
+                                         (tags_original_toggle), true);
 
         /* ID3 Params */
 
         tags_id3_frame = gtk_frame_new(_("ID3 Parameters:"));
         gtk_container_set_border_width(GTK_CONTAINER(tags_id3_frame), 5);
-        gtk_box_pack_start(GTK_BOX(tags_vbox), tags_id3_frame, FALSE,
-                           FALSE, 2);
+        gtk_box_pack_start(GTK_BOX(tags_vbox), tags_id3_frame, false,
+                           false, 2);
 
-        tags_id3_vbox = gtk_vbox_new (FALSE, 5);
+        tags_id3_vbox = gtk_vbox_new (false, 5);
         gtk_container_set_border_width(GTK_CONTAINER(tags_id3_vbox), 5);
         gtk_container_add(GTK_CONTAINER(tags_id3_frame), tags_id3_vbox);
 
@@ -1130,38 +1130,38 @@ static void mp3_configure(void)
             gtk_check_button_new_with_label
             (_("Force addition of version 2 tag"));
         gtk_box_pack_start(GTK_BOX(tags_id3_vbox), tags_force_id3v2_toggle,
-                           FALSE, FALSE, 2);
+                           false, false, 2);
         g_signal_connect (tags_force_id3v2_toggle, "toggled", (GCallback)
          force_v2_toggle, nullptr);
 
-        tags_id3_hbox = gtk_hbox_new (FALSE, 5);
+        tags_id3_hbox = gtk_hbox_new (false, 5);
         gtk_container_add(GTK_CONTAINER(tags_id3_vbox), tags_id3_hbox);
 
         tags_only_v1_toggle =
             gtk_check_button_new_with_label(_("Only add v1 tag"));
         gtk_box_pack_start(GTK_BOX(tags_id3_hbox), tags_only_v1_toggle,
-                           FALSE, FALSE, 2);
+                           false, false, 2);
         g_signal_connect (tags_only_v1_toggle, "toggled", (GCallback)
          id3_only_version, (void *) "v1");
 
         tags_only_v2_toggle =
             gtk_check_button_new_with_label(_("Only add v2 tag"));
         gtk_box_pack_start(GTK_BOX(tags_id3_hbox), tags_only_v2_toggle,
-                           FALSE, FALSE, 2);
+                           false, false, 2);
         g_signal_connect (tags_only_v2_toggle, "toggled", (GCallback)
          id3_only_version, (void *) "v2");
 
         if (force_v2_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (tags_force_id3v2_toggle), TRUE);
+                                         (tags_force_id3v2_toggle), true);
 
         if (only_v1_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (tags_only_v1_toggle), TRUE);
+                                         (tags_only_v1_toggle), true);
 
         if (only_v2_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
-                                         (tags_only_v2_toggle), TRUE);
+                                         (tags_only_v2_toggle), true);
 
         /* Add the Notebook */
 
@@ -1172,10 +1172,10 @@ static void mp3_configure(void)
 
         if (vbr_on == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(vbr_toggle),
-                                         TRUE);
+                                         true);
         else
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(vbr_toggle),
-                                         FALSE);
+                                         false);
 
         /* Show it! */
 

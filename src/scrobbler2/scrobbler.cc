@@ -41,9 +41,9 @@ public:
 EXPORT Scrobbler aud_plugin_instance;
 
 //shared variables
-gboolean scrobbler_running        = TRUE;
-gboolean migrate_config_requested = FALSE;
-gboolean now_playing_requested    = FALSE;
+gboolean scrobbler_running        = true;
+gboolean migrate_config_requested = false;
+gboolean now_playing_requested    = false;
 Tuple now_playing_track;
 
 pthread_mutex_t communication_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -126,7 +126,7 @@ static gboolean queue_track_to_scrobble (void * data) {
     }
     g_free(queuepath);
     cleanup_current_track();
-    return FALSE;
+    return false;
 }
 
 
@@ -168,7 +168,7 @@ static void ready (void *hook_data, void *user_data) {
 
     pthread_mutex_lock(&communication_mutex);
     now_playing_track = current_track.ref ();
-    now_playing_requested = TRUE;
+    now_playing_requested = true;
     pthread_cond_signal(&communication_signal);
     pthread_mutex_unlock(&communication_mutex);
 
@@ -220,15 +220,15 @@ bool Scrobbler::init ()
     // the version it was compiled for and the actual libXML in use
     LIBXML_TEST_VERSION
 
-    if (scrobbler_communication_init() == FALSE) {
+    if (scrobbler_communication_init() == false) {
         aud_ui_show_error(_("The Scrobbler plugin could not be started.\n"
                                    "There might be a problem with your installation."));
-        return FALSE;
+        return false;
     }
 
     session_key = aud_get_str("scrobbler", "session_key");
     if (!session_key[0])
-        scrobbling_enabled = FALSE;
+        scrobbling_enabled = false;
 
     //TODO: Remove this after we are "sure" that noone is using the old scrobbler (from audacious < 3.4)
     //By Debian's standard, this will probably be by 2020 or so
@@ -245,8 +245,8 @@ bool Scrobbler::init ()
         if (oldpass[0] && olduser[0]) {
           //And the old scrobbler was configured
 
-          scrobbling_enabled = FALSE;
-          migrate_config_requested = TRUE;
+          scrobbling_enabled = false;
+          migrate_config_requested = true;
         }
       }
     }
@@ -258,7 +258,7 @@ bool Scrobbler::init ()
     hook_associate("playback ready", (HookFunction) ready, nullptr);
     hook_associate("playback pause", (HookFunction) paused, nullptr);
     hook_associate("playback unpause", (HookFunction) unpaused, nullptr);
-    return TRUE;
+    return true;
 }
 
 void Scrobbler::cleanup ()
@@ -271,8 +271,8 @@ void Scrobbler::cleanup ()
 
     cleanup_current_track();
 
-    scrobbling_enabled = FALSE;
-    scrobbler_running  = FALSE;
+    scrobbling_enabled = false;
+    scrobbler_running  = false;
     pthread_mutex_lock(&communication_mutex);
     pthread_cond_signal(&communication_signal);
     pthread_mutex_unlock(&communication_mutex);
@@ -282,7 +282,7 @@ void Scrobbler::cleanup ()
     request_token = String();
     session_key = String();
     username = String();
-    scrobbler_running = TRUE;
+    scrobbler_running = true;
 }
 
 const char Scrobbler::about[] =

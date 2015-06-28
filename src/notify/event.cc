@@ -49,14 +49,14 @@ static void clear_cache (void)
 static gboolean get_album_art (void)
 {
     if (last_pixbuf)
-        return FALSE;
+        return false;
 
     last_pixbuf = audgui_pixbuf_request_current ();
     if (! last_pixbuf)
-        return FALSE;
+        return false;
 
     audgui_pixbuf_scale_within (& last_pixbuf, audgui_get_dpi ());
-    return TRUE;
+    return true;
 }
 
 static void show_stopped (void)

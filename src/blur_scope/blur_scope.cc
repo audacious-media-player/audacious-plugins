@@ -91,7 +91,7 @@ bool BlurScope::init ()
     aud_config_set_defaults ("BlurScope", bscope_defaults);
     bscope_color = aud_get_int ("BlurScope", "color");
 
-    return TRUE;
+    return true;
 }
 
 void BlurScope::cleanup ()
@@ -130,13 +130,13 @@ void BlurScope::draw ()
 gboolean BlurScope::configure_event (GtkWidget * widget, GdkEventConfigure * event, void * user)
 {
     ((BlurScope *) user)->resize (event->width, event->height);
-    return TRUE;
+    return true;
 }
 
 gboolean BlurScope::expose_event (GtkWidget * widget, GdkEventExpose * event, void * user)
 {
     ((BlurScope *) user)->draw ();
-    return TRUE;
+    return true;
 }
 
 void * BlurScope::get_gtk_widget ()
@@ -222,7 +222,7 @@ static void /* GtkWidget */ * bscope_get_color_chooser (void)
     GdkColor gdk_color = {0, (uint16_t) ((bscope_color & 0xff0000) >> 8),
      (uint16_t) (bscope_color & 0xff00), (uint16_t) ((bscope_color & 0xff) << 8)};
     GtkWidget * chooser = gtk_color_button_new_with_color (& gdk_color);
-    gtk_color_button_set_use_alpha ((GtkColorButton *) chooser, FALSE);
+    gtk_color_button_set_use_alpha ((GtkColorButton *) chooser, false);
 
     g_signal_connect (chooser, "color-set", (GCallback) color_set_cb, nullptr);
 

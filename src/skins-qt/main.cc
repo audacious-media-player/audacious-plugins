@@ -1085,7 +1085,7 @@ static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
     if (event->changed_mask & GDK_WINDOW_STATE_ABOVE)
         view_set_on_top (!! (event->new_window_state & GDK_WINDOW_STATE_ABOVE));
 
-    return TRUE;
+    return true;
 }
 #endif
 

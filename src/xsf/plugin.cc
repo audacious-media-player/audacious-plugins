@@ -75,7 +75,7 @@ static String dirpath;
 const char* const XSFPlugin::defaults[] =
 {
 	"ignore_length", "FALSE",
-	NULL
+	nullptr
 };
 
 bool XSFPlugin::init()

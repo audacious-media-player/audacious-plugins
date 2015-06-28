@@ -378,7 +378,7 @@ gboolean setup_filter()
     gdk_window_add_filter (gdk_screen_get_root_window
      (gdk_screen_get_default ()), gdk_filter, nullptr);
 
-    return TRUE;
+    return true;
 }
 
 void release_filter()

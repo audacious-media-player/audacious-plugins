@@ -383,8 +383,8 @@ static void *alarm_make_config_widget(void)
             alarm_conf.day[daynum].spin_min = GTK_SPIN_BUTTON(w);
             gtk_spin_button_set_value(alarm_conf.day[daynum].spin_min, alarm_conf.default_min);
 
-            gtk_widget_set_sensitive((GtkWidget *)alarm_conf.day[daynum].spin_hr, FALSE);
-            gtk_widget_set_sensitive((GtkWidget *)alarm_conf.day[daynum].spin_min, FALSE);
+            gtk_widget_set_sensitive((GtkWidget *)alarm_conf.day[daynum].spin_hr, false);
+            gtk_widget_set_sensitive((GtkWidget *)alarm_conf.day[daynum].spin_min, false);
         }
         else
         {
@@ -396,8 +396,8 @@ static void *alarm_make_config_widget(void)
             alarm_conf.day[daynum].spin_min = GTK_SPIN_BUTTON(w);
             gtk_spin_button_set_value(alarm_conf.day[daynum].spin_min, alarm_conf.day[daynum].min);
 
-            gtk_widget_set_sensitive((GtkWidget *)alarm_conf.day[daynum].spin_hr, TRUE);
-            gtk_widget_set_sensitive((GtkWidget *)alarm_conf.day[daynum].spin_min, TRUE);
+            gtk_widget_set_sensitive((GtkWidget *)alarm_conf.day[daynum].spin_hr, true);
+            gtk_widget_set_sensitive((GtkWidget *)alarm_conf.day[daynum].spin_min, true);
         }
     }
 
@@ -445,27 +445,27 @@ static void on_day_def_toggled(GtkToggleButton *togglebutton, void * user_data, 
     if(w == nullptr)
         return;
 
-    if(gtk_toggle_button_get_active(togglebutton) == TRUE)
+    if(gtk_toggle_button_get_active(togglebutton) == true)
     {
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(w), alarm_conf.default_hour);
-        gtk_widget_set_sensitive(w, FALSE);
+        gtk_widget_set_sensitive(w, false);
     }
     else
     {
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(w), alarm_conf.day[daynum].hour);
-        gtk_widget_set_sensitive(w, TRUE);
+        gtk_widget_set_sensitive(w, true);
     }
 
     w = lookup_widget(config_notebook, day_m[daynum]);
-    if(gtk_toggle_button_get_active(togglebutton) == TRUE)
+    if(gtk_toggle_button_get_active(togglebutton) == true)
     {
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(w), alarm_conf.default_min);
-        gtk_widget_set_sensitive(w, FALSE);
+        gtk_widget_set_sensitive(w, false);
     }
     else
     {
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(w), alarm_conf.day[daynum].min);
-        gtk_widget_set_sensitive(w, TRUE);
+        gtk_widget_set_sensitive(w, true);
     }
 }
 
@@ -638,7 +638,7 @@ void alarm_stop_cancel(GtkWidget *w, void * data)
 {
     AUDDBG("alarm_stop_cancel\n");
     if (pthread_cancel(stop.tid) == 0)
-        stop.is_valid = FALSE;
+        stop.is_valid = false;
 }
 
 /* the main alarm thread */
@@ -656,10 +656,10 @@ static gboolean alarm_timeout (void * unused)
 
     /* already went off? */
     if (timenow < play_start + 60)
-        return TRUE;
+        return true;
 
     if(alarm_conf.day[today].flags & ALARM_OFF)
-        return TRUE;
+        return true;
     else
     {
         /* set the alarm_h and alarm_m for today, if not default */
@@ -680,9 +680,9 @@ static gboolean alarm_timeout (void * unused)
 
     AUDDBG("Checking time (%d:%d)\n", currtime->tm_hour, currtime->tm_min);
     if((currtime->tm_hour != alarm_h) || (currtime->tm_min != alarm_m))
-        return TRUE;
+        return true;
 
-    if(cmd_on == TRUE)
+    if(cmd_on == true)
     {
         String cmdstr = aud_get_str ("alarm", "cmdstr");
         AUDDBG("Executing %s, cmd_on is true\n", (const char *) cmdstr);
@@ -690,13 +690,13 @@ static gboolean alarm_timeout (void * unused)
             AUDDBG("Executing %s failed\n", (const char *) cmdstr);
     }
 
-    gboolean started = FALSE;
+    gboolean started = false;
 
     String playlist = aud_get_str ("alarm", "playlist");
     if (playlist[0])
     {
         aud_drct_pl_open (playlist);
-        started = TRUE;
+        started = true;
     }
 
     if(fading)
@@ -731,7 +731,7 @@ static gboolean alarm_timeout (void * unused)
         aud_drct_play();
     }
 
-    if(alarm_conf.reminder_on == TRUE)
+    if(alarm_conf.reminder_on == true)
     {
         String reminder_msg = aud_get_str ("alarm", "reminder_msg");
         GtkWidget *reminder_dialog;
@@ -748,7 +748,7 @@ static gboolean alarm_timeout (void * unused)
      * this means that the dialog doesnt get shown until the volume has
      * finished fading though !, so thats something else to fix
      */
-    if(stop_on == TRUE)
+    if(stop_on == true)
     {
         alarm_dialog = create_alarm_dialog();
 
@@ -757,7 +757,7 @@ static gboolean alarm_timeout (void * unused)
         AUDDBG("Created wakeup dialog and started stop thread\n");
     }
 
-    return TRUE;
+    return true;
 }
 
 static void alarm_configure ()
@@ -803,7 +803,7 @@ void AlarmPlugin::cleanup ()
     if (stop.is_valid)
     {
         pthread_cancel(stop.tid);
-        stop.is_valid = FALSE;
+        stop.is_valid = false;
     }
 }
 

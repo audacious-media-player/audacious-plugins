@@ -211,8 +211,8 @@ void skin_view_realize (GtkTreeView * treeview)
 
     gtk_widget_show_all(GTK_WIDGET(treeview));
 
-    gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), TRUE);
-    gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), FALSE);
+    gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), true);
+    gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), false);
 
     store = gtk_list_store_new(SKIN_VIEW_N_COLS, GDK_TYPE_PIXBUF,
                                G_TYPE_STRING , G_TYPE_STRING);
@@ -226,12 +226,12 @@ void skin_view_realize (GtkTreeView * treeview)
                                 GTK_TREE_VIEW_COLUMN(column));
 
     renderer = gtk_cell_renderer_pixbuf_new();
-    gtk_tree_view_column_pack_start(column, renderer, FALSE);
+    gtk_tree_view_column_pack_start(column, renderer, false);
     gtk_tree_view_column_set_attributes(column, renderer, "pixbuf",
                                         SKIN_VIEW_COL_PREVIEW, nullptr);
 
     renderer = gtk_cell_renderer_text_new();
-    gtk_tree_view_column_pack_start(column, renderer, TRUE);
+    gtk_tree_view_column_pack_start(column, renderer, true);
     gtk_tree_view_column_set_attributes(column, renderer, "markup",
                                         SKIN_VIEW_COL_FORMATTEDNAME, nullptr);
 

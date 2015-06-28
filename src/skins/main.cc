@@ -160,7 +160,7 @@ mainwin_menubtn_cb(void)
     int x, y;
     mainwin->getPosition (& x, & y);
     menu_popup (UI_MENU_MAIN, x + 6 * config.scale,
-     y + MAINWIN_SHADED_HEIGHT * config.scale, FALSE, FALSE, 1, GDK_CURRENT_TIME);
+     y + MAINWIN_SHADED_HEIGHT * config.scale, false, false, 1, GDK_CURRENT_TIME);
 }
 
 static void mainwin_minimize_cb (void)
@@ -509,7 +509,7 @@ bool MainWindow::button_press (GdkEventButton * event)
 
 static void mainwin_playback_rpress (Button * button, GdkEventButton * event)
 {
-    menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, FALSE, FALSE,
+    menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, false, false,
      event->button, event->time);
 }
 
@@ -882,7 +882,7 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
     switch (i)
     {
         case MENUROW_OPTIONS:
-            menu_popup (UI_MENU_VIEW, event->x_root, event->y_root, FALSE, FALSE, 1, event->time);
+            menu_popup (UI_MENU_VIEW, event->x_root, event->y_root, false, false, 1, event->time);
             break;
         case MENUROW_ALWAYS:
             view_set_on_top (! aud_get_bool ("skins", "always_on_top"));
@@ -1130,7 +1130,7 @@ static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
     if (event->changed_mask & GDK_WINDOW_STATE_ABOVE)
         view_set_on_top (!! (event->new_window_state & GDK_WINDOW_STATE_ABOVE));
 
-    return TRUE;
+    return true;
 }
 
 void MainWindow::draw (cairo_t * cr)

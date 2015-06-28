@@ -166,7 +166,7 @@ bool CoreAudioPlugin::init (void)
     desc.componentFlagsMask = 0;
     desc.componentManufacturer = 0;
 
-    output_comp = AudioComponentFindNext (NULL, & desc);
+    output_comp = AudioComponentFindNext (nullptr, & desc);
     if (! output_comp)
     {
         error ("Failed to open default audio device.\n");
@@ -317,7 +317,7 @@ bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_)
         prop.mScope    = kAudioObjectPropertyScopeGlobal;
         prop.mElement  = kAudioObjectPropertyElementMaster;
 
-        OSStatus err = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, NULL, sizeof hog_mode, & hog_mode);
+        OSStatus err = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, nullptr, sizeof hog_mode, & hog_mode);
         if (err != noErr)
         {
             AUDWARN ("Failed to open device for exclusive mode, continuing anyway... [%d]\n", err);
@@ -353,7 +353,7 @@ void CoreAudioPlugin::close_audio ()
         prop.mScope    = kAudioObjectPropertyScopeGlobal;
         prop.mElement  = kAudioObjectPropertyElementMaster;
 
-        OSStatus err = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, NULL, sizeof hog_mode, & hog_mode);
+        OSStatus err = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, nullptr, sizeof hog_mode, & hog_mode);
         if (err != noErr)
             AUDWARN ("Failed to release device from exclusive mode, continuing anyway...");
 
