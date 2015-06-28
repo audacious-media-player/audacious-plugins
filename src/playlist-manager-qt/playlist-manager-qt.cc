@@ -132,14 +132,17 @@ QVariant PlaylistsModel::data (const QModelIndex & index, int role) const
         case ColumnEntries:
             return aud_playlist_entry_count (index.row ());
         }
+        break;
 
     case Qt::FontRole:
         if (index.row () == m_playing)
             return m_bold;
+        break;
 
     case Qt::TextAlignmentRole:
         if (index.column () == ColumnEntries)
             return Qt::AlignRight;
+        break;
     }
 
     return QVariant ();
