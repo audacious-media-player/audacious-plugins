@@ -195,8 +195,9 @@ skin_load_pixmaps(const char * path)
 {
     AUDDBG("Loading pixmaps in %s\n", path);
 
+    /* eq_ex.bmp was added after Winamp 2.0 so some skins do not include it */
     for (int i = 0; i < SKIN_PIXMAP_COUNT; i++)
-        if (! skin_load_pixmap_id ((SkinPixmapId) i, path))
+        if (! skin_load_pixmap_id ((SkinPixmapId) i, path) && i != SKIN_EQ_EX)
             return false;
 
     skin_get_textcolors (skin.pixmaps[SKIN_TEXT].get ());
@@ -300,6 +301,9 @@ void skin_install_skin (const char * path)
 void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc, int
  xdest, int ydest, int width, int height)
 {
+    if (! skin.pixmaps[id])
+        return;
+
     cairo_set_source_surface (cr, skin.pixmaps[id].get (), xdest - xsrc, ydest - ysrc);
     cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
     cairo_rectangle (cr, xdest, ydest, width, height);

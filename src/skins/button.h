@@ -38,7 +38,7 @@ public:
 
     // basic skinned button
     Button (int w, int h, int nx, int ny, int px, int py, SkinPixmapId si1, SkinPixmapId si2) :
-        Button (Normal, w, h, nx, ny, px, py, 0, 0, 0, 0, si1, si1) {}
+        Button (Normal, w, h, nx, ny, px, py, 0, 0, 0, 0, si1, si2) {}
 
     // skinned toggle button
     Button (int w, int h, int nx, int ny, int px, int py, int pnx, int pny,

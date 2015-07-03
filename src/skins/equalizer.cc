@@ -265,6 +265,10 @@ equalizerwin_create_window(void)
 {
     bool shaded = aud_get_bool ("skins", "equalizer_shaded");
 
+    /* do not allow shading the equalizer if eq_ex.bmp is missing */
+    if (! skin.pixmaps[SKIN_EQ_EX])
+        shaded = false;
+
     equalizerwin = new EqWindow (shaded);
     equalizerwin->setWindowTitle (_("Audacious Equalizer"));
 }
