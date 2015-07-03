@@ -147,38 +147,6 @@ static void read_comment (vorbis_comment * comment, Tuple & tuple)
         tuple.set_int (Tuple::Year, atoi (tmps));
 }
 
-static float atof_no_locale (const char * string)
-{
-    float result = 0;
-    bool negative = false;
-
-    if (* string == '+')
-        string ++;
-    else if (* string == '-')
-    {
-        negative = true;
-        string ++;
-    }
-
-    while (* string >= '0' && * string <= '9')
-        result = 10 * result + (* string ++ - '0');
-
-    if (* string == '.')
-    {
-        float place = 0.1;
-
-        string ++;
-
-        while (* string >= '0' && * string <= '9')
-        {
-            result += (* string ++ - '0') * place;
-            place *= 0.1;
-        }
-    }
-
-    return negative ? -result : result;
-}
-
 /* try to detect when metadata has changed */
 static bool update_tuple (OggVorbis_File * vf, Tuple & tuple)
 {
@@ -206,21 +174,21 @@ static bool update_replay_gain (OggVorbis_File * vf, ReplayGainInfo * rg_info)
 
     rg_gain = vorbis_comment_query(comment, "replaygain_album_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_audiophile", 0);    /* Old */
-    rg_info->album_gain = (rg_gain != nullptr) ? atof_no_locale (rg_gain) : 0.0;
+    rg_info->album_gain = (rg_gain != nullptr) ? str_to_double (rg_gain) : 0.0;
     AUDDBG ("Album gain: %s (%f)\n", rg_gain, rg_info->album_gain);
 
     rg_gain = vorbis_comment_query(comment, "replaygain_track_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_radio", 0);    /* Old */
-    rg_info->track_gain = (rg_gain != nullptr) ? atof_no_locale (rg_gain) : 0.0;
+    rg_info->track_gain = (rg_gain != nullptr) ? str_to_double (rg_gain) : 0.0;
     AUDDBG ("Track gain: %s (%f)\n", rg_gain, rg_info->track_gain);
 
     rg_peak = vorbis_comment_query(comment, "replaygain_album_peak", 0);
-    rg_info->album_peak = rg_peak != nullptr ? atof_no_locale (rg_peak) : 0.0;
+    rg_info->album_peak = rg_peak != nullptr ? str_to_double (rg_peak) : 0.0;
     AUDDBG ("Album peak: %s (%f)\n", rg_peak, rg_info->album_peak);
 
     rg_peak = vorbis_comment_query(comment, "replaygain_track_peak", 0);
     if (!rg_peak) rg_peak = vorbis_comment_query(comment, "rg_peak", 0);  /* Old */
-    rg_info->track_peak = rg_peak != nullptr ? atof_no_locale (rg_peak) : 0.0;
+    rg_info->track_peak = rg_peak != nullptr ? str_to_double (rg_peak) : 0.0;
     AUDDBG ("Track peak: %s (%f)\n", rg_peak, rg_info->track_peak);
 
     return true;
