@@ -17,83 +17,53 @@
  * the use of this software.
  */
 
+#include <QStaticText>
 #include <QWidget>
-#include <QPainter>
-#include <QGraphicsView>
-#include <QGraphicsPixmapItem>
-#include <QGraphicsTextItem>
 
 #include <libaudcore/hook.h>
-#include <libaudcore/runtime.h>
 #include <libaudcore/visualizer.h>
 
 #ifndef INFO_BAR_H
 #define INFO_BAR_H
 
-class VisItem : public QGraphicsItem, public Visualizer {
-public:
-    VisItem (QGraphicsItem * parent = nullptr);
-    ~VisItem ();
-
-    QRectF boundingRect () const;
-    void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
-
-private:
-    void render_freq (const float * freq);
-    void clear ();
-
-    char m_bars[12];
-    char m_delay[12];
-};
-
-class AlbumArtItem : public QGraphicsPixmapItem {
-public:
-    AlbumArtItem ()
-        { update_cb (); }
-
-private:
-    void update_cb ();
-
-    const HookReceiver<AlbumArtItem>
-     hook1 {"playback ready", this, & AlbumArtItem::update_cb},
-     hook2 {"playback stop", this, & AlbumArtItem::update_cb};
-};
-
-class InfoBar : public QGraphicsView {
+class InfoBar : public QWidget, Visualizer {
 public:
     InfoBar (QWidget * parent = nullptr);
+    ~InfoBar ();
 
     static constexpr int Spacing = 8;
     static constexpr int IconSize = 64;
-    static constexpr int Height = IconSize + (2 * Spacing);
+    static constexpr int Height = IconSize + 2 * Spacing;
 
     static constexpr int VisBands = 12;
-    static constexpr int VisWidth = (8 * VisBands) + Spacing;
-    static constexpr int VisCenter = (IconSize * 5 / 8 + Spacing);
+    static constexpr int VisWidth = 8 * VisBands + Spacing - 2;
+    static constexpr int VisCenter = IconSize * 5 / 8 + Spacing;
     static constexpr int VisDelay = 2;
     static constexpr int VisFalloff = 2;
 
     QSize minimumSizeHint () const;
-    void resizeEvent (QResizeEvent *);
+    void paintEvent (QPaintEvent *);
 
 private:
-    QGraphicsScene * m_scene;
-    AlbumArtItem * m_art;
-
-    QGraphicsTextItem * m_title_text;
-    QGraphicsTextItem * m_album_text;
-    QGraphicsTextItem * m_artist_text;
-
-#ifdef XXX_NOTYET
-    VisItem * m_vis;
-#endif
-
+    void update_cb ();
     void update_metadata_cb ();
+
+    void render_freq (const float * freq);
+    void clear ();
 
     const HookReceiver<InfoBar>
      hook1 {"tuple change", this, & InfoBar::update_metadata_cb},
-     hook2 {"playback ready", this, & InfoBar::update_metadata_cb},
-     hook3 {"playback stop", this, & InfoBar::update_metadata_cb};
+     hook2 {"playback ready", this, & InfoBar::update_cb},
+     hook3 {"playback stop", this, & InfoBar::update_cb};
+
+    QLinearGradient m_gradient;
+    QColor m_colors[VisBands], m_shadow[VisBands];
+
+    QPixmap m_art;
+    QStaticText m_title, m_artist, m_album;
+
+    char m_bars[VisBands] {};
+    char m_delay[VisBands] {};
 };
 
 #endif
