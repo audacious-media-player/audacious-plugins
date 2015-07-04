@@ -206,11 +206,6 @@ InfoBar::InfoBar (QWidget * parent) :
     update_cb ();
 }
 
-QSize InfoBar::minimumSizeHint () const
-{
-    return QSize (IconSize + (2 * Spacing), Height);
-}
-
 void InfoBar::resizeEvent (QResizeEvent *)
 {
     m_vis->move (width () - VisWidth, 0);
@@ -224,8 +219,9 @@ void InfoBar::paintEvent (QPaintEvent *)
 
     if (! m_art.isNull ())
     {
-        int left = Spacing + (IconSize - m_art.width ()) / 2;
-        int top = Spacing + (IconSize - m_art.height ()) / 2;
+        int r = m_art.devicePixelRatio ();
+        int left = Spacing + (IconSize - m_art.width () / r) / 2;
+        int top = Spacing + (IconSize - m_art.height () / r) / 2;
         p.drawPixmap (left, top, m_art);
     }
 

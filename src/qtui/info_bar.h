@@ -33,7 +33,6 @@ class InfoBar : public QWidget
 public:
     InfoBar (QWidget * parent = nullptr);
 
-    QSize minimumSizeHint () const;
     void resizeEvent (QResizeEvent *);
     void paintEvent (QPaintEvent *);
 
