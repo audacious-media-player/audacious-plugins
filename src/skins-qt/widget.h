@@ -40,7 +40,7 @@ protected:
 
     void set_scale (int scale) { m_scale = scale; }
     void resize (int w, int h) { QWidget::resize (w * m_scale, h * m_scale); }
-    void draw_now () { repaint (); }
+    void draw_now () { update (); }
 
     virtual void draw (QPainter & cr) {}
     virtual bool keypress (QKeyEvent * event) { return false; }
