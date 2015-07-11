@@ -24,12 +24,11 @@
 #include "callbacks.h"
 
 #if GTK_CHECK_VERSION (3, 12, 0)
-    #define gtk_widget_set_margin_right(w, m) gtk_widget_set_margin_end(w, m)
+#define gtk_widget_set_margin_right gtk_widget_set_margin_end
 #endif
 
-const char *help[] =
-{
-   N_("Time\n"
+static const char help_text[] =
+ N_("Time\n"
     "  Alarm at:\n"
     "    The time for the alarm to come on.\n\n"
 
@@ -44,9 +43,9 @@ const char *help[] =
     "  Time:\n"
     "    Choose the time for the alarm on each day,\n"
     "    or select the toggle button to use the default\n"
-    "    time.\n\n\n"),
+    "    time.\n\n\n"
 
-   N_("Volume\n"
+    "Volume\n"
     "  Fading:\n"
     "    Fade the volume up to the chosen volume\n"
     "    for this amount of time.\n\n"
@@ -61,9 +60,9 @@ const char *help[] =
 
     "Options:\n"
     "  Additional Command:\n"
-    "    Run this command at the alarm time.\n\n"),
+    "    Run this command at the alarm time.\n\n"
 
-   N_("  Playlist:\n"
+    "  Playlist:\n"
     "    Load this playlist. If no playlist\n"
     "    is given, the current one will be used.\n"
     "    The URL of an mp3/ogg stream\n"
@@ -71,11 +70,8 @@ const char *help[] =
 
     "  Reminder:\n"
     "    Display a reminder when the alarm goes off.\n"
-    "    Type the reminder in the box and turn on the\n"
-    "    toggle button if you want it to be shown."),
-
-    nullptr
-};
+    "    Type the reminder in the input field and enable\n"
+    "    the checkbox if you want it to be shown.");
 
 GtkWidget *create_alarm_dialog (void)
 {
@@ -133,8 +129,8 @@ GtkWidget *create_config_notebook (void)
     GtkWidget *checkbutton;
     GtkWidget *widget[21];
 
-    const char *weekdays[] = { _("Monday"), _("Tuesday"), _("Wednesday"),
-                                _("Thursday"), _("Friday"), _("Saturday"), _("Sunday") };
+    const char *weekdays[] = { N_("Monday"), N_("Tuesday"), N_("Wednesday"),
+                               N_("Thursday"), N_("Friday"), N_("Saturday"), N_("Sunday") };
 
     const char *day_cb[] = { "mon_cb", "tue_cb", "wed_cb", "thu_cb",
                               "fri_cb", "sat_cb", "sun_cb" };
@@ -164,7 +160,6 @@ GtkWidget *create_config_notebook (void)
     /* Page 5 */
     GtkWidget *view, *scrolled_window;
     GtkTextBuffer *text_buffer;
-    char *help_text;
 
 
     /* General */
@@ -256,7 +251,7 @@ GtkWidget *create_config_notebook (void)
 
     for (i = 0; i < 7; i ++)
     {
-        widget[i] = gtk_check_button_new_with_label (weekdays[i]);
+        widget[i] = gtk_check_button_new_with_label (_(weekdays[i]));
         g_object_set_data (G_OBJECT (notebook), day_cb[i], widget[i]);
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget[i]), true);
         gtk_widget_set_valign (widget[i], GTK_ALIGN_CENTER);
@@ -425,9 +420,7 @@ GtkWidget *create_config_notebook (void)
     gtk_text_view_set_editable (GTK_TEXT_VIEW (view), false);
     gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (view), false);
     text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
-    help_text = g_strconcat (_(help[0]), _(help[1]), _(help[2]), nullptr);
-    gtk_text_buffer_set_text (text_buffer, help_text, -1);
-    g_free (help_text);
+    gtk_text_buffer_set_text (text_buffer, _(help_text), -1);
     scrolled_window = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
      GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
