@@ -113,7 +113,7 @@ CdmoLoader::load (VFSFile & fd, const CFileProvider & fp)
   // "TwinTeam" - signed ?
   if (memcmp (module, "TwinTeam Module File" "\x0D\x0A", 22))
   {
-    delete module;
+    delete[]module;
     return false;
   }
 
