@@ -40,7 +40,14 @@ protected:
 
     void set_scale (int scale) { m_scale = scale; }
     void resize (int w, int h) { QWidget::resize (w * m_scale, h * m_scale); }
+
+#ifdef Q_OS_MAC
+    /* repaint() causes graphical glitches on OS X
+     * http://redmine.audacious-media-player.org/issues/558 */
     void draw_now () { update (); }
+#else
+    void draw_now () { repaint (); }
+#endif
 
     virtual void draw (QPainter & cr) {}
     virtual bool keypress (QKeyEvent * event) { return false; }
