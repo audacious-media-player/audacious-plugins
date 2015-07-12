@@ -283,7 +283,7 @@ bool skin_load (const char * path)
 
 void skin_install_skin (const char * path)
 {
-    GError * err = 0;
+    GError * err = nullptr;
     char * data;
     size_t len;
 

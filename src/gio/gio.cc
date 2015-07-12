@@ -176,7 +176,7 @@ FAILED:
 
 GIOFile::~GIOFile ()
 {
-    GError * error = 0;
+    GError * error = nullptr;
 
     if (m_iostream)
     {
@@ -217,7 +217,7 @@ VFSImpl * GIOTransport::fopen (const char * filename, const char * mode, String 
 
 int64_t GIOFile::fread (void * buf, int64_t size, int64_t nitems)
 {
-    GError * error = 0;
+    GError * error = nullptr;
 
     if (! m_istream)
     {
@@ -247,7 +247,7 @@ FAILED:
 
 int64_t GIOFile::fwrite (const void * buf, int64_t size, int64_t nitems)
 {
-    GError * error = 0;
+    GError * error = nullptr;
 
     if (! m_ostream)
     {
@@ -277,7 +277,7 @@ FAILED:
 
 int GIOFile::fseek (int64_t offset, VFSSeekType whence)
 {
-    GError * error = 0;
+    GError * error = nullptr;
     GSeekType gwhence;
 
     switch (whence)
@@ -334,7 +334,7 @@ bool GIOFile::feof ()
 
 int GIOFile::ftruncate (int64_t length)
 {
-    GError * error = 0;
+    GError * error = nullptr;
 
     g_seekable_truncate (m_seekable, length, nullptr, & error);
     CHECK_ERROR ("truncate", m_filename);
@@ -347,7 +347,7 @@ FAILED:
 
 int64_t GIOFile::fsize ()
 {
-    GError * error = 0;
+    GError * error = nullptr;
     int64_t size;
 
     /* Audacious core expects one of two cases:
