@@ -35,6 +35,8 @@
 #define IT_MAGIC    "IMPM"              /* IMPM */
 #define MTM_MAGIC   "\x4D\x54\x4D\x10"
 #define PSM_MAGIC   "PSM "
+#define MMD0_MAGIC  "MMD0"              /* Med MoDule 0 */
+#define MMD1_MAGIC  "MMD1"              /* OctaMED Professional */
 
 class CSoundFile;
 class Archive;
