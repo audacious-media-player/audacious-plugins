@@ -38,6 +38,7 @@
 #define PSM_MAGIC   "PSM "
 #define MMD0_MAGIC  "MMD0"              /* Med MoDule 0 */
 #define MMD1_MAGIC  "MMD1"              /* OctaMED Professional */
+#define OKTA_MAGIC  "OKTASONG"          /* Oktalyzer */
 
 class CSoundFile;
 class Archive;
