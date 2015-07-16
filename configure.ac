@@ -288,7 +288,11 @@ AC_ARG_ENABLE(statusicon,
  [AS_HELP_STRING([--enable-statusicon], [enable X11 Status Icon plugin (default=disabled)])],
  [have_statusicon=$enableval], [have_statusicon="no"])
 
-if test "x$have_statusicon" != "xno"; then
+if test $have_statusicon = yes -a $USE_GTK != yes ; then
+    AC_MSG_ERROR([--enable-statusicon cannot be used without --enable-gtk])
+fi
+
+if test $have_statusicon != no ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS statusicon"
 fi
 
