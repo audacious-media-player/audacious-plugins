@@ -73,7 +73,7 @@ TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
     EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files lyricwiki playlist-manager search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files lyricwiki playlist-manager search-tool"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope cairo-spectrum"
 fi
@@ -279,6 +279,17 @@ if test $enable_songchange != no ; then
             AC_MSG_ERROR([Cannot find sys/wait.h header, but compilation of song change plugin has been explicitly requested])
          fi]
     )
+fi
+
+dnl Status Icon
+dnl ===========
+
+AC_ARG_ENABLE(statusicon,
+ [AS_HELP_STRING([--enable-statusicon], [enable X11 Status Icon plugin (default=disabled)])],
+ [have_statusicon=$enableval], [have_statusicon="no"])
+
+if test "x$have_statusicon" != "xno"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS statusicon"
 fi
 
 dnl *** Audacious OSD plugin (pangocairo-based)
@@ -1158,7 +1169,7 @@ echo "  Playlist Manager (Qt):                  $USE_QT"
 echo "  Search Tool:                            $USE_GTK"
 echo "  Song Change:                            $have_songchange"
 echo "  Song Info (Qt):                         $USE_QT"
-echo "  Status Icon:                            $USE_GTK"
+echo "  Status Icon:                            $have_statusicon"
 echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  libnotify OSD:                          $have_notify"
