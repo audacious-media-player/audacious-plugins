@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-05-30 15:51+0200\n"
+"POT-Creation-Date: 2015-07-19 00:11+0200\n"
 "PO-Revision-Date: 2015-04-27 08:48+0000\n"
 "Last-Translator: Радослав Иванов <reckku@gmail.com>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/projects/p/audacious/"
@@ -2044,7 +2044,7 @@ msgstr "Превъртане при смяна на песента"
 msgid "GTK Interface"
 msgstr "GTK изглед"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:232
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:222
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
@@ -2053,7 +2053,7 @@ msgstr "%s - Audacious"
 msgid "Buffering ..."
 msgstr "Запълване..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:234 src/skins/ui_main.cc:1164
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:224 src/skins/ui_main.cc:1154
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -2246,12 +2246,12 @@ msgstr "Автоматично свързване към изходящите п
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr "Намерени са само изходни портове %d JACK, но се изискват %d."
 
-#: src/jack-ng/jack-ng.cc:164
+#: src/jack-ng/jack-ng.cc:171
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr "Неуспешно свързване към JACK порт %s."
 
-#: src/jack-ng/jack-ng.cc:184
+#: src/jack-ng/jack-ng.cc:191
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
@@ -2259,11 +2259,11 @@ msgstr ""
 "JACK поддържа само звук с плаваща запетая. Трябва да смените изходната "
 "побитова честота на плаваща запетая в настройките на Audacious."
 
-#: src/jack-ng/jack-ng.cc:197
+#: src/jack-ng/jack-ng.cc:204
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr "Неуспех при свързването към сървър JACK. Стартиран ли е?"
 
-#: src/jack-ng/jack-ng.cc:273
+#: src/jack-ng/jack-ng.cc:280
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -3361,7 +3361,7 @@ msgstr "Свиване на редактора на списъци"
 msgid "Roll Up Equalizer"
 msgstr "Свиване на тонкоректор"
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:854
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:844
 msgid "Double Size"
 msgstr "Двоен Размер"
 
@@ -3820,59 +3820,59 @@ msgstr "16 кХц"
 msgid "Audacious Equalizer"
 msgstr "Тонкоректор на Audacious"
 
-#: src/skins/ui_main.cc:688
+#: src/skins/ui_main.cc:678
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Превъртане до %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:709
+#: src/skins/ui_main.cc:699
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Сила на звука: %d%%"
 
-#: src/skins/ui_main.cc:732
+#: src/skins/ui_main.cc:722
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Баланс: %d%% ляво"
 
-#: src/skins/ui_main.cc:734
+#: src/skins/ui_main.cc:724
 msgid "Balance: center"
 msgstr "Баланс: център"
 
-#: src/skins/ui_main.cc:736
+#: src/skins/ui_main.cc:726
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Баланс: %d%% дясно"
 
-#: src/skins/ui_main.cc:842
+#: src/skins/ui_main.cc:832
 msgid "Options Menu"
 msgstr "Меню с опции"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:836
 msgid "Disable 'Always On Top'"
 msgstr "Деактивиране на „Винаги отгоре“"
 
-#: src/skins/ui_main.cc:848
+#: src/skins/ui_main.cc:838
 msgid "Enable 'Always On Top'"
 msgstr "Активиране на „Винаги отгоре“"
 
-#: src/skins/ui_main.cc:851
+#: src/skins/ui_main.cc:841
 msgid "File Info Box"
 msgstr "Кутийка с информация за файла"
 
-#: src/skins/ui_main.cc:857
+#: src/skins/ui_main.cc:847
 msgid "Visualizations"
 msgstr "Визуализации"
 
-#: src/skins/ui_main.cc:1336
+#: src/skins/ui_main.cc:1326
 msgid "Repeat point A set."
 msgstr "Зададена е начална точка на повторение."
 
-#: src/skins/ui_main.cc:1341
+#: src/skins/ui_main.cc:1331
 msgid "Repeat point B set."
 msgstr "Зададена е крайна точка на повторение."
 
-#: src/skins/ui_main.cc:1350
+#: src/skins/ui_main.cc:1340
 msgid "Repeat points cleared."
 msgstr "Точките на повторение са изчистени."
 

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-02-28 19:18+0100\n"
+"POT-Creation-Date: 2015-07-19 00:11+0200\n"
 "PO-Revision-Date: 2015-02-04 21:21+0000\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: Malayalam (India) (http://www.transifex.com/projects/p/"
@@ -1874,7 +1874,7 @@ msgstr ""
 msgid "GTK Interface"
 msgstr "GTK ഇന്‍ഡര്‍ഫേസ്"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:232
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:222
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - ഒഡാഷ്യസ്"
@@ -1883,7 +1883,7 @@ msgstr "%s - ഒഡാഷ്യസ്"
 msgid "Buffering ..."
 msgstr "ബഫര്‍ ചെയ്യുന്നു ..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:234 src/skins/ui_main.cc:1164
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:224 src/skins/ui_main.cc:1154
 msgid "Audacious"
 msgstr "ഒഡാഷ്യസ്"
 
@@ -2064,22 +2064,22 @@ msgstr ""
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:164
+#: src/jack-ng/jack-ng.cc:171
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:184
+#: src/jack-ng/jack-ng.cc:191
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:197
+#: src/jack-ng/jack-ng.cc:204
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:273
+#: src/jack-ng/jack-ng.cc:280
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -3084,7 +3084,7 @@ msgstr ""
 msgid "Roll Up Equalizer"
 msgstr ""
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:854
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:844
 msgid "Double Size"
 msgstr ""
 
@@ -3543,59 +3543,59 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "ഒഡാഷ്യസ് ഈക്വലൈസര്‍"
 
-#: src/skins/ui_main.cc:688
+#: src/skins/ui_main.cc:678
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "തിരയുക %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:709
+#: src/skins/ui_main.cc:699
 #, c-format
 msgid "Volume: %d%%"
 msgstr "ശബ്ദം: %d%%"
 
-#: src/skins/ui_main.cc:732
+#: src/skins/ui_main.cc:722
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "അവശേഷിക്കുന്നത്: %d%% വലത്"
 
-#: src/skins/ui_main.cc:734
+#: src/skins/ui_main.cc:724
 msgid "Balance: center"
 msgstr "അവശേഷിക്കുന്നത്: നടുവില്‍"
 
-#: src/skins/ui_main.cc:736
+#: src/skins/ui_main.cc:726
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "അവശേഷിക്കുന്നത്: %d%% ഇടത്"
 
-#: src/skins/ui_main.cc:842
+#: src/skins/ui_main.cc:832
 msgid "Options Menu"
 msgstr "ഓപ്ഷന്‍സ് മെനു"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:836
 msgid "Disable 'Always On Top'"
 msgstr "'എപ്പോഴും മുകളില്‍' അസാദ്ധ്യമാക്കുക"
 
-#: src/skins/ui_main.cc:848
+#: src/skins/ui_main.cc:838
 msgid "Enable 'Always On Top'"
 msgstr "'എപ്പോഴും മുകളില്‍' സാദ്ധ്യമാക്കുക"
 
-#: src/skins/ui_main.cc:851
+#: src/skins/ui_main.cc:841
 msgid "File Info Box"
 msgstr "ഫയല്‍ ഇന്‍ഫോ ജാലകം"
 
-#: src/skins/ui_main.cc:857
+#: src/skins/ui_main.cc:847
 msgid "Visualizations"
 msgstr ""
 
-#: src/skins/ui_main.cc:1336
+#: src/skins/ui_main.cc:1326
 msgid "Repeat point A set."
 msgstr ""
 
-#: src/skins/ui_main.cc:1341
+#: src/skins/ui_main.cc:1331
 msgid "Repeat point B set."
 msgstr ""
 
-#: src/skins/ui_main.cc:1350
+#: src/skins/ui_main.cc:1340
 msgid "Repeat points cleared."
 msgstr ""
 

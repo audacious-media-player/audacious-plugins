@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-02-28 19:18+0100\n"
+"POT-Creation-Date: 2015-07-19 00:11+0200\n"
 "PO-Revision-Date: 2015-02-14 15:07+0000\n"
 "Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/audacious/"
@@ -1994,7 +1994,7 @@ msgstr "곡 바뀔 때 스크롤"
 msgid "GTK Interface"
 msgstr "GTK 인터페이스"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:232
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:222
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - 오데이셔스"
@@ -2003,7 +2003,7 @@ msgstr "%s - 오데이셔스"
 msgid "Buffering ..."
 msgstr "버퍼링 ..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:234 src/skins/ui_main.cc:1164
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:224 src/skins/ui_main.cc:1154
 msgid "Audacious"
 msgstr "오데이셔스"
 
@@ -2194,22 +2194,22 @@ msgstr "출력 포트로 자동 연결"
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:164
+#: src/jack-ng/jack-ng.cc:171
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:184
+#: src/jack-ng/jack-ng.cc:191
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:197
+#: src/jack-ng/jack-ng.cc:204
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:273
+#: src/jack-ng/jack-ng.cc:280
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -3290,7 +3290,7 @@ msgstr "재생 목록 편집기 말아 올리기"
 msgid "Roll Up Equalizer"
 msgstr "이퀄라이저 말아 올리기"
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:854
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:844
 msgid "Double Size"
 msgstr "두배 길이"
 
@@ -3749,59 +3749,59 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "오데이셔스 이퀄라이저"
 
-#: src/skins/ui_main.cc:688
+#: src/skins/ui_main.cc:678
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "%d 탐색:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:709
+#: src/skins/ui_main.cc:699
 #, c-format
 msgid "Volume: %d%%"
 msgstr "음량: %d%%"
 
-#: src/skins/ui_main.cc:732
+#: src/skins/ui_main.cc:722
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "균형: %d%% 왼쪽"
 
-#: src/skins/ui_main.cc:734
+#: src/skins/ui_main.cc:724
 msgid "Balance: center"
 msgstr "균형: 가운데"
 
-#: src/skins/ui_main.cc:736
+#: src/skins/ui_main.cc:726
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "균형: %d%% 오른쪽"
 
-#: src/skins/ui_main.cc:842
+#: src/skins/ui_main.cc:832
 msgid "Options Menu"
 msgstr "옵션 메뉴"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:836
 msgid "Disable 'Always On Top'"
 msgstr "'항상 위' 비활성화"
 
-#: src/skins/ui_main.cc:848
+#: src/skins/ui_main.cc:838
 msgid "Enable 'Always On Top'"
 msgstr "'항상 위' 활성화"
 
-#: src/skins/ui_main.cc:851
+#: src/skins/ui_main.cc:841
 msgid "File Info Box"
 msgstr "파일 정보 상자"
 
-#: src/skins/ui_main.cc:857
+#: src/skins/ui_main.cc:847
 msgid "Visualizations"
 msgstr ""
 
-#: src/skins/ui_main.cc:1336
+#: src/skins/ui_main.cc:1326
 msgid "Repeat point A set."
 msgstr "A 반복 시점을 설정했습니다."
 
-#: src/skins/ui_main.cc:1341
+#: src/skins/ui_main.cc:1331
 msgid "Repeat point B set."
 msgstr "B 반복 시점을 설정했습니다."
 
-#: src/skins/ui_main.cc:1350
+#: src/skins/ui_main.cc:1340
 msgid "Repeat points cleared."
 msgstr "반복 시점을 지웠습니다."
 

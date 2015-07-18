@@ -16,11 +16,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-05-30 15:51+0200\n"
-"PO-Revision-Date: 2015-05-27 14:24+0000\n"
+"POT-Creation-Date: 2015-07-19 00:11+0200\n"
+"PO-Revision-Date: 2015-06-13 08:19+0000\n"
 "Last-Translator: ABE Tsunehiko\n"
-"Language-Team: Japanese (http://www.transifex.com/projects/p/audacious/"
-"language/ja/)\n"
+"Language-Team: Japanese (http://www.transifex.com/p/audacious/language/ja/)\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -558,7 +557,7 @@ msgstr ""
 "\n"
 "作者 Giacomo Lozito <james@develia.org>\n"
 "\n"
-"一部は Evan Martin 作の Ghosd ライブラリに基づきます:\n"
+"一部は Evan Martin 作の Ghosd ライブラリーに基づきます:\n"
 "http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.h:37
@@ -999,7 +998,7 @@ msgid ""
 "Shay Green <gblargg@gmail.com>"
 msgstr ""
 "コンソール音楽デコーダーエンジン based on Game_Music_Emu 0.5.2\n"
-"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"対応形式: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
 "\n"
 "Audacious plugin by:\n"
 "William Pitcock <nenolod@dereferenced.org>\n"
@@ -1699,7 +1698,7 @@ msgstr "URL を追加(_R)"
 
 #: src/gtkui/menus.cc:131
 msgid "Search _Library"
-msgstr "ライブラリを検索(_L)"
+msgstr "ライブラリーを検索(_L)"
 
 #: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:98
 msgid "A_bout ..."
@@ -2039,7 +2038,7 @@ msgstr "曲が変わったらスクロールする"
 msgid "GTK Interface"
 msgstr "GTK インターフェイス"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:232
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:222
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
@@ -2048,7 +2047,7 @@ msgstr "%s - Audacious"
 msgid "Buffering ..."
 msgstr "バッファ中 ..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:234 src/skins/ui_main.cc:1164
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:224 src/skins/ui_main.cc:1154
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -2239,12 +2238,12 @@ msgstr "出力ポートに自動接続する"
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr "%d 個の JACK 出力ポートが見つかりましたが、 %d 個が必要です。"
 
-#: src/jack-ng/jack-ng.cc:164
+#: src/jack-ng/jack-ng.cc:171
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr "JACK ポート %s への接続に失敗"
 
-#: src/jack-ng/jack-ng.cc:184
+#: src/jack-ng/jack-ng.cc:191
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
@@ -2252,11 +2251,11 @@ msgstr ""
 "JACK は浮動小数点のオーディオにしか対応していません。Audacious のオーディオ出"
 "力の設定で、ビット深度を浮動小数点に変更する必要があります。"
 
-#: src/jack-ng/jack-ng.cc:197
+#: src/jack-ng/jack-ng.cc:204
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr "JACK サーバへの接続に失敗しました。JACK サーバは本当に動いていますか?"
 
-#: src/jack-ng/jack-ng.cc:273
+#: src/jack-ng/jack-ng.cc:280
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -3224,7 +3223,7 @@ msgstr "URLを開く"
 
 #: src/skins/menus.cc:66
 msgid "Search Library"
-msgstr "ライブラリを検索"
+msgstr "ライブラリーを検索"
 
 #: src/skins/menus.cc:68
 msgid "Playback"
@@ -3359,7 +3358,7 @@ msgstr "プレイリストエディターをたたむ"
 msgid "Roll Up Equalizer"
 msgstr "イコライザーをたたむ"
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:854
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:844
 msgid "Double Size"
 msgstr "2倍の大きさで表示"
 
@@ -3818,59 +3817,59 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "Audacious イコライザー"
 
-#: src/skins/ui_main.cc:688
+#: src/skins/ui_main.cc:678
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "%d:%-2.2d / %d:%-2.2d へシークする"
 
-#: src/skins/ui_main.cc:709
+#: src/skins/ui_main.cc:699
 #, c-format
 msgid "Volume: %d%%"
 msgstr "音量: %d%%"
 
-#: src/skins/ui_main.cc:732
+#: src/skins/ui_main.cc:722
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "バランス: %d%% 左"
 
-#: src/skins/ui_main.cc:734
+#: src/skins/ui_main.cc:724
 msgid "Balance: center"
 msgstr "バランス: 中央"
 
-#: src/skins/ui_main.cc:736
+#: src/skins/ui_main.cc:726
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "バランス: %d%% 右"
 
-#: src/skins/ui_main.cc:842
+#: src/skins/ui_main.cc:832
 msgid "Options Menu"
 msgstr "オプションメニュー"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:836
 msgid "Disable 'Always On Top'"
 msgstr "「常に最前面に配置」無効"
 
-#: src/skins/ui_main.cc:848
+#: src/skins/ui_main.cc:838
 msgid "Enable 'Always On Top'"
 msgstr "「常に最前面に配置」有効"
 
-#: src/skins/ui_main.cc:851
+#: src/skins/ui_main.cc:841
 msgid "File Info Box"
 msgstr "ファイル情報ボックス"
 
-#: src/skins/ui_main.cc:857
+#: src/skins/ui_main.cc:847
 msgid "Visualizations"
 msgstr "視覚化"
 
-#: src/skins/ui_main.cc:1336
+#: src/skins/ui_main.cc:1326
 msgid "Repeat point A set."
 msgstr "リピートポイントAを設定します。"
 
-#: src/skins/ui_main.cc:1341
+#: src/skins/ui_main.cc:1331
 msgid "Repeat point B set."
 msgstr "リピートポイントBを設定します。"
 
-#: src/skins/ui_main.cc:1350
+#: src/skins/ui_main.cc:1340
 msgid "Repeat points cleared."
 msgstr "リピートポイントがクリアされました。"
 

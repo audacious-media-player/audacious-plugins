@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-05-30 15:51+0200\n"
+"POT-Creation-Date: 2015-07-19 00:11+0200\n"
 "PO-Revision-Date: 2015-04-09 22:43+0000\n"
 "Last-Translator: Wasilis Mandratzis-Walz\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/audacious/language/"
@@ -2043,7 +2043,7 @@ msgstr "Κύλιση στην αλλαγή τραγουδιού "
 msgid "GTK Interface"
 msgstr "Διεπαφή GTK"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:232
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:222
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
@@ -2052,7 +2052,7 @@ msgstr "%s - Audacious"
 msgid "Buffering ..."
 msgstr "Γέμισμα ενδιάμεσης μνήμης..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:234 src/skins/ui_main.cc:1164
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:224 src/skins/ui_main.cc:1154
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -2242,12 +2242,12 @@ msgstr "Αυτόματη σύνδεση σε θύρες εξόδου"
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr "Μόνο %d θύρες εξόδου JACK βρέθηκαν αλλά %d απαιτούνται."
 
-#: src/jack-ng/jack-ng.cc:164
+#: src/jack-ng/jack-ng.cc:171
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr "Απέτυχε να συνδεθεί στην JACK θύρα %s."
 
-#: src/jack-ng/jack-ng.cc:184
+#: src/jack-ng/jack-ng.cc:191
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
@@ -2255,11 +2255,11 @@ msgstr ""
 "Το JACK υποστηρίζει μόνο κινητή υποδιαστολής ήχου. Πρέπει να αλλάξετε το "
 "βάθος bit εξόδου σε κινητή υποδιαστολή στις ρυθμίσεις του Audacity."
 
-#: src/jack-ng/jack-ng.cc:197
+#: src/jack-ng/jack-ng.cc:204
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr "Απέτυχε η σύνδεση με το διακομιστή JACK; είναι σε λειτουργία;"
 
-#: src/jack-ng/jack-ng.cc:273
+#: src/jack-ng/jack-ng.cc:280
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -3373,7 +3373,7 @@ msgstr "Roll Up Επιμέλεια αναπαραγωγής"
 msgid "Roll Up Equalizer"
 msgstr "Roll Up Ισοσταθμιστής"
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:854
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:844
 msgid "Double Size"
 msgstr "Διπλό Μέγεθος"
 
@@ -3832,59 +3832,59 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "Ισοσταθμιτής Audacious"
 
-#: src/skins/ui_main.cc:688
+#: src/skins/ui_main.cc:678
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Αναζητηση σε %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:709
+#: src/skins/ui_main.cc:699
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Ένταση: %d%%"
 
-#: src/skins/ui_main.cc:732
+#: src/skins/ui_main.cc:722
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Ισορροπία: %d%% αριστερά"
 
-#: src/skins/ui_main.cc:734
+#: src/skins/ui_main.cc:724
 msgid "Balance: center"
 msgstr "Ισορροπία: κέντρο"
 
-#: src/skins/ui_main.cc:736
+#: src/skins/ui_main.cc:726
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Ισορροπία: %d%% δεξιά"
 
-#: src/skins/ui_main.cc:842
+#: src/skins/ui_main.cc:832
 msgid "Options Menu"
 msgstr "Μενού Επιλογών"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:836
 msgid "Disable 'Always On Top'"
 msgstr "Απενεργοποίηση του 'Πάντα στην κορυφή'"
 
-#: src/skins/ui_main.cc:848
+#: src/skins/ui_main.cc:838
 msgid "Enable 'Always On Top'"
 msgstr "Ενεργοποίηση του 'Πάντα στην κορυφή'"
 
-#: src/skins/ui_main.cc:851
+#: src/skins/ui_main.cc:841
 msgid "File Info Box"
 msgstr "Πλαίσιο αρχείου πληροφοριών "
 
-#: src/skins/ui_main.cc:857
+#: src/skins/ui_main.cc:847
 msgid "Visualizations"
 msgstr "Οπτικοποιησεις"
 
-#: src/skins/ui_main.cc:1336
+#: src/skins/ui_main.cc:1326
 msgid "Repeat point A set."
 msgstr "Επαναληψη του σημείου Α"
 
-#: src/skins/ui_main.cc:1341
+#: src/skins/ui_main.cc:1331
 msgid "Repeat point B set."
 msgstr "Επαναληψη του σημείου Β"
 
-#: src/skins/ui_main.cc:1350
+#: src/skins/ui_main.cc:1340
 msgid "Repeat points cleared."
 msgstr "Επανάληψη σημείων εκκαθαρισης."
 

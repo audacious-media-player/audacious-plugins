@@ -11,7 +11,7 @@
 # mcnd2 <glauber_gf@hotmail.com>, 2012
 # John_Norum <john.norum4@gmail.com>, 2012
 # Bruno Bacelar <mail2buy8@gmail.com>, 2012
-# Rafael Ferreira <rafael.f.f1@gmail.com>, 2012
+# Rafael Fontenelle <rffontenelle@gmail.com>, 2012
 # Rodrigo Macedo <rodrigomacedo@rmsolucoeseminformatica.com>, 2012
 # Alexandro Casanova <shorterfire@gmail.com>, 2012-2013
 # vitorgatti <vitorgatti@yahoo.com.br>, 2012
@@ -20,11 +20,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-05-30 15:51+0200\n"
+"POT-Creation-Date: 2015-07-19 00:11+0200\n"
 "PO-Revision-Date: 2015-05-02 14:45+0000\n"
 "Last-Translator: F Marcelo O Amarante <marcelo.amarante@hotmail.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
-"audacious/language/pt_BR/)\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/p/audacious/"
+"language/pt_BR/)\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2049,7 +2049,7 @@ msgstr "Deslocar ao mudar de faixa"
 msgid "GTK Interface"
 msgstr "Interface GTK"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:232
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:222
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
@@ -2058,7 +2058,7 @@ msgstr "%s - Audacious"
 msgid "Buffering ..."
 msgstr "A processar ..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:234 src/skins/ui_main.cc:1164
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:224 src/skins/ui_main.cc:1154
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -2252,12 +2252,12 @@ msgid "Only %d JACK output ports were found but %d are required."
 msgstr ""
 "Apenas %d portas de saída JACK foram encontradas, mas %d são necessárias."
 
-#: src/jack-ng/jack-ng.cc:164
+#: src/jack-ng/jack-ng.cc:171
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr "Falha ao conectar a porta JACK %s."
 
-#: src/jack-ng/jack-ng.cc:184
+#: src/jack-ng/jack-ng.cc:191
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
@@ -2266,11 +2266,11 @@ msgstr ""
 "profundidade de bits de saída para ponto-flutuante nas configurações do "
 "Audacious."
 
-#: src/jack-ng/jack-ng.cc:197
+#: src/jack-ng/jack-ng.cc:204
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr "Falha ao conectar ao servidor JACK; Está em funcionamento?"
 
-#: src/jack-ng/jack-ng.cc:273
+#: src/jack-ng/jack-ng.cc:280
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -3374,7 +3374,7 @@ msgstr "Editor de rolagem"
 msgid "Roll Up Equalizer"
 msgstr "Minimizar Equalizador"
 
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:854
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:844
 msgid "Double Size"
 msgstr "Tamanho Duplo"
 
@@ -3833,59 +3833,59 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "Esqualizador do Audacious"
 
-#: src/skins/ui_main.cc:688
+#: src/skins/ui_main.cc:678
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Ir para %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:709
+#: src/skins/ui_main.cc:699
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Volume: %d%%"
 
-#: src/skins/ui_main.cc:732
+#: src/skins/ui_main.cc:722
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Equilíbrio: %d%% esquerda"
 
-#: src/skins/ui_main.cc:734
+#: src/skins/ui_main.cc:724
 msgid "Balance: center"
 msgstr "Equilíbrio centro"
 
-#: src/skins/ui_main.cc:736
+#: src/skins/ui_main.cc:726
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Equilíbrio: %d%% direita"
 
-#: src/skins/ui_main.cc:842
+#: src/skins/ui_main.cc:832
 msgid "Options Menu"
 msgstr "Menu de Opções"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/ui_main.cc:836
 msgid "Disable 'Always On Top'"
 msgstr "Desativar 'Sempre No Topo'"
 
-#: src/skins/ui_main.cc:848
+#: src/skins/ui_main.cc:838
 msgid "Enable 'Always On Top'"
 msgstr "Ativar 'Sempre No Topo'"
 
-#: src/skins/ui_main.cc:851
+#: src/skins/ui_main.cc:841
 msgid "File Info Box"
 msgstr "Caixa de Informações do Arquivo"
 
-#: src/skins/ui_main.cc:857
+#: src/skins/ui_main.cc:847
 msgid "Visualizations"
 msgstr "Visualizações"
 
-#: src/skins/ui_main.cc:1336
+#: src/skins/ui_main.cc:1326
 msgid "Repeat point A set."
 msgstr "Repetir ponto de definição A."
 
-#: src/skins/ui_main.cc:1341
+#: src/skins/ui_main.cc:1331
 msgid "Repeat point B set."
 msgstr "Repetir ponto de definição B."
 
-#: src/skins/ui_main.cc:1350
+#: src/skins/ui_main.cc:1340
 msgid "Repeat points cleared."
 msgstr "Repetir pontos apagados."
 
