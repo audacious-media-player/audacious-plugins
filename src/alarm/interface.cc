@@ -129,8 +129,8 @@ GtkWidget *create_config_notebook (void)
     GtkWidget *checkbutton;
     GtkWidget *widget[21];
 
-    const char *weekdays[] = { _("Monday"), _("Tuesday"), _("Wednesday"),
-                                _("Thursday"), _("Friday"), _("Saturday"), _("Sunday") };
+    const char *weekdays[] = { N_("Monday"), N_("Tuesday"), N_("Wednesday"),
+                               N_("Thursday"), N_("Friday"), N_("Saturday"), N_("Sunday") };
 
     const char *day_cb[] = { "mon_cb", "tue_cb", "wed_cb", "thu_cb",
                               "fri_cb", "sat_cb", "sun_cb" };
@@ -247,7 +247,7 @@ GtkWidget *create_config_notebook (void)
 
     for (i = 0; i < 7; i ++)
     {
-        widget[i] = gtk_check_button_new_with_label (weekdays[i]);
+        widget[i] = gtk_check_button_new_with_label (_(weekdays[i]));
         g_object_set_data (G_OBJECT (notebook), day_cb[i], widget[i]);
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget[i]), TRUE);
         gtk_table_attach (GTK_TABLE (grid), widget[i], 0, 1, i + 1, i + 2, GTK_FILL, GTK_FILL, 0, 0);
