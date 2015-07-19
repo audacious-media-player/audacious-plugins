@@ -55,7 +55,7 @@ bool CamdLoader::load(const std::string &filename, const CFileProvider &fp)
      strncmp(header.id, "MaDoKaN96", 9)) { fp.close(f); return false; }
 
   // load section
-  memset(inst, 0, sizeof(inst));
+  memset(inst, 0, sizeof(*inst));
   f->seek(0);
   f->readString(songname, sizeof(songname));
   f->readString(author, sizeof(author));

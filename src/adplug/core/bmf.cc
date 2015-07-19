@@ -238,10 +238,11 @@ void CxadbmfPlayer::xadplayer_update()
 {
   for(int i=0;i<9;i++)
     if (bmf.channel[i].stream_position != 0xFFFF)
+    {
     if (bmf.channel[i].delay)
       bmf.channel[i].delay--;
-        else
-        {
+    else
+    {
 #ifdef DEBUG
    AdPlug_LogWrite("channel %02X:\n", i);
 #endif
@@ -362,7 +363,8 @@ void CxadbmfPlayer::xadplayer_update()
         bmf.channel[i].stream_position++;
       } // if (pos != 0xFFFF)
 
-        } // if (!bmf.channel[i].delay)
+    } // if (!bmf.channel[i].delay)
+    } // if (bmf.channel[i].stream_position != 0xFFFF)
 
   // is module loop ?
   if (!bmf.active_streams)
@@ -531,6 +533,7 @@ int CxadbmfPlayer::__bmf_convert_stream(unsigned char *stream, int channel)
         /* 1.2 */
 
         if (bmf.version == BMF1_2)
+        {
         if (*stream == 0x01)
                 {
           // 0x01: Set Modulator Volume -> 0x01
@@ -570,7 +573,8 @@ int CxadbmfPlayer::__bmf_convert_stream(unsigned char *stream, int channel)
           bmf.streams[channel][pos].volume = *(stream+1) + 1;
 
                   stream+=2;
-                } // if (bmf.version == BMF1_2)
+                }
+        } // if (bmf.version == BMF1_2)
 
       } // if ((0x20 <= *stream) && (*stream <= 0x3F))
 

@@ -166,7 +166,7 @@ bool CldsPlayer::update()
   if(!playing) return false;
 
   // handle fading
-  if(fadeonoff)
+  if(fadeonoff) {
     if(fadeonoff <= 128) {
       if(allvolume > fadeonoff || allvolume == 0)
         allvolume -= fadeonoff;
@@ -187,6 +187,7 @@ bool CldsPlayer::update()
         allvolume = mainvolume;
         fadeonoff = 0;
       }
+  }
 
   // handle channel delay
   for(chan = 0; chan < 9; chan++) {
@@ -207,7 +208,7 @@ bool CldsPlayer::update()
 
         comword = patterns[patnum + c->packpos];
         comhi = comword >> 8; comlo = comword & 0xff;
-        if(comword)
+        if(comword) {
           if(comhi == 0x80)
             c->packwait = comlo;
           else
@@ -320,6 +321,7 @@ bool CldsPlayer::update()
                 c->chancheat.high = high;
               }
             }
+        }
 
         c->packpos++;
       } else

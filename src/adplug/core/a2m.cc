@@ -65,8 +65,8 @@ bool Ca2mLoader::load(const std::string &filename, const CFileProvider &fp)
   char id[10];
   int i,j,k,t;
   unsigned int l;
-  unsigned char *org, *orgptr, flags = 0, numpats, version;
-  unsigned long crc, alength;
+  unsigned char *org = nullptr, *orgptr, flags = 0, numpats, version;
+  unsigned long alength;
   unsigned short len[9], *secdata, *secptr;
   const unsigned char convfx[16] = {0,1,2,23,24,3,5,4,6,9,17,13,11,19,7,14};
   const unsigned char convinf1[16] = {0,1,2,6,7,8,9,4,5,3,10,11,12,13,14,15};
@@ -75,7 +75,7 @@ bool Ca2mLoader::load(const std::string &filename, const CFileProvider &fp)
                                      255,255,255,255,255,255,255,255,14,255};
 
   // read header
-  f->readString(id, 10); crc = f->readInt(4);
+  f->readString(id, 10); (void)f->readInt(4);
   version = f->readInt(1); numpats = f->readInt(1);
 
   // file validation section
@@ -306,11 +306,12 @@ void Ca2mLoader::updatefreq(unsigned short a,unsigned short b)
         do {
                 freq[dad[a]] = freq[a] + freq[b];
                 a = dad[a];
-                if(a != ROOT)
+                if(a != ROOT) {
                         if(leftc[dad[a]] == a)
                                 b = rghtc[dad[a]];
                         else
                                 b = leftc[dad[a]];
+                }
         } while(a != ROOT);
 
         if(freq[ROOT] == MAXFREQ)

@@ -51,7 +51,7 @@ void AdPlug_LogWrite(const char *fmt, ...)
 
 #else
 
-void AdPlug_LogFile(char *filename) { }
-void AdPlug_LogWrite(char *fmt, ...) { }
+void AdPlug_LogFile(const char *filename) { }
+void AdPlug_LogWrite(const char *fmt, ...) { }
 
 #endif

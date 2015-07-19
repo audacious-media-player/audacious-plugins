@@ -32,10 +32,7 @@
 #ifndef H_DEBUG
 #define H_DEBUG
 
-extern "C"
-{
-        void AdPlug_LogFile(const char *filename);
-        void AdPlug_LogWrite(const char *fmt, ...);
-}
+void AdPlug_LogFile(const char *filename);
+void AdPlug_LogWrite(const char *fmt, ...);
 
 #endif

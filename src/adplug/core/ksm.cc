@@ -239,21 +239,21 @@ void CksmPlayer::rewind(int subsong)
   if (trchan[11] == 1) {
     for(i=0;i<11;i++)
       instbuf[i] = inst[trinst[11]][i];
-    instbuf[1] = ((instbuf[1]&192)|(trvol[11])^63);
+    instbuf[1] = ((instbuf[1]&192)|((trvol[11])^63));
     setinst(6,instbuf[0],instbuf[1],instbuf[2],instbuf[3],instbuf[4],instbuf[5],instbuf[6],instbuf[7],instbuf[8],instbuf[9],instbuf[10]);
     for(i=0;i<5;i++)
       instbuf[i] = inst[trinst[12]][i];
     for(i=5;i<11;i++)
       instbuf[i] = inst[trinst[15]][i];
-    instbuf[1] = ((instbuf[1]&192)|(trvol[12])^63);
-    instbuf[6] = ((instbuf[6]&192)|(trvol[15])^63);
+    instbuf[1] = ((instbuf[1]&192)|((trvol[12])^63));
+    instbuf[6] = ((instbuf[6]&192)|((trvol[15])^63));
     setinst(7,instbuf[0],instbuf[1],instbuf[2],instbuf[3],instbuf[4],instbuf[5],instbuf[6],instbuf[7],instbuf[8],instbuf[9],instbuf[10]);
     for(i=0;i<5;i++)
       instbuf[i] = inst[trinst[14]][i];
     for(i=5;i<11;i++)
       instbuf[i] = inst[trinst[13]][i];
-    instbuf[1] = ((instbuf[1]&192)|(trvol[14])^63);
-    instbuf[6] = ((instbuf[6]&192)|(trvol[13])^63);
+    instbuf[1] = ((instbuf[1]&192)|((trvol[14])^63));
+    instbuf[6] = ((instbuf[6]&192)|((trvol[13])^63));
     setinst(8,instbuf[0],instbuf[1],instbuf[2],instbuf[3],instbuf[4],instbuf[5],instbuf[6],instbuf[7],instbuf[8],instbuf[9],instbuf[10]);
   }
 

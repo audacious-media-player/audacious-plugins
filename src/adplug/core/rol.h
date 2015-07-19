@@ -270,7 +270,7 @@ private:
     private:
         bool keyLess( const char *const lhs, const char *const rhs ) const
         {
-            return stricmp(lhs, rhs) < 0;
+            return strcasecmp(lhs, rhs) < 0;
         }
     };
 

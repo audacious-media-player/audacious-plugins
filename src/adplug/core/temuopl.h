@@ -23,9 +23,7 @@
 #define H_ADPLUG_TEMUOPL
 
 #include "opl.h"
-extern "C" {
 #include "fmopl.h"
-}
 
 class CTemuopl: public Copl
 {

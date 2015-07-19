@@ -426,7 +426,7 @@ void CrolPlayer::send_operator( int const voice, SOPL2Op const &modulator,  SOPL
         opl->write( 0xc0+voice    , modulator.fbc      );
         opl->write( 0xe0+op_offset, modulator.waveform );
 
-        volumeCache[voice] = (carrier.ksltl & 0xc0) | volumeCache[voice] & 0x3f;
+        volumeCache[voice] = (carrier.ksltl & 0xc0) | (volumeCache[voice] & 0x3f);
 
         opl->write( 0x23+op_offset, carrier.ammulti  );
         opl->write( 0x43+op_offset, volumeCache[voice]    );
@@ -439,7 +439,7 @@ void CrolPlayer::send_operator( int const voice, SOPL2Op const &modulator,  SOPL
     {
         int const op_offset = drum_table[voice-kSnareDrumChannel];
 
-        volumeCache[voice] = (modulator.ksltl & 0xc0) | volumeCache[voice] & 0x3f;
+        volumeCache[voice] = (modulator.ksltl & 0xc0) | (volumeCache[voice] & 0x3f);
 
         opl->write( 0x20+op_offset, modulator.ammulti  );
         opl->write( 0x40+op_offset, volumeCache[voice]      );
@@ -677,7 +677,7 @@ int CrolPlayer::get_ins_index( std::string const &name ) const
 {
     for(unsigned int i=0; i<ins_list.size(); ++i)
     {
-        if( stricmp(ins_list[i].name.c_str(), name.c_str()) == 0 )
+        if( strcasecmp(ins_list[i].name.c_str(), name.c_str()) == 0 )
         {
             return i;
         }

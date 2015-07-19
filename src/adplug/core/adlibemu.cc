@@ -49,13 +49,10 @@ I'm not sure about a few things in my code:
 
 #include <math.h>
 #include <string.h>
+#include <algorithm>
 
-#if !defined(max) && !defined(__cplusplus)
-#define max(a,b)  (((a) > (b)) ? (a) : (b))
-#endif
-#if !defined(min) && !defined(__cplusplus)
-#define min(a,b)  (((a) < (b)) ? (a) : (b))
-#endif
+using std::max;
+using std::min;
 
 #define PI 3.141592653589793
 #define MAXCELLS 18
@@ -103,7 +100,7 @@ long rplc[9] = {0,0,0,0,0,0,0,0,0};   //Samples to delay on right speaker
 long nlvol[9], nrvol[9];
 long nlplc[9], nrplc[9];
 long rend = 0;
-#define FIFOSIZ 256
+#define FIFOSIZ 256L
 static float *rptr[9], *nrptr[9];
 static float rbuf[9][FIFOSIZ*2];
 static float snd[FIFOSIZ*2];
@@ -144,7 +141,7 @@ void docell2 (void *c, float modulator)
 
     ftol(ctc->t+modulator,&i);
 
-    if (*(long *)&ctc->amp <= 0x37800000)
+    if ((long)ctc->amp <= 0x37800000)
     {
         ctc->amp = 0;
         ctc->cellfunc = docell4;
@@ -160,7 +157,7 @@ void docell1 (void *c, float modulator)
 
     ftol(ctc->t+modulator,&i);
 
-    if ((*(long *)&ctc->amp) <= (*(long *)&ctc->sustain))
+    if ((long)ctc->amp <= (long)ctc->sustain)
     {
         if (ctc->flags&32)
         {
@@ -183,7 +180,7 @@ void docell0 (void *c, float modulator)
     ftol(ctc->t+modulator,&i);
 
     ctc->amp = ((ctc->a3*ctc->amp + ctc->a2)*ctc->amp + ctc->a1)*ctc->amp + ctc->a0;
-    if ((*(long *)&ctc->amp) > 0x3f800000)
+    if ((long)ctc->amp > 0x3f800000)
     {
         ctc->amp = 1;
         ctc->cellfunc = docell1;
@@ -466,8 +463,8 @@ void adlibgetsample (unsigned char *sndptr, long numbytes)
             {
                 nlvol[rptrs] = lvol[i]*f;
                 nrvol[rptrs] = rvol[i]*f;
-                nlplc[rptrs] = rend-min(max(lplc[i],0),FIFOSIZ);
-                nrplc[rptrs] = rend-min(max(rplc[i],0),FIFOSIZ);
+                nlplc[rptrs] = rend-min(max(lplc[i],0L),FIFOSIZ);
+                nrplc[rptrs] = rend-min(max(rplc[i],0L),FIFOSIZ);
                 rptrs++;
             }
             rptr[i] = &rbuf[rptrs-1][0];

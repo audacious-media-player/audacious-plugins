@@ -22,7 +22,7 @@
  * for further acknowledgements.
  */
 
-unsigned char midi_fm_instruments[128][14] =
+unsigned char midi_fm_instruments[128][16] =
 {
 
    /* This set of GM instrument patches was provided by Jorrit Rouwe...
