@@ -86,7 +86,6 @@ const char * const AdPlugXMMS::exts[] = {
 static struct {
   int freq = 44100l;
   bool bit16 = true, stereo = false, endless = false;
-  CPlayers players = CAdPlug::getPlayers();
 } conf;
 
 // Player variables
@@ -122,12 +121,6 @@ dbg_printf (const char *fmt, ...)
 
 #endif
 
-static CPlayer *
-factory (VFSFile & fd, Copl * newopl)
-{
-  return CAdPlug::factory (fd, newopl, conf.players);
-}
-
 /***** Main player (!! threaded !!) *****/
 
 Tuple AdPlugXMMS::read_tuple (const char * filename, VFSFile & fd)
@@ -135,10 +128,8 @@ Tuple AdPlugXMMS::read_tuple (const char * filename, VFSFile & fd)
   Tuple tuple;
   CSilentopl tmpopl;
 
-  if (!fd)
-    return tuple;
-
-  CPlayer *p = factory (fd, &tmpopl);
+  CFileProvider fp (fd);
+  CPlayer *p = CAdPlug::factory (filename, &tmpopl, fp);
 
   if (p)
   {
@@ -182,7 +173,8 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 
   // Try to load module
   dbg_printf ("factory, ");
-  if (!(plr.p = factory (fd, &opl)))
+  CFileProvider fp (fd);
+  if (!(plr.p = CAdPlug::factory (filename, &opl, fp)))
   {
     dbg_printf ("error!\n");
     // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
@@ -271,7 +263,8 @@ bool AdPlugXMMS::is_our_file (const char * filename, VFSFile & fd)
 {
   CSilentopl tmpopl;
 
-  CPlayer *p = factory (fd, &tmpopl);
+  CFileProvider fp (fd);
+  CPlayer *p = CAdPlug::factory (filename, &tmpopl, fp);
 
   dbg_printf ("adplug_is_our_file(\"%s\"): returned ", filename);
 
@@ -305,21 +298,6 @@ bool AdPlugXMMS::init ()
   conf.stereo = aud_get_bool (CFG_VERSION, "Stereo");
   conf.freq = aud_get_int (CFG_VERSION, "Frequency");
   conf.endless = aud_get_bool (CFG_VERSION, "Endless");
-
-  // Read file type exclusion list
-  dbg_printf ("exclusion, ");
-  {
-    String cfgstr = aud_get_str (CFG_VERSION, "Exclude");
-
-    if (cfgstr[0])
-    {
-        StringBuf exclude = str_concat ({cfgstr, ":"});
-        str_replace_char (exclude, ':', 0);
-
-        for (char * p = exclude; * p; p += strlen (p) + 1)
-            conf.players.remove (conf.players.lookup_filetype (p));
-    }
-  }
 
   // Load database from disk and hand it to AdPlug
   dbg_printf ("database");
@@ -358,18 +336,4 @@ void AdPlugXMMS::cleanup ()
   aud_set_bool (CFG_VERSION, "Stereo", conf.stereo);
   aud_set_int (CFG_VERSION, "Frequency", conf.freq);
   aud_set_bool (CFG_VERSION, "Endless", conf.endless);
-
-  dbg_printf ("exclude, ");
-  std::string exclude;
-  for (CPlayers::const_iterator i = CAdPlug::getPlayers().begin ();
-       i != CAdPlug::getPlayers().end (); i++)
-    if (find (conf.players.begin (), conf.players.end (), *i) ==
-        conf.players.end ())
-    {
-      if (!exclude.empty ())
-        exclude += ":";
-      exclude += (*i)->filetype;
-    }
-
-  aud_set_str (CFG_VERSION, "Exclude", exclude.c_str ());
 }
