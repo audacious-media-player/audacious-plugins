@@ -28,9 +28,10 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#define INLINE		__inline
 #define HAS_YM3812	1
 
 #include <stdio.h>
@@ -48,7 +49,7 @@
 /* -------------------- for debug --------------------- */
 /* #define OPL_OUTPUT_LOG */
 #ifdef OPL_OUTPUT_LOG
-static FILE *opl_dbg_fp = nullptr;
+static FILE *opl_dbg_fp = NULL;
 static FM_OPL *opl_dbg_opl[16];
 static int opl_dbg_maxchip,opl_dbg_chip;
 #endif
@@ -124,56 +125,54 @@ static const int slot_array[32]=
 /* key scale level */
 /* table is 3dB/OCT , DV converts this in TL step at 6dB/OCT */
 #define DV (EG_STEP/2)
-#define U(x) ((UINT32)(x))
 static const UINT32 KSL_TABLE[8*16]=
 {
 	/* OCT 0 */
-	U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),
-	U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),
-	U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),
-	U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),
+	 0.000/DV, 0.000/DV, 0.000/DV, 0.000/DV,
+	 0.000/DV, 0.000/DV, 0.000/DV, 0.000/DV,
+	 0.000/DV, 0.000/DV, 0.000/DV, 0.000/DV,
+	 0.000/DV, 0.000/DV, 0.000/DV, 0.000/DV,
 	/* OCT 1 */
-	U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),
-	U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),
-	U( 0.000/DV),U( 0.750/DV),U( 1.125/DV),U( 1.500/DV),
-	U( 1.875/DV),U( 2.250/DV),U( 2.625/DV),U( 3.000/DV),
+	 0.000/DV, 0.000/DV, 0.000/DV, 0.000/DV,
+	 0.000/DV, 0.000/DV, 0.000/DV, 0.000/DV,
+	 0.000/DV, 0.750/DV, 1.125/DV, 1.500/DV,
+	 1.875/DV, 2.250/DV, 2.625/DV, 3.000/DV,
 	/* OCT 2 */
-	U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),
-	U( 0.000/DV),U( 1.125/DV),U( 1.875/DV),U( 2.625/DV),
-	U( 3.000/DV),U( 3.750/DV),U( 4.125/DV),U( 4.500/DV),
-	U( 4.875/DV),U( 5.250/DV),U( 5.625/DV),U( 6.000/DV),
+	 0.000/DV, 0.000/DV, 0.000/DV, 0.000/DV,
+	 0.000/DV, 1.125/DV, 1.875/DV, 2.625/DV,
+	 3.000/DV, 3.750/DV, 4.125/DV, 4.500/DV,
+	 4.875/DV, 5.250/DV, 5.625/DV, 6.000/DV,
 	/* OCT 3 */
-	U( 0.000/DV),U( 0.000/DV),U( 0.000/DV),U( 1.875/DV),
-	U( 3.000/DV),U( 4.125/DV),U( 4.875/DV),U( 5.625/DV),
-	U( 6.000/DV),U( 6.750/DV),U( 7.125/DV),U( 7.500/DV),
-	U( 7.875/DV),U( 8.250/DV),U( 8.625/DV),U( 9.000/DV),
+	 0.000/DV, 0.000/DV, 0.000/DV, 1.875/DV,
+	 3.000/DV, 4.125/DV, 4.875/DV, 5.625/DV,
+	 6.000/DV, 6.750/DV, 7.125/DV, 7.500/DV,
+	 7.875/DV, 8.250/DV, 8.625/DV, 9.000/DV,
 	/* OCT 4 */
-	U( 0.000/DV),U( 0.000/DV),U( 3.000/DV),U( 4.875/DV),
-	U( 6.000/DV),U( 7.125/DV),U( 7.875/DV),U( 8.625/DV),
-	U( 9.000/DV),U( 9.750/DV),U(10.125/DV),U(10.500/DV),
-	U(10.875/DV),U(11.250/DV),U(11.625/DV),U(12.000/DV),
+	 0.000/DV, 0.000/DV, 3.000/DV, 4.875/DV,
+	 6.000/DV, 7.125/DV, 7.875/DV, 8.625/DV,
+	 9.000/DV, 9.750/DV,10.125/DV,10.500/DV,
+	10.875/DV,11.250/DV,11.625/DV,12.000/DV,
 	/* OCT 5 */
-	U( 0.000/DV),U( 3.000/DV),U( 6.000/DV),U( 7.875/DV),
-	U( 9.000/DV),U(10.125/DV),U(10.875/DV),U(11.625/DV),
-	U(12.000/DV),U(12.750/DV),U(13.125/DV),U(13.500/DV),
-	U(13.875/DV),U(14.250/DV),U(14.625/DV),U(15.000/DV),
+	 0.000/DV, 3.000/DV, 6.000/DV, 7.875/DV,
+	 9.000/DV,10.125/DV,10.875/DV,11.625/DV,
+	12.000/DV,12.750/DV,13.125/DV,13.500/DV,
+	13.875/DV,14.250/DV,14.625/DV,15.000/DV,
 	/* OCT 6 */
-	U( 0.000/DV),U( 6.000/DV),U( 9.000/DV),U(10.875/DV),
-	U(12.000/DV),U(13.125/DV),U(13.875/DV),U(14.625/DV),
-	U(15.000/DV),U(15.750/DV),U(16.125/DV),U(16.500/DV),
-	U(16.875/DV),U(17.250/DV),U(17.625/DV),U(18.000/DV),
+	 0.000/DV, 6.000/DV, 9.000/DV,10.875/DV,
+	12.000/DV,13.125/DV,13.875/DV,14.625/DV,
+	15.000/DV,15.750/DV,16.125/DV,16.500/DV,
+	16.875/DV,17.250/DV,17.625/DV,18.000/DV,
 	/* OCT 7 */
-	U( 0.000/DV),U( 9.000/DV),U(12.000/DV),U(13.875/DV),
-	U(15.000/DV),U(16.125/DV),U(16.875/DV),U(17.625/DV),
-	U(18.000/DV),U(18.750/DV),U(19.125/DV),U(19.500/DV),
-    U(19.875/DV),U(20.250/DV),U(20.625/DV),U(21.000/DV)
+	 0.000/DV, 9.000/DV,12.000/DV,13.875/DV,
+	15.000/DV,16.125/DV,16.875/DV,17.625/DV,
+	18.000/DV,18.750/DV,19.125/DV,19.500/DV,
+	19.875/DV,20.250/DV,20.625/DV,21.000/DV
 };
-#undef U
 #undef DV
 
 /* sustain lebel table (3db per step) */
 /* 0 - 15: 0, 3, 6, 9,12,15,18,21,24,27,30,33,36,39,42,93 (dB)*/
-#define SC(db) (INT32)((db*((3/EG_STEP)*(1<<ENV_BITS)))+EG_DST)
+#define SC(db) (db*((3/EG_STEP)*(1<<ENV_BITS)))+EG_DST
 static const INT32 SL_TABLE[16]={
  SC( 0),SC( 1),SC( 2),SC(3 ),SC(4 ),SC(5 ),SC(6 ),SC( 7),
  SC( 8),SC( 9),SC(10),SC(11),SC(12),SC(13),SC(14),SC(31)
@@ -201,8 +200,8 @@ static INT32 ENV_CURVE[2*EG_ENT+1];
 #define ML 2
 static const UINT32 MUL_TABLE[16]= {
 /* 1/2, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
-   ML/2, 1*ML, 2*ML, 3*ML, 4*ML, 5*ML, 6*ML, 7*ML,
-   8*ML, 9*ML,10*ML,10*ML,12*ML,12*ML,15*ML,15*ML
+   0.50*ML, 1.00*ML, 2.00*ML, 3.00*ML, 4.00*ML, 5.00*ML, 6.00*ML, 7.00*ML,
+   8.00*ML, 9.00*ML,10.00*ML,10.00*ML,12.00*ML,12.00*ML,15.00*ML,15.00*ML
 };
 #undef ML
 
@@ -216,7 +215,7 @@ static INT32 RATE_0[16]=
 static int num_lock = 0;
 
 /* work table */
-static void *cur_chip = nullptr;	/* current chip point */
+static void *cur_chip = NULL;	/* current chip point */
 /* currenct chip state */
 /* static OPLSAMPLE  *bufL,*bufR; */
 static OPL_CH *S_CH;
@@ -245,7 +244,7 @@ static INT32 feedback2;		/* connect for SLOT 2 */
 
 /* --------------------- subroutines  --------------------- */
 
-static inline int Limit( int val, int max, int min ) {
+INLINE int Limit( int val, int max, int min ) {
 	if ( val > max )
 		val = max;
 	else if ( val < min )
@@ -255,7 +254,7 @@ static inline int Limit( int val, int max, int min ) {
 }
 
 /* status set and IRQ handling */
-static inline void OPL_STATUS_SET(FM_OPL *OPL,int flag)
+INLINE void OPL_STATUS_SET(FM_OPL *OPL,int flag)
 {
 	/* set status flag */
 	OPL->status |= flag;
@@ -271,7 +270,7 @@ static inline void OPL_STATUS_SET(FM_OPL *OPL,int flag)
 }
 
 /* status reset and IRQ handling */
-static inline void OPL_STATUS_RESET(FM_OPL *OPL,int flag)
+INLINE void OPL_STATUS_RESET(FM_OPL *OPL,int flag)
 {
 	/* reset status flag */
 	OPL->status &=~flag;
@@ -287,7 +286,7 @@ static inline void OPL_STATUS_RESET(FM_OPL *OPL,int flag)
 }
 
 /* IRQ mask set */
-static inline void OPL_STATUSMASK_SET(FM_OPL *OPL,int flag)
+INLINE void OPL_STATUSMASK_SET(FM_OPL *OPL,int flag)
 {
 	OPL->statusmask = flag;
 	/* IRQ handling check */
@@ -296,7 +295,7 @@ static inline void OPL_STATUSMASK_SET(FM_OPL *OPL,int flag)
 }
 
 /* ----- key on  ----- */
-static inline void OPL_KEYON(OPL_SLOT *SLOT)
+INLINE void OPL_KEYON(OPL_SLOT *SLOT)
 {
 	/* sin wave restart */
 	SLOT->Cnt = 0;
@@ -307,7 +306,7 @@ static inline void OPL_KEYON(OPL_SLOT *SLOT)
 	SLOT->eve = EG_AED;
 }
 /* ----- key off ----- */
-static inline void OPL_KEYOFF(OPL_SLOT *SLOT)
+INLINE void OPL_KEYOFF(OPL_SLOT *SLOT)
 {
 	if( SLOT->evm > ENV_MOD_RR)
 	{
@@ -323,7 +322,7 @@ static inline void OPL_KEYOFF(OPL_SLOT *SLOT)
 
 /* ---------- calcrate Envelope Generator & Phase Generator ---------- */
 /* return : envelope output */
-static inline UINT32 OPL_CALC_SLOT( OPL_SLOT *SLOT )
+INLINE UINT32 OPL_CALC_SLOT( OPL_SLOT *SLOT )
 {
 	/* calcrate envelope generator */
 	if( (SLOT->evc+=SLOT->evs) >= SLOT->eve )
@@ -369,7 +368,7 @@ static void set_algorythm( OPL_CH *CH)
 }
 
 /* ---------- frequency counter for operater update ---------- */
-static inline void CALC_FCSLOT(OPL_CH *CH,OPL_SLOT *SLOT)
+INLINE void CALC_FCSLOT(OPL_CH *CH,OPL_SLOT *SLOT)
 {
 	int ksr;
 
@@ -389,7 +388,7 @@ static inline void CALC_FCSLOT(OPL_CH *CH,OPL_SLOT *SLOT)
 }
 
 /* set multi,am,vib,EG-TYP,KSR,mul */
-static inline void set_mul(FM_OPL *OPL,int slot,int v)
+INLINE void set_mul(FM_OPL *OPL,int slot,int v)
 {
 	OPL_CH   *CH   = &OPL->P_CH[slot/2];
 	OPL_SLOT *SLOT = &CH->SLOT[slot&1];
@@ -403,7 +402,7 @@ static inline void set_mul(FM_OPL *OPL,int slot,int v)
 }
 
 /* set ksl & tl */
-static inline void set_ksl_tl(FM_OPL *OPL,int slot,int v)
+INLINE void set_ksl_tl(FM_OPL *OPL,int slot,int v)
 {
 	OPL_CH   *CH   = &OPL->P_CH[slot/2];
 	OPL_SLOT *SLOT = &CH->SLOT[slot&1];
@@ -419,7 +418,7 @@ static inline void set_ksl_tl(FM_OPL *OPL,int slot,int v)
 }
 
 /* set attack rate & decay rate  */
-static inline void set_ar_dr(FM_OPL *OPL,int slot,int v)
+INLINE void set_ar_dr(FM_OPL *OPL,int slot,int v)
 {
 	OPL_CH   *CH   = &OPL->P_CH[slot/2];
 	OPL_SLOT *SLOT = &CH->SLOT[slot&1];
@@ -436,7 +435,7 @@ static inline void set_ar_dr(FM_OPL *OPL,int slot,int v)
 }
 
 /* set sustain level & release rate */
-static inline void set_sl_rr(FM_OPL *OPL,int slot,int v)
+INLINE void set_sl_rr(FM_OPL *OPL,int slot,int v)
 {
 	OPL_CH   *CH   = &OPL->P_CH[slot/2];
 	OPL_SLOT *SLOT = &CH->SLOT[slot&1];
@@ -453,7 +452,7 @@ static inline void set_sl_rr(FM_OPL *OPL,int slot,int v)
 /* operator output calcrator */
 #define OP_OUT(slot,env,con)   slot->wavetable[((slot->Cnt+con)/(0x1000000/SIN_ENT))&(SIN_ENT-1)][env]
 /* ---------- calcrate one of channel ---------- */
-static inline void OPL_CALC_CH( OPL_CH *CH )
+INLINE void OPL_CALC_CH( OPL_CH *CH )
 {
 	UINT32 env_out;
 	OPL_SLOT *SLOT;
@@ -498,7 +497,7 @@ static inline void OPL_CALC_CH( OPL_CH *CH )
 
 /* ---------- calcrate rythm block ---------- */
 #define WHITE_NOISE_db 6.0
-static inline void OPL_CALC_RH( OPL_CH *CH )
+INLINE void OPL_CALC_RH( OPL_CH *CH )
 {
 	UINT32 env_tam,env_sd,env_top,env_hh;
 	int whitenoise = (rand()&1)*(WHITE_NOISE_db/EG_STEP);
@@ -597,9 +596,7 @@ static void init_timetables( FM_OPL *OPL , int ARRATE , int DRRATE )
 		OPL->AR_TABLE[i] = rate / ARRATE;
 		OPL->DR_TABLE[i] = rate / DRRATE;
 	}
-	// FIXME: warning: iteration 15u invokes undefined behavior
-	// for (i = 60; i < 76; i++)
-	for (i = 60; i < 75; i++)
+	for (i = 60;i < 76;i++)
 	{
 		OPL->AR_TABLE[i] = EG_AED-1;
 		OPL->DR_TABLE[i] = OPL->DR_TABLE[60];
@@ -622,20 +619,20 @@ static int OPLOpenTable( void )
 	double pom;
 
 	/* allocate dynamic tables */
-	if( (TL_TABLE = (INT32*)malloc(TL_MAX*2*sizeof(INT32))) == nullptr)
+	if( (TL_TABLE = malloc(TL_MAX*2*sizeof(INT32))) == NULL)
 		return 0;
-	if( (SIN_TABLE = (INT32**)malloc(SIN_ENT*4 *sizeof(INT32 *))) == nullptr)
+	if( (SIN_TABLE = malloc(SIN_ENT*4 *sizeof(INT32 *))) == NULL)
 	{
 		free(TL_TABLE);
 		return 0;
 	}
-	if( (AMS_TABLE = (INT32*)malloc(AMS_ENT*2 *sizeof(INT32))) == nullptr)
+	if( (AMS_TABLE = malloc(AMS_ENT*2 *sizeof(INT32))) == NULL)
 	{
 		free(TL_TABLE);
 		free(SIN_TABLE);
 		return 0;
 	}
-	if( (VIB_TABLE = (INT32*)malloc(VIB_ENT*2 *sizeof(INT32))) == nullptr)
+	if( (VIB_TABLE = malloc(VIB_ENT*2 *sizeof(INT32))) == NULL)
 	{
 		free(TL_TABLE);
 		free(SIN_TABLE);
@@ -716,7 +713,7 @@ static void OPLCloseTable( void )
 }
 
 /* CSM Key Controll */
-static inline void CSMKeyControll(OPL_CH *CH)
+INLINE void CSMKeyControll(OPL_CH *CH)
 {
 	OPL_SLOT *slot1 = &CH->SLOT[SLOT1];
 	OPL_SLOT *slot2 = &CH->SLOT[SLOT2];
@@ -1017,7 +1014,7 @@ static int OPL_LockTable(void)
 	num_lock++;
 	if(num_lock>1) return 0;
 	/* first time */
-	cur_chip = nullptr;
+	cur_chip = NULL;
 	/* allocate total level table (128kb space) */
 	if( !OPLOpenTable() )
 	{
@@ -1032,7 +1029,7 @@ static void OPL_UnLockTable(void)
 	if(num_lock) num_lock--;
 	if(num_lock) return;
 	/* last time */
-	cur_chip = nullptr;
+	cur_chip = NULL;
 	OPLCloseTable();
 }
 
@@ -1216,7 +1213,7 @@ FM_OPL *OPLCreate(int type, int clock, int rate)
 	int state_size;
 	int max_ch = 9; /* normaly 9 channels */
 
-	if( OPL_LockTable() ==-1) return nullptr;
+	if( OPL_LockTable() ==-1) return NULL;
 	/* allocate OPL state space */
 	state_size  = sizeof(FM_OPL);
 	state_size += sizeof(OPL_CH)*max_ch;
@@ -1224,8 +1221,8 @@ FM_OPL *OPLCreate(int type, int clock, int rate)
 	if(type&OPL_TYPE_ADPCM) state_size+= sizeof(YM_DELTAT);
 #endif
 	/* allocate memory block */
-	ptr = (char*)malloc(state_size);
-	if(ptr==nullptr) return nullptr;
+	ptr = malloc(state_size);
+	if(ptr==NULL) return NULL;
 	/* clear */
 	memset(ptr,0,state_size);
 	OPL        = (FM_OPL *)ptr; ptr+=sizeof(FM_OPL);
@@ -1270,7 +1267,7 @@ void OPLDestroy(FM_OPL *OPL)
 	if(opl_dbg_fp)
 	{
 		fclose(opl_dbg_fp);
-		opl_dbg_fp = nullptr;
+		opl_dbg_fp = NULL;
 	}
 #endif
 	OPL_UnLockTable();

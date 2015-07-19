@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * sng.h - SNG Player by Simon Peter <dn.tlp@gmx.net>
  */
@@ -32,10 +32,10 @@ public:
 	CsngPlayer(Copl *newopl)
 		: CPlayer(newopl), data(0)
 	{ };
+	~CsngPlayer()
+	{ if(data) delete [] data; };
 
-	~CsngPlayer() { if(data) delete [] data; data = 0; };
-
-	bool load(VFSFile &fd, const CFileProvider &fp);
+	bool load(const std::string &filename, const CFileProvider &fp);
 	bool update();
 	void rewind(int subsong);
 	float getrefresh()

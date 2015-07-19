@@ -1,6 +1,6 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2003 Simon Peter, <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2005 Simon Peter, <dn.tlp@gmx.net>, et al.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,29 +16,29 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * rad.h - RAD Loader by Simon Peter <dn.tlp@gmx.net>
+ * analopl.h - Spectrum analyzing hardware OPL, by Simon Peter <dn.tlp@gmx.net>
  */
 
-#include "protrack.h"
+#ifndef H_ADPLUG_ANALOPL
+#define H_ADPLUG_ANALOPL
 
-class CradLoader: public CmodPlayer
+#include "realopl.h"
+
+class CAnalopl: public CRealopl
 {
-public:
-  static CPlayer *factory(Copl *newopl);
+ public:
+  CAnalopl(unsigned short initport = DFL_ADLIBPORT);	// initport = OPL2 hardware baseport
 
-	CradLoader(Copl *newopl)
-		: CmodPlayer(newopl)
-	{ *desc = '\0'; };
+  // get carrier volume of adlib voice v on chip c
+  int getcarriervol(unsigned int v, unsigned int c = 0);
+  // get modulator volume of adlib voice v on chip c
+  int getmodulatorvol(unsigned int v, unsigned int c = 0);
+  bool getkeyon(unsigned int v, unsigned int c = 0);
 
-	bool load(const std::string &filename, const CFileProvider &fp);
-	float getrefresh();
+  void write(int reg, int val);
 
-	std::string gettype()
-	{ return std::string("Reality ADlib Tracker"); };
-	std::string getdesc()
-	{ return std::string(desc); };
-
-private:
-	unsigned char version,radflags;
-	char desc[80*22];
+ protected:
+  unsigned char	keyregs[2][9][2];		// shadow key register
 };
+
+#endif

@@ -1,6 +1,6 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2002 Simon Peter, <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * hsc.h - HSC Player by Simon Peter <dn.tlp@gmx.net>
  */
@@ -31,7 +31,7 @@ class ChscPlayer: public CPlayer
 
   ChscPlayer(Copl *newopl): CPlayer(newopl), mtkmode(0) {}
 
-  bool load(VFSFile &fd, const CFileProvider &fp);
+  bool load(const std::string &filename, const CFileProvider &fp);
   bool update();
   void rewind(int subsong);
   float getrefresh() { return 18.2f; };	// refresh rate is fixed at 18.2Hz
@@ -48,16 +48,16 @@ class ChscPlayer: public CPlayer
  protected:
   struct hscnote {
     unsigned char note, effect;
-  };			// note type in HSC pattern
+  };	// note type in HSC pattern
 
   struct hscchan {
     unsigned char inst;			// current instrument
     signed char slide;			// used for manual slide-effects
     unsigned short freq;		// actual replaying frequency
-  };			// HSC channel data
+  };	// HSC channel data
 
-  hscchan channel[9];				// player channel-info
-  unsigned char instr[128][12];	// instrument data
+  hscchan channel[9];			// player channel-info
+  unsigned char instr[128][12];		// instrument data
   unsigned char song[0x80];		// song-arrangement (MPU-401 Trakker enhanced)
   hscnote patterns[50][64*9];		// pattern data
   unsigned char pattpos,songpos,	// various bytes & flags

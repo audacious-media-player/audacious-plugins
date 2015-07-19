@@ -1,20 +1,20 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2009 Simon Peter, <dn.tlp@gmx.net>, et al.
- *
+ * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- *
+ * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * cmf.cpp - CMF player by Adam Nielsen <malvineous@shikadi.net>
  *   Subset of CMF reader in MOPL code (Malvineous' OPL player), no seeking etc.
@@ -90,8 +90,8 @@ CPlayer *CcmfPlayer::factory(Copl *newopl)
 
 CcmfPlayer::CcmfPlayer(Copl *newopl) :
 	CPlayer(newopl),
-	data(nullptr),
-	pInstruments(nullptr),
+	data(NULL),
+	pInstruments(NULL),
 	bPercussive(false),
 	iTranspose(0),
 	iPrevCommand(0)
@@ -107,10 +107,9 @@ CcmfPlayer::~CcmfPlayer()
 	if (this->pInstruments) delete[] pInstruments;
 }
 
-bool CcmfPlayer::load(VFSFile & fd, const CFileProvider &fp)
+bool CcmfPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
-	binistream *f = fp.open(fd);
-	if(!f) return false;
+  binistream *f = fp.open(filename); if(!f) return false;
 
 	char cSig[4];
 	f->readString(cSig, 4);
@@ -290,14 +289,14 @@ bool CcmfPlayer::update()
 						break;
 					}
 					case 0xF1: // MIDI Time Code Quarter Frame
-						this->iPlayPointer++; // message data (ignored)
+						this->data[this->iPlayPointer++]; // message data (ignored)
 						break;
 					case 0xF2: // Song position pointer
-						this->iPlayPointer++; // message data (ignored)
-						this->iPlayPointer++;
+						this->data[this->iPlayPointer++]; // message data (ignored)
+						this->data[this->iPlayPointer++];
 						break;
 					case 0xF3: // Song select
-						this->iPlayPointer++; // message data (ignored)
+						this->data[this->iPlayPointer++]; // message data (ignored)
 						AdPlug_LogWrite("CMF: MIDI Song Select is not implemented.\n");
 						break;
 					case 0xF6: // Tune request
@@ -548,7 +547,7 @@ void CcmfPlayer::cmfNoteOn(uint8_t iChannel, uint8_t iNote, uint8_t iVelocity)
 		00 -> N/A (note off)
 		*/
 		// Approximate formula, need to figure out more accurate one (my maths isn't so good...)
-		int iLevel = 0x25 - (int) sqrt(iVelocity * 16 /* 6 */); // (127 - iVelocity) * 0x20 / 127;
+		int iLevel = 0x25 - sqrt(iVelocity * 16/*6*/);//(127 - iVelocity) * 0x20 / 127;
 		if (iVelocity > 0x7b) iLevel = 0; // full volume
 		if (iLevel < 0) iLevel = 0;
 		if (iLevel > 0x3F) iLevel = 0x3F;

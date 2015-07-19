@@ -1,27 +1,27 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2006 Simon Peter, <dn.tlp@gmx.net>, et al.
- *
+ * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- *
+ * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * rol.h - ROL Player by OPLx <oplx@yahoo.com>
  *
  * Visit:  http://tenacity.hispeed.com/aomit/oplx/
  */
+#include <cstring>
 #include <algorithm>
-#include <string.h>
 
 #include "rol.h"
 #include "debug.h"
@@ -41,8 +41,8 @@ float const CrolPlayer::kPitchFactor         = 400.0f;
 
 static const unsigned char drum_table[4] = {0x14, 0x12, 0x15, 0x11};
 
-CrolPlayer::uint16 const CrolPlayer::kNoteTable[12] =
-{
+CrolPlayer::uint16 const CrolPlayer::kNoteTable[12] = 
+{ 
     340, // C
     363, // C#
     385, // D
@@ -66,7 +66,7 @@ CPlayer *CrolPlayer::factory(Copl *newopl)
 //---------------------------------------------------------
 CrolPlayer::CrolPlayer(Copl *newopl)
 :  CPlayer         ( newopl )
-  ,rol_header      ( nullptr )
+  ,rol_header      ( NULL )
   ,mNextTempoEvent ( 0 )
   ,mCurrTick       ( 0 )
   ,mTimeOfLastNote ( 0 )
@@ -80,22 +80,21 @@ CrolPlayer::CrolPlayer(Copl *newopl)
     memset(freqCache,   0, sizeof(freqCache) );
 
     for(n=0; n<11; n++)
-      pitchCache[n]=1.0f;
+      pitchCache[n]=1.0f;    
 }
 //---------------------------------------------------------
 CrolPlayer::~CrolPlayer()
 {
-    if(rol_header)
+    if( rol_header != NULL )
     {
         delete rol_header;
-        rol_header = 0;
+        rol_header=NULL;
     }
 }
 //---------------------------------------------------------
-bool CrolPlayer::load(VFSFile &fd, const CFileProvider &fp)
+bool CrolPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
-    binistream *f = fp.open(fd); if(!f) return false;
-    std::string filename(fd.filename ());
+    binistream *f = fp.open(filename); if(!f) return false;
 
     char *fn = new char[filename.length()+12];
     int i;
@@ -108,7 +107,7 @@ bool CrolPlayer::load(VFSFile &fd, const CFileProvider &fp)
 	break;
     strcpy(fn+i+1,"standard.bnk");
     bnk_filename = fn;
-    delete [] fn; fn = 0;
+    delete [] fn;
     AdPlug_LogWrite("bnk_filename = \"%s\"\n",bnk_filename.c_str());
 
     rol_header = new SRolHeader;
@@ -258,9 +257,6 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
     TVolumeEvents      &vEvents = voiceData.volume_events;
     TPitchEvents       &pEvents = voiceData.pitch_events;
 
-    if (iEvents.empty()) {
-        return;  // prevent out-of-bounds access
-    }
     if( !(voiceData.mEventStatus & CVoiceData::kES_InstrEnd ) &&
         iEvents[voiceData.next_instrument_event].time == mCurrTick )
     {
@@ -275,9 +271,6 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
         }
     }
 
-    if (vEvents.empty()) {
-        return;  // prevent out-of-bounds access
-    }
     if( !(voiceData.mEventStatus & CVoiceData::kES_VolumeEnd ) &&
         vEvents[voiceData.next_volume_event].time == mCurrTick )
     {
@@ -294,7 +287,7 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
         else
         {
             voiceData.mEventStatus |= CVoiceData::kES_VolumeEnd;
-        }
+        }        
     }
 
     if( voiceData.mForceNote || voiceData.current_note_duration > voiceData.mNoteDuration-1 )
@@ -321,9 +314,6 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
         }
     }
 
-    if (pEvents.empty()) {
-        return;  // prevent out-of-bounds access
-    }
     if( !(voiceData.mEventStatus & CVoiceData::kES_PitchEnd ) &&
         pEvents[voiceData.next_pitch_event].time == mCurrTick )
     {
@@ -410,7 +400,7 @@ void CrolPlayer::SetVolume( int const voice, int const volume )
 {
     volumeCache[voice] = (volumeCache[voice] &0xc0) | volume;
 
-    int const op_offset = ( voice < kSnareDrumChannel || rol_header->mode ) ?
+    int const op_offset = ( voice < kSnareDrumChannel || rol_header->mode ) ? 
                           op_table[voice]+3 : drum_table[voice-kSnareDrumChannel];
 
     opl->write( 0x40+op_offset, volumeCache[voice] );
@@ -436,7 +426,7 @@ void CrolPlayer::send_operator( int const voice, SOPL2Op const &modulator,  SOPL
         opl->write( 0xc0+voice    , modulator.fbc      );
         opl->write( 0xe0+op_offset, modulator.waveform );
 
-        volumeCache[voice] = (carrier.ksltl & 0xc0) | (volumeCache[voice] & 0x3f);
+        volumeCache[voice] = (carrier.ksltl & 0xc0) | volumeCache[voice] & 0x3f;
 
         opl->write( 0x23+op_offset, carrier.ammulti  );
         opl->write( 0x43+op_offset, volumeCache[voice]    );
@@ -449,7 +439,7 @@ void CrolPlayer::send_operator( int const voice, SOPL2Op const &modulator,  SOPL
     {
         int const op_offset = drum_table[voice-kSnareDrumChannel];
 
-        volumeCache[voice] = (modulator.ksltl & 0xc0) | (volumeCache[voice] & 0x3f);
+        volumeCache[voice] = (modulator.ksltl & 0xc0) | volumeCache[voice] & 0x3f;
 
         opl->write( 0x20+op_offset, modulator.ammulti  );
         opl->write( 0x40+op_offset, volumeCache[voice]      );
@@ -464,9 +454,6 @@ void CrolPlayer::load_tempo_events( binistream *f )
 {
     int16 const num_tempo_events = f->readInt( 2 );
 
-    if (num_tempo_events<0) {
-        return;
-    }
     mTempoEvents.reserve( num_tempo_events );
 
     for(int i=0; i<num_tempo_events; ++i)
@@ -482,8 +469,7 @@ void CrolPlayer::load_tempo_events( binistream *f )
 bool CrolPlayer::load_voice_data( binistream *f, std::string const &bnk_filename, const CFileProvider &fp )
 {
     SBnkHeader bnk_header;
-    VFSFile fd(bnk_filename.c_str(), "rb");
-    binistream *bnk_file = fp.open(fd);
+    binistream *bnk_file = fp.open( bnk_filename.c_str() );
 
     if( bnk_file )
     {
@@ -550,9 +536,6 @@ void CrolPlayer::load_instrument_events( binistream *f, CVoiceData &voice,
                                          binistream *bnk_file, SBnkHeader const &bnk_header )
 {
     int16 const number_of_instrument_events = f->readInt( 2 );
-    if (number_of_instrument_events<0) {
-        return;
-    }
 
     TInstrumentEvents &instrument_events = voice.instrument_events;
 
@@ -578,9 +561,6 @@ void CrolPlayer::load_instrument_events( binistream *f, CVoiceData &voice,
 void CrolPlayer::load_volume_events( binistream *f, CVoiceData &voice )
 {
     int16 const number_of_volume_events = f->readInt( 2 );
-    if (number_of_volume_events<0) {
-        return;
-    }
 
     TVolumeEvents &volume_events = voice.volume_events;
 
@@ -601,9 +581,6 @@ void CrolPlayer::load_volume_events( binistream *f, CVoiceData &voice )
 void CrolPlayer::load_pitch_events( binistream *f, CVoiceData &voice )
 {
     int16 const number_of_pitch_events = f->readInt( 2 );
-    if (number_of_pitch_events<0) {
-        return;
-    }
 
     TPitchEvents &pitch_events = voice.pitch_events;
 
@@ -668,9 +645,9 @@ int CrolPlayer::load_rol_instrument( binistream *f, SBnkHeader const &header, st
     typedef TInstrumentNames::const_iterator TInsIter;
     typedef std::pair<TInsIter, TInsIter>    TInsIterPair;
 
-    TInsIterPair range = std::equal_range( ins_name_list.begin(),
-                                           ins_name_list.end(),
-                                           name,
+    TInsIterPair range = std::equal_range( ins_name_list.begin(), 
+                                           ins_name_list.end(), 
+                                           name, 
                                            StringCompare() );
 
     if( range.first != range.second )
@@ -689,7 +666,7 @@ int CrolPlayer::load_rol_instrument( binistream *f, SBnkHeader const &header, st
     else
     {
         // set up default instrument data here
-        memset( &usedIns.instrument, 0, sizeof(usedIns.instrument) );
+        memset( &usedIns.instrument, 0, sizeof(SRolInstrument) );
     }
     ins_list.push_back( usedIns );
 
@@ -700,7 +677,7 @@ int CrolPlayer::get_ins_index( std::string const &name ) const
 {
     for(unsigned int i=0; i<ins_list.size(); ++i)
     {
-        if( strcmp_nocase(ins_list[i].name.c_str(), name.c_str()) == 0 )
+        if( stricmp(ins_list[i].name.c_str(), name.c_str()) == 0 )
         {
             return i;
         }

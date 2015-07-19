@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * xsm.cpp - eXtra Simple Music Player, by Simon Peter <dn.tlp@gmx.net>
  */
@@ -23,87 +23,72 @@
 
 #include "xsm.h"
 
-CxsmPlayer::CxsmPlayer (Copl * newopl):CPlayer (newopl), music (0)
+CxsmPlayer::CxsmPlayer(Copl *newopl)
+  : CPlayer(newopl), music(0)
 {
 }
 
-CxsmPlayer::~CxsmPlayer ()
+CxsmPlayer::~CxsmPlayer()
 {
-  if (music)
-  {
-    delete[]music;
-    music = 0;
-  }
+  if(music) delete [] music;
 }
 
-bool
-CxsmPlayer::load (VFSFile & fd, const CFileProvider & fp)
+bool CxsmPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
-  binistream *f = fp.open (fd);
-  if (!f)
-    return false;
-  char id[6];
-  int i, j;
+  binistream *f = fp.open(filename); if(!f) return false;
+  char			id[6];
+  int			i, j;
 
   // check if header matches
-  f->readString (id, 6);
-  songlen = f->readInt (2);
-  if (strncmp (id, "ofTAZ!", 6) || songlen > 3200)
-  {
-    fp.close (f);
-    return false;
-  }
+  f->readString(id, 6); songlen = f->readInt(2);
+  if(strncmp(id, "ofTAZ!", 6) || songlen > 3200) { fp.close(f); return false; }
 
   // read and set instruments
-  for (i = 0; i < 9; i++)
-  {
-    opl->write (0x20 + op_table[i], f->readInt (1));
-    opl->write (0x23 + op_table[i], f->readInt (1));
-    opl->write (0x40 + op_table[i], f->readInt (1));
-    opl->write (0x43 + op_table[i], f->readInt (1));
-    opl->write (0x60 + op_table[i], f->readInt (1));
-    opl->write (0x63 + op_table[i], f->readInt (1));
-    opl->write (0x80 + op_table[i], f->readInt (1));
-    opl->write (0x83 + op_table[i], f->readInt (1));
-    opl->write (0xe0 + op_table[i], f->readInt (1));
-    opl->write (0xe3 + op_table[i], f->readInt (1));
-    opl->write (0xc0 + op_table[i], f->readInt (1));
-    f->ignore (5);
+  for(i = 0; i < 9; i++) {
+    opl->write(0x20 + op_table[i], f->readInt(1));
+    opl->write(0x23 + op_table[i], f->readInt(1));
+    opl->write(0x40 + op_table[i], f->readInt(1));
+    opl->write(0x43 + op_table[i], f->readInt(1));
+    opl->write(0x60 + op_table[i], f->readInt(1));
+    opl->write(0x63 + op_table[i], f->readInt(1));
+    opl->write(0x80 + op_table[i], f->readInt(1));
+    opl->write(0x83 + op_table[i], f->readInt(1));
+    opl->write(0xe0 + op_table[i], f->readInt(1));
+    opl->write(0xe3 + op_table[i], f->readInt(1));
+    opl->write(0xc0 + op_table[i], f->readInt(1));
+    f->ignore(5);
   }
 
   // read song data
-  music = new char[songlen * 9];
-  for (i = 0; i < 9; i++)
-    for (j = 0; j < songlen; j++)
-      music[j * 9 + i] = f->readInt (1);
+  music = new char [songlen * 9];
+  for(i = 0; i < 9; i++)
+    for(j = 0; j < songlen; j++)
+      music[j * 9 + i] = f->readInt(1);
 
   // success
-  fp.close (f);
-  rewind (0);
+  fp.close(f);
+  rewind(0);
   return true;
 }
 
-bool
-CxsmPlayer::update ()
+bool CxsmPlayer::update()
 {
   int c;
 
-  if (notenum >= songlen)
-  {
+  if(notenum >= songlen) {
     songend = true;
     notenum = last = 0;
   }
 
-  for (c = 0; c < 9; c++)
-    if (music[notenum * 9 + c] != music[last * 9 + c])
-      opl->write (0xb0 + c, 0);
+  for(c = 0; c < 9; c++)
+    if(music[notenum * 9 + c] != music[last * 9 + c])
+      opl->write(0xb0 + c, 0);
 
-  for (c = 0; c < 9; c++)
-  {
-    if (music[notenum * 9 + c])
-      play_note (c, music[notenum * 9 + c] % 12, music[notenum * 9 + c] / 12);
+  for(c = 0; c < 9; c++) {
+    if(music[notenum * 9 + c])
+      play_note(c, music[notenum * 9 + c] % 12, music[notenum * 9 + c] / 12);
     else
-      play_note (c, 0, 0);
+      play_note(c, 0, 0);
   }
 
   last = notenum;
@@ -111,26 +96,22 @@ CxsmPlayer::update ()
   return !songend;
 }
 
-void
-CxsmPlayer::rewind (int subsong)
+void CxsmPlayer::rewind(int subsong)
 {
   notenum = last = 0;
   songend = false;
 }
 
-float
-CxsmPlayer::getrefresh ()
+float CxsmPlayer::getrefresh()
 {
   return 5.0f;
 }
 
-void
-CxsmPlayer::play_note (int c, int note, int octv)
+void CxsmPlayer::play_note(int c, int note, int octv)
 {
   int freq = note_table[note];
 
-  if (!note && !octv)
-    freq = 0;
-  opl->write (0xa0 + c, freq & 0xff);
-  opl->write (0xb0 + c, (freq / 0xff) | 32 | (octv * 4));
+  if(!note && !octv) freq = 0;
+  opl->write(0xa0 + c, freq & 0xff);
+  opl->write(0xb0 + c, (freq / 0xff) | 32 | (octv * 4));
 }

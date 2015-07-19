@@ -1,20 +1,20 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
- *
+ * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- *
+ * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Johannes Bjerregaard's JBM Adlib Music Format player for AdPlug
  * Written by Dennis Lindroos <lindroos@nls.fi>, February-March 2007
@@ -24,7 +24,7 @@
  *
  * This version doesn't use the binstr.h functions (coded with custom func.)
  * This is my first attempt on writing a musicplayer for AdPlug, and i'm not
- * coding C++ very often..
+ * coding C++ very often.. 
  *
  * Released under the terms of the GNU General Public License.
  */
@@ -63,10 +63,9 @@ CPlayer *CjbmPlayer::factory(Copl *newopl)
   return new CjbmPlayer(newopl);
 }
 
-bool CjbmPlayer::load(VFSFile & fd, const CFileProvider & fp)
+bool CjbmPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
-  binistream *f = fp.open (fd);
-  std::string filename (fd.filename ());
+  binistream	*f = fp.open(filename); if(!f) return false;
   int		filelen = fp.filesize(f);
   int		i;
 
@@ -75,7 +74,7 @@ bool CjbmPlayer::load(VFSFile & fd, const CFileProvider & fp)
   // Allocate memory buffer m[] and read entire file into it
 
   m = new unsigned char[filelen];
-  if (f->readString((char *)m, filelen) != (unsigned int)filelen) goto loaderr;
+  if (f->readString((char *)m, filelen) != filelen) goto loaderr;
 
   fp.close(f);
 
@@ -97,7 +96,7 @@ bool CjbmPlayer::load(VFSFile & fd, const CFileProvider & fp)
 
   flags = GET_WORD(m, 8);
 
-  // Instrument datas are directly addressed with m[]
+  // Instrument datas are directly addressed with m[] 
 
   inscount = (filelen - instable) >> 4;
 
@@ -111,7 +110,7 @@ bool CjbmPlayer::load(VFSFile & fd, const CFileProvider & fp)
   }
   seqcount = (seqcount - seqtable) >> 1;
   sequences = new unsigned short[seqcount];
-  for (i = 0; i < seqcount; i++)
+  for (i = 0; i < seqcount; i++) 
     sequences[i] = GET_WORD(m, seqtable + (i<<1));
 
   rewind(0);
@@ -289,6 +288,6 @@ void CjbmPlayer::set_opl_instrument(int channel, JBMVoice *v)
 
   // FEEDBACK/FM mode
   opl->write(0xc0 + channel, m[i+8]&15);
-
+	
   return;
 }
