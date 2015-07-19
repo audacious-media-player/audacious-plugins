@@ -38,8 +38,8 @@ public:
   static const CPlayers players;
 
   static CPlayer *factory(const std::string &fn, Copl *opl,
-                          const CPlayers &pl = players,
-                          const CFileProvider &fp = CProvider_Filesystem());
+                          const CFileProvider &fp,
+                          const CPlayers &pl = players);
 
   static void set_database(CAdPlugDatabase *db);
   static std::string get_version();

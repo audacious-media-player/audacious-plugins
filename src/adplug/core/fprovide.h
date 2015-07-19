@@ -25,26 +25,25 @@
 #include <string>
 #include <binio.h>
 
+class VFSFile;
+
 class CFileProvider
 {
 public:
-  virtual ~CFileProvider()
-    {
-    }
+  CFileProvider(VFSFile &file) :
+    m_file(file) {}
 
-  virtual binistream *open(std::string) const = 0;
-  virtual void close(binistream *) const = 0;
+  binistream *open(std::string filename) const;
+
+  static void close(binistream *f)
+    { delete f; }
 
   static bool extension(const std::string &filename,
                         const std::string &extension);
   static unsigned long filesize(binistream *f);
-};
 
-class CProvider_Filesystem: public CFileProvider
-{
-public:
-  virtual binistream *open(std::string filename) const;
-  virtual void close(binistream *f) const;
+private:
+  VFSFile &m_file;
 };
 
 #endif

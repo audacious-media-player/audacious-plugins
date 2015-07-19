@@ -130,8 +130,8 @@ const CPlayers &CAdPlug::init_players(const CPlayerDesc pd[])
 const CPlayers CAdPlug::players = CAdPlug::init_players(CAdPlug::allplayers);
 CAdPlugDatabase *CAdPlug::database = 0;
 
-CPlayer *CAdPlug::factory(const std::string &fn, Copl *opl, const CPlayers &pl,
-                          const CFileProvider &fp)
+CPlayer *CAdPlug::factory(const std::string &fn, Copl *opl,
+                          const CFileProvider &fp, const CPlayers &pl)
 {
   CPlayer                       *p;
   CPlayers::const_iterator      i;

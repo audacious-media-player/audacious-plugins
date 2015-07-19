@@ -24,6 +24,7 @@
 #include <binfile.h>
 
 #include "fprovide.h"
+#include "binio_virtual.h"
 
 /***** CFileProvider *****/
 
@@ -41,36 +42,22 @@ bool CFileProvider::extension(const std::string &filename,
 
 unsigned long CFileProvider::filesize(binistream *f)
 {
-  unsigned long oldpos = f->pos(), size;
-
-  f->seek(0, binio::End);
-  size = f->pos();
-  f->seek(oldpos, binio::Set);
-
-  return size;
+  return static_cast<vfsistream*>(f)->size();
 }
 
-/***** CProvider_Filesystem *****/
-
-binistream *CProvider_Filesystem::open(std::string filename) const
+binistream *CFileProvider::open(std::string filename) const
 {
-  binifstream *f = new binifstream(filename);
+  binistream *f;
 
-  if(!f) return 0;
+  if (!strcmp(filename.c_str(), m_file.filename()) && !m_file.fseek(0, VFS_SEEK_SET))
+    f = new vfsistream(&m_file);
+  else
+    f = new vfsistream(filename);
+
   if(f->error()) { delete f; return 0; }
 
   // Open all files as little endian with IEEE floats by default
   f->setFlag(binio::BigEndian, false); f->setFlag(binio::FloatIEEE);
 
   return f;
-}
-
-void CProvider_Filesystem::close(binistream *f) const
-{
-  binifstream *ff = (binifstream *)f;
-
-  if(f) {
-    ff->close();
-    delete ff;
-  }
 }
