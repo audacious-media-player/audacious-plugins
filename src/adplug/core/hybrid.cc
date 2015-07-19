@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2003 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -31,7 +31,7 @@
 #include "hybrid.h"
 #include "debug.h"
 
-const unsigned char CxadhybridPlayer::hyb_adlib_registers[99] = 
+const unsigned char CxadhybridPlayer::hyb_adlib_registers[99] =
 {
   0xE0, 0x60, 0x80, 0x20, 0x40, 0xE3, 0x63, 0x83, 0x23, 0x43, 0xC0,
   0xE1, 0x61, 0x81, 0x21, 0x41, 0xE4, 0x64, 0x84, 0x24, 0x44, 0xC1,
@@ -57,7 +57,7 @@ const unsigned short CxadhybridPlayer::hyb_notes[98] =
   0x1D6B, 0x1D81, 0x1D98, 0x1DB0, 0x1DCA, 0x1DE5, 0x1E02, 0x1E20, 0x1E41, 0x1E63, 0x1E87, 0x1EAE
 };
 
-const unsigned char CxadhybridPlayer::hyb_default_instrument[11] = 
+const unsigned char CxadhybridPlayer::hyb_default_instrument[11] =
 {
   0x00, 0xFF, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0xFF, 0x00, 0xFF, 0x00
 };
@@ -111,8 +111,8 @@ void CxadhybridPlayer::xadplayer_rewind(int subsong)
     for(int j=0;j<11;j++)
       opl_write(hyb_adlib_registers[i*11+j], 0x00 /* hyb_default_instrument[j] */ );
 
-	opl_write(0xA0+i, 0x00);
-	opl_write(0xB0+i, 0x20);
+        opl_write(0xA0+i, 0x00);
+        opl_write(0xB0+i, 0x20);
   }
 }
 
@@ -141,8 +141,8 @@ void CxadhybridPlayer::xadplayer_update()
 #endif
 
     // calculate variables
-	unsigned char  note  =   event >> 9;
-	unsigned char  ins   = ((event & 0x01F0) >> 4);
+        unsigned char  note  =   event >> 9;
+        unsigned char  ins   = ((event & 0x01F0) >> 4);
     unsigned char  slide =   event & 0x000F;
 
     // play event
@@ -181,7 +181,7 @@ void CxadhybridPlayer::xadplayer_update()
         if (slide)
         {
           hyb.channel[i].freq_slide = (((slide >> 3) * -1) * (slide & 7)) << 1;
-    
+
           if (slide & 0x80)
             slide = -(slide & 7);
         }

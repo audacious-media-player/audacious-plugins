@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2003 Simon Peter <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -60,7 +60,7 @@ bool CadtrackLoader::load(const std::string &filename, const CFileProvider &fp)
   std::string instfilename(filename, 0, filename.find_last_of('.'));
   instfilename += ".ins";
   AdPlug_LogWrite("CadtrackLoader::load(,\"%s\"): Checking for \"%s\"...\n",
-		  filename.c_str(), instfilename.c_str());
+                  filename.c_str(), instfilename.c_str());
   instf = fp.open(instfilename);
   if(!instf || fp.filesize(instf) != 468) { fp.close(f); return false; }
 
@@ -104,18 +104,18 @@ bool CadtrackLoader::load(const std::string &filename, const CFileProvider &fp)
       case 'A': if(note[1] == '#') pnote = 11; else pnote = 10; break;
       case 'B': pnote = 12; break;
       case '\0':
-	if(note[1] == '\0')
-	  tracks[chp][rwp].note = 127;
-	else {
-	  fp.close(f);
-	  return false;
-	}
-	break;
+        if(note[1] == '\0')
+          tracks[chp][rwp].note = 127;
+        else {
+          fp.close(f);
+          return false;
+        }
+        break;
       default: fp.close(f); return false;
       }
       if((*note) != '\0') {
-	tracks[chp][rwp].note = pnote + (octave * 12);
-	tracks[chp][rwp].inst = chp + 1;
+        tracks[chp][rwp].note = pnote + (octave * 12);
+        tracks[chp][rwp].inst = chp + 1;
       }
     }
 

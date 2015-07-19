@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2003, 2006 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -113,12 +113,12 @@ bool CxadbmfPlayer::xadplayer_load()
     strncpy(bmf.title,(char *)&tune[ptr],36);
 
     while (tune[ptr]) { ptr++; }
-	ptr++;
+        ptr++;
 
     strncpy(bmf.author,(char *)&tune[ptr],36);
 
     while (tune[ptr]) { ptr++; }
-	ptr++;
+        ptr++;
   }
   else
   {
@@ -140,22 +140,22 @@ bool CxadbmfPlayer::xadplayer_load()
 
     for(i=0;i<32;i++)
       if (iflags & (1 << (31-i)))
-	  {
+          {
         strcpy(bmf.instruments[i].name, (char *)&tune[ptr]);
         memcpy(bmf.instruments[i].data, &tune[ptr+11], 13);
         ptr += 24;
-	  }
+          }
       else
-	  {
+          {
         bmf.instruments[i].name[0] = 0;
-		
+
         if (bmf.version == BMF1_1)
-		  for(int j=0;j<13;j++)
-			bmf.instruments[i].data[j] = bmf_default_instrument[j];
+                  for(int j=0;j<13;j++)
+                        bmf.instruments[i].data[j] = bmf_default_instrument[j];
         else
-		  for(int j=0;j<13;j++)
-			bmf.instruments[i].data[j] = 0;
-	  }
+                  for(int j=0;j<13;j++)
+                        bmf.instruments[i].data[j] = 0;
+          }
   }
   else
   {
@@ -168,7 +168,7 @@ bool CxadbmfPlayer::xadplayer_load()
       ptr+=15;
     }
   }
-  
+
   // load streams
   if (bmf.version > BMF0_9B)
   {
@@ -186,7 +186,7 @@ bool CxadbmfPlayer::xadplayer_load()
     for(i=0;i<tune[5];i++)
       ptr+=__bmf_convert_stream(&tune[ptr],i);
 
-	for(i=tune[5];i<9;i++)
+        for(i=tune[5];i<9;i++)
       bmf.streams[i][0].cmd = 0xFF;
   }
 
@@ -216,7 +216,7 @@ void CxadbmfPlayer::xadplayer_rewind(int subsong)
   if (bmf.version > BMF0_9B)
   {
     opl_write(0x01, 0x20);
-    
+
     /* 1.1 */
     if (bmf.version == BMF1_1)
       for(i=0;i<9;i++)
@@ -240,47 +240,47 @@ void CxadbmfPlayer::xadplayer_update()
     if (bmf.channel[i].stream_position != 0xFFFF)
     if (bmf.channel[i].delay)
       bmf.channel[i].delay--;
-	else
-	{
+        else
+        {
 #ifdef DEBUG
    AdPlug_LogWrite("channel %02X:\n", i);
 #endif
       bmf_event event;
 
       // process so-called cross-events
-  	  while (true)
-	  {
+          while (true)
+          {
         memcpy(&event, &bmf.streams[i][bmf.channel[i].stream_position], sizeof(bmf_event));
 #ifdef DEBUG
    AdPlug_LogWrite("%02X %02X %02X %02X %02X %02X\n",
-		   event.note,event.delay,event.volume,event.instrument,
-		   event.cmd,event.cmd_data);
+                   event.note,event.delay,event.volume,event.instrument,
+                   event.cmd,event.cmd_data);
 #endif
 
         if (event.cmd == 0xFF)
-		{
+                {
           bmf.channel[i].stream_position = 0xFFFF;
           bmf.active_streams--;
           break;
-		}
+                }
         else if (event.cmd == 0xFE)
-		{
+                {
           bmf.channel[i].loop_position = bmf.channel[i].stream_position+1;
           bmf.channel[i].loop_counter = event.cmd_data;
-		}
+                }
         else if (event.cmd == 0xFD)
-		{
+                {
           if (bmf.channel[i].loop_counter)
           {
             bmf.channel[i].stream_position = bmf.channel[i].loop_position-1;
             bmf.channel[i].loop_counter--;
           }
-		}
+                }
         else
           break;
 
         bmf.channel[i].stream_position++;
-	  } // while (true)
+          } // while (true)
 
       // process normal event
       unsigned short pos = bmf.channel[i].stream_position;
@@ -291,27 +291,27 @@ void CxadbmfPlayer::xadplayer_update()
 
         // command ?
         if (bmf.streams[i][pos].cmd)
-		{
+                {
           unsigned char cmd = bmf.streams[i][pos].cmd;
 
           // 0x01: Set Modulator Volume
           if (cmd == 0x01)
-		  {
+                  {
             unsigned char reg = bmf_adlib_registers[13*i+2];
 
             opl_write(reg, (adlib[reg] | 0x3F) - bmf.streams[i][pos].cmd_data);
-		  }
+                  }
           // 0x10: Set Speed
-		  else if (cmd == 0x10)
-		  {
+                  else if (cmd == 0x10)
+                  {
             plr.speed = bmf.streams[i][pos].cmd_data;
-		    plr.speed_counter = plr.speed;
-		  }
-		} // if (bmf.streams[i][pos].cmd)
+                    plr.speed_counter = plr.speed;
+                  }
+                } // if (bmf.streams[i][pos].cmd)
 
         // instrument ?
         if (bmf.streams[i][pos].instrument)
-		{
+                {
           unsigned char ins = bmf.streams[i][pos].instrument-1;
 
           if (bmf.version != BMF1_1)
@@ -319,20 +319,20 @@ void CxadbmfPlayer::xadplayer_update()
 
           for(int j=0;j<13;j++)
             opl_write(bmf_adlib_registers[i*13+j], bmf.instruments[ins].data[j]);
-		} // if (bmf.streams[i][pos].instrument)
+                } // if (bmf.streams[i][pos].instrument)
 
         // volume ?
         if (bmf.streams[i][pos].volume)
-		{
+                {
           unsigned char vol = bmf.streams[i][pos].volume-1;
           unsigned char reg = bmf_adlib_registers[13*i+3];
 
           opl_write(reg, (adlib[reg] | 0x3F) - vol);
-		} // if (bmf.streams[i][pos].volume)
+                } // if (bmf.streams[i][pos].volume)
 
-	    // note ?
+            // note ?
         if (bmf.streams[i][pos].note)
-		{
+                {
           unsigned short note = bmf.streams[i][pos].note;
           unsigned short freq = 0;
 
@@ -346,23 +346,23 @@ void CxadbmfPlayer::xadplayer_update()
               freq = bmf_notes_2[--note % 12];
           }
           else
-		  {
+                  {
             if (note != 0x7F)
               freq = bmf_notes[--note % 12];
-		  }
+                  }
 
           // play note
-		  if (freq)
+                  if (freq)
           {
             opl_write(0xB0+i, (freq >> 8) | ((note / 12) << 2) | 0x20);
             opl_write(0xA0+i, freq & 0xFF);
           }
-		} // if (bmf.streams[i][pos].note)
+                } // if (bmf.streams[i][pos].note)
 
         bmf.channel[i].stream_position++;
       } // if (pos != 0xFFFF)
 
-	} // if (!bmf.channel[i].delay)
+        } // if (!bmf.channel[i].delay)
 
   // is module loop ?
   if (!bmf.active_streams)
@@ -370,7 +370,7 @@ void CxadbmfPlayer::xadplayer_update()
     for(int j=0;j<9;j++)
       bmf.channel[j].stream_position = 0;
 
-	bmf.active_streams = 9;
+        bmf.active_streams = 9;
 
     plr.looping = 1;
   }
@@ -425,36 +425,36 @@ int CxadbmfPlayer::__bmf_convert_stream(unsigned char *stream, int channel)
     bool is_cmd = false;
 
     if (*stream == 0xFE)
-	{
+        {
       // 0xFE -> 0xFF: End of Stream
       bmf.streams[channel][pos].cmd = 0xFF;
 
-	  stream++;
+          stream++;
 
       break;
-	}
+        }
     else if (*stream == 0xFC)
-	{
+        {
       // 0xFC -> 0xFE xx: Save Loop Position
       bmf.streams[channel][pos].cmd = 0xFE;
       bmf.streams[channel][pos].cmd_data = (*(stream+1) & ((bmf.version == BMF0_9B) ? 0x7F : 0x3F)) - 1;
 
-	  stream+=2;
+          stream+=2;
     }
     else if (*stream == 0x7D)
-	{
+        {
       // 0x7D -> 0xFD: Loop Saved Position
       bmf.streams[channel][pos].cmd = 0xFD;
 
-	  stream++;
-	}
-	else
+          stream++;
+        }
+        else
     {
-      if (*stream & 0x80)                           
+      if (*stream & 0x80)
       {
-		if (*(stream+1) & 0x80)
+                if (*(stream+1) & 0x80)
         {
-		  if (*(stream+1) & 0x40)
+                  if (*(stream+1) & 0x40)
           {
             // byte0: 1aaaaaaa = NOTE
             bmf.streams[channel][pos].note = *stream & 0x7F;
@@ -466,16 +466,16 @@ int CxadbmfPlayer::__bmf_convert_stream(unsigned char *stream, int channel)
 
             is_cmd = true;
           }
-		  else
+                  else
           {
             // byte0: 1aaaaaaa = NOTE
             bmf.streams[channel][pos].note = *stream & 0x7F;
             // byte1: 11bbbbbb = DELAY
             bmf.streams[channel][pos].delay = *(stream+1) & 0x3F;
 
-			stream+=2;
+                        stream+=2;
           } // if (*(stream+1) & 0x40)
-		}
+                }
         else
         {
           // byte0: 1aaaaaaa = NOTE
@@ -486,17 +486,17 @@ int CxadbmfPlayer::__bmf_convert_stream(unsigned char *stream, int channel)
 
           is_cmd = true;
         } // if (*(stream+1) & 0x80)
-	  }
-	  else
+          }
+          else
       {
         // byte0: 0aaaaaaa = NOTE
         bmf.streams[channel][pos].note = *stream & 0x7F;
 
-		stream++;
+                stream++;
       } // if (*stream & 0x80)
     } // if (*stream == 0xFE)
 
-	// is command ?
+        // is command ?
     if (is_cmd)
     {
 
@@ -504,17 +504,17 @@ int CxadbmfPlayer::__bmf_convert_stream(unsigned char *stream, int channel)
 
       if ((0x20 <= *stream) && (*stream <= 0x3F))
       {
-        // 0x20 or higher; 0x3F or lower: Set Instrument 
+        // 0x20 or higher; 0x3F or lower: Set Instrument
         bmf.streams[channel][pos].instrument = *stream - 0x20 + 1;
 
-		stream++;
+                stream++;
       }
       else if (0x40 <= *stream)
       {
         // 0x40 or higher: Set Volume
         bmf.streams[channel][pos].volume = *stream - 0x40 + 1;
 
-		stream++;
+                stream++;
       }
       else
       {
@@ -523,68 +523,68 @@ int CxadbmfPlayer::__bmf_convert_stream(unsigned char *stream, int channel)
 
         if (bmf.version == BMF0_9B)
         if (*stream < 0x20)
-		{
+                {
           // 0x1F or lower: ?
-		  stream++;
-		}
+                  stream++;
+                }
 
         /* 1.2 */
 
         if (bmf.version == BMF1_2)
         if (*stream == 0x01)
-		{
+                {
           // 0x01: Set Modulator Volume -> 0x01
           bmf.streams[channel][pos].cmd = 0x01;
           bmf.streams[channel][pos].cmd_data = *(stream+1);
 
-		  stream+=2;
-		}
+                  stream+=2;
+                }
         else if (*stream == 0x02)
-		{
+                {
           // 0x02: ?
-		  stream+=2;
-		}
+                  stream+=2;
+                }
         else if (*stream == 0x03)
-		{
+                {
           // 0x03: ?
-		  stream+=2;
-		}
+                  stream+=2;
+                }
         else if (*stream == 0x04)
-		{
+                {
           // 0x04: Set Speed -> 0x10
           bmf.streams[channel][pos].cmd = 0x10;
           bmf.streams[channel][pos].cmd_data = *(stream+1);
 
           stream+=2;
-		}
+                }
         else if (*stream == 0x05)
-		{
+                {
           // 0x05: Set Carrier Volume (port 380)
           bmf.streams[channel][pos].volume = *(stream+1) + 1;
 
-		  stream+=2;
-		}
+                  stream+=2;
+                }
         else if (*stream == 0x06)
-		{
+                {
           // 0x06: Set Carrier Volume (port 382)
           bmf.streams[channel][pos].volume = *(stream+1) + 1;
 
-		  stream+=2;
-		} // if (bmf.version == BMF1_2)
+                  stream+=2;
+                } // if (bmf.version == BMF1_2)
 
       } // if ((0x20 <= *stream) && (*stream <= 0x3F))
 
     } // if (is_cmd)
 
 #ifdef DEBUG
-   AdPlug_LogWrite("%02X %02X %02X %02X %02X %02X  <----  ", 
-			bmf.streams[channel][pos].note,	
-			bmf.streams[channel][pos].delay,
-			bmf.streams[channel][pos].volume, 
-			bmf.streams[channel][pos].instrument,
-			bmf.streams[channel][pos].cmd, 
-			bmf.streams[channel][pos].cmd_data
-		   );
+   AdPlug_LogWrite("%02X %02X %02X %02X %02X %02X  <----  ",
+                        bmf.streams[channel][pos].note,
+                        bmf.streams[channel][pos].delay,
+                        bmf.streams[channel][pos].volume,
+                        bmf.streams[channel][pos].instrument,
+                        bmf.streams[channel][pos].cmd,
+                        bmf.streams[channel][pos].cmd_data
+                   );
    for(int zz=0;zz<(stream-last);zz++)
      AdPlug_LogWrite("%02X ",last[zz]);
    AdPlug_LogWrite("\n");

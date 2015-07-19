@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2003 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -132,7 +132,7 @@ void CxadratPlayer::xadplayer_update()
     memcpy(&event,&rat.tracks[rat.order[rat.order_pos]][rat.pattern_pos][i],sizeof(rat_event));
 #ifdef DEBUG
    AdPlug_LogWrite("order %02X, pattern %02X, row %02X, channel %02X, event %02X %02X %02X %02X %02X:\n",
-	         rat.order_pos, rat.order[rat.order_pos], rat.pattern_pos, i, event.note, event.instrument, event.volume, event.fx, event.fxp
+                 rat.order_pos, rat.order[rat.order_pos], rat.pattern_pos, i, event.note, event.instrument, event.volume, event.fx, event.fxp
            );
 #endif
 
@@ -163,27 +163,27 @@ void CxadratPlayer::xadplayer_update()
         opl_write(0xC0+i, rat.inst[ins].connect);
 
         // controls
-		opl_write(0x20+rat_adlib_bases[i], rat.inst[ins].mod_ctrl);
+                opl_write(0x20+rat_adlib_bases[i], rat.inst[ins].mod_ctrl);
         opl_write(0x20+rat_adlib_bases[i+9], rat.inst[ins].car_ctrl);
 
         // volumes
-		opl_write(0x40+rat_adlib_bases[i], __rat_calc_volume(rat.inst[ins].mod_volume,rat.channel[i].volume,rat.volume));
+                opl_write(0x40+rat_adlib_bases[i], __rat_calc_volume(rat.inst[ins].mod_volume,rat.channel[i].volume,rat.volume));
         opl_write(0x40+rat_adlib_bases[i+9], __rat_calc_volume(rat.inst[ins].car_volume,rat.channel[i].volume,rat.volume));
 
         // attack/decay
-		opl_write(0x60+rat_adlib_bases[i], rat.inst[ins].mod_AD);
+                opl_write(0x60+rat_adlib_bases[i], rat.inst[ins].mod_AD);
         opl_write(0x60+rat_adlib_bases[i+9], rat.inst[ins].car_AD);
 
         // sustain/release
-		opl_write(0x80+rat_adlib_bases[i], rat.inst[ins].mod_SR);
+                opl_write(0x80+rat_adlib_bases[i], rat.inst[ins].mod_SR);
         opl_write(0x80+rat_adlib_bases[i+9], rat.inst[ins].car_SR);
 
         // waveforms
-		opl_write(0xE0+rat_adlib_bases[i], rat.inst[ins].mod_wave);
+                opl_write(0xE0+rat_adlib_bases[i], rat.inst[ins].mod_wave);
         opl_write(0xE0+rat_adlib_bases[i+9], rat.inst[ins].car_wave);
 
         // octave/frequency
-	unsigned short insfreq = (rat.inst[ins].freq[1] << 8) + rat.inst[ins].freq[0];
+        unsigned short insfreq = (rat.inst[ins].freq[1] << 8) + rat.inst[ins].freq[0];
         unsigned short freq = insfreq * rat_notes[event.note & 0x0F] / 0x20AB;
 
         opl_write(0xA0+i, freq & 0xFF);

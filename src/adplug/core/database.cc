@@ -1,17 +1,17 @@
 /*
  * AdPlug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (c) 1999 - 2006 Simon Peter <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -27,11 +27,11 @@
 
 #include "database.h"
 
-#define DB_FILEID_V10	"AdPlug Module Information Database 1.0\x10"
+#define DB_FILEID_V10   "AdPlug Module Information Database 1.0\x10"
 
 /***** CAdPlugDatabase *****/
 
-const unsigned short CAdPlugDatabase::hash_radix = 0xfff1;	// should be prime
+const unsigned short CAdPlugDatabase::hash_radix = 0xfff1;      // should be prime
 
 CAdPlugDatabase::CAdPlugDatabase()
   : linear_index(0), linear_logic_length(0), linear_length(0)
@@ -147,9 +147,9 @@ bool CAdPlugDatabase::insert(CRecord *record)
   long index;
 
   // sanity checks
-  if(!record) return false;			// null-pointer given
-  if(linear_length == hash_radix) return false;	// max. db size exceeded
-  if(lookup(record->key)) return false;		// record already in db
+  if(!record) return false;                     // null-pointer given
+  if(linear_length == hash_radix) return false; // max. db size exceeded
+  if(lookup(record->key)) return false;         // record already in db
 
   // make bucket
   DB_Bucket *bucket = new DB_Bucket(linear_length, record);
@@ -162,9 +162,9 @@ bool CAdPlugDatabase::insert(CRecord *record)
   // add to hashed list
   index = make_hash(record->key);
 
-  if(!db_hashed[index])	// First entry in hashtable
+  if(!db_hashed[index]) // First entry in hashtable
     db_hashed[index] = bucket;
-  else {		// Add entry in chained list
+  else {                // Add entry in chained list
     DB_Bucket *chain = db_hashed[index];
 
     while(chain->chain) chain = chain->chain;
@@ -216,7 +216,7 @@ bool CAdPlugDatabase::go_backward()
 }
 
 void CAdPlugDatabase::goto_begin()
-{	
+{
   if(linear_length) linear_index = 0;
 }
 
@@ -256,9 +256,9 @@ CAdPlugDatabase::CRecord *CAdPlugDatabase::CRecord::factory(RecordType type)
 
 CAdPlugDatabase::CRecord *CAdPlugDatabase::CRecord::factory(binistream &in)
 {
-  RecordType	type;
-  unsigned long	size;
-  CRecord	*rec;
+  RecordType    type;
+  unsigned long size;
+  CRecord       *rec;
 
   type = (RecordType)in.readInt(1); size = in.readInt(4);
   rec = factory(type);
@@ -333,19 +333,19 @@ void CAdPlugDatabase::CKey::make(binistream &buf)
       unsigned char byte = buf.readInt(1);
 
       for (int j=0;j<8;j++)
-	{
-	  if ((crc16 ^ byte) & 1)
-	    crc16 = (crc16 >> 1) ^ magic16;
-	  else
-	    crc16 >>= 1;
+        {
+          if ((crc16 ^ byte) & 1)
+            crc16 = (crc16 >> 1) ^ magic16;
+          else
+            crc16 >>= 1;
 
-	  if ((crc32 ^ byte) & 1)
-	    crc32 = (crc32 >> 1) ^ magic32;
-	  else
-	    crc32 >>= 1;
+          if ((crc32 ^ byte) & 1)
+            crc32 = (crc32 >> 1) ^ magic32;
+          else
+            crc32 >>= 1;
 
-	  byte >>= 1;
-	}
+          byte >>= 1;
+        }
     }
 
   crc16 &= 0xffff;

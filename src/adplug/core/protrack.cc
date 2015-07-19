@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -29,8 +29,8 @@
 #include "protrack.h"
 #include "debug.h"
 
-#define SPECIALARPLEN	256	// Standard length of special arpeggio lists
-#define JUMPMARKER	0x80	// Orderlist jump marker
+#define SPECIALARPLEN   256     // Standard length of special arpeggio lists
+#define JUMPMARKER      0x80    // Orderlist jump marker
 
 // SA2 compatible adlib note table
 const unsigned short CmodPlayer::sa2_notetable[12] =
@@ -60,53 +60,53 @@ CmodPlayer::~CmodPlayer()
 
 bool CmodPlayer::update()
 {
-  unsigned char		pattbreak=0, donote, pattnr, chan, oplchan, info1,
+  unsigned char         pattbreak=0, donote, pattnr, chan, oplchan, info1,
     info2, info, pattern_delay;
-  unsigned short	track;
-  unsigned long		row;
+  unsigned short        track;
+  unsigned long         row;
 
-  if(!speed)		// song full stop
+  if(!speed)            // song full stop
     return !songend;
 
   // effect handling (timer dependant)
   for(chan = 0; chan < nchans; chan++) {
     oplchan = set_opl_chip(chan);
 
-    if(arplist && arpcmd && inst[channel[chan].inst].arpstart) {	// special arpeggio
+    if(arplist && arpcmd && inst[channel[chan].inst].arpstart) {        // special arpeggio
       if(channel[chan].arpspdcnt)
-	channel[chan].arpspdcnt--;
+        channel[chan].arpspdcnt--;
       else
-	if(arpcmd[channel[chan].arppos] != 255) {
-	  switch(arpcmd[channel[chan].arppos]) {
-	  case 252: channel[chan].vol1 = arplist[channel[chan].arppos];	// set volume
-	    if(channel[chan].vol1 > 63)	// ?????
-	      channel[chan].vol1 = 63;
-	    channel[chan].vol2 = channel[chan].vol1;
-	    setvolume(chan);
-	    break;
-	  case 253: channel[chan].key = 0; setfreq(chan); break;	// release sustaining note
-	  case 254: channel[chan].arppos = arplist[channel[chan].arppos]; break; // arpeggio loop
-	  default: if(arpcmd[channel[chan].arppos]) {
-	    if(arpcmd[channel[chan].arppos] / 10)
-	      opl->write(0xe3 + op_table[oplchan], arpcmd[channel[chan].arppos] / 10 - 1);
-	    if(arpcmd[channel[chan].arppos] % 10)
-	      opl->write(0xe0 + op_table[oplchan], (arpcmd[channel[chan].arppos] % 10) - 1);
-	    if(arpcmd[channel[chan].arppos] < 10)	// ?????
-	      opl->write(0xe0 + op_table[oplchan], arpcmd[channel[chan].arppos] - 1);
-	  }
-	  }
-	  if(arpcmd[channel[chan].arppos] != 252) {
-	    if(arplist[channel[chan].arppos] <= 96)
-	      setnote(chan,channel[chan].note + arplist[channel[chan].arppos]);
-	    if(arplist[channel[chan].arppos] >= 100)
-	      setnote(chan,arplist[channel[chan].arppos] - 100);
-	  } else
-	    setnote(chan,channel[chan].note);
-	  setfreq(chan);
-	  if(arpcmd[channel[chan].arppos] != 255)
-	    channel[chan].arppos++;
-	  channel[chan].arpspdcnt = inst[channel[chan].inst].arpspeed - 1;
-	}
+        if(arpcmd[channel[chan].arppos] != 255) {
+          switch(arpcmd[channel[chan].arppos]) {
+          case 252: channel[chan].vol1 = arplist[channel[chan].arppos]; // set volume
+            if(channel[chan].vol1 > 63) // ?????
+              channel[chan].vol1 = 63;
+            channel[chan].vol2 = channel[chan].vol1;
+            setvolume(chan);
+            break;
+          case 253: channel[chan].key = 0; setfreq(chan); break;        // release sustaining note
+          case 254: channel[chan].arppos = arplist[channel[chan].arppos]; break; // arpeggio loop
+          default: if(arpcmd[channel[chan].arppos]) {
+            if(arpcmd[channel[chan].arppos] / 10)
+              opl->write(0xe3 + op_table[oplchan], arpcmd[channel[chan].arppos] / 10 - 1);
+            if(arpcmd[channel[chan].arppos] % 10)
+              opl->write(0xe0 + op_table[oplchan], (arpcmd[channel[chan].arppos] % 10) - 1);
+            if(arpcmd[channel[chan].arppos] < 10)       // ?????
+              opl->write(0xe0 + op_table[oplchan], arpcmd[channel[chan].arppos] - 1);
+          }
+          }
+          if(arpcmd[channel[chan].arppos] != 252) {
+            if(arplist[channel[chan].arppos] <= 96)
+              setnote(chan,channel[chan].note + arplist[channel[chan].arppos]);
+            if(arplist[channel[chan].arppos] >= 100)
+              setnote(chan,arplist[channel[chan].arppos] - 100);
+          } else
+            setnote(chan,channel[chan].note);
+          setfreq(chan);
+          if(arpcmd[channel[chan].arppos] != 255)
+            channel[chan].arppos++;
+          channel[chan].arpspdcnt = inst[channel[chan].inst].arpspeed - 1;
+        }
     }
 
     info1 = channel[chan].info1;
@@ -116,11 +116,11 @@ bool CmodPlayer::update()
     else
       info = (channel[chan].info1 << 4) + channel[chan].info2;
     switch(channel[chan].fx) {
-    case 0:	if(info) {	// arpeggio
+    case 0:     if(info) {      // arpeggio
       if(channel[chan].trigger < 2)
-	channel[chan].trigger++;
+        channel[chan].trigger++;
       else
-	channel[chan].trigger = 0;
+        channel[chan].trigger = 0;
       switch(channel[chan].trigger) {
       case 0: setnote(chan,channel[chan].note); break;
       case 1: setnote(chan,channel[chan].note + info1); break;
@@ -129,62 +129,62 @@ bool CmodPlayer::update()
       setfreq(chan);
     }
       break;
-    case 1: slide_up(chan,info); setfreq(chan); break;	// slide up
-    case 2: slide_down(chan,info); setfreq(chan); break;	// slide down
-    case 3: tone_portamento(chan,channel[chan].portainfo); break;	// tone portamento
-    case 4: vibrato(chan,channel[chan].vibinfo1,channel[chan].vibinfo2); break;	// vibrato
-    case 5:	// tone portamento & volume slide
-    case 6: if(channel[chan].fx == 5)		// vibrato & volume slide
+    case 1: slide_up(chan,info); setfreq(chan); break;  // slide up
+    case 2: slide_down(chan,info); setfreq(chan); break;        // slide down
+    case 3: tone_portamento(chan,channel[chan].portainfo); break;       // tone portamento
+    case 4: vibrato(chan,channel[chan].vibinfo1,channel[chan].vibinfo2); break; // vibrato
+    case 5:     // tone portamento & volume slide
+    case 6: if(channel[chan].fx == 5)           // vibrato & volume slide
       tone_portamento(chan,channel[chan].portainfo);
     else
       vibrato(chan,channel[chan].vibinfo1,channel[chan].vibinfo2);
-    case 10: if(del % 4)	// SA2 volume slide
+    case 10: if(del % 4)        // SA2 volume slide
       break;
       if(info1)
-	vol_up(chan,info1);
+        vol_up(chan,info1);
       else
-	vol_down(chan,info2);
+        vol_down(chan,info2);
       setvolume(chan);
       break;
-    case 14: if(info1 == 3)	// retrig note
+    case 14: if(info1 == 3)     // retrig note
       if(!(del % (info2+1)))
-	playnote(chan);
+        playnote(chan);
       break;
-    case 16: if(del % 4)	// AMD volume slide
+    case 16: if(del % 4)        // AMD volume slide
       break;
       if(info1)
-	vol_up_alt(chan,info1);
+        vol_up_alt(chan,info1);
       else
-	vol_down_alt(chan,info2);
+        vol_down_alt(chan,info2);
       setvolume(chan);
       break;
-    case 20:			// RAD volume slide
+    case 20:                    // RAD volume slide
       if(info < 50)
-	vol_down_alt(chan,info);
+        vol_down_alt(chan,info);
       else
-	vol_up_alt(chan,info - 50);
+        vol_up_alt(chan,info - 50);
       setvolume(chan);
       break;
-    case 26: 			// volume slide
+    case 26:                    // volume slide
       if(info1)
-	vol_up(chan,info1);
+        vol_up(chan,info1);
       else
-	vol_down(chan,info2);
+        vol_down(chan,info2);
       setvolume(chan);
       break;
     case 28:
       if (info1) {
-	slide_up(chan,1); channel[chan].info1--;
+        slide_up(chan,1); channel[chan].info1--;
       }
       if (info2) {
-	slide_down(chan,1); channel[chan].info2--;
+        slide_down(chan,1); channel[chan].info2--;
       }
       setfreq(chan);
       break;
     }
   }
 
-  if(del) {		// speed compensation
+  if(del) {             // speed compensation
     del--;
     return !songend;
   }
@@ -202,39 +202,39 @@ bool CmodPlayer::update()
   for(chan = 0; chan < nchans; chan++) {
     oplchan = set_opl_chip(chan);
 
-    if(!(activechan >> (31 - chan)) & 1) {	// channel active?
+    if(!(activechan >> (31 - chan)) & 1) {      // channel active?
       AdPlug_LogWrite("N/A|");
       continue;
     }
-    if(!(track = trackord[pattnr][chan])) {	// resolve track
+    if(!(track = trackord[pattnr][chan])) {     // resolve track
       AdPlug_LogWrite("------------|");
       continue;
     } else
       track--;
 
     AdPlug_LogWrite("%3d%3d%2X%2X%2X|", tracks[track][row].note,
-		    tracks[track][row].inst, tracks[track][row].command,
-		    tracks[track][row].param1, tracks[track][row].param2);
+                    tracks[track][row].inst, tracks[track][row].command,
+                    tracks[track][row].param1, tracks[track][row].param2);
 
     donote = 0;
     if(tracks[track][row].inst) {
       channel[chan].inst = tracks[track][row].inst - 1;
       if (!(flags & Faust)) {
-	channel[chan].vol1 = 63 - (inst[channel[chan].inst].data[10] & 63);
-	channel[chan].vol2 = 63 - (inst[channel[chan].inst].data[9] & 63);
-	setvolume(chan);
+        channel[chan].vol1 = 63 - (inst[channel[chan].inst].data[10] & 63);
+        channel[chan].vol2 = 63 - (inst[channel[chan].inst].data[9] & 63);
+        setvolume(chan);
       }
     }
 
-    if(tracks[track][row].note && tracks[track][row].command != 3) {	// no tone portamento
+    if(tracks[track][row].note && tracks[track][row].command != 3) {    // no tone portamento
       channel[chan].note = tracks[track][row].note;
       setnote(chan,tracks[track][row].note);
       channel[chan].nextfreq = channel[chan].freq;
       channel[chan].nextoct = channel[chan].oct;
       channel[chan].arppos = inst[channel[chan].inst].arpstart;
       channel[chan].arpspdcnt = 0;
-      if(tracks[track][row].note != 127)	// handle key off
-	donote = 1;
+      if(tracks[track][row].note != 127)        // handle key off
+        donote = 1;
     }
     channel[chan].fx = tracks[track][row].command;
     channel[chan].info1 = tracks[track][row].param1;
@@ -253,39 +253,39 @@ bool CmodPlayer::update()
     switch(channel[chan].fx) {
     case 3: // tone portamento
       if(tracks[track][row].note) {
-	if(tracks[track][row].note < 13)
-	  channel[chan].nextfreq = notetable[tracks[track][row].note - 1];
-	else
-	  if(tracks[track][row].note % 12 > 0)
-	    channel[chan].nextfreq = notetable[(tracks[track][row].note % 12) - 1];
-	  else
-	    channel[chan].nextfreq = notetable[11];
-	channel[chan].nextoct = (tracks[track][row].note - 1) / 12;
-	if(tracks[track][row].note == 127) {	// handle key off
-	  channel[chan].nextfreq = channel[chan].freq;
-	  channel[chan].nextoct = channel[chan].oct;
-	}
+        if(tracks[track][row].note < 13)
+          channel[chan].nextfreq = notetable[tracks[track][row].note - 1];
+        else
+          if(tracks[track][row].note % 12 > 0)
+            channel[chan].nextfreq = notetable[(tracks[track][row].note % 12) - 1];
+          else
+            channel[chan].nextfreq = notetable[11];
+        channel[chan].nextoct = (tracks[track][row].note - 1) / 12;
+        if(tracks[track][row].note == 127) {    // handle key off
+          channel[chan].nextfreq = channel[chan].freq;
+          channel[chan].nextoct = channel[chan].oct;
+        }
       }
-      if(info)	// remember vars
-	channel[chan].portainfo = info;
+      if(info)  // remember vars
+        channel[chan].portainfo = info;
       break;
 
     case 4: // vibrato (remember vars)
       if(info) {
-	channel[chan].vibinfo1 = info1;
-	channel[chan].vibinfo2 = info2;
+        channel[chan].vibinfo1 = info1;
+        channel[chan].vibinfo2 = info2;
       }
       break;
 
-    case 7: tempo = info; break;	// set tempo
+    case 7: tempo = info; break;        // set tempo
 
-    case 8: channel[chan].key = 0; setfreq(chan); break;	// release sustaining note
+    case 8: channel[chan].key = 0; setfreq(chan); break;        // release sustaining note
 
     case 9: // set carrier/modulator volume
       if(info1)
-	channel[chan].vol1 = info1 * 7;
+        channel[chan].vol1 = info1 * 7;
       else
-	channel[chan].vol2 = info2 * 7;
+        channel[chan].vol2 = info2 * 7;
       setvolume(chan);
       break;
 
@@ -296,9 +296,9 @@ bool CmodPlayer::update()
       channel[chan].vol1 = info;
       channel[chan].vol2 = info;
       if(channel[chan].vol1 > 63)
-	channel[chan].vol1 = 63;
+        channel[chan].vol1 = 63;
       if(channel[chan].vol2 > 63)
-	channel[chan].vol2 = 63;
+        channel[chan].vol2 = 63;
       setvolume(chan);
       break;
 
@@ -308,64 +308,64 @@ bool CmodPlayer::update()
     case 14: // extended command
       switch(info1) {
       case 0: // define cell-tremolo
-	if(info2)
-	  regbd |= 128;
-	else
-	  regbd &= 127;
-	opl->write(0xbd,regbd);
-	break;
+        if(info2)
+          regbd |= 128;
+        else
+          regbd &= 127;
+        opl->write(0xbd,regbd);
+        break;
 
       case 1: // define cell-vibrato
-	if(info2)
-	  regbd |= 64;
-	else
-	  regbd &= 191;
-	opl->write(0xbd,regbd);
-	break;
+        if(info2)
+          regbd |= 64;
+        else
+          regbd &= 191;
+        opl->write(0xbd,regbd);
+        break;
 
       case 4: // increase volume fine
-	vol_up_alt(chan,info2);
-	setvolume(chan);
-	break;
+        vol_up_alt(chan,info2);
+        setvolume(chan);
+        break;
 
       case 5: // decrease volume fine
-	vol_down_alt(chan,info2);
-	setvolume(chan);
-	break;
+        vol_down_alt(chan,info2);
+        setvolume(chan);
+        break;
 
       case 6: // manual slide up
-	slide_up(chan,info2);
-	setfreq(chan);
-	break;
+        slide_up(chan,info2);
+        setfreq(chan);
+        break;
 
       case 7: // manual slide down
-	slide_down(chan,info2);
-	setfreq(chan);
-	break;
+        slide_down(chan,info2);
+        setfreq(chan);
+        break;
 
       case 8: // pattern delay (rows)
-	pattern_delay = info2 * speed;
-	break;
+        pattern_delay = info2 * speed;
+        break;
       }
       break;
 
     case 15: // SA2 set speed
       if(info <= 0x1f)
-	speed = info;
+        speed = info;
       if(info >= 0x32)
-	tempo = info;
+        tempo = info;
       if(!info)
-	songend = 1;
+        songend = 1;
       break;
 
     case 17: // alternate set volume
       channel[chan].vol1 = info;
       if(channel[chan].vol1 > 63)
-	channel[chan].vol1 = 63;
+        channel[chan].vol1 = 63;
       if(inst[channel[chan].inst].data[0] & 1) {
-	channel[chan].vol2 = info;
-	if(channel[chan].vol2 > 63)
-	  channel[chan].vol2 = 63;
+        channel[chan].vol2 = info;
+        if(channel[chan].vol2 > 63)
+          channel[chan].vol2 = 63;
       }
 
       setvolume(chan);
@@ -373,9 +373,9 @@ bool CmodPlayer::update()
 
     case 18: // AMD set speed
       if(info <= 31 && info > 0)
-	speed = info;
+        speed = info;
       if(info > 31 || !info)
-	tempo = info;
+        tempo = info;
       break;
 
     case 19: // RAD/A2M set speed
@@ -384,17 +384,17 @@ bool CmodPlayer::update()
 
     case 21: // set modulator volume
       if(info <= 63)
-	channel[chan].vol2 = info;
+        channel[chan].vol2 = info;
       else
-	channel[chan].vol2 = 63;
+        channel[chan].vol2 = 63;
       setvolume(chan);
       break;
 
     case 22: // set carrier volume
       if(info <= 63)
-	channel[chan].vol1 = info;
+        channel[chan].vol1 = info;
       else
-	channel[chan].vol1 = 63;
+        channel[chan].vol1 = 63;
       setvolume(chan);
       break;
 
@@ -410,20 +410,20 @@ bool CmodPlayer::update()
 
     case 25: // set carrier/modulator waveform
       if(info1 != 0x0f)
-	opl->write(0xe3 + op_table[oplchan],info1);
+        opl->write(0xe3 + op_table[oplchan],info1);
       if(info2 != 0x0f)
-	opl->write(0xe0 + op_table[oplchan],info2);
+        opl->write(0xe0 + op_table[oplchan],info2);
       break;
 
     case 27: // set chip tremolo/vibrato
       if(info1)
-	regbd |= 128;
+        regbd |= 128;
       else
-	regbd &= 127;
+        regbd &= 127;
       if(info2)
-	regbd |= 64;
+        regbd |= 64;
       else
-	regbd &= 191;
+        regbd &= 191;
       opl->write(0xbd,regbd);
       break;
 
@@ -436,7 +436,7 @@ bool CmodPlayer::update()
   // speed compensation
   del = speed - 1 + pattern_delay;
 
-  if(!pattbreak) {	// next row (only if no manual advance)
+  if(!pattbreak) {      // next row (only if no manual advance)
     rw++;
     if(rw >= nrows) {
       rw = 0;
@@ -444,7 +444,7 @@ bool CmodPlayer::update()
     }
   }
 
-  resolve_order();	// so we can report songend right away
+  resolve_order();      // so we can report songend right away
   AdPlug_LogWrite("\n");
   return !songend;
 }
@@ -475,7 +475,7 @@ bool CmodPlayer::resolve_order()
    */
 {
   if(ord < length) {
-    while(order[ord] >= JUMPMARKER) {	// jump to order
+    while(order[ord] >= JUMPMARKER) {   // jump to order
       unsigned long neword = order[ord] - JUMPMARKER;
 
       if(neword <= ord) songend = 1;
@@ -506,8 +506,8 @@ void CmodPlayer::rewind(int subsong)
     for(i=0;i<length;i++)
       nop = (order[i] > nop ? order[i] : nop);
 
-  opl->init();		// Reset OPL chip
-  opl->write(1, 32);	// Go to ym3812 mode
+  opl->init();          // Reset OPL chip
+  opl->write(1, 32);    // Go to ym3812 mode
 
   // Enable OPL3 extensions if flagged
   if(flags & Opl3) {
@@ -599,7 +599,7 @@ bool CmodPlayer::realloc_instruments(unsigned long len)
   if(inst) delete [] inst;
 
   inst = new Instrument[len];
-  memset(inst,0,sizeof(Instrument)*len);	// reset instruments
+  memset(inst,0,sizeof(Instrument)*len);        // reset instruments
   return true;
 }
 
@@ -653,7 +653,7 @@ void CmodPlayer::playnote(unsigned char chan)
   unsigned char op = op_table[oplchan], insnr = channel[chan].inst;
 
   if(!(flags & NoKeyOn))
-    opl->write(0xb0 + oplchan, 0);	// stop old note
+    opl->write(0xb0 + oplchan, 0);      // stop old note
 
   // set instrument data
   opl->write(0x20 + op, inst[insnr].data[1]);
@@ -665,7 +665,7 @@ void CmodPlayer::playnote(unsigned char chan)
   opl->write(0xe0 + op, inst[insnr].data[7]);
   opl->write(0xe3 + op, inst[insnr].data[8]);
   opl->write(0xc0 + oplchan, inst[insnr].data[0]);
-  opl->write(0xbd, inst[insnr].misc);	// set misc. register
+  opl->write(0xbd, inst[insnr].misc);   // set misc. register
 
   // set frequency, volume & play
   channel[chan].key = 1;
@@ -681,7 +681,7 @@ void CmodPlayer::playnote(unsigned char chan)
 void CmodPlayer::setnote(unsigned char chan, int note)
 {
   if(note > 96) {
-    if(note == 127) {	// key off
+    if(note == 127) {   // key off
       channel[chan].key = 0;
       setfreq(chan);
       return;
@@ -697,7 +697,7 @@ void CmodPlayer::setnote(unsigned char chan, int note)
     else
       channel[chan].freq = notetable[11];
   channel[chan].oct = (note - 1) / 12;
-  channel[chan].freq += inst[channel[chan].inst].slide;	// apply pre-slide
+  channel[chan].freq += inst[channel[chan].inst].slide; // apply pre-slide
 }
 
 void CmodPlayer::slide_down(unsigned char chan, int amount)

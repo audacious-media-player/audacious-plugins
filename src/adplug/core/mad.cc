@@ -60,18 +60,18 @@ bool CmadLoader::load(const std::string &filename, const CFileProvider &fp)
   for(i = 0; i < nop; i++)
     for(k = 0; k < 32; k++)
       for(j = 0; j < 9; j++) {
-	t = i * 9 + j;
+        t = i * 9 + j;
 
-	// read event
-	unsigned char event = f->readInt(1);
+        // read event
+        unsigned char event = f->readInt(1);
 
-	// convert event
-	if (event < 0x61)
-	  tracks[t][k].note = event;
-	if (event == 0xFF) // 0xFF: Release note
-	  tracks[t][k].command = 8;
-	if (event == 0xFE) // 0xFE: Pattern Break
-	  tracks[t][k].command = 13;
+        // convert event
+        if (event < 0x61)
+          tracks[t][k].note = event;
+        if (event == 0xFF) // 0xFF: Release note
+          tracks[t][k].command = 8;
+        if (event == 0xFE) // 0xFE: Pattern Break
+          tracks[t][k].command = 13;
       }
 
   // load order
@@ -94,34 +94,34 @@ bool CmadLoader::load(const std::string &filename, const CFileProvider &fp)
 
 void CmadLoader::rewind(int subsong)
 {
-	CmodPlayer::rewind(subsong);
+        CmodPlayer::rewind(subsong);
 
-	// default instruments
-	for (int i=0;i<9;i++)
-	{
-		channel[i].inst = i;
+        // default instruments
+        for (int i=0;i<9;i++)
+        {
+                channel[i].inst = i;
 
-		channel[i].vol1 = 63 - (inst[i].data[10] & 63);
-		channel[i].vol2 = 63 - (inst[i].data[9] & 63);
-	}
+                channel[i].vol1 = 63 - (inst[i].data[10] & 63);
+                channel[i].vol2 = 63 - (inst[i].data[9] & 63);
+        }
 }
 
 float CmadLoader::getrefresh()
 {
-	return (float)timer;
+        return (float)timer;
 }
 
 std::string CmadLoader::gettype()
 {
-	return std::string("Mlat Adlib Tracker");
+        return std::string("Mlat Adlib Tracker");
 }
 
 std::string CmadLoader::getinstrument(unsigned int n)
 {
-	return std::string(instruments[n].name,8);
+        return std::string(instruments[n].name,8);
 }
 
 unsigned int CmadLoader::getinstruments()
 {
-	return 9;
+        return 9;
 }

@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2006 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -61,16 +61,16 @@ bool CmtkLoader::load(const std::string &filename, const CFileProvider &fp)
   for(i = 0; i < cmpsize; i++) cmp[i] = f->readInt(1);
   fp.close(f);
 
-  while(cmpptr < cmpsize) {	// decompress
+  while(cmpptr < cmpsize) {     // decompress
     ctrlmask >>= 1;
     if(!ctrlmask) {
       ctrlbits = cmp[cmpptr] + (cmp[cmpptr + 1] << 8);
       cmpptr += 2;
       ctrlmask = 0x8000;
     }
-    if(!(ctrlbits & ctrlmask)) {	// uncompressed data
+    if(!(ctrlbits & ctrlmask)) {        // uncompressed data
       if(orgptr >= header.size)
-	goto err;
+        goto err;
 
       org[orgptr] = cmp[cmpptr];
       orgptr++; cmpptr++;
@@ -124,10 +124,10 @@ bool CmtkLoader::load(const std::string &filename, const CFileProvider &fp)
   memcpy(instr,data->insts,0x80 * 12);
   memcpy(song,data->order,0x80);
   memcpy(patterns,data->patterns,header.size-6084);
-  for (i=0;i<128;i++) {				// correct instruments
+  for (i=0;i<128;i++) {                         // correct instruments
     instr[i][2] ^= (instr[i][2] & 0x40) << 1;
     instr[i][3] ^= (instr[i][3] & 0x40) << 1;
-    instr[i][11] >>= 4;		// make unsigned
+    instr[i][11] >>= 4;         // make unsigned
   }
 
   delete [] org;

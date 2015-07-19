@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2007 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -48,13 +48,13 @@ public:
 
 private:
 
-#define ADPLUG_A2M_COPYRANGES		6
-#define ADPLUG_A2M_FIRSTCODE		257
-#define ADPLUG_A2M_MINCOPY		3
-#define ADPLUG_A2M_MAXCOPY		255
-#define ADPLUG_A2M_CODESPERRANGE	(ADPLUG_A2M_MAXCOPY - ADPLUG_A2M_MINCOPY + 1)
-#define ADPLUG_A2M_MAXCHAR		(ADPLUG_A2M_FIRSTCODE + ADPLUG_A2M_COPYRANGES * ADPLUG_A2M_CODESPERRANGE - 1)
-#define ADPLUG_A2M_TWICEMAX		(2 * ADPLUG_A2M_MAXCHAR + 1)
+#define ADPLUG_A2M_COPYRANGES           6
+#define ADPLUG_A2M_FIRSTCODE            257
+#define ADPLUG_A2M_MINCOPY              3
+#define ADPLUG_A2M_MAXCOPY              255
+#define ADPLUG_A2M_CODESPERRANGE        (ADPLUG_A2M_MAXCOPY - ADPLUG_A2M_MINCOPY + 1)
+#define ADPLUG_A2M_MAXCHAR              (ADPLUG_A2M_FIRSTCODE + ADPLUG_A2M_COPYRANGES * ADPLUG_A2M_CODESPERRANGE - 1)
+#define ADPLUG_A2M_TWICEMAX             (2 * ADPLUG_A2M_MAXCHAR + 1)
 
   static const unsigned int MAXFREQ, MINCOPY, MAXCOPY, COPYRANGES,
     CODESPERRANGE, TERMINATE, FIRSTCODE, MAXCHAR, SUCCMAX, TWICEMAX, ROOT,

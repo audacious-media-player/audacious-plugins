@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2006 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -41,8 +41,8 @@ float const CrolPlayer::kPitchFactor         = 400.0f;
 
 static const unsigned char drum_table[4] = {0x14, 0x12, 0x15, 0x11};
 
-CrolPlayer::uint16 const CrolPlayer::kNoteTable[12] = 
-{ 
+CrolPlayer::uint16 const CrolPlayer::kNoteTable[12] =
+{
     340, // C
     363, // C#
     385, // D
@@ -80,7 +80,7 @@ CrolPlayer::CrolPlayer(Copl *newopl)
     memset(freqCache,   0, sizeof(freqCache) );
 
     for(n=0; n<11; n++)
-      pitchCache[n]=1.0f;    
+      pitchCache[n]=1.0f;
 }
 //---------------------------------------------------------
 CrolPlayer::~CrolPlayer()
@@ -104,7 +104,7 @@ bool CrolPlayer::load(const std::string &filename, const CFileProvider &fp)
     strcpy(fn,filename.data());
     for (i=strlen(fn)-1; i>=0; i--)
       if (fn[i] == '/' || fn[i] == '\\')
-	break;
+        break;
     strcpy(fn+i+1,"standard.bnk");
     bnk_filename = fn;
     delete [] fn;
@@ -119,7 +119,7 @@ bool CrolPlayer::load(const std::string &filename, const CFileProvider &fp)
     // Version check
     if(rol_header->version_major != 0 || rol_header->version_minor != 4) {
       AdPlug_LogWrite("Unsupported file version %d.%d or not a ROL file!\n",
-	       rol_header->version_major, rol_header->version_minor);
+               rol_header->version_major, rol_header->version_minor);
       AdPlug_LogWrite("--- CrolPlayer::load ---\n");
       fp.close(f);
       return false;
@@ -287,7 +287,7 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
         else
         {
             voiceData.mEventStatus |= CVoiceData::kES_VolumeEnd;
-        }        
+        }
     }
 
     if( voiceData.mForceNote || voiceData.current_note_duration > voiceData.mNoteDuration-1 )
@@ -400,7 +400,7 @@ void CrolPlayer::SetVolume( int const voice, int const volume )
 {
     volumeCache[voice] = (volumeCache[voice] &0xc0) | volume;
 
-    int const op_offset = ( voice < kSnareDrumChannel || rol_header->mode ) ? 
+    int const op_offset = ( voice < kSnareDrumChannel || rol_header->mode ) ?
                           op_table[voice]+3 : drum_table[voice-kSnareDrumChannel];
 
     opl->write( 0x40+op_offset, volumeCache[voice] );
@@ -547,7 +547,7 @@ void CrolPlayer::load_instrument_events( binistream *f, CVoiceData &voice,
         event.time = f->readInt( 2 );
         f->readString( event.name, 9 );
 
-	    std::string event_name = event.name;
+            std::string event_name = event.name;
         event.ins_index = load_rol_instrument( bnk_file, bnk_header, event_name );
 
         instrument_events.push_back( event );
@@ -645,9 +645,9 @@ int CrolPlayer::load_rol_instrument( binistream *f, SBnkHeader const &header, st
     typedef TInstrumentNames::const_iterator TInsIter;
     typedef std::pair<TInsIter, TInsIter>    TInsIterPair;
 
-    TInsIterPair range = std::equal_range( ins_name_list.begin(), 
-                                           ins_name_list.end(), 
-                                           name, 
+    TInsIterPair range = std::equal_range( ins_name_list.begin(),
+                                           ins_name_list.end(),
+                                           name,
                                            StringCompare() );
 
     if( range.first != range.second )

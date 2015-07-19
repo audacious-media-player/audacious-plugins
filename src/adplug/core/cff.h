@@ -28,14 +28,14 @@ class CcffLoader: public CmodPlayer
 
   CcffLoader(Copl *newopl) : CmodPlayer(newopl) { };
 
-  bool	load(const std::string &filename, const CFileProvider &fp);
-  void	rewind(int subsong);
+  bool  load(const std::string &filename, const CFileProvider &fp);
+  void  rewind(int subsong);
 
-  std::string		gettype();
-  std::string		gettitle();
-  std::string		getauthor();
-  std::string		getinstrument(unsigned int n);
-  unsigned int	getinstruments();
+  std::string           gettype();
+  std::string           gettitle();
+  std::string           getauthor();
+  std::string           getinstrument(unsigned int n);
+  unsigned int  getinstruments();
 
  private:
 
@@ -78,26 +78,26 @@ class CcffLoader: public CmodPlayer
 
   struct cff_header
   {
-    char	id[16];
-    unsigned char	version;
-    unsigned short	size;
-    unsigned char	packed;
-    unsigned char	reserved[12];
+    char        id[16];
+    unsigned char       version;
+    unsigned short      size;
+    unsigned char       packed;
+    unsigned char       reserved[12];
   } header;
 
   struct cff_instrument
   {
-    unsigned char	data[12];
-    char		name[21];
+    unsigned char       data[12];
+    char                name[21];
   } instruments[47];
 
-  char	song_title[20];
-  char	song_author[20];
+  char  song_title[20];
+  char  song_author[20];
 
   struct cff_event
   {
-    unsigned char	byte0;
-    unsigned char	byte1;
-    unsigned char	byte2;
+    unsigned char       byte0;
+    unsigned char       byte1;
+    unsigned char       byte2;
   };
 };

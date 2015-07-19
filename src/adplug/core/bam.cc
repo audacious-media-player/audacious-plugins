@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2003 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -28,16 +28,16 @@
  * Using just one loop counter for each label, my player can't
  * handle files that loop twice to the same label (if that's at
  * all possible with BAM). Imagine the following situation:
- * 
+ *
  * ... [*] ---- [<- *] ---- [<- *] ...
  *  ^   ^    ^     ^     ^     ^    ^
  *  |   |    |     |     |     |    |
  *  +---|----+-----|-----+-----|----+--- normal song data
  *      +----------|-----------|-------- label 1
  *                 +-----------+-------- loop points to label 1
- * 
- * both loop points loop to the same label. Storing the loop 
- * count with the label would cause chaos with the counter, 
+ *
+ * both loop points loop to the same label. Storing the loop
+ * count with the label would cause chaos with the counter,
  * when the player executes the inner jump.
  * ------------------
  * Not to worry. my reference implementation of BAM does not
@@ -68,136 +68,136 @@ CPlayer *CbamPlayer::factory(Copl *newopl)
 bool CbamPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
         binistream *f = fp.open(filename); if(!f) return false;
-	char id[4];
-	unsigned int i;
+        char id[4];
+        unsigned int i;
 
-	size = fp.filesize(f) - 4;	// filesize minus header
-	f->readString(id, 4);
-	if(strncmp(id,"CBMF",4)) { fp.close(f); return false; }
+        size = fp.filesize(f) - 4;      // filesize minus header
+        f->readString(id, 4);
+        if(strncmp(id,"CBMF",4)) { fp.close(f); return false; }
 
-	song = new unsigned char [size];
-	for(i = 0; i < size; i++) song[i] = f->readInt(1);
+        song = new unsigned char [size];
+        for(i = 0; i < size; i++) song[i] = f->readInt(1);
 
-	fp.close(f);
-	rewind(0);
-	return true;
+        fp.close(f);
+        rewind(0);
+        return true;
 }
 
 bool CbamPlayer::update()
 {
-	unsigned char	cmd,c;
+        unsigned char   cmd,c;
 
-	if(del) {
-		del--;
-		return !songend;
-	}
+        if(del) {
+                del--;
+                return !songend;
+        }
 
-	if(pos >= size) {	// EOF detection
-		pos = 0;
-		songend = true;
-	}
+        if(pos >= size) {       // EOF detection
+                pos = 0;
+                songend = true;
+        }
 
-	while(song[pos] < 128) {
-		cmd = song[pos] & 240;
-		c = song[pos] & 15;
-		switch(cmd) {
-		case 0:		// stop song
-			pos = 0;
-			songend = true;
-			break;
-		case 16:	// start note
-			if(c < 9) {
-				opl->write(0xa0 + c, freq[song[++pos]] & 255);
-				opl->write(0xb0 + c, (freq[song[pos]] >> 8) + 32);
-			} else
-				pos++;
-			pos++;
-			break;
-		case 32:	// stop note
-			if(c < 9)
-				opl->write(0xb0 + c, 0);
-			pos++;
-			break;
-		case 48:	// define instrument
-			if(c < 9) {
-				opl->write(0x20 + op_table[c],song[pos+1]);
-				opl->write(0x23 + op_table[c],song[pos+2]);
-				opl->write(0x40 + op_table[c],song[pos+3]);
-				opl->write(0x43 + op_table[c],song[pos+4]);
-				opl->write(0x60 + op_table[c],song[pos+5]);
-				opl->write(0x63 + op_table[c],song[pos+6]);
-				opl->write(0x80 + op_table[c],song[pos+7]);
-				opl->write(0x83 + op_table[c],song[pos+8]);
-				opl->write(0xe0 + op_table[c],song[pos+9]);
-				opl->write(0xe3 + op_table[c],song[pos+10]);
-				opl->write(0xc0 + c,song[pos+11]);
-			}
-			pos += 12;
-			break;
-		case 80:	// set label
-			label[c].target = ++pos;
-			label[c].defined = true;
-			break;
-		case 96:	// jump
-			if(label[c].defined)
-				switch(song[pos+1]) {
-				case 254:	// infinite loop
-					if(label[c].defined) {
-						pos = label[c].target;
-						songend = true;
-						break;
-					}
-					// fall through...
-				case 255:	// chorus
-					if(!chorus && label[c].defined) {
-						chorus = true;
-						gosub = pos + 2;
-						pos = label[c].target;
-						break;
-					}
-					// fall through...
-				case 0:		// end of loop
-					pos += 2;
-					break;
-				default:	// finite loop
-					if(!label[c].count) {	// loop elapsed
-						label[c].count = 255;
-						pos += 2;
-						break;
-					}
-					if(label[c].count < 255)	// loop defined
-						label[c].count--;
-					else						// loop undefined
-						label[c].count = song[pos+1] - 1;
-					pos = label[c].target;
-					break;
-				}
-			break;
-		case 112:	// end of chorus
-			if(chorus) {
-				pos = gosub;
-				chorus = false;
-			} else
-				pos++;
-			break;
-		default:	// reserved command (skip)
-			pos++;
-			break;
-		}
-	}
-	if(song[pos] >= 128) {		// wait
-		del = song[pos] - 127;
-		pos++;
-	}
-	return !songend;
+        while(song[pos] < 128) {
+                cmd = song[pos] & 240;
+                c = song[pos] & 15;
+                switch(cmd) {
+                case 0:         // stop song
+                        pos = 0;
+                        songend = true;
+                        break;
+                case 16:        // start note
+                        if(c < 9) {
+                                opl->write(0xa0 + c, freq[song[++pos]] & 255);
+                                opl->write(0xb0 + c, (freq[song[pos]] >> 8) + 32);
+                        } else
+                                pos++;
+                        pos++;
+                        break;
+                case 32:        // stop note
+                        if(c < 9)
+                                opl->write(0xb0 + c, 0);
+                        pos++;
+                        break;
+                case 48:        // define instrument
+                        if(c < 9) {
+                                opl->write(0x20 + op_table[c],song[pos+1]);
+                                opl->write(0x23 + op_table[c],song[pos+2]);
+                                opl->write(0x40 + op_table[c],song[pos+3]);
+                                opl->write(0x43 + op_table[c],song[pos+4]);
+                                opl->write(0x60 + op_table[c],song[pos+5]);
+                                opl->write(0x63 + op_table[c],song[pos+6]);
+                                opl->write(0x80 + op_table[c],song[pos+7]);
+                                opl->write(0x83 + op_table[c],song[pos+8]);
+                                opl->write(0xe0 + op_table[c],song[pos+9]);
+                                opl->write(0xe3 + op_table[c],song[pos+10]);
+                                opl->write(0xc0 + c,song[pos+11]);
+                        }
+                        pos += 12;
+                        break;
+                case 80:        // set label
+                        label[c].target = ++pos;
+                        label[c].defined = true;
+                        break;
+                case 96:        // jump
+                        if(label[c].defined)
+                                switch(song[pos+1]) {
+                                case 254:       // infinite loop
+                                        if(label[c].defined) {
+                                                pos = label[c].target;
+                                                songend = true;
+                                                break;
+                                        }
+                                        // fall through...
+                                case 255:       // chorus
+                                        if(!chorus && label[c].defined) {
+                                                chorus = true;
+                                                gosub = pos + 2;
+                                                pos = label[c].target;
+                                                break;
+                                        }
+                                        // fall through...
+                                case 0:         // end of loop
+                                        pos += 2;
+                                        break;
+                                default:        // finite loop
+                                        if(!label[c].count) {   // loop elapsed
+                                                label[c].count = 255;
+                                                pos += 2;
+                                                break;
+                                        }
+                                        if(label[c].count < 255)        // loop defined
+                                                label[c].count--;
+                                        else                                            // loop undefined
+                                                label[c].count = song[pos+1] - 1;
+                                        pos = label[c].target;
+                                        break;
+                                }
+                        break;
+                case 112:       // end of chorus
+                        if(chorus) {
+                                pos = gosub;
+                                chorus = false;
+                        } else
+                                pos++;
+                        break;
+                default:        // reserved command (skip)
+                        pos++;
+                        break;
+                }
+        }
+        if(song[pos] >= 128) {          // wait
+                del = song[pos] - 127;
+                pos++;
+        }
+        return !songend;
 }
 
 void CbamPlayer::rewind(int subsong)
 {
         int i;
 
-	pos = 0; songend = false; del = 0; gosub = 0; chorus = false;
-	memset(label, 0, sizeof(label)); label[0].defined = true;
-	for(i = 0; i < 16; i++) label[i].count = 255;	// 255 = undefined
-	opl->init(); opl->write(1,32);
+        pos = 0; songend = false; del = 0; gosub = 0; chorus = false;
+        memset(label, 0, sizeof(label)); label[0].defined = true;
+        for(i = 0; i < 16; i++) label[i].count = 255;   // 255 = undefined
+        opl->init(); opl->write(1,32);
 }

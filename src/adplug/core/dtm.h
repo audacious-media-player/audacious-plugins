@@ -28,9 +28,9 @@ class CdtmLoader: public CmodPlayer
 
   CdtmLoader(Copl *newopl) : CmodPlayer(newopl) { };
 
-  bool	load(const std::string &filename, const CFileProvider &fp);
-  void	rewind(int subsong);
-  float	getrefresh();
+  bool  load(const std::string &filename, const CFileProvider &fp);
+  void  rewind(int subsong);
+  float getrefresh();
 
   std::string     gettype();
   std::string     gettitle();
@@ -61,8 +61,8 @@ class CdtmLoader: public CmodPlayer
 
   struct dtm_event
   {
-    unsigned char	byte0;
-    unsigned char	byte1;
+    unsigned char       byte0;
+    unsigned char       byte1;
   };
 
   long unpack_pattern(unsigned char *ibuf, long ilen, unsigned char *obuf, long olen);

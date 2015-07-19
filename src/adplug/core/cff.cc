@@ -67,21 +67,21 @@ bool CcffLoader::load(const std::string &filename, const CFileProvider &fp)
       fp.close(f);
 
       if (!unpacker->unpack(packed_module,module))
-	{
-	  delete unpacker;
-	  delete packed_module;
-	  delete module;
-	  return false;
-	}
+        {
+          delete unpacker;
+          delete packed_module;
+          delete module;
+          return false;
+        }
 
       delete unpacker;
       delete packed_module;
 
       if (memcmp(&module[0x5E1],"CUD-FM-File - SEND A POSTCARD -",31))
-	{
-	  delete module;
-	  return false;
-	}
+        {
+          delete module;
+          return false;
+        }
     }
   else
     {
@@ -102,7 +102,7 @@ bool CcffLoader::load(const std::string &filename, const CFileProvider &fp)
       memcpy(&instruments[i],&module[i*32],sizeof(cff_instrument));
 
       for (j=0;j<11;j++)
-	inst[i].data[conv_inst[j]] = instruments[i].data[j];
+        inst[i].data[conv_inst[j]] = instruments[i].data[j];
 
       instruments[i].name[20] = 0;
     }
@@ -125,117 +125,117 @@ bool CcffLoader::load(const std::string &filename, const CFileProvider &fp)
       memset(old_event_byte2,0,9);
 
       for (j=0;j<9;j++)
-	{
-	  for (k=0;k<64;k++)
-	    {
-	      cff_event *event = (cff_event *)&module[0x669 + ((i*64+k)*9+j)*3];
+        {
+          for (k=0;k<64;k++)
+            {
+              cff_event *event = (cff_event *)&module[0x669 + ((i*64+k)*9+j)*3];
 
-	      // convert note
-	      if (event->byte0 == 0x6D)
-		tracks[t][k].note = 127;
-	      else
-		if (event->byte0)
-		  tracks[t][k].note = event->byte0;
+              // convert note
+              if (event->byte0 == 0x6D)
+                tracks[t][k].note = 127;
+              else
+                if (event->byte0)
+                  tracks[t][k].note = event->byte0;
 
-	      if (event->byte2)
-		old_event_byte2[j] = event->byte2;
+              if (event->byte2)
+                old_event_byte2[j] = event->byte2;
 
-	      // convert effect
-	      switch (event->byte1)
-		{
-		case 'I': // set instrument
-		  tracks[t][k].inst = event->byte2 + 1;
-		  tracks[t][k].param1 = tracks[t][k].param2 = 0;
-		  break;
+              // convert effect
+              switch (event->byte1)
+                {
+                case 'I': // set instrument
+                  tracks[t][k].inst = event->byte2 + 1;
+                  tracks[t][k].param1 = tracks[t][k].param2 = 0;
+                  break;
 
-		case 'H': // set tempo
-		  tracks[t][k].command = 7;
-		  if (event->byte2 < 16)
-		    {
-		      tracks[t][k].param1 = 0x07;
-		      tracks[t][k].param2 = 0x0D;
-		    }
-		  break;
+                case 'H': // set tempo
+                  tracks[t][k].command = 7;
+                  if (event->byte2 < 16)
+                    {
+                      tracks[t][k].param1 = 0x07;
+                      tracks[t][k].param2 = 0x0D;
+                    }
+                  break;
 
-		case 'A': // set speed
-		  tracks[t][k].command = 19;
-		  tracks[t][k].param1  = event->byte2 >> 4;
-		  tracks[t][k].param2  = event->byte2 & 15;
-		  break;
+                case 'A': // set speed
+                  tracks[t][k].command = 19;
+                  tracks[t][k].param1  = event->byte2 >> 4;
+                  tracks[t][k].param2  = event->byte2 & 15;
+                  break;
 
-		case 'L': // pattern break
-		  tracks[t][k].command = 13;
-		  tracks[t][k].param1  = event->byte2 >> 4;
-		  tracks[t][k].param2  = event->byte2 & 15;
-		  break;
+                case 'L': // pattern break
+                  tracks[t][k].command = 13;
+                  tracks[t][k].param1  = event->byte2 >> 4;
+                  tracks[t][k].param2  = event->byte2 & 15;
+                  break;
 
-		case 'K': // order jump
-		  tracks[t][k].command = 11;
-		  tracks[t][k].param1  = event->byte2 >> 4;
-		  tracks[t][k].param2  = event->byte2 & 15;
-		  break;
+                case 'K': // order jump
+                  tracks[t][k].command = 11;
+                  tracks[t][k].param1  = event->byte2 >> 4;
+                  tracks[t][k].param2  = event->byte2 & 15;
+                  break;
 
-		case 'M': // set vibrato/tremolo
-		  tracks[t][k].command = 27;
-		  tracks[t][k].param1  = event->byte2 >> 4;
-		  tracks[t][k].param2  = event->byte2 & 15;
-		  break;
+                case 'M': // set vibrato/tremolo
+                  tracks[t][k].command = 27;
+                  tracks[t][k].param1  = event->byte2 >> 4;
+                  tracks[t][k].param2  = event->byte2 & 15;
+                  break;
 
-		case 'C': // set modulator volume
-		  tracks[t][k].command = 21;
-		  tracks[t][k].param1 = (0x3F - event->byte2) >> 4;
-		  tracks[t][k].param2 = (0x3F - event->byte2) & 15;
-		  break;
+                case 'C': // set modulator volume
+                  tracks[t][k].command = 21;
+                  tracks[t][k].param1 = (0x3F - event->byte2) >> 4;
+                  tracks[t][k].param2 = (0x3F - event->byte2) & 15;
+                  break;
 
-		case 'G': // set carrier volume
-		  tracks[t][k].command = 22;
-		  tracks[t][k].param1 = (0x3F - event->byte2) >> 4;
-		  tracks[t][k].param2 = (0x3F - event->byte2) & 15;
-		  break;
+                case 'G': // set carrier volume
+                  tracks[t][k].command = 22;
+                  tracks[t][k].param1 = (0x3F - event->byte2) >> 4;
+                  tracks[t][k].param2 = (0x3F - event->byte2) & 15;
+                  break;
 
-		case 'B': // set carrier waveform
-		  tracks[t][k].command = 25;
-		  tracks[t][k].param1  = event->byte2;
-		  tracks[t][k].param2  = 0x0F;
-		  break;
+                case 'B': // set carrier waveform
+                  tracks[t][k].command = 25;
+                  tracks[t][k].param1  = event->byte2;
+                  tracks[t][k].param2  = 0x0F;
+                  break;
 
-		case 'E': // fine frequency slide down
-		  tracks[t][k].command = 24;
-		  tracks[t][k].param1  = old_event_byte2[j] >> 4;
-		  tracks[t][k].param2  = old_event_byte2[j] & 15;
-		  break;
+                case 'E': // fine frequency slide down
+                  tracks[t][k].command = 24;
+                  tracks[t][k].param1  = old_event_byte2[j] >> 4;
+                  tracks[t][k].param2  = old_event_byte2[j] & 15;
+                  break;
 
-		case 'F': // fine frequency slide up
-		  tracks[t][k].command = 23;
-		  tracks[t][k].param1  = old_event_byte2[j] >> 4;
-		  tracks[t][k].param2  = old_event_byte2[j] & 15;
-		  break;
+                case 'F': // fine frequency slide up
+                  tracks[t][k].command = 23;
+                  tracks[t][k].param1  = old_event_byte2[j] >> 4;
+                  tracks[t][k].param2  = old_event_byte2[j] & 15;
+                  break;
 
-		case 'D': // fine volume slide
-		  tracks[t][k].command = 14;
-		  if (old_event_byte2[j] & 15)
-		    {
-		      // slide down
-		      tracks[t][k].param1 = 5;
-		      tracks[t][k].param2 = old_event_byte2[j] & 15;
-		    }
-		  else
-		    {
-		      // slide up
-		      tracks[t][k].param1 = 4;
-		      tracks[t][k].param2 = old_event_byte2[j] >> 4;
-		    }
-		  break;
+                case 'D': // fine volume slide
+                  tracks[t][k].command = 14;
+                  if (old_event_byte2[j] & 15)
+                    {
+                      // slide down
+                      tracks[t][k].param1 = 5;
+                      tracks[t][k].param2 = old_event_byte2[j] & 15;
+                    }
+                  else
+                    {
+                      // slide up
+                      tracks[t][k].param1 = 4;
+                      tracks[t][k].param2 = old_event_byte2[j] >> 4;
+                    }
+                  break;
 
-		case 'J': // arpeggio
-		  tracks[t][k].param1  = old_event_byte2[j] >> 4;
-		  tracks[t][k].param2  = old_event_byte2[j] & 15;
-		  break;
-		}
-	    }
+                case 'J': // arpeggio
+                  tracks[t][k].param1  = old_event_byte2[j] >> 4;
+                  tracks[t][k].param2  = old_event_byte2[j] & 15;
+                  break;
+                }
+            }
 
-	  t++;
-	}
+          t++;
+        }
     }
 
   delete [] module;
@@ -247,10 +247,10 @@ bool CcffLoader::load(const std::string &filename, const CFileProvider &fp)
   for (i=0;i<64;i++)
     {
       if (order[i] >= 0x80)
-	{
-	  length = i;
-	  break;
-	}
+        {
+          length = i;
+          break;
+        }
     }
 
   // default tempo
@@ -258,7 +258,7 @@ bool CcffLoader::load(const std::string &filename, const CFileProvider &fp)
 
   rewind(0);
 
-  return true;	
+  return true;
 }
 
 void CcffLoader::rewind(int subsong)
@@ -340,69 +340,69 @@ long CcffLoader::cff_unpacker::unpack(unsigned char *ibuf, unsigned char *obuf)
 
       // 0x00: end of data
       if (new_code == 0)
-	break;
+        break;
 
       // 0x01: end of block
       if (new_code == 1)
-	{
-	  cleanup();
-	  if(!startup())
-	    goto out;
+        {
+          cleanup();
+          if(!startup())
+            goto out;
 
-	  continue;
-	}
+          continue;
+        }
 
       // 0x02: expand code length
       if (new_code == 2)
-	{
-	  code_length++;
+        {
+          code_length++;
 
-	  continue;
-	}
+          continue;
+        }
 
       // 0x03: RLE
       if (new_code == 3)
-	{
-	  unsigned char old_code_length = code_length;
+        {
+          unsigned char old_code_length = code_length;
 
-	  code_length = 2;
+          code_length = 2;
 
-	  unsigned char repeat_length = get_code() + 1;
+          unsigned char repeat_length = get_code() + 1;
 
-	  code_length = 4 << get_code();
+          code_length = 4 << get_code();
 
-	  unsigned long repeat_counter = get_code();
+          unsigned long repeat_counter = get_code();
 
-	  if(output_length + repeat_counter * repeat_length > 0x10000) {
-	    output_length = 0;
-	    goto out;
-	  }
+          if(output_length + repeat_counter * repeat_length > 0x10000) {
+            output_length = 0;
+            goto out;
+          }
 
-	  for (unsigned int i=0;i<repeat_counter*repeat_length;i++)
-	    output[output_length++] = output[output_length - repeat_length];
+          for (unsigned int i=0;i<repeat_counter*repeat_length;i++)
+            output[output_length++] = output[output_length - repeat_length];
 
-	  code_length = old_code_length;
+          code_length = old_code_length;
 
-	  if(!startup())
-	    goto out;
+          if(!startup())
+            goto out;
 
-	  continue;
-	}
+          continue;
+        }
 
       if (new_code >= (0x104 + dictionary_length))
-	{
-	  // dictionary <- old.code.string + old.code.char
-	  the_string[++the_string[0]] = the_string[1];
-	}
+        {
+          // dictionary <- old.code.string + old.code.char
+          the_string[++the_string[0]] = the_string[1];
+        }
       else
-	{
-	  // dictionary <- old.code.string + new.code.char
-	  unsigned char temp_string[256];
+        {
+          // dictionary <- old.code.string + new.code.char
+          unsigned char temp_string[256];
 
-	  translate_code(new_code,temp_string);
+          translate_code(new_code,temp_string);
 
-	  the_string[++the_string[0]] = temp_string[1];
-	}
+          the_string[++the_string[0]] = temp_string[1];
+        }
 
       expand_dictionary(the_string);
 
@@ -410,12 +410,12 @@ long CcffLoader::cff_unpacker::unpack(unsigned char *ibuf, unsigned char *obuf)
       translate_code(new_code,the_string);
 
       if(output_length + the_string[0] > 0x10000) {
-	output_length = 0;
-	goto out;
+        output_length = 0;
+        goto out;
       }
 
       for (int i=0;i<the_string[0];i++)
-	output[output_length++] = the_string[i+1];
+        output[output_length++] = the_string[i+1];
 
       old_code = new_code;
     }

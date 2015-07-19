@@ -24,25 +24,25 @@
 class CmadLoader: public CmodPlayer
 {
 public:
-	static CPlayer *factory(Copl *newopl);
+        static CPlayer *factory(Copl *newopl);
 
-	CmadLoader(Copl *newopl) : CmodPlayer(newopl) { };
+        CmadLoader(Copl *newopl) : CmodPlayer(newopl) { };
 
-	bool	load(const std::string &filename, const CFileProvider &fp);
-	void	rewind(int subsong);
-	float	getrefresh();
+        bool    load(const std::string &filename, const CFileProvider &fp);
+        void    rewind(int subsong);
+        float   getrefresh();
 
-	std::string	gettype();
-	std::string	getinstrument(unsigned int n);
-	unsigned int	getinstruments();
+        std::string     gettype();
+        std::string     getinstrument(unsigned int n);
+        unsigned int    getinstruments();
 
 private:
 
-	struct mad_instrument
-	{
-	  char            name[8];
-	  unsigned char   data[12]; // last two unused
-	} instruments[9];
+        struct mad_instrument
+        {
+          char            name[8];
+          unsigned char   data[12]; // last two unused
+        } instruments[9];
 
-	unsigned char   timer;
+        unsigned char   timer;
 };

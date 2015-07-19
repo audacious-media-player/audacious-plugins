@@ -57,13 +57,13 @@
 #include "debug.h"
 
 #ifdef ADL_DEBUG
-#	define warning(...)		AdPlug_LogWrite(__VA_ARGS__); \
+#       define warning(...)             AdPlug_LogWrite(__VA_ARGS__); \
 AdPlug_LogWrite("\n")
 
-#	define debugC(i1, i2, ...)	AdPlug_LogWrite(__VA_ARGS__); \
+#       define debugC(i1, i2, ...)      AdPlug_LogWrite(__VA_ARGS__); \
 AdPlug_LogWrite("\n")
 #else
-#	define kDebugLevelSound	1
+#       define kDebugLevelSound 1
 
 static inline void warning(const char *str, ...)
 {
@@ -84,13 +84,13 @@ static inline void debugC(int i1, int i2, const char *str, ...)
 
 #define CALLBACKS_PER_SECOND 72
 
-typedef uint8_t	uint8;
-typedef int8_t	int8;
-typedef uint16_t	uint16;
-typedef int16_t	int16;
-typedef uint32_t	uint32;
-typedef int32_t	int32;
-typedef uint8_t	byte;
+typedef uint8_t uint8;
+typedef int8_t  int8;
+typedef uint16_t        uint16;
+typedef int16_t int16;
+typedef uint32_t        uint32;
+typedef int32_t int32;
+typedef uint8_t byte;
 
 static inline uint16 READ_LE_UINT16(const void *ptr) {
   const byte *b = (const byte *)ptr;
@@ -111,32 +111,32 @@ public:
   void callback();
 
   // AudioStream API
-  // 	int readBuffer(int16 *buffer, const int numSamples) {
-  // 		int32 samplesLeft = numSamples;
-  // 		memset(buffer, 0, sizeof(int16) * numSamples);
-  // 		while (samplesLeft) {
-  // 			if (!_samplesTillCallback) {
-  // 				callback();
-  // 				_samplesTillCallback = _samplesPerCallback;
-  // 				_samplesTillCallbackRemainder += _samplesPerCallbackRemainder;
-  // 				if (_samplesTillCallbackRemainder >= CALLBACKS_PER_SECOND) {
-  // 					_samplesTillCallback++;
-  // 					_samplesTillCallbackRemainder -= CALLBACKS_PER_SECOND;
-  // 				}
-  // 			}
+  //    int readBuffer(int16 *buffer, const int numSamples) {
+  //            int32 samplesLeft = numSamples;
+  //            memset(buffer, 0, sizeof(int16) * numSamples);
+  //            while (samplesLeft) {
+  //                    if (!_samplesTillCallback) {
+  //                            callback();
+  //                            _samplesTillCallback = _samplesPerCallback;
+  //                            _samplesTillCallbackRemainder += _samplesPerCallbackRemainder;
+  //                            if (_samplesTillCallbackRemainder >= CALLBACKS_PER_SECOND) {
+  //                                    _samplesTillCallback++;
+  //                                    _samplesTillCallbackRemainder -= CALLBACKS_PER_SECOND;
+  //                            }
+  //                    }
 
-  // 			int32 render = MIN(samplesLeft, _samplesTillCallback);
-  // 			samplesLeft -= render;
-  // 			_samplesTillCallback -= render;
-  // 			YM3812UpdateOne(_adlib, buffer, render);
-  // 			buffer += render;
-  // 		}
-  // 		return numSamples;
-  // 	}
+  //                    int32 render = MIN(samplesLeft, _samplesTillCallback);
+  //                    samplesLeft -= render;
+  //                    _samplesTillCallback -= render;
+  //                    YM3812UpdateOne(_adlib, buffer, render);
+  //                    buffer += render;
+  //            }
+  //            return numSamples;
+  //    }
 
   bool isStereo() const { return false; }
   bool endOfData() const { return false; }
-  // 	int getRate() const { return _mixer->getOutputRate(); }
+  //    int getRate() const { return _mixer->getOutputRate(); }
 
   struct OpcodeEntry {
     typedef int (AdlibDriver::*DriverOpcode)(va_list &list);
@@ -226,7 +226,7 @@ public:
     uint8 opLevel2;
     uint8 opExtraLevel3;
     uint8 twoChan;
-    uint8 unk39;	
+    uint8 unk39;
     uint8 unk40;
     uint8 spacing1;
     uint8 durationRandomness;
@@ -450,11 +450,11 @@ AdlibDriver::AdlibDriver(Copl *newopl)
   setupOpcodeList();
   setupParserOpcodeTable();
 
-  // 	_mixer = mixer;
+  //    _mixer = mixer;
 
   _flags = 0;
-  // 	_adlib = makeAdlibOPL(getRate());
-  // 	assert(_adlib);
+  //    _adlib = makeAdlibOPL(getRate());
+  //    assert(_adlib);
 
   memset(_channels, 0, sizeof(_channels));
   _soundData = 0;
@@ -476,22 +476,22 @@ AdlibDriver::AdlibDriver(Copl *newopl)
 
   _tablePtr1 = _tablePtr2 = 0;
 
-  // 	_mixer->setupPremix(this);
+  //    _mixer->setupPremix(this);
 
-  // 	_samplesPerCallback = getRate() / CALLBACKS_PER_SECOND;
-  // 	_samplesPerCallbackRemainder = getRate() % CALLBACKS_PER_SECOND;
+  //    _samplesPerCallback = getRate() / CALLBACKS_PER_SECOND;
+  //    _samplesPerCallbackRemainder = getRate() % CALLBACKS_PER_SECOND;
   _samplesTillCallback = 0;
   _samplesTillCallbackRemainder = 0;
 }
 
 AdlibDriver::~AdlibDriver() {
-  // 	_mixer->setupPremix(0);
-  // 	OPLDestroy(_adlib);
-  // 	_adlib = 0;
+  //    _mixer->setupPremix(0);
+  //    OPLDestroy(_adlib);
+  //    _adlib = 0;
 }
 
 int AdlibDriver::callback(int opcode, ...) {
-  // 	lock();
+  //    lock();
   if (opcode >= _opcodesEntries || opcode < 0) {
     warning("AdlibDriver: calling unknown opcode '%d'", opcode);
     return 0;
@@ -503,7 +503,7 @@ int AdlibDriver::callback(int opcode, ...) {
   va_start(args, opcode);
   int returnValue = (this->*(_opcodeList[opcode].function))(args);
   va_end(args);
-  // 	unlock();
+  //    unlock();
   return returnValue;
 }
 
@@ -553,10 +553,10 @@ int AdlibDriver::snd_startSong(va_list &list) {
   if ((songId << 1) != 0) {
     if (chan == 9) {
       if (_flags & 2)
-	return 0;
+        return 0;
     } else {
       if (_flags & 1)
-	return 0;
+        return 0;
     }
   }
 
@@ -650,7 +650,7 @@ int AdlibDriver::snd_clearFlag(va_list &list) {
 // timer callback
 
 void AdlibDriver::callback() {
-  // 	lock();
+  //    lock();
   --_flagTrigger;
   if (_flagTrigger < 0)
     _flags &= ~8;
@@ -665,7 +665,7 @@ void AdlibDriver::callback() {
       ++_unkValue4;
     }
   }
-  // 	unlock();
+  //    unlock();
 }
 
 void AdlibDriver::setupPrograms() {
@@ -731,7 +731,7 @@ void AdlibDriver::setupPrograms() {
 void AdlibDriver::executePrograms() {
   // Each channel runs its own program. There are ten channels: One for
   // each Adlib channel (0-8), plus one "control channel" (9) which is
-  // the one that tells the other channels what to do. 
+  // the one that tells the other channels what to do.
 
   for (_curChannel = 9; _curChannel >= 0; --_curChannel) {
     int result = 1;
@@ -739,7 +739,7 @@ void AdlibDriver::executePrograms() {
     if (!_channels[_curChannel].dataptr) {
       continue;
     }
-	
+
     Channel &channel = _channels[_curChannel];
     _curRegOffset = _regOffset[_curChannel];
 
@@ -751,57 +751,57 @@ void AdlibDriver::executePrograms() {
     channel.position += channel.tempo;
     if (channel.position < backup) {
       if (--channel.duration) {
-	if (channel.duration == channel.spacing2)
-	  noteOff(channel);
-	if (channel.duration == channel.spacing1 && _curChannel != 9)
-	  noteOff(channel);
+        if (channel.duration == channel.spacing2)
+          noteOff(channel);
+        if (channel.duration == channel.spacing1 && _curChannel != 9)
+          noteOff(channel);
       } else {
-	// An opcode is not allowed to modify its own
-	// data pointer except through the 'dataptr'
-	// parameter. To enforce that, we have to work
-	// on a copy of the data pointer.
-	//
-	// This fixes a subtle music bug where the
-	// wrong music would play when getting the
-	// quill in Kyra 1.
-	uint8 *dataptr = channel.dataptr;
-	while (dataptr) {
-	  uint8 opcode = *dataptr++;
-	  uint8 param = *dataptr++;
+        // An opcode is not allowed to modify its own
+        // data pointer except through the 'dataptr'
+        // parameter. To enforce that, we have to work
+        // on a copy of the data pointer.
+        //
+        // This fixes a subtle music bug where the
+        // wrong music would play when getting the
+        // quill in Kyra 1.
+        uint8 *dataptr = channel.dataptr;
+        while (dataptr) {
+          uint8 opcode = *dataptr++;
+          uint8 param = *dataptr++;
 
-	  if (opcode & 0x80) {
-	    opcode &= 0x7F;
-	    if (opcode >= _parserOpcodeTableSize)
-	      opcode = _parserOpcodeTableSize - 1;
-	    debugC(9, kDebugLevelSound, "Calling opcode '%s' (%d) (channel: %d)", _parserOpcodeTable[opcode].name, opcode, _curChannel);
-	    result = (this->*(_parserOpcodeTable[opcode].function))(dataptr, channel, param);
-	    channel.dataptr = dataptr;
-	    if (result)
-	      break;
-	  } else {
-	    debugC(9, kDebugLevelSound, "Note on opcode 0x%02X (duration: %d) (channel: %d)", opcode, param, _curChannel);
-	    setupNote(opcode, channel);
-	    noteOn(channel);
-	    setupDuration(param, channel);
-	    if (param) {
-	      channel.dataptr = dataptr;
-	      break;
-	    }
-	  }
-	}
+          if (opcode & 0x80) {
+            opcode &= 0x7F;
+            if (opcode >= _parserOpcodeTableSize)
+              opcode = _parserOpcodeTableSize - 1;
+            debugC(9, kDebugLevelSound, "Calling opcode '%s' (%d) (channel: %d)", _parserOpcodeTable[opcode].name, opcode, _curChannel);
+            result = (this->*(_parserOpcodeTable[opcode].function))(dataptr, channel, param);
+            channel.dataptr = dataptr;
+            if (result)
+              break;
+          } else {
+            debugC(9, kDebugLevelSound, "Note on opcode 0x%02X (duration: %d) (channel: %d)", opcode, param, _curChannel);
+            setupNote(opcode, channel);
+            noteOn(channel);
+            setupDuration(param, channel);
+            if (param) {
+              channel.dataptr = dataptr;
+              break;
+            }
+          }
+        }
       }
     }
 
     if (result == 1) {
       if (channel.primaryEffect)
-	(this->*(channel.primaryEffect))(channel);
+        (this->*(channel.primaryEffect))(channel);
       if (channel.secondaryEffect)
-	(this->*(channel.secondaryEffect))(channel);
+        (this->*(channel.secondaryEffect))(channel);
     }
   }
 }
 
-// 
+//
 
 void AdlibDriver::resetAdlibState() {
   debugC(9, kDebugLevelSound, "resetAdlibState()");
@@ -1104,7 +1104,7 @@ void AdlibDriver::primaryEffect1(Channel &channel) {
       // up one octave.
       unk1 >>= 1;
       if (!(unk1 & 0x3FF))
-	++unk1;
+        ++unk1;
       unk2 = (unk2 & 0xFF00) | ((unk2 + 4) & 0xFF);
       unk2 &= 0xFF1C;
     }
@@ -1115,7 +1115,7 @@ void AdlibDriver::primaryEffect1(Channel &channel) {
       // down one octave.
       unk1 <<= 1;
       if (!(unk1 & 0x3FF))
-	--unk1;
+        --unk1;
       unk2 = (unk2 & 0xFF00) | ((unk2 - 4) & 0xFF);
       unk2 &= 0xFF1C;
     }
@@ -1184,7 +1184,7 @@ void AdlibDriver::primaryEffect2(Channel &channel) {
 
     uint16 unk2 = (channel.regAx | (channel.regBx << 8)) & 0x3FF;
     unk2 += unk1;
-		
+
     channel.regAx = unk2 & 0xFF;
     channel.regBx = (channel.regBx & 0xFC) | (unk2 >> 8);
 
@@ -2213,7 +2213,7 @@ CadlPlayer::CadlPlayer(Copl *newopl)
   assert(_driver);
 
   _sfxPlayingSound = -1;
-  // 	_soundFileLoaded = "";
+  //    _soundFileLoaded = "";
 
   _soundTriggers = _kyra1SoundTriggers;
   _numSoundTriggers = _kyra1NumSoundTriggers;
@@ -2251,11 +2251,11 @@ void CadlPlayer::process() {
 // }
 
 // int CadlPlayer::getVolume() {
-// 	return 0;
+//      return 0;
 // }
 
 // void CadlPlayer::loadMusicFile(const char *file) {
-// 	loadSoundFile(file);
+//      loadSoundFile(file);
 // }
 
 void CadlPlayer::playTrack(uint8 track) {
@@ -2263,9 +2263,9 @@ void CadlPlayer::playTrack(uint8 track) {
 }
 
 // void CadlPlayer::haltTrack() {
-// 	unk1();
-// 	unk2();
-// 	//_engine->_system->delayMillis(3 * 60);
+//      unk1();
+//      unk2();
+//      //_engine->_system->delayMillis(3 * 60);
 // }
 
 void CadlPlayer::playSoundEffect(uint8_t track) {
@@ -2278,10 +2278,10 @@ void CadlPlayer::play(uint8_t track) {
     return;
   soundId &= 0xFF;
   _driver->callback(16, 0);
-  // 	while ((_driver->callback(16, 0) & 8)) {
+  //    while ((_driver->callback(16, 0) & 8)) {
   // We call the system delay and not the game delay to avoid concurrency issues.
-  // 		_engine->_system->delayMillis(10);
-  // 	}
+  //            _engine->_system->delayMillis(10);
+  //    }
   if (_sfxPlayingSound != -1) {
     // Restore the sounds's normal values.
     _driver->callback(10, _sfxPlayingSound, int(1), int(_sfxPriority));
@@ -2318,12 +2318,12 @@ void CadlPlayer::play(uint8_t track) {
 }
 
 // void CadlPlayer::beginFadeOut() {
-// 	playSoundEffect(1);
+//      playSoundEffect(1);
 // }
 
 bool CadlPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
-  binistream	*f = fp.open(filename);
+  binistream    *f = fp.open(filename);
 
   // file validation section
   if(!f || !fp.extension(filename, ".adl")) {
@@ -2331,23 +2331,23 @@ bool CadlPlayer::load(const std::string &filename, const CFileProvider &fp)
     return false;
   }
 
-  // 	if (_soundFileLoaded == file)
-  // 		return;
+  //    if (_soundFileLoaded == file)
+  //            return;
 
-  // 	if (_soundDataPtr) {
-  // 		haltTrack();
-  // 	}
+  //    if (_soundDataPtr) {
+  //            haltTrack();
+  //    }
 
   uint8 *file_data = 0; uint32 file_size = 0;
 
-  // 	char filename[25];
-  // 	sprintf(filename, "%s.ADL", file);
+  //    char filename[25];
+  //    sprintf(filename, "%s.ADL", file);
 
-  // 	file_data = _engine->resource()->fileData(filename, &file_size);
-  // 	if (!file_data) {
-  // 		warning("Couldn't find music file: '%s'", filename);
-  // 		return;
-  // 	}
+  //    file_data = _engine->resource()->fileData(filename, &file_size);
+  //    if (!file_data) {
+  //            warning("Couldn't find music file: '%s'", filename);
+  //            return;
+  //    }
 
   unk2();
   unk1();
@@ -2376,7 +2376,7 @@ bool CadlPlayer::load(const std::string &filename, const CFileProvider &fp)
 
   _driver->callback(4, _soundDataPtr);
 
-  // 	_soundFileLoaded = file;
+  //    _soundFileLoaded = file;
 
   // find last subsong
   for(int i = 199; i >= 0; i--)

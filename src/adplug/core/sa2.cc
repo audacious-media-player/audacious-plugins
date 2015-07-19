@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2008 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -92,7 +92,7 @@ bool Csa2Loader::load(const std::string &filename, const CFileProvider &fp)
   case 9:
     sat_type = HAS_ARPEGIO | HAS_ARPEGIOLIST | HAS_TRACKORDER | HAS_ACTIVECHANNELS;
     break;
-  default:	/* unknown */
+  default:      /* unknown */
     fp.close(f);
     return false;
   }
@@ -126,8 +126,8 @@ bool Csa2Loader::load(const std::string &filename, const CFileProvider &fp)
   // instrument names
   for(i = 0; i < 29; i++) f->readString(instname[i], 17);
 
-  f->ignore(3);		// dummy bytes
-  for(i = 0; i < 128; i++) order[i] = f->readInt(1);	// pattern orders
+  f->ignore(3);         // dummy bytes
+  for(i = 0; i < 128; i++) order[i] = f->readInt(1);    // pattern orders
   if(sat_type & HAS_UNKNOWN127) f->ignore(127);
 
   // infos
@@ -136,46 +136,46 @@ bool Csa2Loader::load(const std::string &filename, const CFileProvider &fp)
   // bpm
   bpm = f->readInt(2);
   if(sat_type & HAS_OLDBPM) {
-    bpm = bpm * 125 / 50;		// cps -> bpm
+    bpm = bpm * 125 / 50;               // cps -> bpm
   }
 
   if(sat_type & HAS_ARPEGIOLIST) {
     init_specialarp();
-    for(i = 0; i < 256; i++) arplist[i] = f->readInt(1);	// arpeggio list
-    for(i = 0; i < 256; i++) arpcmd[i] = f->readInt(1);	// arpeggio commands
+    for(i = 0; i < 256; i++) arplist[i] = f->readInt(1);        // arpeggio list
+    for(i = 0; i < 256; i++) arpcmd[i] = f->readInt(1); // arpeggio commands
   }
 
-  for(i=0;i<64;i++) {				// track orders
+  for(i=0;i<64;i++) {                           // track orders
     for(j=0;j<9;j++) {
       if(sat_type & HAS_TRACKORDER)
-	trackord[i][j] = f->readInt(1);
+        trackord[i][j] = f->readInt(1);
       else
-	{
-	  trackord[i][j] = i * 9 + j;
-	}
+        {
+          trackord[i][j] = i * 9 + j;
+        }
     }
   }
 
   if(sat_type & HAS_ACTIVECHANNELS)
-    activechan = f->readInt(2) << 16;		// active channels
+    activechan = f->readInt(2) << 16;           // active channels
 
   AdPlug_LogWrite("Csa2Loader::load(\"%s\"): sat_type = %x, nop = %d, "
-		  "length = %d, restartpos = %d, activechan = %x, bpm = %d\n",
-		  filename.c_str(), sat_type, nop, length, restartpos, activechan, bpm);
+                  "length = %d, restartpos = %d, activechan = %x, bpm = %d\n",
+                  filename.c_str(), sat_type, nop, length, restartpos, activechan, bpm);
 
   // track data
   if(sat_type & HAS_OLDPATTERNS) {
     i = 0;
     while(!f->ateof()) {
       for(j=0;j<64;j++) {
-	for(k=0;k<9;k++) {
-	  buf = f->readInt(1);
-	  tracks[i+k][j].note = buf ? (buf + notedis) : 0;
-	  tracks[i+k][j].inst = f->readInt(1);
-	  tracks[i+k][j].command = convfx[f->readInt(1) & 0xf];
-	  tracks[i+k][j].param1 = f->readInt(1);
-	  tracks[i+k][j].param2 = f->readInt(1);
-	}
+        for(k=0;k<9;k++) {
+          buf = f->readInt(1);
+          tracks[i+k][j].note = buf ? (buf + notedis) : 0;
+          tracks[i+k][j].inst = f->readInt(1);
+          tracks[i+k][j].command = convfx[f->readInt(1) & 0xf];
+          tracks[i+k][j].param1 = f->readInt(1);
+          tracks[i+k][j].param2 = f->readInt(1);
+        }
       }
       i+=9;
     }
@@ -183,36 +183,36 @@ bool Csa2Loader::load(const std::string &filename, const CFileProvider &fp)
     if(sat_type & HAS_V7PATTERNS) {
       i = 0;
       while(!f->ateof()) {
-	for(j=0;j<64;j++) {
-	  for(k=0;k<9;k++) {
-	    buf = f->readInt(1);
-	    tracks[i+k][j].note = buf >> 1;
-	    tracks[i+k][j].inst = (buf & 1) << 4;
-	    buf = f->readInt(1);
-	    tracks[i+k][j].inst += buf >> 4;
-	    tracks[i+k][j].command = convfx[buf & 0x0f];
-	    buf = f->readInt(1);
-	    tracks[i+k][j].param1 = buf >> 4;
-	    tracks[i+k][j].param2 = buf & 0x0f;
-	  }
-	}
-	i+=9;
+        for(j=0;j<64;j++) {
+          for(k=0;k<9;k++) {
+            buf = f->readInt(1);
+            tracks[i+k][j].note = buf >> 1;
+            tracks[i+k][j].inst = (buf & 1) << 4;
+            buf = f->readInt(1);
+            tracks[i+k][j].inst += buf >> 4;
+            tracks[i+k][j].command = convfx[buf & 0x0f];
+            buf = f->readInt(1);
+            tracks[i+k][j].param1 = buf >> 4;
+            tracks[i+k][j].param2 = buf & 0x0f;
+          }
+        }
+        i+=9;
       }
     } else {
       i = 0;
       while(!f->ateof()) {
-	for(j=0;j<64;j++) {
-	  buf = f->readInt(1);
-	  tracks[i][j].note = buf >> 1;
-	  tracks[i][j].inst = (buf & 1) << 4;
-	  buf = f->readInt(1);
-	  tracks[i][j].inst += buf >> 4;
-	  tracks[i][j].command = convfx[buf & 0x0f];
-	  buf = f->readInt(1);
-	  tracks[i][j].param1 = buf >> 4;
-	  tracks[i][j].param2 = buf & 0x0f;
-	}
-	i++;
+        for(j=0;j<64;j++) {
+          buf = f->readInt(1);
+          tracks[i][j].note = buf >> 1;
+          tracks[i][j].inst = (buf & 1) << 4;
+          buf = f->readInt(1);
+          tracks[i][j].inst += buf >> 4;
+          tracks[i][j].command = convfx[buf & 0x0f];
+          buf = f->readInt(1);
+          tracks[i][j].param1 = buf >> 4;
+          tracks[i][j].param2 = buf & 0x0f;
+        }
+        i++;
       }
     }
   fp.close(f);
@@ -221,9 +221,9 @@ bool Csa2Loader::load(const std::string &filename, const CFileProvider &fp)
   for(i=0;i<29;i++)
     for(j=0;j<17;j++)
       if(!instname[i][j])
-	instname[i][j] = ' ';
+        instname[i][j] = ' ';
 
-  rewind(0);		// rewind module
+  rewind(0);            // rewind module
   return true;
 }
 
@@ -247,11 +247,11 @@ std::string Csa2Loader::gettitle()
     memcpy(buf,instname[i]+1,16);
     for(ptr=16;ptr>0;ptr--)
       if(buf[ptr] == ' ')
-	buf[ptr] = '\0';
+        buf[ptr] = '\0';
       else {
-	if(ptr<16)
-	  buf[ptr+1] = ' ';
-	break;
+        if(ptr<16)
+          buf[ptr+1] = ' ';
+        break;
       }
     strcat(bufinst,buf);
   }

@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2004 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -33,10 +33,10 @@ CPlayer *CmkjPlayer::factory(Copl *newopl)
 bool CmkjPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
   binistream *f = fp.open(filename); if(!f) return false;
-  char	id[6];
-  float	ver;
-  int	i, j;
-  short	inst[8];
+  char  id[6];
+  float ver;
+  int   i, j;
+  short inst[8];
 
   // file validation
   f->readString(id, 6);
@@ -65,8 +65,8 @@ bool CmkjPlayer::load(const std::string &filename, const CFileProvider &fp)
     songbuf[i] = f->readInt(2);
 
   AdPlug_LogWrite("CmkjPlayer::load(\"%s\"): loaded file ver %.2f, %d channels,"
-		  " %d notes/channel.\n", filename.c_str(), ver, maxchannel,
-		  maxnotes);
+                  " %d notes/channel.\n", filename.c_str(), ver, maxchannel,
+                  maxnotes);
   fp.close(f);
   rewind(0);
   return true;
@@ -78,7 +78,7 @@ bool CmkjPlayer::update()
   short note;
 
   for(c = 0; c < maxchannel; c++) {
-    if(!channel[c].defined)	// skip if channel is disabled
+    if(!channel[c].defined)     // skip if channel is disabled
       continue;
 
     if(channel[c].pstat) {
@@ -86,15 +86,15 @@ bool CmkjPlayer::update()
       continue;
     }
 
-    opl->write(0xb0 + c, 0);	// key off
+    opl->write(0xb0 + c, 0);    // key off
     do {
       assert(channel[c].songptr < (maxchannel + 1) * maxnotes);
       note = songbuf[channel[c].songptr];
       if(channel[c].songptr - c > maxchannel)
-	if(note && note < 250)
-	  channel[c].pstat = channel[c].speed;
+        if(note && note < 250)
+          channel[c].pstat = channel[c].speed;
       switch(note) {
-	// normal notes
+        // normal notes
       case 68: opl->write(0xa0 + c,0x81); opl->write(0xb0 + c,0x21 + 4 * channel[c].octave); break;
       case 69: opl->write(0xa0 + c,0xb0); opl->write(0xb0 + c,0x21 + 4 * channel[c].octave); break;
       case 70: opl->write(0xa0 + c,0xca); opl->write(0xb0 + c,0x21 + 4 * channel[c].octave); break;
@@ -107,36 +107,36 @@ bool CmkjPlayer::update()
       case 20: opl->write(0xa0 + c,0xe5); opl->write(0xb0 + c,0x21 + 4 * channel[c].octave); break;
       case 21: opl->write(0xa0 + c,0x20); opl->write(0xb0 + c,0x22 + 4 * channel[c].octave); break;
       case 15: opl->write(0xa0 + c,0x63); opl->write(0xb0 + c,0x22 + 4 * channel[c].octave); break;
-      case 255:	// delay
-	channel[c].songptr += maxchannel;
-	channel[c].pstat = songbuf[channel[c].songptr];
-	break;
-      case 254:	// set octave
-	channel[c].songptr += maxchannel;
-	channel[c].octave = songbuf[channel[c].songptr];
-	break;
-      case 253:	// set speed
-	channel[c].songptr += maxchannel;
-	channel[c].speed = songbuf[channel[c].songptr];
-	break;
-      case 252:	// set waveform
-	channel[c].songptr += maxchannel;
-	channel[c].waveform = songbuf[channel[c].songptr] - 300;
-	if(c > 2)
-	  opl->write(0xe0 + c + (c+6),channel[c].waveform);
-	else
-	  opl->write(0xe0 + c,channel[c].waveform);
-	break;
-      case 251:	// song end
-	for(i = 0; i < maxchannel; i++) channel[i].songptr = i;
-	songend = true;
-	return false;
+      case 255: // delay
+        channel[c].songptr += maxchannel;
+        channel[c].pstat = songbuf[channel[c].songptr];
+        break;
+      case 254: // set octave
+        channel[c].songptr += maxchannel;
+        channel[c].octave = songbuf[channel[c].songptr];
+        break;
+      case 253: // set speed
+        channel[c].songptr += maxchannel;
+        channel[c].speed = songbuf[channel[c].songptr];
+        break;
+      case 252: // set waveform
+        channel[c].songptr += maxchannel;
+        channel[c].waveform = songbuf[channel[c].songptr] - 300;
+        if(c > 2)
+          opl->write(0xe0 + c + (c+6),channel[c].waveform);
+        else
+          opl->write(0xe0 + c,channel[c].waveform);
+        break;
+      case 251: // song end
+        for(i = 0; i < maxchannel; i++) channel[i].songptr = i;
+        songend = true;
+        return false;
       }
 
       if(channel[c].songptr - c < maxnotes)
-	channel[c].songptr += maxchannel;
+        channel[c].songptr += maxchannel;
       else
-	channel[c].songptr = c;
+        channel[c].songptr = c;
     } while(!channel[c].pstat);
   }
 

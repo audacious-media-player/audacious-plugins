@@ -38,9 +38,9 @@
 
 #define ARRAY_AS_DWORD(a, i) \
 ((a[i + 3] << 24) + (a[i + 2] << 16) + (a[i + 1] << 8) + a[i])
-#define ARRAY_AS_WORD(a, i)	((a[i + 1] << 8) + a[i])
+#define ARRAY_AS_WORD(a, i)     ((a[i + 1] << 8) + a[i])
 
-#define CHARP_AS_WORD(p)	(((*(p + 1)) << 8) + (*p))
+#define CHARP_AS_WORD(p)        (((*(p + 1)) << 8) + (*p))
 
 /* -------- Public Methods -------------------------------- */
 
@@ -106,19 +106,19 @@ bool CdmoLoader::load(const std::string &filename, const CFileProvider &fp)
     }
 
   // load header
-  binisstream	uf(module, unpacked_length);
+  binisstream   uf(module, unpacked_length);
   uf.setFlag(binio::BigEndian, false); uf.setFlag(binio::FloatIEEE);
 
   memset(&header,0,sizeof(s3mheader));
 
-  uf.ignore(22);				// ignore DMO header ID string
+  uf.ignore(22);                                // ignore DMO header ID string
   uf.readString(header.name, 28);
 
-  uf.ignore(2);				// _unk_1
+  uf.ignore(2);                         // _unk_1
   header.ordnum  = uf.readInt(2);
   header.insnum  = uf.readInt(2);
   header.patnum  = uf.readInt(2);
-  uf.ignore(2);				// _unk_2
+  uf.ignore(2);                         // _unk_2
   header.is      = uf.readInt(2);
   header.it      = uf.readInt(2);
 
@@ -127,7 +127,7 @@ bool CdmoLoader::load(const std::string &filename, const CFileProvider &fp)
   for (i=0;i<9;i++)
     header.chanset[i] = 0x10 + i;
 
-  uf.ignore(32);				// ignore panning settings for all 32 channels
+  uf.ignore(32);                                // ignore panning settings for all 32 channels
 
   // load orders
   for(i = 0; i < 256; i++) orders[i] = uf.readInt(1);
@@ -173,31 +173,31 @@ bool CdmoLoader::load(const std::string &filename, const CFileProvider &fp)
 
     for (j = 0; j < 64; j++) {
       while (1) {
-	unsigned char token = uf.readInt(1);
+        unsigned char token = uf.readInt(1);
 
-	if (!token)
-	  break;
+        if (!token)
+          break;
 
-	unsigned char chan = token & 31;
+        unsigned char chan = token & 31;
 
-	// note + instrument ?
-	if (token & 32) {
-	  unsigned char bufbyte = uf.readInt(1);
+        // note + instrument ?
+        if (token & 32) {
+          unsigned char bufbyte = uf.readInt(1);
 
-	  pattern[i][j][chan].note = bufbyte & 15;
-	  pattern[i][j][chan].oct = bufbyte >> 4;
-	  pattern[i][j][chan].instrument = uf.readInt(1);
-	}
+          pattern[i][j][chan].note = bufbyte & 15;
+          pattern[i][j][chan].oct = bufbyte >> 4;
+          pattern[i][j][chan].instrument = uf.readInt(1);
+        }
 
-	// volume ?
-	if (token & 64)
-	  pattern[i][j][chan].volume = uf.readInt(1);
+        // volume ?
+        if (token & 64)
+          pattern[i][j][chan].volume = uf.readInt(1);
 
-	// command ?
-	if (token & 128) {
-	  pattern[i][j][chan].command = uf.readInt(1);
-	  pattern[i][j][chan].info = uf.readInt(1);
-	}
+        // command ?
+        if (token & 128) {
+          pattern[i][j][chan].command = uf.readInt(1);
+          pattern[i][j][chan].info = uf.readInt(1);
+        }
       }
     }
 
@@ -293,91 +293,91 @@ short CdmoLoader::dmo_unpacker::unpack_block(unsigned char *ibuf, long ilen, uns
 
       // 00xxxxxx: copy (xxxxxx + 1) bytes
       if ((code >> 6) == 0)
-	{
-	  cx = (code & 0x3F) + 1;
+        {
+          cx = (code & 0x3F) + 1;
 
-	  if(opos + cx >= oend)
-	    return -1;
+          if(opos + cx >= oend)
+            return -1;
 
-	  for (int i=0;i<cx;i++)
-	    *opos++ = *ipos++;
+          for (int i=0;i<cx;i++)
+            *opos++ = *ipos++;
 
-	  continue;
-	}
+          continue;
+        }
 
       // 01xxxxxx xxxyyyyy: copy (Y + 3) bytes from (X + 1)
       if ((code >> 6) == 1)
-	{
-	  par1 = *ipos++;
+        {
+          par1 = *ipos++;
 
-	  ax = ((code & 0x3F) << 3) + ((par1 & 0xE0) >> 5) + 1;
-	  cx = (par1 & 0x1F) + 3;
+          ax = ((code & 0x3F) << 3) + ((par1 & 0xE0) >> 5) + 1;
+          cx = (par1 & 0x1F) + 3;
 
-	  if(opos + cx >= oend)
-	    return -1;
+          if(opos + cx >= oend)
+            return -1;
 
-	  for(int i=0;i<cx;i++)
-	    *opos++ = *(opos - ax);
+          for(int i=0;i<cx;i++)
+            *opos++ = *(opos - ax);
 
-	  continue;
-	}
+          continue;
+        }
 
       // 10xxxxxx xyyyzzzz: copy (Y + 3) bytes from (X + 1); copy Z bytes
       if ((code >> 6) == 2)
-	{
-	  int i;
+        {
+          int i;
 
-	  par1 = *ipos++;
+          par1 = *ipos++;
 
-	  ax = ((code & 0x3F) << 1) + (par1 >> 7) + 1;
-	  cx = ((par1 & 0x70) >> 4) + 3;
-	  bx = par1 & 0x0F;
+          ax = ((code & 0x3F) << 1) + (par1 >> 7) + 1;
+          cx = ((par1 & 0x70) >> 4) + 3;
+          bx = par1 & 0x0F;
 
-	  if(opos + bx + cx >= oend)
-	    return -1;
+          if(opos + bx + cx >= oend)
+            return -1;
 
-	  for(i=0;i<cx;i++)
-	    *opos++ = *(opos - ax);
+          for(i=0;i<cx;i++)
+            *opos++ = *(opos - ax);
 
-	  for (i=0;i<bx;i++)
-	    *opos++ = *ipos++;
+          for (i=0;i<bx;i++)
+            *opos++ = *ipos++;
 
-	  continue;
-	}
+          continue;
+        }
 
       // 11xxxxxx xxxxxxxy yyyyzzzz: copy (Y + 4) from X; copy Z bytes
       if ((code >> 6) == 3)
-	{
-	  int i;
+        {
+          int i;
 
-	  par1 = *ipos++;
-	  par2 = *ipos++;
+          par1 = *ipos++;
+          par2 = *ipos++;
 
-	  bx = ((code & 0x3F) << 7) + (par1 >> 1);
-	  cx = ((par1 & 0x01) << 4) + (par2 >> 4) + 4;
-	  ax = par2 & 0x0F;
+          bx = ((code & 0x3F) << 7) + (par1 >> 1);
+          cx = ((par1 & 0x01) << 4) + (par2 >> 4) + 4;
+          ax = par2 & 0x0F;
 
-	  if(opos + ax + cx >= oend)
-	    return -1;
+          if(opos + ax + cx >= oend)
+            return -1;
 
-	  for(i=0;i<cx;i++)
-	    *opos++ = *(opos - bx);
+          for(i=0;i<cx;i++)
+            *opos++ = *(opos - bx);
 
-	  for (i=0;i<ax;i++)
-	    *opos++ = *ipos++;
+          for (i=0;i<ax;i++)
+            *opos++ = *ipos++;
 
-	  continue;
-	}
+          continue;
+        }
     }
 
   return opos - obuf;
 }
 
 long CdmoLoader::dmo_unpacker::unpack(unsigned char *ibuf, unsigned char *obuf,
-				      unsigned long outputsize)
+                                      unsigned long outputsize)
 {
-  long			olen = 0;
-  unsigned short	block_count = CHARP_AS_WORD(ibuf);
+  long                  olen = 0;
+  unsigned short        block_count = CHARP_AS_WORD(ibuf);
 
   ibuf += 2;
   unsigned char *block_length = ibuf;
@@ -390,7 +390,7 @@ long CdmoLoader::dmo_unpacker::unpack(unsigned char *ibuf, unsigned char *obuf,
       unsigned short bul = CHARP_AS_WORD(ibuf);
 
       if(unpack_block(ibuf + 2,CHARP_AS_WORD(block_length) - 2,obuf) != bul)
-	return 0;
+        return 0;
 
       obuf += bul;
       olen += bul;

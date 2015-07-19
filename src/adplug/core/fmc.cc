@@ -97,42 +97,42 @@ bool CfmcLoader::load(const std::string &filename, const CFileProvider &fp)
       if(f->ateof()) break;
 
       for (j=0;j<header.numchan;j++)
-	{
-	  for (k=0;k<64;k++)
-	    {
-	      fmc_event event;
+        {
+          for (k=0;k<64;k++)
+            {
+              fmc_event event;
 
-	      // read event
-	      event.byte0 = f->readInt(1);
-	      event.byte1 = f->readInt(1);
-	      event.byte2 = f->readInt(1);
+              // read event
+              event.byte0 = f->readInt(1);
+              event.byte1 = f->readInt(1);
+              event.byte2 = f->readInt(1);
 
-	      // convert event
-	      tracks[t][k].note = event.byte0 & 0x7F;
-	      tracks[t][k].inst = ((event.byte0 & 0x80) >> 3) + (event.byte1 >> 4) + 1;
-	      tracks[t][k].command = conv_fx[event.byte1 & 0x0F];
-	      tracks[t][k].param1 = event.byte2 >> 4;
-	      tracks[t][k].param2 = event.byte2 & 0x0F;
+              // convert event
+              tracks[t][k].note = event.byte0 & 0x7F;
+              tracks[t][k].inst = ((event.byte0 & 0x80) >> 3) + (event.byte1 >> 4) + 1;
+              tracks[t][k].command = conv_fx[event.byte1 & 0x0F];
+              tracks[t][k].param1 = event.byte2 >> 4;
+              tracks[t][k].param2 = event.byte2 & 0x0F;
 
-	      // fix effects
-	      if (tracks[t][k].command == 0x0E)   // 0x0E (14): Retrig
-		tracks[t][k].param1 = 3;
-	      if (tracks[t][k].command == 0x1A) { // 0x1A (26): Volume Slide
-		if (tracks[t][k].param1 > tracks[t][k].param2)
-		  {
-		    tracks[t][k].param1 -= tracks[t][k].param2;
-		    tracks[t][k].param2 = 0;
-		  }
-		else
-		  {
-		    tracks[t][k].param2 -= tracks[t][k].param1;
-		    tracks[t][k].param1 = 0;
-		  }
-	      }
-	    }
+              // fix effects
+              if (tracks[t][k].command == 0x0E)   // 0x0E (14): Retrig
+                tracks[t][k].param1 = 3;
+              if (tracks[t][k].command == 0x1A) { // 0x1A (26): Volume Slide
+                if (tracks[t][k].param1 > tracks[t][k].param2)
+                  {
+                    tracks[t][k].param1 -= tracks[t][k].param2;
+                    tracks[t][k].param2 = 0;
+                  }
+                else
+                  {
+                    tracks[t][k].param2 -= tracks[t][k].param1;
+                    tracks[t][k].param1 = 0;
+                  }
+              }
+            }
 
-	  t++;
-	}
+          t++;
+        }
     }
   fp.close(f);
 
@@ -144,10 +144,10 @@ bool CfmcLoader::load(const std::string &filename, const CFileProvider &fp)
   for (i=0;i<256;i++)
     {
       if (order[i] >= 0xFE)
-	{
-	  length = i;
-	  break;
-	}
+        {
+          length = i;
+          break;
+        }
     }
 
   // data for Protracker

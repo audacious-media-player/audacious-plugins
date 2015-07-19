@@ -62,23 +62,23 @@ bool CdtmLoader::load(const std::string &filename, const CFileProvider &fp)
       unsigned char bufstr_length = f->readInt(1);
 
       if(bufstr_length > 80) {
-	fp.close(f);
-	return false;
+        fp.close(f);
+        return false;
       }
 
       // read line
       if (bufstr_length)
-	{
-	  f->readString(bufstr,bufstr_length);
+        {
+          f->readString(bufstr,bufstr_length);
 
-	  for (j=0;j<bufstr_length;j++)
-	    if (!bufstr[j])
-	      bufstr[j] = 0x20;
+          for (j=0;j<bufstr_length;j++)
+            if (!bufstr[j])
+              bufstr[j] = 0x20;
 
-	  bufstr[bufstr_length] = 0;
+          bufstr[bufstr_length] = 0;
 
-	  strcat(desc,bufstr);
-	}
+          strcat(desc,bufstr);
+        }
 
       strcat(desc,"\n");
     }
@@ -96,15 +96,15 @@ bool CdtmLoader::load(const std::string &filename, const CFileProvider &fp)
       unsigned char name_length = f->readInt(1);
 
       if (name_length)
-	f->readString(instruments[i].name, name_length);
+        f->readString(instruments[i].name, name_length);
 
       instruments[i].name[name_length] = 0;
 
       for(j = 0; j < 12; j++)
-	instruments[i].data[j] = f->readInt(1);
+        instruments[i].data[j] = f->readInt(1);
 
       for (j=0;j<11;j++)
-	inst[i].data[conv_inst[j]] = instruments[i].data[j];
+        inst[i].data[conv_inst[j]] = instruments[i].data[j];
     }
 
   // load order
@@ -124,85 +124,85 @@ bool CdtmLoader::load(const std::string &filename, const CFileProvider &fp)
       unsigned char *packed_pattern = new unsigned char [packed_length];
 
       for(j = 0; j < packed_length; j++)
-	packed_pattern[j] = f->readInt(1);
+        packed_pattern[j] = f->readInt(1);
 
       long unpacked_length = unpack_pattern(packed_pattern,packed_length,pattern,0x480);
 
       delete [] packed_pattern;
 
       if (!unpacked_length)
-	{
-	  delete pattern;
-	  fp.close(f);
-	  return false;
-	}
+        {
+          delete pattern;
+          fp.close(f);
+          return false;
+        }
 
       // convert pattern
       for (j=0;j<9;j++)
-	{
-	  for (k=0;k<64;k++)
-	    {
-	      dtm_event *event = (dtm_event *)&pattern[(k*9+j)*2];
+        {
+          for (k=0;k<64;k++)
+            {
+              dtm_event *event = (dtm_event *)&pattern[(k*9+j)*2];
 
-	      // instrument
-	      if (event->byte0 == 0x80)
-		{
-		  if (event->byte1 <= 0x80)
-		    tracks[t][k].inst = event->byte1 + 1;
-		}
+              // instrument
+              if (event->byte0 == 0x80)
+                {
+                  if (event->byte1 <= 0x80)
+                    tracks[t][k].inst = event->byte1 + 1;
+                }
 
-	      // note + effect
-	      else
-		{
-		  tracks[t][k].note = event->byte0;
+              // note + effect
+              else
+                {
+                  tracks[t][k].note = event->byte0;
 
-		  if ((event->byte0 != 0) && (event->byte0 != 127))
-		    tracks[t][k].note++;
+                  if ((event->byte0 != 0) && (event->byte0 != 127))
+                    tracks[t][k].note++;
 
-		  // convert effects
-		  switch (event->byte1 >> 4)
-		    {
-		    case 0x0: // pattern break
-		      if ((event->byte1 & 15) == 1)
-			tracks[t][k].command = 13;
-		      break;
+                  // convert effects
+                  switch (event->byte1 >> 4)
+                    {
+                    case 0x0: // pattern break
+                      if ((event->byte1 & 15) == 1)
+                        tracks[t][k].command = 13;
+                      break;
 
-		    case 0x1: // freq. slide up
-		      tracks[t][k].command = 28;
-		      tracks[t][k].param1 = event->byte1 & 15;
-		      break;
+                    case 0x1: // freq. slide up
+                      tracks[t][k].command = 28;
+                      tracks[t][k].param1 = event->byte1 & 15;
+                      break;
 
-		    case 0x2: // freq. slide down
-		      tracks[t][k].command = 28;
-		      tracks[t][k].param2 = event->byte1 & 15;
-		      break;
+                    case 0x2: // freq. slide down
+                      tracks[t][k].command = 28;
+                      tracks[t][k].param2 = event->byte1 & 15;
+                      break;
 
-		    case 0xA: // set carrier volume
-		    case 0xC: // set instrument volume
-		      tracks[t][k].command = 22;
-		      tracks[t][k].param1 = (0x3F - (event->byte1 & 15)) >> 4;
-		      tracks[t][k].param2 = (0x3F - (event->byte1 & 15)) & 15;
-		      break;
+                    case 0xA: // set carrier volume
+                    case 0xC: // set instrument volume
+                      tracks[t][k].command = 22;
+                      tracks[t][k].param1 = (0x3F - (event->byte1 & 15)) >> 4;
+                      tracks[t][k].param2 = (0x3F - (event->byte1 & 15)) & 15;
+                      break;
 
-		    case 0xB: // set modulator volume
-		      tracks[t][k].command = 21;
-		      tracks[t][k].param1 = (0x3F - (event->byte1 & 15)) >> 4;
-		      tracks[t][k].param2 = (0x3F - (event->byte1 & 15)) & 15;
-		      break;
+                    case 0xB: // set modulator volume
+                      tracks[t][k].command = 21;
+                      tracks[t][k].param1 = (0x3F - (event->byte1 & 15)) >> 4;
+                      tracks[t][k].param2 = (0x3F - (event->byte1 & 15)) & 15;
+                      break;
 
-		    case 0xE: // set panning
-		      break;
+                    case 0xE: // set panning
+                      break;
 
-		    case 0xF: // set speed
-		      tracks[t][k].command = 13;
-		      tracks[t][k].param2 = event->byte1 & 15;
-		      break;
-		    }
-		}
-	    }
+                    case 0xF: // set speed
+                      tracks[t][k].command = 13;
+                      tracks[t][k].param2 = event->byte1 & 15;
+                      break;
+                    }
+                }
+            }
 
-	  t++;
-	}
+          t++;
+        }
     }
 
   delete [] pattern;
@@ -212,16 +212,16 @@ bool CdtmLoader::load(const std::string &filename, const CFileProvider &fp)
   for (i=0;i<100;i++)
     {
       if (order[i] >= 0x80)
-	{
-	  length = i;
+        {
+          length = i;
 
-	  if (order[i] == 0xFF)
-	    restartpos = 0;
-	  else
-	    restartpos = order[i] - 0x80;
+          if (order[i] == 0xFF)
+            restartpos = 0;
+          else
+            restartpos = order[i] - 0x80;
 
-	  break;
-	}
+          break;
+        }
     }
 
   // initial speed
@@ -299,18 +299,18 @@ long CdtmLoader::unpack_pattern(unsigned char *ibuf, long ilen, unsigned char *o
       repeat_byte = input[input_length++];
 
       if ((repeat_byte & 0xF0) == 0xD0)
-	{
-	  repeat_counter = repeat_byte & 15;
-	  repeat_byte = input[input_length++];
-	}
+        {
+          repeat_counter = repeat_byte & 15;
+          repeat_byte = input[input_length++];
+        }
       else
-	repeat_counter = 1;
+        repeat_counter = 1;
 
       for (int i=0;i<repeat_counter;i++)
-	{
-	  if (output_length < olen)
-	    output[output_length++] = repeat_byte;
-	}
+        {
+          if (output_length < olen)
+            output[output_length++] = repeat_byte;
+        }
     }
 
   return output_length;

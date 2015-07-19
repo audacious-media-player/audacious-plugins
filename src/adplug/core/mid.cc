@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2008 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -60,7 +60,7 @@
  *      Status:  LAA: now EGA and VGA lucas games work pretty well
  *
  * 10/15/2005: Changes by Simon Peter
- *	Added rhythm mode support for CMF format.
+ *      Added rhythm mode support for CMF format.
  *
  * 09/13/2008: Changes by Adam Nielsen (malvineous@shikadi.net)
  *      Fixed a couple of CMF rhythm mode bugs
@@ -97,8 +97,8 @@ void CmidPlayer::midiprintf(const char *format, ...)
 #define SIERRA_STYLE  8
 
 // AdLib melodic and rhythm mode defines
-#define ADLIB_MELODIC	0
-#define ADLIB_RYTHM	1
+#define ADLIB_MELODIC   0
+#define ADLIB_RYTHM     1
 
 // File types
 #define FILE_LUCAS      1
@@ -140,8 +140,8 @@ unsigned char CmidPlayer::datalook(long pos)
 
 unsigned long CmidPlayer::getnexti(unsigned long num)
 {
-	unsigned long v=0;
-	unsigned long i;
+        unsigned long v=0;
+        unsigned long i;
 
     for (i=0; i<num; i++)
         {
@@ -152,8 +152,8 @@ unsigned long CmidPlayer::getnexti(unsigned long num)
 
 unsigned long CmidPlayer::getnext(unsigned long num)
 {
-	unsigned long v=0;
-	unsigned long i;
+        unsigned long v=0;
+        unsigned long i;
 
     for (i=0; i<num; i++)
         {
@@ -166,16 +166,16 @@ unsigned long CmidPlayer::getnext(unsigned long num)
 unsigned long CmidPlayer::getval()
 {
     int v=0;
-	unsigned char b;
+        unsigned char b;
 
     b=(unsigned char)getnext(1);
-	v=b&0x7f;
-	while ((b&0x80) !=0)
-		{
+        v=b&0x7f;
+        while ((b&0x80) !=0)
+                {
         b=(unsigned char)getnext(1);
         v = (v << 7) + (b & 0x7F);
-		}
-	return(v);
+                }
+        return(v);
 }
 
 bool CmidPlayer::load_sierra_ins(const std::string &fname, const CFileProvider &fp)
@@ -190,8 +190,8 @@ bool CmidPlayer::load_sierra_ins(const std::string &fname, const CFileProvider &
     j=0;
     for(i=strlen(pfilename)-1; i >= 0; i--)
       if(pfilename[i] == '/' || pfilename[i] == '\\') {
-	j = i+1;
-	break;
+        j = i+1;
+        break;
       }
     sprintf(pfilename+j+3,"patch.003");
 
@@ -235,9 +235,9 @@ bool CmidPlayer::load_sierra_ins(const std::string &fname, const CFileProvider &
 
             for (j=0; j<11; j++)
                 midiprintf ("%02X ",myinsbank[l][j]);
-			stins++;
+                        stins++;
             }
-		f->ignore(2);
+                f->ignore(2);
         }
 
     fp.close(f);
@@ -261,9 +261,9 @@ void CmidPlayer::sierra_next_section()
        getnext(1);
        curtrack=j; j++;
        track[curtrack].on=1;
-	   track[curtrack].spos = getnext(1);
-	   track[curtrack].spos += (getnext(1) << 8) + 4;	//4 best usually +3? not 0,1,2 or 5
-//       track[curtrack].spos=getnext(1)+(getnext(1)<<8)+4;		// dynamite!: doesn't optimize correctly!!
+           track[curtrack].spos = getnext(1);
+           track[curtrack].spos += (getnext(1) << 8) + 4;       //4 best usually +3? not 0,1,2 or 5
+//       track[curtrack].spos=getnext(1)+(getnext(1)<<8)+4;             // dynamite!: doesn't optimize correctly!!
        track[curtrack].tend=flen; //0xFC will kill it
        track[curtrack].iwait=0;
        track[curtrack].pv=0;
@@ -302,20 +302,20 @@ bool CmidPlayer::load(const std::string &filename, const CFileProvider &fp)
             if (s[1]=='T' && s[2]=='M' && s[3]=='F') good=FILE_CMF;
             break;
         case 0x84:
-	  if (s[1]==0x00 && load_sierra_ins(filename, fp)) {
-	    if (s[2]==0xf0)
-	      good=FILE_ADVSIERRA;
-	    else
-	      good=FILE_SIERRA;
-	  }
-	  break;
+          if (s[1]==0x00 && load_sierra_ins(filename, fp)) {
+            if (s[2]==0xf0)
+              good=FILE_ADVSIERRA;
+            else
+              good=FILE_SIERRA;
+          }
+          break;
         default:
             if (s[4]=='A' && s[5]=='D') good=FILE_OLDLUCAS;
             break;
         }
 
     if (good!=0)
-		subsongs=1;
+                subsongs=1;
     else {
       fp.close(f);
       return false;
@@ -380,7 +380,7 @@ void CmidPlayer::midi_fm_instrument(int voice, unsigned char *inst)
 
 void CmidPlayer::midi_fm_percussion(int ch, unsigned char *inst)
 {
-  int	opadd = map_chan[ch - 12];
+  int   opadd = map_chan[ch - 12];
 
   midi_write_adlib(0x20 + opadd, inst[0]);
   midi_write_adlib(0x40 + opadd, inst[2]);
@@ -422,12 +422,12 @@ void CmidPlayer::midi_fm_playnote(int voice, int note, int volume)
 {
     int freq=fnums[note%12];
     int oct=note/12;
-	int c;
+        int c;
 
     midi_fm_volume(voice,volume);
     midi_write_adlib(0xa0+voice,(unsigned char)(freq&0xff));
 
-	c=((freq&0x300) >> 8)+((oct&7)<<2) + (adlib_mode == ADLIB_MELODIC || voice < 6 ? (1<<5) : 0);
+        c=((freq&0x300) >> 8)+((oct&7)<<2) + (adlib_mode == ADLIB_MELODIC || voice < 6 ? (1<<5) : 0);
     midi_write_adlib(0xb0+voice,(unsigned char)c);
 }
 
@@ -486,18 +486,18 @@ bool CmidPlayer::update()
         {
         pos=track[curtrack].pos;
 
-		v=getnext(1);
+                v=getnext(1);
 
         //  This is to do implied MIDI events.
         if (v<0x80) {v=track[curtrack].pv; pos--;}
         track[curtrack].pv=(unsigned char)v;
 
-		c=v&0x0f;
+                c=v&0x0f;
         midiprintf ("[%2X]",v);
         switch(v&0xf0)
             {
-			case 0x80: /*note off*/
-				note=getnext(1); vel=getnext(1);
+                        case 0x80: /*note off*/
+                                note=getnext(1); vel=getnext(1);
                 for (i=0; i<9; i++)
                     if (chp[i][0]==c && chp[i][1]==note)
                         {
@@ -509,41 +509,41 @@ bool CmidPlayer::update()
               //  doing=0;
                 note=getnext(1); vel=getnext(1);
 
-		if(adlib_mode == ADLIB_RYTHM)
-		  numchan = 6;
-		else
-		  numchan = 9;
+                if(adlib_mode == ADLIB_RYTHM)
+                  numchan = 6;
+                else
+                  numchan = 9;
 
                 if (ch[c].on!=0)
                 {
-		  for (i=0; i<18; i++)
+                  for (i=0; i<18; i++)
                     chp[i][2]++;
 
-		  if(c < 11 || adlib_mode == ADLIB_MELODIC) {
-		    j=0;
-		    on=-1;onl=0;
-		    for (i=0; i<numchan; i++)
-		      if (chp[i][0]==-1 && chp[i][2]>onl)
-			{ onl=chp[i][2]; on=i; j=1; }
+                  if(c < 11 || adlib_mode == ADLIB_MELODIC) {
+                    j=0;
+                    on=-1;onl=0;
+                    for (i=0; i<numchan; i++)
+                      if (chp[i][0]==-1 && chp[i][2]>onl)
+                        { onl=chp[i][2]; on=i; j=1; }
 
-		    if (on==-1)
-		      {
-			onl=0;
-			for (i=0; i<numchan; i++)
-			  if (chp[i][2]>onl)
-			    { onl=chp[i][2]; on=i; }
-		      }
+                    if (on==-1)
+                      {
+                        onl=0;
+                        for (i=0; i<numchan; i++)
+                          if (chp[i][2]>onl)
+                            { onl=chp[i][2]; on=i; }
+                      }
 
-		    if (j==0)
-		      midi_fm_endnote(on);
-		  } else
-		    on = percussion_map[c - 11];
+                    if (j==0)
+                      midi_fm_endnote(on);
+                  } else
+                    on = percussion_map[c - 11];
 
                   if (vel!=0 && ch[c].inum>=0 && ch[c].inum<128) {
                     if (adlib_mode == ADLIB_MELODIC || c < 12) // 11 == bass drum, handled like a normal instrument, on == channel 6 thanks to percussion_map[] above
-		      midi_fm_instrument(on,ch[c].ins);
-		    else
- 		      midi_fm_percussion(c, ch[c].ins);
+                      midi_fm_instrument(on,ch[c].ins);
+                    else
+                      midi_fm_percussion(c, ch[c].ins);
 
                     if (adlib_style & MIDI_STYLE) {
                         nv=((ch[c].vol*vel)/128);
@@ -559,24 +559,24 @@ bool CmidPlayer::update()
                         nv=vel;
                     }
 
-		    midi_fm_playnote(on,note+ch[c].nshift,nv*2); // sets freq in rhythm mode
+                    midi_fm_playnote(on,note+ch[c].nshift,nv*2); // sets freq in rhythm mode
                     chp[on][0]=c;
                     chp[on][1]=note;
                     chp[on][2]=0;
 
-		    if(adlib_mode == ADLIB_RYTHM && c >= 11) {
-		      // Still need to turn off the perc instrument before playing it again,
-		      // as not all songs send a noteoff.
-		      midi_write_adlib(0xbd, adlib_data[0xbd] & ~(0x10 >> (c - 11)));
-		      // Play the perc instrument
-		      midi_write_adlib(0xbd, adlib_data[0xbd] | (0x10 >> (c - 11)));
-		    }
+                    if(adlib_mode == ADLIB_RYTHM && c >= 11) {
+                      // Still need to turn off the perc instrument before playing it again,
+                      // as not all songs send a noteoff.
+                      midi_write_adlib(0xbd, adlib_data[0xbd] & ~(0x10 >> (c - 11)));
+                      // Play the perc instrument
+                      midi_write_adlib(0xbd, adlib_data[0xbd] | (0x10 >> (c - 11)));
+                    }
 
                   } else {
                     if (vel==0) { //same code as end note
-		        if (adlib_mode == ADLIB_RYTHM && c >= 11) {
-		            // Turn off the percussion instrument
-		            midi_write_adlib(0xbd, adlib_data[0xbd] & ~(0x10 >> (c - 11)));
+                        if (adlib_mode == ADLIB_RYTHM && c >= 11) {
+                            // Turn off the percussion instrument
+                            midi_write_adlib(0xbd, adlib_data[0xbd] & ~(0x10 >> (c - 11)));
                             //midi_fm_endnote(percussion_map[c]);
                             chp[percussion_map[c - 11]][0]=-1;
                         } else {
@@ -604,7 +604,7 @@ bool CmidPlayer::update()
                 /*  //this might all be good
                 for (i=0; i<9; i++)
                     if (chp[i][0]==c & chp[i][1]==note)
-                        
+
 midi_fm_playnote(i,note+cnote[c],my_midi_fm_vol_table[(cvols[c]*vel)/128]*2);
                 */
                 break;
@@ -638,21 +638,21 @@ midi_fm_playnote(i,note+cnote[c],my_midi_fm_vol_table[(cvols[c]*vel)/128]*2);
                     case 0x67:
                         midiprintf("Rhythm mode: %d\n", vel);
                         if ((adlib_style&CMF_STYLE)!=0) {
-			  adlib_mode=vel;
-			  if(adlib_mode == ADLIB_RYTHM)
-			    midi_write_adlib(0xbd, adlib_data[0xbd] | (1 << 5));
-			  else
-			    midi_write_adlib(0xbd, adlib_data[0xbd] & ~(1 << 5));
-			}
+                          adlib_mode=vel;
+                          if(adlib_mode == ADLIB_RYTHM)
+                            midi_write_adlib(0xbd, adlib_data[0xbd] | (1 << 5));
+                          else
+                            midi_write_adlib(0xbd, adlib_data[0xbd] & ~(1 << 5));
+                        }
                         break;
                     }
                 break;
             case 0xc0: /*patch change*/
-	      x=getnext(1);
-	      ch[c].inum=x;
-	      for (j=0; j<11; j++)
-		ch[c].ins[j]=myinsbank[ch[c].inum][j];
-	      break;
+              x=getnext(1);
+              ch[c].inum=x;
+              for (j=0; j<11; j++)
+                ch[c].ins[j]=myinsbank[ch[c].inum][j];
+              break;
             case 0xd0: /*chanel touch*/
                 x=getnext(1);
                 break;
@@ -665,27 +665,27 @@ midi_fm_playnote(i,note+cnote[c],my_midi_fm_vol_table[(cvols[c]*vel)/128]*2);
                     {
                     case 0xf0:
                     case 0xf7: /*sysex*/
-		      l=getval();
-		      if (datalook(pos+l)==0xf7)
-			i=1;
-		      midiprintf("{%d}",l);
-		      midiprintf("\n");
+                      l=getval();
+                      if (datalook(pos+l)==0xf7)
+                        i=1;
+                      midiprintf("{%d}",l);
+                      midiprintf("\n");
 
                         if (datalook(pos)==0x7d &&
                             datalook(pos+1)==0x10 &&
                             datalook(pos+2)<16)
-							{
+                                                        {
                             adlib_style=LUCAS_STYLE|MIDI_STYLE;
-							for (i=0; i<l; i++)
-								{
+                                                        for (i=0; i<l; i++)
+                                                                {
                                 midiprintf ("%x ",datalook(pos+i));
                                 if ((i-3)%10 == 0) midiprintf("\n");
-								}
+                                                                }
                             midiprintf ("\n");
                             getnext(1);
                             getnext(1);
-							c=getnext(1);
-							getnext(1);
+                                                        c=getnext(1);
+                                                        getnext(1);
 
                           //  getnext(22); //temp
                             ch[c].ins[0]=(unsigned char)((getnext(1)<<4)+getnext(1));
@@ -706,10 +706,10 @@ midi_fm_playnote(i,note+cnote[c],my_midi_fm_vol_table[(cvols[c]*vel)/128]*2);
                             //if ((i&1)==1) ch[c].ins[10]=1;
 
                             midiprintf ("\n%d: ",c);
-							for (i=0; i<11; i++)
+                                                        for (i=0; i<11; i++)
                                 midiprintf ("%2X ",ch[c].ins[i]);
                             getnext(l-26);
-							}
+                                                        }
                             else
                             {
                             midiprintf("\n");
@@ -718,8 +718,8 @@ midi_fm_playnote(i,note+cnote[c],my_midi_fm_vol_table[(cvols[c]*vel)/128]*2);
                             }
 
                         midiprintf("\n");
-						if(i==1)
-							getnext(1);
+                                                if(i==1)
+                                                        getnext(1);
                         break;
                     case 0xf1:
                         break;
@@ -767,10 +767,10 @@ midi_fm_playnote(i,note+cnote[c],my_midi_fm_vol_table[(cvols[c]*vel)/128]*2);
                                 midiprintf ("%2X ",getnext(1));
                             }
                         break;
-					}
+                                        }
                 break;
             default: midiprintf("!",v); /* if we get down here, a error occurred */
-			break;
+                        break;
             }
 
         if (pos < track[curtrack].tend)
@@ -784,7 +784,7 @@ midi_fm_playnote(i,note+cnote[c],my_midi_fm_vol_table[(cvols[c]*vel)/128]*2);
             if (w!=0)
                 {
                 midiprintf("\n<%d>",w);
-                f = 
+                f =
 ((float)w/(float)deltas)*((float)msqtr/(float)1000000);
                 if (doing==1) f=0; //not playing yet. don't wait yet
                 }
@@ -822,7 +822,7 @@ midi_fm_playnote(i,note+cnote[c],my_midi_fm_vol_table[(cvols[c]*vel)/128]*2);
             if (track[curtrack].on)
                 track[curtrack].iwait-=iwait;
 
-        
+
 fwait=1.0f/(((float)iwait/(float)deltas)*((float)msqtr/(float)1000000));
         }
         else
@@ -831,10 +831,10 @@ fwait=1.0f/(((float)iwait/(float)deltas)*((float)msqtr/(float)1000000));
     midiprintf ("\n");
     for (i=0; i<16; i++)
       if (track[i].on) {
-	if (track[i].pos < track[i].tend)
-	  midiprintf ("<%d>",track[i].iwait);
-	else
-	  midiprintf("stop");
+        if (track[i].pos < track[i].tend)
+          midiprintf ("<%d>",track[i].iwait);
+        else
+          midiprintf("stop");
       }
 
     /*
@@ -848,10 +848,10 @@ fwait=1.0f/(((float)iwait/(float)deltas)*((float)msqtr/(float)1000000));
             }
     */
 
-	if(ret)
-		return true;
-	else
-		return false;
+        if(ret)
+                return true;
+        else
+                return false;
 }
 
 float CmidPlayer::getrefresh()
@@ -871,7 +871,7 @@ void CmidPlayer::rewind(int subsong)
     for (i=0; i<128; i++)
         for (j=0; j<16; j++)
             myinsbank[i][j]=midi_fm_instruments[i][j];
-	for (i=0; i<16; i++)
+        for (i=0; i<16; i++)
         {
         ch[i].inum=0;
         for (j=0; j<11; j++)
@@ -940,11 +940,11 @@ void CmidPlayer::rewind(int subsong)
                    //the stuff in the cmf is click ticks per second..
 
                 i=getnexti(2);
-				if(i) title = (char *)data+i;
+                                if(i) title = (char *)data+i;
                 i=getnexti(2);
-				if(i) author = (char *)data+i;
+                                if(i) author = (char *)data+i;
                 i=getnexti(2);
-				if(i) remarks = (char *)data+i;
+                                if(i) remarks = (char *)data+i;
 
                 getnext(16); // channel in use table ..
                 i=getnexti(2); // num instr
@@ -1023,8 +1023,8 @@ void CmidPlayer::rewind(int subsong)
                 track[curtrack].spos=0x98;  //jump to midi music
                 break;
             case FILE_ADVSIERRA:
-	      memcpy(myinsbank, smyinsbank, 128 * 16);
-	      tins = stins;
+              memcpy(myinsbank, smyinsbank, 128 * 16);
+              tins = stins;
                 deltas=0x20;
                 getnext(11); //worthless empty space and "stuff" :)
 
@@ -1050,8 +1050,8 @@ void CmidPlayer::rewind(int subsong)
                 adlib_style=SIERRA_STYLE|MIDI_STYLE;  //advanced sierra tunes use volume
                 break;
             case FILE_SIERRA:
-	      memcpy(myinsbank, smyinsbank, 128 * 16);
-	      tins = stins;
+              memcpy(myinsbank, smyinsbank, 128 * 16);
+              tins = stins;
                 getnext(2);
                 deltas=0x20;
 
@@ -1091,20 +1091,20 @@ void CmidPlayer::rewind(int subsong)
 
 std::string CmidPlayer::gettype()
 {
-	switch(type) {
-	case FILE_LUCAS:
-		return std::string("LucasArts AdLib MIDI");
-	case FILE_MIDI:
-		return std::string("General MIDI");
-	case FILE_CMF:
-		return std::string("Creative Music Format (CMF MIDI)");
-	case FILE_OLDLUCAS:
-		return std::string("Lucasfilm Adlib MIDI");
-	case FILE_ADVSIERRA:
-		return std::string("Sierra On-Line VGA MIDI");
-	case FILE_SIERRA:
-		return std::string("Sierra On-Line EGA MIDI");
-	default:
-		return std::string("MIDI unknown");
-	}
+        switch(type) {
+        case FILE_LUCAS:
+                return std::string("LucasArts AdLib MIDI");
+        case FILE_MIDI:
+                return std::string("General MIDI");
+        case FILE_CMF:
+                return std::string("Creative Music Format (CMF MIDI)");
+        case FILE_OLDLUCAS:
+                return std::string("Lucasfilm Adlib MIDI");
+        case FILE_ADVSIERRA:
+                return std::string("Sierra On-Line VGA MIDI");
+        case FILE_SIERRA:
+                return std::string("Sierra On-Line EGA MIDI");
+        default:
+                return std::string("MIDI unknown");
+        }
 }

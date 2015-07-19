@@ -28,10 +28,10 @@ class CdmoLoader: public Cs3mPlayer
 
   CdmoLoader(Copl *newopl) : Cs3mPlayer(newopl) { };
 
-  bool	load(const std::string &filename, const CFileProvider &fp);
+  bool  load(const std::string &filename, const CFileProvider &fp);
 
-  std::string	gettype();
-  std::string	getauthor();
+  std::string   gettype();
+  std::string   getauthor();
 
  private:
 
@@ -39,7 +39,7 @@ class CdmoLoader: public Cs3mPlayer
   public:
     bool decrypt(unsigned char *buf, long len);
     long unpack(unsigned char *ibuf, unsigned char *obuf,
-		unsigned long outputsize);
+                unsigned long outputsize);
 
   private:
     unsigned short brand(unsigned short range);

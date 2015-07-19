@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2006 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -42,14 +42,14 @@ CPlayer *CksmPlayer::factory(Copl *newopl)
 
 bool CksmPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
-  binistream	*f;
-  int		i;
-  char		*fn = new char[filename.length() + 9];
+  binistream    *f;
+  int           i;
+  char          *fn = new char[filename.length() + 9];
 
   // file validation section
   if(!fp.extension(filename, ".ksm")) {
     AdPlug_LogWrite("CksmPlayer::load(,\"%s\"): File doesn't have '.ksm' "
-		    "extension! Rejected!\n", filename.c_str());
+                    "extension! Rejected!\n", filename.c_str());
     return false;
   }
   AdPlug_LogWrite("*** CksmPlayer::load(,\"%s\") ***\n", filename.c_str());
@@ -106,123 +106,123 @@ bool CksmPlayer::update()
     {
       bufnum = 0;
       while (count >= countstop)
-	{
-	  templong = note[nownote];
-	  track = (int)((templong>>8)&15);
-	  if ((templong&192) == 0)
-	    {
-	      i = 0;
+        {
+          templong = note[nownote];
+          track = (int)((templong>>8)&15);
+          if ((templong&192) == 0)
+            {
+              i = 0;
 
-	      while ((i < numchans) &&
-		     ((chanfreq[i] != (templong&63)) ||
-		      (chantrack[i] != ((templong>>8)&15))))
-		i++;
-	      if (i < numchans)
-		{
-		  databuf[bufnum] = (char)0; bufnum++;
-		  databuf[bufnum] = (unsigned char)(0xb0+i); bufnum++;
-		  databuf[bufnum] = (unsigned char)((adlibfreq[templong&63]>>8)&223); bufnum++;
-		  chanfreq[i] = 0;
-		  chanage[i] = 0;
-		}
-	    }
-	  else
-	    {
-	      volevel = trvol[track];
-	      if ((templong&192) == 128)
-		{
-		  volevel -= 4;
-		  if (volevel < 0)
-		    volevel = 0;
-		}
-	      if ((templong&192) == 192)
-		{
-		  volevel += 4;
-		  if (volevel > 63)
-		    volevel = 63;
-		}
-	      if (track < 11)
-		{
-		  temp = 0;
-		  i = numchans;
-		  for(j=0;j<numchans;j++)
-		    if ((countstop - chanage[j] >= temp) && (chantrack[j] == track))
-		      {
-			temp = countstop - chanage[j];
-			i = j;
-		      }
-		  if (i < numchans)
-		    {
-		      databuf[bufnum] = (char)0, bufnum++;
-		      databuf[bufnum] = (unsigned char)(0xb0+i); bufnum++;
-		      databuf[bufnum] = (unsigned char)0; bufnum++;
-		      volval = (inst[trinst[track]][1]&192)+(volevel^63);
-		      databuf[bufnum] = (char)0, bufnum++;
-		      databuf[bufnum] = (unsigned char)(0x40+op_table[i]+3); bufnum++;
-		      databuf[bufnum] = (unsigned char)volval; bufnum++;
-		      databuf[bufnum] = (char)0, bufnum++;
-		      databuf[bufnum] = (unsigned char)(0xa0+i); bufnum++;
-		      databuf[bufnum] = (unsigned char)(adlibfreq[templong&63]&255); bufnum++;
-		      databuf[bufnum] = (char)0, bufnum++;
-		      databuf[bufnum] = (unsigned char)(0xb0+i); bufnum++;
-		      databuf[bufnum] = (unsigned char)((adlibfreq[templong&63]>>8)|32); bufnum++;
-		      chanfreq[i] = templong&63;
-		      chanage[i] = countstop;
-		    }
-		}
-	      else if ((drumstat&32) > 0)
-		{
-		  freq = adlibfreq[templong&63];
-		  switch(track)
-		    {
-		    case 11: drumnum = 16; chan = 6; freq -= 2048; break;
-		    case 12: drumnum = 8; chan = 7; freq -= 2048; break;
-		    case 13: drumnum = 4; chan = 8; break;
-		    case 14: drumnum = 2; chan = 8; break;
-		    case 15: drumnum = 1; chan = 7; freq -= 2048; break;
-		    }
-		  databuf[bufnum] = (char)0, bufnum++;
-		  databuf[bufnum] = (unsigned char)(0xa0+chan); bufnum++;
-		  databuf[bufnum] = (unsigned char)(freq&255); bufnum++;
-		  databuf[bufnum] = (char)0, bufnum++;
-		  databuf[bufnum] = (unsigned char)(0xb0+chan); bufnum++;
-		  databuf[bufnum] = (unsigned char)((freq>>8)&223); bufnum++;
-		  databuf[bufnum] = (char)0, bufnum++;
-		  databuf[bufnum] = (unsigned char)(0xbd); bufnum++;
-		  databuf[bufnum] = (unsigned char)(drumstat&(255-drumnum)); bufnum++;
-		  drumstat |= drumnum;
-		  if ((track == 11) || (track == 12) || (track == 14))
-		    {
-		      volval = (inst[trinst[track]][1]&192)+(volevel^63);
-		      databuf[bufnum] = (char)0, bufnum++;
-		      databuf[bufnum] = (unsigned char)(0x40+op_table[chan]+3); bufnum++;
-		      databuf[bufnum] = (unsigned char)(volval); bufnum++;
-		    }
-		  else
-		    {
-		      volval = (inst[trinst[track]][6]&192)+(volevel^63);
-		      databuf[bufnum] = (char)0, bufnum++;
-		      databuf[bufnum] = (unsigned char)(0x40+op_table[chan]); bufnum++;
-		      databuf[bufnum] = (unsigned char)(volval); bufnum++;
-		    }
-		  databuf[bufnum] = (char)0, bufnum++;
-		  databuf[bufnum] = (unsigned char)(0xbd); bufnum++;
-		  databuf[bufnum] = (unsigned char)(drumstat); bufnum++;
-		}
-	    }
-	  nownote++;
-	  if (nownote >= numnotes) {
-	    nownote = 0;
-	    songend = true;
-	  }
-	  templong = note[nownote];
-	  if (nownote == 0)
-	    count = (templong>>12)-1;
-	  quanter = (240/trquant[(templong>>8)&15]);
-	  countstop = (((templong>>12)+(quanter>>1)) / quanter) * quanter;
-	}
+              while ((i < numchans) &&
+                     ((chanfreq[i] != (templong&63)) ||
+                      (chantrack[i] != ((templong>>8)&15))))
+                i++;
+              if (i < numchans)
+                {
+                  databuf[bufnum] = (char)0; bufnum++;
+                  databuf[bufnum] = (unsigned char)(0xb0+i); bufnum++;
+                  databuf[bufnum] = (unsigned char)((adlibfreq[templong&63]>>8)&223); bufnum++;
+                  chanfreq[i] = 0;
+                  chanage[i] = 0;
+                }
+            }
+          else
+            {
+              volevel = trvol[track];
+              if ((templong&192) == 128)
+                {
+                  volevel -= 4;
+                  if (volevel < 0)
+                    volevel = 0;
+                }
+              if ((templong&192) == 192)
+                {
+                  volevel += 4;
+                  if (volevel > 63)
+                    volevel = 63;
+                }
+              if (track < 11)
+                {
+                  temp = 0;
+                  i = numchans;
+                  for(j=0;j<numchans;j++)
+                    if ((countstop - chanage[j] >= temp) && (chantrack[j] == track))
+                      {
+                        temp = countstop - chanage[j];
+                        i = j;
+                      }
+                  if (i < numchans)
+                    {
+                      databuf[bufnum] = (char)0, bufnum++;
+                      databuf[bufnum] = (unsigned char)(0xb0+i); bufnum++;
+                      databuf[bufnum] = (unsigned char)0; bufnum++;
+                      volval = (inst[trinst[track]][1]&192)+(volevel^63);
+                      databuf[bufnum] = (char)0, bufnum++;
+                      databuf[bufnum] = (unsigned char)(0x40+op_table[i]+3); bufnum++;
+                      databuf[bufnum] = (unsigned char)volval; bufnum++;
+                      databuf[bufnum] = (char)0, bufnum++;
+                      databuf[bufnum] = (unsigned char)(0xa0+i); bufnum++;
+                      databuf[bufnum] = (unsigned char)(adlibfreq[templong&63]&255); bufnum++;
+                      databuf[bufnum] = (char)0, bufnum++;
+                      databuf[bufnum] = (unsigned char)(0xb0+i); bufnum++;
+                      databuf[bufnum] = (unsigned char)((adlibfreq[templong&63]>>8)|32); bufnum++;
+                      chanfreq[i] = templong&63;
+                      chanage[i] = countstop;
+                    }
+                }
+              else if ((drumstat&32) > 0)
+                {
+                  freq = adlibfreq[templong&63];
+                  switch(track)
+                    {
+                    case 11: drumnum = 16; chan = 6; freq -= 2048; break;
+                    case 12: drumnum = 8; chan = 7; freq -= 2048; break;
+                    case 13: drumnum = 4; chan = 8; break;
+                    case 14: drumnum = 2; chan = 8; break;
+                    case 15: drumnum = 1; chan = 7; freq -= 2048; break;
+                    }
+                  databuf[bufnum] = (char)0, bufnum++;
+                  databuf[bufnum] = (unsigned char)(0xa0+chan); bufnum++;
+                  databuf[bufnum] = (unsigned char)(freq&255); bufnum++;
+                  databuf[bufnum] = (char)0, bufnum++;
+                  databuf[bufnum] = (unsigned char)(0xb0+chan); bufnum++;
+                  databuf[bufnum] = (unsigned char)((freq>>8)&223); bufnum++;
+                  databuf[bufnum] = (char)0, bufnum++;
+                  databuf[bufnum] = (unsigned char)(0xbd); bufnum++;
+                  databuf[bufnum] = (unsigned char)(drumstat&(255-drumnum)); bufnum++;
+                  drumstat |= drumnum;
+                  if ((track == 11) || (track == 12) || (track == 14))
+                    {
+                      volval = (inst[trinst[track]][1]&192)+(volevel^63);
+                      databuf[bufnum] = (char)0, bufnum++;
+                      databuf[bufnum] = (unsigned char)(0x40+op_table[chan]+3); bufnum++;
+                      databuf[bufnum] = (unsigned char)(volval); bufnum++;
+                    }
+                  else
+                    {
+                      volval = (inst[trinst[track]][6]&192)+(volevel^63);
+                      databuf[bufnum] = (char)0, bufnum++;
+                      databuf[bufnum] = (unsigned char)(0x40+op_table[chan]); bufnum++;
+                      databuf[bufnum] = (unsigned char)(volval); bufnum++;
+                    }
+                  databuf[bufnum] = (char)0, bufnum++;
+                  databuf[bufnum] = (unsigned char)(0xbd); bufnum++;
+                  databuf[bufnum] = (unsigned char)(drumstat); bufnum++;
+                }
+            }
+          nownote++;
+          if (nownote >= numnotes) {
+            nownote = 0;
+            songend = true;
+          }
+          templong = note[nownote];
+          if (nownote == 0)
+            count = (templong>>12)-1;
+          quanter = (240/trquant[(templong>>8)&15]);
+          countstop = (((templong>>12)+(quanter>>1)) / quanter) * quanter;
+        }
       for(i=0;i<bufnum;i+=3)
-	opl->write(databuf[i+1],databuf[i+2]);
+        opl->write(databuf[i+1],databuf[i+2]);
     }
   return !songend;
 }
@@ -266,18 +266,18 @@ void CksmPlayer::rewind(int subsong)
   for(i=0;i<16;i++)
     if ((trchan[i] > 0) && (j < numchans))
       {
-	k = trchan[i];
-	while ((j < numchans) && (k > 0))
-	  {
-	    chantrack[j] = i;
-	    k--;
-	    j++;
-	  }
+        k = trchan[i];
+        while ((j < numchans) && (k > 0))
+          {
+            chantrack[j] = i;
+            k--;
+            j++;
+          }
       }
   for(i=0;i<numchans;i++)
     {
       for(j=0;j<11;j++)
-	instbuf[j] = inst[trinst[chantrack[i]]][j];
+        instbuf[j] = inst[trinst[chantrack[i]]][j];
       instbuf[1] = ((instbuf[1]&192)|(63-trvol[chantrack[i]]));
       setinst(i,instbuf[0],instbuf[1],instbuf[2],instbuf[3],instbuf[4],instbuf[5],instbuf[6],instbuf[7],instbuf[8],instbuf[9],instbuf[10]);
       chanfreq[i] = 0;
@@ -311,10 +311,10 @@ void CksmPlayer::loadinsts(binistream *f)
 }
 
 void CksmPlayer::setinst(int chan,
-			 unsigned char v0,unsigned char v1,unsigned char v2,
-			 unsigned char v3,unsigned char v4,unsigned char v5,
-			 unsigned char v6,unsigned char v7,unsigned char v8,
-			 unsigned char v9,unsigned char v10)
+                         unsigned char v0,unsigned char v1,unsigned char v2,
+                         unsigned char v3,unsigned char v4,unsigned char v5,
+                         unsigned char v6,unsigned char v7,unsigned char v8,
+                         unsigned char v9,unsigned char v10)
 {
   int offs;
 

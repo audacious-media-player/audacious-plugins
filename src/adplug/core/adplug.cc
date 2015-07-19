@@ -1,17 +1,17 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2008 Simon Peter <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -118,8 +118,8 @@ const CPlayerDesc CAdPlug::allplayers[] = {
 
 const CPlayers &CAdPlug::init_players(const CPlayerDesc pd[])
 {
-  static CPlayers	initplayers;
-  unsigned int		i;
+  static CPlayers       initplayers;
+  unsigned int          i;
 
   for(i = 0; pd[i].factory; i++)
     initplayers.push_back(&pd[i]);
@@ -131,11 +131,11 @@ const CPlayers CAdPlug::players = CAdPlug::init_players(CAdPlug::allplayers);
 CAdPlugDatabase *CAdPlug::database = 0;
 
 CPlayer *CAdPlug::factory(const std::string &fn, Copl *opl, const CPlayers &pl,
-			  const CFileProvider &fp)
+                          const CFileProvider &fp)
 {
-  CPlayer			*p;
-  CPlayers::const_iterator	i;
-  unsigned int			j;
+  CPlayer                       *p;
+  CPlayers::const_iterator      i;
+  unsigned int                  j;
 
   AdPlug_LogWrite("*** CAdPlug::factory(\"%s\",opl,fp) ***\n", fn.c_str());
 
@@ -143,15 +143,15 @@ CPlayer *CAdPlug::factory(const std::string &fn, Copl *opl, const CPlayers &pl,
   for(i = pl.begin(); i != pl.end(); i++)
     for(j = 0; (*i)->get_extension(j); j++)
       if(fp.extension(fn, (*i)->get_extension(j))) {
-	AdPlug_LogWrite("Trying direct hit: %s\n", (*i)->filetype.c_str());
-	if((p = (*i)->factory(opl))) {
-	  if(p->load(fn, fp)) {
-	    AdPlug_LogWrite("got it!\n");
-	    AdPlug_LogWrite("--- CAdPlug::factory ---\n");
-	    return p;
-	  } else
-	    delete p;
-	}
+        AdPlug_LogWrite("Trying direct hit: %s\n", (*i)->filetype.c_str());
+        if((p = (*i)->factory(opl))) {
+          if(p->load(fn, fp)) {
+            AdPlug_LogWrite("got it!\n");
+            AdPlug_LogWrite("--- CAdPlug::factory ---\n");
+            return p;
+          } else
+            delete p;
+        }
       }
 
   // Try all players, one by one
@@ -161,9 +161,9 @@ CPlayer *CAdPlug::factory(const std::string &fn, Copl *opl, const CPlayers &pl,
       if(p->load(fn, fp)) {
         AdPlug_LogWrite("got it!\n");
         AdPlug_LogWrite("--- CAdPlug::factory ---\n");
-	return p;
+        return p;
       } else
-	delete p;
+        delete p;
     }
   }
 
