@@ -84,12 +84,12 @@ int PlaylistWidget::indexToRow (const QModelIndex & index)
     return proxyModel->mapToSource (index).row ();
 }
 
-void PlaylistWidget::keyPressEvent (QKeyEvent * e)
+void PlaylistWidget::keyPressEvent (QKeyEvent * event)
 {
-    switch (e->modifiers ())
+    switch (event->modifiers ())
     {
     case Qt::NoModifier:
-        switch (e->key ())
+        switch (event->key ())
         {
         case Qt::Key_Escape:
             scrollToCurrent ();
@@ -132,11 +132,26 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * e)
         break;
     }
 
-     QTreeView::keyPressEvent (e);
+     QTreeView::keyPressEvent (event);
+}
+
+void PlaylistWidget::mousePressEvent (QMouseEvent * event)
+{
+    QModelIndex index = indexAt (event->pos ());
+
+    if (! index.isValid ())
+        return;
+
+    QTreeView::mousePressEvent (event);
 }
 
 void PlaylistWidget::mouseDoubleClickEvent (QMouseEvent * event)
 {
+    QModelIndex index = indexAt (event->pos ());
+
+    if (! index.isValid ())
+        return;
+
     if (event->button () == Qt::LeftButton)
         playCurrentIndex ();
 }
