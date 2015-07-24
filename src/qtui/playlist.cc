@@ -285,7 +285,7 @@ void PlaylistWidget::update (const Playlist::Update & update)
 
 void PlaylistWidget::playCurrentIndex ()
 {
-    aud_playlist_set_position (playlist (), indexToRow (currentIndex ()));
+    aud_playlist_set_position (playlist (), currentIndex ().row ());
     aud_playlist_play (playlist ());
 }
 
@@ -296,7 +296,7 @@ void PlaylistWidget::deleteCurrentSelection ()
 
 void PlaylistWidget::toggleQueue ()
 {
-    int row = indexToRow (currentIndex ());
+    int row = currentIndex ().row ();
     int at = aud_playlist_queue_find_entry (playlist (), row);
 
     if (at < 0)
