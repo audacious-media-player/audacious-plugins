@@ -100,8 +100,7 @@ void PlaylistTabs::addRemovePlaylists ()
 
 void PlaylistTabs::updateTitles ()
 {
-    int tabs = count ();
-    for (int i = 0; i < tabs; i ++)
+    for (int i = 0; i < count (); i ++)
         setTabText (i, (const char *) aud_playlist_get_title (i));
 }
 
@@ -240,7 +239,19 @@ PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)
     connect (this, &QTabBar::tabCloseRequested, this, &PlaylistTabBar::handleCloseRequest);
 }
 
-void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent *e)
+void PlaylistTabBar::mousePressEvent (QMouseEvent * e)
+{
+    if (e->button () == Qt::MidButton)
+    {
+        int index = tabAt (e->pos ());
+        handleCloseRequest (index);
+        e->accept ();
+    }
+
+    QTabBar::mousePressEvent (e);
+}
+
+void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent * e)
 {
     PlaylistTabs *p = (PlaylistTabs *) parent();
 

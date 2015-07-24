@@ -81,7 +81,8 @@ public:
     void handleCloseRequest (int idx);
 
 protected:
-    void mouseDoubleClickEvent (QMouseEvent *e);
+    void mousePressEvent (QMouseEvent * e);
+    void mouseDoubleClickEvent (QMouseEvent * e);
 };
 
 #endif
