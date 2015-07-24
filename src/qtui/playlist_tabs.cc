@@ -253,12 +253,11 @@ void PlaylistTabBar::mousePressEvent (QMouseEvent * e)
 
 void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent * e)
 {
-    PlaylistTabs *p = (PlaylistTabs *) parent();
-
-    int idx = tabAt (e->pos());
-    if (idx < 0)
+    int idx = tabAt (e->pos ());
+    if (idx < 0 || e->button () != Qt::LeftButton)
         return;
 
+    PlaylistTabs * p = (PlaylistTabs *) parent ();
     p->editTab (idx);
 }
 
