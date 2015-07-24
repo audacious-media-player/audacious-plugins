@@ -59,45 +59,21 @@ private:
     char m_delay[VisBands] {};
 };
 
-static void hsv_to_rgb (float h, float s, float v, float * r, float * g, float * b)
-{
-    for (; h >= 2; h -= 2)
-    {
-        float * p = r;
-        r = g;
-        g = b;
-        b = p;
-    }
-
-    if (h < 1)
-    {
-        * r = 1;
-        * g = 0;
-        * b = 1 - h;
-    }
-    else
-    {
-        * r = 1;
-        * g = h - 1;
-        * b = 0;
-    }
-
-    * r = v * (1 - s * (1 - * r));
-    * g = v * (1 - s * (1 - * g));
-    * b = v * (1 - s * (1 - * b));
-}
-
 static void get_color (int i, QColor & color, QColor & shadow)
 {
-    float h = 5;
-    float s = 1 - 0.9 * i / (VisBands - 1);
-    float v = 0.75 + 0.25 * i / (VisBands - 1);
+    color = QWidget ().palette ().color (QPalette::Highlight);
 
-    float r, g, b;
-    hsv_to_rgb (h, s, v, & r, & g, & b);
+    qreal h, s, v;
+    color.getHsvF (& h, & s, & v);
 
-    color = QColor (r * 255, g * 255, b * 255);
-    shadow = QColor (r * 77, g * 77, b * 77);
+    if (s < 0.1) /* monochrome theme? use blue instead */
+        h = 0.67;
+
+    s = 1 - 0.9 * i / (VisBands - 1);
+    v = 0.75 + 0.25 * i / (VisBands - 1);
+
+    color.setHsvF (h, s, v);
+    shadow = QColor (color.redF () * 77, color.greenF () * 77, color.blueF () * 77);
 }
 
 InfoVis::InfoVis (QWidget * parent) :
