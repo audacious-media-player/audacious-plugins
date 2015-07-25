@@ -100,7 +100,8 @@ void PlaylistTabs::addRemovePlaylists ()
 
 void PlaylistTabs::updateTitles ()
 {
-    for (int i = 0; i < count (); i ++)
+    int tabs = count ();
+    for (int i = 0; i < tabs; i ++)
         setTabText (i, (const char *) aud_playlist_get_title (i));
 }
 
