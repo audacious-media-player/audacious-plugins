@@ -299,7 +299,7 @@ static void update_lyrics_window(const char *title, const char *artist, const ch
 
     if (artist != nullptr)
     {
-        cursor.insertHtml (QString ("<br><i><b>") + QString (artist) + QString ("</b></i>"));
+        cursor.insertHtml (QString ("<br><i>") + QString (artist) + QString ("</i>"));
     }
 
     cursor.insertHtml ("<br><br>");
