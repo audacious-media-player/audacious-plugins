@@ -69,10 +69,14 @@ public:
 protected:
     virtual void resizeEvent (QResizeEvent * event)
     {
+	const QPixmap * pm = pixmap();
+	QSize sz = size();
+
 	QLabel::resizeEvent(event);
-	if ( ! origPixmap.isNull() &&
-		(size().width() < origSize.width() || size().height() < origSize.height() ||
-		 pixmap()->size().width() < origSize.width() || pixmap()->size().height() < origSize.height()))
+
+	if ( ! origPixmap.isNull() && pm && ! pm->isNull() &&
+		(sz.width() < origSize.width() || sz.height() < origSize.height() ||
+		 pm->size().width() < origSize.width() || pm->size().height() < origSize.height()))
 	    drawArt();
     }
 
