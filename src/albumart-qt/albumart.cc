@@ -39,7 +39,7 @@ public:
     void * get_qt_widget ();
 };
 
-#define MARGIN 3
+#define MARGIN 4
 
 class ArtLabel : public QLabel {
 public:
@@ -69,14 +69,11 @@ public:
 protected:
     virtual void resizeEvent (QResizeEvent * event)
     {
-	const QPixmap * pm = pixmap();
-	QSize sz = size();
-
 	QLabel::resizeEvent(event);
 
-	if ( ! origPixmap.isNull() && pm && ! pm->isNull() &&
-		(sz.width() < origSize.width() || sz.height() < origSize.height() ||
-		 pm->size().width() < origSize.width() || pm->size().height() < origSize.height()))
+	if ( ! origPixmap.isNull() &&
+		(size().width() <= origSize.width() + MARGIN ||
+		 size().height() <= origSize.height() + MARGIN))
 	    drawArt();
     }
 
