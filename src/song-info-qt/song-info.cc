@@ -23,6 +23,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/probe.h>
 
 #include <libaudqt/libaudqt.h>
 #include <libaudqt/info-widget.h>
@@ -70,7 +71,8 @@ void SongInfo::update (void * unused, audqt::InfoWidget * widget)
 
     Tuple tuple = aud_playlist_entry_get_tuple (playlist, position);
     if (tuple)
-        widget->fillInfo (playlist, position, filename, tuple, decoder, false);
+        widget->fillInfo (playlist, position, filename, tuple, decoder,
+                aud_file_can_write_tuple (filename, decoder));
 }
 
 void SongInfo::clear (void * unused, audqt::InfoWidget * widget)
