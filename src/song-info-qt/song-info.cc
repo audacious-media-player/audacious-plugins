@@ -94,6 +94,8 @@ void * SongInfo::get_qt_widget ()
     hook_associate ("playback begin", (HookFunction) update, widget);
     hook_associate ("playback stop", (HookFunction) clear, widget);
 
+    update(nullptr, widget);
+
     return widget;
 }
 
