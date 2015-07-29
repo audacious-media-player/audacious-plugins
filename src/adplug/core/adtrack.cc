@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * adtrack.cpp - Adlib Tracker 1.0 Loader by Simon Peter <dn.tlp@gmx.net>
  *
@@ -37,176 +37,114 @@
 
 /*** Public methods ***/
 
-CPlayer *
-CadtrackLoader::factory (Copl * newopl)
+CPlayer *CadtrackLoader::factory(Copl *newopl)
 {
-  return new CadtrackLoader (newopl);
+  return new CadtrackLoader(newopl);
 }
 
-bool
-CadtrackLoader::load (VFSFile & fd, const CFileProvider & fp)
+bool CadtrackLoader::load(const std::string &filename, const CFileProvider &fp)
 {
-  binistream *f = fp.open (fd);
-  if (!f)
-    return false;
+  binistream *f = fp.open(filename); if(!f) return false;
   binistream *instf;
   char note[2];
   unsigned short rwp;
   unsigned char chp, octave, pnote = 0;
-  int i, j;
+  int i,j;
   AdTrackInst myinst;
-  std::string filename (fd.filename ());
 
   // file validation
-  if (!fp.extension (filename, ".sng") || fp.filesize (f) != 36000)
-  {
-    fp.close (f);
-    return false;
-  }
+  if(!fp.extension(filename, ".sng") || fp.filesize(f) != 36000)
+    { fp.close(f); return false; }
 
   // check for instruments file
-  std::string instfilename (filename, 0, filename.find_last_of ('.'));
+  std::string instfilename(filename, 0, filename.find_last_of('.'));
   instfilename += ".ins";
-  AdPlug_LogWrite ("CadtrackLoader::load(,\"%s\"): Checking for \"%s\"...\n",
-                   filename.c_str (), instfilename.c_str ());
-
-  VFSFile instfd (instfilename.c_str (), "rb");
-  instf = fp.open (instfd);
-  if (!instf || fp.filesize (instf) != 468)
-  {
-    fp.close (f);
-    return false;
-  }
+  AdPlug_LogWrite("CadtrackLoader::load(,\"%s\"): Checking for \"%s\"...\n",
+                  filename.c_str(), instfilename.c_str());
+  instf = fp.open(instfilename);
+  if(!instf || fp.filesize(instf) != 468) { fp.close(f); return false; }
 
   // give CmodPlayer a hint on what we're up to
-  realloc_patterns (1, 1000, 9);
-  realloc_instruments (9);
-  realloc_order (1);
-  init_trackord ();
-  flags = NoKeyOn;
-  (*order) = 0;
-  length = 1;
-  restartpos = 0;
-  bpm = 120;
-  initspeed = 3;
+  realloc_patterns(1,1000,9); realloc_instruments(9); realloc_order(1);
+  init_trackord(); flags = NoKeyOn;
+  (*order) = 0; length = 1; restartpos = 0; bpm = 120; initspeed = 3;
 
   // load instruments from instruments file
-  for (i = 0; i < 9; i++)
-  {
-    for (j = 0; j < 2; j++)
-    {
-      myinst.op[j].appampmod = instf->readInt (2);
-      myinst.op[j].appvib = instf->readInt (2);
-      myinst.op[j].maintsuslvl = instf->readInt (2);
-      myinst.op[j].keybscale = instf->readInt (2);
-      myinst.op[j].octave = instf->readInt (2);
-      myinst.op[j].freqrisevollvldn = instf->readInt (2);
-      myinst.op[j].softness = instf->readInt (2);
-      myinst.op[j].attack = instf->readInt (2);
-      myinst.op[j].decay = instf->readInt (2);
-      myinst.op[j].release = instf->readInt (2);
-      myinst.op[j].sustain = instf->readInt (2);
-      myinst.op[j].feedback = instf->readInt (2);
-      myinst.op[j].waveform = instf->readInt (2);
+  for(i=0;i<9;i++) {
+    for(j=0;j<2;j++) {
+      myinst.op[j].appampmod = instf->readInt(2);
+      myinst.op[j].appvib = instf->readInt(2);
+      myinst.op[j].maintsuslvl = instf->readInt(2);
+      myinst.op[j].keybscale = instf->readInt(2);
+      myinst.op[j].octave = instf->readInt(2);
+      myinst.op[j].freqrisevollvldn = instf->readInt(2);
+      myinst.op[j].softness = instf->readInt(2);
+      myinst.op[j].attack = instf->readInt(2);
+      myinst.op[j].decay = instf->readInt(2);
+      myinst.op[j].release = instf->readInt(2);
+      myinst.op[j].sustain = instf->readInt(2);
+      myinst.op[j].feedback = instf->readInt(2);
+      myinst.op[j].waveform = instf->readInt(2);
     }
-    convert_instrument (i, &myinst);
+    convert_instrument(i, &myinst);
   }
-  fp.close (instf);
+  fp.close(instf);
 
   // load file
-  for (rwp = 0; rwp < 1000; rwp++)
-    for (chp = 0; chp < 9; chp++)
-    {
+  for(rwp=0;rwp<1000;rwp++)
+    for(chp=0;chp<9;chp++) {
       // read next record
-      f->readString (note, 2);
-      octave = f->readInt (1);
-      f->ignore ();
-      switch (*note)
-      {
-      case 'C':
-        if (note[1] == '#')
-          pnote = 2;
-        else
-          pnote = 1;
-        break;
-      case 'D':
-        if (note[1] == '#')
-          pnote = 4;
-        else
-          pnote = 3;
-        break;
-      case 'E':
-        pnote = 5;
-        break;
-      case 'F':
-        if (note[1] == '#')
-          pnote = 7;
-        else
-          pnote = 6;
-        break;
-      case 'G':
-        if (note[1] == '#')
-          pnote = 9;
-        else
-          pnote = 8;
-        break;
-      case 'A':
-        if (note[1] == '#')
-          pnote = 11;
-        else
-          pnote = 10;
-        break;
-      case 'B':
-        pnote = 12;
-        break;
+      f->readString(note, 2); octave = f->readInt(1); f->ignore();
+      switch(*note) {
+      case 'C': if(note[1] == '#') pnote = 2; else pnote = 1; break;
+      case 'D': if(note[1] == '#') pnote = 4; else pnote = 3; break;
+      case 'E': pnote = 5; break;
+      case 'F': if(note[1] == '#') pnote = 7; else pnote = 6; break;
+      case 'G': if(note[1] == '#') pnote = 9; else pnote = 8; break;
+      case 'A': if(note[1] == '#') pnote = 11; else pnote = 10; break;
+      case 'B': pnote = 12; break;
       case '\0':
-        if (note[1] == '\0')
+        if(note[1] == '\0')
           tracks[chp][rwp].note = 127;
-        else
-        {
-          fp.close (f);
+        else {
+          fp.close(f);
           return false;
         }
         break;
-      default:
-        fp.close (f);
-        return false;
+      default: fp.close(f); return false;
       }
-      if ((*note) != '\0')
-      {
+      if((*note) != '\0') {
         tracks[chp][rwp].note = pnote + (octave * 12);
         tracks[chp][rwp].inst = chp + 1;
       }
     }
 
-  fp.close (f);
-  rewind (0);
+  fp.close(f);
+  rewind(0);
   return true;
 }
 
-float
-CadtrackLoader::getrefresh ()
+float CadtrackLoader::getrefresh()
 {
   return 18.2f;
 }
 
 /*** Private methods ***/
 
-void
-CadtrackLoader::convert_instrument (unsigned int n, AdTrackInst * i)
+void CadtrackLoader::convert_instrument(unsigned int n, AdTrackInst *i)
 {
   // Carrier "Amp Mod / Vib / Env Type / KSR / Multiple" register
   inst[n].data[2] = i->op[Carrier].appampmod ? 1 << 7 : 0;
   inst[n].data[2] += i->op[Carrier].appvib ? 1 << 6 : 0;
   inst[n].data[2] += i->op[Carrier].maintsuslvl ? 1 << 5 : 0;
   inst[n].data[2] += i->op[Carrier].keybscale ? 1 << 4 : 0;
-  inst[n].data[2] += (i->op[Carrier].octave + 1) & 0xffff;  // Bug in original tracker
+  inst[n].data[2] += (i->op[Carrier].octave + 1) & 0xffff; // Bug in original tracker
   // Modulator...
   inst[n].data[1] = i->op[Modulator].appampmod ? 1 << 7 : 0;
   inst[n].data[1] += i->op[Modulator].appvib ? 1 << 6 : 0;
   inst[n].data[1] += i->op[Modulator].maintsuslvl ? 1 << 5 : 0;
   inst[n].data[1] += i->op[Modulator].keybscale ? 1 << 4 : 0;
-  inst[n].data[1] += (i->op[Modulator].octave + 1) & 0xffff;    // Bug in original tracker
+  inst[n].data[1] += (i->op[Modulator].octave + 1) & 0xffff; // Bug in original tracker
 
   // Carrier "Key Scaling / Level" register
   inst[n].data[10] = (i->op[Carrier].freqrisevollvldn & 3) << 6;

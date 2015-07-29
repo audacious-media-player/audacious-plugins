@@ -19,7 +19,6 @@
  *
  */
 
-#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -237,54 +236,6 @@ ERR:
     return data;
 }
 
-static void parse_gain_text(const char *text, int *value, int *unit)
-{
-    int sign = 1;
-
-    *value = 0;
-    *unit = 1;
-
-    if (*text == '-')
-    {
-        sign = -1;
-        text++;
-    }
-
-    while (*text >= '0' && *text <= '9')
-    {
-        *value = *value * 10 + (*text - '0');
-        text++;
-    }
-
-    if (*text == '.')
-    {
-        text++;
-
-        while (*text >= '0' && *text <= '9' && *value < INT_MAX / 10)
-        {
-            *value = *value * 10 + (*text - '0');
-            *unit = *unit * 10;
-            text++;
-        }
-    }
-
-    *value = *value * sign;
-}
-
-static void set_gain_info(Tuple &tuple, Tuple::Field field, Tuple::Field unit_field, const char *text)
-{
-    int value, unit;
-
-    parse_gain_text(text, &value, &unit);
-
-    if (tuple.get_value_type (unit_field) == Tuple::Int)
-        value = value * (int64_t) tuple.get_int (unit_field) / unit;
-    else
-        tuple.set_int (unit_field, unit);
-
-    tuple.set_int (field, value);
-}
-
 static void add_text (Tuple & tuple, Tuple::Field field, const char * value)
 {
     String cur = tuple.get_str (field);
@@ -323,13 +274,13 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
     else if (!strcmp_nocase(key, "DATE"))
         tuple.set_int(Tuple::Year, atoi(value));
     else if (!strcmp_nocase(key, "REPLAYGAIN_TRACK_GAIN"))
-        set_gain_info(tuple, Tuple::TrackGain, Tuple::GainDivisor, value);
+        tuple.set_gain(Tuple::TrackGain, Tuple::GainDivisor, value);
     else if (!strcmp_nocase(key, "REPLAYGAIN_TRACK_PEAK"))
-        set_gain_info(tuple, Tuple::TrackPeak, Tuple::PeakDivisor, value);
+        tuple.set_gain(Tuple::TrackPeak, Tuple::PeakDivisor, value);
     else if (!strcmp_nocase(key, "REPLAYGAIN_ALBUM_GAIN"))
-        set_gain_info(tuple, Tuple::AlbumGain, Tuple::GainDivisor, value);
+        tuple.set_gain(Tuple::AlbumGain, Tuple::GainDivisor, value);
     else if (!strcmp_nocase(key, "REPLAYGAIN_ALBUM_PEAK"))
-        set_gain_info(tuple, Tuple::AlbumPeak, Tuple::PeakDivisor, value);
+        tuple.set_gain(Tuple::AlbumPeak, Tuple::PeakDivisor, value);
 }
 
 Tuple FLACng::read_tuple(const char *filename, VFSFile &file)

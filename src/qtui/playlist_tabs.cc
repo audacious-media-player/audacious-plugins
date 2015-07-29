@@ -240,14 +240,25 @@ PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)
     connect (this, &QTabBar::tabCloseRequested, this, &PlaylistTabBar::handleCloseRequest);
 }
 
-void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent *e)
+void PlaylistTabBar::mousePressEvent (QMouseEvent * e)
 {
-    PlaylistTabs *p = (PlaylistTabs *) parent();
+    if (e->button () == Qt::MidButton)
+    {
+        int index = tabAt (e->pos ());
+        handleCloseRequest (index);
+        e->accept ();
+    }
 
-    int idx = tabAt (e->pos());
-    if (idx < 0)
+    QTabBar::mousePressEvent (e);
+}
+
+void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent * e)
+{
+    int idx = tabAt (e->pos ());
+    if (idx < 0 || e->button () != Qt::LeftButton)
         return;
 
+    PlaylistTabs * p = (PlaylistTabs *) parent ();
     p->editTab (idx);
 }
 

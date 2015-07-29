@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Johannes Bjerregaard's JBM Adlib Music Format player for AdPlug
  * Written by Dennis Lindroos <lindroos@nls.fi>, February-March 2007
@@ -63,19 +63,18 @@ CPlayer *CjbmPlayer::factory(Copl *newopl)
   return new CjbmPlayer(newopl);
 }
 
-bool CjbmPlayer::load(VFSFile & fd, const CFileProvider & fp)
+bool CjbmPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
-  binistream *f = fp.open (fd);
-  std::string filename (fd.filename ());
-  int		filelen = fp.filesize(f);
-  int		i;
+  binistream    *f = fp.open(filename); if(!f) return false;
+  int           filelen = fp.filesize(f);
+  int           i;
 
   if (!filelen || !fp.extension(filename, ".jbm")) goto loaderr;
 
   // Allocate memory buffer m[] and read entire file into it
 
   m = new unsigned char[filelen];
-  if (f->readString((char *)m, filelen) != (unsigned int)filelen) goto loaderr;
+  if (f->readString((char *)m, filelen) != filelen) goto loaderr;
 
   fp.close(f);
 
@@ -126,7 +125,7 @@ bool CjbmPlayer::update()
   short c, spos, frq;
 
   for (c = 0; c < 11; c++) {
-    if (!voice[c].trkpos)		// Unused channel
+    if (!voice[c].trkpos)               // Unused channel
       continue;
 
     if (--voice[c].delay)
@@ -142,34 +141,34 @@ bool CjbmPlayer::update()
     spos = voice[c].seqpos;
     while(!voice[c].delay) {
       switch(m[spos]) {
-      case 0xFD:	// Set Instrument
-	voice[c].instr = m[spos+1];
-	set_opl_instrument(c, &voice[c]);
-	spos+=2;
-	break;
-      case 0xFF:	// End of Sequence
-	voice[c].seqno = m[++voice[c].trkpos];
-	if (voice[c].seqno == 0xff) {
-	  voice[c].trkpos = voice[c].trkstart;
-	  voice[c].seqno = m[voice[c].trkpos];
-	  //voicemask &= 0x7ff-(1<<c);
-	  voicemask &= ~(1<<c);
-	}
-	spos = voice[c].seqpos = sequences[voice[c].seqno];
-	break;
-      default:	// Note Event
-	if ((m[spos] & 127) > 95)
-	  return 0;
+      case 0xFD:        // Set Instrument
+        voice[c].instr = m[spos+1];
+        set_opl_instrument(c, &voice[c]);
+        spos+=2;
+        break;
+      case 0xFF:        // End of Sequence
+        voice[c].seqno = m[++voice[c].trkpos];
+        if (voice[c].seqno == 0xff) {
+          voice[c].trkpos = voice[c].trkstart;
+          voice[c].seqno = m[voice[c].trkpos];
+          //voicemask &= 0x7ff-(1<<c);
+          voicemask &= ~(1<<c);
+        }
+        spos = voice[c].seqpos = sequences[voice[c].seqno];
+        break;
+      default:  // Note Event
+        if ((m[spos] & 127) > 95)
+          return 0;
 
-	voice[c].note = m[spos];
-	voice[c].vol = m[spos+1];
-	voice[c].delay =
-	  (m[spos+2] + (m[spos+3]<<8)) + 1;
+        voice[c].note = m[spos];
+        voice[c].vol = m[spos+1];
+        voice[c].delay =
+          (m[spos+2] + (m[spos+3]<<8)) + 1;
 
-	frq = notetable[voice[c].note&127];
-	voice[c].frq[0] = (unsigned char)frq;
-	voice[c].frq[1] = frq >> 8;
-	spos+=4;
+        frq = notetable[voice[c].note&127];
+        voice[c].frq[0] = (unsigned char)frq;
+        voice[c].frq[1] = frq >> 8;
+        spos+=4;
       }
     }
     voice[c].seqpos = spos;
@@ -238,14 +237,14 @@ void CjbmPlayer::opl_noteonoff(int channel, JBMVoice *v, bool state)
     opl->write(0xa0 + perchn_tab[channel-6], voice[channel].frq[0]);
     opl->write(0xb0 + perchn_tab[channel-6], voice[channel].frq[1]);
     opl->write(0xbd,
-	       state ? bdreg | percmaskon[channel-6] :
-	       bdreg & percmaskoff[channel-6]);
+               state ? bdreg | percmaskon[channel-6] :
+               bdreg & percmaskoff[channel-6]);
   } else {
     // Melodic mode or Rhythm mode melodic channels
     opl->write(0xa0 + channel, voice[channel].frq[0]);
     opl->write(0xb0 + channel,
-	       state ? voice[channel].frq[1] | 0x20 :
-	       voice[channel].frq[1] & 0x1f);
+               state ? voice[channel].frq[1] | 0x20 :
+               voice[channel].frq[1] & 0x1f);
   }
   return;
 }

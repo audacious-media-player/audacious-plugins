@@ -24,13 +24,16 @@
 #include <QMenu>
 
 #include <libaudcore/drct.h>
+#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
 #include <libaudqt/menu.h>
 
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
+#include "main.h"
 #include "view.h"
 
 static QMenu * menus[UI_MENUS];
@@ -45,6 +48,47 @@ static QMenu * get_plugin_menu_playlist () {return audqt::menu_get_by_id (AudMen
 static QMenu * get_plugin_menu_playlist_add () {return audqt::menu_get_by_id (AudMenuID::PlaylistAdd); }
 static QMenu * get_plugin_menu_playlist_remove () {return audqt::menu_get_by_id (AudMenuID::PlaylistRemove); }
 
+static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
+static void configure_output () { audqt::prefswin_show_plugin_page (PluginType::Output); }
+static void configure_visualizations () { audqt::prefswin_show_plugin_page (PluginType::Vis); }
+
+static void volume_up () { mainwin_set_volume_diff (5); }
+static void volume_down () { mainwin_set_volume_diff (-5); }
+
+/* emulate a config item for the recording toggle */
+static void toggle_record ()
+{
+    bool enable = aud_get_bool ("skins", "record");
+
+    if (aud_drct_enable_record (enable))
+        mainwin_show_status_message (enable ? _("Recording on") : _("Recording off"));
+    else
+    {
+        aud_set_bool ("skins", "record", aud_drct_get_record_enabled ());
+        hook_call ("skins set record", nullptr);
+    }
+}
+
+static void record_toggled (void * = nullptr, void * = nullptr)
+{
+    bool enabled = aud_drct_get_record_enabled ();
+    if (enabled != aud_get_bool ("skins", "record"))
+    {
+        aud_set_bool ("skins", "record", enabled);
+        hook_call ("skins set record", nullptr);
+    }
+}
+
+static const audqt::MenuItem output_items[] = {
+    audqt::MenuCommand ({N_("Volume Up"), "audio-volume-high", "+"}, volume_up),
+    audqt::MenuCommand ({N_("Volume Down"), "audio-volume-low", "-"}, volume_down),
+    audqt::MenuSep (),
+    audqt::MenuCommand ({N_("Effects ...")}, configure_effects),
+    audqt::MenuSep (),
+    audqt::MenuToggle ({N_("Record Stream"), "media-record", "D"}, {"skins", "record", "skins set record"}, toggle_record),
+    audqt::MenuCommand ({N_("Audio Settings ..."), "audio-card"}, configure_output)
+};
+
 static const audqt::MenuItem main_items[] = {
     audqt::MenuCommand ({N_("Open Files ..."), "document-open", "L"}, action_play_file),
     audqt::MenuCommand ({N_("Open Folder ..."), "document-open", "Shift+L"}, action_play_folder),
@@ -53,6 +97,7 @@ static const audqt::MenuItem main_items[] = {
     audqt::MenuSep (),
     audqt::MenuSub ({N_("Playback")}, get_menu_playback),
     audqt::MenuSub ({N_("Playlist")}, get_menu_playlist),
+    audqt::MenuSub ({N_("Output")}, {output_items}),
     audqt::MenuSub ({N_("View")}, get_menu_view),
     audqt::MenuSep (),
     audqt::MenuSub ({N_("Services")}, get_plugin_menu_main),
@@ -65,8 +110,8 @@ static const audqt::MenuItem main_items[] = {
 static const audqt::MenuItem playback_items[] = {
     audqt::MenuCommand ({N_("Song Info ..."), "dialog-information", "I"}, audqt::infowin_show_current),
     audqt::MenuSep (),
-    audqt::MenuToggle ({N_("Repeat"), nullptr, "R"}, {nullptr, "repeat", "set repeat"}),
-    audqt::MenuToggle ({N_("Shuffle"), nullptr, "S"}, {nullptr, "shuffle", "set shuffle"}),
+    audqt::MenuToggle ({N_("Repeat"), "media-playlist-repeat", "R"}, {nullptr, "repeat", "set repeat"}),
+    audqt::MenuToggle ({N_("Shuffle"), "media-playlist-shuffle", "S"}, {nullptr, "shuffle", "set shuffle"}),
     audqt::MenuToggle ({N_("No Playlist Advance"), nullptr, "Ctrl+N"}, {nullptr, "no_playlist_advance", "set no_playlist_advance"}),
     audqt::MenuToggle ({N_("Stop After This Song"), nullptr, "Ctrl+M"}, {nullptr, "stop_after_current_song", "set stop_after_current_song"}),
     audqt::MenuSep (),
@@ -112,16 +157,17 @@ static const audqt::MenuItem view_items[] = {
     audqt::MenuSep (),
     audqt::MenuToggle ({N_("Show Remaining Time"), nullptr, "Ctrl+R"}, {"skins", "show_remaining_time", "skins set show_remaining_time"}, view_apply_show_remaining),
     audqt::MenuSep (),
+    audqt::MenuToggle ({N_("Double Size"), nullptr, "Ctrl+D"}, {"skins", "double_size", "skins set double_size"}, view_apply_double_size),
 #if 0
     audqt::MenuToggle ({N_("Always on Top"), nullptr, "Ctrl+O"}, {"skins", "always_on_top", "skins set always_on_top"}, view_apply_on_top),
     audqt::MenuToggle ({N_("On All Workspaces"), nullptr, "Ctrl+S"}, {"skins", "sticky", "skins set sticky"}, view_apply_sticky),
-    audqt::MenuSep (),
 #endif
+    audqt::MenuSep (),
     audqt::MenuToggle ({N_("Roll Up Player"), nullptr, "Ctrl+W"}, {"skins", "player_shaded", "skins set player_shaded"}, view_apply_player_shaded),
     audqt::MenuToggle ({N_("Roll Up Playlist Editor"), nullptr, "Shift+Ctrl+W"}, {"skins", "playlist_shaded", "skins set playlist_shaded"}, view_apply_playlist_shaded),
     audqt::MenuToggle ({N_("Roll Up Equalizer"), nullptr, "Ctrl+Alt+W"}, {"skins", "equalizer_shaded", "skins set equalizer_shaded"}, view_apply_equalizer_shaded),
     audqt::MenuSep (),
-    audqt::MenuToggle ({N_("Double Size"), nullptr, "Ctrl+D"}, {"skins", "double_size", "skins set double_size"}, view_apply_double_size)
+    audqt::MenuCommand ({N_("_Visualizations ...")}, configure_visualizations)
 };
 
 static const audqt::MenuItem playlist_add_items[] = {
@@ -221,8 +267,16 @@ void menu_init (QWidget * parent)
         {playlist_context_items}
     };
 
+    record_toggled ();
+    hook_associate ("enable record", record_toggled, nullptr);
+
     for (int i = UI_MENUS; i --; )
         menus[i] = audqt::menu_build (table[i], parent);
+}
+
+void menu_cleanup (void)
+{
+    hook_dissociate ("enable record", record_toggled);
 }
 
 void menu_popup (int id, int x, int y, bool leftward, bool upward)

@@ -224,9 +224,11 @@ NDS_exec(s32 nb, BOOL force);
        static INLINE void NDS_ARM7VBlankInt(void)
        {
             if(T1ReadWord(MMU.ARM7_REG, 4) & 0x8)
+            {
                  MMU.reg_IF[1] |= 1;// & (MMU.reg_IME[1]);// (MMU.reg_IE[1] & 1);
                  NDS_ARM7.wIRQ = true;
                  //execute = false;
+            }
        }
 
        static INLINE void NDS_swapScreen(void)

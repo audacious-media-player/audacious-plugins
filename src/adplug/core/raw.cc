@@ -14,116 +14,91 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * raw.c - RAW Player by Simon Peter <dn.tlp@gmx.net>
  */
 
-#include <string.h>
-
+#include <cstring>
 #include "raw.h"
 
 /*** public methods *************************************/
 
-CPlayer *
-CrawPlayer::factory (Copl * newopl)
+CPlayer *CrawPlayer::factory(Copl *newopl)
 {
-  return new CrawPlayer (newopl);
+  return new CrawPlayer(newopl);
 }
 
-bool
-CrawPlayer::load (VFSFile & fd, const CFileProvider & fp)
+bool CrawPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
-  binistream *f = fp.open (fd);
-  if (!f)
-    return false;
+  binistream *f = fp.open(filename); if(!f) return false;
   char id[8];
   unsigned long i;
 
   // file validation section
-  f->readString (id, 8);
-  if (strncmp (id, "RAWADATA", 8))
-  {
-    fp.close (f);
-    return false;
-  }
+  f->readString(id, 8);
+  if(strncmp(id,"RAWADATA",8)) { fp.close (f); return false; }
 
   // load section
-  clock = f->readInt (2);       // clock speed
-  length = (fp.filesize (f) - 10) / 2;
-  data = new Tdata[length];
-  for (i = 0; i < length; i++)
-  {
-    data[i].param = f->readInt (1);
-    data[i].command = f->readInt (1);
+  clock = f->readInt(2);        // clock speed
+  length = (fp.filesize(f) - 10) / 2;
+  data = new Tdata [length];
+  for(i = 0; i < length; i++) {
+    data[i].param = f->readInt(1);
+    data[i].command = f->readInt(1);
   }
 
-  fp.close (f);
-  rewind (0);
+  fp.close(f);
+  rewind(0);
   return true;
 }
 
-bool
-CrawPlayer::update ()
+bool CrawPlayer::update()
 {
-  bool setspeed;
+  bool  setspeed;
 
-  if (pos >= length)
-    return false;
+  if(pos >= length) return false;
 
-  if (del)
-  {
+  if(del) {
     del--;
     return !songend;
   }
 
-  do
-  {
+  do {
     setspeed = false;
-    switch (data[pos].command)
-    {
-    case 0:
-      del = data[pos].param - 1;
-      break;
+    switch(data[pos].command) {
+    case 0: del = data[pos].param - 1; break;
     case 2:
-      if (!data[pos].param)
-      {
+      if(!data[pos].param) {
         pos++;
         speed = data[pos].param + (data[pos].command << 8);
         setspeed = true;
-      }
-      else
-        opl->setchip (data[pos].param - 1);
+      } else
+        opl->setchip(data[pos].param - 1);
       break;
     case 0xff:
-      if (data[pos].param == 0xff)
-      {
-        rewind (0);             // auto-rewind song
+      if(data[pos].param == 0xff) {
+        rewind(0);              // auto-rewind song
         songend = true;
         return !songend;
       }
       break;
     default:
-      opl->write (data[pos].command, data[pos].param);
+      opl->write(data[pos].command,data[pos].param);
       break;
     }
-  } while (data[pos++].command || setspeed);
+  } while(data[pos++].command || setspeed);
 
   return !songend;
 }
 
-void
-CrawPlayer::rewind (int subsong)
+void CrawPlayer::rewind(int subsong)
 {
-  pos = del = 0;
-  speed = clock;
-  songend = false;
-  opl->init ();
-  opl->write (1, 32);           // go to 9 channel mode
+  pos = del = 0; speed = clock; songend = false;
+  opl->init(); opl->write(1, 32);       // go to 9 channel mode
 }
 
-float
-CrawPlayer::getrefresh ()
+float CrawPlayer::getrefresh()
 {
   return 1193180.0 / (speed ? speed : 0xffff);  // timer oscillator speed / wait register = clock frequency
 }

@@ -39,15 +39,76 @@ public:
     void * get_qt_widget ();
 };
 
-static void update (void *, QLabel * widget)
+#define MARGIN 4
+
+class ArtLabel : public QLabel {
+public:
+    ArtLabel (QWidget * parent = 0, Qt::WindowFlags f = 0) : QLabel(parent, f)
+    {
+	init ();
+    }
+
+    ArtLabel (const QString & text, QWidget * parent = 0, Qt::WindowFlags f = 0) : QLabel(text, parent, f)
+    {
+	init ();
+    }
+
+    void update_art ()
+    {
+	origPixmap = QPixmap (audqt::art_request_current (0, 0));
+	origSize = origPixmap.size ();
+	drawArt();
+    }
+
+    void clear ()
+    {
+	QLabel::clear();
+	origPixmap = QPixmap();
+    }
+
+protected:
+    virtual void resizeEvent (QResizeEvent * event)
+    {
+	QLabel::resizeEvent(event);
+
+	if ( ! origPixmap.isNull() &&
+		(size().width() <= origSize.width() + MARGIN ||
+		 size().height() <= origSize.height() + MARGIN))
+	    drawArt();
+    }
+
+private:
+    QPixmap origPixmap;
+    QSize origSize;
+
+    void init ()
+    {
+	clear ();
+	setMinimumSize (MARGIN + 1, MARGIN + 1);
+	setAlignment (Qt::AlignCenter);
+    }
+
+    void drawArt ()
+    {
+	if (origSize.width() <= size().width() - MARGIN &&
+	    origSize.height() <= size().height() - MARGIN)
+	    setPixmap (origPixmap);
+	else
+	    setPixmap (origPixmap.scaled(size().width()-MARGIN, size().height()-MARGIN,
+			Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    }
+};
+
+#undef MARGIN
+
+static void update (void *, ArtLabel * widget)
 {
-    QSize size = widget->size ();
-    widget->setPixmap (audqt::art_request_current (size.width (), size.height ()));
+    widget->update_art ();
 }
 
-static void clear (void *, QLabel * widget)
+static void clear (void *, ArtLabel * widget)
 {
-    widget->setPixmap (QPixmap ());
+    widget->clear ();
 }
 
 static void widget_cleanup (QObject * widget)
@@ -58,17 +119,15 @@ static void widget_cleanup (QObject * widget)
 
 void * AlbumArtQt::get_qt_widget ()
 {
-    QLabel * widget = new QLabel;
+    ArtLabel * widget = new ArtLabel;
 
     QObject::connect (widget, &QObject::destroyed, widget_cleanup);
 
     hook_associate ("playback ready", (HookFunction) update, widget);
     hook_associate ("playback stop", (HookFunction) clear, widget);
 
-    widget->resize (96, 96);
-
     if (aud_drct_get_ready ())
-        update (nullptr, widget);
+	widget->update_art ();
 
     return widget;
 }

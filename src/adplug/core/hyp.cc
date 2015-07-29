@@ -1,20 +1,20 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
  * Copyright (C) 1999 - 2003 Simon Peter, <dn.tlp@gmx.net>, et al.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * [xad] HYP player, by Riven the Mage <riven@ok.ru>
  */
@@ -31,8 +31,8 @@
 #include "hyp.h"
 #include "debug.h"
 
-const unsigned char
-  CxadhypPlayer::hyp_adlib_registers[99] = {
+const unsigned char CxadhypPlayer::hyp_adlib_registers[99] =
+{
   0x20, 0x23, 0x40, 0x43, 0x60, 0x63, 0x80, 0x83, 0xA0, 0xB0, 0xC0,
   0x21, 0x24, 0x41, 0x44, 0x61, 0x64, 0x81, 0x84, 0xA1, 0xB1, 0xC1,
   0x22, 0x25, 0x42, 0x45, 0x62, 0x65, 0x82, 0x85, 0xA2, 0xB2, 0xC2,
@@ -44,9 +44,9 @@ const unsigned char
   0x32, 0x35, 0x52, 0x55, 0x72, 0x75, 0x92, 0x95, 0xA8, 0xB8, 0xC8
 };
 
-const unsigned short
-  CxadhypPlayer::hyp_notes[73] = {
-  0x0000,                       // by riven
+const unsigned short CxadhypPlayer::hyp_notes[73] =
+{
+  0x0000, // by riven
   0x0956, 0x096B, 0x0980, 0x0998, 0x09B1, 0x09C9, 0x09E5, 0x0A03, 0x0A21,
   0x0A41, 0x0A63, 0x0A86, 0x0D56, 0x0D6B, 0x0D80, 0x0D98, 0x0DB1, 0x0DC9,
   0x0DE5, 0x0E03, 0x0E21, 0x0E41, 0x0E63, 0x0E86, 0x1156, 0x116B, 0x1180,
@@ -57,35 +57,32 @@ const unsigned short
   0x1D98, 0x1DB1, 0x1DC9, 0x1DE5, 0x1E03, 0x1E21, 0x1E41, 0x1E63, 0x1E86
 };
 
-CPlayer *
-CxadhypPlayer::factory (Copl * newopl)
+CPlayer *CxadhypPlayer::factory(Copl *newopl)
 {
-  return new CxadhypPlayer (newopl);
+  return new CxadhypPlayer(newopl);
 }
 
-void
-CxadhypPlayer::xadplayer_rewind (int subsong)
+void CxadhypPlayer::xadplayer_rewind(int subsong)
 {
   int i;
 
   plr.speed = tune[5];
 
-  opl_write (0xBD, 0xC0);
+  opl_write(0xBD,0xC0);
 
-  for (i = 0; i < 9; i++)
-    adlib[0xB0 + i] = 0;
+  for(i=0; i<9; i++)
+    adlib[0xB0+i] = 0;
 
   // define instruments
-  for (i = 0; i < 99; i++)
-    opl_write (hyp_adlib_registers[i], tune[6 + i]);
+  for(i=0; i<99; i++)
+    opl_write(hyp_adlib_registers[i], tune[6+i]);
 
   hyp.pointer = 0x69;
 }
 
-void
-CxadhypPlayer::xadplayer_update ()
+void CxadhypPlayer::xadplayer_update()
 {
-  for (int i = 0; i < 9; i++)
+  for(int i=0; i<9; i++)
   {
     unsigned char event = tune[hyp.pointer++];
 
@@ -96,15 +93,15 @@ CxadhypPlayer::xadplayer_update ()
       unsigned char lofreq = (freq & 0xFF);
       unsigned char hifreq = (freq >> 8);
 
-      opl_write (0xB0 + i, adlib[0xB0 + i]);
+      opl_write(0xB0+i, adlib[0xB0+i]);
 
       if (!(event & 0x40))
       {
-        opl_write (0xA0 + i, lofreq);
-        opl_write (0xB0 + i, hifreq | 0x20);
+        opl_write(0xA0+i, lofreq);
+        opl_write(0xB0+i, hifreq | 0x20);
       }
 
-      adlib[0xB0 + i] &= 0xDF;
+      adlib[0xB0+i] &= 0xDF;
     }
   }
 
@@ -117,13 +114,12 @@ CxadhypPlayer::xadplayer_update ()
   }
 }
 
-float
-CxadhypPlayer::xadplayer_getrefresh ()
+float CxadhypPlayer::xadplayer_getrefresh()
 {
   return 60.0f;
 }
 
-std::string CxadhypPlayer::xadplayer_gettype ()
+std::string CxadhypPlayer::xadplayer_gettype()
 {
-  return std::string ("xad: hypnosis player");
+  return std::string("xad: hypnosis player");
 }

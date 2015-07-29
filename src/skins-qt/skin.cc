@@ -208,8 +208,9 @@ skin_load_pixmaps(const char * path)
 {
     AUDDBG("Loading pixmaps in %s\n", path);
 
+    /* eq_ex.bmp was added after Winamp 2.0 so some skins do not include it */
     for (int i = 0; i < SKIN_PIXMAP_COUNT; i++)
-        if (! skin_load_pixmap_id ((SkinPixmapId) i, path))
+        if (! skin_load_pixmap_id ((SkinPixmapId) i, path) && i != SKIN_EQ_EX)
             return false;
 
     skin_get_textcolors (skin.pixmaps[SKIN_TEXT]);
@@ -282,7 +283,7 @@ bool skin_load (const char * path)
 
 void skin_install_skin (const char * path)
 {
-    GError * err = 0;
+    GError * err = nullptr;
     char * data;
     size_t len;
 
@@ -313,7 +314,8 @@ void skin_install_skin (const char * path)
 void skin_draw_pixbuf (QPainter & p, SkinPixmapId id, int xsrc, int ysrc, int
  xdest, int ydest, int width, int height)
 {
-    p.drawImage (xdest, ydest, skin.pixmaps[id], xsrc, ysrc, width, height);
+    if (! skin.pixmaps[id].isNull ())
+        p.drawImage (xdest, ydest, skin.pixmaps[id], xsrc, ysrc, width, height);
 }
 
 static void skin_draw_playlistwin_frame_top (QPainter & cr, int width, bool focus)

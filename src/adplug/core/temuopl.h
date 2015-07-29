@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * temuopl.h - Tatsuyuki Satoh's OPL2 emulator, by Simon Peter <dn.tlp@gmx.net>
  */
@@ -28,18 +28,18 @@
 class CTemuopl: public Copl
 {
  public:
-  CTemuopl(int rate, bool bit16, bool usestereo);	// rate = sample rate
+  CTemuopl(int rate, bool bit16, bool usestereo);       // rate = sample rate
   virtual ~CTemuopl();
 
-  void update(short *buf, int samples);	// fill buffer
+  void update(short *buf, int samples); // fill buffer
 
   // template methods
   void write(int reg, int val);
   void init();
 
  private:
-  bool		use16bit,stereo;
-  FM_OPL	*opl;			// holds emulator data
+  bool          use16bit,stereo;
+  FM_OPL        *opl;                   // holds emulator data
 };
 
 #endif

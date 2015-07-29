@@ -1,6 +1,6 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2006 Simon Peter <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2008 Simon Peter <dn.tlp@gmx.net>, et al.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * imf.cpp - IMF Player by Simon Peter <dn.tlp@gmx.net>
  *
@@ -48,141 +48,115 @@
 
 /*** public methods *************************************/
 
-CPlayer *
-CimfPlayer::factory (Copl * newopl)
+CPlayer *CimfPlayer::factory(Copl *newopl)
 {
-  return new CimfPlayer (newopl);
+  return new CimfPlayer(newopl);
 }
 
-bool
-CimfPlayer::load (VFSFile & fd, const CFileProvider & fp)
+bool CimfPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
-  binistream *f = fp.open (fd);
-  if (!f)
-    return false;
+  binistream *f = fp.open(filename); if(!f) return false;
   unsigned long fsize, flsize, mfsize = 0;
   unsigned int i;
 
   // file validation section
   {
-    char header[5];
-    int version;
+    char        header[5];
+    int         version;
 
-    f->readString (header, 5);
-    version = f->readInt (1);
+    f->readString(header, 5);
+    version = f->readInt(1);
 
-    if (strncmp (header, "ADLIB", 5) || version != 1)
-    {
-      if (!fp.extension (fd.filename (), ".imf") && !fp.extension (fd.filename (), ".wlf"))
-      {
+    if(strncmp(header, "ADLIB", 5) || version != 1) {
+      if(!fp.extension(filename, ".imf") && !fp.extension(filename, ".wlf")) {
         // It's no IMF file at all
-        fp.close (f);
+        fp.close(f);
         return false;
-      }
-      else
-        f->seek (0);            // It's a normal IMF file
-    }
-    else
-    {
+      } else
+        f->seek(0);     // It's a normal IMF file
+    } else {
       // It's a IMF file with header
-      track_name = f->readString ('\0');
-      game_name = f->readString ('\0');
-      f->ignore (1);
-      mfsize = f->pos () + 2;
+      track_name = f->readString('\0');
+      game_name = f->readString('\0');
+      f->ignore(1);
+      mfsize = f->pos() + 2;
     }
   }
 
   // load section
-  if (mfsize)
-    fsize = f->readInt (4);
+  if(mfsize)
+    fsize = f->readInt(4);
   else
-    fsize = f->readInt (2);
-  flsize = fp.filesize (f);
-  if (!fsize)
-  {                             // footerless file (raw music data)
-    if (mfsize)
-      f->seek (-4, binio::Add);
+    fsize = f->readInt(2);
+  flsize = fp.filesize(f);
+  if(!fsize) {          // footerless file (raw music data)
+    if(mfsize)
+      f->seek(-4, binio::Add);
     else
-      f->seek (-2, binio::Add);
+      f->seek(-2, binio::Add);
     size = (flsize - mfsize) / 4;
-  }
-  else                          // file has got a footer
+  } else                // file has got a footer
     size = fsize / 4;
 
   data = new Sdata[size];
-  for (i = 0; i < size; i++)
-  {
-    data[i].reg = f->readInt (1);
-    data[i].val = f->readInt (1);
-    data[i].time = f->readInt (2);
+  for(i = 0; i < size; i++) {
+    data[i].reg = f->readInt(1); data[i].val = f->readInt(1);
+    data[i].time = f->readInt(2);
   }
 
   // read footer, if any
-  if (fsize && (fsize < flsize - 2 - mfsize))
-  {
-    if (f->readInt (1) == 0x1a)
-    {
+  if(fsize && (fsize < flsize - 2 - mfsize)) {
+    if(f->readInt(1) == 0x1a) {
       // Adam Nielsen's footer format
-      track_name = f->readString ();
-      author_name = f->readString ();
-      remarks = f->readString ();
-    }
-    else
-    {
+      track_name = f->readString();
+      author_name = f->readString();
+      remarks = f->readString();
+    } else {
       // Generic footer
       unsigned long footerlen = flsize - fsize - 2 - mfsize;
 
       footer = new char[footerlen + 1];
-      f->readString (footer, footerlen);
+      f->readString(footer, footerlen);
       footer[footerlen] = '\0'; // Make ASCIIZ string
     }
   }
 
-  rate = getrate (fd.filename (), fp, f);
-  fp.close (f);
-  rewind (0);
+  rate = getrate(filename, fp, f);
+  fp.close(f);
+  rewind(0);
   return true;
 }
 
-bool
-CimfPlayer::update ()
+bool CimfPlayer::update()
 {
-  do
-  {
-    opl->write (data[pos].reg, data[pos].val);
-    del = data[pos].time;
-    pos++;
-  } while (!del && pos < size);
+        do {
+                opl->write(data[pos].reg,data[pos].val);
+                del = data[pos].time;
+                pos++;
+        } while(!del && pos < size);
 
-  if (pos >= size)
-  {
-    pos = 0;
-    songend = true;
-  }
-  else
-    timer = rate / (float) del;
+        if(pos >= size) {
+                pos = 0;
+                songend = true;
+        }
+        else timer = rate / (float)del;
 
-  return !songend;
+        return !songend;
 }
 
-void
-CimfPlayer::rewind (int subsong)
+void CimfPlayer::rewind(int subsong)
 {
-  pos = 0;
-  del = 0;
-  timer = rate;
-  songend = false;
-  opl->init ();
-  opl->write (1, 32);           // go to OPL2 mode
+        pos = 0; del = 0; timer = rate; songend = false;
+        opl->init(); opl->write(1,32);  // go to OPL2 mode
 }
 
-std::string CimfPlayer::gettitle ()
+std::string CimfPlayer::gettitle()
 {
-  std::string title;
+  std::string   title;
 
   title = track_name;
 
-  if (!track_name.empty () && !game_name.empty ())
+  if(!track_name.empty() && !game_name.empty())
     title += " - ";
 
   title += game_name;
@@ -190,14 +164,14 @@ std::string CimfPlayer::gettitle ()
   return title;
 }
 
-std::string CimfPlayer::getdesc ()
+std::string CimfPlayer::getdesc()
 {
-  std::string desc;
+  std::string   desc;
 
-  if (footer)
-    desc = std::string (footer);
+  if(footer)
+    desc = std::string(footer);
 
-  if (!remarks.empty () && footer)
+  if(!remarks.empty() && footer)
     desc += "\n\n";
 
   desc += remarks;
@@ -207,23 +181,17 @@ std::string CimfPlayer::getdesc ()
 
 /*** private methods *************************************/
 
-float
-CimfPlayer::getrate (const std::string & filename, const CFileProvider & fp,
-                     binistream * f)
+float CimfPlayer::getrate(const std::string &filename, const CFileProvider &fp, binistream *f)
 {
-  if (db)
-  {                             // Database available
-    f->seek (0, binio::Set);
-    CClockRecord *record =
-      (CClockRecord *) db->search (CAdPlugDatabase::CKey (*f));
+  if(db) {      // Database available
+    f->seek(0, binio::Set);
+    CClockRecord *record = (CClockRecord *)db->search(CAdPlugDatabase::CKey(*f));
     if (record && record->type == CAdPlugDatabase::CRecord::ClockSpeed)
       return record->clock;
   }
 
   // Otherwise the database is either unavailable, or there's no entry for this file
-  if (fp.extension (filename, ".imf"))
-    return 560.0f;
-  if (fp.extension (filename, ".wlf"))
-    return 700.0f;
-  return 700.0f;                // default speed for unknown files that aren't .IMF or .WLF
+  if (fp.extension(filename, ".imf")) return 560.0f;
+  if (fp.extension(filename, ".wlf")) return 700.0f;
+  return 700.0f; // default speed for unknown files that aren't .IMF or .WLF
 }

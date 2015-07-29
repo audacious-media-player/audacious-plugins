@@ -166,6 +166,10 @@ void view_apply_equalizer_shaded ()
 {
     bool shaded = aud_get_bool ("skins", "equalizer_shaded");
 
+    /* do not allow shading the equalizer if eq_ex.bmp is missing */
+    if (skin.pixmaps[SKIN_EQ_EX].isNull ())
+        shaded = false;
+
     equalizerwin->set_shaded (shaded);
     equalizerwin->resize (275, shaded ? 14 : 116);
 }
@@ -278,6 +282,7 @@ void view_apply_skin ()
       scale_mask (skin.masks[SKIN_MASK_EQ_SHADE], config.scale));
 
     mainwin_refresh_hints ();
+    view_apply_equalizer_shaded ();
     TextBox::update_all ();
 
     mainwin->queue_draw ();

@@ -326,7 +326,7 @@ static void xspf_add_node(xmlNodePtr node, Tuple::ValueType type,
         tmp = xmlNewNode(nullptr, (xmlChar *) xspfName);
 
     switch (type) {
-        case Tuple::String:;
+        case Tuple::String:
             char * subst;
             if (is_valid_string (strVal, & subst))
                 xmlAddChild (tmp, xmlNewText ((xmlChar *) strVal));

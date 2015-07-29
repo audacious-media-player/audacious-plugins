@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * emuopl.h - Emulated OPL, by Simon Peter <dn.tlp@gmx.net>
  */
@@ -28,20 +28,20 @@
 class CEmuopl: public Copl
 {
  public:
-  CEmuopl(int rate, bool bit16, bool usestereo);	// rate = sample rate
+  CEmuopl(int rate, bool bit16, bool usestereo);        // rate = sample rate
   virtual ~CEmuopl();
 
-  void update(short *buf, int samples);			// fill buffer
+  void update(short *buf, int samples);                 // fill buffer
   void write(int reg, int val);
 
   void init();
   void settype(ChipType type);
 
  private:
-  bool		use16bit, stereo;
-  FM_OPL	*opl[2];				// OPL2 emulator data
-  short		*mixbuf0, *mixbuf1;
-  int		mixbufSamples;
+  bool          use16bit, stereo;
+  FM_OPL        *opl[2];                                // OPL2 emulator data
+  short         *mixbuf0, *mixbuf1;
+  int           mixbufSamples;
 };
 
 #endif

@@ -167,7 +167,7 @@ FAILED:
 bool write_and_pivot_files (vcedit_state * state)
 {
     char * temp;
-    GError * error;
+    GError * error = nullptr;
     int handle = g_file_open_tmp (nullptr, & temp, & error);
 
     if (handle < 0)

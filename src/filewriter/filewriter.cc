@@ -150,10 +150,14 @@ static void set_plugin(void)
 }
 
 const char * const FileWriter::defaults[] = {
- "fileext", "0", /* WAV */
+#ifdef FILEWRITER_MP3
+ "fileext", aud::numeric_string<MP3>::str,
+#else
+ "fileext", aud::numeric_string<WAV>::str,
+#endif
  "filenamefromtags", "TRUE",
  "prependnumber", "FALSE",
- "save_original", "TRUE",
+ "save_original", "FALSE",
  "use_suffix", "FALSE",
  nullptr};
 
@@ -223,9 +227,20 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
     if (filenamefromtags)
     {
         String title = in_tuple.get_str (Tuple::FormattedTitle);
-        StringBuf buf = str_encode_percent (title);
-        str_replace_char (buf, '/', '-');
-        filename = String (buf);
+
+        /* truncate title at 200 characters to avoid hitting filesystem limits */
+        StringBuf buf = str_copy (title, aud::min ((int) strlen (title), 200));
+
+        /* replace non-portable characters */
+        const char * reserved = "<>:\"/\\|?*";
+        for (char * c = buf; * c; c ++)
+        {
+            if (strchr (reserved, * c))
+                * c = ' ';
+        }
+
+        /* URI-encode */
+        filename = String (str_encode_percent (buf));
     }
     else
     {
@@ -481,19 +496,17 @@ static void * file_configure (void)
 }
 
 const char FileWriter::about[] =
- N_("This program is free software; you can redistribute it and/or modify\n"
-    "it under the terms of the GNU General Public License as published by\n"
-    "the Free Software Foundation; either version 2 of the License, or\n"
-    "(at your option) any later version.\n"
-    "\n"
-    "This program is distributed in the hope that it will be useful,\n"
-    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-    "GNU General Public License for more details.\n"
-    "\n"
-    "You should have received a copy of the GNU General Public License\n"
-    "along with this program; if not, write to the Free Software\n"
-    "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+ N_("This program is free software; you can redistribute it and/or modify "
+    "it under the terms of the GNU General Public License as published by "
+    "the Free Software Foundation; either version 2 of the License, or "
+    "(at your option) any later version.\n\n"
+    "This program is distributed in the hope that it will be useful, "
+    "but WITHOUT ANY WARRANTY; without even the implied warranty of "
+    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
+    "GNU General Public License for more details.\n\n"
+    "You should have received a copy of the GNU General Public License "
+    "along with this program; if not, write to the Free Software "
+    "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
     "USA.");
 
 const PreferencesWidget FileWriter::widgets[] = {

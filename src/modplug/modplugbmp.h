@@ -27,6 +27,7 @@
 #define MOD_MAGIC_TAKETRACKER32 "32CN"  // Taketracker 32 channel
 
 #define S3M_MAGIC   "SCRM"  /* This is the SCRM string at offset 44 to 47 in the S3M header */
+#define PTM_MAGIC   "PTMF"  /* Same position for Polytracker magic string */
 
 /* These nicer formats have the magic bytes at the front of the file where they belong */
 #define UMX_MAGIC   "\xC1\x83\x2A\x9E"
@@ -35,6 +36,9 @@
 #define IT_MAGIC    "IMPM"              /* IMPM */
 #define MTM_MAGIC   "\x4D\x54\x4D\x10"
 #define PSM_MAGIC   "PSM "
+#define MMD0_MAGIC  "MMD0"              /* Med MoDule 0 */
+#define MMD1_MAGIC  "MMD1"              /* OctaMED Professional */
+#define OKTA_MAGIC  "OKTASONG"          /* Oktalyzer */
 
 class CSoundFile;
 class Archive;

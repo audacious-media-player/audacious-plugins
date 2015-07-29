@@ -201,8 +201,6 @@ static bool mp3_open (VFSFile & file, const format_info & info, const Tuple & tu
 
     lame_set_in_samplerate(gfp, info.frequency);
     lame_set_num_channels(gfp, info.channels);
-    /* Maybe implement this? */
-    /* lame_set_scale(lame_global_flags *, float); */
     lame_set_out_samplerate(gfp, out_samplerate_val);
 
     /* general control parameters */
@@ -274,11 +272,13 @@ static void mp3_write (VFSFile & file, const void * data, int length)
     while (1)
     {
         if (channels == 1)
-            encoded = lame_encode_buffer (gfp, (int16_t *) data, (int16_t *) data,
-             length / 2, write_buffer.begin (), write_buffer.len ());
+            encoded = lame_encode_buffer_ieee_float (gfp, (const float *) data,
+             (const float *) data, length / sizeof (float),
+             write_buffer.begin (), write_buffer.len ());
         else
-            encoded = lame_encode_buffer_interleaved (gfp, (int16_t *) data,
-             length / 4, write_buffer.begin (), write_buffer.len ());
+            encoded = lame_encode_buffer_interleaved_ieee_float (gfp,
+             (const float *) data, length / (2 * sizeof (float)),
+             write_buffer.begin (), write_buffer.len ());
 
         if (encoded != -1)
             break;
@@ -1185,7 +1185,7 @@ static void mp3_configure(void)
 
 static int mp3_format_required (int fmt)
 {
-    return FMT_S16_NE;
+    return FMT_FLOAT;
 }
 
 FileWriterImpl mp3_plugin = {

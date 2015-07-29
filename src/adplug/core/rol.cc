@@ -14,14 +14,14 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * rol.h - ROL Player by OPLx <oplx@yahoo.com>
  *
  * Visit:  http://tenacity.hispeed.com/aomit/oplx/
  */
+#include <cstring>
 #include <algorithm>
-#include <string.h>
 
 #include "rol.h"
 #include "debug.h"
@@ -66,7 +66,7 @@ CPlayer *CrolPlayer::factory(Copl *newopl)
 //---------------------------------------------------------
 CrolPlayer::CrolPlayer(Copl *newopl)
 :  CPlayer         ( newopl )
-  ,rol_header      ( nullptr )
+  ,rol_header      ( NULL )
   ,mNextTempoEvent ( 0 )
   ,mCurrTick       ( 0 )
   ,mTimeOfLastNote ( 0 )
@@ -85,17 +85,16 @@ CrolPlayer::CrolPlayer(Copl *newopl)
 //---------------------------------------------------------
 CrolPlayer::~CrolPlayer()
 {
-    if(rol_header)
+    if( rol_header != NULL )
     {
         delete rol_header;
-        rol_header = 0;
+        rol_header=NULL;
     }
 }
 //---------------------------------------------------------
-bool CrolPlayer::load(VFSFile &fd, const CFileProvider &fp)
+bool CrolPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
-    binistream *f = fp.open(fd); if(!f) return false;
-    std::string filename(fd.filename ());
+    binistream *f = fp.open(filename); if(!f) return false;
 
     char *fn = new char[filename.length()+12];
     int i;
@@ -105,10 +104,10 @@ bool CrolPlayer::load(VFSFile &fd, const CFileProvider &fp)
     strcpy(fn,filename.data());
     for (i=strlen(fn)-1; i>=0; i--)
       if (fn[i] == '/' || fn[i] == '\\')
-	break;
+        break;
     strcpy(fn+i+1,"standard.bnk");
     bnk_filename = fn;
-    delete [] fn; fn = 0;
+    delete [] fn;
     AdPlug_LogWrite("bnk_filename = \"%s\"\n",bnk_filename.c_str());
 
     rol_header = new SRolHeader;
@@ -120,7 +119,7 @@ bool CrolPlayer::load(VFSFile &fd, const CFileProvider &fp)
     // Version check
     if(rol_header->version_major != 0 || rol_header->version_minor != 4) {
       AdPlug_LogWrite("Unsupported file version %d.%d or not a ROL file!\n",
-	       rol_header->version_major, rol_header->version_minor);
+               rol_header->version_major, rol_header->version_minor);
       AdPlug_LogWrite("--- CrolPlayer::load ---\n");
       fp.close(f);
       return false;
@@ -258,9 +257,6 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
     TVolumeEvents      &vEvents = voiceData.volume_events;
     TPitchEvents       &pEvents = voiceData.pitch_events;
 
-    if (iEvents.empty()) {
-        return;  // prevent out-of-bounds access
-    }
     if( !(voiceData.mEventStatus & CVoiceData::kES_InstrEnd ) &&
         iEvents[voiceData.next_instrument_event].time == mCurrTick )
     {
@@ -275,9 +271,6 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
         }
     }
 
-    if (vEvents.empty()) {
-        return;  // prevent out-of-bounds access
-    }
     if( !(voiceData.mEventStatus & CVoiceData::kES_VolumeEnd ) &&
         vEvents[voiceData.next_volume_event].time == mCurrTick )
     {
@@ -321,9 +314,6 @@ void CrolPlayer::UpdateVoice( int const voice, CVoiceData &voiceData )
         }
     }
 
-    if (pEvents.empty()) {
-        return;  // prevent out-of-bounds access
-    }
     if( !(voiceData.mEventStatus & CVoiceData::kES_PitchEnd ) &&
         pEvents[voiceData.next_pitch_event].time == mCurrTick )
     {
@@ -464,9 +454,6 @@ void CrolPlayer::load_tempo_events( binistream *f )
 {
     int16 const num_tempo_events = f->readInt( 2 );
 
-    if (num_tempo_events<0) {
-        return;
-    }
     mTempoEvents.reserve( num_tempo_events );
 
     for(int i=0; i<num_tempo_events; ++i)
@@ -482,8 +469,7 @@ void CrolPlayer::load_tempo_events( binistream *f )
 bool CrolPlayer::load_voice_data( binistream *f, std::string const &bnk_filename, const CFileProvider &fp )
 {
     SBnkHeader bnk_header;
-    VFSFile fd(bnk_filename.c_str(), "rb");
-    binistream *bnk_file = fp.open(fd);
+    binistream *bnk_file = fp.open( bnk_filename.c_str() );
 
     if( bnk_file )
     {
@@ -550,9 +536,6 @@ void CrolPlayer::load_instrument_events( binistream *f, CVoiceData &voice,
                                          binistream *bnk_file, SBnkHeader const &bnk_header )
 {
     int16 const number_of_instrument_events = f->readInt( 2 );
-    if (number_of_instrument_events<0) {
-        return;
-    }
 
     TInstrumentEvents &instrument_events = voice.instrument_events;
 
@@ -564,7 +547,7 @@ void CrolPlayer::load_instrument_events( binistream *f, CVoiceData &voice,
         event.time = f->readInt( 2 );
         f->readString( event.name, 9 );
 
-	    std::string event_name = event.name;
+            std::string event_name = event.name;
         event.ins_index = load_rol_instrument( bnk_file, bnk_header, event_name );
 
         instrument_events.push_back( event );
@@ -578,9 +561,6 @@ void CrolPlayer::load_instrument_events( binistream *f, CVoiceData &voice,
 void CrolPlayer::load_volume_events( binistream *f, CVoiceData &voice )
 {
     int16 const number_of_volume_events = f->readInt( 2 );
-    if (number_of_volume_events<0) {
-        return;
-    }
 
     TVolumeEvents &volume_events = voice.volume_events;
 
@@ -601,9 +581,6 @@ void CrolPlayer::load_volume_events( binistream *f, CVoiceData &voice )
 void CrolPlayer::load_pitch_events( binistream *f, CVoiceData &voice )
 {
     int16 const number_of_pitch_events = f->readInt( 2 );
-    if (number_of_pitch_events<0) {
-        return;
-    }
 
     TPitchEvents &pitch_events = voice.pitch_events;
 
@@ -689,7 +666,7 @@ int CrolPlayer::load_rol_instrument( binistream *f, SBnkHeader const &header, st
     else
     {
         // set up default instrument data here
-        memset( &usedIns.instrument, 0, sizeof(usedIns.instrument) );
+        memset( &usedIns.instrument, 0, sizeof(SRolInstrument) );
     }
     ins_list.push_back( usedIns );
 
@@ -700,7 +677,7 @@ int CrolPlayer::get_ins_index( std::string const &name ) const
 {
     for(unsigned int i=0; i<ins_list.size(); ++i)
     {
-        if( strcmp_nocase(ins_list[i].name.c_str(), name.c_str()) == 0 )
+        if( strcasecmp(ins_list[i].name.c_str(), name.c_str()) == 0 )
         {
             return i;
         }

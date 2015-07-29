@@ -157,10 +157,12 @@ private:
     bool m_can_ranges = false;          /* true if the webserver advertised accept-range: bytes */
     int64_t m_icy_metaint = 0;          /* Interval in which the server will send metadata announcements. 0 if no announcments */
     int64_t m_icy_metaleft = 0;         /* Bytes left until the next metadata block */
+    int m_icy_len = 0;                  /* Bytes in current metadata block */
 
     bool m_eof = false;
 
     RingBuf<char> m_rb;           /* Ringbuffer for our data */
+    Index<char> m_icy_buf;        /* Buffer for ICY metadata */
     icy_metadata m_icy_metadata;  /* Current ICY metadata */
 
     ne_session * m_session = nullptr;
@@ -175,7 +177,7 @@ private:
     int open_request (uint64_t startbyte, String * error);
     FillBufferResult fill_buffer ();
     void reader ();
-    int64_t try_fread (void * ptr, int64_t size, int64_t nmemb);
+    int64_t try_fread (void * ptr, int64_t size, int64_t nmemb, bool & data_read);
 
     static int server_auth_callback (void * data, const char * realm, int attempt,
      char * username, char * password)
@@ -225,7 +227,7 @@ static void add_icy (struct icy_metadata * m, const char * name, const char * va
     }
 }
 
-static void parse_icy (struct icy_metadata * m, char * metadata, size_t len)
+static void parse_icy (struct icy_metadata * m, char * metadata, int len)
 {
     enum TagReadState
     {
@@ -239,7 +241,7 @@ static void parse_icy (struct icy_metadata * m, char * metadata, size_t len)
 
     char * p = metadata;
     char * tstart = metadata;
-    size_t pos = 1;
+    int pos = 1;
 
     char name[NEON_ICY_BUFSIZE];
     char value[NEON_ICY_BUFSIZE];
@@ -733,7 +735,7 @@ VFSImpl * NeonTransport::fopen (const char * path, const char * mode, String & e
     return file;
 }
 
-int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb)
+int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb, bool & data_read)
 {
     if (! m_request)
     {
@@ -852,7 +854,9 @@ int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb)
     /* Deliver data from the buffer */
     pthread_mutex_lock (& m_reader_status.mutex);
 
-    if (! m_rb.len ())
+    if (m_rb.len ())
+        data_read = true;
+    else
     {
         /* The buffer is still empty, we can deliver no data! */
         AUDERR ("<%p> Buffer still underrun, fatal.\n", this);
@@ -866,31 +870,27 @@ int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb)
     {
         if (! m_icy_metaleft)
         {
-            /* The next data in the buffer is a ICY metadata announcement.
-             * Get the length byte */
-            unsigned char icy_metalen = m_rb.head ();
-            m_rb.pop ();
-
-            /*  We need enough data in the buffer to
-             * a) Read the complete ICY metadata block
-             * b) deliver at least one byte to the reader */
-            AUDDBG ("<%p> Expecting %d bytes of ICY metadata\n", this, (icy_metalen*16));
-
-            if (m_rb.len () < icy_metalen * 16 + size)
+            if (! m_icy_len)
             {
-                /* There is not enough data. We do not have much choice at this point,
-                 * so we'll deliver the metadata as normal data to the reader and
-                 * hope for the best. */
-                AUDERR ("<%p> Buffer underrun when reading metadata. Expect "
-                 "audio degradation\n", this);
-                m_icy_metaleft = m_icy_metaint + icy_metalen * 16;
+                /* The next data in the buffer is a ICY metadata announcement.
+                 * Get the length byte */
+                m_icy_len = 16 * (unsigned char) m_rb.head ();
+                m_rb.pop ();
+
+                AUDDBG ("<%p> Expecting %d bytes of ICY metadata\n", this, m_icy_len);
             }
-            else
+
+            if (m_icy_buf.len () < m_icy_len)
+                m_rb.move_out (m_icy_buf, -1, aud::min (m_icy_len - m_icy_buf.len (), m_rb.len ()));
+
+            if (m_icy_buf.len () >= m_icy_len)
             {
                 /* Grab the metadata from the buffer and send it to the parser */
-                char icy_metadata[NEON_ICY_BUFSIZE];
-                m_rb.move_out (icy_metadata, icy_metalen * 16);
-                parse_icy (& m_icy_metadata, icy_metadata, icy_metalen * 16);
+                parse_icy (& m_icy_metadata, m_icy_buf.begin (), m_icy_buf.len ());
+
+                /* Reset countdown to next announcement */
+                m_icy_buf.clear ();
+                m_icy_len = 0;
                 m_icy_metaleft = m_icy_metaint;
             }
         }
@@ -927,12 +927,17 @@ int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb)
  * must call it repeatedly until we have read the full request. */
 int64_t NeonFile::fread (void * buffer, int64_t size, int64_t count)
 {
-    size_t total = 0, part;
+    int64_t total = 0;
 
     AUDDBG ("<%p> fread %d x %d\n", this, (int) size, (int) count);
 
-    while (count > 0 && (part = try_fread (buffer, size, count)) > 0)
+    while (count > 0)
     {
+        bool data_read = false;
+        int64_t part = try_fread (buffer, size, count, data_read);
+        if (! data_read)
+            break;
+
         buffer = (char *) buffer + size * part;
         total += part;
         count -= part;
@@ -1057,6 +1062,8 @@ int NeonFile::fseek (int64_t offset, VFSSeekType whence)
     }
 
     m_rb.discard ();
+    m_icy_buf.clear ();
+    m_icy_len = 0;
 
     if (open_handle (newpos) != 0)
     {

@@ -39,6 +39,8 @@ enum
 };
 
 void menu_init (QWidget * parent);
+void menu_cleanup ();
+
 void menu_popup (int id, int x, int y, bool leftward, bool upward);
 
 #endif /* SKINS_MENUS_H */

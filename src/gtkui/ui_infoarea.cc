@@ -265,10 +265,7 @@ static void get_color (int i, float * r, float * g, float * b)
     rgb_to_hsv (c.red, c.green, c.blue, & h, & s, & v);
 
     if (s < 0.1) /* monochrome theme? use blue instead */
-    {
         h = 5;
-        s = 0.75;
-    }
 
     s = 1 - 0.9 * i / (VIS_BANDS - 1);
     v = 0.75 + 0.25 * i / (VIS_BANDS - 1);

@@ -14,7 +14,7 @@
 
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
   mad.h - MAD loader by Riven the Mage <riven@ok.ru>
 */
@@ -24,25 +24,25 @@
 class CmadLoader: public CmodPlayer
 {
 public:
-	static CPlayer *factory(Copl *newopl);
+        static CPlayer *factory(Copl *newopl);
 
-	CmadLoader(Copl *newopl) : CmodPlayer(newopl) { };
+        CmadLoader(Copl *newopl) : CmodPlayer(newopl) { };
 
-	bool	load(VFSFile &fd, const CFileProvider &fp);
-	void	rewind(int subsong);
-	float	getrefresh();
+        bool    load(const std::string &filename, const CFileProvider &fp);
+        void    rewind(int subsong);
+        float   getrefresh();
 
-	std::string	gettype();
-	std::string	getinstrument(unsigned int n);
-	unsigned int	getinstruments();
+        std::string     gettype();
+        std::string     getinstrument(unsigned int n);
+        unsigned int    getinstruments();
 
 private:
 
-	struct mad_instrument
-	{
-	  char            name[8];
-	  unsigned char   data[12]; // last two unused
-	} instruments[9];
+        struct mad_instrument
+        {
+          char            name[8];
+          unsigned char   data[12]; // last two unused
+        } instruments[9];
 
-	unsigned char   timer;
+        unsigned char   timer;
 };

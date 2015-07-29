@@ -14,73 +14,66 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * msc.c - MSC Player by Lubomir Bulej (pallas@kadan.cz)
  */
 
+#include <cstring>
 #include <stdio.h>
-#include <string.h>
 
 #include "msc.h"
 #include "debug.h"
 
-const unsigned char
-  CmscPlayer::msc_signature[MSC_SIGN_LEN] = {
+const unsigned char CmscPlayer::msc_signature [MSC_SIGN_LEN] = {
   'C', 'e', 'r', 'e', 's', ' ', '\x13', ' ',
-  'M', 'S', 'C', 'p', 'l', 'a', 'y', ' '
-};
+  'M', 'S', 'C', 'p', 'l', 'a', 'y', ' ' };
 
 /*** public methods *************************************/
 
-CPlayer *
-CmscPlayer::factory (Copl * newopl)
+CPlayer *CmscPlayer::factory (Copl * newopl)
 {
   return new CmscPlayer (newopl);
 }
 
-CmscPlayer::CmscPlayer (Copl * newopl):CPlayer (newopl)
+CmscPlayer::CmscPlayer(Copl * newopl) : CPlayer (newopl)
 {
-  desc = nullptr;
-  msc_data = nullptr;
-  raw_data = nullptr;
+  desc = NULL;
+  msc_data = NULL;
+  raw_data = NULL;
   nr_blocks = 0;
 }
 
-CmscPlayer::~CmscPlayer ()
+CmscPlayer::~CmscPlayer()
 {
-  if (raw_data != nullptr)
-    delete[]raw_data;
+  if (raw_data != NULL)
+    delete [] raw_data;
 
-  if (msc_data != nullptr)
-  {
+  if (msc_data != NULL) {
     // free compressed blocks
-    for (int blk_num = 0; blk_num < nr_blocks; blk_num++)
-    {
-      if (msc_data[blk_num].mb_data != nullptr)
-        delete[]msc_data[blk_num].mb_data;
+    for (int blk_num = 0; blk_num < nr_blocks; blk_num++) {
+      if (msc_data [blk_num].mb_data != NULL)
+        delete [] msc_data [blk_num].mb_data;
     }
 
-    delete[]msc_data;
+    delete [] msc_data;
   }
 
-  if (desc != nullptr)
-    delete[]desc;
+  if (desc != NULL)
+    delete [] desc;
 }
 
-bool
-CmscPlayer::load (VFSFile & fd, const CFileProvider & fp)
+bool CmscPlayer::load(const std::string & filename, const CFileProvider & fp)
 {
-  binistream *bf;
-  msc_header hdr;
+  binistream *  bf;
+  msc_header    hdr;
 
   // open and validate the file
-  bf = fp.open (fd);
-  if (!bf)
+  bf = fp.open (filename);
+  if (! bf)
     return false;
 
-  if (!load_header (bf, &hdr))
-  {
+  if (! load_header (bf, & hdr)) {
     fp.close (bf);
     return false;
   }
@@ -91,28 +84,25 @@ CmscPlayer::load (VFSFile & fd, const CFileProvider & fp)
   nr_blocks = hdr.mh_nr_blocks;
   block_len = hdr.mh_block_len;
 
-  if (!nr_blocks)
-  {
+  if (! nr_blocks) {
     fp.close (bf);
     return false;
   }
 
   // load compressed data blocks
-  msc_data = new msc_block[nr_blocks];
-  raw_data = new u8[block_len];
+  msc_data = new msc_block [nr_blocks];
+  raw_data = new u8 [block_len];
 
-  for (int blk_num = 0; blk_num < nr_blocks; blk_num++)
-  {
+  for (int blk_num = 0; blk_num < nr_blocks; blk_num++) {
     msc_block blk;
 
     blk.mb_length = bf->readInt (2);
-    blk.mb_data = new u8[blk.mb_length];
-    for (int oct_num = 0; oct_num < blk.mb_length; oct_num++)
-    {
-      blk.mb_data[oct_num] = bf->readInt (1);
+    blk.mb_data = new u8 [blk.mb_length];
+    for (int oct_num = 0; oct_num < blk.mb_length; oct_num++) {
+      blk.mb_data [oct_num] = bf->readInt (1);
     }
 
-    msc_data[blk_num] = blk;
+    msc_data [blk_num] = blk;
   }
 
   // clean up & initialize
@@ -122,25 +112,22 @@ CmscPlayer::load (VFSFile & fd, const CFileProvider & fp)
   return true;
 }
 
-bool
-CmscPlayer::update ()
+bool CmscPlayer::update()
 {
   // output data
-  while (!delay)
-  {
-    u8 cmnd;
-    u8 data;
+  while (! delay) {
+    u8  cmnd;
+    u8  data;
 
     // decode data
-    if (!decode_octet (&cmnd))
+    if (! decode_octet (& cmnd))
       return false;
 
-    if (!decode_octet (&data))
+    if (! decode_octet (& data))
       return false;
 
     // check for special commands
-    switch (cmnd)
-    {
+    switch (cmnd) {
 
       // delay
     case 0xff:
@@ -151,8 +138,8 @@ CmscPlayer::update ()
     default:
       opl->write (cmnd, data);
 
-    }                           // command switch
-  }                             // play pass
+    } // command switch
+  } // play pass
 
 
   // count delays
@@ -164,8 +151,7 @@ CmscPlayer::update ()
   return true;
 }
 
-void
-CmscPlayer::rewind (int subsong)
+void CmscPlayer::rewind(int subsong)
 {
   // reset state
   dec_prefix = 0;
@@ -176,30 +162,27 @@ CmscPlayer::rewind (int subsong)
   delay = 0;
 
   // init the OPL chip and go to OPL2 mode
-  opl->init ();
-  opl->write (1, 32);
+  opl->init();
+  opl->write(1, 32);
 }
 
-float
-CmscPlayer::getrefresh ()
+float CmscPlayer::getrefresh()
 {
   // PC timer oscillator frequency / wait register
   return 1193180 / (float) (timer_div ? timer_div : 0xffff);
 }
 
-std::string CmscPlayer::gettype ()
+std::string CmscPlayer::gettype()
 {
-  char
-    vstr[40];
+  char vstr [40];
 
-  sprintf (vstr, "AdLib MSCplay (version %d)", version);
+  sprintf(vstr, "AdLib MSCplay (version %d)", version);
   return std::string (vstr);
 }
 
 /*** private methods *************************************/
 
-bool
-CmscPlayer::load_header (binistream * bf, msc_header * hdr)
+bool CmscPlayer::load_header(binistream * bf, msc_header * hdr)
 {
   // check signature
   bf->readString ((char *) hdr->mh_sign, sizeof (hdr->mh_sign));
@@ -218,42 +201,37 @@ CmscPlayer::load_header (binistream * bf, msc_header * hdr)
   return true;
 }
 
-bool
-CmscPlayer::decode_octet (u8 * output)
+bool CmscPlayer::decode_octet(u8 * output)
 {
-  msc_block blk;                // compressed data block
+  msc_block blk;                        // compressed data block
 
   if (block_num >= nr_blocks)
     return false;
 
-  blk = msc_data[block_num];
-  while (1)
-  {
-    u8 octet;                   // decoded octet
-    u8 len_corr = 0;            // length correction
+  blk = msc_data [block_num];
+  while (1) {
+    u8  octet;          // decoded octet
+    u8  len_corr = 0;   // length correction
 
     // advance to next block if necessary
-    if (block_pos >= blk.mb_length && dec_len == 0)
-    {
+    if (block_pos >= blk.mb_length && dec_len == 0) {
       block_num++;
       if (block_num >= nr_blocks)
         return false;
 
-      blk = msc_data[block_num];
+      blk = msc_data [block_num];
       block_pos = 0;
       raw_pos = 0;
     }
 
     // decode the compressed music data
-    switch (dec_prefix)
-    {
+    switch (dec_prefix) {
 
       // decode prefix
     case 155:
     case 175:
-      octet = blk.mb_data[block_pos++];
-      if (octet == 0)
-      {
+      octet = blk.mb_data [block_pos++];
+      if (octet == 0) {
         // invalid prefix, output original
         octet = dec_prefix;
         dec_prefix = 0;
@@ -276,7 +254,7 @@ CmscPlayer::decode_octet (u8 * output)
       // check for extended length
     case 156:
       if (dec_len == 15)
-        dec_len += blk.mb_data[block_pos++];
+        dec_len += blk.mb_data [block_pos++];
 
       // add length correction and go for copy mode
       dec_len += len_corr;
@@ -286,7 +264,7 @@ CmscPlayer::decode_octet (u8 * output)
 
       // get extended distance
     case 176:
-      dec_dist += 17 + 16 * blk.mb_data[block_pos++];
+      dec_dist += 17 + 16 * blk.mb_data [block_pos++];
       len_corr = 3;
 
       // check for extended length
@@ -296,17 +274,15 @@ CmscPlayer::decode_octet (u8 * output)
 
       // prefix copy mode
     case 255:
-      if ((int) raw_pos >= dec_dist)
-        octet = raw_data[raw_pos - dec_dist];
-      else
-      {
-        AdPlug_LogWrite ("error! read before raw_data buffer.\n");
+      if((int)raw_pos >= dec_dist)
+        octet = raw_data [raw_pos - dec_dist];
+      else {
+        AdPlug_LogWrite("error! read before raw_data buffer.\n");
         octet = 0;
       }
 
       dec_len--;
-      if (dec_len == 0)
-      {
+      if (dec_len == 0) {
         // back to normal mode
         dec_prefix = 0;
       }
@@ -316,23 +292,22 @@ CmscPlayer::decode_octet (u8 * output)
 
       // normal mode
     default:
-      octet = blk.mb_data[block_pos++];
-      if (octet == 155 || octet == 175)
-      {
+      octet = blk.mb_data [block_pos++];
+      if (octet == 155 || octet == 175) {
         // it's a prefix, restart
         dec_prefix = octet;
         continue;
       }
-    }                           // prefix switch
+    } // prefix switch
 
 
     // output the octet
-    if (output != nullptr)
+    if (output != NULL)
       *output = octet;
 
-    raw_data[raw_pos++] = octet;
+    raw_data [raw_pos++] = octet;
     break;
-  };                            // decode pass
+  }; // decode pass
 
   return true;
 }

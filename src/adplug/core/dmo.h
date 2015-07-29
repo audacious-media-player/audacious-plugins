@@ -14,7 +14,7 @@
 
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
   dmo.cpp - TwinTeam loader by Riven the Mage <riven@ok.ru>
 */
@@ -28,10 +28,10 @@ class CdmoLoader: public Cs3mPlayer
 
   CdmoLoader(Copl *newopl) : Cs3mPlayer(newopl) { };
 
-  bool	load(VFSFile &fd, const CFileProvider &fp);
+  bool  load(const std::string &filename, const CFileProvider &fp);
 
-  std::string	gettype();
-  std::string	getauthor();
+  std::string   gettype();
+  std::string   getauthor();
 
  private:
 
@@ -39,7 +39,7 @@ class CdmoLoader: public Cs3mPlayer
   public:
     bool decrypt(unsigned char *buf, long len);
     long unpack(unsigned char *ibuf, unsigned char *obuf,
-		unsigned long outputsize);
+                unsigned long outputsize);
 
   private:
     unsigned short brand(unsigned short range);

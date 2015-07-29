@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * dro.c - DOSBox Raw OPL Player by Sjoerd van der Berg <harekiet@zophar.net>
  *
@@ -23,129 +23,119 @@
  * NOTES: 3-oct-04: the DRO format is not yet finalized. beware.
  */
 
+#include <cstring>
 #include <stdio.h>
-#include <string.h>
 
 #include "dro.h"
 
 /*** public methods *************************************/
 
-CPlayer *
-CdroPlayer::factory (Copl * newopl)
+CPlayer *CdroPlayer::factory(Copl *newopl)
 {
-  return new CdroPlayer (newopl);
+  return new CdroPlayer(newopl);
 }
 
-CdroPlayer::CdroPlayer (Copl * newopl):CPlayer (newopl), data (0)
+CdroPlayer::CdroPlayer(Copl *newopl)
+  : CPlayer(newopl), data(0)
 {
-  if (opl->gettype () == Copl::TYPE_OPL2)
+  if(opl->gettype() == Copl::TYPE_OPL2)
     opl3_mode = 0;
   else
     opl3_mode = 1;
 }
 
-bool
-CdroPlayer::load (VFSFile & fd, const CFileProvider & fp)
+bool CdroPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
-  binistream *f = fp.open (fd);
-  if (!f)
-    return false;
+  binistream *f = fp.open(filename); if(!f) return false;
   char id[8];
   unsigned long i;
 
   // file validation section
-  f->readString (id, 8);
-  if (strncmp (id, "DBRAWOPL", 8))
-  {
-    fp.close (f);
-    return false;
-  }
-  int version = f->readInt (4); // not very useful just yet
-  if (version != 0x10000)
-  {
-    fp.close (f);
-    return false;
-  }
+  f->readString(id, 8);
+  if(strncmp(id,"DBRAWOPL",8)) { fp.close (f); return false; }
+  int version = f->readInt(4);  // not very useful just yet
+  if(version != 0x10000) { fp.close(f); return false; }
 
   // load section
-  mstotal = f->readInt (4);     // Total milliseconds in file
-  length = f->readInt (4);      // Total data bytes in file
-  f->ignore (4);                // Type of opl data this can contain - ignored
-  data = new unsigned char[length];
-  for (i = 0; i < length; i++)
-    data[i] = f->readInt (1);
-  fp.close (f);
-  rewind (0);
+  mstotal = f->readInt(4);      // Total milliseconds in file
+  length = f->readInt(4);       // Total data bytes in file
+  data = new unsigned char [length];
+
+  f->ignore(1);                 // Type of opl data this can contain - ignored
+  for (i=0;i<3;i++)
+        data[i]=f->readInt(1);
+
+  if ((data[0] == 0) || (data[1] == 0) || (data[2] == 0)) {
+        // Some early .DRO files only used one byte for the hardware type, then
+        // later changed to four bytes with no version number change.  If we're
+        // here then this is a later (more popular) file with the full four bytes
+        // for the hardware-type.
+        i = 0; // so ignore the three bytes we just read and start again
+  }
+  for (;i<length;i++)
+    data[i]=f->readInt(1);
+  fp.close(f);
+  rewind(0);
   return true;
 }
 
-bool
-CdroPlayer::update ()
+bool CdroPlayer::update()
 {
-  if (delay > 500)
-  {
-    delay -= 500;
+  if (delay>500) {
+    delay-=500;
     return true;
-  }
-  else
-    delay = 0;
+  } else
+    delay=0;
 
-  while (pos < length)
-  {
+  while (pos < length) {
     unsigned char cmd = data[pos++];
-    switch (cmd)
-    {
+    switch(cmd) {
     case 0:
       delay = 1 + data[pos++];
       return true;
     case 1:
-      delay = 1 + data[pos] + (data[pos + 1] << 8);
-      pos += 2;
+      delay = 1 + data[pos] + (data[pos+1]<<8);
+      pos+=2;
       return true;
     case 2:
       index = 0;
-      opl->setchip (0);
+      opl->setchip(0);
       break;
     case 3:
       index = 1;
-      opl->setchip (1);
+      opl->setchip(1);
       break;
     default:
-      if (cmd == 4)
-        cmd = data[pos++];      //data override
-      if (index == 0 || opl3_mode)
-        opl->write (cmd, data[pos++]);
+      if(cmd==4) cmd = data[pos++]; //data override
+      if(index == 0 || opl3_mode)
+        opl->write(cmd,data[pos++]);
       break;
     }
   }
 
-  return pos < length;
+  return pos<length;
 }
 
-void
-CdroPlayer::rewind (int subsong)
+void CdroPlayer::rewind(int subsong)
 {
-  delay = 1;
+  delay=1;
   pos = index = 0;
-  opl->init ();
+  opl->init();
 
   //dro assumes all registers are initialized to 0
   //registers not initialized to 0 will be corrected
   //in the data stream
-  for (int i = 0; i < 256; i++)
-    opl->write (i, 0);
+  for(int i=0;i<256;i++)
+    opl->write(i,0);
 
-  opl->setchip (1);
-  for (int i = 0; i < 256; i++)
-    opl->write (i, 0);
-  opl->setchip (0);
+  opl->setchip(1);
+  for(int i=0;i<256;i++)
+    opl->write(i,0);
+  opl->setchip(0);
 }
 
-float
-CdroPlayer::getrefresh ()
+float CdroPlayer::getrefresh()
 {
-  if (delay > 500)
-    return 1000 / 500;
-  else
-    return 1000 / (double) delay;
+  if (delay > 500) return 1000 / 500;
+  else return 1000 / (double)delay;
 }

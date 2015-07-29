@@ -217,7 +217,7 @@ void SkinnedVis::draw (QPainter & cr)
         break;
     }
 
-DRAW:;
+DRAW:
     QImage image ((unsigned char *) rgb, 76, 16, 4 * 76, QImage::Format_RGB32);
     cr.drawImage (0, 0, image);
 }

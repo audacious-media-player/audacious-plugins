@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * players.h - Players enumeration, by Simon Peter <dn.tlp@gmx.net>
  */
@@ -23,8 +23,6 @@
 #include <string.h>
 
 #include "players.h"
-
-#include <libaudcore/audstrings.h>
 
 /***** CPlayerDesc *****/
 
@@ -50,7 +48,7 @@ CPlayerDesc::CPlayerDesc(Factory f, const std::string &type, const char *ext)
 
   // Determine length of passed extensions list
   while(*i) i += strlen(i) + 1;
-  extlength = i - ext + 1;	// length = difference between last and first char + 1
+  extlength = i - ext + 1;      // length = difference between last and first char + 1
 
   extensions = (char *)malloc(extlength);
   memcpy(extensions, ext, extlength);
@@ -73,8 +71,8 @@ void CPlayerDesc::add_extension(const char *ext)
 
 const char *CPlayerDesc::get_extension(unsigned int n) const
 {
-  const char	*i = extensions;
-  unsigned int	j;
+  const char    *i = extensions;
+  unsigned int  j;
 
   for(j = 0; j < n && (*i); j++, i += strlen(i) + 1) ;
   return (*i != '\0' ? i : 0);
@@ -84,7 +82,7 @@ const char *CPlayerDesc::get_extension(unsigned int n) const
 
 const CPlayerDesc *CPlayers::lookup_filetype(const std::string &ftype) const
 {
-  const_iterator	i;
+  const_iterator        i;
 
   for(i = begin(); i != end(); i++)
     if((*i)->filetype == ftype)
@@ -95,13 +93,13 @@ const CPlayerDesc *CPlayers::lookup_filetype(const std::string &ftype) const
 
 const CPlayerDesc *CPlayers::lookup_extension(const std::string &extension) const
 {
-  const_iterator	i;
-  unsigned int		j;
+  const_iterator        i;
+  unsigned int          j;
 
   for(i = begin(); i != end(); i++)
     for(j = 0; (*i)->get_extension(j); j++)
-      if(!strcmp_nocase(extension.c_str(), (*i)->get_extension(j)))
-	return *i;
+      if(!strcasecmp(extension.c_str(), (*i)->get_extension(j)))
+        return *i;
 
   return 0;
 }

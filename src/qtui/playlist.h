@@ -38,7 +38,7 @@ public:
     void update (const Playlist::Update & update);
     void playCurrentIndex ();
     void deleteCurrentSelection ();
-    void setFilter (const QString &text);
+    void setFilter (const QString & text);
     void toggleQueue ();
     int playlist () const;
     int uniqueId () const;
@@ -54,7 +54,8 @@ private:
     QModelIndex rowToIndex (int row);
     int indexToRow (const QModelIndex & index);
 
-    void keyPressEvent (QKeyEvent * e); /* override default handler */
+    void keyPressEvent (QKeyEvent * event);
+    void mousePressEvent (QMouseEvent * event);
     void mouseDoubleClickEvent (QMouseEvent * event);
     void currentChanged (const QModelIndex & current, const QModelIndex & previous);
     void selectionChanged (const QItemSelection & selected, const QItemSelection & deselected);

@@ -1,6 +1,6 @@
 /*
  * Adplug - Replayer for many OPL2/OPL3 audio file formats.
- * Copyright (C) 1999 - 2004 Simon Peter, <dn.tlp@gmx.net>, et al.
+ * Copyright (C) 1999 - 2008 Simon Peter, <dn.tlp@gmx.net>, et al.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * rol.h - ROL Player by OPLx <oplx@yahoo.com>
  *
@@ -25,10 +25,9 @@
 
 #include <vector>
 #include <string>
+#include <strings.h>
 
 #include "player.h"
-
-#include <libaudcore/audstrings.h>
 
 class CrolPlayer: public CPlayer
 {
@@ -39,10 +38,10 @@ public:
 
     ~CrolPlayer();
 
-    bool  load      (VFSFile &fd, const CFileProvider &fp);
+    bool  load      (const std::string &filename, const CFileProvider &fp);
     bool  update    ();
-    void  rewind    (int subsong);	// rewinds to specified subsong
-    float getrefresh();			// returns needed timer refresh rate
+    void  rewind    (int subsong);      // rewinds to specified subsong
+    float getrefresh();                 // returns needed timer refresh rate
 
     std::string gettype() { return std::string("Adlib Visual Composer"); }
 
@@ -271,7 +270,7 @@ private:
     private:
         bool keyLess( const char *const lhs, const char *const rhs ) const
         {
-            return strcmp_nocase(lhs, rhs) < 0;
+            return strcasecmp(lhs, rhs) < 0;
         }
     };
 
@@ -289,7 +288,7 @@ private:
     unsigned char               bdRegister;
     unsigned char               bxRegister[9];
     unsigned char               volumeCache[11];
-    uint16			freqCache[11];
+    uint16                      freqCache[11];
     real32                      pitchCache[11];
 
     static int    const kSizeofDataRecord;

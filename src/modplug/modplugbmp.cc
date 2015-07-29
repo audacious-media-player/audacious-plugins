@@ -51,12 +51,20 @@ bool ModplugXMMS::is_our_file (const char * filename, VFSFile & file)
         return true;
     if (!memcmp(magic, PSM_MAGIC, 4))
         return true;
+    if (!memcmp(magic, MMD0_MAGIC, 4))
+        return true;
+    if (!memcmp(magic, MMD1_MAGIC, 4))
+        return true;
+    if (!memcmp(magic, OKTA_MAGIC, 8))
+        return true;
 
     if (file.fseek (44, VFS_SEEK_SET))
         return false;
     if (file.fread (magic, 1, 4) < 4)
         return false;
     if (!memcmp(magic, S3M_MAGIC, 4))
+        return true;
+    if (!memcmp(magic, PTM_MAGIC, 4))
         return true;
 
     if (file.fseek (1080, VFS_SEEK_SET))

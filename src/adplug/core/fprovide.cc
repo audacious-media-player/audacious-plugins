@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * fprovide.cpp - File provider class framework, by Simon Peter <dn.tlp@gmx.net>
  */
@@ -24,50 +24,40 @@
 #include <binfile.h>
 
 #include "fprovide.h"
-
-#include <libaudcore/audstrings.h>
+#include "binio_virtual.h"
 
 /***** CFileProvider *****/
 
 bool CFileProvider::extension(const std::string &filename,
-			      const std::string &extension)
+                              const std::string &extension)
 {
-  return str_has_suffix_nocase(filename.c_str(), extension.c_str());
+  const char *fname = filename.c_str(), *ext = extension.c_str();
+
+  if(strlen(fname) < strlen(ext) ||
+     strcasecmp(fname + strlen(fname) - strlen(ext), ext))
+    return false;
+  else
+    return true;
 }
 
 unsigned long CFileProvider::filesize(binistream *f)
 {
-  unsigned long oldpos = f->pos(), size;
-
-  f->seek(0, binio::End);
-  size = f->pos();
-  f->seek(oldpos, binio::Set);
-
-  return size;
+  return static_cast<vfsistream*>(f)->size();
 }
 
-/***** CProvider_Filesystem *****/
-
-binistream *CProvider_Filesystem::open(VFSFile &fd) const
+binistream *CFileProvider::open(std::string filename) const
 {
-  if(!fd) return 0;
+  binistream *f;
 
-  vfsistream *f = new vfsistream(&fd);
+  if (!strcmp(filename.c_str(), m_file.filename()) && !m_file.fseek(0, VFS_SEEK_SET))
+    f = new vfsistream(&m_file);
+  else
+    f = new vfsistream(filename);
 
-  if(!f) return 0;
   if(f->error()) { delete f; return 0; }
 
   // Open all files as little endian with IEEE floats by default
   f->setFlag(binio::BigEndian, false); f->setFlag(binio::FloatIEEE);
 
   return f;
-}
-
-void CProvider_Filesystem::close(binistream *f) const
-{
-  vfsistream *ff = (vfsistream *)f;
-
-  if(f) {
-    delete ff;
-  }
 }

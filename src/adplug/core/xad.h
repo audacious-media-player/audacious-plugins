@@ -14,7 +14,7 @@
 
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
   xad.h - XAD shell player by Riven the Mage <riven@ok.ru>
 */
@@ -32,10 +32,10 @@ public:
         CxadPlayer(Copl * newopl);
         ~CxadPlayer();
 
-        bool	load(VFSFile &fd, const CFileProvider &fp);
-        bool	update();
-        void	rewind(int subsong);
-        float	getrefresh();
+        bool    load(const std::string &filename, const CFileProvider &fp);
+        bool    update();
+        void    rewind(int subsong);
+        float   getrefresh();
 
         std::string     gettype();
         std::string     gettitle();
@@ -44,33 +44,33 @@ public:
         unsigned int    getinstruments();
 
 protected:
-	virtual void xadplayer_rewind(int subsong) = 0;
-	virtual bool xadplayer_load() = 0;
-	virtual void xadplayer_update() = 0;
-	virtual float xadplayer_getrefresh() = 0;
-	virtual std::string xadplayer_gettype() = 0;
-	virtual std::string xadplayer_gettitle()
-	  {
-	    return std::string(xad.title);
-	  }
-	virtual std::string xadplayer_getauthor()
-	  {
-	    return std::string(xad.author);
-	  }
-	virtual std::string xadplayer_getinstrument(unsigned int i)
-	  {
-	    return std::string("");
-	  }
-	virtual unsigned int xadplayer_getinstruments()
-	  {
-	    return 0;
-	  }
+        virtual void xadplayer_rewind(int subsong) = 0;
+        virtual bool xadplayer_load() = 0;
+        virtual void xadplayer_update() = 0;
+        virtual float xadplayer_getrefresh() = 0;
+        virtual std::string xadplayer_gettype() = 0;
+        virtual std::string xadplayer_gettitle()
+          {
+            return std::string(xad.title);
+          }
+        virtual std::string xadplayer_getauthor()
+          {
+            return std::string(xad.author);
+          }
+        virtual std::string xadplayer_getinstrument(unsigned int i)
+          {
+            return std::string("");
+          }
+        virtual unsigned int xadplayer_getinstruments()
+          {
+            return 0;
+          }
 
-	enum { HYP=1, PSI, FLASH, BMF, RAT, HYBRID };
+        enum { HYP=1, PSI, FLASH, BMF, RAT, HYBRID };
 
         struct xad_header
         {
-	    unsigned long   id;
+            unsigned long   id;
             char            title[36];
             char            author[36];
             unsigned short  fmt;

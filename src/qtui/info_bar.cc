@@ -21,60 +21,94 @@
 
 #include "info_bar.h"
 
-#include <libaudcore/hook.h>
-#include <libaudcore/index.h>
-#include <libaudcore/objects.h>
-#include <libaudcore/runtime.h>
-#include <libaudcore/interface.h>
-#include <libaudcore/tuple.h>
 #include <libaudcore/drct.h>
+#include <libaudcore/interface.h>
 #include <libaudqt/libaudqt.h>
 
-#include <QGraphicsItem>
-#include <QGraphicsPixmapItem>
-#include <QFont>
+#include <QPainter>
 
-VisItem::VisItem (QGraphicsItem * parent) :
-    QGraphicsItem (parent),
-    Visualizer (Freq)
+static constexpr int Spacing = 8;
+static constexpr int IconSize = 64;
+static constexpr int Height = IconSize + 2 * Spacing;
+
+static constexpr int VisBands = 12;
+static constexpr int VisWidth = 8 * VisBands + Spacing - 2;
+static constexpr int VisCenter = IconSize * 5 / 8 + Spacing;
+static constexpr int VisDelay = 2;
+static constexpr int VisFalloff = 2;
+
+class InfoVis : public QWidget, Visualizer
 {
+public:
+    InfoVis (QWidget * parent = nullptr);
+    ~InfoVis ();
+
+    void render_freq (const float * freq);
+    void clear ();
+
+    void paintEvent (QPaintEvent *);
+
+    const QGradient & gradient () const
+        { return m_gradient; }
+
+private:
+    QLinearGradient m_gradient;
+    QColor m_colors[VisBands], m_shadow[VisBands];
+
+    char m_bars[VisBands] {};
+    char m_delay[VisBands] {};
+};
+
+static void get_color (int i, QColor & color, QColor & shadow)
+{
+    color = QWidget ().palette ().color (QPalette::Highlight);
+
+    qreal h, s, v;
+    color.getHsvF (& h, & s, & v);
+
+    if (s < 0.1) /* monochrome theme? use blue instead */
+        h = 0.67;
+
+    s = 1 - 0.9 * i / (VisBands - 1);
+    v = 0.75 + 0.25 * i / (VisBands - 1);
+
+    color.setHsvF (h, s, v);
+    shadow = QColor (color.redF () * 77, color.greenF () * 77, color.blueF () * 77);
+}
+
+InfoVis::InfoVis (QWidget * parent) :
+    QWidget (parent),
+    Visualizer (Freq),
+    m_gradient (0, 0, 0, Height)
+{
+    m_gradient.setStops ({
+        {0, QColor (64, 64, 64)},
+        {0.499, QColor (38, 38, 38)},
+        {0.5, QColor (26, 26, 26)},
+        {1, QColor (0, 0, 0)}
+    });
+
+    for (int i = 0; i < VisBands; i ++)
+        get_color (i, m_colors[i], m_shadow[i]);
+
+    setAttribute (Qt::WA_OpaquePaintEvent);
+    resize (VisWidth, Height);
+
     aud_visualizer_add (this);
 }
 
-VisItem::~VisItem ()
+InfoVis::~InfoVis ()
 {
     aud_visualizer_remove (this);
 }
 
-QRectF VisItem::boundingRect () const
-{
-    return QRectF (0.0, 0.0, InfoBar::VisWidth, InfoBar::Height);
-}
-
-void VisItem::paint (QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
-{
-    QColor c = Qt::blue;
-
-    painter->fillRect (boundingRect (), QColor (0, 0, 0, 0));
-    painter->setPen (QPen (c, 1, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-
-    for (int i = 0; i < InfoBar::VisBands; i++)
-    {
-        int x = InfoBar::Spacing + 8 * i;
-        int q = InfoBar::IconSize - m_bars[i];
-        int t = -(InfoBar::IconSize - q);
-
-        painter->fillRect (x, InfoBar::IconSize, 6, t, c);
-    }
-}
-
-void VisItem::render_freq (const float * freq)
+void InfoVis::render_freq (const float * freq)
 {
     /* xscale[i] = pow (256, i / VIS_BANDS) - 0.5; */
-    const float xscale[InfoBar::VisBands + 1] = {0.5, 1.09, 2.02, 3.5, 5.85, 9.58,
+    const float xscale[VisBands + 1] = {0.5, 1.09, 2.02, 3.5, 5.85, 9.58,
      15.5, 24.9, 39.82, 63.5, 101.09, 160.77, 255.5};
 
-    for (int i = 0; i < InfoBar::VisBands; i ++)
+    for (int i = 0; i < VisBands; i ++)
     {
         int a = ceilf (xscale[i]);
         int b = floorf (xscale[i + 1]);
@@ -96,7 +130,7 @@ void VisItem::render_freq (const float * freq)
         int x = 40 + 20 * log10f (n);
         x = aud::clamp (x, 0, 40);
 
-        m_bars[i] -= aud::max (0, InfoBar::VisFalloff - m_delay[i]);
+        m_bars[i] -= aud::max (0, VisFalloff - m_delay[i]);
 
         if (m_delay[i])
             m_delay[i] --;
@@ -104,14 +138,14 @@ void VisItem::render_freq (const float * freq)
         if (x > m_bars[i])
         {
             m_bars[i] = x;
-            m_delay[i] = InfoBar::VisDelay;
+            m_delay[i] = VisDelay;
         }
     }
 
-    update ();
+    repaint ();
 }
 
-void VisItem::clear ()
+void InfoVis::clear ()
 {
     memset (m_bars, 0, sizeof m_bars);
     memset (m_delay, 0, sizeof m_delay);
@@ -119,95 +153,82 @@ void VisItem::clear ()
     update ();
 }
 
-void AlbumArtItem::update_cb ()
+void InfoVis::paintEvent (QPaintEvent *)
 {
-    setPixmap (audqt::art_request_current (InfoBar::IconSize, InfoBar::IconSize));
+    QPainter p (this);
+    p.fillRect (0, 0, VisWidth, Height, m_gradient);
+
+    for (int i = 0; i < VisBands; i ++)
+    {
+        int x = 8 * i;
+        int v = m_bars[i];
+        int m = aud::min (VisCenter + v, Height);
+
+        p.fillRect (x, VisCenter - v, 6, v, m_colors[i]);
+        p.fillRect (x, VisCenter, 6, m - VisCenter, m_shadow[i]);
+    }
 }
 
-InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
-    m_scene (new QGraphicsScene (this)),
-    m_art (new AlbumArtItem),
-    m_title_text (new QGraphicsTextItem),
-    m_album_text (new QGraphicsTextItem),
-    m_artist_text (new QGraphicsTextItem)
-#ifdef XXX_NOTYET
-    m_vis (new VisItem)
-#endif
+InfoBar::InfoBar (QWidget * parent) :
+    QWidget (parent),
+    m_vis (new InfoVis (this))
 {
-    setAlignment (Qt::AlignLeft | Qt::AlignTop);
-    setScene (m_scene);
-    setFixedHeight (InfoBar::Height);
-    setCacheMode (QGraphicsView::CacheBackground);
+    setFixedHeight (Height);
 
-    m_scene->addItem (m_art);
-    m_scene->addItem (m_title_text);
-    m_scene->addItem (m_album_text);
-    m_scene->addItem (m_artist_text);
-#ifdef XXX_NOTYET
-    m_scene->addItem (m_vis);
-#endif
+    m_title.setTextFormat (Qt::PlainText);
+    m_artist.setTextFormat (Qt::PlainText);
+    m_album.setTextFormat (Qt::PlainText);
 
-    m_title_text->setDefaultTextColor (QColor (255, 255, 255));
-    m_artist_text->setDefaultTextColor (QColor (255, 255, 255));
-    m_album_text->setDefaultTextColor (QColor (179, 179, 179));
-
-    QFont f = m_title_text->font ();
-    f.setPointSize (18);
-    m_title_text->setFont (f);
-
-    f = m_artist_text->font ();
-    f.setPointSize (9);
-    m_artist_text->setFont (f);
-
-    f = m_album_text->font ();
-    f.setPointSize (9);
-    m_album_text->setFont (f);
-
-    update_metadata_cb ();
+    update_cb ();
 }
 
-QSize InfoBar::minimumSizeHint () const
+void InfoBar::resizeEvent (QResizeEvent *)
 {
-    return QSize (InfoBar::IconSize + (2 * InfoBar::Spacing), InfoBar::Height);
+    m_vis->move (width () - VisWidth, 0);
 }
 
-void InfoBar::resizeEvent (QResizeEvent * event)
+void InfoBar::paintEvent (QPaintEvent *)
 {
-    QGraphicsView::resizeEvent (event);
+    QPainter p (this);
 
-    QRect rect = contentsRect ();
-    setSceneRect (rect);
+    p.fillRect (0, 0, width () - VisWidth, Height, m_vis->gradient ());
 
-    QLinearGradient gradient (0, 0, 0, rect.height ());
-    gradient.setStops ({
-        {0, QColor (64, 64, 64)},
-        {0.499, QColor (38, 38, 38)},
-        {0.5, QColor (26, 26, 26)},
-        {1, QColor (0, 0, 0)}
-    });
-    m_scene->setBackgroundBrush (gradient);
+    if (! m_art.isNull ())
+    {
+        int r = m_art.devicePixelRatio ();
+        int left = Spacing + (IconSize - m_art.width () / r) / 2;
+        int top = Spacing + (IconSize - m_art.height () / r) / 2;
+        p.drawPixmap (left, top, m_art);
+    }
 
-    m_art->setPos (InfoBar::Spacing, InfoBar::Spacing);
+    QFont font = p.font ();
+    font.setPointSize (18);
+    p.setFont (font);
 
-    qreal x = InfoBar::IconSize + (InfoBar::Spacing * 1.5);
-    qreal y = InfoBar::Spacing / 2;
-    m_title_text->setPos (x, y);
-    m_artist_text->setPos (x, y + (InfoBar::IconSize / 2));
-    m_album_text->setPos (x, y + ((InfoBar::IconSize * 3) / 4));
+    p.setPen (QColor (255, 255, 255));
+    p.drawStaticText (IconSize + 2 * Spacing, Spacing, m_title);
 
-#ifdef XXX_NOTYET
-    m_vis->setPos ((rect.width () - InfoBar::VisWidth) - (InfoBar::Spacing * 2), 0);
-#endif
+    font.setPointSize (9);
+    p.setFont (font);
+
+    p.drawStaticText (IconSize + 2 * Spacing, Spacing + IconSize / 2, m_artist);
+
+    p.setPen (QColor (179, 179, 179));
+    p.drawStaticText (IconSize + 2 * Spacing, Spacing + IconSize * 3 / 4, m_album);
 }
 
 void InfoBar::update_metadata_cb ()
 {
     Tuple tuple = aud_drct_get_tuple ();
-    String title = tuple.get_str (Tuple::Title);
-    String artist = tuple.get_str (Tuple::Artist);
-    String album = tuple.get_str (Tuple::Album);
+    m_title.setText ((const char *) tuple.get_str (Tuple::Title));
+    m_artist.setText ((const char *) tuple.get_str (Tuple::Artist));
+    m_album.setText ((const char *) tuple.get_str (Tuple::Album));
 
-    m_title_text->setPlainText (QString ((const char *) title));
-    m_artist_text->setPlainText (QString ((const char *) artist));
-    m_album_text->setPlainText (QString ((const char *) album));
+    update ();
+}
+
+void InfoBar::update_cb ()
+{
+    m_art = audqt::art_request_current (IconSize, IconSize);
+    update_metadata_cb ();
 }

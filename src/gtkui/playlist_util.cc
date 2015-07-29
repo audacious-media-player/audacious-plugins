@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/interface.h>
 #include <libaudcore/playlist.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/list.h>
@@ -77,7 +78,15 @@ void playlist_open_folder ()
 
     /* don't trim trailing slash, it may be important */
     StringBuf folder = str_copy (filename, slash + 1 - filename);
-    gtk_show_uri (gdk_screen_get_default (), folder, GDK_CURRENT_TIME, nullptr);
+
+    GError * error = nullptr;
+    gtk_show_uri (gdk_screen_get_default (), folder, GDK_CURRENT_TIME, & error);
+
+    if (error)
+    {
+        aud_ui_show_error (error->message);
+        g_error_free (error);
+    }
 }
 
 void playlist_queue_toggle ()
