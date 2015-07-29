@@ -85,7 +85,7 @@ static const audqt::MenuItem output_items[] = {
     audqt::MenuSep (),
     audqt::MenuCommand ({N_("Effects ...")}, configure_effects),
     audqt::MenuSep (),
-    audqt::MenuToggle ({N_("Record Stream"), nullptr, "D"}, {"skins", "record", "skins set record"}, toggle_record),
+    audqt::MenuToggle ({N_("Record Stream"), "media-record", "D"}, {"skins", "record", "skins set record"}, toggle_record),
     audqt::MenuCommand ({N_("Audio Settings ..."), "audio-card"}, configure_output)
 };
 
@@ -110,8 +110,8 @@ static const audqt::MenuItem main_items[] = {
 static const audqt::MenuItem playback_items[] = {
     audqt::MenuCommand ({N_("Song Info ..."), "dialog-information", "I"}, audqt::infowin_show_current),
     audqt::MenuSep (),
-    audqt::MenuToggle ({N_("Repeat"), nullptr, "R"}, {nullptr, "repeat", "set repeat"}),
-    audqt::MenuToggle ({N_("Shuffle"), nullptr, "S"}, {nullptr, "shuffle", "set shuffle"}),
+    audqt::MenuToggle ({N_("Repeat"), "media-playlist-repeat", "R"}, {nullptr, "repeat", "set repeat"}),
+    audqt::MenuToggle ({N_("Shuffle"), "media-playlist-shuffle", "S"}, {nullptr, "shuffle", "set shuffle"}),
     audqt::MenuToggle ({N_("No Playlist Advance"), nullptr, "Ctrl+N"}, {nullptr, "no_playlist_advance", "set no_playlist_advance"}),
     audqt::MenuToggle ({N_("Stop After This Song"), nullptr, "Ctrl+M"}, {nullptr, "stop_after_current_song", "set stop_after_current_song"}),
     audqt::MenuSep (),
