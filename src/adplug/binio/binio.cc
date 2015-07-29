@@ -107,8 +107,8 @@ binistream::Int binistream::readInt(unsigned int size)
 binistream::Float binistream::readFloat(FType ft)
 {
   if(getFlag(FloatIEEE)) {      // Read IEEE-754 floating-point value
-    unsigned int        i, size;
-    Byte                in[8];
+    unsigned int        i, size = 0;
+    FloatData           in;
     bool                swap;
 
     // Determine appropriate size for given type.
@@ -123,14 +123,14 @@ binistream::Float binistream::readFloat(FType ft)
     // Read the float byte by byte, converting endianess
     for(i = 0; i < size; i++)
       if(swap)
-        in[size - i - 1] = getByte();
+        in.b[size - i - 1] = getByte();
       else
-        in[i] = getByte();
+        in.b[i] = getByte();
 
     // Let the hardware do the conversion
     switch(ft) {
-    case Single: return *(float *)in;
-    case Double: return *(double *)in;
+    case Single: return in.f;
+    case Double: return in.d;
     }
   }
 
@@ -249,29 +249,25 @@ void binostream::writeInt(Int val, unsigned int size)
 void binostream::writeFloat(Float f, FType ft)
 {
   if(getFlag(FloatIEEE)) {      // Write IEEE-754 floating-point value
-    unsigned int        i, size;
-    Byte                *out;
+    unsigned int        i, size = 0;
+    FloatData           out;
     bool                swap;
-
-    // Let the hardware do the conversion
-    float     outf = f;
-    double    outd = f;
 
     // Hardware could be big or little endian, convert appropriately
     swap = getFlag(BigEndian) ^ (system_flags & BigEndian);
 
     // Determine appropriate size for given type and convert by hardware
     switch(ft) {
-    case Single: size = 4; out = (Byte *)&outf; break;        // 32 bits
-    case Double: size = 8; out = (Byte *)&outd; break;        // 64 bits
+    case Single: size = 4; out.f = f; break;  // 32 bits
+    case Double: size = 8; out.d = f; break;  // 64 bits
     }
 
     // Write the float byte by byte, converting endianess
-    if(swap) out += size - 1;
-    for(i = 0; i < size; i++) {
-      putByte(*out);
-      if(swap) out--; else out++;
-    }
+    for(i = 0; i < size; i++)
+      if(swap)
+        putByte(out.b[size - i - 1]);
+      else
+        putByte(out.b[i]);
 
     return;     // We're done.
   }

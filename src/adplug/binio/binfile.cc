@@ -44,7 +44,7 @@ void binfbase::close()
 
 void binfbase::seek(long pos, Offset offs)
 {
-  int error;
+  int error = 0;
 
   if(f == NULL) { err |= NotOpen; return; }
 

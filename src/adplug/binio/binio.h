@@ -78,6 +78,12 @@ protected:
   Flags                 my_flags;
   static const Flags    system_flags;
   Error                 err;
+
+  union FloatData {
+    Byte   b[8];
+    double d;
+    float  f;
+  };
 };
 
 class binistream: virtual public binio
