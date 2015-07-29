@@ -167,7 +167,7 @@ void SmallVis::draw (cairo_t * cr)
     }
     }
 
-DRAW:;
+DRAW:
     cairo_surface_t * surf = cairo_image_surface_create_for_data
      ((unsigned char *) rgb, CAIRO_FORMAT_RGB24, 38, 5, 4 * 38);
     cairo_set_source_surface (cr, surf, 0, 0);

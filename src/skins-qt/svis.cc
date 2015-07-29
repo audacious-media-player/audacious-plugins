@@ -166,7 +166,7 @@ void SmallVis::draw (QPainter & cr)
     }
     }
 
-DRAW:;
+DRAW:
     QImage image ((unsigned char *) rgb, 38, 5, 4 * 38, QImage::Format_RGB32);
     cr.drawImage (0, 0, image);
 }
