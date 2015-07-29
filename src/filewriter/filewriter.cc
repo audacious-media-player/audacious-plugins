@@ -150,10 +150,14 @@ static void set_plugin(void)
 }
 
 const char * const FileWriter::defaults[] = {
- "fileext", "0", /* WAV */
+#ifdef FILEWRITER_MP3
+ "fileext", aud::numeric_string<MP3>::str,
+#else
+ "fileext", aud::numeric_string<WAV>::str,
+#endif
  "filenamefromtags", "TRUE",
  "prependnumber", "FALSE",
- "save_original", "TRUE",
+ "save_original", "FALSE",
  "use_suffix", "FALSE",
  nullptr};
 
