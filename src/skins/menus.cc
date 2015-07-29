@@ -24,8 +24,10 @@
 #include <gdk/gdkkeysyms.h>
 
 #include <libaudcore/drct.h>
+#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -33,6 +35,7 @@
 
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
+#include "main.h"
 #include "view.h"
 
 #define SHIFT GDK_SHIFT_MASK
@@ -58,6 +61,47 @@ static GtkWidget * get_plugin_menu_playlist (void) {return audgui_get_plugin_men
 static GtkWidget * get_plugin_menu_playlist_add (void) {return audgui_get_plugin_menu (AudMenuID::PlaylistAdd); }
 static GtkWidget * get_plugin_menu_playlist_remove (void) {return audgui_get_plugin_menu (AudMenuID::PlaylistRemove); }
 
+static void configure_effects () { audgui_show_prefs_for_plugin_type (PluginType::Effect); }
+static void configure_output () { audgui_show_prefs_for_plugin_type (PluginType::Output); }
+static void configure_visualizations () { audgui_show_prefs_for_plugin_type (PluginType::Vis); }
+
+static void volume_up () { mainwin_set_volume_diff (5); }
+static void volume_down () { mainwin_set_volume_diff (-5); }
+
+/* emulate a config item for the recording toggle */
+static void toggle_record ()
+{
+    bool enable = aud_get_bool ("skins", "record");
+
+    if (aud_drct_enable_record (enable))
+        mainwin_show_status_message (enable ? _("Recording on") : _("Recording off"));
+    else
+    {
+        aud_set_bool ("skins", "record", aud_drct_get_record_enabled ());
+        hook_call ("skins set record", nullptr);
+    }
+}
+
+static void record_toggled (void * = nullptr, void * = nullptr)
+{
+    bool enabled = aud_drct_get_record_enabled ();
+    if (enabled != aud_get_bool ("skins", "record"))
+    {
+        aud_set_bool ("skins", "record", enabled);
+        hook_call ("skins set record", nullptr);
+    }
+}
+
+static const AudguiMenuItem output_items[] = {
+    MenuCommand (N_("Volume Up"), "audio-volume-high", '+', NO_MOD, volume_up),
+    MenuCommand (N_("Volume Down"), "audio-volume-low", '-', NO_MOD, volume_down),
+    MenuSep (),
+    MenuCommand (N_("Effects ..."), nullptr, NO_KEY, configure_effects),
+    MenuSep (),
+    MenuToggle (N_("Record Stream"), nullptr, 'd', NO_MOD, "skins", "record", toggle_record, "skins set record"),
+    MenuCommand (N_("Audio Settings ..."), "audio-card", NO_KEY, configure_output)
+};
+
 static const AudguiMenuItem main_items[] = {
     MenuCommand (N_("Open Files ..."), "document-open", 'l', NO_MOD, action_play_file),
     MenuCommand (N_("Open URL ..."), "folder-remote", 'l', CTRL, action_play_location),
@@ -65,6 +109,7 @@ static const AudguiMenuItem main_items[] = {
     MenuSep (),
     MenuSub (N_("Playback"), nullptr, get_menu_playback),
     MenuSub (N_("Playlist"), nullptr, get_menu_playlist),
+    MenuSub (N_("Output"), nullptr, {output_items}),
     MenuSub (N_("View"), nullptr, get_menu_view),
     MenuSep (),
     MenuSub (N_("Services"), nullptr, get_plugin_menu_main),
@@ -120,6 +165,7 @@ static const AudguiMenuItem view_items[] = {
     MenuSep (),
     MenuToggle (N_("Show Remaining Time"), nullptr, 'r', CTRL, "skins", "show_remaining_time", view_apply_show_remaining, "skins set show_remaining_time"),
     MenuSep (),
+    MenuToggle (N_("Double Size"), nullptr, 'd', CTRL, "skins", "double_size", view_apply_double_size, "skins set double_size"),
     MenuToggle (N_("Always on Top"), nullptr, 'o', CTRL, "skins", "always_on_top", view_apply_on_top, "skins set always_on_top"),
     MenuToggle (N_("On All Workspaces"), nullptr, 's', CTRL, "skins", "sticky", view_apply_sticky, "skins set sticky"),
     MenuSep (),
@@ -127,7 +173,7 @@ static const AudguiMenuItem view_items[] = {
     MenuToggle (N_("Roll Up Playlist Editor"), nullptr, 'w', SHIFT_CTRL, "skins", "playlist_shaded", view_apply_playlist_shaded, "skins set playlist_shaded"),
     MenuToggle (N_("Roll Up Equalizer"), nullptr, 'w', CTRL_ALT, "skins", "equalizer_shaded", view_apply_equalizer_shaded, "skins set equalizer_shaded"),
     MenuSep (),
-    MenuToggle (N_("Double Size"), nullptr, 'd', CTRL, "skins", "double_size", view_apply_double_size, "skins set double_size")
+    MenuCommand (N_("_Visualizations ..."), nullptr, NO_KEY, configure_visualizations)
 };
 
 static const AudguiMenuItem playlist_add_items[] = {
@@ -226,6 +272,9 @@ void menu_init (void)
         {playlist_context_items}
     };
 
+    record_toggled ();
+    hook_associate ("enable record", record_toggled, nullptr);
+
     accel = gtk_accel_group_new ();
 
     for (int i = UI_MENUS; i --; )
@@ -246,6 +295,8 @@ void menu_cleanup (void)
 
     g_object_unref (accel);
     accel = nullptr;
+
+    hook_dissociate ("enable record", record_toggled);
 }
 
 GtkAccelGroup * menu_get_accel_group (void)

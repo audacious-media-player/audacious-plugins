@@ -50,20 +50,21 @@ extern MenuRow * mainwin_menurow;
 extern SkinnedVis * mainwin_vis;
 extern SmallVis * mainwin_svis;
 
-void mainwin_create(void);
-void mainwin_unhook (void);
+void mainwin_create ();
+void mainwin_unhook ();
 
-void mainwin_adjust_volume_motion(int v);
-void mainwin_adjust_volume_release(void);
-void mainwin_adjust_balance_motion(int b);
-void mainwin_adjust_balance_release(void);
-void mainwin_set_volume_slider(int percent);
-void mainwin_set_balance_slider(int percent);
+void mainwin_adjust_volume_motion (int v);
+void mainwin_adjust_volume_release ();
+void mainwin_adjust_balance_motion (int b);
+void mainwin_adjust_balance_release ();
+void mainwin_set_volume_slider (int percent);
+void mainwin_set_balance_slider (int percent);
+void mainwin_set_volume_diff (int diff);
 
-void mainwin_refresh_hints(void);
+void mainwin_refresh_hints ();
 void mainwin_playback_begin ();
 
-void mainwin_update_song_info (void);
+void mainwin_update_song_info ();
 void mainwin_show_status_message (const char * message);
 
 void mainwin_drag_data_received(GtkWidget * widget,

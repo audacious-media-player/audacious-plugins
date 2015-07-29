@@ -119,10 +119,8 @@ static MonoStereo * mainwin_monostereo;
 static Button * mainwin_srew, * mainwin_splay, * mainwin_spause;
 static Button * mainwin_sstop, * mainwin_sfwd, * mainwin_seject, * mainwin_about;
 
-static void mainwin_position_motion_cb (void);
-static void mainwin_position_release_cb (void);
-static void mainwin_set_volume_diff (int diff);
-
+static void mainwin_position_motion_cb ();
+static void mainwin_position_release_cb ();
 static void seek_timeout (void * rewind);
 
 static void format_time (char buf[7], int time, int length)
@@ -154,8 +152,7 @@ static void format_time (char buf[7], int time, int length)
     }
 }
 
-static void
-mainwin_menubtn_cb(void)
+static void mainwin_menubtn_cb ()
 {
     int x, y;
     mainwin->getPosition (& x, & y);
@@ -163,13 +160,12 @@ mainwin_menubtn_cb(void)
      y + MAINWIN_SHADED_HEIGHT * config.scale, false, false, 1, GDK_CURRENT_TIME);
 }
 
-static void mainwin_minimize_cb (void)
+static void mainwin_minimize_cb ()
 {
     gtk_window_iconify ((GtkWindow *) mainwin->gtk ());
 }
 
-static void
-mainwin_shade_toggle(void)
+static void mainwin_shade_toggle ()
 {
     view_set_player_shaded (! aud_get_bool ("skins", "player_shaded"));
 }
@@ -185,7 +181,7 @@ static void mainwin_lock_info_text (const char * text)
     locked_textbox->set_text (text);
 }
 
-static void mainwin_release_info_text (void)
+static void mainwin_release_info_text ()
 {
     if (locked_textbox)
     {
@@ -260,7 +256,7 @@ static void setup_widget (Widget * widget, int x, int y, bool show)
     mainwin->move_widget (false, widget, x, y);
 }
 
-void mainwin_refresh_hints (void)
+void mainwin_refresh_hints ()
 {
     const SkinHints * p = & skin.hints;
 
@@ -520,12 +516,6 @@ bool Window::keypress (GdkEventKey * event)
 
     switch (event->keyval)
     {
-        case GDK_KEY_minus:
-            mainwin_set_volume_diff (-5);
-            break;
-        case GDK_KEY_plus:
-            mainwin_set_volume_diff (5);
-            break;
         case GDK_KEY_Left:
         case GDK_KEY_KP_Left:
         case GDK_KEY_KP_7:
@@ -603,7 +593,7 @@ mainwin_drag_data_received(GtkWidget * widget,
     audgui_urilist_open (data);
 }
 
-static int time_now (void)
+static int time_now ()
 {
     struct timeval tv;
     gettimeofday (& tv, nullptr);
@@ -683,14 +673,14 @@ static void mainwin_eq_cb (Button * button, GdkEventButton * event)
 static void mainwin_pl_cb (Button * button, GdkEventButton * event)
  {view_set_show_playlist (button->get_active ()); }
 
-static void mainwin_spos_set_knob (void)
+static void mainwin_spos_set_knob ()
 {
     int pos = mainwin_sposition->get_pos ();
     int x = (pos < 6) ? 17 : (pos < 9) ? 20 : 23;
     mainwin_sposition->set_knob (x, 36, x, 36);
 }
 
-static void mainwin_spos_motion_cb (void)
+static void mainwin_spos_motion_cb ()
 {
     mainwin_spos_set_knob ();
 
@@ -705,7 +695,7 @@ static void mainwin_spos_motion_cb (void)
     mainwin_stime_sec->set_text (buf + 4);
 }
 
-static void mainwin_spos_release_cb (void)
+static void mainwin_spos_release_cb ()
 {
     mainwin_spos_set_knob ();
 
@@ -713,7 +703,7 @@ static void mainwin_spos_release_cb (void)
     aud_drct_seek (aud_drct_get_length () * (pos - 1) / 12);
 }
 
-static void mainwin_position_motion_cb (void)
+static void mainwin_position_motion_cb ()
 {
     int length = aud_drct_get_length () / 1000;
     int pos = mainwin_position->get_pos ();
@@ -723,7 +713,7 @@ static void mainwin_position_motion_cb (void)
      time / 60, time % 60, length / 60, length % 60));
 }
 
-static void mainwin_position_release_cb (void)
+static void mainwin_position_release_cb ()
 {
     int length = aud_drct_get_length ();
     int pos = mainwin_position->get_pos ();
@@ -761,7 +751,7 @@ void mainwin_adjust_balance_release ()
     mainwin_release_info_text ();
 }
 
-static void mainwin_volume_set_frame (void)
+static void mainwin_volume_set_frame ()
 {
     int pos = mainwin_volume->get_pos ();
     int frame = (pos * 27 + 25) / 51;
@@ -774,7 +764,7 @@ void mainwin_set_volume_slider (int percent)
     mainwin_volume_set_frame ();
 }
 
-static void mainwin_volume_motion_cb (void)
+static void mainwin_volume_motion_cb ()
 {
     mainwin_volume_set_frame ();
     int pos = mainwin_volume->get_pos ();
@@ -784,7 +774,7 @@ static void mainwin_volume_motion_cb (void)
     equalizerwin_set_volume_slider(vol);
 }
 
-static void mainwin_volume_release_cb (void)
+static void mainwin_volume_release_cb ()
 {
     mainwin_volume_set_frame ();
     mainwin_adjust_volume_release();
@@ -797,7 +787,7 @@ static gboolean mainwin_volume_timeout_cb (void *)
     return G_SOURCE_REMOVE;
 }
 
-static void mainwin_balance_set_frame (void)
+static void mainwin_balance_set_frame ()
 {
     int pos = mainwin_balance->get_pos ();
     int frame = (abs (pos - 12) * 27 + 6) / 12;
@@ -814,7 +804,7 @@ void mainwin_set_balance_slider (int percent)
     mainwin_balance_set_frame ();
 }
 
-static void mainwin_balance_motion_cb (void)
+static void mainwin_balance_motion_cb ()
 {
     mainwin_balance_set_frame ();
     int pos = mainwin_balance->get_pos ();
@@ -829,13 +819,13 @@ static void mainwin_balance_motion_cb (void)
     equalizerwin_set_balance_slider(bal);
 }
 
-static void mainwin_balance_release_cb (void)
+static void mainwin_balance_release_cb ()
 {
     mainwin_balance_set_frame ();
     mainwin_adjust_volume_release();
 }
 
-static void mainwin_set_volume_diff (int diff)
+void mainwin_set_volume_diff (int diff)
 {
     int vol = aud_drct_get_volume_main ();
 
@@ -930,8 +920,7 @@ static bool mainwin_info_button_press (GdkEventButton * event)
     return false;
 }
 
-static void
-mainwin_create_widgets(void)
+static void mainwin_create_widgets ()
 {
     mainwin_menubtn = new Button (9, 9, 0, 0, 0, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
     mainwin->put_widget (false, mainwin_menubtn, 6, 3);
@@ -1142,8 +1131,7 @@ void MainWindow::draw (cairo_t * cr)
     skin_draw_mainwin_titlebar (cr, is_shaded (), true);
 }
 
-static void
-mainwin_create_window(void)
+static void mainwin_create_window ()
 {
     bool shaded = aud_get_bool ("skins", "player_shaded");
 
@@ -1170,7 +1158,7 @@ mainwin_create_window(void)
     hook_associate ("set stop_after_current_song", (HookFunction) stop_after_song_toggled, nullptr);
 }
 
-void mainwin_unhook (void)
+void mainwin_unhook ()
 {
     seeking = false;
     timer_remove (TimerRate::Hz10, seek_timeout);
@@ -1206,14 +1194,13 @@ void mainwin_unhook (void)
     locked_old_text = String ();
 }
 
-void
-mainwin_create(void)
+void mainwin_create ()
 {
     mainwin_create_window ();
     mainwin_create_widgets ();
 }
 
-static void mainwin_update_volume (void)
+static void mainwin_update_volume ()
 {
     int volume = aud_drct_get_volume_main ();
     int balance = aud_drct_get_volume_balance ();
@@ -1266,7 +1253,7 @@ static void mainwin_update_time_slider (int time, int length)
     }
 }
 
-void mainwin_update_song_info (void)
+void mainwin_update_song_info ()
 {
     mainwin_update_volume ();
 
