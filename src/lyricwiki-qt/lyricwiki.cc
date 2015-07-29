@@ -295,7 +295,7 @@ static void update_lyrics_window(const char *title, const char *artist, const ch
     if (! textedit)
         return;
 
-    cursor.insertHtml (QString ("<big><b>") + QString (title) + QString ("<b></big>"));
+    cursor.insertHtml (QString ("<big><b>") + QString (title) + QString ("</b></big>"));
 
     if (artist != nullptr)
     {
