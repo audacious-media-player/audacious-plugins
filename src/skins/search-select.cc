@@ -36,16 +36,16 @@
 
 static void search_cbt_cb (GtkWidget * called_cbt, GtkWidget * other_cbt)
 {
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(called_cbt)))
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(other_cbt), false);
+    if (gtk_toggle_button_get_active ((GtkToggleButton *) called_cbt))
+        gtk_toggle_button_set_active ((GtkToggleButton *) other_cbt, false);
 }
 
-static gboolean search_kp_cb (GtkWidget * entry, GdkEventKey * event, GtkWidget * searchdlg_win)
+static gboolean search_kp_cb (GtkWidget * entry, GdkEventKey * event, GtkWidget * dialog)
 {
     if (event->keyval != GDK_KEY_Return)
         return false;
 
-    gtk_dialog_response(GTK_DIALOG(searchdlg_win), GTK_RESPONSE_ACCEPT);
+    gtk_dialog_response ((GtkDialog *) dialog, GTK_RESPONSE_ACCEPT);
     return true;
 }
 
@@ -73,133 +73,120 @@ static void copy_selected_to_new (int playlist)
 
 void action_playlist_search_and_select ()
 {
-    GtkWidget *searchdlg_win, *searchdlg_grid;
-    GtkWidget *searchdlg_hbox, *searchdlg_logo, *searchdlg_helptext;
-    GtkWidget *searchdlg_entry_title, *searchdlg_label_title;
-    GtkWidget *searchdlg_entry_album, *searchdlg_label_album;
-    GtkWidget *searchdlg_entry_file_name, *searchdlg_label_file_name;
-    GtkWidget *searchdlg_entry_performer, *searchdlg_label_performer;
-    GtkWidget *searchdlg_checkbt_clearprevsel;
-    GtkWidget *searchdlg_checkbt_newplaylist;
-    GtkWidget *searchdlg_checkbt_autoenqueue;
-
     /* create dialog */
-    searchdlg_win = gtk_dialog_new_with_buttons(
-      _("Search entries in active playlist"), nullptr, (GtkDialogFlags) 0 ,
-      _("Cancel"), GTK_RESPONSE_REJECT, _("Search"), GTK_RESPONSE_ACCEPT, nullptr);
+    GtkWidget * dialog = gtk_dialog_new_with_buttons (
+     _("Search entries in active playlist"), nullptr, (GtkDialogFlags) 0 ,
+     _("Cancel"), GTK_RESPONSE_REJECT, _("Search"), GTK_RESPONSE_ACCEPT, nullptr);
 
     /* help text and logo */
-    searchdlg_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-    searchdlg_logo = gtk_image_new_from_icon_name ("edit-find", GTK_ICON_SIZE_DIALOG);
-    searchdlg_helptext = gtk_label_new (_("Select entries in playlist by filling one or more "
-      "fields. Fields use regular expressions syntax, case-insensitive. If you don't know how "
-      "regular expressions work, simply insert a literal portion of what you're searching for."));
-    gtk_label_set_max_width_chars (GTK_LABEL(searchdlg_helptext), 70);
-    gtk_label_set_line_wrap (GTK_LABEL(searchdlg_helptext), true);
-    gtk_box_pack_start (GTK_BOX(searchdlg_hbox), searchdlg_logo, false, false, 0);
-    gtk_box_pack_start (GTK_BOX(searchdlg_hbox), searchdlg_helptext, false, false, 0);
+    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    GtkWidget * logo = gtk_image_new_from_icon_name ("edit-find", GTK_ICON_SIZE_DIALOG);
+    GtkWidget * helptext = gtk_label_new (_("Select entries in playlist by filling one or more "
+     "fields. Fields use regular expressions syntax, case-insensitive. If you don't know how "
+     "regular expressions work, simply insert a literal portion of what you're searching for."));
+    gtk_label_set_max_width_chars ((GtkLabel *) helptext, 70);
+    gtk_label_set_line_wrap ((GtkLabel *) helptext, true);
+    gtk_box_pack_start ((GtkBox *) hbox, logo, false, false, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, helptext, false, false, 0);
 
     /* title */
-    searchdlg_label_title = gtk_label_new (_("Title:"));
-    searchdlg_entry_title = gtk_entry_new();
-    gtk_widget_set_hexpand (searchdlg_entry_title, true);
-    gtk_widget_set_halign (searchdlg_label_title, GTK_ALIGN_START);
-    g_signal_connect (searchdlg_entry_title, "key-press-event" ,
-      G_CALLBACK(search_kp_cb), searchdlg_win);
+    GtkWidget * label_title = gtk_label_new (_("Title:"));
+    GtkWidget * entry_title = gtk_entry_new ();
+    gtk_widget_set_hexpand (entry_title, true);
+    gtk_widget_set_halign (label_title, GTK_ALIGN_START);
+    g_signal_connect (entry_title, "key-press-event", (GCallback) search_kp_cb, dialog);
 
     /* album */
-    searchdlg_label_album = gtk_label_new (_("Album:"));
-    searchdlg_entry_album = gtk_entry_new();
-    gtk_widget_set_hexpand (searchdlg_entry_album, true);
-    gtk_widget_set_halign (searchdlg_label_album, GTK_ALIGN_START);
-    g_signal_connect (searchdlg_entry_album, "key-press-event" ,
-      G_CALLBACK(search_kp_cb), searchdlg_win);
+    GtkWidget * label_album = gtk_label_new (_("Album:"));
+    GtkWidget * entry_album = gtk_entry_new ();
+    gtk_widget_set_hexpand (entry_album, true);
+    gtk_widget_set_halign (label_album, GTK_ALIGN_START);
+    g_signal_connect (entry_album, "key-press-event", (GCallback) search_kp_cb, dialog);
 
     /* artist */
-    searchdlg_label_performer = gtk_label_new (_("Artist:"));
-    searchdlg_entry_performer = gtk_entry_new();
-    gtk_widget_set_hexpand (searchdlg_entry_performer, true);
-    gtk_widget_set_halign (searchdlg_label_performer, GTK_ALIGN_START);
-    g_signal_connect (searchdlg_entry_performer, "key-press-event" ,
-      G_CALLBACK(search_kp_cb), searchdlg_win);
+    GtkWidget * label_performer = gtk_label_new (_("Artist:"));
+    GtkWidget * entry_performer = gtk_entry_new ();
+    gtk_widget_set_hexpand (entry_performer, true);
+    gtk_widget_set_halign (label_performer, GTK_ALIGN_START);
+    g_signal_connect (entry_performer, "key-press-event", (GCallback) search_kp_cb, dialog);
 
     /* file name */
-    searchdlg_label_file_name = gtk_label_new (_("File Name:"));
-    searchdlg_entry_file_name = gtk_entry_new();
-    gtk_widget_set_hexpand (searchdlg_entry_file_name, true);
-    gtk_widget_set_halign (searchdlg_label_file_name, GTK_ALIGN_START);
-    g_signal_connect (searchdlg_entry_file_name, "key-press-event" ,
-      G_CALLBACK(search_kp_cb), searchdlg_win);
+    GtkWidget * label_file_name = gtk_label_new (_("File Name:"));
+    GtkWidget * entry_file_name = gtk_entry_new ();
+    gtk_widget_set_hexpand (entry_file_name, true);
+    gtk_widget_set_halign (label_file_name, GTK_ALIGN_START);
+    g_signal_connect (entry_file_name, "key-press-event", (GCallback) search_kp_cb, dialog);
 
     /* some options that control behaviour */
-    searchdlg_checkbt_clearprevsel = gtk_check_button_new_with_label(
-      _("Clear previous selection before searching"));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(searchdlg_checkbt_clearprevsel), true);
-    searchdlg_checkbt_autoenqueue = gtk_check_button_new_with_label(
-      _("Automatically toggle queue for matching entries"));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(searchdlg_checkbt_autoenqueue), false);
-    searchdlg_checkbt_newplaylist = gtk_check_button_new_with_label(
-      _("Create a new playlist with matching entries"));
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(searchdlg_checkbt_newplaylist), false);
-    g_signal_connect (searchdlg_checkbt_autoenqueue, "clicked" ,
-      G_CALLBACK(search_cbt_cb), searchdlg_checkbt_newplaylist);
-    g_signal_connect (searchdlg_checkbt_newplaylist, "clicked" ,
-      G_CALLBACK(search_cbt_cb), searchdlg_checkbt_autoenqueue);
+    GtkWidget * checkbt_clearprevsel = gtk_check_button_new_with_label (
+     _("Clear previous selection before searching"));
+    gtk_toggle_button_set_active ((GtkToggleButton *) checkbt_clearprevsel, true);
+    GtkWidget * checkbt_autoenqueue = gtk_check_button_new_with_label (
+     _("Automatically toggle queue for matching entries"));
+    gtk_toggle_button_set_active ((GtkToggleButton *) checkbt_autoenqueue, false);
+    GtkWidget * checkbt_newplaylist = gtk_check_button_new_with_label (
+     _("Create a new playlist with matching entries"));
+    gtk_toggle_button_set_active ((GtkToggleButton *) checkbt_newplaylist, false);
 
-    /* place fields in searchdlg_grid */
-    searchdlg_grid = gtk_grid_new();
-    gtk_grid_set_row_spacing (GTK_GRID(searchdlg_grid), 2);
-    gtk_widget_set_margin_bottom (searchdlg_hbox, 8);
-    gtk_widget_set_margin_top (searchdlg_checkbt_clearprevsel, 8);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_hbox, 0, 0, 2, 1);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_label_title, 0, 1, 1, 1);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_entry_title, 1, 1, 1, 1);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_label_album, 0, 2, 1, 1);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_entry_album, 1, 2, 1, 1);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_label_performer, 0, 3, 1, 1);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_entry_performer, 1, 3, 1, 1);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_label_file_name, 0, 4, 1, 1);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_entry_file_name, 1, 4, 1, 1);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_checkbt_clearprevsel, 0, 5, 2, 1);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_checkbt_autoenqueue, 0, 6, 2, 1);
-    gtk_grid_attach (GTK_GRID(searchdlg_grid), searchdlg_checkbt_newplaylist, 0, 7, 2, 1);
+    g_signal_connect (checkbt_autoenqueue, "clicked",
+     (GCallback) search_cbt_cb, checkbt_newplaylist);
+    g_signal_connect (checkbt_newplaylist, "clicked",
+     (GCallback) search_cbt_cb, checkbt_autoenqueue);
 
-    gtk_container_set_border_width (GTK_CONTAINER(searchdlg_grid), 5);
-    gtk_container_add (GTK_CONTAINER(gtk_dialog_get_content_area
-     (GTK_DIALOG(searchdlg_win))), searchdlg_grid);
-    gtk_widget_show_all (searchdlg_win);
+    /* place fields in grid */
+    GtkGrid * grid = (GtkGrid *) gtk_grid_new ();
+    gtk_grid_set_row_spacing (grid, 2);
+    gtk_widget_set_margin_bottom (hbox, 8);
+    gtk_widget_set_margin_top (checkbt_clearprevsel, 8);
+    gtk_grid_attach (grid, hbox, 0, 0, 2, 1);
+    gtk_grid_attach (grid, label_title, 0, 1, 1, 1);
+    gtk_grid_attach (grid, entry_title, 1, 1, 1, 1);
+    gtk_grid_attach (grid, label_album, 0, 2, 1, 1);
+    gtk_grid_attach (grid, entry_album, 1, 2, 1, 1);
+    gtk_grid_attach (grid, label_performer, 0, 3, 1, 1);
+    gtk_grid_attach (grid, entry_performer, 1, 3, 1, 1);
+    gtk_grid_attach (grid, label_file_name, 0, 4, 1, 1);
+    gtk_grid_attach (grid, entry_file_name, 1, 4, 1, 1);
+    gtk_grid_attach (grid, checkbt_clearprevsel, 0, 5, 2, 1);
+    gtk_grid_attach (grid, checkbt_autoenqueue, 0, 6, 2, 1);
+    gtk_grid_attach (grid, checkbt_newplaylist, 0, 7, 2, 1);
 
-    if (gtk_dialog_run (GTK_DIALOG(searchdlg_win)) == GTK_RESPONSE_ACCEPT)
+    gtk_container_set_border_width ((GtkContainer *) grid, 5);
+    gtk_container_add ((GtkContainer *) gtk_dialog_get_content_area
+     ((GtkDialog *) dialog), (GtkWidget *) grid);
+    gtk_widget_show_all (dialog);
+
+    if (gtk_dialog_run ((GtkDialog *) dialog) == GTK_RESPONSE_ACCEPT)
     {
         /* create a TitleInput tuple with user search data */
         Tuple tuple;
-        char *searchdata = nullptr;
+        const char * searchdata = nullptr;
         int active_playlist = aud_playlist_get_active ();
 
-        searchdata = (char*)gtk_entry_get_text (GTK_ENTRY(searchdlg_entry_title));
-        AUDDBG("title=\"%s\"\n", searchdata);
+        searchdata = gtk_entry_get_text ((GtkEntry *) entry_title);
+        AUDDBG ("title=\"%s\"\n", searchdata);
         tuple.set_str (Tuple::Title, searchdata);
 
-        searchdata = (char*)gtk_entry_get_text (GTK_ENTRY(searchdlg_entry_album));
-        AUDDBG("album=\"%s\"\n", searchdata);
+        searchdata = gtk_entry_get_text ((GtkEntry *) entry_album);
+        AUDDBG ("album=\"%s\"\n", searchdata);
         tuple.set_str (Tuple::Album, searchdata);
 
-        searchdata = (char*)gtk_entry_get_text (GTK_ENTRY(searchdlg_entry_performer));
-        AUDDBG("performer=\"%s\"\n", searchdata);
+        searchdata = gtk_entry_get_text ((GtkEntry *) entry_performer);
+        AUDDBG ("performer=\"%s\"\n", searchdata);
         tuple.set_str (Tuple::Artist, searchdata);
 
-        searchdata = (char*)gtk_entry_get_text (GTK_ENTRY(searchdlg_entry_file_name));
-        AUDDBG("filename=\"%s\"\n", searchdata);
+        searchdata = gtk_entry_get_text ((GtkEntry *) entry_file_name);
+        AUDDBG ("filename=\"%s\"\n", searchdata);
         tuple.set_str (Tuple::Basename, searchdata);
 
         /* check if previous selection should be cleared before searching */
-        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(searchdlg_checkbt_clearprevsel)))
+        if (gtk_toggle_button_get_active ((GtkToggleButton *) checkbt_clearprevsel))
             aud_playlist_select_all (active_playlist, false);
 
         aud_playlist_select_by_patterns (active_playlist, tuple);
 
         /* check if a new playlist should be created after searching */
-        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(searchdlg_checkbt_newplaylist)))
+        if (gtk_toggle_button_get_active ((GtkToggleButton *) checkbt_newplaylist))
             copy_selected_to_new (active_playlist);
         else
         {
@@ -215,12 +202,11 @@ void action_playlist_search_and_select ()
             }
 
             /* check if matched entries should be queued */
-            if (gtk_toggle_button_get_active ((GtkToggleButton *)
-             searchdlg_checkbt_autoenqueue))
+            if (gtk_toggle_button_get_active ((GtkToggleButton *) checkbt_autoenqueue))
                 aud_playlist_queue_insert_selected (active_playlist, -1);
         }
     }
 
     /* done here :) */
-    gtk_widget_destroy (searchdlg_win);
+    gtk_widget_destroy (dialog);
 }
