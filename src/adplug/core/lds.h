@@ -82,7 +82,7 @@ class CldsPlayer: public CPlayer
     tempo_now, pattplay, tempo, regbd, chandelay[9], mode, pattlen;
   unsigned short        posplay, jumppos, *patterns, speed;
   bool                  playing, songlooped;
-  unsigned int          numpatch, numposi, patterns_size, mainvolume;
+  unsigned int          numpatch, numposi, mainvolume;
 
   void          playsound(int inst_number, int channel_number, int tunehigh);
   inline void   setregs(unsigned char reg, unsigned char val);

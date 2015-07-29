@@ -94,7 +94,7 @@ public:
   static const unsigned char vibratotab[32];
 
   unsigned char speed, del, songend, regbd;
-  unsigned short rows, notetable[12];
+  unsigned short notetable[12];
   unsigned long rw, ord, nrows, npats, nchans;
 
   void setvolume(unsigned char chan);
