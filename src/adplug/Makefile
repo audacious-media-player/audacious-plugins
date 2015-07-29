@@ -1,19 +1,23 @@
 PLUGIN = adplug${PLUGIN_SUFFIX}
 
 SRCS = adplug-xmms.cc		\
+       binio/binfile.cc		\
+       binio/binio.cc		\
+       binio/binstr.cc		\
+       binio/binwrap.cc		\
        core/fmopl.cc		\
        core/debug.cc		\
        core/adlibemu.cc		\
        core/adplug.cc		\
        core/emuopl.cc		\
-       core/fprovide.cc	\
+       core/fprovide.cc		\
        core/player.cc		\
-       core/database.cc	\
+       core/database.cc		\
        core/hsc.cc		\
        core/sng.cc		\
        core/imf.cc		\
        core/players.cc		\
-       core/protrack.cc	\
+       core/protrack.cc		\
        core/a2m.cc		\
        core/adtrack.cc		\
        core/amd.cc		\
@@ -62,5 +66,4 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-sign-compare
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${BINIO_CFLAGS} -I../.. -I./core
-LIBS += ${BINIO_LIBS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. -I./core -I./binio

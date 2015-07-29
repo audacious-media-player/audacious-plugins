@@ -21,7 +21,7 @@
 
 #include <cstring>
 #include <string>
-#include <binfile.h>
+#include "binfile.h"
 
 #include "adplug.h"
 #include "debug.h"
