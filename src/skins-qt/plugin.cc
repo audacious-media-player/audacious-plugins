@@ -147,8 +147,8 @@ bool QtSkins::init ()
         return false;
 
     audqt::init ();
-
     skins_init_main (false);
+
     create_plugin_windows ();
 
     return true;
@@ -159,6 +159,8 @@ static void skins_cleanup_main (void)
     mainwin_unhook ();
     equalizerwin_unhook ();
     playlistwin_unhook ();
+
+    menu_cleanup ();
 
     timer_remove (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
 
@@ -172,14 +174,14 @@ void QtSkins::cleanup ()
     skins_cfg_save ();
 
     destroy_plugin_windows ();
+
     skins_cleanup_main ();
+    audqt::cleanup ();
 
     skin = Skin ();
 
     user_skin_dir = String ();
     skin_thumb_dir = String ();
-
-    audqt::cleanup ();
 }
 
 void skins_restart ()

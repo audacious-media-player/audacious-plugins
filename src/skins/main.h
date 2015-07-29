@@ -32,10 +32,7 @@
 #define MAINWIN_SHADED_HEIGHT    (int)14
 
 class Button;
-class HSlider;
 class MenuRow;
-class PlayStatus;
-class SkinnedNumber;
 class SkinnedVis;
 class SmallVis;
 class TextBox;
