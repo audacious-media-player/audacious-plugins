@@ -151,7 +151,7 @@ binofstream::~binofstream()
 
 void binofstream::open(const char *filename, const Mode mode)
 {
-  char *modestr = "wb";
+  const char *modestr = "wb";
 
   // Check if append mode is desired
   if(mode & Append) modestr = "ab";
@@ -209,7 +209,7 @@ binfstream::~binfstream()
 
 void binfstream::open(const char *filename, const Mode mode)
 {
-  char  *modestr = "w+b";       // Create & at beginning
+  char  modestr[] = "w+b"; // Create & at beginning
   int   ferror = 0;
 
   // Apply desired mode
