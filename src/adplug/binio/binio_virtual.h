@@ -7,7 +7,6 @@
 #define __BINIO_VIRTUAL__
 
 #include "binio.h"
-#include <stdio.h>
 
 #include <libaudcore/vfs.h>
 

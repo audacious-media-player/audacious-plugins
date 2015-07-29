@@ -28,34 +28,7 @@
 // do this.
 #define BINIO_ENABLE_STRING     1
 
-// BINIO_ENABLE_IOSTREAM - Build iostream wrapper classes
-//
-// Set to 1 to build the iostream wrapper classes. You need the standard
-// C++ library to do this.
-#define BINIO_ENABLE_IOSTREAM   1
-
-// BINIO_ISO_STDLIB - Build with ISO C++ standard library compliance
-//
-// Set to 1 to build for the ISO standard C++ library (i.e. namespaces, STL and
-// templatized iostream). Set to 0 to build for the traditional C++ library.
-#define BINIO_ISO_STDLIB        1
-
-// BINIO_WITH_MATH - Build with 'math.h' dependency to allow float conversions
-//
-// Set to 1 to also build routines that depend on the 'math.h' standard C header
-// file (this sometimes also implies a 'libm' or 'libmath' dependency). These
-// routines are needed in order to write IEEE-754 floating-point numbers on a
-// system that doesn't support this format natively. For only reading these
-// numbers, however, these routines are not needed. If set to 0, writing
-// IEEE-754 numbers on an incompatible system will be disabled.
-#define BINIO_WITH_MATH         1
-
 /***** Implementation *****/
-
-// Disable annoying multiple inheritance compiler warning on MSVC6
-#ifdef _MSC_VER
-#       pragma warning(disable: 4250)
-#endif
 
 #if BINIO_ENABLE_STRING
 #include <string>
@@ -105,15 +78,6 @@ protected:
   Flags                 my_flags;
   static const Flags    system_flags;
   Error                 err;
-
-  // Some math.h emulation functions...
-#if !BINIO_WITH_MATH
-  Float pow(Float base, signed int exp);
-  Float ldexp(Float x, signed int exp) { return x * pow(2, exp); }
-#endif
-
-private:
-  static const Flags detect_system_flags();
 };
 
 class binistream: virtual public binio
@@ -138,10 +102,6 @@ public:
 
 protected:
   virtual Byte getByte() = 0;
-
-private:
-  Float ieee_single2float(Byte *data);
-  Float ieee_double2float(Byte *data);
 };
 
 class binostream: virtual public binio
@@ -159,10 +119,6 @@ public:
 
 protected:
   virtual void putByte(Byte) = 0;
-
-private:
-  void float2ieee_single(Float f, Byte *data);
-  void float2ieee_double(Float f, Byte *data);
 };
 
 class binstream: public binistream, public binostream
