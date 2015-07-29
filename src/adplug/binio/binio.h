@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -26,19 +26,19 @@
 //
 // Set to 1 to build std::string supporting methods. You need the STL to
 // do this.
-#define BINIO_ENABLE_STRING	1
+#define BINIO_ENABLE_STRING     1
 
 // BINIO_ENABLE_IOSTREAM - Build iostream wrapper classes
 //
 // Set to 1 to build the iostream wrapper classes. You need the standard
 // C++ library to do this.
-#define BINIO_ENABLE_IOSTREAM	1
+#define BINIO_ENABLE_IOSTREAM   1
 
 // BINIO_ISO_STDLIB - Build with ISO C++ standard library compliance
 //
 // Set to 1 to build for the ISO standard C++ library (i.e. namespaces, STL and
 // templatized iostream). Set to 0 to build for the traditional C++ library.
-#define BINIO_ISO_STDLIB	1
+#define BINIO_ISO_STDLIB        1
 
 // BINIO_WITH_MATH - Build with 'math.h' dependency to allow float conversions
 //
@@ -48,13 +48,13 @@
 // system that doesn't support this format natively. For only reading these
 // numbers, however, these routines are not needed. If set to 0, writing
 // IEEE-754 numbers on an incompatible system will be disabled.
-#define BINIO_WITH_MATH		1
+#define BINIO_WITH_MATH         1
 
 /***** Implementation *****/
 
 // Disable annoying multiple inheritance compiler warning on MSVC6
 #ifdef _MSC_VER
-#	pragma warning(disable: 4250)
+#       pragma warning(disable: 4250)
 #endif
 
 #if BINIO_ENABLE_STRING
@@ -65,18 +65,18 @@ class binio
 {
 public:
   typedef enum {
-    BigEndian	= 1 << 0,
-    FloatIEEE	= 1 << 1
+    BigEndian   = 1 << 0,
+    FloatIEEE   = 1 << 1
   } Flag;
 
   typedef enum {
-    NoError	= 0,
-    Fatal	= 1 << 0,
-    Unsupported	= 1 << 1,
-    NotOpen	= 1 << 2,
-    Denied	= 1 << 3,
-    NotFound	= 1 << 4,
-    Eof		= 1 << 5
+    NoError     = 0,
+    Fatal       = 1 << 0,
+    Unsupported = 1 << 1,
+    NotOpen     = 1 << 2,
+    Denied      = 1 << 3,
+    NotFound    = 1 << 4,
+    Eof         = 1 << 5
   } ErrorCode;
 
   typedef enum { Set, Add, End } Offset;
@@ -96,15 +96,15 @@ public:
   virtual long pos() = 0;
 
 protected:
-  typedef long long	Int;
-  typedef long double	Float;
-  typedef unsigned char	Byte;	// has to be unsigned!
+  typedef long long     Int;
+  typedef long double   Float;
+  typedef unsigned char Byte;   // has to be unsigned!
 
-  typedef int		Flags;
+  typedef int           Flags;
 
-  Flags			my_flags;
-  static const Flags	system_flags;
-  Error			err;
+  Flags                 my_flags;
+  static const Flags    system_flags;
+  Error                 err;
 
   // Some math.h emulation functions...
 #if !BINIO_WITH_MATH

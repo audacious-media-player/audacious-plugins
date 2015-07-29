@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -40,7 +40,7 @@
 
 #if BINIO_ENABLE_STRING
 // String buffer size for std::string readString() method
-#define STRINGBUFSIZE	256
+#define STRINGBUFSIZE   256
 #endif
 
 /***** binio *****/
@@ -62,12 +62,12 @@ const binio::Flags binio::detect_system_flags()
 
   // IEEE-754 floating-point test
   float fl = 6.5;
-  Byte	*dat = (Byte *)&fl;
+  Byte  *dat = (Byte *)&fl;
 
   if(sizeof(float) == 4 && sizeof(double) == 8)
     if(f & BigEndian) {
       if(dat[0] == 0x40 && dat[1] == 0xD0 && !dat[2] && !dat[3])
-	f |= FloatIEEE;
+        f |= FloatIEEE;
     } else
       if(dat[3] == 0x40 && dat[2] == 0xD0 && !dat[1] && !dat[0])
       f |= FloatIEEE;
@@ -122,8 +122,8 @@ binistream::~binistream()
 
 binistream::Int binistream::readInt(unsigned int size)
 {
-  unsigned int	i;
-  Int		val = 0, in;
+  unsigned int  i;
+  Int           val = 0, in;
 
   // Check if 'size' doesn't exceed our system's biggest type.
   if(size > sizeof(Int)) {
@@ -145,15 +145,15 @@ binistream::Int binistream::readInt(unsigned int size)
 
 binistream::Float binistream::readFloat(FType ft)
 {
-  if(getFlag(FloatIEEE)) {	// Read IEEE-754 floating-point value
-    unsigned int	i, size;
-    Byte		in[8];
-    bool		swap;
+  if(getFlag(FloatIEEE)) {      // Read IEEE-754 floating-point value
+    unsigned int        i, size;
+    Byte                in[8];
+    bool                swap;
 
     // Determine appropriate size for given type.
     switch(ft) {
-    case Single: size = 4; break;	// 32 bits
-    case Double: size = 8; break;	// 64 bits
+    case Single: size = 4; break;       // 32 bits
+    case Double: size = 8; break;       // 64 bits
     }
 
     // Determine byte ordering, depending on what we do next
@@ -165,9 +165,9 @@ binistream::Float binistream::readFloat(FType ft)
     // Read the float byte by byte, converting endianess
     for(i = 0; i < size; i++)
       if(swap)
-	in[size - i - 1] = getByte();
+        in[size - i - 1] = getByte();
       else
-	in[i] = getByte();
+        in[i] = getByte();
 
     if(system_flags & FloatIEEE) {
       // Compatible system, let the hardware do the conversion
@@ -175,7 +175,7 @@ binistream::Float binistream::readFloat(FType ft)
       case Single: return *(float *)in;
       case Double: return *(double *)in;
       }
-    } else {	// Incompatible system, convert manually
+    } else {    // Incompatible system, convert manually
       switch(ft) {
       case Single: return ieee_single2float(in);
       case Double: return ieee_double2float(in);
@@ -189,10 +189,10 @@ binistream::Float binistream::readFloat(FType ft)
 
 binistream::Float binistream::ieee_single2float(Byte *data)
 {
-  signed int	sign = data[0] >> 7 ? -1 : 1;
-  unsigned int	exp = ((data[0] << 1) & 0xff) | ((data[1] >> 7) & 1),
+  signed int    sign = data[0] >> 7 ? -1 : 1;
+  unsigned int  exp = ((data[0] << 1) & 0xff) | ((data[1] >> 7) & 1),
     fracthi7 = data[1] & 0x7f;
-  Float		fract = fracthi7 * 65536.0 + data[2] * 256.0 + data[3];
+  Float         fract = fracthi7 * 65536.0 + data[2] * 256.0 + data[3];
 
   // Signed and unsigned zero
   if(!exp && !fracthi7 && !data[2] && !data[3]) return sign * 0.0;
@@ -206,7 +206,7 @@ binistream::Float binistream::ieee_single2float(Byte *data)
       err |= Unsupported;
       if(sign == -1) return -1.0; else return 1.0;
 #endif
-    } else {	  // Not a number (maybe unsupported on non-IEEE systems)
+    } else {      // Not a number (maybe unsupported on non-IEEE systems)
 #ifdef NAN
       return NAN;
 #else
@@ -214,9 +214,9 @@ binistream::Float binistream::ieee_single2float(Byte *data)
 #endif
     }
 
-  if(!exp)	// Unnormalized float values
+  if(!exp)      // Unnormalized float values
     return sign * pow(2, -126) * fract * pow(2, -23);
-  else		// Normalized float values
+  else          // Normalized float values
     return sign * pow(2, exp - 127) * (fract * pow(2, -23) + 1);
 
   err |= Fatal; return 0.0;
@@ -224,10 +224,10 @@ binistream::Float binistream::ieee_single2float(Byte *data)
 
 binistream::Float binistream::ieee_double2float(Byte *data)
 {
-  signed int	sign = data[0] >> 7 ? -1 : 1;
-  unsigned int	exp = ((unsigned int)(data[0] & 0x7f) << 4) | (data[1] >> 4),
+  signed int    sign = data[0] >> 7 ? -1 : 1;
+  unsigned int  exp = ((unsigned int)(data[0] & 0x7f) << 4) | (data[1] >> 4),
     fracthi4 = data[1] & 0xf;
-  Float		fract = fracthi4 * pow(2, 48) + data[2] * pow(2, 40) + data[3] *
+  Float         fract = fracthi4 * pow(2, 48) + data[2] * pow(2, 40) + data[3] *
     pow(2, 32) + data[4] * pow(2, 24) + data[5] * pow(2, 16) + data[6] *
     pow(2, 8) + data[7];
 
@@ -245,7 +245,7 @@ binistream::Float binistream::ieee_double2float(Byte *data)
       err |= Unsupported;
       if(sign == -1) return -1.0; else return 1.0;
 #endif
-    } else {	  // Not a number (maybe unsupported on non-IEEE systems)
+    } else {      // Not a number (maybe unsupported on non-IEEE systems)
 #ifdef NAN
       return NAN;
 #else
@@ -253,9 +253,9 @@ binistream::Float binistream::ieee_double2float(Byte *data)
 #endif
     }
 
-  if(!exp)	// Unnormalized float values
+  if(!exp)      // Unnormalized float values
     return sign * pow(2, -1022) * fract * pow(2, -52);
-  else		// Normalized float values
+  else          // Normalized float values
     return sign * pow(2, exp - 1023) * (fract * pow(2, -52) + 1);
 
   err |= Fatal; return 0.0;
@@ -268,8 +268,8 @@ binio::Float binio::pow(Float base, signed int exp)
  * positive and negative.
  */
 {
-  int	i;
-  Float	val = base;
+  int   i;
+  Float val = base;
 
   if(!exp) return 1.0;
 
@@ -284,7 +284,7 @@ binio::Float binio::pow(Float base, signed int exp)
 
 unsigned long binistream::readString(char *str, unsigned long maxlen)
 {
-  unsigned long	i;
+  unsigned long i;
 
   for(i = 0; i < maxlen; i++) {
     str[i] = (char)getByte();
@@ -295,7 +295,7 @@ unsigned long binistream::readString(char *str, unsigned long maxlen)
 }
 
 unsigned long binistream::readString(char *str, unsigned long maxlen,
-				     const char delim)
+                                     const char delim)
 {
   unsigned long i;
 
@@ -346,12 +346,12 @@ binistream::Float binistream::peekFloat(FType ft)
 
 bool binistream::ateof()
 {
-  Error	olderr = err;	// Save current error state
-  bool	eof_then;
+  Error olderr = err;   // Save current error state
+  bool  eof_then;
 
   peekInt(1);
-  eof_then = eof();	// Get error state of next byte
-  err = olderr;		// Restore original error state
+  eof_then = eof();     // Get error state of next byte
+  err = olderr;         // Restore original error state
   return eof_then;
 }
 
@@ -375,7 +375,7 @@ binostream::~binostream()
 
 void binostream::writeInt(Int val, unsigned int size)
 {
-  unsigned int	i;
+  unsigned int  i;
 
   // Check if 'size' doesn't exceed our system's biggest type.
   if(size > sizeof(Int)) { err |= Unsupported; return; }
@@ -392,28 +392,28 @@ void binostream::writeInt(Int val, unsigned int size)
 
 void binostream::writeFloat(Float f, FType ft)
 {
-  if(getFlag(FloatIEEE)) {	// Write IEEE-754 floating-point value
-    unsigned int	i, size;
-    Byte		*out;
-    bool		swap;
+  if(getFlag(FloatIEEE)) {      // Write IEEE-754 floating-point value
+    unsigned int        i, size;
+    Byte                *out;
+    bool                swap;
 
     if(system_flags & FloatIEEE) {
       // compatible system, let the hardware do the conversion
-      float	outf = f;
-      double	outd = f;
+      float     outf = f;
+      double    outd = f;
 
       // Hardware could be big or little endian, convert appropriately
       swap = getFlag(BigEndian) ^ (system_flags & BigEndian);
 
       // Determine appropriate size for given type and convert by hardware
       switch(ft) {
-      case Single: size = 4; out = (Byte *)&outf; break;	// 32 bits
-      case Double: size = 8; out = (Byte *)&outd; break;	// 64 bits
+      case Single: size = 4; out = (Byte *)&outf; break;        // 32 bits
+      case Double: size = 8; out = (Byte *)&outd; break;        // 64 bits
       }
     } else {
 #if BINIO_WITH_MATH
       // incompatible system, do the conversion manually
-      Byte	buf[8];
+      Byte      buf[8];
 
       // Our own value is always big endian, just check whether we have to
       // convert for a different stream format.
@@ -425,7 +425,7 @@ void binostream::writeFloat(Float f, FType ft)
       case Double: size = 8; float2ieee_double(f, buf); break;
       }
 
-      out = buf;	// Make the value ready for writing
+      out = buf;        // Make the value ready for writing
 #else
       // No necessary support routines to do the conversion, bail out!
       err |= Unsupported; return;
@@ -439,7 +439,7 @@ void binostream::writeFloat(Float f, FType ft)
       if(swap) out--; else out++;
     }
 
-    return;	// We're done.
+    return;     // We're done.
   }
 
   // User tried to write an unsupported floating-point type. Bail out.
@@ -476,23 +476,23 @@ void binostream::writeFloat(Float f, FType ft)
  * Silicon Graphics MIPS-based Iris.
  ****************************************************************/
 
-#ifdef applec	/* The Apple C compiler works */
-# define FloatToUnsigned(f)	((unsigned long)(f))
+#ifdef applec   /* The Apple C compiler works */
+# define FloatToUnsigned(f)     ((unsigned long)(f))
 #else
-# define FloatToUnsigned(f)	((unsigned long)(((long)((f) - 2147483648.0)) + 2147483647L + 1))
+# define FloatToUnsigned(f)     ((unsigned long)(((long)((f) - 2147483648.0)) + 2147483647L + 1))
 #endif
 
-#define SEXP_MAX	255
-#define SEXP_OFFSET	127
-#define SEXP_SIZE	8
-#define SEXP_POSITION	(32-SEXP_SIZE-1)
+#define SEXP_MAX        255
+#define SEXP_OFFSET     127
+#define SEXP_SIZE       8
+#define SEXP_POSITION   (32-SEXP_SIZE-1)
 
 void binostream::float2ieee_single(Float num, Byte *bytes)
 {
-  long		sign;
-  register long	bits;
+  long          sign;
+  register long bits;
 
-  if (num < 0) {	/* Can't distinguish a negative zero */
+  if (num < 0) {        /* Can't distinguish a negative zero */
     sign = 0x80000000;
     num *= -1;
   } else {
@@ -502,55 +502,55 @@ void binostream::float2ieee_single(Float num, Byte *bytes)
   if (num == 0) {
     bits = 0;
   } else {
-    Float	fMant;
-    int		expon;
+    Float       fMant;
+    int         expon;
 
     fMant = frexp(num, &expon);
 
     if ((expon > (SEXP_MAX-SEXP_OFFSET+1)) || !(fMant < 1)) {
       /* NaN's and infinities fail second test */
-      bits = sign | 0x7F800000;		/* +/- infinity */
+      bits = sign | 0x7F800000;         /* +/- infinity */
     }
 
     else {
       long mantissa;
 
-      if (expon < -(SEXP_OFFSET-2)) {	/* Smaller than normalized */
-	int shift = (SEXP_POSITION+1) + (SEXP_OFFSET-2) + expon;
-	if (shift < 0) {	/* Way too small: flush to zero */
-	  bits = sign;
-	}
-	else {			/* Nonzero denormalized number */
-	  mantissa = (long)(fMant * (1L << shift));
-	  bits = sign | mantissa;
-	}
+      if (expon < -(SEXP_OFFSET-2)) {   /* Smaller than normalized */
+        int shift = (SEXP_POSITION+1) + (SEXP_OFFSET-2) + expon;
+        if (shift < 0) {        /* Way too small: flush to zero */
+          bits = sign;
+        }
+        else {                  /* Nonzero denormalized number */
+          mantissa = (long)(fMant * (1L << shift));
+          bits = sign | mantissa;
+        }
       }
 
-      else {				/* Normalized number */
-	mantissa = (long)floor(fMant * (1L << (SEXP_POSITION+1)));
-	mantissa -= (1L << SEXP_POSITION);			/* Hide MSB */
-	bits = sign | ((long)((expon + SEXP_OFFSET - 1)) << SEXP_POSITION) | mantissa;
+      else {                            /* Normalized number */
+        mantissa = (long)floor(fMant * (1L << (SEXP_POSITION+1)));
+        mantissa -= (1L << SEXP_POSITION);                      /* Hide MSB */
+        bits = sign | ((long)((expon + SEXP_OFFSET - 1)) << SEXP_POSITION) | mantissa;
       }
     }
   }
 
-  bytes[0] = bits >> 24;	/* Copy to byte string */
+  bytes[0] = bits >> 24;        /* Copy to byte string */
   bytes[1] = bits >> 16;
   bytes[2] = bits >> 8;
   bytes[3] = bits;
 }
 
-#define DEXP_MAX	2047
-#define DEXP_OFFSET	1023
-#define DEXP_SIZE	11
-#define DEXP_POSITION	(32-DEXP_SIZE-1)
+#define DEXP_MAX        2047
+#define DEXP_OFFSET     1023
+#define DEXP_SIZE       11
+#define DEXP_POSITION   (32-DEXP_SIZE-1)
 
 void binostream::float2ieee_double(Float num, Byte *bytes)
 {
-  long	sign;
-  long	first, second;
+  long  sign;
+  long  first, second;
 
-  if (num < 0) {	/* Can't distinguish a negative zero */
+  if (num < 0) {        /* Can't distinguish a negative zero */
     sign = 0x80000000;
     num *= -1;
   } else {
@@ -561,51 +561,51 @@ void binostream::float2ieee_double(Float num, Byte *bytes)
     first = 0;
     second = 0;
   } else {
-    Float	fMant, fsMant;
-    int		expon;
+    Float       fMant, fsMant;
+    int         expon;
 
     fMant = frexp(num, &expon);
 
     if ((expon > (DEXP_MAX-DEXP_OFFSET+1)) || !(fMant < 1)) {
       /* NaN's and infinities fail second test */
-      first = sign | 0x7FF00000;		/* +/- infinity */
+      first = sign | 0x7FF00000;                /* +/- infinity */
       second = 0;
     }
 
     else {
       long mantissa;
 
-      if (expon < -(DEXP_OFFSET-2)) {	/* Smaller than normalized */
-	int shift = (DEXP_POSITION+1) + (DEXP_OFFSET-2) + expon;
-	if (shift < 0) {	/* Too small for something in the MS word */
-	  first = sign;
-	  shift += 32;
-	  if (shift < 0) {	/* Way too small: flush to zero */
-	    second = 0;
-	  }
-	  else {			/* Pretty small demorn */
-	    second = FloatToUnsigned(floor(ldexp(fMant, shift)));
-	  }
-	}
-	else {			/* Nonzero denormalized number */
-	  fsMant = ldexp(fMant, shift);
-	  mantissa = (long)floor(fsMant);
-	  first = sign | mantissa;
-	  second = FloatToUnsigned(floor(ldexp(fsMant - mantissa, 32)));
-	}
+      if (expon < -(DEXP_OFFSET-2)) {   /* Smaller than normalized */
+        int shift = (DEXP_POSITION+1) + (DEXP_OFFSET-2) + expon;
+        if (shift < 0) {        /* Too small for something in the MS word */
+          first = sign;
+          shift += 32;
+          if (shift < 0) {      /* Way too small: flush to zero */
+            second = 0;
+          }
+          else {                        /* Pretty small demorn */
+            second = FloatToUnsigned(floor(ldexp(fMant, shift)));
+          }
+        }
+        else {                  /* Nonzero denormalized number */
+          fsMant = ldexp(fMant, shift);
+          mantissa = (long)floor(fsMant);
+          first = sign | mantissa;
+          second = FloatToUnsigned(floor(ldexp(fsMant - mantissa, 32)));
+        }
       }
 
-      else {				/* Normalized number */
-	fsMant = ldexp(fMant, DEXP_POSITION+1);
-	mantissa = (long)floor(fsMant);
-	mantissa -= (1L << DEXP_POSITION);			/* Hide MSB */
-	fsMant -= (1L << DEXP_POSITION);
-	first = sign | ((long)((expon + DEXP_OFFSET - 1)) << DEXP_POSITION) | mantissa;
-	second = FloatToUnsigned(floor(ldexp(fsMant - mantissa, 32)));
+      else {                            /* Normalized number */
+        fsMant = ldexp(fMant, DEXP_POSITION+1);
+        mantissa = (long)floor(fsMant);
+        mantissa -= (1L << DEXP_POSITION);                      /* Hide MSB */
+        fsMant -= (1L << DEXP_POSITION);
+        first = sign | ((long)((expon + DEXP_OFFSET - 1)) << DEXP_POSITION) | mantissa;
+        second = FloatToUnsigned(floor(ldexp(fsMant - mantissa, 32)));
       }
     }
   }
-	
+
   bytes[0] = first >> 24;
   bytes[1] = first >> 16;
   bytes[2] = first >> 8;
