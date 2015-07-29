@@ -204,40 +204,34 @@ static void skin_view_on_cursor_changed (GtkTreeView * treeview)
 
 void skin_view_realize (GtkTreeView * treeview)
 {
-    GtkListStore *store;
-    GtkTreeViewColumn *column;
-    GtkCellRenderer *renderer;
-    GtkTreeSelection *selection;
+    gtk_widget_show_all ((GtkWidget *) treeview);
 
-    gtk_widget_show_all(GTK_WIDGET(treeview));
+    gtk_tree_view_set_rules_hint (treeview, true);
+    gtk_tree_view_set_headers_visible (treeview, false);
 
-    gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), true);
-    gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), false);
-
-    store = gtk_list_store_new(SKIN_VIEW_N_COLS, GDK_TYPE_PIXBUF,
-                               G_TYPE_STRING , G_TYPE_STRING);
-    gtk_tree_view_set_model(treeview, GTK_TREE_MODEL(store));
+    GtkListStore * store = gtk_list_store_new (SKIN_VIEW_N_COLS, GDK_TYPE_PIXBUF,
+     G_TYPE_STRING, G_TYPE_STRING);
+    gtk_tree_view_set_model (treeview, (GtkTreeModel *) store);
     g_object_unref (store);
 
-    column = gtk_tree_view_column_new();
-    gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-    gtk_tree_view_column_set_spacing(column, 16);
-    gtk_tree_view_append_column(GTK_TREE_VIEW(treeview),
-                                GTK_TREE_VIEW_COLUMN(column));
+    GtkTreeViewColumn * column = gtk_tree_view_column_new ();
+    gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+    gtk_tree_view_column_set_spacing (column, 16);
+    gtk_tree_view_append_column (treeview, column);
 
-    renderer = gtk_cell_renderer_pixbuf_new();
-    gtk_tree_view_column_pack_start(column, renderer, false);
-    gtk_tree_view_column_set_attributes(column, renderer, "pixbuf",
-                                        SKIN_VIEW_COL_PREVIEW, nullptr);
+    GtkCellRenderer * renderer = gtk_cell_renderer_pixbuf_new ();
+    gtk_tree_view_column_pack_start (column, renderer, false);
+    gtk_tree_view_column_set_attributes (column, renderer, "pixbuf",
+     SKIN_VIEW_COL_PREVIEW, nullptr);
 
-    renderer = gtk_cell_renderer_text_new();
-    gtk_tree_view_column_pack_start(column, renderer, true);
-    gtk_tree_view_column_set_attributes(column, renderer, "markup",
-                                        SKIN_VIEW_COL_FORMATTEDNAME, nullptr);
+    renderer = gtk_cell_renderer_text_new ();
+    gtk_tree_view_column_pack_start (column, renderer, true);
+    gtk_tree_view_column_set_attributes (column, renderer, "markup",
+     SKIN_VIEW_COL_FORMATTEDNAME, nullptr);
 
-    selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
-    gtk_tree_selection_set_mode(selection, GTK_SELECTION_BROWSE);
+    GtkTreeSelection * selection = gtk_tree_view_get_selection (treeview);
+    gtk_tree_selection_set_mode (selection, GTK_SELECTION_BROWSE);
 
-    g_signal_connect(treeview, "cursor-changed",
-                     G_CALLBACK(skin_view_on_cursor_changed), nullptr);
+    g_signal_connect (treeview, "cursor-changed",
+     (GCallback) skin_view_on_cursor_changed, nullptr);
 }
