@@ -227,9 +227,20 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
     if (filenamefromtags)
     {
         String title = in_tuple.get_str (Tuple::FormattedTitle);
-        StringBuf buf = str_encode_percent (title);
-        str_replace_char (buf, '/', '-');
-        filename = String (buf);
+
+        /* truncate title at 200 characters to avoid hitting filesystem limits */
+        StringBuf buf = str_copy (title, aud::min ((int) strlen (title), 200));
+
+        /* replace non-portable characters */
+        const char * reserved = "<>:\"/\\|?*";
+        for (char * c = buf; * c; c ++)
+        {
+            if (strchr (reserved, * c))
+                * c = ' ';
+        }
+
+        /* URI-encode */
+        filename = String (str_encode_percent (buf));
     }
     else
     {
