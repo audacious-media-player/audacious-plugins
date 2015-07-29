@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 
 #include <libaudcore/drct.h>
+#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/playlist.h>
@@ -50,6 +51,7 @@ static void add_files () { audgui_run_filebrowser (false); }
 static void add_url () { audgui_show_add_url_window (false); }
 
 static void configure_effects () { audgui_show_prefs_for_plugin_type (PluginType::Effect); }
+static void configure_output () { audgui_show_prefs_for_plugin_type (PluginType::Output); }
 static void configure_visualizations () { audgui_show_prefs_for_plugin_type (PluginType::Vis); }
 
 static void pl_sort_track () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
@@ -122,6 +124,15 @@ static GtkWidget * get_services_pl () { return audgui_get_plugin_menu (AudMenuID
 
 static void volume_up () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
 static void volume_down () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
+
+static void toggle_record ()
+{
+    if (! aud_drct_enable_record (aud_get_bool ("gtkui", "record")))
+    {
+        aud_set_bool ("gtkui", "record", aud_drct_get_record_enabled ());
+        hook_call ("gtkui set record", nullptr);
+    }
+}
 
 static const AudguiMenuItem file_items[] = {
     MenuCommand (N_("_Open Files ..."), "document-open", 'o', CTRL, open_files),
@@ -219,9 +230,11 @@ static const AudguiMenuItem output_items[] = {
     MenuCommand (N_("Volume _Up"), "audio-volume-high", '+', CTRL, volume_up),
     MenuCommand (N_("Volume _Down"), "audio-volume-low", '-', CTRL, volume_down),
     MenuSep (),
-    MenuCommand (N_("_Equalizer"), "multimedia-volume-control", 'e', CTRL, audgui_show_equalizer_window),
+    MenuCommand (N_("_Equalizer ..."), "multimedia-volume-control", 'e', CTRL, audgui_show_equalizer_window),
+    MenuCommand (N_("E_ffects ..."), nullptr, NONE, configure_effects),
     MenuSep (),
-    MenuCommand (N_("E_ffects ..."), nullptr, NONE, configure_effects)
+    MenuToggle (N_("_Record Stream"), nullptr, 'd', CTRL, "gtkui", "record", toggle_record, "gtkui set record"),
+    MenuCommand (N_("Audio _Settings ..."), "audio-card", NONE, configure_output)
 };
 
 static const AudguiMenuItem view_items[] = {

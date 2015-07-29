@@ -55,6 +55,7 @@ static const char * const gtkui_defaults[] = {
     "autoscroll", "TRUE",
     "playlist_columns", "title artist album queued length",
     "playlist_headers", "TRUE",
+    "record", "FALSE",
     "show_remaining_time", "FALSE",
     "step_size", "5",
 
@@ -120,7 +121,7 @@ static GtkAccelGroup * accel;
 static GtkWidget * window, * vbox_outer, * menu_box, * menu, * toolbar, * vbox,
  * infoarea, * statusbar;
 static GtkToolItem * menu_button, * search_button, * button_play, * button_stop,
- * button_shuffle, * button_repeat;
+ * button_record, * button_shuffle, * button_repeat;
 static GtkWidget * slider, * label_time;
 static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
@@ -636,7 +637,7 @@ static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event)
     return false;
 }
 
-static void update_toggles (void * data, void * user)
+static void update_toggles (void * = nullptr, void * = nullptr)
 {
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_repeat,
      aud_get_bool (nullptr, "repeat"));
@@ -652,6 +653,28 @@ static void toggle_repeat (GtkToggleToolButton * button)
 static void toggle_shuffle (GtkToggleToolButton * button)
 {
     aud_set_bool (nullptr, "shuffle", gtk_toggle_tool_button_get_active (button));
+}
+
+static void toggle_record (GtkToggleToolButton * button)
+{
+    if (! aud_drct_enable_record (gtk_toggle_tool_button_get_active (button)))
+        gtk_toggle_tool_button_set_active (button, aud_drct_get_record_enabled ());
+}
+
+static void record_toggled (void * = nullptr, void * = nullptr)
+{
+    bool supported = (bool) aud_drct_get_record_plugin ();
+    bool enabled = aud_drct_get_record_enabled ();
+
+    gtk_widget_set_sensitive ((GtkWidget *) button_record, supported);
+    gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_record, enabled);
+
+    /* update menu item */
+    if (enabled != aud_get_bool ("gtkui", "record"))
+    {
+        aud_set_bool ("gtkui", "record", enabled);
+        hook_call ("gtkui set record", nullptr);
+    }
 }
 
 static void toggle_search_tool (GtkToggleToolButton * button)
@@ -689,6 +712,7 @@ static void ui_hooks_associate ()
     hook_associate ("playlist position", ui_playlist_notebook_position, nullptr);
     hook_associate ("set shuffle", update_toggles, nullptr);
     hook_associate ("set repeat", update_toggles, nullptr);
+    hook_associate ("enable record", record_toggled, nullptr);
     hook_associate ("config save", (HookFunction) config_save, nullptr);
 }
 
@@ -706,6 +730,7 @@ static void ui_hooks_disassociate ()
     hook_dissociate ("playlist position", ui_playlist_notebook_position);
     hook_dissociate ("set shuffle", update_toggles);
     hook_dissociate ("set repeat", update_toggles);
+    hook_dissociate ("enable record", record_toggled);
     hook_dissociate ("config save", (HookFunction) config_save);
 }
 
@@ -796,10 +821,12 @@ bool GtkUI::init ()
     /* playback buttons */
     toolbar_button_add (toolbar, button_open_pressed, "document-open");
     toolbar_button_add (toolbar, button_add_pressed, "list-add");
-    button_play = toolbar_button_add (toolbar, aud_drct_play_pause, "media-playback-start");
-    button_stop = toolbar_button_add (toolbar, aud_drct_stop, "media-playback-stop");
     toolbar_button_add (toolbar, aud_drct_pl_prev, "media-skip-backward");
     toolbar_button_add (toolbar, aud_drct_pl_next, "media-skip-forward");
+    button_play = toolbar_button_add (toolbar, aud_drct_play_pause, "media-playback-start");
+    button_stop = toolbar_button_add (toolbar, aud_drct_stop, "media-playback-stop");
+    button_record = toggle_button_new ("media-record", toggle_record);
+    gtk_toolbar_insert ((GtkToolbar *) toolbar, button_record, -1);
 
     /* time slider and label */
     GtkToolItem * boxitem1 = gtk_tool_item_new ();
@@ -896,9 +923,10 @@ bool GtkUI::init ()
 
     title_change_cb ();
 
-    gtk_widget_show_all (vbox_outer);
+    update_toggles ();
+    record_toggled ();
 
-    update_toggles (nullptr, nullptr);
+    gtk_widget_show_all (vbox_outer);
 
     menu_rclick = make_menu_rclick (accel);
     menu_tab = make_menu_tab (accel);
