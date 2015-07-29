@@ -4,7 +4,6 @@ SRCS = adplug-xmms.cc		\
        binio/binfile.cc		\
        binio/binio.cc		\
        binio/binstr.cc		\
-       binio/binwrap.cc		\
        core/fmopl.cc		\
        core/debug.cc		\
        core/adlibemu.cc		\
