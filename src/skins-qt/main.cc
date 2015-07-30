@@ -122,8 +122,8 @@ static void seek_timeout (void * rewind);
 
 static void format_time (char buf[7], int time, int length)
 {
-    gboolean zero = aud_get_bool (nullptr, "leading_zero");
-    gboolean remaining = aud_get_bool ("skins", "show_remaining_time");
+    bool zero = aud_get_bool (nullptr, "leading_zero");
+    bool remaining = aud_get_bool ("skins", "show_remaining_time");
 
     if (remaining && length > 0)
     {
@@ -611,22 +611,22 @@ static void seek_release (QMouseEvent * event, bool rewind)
 }
 
 static void mainwin_rew_press (Button * button, QMouseEvent * event)
- {seek_press (event, true); }
+    { seek_press (event, true); }
 static void mainwin_rew_release (Button * button, QMouseEvent * event)
- {seek_release (event, true); }
+    { seek_release (event, true); }
 static void mainwin_fwd_press (Button * button, QMouseEvent * event)
- {seek_press (event, false); }
+    { seek_press (event, false); }
 static void mainwin_fwd_release (Button * button, QMouseEvent * event)
- {seek_release (event, false); }
+    { seek_release (event, false); }
 
 static void mainwin_shuffle_cb (Button * button, QMouseEvent * event)
- {aud_set_bool (nullptr, "shuffle", button->get_active ()); }
+    { aud_set_bool (nullptr, "shuffle", button->get_active ()); }
 static void mainwin_repeat_cb (Button * button, QMouseEvent * event)
- {aud_set_bool (nullptr, "repeat", button->get_active ()); }
+    { aud_set_bool (nullptr, "repeat", button->get_active ()); }
 static void mainwin_eq_cb (Button * button, QMouseEvent * event)
- {view_set_show_equalizer (button->get_active ()); }
+    { view_set_show_equalizer (button->get_active ()); }
 static void mainwin_pl_cb (Button * button, QMouseEvent * event)
- {view_set_show_playlist (button->get_active ()); }
+    { view_set_show_playlist (button->get_active ()); }
 
 static void mainwin_spos_set_knob ()
 {
@@ -725,14 +725,14 @@ static void mainwin_volume_motion_cb ()
     int pos = mainwin_volume->get_pos ();
     int vol = (pos * 100 + 25) / 51;
 
-    mainwin_adjust_volume_motion(vol);
-    equalizerwin_set_volume_slider(vol);
+    mainwin_adjust_volume_motion (vol);
+    equalizerwin_set_volume_slider (vol);
 }
 
 static void mainwin_volume_release_cb ()
 {
     mainwin_volume_set_frame ();
-    mainwin_adjust_volume_release();
+    mainwin_adjust_volume_release ();
 }
 
 static gboolean mainwin_volume_timeout_cb (void *)
@@ -770,14 +770,14 @@ static void mainwin_balance_motion_cb ()
     else
         bal = ((pos - 12) * 100 - 6) / 12;
 
-    mainwin_adjust_balance_motion(bal);
-    equalizerwin_set_balance_slider(bal);
+    mainwin_adjust_balance_motion (bal);
+    equalizerwin_set_balance_slider (bal);
 }
 
 static void mainwin_balance_release_cb ()
 {
     mainwin_balance_set_frame ();
-    mainwin_adjust_volume_release();
+    mainwin_adjust_volume_release ();
 }
 
 void mainwin_set_volume_diff (int diff)
@@ -785,14 +785,15 @@ void mainwin_set_volume_diff (int diff)
     int vol = aud_drct_get_volume_main ();
 
     vol = aud::clamp (vol + diff, 0, 100);
-    mainwin_adjust_volume_motion(vol);
-    mainwin_set_volume_slider(vol);
-    equalizerwin_set_volume_slider(vol);
+    mainwin_adjust_volume_motion (vol);
+    mainwin_set_volume_slider (vol);
+    equalizerwin_set_volume_slider (vol);
 
     if (mainwin_volume_release_timeout)
-        g_source_remove(mainwin_volume_release_timeout);
+        g_source_remove (mainwin_volume_release_timeout);
+
     mainwin_volume_release_timeout =
-        g_timeout_add(700, mainwin_volume_timeout_cb, nullptr);
+        g_timeout_add (700, mainwin_volume_timeout_cb, nullptr);
 }
 
 void mainwin_mr_change (MenuRowItem i)
