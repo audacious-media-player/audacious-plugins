@@ -266,7 +266,7 @@ equalizerwin_create_window(void)
         shaded = false;
 
     equalizerwin = new EqWindow (shaded);
-    equalizerwin->setWindowTitle (_("Audacious Equalizer"));
+    equalizerwin->setWindowTitle (_("Equalizer"));
 }
 
 void equalizerwin_unhook ()

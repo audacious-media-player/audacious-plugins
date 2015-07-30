@@ -210,7 +210,7 @@ void MainWindow::title_change_cb ()
 {
     auto title = aud_drct_get_title ();
     if (title)
-        setWindowTitle (QString (title) + QString (" - Audacious"));
+        setWindowTitle (QString (title));
 }
 
 void MainWindow::playback_begin_cb ()
@@ -246,7 +246,7 @@ void MainWindow::pause_cb ()
 
 void MainWindow::playback_stop_cb ()
 {
-    setWindowTitle ("Audacious");
+    setWindowTitle ("");
     update_play_pause ();
 
     int last_list = aud_playlist_by_unique_id (playing_id);

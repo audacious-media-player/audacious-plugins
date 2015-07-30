@@ -480,7 +480,7 @@ playlistwin_create_window(void)
     bool shaded = aud_get_bool ("skins", "playlist_shaded");
 
     playlistwin = new PlWindow (shaded);
-    playlistwin->setWindowTitle (_("Audacious Playlist Editor"));
+    playlistwin->setWindowTitle (_("Playlist Editor"));
 
 #if 0
     GtkWidget * w = playlistwin->gtk ();
