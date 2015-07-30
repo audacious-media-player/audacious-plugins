@@ -63,7 +63,7 @@ fi
 dnl Default Set of Plugins
 dnl ======================
 
-INPUT_PLUGINS="metronom tonegen vtx"
+INPUT_PLUGINS="adplug metronom psf tonegen vtx xsf"
 OUTPUT_PLUGINS=""
 EFFECT_PLUGINS="compressor crossfade crystalizer mixer silence-removal stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS=""
@@ -103,17 +103,6 @@ if test "x$enable_console" != "xno"; then
             AC_MSG_ERROR([Cannot find zlib development files, but compilation of game music decoder (console) has been explicitly requested; please install zlib dev files and run configure again])
          fi]
     )
-fi
-
-dnl XSF
-dnl =======
-
-AC_ARG_ENABLE(xsf,
- [AS_HELP_STRING([--disable-xsf], [disable Nintendo DS audio decoder (xsf)])],
- [enable_xsf=$enableval], [enable_xsf="yes"])
-
-if test "x$enable_xsf" != "xno"; then
-    INPUT_PLUGINS="$INPUT_PLUGINS xsf"
 fi
 
 dnl QtAudio
@@ -174,18 +163,6 @@ if test "x$enable_pulse" != "xno"; then
     )
 else
     AC_MSG_RESULT([*** pulseaudio output plugin disabled per user request ***])
-fi
-
-dnl PSF
-dnl ===
-
-AC_ARG_ENABLE(psf,
- [AS_HELP_STRING([--disable-psf], [disable PlayStation (psf/psf2) audio decoder])],
- [enable_psf=$enableval],
- [enable_psf=yes])
-
-if test "x$enable_psf" != "xno"; then
-    INPUT_PLUGINS="$INPUT_PLUGINS psf"
 fi
 
 dnl MP3 (enabled by default)
@@ -388,28 +365,6 @@ else
 	elif test $enable_mpris2 = yes ; then
 		AC_MSG_ERROR([MPRIS 2 plugin could not be enabled; check config.log])
 	fi
-fi
-
-dnl *** AdPlug requirement (libbinio)
-
-AC_ARG_ENABLE(adplug,
-    [AS_HELP_STRING([--disable-adplug], [disable AdPlug plugin (default=enabled)])],
-    [enable_adplug=$enableval],
-    [enable_adplug=auto]
-)
-
-have_adplug=no
-if test "x$enable_adplug" != "xno"; then
-    PKG_CHECK_MODULES(BINIO, [libbinio >= 1.4],
-        [have_adplug=yes
-         INPUT_PLUGINS="$INPUT_PLUGINS adplug"
-         AC_SUBST(BINIO_CFLAGS)],
-        [if test "x$enable_adplug" = "xyes"; then
-            AC_MSG_ERROR([Cannot find libbinio development files (ver >= 1.4), but compilation of AdPlug plugin has been explicitly requested; please install libbinio dev files and run configure again])
-         fi]
-    )
-else
-    AC_MSG_RESULT([*** AdPlug plugin disabled per user request ***])
 fi
 
 dnl Ogg Vorbis (enabled by default)
@@ -1153,9 +1108,9 @@ echo "  Ogg Vorbis (vorbis):                    $enable_vorbis"
 echo "  Free Lossless Audio Codec (flacng):     $enable_flacng"
 echo "  Commodore 64 audio (SID):               $have_sidplay"
 echo "  Game music (spc, nsf & gbs):            $have_console"
-echo "  PlayStation (psf/psf2) audio:           $enable_psf"
-echo "  Nintendo DS audio (xsf):                $enable_xsf"
-echo "  AdLib synthesizer (adplug):             $have_adplug"
+echo "  PlayStation (psf/psf2) audio:           yes"
+echo "  Nintendo DS audio (xsf):                yes"
+echo "  AdLib synthesizer (adplug):             yes"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
 echo "  Metronom:                               yes"
 echo "  VTX Decoder:                            yes"
