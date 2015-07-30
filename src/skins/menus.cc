@@ -124,6 +124,7 @@ static const AudguiMenuItem playback_items[] = {
     MenuSep (),
     MenuToggle (N_("Repeat"), nullptr, 'r', NO_MOD, nullptr, "repeat", nullptr, "set repeat"),
     MenuToggle (N_("Shuffle"), nullptr, 's', NO_MOD, nullptr, "shuffle", nullptr, "set shuffle"),
+    MenuToggle (N_("Shuffle by Album"), nullptr, NO_KEY, nullptr, "album_shuffle", nullptr, "set album_shuffle"),
     MenuToggle (N_("No Playlist Advance"), nullptr, 'n', CTRL, nullptr, "no_playlist_advance", nullptr, "set no_playlist_advance"),
     MenuToggle (N_("Stop After This Song"), nullptr, 'm', CTRL, nullptr, "stop_after_current_song", nullptr, "set stop_after_current_song"),
     MenuSep (),

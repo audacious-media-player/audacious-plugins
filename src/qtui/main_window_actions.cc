@@ -113,6 +113,7 @@ void MainWindow::setupActions ()
         audqt::MenuSep (),
         audqt::MenuToggle ({N_("_Repeat"), "media-playlist-repeat", "Ctrl+R"}, {nullptr, "repeat", "set repeat"}),
         audqt::MenuToggle ({N_("S_huffle"), "media-playlist-shuffle", "Ctrl+S"}, {nullptr, "shuffle", "set shuffle"}),
+        audqt::MenuToggle ({N_("Shuffle by Albu_m")}, {nullptr, "album_shuffle", "set album_shuffle"}),
         audqt::MenuToggle ({N_("N_o Playlist Advance"), nullptr, "Ctrl+N"}, {nullptr, "no_playlist_advance", "set no_playlist_advance"}),
         audqt::MenuToggle ({N_("Stop A_fter This Song"), nullptr, "Ctrl+M"}, {nullptr, "stop_after_current_song", "set stop_after_current_song"}),
         audqt::MenuSep (),
