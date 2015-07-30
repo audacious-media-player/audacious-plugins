@@ -48,7 +48,7 @@ public:
 	init ();
     }
 
-    ArtLabel (const QString & text, QWidget * parent = 0, Qt::WindowFlags f = 0) : QLabel(text, parent, f)
+    ArtLabel (const QString & text, QWidget * parent = 0, Qt::WindowFlags f = 0) : QLabel (text, parent, f)
     {
 	init ();
     }
@@ -57,24 +57,24 @@ public:
     {
 	origPixmap = QPixmap (audqt::art_request_current (0, 0));
 	origSize = origPixmap.size ();
-	drawArt();
+	drawArt ();
     }
 
     void clear ()
     {
-	QLabel::clear();
-	origPixmap = QPixmap();
+	QLabel::clear ();
+	origPixmap = QPixmap ();
     }
 
 protected:
     virtual void resizeEvent (QResizeEvent * event)
     {
-	QLabel::resizeEvent(event);
+	QLabel::resizeEvent (event);
 
-	if ( ! origPixmap.isNull() &&
-		(size().width() <= origSize.width() + MARGIN ||
-		 size().height() <= origSize.height() + MARGIN))
-	    drawArt();
+	if ( ! origPixmap.isNull () &&
+		(size ().width () <= origSize.width () + MARGIN ||
+		 size ().height () <= origSize.height () + MARGIN))
+	    drawArt ();
     }
 
 private:
@@ -90,11 +90,11 @@ private:
 
     void drawArt ()
     {
-	if (origSize.width() <= size().width() - MARGIN &&
-	    origSize.height() <= size().height() - MARGIN)
+	if (origSize.width () <= size ().width () - MARGIN &&
+	    origSize.height () <= size ().height() - MARGIN)
 	    setPixmap (origPixmap);
 	else
-	    setPixmap (origPixmap.scaled(size().width()-MARGIN, size().height()-MARGIN,
+	    setPixmap (origPixmap.scaled (size ().width () - MARGIN, size ().height () - MARGIN,
 			Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
 };
