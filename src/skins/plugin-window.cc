@@ -125,7 +125,7 @@ static void remove_dock_plugin (PluginHandle * plugin, void * unused)
     }
 }
 
-void create_plugin_windows (void)
+void create_plugin_windows ()
 {
     for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
@@ -143,7 +143,7 @@ void create_plugin_windows (void)
     hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin, nullptr);
 }
 
-void show_plugin_windows (void)
+void show_plugin_windows ()
 {
     g_list_foreach (windows, (GFunc) gtk_widget_show_all, nullptr);
 }
@@ -157,13 +157,13 @@ void focus_plugin_window (PluginHandle * plugin)
     aud_plugin_send_message (plugin, "grab focus", nullptr, 0);
 }
 
-void hide_plugin_windows (void)
+void hide_plugin_windows ()
 {
     g_list_foreach (windows, (GFunc) save_window_size, nullptr);
     g_list_foreach (windows, (GFunc) gtk_widget_hide, nullptr);
 }
 
-void destroy_plugin_windows (void)
+void destroy_plugin_windows ()
 {
     for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {

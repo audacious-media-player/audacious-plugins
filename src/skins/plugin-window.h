@@ -24,10 +24,10 @@
 
 class PluginHandle;
 
-void create_plugin_windows (void);
-void show_plugin_windows (void);
+void create_plugin_windows ();
+void show_plugin_windows ();
 void focus_plugin_window (PluginHandle * plugin);
-void hide_plugin_windows (void);
-void destroy_plugin_windows (void);
+void hide_plugin_windows ();
+void destroy_plugin_windows ();
 
 #endif /* SKINS_PLUGIN_WINDOW_H */

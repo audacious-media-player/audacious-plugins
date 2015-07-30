@@ -179,13 +179,19 @@ void SkinnedVis::draw (cairo_t * cr)
             break;
         case SCOPE_LINE:
         {
-            for (int x = 0; x < 74; x++)
+            for (int x = 0; x < 74; x ++)
             {
                 int h = aud::clamp ((int) m_data[x], 0, 15);
                 int h2 = aud::clamp ((int) m_data[x + 1], 0, 15);
 
-                if (h < h2) h2 --;
-                else if (h > h2) {int temp = h; h = h2 + 1; h2 = temp;}
+                if (h < h2)
+                    h2 --;
+                else if (h > h2)
+                {
+                    int temp = h;
+                    h = h2 + 1;
+                    h2 = temp;
+                }
 
                 RGB_SEEK (x, h);
 
@@ -199,13 +205,18 @@ void SkinnedVis::draw (cairo_t * cr)
             break;
         }
         default: /* SCOPE_SOLID */
-            for (int x = 0; x < 75; x++)
+            for (int x = 0; x < 75; x ++)
             {
                 int h = aud::clamp ((int) m_data[x], 0, 15);
                 int h2;
 
-                if (h < 8) h2 = 8;
-                else {h2 = h; h = 8;}
+                if (h < 8)
+                    h2 = 8;
+                else
+                {
+                    h2 = h;
+                    h = 8;
+                }
 
                 RGB_SEEK (x, h);
 
@@ -252,7 +263,7 @@ void SkinnedVis::render (const unsigned char * data)
     {
         const int n = (config.analyzer_type == ANALYZER_BARS) ? 19 : 75;
 
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < n; i ++)
         {
             if (data[i] > m_data[i])
             {
@@ -295,14 +306,14 @@ void SkinnedVis::render (const unsigned char * data)
     }
     else if (config.vis_type == VIS_VOICEPRINT)
     {
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 16; i ++)
             m_data[i] = data[15 - i];
 
         m_voiceprint_advance = true;
     }
     else
     {
-        for (int i = 0; i < 75; i++)
+        for (int i = 0; i < 75; i ++)
             m_data[i] = data[i];
     }
 

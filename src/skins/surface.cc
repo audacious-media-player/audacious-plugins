@@ -34,10 +34,13 @@ cairo_surface_t * surface_new_from_file (const char * name)
 {
     GError * error = nullptr;
     GdkPixbuf * p = gdk_pixbuf_new_from_file (name, & error);
-    if (error) {
+
+    if (error)
+    {
         AUDERR ("Error loading %s: %s.\n", name, error->message);
         g_error_free (error);
     }
+
     if (! p)
         return nullptr;
 
@@ -50,6 +53,7 @@ cairo_surface_t * surface_new_from_file (const char * name)
 
     cairo_destroy (cr);
     g_object_unref (p);
+
     return surface;
 }
 

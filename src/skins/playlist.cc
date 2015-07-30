@@ -96,7 +96,7 @@ static int resize_base_width, resize_base_height;
 static int drop_position;
 static bool song_changed;
 
-static void update_info (void)
+static void update_info ()
 {
     int playlist = aud_playlist_get_active ();
     StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
@@ -104,7 +104,7 @@ static void update_info (void)
     playlistwin_info->set_text (str_concat ({s1, "/", s2}));
 }
 
-static void update_rollup_text (void)
+static void update_rollup_text ()
 {
     int playlist = aud_playlist_get_active ();
     int entry = aud_playlist_get_position (playlist);
@@ -133,8 +133,7 @@ static void update_rollup_text (void)
     playlistwin_sinfo->set_text (scratch);
 }
 
-static void
-playlistwin_shade_toggle(void)
+static void playlistwin_shade_toggle ()
 {
     view_set_playlist_shaded (! aud_get_bool ("skins", "playlist_shaded"));
 }
@@ -147,12 +146,12 @@ static void playlistwin_scroll (int dir)
     playlistwin_list->scroll_to (first + dir * rows / 3);
 }
 
-static void playlistwin_scroll_up_pushed (void)
+static void playlistwin_scroll_up_pushed ()
 {
     playlistwin_scroll (-1);
 }
 
-static void playlistwin_scroll_down_pushed (void)
+static void playlistwin_scroll_down_pushed ()
 {
     playlistwin_scroll (1);
 }
@@ -162,7 +161,7 @@ static void playlistwin_resize (int w, int h)
 {
     int tx, ty;
 
-    g_return_if_fail(w > 0 && h > 0);
+    g_return_if_fail (w > 0 && h > 0);
 
     tx = (w - PLAYLISTWIN_MIN_WIDTH) / PLAYLISTWIN_WIDTH_SNAP;
     tx = (tx * PLAYLISTWIN_WIDTH_SNAP) + PLAYLISTWIN_MIN_WIDTH;
@@ -241,7 +240,7 @@ bool PlWindow::button_press (GdkEventButton * event)
     if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
      event->window == gtk_widget_get_window (gtk ()) && event->y < 14)
     {
-        playlistwin_shade_toggle();
+        playlistwin_shade_toggle ();
         return true;
     }
 
@@ -254,8 +253,7 @@ bool PlWindow::button_press (GdkEventButton * event)
     return Window::button_press (event);
 }
 
-void
-playlistwin_hide_timer(void)
+void playlistwin_hide_timer ()
 {
     playlistwin_time_min->set_text (nullptr);
     playlistwin_time_sec->set_text (nullptr);
@@ -301,12 +299,12 @@ static void drag_data_received (GtkWidget * widget, GdkDragContext * context,
     drop_position = -1;
 }
 
-static void playlistwin_hide (void)
+static void playlistwin_hide ()
 {
     view_set_show_playlist (false);
 }
 
-static void resize_press (void)
+static void resize_press ()
 {
     resize_base_width = config.playlist_width;
     resize_base_height = config.playlist_height;
@@ -370,8 +368,7 @@ static void button_list_cb (Button * button, GdkEventButton * event)
      event->button, event->time);
 }
 
-static void
-playlistwin_create_widgets(void)
+static void playlistwin_create_widgets ()
 {
     int w = config.playlist_width, h = config.playlist_height;
 
@@ -489,8 +486,7 @@ void PlWindow::draw (cairo_t * cr)
          config.playlist_height, true);
 }
 
-static void
-playlistwin_create_window(void)
+static void playlistwin_create_window ()
 {
     bool shaded = aud_get_bool ("skins", "playlist_shaded");
 
@@ -534,8 +530,7 @@ static void follow_cb (void * data, void *)
         song_changed = true;
 }
 
-void
-playlistwin_create(void)
+void playlistwin_create ()
 {
     playlistwin_create_window ();
     playlistwin_create_widgets ();
@@ -550,7 +545,7 @@ playlistwin_create(void)
     hook_associate ("playlist update", update_cb, nullptr);
 }
 
-void playlistwin_unhook (void)
+void playlistwin_unhook ()
 {
     hook_dissociate ("playlist position", follow_cb);
     hook_dissociate ("playlist activate", update_cb);

@@ -190,13 +190,12 @@ static void skin_numbers_generate_dash (CairoSurfacePtr & s)
     s.capture (surface);
 }
 
-static bool
-skin_load_pixmaps(const char * path)
+static bool skin_load_pixmaps (const char * path)
 {
-    AUDDBG("Loading pixmaps in %s\n", path);
+    AUDDBG ("Loading pixmaps in %s\n", path);
 
     /* eq_ex.bmp was added after Winamp 2.0 so some skins do not include it */
-    for (int i = 0; i < SKIN_PIXMAP_COUNT; i++)
+    for (int i = 0; i < SKIN_PIXMAP_COUNT; i ++)
         if (! skin_load_pixmap_id ((SkinPixmapId) i, path) && i != SKIN_EQ_EX)
             return false;
 
@@ -313,8 +312,8 @@ void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc, int
 static void skin_draw_playlistwin_frame_top (cairo_t * cr, int width, bool focus)
 {
     /* The title bar skin consists of 2 sets of 4 images, 1 set
-     * for focused state and the other for unfocused. The 4 images
-     * are:
+     * for focused state and the other for unfocused.
+     * The 4 images are:
      *
      * a. right corner (25,20)
      * b. left corner  (25,20)
@@ -341,7 +340,8 @@ static void skin_draw_playlistwin_frame_top (cairo_t * cr, int width, bool focus
     /* compute tile count */
     int c = (width - (100 + 25 + 25)) / 25;
 
-    for (int i = 0; i < c / 2; i++) {
+    for (int i = 0; i < c / 2; i ++)
+    {
         /* left of title */
         skin_draw_pixbuf (cr, SKIN_PLEDIT, 127, y, 25 + i * 25, 0, 25, 20);
 
@@ -349,7 +349,8 @@ static void skin_draw_playlistwin_frame_top (cairo_t * cr, int width, bool focus
         skin_draw_pixbuf (cr, SKIN_PLEDIT, 127, y, (width + 100) / 2 + i * 25, 0, 25, 20);
     }
 
-    if (c & 1) {
+    if (c & 1)
+    {
         /* Odd tile count, so one remaining to draw. Here we split
          * it into two and draw half on either side of the title */
         skin_draw_pixbuf (cr, SKIN_PLEDIT, 127, y, ((c / 2) * 25) + 25, 0, 12, 20);
@@ -359,8 +360,8 @@ static void skin_draw_playlistwin_frame_top (cairo_t * cr, int width, bool focus
 
 static void skin_draw_playlistwin_frame_bottom (cairo_t * cr, int width, int height)
 {
-    /* The bottom frame skin consists of 1 set of 4 images. The 4
-     * images are:
+    /* The bottom frame skin consists of 1 set of 4 images.
+     * The 4 images are:
      *
      * a. left corner with menu buttons (125,38)
      * b. visualization window (75,38)
@@ -376,7 +377,8 @@ static void skin_draw_playlistwin_frame_bottom (cairo_t * cr, int width, int hei
     int c = (width - 275) / 25;
 
     /* draw visualization window, if width allows */
-    if (c >= 3) {
+    if (c >= 3)
+    {
         c -= 3;
         skin_draw_pixbuf (cr, SKIN_PLEDIT, 205, 0, width - (150 + 75), height - 38, 75, 38);
     }
@@ -385,7 +387,7 @@ static void skin_draw_playlistwin_frame_bottom (cairo_t * cr, int width, int hei
     skin_draw_pixbuf (cr, SKIN_PLEDIT, 126, 72, width - 150, height - 38, 150, 38);
 
     /* Tile draw the remaining undrawn portions */
-    for (int i = 0; i < c; i++)
+    for (int i = 0; i < c; i ++)
         skin_draw_pixbuf (cr, SKIN_PLEDIT, 179, 0, 125 + i * 25, height - 38, 25, 38);
 }
 
@@ -398,7 +400,8 @@ static void skin_draw_playlistwin_frame_sides (cairo_t * cr, int width, int heig
      */
 
     /* frame sides */
-    for (int i = 0; i < (height - (20 + 38)) / 29; i++) {
+    for (int i = 0; i < (height - (20 + 38)) / 29; i ++)
+    {
         /* left */
         skin_draw_pixbuf (cr, SKIN_PLEDIT, 0, 42, 0, 20 + i * 29, 12, 29);
 
@@ -427,7 +430,7 @@ void skin_draw_playlistwin_shaded (cairo_t * cr, int width, bool focus)
     skin_draw_pixbuf (cr, SKIN_PLEDIT, 72, 42, 0, 0, 25, 14);
 
     /* bar tile */
-    for (int i = 0; i < (width - 75) / 25; i++)
+    for (int i = 0; i < (width - 75) / 25; i ++)
         skin_draw_pixbuf (cr, SKIN_PLEDIT, 72, 57, (i * 25) + 25, 0, 25, 14);
 
     /* right corner */

@@ -34,13 +34,14 @@ static_assert (N == AUD_EQ_NBANDS, "only a 10-band EQ is supported");
 
 static void init_spline (const double * x, const double * y, double * y2)
 {
-    int i, k;
+    int k;
     double p, qn, sig, un;
     double u[N];
 
     y2[0] = u[0] = 0.0;
 
-    for (i = 1; i < N - 1; i++) {
+    for (int i = 1; i < N - 1; i ++)
+    {
         sig = ((double) x[i] - x[i - 1]) / ((double) x[i + 1] - x[i - 1]);
         p = sig * y2[i - 1] + 2.0;
         y2[i] = (sig - 1.0) / p;
@@ -52,7 +53,7 @@ static void init_spline (const double * x, const double * y, double * y2)
     qn = un = 0.0;
 
     y2[N - 1] = (un - qn * u[N - 2]) / (qn * y2[N - 2] + 1.0);
-    for (k = N - 2; k >= 0; k--)
+    for (k = N - 2; k >= 0; k --)
         y2[k] = y2[k] * y2[k + 1] + u[k];
 }
 
@@ -63,7 +64,8 @@ static double eval_spline (const double * xa, const double * ya, const double * 
 
     klo = 0;
     khi = N - 1;
-    while (khi - klo > 1) {
+    while (khi - klo > 1)
+    {
         k = (khi + klo) >> 1;
         if (xa[k] > x)
             khi = k;
@@ -121,7 +123,7 @@ void EqGraph::draw (cairo_t * cr)
 
         py = y;
 
-        for (y = ymin; y <= ymax; y++)
+        for (y = ymin; y <= ymax; y ++)
         {
             cairo_rectangle (cr, i + 2, y, 1, 1);
             set_cairo_color (cr, skin.eq_spline_colors[y]);

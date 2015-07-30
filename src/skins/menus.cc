@@ -52,14 +52,14 @@ static GtkWidget * menus[UI_MENUS];
 static GtkAccelGroup * accel;
 
 /* note: playback, playlist, and view menus must be created before main menu */
-static GtkWidget * get_menu_playback (void) {return menus[UI_MENU_PLAYBACK]; }
-static GtkWidget * get_menu_playlist (void) {return menus[UI_MENU_PLAYLIST]; }
-static GtkWidget * get_menu_view (void) {return menus[UI_MENU_VIEW]; }
+static GtkWidget * get_menu_playback () { return menus[UI_MENU_PLAYBACK]; }
+static GtkWidget * get_menu_playlist () { return menus[UI_MENU_PLAYLIST]; }
+static GtkWidget * get_menu_view () { return menus[UI_MENU_VIEW]; }
 
-static GtkWidget * get_plugin_menu_main (void) {return audgui_get_plugin_menu (AudMenuID::Main); }
-static GtkWidget * get_plugin_menu_playlist (void) {return audgui_get_plugin_menu (AudMenuID::Playlist); }
-static GtkWidget * get_plugin_menu_playlist_add (void) {return audgui_get_plugin_menu (AudMenuID::PlaylistAdd); }
-static GtkWidget * get_plugin_menu_playlist_remove (void) {return audgui_get_plugin_menu (AudMenuID::PlaylistRemove); }
+static GtkWidget * get_plugin_menu_main () { return audgui_get_plugin_menu (AudMenuID::Main); }
+static GtkWidget * get_plugin_menu_playlist () { return audgui_get_plugin_menu (AudMenuID::Playlist); }
+static GtkWidget * get_plugin_menu_playlist_add () { return audgui_get_plugin_menu (AudMenuID::PlaylistAdd); }
+static GtkWidget * get_plugin_menu_playlist_remove () { return audgui_get_plugin_menu (AudMenuID::PlaylistRemove); }
 
 static void configure_effects () { audgui_show_prefs_for_plugin_type (PluginType::Effect); }
 static void configure_output () { audgui_show_prefs_for_plugin_type (PluginType::Output); }
@@ -259,7 +259,7 @@ static const AudguiMenuItem playlist_context_items[] = {
     MenuSub (N_("Services"), nullptr, get_plugin_menu_playlist)
 };
 
-void menu_init (void)
+void menu_init ()
 {
     static const ArrayRef<AudguiMenuItem> table[] = {
         {main_items},
@@ -286,7 +286,7 @@ void menu_init (void)
     }
 }
 
-void menu_cleanup (void)
+void menu_cleanup ()
 {
     for (int i = 0; i < UI_MENUS; i ++)
     {
@@ -300,7 +300,7 @@ void menu_cleanup (void)
     hook_dissociate ("enable record", record_toggled);
 }
 
-GtkAccelGroup * menu_get_accel_group (void)
+GtkAccelGroup * menu_get_accel_group ()
 {
     return accel;
 }
