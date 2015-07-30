@@ -79,7 +79,7 @@ if test "x$USE_GTK" = "xyes" ; then
 fi
 
 if test "x$USE_QT" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt song-info-qt"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt song-info-qt statusicon-qt"
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
 fi
 
@@ -1114,6 +1114,7 @@ echo "  Search Tool:                            $USE_GTK"
 echo "  Song Change:                            $have_songchange"
 echo "  Song Info (Qt):                         $USE_QT"
 echo "  Status Icon:                            $USE_GTK"
+echo "  Status Icon (Qt):                       $USE_QT"
 echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  libnotify OSD:                          $have_notify"
