@@ -19,7 +19,7 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "plugins.h"
+#include "filewriter.h"
 
 #ifdef FILEWRITER_FLAC
 
@@ -196,7 +196,6 @@ static int flac_format_required (int fmt)
 
 FileWriterImpl flac_plugin = {
     nullptr,  // init
-    nullptr,  // configure
     flac_open,
     flac_write,
     flac_close,

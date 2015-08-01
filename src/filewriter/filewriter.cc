@@ -30,7 +30,6 @@
 #include <libaudcore/runtime.h>
 
 #include "filewriter.h"
-#include "plugins.h"
 #include "convert.h"
 
 class FileWriter : public OutputPlugin
@@ -51,7 +50,6 @@ public:
     constexpr FileWriter () : OutputPlugin (info, 0, true) {}
 
     bool init ();
-    void cleanup ();
 
     StereoVolume get_volume () { return {0, 0}; }
     void set_volume (StereoVolume v) {}
@@ -73,13 +71,23 @@ public:
 
 EXPORT FileWriter aud_plugin_instance;
 
+enum {
+    FILENAME_ORIGINAL,
+    FILENAME_ORIGINAL_NO_SUFFIX,
+    FILENAME_FROM_TAG
+};
+
+/* really a boolean, but stored here as an integer
+ * since WidgetRadio supports only integer settings */
+static int save_original;
+
+/* stored as two separate booleans in the config file */
+static int filename_mode;
+
 static String in_filename;
 static Tuple in_tuple;
 
-struct format_info input;
-
-static GtkWidget * path_hbox, * path_dirbrowser;
-static GtkWidget * fileext_combo, * plugin_button;
+static GtkWidget * path_dirbrowser;
 
 enum fileext_t
 {
@@ -96,36 +104,21 @@ enum fileext_t
     FILEEXT_MAX
 };
 
-static int fileext;
 static const char *fileext_str[FILEEXT_MAX] =
 {
-    "wav",
+    ".wav",
 #ifdef FILEWRITER_MP3
-    "mp3",
+    ".mp3",
 #endif
 #ifdef FILEWRITER_VORBIS
-    "ogg",
+    ".ogg",
 #endif
 #ifdef FILEWRITER_FLAC
-    "flac"
+    ".flac"
 #endif
 };
 
 static FileWriterImpl *plugin;
-
-static gboolean save_original;
-
-static GtkWidget *filenamefrom_hbox, *filenamefrom_label;
-static gboolean filenamefromtags;
-
-static GtkWidget *use_suffix_toggle = nullptr;
-static gboolean use_suffix;
-
-static GtkWidget *prependnumber_toggle;
-static gboolean prependnumber;
-
-static String file_path;
-
 static VFSFile output_file;
 
 FileWriterImpl *plugins[FILEEXT_MAX] = {
@@ -140,14 +133,6 @@ FileWriterImpl *plugins[FILEEXT_MAX] = {
     &flac_plugin,
 #endif
 };
-
-static void set_plugin(void)
-{
-    if (fileext < 0 || fileext >= FILEEXT_MAX)
-        fileext = 0;
-
-    plugin = plugins[fileext];
-}
 
 const char * const FileWriter::defaults[] = {
 #ifdef FILEWRITER_MP3
@@ -165,29 +150,28 @@ bool FileWriter::init ()
 {
     aud_config_set_defaults ("filewriter", defaults);
 
-    fileext = aud_get_int ("filewriter", "fileext");
-    filenamefromtags = aud_get_bool ("filewriter", "filenamefromtags");
-    file_path = aud_get_str ("filewriter", "file_path");
-    prependnumber = aud_get_bool ("filewriter", "prependnumber");
     save_original = aud_get_bool ("filewriter", "save_original");
-    use_suffix = aud_get_bool ("filewriter", "use_suffix");
 
-    if (! file_path[0])
+    if (aud_get_bool ("filewriter", "filenamefromtags"))
+        filename_mode = FILENAME_FROM_TAG;
+    else if (aud_get_bool ("filewriter", "use_suffix"))
+        filename_mode = FILENAME_ORIGINAL;
+    else
+        filename_mode = FILENAME_ORIGINAL_NO_SUFFIX;
+
+    for (auto p : plugins)
     {
-        file_path = String (filename_to_uri (g_get_home_dir ()));
-        g_return_val_if_fail (file_path != nullptr, false);
+        if (p->init)
+            p->init ();
     }
-
-    set_plugin();
-    if (plugin->init)
-        plugin->init();
 
     return true;
 }
 
-void FileWriter::cleanup ()
+static StringBuf get_file_path ()
 {
-    file_path = String ();
+    String path = aud_get_str ("filewriter", "file_path");
+    return path[0] ? str_copy (path) : filename_to_uri (g_get_home_dir ());
 }
 
 static VFSFile safe_create (const char * filename)
@@ -216,20 +200,44 @@ void FileWriter::set_info (const char * filename, const Tuple & tuple)
     in_tuple = tuple.ref ();
 }
 
-bool FileWriter::open_audio (int fmt, int rate, int nch)
+static StringBuf format_filename (const char * suffix)
 {
-    String filename, directory;
+    const char * slash = in_filename ? strrchr (in_filename, '/') : nullptr;
+    const char * base = slash ? slash + 1 : nullptr;
 
-    input.format = fmt;
-    input.frequency = rate;
-    input.channels = nch;
+    StringBuf filename;
 
-    if (filenamefromtags)
+    if (save_original)
+    {
+        g_return_val_if_fail (base, StringBuf ());
+        filename.insert (0, in_filename, base - in_filename);
+    }
+    else
+    {
+        filename.steal (get_file_path ());
+        if (filename[filename.len () - 1] != '/')
+            filename.insert (-1, "/");
+    }
+
+    if (aud_get_bool ("filewriter", "prependnumber"))
+    {
+        int number = in_tuple.get_int (Tuple::Track);
+        if (number >= 0)
+            filename.combine (str_printf ("%d%%20", number));
+    }
+
+    if (aud_get_bool ("filewriter", "filenamefromtags"))
     {
         String title = in_tuple.get_str (Tuple::FormattedTitle);
 
-        /* truncate title at 200 characters to avoid hitting filesystem limits */
-        StringBuf buf = str_copy (title, aud::min ((int) strlen (title), 200));
+        /* truncate title at 200 bytes to avoid hitting filesystem limits */
+        int len = aud::min ((int) strlen (title), 200);
+
+        /* prevent truncation in middle of UTF-8 character */
+        while ((title[len] & 0xc0) == 0x80)
+            len ++;
+
+        StringBuf buf = str_copy (title, len);
 
         /* replace non-portable characters */
         const char * reserved = "<>:\"/\\|?*";
@@ -240,57 +248,44 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
         }
 
         /* URI-encode */
-        filename = String (str_encode_percent (buf));
+        buf.steal (str_encode_percent (buf));
+        filename.combine (std::move (buf));
     }
     else
     {
-        const char * original = strrchr (in_filename, '/');
-        g_return_val_if_fail (original != nullptr, 0);
-        filename = String (original + 1);
+        g_return_val_if_fail (base, StringBuf ());
 
-        if (! use_suffix)
-        {
-            const char * temp;
-            if ((temp = strrchr (filename, '.')))
-                filename = String (str_copy (filename, temp - filename));
-        }
+        const char * end = nullptr;
+        if (! aud_get_bool ("filewriter", "use_suffix"))
+            end = strrchr (base, '.');
+
+        filename.insert (-1, base, end ? end - base : -1);
     }
 
-    if (prependnumber)
-    {
-        int number = in_tuple.get_int (Tuple::Track);
-        if (number >= 0)
-            filename = String (str_printf ("%d%%20%s", number, (const char *) filename));
-    }
+    filename.insert (-1, suffix);
+    return filename;
+}
 
-    if (save_original)
-    {
-        const char * temp = strrchr (in_filename, '/');
-        g_return_val_if_fail (temp != nullptr, 0);
-        directory = String (str_copy (in_filename, temp + 1 - in_filename));
-    }
-    else
-    {
-        g_return_val_if_fail (file_path[0], 0);
-        if (file_path[strlen (file_path) - 1] == '/')
-            directory = String (file_path);
-        else
-            directory = String (str_concat ({file_path, "/"}));
-    }
+bool FileWriter::open_audio (int fmt, int rate, int nch)
+{
+    int ext = aud_get_int ("filewriter", "fileext");
+    g_return_val_if_fail (ext >= 0 && ext < FILEEXT_MAX, false);
 
-    filename = String (str_printf ("%s%s.%s", (const char *) directory,
-     (const char *) filename, fileext_str[fileext]));
+    StringBuf filename = format_filename (fileext_str[ext]);
+    if (! filename)
+        return false;
+
+    plugin = plugins[ext];
+
+    int out_fmt = plugin->format_required (fmt);
+    convert_init (fmt, out_fmt);
 
     output_file = safe_create (filename);
-    if (! output_file)
-        goto err;
-
-    convert_init (fmt, plugin->format_required (fmt));
-
-    if (plugin->open (output_file, input, in_tuple))
+    if (output_file && plugin->open (output_file, {out_fmt, rate, nch}, in_tuple))
         return true;
 
-err:
+    plugin = nullptr;
+    output_file = VFSFile ();
     in_filename = String ();
     in_tuple = Tuple ();
     return false;
@@ -309,190 +304,43 @@ void FileWriter::close_audio ()
     plugin->close (output_file);
     convert_free ();
 
+    plugin = nullptr;
     output_file = VFSFile ();
     in_filename = String ();
     in_tuple = Tuple ();
 }
 
-static void configure_response_cb (void)
+static void * create_dirbrowser ()
 {
-    fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
+    path_dirbrowser = gtk_file_chooser_button_new (_("Pick a folder"),
+     GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+    gtk_file_chooser_set_uri ((GtkFileChooser *) path_dirbrowser, get_file_path ());
+    gtk_widget_set_sensitive (path_dirbrowser, ! save_original);
 
-    char * temp = gtk_file_chooser_get_uri ((GtkFileChooser *) path_dirbrowser);
-    file_path = String (temp);
-    g_free (temp);
+    auto set_cb = [] ()
+    {
+        char * uri = gtk_file_chooser_get_uri ((GtkFileChooser *) path_dirbrowser);
+        aud_set_str ("filewriter", "file_path", uri);
+        g_free (uri);
+    };
 
-    use_suffix =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_suffix_toggle));
+    // "file-set" is unreliable, so get the path on "destroy" as well
+    g_signal_connect (path_dirbrowser, "file-set", set_cb, nullptr);
+    g_signal_connect (path_dirbrowser, "destroy", set_cb, nullptr);
 
-    prependnumber =
-        gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prependnumber_toggle));
+    return path_dirbrowser;
+}
 
-    aud_set_int ("filewriter", "fileext", fileext);
-    aud_set_bool ("filewriter", "filenamefromtags", filenamefromtags);
-    aud_set_str ("filewriter", "file_path", file_path);
-    aud_set_bool ("filewriter", "prependnumber", prependnumber);
+static void save_original_cb ()
+{
     aud_set_bool ("filewriter", "save_original", save_original);
-    aud_set_bool ("filewriter", "use_suffix", use_suffix);
+    gtk_widget_set_sensitive (path_dirbrowser, ! save_original);
 }
 
-static void fileext_cb(GtkWidget *combo, void * data)
+static void filename_mode_cb ()
 {
-    fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
-    set_plugin();
-    if (plugin->init)
-        plugin->init();
-
-    gtk_widget_set_sensitive(plugin_button, plugin->configure != nullptr);
-}
-
-static void plugin_configure_cb(GtkWidget *button, void * data)
-{
-    if (plugin->configure)
-        plugin->configure();
-}
-
-
-static void saveplace_original_cb(GtkWidget *button, void * data)
-{
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
-    {
-        gtk_widget_set_sensitive(path_hbox, false);
-        save_original = true;
-    }
-}
-
-static void saveplace_custom_cb(GtkWidget *button, void * data)
-{
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
-    {
-        gtk_widget_set_sensitive(path_hbox, true);
-        save_original = false;
-    }
-}
-
-static void filenamefromtags_cb(GtkWidget *button, void * data)
-{
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
-    {
-        gtk_widget_set_sensitive(use_suffix_toggle, false);
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), false);
-        use_suffix = false;
-        filenamefromtags = true;
-    }
-}
-
-static void filenamefromfilename_cb(GtkWidget *button, void * data)
-{
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
-    {
-        gtk_widget_set_sensitive(use_suffix_toggle, true);
-        filenamefromtags = false;
-    }
-}
-
-static void * file_configure (void)
-{
-        GtkWidget * configure_vbox = gtk_vbox_new (false, 6);
-
-        GtkWidget * fileext_hbox = gtk_hbox_new (false, 5);
-        gtk_box_pack_start(GTK_BOX(configure_vbox), fileext_hbox, false, false, 0);
-
-        GtkWidget * fileext_label = gtk_label_new (_("Output file format:"));
-        gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_label, false, false, 0);
-
-        fileext_combo = gtk_combo_box_text_new ();
-        gtk_combo_box_text_append_text ((GtkComboBoxText *) fileext_combo, "WAV");
-#ifdef FILEWRITER_MP3
-        gtk_combo_box_text_append_text ((GtkComboBoxText *) fileext_combo, "MP3");
-#endif
-#ifdef FILEWRITER_VORBIS
-        gtk_combo_box_text_append_text ((GtkComboBoxText *) fileext_combo, "Vorbis");
-#endif
-#ifdef FILEWRITER_FLAC
-        gtk_combo_box_text_append_text ((GtkComboBoxText *) fileext_combo, "FLAC");
-#endif
-        gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_combo, false, false, 0);
-        gtk_combo_box_set_active(GTK_COMBO_BOX(fileext_combo), fileext);
-
-        plugin_button = gtk_button_new_with_label(_("Configure"));
-        gtk_widget_set_sensitive(plugin_button, plugin->configure != nullptr);
-        gtk_box_pack_end(GTK_BOX(fileext_hbox), plugin_button, false, false, 0);
-
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), false, false, 0);
-
-        GtkWidget * saveplace_hbox = gtk_hbox_new (false, 5);
-        gtk_container_add(GTK_CONTAINER(configure_vbox), saveplace_hbox);
-
-        GtkWidget * saveplace1 = gtk_radio_button_new_with_label (nullptr,
-         _("Save into original directory"));
-        gtk_box_pack_start ((GtkBox *) saveplace_hbox, saveplace1, false, false, 0);
-
-        GtkWidget * saveplace2 = gtk_radio_button_new_with_label_from_widget
-         ((GtkRadioButton *) saveplace1, _("Save into custom directory"));
-
-        if (!save_original)
-            gtk_toggle_button_set_active ((GtkToggleButton *) saveplace2, true);
-
-        gtk_box_pack_start ((GtkBox *) saveplace_hbox, saveplace2, false, false, 0);
-
-        path_hbox = gtk_hbox_new (false, 5);
-        gtk_box_pack_start(GTK_BOX(configure_vbox), path_hbox, false, false, 0);
-
-        GtkWidget * path_label = gtk_label_new (_("Output file folder:"));
-        gtk_box_pack_start ((GtkBox *) path_hbox, path_label, false, false, 0);
-
-        path_dirbrowser =
-            gtk_file_chooser_button_new (_("Pick a folder"),
-                                         GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-        gtk_file_chooser_set_uri ((GtkFileChooser *) path_dirbrowser, file_path);
-        gtk_box_pack_start(GTK_BOX(path_hbox), path_dirbrowser, true, true, 0);
-
-        if (save_original)
-            gtk_widget_set_sensitive(path_hbox, false);
-
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), false, false, 0);
-
-        filenamefrom_hbox = gtk_hbox_new (false, 5);
-        gtk_container_add(GTK_CONTAINER(configure_vbox), filenamefrom_hbox);
-
-        filenamefrom_label = gtk_label_new(_("Generate file name from:"));
-        gtk_box_pack_start(GTK_BOX(filenamefrom_hbox), filenamefrom_label, false, false, 0);
-
-        GtkWidget * filenamefrom_toggle1 = gtk_radio_button_new_with_label
-         (nullptr, _("Original file tag"));
-        gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle1, false, false, 0);
-
-        GtkWidget * filenamefrom_toggle2 =
-         gtk_radio_button_new_with_label_from_widget
-         ((GtkRadioButton *) filenamefrom_toggle1, _("Original file name"));
-        gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle2, false, false, 0);
-
-        if (!filenamefromtags)
-            gtk_toggle_button_set_active ((GtkToggleButton *) filenamefrom_toggle2, true);
-
-        use_suffix_toggle = gtk_check_button_new_with_label(_("Include original file name extension"));
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), use_suffix);
-        gtk_box_pack_start(GTK_BOX(configure_vbox), use_suffix_toggle, false, false, 0);
-
-        if (filenamefromtags)
-            gtk_widget_set_sensitive(use_suffix_toggle, false);
-
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), false, false, 0);
-
-        prependnumber_toggle = gtk_check_button_new_with_label(_("Prepend track number to file name"));
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prependnumber_toggle), prependnumber);
-        gtk_box_pack_start(GTK_BOX(configure_vbox), prependnumber_toggle, false, false, 0);
-
-        g_signal_connect (fileext_combo, "changed", (GCallback) fileext_cb, nullptr);
-        g_signal_connect (plugin_button, "clicked", (GCallback) plugin_configure_cb, nullptr);
-        g_signal_connect (saveplace1, "toggled", (GCallback) saveplace_original_cb, nullptr);
-        g_signal_connect (saveplace2, "toggled", (GCallback) saveplace_custom_cb, nullptr);
-        g_signal_connect (filenamefrom_toggle1, "toggled", (GCallback) filenamefromtags_cb, nullptr);
-        g_signal_connect (filenamefrom_toggle2, "toggled",
-         (GCallback) filenamefromfilename_cb, nullptr);
-
-        return configure_vbox;
+    aud_set_bool ("filewriter", "filenamefromtags", (filename_mode == FILENAME_FROM_TAG));
+    aud_set_bool ("filewriter", "use_suffix", (filename_mode == FILENAME_ORIGINAL));
 }
 
 const char FileWriter::about[] =
@@ -509,12 +357,71 @@ const char FileWriter::about[] =
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
     "USA.");
 
-const PreferencesWidget FileWriter::widgets[] = {
-    WidgetCustomGTK (file_configure)
+static const ComboItem plugin_combo[] = {
+    ComboItem ("WAV", WAV)
+#ifdef FILEWRITER_MP3
+    ,ComboItem ("MP3", MP3)
+#endif
+#ifdef FILEWRITER_VORBIS
+    ,ComboItem ("Vorbis", VORBIS)
+#endif
+#ifdef FILEWRITER_FLAC
+    ,ComboItem ("FLAC", FLAC)
+#endif
 };
 
-const PluginPreferences FileWriter::prefs = {
-    {widgets},
-    nullptr,  // init
-    configure_response_cb
+static const PreferencesWidget main_widgets[] = {
+    WidgetCombo (N_("Output file format:"),
+        WidgetInt ("filewriter", "fileext"),
+        {{plugin_combo}}),
+    WidgetSeparator ({true}),
+    WidgetRadio (N_("Save into original directory"),
+        WidgetInt (save_original, save_original_cb),
+        {true}),
+    WidgetRadio (N_("Save into custom directory:"),
+        WidgetInt (save_original, save_original_cb),
+        {false}),
+    WidgetCustomGTK (create_dirbrowser),
+    WidgetSeparator ({true}),
+    WidgetLabel (N_("Generate file name from:")),
+    WidgetRadio (N_("Original file name"),
+        WidgetInt (filename_mode, filename_mode_cb),
+        {FILENAME_ORIGINAL}),
+    WidgetRadio (N_("Original file name (no suffix)"),
+        WidgetInt (filename_mode, filename_mode_cb),
+        {FILENAME_ORIGINAL_NO_SUFFIX}),
+    WidgetRadio (N_("Original file tag"),
+        WidgetInt (filename_mode, filename_mode_cb),
+        {FILENAME_FROM_TAG}),
+    WidgetSeparator ({true}),
+    WidgetCheck (N_("Prepend track number to file name"),
+        WidgetBool ("filewriter", "prependnumber"))
 };
+
+#ifdef FILEWRITER_MP3
+static const PreferencesWidget mp3_widgets[] = {
+    WidgetCustomGTK (mp3_configure)
+};
+#endif
+
+#ifdef FILEWRITER_VORBIS
+static const PreferencesWidget vorbis_widgets[] = {
+    WidgetCustomGTK (vorbis_configure)
+};
+#endif
+
+static const NotebookTab tabs[] = {
+    {N_("General"), {main_widgets}}
+#ifdef FILEWRITER_MP3
+    ,{"MP3", {mp3_widgets}}
+#endif
+#ifdef FILEWRITER_VORBIS
+    ,{"Vorbis", {vorbis_widgets}}
+#endif
+};
+
+const PreferencesWidget FileWriter::widgets[] = {
+    WidgetNotebook ({{tabs}})
+};
+
+const PluginPreferences FileWriter::prefs = {{widgets}};

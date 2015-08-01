@@ -19,7 +19,7 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "plugins.h"
+#include "filewriter.h"
 
 #ifdef FILEWRITER_VORBIS
 
@@ -44,14 +44,14 @@ static const char * const vorbis_defaults[] = {
  "base_quality", "0.5",
  nullptr};
 
-static double v_base_quality;
+#define GET_DOUBLE(n)    aud_get_double("filewriter_vorbis", n)
+#define SET_DOUBLE(n, v) aud_set_double("filewriter_vorbis", n, v)
+
 static int channels;
 
 static void vorbis_init ()
 {
     aud_config_set_defaults ("filewriter_vorbis", vorbis_defaults);
-
-    v_base_quality = aud_get_double ("filewriter_vorbis", "base_quality");
 }
 
 static void add_string_from_tuple (vorbis_comment * vc, const char * name,
@@ -88,7 +88,7 @@ static bool vorbis_open (VFSFile & file, const format_info & info, const Tuple &
     if ((scrint = tuple.get_int (Tuple::Year)) > 0)
         vorbis_comment_add_tag(&vc, "year", int_to_str (scrint));
 
-    if (vorbis_encode_init_vbr (& vi, info.channels, info.frequency, v_base_quality))
+    if (vorbis_encode_init_vbr(& vi, info.channels, info.frequency, GET_DOUBLE("base_quality")))
     {
         vorbis_info_clear(&vi);
         return false;
@@ -178,57 +178,42 @@ static void vorbis_close (VFSFile & file)
 }
 
 /* configuration stuff */
-static GtkWidget *configure_win = nullptr;
 static GtkWidget *quality_frame, *quality_vbox, *quality_hbox1, *quality_spin, *quality_label;
 static GtkAdjustment * quality_adj;
 
 static void quality_change(GtkAdjustment *adjustment, void * user_data)
 {
-    v_base_quality = gtk_spin_button_get_value ((GtkSpinButton *) quality_spin) / 10;
-    aud_set_double ("filewriter_vorbis", "base_quality", v_base_quality);
+    SET_DOUBLE ("base_quality", gtk_spin_button_get_value ((GtkSpinButton *) quality_spin) / 10);
 }
 
-static void vorbis_configure(void)
+void * vorbis_configure ()
 {
-    if (! configure_win)
-    {
-        configure_win = gtk_dialog_new_with_buttons
-         (_("Vorbis Encoder Configuration"), nullptr, (GtkDialogFlags) 0,
-          _("_Close"), GTK_RESPONSE_CLOSE, nullptr);
-
-        g_signal_connect (configure_win, "response", (GCallback) gtk_widget_destroy, nullptr);
-        g_signal_connect (configure_win, "destroy", (GCallback)
-         gtk_widget_destroyed, & configure_win);
-
-        GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) configure_win);
+        GtkWidget * vbox = gtk_vbox_new (false, 5);
 
         /* quality options */
         quality_frame = gtk_frame_new(_("Quality"));
-        gtk_container_set_border_width(GTK_CONTAINER(quality_frame), 5);
-        gtk_box_pack_start(GTK_BOX(vbox), quality_frame, false, false, 2);
+        gtk_box_pack_start(GTK_BOX(vbox), quality_frame, false, false, 0);
 
         quality_vbox = gtk_vbox_new (false, 5);
-        gtk_container_set_border_width(GTK_CONTAINER(quality_vbox), 10);
+        gtk_container_set_border_width(GTK_CONTAINER(quality_vbox), 5);
         gtk_container_add(GTK_CONTAINER(quality_frame), quality_vbox);
 
         /* quality option: vbr level */
         quality_hbox1 = gtk_hbox_new (false, 5);
-        gtk_container_set_border_width(GTK_CONTAINER(quality_hbox1), 10);
         gtk_container_add(GTK_CONTAINER(quality_vbox), quality_hbox1);
 
         quality_label = gtk_label_new(_("Quality level (0 - 10):"));
         gtk_misc_set_alignment(GTK_MISC(quality_label), 0, 0.5);
-        gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_label, true, true, 0);
+        gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_label, false, false, 0);
 
         quality_adj = (GtkAdjustment *) gtk_adjustment_new (5, 0, 10, 0.1, 1, 0);
         quality_spin = gtk_spin_button_new(GTK_ADJUSTMENT(quality_adj), 1, 2);
-        gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_spin, true, true, 0);
+        gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_spin, false, false, 0);
         g_signal_connect(G_OBJECT(quality_adj), "value-changed", G_CALLBACK(quality_change), nullptr);
 
-        gtk_spin_button_set_value(GTK_SPIN_BUTTON(quality_spin), (v_base_quality * 10));
-    }
+        gtk_spin_button_set_value(GTK_SPIN_BUTTON(quality_spin), GET_DOUBLE("base_quality") * 10);
 
-    gtk_widget_show_all(configure_win);
+        return vbox;
 }
 
 static int vorbis_format_required (int fmt)
@@ -238,7 +223,6 @@ static int vorbis_format_required (int fmt)
 
 FileWriterImpl vorbis_plugin = {
     vorbis_init,
-    vorbis_configure,
     vorbis_open,
     vorbis_write,
     vorbis_close,
