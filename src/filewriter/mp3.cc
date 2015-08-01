@@ -121,7 +121,7 @@ static const char * const mp3_defaults[] = {
  "bitrate_val", "128",
  "compression_val", "11",
  "enc_toggle_val", "0",
- "audio_mode_val", "4", /* MODE_AUTO */
+ "audio_mode_val", aud::numeric_string<MODE_AUTO>::str,
  "enforce_iso_val", "0",
  "error_protect_val", "0",
  nullptr};

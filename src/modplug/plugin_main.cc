@@ -8,6 +8,9 @@
 
 #include "modplugbmp.h"
 
+#include <libmodplug/stdafx.h>
+#include <libmodplug/sndfile.h>
+
 #include <libaudcore/runtime.h>
 #include <libaudcore/preferences.h>
 
@@ -23,7 +26,7 @@ const char * const ModplugXMMS::exts[] =
 const char * const ModplugXMMS::defaults[] = {
  "Bits", "16",
  "Channels", "2",
- "ResamplingMode", "3", /* SRCMODE_POLYPHASE */
+ "ResamplingMode", aud::numeric_string<SRCMODE_POLYPHASE>::str,
  "Frequency", "44100",
 
  "Reverb", "FALSE",

@@ -45,7 +45,7 @@ static StringBuf color_to_str (const aosd_color_t & color)
 }
 
 static const char * const aosd_defaults[] = {
- "position_placement", "1", /* AOSD_POSITION_PLACEMENT_TOPLEFT */
+ "position_placement", aud::numeric_string<AOSD_POSITION_PLACEMENT_TOPLEFT>::str,
  "position_offset_x", "0",
  "position_offset_y", "0",
  "position_maxsize_width", "0",
