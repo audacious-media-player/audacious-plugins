@@ -92,7 +92,7 @@ static const audqt::MenuItem output_items[] = {
 static const audqt::MenuItem main_items[] = {
     audqt::MenuCommand ({N_("Open Files ..."), "document-open", "L"}, action_play_file),
     audqt::MenuCommand ({N_("Open Folder ..."), "document-open", "Shift+L"}, action_play_folder),
-//    audqt::MenuCommand ({N_("Open URL ..."), "folder-remote", "Ctrl+L"}, action_play_location),
+    audqt::MenuCommand ({N_("Open URL ..."), "folder-remote", "Ctrl+L"}, action_play_location),
 //    audqt::MenuCommand ({N_("Search Library"), "edit-find", "Y"}, action_search_tool),
     audqt::MenuSep (),
     audqt::MenuSub ({N_("Playback")}, get_menu_playback),
@@ -174,7 +174,7 @@ static const audqt::MenuItem view_items[] = {
 static const audqt::MenuItem playlist_add_items[] = {
     audqt::MenuSub ({N_("Services")}, get_plugin_menu_playlist_add),
     audqt::MenuSep (),
-//    audqt::MenuCommand ({N_("Add URL ..."), "folder-remote", "Ctrl+H"}, action_playlist_add_url),
+    audqt::MenuCommand ({N_("Add URL ..."), "folder-remote", "Ctrl+H"}, action_playlist_add_url),
     audqt::MenuCommand ({N_("Add Folder ..."), "list-add", "Shift+F"}, action_playlist_add_folder),
     audqt::MenuCommand ({N_("Add Files ..."), "list-add", "F"}, action_playlist_add_files)
 };
