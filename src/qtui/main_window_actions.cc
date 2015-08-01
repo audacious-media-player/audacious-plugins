@@ -39,6 +39,8 @@ static void open_files () { audqt::fileopener_show (audqt::FileMode::Open); }
 static void add_files () { audqt::fileopener_show (audqt::FileMode::Add); }
 static void open_folder () { audqt::fileopener_show (audqt::FileMode::OpenFolder); }
 static void add_folder () { audqt::fileopener_show (audqt::FileMode::AddFolder); }
+static void open_url () { audqt::urlopener_show (true); }
+static void add_url () { audqt::urlopener_show (false); }
 
 static void rm_dupes_title () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Title); }
 static void rm_dupes_filename () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Filename); }
@@ -93,8 +95,10 @@ void MainWindow::setupActions ()
     static constexpr audqt::MenuItem file_items[] = {
         audqt::MenuCommand ({N_("_Open Files ..."), "document-open", "Ctrl+O"}, open_files),
         audqt::MenuCommand ({N_("_Open Folder ..."), "document-open"}, open_folder),
+        audqt::MenuCommand ({N_("Open _URL ..."), "folder-remote", "Ctrl+L"}, open_url),
         audqt::MenuCommand ({N_("_Add Files ..."), "list-add", "Ctrl+Shift+O"}, add_files),
         audqt::MenuCommand ({N_("_Add Folder ..."), "list-add"}, add_folder),
+        audqt::MenuCommand ({N_("Add U_RL ..."), "folder-remote", "Ctrl+Shift+L"}, add_url),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("A_bout ..."), "help-about"}, aud_ui_show_about_window),
         audqt::MenuCommand ({N_("_Settings ..."), "preferences-system"}, aud_ui_show_prefs_window),
