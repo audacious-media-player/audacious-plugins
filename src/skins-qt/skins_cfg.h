@@ -43,8 +43,8 @@ typedef struct {
 
 extern skins_cfg_t config;
 
-void skins_cfg_load();
-void skins_cfg_save();
+void skins_cfg_load ();
+void skins_cfg_save ();
 
 #if 0
 void on_skin_view_drag_data_received(GtkWidget * widget,

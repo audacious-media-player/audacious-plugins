@@ -24,8 +24,7 @@
 
 class QWidget;
 
-enum
-{
+enum {
     UI_MENU_MAIN,
     UI_MENU_PLAYBACK,
     UI_MENU_PLAYLIST,

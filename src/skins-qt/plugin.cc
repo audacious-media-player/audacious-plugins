@@ -154,7 +154,7 @@ bool QtSkins::init ()
     return true;
 }
 
-static void skins_cleanup_main (void)
+static void skins_cleanup_main ()
 {
     mainwin_unhook ();
     equalizerwin_unhook ();

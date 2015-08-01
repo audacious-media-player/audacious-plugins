@@ -67,14 +67,15 @@ static Button * equalizerwin_presets;
 static EqSlider * equalizerwin_preamp, * equalizerwin_bands[10];
 static HSlider * equalizerwin_volume, * equalizerwin_balance;
 
-static void
-equalizerwin_shade_toggle(void)
+static void equalizerwin_shade_toggle ()
 {
     view_set_equalizer_shaded (! aud_get_bool ("skins", "equalizer_shaded"));
 }
 
 static void eq_on_cb (Button * button, QMouseEvent * event)
- {aud_set_bool (nullptr, "equalizer_active", button->get_active ()); }
+{
+    aud_set_bool (nullptr, "equalizer_active", button->get_active ());
+}
 
 static void update_from_config (void *, void *)
 {
@@ -109,13 +110,12 @@ bool EqWindow::button_press (QMouseEvent * event)
     return Window::button_press (event);
 }
 
-static void
-equalizerwin_close_cb(void)
+static void equalizerwin_close_cb ()
 {
     view_set_show_equalizer (false);
 }
 
-static void eqwin_volume_set_knob (void)
+static void eqwin_volume_set_knob ()
 {
     int pos = equalizerwin_volume->get_pos ();
     int x = (pos < 32) ? 1 : (pos < 63) ? 4 : 7;
@@ -128,23 +128,23 @@ void equalizerwin_set_volume_slider (int percent)
     eqwin_volume_set_knob ();
 }
 
-static void eqwin_volume_motion_cb (void)
+static void eqwin_volume_motion_cb ()
 {
     eqwin_volume_set_knob ();
     int pos = equalizerwin_volume->get_pos ();
     int v = (pos * 100 + 47) / 94;
 
-    mainwin_adjust_volume_motion(v);
-    mainwin_set_volume_slider(v);
+    mainwin_adjust_volume_motion (v);
+    mainwin_set_volume_slider (v);
 }
 
-static void eqwin_volume_release_cb (void)
+static void eqwin_volume_release_cb ()
 {
     eqwin_volume_set_knob ();
-    mainwin_adjust_volume_release();
+    mainwin_adjust_volume_release ();
 }
 
-static void eqwin_balance_set_knob (void)
+static void eqwin_balance_set_knob ()
 {
     int pos = equalizerwin_balance->get_pos ();
     int x = (pos < 13) ? 11 : (pos < 26) ? 14 : 17;
@@ -161,11 +161,11 @@ void equalizerwin_set_balance_slider (int percent)
     eqwin_balance_set_knob ();
 }
 
-static void eqwin_balance_motion_cb (void)
+static void eqwin_balance_motion_cb ()
 {
     eqwin_balance_set_knob ();
     int pos = equalizerwin_balance->get_pos ();
-    pos = aud::min(pos, 38);         /* The skin uses a even number of pixels
+    pos = aud::min(pos, 38);    /* The skin uses a even number of pixels
                                    for the balance-slider *sigh* */
     int b;
     if (pos > 19)
@@ -173,18 +173,17 @@ static void eqwin_balance_motion_cb (void)
     else
         b = ((pos - 19) * 100 - 9) / 19;
 
-    mainwin_adjust_balance_motion(b);
-    mainwin_set_balance_slider(b);
+    mainwin_adjust_balance_motion (b);
+    mainwin_set_balance_slider (b);
 }
 
-static void eqwin_balance_release_cb (void)
+static void eqwin_balance_release_cb ()
 {
     eqwin_balance_set_knob ();
-    mainwin_adjust_balance_release();
+    mainwin_adjust_balance_release ();
 }
 
-static void
-equalizerwin_create_widgets(void)
+static void equalizerwin_create_widgets ()
 {
     equalizerwin_on = new Button (25, 12, 10, 119, 128, 119, 69, 119, 187, 119, SKIN_EQMAIN, SKIN_EQMAIN);
     equalizerwin->put_widget (false, equalizerwin_on, 14, 18);
@@ -256,8 +255,7 @@ void EqWindow::draw (QPainter & cr)
         skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 134, 0, 0, 275, 14);
 }
 
-static void
-equalizerwin_create_window(void)
+static void equalizerwin_create_window ()
 {
     bool shaded = aud_get_bool ("skins", "equalizer_shaded");
 
@@ -266,7 +264,7 @@ equalizerwin_create_window(void)
         shaded = false;
 
     equalizerwin = new EqWindow (shaded);
-    equalizerwin->setWindowTitle (_("Audacious Equalizer"));
+    equalizerwin->setWindowTitle (_("Equalizer"));
 }
 
 void equalizerwin_unhook ()

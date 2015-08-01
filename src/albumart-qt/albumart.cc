@@ -45,36 +45,39 @@ class ArtLabel : public QLabel {
 public:
     ArtLabel (QWidget * parent = 0, Qt::WindowFlags f = 0) : QLabel(parent, f)
     {
-	init ();
+        init ();
     }
 
-    ArtLabel (const QString & text, QWidget * parent = 0, Qt::WindowFlags f = 0) : QLabel(text, parent, f)
+    ArtLabel (const QString & text, QWidget * parent = 0, Qt::WindowFlags f = 0) : QLabel (text, parent, f)
     {
-	init ();
+        init ();
     }
 
     void update_art ()
     {
-	origPixmap = QPixmap (audqt::art_request_current (0, 0));
-	origSize = origPixmap.size ();
-	drawArt();
+        origPixmap = QPixmap (audqt::art_request_current (0, 0));
+        origSize = origPixmap.size ();
+        drawArt ();
     }
 
     void clear ()
     {
-	QLabel::clear();
-	origPixmap = QPixmap();
+        QLabel::clear ();
+        origPixmap = QPixmap ();
     }
 
 protected:
     virtual void resizeEvent (QResizeEvent * event)
     {
-	QLabel::resizeEvent(event);
+        QLabel::resizeEvent (event);
+        const QPixmap * pm = pixmap ();
 
-	if ( ! origPixmap.isNull() &&
-		(size().width() <= origSize.width() + MARGIN ||
-		 size().height() <= origSize.height() + MARGIN))
-	    drawArt();
+        if ( ! origPixmap.isNull () && pm && ! pm->isNull () &&
+                (size ().width () <= origSize.width () + MARGIN ||
+                 size ().height () <= origSize.height () + MARGIN ||
+                 pm->size ().width () != origSize.width () ||
+                 pm->size ().height () != origSize.height ()))
+            drawArt ();
     }
 
 private:
@@ -83,19 +86,19 @@ private:
 
     void init ()
     {
-	clear ();
-	setMinimumSize (MARGIN + 1, MARGIN + 1);
-	setAlignment (Qt::AlignCenter);
+        clear ();
+        setMinimumSize (MARGIN + 1, MARGIN + 1);
+        setAlignment (Qt::AlignCenter);
     }
 
     void drawArt ()
     {
-	if (origSize.width() <= size().width() - MARGIN &&
-	    origSize.height() <= size().height() - MARGIN)
-	    setPixmap (origPixmap);
-	else
-	    setPixmap (origPixmap.scaled(size().width()-MARGIN, size().height()-MARGIN,
-			Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        if (origSize.width () <= size ().width () - MARGIN &&
+            origSize.height () <= size ().height() - MARGIN)
+            setPixmap (origPixmap);
+        else
+            setPixmap (origPixmap.scaled (size ().width () - MARGIN, size ().height () - MARGIN,
+                        Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
 };
 
@@ -127,7 +130,7 @@ void * AlbumArtQt::get_qt_widget ()
     hook_associate ("playback stop", (HookFunction) clear, widget);
 
     if (aud_drct_get_ready ())
-	widget->update_art ();
+        widget->update_art ();
 
     return widget;
 }

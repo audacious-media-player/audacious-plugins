@@ -42,7 +42,10 @@
 #include <libaudcore/playlist.h>
 #include <libaudgui/libaudgui.h>
 
-enum {DRAG_SELECT = 1, DRAG_MOVE};
+enum {
+    DRAG_SELECT = 1,
+    DRAG_MOVE
+};
 
 void PlaylistWidget::update_title ()
 {

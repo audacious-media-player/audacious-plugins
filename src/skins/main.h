@@ -64,14 +64,9 @@ void mainwin_playback_begin ();
 void mainwin_update_song_info ();
 void mainwin_show_status_message (const char * message);
 
-void mainwin_drag_data_received(GtkWidget * widget,
-                                GdkDragContext * context,
-                                int x,
-                                int y,
-                                GtkSelectionData * selection_data,
-                                unsigned info,
-                                unsigned time,
-                                void * user_data);
+void mainwin_drag_data_received (GtkWidget * widget,
+ GdkDragContext * context, int x, int y, GtkSelectionData * selection_data,
+ unsigned info, unsigned time, void * data);
 
 bool change_timer_mode_cb (GdkEventButton * event);
 

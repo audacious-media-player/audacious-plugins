@@ -31,7 +31,9 @@
 #include "widget.h"
 
 typedef enum {
-    STATUS_STOP, STATUS_PAUSE, STATUS_PLAY
+    STATUS_STOP,
+    STATUS_PAUSE,
+    STATUS_PLAY
 } PStatus;
 
 class PlayStatus : public Widget

@@ -117,8 +117,7 @@ char * text_parse_line (char * text)
     return newline + 1;
 }
 
-enum ArchiveType
-{
+enum ArchiveType {
     ARCHIVE_UNKNOWN = 0,
     ARCHIVE_TAR,
     ARCHIVE_TGZ,
@@ -128,8 +127,7 @@ enum ArchiveType
 
 typedef StringBuf (* ArchiveExtractFunc) (const char *, const char *);
 
-struct ArchiveExtensionType
-{
+struct ArchiveExtensionType {
     ArchiveType type;
     const char *ext;
 };
@@ -157,36 +155,34 @@ static ArchiveExtractFunc archive_extract_funcs[] = {
     archive_extract_tbz2
 };
 
-
 /* FIXME: these functions can be generalised into a function using a
  * command lookup table */
 
-static const char *get_tar_command(void)
+static const char * get_tar_command ()
 {
-    static const char *command = nullptr;
+    static const char * command = nullptr;
 
-    if (!command)
+    if (! command)
     {
-        if (!(command = getenv("TARCMD")))
+        if (! (command = getenv("TARCMD")))
             command = "tar";
     }
 
     return command;
 }
 
-static const char *get_unzip_command(void)
+static const char * get_unzip_command ()
 {
-    static const char *command = nullptr;
+    static const char * command = nullptr;
 
-    if (!command)
+    if (! command)
     {
-        if (!(command = getenv("UNZIPCMD")))
+        if (! (command = getenv("UNZIPCMD")))
             command = "unzip";
     }
 
     return command;
 }
-
 
 static StringBuf archive_extract_tar (const char * archive, const char * dest)
 {
@@ -266,11 +262,10 @@ static StringBuf escape_shell_chars (const char * string)
     return escaped;
 }
 
-/*
-   Decompresses the archive "filename" to a temporary directory,
-   returns the path to the temp dir, or nullptr if failed
-*/
-
+/**
+ * Decompresses the archive "filename" to a temporary directory,
+ * returns the path to the temp dir, or nullptr if failed
+ */
 StringBuf archive_decompress (const char * filename)
 {
     ArchiveType type = archive_get_type (filename);
@@ -287,11 +282,11 @@ StringBuf archive_decompress (const char * filename)
     StringBuf escaped_filename = escape_shell_chars (filename);
     StringBuf cmd = archive_extract_funcs[type] (escaped_filename, tmpdir);
 
-    AUDDBG("Executing \"%s\"\n", (const char *) cmd);
+    AUDDBG ("Executing \"%s\"\n", (const char *) cmd);
     int ret = system (cmd);
     if (ret != 0)
     {
-        AUDDBG("Command \"%s\" returned error %d\n", (const char *) cmd, ret);
+        AUDDBG ("Command \"%s\" returned error %d\n", (const char *) cmd, ret);
         return StringBuf ();
     }
 
@@ -316,22 +311,23 @@ Index<int> string_to_int_array (const char * str)
 {
     Index<int> array;
     int temp;
-    const char *ptr = str;
-    char *endptr;
+    const char * ptr = str;
+    char * endptr;
 
     for (;;)
     {
-        temp = strtol(ptr, &endptr, 10);
+        temp = strtol (ptr, &endptr, 10);
         if (ptr == endptr)
             break;
         array.append (temp);
         ptr = endptr;
-        while (!g_ascii_isdigit((int)*ptr) && (*ptr) != '\0')
-            ptr++;
-        if (*ptr == '\0')
+        while (! g_ascii_isdigit ((int) * ptr) && (* ptr) != '\0')
+            ptr ++;
+        if (* ptr == '\0')
             break;
     }
-    return (array);
+
+    return array;
 }
 
 bool dir_foreach (const char * path, DirForeachFunc func)
@@ -353,7 +349,7 @@ bool dir_foreach (const char * path, DirForeachFunc func)
     return true;
 }
 
-void make_directory(const char *path)
+void make_directory (const char * path)
 {
     if (g_mkdir_with_parents (path, DIRMODE) != 0)
         AUDWARN ("Error creating %s: %s\n", strerror (errno));

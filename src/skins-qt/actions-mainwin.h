@@ -20,12 +20,12 @@
 #ifndef SKINS_ACTIONS_MAINWIN_H
 #define SKINS_ACTIONS_MAINWIN_H
 
-void action_ab_clear(void);
-void action_ab_set(void);
-void action_play_file(void);
-void action_play_folder(void);
-void action_play_location(void);
-void action_playlist_manager(void);
-void action_search_tool(void);
+void action_ab_clear ();
+void action_ab_set ();
+void action_play_file ();
+void action_play_folder ();
+void action_play_location ();
+void action_playlist_manager ();
+void action_search_tool ();
 
 #endif /* SKINS_ACTIONS_MAINWIN_H */

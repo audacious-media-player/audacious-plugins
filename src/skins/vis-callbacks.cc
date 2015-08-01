@@ -115,8 +115,8 @@ void VisCallbacks::render_multi_pcm (const float * pcm, int channels)
 }
 
 /* convert linear frequency graph to logarithmic one */
-static void make_log_graph (const float * freq, int bands, int db_range, int
- int_range, unsigned char * graph)
+static void make_log_graph (const float * freq, int bands, int db_range,
+ int int_range, unsigned char * graph)
 {
     static int last_bands = 0;
     static float * xscale = nullptr;

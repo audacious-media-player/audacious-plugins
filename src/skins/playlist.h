@@ -27,9 +27,9 @@ class PlaylistWidget;
 class TextBox;
 class Window;
 
-void playlistwin_create(void);
-void playlistwin_unhook (void);
-void playlistwin_hide_timer(void);
+void playlistwin_create ();
+void playlistwin_unhook ();
+void playlistwin_hide_timer ();
 void playlistwin_set_time (const char * minutes, const char * seconds);
 
 extern Window * playlistwin;

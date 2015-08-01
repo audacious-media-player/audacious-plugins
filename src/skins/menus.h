@@ -24,8 +24,7 @@
 
 #include <gtk/gtk.h>
 
-enum
-{
+enum {
     UI_MENU_MAIN,
     UI_MENU_PLAYBACK,
     UI_MENU_PLAYLIST,
@@ -41,7 +40,7 @@ enum
 void menu_init ();
 void menu_cleanup ();
 
-GtkAccelGroup * menu_get_accel_group (void);
+GtkAccelGroup * menu_get_accel_group ();
 void menu_popup (int id, int x, int y, gboolean leftward, gboolean upward, int button, int time);
 
 #endif /* SKINS_MENUS_H */

@@ -173,8 +173,7 @@ struct SkinHints {
     int textbox_bitmap_font_height = 6;
 };
 
-struct Skin
-{
+struct Skin {
     SkinHints hints;
     uint32_t colors[SKIN_COLOR_COUNT] {};
     uint32_t eq_spline_colors[19] {};

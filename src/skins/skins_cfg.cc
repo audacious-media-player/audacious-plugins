@@ -42,44 +42,46 @@
 #include "view.h"
 
 static const char * const skins_defaults[] = {
- /* general */
- "autoscroll_songname", "TRUE",
- "mainwin_font", "Sans Bold 9",
- "mainwin_use_bitmapfont", "TRUE",
- "playlist_font", "Sans Bold 8",
- "record", "FALSE",
- "show_remaining_time", "FALSE",
- "twoway_scroll", "FALSE",
+    /* general */
+    "autoscroll_songname", "TRUE",
+    "mainwin_font", "Sans Bold 9",
+    "mainwin_use_bitmapfont", "TRUE",
+    "playlist_font", "Sans Bold 8",
+    "record", "FALSE",
+    "show_remaining_time", "FALSE",
+    "twoway_scroll", "FALSE",
 
- /* visualizer */
- "analyzer_falloff", "3", /* FALLOFF_FAST */
- "analyzer_mode", "0", /* ANALYZER_NORMAL */
- "analyzer_peaks", "TRUE",
- "analyzer_type", "1", /* ANALYZER_BARS */
- "peaks_falloff", "1", /* FALLOFF_SLOW */
- "scope_mode", "0", /* SCOPE_DOT */
- "vis_type", "0", /* VIS_ANALYZER */
- "voiceprint_mode", "0", /* VOICEPRINT_NORMAL */
- "vu_mode", "1", /* VU_SMOOTH */
+    /* visualizer */
+    "analyzer_falloff", "3", /* FALLOFF_FAST */
+    "analyzer_mode", "0", /* ANALYZER_NORMAL */
+    "analyzer_peaks", "TRUE",
+    "analyzer_type", "1", /* ANALYZER_BARS */
+    "peaks_falloff", "1", /* FALLOFF_SLOW */
+    "scope_mode", "0", /* SCOPE_DOT */
+    "vis_type", "0", /* VIS_ANALYZER */
+    "voiceprint_mode", "0", /* VOICEPRINT_NORMAL */
+    "vu_mode", "1", /* VU_SMOOTH */
 
- /* windows */
- "always_on_top", "FALSE",
- "double_size", "FALSE",
- "equalizer_shaded", "FALSE",
- "equalizer_visible", "FALSE",
- "equalizer_x", "20",
- "equalizer_y", "136",
- "player_shaded", "FALSE",
- "player_x", "20",
- "player_y", "20",
- "playlist_shaded", "FALSE",
- "playlist_visible", "FALSE",
- "playlist_x", "295",
- "playlist_y", "20",
- "playlist_width", "275",
- "playlist_height", "232",
- "sticky", "FALSE",
- nullptr};
+    /* windows */
+    "always_on_top", "FALSE",
+    "double_size", "FALSE",
+    "equalizer_shaded", "FALSE",
+    "equalizer_visible", "FALSE",
+    "equalizer_x", "20",
+    "equalizer_y", "136",
+    "player_shaded", "FALSE",
+    "player_x", "20",
+    "player_y", "20",
+    "playlist_shaded", "FALSE",
+    "playlist_visible", "FALSE",
+    "playlist_x", "295",
+    "playlist_y", "20",
+    "playlist_width", "275",
+    "playlist_height", "232",
+    "sticky", "FALSE",
+
+    nullptr
+};
 
 skins_cfg_t config;
 
@@ -125,7 +127,7 @@ static const struct {
     {"playlist_height", & config.playlist_height}
 };
 
-void skins_cfg_load (void)
+void skins_cfg_load ()
 {
     aud_config_set_defaults ("skins", skins_defaults);
 
@@ -136,7 +138,7 @@ void skins_cfg_load (void)
         * nument.ptr = aud_get_int ("skins", nument.name);
 }
 
-void skins_cfg_save (void)
+void skins_cfg_save ()
 {
     for (auto & boolent : skins_boolents)
         aud_set_bool ("skins", boolent.name, * boolent.ptr);
@@ -145,8 +147,7 @@ void skins_cfg_save (void)
         aud_set_int ("skins", nument.name, * nument.ptr);
 }
 
-static void
-mainwin_font_set_cb()
+static void mainwin_font_set_cb ()
 {
     if (! config.mainwin_use_bitmapfont)
         mainwin_info->set_font (aud_get_str ("skins", "mainwin_font"));
@@ -154,13 +155,12 @@ mainwin_font_set_cb()
         mainwin_info->set_font (nullptr);
 }
 
-static void
-playlist_font_set_cb()
+static void playlist_font_set_cb ()
 {
     playlistwin_list->set_font (aud_get_str ("skins", "playlist_font"));
 }
 
-static void autoscroll_set_cb (void)
+static void autoscroll_set_cb ()
 {
     if (! aud_get_bool ("skins", "mainwin_shaded"))
         mainwin_info->set_scroll (config.autoscroll);
@@ -168,12 +168,14 @@ static void autoscroll_set_cb (void)
         playlistwin_sinfo->set_scroll (config.autoscroll);
 }
 
-static void vis_reset_cb (void)
+static void vis_reset_cb ()
 {
     mainwin_vis->clear ();
     mainwin_svis->clear ();
     start_stop_visual (false);
 }
+
+static void * create_skin_view ();
 
 static const PreferencesWidget font_table_elements[] = {
     WidgetFonts (N_("Player:"),
@@ -183,8 +185,6 @@ static const PreferencesWidget font_table_elements[] = {
         WidgetString ("skins", "playlist_font", playlist_font_set_cb),
         {N_("Select playlist font:")})
 };
-
-static void * create_skin_view (void);
 
 static const PreferencesWidget skins_widgets_general[] = {
     WidgetLabel (N_("<b>Skin</b>")),
@@ -293,20 +293,17 @@ static const PreferencesWidget skins_widgets[] = {
 
 const PluginPreferences skins_prefs = {{skins_widgets}};
 
-void
-on_skin_view_drag_data_received(GtkWidget * widget,
-                                GdkDragContext * context,
-                                int x, int y,
-                                GtkSelectionData * selection_data,
-                                unsigned info, unsigned time,
-                                void * user_data)
+void on_skin_view_drag_data_received (GtkWidget * widget, GdkDragContext * context,
+ int x, int y, GtkSelectionData * selection_data, unsigned info, unsigned time, void *)
 {
     const char * data = (const char *) gtk_selection_data_get_data (selection_data);
     g_return_if_fail (data);
 
     const char * end = strchr (data, '\r');
-    if (! end) end = strchr (data, '\n');
-    if (! end) end = data + strlen (data);
+    if (! end)
+        end = strchr (data, '\n');
+    if (! end)
+        end = data + strlen (data);
 
     StringBuf path = str_copy (data, end - data);
 
@@ -317,7 +314,7 @@ on_skin_view_drag_data_received(GtkWidget * widget,
             path.steal (std::move (path2));
     }
 
-    if (file_is_archive(path))
+    if (file_is_archive (path))
     {
         if (! skin_load (path))
             return;
@@ -330,7 +327,7 @@ on_skin_view_drag_data_received(GtkWidget * widget,
     }
 }
 
-static void * create_skin_view (void)
+static void * create_skin_view ()
 {
     GtkWidget * scrolled = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrolled,

@@ -39,14 +39,14 @@
 static QMenu * menus[UI_MENUS];
 
 /* note: playback, playlist, and view menus must be created before main menu */
-static QMenu * get_menu_playback () {return menus[UI_MENU_PLAYBACK]; }
-static QMenu * get_menu_playlist () {return menus[UI_MENU_PLAYLIST]; }
-static QMenu * get_menu_view () {return menus[UI_MENU_VIEW]; }
+static QMenu * get_menu_playback () { return menus[UI_MENU_PLAYBACK]; }
+static QMenu * get_menu_playlist () { return menus[UI_MENU_PLAYLIST]; }
+static QMenu * get_menu_view () { return menus[UI_MENU_VIEW]; }
 
-static QMenu * get_plugin_menu_main () {return audqt::menu_get_by_id (AudMenuID::Main); }
-static QMenu * get_plugin_menu_playlist () {return audqt::menu_get_by_id (AudMenuID::Playlist); }
-static QMenu * get_plugin_menu_playlist_add () {return audqt::menu_get_by_id (AudMenuID::PlaylistAdd); }
-static QMenu * get_plugin_menu_playlist_remove () {return audqt::menu_get_by_id (AudMenuID::PlaylistRemove); }
+static QMenu * get_plugin_menu_main () { return audqt::menu_get_by_id (AudMenuID::Main); }
+static QMenu * get_plugin_menu_playlist () { return audqt::menu_get_by_id (AudMenuID::Playlist); }
+static QMenu * get_plugin_menu_playlist_add () { return audqt::menu_get_by_id (AudMenuID::PlaylistAdd); }
+static QMenu * get_plugin_menu_playlist_remove () { return audqt::menu_get_by_id (AudMenuID::PlaylistRemove); }
 
 static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
 static void configure_output () { audqt::prefswin_show_plugin_page (PluginType::Output); }
@@ -112,6 +112,7 @@ static const audqt::MenuItem playback_items[] = {
     audqt::MenuSep (),
     audqt::MenuToggle ({N_("Repeat"), "media-playlist-repeat", "R"}, {nullptr, "repeat", "set repeat"}),
     audqt::MenuToggle ({N_("Shuffle"), "media-playlist-shuffle", "S"}, {nullptr, "shuffle", "set shuffle"}),
+    audqt::MenuToggle ({N_("Shuffle by Album")}, {nullptr, "album_shuffle", "set album_shuffle"}),
     audqt::MenuToggle ({N_("No Playlist Advance"), nullptr, "Ctrl+N"}, {nullptr, "no_playlist_advance", "set no_playlist_advance"}),
     audqt::MenuToggle ({N_("Stop After This Song"), nullptr, "Ctrl+M"}, {nullptr, "stop_after_current_song", "set stop_after_current_song"}),
     audqt::MenuSep (),
@@ -274,7 +275,7 @@ void menu_init (QWidget * parent)
         menus[i] = audqt::menu_build (table[i], parent);
 }
 
-void menu_cleanup (void)
+void menu_cleanup ()
 {
     hook_dissociate ("enable record", record_toggled);
 }

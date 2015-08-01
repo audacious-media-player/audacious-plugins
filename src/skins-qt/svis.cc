@@ -129,7 +129,7 @@ void SmallVis::draw (QPainter & cr)
             break;
         case SCOPE_LINE:
         {
-            for (int x = 0; x < 37; x++)
+            for (int x = 0; x < 37; x ++)
             {
                 int h = scale[aud::clamp (m_data[2 * x], 0, 16)];
                 int h2 = scale[aud::clamp (m_data[2 * (x + 1)], 0, 16)];
@@ -148,13 +148,18 @@ void SmallVis::draw (QPainter & cr)
             break;
         }
         default: /* SCOPE_SOLID */
-            for (int x = 0; x < 38; x++)
+            for (int x = 0; x < 38; x ++)
             {
                 int h = scale[aud::clamp (m_data[2 * x], 0, 16)];
                 int h2;
 
-                if (h < 2) h2 = 2;
-                else {h2 = h; h = 2;}
+                if (h < 2)
+                    h2 = 2;
+                else
+                {
+                    h2 = h;
+                    h = 2;
+                }
 
                 RGB_SEEK (x, h);
                 for (int y = h; y <= h2; y ++)
