@@ -21,7 +21,7 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "plugins.h"
+#include "filewriter.h"
 
 #include <string.h>
 #include <libaudcore/runtime.h>
@@ -144,7 +144,6 @@ static int wav_format_required (int fmt)
 
 FileWriterImpl wav_plugin = {
     nullptr,  // init
-    nullptr,  // configure
     wav_open,
     wav_write,
     wav_close,

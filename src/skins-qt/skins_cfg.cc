@@ -50,15 +50,15 @@ static const char * const skins_defaults[] = {
     "twoway_scroll", "FALSE",
 
     /* visualizer */
-    "analyzer_falloff", "3", /* FALLOFF_FAST */
-    "analyzer_mode", "0", /* ANALYZER_NORMAL */
+    "analyzer_falloff", aud::numeric_string<FALLOFF_FAST>::str,
+    "analyzer_mode", aud::numeric_string<ANALYZER_NORMAL>::str,
     "analyzer_peaks", "TRUE",
-    "analyzer_type", "1", /* ANALYZER_BARS */
-    "peaks_falloff", "1", /* FALLOFF_SLOW */
-    "scope_mode", "0", /* SCOPE_DOT */
-    "vis_type", "0", /* VIS_ANALYZER */
-    "voiceprint_mode", "0", /* VOICEPRINT_NORMAL */
-    "vu_mode", "1", /* VU_SMOOTH */
+    "analyzer_type", aud::numeric_string<ANALYZER_BARS>::str,
+    "peaks_falloff", aud::numeric_string<FALLOFF_SLOW>::str,
+    "scope_mode", aud::numeric_string<SCOPE_DOT>::str,
+    "vis_type", aud::numeric_string<VIS_ANALYZER>::str,
+    "voiceprint_mode", aud::numeric_string<VOICEPRINT_NORMAL>::str,
+    "vu_mode", aud::numeric_string<VU_SMOOTH>::str,
 
     /* windows */
     "always_on_top", "FALSE",
@@ -312,20 +312,17 @@ static const PreferencesWidget skins_widgets[] = {
 const PluginPreferences skins_prefs = {{skins_widgets}};
 
 #if 0
-void
-on_skin_view_drag_data_received(GtkWidget * widget,
-                                GdkDragContext * context,
-                                int x, int y,
-                                GtkSelectionData * selection_data,
-                                unsigned info, unsigned time,
-                                void * user_data)
+void on_skin_view_drag_data_received (GtkWidget * widget, GdkDragContext * context,
+ int x, int y, GtkSelectionData * selection_data, unsigned info, unsigned time, void *)
 {
     const char * data = (const char *) gtk_selection_data_get_data (selection_data);
     g_return_if_fail (data);
 
     const char * end = strchr (data, '\r');
-    if (! end) end = strchr (data, '\n');
-    if (! end) end = data + strlen (data);
+    if (! end)
+        end = strchr (data, '\n');
+    if (! end)
+        end = data + strlen (data);
 
     StringBuf path = str_copy (data, end - data);
 

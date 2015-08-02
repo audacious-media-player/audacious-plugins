@@ -52,15 +52,15 @@ static const char * const skins_defaults[] = {
     "twoway_scroll", "FALSE",
 
     /* visualizer */
-    "analyzer_falloff", "3", /* FALLOFF_FAST */
-    "analyzer_mode", "0", /* ANALYZER_NORMAL */
+    "analyzer_falloff", aud::numeric_string<FALLOFF_FAST>::str,
+    "analyzer_mode", aud::numeric_string<ANALYZER_NORMAL>::str,
     "analyzer_peaks", "TRUE",
-    "analyzer_type", "1", /* ANALYZER_BARS */
-    "peaks_falloff", "1", /* FALLOFF_SLOW */
-    "scope_mode", "0", /* SCOPE_DOT */
-    "vis_type", "0", /* VIS_ANALYZER */
-    "voiceprint_mode", "0", /* VOICEPRINT_NORMAL */
-    "vu_mode", "1", /* VU_SMOOTH */
+    "analyzer_type", aud::numeric_string<ANALYZER_BARS>::str,
+    "peaks_falloff", aud::numeric_string<FALLOFF_SLOW>::str,
+    "scope_mode", aud::numeric_string<SCOPE_DOT>::str,
+    "vis_type", aud::numeric_string<VIS_ANALYZER>::str,
+    "voiceprint_mode", aud::numeric_string<VOICEPRINT_NORMAL>::str,
+    "vu_mode", aud::numeric_string<VU_SMOOTH>::str,
 
     /* windows */
     "always_on_top", "FALSE",

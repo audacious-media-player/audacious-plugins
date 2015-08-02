@@ -70,7 +70,7 @@ void action_play_file ()
 void action_play_folder ()
     { audqt::fileopener_show (audqt::FileMode::OpenFolder); }
 void action_play_location ()
-    { /* TODO */ }
+    { audqt::urlopener_show (true); }
 
 void action_playlist_manager ()
 {
@@ -210,7 +210,7 @@ void action_playlist_paste ()
 }
 
 void action_playlist_add_url ()
-    { /* TODO */ }
+    { audqt::urlopener_show (false); }
 void action_playlist_add_files ()
     { audqt::fileopener_show (audqt::FileMode::Add ); }
 void action_playlist_add_folder ()

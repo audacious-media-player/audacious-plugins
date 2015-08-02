@@ -37,11 +37,26 @@ struct format_info {
 struct FileWriterImpl
 {
     void (* init) ();
-    void (* configure) ();
     bool (* open) (VFSFile & file, const format_info & info, const Tuple & tuple);
     void (* write) (VFSFile & file, const void * data, int length);
     void (* close) (VFSFile & file);
     int (* format_required) (int fmt);
 };
+
+extern FileWriterImpl wav_plugin;
+
+#ifdef FILEWRITER_MP3
+extern FileWriterImpl mp3_plugin;
+void * mp3_configure ();
+#endif
+
+#ifdef FILEWRITER_VORBIS
+extern FileWriterImpl vorbis_plugin;
+void * vorbis_configure ();
+#endif
+
+#ifdef FILEWRITER_FLAC
+extern FileWriterImpl flac_plugin;
+#endif
 
 #endif

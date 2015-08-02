@@ -44,7 +44,7 @@ static const PreferencesWidget bscope_widgets[] = {
 static const PluginPreferences bscope_prefs = {{bscope_widgets}};
 
 static const char * const bscope_defaults[] = {
- "color", "16727935", /* 0xFF3F7F */
+ "color", aud::numeric_string<0xFF3F7F>::str,
  nullptr};
 
 static int bscope_color;

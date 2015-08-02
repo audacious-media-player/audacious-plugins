@@ -73,7 +73,7 @@ static void si_menu_show (int x, int y, unsigned button, uint32_t time, void *);
 static void si_popup_hide (void * icon);
 
 const char * const StatusIcon::defaults[] = {
-    "scroll_action", "0", /* SI_CFG_SCROLL_ACTION_VOLUME */
+    "scroll_action", aud::numeric_string<SI_CFG_SCROLL_ACTION_VOLUME>::str,
     "volume_delta", "5",
     "disable_popup", "FALSE",
     "close_to_tray", "FALSE",
