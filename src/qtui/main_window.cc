@@ -76,8 +76,6 @@ MainWindow::MainWindow () :
     QStringList paths = QIcon::themeSearchPaths ();
     paths.prepend (aud_get_path (AudPath::DataDir));
     QIcon::setThemeSearchPaths (paths);
-#else
-    QApplication::setWindowIcon (QIcon::fromTheme ("audacious"));
 #endif
 
     auto slider = new TimeSlider (this);
