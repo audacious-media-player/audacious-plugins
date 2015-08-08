@@ -50,4 +50,4 @@ private:
      hide_hook {"ui hide progress", this, & DialogWindows::hide_progress};
 };
 
-#endif // DIALOG_WINDOWS_H
+#endif

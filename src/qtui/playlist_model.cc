@@ -36,16 +36,14 @@ static inline QPixmap get_icon (const char * name)
     return pm;
 }
 
-PlaylistModel::PlaylistModel (QObject * parent, int id) : QAbstractListModel (parent),
+PlaylistModel::PlaylistModel (QObject * parent, int id) :
+    QAbstractListModel (parent),
     m_uniqueId (id)
 {
     m_rows = aud_playlist_entry_count (playlist ());
 }
 
-PlaylistModel::~PlaylistModel ()
-{
-
-}
+PlaylistModel::~PlaylistModel () {}
 
 int PlaylistModel::rowCount (const QModelIndex & parent) const
 {
@@ -187,7 +185,7 @@ QString PlaylistModel::getQueued (int row) const
 {
     int at = aud_playlist_queue_find_entry (playlist (), row);
     if (at < 0)
-        return QString ("");
+        return QString ();
     else
         return QString ("#%1").arg (at + 1);
 }

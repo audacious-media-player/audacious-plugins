@@ -17,8 +17,8 @@
  * the use of this software.
  */
 
-#ifndef FILTER_INPUT_WIDGET_H
-#define FILTER_INPUT_WIDGET_H
+#ifndef FILTER_INPUT_H
+#define FILTER_INPUT_H
 
 #include <QLineEdit>
 

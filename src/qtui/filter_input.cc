@@ -46,7 +46,7 @@ FilterInput::FilterInput (QWidget * parent) : QLineEdit (parent)
 
 void FilterInput::keyPressEvent (QKeyEvent * e)
 {
-    if (e->key () == Qt::Key_Enter or e->key () == Qt::Key_Return)
+    if (e->key () == Qt::Key_Enter || e->key () == Qt::Key_Return)
     {
         e->ignore ();
         focusNextChild ();

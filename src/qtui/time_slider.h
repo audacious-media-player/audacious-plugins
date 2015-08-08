@@ -58,4 +58,4 @@ private:
      hook4 {"playback stop", this, & TimeSlider::start_stop};
 };
 
-#endif // TIME_SLIDER_H
+#endif

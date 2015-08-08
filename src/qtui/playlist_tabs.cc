@@ -43,7 +43,7 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
     updateTitles ();
     setCurrentIndex (aud_playlist_get_active ());
 
-    connect (this, &QTabWidget::currentChanged, this, &PlaylistTabs::currentChangedTrigger);
+    connect (this, & QTabWidget::currentChanged, this, & PlaylistTabs::currentChangedTrigger);
 }
 
 void PlaylistTabs::addRemovePlaylists ()
@@ -105,7 +105,7 @@ void PlaylistTabs::updateTitles ()
         setTabText (i, (const char *) aud_playlist_get_title (i));
 }
 
-void PlaylistTabs::filterTrigger (const QString &text)
+void PlaylistTabs::filterTrigger (const QString & text)
 {
     ((PlaylistWidget *) currentWidget ())->setFilter (text);
 }
@@ -169,9 +169,9 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
 {
     if (e->type() == QEvent::KeyPress)
     {
-        QKeyEvent *ke = (QKeyEvent *) e;
+        QKeyEvent * ke = (QKeyEvent *) e;
 
-        if (ke->key() == Qt::Key_Escape)
+        if (ke->key () == Qt::Key_Escape)
         {
             cancelRename ();
             return true;
@@ -237,7 +237,7 @@ PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)
     setDocumentMode (true);
     setTabsClosable (true);
 
-    connect (this, &QTabBar::tabCloseRequested, this, &PlaylistTabBar::handleCloseRequest);
+    connect (this, & QTabBar::tabCloseRequested, this, & PlaylistTabBar::handleCloseRequest);
 }
 
 void PlaylistTabBar::mousePressEvent (QMouseEvent * e)
@@ -264,8 +264,8 @@ void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent * e)
 
 void PlaylistTabBar::handleCloseRequest (int idx)
 {
-    PlaylistTabs *p = (PlaylistTabs *) parent ();
-    PlaylistWidget *pl = (PlaylistWidget *) p->widget (idx);
+    PlaylistTabs * p = (PlaylistTabs *) parent ();
+    PlaylistWidget * pl = (PlaylistWidget *) p->widget (idx);
 
     if (! pl)
         return;
