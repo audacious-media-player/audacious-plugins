@@ -47,6 +47,7 @@ public:
     {
         setObjectName (aud_plugin_get_basename (plugin));
         setWindowTitle (aud_plugin_get_name (plugin));
+        setContextMenuPolicy (Qt::PreventContextMenu);
     }
 
     PluginHandle * plugin () const { return m_plugin; }
