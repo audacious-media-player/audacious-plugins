@@ -149,7 +149,13 @@ MainWindow::~MainWindow ()
 
 void MainWindow::closeEvent (QCloseEvent * e)
 {
-    aud_quit ();
+    bool handled = false;
+
+    hook_call ("window close", & handled);
+
+    if (! handled)
+        aud_quit ();
+
     e->ignore ();
 }
 
