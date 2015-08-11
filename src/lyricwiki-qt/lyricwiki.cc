@@ -21,6 +21,9 @@
 #include <glib.h>
 #include <string.h>
 
+#include <QContextMenuEvent>
+#include <QDesktopServices>
+#include <QMenu>
 #include <QTextCursor>
 #include <QTextDocument>
 #include <QTextEdit>
@@ -49,6 +52,14 @@ typedef struct {
 } LyricsState;
 
 static LyricsState state;
+
+class TextEdit : public QTextEdit {
+public:
+    TextEdit (QWidget * parent = 0) : QTextEdit (parent) {}
+
+protected:
+    void contextMenuEvent (QContextMenuEvent * event);
+};
 
 class LyricWikiQt : public GeneralPlugin {
 public:
@@ -340,7 +351,7 @@ static void lw_cleanup (QObject * object = nullptr)
 
 void * LyricWikiQt::get_qt_widget ()
 {
-    textedit = new QTextEdit;
+    textedit = new TextEdit;
     textedit->setReadOnly (true);
 
     hook_associate ("tuple change", (HookFunction) lyricwiki_playback_began, nullptr);
@@ -352,4 +363,17 @@ void * LyricWikiQt::get_qt_widget ()
     QObject::connect (textedit, &QObject::destroyed, lw_cleanup);
 
     return textedit;
+}
+
+void TextEdit::contextMenuEvent (QContextMenuEvent * event)
+{
+    if (! state.uri)
+        return QTextEdit::contextMenuEvent (event);
+
+    QMenu * menu = createStandardContextMenu ();
+    menu->addSeparator ();
+    QAction * edit = menu->addAction (N_("Edit lyrics ..."));
+    QObject::connect (edit, & QAction::triggered, [] () { QDesktopServices::openUrl ( QUrl((const char *)(state.uri)) ); });
+    menu->exec (event->globalPos ());
+    delete menu;
 }
