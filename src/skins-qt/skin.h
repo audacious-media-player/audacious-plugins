@@ -173,21 +173,6 @@ struct Skin {
 
     QImage pixmaps[SKIN_PIXMAP_COUNT];
     Index<QRect> masks[SKIN_MASK_COUNT];
-
-    Skin () = default;
-    Skin (Skin && b) = default;
-
-    /* GCC 5.1 generates the default move assignment incorrectly;
-     * see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66501 */
-    Skin & operator= (Skin && b)
-    {
-        if (this != & b)
-        {
-            this->~Skin ();
-            new (this) Skin (std::move (b));
-        }
-        return * this;
-    }
 };
 
 extern Skin skin;
