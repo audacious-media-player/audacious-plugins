@@ -281,8 +281,8 @@ static void get_lyrics_step_1(void)
     vfs_async_file_get_contents(state.uri, get_lyrics_step_2, nullptr);
 }
 
-static GtkWidget *scrollview, *vbox;
-static GtkWidget *textview, *edit_button;
+static GtkTextView *textview;
+static GtkWidget *edit_button;
 static GtkTextBuffer *textbuffer;
 
 static void launch_edit_page ()
@@ -293,30 +293,28 @@ static void launch_edit_page ()
 
 static GtkWidget *build_widget(void)
 {
-    textview = gtk_text_view_new();
-    gtk_text_view_set_editable(GTK_TEXT_VIEW(textview), false);
-    gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(textview), false);
-    gtk_text_view_set_left_margin(GTK_TEXT_VIEW(textview), 4);
-    gtk_text_view_set_right_margin(GTK_TEXT_VIEW(textview), 4);
-    gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(textview), GTK_WRAP_WORD);
-    textbuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview));
+    textview = (GtkTextView *) gtk_text_view_new();
+    gtk_text_view_set_editable(textview, false);
+    gtk_text_view_set_cursor_visible(textview, false);
+    gtk_text_view_set_left_margin(textview, 4);
+    gtk_text_view_set_right_margin(textview, 4);
+    gtk_text_view_set_wrap_mode(textview, GTK_WRAP_WORD);
+    textbuffer = gtk_text_view_get_buffer(textview);
 
-    scrollview = gtk_scrolled_window_new(nullptr, nullptr);
+    GtkWidget *scrollview = gtk_scrolled_window_new(nullptr, nullptr);
     gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrollview), GTK_SHADOW_IN);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollview), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-    vbox = gtk_vbox_new (false, 6);
+    GtkWidget *vbox = gtk_vbox_new (false, 6);
 
-    gtk_container_add(GTK_CONTAINER(scrollview), textview);
+    gtk_container_add(GTK_CONTAINER(scrollview), GTK_WIDGET(textview));
 
     gtk_box_pack_start(GTK_BOX(vbox), scrollview, true, true, 0);
 
-    gtk_widget_show(textview);
-    gtk_widget_show(scrollview);
-    gtk_widget_show(vbox);
+    gtk_widget_show_all(vbox);
 
-    gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "weight_bold", "weight", PANGO_WEIGHT_BOLD, nullptr);
-    gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "size_x_large", "scale", PANGO_SCALE_X_LARGE, nullptr);
-    gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "style_italic", "style", PANGO_STYLE_ITALIC, nullptr);
+    gtk_text_buffer_create_tag(textbuffer, "weight_bold", "weight", PANGO_WEIGHT_BOLD, nullptr);
+    gtk_text_buffer_create_tag(textbuffer, "size_x_large", "scale", PANGO_SCALE_X_LARGE, nullptr);
+    gtk_text_buffer_create_tag(textbuffer, "style_italic", "style", PANGO_STYLE_ITALIC, nullptr);
 
     GtkWidget * hbox = gtk_hbox_new (false, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, false, false, 0);
@@ -338,25 +336,25 @@ static void update_lyrics_window(const char *title, const char *artist,
     if (textbuffer == nullptr)
         return;
 
-    gtk_text_buffer_set_text(GTK_TEXT_BUFFER(textbuffer), "", -1);
+    gtk_text_buffer_set_text(textbuffer, "", -1);
 
-    gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
+    gtk_text_buffer_get_start_iter(textbuffer, &iter);
 
-    gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer), &iter,
-            title, -1, "weight_bold", "size_x_large", nullptr);
+    gtk_text_buffer_insert_with_tags_by_name(textbuffer, &iter, title, -1,
+     "weight_bold", "size_x_large", nullptr);
 
     if (artist != nullptr)
     {
-        gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n", -1);
-        gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer),
-                &iter, artist, -1, "style_italic", nullptr);
+        gtk_text_buffer_insert(textbuffer, &iter, "\n", -1);
+        gtk_text_buffer_insert_with_tags_by_name(textbuffer, &iter, artist, -1,
+         "style_italic", nullptr);
     }
 
-    gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n\n", -1);
-    gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, lyrics, -1);
+    gtk_text_buffer_insert(textbuffer, &iter, "\n\n", -1);
+    gtk_text_buffer_insert(textbuffer, &iter, lyrics, -1);
 
-    gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
-    gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(textview), &iter, 0, true, 0, 0);
+    gtk_text_buffer_get_start_iter(textbuffer, &iter);
+    gtk_text_view_scroll_to_iter(textview, &iter, 0, true, 0, 0);
 
     gtk_widget_set_sensitive (edit_button, edit_enabled);
 }
@@ -386,14 +384,14 @@ static void destroy_cb ()
     hook_dissociate ("tuple change", (HookFunction) lyricwiki_playback_began);
     hook_dissociate ("playback ready", (HookFunction) lyricwiki_playback_began);
 
-    scrollview = vbox = nullptr;
-    textview = edit_button = nullptr;
+    textview = nullptr;
+    edit_button = nullptr;
     textbuffer = nullptr;
 }
 
 void * LyricWiki::get_gtk_widget ()
 {
-    build_widget ();
+    GtkWidget * vbox = build_widget ();
 
     hook_associate ("tuple change", (HookFunction) lyricwiki_playback_began, nullptr);
     hook_associate ("playback ready", (HookFunction) lyricwiki_playback_began, nullptr);
