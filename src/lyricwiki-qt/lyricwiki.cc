@@ -372,7 +372,7 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
 
     QMenu * menu = createStandardContextMenu ();
     menu->addSeparator ();
-    QAction * edit = menu->addAction (audqt::translate_str (N_("Edit lyrics ...")));
+    QAction * edit = menu->addAction (_("Edit lyrics ..."));
     QObject::connect (edit, & QAction::triggered, [] () { QDesktopServices::openUrl ( QUrl((const char *)(state.uri)) ); });
     menu->exec (event->globalPos ());
     delete menu;
