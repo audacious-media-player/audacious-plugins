@@ -49,13 +49,14 @@ public:
     constexpr StatusIcon () : GeneralPlugin (info, false) {}
 
     bool init ();
-    void * get_qt_widget ();
     void cleanup ();
 
     static void window_closed (void * data, void * user_data);
     static void activate (QSystemTrayIcon::ActivationReason);
     static void open_files ();
 };
+
+EXPORT StatusIcon aud_plugin_instance;
 
 const char StatusIcon::about[] =
  N_("Status Icon Plugin (partial port for Qt interface)\n\n"
@@ -89,17 +90,15 @@ const audqt::MenuItem StatusIcon::items[] =
     // Quit command is added automatically
 };
 
-bool StatusIcon::init ()
-{
-    aud_config_set_defaults ("statusicon-qt", defaults);
-    return true;
-}
-
 static QSystemTrayIcon * tray = nullptr;
 static QMenu * menu = nullptr;
 
-void * StatusIcon::get_qt_widget ()
+bool StatusIcon::init ()
 {
+    aud_config_set_defaults ("statusicon-qt", defaults);
+
+    audqt::init ();
+
     tray = new QSystemTrayIcon ( QIcon( aud_get_path (AudPath::IconFile)));
     QObject::connect (tray, & QSystemTrayIcon::activated, activate);
     menu = audqt::menu_build (items);
@@ -108,22 +107,25 @@ void * StatusIcon::get_qt_widget ()
 
     hook_associate ("window close", window_closed, nullptr);
 
-    // returning nullptr on purpose
-    // because tray icon must not be reparented by Audacious
-    return nullptr;
+    return true;
 }
 
 void StatusIcon::cleanup ()
 {
     hook_dissociate ("window close", window_closed);
 
-    if (! aud_ui_is_shown ())
+    /* Prevent accidentally hiding the interface by disabling
+     * the plugin while Audacious is closed to the tray. */
+    PluginHandle * p = aud_plugin_by_header (& aud_plugin_instance);
+    if (! aud_plugin_get_enabled (p) && ! aud_get_headless_mode () && ! aud_ui_is_shown ())
         aud_ui_show (true);
 
     delete tray;
     tray = nullptr;
     delete menu;
     menu = nullptr;
+
+    audqt::cleanup ();
 }
 
 void StatusIcon::window_closed (void * data, void * user_data)
@@ -154,5 +156,3 @@ void StatusIcon::open_files ()
 {
     audqt::fileopener_show (audqt::FileMode::Open);
 }
-
-EXPORT StatusIcon aud_plugin_instance;
