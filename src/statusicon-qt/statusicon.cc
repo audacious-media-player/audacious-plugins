@@ -28,6 +28,7 @@
 
 #include <libaudqt/menu.h>
 
+#include <QApplication>
 #include <QMenu>
 #include <QSystemTrayIcon>
 
@@ -99,7 +100,7 @@ bool StatusIcon::init ()
 
     audqt::init ();
 
-    tray = new QSystemTrayIcon ( QIcon( aud_get_path (AudPath::IconFile)));
+    tray = new QSystemTrayIcon (qApp->windowIcon ());
     QObject::connect (tray, & QSystemTrayIcon::activated, activate);
     menu = audqt::menu_build (items);
     tray->setContextMenu (menu);
