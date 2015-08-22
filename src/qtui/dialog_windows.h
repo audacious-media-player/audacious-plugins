@@ -34,6 +34,7 @@ public:
 private:
     QWidget * m_parent;
     QMessageBox * m_progress = nullptr;
+    QMessageBox * m_error = nullptr;
 
     void create_progress ();
     void show_error (const char * message);
