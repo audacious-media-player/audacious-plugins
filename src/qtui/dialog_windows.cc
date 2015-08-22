@@ -28,8 +28,7 @@ void DialogWindows::create_progress ()
     {
         m_progress = new QMessageBox (m_parent);
         m_progress->setIcon (QMessageBox::Information);
-        m_progress->setText (_("Working ..."));
-        m_progress->setStandardButtons (QMessageBox::NoButton);
+        m_progress->setWindowTitle (_("Working ..."));
         m_progress->setWindowModality (Qt::WindowModal);
     }
 }
@@ -42,14 +41,14 @@ void DialogWindows::show_error (const char * message)
 void DialogWindows::show_progress (const char * message)
 {
     create_progress ();
-    m_progress->setInformativeText (message);
+    m_progress->setText (message);
     m_progress->show ();
 }
 
 void DialogWindows::show_progress_2 (const char * message)
 {
     create_progress ();
-    m_progress->setText (message);
+    m_progress->setInformativeText (message);
     m_progress->show ();
 }
 
