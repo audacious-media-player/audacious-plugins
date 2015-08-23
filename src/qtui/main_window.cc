@@ -47,6 +47,7 @@ public:
     {
         setObjectName (aud_plugin_get_basename (plugin));
         setWindowTitle (aud_plugin_get_name (plugin));
+        setContextMenuPolicy (Qt::PreventContextMenu);
     }
 
     PluginHandle * plugin () const { return m_plugin; }
@@ -76,8 +77,6 @@ MainWindow::MainWindow () :
     QStringList paths = QIcon::themeSearchPaths ();
     paths.prepend (aud_get_path (AudPath::DataDir));
     QIcon::setThemeSearchPaths (paths);
-#else
-    QApplication::setWindowIcon (QIcon::fromTheme ("audacious"));
 #endif
 
     auto slider = new TimeSlider (this);
@@ -119,7 +118,7 @@ MainWindow::MainWindow () :
     centralLayout->setContentsMargins (0, 0, 0, 0);
     centralLayout->setSpacing (4);
 
-    connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
+    connect (filterInput, & QLineEdit::textChanged, playlistTabs, & PlaylistTabs::filterTrigger);
 
     setupActions ();
     add_dock_plugins ();
@@ -142,23 +141,29 @@ MainWindow::MainWindow () :
 MainWindow::~MainWindow ()
 {
     QSettings settings ("audacious", "QtUi");
-    settings.setValue ("geometry", saveGeometry());
-    settings.setValue ("windowState", saveState());
+    settings.setValue ("geometry", saveGeometry ());
+    settings.setValue ("windowState", saveState ());
 
     remove_dock_plugins ();
 }
 
 void MainWindow::closeEvent (QCloseEvent * e)
 {
-    aud_quit ();
+    bool handled = false;
+
+    hook_call ("window close", & handled);
+
+    if (! handled)
+        aud_quit ();
+
     e->ignore ();
 }
 
 void MainWindow::readSettings ()
 {
     QSettings settings ("audacious", "QtUi");
-    restoreGeometry (settings.value ("geometry").toByteArray());
-    restoreState (settings.value ("windowState").toByteArray());
+    restoreGeometry (settings.value ("geometry").toByteArray ());
+    restoreState (settings.value ("windowState").toByteArray ());
 }
 
 void MainWindow::keyPressEvent (QKeyEvent * e)
@@ -210,7 +215,7 @@ void MainWindow::title_change_cb ()
 {
     auto title = aud_drct_get_title ();
     if (title)
-        setWindowTitle (QString (title));
+        setWindowTitle (QString (title) + QString (" - Audacious"));
 }
 
 void MainWindow::playback_begin_cb ()
@@ -246,7 +251,7 @@ void MainWindow::pause_cb ()
 
 void MainWindow::playback_stop_cb ()
 {
-    setWindowTitle ("");
+    setWindowTitle ("Audacious");
     update_play_pause ();
 
     int last_list = aud_playlist_by_unique_id (playing_id);

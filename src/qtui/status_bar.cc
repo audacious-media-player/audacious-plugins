@@ -76,7 +76,7 @@ void StatusBar::update_codec ()
 
     if (samplerate > 0)
     {
-        buf.combine (str_printf ("%d kHz", samplerate / 1000));
+        buf.combine (str_printf (_("%d kHz"), samplerate / 1000));
         if (bitrate > 0)
             buf.insert (-1, ", ");
     }

@@ -34,7 +34,6 @@ public:
 private:
     QWidget * m_parent;
     QMessageBox * m_progress = nullptr;
-    QMessageBox * m_error = nullptr;
 
     void create_progress ();
     void show_error (const char * message);
@@ -50,4 +49,4 @@ private:
      hide_hook {"ui hide progress", this, & DialogWindows::hide_progress};
 };
 
-#endif // DIALOG_WINDOWS_H
+#endif

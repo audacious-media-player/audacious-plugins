@@ -30,8 +30,11 @@ ToolBar::ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items)
 {
     setContextMenuPolicy (Qt::PreventContextMenu);
     setMovable (false);
-    setIconSize (QSize (22, 22));
     setObjectName ("MainToolBar");
+
+#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
+    setIconSize (QSize (22, 22));
+#endif
 
     for (const ToolBarItem & item : items)
     {
@@ -48,12 +51,12 @@ ToolBar::ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items)
                 a->setToolTip (audqt::translate_str (item.tooltip_text));
 
             if (item.callback)
-                connect (a, &QAction::triggered, item.callback);
+                connect (a, & QAction::triggered, item.callback);
 
             if (item.toggled)
             {
                 a->setCheckable (true);
-                connect (a, &QAction::toggled, item.toggled);
+                connect (a, & QAction::toggled, item.toggled);
             }
 
             addAction (a);

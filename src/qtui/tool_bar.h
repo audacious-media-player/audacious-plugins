@@ -24,8 +24,7 @@
 
 #include <libaudcore/objects.h>
 
-struct ToolBarItem
-{
+struct ToolBarItem {
     const char * icon_name;
     const char * name;
     const char * tooltip_text;
@@ -46,12 +45,12 @@ public:
     ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items);
 };
 
-constexpr ToolBarItem ToolBarAction (const char * icon_name, const char * name, const char * tooltip_text,
-                                     void (* callback) (), QAction * * action_ptr = nullptr)
+constexpr ToolBarItem ToolBarAction (const char * icon_name, const char * name,
+ const char * tooltip_text, void (* callback) (), QAction * * action_ptr = nullptr)
     { return { icon_name, name, tooltip_text, callback, nullptr, nullptr, false, action_ptr }; }
 
-constexpr ToolBarItem ToolBarAction (const char * icon_name, const char * name, const char * tooltip_text,
-                                     void (* toggled) (bool), QAction * * action_ptr = nullptr)
+constexpr ToolBarItem ToolBarAction (const char * icon_name, const char * name,
+ const char * tooltip_text, void (* toggled) (bool), QAction * * action_ptr = nullptr)
     { return { icon_name, name, tooltip_text, nullptr, toggled, nullptr, false, action_ptr }; }
 
 constexpr ToolBarItem ToolBarCustom (QWidget * item)

@@ -186,7 +186,7 @@ void MainWindow::setupActions ()
         audqt::MenuCommand ({N_("Volume _Up"), "audio-volume-high", "Ctrl++"}, volume_up),
         audqt::MenuCommand ({N_("Volume _Down"), "audio-volume-low", "Ctrl+-"}, volume_down),
         audqt::MenuSep (),
-        audqt::MenuCommand ({N_("_Equalizer"), "multimedia-volume-control", "Ctrl+E"}, audqt::equalizer_show),
+        audqt::MenuCommand ({N_("_Equalizer ..."), "multimedia-volume-control", "Ctrl+E"}, audqt::equalizer_show),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("E_ffects ...")}, configure_effects)
     };

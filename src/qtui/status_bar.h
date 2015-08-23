@@ -46,4 +46,4 @@ private:
      hook6 {"tuple change", this, & StatusBar::update_codec};
 };
 
-#endif // STATUS_BAR_H
+#endif

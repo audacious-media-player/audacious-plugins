@@ -41,16 +41,16 @@ public:
         { return (PlaylistWidget *) widget (num); }
 
     void editTab (int idx);
-    void filterTrigger (const QString &text);
+    void filterTrigger (const QString & text);
     void currentChangedTrigger (int idx);
     void tabEditedTrigger ();
 
 protected:
-    bool eventFilter (QObject * obj, QEvent *e);
+    bool eventFilter (QObject * obj, QEvent * e);
 
 private:
-    QWidget *m_leftbtn;
-    PlaylistTabBar *m_tabbar;
+    QWidget * m_leftbtn;
+    PlaylistTabBar * m_tabbar;
 
     QLineEdit * getTabEdit (int idx);
     void setupTab (int idx, QWidget * button, const QString & text, QWidget * * oldp);

@@ -21,6 +21,9 @@
 #include <glib.h>
 #include <string.h>
 
+#include <QContextMenuEvent>
+#include <QDesktopServices>
+#include <QMenu>
 #include <QTextCursor>
 #include <QTextDocument>
 #include <QTextEdit>
@@ -50,14 +53,24 @@ typedef struct {
 
 static LyricsState state;
 
-class LyricWikiQt : public GeneralPlugin {
+class TextEdit : public QTextEdit
+{
+public:
+    TextEdit (QWidget * parent = nullptr) : QTextEdit (parent) {}
+
+protected:
+    void contextMenuEvent (QContextMenuEvent * event);
+};
+
+class LyricWikiQt : public GeneralPlugin
+{
 public:
     static constexpr PluginInfo info = {
         N_("LyricWiki Plugin"),
         PACKAGE
     };
 
-    constexpr LyricWikiQt() : GeneralPlugin (info, false) {}
+    constexpr LyricWikiQt () : GeneralPlugin (info, false) {}
     void * get_qt_widget ();
 };
 
@@ -67,15 +80,15 @@ EXPORT LyricWikiQt aud_plugin_instance;
  * Suppress libxml warnings, because lyricwiki does not generate anything near
  * valid HTML.
  */
-static void libxml_error_handler(void *ctx, const char *msg, ...)
+static void libxml_error_handler (void * ctx, const char * msg, ...)
 {
 }
 
 /* g_free() returned text */
-static char *scrape_lyrics_from_lyricwiki_edit_page(const char *buf, int64_t len)
+static char * scrape_lyrics_from_lyricwiki_edit_page (const char * buf, int64_t len)
 {
     xmlDocPtr doc;
-    char *ret = nullptr;
+    char * ret = nullptr;
 
     /*
      * temporarily set our error-handling functor to our suppression function,
@@ -86,70 +99,70 @@ static char *scrape_lyrics_from_lyricwiki_edit_page(const char *buf, int64_t len
      * the previous error functor, so we just have to set it back to default after
      * parsing and hope for the best.
      */
-    xmlSetGenericErrorFunc(nullptr, libxml_error_handler);
-    doc = htmlReadMemory(buf, (int) len, nullptr, "utf-8", (HTML_PARSE_RECOVER | HTML_PARSE_NONET));
-    xmlSetGenericErrorFunc(nullptr, nullptr);
+    xmlSetGenericErrorFunc (nullptr, libxml_error_handler);
+    doc = htmlReadMemory (buf, (int) len, nullptr, "utf-8", (HTML_PARSE_RECOVER | HTML_PARSE_NONET));
+    xmlSetGenericErrorFunc (nullptr, nullptr);
 
-    if (doc != nullptr)
+    if (doc)
     {
         xmlXPathContextPtr xpath_ctx = nullptr;
         xmlXPathObjectPtr xpath_obj = nullptr;
         xmlNodePtr node = nullptr;
 
-        xpath_ctx = xmlXPathNewContext(doc);
-        if (xpath_ctx == nullptr)
+        xpath_ctx = xmlXPathNewContext (doc);
+        if (! xpath_ctx)
             goto give_up;
 
-        xpath_obj = xmlXPathEvalExpression((xmlChar *) "//*[@id=\"wpTextbox1\"]", xpath_ctx);
-        if (xpath_obj == nullptr)
+        xpath_obj = xmlXPathEvalExpression ((xmlChar *) "//*[@id=\"wpTextbox1\"]", xpath_ctx);
+        if (! xpath_obj)
             goto give_up;
 
-        if (!xpath_obj->nodesetval->nodeMax)
+        if (! xpath_obj->nodesetval->nodeMax)
             goto give_up;
 
         node = xpath_obj->nodesetval->nodeTab[0];
 give_up:
-        if (xpath_obj != nullptr)
-            xmlXPathFreeObject(xpath_obj);
+        if (xpath_obj)
+            xmlXPathFreeObject (xpath_obj);
 
-        if (xpath_ctx != nullptr)
-            xmlXPathFreeContext(xpath_ctx);
+        if (xpath_ctx)
+            xmlXPathFreeContext (xpath_ctx);
 
-        if (node != nullptr)
+        if (node)
         {
-            xmlChar *lyric = xmlNodeGetContent(node);
+            xmlChar * lyric = xmlNodeGetContent (node);
 
-            if (lyric != nullptr)
+            if (lyric)
             {
-                GMatchInfo *match_info;
-                GRegex *reg;
+                GMatchInfo * match_info;
+                GRegex * reg;
 
                 reg = g_regex_new
                  ("<(lyrics?)>[[:space:]]*(.*?)[[:space:]]*</\\1>",
                  (GRegexCompileFlags) (G_REGEX_MULTILINE | G_REGEX_DOTALL),
                  (GRegexMatchFlags) 0, nullptr);
-                g_regex_match(reg, (char *) lyric, G_REGEX_MATCH_NEWLINE_ANY, &match_info);
+                g_regex_match (reg, (char *) lyric, G_REGEX_MATCH_NEWLINE_ANY, & match_info);
 
-                ret = g_match_info_fetch(match_info, 2);
-                if (!g_utf8_collate(ret, "<!-- PUT LYRICS HERE (and delete this entire line) -->"))
+                ret = g_match_info_fetch (match_info, 2);
+                if (! g_utf8_collate (ret, "<!-- PUT LYRICS HERE (and delete this entire line) -->"))
                 {
-                    g_free(ret);
-                    ret = g_strdup(_("No lyrics available"));
+                    g_free (ret);
+                    ret = g_strdup (_("No lyrics available"));
                 }
 
-                g_regex_unref(reg);
+                g_regex_unref (reg);
             }
 
-            xmlFree(lyric);
+            xmlFree (lyric);
         }
 
-        xmlFreeDoc(doc);
+        xmlFreeDoc (doc);
     }
 
     return ret;
 }
 
-static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t len)
+static String scrape_uri_from_lyricwiki_search_result (const char * buf, int64_t len)
 {
     xmlDocPtr doc;
     String uri;
@@ -158,13 +171,13 @@ static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t l
      * workaround buggy lyricwiki search output where it cuts the lyrics
      * halfway through the UTF-8 symbol resulting in invalid XML.
      */
-    GRegex *reg;
+    GRegex * reg;
 
     reg = g_regex_new ("<(lyrics?)>.*</\\1>", (GRegexCompileFlags)
      (G_REGEX_MULTILINE | G_REGEX_DOTALL | G_REGEX_UNGREEDY),
      (GRegexMatchFlags) 0, nullptr);
-    char *newbuf = g_regex_replace_literal(reg, buf, len, 0, "", G_REGEX_MATCH_NEWLINE_ANY, nullptr);
-    g_regex_unref(reg);
+    char * newbuf = g_regex_replace_literal (reg, buf, len, 0, "", G_REGEX_MATCH_NEWLINE_ANY, nullptr);
+    g_regex_unref (reg);
 
     /*
      * temporarily set our error-handling functor to our suppression function,
@@ -175,9 +188,9 @@ static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t l
      * the previous error functor, so we just have to set it back to default after
      * parsing and hope for the best.
      */
-    xmlSetGenericErrorFunc(nullptr, libxml_error_handler);
-    doc = xmlParseMemory(newbuf, strlen(newbuf));
-    xmlSetGenericErrorFunc(nullptr, nullptr);
+    xmlSetGenericErrorFunc (nullptr, libxml_error_handler);
+    doc = xmlParseMemory (newbuf, strlen (newbuf));
+    xmlSetGenericErrorFunc (nullptr, nullptr);
 
     if (doc != nullptr)
     {
@@ -189,71 +202,71 @@ static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t l
         {
             if (xmlStrEqual(cur->name, (xmlChar *) "url"))
             {
-                xmlChar *lyric;
-                char *basename;
+                xmlChar * lyric;
+                char * basename;
 
-                lyric = xmlNodeGetContent(cur);
-                basename = g_path_get_basename((char *) lyric);
+                lyric = xmlNodeGetContent (cur);
+                basename = g_path_get_basename ((char *) lyric);
 
                 uri = String (str_printf ("http://lyrics.wikia.com/index.php?"
                  "action=edit&title=%s", basename));
 
-                g_free(basename);
-                xmlFree(lyric);
+                g_free (basename);
+                xmlFree (lyric);
             }
         }
 
-        xmlFreeDoc(doc);
+        xmlFreeDoc (doc);
     }
 
-    g_free(newbuf);
+    g_free (newbuf);
 
     return uri;
 }
 
-static void update_lyrics_window(const char *title, const char *artist, const char *lyrics);
+static void update_lyrics_window (const char * title, const char * artist, const char * lyrics);
 
-static void get_lyrics_step_3(const char *uri, const Index<char> &buf, void*)
+static void get_lyrics_step_3 (const char * uri, const Index<char> & buf, void *)
 {
-    if (!state.uri || strcmp(state.uri, uri))
+    if (! state.uri || strcmp (state.uri, uri))
         return;
 
-    if (!buf.len())
+    if (! buf.len ())
     {
         update_lyrics_window (_("Error"), nullptr,
          str_printf (_("Unable to fetch %s"), uri));
         return;
     }
 
-    char *lyrics = scrape_lyrics_from_lyricwiki_edit_page(buf.begin(), buf.len());
+    char * lyrics = scrape_lyrics_from_lyricwiki_edit_page (buf.begin (), buf.len ());
 
-    if (!lyrics)
+    if (! lyrics)
     {
         update_lyrics_window (_("Error"), nullptr,
          str_printf (_("Unable to parse %s"), uri));
         return;
     }
 
-    update_lyrics_window(state.title, state.artist, lyrics);
+    update_lyrics_window (state.title, state.artist, lyrics);
 
-    g_free(lyrics);
+    g_free (lyrics);
 }
 
-static void get_lyrics_step_2(const char *uri1, const Index<char> &buf, void*)
+static void get_lyrics_step_2 (const char * uri1, const Index<char> & buf, void *)
 {
-    if (!state.uri || strcmp(state.uri, uri1))
+    if (! state.uri || strcmp (state.uri, uri1))
         return;
 
-    if (!buf.len())
+    if (! buf.len ())
     {
         update_lyrics_window (_("Error"), nullptr,
          str_printf (_("Unable to fetch %s"), uri1));
         return;
     }
 
-    String uri = scrape_uri_from_lyricwiki_search_result(buf.begin(), buf.len());
+    String uri = scrape_uri_from_lyricwiki_search_result (buf.begin (), buf.len ());
 
-    if (!uri)
+    if (! uri)
     {
         update_lyrics_window (_("Error"), nullptr,
          str_printf (_("Unable to parse %s"), uri1));
@@ -262,15 +275,15 @@ static void get_lyrics_step_2(const char *uri1, const Index<char> &buf, void*)
 
     state.uri = uri;
 
-    update_lyrics_window(state.title, state.artist, _("Looking for lyrics ..."));
-    vfs_async_file_get_contents(uri, get_lyrics_step_3, nullptr);
+    update_lyrics_window (state.title, state.artist, _("Looking for lyrics ..."));
+    vfs_async_file_get_contents (uri, get_lyrics_step_3, nullptr);
 }
 
-static void get_lyrics_step_1(void)
+static void get_lyrics_step_1 ()
 {
-    if(!state.artist || !state.title)
+    if (! state.artist || ! state.title)
     {
-        update_lyrics_window(_("Error"), nullptr, _("Missing song metadata"));
+        update_lyrics_window (_("Error"), nullptr, _("Missing song metadata"));
         return;
     }
 
@@ -281,13 +294,13 @@ static void get_lyrics_step_1(void)
      "action=lyrics&artist=%s&song=%s&fmt=xml", (const char *) artist_buf,
      (const char *) title_buf));
 
-    update_lyrics_window(state.title, state.artist, _("Connecting to lyrics.wikia.com ..."));
-    vfs_async_file_get_contents(state.uri, get_lyrics_step_2, nullptr);
+    update_lyrics_window (state.title, state.artist, _("Connecting to lyrics.wikia.com ..."));
+    vfs_async_file_get_contents (state.uri, get_lyrics_step_2, nullptr);
 }
 
 static QTextEdit * textedit;
 
-static void update_lyrics_window(const char *title, const char *artist, const char *lyrics)
+static void update_lyrics_window (const char * title, const char * artist, const char * lyrics)
 {
     QTextDocument doc;
     QTextCursor cursor (& doc);
@@ -297,7 +310,7 @@ static void update_lyrics_window(const char *title, const char *artist, const ch
 
     cursor.insertHtml (QString ("<big><b>") + QString (title) + QString ("</b></big>"));
 
-    if (artist != nullptr)
+    if (artist)
     {
         cursor.insertHtml (QString ("<br><i>") + QString (artist) + QString ("</i>"));
     }
@@ -305,24 +318,22 @@ static void update_lyrics_window(const char *title, const char *artist, const ch
     cursor.insertHtml ("<br><br>");
     cursor.insertText (lyrics);
 
-    AUDDBG ("update document <%p>\n", textedit);
-
     textedit->setDocument (doc.clone ());
 }
 
-static void lyricwiki_playback_began(void)
+static void lyricwiki_playback_began ()
 {
     /* FIXME: cancel previous VFS requests (not possible with current API) */
 
-    state.filename = aud_drct_get_filename();
+    state.filename = aud_drct_get_filename ();
 
-    Tuple tuple = aud_drct_get_tuple();
-    state.title = tuple.get_str(Tuple::Title);
-    state.artist = tuple.get_str(Tuple::Artist);
+    Tuple tuple = aud_drct_get_tuple ();
+    state.title = tuple.get_str (Tuple::Title);
+    state.artist = tuple.get_str (Tuple::Artist);
 
     state.uri = String ();
 
-    get_lyrics_step_1();
+    get_lyrics_step_1 ();
 }
 
 static void lw_cleanup (QObject * object = nullptr)
@@ -340,7 +351,7 @@ static void lw_cleanup (QObject * object = nullptr)
 
 void * LyricWikiQt::get_qt_widget ()
 {
-    textedit = new QTextEdit;
+    textedit = new TextEdit;
     textedit->setReadOnly (true);
 
     hook_associate ("tuple change", (HookFunction) lyricwiki_playback_began, nullptr);
@@ -349,7 +360,22 @@ void * LyricWikiQt::get_qt_widget ()
     if (aud_drct_get_ready ())
         lyricwiki_playback_began ();
 
-    QObject::connect (textedit, &QObject::destroyed, lw_cleanup);
+    QObject::connect (textedit, & QObject::destroyed, lw_cleanup);
 
     return textedit;
+}
+
+void TextEdit::contextMenuEvent (QContextMenuEvent * event)
+{
+    if (! state.uri)
+        return QTextEdit::contextMenuEvent (event);
+
+    QMenu * menu = createStandardContextMenu ();
+    menu->addSeparator ();
+    QAction * edit = menu->addAction (_("Edit lyrics ..."));
+    QObject::connect (edit, & QAction::triggered, [] () {
+        QDesktopServices::openUrl (QUrl ((const char *) state.uri));
+    });
+    menu->exec (event->globalPos ());
+    delete menu;
 }
