@@ -304,7 +304,7 @@ static GtkWidget * build_widget ()
     GtkWidget * scrollview = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrollview, GTK_SHADOW_IN);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrollview, GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-    GtkWidget * vbox = gtk_vbox_new (false, 6);
+    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
     gtk_container_add ((GtkContainer *) scrollview, (GtkWidget *) textview);
     gtk_box_pack_start ((GtkBox *) vbox, scrollview, true, true, 0);
