@@ -19,8 +19,8 @@
 
 #include "dialog_windows.h"
 
-#include <QMessageBox>
 #include <libaudcore/i18n.h>
+#include <libaudqt/libaudqt.h>
 
 void DialogWindows::create_progress ()
 {
@@ -35,15 +35,7 @@ void DialogWindows::create_progress ()
 
 void DialogWindows::show_error (const char * message)
 {
-    if (! m_error)
-    {
-        m_error = new QMessageBox (m_parent);
-        m_error->setIcon (QMessageBox::Warning);
-        m_error->setWindowModality (Qt::WindowModal);
-    }
-
-    m_error->setText (message);
-    m_error->show ();
+    audqt::simple_message (QMessageBox::Critical, _("Error"), message);
 }
 
 void DialogWindows::show_progress (const char * message)
