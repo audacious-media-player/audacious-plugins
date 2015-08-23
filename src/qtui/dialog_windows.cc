@@ -35,7 +35,7 @@ void DialogWindows::create_progress ()
 
 void DialogWindows::show_error (const char * message)
 {
-    audqt::simple_message (QMessageBox::Critical, _("Error"), message);
+    audqt::simple_message (_("Error"), message, QMessageBox::Critical);
 }
 
 void DialogWindows::show_progress (const char * message)
