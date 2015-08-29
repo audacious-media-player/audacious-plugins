@@ -53,7 +53,8 @@ private:
     PlaylistTabBar * m_tabbar;
 
     QLineEdit * getTabEdit (int idx);
-    void setupTab (int idx, QWidget * button, const QString & text, QWidget * * oldp);
+    void setTabTitle (int idx, const char * text);
+    void setupTab (int idx, QWidget * button, const char * text, QWidget * * oldp);
 
     void addRemovePlaylists ();
     void updateTitles ();
