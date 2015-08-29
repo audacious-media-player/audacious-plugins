@@ -44,12 +44,14 @@ PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (p
     setUniformRowHeights (true);
     setFrameShape (QFrame::NoFrame);
     setSelectionMode (ExtendedSelection);
+
+    /* TODO: set column width based on font size */
     setColumnWidth (PL_COL_NOW_PLAYING, 25);
     setColumnWidth (PL_COL_TITLE, 300);
     setColumnWidth (PL_COL_ARTIST, 150);
     setColumnWidth (PL_COL_ALBUM, 200);
-    resizeColumnToContents (PL_COL_QUEUED);
-    resizeColumnToContents (PL_COL_LENGTH);
+    setColumnWidth (PL_COL_QUEUED, 25);
+    setColumnWidth (PL_COL_LENGTH, 50);
 
     /* get initial selection and focus from core */
     Playlist::Update upd {};
