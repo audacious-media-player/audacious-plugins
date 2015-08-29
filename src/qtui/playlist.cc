@@ -216,6 +216,41 @@ void PlaylistWidget::updatePlaybackIndicator ()
         model->updateRows (currentPos, 1);
 }
 
+void PlaylistWidget::getSelectedRanges (const Playlist::Update & update,
+ QItemSelection & selected, QItemSelection & deselected)
+{
+    int list = playlist ();
+    int entries = aud_playlist_entry_count (list);
+
+    QItemSelection ranges[2];
+    QModelIndex first, last;
+    bool prev = false;
+
+    for (int row = update.before; row < entries - update.after; row ++)
+    {
+        auto idx = rowToIndex (row);
+        if (! idx.isValid ())
+            continue;
+
+        bool sel = aud_playlist_entry_get_selected (list, row);
+
+        if (sel != prev && first.isValid ())
+            ranges[prev].merge (QItemSelection (first, last), QItemSelectionModel::Select);
+
+        if (sel != prev || ! first.isValid ())
+            first = idx;
+
+        last = idx;
+        prev = sel;
+    }
+
+    if (first.isValid ())
+        ranges[prev].merge (QItemSelection (first, last), QItemSelectionModel::Select);
+
+    selected = std::move (ranges[true]);
+    deselected = std::move (ranges[false]);
+}
+
 void PlaylistWidget::update (const Playlist::Update & update)
 {
     inUpdate = true;
@@ -263,15 +298,15 @@ void PlaylistWidget::update (const Playlist::Update & update)
         needIndicatorUpdate = false;
     }
 
+    QItemSelection selected, deselected;
+    getSelectedRanges (update, selected, deselected);
+
     auto sel = selectionModel ();
 
-    for (int row = update.before; row < entries - update.after; row ++)
-    {
-        if (aud_playlist_entry_get_selected (list, row))
-            sel->select (rowToIndex (row), sel->Select | sel->Rows);
-        else
-            sel->select (rowToIndex (row), sel->Deselect | sel->Rows);
-    }
+    if (! selected.isEmpty ())
+        sel->select (selected, sel->Select | sel->Rows);
+    if (! deselected.isEmpty ())
+        sel->select (deselected, sel->Deselect | sel->Rows);
 
     auto current = rowToIndex (aud_playlist_get_focus (list));
     sel->setCurrentIndex (current, sel->NoUpdate);

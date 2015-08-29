@@ -54,6 +54,9 @@ private:
     QModelIndex rowToIndex (int row);
     int indexToRow (const QModelIndex & index);
 
+    void getSelectedRanges (const Playlist::Update & update,
+     QItemSelection & selected, QItemSelection & deselected);
+
     void keyPressEvent (QKeyEvent * event);
     void mousePressEvent (QMouseEvent * event);
     void mouseDoubleClickEvent (QMouseEvent * event);
