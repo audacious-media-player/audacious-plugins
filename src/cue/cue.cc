@@ -57,7 +57,7 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
     if (tracks < 1)
         return false;
 
-    Track * cur = tracks > 0 ? cd_get_track (cd, 1) : nullptr;
+    Track * cur = cd_get_track (cd, 1);
     const char * cur_name = cur ? track_get_filename (cur) : nullptr;
 
     if (! cur_name)
