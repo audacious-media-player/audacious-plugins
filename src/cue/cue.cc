@@ -1,6 +1,6 @@
 /*
  * Cue Sheet Plugin for Audacious
- * Copyright (c) 2009-2011 William Pitcock and John Lindgren
+ * Copyright (c) 2009-2015 William Pitcock and John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#include <stdlib.h>
 #include <string.h>
 
 extern "C" {
@@ -35,7 +34,6 @@ class CueLoader : public PlaylistPlugin
 {
 public:
     static constexpr PluginInfo info = {N_("Cue Sheet Plugin"), PACKAGE};
-
     constexpr CueLoader () : PlaylistPlugin (info, cue_exts, false) {}
 
     bool load (const char * filename, VFSFile & file, String & title,
@@ -44,31 +42,6 @@ public:
 
 EXPORT CueLoader aud_plugin_instance;
 
-static const struct {
-    Tuple::Field field;
-    int pti;
-} pti_map[] = {
-    { Tuple::Artist, PTI_PERFORMER },
-    { Tuple::Title, PTI_TITLE },
-};
-
-static void
-tuple_attach_cdtext(Tuple &tuple, Track *track, Tuple::Field field, int pti)
-{
-    Cdtext *cdtext;
-    const char *text;
-
-    cdtext = track_get_cdtext(track);
-    if (cdtext == nullptr)
-        return;
-
-    text = cdtext_get(pti, cdtext);
-    if (text == nullptr)
-        return;
-
-    tuple.set_str (field, text);
-}
-
 bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
  Index<PlaylistAddItem> & items)
 {
@@ -76,79 +49,80 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
     if (! buffer.len ())
         return false;
 
-    buffer.append (0);  /* null-terminated */
+    buffer.append (0);  /* null-terminate */
 
     Cd * cd = cue_parse_string (buffer.begin ());
-    if (cd == nullptr)
+    int tracks = cd ? cd_get_ntrack (cd) : 0;
+
+    if (tracks < 1)
         return false;
 
-    int tracks = cd_get_ntrack (cd);
-    if (tracks == 0)
+    Track * cur = tracks > 0 ? cd_get_track (cd, 1) : nullptr;
+    const char * cur_name = cur ? track_get_filename (cur) : nullptr;
+
+    if (! cur_name)
         return false;
 
-    Track * current = cd_get_track (cd, 1);
-    if (current == nullptr)
-        return false;
-
-    char * track_filename = track_get_filename (current);
-    if (track_filename == nullptr)
-        return false;
-
-    String filename = String (uri_construct (track_filename, cue_filename));
-
+    bool new_file = true;
+    String filename;
+    PluginHandle * decoder = nullptr;
     Tuple base_tuple;
-    bool base_tuple_scanned = false;
 
     for (int track = 1; track <= tracks; track ++)
     {
-        if (current == nullptr || ! filename)
-            return false;
-
-        if (! base_tuple_scanned)
+        if (new_file)
         {
-            base_tuple_scanned = true;
-            PluginHandle * decoder = aud_file_find_decoder (filename, false);
-            if (decoder != nullptr)
-                base_tuple = aud_file_read_tuple (filename, decoder);
+            filename = String (uri_construct (cur_name, cue_filename));
+            decoder = filename ? aud_file_find_decoder (filename, false) : nullptr;
+            base_tuple = decoder ? aud_file_read_tuple (filename, decoder) : Tuple ();
         }
 
         Track * next = (track + 1 <= tracks) ? cd_get_track (cd, track + 1) : nullptr;
-        String next_filename = (next != nullptr) ? String (uri_construct
-         (track_get_filename (next), cue_filename)) : String ();
-        bool last_track = (! next_filename || strcmp (next_filename, filename));
+        const char * next_name = next ? track_get_filename (next) : nullptr;
 
-        Tuple tuple = base_tuple.ref ();
-        tuple.set_filename (filename);
-        tuple.set_int (Tuple::Track, track);
+        new_file = (! next_name || strcmp (next_name, cur_name));
 
-        int begin = (int64_t) track_get_start (current) * 1000 / 75;
-        tuple.set_int (Tuple::StartTime, begin);
-
-        if (last_track)
+        if (base_tuple)
         {
-            if (base_tuple.get_value_type (Tuple::Length) == Tuple::Int)
-                tuple.set_int (Tuple::Length, base_tuple.get_int (Tuple::Length) - begin);
+            Tuple tuple = base_tuple.ref ();
+            tuple.set_filename (filename);
+            tuple.set_int (Tuple::Track, track);
+
+            int begin = (int64_t) track_get_start (cur) * 1000 / 75;
+            tuple.set_int (Tuple::StartTime, begin);
+
+            if (new_file)
+            {
+                int length = base_tuple.get_int (Tuple::Length);
+                if (length > 0)
+                    tuple.set_int (Tuple::Length, length - begin);
+            }
+            else
+            {
+                int length = (int64_t) track_get_length (cur) * 1000 / 75;
+                tuple.set_int (Tuple::Length, length);
+                tuple.set_int (Tuple::EndTime, begin + length);
+            }
+
+            Cdtext * cdtext = track_get_cdtext (cur);
+
+            if (cdtext)
+            {
+                const char * s;
+                if ((s = cdtext_get (PTI_PERFORMER, cdtext)))
+                    tuple.set_str (Tuple::Artist, s);
+                if ((s = cdtext_get (PTI_TITLE, cdtext)))
+                    tuple.set_str (Tuple::Title, s);
+            }
+
+            items.append (String (filename), std::move (tuple), decoder);
         }
-        else
-        {
-            int length = (int64_t) track_get_length (current) * 1000 / 75;
-            tuple.set_int (Tuple::Length, length);
-            tuple.set_int (Tuple::EndTime, begin + length);
-        }
 
-        for (auto & pti : pti_map)
-            tuple_attach_cdtext (tuple, current, pti.field, pti.pti);
+        if (! next_name)
+            break;
 
-        items.append (filename, std::move (tuple));
-
-        current = next;
-        filename = next_filename;
-
-        if (last_track)
-        {
-            base_tuple = Tuple ();
-            base_tuple_scanned = false;
-        }
+        cur = next;
+        cur_name = next_name;
     }
 
     return true;
