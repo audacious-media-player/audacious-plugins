@@ -1,6 +1,6 @@
 /*
- * search-tool.c
- * Copyright 2011-2012 John Lindgren
+ * search-tool-qt.cc
+ * Copyright 2011-2015 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
