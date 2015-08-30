@@ -79,7 +79,7 @@ if test "x$USE_GTK" = "xyes" ; then
 fi
 
 if test "x$USE_QT" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt song-info-qt statusicon-qt"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt search-tool-qt song-info-qt statusicon-qt"
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
 fi
 
@@ -1111,6 +1111,7 @@ echo "  MPRIS 2 Server:                         $have_mpris2"
 echo "  Playlist Manager:                       $USE_GTK"
 echo "  Playlist Manager (Qt):                  $USE_QT"
 echo "  Search Tool:                            $USE_GTK"
+echo "  Search Tool (Qt):                       $USE_QT"
 echo "  Song Change:                            $have_songchange"
 echo "  Song Info (Qt):                         $USE_QT"
 echo "  Status Icon:                            $USE_GTK"
