@@ -184,7 +184,7 @@ static void create_database (int list)
 
     for (int e = 0; e < entries; e ++)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (list, e, Playlist::Guess);
+        Tuple tuple = aud_playlist_entry_get_tuple (list, e, Playlist::Nothing);
 
         aud::array<SearchField, String> fields;
         fields[SearchField::Genre] = tuple.get_str (Tuple::Genre);
@@ -533,7 +533,7 @@ static void do_add (gboolean play, String & title)
         {
             add.append (
                 aud_playlist_entry_get_filename (list, entry),
-                aud_playlist_entry_get_tuple (list, entry, Playlist::Guess)
+                aud_playlist_entry_get_tuple (list, entry, Playlist::Nothing)
             );
         }
 
