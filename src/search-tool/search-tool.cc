@@ -103,7 +103,7 @@ static Index<const Item *> items;
 static int hidden_items;
 static Index<bool> selection;
 
-static gboolean adding;
+static bool adding;
 static int search_source;
 
 static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list, * stats_label;
@@ -129,7 +129,7 @@ static int create_playlist ()
     return list;
 }
 
-static int get_playlist (gboolean require_added, gboolean require_scanned)
+static int get_playlist (bool require_added, bool require_scanned)
 {
     if (playlist_id < 0)
         return -1;
@@ -511,7 +511,7 @@ static void search_cleanup ()
     destroy_database ();
 }
 
-static void do_add (gboolean play, String & title)
+static void do_add (bool play, String & title)
 {
     if (search_source)
         search_timeout ();
