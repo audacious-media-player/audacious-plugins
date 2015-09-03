@@ -184,6 +184,7 @@ InfoBar::InfoBar (QWidget * parent) :
 
 void InfoBar::resizeEvent (QResizeEvent *)
 {
+    m_title.setText (QString ());
     m_vis->move (width () - VisWidth, 0);
 }
 
@@ -205,22 +206,31 @@ void InfoBar::paintEvent (QPaintEvent *)
     font.setPointSize (18);
     p.setFont (font);
 
+    if (m_title.text ().isNull ())
+    {
+        QFontMetrics metrics = p.fontMetrics ();
+        m_title = metrics.elidedText (m_original_title, Qt::ElideRight,
+         width () - VisWidth - Height - Spacing);
+    }
+
     p.setPen (QColor (255, 255, 255));
-    p.drawStaticText (IconSize + 2 * Spacing, Spacing, m_title);
+    p.drawStaticText (Height, Spacing, m_title);
 
     font.setPointSize (9);
     p.setFont (font);
 
-    p.drawStaticText (IconSize + 2 * Spacing, Spacing + IconSize / 2, m_artist);
+    p.drawStaticText (Height, Spacing + IconSize / 2, m_artist);
 
     p.setPen (QColor (179, 179, 179));
-    p.drawStaticText (IconSize + 2 * Spacing, Spacing + IconSize * 3 / 4, m_album);
+    p.drawStaticText (Height, Spacing + IconSize * 3 / 4, m_album);
 }
 
 void InfoBar::update_metadata_cb ()
 {
     Tuple tuple = aud_drct_get_tuple ();
-    m_title.setText ((const char *) tuple.get_str (Tuple::Title));
+
+    m_title.setText (QString ());
+    m_original_title = tuple.get_str (Tuple::Title);
     m_artist.setText ((const char *) tuple.get_str (Tuple::Artist));
     m_album.setText ((const char *) tuple.get_str (Tuple::Album));
 
