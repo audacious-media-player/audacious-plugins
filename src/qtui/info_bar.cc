@@ -206,7 +206,7 @@ void InfoBar::paintEvent (QPaintEvent *)
     font.setPointSize (18);
     p.setFont (font);
 
-    if (m_title.text ().isNull ())
+    if (m_title.text ().isNull () && ! m_original_title.isNull ())
     {
         QFontMetrics metrics = p.fontMetrics ();
         m_title = metrics.elidedText (m_original_title, Qt::ElideRight,
