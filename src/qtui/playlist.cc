@@ -47,9 +47,9 @@ PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (p
 
     /* TODO: set column width based on font size */
     setColumnWidth (PL_COL_NOW_PLAYING, 25);
-    setColumnWidth (PL_COL_TITLE, 300);
-    setColumnWidth (PL_COL_ARTIST, 150);
-    setColumnWidth (PL_COL_ALBUM, 200);
+    setColumnWidth (PL_COL_TITLE, 275);
+    setColumnWidth (PL_COL_ARTIST, 175);
+    setColumnWidth (PL_COL_ALBUM, 175);
     setColumnWidth (PL_COL_QUEUED, 25);
     setColumnWidth (PL_COL_LENGTH, 50);
 

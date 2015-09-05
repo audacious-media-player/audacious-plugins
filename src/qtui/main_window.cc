@@ -162,7 +162,10 @@ void MainWindow::closeEvent (QCloseEvent * e)
 void MainWindow::readSettings ()
 {
     QSettings settings ("audacious", "QtUi");
-    restoreGeometry (settings.value ("geometry").toByteArray ());
+
+    if (! restoreGeometry (settings.value ("geometry").toByteArray ()))
+        resize (768, 480);
+
     restoreState (settings.value ("windowState").toByteArray ());
 }
 
