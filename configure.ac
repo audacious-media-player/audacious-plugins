@@ -79,7 +79,7 @@ if test "x$USE_GTK" = "xyes" ; then
 fi
 
 if test "x$USE_QT" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt song-info-qt statusicon-qt"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt search-tool-qt song-info-qt statusicon-qt"
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
 fi
 
@@ -357,14 +357,14 @@ AC_ARG_ENABLE(mpris2,
  enable_mpris2=$enableval, enable_mpris2=auto)
 
 if test $enable_mpris2 = no ; then
-	have_mpris2=no
+    have_mpris2=no
 else
-	AC_CHECK_PROG(have_mpris2, gdbus-codegen, yes, no)
-	if test $have_mpris2 = yes ; then
-		GENERAL_PLUGINS="$GENERAL_PLUGINS mpris2"
-	elif test $enable_mpris2 = yes ; then
-		AC_MSG_ERROR([MPRIS 2 plugin could not be enabled; check config.log])
-	fi
+    AC_CHECK_PROG(have_mpris2, gdbus-codegen, yes, no)
+    if test $have_mpris2 = yes ; then
+        GENERAL_PLUGINS="$GENERAL_PLUGINS mpris2"
+    elif test $enable_mpris2 = yes ; then
+        AC_MSG_ERROR([MPRIS 2 plugin could not be enabled; check config.log])
+    fi
 fi
 
 dnl Ogg Vorbis (enabled by default)
@@ -1126,6 +1126,7 @@ echo "  MPRIS 2 Server:                         $have_mpris2"
 echo "  Playlist Manager:                       $USE_GTK"
 echo "  Playlist Manager (Qt):                  $USE_QT"
 echo "  Search Tool:                            $USE_GTK"
+echo "  Search Tool (Qt):                       $USE_QT"
 echo "  Song Change:                            $have_songchange"
 echo "  Song Info (Qt):                         $USE_QT"
 echo "  Status Icon:                            $have_statusicon"

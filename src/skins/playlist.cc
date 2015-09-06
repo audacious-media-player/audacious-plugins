@@ -161,8 +161,6 @@ static void playlistwin_resize (int w, int h)
 {
     int tx, ty;
 
-    g_return_if_fail (w > 0 && h > 0);
-
     tx = (w - PLAYLISTWIN_MIN_WIDTH) / PLAYLISTWIN_WIDTH_SNAP;
     tx = (tx * PLAYLISTWIN_WIDTH_SNAP) + PLAYLISTWIN_MIN_WIDTH;
     if (tx < PLAYLISTWIN_MIN_WIDTH)

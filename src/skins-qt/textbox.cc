@@ -26,7 +26,6 @@
  */
 
 #include <string.h>
-#include <glib.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
@@ -157,11 +156,9 @@ void TextBox::render_bitmap (const char * text)
 
     resize (m_width * config.scale, ch * config.scale);
 
-    long len;
-    gunichar * utf32 = g_utf8_to_ucs4 (text, -1, nullptr, & len, nullptr);
-    g_return_if_fail (utf32);
+    auto ucs4 = QString (text).toUcs4 ();
 
-    m_buf_width = aud::max (cw * (int) len, m_width);
+    m_buf_width = aud::max (cw * ucs4.length (), m_width);
     m_buf.capture (new QImage (m_buf_width * config.scale, ch * config.scale,
      QImage::Format_RGB32));
 
@@ -169,10 +166,9 @@ void TextBox::render_bitmap (const char * text)
     if (config.scale != 1)
         cr.setTransform (QTransform ().scale (config.scale, config.scale));
 
-    gunichar * s = utf32;
-    for (int x = 0; x < m_buf_width; x += cw)
+    for (int x = 0, i = 0; x < m_buf_width; x += cw, i ++)
     {
-        gunichar c = * s ? * s ++ : ' ';
+        unsigned c = (i < ucs4.length ()) ? ucs4[i] : ' ';
         int cx = 0, cy = 0;
 
         if (c >= 'A' && c <= 'Z')
@@ -189,8 +185,6 @@ void TextBox::render_bitmap (const char * text)
 
         skin_draw_pixbuf (cr, SKIN_TEXT, cx, cy, x, 0, cw, ch);
     }
-
-    g_free (utf32);
 }
 
 void TextBox::render ()
@@ -225,9 +219,9 @@ void TextBox::render ()
     queue_draw ();
 
     if (m_scrolling)
-        timer_add (TimerRate::Hz30, TextBox::scroll_timeout_cb, this);
+        scroll_timer.start ();
     else
-        timer_remove (TimerRate::Hz30, TextBox::scroll_timeout_cb, this);
+        scroll_timer.stop ();
 }
 
 void TextBox::set_width (int width)
@@ -276,8 +270,6 @@ void TextBox::set_scroll (bool scroll)
 
 TextBox::~TextBox ()
 {
-    timer_remove (TimerRate::Hz30, TextBox::scroll_timeout_cb, this);
-
     int idx = textboxes.find (this);
     if (idx >= 0)
         textboxes.remove (idx, 1);

@@ -28,7 +28,8 @@
 #ifndef SKINS_UI_SKINNED_PLAYLIST_H
 #define SKINS_UI_SKINNED_PLAYLIST_H
 
-#include <glib.h>
+#include <libaudcore/hook.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/objects.h>
 
 #include "widget.h"
@@ -78,13 +79,10 @@ private:
     void cancel_all ();
     void scroll_timeout ();
     void popup_trigger (int pos);
-    void popup_show ();
     void popup_hide ();
 
-    static void scroll_timeout_cb (void * me)
-        { ((PlaylistWidget *) me)->scroll_timeout (); }
-    static gboolean popup_show_cb (void * me)
-        { ((PlaylistWidget *) me)->popup_show (); return G_SOURCE_REMOVE; }
+    const Timer<PlaylistWidget>
+     scroll_timer {TimerRate::Hz10, this, & PlaylistWidget::scroll_timeout};
 
     PlaylistSlider * m_slider = nullptr;
     PangoFontDescPtr m_font;
@@ -92,8 +90,8 @@ private:
 
     int m_playlist = -1, m_playlist_id = -1, m_length = 0;
     int m_width = 0, m_height = 0, m_row_height = 1, m_offset = 0, m_rows = 0, m_first = 0;
-    int m_scroll = 0, m_hover = -1, m_drag = 0, m_popup_pos = -1, m_popup_source = 0;
-    bool popup_shown = false;
+    int m_scroll = 0, m_hover = -1, m_drag = 0, m_popup_pos = -1;
+    QueuedFunc m_popup_timer;
 };
 
 #endif

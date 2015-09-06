@@ -118,7 +118,7 @@ void PlaylistWidget::cancel_all ()
     if (m_scroll)
     {
         m_scroll = 0;
-        timer_remove (TimerRate::Hz10, PlaylistWidget::scroll_timeout_cb, this);
+        scroll_timer.stop ();
     }
 
     if (m_hover != -1)
@@ -280,7 +280,11 @@ void PlaylistWidget::draw (cairo_t * cr)
     /* focus rectangle */
 
     int focus = aud_playlist_get_focus (m_playlist);
-    if (focus >= m_first && focus <= m_first + m_rows - 1)
+
+    /* don't show rectangle if this is the only selected entry */
+    if (focus >= m_first && focus <= m_first + m_rows - 1 &&
+     (! aud_playlist_entry_get_selected (m_playlist, focus) ||
+     aud_playlist_selected_count (m_playlist) > 1))
     {
         cairo_new_path (cr);
         cairo_set_line_width (cr, 1);
@@ -740,7 +744,7 @@ bool PlaylistWidget::motion (GdkEventMotion * event)
         if (position == -1 || position == m_length)
         {
             if (! m_scroll)
-                timer_add (TimerRate::Hz10, PlaylistWidget::scroll_timeout_cb, this);
+                scroll_timer.start ();
 
             m_scroll = (position == -1 ? -1 : 1);
         }
@@ -749,7 +753,7 @@ bool PlaylistWidget::motion (GdkEventMotion * event)
             if (m_scroll)
             {
                 m_scroll = 0;
-                timer_remove (TimerRate::Hz10, PlaylistWidget::scroll_timeout_cb, this);
+                scroll_timer.stop ();
             }
 
             switch (m_drag)
@@ -787,37 +791,23 @@ bool PlaylistWidget::leave ()
     return true;
 }
 
-void PlaylistWidget::popup_show ()
-{
-    audgui_infopopup_show (m_playlist, m_popup_pos);
-    popup_shown = true;
-
-    g_source_remove (m_popup_source);
-    m_popup_source = 0;
-}
-
 void PlaylistWidget::popup_trigger (int pos)
 {
-    popup_hide ();
+    audgui_infopopup_hide ();
+
+    auto show_cb = [] (void * me_) {
+        auto me = (PlaylistWidget *) me_;
+        audgui_infopopup_show (me->m_playlist, me->m_popup_pos);
+    };
 
     m_popup_pos = pos;
-    m_popup_source = g_timeout_add (aud_get_int (nullptr, "filepopup_delay") *
-     100, PlaylistWidget::popup_show_cb, this);
+    m_popup_timer.queue (aud_get_int (nullptr, "filepopup_delay") * 100, show_cb, this);
 }
 
 void PlaylistWidget::popup_hide ()
 {
-    if (m_popup_source)
-    {
-        g_source_remove (m_popup_source);
-        m_popup_source = 0;
-    }
-
-    if (popup_shown)
-    {
-        audgui_infopopup_hide ();
-        popup_shown = false;
-    }
+    audgui_infopopup_hide ();
 
     m_popup_pos = -1;
+    m_popup_timer.stop ();
 }

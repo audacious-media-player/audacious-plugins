@@ -123,9 +123,6 @@ MainWindow::MainWindow () :
     setupActions ();
     add_dock_plugins ();
 
-    buffering_timer.setSingleShot (true);
-    connect (& buffering_timer, & QTimer::timeout, this, & MainWindow::show_buffering);
-
     if (aud_drct_get_playing ())
     {
         playback_begin_cb ();
@@ -162,7 +159,10 @@ void MainWindow::closeEvent (QCloseEvent * e)
 void MainWindow::readSettings ()
 {
     QSettings settings ("audacious", "QtUi");
-    restoreGeometry (settings.value ("geometry").toByteArray ());
+
+    if (! restoreGeometry (settings.value ("geometry").toByteArray ()))
+        resize (768, 480);
+
     restoreState (settings.value ("windowState").toByteArray ());
 }
 
@@ -205,17 +205,14 @@ void MainWindow::update_play_pause ()
     }
 }
 
-void MainWindow::show_buffering ()
-{
-    if (aud_drct_get_playing () && ! aud_drct_get_ready ())
-        setWindowTitle (_("Buffering ..."));
-}
-
 void MainWindow::title_change_cb ()
 {
     auto title = aud_drct_get_title ();
     if (title)
+    {
         setWindowTitle (QString (title) + QString (" - Audacious"));
+        buffering_timer.stop ();
+    }
 }
 
 void MainWindow::playback_begin_cb ()
@@ -236,7 +233,9 @@ void MainWindow::playback_begin_cb ()
 
     playing_id = aud_playlist_get_unique_id (list);
 
-    buffering_timer.start (250);
+    buffering_timer.queue (250, [] (void * me) {
+        ((MainWindow *) me)->setWindowTitle (_("Buffering ..."));
+    }, this);
 }
 
 void MainWindow::pause_cb ()
@@ -252,6 +251,8 @@ void MainWindow::pause_cb ()
 void MainWindow::playback_stop_cb ()
 {
     setWindowTitle ("Audacious");
+    buffering_timer.stop ();
+
     update_play_pause ();
 
     int last_list = aud_playlist_by_unique_id (playing_id);

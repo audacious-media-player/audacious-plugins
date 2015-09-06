@@ -55,6 +55,8 @@ public:
     static void window_closed (void * data, void * user_data);
     static void activate (QSystemTrayIcon::ActivationReason);
     static void open_files ();
+    static void toggle_aud_ui ();
+    static void update_menu ();
 };
 
 EXPORT StatusIcon aud_plugin_instance;
@@ -80,6 +82,9 @@ const PluginPreferences StatusIcon::prefs = {{widgets}};
 
 const audqt::MenuItem StatusIcon::items[] =
 {
+    audqt::MenuCommand ({N_("_Hide"), "window-close"}, StatusIcon::toggle_aud_ui),
+    audqt::MenuCommand ({N_("_Restore"), "window-new"}, StatusIcon::toggle_aud_ui),
+    audqt::MenuSep (),
     audqt::MenuCommand ({N_("_Open Files ..."), "document-open"}, StatusIcon::open_files),
     audqt::MenuCommand ({N_("Pre_vious"), "media-skip-backward"}, aud_drct_pl_prev),
     audqt::MenuCommand ({N_("_Play"), "media-playback-start"}, aud_drct_play),
@@ -87,8 +92,8 @@ const audqt::MenuItem StatusIcon::items[] =
     audqt::MenuCommand ({N_("_Stop"), "media-playback-stop"}, aud_drct_stop),
     audqt::MenuCommand ({N_("_Next"), "media-skip-forward"}, aud_drct_pl_next),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Se_ttings ..."), "preferences-system"}, audqt::prefswin_show)
-    // Quit command is added automatically
+    audqt::MenuCommand ({N_("Se_ttings ..."), "preferences-system"}, audqt::prefswin_show),
+    audqt::MenuCommand ({N_("_Quit"), "application-exit"}, aud_quit),
 };
 
 static QSystemTrayIcon * tray = nullptr;
@@ -103,7 +108,12 @@ bool StatusIcon::init ()
     tray = new QSystemTrayIcon (qApp->windowIcon ());
     QObject::connect (tray, & QSystemTrayIcon::activated, activate);
     menu = audqt::menu_build (items);
+    // Very dirty hack to get along with KDE5 SNI implementation
+    // which adds Quit action without any permission.
+    // See below in activate().
+    menu->actions ().last ()->setVisible (false);
     tray->setContextMenu (menu);
+    QObject::connect (menu, & QMenu::aboutToShow, update_menu);
     tray->show ();
 
     hook_associate ("window close", window_closed, nullptr);
@@ -145,7 +155,13 @@ void StatusIcon::activate(QSystemTrayIcon::ActivationReason reason)
     switch (reason)
     {
         case QSystemTrayIcon::Trigger:
-            aud_ui_show (! aud_ui_is_shown ());
+            toggle_aud_ui ();
+            break;
+
+        case QSystemTrayIcon::Context:
+            // It is expected that only KDE5 SNI implementation blocks this activation signal.
+            // So getting it means we aren't in KDE and should show the Quit action.
+            menu->actions ().last ()->setVisible (true);
             break;
 
         default:
@@ -156,4 +172,17 @@ void StatusIcon::activate(QSystemTrayIcon::ActivationReason reason)
 void StatusIcon::open_files ()
 {
     audqt::fileopener_show (audqt::FileMode::Open);
+}
+
+void StatusIcon::toggle_aud_ui ()
+{
+    aud_ui_show (! aud_ui_is_shown ());
+}
+
+void StatusIcon::update_menu ()
+{
+    QList< QAction *> acts = menu->actions ();
+
+    acts.at (0)->setVisible (aud_ui_is_shown ());
+    acts.at (1)->setVisible (! aud_ui_is_shown ());
 }

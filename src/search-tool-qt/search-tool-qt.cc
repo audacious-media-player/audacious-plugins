@@ -1,6 +1,6 @@
 /*
- * search-tool.c
- * Copyright 2011-2012 John Lindgren
+ * search-tool-qt.cc
+ * Copyright 2011-2015 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -18,9 +18,19 @@
  */
 
 #include <string.h>
-#include <gtk/gtk.h>
+#include <glib.h>
 
-#define AUD_PLUGIN_GLIB_ONLY
+#include <QAbstractListModel>
+#include <QBoxLayout>
+#include <QContextMenuEvent>
+#include <QIcon>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMenu>
+#include <QPushButton>
+#include <QTreeView>
+
+#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -29,14 +39,13 @@
 #include <libaudcore/mainloop.h>
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
-#include <libaudgui/libaudgui-gtk.h>
-#include <libaudgui/list.h>
-#include <libaudgui/menu.h>
+#include <libaudqt/libaudqt.h>
+#include <libaudqt/menu.h>
 
 #define MAX_RESULTS 20
 #define SEARCH_DELAY 300
 
-class SearchTool : public GeneralPlugin
+class SearchToolQt : public GeneralPlugin
 {
 public:
     static constexpr PluginInfo info = {
@@ -44,13 +53,12 @@ public:
         PACKAGE
     };
 
-    constexpr SearchTool () : GeneralPlugin (info, false) {}
+    constexpr SearchToolQt () : GeneralPlugin (info, false) {}
 
-    void * get_gtk_widget ();
-    int take_message (const char * code, const void * data, int size);
+    void * get_qt_widget ();
 };
 
-EXPORT SearchTool aud_plugin_instance;
+EXPORT SearchToolQt aud_plugin_instance;
 
 enum class SearchField {
     Genre,
@@ -94,6 +102,29 @@ struct SearchState {
     int mask;
 };
 
+class ResultsModel : public QAbstractListModel
+{
+public:
+    void update ();
+
+protected:
+    int rowCount (const QModelIndex & parent) const { return m_rows; }
+    int columnCount (const QModelIndex & parent) const { return 1; }
+
+    QVariant data (const QModelIndex & index, int role) const;
+
+private:
+    int m_rows = 0;
+};
+
+class ResultsView : public QTreeView
+{
+protected:
+    void contextMenuEvent (QContextMenuEvent * event);
+};
+
+static StringBuf create_item_label (int row);
+
 static int playlist_id;
 static Index<String> search_terms;
 
@@ -102,13 +133,49 @@ static SimpleHash<Key, Item> database;
 static bool database_valid;
 static Index<const Item *> items;
 static int hidden_items;
-static Index<bool> selection;
 
 static bool adding;
 static QueuedFunc search_timer;
 static bool search_pending;
 
-static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list, * stats_label;
+static ResultsModel model;
+static QLabel * help_label, * wait_label, * stats_label;
+static QTreeView * results_list;
+static QMenu * menu;
+
+void ResultsModel::update ()
+{
+    int rows = items.len ();
+    int keep = aud::min (rows, m_rows);
+
+    if (rows < m_rows)
+    {
+        beginRemoveRows (QModelIndex (), rows, m_rows - 1);
+        m_rows = rows;
+        endRemoveRows ();
+    }
+    else if (rows > m_rows)
+    {
+        beginInsertRows (QModelIndex (), m_rows, rows - 1);
+        m_rows = rows;
+        endInsertRows ();
+    }
+
+    if (keep > 0)
+    {
+        auto topLeft = createIndex (0, 0);
+        auto bottomRight = createIndex (keep - 1, 0);
+        emit dataChanged (topLeft, bottomRight);
+    }
+}
+
+QVariant ResultsModel::data (const QModelIndex & index, int role) const
+{
+    if (role == Qt::DisplayRole)
+        return QString ((const char *) create_item_label (index.row ()));
+    else
+        return QVariant ();
+}
 
 static void find_playlist ()
 {
@@ -300,11 +367,6 @@ static void do_search ()
 
     /* sort by item type, then item name */
     items.sort (item_compare, nullptr);
-
-    selection.remove (0, -1);
-    selection.insert (0, items.len ());
-    if (items.len ())
-        selection[0] = true;
 }
 
 static bool filter_cb (const char * filename, void * unused)
@@ -358,26 +420,26 @@ static void show_hide_widgets ()
 {
     if (playlist_id < 0)
     {
-        gtk_widget_hide (wait_label);
-        gtk_widget_hide (scrolled);
-        gtk_widget_hide (stats_label);
-        gtk_widget_show (help_label);
+        wait_label->hide ();
+        results_list->hide ();
+        stats_label->hide ();
+        help_label->show ();
     }
     else
     {
-        gtk_widget_hide (help_label);
+        help_label->hide ();
 
         if (database_valid)
         {
-            gtk_widget_hide (wait_label);
-            gtk_widget_show (scrolled);
-            gtk_widget_show (stats_label);
+            wait_label->hide ();
+            results_list->show ();
+            stats_label->show ();
         }
         else
         {
-            gtk_widget_hide (scrolled);
-            gtk_widget_hide (stats_label);
-            gtk_widget_show (wait_label);
+            results_list->hide ();
+            stats_label->hide ();
+            wait_label->show ();
         }
     }
 }
@@ -386,8 +448,13 @@ static void search_timeout (void * = nullptr)
 {
     do_search ();
 
-    audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
-    audgui_list_insert_rows (results_list, 0, items.len ());
+    model.update ();
+
+    if (items.len ())
+    {
+        auto sel = results_list->selectionModel ();
+        sel->select (model.index (0, 0), sel->Clear | sel->SelectCurrent);
+    }
 
     int total = items.len () + hidden_items;
     StringBuf stats = str_printf (dngettext (PACKAGE, "%d result",
@@ -400,7 +467,7 @@ static void search_timeout (void * = nullptr)
          "(%d hidden)", hidden_items), hidden_items));
     }
 
-    gtk_label_set_text ((GtkLabel *) stats_label, stats);
+    stats_label->setText ((const char *) stats);
 
     search_timer.stop ();
     search_pending = false;
@@ -418,8 +485,8 @@ static void update_database ()
     else
     {
         destroy_database ();
-        audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
-        gtk_label_set_text ((GtkLabel *) stats_label, "");
+        model.update ();
+        stats_label->clear ();
     }
 
     show_hide_widgets ();
@@ -486,10 +553,12 @@ static void search_cleanup ()
 
     search_terms.clear ();
     items.clear ();
-    selection.clear ();
 
     added_table.clear ();
     destroy_database ();
+
+    delete menu;
+    menu = nullptr;
 }
 
 static void do_add (bool play, String & title)
@@ -498,14 +567,14 @@ static void do_add (bool play, String & title)
         search_timeout ();
 
     int list = aud_playlist_by_unique_id (playlist_id);
-    int n_items = items.len ();
     int n_selected = 0;
 
     Index<PlaylistAddItem> add;
 
-    for (int i = 0; i < n_items; i ++)
+    for (auto & idx : results_list->selectionModel ()->selectedRows ())
     {
-        if (! selection[i])
+        int i = idx.row ();
+        if (i < 0 || i >= items.len ())
             continue;
 
         const Item * item = items[i];
@@ -565,9 +634,10 @@ static void action_add_to_playlist ()
     do_add (false, title);
 }
 
-static void list_get_value (void * user, int row, int column, GValue * value)
+static StringBuf create_item_label (int row)
 {
-    g_return_if_fail (row >= 0 && row < items.len ());
+    if (row < 0 || row >= items.len ())
+        return StringBuf ();
 
     const Item * item = items[row];
     StringBuf string = str_concat ({item->name, "\n"});
@@ -593,154 +663,94 @@ static void list_get_value (void * user, int row, int column, GValue * value)
         string.insert (-1, item->name);
     }
 
-    g_value_set_string (value, string);
+    return string;
 }
 
-static bool list_get_selected (void * user, int row)
+void ResultsView::contextMenuEvent (QContextMenuEvent * event)
 {
-    g_return_val_if_fail (row >= 0 && row < selection.len (), false);
-    return selection[row];
-}
-
-static void list_set_selected (void * user, int row, bool selected)
-{
-    g_return_if_fail (row >= 0 && row < selection.len ());
-    selection[row] = selected;
-}
-
-static void list_select_all (void * user, bool selected)
-{
-    for (bool & s : selection)
-        s = selected;
-}
-
-static void list_activate_row (void * user, int row)
-{
-    action_play ();
-}
-
-static void list_right_click (void * user, GdkEventButton * event)
-{
-    static const AudguiMenuItem items[] = {
-        MenuCommand (N_("_Play"), "media-playback-start",
-         0, (GdkModifierType) 0, action_play),
-        MenuCommand (N_("_Create Playlist"), "document-new",
-         0, (GdkModifierType) 0, action_create_playlist),
-        MenuCommand (N_("_Add to Playlist"), "list-add",
-         0, (GdkModifierType) 0, action_add_to_playlist)
+    static const audqt::MenuItem items[] = {
+        audqt::MenuCommand ({N_("_Play"), "media-playback-start"}, action_play),
+        audqt::MenuCommand ({N_("_Create Playlist"), "document-new"}, action_create_playlist),
+        audqt::MenuCommand ({N_("_Add to Playlist"), "list-add"}, action_add_to_playlist)
     };
 
-    GtkWidget * menu = gtk_menu_new ();
-    audgui_menu_init (menu, {items}, nullptr);
-    gtk_menu_popup ((GtkMenu *) menu, nullptr, nullptr, nullptr, nullptr, event->button, event->time);
+    if (! menu)
+        menu = audqt::menu_build ({items});
+
+    menu->popup (event->globalPos ());
 }
 
-static const AudguiListCallbacks list_callbacks = {
-    list_get_value,
-    list_get_selected,
-    list_set_selected,
-    list_select_all,
-    list_activate_row,
-    list_right_click
-};
-
-static void entry_cb (GtkEntry * entry, void * unused)
+void * SearchToolQt::get_qt_widget ()
 {
-    const char * text = gtk_entry_get_text ((GtkEntry *) entry);
-    search_terms = str_list_to_index (str_tolower_utf8 (text), " ");
-    search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
-    search_pending = true;
-}
+    auto widget = new QWidget;
+    auto vbox = new QVBoxLayout (widget);
+    vbox->setContentsMargins (0, 0, 0, 0);
 
-static void refresh_cb (GtkButton * button, GtkWidget * chooser)
-{
-    char * path = gtk_file_chooser_get_filename ((GtkFileChooser *) chooser);
-    begin_add (path);
-    g_free (path);
+    auto entry = new QLineEdit;
+    entry->setPlaceholderText (_("Search library"));
+    vbox->addWidget (entry);
 
-    update_database ();
-}
+    help_label = new QLabel (_("To import your music library into Audacious, "
+     "choose a folder and then click the \"refresh\" icon."));
+    help_label->setAlignment (Qt::AlignCenter);
+    help_label->setWordWrap (true);
+    vbox->addWidget (help_label);
 
-void * SearchTool::get_gtk_widget ()
-{
-    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+    wait_label = new QLabel (_("Please wait ..."));
+    wait_label->setAlignment (Qt::AlignCenter);
+    vbox->addWidget (wait_label);
 
-    entry = gtk_entry_new ();
-    gtk_entry_set_icon_from_icon_name ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, "edit-find");
-    gtk_entry_set_placeholder_text ((GtkEntry *) entry, _("Search library"));
-    g_signal_connect (entry, "destroy", (GCallback) gtk_widget_destroyed, & entry);
-    gtk_box_pack_start ((GtkBox *) vbox, entry, false, false, 0);
+    results_list = new ResultsView;
+    results_list->setHeaderHidden (true);
+    results_list->setIndentation (0);
+    results_list->setModel (& model);
+    results_list->setSelectionMode (QTreeView::ExtendedSelection);
+    vbox->addWidget (results_list);
 
-    help_label = gtk_label_new (_("To import your music library into "
-     "Audacious, choose a folder and then click the \"refresh\" icon."));
-    int label_width = aud::rescale (audgui_get_dpi (), 4, 7);
-    gtk_widget_set_size_request (help_label, label_width, -1);
-    gtk_label_set_line_wrap ((GtkLabel *) help_label, true);
-    g_signal_connect (help_label, "destroy", (GCallback) gtk_widget_destroyed, & help_label);
-    gtk_widget_set_no_show_all (help_label, true);
-    gtk_box_pack_start ((GtkBox *) vbox, help_label, true, false, 0);
+    stats_label = new QLabel;
+    stats_label->setAlignment (Qt::AlignCenter);
+    vbox->addWidget (stats_label);
 
-    wait_label = gtk_label_new (_("Please wait ..."));
-    g_signal_connect (wait_label, "destroy", (GCallback) gtk_widget_destroyed, & wait_label);
-    gtk_widget_set_no_show_all (wait_label, true);
-    gtk_box_pack_start ((GtkBox *) vbox, wait_label, true, false, 0);
+    auto hbox = new QHBoxLayout;
+    vbox->addLayout (hbox);
 
-    scrolled = gtk_scrolled_window_new (nullptr, nullptr);
-    g_signal_connect (scrolled, "destroy", (GCallback) gtk_widget_destroyed, & scrolled);
-    gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
-    gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrolled,
-     GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-    gtk_widget_set_no_show_all (scrolled, true);
-    gtk_box_pack_start ((GtkBox *) vbox, scrolled, true, true, 0);
+    auto chooser = new QLineEdit;
+    hbox->addWidget (chooser);
 
-    results_list = audgui_list_new (& list_callbacks, nullptr, items.len ());
-    g_signal_connect (results_list, "destroy", (GCallback) gtk_widget_destroyed, & results_list);
-    gtk_tree_view_set_headers_visible ((GtkTreeView *) results_list, false);
-    audgui_list_add_column (results_list, nullptr, 0, G_TYPE_STRING, -1);
-    gtk_container_add ((GtkContainer *) scrolled, results_list);
+    auto button = new QPushButton (QIcon::fromTheme ("view-refresh"), QString ());
+    button->setFlat (true);
+    hbox->addWidget (button);
 
-    stats_label = gtk_label_new ("");
-    g_signal_connect (stats_label, "destroy", (GCallback) gtk_widget_destroyed, & stats_label);
-    gtk_widget_set_no_show_all (stats_label, true);
-    gtk_box_pack_start ((GtkBox *) vbox, stats_label, false, false, 0);
-
-    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_box_pack_end ((GtkBox *) vbox, hbox, false, false, 0);
-
-    GtkWidget * chooser = gtk_file_chooser_button_new (_("Choose Folder"),
-     GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-    gtk_box_pack_start ((GtkBox *) hbox, chooser, true, true, 0);
-
-    gtk_file_chooser_set_filename ((GtkFileChooser *) chooser, get_path ());
-
-    GtkWidget * button = gtk_button_new ();
-    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
-     ("view-refresh", GTK_ICON_SIZE_BUTTON));
-    gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
-    gtk_box_pack_start ((GtkBox *) hbox, button, false, false, 0);
+    char * utf8 = g_filename_to_utf8 (get_path (), -1, nullptr, nullptr, nullptr);
+    chooser->setText (utf8);
+    g_free (utf8);
 
     search_init ();
 
-    g_signal_connect (vbox, "destroy", (GCallback) search_cleanup, nullptr);
-    g_signal_connect (entry, "changed", (GCallback) entry_cb, nullptr);
-    g_signal_connect (entry, "activate", (GCallback) action_play, nullptr);
-    g_signal_connect (button, "clicked", (GCallback) refresh_cb, chooser);
+    QObject::connect (vbox, & QObject::destroyed, search_cleanup);
+    QObject::connect (entry, & QLineEdit::returnPressed, action_play);
+    QObject::connect (results_list, & QTreeView::doubleClicked, action_play);
 
-    gtk_widget_show_all (vbox);
-    gtk_widget_show (results_list);
-    show_hide_widgets ();
-
-    return vbox;
-}
-
-int SearchTool::take_message (const char * code, const void * data, int size)
-{
-    if (! strcmp (code, "grab focus"))
+    QObject::connect (entry, & QLineEdit::textEdited, [] (const QString & text)
     {
-        if (entry)
-            gtk_widget_grab_focus (entry);
-        return 0;
-    }
+        search_terms = str_list_to_index (str_tolower_utf8 (text.toUtf8 ()), " ");
+        search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
+        search_pending = true;
+    });
 
-    return -1;
+    QObject::connect (button, & QPushButton::clicked, [chooser] ()
+    {
+        char * path = g_filename_from_utf8 (chooser->text ().toUtf8 (), -1,
+         nullptr, nullptr, nullptr);
+
+        if (path && path[0])
+        {
+            begin_add (path);
+            update_database ();
+        }
+
+        g_free (path);
+    });
+
+    return widget;
 }

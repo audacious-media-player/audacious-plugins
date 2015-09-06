@@ -102,7 +102,7 @@ void PlaylistTabs::updateTitles ()
 {
     int tabs = count ();
     for (int i = 0; i < tabs; i ++)
-        setTabText (i, (const char *) aud_playlist_get_title (i));
+        setTabTitle (i, aud_playlist_get_title (i));
 }
 
 void PlaylistTabs::filterTrigger (const QString & text)
@@ -121,11 +121,17 @@ QLineEdit * PlaylistTabs::getTabEdit (int idx)
     return dynamic_cast<QLineEdit *> (m_tabbar->tabButton (idx, QTabBar::LeftSide));
 }
 
-void PlaylistTabs::setupTab (int idx, QWidget * button, const QString & text, QWidget * * oldp)
+void PlaylistTabs::setTabTitle (int idx, const char * text)
+{
+    // escape ampersands for setTabText()
+    setTabText (idx, QString (text).replace ("&", "&&"));
+}
+
+void PlaylistTabs::setupTab (int idx, QWidget * button, const char * text, QWidget * * oldp)
 {
     QWidget * old = m_tabbar->tabButton (idx, QTabBar::LeftSide);
     m_tabbar->setTabButton (idx, QTabBar::LeftSide, button);
-    setTabText (idx, text);
+    setTabTitle (idx, text);
 
     if (oldp)
         * oldp = old;
@@ -146,8 +152,8 @@ void PlaylistTabs::tabEditedTrigger ()
     if (! edit)
         return;
 
-    QString title = edit->text ();
-    aud_playlist_set_title (idx, title.toUtf8 ());
+    QByteArray title = edit->text ().toUtf8 ();
+    aud_playlist_set_title (idx, title);
 
     setupTab (idx, m_leftbtn, title, nullptr);
     m_leftbtn = nullptr;
@@ -155,11 +161,11 @@ void PlaylistTabs::tabEditedTrigger ()
 
 void PlaylistTabs::editTab (int idx)
 {
-    QLineEdit * edit = new QLineEdit (tabText (idx));
+    QLineEdit * edit = new QLineEdit ((const char *) aud_playlist_get_title (idx));
 
     connect (edit, & QLineEdit::returnPressed, this, & PlaylistTabs::tabEditedTrigger);
 
-    setupTab (idx, edit, QString (), & m_leftbtn);
+    setupTab (idx, edit, nullptr, & m_leftbtn);
 
     edit->selectAll ();
     edit->setFocus ();

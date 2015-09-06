@@ -23,15 +23,15 @@
 #include <gtk/gtk.h>
 
 #define AUD_PLUGIN_GLIB_ONLY
-#include <libaudcore/runtime.h>
+#include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
+#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
-#include <libaudcore/audstrings.h>
-#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -125,9 +125,9 @@ static GtkToolItem * menu_button, * search_button, * button_play, * button_stop,
 static GtkWidget * slider, * label_time;
 static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
-static gboolean slider_is_moving = false;
+static bool slider_is_moving = false;
 static int slider_seek_time = -1;
-static unsigned delayed_title_change_source = 0;
+static QueuedFunc delayed_title_change;
 
 static void save_window_size ()
 {
@@ -210,13 +210,9 @@ void clear_ab_repeat ()
     aud_drct_set_ab_repeat (-1, -1);
 }
 
-static gboolean title_change_cb ()
+static void title_change (void * = nullptr)
 {
-    if (delayed_title_change_source)
-    {
-        g_source_remove (delayed_title_change_source);
-        delayed_title_change_source = 0;
-    }
+    delayed_title_change.stop ();
 
     if (aud_drct_get_playing ())
     {
@@ -231,8 +227,6 @@ static gboolean title_change_cb ()
     }
     else
         gtk_window_set_title ((GtkWindow *) window, _("Audacious"));
-
-    return false;
 }
 
 void GtkUI::show (bool show)
@@ -428,18 +422,14 @@ static void ui_playback_begin ()
     pause_cb ();
     gtk_widget_set_sensitive ((GtkWidget *) button_stop, true);
 
-    if (delayed_title_change_source)
-        g_source_remove (delayed_title_change_source);
-
     /* If "title change" is not called by 1/4 second after starting playback,
      * show "Buffering ..." as the window title. */
-    delayed_title_change_source = g_timeout_add (250, (GSourceFunc)
-     title_change_cb, nullptr);
+    delayed_title_change.queue (250, title_change, nullptr);
 }
 
 static void ui_playback_ready ()
 {
-    title_change_cb ();
+    title_change ();
     set_slider_length (aud_drct_get_length ());
     time_counter_cb ();
 
@@ -453,14 +443,8 @@ static void ui_playback_stop ()
 {
     timer_remove (TimerRate::Hz4, time_counter_cb);
 
-    if (delayed_title_change_source)
-        g_source_remove (delayed_title_change_source);
-
-    /* Don't update the window title immediately; we may be about to start
-     * another song. */
-    delayed_title_change_source = g_idle_add ((GSourceFunc) title_change_cb, nullptr);
-
-    gtk_tool_button_set_icon_name ((GtkToolButton *) button_play, "media-playback-start");
+    pause_cb ();
+    title_change ();
     gtk_widget_set_sensitive ((GtkWidget *) button_stop, false);
     gtk_widget_hide (slider);
     gtk_widget_hide (label_time);
@@ -700,7 +684,7 @@ static void config_save ()
 
 static void ui_hooks_associate ()
 {
-    hook_associate ("title change", (HookFunction) title_change_cb, nullptr);
+    hook_associate ("title change", (HookFunction) title_change, nullptr);
     hook_associate ("playback begin", (HookFunction) ui_playback_begin, nullptr);
     hook_associate ("playback ready", (HookFunction) ui_playback_ready, nullptr);
     hook_associate ("playback pause", (HookFunction) pause_cb, nullptr);
@@ -718,7 +702,7 @@ static void ui_hooks_associate ()
 
 static void ui_hooks_disassociate ()
 {
-    hook_dissociate ("title change", (HookFunction) title_change_cb);
+    hook_dissociate ("title change", (HookFunction) title_change);
     hook_dissociate ("playback begin", (HookFunction) ui_playback_begin);
     hook_dissociate ("playback ready", (HookFunction) ui_playback_ready);
     hook_dissociate ("playback pause", (HookFunction) pause_cb);
@@ -924,7 +908,7 @@ bool GtkUI::init ()
     else
         ui_playback_stop ();
 
-    title_change_cb ();
+    title_change ();
 
     update_toggles ();
     record_toggled ();
@@ -951,12 +935,7 @@ void GtkUI::cleanup ()
 
     timer_remove (TimerRate::Hz4, time_counter_cb);
     timer_remove (TimerRate::Hz4, ui_volume_slider_update);
-
-    if (delayed_title_change_source)
-    {
-        g_source_remove (delayed_title_change_source);
-        delayed_title_change_source = 0;
-    }
+    delayed_title_change.stop ();
 
     ui_hooks_disassociate ();
 

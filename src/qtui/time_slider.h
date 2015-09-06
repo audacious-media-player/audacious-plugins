@@ -22,7 +22,6 @@
 
 #include <QLabel>
 #include <QSlider>
-#include <QTimer>
 #include <QStyle>
 #include <QMouseEvent>
 
@@ -48,8 +47,10 @@ private:
 
     void mousePressEvent (QMouseEvent * event);
 
-    QTimer m_timer;
     QLabel * m_label;
+
+    const Timer<TimeSlider>
+     m_timer {TimerRate::Hz4, this, & TimeSlider::update};
 
     const HookReceiver<TimeSlider>
      hook1 {"playback ready", this, & TimeSlider::start_stop},

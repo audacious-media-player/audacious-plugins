@@ -19,7 +19,6 @@
  */
 
 #include <math.h>
-#include <glib.h>
 
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
@@ -119,12 +118,12 @@ static void make_log_graph (const float * freq, int bands, int db_range,
  int int_range, unsigned char * graph)
 {
     static int last_bands = 0;
-    static float * xscale = nullptr;
+    static Index<float> xscale;
 
     /* conversion table for the x-axis */
     if (bands != last_bands)
     {
-        xscale = g_renew (float, xscale, bands + 1);
+        xscale.resize (bands + 1);
         for (int i = 0; i <= bands; i ++)
             xscale[i] = powf (256, (float) i / bands) - 0.5f;
 

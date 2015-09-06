@@ -46,6 +46,7 @@ private:
      hook3 {"playback stop", this, & InfoBar::update_cb};
 
     QPixmap m_art;
+    QString m_original_title;
     QStaticText m_title, m_artist, m_album;
     InfoVis * m_vis;
 };

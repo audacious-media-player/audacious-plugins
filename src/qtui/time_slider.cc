@@ -32,7 +32,6 @@ TimeSlider::TimeSlider (QWidget * parent) :
     m_label->setContentsMargins (4, 0, 4, 0);
     m_label->setSizePolicy (QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
 
-    connect (& m_timer, & QTimer::timeout, this, & TimeSlider::update);
     connect (this, & QSlider::valueChanged, this, & TimeSlider::moved);
     connect (this, & QSlider::sliderPressed, this, & TimeSlider::pressed);
     connect (this, & QSlider::sliderReleased, this, & TimeSlider::released);
@@ -74,7 +73,7 @@ void TimeSlider::start_stop ()
     }
 
     if (ready && ! paused && ! isSliderDown ())
-        m_timer.start (250);
+        m_timer.start ();
     else
         m_timer.stop ();
 }
@@ -106,7 +105,7 @@ void TimeSlider::released ()
     set_label (value (), aud_drct_get_length ());
 
     if (! aud_drct_get_paused ())
-        m_timer.start (250);
+        m_timer.start ();
 }
 
 void TimeSlider::mousePressEvent (QMouseEvent * event)
