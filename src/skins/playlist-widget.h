@@ -28,8 +28,6 @@
 #ifndef SKINS_UI_SKINNED_PLAYLIST_H
 #define SKINS_UI_SKINNED_PLAYLIST_H
 
-#include <glib.h>
-
 #include <libaudcore/hook.h>
 #include <libaudcore/mainloop.h>
 #include <libaudcore/objects.h>

@@ -115,7 +115,7 @@ void PlaylistWidget::cancel_all ()
     if (m_scroll)
     {
         m_scroll = 0;
-        timer_remove (TimerRate::Hz10, PlaylistWidget::scroll_timeout_cb, this);
+        scroll_timer.stop ();
     }
 
     if (m_hover != -1)
@@ -696,7 +696,7 @@ bool PlaylistWidget::motion (QMouseEvent * event)
         if (position == -1 || position == m_length)
         {
             if (! m_scroll)
-                timer_add (TimerRate::Hz10, PlaylistWidget::scroll_timeout_cb, this);
+                scroll_timer.start ();
 
             m_scroll = (position == -1 ? -1 : 1);
         }
@@ -705,7 +705,7 @@ bool PlaylistWidget::motion (QMouseEvent * event)
             if (m_scroll)
             {
                 m_scroll = 0;
-                timer_remove (TimerRate::Hz10, PlaylistWidget::scroll_timeout_cb, this);
+                scroll_timer.stop ();
             }
 
             switch (m_drag)
@@ -743,37 +743,27 @@ bool PlaylistWidget::leave ()
     return true;
 }
 
-void PlaylistWidget::popup_show ()
-{
-//    audgui_infopopup_show (m_playlist, m_popup_pos);
-    popup_shown = true;
-
-    g_source_remove (m_popup_source);
-    m_popup_source = 0;
-}
-
 void PlaylistWidget::popup_trigger (int pos)
 {
-    popup_hide ();
+#if 0
+    audgui_infopopup_hide ();
+
+    auto show_cb = [] (void * me_) {
+        auto me = (PlaylistWidget *) me_;
+        audgui_infopopup_show (me->m_playlist, me->m_popup_pos);
+    };
 
     m_popup_pos = pos;
-    m_popup_source = g_timeout_add (aud_get_int (nullptr, "filepopup_delay") *
-     100, PlaylistWidget::popup_show_cb, this);
+    m_popup_timer.queue (aud_get_int (nullptr, "filepopup_delay") * 100, show_cb, this);
+#endif
 }
 
 void PlaylistWidget::popup_hide ()
 {
-    if (m_popup_source)
-    {
-        g_source_remove (m_popup_source);
-        m_popup_source = 0;
-    }
-
-    if (popup_shown)
-    {
-//        audgui_infopopup_hide ();
-        popup_shown = false;
-    }
+#if 0
+    audgui_infopopup_hide ();
 
     m_popup_pos = -1;
+    m_popup_timer.stop ();
+#endif
 }

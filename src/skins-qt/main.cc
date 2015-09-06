@@ -32,6 +32,7 @@
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
@@ -91,8 +92,8 @@ static int seek_start, seek_time;
 static TextBox * locked_textbox = nullptr;
 static String locked_old_text;
 
-static int status_message_source = 0;
-static int mainwin_volume_release_timeout = 0;
+static QueuedFunc status_message_timeout;
+static QueuedFunc mainwin_volume_release_timeout;
 
 static Button * mainwin_menubtn, * mainwin_minimize, * mainwin_shade, * mainwin_close;
 static Button * mainwin_shaded_menubtn, * mainwin_shaded_minimize, * mainwin_shaded_shade, * mainwin_shaded_close;
@@ -178,7 +179,7 @@ static void mainwin_lock_info_text (const char * text)
     locked_textbox->set_text (text);
 }
 
-static void mainwin_release_info_text ()
+static void mainwin_release_info_text (void * = nullptr)
 {
     if (locked_textbox)
     {
@@ -199,20 +200,10 @@ static void set_info_text (TextBox * textbox, const char * text)
 #define mainwin_set_info_text(t) set_info_text (mainwin_info, (t))
 #define mainwin_set_othertext(t) set_info_text (mainwin_othertext, (t))
 
-static gboolean clear_status_message (void *)
-{
-    mainwin_release_info_text ();
-    status_message_source = 0;
-    return G_SOURCE_REMOVE;
-}
-
 void mainwin_show_status_message (const char * message)
 {
-    if (status_message_source)
-        g_source_remove (status_message_source);
-
     mainwin_lock_info_text (message);
-    status_message_source = g_timeout_add (1000, clear_status_message, nullptr);
+    status_message_timeout.queue (1000, mainwin_release_info_text, nullptr);
 }
 
 static void mainwin_set_song_title (const char * title)
@@ -509,29 +500,12 @@ bool Window::keypress (QKeyEvent * event)
 }
 
 #if 0
-/*
- * Rewritten 09/13/06:
- *
- * Remove all of this flaky iter/sourcelist/strsplit stuff.
- * All we care about is the filepath.
- *
- * We can figure this out and easily pass it to g_filename_from_uri().
- *   - nenolod
- */
-void
-mainwin_drag_data_received(GtkWidget * widget,
-                           GdkDragContext * context,
-                           int x,
-                           int y,
-                           GtkSelectionData * selection_data,
-                           unsigned info,
-                           unsigned time,
-                           void * user_data)
+void mainwin_drag_data_received (GtkWidget * widget, GdkDragContext * context,
+ int x, int y, GtkSelectionData * selection_data, unsigned info, unsigned time, void *)
 {
-    g_return_if_fail(selection_data != nullptr);
+    g_return_if_fail (selection_data != nullptr);
 
-    const char * data = (const char *) gtk_selection_data_get_data
-     (selection_data);
+    const char * data = (const char *) gtk_selection_data_get_data (selection_data);
     g_return_if_fail (data);
 
     if (str_has_prefix_nocase (data, "file:///"))
@@ -569,7 +543,7 @@ static void seek_timeout (void * rewind)
         return;
 
     int position;
-    if (GPOINTER_TO_INT (rewind))
+    if (aud::from_ptr<bool> (rewind))
         position = seek_start - held / SEEK_SPEED;
     else
         position = seek_start + held / SEEK_SPEED;
@@ -587,7 +561,7 @@ static void seek_press (QMouseEvent * event, bool rewind)
     seeking = true;
     seek_start = mainwin_position->get_pos ();
     seek_time = time_now ();
-    timer_add (TimerRate::Hz10, seek_timeout, GINT_TO_POINTER (rewind));
+    timer_add (TimerRate::Hz10, seek_timeout, aud::to_ptr (rewind));
 }
 
 static void seek_release (QMouseEvent * event, bool rewind)
@@ -735,13 +709,6 @@ static void mainwin_volume_release_cb ()
     mainwin_adjust_volume_release ();
 }
 
-static gboolean mainwin_volume_timeout_cb (void *)
-{
-    mainwin_volume_release_cb ();
-    mainwin_volume_release_timeout = 0;
-    return G_SOURCE_REMOVE;
-}
-
 static void mainwin_balance_set_frame ()
 {
     int pos = mainwin_balance->get_pos ();
@@ -789,11 +756,8 @@ void mainwin_set_volume_diff (int diff)
     mainwin_set_volume_slider (vol);
     equalizerwin_set_volume_slider (vol);
 
-    if (mainwin_volume_release_timeout)
-        g_source_remove (mainwin_volume_release_timeout);
-
-    mainwin_volume_release_timeout =
-        g_timeout_add (700, mainwin_volume_timeout_cb, nullptr);
+    mainwin_volume_release_timeout.queue (700,
+     [] (void *) { mainwin_volume_release_cb (); }, nullptr);
 }
 
 void mainwin_mr_change (MenuRowItem i)
@@ -1066,8 +1030,7 @@ static void mainwin_create_widgets ()
 }
 
 #if 0
-static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
- void * unused)
+static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event, void *)
 {
     if (event->changed_mask & GDK_WINDOW_STATE_STICKY)
         view_set_sticky (!! (event->new_window_state & GDK_WINDOW_STATE_STICKY));
@@ -1122,17 +1085,8 @@ void mainwin_unhook ()
     seeking = false;
     timer_remove (TimerRate::Hz10, seek_timeout);
 
-    if (status_message_source)
-    {
-        g_source_remove (status_message_source);
-        status_message_source = 0;
-    }
-
-    if (mainwin_volume_release_timeout)
-    {
-        g_source_remove (mainwin_volume_release_timeout);
-        mainwin_volume_release_timeout = 0;
-    }
+    status_message_timeout.stop ();
+    mainwin_volume_release_timeout.stop ();
 
     hook_dissociate ("playback begin", (HookFunction) mainwin_playback_begin);
     hook_dissociate ("playback ready", (HookFunction) mainwin_playback_begin);

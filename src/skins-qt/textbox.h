@@ -28,6 +28,7 @@
 #ifndef SKINS_UI_SKINNED_TEXTBOX_H
 #define SKINS_UI_SKINNED_TEXTBOX_H
 
+#include <libaudcore/hook.h>
 #include <libaudcore/objects.h>
 
 #include "widget.h"
@@ -58,12 +59,12 @@ private:
     virtual bool button_press (QMouseEvent * event);
 
     void scroll_timeout ();
-    static void scroll_timeout_cb (void * me)
-        { ((TextBox *) me)->scroll_timeout (); }
-
     void render_vector (const char * text);
     void render_bitmap (const char * text);
     void render ();
+
+    const Timer<TextBox>
+     scroll_timer {TimerRate::Hz30, this, & TextBox::scroll_timeout};
 
     String m_text;
     SmartPtr<QFont> m_font;

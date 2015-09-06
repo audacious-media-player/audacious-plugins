@@ -588,7 +588,7 @@ static void seek_timeout (void * rewind)
         return;
 
     int position;
-    if (GPOINTER_TO_INT (rewind))
+    if (aud::from_ptr<bool> (rewind))
         position = seek_start - held / SEEK_SPEED;
     else
         position = seek_start + held / SEEK_SPEED;
@@ -606,7 +606,7 @@ static void seek_press (GdkEventButton * event, bool rewind)
     seeking = true;
     seek_start = mainwin_position->get_pos ();
     seek_time = time_now ();
-    timer_add (TimerRate::Hz10, seek_timeout, GINT_TO_POINTER (rewind));
+    timer_add (TimerRate::Hz10, seek_timeout, aud::to_ptr (rewind));
 }
 
 static void seek_release (GdkEventButton * event, bool rewind)
