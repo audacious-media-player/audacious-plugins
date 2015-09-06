@@ -280,7 +280,11 @@ void PlaylistWidget::draw (cairo_t * cr)
     /* focus rectangle */
 
     int focus = aud_playlist_get_focus (m_playlist);
-    if (focus >= m_first && focus <= m_first + m_rows - 1)
+
+    /* don't show rectangle if this is the only selected entry */
+    if (focus >= m_first && focus <= m_first + m_rows - 1 &&
+     (! aud_playlist_entry_get_selected (m_playlist, focus) ||
+     aud_playlist_selected_count (m_playlist) > 1))
     {
         cairo_new_path (cr);
         cairo_set_line_width (cr, 1);
