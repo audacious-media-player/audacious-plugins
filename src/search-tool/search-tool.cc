@@ -26,6 +26,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -104,7 +105,8 @@ static int hidden_items;
 static Index<bool> selection;
 
 static bool adding;
-static int search_source;
+static QueuedFunc search_timer;
+static bool search_pending;
 
 static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list, * stats_label;
 
@@ -148,11 +150,6 @@ static int get_playlist (bool require_added, bool require_scanned)
         return -1;
 
     return list;
-}
-
-static void set_search_phrase (const char * phrase)
-{
-    search_terms = str_list_to_index (str_tolower_utf8 (phrase), " ");
 }
 
 static String get_path ()
@@ -385,7 +382,7 @@ static void show_hide_widgets ()
     }
 }
 
-static int search_timeout (void * unused = nullptr)
+static void search_timeout (void * = nullptr)
 {
     do_search ();
 
@@ -405,21 +402,8 @@ static int search_timeout (void * unused = nullptr)
 
     gtk_label_set_text ((GtkLabel *) stats_label, stats);
 
-    if (search_source)
-    {
-        g_source_remove (search_source);
-        search_source = 0;
-    }
-
-    return false;
-}
-
-static void schedule_search ()
-{
-    if (search_source)
-        g_source_remove (search_source);
-
-    search_source = g_timeout_add (SEARCH_DELAY, search_timeout, nullptr);
+    search_timer.stop ();
+    search_pending = false;
 }
 
 static void update_database ()
@@ -497,11 +481,8 @@ static void search_cleanup ()
     hook_dissociate ("playlist scan complete", scan_complete_cb);
     hook_dissociate ("playlist update", playlist_update_cb);
 
-    if (search_source)
-    {
-        g_source_remove (search_source);
-        search_source = 0;
-    }
+    search_timer.stop ();
+    search_pending = false;
 
     search_terms.clear ();
     items.clear ();
@@ -513,7 +494,7 @@ static void search_cleanup ()
 
 static void do_add (bool play, String & title)
 {
-    if (search_source)
+    if (search_pending)
         search_timeout ();
 
     int list = aud_playlist_by_unique_id (playlist_id);
@@ -665,8 +646,10 @@ static const AudguiListCallbacks list_callbacks = {
 
 static void entry_cb (GtkEntry * entry, void * unused)
 {
-    set_search_phrase (gtk_entry_get_text ((GtkEntry *) entry));
-    schedule_search ();
+    const char * text = gtk_entry_get_text ((GtkEntry *) entry);
+    search_terms = str_list_to_index (str_tolower_utf8 (text), " ");
+    search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
+    search_pending = true;
 }
 
 static void refresh_cb (GtkButton * button, GtkWidget * chooser)

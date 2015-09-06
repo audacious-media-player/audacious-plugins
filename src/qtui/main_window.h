@@ -22,13 +22,13 @@
 
 #include <libaudcore/hook.h>
 #include <libaudcore/index.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/objects.h>
 
 #include "dialog_windows.h"
 #include "info_bar.h"
 
 #include <QMainWindow>
-#include <QTimer>
 #include <QVBoxLayout>
 
 class FilterInput;
@@ -54,7 +54,7 @@ private:
     QAction * toolButtonRepeat;
     QAction * toolButtonShuffle;
 
-    QTimer buffering_timer;
+    QueuedFunc buffering_timer;
 
     void closeEvent (QCloseEvent * e);
     void keyPressEvent (QKeyEvent * e);
@@ -63,12 +63,10 @@ private:
     void setupActions ();
     void readSettings ();
 
-    void update_play_pause ();
-    void show_buffering ();
-
     void add_dock_plugins ();
     void remove_dock_plugins ();
 
+    void update_play_pause ();
     void title_change_cb ();
     void playback_begin_cb ();
     void playback_ready_cb ();

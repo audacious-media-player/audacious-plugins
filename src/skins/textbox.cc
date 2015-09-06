@@ -242,9 +242,9 @@ void TextBox::render ()
     queue_draw ();
 
     if (m_scrolling)
-        timer_add (TimerRate::Hz30, TextBox::scroll_timeout_cb, this);
+        scroll_timer.start ();
     else
-        timer_remove (TimerRate::Hz30, TextBox::scroll_timeout_cb, this);
+        scroll_timer.stop ();
 }
 
 void TextBox::set_width (int width)
@@ -287,8 +287,6 @@ void TextBox::set_scroll (bool scroll)
 
 TextBox::~TextBox ()
 {
-    timer_remove (TimerRate::Hz30, TextBox::scroll_timeout_cb, this);
-
     int idx = textboxes.find (this);
     if (idx >= 0)
         textboxes.remove (idx, 1);

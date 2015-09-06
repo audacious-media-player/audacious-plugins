@@ -23,6 +23,7 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/tuple.h>
@@ -86,11 +87,11 @@ static const bool pw_col_label[PW_COLS] = {
     false   // bitrate
 };
 
-typedef struct {
+struct PlaylistWidgetData {
     int list;
-    int popup_source, popup_pos;
-    bool popup_shown;
-} PlaylistWidgetData;
+    int popup_pos = -1;
+    QueuedFunc popup_timer;
+};
 
 static void set_int_from_tuple (GValue * value, const Tuple & tuple, Tuple::Field field)
 {
@@ -202,14 +203,12 @@ static void get_value (void * user, int row, int column, GValue * value)
 
 static bool get_selected (void * user, int row)
 {
-    return aud_playlist_entry_get_selected (((PlaylistWidgetData *) user)->list,
-     row);
+    return aud_playlist_entry_get_selected (((PlaylistWidgetData *) user)->list, row);
 }
 
 static void set_selected (void * user, int row, bool selected)
 {
-    aud_playlist_entry_set_selected (((PlaylistWidgetData *) user)->list, row,
-     selected);
+    aud_playlist_entry_set_selected (((PlaylistWidgetData *) user)->list, row, selected);
 }
 
 static void select_all (void * user, bool selected)
@@ -248,40 +247,25 @@ static void shift_rows (void * user, int row, int before)
     aud_playlist_shift (list, row, before - row);
 }
 
-static gboolean popup_show (PlaylistWidgetData * data)
-{
-    audgui_infopopup_show (data->list, data->popup_pos);
-    data->popup_shown = true;
-
-    g_source_remove (data->popup_source);
-    data->popup_source = 0;
-    return false;
-}
-
 static void popup_hide (PlaylistWidgetData * data)
 {
-    if (data->popup_source)
-    {
-        g_source_remove (data->popup_source);
-        data->popup_source = 0;
-    }
-
-    if (data->popup_shown)
-    {
-        audgui_infopopup_hide ();
-        data->popup_shown = false;
-    }
+    audgui_infopopup_hide ();
 
     data->popup_pos = -1;
+    data->popup_timer.stop ();
 }
 
 static void popup_trigger (PlaylistWidgetData * data, int pos)
 {
-    popup_hide (data);
+    audgui_infopopup_hide ();
+
+    auto show_cb = [] (void * data_) {
+        auto data = (PlaylistWidgetData *) data_;
+        audgui_infopopup_show (data->list, data->popup_pos);
+    };
 
     data->popup_pos = pos;
-    data->popup_source = g_timeout_add (aud_get_int (nullptr, "filepopup_delay") *
-     100, (GSourceFunc) popup_show, data);
+    data->popup_timer.queue (aud_get_int (nullptr, "filepopup_delay") * 100, show_cb, data);
 }
 
 static void mouse_motion (void * user, GdkEventMotion * event, int row)
@@ -381,9 +365,6 @@ GtkWidget * ui_playlist_widget_new (int playlist)
 {
     PlaylistWidgetData * data = new PlaylistWidgetData;
     data->list = playlist;
-    data->popup_source = 0;
-    data->popup_pos = -1;
-    data->popup_shown = false;
 
     GtkWidget * list = audgui_list_new (& callbacks, data,
      aud_playlist_entry_count (playlist));
@@ -481,7 +462,7 @@ void ui_playlist_widget_scroll (GtkWidget * widget)
     /* Only update the info popup if it is already shown or about to be shown;
      * this makes sure that it doesn't pop up when the Audacious window isn't
      * even visible. */
-    if (row >= 0 && (data->popup_source || data->popup_shown))
+    if (row >= 0 && data->popup_pos >= 0)
         popup_trigger (data, row);
     else
         popup_hide (data);
