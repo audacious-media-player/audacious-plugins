@@ -44,11 +44,6 @@ public:
 
 EXPORT SongChange aud_plugin_instance;
 
-static void songchange_playback_begin(void *, void *);
-static void songchange_playback_end(void *, void *);
-static void songchange_playlist_eof(void *, void *);
-static void songchange_playback_ttc(void *, void *);
-
 static String cmd_line;
 static String cmd_line_after;
 static String cmd_line_end;
@@ -205,42 +200,6 @@ static void do_command (const char * cmd)
     }
 }
 
-static void read_config ()
-{
-    cmd_line = aud_get_str ("song_change", "cmd_line");
-    cmd_line_after = aud_get_str ("song_change", "cmd_line_after");
-    cmd_line_end = aud_get_str ("song_change", "cmd_line_end");
-    cmd_line_ttc = aud_get_str ("song_change", "cmd_line_ttc");
-}
-
-void SongChange::cleanup ()
-{
-    hook_dissociate ("playback ready", songchange_playback_begin);
-    hook_dissociate ("playback end", songchange_playback_end);
-    hook_dissociate ("playlist end reached", songchange_playlist_eof);
-    hook_dissociate ("title change", songchange_playback_ttc);
-
-    cmd_line = String ();
-    cmd_line_after = String ();
-    cmd_line_end = String ();
-    cmd_line_ttc = String ();
-
-    signal (SIGCHLD, SIG_DFL);
-}
-
-
-bool SongChange::init ()
-{
-    read_config ();
-
-    hook_associate ("playback ready", songchange_playback_begin, nullptr);
-    hook_associate ("playback end", songchange_playback_end, nullptr);
-    hook_associate ("playlist end reached", songchange_playlist_eof, nullptr);
-    hook_associate ("title change", songchange_playback_ttc, nullptr);
-
-    return true;
-}
-
 static void songchange_playback_begin (void *, void *)
 {
     do_command (cmd_line);
@@ -261,6 +220,41 @@ static void songchange_playlist_eof (void *, void *)
     do_command (cmd_line_end);
 }
 
+static void read_config ()
+{
+    cmd_line = aud_get_str ("song_change", "cmd_line");
+    cmd_line_after = aud_get_str ("song_change", "cmd_line_after");
+    cmd_line_end = aud_get_str ("song_change", "cmd_line_end");
+    cmd_line_ttc = aud_get_str ("song_change", "cmd_line_ttc");
+}
+
+bool SongChange::init ()
+{
+    read_config ();
+
+    hook_associate ("playback ready", songchange_playback_begin, nullptr);
+    hook_associate ("playback end", songchange_playback_end, nullptr);
+    hook_associate ("playlist end reached", songchange_playlist_eof, nullptr);
+    hook_associate ("title change", songchange_playback_ttc, nullptr);
+
+    return true;
+}
+
+void SongChange::cleanup ()
+{
+    hook_dissociate ("playback ready", songchange_playback_begin);
+    hook_dissociate ("playback end", songchange_playback_end);
+    hook_dissociate ("playlist end reached", songchange_playlist_eof);
+    hook_dissociate ("title change", songchange_playback_ttc);
+
+    cmd_line = String ();
+    cmd_line_after = String ();
+    cmd_line_end = String ();
+    cmd_line_ttc = String ();
+
+    signal (SIGCHLD, SIG_DFL);
+}
+
 typedef struct {
     String cmd;
     String cmd_after;
@@ -269,19 +263,6 @@ typedef struct {
 } SongChangeConfig;
 
 static SongChangeConfig config;
-
-static void configure_ok_cb ()
-{
-    aud_set_str ("song_change", "cmd_line", config.cmd);
-    aud_set_str ("song_change", "cmd_line_after", config.cmd_after);
-    aud_set_str ("song_change", "cmd_line_end", config.cmd_end);
-    aud_set_str ("song_change", "cmd_line_ttc", config.cmd_ttc);
-
-    cmd_line = config.cmd;
-    cmd_line_after = config.cmd_after;
-    cmd_line_end = config.cmd_end;
-    cmd_line_ttc = config.cmd_ttc;
-}
 
 const PreferencesWidget SongChange::widgets[] = {
     WidgetLabel (N_("<b>Commands</b>")),
@@ -323,6 +304,19 @@ static void configure_init ()
     config.cmd_after = cmd_line_after;
     config.cmd_end = cmd_line_end;
     config.cmd_ttc = cmd_line_ttc;
+}
+
+static void configure_ok_cb ()
+{
+    aud_set_str ("song_change", "cmd_line", config.cmd);
+    aud_set_str ("song_change", "cmd_line_after", config.cmd_after);
+    aud_set_str ("song_change", "cmd_line_end", config.cmd_end);
+    aud_set_str ("song_change", "cmd_line_ttc", config.cmd_ttc);
+
+    cmd_line = config.cmd;
+    cmd_line_after = config.cmd_after;
+    cmd_line_end = config.cmd_end;
+    cmd_line_ttc = config.cmd_ttc;
 }
 
 static void configure_cleanup ()
