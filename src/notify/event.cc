@@ -46,7 +46,7 @@ static void clear_cache ()
     osd_hide ();
 }
 
-static gboolean get_album_art ()
+static bool get_album_art ()
 {
     if (last_pixbuf)
         return false;
