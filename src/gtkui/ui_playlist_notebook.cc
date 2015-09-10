@@ -362,8 +362,9 @@ void ui_playlist_notebook_create_tab (int playlist)
 void ui_playlist_notebook_populate ()
 {
     int playlist = aud_playlist_get_active ();
+    int playlist_count = aud_playlist_count ();
 
-    for (int count = 0; count < aud_playlist_count (); count ++)
+    for (int count = 0; count < playlist_count; count ++)
         ui_playlist_notebook_create_tab (count);
 
     gtk_notebook_set_current_page (UI_PLAYLIST_NOTEBOOK, playlist);
