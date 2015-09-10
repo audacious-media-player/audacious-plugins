@@ -272,13 +272,15 @@ void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent * e)
         return;
 
     PlaylistTabs * p = (PlaylistTabs *) parent ();
-    p->editTab (idx);
+    PlaylistWidget * pl = p->playlistWidget (idx);
+
+    aud_playlist_play (pl->playlist ());
 }
 
 void PlaylistTabBar::handleCloseRequest (int idx)
 {
     PlaylistTabs * p = (PlaylistTabs *) parent ();
-    PlaylistWidget * pl = (PlaylistWidget *) p->widget (idx);
+    PlaylistWidget * pl = p->playlistWidget (idx);
 
     if (! pl)
         return;
