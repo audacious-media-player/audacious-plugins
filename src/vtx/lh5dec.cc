@@ -164,7 +164,7 @@ static void read_pt_len(int nn, int nbit, int i_special)
   }
 }
 
-static void read_c_len(void)
+static void read_c_len()
 {
   int i, c, n;
   unsigned short mask;
@@ -200,7 +200,7 @@ static void read_c_len(void)
 }
 
 
-static unsigned short decode_c(void)
+static unsigned short decode_c()
 {
   unsigned short j, mask;
 
@@ -225,7 +225,7 @@ static unsigned short decode_c(void)
 }
 
 
-static unsigned short decode_p(void)
+static unsigned short decode_p()
 {
   unsigned short j, mask;
 

@@ -151,7 +151,7 @@ const PluginPreferences CoreAudioPlugin::prefs = {
     nullptr
 };
 
-bool CoreAudioPlugin::init (void)
+bool CoreAudioPlugin::init ()
 {
     aud_config_set_defaults ("coreaudio", defaults);
 
@@ -192,7 +192,7 @@ bool CoreAudioPlugin::init (void)
     return 1;
 }
 
-void CoreAudioPlugin::cleanup (void)
+void CoreAudioPlugin::cleanup ()
 {
 }
 

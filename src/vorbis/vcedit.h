@@ -34,7 +34,7 @@ typedef struct {
 	int               eosin;
 } vcedit_state;
 
-extern vcedit_state *vcedit_new_state(void);
+extern vcedit_state *vcedit_new_state();
 extern void vcedit_clear(vcedit_state *state);
 extern vorbis_comment *vcedit_comments(vcedit_state *state);
 extern int vcedit_open(vcedit_state *state, VFSFile &in);

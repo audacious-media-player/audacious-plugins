@@ -85,7 +85,7 @@ char track_no[64];
 int track_no_pos;
 int tid;
 
-void init_lirc (void)
+void init_lirc ()
 {
     int flags;
 

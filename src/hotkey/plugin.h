@@ -49,9 +49,9 @@ typedef struct {
 
 
 
-void load_config (void);
-void save_config (void);
-PluginConfig* get_config(void);
+void load_config ();
+void save_config ();
+PluginConfig* get_config ();
 gboolean handle_keyevent(EVENT event);
 
 #endif

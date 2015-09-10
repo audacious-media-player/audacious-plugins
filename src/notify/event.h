@@ -17,5 +17,5 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-void event_init (void);
-void event_uninit (void);
+void event_init ();
+void event_uninit ();

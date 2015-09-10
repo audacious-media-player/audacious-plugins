@@ -20,4 +20,4 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 void osd_show (const char * title, const char * message, const char * icon, GdkPixbuf * pixbuf);
-void osd_hide (void);
+void osd_hide ();

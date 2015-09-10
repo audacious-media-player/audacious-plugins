@@ -27,7 +27,7 @@
 #include <libaudcore/interface.h>
 #include <libaudcore/runtime.h>
 
-static void show_cb (void)
+static void show_cb ()
 {
     aud_ui_show (true);
 }
@@ -100,7 +100,7 @@ void osd_show (const char * title, const char * _message, const char * icon,
     g_free (message);
 }
 
-void osd_hide (void)
+void osd_hide ()
 {
     if (! notification)
         return;

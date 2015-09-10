@@ -18,7 +18,7 @@
 #define CHUNKSIZE 4096
 
 vcedit_state *
-vcedit_new_state(void)
+vcedit_new_state()
 {
     return g_new0(vcedit_state, 1);
 }

@@ -34,7 +34,7 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
-static void /* GtkWidget */ * bscope_get_color_chooser (void);
+static void /* GtkWidget */ * bscope_get_color_chooser ();
 
 static const PreferencesWidget bscope_widgets[] = {
     WidgetLabel (N_("<b>Color</b>")),
@@ -217,7 +217,7 @@ static void color_set_cb (GtkWidget * chooser)
     bscope_color = ((gdk_color.red & 0xff00) << 8) | (gdk_color.green & 0xff00) | (gdk_color.blue >> 8);
 }
 
-static void /* GtkWidget */ * bscope_get_color_chooser (void)
+static void /* GtkWidget */ * bscope_get_color_chooser ()
 {
     GdkColor gdk_color = {0, (uint16_t) ((bscope_color & 0xff0000) >> 8),
      (uint16_t) (bscope_color & 0xff00), (uint16_t) ((bscope_color & 0xff) << 8)};

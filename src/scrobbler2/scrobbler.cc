@@ -64,7 +64,7 @@ static   unsigned queue_function_ID   = 0;
 
 static pthread_t communicator;
 
-static void cleanup_current_track(void) {
+static void cleanup_current_track () {
 
     timestamp = 0;
     play_started_at = 0;

@@ -190,7 +190,7 @@ static GtkWidget *lookup_widget(GtkWidget *w, const char *name)
  * the callback function that is called when the save button is
  * pressed saves configuration to ~/.bmp/alarmconfig
  */
-static void alarm_save(void)
+static void alarm_save()
 {
     int daynum = 0;  // used to identify day number
 
@@ -267,7 +267,7 @@ static void alarm_save(void)
 /*
  * read the current configuration from the file
  */
-static void alarm_read_config(void)
+static void alarm_read_config()
 {
     int daynum = 0;   // used for day number
 
@@ -306,7 +306,7 @@ static void alarm_read_config(void)
 /*
  * displays the configuration window and opens the config file.
  */
-static void *alarm_make_config_widget(void)
+static void *alarm_make_config_widget()
 {
     int daynum = 0;  // used to loop days
     GtkWidget *w;

@@ -1011,7 +1011,7 @@ static void OPLWriteReg(FM_OPL *OPL, int r, int v)
 }
 
 /* lock/unlock for common table */
-static int OPL_LockTable(void)
+static int OPL_LockTable()
 {
         num_lock++;
         if(num_lock>1) return 0;
@@ -1026,7 +1026,7 @@ static int OPL_LockTable(void)
         return 0;
 }
 
-static void OPL_UnLockTable(void)
+static void OPL_UnLockTable()
 {
         if(num_lock) num_lock--;
         if(num_lock) return;
