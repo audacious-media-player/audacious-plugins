@@ -28,43 +28,50 @@
 
 StringBuf Formatter::format (const char * format) const
 {
-    const char *p;
-    char *q;
+    const char * p;
+    char * q;
     int len;
 
-    for (p = format, len = 0; *p; p++) {
-        if (*p == '%') {
-            if (values[(int) *++p])
-                len += strlen(values[(int) *p]);
-            else if (!*p) {
+    for (p = format, len = 0; * p; p ++)
+    {
+        if (* p == '%')
+        {
+            if (values[(int) * ++ p])
+                len += strlen (values[(int) * p]);
+            else if (! * p)
+            {
                 len += 1;
-                p--;
+                p --;
             }
             else
                 len += 2;
         }
         else
-            len++;
+            len ++;
     }
 
     StringBuf buffer (len);
 
-    for (p = format, q = buffer; *p; p++) {
-        if (*p == '%') {
-            if (values[(int) *++p]) {
-                strcpy(q, values[(int) *p]);
-                q += strlen(q);
+    for (p = format, q = buffer; * p; p ++)
+    {
+        if (* p == '%')
+        {
+            if (values[(int) * ++ p])
+            {
+                strcpy (q, values[(int) * p]);
+                q += strlen (q);
             }
-            else {
-                *q++ = '%';
-                if (*p != '\0')
-                    *q++ = *p;
+            else
+            {
+                * q ++ = '%';
+                if (* p != '\0')
+                    * q ++ = * p;
                 else
-                    p--;
+                    p --;
             }
         }
         else
-            *q++ = *p;
+            * q ++ = * p;
     }
 
     // sanity check

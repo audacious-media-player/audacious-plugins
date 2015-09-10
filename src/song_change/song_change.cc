@@ -2,6 +2,7 @@
  * Audacious: A cross-platform multimedia player.
  * Copyright (c) 2005  Audacious Team
  */
+
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -57,28 +58,29 @@ static String cmd_line_ttc;
  * Escapes characters that are special to the shell inside double quotes.
  *
  * @param string String to be escaped.
- * @return Given string with special characters escaped. Must be freed with g_free().
+ * @return Given string with special characters escaped.
  */
 static StringBuf escape_shell_chars (const char * string)
 {
-    const char *special = "$`\"\\";    /* Characters to escape */
-    const char *in = string;
-    char *out;
+    const char * special = "$`\"\\";    /* Characters to escape */
+    const char * in = string;
+    char * out;
     int num = 0;
 
-    while (*in != '\0')
-        if (strchr(special, *in++))
-            num++;
+    while (* in != '\0')
+        if (strchr (special, * in ++))
+            num ++;
 
     StringBuf escaped (strlen (string) + num);
 
     in = string;
     out = escaped;
 
-    while (*in != '\0') {
-        if (strchr(special, *in))
-            *out++ = '\\';
-        *out++ = *in++;
+    while (* in != '\0')
+    {
+        if (strchr (special, * in))
+            * out ++ = '\\';
+        * out ++ = * in ++;
     }
 
     // sanity check
@@ -87,23 +89,23 @@ static StringBuf escape_shell_chars (const char * string)
     return escaped;
 }
 
-static void bury_child(int signal)
+static void bury_child (int signal)
 {
-    waitpid(-1, nullptr, WNOHANG);
+    waitpid (-1, nullptr, WNOHANG);
 }
 
-static void execute_command(char *cmd)
+static void execute_command (const char * cmd)
 {
-    const char *argv[4] = {"/bin/sh", "-c", nullptr, nullptr};
-    int i;
+    const char * argv[4] = {"/bin/sh", "-c", nullptr, nullptr};
     argv[2] = cmd;
-    signal(SIGCHLD, bury_child);
-    if (fork() == 0)
+    signal (SIGCHLD, bury_child);
+
+    if (fork () == 0)
     {
         /* We don't want this process to hog the audio device etc */
-        for (i = 3; i < 255; i++)
-            close(i);
-        execv("/bin/sh", (char **)argv);
+        for (int i = 3; i < 255; i ++)
+            close (i);
+        execv (argv[0], (char * *) argv);
     }
 }
 
@@ -126,7 +128,7 @@ static void execute_command(char *cmd)
    @cmd: command to run */
 static void do_command (const char * cmd)
 {
-    if (cmd && strlen(cmd) > 0)
+    if (cmd && strlen (cmd) > 0)
     {
         Formatter formatter;
         bool playing = aud_drct_get_ready ();
@@ -199,61 +201,62 @@ static void do_command (const char * cmd)
 
         StringBuf shstring = formatter.format (cmd);
         if (shstring)
-            execute_command(shstring);
+            execute_command (shstring);
     }
 }
 
-static void read_config(void)
+static void read_config ()
 {
-    cmd_line = aud_get_str("song_change", "cmd_line");
-    cmd_line_after = aud_get_str("song_change", "cmd_line_after");
-    cmd_line_end = aud_get_str("song_change", "cmd_line_end");
-    cmd_line_ttc = aud_get_str("song_change", "cmd_line_ttc");
+    cmd_line = aud_get_str ("song_change", "cmd_line");
+    cmd_line_after = aud_get_str ("song_change", "cmd_line_after");
+    cmd_line_end = aud_get_str ("song_change", "cmd_line_end");
+    cmd_line_ttc = aud_get_str ("song_change", "cmd_line_ttc");
 }
 
 void SongChange::cleanup ()
 {
-    hook_dissociate("playback ready", songchange_playback_begin);
-    hook_dissociate("playback end", songchange_playback_end);
-    hook_dissociate("playlist end reached", songchange_playlist_eof);
-    hook_dissociate("title change", songchange_playback_ttc);
+    hook_dissociate ("playback ready", songchange_playback_begin);
+    hook_dissociate ("playback end", songchange_playback_end);
+    hook_dissociate ("playlist end reached", songchange_playlist_eof);
+    hook_dissociate ("title change", songchange_playback_ttc);
 
     cmd_line = String ();
     cmd_line_after = String ();
     cmd_line_end = String ();
     cmd_line_ttc = String ();
 
-    signal(SIGCHLD, SIG_DFL);
+    signal (SIGCHLD, SIG_DFL);
 }
+
 
 bool SongChange::init ()
 {
-    read_config();
+    read_config ();
 
-    hook_associate("playback ready", songchange_playback_begin, nullptr);
-    hook_associate("playback end", songchange_playback_end, nullptr);
-    hook_associate("playlist end reached", songchange_playlist_eof, nullptr);
-    hook_associate("title change", songchange_playback_ttc, nullptr);
+    hook_associate ("playback ready", songchange_playback_begin, nullptr);
+    hook_associate ("playback end", songchange_playback_end, nullptr);
+    hook_associate ("playlist end reached", songchange_playlist_eof, nullptr);
+    hook_associate ("title change", songchange_playback_ttc, nullptr);
 
     return true;
 }
 
-static void songchange_playback_begin(void *, void *)
+static void songchange_playback_begin (void *, void *)
 {
     do_command (cmd_line);
 }
 
-static void songchange_playback_end(void *, void *)
+static void songchange_playback_end (void *, void *)
 {
     do_command (cmd_line_after);
 }
 
-static void songchange_playback_ttc(void *, void *)
+static void songchange_playback_ttc (void *, void *)
 {
     do_command (cmd_line_ttc);
 }
 
-static void songchange_playlist_eof(void *, void *)
+static void songchange_playlist_eof (void *, void *)
 {
     do_command (cmd_line_end);
 }
@@ -267,12 +270,12 @@ typedef struct {
 
 static SongChangeConfig config;
 
-static void configure_ok_cb()
+static void configure_ok_cb ()
 {
-    aud_set_str("song_change", "cmd_line", config.cmd);
-    aud_set_str("song_change", "cmd_line_after", config.cmd_after);
-    aud_set_str("song_change", "cmd_line_end", config.cmd_end);
-    aud_set_str("song_change", "cmd_line_ttc", config.cmd_ttc);
+    aud_set_str ("song_change", "cmd_line", config.cmd);
+    aud_set_str ("song_change", "cmd_line_after", config.cmd_after);
+    aud_set_str ("song_change", "cmd_line_end", config.cmd_end);
+    aud_set_str ("song_change", "cmd_line_ttc", config.cmd_ttc);
 
     cmd_line = config.cmd;
     cmd_line_after = config.cmd_after;
@@ -314,7 +317,7 @@ const PreferencesWidget SongChange::widgets[] = {
                     "unexpected results."))
 };
 
-static void configure_init(void)
+static void configure_init ()
 {
     config.cmd = cmd_line;
     config.cmd_after = cmd_line_after;
@@ -322,7 +325,7 @@ static void configure_init(void)
     config.cmd_ttc = cmd_line_ttc;
 }
 
-static void configure_cleanup(void)
+static void configure_cleanup ()
 {
     config.cmd = String ();
     config.cmd_after = String ();
