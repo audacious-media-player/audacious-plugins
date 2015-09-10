@@ -240,10 +240,17 @@ void PlaylistTabs::playlist_position_cb (int list)
 
 PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)
 {
+    setMovable (true);
     setDocumentMode (true);
     setTabsClosable (true);
 
+    connect (this, & QTabBar::tabMoved, this, & PlaylistTabBar::tabMoved);
     connect (this, & QTabBar::tabCloseRequested, this, & PlaylistTabBar::handleCloseRequest);
+}
+
+void PlaylistTabBar::tabMoved (int from, int to)
+{
+    aud_playlist_reorder (from, to, 1);
 }
 
 void PlaylistTabBar::mousePressEvent (QMouseEvent * e)
