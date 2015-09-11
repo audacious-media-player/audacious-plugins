@@ -23,7 +23,6 @@
 void action_playlist_refresh_list ();
 
 void action_playlist_play ();
-void action_playlist_new ();
 void action_playlist_prev ();
 void action_playlist_next ();
 void action_playlist_rename ();

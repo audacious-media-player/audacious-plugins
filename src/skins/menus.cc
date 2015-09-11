@@ -27,6 +27,7 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/playlist.h>
 #include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
@@ -144,7 +145,7 @@ static const AudguiMenuItem playback_items[] = {
 static const AudguiMenuItem playlist_items[] = {
     MenuCommand (N_("Play/Resume"), "media-playback-start", GDK_KEY_Return, SHIFT, action_playlist_play),
     MenuSep (),
-    MenuCommand (N_("New Playlist"), "document-new", 'n', SHIFT, action_playlist_new),
+    MenuCommand (N_("New Playlist"), "document-new", 'n', SHIFT, (GCallback) aud_playlist_new),
     MenuCommand (N_("Rename Playlist ..."), "insert-text", GDK_KEY_F2, NO_MOD, action_playlist_rename),
     MenuCommand (N_("Remove Playlist"), "edit-delete", 'd', SHIFT, action_playlist_delete),
     MenuSep (),

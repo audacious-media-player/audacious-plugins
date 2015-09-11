@@ -56,13 +56,6 @@ static void rename_cb (void * unused)
     audgui_show_playlist_rename (aud_playlist_get_active ());
 }
 
-static void new_cb (void * unused)
-{
-    int playlist = aud_playlist_get_active () + 1;
-    aud_playlist_insert (playlist);
-    aud_playlist_set_active (playlist);
-}
-
 static void delete_cb (void * unused)
 {
     audgui_confirm_playlist_delete (aud_playlist_get_active ());
@@ -243,7 +236,8 @@ void * PlaylistManager::get_gtk_widget ()
 
     /* ButtonBox */
     GtkWidget * playman_button_hbox = gtk_hbox_new (false, 6);
-    GtkWidget * new_button = audgui_button_new (_("_New"), "document-new", new_cb, nullptr);
+    GtkWidget * new_button = audgui_button_new (_("_New"), "document-new",
+     (AudguiCallback) aud_playlist_new, nullptr);
     GtkWidget * delete_button = audgui_button_new (_("_Remove"), "edit-delete", delete_cb, nullptr);
     GtkWidget * rename_button = audgui_button_new (_("Ren_ame"), "insert-text", rename_cb, nullptr);
 

@@ -315,11 +315,7 @@ void * PlaylistManagerQt::get_qt_widget ()
     vbox->addLayout (hbox);
 
     auto new_button = new_tool_button (N_("_New"), "document-new");
-    QObject::connect (new_button, & QToolButton::clicked, [] () {
-        int playlist = aud_playlist_get_active () + 1;
-        aud_playlist_insert (playlist);
-        aud_playlist_set_active (playlist);
-    });
+    QObject::connect (new_button, & QToolButton::clicked, aud_playlist_new);
 
     auto rename_button = new_tool_button (N_("Ren_ame"), "insert-text");
     QObject::connect (rename_button, & QToolButton::clicked, [] () {

@@ -84,13 +84,6 @@ static void size_allocate_cb (GtkWidget * treeview)
     }
 }
 
-static void add_button_cb (GtkButton * button)
-{
-    int playlist = aud_playlist_get_active () + 1;
-    aud_playlist_insert (playlist);
-    aud_playlist_set_active (playlist);
-}
-
 static void make_add_button (GtkWidget * notebook)
 {
     GtkWidget * button = gtk_button_new ();
@@ -99,7 +92,7 @@ static void make_add_button (GtkWidget * notebook)
      ("list-add", GTK_ICON_SIZE_MENU));
     gtk_widget_set_can_focus (button, false);
 
-    g_signal_connect (button, "clicked", (GCallback) add_button_cb, nullptr);
+    g_signal_connect (button, "clicked", (GCallback) aud_playlist_new, nullptr);
     gtk_widget_show_all (button);
 
     gtk_notebook_set_action_widget ((GtkNotebook *) notebook, button, GTK_PACK_END);

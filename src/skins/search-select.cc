@@ -52,10 +52,7 @@ static gboolean search_kp_cb (GtkWidget * entry, GdkEventKey * event, GtkWidget 
 static void copy_selected_to_new (int playlist)
 {
     int entries = aud_playlist_entry_count (playlist);
-    int new_list = aud_playlist_count ();
     Index<PlaylistAddItem> items;
-
-    aud_playlist_insert (new_list);
 
     for (int entry = 0; entry < entries; entry ++)
     {
@@ -67,8 +64,8 @@ static void copy_selected_to_new (int playlist)
         }
     }
 
+    int new_list = aud_playlist_new ();
     aud_playlist_entry_insert_batch (new_list, 0, std::move (items), false);
-    aud_playlist_set_active (new_list);
 }
 
 void action_playlist_search_and_select ()
