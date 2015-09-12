@@ -87,11 +87,10 @@ const char GlobalHotkeys::about[] =
     " Jonathan A. Davis <davis@jdhouse.org>,\n"
     " Jeremy Tan <nsx@nsx.homeip.net>");
 
-PluginConfig* get_config(void)
+PluginConfig* get_config ()
 {
     return &plugin_cfg;
 }
-
 
 /*
  * plugin activated
@@ -315,7 +314,7 @@ void add_hotkey(HotkeyConfiguration** pphotkey, KeySym keysym, int mask, int typ
     photkey->type = type;
 }
 
-void load_defaults (void)
+void load_defaults ()
 {
     HotkeyConfiguration* hotkey;
 
@@ -338,7 +337,7 @@ void load_defaults (void)
 }
 
 /* load plugin configuration */
-void load_config (void)
+void load_config ()
 {
     HotkeyConfiguration *hotkey;
     int i,max;
@@ -389,7 +388,7 @@ void load_config (void)
 }
 
 /* save plugin configuration */
-void save_config (void)
+void save_config ()
 {
     int max;
     HotkeyConfiguration *hotkey;

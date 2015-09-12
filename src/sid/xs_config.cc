@@ -110,7 +110,7 @@ const PluginPreferences sid_prefs = {{widgets}};
 
 /* Reset/initialize the configuration
  */
-void xs_init_configuration(void)
+void xs_init_configuration()
 {
     aud_config_set_defaults("sid", defaults);
 

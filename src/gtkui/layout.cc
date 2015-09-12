@@ -210,22 +210,21 @@ static GtkWidget * vbox_new (GtkWidget * widget, const char * name)
 }
 
 typedef struct {
-    GtkWidget * paned;
     GtkWidget * widget;
     bool vertical;
     int w, h;
 } RestoreSizeData;
 
-static gboolean restore_size_cb (RestoreSizeData * d)
+static void restore_size_cb (GtkPaned * paned, GdkRectangle *, RestoreSizeData * d)
 {
     GtkAllocation rect;
     gtk_widget_get_allocation (d->widget, & rect);
-    int pos = gtk_paned_get_position ((GtkPaned *) d->paned);
-    pos -= d->vertical ? d->h - rect.height : d->w - rect.width;
-    gtk_paned_set_position ((GtkPaned *) d->paned, pos);
 
-    g_slice_free (RestoreSizeData, d);
-    return false;
+    int pos = gtk_paned_get_position (paned);
+    pos -= d->vertical ? d->h - rect.height : d->w - rect.width;
+    gtk_paned_set_position (paned, pos);
+
+    g_signal_handlers_disconnect_by_data (paned, d);
 }
 
 static GtkWidget * paned_new (bool vertical, bool after, int w, int h)
@@ -250,13 +249,14 @@ static GtkWidget * paned_new (bool vertical, bool after, int w, int h)
         if (after)
         {
             /* hack to set the size of the second pane */
-            RestoreSizeData * d = g_slice_new (RestoreSizeData);
-            d->paned = paned;
+            auto d = g_new (RestoreSizeData, 1);
             d->widget = mine;
             d->vertical = vertical;
             d->w = w;
             d->h = h;
-            g_idle_add ((GSourceFunc) restore_size_cb, d);
+
+            g_signal_connect_data (paned, "size-allocate", (GCallback)
+             restore_size_cb, d, (GClosureNotify) g_free, (GConnectFlags) 0);
         }
         else
             gtk_paned_set_position ((GtkPaned *) paned, vertical ? h : w);
@@ -356,8 +356,7 @@ static void item_add (Item * item)
         if (item->x >= 0 && item->y >= 0)
             gtk_window_move ((GtkWindow *) item->window, item->x, item->y);
         if (item->w > 0 && item->h > 0)
-            gtk_window_set_default_size ((GtkWindow *) item->window, item->w,
-             item->h);
+            gtk_window_set_default_size ((GtkWindow *) item->window, item->w, item->h);
 
         gtk_container_add ((GtkContainer *) item->window, item->vbox);
         gtk_widget_show_all (item->window);
@@ -382,8 +381,7 @@ static void item_add (Item * item)
             parent = item_get_parent (where);
             g_return_if_fail (parent);
 
-            paned = paned_new (! IS_VERTICAL (where->dock), false, where->w,
-             where->h);
+            paned = paned_new (! IS_VERTICAL (where->dock), false, where->w, where->h);
             where->paned = paned;
             NULL_ON_DESTROY (where->paned);
         }
@@ -392,8 +390,7 @@ static void item_add (Item * item)
             parent = dock_get_parent (item->dock);
             g_return_if_fail (parent);
 
-            paned = paned_new (IS_VERTICAL (item->dock), IS_AFTER (item->dock),
-             item->w, item->h);
+            paned = paned_new (IS_VERTICAL (item->dock), IS_AFTER (item->dock), item->w, item->h);
             docks[item->dock] = paned;
             NULL_ON_DESTROY (docks[item->dock]);
         }

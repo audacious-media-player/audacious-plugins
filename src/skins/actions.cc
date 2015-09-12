@@ -97,13 +97,6 @@ void action_playlist_refresh_list ()
 void action_playlist_play ()
     { aud_playlist_play (ACTIVE); }
 
-void action_playlist_new ()
-{
-    int playlist = aud_playlist_count ();
-    aud_playlist_insert (playlist);
-    aud_playlist_set_active (playlist);
-}
-
 void action_playlist_prev ()
 {
     int playlist = ACTIVE;

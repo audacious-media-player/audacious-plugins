@@ -32,7 +32,7 @@
 static String last_title, last_message;
 static GdkPixbuf * last_pixbuf = nullptr;
 
-static void clear_cache (void)
+static void clear_cache ()
 {
     last_title = String ();
     last_message = String ();
@@ -46,7 +46,7 @@ static void clear_cache (void)
     osd_hide ();
 }
 
-static gboolean get_album_art (void)
+static bool get_album_art ()
 {
     if (last_pixbuf)
         return false;
@@ -59,18 +59,18 @@ static gboolean get_album_art (void)
     return true;
 }
 
-static void show_stopped (void)
+static void show_stopped ()
 {
     osd_show (_("Stopped"), _("Audacious is not playing."), "audacious", nullptr);
 }
 
-static void show_playing (void)
+static void show_playing ()
 {
     if (last_title && last_message)
         osd_show (last_title, last_message, "audio-x-generic", last_pixbuf);
 }
 
-static void playback_update (void)
+static void playback_update ()
 {
     Tuple tuple = aud_drct_get_tuple ();
     String title = tuple.get_str (Tuple::Title);
@@ -100,13 +100,13 @@ static void playback_update (void)
     show_playing ();
 }
 
-static void playback_paused (void)
+static void playback_paused ()
 {
     if (aud_get_bool ("notify", "resident"))
         show_playing ();
 }
 
-static void playback_stopped (void)
+static void playback_stopped ()
 {
     clear_cache ();
 
@@ -114,7 +114,7 @@ static void playback_stopped (void)
         show_stopped ();
 }
 
-static void force_show (void)
+static void force_show ()
 {
     if (aud_drct_get_playing ())
         show_playing ();
@@ -122,7 +122,7 @@ static void force_show (void)
         show_stopped ();
 }
 
-void event_init (void)
+void event_init ()
 {
     if (aud_drct_get_ready ())
         playback_update ();
@@ -139,7 +139,7 @@ void event_init (void)
     hook_associate ("aosd toggle", (HookFunction) force_show, nullptr);
 }
 
-void event_uninit (void)
+void event_uninit ()
 {
     hook_dissociate ("playback begin", (HookFunction) clear_cache);
     hook_dissociate ("playback ready", (HookFunction) playback_update);

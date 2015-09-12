@@ -82,6 +82,7 @@ public:
     void handleCloseRequest (int idx);
 
 protected:
+    void tabMoved (int from, int to);
     void mousePressEvent (QMouseEvent * e);
     void mouseDoubleClickEvent (QMouseEvent * e);
 };

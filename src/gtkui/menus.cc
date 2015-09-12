@@ -80,13 +80,6 @@ static void pl_sort_selected_custom () { aud_playlist_sort_selected_by_scheme (a
 static void pl_reverse_selected () { aud_playlist_reverse_selected (aud_playlist_get_active ()); }
 static void pl_random_selected () { aud_playlist_randomize_selected (aud_playlist_get_active ()); }
 
-static void pl_new ()
-{
-    int playlist = aud_playlist_get_active () + 1;
-    aud_playlist_insert (playlist);
-    aud_playlist_set_active (playlist);
-}
-
 static void pl_play () { aud_playlist_play (aud_playlist_get_active ()); }
 static void pl_refresh () { aud_playlist_rescan (aud_playlist_get_active ()); }
 static void pl_remove_failed () { aud_playlist_remove_failed (aud_playlist_get_active ()); }
@@ -216,7 +209,7 @@ static const AudguiMenuItem playlist_items[] = {
     MenuSub (N_("Remove _Duplicates"), "edit-copy", {dupe_items}),
     MenuCommand (N_("Remove _Unavailable Files"), "dialog-warning", NONE, pl_remove_failed),
     MenuSep (),
-    MenuCommand (N_("_New"), "document-new", 't', CTRL, pl_new),
+    MenuCommand (N_("_New"), "document-new", 't', CTRL, (GCallback) aud_playlist_new),
     MenuCommand (N_("Ren_ame ..."), "insert-text", GDK_KEY_F2, (GdkModifierType) 0, pl_rename),
     MenuCommand (N_("Remo_ve"), "edit-delete", 'w', CTRL, pl_close),
     MenuSep (),

@@ -85,7 +85,7 @@ char track_no[64];
 int track_no_pos;
 int tid;
 
-void init_lirc (void)
+void init_lirc ()
 {
     int flags;
 
@@ -350,6 +350,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     tid = g_timeout_add (1500, jump_to, nullptr);
                     utf8_title_markup = g_markup_printf_escaped ("%s", track_no);
                     hook_call ("aosd toggle", utf8_title_markup);
+                    g_free (utf8_title_markup);
                 }
             }
             else

@@ -178,7 +178,7 @@ void i_configure_ev_sflist_commit (void * sfont_lv)
 }
 
 
-void * create_soundfont_list (void)
+void * create_soundfont_list ()
 {
         GtkListStore * soundfont_file_store;
         GtkCellRenderer * soundfont_file_lv_text_rndr;

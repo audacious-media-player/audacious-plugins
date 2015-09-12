@@ -240,10 +240,17 @@ void PlaylistTabs::playlist_position_cb (int list)
 
 PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)
 {
+    setMovable (true);
     setDocumentMode (true);
     setTabsClosable (true);
 
+    connect (this, & QTabBar::tabMoved, this, & PlaylistTabBar::tabMoved);
     connect (this, & QTabBar::tabCloseRequested, this, & PlaylistTabBar::handleCloseRequest);
+}
+
+void PlaylistTabBar::tabMoved (int from, int to)
+{
+    aud_playlist_reorder (from, to, 1);
 }
 
 void PlaylistTabBar::mousePressEvent (QMouseEvent * e)
@@ -265,13 +272,15 @@ void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent * e)
         return;
 
     PlaylistTabs * p = (PlaylistTabs *) parent ();
-    p->editTab (idx);
+    PlaylistWidget * pl = p->playlistWidget (idx);
+
+    aud_playlist_play (pl->playlist ());
 }
 
 void PlaylistTabBar::handleCloseRequest (int idx)
 {
     PlaylistTabs * p = (PlaylistTabs *) parent ();
-    PlaylistWidget * pl = (PlaylistWidget *) p->widget (idx);
+    PlaylistWidget * pl = p->playlistWidget (idx);
 
     if (! pl)
         return;

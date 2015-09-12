@@ -45,9 +45,9 @@ sequencer_client_t;
 static sequencer_client_t sc;
 /* options */
 
-static void i_soundfont_load (void);
+static void i_soundfont_load ();
 
-void backend_init (void)
+void backend_init ()
 {
     sc.settings = new_fluid_settings();
 
@@ -82,7 +82,7 @@ void backend_init (void)
 }
 
 
-void backend_cleanup (void)
+void backend_cleanup ()
 {
     /* unload soundfonts */
     for (int id : sc.soundfont_ids)
@@ -94,7 +94,7 @@ void backend_cleanup (void)
 }
 
 
-void backend_reset (void)
+void backend_reset ()
 {
     fluid_synth_system_reset (sc.synth);  /* all notes off and channels reset */
 }
@@ -204,7 +204,7 @@ void backend_audio_info (int * channels, int * bitdepth, int * samplerate)
    *** INTERNALS ****************************************************
    ****************************************************************** */
 
-static void i_soundfont_load (void)
+static void i_soundfont_load ()
 {
     String soundfont_file = aud_get_str ("amidiplug", "fsyn_soundfont_file");
 

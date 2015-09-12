@@ -72,13 +72,6 @@ static void sort_sel_custom_title () { aud_playlist_sort_by_scheme (aud_playlist
 static void sort_sel_reverse () { aud_playlist_reverse (aud_playlist_get_active ()); }
 static void sort_sel_random () { aud_playlist_randomize (aud_playlist_get_active ()); }
 
-static void pl_new ()
-{
-    int playlist = aud_playlist_get_active () + 1;
-    aud_playlist_insert (playlist);
-    aud_playlist_set_active (playlist);
-}
-
 static void pl_play () { aud_playlist_play (aud_playlist_get_active ()); }
 static void pl_refresh () { aud_playlist_rescan (aud_playlist_get_active ()); }
 static void pl_remove_failed () { aud_playlist_remove_failed (aud_playlist_get_active ()); }
@@ -171,7 +164,7 @@ void MainWindow::setupActions ()
         audqt::MenuSub ({N_("Remove _Duplicates"), "edit-copy"}, dupe_items),
         audqt::MenuCommand ({N_("Remove _Unavailable Files"), "dialog-warning"}, pl_remove_failed),
         audqt::MenuSep (),
-        audqt::MenuCommand ({N_("_New"), "document-new", "Ctrl+T"}, pl_new),
+        audqt::MenuCommand ({N_("_New"), "document-new", "Ctrl+T"}, (audqt::MenuFunc) aud_playlist_new),
         audqt::MenuCommand ({N_("Ren_ame ..."), "insert-text", "F2"}, pl_rename),
         audqt::MenuCommand ({N_("Remo_ve"), "edit-delete", "Ctrl+W"}, pl_close),
         audqt::MenuSep (),

@@ -37,7 +37,7 @@ static bool reverb_setting = true;
 static bool override_chorus = false;
 static bool chorus_setting = true;
 
-static void get_values (void)
+static void get_values ()
 {
     int gain = aud_get_int ("amidiplug", "fsyn_synth_gain");
     int polyphony = aud_get_int ("amidiplug", "fsyn_synth_polyphony");
@@ -69,7 +69,7 @@ static void get_values (void)
     }
 }
 
-static void set_values (void)
+static void set_values ()
 {
     int gain = override_gain ? (int) (gain_setting * 10 + 0.5) : -1;
     int polyphony = override_polyphony ? polyphony_setting : -1;
@@ -82,7 +82,7 @@ static void set_values (void)
     aud_set_int ("amidiplug", "fsyn_synth_chorus", chorus);
 }
 
-static void backend_change (void)
+static void backend_change ()
 {
     set_values ();
 

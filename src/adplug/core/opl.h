@@ -50,7 +50,7 @@ class Copl
       return currChip;
     }
 
-  virtual void init(void) = 0;                  // reinitialize OPL chip(s)
+  virtual void init() = 0;                      // reinitialize OPL chip(s)
 
   // return this OPL chip's type
   ChipType gettype()

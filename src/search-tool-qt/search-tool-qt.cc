@@ -561,20 +561,22 @@ static void search_cleanup ()
     menu = nullptr;
 }
 
-static void do_add (bool play, String & title)
+static void do_add (bool play, bool set_title)
 {
     if (search_pending)
         search_timeout ();
 
     int list = aud_playlist_by_unique_id (playlist_id);
+    int n_items = items.len ();
     int n_selected = 0;
 
     Index<PlaylistAddItem> add;
+    String title;
 
     for (auto & idx : results_list->selectionModel ()->selectedRows ())
     {
         int i = idx.row ();
-        if (i < 0 || i >= items.len ())
+        if (i < 0 || i >= n_items)
             continue;
 
         const Item * item = items[i];
@@ -592,10 +594,11 @@ static void do_add (bool play, String & title)
             title = item->name;
     }
 
-    if (n_selected != 1)
-        title = String ();
+    int list2 = aud_playlist_get_active ();
+    aud_playlist_entry_insert_batch (list2, -1, std::move (add), play);
 
-    aud_playlist_entry_insert_batch (aud_playlist_get_active (), -1, std::move (add), play);
+    if (set_title && n_selected == 1)
+        aud_playlist_set_title (list2, title);
 }
 
 static void action_play ()
@@ -608,30 +611,19 @@ static void action_play ()
     else
         aud_playlist_queue_delete (list, 0, aud_playlist_queue_count (list));
 
-    String title;
-    do_add (true, title);
+    do_add (true, false);
 }
 
 static void action_create_playlist ()
 {
-    int playlist = aud_playlist_get_active () + 1;
-    aud_playlist_insert (playlist);
-    aud_playlist_set_active (playlist);
-
-    String title;
-    do_add (false, title);
-
-    if (title)
-        aud_playlist_set_title (playlist, title);
+    aud_playlist_new ();
+    do_add (false, true);
 }
 
 static void action_add_to_playlist ()
 {
-    if (aud_playlist_by_unique_id (playlist_id) == aud_playlist_get_active ())
-        return;
-
-    String title;
-    do_add (false, title);
+    if (aud_playlist_by_unique_id (playlist_id) != aud_playlist_get_active ())
+        do_add (false, false);
 }
 
 static StringBuf create_item_label (int row)

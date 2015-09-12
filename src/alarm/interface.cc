@@ -73,7 +73,7 @@ static const char help_text[] =
     "    Type the reminder in the input field and enable\n"
     "    the checkbox if you want it to be shown.");
 
-GtkWidget *create_alarm_dialog (void)
+GtkWidget *create_alarm_dialog ()
 {
     GtkWidget *alarm_dialog;
 
@@ -113,7 +113,7 @@ static void file_set_cb (GtkFileChooserButton *button, void * entry)
     g_free (uri);
 }
 
-GtkWidget *create_config_notebook (void)
+GtkWidget *create_config_notebook ()
 {
     /* General */
     GtkWidget *notebook;

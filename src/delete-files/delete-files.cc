@@ -87,7 +87,7 @@ static void really_delete (const char * filename)
         aud_ui_show_error (str_printf (_("Error deleting %s: %s."), filename, strerror (errno)));
 }
 
-static void confirm_delete (void)
+static void confirm_delete ()
 {
     Index<String> files;
 
@@ -119,7 +119,7 @@ static void confirm_delete (void)
     }
 }
 
-static void start_delete (void)
+static void start_delete ()
 {
     if (dialog)
     {
@@ -155,7 +155,7 @@ const char * const DeleteFiles::defaults[] = {
  "use_trash", "TRUE",
  nullptr};
 
-bool DeleteFiles::init (void)
+bool DeleteFiles::init ()
 {
 #if ! GLIB_CHECK_VERSION (2, 36, 0)
     g_type_init ();
@@ -169,7 +169,7 @@ bool DeleteFiles::init (void)
     return true;
 }
 
-void DeleteFiles::cleanup (void)
+void DeleteFiles::cleanup ()
 {
     if (dialog)
         gtk_widget_destroy (dialog);

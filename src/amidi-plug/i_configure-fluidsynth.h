@@ -21,6 +21,6 @@
 #ifndef _I_CONFIGURE_FLUIDSYNTH_H
 #define _I_CONFIGURE_FLUIDSYNTH_H 1
 
-void * create_soundfont_list (void);
+void * create_soundfont_list ();
 
 #endif /* !_I_CONFIGURE_FLUIDSYNTH_H */

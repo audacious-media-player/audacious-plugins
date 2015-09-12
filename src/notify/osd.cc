@@ -27,14 +27,14 @@
 #include <libaudcore/interface.h>
 #include <libaudcore/runtime.h>
 
-static void show_cb (void)
+static void show_cb ()
 {
     aud_ui_show (true);
 }
 
 static void osd_setup (NotifyNotification *notification)
 {
-    gboolean resident = aud_get_bool ("notify", "resident");
+    bool resident = aud_get_bool ("notify", "resident");
 
     notify_notification_set_hint (notification, "desktop-entry",
      g_variant_new_string ("audacious"));
@@ -58,8 +58,8 @@ void osd_setup_buttons (NotifyNotification *notification)
     notify_notification_add_action (notification, "default", _("Show"),
      NOTIFY_ACTION_CALLBACK (show_cb), nullptr, nullptr);
 
-    gboolean playing = aud_drct_get_playing ();
-    gboolean paused = aud_drct_get_paused ();
+    bool playing = aud_drct_get_playing ();
+    bool paused = aud_drct_get_paused ();
 
     if (playing && ! paused)
         notify_notification_add_action (notification, "media-playback-pause",
@@ -100,7 +100,7 @@ void osd_show (const char * title, const char * _message, const char * icon,
     g_free (message);
 }
 
-void osd_hide (void)
+void osd_hide ()
 {
     if (! notification)
         return;
