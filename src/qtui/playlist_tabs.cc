@@ -123,8 +123,16 @@ QLineEdit * PlaylistTabs::getTabEdit (int idx)
 
 void PlaylistTabs::setTabTitle (int idx, const char * text)
 {
-    // escape ampersands for setTabText()
-    setTabText (idx, QString (text).replace ("&", "&&"));
+    QString title = QString ();
+
+    if (aud_get_bool ("qtui", "entry_count_visible"))
+    {
+        title.setNum (aud_playlist_entry_count (idx));
+        title.prepend (" (").append (")");
+    }
+
+    // escape ampersands for setTabText ()
+    setTabText (idx, title.prepend (QString (text).replace ("&", "&&")));
 }
 
 void PlaylistTabs::setupTab (int idx, QWidget * button, const char * text, QWidget * * oldp)
@@ -242,7 +250,7 @@ PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)
 {
     setMovable (true);
     setDocumentMode (true);
-    setTabsClosable (true);
+    updateSettings ();
 
     connect (this, & QTabBar::tabMoved, this, & PlaylistTabBar::tabMoved);
     connect (this, & QTabBar::tabCloseRequested, this, & PlaylistTabBar::handleCloseRequest);
@@ -286,4 +294,10 @@ void PlaylistTabBar::handleCloseRequest (int idx)
         return;
 
     audqt::playlist_confirm_delete (pl->playlist ());
+}
+
+void PlaylistTabBar::updateSettings ()
+{
+    setAutoHide (! aud_get_bool ("qtui", "playlist_tabs_visible"));
+    setTabsClosable (aud_get_bool ("qtui", "close_button_visible"));
 }

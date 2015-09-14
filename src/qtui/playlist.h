@@ -21,6 +21,8 @@
 #define PLAYLIST_H
 
 #include <QTreeView>
+
+#include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 
 #include "playlist_model.h"
@@ -62,6 +64,10 @@ private:
     void mouseDoubleClickEvent (QMouseEvent * event);
     void currentChanged (const QModelIndex & current, const QModelIndex & previous);
     void selectionChanged (const QItemSelection & selected, const QItemSelection & deselected);
+
+    void updateSettings ();
+    const HookReceiver<PlaylistWidget>
+     settings_hook {"qtui update playlist settings", this, & PlaylistWidget::updateSettings};
 };
 
 #endif

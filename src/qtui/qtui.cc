@@ -28,6 +28,7 @@
 #include <libaudqt/iface.h>
 
 #include "main_window.h"
+#include "settings.h"
 
 class QtUI : public audqt::QtIfacePlugin
 {
@@ -35,11 +36,12 @@ private:
     MainWindow * window = nullptr;
 
 public:
-    constexpr QtUI () : audqt::QtIfacePlugin ({N_("Qt Interface"), PACKAGE}) {}
+    constexpr QtUI () : audqt::QtIfacePlugin ({N_("Qt Interface"), PACKAGE, nullptr, & qtui_prefs}) {}
 
     bool init ()
     {
         audqt::init ();
+        aud_config_set_defaults ("qtui", qtui_defaults);
         window = new MainWindow;
         return true;
     }
