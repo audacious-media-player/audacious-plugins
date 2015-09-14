@@ -169,12 +169,17 @@ void PlaylistTabs::tabEditedTrigger ()
 
 void PlaylistTabs::editTab (int idx)
 {
-    QLineEdit * edit = new QLineEdit ((const char *) aud_playlist_get_title (idx));
+    QLineEdit * edit = getTabEdit (idx);
 
-    connect (edit, & QLineEdit::returnPressed, this, & PlaylistTabs::tabEditedTrigger);
+    if (! edit)
+    {
+        edit = new QLineEdit ((const char *) aud_playlist_get_title (idx));
 
-    setupTab (idx, edit, nullptr, & m_leftbtn);
-    setTabText (idx, nullptr);
+        connect (edit, & QLineEdit::returnPressed, this, & PlaylistTabs::tabEditedTrigger);
+
+        setupTab (idx, edit, nullptr, & m_leftbtn);
+        setTabText (idx, nullptr);
+    }
 
     edit->selectAll ();
     edit->setFocus ();
