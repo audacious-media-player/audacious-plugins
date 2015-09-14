@@ -174,6 +174,7 @@ void PlaylistTabs::editTab (int idx)
     connect (edit, & QLineEdit::returnPressed, this, & PlaylistTabs::tabEditedTrigger);
 
     setupTab (idx, edit, nullptr, & m_leftbtn);
+    setTabText (idx, nullptr);
 
     edit->selectAll ();
     edit->setFocus ();
