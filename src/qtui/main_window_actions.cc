@@ -85,7 +85,7 @@ static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType:
 
 void MainWindow::setupActions ()
 {
-    static constexpr audqt::MenuItem file_items[] = {
+    static const audqt::MenuItem file_items[] = {
         audqt::MenuCommand ({N_("_Open Files ..."), "document-open", "Ctrl+O"}, open_files),
         audqt::MenuCommand ({N_("_Open Folder ..."), "document-open"}, open_folder),
         audqt::MenuCommand ({N_("Open _URL ..."), "folder-remote", "Ctrl+L"}, open_url),
@@ -101,7 +101,7 @@ void MainWindow::setupActions ()
         audqt::MenuCommand ({N_("_Quit"), "application-exit", "Ctrl+Q"}, aud_quit)
     };
 
-    static constexpr audqt::MenuItem playback_items[] = {
+    static const audqt::MenuItem playback_items[] = {
         audqt::MenuCommand ({N_("_Play"), "media-playback-start", "Ctrl+Return"}, aud_drct_play),
         audqt::MenuCommand ({N_("Paus_e"), "media-playback-pause", "Ctrl+,"}, aud_drct_pause),
         audqt::MenuCommand ({N_("_Stop"), "media-playback-stop", "Ctrl+."}, aud_drct_stop),
@@ -117,13 +117,13 @@ void MainWindow::setupActions ()
         audqt::MenuCommand ({N_("Song _Info ..."), "dialog-information", "Ctrl+I"}, audqt::infowin_show_current)
     };
 
-    static constexpr audqt::MenuItem dupe_items[] = {
+    static const audqt::MenuItem dupe_items[] = {
         audqt::MenuCommand ({N_("By _Title")}, rm_dupes_title),
         audqt::MenuCommand ({N_("By _File Name")}, rm_dupes_filename),
         audqt::MenuCommand ({N_("By File _Path")}, rm_dupes_path),
     };
 
-    static constexpr audqt::MenuItem sort_items[] = {
+    static const audqt::MenuItem sort_items[] = {
         audqt::MenuCommand ({N_("By Track _Number")}, sort_track),
         audqt::MenuCommand ({N_("By _Title")}, sort_title),
         audqt::MenuCommand ({N_("By _Artist")}, sort_artist),
@@ -139,7 +139,7 @@ void MainWindow::setupActions ()
         audqt::MenuCommand ({N_("_Random Order")}, sort_random)
     };
 
-    static constexpr audqt::MenuItem sort_selected_items[] = {
+    static const audqt::MenuItem sort_selected_items[] = {
         audqt::MenuCommand ({N_("By Track _Number")}, sort_sel_track),
         audqt::MenuCommand ({N_("By _Title")}, sort_sel_title),
         audqt::MenuCommand ({N_("By _Artist")}, sort_sel_artist),
@@ -155,7 +155,7 @@ void MainWindow::setupActions ()
         audqt::MenuCommand ({N_("_Random Order")}, sort_sel_random)
     };
 
-    static constexpr audqt::MenuItem playlist_items[] = {
+    static const audqt::MenuItem playlist_items[] = {
         audqt::MenuCommand ({N_("_Play/Resume"), "media-playback-start", "Shift+Return"}, pl_play),
         audqt::MenuCommand ({N_("_Refresh"), "view-refresh", "F5"}, pl_refresh),
         audqt::MenuSep (),
@@ -175,7 +175,7 @@ void MainWindow::setupActions ()
         audqt::MenuCommand ({N_("_Queue Manager ..."), nullptr, "Ctrl+U"}, audqt::queue_manager_show)
     };
 
-    static constexpr audqt::MenuItem output_items[] = {
+    static const audqt::MenuItem output_items[] = {
         audqt::MenuCommand ({N_("Volume _Up"), "audio-volume-high", "Ctrl++"}, volume_up),
         audqt::MenuCommand ({N_("Volume _Down"), "audio-volume-low", "Ctrl+-"}, volume_down),
         audqt::MenuSep (),
@@ -184,7 +184,7 @@ void MainWindow::setupActions ()
         audqt::MenuCommand ({N_("E_ffects ...")}, configure_effects)
     };
 
-    static constexpr audqt::MenuItem main_items[] = {
+    static const audqt::MenuItem main_items[] = {
         audqt::MenuSub ({N_("_File")}, file_items),
         audqt::MenuSub ({N_("_Playback")}, playback_items),
         audqt::MenuSub ({N_("P_laylist")}, playlist_items),
