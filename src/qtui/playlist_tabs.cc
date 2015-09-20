@@ -204,7 +204,10 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
 void PlaylistTabs::renameCurrent ()
 {
     int idx = currentIndex ();
-    if (idx >= 0)
+
+    if (m_tabbar->autoHide () && m_tabbar->count () < 2)
+        audqt::playlist_show_rename (idx);
+    else if (idx >= 0)
         editTab (idx);
 }
 
