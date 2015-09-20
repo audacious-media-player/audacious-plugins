@@ -205,11 +205,9 @@ void PlaylistTabs::renameCurrent ()
 {
     int idx = currentIndex ();
 
-#if QT_VERSION >= 0x050400
-    if (m_tabbar->autoHide () && m_tabbar->count () < 2)
+    if (! m_tabbar->isVisible ())
         audqt::playlist_show_rename (idx);
     else
-#endif
         editTab (idx);
 }
 
