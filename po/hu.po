@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+# Agócs Dániel <agocsdaniel@gmail.com>, 2015
 # Ferenc Szabo <szaboferee@gmail.com>, 2015
 # Gergely Békési <bekesi.gergely@gmail.com>, 2014
 # Péter Polonkai <polesz@nedudu.hu>, 2010
@@ -11,10 +12,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-04-03 11:52+0200\n"
-"PO-Revision-Date: 2015-03-04 13:41+0000\n"
-"Last-Translator: Péter Polonkai <polesz@nedudu.hu>\n"
-"Language-Team: Hungarian (http://www.transifex.com/projects/p/audacious/"
+"POT-Creation-Date: 2015-09-20 15:15+0200\n"
+"PO-Revision-Date: 2015-08-25 17:16+0000\n"
+"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"Language-Team: Hungarian (http://www.transifex.com/jlindgren/audacious/"
 "language/hu/)\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
@@ -30,20 +31,20 @@ msgstr "AAC (Nyers) Dekóder"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib Lejátszó)"
 
-#: src/adplug/adplug-xmms.cc:156 src/modplug/modplugbmp.cc:335
-#: src/psf/plugin.cc:138 src/vtx/vtx.cc:87 src/xsf/plugin.cc:113
+#: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cc:343
+#: src/psf/plugin.cc:138 src/vtx/vtx.cc:89 src/xsf/plugin.cc:113
 msgid "sequenced"
 msgstr "soros"
 
-#: src/alarm/alarm.cc:55 src/alarm/interface.cc:82
+#: src/alarm/alarm.cc:56 src/alarm/interface.cc:78
 msgid "Alarm"
 msgstr "Riasztás"
 
-#: src/alarm/alarm.cc:782
+#: src/alarm/alarm.cc:783
 msgid "Set Alarm ..."
 msgstr "Riasztás beállítása ..."
 
-#: src/alarm/alarm.cc:810
+#: src/alarm/alarm.cc:811
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
@@ -53,7 +54,7 @@ msgstr ""
 "\n"
 "Eredetileg Adam Feakin és Daniel Stodden írta."
 
-#: src/alarm/interface.cc:28
+#: src/alarm/interface.cc:27
 msgid ""
 "Time\n"
 "  Alarm at:\n"
@@ -74,10 +75,6 @@ msgid ""
 "    time.\n"
 "\n"
 "\n"
-msgstr ""
-
-#: src/alarm/interface.cc:45
-msgid ""
 "Volume\n"
 "  Fading:\n"
 "    Fade the volume up to the chosen volume\n"
@@ -96,10 +93,6 @@ msgid ""
 "  Additional Command:\n"
 "    Run this command at the alarm time.\n"
 "\n"
-msgstr ""
-
-#: src/alarm/interface.cc:62
-msgid ""
 "  Playlist:\n"
 "    Load this playlist. If no playlist\n"
 "    is given, the current one will be used.\n"
@@ -108,154 +101,194 @@ msgid ""
 "\n"
 "  Reminder:\n"
 "    Display a reminder when the alarm goes off.\n"
-"    Type the reminder in the box and turn on the\n"
-"    toggle button if you want it to be shown."
+"    Type the reminder in the input field and enable\n"
+"    the checkbox if you want it to be shown."
 msgstr ""
+"Idő\n"
+"  Riasztás:\n"
+"    Ekkor kapcsol be az ébresztő.\n"
+"\n"
+"  Csendes ezután:\n"
+"    Ennyi idő után magától kikapcsol az ébresztő.\n"
+"       (ha nem zárták be a párbeszédablakot)\n"
+"\n"
+"\n"
+"Napok\n"
+"  Nap:\n"
+"    Ezeken a napokon kapcsol be az ébresztő.\n"
+"\n"
+"  Idő:\n"
+"    Válassza ki az ébresztés idejét naponként,\n"
+"    vagy válassza ki az alapértelmezett időt\n"
+"    time.\n"
+"\n"
+"\n"
+"Hangerő\n"
+"  Felkeverés:\n"
+"    A kiválasztott hangerőig hangosít\n"
+"    ennyi idő alatt.\n"
+"\n"
+"  Kezdjük a:\n"
+"    Ettől a hangerőtől kezdődik a felhangosítás.\n"
+"\n"
+"  Vége:\n"
+"    Ennél a hangerőnél áll meg a felhangosítás.  \n"
+"    Ha a felkeverés ideje 0, itt állítsa a kívánt\n"
+"    hangerőt.\n"
+"\n"
+"\n"
+"Opciók:\n"
+"  További parancs:\n"
+"    Ezt a parancsot is végrehajtja riasztáskor.\n"
+"\n"
+"  Lejátszólista:\n"
+"    Ezt a listát tölti be. Ha itt nem ad meg\n"
+"    listát, akkor a jelenlegit fogja használni.\n"
+"    MP3 vagy OGG adatfolyam URL-jét\n"
+"    is beírhatja ide.\n"
+"\n"
+"  Emlékeztető:\n"
+"    Ezt a szöveget jeleníti meg a program riasztáskor."
 
-#: src/alarm/interface.cc:81
+#: src/alarm/interface.cc:77
 msgid "This is your wakeup call."
 msgstr "Ez egy ébresztési hívás."
 
-#: src/alarm/interface.cc:99
+#: src/alarm/interface.cc:95
 msgid "Your reminder for today is..."
 msgstr "A mai emlékeztető.."
 
-#: src/alarm/interface.cc:101 src/alarm/interface.cc:386
+#: src/alarm/interface.cc:97 src/alarm/interface.cc:381
 msgid "Reminder"
 msgstr "Emlékeztető"
 
-#: src/alarm/interface.cc:132
+#: src/alarm/interface.cc:128
 msgid "Monday"
 msgstr "Hétfő"
 
-#: src/alarm/interface.cc:132
+#: src/alarm/interface.cc:128
 msgid "Tuesday"
 msgstr "Kedd"
 
-#: src/alarm/interface.cc:132
+#: src/alarm/interface.cc:128
 msgid "Wednesday"
 msgstr "Szerda"
 
-#: src/alarm/interface.cc:133
+#: src/alarm/interface.cc:129
 msgid "Thursday"
 msgstr "Csütörtök"
 
-#: src/alarm/interface.cc:133
+#: src/alarm/interface.cc:129
 msgid "Friday"
 msgstr "Péntek"
 
-#: src/alarm/interface.cc:133
+#: src/alarm/interface.cc:129
 msgid "Saturday"
 msgstr "Szombat"
 
-#: src/alarm/interface.cc:133
+#: src/alarm/interface.cc:129
 msgid "Sunday"
 msgstr "Vasárnap"
 
-#: src/alarm/interface.cc:171 src/alarm/interface.cc:230
-#: src/alarm/interface.cc:245
+#: src/alarm/interface.cc:166 src/alarm/interface.cc:225
+#: src/alarm/interface.cc:240
 msgid "Time"
 msgstr "Idő"
 
-#: src/alarm/interface.cc:178
+#: src/alarm/interface.cc:173
 msgid "Alarm at (default):"
 msgstr "Riasztás (alapértelmezett):"
 
-#: src/alarm/interface.cc:200
+#: src/alarm/interface.cc:195
 msgid "h"
 msgstr "h"
 
-#: src/alarm/interface.cc:203
+#: src/alarm/interface.cc:198
 msgid "Quiet after:"
 msgstr "Csendes ezután:"
 
-#: src/alarm/interface.cc:215
+#: src/alarm/interface.cc:210
 msgid "hours"
 msgstr "óra"
 
-#: src/alarm/interface.cc:226
+#: src/alarm/interface.cc:221
 msgid "minutes"
 msgstr "perc"
 
-#: src/alarm/interface.cc:235
+#: src/alarm/interface.cc:230
 msgid "Choose the days for the alarm to come on"
 msgstr "Válassza ki a riasztás napját a következőekből"
 
-#: src/alarm/interface.cc:242
+#: src/alarm/interface.cc:237
 msgid "Day"
 msgstr "Nap"
 
-#: src/alarm/interface.cc:259 src/bs2b/plugin.cc:130
-#: src/skins/preset-list.cc:434 src/skins/preset-list.cc:440
+#: src/alarm/interface.cc:254 src/bs2b/plugin.cc:130
 msgid "Default"
 msgstr "Alapértelmezett"
 
-#: src/alarm/interface.cc:288
+#: src/alarm/interface.cc:283
 msgid "Days"
 msgstr "Napok"
 
-#: src/alarm/interface.cc:297
+#: src/alarm/interface.cc:292
 msgid "Fading"
-msgstr "Elhalványulás"
+msgstr "Felkeverés"
 
-#: src/alarm/interface.cc:305 src/console/plugin.cc:41
-#: src/crossfade/crossfade.cc:53 src/crossfade/crossfade.cc:59
-#: src/gtkui/settings.cc:49 src/lirc/lirc.cc:397 src/sid/xs_config.cc:85
+#: src/alarm/interface.cc:300 src/console/plugin.cc:41
+#: src/crossfade/crossfade.cc:52 src/crossfade/crossfade.cc:58
+#: src/gtkui/settings.cc:49 src/lirc/lirc.cc:398 src/sid/xs_config.cc:85
 #: src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
 msgid "seconds"
 msgstr "másodperc"
 
-#: src/alarm/interface.cc:312 src/alarm/interface.cc:353
+#: src/alarm/interface.cc:307 src/alarm/interface.cc:348
 msgid "Volume"
 msgstr "Hangerő"
 
-#: src/alarm/interface.cc:317
+#: src/alarm/interface.cc:312
 msgid "Start at"
 msgstr "Kezdjük a"
 
-#: src/alarm/interface.cc:333
+#: src/alarm/interface.cc:328
 msgid "Final"
 msgstr "Vége"
 
-#: src/alarm/interface.cc:346
+#: src/alarm/interface.cc:341
 msgid "Current"
 msgstr "Jelenlegi"
 
-#: src/alarm/interface.cc:359
+#: src/alarm/interface.cc:354
 msgid "Additional Command"
 msgstr "További parancs"
 
-#: src/alarm/interface.cc:365 src/alarm/interface.cc:391
+#: src/alarm/interface.cc:360 src/alarm/interface.cc:386
 msgid "enable"
 msgstr "engedélyez"
 
-#: src/alarm/interface.cc:372
+#: src/alarm/interface.cc:367
 msgid "Playlist (optional)"
 msgstr "Lejátszólista (opcionális)"
 
-#: src/alarm/interface.cc:379
+#: src/alarm/interface.cc:374
 msgid "Select a playlist"
 msgstr "Lejátszólista választása"
 
-#: src/alarm/interface.cc:399
+#: src/alarm/interface.cc:394
 msgid "Options"
 msgstr "Opciók"
 
-#: src/alarm/interface.cc:404
+#: src/alarm/interface.cc:399
 msgid "What do these options mean?"
 msgstr "Mit jelentenek ezek a lehetőségek?"
 
-#: src/alarm/interface.cc:420
+#: src/alarm/interface.cc:413
 msgid "Help"
 msgstr "Súgó"
 
-#: src/albumart/albumart.cc:31
+#: src/albumart/albumart.cc:32 src/albumart-qt/albumart.cc:34
 msgid "Album Art"
 msgstr "Album borító"
-
-#: src/albumart-qt/albumart.cc:33
-msgid "Album Art (Qt)"
-msgstr "Album borító (Qt)"
 
 #: src/alsa/alsa.h:70
 msgid "ALSA Output"
@@ -269,6 +302,12 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
+"ALSA Kimeneti Bővítmény az Audacious-hoz\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"Köszönet William Pitcock-nak, az ALSA Output Plugin NG alkotójának, akinek "
+"kódjai referenciaként szolgáltak, amikor az ALSA kézikönyve kevésnek "
+"bizonyult."
 
 #: src/alsa/config.cc:61
 msgid "(no description)"
@@ -298,7 +337,7 @@ msgstr "Mixer elem:"
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (MIDI Lejátszó)"
 
-#: src/amidi-plug/amidi-plug.cc:437
+#: src/amidi-plug/amidi-plug.cc:439
 msgid ""
 "AMIDI-Plug\n"
 "modular MIDI music player\n"
@@ -320,18 +359,37 @@ msgid ""
 "Tony Vroon\n"
 "for the good help with alpha testing"
 msgstr ""
+"AMIDI-Plug\n"
+"moduláris MIDI lejátszó bővítmény\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"írta Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"köszönet...\n"
+"\n"
+"Clemens Ladisch-nek és Jaroslav Kysela-nak\n"
+"a menő aplaymidi és amixer programokért, amik\n"
+"nagyon kasznosak voltak, az alsa-lib leírással együtt\n"
+"az ALSA API megértéséhez\n"
+"\n"
+"Alfredo Spadafina-nak\n"
+"a szép Midi Zongora logóért\n"
+"\n"
+"Tony Vroon-nak\n"
+"a sok segítségért a tesztelésben"
 
 #: src/amidi-plug/i_configure.cc:94
 msgid "Override default gain:"
-msgstr ""
+msgstr "Alapértelmezett erősítés felülbírálása:"
 
 #: src/amidi-plug/i_configure.cc:102
 msgid "Override default polyphony:"
-msgstr ""
+msgstr "Alapértelmezett polifónia felülbírálása:"
 
 #: src/amidi-plug/i_configure.cc:110
 msgid "Override default reverb:"
-msgstr ""
+msgstr "Alapértelmezett visszhang felülbírálása:"
 
 #: src/amidi-plug/i_configure.cc:112 src/amidi-plug/i_configure.cc:120
 msgid "On"
@@ -339,7 +397,7 @@ msgstr "Be"
 
 #: src/amidi-plug/i_configure.cc:118
 msgid "Override default chorus:"
-msgstr ""
+msgstr "Alapértelmezett kórus hatás felülbírálása:"
 
 #: src/amidi-plug/i_configure.cc:128 src/console/plugin.cc:29
 msgid "<b>Playback</b>"
@@ -351,39 +409,39 @@ msgstr "Transzponálás:"
 
 #: src/amidi-plug/i_configure.cc:131
 msgid "semitones"
-msgstr ""
+msgstr "félhangok"
 
 #: src/amidi-plug/i_configure.cc:132
 msgid "Drum shift:"
-msgstr ""
+msgstr "Dob eltolás:"
 
 #: src/amidi-plug/i_configure.cc:134
 msgid "note numbers"
-msgstr ""
+msgstr "hangjegy számok"
 
 #: src/amidi-plug/i_configure.cc:135
 msgid "Skip leading silence"
-msgstr ""
+msgstr "Csend levágása az elején"
 
 #: src/amidi-plug/i_configure.cc:137
 msgid "Skip trailing silence"
-msgstr ""
+msgstr "Csend levágása a végén"
 
 #: src/amidi-plug/i_configure.cc:141
 msgid "<b>SoundFont</b>"
-msgstr ""
+msgstr "<b>SoundFont köyvtárak</b>"
 
-#: src/amidi-plug/i_configure.cc:143
+#: src/amidi-plug/i_configure.cc:145
 msgid "<b>Synthesizer</b>"
-msgstr ""
+msgstr "<b>Szintetizátor</b>"
 
-#: src/amidi-plug/i_configure.cc:148 src/console/plugin.cc:45
+#: src/amidi-plug/i_configure.cc:150 src/console/plugin.cc:45
 #: src/sid/xs_config.cc:65
 msgid "Sample rate:"
 msgstr "Mintavételi frekvencia:"
 
-#: src/amidi-plug/i_configure.cc:150 src/bs2b/plugin.cc:141
-#: src/console/plugin.cc:47 src/modplug/plugin_main.cc:78
+#: src/amidi-plug/i_configure.cc:152 src/bs2b/plugin.cc:141
+#: src/console/plugin.cc:47 src/modplug/plugin_main.cc:81
 #: src/resample/resample.cc:201 src/resample/resample.cc:207
 #: src/resample/resample.cc:211 src/resample/resample.cc:215
 #: src/resample/resample.cc:219 src/resample/resample.cc:223
@@ -394,84 +452,83 @@ msgstr "Mintavételi frekvencia:"
 msgid "Hz"
 msgstr "Hz"
 
-#: src/amidi-plug/i_configure-fluidsynth.cc:52
+#: src/amidi-plug/i_configure-fluidsynth.cc:54
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - SoundFont fájl választás"
 
-#: src/amidi-plug/i_configure-fluidsynth.cc:55 src/filewriter/mp3.cc:658
+#: src/amidi-plug/i_configure-fluidsynth.cc:57
 msgid "_Cancel"
 msgstr "_Mégsem"
 
-#: src/amidi-plug/i_configure-fluidsynth.cc:56
+#: src/amidi-plug/i_configure-fluidsynth.cc:58
 msgid "_Open"
 msgstr "_Megnyitás"
 
-#: src/amidi-plug/i_configure-fluidsynth.cc:225 src/gtkui/columns.cc:46
+#: src/amidi-plug/i_configure-fluidsynth.cc:227 src/gtkui/columns.cc:46
 msgid "File name"
 msgstr "Fájlnév"
 
-#: src/amidi-plug/i_configure-fluidsynth.cc:229
+#: src/amidi-plug/i_configure-fluidsynth.cc:231
 msgid "Size (bytes)"
 msgstr "Méret (byte)"
 
-#: src/amidi-plug/i_fileinfo.cc:163
+#: src/amidi-plug/i_fileinfo.cc:165
 msgid "Name:"
 msgstr "Név"
 
-#: src/amidi-plug/i_fileinfo.cc:181
+#: src/amidi-plug/i_fileinfo.cc:183
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> MIDI Információ </span>"
 
-#: src/amidi-plug/i_fileinfo.cc:195
+#: src/amidi-plug/i_fileinfo.cc:197
 msgid "Format:"
 msgstr "Formátum:"
 
-#: src/amidi-plug/i_fileinfo.cc:198
+#: src/amidi-plug/i_fileinfo.cc:200
 msgid "Length (msec):"
 msgstr "Hossz (msec):"
 
-#: src/amidi-plug/i_fileinfo.cc:201
+#: src/amidi-plug/i_fileinfo.cc:203
 msgid "No. of Tracks:"
 msgstr "Sáv sorszáma:"
 
-#: src/amidi-plug/i_fileinfo.cc:207
+#: src/amidi-plug/i_fileinfo.cc:209
 msgid "variable"
 msgstr "változó"
 
-#: src/amidi-plug/i_fileinfo.cc:209
+#: src/amidi-plug/i_fileinfo.cc:211
 msgid "BPM:"
 msgstr "BPM:"
 
-#: src/amidi-plug/i_fileinfo.cc:217
+#: src/amidi-plug/i_fileinfo.cc:219
 msgid "BPM (wavg):"
 msgstr "BPM (wavg):"
 
-#: src/amidi-plug/i_fileinfo.cc:220
+#: src/amidi-plug/i_fileinfo.cc:222
 msgid "Time Div:"
 msgstr "Kezdeti idő"
 
-#: src/amidi-plug/i_fileinfo.cc:231
+#: src/amidi-plug/i_fileinfo.cc:233
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"smaller\"> MIDI Megjegyzések és Dalszövegek </span>"
 
-#: src/amidi-plug/i_fileinfo.cc:278
+#: src/amidi-plug/i_fileinfo.cc:280
 msgid "* no comments available in this MIDI file *"
 msgstr "* nem található megjegyzés ehhez a MIDI fájlhoz *"
 
-#: src/amidi-plug/i_fileinfo.cc:290
+#: src/amidi-plug/i_fileinfo.cc:292
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* nem található dalszöveg ehhez a MIDI fájlhoz *"
 
-#: src/amidi-plug/i_fileinfo.cc:300 src/filewriter/vorbis.cc:197
-#: src/ladspa/plugin.cc:416
+#: src/amidi-plug/i_fileinfo.cc:302 src/ladspa/plugin.cc:417
 msgid "_Close"
 msgstr "_Bezár"
 
-#: src/amidi-plug/i_fileinfo.cc:325
+#: src/amidi-plug/i_fileinfo.cc:327
 msgid "  (invalid UTF-8)"
 msgstr "  (érvénytelen UTF-8)"
 
-#: src/aosd/aosd.cc:32
+#: src/aosd/aosd.cc:31
 msgid ""
 "Audacious OSD\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -481,10 +538,16 @@ msgid ""
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
 msgstr ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"Írta Giacomo Lozito <james@develia.org>\n"
+"\n"
+"Részben Evan Martin Ghosd könyvtára alapján:\n"
+"http://neugierig.org/software/ghosd/"
 
-#: src/aosd/aosd.h:37
+#: src/aosd/aosd.h:38
 msgid "AOSD (On-Screen Display)"
-msgstr ""
+msgstr "AOSD (On-Screen Display)"
 
 #: src/aosd/aosd_style.cc:54
 msgid "Rectangle"
@@ -502,35 +565,35 @@ msgstr "Konkáv téglalap"
 msgid "None"
 msgstr "Nincs"
 
-#: src/aosd/aosd_trigger.cc:50
+#: src/aosd/aosd_trigger.cc:49
 msgid "Playback Start"
 msgstr "Lejátszás kezdete"
 
-#: src/aosd/aosd_trigger.cc:51
+#: src/aosd/aosd_trigger.cc:50
 msgid "Triggers OSD when a playlist entry is played."
 msgstr "OSD használata ha a lejátszólista egy eleme elindul."
 
-#: src/aosd/aosd_trigger.cc:56
+#: src/aosd/aosd_trigger.cc:55
 msgid "Title Change"
 msgstr "Cím váltás"
 
-#: src/aosd/aosd_trigger.cc:57
+#: src/aosd/aosd_trigger.cc:56
 msgid "Triggers OSD when the song title changes (for internet streams)."
-msgstr ""
+msgstr "Szám címének változásáról értesíti az OSD-t (internetes stream-nél)"
 
-#: src/aosd/aosd_trigger.cc:62
+#: src/aosd/aosd_trigger.cc:61
 msgid "Pause On"
 msgstr "Szünet Be"
 
-#: src/aosd/aosd_trigger.cc:63
+#: src/aosd/aosd_trigger.cc:62
 msgid "Triggers OSD when playback is paused."
 msgstr "OSD használata ha megállítják a lejátszást."
 
-#: src/aosd/aosd_trigger.cc:68
+#: src/aosd/aosd_trigger.cc:67
 msgid "Pause Off"
 msgstr "Szünet Ki"
 
-#: src/aosd/aosd_trigger.cc:69
+#: src/aosd/aosd_trigger.cc:68
 msgid "Triggers OSD when playback is unpaused."
 msgstr "OSD használata ha elindítják a lejátszást."
 
@@ -700,25 +763,25 @@ msgstr "ASXv1/ASXv2 lejátszólisták"
 msgid "Audacious Playlists (audpl)"
 msgstr "Audacious lejátszólisták (audpl)"
 
-#: src/blur_scope/blur_scope.cc:42
+#: src/blur_scope/blur_scope.cc:40
 msgid "<b>Color</b>"
 msgstr "<b>Szín</b>"
 
-#: src/blur_scope/blur_scope.cc:58
+#: src/blur_scope/blur_scope.cc:56
 msgid "Blur Scope"
 msgstr "Szolid szkóp"
 
 #: src/bs2b/plugin.cc:38
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr ""
+msgstr "Bauer Stereophonic -> Binaural (BS2B)"
 
 #: src/bs2b/plugin.cc:129
 msgid "Presets:"
-msgstr ""
+msgstr "Előbeállítások:"
 
 #: src/bs2b/plugin.cc:136
 msgid "Feed level:"
-msgstr ""
+msgstr "Bemenő szint:"
 
 #: src/bs2b/plugin.cc:138
 msgid "x1/10 dB"
@@ -728,15 +791,15 @@ msgstr "x1/10 dB"
 msgid "Cut frequency:"
 msgstr "Vágási frekvencia:"
 
-#: src/cairo-spectrum/cairo-spectrum.cc:41
+#: src/cairo-spectrum/cairo-spectrum.cc:42
 msgid "Spectrum Analyzer"
 msgstr "Spektrum analizátor"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:72
+#: src/cdaudio-ng/cdaudio-ng.cc:71
 msgid "Audio CD Plugin"
 msgstr "Audio CD bővítmény"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:121
+#: src/cdaudio-ng/cdaudio-ng.cc:119
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -759,130 +822,130 @@ msgstr ""
 "\n"
 "Copyright 2009 John Lindgren"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:137
+#: src/cdaudio-ng/cdaudio-ng.cc:135
 msgid "<b>Device</b>"
 msgstr "<b>Eszköz</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:138
+#: src/cdaudio-ng/cdaudio-ng.cc:136
 msgid "Read speed:"
 msgstr "Olvasási sebesség:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:141
+#: src/cdaudio-ng/cdaudio-ng.cc:139
 msgid "Override device:"
 msgstr "Eszköz felülírása:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:143
+#: src/cdaudio-ng/cdaudio-ng.cc:141
 msgid "<b>Metadata</b>"
 msgstr "<b>Metaadat</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:144
+#: src/cdaudio-ng/cdaudio-ng.cc:142
 msgid "Use CD-Text"
 msgstr "CD-Text használata"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:146
+#: src/cdaudio-ng/cdaudio-ng.cc:144
 msgid "Use CDDB"
 msgstr "CDDB használata"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:148
+#: src/cdaudio-ng/cdaudio-ng.cc:146
 msgid "Use HTTP instead of CDDBP"
 msgstr "Hasznájon HTTP helyett CDDBP protokollt"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:151
+#: src/cdaudio-ng/cdaudio-ng.cc:149
 msgid "Server:"
 msgstr "Szerver:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:155
+#: src/cdaudio-ng/cdaudio-ng.cc:153
 msgid "Path:"
 msgstr "Elérési út:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:159
+#: src/cdaudio-ng/cdaudio-ng.cc:157
 msgid "Port:"
 msgstr "Port:"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:246
+#: src/cdaudio-ng/cdaudio-ng.cc:243
 msgid "Failed to initialize cdio subsystem."
 msgstr "A cdio alrendszer inicializálása sikertelen."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:281
+#: src/cdaudio-ng/cdaudio-ng.cc:278
 #, c-format
 msgid "Invalid URI %s."
 msgstr "Érvénytelen URI: %s."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:283
+#: src/cdaudio-ng/cdaudio-ng.cc:280
 #, c-format
 msgid "Track %d not found."
 msgstr "%d sáv nem található."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:285
+#: src/cdaudio-ng/cdaudio-ng.cc:282
 #, c-format
 msgid "Track %d is a data track."
 msgstr "Ez adatsáv: %d."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:360
+#: src/cdaudio-ng/cdaudio-ng.cc:357
 msgid "Error reading audio CD."
 msgstr "Hiba az audio CD olvasásakor."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:429
+#: src/cdaudio-ng/cdaudio-ng.cc:426
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:460 src/cdaudio-ng/cdaudio-ng.cc:469
+#: src/cdaudio-ng/cdaudio-ng.cc:457 src/cdaudio-ng/cdaudio-ng.cc:466
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "A CD eszköz %s megnyitása sikertelen."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:472
+#: src/cdaudio-ng/cdaudio-ng.cc:469
 msgid "No audio capable CD drive found."
-msgstr ""
+msgstr "Nincs hanglemez-képes CD maghajtó."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:497
+#: src/cdaudio-ng/cdaudio-ng.cc:494
 msgid "Failed to finish initializing opened CD drive."
-msgstr ""
+msgstr "A megnyitott CD meghajtó inicializálása sikertelen."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:510
+#: src/cdaudio-ng/cdaudio-ng.cc:507
 msgid "Failed to retrieve first/last track number."
-msgstr ""
+msgstr "Az első/utolsó sáv számának lekérdezése sikertelen."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:531
+#: src/cdaudio-ng/cdaudio-ng.cc:528
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr ""
+msgstr "Az LSN eleje/vége nem olvasható a %d. sávon."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:613
+#: src/cdaudio-ng/cdaudio-ng.cc:610
 msgid "Failed to create the cddb connection."
 msgstr "Sikertelen a cddb kapcsolat létrehozása."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:679
+#: src/cdaudio-ng/cdaudio-ng.cc:676
 msgid "Failed to query the CDDB server"
-msgstr ""
+msgstr "A CDDB kiszolgáló lekérdezése sikertelen."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:681
+#: src/cdaudio-ng/cdaudio-ng.cc:678
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr ""
+msgstr "A CDDB kiszolgáló lekérdezése sikertelen: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:705
+#: src/cdaudio-ng/cdaudio-ng.cc:702
 #, c-format
 msgid "Failed to read the cddb info: %s"
-msgstr ""
+msgstr "A CDDB infó olvasása sikertelen: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:765
+#: src/cdaudio-ng/cdaudio-ng.cc:762
 msgid "Drive is empty."
 msgstr "A meghajtó üres."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:767
+#: src/cdaudio-ng/cdaudio-ng.cc:764
 msgid "Unsupported disk type."
 msgstr "Nem támogatott lemez típus."
 
-#: src/cd-menu-items/cd-menu-items.cc:35
+#: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
 msgstr "Audio CD menüelemek"
 
-#: src/cd-menu-items/cd-menu-items.cc:47
+#: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Play CD"
 msgstr "CD lejátszása"
 
-#: src/cd-menu-items/cd-menu-items.cc:47
+#: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Add CD"
 msgstr "CD Hozzáadása"
 
@@ -903,6 +966,8 @@ msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Dinamikatartomány Kompresszió Bővítmény az Audacious-hoz\n"
+"Copyright 2010-2014 John Lindgren"
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
@@ -917,6 +982,13 @@ msgid ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 msgstr ""
+"Játékkonzol zene dekóder a Game_Music_Emu 0.5.2 alapján az Audacious-hoz\n"
+"Támogatott formátumok: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, "
+"VGZ\n"
+"\n"
+"Készítők:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
 
 #: src/console/plugin.cc:30
 msgid "Bass:"
@@ -934,9 +1006,9 @@ msgstr "Visszhang:"
 msgid "Default song length:"
 msgstr "Alapértelmezett szám hossz:"
 
-#: src/console/plugin.cc:42 src/modplug/plugin_main.cc:59
+#: src/console/plugin.cc:42 src/modplug/plugin_main.cc:62
 msgid "<b>Resampling</b>"
-msgstr ""
+msgstr "<b>Újramintavételezés</b>"
 
 #: src/console/plugin.cc:43
 msgid "Enable audio resampling"
@@ -944,11 +1016,11 @@ msgstr "Engedélyezi az audio újra mintavételezést"
 
 #: src/console/plugin.cc:49
 msgid "<b>SPC</b>"
-msgstr ""
+msgstr "<b>SPC</b>"
 
 #: src/console/plugin.cc:50
 msgid "Ignore length from SPC tags"
-msgstr ""
+msgstr "Tárolt hossz figyelmen kívül hagyása"
 
 #: src/console/plugin.cc:52
 msgid "Increase reverb"
@@ -970,63 +1042,59 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"CoreAudio Kimeneti Bővítmény Audacious-hoz\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"Az SDL Kimeneti Bővítmény Audacious-hoz alapján\n"
+"Copyright 2010 John Lindgren"
 
 #: src/coreaudio/coreaudio.cc:143
 msgid "Use exclusive mode"
-msgstr ""
+msgstr "Exkluzív mód használata"
 
-#: src/crossfade/crossfade.cc:44
+#: src/crossfade/crossfade.cc:43
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Átkeverés Plugin az Audacioushoz\n"
+"Copyright 2010--2014 John Lindgren"
 
-#: src/crossfade/crossfade.cc:48
+#: src/crossfade/crossfade.cc:47
 msgid "<b>Crossfade</b>"
 msgstr "<b>Átfedés</b>"
 
-#: src/crossfade/crossfade.cc:49
+#: src/crossfade/crossfade.cc:48
 msgid "On automatic song change"
 msgstr "Automatikus számváltáskor"
 
-#: src/crossfade/crossfade.cc:51 src/crossfade/crossfade.cc:57
+#: src/crossfade/crossfade.cc:50 src/crossfade/crossfade.cc:56
 msgid "Overlap:"
 msgstr "Átfedés:"
 
-#: src/crossfade/crossfade.cc:55
+#: src/crossfade/crossfade.cc:54
 msgid "On seek or manual song change"
 msgstr "Tekeréskor vagy kézi számváltáskor"
 
-#: src/crossfade/crossfade.cc:61
+#: src/crossfade/crossfade.cc:60
 msgid "<b>Tip</b>"
 msgstr "<b>Tipp</b>"
 
-#: src/crossfade/crossfade.cc:62
+#: src/crossfade/crossfade.cc:61
 msgid ""
 "For better crossfading, enable\n"
 "the Silence Removal effect."
 msgstr ""
+"A jobb átkeverés érdekében\n"
+"engedélyezd a Csend levágását"
 
-#: src/crossfade/crossfade.cc:72
+#: src/crossfade/crossfade.cc:71
 msgid "Crossfade"
 msgstr "Átfedés"
 
-#: src/crossfade/crossfade.cc:161
-msgid ""
-"Crossfading failed because the songs had a different number of channels.  "
-"You can use the Channel Mixer to convert the songs to the same number of "
-"channels."
-msgstr ""
-
-#: src/crossfade/crossfade.cc:168
-msgid ""
-"Crossfading failed because the songs had different sample rates.  You can "
-"use the Sample Rate Converter to convert the songs to the same sample rate."
-msgstr ""
-
 #: src/crystalizer/crystalizer.cc:31
 msgid "<b>Crystalizer</b>"
-msgstr ""
+msgstr "<b>Kristályosító</b>"
 
 #: src/crystalizer/crystalizer.cc:32 src/stereo_plugin/stereo.cc:45
 msgid "Intensity:"
@@ -1034,64 +1102,62 @@ msgstr "Intenzitás:"
 
 #: src/crystalizer/crystalizer.cc:43
 msgid "Crystalizer"
-msgstr ""
+msgstr "Kristályosító"
 
-#: src/cue/cue.cc:37
+#: src/cue/cue.cc:36
 msgid "Cue Sheet Plugin"
-msgstr ""
+msgstr "Cue Lista Bővítmény"
 
-#: src/delete-files/delete-files.cc:46 src/delete-files/delete-files.cc:146
+#: src/delete-files/delete-files.cc:47 src/delete-files/delete-files.cc:147
 msgid "Delete Files"
 msgstr "Fájlok törlése"
 
-#: src/delete-files/delete-files.cc:75
+#: src/delete-files/delete-files.cc:76
 #, c-format
 msgid "Error moving %s to trash: %s."
-msgstr ""
+msgstr "Hiba %s törlésekor: %s."
 
-#: src/delete-files/delete-files.cc:86
+#: src/delete-files/delete-files.cc:87
 #, c-format
 msgid "Error deleting %s: %s."
 msgstr "Hiba a törléskor %s: %s."
 
-#: src/delete-files/delete-files.cc:117
+#: src/delete-files/delete-files.cc:118
 #, c-format
 msgid "Error deleting %s: not a local file."
-msgstr ""
-
-#: src/delete-files/delete-files.cc:134
-msgid "Do you want to move the selected files to the trash?"
-msgstr ""
+msgstr "Hiba %s törlésekor: nem helyi fájl."
 
 #: src/delete-files/delete-files.cc:135
+msgid "Do you want to move the selected files to the trash?"
+msgstr "Törli a kiválasztott fájlokat?"
+
+#: src/delete-files/delete-files.cc:136
 msgid "Move to Trash"
 msgstr "Kukába helyez"
 
-#: src/delete-files/delete-files.cc:140
+#: src/delete-files/delete-files.cc:141
 msgid "Do you want to permanently delete the selected files?"
 msgstr "Véglegesen törli a kiválasztott fájlokat?"
 
-#: src/delete-files/delete-files.cc:141 src/skins/preset-list.cc:411
-#: src/skins/preset-list.cc:427
+#: src/delete-files/delete-files.cc:142
 msgid "Delete"
 msgstr "Törlés"
 
-#: src/delete-files/delete-files.cc:145 src/skins/preset-browser.cc:56
-#: src/skins/preset-list.cc:307 src/skins/ui_playlist.cc:221
+#: src/delete-files/delete-files.cc:146 src/skins/search-select.cc:76
 msgid "Cancel"
 msgstr "Mégsem"
 
-#: src/delete-files/delete-files.cc:166
+#: src/delete-files/delete-files.cc:167
 msgid "Delete Selected Files"
 msgstr "Kijelölt fájlok törlése"
 
-#: src/delete-files/delete-files.cc:181
+#: src/delete-files/delete-files.cc:182
 msgid "<b>Delete Method</b>"
 msgstr "<b>Törlési mód</b>"
 
-#: src/delete-files/delete-files.cc:182
+#: src/delete-files/delete-files.cc:183
 msgid "Move to trash instead of deleting immediately"
-msgstr ""
+msgstr "Lomtárba dob törlés helyett"
 
 #: src/echo_plugin/echo.cc:9
 msgid ""
@@ -1100,18 +1166,26 @@ msgid ""
 "Surround echo by Carl van Schaik, 1999\n"
 "Updated for Audacious by William Pitcock and John Lindgren, 2010-2014"
 msgstr ""
+"Visszhangosítás Bővítmény\n"
+"Johan Levin, 1999\n"
+"\n"
+"Térhatású visszhang\n"
+"Carl van Schaik, 1999\n"
+"\n"
+"Frissítve az Audacious-hoz\n"
+"William Pitcock, John Lindgren, 2010-2014"
 
 #: src/echo_plugin/echo.cc:21
 msgid "<b>Echo</b>"
 msgstr "<b>Visszhang</b>"
 
-#: src/echo_plugin/echo.cc:22 src/modplug/plugin_main.cc:73
-#: src/modplug/plugin_main.cc:83
+#: src/echo_plugin/echo.cc:22 src/modplug/plugin_main.cc:76
+#: src/modplug/plugin_main.cc:86
 msgid "Delay:"
 msgstr "Késleltetés:"
 
-#: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:73
-#: src/modplug/plugin_main.cc:83
+#: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:76
+#: src/modplug/plugin_main.cc:86
 msgid "ms"
 msgstr "ms"
 
@@ -1119,7 +1193,7 @@ msgstr "ms"
 msgid "Feedback:"
 msgstr "Visszajelzés:"
 
-#: src/echo_plugin/echo.cc:28 src/modplug/plugin_main.cc:87
+#: src/echo_plugin/echo.cc:28 src/modplug/plugin_main.cc:90
 msgid "Volume:"
 msgstr "Hangerő:"
 
@@ -1140,224 +1214,215 @@ msgid ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
+"Több formátumú hang dekóder az Audacious-hoz az\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+"használatával.\n"
+"\n"
+"Készítők:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/filewriter/filewriter.cc:45
+#: src/filewriter/filewriter.cc:44
 msgid "FileWriter Plugin"
 msgstr "Fájlíró bővítmény"
 
-#: src/filewriter/filewriter.cc:386
-msgid "Output file format:"
-msgstr "Kimeneti fájl formátum:"
-
-#: src/filewriter/filewriter.cc:403
-msgid "Configure"
-msgstr "Beállítás"
-
-#: src/filewriter/filewriter.cc:413
-msgid "Save into original directory"
-msgstr "Mentés az eredeti könyvtárba"
-
-#: src/filewriter/filewriter.cc:417
-msgid "Save into custom directory"
-msgstr "Mentés egyéb könyvtárba"
-
-#: src/filewriter/filewriter.cc:427
-msgid "Output file folder:"
-msgstr "Kimeneti fájl könyvtára:"
-
-#: src/filewriter/filewriter.cc:431
+#: src/filewriter/filewriter.cc:315
 msgid "Pick a folder"
 msgstr "Válasszon egy mappát"
 
-#: src/filewriter/filewriter.cc:444
-msgid "Generate file name from:"
+#: src/filewriter/filewriter.cc:347
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
-#: src/filewriter/filewriter.cc:448
-msgid "Original file tag"
-msgstr "Eredeti fájl kiterjesztés"
+#: src/filewriter/filewriter.cc:374
+msgid "Output file format:"
+msgstr "Kimeneti fájl formátum:"
 
-#: src/filewriter/filewriter.cc:453
+#: src/filewriter/filewriter.cc:378
+msgid "Save into original directory"
+msgstr "Mentés az eredeti könyvtárba"
+
+#: src/filewriter/filewriter.cc:381
+msgid "Save into custom directory:"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:386
+msgid "Generate file name from:"
+msgstr "Fájlnév generálása innen:"
+
+#: src/filewriter/filewriter.cc:387
 msgid "Original file name"
 msgstr "Eredeti fájlnév"
 
-#: src/filewriter/filewriter.cc:459
-msgid "Include original file name extension"
-msgstr "Az eredeti fájl kiterjesztés használata"
+#: src/filewriter/filewriter.cc:390
+msgid "Original file name (no suffix)"
+msgstr ""
 
-#: src/filewriter/filewriter.cc:468
+#: src/filewriter/filewriter.cc:393
+msgid "Original file tag"
+msgstr "Eredeti fájl kiterjesztés"
+
+#: src/filewriter/filewriter.cc:397
 msgid "Prepend track number to file name"
-msgstr ""
+msgstr "A szám sorszámának beszúrása a fájlnév elé"
 
-#: src/filewriter/filewriter.cc:484
-msgid ""
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
+#: src/filewriter/filewriter.cc:414 src/skins-qt/skins_cfg.cc:304
+#: src/skins/skins_cfg.cc:286
+msgid "General"
+msgstr "Általános"
 
-#: src/filewriter/mp3.cc:40 src/filewriter/mp3.cc:717
+#: src/filewriter/mp3.cc:39 src/filewriter/mp3.cc:603
 msgid "Auto"
 msgstr "Automatikus"
 
-#: src/filewriter/mp3.cc:40
+#: src/filewriter/mp3.cc:39
 msgid "Joint Stereo"
 msgstr "Joint Stereo"
 
-#: src/filewriter/mp3.cc:41 src/modplug/plugin_main.cc:58
-#: src/mpg123/mpg123.cc:248
+#: src/filewriter/mp3.cc:40 src/modplug/plugin_main.cc:61
+#: src/mpg123/mpg123.cc:243
 msgid "Stereo"
 msgstr "Sztereó"
 
-#: src/filewriter/mp3.cc:41 src/modplug/plugin_main.cc:57
-#: src/mpg123/mpg123.cc:248
+#: src/filewriter/mp3.cc:40 src/modplug/plugin_main.cc:60
+#: src/mpg123/mpg123.cc:243
 msgid "Mono"
 msgstr "Monó"
 
-#: src/filewriter/mp3.cc:657
-msgid "MP3 Configuration"
-msgstr "MP3 Beállítás"
-
-#: src/filewriter/mp3.cc:658
-msgid "_OK"
-msgstr "_Rendben"
-
-#: src/filewriter/mp3.cc:681
+#: src/filewriter/mp3.cc:574
 msgid "Algorithm Quality:"
 msgstr "Algoritmus minősége:"
 
-#: src/filewriter/mp3.cc:706
+#: src/filewriter/mp3.cc:594
 msgid "Output Sample Rate:"
 msgstr "Kimenet mintavétele:"
 
-#: src/filewriter/mp3.cc:733
+#: src/filewriter/mp3.cc:621
 msgid "(Hz)"
 msgstr "(Hz)"
 
-#: src/filewriter/mp3.cc:740
+#: src/filewriter/mp3.cc:627
 msgid "Bitrate / Compression Ratio:"
 msgstr "Bitráta / Tömörítési arány:"
 
-#: src/filewriter/mp3.cc:764
+#: src/filewriter/mp3.cc:646
 msgid "Bitrate (kbps):"
 msgstr "Bitráta (kbps):"
 
-#: src/filewriter/mp3.cc:796
+#: src/filewriter/mp3.cc:675
 msgid "Compression ratio:"
 msgstr "Tömörítési arány:"
 
-#: src/filewriter/mp3.cc:820
+#: src/filewriter/mp3.cc:703
 msgid "Audio Mode:"
 msgstr "Audio mód:"
 
-#: src/filewriter/mp3.cc:845
+#: src/filewriter/mp3.cc:727
 msgid "Miscellaneous:"
 msgstr "Egyéb:"
 
-#: src/filewriter/mp3.cc:856
+#: src/filewriter/mp3.cc:736
 msgid "Enforce strict ISO compliance"
-msgstr ""
+msgstr "Erőltesse a szigorú ISO megfelelés"
 
-#: src/filewriter/mp3.cc:867
+#: src/filewriter/mp3.cc:746
 msgid "Error protection"
 msgstr "Hiba védelem"
 
-#: src/filewriter/mp3.cc:879 src/filewriter/vorbis.cc:206
+#: src/filewriter/mp3.cc:757 src/filewriter/vorbis.cc:194
 msgid "Quality"
 msgstr "Minőség"
 
-#: src/filewriter/mp3.cc:888
+#: src/filewriter/mp3.cc:766
 msgid "Enable VBR/ABR"
 msgstr "VBR/ABR engedélyezése"
 
-#: src/filewriter/mp3.cc:898
+#: src/filewriter/mp3.cc:776
 msgid "Type:"
 msgstr "Típus:"
 
-#: src/filewriter/mp3.cc:931
+#: src/filewriter/mp3.cc:804
 msgid "VBR Options:"
 msgstr "VBR beállítások:"
 
-#: src/filewriter/mp3.cc:947
+#: src/filewriter/mp3.cc:815
 msgid "Minimum bitrate (kbps):"
 msgstr "Minimális bitsebesség (kbps):"
 
-#: src/filewriter/mp3.cc:973
+#: src/filewriter/mp3.cc:838
 msgid "Maximum bitrate (kbps):"
 msgstr "Maximális bitsebesség (kbps):"
 
-#: src/filewriter/mp3.cc:995
+#: src/filewriter/mp3.cc:859
 msgid "Strictly enforce minimum bitrate"
-msgstr ""
+msgstr "Szigorú minimális bitráta"
 
-#: src/filewriter/mp3.cc:1007
+#: src/filewriter/mp3.cc:870
 msgid "ABR Options:"
 msgstr "ABR beállítások:"
 
-#: src/filewriter/mp3.cc:1017
+#: src/filewriter/mp3.cc:878
 msgid "Average bitrate (kbps):"
 msgstr "Átlagos bitráta (kbps):"
 
-#: src/filewriter/mp3.cc:1044
+#: src/filewriter/mp3.cc:903
 msgid "VBR quality level:"
 msgstr "VBR minőségi szint:"
 
-#: src/filewriter/mp3.cc:1063
+#: src/filewriter/mp3.cc:920
 msgid "Omit Xing VBR header"
 msgstr "Xing VBR fejléc elhagyása"
 
-#: src/filewriter/mp3.cc:1076
+#: src/filewriter/mp3.cc:932
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/mp3.cc:1085
+#: src/filewriter/mp3.cc:941
 msgid "Frame Parameters:"
-msgstr ""
+msgstr "Keret paraméterek:"
 
-#: src/filewriter/mp3.cc:1097
+#: src/filewriter/mp3.cc:950
 msgid "Mark as copyright"
 msgstr "Megjelölés jogvédettként"
 
-#: src/filewriter/mp3.cc:1108
+#: src/filewriter/mp3.cc:961
 msgid "Mark as original"
 msgstr "Megjelölés eredetiként"
 
-#: src/filewriter/mp3.cc:1120
+#: src/filewriter/mp3.cc:972
 msgid "ID3 Parameters:"
 msgstr "ID3 paraméterek:"
 
-#: src/filewriter/mp3.cc:1131
+#: src/filewriter/mp3.cc:981
 msgid "Force addition of version 2 tag"
 msgstr "Mindig adja hozzá a 2-es verzió címkéit"
 
-#: src/filewriter/mp3.cc:1141
+#: src/filewriter/mp3.cc:990
 msgid "Only add v1 tag"
 msgstr "Csak v1 címkék hozzáadása"
 
-#: src/filewriter/mp3.cc:1148
+#: src/filewriter/mp3.cc:996
 msgid "Only add v2 tag"
 msgstr "Csak v2 címkék hozzáadása"
 
-#: src/filewriter/mp3.cc:1169
+#: src/filewriter/mp3.cc:1016
 msgid "Tags"
 msgstr "Címkék"
 
-#: src/filewriter/vorbis.cc:196
-msgid "Vorbis Encoder Configuration"
-msgstr "Vorbis kódoló beállítások"
-
-#: src/filewriter/vorbis.cc:219
+#: src/filewriter/vorbis.cc:205
 msgid "Quality level (0 - 10):"
 msgstr "Minőségi szint (0-10):"
 
@@ -1365,7 +1430,7 @@ msgstr "Minőségi szint (0-10):"
 msgid "FLAC Decoder"
 msgstr "FLAC dekódoló"
 
-#: src/flacng/metadata.cc:351 src/wavpack/wavpack.cc:209
+#: src/flacng/metadata.cc:302 src/wavpack/wavpack.cc:209
 msgid "lossless"
 msgstr "veszteségmentes"
 
@@ -1401,7 +1466,7 @@ msgstr "Olvas-és-hozzáad mód nem támogatott"
 msgid "Invalid open mode"
 msgstr "Érvénytelen megnyitási mód"
 
-#: src/gl-spectrum/gl-spectrum.cc:51
+#: src/gl-spectrum/gl-spectrum.cc:52
 msgid ""
 "OpenGL Spectrum Analyzer for Audacious\n"
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
@@ -1412,12 +1477,20 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"OpenGL Spectrum Analizátor Audacious-hoz\n"
+"Copyright 2013 Christophe Budé, John Lindgren, és Carlo Bramini\n"
+"\n"
+"Az XMMS beépülő alapján:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, és "
+"4Front Technologies\n"
+"\n"
+"Licensz: GPLv2+"
 
-#: src/gl-spectrum/gl-spectrum.cc:62
+#: src/gl-spectrum/gl-spectrum.cc:63 src/gl-spectrum-qt/gl-spectrum.cc:54
 msgid "OpenGL Spectrum Analyzer"
 msgstr "OpenGL spektrum analizátor"
 
-#: src/gl-spectrum-qt/gl-spectrum.cc:41
+#: src/gl-spectrum-qt/gl-spectrum.cc:42
 msgid ""
 "OpenGL Spectrum Analyzer for Audacious\n"
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
@@ -1429,10 +1502,15 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
-
-#: src/gl-spectrum-qt/gl-spectrum.cc:53
-msgid "OpenGL Spectrum Analyzer (Qt)"
-msgstr ""
+"OpenGL Spectrum Analizátor Audacious-hoz\n"
+"Copyright 2013 Christophe Budé, John Lindgren, és Carlo Bramini\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"Az XMMS beépülő alapján:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, és "
+"4Front Technologies\n"
+"\n"
+"Licensz: GPLv2+"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:38
 msgid "GNOME Shortcuts"
@@ -1445,17 +1523,22 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 msgstr ""
+"GNOME Billentyűparancs Beépülő\n"
+"GNOME billentyűparancsokkal irányíthatod a lejátszót.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
 #: src/gtkui/columns.cc:35
 msgid "Entry number"
 msgstr "Bejegyzés száma"
 
-#: src/gtkui/columns.cc:36 src/playlist-manager/playlist-manager.cc:225
-#: src/qtui/playlist_model.cc:123
+#: src/gtkui/columns.cc:36 src/playlist-manager/playlist-manager.cc:220
+#: src/playlist-manager-qt/playlist-manager-qt.cc:158
+#: src/qtui/playlist_model.cc:124
 msgid "Title"
 msgstr "Cím"
 
-#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:125
+#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:126
 msgid "Artist"
 msgstr "Előadó"
 
@@ -1463,7 +1546,7 @@ msgstr "Előadó"
 msgid "Year"
 msgstr "Év"
 
-#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:127
+#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:128
 msgid "Album"
 msgstr "Album"
 
@@ -1499,15 +1582,16 @@ msgstr "Egyéni cím"
 msgid "Bitrate"
 msgstr "Bitráta"
 
-#: src/gtkui/columns.cc:308
+#: src/gtkui/columns.cc:313
 msgid "Available columns"
 msgstr "Elérhető oszlopok"
 
-#: src/gtkui/columns.cc:334
+#: src/gtkui/columns.cc:339
 msgid "Displayed columns"
 msgstr "Megjelenített oszlopok"
 
-#: src/gtkui/layout.cc:72 src/search-tool/search-tool.cc:40
+#: src/gtkui/layout.cc:72 src/search-tool-qt/search-tool-qt.cc:52
+#: src/search-tool/search-tool.cc:43
 msgid "Search Tool"
 msgstr "Kereső eszköz"
 
@@ -1531,354 +1615,368 @@ msgstr "Alulra rögzít"
 msgid "Undock"
 msgstr "Rögzítés feloldása"
 
-#: src/gtkui/layout.cc:168 src/ladspa/plugin.cc:531
+#: src/gtkui/layout.cc:168 src/ladspa/plugin.cc:534
 msgid "Disable"
 msgstr "Letiltás"
 
-#: src/gtkui/menus.cc:126 src/qtui/main_window_actions.cc:93
-#: src/statusicon/statusicon.cc:276
+#: src/gtkui/menus.cc:131 src/qtui/main_window_actions.cc:89
+#: src/statusicon-qt/statusicon.cc:88 src/statusicon/statusicon.cc:277
 msgid "_Open Files ..."
 msgstr "Fájl_ok megnyitása ..."
 
-#: src/gtkui/menus.cc:127
+#: src/gtkui/menus.cc:132 src/qtui/main_window_actions.cc:91
 msgid "Open _URL ..."
 msgstr "_URL megnyitása ..."
 
-#: src/gtkui/menus.cc:128 src/qtui/main_window_actions.cc:95
+#: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:92
 msgid "_Add Files ..."
 msgstr "Fájlok hozzá_adása ..."
 
-#: src/gtkui/menus.cc:129
+#: src/gtkui/menus.cc:134 src/qtui/main_window_actions.cc:94
 msgid "Add U_RL ..."
 msgstr "U_RL hozzáadása ..."
 
-#: src/gtkui/menus.cc:131
+#: src/gtkui/menus.cc:136
 msgid "Search _Library"
 msgstr "_Keresés a gyűjteményben"
 
-#: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:98
+#: src/gtkui/menus.cc:138 src/qtui/main_window_actions.cc:96
 msgid "A_bout ..."
 msgstr "_Névjegy ..."
 
-#: src/gtkui/menus.cc:134 src/qtui/main_window_actions.cc:99
+#: src/gtkui/menus.cc:139 src/qtui/main_window_actions.cc:97
 msgid "_Settings ..."
 msgstr "_Beállítások ..."
 
-#: src/gtkui/menus.cc:135 src/qtui/main_window_actions.cc:103
-#: src/statusicon/statusicon.cc:284
+#: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:101
+#: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:285
 msgid "_Quit"
 msgstr "_Kilépés"
 
-#: src/gtkui/menus.cc:139 src/gtkui/menus.cc:262
-#: src/qtui/main_window_actions.cc:107 src/search-tool/search-tool.cc:641
-#: src/statusicon/statusicon.cc:278
+#: src/gtkui/menus.cc:144 src/gtkui/menus.cc:270
+#: src/qtui/main_window_actions.cc:105 src/search-tool-qt/search-tool-qt.cc:664
+#: src/search-tool/search-tool.cc:616 src/statusicon-qt/statusicon.cc:90
+#: src/statusicon/statusicon.cc:279
 msgid "_Play"
 msgstr "_Lejátszás"
 
-#: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:108
-#: src/statusicon/statusicon.cc:279
+#: src/gtkui/menus.cc:145 src/qtui/main_window_actions.cc:106
+#: src/statusicon-qt/statusicon.cc:91 src/statusicon/statusicon.cc:280
 msgid "Paus_e"
 msgstr "_Szünet"
 
-#: src/gtkui/menus.cc:141 src/qtui/main_window_actions.cc:109
-#: src/statusicon/statusicon.cc:280
+#: src/gtkui/menus.cc:146 src/qtui/main_window_actions.cc:107
+#: src/statusicon-qt/statusicon.cc:92 src/statusicon/statusicon.cc:281
 msgid "_Stop"
 msgstr "_Megállítás"
 
-#: src/gtkui/menus.cc:142 src/qtui/main_window_actions.cc:110
-#: src/statusicon/statusicon.cc:277
+#: src/gtkui/menus.cc:147 src/qtui/main_window_actions.cc:108
+#: src/statusicon-qt/statusicon.cc:89 src/statusicon/statusicon.cc:278
 msgid "Pre_vious"
 msgstr "Elő_ző"
 
-#: src/gtkui/menus.cc:143 src/qtui/main_window_actions.cc:111
-#: src/statusicon/statusicon.cc:281
+#: src/gtkui/menus.cc:148 src/qtui/main_window_actions.cc:109
+#: src/statusicon-qt/statusicon.cc:93 src/statusicon/statusicon.cc:282
 msgid "_Next"
 msgstr "_Következő"
 
-#: src/gtkui/menus.cc:145 src/qtui/main_window_actions.cc:113
+#: src/gtkui/menus.cc:150 src/qtui/main_window_actions.cc:111
 msgid "_Repeat"
 msgstr "_Ismétlés"
 
-#: src/gtkui/menus.cc:146 src/qtui/main_window_actions.cc:114
+#: src/gtkui/menus.cc:151 src/qtui/main_window_actions.cc:112
 msgid "S_huffle"
 msgstr "_Véletlenszerű"
 
-#: src/gtkui/menus.cc:147 src/qtui/main_window_actions.cc:115
+#: src/gtkui/menus.cc:152 src/qtui/main_window_actions.cc:113
+msgid "Shuffle by Albu_m"
+msgstr ""
+
+#: src/gtkui/menus.cc:153 src/qtui/main_window_actions.cc:114
 msgid "N_o Playlist Advance"
 msgstr "_Ne legyen léptetés a lejátszólistában"
 
-#: src/gtkui/menus.cc:148 src/qtui/main_window_actions.cc:116
+#: src/gtkui/menus.cc:154 src/qtui/main_window_actions.cc:115
 msgid "Stop A_fter This Song"
 msgstr "L_eállítás az aktuális dal után"
 
-#: src/gtkui/menus.cc:150 src/gtkui/menus.cc:247
-#: src/qtui/main_window_actions.cc:118
+#: src/gtkui/menus.cc:156 src/gtkui/menus.cc:255
+#: src/qtui/main_window_actions.cc:117
 msgid "Song _Info ..."
 msgstr "Dal _információ ..."
 
-#: src/gtkui/menus.cc:151
+#: src/gtkui/menus.cc:157
 msgid "Jump to _Time ..."
 msgstr "Ugrás _időre ..."
 
-#: src/gtkui/menus.cc:152
+#: src/gtkui/menus.cc:158
 msgid "_Jump to Song ..."
 msgstr "Ugrás _dalra ..."
 
-#: src/gtkui/menus.cc:154
+#: src/gtkui/menus.cc:160
 msgid "Set Repeat Point _A"
-msgstr ""
+msgstr "Az 'A' Ismétlési pont beállítása"
 
-#: src/gtkui/menus.cc:155
+#: src/gtkui/menus.cc:161
 msgid "Set Repeat Point _B"
-msgstr ""
+msgstr "A 'B' ismétlési pont beállítása"
 
-#: src/gtkui/menus.cc:156
+#: src/gtkui/menus.cc:162
 msgid "_Clear Repeat Points"
 msgstr "_Ismétlési pontok törlése"
 
-#: src/gtkui/menus.cc:160 src/gtkui/menus.cc:167 src/gtkui/menus.cc:183
-#: src/qtui/main_window_actions.cc:122 src/qtui/main_window_actions.cc:129
-#: src/qtui/main_window_actions.cc:145
+#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:173 src/gtkui/menus.cc:189
+#: src/qtui/main_window_actions.cc:121 src/qtui/main_window_actions.cc:128
+#: src/qtui/main_window_actions.cc:144
 msgid "By _Title"
 msgstr "Cím szerin_t"
 
-#: src/gtkui/menus.cc:161 src/qtui/main_window_actions.cc:123
+#: src/gtkui/menus.cc:167 src/qtui/main_window_actions.cc:122
 msgid "By _File Name"
 msgstr "_Fájlnév szerint"
 
-#: src/gtkui/menus.cc:162 src/qtui/main_window_actions.cc:124
+#: src/gtkui/menus.cc:168 src/qtui/main_window_actions.cc:123
 msgid "By File _Path"
 msgstr "Fájl _elérési útja szerint"
 
-#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:182
-#: src/qtui/main_window_actions.cc:128 src/qtui/main_window_actions.cc:144
+#: src/gtkui/menus.cc:172 src/gtkui/menus.cc:188
+#: src/qtui/main_window_actions.cc:127 src/qtui/main_window_actions.cc:143
 msgid "By Track _Number"
 msgstr "Sáv szeri_nt"
 
-#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:184
-#: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:146
+#: src/gtkui/menus.cc:174 src/gtkui/menus.cc:190
+#: src/qtui/main_window_actions.cc:129 src/qtui/main_window_actions.cc:145
 msgid "By _Artist"
 msgstr "Elő_adó szerint"
 
-#: src/gtkui/menus.cc:169 src/gtkui/menus.cc:185
-#: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:147
+#: src/gtkui/menus.cc:175 src/gtkui/menus.cc:191
+#: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:146
 msgid "By Al_bum"
 msgstr "Al_bum szerint"
 
-#: src/gtkui/menus.cc:170 src/gtkui/menus.cc:186
-#: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:148
+#: src/gtkui/menus.cc:176 src/gtkui/menus.cc:192
+#: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:147
 msgid "By Albu_m Artist"
 msgstr "Albu_m előadó szerint"
 
-#: src/gtkui/menus.cc:171 src/gtkui/menus.cc:187
-#: src/qtui/main_window_actions.cc:133 src/qtui/main_window_actions.cc:149
+#: src/gtkui/menus.cc:177 src/gtkui/menus.cc:193
+#: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:148
 msgid "By Release _Date"
 msgstr "_Dátum szerint"
 
-#: src/gtkui/menus.cc:172 src/gtkui/menus.cc:188
-#: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:150
+#: src/gtkui/menus.cc:178 src/gtkui/menus.cc:194
+#: src/qtui/main_window_actions.cc:133 src/qtui/main_window_actions.cc:149
 msgid "By _Genre"
 msgstr "_Műfaj szerint"
 
-#: src/gtkui/menus.cc:173 src/gtkui/menus.cc:189
-#: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:151
+#: src/gtkui/menus.cc:179 src/gtkui/menus.cc:195
+#: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:150
 msgid "By _Length"
 msgstr "_Hossz szerint"
 
-#: src/gtkui/menus.cc:174 src/gtkui/menus.cc:190
-#: src/qtui/main_window_actions.cc:136 src/qtui/main_window_actions.cc:152
+#: src/gtkui/menus.cc:180 src/gtkui/menus.cc:196
+#: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:151
 msgid "By _File Path"
 msgstr "_Fájl útvonal szerint"
 
-#: src/gtkui/menus.cc:175 src/gtkui/menus.cc:191
-#: src/qtui/main_window_actions.cc:137 src/qtui/main_window_actions.cc:153
+#: src/gtkui/menus.cc:181 src/gtkui/menus.cc:197
+#: src/qtui/main_window_actions.cc:136 src/qtui/main_window_actions.cc:152
 msgid "By _Custom Title"
 msgstr "_Egyedi cím szerint"
 
-#: src/gtkui/menus.cc:177 src/gtkui/menus.cc:193
-#: src/qtui/main_window_actions.cc:139 src/qtui/main_window_actions.cc:155
+#: src/gtkui/menus.cc:183 src/gtkui/menus.cc:199
+#: src/qtui/main_window_actions.cc:138 src/qtui/main_window_actions.cc:154
 msgid "R_everse Order"
 msgstr "Fo_rdított sorrend"
 
-#: src/gtkui/menus.cc:178 src/gtkui/menus.cc:194
-#: src/qtui/main_window_actions.cc:140 src/qtui/main_window_actions.cc:156
+#: src/gtkui/menus.cc:184 src/gtkui/menus.cc:200
+#: src/qtui/main_window_actions.cc:139 src/qtui/main_window_actions.cc:155
 msgid "_Random Order"
 msgstr "Véletlensze_rű sorrend"
 
-#: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:160
+#: src/gtkui/menus.cc:204 src/qtui/main_window_actions.cc:159
 msgid "_Play/Resume"
 msgstr "_Lejátszás/Szünet"
 
-#: src/gtkui/menus.cc:199 src/gtkui/menus.cc:251
-#: src/qtui/main_window_actions.cc:161
+#: src/gtkui/menus.cc:205 src/gtkui/menus.cc:259
+#: src/qtui/main_window_actions.cc:160
 msgid "_Refresh"
 msgstr "_Frissítés"
 
-#: src/gtkui/menus.cc:201 src/qtui/main_window_actions.cc:163
+#: src/gtkui/menus.cc:207 src/qtui/main_window_actions.cc:162
 msgid "_Sort"
 msgstr "Rendezé_s"
 
-#: src/gtkui/menus.cc:202 src/qtui/main_window_actions.cc:164
+#: src/gtkui/menus.cc:208 src/qtui/main_window_actions.cc:163
 msgid "Sort Se_lected"
 msgstr "Kije_löltek rendezése"
 
-#: src/gtkui/menus.cc:203 src/qtui/main_window_actions.cc:165
+#: src/gtkui/menus.cc:209 src/qtui/main_window_actions.cc:164
 msgid "Remove _Duplicates"
 msgstr "Kettőzöttek eltávolítása"
 
-#: src/gtkui/menus.cc:204 src/qtui/main_window_actions.cc:166
+#: src/gtkui/menus.cc:210 src/qtui/main_window_actions.cc:165
 msgid "Remove _Unavailable Files"
 msgstr "_Nem elérhető fájlok törlése"
 
-#: src/gtkui/menus.cc:206 src/playlist-manager/playlist-manager.cc:244
-#: src/qtui/main_window_actions.cc:168
+#: src/gtkui/menus.cc:212 src/playlist-manager/playlist-manager.cc:239
+#: src/playlist-manager-qt/playlist-manager-qt.cc:317
+#: src/qtui/main_window_actions.cc:167
 msgid "_New"
 msgstr "_Új"
 
-#: src/gtkui/menus.cc:207
+#: src/gtkui/menus.cc:213 src/qtui/main_window_actions.cc:168
 msgid "Ren_ame ..."
 msgstr "Át_nevezés ..."
 
-#: src/gtkui/menus.cc:208 src/gtkui/menus.cc:264
-#: src/qtui/main_window_actions.cc:170
+#: src/gtkui/menus.cc:214 src/gtkui/menus.cc:272
+#: src/qtui/main_window_actions.cc:169
 msgid "Remo_ve"
 msgstr "Tö_rlés"
 
-#: src/gtkui/menus.cc:210
+#: src/gtkui/menus.cc:216
 msgid "_Import ..."
 msgstr "_Importálás ..."
 
-#: src/gtkui/menus.cc:211
+#: src/gtkui/menus.cc:217
 msgid "_Export ..."
 msgstr "_Exportálás ..."
 
-#: src/gtkui/menus.cc:213
+#: src/gtkui/menus.cc:219
 msgid "Playlist _Manager ..."
 msgstr "_Lejátszólista kezelő ..."
 
-#: src/gtkui/menus.cc:214 src/qtui/main_window_actions.cc:176
+#: src/gtkui/menus.cc:220 src/qtui/main_window_actions.cc:175
 msgid "_Queue Manager ..."
 msgstr "_Várakozási sor kezelő ..."
 
-#: src/gtkui/menus.cc:218 src/qtui/main_window_actions.cc:180
+#: src/gtkui/menus.cc:224 src/qtui/main_window_actions.cc:179
 msgid "Volume _Up"
 msgstr "Hangerő _fel"
 
-#: src/gtkui/menus.cc:219 src/qtui/main_window_actions.cc:181
+#: src/gtkui/menus.cc:225 src/qtui/main_window_actions.cc:180
 msgid "Volume _Down"
 msgstr "Hangerő _le"
 
-#: src/gtkui/menus.cc:221 src/qtui/main_window_actions.cc:183
-msgid "_Equalizer"
-msgstr "_Hangszínszabályzó"
+#: src/gtkui/menus.cc:227 src/qtui/main_window_actions.cc:182
+msgid "_Equalizer ..."
+msgstr ""
 
-#: src/gtkui/menus.cc:223 src/qtui/main_window_actions.cc:185
+#: src/gtkui/menus.cc:228 src/qtui/main_window_actions.cc:184
 msgid "E_ffects ..."
 msgstr "E_ffektusok ..."
 
-#: src/gtkui/menus.cc:227
+#: src/gtkui/menus.cc:230
+msgid "_Record Stream"
+msgstr ""
+
+#: src/gtkui/menus.cc:231
+msgid "Audio _Settings ..."
+msgstr ""
+
+#: src/gtkui/menus.cc:235
 msgid "Show _Menu Bar"
 msgstr "_Menü sor mutatása"
 
-#: src/gtkui/menus.cc:228
+#: src/gtkui/menus.cc:236
 msgid "Show I_nfo Bar"
 msgstr "I_nfo sor mutatása"
 
-#: src/gtkui/menus.cc:229
+#: src/gtkui/menus.cc:237
 msgid "Show Info Bar Vis_ualization"
 msgstr "Inf_ormációs sáv mutatása"
 
-#: src/gtkui/menus.cc:230
+#: src/gtkui/menus.cc:238
 msgid "Show _Status Bar"
 msgstr "_Státusz sor mutatása"
 
-#: src/gtkui/menus.cc:232
+#: src/gtkui/menus.cc:240
 msgid "Show _Remaining Time"
 msgstr "Hát_ralévő idő mutatása"
 
-#: src/gtkui/menus.cc:234
+#: src/gtkui/menus.cc:242 src/skins/menus.cc:178 src/skins-qt/menus.cc:171
 msgid "_Visualizations ..."
 msgstr "_Megjelenítés ..."
 
-#: src/gtkui/menus.cc:238 src/qtui/main_window_actions.cc:189
+#: src/gtkui/menus.cc:246 src/qtui/main_window_actions.cc:188
 msgid "_File"
 msgstr "_Fájl"
 
-#: src/gtkui/menus.cc:239 src/qtui/main_window_actions.cc:190
+#: src/gtkui/menus.cc:247 src/qtui/main_window_actions.cc:189
 msgid "_Playback"
 msgstr "L_ejátszás"
 
-#: src/gtkui/menus.cc:240 src/qtui/main_window_actions.cc:191
+#: src/gtkui/menus.cc:248 src/qtui/main_window_actions.cc:190
 msgid "P_laylist"
 msgstr "_Lejátszólista"
 
-#: src/gtkui/menus.cc:241 src/gtkui/menus.cc:258
-#: src/qtui/main_window_actions.cc:192
+#: src/gtkui/menus.cc:249 src/gtkui/menus.cc:266
+#: src/qtui/main_window_actions.cc:191
 msgid "_Services"
 msgstr "_Szervizek"
 
-#: src/gtkui/menus.cc:242 src/qtui/main_window_actions.cc:193
+#: src/gtkui/menus.cc:250 src/qtui/main_window_actions.cc:192
 msgid "_Output"
 msgstr "_Kimenet"
 
-#: src/gtkui/menus.cc:243
+#: src/gtkui/menus.cc:251
 msgid "_View"
 msgstr "_Nézet"
 
-#: src/gtkui/menus.cc:248
+#: src/gtkui/menus.cc:256
 msgid "_Queue/Unqueue"
 msgstr "_Várólistára/Várólistáról ki"
 
-#: src/gtkui/menus.cc:250
+#: src/gtkui/menus.cc:258
 msgid "_Open Containing Folder"
 msgstr "_Tartalmazó mappa megnyitása"
 
-#: src/gtkui/menus.cc:253
+#: src/gtkui/menus.cc:261
 msgid "Cu_t"
 msgstr "_Kivágás"
 
-#: src/gtkui/menus.cc:254
+#: src/gtkui/menus.cc:262
 msgid "_Copy"
 msgstr "_Másolás"
 
-#: src/gtkui/menus.cc:255
+#: src/gtkui/menus.cc:263
 msgid "_Paste"
 msgstr "_Beillesztés"
 
-#: src/gtkui/menus.cc:256
+#: src/gtkui/menus.cc:264
 msgid "Select _All"
 msgstr "Mind kivál_aszt"
 
-#: src/gtkui/menus.cc:263
+#: src/gtkui/menus.cc:271
 msgid "_Rename ..."
 msgstr "Átneve_zés ..."
 
-#: src/gtkui/settings.cc:35
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:51
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Lejátszólista fülek</b>"
 
-#: src/gtkui/settings.cc:36
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:52
 msgid "Always show tabs"
 msgstr "Mindig mutassa a füleket"
 
-#: src/gtkui/settings.cc:38
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:54
 msgid "Show entry counts"
 msgstr "Elemek számának mutatása"
 
-#: src/gtkui/settings.cc:40
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:56
 msgid "Show close buttons"
 msgstr "Bezárás gomb mutatása"
 
-#: src/gtkui/settings.cc:42
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:58
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Lejátszólista oszlopok</b>"
 
-#: src/gtkui/settings.cc:44
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:60
 msgid "Show column headers"
 msgstr "Oszlop fejlécek mutatása"
 
-#: src/gtkui/settings.cc:46 src/modplug/plugin_main.cc:106
-#: src/skins/skins_cfg.cc:263
+#: src/gtkui/settings.cc:46 src/modplug/plugin_main.cc:109
+#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:281
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Egyéb</b>"
 
@@ -1890,20 +1988,21 @@ msgstr "Nyíl billentyűk a tekeréshez:"
 msgid "Scroll on song change"
 msgstr "Számváltáskor gördül"
 
-#: src/gtkui/ui_gtk.cc:71
+#: src/gtkui/ui_gtk.cc:72
 msgid "GTK Interface"
 msgstr "GTK+ felület"
 
-#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:232
+#: src/gtkui/ui_gtk.cc:223 src/skins/main.cc:215 src/skins-qt/main.cc:212
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:225 src/qtui/main_window.cc:186
+#: src/gtkui/ui_gtk.cc:226 src/qtui/main_window.cc:237
 msgid "Buffering ..."
 msgstr "Pufferelés ..."
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:234 src/skins/ui_main.cc:1164
+#: src/gtkui/ui_gtk.cc:229 src/skins/main.cc:217 src/skins/main.cc:1103
+#: src/skins-qt/main.cc:214 src/skins-qt/main.cc:1059
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -1922,20 +2021,25 @@ msgid_plural "%d channels"
 msgstr[0] "%d csatorna"
 msgstr[1] "%d csatorna"
 
+#: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:79
+#, c-format
+msgid "%d kHz"
+msgstr ""
+
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:85
 #, c-format
 msgid "%d kbps"
 msgstr "%d kbps"
 
-#: src/gtkui/ui_statusbar.cc:107 src/skins/ui_main_evlisteners.cc:103
+#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:443 src/skins-qt/main.cc:426
 msgid "Single mode."
 msgstr "Egyszerű mód."
 
-#: src/gtkui/ui_statusbar.cc:109 src/skins/ui_main_evlisteners.cc:105
+#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:445 src/skins-qt/main.cc:428
 msgid "Playlist mode."
 msgstr "Lejátszólista mód."
 
-#: src/gtkui/ui_statusbar.cc:117 src/skins/ui_main_evlisteners.cc:111
+#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:451 src/skins-qt/main.cc:434
 msgid "Stopping after song."
 msgstr "Leállítás az aktuális dal után."
 
@@ -1943,9 +2047,9 @@ msgstr "Leállítás az aktuális dal után."
 msgid "Previous track"
 msgstr "Előző szám"
 
-#: src/hotkey/gui.cc:72 src/notify/osd.cc:69 src/qtui/main_window.cc:69
-#: src/qtui/main_window.cc:172 src/qtui/main_window.cc:173
-#: src/skins/menus.cc:87
+#: src/hotkey/gui.cc:72 src/notify/osd.cc:69 src/qtui/main_window.cc:90
+#: src/qtui/main_window.cc:197 src/qtui/main_window.cc:198
+#: src/skins/menus.cc:132 src/skins-qt/menus.cc:119
 msgid "Play"
 msgstr "Lejátszás"
 
@@ -1953,7 +2057,8 @@ msgstr "Lejátszás"
 msgid "Pause/Resume"
 msgstr "Szünet/Folytatás"
 
-#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:70 src/skins/menus.cc:89
+#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:91 src/skins/menus.cc:134
+#: src/skins-qt/menus.cc:121
 msgid "Stop"
 msgstr "Leállít"
 
@@ -2020,6 +2125,9 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Nem ajánlott az elsődleges egérgombokat feltétel nélkül társítani.\n"
+"\n"
+"Biztosan folytatni szeretné?"
 
 #: src/hotkey/gui.cc:236
 msgid "Binding mouse buttons"
@@ -2049,11 +2157,11 @@ msgstr "<b>Billentyű kötések:</b>"
 msgid "_Add"
 msgstr "_Hozzáadás"
 
-#: src/hotkey/plugin.cc:61
+#: src/hotkey/plugin.cc:62
 msgid "Global Hotkeys"
 msgstr "Általános gyorsbillentyűk"
 
-#: src/hotkey/plugin.cc:79
+#: src/hotkey/plugin.cc:80
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -2067,6 +2175,17 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
+"Globális Billentyűparancs Bővítmény\n"
+"Multimédia gombokkal és billentyűparancsokkal vezérelheted a lejátszót.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Támogatók:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/jack-ng/jack-ng.cc:49
 msgid "JACK Output"
@@ -2079,14 +2198,14 @@ msgstr "Automatikus csatlakozás a kimeneti portokhoz"
 #: src/jack-ng/jack-ng.cc:155
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
-msgstr ""
+msgstr "Csak %d darab JACK kimeneti portot találtam, de %d darab kellene."
 
-#: src/jack-ng/jack-ng.cc:164
+#: src/jack-ng/jack-ng.cc:171
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr "Sikertelen kapcsolódás a JACK porthoz: %s."
 
-#: src/jack-ng/jack-ng.cc:184
+#: src/jack-ng/jack-ng.cc:191
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
@@ -2094,11 +2213,11 @@ msgstr ""
 "A JACK csak a lebegőpontos audiót támogatja. Kérem állítsa át a kimeneti bit "
 "mélységet lebegőpontosra az Audacious beállításaiban."
 
-#: src/jack-ng/jack-ng.cc:197
+#: src/jack-ng/jack-ng.cc:204
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr "Sikertelen kapcsolódás a JACK szerverhez; valóban fut?"
 
-#: src/jack-ng/jack-ng.cc:273
+#: src/jack-ng/jack-ng.cc:280
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -2108,41 +2227,44 @@ msgstr ""
 "csa %d Hz-en játszik le. Kérem használja a Mintavételi Frekvencia Konverter "
 "modult a hibák elkerülése érdekében."
 
-#: src/ladspa/plugin.cc:414
+#: src/ladspa/plugin.cc:415
 #, c-format
 msgid "%s Settings"
 msgstr "%s Beállítások"
 
-#: src/ladspa/plugin.cc:478
+#: src/ladspa/plugin.cc:481
 msgid "Module paths:"
 msgstr "Modul útvonalak:"
 
-#: src/ladspa/plugin.cc:483
+#: src/ladspa/plugin.cc:486
 msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
+"<small>Több elérési utat kettősponttal válasszon el.\n"
+"Ezek a helyek a LADSPA_PATH-on kivül is kereshetők.\n"
+"Új helyek hozzáadása után nyomjon entert az új beépülők kereséséhez.</small>"
 
-#: src/ladspa/plugin.cc:499
+#: src/ladspa/plugin.cc:502
 msgid "Available plugins:"
 msgstr "Elérhető bővítmények:"
 
-#: src/ladspa/plugin.cc:512 src/modplug/plugin_main.cc:92
-#: src/modplug/plugin_main.cc:95 src/modplug/plugin_main.cc:98
-#: src/modplug/plugin_main.cc:101
+#: src/ladspa/plugin.cc:515 src/modplug/plugin_main.cc:95
+#: src/modplug/plugin_main.cc:98 src/modplug/plugin_main.cc:101
+#: src/modplug/plugin_main.cc:104
 msgid "Enable"
 msgstr "Engedélyez"
 
-#: src/ladspa/plugin.cc:518
+#: src/ladspa/plugin.cc:521
 msgid "Enabled plugins:"
 msgstr "Engedélyezett modulok:"
 
-#: src/ladspa/plugin.cc:534
+#: src/ladspa/plugin.cc:537
 msgid "Settings"
 msgstr "Beállítások"
 
-#: src/ladspa/plugin.cc:551
+#: src/ladspa/plugin.cc:554
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
@@ -2158,7 +2280,7 @@ msgstr "LADSPA gép"
 msgid "LIRC Plugin"
 msgstr "LIRC bővítmény"
 
-#: src/lirc/lirc.cc:381
+#: src/lirc/lirc.cc:382
 msgid ""
 "A simple plugin to control Audacious using the LIRC remote control daemon\n"
 "\n"
@@ -2186,61 +2308,62 @@ msgstr ""
 "\n"
 "További információkért nézze meg a LIRC honlapját, http://lirc.org."
 
-#: src/lirc/lirc.cc:392
+#: src/lirc/lirc.cc:393
 msgid "<b>Connection</b>"
 msgstr "<b>Kapcsolat</b>"
 
-#: src/lirc/lirc.cc:393
+#: src/lirc/lirc.cc:394
 msgid "Reconnect to LIRC server"
 msgstr "Újracsatlakozás a LIRC szerverhez"
 
-#: src/lirc/lirc.cc:395
+#: src/lirc/lirc.cc:396
 msgid "Wait before reconnecting:"
 msgstr "Várjon az újracsatlakozás előtt:"
 
-#: src/lyricwiki/lyricwiki.cc:41
+#: src/lyricwiki/lyricwiki.cc:42 src/lyricwiki-qt/lyricwiki.cc:69
 msgid "LyricWiki Plugin"
 msgstr "LyricWiki bővítmény"
 
-#: src/lyricwiki/lyricwiki.cc:131 src/lyricwiki-qt/lyricwiki.cc:136
+#: src/lyricwiki/lyricwiki.cc:132 src/lyricwiki-qt/lyricwiki.cc:150
 msgid "No lyrics available"
 msgstr "Nincs elérhető zeneszöveg"
 
-#: src/lyricwiki/lyricwiki.cc:217 src/lyricwiki/lyricwiki.cc:226
-#: src/lyricwiki/lyricwiki.cc:243 src/lyricwiki/lyricwiki.cc:252
-#: src/lyricwiki/lyricwiki.cc:267 src/lyricwiki-qt/lyricwiki.cc:222
-#: src/lyricwiki-qt/lyricwiki.cc:231 src/lyricwiki-qt/lyricwiki.cc:248
-#: src/lyricwiki-qt/lyricwiki.cc:257 src/lyricwiki-qt/lyricwiki.cc:272
+#: src/lyricwiki/lyricwiki.cc:219 src/lyricwiki/lyricwiki.cc:228
+#: src/lyricwiki/lyricwiki.cc:245 src/lyricwiki/lyricwiki.cc:254
+#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:236
+#: src/lyricwiki-qt/lyricwiki.cc:245 src/lyricwiki-qt/lyricwiki.cc:262
+#: src/lyricwiki-qt/lyricwiki.cc:271 src/lyricwiki-qt/lyricwiki.cc:286
+#: src/qtui/dialog_windows.cc:38
 msgid "Error"
 msgstr "Hiba"
 
-#: src/lyricwiki/lyricwiki.cc:218 src/lyricwiki/lyricwiki.cc:244
-#: src/lyricwiki-qt/lyricwiki.cc:223 src/lyricwiki-qt/lyricwiki.cc:249
+#: src/lyricwiki/lyricwiki.cc:220 src/lyricwiki/lyricwiki.cc:246
+#: src/lyricwiki-qt/lyricwiki.cc:237 src/lyricwiki-qt/lyricwiki.cc:263
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "Nem sikerült letölteni: %s"
 
-#: src/lyricwiki/lyricwiki.cc:227 src/lyricwiki/lyricwiki.cc:253
-#: src/lyricwiki-qt/lyricwiki.cc:232 src/lyricwiki-qt/lyricwiki.cc:258
+#: src/lyricwiki/lyricwiki.cc:229 src/lyricwiki/lyricwiki.cc:255
+#: src/lyricwiki-qt/lyricwiki.cc:246 src/lyricwiki-qt/lyricwiki.cc:272
 #, c-format
 msgid "Unable to parse %s"
 msgstr "Nem sikerült értelmezni: %s"
 
-#: src/lyricwiki/lyricwiki.cc:259 src/lyricwiki-qt/lyricwiki.cc:264
+#: src/lyricwiki/lyricwiki.cc:261 src/lyricwiki-qt/lyricwiki.cc:278
 msgid "Looking for lyrics ..."
 msgstr "Zeneszöveg keresése ..."
 
-#: src/lyricwiki/lyricwiki.cc:267 src/lyricwiki-qt/lyricwiki.cc:272
+#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:286
 msgid "Missing song metadata"
 msgstr "Érvénytelen a dal metaadata"
 
-#: src/lyricwiki/lyricwiki.cc:278 src/lyricwiki-qt/lyricwiki.cc:283
+#: src/lyricwiki/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:297
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "Kapcsolódás a lyrics.wikia.com helyhez ..."
 
-#: src/lyricwiki-qt/lyricwiki.cc:55
-msgid "LyricWiki Plugin (Qt)"
-msgstr ""
+#: src/lyricwiki/lyricwiki.cc:321 src/lyricwiki-qt/lyricwiki.cc:375
+msgid "Edit lyrics ..."
+msgstr "Dalszöveg szerkesztése..."
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
@@ -2268,6 +2391,15 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
+"Üten Generátor Martin Strauss <mys@faveve.uni-stuttgart.de> által\n"
+"\n"
+"Használat:\n"
+"tact://beats*num/den\n"
+"tact://ütemszám*x/y\n"
+"\n"
+"Például:\n"
+"tact://77 -> 77 ütem percenként\n"
+"tact://60*3/4 -> 60 bpm 3/4-es taktusokban"
 
 #: src/mixer/mixer.cc:38
 msgid "Channel Mixer"
@@ -2278,6 +2410,8 @@ msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
+"Csatornakeverő bővítmény az Audacious-hoz\n"
+"Copyright 2011-2012 John Lindgren és Michał Lipski"
 
 #: src/mixer/mixer.cc:206
 msgid "<b>Channel Mixer</b>"
@@ -2293,114 +2427,114 @@ msgstr "MMS bővítmény"
 
 #: src/mms/mms.cc:82
 msgid "Error connecting to MMS server"
-msgstr ""
+msgstr "Hiba az MMS szerverhez való csatlakozás során"
 
-#: src/modplug/modplugbmp.h:53
+#: src/modplug/modplugbmp.h:57
 msgid "ModPlug (Module Player)"
 msgstr "ModPlug (Modul lejátszó)"
 
-#: src/modplug/plugin_main.cc:53
+#: src/modplug/plugin_main.cc:56
 msgid "<b>Resolution</b>"
 msgstr "<b>Felbontás</b>"
 
-#: src/modplug/plugin_main.cc:54
+#: src/modplug/plugin_main.cc:57
 msgid "8-bit"
 msgstr "8-bit"
 
-#: src/modplug/plugin_main.cc:55
+#: src/modplug/plugin_main.cc:58
 msgid "16-bit"
 msgstr "16 bit"
 
-#: src/modplug/plugin_main.cc:56
+#: src/modplug/plugin_main.cc:59
 msgid "<b>Channels</b>"
 msgstr "<b>Csatornák</b>"
 
-#: src/modplug/plugin_main.cc:60
-msgid "Nearest (fastest)"
-msgstr ""
-
-#: src/modplug/plugin_main.cc:61
-msgid "Linear (fast)"
-msgstr ""
-
-#: src/modplug/plugin_main.cc:62
-msgid "Spline (good)"
-msgstr ""
-
 #: src/modplug/plugin_main.cc:63
-msgid "Polyphase (best)"
-msgstr ""
+msgid "Nearest (fastest)"
+msgstr "Legközelebbi szomszéd (leggyorsabb)"
 
 #: src/modplug/plugin_main.cc:64
+msgid "Linear (fast)"
+msgstr "Lineáris (gyors)"
+
+#: src/modplug/plugin_main.cc:65
+msgid "Spline (good)"
+msgstr "Spline (jó)"
+
+#: src/modplug/plugin_main.cc:66
+msgid "Polyphase (best)"
+msgstr "Polifázis (legjobb)"
+
+#: src/modplug/plugin_main.cc:67
 msgid "<b>Sample rate</b>"
 msgstr "<b>Mintavételi ráta</b>"
 
-#: src/modplug/plugin_main.cc:65
+#: src/modplug/plugin_main.cc:68
 msgid "22 kHz"
 msgstr "22 kHz"
 
-#: src/modplug/plugin_main.cc:66
+#: src/modplug/plugin_main.cc:69
 msgid "44 kHz"
 msgstr "44 kHz"
 
-#: src/modplug/plugin_main.cc:67
+#: src/modplug/plugin_main.cc:70
 msgid "48 kHz"
 msgstr "48 kHz"
 
-#: src/modplug/plugin_main.cc:68
+#: src/modplug/plugin_main.cc:71
 msgid "96 kHz"
 msgstr "96 kHz"
 
-#: src/modplug/plugin_main.cc:72 src/modplug/plugin_main.cc:77
-#: src/modplug/plugin_main.cc:82
+#: src/modplug/plugin_main.cc:75 src/modplug/plugin_main.cc:80
+#: src/modplug/plugin_main.cc:85
 msgid "Level:"
 msgstr "Szint:"
 
-#: src/modplug/plugin_main.cc:78
+#: src/modplug/plugin_main.cc:81
 msgid "Cutoff:"
-msgstr ""
-
-#: src/modplug/plugin_main.cc:91
-msgid "<b>Reverb</b>"
-msgstr ""
+msgstr "Levágás:"
 
 #: src/modplug/plugin_main.cc:94
+msgid "<b>Reverb</b>"
+msgstr "<b>Visszhang</b>"
+
+#: src/modplug/plugin_main.cc:97
 msgid "<b>Bass Boost</b>"
 msgstr "<b>Basszus erősítés</b>"
 
-#: src/modplug/plugin_main.cc:97
+#: src/modplug/plugin_main.cc:100
 msgid "<b>Surround</b>"
 msgstr "<b>Surround</b>"
 
-#: src/modplug/plugin_main.cc:100
+#: src/modplug/plugin_main.cc:103
 msgid "<b>Preamp</b>"
-msgstr ""
+msgstr "<b>Előerősítés</b>"
 
-#: src/modplug/plugin_main.cc:107
+#: src/modplug/plugin_main.cc:110
 msgid "Oversample"
 msgstr "Túlvételezés"
 
-#: src/modplug/plugin_main.cc:108
+#: src/modplug/plugin_main.cc:111
 msgid "Noise reduction"
 msgstr "Zajcsökkentés"
 
-#: src/modplug/plugin_main.cc:109
+#: src/modplug/plugin_main.cc:112
 msgid "Play Amiga MODs"
 msgstr "AMIGA MOD fájlok lejátszása"
 
-#: src/modplug/plugin_main.cc:110
+#: src/modplug/plugin_main.cc:113
 msgid "<b>Repeat</b>"
 msgstr "<b>Ismétlés</b>"
 
-#: src/modplug/plugin_main.cc:111
+#: src/modplug/plugin_main.cc:114
 msgid "Repeat count:"
 msgstr "Ismétlés száma:"
 
-#: src/modplug/plugin_main.cc:112
+#: src/modplug/plugin_main.cc:115
 msgid "To repeat forever, set the repeat count to -1."
 msgstr "Ismétlés örökké, állítsd be az ismétlés számát -1-re"
 
-#: src/modplug/plugin_main.cc:125 src/sid/xs_config.cc:106
+#: src/modplug/plugin_main.cc:128 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
 msgstr "A beállítások csak az Audacious újraindítása után érvényesülnek."
 
@@ -2408,19 +2542,19 @@ msgstr "A beállítások csak az Audacious újraindítása után érvényesülne
 msgid "MPG123 Plugin"
 msgstr "MPG123 bővítmény"
 
-#: src/mpg123/mpg123.cc:83
+#: src/mpg123/mpg123.cc:82
 msgid "<b>Advanced</b>"
 msgstr "<b>Haladó</b>"
 
-#: src/mpg123/mpg123.cc:84
+#: src/mpg123/mpg123.cc:83
 msgid "Use accurate length calculation (slow)"
-msgstr ""
+msgstr "Pontos hossz számítás (lassú)"
 
-#: src/mpg123/mpg123.cc:248
+#: src/mpg123/mpg123.cc:243
 msgid "Surround"
 msgstr "Térhatású"
 
-#: src/mpris2/plugin.cc:39
+#: src/mpris2/plugin.cc:38
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 szerver"
 
@@ -2428,19 +2562,19 @@ msgstr "MPRIS 2 szerver"
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP/HTTPS bővítmény"
 
-#: src/neon/neon.cc:521
+#: src/neon/neon.cc:523
 msgid "Error parsing redirect"
-msgstr ""
+msgstr "Hiba az átirányítás elemzésekor"
 
-#: src/neon/neon.cc:535
+#: src/neon/neon.cc:537
 msgid "Unknown HTTP error"
 msgstr "Ismeretlen HTTP hiba"
 
-#: src/neon/neon.cc:569
+#: src/neon/neon.cc:571
 msgid "Error parsing URL"
 msgstr "Hiba az URL elemzésekor"
 
-#: src/neon/neon.cc:632
+#: src/neon/neon.cc:634
 msgid "Too many redirects"
 msgstr "Túl sok átirányítás"
 
@@ -2452,11 +2586,11 @@ msgstr "Leállítva"
 msgid "Audacious is not playing."
 msgstr "Az Audacious nem játszik."
 
-#: src/notify/notify.cc:42
+#: src/notify/notify.cc:43
 msgid "Desktop Notifications"
 msgstr "Asztali értesítések"
 
-#: src/notify/notify.cc:60
+#: src/notify/notify.cc:61
 msgid ""
 "Desktop Notifications Plugin for Audacious\n"
 "Copyright (C) 2010 Maximilian Bogner\n"
@@ -2475,16 +2609,40 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Asztali értesítések beépülő az Audacious-hoz\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011-2013 John Lindgren és Jean-Alexandre Anglès d'Auriac\n"
+" \n"
+"Ez a program szabad szoftver; terjeszthető illetve módosítható a \n"
+"Free Software Foundation által kiadott GNU General Public License\n"
+"dokumentumában leírtak; akár a licenc 2-es, akár (tetszőleges) későbbi \n"
+"változata szerint.\n"
+"\n"
+"Ez a program abban a reményben kerül közreadásra, hogy hasznos lesz, \n"
+"de minden egyéb GARANCIA NÉLKÜL, az ELADHATÓSÁGRA vagy VALAMELY CÉLRA VALÓ "
+"ALKALMAZHATÓSÁGRA való származtatott garanciát is beleértve. \n"
+"További részleteket a GNU General Public License tartalmaz.\n"
+"\n"
+"A felhasználónak a programmal együtt meg kell kapnia a GNU General \n"
+"Public License egy példányát; ha mégsem kapta meg, akkor\n"
+"ezt a Free Software Foundationnak küldött levélben jelezze \n"
+" \n"
+"Free Software Foundation, Inc.\n"
+"51 Franklin Street, Fifth Floor\n"
+"Boston, MA 02110-1301, USA.\n"
+"\n"
+"http://www.gnu.org/licenses/\n"
+"http://gnu.hu/gpl.html"
 
-#: src/notify/notify.cc:110
+#: src/notify/notify.cc:108
 msgid "Show playback controls"
 msgstr "Lejátszó vezérlők mutatása"
 
-#: src/notify/notify.cc:112
+#: src/notify/notify.cc:110
 msgid "Always show notification"
 msgstr "Mindig mutasson értesítést"
 
-#: src/notify/notify.cc:114
+#: src/notify/notify.cc:112
 msgid "Include album name in notification"
 msgstr "Az album nevének megjelenítése az értesítésben"
 
@@ -2492,12 +2650,13 @@ msgstr "Az album nevének megjelenítése az értesítésben"
 msgid "Show"
 msgstr "Mutat"
 
-#: src/notify/osd.cc:66 src/qtui/main_window.cc:178
-#: src/qtui/main_window.cc:179 src/skins/menus.cc:88
+#: src/notify/osd.cc:66 src/qtui/main_window.cc:203 src/qtui/main_window.cc:204
+#: src/skins/menus.cc:133 src/skins-qt/menus.cc:120
 msgid "Pause"
 msgstr "Szünet"
 
-#: src/notify/osd.cc:73 src/qtui/main_window.cc:72 src/skins/menus.cc:91
+#: src/notify/osd.cc:73 src/qtui/main_window.cc:93 src/skins/menus.cc:136
+#: src/skins-qt/menus.cc:123
 msgid "Next"
 msgstr "Következő"
 
@@ -2513,27 +2672,27 @@ msgstr "OSS3 kimenet"
 msgid "Default device"
 msgstr "Alapértelmezett eszköz"
 
-#: src/oss4/plugin.cc:77
+#: src/oss4/plugin.cc:78
 msgid "Audio device:"
 msgstr "Audio eszköz:"
 
-#: src/oss4/plugin.cc:80
+#: src/oss4/plugin.cc:81
 msgid "Use alternate device:"
 msgstr "Alternatív eszköz használata:"
 
-#: src/oss4/plugin.cc:84
+#: src/oss4/plugin.cc:85
 msgid "Save volume between sessions."
 msgstr "Hangerő mentése munkamentek között"
 
-#: src/oss4/plugin.cc:86
+#: src/oss4/plugin.cc:87
 msgid "Enable format conversions made by the OSS software."
 msgstr "Formátum konverzió engedélyezése az OSS szoftverben."
 
-#: src/oss4/plugin.cc:88
+#: src/oss4/plugin.cc:89
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr ""
+msgstr "Engedélyezd az exkluzív módot a virtuális keverés ellen."
 
-#: src/oss4/plugin.cc:100
+#: src/oss4/plugin.cc:101
 msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010-2012 Michał Lipski\n"
@@ -2541,20 +2700,29 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
+"OSS4 Kimeneti Bővítmény az Audacious-hoz\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"Köszönet mindenkinek az  #audacious-on, különösen Tony Vroon-nak és John "
+"Lindgren-nek, és persze az előző OSS beépülő készítőinek."
 
-#: src/playlist-manager/playlist-manager.cc:37
+#: src/playlist-manager/playlist-manager.cc:38
+#: src/playlist-manager-qt/playlist-manager-qt.cc:41
 msgid "Playlist Manager"
 msgstr "Lejátszólista kezelő"
 
-#: src/playlist-manager/playlist-manager.cc:226
+#: src/playlist-manager/playlist-manager.cc:221
+#: src/playlist-manager-qt/playlist-manager-qt.cc:160
 msgid "Entries"
 msgstr "Elemek"
 
-#: src/playlist-manager/playlist-manager.cc:245
+#: src/playlist-manager/playlist-manager.cc:241
+#: src/playlist-manager-qt/playlist-manager-qt.cc:325
 msgid "_Remove"
 msgstr "_Eltávolítás"
 
-#: src/playlist-manager/playlist-manager.cc:246
+#: src/playlist-manager/playlist-manager.cc:242
+#: src/playlist-manager-qt/playlist-manager-qt.cc:320
 msgid "Ren_ame"
 msgstr "Át_nevezés"
 
@@ -2564,7 +2732,7 @@ msgstr "PLS lejásztólisták"
 
 #: src/psf/plugin.cc:45
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr ""
+msgstr "OpenPSF PSF1/PSF2 Dekóder"
 
 #: src/pulse_audio/pulse_audio.cc:38
 msgid "PulseAudio Output"
@@ -2589,6 +2757,25 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
+"Audacious PulseAudio Kimeneti Bővítmény\n"
+"\n"
+"Ez a program szabad szoftver; terjeszthető illetve módosítható a \n"
+"Free Software Foundation által kiadott GNU General Public License\n"
+"dokumentumában leírtak; akár a licenc 2-es, akár (tetszőleges) későbbi \n"
+"változata szerint.\n"
+"\n"
+"Ez a program abban a reményben kerül közreadásra, hogy hasznos lesz, \n"
+"de minden egyéb GARANCIA NÉLKÜL, az ELADHATÓSÁGRA vagy VALAMELY CÉLRA VALÓ "
+"ALKALMAZHATÓSÁGRA való származtatott garanciát is beleértve. \n"
+"További részleteket a GNU General Public License tartalmaz.\n"
+"\n"
+"A felhasználónak a programmal együtt meg kell kapnia a GNU General \n"
+"Public License egy példányát; ha mégsem kapta meg, akkor\n"
+"ezt a Free Software Foundationnak küldött levélben jelezze.\n"
+"\n"
+"Free Software Foundation, Inc.\n"
+"51 Franklin Street, Fifth Floor, \n"
+"Boston, MA 02110-1301, USA"
 
 #: src/qtaudio/qtaudio.cc:49
 msgid "QtMultimedia Output"
@@ -2602,48 +2789,53 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"QtMultimedia Audio Kimeneti Bővítmény Audacioushoz\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"Az SDL Kimeneti Bővítmény Audacioushoz alapján\n"
+"Copyright 2010 John Lindgren"
 
 #: src/qtui/dialog_windows.cc:31
 msgid "Working ..."
 msgstr "Dolgozom ..."
 
-#: src/qtui/filter_input.cc:44 src/skins/ui_playlist.cc:221
+#: src/qtui/filter_input.cc:44 src/skins/search-select.cc:76
 msgid "Search"
 msgstr "Keresés"
 
-#: src/qtui/main_window_actions.cc:94
+#: src/qtui/main_window_actions.cc:90
 msgid "_Open Folder ..."
 msgstr "_Mappa megnyitása ..."
 
-#: src/qtui/main_window_actions.cc:96
+#: src/qtui/main_window_actions.cc:93
 msgid "_Add Folder ..."
 msgstr "M_appa hozzáadása ..."
 
-#: src/qtui/main_window_actions.cc:101
+#: src/qtui/main_window_actions.cc:99
 msgid "_Log Inspector ..."
 msgstr "_Napló ellenőr ..."
 
-#: src/qtui/main_window.cc:64
+#: src/qtui/main_window.cc:85
 msgid "Open Files"
 msgstr "Fájlok megnyitása"
 
-#: src/qtui/main_window.cc:66
+#: src/qtui/main_window.cc:87
 msgid "Add Files"
 msgstr "Fájlok hozzáadása"
 
-#: src/qtui/main_window.cc:71 src/skins/menus.cc:90
+#: src/qtui/main_window.cc:92 src/skins/menus.cc:135 src/skins-qt/menus.cc:122
 msgid "Previous"
 msgstr "Előző"
 
-#: src/qtui/main_window.cc:77 src/skins/menus.cc:82
+#: src/qtui/main_window.cc:98 src/skins/menus.cc:126 src/skins-qt/menus.cc:113
 msgid "Repeat"
 msgstr "Ismétlés"
 
-#: src/qtui/main_window.cc:79 src/skins/menus.cc:83
+#: src/qtui/main_window.cc:100 src/skins/menus.cc:127 src/skins-qt/menus.cc:114
 msgid "Shuffle"
 msgstr "Véletlenszerű"
 
-#: src/qtui/qtui.cc:42
+#: src/qtui/qtui.cc:39
 msgid "Qt Interface"
 msgstr "Qt felület"
 
@@ -2661,7 +2853,7 @@ msgstr ""
 
 #: src/resample/resample.cc:187
 msgid "Skip/repeat samples"
-msgstr ""
+msgstr "Minták ismétlése, átugrása"
 
 #: src/resample/resample.cc:188
 msgid "Linear interpolation"
@@ -2669,15 +2861,15 @@ msgstr "Lineáris interpoláció"
 
 #: src/resample/resample.cc:189
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "Gyors sinc interpoláció"
 
 #: src/resample/resample.cc:190
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "Közepes sinc interpoláció"
 
 #: src/resample/resample.cc:191
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "Legjobb sinc interpoláció"
 
 #: src/resample/resample.cc:195
 msgid "<b>Conversion</b>"
@@ -2693,11 +2885,11 @@ msgstr "Ráta:"
 
 #: src/resample/resample.cc:202
 msgid "<b>Rate Mappings</b>"
-msgstr ""
+msgstr "<b>Ráta leképezések</b>"
 
 #: src/resample/resample.cc:203
 msgid "Use rate mappings"
-msgstr ""
+msgstr "Ráta leképezések használata"
 
 #: src/resample/resample.cc:205
 msgid "8 kHz:"
@@ -2742,7 +2934,7 @@ msgstr "192 kHz:"
 #: src/scrobbler2/config_window.cc:41
 #, c-format
 msgid "OK. Scrobbling for user: %s"
-msgstr ""
+msgstr "OK. Scrobbling a következőnek: %s"
 
 #: src/scrobbler2/config_window.cc:54
 msgid "Permission Denied"
@@ -2750,17 +2942,21 @@ msgstr "Hozzáférés megtagadva"
 
 #: src/scrobbler2/config_window.cc:56
 msgid "Access the following link to allow Audacious to scrobble your plays:"
-msgstr ""
+msgstr "Kattintson a következő linkre a scrobbling engedélyezéséhez:"
 
 #: src/scrobbler2/config_window.cc:66
 msgid "Keep this window open and click 'Check Permission' again.\n"
 msgstr ""
+"Hagyja ezt az ablakot nyitva és kattintson megint az Engedélyek "
+"Ellenőrzésére\n"
 
 #: src/scrobbler2/config_window.cc:69 src/scrobbler2/config_window.cc:80
 msgid ""
 "Don't worry. Your scrobbles are saved on your computer.\n"
 "They will be submitted as soon as Audacious is allowed to do so."
 msgstr ""
+"Ne aggódj. A scrobble-jeid a számítógépen vannak tárolva\n"
+"El lesznek küldve amint az Audacious engedélyt kap rá."
 
 #: src/scrobbler2/config_window.cc:77
 msgid "Network Problem."
@@ -2768,7 +2964,7 @@ msgstr "Hálózati probléma."
 
 #: src/scrobbler2/config_window.cc:78
 msgid "There was a problem contacting Last.fm. Please try again later."
-msgstr ""
+msgstr "Hiba történtg a Last.fm-hez való csatlakozás közben."
 
 #: src/scrobbler2/config_window.cc:110
 msgid "Checking..."
@@ -2780,12 +2976,13 @@ msgstr "_Jogosultságok ellenőrzése"
 
 #: src/scrobbler2/config_window.cc:177
 msgid "_Revoke Permission"
-msgstr ""
+msgstr "_Jogosultság Megvonása"
 
 #: src/scrobbler2/config_window.cc:220
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr ""
+"Meg kell engedned az Audacious-nak, hogy kommunikáljon a Last.fm fiókoddal.\n"
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
@@ -2796,6 +2993,8 @@ msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
+"A Scrobbler Bővítmény nem indítató el.\n"
+"A telepítéssel lehet gond."
 
 #: src/scrobbler2/scrobbler.cc:289
 msgid ""
@@ -2807,12 +3006,21 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
+"Audacious Scrobbler Beépülő 2.0 by Pitxyoki,\n"
+"\n"
+"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"Köszönet John Lindgren-nek a segítségért a projekt elkezdéséhez.\n"
+"\n"
 
 #: src/scrobbler2/scrobbler_communication.cc:642
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
+"Az Audacious már egy fejlettebb változatát használja a Last.fm Scrobbler-"
+"nek\n"
+"Kérlek, ellenőrizd a beállításait."
 
 #: src/sdlout/sdlout.cc:48
 msgid "SDL Output"
@@ -2823,57 +3031,61 @@ msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"SDL Kimeneti Bővítmény az Audacious-hoz\n"
+"Copyright 2010 John Lindgren"
 
-#: src/search-tool/search-tool.cc:116 src/search-tool/search-tool.cc:124
+#: src/search-tool-qt/search-tool-qt.cc:187
+#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:120
+#: src/search-tool/search-tool.cc:128
 msgid "Library"
 msgstr "Gyűjtemény"
 
-#: src/search-tool/search-tool.cc:394
+#: src/search-tool-qt/search-tool-qt.cc:460 src/search-tool/search-tool.cc:393
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
 msgstr[0] "%d találat"
 msgstr[1] "%d találat"
 
-#: src/search-tool/search-tool.cc:400
+#: src/search-tool-qt/search-tool-qt.cc:466 src/search-tool/search-tool.cc:399
 #, c-format
 msgid "(%d hidden)"
 msgid_plural "(%d hidden)"
 msgstr[0] "(%d rejtett)"
 msgstr[1] "(%d rejtett)"
 
-#: src/search-tool/search-tool.cc:594
+#: src/search-tool-qt/search-tool-qt.cc:640 src/search-tool/search-tool.cc:569
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
 msgstr[0] "%d zeneszám"
 msgstr[1] "%d zeneszám"
 
-#: src/search-tool/search-tool.cc:601
+#: src/search-tool-qt/search-tool-qt.cc:647 src/search-tool/search-tool.cc:576
 msgid "of this genre"
 msgstr "műfaj szerint"
 
-#: src/search-tool/search-tool.cc:607
+#: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
 msgid "on"
 msgstr "be"
 
-#: src/search-tool/search-tool.cc:607
+#: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
 msgid "by"
 msgstr "írta"
 
-#: src/search-tool/search-tool.cc:643
+#: src/search-tool-qt/search-tool-qt.cc:665 src/search-tool/search-tool.cc:618
 msgid "_Create Playlist"
 msgstr "_Lejátszólista létrehozása"
 
-#: src/search-tool/search-tool.cc:645
+#: src/search-tool-qt/search-tool-qt.cc:666 src/search-tool/search-tool.cc:620
 msgid "_Add to Playlist"
 msgstr "Lejátszólistához hozzá_ad"
 
-#: src/search-tool/search-tool.cc:684
+#: src/search-tool-qt/search-tool-qt.cc:682 src/search-tool/search-tool.cc:661
 msgid "Search library"
 msgstr "Keresés a gyűjteményben"
 
-#: src/search-tool/search-tool.cc:688
+#: src/search-tool-qt/search-tool-qt.cc:685 src/search-tool/search-tool.cc:665
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2881,11 +3093,11 @@ msgstr ""
 "Az Audacious zenekönyvtárába importáláshoz válaszd ki a mappát majd kattints "
 "a \"Frissítés\" ikonra."
 
-#: src/search-tool/search-tool.cc:696
+#: src/search-tool-qt/search-tool-qt.cc:691 src/search-tool/search-tool.cc:674
 msgid "Please wait ..."
 msgstr "Kérem várjon ..."
 
-#: src/search-tool/search-tool.cc:723
+#: src/search-tool/search-tool.cc:701
 msgid "Choose Folder"
 msgstr "Mappa választás"
 
@@ -2911,7 +3123,7 @@ msgstr "MOS 8580 emulálása (alapértelmezett: MOS 6581)"
 
 #: src/sid/xs_config.cc:71
 msgid "Do not automatically select chip model"
-msgstr ""
+msgstr "Ne válassza ki automatikusan a chip típusát"
 
 #: src/sid/xs_config.cc:73
 msgid "Emulate filter"
@@ -2943,15 +3155,15 @@ msgstr "Minimális lejátszási idő beállítása:"
 
 #: src/sid/xs_config.cc:96
 msgid "<b>Subtunes</b>"
-msgstr ""
+msgstr "<b>Alzenék</b>"
 
 #: src/sid/xs_config.cc:97
 msgid "Enable subtunes"
-msgstr ""
+msgstr "Alzenék engedélyezése"
 
 #: src/sid/xs_config.cc:99
 msgid "Ignore subtunes shorter than:"
-msgstr ""
+msgstr "Hagyja ki az ennél rövidebb alzenéket:"
 
 #: src/sid/xs_config.cc:105
 msgid "<b>Note</b>"
@@ -2966,6 +3178,8 @@ msgid ""
 "Silence Removal Plugin for Audacious\n"
 "Copyright 2014 John Lindgren"
 msgstr ""
+"Csend eltávolitó Bővítmény az Audacioushoz\n"
+"Copyright 2014 John Lindgren"
 
 #: src/silence-removal/silence-removal.cc:67
 msgid "<b>Silence Removal</b>"
@@ -2973,739 +3187,684 @@ msgstr "<b>Csend eltávolítása</b>"
 
 #: src/silence-removal/silence-removal.cc:68
 msgid "Threshold:"
-msgstr ""
+msgstr "Küszöb:"
 
 #: src/silence-removal/silence-removal.cc:70
 msgid "dB"
 msgstr "dB"
 
-#: src/skins/menus.cc:64
-msgid "Open Files ..."
-msgstr "Fájlok megnyitása ..."
-
-#: src/skins/menus.cc:65
-msgid "Open URL ..."
-msgstr "URL megnyitása ..."
-
-#: src/skins/menus.cc:66
-msgid "Search Library"
-msgstr "Keresés a gyűjteményben"
-
-#: src/skins/menus.cc:68
-msgid "Playback"
-msgstr "Lejátszás"
-
-#: src/skins/menus.cc:69
-msgid "Playlist"
-msgstr "Lejátszólista"
-
-#: src/skins/menus.cc:70
-msgid "View"
-msgstr "Nézet"
-
-#: src/skins/menus.cc:72 src/skins/menus.cc:136 src/skins/menus.cc:149
-#: src/skins/menus.cc:214
-msgid "Services"
-msgstr "Szolgáltatások"
-
-#: src/skins/menus.cc:74
-msgid "About ..."
-msgstr "Névjegy ..."
-
-#: src/skins/menus.cc:75
-msgid "Settings ..."
-msgstr "Beállítások ..."
-
-#: src/skins/menus.cc:76
-msgid "Quit"
-msgstr "Kilépés"
-
-#: src/skins/menus.cc:80 src/skins/menus.cc:206
-msgid "Song Info ..."
-msgstr "Dal információ ..."
-
-#: src/skins/menus.cc:84
-msgid "No Playlist Advance"
-msgstr "Ne legyen léptetés a lejátszólistában"
-
-#: src/skins/menus.cc:85
-msgid "Stop After This Song"
-msgstr "Leállítás az aktuális dal után"
-
-#: src/skins/menus.cc:93
-msgid "Set A-B Repeat"
-msgstr ""
-
-#: src/skins/menus.cc:94
-msgid "Clear A-B Repeat"
-msgstr ""
-
-#: src/skins/menus.cc:96
-msgid "Jump to Song ..."
-msgstr "Ugrás a dalra ..."
-
-#: src/skins/menus.cc:97
-msgid "Jump to Time ..."
-msgstr "Ugrás időpontra ..."
-
-#: src/skins/menus.cc:101
-msgid "Play/Resume"
-msgstr ""
-
-#: src/skins/menus.cc:103
-msgid "New Playlist"
-msgstr "Új lejátszólista"
-
-#: src/skins/menus.cc:104
-msgid "Rename Playlist ..."
-msgstr "Lejátszólista átnevezése ..."
-
-#: src/skins/menus.cc:105
-msgid "Remove Playlist"
-msgstr "Lejátszólista törlése"
-
-#: src/skins/menus.cc:107
-msgid "Previous Playlist"
-msgstr "Előző lejátszólista"
-
-#: src/skins/menus.cc:108
-msgid "Next Playlist"
-msgstr "Következő lejátszólista"
-
-#: src/skins/menus.cc:110
-msgid "Import Playlist ..."
-msgstr "Lejátszólista importálása"
-
-#: src/skins/menus.cc:111
-msgid "Export Playlist ..."
-msgstr "Lejátszólista exportálása"
-
-#: src/skins/menus.cc:113
-msgid "Playlist Manager ..."
-msgstr "Lejátszólista kezelő ..."
-
-#: src/skins/menus.cc:114
-msgid "Queue Manager ..."
-msgstr "Várakozási sor kezelő ..."
-
-#: src/skins/menus.cc:116
-msgid "Refresh Playlist"
-msgstr "Lejátszólista frissítése"
-
-#: src/skins/menus.cc:120
-msgid "Show Playlist Editor"
-msgstr "Lejátszólista szerkesztő mutatása"
-
-#: src/skins/menus.cc:121
-msgid "Show Equalizer"
-msgstr "Hangszínszabályzó mutatása"
-
-#: src/skins/menus.cc:123
-msgid "Show Remaining Time"
-msgstr "Hátralévő idő mutatása"
-
-#: src/skins/menus.cc:125
-msgid "Always on Top"
-msgstr "Mindig felül"
-
-#: src/skins/menus.cc:126
-msgid "On All Workspaces"
-msgstr "Minden munkaterületen"
-
-#: src/skins/menus.cc:128
-msgid "Roll Up Player"
-msgstr "Lejátszó felgördítése"
-
-#: src/skins/menus.cc:129
-msgid "Roll Up Playlist Editor"
-msgstr "Lejátszólista szerkesztő felgördítése"
-
-#: src/skins/menus.cc:130
-msgid "Roll Up Equalizer"
-msgstr "Hangszínszabályzó felgördítése"
-
-#: src/skins/menus.cc:132 src/skins/ui_main.cc:854
-msgid "Double Size"
-msgstr "Dupla méret"
-
-#: src/skins/menus.cc:138
-msgid "Add URL ..."
-msgstr "URL hozzáadása ..."
-
-#: src/skins/menus.cc:139
-msgid "Add Files ..."
-msgstr "Fájlok hozzáadása ..."
-
-#: src/skins/menus.cc:143 src/skins/menus.cc:171 src/skins/menus.cc:185
-msgid "By Title"
-msgstr "Cím szerint"
-
-#: src/skins/menus.cc:144 src/skins/menus.cc:178 src/skins/menus.cc:192
-msgid "By File Name"
-msgstr "Fájlnév szerint"
-
-#: src/skins/menus.cc:145 src/skins/menus.cc:179 src/skins/menus.cc:193
-msgid "By File Path"
-msgstr "Fájl útvonal szerint"
-
-#: src/skins/menus.cc:151
-msgid "Remove All"
-msgstr "Összes törlése"
-
-#: src/skins/menus.cc:152
-msgid "Clear Queue"
-msgstr "Várólista törlése"
-
-#: src/skins/menus.cc:154
-msgid "Remove Unavailable Files"
-msgstr "Elérhetetlen fájlok törlése"
-
-#: src/skins/menus.cc:155
-msgid "Remove Duplicates"
-msgstr "Kettőzöttek eltávolítása"
-
-#: src/skins/menus.cc:157
-msgid "Remove Unselected"
-msgstr "Nem kiválasztottak törlése"
-
-#: src/skins/menus.cc:158
-msgid "Remove Selected"
-msgstr "Kijelölt törlése"
-
-#: src/skins/menus.cc:162
-msgid "Search and Select"
-msgstr "Keresés és választ"
-
-#: src/skins/menus.cc:164
-msgid "Invert Selection"
-msgstr "Kijelölés megfordítása"
-
-#: src/skins/menus.cc:165
-msgid "Select None"
-msgstr "Nincs kijelölés"
-
-#: src/skins/menus.cc:166
-msgid "Select All"
-msgstr "Mindet kijelöl"
-
-#: src/skins/menus.cc:170 src/skins/menus.cc:184
-msgid "By Track Number"
-msgstr "A dal sorszáma szerint"
-
-#: src/skins/menus.cc:172 src/skins/menus.cc:186
-msgid "By Artist"
-msgstr "Előadó szerint"
-
-#: src/skins/menus.cc:173 src/skins/menus.cc:187
-msgid "By Album"
-msgstr "Album szerint"
-
-#: src/skins/menus.cc:174 src/skins/menus.cc:188
-msgid "By Album Artist"
-msgstr "Album előadó szerint"
-
-#: src/skins/menus.cc:175 src/skins/menus.cc:190
-msgid "By Release Date"
-msgstr "Kiadás dátuma szerint"
-
-#: src/skins/menus.cc:176 src/skins/menus.cc:189
-msgid "By Genre"
-msgstr "Műfaj szerint"
-
-#: src/skins/menus.cc:177 src/skins/menus.cc:191
-msgid "By Length"
-msgstr "Hossz szerint"
-
-#: src/skins/menus.cc:180 src/skins/menus.cc:194
-msgid "By Custom Title"
-msgstr "Egyéb cím szerint"
-
-#: src/skins/menus.cc:198
-msgid "Randomize List"
-msgstr "Véletlenszerű lista"
-
-#: src/skins/menus.cc:199
-msgid "Reverse List"
-msgstr "Fordított lista"
-
-#: src/skins/menus.cc:201
-msgid "Sort Selected"
-msgstr "Kijelöltek rendezése"
-
-#: src/skins/menus.cc:202
-msgid "Sort List"
-msgstr "Lista rendezése"
-
-#: src/skins/menus.cc:208
-msgid "Cut"
-msgstr "Kivágás"
-
-#: src/skins/menus.cc:209
-msgid "Copy"
-msgstr "Másolás"
-
-#: src/skins/menus.cc:210
-msgid "Paste"
-msgstr "Beillesztés"
-
-#: src/skins/menus.cc:212
-msgid "Queue/Unqueue"
-msgstr "Várólistára/Várólistáról ki"
-
-#: src/skins/menus.cc:218
-msgid "Load Preset ..."
-msgstr "Előre beállított betöltése"
-
-#: src/skins/menus.cc:219
-msgid "Load Auto Preset ..."
-msgstr ""
-
-#: src/skins/menus.cc:220
-msgid "Load Default"
-msgstr "Alapértelmezett betöltése"
-
-#: src/skins/menus.cc:221
-msgid "Load Preset File ..."
-msgstr ""
-
-#: src/skins/menus.cc:222
-msgid "Load EQF File ..."
-msgstr "EQF fájl betöltése ..."
-
-#: src/skins/menus.cc:224
-msgid "Save Preset ..."
-msgstr "Előre beállított mentése ..."
-
-#: src/skins/menus.cc:225
-msgid "Save Auto Preset ..."
-msgstr ""
-
-#: src/skins/menus.cc:226
-msgid "Save Default"
-msgstr "Alapértelmezettként ment"
-
-#: src/skins/menus.cc:227
-msgid "Save Preset File ..."
-msgstr ""
-
-#: src/skins/menus.cc:228
-msgid "Save EQF File ..."
-msgstr ""
-
-#: src/skins/menus.cc:230
-msgid "Delete Preset ..."
-msgstr ""
-
-#: src/skins/menus.cc:231
-msgid "Delete Auto Preset ..."
-msgstr ""
-
-#: src/skins/menus.cc:233
-msgid "Import Winamp Presets ..."
-msgstr ""
-
-#: src/skins/menus.cc:235
-msgid "Reset to Zero"
-msgstr "Minden érték nulla"
-
-#: src/skins/plugin.cc:48
-msgid "Winamp Classic Interface"
-msgstr ""
-
-#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:371
-#: src/skins/preset-list.cc:386
-msgid "Save"
-msgstr "Mentés"
-
-#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:338
-#: src/skins/preset-list.cc:354
-msgid "Load"
-msgstr "Betöltés"
-
-#: src/skins/preset-browser.cc:83
-msgid "Load Preset File"
-msgstr ""
-
-#: src/skins/preset-browser.cc:100
-msgid "Load EQF File"
-msgstr ""
-
-#: src/skins/preset-browser.cc:119
-msgid "Save Preset File"
-msgstr ""
-
-#: src/skins/preset-browser.cc:137
-msgid "Save EQF File"
-msgstr ""
-
-#: src/skins/preset-browser.cc:151
-msgid "Import Winamp Presets"
-msgstr ""
-
-#: src/skins/preset-list.cc:285
-msgid "Presets"
-msgstr "Profilok"
-
-#: src/skins/preset-list.cc:335
-msgid "Load preset"
-msgstr "Előre beállított betöltése"
-
-#: src/skins/preset-list.cc:351
-msgid "Load auto-preset"
-msgstr ""
-
-#: src/skins/preset-list.cc:367
-msgid "Save preset"
-msgstr ""
-
-#: src/skins/preset-list.cc:382
-msgid "Save auto-preset"
-msgstr ""
-
-#: src/skins/preset-list.cc:408
-msgid "Delete preset"
-msgstr ""
-
-#: src/skins/preset-list.cc:424
-msgid "Delete auto-preset"
-msgstr ""
-
-#: src/skins/skins_cfg.cc:176
-msgid "Player:"
-msgstr "Lejátszó:"
-
-#: src/skins/skins_cfg.cc:178
-msgid "Select main player window font:"
-msgstr "Főablak betűtípus kiválasztás:"
-
-#: src/skins/skins_cfg.cc:179
-msgid "Playlist:"
-msgstr "Lejátszólista:"
-
-#: src/skins/skins_cfg.cc:181
-msgid "Select playlist font:"
-msgstr "Válassza ki a lejátszólista betűkészletét:"
-
-#: src/skins/skins_cfg.cc:187
-msgid "<b>Skin</b>"
-msgstr "<b>Felület</b>"
-
-#: src/skins/skins_cfg.cc:189
-msgid "<b>Fonts</b>"
-msgstr "<b>Betűtípusok</b>"
-
-#: src/skins/skins_cfg.cc:192
-msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Bitmap fontok használata (csak ASCII támogatása)"
-
-#: src/skins/skins_cfg.cc:194
-msgid "Scroll song title"
-msgstr ""
-
-#: src/skins/skins_cfg.cc:196
-msgid "Scroll song title in both directions"
-msgstr "A dal címe mindkét irányba mozog"
-
-#: src/skins/skins_cfg.cc:201
-msgid "Analyzer"
-msgstr "Analizátor"
-
-#: src/skins/skins_cfg.cc:202
-msgid "Scope"
-msgstr "Szkóp"
-
-#: src/skins/skins_cfg.cc:203
-msgid "Voiceprint / VU meter"
-msgstr ""
-
-#: src/skins/skins_cfg.cc:204
-msgid "Off"
-msgstr "Kikapcsolva"
-
-#: src/skins/skins_cfg.cc:208 src/skins/skins_cfg.cc:233
-#: src/skins/skins_cfg.cc:239
-msgid "Normal"
-msgstr "Szokásos"
-
-#: src/skins/skins_cfg.cc:209 src/skins/skins_cfg.cc:234
-msgid "Fire"
-msgstr "Tűz"
-
-#: src/skins/skins_cfg.cc:210
-msgid "Vertical lines"
-msgstr ""
-
-#: src/skins/skins_cfg.cc:214
-msgid "Lines"
-msgstr "Vonalak"
-
-#: src/skins/skins_cfg.cc:215
-msgid "Bars"
-msgstr "Csíkok"
-
-#: src/skins/skins_cfg.cc:219
-msgid "Slowest"
-msgstr "Lasabb"
-
-#: src/skins/skins_cfg.cc:220
-msgid "Slow"
-msgstr "Lassú"
-
-#: src/skins/skins_cfg.cc:221 src/sox-resampler/sox-resampler.cc:152
-msgid "Medium"
-msgstr "Közepes"
-
-#: src/skins/skins_cfg.cc:222
-msgid "Fast"
-msgstr "Gyors"
-
-#: src/skins/skins_cfg.cc:223
-msgid "Fastest"
-msgstr "Leggyorsabb"
-
-#: src/skins/skins_cfg.cc:227
-msgid "Dots"
-msgstr "Pontok"
-
-#: src/skins/skins_cfg.cc:228
-msgid "Line"
-msgstr "Vonal"
-
-#: src/skins/skins_cfg.cc:229
-msgid "Solid"
-msgstr "Szolid"
-
-#: src/skins/skins_cfg.cc:235
-msgid "Ice"
-msgstr "Jég"
-
-#: src/skins/skins_cfg.cc:240
-msgid "Smooth"
-msgstr "Sima"
-
-#: src/skins/skins_cfg.cc:244
-msgid "<b>Type</b>"
-msgstr "<b>Típus</b>"
-
-#: src/skins/skins_cfg.cc:245
-msgid "Visualization type:"
-msgstr "Megjelenítés típusa:"
-
-#: src/skins/skins_cfg.cc:248
-msgid "<b>Analyzer</b>"
-msgstr "<b>Analizátor</b>"
-
-#: src/skins/skins_cfg.cc:249
-msgid "Show peaks"
-msgstr "Csúcsok mutatása"
-
-#: src/skins/skins_cfg.cc:251
-msgid "Coloring:"
-msgstr "Színezés:"
-
-#: src/skins/skins_cfg.cc:254
-msgid "Style:"
-msgstr "Stílus:"
-
-#: src/skins/skins_cfg.cc:257
-msgid "Falloff:"
-msgstr ""
-
-#: src/skins/skins_cfg.cc:260
-msgid "Peak falloff:"
-msgstr ""
-
-#: src/skins/skins_cfg.cc:264
-msgid "Scope Style:"
-msgstr "Szkóp stílusa:"
-
-#: src/skins/skins_cfg.cc:267
-msgid "Voiceprint Coloring:"
-msgstr ""
-
-#: src/skins/skins_cfg.cc:270
-msgid "VU Meter Style:"
-msgstr ""
-
-#: src/skins/skins_cfg.cc:276
-msgid "General"
-msgstr "Általános"
-
-#: src/skins/skins_cfg.cc:277
-msgid "Visualization"
-msgstr "Megjelenítés"
-
-#: src/skins/ui_equalizer.cc:282
+#: src/skins/actions.cc:43 src/skins-qt/actions.cc:41
+msgid "Repeat points cleared."
+msgstr "Ismétlési pontok törölve."
+
+#: src/skins/actions.cc:58 src/skins-qt/actions.cc:56
+msgid "Repeat point A set."
+msgstr "Az 'A' pont beállítva"
+
+#: src/skins/actions.cc:63 src/skins-qt/actions.cc:61
+msgid "Repeat point B set."
+msgstr "A 'B' pont beállítva"
+
+#: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:220
 msgid "Preamp"
 msgstr "Preamp"
 
-#: src/skins/ui_equalizer.cc:286
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:224
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.cc:287
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:225
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.cc:287
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:225
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.cc:287
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:225
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.cc:287
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:225
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.cc:287
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:225
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.cc:288
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:226
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.cc:288
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:226
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.cc:288
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:226
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.cc:288
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:226
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.cc:330
+#: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:267
 msgid "Audacious Equalizer"
 msgstr "Audacious Equalizer"
 
-#: src/skins/ui_main.cc:688
+#: src/skins/main.cc:686 src/skins-qt/main.cc:641
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Tekerés %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.cc:709
+#: src/skins/main.cc:703 src/skins-qt/main.cc:658
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Hangerő: %d%%"
 
-#: src/skins/ui_main.cc:732
+#: src/skins/main.cc:716 src/skins-qt/main.cc:671
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Balansz: %d%% bal"
 
-#: src/skins/ui_main.cc:734
+#: src/skins/main.cc:718 src/skins-qt/main.cc:673
 msgid "Balance: center"
 msgstr "Balansz: közép"
 
-#: src/skins/ui_main.cc:736
+#: src/skins/main.cc:720 src/skins-qt/main.cc:675
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Balansz: %d%% jobb"
 
-#: src/skins/ui_main.cc:842
+#: src/skins/main.cc:813 src/skins-qt/main.cc:768
 msgid "Options Menu"
 msgstr "Beállítások menü"
 
-#: src/skins/ui_main.cc:846
+#: src/skins/main.cc:817 src/skins-qt/main.cc:772
 msgid "Disable 'Always On Top'"
 msgstr "Tiltja a 'Mindig felül' opciót"
 
-#: src/skins/ui_main.cc:848
+#: src/skins/main.cc:819 src/skins-qt/main.cc:774
 msgid "Enable 'Always On Top'"
 msgstr "Engedélyezi a 'Mindig felül' opciót"
 
-#: src/skins/ui_main.cc:851
+#: src/skins/main.cc:822 src/skins-qt/main.cc:777
 msgid "File Info Box"
 msgstr "Fájl Információs doboz"
 
-#: src/skins/ui_main.cc:857
+#: src/skins/main.cc:825 src/skins/menus.cc:170 src/skins-qt/main.cc:780
+#: src/skins-qt/menus.cc:161
+msgid "Double Size"
+msgstr "Dupla méret"
+
+#: src/skins/main.cc:828 src/skins-qt/main.cc:783
 msgid "Visualizations"
 msgstr "Megjelenítés"
 
-#: src/skins/ui_main.cc:1336
-msgid "Repeat point A set."
+#: src/skins/menus.cc:78 src/skins-qt/menus.cc:64
+msgid "Recording on"
 msgstr ""
 
-#: src/skins/ui_main.cc:1341
-msgid "Repeat point B set."
+#: src/skins/menus.cc:78 src/skins-qt/menus.cc:64
+msgid "Recording off"
 msgstr ""
 
-#: src/skins/ui_main.cc:1350
-msgid "Repeat points cleared."
+#: src/skins/menus.cc:97 src/skins-qt/menus.cc:83
+msgid "Volume Up"
 msgstr ""
 
-#: src/skins/ui_playlist.cc:219
+#: src/skins/menus.cc:98 src/skins-qt/menus.cc:84
+msgid "Volume Down"
+msgstr ""
+
+#: src/skins/menus.cc:100 src/skins-qt/menus.cc:86
+msgid "Effects ..."
+msgstr ""
+
+#: src/skins/menus.cc:102 src/skins-qt/menus.cc:88
+msgid "Record Stream"
+msgstr ""
+
+#: src/skins/menus.cc:103 src/skins-qt/menus.cc:89
+msgid "Audio Settings ..."
+msgstr ""
+
+#: src/skins/menus.cc:107 src/skins-qt/menus.cc:93
+msgid "Open Files ..."
+msgstr "Fájlok megnyitása ..."
+
+#: src/skins/menus.cc:108 src/skins-qt/menus.cc:95
+msgid "Open URL ..."
+msgstr "URL megnyitása ..."
+
+#: src/skins/menus.cc:109
+msgid "Search Library"
+msgstr "Keresés a gyűjteményben"
+
+#: src/skins/menus.cc:111 src/skins-qt/menus.cc:98
+msgid "Playback"
+msgstr "Lejátszás"
+
+#: src/skins/menus.cc:112 src/skins-qt/menus.cc:99
+msgid "Playlist"
+msgstr "Lejátszólista"
+
+#: src/skins/menus.cc:113 src/skins-qt/menus.cc:100
+msgid "Output"
+msgstr ""
+
+#: src/skins/menus.cc:114 src/skins-qt/menus.cc:101
+msgid "View"
+msgstr "Nézet"
+
+#: src/skins/menus.cc:116 src/skins/menus.cc:182 src/skins/menus.cc:195
+#: src/skins/menus.cc:260 src/skins-qt/menus.cc:103 src/skins-qt/menus.cc:175
+#: src/skins-qt/menus.cc:189 src/skins-qt/menus.cc:254
+msgid "Services"
+msgstr "Szolgáltatások"
+
+#: src/skins/menus.cc:118 src/skins-qt/menus.cc:105
+msgid "About ..."
+msgstr "Névjegy ..."
+
+#: src/skins/menus.cc:119 src/skins-qt/menus.cc:106
+msgid "Settings ..."
+msgstr "Beállítások ..."
+
+#: src/skins/menus.cc:120 src/skins-qt/menus.cc:107
+msgid "Quit"
+msgstr "Kilépés"
+
+#: src/skins/menus.cc:124 src/skins/menus.cc:252 src/skins-qt/menus.cc:111
+#: src/skins-qt/menus.cc:244
+msgid "Song Info ..."
+msgstr "Dal információ ..."
+
+#: src/skins/menus.cc:128 src/skins-qt/menus.cc:115
+msgid "Shuffle by Album"
+msgstr ""
+
+#: src/skins/menus.cc:129 src/skins-qt/menus.cc:116
+msgid "No Playlist Advance"
+msgstr "Ne legyen léptetés a lejátszólistában"
+
+#: src/skins/menus.cc:130 src/skins-qt/menus.cc:117
+msgid "Stop After This Song"
+msgstr "Leállítás az aktuális dal után"
+
+#: src/skins/menus.cc:138 src/skins-qt/menus.cc:125
+msgid "Set A-B Repeat"
+msgstr "A-B Ismétlés beállítása"
+
+#: src/skins/menus.cc:139 src/skins-qt/menus.cc:126
+msgid "Clear A-B Repeat"
+msgstr "A-B ismétlés törlése"
+
+#: src/skins/menus.cc:141 src/skins-qt/menus.cc:129
+msgid "Jump to Song ..."
+msgstr "Ugrás a dalra ..."
+
+#: src/skins/menus.cc:142 src/skins-qt/menus.cc:130
+msgid "Jump to Time ..."
+msgstr "Ugrás időpontra ..."
+
+#: src/skins/menus.cc:146 src/skins-qt/menus.cc:135
+msgid "Play/Resume"
+msgstr "Lejátszás/Szünet"
+
+#: src/skins/menus.cc:148 src/skins-qt/menus.cc:137
+msgid "New Playlist"
+msgstr "Új lejátszólista"
+
+#: src/skins/menus.cc:149 src/skins-qt/menus.cc:138
+msgid "Rename Playlist ..."
+msgstr "Lejátszólista átnevezése ..."
+
+#: src/skins/menus.cc:150 src/skins-qt/menus.cc:139
+msgid "Remove Playlist"
+msgstr "Lejátszólista törlése"
+
+#: src/skins/menus.cc:152 src/skins-qt/menus.cc:141
+msgid "Previous Playlist"
+msgstr "Előző lejátszólista"
+
+#: src/skins/menus.cc:153 src/skins-qt/menus.cc:142
+msgid "Next Playlist"
+msgstr "Következő lejátszólista"
+
+#: src/skins/menus.cc:155 src/skins-qt/menus.cc:145
+msgid "Import Playlist ..."
+msgstr "Lejátszólista importálása"
+
+#: src/skins/menus.cc:156 src/skins-qt/menus.cc:146
+msgid "Export Playlist ..."
+msgstr "Lejátszólista exportálása"
+
+#: src/skins/menus.cc:158 src/skins-qt/menus.cc:149
+msgid "Playlist Manager ..."
+msgstr "Lejátszólista kezelő ..."
+
+#: src/skins/menus.cc:159 src/skins-qt/menus.cc:150
+msgid "Queue Manager ..."
+msgstr "Várakozási sor kezelő ..."
+
+#: src/skins/menus.cc:161 src/skins-qt/menus.cc:152
+msgid "Refresh Playlist"
+msgstr "Lejátszólista frissítése"
+
+#: src/skins/menus.cc:165 src/skins-qt/menus.cc:156
+msgid "Show Playlist Editor"
+msgstr "Lejátszólista szerkesztő mutatása"
+
+#: src/skins/menus.cc:166 src/skins-qt/menus.cc:157
+msgid "Show Equalizer"
+msgstr "Hangszínszabályzó mutatása"
+
+#: src/skins/menus.cc:168 src/skins-qt/menus.cc:159
+msgid "Show Remaining Time"
+msgstr "Hátralévő idő mutatása"
+
+#: src/skins/menus.cc:171 src/skins-qt/menus.cc:163
+msgid "Always on Top"
+msgstr "Mindig felül"
+
+#: src/skins/menus.cc:172 src/skins-qt/menus.cc:164
+msgid "On All Workspaces"
+msgstr "Minden munkaterületen"
+
+#: src/skins/menus.cc:174 src/skins-qt/menus.cc:167
+msgid "Roll Up Player"
+msgstr "Lejátszó felgördítése"
+
+#: src/skins/menus.cc:175 src/skins-qt/menus.cc:168
+msgid "Roll Up Playlist Editor"
+msgstr "Lejátszólista szerkesztő felgördítése"
+
+#: src/skins/menus.cc:176 src/skins-qt/menus.cc:169
+msgid "Roll Up Equalizer"
+msgstr "Hangszínszabályzó felgördítése"
+
+#: src/skins/menus.cc:184 src/skins-qt/menus.cc:177
+msgid "Add URL ..."
+msgstr "URL hozzáadása ..."
+
+#: src/skins/menus.cc:185 src/skins-qt/menus.cc:179
+msgid "Add Files ..."
+msgstr "Fájlok hozzáadása ..."
+
+#: src/skins/menus.cc:189 src/skins/menus.cc:217 src/skins/menus.cc:231
+#: src/skins-qt/menus.cc:183 src/skins-qt/menus.cc:209
+#: src/skins-qt/menus.cc:223
+msgid "By Title"
+msgstr "Cím szerint"
+
+#: src/skins/menus.cc:190 src/skins/menus.cc:224 src/skins/menus.cc:238
+#: src/skins-qt/menus.cc:184 src/skins-qt/menus.cc:216
+#: src/skins-qt/menus.cc:230
+msgid "By File Name"
+msgstr "Fájlnév szerint"
+
+#: src/skins/menus.cc:191 src/skins/menus.cc:225 src/skins/menus.cc:239
+#: src/skins-qt/menus.cc:185 src/skins-qt/menus.cc:217
+#: src/skins-qt/menus.cc:231
+msgid "By File Path"
+msgstr "Fájl útvonal szerint"
+
+#: src/skins/menus.cc:197 src/skins-qt/menus.cc:191
+msgid "Remove All"
+msgstr "Összes törlése"
+
+#: src/skins/menus.cc:198 src/skins-qt/menus.cc:192
+msgid "Clear Queue"
+msgstr "Várólista törlése"
+
+#: src/skins/menus.cc:200 src/skins-qt/menus.cc:194
+msgid "Remove Unavailable Files"
+msgstr "Elérhetetlen fájlok törlése"
+
+#: src/skins/menus.cc:201 src/skins-qt/menus.cc:195
+msgid "Remove Duplicates"
+msgstr "Kettőzöttek eltávolítása"
+
+#: src/skins/menus.cc:203 src/skins-qt/menus.cc:197
+msgid "Remove Unselected"
+msgstr "Nem kiválasztottak törlése"
+
+#: src/skins/menus.cc:204 src/skins-qt/menus.cc:198
+msgid "Remove Selected"
+msgstr "Kijelölt törlése"
+
+#: src/skins/menus.cc:208
+msgid "Search and Select"
+msgstr "Keresés és választ"
+
+#: src/skins/menus.cc:210 src/skins-qt/menus.cc:202
+msgid "Invert Selection"
+msgstr "Kijelölés megfordítása"
+
+#: src/skins/menus.cc:211 src/skins-qt/menus.cc:203
+msgid "Select None"
+msgstr "Nincs kijelölés"
+
+#: src/skins/menus.cc:212 src/skins-qt/menus.cc:204
+msgid "Select All"
+msgstr "Mindet kijelöl"
+
+#: src/skins/menus.cc:216 src/skins/menus.cc:230 src/skins-qt/menus.cc:208
+#: src/skins-qt/menus.cc:222
+msgid "By Track Number"
+msgstr "A dal sorszáma szerint"
+
+#: src/skins/menus.cc:218 src/skins/menus.cc:232 src/skins-qt/menus.cc:210
+#: src/skins-qt/menus.cc:224
+msgid "By Artist"
+msgstr "Előadó szerint"
+
+#: src/skins/menus.cc:219 src/skins/menus.cc:233 src/skins-qt/menus.cc:211
+#: src/skins-qt/menus.cc:225
+msgid "By Album"
+msgstr "Album szerint"
+
+#: src/skins/menus.cc:220 src/skins/menus.cc:234 src/skins-qt/menus.cc:212
+#: src/skins-qt/menus.cc:226
+msgid "By Album Artist"
+msgstr "Album előadó szerint"
+
+#: src/skins/menus.cc:221 src/skins/menus.cc:236 src/skins-qt/menus.cc:213
+#: src/skins-qt/menus.cc:228
+msgid "By Release Date"
+msgstr "Kiadás dátuma szerint"
+
+#: src/skins/menus.cc:222 src/skins/menus.cc:235 src/skins-qt/menus.cc:214
+#: src/skins-qt/menus.cc:227
+msgid "By Genre"
+msgstr "Műfaj szerint"
+
+#: src/skins/menus.cc:223 src/skins/menus.cc:237 src/skins-qt/menus.cc:215
+#: src/skins-qt/menus.cc:229
+msgid "By Length"
+msgstr "Hossz szerint"
+
+#: src/skins/menus.cc:226 src/skins/menus.cc:240 src/skins-qt/menus.cc:218
+#: src/skins-qt/menus.cc:232
+msgid "By Custom Title"
+msgstr "Egyéb cím szerint"
+
+#: src/skins/menus.cc:244 src/skins-qt/menus.cc:236
+msgid "Randomize List"
+msgstr "Véletlenszerű lista"
+
+#: src/skins/menus.cc:245 src/skins-qt/menus.cc:237
+msgid "Reverse List"
+msgstr "Fordított lista"
+
+#: src/skins/menus.cc:247 src/skins-qt/menus.cc:239
+msgid "Sort Selected"
+msgstr "Kijelöltek rendezése"
+
+#: src/skins/menus.cc:248 src/skins-qt/menus.cc:240
+msgid "Sort List"
+msgstr "Lista rendezése"
+
+#: src/skins/menus.cc:254 src/skins-qt/menus.cc:247
+msgid "Cut"
+msgstr "Kivágás"
+
+#: src/skins/menus.cc:255 src/skins-qt/menus.cc:248
+msgid "Copy"
+msgstr "Másolás"
+
+#: src/skins/menus.cc:256 src/skins-qt/menus.cc:249
+msgid "Paste"
+msgstr "Beillesztés"
+
+#: src/skins/menus.cc:258 src/skins-qt/menus.cc:252
+msgid "Queue/Unqueue"
+msgstr "Várólistára/Várólistáról ki"
+
+#: src/skins/playlist.cc:492 src/skins-qt/playlist.cc:477
+msgid "Audacious Playlist Editor"
+msgstr "Audacious lejátszólista szerkesztő"
+
+#: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:52
+#, c-format
+msgid "%s (%d of %d)"
+msgstr "%s (%d / %d)"
+
+#: src/skins/plugin.cc:50 src/skins-qt/plugin.cc:52
+msgid "Winamp Classic Interface"
+msgstr "Klasszikus Winamp Kinézet"
+
+#: src/skins-qt/menus.cc:94
+msgid "Open Folder ..."
+msgstr "Mappa megnyitása..."
+
+#: src/skins-qt/menus.cc:178
+msgid "Add Folder ..."
+msgstr "Mappa hozzáadása..."
+
+#: src/skins-qt/skins_cfg.cc:197 src/skins/skins_cfg.cc:181
+msgid "Player:"
+msgstr "Lejátszó:"
+
+#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:183
+msgid "Select main player window font:"
+msgstr "Főablak betűtípus kiválasztás:"
+
+#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:184
+msgid "Playlist:"
+msgstr "Lejátszólista:"
+
+#: src/skins-qt/skins_cfg.cc:202 src/skins/skins_cfg.cc:186
+msgid "Select playlist font:"
+msgstr "Válassza ki a lejátszólista betűkészletét:"
+
+#: src/skins-qt/skins_cfg.cc:206 src/skins/skins_cfg.cc:190
+msgid "<b>Skin</b>"
+msgstr "<b>Felület</b>"
+
+#: src/skins-qt/skins_cfg.cc:210 src/skins/skins_cfg.cc:192
+msgid "<b>Fonts</b>"
+msgstr "<b>Betűtípusok</b>"
+
+#: src/skins-qt/skins_cfg.cc:212 src/skins/skins_cfg.cc:194
+msgid "Use bitmap fonts (supports ASCII only)"
+msgstr "Bitmap fontok használata (csak ASCII támogatása)"
+
+#: src/skins-qt/skins_cfg.cc:214 src/skins/skins_cfg.cc:196
+msgid "Scroll song title"
+msgstr "Szám címének görgetése"
+
+#: src/skins-qt/skins_cfg.cc:216 src/skins/skins_cfg.cc:198
+msgid "Scroll song title in both directions"
+msgstr "A dal címe mindkét irányba mozog"
+
+#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:203
+msgid "Analyzer"
+msgstr "Analizátor"
+
+#: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:204
+msgid "Scope"
+msgstr "Szkóp"
+
+#: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:205
+msgid "Voiceprint / VU meter"
+msgstr "Spektrogram / Kivezérlésmérő"
+
+#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:206
+msgid "Off"
+msgstr "Kikapcsolva"
+
+#: src/skins-qt/skins_cfg.cc:228 src/skins-qt/skins_cfg.cc:253
+#: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:210
+#: src/skins/skins_cfg.cc:235 src/skins/skins_cfg.cc:241
+msgid "Normal"
+msgstr "Szokásos"
+
+#: src/skins-qt/skins_cfg.cc:229 src/skins-qt/skins_cfg.cc:254
+#: src/skins/skins_cfg.cc:211 src/skins/skins_cfg.cc:236
+msgid "Fire"
+msgstr "Tűz"
+
+#: src/skins-qt/skins_cfg.cc:230 src/skins/skins_cfg.cc:212
+msgid "Vertical lines"
+msgstr "Függőleges vonalak"
+
+#: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:216
+msgid "Lines"
+msgstr "Vonalak"
+
+#: src/skins-qt/skins_cfg.cc:235 src/skins/skins_cfg.cc:217
+msgid "Bars"
+msgstr "Csíkok"
+
+#: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:221
+msgid "Slowest"
+msgstr "Lassabb"
+
+#: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:222
+msgid "Slow"
+msgstr "Lassú"
+
+#: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:223
+#: src/sox-resampler/sox-resampler.cc:152
+msgid "Medium"
+msgstr "Közepes"
+
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
+msgid "Fast"
+msgstr "Gyors"
+
+#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:225
+msgid "Fastest"
+msgstr "Leggyorsabb"
+
+#: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:229
+msgid "Dots"
+msgstr "Pontok"
+
+#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:230
+msgid "Line"
+msgstr "Vonal"
+
+#: src/skins-qt/skins_cfg.cc:249 src/skins/skins_cfg.cc:231
+msgid "Solid"
+msgstr "Szolid"
+
+#: src/skins-qt/skins_cfg.cc:255 src/skins/skins_cfg.cc:237
+msgid "Ice"
+msgstr "Jég"
+
+#: src/skins-qt/skins_cfg.cc:260 src/skins/skins_cfg.cc:242
+msgid "Smooth"
+msgstr "Sima"
+
+#: src/skins-qt/skins_cfg.cc:264 src/skins/skins_cfg.cc:246
+msgid "Coloring:"
+msgstr "Színezés:"
+
+#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:249
+msgid "Style:"
+msgstr "Stílus:"
+
+#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:252
+msgid "Falloff:"
+msgstr "Esés:"
+
+#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:255
+msgid "Peak falloff:"
+msgstr "Csúcs esése:"
+
+#: src/skins-qt/skins_cfg.cc:279 src/skins/skins_cfg.cc:261
+msgid "Scope Style:"
+msgstr "Szkóp stílusa:"
+
+#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:264
+msgid "Voiceprint Coloring:"
+msgstr "Spektrogram"
+
+#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:267
+msgid "VU Meter Style:"
+msgstr "Kivezérlésmérő stílusa:"
+
+#: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:273
+msgid "<b>Type</b>"
+msgstr "<b>Típus</b>"
+
+#: src/skins-qt/skins_cfg.cc:292 src/skins/skins_cfg.cc:274
+msgid "Visualization type:"
+msgstr "Megjelenítés típusa:"
+
+#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
+msgid "<b>Analyzer</b>"
+msgstr "<b>Analizátor</b>"
+
+#: src/skins-qt/skins_cfg.cc:296 src/skins/skins_cfg.cc:278
+msgid "Show peaks"
+msgstr "Csúcsok mutatása"
+
+#: src/skins-qt/skins_cfg.cc:305 src/skins/skins_cfg.cc:287
+msgid "Visualization"
+msgstr "Megjelenítés"
+
+#: src/skins-qt/skinselector.cc:98 src/skins/skinselector.cc:111
+msgid "Archived Winamp 2.x skin"
+msgstr "Régi Winamp 2.x bőr"
+
+#: src/skins-qt/skinselector.cc:102 src/skins/skinselector.cc:115
+msgid "Unarchived Winamp 2.x skin"
+msgstr "Nem régi Winamp 2.x bőr"
+
+#: src/skins/search-select.cc:75
 msgid "Search entries in active playlist"
 msgstr "Elemek keresése az aktív lejátszólistában"
 
-#: src/skins/ui_playlist.cc:226
+#: src/skins/search-select.cc:81
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
+"Válasszon ki bejegyzéseket egy vagy több mező kijelölésével. A mezők "
+"általános kifejezéseket használnak, a kis-nagybetűkre viszont nem érzékeny. "
+"Ha nem tudod, hogyan működnek a reguláris kifejezések, egyszerűen írj be egy "
+"részletet arról amit keresel."
 
-#: src/skins/ui_playlist.cc:234
+#: src/skins/search-select.cc:89
 msgid "Title:"
 msgstr "Cím:"
 
-#: src/skins/ui_playlist.cc:241
+#: src/skins/search-select.cc:95
 msgid "Album:"
 msgstr "Album:"
 
-#: src/skins/ui_playlist.cc:248
+#: src/skins/search-select.cc:101
 msgid "Artist:"
 msgstr "Előadó:"
 
-#: src/skins/ui_playlist.cc:255
+#: src/skins/search-select.cc:107
 msgid "File Name:"
 msgstr "Fájlnév:"
 
-#: src/skins/ui_playlist.cc:263
+#: src/skins/search-select.cc:115
 msgid "Clear previous selection before searching"
 msgstr "Az előző kiválasztások törlése keresés előtt"
 
-#: src/skins/ui_playlist.cc:266
+#: src/skins/search-select.cc:118
 msgid "Automatically toggle queue for matching entries"
 msgstr "Automatikusan várólistára kerülnek a talált elemek"
 
-#: src/skins/ui_playlist.cc:269
+#: src/skins/search-select.cc:121
 msgid "Create a new playlist with matching entries"
 msgstr "Hozzon létre új lejátszólistát az egyező elemekből"
-
-#: src/skins/ui_playlist.cc:717
-msgid "Audacious Playlist Editor"
-msgstr "Audacious lejátszólista szerkesztő"
-
-#: src/skins/ui_playlist.cc:752
-#, c-format
-msgid "%s (%d of %d)"
-msgstr "%s (%d / %d)"
-
-#: src/skins/ui_skinselector.cc:167
-msgid "Archived Winamp 2.x skin"
-msgstr "Régi Winamp 2.x bőr"
-
-#: src/skins/ui_skinselector.cc:172
-msgid "Unarchived Winamp 2.x skin"
-msgstr "Nem régi Winamp 2.x bőr"
-
-#: src/skins/util.cc:430
-#, c-format
-msgid "Could not create directory (%s): %s\n"
-msgstr "Nem lehet létrehozni a könyvtárat (%s): %s\n"
 
 #: src/sndfile/plugin.cc:39
 msgid "Sndfile Plugin"
 msgstr "Sndfile bővítmény"
 
-#: src/sndfile/plugin.cc:336
+#: src/sndfile/plugin.cc:361
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -3726,6 +3885,31 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Az xmms_sndfile plugin alapán:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Audacious-hoz illesztés Tony Vroon <chainsaw@gentoo.org> által\n"
+"\n"
+"Ez a program szabad szoftver; terjeszthető illetve módosítható a \n"
+"Free Software Foundation által kiadott GNU General Public License\n"
+"dokumentumában leírtak; akár a licenc 2-es, akár (tetszőleges) későbbi \n"
+"változata szerint.\n"
+"\n"
+"Ez a program abban a reményben kerül közreadásra, hogy hasznos lesz, \n"
+"de minden egyéb GARANCIA NÉLKÜL, az ELADHATÓSÁGRA vagy VALAMELY CÉLRA VALÓ "
+"ALKALMAZHATÓSÁGRA való származtatott garanciát is beleértve. \n"
+"További részleteket a GNU General Public License tartalmaz.\n"
+"\n"
+"A felhasználónak a programmal együtt meg kell kapnia a GNU General \n"
+"Public License egy példányát; ha mégsem kapta meg, akkor\n"
+"ezt a Free Software Foundationnak küldött levélben jelezze \n"
+" \n"
+"Free Software Foundation, Inc.\n"
+"51 Franklin Street, Fifth Floor\n"
+"Boston, MA 02110-1301, USA.\n"
+"\n"
+"http://www.gnu.org/licenses/\n"
+"http://gnu.hu/gpl.html"
 
 #: src/sndio-ng/sndio.cc:44
 msgid "Sndio Output"
@@ -3733,7 +3917,7 @@ msgstr "Sndio kimenet"
 
 #: src/sndio-ng/sndio.cc:98
 msgid "Device (blank for default):"
-msgstr ""
+msgstr "Eszköz (alapértelmezetthez hagyd üresen)"
 
 #: src/sndio-ng/sndio.cc:100
 msgid "Save and restore volume:"
@@ -3760,57 +3944,75 @@ msgstr "Sndio hiba: sio_start() sikertelen"
 msgid "Song Change"
 msgstr "Szám váltás"
 
-#: src/song_change/song_change.cc:342
-msgid ""
-"<span size='small'>Parameters passed to the shell should be encapsulated in "
-"quotes. Doing otherwise is a security risk.</span>"
-msgstr ""
-
-#: src/song_change/song_change.cc:358
+#: src/song_change/song_change.cc:268
 msgid "<b>Commands</b>"
 msgstr "<b>Parancsok</b>"
 
-#: src/song_change/song_change.cc:360
+#: src/song_change/song_change.cc:270
 msgid "Command to run when starting a new song:"
 msgstr "Parancs ami lefut az új zeneszám indításakor:"
 
-#: src/song_change/song_change.cc:364
+#: src/song_change/song_change.cc:273
 msgid "Command to run at the end of a song:"
 msgstr "Parancs ami lefut amikor vége a zeneszámnak:"
 
-#: src/song_change/song_change.cc:368
+#: src/song_change/song_change.cc:276
 msgid "Command to run at the end of the playlist:"
 msgstr "Parancs ami lefut ha a lejátszólistának vége:"
 
-#: src/song_change/song_change.cc:372
+#: src/song_change/song_change.cc:279
 msgid "Command to run when song title changes (for network streams):"
 msgstr "Parancs ami lefut a szám címének változásakor (hálózati folyamhoz):"
 
-#: src/song_change/song_change.cc:376
+#: src/song_change/song_change.cc:282
 msgid ""
-"You can use the following format strings which will be substituted before "
-"calling the command (not all are useful for the end-of-playlist command):\n"
-"\n"
-"%F: Frequency (in hertz)\n"
-"%c: Number of channels\n"
-"%f: File name (full path)\n"
-"%l: Length (in milliseconds)\n"
-"%n or %s: Song name\n"
-"%r: Rate (in bits per second)\n"
-"%t: Playlist position (%02d)\n"
-"%p: Currently playing (1 or 0)\n"
+"You can use the following format codes, which will be replaced before "
+"running the command (not all are useful for the end-of-playlist command):"
+msgstr ""
+"Ezeket a formátumkódokat használhatja, ezeket a parancs lefutása előtt "
+"kicserélem (nem mind hasznos lejátszási lista vége parancskor)"
+
+#: src/song_change/song_change.cc:285
+msgid ""
 "%a: Artist\n"
 "%b: Album\n"
-"%T: Track title"
+"%c: Number of channels\n"
+"%f: File name (full path)\n"
+"%F: Frequency (Hertz)\n"
+"%l: Length (milliseconds)\n"
+"%n or %s: Formatted title (see playlist settings)\n"
+"%p: Currently playing (1 or 0)\n"
+"%r: Rate (bits per second)\n"
+"%t: Playlist position\n"
+"%T: Title (unformatted)"
 msgstr ""
+"%a: Előadó\n"
+"%b: Album\n"
+"%c: Csatornák száma\n"
+"%f: Fájlnév (teljes elérési út)\n"
+"%F: Frekvencia (Hertz)\n"
+"%l: Hossz (milliszekondum)\n"
+"%n vagy %s: Formázott cím (ahogy a lej.lista beállításainál van)\n"
+"%p: Lejátszás állapota (1 vagy 0)\n"
+"%r: Bitráta (bit/másodperc)\n"
+"%t: Lejátszási lista pozíciója\n"
+"%T: Cím (formázatlan)"
 
-#: src/song-info-qt/song-info.cc:32
-msgid "Song Info (Qt)"
+#: src/song_change/song_change.cc:296
+msgid ""
+"Parameters passed to the shell should be enclosed in quotation marks.  "
+"Unquoted parameters may lead to unexpected results."
 msgstr ""
+"Az átadott paramétereket idézőjelbe kell írni. A nem azokba írt paraméterek "
+"biztonsági kockázatot jelentenek"
+
+#: src/song-info-qt/song-info.cc:34
+msgid "Song Info"
+msgstr "Dal információ"
 
 #: src/sox-resampler/sox-resampler.cc:44
 msgid "SoX Resampler"
-msgstr ""
+msgstr "SoX Újramintavételező"
 
 #: src/sox-resampler/sox-resampler.cc:144
 msgid ""
@@ -3820,6 +4022,11 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"SoX Újramintavételező Bővítmény az Audacious-hoz\n"
+"Copyright 2013 Michał Lipski\n"
+"\n"
+"Az Újramintavételező Bővítmény alapján:\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/sox-resampler/sox-resampler.cc:150
 msgid "Quick"
@@ -3843,11 +4050,11 @@ msgstr "Minőség:"
 
 #: src/speed-pitch/speed-pitch.cc:51
 msgid "Speed and Pitch"
-msgstr ""
+msgstr "Sebesség és Hangszín"
 
 #: src/speed-pitch/speed-pitch.cc:210
 msgid "<b>Speed and Pitch</b>"
-msgstr ""
+msgstr "<b>Sebesség és Hangszín</b>"
 
 #: src/speed-pitch/speed-pitch.cc:211
 msgid "Speed:"
@@ -3857,15 +4064,39 @@ msgstr "Sebesség:"
 msgid "Pitch:"
 msgstr "Hangmagasság:"
 
-#: src/statusicon/statusicon.cc:47
+#: src/statusicon-qt/statusicon.cc:44 src/statusicon/statusicon.cc:48
 msgid "Status Icon"
 msgstr "Státusz ikon"
 
-#: src/statusicon/statusicon.cc:283
+#: src/statusicon-qt/statusicon.cc:65
+msgid ""
+"Status Icon Plugin (partial port for Qt interface)\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"Copyright 2015 Eugene Paskevich <eugene@raptor.kiev.ua>\n"
+"\n"
+"This plugin provides a status icon, placed in\n"
+"the system tray area of the window manager."
+msgstr ""
+
+#: src/statusicon-qt/statusicon.cc:78 src/statusicon/statusicon.cc:387
+msgid "Close to the system tray"
+msgstr "Bezáráskor az értesítési területen marad (a tálcán)"
+
+#: src/statusicon-qt/statusicon.cc:85
+msgid "_Hide"
+msgstr ""
+
+#: src/statusicon-qt/statusicon.cc:86
+msgid "_Restore"
+msgstr ""
+
+#: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:284
 msgid "Se_ttings ..."
 msgstr "Beállí_tások ...."
 
-#: src/statusicon/statusicon.cc:372
+#: src/statusicon/statusicon.cc:370
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3875,34 +4106,36 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
+"Státuszsor Ikon Bővítmény\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"Ez a beépülő egy ikont helyez el a tálcán."
 
-#: src/statusicon/statusicon.cc:379
+#: src/statusicon/statusicon.cc:377
 msgid "<b>Mouse Scroll Action</b>"
-msgstr ""
+msgstr "<b>Egér görgetés hatása</b>"
 
-#: src/statusicon/statusicon.cc:380
+#: src/statusicon/statusicon.cc:378
 msgid "Change volume"
 msgstr "Hangerő váltás"
 
-#: src/statusicon/statusicon.cc:383
+#: src/statusicon/statusicon.cc:381
 msgid "Change playing song"
 msgstr "Váltja a lejátszott dalt"
 
-#: src/statusicon/statusicon.cc:386
+#: src/statusicon/statusicon.cc:384
 msgid "<b>Other Settings</b>"
 msgstr "<b>Egyéb beállítások</b>"
 
-#: src/statusicon/statusicon.cc:387
+#: src/statusicon/statusicon.cc:385
 msgid "Disable the popup window"
 msgstr "Felugró ablakok tiltása"
 
 #: src/statusicon/statusicon.cc:389
-msgid "Close to the system tray"
-msgstr "Bezáráskor az értesítési területen marad (a tálcán)"
-
-#: src/statusicon/statusicon.cc:391
 msgid "Advance in playlist when scrolling upward"
-msgstr ""
+msgstr "Előrelép a lejátszási listában, amikor felfelé görget"
 
 #: src/stereo_plugin/stereo.cc:19
 msgid "Extra Stereo"
@@ -3924,7 +4157,7 @@ msgstr "<b>Extra Sztereó</b>"
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
-msgstr ""
+msgstr "Hanggenerátor"
 
 #: src/tonegen/tonegen.cc:94
 #, c-format
@@ -3943,12 +4176,20 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 msgstr ""
+"Szinuszjel-generátor Håvard Kvålen <havardk@xmms.org> által\n"
+"Módosította: Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"A használatához nyisson meg egy URL-t: \n"
+"tone://frequency1;frequency2;frequency3;...\n"
+"tone://frekvencia1;frekvencia2;frekvencia3;...\n"
+"\n"
+"pl.: tone://2000;2005 -> 2000 Hz-es és 2005 Hz-es hangot modulál"
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
-msgstr ""
+msgstr "Ének eltávolítás"
 
-#: src/vorbis/vorbis.cc:465
+#: src/vorbis/vorbis.cc:408
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -3968,17 +4209,34 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
+"Audacious Ogg Vorbis Dekódoló\n"
+"\n"
+"A Xiph.org Foundation  Ogg Vorbis Beépülője alapján:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Eredeti kód:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Támogatók:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
 
 #: src/vorbis/vorbis.h:18
 msgid "Ogg Vorbis Decoder"
-msgstr ""
-
-#: src/vtx/info.cc:22
-#, c-format
-msgid "Details about %s"
-msgstr ""
+msgstr "Ogg Vorbis Dekóder"
 
 #: src/vtx/info.cc:24
+#, c-format
+msgid "Details about %s"
+msgstr "%s részletei"
+
+#: src/vtx/info.cc:26
 msgid ""
 "Title: %t\n"
 "Author: %a\n"
@@ -3992,29 +4250,43 @@ msgid ""
 "Player Freq: %P\n"
 "Year: %y"
 msgstr ""
+"Cím: %t\n"
+"Előadó: %a\n"
+"Tőle: %f\n"
+"Tracker: %T\n"
+"Komment: %C\n"
+"Chip típus: %c\n"
+"Sztereó: %s\n"
+"Ismétlés: %l\n"
+"Chip frekv.: %F\n"
+"Lejátszó frekv.: %P\n"
+"Év: %y"
 
 #: src/vtx/vtx.cc:38
 msgid "VTX Decoder"
-msgstr ""
+msgstr "VTX Dekóder"
 
-#: src/vtx/vtx.cc:184
+#: src/vtx/vtx.cc:186
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
+"Vortex lejátszó Sashnov Alexander <sashnov@ngs.ru> által\n"
+"Az in_vtx.dll alapján Roman Sherbakov <v_soft@microfor.ru> által\n"
+"Audacious beépülő Pavel Vymetalek <pvymetalek@seznam.cz> által"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"
-msgstr ""
+msgstr "WavPack Dekóder"
 
 #: src/wavpack/wavpack.cc:211
 msgid "lossy (hybrid)"
-msgstr ""
+msgstr "veszteséges (hibrid)"
 
 #: src/wavpack/wavpack.cc:213
 msgid "lossy"
-msgstr ""
+msgstr "veszteséges"
 
 #: src/wavpack/wavpack.cc:255
 msgid ""
@@ -4022,19 +4294,22 @@ msgid ""
 "\n"
 "Some of the plugin code was by Miles Egan."
 msgstr ""
+"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"A kód egy részét Miles Egan írta."
 
 #: src/xsf/plugin.cc:50
 msgid "2SF Decoder"
-msgstr ""
+msgstr "2SF Dekóder"
 
 #: src/xsf/plugin.cc:238
 msgid "<b>XSF Configuration</b>"
-msgstr ""
+msgstr "<b>XSF Konfiguráció</b>"
 
 #: src/xsf/plugin.cc:239
 msgid "Ignore length from file"
-msgstr ""
+msgstr "Tárolt hossz mellőzése"
 
 #: src/xspf/xspf.cc:89
 msgid "XML Shareable Playlists (XSPF)"
-msgstr ""
+msgstr "XML Shareable Playlists File (XSPF)"
