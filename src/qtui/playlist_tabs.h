@@ -73,6 +73,8 @@ private:
      position_hook {"playlist position", this, & PlaylistTabs::playlist_position_cb};
     const HookReceiver<PlaylistTabs>
      rename_hook {"qtui rename playlist", this, & PlaylistTabs::renameCurrent};
+    const HookReceiver<PlaylistTabs>
+     settings_hook {"qtui update playlist settings", this, & PlaylistTabs::updateTitles};
 };
 
 class PlaylistTabBar : public QTabBar
@@ -85,6 +87,12 @@ protected:
     void tabMoved (int from, int to);
     void mousePressEvent (QMouseEvent * e);
     void mouseDoubleClickEvent (QMouseEvent * e);
+
+private:
+    void updateSettings ();
+
+    const HookReceiver<PlaylistTabBar>
+     settings_hook {"qtui update playlist settings", this, & PlaylistTabBar::updateSettings};
 };
 
 #endif

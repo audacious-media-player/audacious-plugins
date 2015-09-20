@@ -24,6 +24,7 @@
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
+#include <libaudcore/runtime.h>
 
 #include "playlist.h"
 #include "playlist_model.h"
@@ -44,6 +45,8 @@ PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (p
     setUniformRowHeights (true);
     setFrameShape (QFrame::NoFrame);
     setSelectionMode (ExtendedSelection);
+
+    updateSettings ();
 
     /* TODO: set column width based on font size */
     setColumnWidth (PL_COL_NOW_PLAYING, 25);
@@ -340,4 +343,9 @@ void PlaylistWidget::toggleQueue ()
         aud_playlist_queue_insert (playlist (), -1, row);
     else
         aud_playlist_queue_delete (playlist (), at, 1);
+}
+
+void PlaylistWidget::updateSettings ()
+{
+    setHeaderHidden (! aud_get_bool ("qtui", "playlist_headers"));
 }

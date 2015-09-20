@@ -443,8 +443,8 @@ static void ui_playback_stop ()
 {
     timer_remove (TimerRate::Hz4, time_counter_cb);
 
-    pause_cb ();
     title_change ();
+    gtk_tool_button_set_icon_name ((GtkToolButton *) button_play, "media-playback-start");
     gtk_widget_set_sensitive ((GtkWidget *) button_stop, false);
     gtk_widget_hide (slider);
     gtk_widget_hide (label_time);

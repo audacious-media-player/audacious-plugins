@@ -18,7 +18,6 @@
  */
 
 #include <libaudcore/i18n.h>
-#include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
@@ -91,18 +90,9 @@ public:
 EXPORT Crossfade aud_plugin_instance;
 
 static char state = STATE_OFF;
-static int current_channels = 0, current_rate = 0;
+static int current_channels, current_rate;
 static Index<float> buffer, output;
 static int fadein_point;
-
-static void reset ()
-{
-    state = STATE_OFF;
-    current_channels = 0;
-    current_rate = 0;
-    buffer.clear ();
-    output.clear ();
-}
 
 bool Crossfade::init ()
 {
@@ -112,7 +102,9 @@ bool Crossfade::init ()
 
 void Crossfade::cleanup ()
 {
-    reset ();
+    state = STATE_OFF;
+    buffer.clear ();
+    output.clear ();
 }
 
 static void do_ramp (float * data, int length, float a, float b)
@@ -128,6 +120,35 @@ static void mix (float * data, float * add, int length)
 {
     while (length --)
         (* data ++) += (* add ++);
+}
+
+/* stupid simple resampling/rechanneling algorithm */
+static void reformat (int channels, int rate)
+{
+    if (channels == current_channels && rate == current_rate)
+        return;
+
+    int old_frames = buffer.len () / current_channels;
+    int new_frames = (int64_t) old_frames * rate / current_rate;
+
+    int map[AUD_MAX_CHANNELS];
+    for (int c = 0; c < channels; c ++)
+        map[c] = c * current_channels / channels;
+
+    Index<float> new_buffer;
+    new_buffer.resize (new_frames * channels);
+
+    for (int f = 0; f < new_frames; f ++)
+    {
+        int f0 = (int64_t) f * current_rate / rate;
+        int s0 = f0 * current_channels;
+        int s = f * channels;
+
+        for (int c = 0; c < channels; c ++)
+            new_buffer[s + c] = buffer[s0 + map[c]];
+    }
+
+    buffer = std::move (new_buffer);
 }
 
 static int buffer_needed_for_state ()
@@ -155,30 +176,13 @@ static void output_data_as_ready (int buffer_needed, bool exact)
 void Crossfade::start (int & channels, int & rate)
 {
     if (state != STATE_OFF)
-    {
-        if (channels != current_channels)
-        {
-            aud_ui_show_error (_("Crossfading failed because the songs had "
-             "a different number of channels.  You can use the Channel Mixer to "
-             "convert the songs to the same number of channels."));
-            state = STATE_OFF;
-        }
-        else if (rate != current_rate)
-        {
-            aud_ui_show_error (_("Crossfading failed because the songs had "
-             "different sample rates.  You can use the Sample Rate Converter to "
-             "convert the songs to the same sample rate."));
-            state = STATE_OFF;
-        }
-    }
+        reformat (channels, rate);
+
+    current_channels = channels;
+    current_rate = rate;
 
     if (state == STATE_OFF)
     {
-        reset ();
-
-        current_channels = channels;
-        current_rate = rate;
-
         if (aud_get_bool ("crossfade", "manual"))
         {
             state = STATE_FLUSHED;
