@@ -49,8 +49,10 @@ static void qtui_update_playlist_settings ()
 
 static const PreferencesWidget qtui_widgets[] = {
     WidgetLabel (N_("<b>Playlist Tabs</b>")),
+#if QT_VERSION >= 0x050400
     WidgetCheck (N_("Always show tabs"),
         WidgetBool ("qtui", "playlist_tabs_visible", qtui_update_playlist_settings)),
+#endif
     WidgetCheck (N_("Show entry counts"),
         WidgetBool ("qtui", "entry_count_visible", qtui_update_playlist_settings)),
     WidgetCheck (N_("Show close buttons"),

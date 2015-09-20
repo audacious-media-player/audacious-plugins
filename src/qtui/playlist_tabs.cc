@@ -205,9 +205,11 @@ void PlaylistTabs::renameCurrent ()
 {
     int idx = currentIndex ();
 
+#if QT_VERSION >= 0x050400
     if (m_tabbar->autoHide () && m_tabbar->count () < 2)
         audqt::playlist_show_rename (idx);
-    else if (idx >= 0)
+    else
+#endif
         editTab (idx);
 }
 
@@ -307,6 +309,8 @@ void PlaylistTabBar::handleCloseRequest (int idx)
 
 void PlaylistTabBar::updateSettings ()
 {
+#if QT_VERSION >= 0x050400
     setAutoHide (! aud_get_bool ("qtui", "playlist_tabs_visible"));
+#endif
     setTabsClosable (aud_get_bool ("qtui", "close_button_visible"));
 }
