@@ -17,11 +17,13 @@
  * the use of this software.
  */
 
+#include "settings.h"
+
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/preferences.h>
 
-#include "settings.h"
+#include <QtGlobal>
 
 const char * const qtui_defaults[] = {
 //    "infoarea_show_vis", "TRUE",

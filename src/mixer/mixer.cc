@@ -137,6 +137,29 @@ static Index<float> & surround_5p1_to_stereo (Index<float> & data)
     return mixer_buf;
 }
 
+/* 5 channels case. Quad + center channel */
+static Index<float> & quadro_5_to_stereo (Index<float> & data)
+{
+    int frames = data.len () / 5;
+    mixer_buf.resize (2 * frames);
+
+    float * get = data.begin ();
+    float * set = mixer_buf.begin ();
+
+    while (frames --)
+    {
+        float front_left  = * get ++;
+        float front_right = * get ++;
+        float center = * get ++;
+        float rear_left   = * get ++;
+        float rear_right  = * get ++;
+        * set ++ = front_left + (center * 0.5) + rear_left;
+        * set ++ = front_right + (center * 0.5) + rear_right;
+    }
+
+    return mixer_buf;
+}
+
 static Converter get_converter (int in, int out)
 {
     if (in == 1 && out == 2)
@@ -145,6 +168,8 @@ static Converter get_converter (int in, int out)
         return stereo_to_mono;
     if (in == 4 && out == 2)
         return quadro_to_stereo;
+    if (in == 5 && out == 2)
+        return quadro_5_to_stereo;
     if (in == 6 && out == 2)
         return surround_5p1_to_stereo;
 
