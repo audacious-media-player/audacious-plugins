@@ -25,7 +25,7 @@
 #include <cstring>
 #include "s3m.h"
 
-const char Cs3mPlayer::chnresolv[] =    // S3M -> adlib channel conversion
+const signed char Cs3mPlayer::chnresolv[] =    // S3M -> adlib channel conversion
   {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,1,2,3,4,5,6,7,8,-1,-1,-1,-1,-1,-1,-1};
 
 const unsigned short Cs3mPlayer::notetable[12] =                // S3M adlib note table
