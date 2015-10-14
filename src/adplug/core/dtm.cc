@@ -132,7 +132,7 @@ bool CdtmLoader::load(const std::string &filename, const CFileProvider &fp)
 
       if (!unpacked_length)
         {
-          delete pattern;
+          delete [] pattern;
           fp.close(f);
           return false;
         }
