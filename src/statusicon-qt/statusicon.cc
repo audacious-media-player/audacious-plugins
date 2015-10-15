@@ -164,6 +164,10 @@ void StatusIcon::activate(QSystemTrayIcon::ActivationReason reason)
             menu->actions ().last ()->setVisible (true);
             break;
 
+        case QSystemTrayIcon::MiddleClick:
+            aud_drct_pause ();
+            break;
+
         default:
             break;
     }
