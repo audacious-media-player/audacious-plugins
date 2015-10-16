@@ -41,47 +41,32 @@ public:
 
 EXPORT M3ULoader aud_plugin_instance;
 
-static void strip_char (char * text, char c)
-{
-    char * set = text;
-    char a;
-
-    while ((a = * text ++))
-        if (a != c)
-            * set ++ = a;
-
-    * set = 0;
-}
-
-static Index<char> read_win_text (VFSFile & file)
-{
-    Index<char> raw = file.read_all ();
-    if (! raw.len ())
-        return raw;
-
-    raw.append (0);  /* null-terminated */
-    strip_char (raw.begin (), '\r');
-    return raw;
-}
-
 static char * split_line (char * line)
 {
     char * feed = strchr (line, '\n');
     if (! feed)
         return nullptr;
 
-    * feed = 0;
+    if (feed > line && feed[-1] == '\r')
+        feed[-1] = 0;
+    else
+        feed[0] = 0;
+
     return feed + 1;
 }
 
 bool M3ULoader::load (const char * path, VFSFile & file, String & title,
  Index<PlaylistAddItem> & items)
 {
-    Index<char> text = read_win_text (file);
+    Index<char> text = file.read_all ();
     if (! text.len ())
         return false;
 
+    text.append (0);  /* null-terminate */
+
     char * parse = text.begin ();
+    if (! strncmp (parse, "\xef\xbb\xbf", 3)) /* byte order mark */
+        parse += 3;
 
     while (parse)
     {
