@@ -63,8 +63,10 @@ public:
 
     int get_delay ();
 
-    void pause (bool pause);
     void flush ();
+
+    // not implemented
+    void pause (bool pause) {}
 
 private:
     bool poll_locked ();
@@ -77,7 +79,6 @@ private:
     int m_rate = 0, m_channels = 0;
     int m_bytes_per_frame = 0;
 
-    bool m_paused = false;
     int m_frames_buffered = 0;
     timeval m_last_write_time = timeval ();
     int m_flush_count = 0;
@@ -197,7 +198,6 @@ bool SndioPlugin::open_audio (int format, int rate, int channels)
     m_channels = channels;
     m_bytes_per_frame = FMT_SIZEOF (format) * channels;
 
-    m_paused = false;
     m_frames_buffered = 0;
     m_last_write_time = timeval ();
     m_flush_count = 0;
@@ -288,7 +288,7 @@ void SndioPlugin::period_wait ()
 {
     pthread_mutex_lock (& m_mutex);
 
-    if (m_paused || sio_eof (m_handle) || ! poll_locked ())
+    if (sio_eof (m_handle) || ! poll_locked ())
         pthread_cond_wait (& m_cond, & m_mutex);
 
     pthread_mutex_unlock (& m_mutex);
@@ -296,14 +296,10 @@ void SndioPlugin::period_wait ()
 
 int SndioPlugin::write_audio (const void * data, int size)
 {
-    int len = 0;
     pthread_mutex_lock (& m_mutex);
 
-    if (! m_paused)
-    {
-        len = sio_write (m_handle, data, size);
-        m_frames_buffered += len / m_bytes_per_frame;
-    }
+    int len = sio_write (m_handle, data, size);
+    m_frames_buffered += len / m_bytes_per_frame;
 
     pthread_mutex_unlock (& m_mutex);
     return len;
@@ -313,17 +309,14 @@ void SndioPlugin::drain ()
 {
     pthread_mutex_lock (& m_mutex);
 
-    if (! m_paused)
-    {
-        int d = aud::rescale (m_frames_buffered, m_rate, 1000);
-        timespec delay = {d / 1000, d % 1000 * 1000000};
+    int d = aud::rescale (m_frames_buffered, m_rate, 1000);
+    timespec delay = {d / 1000, d % 1000 * 1000000};
 
-        pthread_mutex_unlock (& m_mutex);
-        nanosleep (& delay, nullptr);
-        pthread_mutex_lock (& m_mutex);
+    pthread_mutex_unlock (& m_mutex);
+    nanosleep (& delay, nullptr);
+    pthread_mutex_lock (& m_mutex);
 
-        poll_locked ();
-    }
+    poll_locked ();
 
     pthread_mutex_unlock (& m_mutex);
 }
@@ -346,16 +339,6 @@ int SndioPlugin::get_delay ()
 
     pthread_mutex_unlock (& m_mutex);
     return delay;
-}
-
-void SndioPlugin::pause (bool pause)
-{
-    pthread_mutex_lock (& m_mutex);
-
-    m_paused = pause;
-
-    pthread_cond_broadcast (& m_cond);
-    pthread_mutex_unlock (& m_mutex);
 }
 
 void SndioPlugin::flush ()
