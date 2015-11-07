@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-09-20 15:15+0200\n"
+"POT-Creation-Date: 2015-11-07 18:05+0100\n"
 "PO-Revision-Date: 2015-09-18 08:56+0000\n"
 "Last-Translator: Piotr Strębski <strebski@o2.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/jlindgren/audacious/language/"
@@ -1917,27 +1917,27 @@ msgstr "_Zaznacz wszystko"
 msgid "_Rename ..."
 msgstr "Z_mień nazwę ..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:51
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:53
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Karty listy odtwarzania</b>"
 
-#: src/gtkui/settings.cc:36 src/qtui/settings.cc:52
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:55
 msgid "Always show tabs"
 msgstr "Zawsze pokazuj karty"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:54
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:58
 msgid "Show entry counts"
 msgstr "Pokaż statystykę nagrań"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:56
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:60
 msgid "Show close buttons"
 msgstr "Pokaż przyciski zamykania"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:58
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:62
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Kolumny listy odtwarzania</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:60
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:64
 msgid "Show column headers"
 msgstr "Pokaż nagłówki listy odtwarzania"
 
@@ -2373,7 +2373,7 @@ msgstr ""
 msgid "Channel Mixer"
 msgstr "Mikser kanałów"
 
-#: src/mixer/mixer.cc:202
+#: src/mixer/mixer.cc:227
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
@@ -2381,11 +2381,11 @@ msgstr ""
 "Wtyczka miksera kanałów dla Audacious\n"
 "Prawa autorskie 2011-2012 John Lindgren i Michał Lipski"
 
-#: src/mixer/mixer.cc:206
+#: src/mixer/mixer.cc:231
 msgid "<b>Channel Mixer</b>"
 msgstr "<b>Mikser kanałów</b>"
 
-#: src/mixer/mixer.cc:207
+#: src/mixer/mixer.cc:232
 msgid "Output channels:"
 msgstr "Ilość kanałów wyjściowych:"
 
@@ -3875,20 +3875,20 @@ msgstr ""
 msgid "Sndio Output"
 msgstr "Wyjście Sndio"
 
-#: src/sndio-ng/sndio.cc:98
+#: src/sndio-ng/sndio.cc:99
 msgid "Device (blank for default):"
 msgstr "Urządzenie (puste oznacza domyślne):"
 
-#: src/sndio-ng/sndio.cc:100
+#: src/sndio-ng/sndio.cc:101
 msgid "Save and restore volume:"
 msgstr "Zapisz i przywróć głośność:"
 
-#: src/sndio-ng/sndio.cc:181
+#: src/sndio-ng/sndio.cc:182
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
 msgstr "Błąd Sndio: Nieobsługiwany format dźwięku (%d)"
 
-#: src/sndio-ng/sndio.cc:192
+#: src/sndio-ng/sndio.cc:193
 msgid "Sndio error: sio_open() failed"
 msgstr "Błąd Sndio: funkcja sio_open() zwróciła błąd"
 
@@ -4266,3 +4266,21 @@ msgstr "Ignorowanie czasu trwania z pliku"
 #: src/xspf/xspf.cc:89
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Współdzielone listy odtwarzania XML (XSPF)"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had a different number of channels.  "
+#~ "You can use the Channel Mixer to convert the songs to the same number of "
+#~ "channels."
+#~ msgstr ""
+#~ "Przenikanie ścieżek zawiodło, ponieważ piosenki miały różną liczbę "
+#~ "kanałów. Możesz użyć Miksera kanałów, by przekonwertować piosenki do tej "
+#~ "samej liczby kanałów."
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had different sample rates.  You can "
+#~ "use the Sample Rate Converter to convert the songs to the same sample "
+#~ "rate."
+#~ msgstr ""
+#~ "Wtyczka przenikania ścieżek zawiodła, gdyż utwory posiadają różną "
+#~ "częstotliwość próbkowania. Możesz użyć konwertera częstotliwości "
+#~ "próbkowania, aby sprowadzić utwory do tej samej częstotliwości."

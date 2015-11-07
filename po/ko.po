@@ -7,6 +7,7 @@
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2013
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2012-2013
 #       Jaegeum Choe <baedaron@hananet.net>, 2001
+# Kim ju-gwang <hhs4272@naver.com>, 2015
 #       Man-Yong Lee <yong@linuxkorea.co.kr>, 2000
 #       Sang-Jin Hwang <accel@accellinux.org>, 1999
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2012
@@ -16,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-09-20 15:15+0200\n"
-"PO-Revision-Date: 2015-08-25 17:16+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2015-11-07 18:05+0100\n"
+"PO-Revision-Date: 2015-09-22 13:08+0000\n"
+"Last-Translator: Kim ju-gwang <hhs4272@naver.com>\n"
 "Language-Team: Korean (http://www.transifex.com/jlindgren/audacious/language/"
 "ko/)\n"
 "Language: ko\n"
@@ -689,7 +690,7 @@ msgstr "기타"
 
 #: src/aosd/aosd_ui.cc:878
 msgid "Test"
-msgstr ""
+msgstr "시험"
 
 #: src/asx3/asx3.cc:35
 msgid "ASXv3 Playlists"
@@ -966,7 +967,7 @@ msgstr "게임 콘솔 음악 디코더"
 
 #: src/coreaudio/coreaudio.cc:50
 msgid "CoreAudio output"
-msgstr ""
+msgstr "PulseAudio 출력"
 
 #: src/coreaudio/coreaudio.cc:131
 msgid ""
@@ -1181,7 +1182,7 @@ msgstr ""
 
 #: src/filewriter/filewriter.cc:387
 msgid "Original file name"
-msgstr ""
+msgstr "원본 파일 이름"
 
 #: src/filewriter/filewriter.cc:390
 msgid "Original file name (no suffix)"
@@ -1189,7 +1190,7 @@ msgstr ""
 
 #: src/filewriter/filewriter.cc:393
 msgid "Original file tag"
-msgstr ""
+msgstr "원본 파일 태그"
 
 #: src/filewriter/filewriter.cc:397
 msgid "Prepend track number to file name"
@@ -1858,27 +1859,27 @@ msgstr "모두 선택(_A)"
 msgid "_Rename ..."
 msgstr "이름 바꾸기(_R) ..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:51
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:53
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>재생 목록 탭</b>"
 
-#: src/gtkui/settings.cc:36 src/qtui/settings.cc:52
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:55
 msgid "Always show tabs"
 msgstr "항상 탭 표시"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:54
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:58
 msgid "Show entry counts"
 msgstr "항목 갯수 표시"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:56
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:60
 msgid "Show close buttons"
 msgstr "닫기 단추 표시"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:58
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:62
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>재생 목록 내용</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:60
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:64
 msgid "Show column headers"
 msgstr "내용 헤더 표시"
 
@@ -2301,7 +2302,7 @@ msgstr ""
 msgid "Channel Mixer"
 msgstr "채널 믹서"
 
-#: src/mixer/mixer.cc:202
+#: src/mixer/mixer.cc:227
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
@@ -2309,11 +2310,11 @@ msgstr ""
 "오데이셔스용 채널 음량 조절기 플러그인\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 
-#: src/mixer/mixer.cc:206
+#: src/mixer/mixer.cc:231
 msgid "<b>Channel Mixer</b>"
 msgstr "<b>채널 믹서</b>"
 
-#: src/mixer/mixer.cc:207
+#: src/mixer/mixer.cc:232
 msgid "Output channels:"
 msgstr "출력 채널:"
 
@@ -3778,20 +3779,20 @@ msgstr ""
 msgid "Sndio Output"
 msgstr "sndio 출력"
 
-#: src/sndio-ng/sndio.cc:98
+#: src/sndio-ng/sndio.cc:99
 msgid "Device (blank for default):"
 msgstr "장치(빈 값이 기본값):"
 
-#: src/sndio-ng/sndio.cc:100
+#: src/sndio-ng/sndio.cc:101
 msgid "Save and restore volume:"
 msgstr "저장하고 되돌릴 음량:"
 
-#: src/sndio-ng/sndio.cc:181
+#: src/sndio-ng/sndio.cc:182
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
 msgstr ""
 
-#: src/sndio-ng/sndio.cc:192
+#: src/sndio-ng/sndio.cc:193
 msgid "Sndio error: sio_open() failed"
 msgstr ""
 
@@ -4149,3 +4150,20 @@ msgstr ""
 #: src/xspf/xspf.cc:89
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML 공유 가능 재생 목록(XSPF)"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had a different number of channels.  "
+#~ "You can use the Channel Mixer to convert the songs to the same number of "
+#~ "channels."
+#~ msgstr ""
+#~ "곡이 다른 채널 수를 가지고 있어 크로스페이딩에 실패했습니다. 채널 믹서를 "
+#~ "사용하여 동일한 채널 수를 가지도록 곡을 변환할 수 있습니다."
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had different sample rates.  You can "
+#~ "use the Sample Rate Converter to convert the songs to the same sample "
+#~ "rate."
+#~ msgstr ""
+#~ "곡이 다른 샘플 주파수를 가지고 있어 크로스페이딩에 실패했습니다. 샘플 주파"
+#~ "수 변환기를 사용하여 동일한 샘플 주파수를 가지도록 곡을 변환 할 수 있습니"
+#~ "다."

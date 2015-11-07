@@ -39,9 +39,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-09-20 15:15+0200\n"
-"PO-Revision-Date: 2015-08-25 17:16+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2015-11-07 18:05+0100\n"
+"PO-Revision-Date: 2015-09-20 18:08+0000\n"
+"Last-Translator: Eugene Paskevich <eugene@raptor.kiev.ua>\n"
 "Language-Team: Russian (http://www.transifex.com/jlindgren/audacious/"
 "language/ru/)\n"
 "Language: ru\n"
@@ -1992,27 +1992,27 @@ msgstr "Выбрать _всё"
 msgid "_Rename ..."
 msgstr "Пере_именовать..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:51
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:53
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Вкладки плейлиста</b>"
 
-#: src/gtkui/settings.cc:36 src/qtui/settings.cc:52
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:55
 msgid "Always show tabs"
 msgstr "Всегда показывать вкладки"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:54
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:58
 msgid "Show entry counts"
 msgstr "Показывать счетчик элементов"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:56
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:60
 msgid "Show close buttons"
 msgstr "Показывать кнопки закрытия"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:58
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:62
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Колонки плейлиста</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:60
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:64
 msgid "Show column headers"
 msgstr "Показывать заголовки столбцов"
 
@@ -2447,7 +2447,7 @@ msgstr ""
 msgid "Channel Mixer"
 msgstr "Микшер каналов"
 
-#: src/mixer/mixer.cc:202
+#: src/mixer/mixer.cc:227
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
@@ -2455,11 +2455,11 @@ msgstr ""
 "Модуль смешивания каналов Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 
-#: src/mixer/mixer.cc:206
+#: src/mixer/mixer.cc:231
 msgid "<b>Channel Mixer</b>"
 msgstr "<b>Микшер каналов</b>"
 
-#: src/mixer/mixer.cc:207
+#: src/mixer/mixer.cc:232
 msgid "Output channels:"
 msgstr "Каналов на выходе:"
 
@@ -3940,20 +3940,20 @@ msgstr ""
 msgid "Sndio Output"
 msgstr "Выход Sndio"
 
-#: src/sndio-ng/sndio.cc:98
+#: src/sndio-ng/sndio.cc:99
 msgid "Device (blank for default):"
 msgstr "Устройство (по-умолчанию - оставить пустым):"
 
-#: src/sndio-ng/sndio.cc:100
+#: src/sndio-ng/sndio.cc:101
 msgid "Save and restore volume:"
 msgstr "Сохранять и восстанавливать уровень:"
 
-#: src/sndio-ng/sndio.cc:181
+#: src/sndio-ng/sndio.cc:182
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
 msgstr "Ошибка Sndio: Неподдерживаемый звуковой формат (%d)"
 
-#: src/sndio-ng/sndio.cc:192
+#: src/sndio-ng/sndio.cc:193
 msgid "Sndio error: sio_open() failed"
 msgstr "Ошибка sndio: sio_open() сбой"
 
@@ -4123,11 +4123,11 @@ msgstr "Закрыть в системный трей"
 
 #: src/statusicon-qt/statusicon.cc:85
 msgid "_Hide"
-msgstr ""
+msgstr "Сп_рятать"
 
 #: src/statusicon-qt/statusicon.cc:86
 msgid "_Restore"
-msgstr ""
+msgstr "_Восстановить"
 
 #: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:284
 msgid "Se_ttings ..."
@@ -4349,3 +4349,21 @@ msgstr "Не придавать значение длительности из �
 #: src/xspf/xspf.cc:89
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XSPF"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had a different number of channels.  "
+#~ "You can use the Channel Mixer to convert the songs to the same number of "
+#~ "channels."
+#~ msgstr ""
+#~ "Кроссфэйдер столкнулся с ошибкой, потому что песня имеет другое "
+#~ "количество каналов.  Вы можете использовать микшер каналов, чтобы "
+#~ "конвертировать песню в то же количество каналов."
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had different sample rates.  You can "
+#~ "use the Sample Rate Converter to convert the songs to the same sample "
+#~ "rate."
+#~ msgstr ""
+#~ "Кроссфэйдер столкнулся с ошибкой, потому что песня имеет другую частоту "
+#~ "дискретизации. Вы можете использовать конвертер частоты дискретизации для "
+#~ "конвертирования песни в ту же частоту."

@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-09-20 15:15+0200\n"
-"PO-Revision-Date: 2015-08-26 08:49+0000\n"
+"POT-Creation-Date: 2015-11-07 18:05+0100\n"
+"PO-Revision-Date: 2015-10-10 21:38+0000\n"
 "Last-Translator: Trans-fr\n"
 "Language-Team: French (http://www.transifex.com/jlindgren/audacious/language/"
 "fr/)\n"
@@ -1832,7 +1832,7 @@ msgstr "Enlever les _doublons"
 
 #: src/gtkui/menus.cc:210 src/qtui/main_window_actions.cc:165
 msgid "Remove _Unavailable Files"
-msgstr "Retirer les fichiers _absents"
+msgstr "Retirer les fichiers _manquants"
 
 #: src/gtkui/menus.cc:212 src/playlist-manager/playlist-manager.cc:239
 #: src/playlist-manager-qt/playlist-manager-qt.cc:317
@@ -1966,27 +1966,27 @@ msgstr "Sélectionner _tout"
 msgid "_Rename ..."
 msgstr "_Renommer…"
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:51
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:53
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Onglets de la liste de lecture</b>"
 
-#: src/gtkui/settings.cc:36 src/qtui/settings.cc:52
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:55
 msgid "Always show tabs"
 msgstr "Toujours montrer les onglets"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:54
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:58
 msgid "Show entry counts"
 msgstr "Montrer le nombre d'entrées"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:56
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:60
 msgid "Show close buttons"
 msgstr "Montrer les boutons de fermeture"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:58
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:62
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Colonnes de la liste de lecture</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:60
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:64
 msgid "Show column headers"
 msgstr "Montrer les en-têtes des colonnes"
 
@@ -2424,7 +2424,7 @@ msgstr ""
 msgid "Channel Mixer"
 msgstr "Mélangeur de canaux"
 
-#: src/mixer/mixer.cc:202
+#: src/mixer/mixer.cc:227
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
@@ -2432,11 +2432,11 @@ msgstr ""
 "Greffon de mélange des canaux pour Audacious\n"
 "Tous droits réservés © 2011-2012 John Lindgren et Michał Lipski"
 
-#: src/mixer/mixer.cc:206
+#: src/mixer/mixer.cc:231
 msgid "<b>Channel Mixer</b>"
 msgstr "<b>Mélangeur de canaux</b>"
 
-#: src/mixer/mixer.cc:207
+#: src/mixer/mixer.cc:232
 msgid "Output channels:"
 msgstr "Canaux de sortie :"
 
@@ -3535,7 +3535,7 @@ msgstr "Vider la file d'attente"
 
 #: src/skins/menus.cc:200 src/skins-qt/menus.cc:194
 msgid "Remove Unavailable Files"
-msgstr "Effacer les fichiers absents"
+msgstr "Retirer les fichiers manquants"
 
 #: src/skins/menus.cc:201 src/skins-qt/menus.cc:195
 msgid "Remove Duplicates"
@@ -3924,20 +3924,20 @@ msgstr ""
 msgid "Sndio Output"
 msgstr "Sortie sndio"
 
-#: src/sndio-ng/sndio.cc:98
+#: src/sndio-ng/sndio.cc:99
 msgid "Device (blank for default):"
 msgstr "Périphérique (vide pour celui par défaut) :"
 
-#: src/sndio-ng/sndio.cc:100
+#: src/sndio-ng/sndio.cc:101
 msgid "Save and restore volume:"
 msgstr "Enregistrer et restaurer le volume :"
 
-#: src/sndio-ng/sndio.cc:181
+#: src/sndio-ng/sndio.cc:182
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
 msgstr "Erreur sndio : format audio non pris en charge (%d)"
 
-#: src/sndio-ng/sndio.cc:192
+#: src/sndio-ng/sndio.cc:193
 msgid "Sndio error: sio_open() failed"
 msgstr "Erreur sndio : échec de sio_open()"
 
@@ -4333,3 +4333,21 @@ msgstr "Ignorer la durée donnée par le fichier"
 #: src/xspf/xspf.cc:89
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Listes de lecture XSPF"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had a different number of channels.  "
+#~ "You can use the Channel Mixer to convert the songs to the same number of "
+#~ "channels."
+#~ msgstr ""
+#~ "Le fondu enchaîné a échoué car les morceaux avaient un nombre différents "
+#~ "de canaux.  Tu peux utiliser le « Mélangeur de canaux » pour les "
+#~ "uniformiser."
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had different sample rates.  You can "
+#~ "use the Sample Rate Converter to convert the songs to the same sample "
+#~ "rate."
+#~ msgstr ""
+#~ "Le fondu enchaîné a échoué car les morceaux avaient des taux "
+#~ "d’échantillonnage différents. Tu peux utiliser le « Convertisseur de taux "
+#~ "d’échantillonnage » pour les uniformiser."

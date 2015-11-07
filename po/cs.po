@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-09-20 15:15+0200\n"
+"POT-Creation-Date: 2015-11-07 18:05+0100\n"
 "PO-Revision-Date: 2015-08-25 17:16+0000\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: Czech (http://www.transifex.com/jlindgren/audacious/language/"
@@ -1849,27 +1849,27 @@ msgstr "Vybr_at vše"
 msgid "_Rename ..."
 msgstr "_Přejmenovat ..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:51
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:53
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Panely seznamu skladeb</b>"
 
-#: src/gtkui/settings.cc:36 src/qtui/settings.cc:52
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:55
 msgid "Always show tabs"
 msgstr "Vždy zobrazovat panely"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:54
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:58
 msgid "Show entry counts"
 msgstr "Zobrazovat počet skladeb"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:56
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:60
 msgid "Show close buttons"
 msgstr "Zobrazovat zavírací tlačítko"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:58
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:62
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Sloupce seznamu skladeb</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:60
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:64
 msgid "Show column headers"
 msgstr "Zobrazovat hlavičky sloupců"
 
@@ -2291,7 +2291,7 @@ msgstr ""
 msgid "Channel Mixer"
 msgstr "Míchání kanálů"
 
-#: src/mixer/mixer.cc:202
+#: src/mixer/mixer.cc:227
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
@@ -2299,11 +2299,11 @@ msgstr ""
 "Zásuvný modul kanáloveho mixeru pro Audacious\n"
 "Copyright 2011-2012 John Lindgren a Michał Lipski"
 
-#: src/mixer/mixer.cc:206
+#: src/mixer/mixer.cc:231
 msgid "<b>Channel Mixer</b>"
 msgstr "<b>Míchání kanálů</b>"
 
-#: src/mixer/mixer.cc:207
+#: src/mixer/mixer.cc:232
 msgid "Output channels:"
 msgstr "Výstupní kanály:"
 
@@ -3732,20 +3732,20 @@ msgstr ""
 msgid "Sndio Output"
 msgstr "Sndio Výstup"
 
-#: src/sndio-ng/sndio.cc:98
+#: src/sndio-ng/sndio.cc:99
 msgid "Device (blank for default):"
 msgstr "Zařízení (prázdné pro standardní)"
 
-#: src/sndio-ng/sndio.cc:100
+#: src/sndio-ng/sndio.cc:101
 msgid "Save and restore volume:"
 msgstr "Ulož a obnov hlasitost:"
 
-#: src/sndio-ng/sndio.cc:181
+#: src/sndio-ng/sndio.cc:182
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
 msgstr "Sndio chyba: Nepodporovaný zvukový formát (%d)"
 
-#: src/sndio-ng/sndio.cc:192
+#: src/sndio-ng/sndio.cc:193
 msgid "Sndio error: sio_open() failed"
 msgstr "Sndio chyba: sio_open() selhal"
 

@@ -4,14 +4,15 @@
 #
 # Translators:
 # Bo Serrander <bserrander@gmail.com>, 2013
+# Gaius Anderson <gaius.ankh@gmail.com>, 2015
 # Luna Jernberg <bittin@cafe8bitar.se>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-09-20 15:15+0200\n"
-"PO-Revision-Date: 2015-08-25 17:16+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2015-11-07 18:05+0100\n"
+"PO-Revision-Date: 2015-11-02 12:45+0000\n"
+"Last-Translator: Gaius Anderson <gaius.ankh@gmail.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/jlindgren/audacious/"
 "language/sv/)\n"
 "Language: sv\n"
@@ -109,7 +110,7 @@ msgstr "Din påminelse idag är ..."
 
 #: src/alarm/interface.cc:97 src/alarm/interface.cc:381
 msgid "Reminder"
-msgstr "Påminelse"
+msgstr "Påminnelse"
 
 #: src/alarm/interface.cc:128
 msgid "Monday"
@@ -258,19 +259,19 @@ msgstr ""
 
 #: src/alsa/config.cc:166
 msgid "Default PCM device"
-msgstr ""
+msgstr "Standard PCM-enhet"
 
 #: src/alsa/config.cc:188
 msgid "Default mixer device"
-msgstr ""
+msgstr "Standard mixerenhet"
 
 #: src/alsa/config.cc:296
 msgid "PCM device:"
-msgstr ""
+msgstr "PCM-enhet:"
 
 #: src/alsa/config.cc:299
 msgid "Mixer device:"
-msgstr ""
+msgstr "Mixerenhet:"
 
 #: src/alsa/config.cc:302
 msgid "Mixer element:"
@@ -345,11 +346,11 @@ msgstr ""
 
 #: src/amidi-plug/i_configure.cc:135
 msgid "Skip leading silence"
-msgstr ""
+msgstr "Hoppa över inledande tystnad"
 
 #: src/amidi-plug/i_configure.cc:137
 msgid "Skip trailing silence"
-msgstr ""
+msgstr "Hoppa över avslutande tystnad"
 
 #: src/amidi-plug/i_configure.cc:141
 msgid "<b>SoundFont</b>"
@@ -558,11 +559,11 @@ msgstr ""
 
 #: src/aosd/aosd_ui.cc:292
 msgid "Fade in:"
-msgstr ""
+msgstr "Tona in:"
 
 #: src/aosd/aosd_ui.cc:297
 msgid "Fade out:"
-msgstr ""
+msgstr "Tona ut:"
 
 #: src/aosd/aosd_ui.cc:361
 msgid "Fonts"
@@ -640,7 +641,7 @@ msgstr ""
 
 #: src/aosd/aosd_ui.cc:844
 msgid "Position"
-msgstr ""
+msgstr "Position"
 
 #: src/aosd/aosd_ui.cc:849
 msgid "Animation"
@@ -664,7 +665,7 @@ msgstr "Misc"
 
 #: src/aosd/aosd_ui.cc:878
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
 #: src/asx3/asx3.cc:35
 msgid "ASXv3 Playlists"
@@ -700,7 +701,7 @@ msgstr ""
 
 #: src/bs2b/plugin.cc:138
 msgid "x1/10 dB"
-msgstr ""
+msgstr "x1/10 dB"
 
 #: src/bs2b/plugin.cc:139
 msgid "Cut frequency:"
@@ -760,7 +761,7 @@ msgstr "Server:"
 
 #: src/cdaudio-ng/cdaudio-ng.cc:153
 msgid "Path:"
-msgstr ""
+msgstr "Sökväg:"
 
 #: src/cdaudio-ng/cdaudio-ng.cc:157
 msgid "Port:"
@@ -891,7 +892,7 @@ msgstr "Bass:"
 
 #: src/console/plugin.cc:33
 msgid "Treble:"
-msgstr ""
+msgstr "Diskant:"
 
 #: src/console/plugin.cc:36
 msgid "Echo:"
@@ -1015,7 +1016,7 @@ msgstr ""
 
 #: src/delete-files/delete-files.cc:135
 msgid "Do you want to move the selected files to the trash?"
-msgstr ""
+msgstr "Vill du flytta valda filer till papperskorgen?"
 
 #: src/delete-files/delete-files.cc:136
 msgid "Move to Trash"
@@ -1023,7 +1024,7 @@ msgstr "Flytta till Papperskorgen"
 
 #: src/delete-files/delete-files.cc:141
 msgid "Do you want to permanently delete the selected files?"
-msgstr ""
+msgstr "Vill du radera valda filer permanent?"
 
 #: src/delete-files/delete-files.cc:142
 msgid "Delete"
@@ -1035,7 +1036,7 @@ msgstr "Avsluta"
 
 #: src/delete-files/delete-files.cc:167
 msgid "Delete Selected Files"
-msgstr ""
+msgstr "Radera valda filer"
 
 #: src/delete-files/delete-files.cc:182
 msgid "<b>Delete Method</b>"
@@ -1132,7 +1133,7 @@ msgstr ""
 
 #: src/filewriter/filewriter.cc:386
 msgid "Generate file name from:"
-msgstr ""
+msgstr "Generera filnamn utifrån:"
 
 #: src/filewriter/filewriter.cc:387
 msgid "Original file name"
@@ -1227,7 +1228,7 @@ msgstr "Typ:"
 
 #: src/filewriter/mp3.cc:804
 msgid "VBR Options:"
-msgstr ""
+msgstr "VBR-inställningar"
 
 #: src/filewriter/mp3.cc:815
 msgid "Minimum bitrate (kbps):"
@@ -1283,11 +1284,11 @@ msgstr ""
 
 #: src/filewriter/mp3.cc:990
 msgid "Only add v1 tag"
-msgstr ""
+msgstr "Lägg endast till v1-tag"
 
 #: src/filewriter/mp3.cc:996
 msgid "Only add v2 tag"
-msgstr ""
+msgstr "Lägg endast till v2-tag"
 
 #: src/filewriter/mp3.cc:1016
 msgid "Tags"
@@ -1362,7 +1363,7 @@ msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:38
 msgid "GNOME Shortcuts"
-msgstr ""
+msgstr "GNOME Genvägar"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:54
 msgid ""
@@ -1396,7 +1397,7 @@ msgstr "Album"
 
 #: src/gtkui/columns.cc:40
 msgid "Album artist"
-msgstr ""
+msgstr "Albumartist"
 
 #: src/gtkui/columns.cc:41
 msgid "Track"
@@ -1408,7 +1409,7 @@ msgstr "Genre"
 
 #: src/gtkui/columns.cc:43
 msgid "Queue position"
-msgstr ""
+msgstr "Köposition"
 
 #: src/gtkui/columns.cc:44
 msgid "Length"
@@ -1416,7 +1417,7 @@ msgstr "Längd"
 
 #: src/gtkui/columns.cc:45
 msgid "File path"
-msgstr ""
+msgstr "Filens sökväg"
 
 #: src/gtkui/columns.cc:47
 msgid "Custom title"
@@ -1437,7 +1438,7 @@ msgstr ""
 #: src/gtkui/layout.cc:72 src/search-tool-qt/search-tool-qt.cc:52
 #: src/search-tool/search-tool.cc:43
 msgid "Search Tool"
-msgstr ""
+msgstr "Sökverktyg"
 
 #: src/gtkui/layout.cc:167
 msgid "Dock at Left"
@@ -1795,27 +1796,27 @@ msgstr "Välj _Alla"
 msgid "_Rename ..."
 msgstr "_Döp om ..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:51
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:53
 msgid "<b>Playlist Tabs</b>"
 msgstr ""
 
-#: src/gtkui/settings.cc:36 src/qtui/settings.cc:52
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:55
 msgid "Always show tabs"
 msgstr ""
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:54
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:58
 msgid "Show entry counts"
 msgstr ""
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:56
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:60
 msgid "Show close buttons"
 msgstr ""
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:58
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:62
 msgid "<b>Playlist Columns</b>"
 msgstr ""
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:60
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:64
 msgid "Show column headers"
 msgstr ""
 
@@ -1868,7 +1869,7 @@ msgstr[1] "%d kanaler"
 #: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:79
 #, c-format
 msgid "%d kHz"
-msgstr ""
+msgstr "%d kHz"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:85
 #, c-format
@@ -1982,7 +1983,7 @@ msgstr ""
 
 #: src/hotkey/gui.cc:396
 msgid "Hotkeys:"
-msgstr ""
+msgstr "Snabbtangenter:"
 
 #: src/hotkey/gui.cc:413
 msgid "<b>Action:</b>"
@@ -1998,7 +1999,7 @@ msgstr "_Lägg till"
 
 #: src/hotkey/plugin.cc:62
 msgid "Global Hotkeys"
-msgstr ""
+msgstr "Globala snabbtangenter"
 
 #: src/hotkey/plugin.cc:80
 msgid ""
@@ -2053,7 +2054,7 @@ msgstr ""
 #: src/ladspa/plugin.cc:415
 #, c-format
 msgid "%s Settings"
-msgstr ""
+msgstr "%s inställningar"
 
 #: src/ladspa/plugin.cc:481
 msgid "Module paths:"
@@ -2132,7 +2133,7 @@ msgstr ""
 
 #: src/lyricwiki/lyricwiki.cc:132 src/lyricwiki-qt/lyricwiki.cc:150
 msgid "No lyrics available"
-msgstr ""
+msgstr "Inga sångtexter tillgängliga"
 
 #: src/lyricwiki/lyricwiki.cc:219 src/lyricwiki/lyricwiki.cc:228
 #: src/lyricwiki/lyricwiki.cc:245 src/lyricwiki/lyricwiki.cc:254
@@ -2169,11 +2170,11 @@ msgstr ""
 
 #: src/lyricwiki/lyricwiki.cc:321 src/lyricwiki-qt/lyricwiki.cc:375
 msgid "Edit lyrics ..."
-msgstr ""
+msgstr "Redigera sångtexter ..."
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
-msgstr ""
+msgstr "M3U Spellistor"
 
 #: src/metronom/metronom.cc:44
 msgid "Tact Generator"
@@ -2202,17 +2203,17 @@ msgstr ""
 msgid "Channel Mixer"
 msgstr ""
 
-#: src/mixer/mixer.cc:202
+#: src/mixer/mixer.cc:227
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
 
-#: src/mixer/mixer.cc:206
+#: src/mixer/mixer.cc:231
 msgid "<b>Channel Mixer</b>"
 msgstr ""
 
-#: src/mixer/mixer.cc:207
+#: src/mixer/mixer.cc:232
 msgid "Output channels:"
 msgstr ""
 
@@ -2234,15 +2235,15 @@ msgstr ""
 
 #: src/modplug/plugin_main.cc:57
 msgid "8-bit"
-msgstr ""
+msgstr "8-bitar"
 
 #: src/modplug/plugin_main.cc:58
 msgid "16-bit"
-msgstr ""
+msgstr "16-bitar"
 
 #: src/modplug/plugin_main.cc:59
 msgid "<b>Channels</b>"
-msgstr ""
+msgstr "<b>Kanaler</b>"
 
 #: src/modplug/plugin_main.cc:63
 msgid "Nearest (fastest)"
@@ -2311,7 +2312,7 @@ msgstr ""
 
 #: src/modplug/plugin_main.cc:111
 msgid "Noise reduction"
-msgstr ""
+msgstr "Brusreducering"
 
 #: src/modplug/plugin_main.cc:112
 msgid "Play Amiga MODs"
@@ -2319,7 +2320,7 @@ msgstr "Spela Amiga Moduler"
 
 #: src/modplug/plugin_main.cc:113
 msgid "<b>Repeat</b>"
-msgstr ""
+msgstr "<b>Uppepa</b>"
 
 #: src/modplug/plugin_main.cc:114
 msgid "Repeat count:"
@@ -2363,7 +2364,7 @@ msgstr ""
 
 #: src/neon/neon.cc:537
 msgid "Unknown HTTP error"
-msgstr ""
+msgstr "Okänt HTTP-fel"
 
 #: src/neon/neon.cc:571
 msgid "Error parsing URL"
@@ -2407,7 +2408,7 @@ msgstr ""
 
 #: src/notify/notify.cc:108
 msgid "Show playback controls"
-msgstr ""
+msgstr "Visa uppspelningskontroller"
 
 #: src/notify/notify.cc:110
 msgid "Always show notification"
@@ -2433,23 +2434,23 @@ msgstr "Nästa"
 
 #: src/oss4/oss.h:93
 msgid "OSS4 Output"
-msgstr ""
+msgstr "OSS4 Utgång"
 
 #: src/oss4/oss.h:95
 msgid "OSS3 Output"
-msgstr ""
+msgstr "OSS3 Utgång"
 
 #: src/oss4/plugin.cc:35
 msgid "Default device"
-msgstr ""
+msgstr "Standardenhet"
 
 #: src/oss4/plugin.cc:78
 msgid "Audio device:"
-msgstr ""
+msgstr "Ljudenhet:"
 
 #: src/oss4/plugin.cc:81
 msgid "Use alternate device:"
-msgstr ""
+msgstr "Använd alternativ enhet:"
 
 #: src/oss4/plugin.cc:85
 msgid "Save volume between sessions."
@@ -2498,11 +2499,11 @@ msgstr "PLS Spellistor"
 
 #: src/psf/plugin.cc:45
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr ""
+msgstr "OpenPSF PSF1/PSF2 Avkodare"
 
 #: src/pulse_audio/pulse_audio.cc:38
 msgid "PulseAudio Output"
-msgstr ""
+msgstr "PulseAudio Utgång"
 
 #: src/pulse_audio/pulse_audio.cc:611
 msgid ""
@@ -2526,7 +2527,7 @@ msgstr ""
 
 #: src/qtaudio/qtaudio.cc:49
 msgid "QtMultimedia Output"
-msgstr ""
+msgstr "QtMultimedia Utgång"
 
 #: src/qtaudio/qtaudio.cc:77
 msgid ""
@@ -2539,7 +2540,7 @@ msgstr ""
 
 #: src/qtui/dialog_windows.cc:31
 msgid "Working ..."
-msgstr ""
+msgstr "Arbetar ..."
 
 #: src/qtui/filter_input.cc:44 src/skins/search-select.cc:76
 msgid "Search"
@@ -2547,11 +2548,11 @@ msgstr "Sök"
 
 #: src/qtui/main_window_actions.cc:90
 msgid "_Open Folder ..."
-msgstr ""
+msgstr "_Öppna Mapp ..."
 
 #: src/qtui/main_window_actions.cc:93
 msgid "_Add Folder ..."
-msgstr ""
+msgstr "_Lägg till Mapp"
 
 #: src/qtui/main_window_actions.cc:99
 msgid "_Log Inspector ..."
@@ -2559,11 +2560,11 @@ msgstr ""
 
 #: src/qtui/main_window.cc:85
 msgid "Open Files"
-msgstr ""
+msgstr "Öppna filer"
 
 #: src/qtui/main_window.cc:87
 msgid "Add Files"
-msgstr ""
+msgstr "Lägg till filer"
 
 #: src/qtui/main_window.cc:92 src/skins/menus.cc:135 src/skins-qt/menus.cc:122
 msgid "Previous"
@@ -2571,15 +2572,15 @@ msgstr "Förra"
 
 #: src/qtui/main_window.cc:98 src/skins/menus.cc:126 src/skins-qt/menus.cc:113
 msgid "Repeat"
-msgstr ""
+msgstr "Upprepa"
 
 #: src/qtui/main_window.cc:100 src/skins/menus.cc:127 src/skins-qt/menus.cc:114
 msgid "Shuffle"
-msgstr ""
+msgstr "Blanda"
 
 #: src/qtui/qtui.cc:39
 msgid "Qt Interface"
-msgstr ""
+msgstr "Qt Interface"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -2617,7 +2618,7 @@ msgstr ""
 
 #: src/resample/resample.cc:196
 msgid "Method:"
-msgstr ""
+msgstr "Metod:"
 
 #: src/resample/resample.cc:199 src/sox-resampler/sox-resampler.cc:161
 msgid "Rate:"
@@ -2704,7 +2705,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.cc:110
 msgid "Checking..."
-msgstr ""
+msgstr "Kontrollerar..."
 
 #: src/scrobbler2/config_window.cc:176
 msgid "C_heck Permission"
@@ -2748,19 +2749,21 @@ msgstr ""
 
 #: src/sdlout/sdlout.cc:48
 msgid "SDL Output"
-msgstr ""
+msgstr "SDL Utgång"
 
 #: src/sdlout/sdlout.cc:77
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"SDL Utgång Plugin för Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/search-tool-qt/search-tool-qt.cc:187
 #: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:120
 #: src/search-tool/search-tool.cc:128
 msgid "Library"
-msgstr ""
+msgstr "Bibliotek"
 
 #: src/search-tool-qt/search-tool-qt.cc:460 src/search-tool/search-tool.cc:393
 #, c-format
@@ -2789,11 +2792,11 @@ msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
 msgid "on"
-msgstr ""
+msgstr "på"
 
 #: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
 msgid "by"
-msgstr ""
+msgstr "av"
 
 #: src/search-tool-qt/search-tool-qt.cc:665 src/search-tool/search-tool.cc:618
 msgid "_Create Playlist"
@@ -2815,7 +2818,7 @@ msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:691 src/search-tool/search-tool.cc:674
 msgid "Please wait ..."
-msgstr ""
+msgstr "Vänligen vänta ..."
 
 #: src/search-tool/search-tool.cc:701
 msgid "Choose Folder"
@@ -2823,15 +2826,15 @@ msgstr "Välj Mapp"
 
 #: src/sid/xmms-sid.cc:43
 msgid "SID Player"
-msgstr ""
+msgstr "SID-spelare"
 
 #: src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
-msgstr ""
+msgstr "<b>Utgång</b>"
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
-msgstr ""
+msgstr "Kanaler:"
 
 #: src/sid/xs_config.cc:68
 msgid "<b>Emulation</b>"
@@ -2909,7 +2912,7 @@ msgstr ""
 
 #: src/silence-removal/silence-removal.cc:70
 msgid "dB"
-msgstr ""
+msgstr "dB"
 
 #: src/skins/actions.cc:43 src/skins-qt/actions.cc:41
 msgid "Repeat points cleared."
@@ -2925,7 +2928,7 @@ msgstr ""
 
 #: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:220
 msgid "Preamp"
-msgstr ""
+msgstr "Preamp"
 
 #: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:224
 msgid "31 Hz"
@@ -3018,7 +3021,7 @@ msgstr ""
 
 #: src/skins/main.cc:828 src/skins-qt/main.cc:783
 msgid "Visualizations"
-msgstr ""
+msgstr "Visualiseringar"
 
 #: src/skins/menus.cc:78 src/skins-qt/menus.cc:64
 msgid "Recording on"
@@ -3030,15 +3033,15 @@ msgstr ""
 
 #: src/skins/menus.cc:97 src/skins-qt/menus.cc:83
 msgid "Volume Up"
-msgstr ""
+msgstr "Volym Upp"
 
 #: src/skins/menus.cc:98 src/skins-qt/menus.cc:84
 msgid "Volume Down"
-msgstr ""
+msgstr "Volym Ner"
 
 #: src/skins/menus.cc:100 src/skins-qt/menus.cc:86
 msgid "Effects ..."
-msgstr ""
+msgstr "Effekter ..."
 
 #: src/skins/menus.cc:102 src/skins-qt/menus.cc:88
 msgid "Record Stream"
@@ -3058,7 +3061,7 @@ msgstr "Öppna URL ..."
 
 #: src/skins/menus.cc:109
 msgid "Search Library"
-msgstr ""
+msgstr "Sök bibliotek"
 
 #: src/skins/menus.cc:111 src/skins-qt/menus.cc:98
 msgid "Playback"
@@ -3070,7 +3073,7 @@ msgstr "Spellista"
 
 #: src/skins/menus.cc:113 src/skins-qt/menus.cc:100
 msgid "Output"
-msgstr ""
+msgstr "Utgång"
 
 #: src/skins/menus.cc:114 src/skins-qt/menus.cc:101
 msgid "View"
@@ -3080,7 +3083,7 @@ msgstr "Visa"
 #: src/skins/menus.cc:260 src/skins-qt/menus.cc:103 src/skins-qt/menus.cc:175
 #: src/skins-qt/menus.cc:189 src/skins-qt/menus.cc:254
 msgid "Services"
-msgstr ""
+msgstr "Tjänster"
 
 #: src/skins/menus.cc:118 src/skins-qt/menus.cc:105
 msgid "About ..."
@@ -3356,15 +3359,15 @@ msgstr ""
 
 #: src/skins-qt/menus.cc:94
 msgid "Open Folder ..."
-msgstr ""
+msgstr "Öppna Mapp ..."
 
 #: src/skins-qt/menus.cc:178
 msgid "Add Folder ..."
-msgstr ""
+msgstr "Lägg till Mapp ..."
 
 #: src/skins-qt/skins_cfg.cc:197 src/skins/skins_cfg.cc:181
 msgid "Player:"
-msgstr ""
+msgstr "Spelare:"
 
 #: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:183
 msgid "Select main player window font:"
@@ -3372,7 +3375,7 @@ msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:184
 msgid "Playlist:"
-msgstr ""
+msgstr "Spellista:"
 
 #: src/skins-qt/skins_cfg.cc:202 src/skins/skins_cfg.cc:186
 msgid "Select playlist font:"
@@ -3392,7 +3395,7 @@ msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:214 src/skins/skins_cfg.cc:196
 msgid "Scroll song title"
-msgstr ""
+msgstr "Rulla låttitel"
 
 #: src/skins-qt/skins_cfg.cc:216 src/skins/skins_cfg.cc:198
 msgid "Scroll song title in both directions"
@@ -3548,19 +3551,19 @@ msgstr ""
 
 #: src/skins/search-select.cc:89
 msgid "Title:"
-msgstr ""
+msgstr "Titel:"
 
 #: src/skins/search-select.cc:95
 msgid "Album:"
-msgstr ""
+msgstr "Album:"
 
 #: src/skins/search-select.cc:101
 msgid "Artist:"
-msgstr ""
+msgstr "Artist:"
 
 #: src/skins/search-select.cc:107
 msgid "File Name:"
-msgstr ""
+msgstr "Filnamn:"
 
 #: src/skins/search-select.cc:115
 msgid "Clear previous selection before searching"
@@ -3602,22 +3605,22 @@ msgstr ""
 
 #: src/sndio-ng/sndio.cc:44
 msgid "Sndio Output"
-msgstr ""
+msgstr "Sndio Utgång"
 
-#: src/sndio-ng/sndio.cc:98
+#: src/sndio-ng/sndio.cc:99
 msgid "Device (blank for default):"
 msgstr ""
 
-#: src/sndio-ng/sndio.cc:100
+#: src/sndio-ng/sndio.cc:101
 msgid "Save and restore volume:"
 msgstr ""
 
-#: src/sndio-ng/sndio.cc:181
+#: src/sndio-ng/sndio.cc:182
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
 msgstr ""
 
-#: src/sndio-ng/sndio.cc:192
+#: src/sndio-ng/sndio.cc:193
 msgid "Sndio error: sio_open() failed"
 msgstr ""
 
@@ -3682,7 +3685,7 @@ msgstr ""
 
 #: src/song-info-qt/song-info.cc:34
 msgid "Song Info"
-msgstr ""
+msgstr "Låtinformation"
 
 #: src/sox-resampler/sox-resampler.cc:44
 msgid "SoX Resampler"
@@ -3715,7 +3718,7 @@ msgstr ""
 
 #: src/sox-resampler/sox-resampler.cc:158
 msgid "Quality:"
-msgstr ""
+msgstr "Kvalitet:"
 
 #: src/speed-pitch/speed-pitch.cc:51
 msgid "Speed and Pitch"
