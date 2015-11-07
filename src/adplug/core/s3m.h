@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * s3m.h - AdLib S3M Player by Simon Peter <dn.tlp@gmx.net>
  */
@@ -90,7 +90,7 @@ class Cs3mPlayer: public CPlayer
   unsigned char crow,ord,speed,tempo,del,songend,loopstart,loopcnt;
 
  private:
-  static const char chnresolv[];
+  static const signed char chnresolv[];
   static const unsigned short notetable[12];
   static const unsigned char vibratotab[32];
 

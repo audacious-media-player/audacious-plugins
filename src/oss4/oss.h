@@ -139,7 +139,6 @@ private:
     int m_channels = 0;
     int m_bytes_per_sample = 0;
 
-    bool m_paused = false;
     bool m_ioctl_vol = false;
 };
 

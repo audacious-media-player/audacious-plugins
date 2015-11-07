@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * s3m.c - S3M Player by Simon Peter <dn.tlp@gmx.net>
  *
@@ -25,7 +25,7 @@
 #include <cstring>
 #include "s3m.h"
 
-const char Cs3mPlayer::chnresolv[] =    // S3M -> adlib channel conversion
+const signed char Cs3mPlayer::chnresolv[] =    // S3M -> adlib channel conversion
   {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,1,2,3,4,5,6,7,8,-1,-1,-1,-1,-1,-1,-1};
 
 const unsigned short Cs3mPlayer::notetable[12] =                // S3M adlib note table

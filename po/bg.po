@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-09-20 15:15+0200\n"
-"PO-Revision-Date: 2015-08-25 17:16+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2015-11-07 18:05+0100\n"
+"PO-Revision-Date: 2015-09-29 08:32+0000\n"
+"Last-Translator: Радослав Иванов <reckku@gmail.com>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/jlindgren/audacious/"
 "language/bg/)\n"
 "Language: bg\n"
@@ -107,6 +107,53 @@ msgid ""
 "    Type the reminder in the input field and enable\n"
 "    the checkbox if you want it to be shown."
 msgstr ""
+"Време\n"
+"Алармиране в:\n"
+"Времето в което ще се включи алармата.\n"
+"\n"
+"Затишие след:\n"
+"Спиране на алармата след този период.\n"
+"(ако прозорецът за събуждане не е затворен)\n"
+"\n"
+"\n"
+"Дни\n"
+"Ден:\n"
+"Избиране на дните, в които да се активира алармата.\n"
+"\n"
+"Време:\n"
+"Избете време на алармата за всеки ден\n"
+"или изберете бутона за превключване,\n"
+"за избор на стандартното време.\n"
+"\n"
+"\n"
+"Сила на звука\n"
+"Затихване:\n"
+"Затихване на усилването на звука до избраното,\n"
+"за този период от време.\n"
+"\n"
+"Стартирай от:\n"
+"Стартирай затихване от този момент.\n"
+"\n"
+"Крайно:\n"
+"Сила на звука, при което спира затихването. Ако\n"
+"времето за затихване е 0, тогава се задава тази\n"
+"сила на звука и започва възпроизвежането.\n"
+"\n"
+"\n"
+"Опции:\n"
+"Допълнителна команда:\n"
+"Стартиране на тази команда с алармата.\n"
+"\n"
+"Списък:\n"
+"Зареждане на този списък. Ако не е избран\n"
+"такъв, ще се използва настоящият.\n"
+"Тук може да бъде въведен и Интернет адрес\n"
+"на mp3/ogg поток.\n"
+"\n"
+"Напомняне:\n"
+"Извеждане на напомняне, когато алармата се изключи.\n"
+"Въведете напомнянето в полето за въвеждане и\n"
+"отметнете в кутийката, ако искате да бъде показвано."
 
 #: src/alarm/interface.cc:77
 msgid "This is your wakeup call."
@@ -739,7 +786,7 @@ msgstr "Bauer Многозвучие-към-двузвучие (BS2B)"
 
 #: src/bs2b/plugin.cc:129
 msgid "Presets:"
-msgstr "Предложения:"
+msgstr "Заготовки:"
 
 #: src/bs2b/plugin.cc:136
 msgid "Feed level:"
@@ -1202,6 +1249,18 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Тази програма е свободен софтуер; можете да я разпространявате и/или "
+"променяте\n"
+"според правата на GNU GPL, както е публикувано от FSF; включително\n"
+"за версия 2 на лиценза или всяка по-късна (според ваша преценка).\n"
+"\n"
+"Тази програма се разпространява с вярата, че ще бъде полезна,\n"
+"но БЕЗ КАКВАТО И ДА БИЛО ГАРАНЦИЯ; дори без да се включва гаранция за\n"
+"ПРОДАВАЕМОСТ или ЗА ЛИЧНИ ЦЕЛИ. За повече детайли вижте GNU GPL.\n"
+"\n"
+"Трябва да сте получили копие от GNU GPL редом с тази програма;\n"
+"ако не сте, пишете до Free Software Foundation, Inc., 51 Franklin Street,\n"
+"Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/filewriter/filewriter.cc:374
 msgid "Output file format:"
@@ -1213,7 +1272,7 @@ msgstr "Запамети в оригиналната директория"
 
 #: src/filewriter/filewriter.cc:381
 msgid "Save into custom directory:"
-msgstr ""
+msgstr "Записване в потребителска директория:"
 
 #: src/filewriter/filewriter.cc:386
 msgid "Generate file name from:"
@@ -1225,7 +1284,7 @@ msgstr "Оригинално име на файл"
 
 #: src/filewriter/filewriter.cc:390
 msgid "Original file name (no suffix)"
-msgstr ""
+msgstr "Оригинално име на файла (без наставка)"
 
 #: src/filewriter/filewriter.cc:393
 msgid "Original file tag"
@@ -1646,7 +1705,7 @@ msgstr "Разбърка_но"
 
 #: src/gtkui/menus.cc:152 src/qtui/main_window_actions.cc:113
 msgid "Shuffle by Albu_m"
-msgstr ""
+msgstr "Разбъркване по _Албум"
 
 #: src/gtkui/menus.cc:153 src/qtui/main_window_actions.cc:114
 msgid "N_o Playlist Advance"
@@ -1816,7 +1875,7 @@ msgstr "Намаляване на з_вука"
 
 #: src/gtkui/menus.cc:227 src/qtui/main_window_actions.cc:182
 msgid "_Equalizer ..."
-msgstr ""
+msgstr "_Тонкоректор..."
 
 #: src/gtkui/menus.cc:228 src/qtui/main_window_actions.cc:184
 msgid "E_ffects ..."
@@ -1824,11 +1883,11 @@ msgstr "Е_фекти..."
 
 #: src/gtkui/menus.cc:230
 msgid "_Record Stream"
-msgstr ""
+msgstr "_Запис на поток"
 
 #: src/gtkui/menus.cc:231
 msgid "Audio _Settings ..."
-msgstr ""
+msgstr "Настройки на _звук..."
 
 #: src/gtkui/menus.cc:235
 msgid "Show _Menu Bar"
@@ -1907,27 +1966,27 @@ msgstr "Избор на _всички"
 msgid "_Rename ..."
 msgstr "П_реименуване..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:51
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:53
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Подпрозорци в списъка</b>"
 
-#: src/gtkui/settings.cc:36 src/qtui/settings.cc:52
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:55
 msgid "Always show tabs"
 msgstr "Винаги да се показват подпрозорците"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:54
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:58
 msgid "Show entry counts"
 msgstr "Показване на брояч на записите"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:56
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:60
 msgid "Show close buttons"
 msgstr "Показване на бутони за затваряне"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:58
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:62
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Колони в списъка</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:60
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:64
 msgid "Show column headers"
 msgstr "Показване на антетки"
 
@@ -1980,7 +2039,7 @@ msgstr[1] "%d канали"
 #: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:79
 #, c-format
 msgid "%d kHz"
-msgstr ""
+msgstr "%d кХц"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:85
 #, c-format
@@ -2322,7 +2381,7 @@ msgstr "Свързване към lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.cc:321 src/lyricwiki-qt/lyricwiki.cc:375
 msgid "Edit lyrics ..."
-msgstr ""
+msgstr "Редактиране на текста..."
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
@@ -2360,7 +2419,7 @@ msgstr ""
 msgid "Channel Mixer"
 msgstr "Смесител на канали"
 
-#: src/mixer/mixer.cc:202
+#: src/mixer/mixer.cc:227
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
@@ -2368,11 +2427,11 @@ msgstr ""
 "Приставка смесител на канали за Audacious\n"
 "Авторски права 2011-2012 John Lindgren и "
 
-#: src/mixer/mixer.cc:206
+#: src/mixer/mixer.cc:231
 msgid "<b>Channel Mixer</b>"
 msgstr "<b>Смесител на канали</b>"
 
-#: src/mixer/mixer.cc:207
+#: src/mixer/mixer.cc:232
 msgid "Output channels:"
 msgstr "Изходни канали:"
 
@@ -2774,7 +2833,7 @@ msgstr "Повторение"
 
 #: src/qtui/main_window.cc:100 src/skins/menus.cc:127 src/skins-qt/menus.cc:114
 msgid "Shuffle"
-msgstr "Прескачане"
+msgstr "Разбъркване"
 
 #: src/qtui/qtui.cc:39
 msgid "Qt Interface"
@@ -3246,31 +3305,31 @@ msgstr "Визуализации"
 
 #: src/skins/menus.cc:78 src/skins-qt/menus.cc:64
 msgid "Recording on"
-msgstr ""
+msgstr "Записване - включено"
 
 #: src/skins/menus.cc:78 src/skins-qt/menus.cc:64
 msgid "Recording off"
-msgstr ""
+msgstr "Записване - изключено"
 
 #: src/skins/menus.cc:97 src/skins-qt/menus.cc:83
 msgid "Volume Up"
-msgstr ""
+msgstr "Усилване на звука"
 
 #: src/skins/menus.cc:98 src/skins-qt/menus.cc:84
 msgid "Volume Down"
-msgstr ""
+msgstr "Намаляне на звука"
 
 #: src/skins/menus.cc:100 src/skins-qt/menus.cc:86
 msgid "Effects ..."
-msgstr ""
+msgstr "Ефекти..."
 
 #: src/skins/menus.cc:102 src/skins-qt/menus.cc:88
 msgid "Record Stream"
-msgstr ""
+msgstr "Запис на поток"
 
 #: src/skins/menus.cc:103 src/skins-qt/menus.cc:89
 msgid "Audio Settings ..."
-msgstr ""
+msgstr "Настройки на звук..."
 
 #: src/skins/menus.cc:107 src/skins-qt/menus.cc:93
 msgid "Open Files ..."
@@ -3294,7 +3353,7 @@ msgstr "Списък за изпълнение"
 
 #: src/skins/menus.cc:113 src/skins-qt/menus.cc:100
 msgid "Output"
-msgstr ""
+msgstr "Изход"
 
 #: src/skins/menus.cc:114 src/skins-qt/menus.cc:101
 msgid "View"
@@ -3325,7 +3384,7 @@ msgstr "Информация за песен..."
 
 #: src/skins/menus.cc:128 src/skins-qt/menus.cc:115
 msgid "Shuffle by Album"
-msgstr ""
+msgstr "Разбъркване по албум"
 
 #: src/skins/menus.cc:129 src/skins-qt/menus.cc:116
 msgid "No Playlist Advance"
@@ -3580,11 +3639,11 @@ msgstr "Класически изглед на Winamp"
 
 #: src/skins-qt/menus.cc:94
 msgid "Open Folder ..."
-msgstr ""
+msgstr "Отваряне на папка..."
 
 #: src/skins-qt/menus.cc:178
 msgid "Add Folder ..."
-msgstr ""
+msgstr "Добавяне на папка..."
 
 #: src/skins-qt/skins_cfg.cc:197 src/skins/skins_cfg.cc:181
 msgid "Player:"
@@ -3849,20 +3908,20 @@ msgstr ""
 msgid "Sndio Output"
 msgstr "Sndio изход"
 
-#: src/sndio-ng/sndio.cc:98
+#: src/sndio-ng/sndio.cc:99
 msgid "Device (blank for default):"
 msgstr "Устройство (празно - стойности по подразбиране):"
 
-#: src/sndio-ng/sndio.cc:100
+#: src/sndio-ng/sndio.cc:101
 msgid "Save and restore volume:"
 msgstr "Запази и възстанови силата на звука:"
 
-#: src/sndio-ng/sndio.cc:181
+#: src/sndio-ng/sndio.cc:182
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
 msgstr "Sndio грешка: неподдържан звуков формат (%d)"
 
-#: src/sndio-ng/sndio.cc:192
+#: src/sndio-ng/sndio.cc:193
 msgid "Sndio error: sio_open() failed"
 msgstr "Sndio грешка: sio_open() се провали"
 
@@ -3905,6 +3964,9 @@ msgid ""
 "You can use the following format codes, which will be replaced before "
 "running the command (not all are useful for the end-of-playlist command):"
 msgstr ""
+"Можете да използвате следните формати за кодеци, които ще бъдат заместени "
+"преди изпълнението на командата (не всички са полезни за команда след края "
+"на списъка):"
 
 #: src/song_change/song_change.cc:285
 msgid ""
@@ -3920,16 +3982,29 @@ msgid ""
 "%t: Playlist position\n"
 "%T: Title (unformatted)"
 msgstr ""
+"%a: Изпълнител\n"
+"%b: Албум\n"
+"%c: Брой канали\n"
+"%f: Име на файла (цял път до него)\n"
+"%F: Честота (Херц)\n"
+"%l: Времетраене (милисекунди)\n"
+"%n или %s: Форматирано заглавие (виж настройките за списъка)\n"
+"%p: В момента възпроизвеждано (1 или 0)\n"
+"%r: Честота (битове в секунда)\n"
+"%t: Позиция в списъка\n"
+"%T: Заглавие (неформатирано)"
 
 #: src/song_change/song_change.cc:296
 msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.  "
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
+"Параметрите предадени към обвивката, трябва да са заградени в кавички. "
+"Незаградените параметри биха довели до неочаквани резултати."
 
 #: src/song-info-qt/song-info.cc:34
 msgid "Song Info"
-msgstr ""
+msgstr "Информация за песента"
 
 #: src/sox-resampler/sox-resampler.cc:44
 msgid "SoX Resampler"
@@ -4000,6 +4075,14 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
+"Приставка за икона на състоянието (частичен порт за Qt интерфейс)\n"
+"\n"
+"Всички права запазени 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Всички права запазени 2010 Michał Lipski <tallica@o2.pl>\n"
+"Всички права запазени 2015 Eugene Paskevich <eugene@raptor.kiev.ua>\n"
+"\n"
+"Тази приставка извежда икона на състоянието, разположена\n"
+"в системния панел на мениджъра на прозорци."
 
 #: src/statusicon-qt/statusicon.cc:78 src/statusicon/statusicon.cc:387
 msgid "Close to the system tray"
@@ -4007,11 +4090,11 @@ msgstr "Затваряне в системната табла"
 
 #: src/statusicon-qt/statusicon.cc:85
 msgid "_Hide"
-msgstr ""
+msgstr "_Скриване"
 
 #: src/statusicon-qt/statusicon.cc:86
 msgid "_Restore"
-msgstr ""
+msgstr "_Възстановяване"
 
 #: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:284
 msgid "Se_ttings ..."
@@ -4233,3 +4316,21 @@ msgstr "Игнориране на дължината от файла"
 #: src/xspf/xspf.cc:89
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Споделяеми списъци XML (XSPF)"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had a different number of channels.  "
+#~ "You can use the Channel Mixer to convert the songs to the same number of "
+#~ "channels."
+#~ msgstr ""
+#~ "Плавното преминаване несполучи, защото песните имат различен брой канали. "
+#~ "Можете да използвате Смесителя на канали, за да превърнете броя им в общ "
+#~ "за всички песни."
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had different sample rates.  You can "
+#~ "use the Sample Rate Converter to convert the songs to the same sample "
+#~ "rate."
+#~ msgstr ""
+#~ "Плавното преминаване несполучи, защото песните имат различна честота. "
+#~ "Можете да използвате Преобразувателя на честота, за да зададете обща "
+#~ "честота за всички песни."

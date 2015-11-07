@@ -231,7 +231,6 @@ bool OSSPlugin::open_audio(int aud_format, int rate, int channels)
         buf_info.fragsize,
         buf_info.bytes);
 
-    m_paused = false;
     m_ioctl_vol = true;
 
     if (aud_get_bool("oss4", "save_volume"))
@@ -257,9 +256,6 @@ void OSSPlugin::close_audio()
 
 int OSSPlugin::write_audio(const void *data, int length)
 {
-    if (m_paused)
-        return 0;
-
     int written = write(m_fd, data, length);
 
     if (written < 0)
@@ -316,8 +312,8 @@ void OSSPlugin::pause(bool pause)
         CHECK(ioctl, m_fd, SNDCTL_DSP_SKIP, nullptr);
 
 FAILED:
+    return;
 #endif
-    m_paused = pause;
 }
 
 StereoVolume OSSPlugin::get_volume()

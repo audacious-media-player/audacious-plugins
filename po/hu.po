@@ -4,6 +4,7 @@
 #
 # Translators:
 # Agócs Dániel <agocsdaniel@gmail.com>, 2015
+# Balázs Glatz <glatz.balazs@gmail.com>, 2015
 # Ferenc Szabo <szaboferee@gmail.com>, 2015
 # Gergely Békési <bekesi.gergely@gmail.com>, 2014
 # Péter Polonkai <polesz@nedudu.hu>, 2010
@@ -12,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-09-20 15:15+0200\n"
-"PO-Revision-Date: 2015-08-25 17:16+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2015-11-07 18:05+0100\n"
+"PO-Revision-Date: 2015-10-19 00:17+0000\n"
+"Last-Translator: Balázs Glatz <glatz.balazs@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/jlindgren/audacious/"
 "language/hu/)\n"
 "Language: hu\n"
@@ -1257,7 +1258,7 @@ msgstr "Mentés az eredeti könyvtárba"
 
 #: src/filewriter/filewriter.cc:381
 msgid "Save into custom directory:"
-msgstr ""
+msgstr "Mentés egyéni könyvtárba:"
 
 #: src/filewriter/filewriter.cc:386
 msgid "Generate file name from:"
@@ -1269,7 +1270,7 @@ msgstr "Eredeti fájlnév"
 
 #: src/filewriter/filewriter.cc:390
 msgid "Original file name (no suffix)"
-msgstr ""
+msgstr "Eredeti fájlnév ( kiterjesztés nélkül)"
 
 #: src/filewriter/filewriter.cc:393
 msgid "Original file tag"
@@ -1690,7 +1691,7 @@ msgstr "_Véletlenszerű"
 
 #: src/gtkui/menus.cc:152 src/qtui/main_window_actions.cc:113
 msgid "Shuffle by Albu_m"
-msgstr ""
+msgstr "Keverés Album szerint"
 
 #: src/gtkui/menus.cc:153 src/qtui/main_window_actions.cc:114
 msgid "N_o Playlist Advance"
@@ -1860,7 +1861,7 @@ msgstr "Hangerő _le"
 
 #: src/gtkui/menus.cc:227 src/qtui/main_window_actions.cc:182
 msgid "_Equalizer ..."
-msgstr ""
+msgstr "_Hangszínszabályzó ..."
 
 #: src/gtkui/menus.cc:228 src/qtui/main_window_actions.cc:184
 msgid "E_ffects ..."
@@ -1868,11 +1869,11 @@ msgstr "E_ffektusok ..."
 
 #: src/gtkui/menus.cc:230
 msgid "_Record Stream"
-msgstr ""
+msgstr "_Közvetítés rögzítése"
 
 #: src/gtkui/menus.cc:231
 msgid "Audio _Settings ..."
-msgstr ""
+msgstr "Hang _Beállítások ..."
 
 #: src/gtkui/menus.cc:235
 msgid "Show _Menu Bar"
@@ -1951,27 +1952,27 @@ msgstr "Mind kivál_aszt"
 msgid "_Rename ..."
 msgstr "Átneve_zés ..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:51
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:53
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Lejátszólista fülek</b>"
 
-#: src/gtkui/settings.cc:36 src/qtui/settings.cc:52
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:55
 msgid "Always show tabs"
 msgstr "Mindig mutassa a füleket"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:54
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:58
 msgid "Show entry counts"
 msgstr "Elemek számának mutatása"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:56
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:60
 msgid "Show close buttons"
 msgstr "Bezárás gomb mutatása"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:58
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:62
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Lejátszólista oszlopok</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:60
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:64
 msgid "Show column headers"
 msgstr "Oszlop fejlécek mutatása"
 
@@ -2024,7 +2025,7 @@ msgstr[1] "%d csatorna"
 #: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:79
 #, c-format
 msgid "%d kHz"
-msgstr ""
+msgstr "%d kHz"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:85
 #, c-format
@@ -2405,7 +2406,7 @@ msgstr ""
 msgid "Channel Mixer"
 msgstr "Csatorna keverő"
 
-#: src/mixer/mixer.cc:202
+#: src/mixer/mixer.cc:227
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
@@ -2413,11 +2414,11 @@ msgstr ""
 "Csatornakeverő bővítmény az Audacious-hoz\n"
 "Copyright 2011-2012 John Lindgren és Michał Lipski"
 
-#: src/mixer/mixer.cc:206
+#: src/mixer/mixer.cc:231
 msgid "<b>Channel Mixer</b>"
 msgstr "<b>Csatorna keverő</b>"
 
-#: src/mixer/mixer.cc:207
+#: src/mixer/mixer.cc:232
 msgid "Output channels:"
 msgstr "Kimeneti csatornák:"
 
@@ -3304,31 +3305,31 @@ msgstr "Megjelenítés"
 
 #: src/skins/menus.cc:78 src/skins-qt/menus.cc:64
 msgid "Recording on"
-msgstr ""
+msgstr "Rögzítés folyamatban"
 
 #: src/skins/menus.cc:78 src/skins-qt/menus.cc:64
 msgid "Recording off"
-msgstr ""
+msgstr "Rögzítés leállítva"
 
 #: src/skins/menus.cc:97 src/skins-qt/menus.cc:83
 msgid "Volume Up"
-msgstr ""
+msgstr "Hangerő növelése"
 
 #: src/skins/menus.cc:98 src/skins-qt/menus.cc:84
 msgid "Volume Down"
-msgstr ""
+msgstr "Hangerő csökkentése"
 
 #: src/skins/menus.cc:100 src/skins-qt/menus.cc:86
 msgid "Effects ..."
-msgstr ""
+msgstr "Hatások ..."
 
 #: src/skins/menus.cc:102 src/skins-qt/menus.cc:88
 msgid "Record Stream"
-msgstr ""
+msgstr "Közvetítés rögzítése"
 
 #: src/skins/menus.cc:103 src/skins-qt/menus.cc:89
 msgid "Audio Settings ..."
-msgstr ""
+msgstr "Hangbeállítások ..."
 
 #: src/skins/menus.cc:107 src/skins-qt/menus.cc:93
 msgid "Open Files ..."
@@ -3352,7 +3353,7 @@ msgstr "Lejátszólista"
 
 #: src/skins/menus.cc:113 src/skins-qt/menus.cc:100
 msgid "Output"
-msgstr ""
+msgstr "Kimenet"
 
 #: src/skins/menus.cc:114 src/skins-qt/menus.cc:101
 msgid "View"
@@ -3383,7 +3384,7 @@ msgstr "Dal információ ..."
 
 #: src/skins/menus.cc:128 src/skins-qt/menus.cc:115
 msgid "Shuffle by Album"
-msgstr ""
+msgstr "Keverés Album szerint"
 
 #: src/skins/menus.cc:129 src/skins-qt/menus.cc:116
 msgid "No Playlist Advance"
@@ -3915,20 +3916,20 @@ msgstr ""
 msgid "Sndio Output"
 msgstr "Sndio kimenet"
 
-#: src/sndio-ng/sndio.cc:98
+#: src/sndio-ng/sndio.cc:99
 msgid "Device (blank for default):"
 msgstr "Eszköz (alapértelmezetthez hagyd üresen)"
 
-#: src/sndio-ng/sndio.cc:100
+#: src/sndio-ng/sndio.cc:101
 msgid "Save and restore volume:"
 msgstr "Menti és helyreállítja a hangerőt:"
 
-#: src/sndio-ng/sndio.cc:181
+#: src/sndio-ng/sndio.cc:182
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
 msgstr "Sndio hiba: Ismeretlen audió formátum (%d)"
 
-#: src/sndio-ng/sndio.cc:192
+#: src/sndio-ng/sndio.cc:193
 msgid "Sndio error: sio_open() failed"
 msgstr "Sndio hiba: sio_open() sikertelen"
 
@@ -4086,11 +4087,11 @@ msgstr "Bezáráskor az értesítési területen marad (a tálcán)"
 
 #: src/statusicon-qt/statusicon.cc:85
 msgid "_Hide"
-msgstr ""
+msgstr "_Elrejt"
 
 #: src/statusicon-qt/statusicon.cc:86
 msgid "_Restore"
-msgstr ""
+msgstr "_Visszaállít"
 
 #: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:284
 msgid "Se_ttings ..."
@@ -4313,3 +4314,21 @@ msgstr "Tárolt hossz mellőzése"
 #: src/xspf/xspf.cc:89
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Shareable Playlists File (XSPF)"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had a different number of channels.  "
+#~ "You can use the Channel Mixer to convert the songs to the same number of "
+#~ "channels."
+#~ msgstr ""
+#~ "Az átkeverés sikertelen volt, mert a zemeszámoknak eltérő számú "
+#~ "csatornája volt. Használd a Csatornakeverőt a csatornák számának "
+#~ "megváltoztatásához."
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had different sample rates.  You can "
+#~ "use the Sample Rate Converter to convert the songs to the same sample "
+#~ "rate."
+#~ msgstr ""
+#~ "Az átkeverés sikertelen volt, mert a zemeszámoknak eltérő volt a "
+#~ "mintavételezési rátája. Használd a Mintavételezési Ráta Konvertert a "
+#~ "mintavételezési ráta megváltoztatásához."
