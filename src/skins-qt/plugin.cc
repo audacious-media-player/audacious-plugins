@@ -106,10 +106,7 @@ static void skins_init_main (bool restart)
 {
     int old_scale = config.scale;
 
-    if (aud_get_bool ("skins", "double_size"))
-        config.scale = 2; //aud::rescale (audgui_get_dpi (), 48, 1);
-    else
-        config.scale = 1; //aud::rescale (audgui_get_dpi (), 96, 1);
+    config.scale = aud_get_bool ("skins", "double_size") ? 2 : 1;
 
     if (restart && config.scale != old_scale)
         dock_change_scale (old_scale, config.scale);
