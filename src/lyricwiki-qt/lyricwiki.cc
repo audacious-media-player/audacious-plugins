@@ -144,7 +144,7 @@ give_up:
                 g_regex_match (reg, (char *) lyric, G_REGEX_MATCH_NEWLINE_ANY, & match_info);
 
                 ret = g_match_info_fetch (match_info, 2);
-                if (! g_utf8_collate (ret, "<!-- PUT LYRICS HERE (and delete this entire line) -->"))
+                if (! strcmp_nocase (ret, "<!-- PUT LYRICS HERE (and delete this entire line) -->"))
                 {
                     g_free (ret);
                     ret = g_strdup (_("No lyrics available"));
@@ -202,17 +202,52 @@ static String scrape_uri_from_lyricwiki_search_result (const char * buf, int64_t
         {
             if (xmlStrEqual(cur->name, (xmlChar *) "url"))
             {
-                xmlChar * lyric;
-                char * basename;
+                auto lyric = (char *) xmlNodeGetContent (cur);
 
-                lyric = xmlNodeGetContent (cur);
-                basename = g_path_get_basename ((char *) lyric);
+                // If the lyrics are unknown, LyricWiki returns a broken link
+                // to the edit page.  Extract the song ID (artist:title) from
+                // the URI and recreate a working link.
+                char * title = strstr (lyric, "title=");
+                if (title)
+                {
+                    title += 6;
 
-                uri = String (str_printf ("http://lyrics.wikia.com/index.php?"
-                 "action=edit&title=%s", basename));
+                    // Strip trailing "&action=edit"
+                    char * amp = strchr (title, '&');
+                    if (amp)
+                        * amp = 0;
 
-                g_free (basename);
-                xmlFree (lyric);
+                    // Spaces get replaced with plus signs for some reason.
+                    str_replace_char (title, '+', ' ');
+
+                    // LyricWiki interprets UTF-8 as ISO-8859-1, then "converts"
+                    // it to UTF-8 again.  Worse, it will sometimes corrupt only
+                    // the song title in this way while leaving the artist name
+                    // intact.  So we have to percent-decode the URI, split the
+                    // two strings apart, repair them separately, and then
+                    // rebuild the URI.
+                    auto strings = str_list_to_index (str_decode_percent (title), ":");
+                    for (String & s : strings)
+                    {
+                        StringBuf orig_utf8 = str_convert (s, -1, "UTF-8", "ISO-8859-1");
+                        if (orig_utf8 && g_utf8_validate (orig_utf8, -1, nullptr))
+                            s = String (orig_utf8);
+                    }
+
+                    uri = String (str_printf ("http://lyrics.wikia.com/index.php?"
+                     "action=edit&title=%s", (const char *) str_encode_percent
+                     (index_to_str_list (strings, ":"))));
+                }
+                else
+                {
+                    // Convert normal lyrics link to edit page link
+                    char * slash = strrchr (lyric, '/');
+                    if (slash)
+                        uri = String (str_printf ("http://lyrics.wikia.com/index.php?"
+                         "action=edit&title=%s", slash + 1));
+                }
+
+                xmlFree ((xmlChar *) lyric);
             }
         }
 
