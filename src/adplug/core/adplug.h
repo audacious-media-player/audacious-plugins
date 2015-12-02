@@ -43,7 +43,6 @@ public:
 
   static void set_database(CAdPlugDatabase *db);
   static std::string get_version();
-  static void debug_output(const std::string &filename);
 
 private:
   static CAdPlugDatabase *database;
