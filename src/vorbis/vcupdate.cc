@@ -89,12 +89,11 @@ static void insert_int_tuple_field_to_dictionary (const Tuple & tuple,
 
 bool VorbisPlugin::write_tuple (const char * filename, VFSFile & file, const Tuple & tuple)
 {
-    vcedit_state state;
-
-    if (! vcedit_open (& state, file))
+    VCEdit edit;
+    if (! edit.open (file))
         return false;
 
-    Dictionary dict = dictionary_from_vorbis_comment (& state.vc);
+    Dictionary dict = dictionary_from_vorbis_comment (& edit.vc);
 
     insert_str_tuple_field_to_dictionary (tuple, Tuple::Title, dict, "title");
     insert_str_tuple_field_to_dictionary (tuple, Tuple::Artist, dict, "artist");
@@ -105,15 +104,15 @@ bool VorbisPlugin::write_tuple (const char * filename, VFSFile & file, const Tup
     insert_int_tuple_field_to_dictionary (tuple, Tuple::Year, dict, "date");
     insert_int_tuple_field_to_dictionary (tuple, Tuple::Track, dict, "tracknumber");
 
-    dictionary_to_vorbis_comment (& state.vc, dict);
+    dictionary_to_vorbis_comment (& edit.vc, dict);
 
     auto temp_vfs = VFSFile::tmpfile ();
     if (! temp_vfs)
         return false;
 
-    if (! vcedit_write (& state, file, temp_vfs))
+    if (! edit.write (file, temp_vfs))
     {
-        AUDERR ("Tag update failed: %s.\n", state.lasterror);
+        AUDERR ("Tag update failed: %s.\n", edit.lasterror);
         return false;
     }
 
