@@ -253,7 +253,11 @@ bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const char *filename, const void *b
     ti.dataFileLen = myInfo->dataFileLen();
     ti.sidFormat = String (myInfo->formatString());
 
+#if (LIBSIDPLAYFP_VERSION_MAJ << 8) + LIBSIDPLAYFP_VERSION_MIN >= 0x0108
+    ti.sidModel = myInfo->sidModel(0);
+#else
     ti.sidModel = myInfo->sidModel1();
+#endif
 
     /* Fill in subtune information */
     ti.subTunes.insert(0, ti.nsubTunes);
@@ -282,7 +286,11 @@ bool xs_sidplayfp_updateinfo(xs_tuneinfo_t &ti, int subtune)
     /* NOTICE! Here we assume that libSIDPlay[12] headers define
      * SIDTUNE_SIDMODEL_* similarly to our enums in xs_config.h ...
      */
+#if (LIBSIDPLAYFP_VERSION_MAJ << 8) + LIBSIDPLAYFP_VERSION_MIN >= 0x0108
+    ti.sidModel = myInfo->sidModel(0);
+#else
     ti.sidModel = myInfo->sidModel1();
+#endif
 
     if ((subtune > 0) && (subtune <= ti.nsubTunes)) {
         int tmpSpeed = -1;
