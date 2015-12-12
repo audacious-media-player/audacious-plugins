@@ -73,7 +73,7 @@ TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
     EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files lyricwiki playlist-manager search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart lyricwiki playlist-manager search-tool statusicon"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope cairo-spectrum"
 fi
@@ -83,8 +83,10 @@ if test "x$USE_QT" = "xyes" ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
 fi
 
+USE_GTK_OR_QT=no
 if test "x$USE_GTK" = "xyes" -o "x$USE_QT" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS skins-data"
+    USE_GTK_OR_QT=yes
+    GENERAL_PLUGINS="$GENERAL_PLUGINS delete-files skins-data"
 fi
 
 dnl Console
@@ -1134,7 +1136,7 @@ echo
 echo "  General"
 echo "  -------"
 echo "  Alarm (requires GTK+):                  $USE_GTK"
-echo "  Delete Files (requires GTK+):           $USE_GTK"
+echo "  Delete Files:                           $USE_GTK_OR_QT"
 echo "  GNOME Shortcuts:                        $have_gnomeshortcuts"
 echo "  libnotify OSD:                          $have_notify"
 echo "  Linux Infrared Remote Control (LIRC)    $have_lirc"

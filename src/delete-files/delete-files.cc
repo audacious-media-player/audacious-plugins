@@ -24,9 +24,7 @@
 
 #include <gio/gio.h>
 #include <glib/gstdio.h>
-#include <gtk/gtk.h>
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
@@ -34,7 +32,14 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
+
+#ifdef USE_GTK
 #include <libaudgui/libaudgui-gtk.h>
+#endif
+#ifdef USE_QT
+#include <QMessageBox>
+#include <QPushButton>
+#endif
 
 class DeleteFiles : public GeneralPlugin
 {
@@ -64,7 +69,12 @@ static constexpr AudMenuID menus[] = {
     AudMenuID::PlaylistRemove
 };
 
+#ifdef USE_GTK
 static GtkWidget * dialog = nullptr;
+#endif
+#ifdef USE_QT
+static QMessageBox * qdialog = nullptr;
+#endif
 
 static void move_to_trash (const char * filename)
 {
@@ -121,34 +131,68 @@ static void confirm_delete ()
 
 static void start_delete ()
 {
-    if (dialog)
-    {
-        gtk_window_present ((GtkWindow *) dialog);
-        return;
-    }
-
-    const char * message;
-    GtkWidget * button1, * button2;
+    const char * message, * action, * icon;
 
     if (aud_get_bool ("delete_files", "use_trash"))
     {
         message = _("Do you want to move the selected files to the trash?");
-        button1 = audgui_button_new (_("Move to Trash"), "user-trash",
-         (AudguiCallback) confirm_delete, nullptr);
+        action = _("Move to Trash");
+        icon = "user-trash";
     }
     else
     {
         message = _("Do you want to permanently delete the selected files?");
-        button1 = audgui_button_new (_("Delete"), "edit-delete",
-         (AudguiCallback) confirm_delete, nullptr);
+        action = _("Delete");
+        icon = "edit-delete";
     }
 
-    button2 = audgui_button_new (_("Cancel"), "process-stop", nullptr, nullptr);
-    dialog = audgui_dialog_new (GTK_MESSAGE_QUESTION, _("Delete Files"),
-     message, button1, button2);
+#ifdef USE_GTK
+    if (aud_get_mainloop_type () == MainloopType::GLib)
+    {
+        if (dialog)
+        {
+            gtk_window_present ((GtkWindow *) dialog);
+            return;
+        }
 
-    g_signal_connect (dialog, "destroy", (GCallback) gtk_widget_destroyed, & dialog);
-    gtk_widget_show_all (dialog);
+        auto button1 = audgui_button_new (action, icon, (AudguiCallback) confirm_delete, nullptr);
+        auto button2 = audgui_button_new (_("Cancel"), "process-stop", nullptr, nullptr);
+
+        dialog = audgui_dialog_new (GTK_MESSAGE_QUESTION, _("Delete Files"), message, button1, button2);
+
+        g_signal_connect (dialog, "destroy", (GCallback) gtk_widget_destroyed, & dialog);
+        gtk_widget_show_all (dialog);
+    }
+#endif
+#ifdef USE_QT
+    if (aud_get_mainloop_type () == MainloopType::Qt)
+    {
+        if (qdialog)
+            return;
+
+        qdialog = new QMessageBox;
+        qdialog->setAttribute (Qt::WA_DeleteOnClose);
+        qdialog->setIcon (QMessageBox::Question);
+        qdialog->setWindowTitle (_("Delete Files"));
+        qdialog->setText (message);
+
+        auto remove = new QPushButton (action, qdialog);
+        auto cancel = new QPushButton (_("Cancel"), qdialog);
+
+        remove->setIcon (QIcon::fromTheme (icon));
+        cancel->setIcon (QIcon::fromTheme ("process-stop"));
+
+        qdialog->addButton (remove, QMessageBox::AcceptRole);
+        qdialog->addButton (cancel, QMessageBox::RejectRole);
+
+        QObject::connect (remove, & QPushButton::clicked, confirm_delete);
+        QObject::connect (qdialog, & QObject::destroyed, [] () {
+            qdialog = nullptr;
+        });
+
+        qdialog->show ();
+    }
+#endif
 }
 
 const char * const DeleteFiles::defaults[] = {
@@ -171,8 +215,13 @@ bool DeleteFiles::init ()
 
 void DeleteFiles::cleanup ()
 {
+#ifdef USE_GTK
     if (dialog)
         gtk_widget_destroy (dialog);
+#endif
+#ifdef USE_QT
+    delete qdialog;
+#endif
 
     for (AudMenuID menu : menus)
         aud_plugin_menu_remove (menu, start_delete);
