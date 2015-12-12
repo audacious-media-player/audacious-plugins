@@ -317,17 +317,12 @@ AC_ARG_ENABLE(notify,
  [enable_notify=$enableval], [enable_notify=auto])
 
 have_notify=no
-
-if test $enable_notify = yes -a $USE_GTK != yes ; then
-    AC_MSG_ERROR([--enable-notify cannot be used without --enable-gtk])
-fi
-
-if test $enable_notify != no -a $USE_GTK = yes ; then
-    PKG_CHECK_MODULES(NOTIFY, [libnotify >= 0.7],
+if test $enable_notify != no ; then
+    PKG_CHECK_MODULES(NOTIFY, [libnotify >= 0.7 gdk-pixbuf-2.0 >= 2.26],
         [have_notify=yes
          GENERAL_PLUGINS="$GENERAL_PLUGINS notify"],
         [if test "x$enable_notify" = "xyes"; then
-            AC_MSG_ERROR([Cannot find libnotify development files (ver >= 0.7), but compilation of notify plugin has been explicitly requested; please install libnotify dev files and run configure again])
+            AC_MSG_ERROR([Required dependencies for notify OSD not met])
          fi]
     )
 fi
@@ -1141,7 +1136,7 @@ echo "  -------"
 echo "  Alarm (requires GTK+):                  $USE_GTK"
 echo "  Delete Files (requires GTK+):           $USE_GTK"
 echo "  GNOME Shortcuts:                        $have_gnomeshortcuts"
-echo "  libnotify OSD (requires GTK+):          $have_notify"
+echo "  libnotify OSD:                          $have_notify"
 echo "  Linux Infrared Remote Control (LIRC)    $have_lirc"
 echo "  MPRIS 2 Server:                         $have_mpris2"
 echo "  Scrobbler 2.0 (requires GTK+):          $have_scrobbler2"
