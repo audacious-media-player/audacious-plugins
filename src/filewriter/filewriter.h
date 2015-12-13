@@ -52,7 +52,6 @@ void * mp3_configure ();
 
 #ifdef FILEWRITER_VORBIS
 extern FileWriterImpl vorbis_plugin;
-void * vorbis_configure ();
 #endif
 
 #ifdef FILEWRITER_FLAC

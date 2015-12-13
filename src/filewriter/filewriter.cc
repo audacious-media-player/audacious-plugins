@@ -406,7 +406,9 @@ static const PreferencesWidget mp3_widgets[] = {
 
 #ifdef FILEWRITER_VORBIS
 static const PreferencesWidget vorbis_widgets[] = {
-    WidgetCustomGTK (vorbis_configure)
+    WidgetSpin(N_("Quality (0-1):"),
+        WidgetFloat("filewriter_vorbis", "base_quality"),
+        {0, 1, 0.01})
 };
 #endif
 
