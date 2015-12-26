@@ -4,6 +4,7 @@
 #
 # Translators:
 # Chris <259095+transifex@gmail.com>, 2012
+# HrabiaN <bohopicasso@gmail.com>, 2015
 # Chris <259095+transifex@gmail.com>, 2012
 # Chris <259095+transifex@gmail.com>, 2012
 # felikstayson <felikstayson@o2.pl>, 2012
@@ -23,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-11-07 18:05+0100\n"
-"PO-Revision-Date: 2015-09-18 08:56+0000\n"
+"POT-Creation-Date: 2015-12-26 15:19+0100\n"
+"PO-Revision-Date: 2015-12-17 14:18+0000\n"
 "Last-Translator: Piotr Strębski <strebski@o2.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/jlindgren/audacious/language/"
 "pl/)\n"
@@ -115,6 +116,53 @@ msgid ""
 "    Type the reminder in the input field and enable\n"
 "    the checkbox if you want it to be shown."
 msgstr ""
+"Czas\n"
+"  Alarm o: \n"
+"    Określ czas uruchomienia.\n"
+"\n"
+"  Wycisz po: \n"
+"    Zatrzymaj alarm po upływie określonego czasu.\n"
+"       (jeśli okno alarmu nie zostanie wcześniej zamknięte)\n"
+"\n"
+"\n"
+"Dni\n"
+"  Dzień:\n"
+"    Wybierz dni, w których alarm zostanie włączony.\n"
+"\n"
+"  Czas:\n"
+"    Wybierz czas dla budzika każdego dnia,\n"
+"    albo ustaw opcję domyślną.\n"
+"\n"
+"\n"
+"Głośność\n"
+"  Narastanie: \n"
+"    Ustaw czas narastania głośności \n"
+"    do wybranej wartości.\n"
+"\n"
+"  Narastaj od: \n"
+"    Narastaj od tej głośności.\n"
+"\n"
+"  Końcowa głośność: \n"
+"    Końcowa głośność dla alarmu. Jeśli czas narastania\n"
+"    ustawiony jest na 0, to wtedy następuje natychmiastowe\n"
+"    ustawienie tej głośności i rozpoczęcie odtwarzania.\n"
+"\n"
+"\n"
+"Ustawienia:\n"
+"  Dodatkowe komendy:\n"
+"    Uruchom wybrane programy/skrypty podczas alarmu.\n"
+"\n"
+"  Playlista: \n"
+"    Załaduj wybraną listę odtwarzania. Jeśli nie wybrano\n"
+"    playlisty, to zostaną użyte utwory znajdujące się\n"
+"    w danej chwili na liście.\n"
+"    Adres URL strumienia mp3/ogg może również zostać\n"
+"    tutaj użyty.\n"
+"\n"
+"  Przypominacz:\n"
+"    Wyświetl powiadomienie, gdy alarm zostanie wyłączony.\n"
+"    Wpisz treść komunkatu i zaznacz odpowiednią\n"
+"    opcję, jeśli chcesz, aby było ono pokazywane.."
 
 #: src/alarm/interface.cc:77
 msgid "This is your wakeup call."
@@ -1212,6 +1260,20 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Niniejszy program jest wolnym oprogramowaniem; możesz go rozprowadzać dalej "
+"i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej "
+"przez Fundację Wolnego Oprogramowania - według wersji 2-giej tej Licencji "
+"lub którejś z późniejszych wersji.\n"
+"\n"
+"Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny - "
+"jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej gwarancji PRZYDATNOŚCI "
+"HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania "
+"bliższych informacji - Powszechna Licencja Publiczna GNU.\n"
+"\n"
+"Z pewnością wraz z niniejszym programem otrzymałeś też egzemplarz "
+"Powszechnej Licencji Publicznej GNU (GNU General Public License); jeśli nie "
+"- napisz do Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, "
+"Boston, MA 02110-1301, USA."
 
 #: src/filewriter/filewriter.cc:374
 msgid "Output file format:"
@@ -2299,40 +2361,40 @@ msgstr "Wtyczka LyricWiki"
 msgid "No lyrics available"
 msgstr "Nie znaleziono tekstu piosenki"
 
-#: src/lyricwiki/lyricwiki.cc:219 src/lyricwiki/lyricwiki.cc:228
-#: src/lyricwiki/lyricwiki.cc:245 src/lyricwiki/lyricwiki.cc:254
-#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:236
-#: src/lyricwiki-qt/lyricwiki.cc:245 src/lyricwiki-qt/lyricwiki.cc:262
-#: src/lyricwiki-qt/lyricwiki.cc:271 src/lyricwiki-qt/lyricwiki.cc:286
+#: src/lyricwiki/lyricwiki.cc:254 src/lyricwiki/lyricwiki.cc:263
+#: src/lyricwiki/lyricwiki.cc:280 src/lyricwiki/lyricwiki.cc:289
+#: src/lyricwiki/lyricwiki.cc:304 src/lyricwiki-qt/lyricwiki.cc:271
+#: src/lyricwiki-qt/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:297
+#: src/lyricwiki-qt/lyricwiki.cc:306 src/lyricwiki-qt/lyricwiki.cc:321
 #: src/qtui/dialog_windows.cc:38
 msgid "Error"
 msgstr "Błąd"
 
-#: src/lyricwiki/lyricwiki.cc:220 src/lyricwiki/lyricwiki.cc:246
-#: src/lyricwiki-qt/lyricwiki.cc:237 src/lyricwiki-qt/lyricwiki.cc:263
+#: src/lyricwiki/lyricwiki.cc:255 src/lyricwiki/lyricwiki.cc:281
+#: src/lyricwiki-qt/lyricwiki.cc:272 src/lyricwiki-qt/lyricwiki.cc:298
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "Nie można pobrać %s"
 
-#: src/lyricwiki/lyricwiki.cc:229 src/lyricwiki/lyricwiki.cc:255
-#: src/lyricwiki-qt/lyricwiki.cc:246 src/lyricwiki-qt/lyricwiki.cc:272
+#: src/lyricwiki/lyricwiki.cc:264 src/lyricwiki/lyricwiki.cc:290
+#: src/lyricwiki-qt/lyricwiki.cc:281 src/lyricwiki-qt/lyricwiki.cc:307
 #, c-format
 msgid "Unable to parse %s"
 msgstr "Nie można odczytać %s"
 
-#: src/lyricwiki/lyricwiki.cc:261 src/lyricwiki-qt/lyricwiki.cc:278
+#: src/lyricwiki/lyricwiki.cc:296 src/lyricwiki-qt/lyricwiki.cc:313
 msgid "Looking for lyrics ..."
 msgstr "Szukanie tekstu piosenk i ..."
 
-#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:286
+#: src/lyricwiki/lyricwiki.cc:304 src/lyricwiki-qt/lyricwiki.cc:321
 msgid "Missing song metadata"
 msgstr "Brakujące metadane utworu"
 
-#: src/lyricwiki/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:297
+#: src/lyricwiki/lyricwiki.cc:315 src/lyricwiki-qt/lyricwiki.cc:332
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "Łączenie z lyrics.wikia.com ..."
 
-#: src/lyricwiki/lyricwiki.cc:321 src/lyricwiki-qt/lyricwiki.cc:375
+#: src/lyricwiki/lyricwiki.cc:356 src/lyricwiki-qt/lyricwiki.cc:410
 msgid "Edit lyrics ..."
 msgstr "Edycja tekstu..."
 
@@ -3952,6 +4014,8 @@ msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.  "
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
+"Parametry przekazywane do powłoki powinny być zawarte w cudzysłowach. Ich "
+"brak może prowadzić do nieoczekiwanych rezultatów."
 
 #: src/song-info-qt/song-info.cc:34
 msgid "Song Info"

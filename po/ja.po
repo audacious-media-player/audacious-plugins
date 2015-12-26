@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-11-07 18:05+0100\n"
-"PO-Revision-Date: 2015-08-27 14:49+0000\n"
+"POT-Creation-Date: 2015-12-26 15:19+0100\n"
+"PO-Revision-Date: 2015-11-08 06:27+0000\n"
 "Last-Translator: ABE Tsunehiko\n"
 "Language-Team: Japanese (http://www.transifex.com/jlindgren/audacious/"
 "language/ja/)\n"
@@ -110,52 +110,51 @@ msgid ""
 "    the checkbox if you want it to be shown."
 msgstr ""
 "時刻\n"
-"  アラーム時刻:\n"
-"    アラームが鳴る時刻です。\n"
+"アラーム時刻(デフォルト):\n"
+"アラームが鳴る時刻です。\n"
 "\n"
-"  静かになるまでの時間\n"
-"    アラームが鳴り止むまでの時間です。\n"
-"      (めざましダイアログを閉じなかった場合)\n"
+"静かになるまでの時間\n"
+"アラームが鳴り止むまでの時間です。\n"
+"(めざましダイアログを閉じなかった場合)\n"
 "\n"
 "\n"
 "曜日\n"
-"  曜日:\n"
-"    アラームが鳴る曜日を選択します。\n"
+"曜日:\n"
+"アラームが鳴る曜日を選択します。\n"
 "\n"
-"  時刻:\n"
-"    それぞれの曜日のアラーム時刻を選択するか、トグ\n"
-"    ルボタンを選択し、デフォルト時刻に設定します。\n"
+"時刻:\n"
+"それぞれの曜日のアラーム時刻を選択するか、\n"
+"トグルボタンを選択し、デフォルト時刻に設定します。\n"
 "\n"
 "\n"
 "音量:\n"
-"  フェード:\n"
-"    この時間をかけて、選択した音量まで音量をフェー\n"
-"    ドアップします。\n"
+"フェード:\n"
+"指定した時間をかけて、音量を徐々に変更します。\n"
 "\n"
-"  開始:\n"
-"    この音量からフェードを始めます。\n"
+"開始:\n"
+"この音量からフェードを始めます。\n"
 "\n"
-"  終了:\n"
-"    この音量でフェードを終わります。\n"
-"    フェード時間が 0 のときには、\n"
-"    この音量で再生を始めます。\n"
+"終了:\n"
+"この音量でフェードを終わります。\n"
+"フェード時間が 0 のときには、\n"
+"この音量で再生を始めます。\n"
 "\n"
 "\n"
 "オプション:\n"
-"  追加コマンド:\n"
-"    アラーム時刻になると、このコマンドを実行します。\n"
+"追加コマンド:\n"
+"アラーム時刻になると、このコマンドを実行します。\n"
 "\n"
-"  プレイリスト:\n"
-"    このプレイリストをロードします。\n"
-"    プレイリストを指定しなかった場合には、\n"
-"    現在のものが使われます。\n"
-"    mp3 または ogg ストリームの URL を指定すること\n"
-"    もできます。\n"
+"プレイリスト:\n"
+"このプレイリストをロードします。\n"
+"プレイリストを指定しなかった場合には、\n"
+"現在のものが使われます。\n"
+"mp3 または ogg ストリームの URL を\n"
+"指定することもできます。\n"
 "\n"
-"  リマインダ:\n"
-"    アラームが止まった時にリマインダを表示します。\n"
-"    表示するには、入力フィールドにリマインダを入\n"
-"    力し、チェックボックスを有効にしてください。"
+"リマインダ:\n"
+"アラームが止まった時にリマインダを表示します。\n"
+"表示するには、入力フィールドにリマインダを入力し、\n"
+"チェックボックスを有効にしてください。"
 
 #: src/alarm/interface.cc:77
 msgid "This is your wakeup call."
@@ -224,7 +223,7 @@ msgstr "分"
 
 #: src/alarm/interface.cc:230
 msgid "Choose the days for the alarm to come on"
-msgstr "アラームが鳴る曜日を選んでください"
+msgstr "アラームが鳴る曜日"
 
 #: src/alarm/interface.cc:237
 msgid "Day"
@@ -375,15 +374,16 @@ msgstr ""
 "スペシャルサンクス...\n"
 "\n"
 "Clemens Ladisch および Jaroslav Kysela\n"
-"（彼らの創った素晴らしいプログラム aplaymidi  amixerについて。\n"
-"実に便利で、alsa-lib の文書に沿っており、\n"
-"ALSA API の習得に適っている）\n"
+"　彼らの創った素晴らしいプログラム\n"
+"　aplaymidi  amixerについて。\n"
+"　実に便利で、alsa-lib の文書に沿っており、\n"
+"　ALSA API の習得に適っている。\n"
 "\n"
 "Alfredo Spadafina\n"
-"（彼の、素敵な MIDI キーボードのロゴについて）\n"
+"　彼の、素敵な MIDI キーボードのロゴについて。\n"
 "\n"
 "Tony Vroon\n"
-"（アルファテスト時にとてもよく手伝ってくれた）"
+"　アルファテスト時にとてもよく手伝ってくれた。"
 
 #: src/amidi-plug/i_configure.cc:94
 msgid "Override default gain:"
@@ -586,8 +586,7 @@ msgstr "タイトル変更"
 
 #: src/aosd/aosd_trigger.cc:56
 msgid "Triggers OSD when the song title changes (for internet streams)."
-msgstr ""
-"曲タイトルが替わったら OSD を表示します (インターネットストリーミング用)。"
+msgstr "曲タイトルが替わったら OSD を表示します (ネットストリーミング向け)。"
 
 #: src/aosd/aosd_trigger.cc:61
 msgid "Pause On"
@@ -682,7 +681,7 @@ msgstr "色 %i:"
 
 #: src/aosd/aosd_ui.cc:600
 msgid "Enable trigger"
-msgstr "トリガー有効"
+msgstr "有効にする"
 
 #: src/aosd/aosd_ui.cc:627
 msgid "Event"
@@ -690,7 +689,7 @@ msgstr "イベント"
 
 #: src/aosd/aosd_ui.cc:655
 msgid "Composite manager detected"
-msgstr "Composite マネージャーが検出されました"
+msgstr "コンポジットマネージャーが検出されました"
 
 #: src/aosd/aosd_ui.cc:662
 msgid ""
@@ -698,13 +697,13 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Composite マネージャーが検出されませんでした;\n"
-"動作させているかわからなければ, Composite マネージャーを有効にしてください. "
-"そうしなければ OSD は正常に動作しないでしょう."
+"コンポジットマネージャーが検出されませんでした。\n"
+"動作させているかわからなければ、Composite マネージャーを有効にしてください。"
+"そうしなければ OSD は正常に動作しないでしょう。"
 
 #: src/aosd/aosd_ui.cc:670
 msgid "Composite manager not required for fake transparency"
-msgstr "擬似的な透明化の場合 Composite マネージャーは不要です"
+msgstr "擬似的な透明化の場合コンポジットマネージャーは不要です"
 
 #: src/aosd/aosd_ui.cc:706
 msgid "Transparency"
@@ -716,15 +715,15 @@ msgstr "擬似的な透明化"
 
 #: src/aosd/aosd_ui.cc:714
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "真の透明化 (X Composite 拡張が必要)"
+msgstr "真の透明化 (X コンポジット拡張が必要)"
 
 #: src/aosd/aosd_ui.cc:756
 msgid "Composite extension not loaded"
-msgstr "Composite 拡張が読み込まれていません"
+msgstr "コンポジット拡張が読み込まれていません"
 
 #: src/aosd/aosd_ui.cc:764
 msgid "Composite extension not available"
-msgstr "Composite 拡張が有効ではありません"
+msgstr "コンポジット拡張が無効です"
 
 #: src/aosd/aosd_ui.cc:781
 #, c-format
@@ -820,9 +819,8 @@ msgid ""
 msgstr ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
-"libcdio developers <http://www.gnu.org/software/libcdio/>\n"
-"および libcddb developers <http://libcddb.sourceforge.net/>\n"
-"に感謝します。\n"
+"libcdio developers <http://www.gnu.org/software/libcdio/>と\n"
+"libcddb developers <http://libcddb.sourceforge.net/>に感謝します。\n"
 "\n"
 "メンターとして導いてくれた Tony Vroon にも感謝します。\n"
 "\n"
@@ -916,7 +914,7 @@ msgstr "最初または最後のトラックナンバーを取得できません
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr ""
-"トラック %d の LSN(論理セクタ番号) の開始または終了が読み取れませんでした。"
+"トラック %d の LSN (論理セクタ番号) の開始または終了が読み取れませんでした。"
 
 #: src/cdaudio-ng/cdaudio-ng.cc:610
 msgid "Failed to create the cddb connection."
@@ -1288,7 +1286,7 @@ msgstr "オリジナルのファイル名 (拡張子なし)"
 
 #: src/filewriter/filewriter.cc:393
 msgid "Original file tag"
-msgstr "元のファイルタグ"
+msgstr "元のファイルのタグ"
 
 #: src/filewriter/filewriter.cc:397
 msgid "Prepend track number to file name"
@@ -1709,7 +1707,7 @@ msgstr "アルバムごとにシャッフル (_M)"
 
 #: src/gtkui/menus.cc:153 src/qtui/main_window_actions.cc:114
 msgid "N_o Playlist Advance"
-msgstr "1曲リピート(_O)"
+msgstr "1 曲リピート(_O)"
 
 #: src/gtkui/menus.cc:154 src/qtui/main_window_actions.cc:115
 msgid "Stop A_fter This Song"
@@ -1738,7 +1736,7 @@ msgstr "リピートポイントBを設定(_B)"
 
 #: src/gtkui/menus.cc:162
 msgid "_Clear Repeat Points"
-msgstr "リピートポイントを解除する(_C)"
+msgstr "リピートポイントを解除(_C)"
 
 #: src/gtkui/menus.cc:166 src/gtkui/menus.cc:173 src/gtkui/menus.cc:189
 #: src/qtui/main_window_actions.cc:121 src/qtui/main_window_actions.cc:128
@@ -1824,7 +1822,7 @@ msgstr "ソート(_S)"
 
 #: src/gtkui/menus.cc:208 src/qtui/main_window_actions.cc:163
 msgid "Sort Se_lected"
-msgstr "選択したトラックをソートする(_L)"
+msgstr "選択したトラックをソート(_L)"
 
 #: src/gtkui/menus.cc:209 src/qtui/main_window_actions.cc:164
 msgid "Remove _Duplicates"
@@ -1832,7 +1830,7 @@ msgstr "重複している曲を削除(_D)"
 
 #: src/gtkui/menus.cc:210 src/qtui/main_window_actions.cc:165
 msgid "Remove _Unavailable Files"
-msgstr "再生できないファイルを削除する(_U)"
+msgstr "再生できないファイルを削除(_U)"
 
 #: src/gtkui/menus.cc:212 src/playlist-manager/playlist-manager.cc:239
 #: src/playlist-manager-qt/playlist-manager-qt.cc:317
@@ -1891,11 +1889,11 @@ msgstr "オーディオの設定... (_S)"
 
 #: src/gtkui/menus.cc:235
 msgid "Show _Menu Bar"
-msgstr "メニューバーを表示する(_M)"
+msgstr "メニューバーを表示(_M)"
 
 #: src/gtkui/menus.cc:236
 msgid "Show I_nfo Bar"
-msgstr "情報バーを表示する(_N)"
+msgstr "情報バーを表示(_N)"
 
 #: src/gtkui/menus.cc:237
 msgid "Show Info Bar Vis_ualization"
@@ -1903,11 +1901,11 @@ msgstr "情報バーに視覚効果を表示(_U)"
 
 #: src/gtkui/menus.cc:238
 msgid "Show _Status Bar"
-msgstr "ステータスバーを表示する(_S)"
+msgstr "ステータスバーを表示(_S)"
 
 #: src/gtkui/menus.cc:240
 msgid "Show _Remaining Time"
-msgstr "残り時間を表示する(_R)"
+msgstr "残り時間を表示(_R)"
 
 #: src/gtkui/menus.cc:242 src/skins/menus.cc:178 src/skins-qt/menus.cc:171
 msgid "_Visualizations ..."
@@ -2212,7 +2210,7 @@ msgstr "出力ポートに自動接続する"
 #: src/jack-ng/jack-ng.cc:155
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
-msgstr "%d 個の JACK 出力ポートが見つかりましたが、 %d 個が必要です。"
+msgstr "%d 個の JACK 出力ポートが見つかりましたが、 %d 個必要です。"
 
 #: src/jack-ng/jack-ng.cc:171
 #, c-format
@@ -2224,8 +2222,8 @@ msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
-"JACK は浮動小数点のオーディオにしか対応していません。Audacious のオーディオ出"
-"力の設定で、ビット深度を浮動小数点に変更する必要があります。"
+"JACK は浮動小数点のオーディオにのみ対応しています。Audacious のオーディオ出力"
+"の設定で、ビット深度を浮動小数点に変更する必要があります。"
 
 #: src/jack-ng/jack-ng.cc:204
 msgid "Failed to connect to the JACK server; is it running?"
@@ -2237,7 +2235,7 @@ msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
 "%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
 msgstr ""
-"JACK サーバには%d Hzのサンプリング周波数が必要ですが、 Audacious は %d Hz で"
+"JACK サーバには %d Hzのサンプリング周波数が必要ですが、 Audacious は %d Hz で"
 "再生しています。サンプリング周波数コンバーターを用いて周波数を合わせてくださ"
 "い。"
 
@@ -2343,40 +2341,40 @@ msgstr "LyricWiki プラグイン"
 msgid "No lyrics available"
 msgstr "歌詞が見つかりません"
 
-#: src/lyricwiki/lyricwiki.cc:219 src/lyricwiki/lyricwiki.cc:228
-#: src/lyricwiki/lyricwiki.cc:245 src/lyricwiki/lyricwiki.cc:254
-#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:236
-#: src/lyricwiki-qt/lyricwiki.cc:245 src/lyricwiki-qt/lyricwiki.cc:262
-#: src/lyricwiki-qt/lyricwiki.cc:271 src/lyricwiki-qt/lyricwiki.cc:286
+#: src/lyricwiki/lyricwiki.cc:254 src/lyricwiki/lyricwiki.cc:263
+#: src/lyricwiki/lyricwiki.cc:280 src/lyricwiki/lyricwiki.cc:289
+#: src/lyricwiki/lyricwiki.cc:304 src/lyricwiki-qt/lyricwiki.cc:271
+#: src/lyricwiki-qt/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:297
+#: src/lyricwiki-qt/lyricwiki.cc:306 src/lyricwiki-qt/lyricwiki.cc:321
 #: src/qtui/dialog_windows.cc:38
 msgid "Error"
 msgstr "エラー"
 
-#: src/lyricwiki/lyricwiki.cc:220 src/lyricwiki/lyricwiki.cc:246
-#: src/lyricwiki-qt/lyricwiki.cc:237 src/lyricwiki-qt/lyricwiki.cc:263
+#: src/lyricwiki/lyricwiki.cc:255 src/lyricwiki/lyricwiki.cc:281
+#: src/lyricwiki-qt/lyricwiki.cc:272 src/lyricwiki-qt/lyricwiki.cc:298
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "%s が取得できません"
 
-#: src/lyricwiki/lyricwiki.cc:229 src/lyricwiki/lyricwiki.cc:255
-#: src/lyricwiki-qt/lyricwiki.cc:246 src/lyricwiki-qt/lyricwiki.cc:272
+#: src/lyricwiki/lyricwiki.cc:264 src/lyricwiki/lyricwiki.cc:290
+#: src/lyricwiki-qt/lyricwiki.cc:281 src/lyricwiki-qt/lyricwiki.cc:307
 #, c-format
 msgid "Unable to parse %s"
 msgstr "%s が解析できません"
 
-#: src/lyricwiki/lyricwiki.cc:261 src/lyricwiki-qt/lyricwiki.cc:278
+#: src/lyricwiki/lyricwiki.cc:296 src/lyricwiki-qt/lyricwiki.cc:313
 msgid "Looking for lyrics ..."
 msgstr "歌詞を検索しています ..."
 
-#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:286
+#: src/lyricwiki/lyricwiki.cc:304 src/lyricwiki-qt/lyricwiki.cc:321
 msgid "Missing song metadata"
 msgstr "曲のメタデータが見つかりません"
 
-#: src/lyricwiki/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:297
+#: src/lyricwiki/lyricwiki.cc:315 src/lyricwiki-qt/lyricwiki.cc:332
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "lyrics.wikia.com に接続しています ..."
 
-#: src/lyricwiki/lyricwiki.cc:321 src/lyricwiki-qt/lyricwiki.cc:375
+#: src/lyricwiki/lyricwiki.cc:356 src/lyricwiki-qt/lyricwiki.cc:410
 msgid "Edit lyrics ..."
 msgstr "歌詞を編集 ..."
 
@@ -3831,9 +3829,9 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
-"1つ以上の項目を入力すると、プレイリストのエントリが選択できます。項目には正規"
-"表現が使え、大文字と小文字を区別しません。正規表現の動作がわからない場合は、"
-"検索したい文字をそのまま入力してください。"
+"1 つ以上の項目を入力すると、プレイリストのエントリーが選択できます。項目には"
+"正規表現が使え、大文字と小文字を区別しません。正規表現の動作がわからない場合"
+"は、検索したい文字をそのまま入力してください。"
 
 #: src/skins/search-select.cc:89
 msgid "Title:"
@@ -4000,7 +3998,7 @@ msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.  "
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
-"シェルに渡すパラメータは、引用符で括ってください。引用符のないときは、思わぬ"
+"シェルに渡すパラメーターは引用符でくくってください。引用符がない場合、思わぬ"
 "結果が起きることがあります。"
 
 #: src/song-info-qt/song-info.cc:34
@@ -4153,7 +4151,7 @@ msgid ""
 "\n"
 "By Johan Levin, 1999"
 msgstr ""
-"Extra Stereo プラグイン\n"
+"エクストラステレオプラグイン\n"
 "\n"
 "By Johan Levin, 1999"
 
@@ -4322,3 +4320,19 @@ msgstr "ファイルに記録されている再生時間を無視"
 #: src/xspf/xspf.cc:89
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "共有可能な XML プレイリスト (XSPF)"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had a different number of channels.  "
+#~ "You can use the Channel Mixer to convert the songs to the same number of "
+#~ "channels."
+#~ msgstr ""
+#~ "曲のチャンネル数が異なるため、クロスフェードに失敗しました。チャンネルミキ"
+#~ "サーを利用して、曲のチャンネル数を変換することができます。"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had different sample rates.  You can "
+#~ "use the Sample Rate Converter to convert the songs to the same sample "
+#~ "rate."
+#~ msgstr ""
+#~ "曲のサンプリング周波数が異なるため、クロスフェードに失敗しました。サンプリ"
+#~ "ング周波数コンバーターを利用してサンプリング周波数を揃えることができます。"
