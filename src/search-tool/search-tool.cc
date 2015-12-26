@@ -24,6 +24,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/mainloop.h>
@@ -643,12 +644,18 @@ static void entry_cb (GtkEntry * entry, void * unused)
     search_pending = true;
 }
 
-static void refresh_cb (GtkButton * button, GtkWidget * chooser)
+static void refresh_cb (GtkButton * button, GtkWidget * file_entry)
 {
-    char * path = gtk_file_chooser_get_filename ((GtkFileChooser *) chooser);
-    begin_add (path);
-    g_free (path);
+    String uri = audgui_file_entry_get_uri (file_entry);
+    StringBuf path = uri ? uri_to_filename (uri) : StringBuf ();
 
+    if (! path)
+    {
+        aud_ui_show_error (_("Invalid folder path."));
+        return;
+    }
+
+    begin_add (path);
     update_database ();
 }
 
@@ -698,11 +705,14 @@ void * SearchTool::get_gtk_widget ()
     GtkWidget * hbox = gtk_hbox_new (false, 6);
     gtk_box_pack_end ((GtkBox *) vbox, hbox, false, false, 0);
 
-    GtkWidget * chooser = gtk_file_chooser_button_new (_("Choose Folder"),
-     GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-    gtk_box_pack_start ((GtkBox *) hbox, chooser, true, true, 0);
+    GtkWidget * file_entry = audgui_file_entry_new
+     (GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, _("Choose Folder"));
+    gtk_box_pack_start ((GtkBox *) hbox, file_entry, true, true, 0);
 
-    gtk_file_chooser_set_filename ((GtkFileChooser *) chooser, get_path ());
+    String path = get_path ();
+    StringBuf uri = path ? filename_to_uri (path) : StringBuf ();
+    if (uri)
+        audgui_file_entry_set_uri (file_entry, uri);
 
     GtkWidget * button = gtk_button_new ();
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
@@ -715,7 +725,7 @@ void * SearchTool::get_gtk_widget ()
     g_signal_connect (vbox, "destroy", (GCallback) search_cleanup, nullptr);
     g_signal_connect (entry, "changed", (GCallback) entry_cb, nullptr);
     g_signal_connect (entry, "activate", (GCallback) action_play, nullptr);
-    g_signal_connect (button, "clicked", (GCallback) refresh_cb, chooser);
+    g_signal_connect (button, "clicked", (GCallback) refresh_cb, file_entry);
 
     gtk_widget_show_all (vbox);
     gtk_widget_show (results_list);
