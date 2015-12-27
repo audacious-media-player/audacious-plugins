@@ -776,18 +776,12 @@ dnl ==========
 AC_ARG_ENABLE(filewriter,
     [AS_HELP_STRING([--disable-filewriter], [disable FileWriter output plugin (default=enabled)])],
     [enable_filewriter=$enableval],
-    [enable_filewriter=$USE_GTK]
+    [enable_filewriter=yes]
 )
 
-have_filewriter=no
 if test "x$enable_filewriter" != "xno"; then
-    if test "x$USE_GTK" != "xyes"; then
-        AC_MSG_ERROR([--enable-filewriter cannot be used without --enable-gtk])
-    fi
-    have_filewriter=yes
     OUTPUT_PLUGINS="$OUTPUT_PLUGINS filewriter"
 fi
-
 
 AC_ARG_ENABLE(filewriter_mp3,
     [AS_HELP_STRING([--disable-filewriter_mp3], [disable FileWriter MP3 output part (default=enabled)])],
@@ -795,7 +789,7 @@ AC_ARG_ENABLE(filewriter_mp3,
 )
 
 have_lame=no
-if test "x$have_filewriter" = "xyes" -a "x$enable_filewriter_mp3" != "xno"; then
+if test "x$enable_filewriter" = "xyes" -a "x$enable_filewriter_mp3" != "xno"; then
     AC_CHECK_LIB([mp3lame], [lame_get_id3v2_tag],
         [have_lame=yes
          AC_DEFINE(FILEWRITER_MP3, 1, [Define if MP3 output part should be built])
@@ -810,7 +804,7 @@ fi
 dnl Vorbis support reuses test done for Vorbis input plugin.
 
 have_vorbisenc=no
-if test "x$have_filewriter" = "xyes" -a "x$enable_vorbis" = "xyes"; then
+if test "x$enable_filewriter" = "xyes" -a "x$enable_vorbis" = "xyes"; then
     have_vorbisenc=yes
     AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built])
     FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS $VORBIS_CFLAGS"
@@ -823,7 +817,7 @@ AC_ARG_ENABLE(filewriter_flac,
 )
 
 have_writer_flac=no
-if test "x$have_filewriter" = "xyes" -a "x$enable_filewriter_flac" != "xno"; then
+if test "x$enable_filewriter" = "xyes" -a "x$enable_filewriter_flac" != "xno"; then
     PKG_CHECK_MODULES(FLAC, [flac >= 1.1.3],
         [have_writer_flac=yes
          AC_DEFINE(FILEWRITER_FLAC, 1, [Define if FLAC output part should be built])
@@ -1113,7 +1107,7 @@ echo "  Open Sound System:                      $have_oss4"
 echo "  PulseAudio:                             $have_pulse"
 echo "  Simple DirectMedia Layer:               $have_sdlout"
 echo "  Sndio:                                  $have_sndio"
-echo "  FileWriter (requires GTK+):             $have_filewriter"
+echo "  FileWriter:                             $enable_filewriter"
 echo "    -> MP3 encoding:                      $have_lame"
 echo "    -> Vorbis encoding:                   $have_vorbisenc"
 echo "    -> FLAC encoding:                     $have_writer_flac"

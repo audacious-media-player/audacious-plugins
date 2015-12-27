@@ -20,8 +20,8 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <glib.h>
 #include <string.h>
-#include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
@@ -98,8 +98,6 @@ static bool mp3_id3_force_v2, mp3_id3_only_v1, mp3_id3_only_v2;
 
 static String in_filename;
 static Tuple in_tuple;
-
-static GtkWidget * path_dirbrowser;
 
 enum fileext_t
 {
@@ -338,31 +336,9 @@ void FileWriter::close_audio ()
     in_tuple = Tuple ();
 }
 
-static void * create_dirbrowser ()
-{
-    path_dirbrowser = gtk_file_chooser_button_new (_("Pick a folder"),
-     GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-    gtk_file_chooser_set_uri ((GtkFileChooser *) path_dirbrowser, get_file_path ());
-    gtk_widget_set_sensitive (path_dirbrowser, ! save_original);
-
-    auto set_cb = [] ()
-    {
-        char * uri = gtk_file_chooser_get_uri ((GtkFileChooser *) path_dirbrowser);
-        aud_set_str ("filewriter", "file_path", uri);
-        g_free (uri);
-    };
-
-    // "file-set" is unreliable, so get the path on "destroy" as well
-    g_signal_connect (path_dirbrowser, "file-set", set_cb, nullptr);
-    g_signal_connect (path_dirbrowser, "destroy", set_cb, nullptr);
-
-    return path_dirbrowser;
-}
-
 static void save_original_cb ()
 {
     aud_set_bool ("filewriter", "save_original", save_original);
-    gtk_widget_set_sensitive (path_dirbrowser, ! save_original);
 }
 
 static void filename_mode_cb ()
@@ -409,7 +385,10 @@ static const PreferencesWidget main_widgets[] = {
     WidgetRadio (N_("Save into custom directory:"),
         WidgetInt (save_original, save_original_cb),
         {false}),
-    WidgetCustomGTK (create_dirbrowser),
+    WidgetFileEntry (nullptr,
+        WidgetString ("filewriter", "file_path"),
+        {FileSelectMode::Folder},
+        WIDGET_CHILD),
     WidgetSeparator ({true}),
     WidgetLabel (N_("Generate file name from:")),
     WidgetRadio (N_("Original file name"),
