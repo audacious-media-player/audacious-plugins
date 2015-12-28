@@ -534,7 +534,12 @@ static void add_complete_cb (void * unused, void * unused2)
 
         added_table.clear ();
 
-        aud_playlist_delete_selected (list);
+        /* don't clear the playlist if nothing was added */
+        if (aud_playlist_selected_count (list) < aud_playlist_entry_count (list))
+            aud_playlist_delete_selected (list);
+        else
+            aud_playlist_select_all (list, false);
+
         aud_playlist_sort_by_scheme (list, Playlist::Path);
     }
 
