@@ -384,8 +384,6 @@ static void begin_add (const char * path)
     aud_set_str ("search-tool", "path", path);
 
     StringBuf uri = filename_to_uri (path);
-    g_return_if_fail (uri);
-
     if (! g_str_has_suffix (uri, "/"))
         uri.insert (-1, "/");
 
