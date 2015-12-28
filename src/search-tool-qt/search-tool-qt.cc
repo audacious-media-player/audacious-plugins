@@ -225,17 +225,20 @@ static int get_playlist (bool require_added, bool require_scanned)
     return list;
 }
 
-static String get_path ()
+static String get_uri ()
 {
+    auto to_uri = [] (const char * path)
+        { return String (filename_to_uri (path)); };
+
     String path1 = aud_get_str ("search-tool", "path");
-    if (g_file_test (path1, G_FILE_TEST_EXISTS))
-        return path1;
+    if (path1[0])
+        return strstr (path1, "://") ? path1 : to_uri (path1);
 
     StringBuf path2 = filename_build ({g_get_home_dir (), "Music"});
     if (g_file_test (path2, G_FILE_TEST_EXISTS))
-        return String (path2);
+        return to_uri (path2);
 
-    return String (g_get_home_dir ());
+    return to_uri (g_get_home_dir ());
 }
 
 static void destroy_database ()
@@ -394,7 +397,7 @@ static bool filter_cb (const char * filename, void * unused)
     return add;
 }
 
-static void begin_add (const char * path)
+static void begin_add (const char * uri)
 {
     if (adding)
         return;
@@ -404,7 +407,9 @@ static void begin_add (const char * path)
     if (list < 0)
         list = create_playlist ();
 
-    aud_set_str ("search-tool", "path", path);
+    /* if possible, store local path for compatibility with older versions */
+    StringBuf path = uri_to_filename (uri);
+    aud_set_str ("search-tool", "path", path ? path : uri);
 
     added_table.clear ();
 
@@ -430,7 +435,7 @@ static void begin_add (const char * path)
     tiny_unlock (& adding_lock);
 
     Index<PlaylistAddItem> add;
-    add.append (String (filename_to_uri (path)));
+    add.append (String (uri));
     aud_playlist_entry_insert_filtered (list, -1, std::move (add), filter_cb, nullptr, false);
 }
 
@@ -748,9 +753,9 @@ void * SearchToolQt::get_qt_widget ()
     button->setFlat (true);
     hbox->addWidget (button);
 
-    char * utf8 = g_filename_to_utf8 (get_path (), -1, nullptr, nullptr, nullptr);
-    chooser->setText (utf8);
-    g_free (utf8);
+    String uri = get_uri ();
+    StringBuf path = uri_to_filename (uri, false);
+    chooser->setText (path ? path : uri);
 
     search_init ();
 
@@ -767,16 +772,12 @@ void * SearchToolQt::get_qt_widget ()
 
     QObject::connect (button, & QPushButton::clicked, [chooser] ()
     {
-        char * path = g_filename_from_utf8 (chooser->text ().toUtf8 (), -1,
-         nullptr, nullptr, nullptr);
-
-        if (path && path[0])
+        QByteArray path = chooser->text ().toUtf8 ();
+        if (! path.isEmpty ())
         {
-            begin_add (path);
+            begin_add (strstr (path, "://") ? path : filename_to_uri (path));
             update_database ();
         }
-
-        g_free (path);
     });
 
     return widget;
