@@ -98,14 +98,20 @@ struct SearchState {
 static int playlist_id;
 static Index<String> search_terms;
 
+/* Note: added_table is accessed by multiple threads.
+ * When adding = true, it may only be accessed by the playlist add thread.
+ * When adding = false, it may only be accessed by the UI thread.
+ * adding may only be set by the UI thread while holding adding_lock. */
+static TinyLock adding_lock;
+static bool adding = false;
 static SimpleHash<String, bool> added_table;
+
 static SimpleHash<Key, Item> database;
 static bool database_valid;
 static Index<const Item *> items;
 static int hidden_items;
 static Index<bool> selection;
 
-static bool adding;
 static QueuedFunc search_timer;
 static bool search_pending;
 
@@ -313,11 +319,17 @@ static void do_search ()
 
 static bool filter_cb (const char * filename, void * unused)
 {
-    return ! added_table.lookup (String (filename));
+    tiny_lock (& adding_lock);
+    bool add = adding && ! added_table.lookup (String (filename));
+    tiny_unlock (& adding_lock);
+    return add;
 }
 
 static void begin_add (const char * uri)
 {
+    if (adding)
+        return;
+
     int list = get_playlist (false, false);
 
     if (list < 0)
@@ -351,11 +363,13 @@ static void begin_add (const char * uri)
     aud_playlist_delete_selected (list);
     aud_playlist_remove_failed (list);
 
+    tiny_lock (& adding_lock);
+    adding = true;
+    tiny_unlock (& adding_lock);
+
     Index<PlaylistAddItem> add;
     add.append (String (uri));
     aud_playlist_entry_insert_filtered (list, -1, std::move (add), filter_cb, nullptr, false);
-
-    adding = true;
 }
 
 static void show_hide_widgets ()
@@ -437,7 +451,10 @@ static void add_complete_cb (void * unused, void * unused2)
 
     if (adding)
     {
+        tiny_lock (& adding_lock);
         adding = false;
+        tiny_unlock (& adding_lock);
+
         added_table.clear ();
         aud_playlist_sort_by_scheme (list, Playlist::Path);
     }
@@ -491,6 +508,10 @@ static void search_cleanup ()
     search_terms.clear ();
     items.clear ();
     selection.clear ();
+
+    tiny_lock (& adding_lock);
+    adding = false;
+    tiny_unlock (& adding_lock);
 
     added_table.clear ();
     destroy_database ();
