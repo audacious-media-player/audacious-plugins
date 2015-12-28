@@ -20,6 +20,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #include <gio/gio.h>
 
@@ -43,6 +44,8 @@ public:
     constexpr GIOTransport () : TransportPlugin (info, gio_schemes) {}
 
     VFSImpl * fopen (const char * path, const char * mode, String & error);
+    VFSFileTest test_file_full (const char * filename, VFSFileTest test);
+    Index<String> read_folder (const char * filename, String & error);
 };
 
 EXPORT GIOTransport aud_plugin_instance;
@@ -367,4 +370,76 @@ int GIOFile::fflush ()
 
 FAILED:
     return -1;
+}
+
+VFSFileTest GIOTransport::test_file_full (const char * filename, VFSFileTest test)
+{
+    GFile * file = g_file_new_for_uri (filename);
+    Index<String> attrs;
+    int passed = 0;
+
+    if (test & (VFS_IS_REGULAR | VFS_IS_DIR))
+        attrs.append (G_FILE_ATTRIBUTE_STANDARD_TYPE);
+    if (test & VFS_IS_SYMLINK)
+        attrs.append (G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK);
+    if (test & VFS_IS_EXECUTABLE)
+        attrs.append (G_FILE_ATTRIBUTE_UNIX_MODE);
+
+    GFileInfo * info = g_file_query_info (file, index_to_str_list (attrs, ","),
+     G_FILE_QUERY_INFO_NONE, nullptr, nullptr);
+
+    if (! info)
+        passed |= VFS_NO_ACCESS;
+    else
+    {
+        passed |= VFS_EXISTS;
+
+        switch (g_file_info_get_file_type (info))
+        {
+            case G_FILE_TYPE_REGULAR: passed |= VFS_IS_REGULAR; break;
+            case G_FILE_TYPE_DIRECTORY: passed |= VFS_IS_DIR; break;
+            default: break;
+        };
+
+        if (g_file_info_get_is_symlink (info))
+            passed |= VFS_IS_SYMLINK;
+        if (g_file_info_get_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_MODE) & S_IXUSR)
+            passed |= VFS_IS_EXECUTABLE;
+
+        g_object_unref (info);
+    }
+
+    g_object_unref (file);
+    return VFSFileTest (test & passed);
+}
+
+Index<String> GIOTransport::read_folder (const char * filename, String & error)
+{
+    GFile * file = g_file_new_for_uri (filename);
+    Index<String> files;
+
+    GError * gerr = nullptr;
+    GFileEnumerator * dir = g_file_enumerate_children (file,
+     G_FILE_ATTRIBUTE_STANDARD_NAME, G_FILE_QUERY_INFO_NONE, nullptr, & gerr);
+
+    if (! dir)
+    {
+        error = String (gerr->message);
+        g_error_free (gerr);
+    }
+    else
+    {
+        GFileInfo * info;
+        while ((info = g_file_enumerator_next_file (dir, nullptr, nullptr)))
+        {
+            StringBuf enc = str_encode_percent (g_file_info_get_name (info));
+            files.append (String (str_concat ({filename, "/", enc})));
+            g_object_unref (info);
+        }
+
+        g_object_unref (dir);
+    }
+
+    g_object_unref (file);
+    return files;
 }
