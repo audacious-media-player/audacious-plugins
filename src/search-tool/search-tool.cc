@@ -153,17 +153,20 @@ static int get_playlist (bool require_added, bool require_scanned)
     return list;
 }
 
-static String get_path ()
+static String get_uri ()
 {
+    auto to_uri = [] (const char * path)
+        { return String (filename_to_uri (path)); };
+
     String path1 = aud_get_str ("search-tool", "path");
-    if (g_file_test (path1, G_FILE_TEST_EXISTS))
-        return path1;
+    if (path1[0])
+        return strstr (path1, "://") ? path1 : to_uri (path1);
 
     StringBuf path2 = filename_build ({g_get_home_dir (), "Music"});
     if (g_file_test (path2, G_FILE_TEST_EXISTS))
-        return String (path2);
+        return to_uri (path2);
 
-    return String (g_get_home_dir ());
+    return to_uri (g_get_home_dir ());
 }
 
 static void destroy_database ()
@@ -313,20 +316,20 @@ static bool filter_cb (const char * filename, void * unused)
     return ! added_table.lookup (String (filename));
 }
 
-static void begin_add (const char * path)
+static void begin_add (const char * uri)
 {
     int list = get_playlist (false, false);
 
     if (list < 0)
         list = create_playlist ();
 
-    aud_set_str ("search-tool", "path", path);
+    /* if possible, store local path for compatibility with older versions */
+    StringBuf path = uri_to_filename (uri);
+    aud_set_str ("search-tool", "path", path ? path : uri);
 
-    StringBuf uri = filename_to_uri (path);
-    g_return_if_fail (uri);
-
+    StringBuf prefix = str_copy (uri);
     if (! g_str_has_suffix (uri, "/"))
-        uri.insert (-1, "/");
+        prefix.insert (-1, "/");
 
     added_table.clear ();
 
@@ -336,7 +339,7 @@ static void begin_add (const char * path)
     {
         String filename = aud_playlist_entry_get_filename (list, entry);
 
-        if (g_str_has_prefix (filename, uri) && ! added_table.lookup (filename))
+        if (g_str_has_prefix (filename, prefix) && ! added_table.lookup (filename))
         {
             aud_playlist_entry_set_selected (list, entry, false);
             added_table.add (filename, true);
@@ -647,15 +650,10 @@ static void entry_cb (GtkEntry * entry, void * unused)
 static void refresh_cb (GtkButton * button, GtkWidget * file_entry)
 {
     String uri = audgui_file_entry_get_uri (file_entry);
-    StringBuf path = uri ? uri_to_filename (uri) : StringBuf ();
+    if (! uri)
+        audgui_file_entry_set_uri (file_entry, (uri = get_uri ()));
 
-    if (! path)
-    {
-        aud_ui_show_error (_("Invalid folder path."));
-        return;
-    }
-
-    begin_add (path);
+    begin_add (uri);
     update_database ();
 }
 
@@ -709,10 +707,7 @@ void * SearchTool::get_gtk_widget ()
      (GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, _("Choose Folder"));
     gtk_box_pack_start ((GtkBox *) hbox, file_entry, true, true, 0);
 
-    String path = get_path ();
-    StringBuf uri = path ? filename_to_uri (path) : StringBuf ();
-    if (uri)
-        audgui_file_entry_set_uri (file_entry, uri);
+    audgui_file_entry_set_uri (file_entry, get_uri ());
 
     GtkWidget * button = gtk_button_new ();
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
