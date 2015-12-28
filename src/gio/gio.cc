@@ -44,7 +44,7 @@ public:
     constexpr GIOTransport () : TransportPlugin (info, gio_schemes) {}
 
     VFSImpl * fopen (const char * path, const char * mode, String & error);
-    VFSFileTest test_file_full (const char * filename, VFSFileTest test);
+    VFSFileTest test_file (const char * filename, VFSFileTest test, String & error);
     Index<String> read_folder (const char * filename, String & error);
 };
 
@@ -372,7 +372,7 @@ FAILED:
     return -1;
 }
 
-VFSFileTest GIOTransport::test_file_full (const char * filename, VFSFileTest test)
+VFSFileTest GIOTransport::test_file (const char * filename, VFSFileTest test, String & error)
 {
     GFile * file = g_file_new_for_uri (filename);
     Index<String> attrs;
@@ -385,11 +385,16 @@ VFSFileTest GIOTransport::test_file_full (const char * filename, VFSFileTest tes
     if (test & VFS_IS_EXECUTABLE)
         attrs.append (G_FILE_ATTRIBUTE_UNIX_MODE);
 
+    GError * gerr = nullptr;
     GFileInfo * info = g_file_query_info (file, index_to_str_list (attrs, ","),
-     G_FILE_QUERY_INFO_NONE, nullptr, nullptr);
+     G_FILE_QUERY_INFO_NONE, nullptr, & gerr);
 
     if (! info)
+    {
         passed |= VFS_NO_ACCESS;
+        error = String (gerr->message);
+        g_error_free (gerr);
+    }
     else
     {
         passed |= VFS_EXISTS;
