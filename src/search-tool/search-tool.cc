@@ -763,6 +763,7 @@ void * SearchTool::get_gtk_widget ()
     g_signal_connect (entry, "changed", (GCallback) entry_cb, nullptr);
     g_signal_connect (entry, "activate", (GCallback) action_play, nullptr);
     g_signal_connect (file_entry, "changed", (GCallback) file_entry_cb, button);
+    g_signal_connect (file_entry, "activate", (GCallback) refresh_cb, file_entry);
     g_signal_connect (button, "clicked", (GCallback) refresh_cb, file_entry);
 
     gtk_widget_show_all (vbox);

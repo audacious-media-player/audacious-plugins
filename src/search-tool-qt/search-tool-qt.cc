@@ -773,15 +773,17 @@ void * SearchToolQt::get_qt_widget ()
     QObject::connect (chooser, & QLineEdit::textEdited, [button] (const QString & text)
         { button->setDisabled (text.isEmpty ()); });
 
-    QObject::connect (button, & QPushButton::clicked, [chooser] ()
-    {
+    auto refresh = [chooser] () {
         QByteArray path = chooser->text ().toUtf8 ();
         if (! path.isEmpty ())
         {
             begin_add (strstr (path, "://") ? path : filename_to_uri (path));
             update_database ();
         }
-    });
+    };
+
+    QObject::connect (chooser, & QLineEdit::returnPressed, refresh);
+    QObject::connect (button, & QPushButton::clicked, refresh);
 
     return widget;
 }
