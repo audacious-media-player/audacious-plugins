@@ -575,14 +575,7 @@ static void do_add (bool play, bool set_title)
 
 static void action_play ()
 {
-    int list = aud_playlist_get_temporary ();
-    aud_playlist_set_active (list);
-
-    if (aud_get_bool (nullptr, "clear_playlist"))
-        aud_playlist_entry_delete (list, 0, aud_playlist_entry_count (list));
-    else
-        aud_playlist_queue_delete (list, 0, aud_playlist_queue_count (list));
-
+    aud_playlist_set_active (aud_playlist_get_temporary ());
     do_add (true, false);
 }
 
