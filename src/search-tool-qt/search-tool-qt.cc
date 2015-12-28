@@ -770,6 +770,9 @@ void * SearchToolQt::get_qt_widget ()
         search_pending = true;
     });
 
+    QObject::connect (chooser, & QLineEdit::textEdited, [button] (const QString & text)
+        { button->setDisabled (text.isEmpty ()); });
+
     QObject::connect (button, & QPushButton::clicked, [chooser] ()
     {
         QByteArray path = chooser->text ().toUtf8 ();

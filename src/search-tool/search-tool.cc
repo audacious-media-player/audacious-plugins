@@ -683,14 +683,20 @@ static void entry_cb (GtkEntry * entry, void * unused)
     search_pending = true;
 }
 
+static void file_entry_cb (GtkEntry * entry, GtkWidget * button)
+{
+    const char * text = gtk_entry_get_text ((GtkEntry *) entry);
+    gtk_widget_set_sensitive (button, text[0] != 0);
+}
+
 static void refresh_cb (GtkButton * button, GtkWidget * file_entry)
 {
     String uri = audgui_file_entry_get_uri (file_entry);
-    if (! uri)
-        audgui_file_entry_set_uri (file_entry, (uri = get_uri ()));
-
-    begin_add (uri);
-    update_database ();
+    if (uri)
+    {
+        begin_add (uri);
+        update_database ();
+    }
 }
 
 void * SearchTool::get_gtk_widget ()
@@ -756,6 +762,7 @@ void * SearchTool::get_gtk_widget ()
     g_signal_connect (vbox, "destroy", (GCallback) search_cleanup, nullptr);
     g_signal_connect (entry, "changed", (GCallback) entry_cb, nullptr);
     g_signal_connect (entry, "activate", (GCallback) action_play, nullptr);
+    g_signal_connect (file_entry, "changed", (GCallback) file_entry_cb, button);
     g_signal_connect (button, "clicked", (GCallback) refresh_cb, file_entry);
 
     gtk_widget_show_all (vbox);
