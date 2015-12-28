@@ -377,8 +377,19 @@ static void do_search ()
 
 static bool filter_cb (const char * filename, void * unused)
 {
+    bool add = false;
     tiny_lock (& adding_lock);
-    bool add = adding && ! added_table.lookup (String (filename));
+
+    if (adding)
+    {
+        bool * added = added_table.lookup (String (filename));
+
+        if ((add = ! added))
+            added_table.add (String (filename), true);
+        else
+            (* added) = true;
+    }
+
     tiny_unlock (& adding_lock);
     return add;
 }
@@ -395,10 +406,6 @@ static void begin_add (const char * path)
 
     aud_set_str ("search-tool", "path", path);
 
-    StringBuf uri = filename_to_uri (path);
-    if (! g_str_has_suffix (uri, "/"))
-        uri.insert (-1, "/");
-
     added_table.clear ();
 
     int entries = aud_playlist_entry_count (list);
@@ -407,24 +414,23 @@ static void begin_add (const char * path)
     {
         String filename = aud_playlist_entry_get_filename (list, entry);
 
-        if (g_str_has_prefix (filename, uri) && ! added_table.lookup (filename))
+        if (! added_table.lookup (filename))
         {
             aud_playlist_entry_set_selected (list, entry, false);
-            added_table.add (filename, true);
+            added_table.add (filename, false);
         }
         else
             aud_playlist_entry_set_selected (list, entry, true);
     }
 
     aud_playlist_delete_selected (list);
-    aud_playlist_remove_failed (list);
 
     tiny_lock (& adding_lock);
     adding = true;
     tiny_unlock (& adding_lock);
 
     Index<PlaylistAddItem> add;
-    add.append (String (uri));
+    add.append (String (filename_to_uri (path)));
     aud_playlist_entry_insert_filtered (list, -1, std::move (add), filter_cb, nullptr, false);
 }
 
@@ -516,7 +522,19 @@ static void add_complete_cb (void * unused, void * unused2)
         adding = false;
         tiny_unlock (& adding_lock);
 
+        int entries = aud_playlist_entry_count (list);
+
+        for (int entry = 0; entry < entries; entry ++)
+        {
+            String filename = aud_playlist_entry_get_filename (list, entry);
+            bool * added = added_table.lookup (filename);
+
+            aud_playlist_entry_set_selected (list, entry, ! added || ! (* added));
+        }
+
         added_table.clear ();
+
+        aud_playlist_delete_selected (list);
         aud_playlist_sort_by_scheme (list, Playlist::Path);
     }
 
