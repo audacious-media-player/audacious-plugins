@@ -322,8 +322,6 @@ if test "x$enable_aosd_xcomp" != "xno"; then
             AC_MSG_ERROR([Cannot find X Composite development files, but compilation of X Composite support for Audacious OSD plugin has been explicitly requested; please install X Composite dev files and run configure again])
          fi]
     )
-else
-    AC_MSG_RESULT([*** X Composite support for Audacious OSD plugin disabled per user request ***])
 fi
 
 dnl notify: libnotify-based OSD
@@ -562,8 +560,6 @@ if test "x$enable_oss4" != "xno" ; then
     elif test "x$enable_oss4" = "xyes" ; then
         AC_MSG_ERROR([OSS4 output was enabled but soundcard.h was not found])
     fi
-
-    AC_MSG_RESULT([$have_oss4])
 fi
 
 dnl *** ALSA output plugin

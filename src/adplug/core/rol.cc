@@ -96,7 +96,7 @@ bool CrolPlayer::load(const std::string &filename, const CFileProvider &fp)
 {
     binistream *f = fp.open(filename); if(!f) return false;
 
-    char *fn = new char[filename.length()+12];
+    char *fn = new char[filename.length()+13];
     int i;
     std::string bnk_filename;
 

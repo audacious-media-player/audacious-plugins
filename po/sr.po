@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-11-07 18:05+0100\n"
-"PO-Revision-Date: 2015-08-25 17:16+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2015-12-26 15:19+0100\n"
+"PO-Revision-Date: 2015-12-22 20:23+0000\n"
+"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/jlindgren/audacious/"
 "language/sr/)\n"
 "Language: sr\n"
@@ -101,6 +101,53 @@ msgid ""
 "    Type the reminder in the input field and enable\n"
 "    the checkbox if you want it to be shown."
 msgstr ""
+"Време\n"
+"  Активирај аларм у:\n"
+"    Време када ће се активирати аларм.\n"
+"\n"
+"  Утишај након: \n"
+"    Зауставља аларм након истека овог времена.\n"
+"       (ако није затворено прозорче буђења)\n"
+"\n"
+"\n"
+"Дани\n"
+"  Дан:\n"
+"    Изаберите којим данима ће бити активиран аларм.\n"
+"\n"
+"  Време:\n"
+"    Изаберите време аларма за сваки дан, или\n"
+"    штиклирајте квадратић да користите основно време.\n"
+"\n"
+"\n"
+"Јачина\n"
+"  Ишчезавање:\n"
+"    Повећава јачину звука до изабране јачине\n"
+"    у овом временском периоду.\n"
+"\n"
+"  Започни при:\n"
+"    Започиње појачавање од ове јачине.\n"
+"\n"
+"  Заврши при:\n"
+"    Јачина при којој ће бити заустављено појачање.\n"
+"    Ако је време појачања 0 онда подешава јачину\n"
+"    на ову и започиње пуштање.\n"
+"\n"
+"\n"
+"Опције:\n"
+"  Додатна наредба:\n"
+"    Покреће ову наредбу за време аларма.\n"
+"\n"
+"  Списак нумера:\n"
+"    Учитава овај списак нумера. Ако није дат\n"
+"    списак нумера, биће коришћене песме\n"
+"    које се тренутно налазе на списку.\n"
+"    Адреса мп3/огг тока може такође\n"
+"    бити унешена овде.\n"
+"\n"
+"  Подсетник:\n"
+"    Приказује подсетник након искључења аларма.\n"
+"    Упишите подсетник у поље за унос и укључите\n"
+"    кућицу за избор ако желите да буде приказиван."
 
 #: src/alarm/interface.cc:77
 msgid "This is your wakeup call."
@@ -1188,6 +1235,19 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Овај програм је слободан софтвер; можете га расподељивати и/или мењати под "
+"условима Гнуове опште јавне лиценце коју је објавила Задужбина слободног "
+"софтвера; издања 3 лиценце или (по вашем избору) било којег новијег издања.\n"
+"\n"
+"Овај програм се расподељује у нади да ће бити користан, али БЕЗ ИКАКВЕ "
+"ГАРАНЦИЈЕ; чак и без примењене гаранције ТРЖИШНЕ ВРЕДНОСТИ или "
+"ПРИЛАГОЂЕНОСТИ ОДРЕЂЕНОЈ НАМЕНИ. Погледајте Гнуову Општу јавну лиценцу за "
+"више детаља.\n"
+"\n"
+"Требали сте да примите примерак Гнуове Опште јавне лиценце уз овај програм. "
+"Ако нисте, пишите Задужбини слободног софтвера на адресу: „Free Software "
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA“."
 
 #: src/filewriter/filewriter.cc:374
 msgid "Output file format:"
@@ -1199,7 +1259,7 @@ msgstr "Сачувај у оригиналном директоријуму"
 
 #: src/filewriter/filewriter.cc:381
 msgid "Save into custom directory:"
-msgstr ""
+msgstr "Сачувај у произвољном директоријуму:"
 
 #: src/filewriter/filewriter.cc:386
 msgid "Generate file name from:"
@@ -1211,7 +1271,7 @@ msgstr "Изворног назива датотеке"
 
 #: src/filewriter/filewriter.cc:390
 msgid "Original file name (no suffix)"
-msgstr ""
+msgstr "Изворног назива датотеке (без суфикса)"
 
 #: src/filewriter/filewriter.cc:393
 msgid "Original file tag"
@@ -1632,7 +1692,7 @@ msgstr "_Насумично"
 
 #: src/gtkui/menus.cc:152 src/qtui/main_window_actions.cc:113
 msgid "Shuffle by Albu_m"
-msgstr ""
+msgstr "Насумично према _албуму"
 
 #: src/gtkui/menus.cc:153 src/qtui/main_window_actions.cc:114
 msgid "N_o Playlist Advance"
@@ -1802,7 +1862,7 @@ msgstr "У_тишај"
 
 #: src/gtkui/menus.cc:227 src/qtui/main_window_actions.cc:182
 msgid "_Equalizer ..."
-msgstr ""
+msgstr "_Уједначавач ..."
 
 #: src/gtkui/menus.cc:228 src/qtui/main_window_actions.cc:184
 msgid "E_ffects ..."
@@ -1810,11 +1870,11 @@ msgstr "_Дејства ..."
 
 #: src/gtkui/menus.cc:230
 msgid "_Record Stream"
-msgstr ""
+msgstr "_Сними ток"
 
 #: src/gtkui/menus.cc:231
 msgid "Audio _Settings ..."
-msgstr ""
+msgstr "Подешавања _звука ..."
 
 #: src/gtkui/menus.cc:235
 msgid "Show _Menu Bar"
@@ -1967,7 +2027,7 @@ msgstr[2] "%d канала"
 #: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:79
 #, c-format
 msgid "%d kHz"
-msgstr ""
+msgstr "%d kHz"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:85
 #, c-format
@@ -2273,42 +2333,42 @@ msgstr "Прикључак за Лирик вики"
 msgid "No lyrics available"
 msgstr "Нема доступних текстова"
 
-#: src/lyricwiki/lyricwiki.cc:219 src/lyricwiki/lyricwiki.cc:228
-#: src/lyricwiki/lyricwiki.cc:245 src/lyricwiki/lyricwiki.cc:254
-#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:236
-#: src/lyricwiki-qt/lyricwiki.cc:245 src/lyricwiki-qt/lyricwiki.cc:262
-#: src/lyricwiki-qt/lyricwiki.cc:271 src/lyricwiki-qt/lyricwiki.cc:286
+#: src/lyricwiki/lyricwiki.cc:254 src/lyricwiki/lyricwiki.cc:263
+#: src/lyricwiki/lyricwiki.cc:280 src/lyricwiki/lyricwiki.cc:289
+#: src/lyricwiki/lyricwiki.cc:304 src/lyricwiki-qt/lyricwiki.cc:271
+#: src/lyricwiki-qt/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:297
+#: src/lyricwiki-qt/lyricwiki.cc:306 src/lyricwiki-qt/lyricwiki.cc:321
 #: src/qtui/dialog_windows.cc:38
 msgid "Error"
 msgstr "Грешка"
 
-#: src/lyricwiki/lyricwiki.cc:220 src/lyricwiki/lyricwiki.cc:246
-#: src/lyricwiki-qt/lyricwiki.cc:237 src/lyricwiki-qt/lyricwiki.cc:263
+#: src/lyricwiki/lyricwiki.cc:255 src/lyricwiki/lyricwiki.cc:281
+#: src/lyricwiki-qt/lyricwiki.cc:272 src/lyricwiki-qt/lyricwiki.cc:298
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "Не могу да довучем „%s“"
 
-#: src/lyricwiki/lyricwiki.cc:229 src/lyricwiki/lyricwiki.cc:255
-#: src/lyricwiki-qt/lyricwiki.cc:246 src/lyricwiki-qt/lyricwiki.cc:272
+#: src/lyricwiki/lyricwiki.cc:264 src/lyricwiki/lyricwiki.cc:290
+#: src/lyricwiki-qt/lyricwiki.cc:281 src/lyricwiki-qt/lyricwiki.cc:307
 #, c-format
 msgid "Unable to parse %s"
 msgstr "Не могу да обрадим „%s“"
 
-#: src/lyricwiki/lyricwiki.cc:261 src/lyricwiki-qt/lyricwiki.cc:278
+#: src/lyricwiki/lyricwiki.cc:296 src/lyricwiki-qt/lyricwiki.cc:313
 msgid "Looking for lyrics ..."
 msgstr "Тражим текст песме ..."
 
-#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:286
+#: src/lyricwiki/lyricwiki.cc:304 src/lyricwiki-qt/lyricwiki.cc:321
 msgid "Missing song metadata"
 msgstr "Недостају метаподаци песме"
 
-#: src/lyricwiki/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:297
+#: src/lyricwiki/lyricwiki.cc:315 src/lyricwiki-qt/lyricwiki.cc:332
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "Повезујем се на „lyrics.wikia.com“ ..."
 
-#: src/lyricwiki/lyricwiki.cc:321 src/lyricwiki-qt/lyricwiki.cc:375
+#: src/lyricwiki/lyricwiki.cc:356 src/lyricwiki-qt/lyricwiki.cc:410
 msgid "Edit lyrics ..."
-msgstr ""
+msgstr "Уреди текстове песама ..."
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
@@ -2952,7 +3012,7 @@ msgid ""
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
 "Безочник сада користи побољшано издање Ласт.фм-овог Скроблера.\n"
-"Проверите у поставкама за прикључком Скроблера"
+"Проверите у поставкама за прикључком Скроблера."
 
 #: src/sdlout/sdlout.cc:48
 msgid "SDL Output"
@@ -3239,31 +3299,31 @@ msgstr "Визуализације"
 
 #: src/skins/menus.cc:78 src/skins-qt/menus.cc:64
 msgid "Recording on"
-msgstr ""
+msgstr "Снимање је укључено"
 
 #: src/skins/menus.cc:78 src/skins-qt/menus.cc:64
 msgid "Recording off"
-msgstr ""
+msgstr "Снимање је искључено"
 
 #: src/skins/menus.cc:97 src/skins-qt/menus.cc:83
 msgid "Volume Up"
-msgstr ""
+msgstr "Појачај"
 
 #: src/skins/menus.cc:98 src/skins-qt/menus.cc:84
 msgid "Volume Down"
-msgstr ""
+msgstr "Утишај"
 
 #: src/skins/menus.cc:100 src/skins-qt/menus.cc:86
 msgid "Effects ..."
-msgstr ""
+msgstr "Дејства ..."
 
 #: src/skins/menus.cc:102 src/skins-qt/menus.cc:88
 msgid "Record Stream"
-msgstr ""
+msgstr "Сними ток"
 
 #: src/skins/menus.cc:103 src/skins-qt/menus.cc:89
 msgid "Audio Settings ..."
-msgstr ""
+msgstr "Подешавања звука ..."
 
 #: src/skins/menus.cc:107 src/skins-qt/menus.cc:93
 msgid "Open Files ..."
@@ -3287,7 +3347,7 @@ msgstr "Списак нумера"
 
 #: src/skins/menus.cc:113 src/skins-qt/menus.cc:100
 msgid "Output"
-msgstr ""
+msgstr "Излаз"
 
 #: src/skins/menus.cc:114 src/skins-qt/menus.cc:101
 msgid "View"
@@ -3318,7 +3378,7 @@ msgstr "Подаци о песми ..."
 
 #: src/skins/menus.cc:128 src/skins-qt/menus.cc:115
 msgid "Shuffle by Album"
-msgstr ""
+msgstr "Насумично према албуму"
 
 #: src/skins/menus.cc:129 src/skins-qt/menus.cc:116
 msgid "No Playlist Advance"
@@ -3573,11 +3633,11 @@ msgstr "Винампово уобичајено сучеље"
 
 #: src/skins-qt/menus.cc:94
 msgid "Open Folder ..."
-msgstr ""
+msgstr "Отвори фасциклу ..."
 
 #: src/skins-qt/menus.cc:178
 msgid "Add Folder ..."
-msgstr ""
+msgstr "Додај фасциклу ..."
 
 #: src/skins-qt/skins_cfg.cc:197 src/skins/skins_cfg.cc:181
 msgid "Player:"
@@ -3898,6 +3958,8 @@ msgid ""
 "You can use the following format codes, which will be replaced before "
 "running the command (not all are useful for the end-of-playlist command):"
 msgstr ""
+"Можете да користите следеће шифре записа, које ће бити замењене пре "
+"покретања наредбе (нису све корисне за наредбу крај-списка-нумера):"
 
 #: src/song_change/song_change.cc:285
 msgid ""
@@ -3913,16 +3975,29 @@ msgid ""
 "%t: Playlist position\n"
 "%T: Title (unformatted)"
 msgstr ""
+"%a: Извођач\n"
+"%b: Албум\n"
+"%c: Број канала\n"
+"%f: Назив датотеке (пуна путања)\n"
+"%F: Учестаност (Херца)\n"
+"%l: Трајање (у милисекундама)\n"
+"%n или %s: Обликовани наслов (видите подешавања списка нумера)\n"
+"%p: Тренутно пуштена (1 или 0)\n"
+"%r: Проток (у битима у секунди)\n"
+"%t: Место на списку нумера\n"
+"%T: Наслов (необликовано)"
 
 #: src/song_change/song_change.cc:296
 msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.  "
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
+"Параметри прослеђени љусци би требало да буду под знацима наводника.  "
+"Параметри без наводника могу довести до неочекиваних резултата."
 
 #: src/song-info-qt/song-info.cc:34
 msgid "Song Info"
-msgstr ""
+msgstr "Подаци о песми"
 
 #: src/sox-resampler/sox-resampler.cc:44
 msgid "SoX Resampler"
@@ -3993,6 +4068,14 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
+"Прикључак иконице стања (делимични прикључник за Кут сучеље)\n"
+"\n"
+"Ауторска права 2005-2007 Ђакомо Лоцито <james@develia.org>\n"
+"Ауторска права 2010 Михал Липски <tallica@o2.pl>\n"
+"Ауторска права 2015 Јуџин Пашкевич <eugene@raptor.kiev.ua>\n"
+"\n"
+"Овај додатак обезбеђује иконицу стања, смештену\n"
+"у области фиоке система управника прозора."
 
 #: src/statusicon-qt/statusicon.cc:78 src/statusicon/statusicon.cc:387
 msgid "Close to the system tray"
@@ -4000,11 +4083,11 @@ msgstr "Затвори у системску касету"
 
 #: src/statusicon-qt/statusicon.cc:85
 msgid "_Hide"
-msgstr ""
+msgstr "_Сакриј"
 
 #: src/statusicon-qt/statusicon.cc:86
 msgid "_Restore"
-msgstr ""
+msgstr "_Поврати"
 
 #: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:284
 msgid "Se_ttings ..."
@@ -4228,3 +4311,20 @@ msgstr "Занемари трајање из датотеке"
 #: src/xspf/xspf.cc:89
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "ИксМЛ дељиви спискови пуштања (XSPF)"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had a different number of channels.  "
+#~ "You can use the Channel Mixer to convert the songs to the same number of "
+#~ "channels."
+#~ msgstr ""
+#~ "Постепени прелаз није успео јер је песма имала различит број канала. "
+#~ "Можете да користите Мешача канала да претворите песме на исти број канала."
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had different sample rates.  You can "
+#~ "use the Sample Rate Converter to convert the songs to the same sample "
+#~ "rate."
+#~ msgstr ""
+#~ "Постепени прелаз није успео јер је песма имала различит проток узорка.  "
+#~ "Можете да користите Претварача протока узорка да претворите песме на исти "
+#~ "проток узорка."

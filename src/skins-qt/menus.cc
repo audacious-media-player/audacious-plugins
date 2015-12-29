@@ -122,7 +122,7 @@ static const audqt::MenuItem playback_items[] = {
     audqt::MenuCommand ({N_("Previous"), "media-skip-backward", "Z"}, aud_drct_pl_prev),
     audqt::MenuCommand ({N_("Next"), "media-skip-forward", "B"}, aud_drct_pl_next),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Set A-B Repeat"), nullptr, "B"}, action_ab_set),
+    audqt::MenuCommand ({N_("Set A-B Repeat"), nullptr, "A"}, action_ab_set),
     audqt::MenuCommand ({N_("Clear A-B Repeat"), nullptr, "Shift+A"}, action_ab_clear),
 #if 0
     audqt::MenuSep (),
