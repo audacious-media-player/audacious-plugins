@@ -75,6 +75,20 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
             filename = String (uri_construct (cur_name, cue_filename));
             decoder = filename ? aud_file_find_decoder (filename, false) : nullptr;
             base_tuple = decoder ? aud_file_read_tuple (filename, decoder) : Tuple ();
+
+            if (base_tuple)
+            {
+                Cdtext * cdtext = cd_get_cdtext (cd);
+
+                if (cdtext)
+                {
+                    const char * s;
+                    if ((s = cdtext_get (PTI_PERFORMER, cdtext)))
+                        base_tuple.set_str (Tuple::AlbumArtist, s);
+                    if ((s = cdtext_get (PTI_TITLE, cdtext)))
+                        base_tuple.set_str (Tuple::Album, s);
+                }
+            }
         }
 
         Track * next = (track + 1 <= tracks) ? cd_get_track (cd, track + 1) : nullptr;
