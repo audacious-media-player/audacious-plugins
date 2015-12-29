@@ -98,8 +98,11 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
 
         if (base_tuple)
         {
+            StringBuf track_filename = str_concat ({filename, "?"});
+            track_filename.combine (int_to_str (track));
+
             Tuple tuple = base_tuple.ref ();
-            tuple.set_filename (filename);
+            tuple.set_filename (track_filename);
             tuple.set_int (Tuple::Track, track);
 
             int begin = (int64_t) track_get_start (cur) * 1000 / 75;
@@ -129,7 +132,7 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                     tuple.set_str (Tuple::Title, s);
             }
 
-            items.append (String (filename), std::move (tuple), decoder);
+            items.append (String (track_filename), std::move (tuple), decoder);
         }
 
         if (! next_name)
