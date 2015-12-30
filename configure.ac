@@ -759,12 +759,17 @@ AC_ARG_ENABLE(cue,
 
 have_cue=no
 if test "x$enable_cue" != "xno"; then
-    PKG_CHECK_MODULES(CUE, [libcue],
+    PKG_CHECK_MODULES(CUE, [libcue >= 2.0],
         [have_cue=yes
+         AC_DEFINE([HAVE_LIBCUE2],[1],[Define if libcue version is >= 2.0])
          CONTAINER_PLUGINS="$CONTAINER_PLUGINS cue"],
-        [if test "x$enable_cue" = "xyes"; then
-            AC_MSG_ERROR([Cannot find libcue development files, but compilation of cue support has been explicitly requested; please install libcue dev files and run configure again])
-         fi]
+        [PKG_CHECK_MODULES(CUE, [libcue],
+            [have_cue=yes
+             CONTAINER_PLUGINS="$CONTAINER_PLUGINS cue"],
+            [if test "x$enable_cue" = "xyes"; then
+                AC_MSG_ERROR([Cannot find libcue development files, but compilation of cue support has been explicitly requested; please install libcue dev files and run configure again])
+             fi]
+         )]
     )
 else
     AC_MSG_RESULT([*** cue plugin disabled by request ***])

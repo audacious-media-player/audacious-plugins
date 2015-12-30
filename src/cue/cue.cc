@@ -19,9 +19,13 @@
 
 #include <string.h>
 
+#ifdef HAVE_LIBCUE2
+#include <libcue.h>
+#else
 extern "C" {
 #include <libcue/libcue.h>
 }
+#endif
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
