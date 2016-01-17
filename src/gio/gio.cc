@@ -34,7 +34,7 @@ static const char gio_about[] =
  N_("GIO Plugin for Audacious\n"
     "Copyright 2009-2012 John Lindgren");
 
-static const char * const gio_schemes[] = {"ftp", "sftp", "smb"};
+static const char * const gio_schemes[] = {"ftp", "sftp", "smb", "mtp"};
 
 class GIOTransport : public TransportPlugin
 {
