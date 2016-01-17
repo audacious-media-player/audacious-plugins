@@ -111,7 +111,9 @@ static bool wv_attach (const char * filename, VFSFile & wv_input,
             wvc_input = VFSFile (corrFilename, "r");
     }
 
-    * ctx = WavpackOpenFileInputEx (& wv_readers, & wv_input, & wvc_input, error, flags, 0);
+    * ctx = WavpackOpenFileInputEx (& wv_readers, & wv_input,
+     wvc_input ? (& wvc_input) : nullptr, error, flags, 0);
+
     return (* ctx != nullptr);
 }
 
