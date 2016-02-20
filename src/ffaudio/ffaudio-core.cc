@@ -31,6 +31,10 @@
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
 
+#if CHECK_LIBAVCODEC_VERSION (55, 25, 100, 55, 16, 0)
+#define av_free_packet av_packet_unref
+#endif
+
 class FFaudio : public InputPlugin
 {
 public:
