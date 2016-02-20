@@ -28,6 +28,7 @@
 #include <libaudcore/runtime.h>
 
 #include <algorithm>
+#include <iterator>
 
 #include <assert.h>
 #include <pthread.h>
