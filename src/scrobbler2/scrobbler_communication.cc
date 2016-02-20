@@ -122,6 +122,7 @@ static gboolean send_message_to_lastfm (const char * data)
 {
     AUDDBG("This message will be sent to last.fm:\n%s\n%%%%End of message%%%%\n", data);//Enter?\n", data);
     curl_easy_setopt(curlHandle, CURLOPT_POSTFIELDS, data);
+    curl_easy_setopt(curlHandle, CURLOPT_SSLVERSION, CURL_SSLVERSION_SSLv3);
     CURLcode curl_requests_result = curl_easy_perform(curlHandle);
 
     if (curl_requests_result != CURLE_OK) {
@@ -213,8 +214,8 @@ static gboolean scrobbler_test_connection() {
         return true;
     }
 
-    String testmsg = create_message_to_lastfm ("user.getRecommendedArtists", 3,
-     "limit", "1", "api_key", SCROBBLER_API_KEY,
+    String testmsg = create_message_to_lastfm ("user.getInfo", 2,
+     "api_key", SCROBBLER_API_KEY,
      "sk", (const char *) session_key);
 
     gboolean success = send_message_to_lastfm(testmsg);

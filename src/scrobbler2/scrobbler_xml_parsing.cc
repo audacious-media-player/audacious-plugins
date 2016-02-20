@@ -208,7 +208,7 @@ gboolean read_authentication_test_result (String &error_code, String &error_deta
         result = false;
 
     } else {
-        username = get_attribute_value("/lfm/recommendations[@user]", "user");
+        username = get_node_string("/lfm/user/name");
         if (!username) {
           AUDDBG("last.fm not answering according to the API.\n");
           result = false;
