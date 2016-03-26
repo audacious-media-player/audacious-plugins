@@ -10,9 +10,9 @@
 # gymka <gymka@mail.ru>, 2011
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-12-26 15:19+0100\n"
+"POT-Creation-Date: 2016-03-26 21:41+0100\n"
 "PO-Revision-Date: 2015-08-25 17:16+0000\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: Lithuanian (http://www.transifex.com/jlindgren/audacious/"
@@ -822,51 +822,51 @@ msgstr "Klaida skaitant audio CD."
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:457 src/cdaudio-ng/cdaudio-ng.cc:466
+#: src/cdaudio-ng/cdaudio-ng.cc:459 src/cdaudio-ng/cdaudio-ng.cc:468
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Atverti CD įrenginio %s nepavyko."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:469
+#: src/cdaudio-ng/cdaudio-ng.cc:471
 msgid "No audio capable CD drive found."
 msgstr "CD įrenginio suderinamo su audio nerasta."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:494
+#: src/cdaudio-ng/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Nepavyko užbaigti inicijuoto atverto CD įrenginio."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:507
+#: src/cdaudio-ng/cdaudio-ng.cc:509
 msgid "Failed to retrieve first/last track number."
 msgstr "Gauti pirmo/paskutinio takelio numerio nepavyko."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:528
+#: src/cdaudio-ng/cdaudio-ng.cc:530
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "Perskaityti LSN takelio %d pradžios/pabaigos nepavyko."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:610
+#: src/cdaudio-ng/cdaudio-ng.cc:612
 msgid "Failed to create the cddb connection."
 msgstr "Sukurti cddb sujungimo nepavyko."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:676
+#: src/cdaudio-ng/cdaudio-ng.cc:678
 msgid "Failed to query the CDDB server"
 msgstr "Užlausti CDDB serverio nepavyko"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:678
+#: src/cdaudio-ng/cdaudio-ng.cc:680
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Užlausti CDDB serverio nepavyko: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:702
+#: src/cdaudio-ng/cdaudio-ng.cc:704
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Perskaityti cddb informaciją nepavyko: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:762
+#: src/cdaudio-ng/cdaudio-ng.cc:764
 msgid "Drive is empty."
 msgstr "Diskasukis tuščias."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:764
+#: src/cdaudio-ng/cdaudio-ng.cc:766
 msgid "Unsupported disk type."
 msgstr "Nepalaikomas disko tipas."
 
@@ -1342,7 +1342,7 @@ msgstr "Kokybės lygis (0 - 10):"
 msgid "FLAC Decoder"
 msgstr "FLAC dekoderis"
 
-#: src/flacng/metadata.cc:302 src/wavpack/wavpack.cc:209
+#: src/flacng/metadata.cc:302 src/wavpack/wavpack.cc:211
 msgid "lossless"
 msgstr "lossless"
 
@@ -1358,7 +1358,7 @@ msgstr ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
-#: src/gio/gio.cc:34
+#: src/gio/gio.cc:33
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
@@ -1366,15 +1366,15 @@ msgstr ""
 "GIO įskiepis skirtas Audacious\n"
 "Autorinės teisės 2009-2012 John Lindgren"
 
-#: src/gio/gio.cc:42
+#: src/gio/gio.cc:41
 msgid "GIO Plugin"
 msgstr "GIO įskiepis"
 
-#: src/gio/gio.cc:153
+#: src/gio/gio.cc:149
 msgid "Read-and-append mode not supported"
 msgstr ""
 
-#: src/gio/gio.cc:166
+#: src/gio/gio.cc:162
 msgid "Invalid open mode"
 msgstr ""
 
@@ -1553,8 +1553,8 @@ msgid "_Quit"
 msgstr "_Išeiti"
 
 #: src/gtkui/menus.cc:144 src/gtkui/menus.cc:270
-#: src/qtui/main_window_actions.cc:105 src/search-tool-qt/search-tool-qt.cc:664
-#: src/search-tool/search-tool.cc:616 src/statusicon-qt/statusicon.cc:90
+#: src/qtui/main_window_actions.cc:105 src/search-tool-qt/search-tool-qt.cc:685
+#: src/search-tool/search-tool.cc:637 src/statusicon-qt/statusicon.cc:90
 #: src/statusicon/statusicon.cc:279
 msgid "_Play"
 msgstr "_Groti"
@@ -2087,35 +2087,35 @@ msgstr ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 
-#: src/jack-ng/jack-ng.cc:49
+#: src/jack-ng/jack-ng.cc:50
 msgid "JACK Output"
 msgstr "JACK išvestis"
 
-#: src/jack-ng/jack-ng.cc:114
+#: src/jack-ng/jack-ng.cc:115
 msgid "Automatically connect to output ports"
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:155
+#: src/jack-ng/jack-ng.cc:156
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:171
+#: src/jack-ng/jack-ng.cc:172
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:191
+#: src/jack-ng/jack-ng.cc:192
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:204
+#: src/jack-ng/jack-ng.cc:205
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr ""
 
-#: src/jack-ng/jack-ng.cc:280
+#: src/jack-ng/jack-ng.cc:281
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -2908,13 +2908,13 @@ msgstr ""
 "SDL Output Plugin skirtas Audacious\n"
 "Autorinės teisės 2010 John Lindgren"
 
-#: src/search-tool-qt/search-tool-qt.cc:187
-#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:120
-#: src/search-tool/search-tool.cc:128
+#: src/search-tool-qt/search-tool-qt.cc:193
+#: src/search-tool-qt/search-tool-qt.cc:201 src/search-tool/search-tool.cc:126
+#: src/search-tool/search-tool.cc:134
 msgid "Library"
 msgstr "Fonoteka"
 
-#: src/search-tool-qt/search-tool-qt.cc:460 src/search-tool/search-tool.cc:393
+#: src/search-tool-qt/search-tool-qt.cc:474 src/search-tool/search-tool.cc:407
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
@@ -2922,7 +2922,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/search-tool-qt/search-tool-qt.cc:466 src/search-tool/search-tool.cc:399
+#: src/search-tool-qt/search-tool-qt.cc:480 src/search-tool/search-tool.cc:413
 #, c-format
 msgid "(%d hidden)"
 msgid_plural "(%d hidden)"
@@ -2930,7 +2930,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/search-tool-qt/search-tool-qt.cc:640 src/search-tool/search-tool.cc:569
+#: src/search-tool-qt/search-tool-qt.cc:661 src/search-tool/search-tool.cc:590
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
@@ -2938,31 +2938,31 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/search-tool-qt/search-tool-qt.cc:647 src/search-tool/search-tool.cc:576
+#: src/search-tool-qt/search-tool-qt.cc:668 src/search-tool/search-tool.cc:597
 msgid "of this genre"
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
+#: src/search-tool-qt/search-tool-qt.cc:674 src/search-tool/search-tool.cc:603
 msgid "on"
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
+#: src/search-tool-qt/search-tool-qt.cc:674 src/search-tool/search-tool.cc:603
 msgid "by"
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:665 src/search-tool/search-tool.cc:618
+#: src/search-tool-qt/search-tool-qt.cc:686 src/search-tool/search-tool.cc:639
 msgid "_Create Playlist"
 msgstr "_Sukurti grojaraštį"
 
-#: src/search-tool-qt/search-tool-qt.cc:666 src/search-tool/search-tool.cc:620
+#: src/search-tool-qt/search-tool-qt.cc:687 src/search-tool/search-tool.cc:641
 msgid "_Add to Playlist"
 msgstr "_Pridėti į grojaraštį"
 
-#: src/search-tool-qt/search-tool-qt.cc:682 src/search-tool/search-tool.cc:661
+#: src/search-tool-qt/search-tool-qt.cc:703 src/search-tool/search-tool.cc:682
 msgid "Search library"
 msgstr "Ieškoti fonotekoje"
 
-#: src/search-tool-qt/search-tool-qt.cc:685 src/search-tool/search-tool.cc:665
+#: src/search-tool-qt/search-tool-qt.cc:706 src/search-tool/search-tool.cc:686
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2970,11 +2970,11 @@ msgstr ""
 "Norėdami importuoti muziką į Audacious fonoteką, pasirinkite aplanką ir "
 "paspauskite „atnaujinti“ piktogramą."
 
-#: src/search-tool-qt/search-tool-qt.cc:691 src/search-tool/search-tool.cc:674
+#: src/search-tool-qt/search-tool-qt.cc:712 src/search-tool/search-tool.cc:695
 msgid "Please wait ..."
 msgstr "Palaukite..."
 
-#: src/search-tool/search-tool.cc:701
+#: src/search-tool/search-tool.cc:722
 msgid "Choose Folder"
 msgstr "Pasirinkite aplanką"
 
@@ -4117,15 +4117,15 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "WavPack dekoderis"
 
-#: src/wavpack/wavpack.cc:211
+#: src/wavpack/wavpack.cc:213
 msgid "lossy (hybrid)"
 msgstr "lossy (hibridinis)"
 
-#: src/wavpack/wavpack.cc:213
+#: src/wavpack/wavpack.cc:215
 msgid "lossy"
 msgstr "lossy"
 
-#: src/wavpack/wavpack.cc:255
+#: src/wavpack/wavpack.cc:257
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"

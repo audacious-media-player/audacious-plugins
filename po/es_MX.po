@@ -7,9 +7,9 @@
 # Jorge A. García Sosa <kamesennin555@icloud.com>, 2014-2015
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-12-26 15:19+0100\n"
+"POT-Creation-Date: 2016-03-26 21:41+0100\n"
 "PO-Revision-Date: 2015-09-09 15:12+0000\n"
 "Last-Translator: Jorge A. García Sosa <kamesennin555@icloud.com>\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/jlindgren/"
@@ -890,51 +890,51 @@ msgstr "Error al leer CD de audio."
 msgid "Audio CD"
 msgstr "CD de Audio"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:457 src/cdaudio-ng/cdaudio-ng.cc:466
+#: src/cdaudio-ng/cdaudio-ng.cc:459 src/cdaudio-ng/cdaudio-ng.cc:468
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Fallo al abrir el dispositivo de CD %s."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:469
+#: src/cdaudio-ng/cdaudio-ng.cc:471
 msgid "No audio capable CD drive found."
 msgstr "No se encontró drive de CD capaz de reproducir audio."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:494
+#: src/cdaudio-ng/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Fallo al terminar de preparar drive de CD  abierto."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:507
+#: src/cdaudio-ng/cdaudio-ng.cc:509
 msgid "Failed to retrieve first/last track number."
 msgstr "Fallo al recuperar el primer/último número de pista."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:528
+#: src/cdaudio-ng/cdaudio-ng.cc:530
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "No se puede leer LSN inicio/final para la pista %d."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:610
+#: src/cdaudio-ng/cdaudio-ng.cc:612
 msgid "Failed to create the cddb connection."
 msgstr "Fallo al crear la conexión cddb."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:676
+#: src/cdaudio-ng/cdaudio-ng.cc:678
 msgid "Failed to query the CDDB server"
 msgstr "Fallo al consultar el servidor CDDB."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:678
+#: src/cdaudio-ng/cdaudio-ng.cc:680
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Fallo al consultar el servidor CDDB: %s."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:702
+#: src/cdaudio-ng/cdaudio-ng.cc:704
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Fallo al leer la nformación cddb: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:762
+#: src/cdaudio-ng/cdaudio-ng.cc:764
 msgid "Drive is empty."
 msgstr "La unidad de disco está vacía."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:764
+#: src/cdaudio-ng/cdaudio-ng.cc:766
 msgid "Unsupported disk type."
 msgstr "Tipo de disco no soportado."
 
@@ -1438,7 +1438,7 @@ msgstr "Nivel de calidad (0-10):"
 msgid "FLAC Decoder"
 msgstr "Decodificador FLAC"
 
-#: src/flacng/metadata.cc:302 src/wavpack/wavpack.cc:209
+#: src/flacng/metadata.cc:302 src/wavpack/wavpack.cc:211
 msgid "lossless"
 msgstr "sin pérdida"
 
@@ -1454,7 +1454,7 @@ msgstr ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
-#: src/gio/gio.cc:34
+#: src/gio/gio.cc:33
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
@@ -1462,15 +1462,15 @@ msgstr ""
 "Plugin GIO para Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 
-#: src/gio/gio.cc:42
+#: src/gio/gio.cc:41
 msgid "GIO Plugin"
 msgstr "Plugin GIO"
 
-#: src/gio/gio.cc:153
+#: src/gio/gio.cc:149
 msgid "Read-and-append mode not supported"
 msgstr "Modo leer-y-anexar no soportado"
 
-#: src/gio/gio.cc:166
+#: src/gio/gio.cc:162
 msgid "Invalid open mode"
 msgstr "modo abierto invalido"
 
@@ -1662,8 +1662,8 @@ msgid "_Quit"
 msgstr "_Salir"
 
 #: src/gtkui/menus.cc:144 src/gtkui/menus.cc:270
-#: src/qtui/main_window_actions.cc:105 src/search-tool-qt/search-tool-qt.cc:664
-#: src/search-tool/search-tool.cc:616 src/statusicon-qt/statusicon.cc:90
+#: src/qtui/main_window_actions.cc:105 src/search-tool-qt/search-tool-qt.cc:685
+#: src/search-tool/search-tool.cc:637 src/statusicon-qt/statusicon.cc:90
 #: src/statusicon/statusicon.cc:279
 msgid "_Play"
 msgstr "_Reproducir"
@@ -2196,26 +2196,26 @@ msgstr ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 
-#: src/jack-ng/jack-ng.cc:49
+#: src/jack-ng/jack-ng.cc:50
 msgid "JACK Output"
 msgstr "Salida JACK"
 
-#: src/jack-ng/jack-ng.cc:114
+#: src/jack-ng/jack-ng.cc:115
 msgid "Automatically connect to output ports"
 msgstr "Automáticamente conectar a puertos de salida"
 
-#: src/jack-ng/jack-ng.cc:155
+#: src/jack-ng/jack-ng.cc:156
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr ""
 "Solo %d puertos de salida JACK fueron encontrados pero %d son requeridos."
 
-#: src/jack-ng/jack-ng.cc:171
+#: src/jack-ng/jack-ng.cc:172
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr "Falla al conectar al puerto JACK %s."
 
-#: src/jack-ng/jack-ng.cc:191
+#: src/jack-ng/jack-ng.cc:192
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
@@ -2223,11 +2223,11 @@ msgstr ""
 "JACK solo soporta audio de punto flotante. Debes cambiar la profundidad de "
 "bit de salida a punto flotante en las preferencias de Audacious."
 
-#: src/jack-ng/jack-ng.cc:204
+#: src/jack-ng/jack-ng.cc:205
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr "Falla al conectar al servidor JACK; ¿Se está ejecutando?"
 
-#: src/jack-ng/jack-ng.cc:280
+#: src/jack-ng/jack-ng.cc:281
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -3032,58 +3032,58 @@ msgstr ""
 "Plugin de salida SDL para Audacious\n"
 "Copyright 2010 John Lindgren"
 
-#: src/search-tool-qt/search-tool-qt.cc:187
-#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:120
-#: src/search-tool/search-tool.cc:128
+#: src/search-tool-qt/search-tool-qt.cc:193
+#: src/search-tool-qt/search-tool-qt.cc:201 src/search-tool/search-tool.cc:126
+#: src/search-tool/search-tool.cc:134
 msgid "Library"
 msgstr "Librería"
 
-#: src/search-tool-qt/search-tool-qt.cc:460 src/search-tool/search-tool.cc:393
+#: src/search-tool-qt/search-tool-qt.cc:474 src/search-tool/search-tool.cc:407
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
 msgstr[0] "%d resultado"
 msgstr[1] "%d resultados"
 
-#: src/search-tool-qt/search-tool-qt.cc:466 src/search-tool/search-tool.cc:399
+#: src/search-tool-qt/search-tool-qt.cc:480 src/search-tool/search-tool.cc:413
 #, c-format
 msgid "(%d hidden)"
 msgid_plural "(%d hidden)"
 msgstr[0] "(%d oculto)"
 msgstr[1] "(%d ocultos)"
 
-#: src/search-tool-qt/search-tool-qt.cc:640 src/search-tool/search-tool.cc:569
+#: src/search-tool-qt/search-tool-qt.cc:661 src/search-tool/search-tool.cc:590
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
 msgstr[0] "%d pista"
 msgstr[1] "%d pistas"
 
-#: src/search-tool-qt/search-tool-qt.cc:647 src/search-tool/search-tool.cc:576
+#: src/search-tool-qt/search-tool-qt.cc:668 src/search-tool/search-tool.cc:597
 msgid "of this genre"
 msgstr "de este género"
 
-#: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
+#: src/search-tool-qt/search-tool-qt.cc:674 src/search-tool/search-tool.cc:603
 msgid "on"
 msgstr "en"
 
-#: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
+#: src/search-tool-qt/search-tool-qt.cc:674 src/search-tool/search-tool.cc:603
 msgid "by"
 msgstr "por"
 
-#: src/search-tool-qt/search-tool-qt.cc:665 src/search-tool/search-tool.cc:618
+#: src/search-tool-qt/search-tool-qt.cc:686 src/search-tool/search-tool.cc:639
 msgid "_Create Playlist"
 msgstr "_Crear Lista de Reproducción"
 
-#: src/search-tool-qt/search-tool-qt.cc:666 src/search-tool/search-tool.cc:620
+#: src/search-tool-qt/search-tool-qt.cc:687 src/search-tool/search-tool.cc:641
 msgid "_Add to Playlist"
 msgstr "_Agregar a la Lista de Reproducción"
 
-#: src/search-tool-qt/search-tool-qt.cc:682 src/search-tool/search-tool.cc:661
+#: src/search-tool-qt/search-tool-qt.cc:703 src/search-tool/search-tool.cc:682
 msgid "Search library"
 msgstr "Buscar librería"
 
-#: src/search-tool-qt/search-tool-qt.cc:685 src/search-tool/search-tool.cc:665
+#: src/search-tool-qt/search-tool-qt.cc:706 src/search-tool/search-tool.cc:686
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -3091,11 +3091,11 @@ msgstr ""
 "Para importar tu librería de música en Audacious, selecciona una carpeta y "
 "luego haz clic en el ícono \"actualizar\"."
 
-#: src/search-tool-qt/search-tool-qt.cc:691 src/search-tool/search-tool.cc:674
+#: src/search-tool-qt/search-tool-qt.cc:712 src/search-tool/search-tool.cc:695
 msgid "Please wait ..."
 msgstr "Por favor espere..."
 
-#: src/search-tool/search-tool.cc:701
+#: src/search-tool/search-tool.cc:722
 msgid "Choose Folder"
 msgstr "Seleccione Carpeta"
 
@@ -4283,15 +4283,15 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "Decodificador WavPack"
 
-#: src/wavpack/wavpack.cc:211
+#: src/wavpack/wavpack.cc:213
 msgid "lossy (hybrid)"
 msgstr "con pérdida (híbrido)"
 
-#: src/wavpack/wavpack.cc:213
+#: src/wavpack/wavpack.cc:215
 msgid "lossy"
 msgstr "con pérdida"
 
-#: src/wavpack/wavpack.cc:255
+#: src/wavpack/wavpack.cc:257
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"

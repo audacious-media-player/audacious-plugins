@@ -8,23 +8,27 @@
 # Andrei Stepanov, 2014-2015
 # Someonefree <drag-sasha@mail.ru>, 2013-2014
 # Eugene Paskevich <eugene@raptor.kiev.ua>, 2015
-# Ilyas B Arinov <prot.tcpip@gmail.com>, 2014
+# Ilyas B Arinov <arinov.ilyas@gmail.com>, 2014
 # iavojd <iavojd@gmail.com>, 2013
 # iavojd <iavojd@gmail.com>, 2013
-# Ilyas B Arinov <prot.tcpip@gmail.com>, 2015
-# Ilyas B Arinov <prot.tcpip@gmail.com>, 2015
+# Ilyas B Arinov <arinov.ilyas@gmail.com>, 2014-2015
+# Ilyas B Arinov <arinov.ilyas@gmail.com>, 2015
+# Ilyas B Arinov <arinov.ilyas@gmail.com>, 2015
 # joshuazzz <joshuazzz@yandex.ru>, 2012
 # joshuazzz <joshuazzz@yandex.ru>, 2012
 # Oleg <kvantarium@gmail.com>, 2012
+# Max Musatov <m1kc@yandex.ru>, 2012
 # Max Musatov <m1kc@yandex.ru>, 2012
 # Max Musatov <m1kc@yandex.ru>, 2012
 # NaiLi (aka jamesjames) Rootaerc <theism@mail.ru>, 2012-2013
 # NaiLi (aka jamesjames) Rootaerc <theism@mail.ru>, 2012
 # Алексей <kvadrocu7@gmail.com>, 2013
 # Nikita <osbib2@gmail.com>, 2015
+# Oleg <kvantarium@gmail.com>, 2012
 # Lowrider <pams@imail.ru>, 2014-2015
 # Rax Garfield <admin@dvizho.ks.ua>, 2012
 #   <sejava@mail.ru>, 2012
+# Senya <senyalutyi@ya.ru>, 2013
 # Senya <senyalutyi@ya.ru>, 2013
 # Senya <senyalutyi@ya.ru>, 2013
 # serg0 <sergo@bk.ru>, 2010
@@ -33,15 +37,16 @@
 # Someonefree <drag-sasha@mail.ru>, 2013
 # Oleg <kvantarium@gmail.com>, 2012
 # Victor Ponomarev <victor.a.ponomarev@gmail.com>, 2013
+# Volk Daemon <volk-daemon@rambler.ru>, 2016
 # Алексей <kvadrocu7@gmail.com>, 2013
-# Денис <alpi_bel@mail.ru>, 2015
+# Денис <alpi_bel@mail.ru>, 2014-2015
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-12-26 15:19+0100\n"
-"PO-Revision-Date: 2015-09-20 18:08+0000\n"
-"Last-Translator: Eugene Paskevich <eugene@raptor.kiev.ua>\n"
+"POT-Creation-Date: 2016-03-26 21:41+0100\n"
+"PO-Revision-Date: 2016-02-29 08:16+0000\n"
+"Last-Translator: Volk Daemon <volk-daemon@rambler.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/jlindgren/audacious/"
 "language/ru/)\n"
 "Language: ru\n"
@@ -917,57 +922,57 @@ msgstr "Дорожка %d это данные дорожки."
 
 #: src/cdaudio-ng/cdaudio-ng.cc:357
 msgid "Error reading audio CD."
-msgstr "Ошибка чтения Аудио CD"
+msgstr "Ошибка чтения аудио CD"
 
 #: src/cdaudio-ng/cdaudio-ng.cc:426
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:457 src/cdaudio-ng/cdaudio-ng.cc:466
+#: src/cdaudio-ng/cdaudio-ng.cc:459 src/cdaudio-ng/cdaudio-ng.cc:468
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Не удалось открыть устройство CD %s."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:469
+#: src/cdaudio-ng/cdaudio-ng.cc:471
 msgid "No audio capable CD drive found."
 msgstr "Не найдено совместимого CD-устройства."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:494
+#: src/cdaudio-ng/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Ошибка при инициализации CD."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:507
+#: src/cdaudio-ng/cdaudio-ng.cc:509
 msgid "Failed to retrieve first/last track number."
 msgstr "Failed to retrieve first/last track number."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:528
+#: src/cdaudio-ng/cdaudio-ng.cc:530
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "Невозможно считать начало/конец LSN для трека %d."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:610
+#: src/cdaudio-ng/cdaudio-ng.cc:612
 msgid "Failed to create the cddb connection."
 msgstr "Не удалось создать cddb соеденения."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:676
+#: src/cdaudio-ng/cdaudio-ng.cc:678
 msgid "Failed to query the CDDB server"
 msgstr "Не удалось выполнить запрос к базе CDDB сервера"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:678
+#: src/cdaudio-ng/cdaudio-ng.cc:680
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Не удалось выполнить запрос к базе CDDB сервера: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:702
+#: src/cdaudio-ng/cdaudio-ng.cc:704
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Не удалось прочитать cddb информацию: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:762
+#: src/cdaudio-ng/cdaudio-ng.cc:764
 msgid "Drive is empty."
 msgstr "Привод пуст."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:764
+#: src/cdaudio-ng/cdaudio-ng.cc:766
 msgid "Unsupported disk type."
 msgstr "Неподдерживаемый тип диска."
 
@@ -1471,7 +1476,7 @@ msgstr "Уровень качества (0 – 10):"
 msgid "FLAC Decoder"
 msgstr "Декодер FLAC"
 
-#: src/flacng/metadata.cc:302 src/wavpack/wavpack.cc:209
+#: src/flacng/metadata.cc:302 src/wavpack/wavpack.cc:211
 msgid "lossless"
 msgstr "lossless"
 
@@ -1487,7 +1492,7 @@ msgstr ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
-#: src/gio/gio.cc:34
+#: src/gio/gio.cc:33
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
@@ -1495,15 +1500,15 @@ msgstr ""
 "Модуль GIO для Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 
-#: src/gio/gio.cc:42
+#: src/gio/gio.cc:41
 msgid "GIO Plugin"
 msgstr "Модуль GIO"
 
-#: src/gio/gio.cc:153
+#: src/gio/gio.cc:149
 msgid "Read-and-append mode not supported"
 msgstr "Режим Чтение-и-добавление не поддерживается"
 
-#: src/gio/gio.cc:166
+#: src/gio/gio.cc:162
 msgid "Invalid open mode"
 msgstr "Недопустимый метод открытия"
 
@@ -1695,8 +1700,8 @@ msgid "_Quit"
 msgstr "_Выход"
 
 #: src/gtkui/menus.cc:144 src/gtkui/menus.cc:270
-#: src/qtui/main_window_actions.cc:105 src/search-tool-qt/search-tool-qt.cc:664
-#: src/search-tool/search-tool.cc:616 src/statusicon-qt/statusicon.cc:90
+#: src/qtui/main_window_actions.cc:105 src/search-tool-qt/search-tool-qt.cc:685
+#: src/search-tool/search-tool.cc:637 src/statusicon-qt/statusicon.cc:90
 #: src/statusicon/statusicon.cc:279
 msgid "_Play"
 msgstr "_Воспроизведение"
@@ -1854,7 +1859,7 @@ msgstr "Сортировать выбранные"
 
 #: src/gtkui/menus.cc:209 src/qtui/main_window_actions.cc:164
 msgid "Remove _Duplicates"
-msgstr "Удалить _Дубликаты"
+msgstr "Удалить _дубликаты"
 
 #: src/gtkui/menus.cc:210 src/qtui/main_window_actions.cc:165
 msgid "Remove _Unavailable Files"
@@ -1913,7 +1918,7 @@ msgstr "_Запись потока"
 
 #: src/gtkui/menus.cc:231
 msgid "Audio _Settings ..."
-msgstr "Настрой_ки Аудио ..."
+msgstr "Настрой_ки аудио ..."
 
 #: src/gtkui/menus.cc:235
 msgid "Show _Menu Bar"
@@ -1925,7 +1930,7 @@ msgstr "Показывать п_анель информации"
 
 #: src/gtkui/menus.cc:237
 msgid "Show Info Bar Vis_ualization"
-msgstr "Показывать Info Bar Vis_ualization"
+msgstr "Показывать инфо. визуализации"
 
 #: src/gtkui/menus.cc:238
 msgid "Show _Status Bar"
@@ -1933,7 +1938,7 @@ msgstr "Показывать _строку состояния"
 
 #: src/gtkui/menus.cc:240
 msgid "Show _Remaining Time"
-msgstr "Показать _Оставшееся время"
+msgstr "Показать _оставшееся время"
 
 #: src/gtkui/menus.cc:242 src/skins/menus.cc:178 src/skins-qt/menus.cc:171
 msgid "_Visualizations ..."
@@ -2232,25 +2237,25 @@ msgstr ""
 "Jonathan A. Davis <davis@jdhouse.org>,\n"
 "Jeremy Tan <nsx@nsx.homeip.net>"
 
-#: src/jack-ng/jack-ng.cc:49
+#: src/jack-ng/jack-ng.cc:50
 msgid "JACK Output"
 msgstr "Вывод JACK"
 
-#: src/jack-ng/jack-ng.cc:114
+#: src/jack-ng/jack-ng.cc:115
 msgid "Automatically connect to output ports"
 msgstr "Автоматически подключаться к портам вывода"
 
-#: src/jack-ng/jack-ng.cc:155
+#: src/jack-ng/jack-ng.cc:156
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr "Обнаружены только выходные разъёмы %d JACK, но требуется %d."
 
-#: src/jack-ng/jack-ng.cc:171
+#: src/jack-ng/jack-ng.cc:172
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr "Ошибка подключения к разъёму JACK %s."
 
-#: src/jack-ng/jack-ng.cc:191
+#: src/jack-ng/jack-ng.cc:192
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
@@ -2258,11 +2263,11 @@ msgstr ""
 "JACK поддерживает только аудио с плавающей точкой. Вы должны изменить "
 "выходную битовую глубину на режим с плавающей точкой в настройках Audacious."
 
-#: src/jack-ng/jack-ng.cc:204
+#: src/jack-ng/jack-ng.cc:205
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr "Сбой подключения к серверу JACK; он работает?"
 
-#: src/jack-ng/jack-ng.cc:280
+#: src/jack-ng/jack-ng.cc:281
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -3060,13 +3065,13 @@ msgstr ""
 "Модуль вывода SDL для Audacious\n"
 "Copyright 2010 John Lindgren"
 
-#: src/search-tool-qt/search-tool-qt.cc:187
-#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:120
-#: src/search-tool/search-tool.cc:128
+#: src/search-tool-qt/search-tool-qt.cc:193
+#: src/search-tool-qt/search-tool-qt.cc:201 src/search-tool/search-tool.cc:126
+#: src/search-tool/search-tool.cc:134
 msgid "Library"
 msgstr "Библиотека"
 
-#: src/search-tool-qt/search-tool-qt.cc:460 src/search-tool/search-tool.cc:393
+#: src/search-tool-qt/search-tool-qt.cc:474 src/search-tool/search-tool.cc:407
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
@@ -3075,7 +3080,7 @@ msgstr[1] "%d результатов"
 msgstr[2] "%d результатов"
 msgstr[3] "%d результатов"
 
-#: src/search-tool-qt/search-tool-qt.cc:466 src/search-tool/search-tool.cc:399
+#: src/search-tool-qt/search-tool-qt.cc:480 src/search-tool/search-tool.cc:413
 #, c-format
 msgid "(%d hidden)"
 msgid_plural "(%d hidden)"
@@ -3084,7 +3089,7 @@ msgstr[1] "(%d скрыто)"
 msgstr[2] "(%d скрыто)"
 msgstr[3] "(%d скрыто)"
 
-#: src/search-tool-qt/search-tool-qt.cc:640 src/search-tool/search-tool.cc:569
+#: src/search-tool-qt/search-tool-qt.cc:661 src/search-tool/search-tool.cc:590
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
@@ -3093,31 +3098,31 @@ msgstr[1] "%d песен"
 msgstr[2] "%d песен"
 msgstr[3] "%d песен"
 
-#: src/search-tool-qt/search-tool-qt.cc:647 src/search-tool/search-tool.cc:576
+#: src/search-tool-qt/search-tool-qt.cc:668 src/search-tool/search-tool.cc:597
 msgid "of this genre"
 msgstr "этого жанра"
 
-#: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
+#: src/search-tool-qt/search-tool-qt.cc:674 src/search-tool/search-tool.cc:603
 msgid "on"
 msgstr "на"
 
-#: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
+#: src/search-tool-qt/search-tool-qt.cc:674 src/search-tool/search-tool.cc:603
 msgid "by"
 msgstr "от"
 
-#: src/search-tool-qt/search-tool-qt.cc:665 src/search-tool/search-tool.cc:618
+#: src/search-tool-qt/search-tool-qt.cc:686 src/search-tool/search-tool.cc:639
 msgid "_Create Playlist"
 msgstr "_Создать список воспроизведения"
 
-#: src/search-tool-qt/search-tool-qt.cc:666 src/search-tool/search-tool.cc:620
+#: src/search-tool-qt/search-tool-qt.cc:687 src/search-tool/search-tool.cc:641
 msgid "_Add to Playlist"
 msgstr "_Добавить в список воспроизведения"
 
-#: src/search-tool-qt/search-tool-qt.cc:682 src/search-tool/search-tool.cc:661
+#: src/search-tool-qt/search-tool-qt.cc:703 src/search-tool/search-tool.cc:682
 msgid "Search library"
 msgstr "Поиск в библиотеке"
 
-#: src/search-tool-qt/search-tool-qt.cc:685 src/search-tool/search-tool.cc:665
+#: src/search-tool-qt/search-tool-qt.cc:706 src/search-tool/search-tool.cc:686
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -3125,11 +3130,11 @@ msgstr ""
 "Для импорта музыки в библиотеку Audacious выберите каталог, затем нажмите "
 "иконку \"обновить\"."
 
-#: src/search-tool-qt/search-tool-qt.cc:691 src/search-tool/search-tool.cc:674
+#: src/search-tool-qt/search-tool-qt.cc:712 src/search-tool/search-tool.cc:695
 msgid "Please wait ..."
 msgstr "Пожалуйста, подождите ..."
 
-#: src/search-tool/search-tool.cc:701
+#: src/search-tool/search-tool.cc:722
 msgid "Choose Folder"
 msgstr "Выберите каталог"
 
@@ -3495,7 +3500,7 @@ msgstr "Отобразить эквалайзер"
 
 #: src/skins/menus.cc:168 src/skins-qt/menus.cc:159
 msgid "Show Remaining Time"
-msgstr "Показать Оставшееся время"
+msgstr "Показать оставшееся время"
 
 #: src/skins/menus.cc:171 src/skins-qt/menus.cc:163
 msgid "Always on Top"
@@ -4316,15 +4321,15 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "Декодер WavPack"
 
-#: src/wavpack/wavpack.cc:211
+#: src/wavpack/wavpack.cc:213
 msgid "lossy (hybrid)"
 msgstr "lossy (hybrid)"
 
-#: src/wavpack/wavpack.cc:213
+#: src/wavpack/wavpack.cc:215
 msgid "lossy"
 msgstr "lossy"
 
-#: src/wavpack/wavpack.cc:255
+#: src/wavpack/wavpack.cc:257
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
