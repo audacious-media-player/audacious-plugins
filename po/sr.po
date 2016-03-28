@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-12-26 15:19+0100\n"
+"POT-Creation-Date: 2016-03-26 21:41+0100\n"
 "PO-Revision-Date: 2015-12-22 20:23+0000\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/jlindgren/audacious/"
@@ -885,51 +885,51 @@ msgstr "Грешка читања звучног диска."
 msgid "Audio CD"
 msgstr "Аудио ЦД"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:457 src/cdaudio-ng/cdaudio-ng.cc:466
+#: src/cdaudio-ng/cdaudio-ng.cc:459 src/cdaudio-ng/cdaudio-ng.cc:468
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Нисам успео да отворим ЦД уређај „%s“."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:469
+#: src/cdaudio-ng/cdaudio-ng.cc:471
 msgid "No audio capable CD drive found."
 msgstr "Нисам пронашао уређај за читање ЦД-а."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:494
+#: src/cdaudio-ng/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Нисам успео да завршим покретање отвореног ЦД уређаја."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:507
+#: src/cdaudio-ng/cdaudio-ng.cc:509
 msgid "Failed to retrieve first/last track number."
 msgstr "Нисам успео да пронађем број прве/последње нумере."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:528
+#: src/cdaudio-ng/cdaudio-ng.cc:530
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "Не могу да прочитам почетак/крај ЛСН-а за нумеру „%d“."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:610
+#: src/cdaudio-ng/cdaudio-ng.cc:612
 msgid "Failed to create the cddb connection."
 msgstr "Нисам успео да направим везу са цд базом података."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:676
+#: src/cdaudio-ng/cdaudio-ng.cc:678
 msgid "Failed to query the CDDB server"
 msgstr "Нисам успео да пропитам сервер базе података ЦД-а"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:678
+#: src/cdaudio-ng/cdaudio-ng.cc:680
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Нисам успео да пропитам сервер базе података ЦД-а: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:702
+#: src/cdaudio-ng/cdaudio-ng.cc:704
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Нисам успео да прочитам обавештење базе података цд-а: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.cc:762
+#: src/cdaudio-ng/cdaudio-ng.cc:764
 msgid "Drive is empty."
 msgstr "Уређај је празан."
 
-#: src/cdaudio-ng/cdaudio-ng.cc:764
+#: src/cdaudio-ng/cdaudio-ng.cc:766
 msgid "Unsupported disk type."
 msgstr "Неподржана врста диска."
 
@@ -1432,7 +1432,7 @@ msgstr "Ниво квалитета (0 — 10):"
 msgid "FLAC Decoder"
 msgstr "ФЛАЦ декодер"
 
-#: src/flacng/metadata.cc:302 src/wavpack/wavpack.cc:209
+#: src/flacng/metadata.cc:302 src/wavpack/wavpack.cc:211
 msgid "lossless"
 msgstr "без губитака"
 
@@ -1448,7 +1448,7 @@ msgstr ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
-#: src/gio/gio.cc:34
+#: src/gio/gio.cc:33
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
@@ -1456,15 +1456,15 @@ msgstr ""
 "ГУИ прикључак за Безочника\n"
 "Ауторска права 2009-2012 Џон Линдгрин"
 
-#: src/gio/gio.cc:42
+#: src/gio/gio.cc:41
 msgid "GIO Plugin"
 msgstr "ГУИ прикључак"
 
-#: src/gio/gio.cc:153
+#: src/gio/gio.cc:149
 msgid "Read-and-append mode not supported"
 msgstr "Режим читај-и-прикачи није подржан"
 
-#: src/gio/gio.cc:166
+#: src/gio/gio.cc:162
 msgid "Invalid open mode"
 msgstr "Неисправан режим отварања"
 
@@ -1656,8 +1656,8 @@ msgid "_Quit"
 msgstr "_Изађи"
 
 #: src/gtkui/menus.cc:144 src/gtkui/menus.cc:270
-#: src/qtui/main_window_actions.cc:105 src/search-tool-qt/search-tool-qt.cc:664
-#: src/search-tool/search-tool.cc:616 src/statusicon-qt/statusicon.cc:90
+#: src/qtui/main_window_actions.cc:105 src/search-tool-qt/search-tool-qt.cc:685
+#: src/search-tool/search-tool.cc:637 src/statusicon-qt/statusicon.cc:90
 #: src/statusicon/statusicon.cc:279
 msgid "_Play"
 msgstr "Пу_сти"
@@ -2191,25 +2191,25 @@ msgstr ""
 " Џонатан А. Давис <davis@jdhouse.org>\n"
 " Џереми Тан <nsx@nsx.homeip.net>"
 
-#: src/jack-ng/jack-ng.cc:49
+#: src/jack-ng/jack-ng.cc:50
 msgid "JACK Output"
 msgstr "ЏЕК излаз"
 
-#: src/jack-ng/jack-ng.cc:114
+#: src/jack-ng/jack-ng.cc:115
 msgid "Automatically connect to output ports"
 msgstr "Самостално повезивање на прикључнике излаза"
 
-#: src/jack-ng/jack-ng.cc:155
+#: src/jack-ng/jack-ng.cc:156
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr "Нашао сам само %d излазна прикључка ЏЕК-а али су потребна %d."
 
-#: src/jack-ng/jack-ng.cc:171
+#: src/jack-ng/jack-ng.cc:172
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr "Нисам успео да се повежем на прикључник ЏЕК-а „%s“."
 
-#: src/jack-ng/jack-ng.cc:191
+#: src/jack-ng/jack-ng.cc:192
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
@@ -2217,11 +2217,11 @@ msgstr ""
 "ЏЕК подржава само звук покретног зареза.  Морате изменити дубину излазног "
 "бита на покретни зарез у подешавањима Безочника."
 
-#: src/jack-ng/jack-ng.cc:204
+#: src/jack-ng/jack-ng.cc:205
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr "Нисам успео да се повежем на сервер ЏЕК-а; да ли је покренут?"
 
-#: src/jack-ng/jack-ng.cc:280
+#: src/jack-ng/jack-ng.cc:281
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -3026,13 +3026,13 @@ msgstr ""
 "Прикључак СДЛ излаза за Безочника\n"
 "Ауторска права 2010 Џон Линдгрин"
 
-#: src/search-tool-qt/search-tool-qt.cc:187
-#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:120
-#: src/search-tool/search-tool.cc:128
+#: src/search-tool-qt/search-tool-qt.cc:193
+#: src/search-tool-qt/search-tool-qt.cc:201 src/search-tool/search-tool.cc:126
+#: src/search-tool/search-tool.cc:134
 msgid "Library"
 msgstr "Библиотека"
 
-#: src/search-tool-qt/search-tool-qt.cc:460 src/search-tool/search-tool.cc:393
+#: src/search-tool-qt/search-tool-qt.cc:474 src/search-tool/search-tool.cc:407
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
@@ -3040,7 +3040,7 @@ msgstr[0] "%d резултат"
 msgstr[1] "%d резултата"
 msgstr[2] "%d резултата"
 
-#: src/search-tool-qt/search-tool-qt.cc:466 src/search-tool/search-tool.cc:399
+#: src/search-tool-qt/search-tool-qt.cc:480 src/search-tool/search-tool.cc:413
 #, c-format
 msgid "(%d hidden)"
 msgid_plural "(%d hidden)"
@@ -3048,7 +3048,7 @@ msgstr[0] "(%d скривена)"
 msgstr[1] "(%d скривене)"
 msgstr[2] "(%d скривених)"
 
-#: src/search-tool-qt/search-tool-qt.cc:640 src/search-tool/search-tool.cc:569
+#: src/search-tool-qt/search-tool-qt.cc:661 src/search-tool/search-tool.cc:590
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
@@ -3056,31 +3056,31 @@ msgstr[0] "%d песма"
 msgstr[1] "%d песме"
 msgstr[2] "%d песама"
 
-#: src/search-tool-qt/search-tool-qt.cc:647 src/search-tool/search-tool.cc:576
+#: src/search-tool-qt/search-tool-qt.cc:668 src/search-tool/search-tool.cc:597
 msgid "of this genre"
 msgstr "овог жанра"
 
-#: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
+#: src/search-tool-qt/search-tool-qt.cc:674 src/search-tool/search-tool.cc:603
 msgid "on"
 msgstr " "
 
-#: src/search-tool-qt/search-tool-qt.cc:653 src/search-tool/search-tool.cc:582
+#: src/search-tool-qt/search-tool-qt.cc:674 src/search-tool/search-tool.cc:603
 msgid "by"
 msgstr "изводи"
 
-#: src/search-tool-qt/search-tool-qt.cc:665 src/search-tool/search-tool.cc:618
+#: src/search-tool-qt/search-tool-qt.cc:686 src/search-tool/search-tool.cc:639
 msgid "_Create Playlist"
 msgstr "_Направи списак нумера"
 
-#: src/search-tool-qt/search-tool-qt.cc:666 src/search-tool/search-tool.cc:620
+#: src/search-tool-qt/search-tool-qt.cc:687 src/search-tool/search-tool.cc:641
 msgid "_Add to Playlist"
 msgstr "_Додај у списак нумера"
 
-#: src/search-tool-qt/search-tool-qt.cc:682 src/search-tool/search-tool.cc:661
+#: src/search-tool-qt/search-tool-qt.cc:703 src/search-tool/search-tool.cc:682
 msgid "Search library"
 msgstr "Претражите библиотеку"
 
-#: src/search-tool-qt/search-tool-qt.cc:685 src/search-tool/search-tool.cc:665
+#: src/search-tool-qt/search-tool-qt.cc:706 src/search-tool/search-tool.cc:686
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -3088,11 +3088,11 @@ msgstr ""
 "Да увезете вашу музичку библиотеку у Безочнику, изаберите фасциклу и затим "
 "кликните на иконицу „освежи“."
 
-#: src/search-tool-qt/search-tool-qt.cc:691 src/search-tool/search-tool.cc:674
+#: src/search-tool-qt/search-tool-qt.cc:712 src/search-tool/search-tool.cc:695
 msgid "Please wait ..."
 msgstr "Молим сачекајте ..."
 
-#: src/search-tool/search-tool.cc:701
+#: src/search-tool/search-tool.cc:722
 msgid "Choose Folder"
 msgstr "Изаберите фасциклу"
 
@@ -4278,15 +4278,15 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "Вејвпак декодер"
 
-#: src/wavpack/wavpack.cc:211
+#: src/wavpack/wavpack.cc:213
 msgid "lossy (hybrid)"
 msgstr "ослабљено (хибридно)"
 
-#: src/wavpack/wavpack.cc:213
+#: src/wavpack/wavpack.cc:215
 msgid "lossy"
 msgstr "ослабљено"
 
-#: src/wavpack/wavpack.cc:255
+#: src/wavpack/wavpack.cc:257
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"

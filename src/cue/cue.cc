@@ -75,6 +75,31 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
             filename = String (uri_construct (cur_name, cue_filename));
             decoder = filename ? aud_file_find_decoder (filename, false) : nullptr;
             base_tuple = decoder ? aud_file_read_tuple (filename, decoder) : Tuple ();
+
+            if (base_tuple)
+            {
+                Cdtext * cdtext = cd_get_cdtext (cd);
+
+                if (cdtext)
+                {
+                    const char * s;
+                    if ((s = cdtext_get (PTI_PERFORMER, cdtext)))
+                        base_tuple.set_str (Tuple::AlbumArtist, s);
+                    if ((s = cdtext_get (PTI_TITLE, cdtext)))
+                        base_tuple.set_str (Tuple::Album, s);
+                    if ((s = cdtext_get (PTI_GENRE, cdtext)))
+                        base_tuple.set_str (Tuple::Genre, s);
+                }
+
+                Rem * rem = cd_get_rem (cd);
+
+                if (rem)
+                {
+                    const char * s;
+                    if ((s = rem_get (REM_DATE, rem)))
+                        base_tuple.set_int (Tuple::Year, str_to_int (s));
+                }
+            }
         }
 
         Track * next = (track + 1 <= tracks) ? cd_get_track (cd, track + 1) : nullptr;
@@ -84,8 +109,9 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
 
         if (base_tuple)
         {
+            StringBuf tfilename = str_printf ("%s?%d", (const char *) filename, track);
             Tuple tuple = base_tuple.ref ();
-            tuple.set_filename (filename);
+            tuple.set_filename (tfilename);
             tuple.set_int (Tuple::Track, track);
 
             int begin = (int64_t) track_get_start (cur) * 1000 / 75;
@@ -113,9 +139,20 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                     tuple.set_str (Tuple::Artist, s);
                 if ((s = cdtext_get (PTI_TITLE, cdtext)))
                     tuple.set_str (Tuple::Title, s);
+                if ((s = cdtext_get (PTI_GENRE, cdtext)))
+                    tuple.set_str (Tuple::Genre, s);
             }
 
-            items.append (String (filename), std::move (tuple), decoder);
+            Rem * rem = cd_get_rem (cd);
+
+            if (rem)
+            {
+                const char * s;
+                if ((s = rem_get (REM_DATE, rem)))
+                    tuple.set_int (Tuple::Year, str_to_int (s));
+            }
+
+            items.append (String (tfilename), std::move (tuple), decoder);
         }
 
         if (! next_name)
