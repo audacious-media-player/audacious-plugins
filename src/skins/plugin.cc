@@ -86,6 +86,9 @@ public:
         { audgui_plugin_menu_add (id, func, name, icon); }
     void plugin_menu_remove (AudMenuID id, void func ())
         { audgui_plugin_menu_remove (id, func); }
+
+    void startup_notify (const char * id)
+        { gdk_notify_startup_complete_with_id (id); }
 };
 
 EXPORT SkinnedUI aud_plugin_instance;
