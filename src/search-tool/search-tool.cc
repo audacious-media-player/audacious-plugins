@@ -253,7 +253,7 @@ static void search_cb (const Key & key, Item & item, void * _state)
     state->mask = oldmask;
 }
 
-static int item_compare (const Item * const & a, const Item * const & b, void *)
+static int item_compare (const Item * const & a, const Item * const & b)
 {
     if (a->field < b->field)
         return -1;
@@ -265,19 +265,19 @@ static int item_compare (const Item * const & a, const Item * const & b, void *)
         return val;
 
     if (a->parent)
-        return b->parent ? item_compare (a->parent, b->parent, nullptr) : 1;
+        return b->parent ? item_compare (a->parent, b->parent) : 1;
     else
         return b->parent ? -1 : 0;
 }
 
-static int item_compare_pass1 (const Item * const & a, const Item * const & b, void *)
+static int item_compare_pass1 (const Item * const & a, const Item * const & b)
 {
     if (a->matches.len () > b->matches.len ())
         return -1;
     if (a->matches.len () < b->matches.len ())
         return 1;
 
-    return item_compare (a, b, nullptr);
+    return item_compare (a, b);
 }
 
 static void do_search ()
@@ -298,7 +298,7 @@ static void do_search ()
     items = std::move (state.items);
 
     /* first sort by number of songs per item */
-    items.sort (item_compare_pass1, nullptr);
+    items.sort (item_compare_pass1);
 
     /* limit to items with most songs */
     if (items.len () > MAX_RESULTS)
@@ -308,7 +308,7 @@ static void do_search ()
     }
 
     /* sort by item type, then item name */
-    items.sort (item_compare, nullptr);
+    items.sort (item_compare);
 
     selection.remove (0, -1);
     selection.insert (0, items.len ());

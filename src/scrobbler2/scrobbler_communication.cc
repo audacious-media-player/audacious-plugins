@@ -48,14 +48,10 @@ static size_t result_callback (void *buffer, size_t size, size_t nmemb, void *us
     return len;
 }
 
-static int param_compare (const API_Parameter & a, const API_Parameter & b, void *)
-{
-    return g_strcmp0 (a.paramName, b.paramName);
-}
-
 static char * scrobbler_get_signature (Index<API_Parameter> & params)
 {
-    params.sort (param_compare, nullptr);
+    params.sort ([] (const API_Parameter & a, const API_Parameter & b)
+        { return g_strcmp0 (a.paramName, b.paramName); });
 
     StringBuf buf (0);
 
