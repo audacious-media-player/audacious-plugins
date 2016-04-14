@@ -99,17 +99,16 @@ static void
 aosd_cb_configure_position_placement_commit ( GtkWidget * grid , aosd_cfg_t * cfg )
 {
   GList *placbt_list = gtk_container_get_children( GTK_CONTAINER(grid) );
-  GList *list_iter = placbt_list;
 
-  while ( list_iter != nullptr )
+  for ( GList *iter = placbt_list; iter != nullptr; iter = iter->next )
   {
-    GtkWidget *placbt = (GtkWidget *) list_iter->data;
+    GtkWidget *placbt = (GtkWidget *) iter->data;
+
     if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(placbt) ) == true )
     {
       cfg->position.placement = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(placbt),"value"));
       break;
     }
-    list_iter = g_list_next( list_iter );
   }
 
   g_list_free( placbt_list );
@@ -678,15 +677,17 @@ static void
 aosd_cb_configure_misc_transp_commit ( GtkWidget * mis_transp_vbox , aosd_cfg_t * cfg )
 {
   GList *child_list = gtk_container_get_children( GTK_CONTAINER(mis_transp_vbox) );
-  while (child_list != nullptr)
+
+  for ( GList *iter = child_list; iter != nullptr; iter = iter->next )
   {
-    if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(child_list->data) ) )
+    if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(iter->data) ) )
     {
-      cfg->misc.transparency_mode = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(child_list->data),"val"));
+      cfg->misc.transparency_mode = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(iter->data), "val"));
       break;
     }
-    child_list = g_list_next(child_list);
   }
+
+  g_list_free( child_list );
 }
 
 
