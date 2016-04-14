@@ -180,6 +180,7 @@ GtkWidget *create_config_notebook ()
 
     adjustment = gtk_adjustment_new (6, 0, 23, 1, 10, 0);
     alarm_h_spin = gtk_spin_button_new (adjustment, 1, 0);
+    gtk_widget_set_valign (alarm_h_spin, GTK_ALIGN_CENTER);
     g_object_set_data (G_OBJECT (notebook), "alarm_h_spin", alarm_h_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (alarm_h_spin), GTK_UPDATE_IF_VALID);
     gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (alarm_h_spin), true);
@@ -191,6 +192,7 @@ GtkWidget *create_config_notebook ()
 
     adjustment = gtk_adjustment_new (30, 0, 59, 1, 10, 0);
     alarm_m_spin = gtk_spin_button_new (adjustment, 1, 0);
+    gtk_widget_set_valign (alarm_m_spin, GTK_ALIGN_CENTER);
     g_object_set_data (G_OBJECT (notebook), "alarm_m_spin", alarm_m_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (alarm_m_spin), GTK_UPDATE_IF_VALID);
     gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (alarm_m_spin), true);
@@ -209,6 +211,7 @@ GtkWidget *create_config_notebook ()
 
     adjustment = gtk_adjustment_new (0, 0, 100, 1, 10, 0);
     stop_h_spin = gtk_spin_button_new (adjustment, 1, 0);
+    gtk_widget_set_valign (stop_h_spin, GTK_ALIGN_CENTER);
     g_object_set_data (G_OBJECT (notebook), "stop_h_spin", stop_h_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (stop_h_spin), GTK_UPDATE_IF_VALID);
     gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (stop_h_spin), true);
@@ -221,6 +224,7 @@ GtkWidget *create_config_notebook ()
 
     adjustment = gtk_adjustment_new (0, 0, 59, 1, 10, 0);
     stop_m_spin = gtk_spin_button_new (adjustment, 1, 0);
+    gtk_widget_set_valign (stop_m_spin, GTK_ALIGN_CENTER);
     g_object_set_data (G_OBJECT (notebook), "stop_m_spin", stop_m_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (stop_m_spin), GTK_UPDATE_IF_VALID);
     gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (stop_m_spin), true);
