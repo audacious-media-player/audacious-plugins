@@ -89,6 +89,10 @@ if test "x$USE_GTK" = "xyes" -o "x$USE_QT" = "xyes" ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS delete-files skins-data"
 fi
 
+if test $HAVE_MSWINDOWS = yes ; then
+    OUTPUT_PLUGINS="$OUTPUT_PLUGINS waveout"
+fi
+
 dnl Console
 dnl =======
 
@@ -1112,6 +1116,7 @@ echo "  Open Sound System:                      $have_oss4"
 echo "  PulseAudio:                             $have_pulse"
 echo "  Simple DirectMedia Layer:               $have_sdlout"
 echo "  Sndio:                                  $have_sndio"
+echo "  Win32 waveOut:                          $HAVE_MSWINDOWS"
 echo "  FileWriter:                             $enable_filewriter"
 echo "    -> MP3 encoding:                      $have_lame"
 echo "    -> Vorbis encoding:                   $have_vorbisenc"
