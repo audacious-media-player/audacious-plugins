@@ -79,6 +79,12 @@ MainWindow::MainWindow () :
     QIcon::setThemeSearchPaths (paths);
 #endif
 
+    int instance = aud_get_instance ();
+    if (instance == 1)
+        m_config_name = "audacious";
+    else
+        m_config_name = QString ("audacious-%1").arg (instance);
+
     auto slider = new TimeSlider (this);
 
     const ToolBarItem items[] = {
@@ -137,7 +143,7 @@ MainWindow::MainWindow () :
 
 MainWindow::~MainWindow ()
 {
-    QSettings settings ("audacious", "QtUi");
+    QSettings settings (m_config_name, "QtUi");
     settings.setValue ("geometry", saveGeometry ());
     settings.setValue ("windowState", saveState ());
 
@@ -158,7 +164,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
 
 void MainWindow::readSettings ()
 {
-    QSettings settings ("audacious", "QtUi");
+    QSettings settings (m_config_name, "QtUi");
 
     if (! restoreGeometry (settings.value ("geometry").toByteArray ()))
         resize (768, 480);

@@ -43,6 +43,7 @@ public:
     ~MainWindow ();
 
 private:
+    QString m_config_name;
     DialogWindows m_dialogs;
     FilterInput * filterInput;
     PlaylistTabs * playlistTabs;
