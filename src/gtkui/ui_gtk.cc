@@ -217,19 +217,23 @@ static void title_change (void * = nullptr)
 {
     delayed_title_change.stop ();
 
+    StringBuf title;
+
     if (aud_drct_get_playing ())
     {
         if (aud_drct_get_ready ())
-        {
-            String title = aud_drct_get_title ();
-            gtk_window_set_title ((GtkWindow *) window,
-             str_printf (_("%s - Audacious"), (const char *) title));
-        }
+            title.steal (str_printf (_("%s - Audacious"), (const char *) aud_drct_get_title ()));
         else
-            gtk_window_set_title ((GtkWindow *) window, _("Buffering ..."));
+            title.steal (str_copy (_("Buffering ...")));
     }
     else
-        gtk_window_set_title ((GtkWindow *) window, _("Audacious"));
+        title.steal (str_copy (_("Audacious")));
+
+    int instance = aud_get_instance ();
+    if (instance != 1)
+        title.combine (str_printf (" (%d)", instance));
+
+    gtk_window_set_title ((GtkWindow *) window, title);
 }
 
 void GtkUI::show (bool show)

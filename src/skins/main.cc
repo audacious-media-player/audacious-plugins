@@ -211,11 +211,18 @@ void mainwin_show_status_message (const char * message)
 
 static void mainwin_set_song_title (const char * title)
 {
-    if (title)
-        mainwin->setWindowTitle ((const char *) str_printf (_("%s - Audacious"), title));
-    else
-        mainwin->setWindowTitle (_("Audacious"));
+    StringBuf buf;
 
+    if (title)
+        buf.steal (str_printf (_("%s - Audacious"), title));
+    else
+        buf.steal (str_copy (_("Audacious")));
+
+    int instance = aud_get_instance ();
+    if (instance != 1)
+        buf.combine (str_printf (" (%d)", instance));
+
+    mainwin->setWindowTitle ((const char *) buf);
     mainwin_set_info_text (title ? title : "");
 }
 
@@ -1100,7 +1107,6 @@ static void mainwin_create_window ()
     bool shaded = aud_get_bool ("skins", "player_shaded");
 
     mainwin = new MainWindow (shaded);
-    mainwin->setWindowTitle (_("Audacious"));
 
     GtkWidget * w = mainwin->gtk ();
     drag_dest_set (w);
@@ -1153,6 +1159,7 @@ void mainwin_create ()
 {
     mainwin_create_window ();
     mainwin_create_widgets ();
+    mainwin_set_song_title (nullptr);
 }
 
 static void mainwin_update_volume ()

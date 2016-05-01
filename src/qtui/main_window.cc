@@ -183,6 +183,15 @@ void MainWindow::keyPressEvent (QKeyEvent * e)
     QMainWindow::keyPressEvent (e);
 }
 
+void MainWindow::setWindowTitle (const QString & title)
+{
+    int instance = aud_get_instance ();
+    if (instance == 1)
+        QMainWindow::setWindowTitle (title);
+    else
+        QMainWindow::setWindowTitle (QString ("%1 (%2)").arg (title).arg (instance));
+}
+
 void MainWindow::updateToggles ()
 {
     toolButtonRepeat->setChecked (aud_get_bool (nullptr, "repeat"));

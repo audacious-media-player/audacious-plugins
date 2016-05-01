@@ -59,6 +59,8 @@ private:
     void closeEvent (QCloseEvent * e);
     void keyPressEvent (QKeyEvent * e);
 
+    void setWindowTitle (const QString & title);
+
     void updateToggles ();
     void setupActions ();
     void readSettings ();
