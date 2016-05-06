@@ -256,7 +256,7 @@ static const AudguiMenuItem rclick_items[] = {
     MenuCommand (N_("_Queue/Unqueue"), nullptr, 'q', ALT, playlist_queue_toggle),
     MenuSep (),
     MenuCommand (N_("_Open Containing Folder"), "folder", NONE, playlist_open_folder),
-    MenuCommand (N_("_Refresh"), "view-refresh", GDK_KEY_F6, (GdkModifierType) 0, pl_refresh_sel),
+    MenuCommand (N_("_Refresh Selected"), "view-refresh", GDK_KEY_F6, (GdkModifierType) 0, pl_refresh_sel),
     MenuSep (),
     MenuCommand (N_("Cu_t"), "edit-cut", NONE, playlist_cut),
     MenuCommand (N_("_Copy"), "edit-copy", NONE, playlist_copy),
