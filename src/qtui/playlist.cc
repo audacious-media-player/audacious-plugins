@@ -18,6 +18,7 @@
  */
 
 #include <QKeyEvent>
+#include <QMenu>
 #include <QSortFilterProxyModel>
 
 #include <libaudcore/audstrings.h>
@@ -29,7 +30,7 @@
 #include "playlist.h"
 #include "playlist_model.h"
 
-PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (parent)
+PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueId) : QTreeView (parent)
 {
     model = new PlaylistModel (nullptr, uniqueId);
 
@@ -89,6 +90,12 @@ int PlaylistWidget::indexToRow (const QModelIndex & index)
     return proxyModel->mapToSource (index).row ();
 }
 
+void PlaylistWidget::contextMenuEvent (QContextMenuEvent * event)
+{
+    if (contextMenu)
+        contextMenu->popup (event->globalPos ());
+}
+
 void PlaylistWidget::keyPressEvent (QKeyEvent * event)
 {
     switch (event->modifiers ())
@@ -137,23 +144,12 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
         break;
     }
 
-     QTreeView::keyPressEvent (event);
-}
-
-void PlaylistWidget::mousePressEvent (QMouseEvent * event)
-{
-    QModelIndex index = indexAt (event->pos ());
-
-    if (! index.isValid ())
-        return;
-
-    QTreeView::mousePressEvent (event);
+    QTreeView::keyPressEvent (event);
 }
 
 void PlaylistWidget::mouseDoubleClickEvent (QMouseEvent * event)
 {
     QModelIndex index = indexAt (event->pos ());
-
     if (! index.isValid ())
         return;
 

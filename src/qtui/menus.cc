@@ -34,6 +34,7 @@
 #include <libaudqt/menu.h>
 
 static QMenu * services_menu () { return audqt::menu_get_by_id (AudMenuID::Main); }
+static QMenu * services_menu_pl () { return audqt::menu_get_by_id (AudMenuID::Playlist); }
 
 static void open_files () { audqt::fileopener_show (audqt::FileMode::Open); }
 static void add_files () { audqt::fileopener_show (audqt::FileMode::Add); }
@@ -77,6 +78,37 @@ static void pl_refresh () { aud_playlist_rescan (aud_playlist_get_active ()); }
 static void pl_remove_failed () { aud_playlist_remove_failed (aud_playlist_get_active ()); }
 static void pl_rename () { hook_call ("qtui rename playlist", nullptr); }
 static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_active ()); }
+static void pl_refresh_sel () { aud_playlist_rescan_selected (aud_playlist_get_active ()); }
+static void pl_select_all () { aud_playlist_select_all (aud_playlist_get_active (), true); }
+
+static void pl_song_info ()
+{
+    int list = aud_playlist_get_active ();
+    int focus = aud_playlist_get_focus (list);
+    if (focus >= 0)
+        audqt::infowin_show (list, focus);
+}
+
+static void pl_queue_toggle ()
+{
+    int list = aud_playlist_get_active ();
+    int focus = aud_playlist_get_focus (list);
+    if (focus < 0)
+        return;
+
+    /* make sure focused row is selected */
+    if (! aud_playlist_entry_get_selected (list, focus))
+    {
+        aud_playlist_select_all (list, false);
+        aud_playlist_entry_set_selected (list, focus, true);
+    }
+
+    int at = aud_playlist_queue_find_entry (list, focus);
+    if (at < 0)
+        aud_playlist_queue_insert_selected (list, -1);
+    else
+        aud_playlist_queue_delete_selected (list);
+}
 
 static void volume_up () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
 static void volume_down () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
@@ -193,4 +225,24 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
     };
 
     return audqt::menubar_build (main_items, parent);
+}
+
+QMenu * qtui_build_pl_menu (QWidget * parent)
+{
+    static const audqt::MenuItem pl_items[] = {
+        audqt::MenuCommand ({N_("Song _Info ..."), "dialog-information", "Alt+I"}, pl_song_info),
+        audqt::MenuCommand ({N_("_Queue/Unqueue"), nullptr, "Alt+Q"}, pl_queue_toggle),
+        audqt::MenuSep (),
+    //    audqt::MenuCommand ({N_("_Open Containing Folder"), "folder"}, playlist_open_folder),
+        audqt::MenuCommand ({N_("_Refresh Selected"), "view-refresh", "F6"}, pl_refresh_sel),
+    //    audqt::MenuSep (),
+    //    audqt::MenuCommand ({N_("Cu_t"), "edit-cut"}, playlist_cut),
+    //    audqt::MenuCommand ({N_("_Copy"), "edit-copy"}, playlist_copy),
+    //    audqt::MenuCommand ({N_("_Paste"), "edit-paste"}, playlist_paste),
+        audqt::MenuCommand ({N_("Select _All"), "edit-select-all"}, pl_select_all),
+        audqt::MenuSep (),
+        audqt::MenuSub ({N_("_Services")}, services_menu_pl)
+    };
+
+    return audqt::menu_build (pl_items, parent);
 }

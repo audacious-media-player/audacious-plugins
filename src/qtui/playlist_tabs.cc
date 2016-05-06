@@ -19,6 +19,7 @@
 
 #include "playlist.h"
 #include "playlist_tabs.h"
+#include "menus.h"
 
 #include <QKeyEvent>
 #include <QLineEdit>
@@ -30,6 +31,7 @@
 
 PlaylistTabs::PlaylistTabs (QWidget * parent) :
     QTabWidget (parent),
+    m_pl_menu (qtui_build_pl_menu (this)),
     m_leftbtn (nullptr),
     m_tabbar (new PlaylistTabBar (this))
 {
@@ -44,6 +46,14 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
     setCurrentIndex (aud_playlist_get_active ());
 
     connect (this, & QTabWidget::currentChanged, this, & PlaylistTabs::currentChangedTrigger);
+}
+
+PlaylistWidget * PlaylistTabs::createWidget (int list)
+{
+    int id = aud_playlist_get_unique_id (list);
+    auto widget = new PlaylistWidget (this, id);
+    widget->setContextMenu (m_pl_menu);
+    return widget;
 }
 
 void PlaylistTabs::addRemovePlaylists ()
@@ -83,8 +93,7 @@ void PlaylistTabs::addRemovePlaylists ()
 
             if (! found)
             {
-                int id = aud_playlist_get_unique_id (i);
-                insertTab (i, new PlaylistWidget (0, id), QString ());
+                insertTab (i, createWidget (i), QString ());
                 tabs ++;
             }
         }
@@ -92,8 +101,7 @@ void PlaylistTabs::addRemovePlaylists ()
 
     while (tabs < playlists)
     {
-        int id = aud_playlist_get_unique_id (tabs);
-        addTab (new PlaylistWidget (0, id), QString ());
+        addTab (createWidget (tabs), QString ());
         tabs ++;
     }
 }
