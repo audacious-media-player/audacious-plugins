@@ -40,9 +40,7 @@ public:
     void updatePlaybackIndicator ();
     void update (const Playlist::Update & update);
     void playCurrentIndex ();
-    void deleteCurrentSelection ();
     void setFilter (const QString & text);
-    void toggleQueue ();
 
     int playlist () const;
     int uniqueId () const;

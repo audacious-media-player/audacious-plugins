@@ -18,6 +18,7 @@
  */
 
 #include "menus.h"
+#include "../ui-common/menu-ops.h"
 
 #include <QMenuBar>
 
@@ -43,43 +44,8 @@ static void add_folder () { audqt::fileopener_show (audqt::FileMode::AddFolder);
 static void open_url () { audqt::urlopener_show (true); }
 static void add_url () { audqt::urlopener_show (false); }
 
-static void rm_dupes_title () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void rm_dupes_filename () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Filename); }
-static void rm_dupes_path () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Path); }
-
-static void sort_track () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
-static void sort_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void sort_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
-static void sort_album () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
-static void sort_album_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
-static void sort_date () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
-static void sort_genre () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Genre); }
-static void sort_length () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
-static void sort_path () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
-static void sort_custom_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
-static void sort_reverse () { aud_playlist_reverse (aud_playlist_get_active ()); }
-static void sort_random () { aud_playlist_randomize (aud_playlist_get_active ()); }
-
-static void sort_sel_track () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
-static void sort_sel_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void sort_sel_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
-static void sort_sel_album () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
-static void sort_sel_album_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
-static void sort_sel_date () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
-static void sort_sel_genre () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Genre); }
-static void sort_sel_length () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
-static void sort_sel_path () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
-static void sort_sel_custom_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
-static void sort_sel_reverse () { aud_playlist_reverse (aud_playlist_get_active ()); }
-static void sort_sel_random () { aud_playlist_randomize (aud_playlist_get_active ()); }
-
-static void pl_play () { aud_playlist_play (aud_playlist_get_active ()); }
-static void pl_refresh () { aud_playlist_rescan (aud_playlist_get_active ()); }
-static void pl_remove_failed () { aud_playlist_remove_failed (aud_playlist_get_active ()); }
 static void pl_rename () { hook_call ("qtui rename playlist", nullptr); }
 static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_active ()); }
-static void pl_refresh_sel () { aud_playlist_rescan_selected (aud_playlist_get_active ()); }
-static void pl_select_all () { aud_playlist_select_all (aud_playlist_get_active (), true); }
 
 static void pl_song_info ()
 {
@@ -88,30 +54,6 @@ static void pl_song_info ()
     if (focus >= 0)
         audqt::infowin_show (list, focus);
 }
-
-static void pl_queue_toggle ()
-{
-    int list = aud_playlist_get_active ();
-    int focus = aud_playlist_get_focus (list);
-    if (focus < 0)
-        return;
-
-    /* make sure focused row is selected */
-    if (! aud_playlist_entry_get_selected (list, focus))
-    {
-        aud_playlist_select_all (list, false);
-        aud_playlist_entry_set_selected (list, focus, true);
-    }
-
-    int at = aud_playlist_queue_find_entry (list, focus);
-    if (at < 0)
-        aud_playlist_queue_insert_selected (list, -1);
-    else
-        aud_playlist_queue_delete_selected (list);
-}
-
-static void volume_up () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
-static void volume_down () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
 
 static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
 

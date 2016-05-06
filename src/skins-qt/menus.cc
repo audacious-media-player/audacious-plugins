@@ -27,6 +27,7 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/playlist.h>
 #include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
 #include <libaudqt/menu.h>
@@ -35,6 +36,8 @@
 #include "actions-playlist.h"
 #include "main.h"
 #include "view.h"
+
+#include "../ui-common/menu-ops.h"
 
 static QMenu * menus[UI_MENUS];
 
@@ -52,8 +55,8 @@ static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType:
 static void configure_output () { audqt::prefswin_show_plugin_page (PluginType::Output); }
 static void configure_visualizations () { audqt::prefswin_show_plugin_page (PluginType::Vis); }
 
-static void volume_up () { mainwin_set_volume_diff (5); }
-static void volume_down () { mainwin_set_volume_diff (-5); }
+static void skins_volume_up () { mainwin_set_volume_diff (5); }
+static void skins_volume_down () { mainwin_set_volume_diff (-5); }
 
 /* emulate a config item for the recording toggle */
 static void toggle_record ()
@@ -80,8 +83,8 @@ static void record_toggled (void * = nullptr, void * = nullptr)
 }
 
 static const audqt::MenuItem output_items[] = {
-    audqt::MenuCommand ({N_("Volume Up"), "audio-volume-high", "+"}, volume_up),
-    audqt::MenuCommand ({N_("Volume Down"), "audio-volume-low", "-"}, volume_down),
+    audqt::MenuCommand ({N_("Volume Up"), "audio-volume-high", "+"}, skins_volume_up),
+    audqt::MenuCommand ({N_("Volume Down"), "audio-volume-low", "-"}, skins_volume_down),
     audqt::MenuSep (),
     audqt::MenuCommand ({N_("Effects ...")}, configure_effects),
     audqt::MenuSep (),
@@ -132,14 +135,14 @@ static const audqt::MenuItem playback_items[] = {
 };
 
 static const audqt::MenuItem playlist_items[] = {
-    audqt::MenuCommand ({N_("Play/Resume"), "media-playback-start", "Shift+Return"}, action_playlist_play),
+    audqt::MenuCommand ({N_("Play/Resume"), "media-playback-start", "Shift+Return"}, pl_play),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("New Playlist"), "document-new", "Shift+N"}, action_playlist_new),
+    audqt::MenuCommand ({N_("New Playlist"), "document-new", "Shift+N"}, (audqt::MenuFunc) aud_playlist_new),
     audqt::MenuCommand ({N_("Rename Playlist ..."), "insert-text", "F2"}, action_playlist_rename),
     audqt::MenuCommand ({N_("Remove Playlist"), "edit-delete", "Shift+D"}, action_playlist_delete),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Previous Playlist"), "media-skip-backward", "Shift+Tab"}, action_playlist_prev),
-    audqt::MenuCommand ({N_("Next Playlist"), "media-skip-forward", "Tab"}, action_playlist_next),
+    audqt::MenuCommand ({N_("Previous Playlist"), "media-skip-backward", "Shift+Tab"}, pl_prev),
+    audqt::MenuCommand ({N_("Next Playlist"), "media-skip-forward", "Tab"}, pl_next),
     audqt::MenuSep (),
 #if 0
     audqt::MenuCommand ({N_("Import Playlist ..."), "document-open", "O"}, audgui_import_playlist),
@@ -149,7 +152,7 @@ static const audqt::MenuItem playlist_items[] = {
     audqt::MenuCommand ({N_("Playlist Manager ..."), "audio-x-generic", "P"}, action_playlist_manager),
     audqt::MenuCommand ({N_("Queue Manager ..."), nullptr, "Ctrl+U"}, audqt::queue_manager_show),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Refresh Playlist"), "view-refresh", "F5"}, action_playlist_refresh_list)
+    audqt::MenuCommand ({N_("Refresh Playlist"), "view-refresh", "F5"}, pl_refresh)
 };
 
 static const audqt::MenuItem view_items[] = {
@@ -180,61 +183,61 @@ static const audqt::MenuItem playlist_add_items[] = {
 };
 
 static const audqt::MenuItem dupe_items[] = {
-    audqt::MenuCommand ({N_("By Title")}, action_playlist_remove_dupes_by_title),
-    audqt::MenuCommand ({N_("By File Name")}, action_playlist_remove_dupes_by_filename),
-    audqt::MenuCommand ({N_("By File Path")}, action_playlist_remove_dupes_by_full_path)
+    audqt::MenuCommand ({N_("By Title")}, rm_dupes_title),
+    audqt::MenuCommand ({N_("By File Name")}, rm_dupes_filename),
+    audqt::MenuCommand ({N_("By File Path")}, rm_dupes_path)
 };
 
 static const audqt::MenuItem playlist_remove_items[] = {
     audqt::MenuSub ({N_("Services")}, get_plugin_menu_playlist_remove),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Remove All"), "edit-delete"}, action_playlist_remove_all),
-    audqt::MenuCommand ({N_("Clear Queue"), "edit-clear", "Shift+Q"}, action_playlist_clear_queue),
+    audqt::MenuCommand ({N_("Remove All"), "edit-delete"}, pl_remove_all),
+    audqt::MenuCommand ({N_("Clear Queue"), "edit-clear", "Shift+Q"}, pl_queue_clear),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Remove Unavailable Files"), "dialog-warning"}, action_playlist_remove_unavailable),
+    audqt::MenuCommand ({N_("Remove Unavailable Files"), "dialog-warning"}, pl_remove_failed),
     audqt::MenuSub ({N_("Remove Duplicates"), "edit-copy"}, {dupe_items}),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Remove Unselected"), "list-remove"}, action_playlist_remove_unselected),
-    audqt::MenuCommand ({N_("Remove Selected"), "list-remove", "Delete"}, action_playlist_remove_selected)
+    audqt::MenuCommand ({N_("Remove Unselected"), "list-remove"}, pl_remove_unselected),
+    audqt::MenuCommand ({N_("Remove Selected"), "list-remove", "Delete"}, pl_remove_selected)
 };
 
 static const audqt::MenuItem playlist_select_items[] = {
-    audqt::MenuCommand ({N_("Invert Selection")}, action_playlist_invert_selection),
-    audqt::MenuCommand ({N_("Select None"), nullptr, "Shift+Ctrl+A"}, action_playlist_select_none),
-    audqt::MenuCommand ({N_("Select All"), "edit-select-all", "Ctrl+A"}, action_playlist_select_all),
+    audqt::MenuCommand ({N_("Invert Selection")}, pl_select_invert),
+    audqt::MenuCommand ({N_("Select None"), nullptr, "Shift+Ctrl+A"}, pl_select_none),
+    audqt::MenuCommand ({N_("Select All"), "edit-select-all", "Ctrl+A"}, pl_select_all),
 };
 
 static const audqt::MenuItem sort_items[] = {
-    audqt::MenuCommand ({N_("By Track Number")}, action_playlist_sort_by_track_number),
-    audqt::MenuCommand ({N_("By Title")}, action_playlist_sort_by_title),
-    audqt::MenuCommand ({N_("By Artist")}, action_playlist_sort_by_artist),
-    audqt::MenuCommand ({N_("By Album")}, action_playlist_sort_by_album),
-    audqt::MenuCommand ({N_("By Album Artist")}, action_playlist_sort_by_album_artist),
-    audqt::MenuCommand ({N_("By Release Date")}, action_playlist_sort_by_date),
-    audqt::MenuCommand ({N_("By Genre")}, action_playlist_sort_by_genre),
-    audqt::MenuCommand ({N_("By Length")}, action_playlist_sort_by_length),
-    audqt::MenuCommand ({N_("By File Name")}, action_playlist_sort_by_filename),
-    audqt::MenuCommand ({N_("By File Path")}, action_playlist_sort_by_full_path),
-    audqt::MenuCommand ({N_("By Custom Title")}, action_playlist_sort_by_custom_title)
+    audqt::MenuCommand ({N_("By Track Number")}, sort_track),
+    audqt::MenuCommand ({N_("By Title")}, sort_title),
+    audqt::MenuCommand ({N_("By Artist")}, sort_artist),
+    audqt::MenuCommand ({N_("By Album")}, sort_album),
+    audqt::MenuCommand ({N_("By Album Artist")}, sort_album_artist),
+    audqt::MenuCommand ({N_("By Release Date")}, sort_date),
+    audqt::MenuCommand ({N_("By Genre")}, sort_genre),
+    audqt::MenuCommand ({N_("By Length")}, sort_length),
+    audqt::MenuCommand ({N_("By File Name")}, sort_filename),
+    audqt::MenuCommand ({N_("By File Path")}, sort_path),
+    audqt::MenuCommand ({N_("By Custom Title")}, sort_custom_title)
 };
 
 static const audqt::MenuItem sort_selected_items[] = {
-    audqt::MenuCommand ({N_("By Track Number")}, action_playlist_sort_selected_by_track_number),
-    audqt::MenuCommand ({N_("By Title")}, action_playlist_sort_selected_by_title),
-    audqt::MenuCommand ({N_("By Artist")}, action_playlist_sort_selected_by_artist),
-    audqt::MenuCommand ({N_("By Album")}, action_playlist_sort_selected_by_album),
-    audqt::MenuCommand ({N_("By Album Artist")}, action_playlist_sort_selected_by_album_artist),
-    audqt::MenuCommand ({N_("By Genre")}, action_playlist_sort_selected_by_genre),
-    audqt::MenuCommand ({N_("By Release Date")}, action_playlist_sort_selected_by_date),
-    audqt::MenuCommand ({N_("By Length")}, action_playlist_sort_selected_by_length),
-    audqt::MenuCommand ({N_("By File Name")}, action_playlist_sort_selected_by_filename),
-    audqt::MenuCommand ({N_("By File Path")}, action_playlist_sort_selected_by_full_path),
-    audqt::MenuCommand ({N_("By Custom Title")}, action_playlist_sort_selected_by_custom_title)
+    audqt::MenuCommand ({N_("By Track Number")}, sort_sel_track),
+    audqt::MenuCommand ({N_("By Title")}, sort_sel_title),
+    audqt::MenuCommand ({N_("By Artist")}, sort_sel_artist),
+    audqt::MenuCommand ({N_("By Album")}, sort_sel_album),
+    audqt::MenuCommand ({N_("By Album Artist")}, sort_sel_album_artist),
+    audqt::MenuCommand ({N_("By Genre")}, sort_sel_genre),
+    audqt::MenuCommand ({N_("By Release Date")}, sort_sel_date),
+    audqt::MenuCommand ({N_("By Length")}, sort_sel_length),
+    audqt::MenuCommand ({N_("By File Name")}, sort_sel_filename),
+    audqt::MenuCommand ({N_("By File Path")}, sort_sel_path),
+    audqt::MenuCommand ({N_("By Custom Title")}, sort_sel_custom_title)
 };
 
 static const audqt::MenuItem playlist_sort_items[] = {
-    audqt::MenuCommand ({N_("Randomize List"), nullptr, "Shift+Ctrl+R"}, action_playlist_randomize_list),
-    audqt::MenuCommand ({N_("Reverse List"), "view-sort-descending"}, action_playlist_reverse_list),
+    audqt::MenuCommand ({N_("Randomize List"), nullptr, "Shift+Ctrl+R"}, sort_random),
+    audqt::MenuCommand ({N_("Reverse List"), "view-sort-descending"}, sort_reverse),
     audqt::MenuSep (),
     audqt::MenuSub ({N_("Sort Selected"), "view-sort-ascending"}, {sort_selected_items}),
     audqt::MenuSub ({N_("Sort List"), "view-sort-ascending"}, {sort_items})
@@ -249,7 +252,7 @@ static const audqt::MenuItem playlist_context_items[] = {
     audqt::MenuCommand ({N_("Paste"), "edit-paste", "Ctrl+V"}, action_playlist_paste),
     audqt::MenuSep (),
 #endif
-    audqt::MenuCommand ({N_("Queue/Unqueue"), nullptr, "Q"}, action_queue_toggle),
+    audqt::MenuCommand ({N_("Queue/Unqueue"), nullptr, "Q"}, pl_queue_toggle),
     audqt::MenuSep (),
     audqt::MenuSub ({N_("Services")}, get_plugin_menu_playlist)
 };

@@ -36,6 +36,8 @@
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 
+#include "../ui-common/menu-ops.h"
+
 #define SHIFT GDK_SHIFT_MASK
 #define CTRL GDK_CONTROL_MASK
 #define ALT GDK_MOD1_MASK
@@ -54,42 +56,8 @@ static void configure_effects () { audgui_show_prefs_for_plugin_type (PluginType
 static void configure_output () { audgui_show_prefs_for_plugin_type (PluginType::Output); }
 static void configure_visualizations () { audgui_show_prefs_for_plugin_type (PluginType::Vis); }
 
-static void pl_sort_track () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
-static void pl_sort_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void pl_sort_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
-static void pl_sort_album () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
-static void pl_sort_album_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
-static void pl_sort_date () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
-static void pl_sort_genre () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Genre); }
-static void pl_sort_length () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
-static void pl_sort_path () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
-static void pl_sort_custom () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
-static void pl_reverse () { aud_playlist_reverse (aud_playlist_get_active ()); }
-static void pl_random () { aud_playlist_randomize (aud_playlist_get_active ()); }
-
-static void pl_sort_selected_track () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Track); }
-static void pl_sort_selected_title () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void pl_sort_selected_artist () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
-static void pl_sort_selected_album () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Album); }
-static void pl_sort_selected_album_artist () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
-static void pl_sort_selected_date () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Date); }
-static void pl_sort_selected_genre () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Genre); }
-static void pl_sort_selected_length () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Length); }
-static void pl_sort_selected_path () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Path); }
-static void pl_sort_selected_custom () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
-static void pl_reverse_selected () { aud_playlist_reverse_selected (aud_playlist_get_active ()); }
-static void pl_random_selected () { aud_playlist_randomize_selected (aud_playlist_get_active ()); }
-
-static void pl_play () { aud_playlist_play (aud_playlist_get_active ()); }
-static void pl_refresh () { aud_playlist_rescan (aud_playlist_get_active ()); }
-static void pl_remove_failed () { aud_playlist_remove_failed (aud_playlist_get_active ()); }
-static void pl_remove_dupes_by_title () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void pl_remove_dupes_by_filename () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Filename); }
-static void pl_remove_dupes_by_path () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Path); }
 static void pl_rename () { start_rename_playlist (aud_playlist_get_active ()); }
 static void pl_close () { audgui_confirm_playlist_delete (aud_playlist_get_active ()); }
-static void pl_refresh_sel () { aud_playlist_rescan_selected (aud_playlist_get_active ()); }
-static void pl_select_all () { aud_playlist_select_all (aud_playlist_get_active (), true); }
 
 static void pl_tab_play ()
 {
@@ -114,9 +82,6 @@ static void pl_tab_close ()
 
 static GtkWidget * get_services_main () { return audgui_get_plugin_menu (AudMenuID::Main); }
 static GtkWidget * get_services_pl () { return audgui_get_plugin_menu (AudMenuID::Playlist); }
-
-static void volume_up () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
-static void volume_down () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
 
 static void toggle_record ()
 {
@@ -163,41 +128,41 @@ static const AudguiMenuItem playback_items[] = {
 };
 
 static const AudguiMenuItem dupe_items[] = {
-    MenuCommand (N_("By _Title"), nullptr, NONE, pl_remove_dupes_by_title),
-    MenuCommand (N_("By _File Name"), nullptr, NONE, pl_remove_dupes_by_filename),
-    MenuCommand (N_("By File _Path"), nullptr, NONE, pl_remove_dupes_by_path)
+    MenuCommand (N_("By _Title"), nullptr, NONE, rm_dupes_title),
+    MenuCommand (N_("By _File Name"), nullptr, NONE, rm_dupes_filename),
+    MenuCommand (N_("By File _Path"), nullptr, NONE, rm_dupes_path)
 };
 
 static const AudguiMenuItem sort_items[] = {
-    MenuCommand (N_("By Track _Number"), nullptr, NONE, pl_sort_track),
-    MenuCommand (N_("By _Title"), nullptr, NONE, pl_sort_title),
-    MenuCommand (N_("By _Artist"), nullptr, NONE, pl_sort_artist),
-    MenuCommand (N_("By Al_bum"), nullptr, NONE, pl_sort_album),
-    MenuCommand (N_("By Albu_m Artist"), nullptr, NONE, pl_sort_album_artist),
-    MenuCommand (N_("By Release _Date"), nullptr, NONE, pl_sort_date),
-    MenuCommand (N_("By _Genre"), nullptr, NONE, pl_sort_genre),
-    MenuCommand (N_("By _Length"), nullptr, NONE, pl_sort_length),
-    MenuCommand (N_("By _File Path"), nullptr, NONE, pl_sort_path),
-    MenuCommand (N_("By _Custom Title"), nullptr, NONE, pl_sort_custom),
+    MenuCommand (N_("By Track _Number"), nullptr, NONE, sort_track),
+    MenuCommand (N_("By _Title"), nullptr, NONE, sort_title),
+    MenuCommand (N_("By _Artist"), nullptr, NONE, sort_artist),
+    MenuCommand (N_("By Al_bum"), nullptr, NONE, sort_album),
+    MenuCommand (N_("By Albu_m Artist"), nullptr, NONE, sort_album_artist),
+    MenuCommand (N_("By Release _Date"), nullptr, NONE, sort_date),
+    MenuCommand (N_("By _Genre"), nullptr, NONE, sort_genre),
+    MenuCommand (N_("By _Length"), nullptr, NONE, sort_length),
+    MenuCommand (N_("By _File Path"), nullptr, NONE, sort_path),
+    MenuCommand (N_("By _Custom Title"), nullptr, NONE, sort_custom_title),
     MenuSep (),
-    MenuCommand (N_("R_everse Order"), "view-sort-descending", NONE, pl_reverse),
-    MenuCommand (N_("_Random Order"), nullptr, NONE, pl_random)
+    MenuCommand (N_("R_everse Order"), "view-sort-descending", NONE, sort_reverse),
+    MenuCommand (N_("_Random Order"), nullptr, NONE, sort_random)
 };
 
-static const AudguiMenuItem sort_selected_items[] = {
-    MenuCommand (N_("By Track _Number"), nullptr, NONE, pl_sort_selected_track),
-    MenuCommand (N_("By _Title"), nullptr, NONE, pl_sort_selected_title),
-    MenuCommand (N_("By _Artist"), nullptr, NONE, pl_sort_selected_artist),
-    MenuCommand (N_("By Al_bum"), nullptr, NONE, pl_sort_selected_album),
-    MenuCommand (N_("By Albu_m Artist"), nullptr, NONE, pl_sort_selected_album_artist),
-    MenuCommand (N_("By Release _Date"), nullptr, NONE, pl_sort_selected_date),
-    MenuCommand (N_("By _Genre"), nullptr, NONE, pl_sort_selected_genre),
-    MenuCommand (N_("By _Length"), nullptr, NONE, pl_sort_selected_length),
-    MenuCommand (N_("By _File Path"), nullptr, NONE, pl_sort_selected_path),
-    MenuCommand (N_("By _Custom Title"), nullptr, NONE, pl_sort_selected_custom),
+static const AudguiMenuItem sort_sel_items[] = {
+    MenuCommand (N_("By Track _Number"), nullptr, NONE, sort_sel_track),
+    MenuCommand (N_("By _Title"), nullptr, NONE, sort_sel_title),
+    MenuCommand (N_("By _Artist"), nullptr, NONE, sort_sel_artist),
+    MenuCommand (N_("By Al_bum"), nullptr, NONE, sort_sel_album),
+    MenuCommand (N_("By Albu_m Artist"), nullptr, NONE, sort_sel_album_artist),
+    MenuCommand (N_("By Release _Date"), nullptr, NONE, sort_sel_date),
+    MenuCommand (N_("By _Genre"), nullptr, NONE, sort_sel_genre),
+    MenuCommand (N_("By _Length"), nullptr, NONE, sort_sel_length),
+    MenuCommand (N_("By _File Path"), nullptr, NONE, sort_sel_path),
+    MenuCommand (N_("By _Custom Title"), nullptr, NONE, sort_sel_custom_title),
     MenuSep (),
-    MenuCommand (N_("R_everse Order"), "view-sort-descending", NONE, pl_reverse_selected),
-    MenuCommand (N_("_Random Order"), nullptr, NONE, pl_random_selected)
+    MenuCommand (N_("R_everse Order"), "view-sort-descending", NONE, sort_sel_reverse),
+    MenuCommand (N_("_Random Order"), nullptr, NONE, sort_sel_random)
 };
 
 static const AudguiMenuItem playlist_items[] = {
@@ -205,7 +170,7 @@ static const AudguiMenuItem playlist_items[] = {
     MenuCommand (N_("_Refresh"), "view-refresh", GDK_KEY_F5, (GdkModifierType) 0, pl_refresh),
     MenuSep (),
     MenuSub (N_("_Sort"), "view-sort-ascending", {sort_items}),
-    MenuSub (N_("Sort Se_lected"), "view-sort-ascending", {sort_selected_items}),
+    MenuSub (N_("Sort Se_lected"), "view-sort-ascending", {sort_sel_items}),
     MenuSub (N_("Remove _Duplicates"), "edit-copy", {dupe_items}),
     MenuCommand (N_("Remove _Unavailable Files"), "dialog-warning", NONE, pl_remove_failed),
     MenuSep (),
@@ -253,7 +218,7 @@ static const AudguiMenuItem main_items[] = {
 
 static const AudguiMenuItem rclick_items[] = {
     MenuCommand (N_("Song _Info ..."), "dialog-information", 'i', ALT, playlist_song_info),
-    MenuCommand (N_("_Queue/Unqueue"), nullptr, 'q', ALT, playlist_queue_toggle),
+    MenuCommand (N_("_Queue/Unqueue"), nullptr, 'q', ALT, pl_queue_toggle),
     MenuSep (),
     MenuCommand (N_("_Open Containing Folder"), "folder", NONE, playlist_open_folder),
     MenuCommand (N_("_Refresh Selected"), "view-refresh", GDK_KEY_F6, (GdkModifierType) 0, pl_refresh_sel),

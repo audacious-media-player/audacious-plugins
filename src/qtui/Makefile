@@ -12,7 +12,8 @@ SRCS = qtui.cc \
        status_bar.cc \
        tool_bar.cc \
        time_slider.cc \
-       settings.cc
+       settings.cc \
+       ../ui-common/menu-ops.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

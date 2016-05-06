@@ -29,6 +29,8 @@
 #include "playlist_util.h"
 #include "ui_playlist_notebook.h"
 
+#include "../ui-common/menu-ops.h"
+
 GtkWidget * playlist_get_treeview (int playlist)
 {
     GtkWidget * page = gtk_notebook_get_nth_page (UI_PLAYLIST_NOTEBOOK, playlist);
@@ -89,36 +91,6 @@ void playlist_open_folder ()
     }
 }
 
-void playlist_queue_toggle ()
-{
-    int list = aud_playlist_get_active ();
-    int focus = aud_playlist_get_focus (list);
-
-    if (focus < 0)
-        return;
-
-    /* make sure focused row is selected */
-    if (! aud_playlist_entry_get_selected (list, focus))
-    {
-        aud_playlist_select_all (list, false);
-        aud_playlist_entry_set_selected (list, focus, true);
-    }
-
-    int at = aud_playlist_queue_find_entry (list, focus);
-
-    if (at < 0)
-        aud_playlist_queue_insert_selected (list, -1);
-    else
-        aud_playlist_queue_delete_selected (list);
-}
-
-void playlist_delete_selected ()
-{
-    int list = aud_playlist_get_active ();
-    aud_playlist_delete_selected (list);
-    aud_playlist_entry_set_selected (list, aud_playlist_get_focus (list), true);
-}
-
 void playlist_copy ()
 {
     Index<char> text = audgui_urilist_create_from_selected (aud_playlist_get_active ());
@@ -131,7 +103,7 @@ void playlist_copy ()
 void playlist_cut ()
 {
     playlist_copy ();
-    playlist_delete_selected ();
+    pl_remove_selected ();
 }
 
 void playlist_paste ()

@@ -30,6 +30,8 @@
 #include "playlist.h"
 #include "playlist_model.h"
 
+#include "../ui-common/menu-ops.h"
+
 PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueId) : QTreeView (parent)
 {
     model = new PlaylistModel (nullptr, uniqueId);
@@ -120,7 +122,7 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
             aud_drct_play_pause ();
             break;
         case Qt::Key_Delete:
-            deleteCurrentSelection ();
+            pl_remove_selected ();
             break;
         case Qt::Key_Z:
             aud_drct_pl_prev ();
@@ -136,9 +138,6 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
             return;
         case Qt::Key_B:
             aud_drct_pl_next ();
-            return;
-        case Qt::Key_Q:
-            toggleQueue ();
             return;
         }
         break;
@@ -323,22 +322,6 @@ void PlaylistWidget::playCurrentIndex ()
 {
     aud_playlist_set_position (playlist (), indexToRow (currentIndex ()));
     aud_playlist_play (playlist ());
-}
-
-void PlaylistWidget::deleteCurrentSelection ()
-{
-    aud_playlist_delete_selected (playlist ());
-}
-
-void PlaylistWidget::toggleQueue ()
-{
-    int row = indexToRow (currentIndex ());
-    int at = aud_playlist_queue_find_entry (playlist (), row);
-
-    if (at < 0)
-        aud_playlist_queue_insert (playlist (), -1, row);
-    else
-        aud_playlist_queue_delete (playlist (), at, 1);
 }
 
 void PlaylistWidget::updateSettings ()

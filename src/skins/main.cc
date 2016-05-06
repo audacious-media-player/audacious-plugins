@@ -63,6 +63,8 @@
 #include "util.h"
 #include "view.h"
 
+#include "../ui-common/menu-ops.h"
+
 #define SEEK_THRESHOLD 200 /* milliseconds */
 #define SEEK_SPEED 50 /* milliseconds per pixel */
 
@@ -538,13 +540,13 @@ bool Window::keypress (GdkEventKey * event)
             break;
         case GDK_KEY_Tab: /* GtkUIManager does not handle tab, apparently. */
             if (event->state & GDK_SHIFT_MASK)
-                action_playlist_prev ();
+                pl_prev ();
             else
-                action_playlist_next ();
+                pl_next ();
 
             break;
         case GDK_KEY_ISO_Left_Tab:
-            action_playlist_prev ();
+            pl_prev ();
             break;
         default:
             return false;
