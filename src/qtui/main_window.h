@@ -63,7 +63,6 @@ private:
     void setWindowTitle (const QString & title);
 
     void updateToggles ();
-    void setupActions ();
     void readSettings ();
 
     void add_dock_plugins ();

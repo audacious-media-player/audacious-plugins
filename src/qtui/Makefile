@@ -3,7 +3,7 @@ PLUGIN = qtui${PLUGIN_SUFFIX}
 SRCS = qtui.cc \
        dialog_windows.cc \
        main_window.cc \
-       main_window_actions.cc \
+       menus.cc \
        playlist.cc \
        playlist_model.cc \
        playlist_tabs.cc \

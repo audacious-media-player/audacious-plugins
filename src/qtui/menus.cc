@@ -1,5 +1,5 @@
 /*
- * main_window_actions.cc
+ * menus.cc
  * Copyright 2014 Michał Lipski and William Pitcock
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,7 +17,7 @@
  * the use of this software.
  */
 
-#include "main_window.h"
+#include "menus.h"
 
 #include <QMenuBar>
 
@@ -83,7 +83,7 @@ static void volume_down () { aud_drct_set_volume_main (aud_drct_get_volume_main 
 
 static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
 
-void MainWindow::setupActions ()
+QMenuBar * qtui_build_menubar (QWidget * parent)
 {
     static const audqt::MenuItem file_items[] = {
         audqt::MenuCommand ({N_("_Open Files ..."), "document-open", "Ctrl+O"}, open_files),
@@ -192,5 +192,5 @@ void MainWindow::setupActions ()
         audqt::MenuSub ({N_("_Output")}, output_items),
     };
 
-    setMenuBar (audqt::menubar_build (main_items, this));
+    return audqt::menubar_build (main_items, parent);
 }
