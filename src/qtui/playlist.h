@@ -25,9 +25,7 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 
-#include "playlist_model.h"
-#include "filter_input.h"
-
+class PlaylistModel;
 class QSortFilterProxyModel;
 
 class PlaylistWidget : public QTreeView

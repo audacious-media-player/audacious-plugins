@@ -28,6 +28,7 @@
 #include <libaudqt/volumebutton.h>
 
 #include "filter_input.h"
+#include "info_bar.h"
 #include "menus.h"
 #include "playlist.h"
 #include "playlist_tabs.h"
@@ -35,9 +36,10 @@
 #include "time_slider.h"
 #include "tool_bar.h"
 
-#include <QApplication>
+#include <QBoxLayout>
+#include <QCloseEvent>
 #include <QDockWidget>
-#include <QAction>
+#include <QLabel>
 #include <QSettings>
 
 class PluginWidget : public QDockWidget

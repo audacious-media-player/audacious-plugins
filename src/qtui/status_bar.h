@@ -20,10 +20,11 @@
 #ifndef STATUS_BAR_H
 #define STATUS_BAR_H
 
-#include <QLabel>
 #include <QStatusBar>
 
 #include <libaudcore/hook.h>
+
+class QLabel;
 
 class StatusBar : public QStatusBar
 {

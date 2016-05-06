@@ -20,13 +20,11 @@
 #ifndef PLAYLIST_TABS_H
 #define PLAYLIST_TABS_H
 
+#include <QTabBar>
 #include <QTabWidget>
 
 #include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
-
-#include "playlist.h"
-#include "filter_input.h"
 
 class PlaylistTabBar;
 class PlaylistWidget;

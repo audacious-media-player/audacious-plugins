@@ -37,16 +37,21 @@ class PlaylistModel : public QAbstractListModel
 public:
     PlaylistModel (QObject * parent = nullptr, int id = -1);
     ~PlaylistModel ();
+
     int rowCount (const QModelIndex & parent = QModelIndex ()) const;
     int columnCount (const QModelIndex & parent = QModelIndex ()) const;
     QVariant data (const QModelIndex & index, int role = Qt::DisplayRole) const;
     QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     bool insertRows (int row, int count, const QModelIndex & parent = QModelIndex ());
     bool removeRows (int row, int count, const QModelIndex & parent = QModelIndex ());
+
     void updateRows (int row, int count);
+
     QString getQueued (int row) const;
     int playlist () const;
     int uniqueId () const;
+
+private:
     int m_uniqueId;
     int m_rows;
 };

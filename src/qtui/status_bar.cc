@@ -24,6 +24,8 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 
+#include <QLabel>
+
 StatusBar::StatusBar (QWidget * parent) :
     QStatusBar (parent),
     codec_label (new QLabel (this)),

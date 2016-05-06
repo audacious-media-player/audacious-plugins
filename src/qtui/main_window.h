@@ -23,18 +23,17 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/index.h>
 #include <libaudcore/mainloop.h>
-#include <libaudcore/objects.h>
 
 #include "dialog_windows.h"
-#include "info_bar.h"
 
 #include <QMainWindow>
-#include <QVBoxLayout>
 
 class FilterInput;
+class InfoBar;
 class PlaylistTabs;
 class PluginHandle;
 class PluginWidget;
+class QVBoxLayout;
 
 class MainWindow : public QMainWindow
 {
