@@ -18,6 +18,7 @@
  */
 
 #include <string.h>
+#include <pthread.h>
 
 #ifdef HAVE_LIBCUE2
 #include <libcue.h>
@@ -49,15 +50,20 @@ EXPORT CueLoader aud_plugin_instance;
 bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
  Index<PlaylistAddItem> & items)
 {
+    // XXX: cue_parse_string crashes if called concurrently
+    static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
     Index<char> buffer = file.read_all ();
     if (! buffer.len ())
         return false;
 
     buffer.append (0);  /* null-terminate */
 
+    pthread_mutex_lock (& mutex);
     Cd * cd = cue_parse_string (buffer.begin ());
-    int tracks = cd ? cd_get_ntrack (cd) : 0;
+    pthread_mutex_unlock (& mutex);
 
+    int tracks = cd ? cd_get_ntrack (cd) : 0;
     if (tracks < 1)
         return false;
 
@@ -113,10 +119,11 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
 
         if (base_tuple)
         {
-            StringBuf tfilename = str_printf ("%s?%d", (const char *) filename, track);
+            StringBuf tfilename = str_printf ("%s?%d", (const char *) cue_filename, track);
             Tuple tuple = base_tuple.ref ();
             tuple.set_filename (tfilename);
             tuple.set_int (Tuple::Track, track);
+            tuple.set_str (Tuple::AudioFile, filename);
 
             int begin = (int64_t) track_get_start (cur) * 1000 / 75;
             tuple.set_int (Tuple::StartTime, begin);
