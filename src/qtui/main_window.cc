@@ -36,6 +36,7 @@
 #include "time_slider.h"
 #include "tool_bar.h"
 
+#include <QAction>
 #include <QBoxLayout>
 #include <QCloseEvent>
 #include <QDockWidget>
