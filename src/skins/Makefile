@@ -32,9 +32,7 @@ SRCS = actions.cc \
        vis-callbacks.cc \
        vis.cc \
        widget.cc \
-       window.cc \
-       ../ui-common/menu-ops.cc \
-       ../ui-common/menu-ops-gtk.cc
+       window.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

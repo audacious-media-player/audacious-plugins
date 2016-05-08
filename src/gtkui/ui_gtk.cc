@@ -43,7 +43,8 @@
 #include "ui_statusbar.h"
 #include "playlist_util.h"
 
-#include "../ui-common/menu-ops.h"
+#include "../ui-common/menu-ops.cc"
+#include "../ui-common/menu-ops-gtk.cc"
 
 static const char * const gtkui_defaults[] = {
     "infoarea_show_vis", "TRUE",

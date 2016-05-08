@@ -9,9 +9,7 @@ SRCS = columns.cc \
        ui_playlist_notebook.cc \
        ui_statusbar.cc \
        playlist_util.cc \
-       settings.cc \
-       ../ui-common/menu-ops.cc \
-       ../ui-common/menu-ops-gtk.cc
+       settings.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
