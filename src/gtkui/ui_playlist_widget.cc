@@ -293,10 +293,11 @@ static Index<char> get_data (void * user)
     return audgui_urilist_create_from_selected (playlist);
 }
 
-static void receive_data (void * user, int row, const char * data, int length)
+// length is ignored; GtkSelectionData null-terminates the data for us
+static void receive_data (void * user, int row, const char * data, int /*length*/)
 {
     int playlist = ((PlaylistWidgetData *) user)->list;
-    audgui_urilist_insert (playlist, row, str_copy (data, length));
+    audgui_urilist_insert (playlist, row, data);
 }
 
 static const AudguiListCallbacks callbacks = {
