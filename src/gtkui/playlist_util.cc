@@ -54,43 +54,6 @@ int playlist_count_selected_in_range (int list, int top, int length)
     return selected;
 }
 
-void playlist_song_info ()
-{
-    int list = aud_playlist_get_active ();
-    int focus = aud_playlist_get_focus (list);
-
-    if (focus < 0)
-        return;
-
-    audgui_infowin_show (list, focus);
-}
-
-void playlist_open_folder ()
-{
-    int list = aud_playlist_get_active ();
-    int focus = aud_playlist_get_focus (list);
-
-    String filename = aud_playlist_entry_get_filename (list, focus);
-    if (! filename)
-        return;
-
-    const char * slash = strrchr (filename, '/');
-    if (! slash)
-        return;
-
-    /* don't trim trailing slash, it may be important */
-    StringBuf folder = str_copy (filename, slash + 1 - filename);
-
-    GError * error = nullptr;
-    gtk_show_uri (gdk_screen_get_default (), folder, GDK_CURRENT_TIME, & error);
-
-    if (error)
-    {
-        aud_ui_show_error (error->message);
-        g_error_free (error);
-    }
-}
-
 void playlist_shift (int offset)
 {
     int list = aud_playlist_get_active ();

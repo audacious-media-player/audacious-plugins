@@ -26,7 +26,7 @@
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
 #include "main.h"
-#include "plugin-window.h"\
+#include "plugin-window.h"
 
 #include "../ui-common/menu-ops.h"
 
@@ -103,9 +103,3 @@ void action_playlist_add_url ()
     { audgui_show_add_url_window (false); }
 void action_playlist_add_files ()
     { audgui_run_filebrowser (false); }
-
-void action_playlist_track_info ()
-{
-    int playlist = ACTIVE;
-    audgui_infowin_show (playlist, aud_playlist_get_focus (playlist));
-}

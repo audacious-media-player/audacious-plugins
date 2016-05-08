@@ -244,14 +244,15 @@ static const audqt::MenuItem playlist_sort_items[] = {
 };
 
 static const audqt::MenuItem playlist_context_items[] = {
-    audqt::MenuCommand ({N_("Song Info ..."), "dialog-information", "Alt+I"}, action_playlist_track_info),
-    audqt::MenuSep (),
+    audqt::MenuCommand ({N_("Song Info ..."), "dialog-information", "Alt+I"}, pl_song_info),
 #if 0
+    audqt::MenuCommand ({N_("Open Containing Folder"), "folder"}, pl_open_folder),
+    audqt::MenuSep (),
     audqt::MenuCommand ({N_("Cut"), "edit-cut", "Ctrl+X"}, action_playlist_cut),
     audqt::MenuCommand ({N_("Copy"), "edit-copy", "Ctrl+C"}, action_playlist_copy),
     audqt::MenuCommand ({N_("Paste"), "edit-paste", "Ctrl+V"}, action_playlist_paste),
-    audqt::MenuSep (),
 #endif
+    audqt::MenuSep (),
     audqt::MenuCommand ({N_("Queue/Unqueue"), nullptr, "Q"}, pl_queue_toggle),
     audqt::MenuSep (),
     audqt::MenuSub ({N_("Services")}, get_plugin_menu_playlist)

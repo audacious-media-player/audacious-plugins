@@ -26,7 +26,7 @@
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
 #include "main.h"
-#include "plugin-window.h"\
+#include "plugin-window.h"
 
 #include "../ui-common/menu-ops.h"
 
@@ -99,47 +99,9 @@ void action_playlist_rename ()
 void action_playlist_delete ()
     { audqt::playlist_confirm_delete (ACTIVE); }
 
-void action_playlist_copy ()
-{
-#if 0
-    GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    Index<char> list = audgui_urilist_create_from_selected (ACTIVE);
-
-    if (list.len ())
-        gtk_clipboard_set_text (clip, list.begin (), list.len ());
-#endif
-}
-
-void action_playlist_cut ()
-{
-    action_playlist_copy ();
-    pl_remove_selected ();
-}
-
-void action_playlist_paste ()
-{
-#if 0
-    GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    char * list = gtk_clipboard_wait_for_text (clip);
-
-    if (list)
-    {
-        int playlist = ACTIVE;
-        audgui_urilist_insert (playlist, aud_playlist_get_focus (playlist), list);
-        g_free (list);
-    }
-#endif
-}
-
 void action_playlist_add_url ()
     { audqt::urlopener_show (false); }
 void action_playlist_add_files ()
     { audqt::fileopener_show (audqt::FileMode::Add ); }
 void action_playlist_add_folder ()
     { audqt::fileopener_show (audqt::FileMode::AddFolder ); }
-
-void action_playlist_track_info ()
-{
-    int playlist = ACTIVE;
-    audqt::infowin_show (playlist, aud_playlist_get_focus (playlist));
-}

@@ -79,6 +79,10 @@ void pl_cut ();
 void pl_paste ();
 void pl_paste_end ();
 
+// misc playlist
+void pl_song_info ();
+void pl_open_folder ();
+
 // volume control
 void volume_up ();
 void volume_down ();

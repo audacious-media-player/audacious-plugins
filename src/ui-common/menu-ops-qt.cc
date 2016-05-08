@@ -1,6 +1,6 @@
 /*
- * playlist_util.h
- * Copyright 2010-2011 Michał Lipski and John Lindgren
+ * menu-ops-qt.cc
+ * Copyright 2016 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,12 +17,15 @@
  * the use of this software.
  */
 
-#ifndef __PLAYLISTUTIL_H__
-#define __PLAYLISTUTIL_H__
+#include "menu-ops.h"
 
-GtkWidget * playlist_get_treeview (int playlist);
+#include <libaudcore/playlist.h>
+#include <libaudqt/libaudqt.h>
 
-int playlist_count_selected_in_range (int list, int top, int length);
-void playlist_shift (int offset);
-
-#endif
+void pl_song_info ()
+{
+    int list = aud_playlist_get_active ();
+    int focus = aud_playlist_get_focus (list);
+    if (focus >= 0)
+        audqt::infowin_show (list, focus);
+}

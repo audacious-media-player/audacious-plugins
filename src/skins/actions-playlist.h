@@ -28,6 +28,4 @@ void action_playlist_search_and_select ();
 void action_playlist_add_url ();
 void action_playlist_add_files ();
 
-void action_playlist_track_info ();
-
 #endif /* SKINS_ACTIONS_PLAYLIST_H */

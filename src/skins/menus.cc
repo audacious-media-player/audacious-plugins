@@ -251,12 +251,13 @@ static const AudguiMenuItem playlist_sort_items[] = {
 };
 
 static const AudguiMenuItem playlist_context_items[] = {
-    MenuCommand (N_("Song Info ..."), "dialog-information", 'i', ALT, action_playlist_track_info),
+    MenuCommand (N_("Song Info ..."), "dialog-information", 'i', ALT, pl_song_info),
+    MenuCommand (N_("Open Containing Folder"), "folder", NO_KEY, pl_open_folder),
     MenuSep (),
     MenuCommand (N_("Cut"), "edit-cut", 'x', CTRL, pl_cut),
     MenuCommand (N_("Copy"), "edit-copy", 'c', CTRL, pl_copy),
     MenuCommand (N_("Paste"), "edit-paste", 'v', CTRL, pl_paste),
-    MenuCommand (N_("Paste at _End"), "edit-paste", 'v', SHIFT_CTRL, pl_paste_end),
+    MenuCommand (N_("Paste at End"), "edit-paste", 'v', SHIFT_CTRL, pl_paste_end),
     MenuSep (),
     MenuCommand (N_("Queue/Unqueue"), nullptr, 'q', NO_MOD, pl_queue_toggle),
     MenuSep (),

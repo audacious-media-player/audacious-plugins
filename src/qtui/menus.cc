@@ -47,14 +47,6 @@ static void add_url () { audqt::urlopener_show (false); }
 static void pl_rename () { hook_call ("qtui rename playlist", nullptr); }
 static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_active ()); }
 
-static void pl_song_info ()
-{
-    int list = aud_playlist_get_active ();
-    int focus = aud_playlist_get_focus (list);
-    if (focus >= 0)
-        audqt::infowin_show (list, focus);
-}
-
 static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
 
 QMenuBar * qtui_build_menubar (QWidget * parent)
