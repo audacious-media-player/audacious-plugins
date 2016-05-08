@@ -247,11 +247,12 @@ static const audqt::MenuItem playlist_context_items[] = {
     audqt::MenuCommand ({N_("Song Info ..."), "dialog-information", "Alt+I"}, pl_song_info),
 #if 0
     audqt::MenuCommand ({N_("Open Containing Folder"), "folder"}, pl_open_folder),
-    audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Cut"), "edit-cut", "Ctrl+X"}, action_playlist_cut),
-    audqt::MenuCommand ({N_("Copy"), "edit-copy", "Ctrl+C"}, action_playlist_copy),
-    audqt::MenuCommand ({N_("Paste"), "edit-paste", "Ctrl+V"}, action_playlist_paste),
 #endif
+    audqt::MenuSep (),
+    audqt::MenuCommand ({N_("Cut"), "edit-cut", "Ctrl+X"}, pl_cut),
+    audqt::MenuCommand ({N_("Copy"), "edit-copy", "Ctrl+C"}, pl_copy),
+    audqt::MenuCommand ({N_("Paste"), "edit-paste", "Ctrl+V"}, pl_paste),
+    audqt::MenuCommand ({N_("Paste at End"), "edit-paste", "Shift+Ctrl+V"}, pl_paste_end),
     audqt::MenuSep (),
     audqt::MenuCommand ({N_("Queue/Unqueue"), nullptr, "Q"}, pl_queue_toggle),
     audqt::MenuSep (),
