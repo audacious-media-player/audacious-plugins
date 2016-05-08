@@ -223,9 +223,10 @@ static const AudguiMenuItem rclick_items[] = {
     MenuCommand (N_("_Open Containing Folder"), "folder", NONE, playlist_open_folder),
     MenuCommand (N_("_Refresh Selected"), "view-refresh", GDK_KEY_F6, (GdkModifierType) 0, pl_refresh_sel),
     MenuSep (),
-    MenuCommand (N_("Cu_t"), "edit-cut", NONE, playlist_cut),
-    MenuCommand (N_("_Copy"), "edit-copy", NONE, playlist_copy),
-    MenuCommand (N_("_Paste"), "edit-paste", NONE, playlist_paste),
+    MenuCommand (N_("Cu_t"), "edit-cut", NONE, pl_cut),
+    MenuCommand (N_("_Copy"), "edit-copy", NONE, pl_copy),
+    MenuCommand (N_("_Paste"), "edit-paste", NONE, pl_paste),
+    MenuCommand (N_("Paste at _End"), "edit-paste", 'v', SHIFT_CTRL, pl_paste_end),
     MenuCommand (N_("Select _All"), "edit-select-all", NONE, pl_select_all),
     MenuSep (),
     MenuSub (N_("_Services"), nullptr, get_services_pl)

@@ -91,33 +91,6 @@ void playlist_open_folder ()
     }
 }
 
-void playlist_copy ()
-{
-    Index<char> text = audgui_urilist_create_from_selected (aud_playlist_get_active ());
-    if (! text.len ())
-        return;
-
-    gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), text.begin (), text.len ());
-}
-
-void playlist_cut ()
-{
-    playlist_copy ();
-    pl_remove_selected ();
-}
-
-void playlist_paste ()
-{
-    char * text = gtk_clipboard_wait_for_text (gtk_clipboard_get
-     (GDK_SELECTION_CLIPBOARD));
-    if (! text)
-        return;
-
-    int list = aud_playlist_get_active ();
-    audgui_urilist_insert (list, aud_playlist_get_focus (list), text);
-    g_free (text);
-}
-
 void playlist_shift (int offset)
 {
     int list = aud_playlist_get_active ();

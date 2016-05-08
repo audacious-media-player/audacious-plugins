@@ -33,7 +33,8 @@ SRCS = actions.cc \
        vis.cc \
        widget.cc \
        window.cc \
-       ../ui-common/menu-ops.cc
+       ../ui-common/menu-ops.cc \
+       ../ui-common/menu-ops-gtk.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

@@ -99,34 +99,6 @@ void action_playlist_rename ()
 void action_playlist_delete ()
     { audgui_confirm_playlist_delete (ACTIVE); }
 
-void action_playlist_copy ()
-{
-    GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    Index<char> list = audgui_urilist_create_from_selected (ACTIVE);
-
-    if (list.len ())
-        gtk_clipboard_set_text (clip, list.begin (), list.len ());
-}
-
-void action_playlist_cut ()
-{
-    action_playlist_copy ();
-    pl_remove_selected ();
-}
-
-void action_playlist_paste ()
-{
-    GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    char * list = gtk_clipboard_wait_for_text (clip);
-
-    if (list)
-    {
-        int playlist = ACTIVE;
-        audgui_urilist_insert (playlist, aud_playlist_get_focus (playlist), list);
-        g_free (list);
-    }
-}
-
 void action_playlist_add_url ()
     { audgui_show_add_url_window (false); }
 void action_playlist_add_files ()

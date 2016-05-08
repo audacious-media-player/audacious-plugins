@@ -609,13 +609,13 @@ static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event)
         switch (event->keyval)
         {
         case 'x':
-            playlist_cut ();
+            pl_cut ();
             return true;
         case 'c':
-            playlist_copy ();
+            pl_copy ();
             return true;
         case 'v':
-            playlist_paste ();
+            pl_paste ();
             return true;
         case 'a':
             pl_select_all ();

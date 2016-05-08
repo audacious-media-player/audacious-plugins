@@ -73,6 +73,12 @@ void pl_remove_failed ();
 void pl_remove_selected ();
 void pl_remove_unselected ();
 
+// clipboard
+void pl_copy ();
+void pl_cut ();
+void pl_paste ();
+void pl_paste_end ();
+
 // volume control
 void volume_up ();
 void volume_down ();
