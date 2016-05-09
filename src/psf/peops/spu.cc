@@ -493,8 +493,10 @@ int SPUasync(u32 cycles, void (*update)(const void *, int))
   // if(sr>32767 || sr < -32767) printf("Right: %d, %f\n",sl,asl);
   //}
 
-  if(sl>32767) sl=32767; if(sl<-32767) sl=-32767;
-  if(sr>32767) sr=32767; if(sr<-32767) sr=-32767;
+  if(sl>32767) sl=32767;
+  if(sl<-32767) sl=-32767;
+  if(sr>32767) sr=32767;
+  if(sr<-32767) sr=-32767;
 
   *pS++=sl;
   *pS++=sr;
