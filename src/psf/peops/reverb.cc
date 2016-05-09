@@ -81,7 +81,8 @@ static inline void s_buffer1(int iOff,int iVal)                // set_buffer (+1
  iOff=(iOff*4)+rvb.CurrAddr+1;
  while(iOff>0x3FFFF) iOff=rvb.StartAddr+(iOff-0x40000);
  while(iOff<rvb.StartAddr) iOff=0x3ffff-(rvb.StartAddr-iOff);
- if(iVal<-32768L) iVal=-32768L;if(iVal>32767L) iVal=32767L;
+ if(iVal<-32768L) iVal=-32768L;
+ if(iVal>32767L) iVal=32767L;
  *(p+iOff)=(s16)BFLIP16((s16)iVal);
 }
 

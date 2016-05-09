@@ -122,7 +122,8 @@ static inline void s_buffer(int iOff,int iVal,int core)        // set_buffer con
  iOff=(iOff)+rvb[core].CurrAddr;
  while(iOff>rvb[core].EndAddr) iOff=rvb[core].StartAddr+(iOff-(rvb[core].EndAddr+1));
  while(iOff<rvb[core].StartAddr) iOff=rvb[core].EndAddr-(rvb[core].StartAddr-iOff);
- if(iVal<-32768L) iVal=-32768L;if(iVal>32767L) iVal=32767L;
+ if(iVal<-32768L) iVal=-32768L;
+ if(iVal>32767L) iVal=32767L;
  *(p+iOff)=(short)iVal;
 }
 
@@ -134,7 +135,8 @@ static inline void s_buffer1(int iOff,int iVal,int core)      // set_buffer (+1 
  iOff=(iOff)+rvb[core].CurrAddr+1;
  while(iOff>rvb[core].EndAddr) iOff=rvb[core].StartAddr+(iOff-(rvb[core].EndAddr+1));
  while(iOff<rvb[core].StartAddr) iOff=rvb[core].EndAddr-(rvb[core].StartAddr-iOff);
- if(iVal<-32768L) iVal=-32768L;if(iVal>32767L) iVal=32767L;
+ if(iVal<-32768L) iVal=-32768L;
+ if(iVal>32767L) iVal=32767L;
  *(p+iOff)=(short)iVal;
 }
 
