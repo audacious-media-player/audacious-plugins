@@ -167,7 +167,7 @@ QMenu * qtui_build_pl_menu (QWidget * parent)
         audqt::MenuCommand ({N_("Song _Info ..."), "dialog-information", "Alt+I"}, pl_song_info),
         audqt::MenuCommand ({N_("_Queue/Unqueue"), nullptr, "Alt+Q"}, pl_queue_toggle),
         audqt::MenuSep (),
-    //    audqt::MenuCommand ({N_("_Open Containing Folder"), "folder"}, playlist_open_folder),
+        audqt::MenuCommand ({N_("_Open Containing Folder"), "folder"}, pl_open_folder),
         audqt::MenuCommand ({N_("_Refresh Selected"), "view-refresh", "F6"}, pl_refresh_sel),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("Cu_t"), "edit-cut", "Ctrl+X"}, pl_cut),

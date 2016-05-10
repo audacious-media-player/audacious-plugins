@@ -21,9 +21,11 @@
 
 #include <QApplication>
 #include <QClipboard>
+#include <QDesktopServices>
 #include <QMimeData>
 #include <QUrl>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/playlist.h>
 #include <libaudqt/libaudqt.h>
 
@@ -85,4 +87,23 @@ void pl_song_info ()
     int focus = aud_playlist_get_focus (list);
     if (focus >= 0)
         audqt::infowin_show (list, focus);
+}
+
+void pl_open_folder ()
+{
+    int list = aud_playlist_get_active ();
+    int focus = aud_playlist_get_focus (list);
+
+    String filename = aud_playlist_entry_get_filename (list, focus);
+    if (! filename)
+        return;
+
+    const char * slash = strrchr (filename, '/');
+    if (! slash)
+        return;
+
+    /* don't trim trailing slash, it may be important */
+    StringBuf folder = str_copy (filename, slash + 1 - filename);
+
+    QDesktopServices::openUrl (QUrl (QString (folder)));
 }
