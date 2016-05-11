@@ -131,16 +131,13 @@ QLineEdit * PlaylistTabs::getTabEdit (int idx)
 
 void PlaylistTabs::setTabTitle (int idx, const char * text)
 {
-    QString title = QString ();
+    // escape ampersands for setTabText ()
+    auto title = QString (text).replace ("&", "&&");
 
     if (aud_get_bool ("qtui", "entry_count_visible"))
-    {
-        title.setNum (aud_playlist_entry_count (idx));
-        title.prepend (" (").append (")");
-    }
+        title += QString (" (%1)").arg (aud_playlist_entry_count (idx));
 
-    // escape ampersands for setTabText ()
-    setTabText (idx, title.prepend (QString (text).replace ("&", "&&")));
+    setTabText (idx, title);
 }
 
 void PlaylistTabs::setupTab (int idx, QWidget * button, const char * text, QWidget * * oldp)

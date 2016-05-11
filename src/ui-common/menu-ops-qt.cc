@@ -103,7 +103,5 @@ void pl_open_folder ()
         return;
 
     /* don't trim trailing slash, it may be important */
-    StringBuf folder = str_copy (filename, slash + 1 - filename);
-
-    QDesktopServices::openUrl (QUrl (QString (folder)));
+    QDesktopServices::openUrl (QString::fromUtf8 (filename, slash + 1 - filename));
 }
