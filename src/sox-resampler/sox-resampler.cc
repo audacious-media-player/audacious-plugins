@@ -101,7 +101,7 @@ void SoXResampler::start (int & channels, int & rate)
 
     if (error)
     {
-        AUDERR (error);
+        AUDERR ("%s\n", error);
         return;
     }
 
@@ -123,7 +123,7 @@ Index<float> & SoXResampler::process (Index<float> & data)
 
     if (error)
     {
-        AUDERR (error);
+        AUDERR ("%s\n", error);
         return data;
     }
 
@@ -135,7 +135,7 @@ Index<float> & SoXResampler::process (Index<float> & data)
 bool SoXResampler::flush (bool force)
 {
     if (soxr && (error = soxr_process(soxr, nullptr, 0, nullptr, nullptr, 0, nullptr)))
-        AUDERR (error);
+        AUDERR ("%s\n", error);
 
     return true;
 }
