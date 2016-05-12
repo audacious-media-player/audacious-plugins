@@ -88,6 +88,10 @@ const PluginPreferences MPG123Plugin::prefs = {{widgets}};
 
 #define DECODE_OPTIONS (MPG123_QUIET | MPG123_GAPLESS | MPG123_SEEKBUFFER | MPG123_FUZZY)
 
+// this is a macro so that the printed line number is meaningful
+#define print_mpg123_error(filename, decoder) \
+    AUDERR ("mpg123 error in %s: %s\n", filename, mpg123_strerror (decoder))
+
 static ssize_t replace_read (void * file, void * buffer, size_t length)
 {
     return ((VFSFile *) file)->fread (buffer, 1, length);
@@ -280,11 +284,6 @@ bool MPG123Plugin::read_tag (const char * filename, VFSFile & file, Tuple * tupl
     return true;
 }
 
-static void print_mpg123_error (const char * filename, mpg123_handle * decoder)
-{
-    AUDERR ("mpg123 error in %s: %s\n", filename, mpg123_strerror (decoder));
-}
-
 bool MPG123Plugin::play (const char * filename, VFSFile & file)
 {
     bool stream = (file.fsize () < 0);
@@ -348,10 +347,15 @@ bool MPG123Plugin::play (const char * filename, VFSFile & file)
 
             if (ret < 0)
             {
-                print_mpg123_error (filename, s.dec);
+                // log only the first error
+                if (! error_count)
+                    print_mpg123_error (filename, s.dec);
 
+                // generally unreported errors are bad, but due to the number of
+                // MP3s with junk data at the end, RESYNC_FAIL just becomes a
+                // nuisance, so silence it
                 if (++ error_count >= 10)
-                    return false;
+                    return (mpg123_errcode (s.dec) == MPG123_RESYNC_FAIL);
             }
         }
 
