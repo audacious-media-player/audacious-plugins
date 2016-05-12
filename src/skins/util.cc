@@ -268,7 +268,7 @@ StringBuf archive_decompress (const char * filename)
     StringBuf tmpdir = filename_build ({g_get_tmp_dir (), "audacious.XXXXXX"});
     if (! g_mkdtemp (tmpdir))
     {
-        AUDWARN ("Error creating %s: %s\n", strerror (errno));
+        AUDWARN ("Error creating %s: %s\n", (const char *) tmpdir, strerror (errno));
         return StringBuf ();
     }
 
@@ -345,5 +345,5 @@ bool dir_foreach (const char * path, DirForeachFunc func)
 void make_directory (const char * path)
 {
     if (g_mkdir_with_parents (path, DIRMODE) != 0)
-        AUDWARN ("Error creating %s: %s\n", strerror (errno));
+        AUDWARN ("Error creating %s: %s\n", path, strerror (errno));
 }
