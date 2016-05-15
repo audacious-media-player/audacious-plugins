@@ -11,3 +11,6 @@ LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} -I../..
 LIBS += ${GTK_LIBS} -laudgui
+
+# GTK3 branch: ignore GtkStatusIcon deprecation
+CPPFLAGS += -Wno-deprecated-declarations

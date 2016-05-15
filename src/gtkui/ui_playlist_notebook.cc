@@ -110,29 +110,10 @@ static GtkWidget * make_close_button (GtkWidget * ebox, int list)
     GtkWidget * image = gtk_image_new_from_icon_name ("window-close", GTK_ICON_SIZE_MENU);
     gtk_button_set_image ((GtkButton *) button, image);
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
-    gtk_button_set_focus_on_click ((GtkButton *) button, false);
-    gtk_widget_set_name (button, "gtkui-tab-close-button");
+    gtk_widget_set_can_focus (button, false);
 
     g_signal_connect (button, "clicked", (GCallback) close_button_cb,
      GINT_TO_POINTER (aud_playlist_get_unique_id (list)));
-
-    GtkCssProvider * provider = gtk_css_provider_new ();
-    gtk_css_provider_load_from_data (provider,
-     "#gtkui-tab-close-button {"
-     " -GtkButton-default-border: 0;"
-     " -GtkButton-default-outside-border: 0;"
-     " -GtkButton-inner-border: 0;"
-     " -GtkWidget-focus-padding: 0;"
-     " -GtkWidget-focus-line-width: 0;"
-     " margin: 0;"
-     " padding: 0; }",
-     -1, nullptr);
-
-    gtk_style_context_add_provider (gtk_widget_get_style_context (button),
-     GTK_STYLE_PROVIDER (provider),
-     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    g_object_unref (provider);
-
     gtk_widget_show (button);
 
     return button;

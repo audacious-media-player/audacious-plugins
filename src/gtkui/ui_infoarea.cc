@@ -175,42 +175,6 @@ static void draw_text (GtkWidget * widget, cairo_t * cr, int x, int y, int
 
 /****************************************************************************/
 
-static void rgb_to_hsv (float r, float g, float b, float * h, float * s,
- float * v)
-{
-    float max, min;
-
-    max = r;
-    if (g > max)
-        max = g;
-    if (b > max)
-        max = b;
-
-    min = r;
-    if (g < min)
-        min = g;
-    if (b < min)
-        min = b;
-
-    * v = max;
-
-    if (max == min)
-    {
-        * h = 0;
-        * s = 0;
-        return;
-    }
-
-    if (r == max)
-        * h = 1 + (g - b) / (max - min);
-    else if (g == max)
-        * h = 3 + (b - r) / (max - min);
-    else
-        * h = 5 + (r - g) / (max - min);
-
-    * s = (max - min) / max;
-}
-
 static void hsv_to_rgb (float h, float s, float v, float * r, float * g,
  float * b)
 {
@@ -242,30 +206,9 @@ static void hsv_to_rgb (float h, float s, float v, float * r, float * g,
 
 static void get_color (int i, float * r, float * g, float * b)
 {
-    static GdkRGBA c;
-    static gboolean valid = false;
-
-    if (! valid)
-    {
-        /* we want a color that matches the current theme
-         * selected color of a GtkEntry should be reasonable */
-        GtkStyleContext * style = gtk_style_context_new ();
-        GtkWidgetPath * path = gtk_widget_path_new ();
-        gtk_widget_path_append_type (path, GTK_TYPE_ENTRY);
-        gtk_style_context_set_path (style, path);
-        gtk_widget_path_free (path);
-        gtk_style_context_add_class (style, "entry");
-        gtk_style_context_get_background_color (style,
-         (GtkStateFlags) (GTK_STATE_FLAG_FOCUSED | GTK_STATE_FLAG_SELECTED), & c);
-        g_object_unref (style);
-        valid = true;
-    }
-
     float h, s, v;
-    rgb_to_hsv (c.red, c.green, c.blue, & h, & s, & v);
 
-    if (s < 0.1) /* monochrome theme? use blue instead */
-        h = 5;
+    h = 5; /* hard-coded to blue due to repeatedly broken theming in GTK3 */
 
     s = 1 - 0.9 * i / (VIS_BANDS - 1);
     v = 0.75 + 0.25 * i / (VIS_BANDS - 1);
