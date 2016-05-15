@@ -23,13 +23,6 @@
 GtkWidget * playlist_get_treeview (int playlist);
 
 int playlist_count_selected_in_range (int list, int top, int length);
-void playlist_song_info ();
-void playlist_open_folder ();
-void playlist_queue_toggle ();
-void playlist_delete_selected ();
-void playlist_copy ();
-void playlist_cut ();
-void playlist_paste ();
 void playlist_shift (int offset);
 
 #endif

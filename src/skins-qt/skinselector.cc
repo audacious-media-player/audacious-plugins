@@ -102,11 +102,6 @@ static void scan_skindir_func (const char * path, const char * basename)
          String (_("Unarchived Winamp 2.x skin")), String (path));
 }
 
-static int skinlist_compare_func (const SkinNode & a, const SkinNode & b, void *)
-{
-    return str_compare (a.name, b.name);
-}
-
 void skinlist_update ()
 {
     skinlist.clear ();
@@ -125,5 +120,6 @@ void skinlist_update ()
             dir_foreach (dir, scan_skindir_func);
     }
 
-    skinlist.sort (skinlist_compare_func, nullptr);
+    skinlist.sort ([] (const SkinNode & a, const SkinNode & b)
+        { return str_compare (a.name, b.name); });
 }

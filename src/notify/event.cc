@@ -19,18 +19,28 @@
  */
 
 #include "event.h"
+#include "osd.h"
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
-#include <libaudgui/libaudgui-gtk.h>
 
-#include "osd.h"
+#ifdef USE_GTK
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+#endif
+#ifdef USE_QT
+#include <libaudqt/libaudqt.h>
+#endif
 
 static String last_title, last_message;
 static GdkPixbuf * last_pixbuf = nullptr;
+
+#ifdef USE_QT
+static QImage qimage;
+#endif
 
 static void clear_cache ()
 {
@@ -43,20 +53,41 @@ static void clear_cache ()
         last_pixbuf = nullptr;
     }
 
+#ifdef USE_QT
+    qimage = QImage ();
+#endif
+
     osd_hide ();
 }
 
-static bool get_album_art ()
+static void get_album_art ()
 {
     if (last_pixbuf)
-        return false;
+        return;
 
-    last_pixbuf = audgui_pixbuf_request_current ();
-    if (! last_pixbuf)
-        return false;
+#ifdef USE_GTK
+    if (aud_get_mainloop_type () == MainloopType::GLib)
+    {
+        last_pixbuf = audgui_pixbuf_request_current ();
+        if (last_pixbuf)
+            audgui_pixbuf_scale_within (& last_pixbuf, audgui_get_dpi ());
+    }
+#endif
+#ifdef USE_QT
+    if (aud_get_mainloop_type () == MainloopType::Qt)
+    {
+        QImage image = audqt::art_request_current (96, 96, false).toImage ();
+        if (! image.isNull ())
+            qimage = image.convertToFormat (QImage::Format_RGBA8888);
 
-    audgui_pixbuf_scale_within (& last_pixbuf, audgui_get_dpi ());
-    return true;
+        // convert QImage to GdkPixbuf.
+        // note that the GdkPixbuf shares the same internal image data.
+        if (! qimage.isNull ())
+            last_pixbuf = gdk_pixbuf_new_from_data (qimage.bits (),
+             GDK_COLORSPACE_RGB, true, 8, qimage.width (), qimage.height (),
+             qimage.bytesPerLine (), nullptr, nullptr);
+    }
+#endif
 }
 
 static void show_stopped ()
@@ -124,6 +155,15 @@ static void force_show ()
 
 void event_init ()
 {
+#ifdef USE_GTK
+    if (aud_get_mainloop_type () == MainloopType::GLib)
+        audgui_init ();
+#endif
+#ifdef USE_QT
+    if (aud_get_mainloop_type () == MainloopType::Qt)
+        audqt::init ();
+#endif
+
     if (aud_drct_get_ready ())
         playback_update ();
     else
@@ -151,4 +191,13 @@ void event_uninit ()
     hook_dissociate ("aosd toggle", (HookFunction) force_show);
 
     clear_cache ();
+
+#ifdef USE_GTK
+    if (aud_get_mainloop_type () == MainloopType::GLib)
+        audgui_cleanup ();
+#endif
+#ifdef USE_QT
+    if (aud_get_mainloop_type () == MainloopType::Qt)
+        audqt::cleanup ();
+#endif
 }

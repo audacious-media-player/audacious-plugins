@@ -43,6 +43,9 @@
 #include "window.h"
 #include "view.h"
 
+#include "../ui-common/menu-ops.cc"
+#include "../ui-common/menu-ops-gtk.cc"
+
 class SkinnedUI : public IfacePlugin
 {
 public:
@@ -86,6 +89,9 @@ public:
         { audgui_plugin_menu_add (id, func, name, icon); }
     void plugin_menu_remove (AudMenuID id, void func ())
         { audgui_plugin_menu_remove (id, func); }
+
+    void startup_notify (const char * id)
+        { gdk_notify_startup_complete_with_id (id); }
 };
 
 EXPORT SkinnedUI aud_plugin_instance;
@@ -127,10 +133,12 @@ static void skins_init_main (bool restart)
 {
     int old_scale = config.scale;
 
-    if (aud_get_bool ("skins", "double_size"))
-        config.scale = aud::rescale (audgui_get_dpi (), 48, 1);
-    else
-        config.scale = aud::rescale (audgui_get_dpi (), 96, 1);
+    // The current scaling implementation allows any integer scale factor, but
+    // the legacy "double size" config option is limited to two choices.  For
+    // now, the two options are floor(DPI/96) and floor(DPI/96)+1.  On screens
+    // up to 191 DPI, this gives the traditional 1x and 2x scale factors.
+    config.scale = aud::max (1, audgui_get_dpi () / 96) +
+     aud_get_bool ("skins", "double_size");
 
     if (restart && config.scale != old_scale)
         dock_change_scale (old_scale, config.scale);

@@ -22,6 +22,10 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 
+#include <QLabel>
+#include <QMouseEvent>
+#include <QStyle>
+
 TimeSlider::TimeSlider (QWidget * parent) :
     QSlider (Qt::Horizontal, parent),
     m_label (new QLabel (parent))

@@ -39,6 +39,8 @@
 #include "main.h"
 #include "view.h"
 
+#include "../ui-common/menu-ops.h"
+
 #define SHIFT GDK_SHIFT_MASK
 #define CTRL GDK_CONTROL_MASK
 #define ALT GDK_MOD1_MASK
@@ -66,8 +68,8 @@ static void configure_effects () { audgui_show_prefs_for_plugin_type (PluginType
 static void configure_output () { audgui_show_prefs_for_plugin_type (PluginType::Output); }
 static void configure_visualizations () { audgui_show_prefs_for_plugin_type (PluginType::Vis); }
 
-static void volume_up () { mainwin_set_volume_diff (5); }
-static void volume_down () { mainwin_set_volume_diff (-5); }
+static void skins_volume_up () { mainwin_set_volume_diff (5); }
+static void skins_volume_down () { mainwin_set_volume_diff (-5); }
 
 /* emulate a config item for the recording toggle */
 static void toggle_record ()
@@ -94,8 +96,8 @@ static void record_toggled (void * = nullptr, void * = nullptr)
 }
 
 static const AudguiMenuItem output_items[] = {
-    MenuCommand (N_("Volume Up"), "audio-volume-high", '+', NO_MOD, volume_up),
-    MenuCommand (N_("Volume Down"), "audio-volume-low", '-', NO_MOD, volume_down),
+    MenuCommand (N_("Volume Up"), "audio-volume-high", '+', NO_MOD, skins_volume_up),
+    MenuCommand (N_("Volume Down"), "audio-volume-low", '-', NO_MOD, skins_volume_down),
     MenuSep (),
     MenuCommand (N_("Effects ..."), nullptr, NO_KEY, configure_effects),
     MenuSep (),
@@ -143,14 +145,14 @@ static const AudguiMenuItem playback_items[] = {
 };
 
 static const AudguiMenuItem playlist_items[] = {
-    MenuCommand (N_("Play/Resume"), "media-playback-start", GDK_KEY_Return, SHIFT, action_playlist_play),
+    MenuCommand (N_("Play/Resume"), "media-playback-start", GDK_KEY_Return, SHIFT, pl_play),
     MenuSep (),
     MenuCommand (N_("New Playlist"), "document-new", 'n', SHIFT, (GCallback) aud_playlist_new),
     MenuCommand (N_("Rename Playlist ..."), "insert-text", GDK_KEY_F2, NO_MOD, action_playlist_rename),
     MenuCommand (N_("Remove Playlist"), "edit-delete", 'd', SHIFT, action_playlist_delete),
     MenuSep (),
-    MenuCommand (N_("Previous Playlist"), "media-skip-backward", GDK_KEY_Tab, SHIFT, action_playlist_prev),
-    MenuCommand (N_("Next Playlist"), "media-skip-forward", GDK_KEY_Tab, NO_MOD, action_playlist_next),
+    MenuCommand (N_("Previous Playlist"), "media-skip-backward", GDK_KEY_Tab, SHIFT, pl_prev),
+    MenuCommand (N_("Next Playlist"), "media-skip-forward", GDK_KEY_Tab, NO_MOD, pl_next),
     MenuSep (),
     MenuCommand (N_("Import Playlist ..."), "document-open", 'o', NO_MOD, audgui_import_playlist),
     MenuCommand (N_("Export Playlist ..."), "document-save", 's', SHIFT, audgui_export_playlist),
@@ -158,7 +160,7 @@ static const AudguiMenuItem playlist_items[] = {
     MenuCommand (N_("Playlist Manager ..."), "audio-x-generic", 'p', NO_MOD, action_playlist_manager),
     MenuCommand (N_("Queue Manager ..."), nullptr, 'u', CTRL, audgui_queue_manager_show),
     MenuSep (),
-    MenuCommand (N_("Refresh Playlist"), "view-refresh", GDK_KEY_F5, NO_MOD, action_playlist_refresh_list)
+    MenuCommand (N_("Refresh Playlist"), "view-refresh", GDK_KEY_F5, NO_MOD, pl_refresh)
 };
 
 static const AudguiMenuItem view_items[] = {
@@ -186,76 +188,78 @@ static const AudguiMenuItem playlist_add_items[] = {
 };
 
 static const AudguiMenuItem dupe_items[] = {
-    MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_remove_dupes_by_title),
-    MenuCommand (N_("By File Name"), nullptr, NO_KEY, action_playlist_remove_dupes_by_filename),
-    MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_remove_dupes_by_full_path)
+    MenuCommand (N_("By Title"), nullptr, NO_KEY, rm_dupes_title),
+    MenuCommand (N_("By File Name"), nullptr, NO_KEY, rm_dupes_filename),
+    MenuCommand (N_("By File Path"), nullptr, NO_KEY, rm_dupes_path)
 };
 
 static const AudguiMenuItem playlist_remove_items[] = {
     MenuSub (N_("Services"), nullptr, get_plugin_menu_playlist_remove),
     MenuSep (),
-    MenuCommand (N_("Remove All"), "edit-delete", NO_KEY, action_playlist_remove_all),
-    MenuCommand (N_("Clear Queue"), "edit-clear", 'q', SHIFT, action_playlist_clear_queue),
+    MenuCommand (N_("Remove All"), "edit-delete", NO_KEY, pl_remove_all),
+    MenuCommand (N_("Clear Queue"), "edit-clear", 'q', SHIFT, pl_queue_clear),
     MenuSep (),
-    MenuCommand (N_("Remove Unavailable Files"), "dialog-warning", NO_KEY, action_playlist_remove_unavailable),
+    MenuCommand (N_("Remove Unavailable Files"), "dialog-warning", NO_KEY, pl_remove_failed),
     MenuSub (N_("Remove Duplicates"), "edit-copy", {dupe_items}),
     MenuSep (),
-    MenuCommand (N_("Remove Unselected"), "list-remove", NO_KEY, action_playlist_remove_unselected),
-    MenuCommand (N_("Remove Selected"), "list-remove", GDK_KEY_Delete, NO_MOD, action_playlist_remove_selected)
+    MenuCommand (N_("Remove Unselected"), "list-remove", NO_KEY, pl_remove_unselected),
+    MenuCommand (N_("Remove Selected"), "list-remove", GDK_KEY_Delete, NO_MOD, pl_remove_selected)
 };
 
 static const AudguiMenuItem playlist_select_items[] = {
     MenuCommand (N_("Search and Select"), "edit-find", 'f', CTRL, action_playlist_search_and_select),
     MenuSep (),
-    MenuCommand (N_("Invert Selection"), nullptr, NO_KEY, action_playlist_invert_selection),
-    MenuCommand (N_("Select None"), nullptr, 'a', SHIFT_CTRL, action_playlist_select_none),
-    MenuCommand (N_("Select All"), "edit-select-all", 'a', CTRL, action_playlist_select_all),
+    MenuCommand (N_("Invert Selection"), nullptr, NO_KEY, pl_select_invert),
+    MenuCommand (N_("Select None"), nullptr, 'a', SHIFT_CTRL, pl_select_none),
+    MenuCommand (N_("Select All"), "edit-select-all", 'a', CTRL, pl_select_all),
 };
 
 static const AudguiMenuItem sort_items[] = {
-    MenuCommand (N_("By Track Number"), nullptr, NO_KEY, action_playlist_sort_by_track_number),
-    MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_sort_by_title),
-    MenuCommand (N_("By Artist"), nullptr, NO_KEY, action_playlist_sort_by_artist),
-    MenuCommand (N_("By Album"), nullptr, NO_KEY, action_playlist_sort_by_album),
-    MenuCommand (N_("By Album Artist"), nullptr, NO_KEY, action_playlist_sort_by_album_artist),
-    MenuCommand (N_("By Release Date"), nullptr, NO_KEY, action_playlist_sort_by_date),
-    MenuCommand (N_("By Genre"), nullptr, NO_KEY, action_playlist_sort_by_genre),
-    MenuCommand (N_("By Length"), nullptr, NO_KEY, action_playlist_sort_by_length),
-    MenuCommand (N_("By File Name"), nullptr, NO_KEY, action_playlist_sort_by_filename),
-    MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_sort_by_full_path),
-    MenuCommand (N_("By Custom Title"), nullptr, NO_KEY, action_playlist_sort_by_custom_title)
+    MenuCommand (N_("By Track Number"), nullptr, NO_KEY, sort_track),
+    MenuCommand (N_("By Title"), nullptr, NO_KEY, sort_title),
+    MenuCommand (N_("By Artist"), nullptr, NO_KEY, sort_artist),
+    MenuCommand (N_("By Album"), nullptr, NO_KEY, sort_album),
+    MenuCommand (N_("By Album Artist"), nullptr, NO_KEY, sort_album_artist),
+    MenuCommand (N_("By Release Date"), nullptr, NO_KEY, sort_date),
+    MenuCommand (N_("By Genre"), nullptr, NO_KEY, sort_genre),
+    MenuCommand (N_("By Length"), nullptr, NO_KEY, sort_length),
+    MenuCommand (N_("By File Name"), nullptr, NO_KEY, sort_filename),
+    MenuCommand (N_("By File Path"), nullptr, NO_KEY, sort_path),
+    MenuCommand (N_("By Custom Title"), nullptr, NO_KEY, sort_custom_title)
 };
 
 static const AudguiMenuItem sort_selected_items[] = {
-    MenuCommand (N_("By Track Number"), nullptr, NO_KEY, action_playlist_sort_selected_by_track_number),
-    MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_sort_selected_by_title),
-    MenuCommand (N_("By Artist"), nullptr, NO_KEY, action_playlist_sort_selected_by_artist),
-    MenuCommand (N_("By Album"), nullptr, NO_KEY, action_playlist_sort_selected_by_album),
-    MenuCommand (N_("By Album Artist"), nullptr, NO_KEY, action_playlist_sort_selected_by_album_artist),
-    MenuCommand (N_("By Genre"), nullptr, NO_KEY, action_playlist_sort_selected_by_genre),
-    MenuCommand (N_("By Release Date"), nullptr, NO_KEY, action_playlist_sort_selected_by_date),
-    MenuCommand (N_("By Length"), nullptr, NO_KEY, action_playlist_sort_selected_by_length),
-    MenuCommand (N_("By File Name"), nullptr, NO_KEY, action_playlist_sort_selected_by_filename),
-    MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_sort_selected_by_full_path),
-    MenuCommand (N_("By Custom Title"), nullptr, NO_KEY, action_playlist_sort_selected_by_custom_title)
+    MenuCommand (N_("By Track Number"), nullptr, NO_KEY, sort_sel_track),
+    MenuCommand (N_("By Title"), nullptr, NO_KEY, sort_sel_title),
+    MenuCommand (N_("By Artist"), nullptr, NO_KEY, sort_sel_artist),
+    MenuCommand (N_("By Album"), nullptr, NO_KEY, sort_sel_album),
+    MenuCommand (N_("By Album Artist"), nullptr, NO_KEY, sort_sel_album_artist),
+    MenuCommand (N_("By Genre"), nullptr, NO_KEY, sort_sel_genre),
+    MenuCommand (N_("By Release Date"), nullptr, NO_KEY, sort_sel_date),
+    MenuCommand (N_("By Length"), nullptr, NO_KEY, sort_sel_length),
+    MenuCommand (N_("By File Name"), nullptr, NO_KEY, sort_sel_filename),
+    MenuCommand (N_("By File Path"), nullptr, NO_KEY, sort_sel_path),
+    MenuCommand (N_("By Custom Title"), nullptr, NO_KEY, sort_sel_custom_title)
 };
 
 static const AudguiMenuItem playlist_sort_items[] = {
-    MenuCommand (N_("Randomize List"), nullptr, 'r', SHIFT_CTRL, action_playlist_randomize_list),
-    MenuCommand (N_("Reverse List"), "view-sort-descending", NO_KEY, action_playlist_reverse_list),
+    MenuCommand (N_("Randomize List"), nullptr, 'r', SHIFT_CTRL, sort_random),
+    MenuCommand (N_("Reverse List"), "view-sort-descending", NO_KEY, sort_reverse),
     MenuSep (),
     MenuSub (N_("Sort Selected"), "view-sort-ascending", {sort_selected_items}),
     MenuSub (N_("Sort List"), "view-sort-ascending", {sort_items})
 };
 
 static const AudguiMenuItem playlist_context_items[] = {
-    MenuCommand (N_("Song Info ..."), "dialog-information", 'i', ALT, action_playlist_track_info),
+    MenuCommand (N_("Song Info ..."), "dialog-information", 'i', ALT, pl_song_info),
+    MenuCommand (N_("Open Containing Folder"), "folder", NO_KEY, pl_open_folder),
     MenuSep (),
-    MenuCommand (N_("Cut"), "edit-cut", 'x', CTRL, action_playlist_cut),
-    MenuCommand (N_("Copy"), "edit-copy", 'c', CTRL, action_playlist_copy),
-    MenuCommand (N_("Paste"), "edit-paste", 'v', CTRL, action_playlist_paste),
+    MenuCommand (N_("Cut"), "edit-cut", 'x', CTRL, pl_cut),
+    MenuCommand (N_("Copy"), "edit-copy", 'c', CTRL, pl_copy),
+    MenuCommand (N_("Paste"), "edit-paste", 'v', CTRL, pl_paste),
+    MenuCommand (N_("Paste at End"), "edit-paste", 'v', SHIFT_CTRL, pl_paste_end),
     MenuSep (),
-    MenuCommand (N_("Queue/Unqueue"), nullptr, 'q', NO_MOD, action_queue_toggle),
+    MenuCommand (N_("Queue/Unqueue"), nullptr, 'q', NO_MOD, pl_queue_toggle),
     MenuSep (),
     MenuSub (N_("Services"), nullptr, get_plugin_menu_playlist)
 };

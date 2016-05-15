@@ -43,6 +43,9 @@
 #include "ui_statusbar.h"
 #include "playlist_util.h"
 
+#include "../ui-common/menu-ops.cc"
+#include "../ui-common/menu-ops-gtk.cc"
+
 static const char * const gtkui_defaults[] = {
     "infoarea_show_vis", "TRUE",
     "infoarea_visible", "TRUE",
@@ -106,6 +109,9 @@ public:
         { audgui_plugin_menu_add (id, func, name, icon); }
     void plugin_menu_remove (AudMenuID id, void func ())
         { audgui_plugin_menu_remove (id, func); }
+
+    void startup_notify (const char * id)
+        { gdk_notify_startup_complete_with_id (id); }
 };
 
 EXPORT GtkUI aud_plugin_instance;
@@ -214,19 +220,23 @@ static void title_change (void * = nullptr)
 {
     delayed_title_change.stop ();
 
+    StringBuf title;
+
     if (aud_drct_get_playing ())
     {
         if (aud_drct_get_ready ())
-        {
-            String title = aud_drct_get_title ();
-            gtk_window_set_title ((GtkWindow *) window,
-             str_printf (_("%s - Audacious"), (const char *) title));
-        }
+            title.steal (str_printf (_("%s - Audacious"), (const char *) aud_drct_get_title ()));
         else
-            gtk_window_set_title ((GtkWindow *) window, _("Buffering ..."));
+            title.steal (str_copy (_("Buffering ...")));
     }
     else
-        gtk_window_set_title ((GtkWindow *) window, _("Audacious"));
+        title.steal (str_copy (_("Audacious")));
+
+    int instance = aud_get_instance ();
+    if (instance != 1)
+        title.combine (str_printf (" (%d)", instance));
+
+    gtk_window_set_title ((GtkWindow *) window, title);
 }
 
 void GtkUI::show (bool show)
@@ -538,8 +548,7 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event)
         {
           case GDK_KEY_ISO_Left_Tab:
           case GDK_KEY_Tab:
-            aud_playlist_set_active ((aud_playlist_get_active () + 1) %
-             aud_playlist_count ());
+            pl_next ();
             break;
 
           default:
@@ -551,8 +560,7 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event)
         {
           case GDK_KEY_ISO_Left_Tab:
           case GDK_KEY_Tab:
-            aud_playlist_set_active (aud_playlist_get_active () ?
-             aud_playlist_get_active () - 1 : aud_playlist_count () - 1);
+            pl_prev ();
             break;
           default:
             return false;
@@ -590,7 +598,7 @@ static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event)
             ui_playlist_notebook_position (aud::to_ptr (aud_playlist_get_active ()), nullptr);
             return true;
         case GDK_KEY_Delete:
-            playlist_delete_selected ();
+            pl_remove_selected ();
             return true;
         case GDK_KEY_Menu:
             popup_menu_rclick (0, event->time);
@@ -602,16 +610,16 @@ static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event)
         switch (event->keyval)
         {
         case 'x':
-            playlist_cut ();
+            pl_cut ();
             return true;
         case 'c':
-            playlist_copy ();
+            pl_copy ();
             return true;
         case 'v':
-            playlist_paste ();
+            pl_paste ();
             return true;
         case 'a':
-            aud_playlist_select_all (aud_playlist_get_active (), true);
+            pl_select_all ();
             return true;
         }
 

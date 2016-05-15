@@ -23,18 +23,17 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/index.h>
 #include <libaudcore/mainloop.h>
-#include <libaudcore/objects.h>
 
 #include "dialog_windows.h"
-#include "info_bar.h"
 
 #include <QMainWindow>
-#include <QVBoxLayout>
 
 class FilterInput;
+class InfoBar;
 class PlaylistTabs;
 class PluginHandle;
 class PluginWidget;
+class QVBoxLayout;
 
 class MainWindow : public QMainWindow
 {
@@ -43,6 +42,7 @@ public:
     ~MainWindow ();
 
 private:
+    QString m_config_name;
     DialogWindows m_dialogs;
     FilterInput * filterInput;
     PlaylistTabs * playlistTabs;
@@ -59,8 +59,9 @@ private:
     void closeEvent (QCloseEvent * e);
     void keyPressEvent (QKeyEvent * e);
 
+    void setWindowTitle (const QString & title);
+
     void updateToggles ();
-    void setupActions ();
     void readSettings ();
 
     void add_dock_plugins ();

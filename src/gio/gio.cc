@@ -20,6 +20,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #include <gio/gio.h>
 
@@ -29,12 +30,11 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
-
 static const char gio_about[] =
  N_("GIO Plugin for Audacious\n"
     "Copyright 2009-2012 John Lindgren");
 
-static const char * const gio_schemes[] = {"ftp", "sftp", "smb"};
+static const char * const gio_schemes[] = {"ftp", "sftp", "smb", "mtp"};
 
 class GIOTransport : public TransportPlugin
 {
@@ -44,6 +44,8 @@ public:
     constexpr GIOTransport () : TransportPlugin (info, gio_schemes) {}
 
     VFSImpl * fopen (const char * path, const char * mode, String & error);
+    VFSFileTest test_file (const char * filename, VFSFileTest test, String & error);
+    Index<String> read_folder (const char * filename, String & error);
 };
 
 EXPORT GIOTransport aud_plugin_instance;
@@ -65,10 +67,6 @@ protected:
 
     int fseek (int64_t offset, VFSSeekType whence);
     int64_t ftell ();
-
-    int getc ();
-    int ungetc (int c);
-
     bool feof ();
 
     int ftruncate (int64_t length);
@@ -83,6 +81,7 @@ private:
     GInputStream * m_istream = nullptr;
     GOutputStream * m_ostream = nullptr;
     GSeekable * m_seekable = nullptr;
+    bool m_eof = false;
 };
 
 #define CHECK_ERROR(op, name) do { \
@@ -233,6 +232,8 @@ int64_t GIOFile::fread (void * buf, int64_t size, int64_t nitems)
         int64_t part = g_input_stream_read (m_istream, buf, remain, 0, & error);
         CHECK_ERROR ("read from", m_filename);
 
+        m_eof = (part == 0);
+
         if (part <= 0)
             break;
 
@@ -299,6 +300,8 @@ int GIOFile::fseek (int64_t offset, VFSSeekType whence)
     g_seekable_seek (m_seekable, offset, gwhence, nullptr, & error);
     CHECK_ERROR ("seek within", m_filename);
 
+    m_eof = (whence == VFS_SEEK_END && offset == 0);
+
     return 0;
 
 FAILED:
@@ -310,26 +313,9 @@ int64_t GIOFile::ftell ()
     return g_seekable_tell (m_seekable);
 }
 
-int GIOFile::getc ()
-{
-    unsigned char c;
-    return (fread (& c, 1, 1) == 1) ? c : -1;
-}
-
-int GIOFile::ungetc (int c)
-{
-    return (! fseek (-1, VFS_SEEK_CUR)) ? c : -1;
-}
-
 bool GIOFile::feof ()
 {
-    int test = getc ();
-
-    if (test < 0)
-        return true;
-
-    ungetc (test);
-    return false;
+    return m_eof;
 }
 
 int GIOFile::ftruncate (int64_t length)
@@ -339,6 +325,8 @@ int GIOFile::ftruncate (int64_t length)
     g_seekable_truncate (m_seekable, length, nullptr, & error);
     CHECK_ERROR ("truncate", m_filename);
 
+    m_eof = (g_seekable_tell (m_seekable) >= length);
+
     return 0;
 
 FAILED:
@@ -347,42 +335,116 @@ FAILED:
 
 int64_t GIOFile::fsize ()
 {
-    GError * error = nullptr;
-    int64_t size;
-
-    /* Audacious core expects one of two cases:
-     *  1) File size is known and file is seekable.
-     *  2) File size is unknown and file is not seekable.
-     * Therefore, we return -1 for size if file is not seekable. */
     if (! g_seekable_can_seek (m_seekable))
         return -1;
 
-    GFileInfo * info = g_file_query_info (m_file,
-     G_FILE_ATTRIBUTE_STANDARD_SIZE, (GFileQueryInfoFlags) 0, 0, & error);
-    CHECK_ERROR ("get size of", m_filename);
+    GError * error = nullptr;
+    int64_t saved_pos = g_seekable_tell (m_seekable);
+    int64_t size = -1;
 
-    size = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_STANDARD_SIZE);
+    g_seekable_seek (m_seekable, 0, G_SEEK_END, nullptr, & error);
+    CHECK_ERROR ("seek within", m_filename);
 
-    g_object_unref (info);
+    size = g_seekable_tell (m_seekable);
+
+    g_seekable_seek (m_seekable, saved_pos, G_SEEK_SET, nullptr, & error);
+    CHECK_ERROR ("seek within", m_filename);
+
+    m_eof = (saved_pos >= size);
+
+FAILED:
     return size;
+}
+
+int GIOFile::fflush ()
+{
+    if (! m_ostream)
+        return 0;  /* no-op */
+
+    GError * error = nullptr;
+
+    g_output_stream_flush (m_ostream, nullptr, & error);
+    CHECK_ERROR ("flush", m_filename);
+
+    return 0;
 
 FAILED:
     return -1;
 }
 
-int GIOFile::fflush ()
+VFSFileTest GIOTransport::test_file (const char * filename, VFSFileTest test, String & error)
 {
-    int result;
-    GError * error = nullptr;
+    GFile * file = g_file_new_for_uri (filename);
+    Index<String> attrs;
+    int passed = 0;
 
-    if (! m_ostream)
-        return 0;  /* no-op */
+    if (test & (VFS_IS_REGULAR | VFS_IS_DIR))
+        attrs.append (G_FILE_ATTRIBUTE_STANDARD_TYPE);
+    if (test & VFS_IS_SYMLINK)
+        attrs.append (G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK);
+    if (test & VFS_IS_EXECUTABLE)
+        attrs.append (G_FILE_ATTRIBUTE_UNIX_MODE);
 
-    result = g_output_stream_flush (m_ostream, nullptr, & error);
-    CHECK_ERROR ("flush", m_filename);
+    GError * gerr = nullptr;
+    GFileInfo * info = g_file_query_info (file, index_to_str_list (attrs, ","),
+     G_FILE_QUERY_INFO_NONE, nullptr, & gerr);
 
-    return result;
+    if (! info)
+    {
+        passed |= VFS_NO_ACCESS;
+        error = String (gerr->message);
+        g_error_free (gerr);
+    }
+    else
+    {
+        passed |= VFS_EXISTS;
 
-FAILED:
-    return -1;
+        switch (g_file_info_get_file_type (info))
+        {
+            case G_FILE_TYPE_REGULAR: passed |= VFS_IS_REGULAR; break;
+            case G_FILE_TYPE_DIRECTORY: passed |= VFS_IS_DIR; break;
+            default: break;
+        };
+
+        if (g_file_info_get_is_symlink (info))
+            passed |= VFS_IS_SYMLINK;
+        if (g_file_info_get_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_MODE) & S_IXUSR)
+            passed |= VFS_IS_EXECUTABLE;
+
+        g_object_unref (info);
+    }
+
+    g_object_unref (file);
+    return VFSFileTest (test & passed);
+}
+
+Index<String> GIOTransport::read_folder (const char * filename, String & error)
+{
+    GFile * file = g_file_new_for_uri (filename);
+    Index<String> files;
+
+    GError * gerr = nullptr;
+    GFileEnumerator * dir = g_file_enumerate_children (file,
+     G_FILE_ATTRIBUTE_STANDARD_NAME, G_FILE_QUERY_INFO_NONE, nullptr, & gerr);
+
+    if (! dir)
+    {
+        error = String (gerr->message);
+        g_error_free (gerr);
+    }
+    else
+    {
+        GFileInfo * info;
+        while ((info = g_file_enumerator_next_file (dir, nullptr, nullptr)))
+        {
+            StringBuf enc = str_encode_percent (g_file_info_get_name (info));
+            files.append (String (str_concat ({filename, "/", enc})));
+            g_object_unref (info);
+        }
+
+        g_object_unref (dir);
+    }
+
+    g_object_unref (file);
+    return files;
 }

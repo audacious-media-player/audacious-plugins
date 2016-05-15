@@ -9,6 +9,16 @@ plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
 LD = ${CXX}
 
-CPPFLAGS += -I../.. ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${NOTIFY_CFLAGS}
+CPPFLAGS += -I../.. ${PLUGIN_CPPFLAGS} ${NOTIFY_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBS += ${GTK_LIBS} ${NOTIFY_LIBS} -laudgui
+LIBS += ${NOTIFY_LIBS}
+
+ifeq ($(USE_GTK),yes)
+CPPFLAGS += ${GTK_CFLAGS}
+LIBS += ${GTK_LIBS} -laudgui
+endif
+
+ifeq ($(USE_QT),yes)
+CPPFLAGS += ${QT_CFLAGS}
+LIBS += ${QT_LIBS} -laudqt
+endif

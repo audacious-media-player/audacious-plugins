@@ -32,7 +32,8 @@
 #ifndef H_DEBUG
 #define H_DEBUG
 
-void AdPlug_LogFile(const char *filename);
-void AdPlug_LogWrite(const char *fmt, ...);
+#include <libaudcore/runtime.h>
+
+#define AdPlug_LogWrite(...) AUDDBG(__VA_ARGS__)
 
 #endif

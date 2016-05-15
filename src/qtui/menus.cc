@@ -1,5 +1,5 @@
 /*
- * main_window_actions.cc
+ * menus.cc
  * Copyright 2014 Michał Lipski and William Pitcock
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,7 +17,8 @@
  * the use of this software.
  */
 
-#include "main_window.h"
+#include "menus.h"
+#include "../ui-common/menu-ops.h"
 
 #include <QMenuBar>
 
@@ -34,6 +35,7 @@
 #include <libaudqt/menu.h>
 
 static QMenu * services_menu () { return audqt::menu_get_by_id (AudMenuID::Main); }
+static QMenu * services_menu_pl () { return audqt::menu_get_by_id (AudMenuID::Playlist); }
 
 static void open_files () { audqt::fileopener_show (audqt::FileMode::Open); }
 static void add_files () { audqt::fileopener_show (audqt::FileMode::Add); }
@@ -42,48 +44,12 @@ static void add_folder () { audqt::fileopener_show (audqt::FileMode::AddFolder);
 static void open_url () { audqt::urlopener_show (true); }
 static void add_url () { audqt::urlopener_show (false); }
 
-static void rm_dupes_title () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void rm_dupes_filename () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Filename); }
-static void rm_dupes_path () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Path); }
-
-static void sort_track () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
-static void sort_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void sort_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
-static void sort_album () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
-static void sort_album_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
-static void sort_date () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
-static void sort_genre () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Genre); }
-static void sort_length () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
-static void sort_path () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
-static void sort_custom_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
-static void sort_reverse () { aud_playlist_reverse (aud_playlist_get_active ()); }
-static void sort_random () { aud_playlist_randomize (aud_playlist_get_active ()); }
-
-static void sort_sel_track () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
-static void sort_sel_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }
-static void sort_sel_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
-static void sort_sel_album () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
-static void sort_sel_album_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
-static void sort_sel_date () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
-static void sort_sel_genre () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Genre); }
-static void sort_sel_length () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
-static void sort_sel_path () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
-static void sort_sel_custom_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
-static void sort_sel_reverse () { aud_playlist_reverse (aud_playlist_get_active ()); }
-static void sort_sel_random () { aud_playlist_randomize (aud_playlist_get_active ()); }
-
-static void pl_play () { aud_playlist_play (aud_playlist_get_active ()); }
-static void pl_refresh () { aud_playlist_rescan (aud_playlist_get_active ()); }
-static void pl_remove_failed () { aud_playlist_remove_failed (aud_playlist_get_active ()); }
 static void pl_rename () { hook_call ("qtui rename playlist", nullptr); }
 static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_active ()); }
 
-static void volume_up () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
-static void volume_down () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
-
 static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
 
-void MainWindow::setupActions ()
+QMenuBar * qtui_build_menubar (QWidget * parent)
 {
     static const audqt::MenuItem file_items[] = {
         audqt::MenuCommand ({N_("_Open Files ..."), "document-open", "Ctrl+O"}, open_files),
@@ -192,5 +158,26 @@ void MainWindow::setupActions ()
         audqt::MenuSub ({N_("_Output")}, output_items),
     };
 
-    setMenuBar (audqt::menubar_build (main_items, this));
+    return audqt::menubar_build (main_items, parent);
+}
+
+QMenu * qtui_build_pl_menu (QWidget * parent)
+{
+    static const audqt::MenuItem pl_items[] = {
+        audqt::MenuCommand ({N_("Song _Info ..."), "dialog-information", "Alt+I"}, pl_song_info),
+        audqt::MenuCommand ({N_("_Queue/Unqueue"), nullptr, "Alt+Q"}, pl_queue_toggle),
+        audqt::MenuSep (),
+        audqt::MenuCommand ({N_("_Open Containing Folder"), "folder"}, pl_open_folder),
+        audqt::MenuCommand ({N_("_Refresh Selected"), "view-refresh", "F6"}, pl_refresh_sel),
+        audqt::MenuSep (),
+        audqt::MenuCommand ({N_("Cu_t"), "edit-cut", "Ctrl+X"}, pl_cut),
+        audqt::MenuCommand ({N_("_Copy"), "edit-copy", "Ctrl+C"}, pl_copy),
+        audqt::MenuCommand ({N_("_Paste"), "edit-paste", "Ctrl+V"}, pl_paste),
+        audqt::MenuCommand ({N_("Paste at _End"), "edit-paste", "Shift+Ctrl+V"}, pl_paste_end),
+        audqt::MenuCommand ({N_("Select _All"), "edit-select-all"}, pl_select_all),
+        audqt::MenuSep (),
+        audqt::MenuSub ({N_("_Services")}, services_menu_pl)
+    };
+
+    return audqt::menu_build (pl_items, parent);
 }

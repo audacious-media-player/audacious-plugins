@@ -14,32 +14,39 @@
 #include <vorbis/codec.h>
 #include <libaudcore/vfs.h>
 
-typedef struct {
-	ogg_sync_state	 *oy;
-	ogg_stream_state *os;
+class VCEdit
+{
+public:
+    vorbis_comment vc;
+    const char *lasterror = nullptr;
 
-	vorbis_comment	 *vc;
-	vorbis_info       vi;
+    VCEdit();
+    ~VCEdit();
 
-	VFSFile		 *in;
-	long		  serial;
-	unsigned char	 *mainbuf;
-	unsigned char	 *bookbuf;
-	int		  mainlen;
-	int		  booklen;
-	const char 	         *lasterror;
-	char             *vendor;
-	int               prevW;
-	int               extrapage;
-	int               eosin;
-} vcedit_state;
+    VCEdit(const VCEdit&) = delete;
+    VCEdit& operator=(const VCEdit&) = delete;
 
-extern vcedit_state *vcedit_new_state();
-extern void vcedit_clear(vcedit_state *state);
-extern vorbis_comment *vcedit_comments(vcedit_state *state);
-extern int vcedit_open(vcedit_state *state, VFSFile &in);
-extern int vcedit_write(vcedit_state *state, VFSFile &out);
-extern const char *vcedit_error(vcedit_state *state);
+    bool open(VFSFile &in);
+    bool write(VFSFile &in, VFSFile &out);
+
+private:
+    ogg_sync_state   oy;
+    ogg_stream_state os;
+    vorbis_info      vi;
+
+    long serial = 0;
+    int  prevW = 0;
+    bool extrapage = false;
+    bool eosin = false;
+
+    String vendor;
+
+    Index<unsigned char> mainbuf;
+    Index<unsigned char> bookbuf;
+
+    int blocksize(ogg_packet *p);
+    bool fetch_next_packet(VFSFile &in, ogg_packet *p, ogg_page *page);
+};
 
 #endif /* __VCEDIT_H */
 

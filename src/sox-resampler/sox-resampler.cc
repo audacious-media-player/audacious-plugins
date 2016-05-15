@@ -61,9 +61,10 @@ public:
 EXPORT SoXResampler aud_plugin_instance;
 
 const char * const SoXResampler::defaults[] = {
- "quality", aud::numeric_string<SOXR_HQ>::str,
- "rate", "44100",
- nullptr};
+    "quality", aud::numeric_string<SOXR_HQ>::str,
+    "rate", "44100",
+    nullptr
+};
 
 static soxr_t soxr;
 static soxr_error_t error;
@@ -95,13 +96,13 @@ void SoXResampler::start (int & channels, int & rate)
     if (new_rate == rate)
         return;
 
-    soxr_quality_spec_t q = soxr_quality_spec(aud_get_int ("soxr", "quality"), 0);
+    soxr_quality_spec_t q = soxr_quality_spec (aud_get_int ("soxr", "quality"), 0);
 
-    soxr = soxr_create(rate, new_rate, channels, & error, nullptr, & q, nullptr);
+    soxr = soxr_create (rate, new_rate, channels, & error, nullptr, & q, nullptr);
 
     if (error)
     {
-        AUDERR (error);
+        AUDERR ("%s\n", error);
         return;
     }
 
@@ -123,7 +124,7 @@ Index<float> & SoXResampler::process (Index<float> & data)
 
     if (error)
     {
-        AUDERR (error);
+        AUDERR ("%s\n", error);
         return data;
     }
 
@@ -134,8 +135,8 @@ Index<float> & SoXResampler::process (Index<float> & data)
 
 bool SoXResampler::flush (bool force)
 {
-    if (soxr && (error = soxr_process(soxr, nullptr, 0, nullptr, nullptr, 0, nullptr)))
-        AUDERR (error);
+    if (soxr && (error = soxr_process (soxr, nullptr, 0, nullptr, nullptr, 0, nullptr)))
+        AUDERR ("%s\n", error);
 
     return true;
 }

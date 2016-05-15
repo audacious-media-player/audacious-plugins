@@ -20,14 +20,18 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <glib.h>
 #include <string.h>
-#include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
+
+#ifdef FILEWRITER_MP3
+#include <lame/lame.h>
+#endif
 
 #include "filewriter.h"
 #include "convert.h"
@@ -84,10 +88,16 @@ static int save_original;
 /* stored as two separate booleans in the config file */
 static int filename_mode;
 
+#ifdef FILEWRITER_MP3
+/* stored as integers (0 or 1) in the config file */
+static bool mp3_enforce_iso, mp3_error_protect;
+static bool mp3_vbr_on, mp3_enforce_min, mp3_omit_xing;
+static bool mp3_frame_copyright, mp3_frame_original;
+static bool mp3_id3_force_v2, mp3_id3_only_v1, mp3_id3_only_v2;
+#endif
+
 static String in_filename;
 static Tuple in_tuple;
-
-static GtkWidget * path_dirbrowser;
 
 enum fileext_t
 {
@@ -164,6 +174,22 @@ bool FileWriter::init ()
         if (p->init)
             p->init ();
     }
+
+#ifdef FILEWRITER_MP3
+    mp3_enforce_iso = aud_get_int ("filewriter_mp3", "enforce_iso_val");
+    mp3_error_protect = aud_get_int ("filewriter_mp3", "error_protect_val");
+
+    mp3_vbr_on = aud_get_int ("filewriter_mp3", "vbr_on");
+    mp3_enforce_min = aud_get_int ("filewriter_mp3", "enforce_min_val");
+    mp3_omit_xing = ! aud_get_int ("filewriter_mp3", "toggle_xing_val");
+
+    mp3_frame_copyright = aud_get_int ("filewriter_mp3", "mark_copyright_val");
+    mp3_frame_original = aud_get_int ("filewriter_mp3", "mark_original_val");
+
+    mp3_id3_force_v2 = aud_get_int ("filewriter_mp3", "force_v2_val");
+    mp3_id3_only_v1 = aud_get_int ("filewriter_mp3", "only_v1_val");
+    mp3_id3_only_v2 = aud_get_int ("filewriter_mp3", "only_v2_val");
+#endif
 
     return true;
 }
@@ -310,31 +336,9 @@ void FileWriter::close_audio ()
     in_tuple = Tuple ();
 }
 
-static void * create_dirbrowser ()
-{
-    path_dirbrowser = gtk_file_chooser_button_new (_("Pick a folder"),
-     GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-    gtk_file_chooser_set_uri ((GtkFileChooser *) path_dirbrowser, get_file_path ());
-    gtk_widget_set_sensitive (path_dirbrowser, ! save_original);
-
-    auto set_cb = [] ()
-    {
-        char * uri = gtk_file_chooser_get_uri ((GtkFileChooser *) path_dirbrowser);
-        aud_set_str ("filewriter", "file_path", uri);
-        g_free (uri);
-    };
-
-    // "file-set" is unreliable, so get the path on "destroy" as well
-    g_signal_connect (path_dirbrowser, "file-set", set_cb, nullptr);
-    g_signal_connect (path_dirbrowser, "destroy", set_cb, nullptr);
-
-    return path_dirbrowser;
-}
-
 static void save_original_cb ()
 {
     aud_set_bool ("filewriter", "save_original", save_original);
-    gtk_widget_set_sensitive (path_dirbrowser, ! save_original);
 }
 
 static void filename_mode_cb ()
@@ -381,7 +385,10 @@ static const PreferencesWidget main_widgets[] = {
     WidgetRadio (N_("Save into custom directory:"),
         WidgetInt (save_original, save_original_cb),
         {false}),
-    WidgetCustomGTK (create_dirbrowser),
+    WidgetFileEntry (nullptr,
+        WidgetString ("filewriter", "file_path"),
+        {FileSelectMode::Folder},
+        WIDGET_CHILD),
     WidgetSeparator ({true}),
     WidgetLabel (N_("Generate file name from:")),
     WidgetRadio (N_("Original file name"),
@@ -399,14 +406,159 @@ static const PreferencesWidget main_widgets[] = {
 };
 
 #ifdef FILEWRITER_MP3
+static const ComboItem mp3_sample_rates[] = {
+    ComboItem(N_("Auto"), 0),
+    ComboItem(N_("8000 Hz"), 8000),
+    ComboItem(N_("11025 Hz"), 11025),
+    ComboItem(N_("12000 Hz"), 12000),
+    ComboItem(N_("16000 Hz"), 16000),
+    ComboItem(N_("22050 Hz"), 22050),
+    ComboItem(N_("24000 Hz"), 24000),
+    ComboItem(N_("32000 Hz"), 32000),
+    ComboItem(N_("44100 Hz"), 44100),
+    ComboItem(N_("48000 Hz"), 48000)
+};
+
+static const ComboItem mp3_bitrates[] = {
+    ComboItem(N_("8 kbps"), 8),
+    ComboItem(N_("16 kbps"), 16),
+    ComboItem(N_("32 kbps"), 32),
+    ComboItem(N_("40 kbps"), 40),
+    ComboItem(N_("48 kbps"), 48),
+    ComboItem(N_("56 kbps"), 56),
+    ComboItem(N_("64 kbps"), 64),
+    ComboItem(N_("80 kbps"), 80),
+    ComboItem(N_("96 kbps"), 96),
+    ComboItem(N_("112 kbps"), 112),
+    ComboItem(N_("128 kbps"), 128),
+    ComboItem(N_("160 kbps"), 160),
+    ComboItem(N_("192 kbps"), 192),
+    ComboItem(N_("224 kbps"), 224),
+    ComboItem(N_("256 kbps"), 256),
+    ComboItem(N_("320 kbps"), 320)
+};
+
+static const ComboItem mp3_modes[] = {
+    ComboItem(N_("Auto"), NOT_SET),
+    ComboItem(N_("Joint Stereo"), JOINT_STEREO),
+    ComboItem(N_("Stereo"), STEREO),
+    ComboItem(N_("Mono"), MONO)
+};
+
+static const ComboItem mp3_vbr_modes[] = {
+    ComboItem(N_("VBR"), 0),
+    ComboItem(N_("ABR"), 1)
+};
+
+static void mp3_bools_changed ()
+{
+    aud_set_int ("filewriter_mp3", "enforce_iso_val", mp3_enforce_iso);
+    aud_set_int ("filewriter_mp3", "error_protect_val", mp3_error_protect);
+
+    aud_set_int ("filewriter_mp3", "vbr_on", mp3_vbr_on);
+    aud_set_int ("filewriter_mp3", "enforce_min_val", mp3_enforce_min);
+    aud_set_int ("filewriter_mp3", "toggle_xing_val", ! mp3_omit_xing);
+
+    aud_set_int ("filewriter_mp3", "mark_copyright_val", mp3_frame_copyright);
+    aud_set_int ("filewriter_mp3", "mark_original_val", mp3_frame_original);
+
+    aud_set_int ("filewriter_mp3", "force_v2_val", mp3_id3_force_v2);
+    aud_set_int ("filewriter_mp3", "only_v1_val", mp3_id3_only_v1);
+    aud_set_int ("filewriter_mp3", "only_v2_val", mp3_id3_only_v2);
+}
+
+static const PreferencesWidget mp3_quality_widgets[] = {
+    WidgetSpin(N_("Algorithm quality:"),
+        WidgetInt("filewriter_mp3", "algo_quality_val"),
+        {0, 9, 1}),
+    WidgetCombo(N_("Sample rate:"),
+        WidgetInt("filewriter_mp3", "out_samplerate_val"),
+        {{mp3_sample_rates}}),
+    WidgetRadio(N_("Bitrate:"),
+        WidgetInt("filewriter_mp3", "enc_toggle_val"),
+        {0}),
+    WidgetCombo(nullptr,
+        WidgetInt("filewriter_mp3", "bitrate_val"),
+        {{mp3_bitrates}},
+        WIDGET_CHILD),
+    WidgetRadio(N_("Compression ratio:"),
+        WidgetInt("filewriter_mp3", "enc_toggle_val"),
+        {1}),
+    WidgetSpin(nullptr,
+        WidgetFloat("filewriter_mp3", "compression_val"),
+        {0, 100, 1},
+        WIDGET_CHILD),
+    WidgetCombo(N_("Audio mode:"),
+        WidgetInt("filewriter_mp3", "audio_mode_val"),
+        {{mp3_modes}}),
+    WidgetCheck(N_("Enforce strict ISO compliance"),
+        WidgetBool(mp3_enforce_iso, mp3_bools_changed)),
+    WidgetCheck(N_("Error protection"),
+        WidgetBool(mp3_error_protect, mp3_bools_changed)),
+};
+
+static const PreferencesWidget mp3_vbr_abr_widgets[] = {
+    WidgetCheck(N_("Enable VBR/ABR"),
+        WidgetBool(mp3_vbr_on, mp3_bools_changed)),
+    WidgetCombo(N_("Type:"),
+        WidgetInt("filewriter_mp3", "vbr_type"),
+        {{mp3_vbr_modes}},
+        WIDGET_CHILD),
+    WidgetCombo(N_("Minimum bitrate:"),
+        WidgetInt("filewriter_mp3", "vbr_min_val"),
+        {{mp3_bitrates}},
+        WIDGET_CHILD),
+    WidgetCombo(N_("Maximum bitrate:"),
+        WidgetInt("filewriter_mp3", "vbr_max_val"),
+        {{mp3_bitrates}},
+        WIDGET_CHILD),
+    WidgetCombo(N_("Average bitrate:"),
+        WidgetInt("filewriter_mp3", "abr_val"),
+        {{mp3_bitrates}},
+        WIDGET_CHILD),
+    WidgetSpin(N_("VBR quality level:"),
+        WidgetInt("filewriter_mp3", "vbr_quality_val"),
+        {0, 9, 1},
+        WIDGET_CHILD),
+    WidgetCheck(N_("Strictly enforce minimum bitrate"),
+        WidgetBool(mp3_enforce_min, mp3_bools_changed),
+        WIDGET_CHILD),
+    WidgetCheck(N_("Omit Xing VBR header"),
+        WidgetBool(mp3_omit_xing, mp3_bools_changed),
+        WIDGET_CHILD)
+};
+
+static const PreferencesWidget mp3_tag_widgets[] = {
+    WidgetLabel(N_("<b>Frame Headers</b>")),
+    WidgetCheck(N_("Mark as copyright"),
+        WidgetBool(mp3_frame_copyright, mp3_bools_changed)),
+    WidgetCheck(N_("Mark as original"),
+        WidgetBool(mp3_frame_original, mp3_bools_changed)),
+    WidgetLabel(N_("<b>ID3 Tags</b>")),
+    WidgetCheck(N_("Force addition of version 2 tag"),
+        WidgetBool(mp3_id3_force_v2, mp3_bools_changed)),
+    WidgetCheck(N_("Only add v1 tag"),
+        WidgetBool(mp3_id3_only_v1, mp3_bools_changed)),
+    WidgetCheck(N_("Only add v2 tag"),
+        WidgetBool(mp3_id3_only_v2, mp3_bools_changed)),
+};
+
+static const NotebookTab mp3_tabs[] = {
+    {N_("Quality"), {mp3_quality_widgets}},
+    {N_("VBR/ABR"), {mp3_vbr_abr_widgets}},
+    {N_("Tags"), {mp3_tag_widgets}}
+};
+
 static const PreferencesWidget mp3_widgets[] = {
-    WidgetCustomGTK (mp3_configure)
+    WidgetNotebook ({{mp3_tabs}})
 };
 #endif
 
 #ifdef FILEWRITER_VORBIS
 static const PreferencesWidget vorbis_widgets[] = {
-    WidgetCustomGTK (vorbis_configure)
+    WidgetSpin(N_("Quality (0-1):"),
+        WidgetFloat("filewriter_vorbis", "base_quality"),
+        {0, 1, 0.01})
 };
 #endif
 

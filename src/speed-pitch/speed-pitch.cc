@@ -20,6 +20,7 @@
 #include <math.h>
 #include <samplerate.h>
 
+#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
@@ -39,6 +40,8 @@
 #define MAXSPEED 2.0
 #define MINPITCH 0.5
 #define MAXPITCH 2.0
+#define MINSEMITONES -12.0
+#define MAXSEMITONES 12.0
 
 class SpeedPitch : public EffectPlugin
 {
@@ -74,6 +77,7 @@ private:
 
 EXPORT SpeedPitch aud_plugin_instance;
 
+static double semitones;
 static int curchans, currate;
 static SRC_STATE * srcstate;
 static int outstep, width;
@@ -201,6 +205,18 @@ int SpeedPitch::adjust_delay (int delay)
     return (delay + in_samples * samples_to_ms) * speed + out_samples * samples_to_ms;
 }
 
+static void pitch_changed ()
+{
+    semitones = 12 * log (aud_get_double (CFGSECT, "pitch")) / log (2);
+    hook_call ("speed-pitch set semitones", nullptr);
+}
+
+static void semitones_changed ()
+{
+    aud_set_double (CFGSECT, "pitch", pow (2, semitones / 12));
+    hook_call ("speed-pitch set pitch", nullptr);
+}
+
 const char * const SpeedPitch::defaults[] = {
  "speed", "1",
  "pitch", "1",
@@ -212,8 +228,12 @@ const PreferencesWidget SpeedPitch::widgets[] = {
         WidgetFloat (CFGSECT, "speed"),
         {MINSPEED, MAXSPEED, 0.05}),
     WidgetSpin (N_("Pitch:"),
-        WidgetFloat (CFGSECT, "pitch"),
-        {MINPITCH, MAXPITCH, 0.05})
+        WidgetFloat (CFGSECT, "pitch", pitch_changed, "speed-pitch set pitch"),
+        {MINPITCH, MAXPITCH, 0.005}),
+    WidgetSpin (nullptr,
+        WidgetFloat (semitones, semitones_changed, "speed-pitch set semitones"),
+        {MINSEMITONES, MAXSEMITONES, 0.05, N_("semitones")},
+        WIDGET_CHILD)
 };
 
 const PluginPreferences SpeedPitch::prefs = {{widgets}};
@@ -221,6 +241,7 @@ const PluginPreferences SpeedPitch::prefs = {{widgets}};
 bool SpeedPitch::init ()
 {
     aud_config_set_defaults (CFGSECT, defaults);
+    pitch_changed ();
     return true;
 }
 

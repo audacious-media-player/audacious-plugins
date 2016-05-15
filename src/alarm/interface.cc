@@ -20,6 +20,7 @@
 #include <gtk/gtk.h>
 #include <libaudcore/i18n.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "callbacks.h"
 
@@ -106,13 +107,6 @@ GtkWidget *create_reminder_dialog (const char *reminder_msg)
     return reminder_dialog;
 }
 
-static void file_set_cb (GtkFileChooserButton *button, void * entry)
-{
-    char *uri = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER (button));
-    gtk_entry_set_text (GTK_ENTRY (entry), uri);
-    g_free (uri);
-}
-
 GtkWidget *create_config_notebook ()
 {
     /* General */
@@ -154,8 +148,8 @@ GtkWidget *create_config_notebook ()
     GtkWidget *fading_spin, *quiet_vol_scale, *vol_scale, *separator, *current_button;
 
     /* Page 4 */
-    GtkWidget  *cmd_entry, *playlist_entry, *reminder_text;
-    GtkWidget *cmd_checkb, *reminder_checkb, *file_chooser_button;
+    GtkWidget *cmd_entry, *playlist_entry, *reminder_text;
+    GtkWidget *cmd_checkb, *reminder_checkb;
 
     /* Page 5 */
     GtkWidget *view, *scrolled_window;
@@ -389,14 +383,10 @@ GtkWidget *create_config_notebook ()
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
     gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
     gtk_container_set_border_width (GTK_CONTAINER (hbox), 8);
-    playlist_entry = gtk_entry_new ();
+    playlist_entry = audgui_file_entry_new (GTK_FILE_CHOOSER_ACTION_OPEN, _("Select a playlist"));
     g_object_set_data (G_OBJECT (notebook), "playlist", playlist_entry);
 
-    file_chooser_button = gtk_file_chooser_button_new (_("Select a playlist"), GTK_FILE_CHOOSER_ACTION_OPEN);
-    gtk_widget_set_valign (file_chooser_button, GTK_ALIGN_CENTER);
-    g_signal_connect (file_chooser_button, "file-set", G_CALLBACK (file_set_cb), playlist_entry);
     gtk_box_pack_start (GTK_BOX (hbox), playlist_entry, true, true, 0);
-    gtk_container_add (GTK_CONTAINER (hbox), file_chooser_button);
     gtk_container_add (GTK_CONTAINER (frame), hbox);
     gtk_container_add (GTK_CONTAINER (vbox), frame);
 

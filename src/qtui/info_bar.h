@@ -24,7 +24,6 @@
 #include <QWidget>
 
 #include <libaudcore/hook.h>
-#include <libaudcore/visualizer.h>
 
 class InfoVis;
 

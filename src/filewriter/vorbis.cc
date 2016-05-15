@@ -25,7 +25,6 @@
 
 #include <stdlib.h>
 #include <vorbis/vorbisenc.h>
-#include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
@@ -44,8 +43,7 @@ static const char * const vorbis_defaults[] = {
  "base_quality", "0.5",
  nullptr};
 
-#define GET_DOUBLE(n)    aud_get_double("filewriter_vorbis", n)
-#define SET_DOUBLE(n, v) aud_set_double("filewriter_vorbis", n, v)
+#define GET_DOUBLE(n) aud_get_double("filewriter_vorbis", n)
 
 static int channels;
 
@@ -175,45 +173,6 @@ static void vorbis_close (VFSFile & file)
     vorbis_block_clear(&vb);
     vorbis_dsp_clear(&vd);
     vorbis_info_clear(&vi);
-}
-
-/* configuration stuff */
-static GtkWidget *quality_frame, *quality_vbox, *quality_hbox1, *quality_spin, *quality_label;
-static GtkAdjustment * quality_adj;
-
-static void quality_change(GtkAdjustment *adjustment, void * user_data)
-{
-    SET_DOUBLE ("base_quality", gtk_spin_button_get_value ((GtkSpinButton *) quality_spin) / 10);
-}
-
-void * vorbis_configure ()
-{
-        GtkWidget * vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-
-        /* quality options */
-        quality_frame = gtk_frame_new(_("Quality"));
-        gtk_box_pack_start(GTK_BOX(vbox), quality_frame, false, false, 0);
-
-        quality_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-        gtk_container_set_border_width(GTK_CONTAINER(quality_vbox), 5);
-        gtk_container_add(GTK_CONTAINER(quality_frame), quality_vbox);
-
-        /* quality option: vbr level */
-        quality_hbox1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
-        gtk_container_add(GTK_CONTAINER(quality_vbox), quality_hbox1);
-
-        quality_label = gtk_label_new(_("Quality level (0 - 10):"));
-        gtk_widget_set_halign(quality_label, GTK_ALIGN_START);
-        gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_label, false, false, 0);
-
-        quality_adj = (GtkAdjustment *) gtk_adjustment_new (5, 0, 10, 0.1, 1, 0);
-        quality_spin = gtk_spin_button_new(GTK_ADJUSTMENT(quality_adj), 1, 2);
-        gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_spin, false, false, 0);
-        g_signal_connect(G_OBJECT(quality_adj), "value-changed", G_CALLBACK(quality_change), nullptr);
-
-        gtk_spin_button_set_value(GTK_SPIN_BUTTON(quality_spin), GET_DOUBLE("base_quality") * 10);
-
-        return vbox;
 }
 
 static int vorbis_format_required (int fmt)

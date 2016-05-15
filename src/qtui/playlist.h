@@ -25,29 +25,34 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 
-#include "playlist_model.h"
-#include "filter_input.h"
-
+class PlaylistModel;
+class QContextMenuEvent;
+class QMenu;
 class QSortFilterProxyModel;
 
 class PlaylistWidget : public QTreeView
 {
 public:
-    PlaylistWidget (QTreeView * parent = nullptr, int uniqueId = -1);
+    PlaylistWidget (QWidget * parent = nullptr, int uniqueId = -1);
     ~PlaylistWidget ();
+
     void scrollToCurrent ();
     void updatePlaybackIndicator ();
     void update (const Playlist::Update & update);
     void playCurrentIndex ();
-    void deleteCurrentSelection ();
     void setFilter (const QString & text);
-    void toggleQueue ();
+
     int playlist () const;
     int uniqueId () const;
+
+    void setContextMenu (QMenu * menu)
+        { contextMenu = menu; }
 
 private:
     PlaylistModel * model;
     QSortFilterProxyModel * proxyModel;
+    QMenu * contextMenu = nullptr;
+
     int currentPos = -1;
     bool inUpdate = false;
     bool needIndicatorUpdate = false;
@@ -59,8 +64,8 @@ private:
     void getSelectedRanges (const Playlist::Update & update,
      QItemSelection & selected, QItemSelection & deselected);
 
+    void contextMenuEvent (QContextMenuEvent * event);
     void keyPressEvent (QKeyEvent * event);
-    void mousePressEvent (QMouseEvent * event);
     void mouseDoubleClickEvent (QMouseEvent * event);
     void currentChanged (const QModelIndex & current, const QModelIndex & previous);
     void selectionChanged (const QItemSelection & selected, const QItemSelection & deselected);

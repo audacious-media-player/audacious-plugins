@@ -9,6 +9,16 @@ plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
 LD = ${CXX}
 
-CPPFLAGS += -I../.. ${GIO_CFLAGS} ${GTK_CFLAGS}
+CPPFLAGS += -I../.. ${GIO_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBS += ${GIO_LIBS} ${GTK_LIBS} -laudgui
+LIBS += ${GIO_LIBS}
+
+ifeq ($(USE_GTK),yes)
+CPPFLAGS += ${GTK_CFLAGS}
+LIBS += ${GTK_LIBS} -laudgui
+endif
+
+ifeq ($(USE_QT),yes)
+CPPFLAGS += ${QT_CFLAGS}
+LIBS += ${QT_LIBS}
+endif

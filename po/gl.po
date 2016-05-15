@@ -10,9 +10,9 @@
 # Miguel Anxo Bouzada <mbouzada@gmail.com>, 2012,2014-2015
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-11-07 18:05+0100\n"
+"POT-Creation-Date: 2015-12-26 15:19+0100\n"
 "PO-Revision-Date: 2015-08-29 04:50+0000\n"
 "Last-Translator: antiparvos <marcoslansgarza@gmail.com>\n"
 "Language-Team: Galician (http://www.transifex.com/jlindgren/audacious/"
@@ -2347,40 +2347,40 @@ msgstr "Engadido LyricWiki"
 msgid "No lyrics available"
 msgstr "Non hai letras dispoñíbeis"
 
-#: src/lyricwiki/lyricwiki.cc:219 src/lyricwiki/lyricwiki.cc:228
-#: src/lyricwiki/lyricwiki.cc:245 src/lyricwiki/lyricwiki.cc:254
-#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:236
-#: src/lyricwiki-qt/lyricwiki.cc:245 src/lyricwiki-qt/lyricwiki.cc:262
-#: src/lyricwiki-qt/lyricwiki.cc:271 src/lyricwiki-qt/lyricwiki.cc:286
+#: src/lyricwiki/lyricwiki.cc:254 src/lyricwiki/lyricwiki.cc:263
+#: src/lyricwiki/lyricwiki.cc:280 src/lyricwiki/lyricwiki.cc:289
+#: src/lyricwiki/lyricwiki.cc:304 src/lyricwiki-qt/lyricwiki.cc:271
+#: src/lyricwiki-qt/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:297
+#: src/lyricwiki-qt/lyricwiki.cc:306 src/lyricwiki-qt/lyricwiki.cc:321
 #: src/qtui/dialog_windows.cc:38
 msgid "Error"
 msgstr "Erro"
 
-#: src/lyricwiki/lyricwiki.cc:220 src/lyricwiki/lyricwiki.cc:246
-#: src/lyricwiki-qt/lyricwiki.cc:237 src/lyricwiki-qt/lyricwiki.cc:263
+#: src/lyricwiki/lyricwiki.cc:255 src/lyricwiki/lyricwiki.cc:281
+#: src/lyricwiki-qt/lyricwiki.cc:272 src/lyricwiki-qt/lyricwiki.cc:298
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "Non é posibel obter %s"
 
-#: src/lyricwiki/lyricwiki.cc:229 src/lyricwiki/lyricwiki.cc:255
-#: src/lyricwiki-qt/lyricwiki.cc:246 src/lyricwiki-qt/lyricwiki.cc:272
+#: src/lyricwiki/lyricwiki.cc:264 src/lyricwiki/lyricwiki.cc:290
+#: src/lyricwiki-qt/lyricwiki.cc:281 src/lyricwiki-qt/lyricwiki.cc:307
 #, c-format
 msgid "Unable to parse %s"
 msgstr "Non é posíbel analizar %s"
 
-#: src/lyricwiki/lyricwiki.cc:261 src/lyricwiki-qt/lyricwiki.cc:278
+#: src/lyricwiki/lyricwiki.cc:296 src/lyricwiki-qt/lyricwiki.cc:313
 msgid "Looking for lyrics ..."
 msgstr "Buscando letras ..."
 
-#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:286
+#: src/lyricwiki/lyricwiki.cc:304 src/lyricwiki-qt/lyricwiki.cc:321
 msgid "Missing song metadata"
 msgstr "Faltan os metadatos da canción"
 
-#: src/lyricwiki/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:297
+#: src/lyricwiki/lyricwiki.cc:315 src/lyricwiki-qt/lyricwiki.cc:332
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "Conectando con lyrics.wikia.com ..."
 
-#: src/lyricwiki/lyricwiki.cc:321 src/lyricwiki-qt/lyricwiki.cc:375
+#: src/lyricwiki/lyricwiki.cc:356 src/lyricwiki-qt/lyricwiki.cc:410
 msgid "Edit lyrics ..."
 msgstr "Editar as letras ..."
 

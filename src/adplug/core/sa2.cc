@@ -160,7 +160,7 @@ bool Csa2Loader::load(const std::string &filename, const CFileProvider &fp)
     activechan = f->readInt(2) << 16;           // active channels
 
   AdPlug_LogWrite("Csa2Loader::load(\"%s\"): sat_type = %x, nop = %d, "
-                  "length = %d, restartpos = %d, activechan = %x, bpm = %d\n",
+                  "length = %lu, restartpos = %lu, activechan = %lx, bpm = %d\n",
                   filename.c_str(), sat_type, nop, length, restartpos, activechan, bpm);
 
   // track data

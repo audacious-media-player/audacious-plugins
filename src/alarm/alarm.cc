@@ -149,7 +149,7 @@ static struct
     GtkEntry *cmdstr;
     GtkToggleButton *cmd_on;
 
-    GtkEntry *playlist;
+    GtkWidget *playlist;
 
     int default_hour;
     int default_min;
@@ -251,9 +251,8 @@ static void alarm_save()
     cmd_on = gtk_toggle_button_get_active (alarm_conf.cmd_on);
     aud_set_bool ("alarm", "cmd_on", cmd_on);
 
-    char * playlist = gtk_editable_get_chars ((GtkEditable *) alarm_conf.playlist, 0, -1);
-    aud_set_str ("alarm", "playlist", playlist);
-    g_free (playlist);
+    String playlist = audgui_file_entry_get_uri (alarm_conf.playlist);
+    aud_set_str ("alarm", "playlist", playlist ? playlist : "");
 
     /* reminder */
     char * reminder_msg = gtk_editable_get_chars ((GtkEditable *) alarm_conf.reminder, 0, -1);
@@ -418,8 +417,8 @@ static void *alarm_make_config_widget()
 
     String playlist = aud_get_str ("alarm", "playlist");
     w = lookup_widget(config_notebook, "playlist");
-    alarm_conf.playlist = GTK_ENTRY(w);
-    gtk_entry_set_text(alarm_conf.playlist, playlist);
+    alarm_conf.playlist = w;
+    audgui_file_entry_set_uri(alarm_conf.playlist, playlist);
 
     String reminder_msg = aud_get_str ("alarm", "reminder_msg");
     w = lookup_widget(config_notebook, "reminder_text");

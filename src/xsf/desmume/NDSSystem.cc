@@ -184,8 +184,8 @@ void NDS_DeInit(void) {
      if(MMU.CART_ROM != MMU.UNUSED_RAM)
         NDS_FreeROM();
 
-	armcpu_deinit(&NDS_ARM7);
-	armcpu_deinit(&NDS_ARM9);
+     armcpu_deinit(&NDS_ARM7);
+     armcpu_deinit(&NDS_ARM9);
 
      nds.nextHBlank = 3168;
      SPU_DeInit();

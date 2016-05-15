@@ -97,14 +97,20 @@ struct SearchState {
 static int playlist_id;
 static Index<String> search_terms;
 
+/* Note: added_table is accessed by multiple threads.
+ * When adding = true, it may only be accessed by the playlist add thread.
+ * When adding = false, it may only be accessed by the UI thread.
+ * adding may only be set by the UI thread while holding adding_lock. */
+static TinyLock adding_lock;
+static bool adding = false;
 static SimpleHash<String, bool> added_table;
+
 static SimpleHash<Key, Item> database;
 static bool database_valid;
 static Index<const Item *> items;
 static int hidden_items;
 static Index<bool> selection;
 
-static bool adding;
 static QueuedFunc search_timer;
 static bool search_pending;
 
@@ -152,17 +158,20 @@ static int get_playlist (bool require_added, bool require_scanned)
     return list;
 }
 
-static String get_path ()
+static String get_uri ()
 {
+    auto to_uri = [] (const char * path)
+        { return String (filename_to_uri (path)); };
+
     String path1 = aud_get_str ("search-tool", "path");
-    if (g_file_test (path1, G_FILE_TEST_EXISTS))
-        return path1;
+    if (path1[0])
+        return strstr (path1, "://") ? path1 : to_uri (path1);
 
     StringBuf path2 = filename_build ({g_get_home_dir (), "Music"});
     if (g_file_test (path2, G_FILE_TEST_EXISTS))
-        return String (path2);
+        return to_uri (path2);
 
-    return String (g_get_home_dir ());
+    return to_uri (g_get_home_dir ());
 }
 
 static void destroy_database ()
@@ -244,7 +253,7 @@ static void search_cb (const Key & key, Item & item, void * _state)
     state->mask = oldmask;
 }
 
-static int item_compare (const Item * const & a, const Item * const & b, void *)
+static int item_compare (const Item * const & a, const Item * const & b)
 {
     if (a->field < b->field)
         return -1;
@@ -256,19 +265,19 @@ static int item_compare (const Item * const & a, const Item * const & b, void *)
         return val;
 
     if (a->parent)
-        return b->parent ? item_compare (a->parent, b->parent, nullptr) : 1;
+        return b->parent ? item_compare (a->parent, b->parent) : 1;
     else
         return b->parent ? -1 : 0;
 }
 
-static int item_compare_pass1 (const Item * const & a, const Item * const & b, void *)
+static int item_compare_pass1 (const Item * const & a, const Item * const & b)
 {
     if (a->matches.len () > b->matches.len ())
         return -1;
     if (a->matches.len () < b->matches.len ())
         return 1;
 
-    return item_compare (a, b, nullptr);
+    return item_compare (a, b);
 }
 
 static void do_search ()
@@ -289,7 +298,7 @@ static void do_search ()
     items = std::move (state.items);
 
     /* first sort by number of songs per item */
-    items.sort (item_compare_pass1, nullptr);
+    items.sort (item_compare_pass1);
 
     /* limit to items with most songs */
     if (items.len () > MAX_RESULTS)
@@ -299,7 +308,7 @@ static void do_search ()
     }
 
     /* sort by item type, then item name */
-    items.sort (item_compare, nullptr);
+    items.sort (item_compare);
 
     selection.remove (0, -1);
     selection.insert (0, items.len ());
@@ -309,23 +318,36 @@ static void do_search ()
 
 static bool filter_cb (const char * filename, void * unused)
 {
-    return ! added_table.lookup (String (filename));
+    bool add = false;
+    tiny_lock (& adding_lock);
+
+    if (adding)
+    {
+        bool * added = added_table.lookup (String (filename));
+
+        if ((add = ! added))
+            added_table.add (String (filename), true);
+        else
+            (* added) = true;
+    }
+
+    tiny_unlock (& adding_lock);
+    return add;
 }
 
-static void begin_add (const char * path)
+static void begin_add (const char * uri)
 {
+    if (adding)
+        return;
+
     int list = get_playlist (false, false);
 
     if (list < 0)
         list = create_playlist ();
 
-    aud_set_str ("search-tool", "path", path);
-
-    StringBuf uri = filename_to_uri (path);
-    g_return_if_fail (uri);
-
-    if (! g_str_has_suffix (uri, "/"))
-        uri.insert (-1, "/");
+    /* if possible, store local path for compatibility with older versions */
+    StringBuf path = uri_to_filename (uri);
+    aud_set_str ("search-tool", "path", path ? path : uri);
 
     added_table.clear ();
 
@@ -335,23 +357,24 @@ static void begin_add (const char * path)
     {
         String filename = aud_playlist_entry_get_filename (list, entry);
 
-        if (g_str_has_prefix (filename, uri) && ! added_table.lookup (filename))
+        if (! added_table.lookup (filename))
         {
             aud_playlist_entry_set_selected (list, entry, false);
-            added_table.add (filename, true);
+            added_table.add (filename, false);
         }
         else
             aud_playlist_entry_set_selected (list, entry, true);
     }
 
     aud_playlist_delete_selected (list);
-    aud_playlist_remove_failed (list);
+
+    tiny_lock (& adding_lock);
+    adding = true;
+    tiny_unlock (& adding_lock);
 
     Index<PlaylistAddItem> add;
     add.append (String (uri));
     aud_playlist_entry_insert_filtered (list, -1, std::move (add), filter_cb, nullptr, false);
-
-    adding = true;
 }
 
 static void show_hide_widgets ()
@@ -433,8 +456,28 @@ static void add_complete_cb (void * unused, void * unused2)
 
     if (adding)
     {
+        tiny_lock (& adding_lock);
         adding = false;
+        tiny_unlock (& adding_lock);
+
+        int entries = aud_playlist_entry_count (list);
+
+        for (int entry = 0; entry < entries; entry ++)
+        {
+            String filename = aud_playlist_entry_get_filename (list, entry);
+            bool * added = added_table.lookup (filename);
+
+            aud_playlist_entry_set_selected (list, entry, ! added || ! (* added));
+        }
+
         added_table.clear ();
+
+        /* don't clear the playlist if nothing was added */
+        if (aud_playlist_selected_count (list) < aud_playlist_entry_count (list))
+            aud_playlist_delete_selected (list);
+        else
+            aud_playlist_select_all (list, false);
+
         aud_playlist_sort_by_scheme (list, Playlist::Path);
     }
 
@@ -488,6 +531,10 @@ static void search_cleanup ()
     items.clear ();
     selection.clear ();
 
+    tiny_lock (& adding_lock);
+    adding = false;
+    tiny_unlock (& adding_lock);
+
     added_table.clear ();
     destroy_database ();
 }
@@ -533,14 +580,7 @@ static void do_add (bool play, bool set_title)
 
 static void action_play ()
 {
-    int list = aud_playlist_get_temporary ();
-    aud_playlist_set_active (list);
-
-    if (aud_get_bool (nullptr, "clear_playlist"))
-        aud_playlist_entry_delete (list, 0, aud_playlist_entry_count (list));
-    else
-        aud_playlist_queue_delete (list, 0, aud_playlist_queue_count (list));
-
+    aud_playlist_set_active (aud_playlist_get_temporary ());
     do_add (true, false);
 }
 
@@ -643,13 +683,20 @@ static void entry_cb (GtkEntry * entry, void * unused)
     search_pending = true;
 }
 
-static void refresh_cb (GtkButton * button, GtkWidget * chooser)
+static void file_entry_cb (GtkEntry * entry, GtkWidget * button)
 {
-    char * path = gtk_file_chooser_get_filename ((GtkFileChooser *) chooser);
-    begin_add (path);
-    g_free (path);
+    const char * text = gtk_entry_get_text ((GtkEntry *) entry);
+    gtk_widget_set_sensitive (button, text[0] != 0);
+}
 
-    update_database ();
+static void refresh_cb (GtkButton * button, GtkWidget * file_entry)
+{
+    String uri = audgui_file_entry_get_uri (file_entry);
+    if (uri)
+    {
+        begin_add (uri);
+        update_database ();
+    }
 }
 
 void * SearchTool::get_gtk_widget ()
@@ -698,11 +745,11 @@ void * SearchTool::get_gtk_widget ()
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_end ((GtkBox *) vbox, hbox, false, false, 0);
 
-    GtkWidget * chooser = gtk_file_chooser_button_new (_("Choose Folder"),
-     GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-    gtk_box_pack_start ((GtkBox *) hbox, chooser, true, true, 0);
+    GtkWidget * file_entry = audgui_file_entry_new
+     (GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, _("Choose Folder"));
+    gtk_box_pack_start ((GtkBox *) hbox, file_entry, true, true, 0);
 
-    gtk_file_chooser_set_filename ((GtkFileChooser *) chooser, get_path ());
+    audgui_file_entry_set_uri (file_entry, get_uri ());
 
     GtkWidget * button = gtk_button_new ();
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
@@ -715,7 +762,9 @@ void * SearchTool::get_gtk_widget ()
     g_signal_connect (vbox, "destroy", (GCallback) search_cleanup, nullptr);
     g_signal_connect (entry, "changed", (GCallback) entry_cb, nullptr);
     g_signal_connect (entry, "activate", (GCallback) action_play, nullptr);
-    g_signal_connect (button, "clicked", (GCallback) refresh_cb, chooser);
+    g_signal_connect (file_entry, "changed", (GCallback) file_entry_cb, button);
+    g_signal_connect (file_entry, "activate", (GCallback) refresh_cb, file_entry);
+    g_signal_connect (button, "clicked", (GCallback) refresh_cb, file_entry);
 
     gtk_widget_show_all (vbox);
     gtk_widget_show (results_list);

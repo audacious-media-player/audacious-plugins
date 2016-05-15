@@ -20,12 +20,12 @@
 #ifndef TIME_SLIDER_H
 #define TIME_SLIDER_H
 
-#include <QLabel>
 #include <QSlider>
-#include <QStyle>
-#include <QMouseEvent>
 
 #include <libaudcore/hook.h>
+
+class QLabel;
+class QMouseEvent;
 
 class TimeSlider : public QSlider
 {

@@ -182,9 +182,3 @@ std::string CAdPlug::get_version()
 {
   return std::string(VERSION);
 }
-
-void CAdPlug::debug_output(const std::string &filename)
-{
-  AdPlug_LogFile(filename.c_str());
-  AdPlug_LogWrite("CAdPlug::debug_output(\"%s\"): Redirected.\n",filename.c_str());
-}

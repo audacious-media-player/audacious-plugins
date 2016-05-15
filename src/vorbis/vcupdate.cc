@@ -27,9 +27,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <glib.h>
-#include <glib/gstdio.h>
-
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/multihash.h>
@@ -37,8 +34,6 @@
 
 #include "vorbis.h"
 #include "vcedit.h"
-
-static bool write_and_pivot_files(vcedit_state * state);
 
 typedef SimpleHash<String, String> Dictionary;
 
@@ -48,19 +43,12 @@ static Dictionary dictionary_from_vorbis_comment (vorbis_comment * vc)
 
     for (int i = 0; i < vc->comments; i ++)
     {
-        char **frags;
+        const char * s = vc->user_comments[i];
+        AUDDBG("%s\n", s);
 
-        AUDDBG("%s\n", vc->user_comments[i]);
-        frags = g_strsplit(vc->user_comments[i], "=", 2);
-
-        if (frags[0] && frags[1])
-        {
-            char * key = g_ascii_strdown (frags[0], -1);
-            dict.add (String (key), String (frags[1]));
-            g_free (key);
-        }
-
-        g_strfreev(frags); /* Don't use g_free() for string lists! --eugene */
+        const char * eq = strchr (s, '=');
+        if (eq && eq > s && eq[1])
+            dict.add (String (str_tolower (str_copy (s, eq - s))), String (eq + 1));
     }
 
     return dict;
@@ -73,7 +61,7 @@ static void add_tag_cb (const String & key, String & field, void * vc)
 
 static void dictionary_to_vorbis_comment (vorbis_comment * vc, Dictionary & dict)
 {
-    vorbis_comment_clear(vc);
+    vorbis_comment_clear (vc);
     dict.iterate (add_tag_cb, vc);
 }
 
@@ -101,109 +89,32 @@ static void insert_int_tuple_field_to_dictionary (const Tuple & tuple,
 
 bool VorbisPlugin::write_tuple (const char * filename, VFSFile & file, const Tuple & tuple)
 {
-    vcedit_state *state;
-    vorbis_comment *comment;
-    bool ret;
-
-    state = vcedit_new_state();
-
-    if(vcedit_open(state, file) < 0) {
-        vcedit_clear(state);
-        return false;
-    }
-
-    comment = vcedit_comments(state);
-    Dictionary dict = dictionary_from_vorbis_comment (comment);
-
-    insert_str_tuple_field_to_dictionary(tuple, Tuple::Title, dict, "title");
-    insert_str_tuple_field_to_dictionary(tuple, Tuple::Artist, dict, "artist");
-    insert_str_tuple_field_to_dictionary(tuple, Tuple::Album, dict, "album");
-    insert_str_tuple_field_to_dictionary(tuple, Tuple::Comment, dict, "comment");
-    insert_str_tuple_field_to_dictionary(tuple, Tuple::Genre, dict, "genre");
-
-    insert_int_tuple_field_to_dictionary(tuple, Tuple::Year, dict, "date");
-    insert_int_tuple_field_to_dictionary(tuple, Tuple::Track, dict, "tracknumber");
-
-    dictionary_to_vorbis_comment(comment, dict);
-
-    ret = write_and_pivot_files(state);
-
-    vcedit_clear(state);
-
-    return ret;
-}
-
-#define COPY_BUF 65536
-
-bool copy_vfs (VFSFile & in, VFSFile & out)
-{
-    if (in.fseek (0, VFS_SEEK_SET) < 0 || out.fseek (0, VFS_SEEK_SET) < 0)
+    VCEdit edit;
+    if (! edit.open (file))
         return false;
 
-    char * buffer = g_new (char, COPY_BUF);
-    int64_t size = 0, readed;
+    Dictionary dict = dictionary_from_vorbis_comment (& edit.vc);
 
-    while ((readed = in.fread (buffer, 1, COPY_BUF)) > 0)
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Title, dict, "title");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Artist, dict, "artist");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Album, dict, "album");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Comment, dict, "comment");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Genre, dict, "genre");
+
+    insert_int_tuple_field_to_dictionary (tuple, Tuple::Year, dict, "date");
+    insert_int_tuple_field_to_dictionary (tuple, Tuple::Track, dict, "tracknumber");
+
+    dictionary_to_vorbis_comment (& edit.vc, dict);
+
+    auto temp_vfs = VFSFile::tmpfile ();
+    if (! temp_vfs)
+        return false;
+
+    if (! edit.write (file, temp_vfs))
     {
-        if (out.fwrite (buffer, 1, readed) != readed)
-            goto FAILED;
-
-        size += readed;
-    }
-
-    if (out.ftruncate (size) < 0)
-        goto FAILED;
-
-    g_free (buffer);
-    return true;
-
-FAILED:
-    g_free (buffer);
-    return false;
-}
-
-#undef COPY_BUF
-
-bool write_and_pivot_files (vcedit_state * state)
-{
-    char * temp;
-    GError * error = nullptr;
-    int handle = g_file_open_tmp (nullptr, & temp, & error);
-
-    if (handle < 0)
-    {
-        AUDERR ("Failed to create temp file: %s.\n", error->message);
-        g_error_free (error);
+        AUDERR ("Tag update failed: %s.\n", edit.lasterror);
         return false;
     }
 
-    close (handle);
-
-    StringBuf temp_uri = filename_to_uri (temp);
-    g_return_val_if_fail (temp_uri, false);
-    VFSFile temp_vfs (temp_uri, "r+");
-    g_return_val_if_fail (temp_vfs, false);
-
-    if (vcedit_write (state, temp_vfs) < 0)
-    {
-        AUDERR ("Tag update failed: %s.\n", state->lasterror);
-        g_free (temp);
-        return false;
-    }
-
-    if (! copy_vfs (temp_vfs, * state->in))
-    {
-        AUDERR ("Failed to copy temp file.  The temp file has not "
-         "been deleted: %s.\n", temp);
-        g_free (temp);
-        return false;
-    }
-
-    temp_vfs = VFSFile ();
-
-    if (g_unlink (temp) < 0)
-        AUDERR ("Failed to delete temp file: %s.\n", temp);
-
-    g_free (temp);
-    return true;
+    return file.replace_with (temp_vfs);
 }

@@ -47,12 +47,10 @@ extern FileWriterImpl wav_plugin;
 
 #ifdef FILEWRITER_MP3
 extern FileWriterImpl mp3_plugin;
-void * mp3_configure ();
 #endif
 
 #ifdef FILEWRITER_VORBIS
 extern FileWriterImpl vorbis_plugin;
-void * vorbis_configure ();
 #endif
 
 #ifdef FILEWRITER_FLAC

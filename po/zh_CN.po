@@ -6,8 +6,8 @@
 # 周嘉韡 <btchina@live.com>, 2013
 # Chasye <chasye@gmail.com>, 2010
 # yinsigan <ganweiliang886@gmail.com>, 2012
-# 白铭骢 <jeffbaichina@members.fsf.org>, 2014
-# 白铭骢 <jeffbaichina@members.fsf.org>, 2014
+# 白铭骢 <jeffbai@aosc.xyz>, 2014
+# 白铭骢 <jeffbai@aosc.xyz>, 2014
 # Luke <runningwaterpro@gmail.com>, 2012
 # Michael Jay Tong <michaeljayt@gmail.com>, 2013
 # Michael Jay Tong <michaeljayt@gmail.com>, 2013-2014
@@ -19,14 +19,14 @@
 # zhangmin <zm1990s@gmail.com>, 2013-2015
 # zhangmin <zm1990s@gmail.com>, 2013
 # 周嘉韡 <btchina@live.com>, 2013
-# 白铭骢 <jeffbaichina@members.fsf.org>, 2015
+# 白铭骢 <jeffbai@aosc.xyz>, 2015
 # 蒋浩海 <jhaohai@foxmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2015-11-07 18:05+0100\n"
-"PO-Revision-Date: 2015-09-03 10:42+0000\n"
+"POT-Creation-Date: 2015-12-26 15:19+0100\n"
+"PO-Revision-Date: 2015-11-16 17:40+0000\n"
 "Last-Translator: zhangmin <zm1990s@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/jlindgren/audacious/"
 "language/zh_CN/)\n"
@@ -2329,40 +2329,40 @@ msgstr "LyricWiki 插件"
 msgid "No lyrics available"
 msgstr "没有相符歌词"
 
-#: src/lyricwiki/lyricwiki.cc:219 src/lyricwiki/lyricwiki.cc:228
-#: src/lyricwiki/lyricwiki.cc:245 src/lyricwiki/lyricwiki.cc:254
-#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:236
-#: src/lyricwiki-qt/lyricwiki.cc:245 src/lyricwiki-qt/lyricwiki.cc:262
-#: src/lyricwiki-qt/lyricwiki.cc:271 src/lyricwiki-qt/lyricwiki.cc:286
+#: src/lyricwiki/lyricwiki.cc:254 src/lyricwiki/lyricwiki.cc:263
+#: src/lyricwiki/lyricwiki.cc:280 src/lyricwiki/lyricwiki.cc:289
+#: src/lyricwiki/lyricwiki.cc:304 src/lyricwiki-qt/lyricwiki.cc:271
+#: src/lyricwiki-qt/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:297
+#: src/lyricwiki-qt/lyricwiki.cc:306 src/lyricwiki-qt/lyricwiki.cc:321
 #: src/qtui/dialog_windows.cc:38
 msgid "Error"
 msgstr "错误"
 
-#: src/lyricwiki/lyricwiki.cc:220 src/lyricwiki/lyricwiki.cc:246
-#: src/lyricwiki-qt/lyricwiki.cc:237 src/lyricwiki-qt/lyricwiki.cc:263
+#: src/lyricwiki/lyricwiki.cc:255 src/lyricwiki/lyricwiki.cc:281
+#: src/lyricwiki-qt/lyricwiki.cc:272 src/lyricwiki-qt/lyricwiki.cc:298
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "无法取回 %s"
 
-#: src/lyricwiki/lyricwiki.cc:229 src/lyricwiki/lyricwiki.cc:255
-#: src/lyricwiki-qt/lyricwiki.cc:246 src/lyricwiki-qt/lyricwiki.cc:272
+#: src/lyricwiki/lyricwiki.cc:264 src/lyricwiki/lyricwiki.cc:290
+#: src/lyricwiki-qt/lyricwiki.cc:281 src/lyricwiki-qt/lyricwiki.cc:307
 #, c-format
 msgid "Unable to parse %s"
 msgstr "无法解析 %s"
 
-#: src/lyricwiki/lyricwiki.cc:261 src/lyricwiki-qt/lyricwiki.cc:278
+#: src/lyricwiki/lyricwiki.cc:296 src/lyricwiki-qt/lyricwiki.cc:313
 msgid "Looking for lyrics ..."
 msgstr "正在搜索歌词..."
 
-#: src/lyricwiki/lyricwiki.cc:269 src/lyricwiki-qt/lyricwiki.cc:286
+#: src/lyricwiki/lyricwiki.cc:304 src/lyricwiki-qt/lyricwiki.cc:321
 msgid "Missing song metadata"
 msgstr "缺少歌曲元信息"
 
-#: src/lyricwiki/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:297
+#: src/lyricwiki/lyricwiki.cc:315 src/lyricwiki-qt/lyricwiki.cc:332
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "正在连接到 lyrics.wikia.com ..."
 
-#: src/lyricwiki/lyricwiki.cc:321 src/lyricwiki-qt/lyricwiki.cc:375
+#: src/lyricwiki/lyricwiki.cc:356 src/lyricwiki-qt/lyricwiki.cc:410
 msgid "Edit lyrics ..."
 msgstr "编辑歌词 ..."
 
@@ -4284,3 +4284,21 @@ msgstr "忽略文件长度"
 #: src/xspf/xspf.cc:89
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "可分享的 XML 播放列表 (XSPF)"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had a different number of channels.  "
+#~ "You can use the Channel Mixer to convert the songs to the same number of "
+#~ "channels."
+#~ msgstr ""
+#~ "淡出失败， 原因：歌曲的通道数不一致。\n"
+#~ "\n"
+#~ "你可以尝试使用”声道混音器“使歌曲的通道数保持一致。"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had different sample rates.  You can "
+#~ "use the Sample Rate Converter to convert the songs to the same sample "
+#~ "rate."
+#~ msgstr ""
+#~ "淡出失败， 原因：歌曲的采样率不一致。\n"
+#~ "\n"
+#~ "你可以尝试使用”采样率转换器“使歌曲的采样保持一致。"

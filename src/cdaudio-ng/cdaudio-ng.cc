@@ -434,6 +434,8 @@ Tuple CDAudio::read_tuple (const char * filename, VFSFile & file)
             tuple.set_str (Tuple::Artist, trackinfo[trackno].performer);
         if (trackinfo[0].name)
             tuple.set_str (Tuple::Album, trackinfo[0].name);
+        if (trackinfo[0].performer)
+            tuple.set_str (Tuple::AlbumArtist, trackinfo[0].performer);
         if (trackinfo[trackno].genre)
             tuple.set_str (Tuple::Genre, trackinfo[trackno].genre);
     }

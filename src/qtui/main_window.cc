@@ -28,15 +28,19 @@
 #include <libaudqt/volumebutton.h>
 
 #include "filter_input.h"
+#include "info_bar.h"
+#include "menus.h"
 #include "playlist.h"
-#include "time_slider.h"
-#include "status_bar.h"
 #include "playlist_tabs.h"
+#include "status_bar.h"
+#include "time_slider.h"
 #include "tool_bar.h"
 
-#include <QApplication>
-#include <QDockWidget>
 #include <QAction>
+#include <QBoxLayout>
+#include <QCloseEvent>
+#include <QDockWidget>
+#include <QLabel>
 #include <QSettings>
 
 class PluginWidget : public QDockWidget
@@ -79,6 +83,12 @@ MainWindow::MainWindow () :
     QIcon::setThemeSearchPaths (paths);
 #endif
 
+    int instance = aud_get_instance ();
+    if (instance == 1)
+        m_config_name = "audacious";
+    else
+        m_config_name = QString ("audacious-%1").arg (instance);
+
     auto slider = new TimeSlider (this);
 
     const ToolBarItem items[] = {
@@ -120,7 +130,7 @@ MainWindow::MainWindow () :
 
     connect (filterInput, & QLineEdit::textChanged, playlistTabs, & PlaylistTabs::filterTrigger);
 
-    setupActions ();
+    setMenuBar (qtui_build_menubar (this));
     add_dock_plugins ();
 
     if (aud_drct_get_playing ())
@@ -137,7 +147,7 @@ MainWindow::MainWindow () :
 
 MainWindow::~MainWindow ()
 {
-    QSettings settings ("audacious", "QtUi");
+    QSettings settings (m_config_name, "QtUi");
     settings.setValue ("geometry", saveGeometry ());
     settings.setValue ("windowState", saveState ());
 
@@ -158,7 +168,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
 
 void MainWindow::readSettings ()
 {
-    QSettings settings ("audacious", "QtUi");
+    QSettings settings (m_config_name, "QtUi");
 
     if (! restoreGeometry (settings.value ("geometry").toByteArray ()))
         resize (768, 480);
@@ -181,6 +191,15 @@ void MainWindow::keyPressEvent (QKeyEvent * e)
     }
 
     QMainWindow::keyPressEvent (e);
+}
+
+void MainWindow::setWindowTitle (const QString & title)
+{
+    int instance = aud_get_instance ();
+    if (instance == 1)
+        QMainWindow::setWindowTitle (title);
+    else
+        QMainWindow::setWindowTitle (QString ("%1 (%2)").arg (title).arg (instance));
 }
 
 void MainWindow::updateToggles ()

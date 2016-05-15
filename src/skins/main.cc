@@ -63,6 +63,8 @@
 #include "util.h"
 #include "view.h"
 
+#include "../ui-common/menu-ops.h"
+
 #define SEEK_THRESHOLD 200 /* milliseconds */
 #define SEEK_SPEED 50 /* milliseconds per pixel */
 
@@ -211,11 +213,18 @@ void mainwin_show_status_message (const char * message)
 
 static void mainwin_set_song_title (const char * title)
 {
-    if (title)
-        mainwin->setWindowTitle ((const char *) str_printf (_("%s - Audacious"), title));
-    else
-        mainwin->setWindowTitle (_("Audacious"));
+    StringBuf buf;
 
+    if (title)
+        buf.steal (str_printf (_("%s - Audacious"), title));
+    else
+        buf.steal (str_copy (_("Audacious")));
+
+    int instance = aud_get_instance ();
+    if (instance != 1)
+        buf.combine (str_printf (" (%d)", instance));
+
+    mainwin->setWindowTitle ((const char *) buf);
     mainwin_set_info_text (title ? title : "");
 }
 
@@ -531,13 +540,13 @@ bool Window::keypress (GdkEventKey * event)
             break;
         case GDK_KEY_Tab: /* GtkUIManager does not handle tab, apparently. */
             if (event->state & GDK_SHIFT_MASK)
-                action_playlist_prev ();
+                pl_prev ();
             else
-                action_playlist_next ();
+                pl_next ();
 
             break;
         case GDK_KEY_ISO_Left_Tab:
-            action_playlist_prev ();
+            pl_prev ();
             break;
         default:
             return false;
@@ -1100,7 +1109,6 @@ static void mainwin_create_window ()
     bool shaded = aud_get_bool ("skins", "player_shaded");
 
     mainwin = new MainWindow (shaded);
-    mainwin->setWindowTitle (_("Audacious"));
 
     GtkWidget * w = mainwin->gtk ();
     drag_dest_set (w);
@@ -1153,6 +1161,7 @@ void mainwin_create ()
 {
     mainwin_create_window ();
     mainwin_create_widgets ();
+    mainwin_set_song_title (nullptr);
 }
 
 static void mainwin_update_volume ()

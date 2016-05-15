@@ -5,7 +5,6 @@ SRCS = adplug-xmms.cc		\
        binio/binio.cc		\
        binio/binstr.cc		\
        core/fmopl.cc		\
-       core/debug.cc		\
        core/adlibemu.cc		\
        core/adplug.cc		\
        core/emuopl.cc		\
@@ -64,5 +63,6 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
-CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-sign-compare
+# FIXME: Turning off warnings for now; this code is awful
+CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-sign-compare -Wno-misleading-indentation
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. -I./core -I./binio

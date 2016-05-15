@@ -48,14 +48,10 @@ static size_t result_callback (void *buffer, size_t size, size_t nmemb, void *us
     return len;
 }
 
-static int param_compare (const API_Parameter & a, const API_Parameter & b, void *)
-{
-    return g_strcmp0 (a.paramName, b.paramName);
-}
-
 static char * scrobbler_get_signature (Index<API_Parameter> & params)
 {
-    params.sort (param_compare, nullptr);
+    params.sort ([] (const API_Parameter & a, const API_Parameter & b)
+        { return g_strcmp0 (a.paramName, b.paramName); });
 
     StringBuf buf (0);
 
@@ -125,7 +121,7 @@ static gboolean send_message_to_lastfm (const char * data)
     CURLcode curl_requests_result = curl_easy_perform(curlHandle);
 
     if (curl_requests_result != CURLE_OK) {
-        AUDDBG("Could not communicate with last.fm: %s.\n", curl_easy_strerror(curl_requests_result));
+        AUDERR("Could not communicate with last.fm: %s.\n", curl_easy_strerror(curl_requests_result));
         return false;
     }
 
@@ -171,7 +167,7 @@ static gboolean update_session_key() {
                 g_strcmp0(error_code, "14") == 0 || //token not authorized
                 g_strcmp0(error_code, "15") == 0    //token expired
             )) {
-            AUDDBG("error code CAUGHT: %s\n", (const char *)error_code);
+            AUDINFO("error code CAUGHT: %s\n", (const char *)error_code);
             session_key = String();
             result = true;
         } else {
@@ -213,8 +209,8 @@ static gboolean scrobbler_test_connection() {
         return true;
     }
 
-    String testmsg = create_message_to_lastfm ("user.getRecommendedArtists", 3,
-     "limit", "1", "api_key", SCROBBLER_API_KEY,
+    String testmsg = create_message_to_lastfm ("user.getInfo", 2,
+     "api_key", SCROBBLER_API_KEY,
      "sk", (const char *) session_key);
 
     gboolean success = send_message_to_lastfm(testmsg);
@@ -232,7 +228,7 @@ static gboolean scrobbler_test_connection() {
     String error_detail;
 
     if (read_authentication_test_result(error_code, error_detail) == false) {
-        AUDDBG("Error code: %s. Detail: %s.\n", (const char *)error_code,
+        AUDINFO("Error code: %s. Detail: %s.\n", (const char *)error_code,
          (const char *)error_detail);
         if (error_code != nullptr && (
                 g_strcmp0(error_code, "4") == 0 || //error code 4: Authentication Failed - You do not have permissions to access the service
@@ -353,7 +349,7 @@ static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, GSList
         contents = g_strjoinv("\n", finallines);
         success = g_file_set_contents(queuepath, contents, -1, nullptr);
         if (!success) {
-            AUDDBG("Could not write to scrobbler.log!\n");
+            AUDERR("Could not write to scrobbler.log!\n");
         }
 
     }
@@ -432,7 +428,7 @@ static void scrobble_cached_queue() {
                             save_line_to_remove(&lines_to_remove, i);
                         }
                     } else {
-                        AUDDBG("SCROBBLE NOT OK. Error code: %s. Error detail: %s.\n",
+                        AUDINFO("SCROBBLE NOT OK. Error code: %s. Error detail: %s.\n",
                          (const char *)error_code, (const char *)error_detail);
 
                         if (! error_code) { //net error(?) or the answer from last.fm was not well read
@@ -529,7 +525,7 @@ static void send_now_playing() {
       //see scrobble_cached_queue()
       AUDDBG("NOW PLAYING OK.\n");
     } else {
-      AUDDBG("NOW PLAYING NOT OK. Error code: %s. Error detail: %s.\n",
+      AUDINFO("NOW PLAYING NOT OK. Error code: %s. Error detail: %s.\n",
        (const char *)error_code, (const char *)error_detail);
       //From the API: Now Playing requests that fail should not be retried.
 

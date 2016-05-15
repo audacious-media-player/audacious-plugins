@@ -18,6 +18,7 @@
  */
 
 #include <QKeyEvent>
+#include <QMenu>
 #include <QSortFilterProxyModel>
 
 #include <libaudcore/audstrings.h>
@@ -29,7 +30,9 @@
 #include "playlist.h"
 #include "playlist_model.h"
 
-PlaylistWidget::PlaylistWidget (QTreeView * parent, int uniqueId) : QTreeView (parent)
+#include "../ui-common/menu-ops.h"
+
+PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueId) : QTreeView (parent)
 {
     model = new PlaylistModel (nullptr, uniqueId);
 
@@ -89,6 +92,12 @@ int PlaylistWidget::indexToRow (const QModelIndex & index)
     return proxyModel->mapToSource (index).row ();
 }
 
+void PlaylistWidget::contextMenuEvent (QContextMenuEvent * event)
+{
+    if (contextMenu)
+        contextMenu->popup (event->globalPos ());
+}
+
 void PlaylistWidget::keyPressEvent (QKeyEvent * event)
 {
     switch (event->modifiers ())
@@ -113,7 +122,7 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
             aud_drct_play_pause ();
             break;
         case Qt::Key_Delete:
-            deleteCurrentSelection ();
+            pl_remove_selected ();
             break;
         case Qt::Key_Z:
             aud_drct_pl_prev ();
@@ -130,30 +139,16 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
         case Qt::Key_B:
             aud_drct_pl_next ();
             return;
-        case Qt::Key_Q:
-            toggleQueue ();
-            return;
         }
         break;
     }
 
-     QTreeView::keyPressEvent (event);
-}
-
-void PlaylistWidget::mousePressEvent (QMouseEvent * event)
-{
-    QModelIndex index = indexAt (event->pos ());
-
-    if (! index.isValid ())
-        return;
-
-    QTreeView::mousePressEvent (event);
+    QTreeView::keyPressEvent (event);
 }
 
 void PlaylistWidget::mouseDoubleClickEvent (QMouseEvent * event)
 {
     QModelIndex index = indexAt (event->pos ());
-
     if (! index.isValid ())
         return;
 
@@ -327,22 +322,6 @@ void PlaylistWidget::playCurrentIndex ()
 {
     aud_playlist_set_position (playlist (), indexToRow (currentIndex ()));
     aud_playlist_play (playlist ());
-}
-
-void PlaylistWidget::deleteCurrentSelection ()
-{
-    aud_playlist_delete_selected (playlist ());
-}
-
-void PlaylistWidget::toggleQueue ()
-{
-    int row = indexToRow (currentIndex ());
-    int at = aud_playlist_queue_find_entry (playlist (), row);
-
-    if (at < 0)
-        aud_playlist_queue_insert (playlist (), -1, row);
-    else
-        aud_playlist_queue_delete (playlist (), at, 1);
 }
 
 void PlaylistWidget::updateSettings ()

@@ -80,14 +80,7 @@ StringBuf find_file_case_path (const char * folder, const char * basename)
 VFSFile open_local_file_nocase (const char * folder, const char * basename)
 {
     StringBuf path = find_file_case_path (folder, basename);
-    if (! path)
-        return VFSFile ();
-
-    StringBuf uri = filename_to_uri (path);
-    if (! uri)
-        return VFSFile ();
-
-    return VFSFile (uri, "r");
+    return path ? VFSFile (filename_to_uri (path), "r") : VFSFile ();
 }
 
 StringBuf skin_pixmap_locate (const char * folder, const char * basename, const char * altname)
@@ -275,7 +268,7 @@ StringBuf archive_decompress (const char * filename)
     StringBuf tmpdir = filename_build ({g_get_tmp_dir (), "audacious.XXXXXX"});
     if (! g_mkdtemp (tmpdir))
     {
-        AUDWARN ("Error creating %s: %s\n", strerror (errno));
+        AUDWARN ("Error creating %s: %s\n", (const char *) tmpdir, strerror (errno));
         return StringBuf ();
     }
 
@@ -352,5 +345,5 @@ bool dir_foreach (const char * path, DirForeachFunc func)
 void make_directory (const char * path)
 {
     if (g_mkdir_with_parents (path, DIRMODE) != 0)
-        AUDWARN ("Error creating %s: %s\n", strerror (errno));
+        AUDWARN ("Error creating %s: %s\n", path, strerror (errno));
 }

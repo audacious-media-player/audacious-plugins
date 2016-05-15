@@ -273,7 +273,7 @@ bool CldsPlayer::update()
               case 0xf0:        // progch
                 // MIDI commands (unhandled)
                 AdPlug_LogWrite("CldsPlayer(): not handling MIDI command 0x%x, "
-                                "value = 0x%x\n", comhi);
+                                "value = 0x%x\n", comhi, comlo);
                 break;
               default:
                 if(comhi < 0xa0)

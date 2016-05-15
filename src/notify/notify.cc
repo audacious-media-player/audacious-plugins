@@ -18,16 +18,12 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtk/gtk.h>
-
 #include <libnotify/notify.h>
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
-#include <libaudgui/libaudgui.h>
 
 #include "event.h"
 
@@ -86,7 +82,6 @@ bool NotifyPlugin::init ()
     if (! notify_init ("Audacious"))
         return false;
 
-    audgui_init ();
     event_init ();
     return true;
 }
@@ -94,7 +89,6 @@ bool NotifyPlugin::init ()
 void NotifyPlugin::cleanup ()
 {
     event_uninit ();
-    audgui_cleanup ();
     notify_uninit ();
 }
 

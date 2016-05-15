@@ -20,17 +20,16 @@
 #ifndef PLAYLIST_TABS_H
 #define PLAYLIST_TABS_H
 
+#include <QTabBar>
 #include <QTabWidget>
 
 #include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 
-#include "playlist.h"
-#include "filter_input.h"
-
 class PlaylistTabBar;
 class PlaylistWidget;
 class QLineEdit;
+class QMenu;
 
 class PlaylistTabs : public QTabWidget
 {
@@ -49,12 +48,14 @@ protected:
     bool eventFilter (QObject * obj, QEvent * e);
 
 private:
+    QMenu * m_pl_menu;
     QWidget * m_leftbtn;
     PlaylistTabBar * m_tabbar;
 
     QLineEdit * getTabEdit (int idx);
     void setTabTitle (int idx, const char * text);
     void setupTab (int idx, QWidget * button, const char * text, QWidget * * oldp);
+    PlaylistWidget * createWidget (int list);
 
     void addRemovePlaylists ();
     void updateTitles ();

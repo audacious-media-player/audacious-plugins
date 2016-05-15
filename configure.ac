@@ -5,7 +5,7 @@ dnl ***
 dnl Initialize
 dnl ==========
 AC_PREREQ([2.59])
-AC_INIT([audacious-plugins], [3.7])
+AC_INIT([audacious-plugins], [3.8-devel])
 AC_COPYRIGHT([Copyright (C) 2001-2015 Audacious developers and others])
 
 AC_DEFINE_UNQUOTED([PACKAGE], "$PACKAGE_NAME", [Name of package])
@@ -31,9 +31,9 @@ LIBS="$LIBS $LIBINTL"
 dnl Check for Audacious
 dnl ===================
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.7],
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.8],
     [],
-    [AC_MSG_ERROR([Cannot find Audacious 3.7; have you installed Audacious yet?])]
+    [AC_MSG_ERROR([Cannot find Audacious 3.8; have you installed Audacious yet?])]
 )
 
 CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS"
@@ -73,7 +73,7 @@ TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
     EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files lyricwiki playlist-manager search-tool"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart lyricwiki playlist-manager search-tool statusicon"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope cairo-spectrum"
 fi
@@ -83,8 +83,14 @@ if test "x$USE_QT" = "xyes" ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
 fi
 
+USE_GTK_OR_QT=no
 if test "x$USE_GTK" = "xyes" -o "x$USE_QT" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS skins-data"
+    USE_GTK_OR_QT=yes
+    GENERAL_PLUGINS="$GENERAL_PLUGINS delete-files skins-data"
+fi
+
+if test $HAVE_MSWINDOWS = yes ; then
+    OUTPUT_PLUGINS="$OUTPUT_PLUGINS waveout"
 fi
 
 dnl Console
@@ -258,21 +264,6 @@ if test $enable_songchange != no ; then
     )
 fi
 
-dnl Status Icon
-dnl ===========
-
-AC_ARG_ENABLE(statusicon,
- [AS_HELP_STRING([--enable-statusicon], [enable X11 Status Icon plugin (default=disabled)])],
- [have_statusicon=$enableval], [have_statusicon="no"])
-
-if test $have_statusicon = yes -a $USE_GTK != yes ; then
-    AC_MSG_ERROR([--enable-statusicon cannot be used without --enable-gtk])
-fi
-
-if test $have_statusicon != no ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS statusicon"
-fi
-
 dnl *** Audacious OSD plugin (pangocairo-based)
 
 AC_ARG_ENABLE(aosd,
@@ -322,8 +313,6 @@ if test "x$enable_aosd_xcomp" != "xno"; then
             AC_MSG_ERROR([Cannot find X Composite development files, but compilation of X Composite support for Audacious OSD plugin has been explicitly requested; please install X Composite dev files and run configure again])
          fi]
     )
-else
-    AC_MSG_RESULT([*** X Composite support for Audacious OSD plugin disabled per user request ***])
 fi
 
 dnl notify: libnotify-based OSD
@@ -334,17 +323,12 @@ AC_ARG_ENABLE(notify,
  [enable_notify=$enableval], [enable_notify=auto])
 
 have_notify=no
-
-if test $enable_notify = yes -a $USE_GTK != yes ; then
-    AC_MSG_ERROR([--enable-notify cannot be used without --enable-gtk])
-fi
-
-if test $enable_notify != no -a $USE_GTK = yes ; then
-    PKG_CHECK_MODULES(NOTIFY, [libnotify >= 0.7],
+if test $enable_notify != no ; then
+    PKG_CHECK_MODULES(NOTIFY, [libnotify >= 0.7 gdk-pixbuf-2.0 >= 2.26],
         [have_notify=yes
          GENERAL_PLUGINS="$GENERAL_PLUGINS notify"],
         [if test "x$enable_notify" = "xyes"; then
-            AC_MSG_ERROR([Cannot find libnotify development files (ver >= 0.7), but compilation of notify plugin has been explicitly requested; please install libnotify dev files and run configure again])
+            AC_MSG_ERROR([Required dependencies for notify OSD not met])
          fi]
     )
 fi
@@ -562,8 +546,6 @@ if test "x$enable_oss4" != "xno" ; then
     elif test "x$enable_oss4" = "xyes" ; then
         AC_MSG_ERROR([OSS4 output was enabled but soundcard.h was not found])
     fi
-
-    AC_MSG_RESULT([$have_oss4])
 fi
 
 dnl *** ALSA output plugin
@@ -781,12 +763,17 @@ AC_ARG_ENABLE(cue,
 
 have_cue=no
 if test "x$enable_cue" != "xno"; then
-    PKG_CHECK_MODULES(CUE, [libcue],
+    PKG_CHECK_MODULES(CUE, [libcue >= 2.0],
         [have_cue=yes
+         AC_DEFINE([HAVE_LIBCUE2],[1],[Define if libcue version is >= 2.0])
          CONTAINER_PLUGINS="$CONTAINER_PLUGINS cue"],
-        [if test "x$enable_cue" = "xyes"; then
-            AC_MSG_ERROR([Cannot find libcue development files, but compilation of cue support has been explicitly requested; please install libcue dev files and run configure again])
-         fi]
+        [PKG_CHECK_MODULES(CUE, [libcue],
+            [have_cue=yes
+             CONTAINER_PLUGINS="$CONTAINER_PLUGINS cue"],
+            [if test "x$enable_cue" = "xyes"; then
+                AC_MSG_ERROR([Cannot find libcue development files, but compilation of cue support has been explicitly requested; please install libcue dev files and run configure again])
+             fi]
+         )]
     )
 else
     AC_MSG_RESULT([*** cue plugin disabled by request ***])
@@ -798,18 +785,12 @@ dnl ==========
 AC_ARG_ENABLE(filewriter,
     [AS_HELP_STRING([--disable-filewriter], [disable FileWriter output plugin (default=enabled)])],
     [enable_filewriter=$enableval],
-    [enable_filewriter=$USE_GTK]
+    [enable_filewriter=yes]
 )
 
-have_filewriter=no
 if test "x$enable_filewriter" != "xno"; then
-    if test "x$USE_GTK" != "xyes"; then
-        AC_MSG_ERROR([--enable-filewriter cannot be used without --enable-gtk])
-    fi
-    have_filewriter=yes
     OUTPUT_PLUGINS="$OUTPUT_PLUGINS filewriter"
 fi
-
 
 AC_ARG_ENABLE(filewriter_mp3,
     [AS_HELP_STRING([--disable-filewriter_mp3], [disable FileWriter MP3 output part (default=enabled)])],
@@ -817,7 +798,7 @@ AC_ARG_ENABLE(filewriter_mp3,
 )
 
 have_lame=no
-if test "x$have_filewriter" = "xyes" -a "x$enable_filewriter_mp3" != "xno"; then
+if test "x$enable_filewriter" = "xyes" -a "x$enable_filewriter_mp3" != "xno"; then
     AC_CHECK_LIB([mp3lame], [lame_get_id3v2_tag],
         [have_lame=yes
          AC_DEFINE(FILEWRITER_MP3, 1, [Define if MP3 output part should be built])
@@ -832,7 +813,7 @@ fi
 dnl Vorbis support reuses test done for Vorbis input plugin.
 
 have_vorbisenc=no
-if test "x$have_filewriter" = "xyes" -a "x$enable_vorbis" = "xyes"; then
+if test "x$enable_filewriter" = "xyes" -a "x$enable_vorbis" = "xyes"; then
     have_vorbisenc=yes
     AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built])
     FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS $VORBIS_CFLAGS"
@@ -845,7 +826,7 @@ AC_ARG_ENABLE(filewriter_flac,
 )
 
 have_writer_flac=no
-if test "x$have_filewriter" = "xyes" -a "x$enable_filewriter_flac" != "xno"; then
+if test "x$enable_filewriter" = "xyes" -a "x$enable_filewriter_flac" != "xno"; then
     PKG_CHECK_MODULES(FLAC, [flac >= 1.1.3],
         [have_writer_flac=yes
          AC_DEFINE(FILEWRITER_FLAC, 1, [Define if FLAC output part should be built])
@@ -1079,110 +1060,134 @@ echo "Configuration:"
 echo
 echo "  Install path:                           $plugindir"
 echo
-echo "  Output Plugins"
-echo "  --------------"
-echo "  Open Sound System (oss4):               $have_oss4"
-echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
-echo "  Sndio (sndio):                          $have_sndio"
-echo "  CoreAudio (coreaudio):                  $have_coreaudio"
-echo "  PulseAudio (pulse):                     $have_pulse"
-echo "  Jack Audio Connection Kit (jack):       $have_jack"
-echo "  Simple DirectMedia Layer (sdlout):      $have_sdlout"
-echo "  Qt Multimedia (qtaudio):                $have_qtaudio"
-echo "  FileWriter:                             $have_filewriter"
-echo "    -> FileWriter MP3 output part:        $have_lame"
-echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
-echo "    -> FileWriter FLAC output part:       $have_writer_flac"
+echo "  GTK+ support:                           $USE_GTK"
+echo "  Qt support:                             $USE_QT"
 echo
-echo "  Input Plugins"
+echo "  Audio Formats"
 echo "  -------------"
-echo "  MPEG-1 Layer I/II/III (mpg123):         $enable_mp3"
-echo "  MPEG-2/4 AAC (aac):                     $enable_aac"
-echo "  FFaudio (ffaudio):                      $ffmpeg_variant"
-echo "  Module decoder (modplug):               $have_modplug"
-echo "  MIDI synthesizer (amidi-plug):          $have_amidiplug"
-echo "  CD Digital Audio (cdaudio_ng):          $have_cdaudio_ng"
-echo "  sndfile extensions:                     $have_sndfile"
-echo "  Tone Generator:                         yes"
-echo "  Ogg Vorbis (vorbis):                    $enable_vorbis"
-echo "  Free Lossless Audio Codec (flacng):     $enable_flacng"
-echo "  Commodore 64 audio (SID):               $have_sidplay"
-echo "  Game music (spc, nsf & gbs):            $have_console"
-echo "  PlayStation (psf/psf2) audio:           yes"
-echo "  Nintendo DS audio (xsf):                yes"
+echo "  Audio CD:                               $have_cdaudio_ng"
+echo "  Free Lossless Audio Codec:              $enable_flacng"
+echo "  Ogg Vorbis:                             $enable_vorbis"
+echo "  MIDI (via FluidSynth):                  $have_amidiplug"
+echo "  MPEG-1 Layer I/II/III (via mpg123):     $enable_mp3"
+echo "  MPEG-2/4 AAC:                           $enable_aac"
+echo "  WavPack:                                $have_wavpack"
+echo
+echo "  External Decoders"
+echo "  -----------------"
+echo "  FFmpeg/Libav:                           $ffmpeg_variant"
+echo "  libsndfile:                             $have_sndfile"
+echo
+echo "  Chiptunes"
+echo "  ---------"
 echo "  AdLib synthesizer (adplug):             yes"
-echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
-echo "  Metronom:                               yes"
-echo "  VTX Decoder:                            yes"
+echo "  Commodore 64 audio (sid):               $have_sidplay"
+echo "  Game Music Emu (spc, nsf, gbs, etc.):   $have_console"
+echo "  ModPlug:                                $have_modplug"
+echo "  Nintendo DS audio (xsf):                yes"
+echo "  PlayStation audio (psf/psf2):           yes"
+echo "  Vortex Tracker (vtx):                   yes"
 echo
-echo "  General"
+echo "  Other Inputs"
+echo "  ------------"
+echo "  Metronome:                              yes"
+echo "  Tone Generator:                         yes"
+echo
+echo "  Effects"
 echo "  -------"
-echo "  Alarm:                                  $USE_GTK"
-echo "  Album Art:                              $USE_GTK"
-echo "  Album Art (Qt):                         $USE_QT"
-echo "  Delete from Filesystem:                 $USE_GTK"
-echo "  Linux Infrared Remote Control (LIRC)    $have_lirc"
-echo "  MPRIS 2 Server:                         $have_mpris2"
-echo "  Playlist Manager:                       $USE_GTK"
-echo "  Playlist Manager (Qt):                  $USE_QT"
-echo "  Search Tool:                            $USE_GTK"
-echo "  Search Tool (Qt):                       $USE_QT"
-echo "  Song Change:                            $have_songchange"
-echo "  Song Info (Qt):                         $USE_QT"
-echo "  Status Icon:                            $have_statusicon"
-echo "  Status Icon (Qt):                       $USE_QT"
-echo "  Audacious OSD:                          $have_aosd"
-echo "    -> X Composite support:               $have_aosd_xcomp"
-echo "  libnotify OSD:                          $have_notify"
-echo "  Global Hotkey Plugin:                   $have_hotkey"
-echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
-echo "  Scrobbler 2.0:                          $have_scrobbler2"
-echo "  LyricWiki viewer:                       $USE_GTK"
-echo "  LyricWiki viewer (Qt):                  $USE_QT"
-echo "  Mac Media Keys:                         $enable_mac_media_keys"
-echo
-echo "  Effect"
-echo "  ------"
+echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
 echo "  Channel Mixer:                          yes"
 echo "  Crystalizer:                            yes"
 echo "  Dynamic Range Compressor:               yes"
 echo "  Echo/Surround:                          yes"
 echo "  Extra Stereo:                           yes"
-echo "  LADSPA Host:                            $USE_GTK"
-echo "  Voice Removal:                          yes"
-echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
-echo "  Sample Rate Converter (resample):       $have_resample"
+echo "  LADSPA Host (requires GTK+):            $USE_GTK"
+echo "  Sample Rate Converter:                  $have_resample"
 echo "  Silence Removal:                        yes"
-echo "  Speed and Pitch:                        $have_speedpitch"
 echo "  SoX Resampler:                          $have_soxr"
+echo "  Speed and Pitch:                        $have_speedpitch"
+echo "  Voice Removal:                          yes"
 echo
-echo "  Visualization"
-echo "  -------------"
-echo "  Blur Scope:                             $USE_GTK"
-echo "  Cairo Spectrum Analyzer:                $USE_GTK"
-echo "  GTK+ OpenGL Spectrum Analyzer:          $have_glspectrum"
-echo "  Qt OpenGL Spectrum Analyzer:            $have_qtglspectrum"
+echo "  Outputs"
+echo "  -------"
+echo "  Advanced Linux Sound Architecture:      $have_alsa"
+echo "  Jack Audio Connection Kit:              $have_jack"
+echo "  Open Sound System:                      $have_oss4"
+echo "  PulseAudio:                             $have_pulse"
+echo "  Simple DirectMedia Layer:               $have_sdlout"
+echo "  Sndio:                                  $have_sndio"
+echo "  Win32 waveOut:                          $HAVE_MSWINDOWS"
+echo "  FileWriter:                             $enable_filewriter"
+echo "    -> MP3 encoding:                      $have_lame"
+echo "    -> Vorbis encoding:                   $have_vorbisenc"
+echo "    -> FLAC encoding:                     $have_writer_flac"
 echo
-echo "  Transport"
+echo "  Playlists"
 echo "  ---------"
-echo "  neon-based http/https:                  $enable_neon"
-echo "  libmms-based mms:                       $have_mms"
-echo "  GIO:                                    yes"
-echo
-echo "  Container"
-echo "  ---------"
-echo "  Audacious playlist format (audpl):      yes"
-echo "  Winamp PLS playlist format (pls):       yes"
-echo "  M3U playlist format (m3u):              yes"
+echo "  Cue sheets:                             $have_cue"
+echo "  M3U playlists:                          yes"
 echo "  Microsoft ASX (legacy):                 yes"
 echo "  Microsoft ASX 3.0:                      yes"
-echo "  XML Sharable Playlist Format (xspf):    yes"
-echo "  CUE playlist format (cue):              $have_cue"
+echo "  PLS playlists:                          yes"
+echo "  XML Sharable Playlist Format (XSPF):    yes"
 echo
-echo "  Interfaces"
+echo "  Transports"
 echo "  ----------"
-echo "  GTK (gtkui):                            $USE_GTK"
-echo "  Qt (qtui):                              $USE_QT"
-echo "  Winamp Classic (skins):                 $USE_GTK"
-echo "  Winamp Classic (skins, Qt):             $USE_QT"
+echo "  FTP, SFTP, SMB (via GIO):               yes"
+echo "  HTTP/HTTPS (via neon):                  $enable_neon"
+echo "  MMS (via libmms):                       $have_mms"
 echo
+echo "  General"
+echo "  -------"
+echo "  Alarm (requires GTK+):                  $USE_GTK"
+echo "  Delete Files:                           $USE_GTK_OR_QT"
+echo "  GNOME Shortcuts:                        $have_gnomeshortcuts"
+echo "  libnotify OSD:                          $have_notify"
+echo "  Linux Infrared Remote Control (LIRC):   $have_lirc"
+echo "  MPRIS 2 Server:                         $have_mpris2"
+echo "  Scrobbler 2.0 (requires GTK+):          $have_scrobbler2"
+echo "  Song Change:                            $have_songchange"
+echo
+
+if test "x$USE_GTK" = "xyes" ; then
+    echo "  GTK+ Support"
+    echo "  ------------"
+    echo "  GTK Interface:                          yes"
+    echo "  Winamp Classic Interface:               yes"
+    echo "  Album Art:                              yes"
+    echo "  Blur Scope:                             yes"
+    echo "  OpenGL Spectrum Analyzer:               $have_glspectrum"
+    echo "  LyricWiki viewer:                       yes"
+    echo "  Playlist Manager:                       yes"
+    echo "  Search Tool:                            yes"
+    echo "  Spectrum Analyzer (2D):                 yes"
+    echo "  Status Icon:                            yes"
+    echo "  X11 Global Hotkeys:                     $have_hotkey"
+    echo "  X11 On-Screen Display (aosd):           $have_aosd"
+    echo "    -> X Composite support:               $have_aosd_xcomp"
+    echo
+fi
+
+if test "x$USE_QT" = "xyes" ; then
+    echo "  Qt Support"
+    echo "  ----------"
+    echo "  Qt Multimedia output:                   $have_qtaudio"
+    echo "  Qt Interface:                           yes"
+    echo "  Winamp Classic Interface:               yes"
+    echo "  Album Art:                              yes"
+    echo "  LyricWiki viewer:                       yes"
+    echo "  OpenGL Spectrum Analyzer:               $have_qtglspectrum"
+    echo "  Playlist Manager:                       yes"
+    echo "  Search Tool:                            yes"
+    echo "  Song Info:                              yes"
+    echo "  Status Icon:                            yes"
+    echo
+fi
+
+if test "x$HAVE_DARWIN" = "xyes" ; then
+    echo "  Mac OS X Support"
+    echo "  ----------------"
+    echo "  CoreAudio output:                       $have_coreaudio"
+    echo "  Media Keys:                             $enable_mac_media_keys"
+    echo
+fi
