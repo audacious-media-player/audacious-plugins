@@ -95,7 +95,8 @@ private:
 
                 auto type = Tuple::field_get_type (field);
                 if (type == Tuple::String)
-                    tuple.set_str (field, str_decode_percent (value));
+                    tuple.set_str (field, (field == Tuple::AudioFile) ? value :
+                     str_decode_percent (value));
                 else if (type == Tuple::Int)
                     tuple.set_int (field, atoi (value));
             }
@@ -145,7 +146,8 @@ bool AudPlaylistLoader::save (const char * path, VFSFile & file,
                 if (type == Tuple::String)
                 {
                     String str = tuple.get_str (f);
-                    if (! inifile_write_entry (file, key, str_encode_percent (str)))
+                    if (! inifile_write_entry (file, key,
+                     (f == Tuple::AudioFile) ? str : str_encode_percent (str)))
                         return false;
 
                     keys ++;
