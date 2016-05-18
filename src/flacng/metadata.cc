@@ -162,6 +162,7 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Title, "TITLE");
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Artist, "ARTIST");
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Album, "ALBUM");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::AlbumArtist, "ALBUMARTIST");
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Genre, "GENRE");
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Comment, "COMMENT");
 
@@ -255,6 +256,7 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
     } tfields[] = {
         {"ARTIST", Tuple::Artist},
         {"ALBUM", Tuple::Album},
+        {"ALBUMARTIST", Tuple::AlbumArtist},
         {"TITLE", Tuple::Title},
         {"COMMENT", Tuple::Comment},
         {"GENRE", Tuple::Genre}

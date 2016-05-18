@@ -138,6 +138,7 @@ static void read_comment (vorbis_comment * comment, Tuple & tuple)
     set_tuple_str (tuple, Tuple::Title, comment, "title");
     set_tuple_str (tuple, Tuple::Artist, comment, "artist");
     set_tuple_str (tuple, Tuple::Album, comment, "album");
+    set_tuple_str (tuple, Tuple::AlbumArtist, comment, "albumartist");
     set_tuple_str (tuple, Tuple::Genre, comment, "genre");
     set_tuple_str (tuple, Tuple::Comment, comment, "comment");
 
