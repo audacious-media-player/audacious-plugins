@@ -25,7 +25,6 @@
 #include <libaudcore/plugins.h>
 
 #include <libaudqt/libaudqt.h>
-#include <libaudqt/volumebutton.h>
 
 #include "filter_input.h"
 #include "info_bar.h"
@@ -42,6 +41,7 @@
 #include <QDockWidget>
 #include <QLabel>
 #include <QSettings>
+#include <QToolButton>
 
 class PluginWidget : public QDockWidget
 {
@@ -109,7 +109,7 @@ MainWindow::MainWindow () :
             [] (bool on) { aud_set_bool (nullptr, "repeat", on); }, & toolButtonRepeat),
         ToolBarAction ("media-playlist-shuffle", N_("Shuffle"), N_("Shuffle"),
             [] (bool on) { aud_set_bool (nullptr, "shuffle", on); }, & toolButtonShuffle),
-        ToolBarCustom (new audqt::VolumeButton (this)),
+        ToolBarCustom (audqt::volume_button_new (this)),
         ToolBarCustom (filterInput),
     };
 
