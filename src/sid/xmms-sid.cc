@@ -46,11 +46,9 @@ public:
         & sid_prefs
     };
 
-    static constexpr auto iinfo = InputInfo(FlagSubtunes)
+    constexpr SIDPlugin() : InputPlugin(info, InputInfo(FlagSubtunes)
         .with_priority(5) /* medium priority (slow to initialize) */
-        .with_exts(exts);
-
-    constexpr SIDPlugin() : InputPlugin(info, iinfo) {}
+        .with_exts(exts)) {}
 
     bool delayed_init();
     void cleanup();

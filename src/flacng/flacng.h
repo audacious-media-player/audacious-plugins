@@ -37,11 +37,9 @@ public:
         about
     };
 
-    static constexpr auto iinfo = InputInfo(FlagWritesTag)
+    constexpr FLACng() : InputPlugin(info, InputInfo(FlagWritesTag)
         .with_priority(1)
-        .with_exts(exts);
-
-    constexpr FLACng() : InputPlugin(info, iinfo) {}
+        .with_exts(exts)) {}
 
     bool init();
     void cleanup();

@@ -47,10 +47,8 @@ public:
         about
     };
 
-    static constexpr auto iinfo = InputInfo()
-        .with_schemes(schemes);
-
-    constexpr ToneGen() : InputPlugin(info, iinfo) {}
+    constexpr ToneGen() : InputPlugin(info, InputInfo()
+        .with_schemes(schemes)) {}
 
     bool is_our_file(const char *filename, VFSFile &file);
     Tuple read_tuple(const char *filename, VFSFile &file);

@@ -46,10 +46,8 @@ public:
         about
     };
 
-    static constexpr auto iinfo = InputInfo()
-        .with_schemes(schemes);
-
-    constexpr Metronome() : InputPlugin(info, iinfo) {}
+    constexpr Metronome() : InputPlugin(info, InputInfo()
+        .with_schemes(schemes)) {}
 
     bool is_our_file(const char *filename, VFSFile &);
     Tuple read_tuple(const char *filename, VFSFile &);

@@ -43,10 +43,8 @@ public:
         PACKAGE
     };
 
-    static constexpr auto iinfo = InputInfo ()
-        .with_exts (exts);
-
-    constexpr AdPlugXMMS () : InputPlugin (info, iinfo) {}
+    constexpr AdPlugXMMS () : InputPlugin (info, InputInfo ()
+        .with_exts (exts)) {}
 
     bool init ();
     void cleanup ();

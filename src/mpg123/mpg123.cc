@@ -57,10 +57,8 @@ public:
         & prefs
     };
 
-    static constexpr auto iinfo = InputInfo (FlagWritesTag)
-        .with_exts (exts);
-
-    constexpr MPG123Plugin() : InputPlugin (info, iinfo) {}
+    constexpr MPG123Plugin() : InputPlugin (info, InputInfo (FlagWritesTag)
+        .with_exts (exts)) {}
 
     bool init ();
     void cleanup ();

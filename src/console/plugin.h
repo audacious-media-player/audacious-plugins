@@ -29,10 +29,8 @@ public:
         & prefs
     };
 
-    static constexpr auto iinfo = InputInfo (FlagSubtunes)
-        .with_exts (exts);
-
-    constexpr ConsolePlugin () : InputPlugin (info, iinfo) {}
+    constexpr ConsolePlugin () : InputPlugin (info, InputInfo (FlagSubtunes)
+        .with_exts (exts)) {}
 
     bool init ();
     void cleanup ();

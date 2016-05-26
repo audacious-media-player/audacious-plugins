@@ -60,10 +60,8 @@ public:
         & prefs
     };
 
-    static constexpr auto iinfo = InputInfo (FlagSubtunes)
-        .with_exts (exts);
-
-    constexpr ModplugXMMS () : InputPlugin (info, iinfo) {}
+    constexpr ModplugXMMS () : InputPlugin (info, InputInfo (FlagSubtunes)
+        .with_exts (exts)) {}
 
     bool init ();
 

@@ -53,10 +53,8 @@ public:
 		& prefs
 	};
 
-	static constexpr auto iinfo = InputInfo()
-		.with_exts(exts);
-
-	constexpr XSFPlugin() : InputPlugin(info, iinfo) {}
+	constexpr XSFPlugin() : InputPlugin(info, InputInfo()
+		.with_exts(exts)) {}
 
 	bool init();
 

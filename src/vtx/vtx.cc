@@ -40,10 +40,8 @@ public:
         about
     };
 
-    static constexpr auto iinfo = InputInfo()
-        .with_exts(exts);
-
-    constexpr VTXPlugin() : InputPlugin(info, iinfo) {}
+    constexpr VTXPlugin() : InputPlugin(info, InputInfo()
+        .with_exts(exts)) {}
 
     bool is_our_file(const char *filename, VFSFile &file);
     Tuple read_tuple(const char *filename, VFSFile &file);

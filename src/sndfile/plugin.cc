@@ -41,11 +41,9 @@ public:
         about
     };
 
-    static constexpr auto iinfo = InputInfo ()
+    constexpr SndfilePlugin () : InputPlugin (info, InputInfo ()
         .with_priority (9)  /* low priority fallback (but before ffaudio) */
-        .with_exts (exts);
-
-    constexpr SndfilePlugin () : InputPlugin (info, iinfo) {}
+        .with_exts (exts)) {}
 
     bool is_our_file (const char * filename, VFSFile & file);
     Tuple read_tuple (const char * filename, VFSFile & file);

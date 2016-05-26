@@ -44,10 +44,8 @@ public:
         & amidiplug_prefs
     };
 
-    static constexpr auto iinfo = InputInfo ()
-        .with_exts (exts);
-
-    constexpr AMIDIPlug () : InputPlugin (info, iinfo) {}
+    constexpr AMIDIPlug () : InputPlugin (info, InputInfo ()
+        .with_exts (exts)) {}
 
     bool init ();
     void cleanup ();

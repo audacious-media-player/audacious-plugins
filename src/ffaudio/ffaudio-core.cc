@@ -47,12 +47,10 @@ public:
         about
     };
 
-    static constexpr auto iinfo = InputInfo (FlagWritesTag)
+    constexpr FFaudio () : InputPlugin (info, InputInfo (FlagWritesTag)
         .with_priority (10) /* lowest priority fallback */
         .with_exts (exts)
-        .with_mimes (mimes);
-
-    constexpr FFaudio () : InputPlugin (info, iinfo) {}
+        .with_mimes (mimes)) {}
 
     bool init ();
     void cleanup ();

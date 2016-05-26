@@ -74,10 +74,8 @@ public:
         & prefs
     };
 
-    static constexpr auto iinfo = InputInfo (FlagSubtunes)
-        .with_schemes (cdaudio_schemes);
-
-    constexpr CDAudio () : InputPlugin (info, iinfo) {}
+    constexpr CDAudio () : InputPlugin (info, InputInfo (FlagSubtunes)
+        .with_schemes (cdaudio_schemes)) {}
 
     bool init ();
     void cleanup ();

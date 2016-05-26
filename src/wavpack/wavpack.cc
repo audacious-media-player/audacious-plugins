@@ -26,10 +26,8 @@ public:
         about
     };
 
-    static constexpr auto iinfo = InputInfo (FlagWritesTag)
-        .with_exts (exts);
-
-    constexpr WavpackPlugin() : InputPlugin (info, iinfo) {}
+    constexpr WavpackPlugin() : InputPlugin (info, InputInfo (FlagWritesTag)
+        .with_exts (exts)) {}
 
     bool is_our_file (const char * filename, VFSFile & file)
         { return false; }
