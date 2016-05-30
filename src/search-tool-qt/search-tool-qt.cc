@@ -632,7 +632,8 @@ static void do_add (bool play, bool set_title)
         {
             add.append (
                 aud_playlist_entry_get_filename (list, entry),
-                aud_playlist_entry_get_tuple (list, entry, Playlist::Nothing)
+                aud_playlist_entry_get_tuple (list, entry, Playlist::Nothing),
+                aud_playlist_entry_get_decoder (list, entry, Playlist::Nothing)
             );
         }
 
