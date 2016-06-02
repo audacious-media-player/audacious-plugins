@@ -144,6 +144,20 @@ int ConsoleFileHandler::load(int sample_rate)
     return 0;
 }
 
+static int get_track_length (const track_info_t * info)
+{
+    int length = info->length;
+    if (length <= 0)
+        length = info->intro_length + 2 * info->loop_length;
+
+    if (length <= 0)
+        length = audcfg.loop_length * 1000;
+    else if (length >= fade_threshold)
+        length += fade_length;
+
+    return length;
+}
+
 static Tuple get_track_ti(const char *path, const track_info_t *info, const int track)
 {
     Tuple tuple;
@@ -165,14 +179,7 @@ static Tuple get_track_ti(const char *path, const track_info_t *info, const int 
     else
         tuple.set_subtunes (info->track_count, nullptr);
 
-    int length = info->length;
-    if (length <= 0)
-        length = info->intro_length + 2 * info->loop_length;
-    if (length <= 0)
-        length = audcfg.loop_length * 1000;
-    else if (length >= fade_threshold)
-        length += fade_length;
-    tuple.set_int (Tuple::Length, length);
+    tuple.set_int (Tuple::Length, get_track_length (info));
 
     return tuple;
 }
@@ -246,12 +253,8 @@ bool ConsolePlugin::play(const char *filename, VFSFile &file)
         if (fh.m_type == gme_spc_type && audcfg.ignore_spc_length)
             info.length = -1;
 
-        Tuple tuple = get_track_ti(fh.m_path, &info, fh.m_track);
-        if (tuple.valid ())
-        {
-            length = tuple.get_int (Tuple::Length);
-            set_stream_bitrate(fh.m_emu->voice_count() * 1000);
-        }
+        length = get_track_length(&info);
+        set_stream_bitrate(fh.m_emu->voice_count() * 1000);
     }
 
     // start track
