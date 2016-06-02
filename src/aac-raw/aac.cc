@@ -328,15 +328,9 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
     NeAACDecConfigurationPtr decoder_config;
     unsigned long samplerate = 0;
     unsigned char channels = 0;
-    int bitrate = 0;
 
     Tuple tuple = get_playback_tuple ();
-
-    if (tuple)
-    {
-        bitrate = tuple.get_int (Tuple::Bitrate);
-        bitrate = 1000 * aud::max (0, bitrate);
-    }
+    int bitrate = 1000 * aud::max (0, tuple.get_int (Tuple::Bitrate));
 
     if ((decoder = NeAACDecOpen ()) == nullptr)
     {
@@ -398,7 +392,7 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
 
     /* == CHECK FOR METADATA == */
 
-    if (tuple && tuple.fetch_stream_info (file))
+    if (tuple.valid () && tuple.fetch_stream_info (file))
         set_playback_tuple (tuple.ref ());
 
     set_stream_bitrate (bitrate);
@@ -417,8 +411,7 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
 
         if (seek_value >= 0)
         {
-            int length = tuple ? tuple.get_int (Tuple::Length) : 0;
-
+            int length = tuple.get_int (Tuple::Length);
             if (length > 0)
                 aac_seek (file, decoder, seek_value, length, buf, sizeof buf, & buflen);
         }
@@ -430,7 +423,7 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
 
         /* == CHECK FOR METADATA == */
 
-        if (tuple && tuple.fetch_stream_info (file))
+        if (tuple.valid () && tuple.fetch_stream_info (file))
             set_playback_tuple (tuple.ref ());
 
         /* == DECODE A FRAME == */

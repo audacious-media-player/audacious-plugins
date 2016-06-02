@@ -304,7 +304,7 @@ bool MPG123Plugin::play (const char * filename, VFSFile & file)
 
     set_stream_bitrate (bitrate);
 
-    if (tuple && tuple.fetch_stream_info (file))
+    if (tuple.valid () && tuple.fetch_stream_info (file))
         set_playback_tuple (tuple.ref ());
 
     open_audio (FMT_FLOAT, s.rate, s.channels);
@@ -333,7 +333,7 @@ bool MPG123Plugin::play (const char * filename, VFSFile & file)
             bitrate_count = 0;
         }
 
-        if (tuple && tuple.fetch_stream_info (file))
+        if (tuple.valid () && tuple.fetch_stream_info (file))
             set_playback_tuple (tuple.ref ());
 
         if (! s.bytes_read)

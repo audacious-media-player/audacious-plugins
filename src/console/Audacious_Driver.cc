@@ -247,7 +247,7 @@ bool ConsolePlugin::play(const char *filename, VFSFile &file)
             info.length = -1;
 
         Tuple tuple = get_track_ti(fh.m_path, &info, fh.m_track);
-        if (tuple)
+        if (tuple.valid ())
         {
             length = tuple.get_int (Tuple::Length);
             set_stream_bitrate(fh.m_emu->voice_count() * 1000);

@@ -375,7 +375,7 @@ Tuple FFaudio::read_tuple (const char * filename, VFSFile & file)
         close_input_file (ic);
     }
 
-    if (tuple && ! file.fseek (0, VFS_SEEK_SET))
+    if (tuple.valid () && ! file.fseek (0, VFS_SEEK_SET))
         audtag::read_tag (file, & tuple, nullptr);
 
     return tuple;

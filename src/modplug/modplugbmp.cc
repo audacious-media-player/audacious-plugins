@@ -274,7 +274,7 @@ bool ModplugXMMS::play (const char * filename, VFSFile & file)
     );
 
     Tuple ti = read_tuple (filename, file);
-    if (ti)
+    if (ti.valid ())
         set_playback_tuple (std::move (ti));
 
     set_stream_bitrate(mSoundFile->GetNumChannels() * 1000);

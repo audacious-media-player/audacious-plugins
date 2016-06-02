@@ -84,7 +84,7 @@ private:
         else if (uri)
         {
             /* item field */
-            if (! tuple)
+            if (! tuple.valid ())
                 tuple.set_filename (uri);
 
             if (strcmp (key, "empty"))
@@ -128,9 +128,7 @@ bool AudPlaylistLoader::save (const char * path, VFSFile & file,
         if (! inifile_write_entry (file, "uri", item.filename))
             return false;
 
-        const Tuple & tuple = item.tuple;
-
-        if (tuple)
+        if (item.tuple.valid ())
         {
             int keys = 0;
 
@@ -141,11 +139,11 @@ bool AudPlaylistLoader::save (const char * path, VFSFile & file,
                     continue;
 
                 const char * key = Tuple::field_get_name (f);
-                Tuple::ValueType type = tuple.get_value_type (f);
+                Tuple::ValueType type = item.tuple.get_value_type (f);
 
                 if (type == Tuple::String)
                 {
-                    String str = tuple.get_str (f);
+                    String str = item.tuple.get_str (f);
                     if (! inifile_write_entry (file, key,
                      (f == Tuple::AudioFile) ? str : str_encode_percent (str)))
                         return false;
@@ -154,7 +152,7 @@ bool AudPlaylistLoader::save (const char * path, VFSFile & file,
                 }
                 else if (type == Tuple::Int)
                 {
-                    int val = tuple.get_int (f);
+                    int val = item.tuple.get_int (f);
                     if (! inifile_write_entry (file, key, int_to_str (val)))
                         return false;
 

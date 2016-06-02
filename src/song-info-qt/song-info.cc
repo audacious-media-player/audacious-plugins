@@ -70,7 +70,7 @@ void SongInfo::update (void * unused, audqt::InfoWidget * widget)
         return;
 
     Tuple tuple = aud_playlist_entry_get_tuple (playlist, position);
-    if (tuple)
+    if (tuple.valid ())
         widget->fillInfo (playlist, position, filename, tuple, decoder,
                 aud_file_can_write_tuple (filename, decoder));
 }

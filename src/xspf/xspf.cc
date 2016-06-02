@@ -171,7 +171,7 @@ static void xspf_add_file (xmlNode * track, const char * filename,
 
     if (location != nullptr)
     {
-        if (tuple)
+        if (tuple.valid ())
             tuple.set_filename (location);
 
         items.append (location, std::move (tuple));
@@ -387,7 +387,7 @@ bool XSPFLoader::save (const char * filename, VFSFile & file,
         xmlAddChild(track, location);
         xmlAddChild(tracklist, track);
 
-        if (tuple)
+        if (tuple.valid ())
         {
             for (const xspf_entry_t & entry : xspf_entries)
             {

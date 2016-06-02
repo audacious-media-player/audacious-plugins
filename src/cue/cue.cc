@@ -86,7 +86,7 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
             decoder = filename ? aud_file_find_decoder (filename, false) : nullptr;
             base_tuple = decoder ? aud_file_read_tuple (filename, decoder) : Tuple ();
 
-            if (base_tuple)
+            if (base_tuple.valid ())
             {
                 Cdtext * cdtext = cd_get_cdtext (cd);
 
@@ -117,7 +117,7 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
 
         new_file = (! next_name || strcmp (next_name, cur_name));
 
-        if (base_tuple)
+        if (base_tuple.valid ())
         {
             StringBuf tfilename = str_printf ("%s?%d", (const char *) cue_filename, track);
             Tuple tuple = base_tuple.ref ();
