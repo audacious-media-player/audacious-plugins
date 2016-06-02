@@ -392,7 +392,7 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
 
     /* == CHECK FOR METADATA == */
 
-    if (tuple.valid () && tuple.fetch_stream_info (file))
+    if (tuple.fetch_stream_info (file))
         set_playback_tuple (tuple.ref ());
 
     set_stream_bitrate (bitrate);
@@ -423,7 +423,7 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
 
         /* == CHECK FOR METADATA == */
 
-        if (tuple.valid () && tuple.fetch_stream_info (file))
+        if (tuple.fetch_stream_info (file))
             set_playback_tuple (tuple.ref ());
 
         /* == DECODE A FRAME == */
