@@ -41,44 +41,43 @@
 typedef struct {
     Tuple::Field tupleField;
     const char *xspfName;
-    Tuple::ValueType type;
     bool isMeta;
 } xspf_entry_t;
 
 
 static const xspf_entry_t xspf_entries[] = {
-    {Tuple::Artist, "creator", Tuple::String, false},
-    {Tuple::Title, "title", Tuple::String, false},
-    {Tuple::Album, "album", Tuple::String, false},
-    {Tuple::Comment, "annotation", Tuple::String, false},
-    {Tuple::Genre, "genre", Tuple::String, true},
+    {Tuple::Artist, "creator", false},
+    {Tuple::Title, "title", false},
+    {Tuple::Album, "album", false},
+    {Tuple::Comment, "annotation", false},
+    {Tuple::Genre, "genre", true},
 
-    {Tuple::Track, "trackNum", Tuple::Int, false},
-    {Tuple::Length, "duration", Tuple::Int, false},
-    {Tuple::Year, "year", Tuple::Int, true},
-    {Tuple::Quality, "quality", Tuple::String, true},
+    {Tuple::Track, "trackNum", false},
+    {Tuple::Length, "duration", false},
+    {Tuple::Year, "year", true},
+    {Tuple::Quality, "quality", true},
 
-    {Tuple::Codec, "codec", Tuple::String, true},
+    {Tuple::Codec, "codec", true},
 
-    {Tuple::AlbumArtist, "album-artist", Tuple::String, true},
-    {Tuple::Composer, "composer", Tuple::String, true},
-    {Tuple::Performer, "performer", Tuple::String, true},
-    {Tuple::Copyright, "copyright", Tuple::String, true},
-    {Tuple::Date, "date", Tuple::String, true},
+    {Tuple::AlbumArtist, "album-artist", true},
+    {Tuple::Composer, "composer", true},
+    {Tuple::Performer, "performer", true},
+    {Tuple::Copyright, "copyright", true},
+    {Tuple::Date, "date", true},
 
-    {Tuple::Subtune, "subsong-id", Tuple::Int, true},
-    {Tuple::NumSubtunes, "subsong-num", Tuple::Int, true},
-    {Tuple::MIMEType, "mime-type", Tuple::String, true},
-    {Tuple::Bitrate, "bitrate", Tuple::Int, true},
-    {Tuple::StartTime, "seg-start", Tuple::Int, true},
-    {Tuple::EndTime, "seg-end", Tuple::Int, true},
+    {Tuple::Subtune, "subsong-id", true},
+    {Tuple::NumSubtunes, "subsong-num", true},
+    {Tuple::MIMEType, "mime-type", true},
+    {Tuple::Bitrate, "bitrate", true},
+    {Tuple::StartTime, "seg-start", true},
+    {Tuple::EndTime, "seg-end", true},
 
-    {Tuple::AlbumGain, "gain-album-gain", Tuple::Int, true},
-    {Tuple::AlbumPeak, "gain-album-peak", Tuple::Int, true},
-    {Tuple::TrackGain, "gain-track-gain", Tuple::Int, true},
-    {Tuple::TrackPeak, "gain-track-peak", Tuple::Int, true},
-    {Tuple::GainDivisor, "gain-gain-unit", Tuple::Int, true},
-    {Tuple::PeakDivisor, "gain-peak-unit", Tuple::Int, true},
+    {Tuple::AlbumGain, "gain-album-gain", true},
+    {Tuple::AlbumPeak, "gain-album-peak", true},
+    {Tuple::TrackGain, "gain-track-gain", true},
+    {Tuple::TrackPeak, "gain-track-peak", true},
+    {Tuple::GainDivisor, "gain-gain-unit", true},
+    {Tuple::PeakDivisor, "gain-peak-unit", true},
 };
 
 static const char * const xspf_exts[] = {"xspf"};
@@ -148,7 +147,7 @@ static void xspf_add_file (xmlNode * track, const char * filename,
                 if ((entry.isMeta == isMeta) &&
                     !xmlStrcmp(findName, (xmlChar *)entry.xspfName)) {
                     xmlChar *str = xmlNodeGetContent(nptr);
-                    switch (entry.type) {
+                    switch (Tuple::field_get_type (entry.tupleField)) {
                         case Tuple::String:
                             tuple.set_str (entry.tupleField, (char *)str);
                             break;
@@ -313,11 +312,10 @@ static bool is_valid_string (const char * s, char * * subst)
 }
 
 
-static void xspf_add_node(xmlNodePtr node, Tuple::ValueType type,
-        bool isMeta, const char *xspfName, const char *strVal,
-        const int intVal)
+static void xspf_add_node (xmlNodePtr node, bool isMeta, const char * xspfName, const char * strVal)
 {
     xmlNodePtr tmp;
+    char * subst;
 
     if (isMeta) {
         tmp = xmlNewNode(nullptr, (xmlChar *) "meta");
@@ -325,24 +323,12 @@ static void xspf_add_node(xmlNodePtr node, Tuple::ValueType type,
     } else
         tmp = xmlNewNode(nullptr, (xmlChar *) xspfName);
 
-    switch (type) {
-        case Tuple::String:
-            char * subst;
-            if (is_valid_string (strVal, & subst))
-                xmlAddChild (tmp, xmlNewText ((xmlChar *) strVal));
-            else
-            {
-                xmlAddChild (tmp, xmlNewText ((xmlChar *) subst));
-                g_free (subst);
-            }
-            break;
-
-        case Tuple::Int:
-            xmlAddChild (tmp, xmlNewText ((xmlChar *) (char *) int_to_str (intVal)));
-            break;
-
-        default:
-            break;
+    if (is_valid_string (strVal, & subst))
+        xmlAddChild (tmp, xmlNewText ((xmlChar *) strVal));
+    else
+    {
+        xmlAddChild (tmp, xmlNewText ((xmlChar *) subst));
+        g_free (subst);
     }
 
     xmlAddChild(node, tmp);
@@ -367,7 +353,7 @@ bool XSPFLoader::save (const char * filename, VFSFile & file,
     xmlDocSetRootElement(doc, rootnode);
 
     if (title)
-        xspf_add_node (rootnode, Tuple::String, false, "title", title, 0);
+        xspf_add_node (rootnode, false, "title", title);
 
     tracklist = xmlNewNode(nullptr, (xmlChar *)"trackList");
     xmlAddChild(rootnode, tracklist);
@@ -377,8 +363,6 @@ bool XSPFLoader::save (const char * filename, VFSFile & file,
         const char * filename = item.filename;
         const Tuple & tuple = item.tuple;
         xmlNodePtr track, location;
-        String scratch;
-        int scratchi = 0;
 
         track = xmlNewNode(nullptr, (xmlChar *)"track");
         location = xmlNewNode(nullptr, (xmlChar *)"location");
@@ -387,28 +371,20 @@ bool XSPFLoader::save (const char * filename, VFSFile & file,
         xmlAddChild(track, location);
         xmlAddChild(tracklist, track);
 
-        if (tuple.valid ())
+        for (auto & entry : xspf_entries)
         {
-            for (const xspf_entry_t & entry : xspf_entries)
+            switch (tuple.get_value_type (entry.tupleField))
             {
-                bool isOK = (tuple.get_value_type (entry.tupleField) == entry.type);
-
-                switch (entry.type) {
-                    case Tuple::String:
-                        scratch = tuple.get_str (entry.tupleField);
-                        if (! scratch)
-                            isOK = false;
-                        break;
-                    case Tuple::Int:
-                        scratchi = tuple.get_int (entry.tupleField);
-                        break;
-                    default:
-                        break;
-                }
-
-                if (isOK)
-                    xspf_add_node (track, entry.type, entry.isMeta,
-                     entry.xspfName, scratch, scratchi);
+            case Tuple::String:
+                xspf_add_node (track, entry.isMeta, entry.xspfName,
+                 tuple.get_str (entry.tupleField));
+                break;
+            case Tuple::Int:
+                xspf_add_node (track, entry.isMeta, entry.xspfName,
+                 int_to_str (tuple.get_int (entry.tupleField)));
+                break;
+            default:
+                break;
             }
         }
     }
