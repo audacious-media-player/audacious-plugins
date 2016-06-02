@@ -273,10 +273,6 @@ bool ModplugXMMS::play (const char * filename, VFSFile & file)
         mArchive->Size()
     );
 
-    Tuple ti = read_tuple (filename, file);
-    if (ti.valid ())
-        set_playback_tuple (std::move (ti));
-
     set_stream_bitrate(mSoundFile->GetNumChannels() * 1000);
 
     int fmt = (mModProps.mBits == 16) ? FMT_S16_NE : FMT_U8;
