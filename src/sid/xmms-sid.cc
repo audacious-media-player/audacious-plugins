@@ -50,7 +50,12 @@ public:
         .with_priority(5) /* medium priority (slow to initialize) */
         .with_exts(exts)) {}
 
-    bool delayed_init();
+    bool init()
+    {
+        xs_init_configuration();
+        return true;
+    }
+
     void cleanup();
 
     bool is_our_file(const char *filename, VFSFile &file);
@@ -58,6 +63,8 @@ public:
     bool play(const char *filename, VFSFile &file);
 
 private:
+    bool delayed_init();
+
     pthread_mutex_t m_init_mutex = PTHREAD_MUTEX_INITIALIZER;
     bool m_initialized = false;
     bool m_init_failed = false;
@@ -76,9 +83,6 @@ bool SIDPlugin::delayed_init()
 
     if (!m_initialized && !m_init_failed)
     {
-        /* Initialize and get configuration */
-        xs_init_configuration();
-
         /* Try to initialize emulator engine */
         m_initialized = xs_sidplayfp_init();
         if (!m_initialized)
