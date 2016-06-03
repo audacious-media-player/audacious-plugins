@@ -83,10 +83,12 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
         if (new_file)
         {
             filename = String (uri_construct (cur_name, cue_filename));
-            decoder = filename ? aud_file_find_decoder (filename, false) : nullptr;
-            base_tuple = decoder ? aud_file_read_tuple (filename, decoder) : Tuple ();
+            decoder = nullptr;
+            base_tuple = Tuple ();
 
-            if (base_tuple.valid ())
+            VFSFile file;
+            if ((decoder = aud_file_find_decoder (filename, false, file)) &&
+             aud_file_read_tag (filename, decoder, file, base_tuple))
             {
                 Cdtext * cdtext = cd_get_cdtext (cd);
 

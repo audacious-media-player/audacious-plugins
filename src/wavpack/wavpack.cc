@@ -240,7 +240,7 @@ Tuple WavpackPlugin::read_tuple (const char * filename, VFSFile & file)
     WavpackCloseFile(ctx);
 
     if (! file.fseek (0, VFS_SEEK_SET))
-        audtag::read_tag (file, & tuple, nullptr);
+        audtag::read_tag (file, tuple, nullptr);
 
     AUDDBG("returning tuple for file %s\n", file.filename ());
     return tuple;
@@ -248,7 +248,7 @@ Tuple WavpackPlugin::read_tuple (const char * filename, VFSFile & file)
 
 bool WavpackPlugin::write_tuple (const char * filename, VFSFile & handle, const Tuple & tuple)
 {
-    return audtag::tuple_write(tuple, handle, audtag::TagType::APE);
+    return audtag::write_tuple (handle, tuple, audtag::TagType::APE);
 }
 
 const char WavpackPlugin::about[] =

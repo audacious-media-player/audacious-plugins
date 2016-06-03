@@ -376,7 +376,7 @@ Tuple FFaudio::read_tuple (const char * filename, VFSFile & file)
     }
 
     if (tuple.valid () && ! file.fseek (0, VFS_SEEK_SET))
-        audtag::read_tag (file, & tuple, nullptr);
+        audtag::read_tag (file, tuple, nullptr);
 
     return tuple;
 }
@@ -384,9 +384,9 @@ Tuple FFaudio::read_tuple (const char * filename, VFSFile & file)
 bool FFaudio::write_tuple (const char * filename, VFSFile & file, const Tuple & tuple)
 {
     if (str_has_suffix_nocase (filename, ".ape"))
-        return audtag::tuple_write (tuple, file, audtag::TagType::APE);
+        return audtag::write_tuple (file, tuple, audtag::TagType::APE);
 
-    return audtag::tuple_write (tuple, file, audtag::TagType::None);
+    return audtag::write_tuple (file, tuple, audtag::TagType::None);
 }
 
 Index<char> FFaudio::read_image (const char * filename, VFSFile & file)

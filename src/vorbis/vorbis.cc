@@ -315,7 +315,8 @@ play_cleanup:
     return ! error;
 }
 
-bool VorbisPlugin::read_tag (const char * filename, VFSFile & file, Tuple * tuple, Index<char> * image)
+bool VorbisPlugin::read_tag (const char * filename, VFSFile & file,
+ Tuple & tuple, Index<char> * image)
 {
     OggVorbis_File vfile;
 
@@ -330,20 +331,17 @@ bool VorbisPlugin::read_tag (const char * filename, VFSFile & file, Tuple * tupl
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
         return false;
 
+    vorbis_info * info = ov_info (& vfile, -1);
     vorbis_comment * comment = ov_comment (& vfile, -1);
 
-    if (tuple)
-    {
-        vorbis_info * info = ov_info (& vfile, -1);
-        tuple->set_format ("Ogg Vorbis", info->channels, info->rate, info->bitrate_nominal / 1000);
-        tuple->set_str (Tuple::MIMEType, "application/ogg");
+    tuple.set_format ("Ogg Vorbis", info->channels, info->rate, info->bitrate_nominal / 1000);
+    tuple.set_str (Tuple::MIMEType, "application/ogg");
 
-        if (! stream)
-            tuple->set_int (Tuple::Length, ov_time_total (& vfile, -1) * 1000);
+    if (! stream)
+        tuple.set_int (Tuple::Length, ov_time_total (& vfile, -1) * 1000);
 
-        if (comment)
-            read_comment (comment, * tuple);
-    }
+    if (comment)
+        read_comment (comment, tuple);
 
     if (image && comment)
         * image = read_image_from_comment (filename, comment);
