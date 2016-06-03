@@ -172,12 +172,15 @@ bool ConsolePlugin::read_tag(const char *filename, VFSFile &file, Tuple &tuple, 
     if (log_err(fh.m_emu->track_info(&info, fh.m_track < 0 ? 0 : fh.m_track)))
         return false;
 
-    tuple.set_str(Tuple::Artist, info.author);
-    tuple.set_str(Tuple::Album, info.game);
-    tuple.set_str(Tuple::Title, info.song);
-    tuple.set_str(Tuple::Copyright, info.copyright);
-    tuple.set_str(Tuple::Codec, info.system);
-    tuple.set_str(Tuple::Comment, info.comment);
+    auto set_str = [&tuple](Tuple::Field f, const char *s)
+        { if (s[0]) tuple.set_str(f, s); };
+
+    set_str(Tuple::Artist, info.author);
+    set_str(Tuple::Album, info.game);
+    set_str(Tuple::Title, info.song);
+    set_str(Tuple::Copyright, info.copyright);
+    set_str(Tuple::Codec, info.system);
+    set_str(Tuple::Comment, info.comment);
 
     if (fh.m_track >= 0)
     {
