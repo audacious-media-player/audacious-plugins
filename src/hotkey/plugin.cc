@@ -41,7 +41,6 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -62,7 +61,8 @@ public:
         N_("Global Hotkeys"),
         PACKAGE,
         about,
-        & hotkey_prefs
+        & hotkey_prefs,
+        PluginGLibOnly
     };
 
     constexpr GlobalHotkeys () : GeneralPlugin (info, false) {}

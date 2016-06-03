@@ -24,7 +24,6 @@
 #include <math.h>
 #include <string.h>
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
@@ -62,7 +61,9 @@ public:
     static constexpr PluginInfo info = {
         N_("OpenGL Spectrum Analyzer"),
         PACKAGE,
-        gl_about
+        gl_about,
+        nullptr, // prefs
+        PluginGLibOnly
     };
 
     constexpr GLSpectrum () : VisPlugin (info, Visualizer::Freq) {}

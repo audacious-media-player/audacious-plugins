@@ -19,7 +19,6 @@
 
 #include <QApplication>
 
-#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
@@ -39,7 +38,13 @@ private:
     MainWindow * window = nullptr;
 
 public:
-    constexpr QtUI () : audqt::QtIfacePlugin ({N_("Qt Interface"), PACKAGE, nullptr, & qtui_prefs}) {}
+    constexpr QtUI () : audqt::QtIfacePlugin ({
+        N_("Qt Interface"),
+        PACKAGE,
+        nullptr,
+        & qtui_prefs,
+        PluginQtOnly
+    }) {}
 
     bool init ()
     {

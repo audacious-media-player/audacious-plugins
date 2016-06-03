@@ -21,7 +21,6 @@
 #ifndef _I_AOSD_H
 #define _I_AOSD_H 1
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/plugin.h>
 
 struct PreferencesWidget;
@@ -38,7 +37,8 @@ public:
         N_("AOSD (On-Screen Display)"),
         PACKAGE,
         about,
-        & prefs
+        & prefs,
+        PluginGLibOnly
     };
 
     constexpr AOSD () : GeneralPlugin (info, false) {}

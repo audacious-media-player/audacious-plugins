@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
@@ -30,7 +29,10 @@ class AlbumArtPlugin : public GeneralPlugin
 public:
     static constexpr PluginInfo info = {
         N_("Album Art"),
-        PACKAGE
+        PACKAGE,
+        nullptr, // about
+        nullptr, // prefs
+        PluginGLibOnly
     };
 
     constexpr AlbumArtPlugin () : GeneralPlugin (info, false) {}

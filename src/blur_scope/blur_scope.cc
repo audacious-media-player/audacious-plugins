@@ -28,7 +28,6 @@
 
 #include <gtk/gtk.h>
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
@@ -56,7 +55,8 @@ public:
         N_("Blur Scope"),
         PACKAGE,
         nullptr,
-        & bscope_prefs
+        & bscope_prefs,
+        PluginGLibOnly
     };
 
     constexpr BlurScope () : VisPlugin (info, Visualizer::MonoPCM) {}

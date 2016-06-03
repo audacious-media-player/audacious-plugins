@@ -30,7 +30,6 @@
 #include <QPushButton>
 #include <QTreeView>
 
-#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -50,7 +49,10 @@ class SearchToolQt : public GeneralPlugin
 public:
     static constexpr PluginInfo info = {
         N_("Search Tool"),
-        PACKAGE
+        PACKAGE,
+        nullptr, // about
+        nullptr, // prefs
+        PluginQtOnly
     };
 
     constexpr SearchToolQt () : GeneralPlugin (info, false) {}
