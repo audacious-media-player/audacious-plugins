@@ -188,55 +188,6 @@ ERR:
     return false;
 }
 
-Index<char> FLACng::read_image(const char *filename, VFSFile &file)
-{
-    AUDDBG("Probe for song image.\n");
-
-    FLAC__Metadata_Iterator *iter;
-    FLAC__Metadata_Chain *chain;
-    FLAC__StreamMetadata *metadata = nullptr;
-    FLAC__Metadata_ChainStatus status;
-
-    Index<char> data;
-
-    chain = FLAC__metadata_chain_new();
-
-    if (!FLAC__metadata_chain_read_with_callbacks(chain, &file, io_callbacks))
-        goto ERR;
-
-    iter = FLAC__metadata_iterator_new();
-
-    FLAC__metadata_iterator_init(iter, chain);
-
-    while (FLAC__metadata_iterator_next(iter))
-        if (FLAC__metadata_iterator_get_block_type(iter) == FLAC__METADATA_TYPE_PICTURE)
-            break;
-
-    if (FLAC__metadata_iterator_get_block_type(iter) == FLAC__METADATA_TYPE_PICTURE)
-    {
-        metadata = FLAC__metadata_iterator_get_block(iter);
-
-        if (metadata->data.picture.type == FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER)
-        {
-            AUDDBG("FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER found.");
-            data.insert ((const char *) metadata->data.picture.data, 0,
-             metadata->data.picture.data_length);
-        }
-    }
-
-    FLAC__metadata_iterator_delete(iter);
-    FLAC__metadata_chain_delete(chain);
-
-    return data;
-
-ERR:
-    status = FLAC__metadata_chain_status(chain);
-    FLAC__metadata_chain_delete(chain);
-
-    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
-    return data;
-}
-
 static void add_text (Tuple & tuple, Tuple::Field field, const char * value)
 {
     String cur = tuple.get_str (field);
@@ -285,11 +236,10 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
         tuple.set_gain(Tuple::AlbumPeak, Tuple::PeakDivisor, value);
 }
 
-Tuple FLACng::read_tuple(const char *filename, VFSFile &file)
+bool FLACng::read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image)
 {
     AUDDBG("Probe for tuple.\n");
 
-    Tuple tuple;
     FLAC__Metadata_Iterator *iter;
     FLAC__Metadata_Chain *chain;
     FLAC__StreamMetadata *metadata = nullptr;
@@ -297,8 +247,6 @@ Tuple FLACng::read_tuple(const char *filename, VFSFile &file)
     FLAC__StreamMetadata_VorbisComment_Entry *entry;
     char *key;
     char *value;
-
-    tuple.set_filename (filename);
 
     tuple.set_str (Tuple::Codec, "Free Lossless Audio Codec (FLAC)");
     tuple.set_str (Tuple::Quality, _("lossless"));
@@ -317,29 +265,27 @@ Tuple FLACng::read_tuple(const char *filename, VFSFile &file)
         switch (FLAC__metadata_iterator_get_block_type(iter))
         {
             case FLAC__METADATA_TYPE_VORBIS_COMMENT:
+            {
+                metadata = FLAC__metadata_iterator_get_block(iter);
 
-                if (FLAC__metadata_iterator_get_block_type(iter) == FLAC__METADATA_TYPE_VORBIS_COMMENT)
+                AUDDBG("Vorbis comment contains %d fields\n", metadata->data.vorbis_comment.num_comments);
+                AUDDBG("Vendor string: %s\n", metadata->data.vorbis_comment.vendor_string.entry);
+
+                entry = metadata->data.vorbis_comment.comments;
+
+                for (unsigned i = 0; i < metadata->data.vorbis_comment.num_comments; i++, entry++)
                 {
-                    metadata = FLAC__metadata_iterator_get_block(iter);
-
-                    AUDDBG("Vorbis comment contains %d fields\n", metadata->data.vorbis_comment.num_comments);
-                    AUDDBG("Vendor string: %s\n", metadata->data.vorbis_comment.vendor_string.entry);
-
-                    entry = metadata->data.vorbis_comment.comments;
-
-                    for (unsigned i = 0; i < metadata->data.vorbis_comment.num_comments; i++, entry++)
+                    if (FLAC__metadata_object_vorbiscomment_entry_to_name_value_pair(*entry, &key, &value) == false)
+                        AUDDBG("Could not parse comment\n");
+                    else
                     {
-                        if (FLAC__metadata_object_vorbiscomment_entry_to_name_value_pair(*entry, &key, &value) == false)
-                            AUDDBG("Could not parse comment\n");
-                        else
-                        {
-                            parse_comment(tuple, key, value);
-                            free(key);
-                            free(value);
-                        }
+                        parse_comment(tuple, key, value);
+                        free(key);
+                        free(value);
                     }
                 }
                 break;
+            }
 
             case FLAC__METADATA_TYPE_STREAMINFO:
             {
@@ -372,6 +318,22 @@ Tuple FLACng::read_tuple(const char *filename, VFSFile &file)
                 break;
             }
 
+            case FLAC__METADATA_TYPE_PICTURE:
+            {
+                if (image && !image->len())
+                {
+                    metadata = FLAC__metadata_iterator_get_block(iter);
+
+                    if (metadata->data.picture.type == FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER)
+                    {
+                        AUDDBG("FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER found.");
+                        image->insert((const char *) metadata->data.picture.data, 0,
+                         metadata->data.picture.data_length);
+                    }
+                }
+                break;
+            }
+
             default:
                 ;
         }
@@ -380,12 +342,12 @@ Tuple FLACng::read_tuple(const char *filename, VFSFile &file)
     FLAC__metadata_iterator_delete(iter);
     FLAC__metadata_chain_delete(chain);
 
-    return tuple;
+    return true;
 
 ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
     AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
-    return tuple;
+    return false;
 }
