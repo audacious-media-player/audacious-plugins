@@ -335,7 +335,6 @@ bool VorbisPlugin::read_tag (const char * filename, VFSFile & file,
     vorbis_comment * comment = ov_comment (& vfile, -1);
 
     tuple.set_format ("Ogg Vorbis", info->channels, info->rate, info->bitrate_nominal / 1000);
-    tuple.set_str (Tuple::MIMEType, "application/ogg");
 
     if (! stream)
         tuple.set_int (Tuple::Length, ov_time_total (& vfile, -1) * 1000);

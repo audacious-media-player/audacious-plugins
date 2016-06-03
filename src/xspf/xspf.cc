@@ -46,29 +46,31 @@ typedef struct {
 
 
 static const xspf_entry_t xspf_entries[] = {
-    {Tuple::Artist, "creator", false},
     {Tuple::Title, "title", false},
+    {Tuple::Artist, "creator", false},
     {Tuple::Album, "album", false},
+    {Tuple::AlbumArtist, "album-artist", true},
     {Tuple::Comment, "annotation", false},
     {Tuple::Genre, "genre", true},
-
-    {Tuple::Track, "trackNum", false},
-    {Tuple::Length, "duration", false},
     {Tuple::Year, "year", true},
-    {Tuple::Quality, "quality", true},
 
-    {Tuple::Codec, "codec", true},
-
-    {Tuple::AlbumArtist, "album-artist", true},
     {Tuple::Composer, "composer", true},
     {Tuple::Performer, "performer", true},
     {Tuple::Copyright, "copyright", true},
     {Tuple::Date, "date", true},
 
+    {Tuple::Track, "trackNum", false},
+    {Tuple::Length, "duration", false},
+
+    {Tuple::Bitrate, "bitrate", true},
+    {Tuple::Codec, "codec", true},
+    {Tuple::Quality, "quality", true},
+
+    {Tuple::AudioFile, "audio-file", true},
+
     {Tuple::Subtune, "subsong-id", true},
     {Tuple::NumSubtunes, "subsong-num", true},
-    {Tuple::MIMEType, "mime-type", true},
-    {Tuple::Bitrate, "bitrate", true},
+
     {Tuple::StartTime, "seg-start", true},
     {Tuple::EndTime, "seg-end", true},
 
