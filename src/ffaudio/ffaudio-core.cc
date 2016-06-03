@@ -56,8 +56,7 @@ public:
     void cleanup ();
 
     bool is_our_file (const char * filename, VFSFile & file);
-    Tuple read_tuple (const char * filename, VFSFile & file);
-    Index<char> read_image (const char * filename, VFSFile & file);
+    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
     bool write_tuple (const char * filename, VFSFile & file, const Tuple & tuple);
     bool play (const char * filename, VFSFile & file);
 };
@@ -347,38 +346,40 @@ static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
     }
 }
 
-Tuple FFaudio::read_tuple (const char * filename, VFSFile & file)
+bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image)
 {
-    Tuple tuple;
-    AVFormatContext * ic = open_input_file (filename, file);
+    SmartPtr<AVFormatContext, close_input_file>
+     ic (open_input_file (filename, file));
 
-    if (ic)
+    if (! ic)
+        return false;
+
+    CodecInfo cinfo;
+    if (! find_codec (ic.get (), & cinfo))
+        return false;
+
+    tuple.set_int (Tuple::Length, ic->duration / 1000);
+    tuple.set_int (Tuple::Bitrate, ic->bit_rate / 1000);
+
+    if (cinfo.codec->long_name)
+        tuple.set_str (Tuple::Codec, cinfo.codec->long_name);
+
+    if (ic->metadata)
+        read_metadata_dict (tuple, ic->metadata);
+    if (cinfo.stream->metadata)
+        read_metadata_dict (tuple, cinfo.stream->metadata);
+
+    if (! file.fseek (0, VFS_SEEK_SET))
+        audtag::read_tag (file, tuple, image);
+
+    if (image && (str_has_suffix_nocase (filename, ".m4a") ||
+                  str_has_suffix_nocase (filename, ".mp4")))
     {
-        CodecInfo cinfo;
-
-        if (find_codec (ic, & cinfo))
-        {
-            tuple.set_filename (filename);
-
-            tuple.set_int (Tuple::Length, ic->duration / 1000);
-            tuple.set_int (Tuple::Bitrate, ic->bit_rate / 1000);
-
-            if (cinfo.codec->long_name)
-                tuple.set_str (Tuple::Codec, cinfo.codec->long_name);
-
-            if (ic->metadata)
-                read_metadata_dict (tuple, ic->metadata);
-            if (cinfo.stream->metadata)
-                read_metadata_dict (tuple, cinfo.stream->metadata);
-        }
-
-        close_input_file (ic);
+        if (! file.fseek (0, VFS_SEEK_SET))
+            * image = read_itunes_cover (filename, file);
     }
 
-    if (tuple.valid () && ! file.fseek (0, VFS_SEEK_SET))
-        audtag::read_tag (file, tuple, nullptr);
-
-    return tuple;
+    return true;
 }
 
 bool FFaudio::write_tuple (const char * filename, VFSFile & file, const Tuple & tuple)
@@ -387,14 +388,6 @@ bool FFaudio::write_tuple (const char * filename, VFSFile & file, const Tuple & 
         return audtag::write_tuple (file, tuple, audtag::TagType::APE);
 
     return audtag::write_tuple (file, tuple, audtag::TagType::None);
-}
-
-Index<char> FFaudio::read_image (const char * filename, VFSFile & file)
-{
-    if (str_has_suffix_nocase (filename, ".m4a") || str_has_suffix_nocase (filename, ".mp4"))
-        return read_itunes_cover (filename, file);
-
-    return Index<char> ();
 }
 
 bool FFaudio::play (const char * filename, VFSFile & file)
