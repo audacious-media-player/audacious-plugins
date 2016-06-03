@@ -138,7 +138,7 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
 
     /* Get tune information */
     xs_tuneinfo_t info;
-    if (!xs_sidplayfp_getinfo(info, filename, buf.begin(), buf.len()))
+    if (!xs_sidplayfp_getinfo(info, buf.begin(), buf.len()))
         return false;
 
     /* Initialize the tune */
@@ -162,17 +162,9 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
     /* Initialize song */
     if (!xs_sidplayfp_initsong(subTune)) {
         AUDERR("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n",
-            (const char *) info.sidFilename, subTune);
+            filename, subTune);
         return false;
     }
-
-    /* Set song information for current subtune */
-    xs_sidplayfp_updateinfo(info, subTune);
-
-    Tuple tmpTuple;
-    tmpTuple.set_filename(info.sidFilename);
-    xs_get_song_tuple_info(tmpTuple, info, subTune);
-    set_playback_tuple(std::move(tmpTuple));
 
     /* Open the audio output */
     open_audio(FMT_S16_NE, xs_cfg.audioFrequency, xs_cfg.audioChannels);
@@ -232,16 +224,6 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
     tuple.set_str (Tuple::Copyright, info.sidCopyright);
     tuple.set_str (Tuple::Codec, info.sidFormat);
 
-#if 0
-    switch (info.sidModel) {
-        case XS_SIDMODEL_6581: tmpStr = "6581"; break;
-        case XS_SIDMODEL_8580: tmpStr = "8580"; break;
-        case XS_SIDMODEL_ANY: tmpStr = "ANY"; break;
-        default: tmpStr = "?"; break;
-    }
-    tuple_set_str(tuple, -1, "sid-model", tmpStr);
-#endif
-
     /* Get sub-tune information, if available */
     if (subTune < 0 || info.startTune > info.nsubTunes)
         subTune = info.startTune;
@@ -249,26 +231,6 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
     if (subTune > 0 && subTune <= info.nsubTunes) {
         int tmpInt = info.subTunes[subTune - 1].tuneLength;
         tuple.set_int (Tuple::Length, (tmpInt < 0) ? -1 : tmpInt * 1000);
-
-#if 0
-        tmpInt = info.subTunes[subTune - 1].tuneSpeed;
-        if (tmpInt > 0) {
-            switch (tmpInt) {
-            case XS_CLOCK_PAL: tmpStr = "PAL"; break;
-            case XS_CLOCK_NTSC: tmpStr = "NTSC"; break;
-            case XS_CLOCK_ANY: tmpStr = "ANY"; break;
-            case XS_CLOCK_VBI: tmpStr = "VBI"; break;
-            case XS_CLOCK_CIA: tmpStr = "CIA"; break;
-            default:
-                snprintf(tmpStr2, sizeof(tmpStr2), "%dHz", tmpInt);
-                tmpStr = tmpStr2;
-                break;
-            }
-        } else
-            tmpStr = "?";
-
-        tuple_set_str(tuple, -1, "sid-speed", tmpStr);
-#endif
     } else
         subTune = 1;
 
@@ -306,7 +268,7 @@ bool SIDPlugin::read_tag(const char *filename, VFSFile &file, Tuple &tuple, Inde
 
     /* Get tune information from emulation engine */
     xs_tuneinfo_t info;
-    if (!xs_sidplayfp_getinfo(info, filename, buf.begin(), buf.len()))
+    if (!xs_sidplayfp_getinfo(info, buf.begin(), buf.len()))
         return false;
 
     xs_get_song_tuple_info(tuple, info, tune);
