@@ -44,7 +44,7 @@ public:
         .with_exts(exts)) {}
 
     bool is_our_file(const char *filename, VFSFile &file);
-    Tuple read_tuple(const char *filename, VFSFile &file);
+    bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image);
     bool play(const char *filename, VFSFile &file);
 
 #ifdef USE_GTK
@@ -71,35 +71,27 @@ bool VTXPlugin::is_our_file(const char *filename, VFSFile &file)
     return (!strcmp_nocase(buf, "ay", 2) || !strcmp_nocase(buf, "ym", 2));
 }
 
-Tuple vtx_get_song_tuple_from_vtx(const char * filename, ayemu_vtx_t * in)
-{
-    Tuple tuple;
-    tuple.set_filename (filename);
-
-    tuple.set_str (Tuple::Artist, in->hdr.author);
-    tuple.set_str (Tuple::Title, in->hdr.title);
-
-    tuple.set_int (Tuple::Length, in->hdr.regdata_size / 14 * 1000 / 50);
-
-    tuple.set_str (Tuple::Genre, (in->hdr.chiptype == AYEMU_AY) ? "AY chiptunes" : "YM chiptunes");
-    tuple.set_str (Tuple::Album, in->hdr.from);
-
-    tuple.set_str (Tuple::Quality, _("sequenced"));
-    tuple.set_str (Tuple::Codec, in->hdr.tracker);
-
-    tuple.set_int (Tuple::Year, in->hdr.year);
-
-    return tuple;
-}
-
-Tuple VTXPlugin::read_tuple(const char *filename, VFSFile &file)
+bool VTXPlugin::read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image)
 {
     ayemu_vtx_t tmp;
 
-    if (tmp.read_header(file))
-        return vtx_get_song_tuple_from_vtx(filename, &tmp);
+    if (!tmp.read_header(file))
+        return false;
 
-    return Tuple ();
+    tuple.set_str(Tuple::Artist, tmp.hdr.author);
+    tuple.set_str(Tuple::Title, tmp.hdr.title);
+
+    tuple.set_int(Tuple::Length, tmp.hdr.regdata_size / 14 * 1000 / 50);
+
+    tuple.set_str(Tuple::Genre, (tmp.hdr.chiptype == AYEMU_AY) ? "AY chiptunes" : "YM chiptunes");
+    tuple.set_str(Tuple::Album, tmp.hdr.from);
+
+    tuple.set_str(Tuple::Quality, _("sequenced"));
+    tuple.set_str(Tuple::Codec, tmp.hdr.tracker);
+
+    tuple.set_int(Tuple::Year, tmp.hdr.year);
+
+    return true;
 }
 
 bool VTXPlugin::play(const char *filename, VFSFile &file)

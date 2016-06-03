@@ -46,7 +46,7 @@ public:
         .with_exts (exts)) {}
 
     bool is_our_file (const char * filename, VFSFile & file);
-    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
     bool play (const char * filename, VFSFile & file);
 };
 
@@ -126,33 +126,31 @@ static void copy_int (SNDFILE * sf, int sf_id, Tuple & tup, Tuple::Field field)
         tup.set_int (field, atoi (str));
 }
 
-Tuple SndfilePlugin::read_tuple (const char * filename, VFSFile & file)
+bool SndfilePlugin::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
+ Index<char> * image)
 {
     SF_INFO sfinfo {}; // must be zeroed before sf_open()
     const char *format, *subformat;
-    Tuple ti;
 
     bool stream = (file.fsize () < 0);
     SNDFILE * sndfile = sf_open_virtual (stream ? & sf_virtual_io_stream :
      & sf_virtual_io, SFM_READ, & sfinfo, & file);
 
-    if (sndfile == nullptr)
-        return ti;
+    if (! sndfile)
+        return false;
 
-    ti.set_filename (filename);
-
-    copy_string (sndfile, SF_STR_TITLE, ti, Tuple::Title);
-    copy_string (sndfile, SF_STR_ARTIST, ti, Tuple::Artist);
-    copy_string (sndfile, SF_STR_ALBUM, ti, Tuple::Album);
-    copy_string (sndfile, SF_STR_COMMENT, ti, Tuple::Comment);
-    copy_string (sndfile, SF_STR_GENRE, ti, Tuple::Genre);
-    copy_int (sndfile, SF_STR_DATE, ti, Tuple::Year);
-    copy_int (sndfile, SF_STR_TRACKNUMBER, ti, Tuple::Track);
+    copy_string (sndfile, SF_STR_TITLE, tuple, Tuple::Title);
+    copy_string (sndfile, SF_STR_ARTIST, tuple, Tuple::Artist);
+    copy_string (sndfile, SF_STR_ALBUM, tuple, Tuple::Album);
+    copy_string (sndfile, SF_STR_COMMENT, tuple, Tuple::Comment);
+    copy_string (sndfile, SF_STR_GENRE, tuple, Tuple::Genre);
+    copy_int (sndfile, SF_STR_DATE, tuple, Tuple::Year);
+    copy_int (sndfile, SF_STR_TRACKNUMBER, tuple, Tuple::Track);
 
     sf_close (sndfile);
 
     if (sfinfo.samplerate > 0)
-        ti.set_int (Tuple::Length, ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
+        tuple.set_int (Tuple::Length, ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
 
     switch (sfinfo.format & SF_FORMAT_TYPEMASK)
     {
@@ -294,12 +292,12 @@ Tuple SndfilePlugin::read_tuple (const char * filename, VFSFile & file)
     }
 
     if (subformat != nullptr)
-        ti.set_format (str_printf ("%s (%s)", format, subformat),
+        tuple.set_format (str_printf ("%s (%s)", format, subformat),
          sfinfo.channels, sfinfo.samplerate, 0);
     else
-        ti.set_format (format, sfinfo.channels, sfinfo.samplerate, 0);
+        tuple.set_format (format, sfinfo.channels, sfinfo.samplerate, 0);
 
-    return ti;
+    return true;
 }
 
 bool SndfilePlugin::play (const char * filename, VFSFile & file)

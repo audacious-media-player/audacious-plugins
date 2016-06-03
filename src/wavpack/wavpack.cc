@@ -32,7 +32,7 @@ public:
     bool is_our_file (const char * filename, VFSFile & file)
         { return false; }
 
-    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
     bool write_tuple (const char * filename, VFSFile & file, const Tuple & tuple);
     bool play (const char * filename, VFSFile & file);
 };
@@ -216,20 +216,16 @@ wv_get_quality(WavpackContext *ctx)
      (mode & MODE_DNS) ? " (dynamic noise shaped)" : ""});
 }
 
-Tuple WavpackPlugin::read_tuple (const char * filename, VFSFile & file)
+bool WavpackPlugin::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
+ Index<char> * image)
 {
-    WavpackContext *ctx;
-    Tuple tuple;
     char error[1024];
 
-    ctx = WavpackOpenFileInputEx(&wv_readers, &file, nullptr, error, OPEN_TAGS, 0);
-
-    if (ctx == nullptr)
-        return tuple;
+    auto ctx = WavpackOpenFileInputEx(&wv_readers, &file, nullptr, error, OPEN_TAGS, 0);
+    if (! ctx)
+        return false;
 
     AUDDBG("starting probe of %s\n", file.filename ());
-
-    tuple.set_filename (filename);
 
     tuple.set_int (Tuple::Length,
         ((uint64_t) WavpackGetNumSamples(ctx) * 1000) / (uint64_t) WavpackGetSampleRate(ctx));
@@ -243,7 +239,7 @@ Tuple WavpackPlugin::read_tuple (const char * filename, VFSFile & file)
         audtag::read_tag (file, tuple, nullptr);
 
     AUDDBG("returning tuple for file %s\n", file.filename ());
-    return tuple;
+    return true;
 }
 
 bool WavpackPlugin::write_tuple (const char * filename, VFSFile & handle, const Tuple & tuple)

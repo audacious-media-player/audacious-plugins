@@ -59,7 +59,7 @@ public:
 	bool init();
 
 	bool is_our_file(const char *filename, VFSFile &file);
-	Tuple read_tuple(const char *filename, VFSFile &file);
+	bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image);
 	bool play(const char *filename, VFSFile &file);
 };
 
@@ -88,32 +88,27 @@ Index<char> xsf_get_lib(char *filename)
 	return file ? file.read_all() : Index<char>();
 }
 
-Tuple XSFPlugin::read_tuple(const char *filename, VFSFile &fd)
+bool XSFPlugin::read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image)
 {
-	Tuple t;
-	corlett_t *c;
-
-	Index<char> buf = fd.read_all ();
-
+	Index<char> buf = file.read_all ();
 	if (!buf.len())
-		return t;
+		return false;
 
+	corlett_t *c;
 	if (corlett_decode((uint8_t *)buf.begin(), buf.len(), nullptr, nullptr, &c) != AO_SUCCESS)
-		return t;
+		return false;
 
-	t.set_filename (filename);
-
-	t.set_int (Tuple::Length, psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade));
-	t.set_str (Tuple::Artist, c->inf_artist);
-	t.set_str (Tuple::Album, c->inf_game);
-	t.set_str (Tuple::Title, c->inf_title);
-	t.set_str (Tuple::Copyright, c->inf_copy);
-	t.set_str (Tuple::Quality, _("sequenced"));
-	t.set_str (Tuple::Codec, "GBA/Nintendo DS Audio");
+	tuple.set_int(Tuple::Length, psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade));
+	tuple.set_str(Tuple::Artist, c->inf_artist);
+	tuple.set_str(Tuple::Album, c->inf_game);
+	tuple.set_str(Tuple::Title, c->inf_title);
+	tuple.set_str(Tuple::Copyright, c->inf_copy);
+	tuple.set_str(Tuple::Quality, _("sequenced"));
+	tuple.set_str(Tuple::Codec, "GBA/Nintendo DS Audio");
 
 	free(c);
 
-	return t;
+	return true;
 }
 
 static int xsf_get_length(const Index<char> &buf)
@@ -202,7 +197,7 @@ bool XSFPlugin::play(const char *filename, VFSFile &file)
 		xsf_gen(samples, seglen);
 		pos += 16.666;
 
-        write_audio(samples, seglen * 4);
+		write_audio(samples, seglen * 4);
 
 		bool ignore_length = aud_get_bool(CFG_ID, "ignore_length");
 		if (pos >= length && !ignore_length)

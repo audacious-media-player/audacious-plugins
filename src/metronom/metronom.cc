@@ -50,7 +50,7 @@ public:
         .with_schemes(schemes)) {}
 
     bool is_our_file(const char *filename, VFSFile &);
-    Tuple read_tuple(const char *filename, VFSFile &);
+    bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image);
     bool play(const char *filename, VFSFile &);
 };
 
@@ -218,17 +218,16 @@ bool Metronome::play (const char * filename, VFSFile &)
     return true;
 }
 
-Tuple Metronome::read_tuple(const char *filename, VFSFile &)
+bool Metronome::read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image)
 {
-    Tuple tuple;
     metronom_t metronom;
     String desc;
 
-    tuple.set_filename (filename);
-    if (metronom_get_cp(filename, &metronom, desc))
-        tuple.set_str (Tuple::Title, desc);
+    if (!metronom_get_cp(filename, &metronom, desc))
+        return false;
 
-    return tuple;
+    tuple.set_str(Tuple::Title, desc);
+    return true;
 }
 
 const char Metronome::about[] =

@@ -51,7 +51,7 @@ public:
         .with_schemes(schemes)) {}
 
     bool is_our_file(const char *filename, VFSFile &file);
-    Tuple read_tuple(const char *filename, VFSFile &file);
+    bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image);
     bool play(const char *filename, VFSFile &file);
 };
 
@@ -146,12 +146,14 @@ bool ToneGen::play(const char *filename, VFSFile &file)
     return true;
 }
 
-Tuple ToneGen::read_tuple(const char *filename, VFSFile &file)
+bool ToneGen::read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image)
 {
-    Tuple tuple;
-    tuple.set_filename(filename);
-    tuple.set_str(Tuple::Title, tone_title(filename));
-    return tuple;
+    StringBuf title = tone_title(filename);
+    if (!title)
+        return false;
+
+    tuple.set_str(Tuple::Title, title);
+    return true;
 }
 
 const char ToneGen::about[] =

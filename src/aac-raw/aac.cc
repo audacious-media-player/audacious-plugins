@@ -23,7 +23,7 @@ public:
         .with_exts (exts)) {}
 
     bool is_our_file (const char * filename, VFSFile & file);
-    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
     bool play (const char * filename, VFSFile & file);
 };
 
@@ -252,24 +252,24 @@ static void calc_aac_info (VFSFile & handle, int * length, int * bitrate,
         NeAACDecClose (decoder);
 }
 
-Tuple AACDecoder::read_tuple (const char * filename, VFSFile & handle)
+bool AACDecoder::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
+ Index<char> * image)
 {
-    Tuple tuple;
     int length, bitrate, samplerate, channels;
 
-    tuple.set_filename (filename);
     tuple.set_str (Tuple::Codec, "MPEG-2/4 AAC");
 
-    calc_aac_info (handle, &length, &bitrate, &samplerate, &channels);
+    // TODO: error handling
+    calc_aac_info (file, &length, &bitrate, &samplerate, &channels);
 
     if (length > 0)
         tuple.set_int (Tuple::Length, length);
     if (bitrate > 0)
         tuple.set_int (Tuple::Bitrate, bitrate);
 
-    tuple.fetch_stream_info (handle);
+    tuple.fetch_stream_info (file);
 
-    return tuple;
+    return true;
 }
 
 static void aac_seek (VFSFile & file, NeAACDecHandle dec, int time, int len,

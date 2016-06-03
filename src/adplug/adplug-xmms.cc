@@ -50,7 +50,7 @@ public:
     void cleanup ();
 
     bool is_our_file (const char * filename, VFSFile & file);
-    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
     bool play (const char * filename, VFSFile & file);
 };
 
@@ -121,33 +121,31 @@ dbg_printf (const char *fmt, ...)
 
 /***** Main player (!! threaded !!) *****/
 
-Tuple AdPlugXMMS::read_tuple (const char * filename, VFSFile & fd)
+bool AdPlugXMMS::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
+ Index<char> * image)
 {
-  Tuple tuple;
   CSilentopl tmpopl;
 
-  CFileProvider fp (fd);
+  CFileProvider fp (file);
   CPlayer *p = CAdPlug::factory (filename, &tmpopl, fp);
 
-  if (p)
-  {
-    tuple.set_filename (filename);
+  if (! p)
+    return false;
 
-    if (! p->getauthor().empty())
-      tuple.set_str (Tuple::Artist, p->getauthor().c_str());
+  if (! p->getauthor().empty())
+    tuple.set_str (Tuple::Artist, p->getauthor().c_str());
 
-    if (! p->gettitle().empty())
-      tuple.set_str (Tuple::Title, p->gettitle().c_str());
-    else if (! p->getdesc().empty())
-      tuple.set_str (Tuple::Title, p->getdesc().c_str());
+  if (! p->gettitle().empty())
+    tuple.set_str (Tuple::Title, p->gettitle().c_str());
+  else if (! p->getdesc().empty())
+    tuple.set_str (Tuple::Title, p->getdesc().c_str());
 
-    tuple.set_str (Tuple::Codec, p->gettype().c_str());
-    tuple.set_str (Tuple::Quality, _("sequenced"));
-    tuple.set_int (Tuple::Length, p->songlength (plr.subsong));
-    delete p;
-  }
+  tuple.set_str (Tuple::Codec, p->gettype().c_str());
+  tuple.set_str (Tuple::Quality, _("sequenced"));
+  tuple.set_int (Tuple::Length, p->songlength (plr.subsong));
+  delete p;
 
-  return tuple;
+  return true;
 }
 
 /* Main playback thread. Takes the filename to play as argument. */
