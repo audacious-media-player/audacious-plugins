@@ -104,7 +104,7 @@ static void update_rollup_text ()
 {
     int playlist = aud_playlist_get_active ();
     int entry = aud_playlist_get_position (playlist);
-    Tuple tuple = aud_playlist_entry_get_tuple (playlist, entry, Playlist::Guess);
+    Tuple tuple = aud_playlist_entry_get_tuple (playlist, entry, Playlist::NoWait);
     char scratch[512];
 
     scratch[0] = 0;

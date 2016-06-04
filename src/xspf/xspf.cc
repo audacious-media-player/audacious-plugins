@@ -152,10 +152,12 @@ static void xspf_add_file (xmlNode * track, const char * filename,
                     switch (Tuple::field_get_type (entry.tupleField)) {
                         case Tuple::String:
                             tuple.set_str (entry.tupleField, (char *)str);
+                            tuple.set_state (Tuple::Valid);
                             break;
 
                         case Tuple::Int:
                             tuple.set_int (entry.tupleField, atol((char *)str));
+                            tuple.set_state (Tuple::Valid);
                             break;
 
                         default:

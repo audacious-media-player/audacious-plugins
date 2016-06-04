@@ -394,7 +394,7 @@ bool CDAudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
 
     if (whole_disk)
     {
-        Index<int> subtunes;
+        Index<short> subtunes;
 
         /* only add the audio tracks to the playlist */
         for (int trackno = firsttrackno; trackno <= lasttrackno; trackno++)

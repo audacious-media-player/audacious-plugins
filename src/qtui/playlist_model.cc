@@ -69,7 +69,7 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         case PL_COL_ARTIST:
         case PL_COL_ALBUM:
         case PL_COL_LENGTH:
-            tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), Playlist::Guess);
+            tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), Playlist::NoWait);
             break;
         }
 

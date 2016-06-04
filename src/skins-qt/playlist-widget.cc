@@ -187,7 +187,7 @@ void PlaylistWidget::draw (QPainter & cr)
 
     for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::Guess);
+        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::NoWait);
         int len = tuple.get_int (Tuple::Length);
         if (len < 0)
             continue;
@@ -235,7 +235,7 @@ void PlaylistWidget::draw (QPainter & cr)
 
     for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::Guess);
+        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::NoWait);
         String title = tuple.get_str (Tuple::FormattedTitle);
 
         cr.setPen (QColor (skin.colors[(i == active_entry) ?

@@ -242,7 +242,7 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
 
 static void xs_fill_subtunes(Tuple &tuple, const xs_tuneinfo_t &info)
 {
-    Index<int> subtunes;
+    Index<short> subtunes;
 
     for (int count = 0; count < info.nsubTunes; count++) {
         if (count + 1 == info.startTune || !xs_cfg.subAutoMinOnly ||

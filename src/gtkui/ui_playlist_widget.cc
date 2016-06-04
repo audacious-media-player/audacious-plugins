@@ -149,7 +149,7 @@ static void get_value (void * user, int row, int column, GValue * value)
     case PW_COL_PATH:
     case PW_COL_CUSTOM:
     case PW_COL_BITRATE:
-        tuple = aud_playlist_entry_get_tuple (data->list, row, Playlist::Guess);
+        tuple = aud_playlist_entry_get_tuple (data->list, row, Playlist::NoWait);
         break;
     }
 

@@ -204,7 +204,7 @@ void PlaylistWidget::draw (cairo_t * cr)
 
     for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::Guess);
+        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::NoWait);
         int len = tuple.get_int (Tuple::Length);
         if (len < 0)
             continue;
@@ -262,7 +262,7 @@ void PlaylistWidget::draw (cairo_t * cr)
 
     for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::Guess);
+        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::NoWait);
         String title = tuple.get_str (Tuple::FormattedTitle);
 
         layout = gtk_widget_create_pango_layout (gtk_dr (), title);
