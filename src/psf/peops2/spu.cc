@@ -332,14 +332,13 @@ static u32 seektime;
 int psf2_seek(u32 t)
 {
  seektime=t*441/10;
- if(seektime>sampcount) return(1);
+ if(seektime>=sampcount) return(1);
  return(0);
 }
 
 // Counting to 65536 results in full volume offage.
 void setlength2(s32 stop, s32 fade)
 {
- seektime = 0;
  if(stop==~0)
  {
   decaybegin=~0;
@@ -835,6 +834,7 @@ EXPORT_GCC long CALLBACK SPU2init(void)
  memset(rvb,0,2*sizeof(REVERBInfo));
 
  sampcount = 0;
+ seektime = 0;
 
  InitADSR();
 
