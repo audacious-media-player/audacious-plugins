@@ -193,7 +193,7 @@ static u32 seektime;
 int psf_seek(u32 t)
 {
  seektime=t*441/10;
- if(seektime>sampcount) return(1);
+ if(seektime>=sampcount) return(1);
  return(0);
 }
 
@@ -562,6 +562,7 @@ int SPUinit(void)
  memset(spuMem,0,sizeof(spuMem));
  InitADSR();
  sampcount=ttemp=0;
+ seektime=0;
  #ifdef TIMEO
  begintime=gettime64();
  #endif

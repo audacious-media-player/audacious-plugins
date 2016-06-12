@@ -86,6 +86,11 @@ static String dirpath;
 
 bool stop_flag = false;
 
+/* The emulation engine can only seek forward, not back.  This variable is set
+ * a non-negative time (milliseconds) when the song is to be restarted in order
+ * to seek backward. */
+static int reverse_seek;
+
 static PSFEngine psf_probe(const char *buf, int len)
 {
 	if (len < 4)
@@ -156,19 +161,34 @@ bool PSFPlugin::play(const char *filename, VFSFile &file)
 	}
 
 	f = &psf_functor_map[eng];
-	if (f->start((uint8_t *)buf.begin(), buf.len()) != AO_SUCCESS)
-	{
-		error = true;
-		goto cleanup;
-	}
 
 	set_stream_bitrate(44100*2*2*8);
 	open_audio(FMT_S16_NE, 44100, 2);
 
-	stop_flag = false;
+	reverse_seek = -1;
 
-	f->execute(update);
-	f->stop();
+    /* This loop will restart playback from the beginning when necessary to seek
+	 * backwards in the file (reverse_seek >= 0). */
+	do
+	{
+		if (f->start((uint8_t *)buf.begin(), buf.len()) != AO_SUCCESS)
+		{
+			error = true;
+			goto cleanup;
+		}
+
+		if (reverse_seek >= 0)
+		{
+			f->seek(reverse_seek); /* should never fail here */
+			reverse_seek = -1;
+		}
+
+		stop_flag = false;
+
+		f->execute(update);
+		f->stop();
+	}
+	while (reverse_seek >= 0);
 
 cleanup:
 	f = nullptr;
@@ -189,7 +209,12 @@ void PSFPlugin::update(const void *data, int bytes)
 
 	if (seek >= 0)
 	{
-		f->seek(seek);
+		if (!f->seek(seek))
+		{
+			reverse_seek = seek;
+			stop_flag = true;
+		}
+
 		return;
 	}
 
