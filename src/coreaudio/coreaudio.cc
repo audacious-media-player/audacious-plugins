@@ -61,7 +61,7 @@ public:
     StereoVolume get_volume ();
     void set_volume (StereoVolume vol);
 
-    bool open_audio (int format, int rate_, int chan_);
+    bool open_audio (int format, int rate_, int chan_, String & err);
     void close_audio ();
 
     void period_wait ();
@@ -245,7 +245,8 @@ OSStatus CoreAudioPlugin::callback (void *inRefCon, AudioUnitRenderActionFlags *
     return 0;
 }
 
-bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_)
+// TODO: return error message to core instead of calling aud_ui_show_error
+bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_, String & err)
 {
     struct AudioUnitFormatDescriptionMap * m = nullptr;
 

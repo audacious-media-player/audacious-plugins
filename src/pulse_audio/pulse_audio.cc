@@ -47,7 +47,7 @@ public:
     StereoVolume get_volume ();
     void set_volume (StereoVolume v);
 
-    bool open_audio (int fmt, int rate, int nch);
+    bool open_audio (int fmt, int rate, int nch, String & error);
     void close_audio ();
 
     void period_wait ();
@@ -455,7 +455,7 @@ static pa_sample_format_t to_pulse_format (int aformat)
     }
 }
 
-bool PulseOutput::open_audio (int fmt, int rate, int nch)
+bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
 {
     pa_sample_spec ss;
 
@@ -600,7 +600,8 @@ FAIL2:
 
 bool PulseOutput::init ()
 {
-    if (! open_audio (FMT_S16_NE, 44100, 2))
+    String error;
+    if (! open_audio (FMT_S16_NE, 44100, 2, error))
         return false;
 
     close_audio ();

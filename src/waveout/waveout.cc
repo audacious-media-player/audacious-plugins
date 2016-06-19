@@ -29,15 +29,10 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
 #define NUM_BLOCKS 4
-
-#define waveout_error(...) do { \
-    aud_ui_show_error (str_printf ("waveOut error: " __VA_ARGS__)); \
-} while (0)
 
 class WaveOut : public OutputPlugin
 {
@@ -55,7 +50,7 @@ public:
     StereoVolume get_volume ();
     void set_volume (StereoVolume v);
 
-    bool open_audio (int aud_format, int rate, int chans);
+    bool open_audio (int aud_format, int rate, int chans, String & error);
     void close_audio ();
 
     void period_wait ();
@@ -124,12 +119,12 @@ static void CALLBACK callback (HWAVEOUT, UINT uMsg, DWORD_PTR, DWORD_PTR, DWORD_
     pthread_mutex_unlock (& buffer_mutex);
 }
 
-bool WaveOut::open_audio (int format, int rate, int chan)
+bool WaveOut::open_audio (int format, int rate, int chan, String & error)
 {
     if (format != FMT_S16_NE && format != FMT_S32_NE && format != FMT_FLOAT)
     {
-        waveout_error ("Unsupported audio format.  Supported bit depths are "
-                       "16, 32, and floating point.");
+        error = String ("waveOut error: Unsupported audio format.  Supported "
+                        "bit depths are 16, 32, and floating point.");
         return false;
     }
 
@@ -153,7 +148,7 @@ bool WaveOut::open_audio (int format, int rate, int chan)
 
     if (res != MMSYSERR_NOERROR)
     {
-        waveout_error ("Error opening device (%d)!", (int) res);
+        error = String (str_printf ("Error opening device (%d)!", (int) res));
         return false;
     }
 

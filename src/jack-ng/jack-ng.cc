@@ -62,7 +62,7 @@ public:
     StereoVolume get_volume ();
     void set_volume (StereoVolume v);
 
-    bool open_audio (int format, int rate, int channels);
+    bool open_audio (int format, int rate, int channels, String & error);
     void close_audio ();
 
     void period_wait ();
@@ -75,7 +75,7 @@ public:
     void flush ();
 
 private:
-    bool connect_ports (int channels);
+    bool connect_ports (int channels, String & error);
     void generate (jack_nframes_t frames);
 
     static void error_cb (const char * error)
@@ -135,7 +135,7 @@ StereoVolume JACKOutput::get_volume ()
     return {aud_get_int ("jack", "volume_left"), aud_get_int ("jack", "volume_right")};
 }
 
-bool JACKOutput::connect_ports (int channels)
+bool JACKOutput::connect_ports (int channels, String & error)
 {
     bool success = false;
     const char * * ports = nullptr;
@@ -153,7 +153,7 @@ bool JACKOutput::connect_ports (int channels)
 
     if (count < channels)
     {
-        aud_ui_show_error (str_printf (_("Only %d JACK output ports were "
+        error = String (str_printf (_("Only %d JACK output ports were "
          "found but %d are required."), count, channels));
         goto fail;
     }
@@ -169,7 +169,7 @@ bool JACKOutput::connect_ports (int channels)
     {
         if (jack_connect (m_client, jack_port_name (m_ports[i % channels]), ports[i]) != 0)
         {
-            aud_ui_show_error (str_printf (_("Failed to connect to JACK port %s."), ports[i]));
+            error = String (str_printf (_("Failed to connect to JACK port %s."), ports[i]));
             goto fail;
         }
     }
@@ -183,13 +183,13 @@ fail:
     return success;
 }
 
-bool JACKOutput::open_audio (int format, int rate, int channels)
+bool JACKOutput::open_audio (int format, int rate, int channels, String & error)
 {
     int buffer_time;
 
     if (format != FMT_FLOAT)
     {
-        aud_ui_show_error (_("JACK supports only floating-point audio.  You "
+        error = String (_("JACK supports only floating-point audio.  You "
          "must change the output bit depth to floating-point in Audacious "
          "settings."));
         return false;
@@ -202,7 +202,7 @@ bool JACKOutput::open_audio (int format, int rate, int channels)
 
     if (! (m_client = jack_client_open ("audacious", JackNoStartServer, nullptr)))
     {
-        aud_ui_show_error (_("Failed to connect to the JACK server; is it running?"));
+        error = String (_("Failed to connect to the JACK server; is it running?"));
         goto fail;
     }
 
@@ -239,7 +239,7 @@ bool JACKOutput::open_audio (int format, int rate, int channels)
 
     if (aud_get_bool ("jack", "auto_connect"))
     {
-        if (! connect_ports (channels))
+        if (! connect_ports (channels, error))
             goto fail;
     }
 

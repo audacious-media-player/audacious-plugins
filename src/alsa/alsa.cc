@@ -94,13 +94,13 @@ static bool poll_setup ()
 {
     if (pipe (poll_pipe))
     {
-        ERROR ("Failed to create pipe: %s.\n", strerror (errno));
+        AUDERR ("Failed to create pipe: %s.\n", strerror (errno));
         return false;
     }
 
     if (fcntl (poll_pipe[0], F_SETFL, O_NONBLOCK))
     {
-        ERROR ("Failed to set O_NONBLOCK on pipe: %s.\n", strerror (errno));
+        AUDERR ("Failed to set O_NONBLOCK on pipe: %s.\n", strerror (errno));
         close (poll_pipe[0]);
         close (poll_pipe[1]);
         return false;
@@ -120,7 +120,7 @@ static void poll_sleep ()
 {
     if (poll (poll_handles, poll_count, -1) < 0)
     {
-        ERROR ("Failed to poll: %s.\n", strerror (errno));
+        AUDERR ("Failed to poll: %s.\n", strerror (errno));
         return;
     }
 
@@ -136,7 +136,7 @@ static void poll_wake ()
 {
     const char c = 0;
     if (write (poll_pipe[1], & c, 1) < 0)
-        ERROR ("Failed to write to pipe: %s.\n", strerror (errno));
+        AUDERR ("Failed to write to pipe: %s.\n", strerror (errno));
 }
 
 static void poll_cleanup ()
@@ -307,7 +307,7 @@ static snd_pcm_format_t convert_aud_format (int aud_format)
     return SND_PCM_FORMAT_UNKNOWN;
 }
 
-bool ALSAPlugin::open_audio (int aud_format, int rate, int channels)
+bool ALSAPlugin::open_audio (int aud_format, int rate, int channels, String & error)
 {
     int total_buffer, hard_buffer, soft_buffer, buffer_frames;
     unsigned useconds;
@@ -321,17 +321,17 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels)
     snd_pcm_format_t format = convert_aud_format (aud_format);
     AUDDBG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
      (const char *) pcm, snd_pcm_format_name (format), channels, rate);
-    CHECK_NOISY (snd_pcm_open, & alsa_handle, pcm, SND_PCM_STREAM_PLAYBACK, 0);
+    CHECK_STR (error, snd_pcm_open, & alsa_handle, pcm, SND_PCM_STREAM_PLAYBACK, 0);
 
     snd_pcm_hw_params_t * params;
     snd_pcm_hw_params_alloca (& params);
-    CHECK_NOISY (snd_pcm_hw_params_any, alsa_handle, params);
-    CHECK_NOISY (snd_pcm_hw_params_set_access, alsa_handle, params,
+    CHECK_STR (error, snd_pcm_hw_params_any, alsa_handle, params);
+    CHECK_STR (error, snd_pcm_hw_params_set_access, alsa_handle, params,
      SND_PCM_ACCESS_RW_INTERLEAVED);
 
-    CHECK_NOISY (snd_pcm_hw_params_set_format, alsa_handle, params, format);
-    CHECK_NOISY (snd_pcm_hw_params_set_channels, alsa_handle, params, channels);
-    CHECK_NOISY (snd_pcm_hw_params_set_rate, alsa_handle, params, rate, 0);
+    CHECK_STR (error, snd_pcm_hw_params_set_format, alsa_handle, params, format);
+    CHECK_STR (error, snd_pcm_hw_params_set_channels, alsa_handle, params, channels);
+    CHECK_STR (error, snd_pcm_hw_params_set_rate, alsa_handle, params, rate, 0);
 
     alsa_format = format;
     alsa_channels = channels;
@@ -340,17 +340,17 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels)
     total_buffer = aud_get_int (nullptr, "output_buffer_size");
     useconds = 1000 * aud::min (1000, total_buffer / 2);
     direction = 0;
-    CHECK_NOISY (snd_pcm_hw_params_set_buffer_time_near, alsa_handle, params,
-     & useconds, & direction);
+    CHECK_STR (error, snd_pcm_hw_params_set_buffer_time_near, alsa_handle,
+     params, & useconds, & direction);
     hard_buffer = useconds / 1000;
 
     useconds = 1000 * (hard_buffer / 4);
     direction = 0;
-    CHECK_NOISY (snd_pcm_hw_params_set_period_time_near, alsa_handle, params,
-     & useconds, & direction);
+    CHECK_STR (error, snd_pcm_hw_params_set_period_time_near, alsa_handle,
+     params, & useconds, & direction);
     alsa_period = useconds / 1000;
 
-    CHECK_NOISY (snd_pcm_hw_params, alsa_handle, params);
+    CHECK_STR (error, snd_pcm_hw_params, alsa_handle, params);
 
     soft_buffer = aud::max (total_buffer / 2, total_buffer - hard_buffer);
     AUDDBG ("Buffer: hardware %d ms, software %d ms, period %d ms.\n",
@@ -543,10 +543,10 @@ void ALSAPlugin::open_mixer ()
         goto FAILED;
 
     AUDDBG ("Opening mixer card %s.\n", (const char *) mixer);
-    CHECK_NOISY (snd_mixer_open, & alsa_mixer, 0);
-    CHECK_NOISY (snd_mixer_attach, alsa_mixer, mixer);
-    CHECK_NOISY (snd_mixer_selem_register, alsa_mixer, nullptr, nullptr);
-    CHECK_NOISY (snd_mixer_load, alsa_mixer);
+    CHECK (snd_mixer_open, & alsa_mixer, 0);
+    CHECK (snd_mixer_attach, alsa_mixer, mixer);
+    CHECK (snd_mixer_selem_register, alsa_mixer, nullptr, nullptr);
+    CHECK (snd_mixer_load, alsa_mixer);
 
     snd_mixer_selem_id_t * selem_id;
     snd_mixer_selem_id_alloca (& selem_id);
@@ -555,7 +555,7 @@ void ALSAPlugin::open_mixer ()
 
     if (! alsa_mixer_element)
     {
-        ERROR_NOISY ("snd_mixer_find_selem failed.\n");
+        AUDERR ("snd_mixer_find_selem failed.\n");
         goto FAILED;
     }
 

@@ -27,17 +27,12 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
 #include <QAudioOutput>
 
 #define VOLUME_RANGE 40 /* decibels */
-
-#define error(...) do { \
-    aud_ui_show_error (str_printf ("QtAudio error: " __VA_ARGS__)); \
-} while (0)
 
 class QtAudio : public OutputPlugin
 {
@@ -58,7 +53,7 @@ public:
     StereoVolume get_volume ();
     void set_volume (StereoVolume v);
 
-    bool open_audio (int aud_format, int rate, int chan);
+    bool open_audio (int aud_format, int rate, int chan, String & error);
     void close_audio ();
 
     void period_wait ();
@@ -143,7 +138,7 @@ void QtAudio::set_volume (StereoVolume v)
     }
 }
 
-bool QtAudio::open_audio (int format, int rate, int chan)
+bool QtAudio::open_audio (int format, int rate, int chan, String & error)
 {
     const FormatDescriptionMap * m = nullptr;
 
@@ -158,7 +153,8 @@ bool QtAudio::open_audio (int format, int rate, int chan)
 
     if (! m)
     {
-        error ("The requested audio format %d is unsupported.\n", format);
+        error = String (str_printf ("QtAudio error: The requested audio format "
+         "%d is unsupported.", format));
         return false;
     }
 
@@ -186,7 +182,7 @@ bool QtAudio::open_audio (int format, int rate, int chan)
     QAudioDeviceInfo info (QAudioDeviceInfo::defaultOutputDevice ());
     if (! info.isFormatSupported (fmt))
     {
-        error ("Format not supported by backend.\n");
+        error = String ("QtAudio error: Format not supported by backend.");
         return false;
     }
 

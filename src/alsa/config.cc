@@ -235,7 +235,7 @@ static void guess_element ()
         }
     }
 
-    ERROR_NOISY ("No suitable mixer element found.\n");
+    AUDERR ("No suitable mixer element found.\n");
 }
 
 const char * const ALSAPlugin::defaults[] = {

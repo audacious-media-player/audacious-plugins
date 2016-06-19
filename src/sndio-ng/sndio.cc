@@ -19,7 +19,6 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
@@ -54,7 +53,7 @@ public:
     StereoVolume get_volume ();
     void set_volume (StereoVolume v);
 
-    bool open_audio (int format, int rate, int channels);
+    bool open_audio (int format, int rate, int channels, String & error);
     void close_audio ();
 
     void period_wait ();
@@ -167,7 +166,7 @@ static const FormatData format_table[] = {
     {FMT_U32_BE, 32, 4, false, false},
 };
 
-bool SndioPlugin::open_audio (int format, int rate, int channels)
+bool SndioPlugin::open_audio (int format, int rate, int channels, String & error)
 {
     const FormatData * fdata = nullptr;
 
@@ -179,7 +178,7 @@ bool SndioPlugin::open_audio (int format, int rate, int channels)
 
     if (! fdata)
     {
-        aud_ui_show_error (str_printf (_("Sndio error: Unsupported audio format (%d)"), format));
+        error = String (str_printf (_("Sndio error: Unsupported audio format (%d)"), format));
         return false;
     }
 
@@ -190,7 +189,7 @@ bool SndioPlugin::open_audio (int format, int rate, int channels)
 
     if (! m_handle)
     {
-        aud_ui_show_error (_("Sndio error: sio_open() failed"));
+        error = String (_("Sndio error: sio_open() failed"));
         return false;
     }
 
@@ -219,7 +218,7 @@ bool SndioPlugin::open_audio (int format, int rate, int channels)
 
     if (! sio_setpar (m_handle, & par))
     {
-        aud_ui_show_error (_("Sndio error: sio_setpar() failed"));
+        error = String (_("Sndio error: sio_setpar() failed"));
         goto fail;
     }
 
@@ -231,7 +230,7 @@ bool SndioPlugin::open_audio (int format, int rate, int channels)
 
     if (! sio_start (m_handle))
     {
-        aud_ui_show_error (_("Sndio error: sio_start() failed"));
+        error = String (_("Sndio error: sio_start() failed"));
         goto fail;
     }
 
