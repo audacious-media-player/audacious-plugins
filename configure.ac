@@ -93,6 +93,62 @@ if test $HAVE_MSWINDOWS = yes ; then
     OUTPUT_PLUGINS="$OUTPUT_PLUGINS waveout"
 fi
 
+dnl Enable/disable plugin with pkg-config dependency
+dnl ================================================
+dnl $1 = short name of plugin (e.g. pulse)
+dnl $2 = long name of plugin (e.g. PulseAudio output plugin)
+dnl $3 = enabled by default (auto/yes/no)
+dnl $4 = type of plugin (e.g. OUTPUT)
+dnl $5 = CFLAGS/LIBS prefix (e.g. PULSE)
+dnl $6 = dependency (e.g. libpulse >= 0.9.5)
+
+AC_DEFUN([ENABLE_PLUGIN_WITH_DEP], [
+    AC_ARG_ENABLE($1,
+        [AS_HELP_STRING([--enable-$1], [enable $2 (default=$3)])],
+        [enable_$1=$enableval],
+        [enable_$1=$3])
+
+    have_$1=no
+    if test $enable_$1 != no ; then
+        PKG_CHECK_MODULES($5, $6, [
+            have_$1=yes
+            $4_PLUGINS="$$4_PLUGINS $1"
+        ], [
+            if test $enable_$1 = yes ; then
+                AC_MSG_ERROR([Missing dependency for $2: $6])
+            else
+                AC_MSG_WARN([$2 disabled due to missing dependency: $6])
+            fi
+        ])
+    fi
+])
+
+dnl Enable/disable plugin, first calling test_<name>
+dnl ================================================
+dnl $1 = short name of plugin (e.g. pulse)
+dnl $2 = long name of plugin (e.g. PulseAudio output plugin)
+dnl $3 = enabled by default (auto/yes/no)
+dnl $4 = type of plugin (e.g. OUTPUT)
+
+AC_DEFUN([ENABLE_PLUGIN_WITH_TEST], [
+    AC_ARG_ENABLE($1,
+        [AS_HELP_STRING([--enable-$1], [enable $2 (default=$3)])],
+        [enable_$1=$enableval],
+        [enable_$1=$3])
+
+    have_$1=no
+    if test $enable_$1 != no ; then
+        test_$1
+        if test $have_$1 = no ; then
+            if test $enable_$1 = yes ; then
+                AC_MSG_ERROR([Missing dependency for $2])
+            else
+                AC_MSG_WARN([$2 disabled due to missing dependency])
+            fi
+        fi
+    fi
+])
+
 dnl Optional Plugins
 dnl ================
 
