@@ -35,6 +35,10 @@
 #define av_free_packet av_packet_unref
 #endif
 
+#if CHECK_LIBAVFORMAT_VERSION (57, 33, 100, 57, 5, 0)
+#define ALLOC_CONTEXT 1
+#endif
+
 class FFaudio : public InputPlugin
 {
 public:
@@ -67,7 +71,6 @@ typedef struct
 {
     int stream_idx;
     AVStream * stream;
-    AVCodecContext * context;
     AVCodec * codec;
 }
 CodecInfo;
@@ -286,20 +289,23 @@ static bool find_codec (AVFormatContext * c, CodecInfo * cinfo)
     {
         AVStream * stream = c->streams[i];
 
-        if (stream && stream->codec && stream->codec->codec_type == AVMEDIA_TYPE_AUDIO)
+#ifndef ALLOC_CONTEXT
+#define codecpar codec
+#endif
+        if (stream && stream->codecpar && stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
         {
-            AVCodec * codec = avcodec_find_decoder (stream->codec->codec_id);
+            AVCodec * codec = avcodec_find_decoder (stream->codecpar->codec_id);
 
             if (codec)
             {
                 cinfo->stream_idx = i;
                 cinfo->stream = stream;
-                cinfo->context = stream->codec;
                 cinfo->codec = codec;
 
                 return true;
             }
         }
+#undef codecpar
     }
 
     return false;
@@ -396,7 +402,6 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
     AVPacket pkt = AVPacket();
     int errcount;
-    bool codec_opened = false;
     int out_fmt;
     bool planar;
     bool error = false;
@@ -408,6 +413,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
         return false;
 
     CodecInfo cinfo;
+    AVCodecContext * context = nullptr;
 
     if (! find_codec (ic, & cinfo))
     {
@@ -417,12 +423,17 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
     AUDDBG("got codec %s for stream index %d, opening\n", cinfo.codec->name, cinfo.stream_idx);
 
-    if (avcodec_open2 (cinfo.context, cinfo.codec, nullptr) < 0)
+#ifdef ALLOC_CONTEXT
+    context = avcodec_alloc_context3 (cinfo.codec);
+    avcodec_parameters_to_context (context, cinfo.stream->codecpar);
+#else
+    context = cinfo.stream->codec;
+#endif
+
+    if (avcodec_open2 (context, cinfo.codec, nullptr) < 0)
         goto error_exit;
 
-    codec_opened = true;
-
-    switch (cinfo.context->sample_fmt)
+    switch (context->sample_fmt)
     {
         case AV_SAMPLE_FMT_U8: out_fmt = FMT_U8; planar = false; break;
         case AV_SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; planar = false; break;
@@ -435,7 +446,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
         case AV_SAMPLE_FMT_FLTP: out_fmt = FMT_FLOAT; planar = true; break;
 
     default:
-        AUDERR ("Unsupported audio format %d\n", (int) cinfo.context->sample_fmt);
+        AUDERR ("Unsupported audio format %d\n", (int) context->sample_fmt);
         goto error_exit;
     }
 
@@ -443,7 +454,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
     AUDDBG("opening audio output\n");
 
     set_stream_bitrate(ic->bit_rate);
-    open_audio(out_fmt, cinfo.context->sample_rate, cinfo.context->channels);
+    open_audio(out_fmt, context->sample_rate, context->channels);
 
     errcount = 0;
 
@@ -510,7 +521,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
             AVFrame * frame = avcodec_alloc_frame ();
 #endif
             int decoded = 0;
-            int len = avcodec_decode_audio4 (cinfo.context, frame, & decoded, & tmp);
+            int len = avcodec_decode_audio4 (context, frame, & decoded, & tmp);
 
             if (len < 0)
             {
@@ -524,7 +535,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
             if (! decoded)
                 continue;
 
-            int size = FMT_SIZEOF (out_fmt) * cinfo.context->channels * frame->nb_samples;
+            int size = FMT_SIZEOF (out_fmt) * context->channels * frame->nb_samples;
 
             if (planar)
             {
@@ -532,7 +543,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
                     buf.resize (size);
 
                 audio_interlace ((const void * *) frame->data, out_fmt,
-                 cinfo.context->channels, buf.begin (), frame->nb_samples);
+                 context->channels, buf.begin (), frame->nb_samples);
                 write_audio (buf.begin (), size);
             }
             else
@@ -554,8 +565,16 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 error_exit:
     if (pkt.data)
         av_free_packet(&pkt);
-    if (codec_opened)
-        avcodec_close(cinfo.context);
+
+    if (context)
+    {
+#ifdef ALLOC_CONTEXT
+        avcodec_free_context (& context);
+#else
+        avcodec_close (context);
+#endif
+    }
+
     if (ic != nullptr)
         close_input_file(ic);
 
