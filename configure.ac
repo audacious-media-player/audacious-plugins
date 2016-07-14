@@ -131,7 +131,7 @@ ENABLE_PLUGIN_WITH_DEP(mpg123,
     MPG123,
     libmpg123 >= 1.12)
 
-function test_aac {
+test_aac () {
     AC_CHECK_HEADER(neaacdec.h, have_aac=yes, have_aac=no)
     AC_CHECK_LIB(faad, NeAACDecInit2, true, have_aac=no)
 }
@@ -169,7 +169,7 @@ ENABLE_PLUGIN_WITH_DEP(sid,
     SIDPLAYFP,
     libsidplayfp >= 1.0)
 
-function test_console {
+test_console () {
     AC_CHECK_HEADERS(zlib.h, have_console=yes, have_console=no)
 }
 
@@ -213,7 +213,7 @@ ENABLE_PLUGIN_WITH_DEP(alsa,
     ALSA,
     alsa >= 1.0.16)
 
-function test_jack {
+test_jack () {
     PKG_CHECK_MODULES(JACK, jack >= 1.9.7, have_jack=yes, [
         PKG_CHECK_MODULES(JACK, jack >= 0.120.1 jack < 1.0, have_jack=yes, have_jack=no)
     ])
@@ -224,7 +224,7 @@ ENABLE_PLUGIN_WITH_TEST(jack,
     auto,
     OUTPUT)
 
-function test_oss4 {
+test_oss4 () {
     OSS_CFLAGS=
     if test -f "/etc/oss.conf"; then
         . "/etc/oss.conf"
@@ -254,7 +254,7 @@ ENABLE_PLUGIN_WITH_DEP(pulse,
     PULSE,
     libpulse >= 0.9.5)
 
-function test_sndio {
+test_sndio () {
     AC_CHECK_LIB(sndio, sio_open, have_sndio=yes, have_sndio=no)
 }
 
@@ -263,7 +263,7 @@ ENABLE_PLUGIN_WITH_TEST(sndio,
     auto,
     OUTPUT)
 
-function test_cue {
+test_cue () {
     PKG_CHECK_MODULES(CUE, libcue >= 2.0, [
         AC_DEFINE(HAVE_LIBCUE2, 1, [Define if libcue version is >= 2.0])
         have_cue=yes
@@ -305,7 +305,7 @@ ENABLE_PLUGIN_WITH_DEP(notify,
     NOTIFY,
     libnotify >= 0.7 gdk-pixbuf-2.0 >= 2.26)
 
-function test_lirc {
+test_lirc () {
     AC_CHECK_HEADERS(lirc/lirc_client.h, have_lirc=yes, have_lirc=no)
 }
 
@@ -314,7 +314,7 @@ ENABLE_PLUGIN_WITH_TEST(lirc,
     auto,
     GENERAL)
 
-function test_mpris2 {
+test_mpris2 () {
     unset have_mpris2
     AC_CHECK_PROG(have_mpris2, gdbus-codegen, yes, no)
 }
@@ -324,7 +324,7 @@ ENABLE_PLUGIN_WITH_TEST(mpris2,
     auto,
     GENERAL)
 
-function test_songchange {
+test_songchange () {
     AC_CHECK_HEADERS(sys/wait.h, have_songchange=yes, have_songchange=no)
 }
 
@@ -446,7 +446,7 @@ AC_ARG_WITH(libsdl,
  AS_HELP_STRING([--with-libsdl=1,2], [select which SDL version to use (default=auto)]),
  [with_libsdl=$withval], [with_libsdl=auto])
 
-function test_sdlout {
+test_sdlout () {
     if test "x$with_libsdl" = "x1"; then
         PKG_CHECK_MODULES(SDL, sdl >= 1.2.11, have_sdlout=yes, have_sdlout=no)
     elif test "x$with_libsdl" = "x2"; then
