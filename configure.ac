@@ -93,6 +93,26 @@ if test $HAVE_MSWINDOWS = yes ; then
     OUTPUT_PLUGINS="$OUTPUT_PLUGINS waveout"
 fi
 
+check_allowed () {
+    case $1 in
+        scrobbler2|glspectrum|hotkey|aosd)
+            plugin_allowed=$USE_GTK
+            if test $plugin_allowed = no -a $2 = yes ; then
+                AC_MSG_ERROR([--enable-$1 cannot be used without --enable-gtk])
+            fi
+            ;;
+        qtaudio|qtglspectrum)
+            plugin_allowed=$USE_QT
+            if test $plugin_allowed = no -a $2 = yes ; then
+                AC_MSG_ERROR([--enable-$1 cannot be used without --enable-qt])
+            fi
+            ;;
+        *)
+            plugin_allowed=yes
+            ;;
+    esac
+}
+
 dnl Enable/disable plugin with pkg-config dependency
 dnl ================================================
 dnl $1 = short name of plugin (e.g. pulse)
@@ -109,7 +129,8 @@ AC_DEFUN([ENABLE_PLUGIN_WITH_DEP], [
         [enable_$1=$3])
 
     have_$1=no
-    if test $enable_$1 != no ; then
+    check_allowed $1 $enable_$1
+    if test $enable_$1 != no -a $plugin_allowed = yes ; then
         PKG_CHECK_MODULES($5, $6, [
             have_$1=yes
             $4_PLUGINS="$$4_PLUGINS $1"
@@ -137,14 +158,15 @@ AC_DEFUN([ENABLE_PLUGIN_WITH_TEST], [
         [enable_$1=$3])
 
     have_$1=no
-    if test $enable_$1 != no ; then
+    check_allowed $1 $enable_$1
+    if test $enable_$1 != no -a $plugin_allowed = yes ; then
         test_$1
-        if test $have_$1 = no ; then
-            if test $enable_$1 = yes ; then
-                AC_MSG_ERROR([Missing dependency for $2])
-            else
-                AC_MSG_WARN([$2 disabled due to missing dependency])
-            fi
+        if test $have_$1 = yes ; then
+            $4_PLUGINS="$$4_PLUGINS $1"
+        elif test $enable_$1 = yes ; then
+            AC_MSG_ERROR([Missing dependency for $2])
+        else
+            AC_MSG_WARN([$2 disabled due to missing dependency])
         fi
     fi
 ])
@@ -153,7 +175,7 @@ dnl Optional Plugins
 dnl ================
 
 ENABLE_PLUGIN_WITH_DEP(cdaudio,
-    Audio CD support,
+    audio CD support,
     auto,
     INPUT,
     CDIO,
@@ -242,14 +264,14 @@ ENABLE_PLUGIN_WITH_DEP(bs2b,
     libbs2b >= 3.0.0)
 
 ENABLE_PLUGIN_WITH_DEP(resample,
-    Sample rate converter,
+    sample rate converter,
     auto,
     EFFECT,
     SAMPLERATE,
     samplerate)
 
 ENABLE_PLUGIN_WITH_DEP(speedpitch,
-    Speed/pitch effect,
+    speed/pitch effect,
     auto,
     EFFECT,
     SAMPLERATE,
@@ -329,7 +351,7 @@ test_cue () {
 }
 
 ENABLE_PLUGIN_WITH_TEST(cue,
-    Cue sheet support,
+    cue sheet support,
     auto,
     CONTAINER)
 
@@ -385,28 +407,84 @@ test_songchange () {
 }
 
 ENABLE_PLUGIN_WITH_TEST(songchange,
-    Song change plugin,
+    song change plugin,
     auto,
     GENERAL)
 
-dnl QtAudio
-dnl =======
+dnl Optional plugins (GTK-only)
+dnl ===========================
 
-AC_ARG_ENABLE(qtaudio,
-    [AS_HELP_STRING([--disable-qtaudio], [disable QtMultimedia output plugin (default=enabled)])],
-    [enable_qtaudio=$enableval],
-    [enable_qtaudio=auto])
+ENABLE_PLUGIN_WITH_DEP(scrobbler2,
+    Scrobbler 2,
+    auto,
+    GENERAL,
+    CURL,
+    libcurl >= 7.9.7)
 
-have_qtaudio=no
-if test "x$enable_qtaudio" = "xyes" -o \( "x$USE_QT" = "xyes" -a "x$enable_qtaudio" = "xauto" \); then
-    PKG_CHECK_MODULES(QTMULTIMEDIA, [Qt5Multimedia], [have_qtaudio=yes], [have_qtaudio=no])
-    if test "x$have_qtaudio" = "xyes"; then
-        QTMULTIMEDIA_CFLAGS="$QTMULTIMEDIA_CFLAGS -fPIC"
-        OUTPUT_PLUGINS="$OUTPUT_PLUGINS qtaudio"
-    elif test "x$enable_qtaudio" = "xyes"; then
-        AC_MSG_ERROR([QtAudio output plugin requested but QtMultimedia not found!])
+test_glspectrum () {
+    if test $HAVE_MSWINDOWS = yes ; then
+        have_glspectrum=yes
+        GL_LIBS="-lopengl32"
+    else
+        AC_CHECK_LIB(GL, glXCreateContext, [
+            have_glspectrum=yes
+            GL_LIBS="-lGL -lX11"
+        ], [have_glspectrum=no])
     fi
-fi
+    AC_SUBST(GL_LIBS)
+}
+
+ENABLE_PLUGIN_WITH_TEST(glspectrum,
+    OpenGL spectrum analyzer,
+    auto,
+    VISUALIZATION)
+
+ENABLE_PLUGIN_WITH_DEP(hotkey,
+    global hotkeys (X11),
+    auto,
+    GENERAL,
+    GDKX11,
+    gdk-x11-2.0)
+
+ENABLE_PLUGIN_WITH_DEP(aosd,
+    X11 OSD,
+    auto,
+    GENERAL,
+    X11EXT,
+    xrender xcomposite)
+
+dnl Optional plugins (Qt-only)
+dnl ==========================
+
+ENABLE_PLUGIN_WITH_DEP(qtaudio,
+    QtMultimedia output,
+    auto,
+    OUTPUT,
+    QTMULTIMEDIA,
+    Qt5Multimedia)
+
+test_qtglspectrum () {
+    PKG_CHECK_MODULES(QTOPENGL, Qt5OpenGL, [
+        QTOPENGL_CFLAGS="$QTOPENGL_CFLAGS -fPIC"
+        if test $have_glspectrum = yes ; then
+            have_qtglspectrum=yes
+        elif test $HAVE_MSWINDOWS = yes ; then
+            have_qtglspectrum=yes
+            GL_LIBS="-lopengl32"
+        else
+            AC_CHECK_LIB(GL, glBegin, [
+                have_qtglspectrum=yes
+                GL_LIBS="-lGL"
+            ], [have_qtglspectrum=no])
+        fi
+        AC_SUBST(GL_LIBS)
+    ], [have_qtglspectrum=no])
+}
+
+ENABLE_PLUGIN_WITH_TEST(qtglspectrum,
+    Qt OpenGL spectrum analyzer,
+    auto,
+    VISUALIZATION)
 
 dnl CoreAudio
 dnl =========
@@ -425,56 +503,6 @@ if test "x$enable_coreaudio" != "xno"; then
     fi
 else
     AC_MSG_RESULT([*** CoreAudio output plugin disabled per user request ***])
-fi
-
-dnl *** Global Hotkey general plugin (only built on X11)
-
-AC_ARG_ENABLE(hotkey,
-    [AS_HELP_STRING([--disable-hotkey], [disable global hotkey plugin (default=enabled)])],
-    [enable_hotkey=$enableval],
-    [enable_hotkey=auto]
-)
-
-have_hotkey=no
-
-if test $enable_hotkey = yes -a $USE_GTK != yes ; then
-    AC_MSG_ERROR([--enable-hotkey cannot be used without --enable-gtk])
-fi
-
-if test $enable_hotkey != no -a $USE_GTK = yes ; then
-    PKG_CHECK_MODULES(GDKX11, [gdk-x11-2.0],
-        [have_hotkey="yes"
-         GENERAL_PLUGINS="$GENERAL_PLUGINS hotkey"],
-        [if test "x$enable_hotkey" = "xyes"; then
-            AC_MSG_ERROR([Cannot find gdk-x11-2.0 development files, but compilation of X11 Global Hotkey plugin has been explicitly requested; please install gdk-x11-2.0 dev files and run configure again])
-         fi]
-    )
-fi
-
-dnl *** Audacious OSD plugin (pangocairo-based)
-
-AC_ARG_ENABLE(aosd,
-    [AS_HELP_STRING([--disable-aosd], [disable Audacious OSD plugin (default=enabled)])],
-    [enable_aosd=$enableval],
-    [enable_aosd=auto]
-)
-
-have_aosd=no
-
-if test $enable_aosd = yes -a $USE_GTK != yes ; then
-    AC_MSG_ERROR([--enable-aosd cannot be used without --enable-gtk])
-fi
-
-if test $enable_aosd != no -a $USE_GTK = yes ; then
-    PKG_CHECK_MODULES(X11EXT, [xrender xcomposite],
-        [have_aosd=yes
-         GENERAL_PLUGINS="$GENERAL_PLUGINS aosd"],
-        [AC_MSG_RESULT([*** X Render and Composite extensions are required for Audacious OSD plugin ***])]
-    )
-
-    if test "x$enable_aosd" = "xyes" -a "x$have_aosd" != "xyes"; then
-        AC_MSG_ERROR([Compilation of OSD plugin has been explicitly requested; please install required dev files and run configure again])
-    fi
 fi
 
 dnl *** FFaudio
@@ -526,30 +554,6 @@ if test "x$OUTPUT_PLUGINS" = "x" ; then
     AC_MSG_ERROR([No output plugin was enabled.  Please install the necessary packages for your system and run configure again.])
 fi
 
-dnl *** scrobbler2 ***
-
-AC_ARG_ENABLE(scrobbler2,
- [AS_HELP_STRING([--disable-scrobbler2], [disable Scrobbler 2 plugin (default=enabled)])],
- [enable_scrobbler2=$enableval], [enable_scrobbler2=auto])
-
-have_scrobbler2=no
-
-if test $enable_scrobbler2 = yes -a $USE_GTK != yes ; then
-    AC_MSG_ERROR([--enable-scrobbler2 cannot be used without --enable-gtk])
-fi
-
-if test $enable_scrobbler2 != no -a $USE_GTK = yes ; then
-    PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
-        [have_scrobbler2=yes
-         AC_SUBST(CURL_CFLAGS)
-         AC_SUBST(CURL_LIBS)]
-         GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler2",
-        [if test "x$enable_scrobbler2" = "xyes"; then
-            AC_MSG_ERROR([Cannot find libcurl development files (ver >= 7.9.7), but compilation of Scrobbler 2 plugin has been explicitly requested; please install libcurl dev files and run configure again])
-         fi]
-    )
-fi
-
 dnl FileWriter
 dnl ==========
 
@@ -597,80 +601,6 @@ fi
 
 AC_SUBST(FILEWRITER_CFLAGS)
 AC_SUBST(FILEWRITER_LIBS)
-
-dnl OpenGL Spectrum Analyzer
-dnl ========================
-
-AC_ARG_ENABLE(glspectrum,
- [AS_HELP_STRING([--enable-glspectrum], [enable OpenGL Spectrum Analyzer (default=auto)])],
- [enable_glspectrum=$enableval], [enable_glspectrum=auto])
-
-have_glspectrum=no
-
-if test $enable_glspectrum = yes -a $USE_GTK != yes ; then
-    AC_MSG_ERROR([--enable-glspectrum cannot be used without --enable-gtk])
-fi
-
-if test $enable_glspectrum != no -a $USE_GTK = yes ; then
-    if test $HAVE_MSWINDOWS = yes ; then
-        have_glspectrum=yes
-        GL_LIBS="-lopengl32"
-    else
-        AC_CHECK_LIB(GL, glXCreateContext, [have_glspectrum=yes], [have_glspectrum=no])
-        if test $have_glspectrum = yes ; then
-            GL_LIBS="-lGL -lX11"
-        fi
-    fi
-
-    if test $enable_glspectrum = yes && test $have_glspectrum = no ; then
-        AC_MSG_ERROR([Unable to enable OpenGL Spectrum Analyzer; check config.log])
-    fi
-
-    if test $have_glspectrum = yes ; then
-        VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS gl-spectrum"
-    fi
-fi
-
-AC_SUBST(GL_LIBS)
-
-dnl Qt OpenGL Spectrum Analyzer
-dnl ===========================
-
-AC_ARG_ENABLE(qtglspectrum,
-    [AS_HELP_STRING([--disable-qtglspectrum], [disable Qt OpenGL Spectrum Analyzer (default=enabled)])],
-    [enable_qtglspectrum=$enableval],
-    [enable_qtglspectrum=auto])
-
-have_qtglspectrum=no
-
-if test "x$USE_QT" = "xno" -a "x$enable_qtglspectrum" = "xyes"; then
-    AC_MSG_ERROR([--enable-qtglspectrum cannot be used without --enable-qt])
-fi
-
-if test "x$USE_QT" = "xyes" -a "x$enable_qtglspectrum" != "xno"; then
-    if test $have_glspectrum = yes ; then
-        have_qtglspectrum=yes
-    elif test $HAVE_MSWINDOWS = yes ; then
-        have_qtglspectrum=yes
-        GL_LIBS="-lopengl32"
-    else
-        AC_CHECK_LIB(GL, glBegin, [have_qtglspectrum=yes], [have_qtglspectrum=no])
-        if test $have_qtglspectrum = yes ; then
-            GL_LIBS="-lGL"
-        fi
-    fi
-
-    if test "x$have_qtglspectrum" = "xyes"; then
-        PKG_CHECK_MODULES(QTOPENGL, [Qt5OpenGL], [have_qtglspectrum=yes], [have_qtglspectrum=no])
-    fi
-
-    if test "x$have_qtglspectrum" = "xyes"; then
-        QTOPENGL_CFLAGS="$QTOPENGL_CFLAGS -fPIC"
-        VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS gl-spectrum-qt"
-    elif test "x$enable_qtglspectrum" = "xyes"; then
-        AC_MSG_ERROR([Qt OpenGL Spectrum Analyzer could not be enabled; check config.log])
-    fi
-fi
 
 dnl Mac Media Keys
 dnl ============
