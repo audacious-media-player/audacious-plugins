@@ -640,7 +640,6 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg )
 }
 
 
-#ifdef HAVE_XCOMPOSITE
 static void
 aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , void * status_hbox )
 {
@@ -670,7 +669,6 @@ aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , void *
     gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , false );
   }
 }
-#endif
 
 
 static void
@@ -736,7 +734,6 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg )
   g_object_set_data( G_OBJECT(mis_transp_status_hbox) , "img" , mis_transp_status_img );
   g_object_set_data( G_OBJECT(mis_transp_status_hbox) , "label" , mis_transp_status_label );
 
-#ifdef HAVE_XCOMPOSITE
   g_signal_connect( G_OBJECT(mis_transp_real_rbt) , "toggled" ,
     G_CALLBACK(aosd_cb_configure_misc_transp_real_clicked) , mis_transp_status_hbox );
 
@@ -757,14 +754,6 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg )
     gtk_label_set_text( GTK_LABEL(mis_transp_status_label) , _("Composite extension not loaded") );
     gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_status_hbox) , false );
   }
-#else
-  gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , true );
-  gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_real_rbt) , false );
-  gtk_image_set_from_icon_name( GTK_IMAGE(mis_transp_status_img) ,
-    "dialog-error" , GTK_ICON_SIZE_MENU );
-  gtk_label_set_text( GTK_LABEL(mis_transp_status_label) , _("Composite extension not available") );
-  gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_status_hbox) , false );
-#endif
 
   aosd_cb_list.append( mis_transp_vbox , aosd_cb_configure_misc_transp_commit );
 

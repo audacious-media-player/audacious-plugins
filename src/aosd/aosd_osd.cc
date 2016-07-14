@@ -416,7 +416,6 @@ aosd_osd_init ( int transparency_mode )
     if ( transparency_mode == AOSD_MISC_TRANSPARENCY_FAKE )
       osd = ghosd_new();
     else
-#ifdef HAVE_XCOMPOSITE
     {
       /* check if the composite module is actually loaded */
       if ( aosd_osd_check_composite_ext() )
@@ -427,9 +426,6 @@ aosd_osd_init ( int transparency_mode )
         osd = ghosd_new(); /* fall back to fake transparency */
       }
     }
-#else
-      osd = ghosd_new();
-#endif
 
     if ( osd == nullptr )
       g_warning( "Unable to load osd object; OSD will not work properly!\n" );
@@ -450,7 +446,6 @@ aosd_osd_cleanup ( void )
   return;
 }
 
-#ifdef HAVE_XCOMPOSITE
 int
 aosd_osd_check_composite_ext ( void )
 {
@@ -506,4 +501,3 @@ aosd_osd_check_composite_mgr ( void )
     return have_comp_mgr;
   }
 }
-#endif

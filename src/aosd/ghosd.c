@@ -14,16 +14,13 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
-#ifdef HAVE_XCOMPOSITE
 #include <X11/extensions/Xcomposite.h>
-#endif
 
 #include <glib.h>
 
 #include "ghosd.h"
 #include "ghosd-internal.h"
 
-#ifdef HAVE_XCOMPOSITE
 static Bool
 composite_find_manager(Display *dpy, int scr)
 {
@@ -77,7 +74,6 @@ composite_find_argb_visual(Display *dpy, int scr)
 
   return visual;
 }
-#endif
 
 static Pixmap
 take_snapshot(Ghosd *ghosd) {
@@ -359,7 +355,6 @@ ghosd_new(void) {
   return ghosd;
 }
 
-#ifdef HAVE_XCOMPOSITE
 Ghosd *
 ghosd_new_with_argbvisual(void) {
   Ghosd *ghosd;
@@ -443,7 +438,6 @@ ghosd_check_composite_mgr(void)
   XCloseDisplay(dpy);
   return have_composite_m;
 }
-#endif
 
 void
 ghosd_destroy(Ghosd* ghosd) {

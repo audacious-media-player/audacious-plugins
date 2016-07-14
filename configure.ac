@@ -353,40 +353,15 @@ if test $enable_aosd = yes -a $USE_GTK != yes ; then
 fi
 
 if test $enable_aosd != no -a $USE_GTK = yes ; then
-    PKG_CHECK_MODULES(XRENDER, [xrender],
+    PKG_CHECK_MODULES(X11EXT, [xrender xcomposite],
         [have_aosd=yes
          GENERAL_PLUGINS="$GENERAL_PLUGINS aosd"],
-        [AC_MSG_RESULT([*** X Render extension is required for Audacious OSD plugin ***])]
+        [AC_MSG_RESULT([*** X Render and Composite extensions are required for Audacious OSD plugin ***])]
     )
 
     if test "x$enable_aosd" = "xyes" -a "x$have_aosd" != "xyes"; then
         AC_MSG_ERROR([Compilation of OSD plugin has been explicitly requested; please install required dev files and run configure again])
     fi
-fi
-
-AC_ARG_ENABLE(aosd_xcomp,
-    [AS_HELP_STRING([--disable-aosd-xcomp], [disable Audacious OSD X Composite Support (default=enabled)])],
-    [enable_aosd_xcomp=$enableval],
-    [enable_aosd_xcomp=auto]
-)
-
-if test "x$have_aosd" != "xyes"; then
-    if test "x$enable_aosd_xcomp" = "xyes"; then
-        AC_MSG_ERROR([Cannot enable X Composite support for Audacious OSD plugin which is disabled])
-    else
-        enable_aosd_xcomp=no
-    fi
-fi
-
-have_aosd_xcomp=no
-if test "x$enable_aosd_xcomp" != "xno"; then
-    PKG_CHECK_MODULES(XCOMPOSITE, [xcomposite],
-        [have_aosd_xcomp=yes
-         AC_DEFINE([HAVE_XCOMPOSITE],[],[X Composite extension available])],
-        [if test "x$enable_aosd_xcomp" = "xyes"; then
-            AC_MSG_ERROR([Cannot find X Composite development files, but compilation of X Composite support for Audacious OSD plugin has been explicitly requested; please install X Composite dev files and run configure again])
-         fi]
-    )
 fi
 
 dnl MPRIS 2 (requires GDBus)
@@ -956,7 +931,6 @@ if test "x$USE_GTK" = "xyes" ; then
     echo "  Status Icon:                            yes"
     echo "  X11 Global Hotkeys:                     $have_hotkey"
     echo "  X11 On-Screen Display (aosd):           $have_aosd"
-    echo "    -> X Composite support:               $have_aosd_xcomp"
     echo
 fi
 
