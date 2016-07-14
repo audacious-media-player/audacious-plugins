@@ -96,6 +96,13 @@ fi
 dnl Optional Plugins
 dnl ================
 
+ENABLE_PLUGIN_WITH_DEP(cdaudio,
+    Audio CD support,
+    auto,
+    INPUT,
+    CDIO,
+    libcdio >= 0.70 libcdio_cdda >= 0.70 libcddb >= 1.2.1)
+
 ENABLE_PLUGIN_WITH_DEP(flac,
     FLAC support,
     yes,
@@ -124,6 +131,16 @@ ENABLE_PLUGIN_WITH_DEP(mpg123,
     MPG123,
     libmpg123 >= 1.12)
 
+function test_aac {
+    AC_CHECK_HEADER(neaacdec.h, have_aac=yes, have_aac=no)
+    AC_CHECK_LIB(faad, NeAACDecInit2, true, have_aac=no)
+}
+
+ENABLE_PLUGIN_WITH_TEST(aac,
+    AAC support,
+    auto,
+    INPUT)
+
 ENABLE_PLUGIN_WITH_DEP(wavpack,
     WavPack support,
     yes,
@@ -151,6 +168,15 @@ ENABLE_PLUGIN_WITH_DEP(sid,
     INPUT,
     SIDPLAYFP,
     libsidplayfp >= 1.0)
+
+function test_console {
+    AC_CHECK_HEADERS(zlib.h, have_console=yes, have_console=no)
+}
+
+ENABLE_PLUGIN_WITH_TEST(console,
+    Game Music Emu,
+    auto,
+    INPUT)
 
 ENABLE_PLUGIN_WITH_DEP(bs2b,
     BS2B effect,
@@ -187,12 +213,69 @@ ENABLE_PLUGIN_WITH_DEP(alsa,
     ALSA,
     alsa >= 1.0.16)
 
+function test_jack {
+    PKG_CHECK_MODULES(JACK, jack >= 1.9.7, have_jack=yes, [
+        PKG_CHECK_MODULES(JACK, jack >= 0.120.1 jack < 1.0, have_jack=yes, have_jack=no)
+    ])
+}
+
+ENABLE_PLUGIN_WITH_TEST(jack,
+    JACK output,
+    auto,
+    OUTPUT)
+
+function test_oss4 {
+    OSS_CFLAGS=
+    if test -f "/etc/oss.conf"; then
+        . "/etc/oss.conf"
+        OSS_CFLAGS="-I$OSSLIBDIR/include"
+    fi
+    AC_SUBST(OSS_CFLAGS)
+
+    OLD_CPPFLAGS="$CPPFLAGS"
+    CPPFLAGS="$CPPFLAGS $OSS_CFLAGS"
+    have_oss4=no
+    AC_CHECK_HEADERS(sys/soundcard.h soundcard.h, [
+        have_oss4=yes
+        break
+    ])
+    CPPFLAGS="$OLD_CPPFLAGS"
+}
+
+ENABLE_PLUGIN_WITH_TEST(oss4,
+    OSS output,
+    auto,
+    OUTPUT)
+
 ENABLE_PLUGIN_WITH_DEP(pulse,
     PulseAudio output,
     auto,
     OUTPUT,
     PULSE,
     libpulse >= 0.9.5)
+
+function test_sndio {
+    AC_CHECK_LIB(sndio, sio_open, have_sndio=yes, have_sndio=no)
+}
+
+ENABLE_PLUGIN_WITH_TEST(sndio,
+    Sndio output,
+    auto,
+    OUTPUT)
+
+function test_cue {
+    PKG_CHECK_MODULES(CUE, libcue >= 2.0, [
+        AC_DEFINE(HAVE_LIBCUE2, 1, [Define if libcue version is >= 2.0])
+        have_cue=yes
+    ], [
+        PKG_CHECK_MODULES(CUE, libcue, have_cue=yes, have_cue=no)
+    ])
+}
+
+ENABLE_PLUGIN_WITH_TEST(cue,
+    Cue sheet support,
+    auto,
+    CONTAINER)
 
 ENABLE_PLUGIN_WITH_DEP(neon,
     HTTP/HTTPS transport,
@@ -222,23 +305,33 @@ ENABLE_PLUGIN_WITH_DEP(notify,
     NOTIFY,
     libnotify >= 0.7 gdk-pixbuf-2.0 >= 2.26)
 
-dnl Console
-dnl =======
+function test_lirc {
+    AC_CHECK_HEADERS(lirc/lirc_client.h, have_lirc=yes, have_lirc=no)
+}
 
-AC_ARG_ENABLE(console,
- [AS_HELP_STRING([--disable-console], [disable game music decoder (console)])],
- [enable_console=$enableval], [enable_console=auto])
+ENABLE_PLUGIN_WITH_TEST(lirc,
+    LIRC support,
+    auto,
+    GENERAL)
 
-have_console=no
-if test "x$enable_console" != "xno"; then
-    AC_CHECK_HEADERS([zlib.h],
-        [have_console=yes
-         INPUT_PLUGINS="$INPUT_PLUGINS console"],
-        [if test "x$enable_console" = "xyes"; then
-            AC_MSG_ERROR([Cannot find zlib development files, but compilation of game music decoder (console) has been explicitly requested; please install zlib dev files and run configure again])
-         fi]
-    )
-fi
+function test_mpris2 {
+    unset have_mpris2
+    AC_CHECK_PROG(have_mpris2, gdbus-codegen, yes, no)
+}
+
+ENABLE_PLUGIN_WITH_TEST(mpris2,
+    MPRIS 2 server,
+    auto,
+    GENERAL)
+
+function test_songchange {
+    AC_CHECK_HEADERS(sys/wait.h, have_songchange=yes, have_songchange=no)
+}
+
+ENABLE_PLUGIN_WITH_TEST(songchange,
+    Song change plugin,
+    auto,
+    GENERAL)
 
 dnl QtAudio
 dnl =======
@@ -302,42 +395,6 @@ if test $enable_hotkey != no -a $USE_GTK = yes ; then
     )
 fi
 
-dnl Linux Infrared Remote Control (LIRC)
-dnl ====================================
-
-AC_ARG_ENABLE(lirc,
- [AS_HELP_STRING([--disable-lirc], [disable LIRC support (default=enabled)])],
- [enable_lirc=$enableval], [enable_lirc=auto])
-
-have_lirc=no
-if test "x$enable_lirc" != "xno"; then
-    AC_CHECK_HEADERS([lirc/lirc_client.h],
-        [have_lirc=yes
-         GENERAL_PLUGINS="$GENERAL_PLUGINS lirc"],
-        [if test "x$enable_lirc" = "xyes"; then
-            AC_MSG_ERROR([Cannot find lirc development files, but compilation of LIRC support has been explicitly requested; please install lirc dev files and run configure again])
-         fi])
-fi
-
-dnl Song Change
-dnl ===========
-
-AC_ARG_ENABLE(songchange,
- [AS_HELP_STRING([--disable-songchange], [disable song change plugin])],
- [enable_songchange=$enableval], [enable_songchange=auto])
-
-have_songchange=no
-
-if test $enable_songchange != no ; then
-    AC_CHECK_HEADERS([sys/wait.h],
-        [have_songchange=yes
-         GENERAL_PLUGINS="$GENERAL_PLUGINS song_change"],
-        [if test "x$enable_songchange" = "xyes"; then
-            AC_MSG_ERROR([Cannot find sys/wait.h header, but compilation of song change plugin has been explicitly requested])
-         fi]
-    )
-fi
-
 dnl *** Audacious OSD plugin (pangocairo-based)
 
 AC_ARG_ENABLE(aosd,
@@ -364,53 +421,11 @@ if test $enable_aosd != no -a $USE_GTK = yes ; then
     fi
 fi
 
-dnl MPRIS 2 (requires GDBus)
-dnl ========================
-
-AC_ARG_ENABLE(mpris2,
- AS_HELP_STRING(--disable-mpris2, [disable MPRIS 2 support (default=auto)]),
- enable_mpris2=$enableval, enable_mpris2=auto)
-
-if test $enable_mpris2 = no ; then
-    have_mpris2=no
-else
-    AC_CHECK_PROG(have_mpris2, gdbus-codegen, yes, no)
-    if test $have_mpris2 = yes ; then
-        GENERAL_PLUGINS="$GENERAL_PLUGINS mpris2"
-    elif test $enable_mpris2 = yes ; then
-        AC_MSG_ERROR([MPRIS 2 plugin could not be enabled; check config.log])
-    fi
-fi
-
-dnl AAC (enabled by default)
-dnl ========================
-
-AC_ARG_ENABLE(aac,
- [AS_HELP_STRING([--disable-aac], [disable AAC support (default=enabled)])],
- [enable_aac=$enableval], [enable_aac=yes])
-
-if test $enable_aac = yes ; then
-    AC_CHECK_HEADER([neaacdec.h], [have_aac=yes], [have_aac=no])
-    AC_CHECK_LIB([faad], [NeAACDecInit2], [have_aac=$have_aac], [have_aac=no])
-
-    if test $have_aac != yes ; then
-        AC_MSG_ERROR([Please install libfaad, or use --disable-aac to disable AAC support.])
-    fi
-
-    FAAD_CFLAGS=
-    FAAD_LIBS="-lfaad"
-    AC_SUBST(FAAD_CFLAGS)
-    AC_SUBST(FAAD_LIBS)
-
-    INPUT_PLUGINS="$INPUT_PLUGINS aac-raw"
-fi
-
 dnl *** FFaudio
 
 AC_ARG_WITH([ffmpeg],
  AS_HELP_STRING([--with-ffmpeg=ffmpeg,libav,none], [choose between FFmpeg, libav, or neither (default=ffmpeg)]),
- [ffmpeg_variant=$withval],
- [ffmpeg_variant=ffmpeg])
+ [ffmpeg_variant=$withval], [ffmpeg_variant=ffmpeg])
 
 if test $ffmpeg_variant = ffmpeg ; then
     PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.40.0 libavformat >= 53.21.0 libavutil >= 51.27.0],
@@ -424,165 +439,35 @@ elif test $ffmpeg_variant = libav ; then
      [AC_MSG_ERROR([libav is not installed or too old (required: libavcodec 53.25.0, libavformat 53.15.0, libavutil 51.18.0).])])
 fi
 
-dnl *** jack output plugin
-
-AC_ARG_ENABLE(jack,
- [AS_HELP_STRING([--disable-jack], [disable JACK output plugin (default=enabled)])],
- [enable_jack=$enableval], [enable_jack=auto])
-
-have_jack=no
-if test "x$enable_jack" != "xno"; then
-    PKG_CHECK_MODULES(JACK, [jack >= 1.9.7],
-        [have_jack=yes],
-        [PKG_CHECK_MODULES(JACK, [jack >= 0.120.1 jack < 1.0],
-            [have_jack=yes],
-            [have_jack=no])]
-    )
-
-    if test "x$have_jack" = "xyes"; then
-        OUTPUT_PLUGINS="$OUTPUT_PLUGINS jack-ng"
-    elif test "x$enable_jack" = "xyes"; then
-        AC_MSG_ERROR([Cannot find JACK (ver >= 0.120.1 but < 1.0 or >= 1.9.7) development files, but compilation of JACK output plugin has been explicitly requested; please install JACK dev files and run configure again])
-    fi
-fi
-
-dnl OSS output
-dnl ==========
-
-AC_ARG_ENABLE(oss4,
- [AS_HELP_STRING([--disable-oss4], [disable OSS4 output plugin])],
- [enable_oss4=$enableval], [enable_oss4=auto])
-
-OSS_CFLAGS=
-have_oss4=no
-if test "x$enable_oss4" != "xno" ; then
-    if test -f "/etc/oss.conf"; then
-        . "/etc/oss.conf"
-        OSS_CFLAGS="-I$OSSLIBDIR/include"
-    fi
-
-    OLD_CPPFLAGS="$CPPFLAGS"
-    CPPFLAGS="$CPPFLAGS $OSS_CFLAGS"
-    AC_CHECK_HEADERS([sys/soundcard.h soundcard.h], [have_oss4=yes])
-    CPPFLAGS="$OLD_CPPFLAGS"
-
-    if test "x$have_oss4" = "xyes" ; then
-        OUTPUT_PLUGINS="$OUTPUT_PLUGINS oss4"
-        AC_SUBST(OSS_CFLAGS)
-    elif test "x$enable_oss4" = "xyes" ; then
-        AC_MSG_ERROR([OSS4 output was enabled but soundcard.h was not found])
-    fi
-fi
-
 dnl SDL Output
 dnl ==========
 
-AC_ARG_ENABLE(sdlout,
- [AS_HELP_STRING([--disable-sdlout], [disable SDL output plugin])],
- [enable_sdlout=$enableval], [enable_sdlout=auto])
+AC_ARG_WITH(libsdl,
+ AS_HELP_STRING([--with-libsdl=1,2], [select which SDL version to use (default=auto)]),
+ [with_libsdl=$withval], [with_libsdl=auto])
 
-if test "x$enable_sdlout" != "xno"; then
-    AC_ARG_WITH(libsdl,
-                [AS_HELP_STRING([--with-libsdl=VER], [select which SDL version to use. Set VER to 1 for libsdl1, to 2 for libsdl2. @<:@default=check@:>@])],
-                [case "x$withval" in
-                     x1) ;;
-                     x2) ;;
-                     x*) withval=check;;
-                 esac
-                 with_libsdl=$withval], [with_libsdl=check])
-fi
-
-libsdl1_min="1.2.11";
-libsdl2_min="2.0";
-
-have_sdlout=no
-if test "x$enable_sdlout" != "xno"; then
-    if test "x$with_libsdl" = "xcheck"; then
-        PKG_CHECK_MODULES([SDL], [sdl2 >= $libsdl2_min],
-           [have_sdlout=yes
-            OUTPUT_PLUGINS="$OUTPUT_PLUGINS sdlout"],
-           [PKG_CHECK_MODULES([SDL], [sdl >= $libsdl1_min],
-               [have_sdlout=yes
-                OUTPUT_PLUGINS="$OUTPUT_PLUGINS sdlout"],
-               [if test "x$enable_sdlout" = "xyes"; then
-                   AC_MSG_ERROR([Cannot find SDL development files (ver >= $libsdl1_min), but compilation of SDL output plugin has been explicitly requested; please install SDL dev files and run configure again])
-                fi])])
-    elif test "x$with_libsdl" = "x1"; then
-        PKG_CHECK_MODULES([SDL], [sdl >= $libsdl1_min],
-            [have_sdlout=yes
-             OUTPUT_PLUGINS="$OUTPUT_PLUGINS sdlout"],
-            [if test "x$enable_sdlout" = "xyes"; then
-                 AC_MSG_ERROR([Cannot find SDL1 development files (ver >= $libsdl1_min), but compilation of SDL output plugin has been explicitly requested; please install SDL1 dev files and run configure again])
-             fi])
+function test_sdlout {
+    if test "x$with_libsdl" = "x1"; then
+        PKG_CHECK_MODULES(SDL, sdl >= 1.2.11, have_sdlout=yes, have_sdlout=no)
     elif test "x$with_libsdl" = "x2"; then
-        PKG_CHECK_MODULES([SDL], [sdl2 >= $libsdl2_min],
-            [have_sdlout=yes
-             OUTPUT_PLUGINS="$OUTPUT_PLUGINS sdlout"],
-            [if test "x$enable_sdlout" = "xyes"; then
-                 AC_MSG_ERROR([Cannot find SDL2 development files (ver >= $libsdl2_min), but compilation of SDL output plugin has been explicitly requested; please install SDL2 dev files and run configure again])
-             fi])
+        PKG_CHECK_MODULES(SDL, sdl2 >= 2.0, have_sdlout=yes, have_sdlout=no)
+    else
+        PKG_CHECK_MODULES(SDL, sdl2 >= 2.0, have_sdlout=yes, [
+            PKG_CHECK_MODULES(SDL, sdl >= 1.2.11, have_sdlout=yes, have_sdlout=no)
+        ])
     fi
-fi
+}
 
-dnl *** sndio output
-
-AC_ARG_ENABLE(sndio,
-    [AS_HELP_STRING([--disable-sndio], [disable sndio output plugin (default=enabled)])],
-    [enable_sndio=$enableval],
-    [enable_sndio=auto]
-)
-
-have_sndio=no
-if test "x$enable_sndio" != "xno"; then
-    AC_CHECK_HEADER([sndio.h],
-        [AC_CHECK_LIB([sndio], [sio_open],
-            [have_sndio=yes
-             OUTPUT_PLUGINS="$OUTPUT_PLUGINS sndio-ng"
-             SNDIO_LIBS="-lsndio"
-             AC_SUBST(SNDIO_LIBS)]
-         )]
-    )
-
-    if test "x$enable_sndio" = "xyes" -a "x$have_sndio" != "xyes"; then
-        AC_MSG_ERROR([Cannot find sndio development files, but compilation of sndio output plugin has been explicitly requested; please install sndio dev files and run configure again])
-    fi
-fi
+ENABLE_PLUGIN_WITH_TEST(sdlout,
+    SDL Output,
+    auto,
+    OUTPUT)
 
 dnl Check for at least one output plugin (not including filewriter)
 dnl ===============================================================
 
 if test "x$OUTPUT_PLUGINS" = "x" ; then
     AC_MSG_ERROR([No output plugin was enabled.  Please install the necessary packages for your system and run configure again.])
-fi
-
-dnl Audio CD
-dnl ========
-
-AC_ARG_ENABLE(cdaudio,
-    [AS_HELP_STRING([--disable-cdaudio], [disable cdaudio-ng input plugin (default=enabled)])],
-    [enable_cdaudio_ng=$enableval],
-    [enable_cdaudio_ng=auto]
-)
-
-have_cdaudio_ng=no
-if test "x$enable_cdaudio_ng" != "xno"; then
-    PKG_CHECK_MODULES(CDIO, [libcdio >= 0.70 libcdio_cdda >= 0.70],
-        [PKG_CHECK_MODULES(CDDB, [libcddb >= 1.2.1],
-            [have_cdaudio_ng=yes
-             INPUT_PLUGINS="$INPUT_PLUGINS cdaudio-ng"
-             GENERAL_PLUGINS="$GENERAL_PLUGINS cd-menu-items"
-             AC_SUBST(CDIO_LIBS)
-             AC_SUBST(CDIO_CFLAGS)
-             AC_SUBST(CDDB_LIBS)
-             AC_SUBST(CDDB_CFLAGS)],
-            [AC_MSG_WARN([*** Cannot find libcddb 1.2.1 or newer, cdaudio-ng will not be built ***])]
-         )],
-        [AC_MSG_WARN([*** Cannot find libcdio 0.70 or newer, cdaudio-ng will not be built ***])]
-    )
-
-    if test "x$enable_cdaudio_ng" = "xyes" -a "x$have_cdaudio_ng" != "xyes"; then
-        AC_MSG_ERROR([Compilation of cdaudio-ng input plugin has been explicitly requested; please install required dev files and run configure again])
-    fi
 fi
 
 dnl *** scrobbler2 ***
@@ -607,32 +492,6 @@ if test $enable_scrobbler2 != no -a $USE_GTK = yes ; then
             AC_MSG_ERROR([Cannot find libcurl development files (ver >= 7.9.7), but compilation of Scrobbler 2 plugin has been explicitly requested; please install libcurl dev files and run configure again])
          fi]
     )
-fi
-
-dnl CUE
-dnl ---
-
-AC_ARG_ENABLE(cue,
-[AS_HELP_STRING([--disable-cue], [disable cue support. (default=enabled)])],
-[enable_cue=$enableval],
-[enable_cue=auto])
-
-have_cue=no
-if test "x$enable_cue" != "xno"; then
-    PKG_CHECK_MODULES(CUE, [libcue >= 2.0],
-        [have_cue=yes
-         AC_DEFINE([HAVE_LIBCUE2],[1],[Define if libcue version is >= 2.0])
-         CONTAINER_PLUGINS="$CONTAINER_PLUGINS cue"],
-        [PKG_CHECK_MODULES(CUE, [libcue],
-            [have_cue=yes
-             CONTAINER_PLUGINS="$CONTAINER_PLUGINS cue"],
-            [if test "x$enable_cue" = "xyes"; then
-                AC_MSG_ERROR([Cannot find libcue development files, but compilation of cue support has been explicitly requested; please install libcue dev files and run configure again])
-             fi]
-         )]
-    )
-else
-    AC_MSG_RESULT([*** cue plugin disabled by request ***])
 fi
 
 dnl FileWriter
@@ -832,12 +691,12 @@ echo "  Qt support:                             $USE_QT"
 echo
 echo "  Audio Formats"
 echo "  -------------"
-echo "  Audio CD:                               $have_cdaudio_ng"
+echo "  Audio CD:                               $have_cdaudio"
 echo "  Free Lossless Audio Codec:              $have_flac"
 echo "  Ogg Vorbis:                             $have_vorbis"
 echo "  MIDI (via FluidSynth):                  $have_amidiplug"
 echo "  MPEG-1 Layer I/II/III (via mpg123):     $have_mpg123"
-echo "  MPEG-2/4 AAC:                           $enable_aac"
+echo "  MPEG-2/4 AAC:                           $have_aac"
 echo "  WavPack:                                $have_wavpack"
 echo
 echo "  External Decoders"
