@@ -20,7 +20,6 @@
 
 #include <stdlib.h>
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -53,7 +52,8 @@ public:
         N_("Winamp Classic Interface"),
         PACKAGE,
         nullptr,
-        & skins_prefs
+        & skins_prefs,
+        PluginGLibOnly
     };
 
     constexpr SkinnedUI () : IfacePlugin (info) {}

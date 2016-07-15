@@ -23,7 +23,6 @@
 
 #include <gtk/gtk.h>
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
@@ -40,7 +39,10 @@ class CairoSpectrum : public VisPlugin
 public:
     static constexpr PluginInfo info = {
         N_("Spectrum Analyzer"),
-        PACKAGE
+        PACKAGE,
+        nullptr, // about
+        nullptr, // prefs
+        PluginGLibOnly
     };
 
     constexpr CairoSpectrum () : VisPlugin (info, Visualizer::Freq) {}

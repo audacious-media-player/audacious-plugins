@@ -1,13 +1,14 @@
-PLUGIN = sndio-ng${PLUGIN_SUFFIX}
+PLUGIN = aac-raw${PLUGIN_SUFFIX}
 
-SRCS = sndio.cc
+SRCS = aac.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
 
-plugindir := ${plugindir}/${OUTPUT_PLUGIN_DIR}
+plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
+
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..
-LIBS += ${SNDIO_LIBS}
+LIBS += -lfaad -lm -laudtag

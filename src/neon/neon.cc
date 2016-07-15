@@ -130,7 +130,7 @@ public:
     NeonFile (const char * url);
     ~NeonFile ();
 
-    int open_handle (uint64_t startbyte, String * error = nullptr);
+    int open_handle (int64_t startbyte, String * error = nullptr);
 
 protected:
     int64_t fread (void * ptr, int64_t size, int64_t nmemb);
@@ -151,11 +151,14 @@ private:
     ne_uri m_purl = ne_uri ();  /* The URL, parsed into a structure */
 
     unsigned char m_redircount = 0;     /* Redirect count for the opened URL */
-    long m_pos = 0;                     /* Current position in the stream (number of last byte delivered to the player) */
-    unsigned long m_content_start = 0;  /* Start position in the stream */
-    long m_content_length = -1;         /* Total content length, counting from content_start, if known. -1 if unknown */
+    int64_t m_pos = 0;                  /* Current position in the stream
+                                           (number of last byte delivered to the player) */
+    int64_t m_content_start = 0;        /* Start position in the stream */
+    int64_t m_content_length = -1;      /* Total content length, counting from
+                                           content_start, if known. -1 if unknown */
     bool m_can_ranges = false;          /* true if the webserver advertised accept-range: bytes */
-    int64_t m_icy_metaint = 0;          /* Interval in which the server will send metadata announcements. 0 if no announcments */
+    int64_t m_icy_metaint = 0;          /* Interval in which the server will
+                                           send metadata announcements. 0 if no announcments */
     int64_t m_icy_metaleft = 0;         /* Bytes left until the next metadata block */
     int m_icy_len = 0;                  /* Bytes in current metadata block */
 
@@ -174,7 +177,7 @@ private:
     void kill_reader ();
     int server_auth (const char * realm, int attempt, char * username, char * password);
     void handle_headers ();
-    int open_request (uint64_t startbyte, String * error);
+    int open_request (int64_t startbyte, String * error);
     FillBufferResult fill_buffer ();
     void reader ();
     int64_t try_fread (void * ptr, int64_t size, int64_t nmemb, bool & data_read);
@@ -380,12 +383,12 @@ void NeonFile::handle_headers ()
         {
             /* The server sent us the content length. Parse and store. */
             char * endptr;
-            long len = strtol (value, & endptr, 10);
+            int64_t len = strtoll (value, & endptr, 10);
 
             if (value[0] && ! endptr[0] && len >= 0)
             {
                 /* Valid data. */
-                AUDDBG ("Content length as advertised by server: %ld\n", len);
+                AUDDBG ("Content length as advertised by server: %" PRId64 "\n", len);
                 m_content_length = len;
             }
             else
@@ -401,12 +404,12 @@ void NeonFile::handle_headers ()
         {
             /* The server sent us a ICY metaint header. Parse and store. */
             char * endptr;
-            long len = strtol (value, & endptr, 10);
+            int64_t len = strtoll (value, & endptr, 10);
 
             if (value[0] && ! endptr[0] && len > 0)
             {
                 /* Valid data */
-                AUDDBG ("ICY MetaInt as advertised by server: %ld\n", len);
+                AUDDBG ("ICY MetaInt as advertised by server: %" PRId64 "\n", len);
                 m_icy_metaint = len;
                 m_icy_metaleft = len;
             }
@@ -440,7 +443,7 @@ static int neon_proxy_auth_cb (void * userdata, const char * realm, int attempt,
     return attempt;
 }
 
-int NeonFile::open_request (uint64_t startbyte, String * error)
+int NeonFile::open_request (int64_t startbyte, String * error)
 {
     int ret;
     const ne_status * status;
@@ -546,7 +549,7 @@ int NeonFile::open_request (uint64_t startbyte, String * error)
     return -1;
 }
 
-int NeonFile::open_handle (uint64_t startbyte, String * error)
+int NeonFile::open_handle (int64_t startbyte, String * error)
 {
     int ret;
     String proxy_host;
@@ -957,7 +960,7 @@ int64_t NeonFile::fwrite (const void * ptr, int64_t size, int64_t nmemb)
 
 int64_t NeonFile::ftell ()
 {
-    AUDDBG ("<%p> Current file position: %ld\n", this, m_pos);
+    AUDDBG ("<%p> Current file position: %" PRId64 "\n", this, m_pos);
 
     return m_pos;
 }
@@ -983,7 +986,7 @@ int NeonFile::fflush ()
 
 int NeonFile::fseek (int64_t offset, VFSSeekType whence)
 {
-    AUDDBG ("<%p> Seek requested: offset %ld, whence %d\n", this, offset, whence);
+    AUDDBG ("<%p> Seek requested: offset %" PRId64 ", whence %d\n", this, offset, whence);
 
     /* To seek to a non-zero offset, two things must be satisfied:
      * - the server must advertise a content-length
@@ -1023,7 +1026,7 @@ int NeonFile::fseek (int64_t offset, VFSSeekType whence)
         return -1;
     }
 
-    AUDDBG ("<%p> Position to seek to: %ld, current: %ld\n", this, newpos, m_pos);
+    AUDDBG ("<%p> Position to seek to: %" PRId64 ", current: %" PRId64 "\n", this, newpos, m_pos);
 
     if (newpos < 0)
     {
@@ -1033,8 +1036,8 @@ int NeonFile::fseek (int64_t offset, VFSSeekType whence)
 
     if (newpos && newpos >= content_length)
     {
-        AUDERR ("<%p> Can not seek beyond end of stream (%ld >= %ld)\n",
-         this, (long) newpos, (long) content_length);
+        AUDERR ("<%p> Can not seek beyond end of stream (%" PRId64 " >= %"
+         PRId64 "\n", this, newpos, content_length);
         return -1;
     }
 

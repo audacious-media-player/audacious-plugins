@@ -273,10 +273,6 @@ bool ModplugXMMS::play (const char * filename, VFSFile & file)
         mArchive->Size()
     );
 
-    Tuple ti = read_tuple (filename, file);
-    if (ti)
-        set_playback_tuple (std::move (ti));
-
     set_stream_bitrate(mSoundFile->GetNumChannels() * 1000);
 
     int fmt = (mModProps.mBits == 16) ? FMT_S16_NE : FMT_U8;
@@ -294,7 +290,8 @@ bool ModplugXMMS::play (const char * filename, VFSFile & file)
     return true;
 }
 
-Tuple ModplugXMMS::read_tuple (const char * filename, VFSFile & file)
+bool ModplugXMMS::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
+ Index<char> * image)
 {
     CSoundFile* lSoundFile;
     Archive* lArchive;
@@ -305,11 +302,8 @@ Tuple ModplugXMMS::read_tuple (const char * filename, VFSFile & file)
     if(lArchive->Size() == 0)
     {
         delete lArchive;
-        return Tuple ();
+        return false;
     }
-
-    Tuple ti;
-    ti.set_filename (filename);
 
     lSoundFile = new CSoundFile;
     lSoundFile->Create((unsigned char*)lArchive->Map(), lArchive->Size());
@@ -339,22 +333,22 @@ Tuple ModplugXMMS::read_tuple (const char * filename, VFSFile & file)
     case MOD_TYPE_PSM:  tmps = "Protracker Studio Module"; break;
     default:        tmps = "ModPlug unknown"; break;
     }
-    ti.set_str (Tuple::Codec, tmps);
-    ti.set_str (Tuple::Quality, _("sequenced"));
-    ti.set_int (Tuple::Length, lSoundFile->GetSongTime() * 1000);
+    tuple.set_str (Tuple::Codec, tmps);
+    tuple.set_str (Tuple::Quality, _("sequenced"));
+    tuple.set_int (Tuple::Length, lSoundFile->GetSongTime() * 1000);
 
     const char *tmps2 = lSoundFile->GetTitle();
     // Chop any leading spaces off. They are annoying in the playlist.
     while (tmps2[0] == ' ')
         tmps2++;
     if (tmps2[0])
-        ti.set_str(Tuple::Title, tmps2);
+        tuple.set_str(Tuple::Title, tmps2);
 
     //unload the file
     lSoundFile->Destroy();
     delete lSoundFile;
     delete lArchive;
-    return ti;
+    return true;
 }
 
 void ModplugXMMS::apply_settings ()

@@ -37,18 +37,15 @@ public:
         about
     };
 
-    static constexpr auto iinfo = InputInfo(FlagWritesTag)
+    constexpr FLACng() : InputPlugin(info, InputInfo(FlagWritesTag)
         .with_priority(1)
-        .with_exts(exts);
-
-    constexpr FLACng() : InputPlugin(info, iinfo) {}
+        .with_exts(exts)) {}
 
     bool init();
     void cleanup();
 
     bool is_our_file(const char *filename, VFSFile &file);
-    Tuple read_tuple(const char *filename, VFSFile &file);
-    Index<char> read_image(const char *filename, VFSFile &file);
+    bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image);
     bool write_tuple(const char *filename, VFSFile &file, const Tuple &tuple);
     bool play(const char *filename, VFSFile &file);
 };

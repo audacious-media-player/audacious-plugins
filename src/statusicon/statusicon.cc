@@ -22,7 +22,6 @@
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -48,7 +47,8 @@ public:
         N_("Status Icon"),
         PACKAGE,
         about,
-        & prefs
+        & prefs,
+        PluginGLibOnly
     };
 
     constexpr StatusIcon () : GeneralPlugin (info, false) {}

@@ -22,7 +22,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
@@ -75,7 +74,8 @@ public:
         N_("GTK Interface"),
         PACKAGE,
         nullptr,
-        & gtkui_prefs
+        & gtkui_prefs,
+        PluginGLibOnly
     };
 
     constexpr GtkUI () : IfacePlugin (info) {}

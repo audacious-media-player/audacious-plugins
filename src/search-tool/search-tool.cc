@@ -20,7 +20,6 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
-#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -41,7 +40,10 @@ class SearchTool : public GeneralPlugin
 public:
     static constexpr PluginInfo info = {
         N_("Search Tool"),
-        PACKAGE
+        PACKAGE,
+        nullptr, // about
+        nullptr, // prefs
+        PluginGLibOnly
     };
 
     constexpr SearchTool () : GeneralPlugin (info, false) {}
@@ -190,7 +192,7 @@ static void create_database (int list)
 
     for (int e = 0; e < entries; e ++)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (list, e, Playlist::Nothing);
+        Tuple tuple = aud_playlist_entry_get_tuple (list, e, Playlist::NoWait);
 
         aud::array<SearchField, String> fields;
         fields[SearchField::Genre] = tuple.get_str (Tuple::Genre);
@@ -562,7 +564,8 @@ static void do_add (bool play, bool set_title)
         {
             add.append (
                 aud_playlist_entry_get_filename (list, entry),
-                aud_playlist_entry_get_tuple (list, entry, Playlist::Nothing)
+                aud_playlist_entry_get_tuple (list, entry, Playlist::NoWait),
+                aud_playlist_entry_get_decoder (list, entry, Playlist::NoWait)
             );
         }
 

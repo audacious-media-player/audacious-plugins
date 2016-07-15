@@ -37,13 +37,11 @@
 /* Plugin-wide typedefs
  */
 typedef struct {
-    int tuneSpeed = -1;
     int tuneLength = -1;
 } xs_subtuneinfo_t;
 
 typedef struct {
-    String sidFilename, sidName, sidComposer, sidCopyright, sidFormat;
-    int loadAddr, initAddr, playAddr, dataFileLen, sidModel;
+    String sidName, sidComposer, sidCopyright, sidFormat;
     int nsubTunes, startTune;
     Index<xs_subtuneinfo_t> subTunes;
 } xs_tuneinfo_t;

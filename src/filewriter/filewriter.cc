@@ -59,7 +59,7 @@ public:
     void set_volume (StereoVolume v) {}
 
     void set_info (const char * filename, const Tuple & tuple);
-    bool open_audio (int fmt, int rate, int nch);
+    bool open_audio (int fmt, int rate, int nch, String & error);
     void close_audio ();
 
     void period_wait () {}
@@ -292,7 +292,7 @@ static StringBuf format_filename (const char * suffix)
     return filename;
 }
 
-bool FileWriter::open_audio (int fmt, int rate, int nch)
+bool FileWriter::open_audio (int fmt, int rate, int nch, String & error)
 {
     int ext = aud_get_int ("filewriter", "fileext");
     g_return_val_if_fail (ext >= 0 && ext < FILEEXT_MAX, false);

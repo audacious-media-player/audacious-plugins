@@ -1,6 +1,6 @@
 /*
  * Audacious playlist format plugin
- * Copyright 2011 John Lindgren
+ * Copyright 2011-2016 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -20,10 +20,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libaudcore/i18n.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/inifile.h>
+#include <libaudcore/plugin.h>
 
 static const char * const audpl_exts[] = {"audpl"};
 
@@ -65,7 +65,12 @@ private:
     Tuple tuple;
 
     void finish_item ()
-        { items.append (std::move (uri), std::move (tuple)); }
+    {
+        if (tuple.valid ())
+            tuple.set_filename (uri);
+
+        items.append (std::move (uri), std::move (tuple));
+    }
 
     /* no headings */
     void handle_heading (const char * heading) {}
@@ -83,21 +88,30 @@ private:
         }
         else if (uri)
         {
-            /* item field */
-            if (! tuple)
-                tuple.set_filename (uri);
-
-            if (strcmp (key, "empty"))
+            if (! strcmp (key, "state"))
             {
+                /* item state */
+                if (! strcmp (value, "good"))
+                    tuple.set_state (Tuple::Valid);
+                else if (! strcmp (value, "failed"))
+                    tuple.set_state (Tuple::Failed);
+            }
+            else
+            {
+                /* item field */
                 auto field = Tuple::field_by_name (key);
                 if (field == Tuple::Invalid)
                     return;
 
                 auto type = Tuple::field_get_type (field);
                 if (type == Tuple::String)
-                    tuple.set_str (field, str_decode_percent (value));
+                    tuple.set_str (field, (field == Tuple::AudioFile) ? value :
+                     str_decode_percent (value));
                 else if (type == Tuple::Int)
                     tuple.set_int (field, atoi (value));
+
+                /* state is implicitly Valid if any field is present */
+                tuple.set_state (Tuple::Valid);
             }
         }
         else
@@ -127,12 +141,15 @@ bool AudPlaylistLoader::save (const char * path, VFSFile & file,
         if (! inifile_write_entry (file, "uri", item.filename))
             return false;
 
-        const Tuple & tuple = item.tuple;
+        int keys = 0;
 
-        if (tuple)
+        switch (item.tuple.state ())
         {
-            int keys = 0;
+        case Tuple::Initial:
+            /* state is implicitly Initial if no fields are present */
+            break;
 
+        case Tuple::Valid:
             for (auto f : Tuple::all_fields ())
             {
                 if (f == Tuple::Path || f == Tuple::Basename ||
@@ -140,19 +157,20 @@ bool AudPlaylistLoader::save (const char * path, VFSFile & file,
                     continue;
 
                 const char * key = Tuple::field_get_name (f);
-                Tuple::ValueType type = tuple.get_value_type (f);
+                Tuple::ValueType type = item.tuple.get_value_type (f);
 
                 if (type == Tuple::String)
                 {
-                    String str = tuple.get_str (f);
-                    if (! inifile_write_entry (file, key, str_encode_percent (str)))
+                    String str = item.tuple.get_str (f);
+                    if (! inifile_write_entry (file, key,
+                     (f == Tuple::AudioFile) ? str : str_encode_percent (str)))
                         return false;
 
                     keys ++;
                 }
                 else if (type == Tuple::Int)
                 {
-                    int val = tuple.get_int (f);
+                    int val = item.tuple.get_int (f);
                     if (! inifile_write_entry (file, key, int_to_str (val)))
                         return false;
 
@@ -160,9 +178,17 @@ bool AudPlaylistLoader::save (const char * path, VFSFile & file,
                 }
             }
 
-            /* distinguish between an empty tuple and no tuple at all */
-            if (! keys && ! inifile_write_entry (file, "empty", "1"))
+            /* for an actual empty tuple, record state explicity */
+            if (! keys && ! inifile_write_entry (file, "state", "good"))
                 return false;
+
+            break;
+
+        case Tuple::Failed:
+            if (! inifile_write_entry (file, "state", "failed"))
+                return false;
+
+            break;
         }
     }
 

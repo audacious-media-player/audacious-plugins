@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -32,7 +31,10 @@ class SongInfo : public GeneralPlugin {
 public:
     static constexpr PluginInfo info = {
         N_("Song Info"),
-        PACKAGE
+        PACKAGE,
+        nullptr, // about
+        nullptr, // prefs
+        PluginQtOnly
     };
 
     constexpr SongInfo () : GeneralPlugin (info, false) {}
@@ -70,7 +72,7 @@ void SongInfo::update (void * unused, audqt::InfoWidget * widget)
         return;
 
     Tuple tuple = aud_playlist_entry_get_tuple (playlist, position);
-    if (tuple)
+    if (tuple.valid ())
         widget->fillInfo (playlist, position, filename, tuple, decoder,
                 aud_file_can_write_tuple (filename, decoder));
 }

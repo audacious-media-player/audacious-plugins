@@ -27,7 +27,6 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
@@ -39,7 +38,10 @@ class PlaylistManagerQt : public GeneralPlugin
 public:
     static constexpr PluginInfo info = {
         N_("Playlist Manager"),
-        PACKAGE
+        PACKAGE,
+        nullptr, // about
+        nullptr, // prefs
+        PluginQtOnly
     };
 
     constexpr PlaylistManagerQt () : GeneralPlugin (info, false) {}

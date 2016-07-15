@@ -226,7 +226,7 @@ bool xs_sidplayfp_load(const void *buf, int64_t bufSize)
 }
 
 
-bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const char *filename, const void *buf, int64_t bufSize)
+bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const void *buf, int64_t bufSize)
 {
     /* Check if the tune exists and is readable */
     SidTune myTune((const uint8_t*)buf, bufSize);
@@ -238,8 +238,6 @@ bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const char *filename, const void *b
     const SidTuneInfo *myInfo = myTune.getInfo();
 
     /* Allocate tuneinfo structure and set information */
-    ti.sidFilename = String (filename);
-
     ti.sidName = String (myInfo->infoString(0));
     ti.sidComposer = String (myInfo->infoString(1));
     ti.sidCopyright = String (myInfo->infoString(2));
@@ -247,17 +245,7 @@ bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const char *filename, const void *b
     ti.nsubTunes = myInfo->songs();
     ti.startTune = myInfo->startSong();
 
-    ti.loadAddr = myInfo->loadAddr();
-    ti.initAddr = myInfo->initAddr();
-    ti.playAddr = myInfo->playAddr();
-    ti.dataFileLen = myInfo->dataFileLen();
     ti.sidFormat = String (myInfo->formatString());
-
-#if (LIBSIDPLAYFP_VERSION_MAJ << 8) + LIBSIDPLAYFP_VERSION_MIN >= 0x0108
-    ti.sidModel = myInfo->sidModel(0);
-#else
-    ti.sidModel = myInfo->sidModel1();
-#endif
 
     /* Fill in subtune information */
     ti.subTunes.insert(0, ti.nsubTunes);
@@ -273,57 +261,6 @@ bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const char *filename, const void *b
         }
 
         pthread_mutex_unlock(&state.database_mutex);
-    }
-
-    return true;
-}
-
-bool xs_sidplayfp_updateinfo(xs_tuneinfo_t &ti, int subtune)
-{
-    /* Get currently playing tune information */
-    const SidTuneInfo *myInfo = state.currTune->getInfo();
-
-    /* NOTICE! Here we assume that libSIDPlay[12] headers define
-     * SIDTUNE_SIDMODEL_* similarly to our enums in xs_config.h ...
-     */
-#if (LIBSIDPLAYFP_VERSION_MAJ << 8) + LIBSIDPLAYFP_VERSION_MIN >= 0x0108
-    ti.sidModel = myInfo->sidModel(0);
-#else
-    ti.sidModel = myInfo->sidModel1();
-#endif
-
-    if ((subtune > 0) && (subtune <= ti.nsubTunes)) {
-        int tmpSpeed = -1;
-
-        switch (myInfo->clockSpeed()) {
-        case SidTuneInfo::CLOCK_PAL:
-            tmpSpeed = XS_CLOCK_PAL;
-            break;
-        case SidTuneInfo::CLOCK_NTSC:
-            tmpSpeed = XS_CLOCK_NTSC;
-            break;
-        case SidTuneInfo::CLOCK_ANY:
-            tmpSpeed = XS_CLOCK_ANY;
-            break;
-        case SidTuneInfo::CLOCK_UNKNOWN:
-            switch (myInfo->songSpeed()) {
-            case SidTuneInfo::SPEED_VBI:
-                tmpSpeed = XS_CLOCK_VBI;
-                break;
-            case SidTuneInfo::SPEED_CIA_1A:
-                tmpSpeed = XS_CLOCK_CIA;
-                break;
-            default:
-                tmpSpeed = myInfo->songSpeed();
-                break;
-            }
-            break;
-        default:
-            tmpSpeed = myInfo->clockSpeed();
-            break;
-        }
-
-        ti.subTunes[subtune - 1].tuneSpeed = tmpSpeed;
     }
 
     return true;

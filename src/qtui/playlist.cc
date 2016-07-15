@@ -41,7 +41,11 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueId) : QTreeView (par
     proxyModel->setSourceModel (model);
     proxyModel->setFilterKeyColumn (-1); /* filter by all columns */
 
+    inUpdate = true; /* prevents changing focused row */
     setModel (proxyModel);
+    inUpdate = false;
+
+    setAllColumnsShowFocus (true);
     setAlternatingRowColors (true);
     setAttribute (Qt::WA_MacShowFocusRect, false);
     setIndentation (0);

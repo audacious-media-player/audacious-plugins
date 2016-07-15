@@ -112,7 +112,7 @@ public:
     StereoVolume get_volume();
     void set_volume(StereoVolume v);
 
-    bool open_audio(int aud_format, int rate, int chans);
+    bool open_audio(int aud_format, int rate, int chans, String & error);
     void close_audio();
 
     void period_wait();

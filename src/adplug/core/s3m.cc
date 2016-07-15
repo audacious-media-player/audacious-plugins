@@ -352,13 +352,15 @@ bool Cs3mPlayer::update()
         }
         break;
       case 7:                                                                                                           // tone portamento
-      case 8:   if((channel[realchan].fx == 7 ||        // vibrato (remember info for dual commands)
-                    channel[realchan].fx == 8) && pattern[pattnr][row][chan].info)
-        channel[realchan].dualinfo = info;
+      case 8:
+        if((channel[realchan].fx == 7 ||                // vibrato (remember info for dual commands)
+            channel[realchan].fx == 8) && pattern[pattnr][row][chan].info)
+          channel[realchan].dualinfo = info;
         break;
       case 10: channel[realchan].trigger = 0; break;    // arpeggio (set trigger)
-      case 19: if(info == 0xb0)                         // set loop start
-        loopstart = row;
+      case 19:
+        if(info == 0xb0)                                // set loop start
+          loopstart = row;
         if(info > 0xb0 && info <= 0xbf) {               // pattern loop
           if(!loopcnt) {
             loopcnt = info & 0x0f;

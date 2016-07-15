@@ -38,11 +38,9 @@ extern "C" {
 
 Ghosd *ghosd_new(void);
 void   ghosd_destroy(Ghosd* ghosd);
-#ifdef HAVE_XCOMPOSITE
 Ghosd *ghosd_new_with_argbvisual(void);
 int ghosd_check_composite_ext(void);
 int ghosd_check_composite_mgr(void);
-#endif
 
 #define GHOSD_COORD_CENTER INT_MAX
 void ghosd_set_transparent(Ghosd *ghosd, int transparent);

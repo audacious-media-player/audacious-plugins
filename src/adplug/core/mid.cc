@@ -871,7 +871,7 @@ void CmidPlayer::rewind(int subsong)
     for (i=0; i<128; i++)
         for (j=0; j<16; j++)
             myinsbank[i][j]=midi_fm_instruments[i][j];
-        for (i=0; i<16; i++)
+    for (i=0; i<16; i++)
         {
         ch[i].inum=0;
         for (j=0; j<11; j++)

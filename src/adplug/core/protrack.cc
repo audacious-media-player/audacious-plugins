@@ -138,20 +138,23 @@ bool CmodPlayer::update()
       tone_portamento(chan,channel[chan].portainfo);
     else
       vibrato(chan,channel[chan].vibinfo1,channel[chan].vibinfo2);
-    case 10: if(del % 4)        // SA2 volume slide
-      break;
+    case 10:
+      if(del % 4)        // SA2 volume slide
+        break;
       if(info1)
         vol_up(chan,info1);
       else
         vol_down(chan,info2);
       setvolume(chan);
       break;
-    case 14: if(info1 == 3)     // retrig note
-      if(!(del % (info2+1)))
-        playnote(chan);
+    case 14:
+      if(info1 == 3)     // retrig note
+        if(!(del % (info2+1)))
+          playnote(chan);
       break;
-    case 16: if(del % 4)        // AMD volume slide
-      break;
+    case 16:
+      if(del % 4)        // AMD volume slide
+        break;
       if(info1)
         vol_up_alt(chan,info1);
       else

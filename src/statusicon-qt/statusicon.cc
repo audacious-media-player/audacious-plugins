@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/i18n.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
@@ -44,7 +43,8 @@ public:
         N_("Status Icon"),
         PACKAGE,
         about,
-        & prefs
+        & prefs,
+        PluginQtOnly
     };
 
     constexpr StatusIcon () : GeneralPlugin (info, false) {}

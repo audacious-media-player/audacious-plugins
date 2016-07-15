@@ -139,7 +139,7 @@ static void ended (void *hook_data, void *user_data) {
     //Called when when a track finishes playing.
 
     //TODO: hic sunt race conditions
-    if (playing_track && (g_get_monotonic_time() > (play_started_at + 30*G_USEC_PER_SEC)) ) {
+    if (playing_track.valid() && (g_get_monotonic_time() > (play_started_at + 30*G_USEC_PER_SEC)) ) {
       //This is an odd situation when the track's real length doesn't correspond to the length reported by the player.
       //If we are at the end of the track, it is longer than 30 seconds and it wasn't scrobbled, we scrobble it by then.
 
@@ -185,7 +185,7 @@ static void ready (void *hook_data, void *user_data) {
 }
 
 static void paused (void *hook_data, void *user_data) {
-    if (! playing_track) {
+    if (! playing_track.valid()) {
         //This happens when audacious is started in paused mode
         return;
     }
@@ -202,7 +202,7 @@ static void paused (void *hook_data, void *user_data) {
 
 static void unpaused (void *hook_data, void *user_data) {
 
-    if (! playing_track
+    if (! playing_track.valid()
         || pause_started_at == 0) { //TODO: audacious was started with a paused track.
         return;
     }

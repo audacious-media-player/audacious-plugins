@@ -95,7 +95,7 @@ struct PlaylistWidgetData {
 
 static void set_int_from_tuple (GValue * value, const Tuple & tuple, Tuple::Field field)
 {
-    int i = tuple ? tuple.get_int (field) : 0;
+    int i = tuple.get_int (field);
     if (i > 0)
         g_value_take_string (value, g_strdup_printf ("%d", i));
     else
@@ -104,8 +104,7 @@ static void set_int_from_tuple (GValue * value, const Tuple & tuple, Tuple::Fiel
 
 static void set_string_from_tuple (GValue * value, const Tuple & tuple, Tuple::Field field)
 {
-    String str = tuple ? tuple.get_str (field) : String ();
-    g_value_set_string (value, str);
+    g_value_set_string (value, tuple.get_str (field));
 }
 
 static void set_queued (GValue * value, int list, int row)
@@ -150,7 +149,7 @@ static void get_value (void * user, int row, int column, GValue * value)
     case PW_COL_PATH:
     case PW_COL_CUSTOM:
     case PW_COL_BITRATE:
-        tuple = aud_playlist_entry_get_tuple (data->list, row, Playlist::Guess);
+        tuple = aud_playlist_entry_get_tuple (data->list, row, Playlist::NoWait);
         break;
     }
 

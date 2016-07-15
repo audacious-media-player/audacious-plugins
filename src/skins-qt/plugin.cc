@@ -22,7 +22,6 @@
 #include <glib.h>
 #include <QApplication>
 
-#define AUD_PLUGIN_QT_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -55,7 +54,8 @@ public:
         N_("Winamp Classic Interface"),
         PACKAGE,
         nullptr,
-        & skins_prefs
+        & skins_prefs,
+        PluginQtOnly
     };
 
     constexpr QtSkins () : audqt::QtIfacePlugin (info) {}

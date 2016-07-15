@@ -27,16 +27,11 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/ringbuf.h>
 #include <libaudcore/runtime.h>
 
 #define VOLUME_RANGE 40 /* decibels */
-
-#define sdlout_error(...) do { \
-    aud_ui_show_error (str_printf ("SDL error: " __VA_ARGS__)); \
-} while (0)
 
 class SDLOutput : public OutputPlugin
 {
@@ -58,7 +53,7 @@ public:
     StereoVolume get_volume ();
     void set_volume (StereoVolume v);
 
-    bool open_audio (int aud_format, int rate, int chans);
+    bool open_audio (int aud_format, int rate, int chans, String & error);
     void close_audio ();
 
     void period_wait ();
@@ -191,11 +186,11 @@ static void callback (void * user, unsigned char * buf, int len)
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-bool SDLOutput::open_audio (int format, int rate, int chan)
+bool SDLOutput::open_audio (int format, int rate, int chan, String & error)
 {
     if (format != FMT_S16_NE)
     {
-        sdlout_error ("Only signed 16-bit, native endian audio is supported.\n");
+        error = String ("SDL error: Only signed 16-bit, native endian audio is supported.");
         return false;
     }
 
@@ -220,7 +215,8 @@ bool SDLOutput::open_audio (int format, int rate, int chan)
 
     if (SDL_OpenAudio (& spec, nullptr) < 0)
     {
-        sdlout_error ("Failed to open audio stream: %s.\n", SDL_GetError ());
+        error = String (str_printf
+         ("SDL error: Failed to open audio stream: %s.", SDL_GetError ()));
         buffer.destroy ();
         return false;
     }

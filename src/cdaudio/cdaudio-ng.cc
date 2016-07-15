@@ -74,16 +74,14 @@ public:
         & prefs
     };
 
-    static constexpr auto iinfo = InputInfo (FlagSubtunes)
-        .with_schemes (cdaudio_schemes);
-
-    constexpr CDAudio () : InputPlugin (info, iinfo) {}
+    constexpr CDAudio () : InputPlugin (info, InputInfo (FlagSubtunes)
+        .with_schemes (cdaudio_schemes)) {}
 
     bool init ();
     void cleanup ();
 
     bool is_our_file (const char * filename, VFSFile & file);
-    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
     bool play (const char * filename, VFSFile & file);
 };
 
@@ -377,10 +375,11 @@ void CDAudio::cleanup ()
 }
 
 /* thread safe */
-Tuple CDAudio::read_tuple (const char * filename, VFSFile & file)
+bool CDAudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
+ Index<char> * image)
 {
     bool whole_disk = ! strcmp (filename, "cdda://");
-    Tuple tuple;
+    bool valid = false;
 
     pthread_mutex_lock (& mutex);
 
@@ -395,9 +394,7 @@ Tuple CDAudio::read_tuple (const char * filename, VFSFile & file)
 
     if (whole_disk)
     {
-        tuple.set_filename (filename);
-
-        Index<int> subtunes;
+        Index<short> subtunes;
 
         /* only add the audio tracks to the playlist */
         for (int trackno = firsttrackno; trackno <= lasttrackno; trackno++)
@@ -405,6 +402,8 @@ Tuple CDAudio::read_tuple (const char * filename, VFSFile & file)
                 subtunes.append (trackno);
 
         tuple.set_subtunes (subtunes.len (), subtunes.begin ());
+
+        valid = true;
     }
     else
     {
@@ -422,7 +421,6 @@ Tuple CDAudio::read_tuple (const char * filename, VFSFile & file)
             goto DONE;
         }
 
-        tuple.set_filename (filename);
         tuple.set_format (_("Audio CD"), 2, 44100, 1411);
         tuple.set_int (Tuple::Track, trackno);
         tuple.set_int (Tuple::Length, calculate_track_length
@@ -438,11 +436,13 @@ Tuple CDAudio::read_tuple (const char * filename, VFSFile & file)
             tuple.set_str (Tuple::AlbumArtist, trackinfo[0].performer);
         if (trackinfo[trackno].genre)
             tuple.set_str (Tuple::Genre, trackinfo[trackno].genre);
+
+        valid = true;
     }
 
   DONE:
     pthread_mutex_unlock (& mutex);
-    return tuple;
+    return valid;
 }
 
 /* mutex must be locked */

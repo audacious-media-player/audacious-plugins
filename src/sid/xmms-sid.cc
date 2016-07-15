@@ -46,20 +46,25 @@ public:
         & sid_prefs
     };
 
-    static constexpr auto iinfo = InputInfo(FlagSubtunes)
+    constexpr SIDPlugin() : InputPlugin(info, InputInfo(FlagSubtunes)
         .with_priority(5) /* medium priority (slow to initialize) */
-        .with_exts(exts);
+        .with_exts(exts)) {}
 
-    constexpr SIDPlugin() : InputPlugin(info, iinfo) {}
+    bool init()
+    {
+        xs_init_configuration();
+        return true;
+    }
 
-    bool delayed_init();
     void cleanup();
 
     bool is_our_file(const char *filename, VFSFile &file);
-    Tuple read_tuple(const char *filename, VFSFile &file);
+    bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image);
     bool play(const char *filename, VFSFile &file);
 
 private:
+    bool delayed_init();
+
     pthread_mutex_t m_init_mutex = PTHREAD_MUTEX_INITIALIZER;
     bool m_initialized = false;
     bool m_init_failed = false;
@@ -78,9 +83,6 @@ bool SIDPlugin::delayed_init()
 
     if (!m_initialized && !m_init_failed)
     {
-        /* Initialize and get configuration */
-        xs_init_configuration();
-
         /* Try to initialize emulator engine */
         m_initialized = xs_sidplayfp_init();
         if (!m_initialized)
@@ -136,7 +138,7 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
 
     /* Get tune information */
     xs_tuneinfo_t info;
-    if (!xs_sidplayfp_getinfo(info, filename, buf.begin(), buf.len()))
+    if (!xs_sidplayfp_getinfo(info, buf.begin(), buf.len()))
         return false;
 
     /* Initialize the tune */
@@ -160,17 +162,9 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
     /* Initialize song */
     if (!xs_sidplayfp_initsong(subTune)) {
         AUDERR("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n",
-            (const char *) info.sidFilename, subTune);
+            filename, subTune);
         return false;
     }
-
-    /* Set song information for current subtune */
-    xs_sidplayfp_updateinfo(info, subTune);
-
-    Tuple tmpTuple;
-    tmpTuple.set_filename(info.sidFilename);
-    xs_get_song_tuple_info(tmpTuple, info, subTune);
-    set_playback_tuple(std::move(tmpTuple));
 
     /* Open the audio output */
     open_audio(FMT_S16_NE, xs_cfg.audioFrequency, xs_cfg.audioChannels);
@@ -230,16 +224,6 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
     tuple.set_str (Tuple::Copyright, info.sidCopyright);
     tuple.set_str (Tuple::Codec, info.sidFormat);
 
-#if 0
-    switch (info.sidModel) {
-        case XS_SIDMODEL_6581: tmpStr = "6581"; break;
-        case XS_SIDMODEL_8580: tmpStr = "8580"; break;
-        case XS_SIDMODEL_ANY: tmpStr = "ANY"; break;
-        default: tmpStr = "?"; break;
-    }
-    tuple_set_str(tuple, -1, "sid-model", tmpStr);
-#endif
-
     /* Get sub-tune information, if available */
     if (subTune < 0 || info.startTune > info.nsubTunes)
         subTune = info.startTune;
@@ -247,26 +231,6 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
     if (subTune > 0 && subTune <= info.nsubTunes) {
         int tmpInt = info.subTunes[subTune - 1].tuneLength;
         tuple.set_int (Tuple::Length, (tmpInt < 0) ? -1 : tmpInt * 1000);
-
-#if 0
-        tmpInt = info.subTunes[subTune - 1].tuneSpeed;
-        if (tmpInt > 0) {
-            switch (tmpInt) {
-            case XS_CLOCK_PAL: tmpStr = "PAL"; break;
-            case XS_CLOCK_NTSC: tmpStr = "NTSC"; break;
-            case XS_CLOCK_ANY: tmpStr = "ANY"; break;
-            case XS_CLOCK_VBI: tmpStr = "VBI"; break;
-            case XS_CLOCK_CIA: tmpStr = "CIA"; break;
-            default:
-                snprintf(tmpStr2, sizeof(tmpStr2), "%dHz", tmpInt);
-                tmpStr = tmpStr2;
-                break;
-            }
-        } else
-            tmpStr = "?";
-
-        tuple_set_str(tuple, -1, "sid-speed", tmpStr);
-#endif
     } else
         subTune = 1;
 
@@ -278,7 +242,7 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
 
 static void xs_fill_subtunes(Tuple &tuple, const xs_tuneinfo_t &info)
 {
-    Index<int> subtunes;
+    Index<short> subtunes;
 
     for (int count = 0; count < info.nsubTunes; count++) {
         if (count + 1 == info.startTune || !xs_cfg.subAutoMinOnly ||
@@ -290,34 +254,29 @@ static void xs_fill_subtunes(Tuple &tuple, const xs_tuneinfo_t &info)
     tuple.set_subtunes (subtunes.len (), subtunes.begin ());
 }
 
-Tuple SIDPlugin::read_tuple(const char *filename, VFSFile &file)
+bool SIDPlugin::read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image)
 {
-    Tuple tuple;
-
     if (!delayed_init())
-        return tuple;
-
-    xs_tuneinfo_t info;
-    int tune = -1;
+        return false;
 
     Index<char> buf = file.read_all ();
     if (!xs_sidplayfp_probe(buf.begin(), buf.len()))
-        return tuple;
+        return false;
 
     /* Get information from URL */
-    tuple.set_filename (filename);
-    tune = tuple.get_int (Tuple::Subtune);
+    int tune = tuple.get_int (Tuple::Subtune);
 
     /* Get tune information from emulation engine */
-    if (!xs_sidplayfp_getinfo(info, filename, buf.begin(), buf.len()))
-        return tuple;
+    xs_tuneinfo_t info;
+    if (!xs_sidplayfp_getinfo(info, buf.begin(), buf.len()))
+        return false;
 
     xs_get_song_tuple_info(tuple, info, tune);
 
     if (xs_cfg.subAutoEnable && info.nsubTunes > 1 && tune < 0)
         xs_fill_subtunes(tuple, info);
 
-    return tuple;
+    return true;
 }
 
 /*

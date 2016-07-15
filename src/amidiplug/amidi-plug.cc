@@ -44,16 +44,14 @@ public:
         & amidiplug_prefs
     };
 
-    static constexpr auto iinfo = InputInfo ()
-        .with_exts (exts);
-
-    constexpr AMIDIPlug () : InputPlugin (info, iinfo) {}
+    constexpr AMIDIPlug () : InputPlugin (info, InputInfo ()
+        .with_exts (exts)) {}
 
     bool init ();
     void cleanup ();
 
     bool is_our_file (const char * filename, VFSFile & file);
-    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
     bool play (const char * filename, VFSFile & file);
 
 #ifdef USE_GTK
@@ -140,19 +138,17 @@ bool AMIDIPlug::is_our_file (const char * filename, VFSFile & file)
     return false;
 }
 
-Tuple AMIDIPlug::read_tuple (const char * filename, VFSFile & file)
+bool AMIDIPlug::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
+ Index<char> * image)
 {
-    /* song title, get it from the filename */
-    Tuple tuple;
-    tuple.set_filename (filename);
-    tuple.set_str (Tuple::Codec, "MIDI");
-
     midifile_t mf;
+    if (! mf.parse_from_file (filename, file))
+        return false;
 
-    if (mf.parse_from_file (filename, file))
-        tuple.set_int (Tuple::Length, mf.length / 1000);
+    tuple.set_str (Tuple::Codec, "MIDI");
+    tuple.set_int (Tuple::Length, mf.length / 1000);
 
-    return tuple;
+    return true;
 }
 
 

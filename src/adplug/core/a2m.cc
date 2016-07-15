@@ -157,24 +157,24 @@ bool Ca2mLoader::load(const std::string &filename, const CFileProvider &fp)
     orgptr += sixdepak(secptr,orgptr,len[1]); secptr += len[1] / 2;
     if(version == 1) {
       if(numpats > 16)
-        orgptr += sixdepak(secptr,orgptr,len[2]); secptr += len[2] / 2;
+        { orgptr += sixdepak(secptr,orgptr,len[2]); secptr += len[2] / 2; }
       if(numpats > 32)
-        orgptr += sixdepak(secptr,orgptr,len[3]); secptr += len[3] / 2;
+        { orgptr += sixdepak(secptr,orgptr,len[3]); secptr += len[3] / 2; }
       if(numpats > 48)
         sixdepak(secptr,orgptr,len[4]);
     } else {
       if(numpats > 8)
-        orgptr += sixdepak(secptr,orgptr,len[2]); secptr += len[2] / 2;
+        { orgptr += sixdepak(secptr,orgptr,len[2]); secptr += len[2] / 2; }
       if(numpats > 16)
-        orgptr += sixdepak(secptr,orgptr,len[3]); secptr += len[3] / 2;
+        { orgptr += sixdepak(secptr,orgptr,len[3]); secptr += len[3] / 2; }
       if(numpats > 24)
-        orgptr += sixdepak(secptr,orgptr,len[4]); secptr += len[4] / 2;
+        { orgptr += sixdepak(secptr,orgptr,len[4]); secptr += len[4] / 2; }
       if(numpats > 32)
-        orgptr += sixdepak(secptr,orgptr,len[5]); secptr += len[5] / 2;
+        { orgptr += sixdepak(secptr,orgptr,len[5]); secptr += len[5] / 2; }
       if(numpats > 40)
-        orgptr += sixdepak(secptr,orgptr,len[6]); secptr += len[6] / 2;
+        { orgptr += sixdepak(secptr,orgptr,len[6]); secptr += len[6] / 2; }
       if(numpats > 48)
-        orgptr += sixdepak(secptr,orgptr,len[7]); secptr += len[7] / 2;
+        { orgptr += sixdepak(secptr,orgptr,len[7]); secptr += len[7] / 2; }
       if(numpats > 56)
         sixdepak(secptr,orgptr,len[8]);
     }

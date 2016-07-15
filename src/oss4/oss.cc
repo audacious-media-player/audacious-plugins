@@ -200,7 +200,8 @@ static void poll_cleanup()
     close(poll_pipe[1]);
 }
 
-bool OSSPlugin::open_audio(int aud_format, int rate, int channels)
+// TODO: return error message to core instead of calling aud_ui_show_error
+bool OSSPlugin::open_audio(int aud_format, int rate, int channels, String & error)
 {
     AUDDBG("Opening audio.\n");
 
