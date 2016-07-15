@@ -31,10 +31,6 @@
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
 
-#if CHECK_LIBAVCODEC_VERSION (55, 25, 100, 55, 16, 0)
-#define av_free_packet av_packet_unref
-#endif
-
 #if CHECK_LIBAVFORMAT_VERSION (57, 33, 100, 57, 5, 0)
 #define ALLOC_CONTEXT 1
 #endif
@@ -74,6 +70,58 @@ typedef struct
     AVCodec * codec;
 }
 CodecInfo;
+
+struct ScopedContext
+{
+    AVCodecContext * ptr;
+    AVCodecContext * operator-> () { return ptr; }
+
+    ScopedContext (const CodecInfo & cinfo)
+    {
+#ifdef ALLOC_CONTEXT
+        ptr = avcodec_alloc_context3 (cinfo.codec);
+        avcodec_parameters_to_context (ptr, cinfo.stream->codecpar);
+#else
+        ptr = cinfo.stream->codec;
+#endif
+    }
+
+#ifdef ALLOC_CONTEXT
+    ~ScopedContext () { avcodec_free_context (& ptr); }
+#else
+    ~ScopedContext () { avcodec_close (ptr); }
+#endif
+};
+
+struct ScopedPacket : public AVPacket
+{
+    ScopedPacket () { av_init_packet (this); }
+
+#if CHECK_LIBAVCODEC_VERSION (55, 25, 100, 55, 16, 0)
+    ~ScopedPacket () { av_packet_unref (this); }
+#else
+    ~ScopedPacket () { av_free_packet (this); }
+#endif
+};
+
+struct ScopedFrame
+{
+#if CHECK_LIBAVCODEC_VERSION (55, 45, 101, 55, 28, 1)
+    AVFrame * ptr = av_frame_alloc ();
+#else
+    AVFrame * ptr = avcodec_alloc_frame ();
+#endif
+
+    AVFrame * operator-> () { return ptr; }
+
+#if CHECK_LIBAVCODEC_VERSION (55, 45, 101, 55, 28, 1)
+    ~ScopedFrame () { av_frame_free (& ptr); }
+#elif CHECK_LIBAVCODEC_VERSION (54, 59, 100, 54, 28, 0)
+    ~ScopedFrame () { avcodec_free_frame (& ptr); }
+#else
+    ~ScopedFrame () { av_free (ptr); }
+#endif
+};
 
 static SimpleHash<String, AVInputFormat *> extension_dict;
 
@@ -399,39 +447,27 @@ bool FFaudio::write_tuple (const char * filename, VFSFile & file, const Tuple & 
 bool FFaudio::play (const char * filename, VFSFile & file)
 {
     AUDDBG ("Playing %s.\n", filename);
+    SmartPtr<AVFormatContext, close_input_file>
+     ic (open_input_file (filename, file));
 
-    AVPacket pkt = AVPacket();
-    int errcount;
-    int out_fmt;
-    bool planar;
-    bool error = false;
-
-    Index<char> buf;
-
-    AVFormatContext * ic = open_input_file (filename, file);
     if (! ic)
         return false;
 
     CodecInfo cinfo;
-    AVCodecContext * context = nullptr;
-
-    if (! find_codec (ic, & cinfo))
+    if (! find_codec (ic.get (), & cinfo))
     {
         AUDERR ("No codec found for %s.\n", filename);
-        goto error_exit;
+        return false;
     }
 
     AUDDBG("got codec %s for stream index %d, opening\n", cinfo.codec->name, cinfo.stream_idx);
 
-#ifdef ALLOC_CONTEXT
-    context = avcodec_alloc_context3 (cinfo.codec);
-    avcodec_parameters_to_context (context, cinfo.stream->codecpar);
-#else
-    context = cinfo.stream->codec;
-#endif
+    ScopedContext context (cinfo);
+    if (avcodec_open2 (context.ptr, cinfo.codec, nullptr) < 0)
+        return false;
 
-    if (avcodec_open2 (context, cinfo.codec, nullptr) < 0)
-        goto error_exit;
+    int out_fmt;
+    bool planar;
 
     switch (context->sample_fmt)
     {
@@ -447,7 +483,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
     default:
         AUDERR ("Unsupported audio format %d\n", (int) context->sample_fmt);
-        goto error_exit;
+        return false;
     }
 
     /* Open audio output */
@@ -456,7 +492,8 @@ bool FFaudio::play (const char * filename, VFSFile & file)
     set_stream_bitrate(ic->bit_rate);
     open_audio(out_fmt, context->sample_rate, context->channels);
 
-    errcount = 0;
+    int errcount = 0;
+    Index<char> buf;
 
     while (! check_stop ())
     {
@@ -464,8 +501,8 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
         if (seek_value >= 0)
         {
-            if (av_seek_frame (ic, -1, (int64_t) seek_value * AV_TIME_BASE /
-             1000, AVSEEK_FLAG_ANY) < 0)
+            if (av_seek_frame (ic.get (), -1, (int64_t) seek_value *
+             AV_TIME_BASE / 1000, AVSEEK_FLAG_ANY) < 0)
             {
                 AUDERR ("error while seeking\n");
             } else
@@ -474,11 +511,11 @@ bool FFaudio::play (const char * filename, VFSFile & file)
             seek_value = -1;
         }
 
-        AVPacket tmp;
-        int ret;
-
         /* Read next frame (or more) of data */
-        if ((ret = av_read_frame(ic, &pkt)) < 0)
+        ScopedPacket pkt;
+        int ret = av_read_frame (ic.get (), & pkt);
+
+        if (ret < 0)
         {
             if (ret == (int) AVERROR_EOF)
             {
@@ -499,13 +536,10 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
         /* Ignore any other substreams */
         if (pkt.stream_index != cinfo.stream_idx)
-        {
-            av_free_packet(&pkt);
             continue;
-        }
 
         /* Decode and play packet/frame */
-        memcpy(&tmp, &pkt, sizeof(tmp));
+        AVPacket tmp = pkt;
         while (tmp.size > 0 && ! check_stop ())
         {
             /* Check for seek request and bail out if we have one */
@@ -515,13 +549,9 @@ bool FFaudio::play (const char * filename, VFSFile & file)
             if (seek_value >= 0)
                 break;
 
-#if CHECK_LIBAVCODEC_VERSION (55, 45, 101, 55, 28, 1)
-            AVFrame * frame = av_frame_alloc ();
-#else
-            AVFrame * frame = avcodec_alloc_frame ();
-#endif
+            ScopedFrame frame;
             int decoded = 0;
-            int len = avcodec_decode_audio4 (context, frame, & decoded, & tmp);
+            int len = avcodec_decode_audio4 (context.ptr, frame.ptr, & decoded, & tmp);
 
             if (len < 0)
             {
@@ -548,37 +578,10 @@ bool FFaudio::play (const char * filename, VFSFile & file)
             }
             else
                 write_audio (frame->data[0], size);
-
-#if CHECK_LIBAVCODEC_VERSION (55, 45, 101, 55, 28, 1)
-            av_frame_free (& frame);
-#elif CHECK_LIBAVCODEC_VERSION (54, 59, 100, 54, 28, 0)
-            avcodec_free_frame (& frame);
-#else
-            av_free (frame);
-#endif
         }
-
-        if (pkt.data)
-            av_free_packet(&pkt);
     }
 
-error_exit:
-    if (pkt.data)
-        av_free_packet(&pkt);
-
-    if (context)
-    {
-#ifdef ALLOC_CONTEXT
-        avcodec_free_context (& context);
-#else
-        avcodec_close (context);
-#endif
-    }
-
-    if (ic != nullptr)
-        close_input_file(ic);
-
-    return ! error;
+    return true;
 }
 
 const char FFaudio::about[] =
