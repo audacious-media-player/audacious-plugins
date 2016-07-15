@@ -181,6 +181,10 @@ ENABLE_PLUGIN_WITH_DEP(cdaudio,
     CDIO,
     libcdio >= 0.70 libcdio_cdda >= 0.70 libcddb >= 1.2.1)
 
+if test $have_cdaudio = yes ; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS cd-menu-items"
+fi
+
 ENABLE_PLUGIN_WITH_DEP(flac,
     FLAC support,
     yes,
