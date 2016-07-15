@@ -201,11 +201,21 @@ void FFaudio::cleanup ()
     av_lockmgr_register (nullptr);
 }
 
-static const char * ffaudio_strerror (int error)
+static int log_result (const char * func, int ret)
 {
-    static char buf[256];
-    return (! av_strerror (error, buf, sizeof buf)) ? buf : "unknown error";
+    if (ret < 0 && ret != (int) AVERROR_EOF)
+    {
+        static char buf[256];
+        if (! av_strerror (ret, buf, sizeof buf))
+            AUDERR ("%s failed: %s\n", func, buf);
+        else
+            AUDERR ("%s failed\n", func);
+    }
+
+    return ret;
 }
+
+#define LOG(function, ...) log_result (#function, function (__VA_ARGS__))
 
 static void create_extension_dict ()
 {
@@ -304,11 +314,8 @@ static AVFormatContext * open_input_file (const char * name, VFSFile & file)
     AVIOContext * io = io_context_new (file);
     c->pb = io;
 
-    int ret = avformat_open_input (& c, name, f, nullptr);
-
-    if (ret < 0)
+    if (LOG (avformat_open_input, & c, name, f, nullptr) < 0)
     {
-        AUDERR ("avformat_open_input failed for %s: %s.\n", name, ffaudio_strerror (ret));
         io_context_free (io);
         return nullptr;
     }
@@ -444,9 +451,30 @@ bool FFaudio::write_tuple (const char * filename, VFSFile & file, const Tuple & 
     return audtag::write_tuple (file, tuple, audtag::TagType::None);
 }
 
+static bool convert_format (int ff_fmt, int & aud_fmt, bool & planar)
+{
+    switch (ff_fmt)
+    {
+        case AV_SAMPLE_FMT_U8: aud_fmt = FMT_U8; planar = false; break;
+        case AV_SAMPLE_FMT_S16: aud_fmt = FMT_S16_NE; planar = false; break;
+        case AV_SAMPLE_FMT_S32: aud_fmt = FMT_S32_NE; planar = false; break;
+        case AV_SAMPLE_FMT_FLT: aud_fmt = FMT_FLOAT; planar = false; break;
+
+        case AV_SAMPLE_FMT_U8P: aud_fmt = FMT_U8; planar = true; break;
+        case AV_SAMPLE_FMT_S16P: aud_fmt = FMT_S16_NE; planar = true; break;
+        case AV_SAMPLE_FMT_S32P: aud_fmt = FMT_S32_NE; planar = true; break;
+        case AV_SAMPLE_FMT_FLTP: aud_fmt = FMT_FLOAT; planar = true; break;
+
+    default:
+        AUDERR ("Unsupported audio format %d\n", (int) ff_fmt);
+        return false;
+    }
+
+    return true;
+}
+
 bool FFaudio::play (const char * filename, VFSFile & file)
 {
-    AUDDBG ("Playing %s.\n", filename);
     SmartPtr<AVFormatContext, close_input_file>
      ic (open_input_file (filename, file));
 
@@ -463,32 +491,14 @@ bool FFaudio::play (const char * filename, VFSFile & file)
     AUDDBG("got codec %s for stream index %d, opening\n", cinfo.codec->name, cinfo.stream_idx);
 
     ScopedContext context (cinfo);
-    if (avcodec_open2 (context.ptr, cinfo.codec, nullptr) < 0)
+    if (LOG (avcodec_open2, context.ptr, cinfo.codec, nullptr) < 0)
         return false;
 
-    int out_fmt;
-    bool planar;
-
-    switch (context->sample_fmt)
-    {
-        case AV_SAMPLE_FMT_U8: out_fmt = FMT_U8; planar = false; break;
-        case AV_SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; planar = false; break;
-        case AV_SAMPLE_FMT_S32: out_fmt = FMT_S32_NE; planar = false; break;
-        case AV_SAMPLE_FMT_FLT: out_fmt = FMT_FLOAT; planar = false; break;
-
-        case AV_SAMPLE_FMT_U8P: out_fmt = FMT_U8; planar = true; break;
-        case AV_SAMPLE_FMT_S16P: out_fmt = FMT_S16_NE; planar = true; break;
-        case AV_SAMPLE_FMT_S32P: out_fmt = FMT_S32_NE; planar = true; break;
-        case AV_SAMPLE_FMT_FLTP: out_fmt = FMT_FLOAT; planar = true; break;
-
-    default:
-        AUDERR ("Unsupported audio format %d\n", (int) context->sample_fmt);
+    int out_fmt; bool planar;
+    if (! convert_format (context->sample_fmt, out_fmt, planar))
         return false;
-    }
 
     /* Open audio output */
-    AUDDBG("opening audio output\n");
-
     set_stream_bitrate(ic->bit_rate);
     open_audio(out_fmt, context->sample_rate, context->channels);
 
@@ -501,11 +511,8 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
         if (seek_value >= 0)
         {
-            if (av_seek_frame (ic.get (), -1, (int64_t) seek_value *
-             AV_TIME_BASE / 1000, AVSEEK_FLAG_ANY) < 0)
-            {
-                AUDERR ("error while seeking\n");
-            } else
+            if (LOG (av_seek_frame, ic.get (), -1, (int64_t) seek_value *
+             AV_TIME_BASE / 1000, AVSEEK_FLAG_ANY) >= 0)
                 errcount = 0;
 
             seek_value = -1;
@@ -513,26 +520,19 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
         /* Read next frame (or more) of data */
         ScopedPacket pkt;
-        int ret = av_read_frame (ic.get (), & pkt);
+        int ret = LOG (av_read_frame, ic.get (), & pkt);
 
         if (ret < 0)
         {
             if (ret == (int) AVERROR_EOF)
-            {
-                AUDDBG("eof reached\n");
                 break;
-            }
-            else
-            {
-                if (++errcount > 4)
-                {
-                    AUDERR ("av_read_frame error %d, giving up.\n", ret);
-                    break;
-                } else
-                    continue;
-            }
-        } else
-            errcount = 0;
+            if (++ errcount > 4)
+                return false;
+
+            continue;
+        }
+
+        errcount = 0;
 
         /* Ignore any other substreams */
         if (pkt.stream_index != cinfo.stream_idx)
@@ -551,13 +551,10 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
             ScopedFrame frame;
             int decoded = 0;
-            int len = avcodec_decode_audio4 (context.ptr, frame.ptr, & decoded, & tmp);
+            int len = LOG (avcodec_decode_audio4, context.ptr, frame.ptr, & decoded, & tmp);
 
             if (len < 0)
-            {
-                AUDERR ("decode_audio() failed, code %d\n", len);
                 break;
-            }
 
             tmp.size -= len;
             tmp.data += len;
