@@ -207,7 +207,7 @@ void FFaudio::cleanup ()
 
 static int log_result (const char * func, int ret)
 {
-    if (ret < 0 && ret != AVERROR_EOF && ret != AVERROR (EAGAIN))
+    if (ret < 0 && ret != (int) AVERROR_EOF && ret != AVERROR (EAGAIN))
     {
         static char buf[256];
         if (! av_strerror (ret, buf, sizeof buf))
@@ -530,7 +530,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
         if (ret < 0)
         {
-            if (ret == AVERROR_EOF)
+            if (ret == (int) AVERROR_EOF)
                 eof = true;
             else if (++ errcount > 4)
                 return false;
