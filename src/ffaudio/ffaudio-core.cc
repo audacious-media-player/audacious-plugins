@@ -2,7 +2,7 @@
  * Audacious FFaudio Plugin
  * Copyright © 2009 William Pitcock <nenolod@dereferenced.org>
  *                  Matti Hämäläinen <ccr@tnsp.org>
- * Copyright © 2011 John Lindgren <john.lindgren@tds.net>
+ * Copyright © 2011-2016 John Lindgren <john.lindgren@aol.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,6 +33,10 @@
 
 #if CHECK_LIBAVFORMAT_VERSION (57, 33, 100, 57, 5, 0)
 #define ALLOC_CONTEXT 1
+#endif
+
+#if CHECK_LIBAVCODEC_VERSION (57, 37, 100, 57, 16, 0)
+#define SEND_PACKET 1
 #endif
 
 class FFaudio : public InputPlugin
@@ -203,7 +207,7 @@ void FFaudio::cleanup ()
 
 static int log_result (const char * func, int ret)
 {
-    if (ret < 0 && ret != (int) AVERROR_EOF)
+    if (ret < 0 && ret != AVERROR_EOF && ret != AVERROR (EAGAIN))
     {
         static char buf[256];
         if (! av_strerror (ret, buf, sizeof buf))
@@ -503,9 +507,11 @@ bool FFaudio::play (const char * filename, VFSFile & file)
     open_audio(out_fmt, context->sample_rate, context->channels);
 
     int errcount = 0;
+    bool eof = false;
+
     Index<char> buf;
 
-    while (! check_stop ())
+    while (! eof && ! check_stop ())
     {
         int seek_value = check_seek ();
 
@@ -524,43 +530,61 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
         if (ret < 0)
         {
-            if (ret == (int) AVERROR_EOF)
-                break;
-            if (++ errcount > 4)
+            if (ret == AVERROR_EOF)
+                eof = true;
+            else if (++ errcount > 4)
                 return false;
+            else
+                continue;
+        }
+        else
+        {
+            errcount = 0;
 
-            continue;
+            /* Ignore any other substreams */
+            if (pkt.stream_index != cinfo.stream_idx)
+                continue;
         }
 
-        errcount = 0;
-
-        /* Ignore any other substreams */
-        if (pkt.stream_index != cinfo.stream_idx)
-            continue;
-
         /* Decode and play packet/frame */
-        AVPacket tmp = pkt;
-        while (tmp.size > 0 && ! check_stop ())
+        /* On EOF, send an empty packet to "flush" the decoder */
+        /* Otherwise, make a mutable (shallow) copy of the real packet */
+        AVPacket tmp;
+        if (eof)
+            av_init_packet (& tmp);
+        else
+            tmp = pkt;
+
+#ifdef SEND_PACKET
+        if ((ret = LOG (avcodec_send_packet, context.ptr, & tmp)) < 0)
+            return false; /* defensive, errors not expected here */
+#endif
+
+        while (! check_stop ())
         {
-            /* Check for seek request and bail out if we have one */
-            if (seek_value < 0)
-                seek_value = check_seek ();
-
-            if (seek_value >= 0)
-                break;
-
             ScopedFrame frame;
+
+#ifdef SEND_PACKET
+            if ((ret = LOG (avcodec_receive_frame, context.ptr, frame.ptr)) < 0)
+                break; /* read next packet (continue past errors) */
+#else
             int decoded = 0;
             int len = LOG (avcodec_decode_audio4, context.ptr, frame.ptr, & decoded, & tmp);
 
             if (len < 0)
-                break;
+                break; /* read next packet (continue past errors) */
 
             tmp.size -= len;
             tmp.data += len;
 
             if (! decoded)
-                continue;
+            {
+                if (tmp.size > 0)
+                    continue; /* process more of current packet */
+
+                break; /* read next packet */
+            }
+#endif
 
             int size = FMT_SIZEOF (out_fmt) * context->channels * frame->nb_samples;
 
