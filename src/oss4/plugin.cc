@@ -38,7 +38,7 @@ static void combo_init()
     oss_sysinfo sysinfo;
     memset(&sysinfo, 0, sizeof sysinfo);
     CHECK(ioctl, mixerfd, SNDCTL_SYSINFO, &sysinfo);
-    CHECK_NOISY(oss_probe_for_adev, &sysinfo);
+    CHECK(oss_probe_for_adev, &sysinfo);
 
     for (int i = 0; i < sysinfo.numaudios; i++)
     {
