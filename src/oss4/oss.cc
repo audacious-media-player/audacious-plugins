@@ -54,7 +54,7 @@ bool OSSPlugin::init()
     return oss_hardware_present();
 }
 
-bool OSSPlugin::set_format(int format, int rate, int channels)
+bool OSSPlugin::set_format(int format, int rate, int channels, String &error)
 {
     int param;
 
@@ -69,17 +69,31 @@ bool OSSPlugin::set_format(int format, int rate, int channels)
 #endif
 
     param = format;
-    CHECK_NOISY(ioctl, m_fd, SNDCTL_DSP_SETFMT, &param);
-    CHECK_VAL(param == format, ERROR_NOISY, "Selected audio format is not supported by the device.\n");
+    CHECK_STR(error, ioctl, m_fd, SNDCTL_DSP_SETFMT, &param);
+
+    if (param != format)
+    {
+        error = String("Selected audio format is not supported by the device.");
+        goto FAILED;
+    }
 
     param = rate;
-    CHECK_NOISY(ioctl, m_fd, SNDCTL_DSP_SPEED, &param);
-    CHECK_VAL(param >= rate * 9 / 10 && param <= rate * 11 / 10, ERROR_NOISY,
-     "Selected sample rate is not supported by the device.\n");
+    CHECK_STR(error, ioctl, m_fd, SNDCTL_DSP_SPEED, &param);
+
+    if (param < rate * 9 / 10 || param > rate * 11 / 10)
+    {
+        error = String("Selected sample rate is not supported by the device.");
+        goto FAILED;
+    }
 
     param = channels;
-    CHECK_NOISY(ioctl, m_fd, SNDCTL_DSP_CHANNELS, &param);
-    CHECK_VAL(param == channels, ERROR_NOISY, "Selected number of channels is not supported by the device.\n");
+    CHECK_STR(error, ioctl, m_fd, SNDCTL_DSP_CHANNELS, &param);
+
+    if (param != channels)
+    {
+        error = String("Selected number of channels is not supported by the device.");
+        goto FAILED;
+    }
 
     m_format = format;
     m_rate = rate;
@@ -102,7 +116,7 @@ static int log2(int x)
     return y;
 }
 
-bool OSSPlugin::set_buffer()
+bool OSSPlugin::set_buffer(String &error)
 {
     int milliseconds = aud_get_int(nullptr, "output_buffer_size");
     int bytes = frames_to_bytes(aud::rescale(milliseconds, 1000, m_rate));
@@ -110,7 +124,7 @@ bool OSSPlugin::set_buffer()
     int numfrags = aud::clamp(aud::rdiv(bytes, 1 << fragorder), 4, 32767);
 
     int param = (numfrags << 16) | fragorder;
-    CHECK_NOISY(ioctl, m_fd, SNDCTL_DSP_SETFRAGMENT, &param);
+    CHECK_STR(error, ioctl, m_fd, SNDCTL_DSP_SETFRAGMENT, &param);
 
     return true;
 
@@ -200,8 +214,7 @@ static void poll_cleanup()
     close(poll_pipe[1]);
 }
 
-// TODO: return error message to core instead of calling aud_ui_show_error
-bool OSSPlugin::open_audio(int aud_format, int rate, int channels, String & error)
+bool OSSPlugin::open_audio(int aud_format, int rate, int channels, String &error)
 {
     AUDDBG("Opening audio.\n");
 
@@ -209,7 +222,7 @@ bool OSSPlugin::open_audio(int aud_format, int rate, int channels, String & erro
     audio_buf_info buf_info;
     bool poll_was_setup = false;
 
-    CHECK_NOISY(m_fd = open_device);
+    CHECK_STR(error, m_fd = open_device);
 
     if (poll_setup(m_fd))
         poll_was_setup = true;
@@ -218,14 +231,14 @@ bool OSSPlugin::open_audio(int aud_format, int rate, int channels, String & erro
 
     format = oss_convert_aud_format(aud_format);
 
-    if (!set_format(format, rate, channels))
+    if (!set_format(format, rate, channels, error))
         goto FAILED;
 
-    if (!set_buffer())
+    if (!set_buffer(error))
         goto FAILED;
 
     memset(&buf_info, 0, sizeof buf_info);
-    CHECK_NOISY(ioctl, m_fd, SNDCTL_DSP_GETOSPACE, &buf_info);
+    CHECK_STR(error, ioctl, m_fd, SNDCTL_DSP_GETOSPACE, &buf_info);
 
     AUDINFO("Buffer information, fragstotal: %d, fragsize: %d, bytes: %d.\n",
         buf_info.fragstotal,

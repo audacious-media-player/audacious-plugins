@@ -30,7 +30,7 @@ static void combo_init()
 {
     int mixerfd;
 
-    CHECK_NOISY(mixerfd = open, DEFAULT_MIXER, O_RDWR);
+    CHECK(mixerfd = open, DEFAULT_MIXER, O_RDWR);
 
     oss_elements.append(ComboItem(strdup(N_("Default device")), strdup(DEFAULT_DSP)));
 
