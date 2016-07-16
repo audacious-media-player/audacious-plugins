@@ -344,11 +344,20 @@ static gboolean ui_slider_change_value_cb (GtkRange * range,
     return false;
 }
 
+/* return an object property if it exists, otherwise false */
+static bool get_boolean_prop (void * obj, const char * prop)
+{
+    gboolean value = false;
+    if (g_object_class_find_property (G_OBJECT_GET_CLASS (obj), prop))
+        g_object_get (obj, prop, & value, nullptr);
+
+    return value;
+}
+
 static gboolean ui_slider_button_press_cb (GtkWidget * widget, GdkEventButton * event)
 {
-    gboolean primary_warps = false;
-    g_object_get (gtk_widget_get_settings (widget),
-     "gtk-primary-button-warps-slider", & primary_warps, nullptr);
+    bool primary_warps = get_boolean_prop (gtk_widget_get_settings (widget),
+     "gtk-primary-button-warps-slider");
 
     if (event->button == 1 && ! primary_warps)
         event->button = 2;
@@ -359,9 +368,8 @@ static gboolean ui_slider_button_press_cb (GtkWidget * widget, GdkEventButton * 
 
 static gboolean ui_slider_button_release_cb (GtkWidget * widget, GdkEventButton * event)
 {
-    gboolean primary_warps = false;
-    g_object_get (gtk_widget_get_settings (widget),
-     "gtk-primary-button-warps-slider", & primary_warps, nullptr);
+    bool primary_warps = get_boolean_prop (gtk_widget_get_settings (widget),
+     "gtk-primary-button-warps-slider");
 
     if (event->button == 1 && ! primary_warps)
         event->button = 2;
