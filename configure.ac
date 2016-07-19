@@ -101,7 +101,7 @@ check_allowed () {
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-gtk])
             fi
             ;;
-        qtaudio|qtglspectrum)
+        ampache|qtaudio|qtglspectrum)
             plugin_allowed=$USE_QT
             if test $plugin_allowed = no -a $2 = yes ; then
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-qt])
@@ -460,6 +460,13 @@ ENABLE_PLUGIN_WITH_DEP(aosd,
 dnl Optional plugins (Qt-only)
 dnl ==========================
 
+ENABLE_PLUGIN_WITH_DEP(ampache,
+    Ampache browser,
+    auto,
+    GENERAL,
+    AMPACHE,
+    ampache_browser_0)
+
 ENABLE_PLUGIN_WITH_DEP(qtaudio,
     QtMultimedia output,
     auto,
@@ -756,6 +763,7 @@ echo
 echo "  General"
 echo "  -------"
 echo "  Alarm (requires GTK+):                  $USE_GTK"
+echo "  Ampache browser (requires Qt):          $have_ampache"
 echo "  Delete Files:                           $USE_GTK_OR_QT"
 echo "  GNOME Shortcuts:                        $have_gnomeshortcuts"
 echo "  libnotify OSD:                          $have_notify"
