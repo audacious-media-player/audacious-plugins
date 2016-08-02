@@ -34,43 +34,25 @@
 #endif
 
 #include <libaudcore/i18n.h>
-#include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
-#define ERROR AUDERR
-
-#define ERROR_NOISY(...) \
-do { \
-    aud_ui_show_error(str_printf("OSS4 error: " __VA_ARGS__)); \
-    ERROR(__VA_ARGS__); \
-} while (0) \
-
-#define DESCRIBE_ERROR ERROR("%s\n", oss_describe_error())
-#define DESCRIBE_ERROR_NOISY ERROR_NOISY("%s\n", oss_describe_error())
+#define DESCRIBE_ERROR AUDERR("%s\n", oss_describe_error())
 
 #define CHECK(function, ...) \
 do { \
-    int error = function(__VA_ARGS__); \
-    if (error < 0) { \
+    int CHECK_error = function(__VA_ARGS__); \
+    if (CHECK_error < 0) { \
         DESCRIBE_ERROR; \
         goto FAILED; \
     } \
 } while (0)
 
-#define CHECK_NOISY(function, ...) \
+#define CHECK_STR(str, function, ...) \
 do { \
-    int error = function(__VA_ARGS__); \
-    if (error < 0) { \
-        DESCRIBE_ERROR_NOISY; \
-        goto FAILED; \
-    } \
-} while (0)
-
-#define CHECK_VAL(value, function, ...) \
-do { \
-    if (!(value)) { \
-        function(__VA_ARGS__); \
+    int CHECK_STR_error = function(__VA_ARGS__); \
+    if (CHECK_STR_error < 0) { \
+        str = String(str_printf("OSS error: %s\n", oss_describe_error())); \
         goto FAILED; \
     } \
 } while (0)
@@ -112,7 +94,7 @@ public:
     StereoVolume get_volume();
     void set_volume(StereoVolume v);
 
-    bool open_audio(int aud_format, int rate, int chans, String & error);
+    bool open_audio(int aud_format, int rate, int chans, String &error);
     void close_audio();
 
     void period_wait();
@@ -125,8 +107,8 @@ public:
     void flush();
 
 private:
-    bool set_format(int format, int rate, int channels);
-    bool set_buffer();
+    bool set_format(int format, int rate, int channels, String &error);
+    bool set_buffer(String &error);
 
     int frames_to_bytes(int frames) const
         { return frames * (m_bytes_per_sample * m_channels); }

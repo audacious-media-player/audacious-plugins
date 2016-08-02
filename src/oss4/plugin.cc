@@ -30,7 +30,7 @@ static void combo_init()
 {
     int mixerfd;
 
-    CHECK_NOISY(mixerfd = open, DEFAULT_MIXER, O_RDWR);
+    CHECK(mixerfd = open, DEFAULT_MIXER, O_RDWR);
 
     oss_elements.append(ComboItem(strdup(N_("Default device")), strdup(DEFAULT_DSP)));
 
@@ -38,7 +38,7 @@ static void combo_init()
     oss_sysinfo sysinfo;
     memset(&sysinfo, 0, sizeof sysinfo);
     CHECK(ioctl, mixerfd, SNDCTL_SYSINFO, &sysinfo);
-    CHECK_NOISY(oss_probe_for_adev, &sysinfo);
+    CHECK(oss_probe_for_adev, &sysinfo);
 
     for (int i = 0; i < sysinfo.numaudios; i++)
     {

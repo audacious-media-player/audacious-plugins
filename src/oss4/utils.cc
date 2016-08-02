@@ -192,7 +192,7 @@ bool oss_hardware_present()
     oss_sysinfo sysinfo;
     memset(&sysinfo, 0, sizeof sysinfo);
     CHECK(ioctl, mixerfd, SNDCTL_SYSINFO, &sysinfo);
-    CHECK_NOISY(oss_probe_for_adev, &sysinfo);
+    CHECK(oss_probe_for_adev, &sysinfo);
 #endif
 
     close(mixerfd);

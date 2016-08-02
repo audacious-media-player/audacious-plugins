@@ -101,7 +101,7 @@ check_allowed () {
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-gtk])
             fi
             ;;
-        qtaudio|qtglspectrum)
+        ampache|qtaudio|qtglspectrum)
             plugin_allowed=$USE_QT
             if test $plugin_allowed = no -a $2 = yes ; then
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-qt])
@@ -460,6 +460,13 @@ ENABLE_PLUGIN_WITH_DEP(aosd,
 dnl Optional plugins (Qt-only)
 dnl ==========================
 
+ENABLE_PLUGIN_WITH_DEP(ampache,
+    Ampache browser,
+    auto,
+    GENERAL,
+    AMPACHE,
+    ampache_browser_0)
+
 ENABLE_PLUGIN_WITH_DEP(qtaudio,
     QtMultimedia output,
     auto,
@@ -516,15 +523,15 @@ AC_ARG_WITH([ffmpeg],
  [ffmpeg_variant=$withval], [ffmpeg_variant=ffmpeg])
 
 if test $ffmpeg_variant = ffmpeg ; then
-    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.40.0 libavformat >= 53.21.0 libavutil >= 51.27.0],
+    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.40.0 libavformat >= 53.25.0 libavutil >= 51.27.0],
      [INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"
       AC_DEFINE([HAVE_FFMPEG], [1], [Define if using FFmpeg])],
-     [AC_MSG_ERROR([FFmpeg is not installed or too old (required: libavcodec 53.40.0, libavformat 53.21.0, libavutil 51.27.0).  Use --with-ffmpeg=none to disable the ffaudio plugin or --with-ffmpeg=libav to use libav instead.])])
+     [AC_MSG_ERROR([FFmpeg is not installed or too old (required: libavcodec 53.40.0, libavformat 53.25.0, libavutil 51.27.0).  Use --with-ffmpeg=none to disable the ffaudio plugin or --with-ffmpeg=libav to use libav instead.])])
 elif test $ffmpeg_variant = libav ; then
-    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.25.0 libavformat >= 53.15.0 libavutil >= 51.18.0],
+    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.25.0 libavformat >= 53.17.0 libavutil >= 51.18.0],
      [INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"
       AC_DEFINE([HAVE_LIBAV], [1], [Define if using libav])],
-     [AC_MSG_ERROR([libav is not installed or too old (required: libavcodec 53.25.0, libavformat 53.15.0, libavutil 51.18.0).])])
+     [AC_MSG_ERROR([libav is not installed or too old (required: libavcodec 53.25.0, libavformat 53.17.0, libavutil 51.18.0).])])
 fi
 
 dnl SDL Output
@@ -756,6 +763,7 @@ echo
 echo "  General"
 echo "  -------"
 echo "  Alarm (requires GTK+):                  $USE_GTK"
+echo "  Ampache browser (requires Qt):          $have_ampache"
 echo "  Delete Files:                           $USE_GTK_OR_QT"
 echo "  GNOME Shortcuts:                        $have_gnomeshortcuts"
 echo "  libnotify OSD:                          $have_notify"

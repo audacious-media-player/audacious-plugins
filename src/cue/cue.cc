@@ -73,14 +73,14 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
     if (! cur_name)
         return false;
 
-    bool new_file = true;
+    bool same_file = false;
     String filename;
     PluginHandle * decoder = nullptr;
     Tuple base_tuple;
 
     for (int track = 1; track <= tracks; track ++)
     {
-        if (new_file)
+        if (! same_file)
         {
             filename = String (uri_construct (cur_name, cue_filename));
             decoder = nullptr;
@@ -117,7 +117,7 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
         Track * next = (track + 1 <= tracks) ? cd_get_track (cd, track + 1) : nullptr;
         const char * next_name = next ? track_get_filename (next) : nullptr;
 
-        new_file = (! next_name || strcmp (next_name, cur_name));
+        same_file = (next_name && ! strcmp (next_name, cur_name));
 
         if (base_tuple.valid ())
         {
@@ -130,17 +130,17 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
             int begin = (int64_t) track_get_start (cur) * 1000 / 75;
             tuple.set_int (Tuple::StartTime, begin);
 
-            if (new_file)
+            if (same_file)
+            {
+                int end = (int64_t) track_get_start (next) * 1000 / 75;
+                tuple.set_int (Tuple::EndTime, end);
+                tuple.set_int (Tuple::Length, end - begin);
+            }
+            else
             {
                 int length = base_tuple.get_int (Tuple::Length);
                 if (length > 0)
                     tuple.set_int (Tuple::Length, length - begin);
-            }
-            else
-            {
-                int length = (int64_t) track_get_length (cur) * 1000 / 75;
-                tuple.set_int (Tuple::Length, length);
-                tuple.set_int (Tuple::EndTime, begin + length);
             }
 
             Cdtext * cdtext = track_get_cdtext (cur);
