@@ -95,7 +95,7 @@ fi
 
 check_allowed () {
     case $1 in
-        scrobbler2|glspectrum|hotkey|aosd)
+        glspectrum|hotkey|aosd)
             plugin_allowed=$USE_GTK
             if test $plugin_allowed = no -a $2 = yes ; then
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-gtk])
@@ -769,7 +769,7 @@ echo "  GNOME Shortcuts:                        $have_gnomeshortcuts"
 echo "  libnotify OSD:                          $have_notify"
 echo "  Linux Infrared Remote Control (LIRC):   $have_lirc"
 echo "  MPRIS 2 Server:                         $have_mpris2"
-echo "  Scrobbler 2.0 (requires GTK+):          $have_scrobbler2"
+echo "  Scrobbler 2.0:                          $have_scrobbler2"
 echo "  Song Change:                            $have_songchange"
 echo
 

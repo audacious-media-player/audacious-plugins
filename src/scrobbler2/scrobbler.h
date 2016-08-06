@@ -15,7 +15,6 @@
 #include <string.h>
 #include <glib.h>
 #include <libxml/xpath.h>
-#include <gtk/gtk.h>
 
 //audacious includes
 #include <libaudcore/i18n.h>
