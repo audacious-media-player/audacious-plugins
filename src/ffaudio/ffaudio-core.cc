@@ -18,12 +18,12 @@
  * implied. In no event shall the authors be liable for any damages arising from
  */
 
-#include <pthread.h>
-
 #undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
 
 #include "ffaudio-stdinc.h"
+
+#include <pthread.h>
 
 #include <audacious/audtag.h>
 #include <libaudcore/audstrings.h>
