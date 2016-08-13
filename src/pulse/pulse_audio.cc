@@ -17,7 +17,6 @@
   USA.
 ***/
 
-#include <assert.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -88,10 +87,8 @@ do { \
         return retval; \
 } while (0);
 
-static void info_cb (pa_context * c, const pa_sink_input_info * i, int, void *)
+static void info_cb (pa_context *, const pa_sink_input_info * i, int, void *)
 {
-    assert (c);
-
     if (! i)
         return;
 
@@ -102,8 +99,6 @@ static void info_cb (pa_context * c, const pa_sink_input_info * i, int, void *)
 static void subscribe_cb (pa_context * c, pa_subscription_event_type t, uint32_t index, void *)
 {
     pa_operation * o;
-
-    assert (c);
 
     if (! stream || index != pa_stream_get_index (stream) ||
         (t != (PA_SUBSCRIPTION_EVENT_SINK_INPUT | PA_SUBSCRIPTION_EVENT_CHANGE) &&
@@ -122,8 +117,6 @@ static void subscribe_cb (pa_context * c, pa_subscription_event_type t, uint32_t
 
 static void context_state_cb (pa_context * c, void *)
 {
-    assert (c);
-
     switch (pa_context_get_state (c))
     {
         case PA_CONTEXT_READY:
@@ -142,8 +135,6 @@ static void context_state_cb (pa_context * c, void *)
 
 static void stream_state_cb (pa_stream * s, void *)
 {
-    assert (s);
-
     switch (pa_stream_get_state (s))
     {
         case PA_STREAM_READY:
@@ -158,37 +149,29 @@ static void stream_state_cb (pa_stream * s, void *)
     }
 }
 
-static void stream_success_cb (pa_stream * s, int success, void * userdata)
+static void stream_success_cb (pa_stream *, int success, void * userdata)
 {
-    assert (s);
-
     if (userdata)
         * (int * ) userdata = success;
 
     pa_threaded_mainloop_signal (mainloop, 0);
 }
 
-static void context_success_cb (pa_context * c, int success, void * userdata)
+static void context_success_cb (pa_context *, int success, void * userdata)
 {
-    assert (c);
-
     if (userdata)
         * (int * ) userdata = success;
 
     pa_threaded_mainloop_signal (mainloop, 0);
 }
 
-static void stream_request_cb (pa_stream * s, size_t, void *)
+static void stream_request_cb (pa_stream *, size_t, void *)
 {
-    assert (s);
-
     pa_threaded_mainloop_signal (mainloop, 0);
 }
 
-static void stream_latency_update_cb (pa_stream * s, void *)
+static void stream_latency_update_cb (pa_stream *, void *)
 {
-    assert (s);
-
     pa_threaded_mainloop_signal (mainloop, 0);
 }
 
@@ -478,11 +461,6 @@ static pa_sample_format_t to_pulse_format (int aformat)
 bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
 {
     pa_sample_spec ss;
-
-    assert (! mainloop);
-    assert (! context);
-    assert (! stream);
-    assert (! connected);
 
     ss.format = to_pulse_format (fmt);
     if (ss.format == PA_SAMPLE_INVALID)
