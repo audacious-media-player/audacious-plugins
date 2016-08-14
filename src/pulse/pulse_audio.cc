@@ -63,6 +63,7 @@ static pa_stream * stream = nullptr;
 
 static std::mutex mainloop_mutex;
 static pa_threaded_mainloop * mainloop = nullptr;
+static bool flushed;
 
 static pa_cvolume volume;
 
@@ -273,6 +274,8 @@ void PulseOutput::flush ()
     if (! finish (pa_stream_flush (stream, stream_success_cb, & success)) || ! success)
         AUDDBG ("pa_stream_flush() failed: %s\n", pa_strerror (pa_context_errno (context)));
 
+    flushed = true;
+    pa_threaded_mainloop_signal (mainloop, 0);
     pa_threaded_mainloop_unlock (mainloop);
 }
 
@@ -284,11 +287,9 @@ void PulseOutput::period_wait ()
     if (! finish (pa_stream_trigger (stream, stream_success_cb, & success)) || ! success)
         AUDDBG ("pa_stream_trigger() failed: %s\n", pa_strerror (pa_context_errno (context)));
 
-    if (success)
-    {
-        while (! pa_stream_writable_size (stream) && alive ())
-            pa_threaded_mainloop_wait (mainloop);
-    }
+    /* if the connection dies, wait until flush() is called */
+    while ((! pa_stream_writable_size (stream) || ! alive ()) && ! flushed)
+        pa_threaded_mainloop_wait (mainloop);
 
     pa_threaded_mainloop_unlock (mainloop);
 }
@@ -305,6 +306,7 @@ int PulseOutput::write_audio (const void * ptr, int length)
     else
         ret = length;
 
+    flushed = false;
     pa_threaded_mainloop_unlock (mainloop);
     return ret;
 }
@@ -466,6 +468,7 @@ fail:
         goto fail;
     }
 
+    flushed = true;
     pa_threaded_mainloop_unlock (mainloop);
     return true;
 }
