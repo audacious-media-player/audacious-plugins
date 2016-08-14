@@ -177,6 +177,13 @@ StereoVolume PulseOutput::get_volume ()
     if (! connected)
         return {0, 0};
 
+    if (! polling)
+    {
+        /* read any pending events to get the lastest volume */
+        while (pa_mainloop_iterate (mainloop, 0, nullptr) > 0)
+            continue;
+    }
+
     StereoVolume v;
     if (volume.channels == 2)
     {
