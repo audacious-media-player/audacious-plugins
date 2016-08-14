@@ -71,7 +71,7 @@ static pa_context * context = nullptr;
 static pa_stream * stream = nullptr;
 static pa_mainloop * mainloop = nullptr;
 
-static bool polling, flushed;
+static bool connected, flushed, polling;
 
 static pa_cvolume volume;
 
@@ -174,7 +174,7 @@ StereoVolume PulseOutput::get_volume ()
 {
     scoped_lock lock (pulse_mutex);
 
-    if (! mainloop)
+    if (! connected)
         return {0, 0};
 
     StereoVolume v;
@@ -193,7 +193,7 @@ void PulseOutput::set_volume (StereoVolume v)
 {
     scoped_lock lock (pulse_mutex);
 
-    if (! mainloop)
+    if (! connected)
         return;
 
     if (volume.channels != 1)
@@ -290,6 +290,8 @@ void PulseOutput::close_audio ()
     /* wait for any parallel tasks (e.g. set_volume()) to complete */
     while (polling)
         pulse_cond.wait (lock);
+
+    connected = false;
 
     if (stream)
     {
@@ -462,6 +464,7 @@ bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
         return false;
     }
 
+    connected = true;
     flushed = true;
     return true;
 }
