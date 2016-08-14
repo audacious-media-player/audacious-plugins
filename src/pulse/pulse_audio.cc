@@ -332,6 +332,30 @@ static pa_sample_format_t to_pulse_format (int aformat)
     }
 }
 
+static bool set_sample_spec (pa_sample_spec & ss, int fmt, int rate, int nch)
+{
+    ss.format = to_pulse_format (fmt);
+    if (ss.format == PA_SAMPLE_INVALID)
+        return false;
+
+    ss.rate = rate;
+    ss.channels = nch;
+
+    return pa_sample_spec_valid (& ss);
+}
+
+static void set_buffer_attr (pa_buffer_attr & buffer, const pa_sample_spec & ss)
+{
+    int buffer_ms = aud_get_int (nullptr, "output_buffer_size");
+    size_t buffer_size = pa_usec_to_bytes ((pa_usec_t) 1000 * buffer_ms, & ss);
+
+    buffer.maxlength = (uint32_t) -1;
+    buffer.tlength = buffer_size;
+    buffer.prebuf = (uint32_t) -1;
+    buffer.minreq = (uint32_t) -1;
+    buffer.fragsize = buffer_size;
+}
+
 static bool create_context (scoped_lock & lock)
 {
     if (! (mainloop = pa_mainloop_new ()))
@@ -377,15 +401,8 @@ static bool create_stream (scoped_lock & lock, const pa_sample_spec & ss)
     }
 
     /* Connect stream with sink and default volume */
-    int buffer_ms = aud_get_int (nullptr, "output_buffer_size");
-    size_t buffer_size = pa_usec_to_bytes ((pa_usec_t) 1000 * buffer_ms, & ss);
-
     pa_buffer_attr buffer;
-    buffer.maxlength = (uint32_t) -1;
-    buffer.tlength = buffer_size;
-    buffer.prebuf = (uint32_t) -1;
-    buffer.minreq = (uint32_t) -1;
-    buffer.fragsize = buffer_size;
+    set_buffer_attr (buffer, ss);
 
     auto flags = pa_stream_flags_t (PA_STREAM_INTERPOLATE_TIMING | PA_STREAM_AUTO_TIMING_UPDATE);
     if (pa_stream_connect_playback (stream, nullptr, & buffer, flags, nullptr, nullptr) < 0)
@@ -432,16 +449,9 @@ static bool subscribe_events (scoped_lock & lock)
 bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
 {
     scoped_lock lock (pulse_mutex);
+
     pa_sample_spec ss;
-
-    ss.format = to_pulse_format (fmt);
-    if (ss.format == PA_SAMPLE_INVALID)
-        return false;
-
-    ss.rate = rate;
-    ss.channels = nch;
-
-    if (! pa_sample_spec_valid (& ss))
+    if (! set_sample_spec (ss, fmt, rate, nch))
         return false;
 
     if (! create_context (lock) ||
