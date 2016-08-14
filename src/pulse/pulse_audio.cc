@@ -332,6 +332,103 @@ static pa_sample_format_t to_pulse_format (int aformat)
     }
 }
 
+static bool create_context (scoped_lock & lock)
+{
+    if (! (mainloop = pa_mainloop_new ()))
+    {
+        AUDERR ("Failed to allocate main loop\n");
+        return false;
+    }
+
+    if (! (context = pa_context_new (pa_mainloop_get_api (mainloop), "Audacious")))
+    {
+        AUDERR ("Failed to allocate context\n");
+        return false;
+    }
+
+    if (pa_context_connect (context, nullptr, (pa_context_flags_t) 0, nullptr) < 0)
+    {
+        REPORT ("pa_context_connect");
+        return false;
+    }
+
+    /* Wait until the context is ready */
+    pa_context_state_t cstate;
+    while ((cstate = pa_context_get_state (context)) != PA_CONTEXT_READY)
+    {
+        if (cstate == PA_CONTEXT_TERMINATED || cstate == PA_CONTEXT_FAILED)
+        {
+            REPORT ("pa_context_connect");
+            return false;
+        }
+
+        poll_events (lock);
+    }
+
+    return true;
+}
+
+static bool create_stream (scoped_lock & lock, const pa_sample_spec & ss)
+{
+    if (! (stream = pa_stream_new (context, "Audacious", & ss, nullptr)))
+    {
+        REPORT ("pa_stream_new");
+        return false;
+    }
+
+    /* Connect stream with sink and default volume */
+    int buffer_ms = aud_get_int (nullptr, "output_buffer_size");
+    size_t buffer_size = pa_usec_to_bytes ((pa_usec_t) 1000 * buffer_ms, & ss);
+
+    pa_buffer_attr buffer;
+    buffer.maxlength = (uint32_t) -1;
+    buffer.tlength = buffer_size;
+    buffer.prebuf = (uint32_t) -1;
+    buffer.minreq = (uint32_t) -1;
+    buffer.fragsize = buffer_size;
+
+    auto flags = pa_stream_flags_t (PA_STREAM_INTERPOLATE_TIMING | PA_STREAM_AUTO_TIMING_UPDATE);
+    if (pa_stream_connect_playback (stream, nullptr, & buffer, flags, nullptr, nullptr) < 0)
+    {
+        REPORT ("pa_stream_connect_playback");
+        return false;
+    }
+
+    /* Wait until the stream is ready */
+    pa_stream_state_t sstate;
+    while ((sstate = pa_stream_get_state (stream)) != PA_STREAM_READY)
+    {
+        if (sstate == PA_STREAM_FAILED || sstate == PA_STREAM_TERMINATED)
+        {
+            REPORT ("pa_stream_connect_playback");
+            return false;
+        }
+
+        poll_events (lock);
+    }
+
+    return true;
+}
+
+static bool subscribe_events (scoped_lock & lock)
+{
+    pa_context_set_subscribe_callback (context, subscribe_cb, nullptr);
+
+    /* Now subscribe to events */
+    int success = 0;
+    CHECK (pa_context_subscribe, context, PA_SUBSCRIPTION_MASK_SINK_INPUT, context_success_cb);
+    if (! success)
+        return false;
+
+    /* Now request the initial stream info */
+    success = 0;
+    CHECK (pa_context_get_sink_input_info, context, pa_stream_get_index (stream), info_cb);
+    if (! success)
+        return false;
+
+    return true;
+}
+
 bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
 {
     scoped_lock lock (pulse_mutex);
@@ -347,89 +444,13 @@ bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
     if (! pa_sample_spec_valid (& ss))
         return false;
 
-    if (! (mainloop = pa_mainloop_new ()))
+    if (! create_context (lock) ||
+        ! create_stream (lock, ss) ||
+        ! subscribe_events (lock))
     {
-        AUDERR ("Failed to allocate main loop\n");
-        return false;
-    }
-
-    if (! (context = pa_context_new (pa_mainloop_get_api (mainloop), "Audacious")))
-    {
-        AUDERR ("Failed to allocate context\n");
-fail:
         close_audio ();
         return false;
     }
-
-    pa_context_set_subscribe_callback (context, subscribe_cb, nullptr);
-
-    if (pa_context_connect (context, nullptr, (pa_context_flags_t) 0, nullptr) < 0)
-    {
-        REPORT ("pa_context_connect");
-        goto fail;
-    }
-
-    /* Wait until the context is ready */
-    pa_context_state_t cstate;
-    while ((cstate = pa_context_get_state (context)) != PA_CONTEXT_READY)
-    {
-        if (cstate == PA_CONTEXT_TERMINATED || cstate == PA_CONTEXT_FAILED)
-        {
-            REPORT ("pa_context_connect");
-            goto fail;
-        }
-
-        poll_events (lock);
-    }
-
-    if (! (stream = pa_stream_new (context, "Audacious", & ss, nullptr)))
-    {
-        REPORT ("pa_stream_new");
-        goto fail;
-    }
-
-    /* Connect stream with sink and default volume */
-    int aud_buffer = aud_get_int (nullptr, "output_buffer_size");
-    size_t buffer_size = pa_usec_to_bytes ((pa_usec_t) 1000 * aud_buffer, & ss);
-
-    pa_buffer_attr buffer;
-    buffer.maxlength = (uint32_t) -1;
-    buffer.tlength = buffer_size;
-    buffer.prebuf = (uint32_t) -1;
-    buffer.minreq = (uint32_t) -1;
-    buffer.fragsize = buffer_size;
-
-    auto flags = pa_stream_flags_t (PA_STREAM_INTERPOLATE_TIMING | PA_STREAM_AUTO_TIMING_UPDATE);
-    if (pa_stream_connect_playback (stream, nullptr, & buffer, flags, nullptr, nullptr) < 0)
-    {
-        REPORT ("pa_stream_connect_playback");
-        goto fail;
-    }
-
-    /* Wait until the stream is ready */
-    pa_stream_state_t sstate;
-    while ((sstate = pa_stream_get_state (stream)) != PA_STREAM_READY)
-    {
-        if (sstate == PA_STREAM_FAILED || sstate == PA_STREAM_TERMINATED)
-        {
-            REPORT ("pa_stream_connect_playback");
-            goto fail;
-        }
-
-        poll_events (lock);
-    }
-
-    /* Now subscribe to events */
-    int success = 0;
-    CHECK (pa_context_subscribe, context, PA_SUBSCRIPTION_MASK_SINK_INPUT, context_success_cb);
-    if (! success)
-        goto fail;
-
-    /* Now request the initial stream info */
-    success = 0;
-    CHECK (pa_context_get_sink_input_info, context, pa_stream_get_index (stream), info_cb);
-    if (! success)
-        goto fail;
 
     flushed = true;
     return true;
