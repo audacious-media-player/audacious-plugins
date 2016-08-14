@@ -669,13 +669,53 @@ static void list_right_click (void * user, GdkEventButton * event)
     gtk_menu_popup ((GtkMenu *) menu, nullptr, nullptr, nullptr, nullptr, event->button, event->time);
 }
 
+static Index<char> list_get_data (void * user)
+{
+    if (search_pending)
+        search_timeout ();
+
+    int list = aud_playlist_by_unique_id (playlist_id);
+    int n_items = items.len ();
+
+    Index<char> buf;
+
+    aud_playlist_select_all (playlist_id, false);
+
+    for (int i = 0; i < n_items; i ++)
+    {
+        if (! selection[i])
+            continue;
+
+        const Item * item = items[i];
+
+        for (int entry : item->matches)
+        {
+            if (buf.len ())
+                buf.append ('\n');
+
+            String filename = aud_playlist_entry_get_filename (list, entry);
+            buf.insert (filename, -1, strlen (filename));
+
+            aud_playlist_entry_set_selected (list, entry, true);
+        }
+    }
+
+    aud_playlist_cache_selected (list);
+
+    return buf;
+}
+
 static const AudguiListCallbacks list_callbacks = {
     list_get_value,
     list_get_selected,
     list_set_selected,
     list_select_all,
     list_activate_row,
-    list_right_click
+    list_right_click,
+    nullptr,  // shift_rows
+    "text/uri-list",
+    list_get_data,
+    nullptr  // receive_data
 };
 
 static void entry_cb (GtkEntry * entry, void * unused)

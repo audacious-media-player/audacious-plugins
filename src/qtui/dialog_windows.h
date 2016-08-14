@@ -37,6 +37,7 @@ private:
 
     void create_progress ();
     void show_error (const char * message);
+    void show_info (const char * message);
     void show_progress (const char * message);
     void show_progress_2 (const char * message);
     void hide_progress ();
@@ -44,7 +45,8 @@ private:
     const HookReceiver<DialogWindows, const char *>
      show_hook1 {"ui show progress", this, & DialogWindows::show_progress},
      show_hook2 {"ui show progress 2", this, & DialogWindows::show_progress_2},
-     show_hook3 {"ui show error", this, & DialogWindows::show_error};
+     show_hook3 {"ui show error", this, & DialogWindows::show_error},
+     show_hook4 {"ui show info", this, & DialogWindows::show_info};
     const HookReceiver<DialogWindows>
      hide_hook {"ui hide progress", this, & DialogWindows::hide_progress};
 };
