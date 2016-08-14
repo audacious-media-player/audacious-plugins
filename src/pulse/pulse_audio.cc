@@ -111,9 +111,6 @@ static void poll_events (scoped_lock & lock)
  * connection dies. */
 static bool finish (pa_operation * op, scoped_lock & lock)
 {
-    if (! op)
-        return false;
-
     pa_operation_state_t state;
     while ((state = pa_operation_get_state (op)) != PA_OPERATION_DONE && alive ())
         poll_events (lock);
@@ -121,6 +118,16 @@ static bool finish (pa_operation * op, scoped_lock & lock)
     pa_operation_unref (op);
     return (state == PA_OPERATION_DONE);
 }
+
+#define REPORT(function) do { \
+    AUDERR ("%s() failed: %s\n", function, pa_strerror (pa_context_errno (context))); \
+} while (0)
+
+#define CHECK(function, ...) do { \
+    auto op = function (__VA_ARGS__, & success); \
+    if (! op || ! finish (op, lock) || ! success) \
+        REPORT (#function); \
+} while (0)
 
 static void info_cb (pa_context *, const pa_sink_input_info * i, int, void * userdata)
 {
@@ -144,8 +151,7 @@ static void subscribe_cb (pa_context * c, pa_subscription_event_type t, uint32_t
 
     if (! (o = pa_context_get_sink_input_info (c, index, info_cb, nullptr)))
     {
-        AUDDBG ("pa_context_get_sink_input_info() failed: %s\n",
-         pa_strerror (pa_context_errno (c)));
+        REPORT ("pa_context_get_sink_input_info");
         return;
     }
 
@@ -203,12 +209,8 @@ void PulseOutput::set_volume (StereoVolume v)
     }
 
     int success = 0;
-    auto op = pa_context_set_sink_input_volume (context,
-     pa_stream_get_index (stream), & volume, context_success_cb, & success);
-
-    if (! finish (op, lock) || ! success)
-        AUDDBG ("pa_context_set_sink_input_volume() failed: %s\n",
-         pa_strerror (pa_context_errno (context)));
+    CHECK (pa_context_set_sink_input_volume, context,
+     pa_stream_get_index (stream), & volume, context_success_cb);
 }
 
 void PulseOutput::pause (bool pause)
@@ -216,10 +218,7 @@ void PulseOutput::pause (bool pause)
     scoped_lock lock (pulse_mutex);
 
     int success = 0;
-    auto op = pa_stream_cork (stream, pause, stream_success_cb, & success);
-
-    if (! finish (op, lock) || ! success)
-        AUDDBG ("pa_stream_cork() failed: %s\n", pa_strerror (pa_context_errno (context)));
+    CHECK (pa_stream_cork, stream, pause, stream_success_cb);
 }
 
 int PulseOutput::get_delay ()
@@ -240,10 +239,7 @@ void PulseOutput::drain ()
     scoped_lock lock (pulse_mutex);
 
     int success = 0;
-    auto op = pa_stream_drain (stream, stream_success_cb, & success);
-
-    if (! finish (op, lock) || ! success)
-        AUDDBG ("pa_stream_drain() failed: %s\n", pa_strerror (pa_context_errno (context)));
+    CHECK (pa_stream_drain, stream, stream_success_cb);
 }
 
 void PulseOutput::flush ()
@@ -251,9 +247,7 @@ void PulseOutput::flush ()
     scoped_lock lock (pulse_mutex);
 
     int success = 0;
-    auto op = pa_stream_flush (stream, stream_success_cb, & success);
-    if (! finish (op, lock) || ! success)
-        AUDDBG ("pa_stream_flush() failed: %s\n", pa_strerror (pa_context_errno (context)));
+    CHECK (pa_stream_flush, stream, stream_success_cb);
 
     /* wake up period_wait() */
     flushed = true;
@@ -266,10 +260,7 @@ void PulseOutput::period_wait ()
     scoped_lock lock (pulse_mutex);
 
     int success = 0;
-    auto op = pa_stream_trigger (stream, stream_success_cb, & success);
-
-    if (! finish (op, lock) || ! success)
-        AUDDBG ("pa_stream_trigger() failed: %s\n", pa_strerror (pa_context_errno (context)));
+    CHECK (pa_stream_trigger, stream, stream_success_cb);
 
     /* if the connection dies, wait until flush() is called */
     while ((! pa_stream_writable_size (stream) || ! alive ()) && ! flushed)
@@ -284,7 +275,7 @@ int PulseOutput::write_audio (const void * ptr, int length)
     length = aud::min ((size_t) length, pa_stream_writable_size (stream));
 
     if (pa_stream_write (stream, ptr, length, nullptr, 0, PA_SEEK_RELATIVE) < 0)
-        AUDDBG ("pa_stream_write() failed: %s\n", pa_strerror (pa_context_errno (context)));
+        REPORT ("pa_stream_write");
     else
         ret = length;
 
@@ -365,14 +356,16 @@ bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
     if (! (context = pa_context_new (pa_mainloop_get_api (mainloop), "Audacious")))
     {
         AUDERR ("Failed to allocate context\n");
-        goto fail;
+fail:
+        close_audio ();
+        return false;
     }
 
     pa_context_set_subscribe_callback (context, subscribe_cb, nullptr);
 
     if (pa_context_connect (context, nullptr, (pa_context_flags_t) 0, nullptr) < 0)
     {
-        AUDERR ("Failed to connect to server: %s\n", pa_strerror (pa_context_errno (context)));
+        REPORT ("pa_context_connect");
         goto fail;
     }
 
@@ -382,7 +375,7 @@ bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
     {
         if (cstate == PA_CONTEXT_TERMINATED || cstate == PA_CONTEXT_FAILED)
         {
-            AUDERR ("Failed to connect to server: %s\n", pa_strerror (pa_context_errno (context)));
+            REPORT ("pa_context_connect");
             goto fail;
         }
 
@@ -391,10 +384,8 @@ bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
 
     if (! (stream = pa_stream_new (context, "Audacious", & ss, nullptr)))
     {
-        AUDERR ("Failed to create stream: %s\n", pa_strerror (pa_context_errno (context)));
-fail:
-        close_audio ();
-        return false;
+        REPORT ("pa_stream_new");
+        goto fail;
     }
 
     /* Connect stream with sink and default volume */
@@ -411,7 +402,7 @@ fail:
     auto flags = pa_stream_flags_t (PA_STREAM_INTERPOLATE_TIMING | PA_STREAM_AUTO_TIMING_UPDATE);
     if (pa_stream_connect_playback (stream, nullptr, & buffer, flags, nullptr, nullptr) < 0)
     {
-        AUDERR ("Failed to connect stream: %s\n", pa_strerror (pa_context_errno (context)));
+        REPORT ("pa_stream_connect_playback");
         goto fail;
     }
 
@@ -421,7 +412,7 @@ fail:
     {
         if (sstate == PA_STREAM_FAILED || sstate == PA_STREAM_TERMINATED)
         {
-            AUDERR ("Failed to connect stream: %s\n", pa_strerror (pa_context_errno (context)));
+            REPORT ("pa_stream_connect_playback");
             goto fail;
         }
 
@@ -430,25 +421,15 @@ fail:
 
     /* Now subscribe to events */
     int success = 0;
-    auto op = pa_context_subscribe (context, PA_SUBSCRIPTION_MASK_SINK_INPUT,
-     context_success_cb, & success);
-
-    if (! finish (op, lock) || ! success)
-    {
-        AUDERR ("pa_context_subscribe() failed: %s\n", pa_strerror (pa_context_errno (context)));
+    CHECK (pa_context_subscribe, context, PA_SUBSCRIPTION_MASK_SINK_INPUT, context_success_cb);
+    if (! success)
         goto fail;
-    }
 
     /* Now request the initial stream info */
     success = 0;
-    op = pa_context_get_sink_input_info (context, pa_stream_get_index (stream), info_cb, & success);
-
-    if (! finish (op, lock) || ! success)
-    {
-        AUDERR ("pa_context_get_sink_input_info() failed: %s\n",
-         pa_strerror (pa_context_errno (context)));
+    CHECK (pa_context_get_sink_input_info, context, pa_stream_get_index (stream), info_cb);
+    if (! success)
         goto fail;
-    }
 
     flushed = true;
     return true;
