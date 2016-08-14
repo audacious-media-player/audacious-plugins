@@ -17,10 +17,7 @@
   USA.
 ***/
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
+#include <mutex>
 
 #include <pulse/pulseaudio.h>
 
@@ -63,16 +60,14 @@ EXPORT PulseOutput aud_plugin_instance;
 
 static pa_context * context = nullptr;
 static pa_stream * stream = nullptr;
+
+static std::mutex mainloop_mutex;
 static pa_threaded_mainloop * mainloop = nullptr;
 
 static pa_cvolume volume;
-static bool volume_valid = false;
-
-static bool connected = false;
 
 #define CHECK_DEAD_GOTO(label, warn) do { \
-if (! mainloop || \
-    ! context || pa_context_get_state (context) != PA_CONTEXT_READY || \
+if (! context || pa_context_get_state (context) != PA_CONTEXT_READY || \
     ! stream || pa_stream_get_state (stream) != PA_STREAM_READY) { \
         if (warn) \
             AUDDBG ("Connection died: %s\n", context ? \
@@ -81,19 +76,15 @@ if (! mainloop || \
     }  \
 } while (0);
 
-#define CHECK_CONNECTED(retval) \
-do { \
-    if (! connected) \
-        return retval; \
-} while (0);
-
-static void info_cb (pa_context *, const pa_sink_input_info * i, int, void *)
+static void info_cb (pa_context *, const pa_sink_input_info * i, int, void * userdata)
 {
     if (! i)
         return;
 
     volume = i->volume;
-    volume_valid = true;
+
+    if (userdata)
+        * (int *) userdata = 1;
 }
 
 static void subscribe_cb (pa_context * c, pa_subscription_event_type t, uint32_t index, void *)
@@ -177,13 +168,13 @@ static void stream_latency_update_cb (pa_stream *, void *)
 
 StereoVolume PulseOutput::get_volume ()
 {
+    std::unique_lock<std::mutex> lock (mainloop_mutex);
     StereoVolume v = {0, 0};
 
-    if (! connected || ! volume_valid)
+    if (! mainloop)
         return v;
 
     pa_threaded_mainloop_lock (mainloop);
-    CHECK_DEAD_GOTO (fail, 1);
 
     if (volume.channels == 2)
     {
@@ -193,22 +184,22 @@ StereoVolume PulseOutput::get_volume ()
     else
         v.left = v.right = aud::rescale<int> (pa_cvolume_avg (& volume), PA_VOLUME_NORM, 100);
 
-fail:
     pa_threaded_mainloop_unlock (mainloop);
     return v;
 }
 
 void PulseOutput::set_volume (StereoVolume v)
 {
+    std::unique_lock<std::mutex> lock (mainloop_mutex);
     pa_operation * o;
 
-    if (! connected)
+    if (! mainloop)
         return;
 
     pa_threaded_mainloop_lock (mainloop);
     CHECK_DEAD_GOTO (fail, 1);
 
-    if (! volume_valid || volume.channels != 1)
+    if (volume.channels != 1)
     {
         volume.values[0] = aud::rescale<int> (v.left, 100, PA_VOLUME_NORM);
         volume.values[1] = aud::rescale<int> (v.right, 100, PA_VOLUME_NORM);
@@ -219,8 +210,6 @@ void PulseOutput::set_volume (StereoVolume v)
         volume.values[0] = aud::rescale<int> (aud::max (v.left, v.right), 100, PA_VOLUME_NORM);
         volume.channels = 1;
     }
-
-    volume_valid = true;
 
     if (! (o = pa_context_set_sink_input_volume (context,
      pa_stream_get_index (stream), & volume, nullptr, nullptr)))
@@ -237,8 +226,6 @@ void PulseOutput::pause (bool pause)
 {
     pa_operation * o = nullptr;
     int success = 0;
-
-    CHECK_CONNECTED ();
 
     pa_threaded_mainloop_lock (mainloop);
     CHECK_DEAD_GOTO (fail, 1);
@@ -269,8 +256,6 @@ int PulseOutput::get_delay ()
 {
     int delay = 0;
 
-    CHECK_CONNECTED (0);
-
     pa_threaded_mainloop_lock (mainloop);
 
     pa_usec_t usec;
@@ -287,8 +272,6 @@ void PulseOutput::drain ()
 {
     pa_operation * o = nullptr;
     int success = 0;
-
-    CHECK_CONNECTED ();
 
     pa_threaded_mainloop_lock (mainloop);
     CHECK_DEAD_GOTO (fail, 0);
@@ -320,8 +303,6 @@ void PulseOutput::flush ()
     pa_operation * o = nullptr;
     int success = 0;
 
-    CHECK_CONNECTED ();
-
     pa_threaded_mainloop_lock (mainloop);
     CHECK_DEAD_GOTO (fail, 1);
 
@@ -351,8 +332,6 @@ void PulseOutput::period_wait ()
 {
     pa_operation * o = nullptr;
     int success = 0;
-
-    CHECK_CONNECTED ();
 
     pa_threaded_mainloop_lock (mainloop);
     CHECK_DEAD_GOTO (fail, 1);
@@ -387,8 +366,6 @@ fail:
 
 int PulseOutput::write_audio (const void * ptr, int length)
 {
-    CHECK_CONNECTED (0);
-
     int ret = 0;
     pa_threaded_mainloop_lock (mainloop);
     CHECK_DEAD_GOTO (fail, 1);
@@ -410,7 +387,7 @@ fail:
 
 void PulseOutput::close_audio ()
 {
-    connected = false;
+    std::unique_lock<std::mutex> lock (mainloop_mutex);
 
     if (mainloop)
         pa_threaded_mainloop_stop (mainloop);
@@ -434,8 +411,6 @@ void PulseOutput::close_audio ()
         pa_threaded_mainloop_free (mainloop);
         mainloop = nullptr;
     }
-
-    volume_valid = false;
 }
 
 static pa_sample_format_t to_pulse_format (int aformat)
@@ -460,6 +435,7 @@ static pa_sample_format_t to_pulse_format (int aformat)
 
 bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
 {
+    std::unique_lock<std::mutex> lock (mainloop_mutex);
     pa_sample_spec ss;
 
     ss.format = to_pulse_format (fmt);
@@ -576,28 +552,27 @@ FAIL1:
 
     /* Now request the initial stream info */
     if (! (o = pa_context_get_sink_input_info (context,
-     pa_stream_get_index (stream), info_cb, nullptr)))
+     pa_stream_get_index (stream), info_cb, & success)))
     {
         AUDERR ("pa_context_get_sink_input_info() failed: %s\n",
          pa_strerror (pa_context_errno (context)));
         goto FAIL2;
     }
 
+    success = 0;
     while (pa_operation_get_state (o) != PA_OPERATION_DONE)
     {
         CHECK_DEAD_GOTO (FAIL2, 1);
         pa_threaded_mainloop_wait (mainloop);
     }
 
-    if (! volume_valid)
+    if (! success)
     {
         AUDERR ("pa_context_get_sink_input_info() failed: %s\n",
          pa_strerror (pa_context_errno (context)));
         goto FAIL2;
     }
     pa_operation_unref (o);
-
-    connected = true;
 
     pa_threaded_mainloop_unlock (mainloop);
 
