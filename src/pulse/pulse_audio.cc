@@ -66,15 +66,24 @@ static pa_threaded_mainloop * mainloop = nullptr;
 
 static pa_cvolume volume;
 
-#define CHECK_DEAD_GOTO(label, warn) do { \
-if (! context || pa_context_get_state (context) != PA_CONTEXT_READY || \
-    ! stream || pa_stream_get_state (stream) != PA_STREAM_READY) { \
-        if (warn) \
-            AUDDBG ("Connection died: %s\n", context ? \
-             pa_strerror (pa_context_errno (context)) : "nullptr"); \
-        goto label; \
-    }  \
-} while (0);
+static bool alive ()
+{
+    return pa_context_get_state (context) == PA_CONTEXT_READY &&
+     pa_stream_get_state (stream) == PA_STREAM_READY;
+}
+
+static bool finish (pa_operation * op)
+{
+    if (! op)
+        return false;
+
+    pa_operation_state_t state;
+    while ((state = pa_operation_get_state (op)) != PA_OPERATION_DONE && alive ())
+        pa_threaded_mainloop_wait (mainloop);
+
+    pa_operation_unref (op);
+    return (state == PA_OPERATION_DONE);
+}
 
 static void info_cb (pa_context *, const pa_sink_input_info * i, int, void * userdata)
 {
@@ -197,7 +206,6 @@ void PulseOutput::set_volume (StereoVolume v)
         return;
 
     pa_threaded_mainloop_lock (mainloop);
-    CHECK_DEAD_GOTO (fail, 1);
 
     if (volume.channels != 1)
     {
@@ -218,36 +226,16 @@ void PulseOutput::set_volume (StereoVolume v)
     else
         pa_operation_unref (o);
 
-fail:
     pa_threaded_mainloop_unlock (mainloop);
 }
 
 void PulseOutput::pause (bool pause)
 {
-    pa_operation * o = nullptr;
-    int success = 0;
-
     pa_threaded_mainloop_lock (mainloop);
-    CHECK_DEAD_GOTO (fail, 1);
 
-    if (! (o = pa_stream_cork (stream, pause, stream_success_cb, & success)))
-    {
+    int success = 0;
+    if (! finish (pa_stream_cork (stream, pause, stream_success_cb, & success)) || ! success)
         AUDDBG ("pa_stream_cork() failed: %s\n", pa_strerror (pa_context_errno (context)));
-        goto fail;
-    }
-
-    while (pa_operation_get_state (o) != PA_OPERATION_DONE)
-    {
-        CHECK_DEAD_GOTO (fail, 1);
-        pa_threaded_mainloop_wait (mainloop);
-    }
-
-    if (! success)
-        AUDDBG ("pa_stream_cork() failed: %s\n", pa_strerror (pa_context_errno (context)));
-
-fail:
-    if (o)
-        pa_operation_unref (o);
 
     pa_threaded_mainloop_unlock (mainloop);
 }
@@ -255,7 +243,6 @@ fail:
 int PulseOutput::get_delay ()
 {
     int delay = 0;
-
     pa_threaded_mainloop_lock (mainloop);
 
     pa_usec_t usec;
@@ -264,102 +251,44 @@ int PulseOutput::get_delay ()
         delay = usec / 1000;
 
     pa_threaded_mainloop_unlock (mainloop);
-
     return delay;
 }
 
 void PulseOutput::drain ()
 {
-    pa_operation * o = nullptr;
-    int success = 0;
-
     pa_threaded_mainloop_lock (mainloop);
-    CHECK_DEAD_GOTO (fail, 0);
 
-    if (! (o = pa_stream_drain (stream, stream_success_cb, & success)))
-    {
+    int success = 0;
+    if (! finish (pa_stream_drain (stream, stream_success_cb, & success)) || ! success)
         AUDDBG ("pa_stream_drain() failed: %s\n", pa_strerror (pa_context_errno (context)));
-        goto fail;
-    }
-
-    while (pa_operation_get_state (o) != PA_OPERATION_DONE)
-    {
-        CHECK_DEAD_GOTO (fail, 1);
-        pa_threaded_mainloop_wait (mainloop);
-    }
-
-    if (! success)
-        AUDDBG ("pa_stream_drain() failed: %s\n", pa_strerror (pa_context_errno (context)));
-
-fail:
-    if (o)
-        pa_operation_unref (o);
 
     pa_threaded_mainloop_unlock (mainloop);
 }
 
 void PulseOutput::flush ()
 {
-    pa_operation * o = nullptr;
-    int success = 0;
-
     pa_threaded_mainloop_lock (mainloop);
-    CHECK_DEAD_GOTO (fail, 1);
 
-    if (! (o = pa_stream_flush (stream, stream_success_cb, & success)))
-    {
+    int success = 0;
+    if (! finish (pa_stream_flush (stream, stream_success_cb, & success)) || ! success)
         AUDDBG ("pa_stream_flush() failed: %s\n", pa_strerror (pa_context_errno (context)));
-        goto fail;
-    }
-
-    while (pa_operation_get_state (o) != PA_OPERATION_DONE)
-    {
-        CHECK_DEAD_GOTO (fail, 1);
-        pa_threaded_mainloop_wait (mainloop);
-    }
-
-    if (! success)
-        AUDDBG ("pa_stream_flush() failed: %s\n", pa_strerror (pa_context_errno (context)));
-
-fail:
-    if (o)
-        pa_operation_unref (o);
 
     pa_threaded_mainloop_unlock (mainloop);
 }
 
 void PulseOutput::period_wait ()
 {
-    pa_operation * o = nullptr;
-    int success = 0;
-
     pa_threaded_mainloop_lock (mainloop);
-    CHECK_DEAD_GOTO (fail, 1);
 
-    if (! (o = pa_stream_trigger (stream, stream_success_cb, & success)))
-    {
-        AUDDBG ("pa_stream_trigger() failed: %s\n", pa_strerror (pa_context_errno (context)));
-        goto fail;
-    }
-
-    while (pa_operation_get_state (o) != PA_OPERATION_DONE)
-    {
-        CHECK_DEAD_GOTO (fail, 1);
-        pa_threaded_mainloop_wait (mainloop);
-    }
-
-    if (! success)
+    int success = 0;
+    if (! finish (pa_stream_trigger (stream, stream_success_cb, & success)) || ! success)
         AUDDBG ("pa_stream_trigger() failed: %s\n", pa_strerror (pa_context_errno (context)));
 
-    while (! pa_stream_writable_size (stream))
+    if (success)
     {
-        CHECK_DEAD_GOTO (fail, 1);
-        pa_threaded_mainloop_wait (mainloop);
+        while (! pa_stream_writable_size (stream) && alive ())
+            pa_threaded_mainloop_wait (mainloop);
     }
-
-fail:
-    if (o)
-        pa_operation_unref (o);
 
     pa_threaded_mainloop_unlock (mainloop);
 }
@@ -368,19 +297,14 @@ int PulseOutput::write_audio (const void * ptr, int length)
 {
     int ret = 0;
     pa_threaded_mainloop_lock (mainloop);
-    CHECK_DEAD_GOTO (fail, 1);
 
     length = aud::min ((size_t) length, pa_stream_writable_size (stream));
 
     if (pa_stream_write (stream, ptr, length, nullptr, 0, PA_SEEK_RELATIVE) < 0)
-    {
         AUDDBG ("pa_stream_write() failed: %s\n", pa_strerror (pa_context_errno (context)));
-        goto fail;
-    }
+    else
+        ret = length;
 
-    ret = length;
-
-fail:
     pa_threaded_mainloop_unlock (mainloop);
     return ret;
 }
@@ -459,7 +383,7 @@ bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
     if (! (context = pa_context_new (pa_threaded_mainloop_get_api (mainloop), "Audacious")))
     {
         AUDERR ("Failed to allocate context\n");
-        goto FAIL1;
+        goto fail;
     }
 
     pa_context_set_state_callback (context, context_state_cb, nullptr);
@@ -468,13 +392,13 @@ bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
     if (pa_context_connect (context, nullptr, (pa_context_flags_t) 0, nullptr) < 0)
     {
         AUDERR ("Failed to connect to server: %s\n", pa_strerror (pa_context_errno (context)));
-        goto FAIL1;
+        goto fail;
     }
 
     if (pa_threaded_mainloop_start (mainloop) < 0)
     {
         AUDERR ("Failed to start main loop\n");
-        goto FAIL1;
+        goto fail;
     }
 
     /* Wait until the context is ready */
@@ -483,14 +407,13 @@ bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
     if (pa_context_get_state (context) != PA_CONTEXT_READY)
     {
         AUDERR ("Failed to connect to server: %s\n", pa_strerror (pa_context_errno (context)));
-        goto FAIL1;
+        goto fail;
     }
 
     if (! (stream = pa_stream_new (context, "Audacious", & ss, nullptr)))
     {
         AUDERR ("Failed to create stream: %s\n", pa_strerror (pa_context_errno (context)));
-
-FAIL1:
+fail:
         pa_threaded_mainloop_unlock (mainloop);
         close_audio ();
         return false;
@@ -508,14 +431,11 @@ FAIL1:
     pa_buffer_attr buffer = {(uint32_t) -1, (uint32_t) buffer_size,
      (uint32_t) -1, (uint32_t) -1, (uint32_t) buffer_size};
 
-    pa_operation * o = nullptr;
-    int success;
-
     auto flags = pa_stream_flags_t (PA_STREAM_INTERPOLATE_TIMING | PA_STREAM_AUTO_TIMING_UPDATE);
     if (pa_stream_connect_playback (stream, nullptr, & buffer, flags, nullptr, nullptr) < 0)
     {
         AUDERR ("Failed to connect stream: %s\n", pa_strerror (pa_context_errno (context)));
-        goto FAIL2;
+        goto fail;
     }
 
     /* Wait until the stream is ready */
@@ -524,67 +444,30 @@ FAIL1:
     if (pa_stream_get_state (stream) != PA_STREAM_READY)
     {
         AUDERR ("Failed to connect stream: %s\n", pa_strerror (pa_context_errno (context)));
-        goto FAIL2;
+        goto fail;
     }
 
     /* Now subscribe to events */
-    if (! (o = pa_context_subscribe (context, PA_SUBSCRIPTION_MASK_SINK_INPUT,
-     context_success_cb, & success)))
+    int success = 0;
+    if (! finish (pa_context_subscribe (context,
+     PA_SUBSCRIPTION_MASK_SINK_INPUT, context_success_cb, & success)) || ! success)
     {
         AUDERR ("pa_context_subscribe() failed: %s\n", pa_strerror (pa_context_errno (context)));
-        goto FAIL2;
+        goto fail;
     }
-
-    success = 0;
-    while (pa_operation_get_state (o) != PA_OPERATION_DONE)
-    {
-        CHECK_DEAD_GOTO (FAIL2, 1);
-        pa_threaded_mainloop_wait (mainloop);
-    }
-
-    if (! success)
-    {
-        AUDERR ("pa_context_subscribe() failed: %s\n", pa_strerror (pa_context_errno (context)));
-        goto FAIL2;
-    }
-
-    pa_operation_unref (o);
 
     /* Now request the initial stream info */
-    if (! (o = pa_context_get_sink_input_info (context,
-     pa_stream_get_index (stream), info_cb, & success)))
-    {
-        AUDERR ("pa_context_get_sink_input_info() failed: %s\n",
-         pa_strerror (pa_context_errno (context)));
-        goto FAIL2;
-    }
-
     success = 0;
-    while (pa_operation_get_state (o) != PA_OPERATION_DONE)
-    {
-        CHECK_DEAD_GOTO (FAIL2, 1);
-        pa_threaded_mainloop_wait (mainloop);
-    }
-
-    if (! success)
+    if (! finish (pa_context_get_sink_input_info (context,
+     pa_stream_get_index (stream), info_cb, & success)) || ! success)
     {
         AUDERR ("pa_context_get_sink_input_info() failed: %s\n",
          pa_strerror (pa_context_errno (context)));
-        goto FAIL2;
+        goto fail;
     }
-    pa_operation_unref (o);
 
     pa_threaded_mainloop_unlock (mainloop);
-
     return true;
-
-FAIL2:
-    if (o)
-        pa_operation_unref (o);
-
-    pa_threaded_mainloop_unlock (mainloop);
-    close_audio ();
-    return false;
 }
 
 bool PulseOutput::init ()
