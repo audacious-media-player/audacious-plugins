@@ -737,6 +737,7 @@ static void refresh_cb (GtkButton * button, GtkWidget * file_entry)
     String uri = audgui_file_entry_get_uri (file_entry);
     if (uri)
     {
+        audgui_file_entry_set_uri (file_entry, uri);  // normalize path
         begin_add (uri);
         update_database ();
     }
