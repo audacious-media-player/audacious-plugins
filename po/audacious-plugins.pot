@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-08-03 19:21-0400\n"
+"POT-Creation-Date: 2016-08-22 15:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2579,11 +2579,11 @@ msgstr ""
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr ""
 
-#: src/pulse/pulse_audio.cc:38
+#: src/pulse/pulse_audio.cc:40
 msgid "PulseAudio Output"
 msgstr ""
 
-#: src/pulse/pulse_audio.cc:612
+#: src/pulse/pulse_audio.cc:494
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -2630,6 +2630,10 @@ msgstr ""
 
 #: src/qtui/dialog_windows.cc:31
 msgid "Working ..."
+msgstr ""
+
+#: src/qtui/dialog_windows.cc:43
+msgid "Information"
 msgstr ""
 
 #: src/qtui/filter_input.cc:44 src/skins/search-select.cc:76
@@ -2762,52 +2766,41 @@ msgstr ""
 msgid "192 kHz:"
 msgstr ""
 
-#: src/scrobbler2/config_window.cc:41
+#: src/scrobbler2/config_window.cc:19
+msgid "Checking Last.fm access ..."
+msgstr ""
+
+#: src/scrobbler2/config_window.cc:27
+msgid ""
+"Your scrobbles are being saved on your computer temporarily.  They will be "
+"submitted as soon as Audacious is allowed access."
+msgstr ""
+
+#: src/scrobbler2/config_window.cc:33
 #, c-format
-msgid "OK. Scrobbling for user: %s"
+msgid "Permission granted.  Scrobbling for user %s."
 msgstr ""
 
-#: src/scrobbler2/config_window.cc:54
-msgid "Permission Denied"
-msgstr ""
-
-#: src/scrobbler2/config_window.cc:56
-msgid "Access the following link to allow Audacious to scrobble your plays:"
-msgstr ""
-
-#: src/scrobbler2/config_window.cc:66
-msgid "Keep this window open and click 'Check Permission' again.\n"
-msgstr ""
-
-#: src/scrobbler2/config_window.cc:69 src/scrobbler2/config_window.cc:80
+#: src/scrobbler2/config_window.cc:37
 msgid ""
-"Don't worry. Your scrobbles are saved on your computer.\n"
-"They will be submitted as soon as Audacious is allowed to do so."
+"Permission denied.  Open the following URL in a browser, allow Audacious "
+"access to your account, and then click 'Check Permission' again:"
 msgstr ""
 
-#: src/scrobbler2/config_window.cc:77
-msgid "Network Problem."
+#: src/scrobbler2/config_window.cc:47
+msgid "There was a problem contacting Last.fm."
 msgstr ""
 
-#: src/scrobbler2/config_window.cc:78
-msgid "There was a problem contacting Last.fm. Please try again later."
+#: src/scrobbler2/config_window.cc:86
+msgid "Check Permission"
 msgstr ""
 
-#: src/scrobbler2/config_window.cc:110
-msgid "Checking..."
+#: src/scrobbler2/config_window.cc:87
+msgid "Revoke Permission"
 msgstr ""
 
-#: src/scrobbler2/config_window.cc:176
-msgid "C_heck Permission"
-msgstr ""
-
-#: src/scrobbler2/config_window.cc:177
-msgid "_Revoke Permission"
-msgstr ""
-
-#: src/scrobbler2/config_window.cc:220
-msgid ""
-"You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
+#: src/scrobbler2/config_window.cc:91
+msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
 
 #: src/scrobbler2/scrobbler.cc:29
@@ -2894,21 +2887,21 @@ msgstr ""
 msgid "_Add to Playlist"
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:725 src/search-tool/search-tool.cc:711
+#: src/search-tool-qt/search-tool-qt.cc:725 src/search-tool/search-tool.cc:752
 msgid "Search library"
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:728 src/search-tool/search-tool.cc:715
+#: src/search-tool-qt/search-tool-qt.cc:728 src/search-tool/search-tool.cc:756
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:734 src/search-tool/search-tool.cc:724
+#: src/search-tool-qt/search-tool-qt.cc:734 src/search-tool/search-tool.cc:765
 msgid "Please wait ..."
 msgstr ""
 
-#: src/search-tool/search-tool.cc:752
+#: src/search-tool/search-tool.cc:793
 msgid "Choose Folder"
 msgstr ""
 
