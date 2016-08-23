@@ -290,10 +290,8 @@ int PulseOutput::write_audio (const void * ptr, int length)
     return ret;
 }
 
-void PulseOutput::close_audio ()
+static void close_audio_locked (scoped_lock & lock)
 {
-    scoped_lock lock (pulse_mutex);
-
     /* wait for any parallel tasks (e.g. set_volume()) to complete */
     while (polling)
         pulse_cond.wait (lock);
@@ -319,6 +317,12 @@ void PulseOutput::close_audio ()
         pa_mainloop_free (mainloop);
         mainloop = nullptr;
     }
+}
+
+void PulseOutput::close_audio ()
+{
+    scoped_lock lock (pulse_mutex);
+    close_audio_locked (lock);
 }
 
 static pa_sample_format_t to_pulse_format (int aformat)
@@ -467,7 +471,7 @@ bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
         ! create_stream (lock, ss) ||
         ! subscribe_events (lock))
     {
-        close_audio ();
+        close_audio_locked (lock);
         return false;
     }
 
