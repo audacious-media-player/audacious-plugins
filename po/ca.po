@@ -1,26 +1,26 @@
-# Catalan translation for Audacious Plugins
-# Copyright (C) Audacious translators
-# This file is distributed under the same license as the Audacious Plugins package.
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
 # Translators:
 # Adolfo Jayme-Barrientos, 2013
 # Catalanoic <catalanoic@gmail.com>, 2016
 # Catalanoic <catalanoic@gmail.com>, 2012
-# David Surroca Estrada <david.tb303@gmail.com>, 2015
+# David Surroca Estrada <david.tb303@gmail.com>, 2015-2016
 # Francesc Gordillo i Cortínez <inactive+frangor@transifex.com>, 2013
+# Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2016
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-08-22 15:08+0200\n"
-"PO-Revision-Date: 2016-08-22 12:05+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
-"Language-Team: Catalan (http://www.transifex.com/jlindgren/audacious/"
-"language/ca/)\n"
-"Language: ca\n"
+"POT-Creation-Date: 2016-08-15 22:28+0200\n"
+"PO-Revision-Date: 2016-08-25 09:56+0000\n"
+"Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
+"Language-Team: Catalan (http://www.transifex.com/jlindgren/audacious/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ca\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/aac/aac.cc:18
@@ -29,7 +29,7 @@ msgstr "Descodificador d'AAC (Raw)"
 
 #: src/adplug/adplug-xmms.cc:42
 msgid "AdPlug (AdLib Player)"
-msgstr "AdPlug (AdLib Player)"
+msgstr "AdPlug (reproductor AdLib)"
 
 #: src/adplug/adplug-xmms.cc:144 src/modplug/modplugbmp.cc:337
 #: src/psf/plugin.cc:136 src/vtx/vtx.cc:89 src/xsf/plugin.cc:106
@@ -42,18 +42,14 @@ msgstr "Alarma"
 
 #: src/alarm/alarm.cc:782
 msgid "Set Alarm ..."
-msgstr "Configura Alarma ..."
+msgstr "Estableix l'alarma..."
 
 #: src/alarm/alarm.cc:810
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
-msgstr ""
-"Un connector que pot ser utilitzat per iniciar la reproducció en qualsevol "
-"moment.\n"
-"\n"
-"Programat originalment per Adam Feakin i Daniel Stodden."
+msgstr "Un connector que pot ser utilitzat per iniciar la reproducció en qualsevol moment.\n\nEscrit originalment per Adam Feakin i Daniel Stodden."
 
 #: src/alarm/interface.cc:28
 msgid ""
@@ -104,58 +100,15 @@ msgid ""
 "    Display a reminder when the alarm goes off.\n"
 "    Type the reminder in the input field and enable\n"
 "    the checkbox if you want it to be shown."
-msgstr ""
-"Temps\n"
-"  Alarma a:\n"
-"    L'hora que s'encendrà l'alarma.\n"
-"\n"
-"  Tranquil després de:\n"
-"    Atura alarma després d'aquest temps.\n"
-"       (si la finestra despertament no està tancada)\n"
-"\n"
-"\n"
-"Dies\n"
-"  Dia:\n"
-"    Selecciona els dies per activar l'alarma.\n"
-"\n"
-"  Temps:\n"
-"    Escolliu l'hora de l'alarma diària,\n"
-"    o seleccioneu el botó per utilitzar l'hora per defecte.\n"
-"\n"
-"\n"
-"Volum\n"
-"  Increment:\n"
-"    Augmenta el volum seleccionat per aquest temps.\n"
-"\n"
-"  Inicia a:\n"
-"    Inicia augmentant des d'aquest volum.\n"
-"\n"
-"  Final:\n"
-"    El volum per aturar l'augment. Si l'augment de temps és 0 llavors "
-"selecciona aquest volum i s'inicia la reproducció.\n"
-"\n"
-"\n"
-"Opcions:\n"
-"  Instrucció addiconal:\n"
-"    Activa aquesta instrucció durant l'alarma.\n"
-"\n"
-"  Reproducció:\n"
-"    Carrega aquesta llista de reproducció. Si no hi ha cap llista, serà "
-"usada l'actual.\n"
-"    També es pot introduir aquí l'URL d'un flux mp3/ogg.\n"
-"\n"
-"  Recordatori:\n"
-"    Mostra un recordatori quan s'apaga l'alarma.\n"
-"    Escriviu el recordatori en el camp d'entrada i activa la casella so "
-"voleu que es mostri."
+msgstr "Temps\n  Alarma a:\n    L'hora que s'activarà l'alarma.\n\n  Tranquil després de:\n    Atura alarma després d'aquest temps.\n       (si la finestra despertament no està tancada)\n\n\nDies\n  Dia:\n    Selecciona els dies per activar l'alarma.\n\n  Temps:\n    Escolliu l'hora de l'alarma diària,\n    o seleccioneu el botó per utilitzar l'hora per defecte.\n\n\nVolum\n  Esvaïment:\n    Esvaeix el volum seleccionat per aquest interval de temps.\n\n  Comença per:\n    Inicia l'esvaïment a partir d'aquest volum.\n\n  Acabament:\n    El volum per aturar l'esvaïment. Si el temps d'esvaïment és 0 aleshores es selecciona aquest volum i s'inicia la reproducció.\n\n\nOpcions:\n  Ordre addicional:\n    Activa aquesta ordre durant l'alarma.\n\n  Llista de reproducció:\n    Carrega aquesta llista de reproducció. Si no hi ha cap llista, s'utilitzarà l'actual.\n    També es pot introduir aquí l'URL d'un flux mp3/ogg.\n\n  Recordatori:\n    Mostra un recordatori quan s'apaga l'alarma.\n    Teclegeu el recordatori al camp d'entrada i habiliteu la casella si voleu que es mostri."
 
 #: src/alarm/interface.cc:78
 msgid "This is your wakeup call."
-msgstr "Això és l'avís per despertar-se."
+msgstr "Aquest és el vostre avís per despertar."
 
 #: src/alarm/interface.cc:96
 msgid "Your reminder for today is..."
-msgstr "El vostre recordatori d'avui és.."
+msgstr "El vostre recordatori d'avui és..."
 
 #: src/alarm/interface.cc:98 src/alarm/interface.cc:372
 msgid "Reminder"
@@ -192,7 +145,7 @@ msgstr "Diumenge"
 #: src/alarm/interface.cc:160 src/alarm/interface.cc:219
 #: src/alarm/interface.cc:234
 msgid "Time"
-msgstr "Hora"
+msgstr "Temps"
 
 #: src/alarm/interface.cc:167
 msgid "Alarm at (default):"
@@ -232,7 +185,7 @@ msgstr "Dies"
 
 #: src/alarm/interface.cc:286
 msgid "Fading"
-msgstr "Fosa"
+msgstr "Esvaïment"
 
 #: src/alarm/interface.cc:294 src/console/plugin.cc:41
 #: src/crossfade/crossfade.cc:52 src/crossfade/crossfade.cc:58
@@ -247,11 +200,11 @@ msgstr "Volum"
 
 #: src/alarm/interface.cc:306
 msgid "Start at"
-msgstr "Comença a"
+msgstr "Comença per"
 
 #: src/alarm/interface.cc:322
 msgid "Final"
-msgstr "Final"
+msgstr "Acabament"
 
 #: src/alarm/interface.cc:335
 msgid "Current"
@@ -263,7 +216,7 @@ msgstr "Ordre addicional"
 
 #: src/alarm/interface.cc:354 src/alarm/interface.cc:377
 msgid "enable"
-msgstr "activa"
+msgstr "habilita"
 
 #: src/alarm/interface.cc:361
 msgid "Playlist (optional)"
@@ -287,7 +240,7 @@ msgstr "Ajuda"
 
 #: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:33
 msgid "Album Art"
-msgstr "Art del àlbum"
+msgstr "Art de l'àlbum"
 
 #: src/alsa/alsa.h:64
 msgid "ALSA Output"
@@ -298,14 +251,8 @@ msgid ""
 "ALSA Output Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
-"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
-"code served as a reference when the ALSA manual was not enough."
-msgstr ""
-"ALSA Output Plugin for Audacious\n"
-"Copyright 2009-2012 John Lindgren\n"
-"\n"
-"Molts agraïments a William Pitcock, autor de l'ALSA Output Plugin NG, el "
-"codi va servir de referència quan el manual d'ALSA no era suficient."
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
+msgstr "Connector de sortida ALSA per a Audacious\nCopyright 2009-2012 John Lindgren\n\nMolts agraïments a William Pitcock, autor del connector de sortida ALSA NG, el codi va servir de referència quan el manual d'ALSA no era suficient."
 
 #: src/alsa/config.cc:61
 msgid "(no description)"
@@ -333,7 +280,7 @@ msgstr "Element de mescla:"
 
 #: src/amidiplug/amidi-plug.cc:41
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "AMIDI-Plug (MIDI Player)"
+msgstr "AMIDI-Plug (reproductor MIDI)"
 
 #: src/amidiplug/amidi-plug.cc:435
 msgid ""
@@ -356,25 +303,7 @@ msgid ""
 "\n"
 "Tony Vroon\n"
 "for the good help with alpha testing"
-msgstr ""
-"AMIDI-Plug\n"
-"modular MIDI music player\n"
-"http://www.develia.org/projects.php?p=amidiplug\n"
-"\n"
-"programat per Giacomo Lozito\n"
-"<james@develia.org>\n"
-"\n"
-"agraïments especials a...\n"
-"\n"
-"Clemens Ladisch o Jaroslav Kysela\n"
-"pels fantàstics programes aplaymidi i amixer; que són molt útils, així com "
-"l'alsa-lib docs, per poder aprendre més sobre l'API ALSA\n"
-"\n"
-"Alfredo Spadafina\n"
-"per al bon logotip del teclat midi\n"
-"\n"
-"Tony Vroon\n"
-"per a la bona ajuda amb les proves alfa"
+msgstr "AMIDI-Plug\nmodular MIDI music player\nhttp://www.develia.org/projects.php?p=amidiplug\n\nprogramat per Giacomo Lozito\n<james@develia.org>\n\nagraïments especials a...\n\nClemens Ladisch o Jaroslav Kysela\npels fantàstics programes aplaymidi i amixer; que són molt útils, així com l'alsa-lib docs, per poder aprendre més sobre l'API ALSA\n\nAlfredo Spadafina\nper al bon logotip del teclat midi\n\nTony Vroon\nper a la bona ajuda amb les proves alfa"
 
 #: src/amidiplug/i_configure.cc:94
 msgid "Override default gain:"
@@ -386,7 +315,7 @@ msgstr "Ignora la polifonia per defecte:"
 
 #: src/amidiplug/i_configure.cc:110
 msgid "Override default reverb:"
-msgstr "Ignora el reverb per defecte:"
+msgstr "Ignora la reverberació per defecte:"
 
 #: src/amidiplug/i_configure.cc:112 src/amidiplug/i_configure.cc:120
 msgid "On"
@@ -406,7 +335,7 @@ msgstr "Transposició:"
 
 #: src/amidiplug/i_configure.cc:131 src/speedpitch/speed-pitch.cc:235
 msgid "semitones"
-msgstr "semitones"
+msgstr "semitons"
 
 #: src/amidiplug/i_configure.cc:132
 msgid "Drum shift:"
@@ -418,11 +347,11 @@ msgstr "nombres de nota"
 
 #: src/amidiplug/i_configure.cc:135
 msgid "Skip leading silence"
-msgstr "Salta silenci inicial"
+msgstr "Omet el silenci inicial"
 
 #: src/amidiplug/i_configure.cc:137
 msgid "Skip trailing silence"
-msgstr "Salta silenci posterior"
+msgstr "Omet el silenci posterior"
 
 #: src/amidiplug/i_configure.cc:141
 msgid "<b>SoundFont</b>"
@@ -435,7 +364,7 @@ msgstr "<b>Sintetitzador</b>"
 #: src/amidiplug/i_configure.cc:150 src/console/plugin.cc:45
 #: src/filewriter/filewriter.cc:474 src/sid/xs_config.cc:65
 msgid "Sample rate:"
-msgstr "Freqüència de mostra:"
+msgstr "Freqüència de mostreig:"
 
 #: src/amidiplug/i_configure.cc:152 src/bs2b/plugin.cc:141
 #: src/console/plugin.cc:47 src/modplug/plugin_main.cc:81
@@ -467,7 +396,7 @@ msgstr "Nom del fitxer"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:231
 msgid "Size (bytes)"
-msgstr "Mida (octets)"
+msgstr "Mida (bytes)"
 
 #: src/amidiplug/i_fileinfo.cc:165
 msgid "Name:"
@@ -487,7 +416,7 @@ msgstr "Durada (ms):"
 
 #: src/amidiplug/i_fileinfo.cc:203
 msgid "No. of Tracks:"
-msgstr "Num. de pistes:"
+msgstr "Nre. de pistes:"
 
 #: src/amidiplug/i_fileinfo.cc:209
 msgid "variable"
@@ -527,7 +456,7 @@ msgstr "  (UTF-8 no vàlid)"
 
 #: src/ampache/ampache.cc:31
 msgid "Ampache Browser"
-msgstr ""
+msgstr "Navegador Ampache"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -537,7 +466,7 @@ msgid ""
 "\n"
 "License: GNU GPLv3\n"
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
-msgstr ""
+msgstr "Navegador Ampache\n\nClient d'Ampache per a Audacious.\n\nLlicència: GNU GPLv3\nCopyright (C) Róbert Čerňanský i John Lindgren\n"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -548,14 +477,7 @@ msgid ""
 "\n"
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
-msgstr ""
-"Audacious OSD\n"
-"http://www.develia.org/projects.php?p=audacious#aosd\n"
-"\n"
-"Programat per Giacomo Lozito <james@develia.org>\n"
-"\n"
-"Basat en part en la llibreria Ghosd d'Evan Martin:\n"
-"http://neugierig.org/software/ghosd/"
+msgstr "OSD d'Audacious\nhttp://www.develia.org/projects.php?p=audacious#aosd\n\nProgramat per Giacomo Lozito <james@develia.org>\n\nBasat en part en la biblioteca Ghosd d'Evan Martin:\nhttp://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.h:37
 msgid "AOSD (On-Screen Display)"
@@ -583,8 +505,7 @@ msgstr "Inici de la reproducció"
 
 #: src/aosd/aosd_trigger.cc:50
 msgid "Triggers OSD when a playlist entry is played."
-msgstr ""
-"Activa l'OSD quan es reprodueix una entrada de la llista de reproducció"
+msgstr "Dispara l'OSD quan es reprodueix una entrada de la llista de reproducció."
 
 #: src/aosd/aosd_trigger.cc:55
 msgid "Title Change"
@@ -592,23 +513,23 @@ msgstr "Canvi de títol"
 
 #: src/aosd/aosd_trigger.cc:56
 msgid "Triggers OSD when the song title changes (for internet streams)."
-msgstr ""
+msgstr "Dispara l'OSD quan canvia el nom de la cançó (per als fluxos d'Internet)."
 
 #: src/aosd/aosd_trigger.cc:61
 msgid "Pause On"
-msgstr "Pausa On"
+msgstr "Pausa engegada"
 
 #: src/aosd/aosd_trigger.cc:62
 msgid "Triggers OSD when playback is paused."
-msgstr "Activa l'OSD quan la reproducció està en pausa."
+msgstr "Dispara l'OSD quan la reproducció està en pausa."
 
 #: src/aosd/aosd_trigger.cc:67
 msgid "Pause Off"
-msgstr "Pausa Off"
+msgstr "Pausa apagada"
 
 #: src/aosd/aosd_trigger.cc:68
 msgid "Triggers OSD when playback is unpaused."
-msgstr "Activa l'OSD quan la reproducció deixa d'estar en pausa."
+msgstr "Dispara l'OSD quan la reproducció deixa d'estar en pausa."
 
 #: src/aosd/aosd_ui.cc:162
 msgid "Placement"
@@ -653,20 +574,20 @@ msgstr "Visible:"
 
 #: src/aosd/aosd_ui.cc:291
 msgid "Fade in:"
-msgstr "Fosa entrant:"
+msgstr "Esvaïment d'entrada:"
 
 #: src/aosd/aosd_ui.cc:296
 msgid "Fade out:"
-msgstr "Fosa sortint:"
+msgstr "Esvaïment de sortida:"
 
 #: src/aosd/aosd_ui.cc:360
 msgid "Fonts"
-msgstr "Foses"
+msgstr "Tipus de lletres"
 
 #: src/aosd/aosd_ui.cc:367
 #, c-format
 msgid "Font %i:"
-msgstr "Fosa %i:"
+msgstr "Lletra %i:"
 
 #: src/aosd/aosd_ui.cc:381
 msgid "Shadow"
@@ -687,7 +608,7 @@ msgstr "Color %i:"
 
 #: src/aosd/aosd_ui.cc:599
 msgid "Enable trigger"
-msgstr "Habilita activador"
+msgstr "Habilita el disparador"
 
 #: src/aosd/aosd_ui.cc:626
 msgid "Event"
@@ -695,21 +616,17 @@ msgstr "Esdeveniment"
 
 #: src/aosd/aosd_ui.cc:653
 msgid "Composite manager detected"
-msgstr "S'ha detectat un gestor Composite"
+msgstr "S'ha detectat un gestor de composicions"
 
 #: src/aosd/aosd_ui.cc:660
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
-msgstr ""
-"No s'ha detectat cap gestor Composite;\n"
-"tret que sapigueu que ja n'està funcionant un, activeu un gestor Composite o "
-"l'OSD no funcionarà correctament"
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+msgstr "No s'ha detectat cap gestor de composicions;\ntret que sapigueu que ja n'està funcionant un, activeu un gestor de composicions o l'OSD no funcionarà correctament"
 
 #: src/aosd/aosd_ui.cc:668
 msgid "Composite manager not required for fake transparency"
-msgstr "La transparència simulada no requereix un gestor Composite"
+msgstr "La transparència simulada no requereix un gestor de composicions"
 
 #: src/aosd/aosd_ui.cc:705
 msgid "Transparency"
@@ -721,16 +638,16 @@ msgstr "Transparència simulada"
 
 #: src/aosd/aosd_ui.cc:713
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "Transparència real (requereix l'ext. X composite)"
+msgstr "Transparència real (requereix l'extensió de composicions de les X)"
 
 #: src/aosd/aosd_ui.cc:754
 msgid "Composite extension not loaded"
-msgstr "L'extensió Composite no està carregada"
+msgstr "L'extensió de composicions no està carregada"
 
 #: src/aosd/aosd_ui.cc:771
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr "<span font_desc='%s'>OSD de l'Audacious</span>"
+msgstr "<span font_desc='%s'>OSD d'Audacious</span>"
 
 #: src/aosd/aosd_ui.cc:834
 msgid "Position"
@@ -750,7 +667,7 @@ msgstr "Decoració"
 
 #: src/aosd/aosd_ui.cc:854
 msgid "Trigger"
-msgstr "Llançador"
+msgstr "Disparador"
 
 #: src/aosd/aosd_ui.cc:859
 msgid "Misc"
@@ -782,11 +699,11 @@ msgstr "Oscil·loscopi difús"
 
 #: src/bs2b/plugin.cc:38
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr "BS2B (Bauer Stereophonic-to-Binaural)"
 
 #: src/bs2b/plugin.cc:129
 msgid "Presets:"
-msgstr "Predefinits:"
+msgstr "Valors preestablerts:"
 
 #: src/bs2b/plugin.cc:136
 msgid "Feed level:"
@@ -798,15 +715,15 @@ msgstr "x1/10 dB"
 
 #: src/bs2b/plugin.cc:139
 msgid "Cut frequency:"
-msgstr "Tallar freqüència:"
+msgstr "Retalla la freqüència:"
 
 #: src/cairo-spectrum/cairo-spectrum.cc:41
 msgid "Spectrum Analyzer"
-msgstr "Analitzador d'espectre"
+msgstr "Analitzador espectral"
 
 #: src/cdaudio/cdaudio-ng.cc:71
 msgid "Audio CD Plugin"
-msgstr "Connector de Àudio CD"
+msgstr "Connector de CD d'àudio"
 
 #: src/cdaudio/cdaudio-ng.cc:117
 msgid ""
@@ -818,7 +735,7 @@ msgid ""
 "Also thank you to Tony Vroon for mentoring and guiding me.\n"
 "\n"
 "This was a Google Summer of Code 2007 project."
-msgstr ""
+msgstr "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> i altres.\n\nMoltes gràcies als desenvolupadors de libcdio <http://www.gnu.org/software/libcdio/>\ni als desenvolupadors de libcddb <http://libcddb.sourceforge.net/>.\n\nTambé moltes gràcies a Tony Vroon per a assessorar-me i guiar-me.\n\nAquest va ser un projecte de Google Summer of Code del 2007."
 
 #: src/cdaudio/cdaudio-ng.cc:133
 msgid "<b>Device</b>"
@@ -830,7 +747,7 @@ msgstr "Velocitat de lectura:"
 
 #: src/cdaudio/cdaudio-ng.cc:137
 msgid "Override device:"
-msgstr "Dispositiu ignorat:"
+msgstr "Anul·la el dispositiu:"
 
 #: src/cdaudio/cdaudio-ng.cc:139
 msgid "<b>Metadata</b>"
@@ -838,15 +755,15 @@ msgstr "<b>Metadades</b>"
 
 #: src/cdaudio/cdaudio-ng.cc:140
 msgid "Use CD-Text"
-msgstr "Usa CD-Text"
+msgstr "Utilitza CD-Text"
 
 #: src/cdaudio/cdaudio-ng.cc:142
 msgid "Use CDDB"
-msgstr "Usa CDDB"
+msgstr "Utilitza CDDB"
 
 #: src/cdaudio/cdaudio-ng.cc:144
 msgid "Use HTTP instead of CDDBP"
-msgstr "Usa HTTP en lloc de CDDBP"
+msgstr "Utilitza HTTP en lloc de CDDBP"
 
 #: src/cdaudio/cdaudio-ng.cc:147
 msgid "Server:"
@@ -862,17 +779,17 @@ msgstr "Port:"
 
 #: src/cdaudio/cdaudio-ng.cc:241
 msgid "Failed to initialize cdio subsystem."
-msgstr "S'ha produït un error en inicialitzar el subsistema de cdio."
+msgstr "No s'ha pogut iniciar el subsistema de cdio."
 
 #: src/cdaudio/cdaudio-ng.cc:276
 #, c-format
 msgid "Invalid URI %s."
-msgstr "L’URI %s no és vàlid."
+msgstr "L'URI %s no és vàlid."
 
 #: src/cdaudio/cdaudio-ng.cc:278
 #, c-format
 msgid "Track %d not found."
-msgstr "No s’ha trobat la pista %d."
+msgstr "No s'ha trobat la pista %d."
 
 #: src/cdaudio/cdaudio-ng.cc:280
 #, c-format
@@ -881,28 +798,28 @@ msgstr "La pista %d és una pista de dades."
 
 #: src/cdaudio/cdaudio-ng.cc:355
 msgid "Error reading audio CD."
-msgstr "S'ha produït un error llegint el CD d'àudio."
+msgstr "Error en llegir el CD d'àudio."
 
 #: src/cdaudio/cdaudio-ng.cc:424
 msgid "Audio CD"
-msgstr "CD d'audio"
+msgstr "CD d'àudio"
 
 #: src/cdaudio/cdaudio-ng.cc:459 src/cdaudio/cdaudio-ng.cc:468
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr "S'ha produït un error en obrir el dispositiu de CD %s."
+msgstr "No s'ha pogut obrir el dispositiu de CD %s."
 
 #: src/cdaudio/cdaudio-ng.cc:471
 msgid "No audio capable CD drive found."
-msgstr "No s'ha trobat unitat de CD d'àudio."
+msgstr "No s'ha trobat cap unitat de CD d'àudio."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
-msgstr "S'ha produït un error en finalitzar inicialitzar la unitat CD oberta."
+msgstr "No s'ha pogut acabar la inicialització de la unitat CD oberta."
 
 #: src/cdaudio/cdaudio-ng.cc:509
 msgid "Failed to retrieve first/last track number."
-msgstr "S'ha produït un error en recuperar el primer/últim número de pista."
+msgstr "No s'ha pogut recuperar el primer/últim número de pista."
 
 #: src/cdaudio/cdaudio-ng.cc:530
 #, c-format
@@ -911,21 +828,21 @@ msgstr "No s'ha pogut llegir el LSN d'inici/fi per la pista %d."
 
 #: src/cdaudio/cdaudio-ng.cc:612
 msgid "Failed to create the cddb connection."
-msgstr "S'ha produït un error en crear la connexió de cddb."
+msgstr "No s'ha pogut crear la connexió de cddb."
 
 #: src/cdaudio/cdaudio-ng.cc:678
 msgid "Failed to query the CDDB server"
-msgstr "S'ha produït un error en trametre el servidor CDDB"
+msgstr "No s'ha pogut consultar al servidor CDDB"
 
 #: src/cdaudio/cdaudio-ng.cc:680
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr "S'ha produït un error en trametre el servidor CDDB: %s"
+msgstr "No s'ha pogut consultar al servidor CDDB: %s"
 
 #: src/cdaudio/cdaudio-ng.cc:704
 #, c-format
 msgid "Failed to read the cddb info: %s"
-msgstr "S'ha produït un error en llegir la info de cddb: %s"
+msgstr "No s'ha pogut llegir la informació de cddb: %s"
 
 #: src/cdaudio/cdaudio-ng.cc:764
 msgid "Drive is empty."
@@ -937,15 +854,15 @@ msgstr "Tipus de disc no admès."
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
-msgstr "Paràmetres de menú del CD d'Àudio"
+msgstr "Elements de menú del CD d'Àudio"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Play CD"
-msgstr "Reprodueix CD"
+msgstr "Reprodueix el CD"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Add CD"
-msgstr "Afegeix CD"
+msgstr "Afegeix el CD"
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
@@ -953,7 +870,7 @@ msgstr "<b>Compressió</b>"
 
 #: src/compressor/compressor.cc:46
 msgid "Center volume:"
-msgstr "Centrar volum"
+msgstr "Centra el volum:"
 
 #: src/compressor/compressor.cc:49
 msgid "Dynamic range:"
@@ -963,9 +880,7 @@ msgstr "Marge dinàmic:"
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
-msgstr ""
-"Dynamic Range Compression Plugin for Audacious\n"
-"Copyright 2010-2014 John Lindgren"
+msgstr "Connector de compressió d'interval dinàmic per a Audacious\nCopyright 2010-2014 John Lindgren"
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
@@ -979,13 +894,7 @@ msgid ""
 "Audacious plugin by:\n"
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
-msgstr ""
-"Motor de consola de descodificador de música basat en Game_Music_Emu 0.5.2\n"
-"Formats suportats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"\n"
-"Connector d'Audacious per:\n"
-"William Pitcock <nenolod@dereferenced.org>\n"
-"Shay Green <gblargg@gmail.com>"
+msgstr "Motor de consola de descodificador de música basat en Game_Music_Emu 0.5.2\nFormats suportats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n\nConnector d'Audacious per:\nWilliam Pitcock <nenolod@dereferenced.org>\nShay Green <gblargg@gmail.com>"
 
 #: src/console/plugin.cc:30
 msgid "Bass:"
@@ -1005,11 +914,11 @@ msgstr "Durada per defecte:"
 
 #: src/console/plugin.cc:42 src/modplug/plugin_main.cc:62
 msgid "<b>Resampling</b>"
-msgstr "<b>Remostratge</b>"
+msgstr "<b>Remostreig</b>"
 
 #: src/console/plugin.cc:43
 msgid "Enable audio resampling"
-msgstr "Activa el remostratge d'àudio"
+msgstr "Habilita el remostreig de l'àudio"
 
 #: src/console/plugin.cc:49
 msgid "<b>SPC</b>"
@@ -1038,36 +947,29 @@ msgid ""
 "\n"
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
-msgstr ""
-"CoreAudio Output Plugin for Audacious\n"
-"Copyright 2014 William Pitcock\n"
-"\n"
-"Based on SDL Output Plugin for Audacious\n"
-"Copyright 2010 John Lindgren"
+msgstr "Connector de sortida CoreAudio per a Audacious\nCopyright 2014 William Pitcock\n\nBasat en el connector de sortida SDL per a Audacious\nCopyright 2010 John Lindgren"
 
 #: src/coreaudio/coreaudio.cc:143
 msgid "Use exclusive mode"
-msgstr "Utilitzar mode exclusiu"
+msgstr "Utilitza el mode exclusiu"
 
 #: src/crossfade/crossfade.cc:43
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
-msgstr ""
-"Crossfade Plugin for Audacious\n"
-"Copyright 2010-2014 John Lindgren"
+msgstr "Connector de fusió entre cançons per a Audacious\nCopyright 2010-2014 John Lindgren"
 
 #: src/crossfade/crossfade.cc:47
 msgid "<b>Crossfade</b>"
-msgstr "<b>Crossfade</b>"
+msgstr "<b>Fusió entre cançons</b>"
 
 #: src/crossfade/crossfade.cc:48
 msgid "On automatic song change"
-msgstr "En canviar automàticament de cançó"
+msgstr "Amb el canvi automàtic de la cançó"
 
 #: src/crossfade/crossfade.cc:50 src/crossfade/crossfade.cc:56
 msgid "Overlap:"
-msgstr "Solapar:"
+msgstr "Solapa:"
 
 #: src/crossfade/crossfade.cc:54
 msgid "On seek or manual song change"
@@ -1075,19 +977,17 @@ msgstr "Cerca o canvi de cançó manual"
 
 #: src/crossfade/crossfade.cc:60
 msgid "<b>Tip</b>"
-msgstr "<b>Suggerència</b>"
+msgstr "<b>Consell</b>"
 
 #: src/crossfade/crossfade.cc:61
 msgid ""
 "For better crossfading, enable\n"
 "the Silence Removal effect."
-msgstr ""
-"Per a un millor crossfading, activeu\n"
-"l'efecte d'eliminació de silenci."
+msgstr "Per a una millor fusió entre cançons, activeu\nl'efecte d'eliminació de silenci."
 
 #: src/crossfade/crossfade.cc:71
 msgid "Crossfade"
-msgstr "Crossfade"
+msgstr "Fusió entre cançons"
 
 #: src/crystalizer/crystalizer.cc:31
 msgid "<b>Crystalizer</b>"
@@ -1103,39 +1003,39 @@ msgstr "Cristal·litzador"
 
 #: src/cue/cue.cc:41
 msgid "Cue Sheet Plugin"
-msgstr "Cue Sheet Plugin"
+msgstr "Connector de full CUE"
 
 #: src/delete-files/delete-files.cc:52 src/delete-files/delete-files.cc:161
 #: src/delete-files/delete-files.cc:176
 msgid "Delete Files"
-msgstr "Esborra arxius"
+msgstr "Suprimeix fitxers"
 
 #: src/delete-files/delete-files.cc:86
 #, c-format
 msgid "Error moving %s to trash: %s."
-msgstr "S'ha produït un error movent %s a la papelera: %s."
+msgstr "Error en moure %s a la paperera: %s."
 
 #: src/delete-files/delete-files.cc:97
 #, c-format
 msgid "Error deleting %s: %s."
-msgstr "S'ha produït un error suprimint %s: %s."
+msgstr "Error en suprimir %s: %s."
 
 #: src/delete-files/delete-files.cc:128
 #, c-format
 msgid "Error deleting %s: not a local file."
-msgstr "S'ha produït un error suprimint %s: no és un arxiu local."
+msgstr "Error en suprimir %s: no és un fitxer local."
 
 #: src/delete-files/delete-files.cc:138
 msgid "Do you want to move the selected files to the trash?"
-msgstr "Voleu moure els arxius seleccionats a la Papelera?"
+msgstr "Voleu moure els fitxers seleccionats a la paperera?"
 
 #: src/delete-files/delete-files.cc:139
 msgid "Move to Trash"
-msgstr "Mou a la Papelera"
+msgstr "Mou a la paperera"
 
 #: src/delete-files/delete-files.cc:144
 msgid "Do you want to permanently delete the selected files?"
-msgstr "Voleu eliminar permanentment els arxius seleccionats?"
+msgstr "Voleu suprimir permanentment els fitxers seleccionats?"
 
 #: src/delete-files/delete-files.cc:145
 msgid "Delete"
@@ -1148,15 +1048,15 @@ msgstr "Cancel·la"
 
 #: src/delete-files/delete-files.cc:211
 msgid "Delete Selected Files"
-msgstr "Suprimeix els arxius seleccionats"
+msgstr "Suprimeix els fitxers seleccionats"
 
 #: src/delete-files/delete-files.cc:231
 msgid "<b>Delete Method</b>"
-msgstr "<b>Mètode d'esborrament</b>"
+msgstr "<b>Mètode de supressió</b>"
 
 #: src/delete-files/delete-files.cc:232
 msgid "Move to trash instead of deleting immediately"
-msgstr "Mou a la Papelera en comptes de suprimir immediatament"
+msgstr "Mou a la paperera en comptes de suprimir immediatament"
 
 #: src/echo_plugin/echo.cc:9
 msgid ""
@@ -1164,11 +1064,7 @@ msgid ""
 "By Johan Levin, 1999\n"
 "Surround echo by Carl van Schaik, 1999\n"
 "Updated for Audacious by William Pitcock and John Lindgren, 2010-2014"
-msgstr ""
-"Echo Plugin\n"
-"Per Johan Levin, 1999\n"
-"Eco envolvent per Carl van Schaik, 1999\n"
-"Actualitzat per l'Audacious per William Pitcock i John Lindgren, 2010-2014"
+msgstr "Connector d'eco\nPer Johan Levin, 1999\nEco envolvent per Carl van Schaik, 1999\nActualitzat per a Audacious per William Pitcock i John Lindgren, 2010-2014"
 
 #: src/echo_plugin/echo.cc:21
 msgid "<b>Echo</b>"
@@ -1208,13 +1104,7 @@ msgid ""
 "Audacious plugin by:\n"
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
-msgstr ""
-"Connector de descodificació d'àudio multiformat per l'Audacious usant el\n"
-"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
-"\n"
-"Connector de l'Audacious per:\n"
-"William Pitcock <nenolod@nenolod.net>\n"
-"Matti Hämäläinen <ccr@tnsp.org>"
+msgstr "Connector de descodificació d'àudio multiformat per a Audacious mitjançant\nel marc de treball multimèdia de FFmpeg (http://www.ffmpeg.org/)\n\nConnector d'Audacious per:\nWilliam Pitcock <nenolod@nenolod.net>\nMatti Hämäläinen <ccr@tnsp.org>"
 
 #: src/filewriter/filewriter.cc:48
 msgid "FileWriter Plugin"
@@ -1222,19 +1112,11 @@ msgstr "Connector FileWriter"
 
 #: src/filewriter/filewriter.cc:351
 msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
 #: src/filewriter/filewriter.cc:378
@@ -1247,7 +1129,7 @@ msgstr "Desa al directori original"
 
 #: src/filewriter/filewriter.cc:385
 msgid "Save into custom directory:"
-msgstr "Desa a un altre directori"
+msgstr "Desa a un altre directori:"
 
 #: src/filewriter/filewriter.cc:393
 msgid "Generate file name from:"
@@ -1259,7 +1141,7 @@ msgstr "Nom del fitxer original"
 
 #: src/filewriter/filewriter.cc:397
 msgid "Original file name (no suffix)"
-msgstr "Nom del fitxer original (sense suffix)"
+msgstr "Nom del fitxer original (sense sufix)"
 
 #: src/filewriter/filewriter.cc:400
 msgid "Original file tag"
@@ -1275,103 +1157,103 @@ msgstr "Auto"
 
 #: src/filewriter/filewriter.cc:411
 msgid "8000 Hz"
-msgstr ""
+msgstr "8000 Hz"
 
 #: src/filewriter/filewriter.cc:412
 msgid "11025 Hz"
-msgstr ""
+msgstr "11025 Hz"
 
 #: src/filewriter/filewriter.cc:413
 msgid "12000 Hz"
-msgstr ""
+msgstr "12000 Hz"
 
 #: src/filewriter/filewriter.cc:414
 msgid "16000 Hz"
-msgstr ""
+msgstr "16000 Hz"
 
 #: src/filewriter/filewriter.cc:415
 msgid "22050 Hz"
-msgstr ""
+msgstr "22050 Hz"
 
 #: src/filewriter/filewriter.cc:416
 msgid "24000 Hz"
-msgstr ""
+msgstr "24000 Hz"
 
 #: src/filewriter/filewriter.cc:417
 msgid "32000 Hz"
-msgstr ""
+msgstr "32000 Hz"
 
 #: src/filewriter/filewriter.cc:418
 msgid "44100 Hz"
-msgstr ""
+msgstr "44100 Hz"
 
 #: src/filewriter/filewriter.cc:419
 msgid "48000 Hz"
-msgstr ""
+msgstr "48000 Hz"
 
 #: src/filewriter/filewriter.cc:423
 msgid "8 kbps"
-msgstr ""
+msgstr "8 kbps"
 
 #: src/filewriter/filewriter.cc:424
 msgid "16 kbps"
-msgstr ""
+msgstr "16 kbps"
 
 #: src/filewriter/filewriter.cc:425
 msgid "32 kbps"
-msgstr ""
+msgstr "32 kbps"
 
 #: src/filewriter/filewriter.cc:426
 msgid "40 kbps"
-msgstr ""
+msgstr "40 kbps"
 
 #: src/filewriter/filewriter.cc:427
 msgid "48 kbps"
-msgstr ""
+msgstr "48 kbps"
 
 #: src/filewriter/filewriter.cc:428
 msgid "56 kbps"
-msgstr ""
+msgstr "56 kbps"
 
 #: src/filewriter/filewriter.cc:429
 msgid "64 kbps"
-msgstr ""
+msgstr "64 kbps"
 
 #: src/filewriter/filewriter.cc:430
 msgid "80 kbps"
-msgstr ""
+msgstr "80 kbps"
 
 #: src/filewriter/filewriter.cc:431
 msgid "96 kbps"
-msgstr ""
+msgstr "96 kbps"
 
 #: src/filewriter/filewriter.cc:432
 msgid "112 kbps"
-msgstr ""
+msgstr "112 kbps"
 
 #: src/filewriter/filewriter.cc:433
 msgid "128 kbps"
-msgstr ""
+msgstr "128 kbps"
 
 #: src/filewriter/filewriter.cc:434
 msgid "160 kbps"
-msgstr ""
+msgstr "160 kbps"
 
 #: src/filewriter/filewriter.cc:435
 msgid "192 kbps"
-msgstr ""
+msgstr "192 kbps"
 
 #: src/filewriter/filewriter.cc:436
 msgid "224 kbps"
-msgstr ""
+msgstr "224 kbps"
 
 #: src/filewriter/filewriter.cc:437
 msgid "256 kbps"
-msgstr ""
+msgstr "256 kbps"
 
 #: src/filewriter/filewriter.cc:438
 msgid "320 kbps"
-msgstr ""
+msgstr "320 kbps"
 
 #: src/filewriter/filewriter.cc:443
 msgid "Joint Stereo"
@@ -1389,19 +1271,19 @@ msgstr "Mono"
 
 #: src/filewriter/filewriter.cc:449
 msgid "VBR"
-msgstr ""
+msgstr "VBR"
 
 #: src/filewriter/filewriter.cc:450
 msgid "ABR"
-msgstr ""
+msgstr "ABR"
 
 #: src/filewriter/filewriter.cc:471
 msgid "Algorithm quality:"
-msgstr ""
+msgstr "Qualitat de l'algoritme:"
 
 #: src/filewriter/filewriter.cc:477
 msgid "Bitrate:"
-msgstr ""
+msgstr "Taxa de bits:"
 
 #: src/filewriter/filewriter.cc:484
 msgid "Compression ratio:"
@@ -1409,7 +1291,7 @@ msgstr "Ràtio de compressió:"
 
 #: src/filewriter/filewriter.cc:491
 msgid "Audio mode:"
-msgstr ""
+msgstr "Mode d'àudio:"
 
 #: src/filewriter/filewriter.cc:494
 msgid "Enforce strict ISO compliance"
@@ -1421,7 +1303,7 @@ msgstr "Protecció d'errors"
 
 #: src/filewriter/filewriter.cc:501
 msgid "Enable VBR/ABR"
-msgstr "Activa VBR/ABR"
+msgstr "Habilita VBR/ABR"
 
 #: src/filewriter/filewriter.cc:503
 msgid "Type:"
@@ -1429,15 +1311,15 @@ msgstr "Tipus:"
 
 #: src/filewriter/filewriter.cc:507
 msgid "Minimum bitrate:"
-msgstr ""
+msgstr "Taxa de bits mínima:"
 
 #: src/filewriter/filewriter.cc:511
 msgid "Maximum bitrate:"
-msgstr ""
+msgstr "Taxa de bits màxima:"
 
 #: src/filewriter/filewriter.cc:515
 msgid "Average bitrate:"
-msgstr ""
+msgstr "Taxa de bits mitjana:"
 
 #: src/filewriter/filewriter.cc:519
 msgid "VBR quality level:"
@@ -1445,7 +1327,7 @@ msgstr "Nivell de qualitat VBR:"
 
 #: src/filewriter/filewriter.cc:523
 msgid "Strictly enforce minimum bitrate"
-msgstr "Compliment estricte el flux de bit mínim"
+msgstr "Estricte compliment de la taxa de bits mínima"
 
 #: src/filewriter/filewriter.cc:526
 msgid "Omit Xing VBR header"
@@ -1453,7 +1335,7 @@ msgstr "Omet escriure la capçalera VBR Xing"
 
 #: src/filewriter/filewriter.cc:532
 msgid "<b>Frame Headers</b>"
-msgstr ""
+msgstr "<b>Capçaleres dels marcs</b>"
 
 #: src/filewriter/filewriter.cc:533
 msgid "Mark as copyright"
@@ -1465,19 +1347,19 @@ msgstr "Marca com a original"
 
 #: src/filewriter/filewriter.cc:537
 msgid "<b>ID3 Tags</b>"
-msgstr ""
+msgstr "<b>Etiquetes ID3 </b>"
 
 #: src/filewriter/filewriter.cc:538
 msgid "Force addition of version 2 tag"
-msgstr "Força l'afegit d'etiquetes ID3 versió 2"
+msgstr "Força l'addició de les etiquetes de la versió 2"
 
 #: src/filewriter/filewriter.cc:540
 msgid "Only add v1 tag"
-msgstr "Només etiquetes v1"
+msgstr "Només afegeix l'etiqueta v1"
 
 #: src/filewriter/filewriter.cc:542
 msgid "Only add v2 tag"
-msgstr "Només etiquetes v2"
+msgstr "Només afegeix l'etiqueta v2"
 
 #: src/filewriter/filewriter.cc:547
 msgid "Quality"
@@ -1493,7 +1375,7 @@ msgstr "Etiquetes"
 
 #: src/filewriter/filewriter.cc:559
 msgid "Quality (0-1):"
-msgstr ""
+msgstr "Qualitat (0-1):"
 
 #: src/filewriter/filewriter.cc:566 src/skins-qt/skins_cfg.cc:304
 #: src/skins/skins_cfg.cc:286
@@ -1514,19 +1396,13 @@ msgid ""
 "Ralf Ertzinger <ralf@skytale.net>\n"
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
-msgstr ""
-"Codi original per\n"
-"Ralf Ertzinger <ralf@skytale.net>\n"
-"\n"
-"http://www.skytale.net/projects/bmp-flac2/"
+msgstr "Codi original per\nRalf Ertzinger <ralf@skytale.net>\n\nhttp://www.skytale.net/projects/bmp-flac2/"
 
 #: src/gio/gio.cc:34
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
-msgstr ""
-"GIO Plugin per l'Audacious\n"
-"Copyright 2009-2012 John Lindgren"
+msgstr "Connector GIO per a Audacious\nCopyright 2009-2012 John Lindgren"
 
 #: src/gio/gio.cc:42
 msgid "GIO Plugin"
@@ -1538,7 +1414,7 @@ msgstr ""
 
 #: src/gio/gio.cc:165
 msgid "Invalid open mode"
-msgstr "Mode d'obrir no vàlid"
+msgstr "Mode d'obriment no vàlid"
 
 #: src/glspectrum/gl-spectrum.cc:51
 msgid ""
@@ -1546,19 +1422,18 @@ msgid ""
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
 "\n"
 "Based on the XMMS plugin:\n"
-"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
-"4Front Technologies\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and 4Front Technologies\n"
 "\n"
 "License: GPLv2+"
 msgstr ""
 
 #: src/glspectrum/gl-spectrum.cc:62 src/qtglspectrum/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer"
-msgstr "Analitzador d’espectre OpenGL"
+msgstr "Analitzador espectral d'OpenGL"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:38
 msgid "GNOME Shortcuts"
-msgstr "Dreceres del GNOME"
+msgstr "Dreceres de GNOME"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:54
 msgid ""
@@ -1566,11 +1441,7 @@ msgid ""
 "Lets you control the player with GNOME's shortcuts.\n"
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
-msgstr ""
-"Connector de Dreceres del GNOME\n"
-"Perment controlar el reproductor amb les dreceres del GNOME.\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
+msgstr "Connector de dreceres de GNOME\nPermet controlar el reproductor amb les dreceres de GNOME.\n\nCopyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
 #: src/gtkui/columns.cc:35
 msgid "Entry number"
@@ -1616,7 +1487,7 @@ msgstr "Durada"
 
 #: src/gtkui/columns.cc:45
 msgid "File path"
-msgstr "Camí del fitxer"
+msgstr "Camí al fitxer"
 
 #: src/gtkui/columns.cc:47
 msgid "Custom title"
@@ -1624,7 +1495,7 @@ msgstr "Títol personalitzat"
 
 #: src/gtkui/columns.cc:48
 msgid "Bitrate"
-msgstr "Flux de bits"
+msgstr "Taxa de bits"
 
 #: src/gtkui/columns.cc:313
 msgid "Available columns"
@@ -1661,28 +1532,28 @@ msgstr "Desacoblar"
 
 #: src/gtkui/layout.cc:168 src/ladspa/plugin.cc:534
 msgid "Disable"
-msgstr "Desactivar"
+msgstr "Inhabilita"
 
 #: src/gtkui/menus.cc:96 src/qtui/menus.cc:55
 #: src/statusicon-qt/statusicon.cc:88 src/statusicon/statusicon.cc:277
 msgid "_Open Files ..."
-msgstr "_Obrir Fitxers..."
+msgstr "_Obre els fitxers..."
 
 #: src/gtkui/menus.cc:97 src/qtui/menus.cc:57
 msgid "Open _URL ..."
-msgstr "Obrir _URL..."
+msgstr "Obre l'_URL..."
 
 #: src/gtkui/menus.cc:98 src/qtui/menus.cc:58
 msgid "_Add Files ..."
-msgstr "_Afegir fitxers..."
+msgstr "_Afegeix els fitxers..."
 
 #: src/gtkui/menus.cc:99 src/qtui/menus.cc:60
 msgid "Add U_RL ..."
-msgstr "Afegir U_RL..."
+msgstr "Afegeix l'U_RL..."
 
 #: src/gtkui/menus.cc:101
 msgid "Search _Library"
-msgstr "Cerca _biblioteca"
+msgstr "Cerca la bib_lioteca"
 
 #: src/gtkui/menus.cc:103 src/qtui/menus.cc:62
 msgid "A_bout ..."
@@ -1690,7 +1561,7 @@ msgstr "_Quant a..."
 
 #: src/gtkui/menus.cc:104 src/qtui/menus.cc:63
 msgid "_Settings ..."
-msgstr "_Opcions ..."
+msgstr "Ajust_s..."
 
 #: src/gtkui/menus.cc:105 src/qtui/menus.cc:67
 #: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:285
@@ -1701,7 +1572,7 @@ msgstr "_Surt"
 #: src/search-tool-qt/search-tool-qt.cc:707 src/search-tool/search-tool.cc:659
 #: src/statusicon-qt/statusicon.cc:90 src/statusicon/statusicon.cc:279
 msgid "_Play"
-msgstr "Repro_duir"
+msgstr "Re_produeix"
 
 #: src/gtkui/menus.cc:110 src/qtui/menus.cc:72
 #: src/statusicon-qt/statusicon.cc:91 src/statusicon/statusicon.cc:280
@@ -1725,23 +1596,23 @@ msgstr "_Següent"
 
 #: src/gtkui/menus.cc:115 src/qtui/menus.cc:77
 msgid "_Repeat"
-msgstr "_Repetir"
+msgstr "_Repeteix"
 
 #: src/gtkui/menus.cc:116 src/qtui/menus.cc:78
 msgid "S_huffle"
-msgstr "_Mesclar"
+msgstr "Or_dre aleatori"
 
 #: src/gtkui/menus.cc:117 src/qtui/menus.cc:79
 msgid "Shuffle by Albu_m"
-msgstr "Baralla per Àlbu_m"
+msgstr "Ordre aleatori per àlbu_m"
 
 #: src/gtkui/menus.cc:118 src/qtui/menus.cc:80
 msgid "N_o Playlist Advance"
-msgstr "No ava_nçar la llista de reproducció"
+msgstr "N_o avancis la llista de reproducció"
 
 #: src/gtkui/menus.cc:119 src/qtui/menus.cc:81
 msgid "Stop A_fter This Song"
-msgstr "Parar després de la cançó."
+msgstr "Atura d_esprés d'aquesta cançó."
 
 #: src/gtkui/menus.cc:121 src/gtkui/menus.cc:220 src/qtui/menus.cc:83
 #: src/qtui/menus.cc:167
@@ -1750,7 +1621,7 @@ msgstr "_Informació de la cançó..."
 
 #: src/gtkui/menus.cc:122
 msgid "Jump to _Time ..."
-msgstr "_Salta al temps..."
+msgstr "Salta a l'ins_tant..."
 
 #: src/gtkui/menus.cc:123
 msgid "_Jump to Song ..."
@@ -1758,15 +1629,15 @@ msgstr "Salta a la _cançó..."
 
 #: src/gtkui/menus.cc:125
 msgid "Set Repeat Point _A"
-msgstr "Estableix punt de repetició _A"
+msgstr "Estableix el punt de repetició _A"
 
 #: src/gtkui/menus.cc:126
 msgid "Set Repeat Point _B"
-msgstr "Estableix punt de repetició _B"
+msgstr "Estableix el punt de repetició _B"
 
 #: src/gtkui/menus.cc:127
 msgid "_Clear Repeat Points"
-msgstr "_Neteja punts de repetició"
+msgstr "Neteja els punts de repeti_ció"
 
 #: src/gtkui/menus.cc:131 src/gtkui/menus.cc:138 src/gtkui/menus.cc:154
 #: src/qtui/menus.cc:87 src/qtui/menus.cc:94 src/qtui/menus.cc:110
@@ -1779,17 +1650,17 @@ msgstr "Per nom de _fitxer"
 
 #: src/gtkui/menus.cc:133 src/qtui/menus.cc:89
 msgid "By File _Path"
-msgstr "Per _camí del fitxer"
+msgstr "_Per camí al fitxer"
 
 #: src/gtkui/menus.cc:137 src/gtkui/menus.cc:153 src/qtui/menus.cc:93
 #: src/qtui/menus.cc:109
 msgid "By Track _Number"
-msgstr "Pel número de _pista"
+msgstr "Per número de _pista"
 
 #: src/gtkui/menus.cc:139 src/gtkui/menus.cc:155 src/qtui/menus.cc:95
 #: src/qtui/menus.cc:111
 msgid "By _Artist"
-msgstr "Per l'_artista"
+msgstr "Per _artista"
 
 #: src/gtkui/menus.cc:140 src/gtkui/menus.cc:156 src/qtui/menus.cc:96
 #: src/qtui/menus.cc:112
@@ -1804,7 +1675,7 @@ msgstr "Per artista d'àlbu_m"
 #: src/gtkui/menus.cc:142 src/gtkui/menus.cc:158 src/qtui/menus.cc:98
 #: src/qtui/menus.cc:114
 msgid "By Release _Date"
-msgstr "Per la _data"
+msgstr "Per _data de llançament"
 
 #: src/gtkui/menus.cc:143 src/gtkui/menus.cc:159 src/qtui/menus.cc:99
 #: src/qtui/menus.cc:115
@@ -1838,27 +1709,27 @@ msgstr "Ordre alea_tori"
 
 #: src/gtkui/menus.cc:169 src/qtui/menus.cc:125
 msgid "_Play/Resume"
-msgstr "_Pausa/Represa"
+msgstr "Re_produeix/reprèn"
 
 #: src/gtkui/menus.cc:170 src/qtui/menus.cc:126
 msgid "_Refresh"
-msgstr "A_ctualitzar"
+msgstr "_Refresca"
 
 #: src/gtkui/menus.cc:172 src/qtui/menus.cc:128
 msgid "_Sort"
-msgstr "_Ordenar"
+msgstr "_Ordena"
 
 #: src/gtkui/menus.cc:173 src/qtui/menus.cc:129
 msgid "Sort Se_lected"
-msgstr "Ordena els seleccionats"
+msgstr "Ordena els se_leccionats"
 
 #: src/gtkui/menus.cc:174 src/qtui/menus.cc:130
 msgid "Remove _Duplicates"
-msgstr "Treu els duplicats"
+msgstr "Treu els _duplicats"
 
 #: src/gtkui/menus.cc:175 src/qtui/menus.cc:131
 msgid "Remove _Unavailable Files"
-msgstr "Eliminar fitxers _no disponibles"
+msgstr "Elimina els fitxers _no disponibles"
 
 #: src/gtkui/menus.cc:177 src/playlist-manager/playlist-manager.cc:241
 #: src/playlist-manager-qt/playlist-manager-qt.cc:319 src/qtui/menus.cc:133
@@ -1867,23 +1738,23 @@ msgstr "_Nou"
 
 #: src/gtkui/menus.cc:178 src/qtui/menus.cc:134
 msgid "Ren_ame ..."
-msgstr "Reanomena ..."
+msgstr "Re_anomena..."
 
 #: src/gtkui/menus.cc:179 src/gtkui/menus.cc:238 src/qtui/menus.cc:135
 msgid "Remo_ve"
-msgstr "Suprimeix"
+msgstr "Suprimei_x"
 
 #: src/gtkui/menus.cc:181
 msgid "_Import ..."
-msgstr "_Importar..."
+msgstr "_Importa..."
 
 #: src/gtkui/menus.cc:182
 msgid "_Export ..."
-msgstr "_Exportar..."
+msgstr "_Exporta..."
 
 #: src/gtkui/menus.cc:184
 msgid "Playlist _Manager ..."
-msgstr "Gestor de llistes de reproducció ..."
+msgstr "_Gestor de llistes de reproducció..."
 
 #: src/gtkui/menus.cc:185 src/qtui/menus.cc:141
 msgid "_Queue Manager ..."
@@ -1891,43 +1762,43 @@ msgstr "Gestor de _cues..."
 
 #: src/gtkui/menus.cc:189 src/qtui/menus.cc:145
 msgid "Volume _Up"
-msgstr "P_ujar volum"
+msgstr "Apuja vol_um"
 
 #: src/gtkui/menus.cc:190 src/qtui/menus.cc:146
 msgid "Volume _Down"
-msgstr "_Baixar volum"
+msgstr "A_baixa el volum"
 
 #: src/gtkui/menus.cc:192 src/qtui/menus.cc:148
 msgid "_Equalizer ..."
-msgstr "_Equalitzador"
+msgstr "_Equalitzador..."
 
 #: src/gtkui/menus.cc:193 src/qtui/menus.cc:150
 msgid "E_ffects ..."
-msgstr "E_fectes ..."
+msgstr "E_fectes..."
 
 #: src/gtkui/menus.cc:195
 msgid "_Record Stream"
-msgstr "_Flux de gravació"
+msgstr "En_registra el flux"
 
 #: src/gtkui/menus.cc:196
 msgid "Audio _Settings ..."
-msgstr "Opcions d'àudio"
+msgstr "Ajust_s de l'àudio..."
 
 #: src/gtkui/menus.cc:200
 msgid "Show _Menu Bar"
-msgstr "_Mostrar barra de menú"
+msgstr "_Mostra la barra de menús"
 
 #: src/gtkui/menus.cc:201
 msgid "Show I_nfo Bar"
-msgstr "Mostrar barra d'_informació"
+msgstr "Mostra la barra d'_informació"
 
 #: src/gtkui/menus.cc:202
 msgid "Show Info Bar Vis_ualization"
-msgstr "Mostrar visualització de barra d'_informació"
+msgstr "Mostra la visualització de la barra d'_informació"
 
 #: src/gtkui/menus.cc:203
 msgid "Show _Status Bar"
-msgstr "Mostrar barra d'_estat"
+msgstr "Mostra la barra d'_estat"
 
 #: src/gtkui/menus.cc:205
 msgid "Show _Remaining Time"
@@ -1935,7 +1806,7 @@ msgstr "Mostra el temps _restant"
 
 #: src/gtkui/menus.cc:207 src/skins/menus.cc:180 src/skins-qt/menus.cc:174
 msgid "_Visualizations ..."
-msgstr "_Visualitzacions ..."
+msgstr "_Visualitzacions..."
 
 #: src/gtkui/menus.cc:211 src/qtui/menus.cc:154
 msgid "_File"
@@ -1960,84 +1831,84 @@ msgstr "Sorti_da"
 
 #: src/gtkui/menus.cc:216
 msgid "_View"
-msgstr "_Veure"
+msgstr "_Visualitza"
 
 #: src/gtkui/menus.cc:221 src/qtui/menus.cc:168
 msgid "_Queue/Unqueue"
-msgstr "_Enviar/Treure de la cua"
+msgstr "Afegeix/treu de la _cua"
 
 #: src/gtkui/menus.cc:223 src/qtui/menus.cc:170
 msgid "_Open Containing Folder"
-msgstr "_Obre carpeta"
+msgstr "_Obre la carpeta"
 
 #: src/gtkui/menus.cc:224 src/qtui/menus.cc:171
 msgid "_Refresh Selected"
-msgstr ""
+msgstr "_Refresca els seleccionats"
 
 #: src/gtkui/menus.cc:226 src/qtui/menus.cc:173
 msgid "Cu_t"
-msgstr "Re_tallar"
+msgstr "Re_talla"
 
 #: src/gtkui/menus.cc:227 src/qtui/menus.cc:174
 msgid "_Copy"
-msgstr "_Copiar"
+msgstr "_Copia"
 
 #: src/gtkui/menus.cc:228 src/qtui/menus.cc:175
 msgid "_Paste"
-msgstr "_Enganxar"
+msgstr "_Enganxa"
 
 #: src/gtkui/menus.cc:229 src/qtui/menus.cc:176
 msgid "Paste at _End"
-msgstr ""
+msgstr "_Enganxa a l'acabament"
 
 #: src/gtkui/menus.cc:230 src/qtui/menus.cc:177
 msgid "Select _All"
-msgstr "Seleccionar _tot"
+msgstr "Selecciona-ho _tot"
 
 #: src/gtkui/menus.cc:237
 msgid "_Rename ..."
-msgstr "_Reanomena ..."
+msgstr "_Reanomena..."
 
 #: src/gtkui/settings.cc:35 src/qtui/settings.cc:53
 msgid "<b>Playlist Tabs</b>"
-msgstr "<b>Pestanyes de llista de reproducció</b>"
+msgstr "<b>Pestanyes de la llista de reproducció</b>"
 
 #: src/gtkui/settings.cc:36 src/qtui/settings.cc:55
 msgid "Always show tabs"
-msgstr "Sempre mostra pestanyes"
+msgstr "Mostra sempre les pestanyes"
 
 #: src/gtkui/settings.cc:38 src/qtui/settings.cc:58
 msgid "Show entry counts"
-msgstr "Mostra comptadors d'entrada"
+msgstr "Mostra els comptadors de les entrades"
 
 #: src/gtkui/settings.cc:40 src/qtui/settings.cc:60
 msgid "Show close buttons"
-msgstr "Mostra botons de tancar"
+msgstr "Mostra els botons de tancament"
 
 #: src/gtkui/settings.cc:42 src/qtui/settings.cc:62
 msgid "<b>Playlist Columns</b>"
-msgstr "<b>Columnes de llista de reproducció</b>"
+msgstr "<b>Columnes de la llista de reproducció</b>"
 
 #: src/gtkui/settings.cc:44 src/qtui/settings.cc:64
 msgid "Show column headers"
-msgstr "Mostrar capçaleres de columna"
+msgstr "Mostra les capçaleres de les columnes"
 
 #: src/gtkui/settings.cc:46 src/modplug/plugin_main.cc:109
 #: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:281
 msgid "<b>Miscellaneous</b>"
-msgstr "<b>Miscel·lània</b>"
+msgstr "<b>Altres</b>"
 
 #: src/gtkui/settings.cc:47
 msgid "Arrow keys seek by:"
-msgstr "Cerca de tecles de fletxa per:"
+msgstr "Les tecles de les fletxes desplacen:"
 
 #: src/gtkui/settings.cc:50
 msgid "Scroll on song change"
-msgstr "Avança al canviar de cançó"
+msgstr "Desplaça amb el canvi de cançó"
 
 #: src/gtkui/ui_gtk.cc:74
 msgid "GTK Interface"
-msgstr "Interfície GTK"
+msgstr "Interfície de GTK"
 
 #: src/gtkui/ui_gtk.cc:228 src/skins/main.cc:219 src/skins-qt/main.cc:214
 #, c-format
@@ -2077,17 +1948,20 @@ msgstr "%d kHz"
 msgid "%d kbps"
 msgstr "%d kbps"
 
-#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:452 src/skins-qt/main.cc:433
+#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:452
+#: src/skins-qt/main.cc:433
 msgid "Single mode."
-msgstr "Mode únic"
+msgstr "Mode únic."
 
-#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:454 src/skins-qt/main.cc:435
+#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:454
+#: src/skins-qt/main.cc:435
 msgid "Playlist mode."
-msgstr "Mode de llista de reproducció"
+msgstr "Mode de llista de reproducció."
 
-#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:460 src/skins-qt/main.cc:441
+#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:460
+#: src/skins-qt/main.cc:441
 msgid "Stopping after song."
-msgstr "Parar després de la cançó."
+msgstr "Aturada després de la cançó."
 
 #: src/hotkey/gui.cc:71
 msgid "Previous track"
@@ -2101,12 +1975,12 @@ msgstr "Reprodueix"
 
 #: src/hotkey/gui.cc:73
 msgid "Pause/Resume"
-msgstr "Pausa/Represa"
+msgstr "Pausa/reprèn"
 
 #: src/hotkey/gui.cc:74 src/qtui/main_window.cc:101 src/skins/menus.cc:136
 #: src/skins-qt/menus.cc:124
 msgid "Stop"
-msgstr "Para"
+msgstr "Atura"
 
 #: src/hotkey/gui.cc:75
 msgid "Next track"
@@ -2126,11 +2000,11 @@ msgstr "Silencia"
 
 #: src/hotkey/gui.cc:79
 msgid "Volume up"
-msgstr "Puja el volum"
+msgstr "Apuja el volum"
 
 #: src/hotkey/gui.cc:80
 msgid "Volume down"
-msgstr "Baixa el volum"
+msgstr "Abaixa el volum"
 
 #: src/hotkey/gui.cc:81
 msgid "Jump to file"
@@ -2150,11 +2024,11 @@ msgstr "Activa repetició"
 
 #: src/hotkey/gui.cc:85
 msgid "Toggle shuffle"
-msgstr "Activa barreja"
+msgstr "Commuta l'ordre aleatori"
 
 #: src/hotkey/gui.cc:86
 msgid "Toggle stop after current"
-msgstr "Para quan s'acabi la cançó"
+msgstr "Commuta l'aturada després de l'actual"
 
 #: src/hotkey/gui.cc:87
 msgid "Raise player window(s)"
@@ -2166,15 +2040,10 @@ msgstr "(cap)"
 
 #: src/hotkey/gui.cc:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
-"No és recomanable vincular els botons primaris del ratolí sense tecles "
-"modificadores.\n"
-"\n"
-"Voleu continuar?"
+msgstr "No és recomanable vincular els botons primaris del ratolí sense tecles modificadores.\n\nVoleu continuar?"
 
 #: src/hotkey/gui.cc:236
 msgid "Binding mouse buttons"
@@ -2184,9 +2053,7 @@ msgstr "Vinculació dels botons del ratolí"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr ""
-"Premeu una combinació de tecles dins del camp de text.\n"
-"També podeu vincular botons del ratolí."
+msgstr "Premeu una combinació de tecles dins del camp de text.\nTambé podeu vincular botons del ratolí."
 
 #: src/hotkey/gui.cc:396
 msgid "Hotkeys:"
@@ -2221,19 +2088,7 @@ msgid ""
 " Bryn Davies <curious@ihug.com.au>,\n"
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
-msgstr ""
-"Tecles ràpides globals\n"
-"Controla el reproductor amb les combinacions de tecles globals o "
-"multimèdia.\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-"Els contribuïdors s'inclouen:\n"
-"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
-" Bryn Davies <curious@ihug.com.au>,\n"
-" Jonathan A. Davis <davis@jdhouse.org>,\n"
-" Jeremy Tan <nsx@nsx.homeip.net>"
+msgstr "Tecles ràpides globals\nControla el reproductor amb les combinacions de tecles globals o multimèdia.\n\nCopyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\nEls contribuïdors s'inclouen:\nCopyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\nCopyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n Bryn Davies <curious@ihug.com.au>,\n Jonathan A. Davis <davis@jdhouse.org>,\n Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/jack/jack-ng.cc:50
 msgid "JACK Output"
@@ -2246,12 +2101,12 @@ msgstr "Connecta automàticament els ports de sortida"
 #: src/jack/jack-ng.cc:156
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
-msgstr "Només s'han trobat %d ports de sortida de JACK però es necessiten %d"
+msgstr "Només s'han trobat %d ports de sortida JACK però es necessiten %d."
 
 #: src/jack/jack-ng.cc:172
 #, c-format
 msgid "Failed to connect to JACK port %s."
-msgstr "S'ha produït un error en connectar al port JACK %s."
+msgstr "No s'ha pogut connectar al port JACK %s."
 
 #: src/jack/jack-ng.cc:192
 msgid ""
@@ -2261,23 +2116,24 @@ msgstr ""
 
 #: src/jack/jack-ng.cc:205
 msgid "Failed to connect to the JACK server; is it running?"
-msgstr ""
+msgstr "No s'ha pogut connectar al servidor JACK; està en execució?"
 
 #: src/jack/jack-ng.cc:281
 #, c-format
 msgid ""
-"The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
-"%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
+"The JACK server requires a sample rate of %d Hz, but Audacious is playing at"
+" %d Hz.  Please use the Sample Rate Converter effect to correct the "
+"mismatch."
 msgstr ""
 
 #: src/ladspa/plugin.cc:415
 #, c-format
 msgid "%s Settings"
-msgstr "Paràmetres %s"
+msgstr "Ajusts %s"
 
 #: src/ladspa/plugin.cc:481
 msgid "Module paths:"
-msgstr "Camí de mòduls:"
+msgstr "Camí als mòduls:"
 
 #: src/ladspa/plugin.cc:486
 msgid ""
@@ -2294,7 +2150,7 @@ msgstr "Connectors disponibles: "
 #: src/modplug/plugin_main.cc:98 src/modplug/plugin_main.cc:101
 #: src/modplug/plugin_main.cc:104
 msgid "Enable"
-msgstr "Activa"
+msgstr "Habilita"
 
 #: src/ladspa/plugin.cc:521
 msgid "Enabled plugins:"
@@ -2302,13 +2158,13 @@ msgstr "Connectors habilitats:"
 
 #: src/ladspa/plugin.cc:537
 msgid "Settings"
-msgstr "Configuració"
+msgstr "Ajusts"
 
 #: src/ladspa/plugin.cc:554
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
-msgstr ""
+msgstr "Amfitrió LADSPA per a Audacious\nCopyright 2011 John Lindgren"
 
 #: src/ladspa/plugin.h:78
 msgid "LADSPA Host"
@@ -2332,20 +2188,7 @@ msgid ""
 "Andrew O. Shadoura <bugzilla@tut.by>\n"
 "\n"
 "For more information about LIRC, see http://lirc.org."
-msgstr ""
-"Un connector simple per controlar l'Audacious utilitzant el dimoni de "
-"control remot LIRC\n"
-"\n"
-"Adaptat per l'Audacious per:\n"
-"Tony Vroon <chainsaw@gentoo.org>\n"
-"Joonas Harjumäki <jharjuma@gmail.com>\n"
-"\n"
-"Basat en el connector XMMS LIRC per:\n"
-"Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de>\n"
-"Andrew O. Shadoura <bugzilla@tut.by>\n"
-"\n"
-"Per obtenir més informació sobre LIRC, vegeu http://lirc.org."
+msgstr "Un connector simple per controlar Audacious mitjançant el dimoni de comandament remot LIRC\n\nAdaptat per a Audacious per:\nTony Vroon <chainsaw@gentoo.org>\nJoonas Harjumäki <jharjuma@gmail.com>\n\nBasat en el connector XMMS LIRC per:\nCarl van Schaik <carl@leg.uct.ac.za>\nChristoph Bartelmus <xmms@bartelmus.de>\nAndrew O. Shadoura <bugzilla@tut.by>\n\nPer a més informació sobre LIRC, vegeu http://lirc.org."
 
 #: src/lirc/lirc.cc:393
 msgid "<b>Connection</b>"
@@ -2353,11 +2196,11 @@ msgstr "<b>Connexió</b>"
 
 #: src/lirc/lirc.cc:394
 msgid "Reconnect to LIRC server"
-msgstr "Reconnecta amb el servidor LIRC"
+msgstr "Reconnecta al servidor LIRC"
 
 #: src/lirc/lirc.cc:396
 msgid "Wait before reconnecting:"
-msgstr "Temps d'espera abans d'intentar reconnectar: "
+msgstr "Espera abans de la reconnexió:"
 
 #: src/lyricwiki/lyricwiki.cc:41 src/lyricwiki-qt/lyricwiki.cc:68
 msgid "LyricWiki Plugin"
@@ -2390,7 +2233,7 @@ msgstr "No es pot analitzar %s"
 
 #: src/lyricwiki/lyricwiki.cc:298 src/lyricwiki-qt/lyricwiki.cc:315
 msgid "Looking for lyrics ..."
-msgstr "S'està cercant lletres ..."
+msgstr "S'estan cercant les lletres..."
 
 #: src/lyricwiki/lyricwiki.cc:306 src/lyricwiki-qt/lyricwiki.cc:323
 msgid "Missing song metadata"
@@ -2402,7 +2245,7 @@ msgstr "S'està connectant a lyrics.wikia.com ..."
 
 #: src/lyricwiki/lyricwiki.cc:358 src/lyricwiki-qt/lyricwiki.cc:412
 msgid "Edit lyrics ..."
-msgstr "Edita lletres ..."
+msgstr "Edita les lletres..."
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
@@ -2410,7 +2253,7 @@ msgstr "Llistes de reproducció M3U"
 
 #: src/metronom/metronom.cc:44
 msgid "Tact Generator"
-msgstr "Generador de tons:"
+msgstr "Generador de tactes"
 
 #: src/metronom/metronom.cc:145
 #, c-format
@@ -2433,7 +2276,7 @@ msgstr ""
 
 #: src/mixer/mixer.cc:38
 msgid "Channel Mixer"
-msgstr ""
+msgstr "Mesclador de canals"
 
 #: src/mixer/mixer.cc:227
 msgid ""
@@ -2443,7 +2286,7 @@ msgstr ""
 
 #: src/mixer/mixer.cc:231
 msgid "<b>Channel Mixer</b>"
-msgstr ""
+msgstr "<b>Mesclador de canals</b>"
 
 #: src/mixer/mixer.cc:232
 msgid "Output channels:"
@@ -2455,7 +2298,7 @@ msgstr "Connector MMS"
 
 #: src/mms/mms.cc:82
 msgid "Error connecting to MMS server"
-msgstr ""
+msgstr "Error en connectar al servidor MMS"
 
 #: src/modplug/modplugbmp.h:57
 msgid "ModPlug (Module Player)"
@@ -2467,11 +2310,11 @@ msgstr "<b>Resolució</b>"
 
 #: src/modplug/plugin_main.cc:57
 msgid "8-bit"
-msgstr "8 bit"
+msgstr "8 bits"
 
 #: src/modplug/plugin_main.cc:58
 msgid "16-bit"
-msgstr "16 bit"
+msgstr "16 bits"
 
 #: src/modplug/plugin_main.cc:59
 msgid "<b>Channels</b>"
@@ -2495,7 +2338,7 @@ msgstr "Polifase (millor)"
 
 #: src/modplug/plugin_main.cc:67
 msgid "<b>Sample rate</b>"
-msgstr "<b>Freqüència de mostra</b>"
+msgstr "<b>Freqüència de mostreig</b>"
 
 #: src/modplug/plugin_main.cc:68
 msgid "22 kHz"
@@ -2520,19 +2363,19 @@ msgstr "Nivell:"
 
 #: src/modplug/plugin_main.cc:81
 msgid "Cutoff:"
-msgstr "Tallar:"
+msgstr "Tall:"
 
 #: src/modplug/plugin_main.cc:94
 msgid "<b>Reverb</b>"
-msgstr "<b>Reverb</b>"
+msgstr "<b>Reverberació</b>"
 
 #: src/modplug/plugin_main.cc:97
 msgid "<b>Bass Boost</b>"
-msgstr "<b>Bass Boost</b>"
+msgstr "<b>Increment de baixos</b>"
 
 #: src/modplug/plugin_main.cc:100
 msgid "<b>Surround</b>"
-msgstr "<b>Surround</b>"
+msgstr "<b>Envoltant</b>"
 
 #: src/modplug/plugin_main.cc:103
 msgid "<b>Preamp</b>"
@@ -2540,23 +2383,23 @@ msgstr "<b>Preamplificador</b>"
 
 #: src/modplug/plugin_main.cc:110
 msgid "Oversample"
-msgstr "Sobremostra"
+msgstr "Sobremostreig"
 
 #: src/modplug/plugin_main.cc:111
 msgid "Noise reduction"
-msgstr "Reducció de soroll"
+msgstr "Reducció del soroll"
 
 #: src/modplug/plugin_main.cc:112
 msgid "Play Amiga MODs"
-msgstr "Reprodueix Amiga MODs"
+msgstr "Reprodueix els MOD d'Amiga"
 
 #: src/modplug/plugin_main.cc:113
 msgid "<b>Repeat</b>"
-msgstr "<b>Repeteix</b>"
+msgstr "<b>Repetició</b>"
 
 #: src/modplug/plugin_main.cc:114
 msgid "Repeat count:"
-msgstr "Comptatge de repeticions:"
+msgstr "Nombre de repeticions:"
 
 #: src/modplug/plugin_main.cc:115
 msgid "To repeat forever, set the repeat count to -1."
@@ -2564,7 +2407,7 @@ msgstr "Per repetir indefinidament, definiu el nombre a -1."
 
 #: src/modplug/plugin_main.cc:128 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
-msgstr ""
+msgstr "Aquests ajusts tindran efecte quan es reiniciï Audacious."
 
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
@@ -2576,11 +2419,11 @@ msgstr "<b>Avançat</b>"
 
 #: src/mpg123/mpg123.cc:81
 msgid "Use accurate length calculation (slow)"
-msgstr ""
+msgstr "Utilitza el càlcul acurat de la longitud (lent)"
 
 #: src/mpg123/mpg123.cc:245
 msgid "Surround"
-msgstr "So envolvent"
+msgstr "Envoltant"
 
 #: src/mpris2/plugin.cc:38
 msgid "MPRIS 2 Server"
@@ -2588,19 +2431,19 @@ msgstr "Servidor MPRIS 2"
 
 #: src/neon/neon.cc:97
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr ""
+msgstr "Connector HTTP/HTTPS de Neon"
 
 #: src/neon/neon.cc:526
 msgid "Error parsing redirect"
-msgstr ""
+msgstr "Error en analitzar la redirecció:"
 
 #: src/neon/neon.cc:540
 msgid "Unknown HTTP error"
-msgstr ""
+msgstr "Error HTTP desconegut"
 
 #: src/neon/neon.cc:574
 msgid "Error parsing URL"
-msgstr ""
+msgstr "Error en analitzar l'URL"
 
 #: src/neon/neon.cc:637
 msgid "Too many redirects"
@@ -2624,38 +2467,32 @@ msgid ""
 "Copyright (C) 2010 Maximilian Bogner\n"
 "Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
 "\n"
-"This plugin is free software: you can redistribute it and/or modify it under "
-"the terms of the GNU General Public License as published by the Free "
-"Software Foundation, either version 3 of the License, or (at your option) "
-"any later version.\n"
+"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
 "\n"
-"This plugin is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 
 #: src/notify/notify.cc:102
 msgid "Show playback controls"
-msgstr ""
+msgstr "Mostra els controls de reproducció"
 
 #: src/notify/notify.cc:104
 msgid "Always show notification"
-msgstr ""
+msgstr "Mostra sempre la notificació"
 
 #: src/notify/notify.cc:106
 msgid "Include album name in notification"
-msgstr ""
+msgstr "Inclou el nom de l'àlbum a la notificació"
 
 #: src/notify/osd.cc:58
 msgid "Show"
 msgstr "Mostra"
 
-#: src/notify/osd.cc:66 src/qtui/main_window.cc:222 src/qtui/main_window.cc:223
-#: src/skins/menus.cc:135 src/skins-qt/menus.cc:123
+#: src/notify/osd.cc:66 src/qtui/main_window.cc:222
+#: src/qtui/main_window.cc:223 src/skins/menus.cc:135
+#: src/skins-qt/menus.cc:123
 msgid "Pause"
 msgstr "Pausa"
 
@@ -2682,27 +2519,26 @@ msgstr "Dispositiu d'àudio:"
 
 #: src/oss4/plugin.cc:81
 msgid "Use alternate device:"
-msgstr "Usa un dispositiu alternatiu:"
+msgstr "Utilitza un dispositiu alternatiu:"
 
 #: src/oss4/plugin.cc:85
 msgid "Save volume between sessions."
-msgstr ""
+msgstr "Desa el volum entre les sessions."
 
 #: src/oss4/plugin.cc:87
 msgid "Enable format conversions made by the OSS software."
-msgstr "Activar conversions de format realitzades pel programari OSS."
+msgstr "Habilita les conversions de format realitzades amb el programari OSS."
 
 #: src/oss4/plugin.cc:89
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr ""
+msgstr "Habilita el mode exclusiu per evitar la mescla virtual."
 
 #: src/oss4/plugin.cc:101
 msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010-2012 Michał Lipski\n"
 "\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John "
-"Lindgren and of course the authors of the previous OSS plugin."
+"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
 
 #: src/playlist-manager/playlist-manager.cc:37
@@ -2723,7 +2559,7 @@ msgstr "_Suprimeix"
 #: src/playlist-manager/playlist-manager.cc:244
 #: src/playlist-manager-qt/playlist-manager-qt.cc:322
 msgid "Ren_ame"
-msgstr "Ranomena"
+msgstr "Re_anomena"
 
 #: src/pls/pls.cc:35
 msgid "PLS Playlists"
@@ -2737,28 +2573,20 @@ msgstr "Descodificador OpenPSF PSF1/PSF2"
 msgid "PulseAudio Output"
 msgstr "Sortida PulseAudio"
 
-#: src/pulse/pulse_audio.cc:494
+#: src/pulse/pulse_audio.cc:490
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
-msgstr "Sortida QtMultimedia"
+msgstr "Sortida de QtMultimedia"
 
 #: src/qtaudio/qtaudio.cc:72
 msgid ""
@@ -2776,19 +2604,18 @@ msgid ""
 "Copyright 2014 William Pitcock\n"
 "\n"
 "Based on the XMMS plugin:\n"
-"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
-"4Front Technologies\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and 4Front Technologies\n"
 "\n"
 "License: GPLv2+"
 msgstr ""
 
 #: src/qtui/dialog_windows.cc:31
 msgid "Working ..."
-msgstr "S'està treballant ..."
+msgstr "S'està treballant..."
 
 #: src/qtui/dialog_windows.cc:43
 msgid "Information"
-msgstr ""
+msgstr "Informació"
 
 #: src/qtui/filter_input.cc:44 src/skins/search-select.cc:76
 msgid "Search"
@@ -2802,29 +2629,32 @@ msgstr "Obre els fitxers"
 msgid "Add Files"
 msgstr "Afegeix els fitxers"
 
-#: src/qtui/main_window.cc:102 src/skins/menus.cc:137 src/skins-qt/menus.cc:125
+#: src/qtui/main_window.cc:102 src/skins/menus.cc:137
+#: src/skins-qt/menus.cc:125
 msgid "Previous"
 msgstr "Anterior"
 
-#: src/qtui/main_window.cc:108 src/skins/menus.cc:128 src/skins-qt/menus.cc:116
+#: src/qtui/main_window.cc:108 src/skins/menus.cc:128
+#: src/skins-qt/menus.cc:116
 msgid "Repeat"
 msgstr "Repeteix"
 
-#: src/qtui/main_window.cc:110 src/skins/menus.cc:129 src/skins-qt/menus.cc:117
+#: src/qtui/main_window.cc:110 src/skins/menus.cc:129
+#: src/skins-qt/menus.cc:117
 msgid "Shuffle"
-msgstr "Barreja"
+msgstr "Ordre aleatori"
 
 #: src/qtui/menus.cc:56
 msgid "_Open Folder ..."
-msgstr "_Obre carpeta ..."
+msgstr "_Obre la carpeta..."
 
 #: src/qtui/menus.cc:59
 msgid "_Add Folder ..."
-msgstr "_Afegeix carpeta ..."
+msgstr "_Afegeix la carpeta..."
 
 #: src/qtui/menus.cc:65
 msgid "_Log Inspector ..."
-msgstr "_Log Inspector ..."
+msgstr ""
 
 #: src/qtui/qtui.cc:42
 msgid "Qt Interface"
@@ -2832,19 +2662,17 @@ msgstr "Interfície Qt"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
-msgstr "Convertidor de taxa de mostratge"
+msgstr "Convertidor de taxa de mostreig"
 
 #: src/resample/resample.cc:183
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
-msgstr ""
-"Sample Rate Converter Plugin for Audacious\n"
-"Copyright 2010-2012 John Lindgren"
+msgstr "Connector de conversió de freqüència de mostreig per a Audacious\nCopyright 2010-2012 John Lindgren"
 
 #: src/resample/resample.cc:187
 msgid "Skip/repeat samples"
-msgstr ""
+msgstr "Omet/repeteix les mostres"
 
 #: src/resample/resample.cc:188
 msgid "Linear interpolation"
@@ -2852,15 +2680,15 @@ msgstr "Interpolació lineal"
 
 #: src/resample/resample.cc:189
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "Interpolació ràpida de la sincronització"
 
 #: src/resample/resample.cc:190
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "Interpolació mitjana de la sincronització"
 
 #: src/resample/resample.cc:191
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "La millor interpolació de la sincronització"
 
 #: src/resample/resample.cc:195
 msgid "<b>Conversion</b>"
@@ -2876,11 +2704,11 @@ msgstr "Taxa:"
 
 #: src/resample/resample.cc:202
 msgid "<b>Rate Mappings</b>"
-msgstr ""
+msgstr "<b>Assignacions de les taxes</b>"
 
 #: src/resample/resample.cc:203
 msgid "Use rate mappings"
-msgstr "Usa sobre-mostratge"
+msgstr "Utilitza les assignacions de les taxes"
 
 #: src/resample/resample.cc:205
 msgid "8 kHz:"
@@ -2924,7 +2752,7 @@ msgstr "192 kHz:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr ""
+msgstr "S'està comprovant l'accés a Last.fm..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
@@ -2949,14 +2777,15 @@ msgstr ""
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "Comprova el permís"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "Revoca el permís"
 
 #: src/scrobbler2/config_window.cc:91
-msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
+msgid ""
+"You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
 
 #: src/scrobbler2/scrobbler.cc:29
@@ -2975,8 +2804,7 @@ msgid ""
 "\n"
 "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "\n"
-"Thanks to John Lindgren for giving me a hand at the beginning of this "
-"project.\n"
+"Thanks to John Lindgren for giving me a hand at the beginning of this project.\n"
 "\n"
 msgstr ""
 
@@ -2994,9 +2822,7 @@ msgstr "Sortida SDL"
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
-msgstr ""
-"SDL Output Plugin for Audacious\n"
-"Copyright 2010 John Lindgren"
+msgstr "Connector de sortida SDL per a Audacious\nCopyright 2010 John Lindgren"
 
 #: src/search-tool-qt/search-tool-qt.cc:195
 #: src/search-tool-qt/search-tool-qt.cc:203 src/search-tool/search-tool.cc:128
@@ -3008,26 +2834,26 @@ msgstr "Biblioteca"
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d resultat"
+msgstr[1] "%d resultats"
 
 #: src/search-tool-qt/search-tool-qt.cc:491 src/search-tool/search-tool.cc:424
 #, c-format
 msgid "(%d hidden)"
 msgid_plural "(%d hidden)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(%d ocult)"
+msgstr[1] "(%d ocults)"
 
 #: src/search-tool-qt/search-tool-qt.cc:683 src/search-tool/search-tool.cc:612
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d cançó"
+msgstr[1] "%d cançons"
 
 #: src/search-tool-qt/search-tool-qt.cc:690 src/search-tool/search-tool.cc:619
 msgid "of this genre"
-msgstr ""
+msgstr "d'aquest gènere"
 
 #: src/search-tool-qt/search-tool-qt.cc:696 src/search-tool/search-tool.cc:625
 msgid "on"
@@ -3035,27 +2861,25 @@ msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:696 src/search-tool/search-tool.cc:625
 msgid "by"
-msgstr ""
+msgstr "per"
 
 #: src/search-tool-qt/search-tool-qt.cc:708 src/search-tool/search-tool.cc:661
 msgid "_Create Playlist"
-msgstr "_Crear llista de reproducció"
+msgstr "_Crea una llista de reproducció"
 
 #: src/search-tool-qt/search-tool-qt.cc:709 src/search-tool/search-tool.cc:663
 msgid "_Add to Playlist"
-msgstr "_Afegir a la llista de reproducció"
+msgstr "_Afegeix a la llista de reproducció"
 
 #: src/search-tool-qt/search-tool-qt.cc:725 src/search-tool/search-tool.cc:752
 msgid "Search library"
-msgstr "Cercar biblioteca"
+msgstr "Cerca la biblioteca"
 
 #: src/search-tool-qt/search-tool-qt.cc:728 src/search-tool/search-tool.cc:756
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr ""
-"Per importar la vostra col·lecció musical en l’Audacious, trieu una carpeta "
-"i feu clic a la icona «Actualitza»."
+msgstr "Per importar la vostra biblioteca de música a Audacious, trieu una carpeta i feu clic a la icona «refresca»."
 
 #: src/search-tool-qt/search-tool-qt.cc:734 src/search-tool/search-tool.cc:765
 msgid "Please wait ..."
@@ -3071,7 +2895,7 @@ msgstr "Reproductor SID"
 
 #: src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
-msgstr ""
+msgstr "<b>Sortida</b>"
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
@@ -3083,11 +2907,11 @@ msgstr "<b>Emulació</b>"
 
 #: src/sid/xs_config.cc:69
 msgid "Emulate MOS 8580 (default: MOS 6581)"
-msgstr ""
+msgstr "Emula MOS 8580 (per defecte: MOS 6581)"
 
 #: src/sid/xs_config.cc:71
 msgid "Do not automatically select chip model"
-msgstr ""
+msgstr "No seleccionis automàticament el model del xip!"
 
 #: src/sid/xs_config.cc:73
 msgid "Emulate filter"
@@ -3107,7 +2931,7 @@ msgstr "<b>Temps de reproducció</b>"
 
 #: src/sid/xs_config.cc:81
 msgid "Set maximum playback time:"
-msgstr ""
+msgstr "Estableix el temps màxim de reproducció:"
 
 #: src/sid/xs_config.cc:87
 msgid "Use only when song length is unknown"
@@ -3115,15 +2939,15 @@ msgstr ""
 
 #: src/sid/xs_config.cc:90
 msgid "Set minimum playback time:"
-msgstr ""
+msgstr "Estableix el temps mínim de reproducció:"
 
 #: src/sid/xs_config.cc:96
 msgid "<b>Subtunes</b>"
-msgstr ""
+msgstr "<b>Subtons</b>"
 
 #: src/sid/xs_config.cc:97
 msgid "Enable subtunes"
-msgstr "Activa subtons"
+msgstr "Habilita els subtons"
 
 #: src/sid/xs_config.cc:99
 msgid "Ignore subtunes shorter than:"
@@ -3135,15 +2959,13 @@ msgstr "<b>Nota</b>"
 
 #: src/silence-removal/silence-removal.cc:39
 msgid "Silence Removal"
-msgstr "Eliminació de silenci"
+msgstr "Eliminació del silenci"
 
 #: src/silence-removal/silence-removal.cc:58
 msgid ""
 "Silence Removal Plugin for Audacious\n"
 "Copyright 2014 John Lindgren"
-msgstr ""
-"Silence Removal Plugin per l'Audacious\n"
-"Copyright 2014 John Lindgren"
+msgstr "Connector de supressió del silenci per a Audacious\nCopyright 2014 John Lindgren"
 
 #: src/silence-removal/silence-removal.cc:67
 msgid "<b>Silence Removal</b>"
@@ -3215,12 +3037,12 @@ msgstr "16 kHz"
 
 #: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:267
 msgid "Audacious Equalizer"
-msgstr "Equalitzador de l'Audacious"
+msgstr "Equalitzador d'Audacious"
 
 #: src/skins/main.cc:695 src/skins-qt/main.cc:648
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Anar a la posició %d:%-2.2d / %d:%-2.2d"
+msgstr "Vés a la posició %d:%-2.2d / %d:%-2.2d"
 
 #: src/skins/main.cc:712 src/skins-qt/main.cc:665
 #, c-format
@@ -3247,20 +3069,20 @@ msgstr "Menú d'opcions"
 
 #: src/skins/main.cc:826 src/skins-qt/main.cc:779
 msgid "Disable 'Always On Top'"
-msgstr "Desactiva 'Sempre per sobre'"
+msgstr "Inhabilita 'Sempre per sobre'"
 
 #: src/skins/main.cc:828 src/skins-qt/main.cc:781
 msgid "Enable 'Always On Top'"
-msgstr "Activa 'Sempre per sobre'"
+msgstr "Habilita 'Sempre per sobre'"
 
 #: src/skins/main.cc:831 src/skins-qt/main.cc:784
 msgid "File Info Box"
-msgstr "Informació del fitxer"
+msgstr "Quadre d'informació del fitxer"
 
 #: src/skins/main.cc:834 src/skins/menus.cc:172 src/skins-qt/main.cc:787
 #: src/skins-qt/menus.cc:164
 msgid "Double Size"
-msgstr "Dobla mida"
+msgstr "Mida doble"
 
 #: src/skins/main.cc:837 src/skins-qt/main.cc:790
 msgid "Visualizations"
@@ -3276,35 +3098,35 @@ msgstr ""
 
 #: src/skins/menus.cc:99 src/skins-qt/menus.cc:86
 msgid "Volume Up"
-msgstr ""
+msgstr "Apuja el volum"
 
 #: src/skins/menus.cc:100 src/skins-qt/menus.cc:87
 msgid "Volume Down"
-msgstr ""
+msgstr "Abaixa el volum"
 
 #: src/skins/menus.cc:102 src/skins-qt/menus.cc:89
 msgid "Effects ..."
-msgstr "Efectes ..."
+msgstr "Efectes..."
 
 #: src/skins/menus.cc:104 src/skins-qt/menus.cc:91
 msgid "Record Stream"
-msgstr ""
+msgstr "Enregistra el flux"
 
 #: src/skins/menus.cc:105 src/skins-qt/menus.cc:92
 msgid "Audio Settings ..."
-msgstr ""
+msgstr "Ajusts de l'àudio..."
 
 #: src/skins/menus.cc:109 src/skins-qt/menus.cc:96
 msgid "Open Files ..."
-msgstr "Obre arxius ..."
+msgstr "Obre fitxers..."
 
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:98
 msgid "Open URL ..."
-msgstr "Obre URL ..."
+msgstr "Obre l'URL..."
 
 #: src/skins/menus.cc:111
 msgid "Search Library"
-msgstr "Cerca biblioteca"
+msgstr "Cerca la biblioteca"
 
 #: src/skins/menus.cc:113 src/skins-qt/menus.cc:101
 msgid "Playback"
@@ -3312,7 +3134,7 @@ msgstr "Reproducció"
 
 #: src/skins/menus.cc:114 src/skins-qt/menus.cc:102
 msgid "Playlist"
-msgstr "Llistes"
+msgstr "Llista de reproducció"
 
 #: src/skins/menus.cc:115 src/skins-qt/menus.cc:103
 msgid "Output"
@@ -3330,11 +3152,11 @@ msgstr "Serveis"
 
 #: src/skins/menus.cc:120 src/skins-qt/menus.cc:108
 msgid "About ..."
-msgstr "Quant a ..."
+msgstr "Quant a..."
 
 #: src/skins/menus.cc:121 src/skins-qt/menus.cc:109
 msgid "Settings ..."
-msgstr "Opcions ..."
+msgstr "Ajusts..."
 
 #: src/skins/menus.cc:122 src/skins-qt/menus.cc:110
 msgid "Quit"
@@ -3343,39 +3165,39 @@ msgstr "Surt"
 #: src/skins/menus.cc:126 src/skins/menus.cc:254 src/skins-qt/menus.cc:114
 #: src/skins-qt/menus.cc:247
 msgid "Song Info ..."
-msgstr "Informació de la cançó ..."
+msgstr "Informació de la cançó..."
 
 #: src/skins/menus.cc:130 src/skins-qt/menus.cc:118
 msgid "Shuffle by Album"
-msgstr ""
+msgstr "Ordre aleatori per àlbum"
 
 #: src/skins/menus.cc:131 src/skins-qt/menus.cc:119
 msgid "No Playlist Advance"
-msgstr "Discontinua la reproducció programada"
+msgstr "Sense l'avanç de la llista de reproducció"
 
 #: src/skins/menus.cc:132 src/skins-qt/menus.cc:120
 msgid "Stop After This Song"
-msgstr ""
+msgstr "Atura després d'aquesta cançó"
 
 #: src/skins/menus.cc:140 src/skins-qt/menus.cc:128
 msgid "Set A-B Repeat"
-msgstr ""
+msgstr "Estableix la repetició A-B"
 
 #: src/skins/menus.cc:141 src/skins-qt/menus.cc:129
 msgid "Clear A-B Repeat"
-msgstr ""
+msgstr "Neteja la repetició A-B"
 
 #: src/skins/menus.cc:143 src/skins-qt/menus.cc:132
 msgid "Jump to Song ..."
-msgstr ""
+msgstr "Salta a la cançó..."
 
 #: src/skins/menus.cc:144 src/skins-qt/menus.cc:133
 msgid "Jump to Time ..."
-msgstr ""
+msgstr "Salta a l'instant..."
 
 #: src/skins/menus.cc:148 src/skins-qt/menus.cc:138
 msgid "Play/Resume"
-msgstr ""
+msgstr "Reprodueix/reprèn"
 
 #: src/skins/menus.cc:150 src/skins-qt/menus.cc:140
 msgid "New Playlist"
@@ -3383,43 +3205,43 @@ msgstr "Llista de reproducció nova"
 
 #: src/skins/menus.cc:151 src/skins-qt/menus.cc:141
 msgid "Rename Playlist ..."
-msgstr ""
+msgstr "Reanomena la llista de reproducció..."
 
 #: src/skins/menus.cc:152 src/skins-qt/menus.cc:142
 msgid "Remove Playlist"
-msgstr "Suprimeix llista de reproducció"
+msgstr "Suprimeix la llista de reproducció"
 
 #: src/skins/menus.cc:154 src/skins-qt/menus.cc:144
 msgid "Previous Playlist"
-msgstr ""
+msgstr "Llista de reproducció anterior"
 
 #: src/skins/menus.cc:155 src/skins-qt/menus.cc:145
 msgid "Next Playlist"
-msgstr ""
+msgstr "Llista de reproducció següent"
 
 #: src/skins/menus.cc:157 src/skins-qt/menus.cc:148
 msgid "Import Playlist ..."
-msgstr ""
+msgstr "Importa la llista de reproducció..."
 
 #: src/skins/menus.cc:158 src/skins-qt/menus.cc:149
 msgid "Export Playlist ..."
-msgstr ""
+msgstr "Exporta la llista de reproducció..."
 
 #: src/skins/menus.cc:160 src/skins-qt/menus.cc:152
 msgid "Playlist Manager ..."
-msgstr ""
+msgstr "Gestor de llistes de reproducció..."
 
 #: src/skins/menus.cc:161 src/skins-qt/menus.cc:153
 msgid "Queue Manager ..."
-msgstr ""
+msgstr "Gestor de la cua..."
 
 #: src/skins/menus.cc:163 src/skins-qt/menus.cc:155
 msgid "Refresh Playlist"
-msgstr ""
+msgstr "Refresca la llista de reproducció"
 
 #: src/skins/menus.cc:167 src/skins-qt/menus.cc:159
 msgid "Show Playlist Editor"
-msgstr "Mostra l'editor de llistes"
+msgstr "Mostra l'editor la llista de reproducció"
 
 #: src/skins/menus.cc:168 src/skins-qt/menus.cc:160
 msgid "Show Equalizer"
@@ -3427,7 +3249,7 @@ msgstr "Mostra l'equalitzador"
 
 #: src/skins/menus.cc:170 src/skins-qt/menus.cc:162
 msgid "Show Remaining Time"
-msgstr ""
+msgstr "Mostra el temps restant"
 
 #: src/skins/menus.cc:173 src/skins-qt/menus.cc:166
 msgid "Always on Top"
@@ -3435,27 +3257,27 @@ msgstr "Sempre per sobre"
 
 #: src/skins/menus.cc:174 src/skins-qt/menus.cc:167
 msgid "On All Workspaces"
-msgstr ""
+msgstr "En tots els espais de treball"
 
 #: src/skins/menus.cc:176 src/skins-qt/menus.cc:170
 msgid "Roll Up Player"
-msgstr ""
+msgstr "Enrotlla cap a dalt el reproductor"
 
 #: src/skins/menus.cc:177 src/skins-qt/menus.cc:171
 msgid "Roll Up Playlist Editor"
-msgstr ""
+msgstr "Enrotlla cap a dalt l'editor de la llista de reproducció"
 
 #: src/skins/menus.cc:178 src/skins-qt/menus.cc:172
 msgid "Roll Up Equalizer"
-msgstr ""
+msgstr "Enrotlla cap a dalt l'equalitzador"
 
 #: src/skins/menus.cc:186 src/skins-qt/menus.cc:180
 msgid "Add URL ..."
-msgstr ""
+msgstr "Afegeix l'URL..."
 
 #: src/skins/menus.cc:187 src/skins-qt/menus.cc:182
 msgid "Add Files ..."
-msgstr ""
+msgstr "Afegeix els fitxers..."
 
 #: src/skins/menus.cc:191 src/skins/menus.cc:219 src/skins/menus.cc:233
 #: src/skins-qt/menus.cc:186 src/skins-qt/menus.cc:212
@@ -3467,13 +3289,13 @@ msgstr "Per títol"
 #: src/skins-qt/menus.cc:187 src/skins-qt/menus.cc:219
 #: src/skins-qt/menus.cc:233
 msgid "By File Name"
-msgstr ""
+msgstr "Per nom de fitxer"
 
 #: src/skins/menus.cc:193 src/skins/menus.cc:227 src/skins/menus.cc:241
 #: src/skins-qt/menus.cc:188 src/skins-qt/menus.cc:220
 #: src/skins-qt/menus.cc:234
 msgid "By File Path"
-msgstr ""
+msgstr "Per camí al fitxer"
 
 #: src/skins/menus.cc:199 src/skins-qt/menus.cc:194
 msgid "Remove All"
@@ -3518,12 +3340,12 @@ msgstr "Selecciona tots els elements"
 #: src/skins/menus.cc:218 src/skins/menus.cc:232 src/skins-qt/menus.cc:211
 #: src/skins-qt/menus.cc:225
 msgid "By Track Number"
-msgstr "Pel número de pista"
+msgstr "Per número de pista"
 
 #: src/skins/menus.cc:220 src/skins/menus.cc:234 src/skins-qt/menus.cc:213
 #: src/skins-qt/menus.cc:227
 msgid "By Artist"
-msgstr "Per l'artista"
+msgstr "Per artista"
 
 #: src/skins/menus.cc:221 src/skins/menus.cc:235 src/skins-qt/menus.cc:214
 #: src/skins-qt/menus.cc:228
@@ -3533,27 +3355,27 @@ msgstr "Per àlbum"
 #: src/skins/menus.cc:222 src/skins/menus.cc:236 src/skins-qt/menus.cc:215
 #: src/skins-qt/menus.cc:229
 msgid "By Album Artist"
-msgstr ""
+msgstr "Per artista de l'àlbum"
 
 #: src/skins/menus.cc:223 src/skins/menus.cc:238 src/skins-qt/menus.cc:216
 #: src/skins-qt/menus.cc:231
 msgid "By Release Date"
-msgstr ""
+msgstr "Per data de llançament"
 
 #: src/skins/menus.cc:224 src/skins/menus.cc:237 src/skins-qt/menus.cc:217
 #: src/skins-qt/menus.cc:230
 msgid "By Genre"
-msgstr ""
+msgstr "Per gènere"
 
 #: src/skins/menus.cc:225 src/skins/menus.cc:239 src/skins-qt/menus.cc:218
 #: src/skins-qt/menus.cc:232
 msgid "By Length"
-msgstr ""
+msgstr "Per longitud"
 
 #: src/skins/menus.cc:228 src/skins/menus.cc:242 src/skins-qt/menus.cc:221
 #: src/skins-qt/menus.cc:235
 msgid "By Custom Title"
-msgstr ""
+msgstr "Per títol personalitzat"
 
 #: src/skins/menus.cc:246 src/skins-qt/menus.cc:239
 msgid "Randomize List"
@@ -3573,31 +3395,31 @@ msgstr "Ordena la llista"
 
 #: src/skins/menus.cc:255 src/skins-qt/menus.cc:248
 msgid "Open Containing Folder"
-msgstr ""
+msgstr "Obre la carpeta contenidora"
 
 #: src/skins/menus.cc:257 src/skins-qt/menus.cc:250
 msgid "Cut"
-msgstr "Retallar"
+msgstr "Retalla"
 
 #: src/skins/menus.cc:258 src/skins-qt/menus.cc:251
 msgid "Copy"
-msgstr "Copiar"
+msgstr "Copia"
 
 #: src/skins/menus.cc:259 src/skins-qt/menus.cc:252
 msgid "Paste"
-msgstr "Enganxar"
+msgstr "Enganxa"
 
 #: src/skins/menus.cc:260 src/skins-qt/menus.cc:253
 msgid "Paste at End"
-msgstr ""
+msgstr "Enganxa a l'acabament"
 
 #: src/skins/menus.cc:262 src/skins-qt/menus.cc:255
 msgid "Queue/Unqueue"
-msgstr ""
+msgstr "Afegeix/treu de la cua"
 
 #: src/skins/playlist.cc:492 src/skins-qt/playlist.cc:477
 msgid "Audacious Playlist Editor"
-msgstr "Editor de llistes de l'Audacious"
+msgstr "Editor de la llista de reproducció d'Audacious"
 
 #: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:52
 #, c-format
@@ -3606,51 +3428,51 @@ msgstr "%s (%d de %d)"
 
 #: src/skins/plugin.cc:52 src/skins-qt/plugin.cc:54
 msgid "Winamp Classic Interface"
-msgstr "Interfície del Winamp clàssic"
+msgstr "Interfície de Winamp clàssic"
 
 #: src/skins-qt/menus.cc:97
 msgid "Open Folder ..."
-msgstr ""
+msgstr "Obre la carpeta..."
 
 #: src/skins-qt/menus.cc:181
 msgid "Add Folder ..."
-msgstr ""
+msgstr "Afegeix la carpeta..."
 
 #: src/skins-qt/skins_cfg.cc:197 src/skins/skins_cfg.cc:181
 msgid "Player:"
-msgstr ""
+msgstr "Reproductor:"
 
 #: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:183
 msgid "Select main player window font:"
-msgstr "Trieu la fosa de la finestra principal:"
+msgstr "Seleccioneu el tipus de lletra de la finestra principal del reproductor:"
 
 #: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:184
 msgid "Playlist:"
-msgstr ""
+msgstr "Llista de reproducció:"
 
 #: src/skins-qt/skins_cfg.cc:202 src/skins/skins_cfg.cc:186
 msgid "Select playlist font:"
-msgstr "Trieu la fosa de la llista de reproducció:"
+msgstr "Seleccioneu el tipus de lletra de la llista de reproducció:"
 
 #: src/skins-qt/skins_cfg.cc:206 src/skins/skins_cfg.cc:190
 msgid "<b>Skin</b>"
-msgstr ""
+msgstr "<b>Tema</b>"
 
 #: src/skins-qt/skins_cfg.cc:210 src/skins/skins_cfg.cc:192
 msgid "<b>Fonts</b>"
-msgstr ""
+msgstr "<b>Tipus de lletres</b>"
 
 #: src/skins-qt/skins_cfg.cc:212 src/skins/skins_cfg.cc:194
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Utilitzar tipografies de mapa de bits (nomes suporta ASCII)"
+msgstr "Utilitza els tipus de lletra bitmap (només és compatible amb ASCII)"
 
 #: src/skins-qt/skins_cfg.cc:214 src/skins/skins_cfg.cc:196
 msgid "Scroll song title"
-msgstr ""
+msgstr "Desplaça el títol de la cançó"
 
 #: src/skins-qt/skins_cfg.cc:216 src/skins/skins_cfg.cc:198
 msgid "Scroll song title in both directions"
-msgstr "Desplaçar el títol de la cançó en ambdues direccions "
+msgstr "Desplaça el títol de la cançó en ambdues direccions"
 
 #: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:203
 msgid "Analyzer"
@@ -3681,7 +3503,7 @@ msgstr "Foc"
 
 #: src/skins-qt/skins_cfg.cc:230 src/skins/skins_cfg.cc:212
 msgid "Vertical lines"
-msgstr ""
+msgstr "Línies verticals"
 
 #: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:216
 msgid "Lines"
@@ -3702,7 +3524,7 @@ msgstr "Lent"
 #: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:223
 #: src/soxr/sox-resampler.cc:153
 msgid "Medium"
-msgstr "Mitjà"
+msgstr "Mitja"
 
 #: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
 msgid "Fast"
@@ -3714,7 +3536,7 @@ msgstr "Al màxim"
 
 #: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:229
 msgid "Dots"
-msgstr ""
+msgstr "Punts"
 
 #: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:230
 msgid "Line"
@@ -3722,7 +3544,7 @@ msgstr "Línia"
 
 #: src/skins-qt/skins_cfg.cc:249 src/skins/skins_cfg.cc:231
 msgid "Solid"
-msgstr ""
+msgstr "Sòlid"
 
 #: src/skins-qt/skins_cfg.cc:255 src/skins/skins_cfg.cc:237
 msgid "Ice"
@@ -3738,7 +3560,7 @@ msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:249
 msgid "Style:"
-msgstr ""
+msgstr "Estil:"
 
 #: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:252
 msgid "Falloff:"
@@ -3762,15 +3584,15 @@ msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:273
 msgid "<b>Type</b>"
-msgstr ""
+msgstr "<b>Tipus</b>"
 
 #: src/skins-qt/skins_cfg.cc:292 src/skins/skins_cfg.cc:274
 msgid "Visualization type:"
-msgstr ""
+msgstr "Tipus de visualització:"
 
 #: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
 msgid "<b>Analyzer</b>"
-msgstr ""
+msgstr "<b>Analitzador</b>"
 
 #: src/skins-qt/skins_cfg.cc:296 src/skins/skins_cfg.cc:278
 msgid "Show peaks"
@@ -3782,43 +3604,39 @@ msgstr "Visualització"
 
 #: src/skins-qt/skinselector.cc:98 src/skins/skinselector.cc:111
 msgid "Archived Winamp 2.x skin"
-msgstr "Decoració del Winamp 2.x arxivada"
+msgstr "Tema de Winamp 2.x arxivat"
 
 #: src/skins-qt/skinselector.cc:102 src/skins/skinselector.cc:115
 msgid "Unarchived Winamp 2.x skin"
-msgstr "Decoració del Winamp 2.x no arxivada"
+msgstr "Tema de Winamp 2.x no arxivat"
 
 #: src/skins/search-select.cc:75
 msgid "Search entries in active playlist"
-msgstr "Cerca elements en la llista de reproducció activa"
+msgstr "Cerca les entrades a la llista de reproducció activa"
 
 #: src/skins/search-select.cc:81
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr ""
-"Seleccioneu elements de la llista de reproducció omplint un o diversos "
-"camps. Aquests camps admeten la sintaxi d'expressions regulars i són "
-"insensibles a la capitalització. Si no sabeu com funcionen les expressions "
-"regulars, podeu escriure literalment el text que busqueu."
+msgstr "Seleccioneu elements de la llista de reproducció omplint un o diversos camps. Aquests camps admeten la sintaxi d'expressions regulars i són insensibles a la capitalització. Si no sabeu com funcionen les expressions regulars, podeu escriure literalment el text que busqueu."
 
 #: src/skins/search-select.cc:89
 msgid "Title:"
-msgstr ""
+msgstr "Títol: "
 
 #: src/skins/search-select.cc:95
 msgid "Album:"
-msgstr ""
+msgstr "Àlbum:"
 
 #: src/skins/search-select.cc:101
 msgid "Artist:"
-msgstr ""
+msgstr "Artista: "
 
 #: src/skins/search-select.cc:107
 msgid "File Name:"
-msgstr ""
+msgstr "Nom del fitxer:"
 
 #: src/skins/search-select.cc:115
 msgid "Clear previous selection before searching"
@@ -3834,7 +3652,7 @@ msgstr "Crea una llista de reproducció nova amb els elements trobats"
 
 #: src/sndfile/plugin.cc:39
 msgid "Sndfile Plugin"
-msgstr ""
+msgstr "Connector Sndfile"
 
 #: src/sndfile/plugin.cc:357
 msgid ""
@@ -3843,49 +3661,41 @@ msgid ""
 "\n"
 "Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
 #: src/sndio/sndio.cc:43
 msgid "Sndio Output"
-msgstr ""
+msgstr "Sortida Sndio"
 
 #: src/sndio/sndio.cc:98
 msgid "Device (blank for default):"
-msgstr ""
+msgstr "Dispositiu (en blanc per al predeterminat):"
 
 #: src/sndio/sndio.cc:100
 msgid "Save and restore volume:"
-msgstr ""
+msgstr "Desa i restaura el volum:"
 
 #: src/sndio/sndio.cc:181
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
-msgstr ""
+msgstr "Error de Sndio: Format de àudio no compatible (%d)"
 
 #: src/sndio/sndio.cc:192
 msgid "Sndio error: sio_open() failed"
-msgstr ""
+msgstr "Error de Sndio: ha fallat sio_open()"
 
 #: src/sndio/sndio.cc:221
 msgid "Sndio error: sio_setpar() failed"
-msgstr ""
+msgstr "Error de Sndio: ha fallat sio_setpar()"
 
 #: src/sndio/sndio.cc:233
 msgid "Sndio error: sio_start() failed"
-msgstr ""
+msgstr "Error de Sndio: ha fallat sio_start()"
 
 #: src/songchange/song_change.cc:33
 msgid "Song Change"
@@ -3893,23 +3703,23 @@ msgstr "Canvi de cançó"
 
 #: src/songchange/song_change.cc:268
 msgid "<b>Commands</b>"
-msgstr ""
+msgstr "<b>Ordres</b>"
 
 #: src/songchange/song_change.cc:270
 msgid "Command to run when starting a new song:"
-msgstr ""
+msgstr "Ordre a executar quan es comença una cançó nova:"
 
 #: src/songchange/song_change.cc:273
 msgid "Command to run at the end of a song:"
-msgstr ""
+msgstr "Ordre a executar a l'acabament d'una cançó:"
 
 #: src/songchange/song_change.cc:276
 msgid "Command to run at the end of the playlist:"
-msgstr ""
+msgstr "Ordre a executar a l'acabament d'una llista de reproducció:"
 
 #: src/songchange/song_change.cc:279
 msgid "Command to run when song title changes (for network streams):"
-msgstr ""
+msgstr "Ordre a executar quan canvia el nom de la cançó (per als fluxos de xarxa):"
 
 #: src/songchange/song_change.cc:282
 msgid ""
@@ -3940,7 +3750,7 @@ msgstr ""
 
 #: src/song-info-qt/song-info.cc:33
 msgid "Song Info"
-msgstr ""
+msgstr "Informació de la cançó"
 
 #: src/soxr/sox-resampler.cc:44
 msgid "SoX Resampler"
@@ -3993,7 +3803,7 @@ msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:43 src/statusicon/statusicon.cc:47
 msgid "Status Icon"
-msgstr "Icona d’estat"
+msgstr "Icona d'estat"
 
 #: src/statusicon-qt/statusicon.cc:65
 msgid ""
@@ -4009,19 +3819,19 @@ msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:78 src/statusicon/statusicon.cc:387
 msgid "Close to the system tray"
-msgstr "Tanca a la safata del sistema"
+msgstr "A prop de la safata del sistema"
 
 #: src/statusicon-qt/statusicon.cc:85
 msgid "_Hide"
-msgstr ""
+msgstr "_Oculta"
 
 #: src/statusicon-qt/statusicon.cc:86
 msgid "_Restore"
-msgstr ""
+msgstr "_Restaura"
 
 #: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:284
 msgid "Se_ttings ..."
-msgstr ""
+msgstr "Ajus_ts..."
 
 #: src/statusicon/statusicon.cc:370
 msgid ""
@@ -4032,11 +3842,11 @@ msgid ""
 "\n"
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
-msgstr ""
+msgstr "Connector d'icona d'estat\n\nCopyright 2005-2007 Giacomo Lozito <james@develia.org>\nCopyright 2010 Michał Lipski <tallica@o2.pl>\n\nAquest connector proporciona una icona d'estat, ubicada\na la safata de sistema del gestor de finestres."
 
 #: src/statusicon/statusicon.cc:377
 msgid "<b>Mouse Scroll Action</b>"
-msgstr ""
+msgstr "<b>Acció del desplaçament del ratolí</b>"
 
 #: src/statusicon/statusicon.cc:378
 msgid "Change volume"
@@ -4048,11 +3858,11 @@ msgstr "Canvia la cançó"
 
 #: src/statusicon/statusicon.cc:384
 msgid "<b>Other Settings</b>"
-msgstr ""
+msgstr "<b>Altres ajusts</b>"
 
 #: src/statusicon/statusicon.cc:385
 msgid "Disable the popup window"
-msgstr "Desactiva la finestra emergent"
+msgstr "Inhabilita la finestra emergent"
 
 #: src/statusicon/statusicon.cc:389
 msgid "Advance in playlist when scrolling upward"
@@ -4060,22 +3870,22 @@ msgstr ""
 
 #: src/stereo_plugin/stereo.cc:19
 msgid "Extra Stereo"
-msgstr ""
+msgstr "Estèreo extra"
 
 #: src/stereo_plugin/stereo.cc:36
 msgid ""
 "Extra Stereo Plugin\n"
 "\n"
 "By Johan Levin, 1999"
-msgstr ""
+msgstr "Connector d'estèreo extra\n\nPer Johan Levin, 1999"
 
 #: src/stereo_plugin/stereo.cc:44
 msgid "<b>Extra Stereo</b>"
-msgstr ""
+msgstr "<b>Estèreo extra</b>"
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
-msgstr ""
+msgstr "Generador de tons"
 
 #: src/tonegen/tonegen.cc:92
 #, c-format
@@ -4093,11 +3903,11 @@ msgid ""
 "\n"
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
-msgstr ""
+msgstr "Generador de tons sinusoïdals per Haavard Kvaalen <havardk@xmms.org>\nModificat per Daniel J. Peng <danielpeng@bigfoot.com>\n\nPer a utilitzar-ho, afegiu un URL: tone://feqüència1;feqüència2;feqüència3;...\np. ex. tone://2000;2005 per a reproduir un to de 2000 Hz i un to de 2005 Hz."
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
-msgstr ""
+msgstr "Eliminació de la veu"
 
 #: src/vorbis/vorbis.cc:406
 msgid ""
@@ -4118,16 +3928,16 @@ msgid ""
 "Håvard Kvålen <havardk@xmms.org>\n"
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
-msgstr ""
+msgstr "Descodificador Ogg Vorbis d'Audacious\n\nEstà basat en el connector Ogg Vorbis de la Fundació Xiph.org:\nhttp://www.xiph.org/\n\nCodi original per:\nTony Arcieri <bascule@inferno.tusculum.edu>\n\nContribucions de:\nChris Montgomery <monty@xiph.org>\nPeter Alm <peter@xmms.org>\nMichael Smith <msmith@labyrinth.edu.au>\nJack Moffitt <jack@icecast.org>\nJorn Baayen <jorn@nl.linux.org>\nHåvard Kvålen <havardk@xmms.org>\nGian-Carlo Pascutto <gcp@sjeng.org>\nEugene Zagidullin <e.asphyx@gmail.com>"
 
 #: src/vorbis/vorbis.h:18
 msgid "Ogg Vorbis Decoder"
-msgstr ""
+msgstr "Descodificador Ogg Vorbis"
 
 #: src/vtx/info.cc:24
 #, c-format
 msgid "Details about %s"
-msgstr ""
+msgstr "Detalls quant a %s"
 
 #: src/vtx/info.cc:26
 msgid ""
@@ -4146,28 +3956,28 @@ msgstr ""
 
 #: src/vtx/vtx.cc:38
 msgid "VTX Decoder"
-msgstr ""
+msgstr "Descodificador VTX"
 
 #: src/vtx/vtx.cc:176
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
-msgstr ""
+msgstr "Reproductor del format de fitxer Vortex per Sashnov Alexander <sashnov@ngs.ru>\nEstà basat en in_vtx.dll per Roman Sherbakov <v_soft@microfor.ru>\nConnector d'Audacious per Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
-msgstr ""
+msgstr "Win32 waveOut"
 
 #: src/waveout/waveout.cc:69
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
-msgstr ""
+msgstr "Connector Win32 waveOut per a Audacious\nCopyright 2016 John Lindgren"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"
-msgstr ""
+msgstr "Descodificador Wavpack"
 
 #: src/wavpack/wavpack.cc:211
 msgid "lossy (hybrid)"
@@ -4182,20 +3992,20 @@ msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
 "Some of the plugin code was by Miles Egan."
-msgstr ""
+msgstr "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n\nPart del codi del connector va ser feta per Miles Egan."
 
 #: src/xsf/plugin.cc:50
 msgid "2SF Decoder"
-msgstr ""
+msgstr "Descodificador 2SF"
 
 #: src/xsf/plugin.cc:231
 msgid "<b>XSF Configuration</b>"
-msgstr ""
+msgstr "<b> Configuració  de XSF</b>"
 
 #: src/xsf/plugin.cc:232
 msgid "Ignore length from file"
-msgstr ""
+msgstr "Ignora la longitud del fitxer"
 
 #: src/xspf/xspf.cc:90
 msgid "XML Shareable Playlists (XSPF)"
-msgstr ""
+msgstr "XSPF (XML Shareable Playlists)"
