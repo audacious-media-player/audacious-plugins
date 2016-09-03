@@ -113,12 +113,12 @@ void pw_col_init ()
 
     String widths = aud_get_str ("gtkui", "column_widths");
 
-    if (! str_to_int_array (widths, pw_col_widths, PW_COLS))
-    {
-        int dpi = audgui_get_dpi ();
-        for (int i = 0; i < PW_COLS; i ++)
-            pw_col_widths[i] = pw_default_widths[i] * dpi / 96;
-    }
+    int iwidths[PW_COLS];
+    bool valid = str_to_int_array (widths, iwidths, PW_COLS);
+    auto source = valid ? iwidths : pw_default_widths;
+
+    for (int i = 0; i < PW_COLS; i ++)
+        pw_col_widths[i] = audgui_to_native_dpi (source[i]);
 }
 
 struct Column {
@@ -350,6 +350,10 @@ void pw_col_save ()
     for (int i = 0; i < pw_num_cols; i ++)
         index.append (String (pw_col_keys[pw_cols[i]]));
 
+    int widths[PW_COLS];
+    for (int i = 0; i < PW_COLS; i ++)
+        widths[i] = audgui_to_portable_dpi (pw_col_widths[i]);
+
     aud_set_str ("gtkui", "playlist_columns", index_to_str_list (index, " "));
-    aud_set_str ("gtkui", "column_widths", int_array_to_str (pw_col_widths, PW_COLS));
+    aud_set_str ("gtkui", "column_widths", int_array_to_str (widths, PW_COLS));
 }

@@ -78,6 +78,9 @@ static void add_dock_plugin (PluginHandle * plugin, void * unused)
 
         if (pos_str && str_to_int_array (pos_str, pos, aud::n_elems (pos)))
         {
+            pos[2] = audgui_to_native_dpi (pos[2]);
+            pos[3] = audgui_to_native_dpi (pos[3]);
+
             gtk_window_set_default_size ((GtkWindow *) window, pos[2], pos[3]);
             gtk_window_move ((GtkWindow *) window, pos[0], pos[1]);
         }
@@ -102,6 +105,9 @@ static void save_window_size (GtkWidget * window)
     int pos[4];
     gtk_window_get_position ((GtkWindow *) window, & pos[0], & pos[1]);
     gtk_window_get_size ((GtkWindow *) window, & pos[2], & pos[3]);
+
+    pos[2] = audgui_to_portable_dpi (pos[2]);
+    pos[3] = audgui_to_portable_dpi (pos[3]);
 
     const char * basename = aud_plugin_get_basename (plugin);
     StringBuf pos_str = int_array_to_str (pos, aud::n_elems (pos));

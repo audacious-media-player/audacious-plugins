@@ -63,6 +63,8 @@ static const char * const gtkui_defaults[] = {
 
     "player_x", "-1000",
     "player_y", "-1000",
+    "player_width", "768",
+    "player_height", "480",
 
     nullptr
 };
@@ -143,22 +145,16 @@ static void save_window_size ()
 
     aud_set_int ("gtkui", "player_x", x);
     aud_set_int ("gtkui", "player_y", y);
-    aud_set_int ("gtkui", "player_width", w);
-    aud_set_int ("gtkui", "player_height", h);
+    aud_set_int ("gtkui", "player_width", audgui_to_portable_dpi (w));
+    aud_set_int ("gtkui", "player_height", audgui_to_portable_dpi (h));
 }
 
 static void restore_window_size ()
 {
-    int dpi = audgui_get_dpi ();
     int x = aud_get_int ("gtkui", "player_x");
     int y = aud_get_int ("gtkui", "player_y");
-    int w = aud_get_int ("gtkui", "player_width");
-    int h = aud_get_int ("gtkui", "player_height");
-
-    if (w < 1)
-        w = 8 * dpi;
-    if (h < 1)
-        h = 5 * dpi;
+    int w = audgui_to_native_dpi (aud_get_int ("gtkui", "player_width"));
+    int h = audgui_to_native_dpi (aud_get_int ("gtkui", "player_height"));
 
     gtk_window_set_default_size ((GtkWindow *) window, w, h);
 
