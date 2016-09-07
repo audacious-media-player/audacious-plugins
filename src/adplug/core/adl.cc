@@ -741,7 +741,9 @@ void AdlibDriver::executePrograms() {
     }
 
     Channel &channel = _channels[_curChannel];
-    _curRegOffset = _regOffset[_curChannel];
+    if (_curChannel != 9) {
+      _curRegOffset = _regOffset[_curChannel];
+    }
 
     if (channel.tempoReset) {
       channel.tempo = _tempo;

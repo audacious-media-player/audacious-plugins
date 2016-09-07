@@ -51,8 +51,15 @@ bool ChspLoader::load(const std::string &filename, const CFileProvider &fp)
     if(j >= orgsize) break;     // memory boundary check
     memset(org + j, cmp[i + 1], j + cmp[i] < orgsize ? cmp[i] : orgsize - j - 1);
   }
+  if (j < orgsize) {
+    orgsize = j;
+  }
   delete [] cmp;
 
+  if (orgsize < 128 * 12 + 51) {        // check decompressed size
+    delete [] org;
+    return false;
+  }
   memcpy(instr, org, 128 * 12);         // instruments
   for(i = 0; i < 128; i++) {            // correct instruments
     instr[i][2] ^= (instr[i][2] & 0x40) << 1;

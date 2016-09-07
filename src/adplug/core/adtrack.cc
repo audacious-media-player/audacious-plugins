@@ -62,7 +62,7 @@ bool CadtrackLoader::load(const std::string &filename, const CFileProvider &fp)
   AdPlug_LogWrite("CadtrackLoader::load(,\"%s\"): Checking for \"%s\"...\n",
                   filename.c_str(), instfilename.c_str());
   instf = fp.open(instfilename);
-  if(!instf || fp.filesize(instf) != 468) { fp.close(f); return false; }
+  if(!instf || fp.filesize(instf) != 468) { if(instf) { fp.close(instf); } fp.close(f); return false; }
 
   // give CmodPlayer a hint on what we're up to
   realloc_patterns(1,1000,9); realloc_instruments(9); realloc_order(1);
