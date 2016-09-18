@@ -296,6 +296,8 @@ static snd_pcm_format_t convert_aud_format (int aud_format)
         {FMT_S32_BE, SND_PCM_FORMAT_S32_BE},
         {FMT_U32_LE, SND_PCM_FORMAT_U32_LE},
         {FMT_U32_BE, SND_PCM_FORMAT_U32_BE},
+        {FMT_S24_3LE, SND_PCM_FORMAT_S24_3LE},
+        {FMT_S24_3BE, SND_PCM_FORMAT_S24_3BE}
     };
 
     for (auto & conv : table)
