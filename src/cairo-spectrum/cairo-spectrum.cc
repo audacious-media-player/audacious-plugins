@@ -194,10 +194,7 @@ static void get_color (GtkWidget * widget, int i, float * r, float * g, float * 
     rgb_to_hsv (c->red / 65535.0, c->green / 65535.0, c->blue / 65535.0, & h, & s, & v);
 
     if (s < 0.1) /* monochrome theme? use blue instead */
-    {
-        h = 5;
-        s = 0.75;
-    }
+        h = 4.6;
 
     s = 1 - 0.9 * i / (bands - 1);
     v = 0.75 + 0.25 * i / (bands - 1);
