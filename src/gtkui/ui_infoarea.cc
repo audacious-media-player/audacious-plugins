@@ -208,7 +208,7 @@ static void get_color (int i, float * r, float * g, float * b)
 {
     float h, s, v;
 
-    h = 5; /* hard-coded to blue due to repeatedly broken theming in GTK3 */
+    h = 4.6; /* hard-coded to blue due to repeatedly broken theming in GTK3 */
 
     s = 1 - 0.9 * i / (VIS_BANDS - 1);
     v = 0.75 + 0.25 * i / (VIS_BANDS - 1);

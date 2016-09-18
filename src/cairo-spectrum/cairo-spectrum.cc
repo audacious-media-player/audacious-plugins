@@ -155,7 +155,7 @@ static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
 {
     gfloat h, s, v, n;
 
-    h = 5; /* hard-coded to blue due to repeatedly broken theming in GTK3 */
+    h = 4.6; /* hard-coded to blue due to repeatedly broken theming in GTK3 */
 
     n = i / (gfloat) (bands - 1);
     s = 1 - 0.9 * n;
