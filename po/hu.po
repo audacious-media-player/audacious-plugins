@@ -9,14 +9,14 @@
 # Gábor Sávolyi, 2016
 # Gergely Békési <bekesi.gergely@gmail.com>, 2014
 # Péter Polonkai <polesz@nedudu.hu>, 2010
-# Péter Polonkai <polesz@nedudu.hu>, 2011-2012,2014-2015
+# Péter Polonkai <polesz@nedudu.hu>, 2011-2012,2014-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-08-22 15:08+0200\n"
-"PO-Revision-Date: 2016-08-22 12:05+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2016-09-18 19:53+0200\n"
+"PO-Revision-Date: 2016-09-14 16:04+0000\n"
+"Last-Translator: Péter Polonkai <polesz@nedudu.hu>\n"
 "Language-Team: Hungarian (http://www.transifex.com/jlindgren/audacious/"
 "language/hu/)\n"
 "Language: hu\n"
@@ -532,7 +532,7 @@ msgstr "  (érvénytelen UTF-8)"
 
 #: src/ampache/ampache.cc:31
 msgid "Ampache Browser"
-msgstr ""
+msgstr "Ampache Böngésző"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -543,6 +543,11 @@ msgid ""
 "License: GNU GPLv3\n"
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 msgstr ""
+"Ampache Böngésző\n"
+"Ampache kliens az Audacioushoz.\n"
+"\n"
+"Licence: GNU GPLv3\n"
+"Copyright (C) Róbert Čerňanský and John Lindgren\n"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -1307,103 +1312,103 @@ msgstr "Automatikus"
 
 #: src/filewriter/filewriter.cc:411
 msgid "8000 Hz"
-msgstr ""
+msgstr "8000 Hz"
 
 #: src/filewriter/filewriter.cc:412
 msgid "11025 Hz"
-msgstr ""
+msgstr "11025 Hz"
 
 #: src/filewriter/filewriter.cc:413
 msgid "12000 Hz"
-msgstr ""
+msgstr "12000 Hz"
 
 #: src/filewriter/filewriter.cc:414
 msgid "16000 Hz"
-msgstr ""
+msgstr "16000 Hz"
 
 #: src/filewriter/filewriter.cc:415
 msgid "22050 Hz"
-msgstr ""
+msgstr "22050 Hz"
 
 #: src/filewriter/filewriter.cc:416
 msgid "24000 Hz"
-msgstr ""
+msgstr "24000 Hz"
 
 #: src/filewriter/filewriter.cc:417
 msgid "32000 Hz"
-msgstr ""
+msgstr "32000 Hz"
 
 #: src/filewriter/filewriter.cc:418
 msgid "44100 Hz"
-msgstr ""
+msgstr "44100 Hz"
 
 #: src/filewriter/filewriter.cc:419
 msgid "48000 Hz"
-msgstr ""
+msgstr "48000 Hz"
 
 #: src/filewriter/filewriter.cc:423
 msgid "8 kbps"
-msgstr ""
+msgstr "8 kbps"
 
 #: src/filewriter/filewriter.cc:424
 msgid "16 kbps"
-msgstr ""
+msgstr "16 kbps"
 
 #: src/filewriter/filewriter.cc:425
 msgid "32 kbps"
-msgstr ""
+msgstr "32 kbps"
 
 #: src/filewriter/filewriter.cc:426
 msgid "40 kbps"
-msgstr ""
+msgstr "40 kbps"
 
 #: src/filewriter/filewriter.cc:427
 msgid "48 kbps"
-msgstr ""
+msgstr "48 kbps"
 
 #: src/filewriter/filewriter.cc:428
 msgid "56 kbps"
-msgstr ""
+msgstr "56 kbps"
 
 #: src/filewriter/filewriter.cc:429
 msgid "64 kbps"
-msgstr ""
+msgstr "64 kbps"
 
 #: src/filewriter/filewriter.cc:430
 msgid "80 kbps"
-msgstr ""
+msgstr "80 kbps"
 
 #: src/filewriter/filewriter.cc:431
 msgid "96 kbps"
-msgstr ""
+msgstr "96 kbps"
 
 #: src/filewriter/filewriter.cc:432
 msgid "112 kbps"
-msgstr ""
+msgstr "112 kbps"
 
 #: src/filewriter/filewriter.cc:433
 msgid "128 kbps"
-msgstr ""
+msgstr "128 kbps"
 
 #: src/filewriter/filewriter.cc:434
 msgid "160 kbps"
-msgstr ""
+msgstr "160 kbps"
 
 #: src/filewriter/filewriter.cc:435
 msgid "192 kbps"
-msgstr ""
+msgstr "192 kbps"
 
 #: src/filewriter/filewriter.cc:436
 msgid "224 kbps"
-msgstr ""
+msgstr "224 kbps"
 
 #: src/filewriter/filewriter.cc:437
 msgid "256 kbps"
-msgstr ""
+msgstr "256 kbps"
 
 #: src/filewriter/filewriter.cc:438
 msgid "320 kbps"
-msgstr ""
+msgstr "320 kbps"
 
 #: src/filewriter/filewriter.cc:443
 msgid "Joint Stereo"
@@ -1421,19 +1426,19 @@ msgstr "Monó"
 
 #: src/filewriter/filewriter.cc:449
 msgid "VBR"
-msgstr ""
+msgstr "VBR"
 
 #: src/filewriter/filewriter.cc:450
 msgid "ABR"
-msgstr ""
+msgstr "ABR"
 
 #: src/filewriter/filewriter.cc:471
 msgid "Algorithm quality:"
-msgstr ""
+msgstr "Algoritmus minősége:"
 
 #: src/filewriter/filewriter.cc:477
 msgid "Bitrate:"
-msgstr ""
+msgstr "Bitráta:"
 
 #: src/filewriter/filewriter.cc:484
 msgid "Compression ratio:"
@@ -1441,7 +1446,7 @@ msgstr "Tömörítési arány:"
 
 #: src/filewriter/filewriter.cc:491
 msgid "Audio mode:"
-msgstr ""
+msgstr "Audio mód:"
 
 #: src/filewriter/filewriter.cc:494
 msgid "Enforce strict ISO compliance"
@@ -1461,15 +1466,15 @@ msgstr "Típus:"
 
 #: src/filewriter/filewriter.cc:507
 msgid "Minimum bitrate:"
-msgstr ""
+msgstr "Minimális bitráta:"
 
 #: src/filewriter/filewriter.cc:511
 msgid "Maximum bitrate:"
-msgstr ""
+msgstr "Maximális bitráta:"
 
 #: src/filewriter/filewriter.cc:515
 msgid "Average bitrate:"
-msgstr ""
+msgstr "Átlagos bitráta:"
 
 #: src/filewriter/filewriter.cc:519
 msgid "VBR quality level:"
@@ -1485,7 +1490,7 @@ msgstr "Xing VBR fejléc elhagyása"
 
 #: src/filewriter/filewriter.cc:532
 msgid "<b>Frame Headers</b>"
-msgstr ""
+msgstr "<b>Keret fejlécek</b>"
 
 #: src/filewriter/filewriter.cc:533
 msgid "Mark as copyright"
@@ -1497,7 +1502,7 @@ msgstr "Megjelölés eredetiként"
 
 #: src/filewriter/filewriter.cc:537
 msgid "<b>ID3 Tags</b>"
-msgstr ""
+msgstr "<b>ID3 tagek</b>"
 
 #: src/filewriter/filewriter.cc:538
 msgid "Force addition of version 2 tag"
@@ -1525,7 +1530,7 @@ msgstr "Címkék"
 
 #: src/filewriter/filewriter.cc:559
 msgid "Quality (0-1):"
-msgstr ""
+msgstr "Minőség (0-1):"
 
 #: src/filewriter/filewriter.cc:566 src/skins-qt/skins_cfg.cc:304
 #: src/skins/skins_cfg.cc:286
@@ -2012,7 +2017,7 @@ msgstr "_Tartalmazó mappa megnyitása"
 
 #: src/gtkui/menus.cc:224 src/qtui/menus.cc:171
 msgid "_Refresh Selected"
-msgstr ""
+msgstr "Kiválasztott f_rissítése"
 
 #: src/gtkui/menus.cc:226 src/qtui/menus.cc:173
 msgid "Cu_t"
@@ -2028,7 +2033,7 @@ msgstr "_Beillesztés"
 
 #: src/gtkui/menus.cc:229 src/qtui/menus.cc:176
 msgid "Paste at _End"
-msgstr ""
+msgstr "B_eillesztés a végére"
 
 #: src/gtkui/menus.cc:230 src/qtui/menus.cc:177
 msgid "Select _All"
@@ -2075,20 +2080,20 @@ msgstr "Nyíl billentyűk a tekeréshez:"
 msgid "Scroll on song change"
 msgstr "Számváltáskor gördül"
 
-#: src/gtkui/ui_gtk.cc:74
+#: src/gtkui/ui_gtk.cc:76
 msgid "GTK Interface"
 msgstr "GTK+ felület"
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/main.cc:219 src/skins-qt/main.cc:214
+#: src/gtkui/ui_gtk.cc:224 src/skins/main.cc:219 src/skins-qt/main.cc:214
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:230 src/qtui/main_window.cc:256
+#: src/gtkui/ui_gtk.cc:226 src/qtui/main_window.cc:256
 msgid "Buffering ..."
 msgstr "Pufferelés ..."
 
-#: src/gtkui/ui_gtk.cc:233 src/skins/main.cc:221 src/skins-qt/main.cc:216
+#: src/gtkui/ui_gtk.cc:229 src/skins/main.cc:221 src/skins-qt/main.cc:216
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -2842,6 +2847,25 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Audacious PulseAudio Kimeneti Bővítmény\n"
+"\n"
+"Ez a program szabad szoftver; terjeszthető illetve módosítható a \n"
+"Free Software Foundation által kiadott GNU General Public License\n"
+"dokumentumában leírtak; akár a licenc 2-es, akár (tetszőleges) későbbi \n"
+"változata szerint.\n"
+"\n"
+"Ez a program abban a reményben kerül közreadásra, hogy hasznos lesz, \n"
+"de minden egyéb GARANCIA NÉLKÜL, az ELADHATÓSÁGRA vagy VALAMELY CÉLRA VALÓ "
+"ALKALMAZHATÓSÁGRA való származtatott garanciát is beleértve. \n"
+"További részleteket a GNU General Public License tartalmaz.\n"
+"\n"
+"A felhasználónak a programmal együtt meg kell kapnia a GNU General \n"
+"Public License egy példányát; ha mégsem kapta meg, akkor\n"
+"ezt a Free Software Foundationnak küldött levélben jelezze.\n"
+"\n"
+"Free Software Foundation, Inc.\n"
+"51 Franklin Street, Fifth Floor, \n"
+"Boston, MA 02110-1301, USA"
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
@@ -2889,7 +2913,7 @@ msgstr "Dolgozom ..."
 
 #: src/qtui/dialog_windows.cc:43
 msgid "Information"
-msgstr ""
+msgstr "Információ"
 
 #: src/qtui/filter_input.cc:44 src/skins/search-select.cc:76
 msgid "Search"
@@ -3025,40 +3049,45 @@ msgstr "192 kHz:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr ""
+msgstr "Last.fm elérés ellenőrzése ..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
 msgstr ""
+"Ne aggódj. A scrobble-jeid a számítógépen vannak tárolva\n"
+"El lesznek küldve amint az Audacious engedélyt kap rá."
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr ""
+msgstr "Hozzáférés megtagadva. Scrobbling felhasználó %s."
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
+"Hozzáférés nem engedélyezett. Nyisd meg a következő URL-t a böngészőben és "
+"add hozzá az Audacious hozzáférését a te beállításaidban és kattints újra az "
+"'Engedélyek Ellenőrzésére\":"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr ""
+msgstr "Hiba történt a Last.fm-hez való csatlakozás közben."
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "Jogosultságok ellenőrzése"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "Jogosultság megvonása"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
-msgstr ""
+msgstr "Szükséges, hogy az Audacious hozzáférjen a te Last.fm fiókodhoz."
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
@@ -3685,7 +3714,7 @@ msgstr "Lista rendezése"
 
 #: src/skins/menus.cc:255 src/skins-qt/menus.cc:248
 msgid "Open Containing Folder"
-msgstr ""
+msgstr "Tartalmazó mappa megnyitása"
 
 #: src/skins/menus.cc:257 src/skins-qt/menus.cc:250
 msgid "Cut"
@@ -3701,7 +3730,7 @@ msgstr "Beillesztés"
 
 #: src/skins/menus.cc:260 src/skins-qt/menus.cc:253
 msgid "Paste at End"
-msgstr ""
+msgstr "Beillesztés a végére"
 
 #: src/skins/menus.cc:262 src/skins-qt/menus.cc:255
 msgid "Queue/Unqueue"
@@ -4370,13 +4399,15 @@ msgstr ""
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
-msgstr ""
+msgstr "Win32 waveOut"
 
 #: src/waveout/waveout.cc:69
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
 msgstr ""
+"Win32 waveOut bővítmény az Audacioushoz\n"
+"Copyright 2016 John Lindgren"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"

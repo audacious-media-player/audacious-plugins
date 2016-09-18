@@ -4,6 +4,7 @@
 #
 # Translators:
 # Chris <259095+transifex@gmail.com>, 2012
+# a b <tmp57@tlen.pl>, 2016
 # HrabiaN <bohopicasso@gmail.com>, 2015
 # Chris <259095+transifex@gmail.com>, 2012
 # Chris <259095+transifex@gmail.com>, 2012
@@ -24,9 +25,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-08-22 15:08+0200\n"
-"PO-Revision-Date: 2016-08-22 12:05+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2016-09-18 19:53+0200\n"
+"PO-Revision-Date: 2016-09-14 17:57+0000\n"
+"Last-Translator: a b <tmp57@tlen.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/jlindgren/audacious/language/"
 "pl/)\n"
 "Language: pl\n"
@@ -543,7 +544,7 @@ msgstr "  (niepoprawne kodowanie UTF-8)"
 
 #: src/ampache/ampache.cc:31
 msgid "Ampache Browser"
-msgstr ""
+msgstr "Przeglądarka Ampache"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -554,6 +555,12 @@ msgid ""
 "License: GNU GPLv3\n"
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 msgstr ""
+"Przeglądarka Ampache\n"
+"\n"
+"Klient Ampache dla Audacious.\n"
+"\n"
+"Licencja: GNU GPLv3\n"
+"Prawa autorskie (C) Róbert Čerňanský i John Lindgren\n"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -1321,103 +1328,103 @@ msgstr "Automatycznie"
 
 #: src/filewriter/filewriter.cc:411
 msgid "8000 Hz"
-msgstr ""
+msgstr "8000 Hz"
 
 #: src/filewriter/filewriter.cc:412
 msgid "11025 Hz"
-msgstr ""
+msgstr "11025 Hz"
 
 #: src/filewriter/filewriter.cc:413
 msgid "12000 Hz"
-msgstr ""
+msgstr "12000 Hz"
 
 #: src/filewriter/filewriter.cc:414
 msgid "16000 Hz"
-msgstr ""
+msgstr "16000 Hz"
 
 #: src/filewriter/filewriter.cc:415
 msgid "22050 Hz"
-msgstr ""
+msgstr "22050 Hz"
 
 #: src/filewriter/filewriter.cc:416
 msgid "24000 Hz"
-msgstr ""
+msgstr "24000 Hz"
 
 #: src/filewriter/filewriter.cc:417
 msgid "32000 Hz"
-msgstr ""
+msgstr "32000 Hz"
 
 #: src/filewriter/filewriter.cc:418
 msgid "44100 Hz"
-msgstr ""
+msgstr "44100 Hz"
 
 #: src/filewriter/filewriter.cc:419
 msgid "48000 Hz"
-msgstr ""
+msgstr "48000 Hz"
 
 #: src/filewriter/filewriter.cc:423
 msgid "8 kbps"
-msgstr ""
+msgstr "8 kbps"
 
 #: src/filewriter/filewriter.cc:424
 msgid "16 kbps"
-msgstr ""
+msgstr "16 kbps"
 
 #: src/filewriter/filewriter.cc:425
 msgid "32 kbps"
-msgstr ""
+msgstr "32 kbps"
 
 #: src/filewriter/filewriter.cc:426
 msgid "40 kbps"
-msgstr ""
+msgstr "40 kbps"
 
 #: src/filewriter/filewriter.cc:427
 msgid "48 kbps"
-msgstr ""
+msgstr "48 kbps"
 
 #: src/filewriter/filewriter.cc:428
 msgid "56 kbps"
-msgstr ""
+msgstr "56 kbps"
 
 #: src/filewriter/filewriter.cc:429
 msgid "64 kbps"
-msgstr ""
+msgstr "64 kbps"
 
 #: src/filewriter/filewriter.cc:430
 msgid "80 kbps"
-msgstr ""
+msgstr "80 kbps"
 
 #: src/filewriter/filewriter.cc:431
 msgid "96 kbps"
-msgstr ""
+msgstr "96 kbps"
 
 #: src/filewriter/filewriter.cc:432
 msgid "112 kbps"
-msgstr ""
+msgstr "112 kbps"
 
 #: src/filewriter/filewriter.cc:433
 msgid "128 kbps"
-msgstr ""
+msgstr "128 kbps"
 
 #: src/filewriter/filewriter.cc:434
 msgid "160 kbps"
-msgstr ""
+msgstr "160 kbps"
 
 #: src/filewriter/filewriter.cc:435
 msgid "192 kbps"
-msgstr ""
+msgstr "192 kbps"
 
 #: src/filewriter/filewriter.cc:436
 msgid "224 kbps"
-msgstr ""
+msgstr "224 kbps"
 
 #: src/filewriter/filewriter.cc:437
 msgid "256 kbps"
-msgstr ""
+msgstr "256 kbps"
 
 #: src/filewriter/filewriter.cc:438
 msgid "320 kbps"
-msgstr ""
+msgstr "320 kbps"
 
 #: src/filewriter/filewriter.cc:443
 msgid "Joint Stereo"
@@ -1435,19 +1442,19 @@ msgstr "Mono"
 
 #: src/filewriter/filewriter.cc:449
 msgid "VBR"
-msgstr ""
+msgstr "VBR"
 
 #: src/filewriter/filewriter.cc:450
 msgid "ABR"
-msgstr ""
+msgstr "ABR"
 
 #: src/filewriter/filewriter.cc:471
 msgid "Algorithm quality:"
-msgstr ""
+msgstr "Jakość algorytmu:"
 
 #: src/filewriter/filewriter.cc:477
 msgid "Bitrate:"
-msgstr ""
+msgstr "Bitrate:"
 
 #: src/filewriter/filewriter.cc:484
 msgid "Compression ratio:"
@@ -1455,7 +1462,7 @@ msgstr "Współczynnik kompresji:"
 
 #: src/filewriter/filewriter.cc:491
 msgid "Audio mode:"
-msgstr ""
+msgstr "tryb audio:"
 
 #: src/filewriter/filewriter.cc:494
 msgid "Enforce strict ISO compliance"
@@ -1475,15 +1482,15 @@ msgstr "Rodzaj:"
 
 #: src/filewriter/filewriter.cc:507
 msgid "Minimum bitrate:"
-msgstr ""
+msgstr "Minimalny bitrate:"
 
 #: src/filewriter/filewriter.cc:511
 msgid "Maximum bitrate:"
-msgstr ""
+msgstr "Maksymalny bitrate:"
 
 #: src/filewriter/filewriter.cc:515
 msgid "Average bitrate:"
-msgstr ""
+msgstr "Średni bitrate:"
 
 #: src/filewriter/filewriter.cc:519
 msgid "VBR quality level:"
@@ -1499,7 +1506,7 @@ msgstr "Pominięcie nagłówka Xing VBR"
 
 #: src/filewriter/filewriter.cc:532
 msgid "<b>Frame Headers</b>"
-msgstr ""
+msgstr "<b>Nagłówki ramki</b>"
 
 #: src/filewriter/filewriter.cc:533
 msgid "Mark as copyright"
@@ -1511,7 +1518,7 @@ msgstr "Oznaczenie jako oryginalne"
 
 #: src/filewriter/filewriter.cc:537
 msgid "<b>ID3 Tags</b>"
-msgstr ""
+msgstr "<b>Tagi ID3</b>"
 
 #: src/filewriter/filewriter.cc:538
 msgid "Force addition of version 2 tag"
@@ -1539,7 +1546,7 @@ msgstr "Znaczniki"
 
 #: src/filewriter/filewriter.cc:559
 msgid "Quality (0-1):"
-msgstr ""
+msgstr "Jakość (0-1):"
 
 #: src/filewriter/filewriter.cc:566 src/skins-qt/skins_cfg.cc:304
 #: src/skins/skins_cfg.cc:286
@@ -2026,7 +2033,7 @@ msgstr "_Otwórz katalog zawierający"
 
 #: src/gtkui/menus.cc:224 src/qtui/menus.cc:171
 msgid "_Refresh Selected"
-msgstr ""
+msgstr "Odśwież zaznaczone"
 
 #: src/gtkui/menus.cc:226 src/qtui/menus.cc:173
 msgid "Cu_t"
@@ -2042,7 +2049,7 @@ msgstr "Wk_lej"
 
 #: src/gtkui/menus.cc:229 src/qtui/menus.cc:176
 msgid "Paste at _End"
-msgstr ""
+msgstr "Wklej na końcu"
 
 #: src/gtkui/menus.cc:230 src/qtui/menus.cc:177
 msgid "Select _All"
@@ -2089,20 +2096,20 @@ msgstr "Przyciski strzałki przesuwają o:"
 msgid "Scroll on song change"
 msgstr "Przewiń przy zmianie piosenki"
 
-#: src/gtkui/ui_gtk.cc:74
+#: src/gtkui/ui_gtk.cc:76
 msgid "GTK Interface"
 msgstr "Interfejs GTK"
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/main.cc:219 src/skins-qt/main.cc:214
+#: src/gtkui/ui_gtk.cc:224 src/skins/main.cc:219 src/skins-qt/main.cc:214
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:230 src/qtui/main_window.cc:256
+#: src/gtkui/ui_gtk.cc:226 src/qtui/main_window.cc:256
 msgid "Buffering ..."
 msgstr "Buforowanie ..."
 
-#: src/gtkui/ui_gtk.cc:233 src/skins/main.cc:221 src/skins-qt/main.cc:216
+#: src/gtkui/ui_gtk.cc:229 src/skins/main.cc:221 src/skins-qt/main.cc:216
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -2854,6 +2861,21 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Plugin wyjściowy Audacious PulseAudio\n"
+"\n"
+"Ten program jest darmowym oprogramowaniem; możesz go re-dystrybuować i/lub "
+"modyfikować zgodnie z warunkami licencji GNU General Public License, która "
+"została opublikowana przez Free Software Foundation; zarówno w wersji 2 lub "
+"(wedle życzenia) którejkolwiek późniejszej wersji licencji.\n"
+"\n"
+"Ten program jest dystrybuowany w nadziei, że będzie użyteczny, ale BEZ "
+"JAKIEJKOLWIEK GWARANCJI; Nawet bez domyślnej gwarancji HANDLOWEJ lub "
+"PRZYDATNOŚCI DO OKREŚLONEGO CELU.  Zobacz licencję GNU General Public "
+"License w celu poznania szczegółów.\n"
+"\n"
+"Powinieneś otrzymać kopię licencji GNU General Public License razem z tym "
+"programem; Jeżeli tak się nie stało, napisz do Free Software Foundation, "
+"Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
@@ -2901,7 +2923,7 @@ msgstr "Działanie..."
 
 #: src/qtui/dialog_windows.cc:43
 msgid "Information"
-msgstr ""
+msgstr "Informacje"
 
 #: src/qtui/filter_input.cc:44 src/skins/search-select.cc:76
 msgid "Search"
@@ -3037,40 +3059,45 @@ msgstr "192 kHz:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr ""
+msgstr "Sprawdzam dostęp do Last.fm ..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
 msgstr ""
+"Twoje nazwy odtworzonych utworów są tymczasowo zapisywane na twoim "
+"komputerze. Zostaną wysłane kiedy tylko Audacious będzie miał dostęp."
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr ""
+msgstr "Uprawnienia przyznane.  Scrobbling dla użytkownika %s."
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
+"Brak uprawnień. Otwórz następujący URL w przeglądarce, zezwól Audacious na "
+"dostęp do swojego konta i następnie kliknij ponownie 'Sprawdź uprawnienia':"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr ""
+msgstr "Wystąpił problem łączenia z Last.fm."
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "Sprawdź uprawnienia."
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "Unieważnij uprawnienia."
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
+"Musisz pozwolić Audacious wysyłać nazwy utworów do swojego konta Last.fm."
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
@@ -3456,7 +3483,7 @@ msgstr "Usługi"
 
 #: src/skins/menus.cc:120 src/skins-qt/menus.cc:108
 msgid "About ..."
-msgstr "O..."
+msgstr "O programie..."
 
 #: src/skins/menus.cc:121 src/skins-qt/menus.cc:109
 msgid "Settings ..."
@@ -3699,7 +3726,7 @@ msgstr "Sortuj"
 
 #: src/skins/menus.cc:255 src/skins-qt/menus.cc:248
 msgid "Open Containing Folder"
-msgstr ""
+msgstr "Otwórz nadrzędny katalog"
 
 #: src/skins/menus.cc:257 src/skins-qt/menus.cc:250
 msgid "Cut"
@@ -3715,7 +3742,7 @@ msgstr "Wklej"
 
 #: src/skins/menus.cc:260 src/skins-qt/menus.cc:253
 msgid "Paste at End"
-msgstr ""
+msgstr "Wklej na końcu"
 
 #: src/skins/menus.cc:262 src/skins-qt/menus.cc:255
 msgid "Queue/Unqueue"
@@ -4063,6 +4090,9 @@ msgid ""
 "You can use the following format codes, which will be replaced before "
 "running the command (not all are useful for the end-of-playlist command):"
 msgstr ""
+"Możesz użyć następujących kodów formatujących, które zostaną zastąpione "
+"przed uruchomieniem polecenia (nie wszystkie są użyteczne dla polecenia end-"
+"of-playlist):"
 
 #: src/songchange/song_change.cc:285
 msgid ""
@@ -4078,6 +4108,17 @@ msgid ""
 "%t: Playlist position\n"
 "%T: Title (unformatted)"
 msgstr ""
+"%a: Wykonawca\n"
+"%b: Album\n"
+"%c: Liczba kanałów\n"
+"%f: Nazwa pliku (pełna ścieżka)\n"
+"%F: Częstotliwość (Herce)\n"
+"%l: Długość (milisekundy)\n"
+"%n lub %s: Sformatowany tytuł (zobacz ustawienia listy odtwarzania)\n"
+"%p: Teraz gra (1 lub 0)\n"
+"%r: Rate (bitów na sekundę)\n"
+"%t: Pozycja listy odtwarzania\n"
+"%T: Tytuł (niesformatowany)"
 
 #: src/songchange/song_change.cc:296
 msgid ""
@@ -4365,13 +4406,15 @@ msgstr ""
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
-msgstr ""
+msgstr "Win32 waveOut"
 
 #: src/waveout/waveout.cc:69
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
 msgstr ""
+"Wtyczka Win32 waveOut dla Audacious\n"
+"Prawa autorskie 2016 John Lindgren"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"
