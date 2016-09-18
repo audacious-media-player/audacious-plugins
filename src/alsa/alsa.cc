@@ -296,6 +296,10 @@ static snd_pcm_format_t convert_aud_format (int aud_format)
         {FMT_S32_BE, SND_PCM_FORMAT_S32_BE},
         {FMT_U32_LE, SND_PCM_FORMAT_U32_LE},
         {FMT_U32_BE, SND_PCM_FORMAT_U32_BE},
+        {FMT_S24_3LE, SND_PCM_FORMAT_S24_3LE},
+        {FMT_S24_3BE, SND_PCM_FORMAT_S24_3BE},
+        {FMT_U24_3LE, SND_PCM_FORMAT_U24_3LE},
+        {FMT_U24_3BE, SND_PCM_FORMAT_U24_3BE},
     };
 
     for (auto & conv : table)
@@ -326,7 +330,7 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels, String & er
         goto FAILED;
     }
 
-    AUDDBG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
+    AUDINFO ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
      (const char *) pcm, snd_pcm_format_name (format), channels, rate);
     CHECK_STR (error, snd_pcm_open, & alsa_handle, pcm, SND_PCM_STREAM_PLAYBACK, 0);
 
@@ -360,7 +364,7 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels, String & er
     CHECK_STR (error, snd_pcm_hw_params, alsa_handle, params);
 
     soft_buffer = aud::max (total_buffer / 2, total_buffer - hard_buffer);
-    AUDDBG ("Buffer: hardware %d ms, software %d ms, period %d ms.\n",
+    AUDINFO ("Buffer: hardware %d ms, software %d ms, period %d ms.\n",
      hard_buffer, soft_buffer, alsa_period);
 
     buffer_frames = aud::rescale<int64_t> (soft_buffer, 1000, rate);
