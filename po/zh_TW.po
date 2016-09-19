@@ -5,13 +5,14 @@
 # Translators:
 # 盧瑞元（ryuanlu） <rueiyuan.lu@gmail.com>, 2014
 # Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>, 2011
+# 盧瑞元（ryuanlu） <rueiyuan.lu@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-08-22 15:08+0200\n"
-"PO-Revision-Date: 2016-08-22 12:05+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2016-09-18 19:53+0200\n"
+"PO-Revision-Date: 2016-09-15 11:31+0000\n"
+"Last-Translator: 盧瑞元（ryuanlu） <rueiyuan.lu@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/jlindgren/"
 "audacious/language/zh_TW/)\n"
 "Language: zh_TW\n"
@@ -524,7 +525,7 @@ msgstr "  (無效的 UTF-8 字串)"
 
 #: src/ampache/ampache.cc:31
 msgid "Ampache Browser"
-msgstr ""
+msgstr "Ampache 瀏覽器"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -535,6 +536,12 @@ msgid ""
 "License: GNU GPLv3\n"
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 msgstr ""
+"Ampache 瀏覽器\n"
+"\n"
+"Audacious 的 Ampache 客戶端。\n"
+"\n"
+"License: GNU GPLv3\n"
+"Copyright (C) Róbert Čerňanský and John Lindgren\n"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -1289,103 +1296,103 @@ msgstr "自動"
 
 #: src/filewriter/filewriter.cc:411
 msgid "8000 Hz"
-msgstr ""
+msgstr "8000 Hz"
 
 #: src/filewriter/filewriter.cc:412
 msgid "11025 Hz"
-msgstr ""
+msgstr "11025 Hz"
 
 #: src/filewriter/filewriter.cc:413
 msgid "12000 Hz"
-msgstr ""
+msgstr "12000 Hz"
 
 #: src/filewriter/filewriter.cc:414
 msgid "16000 Hz"
-msgstr ""
+msgstr "16000 Hz"
 
 #: src/filewriter/filewriter.cc:415
 msgid "22050 Hz"
-msgstr ""
+msgstr "22050 Hz"
 
 #: src/filewriter/filewriter.cc:416
 msgid "24000 Hz"
-msgstr ""
+msgstr "24000 Hz"
 
 #: src/filewriter/filewriter.cc:417
 msgid "32000 Hz"
-msgstr ""
+msgstr "32000 Hz"
 
 #: src/filewriter/filewriter.cc:418
 msgid "44100 Hz"
-msgstr ""
+msgstr "44100 Hz"
 
 #: src/filewriter/filewriter.cc:419
 msgid "48000 Hz"
-msgstr ""
+msgstr "48000 Hz"
 
 #: src/filewriter/filewriter.cc:423
 msgid "8 kbps"
-msgstr ""
+msgstr "8 kbps"
 
 #: src/filewriter/filewriter.cc:424
 msgid "16 kbps"
-msgstr ""
+msgstr "16 kbps"
 
 #: src/filewriter/filewriter.cc:425
 msgid "32 kbps"
-msgstr ""
+msgstr "32 kbps"
 
 #: src/filewriter/filewriter.cc:426
 msgid "40 kbps"
-msgstr ""
+msgstr "40 kbps"
 
 #: src/filewriter/filewriter.cc:427
 msgid "48 kbps"
-msgstr ""
+msgstr "48 kbps"
 
 #: src/filewriter/filewriter.cc:428
 msgid "56 kbps"
-msgstr ""
+msgstr "56 kbps"
 
 #: src/filewriter/filewriter.cc:429
 msgid "64 kbps"
-msgstr ""
+msgstr "64 kbps"
 
 #: src/filewriter/filewriter.cc:430
 msgid "80 kbps"
-msgstr ""
+msgstr "80 kbps"
 
 #: src/filewriter/filewriter.cc:431
 msgid "96 kbps"
-msgstr ""
+msgstr "96 kbps"
 
 #: src/filewriter/filewriter.cc:432
 msgid "112 kbps"
-msgstr ""
+msgstr "112 kbps"
 
 #: src/filewriter/filewriter.cc:433
 msgid "128 kbps"
-msgstr ""
+msgstr "128 kbps"
 
 #: src/filewriter/filewriter.cc:434
 msgid "160 kbps"
-msgstr ""
+msgstr "160 kbps"
 
 #: src/filewriter/filewriter.cc:435
 msgid "192 kbps"
-msgstr ""
+msgstr "192 kbps"
 
 #: src/filewriter/filewriter.cc:436
 msgid "224 kbps"
-msgstr ""
+msgstr "224 kbps"
 
 #: src/filewriter/filewriter.cc:437
 msgid "256 kbps"
-msgstr ""
+msgstr "256 kbps"
 
 #: src/filewriter/filewriter.cc:438
 msgid "320 kbps"
-msgstr ""
+msgstr "320 kbps"
 
 #: src/filewriter/filewriter.cc:443
 msgid "Joint Stereo"
@@ -1403,19 +1410,19 @@ msgstr "單聲道"
 
 #: src/filewriter/filewriter.cc:449
 msgid "VBR"
-msgstr ""
+msgstr "VBR"
 
 #: src/filewriter/filewriter.cc:450
 msgid "ABR"
-msgstr ""
+msgstr "ABR"
 
 #: src/filewriter/filewriter.cc:471
 msgid "Algorithm quality:"
-msgstr ""
+msgstr "演算法品質："
 
 #: src/filewriter/filewriter.cc:477
 msgid "Bitrate:"
-msgstr ""
+msgstr "位元率："
 
 #: src/filewriter/filewriter.cc:484
 msgid "Compression ratio:"
@@ -1423,7 +1430,7 @@ msgstr "壓縮比率："
 
 #: src/filewriter/filewriter.cc:491
 msgid "Audio mode:"
-msgstr ""
+msgstr "音訊模式："
 
 #: src/filewriter/filewriter.cc:494
 msgid "Enforce strict ISO compliance"
@@ -1443,15 +1450,15 @@ msgstr "類型："
 
 #: src/filewriter/filewriter.cc:507
 msgid "Minimum bitrate:"
-msgstr ""
+msgstr "最低位元率："
 
 #: src/filewriter/filewriter.cc:511
 msgid "Maximum bitrate:"
-msgstr ""
+msgstr "最高位元率："
 
 #: src/filewriter/filewriter.cc:515
 msgid "Average bitrate:"
-msgstr ""
+msgstr "平均位元率："
 
 #: src/filewriter/filewriter.cc:519
 msgid "VBR quality level:"
@@ -1467,7 +1474,7 @@ msgstr "省略 Xing VBR 檔頭"
 
 #: src/filewriter/filewriter.cc:532
 msgid "<b>Frame Headers</b>"
-msgstr ""
+msgstr "<b>音格標頭</b>"
 
 #: src/filewriter/filewriter.cc:533
 msgid "Mark as copyright"
@@ -1479,7 +1486,7 @@ msgstr "標示為原創"
 
 #: src/filewriter/filewriter.cc:537
 msgid "<b>ID3 Tags</b>"
-msgstr ""
+msgstr "<b>ID3 標籤</b>"
 
 #: src/filewriter/filewriter.cc:538
 msgid "Force addition of version 2 tag"
@@ -1507,7 +1514,7 @@ msgstr "標籤"
 
 #: src/filewriter/filewriter.cc:559
 msgid "Quality (0-1):"
-msgstr ""
+msgstr "品質 (0-1)："
 
 #: src/filewriter/filewriter.cc:566 src/skins-qt/skins_cfg.cc:304
 #: src/skins/skins_cfg.cc:286
@@ -1994,7 +2001,7 @@ msgstr "開啟該資料夾(_O)"
 
 #: src/gtkui/menus.cc:224 src/qtui/menus.cc:171
 msgid "_Refresh Selected"
-msgstr ""
+msgstr "重新整理選擇的項目(_R)"
 
 #: src/gtkui/menus.cc:226 src/qtui/menus.cc:173
 msgid "Cu_t"
@@ -2010,7 +2017,7 @@ msgstr "貼上(_P)"
 
 #: src/gtkui/menus.cc:229 src/qtui/menus.cc:176
 msgid "Paste at _End"
-msgstr ""
+msgstr "貼到最後(_E)"
 
 #: src/gtkui/menus.cc:230 src/qtui/menus.cc:177
 msgid "Select _All"
@@ -2057,20 +2064,20 @@ msgstr "按下方向鍵時跳轉的時間長度："
 msgid "Scroll on song change"
 msgstr "切換歌曲時捲動清單"
 
-#: src/gtkui/ui_gtk.cc:74
+#: src/gtkui/ui_gtk.cc:76
 msgid "GTK Interface"
 msgstr "GTK 介面"
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/main.cc:219 src/skins-qt/main.cc:214
+#: src/gtkui/ui_gtk.cc:224 src/skins/main.cc:219 src/skins-qt/main.cc:214
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:230 src/qtui/main_window.cc:256
+#: src/gtkui/ui_gtk.cc:226 src/qtui/main_window.cc:256
 msgid "Buffering ..."
 msgstr "緩衝中 ..."
 
-#: src/gtkui/ui_gtk.cc:233 src/skins/main.cc:221 src/skins-qt/main.cc:216
+#: src/gtkui/ui_gtk.cc:229 src/skins/main.cc:221 src/skins-qt/main.cc:216
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -2809,6 +2816,21 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Audacious PulseAudio Output Plugin\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
@@ -2856,7 +2878,7 @@ msgstr "處理中 ..."
 
 #: src/qtui/dialog_windows.cc:43
 msgid "Information"
-msgstr ""
+msgstr "資訊"
 
 #: src/qtui/filter_input.cc:44 src/skins/search-select.cc:76
 msgid "Search"
@@ -2992,40 +3014,43 @@ msgstr "192 kHz："
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr ""
+msgstr "正在檢查 Last.fm 存取權限 ..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
 msgstr ""
+"您的播放記錄已暫時儲存在電腦上。Audacious 會在狀況允許下盡快地將它們上傳。"
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr ""
+msgstr "已取得授權。上傳使用者 %s 的播放記錄。"
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
+"存取被拒。請用瀏覽器開啟以下連結並允許 Audacious 存取您的帳號，然後再點一次"
+"「檢查授權」："
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr ""
+msgstr "存取 Last.fm 時發生問題。"
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "檢查授權"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "撤銷授權"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
-msgstr ""
+msgstr "您必須允許 Audacious 上傳音軌的播放記錄到您的 Last.fm 帳號。"
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
@@ -3648,7 +3673,7 @@ msgstr "排序清單"
 
 #: src/skins/menus.cc:255 src/skins-qt/menus.cc:248
 msgid "Open Containing Folder"
-msgstr ""
+msgstr "開啟所在的資料夾"
 
 #: src/skins/menus.cc:257 src/skins-qt/menus.cc:250
 msgid "Cut"
@@ -3664,7 +3689,7 @@ msgstr "貼上"
 
 #: src/skins/menus.cc:260 src/skins-qt/menus.cc:253
 msgid "Paste at End"
-msgstr ""
+msgstr "貼到最後"
 
 #: src/skins/menus.cc:262 src/skins-qt/menus.cc:255
 msgid "Queue/Unqueue"
@@ -4318,13 +4343,15 @@ msgstr ""
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
-msgstr ""
+msgstr "Win32 waveOut"
 
 #: src/waveout/waveout.cc:69
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
 msgstr ""
+"Win32 waveOut Plugin for Audacious\n"
+"Copyright 2016 John Lindgren"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"

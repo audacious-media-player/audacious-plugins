@@ -12,9 +12,9 @@
 # Радослав Иванов <reckku@gmail.com>, 2015
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-08-22 15:08+0200\n"
+"POT-Creation-Date: 2016-09-18 19:53+0200\n"
 "PO-Revision-Date: 2016-08-22 12:05+0000\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/jlindgren/audacious/"
@@ -2076,20 +2076,20 @@ msgstr "Превъртане със стрелките:"
 msgid "Scroll on song change"
 msgstr "Превъртане при смяна на песента"
 
-#: src/gtkui/ui_gtk.cc:74
+#: src/gtkui/ui_gtk.cc:76
 msgid "GTK Interface"
 msgstr "GTK изглед"
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/main.cc:219 src/skins-qt/main.cc:214
+#: src/gtkui/ui_gtk.cc:224 src/skins/main.cc:219 src/skins-qt/main.cc:214
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:230 src/qtui/main_window.cc:256
+#: src/gtkui/ui_gtk.cc:226 src/qtui/main_window.cc:256
 msgid "Buffering ..."
 msgstr "Запълване..."
 
-#: src/gtkui/ui_gtk.cc:233 src/skins/main.cc:221 src/skins-qt/main.cc:216
+#: src/gtkui/ui_gtk.cc:229 src/skins/main.cc:221 src/skins-qt/main.cc:216
 msgid "Audacious"
 msgstr "Audacious"
 

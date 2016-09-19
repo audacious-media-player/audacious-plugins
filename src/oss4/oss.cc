@@ -229,7 +229,11 @@ bool OSSPlugin::open_audio(int aud_format, int rate, int channels, String &error
     else
         goto FAILED;
 
-    format = oss_convert_aud_format(aud_format);
+    if ((format = oss_convert_aud_format(aud_format)) < 0)
+    {
+        error = String("Unsupported audio format");
+        goto FAILED;
+    }
 
     if (!set_format(format, rate, channels, error))
         goto FAILED;

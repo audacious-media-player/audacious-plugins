@@ -111,11 +111,13 @@ bool CxadbmfPlayer::xadplayer_load()
     ptr = 6;
 
     strncpy(bmf.title,(char *)&tune[ptr],36);
+    bmf.title[35] = 0;
 
     while (tune[ptr]) { ptr++; }
         ptr++;
 
     strncpy(bmf.author,(char *)&tune[ptr],36);
+    bmf.author[35] = 0;
 
     while (tune[ptr]) { ptr++; }
         ptr++;

@@ -319,6 +319,13 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels, String & er
 
     String pcm = aud_get_str ("alsa", "pcm");
     snd_pcm_format_t format = convert_aud_format (aud_format);
+
+    if (format == SND_PCM_FORMAT_UNKNOWN)
+    {
+        error = String ("Unsupported audio format");
+        goto FAILED;
+    }
+
     AUDDBG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
      (const char *) pcm, snd_pcm_format_name (format), channels, rate);
     CHECK_STR (error, snd_pcm_open, & alsa_handle, pcm, SND_PCM_STREAM_PLAYBACK, 0);

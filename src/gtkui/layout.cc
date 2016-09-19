@@ -572,9 +572,12 @@ void layout_save ()
         snprintf (key, sizeof key, "item%d_name", i);
         aud_set_str ("gtkui-layout", key, item->name);
 
+        int temp_w = audgui_to_portable_dpi (item->w);
+        int temp_h = audgui_to_portable_dpi (item->h);
+
         snprintf (key, sizeof key, "item%d_pos", i);
         snprintf (value, sizeof value, "%d,%d,%d,%d,%d", item->dock, item->x,
-         item->y, item->w, item->h);
+         item->y, temp_w, temp_h);
         aud_set_str ("gtkui-layout", key, value);
 
         i ++;
@@ -597,9 +600,16 @@ void layout_load ()
         String name = aud_get_str ("gtkui-layout", key);
         Item * item = item_new (name);
 
+        int temp_w = 0, temp_h = 0;
+
         snprintf (key, sizeof key, "item%d_pos", i);
         String pos = aud_get_str ("gtkui-layout", key);
-        sscanf (pos, "%d,%d,%d,%d,%d", & item->dock, & item->x, & item->y, & item->w, & item->h);
+        sscanf (pos, "%d,%d,%d,%d,%d", & item->dock, & item->x, & item->y, & temp_w, & temp_h);
+
+        if (temp_w)
+            item->w = audgui_to_native_dpi (temp_w);
+        if (temp_h)
+            item->h = audgui_to_native_dpi (temp_h);
     }
 }
 

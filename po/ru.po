@@ -7,7 +7,7 @@
 # Денис <alpi_bel@mail.ru>, 2014
 # Andrei Stepanov, 2014-2015
 # Someonefree <drag-sasha@mail.ru>, 2013-2014
-# Eugene Paskevich <eugene@raptor.kiev.ua>, 2015
+# Eugene Paskevich <eugene@raptor.kiev.ua>, 2015-2016
 # Ilyas B Arinov <arinov.ilyas@gmail.com>, 2014
 # iavojd <iavojd@gmail.com>, 2013
 # iavojd <iavojd@gmail.com>, 2013
@@ -44,9 +44,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-08-22 15:08+0200\n"
-"PO-Revision-Date: 2016-08-22 12:05+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2016-09-18 19:53+0200\n"
+"PO-Revision-Date: 2016-08-24 18:43+0000\n"
+"Last-Translator: Eugene Paskevich <eugene@raptor.kiev.ua>\n"
 "Language-Team: Russian (http://www.transifex.com/jlindgren/audacious/"
 "language/ru/)\n"
 "Language: ru\n"
@@ -1523,7 +1523,7 @@ msgstr "Пропускать заголовок Xing VBR"
 
 #: src/filewriter/filewriter.cc:532
 msgid "<b>Frame Headers</b>"
-msgstr ""
+msgstr "<b>Заголовки кадра</b>"
 
 #: src/filewriter/filewriter.cc:533
 msgid "Mark as copyright"
@@ -2113,20 +2113,20 @@ msgstr "Поиск стрелками:"
 msgid "Scroll on song change"
 msgstr "Прокручивать при смене песни"
 
-#: src/gtkui/ui_gtk.cc:74
+#: src/gtkui/ui_gtk.cc:76
 msgid "GTK Interface"
 msgstr "Интерфейс GTK"
 
-#: src/gtkui/ui_gtk.cc:228 src/skins/main.cc:219 src/skins-qt/main.cc:214
+#: src/gtkui/ui_gtk.cc:224 src/skins/main.cc:219 src/skins-qt/main.cc:214
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:230 src/qtui/main_window.cc:256
+#: src/gtkui/ui_gtk.cc:226 src/qtui/main_window.cc:256
 msgid "Buffering ..."
 msgstr "Буферизация ..."
 
-#: src/gtkui/ui_gtk.cc:233 src/skins/main.cc:221 src/skins-qt/main.cc:216
+#: src/gtkui/ui_gtk.cc:229 src/skins/main.cc:221 src/skins-qt/main.cc:216
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -2868,6 +2868,20 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Модуль вывода PulseAudio для Audacious\n"
+"\n"
+"Это свободная программа; Вы можете повторно распространять и/или "
+"модифицировать её в соответствии с условиями GNU General Public License, "
+"опубликованной Free Software Foundation; либо версии 2 Лицензии, либо (по "
+"Вашему выбору) любой более поздней версии.\n"
+"\n"
+"Эта программа распространяется в надежде, что она будет полезной, но БЕЗ "
+"всякой ГАРАНТИИ; даже без подразумеваемых гарантий Коммерческой ценности или "
+"ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. См. GNU General Public License.\n"
+"\n"
+"Вы должны были получить копию лицензии GNU General Public License вместе с "
+"этой программой; если нет, напишите в Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, США."
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
@@ -2915,7 +2929,7 @@ msgstr "Работаю ..."
 
 #: src/qtui/dialog_windows.cc:43
 msgid "Information"
-msgstr ""
+msgstr "Информация"
 
 #: src/qtui/filter_input.cc:44 src/skins/search-select.cc:76
 msgid "Search"
@@ -3051,40 +3065,46 @@ msgstr "192 кГц:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr ""
+msgstr "Проверяется доступ к Last.fm ..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
 msgstr ""
+"Список Ваших прослушиваний временно сохраняется на Вашем компьютере. Он "
+"будет доставлен на Last.fm, как только Audacious получит доступ."
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr ""
+msgstr "Доступ получен. Пользователь %s."
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
+"В доступе отказано. Откройте ссылку ниже в Вашем браузере, предоставьте "
+"доступ для Audacious, а затем нажмите \"Проверить доступ\" еще раз:"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr ""
+msgstr "Не удалось подключиться к Last.fm."
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "Проверить доступ"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "Отменить доступ"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
+"Вы должны разрешить Audacious отправлять прослушанные дорожки в ваш аккаунт "
+"Last.fm."
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
