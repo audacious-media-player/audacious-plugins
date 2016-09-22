@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses>.
  */
 
-#include <assert.h>
 #include <errno.h>
 #include <pthread.h>
 #include <stdlib.h>
@@ -46,6 +45,7 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
@@ -106,9 +106,10 @@ static int lasttrackno = -1;
 static int n_audio_tracks;
 static cdrom_drive_t *pcdrom_drive = nullptr;
 static Index<trackinfo_t> trackinfo;
+static QueuedFunc purge_func;
 
 static bool scan_cd ();
-static void refresh_trackinfo (bool warning);
+static bool refresh_trackinfo (bool warning);
 static void reset_trackinfo ();
 static int calculate_track_length (int startlsn, int endlsn);
 static int find_trackno_from_filename (const char * filename);
@@ -189,7 +190,7 @@ static void purge_playlist (int playlist)
 }
 
 /* main thread only */
-static void purge_all_playlists ()
+static void purge_all_playlists (void * = nullptr)
 {
     int playlists = aud_playlist_count ();
     int count;
@@ -204,31 +205,10 @@ static void monitor (void *)
     pthread_mutex_lock (& mutex);
 
     /* make sure not to close drive handle while playing */
-    if (playing)
-    {
-        pthread_mutex_unlock (& mutex);
-        return;
-    }
-
-    if (trackinfo.len ())
+    if (! playing)
         refresh_trackinfo (false);
 
-    if (trackinfo.len ())
-    {
-        pthread_mutex_unlock (& mutex);
-        return;
-    }
-
-    timer_remove (TimerRate::Hz1, monitor);
     pthread_mutex_unlock (& mutex);
-
-    purge_all_playlists ();
-}
-
-/* mutex must be locked */
-static void trigger_monitor ()
-{
-    timer_add (TimerRate::Hz1, monitor);
 }
 
 /* main thread only */
@@ -258,15 +238,10 @@ bool CDAudio::play (const char * name, VFSFile & file)
 {
     pthread_mutex_lock (& mutex);
 
-    if (! trackinfo.len ())
+    if (! trackinfo.len () && ! refresh_trackinfo (true))
     {
-        refresh_trackinfo (true);
-
-        if (! trackinfo.len ())
-        {
-            pthread_mutex_unlock (& mutex);
-            return false;
-        }
+        pthread_mutex_unlock (& mutex);
+        return false;
     }
 
     bool okay = false;
@@ -369,6 +344,8 @@ void CDAudio::cleanup ()
     pthread_mutex_lock (& mutex);
 
     reset_trackinfo ();
+    purge_func.stop ();
+
     libcddb_shutdown ();
 
     pthread_mutex_unlock (& mutex);
@@ -387,9 +364,7 @@ bool CDAudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
     if (whole_disk && ! playing)
         reset_trackinfo ();
 
-    if (! trackinfo.len ())
-        refresh_trackinfo (true);
-    if (! trackinfo.len ())
+    if (! trackinfo.len () && ! refresh_trackinfo (true))
         goto DONE;
 
     if (whole_disk)
@@ -446,11 +421,12 @@ bool CDAudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
 }
 
 /* mutex must be locked */
-static void open_cd ()
+static bool open_cd ()
 {
-    AUDDBG ("Opening CD drive.\n");
-    assert (pcdrom_drive == nullptr);
+    if (pcdrom_drive)
+        return true;
 
+    AUDDBG ("Opening CD drive.\n");
     String device = aud_get_str ("CDDA", "device");
 
     if (device[0])
@@ -473,16 +449,40 @@ static void open_cd ()
         if (ppcd_drives)
             cdio_free_device_list (ppcd_drives);
     }
+
+    return (bool) pcdrom_drive;
+}
+
+/* mutex must be locked */
+static bool check_disc_mode (bool warning)
+{
+    int mode = cdio_get_discmode (pcdrom_drive->p_cdio);
+
+#ifdef _WIN32 /* cdio_get_discmode reports the wrong disk type sometimes */
+    if (mode == CDIO_DISC_MODE_NO_INFO || mode == CDIO_DISC_MODE_ERROR)
+#else
+    if (mode != CDIO_DISC_MODE_CD_DA && mode != CDIO_DISC_MODE_CD_MIXED)
+#endif
+    {
+        if (warning)
+        {
+            if (mode == CDIO_DISC_MODE_NO_INFO)
+                cdaudio_error (_("Drive is empty."));
+            else
+                cdaudio_error (_("Unsupported disk type."));
+        }
+
+        return false;
+    }
+
+    return true;
 }
 
 /* mutex must be locked */
 static bool scan_cd ()
 {
     AUDDBG ("Scanning CD drive.\n");
-    assert (pcdrom_drive);
-    assert (! trackinfo.len ());
-
-    int trackno;
+    trackinfo.clear ();
 
     /* general track initialization */
 
@@ -519,7 +519,7 @@ static bool scan_cd ()
 
     n_audio_tracks = 0;
 
-    for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
+    for (int trackno = firsttrackno; trackno <= lasttrackno; trackno++)
     {
         trackinfo[trackno].startlsn = cdda_track_firstsector (pcdrom_drive, trackno);
         trackinfo[trackno].endlsn = cdda_track_lastsector (pcdrom_drive, trackno);
@@ -567,7 +567,7 @@ static bool scan_cd ()
 
     /* get track information from cdtext */
     bool cdtext_was_available = false;
-    for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
+    for (int trackno = firsttrackno; trackno <= lasttrackno; trackno++)
     {
 #if LIBCDIO_VERSION_NUM < 90
         if (aud_get_bool ("CDDA", "use_cdtext"))
@@ -656,7 +656,7 @@ static bool scan_cd ()
                                           CDIO_CDROM_LEADOUT_TRACK);
                 cddb_disc_set_length (pcddb_disc, FRAMES_TO_SECONDS (lba));
 
-                for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
+                for (int trackno = firsttrackno; trackno <= lasttrackno; trackno++)
                 {
                     pcddb_track = cddb_track_new ();
                     cddb_track_set_frame_offset (pcddb_track,
@@ -742,43 +742,25 @@ static bool scan_cd ()
 }
 
 /* mutex must be locked */
-static void refresh_trackinfo (bool warning)
+static bool refresh_trackinfo (bool warning)
 {
-    if (pcdrom_drive == nullptr)
-    {
-        open_cd ();
-        if (pcdrom_drive == nullptr)
-            return;
-    }
-
-    int mode = cdio_get_discmode (pcdrom_drive->p_cdio);
-#ifdef _WIN32 /* cdio_get_discmode reports the wrong disk type sometimes */
-    if (mode == CDIO_DISC_MODE_NO_INFO || mode == CDIO_DISC_MODE_ERROR)
-#else
-    if (mode != CDIO_DISC_MODE_CD_DA && mode != CDIO_DISC_MODE_CD_MIXED)
-#endif
-    {
-        if (warning)
-        {
-            if (mode == CDIO_DISC_MODE_NO_INFO)
-                cdaudio_error (_("Drive is empty."));
-            else
-                cdaudio_error (_("Unsupported disk type."));
-        }
-
-        reset_trackinfo ();
-        return;
-    }
+    if (! open_cd () || ! check_disc_mode (warning))
+        goto fail;
 
     if (! trackinfo.len () || cdio_get_media_changed (pcdrom_drive->p_cdio))
     {
-        trackinfo.clear ();
+        if (! scan_cd ())
+            goto fail;
 
-        if (scan_cd ())
-            trigger_monitor ();
-        else
-            reset_trackinfo ();
+        timer_add (TimerRate::Hz1, monitor);
     }
+
+    return true;
+
+fail:
+    reset_trackinfo ();
+    purge_func.queue (purge_all_playlists, nullptr);
+    return false;
 }
 
 /* mutex must be locked */
