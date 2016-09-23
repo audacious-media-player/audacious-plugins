@@ -432,11 +432,17 @@ bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, In
     if (! file.fseek (0, VFS_SEEK_SET))
         audtag::read_tag (file, tuple, image);
 
-    if (image && (str_has_suffix_nocase (filename, ".m4a") ||
-                  str_has_suffix_nocase (filename, ".mp4")))
+    if (image && ! image->len ())
     {
-        if (! file.fseek (0, VFS_SEEK_SET))
-            * image = read_itunes_cover (filename, file);
+        for (unsigned i = 0; i < ic->nb_streams; i ++)
+        {
+            if (ic->streams[i]->attached_pic.size > 0)
+            {
+                image->insert ((char *) ic->streams[i]->attached_pic.data, 0,
+                 ic->streams[i]->attached_pic.size);
+                break;
+            }
+        }
     }
 
     return true;
