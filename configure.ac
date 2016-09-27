@@ -624,8 +624,6 @@ if test "x$enable_mac_media_keys" != "xno"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS mac-media-keys"
 fi
 
-dnl *** End of all plugin checks ***
-
 dnl rgswitch
 
 AC_ARG_ENABLE(rgswitch,
@@ -635,6 +633,8 @@ AC_ARG_ENABLE(rgswitch,
 if test "x$enable_rgswitch" != "xno"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS rgswitch"
 fi
+
+dnl *** End of all plugin checks ***
 
 plugindir=`pkg-config audacious --variable=plugin_dir`
 AC_SUBST(plugindir)
