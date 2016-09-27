@@ -626,6 +626,16 @@ fi
 
 dnl *** End of all plugin checks ***
 
+dnl rgswitch
+
+AC_ARG_ENABLE(rgswitch,
+ [AS_HELP_STRING([--disable-rgswitch], [disable ReplayGain Switch])],
+ [enable_rgswitch=$enableval], [enable_rgswitch="yes"])
+
+if test "x$enable_rgswitch" != "xno"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS rgswitch"
+fi
+
 plugindir=`pkg-config audacious --variable=plugin_dir`
 AC_SUBST(plugindir)
 
@@ -769,6 +779,7 @@ echo "  GNOME Shortcuts:                        $have_gnomeshortcuts"
 echo "  libnotify OSD:                          $have_notify"
 echo "  Linux Infrared Remote Control (LIRC):   $have_lirc"
 echo "  MPRIS 2 Server:                         $have_mpris2"
+echo "  ReplayGain Switch:                      $enable_rgswitch"
 echo "  Scrobbler 2.0:                          $have_scrobbler2"
 echo "  Song Change:                            $have_songchange"
 echo
