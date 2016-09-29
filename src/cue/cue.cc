@@ -106,6 +106,7 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                 }
 
                 Rem * rem = cd_get_rem (cd);
+
                 if (rem)
                 {
                     const char * s;
@@ -167,6 +168,7 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
             }
 
             Rem * rem = track_get_rem (cur);
+
             if (rem)
             {
                 const char * s;
