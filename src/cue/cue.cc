@@ -101,16 +101,26 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                         base_tuple.set_str (Tuple::Album, s);
                     if ((s = cdtext_get (PTI_GENRE, cdtext)))
                         base_tuple.set_str (Tuple::Genre, s);
+                    if ((s = cdtext_get (PTI_COMPOSER, cdtext)))
+                        base_tuple.set_str (Tuple::Composer, s);
                 }
 
                 Rem * rem = cd_get_rem (cd);
-
                 if (rem)
                 {
                     const char * s;
-                    if ((s = rem_get (REM_DATE, rem)))
-                        base_tuple.set_int (Tuple::Year, str_to_int (s));
+                    if ((s = rem_get (REM_DATE, rem))) {
+                        // We should extract the year out of the string, nothing guarantees it will only be a year.
+                        base_tuple.set_int (Tuple::Year, str_to_int(s));
+                        base_tuple.set_str (Tuple::Date, s);
+                    }
+                    if ((s = rem_get (REM_REPLAYGAIN_ALBUM_GAIN, rem)))
+                        base_tuple.set_gain (Tuple::AlbumGain, Tuple::GainDivisor, s);
+                    if ((s = rem_get (REM_REPLAYGAIN_ALBUM_PEAK, rem)))
+                        base_tuple.set_gain (Tuple::AlbumPeak, Tuple::PeakDivisor, s);
                 }
+
+                base_tuple.set_int (Tuple::NumSubtunes, tracks);
             }
         }
 
@@ -156,13 +166,14 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                     tuple.set_str (Tuple::Genre, s);
             }
 
-            Rem * rem = cd_get_rem (cd);
-
+            Rem * rem = track_get_rem (cur);
             if (rem)
             {
                 const char * s;
-                if ((s = rem_get (REM_DATE, rem)))
-                    tuple.set_int (Tuple::Year, str_to_int (s));
+                if ((s = rem_get (REM_REPLAYGAIN_TRACK_GAIN, rem)))
+                    tuple.set_gain (Tuple::TrackGain, Tuple::GainDivisor, s);
+                if ((s = rem_get (REM_REPLAYGAIN_TRACK_PEAK, rem)))
+                    tuple.set_gain (Tuple::TrackPeak, Tuple::PeakDivisor, s);
             }
 
             items.append (String (tfilename), std::move (tuple), decoder);
