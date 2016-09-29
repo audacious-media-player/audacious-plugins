@@ -74,7 +74,7 @@ TRANSPORT_PLUGINS="gio"
 if test "x$USE_GTK" = "xyes" ; then
     EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
     GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart lyricwiki playlist-manager search-tool statusicon"
-    GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins tag-info"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope cairo-spectrum"
 fi
 
@@ -786,6 +786,7 @@ if test "x$USE_GTK" = "xyes" ; then
     echo "  Search Tool:                            yes"
     echo "  Spectrum Analyzer (2D):                 yes"
     echo "  Status Icon:                            yes"
+    echo "  Tag Info:                               yes"
     echo "  X11 Global Hotkeys:                     $have_hotkey"
     echo "  X11 On-Screen Display (aosd):           $have_aosd"
     echo
