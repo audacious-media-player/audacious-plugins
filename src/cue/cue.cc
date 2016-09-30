@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#include <ctype.h>
 #include <string.h>
 #include <pthread.h>
 
@@ -101,6 +102,8 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                         base_tuple.set_str (Tuple::Album, s);
                     if ((s = cdtext_get (PTI_GENRE, cdtext)))
                         base_tuple.set_str (Tuple::Genre, s);
+                    if ((s = cdtext_get (PTI_COMPOSER, cdtext)))
+                        base_tuple.set_str (Tuple::Composer, s);
                 }
 
                 Rem * rem = cd_get_rem (cd);
@@ -109,7 +112,30 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                 {
                     const char * s;
                     if ((s = rem_get (REM_DATE, rem)))
-                        base_tuple.set_int (Tuple::Year, str_to_int (s));
+                    {
+                        bool date = true;
+                        // Year on all recorded music is currently 4 digits.
+                        if (strlen(s) == 4)
+                        {
+                            date = false;
+                            for (int i = 0; i < 4; i++)
+                            {
+                                if (!isdigit(s[i]))
+                                {
+                                    date = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (date)
+                            base_tuple.set_str(Tuple::Date, s);
+                        else
+                            base_tuple.set_int(Tuple::Year, str_to_int(s));
+                    }
+                    if ((s = rem_get (REM_REPLAYGAIN_ALBUM_GAIN, rem)))
+                        base_tuple.set_gain (Tuple::AlbumGain, Tuple::GainDivisor, s);
+                    if ((s = rem_get (REM_REPLAYGAIN_ALBUM_PEAK, rem)))
+                        base_tuple.set_gain (Tuple::AlbumPeak, Tuple::PeakDivisor, s);
                 }
             }
         }
@@ -156,13 +182,15 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                     tuple.set_str (Tuple::Genre, s);
             }
 
-            Rem * rem = cd_get_rem (cd);
+            Rem * rem = track_get_rem (cur);
 
             if (rem)
             {
                 const char * s;
-                if ((s = rem_get (REM_DATE, rem)))
-                    tuple.set_int (Tuple::Year, str_to_int (s));
+                if ((s = rem_get (REM_REPLAYGAIN_TRACK_GAIN, rem)))
+                    tuple.set_gain (Tuple::TrackGain, Tuple::GainDivisor, s);
+                if ((s = rem_get (REM_REPLAYGAIN_TRACK_PEAK, rem)))
+                    tuple.set_gain (Tuple::TrackPeak, Tuple::PeakDivisor, s);
             }
 
             items.append (String (tfilename), std::move (tuple), decoder);
