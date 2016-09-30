@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#include <ctype.h>
 #include <string.h>
 #include <pthread.h>
 
@@ -110,18 +111,32 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                 if (rem)
                 {
                     const char * s;
-                    if ((s = rem_get (REM_DATE, rem))) {
-                        // We should extract the year out of the string, nothing guarantees it will only be a year.
-                        base_tuple.set_int (Tuple::Year, str_to_int(s));
-                        base_tuple.set_str (Tuple::Date, s);
+                    if ((s = rem_get (REM_DATE, rem)))
+                    {
+                        bool date = true;
+                        // Year on all recorded music is currently 4 digits.
+                        if (strlen(s) == 4)
+                        {
+                            date = false;
+                            for (int i = 0; i < 4; i++)
+                            {
+                                if (!isdigit(s[i]))
+                                {
+                                    date = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (date)
+                            base_tuple.set_str(Tuple::Date, s);
+                        else
+                            base_tuple.set_int(Tuple::Year, str_to_int(s));
                     }
                     if ((s = rem_get (REM_REPLAYGAIN_ALBUM_GAIN, rem)))
                         base_tuple.set_gain (Tuple::AlbumGain, Tuple::GainDivisor, s);
                     if ((s = rem_get (REM_REPLAYGAIN_ALBUM_PEAK, rem)))
                         base_tuple.set_gain (Tuple::AlbumPeak, Tuple::PeakDivisor, s);
                 }
-
-                base_tuple.set_int (Tuple::NumSubtunes, tracks);
             }
         }
 
