@@ -47,6 +47,15 @@ public:
 
 EXPORT CueLoader aud_plugin_instance;
 
+static bool is_year (const char * s)
+{
+    auto is_digit = [] (char c)
+        { return c >= '0' && c <= '9'; };
+
+    return is_digit (s[0]) && is_digit (s[1]) &&
+           is_digit (s[2]) && is_digit (s[3]) && ! s[4];
+}
+
 bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
  Index<PlaylistAddItem> & items)
 {
@@ -101,6 +110,8 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                         base_tuple.set_str (Tuple::Album, s);
                     if ((s = cdtext_get (PTI_GENRE, cdtext)))
                         base_tuple.set_str (Tuple::Genre, s);
+                    if ((s = cdtext_get (PTI_COMPOSER, cdtext)))
+                        base_tuple.set_str (Tuple::Composer, s);
                 }
 
                 Rem * rem = cd_get_rem (cd);
@@ -108,8 +119,19 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                 if (rem)
                 {
                     const char * s;
+
                     if ((s = rem_get (REM_DATE, rem)))
-                        base_tuple.set_int (Tuple::Year, str_to_int (s));
+                    {
+                        if (is_year (s))
+                            base_tuple.set_int (Tuple::Year, str_to_int (s));
+                        else
+                            base_tuple.set_str (Tuple::Date, s);
+                    }
+
+                    if ((s = rem_get (REM_REPLAYGAIN_ALBUM_GAIN, rem)))
+                        base_tuple.set_gain (Tuple::AlbumGain, Tuple::GainDivisor, s);
+                    if ((s = rem_get (REM_REPLAYGAIN_ALBUM_PEAK, rem)))
+                        base_tuple.set_gain (Tuple::AlbumPeak, Tuple::PeakDivisor, s);
                 }
             }
         }
@@ -156,13 +178,15 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
                     tuple.set_str (Tuple::Genre, s);
             }
 
-            Rem * rem = cd_get_rem (cd);
+            Rem * rem = track_get_rem (cur);
 
             if (rem)
             {
                 const char * s;
-                if ((s = rem_get (REM_DATE, rem)))
-                    tuple.set_int (Tuple::Year, str_to_int (s));
+                if ((s = rem_get (REM_REPLAYGAIN_TRACK_GAIN, rem)))
+                    tuple.set_gain (Tuple::TrackGain, Tuple::GainDivisor, s);
+                if ((s = rem_get (REM_REPLAYGAIN_TRACK_PEAK, rem)))
+                    tuple.set_gain (Tuple::TrackPeak, Tuple::PeakDivisor, s);
             }
 
             items.append (String (tfilename), std::move (tuple), decoder);
