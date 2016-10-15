@@ -415,17 +415,14 @@ static void search_timeout (void * = nullptr)
     audgui_list_insert_rows (results_list, 0, items.len ());
 
     int total = items.len () + hidden_items;
-    StringBuf stats = str_printf (dngettext (PACKAGE, "%d result",
-     "%d results", total), total);
 
     if (hidden_items)
-    {
-        stats.insert (-1, " ");
-        stats.combine (str_printf (dngettext (PACKAGE, "(%d hidden)",
-         "(%d hidden)", hidden_items), hidden_items));
-    }
-
-    gtk_label_set_text ((GtkLabel *) stats_label, stats);
+        gtk_label_set_text ((GtkLabel *) stats_label,
+         str_printf (dngettext (PACKAGE, "%d of %d result shown",
+         "%d of %d results shown", total), items.len (), total));
+    else
+        gtk_label_set_text ((GtkLabel *) stats_label,
+         str_printf (dngettext (PACKAGE, "%d result", "%d results", total), total));
 
     search_timer.stop ();
     search_pending = false;
