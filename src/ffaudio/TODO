@@ -3,13 +3,6 @@ ffaudio todo
 
 - Tagging: reading should probably be done through ffmpeg (unless there is a reason not to), writing through libaudtag.
 
-- Removing crappy plugins which use the same codebase and merging it into ffaudio.
-
-Potential good candidates are:
-
-  * Windows Media Audio (wma)
-  * Monkey's Audio Codec (mac)
-
 Candidates with problems:
 
   * Apple Lossless Audio Codec (alac): typically uses same container as

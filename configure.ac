@@ -604,7 +604,7 @@ if test "x$enable_filewriter" = "xyes" -a "x$have_vorbis" = "xyes"; then
     FILEWRITER_LIBS="$FILEWRITER_LIBS $VORBIS_LIBS"
 fi
 
-if test "x$enable_filewriter" = "xyes" -a "x$have_flac" != "xyes"; then
+if test "x$enable_filewriter" = "xyes" -a "x$have_flac" = "xyes"; then
     AC_DEFINE(FILEWRITER_FLAC, 1, [Define if FLAC output part should be built])
     FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS $LIBFLAC_CFLAGS"
     FILEWRITER_LIBS="$FILEWRITER_LIBS $LIBFLAC_LIBS"

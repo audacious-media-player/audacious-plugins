@@ -482,17 +482,14 @@ static void search_timeout (void * = nullptr)
     }
 
     int total = items.len () + hidden_items;
-    StringBuf stats = str_printf (dngettext (PACKAGE, "%d result",
-     "%d results", total), total);
 
     if (hidden_items)
-    {
-        stats.insert (-1, " ");
-        stats.combine (str_printf (dngettext (PACKAGE, "(%d hidden)",
-         "(%d hidden)", hidden_items), hidden_items));
-    }
-
-    stats_label->setText ((const char *) stats);
+        stats_label->setText ((const char *)
+         str_printf (dngettext (PACKAGE, "%d of %d result shown",
+         "%d of %d results shown", total), items.len (), total));
+    else
+        stats_label->setText ((const char *)
+         str_printf (dngettext (PACKAGE, "%d result", "%d results", total), total));
 
     search_timer.stop ();
     search_pending = false;
