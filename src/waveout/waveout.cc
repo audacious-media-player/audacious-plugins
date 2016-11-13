@@ -189,20 +189,17 @@ void WaveOut::period_wait ()
     pthread_mutex_unlock (& buffer_mutex);
 }
 
-// assumes state_mutex + buffer_mutex locked
-static void write_next_block ()
+// assumes state_mutex locked
+static void write_block (int b)
 {
-    WAVEHDR & header = headers[next_block];
-    Index<char> & block = blocks[next_block];
+    WAVEHDR & header = headers[b];
+    Index<char> & block = blocks[b];
 
     header.lpData = block.begin ();
     header.dwBufferLength = block.len ();
 
     waveOutPrepareHeader (device, & header, sizeof header);
     waveOutWrite (device, & header, sizeof header);
-
-    next_block = (next_block + 1) % NUM_BLOCKS;
-    blocks_free --;
 }
 
 // assumes state_mutex locked
@@ -226,16 +223,29 @@ int WaveOut::write_audio (const void * data, int len)
 
     while (len > 0 && blocks_free > 0)
     {
+        int block_to_write = -1;
+
         Index<char> & block = blocks[next_block];
         int copy = aud::min (len, block_size - block.len ());
         block.insert ((const char *) data, -1, copy);
 
         if (block.len () == block_size)
-            write_next_block ();
+        {
+            block_to_write = next_block;
+            next_block = (next_block + 1) % NUM_BLOCKS;
+            blocks_free --;
+        }
 
         written += copy;
         data = (const char *) data + copy;
         len -= copy;
+
+        if (block_to_write >= 0)
+        {
+            pthread_mutex_unlock (& buffer_mutex);
+            write_block (block_to_write);
+            pthread_mutex_lock (& buffer_mutex);
+        }
     }
 
     bool filled = ! blocks_free;
@@ -256,11 +266,20 @@ void WaveOut::drain ()
     pthread_mutex_lock (& state_mutex);
     pthread_mutex_lock (& buffer_mutex);
 
+    int block_to_write = -1;
+
     // write last partial block, if any
     if (blocks_free > 0 && blocks[next_block].len () > 0)
-        write_next_block ();
+    {
+        block_to_write = next_block;
+        next_block = (next_block + 1) % NUM_BLOCKS;
+        blocks_free --;
+    }
 
     pthread_mutex_unlock (& buffer_mutex);
+
+    if (block_to_write >= 0)
+        write_block (block_to_write);
 
     check_started ();
 
