@@ -239,9 +239,9 @@ static void shift_rows (void * user, int row, int before)
     /* Adjust the shift amount so that the selected entry closest to the
      * destination ends up at the destination. */
     if (before > row)
-        before -= playlist_count_selected_in_range (list, row, before - row);
+        before -= aud_playlist_selected_count (list, row, before - row);
     else
-        before += playlist_count_selected_in_range (list, before, row - before);
+        before += aud_playlist_selected_count (list, before, row - before);
 
     aud_playlist_shift (list, row, before - row);
 }

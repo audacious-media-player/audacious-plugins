@@ -22,7 +22,6 @@
 
 GtkWidget * playlist_get_treeview (int playlist);
 
-int playlist_count_selected_in_range (int list, int top, int length);
 void playlist_shift (int offset);
 
 #endif
