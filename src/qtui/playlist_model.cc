@@ -136,6 +136,19 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
     return QVariant ();
 }
 
+Qt::DropActions PlaylistModel::supportedDropActions () const
+{
+    return Qt::MoveAction;
+}
+
+Qt::ItemFlags PlaylistModel::flags (const QModelIndex & index) const
+{
+    if (index.isValid ())
+        return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+    else
+        return Qt::ItemIsSelectable | Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
+}
+
 int PlaylistModel::playlist () const
 {
     return aud_playlist_by_unique_id (m_uniqueId);
@@ -146,31 +159,29 @@ int PlaylistModel::uniqueId () const
     return m_uniqueId;
 }
 
-bool PlaylistModel::insertRows (int row, int count, const QModelIndex & parent)
+void PlaylistModel::entriesAdded (int row, int count)
 {
     if (count < 1)
-        return true;
+        return;
 
     int last = row + count - 1;
-    beginInsertRows (parent, row, last);
-    m_rows = aud_playlist_entry_count (playlist ());
+    beginInsertRows (QModelIndex (), row, last);
+    m_rows += count;
     endInsertRows ();
-    return true;
 }
 
-bool PlaylistModel::removeRows (int row, int count, const QModelIndex & parent)
+void PlaylistModel::entriesRemoved (int row, int count)
 {
     if (count < 1)
-        return true;
+        return;
 
     int last = row + count - 1;
-    beginRemoveRows (parent, row, last);
-    m_rows = aud_playlist_entry_count (playlist ());
+    beginRemoveRows (QModelIndex (), row, last);
+    m_rows -= count;
     endRemoveRows ();
-    return true;
 }
 
-void PlaylistModel::updateRows (int row, int count)
+void PlaylistModel::entriesChanged (int row, int count)
 {
     if (count < 1)
         return;

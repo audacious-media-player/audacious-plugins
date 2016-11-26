@@ -52,6 +52,7 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueId) : QTreeView (par
     setUniformRowHeights (true);
     setFrameShape (QFrame::NoFrame);
     setSelectionMode (ExtendedSelection);
+    setDragDropMode (InternalMove);
 
     updateSettings ();
 
@@ -160,6 +161,37 @@ void PlaylistWidget::mouseDoubleClickEvent (QMouseEvent * event)
         playCurrentIndex ();
 }
 
+void PlaylistWidget::dropEvent (QDropEvent * event)
+{
+    if (event->source () != this || event->proposedAction () != Qt::MoveAction)
+        return;
+
+    int list = playlist ();
+    int from = indexToRow (currentIndex ());
+    if (from < 0)
+        return;
+
+    int to;
+    switch (dropIndicatorPosition ())
+    {
+        case AboveItem: to = indexToRow (indexAt (event->pos ())); break;
+        case BelowItem: to = indexToRow (indexAt (event->pos ())) + 1; break;
+        case OnViewport: to = aud_playlist_entry_count (list); break;
+        default: return;
+    }
+
+    /* Adjust the shift amount so that the selected entry closest to the
+     * destination ends up at the destination. */
+    if (to > from)
+        to -= aud_playlist_selected_count (list, from, to - from);
+    else
+        to += aud_playlist_selected_count (list, to, from - to);
+
+    aud_playlist_shift (list, from, to - from);
+
+    event->acceptProposedAction ();
+}
+
 void PlaylistWidget::currentChanged (const QModelIndex & current, const QModelIndex & previous)
 {
     QTreeView::currentChanged (current, previous);
@@ -215,7 +247,7 @@ void PlaylistWidget::updatePlaybackIndicator ()
     if (aud_playlist_update_pending (list))
         needIndicatorUpdate = true;
     else if (currentPos >= 0)
-        model->updateRows (currentPos, 1);
+        model->entriesChanged (currentPos, 1);
 }
 
 void PlaylistWidget::getSelectedRanges (const Playlist::Update & update,
@@ -271,11 +303,11 @@ void PlaylistWidget::update (const Playlist::Update & update)
         else if (currentPos >= update.before)
             currentPos = -1;
 
-        model->removeRows (update.before, removed);
-        model->insertRows (update.before, changed);
+        model->entriesRemoved (update.before, removed);
+        model->entriesAdded (update.before, changed);
     }
     else if (update.level == Playlist::Metadata || update.queue_changed)
-        model->updateRows (update.before, changed);
+        model->entriesChanged (update.before, changed);
 
     if (update.queue_changed)
     {
@@ -283,7 +315,7 @@ void PlaylistWidget::update (const Playlist::Update & update)
         {
             int entry = aud_playlist_queue_get_entry (list, i);
             if (entry < update.before || entry >= entries - update.after)
-                model->updateRows (entry, 1);
+                model->entriesChanged (entry, 1);
         }
     }
 
@@ -292,9 +324,9 @@ void PlaylistWidget::update (const Playlist::Update & update)
     if (needIndicatorUpdate || pos != currentPos)
     {
         if (currentPos >= 0)
-            model->updateRows (currentPos, 1);
+            model->entriesChanged (currentPos, 1);
         if (pos >= 0 && pos != currentPos)
-            model->updateRows (pos, 1);
+            model->entriesChanged (pos, 1);
 
         currentPos = pos;
         needIndicatorUpdate = false;
