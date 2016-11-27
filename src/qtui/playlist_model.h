@@ -46,6 +46,11 @@ public:
     Qt::DropActions supportedDropActions () const;
     Qt::ItemFlags flags (const QModelIndex & index) const;
 
+    QStringList mimeTypes () const;
+    QMimeData * mimeData (const QModelIndexList & indexes) const;
+    bool dropMimeData (const QMimeData * data, Qt::DropAction action, int row,
+     int column, const QModelIndex & parent);
+
     void entriesAdded (int row, int count);
     void entriesRemoved (int row, int count);
     void entriesChanged (int row, int count);

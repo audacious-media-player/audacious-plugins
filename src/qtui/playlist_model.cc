@@ -19,6 +19,8 @@
 
 #include <QApplication>
 #include <QIcon>
+#include <QMimeData>
+#include <QUrl>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
@@ -138,7 +140,7 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
 
 Qt::DropActions PlaylistModel::supportedDropActions () const
 {
-    return Qt::MoveAction;
+    return Qt::CopyAction | Qt::MoveAction;
 }
 
 Qt::ItemFlags PlaylistModel::flags (const QModelIndex & index) const
@@ -147,6 +149,50 @@ Qt::ItemFlags PlaylistModel::flags (const QModelIndex & index) const
         return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
     else
         return Qt::ItemIsSelectable | Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
+}
+
+QStringList PlaylistModel::mimeTypes () const
+{
+    return QStringList ("text/uri-list");
+}
+
+QMimeData * PlaylistModel::mimeData (const QModelIndexList & indexes) const
+{
+    int list = playlist ();
+
+    /* we assume that <indexes> contains the selected entries */
+    aud_playlist_cache_selected (list);
+
+    QList<QUrl> urls;
+    int prev = -1;
+
+    for (auto & index : indexes)
+    {
+        int row = index.row ();
+        if (row != prev)  /* skip multiple cells in same row */
+        {
+            urls.append (QString (aud_playlist_entry_get_filename (list, row)));
+            prev = row;
+        }
+    }
+
+    auto data = new QMimeData;
+    data->setUrls (urls);
+    return data;
+}
+
+bool PlaylistModel::dropMimeData (const QMimeData * data, Qt::DropAction action,
+ int row, int column, const QModelIndex & parent)
+{
+    if (action != Qt::CopyAction || ! data->hasUrls ())
+        return false;
+
+    Index<PlaylistAddItem> items;
+    for (auto & url : data->urls ())
+        items.append (String (url.toEncoded ()));
+
+    aud_playlist_entry_insert_batch (playlist (), row, std::move (items), false);
+    return true;
 }
 
 int PlaylistModel::playlist () const

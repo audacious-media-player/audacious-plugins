@@ -52,7 +52,7 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueId) : QTreeView (par
     setUniformRowHeights (true);
     setFrameShape (QFrame::NoFrame);
     setSelectionMode (ExtendedSelection);
-    setDragDropMode (InternalMove);
+    setDragDropMode (DragDrop);
 
     updateSettings ();
 
@@ -161,10 +161,24 @@ void PlaylistWidget::mouseDoubleClickEvent (QMouseEvent * event)
         playCurrentIndex ();
 }
 
+/* Since Qt doesn't support both DragDrop and InternalMove at once,
+ * this hack is needed to set the drag icon to "move" for internal drags. */
+void PlaylistWidget::dragMoveEvent (QDragMoveEvent * event)
+{
+    if (event->source () == this)
+        event->setDropAction (Qt::MoveAction);
+
+    QTreeView::dragMoveEvent (event);
+
+    if (event->source () == this)
+        event->setDropAction (Qt::MoveAction);
+}
+
 void PlaylistWidget::dropEvent (QDropEvent * event)
 {
-    if (event->source () != this || event->proposedAction () != Qt::MoveAction)
-        return;
+    /* let Qt forward external drops to the PlaylistModel */
+    if (event->source () != this)
+        return QTreeView::dropEvent (event);
 
     int list = playlist ();
     int from = indexToRow (currentIndex ());
