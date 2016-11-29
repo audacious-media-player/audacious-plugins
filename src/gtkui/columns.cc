@@ -45,7 +45,8 @@ const char * const pw_col_names[PW_COLS] = {
     N_("File path"),
     N_("File name"),
     N_("Custom title"),
-    N_("Bitrate")
+    N_("Bitrate"),
+    N_("Comment")
 };
 
 int pw_num_cols;
@@ -66,7 +67,8 @@ static const char * const pw_col_keys[PW_COLS] = {
     "path",
     "filename",
     "custom",
-    "bitrate"
+    "bitrate",
+    "comment"
 };
 
 static const int pw_default_widths[PW_COLS] = {
@@ -83,7 +85,8 @@ static const int pw_default_widths[PW_COLS] = {
     275,  // path
     275,  // filename
     275,  // custom title
-    10    // bitrate
+    10,   // bitrate
+    275   // comment
 };
 
 void pw_col_init ()
@@ -111,14 +114,13 @@ void pw_col_init ()
         pw_cols[pw_num_cols ++] = i;
     }
 
-    String widths = aud_get_str ("gtkui", "column_widths");
+    auto widths = str_list_to_index (aud_get_str ("gtkui", "column_widths"), ", ");
+    int nwidths = aud::min (widths.len (), (int) PW_COLS);
 
-    int iwidths[PW_COLS];
-    bool valid = str_to_int_array (widths, iwidths, PW_COLS);
-    auto source = valid ? iwidths : pw_default_widths;
-
-    for (int i = 0; i < PW_COLS; i ++)
-        pw_col_widths[i] = audgui_to_native_dpi (source[i]);
+    for (int i = 0; i < nwidths; i ++)
+        pw_col_widths[i] = audgui_to_native_dpi (str_to_int (widths[i]));
+    for (int i = nwidths; i < PW_COLS; i ++)
+        pw_col_widths[i] = audgui_to_native_dpi (pw_default_widths[i]);
 }
 
 struct Column {

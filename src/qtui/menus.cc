@@ -100,6 +100,7 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuCommand ({N_("By _Length")}, sort_length),
         audqt::MenuCommand ({N_("By _File Path")}, sort_path),
         audqt::MenuCommand ({N_("By _Custom Title")}, sort_custom_title),
+        audqt::MenuCommand ({N_("By C_omment")}, sort_comment),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("R_everse Order"), "view-sort-descending"}, sort_reverse),
         audqt::MenuCommand ({N_("_Random Order")}, sort_random)
@@ -116,6 +117,7 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuCommand ({N_("By _Length")}, sort_sel_length),
         audqt::MenuCommand ({N_("By _File Path")}, sort_sel_path),
         audqt::MenuCommand ({N_("By _Custom Title")}, sort_sel_custom_title),
+        audqt::MenuCommand ({N_("By C_omment")}, sort_sel_comment),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("R_everse Order"), "view-sort-descending"}, sort_sel_reverse),
         audqt::MenuCommand ({N_("_Random Order")}, sort_sel_random)

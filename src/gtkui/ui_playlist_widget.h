@@ -44,6 +44,7 @@ enum {
     PW_COL_FILENAME,
     PW_COL_CUSTOM,
     PW_COL_BITRATE,
+    PW_COL_COMMENT,
     PW_COLS
 };
 

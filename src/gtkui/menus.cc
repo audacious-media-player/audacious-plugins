@@ -144,6 +144,7 @@ static const AudguiMenuItem sort_items[] = {
     MenuCommand (N_("By _Length"), nullptr, NONE, sort_length),
     MenuCommand (N_("By _File Path"), nullptr, NONE, sort_path),
     MenuCommand (N_("By _Custom Title"), nullptr, NONE, sort_custom_title),
+    MenuCommand (N_("By C_omment"), nullptr, NONE, sort_comment),
     MenuSep (),
     MenuCommand (N_("R_everse Order"), "view-sort-descending", NONE, sort_reverse),
     MenuCommand (N_("_Random Order"), nullptr, NONE, sort_random)
@@ -160,6 +161,7 @@ static const AudguiMenuItem sort_sel_items[] = {
     MenuCommand (N_("By _Length"), nullptr, NONE, sort_sel_length),
     MenuCommand (N_("By _File Path"), nullptr, NONE, sort_sel_path),
     MenuCommand (N_("By _Custom Title"), nullptr, NONE, sort_sel_custom_title),
+    MenuCommand (N_("By C_omment"), nullptr, NONE, sort_sel_comment),
     MenuSep (),
     MenuCommand (N_("R_everse Order"), "view-sort-descending", NONE, sort_sel_reverse),
     MenuCommand (N_("_Random Order"), nullptr, NONE, sort_sel_random)
