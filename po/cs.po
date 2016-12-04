@@ -6,8 +6,9 @@
 # Jiří Vírava <appukonrad@gmail.com>, 2012-2013
 # Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004
 # fri, 2012-2013
-# nd76er <nd76er@gmail.com>, 2014
-# nd76er <nd76er@gmail.com>, 2014-2015
+# Andy Andy <nd76er@gmail.com>, 2014
+# IAmNotImportant <mates@horky.name>, 2016
+# Andy Andy <nd76er@gmail.com>, 2014-2015
 # fri, 2014
 # fri, 2012
 # Petr Pisar <petr.pisar@atlas.cz>, 2007-2012
@@ -17,11 +18,11 @@
 # Roman Horník <roman.hornik@debian-linux.cz>, 2016
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-09-18 19:53+0200\n"
-"PO-Revision-Date: 2016-08-22 12:05+0000\n"
-"Last-Translator: Roman Horník <roman.hornik@debian-linux.cz>\n"
+"POT-Creation-Date: 2016-12-04 20:09+0100\n"
+"PO-Revision-Date: 2016-12-04 18:56+0000\n"
+"Last-Translator: IAmNotImportant <mates@horky.name>\n"
 "Language-Team: Czech (http://www.transifex.com/jlindgren/audacious/language/"
 "cs/)\n"
 "Language: cs\n"
@@ -821,7 +822,7 @@ msgstr "Analyzátor spektra"
 msgid "Audio CD Plugin"
 msgstr "Audio CD Plugin"
 
-#: src/cdaudio/cdaudio-ng.cc:117
+#: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -841,81 +842,89 @@ msgstr ""
 "\n"
 "Toto byl projekt v rámci Google Summer of Code 2007."
 
-#: src/cdaudio/cdaudio-ng.cc:133
+#: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
 msgstr "<b>Zařízení</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:134
+#: src/cdaudio/cdaudio-ng.cc:135
 msgid "Read speed:"
 msgstr "Rychlost čtení:"
 
-#: src/cdaudio/cdaudio-ng.cc:137
+#: src/cdaudio/cdaudio-ng.cc:138
 msgid "Override device:"
 msgstr "Přepsat zařízení:"
 
-#: src/cdaudio/cdaudio-ng.cc:139
+#: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
 msgstr "<b>Metadata</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:140
+#: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
 msgstr "Použití CD-Text"
 
-#: src/cdaudio/cdaudio-ng.cc:142
+#: src/cdaudio/cdaudio-ng.cc:143
 msgid "Use CDDB"
 msgstr "Používat CDDB"
 
-#: src/cdaudio/cdaudio-ng.cc:144
+#: src/cdaudio/cdaudio-ng.cc:145
 msgid "Use HTTP instead of CDDBP"
 msgstr "Použít HTTP místo CDDBP"
 
-#: src/cdaudio/cdaudio-ng.cc:147
+#: src/cdaudio/cdaudio-ng.cc:148
 msgid "Server:"
 msgstr "Server:"
 
-#: src/cdaudio/cdaudio-ng.cc:151
+#: src/cdaudio/cdaudio-ng.cc:152
 msgid "Path:"
 msgstr "Cesta:"
 
-#: src/cdaudio/cdaudio-ng.cc:155
+#: src/cdaudio/cdaudio-ng.cc:156
 msgid "Port:"
 msgstr "Port:"
 
-#: src/cdaudio/cdaudio-ng.cc:241
+#: src/cdaudio/cdaudio-ng.cc:221
 msgid "Failed to initialize cdio subsystem."
 msgstr "Nepodařilo se inicializovat cdio subsystému."
 
-#: src/cdaudio/cdaudio-ng.cc:276
+#: src/cdaudio/cdaudio-ng.cc:251
 #, c-format
 msgid "Invalid URI %s."
 msgstr "Neplatná URI %s."
 
-#: src/cdaudio/cdaudio-ng.cc:278
+#: src/cdaudio/cdaudio-ng.cc:253
 #, c-format
 msgid "Track %d not found."
 msgstr "Stopa %d nebyla nalezena."
 
-#: src/cdaudio/cdaudio-ng.cc:280
+#: src/cdaudio/cdaudio-ng.cc:255
 #, c-format
 msgid "Track %d is a data track."
 msgstr "Stopa %d je datová stopa."
 
-#: src/cdaudio/cdaudio-ng.cc:355
+#: src/cdaudio/cdaudio-ng.cc:330
 msgid "Error reading audio CD."
 msgstr "Chyba při čtení zvukového CD."
 
-#: src/cdaudio/cdaudio-ng.cc:424
+#: src/cdaudio/cdaudio-ng.cc:399
 msgid "Audio CD"
 msgstr "Zvukové CD"
 
-#: src/cdaudio/cdaudio-ng.cc:459 src/cdaudio/cdaudio-ng.cc:468
+#: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Nelze otevřít CD zařízení %s."
 
-#: src/cdaudio/cdaudio-ng.cc:471
+#: src/cdaudio/cdaudio-ng.cc:447
 msgid "No audio capable CD drive found."
 msgstr "Nebyly nalezeny funkční CD mechaniky"
+
+#: src/cdaudio/cdaudio-ng.cc:470
+msgid "Drive is empty."
+msgstr "Mechanika je prázdná"
+
+#: src/cdaudio/cdaudio-ng.cc:472
+msgid "Unsupported disk type."
+msgstr "Nepodporovaný druh disku."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
@@ -947,14 +956,6 @@ msgstr "Nepodařil se dotaz na server CDDB: %s"
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Nepodařilo se přečíst cddb info: %s"
-
-#: src/cdaudio/cdaudio-ng.cc:764
-msgid "Drive is empty."
-msgstr "Mechanika je prázdná"
-
-#: src/cdaudio/cdaudio-ng.cc:766
-msgid "Unsupported disk type."
-msgstr "Nepodporovaný druh disku."
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -1221,7 +1222,7 @@ msgstr "Ozvěna"
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg Plugin"
 
-#: src/ffaudio/ffaudio-core.cc:604
+#: src/ffaudio/ffaudio-core.cc:612
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -2835,6 +2836,19 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Audacious PulseAudio plugin pro výstup\n"
+"\n"
+"Tento program je svobodný software; můžete ho šířit a/nebo upravovat podle "
+"podmínek GNU General Public License publikovaných Free Software Foundation, "
+"dle verze 2 nebo (pokud vám to vyhovuje) jakékoliv pozdější verze.\n"
+"\n"
+"Tento program je předáván s nadějí že bude užitečný, ale BEZ JAKÉKOLIV "
+"ZÁRUKY, bez jakékoli nevyslovené záruky PRODEJE nebo VHODNOSTI PRO KONKRÉTNÍ "
+"ÚČEL. Pro více informací vyhledejte GNU General Public License.\n"
+"\n"
+"Spolu s tímto programem byste měli obdržet kopii GNU General Public License. "
+"Pokud tomu tak není, napište na Free Software Foundation, Inc., 51 Franklin "
+"Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
@@ -3025,6 +3039,8 @@ msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
 msgstr ""
+"Přehrané skladby jsou v počítači uloženy dočasně. Budou odeslány jakmile "
+"bude povolen přístup pro Audacious."
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
@@ -3089,6 +3105,8 @@ msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
+"Audacious nyní používá vylepšenou verzi Last.fm Scrobbler.\n"
+"Otevřete nastavení pro zobrazení pluginu Scrobbler."
 
 #: src/sdlout/sdlout.cc:43
 msgid "SDL Output"
@@ -3680,7 +3698,7 @@ msgstr "Seřadit seznam"
 
 #: src/skins/menus.cc:255 src/skins-qt/menus.cc:248
 msgid "Open Containing Folder"
-msgstr ""
+msgstr "Otevřít obsahující složku"
 
 #: src/skins/menus.cc:257 src/skins-qt/menus.cc:250
 msgid "Cut"
@@ -4041,6 +4059,8 @@ msgid ""
 "You can use the following format codes, which will be replaced before "
 "running the command (not all are useful for the end-of-playlist command):"
 msgstr ""
+"Můžete použít následující formáty, které budou použity před spuštěním "
+"programu (ne všechny jsou použitelné pro příkaz end-of-playlist):"
 
 #: src/songchange/song_change.cc:285
 msgid ""
@@ -4354,13 +4374,15 @@ msgstr ""
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
-msgstr ""
+msgstr "Win32 waveOut"
 
 #: src/waveout/waveout.cc:69
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
 msgstr ""
+"Win32 waveOut plugin pro Audacious\n"
+"Copyright 2016 John Lindgren"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"

@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-09-18 19:53+0200\n"
-"PO-Revision-Date: 2016-09-18 08:55+0000\n"
-"Last-Translator: Catalanoic <catalanoic@gmail.com>\n"
+"POT-Creation-Date: 2016-12-04 20:09+0100\n"
+"PO-Revision-Date: 2016-12-04 18:56+0000\n"
+"Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan (http://www.transifex.com/jlindgren/audacious/"
 "language/ca/)\n"
 "Language: ca\n"
@@ -112,7 +112,7 @@ msgstr ""
 "\n"
 "  Tranquil després de:\n"
 "    Atura alarma després d'aquest temps.\n"
-"       (si la finestra despertament no està tancada)\n"
+"       (si el diàleg de despertament no està tancat)\n"
 "\n"
 "\n"
 "Dies\n"
@@ -133,7 +133,7 @@ msgstr ""
 "\n"
 "  Acabament:\n"
 "    El volum per aturar l'esvaïment. Si el temps d'esvaïment és 0 aleshores "
-"es selecciona aquest volum i s'inicia la reproducció.\n"
+"se selecciona aquest volum i s'inicia la reproducció.\n"
 "\n"
 "\n"
 "Opcions:\n"
@@ -372,7 +372,7 @@ msgstr ""
 "l'alsa-lib docs, per poder aprendre més sobre l'API ALSA\n"
 "\n"
 "Alfredo Spadafina\n"
-"per al bon logotip del teclat midi\n"
+"per al bon logotip del teclat MIDI\n"
 "\n"
 "Tony Vroon\n"
 "per a la bona ajuda amb les proves alfa"
@@ -636,7 +636,7 @@ msgstr "Amplada màxima de l'OSD:"
 
 #: src/aosd/aosd_ui.cc:220
 msgid "Multi-Monitor options"
-msgstr "Opcions multi-monitor"
+msgstr "Opcions multimonitor"
 
 #: src/aosd/aosd_ui.cc:224
 msgid "Display OSD using:"
@@ -816,7 +816,7 @@ msgstr "Analitzador espectral"
 msgid "Audio CD Plugin"
 msgstr "Connector de CD d'àudio"
 
-#: src/cdaudio/cdaudio-ng.cc:117
+#: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -837,81 +837,89 @@ msgstr ""
 "\n"
 "Aquest va ser un projecte de Google Summer of Code del 2007."
 
-#: src/cdaudio/cdaudio-ng.cc:133
+#: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
 msgstr "<b>Dispositiu</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:134
+#: src/cdaudio/cdaudio-ng.cc:135
 msgid "Read speed:"
 msgstr "Velocitat de lectura:"
 
-#: src/cdaudio/cdaudio-ng.cc:137
+#: src/cdaudio/cdaudio-ng.cc:138
 msgid "Override device:"
 msgstr "Anul·la el dispositiu:"
 
-#: src/cdaudio/cdaudio-ng.cc:139
+#: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
 msgstr "<b>Metadades</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:140
+#: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
 msgstr "Utilitza CD-Text"
 
-#: src/cdaudio/cdaudio-ng.cc:142
+#: src/cdaudio/cdaudio-ng.cc:143
 msgid "Use CDDB"
 msgstr "Utilitza CDDB"
 
-#: src/cdaudio/cdaudio-ng.cc:144
+#: src/cdaudio/cdaudio-ng.cc:145
 msgid "Use HTTP instead of CDDBP"
 msgstr "Utilitza HTTP en lloc de CDDBP"
 
-#: src/cdaudio/cdaudio-ng.cc:147
+#: src/cdaudio/cdaudio-ng.cc:148
 msgid "Server:"
 msgstr "Servidor:"
 
-#: src/cdaudio/cdaudio-ng.cc:151
+#: src/cdaudio/cdaudio-ng.cc:152
 msgid "Path:"
 msgstr "Camí:"
 
-#: src/cdaudio/cdaudio-ng.cc:155
+#: src/cdaudio/cdaudio-ng.cc:156
 msgid "Port:"
 msgstr "Port:"
 
-#: src/cdaudio/cdaudio-ng.cc:241
+#: src/cdaudio/cdaudio-ng.cc:221
 msgid "Failed to initialize cdio subsystem."
 msgstr "No s'ha pogut iniciar el subsistema de cdio."
 
-#: src/cdaudio/cdaudio-ng.cc:276
+#: src/cdaudio/cdaudio-ng.cc:251
 #, c-format
 msgid "Invalid URI %s."
 msgstr "L'URI %s no és vàlid."
 
-#: src/cdaudio/cdaudio-ng.cc:278
+#: src/cdaudio/cdaudio-ng.cc:253
 #, c-format
 msgid "Track %d not found."
 msgstr "No s'ha trobat la pista %d."
 
-#: src/cdaudio/cdaudio-ng.cc:280
+#: src/cdaudio/cdaudio-ng.cc:255
 #, c-format
 msgid "Track %d is a data track."
 msgstr "La pista %d és una pista de dades."
 
-#: src/cdaudio/cdaudio-ng.cc:355
+#: src/cdaudio/cdaudio-ng.cc:330
 msgid "Error reading audio CD."
 msgstr "Error en llegir el CD d'àudio."
 
-#: src/cdaudio/cdaudio-ng.cc:424
+#: src/cdaudio/cdaudio-ng.cc:399
 msgid "Audio CD"
 msgstr "CD d'àudio"
 
-#: src/cdaudio/cdaudio-ng.cc:459 src/cdaudio/cdaudio-ng.cc:468
+#: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "No s'ha pogut obrir el dispositiu de CD %s."
 
-#: src/cdaudio/cdaudio-ng.cc:471
+#: src/cdaudio/cdaudio-ng.cc:447
 msgid "No audio capable CD drive found."
 msgstr "No s'ha trobat cap unitat de CD d'àudio."
+
+#: src/cdaudio/cdaudio-ng.cc:470
+msgid "Drive is empty."
+msgstr "La unitat està buida."
+
+#: src/cdaudio/cdaudio-ng.cc:472
+msgid "Unsupported disk type."
+msgstr "Tipus de disc no admès."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
@@ -943,14 +951,6 @@ msgstr "No s'ha pogut consultar al servidor CDDB: %s"
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "No s'ha pogut llegir la informació de cddb: %s"
-
-#: src/cdaudio/cdaudio-ng.cc:764
-msgid "Drive is empty."
-msgstr "La unitat està buida."
-
-#: src/cdaudio/cdaudio-ng.cc:766
-msgid "Unsupported disk type."
-msgstr "Tipus de disc no admès."
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -1217,7 +1217,7 @@ msgstr "Eco"
 msgid "FFmpeg Plugin"
 msgstr "Connector FFmpeg"
 
-#: src/ffaudio/ffaudio-core.cc:604
+#: src/ffaudio/ffaudio-core.cc:612
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1263,7 +1263,7 @@ msgstr ""
 "PER A UN PROPÒSIT PARTICULAR.  Vegeu la GNU General Public License per a més "
 "detalls.\n"
 "\n"
-"Haurieu de rebre una còpia de la GNU General Public License juntament amb "
+"Hauríeu de rebre una còpia de la GNU General Public License juntament amb "
 "aquest programa; si no, podeu escriure la Free Software Foundation, Inc., 51 "
 "Franklin Street, Cinquena Planta, Boston, MA 02110-1301, USA."
 
@@ -1581,11 +1581,11 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
-"OpenGL Spectrum Analyzer for Audacious\n"
-"Copyright 2013 Christophe Budé, John Lindgren, i Carlo Bramini\n"
+"OpenGL Spectrum Analyzer per a Audacious\n"
+"Copyright 2013 Christophe Budé, John Lindgren i Carlo Bramini\n"
 "\n"
-"Basat en el plugin XMMS:\n"
-"Drets d'autor 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, "
+"Basat en el connector de XMMS:\n"
+"Drets d'autor 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson "
 "i 4Front Technologies\n"
 "\n"
 "Llicència: GPLv2+"
@@ -2180,7 +2180,7 @@ msgstr "Commuta les finestres"
 
 #: src/hotkey/gui.cc:83
 msgid "Show On-Screen-Display"
-msgstr "Activa l'OSD (sobre-impressió)"
+msgstr "Mostra l'OSD"
 
 #: src/hotkey/gui.cc:84
 msgid "Toggle repeat"
@@ -2196,7 +2196,7 @@ msgstr "Commuta l'aturada després de l'actual"
 
 #: src/hotkey/gui.cc:87
 msgid "Raise player window(s)"
-msgstr "Mostra la finestra principal"
+msgstr "Realça les finestres del reproductor"
 
 #: src/hotkey/gui.cc:97
 msgid "(none)"
@@ -2310,8 +2310,8 @@ msgid ""
 "%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
 msgstr ""
 "El servidor JACK requereix una freqüència de mostreig de %d Hz, però "
-"l'Audacious està reproduint a %d Hz.  Utilitzeu l'efecte convertidor de "
-"freqüència demostra per corregir el desajust."
+"Audacious està reproduint a %d Hz. Utilitzeu l'efecte convertidor de "
+"freqüència de les mostres per corregir el desajust."
 
 #: src/ladspa/plugin.cc:415
 #, c-format
@@ -2481,8 +2481,8 @@ msgid ""
 msgstr ""
 "Un generador de tacte per Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
-"Per usar-lo, afegiu una URL: tact://beats*num/den\n"
-"e.g. tact://77 per reproduir 77 batecs per minut\n"
+"Per a utilitzar-ho, afegiu un URL: tact://beats*num/den\n"
+"p. ex. tact://77 per reproduir 77 batecs per minut\n"
 "o tact://60*3/4 per reproduir 60 bpm en 3/4 tactes"
 
 #: src/mixer/mixer.cc:38
@@ -2494,7 +2494,7 @@ msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
-"Channel Mixer Plugin for Audacious\n"
+"Channel Mixer Plugin per a Audacious\n"
 "Drets d'autor 2011-2012 John Lindgren i Michał Lipski"
 
 #: src/mixer/mixer.cc:231
@@ -2693,7 +2693,7 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Desktop Notifications Plugin for Audacious\n"
+"Desktop Notifications Plugin per a Audacious\n"
 "Drets d'autor (C) 2010 Maximilian Bogner\n"
 "Drets d'autor (C) 2011-2013 John Lindgren i Jean-Alexandre Anglès d'Auriac\n"
 "\n"
@@ -2707,7 +2707,7 @@ msgstr ""
 "APTITUD DE PROPÒSIT PARTICULAR.  Vegeu la Llicència general pública de GNU "
 "per a més detalls.\n"
 "\n"
-"Haurieu de rebre una còpia de la llicència pública general GNU amb aquest "
+"Hauríeu de rebre una còpia de la llicència pública general GNU amb aquest "
 "programa. Si no és així, consulteu <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.cc:102
@@ -2840,6 +2840,11 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Connector de sortida d'àudio QtMultimedia per a Audacious\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"Basat en el connector de sortida d'àudio SDL per a Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/qtglspectrum/gl-spectrum.cc:41
 msgid ""
@@ -3340,11 +3345,11 @@ msgstr "Visualitzacions"
 
 #: src/skins/menus.cc:80 src/skins-qt/menus.cc:67
 msgid "Recording on"
-msgstr ""
+msgstr "Enregistrament engegat"
 
 #: src/skins/menus.cc:80 src/skins-qt/menus.cc:67
 msgid "Recording off"
-msgstr ""
+msgstr "Enregistrament apagat"
 
 #: src/skins/menus.cc:99 src/skins-qt/menus.cc:86
 msgid "Volume Up"
@@ -3946,7 +3951,7 @@ msgstr "Desa i restaura el volum:"
 #: src/sndio/sndio.cc:181
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
-msgstr "Error de Sndio: Format de àudio no compatible (%d)"
+msgstr "Error de Sndio: Format d'àudio no compatible (%d)"
 
 #: src/sndio/sndio.cc:192
 msgid "Sndio error: sio_open() failed"
