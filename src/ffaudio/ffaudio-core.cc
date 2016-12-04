@@ -432,6 +432,7 @@ bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, In
     if (! file.fseek (0, VFS_SEEK_SET))
         audtag::read_tag (file, tuple, image);
 
+#if CHECK_LIBAVFORMAT_VERSION (54, 2, 100, 54, 2, 0)
     if (image && ! image->len ())
     {
         for (unsigned i = 0; i < ic->nb_streams; i ++)
@@ -444,6 +445,7 @@ bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, In
             }
         }
     }
+#endif
 
     return true;
 }
