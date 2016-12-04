@@ -50,7 +50,8 @@ static const GType pw_col_types[PW_COLS] =
     G_TYPE_STRING,  // path
     G_TYPE_STRING,  // file name
     G_TYPE_STRING,  // custom title
-    G_TYPE_STRING   // bitrate
+    G_TYPE_STRING,  // bitrate
+    G_TYPE_STRING   // comment
 };
 
 static const int pw_col_min_widths[PW_COLS] = {
@@ -67,7 +68,8 @@ static const int pw_col_min_widths[PW_COLS] = {
     10,  // path
     10,  // file name
     10,  // custom title
-    3    // bitrate
+    3,   // bitrate
+    10   // comment
 };
 
 static const bool pw_col_label[PW_COLS] = {
@@ -84,7 +86,8 @@ static const bool pw_col_label[PW_COLS] = {
     true,   // path
     true,   // file name
     true,   // custom title
-    false   // bitrate
+    false,  // bitrate
+    true    // comment
 };
 
 struct PlaylistWidgetData {
@@ -135,23 +138,8 @@ static void get_value (void * user, int row, int column, GValue * value)
 
     Tuple tuple;
 
-    switch (column)
-    {
-    case PW_COL_TITLE:
-    case PW_COL_ARTIST:
-    case PW_COL_ALBUM:
-    case PW_COL_YEAR:
-    case PW_COL_ALBUM_ARTIST:
-    case PW_COL_TRACK:
-    case PW_COL_GENRE:
-    case PW_COL_LENGTH:
-    case PW_COL_FILENAME:
-    case PW_COL_PATH:
-    case PW_COL_CUSTOM:
-    case PW_COL_BITRATE:
+    if (column != PW_COL_NUMBER && column != PW_COL_QUEUED)
         tuple = aud_playlist_entry_get_tuple (data->list, row, Playlist::NoWait);
-        break;
-    }
 
     switch (column)
     {
@@ -197,6 +185,9 @@ static void get_value (void * user, int row, int column, GValue * value)
     case PW_COL_BITRATE:
         set_int_from_tuple (value, tuple, Tuple::Bitrate);
         break;
+    case PW_COL_COMMENT:
+        set_string_from_tuple (value, tuple, Tuple::Comment);
+        break;
     }
 }
 
@@ -239,9 +230,9 @@ static void shift_rows (void * user, int row, int before)
     /* Adjust the shift amount so that the selected entry closest to the
      * destination ends up at the destination. */
     if (before > row)
-        before -= playlist_count_selected_in_range (list, row, before - row);
+        before -= aud_playlist_selected_count (list, row, before - row);
     else
-        before += playlist_count_selected_in_range (list, before, row - before);
+        before += aud_playlist_selected_count (list, before, row - before);
 
     aud_playlist_shift (list, row, before - row);
 }

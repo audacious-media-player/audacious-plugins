@@ -41,19 +41,6 @@ GtkWidget * playlist_get_treeview (int playlist)
     return (GtkWidget *) g_object_get_data ((GObject *) page, "treeview");
 }
 
-int playlist_count_selected_in_range (int list, int top, int length)
-{
-    int selected = 0;
-
-    for (int count = 0; count < length; count ++)
-    {
-        if (aud_playlist_entry_get_selected (list, top + count))
-            selected ++;
-    }
-
-    return selected;
-}
-
 void playlist_shift (int offset)
 {
     int list = aud_playlist_get_active ();

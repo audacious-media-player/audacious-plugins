@@ -27,8 +27,10 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
+#include <QMimeData>
 #include <QPushButton>
 #include <QTreeView>
+#include <QUrl>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
@@ -112,8 +114,22 @@ public:
 protected:
     int rowCount (const QModelIndex & parent) const { return m_rows; }
     int columnCount (const QModelIndex & parent) const { return 1; }
-
     QVariant data (const QModelIndex & index, int role) const;
+
+    Qt::ItemFlags flags (const QModelIndex & index) const
+    {
+        if (index.isValid ())
+            return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+        else
+            return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    }
+
+    QStringList mimeTypes () const
+    {
+        return QStringList ("text/uri-list");
+    }
+
+    QMimeData * mimeData (const QModelIndexList & indexes) const;
 
 private:
     int m_rows = 0;
@@ -712,6 +728,36 @@ void ResultsView::contextMenuEvent (QContextMenuEvent * event)
     menu->popup (event->globalPos ());
 }
 
+QMimeData * ResultsModel::mimeData (const QModelIndexList & indexes) const
+{
+    if (search_pending)
+        search_timeout ();
+
+    int list = aud_playlist_by_unique_id (playlist_id);
+
+    aud_playlist_select_all (list, false);
+
+    QList<QUrl> urls;
+    for (auto & index : indexes)
+    {
+        int row = index.row ();
+        if (row < 0 || row >= items.len ())
+            continue;
+
+        for (int entry : items[row]->matches)
+        {
+            urls.append (QString (aud_playlist_entry_get_filename (list, entry)));
+            aud_playlist_entry_set_selected (list, entry, true);
+        }
+    }
+
+    aud_playlist_cache_selected (list);
+
+    auto data = new QMimeData;
+    data->setUrls (urls);
+    return data;
+}
+
 void * SearchToolQt::get_qt_widget ()
 {
     auto widget = new QWidget;
@@ -737,6 +783,7 @@ void * SearchToolQt::get_qt_widget ()
     results_list->setIndentation (0);
     results_list->setModel (& model);
     results_list->setSelectionMode (QTreeView::ExtendedSelection);
+    results_list->setDragDropMode (QTreeView::DragOnly);
     vbox->addWidget (results_list);
 
     stats_label = new QLabel;

@@ -42,10 +42,18 @@ public:
     int columnCount (const QModelIndex & parent = QModelIndex ()) const;
     QVariant data (const QModelIndex & index, int role = Qt::DisplayRole) const;
     QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool insertRows (int row, int count, const QModelIndex & parent = QModelIndex ());
-    bool removeRows (int row, int count, const QModelIndex & parent = QModelIndex ());
 
-    void updateRows (int row, int count);
+    Qt::DropActions supportedDropActions () const;
+    Qt::ItemFlags flags (const QModelIndex & index) const;
+
+    QStringList mimeTypes () const;
+    QMimeData * mimeData (const QModelIndexList & indexes) const;
+    bool dropMimeData (const QMimeData * data, Qt::DropAction action, int row,
+     int column, const QModelIndex & parent);
+
+    void entriesAdded (int row, int count);
+    void entriesRemoved (int row, int count);
+    void entriesChanged (int row, int count);
 
     QString getQueued (int row) const;
     int playlist () const;

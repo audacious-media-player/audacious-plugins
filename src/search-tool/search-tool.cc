@@ -676,7 +676,7 @@ static Index<char> list_get_data (void * user)
 
     Index<char> buf;
 
-    aud_playlist_select_all (playlist_id, false);
+    aud_playlist_select_all (list, false);
 
     for (int i = 0; i < n_items; i ++)
     {

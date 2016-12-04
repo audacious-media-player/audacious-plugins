@@ -19,6 +19,8 @@
 
 #include <QApplication>
 #include <QIcon>
+#include <QMimeData>
+#include <QUrl>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
@@ -136,6 +138,63 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
     return QVariant ();
 }
 
+Qt::DropActions PlaylistModel::supportedDropActions () const
+{
+    return Qt::CopyAction | Qt::MoveAction;
+}
+
+Qt::ItemFlags PlaylistModel::flags (const QModelIndex & index) const
+{
+    if (index.isValid ())
+        return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+    else
+        return Qt::ItemIsSelectable | Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
+}
+
+QStringList PlaylistModel::mimeTypes () const
+{
+    return QStringList ("text/uri-list");
+}
+
+QMimeData * PlaylistModel::mimeData (const QModelIndexList & indexes) const
+{
+    int list = playlist ();
+
+    /* we assume that <indexes> contains the selected entries */
+    aud_playlist_cache_selected (list);
+
+    QList<QUrl> urls;
+    int prev = -1;
+
+    for (auto & index : indexes)
+    {
+        int row = index.row ();
+        if (row != prev)  /* skip multiple cells in same row */
+        {
+            urls.append (QString (aud_playlist_entry_get_filename (list, row)));
+            prev = row;
+        }
+    }
+
+    auto data = new QMimeData;
+    data->setUrls (urls);
+    return data;
+}
+
+bool PlaylistModel::dropMimeData (const QMimeData * data, Qt::DropAction action,
+ int row, int column, const QModelIndex & parent)
+{
+    if (action != Qt::CopyAction || ! data->hasUrls ())
+        return false;
+
+    Index<PlaylistAddItem> items;
+    for (auto & url : data->urls ())
+        items.append (String (url.toEncoded ()));
+
+    aud_playlist_entry_insert_batch (playlist (), row, std::move (items), false);
+    return true;
+}
+
 int PlaylistModel::playlist () const
 {
     return aud_playlist_by_unique_id (m_uniqueId);
@@ -146,31 +205,29 @@ int PlaylistModel::uniqueId () const
     return m_uniqueId;
 }
 
-bool PlaylistModel::insertRows (int row, int count, const QModelIndex & parent)
+void PlaylistModel::entriesAdded (int row, int count)
 {
     if (count < 1)
-        return true;
+        return;
 
     int last = row + count - 1;
-    beginInsertRows (parent, row, last);
-    m_rows = aud_playlist_entry_count (playlist ());
+    beginInsertRows (QModelIndex (), row, last);
+    m_rows += count;
     endInsertRows ();
-    return true;
 }
 
-bool PlaylistModel::removeRows (int row, int count, const QModelIndex & parent)
+void PlaylistModel::entriesRemoved (int row, int count)
 {
     if (count < 1)
-        return true;
+        return;
 
     int last = row + count - 1;
-    beginRemoveRows (parent, row, last);
-    m_rows = aud_playlist_entry_count (playlist ());
+    beginRemoveRows (QModelIndex (), row, last);
+    m_rows -= count;
     endRemoveRows ();
-    return true;
 }
 
-void PlaylistModel::updateRows (int row, int count)
+void PlaylistModel::entriesChanged (int row, int count)
 {
     if (count < 1)
         return;
