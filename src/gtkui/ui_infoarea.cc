@@ -40,7 +40,7 @@ static void compute_sizes ()
     int dpi = audgui_get_dpi ();
 
     SPACING = aud::rescale (dpi, 12, 1);
-    ICON_SIZE = aud::rescale (dpi, 3, 2);
+    ICON_SIZE = 2 * aud::rescale (dpi, 3, 1); // should be divisible by 2
     HEIGHT = ICON_SIZE + 2 * SPACING;
     BAND_WIDTH = aud::rescale (dpi, 16, 1);
     BAND_SPACING = aud::rescale (dpi, 48, 1);
