@@ -5,6 +5,7 @@
 # Translators:
 # Ivailo Monev <xakepa10@gmail.com>, 2014
 # Kiril Kirilov <cybercop_montana@abv.bg>, 2014-2015
+# Myselus, 2016
 # Pandi3a <pandi3a@gmail.com>, 2012
 # Pandi3a <pandi3a@gmail.com>, 2012
 # Радослав Иванов <reckku@gmail.com>, 2013-2014
@@ -12,11 +13,11 @@
 # Радослав Иванов <reckku@gmail.com>, 2015
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-09-18 19:53+0200\n"
-"PO-Revision-Date: 2016-08-22 12:05+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2016-12-04 20:09+0100\n"
+"PO-Revision-Date: 2016-12-04 18:56+0000\n"
+"Last-Translator: Myselus\n"
 "Language-Team: Bulgarian (http://www.transifex.com/jlindgren/audacious/"
 "language/bg/)\n"
 "Language: bg\n"
@@ -535,7 +536,7 @@ msgstr "  (невалиден UTF-8)"
 
 #: src/ampache/ampache.cc:31
 msgid "Ampache Browser"
-msgstr ""
+msgstr "Ampache Браузер"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -546,6 +547,12 @@ msgid ""
 "License: GNU GPLv3\n"
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 msgstr ""
+"Ampache Браузер\n"
+"\n"
+"Ampache клиент за Audacious.\n"
+"\n"
+"Лиценз: GNU GPLv3\n"
+"Copyright (C) Róbert Čerňanský и John Lindgren\n"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -818,7 +825,7 @@ msgstr "Анализ на спектъра"
 msgid "Audio CD Plugin"
 msgstr "Аудио CD Приставка"
 
-#: src/cdaudio/cdaudio-ng.cc:117
+#: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -841,81 +848,89 @@ msgstr ""
 "\n"
 "Това беше проект от Google Summer of Code 2007."
 
-#: src/cdaudio/cdaudio-ng.cc:133
+#: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
 msgstr "<b>Устройство</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:134
+#: src/cdaudio/cdaudio-ng.cc:135
 msgid "Read speed:"
 msgstr "Скорост на четене:"
 
-#: src/cdaudio/cdaudio-ng.cc:137
+#: src/cdaudio/cdaudio-ng.cc:138
 msgid "Override device:"
 msgstr "Презапис на устройството:"
 
-#: src/cdaudio/cdaudio-ng.cc:139
+#: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
 msgstr "<b>Метаданни</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:140
+#: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
 msgstr "Използвай CD-Text"
 
-#: src/cdaudio/cdaudio-ng.cc:142
+#: src/cdaudio/cdaudio-ng.cc:143
 msgid "Use CDDB"
 msgstr "Използвай CDDB"
 
-#: src/cdaudio/cdaudio-ng.cc:144
+#: src/cdaudio/cdaudio-ng.cc:145
 msgid "Use HTTP instead of CDDBP"
 msgstr "Използване на HTTP вместо CDDBP"
 
-#: src/cdaudio/cdaudio-ng.cc:147
+#: src/cdaudio/cdaudio-ng.cc:148
 msgid "Server:"
 msgstr "Сървър:"
 
-#: src/cdaudio/cdaudio-ng.cc:151
+#: src/cdaudio/cdaudio-ng.cc:152
 msgid "Path:"
 msgstr "Път:"
 
-#: src/cdaudio/cdaudio-ng.cc:155
+#: src/cdaudio/cdaudio-ng.cc:156
 msgid "Port:"
 msgstr "Порт:"
 
-#: src/cdaudio/cdaudio-ng.cc:241
+#: src/cdaudio/cdaudio-ng.cc:221
 msgid "Failed to initialize cdio subsystem."
 msgstr "Нуспех при откриване на cdio подсистема."
 
-#: src/cdaudio/cdaudio-ng.cc:276
+#: src/cdaudio/cdaudio-ng.cc:251
 #, c-format
 msgid "Invalid URI %s."
 msgstr "Невалиден Интернет адрес %s."
 
-#: src/cdaudio/cdaudio-ng.cc:278
+#: src/cdaudio/cdaudio-ng.cc:253
 #, c-format
 msgid "Track %d not found."
 msgstr "Запис %d не е намерен."
 
-#: src/cdaudio/cdaudio-ng.cc:280
+#: src/cdaudio/cdaudio-ng.cc:255
 #, c-format
 msgid "Track %d is a data track."
 msgstr "Записът %d е от данни."
 
-#: src/cdaudio/cdaudio-ng.cc:355
+#: src/cdaudio/cdaudio-ng.cc:330
 msgid "Error reading audio CD."
 msgstr "Грешка при четене на audio CD."
 
-#: src/cdaudio/cdaudio-ng.cc:424
+#: src/cdaudio/cdaudio-ng.cc:399
 msgid "Audio CD"
 msgstr "Аудио Диск"
 
-#: src/cdaudio/cdaudio-ng.cc:459 src/cdaudio/cdaudio-ng.cc:468
+#: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Не може да бъде отворено CD устройство %s."
 
-#: src/cdaudio/cdaudio-ng.cc:471
+#: src/cdaudio/cdaudio-ng.cc:447
 msgid "No audio capable CD drive found."
 msgstr "Не е намерено Audio CD устройство."
+
+#: src/cdaudio/cdaudio-ng.cc:470
+msgid "Drive is empty."
+msgstr "Устройството е празно."
+
+#: src/cdaudio/cdaudio-ng.cc:472
+msgid "Unsupported disk type."
+msgstr "Неподдържан диск."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
@@ -947,14 +962,6 @@ msgstr "Неуспешна заявка към CDDB сървър: %s"
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Неуспешно прочитане на cddb информация: %s"
-
-#: src/cdaudio/cdaudio-ng.cc:764
-msgid "Drive is empty."
-msgstr "Устройството е празно."
-
-#: src/cdaudio/cdaudio-ng.cc:766
-msgid "Unsupported disk type."
-msgstr "Неподдържан диск."
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -1221,7 +1228,7 @@ msgstr "Ехо"
 msgid "FFmpeg Plugin"
 msgstr "Приставка за FFmpeg"
 
-#: src/ffaudio/ffaudio-core.cc:604
+#: src/ffaudio/ffaudio-core.cc:612
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1308,103 +1315,103 @@ msgstr "Автоматично"
 
 #: src/filewriter/filewriter.cc:411
 msgid "8000 Hz"
-msgstr ""
+msgstr "8000 Хц"
 
 #: src/filewriter/filewriter.cc:412
 msgid "11025 Hz"
-msgstr ""
+msgstr "11025 Хц"
 
 #: src/filewriter/filewriter.cc:413
 msgid "12000 Hz"
-msgstr ""
+msgstr "12000 Хц"
 
 #: src/filewriter/filewriter.cc:414
 msgid "16000 Hz"
-msgstr ""
+msgstr "16000 Хц"
 
 #: src/filewriter/filewriter.cc:415
 msgid "22050 Hz"
-msgstr ""
+msgstr "22050 Хц"
 
 #: src/filewriter/filewriter.cc:416
 msgid "24000 Hz"
-msgstr ""
+msgstr "24000 Хц"
 
 #: src/filewriter/filewriter.cc:417
 msgid "32000 Hz"
-msgstr ""
+msgstr "32000 Хц"
 
 #: src/filewriter/filewriter.cc:418
 msgid "44100 Hz"
-msgstr ""
+msgstr "44100 Хц"
 
 #: src/filewriter/filewriter.cc:419
 msgid "48000 Hz"
-msgstr ""
+msgstr "48000 Хц"
 
 #: src/filewriter/filewriter.cc:423
 msgid "8 kbps"
-msgstr ""
+msgstr "8 кбвс"
 
 #: src/filewriter/filewriter.cc:424
 msgid "16 kbps"
-msgstr ""
+msgstr "16 кбвс"
 
 #: src/filewriter/filewriter.cc:425
 msgid "32 kbps"
-msgstr ""
+msgstr "32 кбвс"
 
 #: src/filewriter/filewriter.cc:426
 msgid "40 kbps"
-msgstr ""
+msgstr "40 кбвс"
 
 #: src/filewriter/filewriter.cc:427
 msgid "48 kbps"
-msgstr ""
+msgstr "48 кбвс"
 
 #: src/filewriter/filewriter.cc:428
 msgid "56 kbps"
-msgstr ""
+msgstr "56 кбвс"
 
 #: src/filewriter/filewriter.cc:429
 msgid "64 kbps"
-msgstr ""
+msgstr "64 кбвс"
 
 #: src/filewriter/filewriter.cc:430
 msgid "80 kbps"
-msgstr ""
+msgstr "80 кбвс"
 
 #: src/filewriter/filewriter.cc:431
 msgid "96 kbps"
-msgstr ""
+msgstr "96 кбвс"
 
 #: src/filewriter/filewriter.cc:432
 msgid "112 kbps"
-msgstr ""
+msgstr "112 кбвс"
 
 #: src/filewriter/filewriter.cc:433
 msgid "128 kbps"
-msgstr ""
+msgstr "128 кбвс"
 
 #: src/filewriter/filewriter.cc:434
 msgid "160 kbps"
-msgstr ""
+msgstr "160 кбвс"
 
 #: src/filewriter/filewriter.cc:435
 msgid "192 kbps"
-msgstr ""
+msgstr "192 кбвс"
 
 #: src/filewriter/filewriter.cc:436
 msgid "224 kbps"
-msgstr ""
+msgstr "224 кбвс"
 
 #: src/filewriter/filewriter.cc:437
 msgid "256 kbps"
-msgstr ""
+msgstr "256 кбвс"
 
 #: src/filewriter/filewriter.cc:438
 msgid "320 kbps"
-msgstr ""
+msgstr "320 кбвс"
 
 #: src/filewriter/filewriter.cc:443
 msgid "Joint Stereo"
@@ -1430,11 +1437,11 @@ msgstr ""
 
 #: src/filewriter/filewriter.cc:471
 msgid "Algorithm quality:"
-msgstr ""
+msgstr "Алгоритъм за качество:"
 
 #: src/filewriter/filewriter.cc:477
 msgid "Bitrate:"
-msgstr ""
+msgstr "Битрейт:"
 
 #: src/filewriter/filewriter.cc:484
 msgid "Compression ratio:"
@@ -1442,7 +1449,7 @@ msgstr "Честота на сгъстяване:"
 
 #: src/filewriter/filewriter.cc:491
 msgid "Audio mode:"
-msgstr ""
+msgstr "Звуков режим:"
 
 #: src/filewriter/filewriter.cc:494
 msgid "Enforce strict ISO compliance"
@@ -1462,15 +1469,15 @@ msgstr "Вид:"
 
 #: src/filewriter/filewriter.cc:507
 msgid "Minimum bitrate:"
-msgstr ""
+msgstr "Минимален битрейт:"
 
 #: src/filewriter/filewriter.cc:511
 msgid "Maximum bitrate:"
-msgstr ""
+msgstr "Максимален битрейт:"
 
 #: src/filewriter/filewriter.cc:515
 msgid "Average bitrate:"
-msgstr ""
+msgstr "Среден битрейт:"
 
 #: src/filewriter/filewriter.cc:519
 msgid "VBR quality level:"
@@ -1526,7 +1533,7 @@ msgstr "Маркери"
 
 #: src/filewriter/filewriter.cc:559
 msgid "Quality (0-1):"
-msgstr ""
+msgstr "Качество (0-1):"
 
 #: src/filewriter/filewriter.cc:566 src/skins-qt/skins_cfg.cc:304
 #: src/skins/skins_cfg.cc:286
@@ -2880,7 +2887,7 @@ msgstr "Работи ..."
 
 #: src/qtui/dialog_windows.cc:43
 msgid "Information"
-msgstr ""
+msgstr "Информация"
 
 #: src/qtui/filter_input.cc:44 src/skins/search-select.cc:76
 msgid "Search"
@@ -3016,7 +3023,7 @@ msgstr "192 кХц:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr ""
+msgstr "Проверяване на Last.fm достъп ..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
@@ -3028,28 +3035,34 @@ msgstr ""
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
 msgstr ""
+"Получено е разрешение. Изпращане на слушаните изпълнения за потребител %s."
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
+"Отказано е разрешение. Отворете следния URL в браузер, позволете на "
+"Audacious достъп до вашия акаунт и тогава кликнете 'Проверка за Разрешение' "
+"отново:"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr ""
+msgstr "Възникна проблем при свързването с Last.fm"
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "Проверка за Разрешение"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "Отказване на Разрешение"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
+"Нужно е да позволите на Audacious да споделя слушаните изпълнения във вашия "
+"Last.fm акаунт."
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
@@ -3675,7 +3688,7 @@ msgstr "Подреждане на списъка"
 
 #: src/skins/menus.cc:255 src/skins-qt/menus.cc:248
 msgid "Open Containing Folder"
-msgstr ""
+msgstr "Отваряне на Съдържащата Папка"
 
 #: src/skins/menus.cc:257 src/skins-qt/menus.cc:250
 msgid "Cut"
@@ -3691,7 +3704,7 @@ msgstr "Поставяне"
 
 #: src/skins/menus.cc:260 src/skins-qt/menus.cc:253
 msgid "Paste at End"
-msgstr ""
+msgstr "Поставяне на Края"
 
 #: src/skins/menus.cc:262 src/skins-qt/menus.cc:255
 msgid "Queue/Unqueue"

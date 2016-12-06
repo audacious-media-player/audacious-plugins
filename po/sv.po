@@ -6,14 +6,16 @@
 # Bo Serrander <bserrander@gmail.com>, 2013,2016
 # Gaius Anderson <gaius.ankh@gmail.com>, 2015-2016
 # Henrik Mattsson-Mårn <h@reglage.net>, 2015
+# Kristoffer Grundström <kristoffer.grundstrom1983@gmail.com>, 2016
 # Luna Jernberg <bittin@cafe8bitar.se>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-09-18 19:53+0200\n"
-"PO-Revision-Date: 2016-08-22 12:05+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2016-12-04 20:09+0100\n"
+"PO-Revision-Date: 2016-12-04 18:55+0000\n"
+"Last-Translator: Kristoffer Grundström <kristoffer.grundstrom1983@gmail."
+"com>\n"
 "Language-Team: Swedish (http://www.transifex.com/jlindgren/audacious/"
 "language/sv/)\n"
 "Language: sv\n"
@@ -358,11 +360,11 @@ msgstr "<b> Uppspelning </ b>"
 
 #: src/amidiplug/i_configure.cc:129
 msgid "Transpose:"
-msgstr ""
+msgstr "Tranponera:"
 
 #: src/amidiplug/i_configure.cc:131 src/speedpitch/speed-pitch.cc:235
 msgid "semitones"
-msgstr ""
+msgstr "halvtoner"
 
 #: src/amidiplug/i_configure.cc:132
 msgid "Drum shift:"
@@ -391,7 +393,7 @@ msgstr "<b>Synthesizer</b>"
 #: src/amidiplug/i_configure.cc:150 src/console/plugin.cc:45
 #: src/filewriter/filewriter.cc:474 src/sid/xs_config.cc:65
 msgid "Sample rate:"
-msgstr ""
+msgstr "Samplingsfrekvens:"
 
 #: src/amidiplug/i_configure.cc:152 src/bs2b/plugin.cc:141
 #: src/console/plugin.cc:47 src/modplug/plugin_main.cc:81
@@ -536,7 +538,7 @@ msgstr ""
 
 #: src/aosd/aosd_trigger.cc:55
 msgid "Title Change"
-msgstr ""
+msgstr "Titeländring"
 
 #: src/aosd/aosd_trigger.cc:56
 msgid "Triggers OSD when the song title changes (for internet streams)."
@@ -597,7 +599,7 @@ msgstr ""
 
 #: src/aosd/aosd_ui.cc:286
 msgid "Display:"
-msgstr ""
+msgstr "Skärm:"
 
 #: src/aosd/aosd_ui.cc:291
 msgid "Fade in:"
@@ -635,7 +637,7 @@ msgstr "Färg %i:"
 
 #: src/aosd/aosd_ui.cc:599
 msgid "Enable trigger"
-msgstr ""
+msgstr "Aktivera utösare"
 
 #: src/aosd/aosd_ui.cc:626
 msgid "Event"
@@ -662,7 +664,7 @@ msgstr "Genomskinlighet"
 
 #: src/aosd/aosd_ui.cc:711
 msgid "Fake transparency"
-msgstr ""
+msgstr "Falsk genomskinlighet"
 
 #: src/aosd/aosd_ui.cc:713
 msgid "Real transparency (requires X Composite Ext.)"
@@ -731,7 +733,7 @@ msgstr ""
 
 #: src/bs2b/plugin.cc:129
 msgid "Presets:"
-msgstr ""
+msgstr "Förinställningar:"
 
 #: src/bs2b/plugin.cc:136
 msgid "Feed level:"
@@ -753,7 +755,7 @@ msgstr "Spektrumanalysator"
 msgid "Audio CD Plugin"
 msgstr "Ljud CD Plugin"
 
-#: src/cdaudio/cdaudio-ng.cc:117
+#: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -765,81 +767,89 @@ msgid ""
 "This was a Google Summer of Code 2007 project."
 msgstr ""
 
-#: src/cdaudio/cdaudio-ng.cc:133
+#: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
 msgstr "<b>Enhet</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:134
+#: src/cdaudio/cdaudio-ng.cc:135
 msgid "Read speed:"
 msgstr "Läshastighet:"
 
-#: src/cdaudio/cdaudio-ng.cc:137
+#: src/cdaudio/cdaudio-ng.cc:138
 msgid "Override device:"
 msgstr ""
 
-#: src/cdaudio/cdaudio-ng.cc:139
+#: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
 msgstr "<b>Metadata</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:140
+#: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
 msgstr "Använd CD-Text"
 
-#: src/cdaudio/cdaudio-ng.cc:142
+#: src/cdaudio/cdaudio-ng.cc:143
 msgid "Use CDDB"
 msgstr "Använd CDDB"
 
-#: src/cdaudio/cdaudio-ng.cc:144
+#: src/cdaudio/cdaudio-ng.cc:145
 msgid "Use HTTP instead of CDDBP"
 msgstr "Använd HTTP istället för CDDBP"
 
-#: src/cdaudio/cdaudio-ng.cc:147
+#: src/cdaudio/cdaudio-ng.cc:148
 msgid "Server:"
 msgstr "Server:"
 
-#: src/cdaudio/cdaudio-ng.cc:151
+#: src/cdaudio/cdaudio-ng.cc:152
 msgid "Path:"
 msgstr "Sökväg:"
 
-#: src/cdaudio/cdaudio-ng.cc:155
+#: src/cdaudio/cdaudio-ng.cc:156
 msgid "Port:"
 msgstr "Port:"
 
-#: src/cdaudio/cdaudio-ng.cc:241
+#: src/cdaudio/cdaudio-ng.cc:221
 msgid "Failed to initialize cdio subsystem."
 msgstr ""
 
-#: src/cdaudio/cdaudio-ng.cc:276
+#: src/cdaudio/cdaudio-ng.cc:251
 #, c-format
 msgid "Invalid URI %s."
 msgstr "Ogiltig URI %s"
 
-#: src/cdaudio/cdaudio-ng.cc:278
+#: src/cdaudio/cdaudio-ng.cc:253
 #, c-format
 msgid "Track %d not found."
 msgstr "Spår %d kunde inte hittas."
 
-#: src/cdaudio/cdaudio-ng.cc:280
+#: src/cdaudio/cdaudio-ng.cc:255
 #, c-format
 msgid "Track %d is a data track."
 msgstr "Spår %d är ett dataspår."
 
-#: src/cdaudio/cdaudio-ng.cc:355
+#: src/cdaudio/cdaudio-ng.cc:330
 msgid "Error reading audio CD."
 msgstr ""
 
-#: src/cdaudio/cdaudio-ng.cc:424
+#: src/cdaudio/cdaudio-ng.cc:399
 msgid "Audio CD"
 msgstr "Ljud CD"
 
-#: src/cdaudio/cdaudio-ng.cc:459 src/cdaudio/cdaudio-ng.cc:468
+#: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr ""
 
-#: src/cdaudio/cdaudio-ng.cc:471
+#: src/cdaudio/cdaudio-ng.cc:447
 msgid "No audio capable CD drive found."
 msgstr ""
+
+#: src/cdaudio/cdaudio-ng.cc:470
+msgid "Drive is empty."
+msgstr "Enheten är tom."
+
+#: src/cdaudio/cdaudio-ng.cc:472
+msgid "Unsupported disk type."
+msgstr "Ogiltig  typ av skiva."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
@@ -871,14 +881,6 @@ msgstr "Kunde inte fråga CDDB-server: %s"
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Kunde inte läsa cddb-data: %s"
-
-#: src/cdaudio/cdaudio-ng.cc:764
-msgid "Drive is empty."
-msgstr "Enheten är tom."
-
-#: src/cdaudio/cdaudio-ng.cc:766
-msgid "Unsupported disk type."
-msgstr "Ogiltig  typ av skiva."
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -1124,7 +1126,7 @@ msgstr "Eko"
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg Plugin"
 
-#: src/ffaudio/ffaudio-core.cc:604
+#: src/ffaudio/ffaudio-core.cc:612
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"

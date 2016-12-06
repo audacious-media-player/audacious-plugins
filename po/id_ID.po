@@ -8,6 +8,7 @@
 # Ardjuna <Asyura.x@gmail.com>, 2013,2015
 # Ardjuna <Asyura.x@gmail.com>, 2012
 # abd azis ws <astrojim.blankon@gmail.com>, 2012
+# Bervianto Leo Pratama <bervianto.leo@gmail.com>, 2016
 #  <bu0ncu3@yahoo.com>, 2012
 # Catur Susetyo <satyafree@gmail.com>, 2013
 #  <kokabiel9@gmail.com>, 2012
@@ -22,11 +23,11 @@
 #  <yustrizal24@gmail.com>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-09-18 19:53+0200\n"
-"PO-Revision-Date: 2016-08-22 12:05+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2016-12-04 20:09+0100\n"
+"PO-Revision-Date: 2016-12-04 18:56+0000\n"
+"Last-Translator: Bervianto Leo Pratama <bervianto.leo@gmail.com>\n"
 "Language-Team: Indonesian (Indonesia) (http://www.transifex.com/jlindgren/"
 "audacious/language/id_ID/)\n"
 "Language: id_ID\n"
@@ -54,7 +55,7 @@ msgstr "Alarm"
 
 #: src/alarm/alarm.cc:782
 msgid "Set Alarm ..."
-msgstr "Setel Alarm..."
+msgstr "Mengatur Alarm ..."
 
 #: src/alarm/alarm.cc:810
 msgid ""
@@ -62,7 +63,7 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
-"Sebuah plugin yang dapat digunakan untuk mulai bermain pada waktu tertentu\n"
+"Sebuah plugin yang dapat digunakan untuk mulai bermain pada waktu tertentu.\n"
 "\n"
 "Awalnya ditulis oleh Adam Feakin dan Daniel Stodden."
 
@@ -353,7 +354,7 @@ msgstr "<b>Putar lagu</b>"
 
 #: src/amidiplug/i_configure.cc:129
 msgid "Transpose:"
-msgstr "Tukar tempat"
+msgstr "Tukar tempat:"
 
 #: src/amidiplug/i_configure.cc:131 src/speedpitch/speed-pitch.cc:235
 msgid "semitones"
@@ -442,7 +443,7 @@ msgstr "Jumlah trek:"
 
 #: src/amidiplug/i_fileinfo.cc:209
 msgid "variable"
-msgstr "variable"
+msgstr "variabel"
 
 #: src/amidiplug/i_fileinfo.cc:211
 msgid "BPM:"
@@ -751,7 +752,7 @@ msgstr "Penelaah spektrum"
 msgid "Audio CD Plugin"
 msgstr "Pengaya Audio CD"
 
-#: src/cdaudio/cdaudio-ng.cc:117
+#: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -773,81 +774,89 @@ msgstr ""
 "\n"
 "Ini adalah sebuah proyek Google Summer of Code 2007."
 
-#: src/cdaudio/cdaudio-ng.cc:133
+#: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
 msgstr "<b>Perangkat</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:134
+#: src/cdaudio/cdaudio-ng.cc:135
 msgid "Read speed:"
 msgstr "Kecepatan membaca:"
 
-#: src/cdaudio/cdaudio-ng.cc:137
+#: src/cdaudio/cdaudio-ng.cc:138
 msgid "Override device:"
 msgstr "Timpa perangkat:"
 
-#: src/cdaudio/cdaudio-ng.cc:139
+#: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
 msgstr "<b>Metadata</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:140
+#: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
 msgstr "Gunakan CD-Teks"
 
-#: src/cdaudio/cdaudio-ng.cc:142
+#: src/cdaudio/cdaudio-ng.cc:143
 msgid "Use CDDB"
 msgstr "Gunakan CDDB"
 
-#: src/cdaudio/cdaudio-ng.cc:144
+#: src/cdaudio/cdaudio-ng.cc:145
 msgid "Use HTTP instead of CDDBP"
 msgstr "Gunakan HTTP daripada CDDBP"
 
-#: src/cdaudio/cdaudio-ng.cc:147
+#: src/cdaudio/cdaudio-ng.cc:148
 msgid "Server:"
 msgstr "Server:"
 
-#: src/cdaudio/cdaudio-ng.cc:151
+#: src/cdaudio/cdaudio-ng.cc:152
 msgid "Path:"
 msgstr "Jalur:"
 
-#: src/cdaudio/cdaudio-ng.cc:155
+#: src/cdaudio/cdaudio-ng.cc:156
 msgid "Port:"
 msgstr "Port:"
 
-#: src/cdaudio/cdaudio-ng.cc:241
+#: src/cdaudio/cdaudio-ng.cc:221
 msgid "Failed to initialize cdio subsystem."
 msgstr "Gagal memulai subsistem cdio."
 
-#: src/cdaudio/cdaudio-ng.cc:276
+#: src/cdaudio/cdaudio-ng.cc:251
 #, c-format
 msgid "Invalid URI %s."
 msgstr "URI Tidak Valid %s."
 
-#: src/cdaudio/cdaudio-ng.cc:278
+#: src/cdaudio/cdaudio-ng.cc:253
 #, c-format
 msgid "Track %d not found."
 msgstr "Tidak menemukan trek %d."
 
-#: src/cdaudio/cdaudio-ng.cc:280
+#: src/cdaudio/cdaudio-ng.cc:255
 #, c-format
 msgid "Track %d is a data track."
 msgstr "Trek %d adalah sebuah trek data."
 
-#: src/cdaudio/cdaudio-ng.cc:355
+#: src/cdaudio/cdaudio-ng.cc:330
 msgid "Error reading audio CD."
 msgstr "Galat saat membaca audio CD."
 
-#: src/cdaudio/cdaudio-ng.cc:424
+#: src/cdaudio/cdaudio-ng.cc:399
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: src/cdaudio/cdaudio-ng.cc:459 src/cdaudio/cdaudio-ng.cc:468
+#: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Gagal membuka perangkat CD %s."
 
-#: src/cdaudio/cdaudio-ng.cc:471
+#: src/cdaudio/cdaudio-ng.cc:447
 msgid "No audio capable CD drive found."
 msgstr ""
+
+#: src/cdaudio/cdaudio-ng.cc:470
+msgid "Drive is empty."
+msgstr "Penggerak kosong."
+
+#: src/cdaudio/cdaudio-ng.cc:472
+msgid "Unsupported disk type."
+msgstr "Tipe diska tidak didukung."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
@@ -878,15 +887,7 @@ msgstr ""
 #: src/cdaudio/cdaudio-ng.cc:704
 #, c-format
 msgid "Failed to read the cddb info: %s"
-msgstr ""
-
-#: src/cdaudio/cdaudio-ng.cc:764
-msgid "Drive is empty."
-msgstr "Penggerak kosong."
-
-#: src/cdaudio/cdaudio-ng.cc:766
-msgid "Unsupported disk type."
-msgstr "Tipe diska tidak didukung."
+msgstr "Gagal membaca info cddb: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -902,7 +903,7 @@ msgstr "Tambah CD"
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
-msgstr ""
+msgstr "<b>Compression</b>"
 
 #: src/compressor/compressor.cc:46
 msgid "Center volume:"
@@ -917,6 +918,8 @@ msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Pengaya Dynamic Range Compression untuk Audacious\n"
+"Hak cipta 2010-2014 John Lindgren"
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
@@ -942,7 +945,7 @@ msgstr "Trebel:"
 
 #: src/console/plugin.cc:36
 msgid "Echo:"
-msgstr ""
+msgstr "Echo:"
 
 #: src/console/plugin.cc:39
 msgid "Default song length:"
@@ -987,17 +990,19 @@ msgstr ""
 
 #: src/coreaudio/coreaudio.cc:143
 msgid "Use exclusive mode"
-msgstr ""
+msgstr "Gunakan mode eksklusif"
 
 #: src/crossfade/crossfade.cc:43
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Pengaya Crossfade untuk Audacious\n"
+"Hak cipta 2010-2014 John Lindgren"
 
 #: src/crossfade/crossfade.cc:47
 msgid "<b>Crossfade</b>"
-msgstr ""
+msgstr "<b>Crossfade</b>"
 
 #: src/crossfade/crossfade.cc:48
 msgid "On automatic song change"
@@ -1013,7 +1018,7 @@ msgstr ""
 
 #: src/crossfade/crossfade.cc:60
 msgid "<b>Tip</b>"
-msgstr ""
+msgstr "<b>Tip</b>"
 
 #: src/crossfade/crossfade.cc:61
 msgid ""
@@ -1049,21 +1054,21 @@ msgstr "Hapus Berkas"
 #: src/delete-files/delete-files.cc:86
 #, c-format
 msgid "Error moving %s to trash: %s."
-msgstr ""
+msgstr "Galat memindahkan %s ke tempat sampah: %s."
 
 #: src/delete-files/delete-files.cc:97
 #, c-format
 msgid "Error deleting %s: %s."
-msgstr ""
+msgstr "Galat menghapus %s: %s."
 
 #: src/delete-files/delete-files.cc:128
 #, c-format
 msgid "Error deleting %s: not a local file."
-msgstr ""
+msgstr "Galat menghapus %s: bukan berkas lokal."
 
 #: src/delete-files/delete-files.cc:138
 msgid "Do you want to move the selected files to the trash?"
-msgstr ""
+msgstr "Apakah Anda yakin memindahkan berkas yang dipilih ke tempat sampah?"
 
 #: src/delete-files/delete-files.cc:139
 msgid "Move to Trash"
@@ -1071,7 +1076,7 @@ msgstr "Pindah ke Tong Sampah"
 
 #: src/delete-files/delete-files.cc:144
 msgid "Do you want to permanently delete the selected files?"
-msgstr ""
+msgstr "Apakah Anda yakin menghapus permanen berkas yang dipilih?"
 
 #: src/delete-files/delete-files.cc:145
 msgid "Delete"
@@ -1088,7 +1093,7 @@ msgstr "Hapus Berkas Dipilih"
 
 #: src/delete-files/delete-files.cc:231
 msgid "<b>Delete Method</b>"
-msgstr ""
+msgstr "<b>Metode Menghapus</b>"
 
 #: src/delete-files/delete-files.cc:232
 msgid "Move to trash instead of deleting immediately"
@@ -1118,7 +1123,7 @@ msgstr "ms"
 
 #: src/echo_plugin/echo.cc:25
 msgid "Feedback:"
-msgstr ""
+msgstr "Umpan balik:"
 
 #: src/echo_plugin/echo.cc:28 src/modplug/plugin_main.cc:90
 msgid "Volume:"
@@ -1132,7 +1137,7 @@ msgstr "Echo"
 msgid "FFmpeg Plugin"
 msgstr "Pengaya FFmpeg"
 
-#: src/ffaudio/ffaudio-core.cc:604
+#: src/ffaudio/ffaudio-core.cc:612
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1144,7 +1149,7 @@ msgstr ""
 
 #: src/filewriter/filewriter.cc:48
 msgid "FileWriter Plugin"
-msgstr ""
+msgstr "Pengaya FileWriter"
 
 #: src/filewriter/filewriter.cc:351
 msgid ""
@@ -1169,7 +1174,7 @@ msgstr "Format berkas keluaran:"
 
 #: src/filewriter/filewriter.cc:382
 msgid "Save into original directory"
-msgstr "Simpan didalam original direktori"
+msgstr "Simpan di dalam direktori asli"
 
 #: src/filewriter/filewriter.cc:385
 msgid "Save into custom directory:"
@@ -1181,15 +1186,15 @@ msgstr ""
 
 #: src/filewriter/filewriter.cc:394
 msgid "Original file name"
-msgstr ""
+msgstr "Nama file asli"
 
 #: src/filewriter/filewriter.cc:397
 msgid "Original file name (no suffix)"
-msgstr ""
+msgstr "Nama file asli (tanpa suffiks)"
 
 #: src/filewriter/filewriter.cc:400
 msgid "Original file tag"
-msgstr ""
+msgstr "Berkas tag asli"
 
 #: src/filewriter/filewriter.cc:404
 msgid "Prepend track number to file name"
@@ -1201,39 +1206,39 @@ msgstr "Otomatis"
 
 #: src/filewriter/filewriter.cc:411
 msgid "8000 Hz"
-msgstr ""
+msgstr "8000 Hz"
 
 #: src/filewriter/filewriter.cc:412
 msgid "11025 Hz"
-msgstr ""
+msgstr "11025 Hz"
 
 #: src/filewriter/filewriter.cc:413
 msgid "12000 Hz"
-msgstr ""
+msgstr "12000 Hz"
 
 #: src/filewriter/filewriter.cc:414
 msgid "16000 Hz"
-msgstr ""
+msgstr "16000 Hz"
 
 #: src/filewriter/filewriter.cc:415
 msgid "22050 Hz"
-msgstr ""
+msgstr "22050 Hz"
 
 #: src/filewriter/filewriter.cc:416
 msgid "24000 Hz"
-msgstr ""
+msgstr "24000 Hz"
 
 #: src/filewriter/filewriter.cc:417
 msgid "32000 Hz"
-msgstr ""
+msgstr "32000 Hz"
 
 #: src/filewriter/filewriter.cc:418
 msgid "44100 Hz"
-msgstr ""
+msgstr "44100 Hz"
 
 #: src/filewriter/filewriter.cc:419
 msgid "48000 Hz"
-msgstr ""
+msgstr "48000 Hz"
 
 #: src/filewriter/filewriter.cc:423
 msgid "8 kbps"
@@ -1335,7 +1340,7 @@ msgstr "Rasio kompresi:"
 
 #: src/filewriter/filewriter.cc:491
 msgid "Audio mode:"
-msgstr ""
+msgstr "Mode suara:"
 
 #: src/filewriter/filewriter.cc:494
 msgid "Enforce strict ISO compliance"
@@ -1355,15 +1360,15 @@ msgstr "Tipe:"
 
 #: src/filewriter/filewriter.cc:507
 msgid "Minimum bitrate:"
-msgstr ""
+msgstr "Bitrate minimum:"
 
 #: src/filewriter/filewriter.cc:511
 msgid "Maximum bitrate:"
-msgstr ""
+msgstr "Bitrate maksimum:"
 
 #: src/filewriter/filewriter.cc:515
 msgid "Average bitrate:"
-msgstr ""
+msgstr "Bitrate rata-rata:"
 
 #: src/filewriter/filewriter.cc:519
 msgid "VBR quality level:"
@@ -1649,7 +1654,7 @@ msgstr "_Acak"
 
 #: src/gtkui/menus.cc:117 src/qtui/menus.cc:79
 msgid "Shuffle by Albu_m"
-msgstr ""
+msgstr "Acak berdasarkan Albu_m"
 
 #: src/gtkui/menus.cc:118 src/qtui/menus.cc:80
 msgid "N_o Playlist Advance"
@@ -1657,12 +1662,12 @@ msgstr "N_o Kemajuan Playlist"
 
 #: src/gtkui/menus.cc:119 src/qtui/menus.cc:81
 msgid "Stop A_fter This Song"
-msgstr ""
+msgstr "Berhenti Setela_h Lagu Ini"
 
 #: src/gtkui/menus.cc:121 src/gtkui/menus.cc:220 src/qtui/menus.cc:83
 #: src/qtui/menus.cc:167
 msgid "Song _Info ..."
-msgstr "Informasi_Lagu..."
+msgstr "Informasi _Lagu..."
 
 #: src/gtkui/menus.cc:122
 msgid "Jump to _Time ..."
@@ -1687,11 +1692,11 @@ msgstr ""
 #: src/gtkui/menus.cc:131 src/gtkui/menus.cc:138 src/gtkui/menus.cc:154
 #: src/qtui/menus.cc:87 src/qtui/menus.cc:94 src/qtui/menus.cc:110
 msgid "By _Title"
-msgstr "Oleh_Judul"
+msgstr "Oleh _Judul"
 
 #: src/gtkui/menus.cc:132 src/qtui/menus.cc:88
 msgid "By _File Name"
-msgstr ""
+msgstr "Oleh Nama _Berkas"
 
 #: src/gtkui/menus.cc:133 src/qtui/menus.cc:89
 msgid "By File _Path"

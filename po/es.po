@@ -16,6 +16,7 @@
 # Jack R. <dny1020@aol.com>, 2013
 # Jorge Andrés <winninglero@gmail.com>, 2011
 # Juan Riquelme González <soulchainer@gmail.com>, 2015
+# fgp <komakino@wanadoo.es>, 2016
 # Lucía Balsa <lucia.balsa.prados@gmail.com>, 2012
 # Marco Antonio Frias Butrón <inactive+smaug@transifex.com>, 2012
 # Marco Antonio Frias Butrón <inactive+smaug@transifex.com>, 2012
@@ -25,11 +26,11 @@
 # enjolras <yo@miguelrevilla.com>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-09-18 19:53+0200\n"
-"PO-Revision-Date: 2016-08-22 12:05+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2016-12-04 20:09+0100\n"
+"PO-Revision-Date: 2016-12-04 18:56+0000\n"
+"Last-Translator: fgp <komakino@wanadoo.es>\n"
 "Language-Team: Spanish (http://www.transifex.com/jlindgren/audacious/"
 "language/es/)\n"
 "Language: es\n"
@@ -500,7 +501,7 @@ msgstr "  (UTF-8 no válido)"
 
 #: src/ampache/ampache.cc:31
 msgid "Ampache Browser"
-msgstr ""
+msgstr "Navegador Ampache"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -783,7 +784,7 @@ msgstr "Analizador de espectro"
 msgid "Audio CD Plugin"
 msgstr "Complemento de Audio CD"
 
-#: src/cdaudio/cdaudio-ng.cc:117
+#: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -804,81 +805,89 @@ msgstr ""
 "\n"
 "Este fue un proyecto del «Google Summer of Code» de 2007."
 
-#: src/cdaudio/cdaudio-ng.cc:133
+#: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
 msgstr "<b>Dispositivo</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:134
+#: src/cdaudio/cdaudio-ng.cc:135
 msgid "Read speed:"
 msgstr "Velocidad de lectura:"
 
-#: src/cdaudio/cdaudio-ng.cc:137
+#: src/cdaudio/cdaudio-ng.cc:138
 msgid "Override device:"
 msgstr "Reemplazar dispositivo:"
 
-#: src/cdaudio/cdaudio-ng.cc:139
+#: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
 msgstr "<b>Metadatos</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:140
+#: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
 msgstr "Utilizar CD-Text"
 
-#: src/cdaudio/cdaudio-ng.cc:142
+#: src/cdaudio/cdaudio-ng.cc:143
 msgid "Use CDDB"
 msgstr "Usar CDDB"
 
-#: src/cdaudio/cdaudio-ng.cc:144
+#: src/cdaudio/cdaudio-ng.cc:145
 msgid "Use HTTP instead of CDDBP"
 msgstr "Usar HTTP en lugar de CDDBP"
 
-#: src/cdaudio/cdaudio-ng.cc:147
+#: src/cdaudio/cdaudio-ng.cc:148
 msgid "Server:"
 msgstr "Servidor"
 
-#: src/cdaudio/cdaudio-ng.cc:151
+#: src/cdaudio/cdaudio-ng.cc:152
 msgid "Path:"
 msgstr "Dirección:"
 
-#: src/cdaudio/cdaudio-ng.cc:155
+#: src/cdaudio/cdaudio-ng.cc:156
 msgid "Port:"
 msgstr "Puerto:"
 
-#: src/cdaudio/cdaudio-ng.cc:241
+#: src/cdaudio/cdaudio-ng.cc:221
 msgid "Failed to initialize cdio subsystem."
 msgstr "No se pudo iniciar el subsistema cdio."
 
-#: src/cdaudio/cdaudio-ng.cc:276
+#: src/cdaudio/cdaudio-ng.cc:251
 #, c-format
 msgid "Invalid URI %s."
 msgstr "URI %s no válido."
 
-#: src/cdaudio/cdaudio-ng.cc:278
+#: src/cdaudio/cdaudio-ng.cc:253
 #, c-format
 msgid "Track %d not found."
 msgstr "Pista %d no encontrada."
 
-#: src/cdaudio/cdaudio-ng.cc:280
+#: src/cdaudio/cdaudio-ng.cc:255
 #, c-format
 msgid "Track %d is a data track."
 msgstr "La pista %d es una pista de datos."
 
-#: src/cdaudio/cdaudio-ng.cc:355
+#: src/cdaudio/cdaudio-ng.cc:330
 msgid "Error reading audio CD."
 msgstr "Error al leer el CD de audio."
 
-#: src/cdaudio/cdaudio-ng.cc:424
+#: src/cdaudio/cdaudio-ng.cc:399
 msgid "Audio CD"
 msgstr "CD de audio"
 
-#: src/cdaudio/cdaudio-ng.cc:459 src/cdaudio/cdaudio-ng.cc:468
+#: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "No se pudo abrir el dispositivo de CD %s."
 
-#: src/cdaudio/cdaudio-ng.cc:471
+#: src/cdaudio/cdaudio-ng.cc:447
 msgid "No audio capable CD drive found."
 msgstr "No se encontró ningún lector compatible con CDs de audio."
+
+#: src/cdaudio/cdaudio-ng.cc:470
+msgid "Drive is empty."
+msgstr "La unidad está vacía."
+
+#: src/cdaudio/cdaudio-ng.cc:472
+msgid "Unsupported disk type."
+msgstr "Tipo de disco no soportado."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
@@ -910,14 +919,6 @@ msgstr "Error de consulta al servidor CDDB: %s"
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Error de lectura de información de la CDDB: %s"
-
-#: src/cdaudio/cdaudio-ng.cc:764
-msgid "Drive is empty."
-msgstr "La unidad está vacía."
-
-#: src/cdaudio/cdaudio-ng.cc:766
-msgid "Unsupported disk type."
-msgstr "Tipo de disco no soportado."
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -1184,7 +1185,7 @@ msgstr "Eco"
 msgid "FFmpeg Plugin"
 msgstr "Complemento de FFmpeg"
 
-#: src/ffaudio/ffaudio-core.cc:604
+#: src/ffaudio/ffaudio-core.cc:612
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1891,7 +1892,7 @@ msgstr "_Bajar volumen"
 
 #: src/gtkui/menus.cc:192 src/qtui/menus.cc:148
 msgid "_Equalizer ..."
-msgstr ""
+msgstr "_Ecualizador ..."
 
 #: src/gtkui/menus.cc:193 src/qtui/menus.cc:150
 msgid "E_ffects ..."
@@ -2837,7 +2838,7 @@ msgstr "Trabajando ..."
 
 #: src/qtui/dialog_windows.cc:43
 msgid "Information"
-msgstr ""
+msgstr "Información"
 
 #: src/qtui/filter_input.cc:44 src/skins/search-select.cc:76
 msgid "Search"
@@ -2973,7 +2974,7 @@ msgstr "192 kHz:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr ""
+msgstr "Comprobando el acceso a Last.fm ..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
@@ -2994,15 +2995,15 @@ msgstr ""
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr ""
+msgstr "Hubo un problema al contactar con Last.fm."
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "Comprobando Permisos"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "Revocar Permiso"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
@@ -4099,11 +4100,11 @@ msgstr "Cerrar a la bandeja del sistema"
 
 #: src/statusicon-qt/statusicon.cc:85
 msgid "_Hide"
-msgstr ""
+msgstr "_Esconder"
 
 #: src/statusicon-qt/statusicon.cc:86
 msgid "_Restore"
-msgstr ""
+msgstr "_Restaurar"
 
 #: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:284
 msgid "Se_ttings ..."
@@ -4290,13 +4291,15 @@ msgstr ""
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
-msgstr ""
+msgstr "Win32 waveOut"
 
 #: src/waveout/waveout.cc:69
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
 msgstr ""
+"Win32 waveOut Plugin para Audacious\n"
+"Copyright 2016 John Lindgren"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"

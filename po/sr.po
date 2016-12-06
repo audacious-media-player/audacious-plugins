@@ -6,11 +6,11 @@
 # Мирослав Николић <miroslavnikolic@rocketmail.com>, 2014-2015
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2016-09-18 19:53+0200\n"
-"PO-Revision-Date: 2016-08-22 12:05+0000\n"
-"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2016-12-04 20:09+0100\n"
+"PO-Revision-Date: 2016-12-04 18:56+0000\n"
+"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/jlindgren/audacious/"
 "language/sr/)\n"
 "Language: sr\n"
@@ -301,7 +301,7 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
-"Прикључак излаза АЛСА-е за Безочника\n"
+"Прикључак излаза АЛСА-е за Аудацијуса\n"
 "Ауторска права 2009-2012 Џон Линдгрин\n"
 "\n"
 "Захваљујем се Вилијаму Питкоку, аутору НГ прикључка излаза АЛСА-е, чији је "
@@ -528,7 +528,7 @@ msgstr "  (неисправан УТФ-8)"
 
 #: src/ampache/ampache.cc:31
 msgid "Ampache Browser"
-msgstr ""
+msgstr "Ампаш прегледник"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -539,6 +539,12 @@ msgid ""
 "License: GNU GPLv3\n"
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 msgstr ""
+"Ампаш прегледник\n"
+"\n"
+"Ампаш клијент за Аудацијус.\n"
+"\n"
+"Дозвола: Гнуова ОЈЛв3\n"
+"Ауторска права © Роберт Черњански и Џон Линдгрен\n"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -550,7 +556,7 @@ msgid ""
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
 msgstr ""
-"НЕП Безочника\n"
+"НЕП Аудацијуса\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
 "\n"
 "Написао га је Ђакомо Лоцито < james@develia.org >\n"
@@ -730,7 +736,7 @@ msgstr "Композитно проширење није учитано"
 #: src/aosd/aosd_ui.cc:771
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr "<span font_desc='%s'>Безочник — ОСД</span>"
+msgstr "<span font_desc='%s'>Аудацијус — ОСД</span>"
 
 #: src/aosd/aosd_ui.cc:834
 msgid "Position"
@@ -770,7 +776,7 @@ msgstr "АСИксв1/АСИксв2 спискови нумера"
 
 #: src/audpl/audpl.cc:33
 msgid "Audacious Playlists (audpl)"
-msgstr "Безочникови спискови нумера (audpl)"
+msgstr "Аудацијусови спискови нумера (audpl)"
 
 #: src/blur_scope/blur_scope.cc:39
 msgid "<b>Color</b>"
@@ -808,7 +814,7 @@ msgstr "Анализатор спектра"
 msgid "Audio CD Plugin"
 msgstr "Прикључак звучног ЦД-а"
 
-#: src/cdaudio/cdaudio-ng.cc:117
+#: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -828,81 +834,89 @@ msgstr ""
 "\n"
 "Беше то Гугл лето пројекта Кôд 2007."
 
-#: src/cdaudio/cdaudio-ng.cc:133
+#: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
 msgstr "<b>Уређај</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:134
+#: src/cdaudio/cdaudio-ng.cc:135
 msgid "Read speed:"
 msgstr "Брзина читања:"
 
-#: src/cdaudio/cdaudio-ng.cc:137
+#: src/cdaudio/cdaudio-ng.cc:138
 msgid "Override device:"
 msgstr "Препиши уређај:"
 
-#: src/cdaudio/cdaudio-ng.cc:139
+#: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
 msgstr "<b>Метаподаци</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:140
+#: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
 msgstr "Користи ЦД-текст"
 
-#: src/cdaudio/cdaudio-ng.cc:142
+#: src/cdaudio/cdaudio-ng.cc:143
 msgid "Use CDDB"
 msgstr "Користи ЦДБП"
 
-#: src/cdaudio/cdaudio-ng.cc:144
+#: src/cdaudio/cdaudio-ng.cc:145
 msgid "Use HTTP instead of CDDBP"
 msgstr "Користи ХТТП уместо ЦДДБП-а"
 
-#: src/cdaudio/cdaudio-ng.cc:147
+#: src/cdaudio/cdaudio-ng.cc:148
 msgid "Server:"
 msgstr "Сервер:"
 
-#: src/cdaudio/cdaudio-ng.cc:151
+#: src/cdaudio/cdaudio-ng.cc:152
 msgid "Path:"
 msgstr "Путања:"
 
-#: src/cdaudio/cdaudio-ng.cc:155
+#: src/cdaudio/cdaudio-ng.cc:156
 msgid "Port:"
 msgstr "Прикључник:"
 
-#: src/cdaudio/cdaudio-ng.cc:241
+#: src/cdaudio/cdaudio-ng.cc:221
 msgid "Failed to initialize cdio subsystem."
 msgstr "Нисам успео да започнем цдуи подсистем."
 
-#: src/cdaudio/cdaudio-ng.cc:276
+#: src/cdaudio/cdaudio-ng.cc:251
 #, c-format
 msgid "Invalid URI %s."
 msgstr "Неисправна путања „%s“."
 
-#: src/cdaudio/cdaudio-ng.cc:278
+#: src/cdaudio/cdaudio-ng.cc:253
 #, c-format
 msgid "Track %d not found."
 msgstr "Нисам пронашао нумеру „%d“."
 
-#: src/cdaudio/cdaudio-ng.cc:280
+#: src/cdaudio/cdaudio-ng.cc:255
 #, c-format
 msgid "Track %d is a data track."
 msgstr "Нумера „%d“ је запис података."
 
-#: src/cdaudio/cdaudio-ng.cc:355
+#: src/cdaudio/cdaudio-ng.cc:330
 msgid "Error reading audio CD."
 msgstr "Грешка читања звучног диска."
 
-#: src/cdaudio/cdaudio-ng.cc:424
+#: src/cdaudio/cdaudio-ng.cc:399
 msgid "Audio CD"
 msgstr "Аудио ЦД"
 
-#: src/cdaudio/cdaudio-ng.cc:459 src/cdaudio/cdaudio-ng.cc:468
+#: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Нисам успео да отворим ЦД уређај „%s“."
 
-#: src/cdaudio/cdaudio-ng.cc:471
+#: src/cdaudio/cdaudio-ng.cc:447
 msgid "No audio capable CD drive found."
 msgstr "Нисам пронашао уређај за читање ЦД-а."
+
+#: src/cdaudio/cdaudio-ng.cc:470
+msgid "Drive is empty."
+msgstr "Уређај је празан."
+
+#: src/cdaudio/cdaudio-ng.cc:472
+msgid "Unsupported disk type."
+msgstr "Неподржана врста диска."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
@@ -935,14 +949,6 @@ msgstr "Нисам успео да пропитам сервер базе под
 msgid "Failed to read the cddb info: %s"
 msgstr "Нисам успео да прочитам обавештење базе података цд-а: %s"
 
-#: src/cdaudio/cdaudio-ng.cc:764
-msgid "Drive is empty."
-msgstr "Уређај је празан."
-
-#: src/cdaudio/cdaudio-ng.cc:766
-msgid "Unsupported disk type."
-msgstr "Неподржана врста диска."
-
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
 msgstr "Ставке изборника звучног ЦД-а"
@@ -972,7 +978,7 @@ msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
-"Прикључак сажимања динамичког опсега за Безочника\n"
+"Прикључак сажимања динамичког опсега за Аудацијуса\n"
 "Ауторска права 2010-2014 Џон Линдгрин"
 
 #: src/compressor/compressor.cc:64
@@ -990,7 +996,8 @@ msgid ""
 msgstr ""
 "Мотор конзолног музичког декодера је заснован на „Game_Music_Emu“-у 0.5.2\n"
 "Подржани формати: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"Прикључак за Безочника су приредили:\n"
+"\n"
+"Прикључак за Аудацијуса су приредили:\n"
 "Вилијам Питкок <nenolod@dereferenced.org>, \n"
 "Шај Грин <gblargg@gmail.com>"
 
@@ -1046,10 +1053,10 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
-"Прикључак Коре-аудио излаза за Безочника\n"
+"Прикључак Коре-аудио излаза за Аудацијуса\n"
 "Ауторска права 2014 Вилијам Питкок\n"
 "\n"
-"Засновано на прикључку СДЛ излаза за Безочника:\n"
+"Засновано на прикључку СДЛ излаза за Аудацијуса:\n"
 "Ауторска права 2010 Џон Линдгрин"
 
 #: src/coreaudio/coreaudio.cc:143
@@ -1061,7 +1068,7 @@ msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
-"Прикључак постепеног прелаза за Безочника\n"
+"Прикључак постепеног прелаза за Аудацијуса\n"
 "Ауторска права 2010-2014 Џон Линдгрин"
 
 #: src/crossfade/crossfade.cc:47
@@ -1175,7 +1182,7 @@ msgstr ""
 "Прикључак одјека\n"
 "Аутор Јохан Левин 1999\n"
 "Одјек окружења је написао Карл ван Шаик, 1999\n"
-"За Безочника су га освежили Вилијам Питкок и Џон Линдгрен, 2010-2014"
+"За Аудацијуса су га освежили Вилијам Питкок и Џон Линдгрен, 2010-2014"
 
 #: src/echo_plugin/echo.cc:21
 msgid "<b>Echo</b>"
@@ -1207,7 +1214,7 @@ msgstr "Одјек"
 msgid "FFmpeg Plugin"
 msgstr "Прикључак ФФмпег-а"
 
-#: src/ffaudio/ffaudio-core.cc:604
+#: src/ffaudio/ffaudio-core.cc:612
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1216,10 +1223,10 @@ msgid ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
-"Прикључак декодирања вишеобликног звука за Безочника који користи\n"
+"Прикључак декодирања вишеобликног звука за Аудацијуса који користи\n"
 "вишемедијски радни оквир ФФмпег-а (http://www.ffmpeg.org/)\n"
 "\n"
-"Прикључак за Безочника су приредили:\n"
+"Прикључак за Аудацијуса су приредили:\n"
 "Вилијам Питкок <nenolod@nenolod.net>\n"
 "Мати Хамалајнен <ccr@tnsp.org>"
 
@@ -1245,7 +1252,7 @@ msgid ""
 msgstr ""
 "Овај програм је слободан софтвер; можете га расподељивати и/или мењати под "
 "условима Гнуове опште јавне лиценце коју је објавила Задужбина слободног "
-"софтвера; издања 3 лиценце или (по вашем избору) било којег новијег издања.\n"
+"софтвера; издања 2 лиценце или (по вашем избору) било којег новијег издања.\n"
 "\n"
 "Овај програм се расподељује у нади да ће бити користан, али БЕЗ ИКАКВЕ "
 "ГАРАНЦИЈЕ; чак и без примењене гаранције ТРЖИШНЕ ВРЕДНОСТИ или "
@@ -1295,103 +1302,103 @@ msgstr "Самостално"
 
 #: src/filewriter/filewriter.cc:411
 msgid "8000 Hz"
-msgstr ""
+msgstr "8000 Hz"
 
 #: src/filewriter/filewriter.cc:412
 msgid "11025 Hz"
-msgstr ""
+msgstr "11025 Hz"
 
 #: src/filewriter/filewriter.cc:413
 msgid "12000 Hz"
-msgstr ""
+msgstr "12000 Hz"
 
 #: src/filewriter/filewriter.cc:414
 msgid "16000 Hz"
-msgstr ""
+msgstr "16000 Hz"
 
 #: src/filewriter/filewriter.cc:415
 msgid "22050 Hz"
-msgstr ""
+msgstr "22050 Hz"
 
 #: src/filewriter/filewriter.cc:416
 msgid "24000 Hz"
-msgstr ""
+msgstr "24000 Hz"
 
 #: src/filewriter/filewriter.cc:417
 msgid "32000 Hz"
-msgstr ""
+msgstr "32000 Hz"
 
 #: src/filewriter/filewriter.cc:418
 msgid "44100 Hz"
-msgstr ""
+msgstr "44100 Hz"
 
 #: src/filewriter/filewriter.cc:419
 msgid "48000 Hz"
-msgstr ""
+msgstr "48000 Hz"
 
 #: src/filewriter/filewriter.cc:423
 msgid "8 kbps"
-msgstr ""
+msgstr "8 kb/s"
 
 #: src/filewriter/filewriter.cc:424
 msgid "16 kbps"
-msgstr ""
+msgstr "16 kb/s"
 
 #: src/filewriter/filewriter.cc:425
 msgid "32 kbps"
-msgstr ""
+msgstr "32 kb/s"
 
 #: src/filewriter/filewriter.cc:426
 msgid "40 kbps"
-msgstr ""
+msgstr "40 kb/s"
 
 #: src/filewriter/filewriter.cc:427
 msgid "48 kbps"
-msgstr ""
+msgstr "48 kb/s"
 
 #: src/filewriter/filewriter.cc:428
 msgid "56 kbps"
-msgstr ""
+msgstr "56 kb/s"
 
 #: src/filewriter/filewriter.cc:429
 msgid "64 kbps"
-msgstr ""
+msgstr "64 kb/s"
 
 #: src/filewriter/filewriter.cc:430
 msgid "80 kbps"
-msgstr ""
+msgstr "80 kb/s"
 
 #: src/filewriter/filewriter.cc:431
 msgid "96 kbps"
-msgstr ""
+msgstr "96 kb/s"
 
 #: src/filewriter/filewriter.cc:432
 msgid "112 kbps"
-msgstr ""
+msgstr "112 kb/s"
 
 #: src/filewriter/filewriter.cc:433
 msgid "128 kbps"
-msgstr ""
+msgstr "128 kb/s"
 
 #: src/filewriter/filewriter.cc:434
 msgid "160 kbps"
-msgstr ""
+msgstr "160 kb/s"
 
 #: src/filewriter/filewriter.cc:435
 msgid "192 kbps"
-msgstr ""
+msgstr "192 kb/s"
 
 #: src/filewriter/filewriter.cc:436
 msgid "224 kbps"
-msgstr ""
+msgstr "224 kb/s"
 
 #: src/filewriter/filewriter.cc:437
 msgid "256 kbps"
-msgstr ""
+msgstr "256 kb/s"
 
 #: src/filewriter/filewriter.cc:438
 msgid "320 kbps"
-msgstr ""
+msgstr "320 kb/s"
 
 #: src/filewriter/filewriter.cc:443
 msgid "Joint Stereo"
@@ -1409,19 +1416,19 @@ msgstr "Моно"
 
 #: src/filewriter/filewriter.cc:449
 msgid "VBR"
-msgstr ""
+msgstr "ППБ"
 
 #: src/filewriter/filewriter.cc:450
 msgid "ABR"
-msgstr ""
+msgstr "СПБ"
 
 #: src/filewriter/filewriter.cc:471
 msgid "Algorithm quality:"
-msgstr ""
+msgstr "Квалитет алгоритма:"
 
 #: src/filewriter/filewriter.cc:477
 msgid "Bitrate:"
-msgstr ""
+msgstr "Битски проток:"
 
 #: src/filewriter/filewriter.cc:484
 msgid "Compression ratio:"
@@ -1429,7 +1436,7 @@ msgstr "Однос сажимања:"
 
 #: src/filewriter/filewriter.cc:491
 msgid "Audio mode:"
-msgstr ""
+msgstr "Режим звука:"
 
 #: src/filewriter/filewriter.cc:494
 msgid "Enforce strict ISO compliance"
@@ -1449,15 +1456,15 @@ msgstr "Врста:"
 
 #: src/filewriter/filewriter.cc:507
 msgid "Minimum bitrate:"
-msgstr ""
+msgstr "Најмањи проток бита:"
 
 #: src/filewriter/filewriter.cc:511
 msgid "Maximum bitrate:"
-msgstr ""
+msgstr "Највећи проток бита:"
 
 #: src/filewriter/filewriter.cc:515
 msgid "Average bitrate:"
-msgstr ""
+msgstr "Просечни проток бита:"
 
 #: src/filewriter/filewriter.cc:519
 msgid "VBR quality level:"
@@ -1473,7 +1480,7 @@ msgstr "Изостави Иксинг заглавље ППБ-а"
 
 #: src/filewriter/filewriter.cc:532
 msgid "<b>Frame Headers</b>"
-msgstr ""
+msgstr "<b>Заглавља кадра</b>"
 
 #: src/filewriter/filewriter.cc:533
 msgid "Mark as copyright"
@@ -1485,7 +1492,7 @@ msgstr "Означи као оригинал"
 
 #: src/filewriter/filewriter.cc:537
 msgid "<b>ID3 Tags</b>"
-msgstr ""
+msgstr "<b>ИД3 ознаке</b>"
 
 #: src/filewriter/filewriter.cc:538
 msgid "Force addition of version 2 tag"
@@ -1513,7 +1520,7 @@ msgstr "Ознаке"
 
 #: src/filewriter/filewriter.cc:559
 msgid "Quality (0-1):"
-msgstr ""
+msgstr "Квалитет (0-1):"
 
 #: src/filewriter/filewriter.cc:566 src/skins-qt/skins_cfg.cc:304
 #: src/skins/skins_cfg.cc:286
@@ -1545,7 +1552,7 @@ msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
-"ГУИ прикључак за Безочника\n"
+"ГУИ прикључак за Аудацијуса\n"
 "Ауторска права 2009-2012 Џон Линдгрин"
 
 #: src/gio/gio.cc:42
@@ -1571,7 +1578,7 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
-"ОпенГЛ анализатор спектра за Безочника\n"
+"ОпенГЛ анализатор спектра за Аудацијуса\n"
 "Ауторска права 2013 Кристоф Буде, Џон Линдгрин, и Карло Брамини\n"
 "\n"
 "Засновано на ИКсММС прикључку:\n"
@@ -2000,7 +2007,7 @@ msgstr "_Отвори садржавајућу фасциклу"
 
 #: src/gtkui/menus.cc:224 src/qtui/menus.cc:171
 msgid "_Refresh Selected"
-msgstr ""
+msgstr "_Освежи изабрано"
 
 #: src/gtkui/menus.cc:226 src/qtui/menus.cc:173
 msgid "Cu_t"
@@ -2016,7 +2023,7 @@ msgstr "У_баци"
 
 #: src/gtkui/menus.cc:229 src/qtui/menus.cc:176
 msgid "Paste at _End"
-msgstr ""
+msgstr "Убаци на _крај"
 
 #: src/gtkui/menus.cc:230 src/qtui/menus.cc:177
 msgid "Select _All"
@@ -2070,7 +2077,7 @@ msgstr "ГТК сучеље"
 #: src/gtkui/ui_gtk.cc:224 src/skins/main.cc:219 src/skins-qt/main.cc:214
 #, c-format
 msgid "%s - Audacious"
-msgstr "%s — Безочник"
+msgstr "%s — Аудацијус"
 
 #: src/gtkui/ui_gtk.cc:226 src/qtui/main_window.cc:256
 msgid "Buffering ..."
@@ -2078,7 +2085,7 @@ msgstr "Баферујем ..."
 
 #: src/gtkui/ui_gtk.cc:229 src/skins/main.cc:221 src/skins-qt/main.cc:216
 msgid "Audacious"
-msgstr "Безочник"
+msgstr "Аудацијус"
 
 #: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:69
 msgid "mono"
@@ -2287,7 +2294,7 @@ msgid ""
 "depth to floating-point in Audacious settings."
 msgstr ""
 "ЏЕК подржава само звук покретног зареза.  Морате изменити дубину излазног "
-"бита на покретни зарез у подешавањима Безочника."
+"бита на покретни зарез у подешавањима Аудацијуса."
 
 #: src/jack/jack-ng.cc:205
 msgid "Failed to connect to the JACK server; is it running?"
@@ -2299,7 +2306,7 @@ msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
 "%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
 msgstr ""
-"ЏЕК сервер захтева проток узорка од %d Hz, али Безочник пушта при %d Hz.  "
+"ЏЕК сервер захтева проток узорка од %d Hz, али Аудацијус пушта при %d Hz.  "
 "Користите дејство претварача протока узорка да исправите несагласност."
 
 #: src/ladspa/plugin.cc:415
@@ -2345,7 +2352,7 @@ msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 msgstr ""
-"ЛАДСПА домаћин за Безочника\n"
+"ЛАДСПА домаћин за Аудацијуса\n"
 "Ауторска права 2011 Џон Линдгрин"
 
 #: src/ladspa/plugin.h:78
@@ -2371,10 +2378,10 @@ msgid ""
 "\n"
 "For more information about LIRC, see http://lirc.org."
 msgstr ""
-"Једноставан прикључак за управљање Безочником коришћењем демона даљинског "
+"Једноставан прикључак за управљање Аудацијусом коришћењем демона даљинског "
 "управљања ЛИРЦ-а\n"
 "\n"
-"За Безочника су га прилагодили:\n"
+"За Аудацијуса су га прилагодили:\n"
 "Тони Врун <chainsaw@gentoo.org>\n"
 "Јунас Харјумаки <jharjuma@gmail.com>\n"
 "\n"
@@ -2483,7 +2490,7 @@ msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
-"Прикључак мешача канала за Безочника\n"
+"Прикључак мешача канала за Аудацијуса\n"
 "Ауторска права 2011-2012 Џон Линдгрин и Михал Липски"
 
 #: src/mixer/mixer.cc:231
@@ -2610,7 +2617,7 @@ msgstr "За непрекидно понављање, поставите бро�
 #: src/modplug/plugin_main.cc:128 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
 msgstr ""
-"Ова подешавања ће ступити у дејство након поновног покретања Безочника."
+"Ова подешавања ће ступити у дејство након поновног покретања Аудацијуса."
 
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
@@ -2658,7 +2665,7 @@ msgstr "Заустављено"
 
 #: src/notify/event.cc:95
 msgid "Audacious is not playing."
-msgstr "Безочник не пушта песме."
+msgstr "Аудацијус не пушта песме."
 
 #: src/notify/notify.cc:39
 msgid "Desktop Notifications"
@@ -2683,9 +2690,9 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Прикључак обавештавања радне површи за Безочника\n"
+"Прикључак обавештавања радне површи за Аудацијуса\n"
 "Ауторска права (C) 2010 Максимилијан Богнер\n"
-"Ауторска права (C) 2011 Џон Линдгрин и Жан-Александр Англе д'Орјак\n"
+"Ауторска права (C) 2011-2013 Џон Линдгрин и Жан-Александр Англе д'Орјак\n"
 "\n"
 "Овај прикључак је слободан софтвер: можете га прослеђивати\n"
 "и/или мењати под условима Гнуове опште јавне лиценце коју је\n"
@@ -2766,7 +2773,7 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
-"Прикључак ОСС4 излаза за Безочника\n"
+"Прикључак ОСС4 излаза за Аудацијуса\n"
 "Ауторска права 2010-2012 Михал Липски\n"
 "\n"
 "Желим да се захвалим људима на „#audacious“, нарочито Тони Вруну и Џону "
@@ -2822,6 +2829,21 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Аудацијусов прикључак Пулсеаудио излаза\n"
+"\n"
+"Овај програм је слободан софтвер; можете га расподељивати и/или мењати под "
+"условима Гнуове опште јавне лиценце коју је објавила Задужбина слободног "
+"софтвера; издања 2 лиценце или (по вашем избору) било којег новијег издања.\n"
+"\n"
+"Овај програм се расподељује у нади да ће бити користан, али БЕЗ ИКАКВЕ "
+"ГАРАНЦИЈЕ; чак и без примењене гаранције ТРЖИШНЕ ВРЕДНОСТИ или "
+"ПРИЛАГОЂЕНОСТИ ОДРЕЂЕНОЈ НАМЕНИ. Погледајте Гнуову Општу јавну лиценцу за "
+"више детаља.\n"
+"\n"
+"Требали сте да примите примерак Гнуове Опште јавне лиценце уз овај програм. "
+"Ако нисте, пишите Задужбини слободног софтвера на адресу: „Free Software "
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA“."
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
@@ -2835,10 +2857,10 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
-"Прикључак аудио излаза Кут мултимедија за Безочника\n"
+"Прикључак аудио излаза Кут мултимедија за Аудацијуса\n"
 "Ауторска права 2014 Вилијам Питкок\n"
 "\n"
-"Засновано на прикључку СДЛ излаза за Безочника\n"
+"Засновано на прикључку СДЛ излаза за Аудацијуса\n"
 "Ауторска права 2010 Џон Линдгрин"
 
 #: src/qtglspectrum/gl-spectrum.cc:41
@@ -2853,7 +2875,7 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
-"ОпенГЛ анализатор спектра за Безочника\n"
+"ОпенГЛ анализатор спектра за Аудацијуса\n"
 "Ауторска права 2013 Кристоф Буде, Џон Линдгрин, и Карло Брамини\n"
 "Ауторска права 2014 Вилијам Питкок\n"
 "\n"
@@ -2869,7 +2891,7 @@ msgstr "Радим ..."
 
 #: src/qtui/dialog_windows.cc:43
 msgid "Information"
-msgstr ""
+msgstr "Информације"
 
 #: src/qtui/filter_input.cc:44 src/skins/search-select.cc:76
 msgid "Search"
@@ -2920,7 +2942,7 @@ msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"Прикључак Претварача протока узорка за Безочника\n"
+"Прикључак Претварача протока узорка за Аудацијуса\n"
 "Ауторска права 2010-2012 Џон Линдгрин"
 
 #: src/resample/resample.cc:187
@@ -3005,40 +3027,45 @@ msgstr "192 kHz:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr ""
+msgstr "Проверавам приступ Ласт.фм-у ..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
 msgstr ""
+"Ваша скробловања су привремено сачувана на вашем рачунару.  Биће предата чим "
+"Аудацијусу буде био дозвољен приступ."
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr ""
+msgstr "Овлашћење је дато.  Скроблујем за корисника %s."
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
+"Овлашћење је одбијено.  Отворите следећу адресу у прегледнику, дозволите "
+"Аудацијусу приступ вашем налогу, и затим поново кликните „Овери овлашћење“:"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr ""
+msgstr "Дошло је до проблема приликом ступања у везу са Ласт.фм-ом."
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "Овери овлашћење"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "Опозови овлашћење"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
+"Треба да дозволите Аудацијусу да скроблује нумере на ваш налог Ласт.фм-а."
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
@@ -3062,7 +3089,7 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
-"Безочников прикључак скроблера 2.0 је написао Питксјоки,\n"
+"Аудацијусов прикључак скроблера 2.0 је написао Питксјоки,\n"
 "\n"
 "Ауторска права © 2012-2013 Луис М. Пићоки Оливеира <Pitxyoki@Gmail.com>\n"
 "\n"
@@ -3074,7 +3101,7 @@ msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
-"Безочник сада користи побољшано издање Ласт.фм-овог Скроблера.\n"
+"Аудацијус сада користи побољшано издање Ласт.фм-овог Скроблера.\n"
 "Проверите у поставкама за прикључком Скроблера."
 
 #: src/sdlout/sdlout.cc:43
@@ -3086,7 +3113,7 @@ msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
-"Прикључак СДЛ излаза за Безочника\n"
+"Прикључак СДЛ излаза за Аудацијуса\n"
 "Ауторска права 2010 Џон Линдгрин"
 
 #: src/search-tool-qt/search-tool-qt.cc:195
@@ -3148,7 +3175,7 @@ msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"Да увезете вашу музичку библиотеку у Безочнику, изаберите фасциклу и затим "
+"Да увезете вашу музичку библиотеку у Аудацијусу, изаберите фасциклу и затим "
 "кликните на иконицу „освежи“."
 
 #: src/search-tool-qt/search-tool-qt.cc:734 src/search-tool/search-tool.cc:765
@@ -3236,7 +3263,7 @@ msgid ""
 "Silence Removal Plugin for Audacious\n"
 "Copyright 2014 John Lindgren"
 msgstr ""
-"Прикључак уклањања тишине за Безочника\n"
+"Прикључак уклањања тишине за Аудацијуса\n"
 "Ауторска права 2014 Џон Линдгрин"
 
 #: src/silence-removal/silence-removal.cc:67
@@ -3309,7 +3336,7 @@ msgstr "16 kHz"
 
 #: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:267
 msgid "Audacious Equalizer"
-msgstr "Уједначавач Безочника"
+msgstr "Уједначавач Аудацијуса"
 
 #: src/skins/main.cc:695 src/skins-qt/main.cc:648
 #, c-format
@@ -3667,7 +3694,7 @@ msgstr "Поређај списак"
 
 #: src/skins/menus.cc:255 src/skins-qt/menus.cc:248
 msgid "Open Containing Folder"
-msgstr ""
+msgstr "Отвори садржавајућу фасциклу"
 
 #: src/skins/menus.cc:257 src/skins-qt/menus.cc:250
 msgid "Cut"
@@ -3683,7 +3710,7 @@ msgstr "Убаци"
 
 #: src/skins/menus.cc:260 src/skins-qt/menus.cc:253
 msgid "Paste at End"
-msgstr ""
+msgstr "Убаци на крај"
 
 #: src/skins/menus.cc:262 src/skins-qt/menus.cc:255
 msgid "Queue/Unqueue"
@@ -3954,7 +3981,7 @@ msgstr ""
 "Заснован на прикључку иксммс_звучнедатотеке:\n"
 "Ауторска права (C) 2000, 2002 Ерик де Кастро Лопо\n"
 "\n"
-"За Безочника га је прилагодио Тони Врун <chainsaw@gentoo.org>\n"
+"За Аудацијуса га је прилагодио Тони Врун <chainsaw@gentoo.org>\n"
 "\n"
 "Овај програм је слободан софтвер; можете га прослеђивати\n"
 "и/или мењати под условима Гнуове Опште јавне лиценце коју је\n"
@@ -4082,7 +4109,7 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"Прикључак СоКС поновног узорковања за Безочника\n"
+"Прикључак СоКС поновног узорковања за Аудацијуса\n"
 "Ауторска права 2013 Михаљ Липски\n"
 "\n"
 "Засновано на прикључку претварача протока узорка:\n"
@@ -4276,7 +4303,7 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
-"Безочников Огг Ворбис декодер\n"
+"Аудацијусов Огг Ворбис декодер\n"
 "\n"
 "Заснован на Огг Ворбис прикључку Иксиф.орг удружења:\n"
 "http://www.xiph.org/\n"
@@ -4343,17 +4370,19 @@ msgstr ""
 "<sashnov@ngs.ru>\n"
 "Заснован је на „in_vtx.dll“ који је написао Роман Шербаков <v_soft@microfor."
 "ru>\n"
-"Прикључак за Безочника је написао Павел Виметалек <pvymetalek@seznam.cz>"
+"Прикључак за Аудацијуса је написао Павел Виметалек <pvymetalek@seznam.cz>"
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
-msgstr ""
+msgstr "Вин32 вејвАут"
 
 #: src/waveout/waveout.cc:69
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
 msgstr ""
+"Прикључак Вин32 вејваут за Аудацијус\n"
+"Ауторска права 2016 Џон Линдгрин"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"
