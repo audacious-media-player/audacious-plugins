@@ -20,6 +20,7 @@
 #include "playlist.h"
 #include "playlist_tabs.h"
 #include "menus.h"
+#include "search_bar.h"
 
 #include <QKeyEvent>
 #include <QLineEdit>
@@ -30,56 +31,6 @@
 #include <libaudcore/runtime.h>
 
 #include <libaudqt/libaudqt.h>
-
-class SearchField : public QLineEdit
-{
-public:
-    SearchField (QWidget * parent, PlaylistWidget * playlistWidget) :
-        QLineEdit (parent),
-        m_playlistWidget (playlistWidget)
-    {
-        setClearButtonEnabled (true);
-        setPlaceholderText (_("Search playlist"));
-        hide ();
-    }
-
-private:
-    void keyPressEvent (QKeyEvent * event);
-
-    PlaylistWidget * m_playlistWidget;
-};
-
-void SearchField::keyPressEvent (QKeyEvent * event)
-{
-    if (event->modifiers () == Qt::NoModifier)
-    {
-        switch (event->key ())
-        {
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-            m_playlistWidget->playCurrentIndex ();
-            return;
-
-        case Qt::Key_Up:
-            m_playlistWidget->moveFocus (-1);
-            return;
-
-        case Qt::Key_Down:
-            m_playlistWidget->moveFocus (1);
-            return;
-
-        case Qt::Key_Escape:
-            clear ();
-            m_playlistWidget->setFocus ();
-            hide ();
-            return;
-        }
-    }
-
-    QLineEdit::keyPressEvent (event);
-}
-
-/* --------------------------------- */
 
 class LayoutWidget : public QWidget
 {
@@ -94,35 +45,31 @@ public:
 
     void activateSearch ()
     {
-        m_searchField->show ();
-        m_searchField->setFocus ();
+        m_searchBar->show ();
+        m_searchBar->setFocus ();
     }
 
 private:
     int m_uniqueID;
-    QVBoxLayout * m_layout;
     PlaylistWidget * m_playlistWidget;
-    QLineEdit * m_searchField;
+    SearchBar * m_searchBar;
 };
 
 LayoutWidget::LayoutWidget (QWidget * parent, int list, QMenu * contextMenu) :
     QWidget (parent),
     m_uniqueID (aud_playlist_get_unique_id (list)),
-    m_layout (new QVBoxLayout (this)),
     m_playlistWidget (new PlaylistWidget (this, m_uniqueID)),
-    m_searchField (new SearchField (this, m_playlistWidget))
+    m_searchBar (new SearchBar (this, m_playlistWidget))
 {
-    m_layout->addWidget (m_playlistWidget);
-    m_layout->addWidget (m_searchField);
+    auto layout = new QVBoxLayout (this);
+    layout->setContentsMargins (0, 0, 0, 0);
+    layout->setSpacing (4);
 
-    m_layout->setContentsMargins (0, 0, 0, 0);
-    m_layout->setSpacing (4);
+    layout->addWidget (m_playlistWidget);
+    layout->addWidget (m_searchBar);
 
     m_playlistWidget->setContextMenu (contextMenu);
-
-    connect (m_searchField, & QLineEdit::textChanged, [this] (const QString & text) {
-        m_playlistWidget->setFilter (text);
-    });
+    m_searchBar->hide ();
 }
 
 /* --------------------------------- */
