@@ -51,14 +51,32 @@ private:
 
 void SearchField::keyPressEvent (QKeyEvent * event)
 {
-    if (event->modifiers () == Qt::NoModifier && event->key () == Qt::Key_Escape)
+    if (event->modifiers () == Qt::NoModifier)
     {
-        clear ();
-        m_playlistWidget->setFocus ();
-        hide ();
+        switch (event->key ())
+        {
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            m_playlistWidget->playCurrentIndex ();
+            return;
+
+        case Qt::Key_Up:
+            m_playlistWidget->moveFocus (-1);
+            return;
+
+        case Qt::Key_Down:
+            m_playlistWidget->moveFocus (1);
+            return;
+
+        case Qt::Key_Escape:
+            clear ();
+            m_playlistWidget->setFocus ();
+            hide ();
+            return;
+        }
     }
-    else
-        QLineEdit::keyPressEvent (event);
+
+    QLineEdit::keyPressEvent (event);
 }
 
 /* --------------------------------- */

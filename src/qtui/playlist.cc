@@ -393,6 +393,17 @@ void PlaylistWidget::setFilter (const QString & text)
     scrollTo (index);
 }
 
+void PlaylistWidget::moveFocus (int distance)
+{
+    int visibleRows = proxyModel->rowCount ();
+    if (! visibleRows)
+        return;
+
+    int row = currentIndex ().row ();
+    row = aud::clamp (row + distance, 0, visibleRows - 1);
+    setCurrentIndex (proxyModel->index (row, 0));
+}
+
 void PlaylistWidget::updateSettings ()
 {
     setHeaderHidden (! aud_get_bool ("qtui", "playlist_headers"));

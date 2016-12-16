@@ -41,6 +41,7 @@ public:
     void update (const Playlist::Update & update);
     void playCurrentIndex ();
     void setFilter (const QString & text);
+    void moveFocus (int distance);
 
     void setContextMenu (QMenu * menu)
         { contextMenu = menu; }
