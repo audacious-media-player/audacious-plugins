@@ -641,7 +641,12 @@ void Spc_Dsp::mute_voices( int mask )
 void Spc_Dsp::init( void* ram_64k )
 {
 	m.ram = (uint8_t*) ram_64k;
-	mute_voices( 0 );
+
+	// [jlindgren 2016/12/16] Calling mute_voices() before load() causes an
+	// unitialized read of m.regs; instead, just set m.mute_mask here, as we
+	// know mute_voices() will be called as part of load() anyway.
+	m.mute_mask = 0;  // mute_voices( 0 );
+
 	disable_surround( false );
 	set_output( 0, 0 );
 	reset();
