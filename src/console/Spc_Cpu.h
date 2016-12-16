@@ -485,7 +485,7 @@ loop:
 
 	case 0xAF: // MOV (X)+,A
 		WRITE_DP( 0, x, a + no_read_before_write  );
-		x = (uint8_t) x + 1;
+		x = (uint8_t) (x + 1);
 		goto loop;
 
 // 5. 8-BIT LOGIC OPERATION COMMANDS
