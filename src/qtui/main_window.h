@@ -28,7 +28,6 @@
 
 #include <QMainWindow>
 
-class FilterInput;
 class InfoBar;
 class PlaylistTabs;
 class PluginHandle;
@@ -44,7 +43,6 @@ public:
 private:
     QString m_config_name;
     DialogWindows m_dialogs;
-    FilterInput * filterInput;
     PlaylistTabs * playlistTabs;
     InfoBar * infoBar;
     QWidget * centralWidget;
@@ -57,7 +55,6 @@ private:
     QueuedFunc buffering_timer;
 
     void closeEvent (QCloseEvent * e);
-    void keyPressEvent (QKeyEvent * e);
 
     void setWindowTitle (const QString & title);
 

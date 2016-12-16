@@ -7,7 +7,6 @@ SRCS = qtui.cc \
        playlist.cc \
        playlist_model.cc \
        playlist_tabs.cc \
-       filter_input.cc \
        info_bar.cc \
        status_bar.cc \
        tool_bar.cc \

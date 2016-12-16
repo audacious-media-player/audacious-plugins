@@ -180,7 +180,7 @@ void PlaylistWidget::dropEvent (QDropEvent * event)
     if (event->source () != this)
         return QTreeView::dropEvent (event);
 
-    int list = playlist ();
+    int list = model->playlist ();
     int from = indexToRow (currentIndex ());
     if (from < 0)
         return;
@@ -211,7 +211,7 @@ void PlaylistWidget::currentChanged (const QModelIndex & current, const QModelIn
     QTreeView::currentChanged (current, previous);
 
     if (! inUpdate)
-        aud_playlist_set_focus (playlist (), indexToRow (current));
+        aud_playlist_set_focus (model->playlist (), indexToRow (current));
 }
 
 void PlaylistWidget::selectionChanged (const QItemSelection & selected,
@@ -221,7 +221,7 @@ void PlaylistWidget::selectionChanged (const QItemSelection & selected,
 
     if (! inUpdate)
     {
-        int list = playlist ();
+        int list = model->playlist ();
 
         for (const QModelIndex & idx : selected.indexes ())
             aud_playlist_entry_set_selected (list, indexToRow (idx), true);
@@ -230,19 +230,9 @@ void PlaylistWidget::selectionChanged (const QItemSelection & selected,
     }
 }
 
-int PlaylistWidget::playlist () const
-{
-    return model->playlist ();
-}
-
-int PlaylistWidget::uniqueId () const
-{
-    return model->uniqueId ();
-}
-
 void PlaylistWidget::scrollToCurrent ()
 {
-    int list = playlist ();
+    int list = model->playlist ();
     int entry = aud_playlist_get_position (list);
 
     aud_playlist_select_all (list, false);
@@ -256,7 +246,7 @@ void PlaylistWidget::scrollToCurrent ()
 
 void PlaylistWidget::updatePlaybackIndicator ()
 {
-    int list = playlist ();
+    int list = model->playlist ();
 
     if (aud_playlist_update_pending (list))
         needIndicatorUpdate = true;
@@ -267,7 +257,7 @@ void PlaylistWidget::updatePlaybackIndicator ()
 void PlaylistWidget::getSelectedRanges (const Playlist::Update & update,
  QItemSelection & selected, QItemSelection & deselected)
 {
-    int list = playlist ();
+    int list = model->playlist ();
     int entries = aud_playlist_entry_count (list);
 
     QItemSelection ranges[2];
@@ -303,7 +293,7 @@ void PlaylistWidget::update (const Playlist::Update & update)
 {
     inUpdate = true;
 
-    int list = playlist ();
+    int list = model->playlist ();
     int entries = aud_playlist_entry_count (list);
     int changed = entries - update.before - update.after;
 
@@ -370,8 +360,9 @@ void PlaylistWidget::update (const Playlist::Update & update)
 
 void PlaylistWidget::playCurrentIndex ()
 {
-    aud_playlist_set_position (playlist (), indexToRow (currentIndex ()));
-    aud_playlist_play (playlist ());
+    int list = model->playlist ();
+    aud_playlist_set_position (list, indexToRow (currentIndex ()));
+    aud_playlist_play (list);
 }
 
 void PlaylistWidget::updateSettings ()

@@ -42,9 +42,6 @@ public:
     void playCurrentIndex ();
     void setFilter (const QString & text);
 
-    int playlist () const;
-    int uniqueId () const;
-
     void setContextMenu (QMenu * menu)
         { contextMenu = menu; }
 
