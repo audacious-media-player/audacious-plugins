@@ -40,6 +40,7 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueId) : QTreeView (par
     proxyModel = new QSortFilterProxyModel (this);
     proxyModel->setSourceModel (model);
     proxyModel->setFilterKeyColumn (-1); /* filter by all columns */
+    proxyModel->setFilterCaseSensitivity (Qt::CaseInsensitive);
 
     inUpdate = true; /* prevents changing focused row */
     setModel (proxyModel);
@@ -68,11 +69,6 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueId) : QTreeView (par
     Playlist::Update upd {};
     upd.level = Playlist::Selection;
     update (upd);
-}
-
-void PlaylistWidget::setFilter (const QString & text)
-{
-    proxyModel->setFilterRegExp (QRegExp (text, Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
 PlaylistWidget::~PlaylistWidget ()
@@ -363,6 +359,38 @@ void PlaylistWidget::playCurrentIndex ()
     int list = model->playlist ();
     aud_playlist_set_position (list, indexToRow (currentIndex ()));
     aud_playlist_play (list);
+}
+
+void PlaylistWidget::setFilter (const QString & text)
+{
+    proxyModel->setFilterFixedString (text);
+
+    int list = model->playlist ();
+    int focus = aud_playlist_get_focus (list);
+    QModelIndex index;
+
+    // If there was a valid focus before filtering, Qt updates it for us via
+    // currentChanged().  If not, we will set focus on the first visible row.
+
+    if (focus >= 0)
+        index = rowToIndex (focus);
+    else
+    {
+        if (! proxyModel->rowCount ())
+            return;
+
+        index = proxyModel->index (0, 0);
+        focus = indexToRow (index);
+        aud_playlist_set_focus (list, focus);
+    }
+
+    if (! aud_playlist_entry_get_selected (list, focus))
+    {
+        aud_playlist_select_all (list, false);
+        aud_playlist_entry_set_selected (list, focus, true);
+    }
+
+    scrollTo (index);
 }
 
 void PlaylistWidget::updateSettings ()
