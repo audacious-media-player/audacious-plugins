@@ -798,6 +798,7 @@ void * SearchToolQt::get_qt_widget ()
 
     auto button = new QPushButton (QIcon::fromTheme ("view-refresh"), QString ());
     button->setFlat (true);
+    button->setFocusPolicy (Qt::NoFocus);
     hbox->addWidget (button);
 
     String uri = get_uri ();
