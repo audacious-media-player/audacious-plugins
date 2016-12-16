@@ -24,8 +24,17 @@
 #include <QKeyEvent>
 #include <QLabel>
 #include <QLineEdit>
+#include <QPushButton>
 
 #include <libaudcore/i18n.h>
+
+static QPushButton * makeButton (const char * icon, QWidget * parent)
+{
+    auto button = new QPushButton (QIcon::fromTheme (icon), QString (), parent);
+    button->setFlat (true);
+    button->setFocusPolicy (Qt::NoFocus);
+    return button;
+}
 
 SearchBar::SearchBar (QWidget * parent, PlaylistWidget * playlistWidget) :
     QWidget (parent),
@@ -41,10 +50,32 @@ SearchBar::SearchBar (QWidget * parent, PlaylistWidget * playlistWidget) :
     layout->addWidget (new QLabel (_("Find:"), this));
     layout->addWidget (m_entry);
 
+    auto upButton = makeButton ("go-up", this);
+    auto downButton = makeButton ("go-down", this);
+    auto closeButton = makeButton ("window-close", this);
+
+    layout->addWidget (upButton);
+    layout->addWidget (downButton);
+    layout->addWidget (closeButton);
+
     setFocusProxy (m_entry);
 
     connect (m_entry, & QLineEdit::textChanged, [this] (const QString & text) {
         m_playlistWidget->setFilter (text);
+    });
+
+    connect (upButton, & QPushButton::clicked, [this] (bool) {
+        m_playlistWidget->moveFocus (-1);
+    });
+
+    connect (downButton, & QPushButton::clicked, [this] (bool) {
+        m_playlistWidget->moveFocus (1);
+    });
+
+    connect (closeButton, & QPushButton::clicked, [this] (bool) {
+        m_entry->clear ();
+        m_playlistWidget->setFocus ();
+        hide ();
     });
 }
 
