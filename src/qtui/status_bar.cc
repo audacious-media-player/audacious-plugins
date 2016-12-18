@@ -26,22 +26,71 @@
 
 #include <QLabel>
 
+#define TIMEOUT_MS 5000
+
+static const char * normal_css =
+ "QStatusBar { background: transparent; }\n"
+ "QStatusBar::item { border: none; }";
+static const char * warning_css =
+ "QStatusBar { background: rgba(255,255,0,64); }\n"
+ "QStatusBar::item { border: none; }";
+static const char * error_css =
+ "QStatusBar { background: rgba(255,0,0,64); }\n"
+ "QStatusBar::item { border: none; }";
+
 StatusBar::StatusBar (QWidget * parent) :
     QStatusBar (parent),
     codec_label (new QLabel (this)),
     length_label (new QLabel (this))
 {
-    setStyleSheet ("QStatusBar { background: transparent; } QStatusBar::item { border: none; }");
-
     addWidget (codec_label);
     addPermanentWidget (length_label);
 
     update_codec ();
     update_length ();
+
+    setStyleSheet (normal_css);
+
+    audlog::subscribe (log_handler, audlog::Warning);
+
+    /* redisplay codec info when message is cleared */
+    connect (this, & QStatusBar::messageChanged, [this] (const QString & text) {
+        if (text.isEmpty ()) {
+            setStyleSheet (normal_css);
+            update_codec ();
+        }
+    });
+}
+
+StatusBar::~StatusBar ()
+{
+    audlog::unsubscribe (log_handler);
+    event_queue_cancel ("qtui log message");
+}
+
+void StatusBar::log_handler (audlog::Level level, const char * file, int line,
+ const char * func, const char * text)
+{
+    QString s = text;
+    if (s.contains ('\n'))
+        s = s.split ('\n', QString::SkipEmptyParts).last ();
+
+    event_queue ("qtui log message", new Message {level, s}, aud::delete_obj<Message>);
+}
+
+void StatusBar::log_message (const Message * message)
+{
+    codec_label->hide ();
+    setStyleSheet ((message->level == audlog::Error) ? error_css : warning_css);
+    showMessage (message->text, TIMEOUT_MS);
 }
 
 void StatusBar::update_codec ()
 {
+    /* codec info is hidden when a message is displayed */
+    if (! currentMessage ().isEmpty ())
+        return;
+
     if (! aud_drct_get_ready ())
     {
         codec_label->hide ();

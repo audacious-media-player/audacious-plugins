@@ -23,6 +23,7 @@
 #include <QStatusBar>
 
 #include <libaudcore/hook.h>
+#include <libaudcore/runtime.h>
 
 class QLabel;
 
@@ -30,13 +31,27 @@ class StatusBar : public QStatusBar
 {
 public:
     StatusBar (QWidget * parent);
+    ~StatusBar ();
 
 private:
+    struct Message {
+        audlog::Level level;
+        QString text;
+    };
+
     QLabel * codec_label;
     QLabel * length_label;
 
+    static void log_handler (audlog::Level level, const char * file, int line,
+     const char * func, const char * text);
+
+    void log_message (const Message * message);
+
     void update_codec ();
     void update_length ();
+
+    const HookReceiver<StatusBar, const Message *>
+     log_hook {"qtui log message", this, & StatusBar::log_message};
 
     const HookReceiver<StatusBar>
      hook1 {"playlist activate", this, & StatusBar::update_length},
