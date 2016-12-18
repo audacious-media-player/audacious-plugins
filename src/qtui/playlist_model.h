@@ -21,6 +21,10 @@
 #define PLAYLIST_MODEL_H
 
 #include <QAbstractListModel>
+#include <QSortFilterProxyModel>
+
+#include <libaudcore/index.h>
+#include <libaudcore/objects.h>
 
 enum {
     PL_COL_NOW_PLAYING,
@@ -35,7 +39,7 @@ enum {
 class PlaylistModel : public QAbstractListModel
 {
 public:
-    PlaylistModel (QObject * parent = nullptr, int id = -1);
+    PlaylistModel (QObject * parent, int uniqueID);
     ~PlaylistModel ();
 
     int rowCount (const QModelIndex & parent = QModelIndex ()) const;
@@ -60,8 +64,24 @@ public:
     int uniqueId () const;
 
 private:
-    int m_uniqueId;
+    int m_uniqueID;
     int m_rows;
+};
+
+class PlaylistProxyModel : public QSortFilterProxyModel
+{
+public:
+    PlaylistProxyModel (QObject * parent, int uniqueID) :
+        QSortFilterProxyModel (parent),
+        m_uniqueID (uniqueID) {}
+
+    void setFilter (const char * filter);
+
+private:
+    bool filterAcceptsRow (int source_row, const QModelIndex &) const;
+
+    int m_uniqueID;
+    Index<String> m_searchTerms;
 };
 
 #endif

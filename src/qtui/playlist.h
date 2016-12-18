@@ -26,21 +26,21 @@
 #include <libaudcore/playlist.h>
 
 class PlaylistModel;
+class PlaylistProxyModel;
 class QContextMenuEvent;
 class QMenu;
-class QSortFilterProxyModel;
 
 class PlaylistWidget : public QTreeView
 {
 public:
-    PlaylistWidget (QWidget * parent = nullptr, int uniqueId = -1);
+    PlaylistWidget (QWidget * parent, int uniqueID);
     ~PlaylistWidget ();
 
     void scrollToCurrent ();
     void updatePlaybackIndicator ();
     void update (const Playlist::Update & update);
     void playCurrentIndex ();
-    void setFilter (const QString & text);
+    void setFilter (const char * text);
     void moveFocus (int distance);
 
     void setContextMenu (QMenu * menu)
@@ -48,7 +48,7 @@ public:
 
 private:
     PlaylistModel * model;
-    QSortFilterProxyModel * proxyModel;
+    PlaylistProxyModel * proxyModel;
     QMenu * contextMenu = nullptr;
 
     int currentPos = -1;

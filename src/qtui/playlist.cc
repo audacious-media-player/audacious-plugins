@@ -32,15 +32,13 @@
 
 #include "../ui-common/menu-ops.h"
 
-PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueId) : QTreeView (parent)
+PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) : QTreeView (parent)
 {
-    model = new PlaylistModel (nullptr, uniqueId);
+    model = new PlaylistModel (this, uniqueID);
 
     /* setting up filtering model */
-    proxyModel = new QSortFilterProxyModel (this);
+    proxyModel = new PlaylistProxyModel (this, uniqueID);
     proxyModel->setSourceModel (model);
-    proxyModel->setFilterKeyColumn (-1); /* filter by all columns */
-    proxyModel->setFilterCaseSensitivity (Qt::CaseInsensitive);
 
     inUpdate = true; /* prevents changing focused row */
     setModel (proxyModel);
@@ -361,9 +359,9 @@ void PlaylistWidget::playCurrentIndex ()
     aud_playlist_play (list);
 }
 
-void PlaylistWidget::setFilter (const QString & text)
+void PlaylistWidget::setFilter (const char * text)
 {
-    proxyModel->setFilterFixedString (text);
+    proxyModel->setFilter (text);
 
     int list = model->playlist ();
     int focus = aud_playlist_get_focus (list);

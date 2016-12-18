@@ -38,9 +38,9 @@ static inline QPixmap get_icon (const char * name)
     return pm;
 }
 
-PlaylistModel::PlaylistModel (QObject * parent, int id) :
+PlaylistModel::PlaylistModel (QObject * parent, int uniqueID) :
     QAbstractListModel (parent),
-    m_uniqueId (id)
+    m_uniqueID (uniqueID)
 {
     m_rows = aud_playlist_entry_count (playlist ());
 }
@@ -197,12 +197,12 @@ bool PlaylistModel::dropMimeData (const QMimeData * data, Qt::DropAction action,
 
 int PlaylistModel::playlist () const
 {
-    return aud_playlist_by_unique_id (m_uniqueId);
+    return aud_playlist_by_unique_id (m_uniqueID);
 }
 
 int PlaylistModel::uniqueId () const
 {
-    return m_uniqueId;
+    return m_uniqueID;
 }
 
 void PlaylistModel::entriesAdded (int row, int count)
@@ -245,4 +245,46 @@ QString PlaylistModel::getQueued (int row) const
         return QString ();
     else
         return QString ("#%1").arg (at + 1);
+}
+
+/* ---------------------------------- */
+
+void PlaylistProxyModel::setFilter (const char * filter)
+{
+    m_searchTerms = str_list_to_index (filter, " ");
+    invalidateFilter ();
+}
+
+bool PlaylistProxyModel::filterAcceptsRow (int source_row, const QModelIndex &) const
+{
+    if (! m_searchTerms.len ())
+        return true;
+
+    int list = aud_playlist_by_unique_id (m_uniqueID);
+    Tuple tuple = aud_playlist_entry_get_tuple (list, source_row);
+
+    String strings[] = {
+        tuple.get_str (Tuple::Title),
+        tuple.get_str (Tuple::Artist),
+        tuple.get_str (Tuple::Album)
+    };
+
+    for (auto & term : m_searchTerms)
+    {
+        bool found = false;
+
+        for (auto & s : strings)
+        {
+            if (s && strstr_nocase_utf8 (s, term))
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if (! found)
+            return false;
+    }
+
+    return true;
 }
