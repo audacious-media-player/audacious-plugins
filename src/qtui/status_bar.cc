@@ -22,7 +22,9 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/playlist.h>
+#include <libaudcore/tinylock.h>
 
 #include <QLabel>
 
@@ -68,9 +70,42 @@ StatusBar::~StatusBar ()
     event_queue_cancel ("qtui log message");
 }
 
+/* rate-limiting data */
+static QueuedFunc message_func;
+static TinyLock message_lock;
+static int current_message_level = -1;
+static unsigned current_message_serial = 0;
+
+static void one_second_cb (void * serial)
+{
+    tiny_lock (& message_lock);
+
+    /* allow new messages after one second */
+    if (aud::from_ptr<unsigned> (serial) == current_message_serial)
+        current_message_level = -1;
+
+    tiny_unlock (& message_lock);
+}
+
 void StatusBar::log_handler (audlog::Level level, const char * file, int line,
  const char * func, const char * text)
 {
+    tiny_lock (& message_lock);
+
+    /* do not replace a message of same or higher priority */
+    if (level <= current_message_level)
+    {
+        tiny_unlock (& message_lock);
+        return;
+    }
+
+    current_message_level = level;
+    current_message_serial ++;
+
+    message_func.queue (1000, one_second_cb, aud::to_ptr (current_message_serial));
+
+    tiny_unlock (& message_lock);
+
     QString s = text;
     if (s.contains ('\n'))
         s = s.split ('\n', QString::SkipEmptyParts).last ();
