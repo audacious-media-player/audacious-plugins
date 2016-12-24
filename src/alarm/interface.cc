@@ -24,10 +24,6 @@
 
 #include "callbacks.h"
 
-#if GTK_CHECK_VERSION (3, 12, 0)
-#define gtk_widget_set_margin_right gtk_widget_set_margin_end
-#endif
-
 static const char help_text[] =
  N_("Time\n"
     "  Alarm at:\n"
