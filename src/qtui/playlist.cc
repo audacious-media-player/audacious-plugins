@@ -32,14 +32,13 @@
 
 #include "../ui-common/menu-ops.h"
 
-PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueId) : QTreeView (parent)
+PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) : QTreeView (parent)
 {
-    model = new PlaylistModel (nullptr, uniqueId);
+    model = new PlaylistModel (this, uniqueID);
 
     /* setting up filtering model */
-    proxyModel = new QSortFilterProxyModel (this);
+    proxyModel = new PlaylistProxyModel (this, uniqueID);
     proxyModel->setSourceModel (model);
-    proxyModel->setFilterKeyColumn (-1); /* filter by all columns */
 
     inUpdate = true; /* prevents changing focused row */
     setModel (proxyModel);
@@ -68,11 +67,6 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueId) : QTreeView (par
     Playlist::Update upd {};
     upd.level = Playlist::Selection;
     update (upd);
-}
-
-void PlaylistWidget::setFilter (const QString & text)
-{
-    proxyModel->setFilterRegExp (QRegExp (text, Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
 PlaylistWidget::~PlaylistWidget ()
@@ -180,7 +174,7 @@ void PlaylistWidget::dropEvent (QDropEvent * event)
     if (event->source () != this)
         return QTreeView::dropEvent (event);
 
-    int list = playlist ();
+    int list = model->playlist ();
     int from = indexToRow (currentIndex ());
     if (from < 0)
         return;
@@ -211,7 +205,7 @@ void PlaylistWidget::currentChanged (const QModelIndex & current, const QModelIn
     QTreeView::currentChanged (current, previous);
 
     if (! inUpdate)
-        aud_playlist_set_focus (playlist (), indexToRow (current));
+        aud_playlist_set_focus (model->playlist (), indexToRow (current));
 }
 
 void PlaylistWidget::selectionChanged (const QItemSelection & selected,
@@ -221,7 +215,7 @@ void PlaylistWidget::selectionChanged (const QItemSelection & selected,
 
     if (! inUpdate)
     {
-        int list = playlist ();
+        int list = model->playlist ();
 
         for (const QModelIndex & idx : selected.indexes ())
             aud_playlist_entry_set_selected (list, indexToRow (idx), true);
@@ -230,19 +224,9 @@ void PlaylistWidget::selectionChanged (const QItemSelection & selected,
     }
 }
 
-int PlaylistWidget::playlist () const
-{
-    return model->playlist ();
-}
-
-int PlaylistWidget::uniqueId () const
-{
-    return model->uniqueId ();
-}
-
 void PlaylistWidget::scrollToCurrent ()
 {
-    int list = playlist ();
+    int list = model->playlist ();
     int entry = aud_playlist_get_position (list);
 
     aud_playlist_select_all (list, false);
@@ -256,7 +240,7 @@ void PlaylistWidget::scrollToCurrent ()
 
 void PlaylistWidget::updatePlaybackIndicator ()
 {
-    int list = playlist ();
+    int list = model->playlist ();
 
     if (aud_playlist_update_pending (list))
         needIndicatorUpdate = true;
@@ -267,7 +251,7 @@ void PlaylistWidget::updatePlaybackIndicator ()
 void PlaylistWidget::getSelectedRanges (const Playlist::Update & update,
  QItemSelection & selected, QItemSelection & deselected)
 {
-    int list = playlist ();
+    int list = model->playlist ();
     int entries = aud_playlist_entry_count (list);
 
     QItemSelection ranges[2];
@@ -303,7 +287,7 @@ void PlaylistWidget::update (const Playlist::Update & update)
 {
     inUpdate = true;
 
-    int list = playlist ();
+    int list = model->playlist ();
     int entries = aud_playlist_entry_count (list);
     int changed = entries - update.before - update.after;
 
@@ -370,8 +354,52 @@ void PlaylistWidget::update (const Playlist::Update & update)
 
 void PlaylistWidget::playCurrentIndex ()
 {
-    aud_playlist_set_position (playlist (), indexToRow (currentIndex ()));
-    aud_playlist_play (playlist ());
+    int list = model->playlist ();
+    aud_playlist_set_position (list, indexToRow (currentIndex ()));
+    aud_playlist_play (list);
+}
+
+void PlaylistWidget::setFilter (const char * text)
+{
+    proxyModel->setFilter (text);
+
+    int list = model->playlist ();
+    int focus = aud_playlist_get_focus (list);
+    QModelIndex index;
+
+    // If there was a valid focus before filtering, Qt updates it for us via
+    // currentChanged().  If not, we will set focus on the first visible row.
+
+    if (focus >= 0)
+        index = rowToIndex (focus);
+    else
+    {
+        if (! proxyModel->rowCount ())
+            return;
+
+        index = proxyModel->index (0, 0);
+        focus = indexToRow (index);
+        aud_playlist_set_focus (list, focus);
+    }
+
+    if (! aud_playlist_entry_get_selected (list, focus))
+    {
+        aud_playlist_select_all (list, false);
+        aud_playlist_entry_set_selected (list, focus, true);
+    }
+
+    scrollTo (index);
+}
+
+void PlaylistWidget::moveFocus (int distance)
+{
+    int visibleRows = proxyModel->rowCount ();
+    if (! visibleRows)
+        return;
+
+    int row = currentIndex ().row ();
+    row = aud::clamp (row + distance, 0, visibleRows - 1);
+    setCurrentIndex (proxyModel->index (row, 0));
 }
 
 void PlaylistWidget::updateSettings ()

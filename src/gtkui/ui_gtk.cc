@@ -57,7 +57,6 @@ static const char * const gtkui_defaults[] = {
     "autoscroll", "TRUE",
     "playlist_columns", "title artist album queued length",
     "playlist_headers", "TRUE",
-    "record", "FALSE",
     "show_remaining_time", "FALSE",
     "step_size", "5",
 
@@ -654,8 +653,13 @@ static void toggle_shuffle (GtkToggleToolButton * button)
 
 static void toggle_record (GtkToggleToolButton * button)
 {
-    if (! aud_drct_enable_record (gtk_toggle_tool_button_get_active (button)))
-        gtk_toggle_tool_button_set_active (button, aud_drct_get_record_enabled ());
+    bool enable = gtk_toggle_tool_button_get_active (button);
+    if (enable != aud_drct_get_record_enabled ())
+        audgui_toggle_record ();
+
+    /* reset toggle state if necessary */
+    if (enable != aud_drct_get_record_enabled ())
+        gtk_toggle_tool_button_set_active (button, ! enable);
 }
 
 static void record_toggled (void * = nullptr, void * = nullptr)
@@ -665,13 +669,6 @@ static void record_toggled (void * = nullptr, void * = nullptr)
 
     gtk_widget_set_sensitive ((GtkWidget *) button_record, supported);
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_record, enabled);
-
-    /* update menu item */
-    if (enabled != aud_get_bool ("gtkui", "record"))
-    {
-        aud_set_bool ("gtkui", "record", enabled);
-        hook_call ("gtkui set record", nullptr);
-    }
 }
 
 static void toggle_search_tool (GtkToggleToolButton * button)

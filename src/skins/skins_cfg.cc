@@ -47,7 +47,6 @@ static const char * const skins_defaults[] = {
     "mainwin_font", "Sans Bold 9",
     "mainwin_use_bitmapfont", "TRUE",
     "playlist_font", "Sans Bold 8",
-    "record", "FALSE",
     "show_remaining_time", "FALSE",
     "twoway_scroll", "FALSE",
 

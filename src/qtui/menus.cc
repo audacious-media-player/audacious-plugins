@@ -44,6 +44,7 @@ static void add_folder () { audqt::fileopener_show (audqt::FileMode::AddFolder);
 static void open_url () { audqt::urlopener_show (true); }
 static void add_url () { audqt::urlopener_show (false); }
 
+static void pl_find () { hook_call ("qtui find", nullptr); }
 static void pl_rename () { hook_call ("qtui rename playlist", nullptr); }
 static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_active ()); }
 
@@ -126,6 +127,8 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
     static const audqt::MenuItem playlist_items[] = {
         audqt::MenuCommand ({N_("_Play/Resume"), "media-playback-start", "Shift+Return"}, pl_play),
         audqt::MenuCommand ({N_("_Refresh"), "view-refresh", "F5"}, pl_refresh),
+        audqt::MenuSep (),
+        audqt::MenuCommand ({N_("_Find ..."), "edit-find", "Ctrl+F"}, pl_find),
         audqt::MenuSep (),
         audqt::MenuSub ({N_("_Sort"), "view-sort-ascending"}, sort_items),
         audqt::MenuSub ({N_("Sort Se_lected"), "view-sort-ascending"}, sort_selected_items),

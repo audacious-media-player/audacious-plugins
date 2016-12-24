@@ -28,7 +28,6 @@
 
 class PlaylistTabBar;
 class PlaylistWidget;
-class QLineEdit;
 class QMenu;
 
 class PlaylistTabs : public QTabWidget
@@ -36,11 +35,9 @@ class PlaylistTabs : public QTabWidget
 public:
     PlaylistTabs (QWidget * parent = nullptr);
 
-    PlaylistWidget * playlistWidget (int num)
-        { return (PlaylistWidget *) widget (num); }
+    PlaylistWidget * playlistWidget (int num) const;
 
     void editTab (int idx);
-    void filterTrigger (const QString & text);
     void currentChangedTrigger (int idx);
     void tabEditedTrigger ();
 
@@ -57,6 +54,7 @@ private:
     void setupTab (int idx, QWidget * button, const char * text, QWidget * * oldp);
     PlaylistWidget * createWidget (int list);
 
+    void activateSearch ();
     void addRemovePlaylists ();
     void updateTitles ();
     void renameCurrent ();
@@ -67,22 +65,22 @@ private:
     void playlist_position_cb (int list);
 
     const HookReceiver<PlaylistTabs>
+     hook1 {"qtui find", this, & PlaylistTabs::activateSearch},
+     hook2 {"qtui rename playlist", this, & PlaylistTabs::renameCurrent},
+     hook3 {"qtui update playlist settings", this, & PlaylistTabs::updateTitles};
+
+    const HookReceiver<PlaylistTabs>
      activate_hook {"playlist activate", this, & PlaylistTabs::playlist_activate_cb};
     const HookReceiver<PlaylistTabs, Playlist::UpdateLevel>
      update_hook {"playlist update", this, & PlaylistTabs::playlist_update_cb};
     const HookReceiver<PlaylistTabs, int>
      position_hook {"playlist position", this, & PlaylistTabs::playlist_position_cb};
-    const HookReceiver<PlaylistTabs>
-     rename_hook {"qtui rename playlist", this, & PlaylistTabs::renameCurrent};
-    const HookReceiver<PlaylistTabs>
-     settings_hook {"qtui update playlist settings", this, & PlaylistTabs::updateTitles};
 };
 
 class PlaylistTabBar : public QTabBar
 {
 public:
     PlaylistTabBar (QWidget * parent = nullptr);
-    void handleCloseRequest (int idx);
 
 protected:
     void tabMoved (int from, int to);

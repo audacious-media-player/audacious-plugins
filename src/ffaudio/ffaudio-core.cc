@@ -99,7 +99,8 @@ struct ScopedContext
 
 struct ScopedPacket : public AVPacket
 {
-    ScopedPacket () { av_init_packet (this); }
+    ScopedPacket () : AVPacket ()
+        { av_init_packet (this); }
 
 #if CHECK_LIBAVCODEC_VERSION (55, 25, 100, 55, 16, 0)
     ~ScopedPacket () { av_packet_unref (this); }
@@ -432,6 +433,7 @@ bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, In
     if (! file.fseek (0, VFS_SEEK_SET))
         audtag::read_tag (file, tuple, image);
 
+#if CHECK_LIBAVFORMAT_VERSION (54, 2, 100, 54, 2, 0)
     if (image && ! image->len ())
     {
         for (unsigned i = 0; i < ic->nb_streams; i ++)
@@ -444,6 +446,7 @@ bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, In
             }
         }
     }
+#endif
 
     return true;
 }
@@ -551,8 +554,10 @@ bool FFaudio::play (const char * filename, VFSFile & file)
         /* On EOF, send an empty packet to "flush" the decoder */
         /* Otherwise, make a mutable (shallow) copy of the real packet */
         AVPacket tmp;
-        if (eof)
+        if (eof) {
+            tmp = AVPacket ();
             av_init_packet (& tmp);
+        }
         else
             tmp = pkt;
 

@@ -24,7 +24,6 @@
 #include <gdk/gdkkeysyms.h>
 
 #include <libaudcore/drct.h>
-#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/playlist.h>
@@ -71,37 +70,13 @@ static void configure_visualizations () { audgui_show_prefs_for_plugin_type (Plu
 static void skins_volume_up () { mainwin_set_volume_diff (5); }
 static void skins_volume_down () { mainwin_set_volume_diff (-5); }
 
-/* emulate a config item for the recording toggle */
-static void toggle_record ()
-{
-    bool enable = aud_get_bool ("skins", "record");
-
-    if (aud_drct_enable_record (enable))
-        mainwin_show_status_message (enable ? _("Recording on") : _("Recording off"));
-    else
-    {
-        aud_set_bool ("skins", "record", aud_drct_get_record_enabled ());
-        hook_call ("skins set record", nullptr);
-    }
-}
-
-static void record_toggled (void * = nullptr, void * = nullptr)
-{
-    bool enabled = aud_drct_get_record_enabled ();
-    if (enabled != aud_get_bool ("skins", "record"))
-    {
-        aud_set_bool ("skins", "record", enabled);
-        hook_call ("skins set record", nullptr);
-    }
-}
-
 static const AudguiMenuItem output_items[] = {
     MenuCommand (N_("Volume Up"), "audio-volume-high", '+', NO_MOD, skins_volume_up),
     MenuCommand (N_("Volume Down"), "audio-volume-low", '-', NO_MOD, skins_volume_down),
     MenuSep (),
     MenuCommand (N_("Effects ..."), nullptr, NO_KEY, configure_effects),
     MenuSep (),
-    MenuToggle (N_("Record Stream"), nullptr, 'd', NO_MOD, "skins", "record", toggle_record, "skins set record"),
+    MenuToggle (N_("Record Stream"), nullptr, 'd', NO_MOD, "audgui", "record", audgui_toggle_record, "audgui set record"),
     MenuCommand (N_("Audio Settings ..."), "audio-card", NO_KEY, configure_output)
 };
 
@@ -280,9 +255,6 @@ void menu_init ()
         {playlist_context_items}
     };
 
-    record_toggled ();
-    hook_associate ("enable record", record_toggled, nullptr);
-
     accel = gtk_accel_group_new ();
 
     for (int i = UI_MENUS; i --; )
@@ -303,8 +275,6 @@ void menu_cleanup ()
 
     g_object_unref (accel);
     accel = nullptr;
-
-    hook_dissociate ("enable record", record_toggled);
 }
 
 GtkAccelGroup * menu_get_accel_group ()

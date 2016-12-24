@@ -1,6 +1,6 @@
 /*
- * filter_input.h
- * Copyright 2014 Daniel (dmilith) Dettlaff
+ * search_bar.h
+ * Copyright 2016 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,18 +17,24 @@
  * the use of this software.
  */
 
-#ifndef FILTER_INPUT_H
-#define FILTER_INPUT_H
+#ifndef SEARCH_BAR_H
+#define SEARCH_BAR_H
 
-#include <QLineEdit>
+#include <QWidget>
 
-class FilterInput : public QLineEdit
+class PlaylistWidget;
+class QLineEdit;
+
+class SearchBar : public QWidget
 {
 public:
-    FilterInput (QWidget * parent = nullptr);
+    SearchBar (QWidget * parent, PlaylistWidget * playlistWidget);
 
-protected:
-    virtual void keyPressEvent (QKeyEvent * e); /* override default handler */
+private:
+    void keyPressEvent (QKeyEvent * event);
+
+    PlaylistWidget * m_playlistWidget;
+    QLineEdit * m_entry;
 };
 
 #endif

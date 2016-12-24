@@ -26,7 +26,6 @@
 
 #include <libaudqt/libaudqt.h>
 
-#include "filter_input.h"
 #include "info_bar.h"
 #include "menus.h"
 #include "playlist.h"
@@ -69,7 +68,6 @@ private:
 
 MainWindow::MainWindow () :
     m_dialogs (this),
-    filterInput (new FilterInput (this)),
     playlistTabs (new PlaylistTabs (this)),
     infoBar (new InfoBar (this)),
     centralWidget (new QWidget (this)),
@@ -109,8 +107,7 @@ MainWindow::MainWindow () :
             [] (bool on) { aud_set_bool (nullptr, "repeat", on); }, & toolButtonRepeat),
         ToolBarAction ("media-playlist-shuffle", N_("Shuffle"), N_("Shuffle"),
             [] (bool on) { aud_set_bool (nullptr, "shuffle", on); }, & toolButtonShuffle),
-        ToolBarCustom (audqt::volume_button_new (this)),
-        ToolBarCustom (filterInput),
+        ToolBarCustom (audqt::volume_button_new (this))
     };
 
     addToolBar (Qt::TopToolBarArea, new ToolBar (this, items));
@@ -127,8 +124,6 @@ MainWindow::MainWindow () :
 
     centralLayout->setContentsMargins (0, 0, 0, 0);
     centralLayout->setSpacing (4);
-
-    connect (filterInput, & QLineEdit::textChanged, playlistTabs, & PlaylistTabs::filterTrigger);
 
     setMenuBar (qtui_build_menubar (this));
     add_dock_plugins ();
@@ -174,23 +169,6 @@ void MainWindow::readSettings ()
         resize (768, 480);
 
     restoreState (settings.value ("windowState").toByteArray ());
-}
-
-void MainWindow::keyPressEvent (QKeyEvent * e)
-{
-    switch (e->modifiers ())
-    {
-    case Qt::ControlModifier:
-        switch (e->key ())
-        {
-        case Qt::Key_F:
-            filterInput->setFocus ();
-            break;
-        }
-        break;
-    }
-
-    QMainWindow::keyPressEvent (e);
 }
 
 void MainWindow::setWindowTitle (const QString & title)

@@ -83,15 +83,6 @@ static void pl_tab_close ()
 static GtkWidget * get_services_main () { return audgui_get_plugin_menu (AudMenuID::Main); }
 static GtkWidget * get_services_pl () { return audgui_get_plugin_menu (AudMenuID::Playlist); }
 
-static void toggle_record ()
-{
-    if (! aud_drct_enable_record (aud_get_bool ("gtkui", "record")))
-    {
-        aud_set_bool ("gtkui", "record", aud_drct_get_record_enabled ());
-        hook_call ("gtkui set record", nullptr);
-    }
-}
-
 static const AudguiMenuItem file_items[] = {
     MenuCommand (N_("_Open Files ..."), "document-open", 'o', CTRL, open_files),
     MenuCommand (N_("Open _URL ..."), "folder-remote", 'l', CTRL, open_url),
@@ -194,7 +185,7 @@ static const AudguiMenuItem output_items[] = {
     MenuCommand (N_("_Equalizer ..."), "multimedia-volume-control", 'e', CTRL, audgui_show_equalizer_window),
     MenuCommand (N_("E_ffects ..."), nullptr, NONE, configure_effects),
     MenuSep (),
-    MenuToggle (N_("_Record Stream"), nullptr, 'd', CTRL, "gtkui", "record", toggle_record, "gtkui set record"),
+    MenuToggle (N_("_Record Stream"), nullptr, 'd', CTRL, "audgui", "record", audgui_toggle_record, "audgui set record"),
     MenuCommand (N_("Audio _Settings ..."), "audio-card", NONE, configure_output)
 };
 
