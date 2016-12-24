@@ -34,10 +34,6 @@
 
 #include "plugin.h"
 
-#if GTK_CHECK_VERSION (3, 12, 0)
-#define gtk_widget_set_margin_left gtk_widget_set_margin_start
-#endif
-
 const char * const LADSPAHost::defaults[] = {
  "plugin_count", "0",
  nullptr};

@@ -422,12 +422,7 @@ void * GLSpectrum::get_gtk_widget ()
     g_signal_connect (s_widget, "destroy", (GCallback) widget_destroyed, nullptr);
     g_signal_connect (s_widget, "configure-event", (GCallback) widget_resize, nullptr);
 
-    /* Disable GTK double buffering -- this still works and is still necessary
-     * in GTK3, regardless of the deprecation */
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     gtk_widget_set_double_buffered (s_widget, false);
-#pragma GCC diagnostic pop
 
     return s_widget;
 }
