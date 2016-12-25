@@ -44,7 +44,7 @@ static void compute_sizes ()
     HEIGHT = ICON_SIZE + 2 * SPACING;
     BAND_WIDTH = aud::rescale (dpi, 16, 1);
     BAND_SPACING = aud::rescale (dpi, 48, 1);
-    VIS_WIDTH = VIS_BANDS * (BAND_WIDTH + BAND_SPACING) - BAND_SPACING;
+    VIS_WIDTH = VIS_BANDS * (BAND_WIDTH + BAND_SPACING) - BAND_SPACING + 2 * SPACING;
     VIS_SCALE = aud::rescale (ICON_SIZE, 8, 5);
     VIS_CENTER = VIS_SCALE + SPACING;
 }
@@ -469,7 +469,7 @@ void ui_infoarea_show_vis (bool show)
         /* note: "realize" signal must be connected before adding to box */
         g_signal_connect (vis.widget, "realize", (GCallback) realize_cb, nullptr);
 
-        gtk_widget_set_size_request (vis.widget, VIS_WIDTH + 2 * SPACING, HEIGHT);
+        gtk_widget_set_size_request (vis.widget, VIS_WIDTH, HEIGHT);
         gtk_box_pack_start ((GtkBox *) area->box, vis.widget, false, false, 0);
 
         g_signal_connect (vis.widget, "expose-event", (GCallback) expose_vis_cb, nullptr);
