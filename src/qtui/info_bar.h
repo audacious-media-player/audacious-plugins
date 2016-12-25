@@ -32,24 +32,42 @@ class InfoBar : public QWidget
 {
 public:
     InfoBar (QWidget * parent = nullptr);
+    ~InfoBar ();
 
     void resizeEvent (QResizeEvent *);
     void paintEvent (QPaintEvent *);
 
 private:
-    void update_metadata_cb ();
-    void update_cb ();
+    void update_title ();
+    void update_album_art ();
+    void next_song ();
+    void do_fade ();
+
+    void playback_ready_cb ();
+    void playback_stop_cb ();
+
+    static void fade_cb (void * me)
+        { ((InfoBar *) me)->do_fade (); }
 
     const HookReceiver<InfoBar>
-     hook1 {"tuple change", this, & InfoBar::update_metadata_cb},
-     hook2 {"playback ready", this, & InfoBar::update_cb},
-     hook3 {"playback stop", this, & InfoBar::update_cb};
+     hook1 {"tuple change", this, & InfoBar::update_title},
+     hook2 {"playback ready", this, & InfoBar::playback_ready_cb},
+     hook3 {"playback stop", this, & InfoBar::playback_stop_cb};
 
-    QPixmap m_art;
-    QString m_original_title;
-    QStaticText m_title, m_artist, m_album;
     InfoVis * m_vis;
     const PixelSizes & ps;
+
+    struct SongData {
+        QPixmap art;
+        QString orig_title;
+        QStaticText title, artist, album;
+        int alpha;
+    };
+
+    enum {Prev = 0, Cur = 1}; /* index into SongData array */
+
+    SongData sd[2];
+    bool m_stopped;
 };
 
 #endif

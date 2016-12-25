@@ -27,6 +27,8 @@
 
 #include <QPainter>
 
+static constexpr int FadeSteps = 10;
+
 static constexpr int VisBands = 12;
 static constexpr int VisDelay = 2; /* delay before falloff in frames */
 static constexpr int VisFalloff = 2; /* falloff in decibels per frame */
@@ -188,16 +190,34 @@ InfoBar::InfoBar (QWidget * parent) :
 {
     setFixedHeight (ps.Height);
 
-    m_title.setTextFormat (Qt::PlainText);
-    m_artist.setTextFormat (Qt::PlainText);
-    m_album.setTextFormat (Qt::PlainText);
+    for (SongData & d : sd)
+    {
+        d.title.setTextFormat (Qt::PlainText);
+        d.artist.setTextFormat (Qt::PlainText);
+        d.album.setTextFormat (Qt::PlainText);
+        d.alpha = 0;
+    }
 
-    update_cb ();
+    if (aud_drct_get_ready ())
+    {
+        update_title ();
+        update_album_art ();
+
+        /* skip fade-in */
+        sd[Cur].alpha = FadeSteps;
+    }
+}
+
+InfoBar::~InfoBar ()
+{
+    timer_remove (TimerRate::Hz30, fade_cb, this);
 }
 
 void InfoBar::resizeEvent (QResizeEvent *)
 {
-    m_title.setText (QString ());
+    for (SongData & d : sd)
+        d.title.setText (QString ());
+
     m_vis->move (width () - ps.VisWidth, 0);
 }
 
@@ -207,51 +227,105 @@ void InfoBar::paintEvent (QPaintEvent *)
 
     p.fillRect (0, 0, width () - ps.VisWidth, ps.Height, m_vis->gradient ());
 
-    if (! m_art.isNull ())
+    for (SongData & d : sd)
     {
-        int r = m_art.devicePixelRatio ();
-        int left = ps.Spacing + (ps.IconSize - m_art.width () / r) / 2;
-        int top = ps.Spacing + (ps.IconSize - m_art.height () / r) / 2;
-        p.drawPixmap (left, top, m_art);
+        p.setOpacity ((float) d.alpha / FadeSteps);
+
+        if (! d.art.isNull ())
+        {
+            int r = d.art.devicePixelRatio ();
+            int left = ps.Spacing + (ps.IconSize - d.art.width () / r) / 2;
+            int top = ps.Spacing + (ps.IconSize - d.art.height () / r) / 2;
+            p.drawPixmap (left, top, d.art);
+        }
+
+        QFont font = p.font ();
+        font.setPointSize (18);
+        p.setFont (font);
+
+        if (d.title.text ().isNull () && ! d.orig_title.isNull ())
+        {
+            QFontMetrics metrics = p.fontMetrics ();
+            d.title = metrics.elidedText (d.orig_title, Qt::ElideRight,
+             width () - ps.VisWidth - ps.Height - ps.Spacing);
+        }
+
+        p.setPen (QColor (255, 255, 255));
+        p.drawStaticText (ps.Height, ps.Spacing, d.title);
+
+        font.setPointSize (9);
+        p.setFont (font);
+
+        p.drawStaticText (ps.Height, ps.Spacing + ps.IconSize / 2, d.artist);
+
+        p.setPen (QColor (179, 179, 179));
+        p.drawStaticText (ps.Height, ps.Spacing + ps.IconSize * 3 / 4, d.album);
     }
-
-    QFont font = p.font ();
-    font.setPointSize (18);
-    p.setFont (font);
-
-    if (m_title.text ().isNull () && ! m_original_title.isNull ())
-    {
-        QFontMetrics metrics = p.fontMetrics ();
-        m_title = metrics.elidedText (m_original_title, Qt::ElideRight,
-         width () - ps.VisWidth - ps.Height - ps.Spacing);
-    }
-
-    p.setPen (QColor (255, 255, 255));
-    p.drawStaticText (ps.Height, ps.Spacing, m_title);
-
-    font.setPointSize (9);
-    p.setFont (font);
-
-    p.drawStaticText (ps.Height, ps.Spacing + ps.IconSize / 2, m_artist);
-
-    p.setPen (QColor (179, 179, 179));
-    p.drawStaticText (ps.Height, ps.Spacing + ps.IconSize * 3 / 4, m_album);
 }
 
-void InfoBar::update_metadata_cb ()
+void InfoBar::update_title ()
 {
     Tuple tuple = aud_drct_get_tuple ();
 
-    m_title.setText (QString ());
-    m_original_title = tuple.get_str (Tuple::Title);
-    m_artist.setText ((const char *) tuple.get_str (Tuple::Artist));
-    m_album.setText ((const char *) tuple.get_str (Tuple::Album));
+    sd[Cur].title.setText (QString ());
+    sd[Cur].orig_title = tuple.get_str (Tuple::Title);
+    sd[Cur].artist.setText ((const char *) tuple.get_str (Tuple::Artist));
+    sd[Cur].album.setText ((const char *) tuple.get_str (Tuple::Album));
 
     update ();
 }
 
-void InfoBar::update_cb ()
+void InfoBar::update_album_art ()
 {
-    m_art = audqt::art_request_current (ps.IconSize, ps.IconSize);
-    update_metadata_cb ();
+    sd[Cur].art = audqt::art_request_current (ps.IconSize, ps.IconSize);
+}
+
+void InfoBar::next_song ()
+{
+    sd[Prev] = std::move (sd[Cur]);
+    sd[Cur].alpha = 0;
+}
+
+void InfoBar::do_fade ()
+{
+    bool done = true;
+
+    if (aud_drct_get_playing () && sd[Cur].alpha < FadeSteps)
+    {
+        sd[Cur].alpha ++;
+        done = false;
+    }
+
+    if (sd[Prev].alpha > 0)
+    {
+        sd[Prev].alpha --;
+        done = false;
+    }
+
+    update ();
+
+    if (done)
+        timer_remove (TimerRate::Hz30, fade_cb, this);
+}
+
+void InfoBar::playback_ready_cb ()
+{
+    if (! m_stopped)
+        next_song ();
+
+    m_stopped = false;
+    update_title ();
+    update_album_art ();
+
+    update ();
+    timer_add (TimerRate::Hz30, fade_cb, this);
+}
+
+void InfoBar::playback_stop_cb ()
+{
+    next_song ();
+    m_stopped = true;
+
+    update ();
+    timer_add (TimerRate::Hz30, fade_cb, this);
 }
