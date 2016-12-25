@@ -26,6 +26,7 @@
 #include <libaudcore/hook.h>
 
 class InfoVis;
+struct PixelSizes;
 
 class InfoBar : public QWidget
 {
@@ -48,6 +49,7 @@ private:
     QString m_original_title;
     QStaticText m_title, m_artist, m_album;
     InfoVis * m_vis;
+    const PixelSizes & ps;
 };
 
 #endif

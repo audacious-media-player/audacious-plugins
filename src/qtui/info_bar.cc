@@ -27,15 +27,24 @@
 
 #include <QPainter>
 
-static constexpr int Spacing = 8;
-static constexpr int IconSize = 64;
-static constexpr int Height = IconSize + 2 * Spacing;
-
 static constexpr int VisBands = 12;
-static constexpr int VisWidth = 8 * VisBands + Spacing - 2;
-static constexpr int VisCenter = IconSize * 5 / 8 + Spacing;
-static constexpr int VisDelay = 2;
-static constexpr int VisFalloff = 2;
+static constexpr int VisDelay = 2; /* delay before falloff in frames */
+static constexpr int VisFalloff = 2; /* falloff in decibels per frame */
+
+struct PixelSizes
+{
+    int Spacing, IconSize, Height, BandWidth, BandSpacing, VisWidth, VisScale, VisCenter;
+
+    PixelSizes (int dpi) :
+        Spacing (aud::rescale (dpi, 12, 1)),
+        IconSize (2 * aud::rescale (dpi, 3, 1)), // should be divisible by 2
+        Height (IconSize + 2 * Spacing),
+        BandWidth (aud::rescale (dpi, 16, 1)),
+        BandSpacing (aud::rescale (dpi, 48, 1)),
+        VisWidth (VisBands * (BandWidth + BandSpacing) - BandSpacing + 2 * Spacing),
+        VisScale (aud::rescale (IconSize, 8, 5)),
+        VisCenter (VisScale + Spacing) {}
+};
 
 class InfoVis : public QWidget, Visualizer
 {
@@ -50,12 +59,15 @@ public:
 
     const QGradient & gradient () const
         { return m_gradient; }
+    const PixelSizes & pixelSizes () const
+        { return ps; }
 
 private:
+    const PixelSizes ps;
     QLinearGradient m_gradient;
     QColor m_colors[VisBands], m_shadow[VisBands];
 
-    char m_bars[VisBands] {};
+    float m_bars[VisBands] {};
     char m_delay[VisBands] {};
 };
 
@@ -79,7 +91,8 @@ static void get_color (int i, QColor & color, QColor & shadow)
 InfoVis::InfoVis (QWidget * parent) :
     QWidget (parent),
     Visualizer (Freq),
-    m_gradient (0, 0, 0, Height)
+    ps ((logicalDpiX () + logicalDpiY ()) / 2),
+    m_gradient (0, 0, 0, ps.Height)
 {
     m_gradient.setStops ({
         {0, QColor (64, 64, 64)},
@@ -92,7 +105,7 @@ InfoVis::InfoVis (QWidget * parent) :
         get_color (i, m_colors[i], m_shadow[i]);
 
     setAttribute (Qt::WA_OpaquePaintEvent);
-    resize (VisWidth, Height);
+    resize (ps.VisWidth + 2 * ps.Spacing, ps.Height);
 
     aud_visualizer_add (this);
 }
@@ -127,8 +140,7 @@ void InfoVis::render_freq (const float * freq)
         }
 
         /* 40 dB range */
-        int x = 40 + 20 * log10f (n);
-        x = aud::clamp (x, 0, 40);
+        float x = 40 + 20 * log10f (n);
 
         m_bars[i] -= aud::max (0, VisFalloff - m_delay[i]);
 
@@ -156,24 +168,25 @@ void InfoVis::clear ()
 void InfoVis::paintEvent (QPaintEvent *)
 {
     QPainter p (this);
-    p.fillRect (0, 0, VisWidth, Height, m_gradient);
+    p.fillRect (0, 0, ps.VisWidth, ps.Height, m_gradient);
 
     for (int i = 0; i < VisBands; i ++)
     {
-        int x = 8 * i;
-        int v = m_bars[i];
-        int m = aud::min (VisCenter + v, Height);
+        int x = ps.Spacing + i * (ps.BandWidth + ps.BandSpacing);
+        int v = aud::clamp ((int) (m_bars[i] * ps.VisScale / 40), 0, ps.VisScale);
+        int m = aud::min (ps.VisCenter + v, ps.Height);
 
-        p.fillRect (x, VisCenter - v, 6, v, m_colors[i]);
-        p.fillRect (x, VisCenter, 6, m - VisCenter, m_shadow[i]);
+        p.fillRect (x, ps.VisCenter - v, ps.BandWidth, v, m_colors[i]);
+        p.fillRect (x, ps.VisCenter, ps.BandWidth, m - ps.VisCenter, m_shadow[i]);
     }
 }
 
 InfoBar::InfoBar (QWidget * parent) :
     QWidget (parent),
-    m_vis (new InfoVis (this))
+    m_vis (new InfoVis (this)),
+    ps (m_vis->pixelSizes ())
 {
-    setFixedHeight (Height);
+    setFixedHeight (ps.Height);
 
     m_title.setTextFormat (Qt::PlainText);
     m_artist.setTextFormat (Qt::PlainText);
@@ -185,20 +198,20 @@ InfoBar::InfoBar (QWidget * parent) :
 void InfoBar::resizeEvent (QResizeEvent *)
 {
     m_title.setText (QString ());
-    m_vis->move (width () - VisWidth, 0);
+    m_vis->move (width () - ps.VisWidth, 0);
 }
 
 void InfoBar::paintEvent (QPaintEvent *)
 {
     QPainter p (this);
 
-    p.fillRect (0, 0, width () - VisWidth, Height, m_vis->gradient ());
+    p.fillRect (0, 0, width () - ps.VisWidth, ps.Height, m_vis->gradient ());
 
     if (! m_art.isNull ())
     {
         int r = m_art.devicePixelRatio ();
-        int left = Spacing + (IconSize - m_art.width () / r) / 2;
-        int top = Spacing + (IconSize - m_art.height () / r) / 2;
+        int left = ps.Spacing + (ps.IconSize - m_art.width () / r) / 2;
+        int top = ps.Spacing + (ps.IconSize - m_art.height () / r) / 2;
         p.drawPixmap (left, top, m_art);
     }
 
@@ -210,19 +223,19 @@ void InfoBar::paintEvent (QPaintEvent *)
     {
         QFontMetrics metrics = p.fontMetrics ();
         m_title = metrics.elidedText (m_original_title, Qt::ElideRight,
-         width () - VisWidth - Height - Spacing);
+         width () - ps.VisWidth - ps.Height - ps.Spacing);
     }
 
     p.setPen (QColor (255, 255, 255));
-    p.drawStaticText (Height, Spacing, m_title);
+    p.drawStaticText (ps.Height, ps.Spacing, m_title);
 
     font.setPointSize (9);
     p.setFont (font);
 
-    p.drawStaticText (Height, Spacing + IconSize / 2, m_artist);
+    p.drawStaticText (ps.Height, ps.Spacing + ps.IconSize / 2, m_artist);
 
     p.setPen (QColor (179, 179, 179));
-    p.drawStaticText (Height, Spacing + IconSize * 3 / 4, m_album);
+    p.drawStaticText (ps.Height, ps.Spacing + ps.IconSize * 3 / 4, m_album);
 }
 
 void InfoBar::update_metadata_cb ()
@@ -239,6 +252,6 @@ void InfoBar::update_metadata_cb ()
 
 void InfoBar::update_cb ()
 {
-    m_art = audqt::art_request_current (IconSize, IconSize);
+    m_art = audqt::art_request_current (ps.IconSize, ps.IconSize);
     update_metadata_cb ();
 }
