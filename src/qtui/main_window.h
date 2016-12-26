@@ -92,9 +92,9 @@ private:
      hook8 {"set shuffle", this, & MainWindow::update_toggles_cb},
      hook9 {"set no_playlist_advance", this, & MainWindow::update_toggles_cb},
      hook10 {"set stop_after_current_song", this, & MainWindow::update_toggles_cb},
-     hook11 {"toggle menubar", this, & MainWindow::update_visibility_cb},
-     hook12 {"toggle infoarea", this, & MainWindow::update_visibility_cb},
-     hook13 {"toggle statusbar", this, & MainWindow::update_visibility_cb};
+     hook11 {"qtui toggle menubar", this, & MainWindow::update_visibility_cb},
+     hook12 {"qtui toggle infoarea", this, & MainWindow::update_visibility_cb},
+     hook13 {"qtui toggle statusbar", this, & MainWindow::update_visibility_cb};
 
     const HookReceiver<MainWindow, PluginHandle *>
      plugin_hook1 {"dock plugin enabled", this, & MainWindow::add_dock_plugin_cb},

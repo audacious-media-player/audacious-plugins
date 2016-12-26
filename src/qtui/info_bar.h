@@ -54,7 +54,7 @@ private:
      hook1 {"tuple change", this, & InfoBar::update_title},
      hook2 {"playback ready", this, & InfoBar::playback_ready_cb},
      hook3 {"playback stop", this, & InfoBar::playback_stop_cb},
-     hook4 {"toggle infoarea_vis", this, & InfoBar::update_vis};
+     hook4 {"qtui toggle infoarea_vis", this, & InfoBar::update_vis};
 
     InfoVis * m_vis;
     const PixelSizes & ps;

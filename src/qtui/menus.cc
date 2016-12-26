@@ -51,10 +51,10 @@ static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_activ
 static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
 static void configure_visualizations () { audqt::prefswin_show_plugin_page (PluginType::Vis); }
 
-static void toggle_menubar () { hook_call ("toggle menubar", nullptr); }
-static void toggle_infoarea () { hook_call ("toggle infoarea", nullptr); }
-static void toggle_infoarea_vis () { hook_call ("toggle infoarea_vis", nullptr); }
-static void toggle_statusbar () { hook_call ("toggle statusbar", nullptr); }
+static void toggle_menubar () { hook_call ("qtui toggle menubar", nullptr); }
+static void toggle_infoarea () { hook_call ("qtui toggle infoarea", nullptr); }
+static void toggle_infoarea_vis () { hook_call ("qtui toggle infoarea_vis", nullptr); }
+static void toggle_statusbar () { hook_call ("qtui toggle statusbar", nullptr); }
 
 QMenuBar * qtui_build_menubar (QWidget * parent)
 {
