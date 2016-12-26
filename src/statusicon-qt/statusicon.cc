@@ -108,10 +108,6 @@ bool StatusIcon::init ()
     tray = new QSystemTrayIcon (qApp->windowIcon ());
     QObject::connect (tray, & QSystemTrayIcon::activated, activate);
     menu = audqt::menu_build (items);
-    // Very dirty hack to get along with KDE5 SNI implementation
-    // which adds Quit action without any permission.
-    // See below in activate().
-    menu->actions ().last ()->setVisible (false);
     tray->setContextMenu (menu);
     QObject::connect (menu, & QMenu::aboutToShow, update_menu);
     tray->show ();
@@ -156,12 +152,6 @@ void StatusIcon::activate(QSystemTrayIcon::ActivationReason reason)
     {
         case QSystemTrayIcon::Trigger:
             toggle_aud_ui ();
-            break;
-
-        case QSystemTrayIcon::Context:
-            // It is expected that only KDE5 SNI implementation blocks this activation signal.
-            // So getting it means we aren't in KDE and should show the Quit action.
-            menu->actions ().last ()->setVisible (true);
             break;
 
         case QSystemTrayIcon::MiddleClick:
