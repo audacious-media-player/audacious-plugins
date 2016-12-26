@@ -158,7 +158,7 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("_Equalizer ..."), "multimedia-volume-control", "Ctrl+E"}, audqt::equalizer_show),
         audqt::MenuSep (),
-        audqt::MenuCommand ({N_("E_ffects ...")}, configure_effects)
+        audqt::MenuCommand ({N_("E_ffects ..."), "preferences-system"}, configure_effects)
     };
 
     static const audqt::MenuItem view_items[] = {
@@ -169,7 +169,7 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuSep (),
         audqt::MenuToggle ({N_("Show _Remaining Time"), nullptr, "Shift+Ctrl+R"}, {"qtui", "show_remaining_time"}),
         audqt::MenuSep (),
-        audqt::MenuCommand ({N_("_Visualizations ...")}, configure_visualizations)
+        audqt::MenuCommand ({N_("_Visualizations ..."), "preferences-system"}, configure_visualizations)
     };
 
     static const audqt::MenuItem main_items[] = {
