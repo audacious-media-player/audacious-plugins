@@ -39,6 +39,7 @@
 #include <QCloseEvent>
 #include <QDockWidget>
 #include <QLabel>
+#include <QMenuBar>
 #include <QSettings>
 #include <QToolButton>
 
@@ -116,7 +117,7 @@ MainWindow::MainWindow () :
 
     updateToggles ();
 
-    setStatusBar (new StatusBar (this));
+    setStatusBar (statusBar = new StatusBar (this));
     setCentralWidget (centralWidget);
 
     centralLayout->addWidget (playlistTabs);
@@ -125,7 +126,7 @@ MainWindow::MainWindow () :
     centralLayout->setContentsMargins (0, 0, 0, 0);
     centralLayout->setSpacing (4);
 
-    setMenuBar (qtui_build_menubar (this));
+    setMenuBar (menuBar = qtui_build_menubar (this));
     add_dock_plugins ();
 
     if (aud_drct_get_playing ())
@@ -138,6 +139,7 @@ MainWindow::MainWindow () :
         playback_stop_cb ();
 
     readSettings ();
+    updateVisibility ();
 }
 
 MainWindow::~MainWindow ()
@@ -184,6 +186,13 @@ void MainWindow::updateToggles ()
 {
     toolButtonRepeat->setChecked (aud_get_bool (nullptr, "repeat"));
     toolButtonShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
+}
+
+void MainWindow::updateVisibility ()
+{
+    menuBar->setVisible (aud_get_bool ("qtui", "menu_visible"));
+    infoBar->setVisible (aud_get_bool ("qtui", "infoarea_visible"));
+    statusBar->setVisible (aud_get_bool ("qtui", "statusbar_visible"));
 }
 
 void MainWindow::update_play_pause ()
@@ -263,6 +272,11 @@ void MainWindow::playback_stop_cb ()
 void MainWindow::update_toggles_cb ()
 {
     updateToggles ();
+}
+
+void MainWindow::update_visibility_cb ()
+{
+    updateVisibility ();
 }
 
 PluginWidget * MainWindow::find_dock_plugin (PluginHandle * plugin)

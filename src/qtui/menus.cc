@@ -50,6 +50,11 @@ static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_activ
 
 static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
 
+static void toggle_menubar () { hook_call ("toggle menubar", nullptr); }
+static void toggle_infoarea () { hook_call ("toggle infoarea", nullptr); }
+static void toggle_infoarea_vis () { hook_call ("toggle infoarea_vis", nullptr); }
+static void toggle_statusbar () { hook_call ("toggle statusbar", nullptr); }
+
 QMenuBar * qtui_build_menubar (QWidget * parent)
 {
     static const audqt::MenuItem file_items[] = {
@@ -155,12 +160,20 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuCommand ({N_("E_ffects ...")}, configure_effects)
     };
 
+    static const audqt::MenuItem view_items[] = {
+        audqt::MenuToggle ({N_("Show _Menu Bar"), nullptr, "Shift+Ctrl+M"}, {"qtui", "menu_visible"}, toggle_menubar),
+        audqt::MenuToggle ({N_("Show I_nfo Bar"), nullptr, "Shift+Ctrl+I"}, {"qtui", "infoarea_visible"}, toggle_infoarea),
+        audqt::MenuToggle ({N_("Show Info Bar Vis_ualization")}, {"qtui", "infoarea_show_vis"}, toggle_infoarea_vis),
+        audqt::MenuToggle ({N_("Show _Status Bar"), nullptr, "Shift+Ctrl+S"}, {"qtui", "statusbar_visible"}, toggle_statusbar),
+    };
+
     static const audqt::MenuItem main_items[] = {
         audqt::MenuSub ({N_("_File")}, file_items),
         audqt::MenuSub ({N_("_Playback")}, playback_items),
         audqt::MenuSub ({N_("P_laylist")}, playlist_items),
         audqt::MenuSub ({N_("_Services")}, services_menu),
         audqt::MenuSub ({N_("_Output")}, output_items),
+        audqt::MenuSub ({N_("_View")}, view_items)
     };
 
     return audqt::menubar_build (main_items, parent);

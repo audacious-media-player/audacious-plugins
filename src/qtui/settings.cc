@@ -26,11 +26,11 @@
 #include <QtGlobal>
 
 const char * const qtui_defaults[] = {
-//    "infoarea_show_vis", "TRUE",
-//    "infoarea_visible", "TRUE",
-//    "menu_visible", "TRUE",
+    "infoarea_show_vis", "TRUE",
+    "infoarea_visible", "TRUE",
+    "menu_visible", "TRUE",
     "playlist_tabs_visible", "TRUE",
-//    "statusbar_visible", "TRUE",
+    "statusbar_visible", "TRUE",
     "entry_count_visible", "FALSE",
     "close_button_visible", "TRUE",
 

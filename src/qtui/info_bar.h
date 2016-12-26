@@ -45,6 +45,7 @@ private:
 
     void playback_ready_cb ();
     void playback_stop_cb ();
+    void update_vis ();
 
     static void fade_cb (void * me)
         { ((InfoBar *) me)->do_fade (); }
@@ -52,7 +53,8 @@ private:
     const HookReceiver<InfoBar>
      hook1 {"tuple change", this, & InfoBar::update_title},
      hook2 {"playback ready", this, & InfoBar::playback_ready_cb},
-     hook3 {"playback stop", this, & InfoBar::playback_stop_cb};
+     hook3 {"playback stop", this, & InfoBar::playback_stop_cb},
+     hook4 {"toggle infoarea_vis", this, & InfoBar::update_vis};
 
     InfoVis * m_vis;
     const PixelSizes & ps;

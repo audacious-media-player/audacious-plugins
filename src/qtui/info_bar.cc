@@ -23,6 +23,7 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
 
 #include <QPainter>
@@ -58,6 +59,8 @@ public:
     void clear ();
 
     void paintEvent (QPaintEvent *);
+
+    void enable (bool enabled);
 
     const QGradient & gradient () const
         { return m_gradient; }
@@ -108,13 +111,11 @@ InfoVis::InfoVis (QWidget * parent) :
 
     setAttribute (Qt::WA_OpaquePaintEvent);
     resize (ps.VisWidth + 2 * ps.Spacing, ps.Height);
-
-    aud_visualizer_add (this);
 }
 
 InfoVis::~InfoVis ()
 {
-    aud_visualizer_remove (this);
+    enable (false);
 }
 
 void InfoVis::render_freq (const float * freq)
@@ -183,11 +184,23 @@ void InfoVis::paintEvent (QPaintEvent *)
     }
 }
 
+void InfoVis::enable (bool enabled)
+{
+    if (enabled)
+        aud_visualizer_add (this);
+    else
+    {
+        aud_visualizer_remove (this);
+        clear ();
+    }
+}
+
 InfoBar::InfoBar (QWidget * parent) :
     QWidget (parent),
     m_vis (new InfoVis (this)),
     ps (m_vis->pixelSizes ())
 {
+    update_vis ();
     setFixedHeight (ps.Height);
 
     for (SongData & d : sd)
@@ -328,4 +341,9 @@ void InfoBar::playback_stop_cb ()
 
     update ();
     timer_add (TimerRate::Hz30, fade_cb, this);
+}
+
+void InfoBar::update_vis ()
+{
+    m_vis->enable (aud_get_bool ("qtui", "infoarea_show_vis"));
 }
