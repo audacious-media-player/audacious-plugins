@@ -21,6 +21,7 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
+#include <libaudcore/runtime.h>
 
 #include <QLabel>
 #include <QMouseEvent>
@@ -50,7 +51,10 @@ void TimeSlider::set_label (int time, int length)
     QString text;
 
     if (length > 0)
-        text = str_concat ({str_format_time (time), " / ", str_format_time (length)});
+        if (aud_get_bool ("qtui", "show_remaining_time"))
+            text = str_concat ({str_format_time (time - length), " / ", str_format_time (length)});
+        else
+            text = str_concat ({str_format_time (time), " / ", str_format_time (length)});
     else
         text = str_format_time (time);
 

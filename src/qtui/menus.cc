@@ -165,6 +165,8 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuToggle ({N_("Show I_nfo Bar"), nullptr, "Shift+Ctrl+I"}, {"qtui", "infoarea_visible"}, toggle_infoarea),
         audqt::MenuToggle ({N_("Show Info Bar Vis_ualization")}, {"qtui", "infoarea_show_vis"}, toggle_infoarea_vis),
         audqt::MenuToggle ({N_("Show _Status Bar"), nullptr, "Shift+Ctrl+S"}, {"qtui", "statusbar_visible"}, toggle_statusbar),
+        audqt::MenuSep (),
+        audqt::MenuToggle ({N_("Show _Remaining Time"), nullptr, "Shift+Ctrl+R"}, {"qtui", "show_remaining_time"}),
     };
 
     static const audqt::MenuItem main_items[] = {
