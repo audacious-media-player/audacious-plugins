@@ -49,6 +49,7 @@ static void pl_rename () { hook_call ("qtui rename playlist", nullptr); }
 static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_active ()); }
 
 static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
+static void configure_visualizations () { audqt::prefswin_show_plugin_page (PluginType::Vis); }
 
 static void toggle_menubar () { hook_call ("toggle menubar", nullptr); }
 static void toggle_infoarea () { hook_call ("toggle infoarea", nullptr); }
@@ -167,6 +168,8 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuToggle ({N_("Show _Status Bar"), nullptr, "Shift+Ctrl+S"}, {"qtui", "statusbar_visible"}, toggle_statusbar),
         audqt::MenuSep (),
         audqt::MenuToggle ({N_("Show _Remaining Time"), nullptr, "Shift+Ctrl+R"}, {"qtui", "show_remaining_time"}),
+        audqt::MenuSep (),
+        audqt::MenuCommand ({N_("_Visualizations ...")}, configure_visualizations)
     };
 
     static const audqt::MenuItem main_items[] = {
