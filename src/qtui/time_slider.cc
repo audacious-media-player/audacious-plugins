@@ -23,13 +23,25 @@
 #include <libaudcore/drct.h>
 #include <libaudcore/runtime.h>
 
-#include <QLabel>
 #include <QMouseEvent>
 #include <QStyle>
 
+MyLabel::MyLabel (QWidget * parent) : QLabel (parent) {}
+MyLabel::~MyLabel () {}
+
+void MyLabel::mouseDoubleClickEvent (QMouseEvent * event)
+{
+    aud_set_bool ("qtui", "show_remaining_time", ! aud_get_bool ("qtui", "show_remaining_time"));
+    hook_call ("qtui toggle remaining time", nullptr);
+
+    event->accept ();
+
+    QLabel::mouseDoubleClickEvent (event);
+}
+
 TimeSlider::TimeSlider (QWidget * parent) :
     QSlider (Qt::Horizontal, parent),
-    m_label (new QLabel (parent))
+    m_label (new MyLabel (parent))
 {
     setFocusPolicy (Qt::NoFocus);
     setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Fixed);

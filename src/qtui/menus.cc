@@ -55,6 +55,7 @@ static void toggle_menubar () { hook_call ("qtui toggle menubar", nullptr); }
 static void toggle_infoarea () { hook_call ("qtui toggle infoarea", nullptr); }
 static void toggle_infoarea_vis () { hook_call ("qtui toggle infoarea_vis", nullptr); }
 static void toggle_statusbar () { hook_call ("qtui toggle statusbar", nullptr); }
+static void toggle_remaining_time () { hook_call ("qtui toggle remaining time", nullptr); }
 
 QMenuBar * qtui_build_menubar (QWidget * parent)
 {
@@ -167,7 +168,7 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuToggle ({N_("Show Info Bar Vis_ualization")}, {"qtui", "infoarea_show_vis"}, toggle_infoarea_vis),
         audqt::MenuToggle ({N_("Show _Status Bar"), nullptr, "Shift+Ctrl+S"}, {"qtui", "statusbar_visible"}, toggle_statusbar),
         audqt::MenuSep (),
-        audqt::MenuToggle ({N_("Show _Remaining Time"), nullptr, "Shift+Ctrl+R"}, {"qtui", "show_remaining_time"}),
+        audqt::MenuToggle ({N_("Show _Remaining Time"), nullptr, "Shift+Ctrl+R"}, {"qtui", "show_remaining_time", "qtui toggle remaining time"}, toggle_remaining_time),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("_Visualizations ..."), "preferences-system"}, configure_visualizations)
     };
