@@ -67,7 +67,7 @@ private:
      hook2 {"playback pause", this, & TimeSlider::start_stop},
      hook3 {"playback unpause", this, & TimeSlider::start_stop},
      hook4 {"playback stop", this, & TimeSlider::start_stop},
-     hook5 {"qtui toggle remaining time", this, & TimeSlider::update};
+     hook5 {"qtui toggle remaining time", this, & TimeSlider::start_stop};
 };
 
 #endif

@@ -62,7 +62,7 @@ void TimeSlider::set_label (int time, int length)
 {
     QString text;
 
-    if (length > 0)
+    if (length >= 0)
         if (aud_get_bool ("qtui", "show_remaining_time"))
             text = str_concat ({str_format_time (time - length), " / ", str_format_time (length)});
         else
@@ -89,7 +89,7 @@ void TimeSlider::start_stop ()
     else
     {
         setRange (0, 0);
-        m_label->setText ("0:00 / 0:00");
+        set_label (0, 0);
     }
 
     if (ready && ! paused && ! isSliderDown ())
