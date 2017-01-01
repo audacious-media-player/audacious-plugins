@@ -267,19 +267,19 @@ gboolean handle_keyevent (EVENT event)
 
     if (event == EVENT_TOGGLE_REPEAT)
     {
-        aud_set_bool (nullptr, "repeat", ! aud_get_bool (nullptr, "repeat"));
+        aud_toggle_bool (nullptr, "repeat");
         return true;
     }
 
     if (event == EVENT_TOGGLE_SHUFFLE)
     {
-        aud_set_bool (nullptr, "shuffle", ! aud_get_bool (nullptr, "shuffle"));
+        aud_toggle_bool (nullptr, "shuffle");
         return true;
     }
 
     if (event == EVENT_TOGGLE_STOP)
     {
-        aud_set_bool (nullptr, "stop_after_current_song", ! aud_get_bool (nullptr, "stop_after_current_song"));
+        aud_toggle_bool (nullptr, "stop_after_current_song");
         return true;
     }
 

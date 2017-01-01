@@ -209,9 +209,9 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 }
             }
             else if (g_ascii_strcasecmp ("SHUFFLE", c) == 0)
-                aud_set_bool (nullptr, "shuffle", ! aud_get_bool (nullptr, "shuffle"));
+                aud_toggle_bool (nullptr, "shuffle");
             else if (g_ascii_strcasecmp ("REPEAT", c) == 0)
-                aud_set_bool (nullptr, "repeat", ! aud_get_bool (nullptr, "repeat"));
+                aud_toggle_bool (nullptr, "repeat");
             else if (g_ascii_strncasecmp ("FWD", c, 3) == 0)
             {
                 ptr = c + 3;

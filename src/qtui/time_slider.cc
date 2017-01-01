@@ -31,7 +31,7 @@ MyLabel::~MyLabel () {}
 
 void MyLabel::mouseDoubleClickEvent (QMouseEvent * event)
 {
-    aud_set_bool ("qtui", "show_remaining_time", ! aud_get_bool ("qtui", "show_remaining_time"));
+    aud_toggle_bool ("qtui", "show_remaining_time");
     hook_call ("qtui toggle remaining time", nullptr);
 
     event->accept ();
