@@ -34,7 +34,7 @@ const char * const qtui_defaults[] = {
     "entry_count_visible", "FALSE",
     "close_button_visible", "TRUE",
 
-//    "autoscroll", "TRUE",
+    "autoscroll", "TRUE",
 //    "playlist_columns", "title artist album queued length",
     "playlist_headers", "TRUE",
 //    "record", "FALSE",
@@ -67,8 +67,8 @@ static const PreferencesWidget qtui_widgets[] = {
     WidgetSpin (N_("Arrow keys seek by:"),
         WidgetFloat ("qtui", "step_size"),
         {0.1, 60, 0.1, N_("seconds")}),
-//    WidgetCheck (N_("Scroll on song change"),
-//        WidgetBool ("qtui", "autoscroll"))
+    WidgetCheck (N_("Scroll on song change"),
+        WidgetBool ("qtui", "autoscroll"))
 };
 
 const PluginPreferences qtui_prefs = {{qtui_widgets}};

@@ -105,7 +105,7 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
         switch (event->key ())
         {
         case Qt::Key_Escape:
-            scrollToCurrent ();
+            scrollToCurrent (true);
             break;
         case Qt::Key_Enter:
         case Qt::Key_Return:
@@ -224,18 +224,21 @@ void PlaylistWidget::selectionChanged (const QItemSelection & selected,
     }
 }
 
-void PlaylistWidget::scrollToCurrent ()
+void PlaylistWidget::scrollToCurrent (bool force)
 {
     int list = model->playlist ();
     int entry = aud_playlist_get_position (list);
 
-    aud_playlist_select_all (list, false);
-    aud_playlist_entry_set_selected (list, entry, true);
-    aud_playlist_set_focus (list, entry);
+    if (aud_get_bool ("qtui", "autoscroll") || force)
+    {
+        aud_playlist_select_all (list, false);
+        aud_playlist_entry_set_selected (list, entry, true);
+        aud_playlist_set_focus (list, entry);
 
-    // a playlist update should have been queued, unless the playlist is empty
-    if (aud_playlist_update_pending (list))
-        scrollQueued = true;
+        // a playlist update should have been queued, unless the playlist is empty
+        if (aud_playlist_update_pending (list))
+            scrollQueued = true;
+    }
 }
 
 void PlaylistWidget::updatePlaybackIndicator ()

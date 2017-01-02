@@ -36,7 +36,7 @@ public:
     PlaylistWidget (QWidget * parent, int uniqueID);
     ~PlaylistWidget ();
 
-    void scrollToCurrent ();
+    void scrollToCurrent (bool force = false);
     void updatePlaybackIndicator ();
     void update (const Playlist::Update & update);
     void playCurrentIndex ();
