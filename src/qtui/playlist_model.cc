@@ -61,6 +61,7 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
 {
     String title, artist, album;
     Tuple tuple;
+    int length;
 
     switch (role)
     {
@@ -86,7 +87,7 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         case PL_COL_QUEUED:
             return getQueued (index.row ());
         case PL_COL_LENGTH:
-            int length = tuple.get_int (Tuple::Length);
+            length = tuple.get_int (Tuple::Length);
             return QString (length >=0 ? str_format_time (length) : "" );
         }
         break;
