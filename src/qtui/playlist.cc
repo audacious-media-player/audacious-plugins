@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#include <QHeaderView>
 #include <QKeyEvent>
 #include <QMenu>
 #include <QSortFilterProxyModel>
@@ -28,11 +29,14 @@
 #include <libaudcore/runtime.h>
 
 #include "playlist.h"
+#include "playlist_columns.h"
 #include "playlist_model.h"
 
 #include "../ui-common/menu-ops.h"
 
-PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) : QTreeView (parent)
+PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) :
+    QTreeView (parent),
+    in_columnUpdate (false)
 {
     model = new PlaylistModel (this, uniqueID);
 
@@ -55,13 +59,14 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) : QTreeView (par
 
     updateSettings ();
 
-    /* TODO: set column width based on font size */
-    setColumnWidth (PL_COL_NOW_PLAYING, 25);
-    setColumnWidth (PL_COL_TITLE, 275);
-    setColumnWidth (PL_COL_ARTIST, 175);
-    setColumnWidth (PL_COL_ALBUM, 175);
-    setColumnWidth (PL_COL_QUEUED, 25);
-    setColumnWidth (PL_COL_LENGTH, 50);
+    pl_col_init ();
+    updateColumns ();
+
+    auto hdr = header ();
+    // avoid resize signalling for the last visible section
+    hdr->setStretchLastSection (false);
+    QObject::connect (hdr, & QHeaderView::sectionResized, this, & PlaylistWidget::sectionResized);
+    QObject::connect (hdr, & QHeaderView::sectionMoved, this, & PlaylistWidget::sectionMoved);
 
     /* get initial selection and focus from core */
     Playlist::Update upd {};
@@ -408,4 +413,52 @@ void PlaylistWidget::moveFocus (int distance)
 void PlaylistWidget::updateSettings ()
 {
     setHeaderHidden (! aud_get_bool ("qtui", "playlist_headers"));
+}
+
+void PlaylistWidget::updateColumns ()
+{
+    int i;
+    QHeaderView * hdr = header ();
+
+    in_columnUpdate = true;
+
+    for (i = 0; i < PL_COLS; i++)
+    {
+        /* TODO: set column width based on font size */
+        setColumnWidth (i, pl_col_widths[i]);
+        setColumnHidden (i, true);
+    }
+
+    for (i = 0; i < pl_num_cols; i++)
+    {
+        setColumnHidden (pl_cols[i], false);
+        hdr->moveSection (hdr->visualIndex (pl_cols[i]), i);
+    }
+
+    in_columnUpdate = false;
+}
+
+void PlaylistWidget::sectionResized (int logicalIndex, int oldSize, int newSize)
+{
+    if (in_columnUpdate || newSize == 0)
+        return;
+
+    pl_col_widths[logicalIndex] = newSize;
+    pl_col_save ();
+}
+
+void PlaylistWidget::sectionMoved (int logicalIndex, int oldVisualIndex, int newVisualIndex)
+{
+    if (in_columnUpdate)
+        return;
+
+    auto hdr = header ();
+
+    for (auto i = 0; i < pl_num_cols; i++)
+    {
+        pl_cols[i] = hdr->logicalIndex (i);
+    }
+
+    hook_call ("qtui update playlist columns from ui", nullptr);
+    pl_col_save ();
 }

@@ -28,6 +28,7 @@
 #include <libaudcore/playlist.h>
 #include <libaudcore/tuple.h>
 
+#include "playlist_columns.h"
 #include "playlist_model.h"
 
 static inline QPixmap get_icon (const char * name)
@@ -68,10 +69,19 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         switch (index.column ())
         {
-        case PL_COL_TITLE:
-        case PL_COL_ARTIST:
         case PL_COL_ALBUM:
+        case PL_COL_ALBUM_ARTIST:
+        case PL_COL_ARTIST:
+        case PL_COL_BITRATE:
+        case PL_COL_COMMENT:
+        case PL_COL_CUSTOM:
+        case PL_COL_FILENAME:
+        case PL_COL_GENRE:
         case PL_COL_LENGTH:
+        case PL_COL_PATH:
+        case PL_COL_TITLE:
+        case PL_COL_TRACK:
+        case PL_COL_YEAR:
             tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), Playlist::NoWait);
             break;
         }
@@ -89,14 +99,39 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         case PL_COL_LENGTH:
             length = tuple.get_int (Tuple::Length);
             return QString (length >=0 ? str_format_time (length) : "" );
+        case PL_COL_BITRATE:
+            return QString ("%1 kbps").arg (tuple.get_int (Tuple::Bitrate));
+        case PL_COL_NUMBER:
+            return QString ("%1").arg (index.row () + 1);
+        case PL_COL_YEAR:
+            return QString ("%1").arg (tuple.get_int (Tuple::Year));
+        case PL_COL_ALBUM_ARTIST:
+            return QString (tuple.get_str (Tuple::AlbumArtist));
+        case PL_COL_TRACK:
+            return QString ("%1").arg (tuple.get_int (Tuple::Track));
+        case PL_COL_GENRE:
+            return QString (tuple.get_str (Tuple::Genre));
+        case PL_COL_PATH:
+            return QString (tuple.get_str (Tuple::Path));
+        case PL_COL_FILENAME:
+            return QString (tuple.get_str (Tuple::Basename));
+        case PL_COL_CUSTOM:
+            return QString (tuple.get_str (Tuple::FormattedTitle));
+        case PL_COL_COMMENT:
+            return QString (tuple.get_str (Tuple::Comment));
+            break;
         }
         break;
 
     case Qt::TextAlignmentRole:
         switch (index.column ())
         {
+        case PL_COL_NOW_PLAYING:
+            return Qt::AlignCenter;
         case PL_COL_LENGTH:
-            return Qt::AlignRight;
+            return Qt::AlignRight + Qt::AlignVCenter;
+        default:
+            return Qt::AlignLeft + Qt::AlignVCenter;
         }
         break;
 
@@ -124,17 +159,13 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
         {
             switch (section)
             {
-            case PL_COL_TITLE:
-                return QString (_("Title"));
-            case PL_COL_ARTIST:
-                return QString (_("Artist"));
-            case PL_COL_ALBUM:
-                return QString (_("Album"));
+            case PL_COL_NOW_PLAYING:
             case PL_COL_QUEUED:
-                return QString ();
-            case PL_COL_LENGTH:
+            case PL_COL_NUMBER:
                 return QString ();
             }
+
+            return QString (_(pl_col_names[section]));
         }
     }
     return QVariant ();

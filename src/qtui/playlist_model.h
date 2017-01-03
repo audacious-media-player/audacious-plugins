@@ -26,16 +26,6 @@
 #include <libaudcore/index.h>
 #include <libaudcore/objects.h>
 
-enum {
-    PL_COL_NOW_PLAYING,
-    PL_COL_TITLE,
-    PL_COL_ARTIST,
-    PL_COL_ALBUM,
-    PL_COL_QUEUED,
-    PL_COL_LENGTH,
-    PL_COLS
-};
-
 class PlaylistModel : public QAbstractListModel
 {
 public:
