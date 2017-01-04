@@ -237,7 +237,7 @@ QVariant ListModel::data (const QModelIndex & index, int role) const
         switch (role)
         {
             case Qt::DisplayRole:
-                return QString (pl_col_names[m_data[index.row ()]]);
+                return QString (_(pl_col_names[m_data[index.row ()]]));
             case Qt::UserRole:
                 return m_data[index.row ()];
         }
