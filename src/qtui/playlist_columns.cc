@@ -22,6 +22,7 @@
 #include <QAbstractListModel>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QLabel>
 #include <QListView>
 #include <QToolButton>
 
@@ -113,7 +114,6 @@ ListView::ListView (QWidget * parent) :
     setViewMode (QListView::ListMode);
     setMovement (QListView::Free);
     setAlternatingRowColors (true);
-    setMaximumWidth (200);
     setSelectionMode (QAbstractItemView::ExtendedSelection);
 
     connect (this, & QAbstractItemView::doubleClicked, this, & ListView::doubleClicked);
@@ -369,36 +369,38 @@ void * pl_col_create_chooser ()
     layout->setSpacing (4);
 
     avail = new ListView (widget);
-    auto avail_model = new ListModel (avail);
-    avail->setModel (avail_model);
-
-    //avail->setHeaderLabel (_("Available columns"));
-    layout->addWidget (avail);
-
-    auto layout2 = new QVBoxLayout ();
-    layout->addLayout (layout2);
-
-    auto tb_right = new QToolButton (widget);
-    tb_right->setArrowType (Qt::RightArrow);
-    QObject::connect (tb_right, & QToolButton::clicked, & add_column);
-    layout2->addWidget (tb_right);
-
-    auto tb_left = new QToolButton (widget);
-    tb_left->setArrowType (Qt::LeftArrow);
-    QObject::connect (tb_left, & QToolButton::clicked, & remove_column);
-    layout2->addWidget (tb_left);
-
     chosen = new ListView (widget);
+    auto avail_model = new ListModel (avail);
     auto chosen_model = new ListModel (chosen);
+    avail->setModel (avail_model);
     chosen->setModel (chosen_model);
-
-    //chosen->setHeaderLabel (_("Displayed columns"));
-    layout->addWidget (chosen);
 
     populate_models ();
 
-    QObject::connect (chosen_model, & QAbstractItemModel::dataChanged, & apply_changes);
-    QObject::connect (chosen_model, & QAbstractItemModel::rowsRemoved, & apply_changes);
+    QObject::connect (chosen_model, & QAbstractItemModel::dataChanged, apply_changes);
+    QObject::connect (chosen_model, & QAbstractItemModel::rowsRemoved, apply_changes);
+
+    auto tb_right = new QToolButton (widget);
+    auto tb_left = new QToolButton (widget);
+    tb_right->setArrowType (Qt::RightArrow);
+    tb_left->setArrowType (Qt::LeftArrow);
+    QObject::connect (tb_right, & QToolButton::clicked, add_column);
+    QObject::connect (tb_left, & QToolButton::clicked, remove_column);
+
+    auto layout2 = new QVBoxLayout ();
+    layout2->addWidget (new QLabel (_("Available columns"), widget));
+    layout2->addWidget (avail);
+    layout->addLayout (layout2);
+
+    layout2 = new QVBoxLayout ();
+    layout2->addWidget (tb_right);
+    layout2->addWidget (tb_left);
+    layout->addLayout (layout2);
+
+    layout2 = new QVBoxLayout ();
+    layout2->addWidget (new QLabel (_("Displayed columns"), widget));
+    layout2->addWidget (chosen);
+    layout->addLayout (layout2);
 
     return widget;
 }
