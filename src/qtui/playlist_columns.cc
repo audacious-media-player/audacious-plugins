@@ -92,6 +92,9 @@ const int pl_default_widths[PL_COLS] = {
     275   // comment
 };
 
+class ListView;
+void transfer (ListView * source);
+
 class ListView : public QListView
 {
 public:
@@ -99,6 +102,9 @@ public:
     ~ListView () {}
 
     QModelIndexList selected () const { return QListView::selectedIndexes(); }
+
+private:
+    void doubleClicked () { transfer (this); }
 };
 
 ListView::ListView (QWidget * parent) :
@@ -109,6 +115,8 @@ ListView::ListView (QWidget * parent) :
     setAlternatingRowColors (true);
     setMaximumWidth (200);
     setSelectionMode (QAbstractItemView::ExtendedSelection);
+
+    connect (this, & QAbstractItemView::doubleClicked, this, & ListView::doubleClicked);
 }
 
 ListView * chosen = nullptr, * avail = nullptr;
