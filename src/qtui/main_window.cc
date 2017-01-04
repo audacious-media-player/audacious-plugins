@@ -127,6 +127,7 @@ MainWindow::MainWindow () :
     centralLayout->setSpacing (4);
 
     setMenuBar (menuBar = qtui_build_menubar (this));
+    setDockNestingEnabled (true);
     add_dock_plugins ();
 
     if (aud_drct_get_playing ())
