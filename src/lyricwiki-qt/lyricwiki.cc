@@ -244,9 +244,11 @@ static String scrape_uri_from_lyricwiki_search_result (const char * buf, int64_t
                 {
                     // Convert normal lyrics link to edit page link
                     char * slash = strrchr (lyric, '/');
-                    if (slash)
+                    if (slash && ! strstr (slash, "lyrics.wikia.com"))
                         uri = String (str_printf ("http://lyrics.wikia.com/index.php?"
                          "action=edit&title=%s", slash + 1));
+                    else
+                        uri = String ("N/A");
                 }
 
                 xmlFree ((xmlChar *) lyric);
@@ -307,6 +309,12 @@ static void get_lyrics_step_2 (const char * uri1, const Index<char> & buf, void 
     {
         update_lyrics_window (_("Error"), nullptr,
          str_printf (_("Unable to parse %s"), uri1));
+        return;
+    }
+    else if (uri == String ("N/A"))
+    {
+        update_lyrics_window (state.title, state.artist,
+         _("No lyrics available"));
         return;
     }
 
