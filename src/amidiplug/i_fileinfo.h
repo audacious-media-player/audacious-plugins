@@ -23,6 +23,6 @@
 
 class VFSFile;
 
-void i_fileinfo_gui (const char * filename_uri, VFSFile & file);
+bool i_fileinfo_gui (const char * filename_uri, VFSFile & file);
 
 #endif /* !_I_FILEINFO_H */
