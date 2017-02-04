@@ -101,11 +101,6 @@ struct Item
     Item & operator= (Item &&) = default;
 };
 
-struct SearchState {
-    Index<const Item *> items;
-    int mask;
-};
-
 class ResultsModel : public QAbstractListModel
 {
 public:
@@ -311,31 +306,30 @@ static void create_database (int list)
     database_valid = true;
 }
 
-static void search_cb (const Key & key, Item & item, void * _state)
+static void search_recurse (SimpleHash<Key, Item> & domain, int mask, Index<const Item *> & results)
 {
-    SearchState * state = (SearchState *) _state;
-
-    int oldmask = state->mask;
-    int count = search_terms.len ();
-
-    for (int t = 0, bit = 1; t < count; t ++, bit <<= 1)
+    domain.iterate ([mask, & results] (const Key & key, Item & item)
     {
-        if (! (state->mask & bit))
-            continue; /* skip term if it is already found */
+        int count = search_terms.len ();
+        int new_mask = mask;
 
-        if (strstr (item.folded, search_terms[t]))
-            state->mask &= ~bit; /* we found it */
-        else if (! item.children.n_items ())
-            break; /* quit early if there are no children to search */
-    }
+        for (int t = 0, bit = 1; t < count; t ++, bit <<= 1)
+        {
+            if (! (new_mask & bit))
+                continue; /* skip term if it is already found */
 
-    /* adding an item with exactly one child is redundant, so avoid it */
-    if (! state->mask && item.children.n_items () != 1)
-        state->items.append (& item);
+            if (strstr (item.folded, search_terms[t]))
+                new_mask &= ~bit; /* we found it */
+            else if (! item.children.n_items ())
+                break; /* quit early if there are no children to search */
+        }
 
-    item.children.iterate (search_cb, state);
+        /* adding an item with exactly one child is redundant, so avoid it */
+        if (! new_mask && item.children.n_items () != 1)
+            results.append (& item);
 
-    state->mask = oldmask;
+        search_recurse (item.children, new_mask, results);
+    });
 }
 
 static int item_compare (const Item * const & a, const Item * const & b)
@@ -373,14 +367,8 @@ static void do_search ()
     if (! database_valid)
         return;
 
-    SearchState state;
-
     /* effectively limits number of search terms to 32 */
-    state.mask = (1 << search_terms.len ()) - 1;
-
-    database.iterate (search_cb, & state);
-
-    items = std::move (state.items);
+    search_recurse (database, (1 << search_terms.len ()) - 1, items);
 
     /* first sort by number of songs per item */
     items.sort (item_compare_pass1);

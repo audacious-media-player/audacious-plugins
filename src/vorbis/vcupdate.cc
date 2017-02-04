@@ -54,15 +54,13 @@ static Dictionary dictionary_from_vorbis_comment (vorbis_comment * vc)
     return dict;
 }
 
-static void add_tag_cb (const String & key, String & field, void * vc)
-{
-    vorbis_comment_add_tag ((vorbis_comment *) vc, key, field);
-}
-
 static void dictionary_to_vorbis_comment (vorbis_comment * vc, Dictionary & dict)
 {
     vorbis_comment_clear (vc);
-    dict.iterate (add_tag_cb, vc);
+
+    dict.iterate ([vc] (const String & key, String & field) {
+        vorbis_comment_add_tag (vc, key, field);
+    });
 }
 
 static void insert_str_tuple_field_to_dictionary (const Tuple & tuple,
