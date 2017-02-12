@@ -48,7 +48,7 @@ static Dictionary dictionary_from_vorbis_comment (vorbis_comment * vc)
 
         const char * eq = strchr (s, '=');
         if (eq && eq > s && eq[1])
-            dict.add (String (str_tolower (str_copy (s, eq - s))), String (eq + 1));
+            dict.add (String (str_toupper (str_copy (s, eq - s))), String (eq + 1));
     }
 
     return dict;
@@ -93,15 +93,15 @@ bool VorbisPlugin::write_tuple (const char * filename, VFSFile & file, const Tup
 
     Dictionary dict = dictionary_from_vorbis_comment (& edit.vc);
 
-    insert_str_tuple_field_to_dictionary (tuple, Tuple::Title, dict, "title");
-    insert_str_tuple_field_to_dictionary (tuple, Tuple::Artist, dict, "artist");
-    insert_str_tuple_field_to_dictionary (tuple, Tuple::Album, dict, "album");
-    insert_str_tuple_field_to_dictionary (tuple, Tuple::AlbumArtist, dict, "albumartist");
-    insert_str_tuple_field_to_dictionary (tuple, Tuple::Comment, dict, "comment");
-    insert_str_tuple_field_to_dictionary (tuple, Tuple::Genre, dict, "genre");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Title, dict, "TITLE");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Artist, dict, "ARTIST");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Album, dict, "ALBUM");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::AlbumArtist, dict, "ALBUMARTIST");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Comment, dict, "COMMENT");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Genre, dict, "GENRE");
 
-    insert_int_tuple_field_to_dictionary (tuple, Tuple::Year, dict, "date");
-    insert_int_tuple_field_to_dictionary (tuple, Tuple::Track, dict, "tracknumber");
+    insert_int_tuple_field_to_dictionary (tuple, Tuple::Year, dict, "DATE");
+    insert_int_tuple_field_to_dictionary (tuple, Tuple::Track, dict, "TRACKNUMBER");
 
     dictionary_to_vorbis_comment (& edit.vc, dict);
 

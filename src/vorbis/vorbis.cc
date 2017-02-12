@@ -135,16 +135,16 @@ static void read_comment (vorbis_comment * comment, Tuple & tuple)
 {
     const char * tmps;
 
-    set_tuple_str (tuple, Tuple::Title, comment, "title");
-    set_tuple_str (tuple, Tuple::Artist, comment, "artist");
-    set_tuple_str (tuple, Tuple::Album, comment, "album");
-    set_tuple_str (tuple, Tuple::AlbumArtist, comment, "albumartist");
-    set_tuple_str (tuple, Tuple::Genre, comment, "genre");
-    set_tuple_str (tuple, Tuple::Comment, comment, "comment");
+    set_tuple_str (tuple, Tuple::Title, comment, "TITLE");
+    set_tuple_str (tuple, Tuple::Artist, comment, "ARTIST");
+    set_tuple_str (tuple, Tuple::Album, comment, "ALBUM");
+    set_tuple_str (tuple, Tuple::AlbumArtist, comment, "ALBUMARTIST");
+    set_tuple_str (tuple, Tuple::Genre, comment, "GENRE");
+    set_tuple_str (tuple, Tuple::Comment, comment, "COMMENT");
 
-    if ((tmps = vorbis_comment_query (comment, "tracknumber", 0)))
+    if ((tmps = vorbis_comment_query (comment, "TRACKNUMBER", 0)))
         tuple.set_int (Tuple::Track, atoi (tmps));
-    if ((tmps = vorbis_comment_query (comment, "date", 0)))
+    if ((tmps = vorbis_comment_query (comment, "DATE", 0)))
         tuple.set_int (Tuple::Year, atoi (tmps));
 }
 
@@ -156,7 +156,7 @@ static bool update_tuple (OggVorbis_File * vf, Tuple & tuple)
         return false;
 
     String old_title = tuple.get_str (Tuple::Title);
-    const char * new_title = vorbis_comment_query (comment, "title", 0);
+    const char * new_title = vorbis_comment_query (comment, "TITLE", 0);
 
     if (! new_title || (old_title && ! strcmp (old_title, new_title)))
         return false;
@@ -173,22 +173,22 @@ static bool update_replay_gain (OggVorbis_File * vf, ReplayGainInfo * rg_info)
     if (! comment)
         return false;
 
-    rg_gain = vorbis_comment_query(comment, "replaygain_album_gain", 0);
-    if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_audiophile", 0);    /* Old */
+    rg_gain = vorbis_comment_query(comment, "REPLAYGAIN_ALBUM_GAIN", 0);
+    if (!rg_gain) rg_gain = vorbis_comment_query(comment, "RG_AUDIOPHILE", 0);    /* Old */
     rg_info->album_gain = (rg_gain != nullptr) ? str_to_double (rg_gain) : 0.0;
     AUDDBG ("Album gain: %s (%f)\n", rg_gain, rg_info->album_gain);
 
-    rg_gain = vorbis_comment_query(comment, "replaygain_track_gain", 0);
-    if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_radio", 0);    /* Old */
+    rg_gain = vorbis_comment_query(comment, "REPLAYGAIN_TRACK_GAIN", 0);
+    if (!rg_gain) rg_gain = vorbis_comment_query(comment, "RG_RADIO", 0);    /* Old */
     rg_info->track_gain = (rg_gain != nullptr) ? str_to_double (rg_gain) : 0.0;
     AUDDBG ("Track gain: %s (%f)\n", rg_gain, rg_info->track_gain);
 
-    rg_peak = vorbis_comment_query(comment, "replaygain_album_peak", 0);
+    rg_peak = vorbis_comment_query(comment, "REPLAYGAIN_ALBUM_PEAK", 0);
     rg_info->album_peak = rg_peak != nullptr ? str_to_double (rg_peak) : 0.0;
     AUDDBG ("Album peak: %s (%f)\n", rg_peak, rg_info->album_peak);
 
-    rg_peak = vorbis_comment_query(comment, "replaygain_track_peak", 0);
-    if (!rg_peak) rg_peak = vorbis_comment_query(comment, "rg_peak", 0);  /* Old */
+    rg_peak = vorbis_comment_query(comment, "REPLAYGAIN_TRACK_PEAK", 0);
+    if (!rg_peak) rg_peak = vorbis_comment_query(comment, "RG_PEAK", 0);  /* Old */
     rg_info->track_peak = rg_peak != nullptr ? str_to_double (rg_peak) : 0.0;
     AUDDBG ("Track peak: %s (%f)\n", rg_peak, rg_info->track_peak);
 
