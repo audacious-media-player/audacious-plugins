@@ -29,6 +29,28 @@
 class PlaylistModel : public QAbstractListModel
 {
 public:
+    enum {
+        NowPlaying,
+        EntryNumber,
+        Title,
+        Artist,
+        Year,
+        Album,
+        AlbumArtist,
+        Track,
+        Genre,
+        QueuePos,
+        Length,
+        Path,
+        Filename,
+        CustomTitle,
+        Bitrate,
+        Comment,
+        n_cols
+    };
+
+    static const char * const labels[];
+
     PlaylistModel (QObject * parent, int uniqueID);
     ~PlaylistModel ();
 
@@ -49,13 +71,15 @@ public:
     void entriesRemoved (int row, int count);
     void entriesChanged (int row, int count);
 
-    QString getQueued (int row) const;
     int playlist () const;
     int uniqueId () const;
 
 private:
     int m_uniqueID;
     int m_rows;
+
+    QVariant alignment (int col) const;
+    QString queuePos (int row) const;
 };
 
 class PlaylistProxyModel : public QSortFilterProxyModel
