@@ -35,7 +35,7 @@ const char * const qtui_defaults[] = {
     "close_button_visible", "TRUE",
 
     "autoscroll", "TRUE",
-    "playlist_columns", "playing title artist album queued length",
+    "playlist_columns", DEFAULT_COLUMNS,
     "playlist_headers", "TRUE",
 //    "record", "FALSE",
     "show_remaining_time", "FALSE",

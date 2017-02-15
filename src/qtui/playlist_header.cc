@@ -20,6 +20,7 @@
 #include "playlist_header.h"
 #include "playlist_model.h"
 #include "playlist.h"
+#include "settings.h"
 
 #include <string.h>
 
@@ -76,23 +77,22 @@ static_assert (aud::n_elems (s_default_widths) == PlaylistModel::n_cols, "update
 static Index<int> s_cols;
 static int s_col_widths[PlaylistModel::n_cols];
 
-static void loadConfig ()
+static void loadConfig (bool force = false)
 {
     static bool loaded = false;
 
-    if (loaded)
+    if (loaded && ! force)
         return;
 
-    String columns = aud_get_str ("qtui", "playlist_columns");
-    Index<String> index = str_list_to_index (columns, " ");
-    int count = aud::min (index.len (), (int) PlaylistModel::n_cols);
+    auto columns = str_list_to_index (aud_get_str ("qtui", "playlist_columns"), " ");
+    int n_columns = aud::min (columns.len (), (int) PlaylistModel::n_cols);
 
-    for (int c = 0; c < count; c ++)
+    s_cols.clear ();
+
+    for (int c = 0; c < n_columns; c ++)
     {
-        const String & column = index[c];
-
         int i = 0;
-        while (i < PlaylistModel::n_cols && strcmp (column, s_col_keys[i]))
+        while (i < PlaylistModel::n_cols && strcmp (columns[c], s_col_keys[i]))
             i ++;
 
         if (i < PlaylistModel::n_cols)
@@ -100,11 +100,11 @@ static void loadConfig ()
     }
 
     auto widths = str_list_to_index (aud_get_str ("qtui", "column_widths"), ", ");
-    int nwidths = aud::min (widths.len (), (int) PlaylistModel::n_cols);
+    int n_widths = aud::min (widths.len (), (int) PlaylistModel::n_cols);
 
-    for (int i = 0; i < nwidths; i ++)
+    for (int i = 0; i < n_widths; i ++)
         s_col_widths[i] = str_to_int (widths[i]);
-    for (int i = nwidths; i < PlaylistModel::n_cols; i ++)
+    for (int i = n_widths; i < PlaylistModel::n_cols; i ++)
         s_col_widths[i] = s_default_widths[i];
 
     loaded = true;
@@ -158,6 +158,17 @@ static void toggleColumn (int col, bool on)
     hook_call ("qtui update playlist columns", nullptr);
 }
 
+static void resetToDefaults ()
+{
+    aud_set_str ("qtui", "playlist_columns", DEFAULT_COLUMNS);
+    aud_set_str ("qtui", "column_widths", "");
+
+    loadConfig (true);
+
+    // update all playlists
+    hook_call ("qtui update playlist columns", nullptr);
+}
+
 void PlaylistHeader::contextMenuEvent (QContextMenuEvent * event)
 {
     auto menu = new QMenu (this);
@@ -168,7 +179,7 @@ void PlaylistHeader::contextMenuEvent (QContextMenuEvent * event)
         actions[col] = new QAction (_(PlaylistModel::labels[col]), menu);
         actions[col]->setCheckable (true);
 
-        QObject::connect (actions[col], & QAction::toggled, [col] (bool on) {
+        connect (actions[col], & QAction::toggled, [col] (bool on) {
             toggleColumn (col, on);
         });
 
@@ -177,6 +188,14 @@ void PlaylistHeader::contextMenuEvent (QContextMenuEvent * event)
 
     for (int col : s_cols)
         actions[col]->setChecked (true);
+
+    auto sep = new QAction (menu);
+    sep->setSeparator (true);
+    menu->addAction (sep);
+
+    auto reset = new QAction (_("Reset to Defaults"), menu);
+    connect (reset, & QAction::triggered, resetToDefaults);
+    menu->addAction (reset);
 
     menu->popup (event->globalPos ());
 }

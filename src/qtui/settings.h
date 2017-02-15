@@ -20,6 +20,8 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#define DEFAULT_COLUMNS "playing title artist album queued length"
+
 struct PluginPreferences;
 extern const PluginPreferences qtui_prefs;
 
