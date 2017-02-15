@@ -231,11 +231,19 @@ void PlaylistHeader::updateColumns ()
 
     for (int col = 0; col < PlaylistModel::n_cols; col++)
     {
-        m_playlist->setColumnWidth (1 + col, (col == last) ? 0 : s_col_widths[col]);
+        if (col != last)
+            m_playlist->setColumnWidth (1 + col, s_col_widths[col]);
+
         m_playlist->setColumnHidden (1 + col, ! shown[col]);
     }
 
+    // width of last column should be set to 0 initially,
+    // but doing so repeatedly causes flicker
+    if (last >= 0 && last != m_lastCol)
+        m_playlist->setColumnWidth (1 + last, 0);
+
     m_inUpdate = false;
+    m_lastCol = last;
 }
 
 void PlaylistHeader::sectionMoved (int logicalIndex, int oldVisualIndex, int newVisualIndex)
