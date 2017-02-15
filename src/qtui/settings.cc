@@ -18,7 +18,6 @@
  */
 
 #include "settings.h"
-#include "playlist_columns.h"
 
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -61,7 +60,6 @@ static const PreferencesWidget qtui_widgets[] = {
     WidgetCheck (N_("Show close buttons"),
         WidgetBool ("qtui", "close_button_visible", qtui_update_playlist_settings)),
     WidgetLabel (N_("<b>Playlist Columns</b>")),
-    WidgetCustomQt (pl_col_create_chooser),
     WidgetCheck (N_("Show column headers"),
         WidgetBool ("qtui", "playlist_headers", qtui_update_playlist_settings)),
     WidgetLabel (N_("<b>Miscellaneous</b>")),

@@ -1,6 +1,6 @@
 /*
- * playlist_columns.h
- * Copyright 2017 Eugene Paskevich
+ * playlist_header.h
+ * Copyright 2017 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,36 +17,23 @@
  * the use of this software.
  */
 
-#ifndef PLAYLIST_COLUMNS_H
-#define PLAYLIST_COLUMNS_H
+#ifndef PLAYLIST_HEADER_H
+#define PLAYLIST_HEADER_H
 
-enum {
-    PL_COL_NOW_PLAYING,
-    PL_COL_NUMBER,
-    PL_COL_TITLE,
-    PL_COL_ARTIST,
-    PL_COL_YEAR,
-    PL_COL_ALBUM,
-    PL_COL_ALBUM_ARTIST,
-    PL_COL_TRACK,
-    PL_COL_GENRE,
-    PL_COL_QUEUED,
-    PL_COL_LENGTH,
-    PL_COL_PATH,
-    PL_COL_FILENAME,
-    PL_COL_CUSTOM,
-    PL_COL_BITRATE,
-    PL_COL_COMMENT,
-    PL_COLS
+#include <QHeaderView>
+
+class QAction;
+class QContextMenuEvent;
+class QMenu;
+
+class PlaylistHeader : public QHeaderView
+{
+public:
+    PlaylistHeader (QWidget * parent) :
+        QHeaderView (Qt::Horizontal, parent) {}
+
+protected:
+    void contextMenuEvent (QContextMenuEvent * event);
 };
 
-extern const char * const pl_col_names[PL_COLS];
-
-extern int pl_num_cols;
-extern int pl_cols[PL_COLS];
-extern int pl_col_widths[PL_COLS];
-
-void pl_col_init ();
-void pl_col_save ();
-
-#endif
+#endif // PLAYLIST_HEADER_H

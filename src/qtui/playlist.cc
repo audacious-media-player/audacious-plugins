@@ -30,6 +30,7 @@
 
 #include "playlist.h"
 #include "playlist_columns.h"
+#include "playlist_header.h"
 #include "playlist_model.h"
 
 #include "../ui-common/menu-ops.h"
@@ -48,6 +49,8 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) :
     setModel (proxyModel);
     inUpdate = false;
 
+    setHeader (new PlaylistHeader (this));
+
     setAllColumnsShowFocus (true);
     setAlternatingRowColors (true);
     setAttribute (Qt::WA_MacShowFocusRect, false);
@@ -62,6 +65,7 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) :
     updateColumns ();
 
     auto hdr = header ();
+    hdr->setSectionsMovable (true);
     // avoid resize signalling for the last visible section
     hdr->setStretchLastSection (false);
     QObject::connect (hdr, & QHeaderView::sectionResized, this, & PlaylistWidget::sectionResized);
@@ -420,9 +424,12 @@ void PlaylistWidget::updateColumns ()
 
     in_columnUpdate = true;
 
-    // column 0 is hidden and useful columns start at 1
-    // workaround for QTBUG-33974 (column 0 cannot be moved)
-    setColumnHidden (0, true);
+    // Due to QTBUG-33974, column #0 cannot be moved by the user.
+    // As a workaround, hide column #0 and start the real columns at #1.
+    // However, Qt will hide the header completely if no columns are visible.
+    // This is bad since the user can't right-click to add any columns again.
+    // To prevent this, show column #0 if no real columns are visible.
+    setColumnHidden (0, (pl_num_cols > 0));
 
     bool shown[PL_COLS] {};
 
