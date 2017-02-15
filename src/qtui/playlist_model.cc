@@ -58,6 +58,19 @@ int PlaylistModel::columnCount (const QModelIndex & parent) const
     return PL_COLS;
 }
 
+QVariant PlaylistModel::alignment (int column) const
+{
+    switch (column)
+    {
+    case PL_COL_NOW_PLAYING:
+        return Qt::AlignCenter;
+    case PL_COL_LENGTH:
+        return Qt::AlignRight + Qt::AlignVCenter;
+    default:
+        return Qt::AlignLeft + Qt::AlignVCenter;
+    }
+}
+
 QVariant PlaylistModel::data (const QModelIndex &index, int role) const
 {
     String title, artist, album;
@@ -119,21 +132,11 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
             return QString (tuple.get_str (Tuple::FormattedTitle));
         case PL_COL_COMMENT:
             return QString (tuple.get_str (Tuple::Comment));
-            break;
         }
         break;
 
     case Qt::TextAlignmentRole:
-        switch (index.column ())
-        {
-        case PL_COL_NOW_PLAYING:
-            return Qt::AlignCenter;
-        case PL_COL_LENGTH:
-            return Qt::AlignRight + Qt::AlignVCenter;
-        default:
-            return Qt::AlignLeft + Qt::AlignVCenter;
-        }
-        break;
+        return alignment (index.column ());
 
     case Qt::DecorationRole:
         if (index.column () == 0 && index.row () == aud_playlist_get_position (playlist ()))
@@ -153,22 +156,28 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
 
 QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, int role) const
 {
-    if (role == Qt::DisplayRole)
-    {
-        if (orientation == Qt::Horizontal)
-        {
-            switch (section)
-            {
-            case PL_COL_NOW_PLAYING:
-            case PL_COL_QUEUED:
-            case PL_COL_NUMBER:
-                return QString ();
-            }
+    if (orientation != Qt::Horizontal)
+        return QVariant ();
 
-            return QString (_(pl_col_names[section]));
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        switch (section)
+        {
+        case PL_COL_NOW_PLAYING:
+        case PL_COL_QUEUED:
+        case PL_COL_NUMBER:
+            return QString ();
         }
+
+        return QString (_(pl_col_names[section]));
+
+    case Qt::TextAlignmentRole:
+        return alignment (section);
+
+    default:
+        return QVariant ();
     }
-    return QVariant ();
 }
 
 Qt::DropActions PlaylistModel::supportedDropActions () const
