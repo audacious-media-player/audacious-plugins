@@ -40,7 +40,7 @@ private:
     PlaylistWidget * m_playlist;
     bool m_inUpdate = false;
 
-    void sectionMoved (int /*logicalIndex*/, int oldVisualIndex, int newVisualIndex);
+    void sectionMoved (int logicalIndex, int oldVisualIndex, int newVisualIndex);
     void sectionResized (int logicalIndex, int /*oldSize*/, int newSize);
 
     void contextMenuEvent (QContextMenuEvent * event);

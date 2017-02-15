@@ -73,8 +73,7 @@ static const int s_default_widths[] = {
 static_assert (aud::n_elems (s_col_keys) == PlaylistModel::n_cols, "update s_col_keys");
 static_assert (aud::n_elems (s_default_widths) == PlaylistModel::n_cols, "update s_default_widths");
 
-static int s_num_cols;
-static int s_cols[PlaylistModel::n_cols];
+static Index<int> s_cols;
 static int s_col_widths[PlaylistModel::n_cols];
 
 static void loadConfig ()
@@ -84,11 +83,8 @@ static void loadConfig ()
     if (loaded)
         return;
 
-    s_num_cols = 0;
-
     String columns = aud_get_str ("qtui", "playlist_columns");
     Index<String> index = str_list_to_index (columns, " ");
-
     int count = aud::min (index.len (), (int) PlaylistModel::n_cols);
 
     for (int c = 0; c < count; c ++)
@@ -99,10 +95,8 @@ static void loadConfig ()
         while (i < PlaylistModel::n_cols && strcmp (column, s_col_keys[i]))
             i ++;
 
-        if (i == PlaylistModel::n_cols)
-            break;
-
-        s_cols[s_num_cols ++] = i;
+        if (i < PlaylistModel::n_cols)
+            s_cols.append (i);
     }
 
     auto widths = str_list_to_index (aud_get_str ("qtui", "column_widths"), ", ");
@@ -119,8 +113,8 @@ static void loadConfig ()
 static void saveConfig ()
 {
     Index<String> index;
-    for (int i = 0; i < s_num_cols; i ++)
-        index.append (String (s_col_keys[s_cols[i]]));
+    for (int col : s_cols)
+        index.append (String (s_col_keys[col]));
 
     aud_set_str ("qtui", "playlist_columns", index_to_str_list (index, " "));
     aud_set_str ("qtui", "column_widths", int_array_to_str (s_col_widths, PlaylistModel::n_cols));
@@ -141,34 +135,23 @@ PlaylistHeader::PlaylistHeader (PlaylistWidget * playlist) :
     connect (this, & QHeaderView::sectionMoved, this, & PlaylistHeader::sectionMoved);
 }
 
-static void toggle_column (int col, bool on)
+static void toggleColumn (int col, bool on)
 {
-    int pos = -1;
-
-    for (int i = 0; i < s_num_cols; i ++)
-    {
-        if (s_cols[i] == col)
-        {
-            pos = i;
-            break;
-        }
-    }
+    int pos = s_cols.find (col);
 
     if (on)
     {
         if (pos >= 0)
             return;
 
-        s_cols[s_num_cols ++] = col;
+        s_cols.append (col);
     }
     else
     {
         if (pos < 0)
             return;
 
-        s_num_cols --;
-        for (int i = pos; i < s_num_cols; i ++)
-            s_cols[i] = s_cols[i + 1];
+        s_cols.remove (pos, 1);
     }
 
     saveConfig ();
@@ -182,20 +165,20 @@ void PlaylistHeader::contextMenuEvent (QContextMenuEvent * event)
     auto menu = new QMenu (this);
     QAction * actions[PlaylistModel::n_cols];
 
-    for (int c = 0; c < PlaylistModel::n_cols; c ++)
+    for (int col = 0; col < PlaylistModel::n_cols; col ++)
     {
-        actions[c] = new QAction (_(PlaylistModel::labels[c]), menu);
-        actions[c]->setCheckable (true);
+        actions[col] = new QAction (_(PlaylistModel::labels[col]), menu);
+        actions[col]->setCheckable (true);
 
-        QObject::connect (actions[c], & QAction::toggled, [c] (bool on) {
-            toggle_column (c, on);
+        QObject::connect (actions[col], & QAction::toggled, [col] (bool on) {
+            toggleColumn (col, on);
         });
 
-        menu->addAction (actions[c]);
+        menu->addAction (actions[col]);
     }
 
-    for (int i = 0; i < s_num_cols; i ++)
-        actions[s_cols[i]]->setChecked (true);
+    for (int col : s_cols)
+        actions[col]->setChecked (true);
 
     menu->popup (event->globalPos ());
 }
@@ -209,11 +192,11 @@ void PlaylistHeader::updateColumns ()
     // However, Qt will hide the header completely if no columns are visible.
     // This is bad since the user can't right-click to add any columns again.
     // To prevent this, show column #0 if no real columns are visible.
-    m_playlist->setColumnHidden (0, (s_num_cols > 0));
+    m_playlist->setColumnHidden (0, (s_cols.len () > 0));
 
     bool shown[PlaylistModel::n_cols] {};
 
-    for (int i = 0; i < s_num_cols; i++)
+    for (int i = 0; i < s_cols.len (); i++)
     {
         int col = s_cols[i];
         moveSection (visualIndex (1 + col), 1 + i);
@@ -230,7 +213,7 @@ void PlaylistHeader::updateColumns ()
     m_inUpdate = false;
 }
 
-void PlaylistHeader::sectionMoved (int /*logicalIndex*/, int oldVisualIndex, int newVisualIndex)
+void PlaylistHeader::sectionMoved (int logicalIndex, int oldVisualIndex, int newVisualIndex)
 {
     if (m_inUpdate)
         return;
@@ -238,17 +221,16 @@ void PlaylistHeader::sectionMoved (int /*logicalIndex*/, int oldVisualIndex, int
     int old_pos = oldVisualIndex - 1;
     int new_pos = newVisualIndex - 1;
 
-    if (old_pos < 0 || old_pos > s_num_cols || new_pos < 0 || new_pos > s_num_cols)
+    if (old_pos < 0 || old_pos > s_cols.len () || new_pos < 0 || new_pos > s_cols.len ())
         return;
 
-    int col = s_cols[old_pos];
+    int col = logicalIndex - 1;
+    if (col != s_cols[old_pos])
+        return;
 
-    for (int i = old_pos; i < new_pos; i ++)
-        s_cols[i] = s_cols[i + 1];
-    for (int i = old_pos; i > new_pos; i --)
-        s_cols[i] = s_cols[i - 1];
+    s_cols.remove (old_pos, 1);
+    s_cols.insert (& col, new_pos, 1);
 
-    s_cols[new_pos] = col;
     saveConfig ();
 
     // update all the other playlists
@@ -265,6 +247,7 @@ void PlaylistHeader::sectionResized (int logicalIndex, int /*oldSize*/, int newS
         return;
 
     s_col_widths[col] = newSize;
+
     saveConfig ();
 
     // update all the other playlists
