@@ -32,24 +32,44 @@
 
 const char * const PlaylistModel::labels[] = {
     N_("Now Playing"),
-    N_("Entry number"),
+    N_("Entry Number"),
     N_("Title"),
     N_("Artist"),
     N_("Year"),
     N_("Album"),
-    N_("Album artist"),
+    N_("Album Artist"),
     N_("Track"),
     N_("Genre"),
-    N_("Queue position"),
+    N_("Queue Position"),
     N_("Length"),
-    N_("File path"),
-    N_("File name"),
-    N_("Custom title"),
+    N_("File Path"),
+    N_("File Name"),
+    N_("Custom Title"),
     N_("Bitrate"),
     N_("Comment")
 };
 
+static const Tuple::Field s_fields[] = {
+    Tuple::Invalid,
+    Tuple::Invalid,
+    Tuple::Title,
+    Tuple::Artist,
+    Tuple::Year,
+    Tuple::Album,
+    Tuple::AlbumArtist,
+    Tuple::Track,
+    Tuple::Genre,
+    Tuple::Invalid,
+    Tuple::Length,
+    Tuple::Path,
+    Tuple::Basename,
+    Tuple::FormattedTitle,
+    Tuple::Bitrate,
+    Tuple::Comment
+};
+
 static_assert (aud::n_elems (PlaylistModel::labels) == PlaylistModel::n_cols, "update PlaylistModel::labels");
+static_assert (aud::n_elems (s_fields) == PlaylistModel::n_cols, "update s_fields");
 
 static inline QPixmap get_icon (const char * name)
 {
@@ -98,65 +118,42 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         return QVariant ();
 
     Tuple tuple;
-    int length;
+    int val = -1;
 
     switch (role)
     {
     case Qt::DisplayRole:
-        switch (col)
+        if (s_fields[col] != Tuple::Invalid)
         {
-        case Album:
-        case AlbumArtist:
-        case Artist:
-        case Bitrate:
-        case Comment:
-        case CustomTitle:
-        case Filename:
-        case Genre:
-        case Length:
-        case Path:
-        case Title:
-        case Track:
-        case Year:
             tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), Playlist::NoWait);
-            break;
+
+            switch (tuple.get_value_type (s_fields[col]))
+            {
+            case Tuple::Empty:
+                return QVariant ();
+            case Tuple::String:
+                return QString (tuple.get_str (s_fields[col]));
+            case Tuple::Int:
+                val = tuple.get_int (s_fields[col]);
+                break;
+            }
         }
 
         switch (col)
         {
-        case Title:
-            return QString (tuple.get_str (Tuple::Title));
-        case Artist:
-            return QString (tuple.get_str (Tuple::Artist));
-        case Album:
-            return QString (tuple.get_str (Tuple::Album));
+        case NowPlaying:
+            return QVariant ();
+        case EntryNumber:
+            return QString ("%1").arg (index.row () + 1);
         case QueuePos:
             return queuePos (index.row ());
         case Length:
-            length = tuple.get_int (Tuple::Length);
-            return QString (length >= 0 ? (const char *) str_format_time (length) : "");
+            return QString (str_format_time (val));
         case Bitrate:
-            return QString ("%1 kbps").arg (tuple.get_int (Tuple::Bitrate));
-        case EntryNumber:
-            return QString ("%1").arg (index.row () + 1);
-        case Year:
-            return QString ("%1").arg (tuple.get_int (Tuple::Year));
-        case AlbumArtist:
-            return QString (tuple.get_str (Tuple::AlbumArtist));
-        case Track:
-            return QString ("%1").arg (tuple.get_int (Tuple::Track));
-        case Genre:
-            return QString (tuple.get_str (Tuple::Genre));
-        case Path:
-            return QString (tuple.get_str (Tuple::Path));
-        case Filename:
-            return QString (tuple.get_str (Tuple::Basename));
-        case CustomTitle:
-            return QString (tuple.get_str (Tuple::FormattedTitle));
-        case Comment:
-            return QString (tuple.get_str (Tuple::Comment));
+            return QString ("%1 kbps").arg (val);
+        default:
+            return QString ("%1").arg (val);
         }
-        break;
 
     case Qt::TextAlignmentRole:
         return alignment (col);

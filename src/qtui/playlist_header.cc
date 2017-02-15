@@ -53,7 +53,7 @@ static const char * const s_col_keys[] = {
 };
 
 static const int s_default_widths[] = {
-    25,   // playing
+    25,   // now playing
     25,   // entry number
     275,  // title
     175,  // artist
