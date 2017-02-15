@@ -45,6 +45,8 @@ const char * const pl_col_names[PL_COLS] = {
     N_("Comment")
 };
 
+static bool initted = false;
+
 int pl_num_cols;
 int pl_cols[PL_COLS];
 int pl_col_widths[PL_COLS];
@@ -89,6 +91,9 @@ const int pl_default_widths[PL_COLS] = {
 
 void pl_col_init ()
 {
+    if (initted)
+        return;
+
     pl_num_cols = 0;
 
     String columns = aud_get_str ("qtui", "playlist_columns");
@@ -117,6 +122,8 @@ void pl_col_init ()
         pl_col_widths[i] = str_to_int (widths[i]);
     for (int i = nwidths; i < PL_COLS; i ++)
         pl_col_widths[i] = pl_default_widths[i];
+
+    initted = true;
 }
 
 void pl_col_save ()
