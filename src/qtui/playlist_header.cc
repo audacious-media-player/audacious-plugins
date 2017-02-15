@@ -127,9 +127,7 @@ PlaylistHeader::PlaylistHeader (PlaylistWidget * playlist) :
     loadConfig ();
 
     setSectionsMovable (true);
-
-    // avoid resize signalling for the last visible section
-    setStretchLastSection (false);
+    setStretchLastSection (true);
 
     connect (this, & QHeaderView::sectionResized, this, & PlaylistHeader::sectionResized);
     connect (this, & QHeaderView::sectionMoved, this, & PlaylistHeader::sectionMoved);
@@ -187,26 +185,31 @@ void PlaylistHeader::updateColumns ()
 {
     m_inUpdate = true;
 
+    int n_shown = s_cols.len ();
+
     // Due to QTBUG-33974, column #0 cannot be moved by the user.
     // As a workaround, hide column #0 and start the real columns at #1.
     // However, Qt will hide the header completely if no columns are visible.
     // This is bad since the user can't right-click to add any columns again.
     // To prevent this, show column #0 if no real columns are visible.
-    m_playlist->setColumnHidden (0, (s_cols.len () > 0));
+    m_playlist->setColumnHidden (0, (n_shown > 0));
 
     bool shown[PlaylistModel::n_cols] {};
 
-    for (int i = 0; i < s_cols.len (); i++)
+    for (int i = 0; i < n_shown; i++)
     {
         int col = s_cols[i];
         moveSection (visualIndex (1 + col), 1 + i);
         shown[col] = true;
     }
 
+    // last column expands to fit, so size is not restored
+    int last = (n_shown > 0) ? s_cols[n_shown - 1] : -1;
+
     for (int col = 0; col < PlaylistModel::n_cols; col++)
     {
         // TODO: set column width based on font size
-        m_playlist->setColumnWidth (1 + col, s_col_widths[col]);
+        m_playlist->setColumnWidth (1 + col, (col == last) ? 0 : s_col_widths[col]);
         m_playlist->setColumnHidden (1 + col, ! shown[col]);
     }
 
@@ -239,11 +242,16 @@ void PlaylistHeader::sectionMoved (int logicalIndex, int oldVisualIndex, int new
 
 void PlaylistHeader::sectionResized (int logicalIndex, int /*oldSize*/, int newSize)
 {
-    if (m_inUpdate || newSize == 0)
+    if (m_inUpdate)
         return;
 
     int col = logicalIndex - 1;
     if (col < 0 || col > PlaylistModel::n_cols)
+        return;
+
+    // last column expands to fit, so size is not saved
+    int pos = s_cols.find (col);
+    if (pos < 0 || pos == s_cols.len () - 1)
         return;
 
     s_col_widths[col] = newSize;
