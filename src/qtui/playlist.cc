@@ -420,9 +420,13 @@ void PlaylistWidget::updateSettings ()
 
 void PlaylistWidget::updateColumns ()
 {
-    auto hdr = header ();
+    /* prevent recursion */
+    if (in_columnUpdate)
+        return;
 
     in_columnUpdate = true;
+
+    auto hdr = header ();
 
     // Due to QTBUG-33974, column #0 cannot be moved by the user.
     // As a workaround, hide column #0 and start the real columns at #1.
@@ -461,6 +465,9 @@ void PlaylistWidget::sectionResized (int logicalIndex, int oldSize, int newSize)
 
     pl_col_widths[col] = newSize;
     pl_col_save ();
+
+    /* this will update all the other playlists */
+    hook_call ("qtui update playlist columns", nullptr);
 }
 
 void PlaylistWidget::sectionMoved (int logicalIndex, int oldVisualIndex, int newVisualIndex)
@@ -482,7 +489,8 @@ void PlaylistWidget::sectionMoved (int logicalIndex, int oldVisualIndex, int new
         pl_cols[i] = pl_cols[i - 1];
 
     pl_cols[new_pos] = col;
-
-    hook_call ("qtui update playlist columns from ui", nullptr);
     pl_col_save ();
+
+    /* this will update all the other playlists */
+    hook_call ("qtui update playlist columns", nullptr);
 }
