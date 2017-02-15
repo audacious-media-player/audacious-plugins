@@ -103,9 +103,9 @@ static void loadConfig (bool force = false)
     int n_widths = aud::min (widths.len (), (int) PlaylistModel::n_cols);
 
     for (int i = 0; i < n_widths; i ++)
-        s_col_widths[i] = str_to_int (widths[i]);
+        s_col_widths[i] = toNativeDPI (str_to_int (widths[i]));
     for (int i = n_widths; i < PlaylistModel::n_cols; i ++)
-        s_col_widths[i] = s_default_widths[i];
+        s_col_widths[i] = toNativeDPI (s_default_widths[i]);
 
     loaded = true;
 }
@@ -116,8 +116,12 @@ static void saveConfig ()
     for (int col : s_cols)
         index.append (String (s_col_keys[col]));
 
+    int widths[PlaylistModel::n_cols];
+    for (int i = 0; i < PlaylistModel::n_cols; i ++)
+        widths[i] = toPortableDPI (s_col_widths[i]);
+
     aud_set_str ("qtui", "playlist_columns", index_to_str_list (index, " "));
-    aud_set_str ("qtui", "column_widths", int_array_to_str (s_col_widths, PlaylistModel::n_cols));
+    aud_set_str ("qtui", "column_widths", int_array_to_str (widths, PlaylistModel::n_cols));
 }
 
 PlaylistHeader::PlaylistHeader (PlaylistWidget * playlist) :
@@ -227,7 +231,6 @@ void PlaylistHeader::updateColumns ()
 
     for (int col = 0; col < PlaylistModel::n_cols; col++)
     {
-        // TODO: set column width based on font size
         m_playlist->setColumnWidth (1 + col, (col == last) ? 0 : s_col_widths[col]);
         m_playlist->setColumnHidden (1 + col, ! shown[col]);
     }

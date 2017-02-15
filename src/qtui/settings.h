@@ -20,11 +20,20 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include <libaudcore/templates.h>
+
 #define DEFAULT_COLUMNS "playing title artist album queued length"
 
 struct PluginPreferences;
 extern const PluginPreferences qtui_prefs;
 
 extern const char * const qtui_defaults[];
+
+int getDPI ();
+
+static inline int toNativeDPI (int x)
+    { return aud::rescale (x, 96, getDPI ()); }
+static inline int toPortableDPI (int x)
+    { return aud::rescale (x, getDPI (), 96); }
 
 #endif

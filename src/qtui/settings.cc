@@ -23,7 +23,8 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/preferences.h>
 
-#include <QtGlobal>
+#include <QApplication>
+#include <QDesktopWidget>
 
 const char * const qtui_defaults[] = {
     "infoarea_show_vis", "TRUE",
@@ -71,3 +72,16 @@ static const PreferencesWidget qtui_widgets[] = {
 };
 
 const PluginPreferences qtui_prefs = {{qtui_widgets}};
+
+int getDPI ()
+{
+    static int dpi = 0;
+
+    if (! dpi)
+    {
+        auto desktop = qApp->desktop ();
+        dpi = aud::max (96, (desktop->logicalDpiX () + desktop->logicalDpiY ()) / 2);
+    }
+
+    return dpi;
+}

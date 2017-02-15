@@ -20,6 +20,7 @@
 #include <cmath>
 
 #include "info_bar.h"
+#include "settings.h"
 
 #include <libaudcore/drct.h>
 #include <libaudcore/interface.h>
@@ -96,7 +97,7 @@ static void get_color (int i, QColor & color, QColor & shadow)
 InfoVis::InfoVis (QWidget * parent) :
     QWidget (parent),
     Visualizer (Freq),
-    ps ((logicalDpiX () + logicalDpiY ()) / 2),
+    ps (getDPI ()),
     m_gradient (0, 0, 0, ps.Height)
 {
     m_gradient.setStops ({
