@@ -55,12 +55,12 @@ int PlaylistModel::rowCount (const QModelIndex & parent) const
 
 int PlaylistModel::columnCount (const QModelIndex & parent) const
 {
-    return PL_COLS;
+    return 1 + PL_COLS;
 }
 
-QVariant PlaylistModel::alignment (int column) const
+static QVariant col_alignment (int col)
 {
-    switch (column)
+    switch (col)
     {
     case PL_COL_NOW_PLAYING:
         return Qt::AlignCenter;
@@ -73,14 +73,17 @@ QVariant PlaylistModel::alignment (int column) const
 
 QVariant PlaylistModel::data (const QModelIndex &index, int role) const
 {
-    String title, artist, album;
+    int col = index.column () - 1;
+    if (col < 0 || col > PL_COLS)
+        return QVariant ();
+
     Tuple tuple;
     int length;
 
     switch (role)
     {
     case Qt::DisplayRole:
-        switch (index.column ())
+        switch (col)
         {
         case PL_COL_ALBUM:
         case PL_COL_ALBUM_ARTIST:
@@ -99,7 +102,7 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
             break;
         }
 
-        switch (index.column ())
+        switch (col)
         {
         case PL_COL_TITLE:
             return QString (tuple.get_str (Tuple::Title));
@@ -136,10 +139,10 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         break;
 
     case Qt::TextAlignmentRole:
-        return alignment (index.column ());
+        return col_alignment (col);
 
     case Qt::DecorationRole:
-        if (index.column () == 0 && index.row () == aud_playlist_get_position (playlist ()))
+        if (col == PL_COL_NOW_PLAYING && index.row () == aud_playlist_get_position (playlist ()))
         {
             if (aud_playlist_get_playing () == playlist ())
                 if (aud_drct_get_paused ())
@@ -159,21 +162,25 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
     if (orientation != Qt::Horizontal)
         return QVariant ();
 
+    int col = section - 1;
+    if (col < 0 || col > PL_COLS)
+        return QVariant ();
+
     switch (role)
     {
     case Qt::DisplayRole:
-        switch (section)
+        switch (col)
         {
         case PL_COL_NOW_PLAYING:
         case PL_COL_QUEUED:
         case PL_COL_NUMBER:
-            return QString ();
+            return QVariant ();
         }
 
-        return QString (_(pl_col_names[section]));
+        return QString (_(pl_col_names[col]));
 
     case Qt::TextAlignmentRole:
-        return alignment (section);
+        return col_alignment (col);
 
     default:
         return QVariant ();

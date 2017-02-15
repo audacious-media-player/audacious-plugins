@@ -54,8 +54,6 @@ public:
     int uniqueId () const;
 
 private:
-    QVariant alignment (int column) const;
-
     int m_uniqueID;
     int m_rows;
 };

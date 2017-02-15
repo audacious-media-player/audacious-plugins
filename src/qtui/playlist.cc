@@ -51,7 +51,6 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) :
     setAllColumnsShowFocus (true);
     setAlternatingRowColors (true);
     setAttribute (Qt::WA_MacShowFocusRect, false);
-    setIndentation (0);
     setUniformRowHeights (true);
     setFrameShape (QFrame::NoFrame);
     setSelectionMode (ExtendedSelection);
@@ -417,22 +416,28 @@ void PlaylistWidget::updateSettings ()
 
 void PlaylistWidget::updateColumns ()
 {
-    int i;
-    QHeaderView * hdr = header ();
+    auto hdr = header ();
 
     in_columnUpdate = true;
 
-    for (i = 0; i < PL_COLS; i++)
+    // column 0 is hidden and useful columns start at 1
+    // workaround for QTBUG-33974 (column 0 cannot be moved)
+    setColumnHidden (0, true);
+
+    bool shown[PL_COLS] {};
+
+    for (int i = 0; i < pl_num_cols; i++)
     {
-        /* TODO: set column width based on font size */
-        setColumnWidth (i, pl_col_widths[i]);
-        setColumnHidden (i, true);
+        int col = pl_cols[i];
+        hdr->moveSection (hdr->visualIndex (1 + col), 1 + i);
+        shown[col] = true;
     }
 
-    for (i = 0; i < pl_num_cols; i++)
+    for (int col = 0; col < PL_COLS; col++)
     {
-        setColumnHidden (pl_cols[i], false);
-        hdr->moveSection (hdr->visualIndex (pl_cols[i]), i);
+        /* TODO: set column width based on font size */
+        setColumnWidth (1 + col, pl_col_widths[col]);
+        setColumnHidden (1 + col, ! shown[col]);
     }
 
     in_columnUpdate = false;
@@ -443,7 +448,11 @@ void PlaylistWidget::sectionResized (int logicalIndex, int oldSize, int newSize)
     if (in_columnUpdate || newSize == 0)
         return;
 
-    pl_col_widths[logicalIndex] = newSize;
+    int col = logicalIndex - 1;
+    if (col < 0 || col > PL_COLS)
+        return;
+
+    pl_col_widths[col] = newSize;
     pl_col_save ();
 }
 
@@ -452,12 +461,20 @@ void PlaylistWidget::sectionMoved (int logicalIndex, int oldVisualIndex, int new
     if (in_columnUpdate)
         return;
 
-    auto hdr = header ();
+    int old_pos = oldVisualIndex - 1;
+    int new_pos = newVisualIndex - 1;
 
-    for (auto i = 0; i < pl_num_cols; i++)
-    {
-        pl_cols[i] = hdr->logicalIndex (i);
-    }
+    if (old_pos < 0 || old_pos > pl_num_cols || new_pos < 0 || new_pos > pl_num_cols)
+        return;
+
+    int col = pl_cols[old_pos];
+
+    for (int i = old_pos; i < new_pos; i ++)
+        pl_cols[i] = pl_cols[i + 1];
+    for (int i = old_pos; i > new_pos; i --)
+        pl_cols[i] = pl_cols[i - 1];
+
+    pl_cols[new_pos] = col;
 
     hook_call ("qtui update playlist columns from ui", nullptr);
     pl_col_save ();
