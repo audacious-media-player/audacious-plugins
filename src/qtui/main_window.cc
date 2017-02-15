@@ -30,6 +30,7 @@
 #include "menus.h"
 #include "playlist.h"
 #include "playlist_tabs.h"
+#include "settings.h"
 #include "status_bar.h"
 #include "time_slider.h"
 #include "tool_bar.h"
@@ -169,7 +170,7 @@ void MainWindow::readSettings ()
     QSettings settings (m_config_name, "QtUi");
 
     if (! restoreGeometry (settings.value ("geometry").toByteArray ()))
-        resize (768, 480);
+        resize (toNativeDPI (768), toNativeDPI (480));
 
     restoreState (settings.value ("windowState").toByteArray ());
 }
