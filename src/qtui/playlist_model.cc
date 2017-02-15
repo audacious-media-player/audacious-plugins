@@ -98,7 +98,7 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
             return getQueued (index.row ());
         case PL_COL_LENGTH:
             length = tuple.get_int (Tuple::Length);
-            return QString ("%1").arg (length >= 0 ? str_format_time (length) : nullptr);
+            return QString (length >= 0 ? (const char *) str_format_time (length) : "");
         case PL_COL_BITRATE:
             return QString ("%1 kbps").arg (tuple.get_int (Tuple::Bitrate));
         case PL_COL_NUMBER:
