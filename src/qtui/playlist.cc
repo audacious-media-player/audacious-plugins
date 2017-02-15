@@ -29,15 +29,13 @@
 #include <libaudcore/runtime.h>
 
 #include "playlist.h"
-#include "playlist_columns.h"
 #include "playlist_header.h"
 #include "playlist_model.h"
 
 #include "../ui-common/menu-ops.h"
 
 PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) :
-    QTreeView (parent),
-    in_columnUpdate (false)
+    QTreeView (parent)
 {
     model = new PlaylistModel (this, uniqueID);
 
@@ -49,7 +47,8 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) :
     setModel (proxyModel);
     inUpdate = false;
 
-    setHeader (new PlaylistHeader (this));
+    auto header = new PlaylistHeader (this);
+    setHeader (header);
 
     setAllColumnsShowFocus (true);
     setAlternatingRowColors (true);
@@ -60,16 +59,7 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) :
     setDragDropMode (DragDrop);
 
     updateSettings ();
-
-    pl_col_init ();
-    updateColumns ();
-
-    auto hdr = header ();
-    hdr->setSectionsMovable (true);
-    // avoid resize signalling for the last visible section
-    hdr->setStretchLastSection (false);
-    QObject::connect (hdr, & QHeaderView::sectionResized, this, & PlaylistWidget::sectionResized);
-    QObject::connect (hdr, & QHeaderView::sectionMoved, this, & PlaylistWidget::sectionMoved);
+    header->updateColumns ();
 
     /* get initial selection and focus from core */
     Playlist::Update upd {};
@@ -416,81 +406,4 @@ void PlaylistWidget::moveFocus (int distance)
 void PlaylistWidget::updateSettings ()
 {
     setHeaderHidden (! aud_get_bool ("qtui", "playlist_headers"));
-}
-
-void PlaylistWidget::updateColumns ()
-{
-    /* prevent recursion */
-    if (in_columnUpdate)
-        return;
-
-    in_columnUpdate = true;
-
-    auto hdr = header ();
-
-    // Due to QTBUG-33974, column #0 cannot be moved by the user.
-    // As a workaround, hide column #0 and start the real columns at #1.
-    // However, Qt will hide the header completely if no columns are visible.
-    // This is bad since the user can't right-click to add any columns again.
-    // To prevent this, show column #0 if no real columns are visible.
-    setColumnHidden (0, (pl_num_cols > 0));
-
-    bool shown[PL_COLS] {};
-
-    for (int i = 0; i < pl_num_cols; i++)
-    {
-        int col = pl_cols[i];
-        hdr->moveSection (hdr->visualIndex (1 + col), 1 + i);
-        shown[col] = true;
-    }
-
-    for (int col = 0; col < PL_COLS; col++)
-    {
-        /* TODO: set column width based on font size */
-        setColumnWidth (1 + col, pl_col_widths[col]);
-        setColumnHidden (1 + col, ! shown[col]);
-    }
-
-    in_columnUpdate = false;
-}
-
-void PlaylistWidget::sectionResized (int logicalIndex, int oldSize, int newSize)
-{
-    if (in_columnUpdate || newSize == 0)
-        return;
-
-    int col = logicalIndex - 1;
-    if (col < 0 || col > PL_COLS)
-        return;
-
-    pl_col_widths[col] = newSize;
-    pl_col_save ();
-
-    /* this will update all the other playlists */
-    hook_call ("qtui update playlist columns", nullptr);
-}
-
-void PlaylistWidget::sectionMoved (int logicalIndex, int oldVisualIndex, int newVisualIndex)
-{
-    if (in_columnUpdate)
-        return;
-
-    int old_pos = oldVisualIndex - 1;
-    int new_pos = newVisualIndex - 1;
-
-    if (old_pos < 0 || old_pos > pl_num_cols || new_pos < 0 || new_pos > pl_num_cols)
-        return;
-
-    int col = pl_cols[old_pos];
-
-    for (int i = old_pos; i < new_pos; i ++)
-        pl_cols[i] = pl_cols[i + 1];
-    for (int i = old_pos; i > new_pos; i --)
-        pl_cols[i] = pl_cols[i - 1];
-
-    pl_cols[new_pos] = col;
-    pl_col_save ();
-
-    /* this will update all the other playlists */
-    hook_call ("qtui update playlist columns", nullptr);
 }

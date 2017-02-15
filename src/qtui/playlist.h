@@ -71,14 +71,9 @@ private:
     void selectionChanged (const QItemSelection & selected, const QItemSelection & deselected);
 
     void updateSettings ();
-    void updateColumns ();
-    bool in_columnUpdate;
-    void sectionResized (int logicalIndex, int oldSize, int newSize);
-    void sectionMoved (int logicalIndex, int oldVisualIndex, int newVisualIndex);
 
     const HookReceiver<PlaylistWidget>
-     hook1 {"qtui update playlist settings", this, & PlaylistWidget::updateSettings},
-     hook2 {"qtui update playlist columns", this, & PlaylistWidget::updateColumns};
+     hook1 {"qtui update playlist settings", this, & PlaylistWidget::updateSettings};
 };
 
 #endif

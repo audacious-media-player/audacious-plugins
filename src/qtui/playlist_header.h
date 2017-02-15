@@ -1,6 +1,6 @@
 /*
  * playlist_header.h
- * Copyright 2017 John Lindgren
+ * Copyright 2017 John Lindgren and Eugene Paskevich
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -21,7 +21,9 @@
 #define PLAYLIST_HEADER_H
 
 #include <QHeaderView>
+#include <libaudcore/hook.h>
 
+class PlaylistWidget;
 class QAction;
 class QContextMenuEvent;
 class QMenu;
@@ -29,11 +31,22 @@ class QMenu;
 class PlaylistHeader : public QHeaderView
 {
 public:
-    PlaylistHeader (QWidget * parent) :
-        QHeaderView (Qt::Horizontal, parent) {}
+    PlaylistHeader (PlaylistWidget * parent);
 
-protected:
+    /* this should be called by the playlist after adding the header */
+    void updateColumns ();
+
+private:
+    PlaylistWidget * m_playlist;
+    bool m_inUpdate = false;
+
+    void sectionMoved (int /*logicalIndex*/, int oldVisualIndex, int newVisualIndex);
+    void sectionResized (int logicalIndex, int /*oldSize*/, int newSize);
+
     void contextMenuEvent (QContextMenuEvent * event);
+
+    const HookReceiver<PlaylistHeader>
+     hook1 {"qtui update playlist columns", this, & PlaylistHeader::updateColumns};
 };
 
 #endif // PLAYLIST_HEADER_H
