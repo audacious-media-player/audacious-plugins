@@ -90,10 +90,14 @@ static const bool pw_col_label[PW_COLS] = {
     true    // comment
 };
 
-struct PlaylistWidgetData {
+struct PlaylistWidgetData
+{
     int list;
     int popup_pos = -1;
     QueuedFunc popup_timer;
+
+    void show_popup ()
+        { audgui_infopopup_show (list, popup_pos); }
 };
 
 static void set_int_from_tuple (GValue * value, const Tuple & tuple, Tuple::Field field)
@@ -249,13 +253,9 @@ static void popup_trigger (PlaylistWidgetData * data, int pos)
 {
     audgui_infopopup_hide ();
 
-    auto show_cb = [] (void * data_) {
-        auto data = (PlaylistWidgetData *) data_;
-        audgui_infopopup_show (data->list, data->popup_pos);
-    };
-
     data->popup_pos = pos;
-    data->popup_timer.queue (aud_get_int (nullptr, "filepopup_delay") * 100, show_cb, data);
+    data->popup_timer.queue (aud_get_int (nullptr, "filepopup_delay") * 100,
+     aud::obj_member<PlaylistWidgetData, & PlaylistWidgetData::show_popup>, data);
 }
 
 static void mouse_motion (void * user, GdkEventMotion * event, int row)

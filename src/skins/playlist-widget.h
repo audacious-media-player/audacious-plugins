@@ -79,6 +79,7 @@ private:
     void cancel_all ();
     void scroll_timeout ();
     void popup_trigger (int pos);
+    void popup_show ();
     void popup_hide ();
 
     const Timer<PlaylistWidget>

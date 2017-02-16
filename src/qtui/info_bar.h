@@ -32,7 +32,6 @@ class InfoBar : public QWidget
 {
 public:
     InfoBar (QWidget * parent = nullptr);
-    ~InfoBar ();
 
     void resizeEvent (QResizeEvent *);
     void paintEvent (QPaintEvent *);
@@ -47,14 +46,14 @@ private:
     void playback_stop_cb ();
     void update_vis ();
 
-    static void fade_cb (void * me)
-        { ((InfoBar *) me)->do_fade (); }
-
     const HookReceiver<InfoBar>
      hook1 {"tuple change", this, & InfoBar::update_title},
      hook2 {"playback ready", this, & InfoBar::playback_ready_cb},
      hook3 {"playback stop", this, & InfoBar::playback_stop_cb},
      hook4 {"qtui toggle infoarea_vis", this, & InfoBar::update_vis};
+
+    const Timer<InfoBar>
+     fade_timer {TimerRate::Hz30, this, & InfoBar::do_fade};
 
     InfoVis * m_vis;
     const PixelSizes & ps;

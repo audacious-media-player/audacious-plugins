@@ -241,9 +241,12 @@ void MainWindow::playback_begin_cb ()
 
     playing_id = aud_playlist_get_unique_id (list);
 
-    buffering_timer.queue (250, [] (void * me) {
-        ((MainWindow *) me)->setWindowTitle (_("Buffering ..."));
-    }, this);
+    buffering_timer.queue (250, aud::obj_member<MainWindow, & MainWindow::buffering_cb>, this);
+}
+
+void MainWindow::buffering_cb ()
+{
+    setWindowTitle (_("Buffering ..."));
 }
 
 void MainWindow::pause_cb ()

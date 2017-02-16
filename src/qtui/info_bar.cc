@@ -222,11 +222,6 @@ InfoBar::InfoBar (QWidget * parent) :
     }
 }
 
-InfoBar::~InfoBar ()
-{
-    timer_remove (TimerRate::Hz30, fade_cb, this);
-}
-
 void InfoBar::resizeEvent (QResizeEvent *)
 {
     for (SongData & d : sd)
@@ -319,7 +314,7 @@ void InfoBar::do_fade ()
     update ();
 
     if (done)
-        timer_remove (TimerRate::Hz30, fade_cb, this);
+        fade_timer.stop ();
 }
 
 void InfoBar::playback_ready_cb ()
@@ -332,7 +327,7 @@ void InfoBar::playback_ready_cb ()
     update_album_art ();
 
     update ();
-    timer_add (TimerRate::Hz30, fade_cb, this);
+    fade_timer.start ();
 }
 
 void InfoBar::playback_stop_cb ()
@@ -341,7 +336,7 @@ void InfoBar::playback_stop_cb ()
     m_stopped = true;
 
     update ();
-    timer_add (TimerRate::Hz30, fade_cb, this);
+    fade_timer.start ();
 }
 
 void InfoBar::update_vis ()
