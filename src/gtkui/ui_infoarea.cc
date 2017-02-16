@@ -54,11 +54,10 @@ typedef struct {
 
     String title, artist, album;
     String last_title, last_artist, last_album;
+    AudguiPixbuf pb, last_pb;
     float alpha, last_alpha;
 
     bool stopped;
-
-    GdkPixbuf * pb, * last_pb;
 } UIInfoArea;
 
 class InfoAreaVis : public Visualizer
@@ -290,17 +289,17 @@ static void draw_album_art (cairo_t * cr)
 
     if (area->pb)
     {
-        int left = SPACING + (ICON_SIZE - gdk_pixbuf_get_width (area->pb)) / 2;
-        int top = SPACING + (ICON_SIZE - gdk_pixbuf_get_height (area->pb)) / 2;
-        gdk_cairo_set_source_pixbuf (cr, area->pb, left, top);
+        int left = SPACING + (ICON_SIZE - area->pb.width ()) / 2;
+        int top = SPACING + (ICON_SIZE - area->pb.height ()) / 2;
+        gdk_cairo_set_source_pixbuf (cr, area->pb.get (), left, top);
         cairo_paint_with_alpha (cr, area->alpha);
     }
 
     if (area->last_pb)
     {
-        int left = SPACING + (ICON_SIZE - gdk_pixbuf_get_width (area->last_pb)) / 2;
-        int top = SPACING + (ICON_SIZE - gdk_pixbuf_get_height (area->last_pb)) / 2;
-        gdk_cairo_set_source_pixbuf (cr, area->last_pb, left, top);
+        int left = SPACING + (ICON_SIZE - area->last_pb.width ()) / 2;
+        int top = SPACING + (ICON_SIZE - area->last_pb.height ()) / 2;
+        gdk_cairo_set_source_pixbuf (cr, area->last_pb.get (), left, top);
         cairo_paint_with_alpha (cr, area->last_alpha);
     }
 }
@@ -395,28 +394,21 @@ static void set_album_art ()
 {
     g_return_if_fail (area);
 
-    if (area->pb)
-        g_object_unref (area->pb);
-
     area->pb = audgui_pixbuf_request_current ();
     if (! area->pb)
         area->pb = audgui_pixbuf_fallback ();
     if (area->pb)
-        audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
+        audgui_pixbuf_scale_within (area->pb, ICON_SIZE);
 }
 
 static void infoarea_next ()
 {
     g_return_if_fail (area);
 
-    if (area->last_pb)
-        g_object_unref (area->last_pb);
-    area->last_pb = area->pb;
-    area->pb = nullptr;
-
     area->last_title = std::move (area->title);
     area->last_artist = std::move (area->artist);
     area->last_album = std::move (area->album);
+    area->last_pb = std::move (area->pb);
 
     area->last_alpha = area->alpha;
     area->alpha = 0;
@@ -502,11 +494,6 @@ static void destroy_cb (GtkWidget * widget)
     hook_dissociate ("playback stop", (HookFunction) ui_infoarea_playback_stop);
 
     timer_remove (TimerRate::Hz30, ui_infoarea_do_fade);
-
-    if (area->pb)
-        g_object_unref (area->pb);
-    if (area->last_pb)
-        g_object_unref (area->last_pb);
 
     delete area;
     area = nullptr;

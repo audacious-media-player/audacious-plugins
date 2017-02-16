@@ -44,15 +44,12 @@ EXPORT AlbumArtPlugin aud_plugin_instance;
 
 static void album_update (void *, GtkWidget * widget)
 {
-    GdkPixbuf * pixbuf = audgui_pixbuf_request_current ();
+    AudguiPixbuf pixbuf = audgui_pixbuf_request_current ();
 
     if (! pixbuf)
         pixbuf = audgui_pixbuf_fallback ();
 
-    audgui_scaled_image_set (widget, pixbuf);
-
-    if (pixbuf)
-        g_object_unref (pixbuf);
+    audgui_scaled_image_set (widget, pixbuf.get ());
 }
 
 static void album_clear (void *, GtkWidget * widget)
