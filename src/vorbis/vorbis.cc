@@ -34,6 +34,7 @@
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
+#define AUD_GLIB_INTEGRATION
 #define WANT_AUD_BSWAP
 #define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/audstrings.h>
@@ -359,7 +360,7 @@ static Index<char> read_image_from_comment (const char * filename, vorbis_commen
         unsigned mime_length, desc_length, length;
 
         size_t length2;
-        unsigned char * data2 = g_base64_decode (s, & length2);
+        CharPtr data2 ((char *) g_base64_decode (s, & length2));
         if (! data2 || length2 < 8)
             goto PARSE_ERR;
 
@@ -375,27 +376,23 @@ static Index<char> read_image_from_comment (const char * filename, vorbis_commen
         if (length2 < 8 + mime_length + 4 + desc_length + 20 + length)
             goto PARSE_ERR;
 
-        data.insert ((char *) data2 + 8 + mime_length + 4 + desc_length + 20, 0, length);
-
-        g_free (data2);
+        data.insert (data2 + 8 + mime_length + 4 + desc_length + 20, 0, length);
         return data;
 
     PARSE_ERR:
         AUDERR ("Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
-        g_free (data2);
     }
 
     if ((s = vorbis_comment_query (comment, "COVERART", 0)))
     {
         size_t length2;
-        void * data2 = g_base64_decode (s, & length2);
+        CharPtr data2 ((char *) g_base64_decode (s, & length2));
 
         if (data2 && length2)
-            data.insert ((const char *) data2, 0, length2);
+            data.insert (data2, 0, length2);
         else
             AUDERR ("Error parsing COVERART in %s.\n", filename);
 
-        g_free (data2);
         return data;
     }
 

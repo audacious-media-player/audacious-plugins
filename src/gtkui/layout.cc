@@ -22,6 +22,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#define AUD_GLIB_INTEGRATION
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugins.h>
@@ -195,9 +196,8 @@ static GtkWidget * vbox_new (GtkWidget * widget, const char * name)
      widget);
 
     GtkWidget * label = gtk_label_new (nullptr);
-    char * markup = g_markup_printf_escaped ("<small><b>%s</b></small>", name);
+    CharPtr markup (g_markup_printf_escaped ("<small><b>%s</b></small>", name));
     gtk_label_set_markup ((GtkLabel *) label, markup);
-    g_free (markup);
     gtk_misc_set_alignment ((GtkMisc *) label, 0, 0);
     gtk_container_add ((GtkContainer *) ebox, label);
 

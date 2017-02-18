@@ -22,6 +22,7 @@
 
 #include <libnotify/notify.h>
 
+#define AUD_GLIB_INTEGRATION
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
@@ -78,7 +79,7 @@ static NotifyNotification * notification = nullptr;
 void osd_show (const char * title, const char * _message, const char * icon,
  GdkPixbuf * pixbuf)
 {
-    char * message = g_markup_escape_text (_message, -1);
+    CharPtr message (g_markup_escape_text (_message, -1));
 
     if (pixbuf)
         icon = nullptr;
@@ -96,8 +97,6 @@ void osd_show (const char * title, const char * _message, const char * icon,
 
     osd_setup_buttons (notification);
     notify_notification_show (notification, nullptr);
-
-    g_free (message);
 }
 
 void osd_hide ()

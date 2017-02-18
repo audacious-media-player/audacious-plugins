@@ -31,6 +31,7 @@
 #include <libxml/xpathInternals.h>
 #include <libxml/uri.h>
 
+#define AUD_GLIB_INTEGRATION
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
@@ -259,7 +260,7 @@ bool XSPFLoader::load (const char * filename, VFSFile & file, String & title,
                           ((c) >= 0x10000 && (c) <= 0x10ffff))
 
 /* check for characters that are invalid in XML */
-static bool is_valid_string (const char * s, char * * subst)
+static bool is_valid_string (const char * s, CharPtr & subst)
 {
     bool valid = g_utf8_validate (s, -1, nullptr);
 
@@ -294,8 +295,8 @@ static bool is_valid_string (const char * s, char * * subst)
             p ++;
     }
 
-    * subst = g_new (char, len + 1);
-    char * w = * subst;
+    subst.capture (g_new (char, len + 1));
+    char * w = subst.get ();
 
     p = s;
     while (* p)
@@ -319,7 +320,7 @@ static bool is_valid_string (const char * s, char * * subst)
 static void xspf_add_node (xmlNodePtr node, bool isMeta, const char * xspfName, const char * strVal)
 {
     xmlNodePtr tmp;
-    char * subst;
+    CharPtr subst;
 
     if (isMeta) {
         tmp = xmlNewNode(nullptr, (xmlChar *) "meta");
@@ -327,13 +328,10 @@ static void xspf_add_node (xmlNodePtr node, bool isMeta, const char * xspfName, 
     } else
         tmp = xmlNewNode(nullptr, (xmlChar *) xspfName);
 
-    if (is_valid_string (strVal, & subst))
+    if (is_valid_string (strVal, subst))
         xmlAddChild (tmp, xmlNewText ((xmlChar *) strVal));
     else
-    {
-        xmlAddChild (tmp, xmlNewText ((xmlChar *) subst));
-        g_free (subst);
-    }
+        xmlAddChild (tmp, xmlNewText ((xmlChar *) subst.get ()));
 
     xmlAddChild(node, tmp);
 }

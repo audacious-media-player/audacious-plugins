@@ -26,6 +26,7 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/xpath.h>
 
+#define AUD_GLIB_INTEGRATION
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
@@ -68,11 +69,10 @@ static void libxml_error_handler (void * ctx, const char * msg, ...)
 {
 }
 
-/* g_free() returned text */
-static char * scrape_lyrics_from_lyricwiki_edit_page (const char * buf, int64_t len)
+static CharPtr scrape_lyrics_from_lyricwiki_edit_page (const char * buf, int64_t len)
 {
     xmlDocPtr doc;
-    char * ret = nullptr;
+    CharPtr ret;
 
     /*
      * temporarily set our error-handling functor to our suppression function,
@@ -127,12 +127,9 @@ give_up:
                  (GRegexMatchFlags) 0, nullptr);
                 g_regex_match (reg, (char *) lyric, G_REGEX_MATCH_NEWLINE_ANY, & match_info);
 
-                ret = g_match_info_fetch (match_info, 2);
+                ret.capture (g_match_info_fetch (match_info, 2));
                 if (! strcmp_nocase (ret, "<!-- PUT LYRICS HERE (and delete this entire line) -->"))
-                {
-                    g_free (ret);
-                    ret = g_strdup (_("No lyrics available"));
-                }
+                    ret.capture (g_strdup (_("No lyrics available")));
 
                 g_regex_unref (reg);
             }
@@ -160,7 +157,7 @@ static String scrape_uri_from_lyricwiki_search_result (const char * buf, int64_t
     reg = g_regex_new ("<(lyrics?)>.*</\\1>", (GRegexCompileFlags)
      (G_REGEX_MULTILINE | G_REGEX_DOTALL | G_REGEX_UNGREEDY),
      (GRegexMatchFlags) 0, nullptr);
-    char * newbuf = g_regex_replace_literal (reg, buf, len, 0, "", G_REGEX_MATCH_NEWLINE_ANY, nullptr);
+    CharPtr newbuf (g_regex_replace_literal (reg, buf, len, 0, "", G_REGEX_MATCH_NEWLINE_ANY, nullptr));
     g_regex_unref (reg);
 
     /*
@@ -238,8 +235,6 @@ static String scrape_uri_from_lyricwiki_search_result (const char * buf, int64_t
         xmlFreeDoc (doc);
     }
 
-    g_free (newbuf);
-
     return uri;
 }
 
@@ -258,7 +253,7 @@ static void get_lyrics_step_3 (const char * uri, const Index<char> & buf, void *
         return;
     }
 
-    char * lyrics = scrape_lyrics_from_lyricwiki_edit_page (buf.begin (), buf.len ());
+    CharPtr lyrics = scrape_lyrics_from_lyricwiki_edit_page (buf.begin (), buf.len ());
 
     if (! lyrics)
     {
@@ -268,8 +263,6 @@ static void get_lyrics_step_3 (const char * uri, const Index<char> & buf, void *
     }
 
     update_lyrics_window (state.title, state.artist, lyrics, true);
-
-    g_free (lyrics);
 }
 
 static void get_lyrics_step_2 (const char * uri1, const Index<char> & buf, void *)

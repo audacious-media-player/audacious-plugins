@@ -20,6 +20,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
+#define AUD_GLIB_INTEGRATION
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -591,13 +592,15 @@ static void list_get_value (void * user, int row, int column, GValue * value)
     static constexpr aud::array<SearchField, const char *> end_tags =
         {"", "</b>", "</i>", ""};
 
+    auto escape = [] (const char * s)
+        { return CharPtr (g_markup_escape_text (s, -1)); };
+
     g_return_if_fail (row >= 0 && row < items.len ());
 
     const Item * item = items[row];
 
-    char * name = (item->field == SearchField::Genre) ?
-                  g_markup_escape_text (str_toupper_utf8 (item->name), -1) :
-                  g_markup_escape_text (item->name, -1);
+    CharPtr name = escape ((item->field == SearchField::Genre) ?
+                           str_toupper_utf8 (item->name) : item->name);
 
     StringBuf desc (0);
 
@@ -621,19 +624,13 @@ static void list_get_value (void * user, int row, int column, GValue * value)
         desc.insert (-1, (parent->field == SearchField::Album) ? _("on") : _("by"));
         desc.insert (-1, " ");
         desc.insert (-1, start_tags[parent->field]);
-
-        char * temp = g_markup_escape_text (parent->name, -1);
-        desc.insert (-1, temp);
-        g_free (temp);
-
+        desc.insert (-1, escape (parent->name));
         desc.insert (-1, end_tags[parent->field]);
     }
 
     g_value_take_string (value, g_strdup_printf
-     ("%s%s%s\n<small>%s</small>", start_tags[item->field], name,
+     ("%s%s%s\n<small>%s</small>", start_tags[item->field], (const char *) name,
       end_tags[item->field], (const char *) desc));
-
-    g_free (name);
 }
 
 static bool list_get_selected (void * user, int row)

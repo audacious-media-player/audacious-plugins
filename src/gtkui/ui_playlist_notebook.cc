@@ -22,6 +22,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#define AUD_GLIB_INTEGRATION
 #include <libaudcore/runtime.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/audstrings.h>
@@ -242,9 +243,8 @@ static void set_tab_label (int list, GtkLabel * label)
 
     if (list == aud_playlist_get_playing ())
     {
-        char * markup = g_markup_printf_escaped ("<b>%s</b>", (const char *) title);
+        CharPtr markup (g_markup_printf_escaped ("<b>%s</b>", (const char *) title));
         gtk_label_set_markup (label, markup);
-        g_free (markup);
     }
     else
         gtk_label_set_text (label, title);
