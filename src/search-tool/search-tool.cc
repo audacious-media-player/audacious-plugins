@@ -586,33 +586,54 @@ static void action_add_to_playlist ()
 
 static void list_get_value (void * user, int row, int column, GValue * value)
 {
+    static constexpr aud::array<SearchField, const char *> start_tags =
+        {"", "<b>", "<i>", ""};
+    static constexpr aud::array<SearchField, const char *> end_tags =
+        {"", "</b>", "</i>", ""};
+
     g_return_if_fail (row >= 0 && row < items.len ());
 
     const Item * item = items[row];
-    StringBuf string = str_concat ({item->name, "\n"});
+
+    char * name = (item->field == SearchField::Genre) ?
+                  g_markup_escape_text (str_toupper_utf8 (item->name), -1) :
+                  g_markup_escape_text (item->name, -1);
+
+    StringBuf desc (0);
 
     if (item->field != SearchField::Title)
     {
-        string.insert (-1, " ");
-        string.combine (str_printf (dngettext (PACKAGE, "%d song", "%d songs",
+        desc.insert (-1, " ");
+        desc.combine (str_printf (dngettext (PACKAGE, "%d song", "%d songs",
          item->matches.len ()), item->matches.len ()));
     }
 
     if (item->field == SearchField::Genre)
     {
-        string.insert (-1, " ");
-        string.insert (-1, _("of this genre"));
+        desc.insert (-1, " ");
+        desc.insert (-1, _("of this genre"));
     }
 
-    while ((item = item->parent))
+    auto parent = item;
+    while ((parent = parent->parent))
     {
-        string.insert (-1, " ");
-        string.insert (-1, (item->field == SearchField::Album) ? _("on") : _("by"));
-        string.insert (-1, " ");
-        string.insert (-1, item->name);
+        desc.insert (-1, " ");
+        desc.insert (-1, (parent->field == SearchField::Album) ? _("on") : _("by"));
+        desc.insert (-1, " ");
+        desc.insert (-1, start_tags[parent->field]);
+
+        char * temp = g_markup_escape_text (parent->name, -1);
+        desc.insert (-1, temp);
+        g_free (temp);
+
+        desc.insert (-1, end_tags[parent->field]);
     }
 
-    g_value_set_string (value, string);
+    g_value_take_string (value, g_strdup_printf
+     ("%s%s%s\n<small>%s</small>", start_tags[item->field], name,
+      end_tags[item->field], (const char *) desc));
+
+    g_free (name);
 }
 
 static bool list_get_selected (void * user, int row)
@@ -763,7 +784,7 @@ void * SearchTool::get_gtk_widget ()
     results_list = audgui_list_new (& list_callbacks, nullptr, items.len ());
     g_signal_connect (results_list, "destroy", (GCallback) gtk_widget_destroyed, & results_list);
     gtk_tree_view_set_headers_visible ((GtkTreeView *) results_list, false);
-    audgui_list_add_column (results_list, nullptr, 0, G_TYPE_STRING, -1);
+    audgui_list_add_column (results_list, nullptr, 0, G_TYPE_STRING, -1, true);
     gtk_container_add ((GtkContainer *) scrolled, results_list);
 
     stats_label = gtk_label_new ("");
