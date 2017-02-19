@@ -42,12 +42,12 @@ SearchBar::SearchBar (QWidget * parent, PlaylistWidget * playlistWidget) :
     m_entry (new QLineEdit (this))
 {
     m_entry->setClearButtonEnabled (true);
+    m_entry->setPlaceholderText (_("Search playlist"));
 
     auto layout = new QHBoxLayout (this);
-    layout->setContentsMargins (0, 0, 0, 0);
-    layout->setSpacing (4);
 
-    layout->addWidget (new QLabel (_("Find:"), this));
+    layout->setContentsMargins (0, 4, 0, 4);
+    layout->setSpacing (4);
     layout->addWidget (m_entry);
 
     auto upButton = makeButton ("go-up", this);

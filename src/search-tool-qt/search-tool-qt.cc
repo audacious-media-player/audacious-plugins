@@ -750,9 +750,12 @@ void * SearchToolQt::get_qt_widget ()
 {
     auto widget = new QWidget;
     auto vbox = new QVBoxLayout (widget);
+
     vbox->setContentsMargins (0, 0, 0, 0);
+    vbox->setSpacing (4);
 
     auto entry = new QLineEdit;
+    entry->setClearButtonEnabled (true);
     entry->setPlaceholderText (_("Search library"));
     vbox->addWidget (entry);
 
@@ -767,6 +770,7 @@ void * SearchToolQt::get_qt_widget ()
     vbox->addWidget (wait_label);
 
     results_list = new ResultsView;
+    results_list->setFrameStyle (QFrame::NoFrame);
     results_list->setHeaderHidden (true);
     results_list->setIndentation (0);
     results_list->setModel (& model);
@@ -779,6 +783,7 @@ void * SearchToolQt::get_qt_widget ()
     vbox->addWidget (stats_label);
 
     auto hbox = new QHBoxLayout;
+    hbox->setSpacing (4);
     vbox->addLayout (hbox);
 
     auto chooser = new QLineEdit;

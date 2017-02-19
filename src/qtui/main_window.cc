@@ -121,11 +121,10 @@ MainWindow::MainWindow () :
     setStatusBar (statusBar = new StatusBar (this));
     setCentralWidget (centralWidget);
 
+    centralLayout->setContentsMargins (0, 0, 0, 0);
+    centralLayout->setSpacing (0);
     centralLayout->addWidget (playlistTabs);
     centralLayout->addWidget (infoBar);
-
-    centralLayout->setContentsMargins (0, 0, 0, 0);
-    centralLayout->setSpacing (4);
 
     setMenuBar (menuBar = qtui_build_menubar (this));
     setDockNestingEnabled (true);

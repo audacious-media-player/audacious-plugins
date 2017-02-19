@@ -62,9 +62,9 @@ LayoutWidget::LayoutWidget (QWidget * parent, int list, QMenu * contextMenu) :
     m_searchBar (new SearchBar (this, m_playlistWidget))
 {
     auto layout = new QVBoxLayout (this);
-    layout->setContentsMargins (0, 0, 0, 0);
-    layout->setSpacing (4);
 
+    layout->setContentsMargins (0, 0, 0, 0);
+    layout->setSpacing (0);
     layout->addWidget (m_playlistWidget);
     layout->addWidget (m_searchBar);
 
