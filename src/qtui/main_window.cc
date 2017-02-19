@@ -73,7 +73,7 @@ MainWindow::MainWindow () :
     playlistTabs (new PlaylistTabs (this)),
     infoBar (new InfoBar (this)),
     centralWidget (new QWidget (this)),
-    centralLayout (new QVBoxLayout (centralWidget))
+    centralLayout (audqt::make_vbox (centralWidget, 0))
 {
 #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     QIcon::setThemeName ("QtUi");
@@ -121,8 +121,6 @@ MainWindow::MainWindow () :
     setStatusBar (statusBar = new StatusBar (this));
     setCentralWidget (centralWidget);
 
-    centralLayout->setContentsMargins (0, 0, 0, 0);
-    centralLayout->setSpacing (0);
     centralLayout->addWidget (playlistTabs);
     centralLayout->addWidget (infoBar);
 
@@ -169,7 +167,7 @@ void MainWindow::readSettings ()
     QSettings settings (m_config_name, "QtUi");
 
     if (! restoreGeometry (settings.value ("geometry").toByteArray ()))
-        resize (toNativeDPI (768), toNativeDPI (480));
+        resize (audqt::to_native_dpi (768), audqt::to_native_dpi (480));
 
     restoreState (settings.value ("windowState").toByteArray ());
 }

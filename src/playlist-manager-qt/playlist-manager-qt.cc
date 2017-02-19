@@ -18,6 +18,7 @@
  */
 
 #include <QAbstractListModel>
+#include <QBoxLayout>
 #include <QFont>
 #include <QGuiApplication>
 #include <QHeaderView>
@@ -25,7 +26,6 @@
 #include <QMouseEvent>
 #include <QToolButton>
 #include <QTreeView>
-#include <QVBoxLayout>
 
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -234,9 +234,10 @@ PlaylistsView::PlaylistsView ()
     hdr->setStretchLastSection (false);
     hdr->setSectionResizeMode (PlaylistsModel::ColumnTitle, QHeaderView::Stretch);
     hdr->setSectionResizeMode (PlaylistsModel::ColumnEntries, QHeaderView::Interactive);
-    hdr->resizeSection (PlaylistsModel::ColumnEntries, 64);
+    hdr->resizeSection (PlaylistsModel::ColumnEntries, audqt::to_native_dpi (64));
 
     setDragDropMode (InternalMove);
+    setFrameShape (QFrame::NoFrame);
     setIndentation (0);
 }
 
@@ -306,15 +307,7 @@ static QToolButton * new_tool_button (const char * text, const char * icon)
 
 void * PlaylistManagerQt::get_qt_widget ()
 {
-    auto widget = new QWidget;
-    auto vbox = new QVBoxLayout (widget);
-    vbox->setContentsMargins (0, 0, 0, 0);
-
     auto view = new PlaylistsView;
-    vbox->addWidget (view, 1);
-
-    auto hbox = new QHBoxLayout;
-    vbox->addLayout (hbox);
 
     auto new_button = new_tool_button (N_("_New"), "document-new");
     QObject::connect (new_button, & QToolButton::clicked, aud_playlist_new);
@@ -329,10 +322,19 @@ void * PlaylistManagerQt::get_qt_widget ()
         audqt::playlist_confirm_delete (aud_playlist_get_active ());
     });
 
+    auto hbox = audqt::make_hbox (nullptr);
+    hbox->setContentsMargins (audqt::margins.TwoPt);
+
     hbox->addWidget (new_button);
     hbox->addWidget (rename_button);
     hbox->addStretch (1);
     hbox->addWidget (remove_button);
+
+    auto widget = new QWidget;
+    auto vbox = audqt::make_vbox (widget, 0);
+
+    vbox->addWidget (view, 1);
+    vbox->addLayout (hbox);
 
     return widget;
 }

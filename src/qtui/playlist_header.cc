@@ -32,6 +32,7 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
+#include <libaudqt/libaudqt.h>
 
 static const char * const s_col_keys[] = {
     "playing",
@@ -103,9 +104,9 @@ static void loadConfig (bool force = false)
     int n_widths = aud::min (widths.len (), (int) PlaylistModel::n_cols);
 
     for (int i = 0; i < n_widths; i ++)
-        s_col_widths[i] = toNativeDPI (str_to_int (widths[i]));
+        s_col_widths[i] = audqt::to_native_dpi (str_to_int (widths[i]));
     for (int i = n_widths; i < PlaylistModel::n_cols; i ++)
-        s_col_widths[i] = toNativeDPI (s_default_widths[i]);
+        s_col_widths[i] = audqt::to_native_dpi (s_default_widths[i]);
 
     loaded = true;
 }
@@ -118,7 +119,7 @@ static void saveConfig ()
 
     int widths[PlaylistModel::n_cols];
     for (int i = 0; i < PlaylistModel::n_cols; i ++)
-        widths[i] = toPortableDPI (s_col_widths[i]);
+        widths[i] = audqt::to_portable_dpi (s_col_widths[i]);
 
     aud_set_str ("qtui", "playlist_columns", index_to_str_list (index, " "));
     aud_set_str ("qtui", "column_widths", int_array_to_str (widths, PlaylistModel::n_cols));

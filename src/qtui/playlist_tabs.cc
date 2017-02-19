@@ -22,9 +22,9 @@
 #include "menus.h"
 #include "search_bar.h"
 
+#include <QBoxLayout>
 #include <QKeyEvent>
 #include <QLineEdit>
-#include <QVBoxLayout>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
@@ -61,10 +61,7 @@ LayoutWidget::LayoutWidget (QWidget * parent, int list, QMenu * contextMenu) :
     m_playlistWidget (new PlaylistWidget (this, m_uniqueID)),
     m_searchBar (new SearchBar (this, m_playlistWidget))
 {
-    auto layout = new QVBoxLayout (this);
-
-    layout->setContentsMargins (0, 0, 0, 0);
-    layout->setSpacing (0);
+    auto layout = audqt::make_vbox (this, 0);
     layout->addWidget (m_playlistWidget);
     layout->addWidget (m_searchBar);
 

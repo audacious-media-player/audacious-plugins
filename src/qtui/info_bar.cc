@@ -97,7 +97,7 @@ static void get_color (int i, QColor & color, QColor & shadow)
 InfoVis::InfoVis (QWidget * parent) :
     QWidget (parent),
     Visualizer (Freq),
-    ps (getDPI ()),
+    ps (audqt::sizes.OneInch),
     m_gradient (0, 0, 0, ps.Height)
 {
     m_gradient.setStops ({

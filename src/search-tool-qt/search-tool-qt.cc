@@ -748,26 +748,20 @@ QMimeData * ResultsModel::mimeData (const QModelIndexList & indexes) const
 
 void * SearchToolQt::get_qt_widget ()
 {
-    auto widget = new QWidget;
-    auto vbox = new QVBoxLayout (widget);
-
-    vbox->setContentsMargins (0, 0, 0, 0);
-    vbox->setSpacing (4);
-
     auto entry = new QLineEdit;
+    entry->setContentsMargins (audqt::margins.TwoPt);
     entry->setClearButtonEnabled (true);
     entry->setPlaceholderText (_("Search library"));
-    vbox->addWidget (entry);
 
     help_label = new QLabel (_("To import your music library into Audacious, "
      "choose a folder and then click the \"refresh\" icon."));
     help_label->setAlignment (Qt::AlignCenter);
+    help_label->setContentsMargins (audqt::margins.EightPt);
     help_label->setWordWrap (true);
-    vbox->addWidget (help_label);
 
     wait_label = new QLabel (_("Please wait ..."));
     wait_label->setAlignment (Qt::AlignCenter);
-    vbox->addWidget (wait_label);
+    wait_label->setContentsMargins (audqt::margins.EightPt);
 
     results_list = new ResultsView;
     results_list->setFrameStyle (QFrame::NoFrame);
@@ -776,23 +770,32 @@ void * SearchToolQt::get_qt_widget ()
     results_list->setModel (& model);
     results_list->setSelectionMode (QTreeView::ExtendedSelection);
     results_list->setDragDropMode (QTreeView::DragOnly);
-    vbox->addWidget (results_list);
 
     stats_label = new QLabel;
     stats_label->setAlignment (Qt::AlignCenter);
-    vbox->addWidget (stats_label);
-
-    auto hbox = new QHBoxLayout;
-    hbox->setSpacing (4);
-    vbox->addLayout (hbox);
+    stats_label->setContentsMargins (audqt::margins.TwoPt);
 
     auto chooser = new QLineEdit;
-    hbox->addWidget (chooser);
 
     auto button = new QPushButton (QIcon::fromTheme ("view-refresh"), QString ());
     button->setFlat (true);
     button->setFocusPolicy (Qt::NoFocus);
+
+    auto hbox = audqt::make_hbox (nullptr);
+    hbox->setContentsMargins (audqt::margins.TwoPt);
+
+    hbox->addWidget (chooser);
     hbox->addWidget (button);
+
+    auto widget = new QWidget;
+    auto vbox = audqt::make_vbox (widget, 0);
+
+    vbox->addWidget (entry);
+    vbox->addWidget (help_label);
+    vbox->addWidget (wait_label);
+    vbox->addWidget (results_list);
+    vbox->addWidget (stats_label);
+    vbox->addLayout (hbox);
 
     String uri = get_uri ();
     StringBuf path = uri_to_filename (uri, false);
@@ -800,7 +803,7 @@ void * SearchToolQt::get_qt_widget ()
 
     search_init ();
 
-    QObject::connect (vbox, & QObject::destroyed, search_cleanup);
+    QObject::connect (widget, & QObject::destroyed, search_cleanup);
     QObject::connect (entry, & QLineEdit::returnPressed, action_play);
     QObject::connect (results_list, & QTreeView::doubleClicked, action_play);
 

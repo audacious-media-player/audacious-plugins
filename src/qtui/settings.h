@@ -29,11 +29,4 @@ extern const PluginPreferences qtui_prefs;
 
 extern const char * const qtui_defaults[];
 
-int getDPI ();
-
-static inline int toNativeDPI (int x)
-    { return aud::rescale (x, 96, getDPI ()); }
-static inline int toPortableDPI (int x)
-    { return aud::rescale (x, getDPI (), 96); }
-
 #endif
