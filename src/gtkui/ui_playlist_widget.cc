@@ -32,7 +32,6 @@
 #include <libaudgui/list.h>
 
 #include "gtkui.h"
-#include "playlist_util.h"
 #include "ui_playlist_widget.h"
 
 static const GType pw_col_types[PW_COLS] =
@@ -92,7 +91,7 @@ static const bool pw_col_label[PW_COLS] = {
 
 struct PlaylistWidgetData
 {
-    int list;
+    Playlist list;
     int popup_pos = -1;
     QueuedFunc popup_timer;
 
@@ -114,9 +113,9 @@ static void set_string_from_tuple (GValue * value, const Tuple & tuple, Tuple::F
     g_value_set_string (value, tuple.get_str (field));
 }
 
-static void set_queued (GValue * value, int list, int row)
+static void set_queued (GValue * value, Playlist list, int row)
 {
-    int q = aud_playlist_queue_find_entry (list, row);
+    int q = list.queue_find_entry (row);
     if (q < 0)
         g_value_set_string (value, "");
     else
@@ -136,14 +135,14 @@ static void get_value (void * user, int row, int column, GValue * value)
 {
     PlaylistWidgetData * data = (PlaylistWidgetData *) user;
     g_return_if_fail (column >= 0 && column < pw_num_cols);
-    g_return_if_fail (row >= 0 && row < aud_playlist_entry_count (data->list));
+    g_return_if_fail (row >= 0 && row < data->list.n_entries ());
 
     column = pw_cols[column];
 
     Tuple tuple;
 
     if (column != PW_COL_NUMBER && column != PW_COL_QUEUED)
-        tuple = aud_playlist_entry_get_tuple (data->list, row, Playlist::NoWait);
+        tuple = data->list.entry_tuple (row, Playlist::NoWait);
 
     switch (column)
     {
@@ -197,29 +196,29 @@ static void get_value (void * user, int row, int column, GValue * value)
 
 static bool get_selected (void * user, int row)
 {
-    return aud_playlist_entry_get_selected (((PlaylistWidgetData *) user)->list, row);
+    return ((PlaylistWidgetData *) user)->list.entry_selected (row);
 }
 
 static void set_selected (void * user, int row, bool selected)
 {
-    aud_playlist_entry_set_selected (((PlaylistWidgetData *) user)->list, row, selected);
+    ((PlaylistWidgetData *) user)->list.select_entry (row, selected);
 }
 
 static void select_all (void * user, bool selected)
 {
-    aud_playlist_select_all (((PlaylistWidgetData *) user)->list, selected);
+    ((PlaylistWidgetData *) user)->list.select_all (selected);
 }
 
 static void focus_change (void * user, int row)
 {
-    aud_playlist_set_focus (((PlaylistWidgetData *) user)->list, row);
+    ((PlaylistWidgetData *) user)->list.set_focus (row);
 }
 
 static void activate_row (void * user, int row)
 {
-    int list = ((PlaylistWidgetData *) user)->list;
-    aud_playlist_set_position (list, row);
-    aud_playlist_play (list);
+    auto list = ((PlaylistWidgetData *) user)->list;
+    list.set_position (row);
+    list.start_playback ();
 }
 
 static void right_click (void * user, GdkEventButton * event)
@@ -229,16 +228,16 @@ static void right_click (void * user, GdkEventButton * event)
 
 static void shift_rows (void * user, int row, int before)
 {
-    int list = ((PlaylistWidgetData *) user)->list;
+    auto list = ((PlaylistWidgetData *) user)->list;
 
     /* Adjust the shift amount so that the selected entry closest to the
      * destination ends up at the destination. */
     if (before > row)
-        before -= aud_playlist_selected_count (list, row, before - row);
+        before -= list.n_selected (row, before - row);
     else
-        before += aud_playlist_selected_count (list, before, row - before);
+        before += list.n_selected (before, row - before);
 
-    aud_playlist_shift (list, row, before - row);
+    list.shift_entries (row, before - row);
 }
 
 static void popup_hide (PlaylistWidgetData * data)
@@ -279,14 +278,14 @@ static void mouse_leave (void * user, GdkEventMotion * event, int row)
 
 static Index<char> get_data (void * user)
 {
-    int playlist = ((PlaylistWidgetData *) user)->list;
+    auto playlist = ((PlaylistWidgetData *) user)->list;
     return audgui_urilist_create_from_selected (playlist);
 }
 
 // length is ignored; GtkSelectionData null-terminates the data for us
 static void receive_data (void * user, int row, const char * data, int /*length*/)
 {
-    int playlist = ((PlaylistWidgetData *) user)->list;
+    auto playlist = ((PlaylistWidgetData *) user)->list;
     audgui_urilist_insert (playlist, row, data);
 }
 
@@ -321,8 +320,8 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * search
 
     if (keys.len ())
     {
-        int list = ((PlaylistWidgetData *) user)->list;
-        Tuple tuple = aud_playlist_entry_get_tuple (list, row);
+        auto list = ((PlaylistWidgetData *) user)->list;
+        Tuple tuple = list.entry_tuple (row);
 
         String strings[3] = {
             tuple.get_str (Tuple::Title),
@@ -352,13 +351,13 @@ static void destroy_cb (PlaylistWidgetData * data)
     delete data;
 }
 
-GtkWidget * ui_playlist_widget_new (int playlist)
+GtkWidget * ui_playlist_widget_new (Playlist playlist)
 {
     PlaylistWidgetData * data = new PlaylistWidgetData;
     data->list = playlist;
 
     GtkWidget * list = audgui_list_new (& callbacks, data,
-     aud_playlist_entry_count (playlist));
+     playlist.n_entries ());
 
     gtk_tree_view_set_headers_visible ((GtkTreeView *) list,
      aud_get_bool ("gtkui", "playlist_headers"));
@@ -381,26 +380,17 @@ GtkWidget * ui_playlist_widget_new (int playlist)
     return list;
 }
 
-int ui_playlist_widget_get_playlist (GtkWidget * widget)
-{
-    PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
-    g_return_val_if_fail (data, -1);
-    return data->list;
-}
-
-void ui_playlist_widget_set_playlist (GtkWidget * widget, int list)
-{
-    PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
-    g_return_if_fail (data);
-    data->list = list;
-}
-
-void ui_playlist_widget_update (GtkWidget * widget, const Playlist::Update & update)
+void ui_playlist_widget_update (GtkWidget * widget)
 {
     PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
     g_return_if_fail (data);
 
-    int entries = aud_playlist_entry_count (data->list);
+    auto update = data->list.update_detail ();
+
+    if (update.level == Playlist::NoUpdate)
+        return;
+
+    int entries = data->list.n_entries ();
     int changed = entries - update.before - update.after;
 
     if (update.level == Playlist::Structure)
@@ -413,9 +403,8 @@ void ui_playlist_widget_update (GtkWidget * widget, const Playlist::Update & upd
 
         /* scroll to end of playlist if entries were added there
            (but not if a newly added entry is playing) */
-        if (entries > old_entries && ! update.after &&
-         aud_playlist_get_focus (data->list) < old_entries)
-            aud_playlist_set_focus (data->list, entries - 1);
+        if (entries > old_entries && ! update.after && data->list.get_focus () < old_entries)
+            data->list.set_focus (entries - 1);
 
         ui_playlist_widget_scroll (widget);
     }
@@ -424,16 +413,17 @@ void ui_playlist_widget_update (GtkWidget * widget, const Playlist::Update & upd
 
     if (update.queue_changed)
     {
-        for (int i = aud_playlist_queue_count (data->list); i --; )
+        for (int i = data->list.n_queued (); i --; )
         {
-            int entry = aud_playlist_queue_get_entry (data->list, i);
+            int entry = data->list.queue_get_entry (i);
             if (entry < update.before || entry >= entries - update.after)
                 audgui_list_update_rows (widget, entry, 1);
         }
     }
 
     audgui_list_update_selection (widget, update.before, changed);
-    audgui_list_set_focus (widget, aud_playlist_get_focus (data->list));
+    audgui_list_set_highlight (widget, data->list.get_position ());
+    audgui_list_set_focus (widget, data->list.get_focus ());
 }
 
 void ui_playlist_widget_scroll (GtkWidget * widget)

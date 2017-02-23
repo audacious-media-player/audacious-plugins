@@ -33,12 +33,15 @@ class QMenu;
 class PlaylistWidget : public QTreeView
 {
 public:
-    PlaylistWidget (QWidget * parent, int uniqueID);
+    PlaylistWidget (QWidget * parent, Playlist playlist);
     ~PlaylistWidget ();
+
+    Playlist playlist () const
+        { return m_playlist; }
 
     void scrollToCurrent (bool force = false);
     void updatePlaybackIndicator ();
-    void update (const Playlist::Update & update);
+    void playlistUpdate ();
     void playCurrentIndex ();
     void setFilter (const char * text);
     void moveFocus (int distance);
@@ -47,6 +50,7 @@ public:
         { contextMenu = menu; }
 
 private:
+    Playlist m_playlist;
     PlaylistModel * model;
     PlaylistProxyModel * proxyModel;
     QMenu * contextMenu = nullptr;
@@ -59,8 +63,9 @@ private:
     QModelIndex rowToIndex (int row);
     int indexToRow (const QModelIndex & index);
 
-    void getSelectedRanges (const Playlist::Update & update,
+    void getSelectedRanges (int rowsBefore, int rowsAfter,
      QItemSelection & selected, QItemSelection & deselected);
+    void updateSelection (int rowsBefore, int rowsAfter);
 
     void contextMenuEvent (QContextMenuEvent * event);
     void keyPressEvent (QKeyEvent * event);

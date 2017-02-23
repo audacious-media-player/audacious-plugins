@@ -35,10 +35,7 @@
 class LayoutWidget : public QWidget
 {
 public:
-    LayoutWidget (QWidget * parent, int list, QMenu * contextMenu);
-
-    int playlist () const
-        { return aud_playlist_by_unique_id (m_uniqueID); }
+    LayoutWidget (QWidget * parent, Playlist playlist, QMenu * contextMenu);
 
     PlaylistWidget * playlistWidget () const
         { return m_playlistWidget; }
@@ -50,15 +47,13 @@ public:
     }
 
 private:
-    int m_uniqueID;
     PlaylistWidget * m_playlistWidget;
     SearchBar * m_searchBar;
 };
 
-LayoutWidget::LayoutWidget (QWidget * parent, int list, QMenu * contextMenu) :
+LayoutWidget::LayoutWidget (QWidget * parent, Playlist playlist, QMenu * contextMenu) :
     QWidget (parent),
-    m_uniqueID (aud_playlist_get_unique_id (list)),
-    m_playlistWidget (new PlaylistWidget (this, m_uniqueID)),
+    m_playlistWidget (new PlaylistWidget (this, playlist)),
     m_searchBar (new SearchBar (this, m_playlistWidget))
 {
     auto layout = audqt::make_vbox (this, 0);
@@ -85,14 +80,14 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
 
     addRemovePlaylists ();
     updateTitles ();
-    setCurrentIndex (aud_playlist_get_active ());
+    setCurrentIndex (Playlist::active_playlist ().index ());
 
     connect (this, & QTabWidget::currentChanged, this, & PlaylistTabs::currentChangedTrigger);
 }
 
-PlaylistWidget * PlaylistTabs::playlistWidget (int list) const
+PlaylistWidget * PlaylistTabs::playlistWidget (int idx) const
 {
-    auto w = (LayoutWidget *) widget (list);
+    auto w = (LayoutWidget *) widget (idx);
     return w ? w->playlistWidget () : nullptr;
 }
 
@@ -104,30 +99,30 @@ void PlaylistTabs::activateSearch ()
 void PlaylistTabs::addRemovePlaylists ()
 {
     int tabs = count ();
-    int playlists = aud_playlist_count ();
+    int playlists = Playlist::n_playlists ();
 
     for (int i = 0; i < tabs; i ++)
     {
         auto w = (LayoutWidget *) widget (i);
-        int playlist = w->playlist ();
+        int list_idx = w->playlistWidget ()->playlist ().index ();
 
-        if (playlist < 0)
+        if (list_idx < 0)
         {
             removeTab (i);
             delete w;
             tabs --;
             i --;
         }
-        else if (playlist != i)
+        else if (list_idx != i)
         {
             bool found = false;
 
             for (int j = i + 1; j < tabs; j ++)
             {
                 w = (LayoutWidget *) widget (j);
-                playlist = w->playlist ();
+                list_idx = w->playlistWidget ()->playlist ().index ();
 
-                if (playlist == i)
+                if (list_idx == i)
                 {
                     removeTab (j);
                     insertTab (i, w, QString ());
@@ -138,7 +133,7 @@ void PlaylistTabs::addRemovePlaylists ()
 
             if (! found)
             {
-                insertTab (i, new LayoutWidget (this, i, m_pl_menu), QString ());
+                insertTab (i, new LayoutWidget (this, Playlist::by_index (i), m_pl_menu), QString ());
                 tabs ++;
             }
         }
@@ -146,7 +141,7 @@ void PlaylistTabs::addRemovePlaylists ()
 
     while (tabs < playlists)
     {
-        addTab (new LayoutWidget (this, tabs, m_pl_menu), QString ());
+        addTab (new LayoutWidget (this, Playlist::by_index (tabs), m_pl_menu), QString ());
         tabs ++;
     }
 }
@@ -155,13 +150,13 @@ void PlaylistTabs::updateTitles ()
 {
     int tabs = count ();
     for (int i = 0; i < tabs; i ++)
-        setTabTitle (i, aud_playlist_get_title (i));
+        setTabTitle (i, Playlist::by_index (i));
 }
 
 void PlaylistTabs::currentChangedTrigger (int idx)
 {
     cancelRename ();
-    aud_playlist_set_active (idx);
+    Playlist::by_index (idx).activate ();
 }
 
 QLineEdit * PlaylistTabs::getTabEdit (int idx)
@@ -169,22 +164,26 @@ QLineEdit * PlaylistTabs::getTabEdit (int idx)
     return dynamic_cast<QLineEdit *> (m_tabbar->tabButton (idx, QTabBar::LeftSide));
 }
 
-void PlaylistTabs::setTabTitle (int idx, const char * text)
+void PlaylistTabs::setTabTitle (int idx, Playlist playlist)
 {
-    // escape ampersands for setTabText ()
-    auto title = QString (text).replace ("&", "&&");
+    QString title;
 
-    if (aud_get_bool ("qtui", "entry_count_visible"))
-        title += QString (" (%1)").arg (aud_playlist_entry_count (idx));
+    if (playlist != Playlist ())
+    {
+        // escape ampersands for setTabText ()
+        title = QString (playlist.get_title ()).replace ("&", "&&");
+
+        if (aud_get_bool ("qtui", "entry_count_visible"))
+            title += QString (" (%1)").arg (playlist.n_entries ());
+    }
 
     setTabText (idx, title);
 }
 
-void PlaylistTabs::setupTab (int idx, QWidget * button, const char * text, QWidget * * oldp)
+void PlaylistTabs::setupTab (int idx, QWidget * button, QWidget * * oldp)
 {
     QWidget * old = m_tabbar->tabButton (idx, QTabBar::LeftSide);
     m_tabbar->setTabButton (idx, QTabBar::LeftSide, button);
-    setTabTitle (idx, text);
 
     if (oldp)
         * oldp = old;
@@ -206,24 +205,25 @@ void PlaylistTabs::tabEditedTrigger ()
         return;
 
     QByteArray title = edit->text ().toUtf8 ();
-    aud_playlist_set_title (idx, title);
+    m_pl_to_rename.set_title (title);
 
-    setupTab (idx, m_leftbtn, title, nullptr);
+    setupTab (idx, m_leftbtn, nullptr);
     m_leftbtn = nullptr;
+    m_pl_to_rename = Playlist ();
 }
 
-void PlaylistTabs::editTab (int idx)
+void PlaylistTabs::editTab (int idx, Playlist playlist)
 {
     QLineEdit * edit = getTabEdit (idx);
 
     if (! edit)
     {
-        edit = new QLineEdit ((const char *) aud_playlist_get_title (idx));
+        edit = new QLineEdit ((const char *) playlist.get_title ());
 
         connect (edit, & QLineEdit::returnPressed, this, & PlaylistTabs::tabEditedTrigger);
 
-        setupTab (idx, edit, nullptr, & m_leftbtn);
-        setTabText (idx, nullptr);
+        setupTab (idx, edit, & m_leftbtn);
+        m_pl_to_rename = playlist;
     }
 
     edit->selectAll ();
@@ -249,11 +249,12 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
 void PlaylistTabs::renameCurrent ()
 {
     int idx = currentIndex ();
+    auto playlist = Playlist::by_index (idx);
 
     if (! m_tabbar->isVisible ())
-        audqt::playlist_show_rename (idx);
+        audqt::playlist_show_rename (playlist);
     else
-        editTab (idx);
+        editTab (idx, playlist);
 }
 
 void PlaylistTabs::cancelRename ()
@@ -264,15 +265,16 @@ void PlaylistTabs::cancelRename ()
         if (! edit)
             continue;
 
-        setupTab (i, m_leftbtn, (const char *) aud_playlist_get_title (i), nullptr);
+        setupTab (i, m_leftbtn, nullptr);
         m_leftbtn = nullptr;
+        m_pl_to_rename = Playlist ();
     }
 }
 
 void PlaylistTabs::playlist_activate_cb ()
 {
-    if (! aud_playlist_update_pending ())
-        setCurrentIndex (aud_playlist_get_active ());
+    if (! Playlist::update_pending_any ())
+        setCurrentIndex (Playlist::active_playlist ().index ());
 }
 
 void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)
@@ -282,15 +284,10 @@ void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)
     if (global_level >= Playlist::Metadata)
         updateTitles ();
 
-    int lists = aud_playlist_count ();
-    for (int list = 0; list < lists; list ++)
-    {
-        auto update = aud_playlist_update_detail (list);
-        if (update.level)
-            playlistWidget (list)->update (update);
-    }
+    for (int i = 0; i < count (); i ++)
+        playlistWidget (i)->playlistUpdate ();
 
-    setCurrentIndex (aud_playlist_get_active ());
+    setCurrentIndex (Playlist::active_playlist ().index ());
 }
 
 void PlaylistTabs::playlist_position_cb (int list)
@@ -307,12 +304,14 @@ PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)
     updateSettings ();
 
     connect (this, & QTabBar::tabMoved, this, & PlaylistTabBar::tabMoved);
-    connect (this, & QTabBar::tabCloseRequested, audqt::playlist_confirm_delete);
+    connect (this, & QTabBar::tabCloseRequested, [] (int idx) {
+        audqt::playlist_confirm_delete (Playlist::by_index (idx));
+    });
 }
 
 void PlaylistTabBar::tabMoved (int from, int to)
 {
-    aud_playlist_reorder (from, to, 1);
+    Playlist::reorder_playlists (from, to, 1);
 }
 
 void PlaylistTabBar::mousePressEvent (QMouseEvent * e)
@@ -322,7 +321,7 @@ void PlaylistTabBar::mousePressEvent (QMouseEvent * e)
         int index = tabAt (e->pos ());
         if (index >= 0)
         {
-            audqt::playlist_confirm_delete (index);
+            audqt::playlist_confirm_delete (Playlist::by_index (index));
             e->accept ();
         }
     }
@@ -336,7 +335,7 @@ void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent * e)
     if (idx < 0 || e->button () != Qt::LeftButton)
         return;
 
-    aud_playlist_play (idx);
+    Playlist::by_index (idx).start_playback ();
 }
 
 void PlaylistTabBar::updateSettings ()

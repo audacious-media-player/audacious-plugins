@@ -54,26 +54,26 @@ void SongInfo::update (void * unused, audqt::InfoWidget * widget)
     if (! widget)
         return;
 
-    int playlist = aud_playlist_get_playing ();
+    auto playlist = Playlist::playing_playlist ();
 
-    if (playlist == -1)
-        playlist = aud_playlist_get_active ();
+    if (playlist == Playlist ())
+        playlist = Playlist::active_playlist ();
 
-    int position = aud_playlist_get_position (playlist);
+    int position = playlist.get_position ();
     if (position == -1)
         return;
 
-    String filename = aud_playlist_entry_get_filename (playlist, position);
+    String filename = playlist.entry_filename (position);
     if (! filename)
         return;
 
-    PluginHandle * decoder = aud_playlist_entry_get_decoder (playlist, position);
+    PluginHandle * decoder = playlist.entry_decoder (position);
     if (! decoder)
         return;
 
-    Tuple tuple = aud_playlist_entry_get_tuple (playlist, position);
+    Tuple tuple = playlist.entry_tuple (position);
     if (tuple.valid ())
-        widget->fillInfo (playlist, position, filename, tuple, decoder,
+        widget->fillInfo (filename, tuple, decoder,
                 aud_file_can_write_tuple (filename, decoder));
 }
 

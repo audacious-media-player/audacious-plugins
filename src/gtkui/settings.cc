@@ -27,8 +27,8 @@
 
 static void redisplay_playlists ()
 {
-    ui_playlist_notebook_empty ();
-    ui_playlist_notebook_populate ();
+    pl_notebook_purge ();
+    pl_notebook_populate ();
 }
 
 static const PreferencesWidget gtkui_widgets[] = {

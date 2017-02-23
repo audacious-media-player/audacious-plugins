@@ -25,8 +25,6 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
-#include <libaudcore/playlist.h>
-#include <libaudcore/tuple.h>
 
 #include "playlist_model.h"
 
@@ -79,14 +77,10 @@ static inline QPixmap get_icon (const char * name)
     return pm;
 }
 
-PlaylistModel::PlaylistModel (QObject * parent, int uniqueID) :
+PlaylistModel::PlaylistModel (QObject * parent, Playlist playlist) :
     QAbstractListModel (parent),
-    m_uniqueID (uniqueID)
-{
-    m_rows = aud_playlist_entry_count (playlist ());
-}
-
-PlaylistModel::~PlaylistModel () {}
+    m_playlist (playlist),
+    m_rows (playlist.n_entries ()) {}
 
 int PlaylistModel::rowCount (const QModelIndex & parent) const
 {
@@ -125,7 +119,7 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         if (s_fields[col] != Tuple::Invalid)
         {
-            tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), Playlist::NoWait);
+            tuple = m_playlist.entry_tuple (index.row (), Playlist::NoWait);
 
             switch (tuple.get_value_type (s_fields[col]))
             {
@@ -159,15 +153,15 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         return alignment (col);
 
     case Qt::DecorationRole:
-        if (col == NowPlaying && index.row () == aud_playlist_get_position (playlist ()))
+        if (col == NowPlaying && index.row () == m_playlist.get_position ())
         {
-            if (aud_playlist_get_playing () == playlist ())
-                if (aud_drct_get_paused ())
-                    return get_icon ("media-playback-pause");
-                else
-                    return get_icon ("media-playback-start");
-            else
-                return get_icon ("media-playback-stop");
+            const char * icon_name = "media-playback-stop";
+
+            if (m_playlist == Playlist::playing_playlist ())
+                icon_name = aud_drct_get_paused () ? "media-playback-pause" :
+                                                     "media-playback-start";
+
+            return get_icon (icon_name);
         }
         break;
     }
@@ -224,10 +218,8 @@ QStringList PlaylistModel::mimeTypes () const
 
 QMimeData * PlaylistModel::mimeData (const QModelIndexList & indexes) const
 {
-    int list = playlist ();
-
     /* we assume that <indexes> contains the selected entries */
-    aud_playlist_cache_selected (list);
+    m_playlist.cache_selected ();
 
     QList<QUrl> urls;
     int prev = -1;
@@ -237,7 +229,7 @@ QMimeData * PlaylistModel::mimeData (const QModelIndexList & indexes) const
         int row = index.row ();
         if (row != prev)  /* skip multiple cells in same row */
         {
-            urls.append (QString (aud_playlist_entry_get_filename (list, row)));
+            urls.append (QString (m_playlist.entry_filename (row)));
             prev = row;
         }
     }
@@ -257,18 +249,8 @@ bool PlaylistModel::dropMimeData (const QMimeData * data, Qt::DropAction action,
     for (auto & url : data->urls ())
         items.append (String (url.toEncoded ()));
 
-    aud_playlist_entry_insert_batch (playlist (), row, std::move (items), false);
+    m_playlist.insert_items (row, std::move (items), false);
     return true;
-}
-
-int PlaylistModel::playlist () const
-{
-    return aud_playlist_by_unique_id (m_uniqueID);
-}
-
-int PlaylistModel::uniqueId () const
-{
-    return m_uniqueID;
 }
 
 void PlaylistModel::entriesAdded (int row, int count)
@@ -306,7 +288,7 @@ void PlaylistModel::entriesChanged (int row, int count)
 
 QString PlaylistModel::queuePos (int row) const
 {
-    int at = aud_playlist_queue_find_entry (playlist (), row);
+    int at = m_playlist.queue_find_entry (row);
     if (at < 0)
         return QString ();
     else
@@ -326,8 +308,7 @@ bool PlaylistProxyModel::filterAcceptsRow (int source_row, const QModelIndex &) 
     if (! m_searchTerms.len ())
         return true;
 
-    int list = aud_playlist_by_unique_id (m_uniqueID);
-    Tuple tuple = aud_playlist_entry_get_tuple (list, source_row);
+    Tuple tuple = m_playlist.entry_tuple (source_row);
 
     String strings[] = {
         tuple.get_str (Tuple::Title),

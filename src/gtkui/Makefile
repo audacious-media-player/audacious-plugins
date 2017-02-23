@@ -8,7 +8,6 @@ SRCS = columns.cc \
        ui_playlist_widget.cc \
        ui_playlist_notebook.cc \
        ui_statusbar.cc \
-       playlist_util.cc \
        settings.cc
 
 include ../../buildsys.mk

@@ -55,38 +55,39 @@ static void activate_row (void * user, int row);
 
 static void rename_cb (void * unused)
 {
-    audgui_show_playlist_rename (aud_playlist_get_active ());
+    audgui_show_playlist_rename (Playlist::active_playlist ());
 }
 
 static void delete_cb (void * unused)
 {
-    audgui_confirm_playlist_delete (aud_playlist_get_active ());
+    audgui_confirm_playlist_delete (Playlist::active_playlist ());
 }
 
 static void get_value (void * user, int row, int column, GValue * value)
 {
+    auto list = Playlist::by_index (row);
+
     switch (column)
     {
     case 0:
-    {
-        g_value_set_string (value, aud_playlist_get_title (row));
+        g_value_set_string (value, list.get_title ());
         break;
-    }
+
     case 1:
-        g_value_set_int (value, aud_playlist_entry_count (row));
+        g_value_set_int (value, list.n_entries ());
         break;
     }
 }
 
 static bool get_selected (void * user, int row)
 {
-    return (row == aud_playlist_get_active ());
+    return (row == Playlist::active_playlist ().index ());
 }
 
 static void set_selected (void * user, int row, bool selected)
 {
     if (selected)
-        aud_playlist_set_active (row);
+        Playlist::by_index (row).activate ();
 }
 
 static void select_all (void * user, bool selected)
@@ -95,16 +96,17 @@ static void select_all (void * user, bool selected)
 
 static void activate_row (void * user, int row)
 {
-    aud_playlist_set_active (row);
-    aud_playlist_play (row);
+    auto playlist = Playlist::by_index (row);
+    playlist.activate ();
+    playlist.start_playback ();
 }
 
 static void shift_rows (void * user, int row, int before)
 {
     if (before < row)
-        aud_playlist_reorder (row, before, 1);
+        Playlist::reorder_playlists (row, before, 1);
     else if (before - 1 > row)
-        aud_playlist_reorder (row, before - 1, 1);
+        Playlist::reorder_playlists (row, before - 1, 1);
 }
 
 static const AudguiListCallbacks callbacks = {
@@ -125,7 +127,7 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * key,
     int row = gtk_tree_path_get_indices (path)[0];
     gtk_tree_path_free (path);
 
-    String title = aud_playlist_get_title (row);
+    String title = Playlist::by_index (row).get_title ();
     g_return_val_if_fail (title, true);
 
     Index<String> keys = str_list_to_index (key, " ");
@@ -149,7 +151,7 @@ static void update_hook (void * data, void * list_)
 {
     auto level = aud::from_ptr<Playlist::UpdateLevel> (data);
     GtkWidget * list = (GtkWidget *) list_;
-    int rows = aud_playlist_count ();
+    int rows = Playlist::n_playlists ();
 
     if (level == Playlist::Structure)
     {
@@ -169,14 +171,14 @@ static void update_hook (void * data, void * list_)
 
     if (playlist_activated)
     {
-        audgui_list_set_focus (list, aud_playlist_get_active ());
+        audgui_list_set_focus (list, Playlist::active_playlist ().index ());
         audgui_list_update_selection (list, 0, rows);
         playlist_activated = false;
     }
 
     if (position_changed)
     {
-        audgui_list_set_highlight (list, aud_playlist_get_playing ());
+        audgui_list_set_highlight (list, Playlist::playing_playlist ().index ());
         position_changed = false;
     }
 }
@@ -185,12 +187,12 @@ static void activate_hook (void * data, void * list_)
 {
     GtkWidget * list = (GtkWidget *) list_;
 
-    if (aud_playlist_update_pending ())
+    if (Playlist::update_pending_any ())
         playlist_activated = true;
     else
     {
-        audgui_list_set_focus (list, aud_playlist_get_active ());
-        audgui_list_update_selection (list, 0, aud_playlist_count ());
+        audgui_list_set_focus (list, Playlist::active_playlist ().index ());
+        audgui_list_update_selection (list, 0, Playlist::n_playlists ());
     }
 }
 
@@ -198,10 +200,10 @@ static void position_hook (void * data, void * list_)
 {
     GtkWidget * list = (GtkWidget *) list_;
 
-    if (aud_playlist_update_pending ())
+    if (Playlist::update_pending_any ())
         position_changed = true;
     else
-        audgui_list_set_highlight (list, aud_playlist_get_playing ());
+        audgui_list_set_highlight (list, Playlist::playing_playlist ().index ());
 }
 
 static void destroy_cb (GtkWidget * window)
@@ -218,10 +220,10 @@ void * PlaylistManager::get_gtk_widget ()
     GtkWidget * playman_vbox = gtk_vbox_new (false, 6);
 
     /* ListView */
-    GtkWidget * playman_pl_lv = audgui_list_new (& callbacks, nullptr, aud_playlist_count ());
+    GtkWidget * playman_pl_lv = audgui_list_new (& callbacks, nullptr, Playlist::n_playlists ());
     audgui_list_add_column (playman_pl_lv, _("Title"), 0, G_TYPE_STRING, -1);
     audgui_list_add_column (playman_pl_lv, _("Entries"), 1, G_TYPE_INT, 7);
-    audgui_list_set_highlight (playman_pl_lv, aud_playlist_get_playing ());
+    audgui_list_set_highlight (playman_pl_lv, Playlist::playing_playlist ().index ());
     gtk_tree_view_set_search_equal_func ((GtkTreeView *) playman_pl_lv,
      search_cb, nullptr, nullptr);
     hook_associate ("playlist update", update_hook, playman_pl_lv);
@@ -239,7 +241,7 @@ void * PlaylistManager::get_gtk_widget ()
     /* ButtonBox */
     GtkWidget * playman_button_hbox = gtk_hbox_new (false, 6);
     GtkWidget * new_button = audgui_button_new (_("_New"), "document-new",
-     (AudguiCallback) aud_playlist_new, nullptr);
+     [] (void *) { Playlist::new_playlist (); }, nullptr);
     GtkWidget * delete_button = audgui_button_new (_("_Remove"), "edit-delete", delete_cb, nullptr);
     GtkWidget * rename_button = audgui_button_new (_("Ren_ame"), "insert-text", rename_cb, nullptr);
 

@@ -34,22 +34,22 @@ static void uri_clear_func (GtkClipboard *, void * data)
 
 void pl_copy ()
 {
-    int list = aud_playlist_get_active ();
-    int entries = aud_playlist_entry_count (list);
-    int selected = aud_playlist_selected_count (list);
+    auto list = Playlist::active_playlist ();
+    int entries = list.n_entries ();
+    int selected = list.n_selected ();
     int fetched = 0;
 
     if (! selected)
         return;
 
-    aud_playlist_cache_selected (list);
+    list.cache_selected ();
 
     char * * uris = g_new (char *, selected + 1);
 
     for (int i = 0; i < entries && fetched < selected; i ++)
     {
-        if (aud_playlist_entry_get_selected (list, i))
-            uris[fetched ++] = g_strdup (aud_playlist_entry_get_filename (list, i));
+        if (list.entry_selected (i))
+            uris[fetched ++] = g_strdup (list.entry_filename (i));
     }
 
     uris[fetched] = nullptr;
@@ -73,7 +73,7 @@ void pl_cut ()
     pl_remove_selected ();
 }
 
-static void paste_to (int list, int pos)
+static void paste_to (Playlist list, int pos)
 {
     char * * uris = gtk_clipboard_wait_for_uris (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD));
     if (! uris)
@@ -83,35 +83,35 @@ static void paste_to (int list, int pos)
     for (int i = 0; uris[i]; i ++)
         items.append (String (uris[i]));
 
-    aud_playlist_entry_insert_batch (list, pos, std::move (items), false);
+    list.insert_items (pos, std::move (items), false);
     g_strfreev (uris);
 }
 
 void pl_paste ()
 {
-    int list = aud_playlist_get_active ();
-    paste_to (list, aud_playlist_get_focus (list));
+    auto list = Playlist::active_playlist ();
+    paste_to (list, list.get_focus ());
 }
 
 void pl_paste_end ()
 {
-    paste_to (aud_playlist_get_active (), -1);
+    paste_to (Playlist::active_playlist (), -1);
 }
 
 void pl_song_info ()
 {
-    int list = aud_playlist_get_active ();
-    int focus = aud_playlist_get_focus (list);
+    auto list = Playlist::active_playlist ();
+    int focus = list.get_focus ();
     if (focus >= 0)
         audgui_infowin_show (list, focus);
 }
 
 void pl_open_folder ()
 {
-    int list = aud_playlist_get_active ();
-    int focus = aud_playlist_get_focus (list);
+    auto list = Playlist::active_playlist ();
+    int focus = list.get_focus ();
 
-    String filename = aud_playlist_entry_get_filename (list, focus);
+    String filename = list.entry_filename (focus);
     if (! filename)
         return;
 

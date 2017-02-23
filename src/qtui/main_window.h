@@ -21,8 +21,8 @@
 #define MAIN_WINDOW_H
 
 #include <libaudcore/hook.h>
-#include <libaudcore/index.h>
 #include <libaudcore/mainloop.h>
+#include <libaudcore/playlist.h>
 
 #include "dialog_windows.h"
 
@@ -102,7 +102,7 @@ private:
      plugin_hook2 {"dock plugin disabled", this, & MainWindow::remove_dock_plugin_cb};
 
     Index<PluginWidget *> dock_widgets;
-    int playing_id = -1;
+    Playlist last_playing;
 };
 
 #endif

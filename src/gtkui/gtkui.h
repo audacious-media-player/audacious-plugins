@@ -23,6 +23,7 @@
 #include <stdint.h>
 #include <gtk/gtk.h>
 
+class Playlist;
 struct PluginPreferences;
 
 /* menus.c */
@@ -30,7 +31,7 @@ GtkWidget * make_menu_bar (GtkAccelGroup * accel);
 GtkWidget * make_menu_main (GtkAccelGroup * accel);
 GtkWidget * make_menu_rclick (GtkAccelGroup * accel);
 GtkWidget * make_menu_tab (GtkAccelGroup * accel);
-extern int menu_tab_playlist_id;
+extern Playlist menu_tab_playlist;
 
 /* settings.c */
 extern const PluginPreferences gtkui_prefs;
@@ -44,7 +45,7 @@ void show_hide_infoarea ();
 void show_hide_infoarea_vis ();
 void show_hide_statusbar ();
 void popup_menu_rclick (unsigned button, uint32_t time);
-void popup_menu_tab (unsigned button, uint32_t time, int playlist);
+void popup_menu_tab (unsigned button, uint32_t time, Playlist playlist);
 void activate_search_tool ();
 void activate_playlist_manager ();
 void update_step_size ();

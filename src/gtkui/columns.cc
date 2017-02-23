@@ -136,12 +136,12 @@ static void apply_changes ()
     int cols = chosen.len ();
     g_return_if_fail (cols <= PW_COLS);
 
-    ui_playlist_notebook_empty ();
+    pl_notebook_purge ();
 
     for (pw_num_cols = 0; pw_num_cols < cols; pw_num_cols ++)
         pw_cols[pw_num_cols] = chosen[pw_num_cols].column;
 
-    ui_playlist_notebook_populate ();
+    pl_notebook_populate ();
 }
 
 static void get_value (void * user, int row, int column, GValue * value)

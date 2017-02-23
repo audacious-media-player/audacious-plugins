@@ -147,8 +147,8 @@ void LIRCPlugin::cleanup ()
 
 gboolean jump_to (void * data)
 {
-    int playlist = aud_playlist_get_active ();
-    aud_playlist_set_position (playlist, atoi (track_no) - 1);
+    auto playlist = Playlist::active_playlist ();
+    playlist.set_position (atoi (track_no) - 1);
     track_no_pos = 0;
     tid = 0;
     return false;
@@ -330,10 +330,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
             else if (g_ascii_strcasecmp ("PLAYLIST_CLEAR", c) == 0)
             {
                 aud_drct_stop ();
-                int playlist = aud_playlist_get_active ();
-                aud_playlist_entry_delete (playlist, 0,
-                                           aud_playlist_entry_count
-                                           (playlist));
+                Playlist::active_playlist ().remove_all_entries ();
             }
             else if (g_ascii_strncasecmp ("PLAYLIST_ADD ", c, 13) == 0)
             {

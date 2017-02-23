@@ -172,18 +172,18 @@ static void cdaudio_error (const char * message_format, ...)
 }
 
 /* main thread only */
-static void purge_playlist (int playlist)
+static void purge_playlist (Playlist playlist)
 {
-    int length = aud_playlist_entry_count (playlist);
+    int length = playlist.n_entries ();
 
-    for (int count = 0; count < length; count ++)
+    for (int i = 0; i < length; i ++)
     {
-        String filename = aud_playlist_entry_get_filename (playlist, count);
+        String filename = playlist.entry_filename (i);
 
         if (! strncmp (filename, "cdda://", 7))
         {
-            aud_playlist_entry_delete (playlist, count, 1);
-            count--;
+            playlist.remove_entry (i);
+            i--;
             length--;
         }
     }
@@ -192,11 +192,10 @@ static void purge_playlist (int playlist)
 /* main thread only */
 static void purge_all_playlists (void * = nullptr)
 {
-    int playlists = aud_playlist_count ();
-    int count;
+    int playlists = Playlist::n_playlists ();
 
-    for (count = 0; count < playlists; count++)
-        purge_playlist (count);
+    for (int i = 0; i < playlists; i++)
+        purge_playlist (Playlist::by_index (i));
 }
 
 /* main thread only */

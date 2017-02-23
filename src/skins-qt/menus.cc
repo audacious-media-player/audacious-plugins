@@ -137,7 +137,7 @@ static const audqt::MenuItem playback_items[] = {
 static const audqt::MenuItem playlist_items[] = {
     audqt::MenuCommand ({N_("Play/Resume"), "media-playback-start", "Shift+Return"}, pl_play),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("New Playlist"), "document-new", "Shift+N"}, (audqt::MenuFunc) aud_playlist_new),
+    audqt::MenuCommand ({N_("New Playlist"), "document-new", "Shift+N"}, pl_new),
     audqt::MenuCommand ({N_("Rename Playlist ..."), "insert-text", "F2"}, action_playlist_rename),
     audqt::MenuCommand ({N_("Remove Playlist"), "edit-delete", "Shift+D"}, action_playlist_delete),
     audqt::MenuSep (),

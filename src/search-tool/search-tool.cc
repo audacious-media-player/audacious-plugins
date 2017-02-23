@@ -92,7 +92,7 @@ struct Item
     Item & operator= (Item &&) = default;
 };
 
-static int playlist_id;
+static Playlist s_playlist;
 static Index<String> search_terms;
 
 /* Note: added_table is accessed by multiple threads.
@@ -116,44 +116,40 @@ static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list
 
 static void find_playlist ()
 {
-    playlist_id = -1;
+    s_playlist = Playlist ();
 
-    for (int p = 0; playlist_id < 0 && p < aud_playlist_count (); p ++)
+    for (int p = 0; p < Playlist::n_playlists (); p ++)
     {
-        String title = aud_playlist_get_title (p);
-        if (! strcmp (title, _("Library")))
-            playlist_id = aud_playlist_get_unique_id (p);
+        auto playlist = Playlist::by_index (p);
+        if (! strcmp (playlist.get_title (), _("Library")))
+        {
+            s_playlist = playlist;
+            break;
+        }
     }
 }
 
-static int create_playlist ()
+static void create_playlist ()
 {
-    int list = aud_playlist_get_blank ();
-    aud_playlist_set_title (list, _("Library"));
-    aud_playlist_set_active (list);
-    playlist_id = aud_playlist_get_unique_id (list);
-    return list;
+    s_playlist = Playlist::blank_playlist ();
+    s_playlist.set_title (_("Library"));
+    s_playlist.active_playlist ();
 }
 
-static int get_playlist (bool require_added, bool require_scanned)
+static bool check_playlist (bool require_added, bool require_scanned)
 {
-    if (playlist_id < 0)
-        return -1;
-
-    int list = aud_playlist_by_unique_id (playlist_id);
-
-    if (list < 0)
+    if (! s_playlist.exists ())
     {
-        playlist_id = -1;
-        return -1;
+        s_playlist = Playlist ();
+        return false;
     }
 
-    if (require_added && aud_playlist_add_in_progress (list))
-        return -1;
-    if (require_scanned && aud_playlist_scan_in_progress (list))
-        return -1;
+    if (require_added && s_playlist.add_in_progress ())
+        return false;
+    if (require_scanned && s_playlist.scan_in_progress ())
+        return false;
 
-    return list;
+    return true;
 }
 
 static String get_uri ()
@@ -180,15 +176,15 @@ static void destroy_database ()
     database_valid = false;
 }
 
-static void create_database (int list)
+static void create_database ()
 {
     destroy_database ();
 
-    int entries = aud_playlist_entry_count (list);
+    int entries = s_playlist.n_entries ();
 
     for (int e = 0; e < entries; e ++)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (list, e, Playlist::NoWait);
+        Tuple tuple = s_playlist.entry_tuple (e, Playlist::NoWait);
 
         aud::array<SearchField, String> fields;
         fields[SearchField::Genre] = tuple.get_str (Tuple::Genre);
@@ -331,10 +327,8 @@ static void begin_add (const char * uri)
     if (adding)
         return;
 
-    int list = get_playlist (false, false);
-
-    if (list < 0)
-        list = create_playlist ();
+    if (! check_playlist (false, false))
+        create_playlist ();
 
     /* if possible, store local path for compatibility with older versions */
     StringBuf path = uri_to_filename (uri);
@@ -342,22 +336,22 @@ static void begin_add (const char * uri)
 
     added_table.clear ();
 
-    int entries = aud_playlist_entry_count (list);
+    int entries = s_playlist.n_entries ();
 
     for (int entry = 0; entry < entries; entry ++)
     {
-        String filename = aud_playlist_entry_get_filename (list, entry);
+        String filename = s_playlist.entry_filename (entry);
 
         if (! added_table.lookup (filename))
         {
-            aud_playlist_entry_set_selected (list, entry, false);
+            s_playlist.select_entry (entry, false);
             added_table.add (filename, false);
         }
         else
-            aud_playlist_entry_set_selected (list, entry, true);
+            s_playlist.select_entry (entry, true);
     }
 
-    aud_playlist_delete_selected (list);
+    s_playlist.remove_selected ();
 
     tiny_lock (& adding_lock);
     adding = true;
@@ -365,12 +359,12 @@ static void begin_add (const char * uri)
 
     Index<PlaylistAddItem> add;
     add.append (String (uri));
-    aud_playlist_entry_insert_filtered (list, -1, std::move (add), filter_cb, nullptr, false);
+    s_playlist.insert_filtered (-1, std::move (add), filter_cb, nullptr, false);
 }
 
 static void show_hide_widgets ()
 {
-    if (playlist_id < 0)
+    if (s_playlist == Playlist ())
     {
         gtk_widget_hide (wait_label);
         gtk_widget_hide (scrolled);
@@ -419,11 +413,9 @@ static void search_timeout (void * = nullptr)
 
 static void update_database ()
 {
-    int list = get_playlist (true, true);
-
-    if (list >= 0)
+    if (check_playlist (true, true))
     {
-        create_database (list);
+        create_database ();
         search_timeout ();
     }
     else
@@ -436,10 +428,9 @@ static void update_database ()
     show_hide_widgets ();
 }
 
-static void add_complete_cb (void * unused, void * unused2)
+static void add_complete_cb (void *, void *)
 {
-    int list = get_playlist (true, false);
-    if (list < 0)
+    if (! check_playlist (true, false))
         return;
 
     if (adding)
@@ -448,50 +439,46 @@ static void add_complete_cb (void * unused, void * unused2)
         adding = false;
         tiny_unlock (& adding_lock);
 
-        int entries = aud_playlist_entry_count (list);
+        int entries = s_playlist.n_entries ();
 
         for (int entry = 0; entry < entries; entry ++)
         {
-            String filename = aud_playlist_entry_get_filename (list, entry);
+            String filename = s_playlist.entry_filename (entry);
             bool * added = added_table.lookup (filename);
 
-            aud_playlist_entry_set_selected (list, entry, ! added || ! (* added));
+            s_playlist.select_entry (entry, ! added || ! (* added));
         }
 
         added_table.clear ();
 
         /* don't clear the playlist if nothing was added */
-        if (aud_playlist_selected_count (list) < aud_playlist_entry_count (list))
-            aud_playlist_delete_selected (list);
+        if (s_playlist.n_selected () < entries)
+            s_playlist.remove_selected ();
         else
-            aud_playlist_select_all (list, false);
+            s_playlist.select_all (false);
 
-        aud_playlist_sort_by_scheme (list, Playlist::Path);
+        s_playlist.sort_entries (Playlist::Path);
     }
 
-    if (! database_valid && ! aud_playlist_update_pending (list))
+    if (! database_valid && ! s_playlist.update_pending ())
         update_database ();
 }
 
-static void scan_complete_cb (void * unused, void * unused2)
+static void scan_complete_cb (void *, void *)
 {
-    int list = get_playlist (true, true);
-    if (list < 0)
+    if (! check_playlist (true, true))
         return;
 
-    if (! database_valid && ! aud_playlist_update_pending (list))
+    if (! database_valid && ! s_playlist.update_pending ())
         update_database ();
 }
 
-static void playlist_update_cb (void * data, void * unused)
+static void playlist_update_cb (void *, void *)
 {
-    if (! database_valid)
-        update_database ();
-    else
+    if (! database_valid || ! check_playlist (true, true) ||
+        s_playlist.update_detail ().level >= Playlist::Metadata)
     {
-        int list = get_playlist (true, true);
-        if (list < 0 || aud_playlist_update_detail (list).level >= Playlist::Metadata)
-            update_database ();
+        update_database ();
     }
 }
 
@@ -532,7 +519,6 @@ static void do_add (bool play, bool set_title)
     if (search_pending)
         search_timeout ();
 
-    int list = aud_playlist_by_unique_id (playlist_id);
     int n_items = items.len ();
     int n_selected = 0;
 
@@ -549,9 +535,9 @@ static void do_add (bool play, bool set_title)
         for (int entry : item->matches)
         {
             add.append (
-                aud_playlist_entry_get_filename (list, entry),
-                aud_playlist_entry_get_tuple (list, entry, Playlist::NoWait),
-                aud_playlist_entry_get_decoder (list, entry, Playlist::NoWait)
+                s_playlist.entry_filename (entry),
+                s_playlist.entry_tuple (entry, Playlist::NoWait),
+                s_playlist.entry_decoder (entry, Playlist::NoWait)
             );
         }
 
@@ -560,28 +546,28 @@ static void do_add (bool play, bool set_title)
             title = item->name;
     }
 
-    int list2 = aud_playlist_get_active ();
-    aud_playlist_entry_insert_batch (list2, -1, std::move (add), play);
+    auto list2 = Playlist::active_playlist ();
+    list2.insert_items (-1, std::move (add), play);
 
     if (set_title && n_selected == 1)
-        aud_playlist_set_title (list2, title);
+        list2.set_title (title);
 }
 
 static void action_play ()
 {
-    aud_playlist_set_active (aud_playlist_get_temporary ());
+    Playlist::temporary_playlist ().activate ();
     do_add (true, false);
 }
 
 static void action_create_playlist ()
 {
-    aud_playlist_new ();
+    Playlist::new_playlist ();
     do_add (false, true);
 }
 
 static void action_add_to_playlist ()
 {
-    if (aud_playlist_by_unique_id (playlist_id) != aud_playlist_get_active ())
+    if (s_playlist != Playlist::active_playlist ())
         do_add (false, false);
 }
 
@@ -677,12 +663,10 @@ static Index<char> list_get_data (void * user)
     if (search_pending)
         search_timeout ();
 
-    int list = aud_playlist_by_unique_id (playlist_id);
     int n_items = items.len ();
-
     Index<char> buf;
 
-    aud_playlist_select_all (list, false);
+    s_playlist.select_all (false);
 
     for (int i = 0; i < n_items; i ++)
     {
@@ -696,14 +680,14 @@ static Index<char> list_get_data (void * user)
             if (buf.len ())
                 buf.append ('\n');
 
-            String filename = aud_playlist_entry_get_filename (list, entry);
+            String filename = s_playlist.entry_filename (entry);
             buf.insert (filename, -1, strlen (filename));
 
-            aud_playlist_entry_set_selected (list, entry, true);
+            s_playlist.select_entry (entry, true);
         }
     }
 
-    aud_playlist_cache_selected (list);
+    s_playlist.cache_selected ();
 
     return buf;
 }

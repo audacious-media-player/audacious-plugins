@@ -224,19 +224,18 @@ void MainWindow::playback_begin_cb ()
 {
     update_play_pause ();
 
-    int last_list = aud_playlist_by_unique_id (playing_id);
-    auto last_widget = playlistTabs->playlistWidget (last_list);
+    auto last_widget = playlistTabs->playlistWidget (last_playing.index ());
     if (last_widget)
         last_widget->updatePlaybackIndicator ();
 
-    int list = aud_playlist_get_playing ();
-    auto widget = playlistTabs->playlistWidget (list);
+    auto playing = Playlist::playing_playlist ();
+    auto widget = playlistTabs->playlistWidget (playing.index ());
     if (widget)
         widget->scrollToCurrent ();
     if (widget && widget != last_widget)
         widget->updatePlaybackIndicator ();
 
-    playing_id = aud_playlist_get_unique_id (list);
+    last_playing = playing;
 
     buffering_timer.queue (250, aud::obj_member<MainWindow, & MainWindow::buffering_cb>, this);
 }
@@ -250,8 +249,7 @@ void MainWindow::pause_cb ()
 {
     update_play_pause ();
 
-    int list = aud_playlist_by_unique_id (playing_id);
-    auto widget = playlistTabs->playlistWidget (list);
+    auto widget = playlistTabs->playlistWidget (last_playing.index ());
     if (widget)
         widget->updatePlaybackIndicator ();
 }
@@ -263,12 +261,11 @@ void MainWindow::playback_stop_cb ()
 
     update_play_pause ();
 
-    int last_list = aud_playlist_by_unique_id (playing_id);
-    auto last_widget = playlistTabs->playlistWidget (last_list);
+    auto last_widget = playlistTabs->playlistWidget (last_playing.index ());
     if (last_widget)
         last_widget->updatePlaybackIndicator ();
 
-    playing_id = -1;
+    last_playing = Playlist ();
 }
 
 void MainWindow::update_toggles_cb ()

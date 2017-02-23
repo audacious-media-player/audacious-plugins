@@ -31,19 +31,19 @@
 
 void pl_copy ()
 {
-    int list = aud_playlist_get_active ();
-    int entries = aud_playlist_entry_count (list);
+    auto list = Playlist::active_playlist ();
+    int entries = list.n_entries ();
 
-    if (! aud_playlist_selected_count (list))
+    if (! list.n_selected ())
         return;
 
-    aud_playlist_cache_selected (list);
+    list.cache_selected ();
 
     QList<QUrl> urls;
     for (int i = 0; i < entries; i ++)
     {
-        if (aud_playlist_entry_get_selected (list, i))
-            urls.append (QString (aud_playlist_entry_get_filename (list, i)));
+        if (list.entry_selected (i))
+            urls.append (QString (list.entry_filename (i)));
     }
 
     auto data = new QMimeData;
@@ -57,7 +57,7 @@ void pl_cut ()
     pl_remove_selected ();
 }
 
-static void paste_to (int list, int pos)
+static void paste_to (Playlist list, int pos)
 {
     auto data = QApplication::clipboard ()->mimeData ();
     if (! data->hasUrls ())
@@ -67,34 +67,34 @@ static void paste_to (int list, int pos)
     for (auto & url : data->urls ())
         items.append (String (url.toEncoded ()));
 
-    aud_playlist_entry_insert_batch (list, pos, std::move (items), false);
+    list.insert_items (pos, std::move (items), false);
 }
 
 void pl_paste ()
 {
-    int list = aud_playlist_get_active ();
-    paste_to (list, aud_playlist_get_focus (list));
+    auto list = Playlist::active_playlist ();
+    paste_to (list, list.get_focus ());
 }
 
 void pl_paste_end ()
 {
-    paste_to (aud_playlist_get_active (), -1);
+    paste_to (Playlist::active_playlist (), -1);
 }
 
 void pl_song_info ()
 {
-    int list = aud_playlist_get_active ();
-    int focus = aud_playlist_get_focus (list);
+    auto list = Playlist::active_playlist ();
+    int focus = list.get_focus ();
     if (focus >= 0)
         audqt::infowin_show (list, focus);
 }
 
 void pl_open_folder ()
 {
-    int list = aud_playlist_get_active ();
-    int focus = aud_playlist_get_focus (list);
+    auto list = Playlist::active_playlist ();
+    int focus = list.get_focus ();
 
-    String filename = aud_playlist_entry_get_filename (list, focus);
+    String filename = list.entry_filename (focus);
     if (! filename)
         return;
 

@@ -31,9 +31,9 @@ static QueuedFunc clear_timeout;
 
 static void ui_statusbar_update_playlist_length (void *, void * label)
 {
-    int playlist = aud_playlist_get_active ();
-    StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
-    StringBuf s2 = str_format_time (aud_playlist_get_total_length (playlist));
+    auto playlist = Playlist::active_playlist ();
+    StringBuf s1 = str_format_time (playlist.selected_length_ms ());
+    StringBuf s2 = str_format_time (playlist.total_length_ms ());
     gtk_label_set_text ((GtkLabel *) label, str_concat ({s1, " / ", s2}));
 }
 
