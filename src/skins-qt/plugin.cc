@@ -160,8 +160,6 @@ static void skins_cleanup_main ()
     equalizerwin_unhook ();
     playlistwin_unhook ();
 
-    menu_cleanup ();
-
     timer_remove (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
 
     delete mainwin; mainwin = nullptr;

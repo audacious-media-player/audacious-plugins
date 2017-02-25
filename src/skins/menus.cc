@@ -76,7 +76,7 @@ static const AudguiMenuItem output_items[] = {
     MenuSep (),
     MenuCommand (N_("Effects ..."), nullptr, NO_KEY, configure_effects),
     MenuSep (),
-    MenuToggle (N_("Record Stream"), nullptr, 'd', NO_MOD, "audgui", "record", audgui_toggle_record, "audgui set record"),
+    MenuToggle (N_("Record Stream"), nullptr, 'd', NO_MOD, nullptr, "record", nullptr, "set record"),
     MenuCommand (N_("Audio Settings ..."), "audio-card", NO_KEY, configure_output)
 };
 

@@ -177,7 +177,7 @@ static const AudguiMenuItem output_items[] = {
     MenuCommand (N_("_Equalizer ..."), "multimedia-volume-control", 'e', CTRL, audgui_show_equalizer_window),
     MenuCommand (N_("E_ffects ..."), nullptr, NONE, configure_effects),
     MenuSep (),
-    MenuToggle (N_("_Record Stream"), nullptr, 'd', CTRL, "audgui", "record", audgui_toggle_record, "audgui set record"),
+    MenuToggle (N_("_Record Stream"), nullptr, 'd', CTRL, nullptr, "record", nullptr, "set record"),
     MenuCommand (N_("Audio _Settings ..."), "audio-card", NONE, configure_output)
 };
 

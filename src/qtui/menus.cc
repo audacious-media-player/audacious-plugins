@@ -49,6 +49,7 @@ static void pl_rename () { hook_call ("qtui rename playlist", nullptr); }
 static void pl_close () { audqt::playlist_confirm_delete (Playlist::active_playlist ()); }
 
 static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
+static void configure_output () { audqt::prefswin_show_plugin_page (PluginType::Output); }
 static void configure_visualizations () { audqt::prefswin_show_plugin_page (PluginType::Vis); }
 
 static void toggle_menubar () { hook_call ("qtui toggle menubar", nullptr); }
@@ -158,8 +159,10 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuCommand ({N_("Volume _Down"), "audio-volume-low", "Ctrl+-"}, volume_down),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("_Equalizer ..."), "multimedia-volume-control", "Ctrl+E"}, audqt::equalizer_show),
+        audqt::MenuCommand ({N_("E_ffects ..."), "preferences-system"}, configure_effects),
         audqt::MenuSep (),
-        audqt::MenuCommand ({N_("E_ffects ..."), "preferences-system"}, configure_effects)
+        audqt::MenuToggle ({N_("Record Stream"), "media-record", "Ctrl+D"}, {nullptr, "record", "set record"}),
+        audqt::MenuCommand ({N_("Audio Settings ..."), "audio-card"}, configure_output)
     };
 
     static const audqt::MenuItem view_items[] = {
