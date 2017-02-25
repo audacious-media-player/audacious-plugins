@@ -40,7 +40,6 @@
 #include "ui_playlist_widget.h"
 #include "ui_infoarea.h"
 #include "ui_statusbar.h"
-#include "playlist_util.h"
 
 #include "../ui-common/menu-ops.cc"
 #include "../ui-common/menu-ops-gtk.cc"
@@ -490,11 +489,6 @@ static GtkWidget * markup_label_new (const char * str)
     return label;
 }
 
-static void window_mapped_cb (GtkWidget * widget)
-{
-    gtk_widget_grab_focus (playlist_get_treeview (aud_playlist_get_active ()));
-}
-
 static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event)
 {
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
@@ -506,8 +500,8 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event)
         /* escape key returns focus to playlist */
         if (event->keyval == GDK_KEY_Escape)
         {
-            if (! focused || ! gtk_widget_is_ancestor (focused, (GtkWidget *) UI_PLAYLIST_NOTEBOOK))
-                gtk_widget_grab_focus (playlist_get_treeview (aud_playlist_get_active ()));
+            if (! focused || ! gtk_widget_is_ancestor (focused, pl_notebook))
+                pl_notebook_grab_focus ();
 
             return false;
         }
@@ -599,7 +593,7 @@ static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event)
         switch (event->keyval)
         {
         case GDK_KEY_Escape:
-            ui_playlist_notebook_position (aud::to_ptr (aud_playlist_get_active ()), nullptr);
+            pl_notebook_set_position (aud::to_ptr (Playlist::active_playlist ()), nullptr);
             return true;
         case GDK_KEY_Delete:
             pl_remove_selected ();
@@ -635,6 +629,10 @@ static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event)
 
 static void update_toggles (void * = nullptr, void * = nullptr)
 {
+    gtk_widget_set_visible ((GtkWidget *) button_record, aud_drct_get_record_enabled ());
+
+    gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_record,
+     aud_get_bool (nullptr, "record"));
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_repeat,
      aud_get_bool (nullptr, "repeat"));
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_shuffle,
@@ -653,22 +651,7 @@ static void toggle_shuffle (GtkToggleToolButton * button)
 
 static void toggle_record (GtkToggleToolButton * button)
 {
-    bool enable = gtk_toggle_tool_button_get_active (button);
-    if (enable != aud_drct_get_record_enabled ())
-        audgui_toggle_record ();
-
-    /* reset toggle state if necessary */
-    if (enable != aud_drct_get_record_enabled ())
-        gtk_toggle_tool_button_set_active (button, ! enable);
-}
-
-static void record_toggled (void * = nullptr, void * = nullptr)
-{
-    bool supported = (bool) aud_drct_get_record_plugin ();
-    bool enabled = aud_drct_get_record_enabled ();
-
-    gtk_widget_set_sensitive ((GtkWidget *) button_record, supported);
-    gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_record, enabled);
+    aud_set_bool (nullptr, "record", gtk_toggle_tool_button_get_active (button));
 }
 
 static void toggle_search_tool (GtkToggleToolButton * button)
@@ -700,13 +683,14 @@ static void ui_hooks_associate ()
     hook_associate ("playback pause", (HookFunction) pause_cb, nullptr);
     hook_associate ("playback unpause", (HookFunction) pause_cb, nullptr);
     hook_associate ("playback stop", (HookFunction) ui_playback_stop, nullptr);
-    hook_associate ("playlist update", ui_playlist_notebook_update, nullptr);
-    hook_associate ("playlist activate", ui_playlist_notebook_activate, nullptr);
-    hook_associate ("playlist set playing", ui_playlist_notebook_set_playing, nullptr);
-    hook_associate ("playlist position", ui_playlist_notebook_position, nullptr);
+    hook_associate ("playlist update", pl_notebook_update, nullptr);
+    hook_associate ("playlist activate", pl_notebook_activate, nullptr);
+    hook_associate ("playlist set playing", pl_notebook_set_playing, nullptr);
+    hook_associate ("playlist position", pl_notebook_set_position, nullptr);
+    hook_associate ("enable record", update_toggles, nullptr);
+    hook_associate ("set record", update_toggles, nullptr);
     hook_associate ("set shuffle", update_toggles, nullptr);
     hook_associate ("set repeat", update_toggles, nullptr);
-    hook_associate ("enable record", record_toggled, nullptr);
     hook_associate ("config save", (HookFunction) config_save, nullptr);
 }
 
@@ -718,13 +702,14 @@ static void ui_hooks_disassociate ()
     hook_dissociate ("playback pause", (HookFunction) pause_cb);
     hook_dissociate ("playback unpause", (HookFunction) pause_cb);
     hook_dissociate ("playback stop", (HookFunction) ui_playback_stop);
-    hook_dissociate ("playlist update", ui_playlist_notebook_update);
-    hook_dissociate ("playlist activate", ui_playlist_notebook_activate);
-    hook_dissociate ("playlist set playing", ui_playlist_notebook_set_playing);
-    hook_dissociate ("playlist position", ui_playlist_notebook_position);
+    hook_dissociate ("playlist update", pl_notebook_update);
+    hook_dissociate ("playlist activate", pl_notebook_activate);
+    hook_dissociate ("playlist set playing", pl_notebook_set_playing);
+    hook_dissociate ("playlist position", pl_notebook_set_position);
+    hook_dissociate ("enable record", update_toggles);
+    hook_dissociate ("set record", update_toggles);
     hook_dissociate ("set shuffle", update_toggles);
     hook_dissociate ("set repeat", update_toggles);
-    hook_dissociate ("enable record", record_toggled);
     hook_dissociate ("config save", (HookFunction) config_save);
 }
 
@@ -814,15 +799,23 @@ bool GtkUI::init ()
         aud_plugin_add_watch (search_tool, search_tool_toggled, nullptr);
     }
 
-    /* playback buttons */
+    /* open/add buttons */
     toolbar_button_add (toolbar, button_open_pressed, "document-open");
     toolbar_button_add (toolbar, button_add_pressed, "list-add");
+
+    gtk_toolbar_insert ((GtkToolbar *) toolbar, gtk_separator_tool_item_new (), -1);
+
+    /* playback buttons */
     toolbar_button_add (toolbar, aud_drct_pl_prev, "media-skip-backward");
     toolbar_button_add (toolbar, aud_drct_pl_next, "media-skip-forward");
     button_play = toolbar_button_add (toolbar, aud_drct_play_pause, "media-playback-start");
     button_stop = toolbar_button_add (toolbar, aud_drct_stop, "media-playback-stop");
+
     button_record = toggle_button_new ("media-record", toggle_record);
+    gtk_widget_set_no_show_all ((GtkWidget *) button_record, true);
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_record, -1);
+
+    gtk_toolbar_insert ((GtkToolbar *) toolbar, gtk_separator_tool_item_new (), -1);
 
     /* time slider and label */
     GtkToolItem * boxitem1 = gtk_tool_item_new ();
@@ -846,6 +839,8 @@ bool GtkUI::init ()
 
     gtk_widget_set_no_show_all (slider, true);
     gtk_widget_set_no_show_all (label_time, true);
+
+    gtk_toolbar_insert ((GtkToolbar *) toolbar, gtk_separator_tool_item_new (), -1);
 
     /* repeat and shuffle buttons */
     button_repeat = toggle_button_new ("media-playlist-repeat", toggle_repeat);
@@ -880,8 +875,7 @@ bool GtkUI::init ()
     vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
     layout_add_center (vbox);
 
-    ui_playlist_notebook_new ();
-    gtk_box_pack_start ((GtkBox *) vbox, (GtkWidget *) UI_PLAYLIST_NOTEBOOK, true, true, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, pl_notebook_new (), true, true, 0);
 
     /* optional UI elements */
     show_hide_menu ();
@@ -892,7 +886,7 @@ bool GtkUI::init ()
     ui_hooks_associate ();
 
     AUDDBG ("playlist associate\n");
-    ui_playlist_notebook_populate ();
+    pl_notebook_populate ();
 
     g_signal_connect (slider, "change-value", (GCallback) ui_slider_change_value_cb , nullptr);
     g_signal_connect (slider, "button-press-event", (GCallback) ui_slider_button_press_cb, nullptr);
@@ -904,10 +898,10 @@ bool GtkUI::init ()
 
     timer_add (TimerRate::Hz4, ui_volume_slider_update, volume);
 
-    g_signal_connect (window, "map-event", (GCallback) window_mapped_cb, nullptr);
+    g_signal_connect (window, "map-event", (GCallback) pl_notebook_grab_focus, nullptr);
     g_signal_connect (window, "delete-event", (GCallback) window_delete, nullptr);
     g_signal_connect (window, "key-press-event", (GCallback) window_keypress_cb, nullptr);
-    g_signal_connect (UI_PLAYLIST_NOTEBOOK, "key-press-event", (GCallback) playlist_keypress_cb, nullptr);
+    g_signal_connect (pl_notebook, "key-press-event", (GCallback) playlist_keypress_cb, nullptr);
 
     if (aud_drct_get_playing ())
     {
@@ -921,7 +915,6 @@ bool GtkUI::init ()
     title_change ();
 
     update_toggles ();
-    record_toggled ();
 
     gtk_widget_show_all (vbox_outer);
 
@@ -1083,9 +1076,9 @@ void popup_menu_rclick (unsigned button, uint32_t time)
      time);
 }
 
-void popup_menu_tab (unsigned button, uint32_t time, int playlist)
+void popup_menu_tab (unsigned button, uint32_t time, Playlist playlist)
 {
-    menu_tab_playlist_id = aud_playlist_get_unique_id (playlist);
+    menu_tab_playlist = playlist;
     gtk_menu_popup ((GtkMenu *) menu_tab, nullptr, nullptr, nullptr, nullptr, button, time);
 }
 

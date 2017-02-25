@@ -46,11 +46,11 @@ enum {
 
 void PlaylistWidget::update_title ()
 {
-    if (aud_playlist_count () > 1)
+    if (Playlist::n_playlists () > 1)
     {
-        String title = aud_playlist_get_title (m_playlist);
+        String title = m_playlist.get_title ();
         m_title_text = String (str_printf (_("%s (%d of %d)"),
-         (const char *) title, 1 + m_playlist, aud_playlist_count ()));
+         (const char *) title, 1 + m_playlist.index (), Playlist::n_playlists ()));
     }
     else
         m_title_text = String ();
@@ -93,7 +93,7 @@ int PlaylistWidget::adjust_position (bool relative, int position) const
 
     if (relative)
     {
-        int focus = aud_playlist_get_focus (m_playlist);
+        int focus = m_playlist.get_focus ();
         if (focus == -1)
             return 0;
 
@@ -129,7 +129,7 @@ void PlaylistWidget::cancel_all ()
 
 void PlaylistWidget::draw (QPainter & cr)
 {
-    int active_entry = aud_playlist_get_position (m_playlist);
+    int active_entry = m_playlist.get_position ();
     int left = 3, right = 3;
     int width;
     QRect rect;
@@ -153,7 +153,7 @@ void PlaylistWidget::draw (QPainter & cr)
 
     for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
     {
-        if (aud_playlist_entry_get_selected (m_playlist, i))
+        if (m_playlist.entry_selected (i))
             cr.fillRect (0, m_offset + m_row_height * (i - m_first), m_width,
              m_row_height, QColor (skin.colors[SKIN_PLEDIT_SELECTEDBG]));
     }
@@ -187,7 +187,7 @@ void PlaylistWidget::draw (QPainter & cr)
 
     for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::NoWait);
+        Tuple tuple = m_playlist.entry_tuple (i, Playlist::NoWait);
         int len = tuple.get_int (Tuple::Length);
         if (len < 0)
             continue;
@@ -206,13 +206,13 @@ void PlaylistWidget::draw (QPainter & cr)
 
     /* queue positions */
 
-    if (aud_playlist_queue_count (m_playlist))
+    if (m_playlist.n_queued ())
     {
         width = 0;
 
         for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
         {
-            int pos = aud_playlist_queue_find_entry (m_playlist, i);
+            int pos = m_playlist.queue_find_entry (i);
             if (pos < 0)
                 continue;
 
@@ -235,7 +235,7 @@ void PlaylistWidget::draw (QPainter & cr)
 
     for (int i = m_first; i < m_first + m_rows && i < m_length; i ++)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (m_playlist, i, Playlist::NoWait);
+        Tuple tuple = m_playlist.entry_tuple (i, Playlist::NoWait);
         String title = tuple.get_str (Tuple::FormattedTitle);
 
         cr.setPen (QColor (skin.colors[(i == active_entry) ?
@@ -247,12 +247,11 @@ void PlaylistWidget::draw (QPainter & cr)
 
     /* focus rectangle */
 
-    int focus = aud_playlist_get_focus (m_playlist);
+    int focus = m_playlist.get_focus ();
 
     /* don't show rectangle if this is the only selected entry */
     if (focus >= m_first && focus <= m_first + m_rows - 1 &&
-     (! aud_playlist_entry_get_selected (m_playlist, focus) ||
-     aud_playlist_selected_count (m_playlist) > 1))
+        (! m_playlist.entry_selected (focus) || m_playlist.n_selected () > 1))
     {
         cr.setPen (QColor (skin.colors[SKIN_PLEDIT_NORMAL]));
         cr.drawRect (0, m_offset + m_row_height * (focus - m_first), m_width - 1, m_row_height - 1);
@@ -300,18 +299,18 @@ void PlaylistWidget::set_font (const char * font)
 
 void PlaylistWidget::refresh ()
 {
-    m_playlist = aud_playlist_get_active ();
-    m_length = aud_playlist_entry_count (m_playlist);
+    auto prev_playlist = m_playlist;
+    m_playlist = Playlist::active_playlist ();
+    m_length = m_playlist.n_entries ();
+
     update_title ();
     calc_layout ();
 
-    int id = aud_playlist_get_unique_id (m_playlist);
-    if (m_playlist_id != id)
+    if (m_playlist != prev_playlist)
     {
         cancel_all ();
-        m_playlist_id = id;
         m_first = 0;
-        ensure_visible (aud_playlist_get_focus (m_playlist));
+        ensure_visible (m_playlist.get_focus ());
     }
 
     queue_draw ();
@@ -335,9 +334,9 @@ void PlaylistWidget::select_single (bool relative, int position)
     if (position == -1)
         return;
 
-    aud_playlist_select_all (m_playlist, false);
-    aud_playlist_entry_set_selected (m_playlist, position, true);
-    aud_playlist_set_focus (m_playlist, position);
+    m_playlist.select_all (false);
+    m_playlist.select_entry (position, true);
+    m_playlist.set_focus (position);
     ensure_visible (position);
 }
 
@@ -352,11 +351,10 @@ void PlaylistWidget::select_extend (bool relative, int position)
     int sign = (position > count) ? 1 : -1;
 
     for (; count != position; count += sign)
-        aud_playlist_entry_set_selected (m_playlist, count,
-         ! aud_playlist_entry_get_selected (m_playlist, count + sign));
+        m_playlist.select_entry (count, ! m_playlist.entry_selected (count + sign));
 
-    aud_playlist_entry_set_selected (m_playlist, position, true);
-    aud_playlist_set_focus (m_playlist, position);
+    m_playlist.select_entry (position, true);
+    m_playlist.set_focus (position);
     ensure_visible (position);
 }
 
@@ -367,7 +365,7 @@ void PlaylistWidget::select_slide (bool relative, int position)
     if (position == -1)
         return;
 
-    aud_playlist_set_focus (m_playlist, position);
+    m_playlist.set_focus (position);
     ensure_visible (position);
 }
 
@@ -378,34 +376,33 @@ void PlaylistWidget::select_toggle (bool relative, int position)
     if (position == -1)
         return;
 
-    aud_playlist_entry_set_selected (m_playlist, position,
-     ! aud_playlist_entry_get_selected (m_playlist, position));
-    aud_playlist_set_focus (m_playlist, position);
+    m_playlist.select_entry (position, ! m_playlist.entry_selected (position));
+    m_playlist.set_focus (position);
     ensure_visible (position);
 }
 
 void PlaylistWidget::select_move (bool relative, int position)
 {
-    int focus = aud_playlist_get_focus (m_playlist);
+    int focus = m_playlist.get_focus ();
     position = adjust_position (relative, position);
 
     if (focus == -1 || position == -1 || position == focus)
         return;
 
-    focus += aud_playlist_shift (m_playlist, focus, position - focus);
+    focus += m_playlist.shift_entries (focus, position - focus);
     ensure_visible (focus);
 }
 
 void PlaylistWidget::delete_selected ()
 {
-    aud_playlist_delete_selected (m_playlist);
+    m_playlist.remove_selected ();
 
-    m_length = aud_playlist_entry_count (m_playlist);
-    int focus = aud_playlist_get_focus (m_playlist);
+    m_length = m_playlist.n_entries ();
+    int focus = m_playlist.get_focus ();
 
     if (focus != -1)
     {
-        aud_playlist_entry_set_selected (m_playlist, focus, true);
+        m_playlist.select_entry (focus, true);
         ensure_visible (focus);
     }
 }
@@ -439,11 +436,11 @@ bool PlaylistWidget::handle_keypress (QKeyEvent * event)
             break;
           case Qt::Key_Return:
             select_single (true, 0);
-            aud_playlist_set_position (m_playlist, aud_playlist_get_focus (m_playlist));
-            aud_playlist_play (m_playlist);
+            m_playlist.set_position (m_playlist.get_focus ());
+            m_playlist.start_playback ();
             break;
           case Qt::Key_Escape:
-            select_single (false, aud_playlist_get_position (m_playlist));
+            select_single (false, m_playlist.get_position ());
             break;
           case Qt::Key_Delete:
             delete_selected ();
@@ -554,7 +551,7 @@ void PlaylistWidget::scroll_to (int row)
 void PlaylistWidget::set_focused (int row)
 {
     cancel_all ();
-    aud_playlist_set_focus (m_playlist, row);
+    m_playlist.set_focus (row);
     ensure_visible (row);
     refresh ();
 }
@@ -608,7 +605,7 @@ bool PlaylistWidget::button_press (QMouseEvent * event)
             switch (state)
             {
               case 0:
-                if (aud_playlist_entry_get_selected (m_playlist, position))
+                if (m_playlist.entry_selected (position))
                     select_slide (false, position);
                 else
                     select_single (false, position);
@@ -634,7 +631,7 @@ bool PlaylistWidget::button_press (QMouseEvent * event)
 
             if (position != -1 && position != m_length)
             {
-                if (aud_playlist_entry_get_selected (m_playlist, position))
+                if (m_playlist.entry_selected (position))
                     select_slide (false, position);
                 else
                     select_single (false, position);
@@ -654,9 +651,9 @@ bool PlaylistWidget::button_press (QMouseEvent * event)
             return true;
 
         if (position != -1)
-            aud_playlist_set_position (m_playlist, position);
+            m_playlist.set_position (position);
 
-        aud_playlist_play (m_playlist);
+        m_playlist.start_playback ();
         break;
       default:
         return true;

@@ -56,7 +56,7 @@ public:
 
 #ifdef USE_GTK
     bool file_info_box (const char * filename, VFSFile & file)
-        { i_fileinfo_gui (filename, file); return true; }
+        { return i_fileinfo_gui (filename, file); }
 #endif
 
 protected:

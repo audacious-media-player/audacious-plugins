@@ -23,24 +23,34 @@
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
 
-#include <libaudcore/index.h>
-#include <libaudcore/objects.h>
-
-enum {
-    PL_COL_NOW_PLAYING,
-    PL_COL_TITLE,
-    PL_COL_ARTIST,
-    PL_COL_ALBUM,
-    PL_COL_QUEUED,
-    PL_COL_LENGTH,
-    PL_COLS
-};
+#include <libaudcore/playlist.h>
 
 class PlaylistModel : public QAbstractListModel
 {
 public:
-    PlaylistModel (QObject * parent, int uniqueID);
-    ~PlaylistModel ();
+    enum {
+        NowPlaying,
+        EntryNumber,
+        Title,
+        Artist,
+        Year,
+        Album,
+        AlbumArtist,
+        Track,
+        Genre,
+        QueuePos,
+        Length,
+        Path,
+        Filename,
+        CustomTitle,
+        Bitrate,
+        Comment,
+        n_cols
+    };
+
+    static const char * const labels[];
+
+    PlaylistModel (QObject * parent, Playlist playlist);
 
     int rowCount (const QModelIndex & parent = QModelIndex ()) const;
     int columnCount (const QModelIndex & parent = QModelIndex ()) const;
@@ -59,28 +69,27 @@ public:
     void entriesRemoved (int row, int count);
     void entriesChanged (int row, int count);
 
-    QString getQueued (int row) const;
-    int playlist () const;
-    int uniqueId () const;
-
 private:
-    int m_uniqueID;
+    Playlist m_playlist;
     int m_rows;
+
+    QVariant alignment (int col) const;
+    QString queuePos (int row) const;
 };
 
 class PlaylistProxyModel : public QSortFilterProxyModel
 {
 public:
-    PlaylistProxyModel (QObject * parent, int uniqueID) :
+    PlaylistProxyModel (QObject * parent, Playlist playlist) :
         QSortFilterProxyModel (parent),
-        m_uniqueID (uniqueID) {}
+        m_playlist (playlist) {}
 
     void setFilter (const char * filter);
 
 private:
     bool filterAcceptsRow (int source_row, const QModelIndex &) const;
 
-    int m_uniqueID;
+    Playlist m_playlist;
     Index<String> m_searchTerms;
 };
 

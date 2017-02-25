@@ -68,9 +68,11 @@ static void get_album_art ()
 #ifdef USE_GTK
     if (aud_get_mainloop_type () == MainloopType::GLib)
     {
-        last_pixbuf = audgui_pixbuf_request_current ();
-        if (last_pixbuf)
-            audgui_pixbuf_scale_within (& last_pixbuf, audgui_get_dpi ());
+        AudguiPixbuf pb = audgui_pixbuf_request_current ();
+        if (pb)
+            audgui_pixbuf_scale_within (pb, audgui_get_dpi ());
+
+        last_pixbuf = pb.release ();
     }
 #endif
 #ifdef USE_QT

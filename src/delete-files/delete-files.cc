@@ -101,16 +101,16 @@ static void confirm_delete ()
 {
     Index<String> files;
 
-    int playlist = aud_playlist_get_active ();
-    int entry_count = aud_playlist_entry_count (playlist);
+    auto playlist = Playlist::active_playlist ();
+    int entry_count = playlist.n_entries ();
 
     for (int i = 0; i < entry_count; i ++)
     {
-        if (aud_playlist_entry_get_selected (playlist, i))
-            files.append (aud_playlist_entry_get_filename (playlist, i));
+        if (playlist.entry_selected (i))
+            files.append (playlist.entry_filename (i));
     }
 
-    aud_playlist_delete_selected (playlist);
+    playlist.remove_selected ();
 
     for (const String & uri : files)
     {

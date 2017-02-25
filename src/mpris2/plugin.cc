@@ -50,7 +50,7 @@ EXPORT MPRIS2Plugin aud_plugin_instance;
 static GObject * object_core, * object_player;
 static String last_title, last_artist, last_album, last_file;
 static int last_length;
-static const char * image_file;
+static AudArtPtr image;
 
 static gboolean quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
  void * unused)
@@ -90,11 +90,7 @@ static void update_metadata (void * data, GObject * object)
         return;
 
     if (file != last_file)
-    {
-        if (image_file)
-            aud_art_unref (last_file);
-        image_file = file ? aud_art_request_file (file) : nullptr;
-    }
+        image = file ? aud_art_request (file, AUD_ART_FILE) : AudArtPtr ();
 
     last_title = title;
     last_artist = artist;
@@ -146,6 +142,7 @@ static void update_metadata (void * data, GObject * object)
         elems[nelems ++] = g_variant_new_dict_entry (key, var);
     }
 
+    auto image_file = image.file ();
     if (image_file)
     {
         GVariant * key = g_variant_new_string ("mpris:artUrl");
@@ -292,17 +289,13 @@ void MPRIS2Plugin::cleanup ()
     g_object_unref (object_core);
     g_object_unref (object_player);
 
-    if (image_file)
-    {
-        aud_art_unref (last_file);
-        image_file = nullptr;
-    }
-
     last_title = String ();
     last_artist = String ();
     last_album = String ();
     last_file = String ();
     last_length = 0;
+
+    image.clear ();
 }
 
 bool MPRIS2Plugin::init ()

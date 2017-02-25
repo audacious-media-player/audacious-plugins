@@ -24,6 +24,7 @@
 #include "surface.h"
 
 #include <libaudcore/runtime.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 cairo_surface_t * surface_new (int w, int h)
 {
@@ -33,7 +34,7 @@ cairo_surface_t * surface_new (int w, int h)
 cairo_surface_t * surface_new_from_file (const char * name)
 {
     GError * error = nullptr;
-    GdkPixbuf * p = gdk_pixbuf_new_from_file (name, & error);
+    AudguiPixbuf p (gdk_pixbuf_new_from_file (name, & error));
 
     if (error)
     {
@@ -44,16 +45,13 @@ cairo_surface_t * surface_new_from_file (const char * name)
     if (! p)
         return nullptr;
 
-    cairo_surface_t * surface = surface_new (gdk_pixbuf_get_width (p),
-     gdk_pixbuf_get_height (p));
+    cairo_surface_t * surface = surface_new (p.width (), p.height ());
     cairo_t * cr = cairo_create (surface);
 
-    gdk_cairo_set_source_pixbuf (cr, p, 0, 0);
+    gdk_cairo_set_source_pixbuf (cr, p.get (), 0, 0);
     cairo_paint (cr);
 
     cairo_destroy (cr);
-    g_object_unref (p);
-
     return surface;
 }
 

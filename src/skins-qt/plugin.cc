@@ -44,6 +44,7 @@
 #include "window.h"
 #include "view.h"
 
+#include "../ui-common/dialogs-qt.cc"
 #include "../ui-common/menu-ops.cc"
 #include "../ui-common/menu-ops-qt.cc"
 
@@ -159,8 +160,6 @@ static void skins_cleanup_main ()
     mainwin_unhook ();
     equalizerwin_unhook ();
     playlistwin_unhook ();
-
-    menu_cleanup ();
 
     timer_remove (TimerRate::Hz4, (TimerFunc) mainwin_update_song_info);
 

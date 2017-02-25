@@ -76,7 +76,7 @@ static const AudguiMenuItem output_items[] = {
     MenuSep (),
     MenuCommand (N_("Effects ..."), nullptr, NO_KEY, configure_effects),
     MenuSep (),
-    MenuToggle (N_("Record Stream"), nullptr, 'd', NO_MOD, "audgui", "record", audgui_toggle_record, "audgui set record"),
+    MenuToggle (N_("Record Stream"), nullptr, 'd', NO_MOD, nullptr, "record", nullptr, "set record"),
     MenuCommand (N_("Audio Settings ..."), "audio-card", NO_KEY, configure_output)
 };
 
@@ -122,7 +122,7 @@ static const AudguiMenuItem playback_items[] = {
 static const AudguiMenuItem playlist_items[] = {
     MenuCommand (N_("Play/Resume"), "media-playback-start", GDK_KEY_Return, SHIFT, pl_play),
     MenuSep (),
-    MenuCommand (N_("New Playlist"), "document-new", 'n', SHIFT, (GCallback) aud_playlist_new),
+    MenuCommand (N_("New Playlist"), "document-new", 'n', SHIFT, pl_new),
     MenuCommand (N_("Rename Playlist ..."), "insert-text", GDK_KEY_F2, NO_MOD, action_playlist_rename),
     MenuCommand (N_("Remove Playlist"), "edit-delete", 'd', SHIFT, action_playlist_delete),
     MenuSep (),

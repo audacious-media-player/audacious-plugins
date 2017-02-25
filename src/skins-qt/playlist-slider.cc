@@ -103,7 +103,7 @@ bool PlaylistSlider::motion (QMouseEvent * event)
 
 PlaylistSlider::PlaylistSlider (PlaylistWidget * list, int height) :
     m_list (list), m_height (height),
-    m_length (aud_playlist_entry_count (aud_playlist_get_active ()))
+    m_length (Playlist::active_playlist ().n_entries ())
 {
     set_scale (config.scale);
     add_input (8, height, true, true);
@@ -118,6 +118,6 @@ void PlaylistSlider::resize (int height)
 
 void PlaylistSlider::refresh ()
 {
-    m_length = aud_playlist_entry_count (aud_playlist_get_active ());
+    m_length = Playlist::active_playlist ().n_entries ();
     queue_draw ();
 }

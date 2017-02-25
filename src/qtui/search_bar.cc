@@ -27,6 +27,7 @@
 #include <QPushButton>
 
 #include <libaudcore/i18n.h>
+#include <libaudqt/libaudqt.h>
 
 static QPushButton * makeButton (const char * icon, QWidget * parent)
 {
@@ -42,18 +43,16 @@ SearchBar::SearchBar (QWidget * parent, PlaylistWidget * playlistWidget) :
     m_entry (new QLineEdit (this))
 {
     m_entry->setClearButtonEnabled (true);
-
-    auto layout = new QHBoxLayout (this);
-    layout->setContentsMargins (0, 0, 0, 0);
-    layout->setSpacing (4);
-
-    layout->addWidget (new QLabel (_("Find:"), this));
-    layout->addWidget (m_entry);
+    m_entry->setPlaceholderText (_("Search playlist"));
 
     auto upButton = makeButton ("go-up", this);
     auto downButton = makeButton ("go-down", this);
     auto closeButton = makeButton ("window-close", this);
 
+    auto layout = audqt::make_hbox (this);
+    layout->setContentsMargins (audqt::margins.TwoPt);
+
+    layout->addWidget (m_entry);
     layout->addWidget (upButton);
     layout->addWidget (downButton);
     layout->addWidget (closeButton);

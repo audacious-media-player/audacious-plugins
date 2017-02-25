@@ -18,6 +18,7 @@
  */
 
 #include <QAbstractListModel>
+#include <QBoxLayout>
 #include <QFont>
 #include <QGuiApplication>
 #include <QHeaderView>
@@ -25,7 +26,6 @@
 #include <QMouseEvent>
 #include <QToolButton>
 #include <QTreeView>
-#include <QVBoxLayout>
 
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -61,8 +61,8 @@ public:
     };
 
     PlaylistsModel () :
-        m_rows (aud_playlist_count ()),
-        m_playing (aud_playlist_get_playing ()),
+        m_rows (Playlist::n_playlists ()),
+        m_playing (Playlist::playing_playlist ().index ()),
         m_bold (QGuiApplication::font ())
     {
         m_bold.setBold (true);
@@ -127,13 +127,16 @@ QVariant PlaylistsModel::data (const QModelIndex & index, int role) const
     switch (role)
     {
     case Qt::DisplayRole:
+    {
+        auto list = Playlist::by_index (index.row ());
         switch (index.column ())
         {
         case ColumnTitle:
-            return QString (aud_playlist_get_title (index.row ()));
+            return QString (list.get_title ());
         case ColumnEntries:
-            return aud_playlist_entry_count (index.row ());
+            return list.n_entries ();
         }
+    }
         break;
 
     case Qt::FontRole:
@@ -178,10 +181,10 @@ void PlaylistsModel::update_rows (int row, int count)
 
 void PlaylistsModel::update_playing ()
 {
-    if (aud_playlist_update_pending ())
+    if (Playlist::update_pending_any ())
         return;
 
-    int playing = aud_playlist_get_playing ();
+    int playing = Playlist::playing_playlist ().index ();
 
     if (playing != m_playing)
     {
@@ -196,7 +199,7 @@ void PlaylistsModel::update_playing ()
 
 void PlaylistsModel::update (const Playlist::UpdateLevel level)
 {
-    int rows = aud_playlist_count ();
+    int rows = Playlist::n_playlists ();
 
     if (level == Playlist::Structure)
     {
@@ -217,7 +220,7 @@ void PlaylistsModel::update (const Playlist::UpdateLevel level)
     if (level >= Playlist::Metadata)
     {
         update_rows (0, m_rows);
-        m_playing = aud_playlist_get_playing ();
+        m_playing = Playlist::playing_playlist ().index ();
     }
     else
         update_playing ();
@@ -234,9 +237,10 @@ PlaylistsView::PlaylistsView ()
     hdr->setStretchLastSection (false);
     hdr->setSectionResizeMode (PlaylistsModel::ColumnTitle, QHeaderView::Stretch);
     hdr->setSectionResizeMode (PlaylistsModel::ColumnEntries, QHeaderView::Interactive);
-    hdr->resizeSection (PlaylistsModel::ColumnEntries, 64);
+    hdr->resizeSection (PlaylistsModel::ColumnEntries, audqt::to_native_dpi (64));
 
     setDragDropMode (InternalMove);
+    setFrameShape (QFrame::NoFrame);
     setIndentation (0);
 }
 
@@ -244,13 +248,13 @@ void PlaylistsView::currentChanged (const QModelIndex & current, const QModelInd
 {
     QTreeView::currentChanged (current, previous);
     if (! m_in_update)
-        aud_playlist_set_active (current.row ());
+        Playlist::by_index (current.row ()).activate ();
 }
 
 void PlaylistsView::mouseDoubleClickEvent (QMouseEvent * event)
 {
     if (event->button () == Qt::LeftButton)
-        aud_playlist_play (currentIndex ().row ());
+        Playlist::by_index (currentIndex ().row ()).start_playback ();
 }
 
 void PlaylistsView::dropEvent (QDropEvent * event)
@@ -267,11 +271,11 @@ void PlaylistsView::dropEvent (QDropEvent * event)
     {
         case AboveItem: to = indexAt (event->pos ()).row (); break;
         case BelowItem: to = indexAt (event->pos ()).row () + 1; break;
-        case OnViewport: to = aud_playlist_count (); break;
+        case OnViewport: to = Playlist::n_playlists (); break;
         default: return;
     }
 
-    aud_playlist_reorder (from, (to > from) ? to - 1 : to, 1);
+    Playlist::reorder_playlists (from, (to > from) ? to - 1 : to, 1);
     event->acceptProposedAction ();
 }
 
@@ -285,12 +289,12 @@ void PlaylistsView::update (Playlist::UpdateLevel level)
 
 void PlaylistsView::update_sel ()
 {
-    if (aud_playlist_update_pending ())
+    if (Playlist::update_pending_any ())
         return;
 
     m_in_update ++;
     auto sel = selectionModel ();
-    auto current = m_model.index (aud_playlist_get_active (), 0);
+    auto current = m_model.index (Playlist::active_playlist ().index (), 0);
     sel->setCurrentIndex (current, sel->ClearAndSelect | sel->Rows);
     m_in_update --;
 }
@@ -306,33 +310,34 @@ static QToolButton * new_tool_button (const char * text, const char * icon)
 
 void * PlaylistManagerQt::get_qt_widget ()
 {
-    auto widget = new QWidget;
-    auto vbox = new QVBoxLayout (widget);
-    vbox->setContentsMargins (0, 0, 0, 0);
-
     auto view = new PlaylistsView;
-    vbox->addWidget (view, 1);
-
-    auto hbox = new QHBoxLayout;
-    vbox->addLayout (hbox);
 
     auto new_button = new_tool_button (N_("_New"), "document-new");
-    QObject::connect (new_button, & QToolButton::clicked, aud_playlist_new);
+    QObject::connect (new_button, & QToolButton::clicked, Playlist::new_playlist);
 
     auto rename_button = new_tool_button (N_("Ren_ame"), "insert-text");
     QObject::connect (rename_button, & QToolButton::clicked, [] () {
-        audqt::playlist_show_rename (aud_playlist_get_active ());
+        audqt::playlist_show_rename (Playlist::active_playlist ());
     });
 
     auto remove_button = new_tool_button (N_("_Remove"), "edit-delete");
     QObject::connect (remove_button, & QToolButton::clicked, [] () {
-        audqt::playlist_confirm_delete (aud_playlist_get_active ());
+        audqt::playlist_confirm_delete (Playlist::active_playlist ());
     });
+
+    auto hbox = audqt::make_hbox (nullptr);
+    hbox->setContentsMargins (audqt::margins.TwoPt);
 
     hbox->addWidget (new_button);
     hbox->addWidget (rename_button);
     hbox->addStretch (1);
     hbox->addWidget (remove_button);
+
+    auto widget = new QWidget;
+    auto vbox = audqt::make_vbox (widget, 0);
+
+    vbox->addWidget (view, 1);
+    vbox->addLayout (hbox);
 
     return widget;
 }

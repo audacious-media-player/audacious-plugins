@@ -32,7 +32,6 @@
 #include <libaudgui/menu.h>
 
 #include "gtkui.h"
-#include "playlist_util.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 
@@ -45,7 +44,7 @@
 #define SHIFT_CTRL (GdkModifierType) (SHIFT | CTRL)
 #define NONE       0, (GdkModifierType) 0
 
-int menu_tab_playlist_id = -1; /* should really be stored in the menu somehow */
+Playlist menu_tab_playlist; /* should really be stored in the menu somehow */
 
 static void open_files () { audgui_run_filebrowser (true); }
 static void open_url () { audgui_show_add_url_window (true); }
@@ -56,28 +55,21 @@ static void configure_effects () { audgui_show_prefs_for_plugin_type (PluginType
 static void configure_output () { audgui_show_prefs_for_plugin_type (PluginType::Output); }
 static void configure_visualizations () { audgui_show_prefs_for_plugin_type (PluginType::Vis); }
 
-static void pl_rename () { start_rename_playlist (aud_playlist_get_active ()); }
-static void pl_close () { audgui_confirm_playlist_delete (aud_playlist_get_active ()); }
+static void pl_rename () { start_rename_playlist (Playlist::active_playlist ()); }
+static void pl_close () { audgui_confirm_playlist_delete (Playlist::active_playlist ()); }
 
-static void pl_tab_play ()
-{
-    int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
-    if (playlist >= 0)
-        aud_playlist_play (playlist);
-}
+static void pl_tab_play () { menu_tab_playlist.start_playback (); }
 
 static void pl_tab_rename ()
 {
-    int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
-    if (playlist >= 0)
-        start_rename_playlist (playlist);
+    if (menu_tab_playlist.exists ())
+        start_rename_playlist (menu_tab_playlist);
 }
 
 static void pl_tab_close ()
 {
-    int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
-    if (playlist >= 0)
-        audgui_confirm_playlist_delete (playlist);
+    if (menu_tab_playlist.exists ())
+        audgui_confirm_playlist_delete (menu_tab_playlist);
 }
 
 static GtkWidget * get_services_main () { return audgui_get_plugin_menu (AudMenuID::Main); }
@@ -167,7 +159,7 @@ static const AudguiMenuItem playlist_items[] = {
     MenuSub (N_("Remove _Duplicates"), "edit-copy", {dupe_items}),
     MenuCommand (N_("Remove _Unavailable Files"), "dialog-warning", NONE, pl_remove_failed),
     MenuSep (),
-    MenuCommand (N_("_New"), "document-new", 't', CTRL, (GCallback) aud_playlist_new),
+    MenuCommand (N_("_New"), "document-new", 't', CTRL, pl_new),
     MenuCommand (N_("Ren_ame ..."), "insert-text", GDK_KEY_F2, (GdkModifierType) 0, pl_rename),
     MenuCommand (N_("Remo_ve"), "edit-delete", 'w', CTRL, pl_close),
     MenuSep (),
@@ -185,7 +177,7 @@ static const AudguiMenuItem output_items[] = {
     MenuCommand (N_("_Equalizer ..."), "multimedia-volume-control", 'e', CTRL, audgui_show_equalizer_window),
     MenuCommand (N_("E_ffects ..."), nullptr, NONE, configure_effects),
     MenuSep (),
-    MenuToggle (N_("_Record Stream"), nullptr, 'd', CTRL, "audgui", "record", audgui_toggle_record, "audgui set record"),
+    MenuToggle (N_("_Record Stream"), nullptr, 'd', CTRL, nullptr, "record", nullptr, "set record"),
     MenuCommand (N_("Audio _Settings ..."), "audio-card", NONE, configure_output)
 };
 

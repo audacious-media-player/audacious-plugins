@@ -49,23 +49,23 @@ static gboolean search_kp_cb (GtkWidget * entry, GdkEventKey * event, GtkWidget 
     return true;
 }
 
-static void copy_selected_to_new (int playlist)
+static void copy_selected_to_new (Playlist playlist)
 {
-    int entries = aud_playlist_entry_count (playlist);
+    int entries = playlist.n_entries ();
     Index<PlaylistAddItem> items;
 
     for (int entry = 0; entry < entries; entry ++)
     {
-        if (aud_playlist_entry_get_selected (playlist, entry))
+        if (playlist.entry_selected (entry))
         {
             items.append
-             (aud_playlist_entry_get_filename (playlist, entry),
-              aud_playlist_entry_get_tuple (playlist, entry, Playlist::NoWait));
+             (playlist.entry_filename (entry),
+              playlist.entry_tuple (entry, Playlist::NoWait));
         }
     }
 
-    int new_list = aud_playlist_new ();
-    aud_playlist_entry_insert_batch (new_list, 0, std::move (items), false);
+    auto new_list = Playlist::new_playlist ();
+    new_list.insert_items (0, std::move (items), false);
 }
 
 void action_playlist_search_and_select ()
@@ -158,7 +158,7 @@ void action_playlist_search_and_select ()
         /* create a TitleInput tuple with user search data */
         Tuple tuple;
         const char * searchdata = nullptr;
-        int active_playlist = aud_playlist_get_active ();
+        auto playlist = Playlist::active_playlist ();
 
         searchdata = gtk_entry_get_text ((GtkEntry *) entry_title);
         AUDDBG ("title=\"%s\"\n", searchdata);
@@ -178,29 +178,29 @@ void action_playlist_search_and_select ()
 
         /* check if previous selection should be cleared before searching */
         if (gtk_toggle_button_get_active ((GtkToggleButton *) checkbt_clearprevsel))
-            aud_playlist_select_all (active_playlist, false);
+            playlist.select_all (false);
 
-        aud_playlist_select_by_patterns (active_playlist, tuple);
+        playlist.select_by_patterns (tuple);
 
         /* check if a new playlist should be created after searching */
         if (gtk_toggle_button_get_active ((GtkToggleButton *) checkbt_newplaylist))
-            copy_selected_to_new (active_playlist);
+            copy_selected_to_new (playlist);
         else
         {
             /* set focus on the first entry found */
-            int entries = aud_playlist_entry_count (active_playlist);
-            for (int count = 0; count < entries; count ++)
+            int entries = playlist.n_entries ();
+            for (int i = 0; i < entries; i ++)
             {
-                if (aud_playlist_entry_get_selected (active_playlist, count))
+                if (playlist.entry_selected (i))
                 {
-                    playlistwin_list->set_focused (count);
+                    playlistwin_list->set_focused (i);
                     break;
                 }
             }
 
             /* check if matched entries should be queued */
             if (gtk_toggle_button_get_active ((GtkToggleButton *) checkbt_autoenqueue))
-                aud_playlist_queue_insert_selected (active_playlist, -1);
+                playlist.queue_insert_selected (-1);
         }
     }
 

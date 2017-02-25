@@ -46,9 +46,17 @@ static void add_url () { audqt::urlopener_show (false); }
 
 static void pl_find () { hook_call ("qtui find", nullptr); }
 static void pl_rename () { hook_call ("qtui rename playlist", nullptr); }
-static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_active ()); }
+static void pl_close () { audqt::playlist_confirm_delete (Playlist::active_playlist ()); }
 
 static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
+static void configure_output () { audqt::prefswin_show_plugin_page (PluginType::Output); }
+static void configure_visualizations () { audqt::prefswin_show_plugin_page (PluginType::Vis); }
+
+static void toggle_menubar () { hook_call ("qtui toggle menubar", nullptr); }
+static void toggle_infoarea () { hook_call ("qtui toggle infoarea", nullptr); }
+static void toggle_infoarea_vis () { hook_call ("qtui toggle infoarea_vis", nullptr); }
+static void toggle_statusbar () { hook_call ("qtui toggle statusbar", nullptr); }
+static void toggle_remaining_time () { hook_call ("qtui toggle remaining time", nullptr); }
 
 QMenuBar * qtui_build_menubar (QWidget * parent)
 {
@@ -135,7 +143,7 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuSub ({N_("Remove _Duplicates"), "edit-copy"}, dupe_items),
         audqt::MenuCommand ({N_("Remove _Unavailable Files"), "dialog-warning"}, pl_remove_failed),
         audqt::MenuSep (),
-        audqt::MenuCommand ({N_("_New"), "document-new", "Ctrl+T"}, (audqt::MenuFunc) aud_playlist_new),
+        audqt::MenuCommand ({N_("_New"), "document-new", "Ctrl+T"}, pl_new),
         audqt::MenuCommand ({N_("Ren_ame ..."), "insert-text", "F2"}, pl_rename),
         audqt::MenuCommand ({N_("Remo_ve"), "edit-delete", "Ctrl+W"}, pl_close),
         audqt::MenuSep (),
@@ -151,8 +159,21 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuCommand ({N_("Volume _Down"), "audio-volume-low", "Ctrl+-"}, volume_down),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("_Equalizer ..."), "multimedia-volume-control", "Ctrl+E"}, audqt::equalizer_show),
+        audqt::MenuCommand ({N_("E_ffects ..."), "preferences-system"}, configure_effects),
         audqt::MenuSep (),
-        audqt::MenuCommand ({N_("E_ffects ...")}, configure_effects)
+        audqt::MenuToggle ({N_("Record Stream"), "media-record", "Ctrl+D"}, {nullptr, "record", "set record"}),
+        audqt::MenuCommand ({N_("Audio Settings ..."), "audio-card"}, configure_output)
+    };
+
+    static const audqt::MenuItem view_items[] = {
+        audqt::MenuToggle ({N_("Show _Menu Bar"), nullptr, "Shift+Ctrl+M"}, {"qtui", "menu_visible"}, toggle_menubar),
+        audqt::MenuToggle ({N_("Show I_nfo Bar"), nullptr, "Shift+Ctrl+I"}, {"qtui", "infoarea_visible"}, toggle_infoarea),
+        audqt::MenuToggle ({N_("Show Info Bar Vis_ualization")}, {"qtui", "infoarea_show_vis"}, toggle_infoarea_vis),
+        audqt::MenuToggle ({N_("Show _Status Bar"), nullptr, "Shift+Ctrl+S"}, {"qtui", "statusbar_visible"}, toggle_statusbar),
+        audqt::MenuSep (),
+        audqt::MenuToggle ({N_("Show _Remaining Time"), nullptr, "Shift+Ctrl+R"}, {"qtui", "show_remaining_time", "qtui toggle remaining time"}, toggle_remaining_time),
+        audqt::MenuSep (),
+        audqt::MenuCommand ({N_("_Visualizations ..."), "preferences-system"}, configure_visualizations)
     };
 
     static const audqt::MenuItem main_items[] = {
@@ -161,6 +182,7 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuSub ({N_("P_laylist")}, playlist_items),
         audqt::MenuSub ({N_("_Services")}, services_menu),
         audqt::MenuSub ({N_("_Output")}, output_items),
+        audqt::MenuSub ({N_("_View")}, view_items)
     };
 
     return audqt::menubar_build (main_items, parent);

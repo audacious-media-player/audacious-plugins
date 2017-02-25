@@ -176,10 +176,10 @@ void StatusBar::update_codec ()
 
 void StatusBar::update_length ()
 {
-    int playlist = aud_playlist_get_active ();
+    auto playlist = Playlist::active_playlist ();
 
-    StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
-    StringBuf s2 = str_format_time (aud_playlist_get_total_length (playlist));
+    StringBuf s1 = str_format_time (playlist.selected_length_ms ());
+    StringBuf s2 = str_format_time (playlist.total_length_ms ());
 
     length_label->setText ((const char *) str_concat ({s1, " / ", s2}));
 }

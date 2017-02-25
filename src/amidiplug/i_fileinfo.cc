@@ -106,8 +106,12 @@ void i_fileinfo_text_fill (midifile_t * mf, GtkTextBuffer * text_tb, GtkTextBuff
 }
 
 
-void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
+bool i_fileinfo_gui (const char * filename_uri, VFSFile & file)
 {
+    // TODO: Qt support
+    if (aud_get_mainloop_type () != MainloopType::GLib)
+        return false;
+
     static GtkWidget * fileinfowin = nullptr;
     GtkWidget * fileinfowin_vbox, *fileinfowin_columns_hbox;
     GtkWidget * midiinfoboxes_vbox, *miditextboxes_vbox, *miditextboxes_paned;
@@ -125,13 +129,13 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     int bpm = 0, wavg_bpm = 0;
 
     if (fileinfowin)
-        return;
+        return true;
 
     midifile_t mf;
 
     /****************** midifile parser ******************/
     if (! mf.parse_from_file (filename_uri, file))
-        return;
+        return false;
 
     /* midifile is filled with information at this point,
        bpm information is needed too */
@@ -341,6 +345,8 @@ void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
 
     gtk_widget_grab_focus (GTK_WIDGET (footer_bclose));
     gtk_widget_show_all (fileinfowin);
+
+    return true;
 }
 
 #endif // USE_GTK

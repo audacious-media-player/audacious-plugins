@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#include <QHeaderView>
 #include <QKeyEvent>
 #include <QMenu>
 #include <QSortFilterProxyModel>
@@ -28,45 +29,42 @@
 #include <libaudcore/runtime.h>
 
 #include "playlist.h"
+#include "playlist_header.h"
 #include "playlist_model.h"
 
 #include "../ui-common/menu-ops.h"
 
-PlaylistWidget::PlaylistWidget (QWidget * parent, int uniqueID) : QTreeView (parent)
+PlaylistWidget::PlaylistWidget (QWidget * parent, Playlist playlist) :
+    QTreeView (parent),
+    m_playlist (playlist),
+    model (new PlaylistModel (this, playlist)),
+    proxyModel (new PlaylistProxyModel (this, playlist))
 {
-    model = new PlaylistModel (this, uniqueID);
-
     /* setting up filtering model */
-    proxyModel = new PlaylistProxyModel (this, uniqueID);
     proxyModel->setSourceModel (model);
 
     inUpdate = true; /* prevents changing focused row */
     setModel (proxyModel);
     inUpdate = false;
 
+    auto header = new PlaylistHeader (this);
+    setHeader (header);
+
     setAllColumnsShowFocus (true);
     setAlternatingRowColors (true);
     setAttribute (Qt::WA_MacShowFocusRect, false);
-    setIndentation (0);
     setUniformRowHeights (true);
     setFrameShape (QFrame::NoFrame);
     setSelectionMode (ExtendedSelection);
     setDragDropMode (DragDrop);
 
     updateSettings ();
-
-    /* TODO: set column width based on font size */
-    setColumnWidth (PL_COL_NOW_PLAYING, 25);
-    setColumnWidth (PL_COL_TITLE, 275);
-    setColumnWidth (PL_COL_ARTIST, 175);
-    setColumnWidth (PL_COL_ALBUM, 175);
-    setColumnWidth (PL_COL_QUEUED, 25);
-    setColumnWidth (PL_COL_LENGTH, 50);
+    header->updateColumns ();
 
     /* get initial selection and focus from core */
-    Playlist::Update upd {};
-    upd.level = Playlist::Selection;
-    update (upd);
+    inUpdate = true;
+    updateSelection (0, 0);
+    inUpdate = false;
 }
 
 PlaylistWidget::~PlaylistWidget ()
@@ -105,17 +103,17 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
         switch (event->key ())
         {
         case Qt::Key_Escape:
-            scrollToCurrent ();
+            scrollToCurrent (true);
             break;
         case Qt::Key_Enter:
         case Qt::Key_Return:
             playCurrentIndex ();
             break;
         case Qt::Key_Right:
-            aud_drct_seek (aud_drct_get_time () + 5000);
+            aud_drct_seek (aud_drct_get_time () + aud_get_double ("qtui", "step_size") * 1000);
             break;
         case Qt::Key_Left:
-            aud_drct_seek (aud_drct_get_time () - 5000);
+            aud_drct_seek (aud_drct_get_time () - aud_get_double ("qtui", "step_size") * 1000);
             break;
         case Qt::Key_Space:
             aud_drct_play_pause ();
@@ -174,7 +172,6 @@ void PlaylistWidget::dropEvent (QDropEvent * event)
     if (event->source () != this)
         return QTreeView::dropEvent (event);
 
-    int list = model->playlist ();
     int from = indexToRow (currentIndex ());
     if (from < 0)
         return;
@@ -184,18 +181,18 @@ void PlaylistWidget::dropEvent (QDropEvent * event)
     {
         case AboveItem: to = indexToRow (indexAt (event->pos ())); break;
         case BelowItem: to = indexToRow (indexAt (event->pos ())) + 1; break;
-        case OnViewport: to = aud_playlist_entry_count (list); break;
+        case OnViewport: to = m_playlist.n_entries (); break;
         default: return;
     }
 
     /* Adjust the shift amount so that the selected entry closest to the
      * destination ends up at the destination. */
     if (to > from)
-        to -= aud_playlist_selected_count (list, from, to - from);
+        to -= m_playlist.n_selected (from, to - from);
     else
-        to += aud_playlist_selected_count (list, to, from - to);
+        to += m_playlist.n_selected (to, from - to);
 
-    aud_playlist_shift (list, from, to - from);
+    m_playlist.shift_entries (from, to - from);
 
     event->acceptProposedAction ();
 }
@@ -205,7 +202,7 @@ void PlaylistWidget::currentChanged (const QModelIndex & current, const QModelIn
     QTreeView::currentChanged (current, previous);
 
     if (! inUpdate)
-        aud_playlist_set_focus (model->playlist (), indexToRow (current));
+        m_playlist.set_focus (indexToRow (current));
 }
 
 void PlaylistWidget::selectionChanged (const QItemSelection & selected,
@@ -215,56 +212,53 @@ void PlaylistWidget::selectionChanged (const QItemSelection & selected,
 
     if (! inUpdate)
     {
-        int list = model->playlist ();
-
         for (const QModelIndex & idx : selected.indexes ())
-            aud_playlist_entry_set_selected (list, indexToRow (idx), true);
+            m_playlist.select_entry (indexToRow (idx), true);
         for (const QModelIndex & idx : deselected.indexes ())
-            aud_playlist_entry_set_selected (list, indexToRow (idx), false);
+            m_playlist.select_entry (indexToRow (idx), false);
     }
 }
 
-void PlaylistWidget::scrollToCurrent ()
+void PlaylistWidget::scrollToCurrent (bool force)
 {
-    int list = model->playlist ();
-    int entry = aud_playlist_get_position (list);
+    int entry = m_playlist.get_position ();
 
-    aud_playlist_select_all (list, false);
-    aud_playlist_entry_set_selected (list, entry, true);
-    aud_playlist_set_focus (list, entry);
+    if (aud_get_bool ("qtui", "autoscroll") || force)
+    {
+        m_playlist.select_all (false);
+        m_playlist.select_entry (entry, true);
+        m_playlist.set_focus (entry);
 
-    // a playlist update should have been queued, unless the playlist is empty
-    if (aud_playlist_update_pending (list))
-        scrollQueued = true;
+        // a playlist update should have been queued, unless the playlist is empty
+        if (m_playlist.update_pending ())
+            scrollQueued = true;
+    }
 }
 
 void PlaylistWidget::updatePlaybackIndicator ()
 {
-    int list = model->playlist ();
-
-    if (aud_playlist_update_pending (list))
+    if (m_playlist.update_pending ())
         needIndicatorUpdate = true;
     else if (currentPos >= 0)
         model->entriesChanged (currentPos, 1);
 }
 
-void PlaylistWidget::getSelectedRanges (const Playlist::Update & update,
+void PlaylistWidget::getSelectedRanges (int rowsBefore, int rowsAfter,
  QItemSelection & selected, QItemSelection & deselected)
 {
-    int list = model->playlist ();
-    int entries = aud_playlist_entry_count (list);
+    int entries = m_playlist.n_entries ();
 
     QItemSelection ranges[2];
     QModelIndex first, last;
     bool prev = false;
 
-    for (int row = update.before; row < entries - update.after; row ++)
+    for (int row = rowsBefore; row < entries - rowsAfter; row ++)
     {
         auto idx = rowToIndex (row);
         if (! idx.isValid ())
             continue;
 
-        bool sel = aud_playlist_entry_get_selected (list, row);
+        bool sel = m_playlist.entry_selected (row);
 
         if (sel != prev && first.isValid ())
             ranges[prev].merge (QItemSelection (first, last), QItemSelectionModel::Select);
@@ -283,12 +277,38 @@ void PlaylistWidget::getSelectedRanges (const Playlist::Update & update,
     deselected = std::move (ranges[false]);
 }
 
-void PlaylistWidget::update (const Playlist::Update & update)
+void PlaylistWidget::updateSelection (int rowsBefore, int rowsAfter)
 {
+    QItemSelection selected, deselected;
+    getSelectedRanges (rowsBefore, rowsAfter, selected, deselected);
+
+    auto sel = selectionModel ();
+
+    if (! selected.isEmpty ())
+        sel->select (selected, sel->Select | sel->Rows);
+    if (! deselected.isEmpty ())
+        sel->select (deselected, sel->Deselect | sel->Rows);
+
+    auto current = rowToIndex (m_playlist.get_focus ());
+    sel->setCurrentIndex (current, sel->NoUpdate);
+
+    if (scrollQueued)
+    {
+        scrollTo (current);
+        scrollQueued = false;
+    }
+}
+
+void PlaylistWidget::playlistUpdate ()
+{
+    auto update = m_playlist.update_detail ();
+
+    if (update.level == Playlist::NoUpdate)
+        return;
+
     inUpdate = true;
 
-    int list = model->playlist ();
-    int entries = aud_playlist_entry_count (list);
+    int entries = m_playlist.n_entries ();
     int changed = entries - update.before - update.after;
 
     if (update.level == Playlist::Structure)
@@ -309,15 +329,15 @@ void PlaylistWidget::update (const Playlist::Update & update)
 
     if (update.queue_changed)
     {
-        for (int i = aud_playlist_queue_count (list); i --; )
+        for (int i = m_playlist.n_queued (); i --; )
         {
-            int entry = aud_playlist_queue_get_entry (list, i);
+            int entry = m_playlist.queue_get_entry (i);
             if (entry < update.before || entry >= entries - update.after)
                 model->entriesChanged (entry, 1);
         }
     }
 
-    int pos = aud_playlist_get_position (list);
+    int pos = m_playlist.get_position ();
 
     if (needIndicatorUpdate || pos != currentPos)
     {
@@ -330,41 +350,22 @@ void PlaylistWidget::update (const Playlist::Update & update)
         needIndicatorUpdate = false;
     }
 
-    QItemSelection selected, deselected;
-    getSelectedRanges (update, selected, deselected);
-
-    auto sel = selectionModel ();
-
-    if (! selected.isEmpty ())
-        sel->select (selected, sel->Select | sel->Rows);
-    if (! deselected.isEmpty ())
-        sel->select (deselected, sel->Deselect | sel->Rows);
-
-    auto current = rowToIndex (aud_playlist_get_focus (list));
-    sel->setCurrentIndex (current, sel->NoUpdate);
-
-    if (scrollQueued)
-    {
-        scrollTo (current);
-        scrollQueued = false;
-    }
+    updateSelection (update.before, update.after);
 
     inUpdate = false;
 }
 
 void PlaylistWidget::playCurrentIndex ()
 {
-    int list = model->playlist ();
-    aud_playlist_set_position (list, indexToRow (currentIndex ()));
-    aud_playlist_play (list);
+    m_playlist.set_position (indexToRow (currentIndex ()));
+    m_playlist.start_playback ();
 }
 
 void PlaylistWidget::setFilter (const char * text)
 {
     proxyModel->setFilter (text);
 
-    int list = model->playlist ();
-    int focus = aud_playlist_get_focus (list);
+    int focus = m_playlist.get_focus ();
     QModelIndex index;
 
     // If there was a valid focus before filtering, Qt updates it for us via
@@ -379,13 +380,13 @@ void PlaylistWidget::setFilter (const char * text)
 
         index = proxyModel->index (0, 0);
         focus = indexToRow (index);
-        aud_playlist_set_focus (list, focus);
+        m_playlist.set_focus (focus);
     }
 
-    if (! aud_playlist_entry_get_selected (list, focus))
+    if (! m_playlist.entry_selected (focus))
     {
-        aud_playlist_select_all (list, false);
-        aud_playlist_entry_set_selected (list, focus, true);
+        m_playlist.select_all (false);
+        m_playlist.select_entry (focus, true);
     }
 
     scrollTo (index);

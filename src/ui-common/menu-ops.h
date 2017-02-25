@@ -60,6 +60,7 @@ void sort_sel_random ();
 // playlist switching
 void pl_prev ();
 void pl_next ();
+void pl_new ();
 void pl_play ();
 
 // playlist editing

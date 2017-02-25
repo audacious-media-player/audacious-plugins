@@ -94,17 +94,17 @@ static bool song_changed;
 
 static void update_info ()
 {
-    int playlist = aud_playlist_get_active ();
-    StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
-    StringBuf s2 = str_format_time (aud_playlist_get_total_length (playlist));
+    auto playlist = Playlist::active_playlist ();
+    StringBuf s1 = str_format_time (playlist.selected_length_ms ());
+    StringBuf s2 = str_format_time (playlist.total_length_ms ());
     playlistwin_info->set_text (str_concat ({s1, "/", s2}));
 }
 
 static void update_rollup_text ()
 {
-    int playlist = aud_playlist_get_active ();
-    int entry = aud_playlist_get_position (playlist);
-    Tuple tuple = aud_playlist_entry_get_tuple (playlist, entry, Playlist::NoWait);
+    auto playlist = Playlist::active_playlist ();
+    int entry = playlist.get_position ();
+    Tuple tuple = playlist.entry_tuple (entry, Playlist::NoWait);
     char scratch[512];
 
     scratch[0] = 0;
@@ -281,7 +281,7 @@ static void drag_drop (GtkWidget * widget, GdkDragContext * context, int x,
 static void drag_data_received (GtkWidget * widget, GdkDragContext * context,
  int x, int y, GtkSelectionData * data, unsigned info, unsigned time, void * unused)
 {
-    audgui_urilist_insert (aud_playlist_get_active (), drop_position,
+    audgui_urilist_insert (Playlist::active_playlist (), drop_position,
      (const char *) gtk_selection_data_get_data (data));
     drop_position = -1;
 }
@@ -494,7 +494,7 @@ static void update_cb (void *, void *)
 
     if (song_changed)
     {
-        playlistwin_list->set_focused (aud_playlist_get_position (aud_playlist_get_active ()));
+        playlistwin_list->set_focused (Playlist::active_playlist ().get_position ());
         song_changed = false;
     }
 
@@ -504,14 +504,14 @@ static void update_cb (void *, void *)
 
 static void follow_cb (void * data, void *)
 {
-    int list = aud::from_ptr<int> (data);
-    aud_playlist_select_all (list, false);
+    auto list = aud::from_ptr<Playlist> (data);
+    list.select_all (false);
 
-    int row = aud_playlist_get_position (list);
+    int row = list.get_position ();
     if (row >= 0)
-        aud_playlist_entry_set_selected (list, row, true);
+        list.select_entry (row, true);
 
-    if (list == aud_playlist_get_active ())
+    if (list == Playlist::active_playlist ())
         song_changed = true;
 }
 

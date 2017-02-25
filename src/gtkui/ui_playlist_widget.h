@@ -23,10 +23,8 @@
 #include <gtk/gtk.h>
 #include <libaudcore/playlist.h>
 
-GtkWidget * ui_playlist_widget_new (int playlist);
-int ui_playlist_widget_get_playlist (GtkWidget * widget);
-void ui_playlist_widget_set_playlist (GtkWidget * widget, int playlist);
-void ui_playlist_widget_update (GtkWidget * widget, const Playlist::Update & update);
+GtkWidget * ui_playlist_widget_new (Playlist playlist);
+void ui_playlist_widget_update (GtkWidget * widget);
 void ui_playlist_widget_scroll (GtkWidget * widget);
 
 enum {

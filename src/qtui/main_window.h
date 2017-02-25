@@ -21,10 +21,10 @@
 #define MAIN_WINDOW_H
 
 #include <libaudcore/hook.h>
-#include <libaudcore/index.h>
 #include <libaudcore/mainloop.h>
+#include <libaudcore/playlist.h>
 
-#include "dialog_windows.h"
+#include "../ui-common/dialogs-qt.h"
 
 #include <QMainWindow>
 
@@ -33,6 +33,7 @@ class PlaylistTabs;
 class PluginHandle;
 class PluginWidget;
 class QVBoxLayout;
+class StatusBar;
 
 class MainWindow : public QMainWindow
 {
@@ -44,9 +45,11 @@ private:
     QString m_config_name;
     DialogWindows m_dialogs;
     PlaylistTabs * playlistTabs;
+    QMenuBar * menuBar;
     InfoBar * infoBar;
     QWidget * centralWidget;
     QVBoxLayout * centralLayout;
+    StatusBar * statusBar;
 
     QAction * toolButtonPlayPause;
     QAction * toolButtonRepeat;
@@ -59,6 +62,7 @@ private:
     void setWindowTitle (const QString & title);
 
     void updateToggles ();
+    void updateVisibility ();
     void readSettings ();
 
     void add_dock_plugins ();
@@ -67,10 +71,12 @@ private:
     void update_play_pause ();
     void title_change_cb ();
     void playback_begin_cb ();
+    void buffering_cb ();
     void playback_ready_cb ();
     void pause_cb ();
     void playback_stop_cb ();
     void update_toggles_cb ();
+    void update_visibility_cb ();
 
     PluginWidget * find_dock_plugin (PluginHandle * plugin);
     void add_dock_plugin_cb (PluginHandle * plugin);
@@ -86,14 +92,17 @@ private:
      hook7 {"set repeat", this, & MainWindow::update_toggles_cb},
      hook8 {"set shuffle", this, & MainWindow::update_toggles_cb},
      hook9 {"set no_playlist_advance", this, & MainWindow::update_toggles_cb},
-     hook10 {"set stop_after_current_song", this, & MainWindow::update_toggles_cb};
+     hook10 {"set stop_after_current_song", this, & MainWindow::update_toggles_cb},
+     hook11 {"qtui toggle menubar", this, & MainWindow::update_visibility_cb},
+     hook12 {"qtui toggle infoarea", this, & MainWindow::update_visibility_cb},
+     hook13 {"qtui toggle statusbar", this, & MainWindow::update_visibility_cb};
 
     const HookReceiver<MainWindow, PluginHandle *>
      plugin_hook1 {"dock plugin enabled", this, & MainWindow::add_dock_plugin_cb},
      plugin_hook2 {"dock plugin disabled", this, & MainWindow::remove_dock_plugin_cb};
 
     Index<PluginWidget *> dock_widgets;
-    int playing_id = -1;
+    Playlist last_playing;
 };
 
 #endif

@@ -23,23 +23,24 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/preferences.h>
 
-#include <QtGlobal>
+#include <QApplication>
+#include <QDesktopWidget>
 
 const char * const qtui_defaults[] = {
-//    "infoarea_show_vis", "TRUE",
-//    "infoarea_visible", "TRUE",
-//    "menu_visible", "TRUE",
+    "infoarea_show_vis", "TRUE",
+    "infoarea_visible", "TRUE",
+    "menu_visible", "TRUE",
     "playlist_tabs_visible", "TRUE",
-//    "statusbar_visible", "TRUE",
+    "statusbar_visible", "TRUE",
     "entry_count_visible", "FALSE",
     "close_button_visible", "TRUE",
 
-//    "autoscroll", "TRUE",
-//    "playlist_columns", "title artist album queued length",
+    "autoscroll", "TRUE",
+    "playlist_columns", DEFAULT_COLUMNS,
     "playlist_headers", "TRUE",
 //    "record", "FALSE",
-//    "show_remaining_time", "FALSE",
-//    "step_size", "5",
+    "show_remaining_time", "FALSE",
+    "step_size", "5",
 
     nullptr
 };
@@ -60,15 +61,27 @@ static const PreferencesWidget qtui_widgets[] = {
     WidgetCheck (N_("Show close buttons"),
         WidgetBool ("qtui", "close_button_visible", qtui_update_playlist_settings)),
     WidgetLabel (N_("<b>Playlist Columns</b>")),
-//    WidgetCustomQt (pw_col_create_chooser),
     WidgetCheck (N_("Show column headers"),
         WidgetBool ("qtui", "playlist_headers", qtui_update_playlist_settings)),
-//    WidgetLabel (N_("<b>Miscellaneous</b>")),
-//    WidgetSpin (N_("Arrow keys seek by:"),
-//        WidgetFloat ("qtui", "step_size", update_step_size),
-//        {0.1, 60, 0.1, N_("seconds")}),
-//    WidgetCheck (N_("Scroll on song change"),
-//        WidgetBool ("qtui", "autoscroll"))
+    WidgetLabel (N_("<b>Miscellaneous</b>")),
+    WidgetSpin (N_("Arrow keys seek by:"),
+        WidgetFloat ("qtui", "step_size"),
+        {0.1, 60, 0.1, N_("seconds")}),
+    WidgetCheck (N_("Scroll on song change"),
+        WidgetBool ("qtui", "autoscroll"))
 };
 
 const PluginPreferences qtui_prefs = {{qtui_widgets}};
+
+int getDPI ()
+{
+    static int dpi = 0;
+
+    if (! dpi)
+    {
+        auto desktop = qApp->desktop ();
+        dpi = aud::max (96, (desktop->logicalDpiX () + desktop->logicalDpiY ()) / 2);
+    }
+
+    return dpi;
+}

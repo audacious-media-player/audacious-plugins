@@ -23,7 +23,7 @@
 
 #include "plugin-window.h"
 
-#include <QVBoxLayout>
+#include <QBoxLayout>
 #include <QWidget>
 #include <QWindow>
 
@@ -33,6 +33,7 @@
 #include <libaudcore/plugins.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/runtime.h>
+#include <libaudqt/libaudqt.h>
 
 #include "main.h"
 #include "window.h"
@@ -57,10 +58,9 @@ public:
             resize (pos[2], pos[3]);
         }
         else
-            resize (320, 240);
+            resize (3 * audqt::sizes.OneInch, 2 * audqt::sizes.OneInch);
 
-        auto vbox = new QVBoxLayout (this);
-        vbox->setContentsMargins (2, 2, 2, 2);
+        auto vbox = audqt::make_vbox (this);
         vbox->addWidget (widget);
     }
 

@@ -58,37 +58,13 @@ static void configure_visualizations () { audqt::prefswin_show_plugin_page (Plug
 static void skins_volume_up () { mainwin_set_volume_diff (5); }
 static void skins_volume_down () { mainwin_set_volume_diff (-5); }
 
-/* emulate a config item for the recording toggle */
-static void toggle_record ()
-{
-    bool enable = aud_get_bool ("skins", "record");
-
-    if (aud_drct_enable_record (enable))
-        mainwin_show_status_message (enable ? _("Recording on") : _("Recording off"));
-    else
-    {
-        aud_set_bool ("skins", "record", aud_drct_get_record_enabled ());
-        hook_call ("skins set record", nullptr);
-    }
-}
-
-static void record_toggled (void * = nullptr, void * = nullptr)
-{
-    bool enabled = aud_drct_get_record_enabled ();
-    if (enabled != aud_get_bool ("skins", "record"))
-    {
-        aud_set_bool ("skins", "record", enabled);
-        hook_call ("skins set record", nullptr);
-    }
-}
-
 static const audqt::MenuItem output_items[] = {
     audqt::MenuCommand ({N_("Volume Up"), "audio-volume-high", "+"}, skins_volume_up),
     audqt::MenuCommand ({N_("Volume Down"), "audio-volume-low", "-"}, skins_volume_down),
     audqt::MenuSep (),
     audqt::MenuCommand ({N_("Effects ...")}, configure_effects),
     audqt::MenuSep (),
-    audqt::MenuToggle ({N_("Record Stream"), "media-record", "D"}, {"skins", "record", "skins set record"}, toggle_record),
+    audqt::MenuToggle ({N_("Record Stream"), "media-record", "D"}, {nullptr, "record", "set record"}),
     audqt::MenuCommand ({N_("Audio Settings ..."), "audio-card"}, configure_output)
 };
 
@@ -137,7 +113,7 @@ static const audqt::MenuItem playback_items[] = {
 static const audqt::MenuItem playlist_items[] = {
     audqt::MenuCommand ({N_("Play/Resume"), "media-playback-start", "Shift+Return"}, pl_play),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("New Playlist"), "document-new", "Shift+N"}, (audqt::MenuFunc) aud_playlist_new),
+    audqt::MenuCommand ({N_("New Playlist"), "document-new", "Shift+N"}, pl_new),
     audqt::MenuCommand ({N_("Rename Playlist ..."), "insert-text", "F2"}, action_playlist_rename),
     audqt::MenuCommand ({N_("Remove Playlist"), "edit-delete", "Shift+D"}, action_playlist_delete),
     audqt::MenuSep (),
@@ -273,16 +249,8 @@ void menu_init (QWidget * parent)
         {playlist_context_items}
     };
 
-    record_toggled ();
-    hook_associate ("enable record", record_toggled, nullptr);
-
     for (int i = UI_MENUS; i --; )
         menus[i] = audqt::menu_build (table[i], parent);
-}
-
-void menu_cleanup ()
-{
-    hook_dissociate ("enable record", record_toggled);
 }
 
 void menu_popup (int id, int x, int y, bool leftward, bool upward)

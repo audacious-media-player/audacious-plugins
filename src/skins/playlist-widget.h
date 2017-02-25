@@ -30,7 +30,7 @@
 
 #include <libaudcore/hook.h>
 #include <libaudcore/mainloop.h>
-#include <libaudcore/objects.h>
+#include <libaudcore/playlist.h>
 
 #include "widget.h"
 
@@ -79,6 +79,7 @@ private:
     void cancel_all ();
     void scroll_timeout ();
     void popup_trigger (int pos);
+    void popup_show ();
     void popup_hide ();
 
     const Timer<PlaylistWidget>
@@ -88,7 +89,8 @@ private:
     PangoFontDescPtr m_font;
     String m_title_text;
 
-    int m_playlist = -1, m_playlist_id = -1, m_length = 0;
+    Playlist m_playlist;
+    int m_length = 0;
     int m_width = 0, m_height = 0, m_row_height = 1, m_offset = 0, m_rows = 0, m_first = 0;
     int m_scroll = 0, m_hover = -1, m_drag = 0, m_popup_pos = -1;
     QueuedFunc m_popup_timer;

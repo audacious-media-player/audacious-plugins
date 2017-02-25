@@ -22,20 +22,22 @@
 
 #include <gtk/gtk.h>
 
-#define UI_PLAYLIST_NOTEBOOK ui_playlist_get_notebook ()
+class Playlist;
 
-GtkNotebook * ui_playlist_get_notebook ();
-GtkWidget * ui_playlist_notebook_new ();
+extern GtkWidget * pl_notebook;
 
-void ui_playlist_notebook_create_tab (int playlist);
-void ui_playlist_notebook_populate ();
-void ui_playlist_notebook_empty ();
-void ui_playlist_notebook_update (void * data, void * user);
-void ui_playlist_notebook_activate (void * data, void * user);
-void ui_playlist_notebook_set_playing (void * data, void * user);
-void ui_playlist_notebook_position (void * data, void * user);
+GtkWidget * pl_notebook_new ();
 
-void start_rename_playlist (int playlist);
+void pl_notebook_grab_focus ();
+void pl_notebook_populate ();
+void pl_notebook_purge ();
+
+void pl_notebook_update (void * data, void * user);
+void pl_notebook_activate (void * data, void * user);
+void pl_notebook_set_playing (void * data, void * user);
+void pl_notebook_set_position (void * data, void * user);
+
+void start_rename_playlist (Playlist playlist);
 void show_hide_playlist_tabs ();
 
 #endif

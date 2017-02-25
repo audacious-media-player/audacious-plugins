@@ -36,7 +36,7 @@
 #include <libaudcore/plugins.h>
 #include <libaudqt/libaudqt.h>
 
-#define ACTIVE (aud_playlist_get_active ())
+#define ACTIVE (Playlist::active_playlist ())
 
 void action_ab_clear ()
 {

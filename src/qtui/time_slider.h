@@ -20,12 +20,22 @@
 #ifndef TIME_SLIDER_H
 #define TIME_SLIDER_H
 
+#include <QLabel>
 #include <QSlider>
 
 #include <libaudcore/hook.h>
 
-class QLabel;
 class QMouseEvent;
+
+class MyLabel : public QLabel
+{
+public:
+    MyLabel (QWidget * parent);
+    ~MyLabel ();
+
+protected:
+     void mouseDoubleClickEvent (QMouseEvent * event);
+};
 
 class TimeSlider : public QSlider
 {
@@ -33,7 +43,7 @@ public:
     TimeSlider (QWidget * parent);
     ~TimeSlider ();
 
-    QLabel * label ()
+    MyLabel * label ()
         { return m_label; }
 
 private:
@@ -47,7 +57,7 @@ private:
 
     void mousePressEvent (QMouseEvent * event);
 
-    QLabel * m_label;
+    MyLabel * m_label;
 
     const Timer<TimeSlider>
      m_timer {TimerRate::Hz4, this, & TimeSlider::update};
@@ -56,7 +66,8 @@ private:
      hook1 {"playback ready", this, & TimeSlider::start_stop},
      hook2 {"playback pause", this, & TimeSlider::start_stop},
      hook3 {"playback unpause", this, & TimeSlider::start_stop},
-     hook4 {"playback stop", this, & TimeSlider::start_stop};
+     hook4 {"playback stop", this, & TimeSlider::start_stop},
+     hook5 {"qtui toggle remaining time", this, & TimeSlider::start_stop};
 };
 
 #endif
