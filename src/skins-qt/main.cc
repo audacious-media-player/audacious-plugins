@@ -37,6 +37,8 @@
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
 
+#include "../ui-common/dialogs-qt.h"
+
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
 #include "dnd.h"
@@ -69,9 +71,12 @@ public:
     MainWindow (bool shaded) :
         Window (WINDOW_MAIN, & config.player_x, & config.player_y,
          shaded ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width,
-         shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height, shaded) {}
+         shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height, shaded),
+        m_dialogs (this) {}
 
 private:
+    DialogWindows m_dialogs;
+
     void draw (QPainter & cr);
     bool button_press (QMouseEvent * event);
     bool scroll (QWheelEvent * event);

@@ -1,5 +1,5 @@
 /*
- * dialog_windows.cc
+ * dialogs-qt.cc
  * Copyright 2014 John Lindgren and Michał Lipski
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,7 +17,7 @@
  * the use of this software.
  */
 
-#include "dialog_windows.h"
+#include "dialogs-qt.h"
 
 #include <libaudcore/i18n.h>
 #include <libaudqt/libaudqt.h>

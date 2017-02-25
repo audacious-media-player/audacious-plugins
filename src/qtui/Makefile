@@ -1,7 +1,6 @@
 PLUGIN = qtui${PLUGIN_SUFFIX}
 
 SRCS = qtui.cc \
-       dialog_windows.cc \
        main_window.cc \
        menus.cc \
        playlist.cc \
