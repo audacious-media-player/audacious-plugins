@@ -41,8 +41,7 @@
 #include "ui_infoarea.h"
 #include "ui_statusbar.h"
 
-#include "../ui-common/menu-ops.cc"
-#include "../ui-common/menu-ops-gtk.cc"
+#include "../ui-common/menu-ops.h"
 
 static const char * const gtkui_defaults[] = {
     "infoarea_show_vis", "TRUE",

@@ -2,6 +2,7 @@ PLUGIN = skins-qt${PLUGIN_SUFFIX}
 
 SRCS = actions.cc \
        button.cc \
+       dialogs-qt.cc \
        dock.cc \
        drag-handle.cc \
        eq-graph.cc \
@@ -10,6 +11,7 @@ SRCS = actions.cc \
        hslider.cc \
        main.cc \
        menurow.cc \
+       menu-ops.cc \
        menus.cc \
        monostereo.cc \
        number.cc \
