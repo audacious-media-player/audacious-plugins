@@ -273,8 +273,7 @@ void PlaylistTabs::cancelRename ()
 
 void PlaylistTabs::playlist_activate_cb ()
 {
-    if (! Playlist::update_pending_any ())
-        setCurrentIndex (Playlist::active_playlist ().index ());
+    setCurrentIndex (Playlist::active_playlist ().index ());
 }
 
 void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)

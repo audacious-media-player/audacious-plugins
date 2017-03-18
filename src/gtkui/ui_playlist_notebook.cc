@@ -500,14 +500,12 @@ void pl_notebook_set_position (void * data, void * user)
         list.set_focus (row);
     }
 
-    if (! Playlist::update_pending_any ())
-        audgui_list_set_highlight (treeview_at_idx (list.index ()), row);
+    audgui_list_set_highlight (treeview_at_idx (list.index ()), row);
 }
 
 void pl_notebook_activate (void * data, void * user)
 {
-    if (! Playlist::update_pending_any ())
-        switch_to_active ();
+    switch_to_active ();
 }
 
 void pl_notebook_set_playing (void * data, void * user)

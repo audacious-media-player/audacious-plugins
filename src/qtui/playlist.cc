@@ -229,17 +229,13 @@ void PlaylistWidget::scrollToCurrent (bool force)
         m_playlist.select_entry (entry, true);
         m_playlist.set_focus (entry);
 
-        // a playlist update should have been queued, unless the playlist is empty
-        if (m_playlist.update_pending ())
-            scrollQueued = true;
+        scrollTo (rowToIndex (entry));
     }
 }
 
 void PlaylistWidget::updatePlaybackIndicator ()
 {
-    if (m_playlist.update_pending ())
-        needIndicatorUpdate = true;
-    else if (currentPos >= 0)
+    if (currentPos >= 0)
         model->entriesChanged (currentPos, 1);
 }
 
@@ -289,14 +285,7 @@ void PlaylistWidget::updateSelection (int rowsBefore, int rowsAfter)
     if (! deselected.isEmpty ())
         sel->select (deselected, sel->Deselect | sel->Rows);
 
-    auto current = rowToIndex (m_playlist.get_focus ());
-    sel->setCurrentIndex (current, sel->NoUpdate);
-
-    if (scrollQueued)
-    {
-        scrollTo (current);
-        scrollQueued = false;
-    }
+    sel->setCurrentIndex (rowToIndex (m_playlist.get_focus ()), sel->NoUpdate);
 }
 
 void PlaylistWidget::playlistUpdate ()
@@ -339,15 +328,14 @@ void PlaylistWidget::playlistUpdate ()
 
     int pos = m_playlist.get_position ();
 
-    if (needIndicatorUpdate || pos != currentPos)
+    if (pos != currentPos)
     {
         if (currentPos >= 0)
             model->entriesChanged (currentPos, 1);
-        if (pos >= 0 && pos != currentPos)
+        if (pos >= 0)
             model->entriesChanged (pos, 1);
 
         currentPos = pos;
-        needIndicatorUpdate = false;
     }
 
     updateSelection (update.before, update.after);

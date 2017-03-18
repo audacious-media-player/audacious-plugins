@@ -57,8 +57,6 @@ private:
 
     int currentPos = -1;
     bool inUpdate = false;
-    bool needIndicatorUpdate = false;
-    bool scrollQueued = false;
 
     QModelIndex rowToIndex (int row);
     int indexToRow (const QModelIndex & index);

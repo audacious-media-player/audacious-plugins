@@ -181,9 +181,6 @@ void PlaylistsModel::update_rows (int row, int count)
 
 void PlaylistsModel::update_playing ()
 {
-    if (Playlist::update_pending_any ())
-        return;
-
     int playing = Playlist::playing_playlist ().index ();
 
     if (playing != m_playing)
@@ -289,9 +286,6 @@ void PlaylistsView::update (Playlist::UpdateLevel level)
 
 void PlaylistsView::update_sel ()
 {
-    if (Playlist::update_pending_any ())
-        return;
-
     m_in_update ++;
     auto sel = selectionModel ();
     auto current = m_model.index (Playlist::active_playlist ().index (), 0);
