@@ -243,6 +243,9 @@ void PlaylistHeader::updateColumns ()
     if (last >= 0 && last != m_lastCol)
         m_playlist->setColumnWidth (1 + last, 0);
 
+    // this should come after all setColumnHidden() calls
+    m_playlist->setFirstVisibleColumn ((n_shown > 0) ? 1 + s_cols[0] : 0);
+
     m_inUpdate = false;
     m_lastCol = last;
 }

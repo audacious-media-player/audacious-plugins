@@ -78,7 +78,7 @@ QModelIndex PlaylistWidget::rowToIndex (int row)
     if (row < 0)
         return QModelIndex ();
 
-    return proxyModel->mapFromSource (model->index (row));
+    return proxyModel->mapFromSource (model->index (row, firstVisibleColumn));
 }
 
 int PlaylistWidget::indexToRow (const QModelIndex & index)
@@ -378,6 +378,17 @@ void PlaylistWidget::setFilter (const char * text)
     }
 
     scrollTo (index);
+}
+
+void PlaylistWidget::setFirstVisibleColumn (int col)
+{
+    inUpdate = true;
+    firstVisibleColumn = col;
+
+    // make sure current and selected indexes point to a visible column
+    updateSelection (0, 0);
+
+    inUpdate = false;
 }
 
 void PlaylistWidget::moveFocus (int distance)

@@ -44,6 +44,7 @@ public:
     void playlistUpdate ();
     void playCurrentIndex ();
     void setFilter (const char * text);
+    void setFirstVisibleColumn (int col);
     void moveFocus (int distance);
 
     void setContextMenu (QMenu * menu)
@@ -57,6 +58,7 @@ private:
 
     int currentPos = -1;
     bool inUpdate = false;
+    int firstVisibleColumn = 0;
 
     QModelIndex rowToIndex (int row);
     int indexToRow (const QModelIndex & index);
