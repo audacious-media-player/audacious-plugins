@@ -108,11 +108,11 @@ bool AmpacheBrowserPlugin::init()
     });
 
     browser.connectCreatePlaylist([](const UrlList& urls) {
-        aud_playlist_entry_insert_batch(aud_playlist_new(), -1, toAddItems(urls), true);
+        Playlist::new_playlist().insert_items(-1, toAddItems(urls), true);
     });
 
     browser.connectAddToPlaylist([](const UrlList& urls) {
-        aud_playlist_entry_insert_batch(aud_playlist_get_active(), -1, toAddItems(urls), false);
+        Playlist::active_playlist().insert_items(-1, toAddItems(urls), false);
     });
 
     initSettings(s_app->getSettings());
