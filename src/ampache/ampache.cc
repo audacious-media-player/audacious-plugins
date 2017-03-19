@@ -43,10 +43,10 @@ public:
 };
 
 const char AmpacheBrowserPlugin::about[] =
-    N_("Ampache Browser\n\n"
-       "Ampache client for Audacious.\n\n"
-       "License: GNU GPLv3\n"
-       "Copyright (C) Róbert Čerňanský and John Lindgren\n");
+    N_("Ampache Browser for Audacious\n"
+       "http://ampache-browser.org/\n\n"
+       "Copyright (C) Róbert Čerňanský and John Lindgren\n"
+       "License: GNU GPLv3");
 
 static SmartPtr<ampache_browser::ApplicationQt> s_app;
 
