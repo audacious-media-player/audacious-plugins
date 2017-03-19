@@ -108,7 +108,7 @@ bool AmpacheBrowserPlugin::init()
     });
 
     browser.connectCreatePlaylist([](const UrlList& urls) {
-        Playlist::new_playlist().insert_items(-1, toAddItems(urls), true);
+        Playlist::new_playlist().insert_items(-1, toAddItems(urls), false);
     });
 
     browser.connectAddToPlaylist([](const UrlList& urls) {
