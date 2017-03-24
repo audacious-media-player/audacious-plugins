@@ -357,6 +357,10 @@ bool StatusIcon::init ()
     aud_config_set_defaults ("statusicon", defaults);
     audgui_init ();
     si_enable (true);
+
+    if (! aud_ui_is_shown ())
+        gdk_notify_startup_complete ();
+
     return true;
 }
 
