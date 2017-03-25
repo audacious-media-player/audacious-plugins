@@ -20,6 +20,7 @@
 #include "search_bar.h"
 #include "playlist.h"
 
+#include <QApplication>
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QLabel>
@@ -86,15 +87,11 @@ void SearchBar::keyPressEvent (QKeyEvent * event)
         {
         case Qt::Key_Enter:
         case Qt::Key_Return:
-            m_playlistWidget->playCurrentIndex ();
-            return;
-
         case Qt::Key_Up:
-            m_playlistWidget->moveFocus (-1);
-            return;
-
         case Qt::Key_Down:
-            m_playlistWidget->moveFocus (1);
+        case Qt::Key_PageUp:
+        case Qt::Key_PageDown:
+            qApp->sendEvent (m_playlistWidget, event);
             return;
 
         case Qt::Key_Escape:
