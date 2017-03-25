@@ -50,12 +50,10 @@ private:
     QMenu * m_pl_menu;
     QWidget * m_leftbtn;
     PlaylistTabBar * m_tabbar;
-    Playlist m_pl_to_rename;
 
     QLineEdit * getTabEdit (int idx);
     void updateTabText (int idx);
     void setupTab (int idx, QWidget * button, QWidget * * oldp);
-    PlaylistWidget * createWidget (int list);
 
     void activateSearch ();
     void addRemovePlaylists ();

@@ -160,7 +160,6 @@ void PlaylistTabs::updateTitles ()
 
 void PlaylistTabs::currentChangedTrigger (int idx)
 {
-    cancelRename ();
     Playlist::by_index (idx).activate ();
 }
 
@@ -203,24 +202,6 @@ void PlaylistTabs::setupTab (int idx, QWidget * button, QWidget * * oldp)
     updateTabText (idx);
 }
 
-void PlaylistTabs::tabEditedTrigger ()
-{
-    int idx = currentIndex ();
-    if (idx < 0)
-        return;
-
-    QLineEdit * edit = getTabEdit (idx);
-    if (! edit)
-        return;
-
-    QByteArray title = edit->text ().toUtf8 ();
-    m_pl_to_rename.set_title (title);
-
-    setupTab (idx, m_leftbtn, nullptr);
-    m_leftbtn = nullptr;
-    m_pl_to_rename = Playlist ();
-}
-
 void PlaylistTabs::editTab (int idx, Playlist playlist)
 {
     QLineEdit * edit = getTabEdit (idx);
@@ -229,10 +210,13 @@ void PlaylistTabs::editTab (int idx, Playlist playlist)
     {
         edit = new QLineEdit ((const char *) playlist.get_title ());
 
-        connect (edit, & QLineEdit::returnPressed, this, & PlaylistTabs::tabEditedTrigger);
+        connect (edit, & QLineEdit::returnPressed, [this, playlist, edit] ()
+        {
+            playlist.set_title (edit->text ().toUtf8 ());
+            cancelRename ();
+        });
 
         setupTab (idx, edit, & m_leftbtn);
-        m_pl_to_rename = playlist;
     }
 
     edit->selectAll ();
@@ -255,7 +239,7 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
 void PlaylistTabs::renameCurrent ()
 {
     int idx = currentIndex ();
-    auto playlist = Playlist::by_index (idx);
+    auto playlist = currentPlaylistWidget ()->playlist ();
 
     if (! m_tabbar->isVisible ())
         audqt::playlist_show_rename (playlist);
@@ -275,7 +259,6 @@ bool PlaylistTabs::cancelRename ()
 
         setupTab (i, m_leftbtn, nullptr);
         m_leftbtn = nullptr;
-        m_pl_to_rename = Playlist ();
         cancelled = true;
     }
 
@@ -285,6 +268,7 @@ bool PlaylistTabs::cancelRename ()
 void PlaylistTabs::playlist_activate_cb ()
 {
     setCurrentIndex (Playlist::active_playlist ().index ());
+    cancelRename ();
 }
 
 void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)
