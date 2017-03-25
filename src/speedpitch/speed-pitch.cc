@@ -156,6 +156,12 @@ Index<float> & SpeedPitch::process (Index<float> & data, bool ending)
     /* Copy the passed audio to the input buffer, scaled to adjust pitch. */
     add_data (in, data, 1.0 / pitch);
 
+    if (! aud_get_bool (CFGSECT, "decouple"))
+    {
+        data = std::move (in);
+        return data;
+    }
+
     /* Calculate the spacing interval for input. */
     int instep = (int) round ((outstep / curchans) * speed / pitch) * curchans;
 
@@ -197,6 +203,9 @@ Index<float> & SpeedPitch::process (Index<float> & data, bool ending)
 
 int SpeedPitch::adjust_delay (int delay)
 {
+    if (! aud_get_bool (CFGSECT, "decouple"))
+        return delay;
+
     float samples_to_ms = 1000.0 / (curchans * currate);
     float speed = aud_get_double (CFGSECT, "speed");
     int in_samples = in.len () - src;
@@ -205,34 +214,50 @@ int SpeedPitch::adjust_delay (int delay)
     return (delay + in_samples * samples_to_ms) * speed + out_samples * samples_to_ms;
 }
 
+static void sync_speed ()
+{
+    if (! aud_get_bool (CFGSECT, "decouple"))
+    {
+        aud_set_double (CFGSECT, "speed", aud_get_double (CFGSECT, "pitch"));
+        hook_call ("speed-pitch set speed", nullptr);
+    }
+}
+
 static void pitch_changed ()
 {
     semitones = 12 * log (aud_get_double (CFGSECT, "pitch")) / log (2);
     hook_call ("speed-pitch set semitones", nullptr);
+    sync_speed ();
 }
 
 static void semitones_changed ()
 {
     aud_set_double (CFGSECT, "pitch", pow (2, semitones / 12));
     hook_call ("speed-pitch set pitch", nullptr);
+    sync_speed ();
 }
 
 const char * const SpeedPitch::defaults[] = {
+ "decouple", "TRUE",
  "speed", "1",
  "pitch", "1",
  nullptr};
 
 const PreferencesWidget SpeedPitch::widgets[] = {
-    WidgetLabel (N_("<b>Speed and Pitch</b>")),
-    WidgetSpin (N_("Speed:"),
-        WidgetFloat (CFGSECT, "speed"),
-        {MINSPEED, MAXSPEED, 0.05}),
-    WidgetSpin (N_("Pitch:"),
-        WidgetFloat (CFGSECT, "pitch", pitch_changed, "speed-pitch set pitch"),
-        {MINPITCH, MAXPITCH, 0.005}),
+    WidgetLabel (N_("<b>Speed</b>")),
+    WidgetCheck (N_("Decouple from pitch"),
+        WidgetBool (CFGSECT, "decouple", sync_speed)),
+    WidgetSpin (N_("Multiplier:"),
+        WidgetFloat (CFGSECT, "speed", nullptr, "speed-pitch set speed"),
+        {MINSPEED, MAXSPEED, 0.05},
+        WIDGET_CHILD),
+    WidgetLabel (N_("<b>Pitch</b>")),
     WidgetSpin (nullptr,
         WidgetFloat (semitones, semitones_changed, "speed-pitch set semitones"),
-        {MINSEMITONES, MAXSEMITONES, 0.05, N_("semitones")},
+        {MINSEMITONES, MAXSEMITONES, 0.05, N_("semitones")}),
+    WidgetSpin (N_("Multiplier:"),
+        WidgetFloat (CFGSECT, "pitch", pitch_changed, "speed-pitch set pitch"),
+        {MINPITCH, MAXPITCH, 0.005},
         WIDGET_CHILD)
 };
 
