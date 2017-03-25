@@ -91,7 +91,7 @@ void SearchBar::keyPressEvent (QKeyEvent * event)
         case Qt::Key_Down:
         case Qt::Key_PageUp:
         case Qt::Key_PageDown:
-            qApp->sendEvent (m_playlistWidget, event);
+            QApplication::sendEvent (m_playlistWidget, event);
             return;
 
         case Qt::Key_Escape:
