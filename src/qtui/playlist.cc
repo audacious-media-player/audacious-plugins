@@ -102,25 +102,22 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
     case Qt::NoModifier:
         switch (event->key ())
         {
-        case Qt::Key_Escape:
-            scrollToCurrent (true);
-            break;
         case Qt::Key_Enter:
         case Qt::Key_Return:
             playCurrentIndex ();
-            break;
+            return;
         case Qt::Key_Right:
             aud_drct_seek (aud_drct_get_time () + aud_get_double ("qtui", "step_size") * 1000);
-            break;
+            return;
         case Qt::Key_Left:
             aud_drct_seek (aud_drct_get_time () - aud_get_double ("qtui", "step_size") * 1000);
-            break;
+            return;
         case Qt::Key_Space:
             aud_drct_play_pause ();
-            break;
+            return;
         case Qt::Key_Delete:
             pl_remove_selected ();
-            break;
+            return;
         case Qt::Key_Z:
             aud_drct_pl_prev ();
             return;

@@ -84,7 +84,9 @@ MainWindow::MainWindow () :
     m_center_widget (new QWidget (this)),
     m_center_layout (audqt::make_vbox (m_center_widget, 0)),
     m_infobar (new InfoBar (this)),
-    m_statusbar (new StatusBar (this))
+    m_statusbar (new StatusBar (this)),
+    m_search_tool (aud_plugin_lookup_basename ("search-tool-qt")),
+    m_playlist_manager (aud_plugin_lookup_basename ("playlist-manager-qt"))
 {
 #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     QIcon::setThemeName ("QtUi");
@@ -165,6 +167,23 @@ void MainWindow::closeEvent (QCloseEvent * e)
         aud_quit ();
 
     e->ignore ();
+}
+
+void MainWindow::keyPressEvent (QKeyEvent * event)
+{
+    if (event->modifiers () == Qt::NoModifier && event->key () == Qt::Key_Escape)
+    {
+        auto widget = m_playlist_tabs->currentPlaylistWidget ();
+
+        if (widget->hasFocus ())
+            widget->scrollToCurrent (true);
+        else
+            widget->setFocus (Qt::OtherFocusReason);
+
+        return;
+    }
+
+    QMainWindow::keyPressEvent (event);
 }
 
 void MainWindow::read_settings ()
@@ -282,6 +301,12 @@ PluginWidget * MainWindow::find_dock_plugin (PluginHandle * plugin)
     }
 
     return nullptr;
+}
+
+void MainWindow::show_dock_plugin (PluginHandle * plugin)
+{
+    aud_plugin_enable (plugin, true);
+    aud_plugin_send_message (plugin, "grab focus", nullptr, 0);
 }
 
 void MainWindow::add_dock_plugin_cb (PluginHandle * plugin)

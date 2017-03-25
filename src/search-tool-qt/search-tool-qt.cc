@@ -60,6 +60,7 @@ public:
     constexpr SearchToolQt () : GeneralPlugin (info, false) {}
 
     void * get_qt_widget ();
+    int take_message (const char * code, const void *, int);
 };
 
 EXPORT SearchToolQt aud_plugin_instance;
@@ -159,6 +160,7 @@ static bool s_search_pending;
 
 static ResultsModel s_model;
 static QLabel * s_help_label, * s_wait_label, * s_stats_label;
+static QLineEdit * s_search_entry;
 static QTreeView * s_results_list;
 static QMenu * s_menu;
 
@@ -594,6 +596,10 @@ static void search_cleanup ()
     s_added_table.clear ();
     destroy_database ();
 
+    s_help_label = s_wait_label = s_stats_label = nullptr;
+    s_search_entry = nullptr;
+    s_results_list = nullptr;
+
     delete s_menu;
     s_menu = nullptr;
 }
@@ -732,10 +738,10 @@ QMimeData * ResultsModel::mimeData (const QModelIndexList & indexes) const
 
 void * SearchToolQt::get_qt_widget ()
 {
-    auto entry = new QLineEdit;
-    entry->setContentsMargins (audqt::margins.TwoPt);
-    entry->setClearButtonEnabled (true);
-    entry->setPlaceholderText (_("Search library"));
+    s_search_entry = new QLineEdit;
+    s_search_entry->setContentsMargins (audqt::margins.TwoPt);
+    s_search_entry->setClearButtonEnabled (true);
+    s_search_entry->setPlaceholderText (_("Search library"));
 
     s_help_label = new QLabel (_("To import your music library into Audacious, "
      "choose a folder and then click the \"refresh\" icon."));
@@ -774,7 +780,7 @@ void * SearchToolQt::get_qt_widget ()
     auto widget = new QWidget;
     auto vbox = audqt::make_vbox (widget, 0);
 
-    vbox->addWidget (entry);
+    vbox->addWidget (s_search_entry);
     vbox->addWidget (s_help_label);
     vbox->addWidget (s_wait_label);
     vbox->addWidget (s_results_list);
@@ -788,10 +794,10 @@ void * SearchToolQt::get_qt_widget ()
     search_init ();
 
     QObject::connect (widget, & QObject::destroyed, search_cleanup);
-    QObject::connect (entry, & QLineEdit::returnPressed, action_play);
+    QObject::connect (s_search_entry, & QLineEdit::returnPressed, action_play);
     QObject::connect (s_results_list, & QTreeView::doubleClicked, action_play);
 
-    QObject::connect (entry, & QLineEdit::textEdited, [] (const QString & text)
+    QObject::connect (s_search_entry, & QLineEdit::textEdited, [] (const QString & text)
     {
         s_search_terms = str_list_to_index (str_tolower_utf8 (text.toUtf8 ()), " ");
         s_search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
@@ -814,4 +820,15 @@ void * SearchToolQt::get_qt_widget ()
     QObject::connect (button, & QPushButton::clicked, refresh);
 
     return widget;
+}
+
+int SearchToolQt::take_message (const char * code, const void *, int)
+{
+    if (! strcmp (code, "grab focus") && s_search_entry)
+    {
+        s_search_entry->setFocus (Qt::OtherFocusReason);
+        return 0;
+    }
+
+    return -1;
 }

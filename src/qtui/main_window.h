@@ -51,6 +51,7 @@ private:
     InfoBar * m_infobar;
     StatusBar * m_statusbar;
 
+    PluginHandle * m_search_tool, * m_playlist_manager;
     Index<PluginWidget *> m_dock_widgets;
 
     QAction * m_play_pause_action;
@@ -61,6 +62,7 @@ private:
     Playlist m_last_playing;
 
     void closeEvent (QCloseEvent * e);
+    void keyPressEvent (QKeyEvent * event);
 
     void read_settings ();
     void set_title (const QString & title);
@@ -76,10 +78,16 @@ private:
     void playback_stop_cb ();
 
     PluginWidget * find_dock_plugin (PluginHandle * plugin);
+    void show_dock_plugin (PluginHandle * plugin);
     void add_dock_plugin_cb (PluginHandle * plugin);
     void remove_dock_plugin_cb (PluginHandle * plugin);
     void add_dock_plugins ();
     void remove_dock_plugins ();
+
+    void show_search_tool ()
+        { if (m_search_tool) show_dock_plugin (m_search_tool); }
+    void show_playlist_manager ()
+        { if (m_playlist_manager) show_dock_plugin (m_playlist_manager); }
 
     const HookReceiver<MainWindow>
      hook1 {"title change", this, & MainWindow::title_change_cb},
@@ -94,7 +102,9 @@ private:
      hook10 {"set stop_after_current_song", this, & MainWindow::update_toggles},
      hook11 {"qtui toggle menubar", this, & MainWindow::update_visibility},
      hook12 {"qtui toggle infoarea", this, & MainWindow::update_visibility},
-     hook13 {"qtui toggle statusbar", this, & MainWindow::update_visibility};
+     hook13 {"qtui toggle statusbar", this, & MainWindow::update_visibility},
+     hook14 {"qtui show search tool", this, & MainWindow::show_search_tool},
+     hook15 {"qtui show playlist manager", this, & MainWindow::show_playlist_manager};
 
     const HookReceiver<MainWindow, PluginHandle *>
      plugin_hook1 {"dock plugin enabled", this, & MainWindow::add_dock_plugin_cb},

@@ -85,6 +85,11 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
     connect (this, & QTabWidget::currentChanged, this, & PlaylistTabs::currentChangedTrigger);
 }
 
+PlaylistWidget * PlaylistTabs::currentPlaylistWidget () const
+{
+    return ((LayoutWidget *) currentWidget ())->playlistWidget ();
+}
+
 PlaylistWidget * PlaylistTabs::playlistWidget (int idx) const
 {
     auto w = (LayoutWidget *) widget (idx);
@@ -237,10 +242,7 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
         QKeyEvent * ke = (QKeyEvent *) e;
 
         if (ke->key () == Qt::Key_Escape)
-        {
-            cancelRename ();
-            return true;
-        }
+            return cancelRename ();
     }
 
     return QTabWidget::eventFilter(obj, e);
@@ -257,8 +259,10 @@ void PlaylistTabs::renameCurrent ()
         editTab (idx, playlist);
 }
 
-void PlaylistTabs::cancelRename ()
+bool PlaylistTabs::cancelRename ()
 {
+    bool cancelled = false;
+
     for (int i = 0; i < count (); i ++)
     {
         QLineEdit * edit = getTabEdit (i);
@@ -268,7 +272,10 @@ void PlaylistTabs::cancelRename ()
         setupTab (i, m_leftbtn, nullptr);
         m_leftbtn = nullptr;
         m_pl_to_rename = Playlist ();
+        cancelled = true;
     }
+
+    return cancelled;
 }
 
 void PlaylistTabs::playlist_activate_cb ()

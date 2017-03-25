@@ -47,6 +47,7 @@ public:
     constexpr PlaylistManagerQt () : GeneralPlugin (info, false) {}
 
     void * get_qt_widget ();
+    int take_message (const char * code, const void *, int);
 };
 
 EXPORT PlaylistManagerQt aud_plugin_instance;
@@ -105,6 +106,7 @@ public:
 
 protected:
     void currentChanged (const QModelIndex & current, const QModelIndex & previous);
+    void keyPressEvent (QKeyEvent * event);
     void mouseDoubleClickEvent (QMouseEvent * event);
     void dropEvent (QDropEvent * event);
 
@@ -113,6 +115,9 @@ private:
 
     void update (Playlist::UpdateLevel level);
     void update_sel ();
+
+    void play_current ()
+        { Playlist::by_index (currentIndex ().row ()).start_playback (); }
 
     const HookReceiver<PlaylistsView, Playlist::UpdateLevel>
      update_hook {"playlist update", this, & PlaylistsView::update};
@@ -248,10 +253,28 @@ void PlaylistsView::currentChanged (const QModelIndex & current, const QModelInd
         Playlist::by_index (current.row ()).activate ();
 }
 
+void PlaylistsView::keyPressEvent (QKeyEvent * event)
+{
+    if (event->modifiers () == Qt::NoModifier)
+    {
+        switch (event->key ())
+        {
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            play_current ();
+            return;
+        default:
+            break;
+        }
+    }
+
+    QTreeView::keyPressEvent (event);
+}
+
 void PlaylistsView::mouseDoubleClickEvent (QMouseEvent * event)
 {
     if (event->button () == Qt::LeftButton)
-        Playlist::by_index (currentIndex ().row ()).start_playback ();
+        play_current ();
 }
 
 void PlaylistsView::dropEvent (QDropEvent * event)
@@ -293,6 +316,8 @@ void PlaylistsView::update_sel ()
     m_in_update --;
 }
 
+static PlaylistsView * s_playlists_view = nullptr;
+
 static QToolButton * new_tool_button (const char * text, const char * icon)
 {
     auto button = new QToolButton;
@@ -304,7 +329,11 @@ static QToolButton * new_tool_button (const char * text, const char * icon)
 
 void * PlaylistManagerQt::get_qt_widget ()
 {
-    auto view = new PlaylistsView;
+    s_playlists_view = new PlaylistsView;
+
+    QObject::connect (s_playlists_view, & QObject::destroyed, [] () {
+        s_playlists_view = nullptr;
+    });
 
     auto new_button = new_tool_button (N_("_New"), "document-new");
     QObject::connect (new_button, & QToolButton::clicked, Playlist::new_playlist);
@@ -330,8 +359,19 @@ void * PlaylistManagerQt::get_qt_widget ()
     auto widget = new QWidget;
     auto vbox = audqt::make_vbox (widget, 0);
 
-    vbox->addWidget (view, 1);
+    vbox->addWidget (s_playlists_view, 1);
     vbox->addLayout (hbox);
 
     return widget;
+}
+
+int PlaylistManagerQt::take_message (const char * code, const void *, int)
+{
+    if (! strcmp (code, "grab focus") && s_playlists_view)
+    {
+        s_playlists_view->setFocus (Qt::OtherFocusReason);
+        return 0;
+    }
+
+    return -1;
 }

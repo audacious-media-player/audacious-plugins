@@ -36,6 +36,7 @@ class PlaylistTabs : public QTabWidget
 public:
     PlaylistTabs (QWidget * parent = nullptr);
 
+    PlaylistWidget * currentPlaylistWidget () const;
     PlaylistWidget * playlistWidget (int idx) const;
 
     void editTab (int idx, Playlist playlist);
@@ -60,7 +61,7 @@ private:
     void addRemovePlaylists ();
     void updateTitles ();
     void renameCurrent ();
-    void cancelRename ();
+    bool cancelRename ();
 
     void playlist_activate_cb ();
     void playlist_update_cb (Playlist::UpdateLevel global_level);
