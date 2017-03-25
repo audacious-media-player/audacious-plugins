@@ -106,7 +106,9 @@ MainWindow::MainWindow () :
         ToolBarSeparator (),
         ToolBarAction ("media-skip-backward", N_("Previous"), N_("Previous"), aud_drct_pl_prev),
         ToolBarAction ("media-playback-play", N_("Play"), N_("Play"), aud_drct_play_pause, & m_play_pause_action),
-        ToolBarAction ("media-playback-stop", N_("Stop"), N_("Stop"), aud_drct_stop),
+        ToolBarAction ("media-playback-stop", N_("Stop"), N_("Stop"), aud_drct_stop, & m_stop_action),
+        ToolBarAction ("media-playback-stop", N_("Stop After This Song"), N_("Stop After This Song"),
+            [] (bool on) { aud_set_bool (nullptr, "stop_after_current_song", on); }, & m_stop_after_action),
         ToolBarAction ("media-skip-forward", N_("Next"), N_("Next"), aud_drct_pl_next),
         ToolBarSeparator (),
         ToolBarCustom (slider),
@@ -207,6 +209,11 @@ void MainWindow::set_title (const QString & title)
 
 void MainWindow::update_toggles ()
 {
+    bool stop_after = aud_get_bool (nullptr, "stop_after_current_song");
+    m_stop_action->setVisible (! stop_after);
+    m_stop_after_action->setVisible (stop_after);
+    m_stop_after_action->setChecked (stop_after);
+
     m_repeat_action->setChecked (aud_get_bool (nullptr, "repeat"));
     m_shuffle_action->setChecked (aud_get_bool (nullptr, "shuffle"));
 }

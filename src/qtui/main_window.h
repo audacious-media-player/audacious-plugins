@@ -54,9 +54,8 @@ private:
     PluginHandle * m_search_tool, * m_playlist_manager;
     Index<PluginWidget *> m_dock_widgets;
 
-    QAction * m_play_pause_action;
-    QAction * m_repeat_action;
-    QAction * m_shuffle_action;
+    QAction * m_play_pause_action, * m_stop_action, * m_stop_after_action;
+    QAction * m_repeat_action, * m_shuffle_action;
 
     QueuedFunc m_buffering_timer;
     Playlist m_last_playing;
