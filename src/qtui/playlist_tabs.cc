@@ -155,7 +155,7 @@ void PlaylistTabs::updateTitles ()
 {
     int tabs = count ();
     for (int i = 0; i < tabs; i ++)
-        setTabTitle (i, Playlist::by_index (i));
+        updateTabText (i);
 }
 
 void PlaylistTabs::currentChangedTrigger (int idx)
@@ -169,12 +169,14 @@ QLineEdit * PlaylistTabs::getTabEdit (int idx)
     return dynamic_cast<QLineEdit *> (m_tabbar->tabButton (idx, QTabBar::LeftSide));
 }
 
-void PlaylistTabs::setTabTitle (int idx, Playlist playlist)
+void PlaylistTabs::updateTabText (int idx)
 {
     QString title;
 
-    if (playlist != Playlist ())
+    if (! getTabEdit (idx))
     {
+        auto playlist = Playlist::by_index (idx);
+
         // escape ampersands for setTabText ()
         title = QString (playlist.get_title ()).replace ("&", "&&");
 
@@ -197,6 +199,8 @@ void PlaylistTabs::setupTab (int idx, QWidget * button, QWidget * * oldp)
         old->setParent (nullptr);
         old->deleteLater ();
     }
+
+    updateTabText (idx);
 }
 
 void PlaylistTabs::tabEditedTrigger ()

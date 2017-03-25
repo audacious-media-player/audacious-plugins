@@ -53,7 +53,7 @@ private:
     Playlist m_pl_to_rename;
 
     QLineEdit * getTabEdit (int idx);
-    void setTabTitle (int idx, Playlist playlist);
+    void updateTabText (int idx);
     void setupTab (int idx, QWidget * button, QWidget * * oldp);
     PlaylistWidget * createWidget (int list);
 
