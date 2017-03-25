@@ -49,8 +49,7 @@ TimeSlider::TimeSlider (QWidget * parent) :
     m_label->setContentsMargins (4, 0, 4, 0);
     m_label->setSizePolicy (QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
 
-    connect (this, & QSlider::valueChanged, this, & TimeSlider::moved);
-    connect (this, & QSlider::sliderPressed, this, & TimeSlider::pressed);
+    connect (this, & QSlider::sliderMoved, this, & TimeSlider::moved);
     connect (this, & QSlider::sliderReleased, this, & TimeSlider::released);
 
     start_stop ();
@@ -81,18 +80,9 @@ void TimeSlider::start_stop ()
     setEnabled (ready);
     m_label->setEnabled (ready);
 
-    if (ready)
-    {
-        if (! isSliderDown ())
-            update ();
-    }
-    else
-    {
-        setRange (0, 0);
-        set_label (0, 0);
-    }
+    update ();
 
-    if (ready && ! paused && ! isSliderDown ())
+    if (ready && ! paused)
         m_timer.start ();
     else
         m_timer.stop ();
@@ -100,13 +90,24 @@ void TimeSlider::start_stop ()
 
 void TimeSlider::update ()
 {
-    int time = aud_drct_get_time ();
-    int length = aud_drct_get_length ();
+    if (aud_drct_get_ready ())
+    {
+        if (! isSliderDown ())
+        {
+            int time = aud_drct_get_time ();
+            int length = aud_drct_get_length ();
 
-    setRange (0, length);
-    setValue (time);
+            setRange (0, length);
+            setValue (time);
 
-    set_label (time, length);
+            set_label (time, length);
+        }
+    }
+    else
+    {
+        setRange (0, 0);
+        set_label (0, 0);
+    }
 }
 
 void TimeSlider::moved (int value)
@@ -114,18 +115,9 @@ void TimeSlider::moved (int value)
     set_label (value, aud_drct_get_length ());
 }
 
-void TimeSlider::pressed ()
-{
-    m_timer.stop ();
-}
-
 void TimeSlider::released ()
 {
     aud_drct_seek (value ());
-    set_label (value (), aud_drct_get_length ());
-
-    if (! aud_drct_get_paused ())
-        m_timer.start ();
 }
 
 void TimeSlider::mousePressEvent (QMouseEvent * event)
