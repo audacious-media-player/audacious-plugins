@@ -205,27 +205,76 @@ int SpeedPitch::adjust_delay (int delay)
     return (delay + in_samples * samples_to_ms) * speed + out_samples * samples_to_ms;
 }
 
+static double pitch_to_semitones(double pitch)
+{
+    return 12 * log (pitch) / log (2);
+}
+
+static double semitones_to_pitch(double semitones)
+{
+    return pow (2, semitones / 12);
+}
+
+static void speed_changed ()
+{
+    if (aud_get_bool (CFGSECT, "sync"))
+    {
+        aud_set_double (CFGSECT, "pitch", aud_get_double (CFGSECT, "speed"));
+        hook_call ("speed-pitch set pitch", nullptr);
+
+        semitones = pitch_to_semitones (aud_get_double (CFGSECT, "pitch"));
+        hook_call ("speed-pitch set semitones", nullptr);
+    }
+}
+
 static void pitch_changed ()
 {
-    semitones = 12 * log (aud_get_double (CFGSECT, "pitch")) / log (2);
+    semitones = pitch_to_semitones (aud_get_double (CFGSECT, "pitch"));
     hook_call ("speed-pitch set semitones", nullptr);
+
+    if (aud_get_bool (CFGSECT, "sync"))
+    {
+        aud_set_double (CFGSECT, "speed", aud_get_double (CFGSECT, "pitch"));
+        hook_call ("speed-pitch set speed", nullptr);
+    }
 }
 
 static void semitones_changed ()
 {
-    aud_set_double (CFGSECT, "pitch", pow (2, semitones / 12));
+    double pitch = semitones_to_pitch (semitones);
+
+    aud_set_double (CFGSECT, "pitch", pitch);
     hook_call ("speed-pitch set pitch", nullptr);
+
+    if (aud_get_bool (CFGSECT, "sync"))
+    {
+        aud_set_double (CFGSECT, "speed", pitch);
+        hook_call ("speed-pitch set speed", nullptr);
+    }
+}
+
+static void sync_changed ()
+{
+    if (aud_get_bool (CFGSECT, "sync"))
+    {
+        /* Will pretend that the speed changed so that it synchronizes when the
+         * option is enabled. */
+        speed_changed ();
+    }
 }
 
 const char * const SpeedPitch::defaults[] = {
  "speed", "1",
  "pitch", "1",
+ "sync", "FALSE",
  nullptr};
 
 const PreferencesWidget SpeedPitch::widgets[] = {
     WidgetLabel (N_("<b>Speed and Pitch</b>")),
+    WidgetCheck (N_("Synchronize"),
+        WidgetBool (CFGSECT, "sync", sync_changed)),
     WidgetSpin (N_("Speed:"),
-        WidgetFloat (CFGSECT, "speed"),
+        WidgetFloat (CFGSECT, "speed", speed_changed, "speed-pitch set speed"),
         {MINSPEED, MAXSPEED, 0.05}),
     WidgetSpin (N_("Pitch:"),
         WidgetFloat (CFGSECT, "pitch", pitch_changed, "speed-pitch set pitch"),
@@ -241,7 +290,7 @@ const PluginPreferences SpeedPitch::prefs = {{widgets}};
 bool SpeedPitch::init ()
 {
     aud_config_set_defaults (CFGSECT, defaults);
-    pitch_changed ();
+    semitones = pitch_to_semitones (aud_get_double (CFGSECT, "pitch"));
     return true;
 }
 
