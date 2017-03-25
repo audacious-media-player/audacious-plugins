@@ -118,6 +118,8 @@ MainWindow::MainWindow () :
         ToolBarAction ("media-playback-stop", N_("Stop After This Song"), N_("Stop After This Song"),
             [] (bool on) { aud_set_bool (nullptr, "stop_after_current_song", on); }, & m_stop_after_action),
         ToolBarAction ("media-skip-forward", N_("Next"), N_("Next"), aud_drct_pl_next),
+        ToolBarAction ("media-record", N_("Record Stream"), N_("Record Stream"),
+            [] (bool on) { aud_set_bool (nullptr, "record", on); }, & m_record_action),
         ToolBarSeparator (),
         ToolBarCustom (slider),
         ToolBarCustom (slider->label ()),
@@ -231,6 +233,9 @@ void MainWindow::update_toggles ()
     m_stop_action->setVisible (! stop_after);
     m_stop_after_action->setVisible (stop_after);
     m_stop_after_action->setChecked (stop_after);
+
+    m_record_action->setVisible (aud_drct_get_record_enabled ());
+    m_record_action->setChecked (aud_get_bool (nullptr, "record"));
 
     m_repeat_action->setChecked (aud_get_bool (nullptr, "repeat"));
     m_shuffle_action->setChecked (aud_get_bool (nullptr, "shuffle"));

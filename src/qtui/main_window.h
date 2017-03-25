@@ -56,6 +56,7 @@ private:
 
     QAction * m_search_action;
     QAction * m_play_pause_action, * m_stop_action, * m_stop_after_action;
+    QAction * m_record_action;
     QAction * m_repeat_action, * m_shuffle_action;
 
     QueuedFunc m_buffering_timer;
@@ -99,15 +100,16 @@ private:
      hook4 {"playback pause", this, & MainWindow::pause_cb},
      hook5 {"playback unpause", this, & MainWindow::pause_cb},
      hook6 {"playback stop", this, & MainWindow::playback_stop_cb},
-     hook7 {"set repeat", this, & MainWindow::update_toggles},
-     hook8 {"set shuffle", this, & MainWindow::update_toggles},
-     hook9 {"set no_playlist_advance", this, & MainWindow::update_toggles},
-     hook10 {"set stop_after_current_song", this, & MainWindow::update_toggles},
-     hook11 {"qtui toggle menubar", this, & MainWindow::update_visibility},
-     hook12 {"qtui toggle infoarea", this, & MainWindow::update_visibility},
-     hook13 {"qtui toggle statusbar", this, & MainWindow::update_visibility},
-     hook14 {"qtui show search tool", this, & MainWindow::show_search_tool},
-     hook15 {"qtui show playlist manager", this, & MainWindow::show_playlist_manager};
+     hook7 {"set stop_after_current_song", this, & MainWindow::update_toggles},
+     hook8 {"enable record", this, & MainWindow::update_toggles},
+     hook9 {"set record", this, & MainWindow::update_toggles},
+     hook10 {"set repeat", this, & MainWindow::update_toggles},
+     hook11 {"set shuffle", this, & MainWindow::update_toggles},
+     hook12 {"qtui toggle menubar", this, & MainWindow::update_visibility},
+     hook13 {"qtui toggle infoarea", this, & MainWindow::update_visibility},
+     hook14 {"qtui toggle statusbar", this, & MainWindow::update_visibility},
+     hook15 {"qtui show search tool", this, & MainWindow::show_search_tool},
+     hook16 {"qtui show playlist manager", this, & MainWindow::show_playlist_manager};
 
     const HookReceiver<MainWindow, PluginHandle *>
      plugin_hook1 {"dock plugin enabled", this, & MainWindow::add_dock_plugin_cb},
