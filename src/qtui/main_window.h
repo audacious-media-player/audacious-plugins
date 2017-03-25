@@ -54,6 +54,7 @@ private:
     PluginHandle * m_search_tool, * m_playlist_manager;
     Index<PluginWidget *> m_dock_widgets;
 
+    QAction * m_search_action;
     QAction * m_play_pause_action, * m_stop_action, * m_stop_after_action;
     QAction * m_repeat_action, * m_shuffle_action;
 
@@ -87,6 +88,9 @@ private:
         { if (m_search_tool) show_dock_plugin (m_search_tool); }
     void show_playlist_manager ()
         { if (m_playlist_manager) show_dock_plugin (m_playlist_manager); }
+
+    static bool plugin_watcher (PluginHandle *, void * me)
+        { ((MainWindow *) me)->update_toggles (); return true; }
 
     const HookReceiver<MainWindow>
      hook1 {"title change", this, & MainWindow::title_change_cb},

@@ -76,6 +76,13 @@ static QString get_config_name ()
            QString ("audacious-%1").arg (instance);
 }
 
+static void toggle_search_tool (bool enable)
+{
+    auto search_tool = aud_plugin_lookup_basename ("search-tool-qt");
+    if (search_tool)
+        aud_plugin_enable (search_tool, enable);
+}
+
 MainWindow::MainWindow () :
     m_config_name (get_config_name ()),
     m_dialogs (this),
@@ -99,6 +106,7 @@ MainWindow::MainWindow () :
     auto slider = new TimeSlider (this);
 
     const ToolBarItem items[] = {
+        ToolBarAction ("edit-find", N_("Search Library"), N_("Search Library"), toggle_search_tool, & m_search_action),
         ToolBarAction ("document-open", N_("Open Files"), N_("Open Files"),
             [] () { audqt::fileopener_show (audqt::FileMode::Open); }),
         ToolBarAction ("list-add", N_("Add Files"), N_("Add Files"),
@@ -122,8 +130,12 @@ MainWindow::MainWindow () :
     };
 
     addToolBar (Qt::TopToolBarArea, new ToolBar (this, items));
-
     setUnifiedTitleAndToolBarOnMac (true);
+
+    if (m_search_tool)
+        aud_plugin_add_watch (m_search_tool, plugin_watcher, this);
+    else
+        m_search_action->setVisible (false);
 
     update_toggles ();
 
@@ -157,6 +169,9 @@ MainWindow::~MainWindow ()
     settings.setValue ("windowState", saveState ());
 
     remove_dock_plugins ();
+
+    if (m_search_tool)
+        aud_plugin_remove_watch (m_search_tool, plugin_watcher, this);
 }
 
 void MainWindow::closeEvent (QCloseEvent * e)
@@ -209,6 +224,9 @@ void MainWindow::set_title (const QString & title)
 
 void MainWindow::update_toggles ()
 {
+    if (m_search_tool)
+        m_search_action->setChecked (aud_plugin_get_enabled (m_search_tool));
+
     bool stop_after = aud_get_bool (nullptr, "stop_after_current_song");
     m_stop_action->setVisible (! stop_after);
     m_stop_after_action->setVisible (stop_after);
