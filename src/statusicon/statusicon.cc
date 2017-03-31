@@ -280,8 +280,8 @@ static GtkWidget * si_menu_create ()
         MenuCommand (N_("_Stop"), "media-playback-stop", 0, (GdkModifierType) 0, aud_drct_stop),
         MenuCommand (N_("_Next"), "media-skip-forward", 0, (GdkModifierType) 0, aud_drct_pl_next),
         MenuSep (),
-        MenuCommand (N_("_Open Files ..."), "document-open", 0, (GdkModifierType) 0, open_files),
-        MenuCommand (N_("Se_ttings ..."), "preferences-system", 0, (GdkModifierType) 0, audgui_show_prefs_window),
+        //MenuCommand (N_("_Open Files ..."), "document-open", 0, (GdkModifierType) 0, open_files),
+        //MenuCommand (N_("Se_ttings ..."), "preferences-system", 0, (GdkModifierType) 0, audgui_show_prefs_window),
         MenuCommand (N_("_Quit"), "application-exit", 0, (GdkModifierType) 0, aud_quit)
     };
 

@@ -91,8 +91,8 @@ const audqt::MenuItem StatusIcon::items[] =
     audqt::MenuCommand ({N_("_Stop"), "media-playback-stop"}, aud_drct_stop),
     audqt::MenuCommand ({N_("_Next"), "media-skip-forward"}, aud_drct_pl_next),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("_Open Files ..."), "document-open"}, StatusIcon::open_files),
-    audqt::MenuCommand ({N_("Se_ttings ..."), "preferences-system"}, audqt::prefswin_show),
+    //audqt::MenuCommand ({N_("_Open Files ..."), "document-open"}, StatusIcon::open_files),
+    //audqt::MenuCommand ({N_("Se_ttings ..."), "preferences-system"}, audqt::prefswin_show),
     audqt::MenuCommand ({N_("_Quit"), "application-exit"}, aud_quit),
 };
 
