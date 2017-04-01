@@ -274,10 +274,10 @@ static void open_files ()
 static GtkWidget * si_menu_create ()
 {
     static const AudguiMenuItem items[] = {
-        MenuCommand (N_("Pre_vious"), "media-skip-backward", 0, (GdkModifierType) 0, aud_drct_pl_prev),
         MenuCommand (N_("_Play"), "media-playback-start", 0, (GdkModifierType) 0, aud_drct_play),
         MenuCommand (N_("Paus_e"), "media-playback-pause", 0, (GdkModifierType) 0, aud_drct_pause),
         MenuCommand (N_("_Stop"), "media-playback-stop", 0, (GdkModifierType) 0, aud_drct_stop),
+        MenuCommand (N_("Pre_vious"), "media-skip-backward", 0, (GdkModifierType) 0, aud_drct_pl_prev),
         MenuCommand (N_("_Next"), "media-skip-forward", 0, (GdkModifierType) 0, aud_drct_pl_next),
         MenuSep (),
         //MenuCommand (N_("_Open Files ..."), "document-open", 0, (GdkModifierType) 0, open_files),
