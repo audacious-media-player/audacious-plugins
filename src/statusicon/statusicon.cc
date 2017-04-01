@@ -266,10 +266,11 @@ static void si_menu_show (int x, int y, unsigned button, uint32_t time, void * e
     gtk_menu_popup ((GtkMenu *) si_menu, nullptr, nullptr, nullptr, nullptr, button, time);
 }
 
-static void open_files ()
+/*static void open_files ()
 {
     audgui_run_filebrowser (true);
 }
+*/
 
 static GtkWidget * si_menu_create ()
 {
