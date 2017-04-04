@@ -82,9 +82,6 @@ const PluginPreferences StatusIcon::prefs = {{widgets}};
 
 const audqt::MenuItem StatusIcon::items[] =
 {
-    audqt::MenuCommand ({N_("_Hide"), "window-close"}, StatusIcon::toggle_aud_ui),
-    audqt::MenuCommand ({N_("_Restore"), "window-new"}, StatusIcon::toggle_aud_ui),
-    audqt::MenuSep (),
     audqt::MenuCommand ({N_("_Play"), "media-playback-start"}, aud_drct_play),
     audqt::MenuCommand ({N_("Paus_e"), "media-playback-pause"}, aud_drct_pause),
     audqt::MenuCommand ({N_("_Stop"), "media-playback-stop"}, aud_drct_stop),
@@ -176,7 +173,4 @@ void StatusIcon::toggle_aud_ui ()
 void StatusIcon::update_menu ()
 {
     QList< QAction *> acts = menu->actions ();
-
-    acts.at (0)->setVisible (aud_ui_is_shown ());
-    acts.at (1)->setVisible (! aud_ui_is_shown ());
 }
