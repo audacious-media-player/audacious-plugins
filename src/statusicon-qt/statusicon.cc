@@ -56,7 +56,6 @@ public:
     static void activate (QSystemTrayIcon::ActivationReason);
     static void open_files ();
     static void toggle_aud_ui ();
-    static void update_menu ();
 };
 
 EXPORT StatusIcon aud_plugin_instance;
@@ -106,7 +105,6 @@ bool StatusIcon::init ()
     QObject::connect (tray, & QSystemTrayIcon::activated, activate);
     menu = audqt::menu_build (items);
     tray->setContextMenu (menu);
-    QObject::connect (menu, & QMenu::aboutToShow, update_menu);
     tray->show ();
 
     hook_associate ("window close", window_closed, nullptr);
