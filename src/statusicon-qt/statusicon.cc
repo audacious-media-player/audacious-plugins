@@ -169,8 +169,3 @@ void StatusIcon::toggle_aud_ui ()
 {
     aud_ui_show (! aud_ui_is_shown ());
 }
-
-void StatusIcon::update_menu ()
-{
-    QList< QAction *> acts = menu->actions ();
-}
