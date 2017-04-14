@@ -458,9 +458,9 @@ int NeonFile::open_request (int64_t startbyte, String * error)
         m_request = ne_request_create (m_session, "GET", m_purl.path);
 
     if (startbyte > 0)
-        ne_print_request_header (m_request, "Range", "bytes=%" PRIu64 "-", startbyte);
+        ne_add_request_header (m_request, "Range", str_printf ("bytes=%" PRIu64 "-", startbyte));
 
-    ne_print_request_header (m_request, "Icy-MetaData", "1");
+    ne_add_request_header (m_request, "Icy-MetaData", "1");
 
     /* Try to connect to the server. */
     AUDDBG ("<%p> Connecting...\n", this);
