@@ -603,9 +603,10 @@ static void list_get_value (void * user, int row, int column, GValue * value)
         desc.insert (-1, _("of this genre"));
     }
 
-    auto parent = item;
-    while ((parent = parent->parent))
+    if (item->parent)
     {
+        auto parent = (item->parent->parent ? item->parent->parent : item->parent);
+
         desc.insert (-1, " ");
         desc.insert (-1, (parent->field == SearchField::Album) ? _("on") : _("by"));
         desc.insert (-1, " ");
