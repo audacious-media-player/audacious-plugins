@@ -65,7 +65,6 @@ public:
 private:
     bool delayed_init();
 
-    pthread_mutex_t m_init_mutex = PTHREAD_MUTEX_INITIALIZER;
     bool m_initialized = false;
     bool m_init_failed = false;
 };
@@ -74,12 +73,14 @@ EXPORT SIDPlugin aud_plugin_instance;
 
 static void xs_get_song_tuple_info(Tuple &pResult, const xs_tuneinfo_t &info, int subTune);
 
+static pthread_mutex_t s_init_mutex = PTHREAD_MUTEX_INITIALIZER;
+
 /*
  * Initialization functions
  */
 bool SIDPlugin::delayed_init()
 {
-    pthread_mutex_lock(&m_init_mutex);
+    pthread_mutex_lock(&s_init_mutex);
 
     if (!m_initialized && !m_init_failed)
     {
@@ -89,7 +90,7 @@ bool SIDPlugin::delayed_init()
             m_init_failed = true;
     }
 
-    pthread_mutex_unlock(&m_init_mutex);
+    pthread_mutex_unlock(&s_init_mutex);
     return m_initialized;
 }
 
