@@ -683,12 +683,14 @@ static StringBuf create_item_label (int row)
         string.insert (-1, _("of this genre"));
     }
 
-    while ((item = item->parent))
+    if (item->parent)
     {
+        auto parent = (item->parent->parent ? item->parent->parent : item->parent);
+
         string.insert (-1, " ");
-        string.insert (-1, (item->field == SearchField::Album) ? _("on") : _("by"));
+        string.insert (-1, (parent->field == SearchField::Album) ? _("on") : _("by"));
         string.insert (-1, " ");
-        string.insert (-1, item->name);
+        string.insert (-1, parent->name);
     }
 
     return string;
