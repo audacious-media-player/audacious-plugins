@@ -64,5 +64,5 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
 # FIXME: Turning off warnings for now; this code is awful
-CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-sign-compare
+CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-sign-compare -Wno-shift-negative-value
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. -I./core -I./binio
