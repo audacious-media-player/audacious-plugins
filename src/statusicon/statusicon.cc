@@ -266,10 +266,11 @@ static void si_menu_show (int x, int y, unsigned button, uint32_t time, void * e
     gtk_menu_popup ((GtkMenu *) si_menu, nullptr, nullptr, nullptr, nullptr, button, time);
 }
 
-static void open_files ()
+/*static void open_files ()
 {
     audgui_run_filebrowser (true);
 }
+*/
 
 static GtkWidget * si_menu_create ()
 {
@@ -280,8 +281,8 @@ static GtkWidget * si_menu_create ()
         MenuCommand (N_("Pre_vious"), "media-skip-backward", 0, (GdkModifierType) 0, aud_drct_pl_prev),
         MenuCommand (N_("_Next"), "media-skip-forward", 0, (GdkModifierType) 0, aud_drct_pl_next),
         MenuSep (),
-        MenuCommand (N_("_Open Files ..."), "document-open", 0, (GdkModifierType) 0, open_files),
-        MenuCommand (N_("Se_ttings ..."), "preferences-system", 0, (GdkModifierType) 0, audgui_show_prefs_window),
+        //MenuCommand (N_("_Open Files ..."), "document-open", 0, (GdkModifierType) 0, open_files),
+        //MenuCommand (N_("Se_ttings ..."), "preferences-system", 0, (GdkModifierType) 0, audgui_show_prefs_window),
         MenuCommand (N_("_Quit"), "application-exit", 0, (GdkModifierType) 0, aud_quit)
     };
 
