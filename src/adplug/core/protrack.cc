@@ -205,7 +205,7 @@ bool CmodPlayer::update()
   for(chan = 0; chan < nchans; chan++) {
     oplchan = set_opl_chip(chan);
 
-    if(!(activechan >> (31 - chan)) & 1) {      // channel active?
+    if(!((activechan >> (31 - chan)) & 1)) {      // channel active?
       AdPlug_LogWrite("N/A|");
       continue;
     }
