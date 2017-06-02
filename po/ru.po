@@ -40,6 +40,7 @@
 # Volk Daemon <volk-daemon@rambler.ru>, 2016
 # Алексей <kvadrocu7@gmail.com>, 2013
 # Денис <alpi_bel@mail.ru>, 2014-2015
+# Предлагаю содрать кожу со всех конечностей переводчику, который обозвал silence-removal "Шумоподавлением"!
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
@@ -3298,7 +3299,7 @@ msgstr "<b>Заметка</b>"
 
 #: src/silence-removal/silence-removal.cc:39
 msgid "Silence Removal"
-msgstr "Шумоподавление"
+msgstr "Удаление тишины"
 
 #: src/silence-removal/silence-removal.cc:58
 msgid ""
@@ -3310,11 +3311,11 @@ msgstr ""
 
 #: src/silence-removal/silence-removal.cc:67
 msgid "<b>Silence Removal</b>"
-msgstr "<b>Шумоподавление</b>"
+msgstr "<b>Удаление тишины</b>"
 
 #: src/silence-removal/silence-removal.cc:68
 msgid "Threshold:"
-msgstr "Примесь:"
+msgstr "Порог:"
 
 #: src/silence-removal/silence-removal.cc:70
 msgid "dB"
