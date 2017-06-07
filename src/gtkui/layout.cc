@@ -563,7 +563,7 @@ void layout_save ()
         Item * item = (Item *) node->data;
         g_return_if_fail (item && item->name);
 
-        char key[16], value[64];
+        char key[32], value[64];
 
         snprintf (key, sizeof key, "item%d_name", i);
         aud_set_str ("gtkui-layout", key, item->name);
@@ -590,7 +590,7 @@ void layout_load ()
 
     for (int i = 0; i < count; i ++)
     {
-        char key[16];
+        char key[32];
 
         snprintf (key, sizeof key, "item%d_name", i);
         String name = aud_get_str ("gtkui-layout", key);
