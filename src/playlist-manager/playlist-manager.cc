@@ -144,9 +144,6 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * key,
     return false;  /* matched */
 }
 
-static gboolean position_changed = false;
-static gboolean playlist_activated = false;
-
 static void update_hook (void * data, void * list_)
 {
     auto level = aud::from_ptr<Playlist::UpdateLevel> (data);
@@ -162,48 +159,26 @@ static void update_hook (void * data, void * list_)
         else if (rows > old_rows)
             audgui_list_insert_rows (list, old_rows, rows - old_rows);
 
-        position_changed = true;
-        playlist_activated = true;
+        audgui_list_set_focus (list, Playlist::active_playlist ().index ());
+        audgui_list_set_highlight (list, Playlist::playing_playlist ().index ());
+        audgui_list_update_selection (list, 0, rows);
     }
 
     if (level >= Playlist::Metadata)
         audgui_list_update_rows (list, 0, rows);
-
-    if (playlist_activated)
-    {
-        audgui_list_set_focus (list, Playlist::active_playlist ().index ());
-        audgui_list_update_selection (list, 0, rows);
-        playlist_activated = false;
-    }
-
-    if (position_changed)
-    {
-        audgui_list_set_highlight (list, Playlist::playing_playlist ().index ());
-        position_changed = false;
-    }
 }
 
 static void activate_hook (void * data, void * list_)
 {
     GtkWidget * list = (GtkWidget *) list_;
-
-    if (Playlist::update_pending_any ())
-        playlist_activated = true;
-    else
-    {
-        audgui_list_set_focus (list, Playlist::active_playlist ().index ());
-        audgui_list_update_selection (list, 0, Playlist::n_playlists ());
-    }
+    audgui_list_set_focus (list, Playlist::active_playlist ().index ());
+    audgui_list_update_selection (list, 0, Playlist::n_playlists ());
 }
 
 static void position_hook (void * data, void * list_)
 {
     GtkWidget * list = (GtkWidget *) list_;
-
-    if (Playlist::update_pending_any ())
-        position_changed = true;
-    else
-        audgui_list_set_highlight (list, Playlist::playing_playlist ().index ());
+    audgui_list_set_highlight (list, Playlist::playing_playlist ().index ());
 }
 
 static void destroy_cb (GtkWidget * window)

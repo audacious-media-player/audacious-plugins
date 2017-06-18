@@ -52,6 +52,8 @@ static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType:
 static void configure_output () { audqt::prefswin_show_plugin_page (PluginType::Output); }
 static void configure_visualizations () { audqt::prefswin_show_plugin_page (PluginType::Vis); }
 
+static void show_search_tool () { hook_call ("qtui show search tool", nullptr); }
+static void show_playlist_manager () { hook_call ("qtui show playlist manager", nullptr); }
 static void toggle_menubar () { hook_call ("qtui toggle menubar", nullptr); }
 static void toggle_infoarea () { hook_call ("qtui toggle infoarea", nullptr); }
 static void toggle_infoarea_vis () { hook_call ("qtui toggle infoarea_vis", nullptr); }
@@ -67,6 +69,8 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuCommand ({N_("_Add Files ..."), "list-add", "Ctrl+Shift+O"}, add_files),
         audqt::MenuCommand ({N_("_Add Folder ..."), "list-add"}, add_folder),
         audqt::MenuCommand ({N_("Add U_RL ..."), "folder-remote", "Ctrl+Shift+L"}, add_url),
+        audqt::MenuSep (),
+        audqt::MenuCommand ({N_("Search _Library"), "edit-find", "Ctrl+Y"}, show_search_tool),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("A_bout ..."), "help-about"}, aud_ui_show_about_window),
         audqt::MenuCommand ({N_("_Settings ..."), "preferences-system"}, aud_ui_show_prefs_window),
@@ -150,7 +154,7 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         //audqt::MenuCommand ({N_("_Import ..."), "document-open"}, TODO),
         //audqt::MenuCommand ({N_("_Export ..."), "document-save"}, TODO),
         audqt::MenuSep (),
-        //audqt::MenuCommand ({N_("Playlist _Manager ..."), "audio-x-generic", "Ctrl+P"}, TODO),
+        audqt::MenuCommand ({N_("Playlist _Manager ..."), "audio-x-generic", "Ctrl+P"}, show_playlist_manager),
         audqt::MenuCommand ({N_("_Queue Manager ..."), nullptr, "Ctrl+U"}, audqt::queue_manager_show)
     };
 

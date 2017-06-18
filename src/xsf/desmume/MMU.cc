@@ -307,7 +307,7 @@ void MMU_clearMem()
 	memset(ARM9Mem.ARM9_WRAM, 0, 0x01000000);
 	memset(ARM9Mem.MAIN_MEM,  0, 0x400000);
 
-	memset(ARM9Mem.blank_memory,  0, 0x020000);
+    memset(ARM9Mem.blank_memory, 0, sizeof ARM9Mem.blank_memory);
 
 	memset(MMU.ARM7_ERAM,     0, 0x010000);
 	memset(MMU.ARM7_REG,      0, 0x010000);

@@ -43,10 +43,10 @@ public:
 };
 
 const char AmpacheBrowserPlugin::about[] =
-    N_("Ampache Browser\n\n"
-       "Ampache client for Audacious.\n\n"
-       "License: GNU GPLv3\n"
-       "Copyright (C) Róbert Čerňanský and John Lindgren\n");
+    N_("Ampache Browser for Audacious\n"
+       "http://ampache-browser.org/\n\n"
+       "Copyright (C) Róbert Čerňanský and John Lindgren\n"
+       "License: GNU GPLv3");
 
 static SmartPtr<ampache_browser::ApplicationQt> s_app;
 
@@ -108,11 +108,11 @@ bool AmpacheBrowserPlugin::init()
     });
 
     browser.connectCreatePlaylist([](const UrlList& urls) {
-        aud_playlist_entry_insert_batch(aud_playlist_new(), -1, toAddItems(urls), true);
+        Playlist::new_playlist().insert_items(-1, toAddItems(urls), false);
     });
 
     browser.connectAddToPlaylist([](const UrlList& urls) {
-        aud_playlist_entry_insert_batch(aud_playlist_get_active(), -1, toAddItems(urls), false);
+        Playlist::active_playlist().insert_items(-1, toAddItems(urls), false);
     });
 
     initSettings(s_app->getSettings());

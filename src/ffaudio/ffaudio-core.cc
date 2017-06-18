@@ -662,6 +662,9 @@ const char * const FFaudio::exts[] = {
     /* True Audio */
     "tta",
 
+    /* WebM */
+    "webm",
+
     /* end of table */
     nullptr
 };

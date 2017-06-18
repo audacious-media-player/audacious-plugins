@@ -36,6 +36,7 @@ class PlaylistTabs : public QTabWidget
 public:
     PlaylistTabs (QWidget * parent = nullptr);
 
+    PlaylistWidget * currentPlaylistWidget () const;
     PlaylistWidget * playlistWidget (int idx) const;
 
     void editTab (int idx, Playlist playlist);
@@ -49,18 +50,16 @@ private:
     QMenu * m_pl_menu;
     QWidget * m_leftbtn;
     PlaylistTabBar * m_tabbar;
-    Playlist m_pl_to_rename;
 
     QLineEdit * getTabEdit (int idx);
-    void setTabTitle (int idx, Playlist playlist);
+    void updateTabText (int idx);
     void setupTab (int idx, QWidget * button, QWidget * * oldp);
-    PlaylistWidget * createWidget (int list);
 
     void activateSearch ();
     void addRemovePlaylists ();
     void updateTitles ();
     void renameCurrent ();
-    void cancelRename ();
+    bool cancelRename ();
 
     void playlist_activate_cb ();
     void playlist_update_cb (Playlist::UpdateLevel global_level);

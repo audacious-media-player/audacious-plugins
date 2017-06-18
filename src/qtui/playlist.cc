@@ -78,7 +78,7 @@ QModelIndex PlaylistWidget::rowToIndex (int row)
     if (row < 0)
         return QModelIndex ();
 
-    return proxyModel->mapFromSource (model->index (row));
+    return proxyModel->mapFromSource (model->index (row, firstVisibleColumn));
 }
 
 int PlaylistWidget::indexToRow (const QModelIndex & index)
@@ -102,25 +102,22 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
     case Qt::NoModifier:
         switch (event->key ())
         {
-        case Qt::Key_Escape:
-            scrollToCurrent (true);
-            break;
         case Qt::Key_Enter:
         case Qt::Key_Return:
             playCurrentIndex ();
-            break;
+            return;
         case Qt::Key_Right:
             aud_drct_seek (aud_drct_get_time () + aud_get_double ("qtui", "step_size") * 1000);
-            break;
+            return;
         case Qt::Key_Left:
             aud_drct_seek (aud_drct_get_time () - aud_get_double ("qtui", "step_size") * 1000);
-            break;
+            return;
         case Qt::Key_Space:
             aud_drct_play_pause ();
-            break;
+            return;
         case Qt::Key_Delete:
             pl_remove_selected ();
-            break;
+            return;
         case Qt::Key_Z:
             aud_drct_pl_prev ();
             return;
@@ -229,17 +226,13 @@ void PlaylistWidget::scrollToCurrent (bool force)
         m_playlist.select_entry (entry, true);
         m_playlist.set_focus (entry);
 
-        // a playlist update should have been queued, unless the playlist is empty
-        if (m_playlist.update_pending ())
-            scrollQueued = true;
+        scrollTo (rowToIndex (entry));
     }
 }
 
 void PlaylistWidget::updatePlaybackIndicator ()
 {
-    if (m_playlist.update_pending ())
-        needIndicatorUpdate = true;
-    else if (currentPos >= 0)
+    if (currentPos >= 0)
         model->entriesChanged (currentPos, 1);
 }
 
@@ -289,14 +282,7 @@ void PlaylistWidget::updateSelection (int rowsBefore, int rowsAfter)
     if (! deselected.isEmpty ())
         sel->select (deselected, sel->Deselect | sel->Rows);
 
-    auto current = rowToIndex (m_playlist.get_focus ());
-    sel->setCurrentIndex (current, sel->NoUpdate);
-
-    if (scrollQueued)
-    {
-        scrollTo (current);
-        scrollQueued = false;
-    }
+    sel->setCurrentIndex (rowToIndex (m_playlist.get_focus ()), sel->NoUpdate);
 }
 
 void PlaylistWidget::playlistUpdate ()
@@ -339,15 +325,14 @@ void PlaylistWidget::playlistUpdate ()
 
     int pos = m_playlist.get_position ();
 
-    if (needIndicatorUpdate || pos != currentPos)
+    if (pos != currentPos)
     {
         if (currentPos >= 0)
             model->entriesChanged (currentPos, 1);
-        if (pos >= 0 && pos != currentPos)
+        if (pos >= 0)
             model->entriesChanged (pos, 1);
 
         currentPos = pos;
-        needIndicatorUpdate = false;
     }
 
     updateSelection (update.before, update.after);
@@ -390,6 +375,17 @@ void PlaylistWidget::setFilter (const char * text)
     }
 
     scrollTo (index);
+}
+
+void PlaylistWidget::setFirstVisibleColumn (int col)
+{
+    inUpdate = true;
+    firstVisibleColumn = col;
+
+    // make sure current and selected indexes point to a visible column
+    updateSelection (0, 0);
+
+    inUpdate = false;
 }
 
 void PlaylistWidget::moveFocus (int distance)

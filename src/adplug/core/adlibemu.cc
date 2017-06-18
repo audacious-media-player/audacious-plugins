@@ -105,25 +105,9 @@ static float *rptr[9], *nrptr[9];
 static float rbuf[9][FIFOSIZ*2];
 static float snd[FIFOSIZ*2];
 
-#ifndef USING_ASM
-#define _inline
-#endif
-
-#ifdef USING_ASM
-static _inline void ftol (float f, long *a)
-{
-    _asm
-        {
-            mov eax, a
-                fld f
-                fistp dword ptr [eax]
-                }
-}
-#else
 static void ftol(float f, long *a) {
     *a=f;
 }
-#endif
 
 #define ctc ((celltype *)c)      //A rare attempt to make code easier to read!
 void docell4 (void *c, float modulator) { }
@@ -382,42 +366,6 @@ void adlib0 (long i, long v)
     //outdata(i,v);
 }
 
-#ifdef USING_ASM
-static long fpuasm;
-static float fakeadd = 8388608.0+128.0;
-static _inline void clipit8 (float f, long a)
-{
-    _asm
-        {
-            mov edi, a
-                fld dword ptr f
-                fadd dword ptr fakeadd
-                fstp dword ptr fpuasm
-                mov eax, fpuasm
-                test eax, 0x007fff00
-                jz short skipit
-                shr eax, 16
-                xor eax, -1
-                skipit: mov byte ptr [edi], al
-                }
-}
-
-static _inline void clipit16 (float f, long a)
-{
-    _asm
-        {
-            mov eax, a
-                fld dword ptr f
-                fist word ptr [eax]
-                cmp word ptr [eax], 0x8000
-                jne short skipit2
-                fst dword ptr [fpuasm]
-                cmp fpuasm, 0x80000000
-                sbb word ptr [eax], 0
-                skipit2: fstp st
-                }
-}
-#else
 static void clipit8(float f,unsigned char *a) {
     f/=256.0;
     f+=128.0;
@@ -431,7 +379,6 @@ static void clipit16(float f,short *a) {
     else if (f<-32767.5) *a=-32768;
     else *a=f;
 }
-#endif
 
 void adlibsetvolume(int i) {
     AMPSCALE=i;

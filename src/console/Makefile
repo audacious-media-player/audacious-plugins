@@ -61,6 +61,6 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 LD = ${CXX}
 
 CFLAGS += ${PLUGIN_CFLAGS}
-CXXFLAGS += ${PLUGIN_CFLAGS}
+CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-shift-negative-value
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..
 LIBS += -lz

@@ -9,6 +9,7 @@ SRCS = actions.cc \
        equalizer.cc \
        hslider.cc \
        main.cc \
+       menu-ops.cc \
        menurow.cc \
        menus.cc \
        monostereo.cc \

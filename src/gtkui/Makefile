@@ -2,6 +2,7 @@ PLUGIN = gtkui${PLUGIN_SUFFIX}
 
 SRCS = columns.cc \
        layout.cc \
+       menu-ops.cc \
        menus.cc \
        ui_infoarea.cc \
        ui_gtk.cc \

@@ -134,6 +134,7 @@ static void format_time (char buf[7], int time, int length)
     if (remaining && length > 0)
     {
         time = (length - time) / 1000;
+        time = aud::clamp(0, time, 359999); // 99:59:59
 
         if (time < 60)
             snprintf (buf, 7, zero ? "-00:%02d" : " -0:%02d", time);
@@ -145,6 +146,7 @@ static void format_time (char buf[7], int time, int length)
     else
     {
         time /= 1000;
+        time = aud::clamp(0, time, 3599999); // 999:59:59
 
         if (time < 6000)
             snprintf (buf, 7, zero ? " %02d:%02d" : " %2d:%02d", time / 60, time % 60);

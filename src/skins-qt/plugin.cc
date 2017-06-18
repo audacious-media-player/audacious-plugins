@@ -44,10 +44,6 @@
 #include "window.h"
 #include "view.h"
 
-#include "../ui-common/dialogs-qt.cc"
-#include "../ui-common/menu-ops.cc"
-#include "../ui-common/menu-ops-qt.cc"
-
 class QtSkins : public audqt::QtIfacePlugin
 {
 public:

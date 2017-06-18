@@ -60,6 +60,7 @@ public:
     constexpr SearchToolQt () : GeneralPlugin (info, false) {}
 
     void * get_qt_widget ();
+    int take_message (const char * code, const void *, int);
 };
 
 EXPORT SearchToolQt aud_plugin_instance;
@@ -139,32 +140,33 @@ protected:
 static StringBuf create_item_label (int row);
 
 static Playlist s_playlist;
-static Index<String> search_terms;
+static Index<String> s_search_terms;
 
 /* Note: added_table is accessed by multiple threads.
  * When adding = true, it may only be accessed by the playlist add thread.
  * When adding = false, it may only be accessed by the UI thread.
  * adding may only be set by the UI thread while holding adding_lock. */
-static TinyLock adding_lock;
-static bool adding = false;
-static SimpleHash<String, bool> added_table;
+static TinyLock s_adding_lock;
+static bool s_adding = false;
+static SimpleHash<String, bool> s_added_table;
 
-static SimpleHash<Key, Item> database;
-static bool database_valid;
-static Index<const Item *> items;
-static int hidden_items;
+static SimpleHash<Key, Item> s_database;
+static bool s_database_valid;
+static Index<const Item *> s_items;
+static int s_hidden_items;
 
-static QueuedFunc search_timer;
-static bool search_pending;
+static QueuedFunc s_search_timer;
+static bool s_search_pending;
 
-static ResultsModel model;
-static QLabel * help_label, * wait_label, * stats_label;
-static QTreeView * results_list;
-static QMenu * menu;
+static ResultsModel s_model;
+static QLabel * s_help_label, * s_wait_label, * s_stats_label;
+static QLineEdit * s_search_entry;
+static QTreeView * s_results_list;
+static QMenu * s_menu;
 
 void ResultsModel::update ()
 {
-    int rows = items.len ();
+    int rows = s_items.len ();
     int keep = aud::min (rows, m_rows);
 
     if (rows < m_rows)
@@ -252,10 +254,10 @@ static String get_uri ()
 
 static void destroy_database ()
 {
-    items.clear ();
-    hidden_items = 0;
-    database.clear ();
-    database_valid = false;
+    s_items.clear ();
+    s_hidden_items = 0;
+    s_database.clear ();
+    s_database_valid = false;
 }
 
 static void create_database ()
@@ -275,7 +277,7 @@ static void create_database ()
         fields[SearchField::Title] = tuple.get_str (Tuple::Title);
 
         Item * parent = nullptr;
-        SimpleHash<Key, Item> * hash = & database;
+        SimpleHash<Key, Item> * hash = & s_database;
 
         for (auto f : aud::range<SearchField> ())
         {
@@ -299,14 +301,14 @@ static void create_database ()
         }
     }
 
-    database_valid = true;
+    s_database_valid = true;
 }
 
 static void search_recurse (SimpleHash<Key, Item> & domain, int mask, Index<const Item *> & results)
 {
     domain.iterate ([mask, & results] (const Key & key, Item & item)
     {
-        int count = search_terms.len ();
+        int count = s_search_terms.len ();
         int new_mask = mask;
 
         for (int t = 0, bit = 1; t < count; t ++, bit <<= 1)
@@ -314,7 +316,7 @@ static void search_recurse (SimpleHash<Key, Item> & domain, int mask, Index<cons
             if (! (new_mask & bit))
                 continue; /* skip term if it is already found */
 
-            if (strstr (item.folded, search_terms[t]))
+            if (strstr (item.folded, s_search_terms[t]))
                 new_mask &= ~bit; /* we found it */
             else if (! item.children.n_items ())
                 break; /* quit early if there are no children to search */
@@ -357,51 +359,51 @@ static int item_compare_pass1 (const Item * const & a, const Item * const & b)
 
 static void do_search ()
 {
-    items.clear ();
-    hidden_items = 0;
+    s_items.clear ();
+    s_hidden_items = 0;
 
-    if (! database_valid)
+    if (! s_database_valid)
         return;
 
     /* effectively limits number of search terms to 32 */
-    search_recurse (database, (1 << search_terms.len ()) - 1, items);
+    search_recurse (s_database, (1 << s_search_terms.len ()) - 1, s_items);
 
     /* first sort by number of songs per item */
-    items.sort (item_compare_pass1);
+    s_items.sort (item_compare_pass1);
 
     /* limit to items with most songs */
-    if (items.len () > MAX_RESULTS)
+    if (s_items.len () > MAX_RESULTS)
     {
-        hidden_items = items.len () - MAX_RESULTS;
-        items.remove (MAX_RESULTS, -1);
+        s_hidden_items = s_items.len () - MAX_RESULTS;
+        s_items.remove (MAX_RESULTS, -1);
     }
 
     /* sort by item type, then item name */
-    items.sort (item_compare);
+    s_items.sort (item_compare);
 }
 
 static bool filter_cb (const char * filename, void * unused)
 {
     bool add = false;
-    tiny_lock (& adding_lock);
+    tiny_lock (& s_adding_lock);
 
-    if (adding)
+    if (s_adding)
     {
-        bool * added = added_table.lookup (String (filename));
+        bool * added = s_added_table.lookup (String (filename));
 
         if ((add = ! added))
-            added_table.add (String (filename), true);
+            s_added_table.add (String (filename), true);
         else
             (* added) = true;
     }
 
-    tiny_unlock (& adding_lock);
+    tiny_unlock (& s_adding_lock);
     return add;
 }
 
 static void begin_add (const char * uri)
 {
-    if (adding)
+    if (s_adding)
         return;
 
     if (! check_playlist (false, false))
@@ -411,7 +413,7 @@ static void begin_add (const char * uri)
     StringBuf path = uri_to_filename (uri);
     aud_set_str ("search-tool", "path", path ? path : uri);
 
-    added_table.clear ();
+    s_added_table.clear ();
 
     int entries = s_playlist.n_entries ();
 
@@ -419,10 +421,10 @@ static void begin_add (const char * uri)
     {
         String filename = s_playlist.entry_filename (entry);
 
-        if (! added_table.lookup (filename))
+        if (! s_added_table.lookup (filename))
         {
             s_playlist.select_entry (entry, false);
-            added_table.add (filename, false);
+            s_added_table.add (filename, false);
         }
         else
             s_playlist.select_entry (entry, true);
@@ -430,9 +432,9 @@ static void begin_add (const char * uri)
 
     s_playlist.remove_selected ();
 
-    tiny_lock (& adding_lock);
-    adding = true;
-    tiny_unlock (& adding_lock);
+    tiny_lock (& s_adding_lock);
+    s_adding = true;
+    tiny_unlock (& s_adding_lock);
 
     Index<PlaylistAddItem> add;
     add.append (String (uri));
@@ -443,26 +445,26 @@ static void show_hide_widgets ()
 {
     if (s_playlist == Playlist ())
     {
-        wait_label->hide ();
-        results_list->hide ();
-        stats_label->hide ();
-        help_label->show ();
+        s_wait_label->hide ();
+        s_results_list->hide ();
+        s_stats_label->hide ();
+        s_help_label->show ();
     }
     else
     {
-        help_label->hide ();
+        s_help_label->hide ();
 
-        if (database_valid)
+        if (s_database_valid)
         {
-            wait_label->hide ();
-            results_list->show ();
-            stats_label->show ();
+            s_wait_label->hide ();
+            s_results_list->show ();
+            s_stats_label->show ();
         }
         else
         {
-            results_list->hide ();
-            stats_label->hide ();
-            wait_label->show ();
+            s_results_list->hide ();
+            s_stats_label->hide ();
+            s_wait_label->show ();
         }
     }
 }
@@ -471,26 +473,26 @@ static void search_timeout (void * = nullptr)
 {
     do_search ();
 
-    model.update ();
+    s_model.update ();
 
-    if (items.len ())
+    if (s_items.len ())
     {
-        auto sel = results_list->selectionModel ();
-        sel->select (model.index (0, 0), sel->Clear | sel->SelectCurrent);
+        auto sel = s_results_list->selectionModel ();
+        sel->select (s_model.index (0, 0), sel->Clear | sel->SelectCurrent);
     }
 
-    int total = items.len () + hidden_items;
+    int total = s_items.len () + s_hidden_items;
 
-    if (hidden_items)
-        stats_label->setText ((const char *)
+    if (s_hidden_items)
+        s_stats_label->setText ((const char *)
          str_printf (dngettext (PACKAGE, "%d of %d result shown",
-         "%d of %d results shown", total), items.len (), total));
+         "%d of %d results shown", total), s_items.len (), total));
     else
-        stats_label->setText ((const char *)
+        s_stats_label->setText ((const char *)
          str_printf (dngettext (PACKAGE, "%d result", "%d results", total), total));
 
-    search_timer.stop ();
-    search_pending = false;
+    s_search_timer.stop ();
+    s_search_pending = false;
 }
 
 static void update_database ()
@@ -503,8 +505,8 @@ static void update_database ()
     else
     {
         destroy_database ();
-        model.update ();
-        stats_label->clear ();
+        s_model.update ();
+        s_stats_label->clear ();
     }
 
     show_hide_widgets ();
@@ -515,23 +517,23 @@ static void add_complete_cb (void *, void *)
     if (! check_playlist (true, false))
         return;
 
-    if (adding)
+    if (s_adding)
     {
-        tiny_lock (& adding_lock);
-        adding = false;
-        tiny_unlock (& adding_lock);
+        tiny_lock (& s_adding_lock);
+        s_adding = false;
+        tiny_unlock (& s_adding_lock);
 
         int entries = s_playlist.n_entries ();
 
         for (int entry = 0; entry < entries; entry ++)
         {
             String filename = s_playlist.entry_filename (entry);
-            bool * added = added_table.lookup (filename);
+            bool * added = s_added_table.lookup (filename);
 
             s_playlist.select_entry (entry, ! added || ! (* added));
         }
 
-        added_table.clear ();
+        s_added_table.clear ();
 
         /* don't clear the playlist if nothing was added */
         if (s_playlist.n_selected () < entries)
@@ -542,7 +544,7 @@ static void add_complete_cb (void *, void *)
         s_playlist.sort_entries (Playlist::Path);
     }
 
-    if (! database_valid && ! s_playlist.update_pending ())
+    if (! s_database_valid && ! s_playlist.update_pending ())
         update_database ();
 }
 
@@ -551,13 +553,13 @@ static void scan_complete_cb (void *, void *)
     if (! check_playlist (true, true))
         return;
 
-    if (! database_valid && ! s_playlist.update_pending ())
+    if (! s_database_valid && ! s_playlist.update_pending ())
         update_database ();
 }
 
 static void playlist_update_cb (void *, void *)
 {
-    if (! database_valid || ! check_playlist (true, true) ||
+    if (! s_database_valid || ! check_playlist (true, true) ||
         s_playlist.update_detail ().level >= Playlist::Metadata)
     {
         update_database ();
@@ -581,41 +583,45 @@ static void search_cleanup ()
     hook_dissociate ("playlist scan complete", scan_complete_cb);
     hook_dissociate ("playlist update", playlist_update_cb);
 
-    search_timer.stop ();
-    search_pending = false;
+    s_search_timer.stop ();
+    s_search_pending = false;
 
-    search_terms.clear ();
-    items.clear ();
+    s_search_terms.clear ();
+    s_items.clear ();
 
-    tiny_lock (& adding_lock);
-    adding = false;
-    tiny_unlock (& adding_lock);
+    tiny_lock (& s_adding_lock);
+    s_adding = false;
+    tiny_unlock (& s_adding_lock);
 
-    added_table.clear ();
+    s_added_table.clear ();
     destroy_database ();
 
-    delete menu;
-    menu = nullptr;
+    s_help_label = s_wait_label = s_stats_label = nullptr;
+    s_search_entry = nullptr;
+    s_results_list = nullptr;
+
+    delete s_menu;
+    s_menu = nullptr;
 }
 
 static void do_add (bool play, bool set_title)
 {
-    if (search_pending)
+    if (s_search_pending)
         search_timeout ();
 
-    int n_items = items.len ();
+    int n_items = s_items.len ();
     int n_selected = 0;
 
     Index<PlaylistAddItem> add;
     String title;
 
-    for (auto & idx : results_list->selectionModel ()->selectedRows ())
+    for (auto & idx : s_results_list->selectionModel ()->selectedRows ())
     {
         int i = idx.row ();
         if (i < 0 || i >= n_items)
             continue;
 
-        const Item * item = items[i];
+        const Item * item = s_items[i];
 
         for (int entry : item->matches)
         {
@@ -658,10 +664,10 @@ static void action_add_to_playlist ()
 
 static StringBuf create_item_label (int row)
 {
-    if (row < 0 || row >= items.len ())
+    if (row < 0 || row >= s_items.len ())
         return StringBuf ();
 
-    const Item * item = items[row];
+    const Item * item = s_items[row];
     StringBuf string = str_concat ({item->name, "\n"});
 
     if (item->field != SearchField::Title)
@@ -677,12 +683,14 @@ static StringBuf create_item_label (int row)
         string.insert (-1, _("of this genre"));
     }
 
-    while ((item = item->parent))
+    if (item->parent)
     {
+        auto parent = (item->parent->parent ? item->parent->parent : item->parent);
+
         string.insert (-1, " ");
-        string.insert (-1, (item->field == SearchField::Album) ? _("on") : _("by"));
+        string.insert (-1, (parent->field == SearchField::Album) ? _("on") : _("by"));
         string.insert (-1, " ");
-        string.insert (-1, item->name);
+        string.insert (-1, parent->name);
     }
 
     return string;
@@ -696,15 +704,15 @@ void ResultsView::contextMenuEvent (QContextMenuEvent * event)
         audqt::MenuCommand ({N_("_Add to Playlist"), "list-add"}, action_add_to_playlist)
     };
 
-    if (! menu)
-        menu = audqt::menu_build ({items});
+    if (! s_menu)
+        s_menu = audqt::menu_build ({items});
 
-    menu->popup (event->globalPos ());
+    s_menu->popup (event->globalPos ());
 }
 
 QMimeData * ResultsModel::mimeData (const QModelIndexList & indexes) const
 {
-    if (search_pending)
+    if (s_search_pending)
         search_timeout ();
 
     s_playlist.select_all (false);
@@ -713,10 +721,10 @@ QMimeData * ResultsModel::mimeData (const QModelIndexList & indexes) const
     for (auto & index : indexes)
     {
         int row = index.row ();
-        if (row < 0 || row >= items.len ())
+        if (row < 0 || row >= s_items.len ())
             continue;
 
-        for (int entry : items[row]->matches)
+        for (int entry : s_items[row]->matches)
         {
             urls.append (QString (s_playlist.entry_filename (entry)));
             s_playlist.select_entry (entry, true);
@@ -732,32 +740,32 @@ QMimeData * ResultsModel::mimeData (const QModelIndexList & indexes) const
 
 void * SearchToolQt::get_qt_widget ()
 {
-    auto entry = new QLineEdit;
-    entry->setContentsMargins (audqt::margins.TwoPt);
-    entry->setClearButtonEnabled (true);
-    entry->setPlaceholderText (_("Search library"));
+    s_search_entry = new QLineEdit;
+    s_search_entry->setContentsMargins (audqt::margins.TwoPt);
+    s_search_entry->setClearButtonEnabled (true);
+    s_search_entry->setPlaceholderText (_("Search library"));
 
-    help_label = new QLabel (_("To import your music library into Audacious, "
+    s_help_label = new QLabel (_("To import your music library into Audacious, "
      "choose a folder and then click the \"refresh\" icon."));
-    help_label->setAlignment (Qt::AlignCenter);
-    help_label->setContentsMargins (audqt::margins.EightPt);
-    help_label->setWordWrap (true);
+    s_help_label->setAlignment (Qt::AlignCenter);
+    s_help_label->setContentsMargins (audqt::margins.EightPt);
+    s_help_label->setWordWrap (true);
 
-    wait_label = new QLabel (_("Please wait ..."));
-    wait_label->setAlignment (Qt::AlignCenter);
-    wait_label->setContentsMargins (audqt::margins.EightPt);
+    s_wait_label = new QLabel (_("Please wait ..."));
+    s_wait_label->setAlignment (Qt::AlignCenter);
+    s_wait_label->setContentsMargins (audqt::margins.EightPt);
 
-    results_list = new ResultsView;
-    results_list->setFrameStyle (QFrame::NoFrame);
-    results_list->setHeaderHidden (true);
-    results_list->setIndentation (0);
-    results_list->setModel (& model);
-    results_list->setSelectionMode (QTreeView::ExtendedSelection);
-    results_list->setDragDropMode (QTreeView::DragOnly);
+    s_results_list = new ResultsView;
+    s_results_list->setFrameStyle (QFrame::NoFrame);
+    s_results_list->setHeaderHidden (true);
+    s_results_list->setIndentation (0);
+    s_results_list->setModel (& s_model);
+    s_results_list->setSelectionMode (QTreeView::ExtendedSelection);
+    s_results_list->setDragDropMode (QTreeView::DragOnly);
 
-    stats_label = new QLabel;
-    stats_label->setAlignment (Qt::AlignCenter);
-    stats_label->setContentsMargins (audqt::margins.TwoPt);
+    s_stats_label = new QLabel;
+    s_stats_label->setAlignment (Qt::AlignCenter);
+    s_stats_label->setContentsMargins (audqt::margins.TwoPt);
 
     auto chooser = new QLineEdit;
 
@@ -774,11 +782,11 @@ void * SearchToolQt::get_qt_widget ()
     auto widget = new QWidget;
     auto vbox = audqt::make_vbox (widget, 0);
 
-    vbox->addWidget (entry);
-    vbox->addWidget (help_label);
-    vbox->addWidget (wait_label);
-    vbox->addWidget (results_list);
-    vbox->addWidget (stats_label);
+    vbox->addWidget (s_search_entry);
+    vbox->addWidget (s_help_label);
+    vbox->addWidget (s_wait_label);
+    vbox->addWidget (s_results_list);
+    vbox->addWidget (s_stats_label);
     vbox->addLayout (hbox);
 
     String uri = get_uri ();
@@ -788,14 +796,14 @@ void * SearchToolQt::get_qt_widget ()
     search_init ();
 
     QObject::connect (widget, & QObject::destroyed, search_cleanup);
-    QObject::connect (entry, & QLineEdit::returnPressed, action_play);
-    QObject::connect (results_list, & QTreeView::doubleClicked, action_play);
+    QObject::connect (s_search_entry, & QLineEdit::returnPressed, action_play);
+    QObject::connect (s_results_list, & QTreeView::doubleClicked, action_play);
 
-    QObject::connect (entry, & QLineEdit::textEdited, [] (const QString & text)
+    QObject::connect (s_search_entry, & QLineEdit::textEdited, [] (const QString & text)
     {
-        search_terms = str_list_to_index (str_tolower_utf8 (text.toUtf8 ()), " ");
-        search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
-        search_pending = true;
+        s_search_terms = str_list_to_index (str_tolower_utf8 (text.toUtf8 ()), " ");
+        s_search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
+        s_search_pending = true;
     });
 
     QObject::connect (chooser, & QLineEdit::textEdited, [button] (const QString & text)
@@ -814,4 +822,15 @@ void * SearchToolQt::get_qt_widget ()
     QObject::connect (button, & QPushButton::clicked, refresh);
 
     return widget;
+}
+
+int SearchToolQt::take_message (const char * code, const void *, int)
+{
+    if (! strcmp (code, "grab focus") && s_search_entry)
+    {
+        s_search_entry->setFocus (Qt::OtherFocusReason);
+        return 0;
+    }
+
+    return -1;
 }
