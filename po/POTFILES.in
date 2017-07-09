@@ -134,12 +134,12 @@ src/psf/psx.h
 src/pulse/pulse_audio.cc
 src/qtaudio/qtaudio.cc
 src/qtglspectrum/gl-spectrum.cc
-src/qtui/dialog_windows.cc
-src/qtui/filter_input.cc
 src/qtui/main_window.cc
 src/qtui/menus.cc
+src/qtui/playlist_header.cc
 src/qtui/playlist_model.cc
 src/qtui/qtui.cc
+src/qtui/search_bar.cc
 src/qtui/settings.cc
 src/qtui/status_bar.cc
 src/resample/resample.cc
@@ -181,6 +181,7 @@ src/statusicon-qt/statusicon.cc
 src/statusicon/statusicon.cc
 src/stereo_plugin/stereo.cc
 src/tonegen/tonegen.cc
+src/ui-common/dialogs-qt.cc
 src/voice_removal/voice_removal.cc
 src/vorbis/vorbis.cc
 src/vorbis/vorbis.h
