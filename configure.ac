@@ -465,7 +465,7 @@ ENABLE_PLUGIN_WITH_DEP(ampache,
     auto,
     GENERAL,
     AMPACHE,
-    ampache_browser_0)
+    ampache_browser_1)
 
 ENABLE_PLUGIN_WITH_DEP(qtaudio,
     QtMultimedia output,
