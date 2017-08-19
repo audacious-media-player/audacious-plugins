@@ -12,14 +12,14 @@
 #       Sang-Jin Hwang <accel@accellinux.org>, 1999
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2012
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2012
-# Seong-ho Cho <darkcircle.0426@gmail.com>, 2012-2015
+# Seong-ho Cho <darkcircle.0426@gmail.com>, 2012-2015,2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2017-07-09 23:42+0200\n"
-"PO-Revision-Date: 2017-06-07 18:53+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2017-08-19 19:26+0200\n"
+"PO-Revision-Date: 2017-08-06 16:01+0000\n"
+"Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/audacious/audacious/language/"
 "ko/)\n"
 "Language: ko\n"
@@ -270,7 +270,7 @@ msgstr ""
 
 #: src/alsa/config.cc:61
 msgid "(no description)"
-msgstr ""
+msgstr "(설명 없음)"
 
 #: src/alsa/config.cc:166
 msgid "Default PCM device"
@@ -378,7 +378,7 @@ msgstr "<b>신디사이저</b>"
 #: src/amidiplug/i_configure.cc:150 src/console/plugin.cc:45
 #: src/filewriter/filewriter.cc:474 src/sid/xs_config.cc:65
 msgid "Sample rate:"
-msgstr ""
+msgstr "샘플 주파수:"
 
 #: src/amidiplug/i_configure.cc:152 src/bs2b/plugin.cc:141
 #: src/console/plugin.cc:47 src/modplug/plugin_main.cc:81
@@ -1181,7 +1181,7 @@ msgstr "원본 디렉터리에 저장"
 
 #: src/filewriter/filewriter.cc:385
 msgid "Save into custom directory:"
-msgstr ""
+msgstr "개별 디렉터리에저 장:"
 
 #: src/filewriter/filewriter.cc:393
 msgid "Generate file name from:"
@@ -1209,103 +1209,103 @@ msgstr "자동"
 
 #: src/filewriter/filewriter.cc:411
 msgid "8000 Hz"
-msgstr ""
+msgstr "8000 Hz"
 
 #: src/filewriter/filewriter.cc:412
 msgid "11025 Hz"
-msgstr ""
+msgstr "11025 Hz"
 
 #: src/filewriter/filewriter.cc:413
 msgid "12000 Hz"
-msgstr ""
+msgstr "12000 Hz"
 
 #: src/filewriter/filewriter.cc:414
 msgid "16000 Hz"
-msgstr ""
+msgstr "16000 Hz"
 
 #: src/filewriter/filewriter.cc:415
 msgid "22050 Hz"
-msgstr ""
+msgstr "22050 Hz"
 
 #: src/filewriter/filewriter.cc:416
 msgid "24000 Hz"
-msgstr ""
+msgstr "24000 Hz"
 
 #: src/filewriter/filewriter.cc:417
 msgid "32000 Hz"
-msgstr ""
+msgstr "32000 Hz"
 
 #: src/filewriter/filewriter.cc:418
 msgid "44100 Hz"
-msgstr ""
+msgstr "44100 Hz"
 
 #: src/filewriter/filewriter.cc:419
 msgid "48000 Hz"
-msgstr ""
+msgstr "48000 Hz"
 
 #: src/filewriter/filewriter.cc:423
 msgid "8 kbps"
-msgstr ""
+msgstr "8 kbps"
 
 #: src/filewriter/filewriter.cc:424
 msgid "16 kbps"
-msgstr ""
+msgstr "16 kbps"
 
 #: src/filewriter/filewriter.cc:425
 msgid "32 kbps"
-msgstr ""
+msgstr "32 kbps"
 
 #: src/filewriter/filewriter.cc:426
 msgid "40 kbps"
-msgstr ""
+msgstr "40 kbps"
 
 #: src/filewriter/filewriter.cc:427
 msgid "48 kbps"
-msgstr ""
+msgstr "48 kbps"
 
 #: src/filewriter/filewriter.cc:428
 msgid "56 kbps"
-msgstr ""
+msgstr "56 kbps"
 
 #: src/filewriter/filewriter.cc:429
 msgid "64 kbps"
-msgstr ""
+msgstr "64 kbps"
 
 #: src/filewriter/filewriter.cc:430
 msgid "80 kbps"
-msgstr ""
+msgstr "80 kbps"
 
 #: src/filewriter/filewriter.cc:431
 msgid "96 kbps"
-msgstr ""
+msgstr "96 kbps"
 
 #: src/filewriter/filewriter.cc:432
 msgid "112 kbps"
-msgstr ""
+msgstr "112 kbps"
 
 #: src/filewriter/filewriter.cc:433
 msgid "128 kbps"
-msgstr ""
+msgstr "128 kbps"
 
 #: src/filewriter/filewriter.cc:434
 msgid "160 kbps"
-msgstr ""
+msgstr "160 kbps"
 
 #: src/filewriter/filewriter.cc:435
 msgid "192 kbps"
-msgstr ""
+msgstr "192 kbps"
 
 #: src/filewriter/filewriter.cc:436
 msgid "224 kbps"
-msgstr ""
+msgstr "224 kbps"
 
 #: src/filewriter/filewriter.cc:437
 msgid "256 kbps"
-msgstr ""
+msgstr "256 kbps"
 
 #: src/filewriter/filewriter.cc:438
 msgid "320 kbps"
-msgstr ""
+msgstr "320 kbps"
 
 #: src/filewriter/filewriter.cc:443
 msgid "Joint Stereo"
@@ -1331,7 +1331,7 @@ msgstr ""
 
 #: src/filewriter/filewriter.cc:471
 msgid "Algorithm quality:"
-msgstr ""
+msgstr "알고리즘 성능:"
 
 #: src/filewriter/filewriter.cc:477
 msgid "Bitrate:"
@@ -1343,7 +1343,7 @@ msgstr "압축율:"
 
 #: src/filewriter/filewriter.cc:491
 msgid "Audio mode:"
-msgstr ""
+msgstr "오디오 모드:"
 
 #: src/filewriter/filewriter.cc:494
 msgid "Enforce strict ISO compliance"
@@ -1363,15 +1363,15 @@ msgstr "형식:"
 
 #: src/filewriter/filewriter.cc:507
 msgid "Minimum bitrate:"
-msgstr ""
+msgstr "최소 비트 전송율:"
 
 #: src/filewriter/filewriter.cc:511
 msgid "Maximum bitrate:"
-msgstr ""
+msgstr "최대 비트 전송율:"
 
 #: src/filewriter/filewriter.cc:515
 msgid "Average bitrate:"
-msgstr ""
+msgstr "평균 비트 전송율:"
 
 #: src/filewriter/filewriter.cc:519
 msgid "VBR quality level:"
@@ -1679,7 +1679,7 @@ msgstr "뒤섞기(_H)"
 
 #: src/gtkui/menus.cc:100 src/qtui/menus.cc:92
 msgid "Shuffle by Albu_m"
-msgstr ""
+msgstr "앨범 단위로 임의 재생(_M)"
 
 #: src/gtkui/menus.cc:101 src/qtui/menus.cc:93
 msgid "N_o Playlist Advance"
@@ -1775,7 +1775,7 @@ msgstr "사용자 정의 제목순(_C)"
 #: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:116
 #: src/qtui/menus.cc:133
 msgid "By C_omment"
-msgstr ""
+msgstr "설명순(_O)"
 
 #: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:118
 #: src/qtui/menus.cc:135
@@ -1850,7 +1850,7 @@ msgstr "음량 작게(_D)"
 
 #: src/gtkui/menus.cc:177 src/qtui/menus.cc:165
 msgid "_Equalizer ..."
-msgstr ""
+msgstr "이퀄라이저(_E)..."
 
 #: src/gtkui/menus.cc:178 src/qtui/menus.cc:166
 msgid "E_ffects ..."
@@ -1858,11 +1858,11 @@ msgstr "효과(_F)..."
 
 #: src/gtkui/menus.cc:180
 msgid "_Record Stream"
-msgstr ""
+msgstr "녹음 스트림(_R)"
 
 #: src/gtkui/menus.cc:181
 msgid "Audio _Settings ..."
-msgstr ""
+msgstr "오디오 설정(_S)..."
 
 #: src/gtkui/menus.cc:185 src/qtui/menus.cc:173
 msgid "Show _Menu Bar"
@@ -1924,7 +1924,7 @@ msgstr "음악 포함 폴더 열기(_O)"
 
 #: src/gtkui/menus.cc:209 src/qtui/menus.cc:202
 msgid "_Refresh Selected"
-msgstr ""
+msgstr "선택 영역 새로 고침(_R)"
 
 #: src/gtkui/menus.cc:211 src/qtui/menus.cc:204
 msgid "Cu_t"
@@ -1940,7 +1940,7 @@ msgstr "붙여넣기(_P)"
 
 #: src/gtkui/menus.cc:214 src/qtui/menus.cc:207
 msgid "Paste at _End"
-msgstr ""
+msgstr "마지막 부분에 붙여넣기(_E)"
 
 #: src/gtkui/menus.cc:215 src/qtui/menus.cc:208
 msgid "Select _All"
@@ -2022,7 +2022,7 @@ msgstr[0] "채널 %d개"
 #: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:165
 #, c-format
 msgid "%d kHz"
-msgstr ""
+msgstr "%d kHz"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:171
 #, c-format
@@ -2356,7 +2356,7 @@ msgstr "lyrics.wikia.com에 연결 중..."
 
 #: src/lyricwiki/lyricwiki.cc:351 src/lyricwiki-qt/lyricwiki.cc:413
 msgid "Edit lyrics ..."
-msgstr ""
+msgstr "가사 편집 ..."
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
@@ -2416,7 +2416,7 @@ msgstr "MMS 플러그인"
 
 #: src/mms/mms.cc:82
 msgid "Error connecting to MMS server"
-msgstr ""
+msgstr "MMS 서버 연결 오류"
 
 #: src/modplug/modplugbmp.h:57
 msgid "ModPlug (Module Player)"
@@ -2456,7 +2456,7 @@ msgstr "다중 페이스(최상)"
 
 #: src/modplug/plugin_main.cc:67
 msgid "<b>Sample rate</b>"
-msgstr ""
+msgstr "<b>샘플링 주파수</b>"
 
 #: src/modplug/plugin_main.cc:68
 msgid "22 kHz"
@@ -2790,7 +2790,7 @@ msgstr "이 곡 다음 멈춤"
 #: src/qtui/main_window.cc:121 src/qtui/menus.cc:168 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:67
 msgid "Record Stream"
-msgstr ""
+msgstr "스트림 녹음"
 
 #: src/qtui/main_window.cc:127 src/skins/menus.cc:103 src/skins-qt/menus.cc:92
 msgid "Repeat"
@@ -2814,15 +2814,15 @@ msgstr "로그 감시기(_L)..."
 
 #: src/qtui/menus.cc:143
 msgid "_Find ..."
-msgstr ""
+msgstr "찾기(_F)..."
 
 #: src/qtui/menus.cc:169 src/skins/menus.cc:80 src/skins-qt/menus.cc:68
 msgid "Audio Settings ..."
-msgstr ""
+msgstr "오디오 설정..."
 
 #: src/qtui/playlist_header.cc:201
 msgid "Reset to Defaults"
-msgstr ""
+msgstr "기본 값으로 재설정"
 
 #: src/qtui/playlist_model.cc:32
 msgid "Now Playing"
@@ -2830,7 +2830,7 @@ msgstr "재생 중"
 
 #: src/qtui/playlist_model.cc:33
 msgid "Entry Number"
-msgstr ""
+msgstr "항목 번호"
 
 #: src/qtui/playlist_model.cc:38
 msgid "Album Artist"
@@ -2838,19 +2838,19 @@ msgstr "앨범 음악가"
 
 #: src/qtui/playlist_model.cc:41
 msgid "Queue Position"
-msgstr ""
+msgstr "큐 위치"
 
 #: src/qtui/playlist_model.cc:43
 msgid "File Path"
-msgstr ""
+msgstr "파일 경로"
 
 #: src/qtui/playlist_model.cc:44
 msgid "File Name"
-msgstr ""
+msgstr "파일 이름"
 
 #: src/qtui/playlist_model.cc:45
 msgid "Custom Title"
-msgstr ""
+msgstr "사용자 정의 제목"
 
 #: src/qtui/qtui.cc:39
 msgid "Qt Interface"
@@ -2858,7 +2858,7 @@ msgstr "Qt 인터페이스"
 
 #: src/qtui/search_bar.cc:47
 msgid "Search playlist"
-msgstr ""
+msgstr "재생 목록 검색"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -2954,7 +2954,7 @@ msgstr "192 kHz:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr ""
+msgstr "Last.fm 접근 가능 확인 중 ..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
@@ -2979,11 +2979,11 @@ msgstr ""
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "권한 확인"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "권한 거절"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
@@ -3186,7 +3186,7 @@ msgstr ""
 
 #: src/silence-removal/silence-removal.cc:68
 msgid "Threshold:"
-msgstr ""
+msgstr "임계치:"
 
 #: src/silence-removal/silence-removal.cc:70
 msgid "dB"
@@ -3254,11 +3254,11 @@ msgstr "오데이셔스 이퀄라이저"
 
 #: src/skins/main.cc:444
 msgid "Recording on"
-msgstr ""
+msgstr "녹음 켜기"
 
 #: src/skins/main.cc:446
 msgid "Recording off"
-msgstr ""
+msgstr "녹음 끄기"
 
 #: src/skins/main.cc:705 src/skins-qt/main.cc:655
 #, c-format
@@ -3307,7 +3307,7 @@ msgstr "두배 길이"
 
 #: src/skins/main.cc:847 src/skins-qt/main.cc:797
 msgid "Visualizations"
-msgstr ""
+msgstr "시각화"
 
 #: src/skins/menus.cc:74 src/skins-qt/menus.cc:62
 msgid "Volume Up"
@@ -3319,7 +3319,7 @@ msgstr "음량 작게"
 
 #: src/skins/menus.cc:77 src/skins-qt/menus.cc:65
 msgid "Effects ..."
-msgstr ""
+msgstr "효과..."
 
 #: src/skins/menus.cc:84 src/skins-qt/menus.cc:72
 msgid "Open Files ..."
@@ -3339,7 +3339,7 @@ msgstr "재생 목록"
 
 #: src/skins/menus.cc:90 src/skins-qt/menus.cc:79
 msgid "Output"
-msgstr ""
+msgstr "출력"
 
 #: src/skins/menus.cc:91 src/skins-qt/menus.cc:80
 msgid "View"
@@ -3937,7 +3937,7 @@ msgstr "곡 바꾸기"
 
 #: src/songchange/song_change.cc:268
 msgid "<b>Commands</b>"
-msgstr ""
+msgstr "<b>명령</b>"
 
 #: src/songchange/song_change.cc:270
 msgid "Command to run when starting a new song:"
@@ -4042,7 +4042,7 @@ msgstr ""
 
 #: src/speedpitch/speed-pitch.cc:254
 msgid "<b>Pitch</b>"
-msgstr ""
+msgstr "<b>피치</b>"
 
 #: src/statusicon-qt/statusicon.cc:43 src/statusicon/statusicon.cc:47
 msgid "Status Icon"
@@ -4162,7 +4162,7 @@ msgstr "동작중 ..."
 
 #: src/ui-common/dialogs-qt.cc:43
 msgid "Information"
-msgstr ""
+msgstr "wjdqh"
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
@@ -4213,7 +4213,7 @@ msgstr "Ogg Vorbis "
 #: src/vtx/info.cc:24
 #, c-format
 msgid "Details about %s"
-msgstr ""
+msgstr "%s 세부 정보"
 
 #: src/vtx/info.cc:26
 msgid ""
@@ -4282,7 +4282,7 @@ msgstr "2SF 디코더"
 
 #: src/xsf/plugin.cc:231
 msgid "<b>XSF Configuration</b>"
-msgstr ""
+msgstr "<b>XSF 설정</b>"
 
 #: src/xsf/plugin.cc:232
 msgid "Ignore length from file"

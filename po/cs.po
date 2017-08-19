@@ -7,7 +7,7 @@
 # Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004
 # fri, 2012-2013
 # Andy Andy <nd76er@gmail.com>, 2014
-# IAmNotImportant, 2016
+# IAmNotImportant, 2016-2017
 # Andy Andy <nd76er@gmail.com>, 2014-2015
 # fri, 2014
 # fri, 2012
@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2017-07-09 23:42+0200\n"
-"PO-Revision-Date: 2017-06-08 06:57+0000\n"
-"Last-Translator: Petr Šimáček <petr.simacek@gmail.com>\n"
+"POT-Creation-Date: 2017-08-19 19:26+0200\n"
+"PO-Revision-Date: 2017-08-03 11:12+0000\n"
+"Last-Translator: IAmNotImportant\n"
 "Language-Team: Czech (http://www.transifex.com/audacious/audacious/language/"
 "cs/)\n"
 "Language: cs\n"
@@ -4196,7 +4196,7 @@ msgstr "<b>Rychlost</b>"
 
 #: src/speedpitch/speed-pitch.cc:248
 msgid "Decouple from pitch"
-msgstr ""
+msgstr "Oddělit od výšek"
 
 #: src/speedpitch/speed-pitch.cc:250 src/speedpitch/speed-pitch.cc:258
 msgid "Multiplier:"
@@ -4204,7 +4204,7 @@ msgstr "Násobitel:"
 
 #: src/speedpitch/speed-pitch.cc:254
 msgid "<b>Pitch</b>"
-msgstr ""
+msgstr "<b>Výška</b>"
 
 #: src/statusicon-qt/statusicon.cc:43 src/statusicon/statusicon.cc:47
 msgid "Status Icon"

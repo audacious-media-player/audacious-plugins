@@ -4,8 +4,8 @@
 #
 # Translators:
 # Ivailo Monev <xakepa10@gmail.com>, 2014
-# Kiril Kirilov <cybercop_montana@abv.bg>, 2014-2015
-# Myselus, 2016
+# Kiril Kirilov <cybercop_montana@abv.bg>, 2014-2015,2017
+# Myselus, 2016-2017
 # Pandi3a <pandi3a@gmail.com>, 2012
 # Pandi3a <pandi3a@gmail.com>, 2012
 # Радослав Иванов <reckku@gmail.com>, 2013-2014
@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2017-07-09 23:42+0200\n"
-"PO-Revision-Date: 2017-06-07 18:53+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2017-08-19 19:26+0200\n"
+"PO-Revision-Date: 2017-08-10 07:24+0000\n"
+"Last-Translator: Myselus\n"
 "Language-Team: Bulgarian (http://www.transifex.com/audacious/audacious/"
 "language/bg/)\n"
 "Language: bg\n"
@@ -546,6 +546,11 @@ msgid ""
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 "License: GNU GPLv3"
 msgstr ""
+"Ampache браузър за Audacious\n"
+"http://ampache-browser.org/\n"
+"\n"
+"Авторски права (C) Róbert Čerňanský and John Lindgren\n"
+"Лиценз: GNU GPLv3"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -1874,7 +1879,7 @@ msgstr "По избрано з_аглавие"
 #: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:116
 #: src/qtui/menus.cc:133
 msgid "By C_omment"
-msgstr ""
+msgstr "По _коментар"
 
 #: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:118
 #: src/qtui/menus.cc:135
@@ -2947,7 +2952,7 @@ msgstr "Инспектор на от_чети..."
 
 #: src/qtui/menus.cc:143
 msgid "_Find ..."
-msgstr ""
+msgstr "_Намери ..."
 
 #: src/qtui/menus.cc:169 src/skins/menus.cc:80 src/skins-qt/menus.cc:68
 msgid "Audio Settings ..."
@@ -2955,7 +2960,7 @@ msgstr "Настройки на звук..."
 
 #: src/qtui/playlist_header.cc:201
 msgid "Reset to Defaults"
-msgstr ""
+msgstr "Възстановяване на началните настройки"
 
 #: src/qtui/playlist_model.cc:32
 msgid "Now Playing"
@@ -2963,7 +2968,7 @@ msgstr "Възпроизвежда се"
 
 #: src/qtui/playlist_model.cc:33
 msgid "Entry Number"
-msgstr ""
+msgstr "Номер по ред"
 
 #: src/qtui/playlist_model.cc:38
 msgid "Album Artist"
@@ -2971,19 +2976,19 @@ msgstr " Изпълнител на Албум"
 
 #: src/qtui/playlist_model.cc:41
 msgid "Queue Position"
-msgstr ""
+msgstr "Позиция на опашката"
 
 #: src/qtui/playlist_model.cc:43
 msgid "File Path"
-msgstr ""
+msgstr "Път до файла"
 
 #: src/qtui/playlist_model.cc:44
 msgid "File Name"
-msgstr ""
+msgstr "Име на файла"
 
 #: src/qtui/playlist_model.cc:45
 msgid "Custom Title"
-msgstr ""
+msgstr "Заглавие по подразбиране"
 
 #: src/qtui/qtui.cc:39
 msgid "Qt Interface"
@@ -2991,7 +2996,7 @@ msgstr "Qt Интерфейс"
 
 #: src/qtui/search_bar.cc:47
 msgid "Search playlist"
-msgstr ""
+msgstr "Търсене в списъка"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -3189,8 +3194,8 @@ msgstr "Библиотека"
 #, c-format
 msgid "%d of %d result shown"
 msgid_plural "%d of %d results shown"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d от %d резултат е показан"
+msgstr[1] "%d от %d резултати са показани"
 
 #: src/search-tool-qt/search-tool-qt.cc:492 src/search-tool/search-tool.cc:408
 #, c-format
@@ -3723,7 +3728,7 @@ msgstr "По избрано заглавие"
 #: src/skins/menus.cc:204 src/skins/menus.cc:219 src/skins-qt/menus.cc:198
 #: src/skins-qt/menus.cc:213
 msgid "By Comment"
-msgstr ""
+msgstr "По коментар"
 
 #: src/skins/menus.cc:223 src/skins-qt/menus.cc:217
 msgid "Randomize List"
@@ -4195,19 +4200,19 @@ msgstr "Скорост и нива"
 
 #: src/speedpitch/speed-pitch.cc:247
 msgid "<b>Speed</b>"
-msgstr ""
+msgstr "1"
 
 #: src/speedpitch/speed-pitch.cc:248
 msgid "Decouple from pitch"
-msgstr ""
+msgstr "Отделяне от нивото"
 
 #: src/speedpitch/speed-pitch.cc:250 src/speedpitch/speed-pitch.cc:258
 msgid "Multiplier:"
-msgstr ""
+msgstr "Мултипликатор:"
 
 #: src/speedpitch/speed-pitch.cc:254
 msgid "<b>Pitch</b>"
-msgstr ""
+msgstr "<b>Ниво</b>"
 
 #: src/statusicon-qt/statusicon.cc:43 src/statusicon/statusicon.cc:47
 msgid "Status Icon"
