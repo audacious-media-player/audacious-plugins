@@ -16,6 +16,7 @@
 # Marco Oliver Grunwald <m@mgrvnwald.com>, 2013
 # mkkot <marcin2006@gmail.com>, 2013-2014
 # Piotr Sokół <psokol.l10n@gmail.com>, 2012
+# Piotr Strębski <strebski@gmail.com>, 2017
 # Piotr Strębski <strebski@gmail.com>, 2014-2015
 # Szymon Weihs <sz.weihs@gmail.com>, 2011
 # Szymon Weihs <sz.weihs@gmail.com>, 2011-2012
@@ -25,9 +26,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2017-07-09 23:42+0200\n"
-"PO-Revision-Date: 2017-06-07 18:53+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2017-08-19 19:26+0200\n"
+"PO-Revision-Date: 2017-08-03 11:12+0000\n"
+"Last-Translator: Piotr Strębski <strebski@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/audacious/audacious/language/"
 "pl/)\n"
 "Language: pl\n"
@@ -2979,7 +2980,7 @@ msgstr "Ustawienia dźwięku..."
 
 #: src/qtui/playlist_header.cc:201
 msgid "Reset to Defaults"
-msgstr ""
+msgstr "Przywróć do domyślnych"
 
 #: src/qtui/playlist_model.cc:32
 msgid "Now Playing"
@@ -2999,11 +3000,11 @@ msgstr ""
 
 #: src/qtui/playlist_model.cc:43
 msgid "File Path"
-msgstr ""
+msgstr "Ścieżka pliku"
 
 #: src/qtui/playlist_model.cc:44
 msgid "File Name"
-msgstr ""
+msgstr "Nazwa pliku"
 
 #: src/qtui/playlist_model.cc:45
 msgid "Custom Title"
@@ -3015,7 +3016,7 @@ msgstr "Interfejs Qt"
 
 #: src/qtui/search_bar.cc:47
 msgid "Search playlist"
-msgstr ""
+msgstr "Wyszukaj listę odtwarzania"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"

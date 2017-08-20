@@ -9,6 +9,7 @@
 # F Marcelo O Amarante <marcelo.amarante@hotmail.com>, 2015
 # Fuad Saud <fuadksd@gmail.com>, 2012
 # mcnd2 <glauber_gf@hotmail.com>, 2012
+# Iuri Suzano <isuzano@netkings.cc>, 2017
 # John_Norum <john.norum4@gmail.com>, 2012
 # Jorgebadad <jorgebadad@gmail.com>, 2016
 # Bruno Bacelar <mail2buy8@gmail.com>, 2012
@@ -23,9 +24,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2017-07-09 23:42+0200\n"
-"PO-Revision-Date: 2017-06-07 18:53+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2017-08-19 19:26+0200\n"
+"PO-Revision-Date: 2017-08-03 11:12+0000\n"
+"Last-Translator: Iuri Suzano <isuzano@netkings.cc>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/audacious/"
 "audacious/language/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -2931,7 +2932,7 @@ msgstr ""
 
 #: src/qtui/playlist_model.cc:45
 msgid "Custom Title"
-msgstr ""
+msgstr "Título personalizado"
 
 #: src/qtui/qtui.cc:39
 msgid "Qt Interface"
@@ -3664,7 +3665,7 @@ msgstr "Por Título Personalizado"
 #: src/skins/menus.cc:204 src/skins/menus.cc:219 src/skins-qt/menus.cc:198
 #: src/skins-qt/menus.cc:213
 msgid "By Comment"
-msgstr ""
+msgstr "Por Comentário"
 
 #: src/skins/menus.cc:223 src/skins-qt/menus.cc:217
 msgid "Randomize List"

@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2017-07-09 23:42+0200\n"
-"PO-Revision-Date: 2017-06-08 19:35+0000\n"
+"POT-Creation-Date: 2017-08-19 19:26+0200\n"
+"PO-Revision-Date: 2017-08-03 11:12+0000\n"
 "Last-Translator: antiparvos <marcoslansgarza@gmail.com>\n"
 "Language-Team: Galician (http://www.transifex.com/audacious/audacious/"
 "language/gl/)\n"
@@ -3454,7 +3454,7 @@ msgstr "Caixa de información do ficheiro"
 #: src/skins/main.cc:844 src/skins/menus.cc:147 src/skins-qt/main.cc:794
 #: src/skins-qt/menus.cc:140
 msgid "Double Size"
-msgstr "Dobre tamaño"
+msgstr "Tamaño dobre"
 
 #: src/skins/main.cc:847 src/skins-qt/main.cc:797
 msgid "Visualizations"

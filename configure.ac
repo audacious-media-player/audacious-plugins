@@ -5,7 +5,7 @@ dnl ***
 dnl Initialize
 dnl ==========
 AC_PREREQ([2.59])
-AC_INIT([audacious-plugins], [3.9-beta1])
+AC_INIT([audacious-plugins], [3.9])
 AC_COPYRIGHT([Copyright (C) 2001-2017 Audacious developers and others])
 
 AC_DEFINE_UNQUOTED([PACKAGE], "$PACKAGE_NAME", [Name of package])
@@ -465,7 +465,7 @@ ENABLE_PLUGIN_WITH_DEP(ampache,
     auto,
     GENERAL,
     AMPACHE,
-    ampache_browser_0)
+    ampache_browser_1)
 
 ENABLE_PLUGIN_WITH_DEP(qtaudio,
     QtMultimedia output,

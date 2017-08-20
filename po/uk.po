@@ -18,15 +18,16 @@
 # Rustam Tsurik <rustam.tsurik@gmail.com>, 2013
 # Rustam Tsurik <rustam.tsurik@gmail.com>, 2013
 # Oleg <kvantarium@gmail.com>, 2012
+# Taras Shevchenko, 2017
 # Yuri Chornoivan <yurchor@ukr.net>, 2012
 # Олександр Сенін <aleniksenin@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2017-07-09 23:42+0200\n"
-"PO-Revision-Date: 2017-06-07 18:53+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2017-08-19 19:26+0200\n"
+"PO-Revision-Date: 2017-08-06 09:03+0000\n"
+"Last-Translator: Taras Shevchenko\n"
 "Language-Team: Ukrainian (http://www.transifex.com/audacious/audacious/"
 "language/uk/)\n"
 "Language: uk\n"
@@ -55,7 +56,7 @@ msgstr "Будильник"
 
 #: src/alarm/alarm.cc:782
 msgid "Set Alarm ..."
-msgstr "Встановити Будильник..."
+msgstr "Встановити будильник..."
 
 #: src/alarm/alarm.cc:810
 msgid ""
@@ -120,7 +121,7 @@ msgstr ""
 
 #: src/alarm/interface.cc:78
 msgid "This is your wakeup call."
-msgstr "Вставай, Україно! Вставай, рідна ненько! Москаль вже годину не спить!"
+msgstr "Ваш текст для піднімання."
 
 #: src/alarm/interface.cc:96
 msgid "Your reminder for today is..."
@@ -177,11 +178,11 @@ msgstr "Закінчити через:"
 
 #: src/alarm/interface.cc:204
 msgid "hours"
-msgstr "год"
+msgstr "годин"
 
 #: src/alarm/interface.cc:215
 msgid "minutes"
-msgstr "хв"
+msgstr "хвилин"
 
 #: src/alarm/interface.cc:224
 msgid "Choose the days for the alarm to come on"
@@ -208,7 +209,7 @@ msgstr "Наростання"
 #: src/gtkui/settings.cc:49 src/lirc/lirc.cc:395 src/qtui/settings.cc:69
 #: src/sid/xs_config.cc:85 src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
 msgid "seconds"
-msgstr "сек"
+msgstr "секунд"
 
 #: src/alarm/interface.cc:301 src/alarm/interface.cc:342
 msgid "Volume"
@@ -278,7 +279,7 @@ msgstr ""
 
 #: src/alsa/config.cc:61
 msgid "(no description)"
-msgstr ""
+msgstr "(опис відсутній)"
 
 #: src/alsa/config.cc:166
 msgid "Default PCM device"
@@ -326,6 +327,24 @@ msgid ""
 "Tony Vroon\n"
 "for the good help with alpha testing"
 msgstr ""
+"AMIDI-Plug\n"
+"modular MIDI music player\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"окрема подяка...\n"
+"\n"
+"Клеменсу Ладишу та Ярославові Киселі\n"
+"за їхні кульні програми aplaymidi та amixer;\n"
+"вони дійсно стали в нагоді\n"
+"\n"
+"Альфредові Спадафіні\n"
+"за найсовий лоґотип міді клавіатури\n"
+"\n"
+"Тоні Вруну\n"
+"за добру поміч в альфа-тестуванні"
 
 #: src/amidiplug/i_configure.cc:94
 msgid "Override default gain:"
@@ -365,11 +384,11 @@ msgstr "Зсув ударних: "
 
 #: src/amidiplug/i_configure.cc:134
 msgid "note numbers"
-msgstr ""
+msgstr "Примітки номерів"
 
 #: src/amidiplug/i_configure.cc:135
 msgid "Skip leading silence"
-msgstr ""
+msgstr "Пропустити тишу попереду"
 
 #: src/amidiplug/i_configure.cc:137
 msgid "Skip trailing silence"
@@ -386,7 +405,7 @@ msgstr "<b>Синтезатор</b>"
 #: src/amidiplug/i_configure.cc:150 src/console/plugin.cc:45
 #: src/filewriter/filewriter.cc:474 src/sid/xs_config.cc:65
 msgid "Sample rate:"
-msgstr ""
+msgstr "Висота семплів:"
 
 #: src/amidiplug/i_configure.cc:152 src/bs2b/plugin.cc:141
 #: src/console/plugin.cc:47 src/modplug/plugin_main.cc:81
@@ -478,7 +497,7 @@ msgstr "  (недійсний UTF-8)"
 
 #: src/ampache/ampache.cc:31
 msgid "Ampache Browser"
-msgstr ""
+msgstr "Переглядач Ampache"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -488,6 +507,11 @@ msgid ""
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 "License: GNU GPLv3"
 msgstr ""
+"Перглядач Ampache для Audacious\n"
+"http://ampache-browser.org/\n"
+"\n"
+"Копірайт (C) Роберт Чернянський та Джон Ліндґрен\n"
+"Ліцензія: GNU GPLv3"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -541,7 +565,7 @@ msgstr "Зміна назви"
 
 #: src/aosd/aosd_trigger.cc:56
 msgid "Triggers OSD when the song title changes (for internet streams)."
-msgstr ""
+msgstr "Триґерити OSD при зміні назви пісні (для інтернет плинів)."
 
 #: src/aosd/aosd_trigger.cc:61
 msgid "Pause On"
@@ -921,6 +945,8 @@ msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Dynamic Range Compression плаґін для Audacious\n"
+"Copyright 2010-2014 Джон Ліндґрен"
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
@@ -984,7 +1010,7 @@ msgstr "Декодер ігроконсольної музики"
 
 #: src/coreaudio/coreaudio.cc:50
 msgid "CoreAudio output"
-msgstr ""
+msgstr "Вихід CoreAudio"
 
 #: src/coreaudio/coreaudio.cc:131
 msgid ""
@@ -994,16 +1020,23 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"CoreAudio Output Plugin for Audacious\n"
+"Copyright 2014 Вільям Піткок\n"
+"\n"
+"Побудовано на SDL Output Plugin для Audacious\n"
+"Copyright 2010 Джон Ліндґрен"
 
 #: src/coreaudio/coreaudio.cc:143
 msgid "Use exclusive mode"
-msgstr ""
+msgstr "Користати винятковий режим"
 
 #: src/crossfade/crossfade.cc:43
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Плаґін Crossfade для Audacious\n"
+"Copyright 2010-2014 Джон Ліндґрен"
 
 #: src/crossfade/crossfade.cc:47
 msgid "<b>Crossfade</b>"
@@ -1011,7 +1044,7 @@ msgstr "<b>Перехресне затихання</b>"
 
 #: src/crossfade/crossfade.cc:48
 msgid "On automatic song change"
-msgstr ""
+msgstr "За автоматичною зміною пісень"
 
 #: src/crossfade/crossfade.cc:50 src/crossfade/crossfade.cc:56
 msgid "Overlap:"
@@ -1023,13 +1056,15 @@ msgstr ""
 
 #: src/crossfade/crossfade.cc:60
 msgid "<b>Tip</b>"
-msgstr ""
+msgstr "<b>Порада</b>"
 
 #: src/crossfade/crossfade.cc:61
 msgid ""
 "For better crossfading, enable\n"
 "the Silence Removal effect."
 msgstr ""
+"Для ліпшого перехідного затухання ввімкніть\n"
+"ефект усування тиші"
 
 #: src/crossfade/crossfade.cc:71
 msgid "Crossfade"
@@ -1111,6 +1146,10 @@ msgid ""
 "Surround echo by Carl van Schaik, 1999\n"
 "Updated for Audacious by William Pitcock and John Lindgren, 2010-2014"
 msgstr ""
+"Плаґін Echo \n"
+"Створено Джоан Левін, 1999\n"
+"Surround echo створено Карлом ван Шайком, 1999\n"
+"Оновлено для Audacious Вільямом Піткоком та Джоном Ліндґреном, 2010-2014"
 
 #: src/echo_plugin/echo.cc:21
 msgid "<b>Echo</b>"
@@ -1195,23 +1234,23 @@ msgstr "Зберегти до обраної теки:"
 
 #: src/filewriter/filewriter.cc:393
 msgid "Generate file name from:"
-msgstr ""
+msgstr "Створити назву назву фалу з:"
 
 #: src/filewriter/filewriter.cc:394
 msgid "Original file name"
-msgstr ""
+msgstr "Ориґінальна назва файлу"
 
 #: src/filewriter/filewriter.cc:397
 msgid "Original file name (no suffix)"
-msgstr ""
+msgstr "Ориґінальна назва файлу (без наростка)"
 
 #: src/filewriter/filewriter.cc:400
 msgid "Original file tag"
-msgstr ""
+msgstr "Ориґінальний теґ файлу"
 
 #: src/filewriter/filewriter.cc:404
 msgid "Prepend track number to file name"
-msgstr ""
+msgstr "Номер доріжки на початку назви файлу"
 
 #: src/filewriter/filewriter.cc:410 src/filewriter/filewriter.cc:442
 msgid "Auto"
@@ -1333,15 +1372,15 @@ msgstr "Моно"
 
 #: src/filewriter/filewriter.cc:449
 msgid "VBR"
-msgstr ""
+msgstr "VBR"
 
 #: src/filewriter/filewriter.cc:450
 msgid "ABR"
-msgstr ""
+msgstr "ABR"
 
 #: src/filewriter/filewriter.cc:471
 msgid "Algorithm quality:"
-msgstr ""
+msgstr "Алґоритм якості:"
 
 #: src/filewriter/filewriter.cc:477
 msgid "Bitrate:"
@@ -1373,15 +1412,15 @@ msgstr "Тип бітрейту:"
 
 #: src/filewriter/filewriter.cc:507
 msgid "Minimum bitrate:"
-msgstr ""
+msgstr "Найменша швидкість потоку:"
 
 #: src/filewriter/filewriter.cc:511
 msgid "Maximum bitrate:"
-msgstr ""
+msgstr "Найбільша швидкість потоку:"
 
 #: src/filewriter/filewriter.cc:515
 msgid "Average bitrate:"
-msgstr ""
+msgstr "Середня швидкість потоку:"
 
 #: src/filewriter/filewriter.cc:519
 msgid "VBR quality level:"
@@ -1393,11 +1432,11 @@ msgstr "Примусово встановити мінімальний бітр�
 
 #: src/filewriter/filewriter.cc:526
 msgid "Omit Xing VBR header"
-msgstr ""
+msgstr "Опустити заголовок Xing VBR"
 
 #: src/filewriter/filewriter.cc:532
 msgid "<b>Frame Headers</b>"
-msgstr ""
+msgstr "<b>Заголовки</b>"
 
 #: src/filewriter/filewriter.cc:533
 msgid "Mark as copyright"
@@ -1409,7 +1448,7 @@ msgstr "«Є оригіналом»"
 
 #: src/filewriter/filewriter.cc:537
 msgid "<b>ID3 Tags</b>"
-msgstr ""
+msgstr "<b>ID3 Теґи</b>"
 
 #: src/filewriter/filewriter.cc:538
 msgid "Force addition of version 2 tag"
@@ -1437,7 +1476,7 @@ msgstr "Теґи"
 
 #: src/filewriter/filewriter.cc:559
 msgid "Quality (0-1):"
-msgstr ""
+msgstr "Якість (0-1):"
 
 #: src/filewriter/filewriter.cc:566 src/skins-qt/skins_cfg.cc:304
 #: src/skins/skins_cfg.cc:285
@@ -1510,7 +1549,7 @@ msgstr "OpenGL аналізатор спектру"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:38
 msgid "GNOME Shortcuts"
-msgstr ""
+msgstr "Мініатюри GNOME"
 
 #: src/gnomeshortcuts/gnomeshortcuts.cc:54
 msgid ""
@@ -1519,6 +1558,10 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 msgstr ""
+"Плаґін мініатюр GNOME\n"
+"Дозволяє керувати програвачем з мініатюрами GNOME\n"
+"\n"
+"Copyright (C) 2007-2008 Саша Глюсяк <contact@saschahlusiak.de>"
 
 #: src/gtkui/columns.cc:35
 msgid "Entry number"
@@ -1727,7 +1770,7 @@ msgstr "За _назвою"
 
 #: src/gtkui/menus.cc:115 src/qtui/menus.cc:101
 msgid "By _File Name"
-msgstr ""
+msgstr "По _назві файлу"
 
 #: src/gtkui/menus.cc:116 src/qtui/menus.cc:102
 msgid "By File _Path"
@@ -1751,7 +1794,7 @@ msgstr "За а_льбомом"
 #: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:110
 #: src/qtui/menus.cc:127
 msgid "By Albu_m Artist"
-msgstr ""
+msgstr "По альбо_му виконавця"
 
 #: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:111
 #: src/qtui/menus.cc:128
@@ -1761,7 +1804,7 @@ msgstr "За _датою видання"
 #: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:112
 #: src/qtui/menus.cc:129
 msgid "By _Genre"
-msgstr ""
+msgstr "За _напрямком"
 
 #: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:113
 #: src/qtui/menus.cc:130
@@ -1781,7 +1824,7 @@ msgstr "За назвою _файлу"
 #: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:116
 #: src/qtui/menus.cc:133
 msgid "By C_omment"
-msgstr ""
+msgstr "По ко_ментарю"
 
 #: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:118
 #: src/qtui/menus.cc:135
@@ -1864,11 +1907,11 @@ msgstr "Е_фекти..."
 
 #: src/gtkui/menus.cc:180
 msgid "_Record Stream"
-msgstr ""
+msgstr "_записування потоку"
 
 #: src/gtkui/menus.cc:181
 msgid "Audio _Settings ..."
-msgstr ""
+msgstr "Звукові _налаштування ..."
 
 #: src/gtkui/menus.cc:185 src/qtui/menus.cc:173
 msgid "Show _Menu Bar"
@@ -1926,11 +1969,11 @@ msgstr "_Елемент черги"
 
 #: src/gtkui/menus.cc:208 src/qtui/menus.cc:201
 msgid "_Open Containing Folder"
-msgstr ""
+msgstr "_відкрити теку вмісту"
 
 #: src/gtkui/menus.cc:209 src/qtui/menus.cc:202
 msgid "_Refresh Selected"
-msgstr ""
+msgstr "_оновити обране"
 
 #: src/gtkui/menus.cc:211 src/qtui/menus.cc:204
 msgid "Cu_t"
@@ -1946,7 +1989,7 @@ msgstr "Вст_авити"
 
 #: src/gtkui/menus.cc:214 src/qtui/menus.cc:207
 msgid "Paste at _End"
-msgstr ""
+msgstr "Унести на _кінець"
 
 #: src/gtkui/menus.cc:215 src/qtui/menus.cc:208
 msgid "Select _All"
@@ -2368,7 +2411,7 @@ msgstr "З’єднуюся з lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.cc:351 src/lyricwiki-qt/lyricwiki.cc:413
 msgid "Edit lyrics ..."
-msgstr ""
+msgstr "Корегувати текст пісні ..."
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
@@ -2431,7 +2474,7 @@ msgstr "Плаґін MMS"
 
 #: src/mms/mms.cc:82
 msgid "Error connecting to MMS server"
-msgstr ""
+msgstr "Хиба підключення до MMS серверу"
 
 #: src/modplug/modplugbmp.h:57
 msgid "ModPlug (Module Player)"
@@ -2471,7 +2514,7 @@ msgstr "Поліфазний (найкращий)"
 
 #: src/modplug/plugin_main.cc:67
 msgid "<b>Sample rate</b>"
-msgstr ""
+msgstr "<b>Висота семплів</b>"
 
 #: src/modplug/plugin_main.cc:68
 msgid "22 kHz"
@@ -2540,7 +2583,7 @@ msgstr "Для безкінечного повторення, встановіт
 
 #: src/modplug/plugin_main.cc:128 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
-msgstr ""
+msgstr "Налаштування вступлять у дію після перезапуску."
 
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
@@ -2572,7 +2615,7 @@ msgstr ""
 
 #: src/neon/neon.cc:540
 msgid "Unknown HTTP error"
-msgstr ""
+msgstr "Невідома хиба HTTP "
 
 #: src/neon/neon.cc:574
 msgid "Error parsing URL"
@@ -2580,7 +2623,7 @@ msgstr ""
 
 #: src/neon/neon.cc:637
 msgid "Too many redirects"
-msgstr ""
+msgstr "Забагато перепосилань"
 
 #: src/notify/event.cc:97
 msgid "Stopped"
@@ -2641,7 +2684,7 @@ msgstr "Завжди показувати повідомлення"
 
 #: src/notify/notify.cc:106
 msgid "Include album name in notification"
-msgstr ""
+msgstr "Включати назву платівки у сповіщеннях"
 
 #: src/notify/osd.cc:59
 msgid "Show"
@@ -2663,11 +2706,11 @@ msgstr "OSS4-вивід"
 
 #: src/oss4/oss.h:77
 msgid "OSS3 Output"
-msgstr ""
+msgstr "Вихід OSS3"
 
 #: src/oss4/plugin.cc:35
 msgid "Default device"
-msgstr ""
+msgstr "Усталений пристрій"
 
 #: src/oss4/plugin.cc:78
 msgid "Audio device:"
@@ -2757,7 +2800,7 @@ msgstr ""
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
-msgstr ""
+msgstr "Вихід QtMultimedia"
 
 #: src/qtaudio/qtaudio.cc:72
 msgid ""
@@ -2783,7 +2826,7 @@ msgstr ""
 
 #: src/qtui/main_window.cc:109 src/skins/menus.cc:86
 msgid "Search Library"
-msgstr ""
+msgstr "Шукати бібліотеку"
 
 #: src/qtui/main_window.cc:110
 msgid "Open Files"
@@ -2804,7 +2847,7 @@ msgstr "Зупинити після цієї доріжки"
 #: src/qtui/main_window.cc:121 src/qtui/menus.cc:168 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:67
 msgid "Record Stream"
-msgstr ""
+msgstr "Записування потоку"
 
 #: src/qtui/main_window.cc:127 src/skins/menus.cc:103 src/skins-qt/menus.cc:92
 msgid "Repeat"
@@ -2816,27 +2859,27 @@ msgstr "Випадково"
 
 #: src/qtui/menus.cc:67
 msgid "_Open Folder ..."
-msgstr ""
+msgstr "_відкрити теку ..."
 
 #: src/qtui/menus.cc:70
 msgid "_Add Folder ..."
-msgstr ""
+msgstr "_додати теку ..."
 
 #: src/qtui/menus.cc:78
 msgid "_Log Inspector ..."
-msgstr ""
+msgstr "_перевіряльник лоґу ..."
 
 #: src/qtui/menus.cc:143
 msgid "_Find ..."
-msgstr ""
+msgstr "_знайти ..."
 
 #: src/qtui/menus.cc:169 src/skins/menus.cc:80 src/skins-qt/menus.cc:68
 msgid "Audio Settings ..."
-msgstr ""
+msgstr "Звукові налаштування ..."
 
 #: src/qtui/playlist_header.cc:201
 msgid "Reset to Defaults"
-msgstr ""
+msgstr "Скинути до всталених налаштувань"
 
 #: src/qtui/playlist_model.cc:32
 msgid "Now Playing"
@@ -2844,7 +2887,7 @@ msgstr "Зараз відтворюється"
 
 #: src/qtui/playlist_model.cc:33
 msgid "Entry Number"
-msgstr ""
+msgstr "Унести номер"
 
 #: src/qtui/playlist_model.cc:38
 msgid "Album Artist"
@@ -2852,27 +2895,27 @@ msgstr "Виконавець альбому"
 
 #: src/qtui/playlist_model.cc:41
 msgid "Queue Position"
-msgstr ""
+msgstr "Місце у черзі"
 
 #: src/qtui/playlist_model.cc:43
 msgid "File Path"
-msgstr ""
+msgstr "Тропа файлу"
 
 #: src/qtui/playlist_model.cc:44
 msgid "File Name"
-msgstr ""
+msgstr "Назва файлу"
 
 #: src/qtui/playlist_model.cc:45
 msgid "Custom Title"
-msgstr ""
+msgstr "Користувацько-налаштовна назва"
 
 #: src/qtui/qtui.cc:39
 msgid "Qt Interface"
-msgstr ""
+msgstr "Вигляд Qt"
 
 #: src/qtui/search_bar.cc:47
 msgid "Search playlist"
-msgstr ""
+msgstr "Шукати список відтворення"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -2968,40 +3011,47 @@ msgstr "192 кГц:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr ""
+msgstr "Перевірка доступу до Last.fm ..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
 msgstr ""
+"Прослуховування були збережені на комп'ютері. Вони будуть відіслані щойно "
+"Audacious дозволить доступ."
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr ""
+msgstr "Дозвіл надано. Скроблінґування для користувача %s."
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
+"Дозвіл відхилено. Відкрийте цю адресу сторінки у переглядачеві, дозвольте "
+"Audacious'осу доступ до вашої обліківки, а потім знову клацніть \"Перевірка "
+"дозволу\":"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr ""
+msgstr "Проблема зі зв'язком до Last.fm."
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "Перевірка дозволу"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "Вилучення дозволу"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
+"Ви маєте надати дозвіл Audacious'осові для скроблінґування стежок до "
+"обліківки Last.fm."
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
@@ -3063,37 +3113,37 @@ msgstr "Бібліотека"
 #, c-format
 msgid "%d of %d result shown"
 msgid_plural "%d of %d results shown"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Показано результатів %dз%d"
+msgstr[1] "Показано результатів %dз%d"
+msgstr[2] "Показано результатів %dз%d"
 
 #: src/search-tool-qt/search-tool-qt.cc:492 src/search-tool/search-tool.cc:408
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%dрезультат"
+msgstr[1] "%dрезультати"
+msgstr[2] "%dрезультатів"
 
 #: src/search-tool-qt/search-tool-qt.cc:676 src/search-tool/search-tool.cc:596
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%dпісня"
+msgstr[1] "%dпісні"
+msgstr[2] "%dпісень"
 
 #: src/search-tool-qt/search-tool-qt.cc:683 src/search-tool/search-tool.cc:603
 msgid "of this genre"
-msgstr ""
+msgstr "За напрямком"
 
 #: src/search-tool-qt/search-tool-qt.cc:691 src/search-tool/search-tool.cc:611
 msgid "on"
-msgstr ""
+msgstr "on"
 
 #: src/search-tool-qt/search-tool-qt.cc:691 src/search-tool/search-tool.cc:611
 msgid "by"
-msgstr ""
+msgstr "by"
 
 #: src/search-tool-qt/search-tool-qt.cc:703 src/search-tool/search-tool.cc:651
 msgid "_Create Playlist"
@@ -3129,85 +3179,87 @@ msgstr "Програвач SID"
 
 #: src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
-msgstr ""
+msgstr "<b>Вихід</b>"
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
-msgstr ""
+msgstr "Каналів:"
 
 #: src/sid/xs_config.cc:68
 msgid "<b>Emulation</b>"
-msgstr ""
+msgstr "<b>Емулювання</b>"
 
 #: src/sid/xs_config.cc:69
 msgid "Emulate MOS 8580 (default: MOS 6581)"
-msgstr ""
+msgstr "Емулювати MOS 8580 (усталено: MOS 6581)"
 
 #: src/sid/xs_config.cc:71
 msgid "Do not automatically select chip model"
-msgstr ""
+msgstr "Не обирати модель чипу автоматично"
 
 #: src/sid/xs_config.cc:73
 msgid "Emulate filter"
-msgstr ""
+msgstr "Емулювати фільтер"
 
 #: src/sid/xs_config.cc:75
 msgid "Clock speed:"
-msgstr ""
+msgstr "Швидкість годинника:"
 
 #: src/sid/xs_config.cc:78
 msgid "Do not automatically select clock speed"
-msgstr ""
+msgstr "Не обирати швидкість годинника автоматично"
 
 #: src/sid/xs_config.cc:80
 msgid "<b>Playback time</b>"
-msgstr ""
+msgstr "<b>Час програвання</b>"
 
 #: src/sid/xs_config.cc:81
 msgid "Set maximum playback time:"
-msgstr ""
+msgstr "Налаштувати найбільший час програвання:"
 
 #: src/sid/xs_config.cc:87
 msgid "Use only when song length is unknown"
-msgstr ""
+msgstr "Користати лише коли тривалість пісні не є відомою"
 
 #: src/sid/xs_config.cc:90
 msgid "Set minimum playback time:"
-msgstr ""
+msgstr "Налаштувати найменший час програвання:"
 
 #: src/sid/xs_config.cc:96
 msgid "<b>Subtunes</b>"
-msgstr ""
+msgstr "<b>Підмелодії</b>"
 
 #: src/sid/xs_config.cc:97
 msgid "Enable subtunes"
-msgstr ""
+msgstr "Увімкнути підмелодії"
 
 #: src/sid/xs_config.cc:99
 msgid "Ignore subtunes shorter than:"
-msgstr ""
+msgstr "Іґнорувати підмелодії коротші за:"
 
 #: src/sid/xs_config.cc:105
 msgid "<b>Note</b>"
-msgstr ""
+msgstr "<b>Примітка</b>"
 
 #: src/silence-removal/silence-removal.cc:39
 msgid "Silence Removal"
-msgstr ""
+msgstr "Усувач тиші"
 
 #: src/silence-removal/silence-removal.cc:58
 msgid ""
 "Silence Removal Plugin for Audacious\n"
 "Copyright 2014 John Lindgren"
 msgstr ""
+"Плаґін усунення тиші для Audacious\n"
+"Copyright 2014 Джон Ліндґрен"
 
 #: src/silence-removal/silence-removal.cc:67
 msgid "<b>Silence Removal</b>"
-msgstr ""
+msgstr "<b>Усувач тиші</b>"
 
 #: src/silence-removal/silence-removal.cc:68
 msgid "Threshold:"
-msgstr ""
+msgstr "Початок:"
 
 #: src/silence-removal/silence-removal.cc:70
 msgid "dB"
@@ -3275,11 +3327,11 @@ msgstr "Еквалайзер Audacious"
 
 #: src/skins/main.cc:444
 msgid "Recording on"
-msgstr ""
+msgstr "Увімкнути записування"
 
 #: src/skins/main.cc:446
 msgid "Recording off"
-msgstr ""
+msgstr "Вимкнути записування"
 
 #: src/skins/main.cc:705 src/skins-qt/main.cc:655
 #, c-format
@@ -3324,11 +3376,11 @@ msgstr "Редактор інформації про доріжку"
 #: src/skins/main.cc:844 src/skins/menus.cc:147 src/skins-qt/main.cc:794
 #: src/skins-qt/menus.cc:140
 msgid "Double Size"
-msgstr ""
+msgstr "Збільшити вдвічі"
 
 #: src/skins/main.cc:847 src/skins-qt/main.cc:797
 msgid "Visualizations"
-msgstr ""
+msgstr "Візерунки"
 
 #: src/skins/menus.cc:74 src/skins-qt/menus.cc:62
 msgid "Volume Up"
@@ -3340,7 +3392,7 @@ msgstr "Зменшити гучність"
 
 #: src/skins/menus.cc:77 src/skins-qt/menus.cc:65
 msgid "Effects ..."
-msgstr ""
+msgstr "Ефекти ..."
 
 #: src/skins/menus.cc:84 src/skins-qt/menus.cc:72
 msgid "Open Files ..."
@@ -3360,7 +3412,7 @@ msgstr "Список відтворення"
 
 #: src/skins/menus.cc:90 src/skins-qt/menus.cc:79
 msgid "Output"
-msgstr ""
+msgstr "Вихід"
 
 #: src/skins/menus.cc:91 src/skins-qt/menus.cc:80
 msgid "View"
@@ -3507,7 +3559,7 @@ msgstr "За назвою"
 #: src/skins-qt/menus.cc:163 src/skins-qt/menus.cc:195
 #: src/skins-qt/menus.cc:210
 msgid "By File Name"
-msgstr ""
+msgstr "По назві файлу"
 
 #: src/skins/menus.cc:168 src/skins/menus.cc:202 src/skins/menus.cc:217
 #: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:196
@@ -3583,22 +3635,22 @@ msgstr "За датою видання"
 #: src/skins/menus.cc:199 src/skins/menus.cc:213 src/skins-qt/menus.cc:193
 #: src/skins-qt/menus.cc:207
 msgid "By Genre"
-msgstr ""
+msgstr "По напрямку"
 
 #: src/skins/menus.cc:200 src/skins/menus.cc:215 src/skins-qt/menus.cc:194
 #: src/skins-qt/menus.cc:209
 msgid "By Length"
-msgstr ""
+msgstr "За часом"
 
 #: src/skins/menus.cc:203 src/skins/menus.cc:218 src/skins-qt/menus.cc:197
 #: src/skins-qt/menus.cc:212
 msgid "By Custom Title"
-msgstr ""
+msgstr "За налаштовною назвою"
 
 #: src/skins/menus.cc:204 src/skins/menus.cc:219 src/skins-qt/menus.cc:198
 #: src/skins-qt/menus.cc:213
 msgid "By Comment"
-msgstr ""
+msgstr "За коментарями"
 
 #: src/skins/menus.cc:223 src/skins-qt/menus.cc:217
 msgid "Randomize List"
@@ -3618,7 +3670,7 @@ msgstr "Сортувати список..."
 
 #: src/skins/menus.cc:232 src/skins-qt/menus.cc:226
 msgid "Open Containing Folder"
-msgstr ""
+msgstr "За текою вмісту"
 
 #: src/skins/menus.cc:234 src/skins-qt/menus.cc:228
 msgid "Cut"
@@ -3634,7 +3686,7 @@ msgstr "Вставити"
 
 #: src/skins/menus.cc:237 src/skins-qt/menus.cc:231
 msgid "Paste at End"
-msgstr ""
+msgstr "Унести у кінці"
 
 #: src/skins/menus.cc:239 src/skins-qt/menus.cc:233
 msgid "Queue/Unqueue"
@@ -3655,11 +3707,11 @@ msgstr "Класичний інтерфейс Winamp"
 
 #: src/skins-qt/menus.cc:73
 msgid "Open Folder ..."
-msgstr ""
+msgstr "Відкрити теку ..."
 
 #: src/skins-qt/menus.cc:157
 msgid "Add Folder ..."
-msgstr ""
+msgstr "Додати теку ..."
 
 #: src/skins-qt/skins_cfg.cc:197 src/skins/skins_cfg.cc:180
 msgid "Player:"
@@ -3854,19 +3906,19 @@ msgstr ""
 
 #: src/skins/search-select.cc:89
 msgid "Title:"
-msgstr ""
+msgstr "Назва:"
 
 #: src/skins/search-select.cc:95
 msgid "Album:"
-msgstr ""
+msgstr "Альбом:"
 
 #: src/skins/search-select.cc:101
 msgid "Artist:"
-msgstr ""
+msgstr "Виконавець:"
 
 #: src/skins/search-select.cc:107
 msgid "File Name:"
-msgstr ""
+msgstr "Назва файлу:"
 
 #: src/skins/search-select.cc:115
 msgid "Clear previous selection before searching"
@@ -3929,32 +3981,32 @@ msgstr ""
 
 #: src/sndio/sndio.cc:43
 msgid "Sndio Output"
-msgstr ""
+msgstr "Вихід Sndio"
 
 #: src/sndio/sndio.cc:98
 msgid "Device (blank for default):"
-msgstr ""
+msgstr "Пристрій (полиште для всталених налаштувань):"
 
 #: src/sndio/sndio.cc:100
 msgid "Save and restore volume:"
-msgstr ""
+msgstr "Зберегти та відновити гучність:"
 
 #: src/sndio/sndio.cc:181
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
-msgstr ""
+msgstr "Хиба sndio: звуковий формат не має підтримування (%d)"
 
 #: src/sndio/sndio.cc:192
 msgid "Sndio error: sio_open() failed"
-msgstr ""
+msgstr "Хиба sndio: невдача sio_open() "
 
 #: src/sndio/sndio.cc:221
 msgid "Sndio error: sio_setpar() failed"
-msgstr ""
+msgstr "Хиба sndio: невдача sio_setpar()"
 
 #: src/sndio/sndio.cc:233
 msgid "Sndio error: sio_start() failed"
-msgstr ""
+msgstr "Хиба sndio: невдача sio_start()"
 
 #: src/songchange/song_change.cc:33
 msgid "Song Change"
@@ -3962,11 +4014,11 @@ msgstr "Зміна доріжки"
 
 #: src/songchange/song_change.cc:268
 msgid "<b>Commands</b>"
-msgstr ""
+msgstr "<b>Накази</b>"
 
 #: src/songchange/song_change.cc:270
 msgid "Command to run when starting a new song:"
-msgstr ""
+msgstr "Наказати програвання за початком нової пісні:"
 
 #: src/songchange/song_change.cc:273
 msgid "Command to run at the end of a song:"
@@ -4055,7 +4107,7 @@ msgstr "Швидкість та висота"
 
 #: src/speedpitch/speed-pitch.cc:247
 msgid "<b>Speed</b>"
-msgstr ""
+msgstr "<b>Швидкість</b>"
 
 #: src/speedpitch/speed-pitch.cc:248
 msgid "Decouple from pitch"
@@ -4084,6 +4136,14 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
+"Status Icon Plugin (partial port for Qt interface)\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Міхав Ліпскі <tallica@o2.pl>\n"
+"Copyright 2015 Євген Паскевич <eugene@raptor.kiev.ua>\n"
+"\n"
+"Плаґін надає ікону стану, яка знаходиться у\n"
+"системній таці віндовс менеджера"
 
 #: src/statusicon-qt/statusicon.cc:77 src/statusicon/statusicon.cc:391
 msgid "Close to the system tray"
@@ -4237,7 +4297,7 @@ msgstr "Декодер Ogg Vorbis"
 #: src/vtx/info.cc:24
 #, c-format
 msgid "Details about %s"
-msgstr ""
+msgstr "Більше про %s"
 
 #: src/vtx/info.cc:26
 msgid ""
@@ -4271,13 +4331,15 @@ msgstr ""
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
-msgstr ""
+msgstr "Win32 waveOut"
 
 #: src/waveout/waveout.cc:69
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
 msgstr ""
+"Win32 waveOut плаґін для Audacious\n"
+"Copyright 2016 Джон Ліндґрен"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"
@@ -4307,11 +4369,11 @@ msgstr "Декодер 2SF"
 
 #: src/xsf/plugin.cc:231
 msgid "<b>XSF Configuration</b>"
-msgstr ""
+msgstr "<b>Конфіґурація XSF</b>"
 
 #: src/xsf/plugin.cc:232
 msgid "Ignore length from file"
-msgstr ""
+msgstr "Іґнорувати час програвання з файлу"
 
 #: src/xspf/xspf.cc:91
 msgid "XML Shareable Playlists (XSPF)"

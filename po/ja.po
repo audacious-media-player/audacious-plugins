@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# ABE Tsunehiko, 2015-2016
+# ABE Tsunehiko, 2015-2017
 # natird zoto <dritan86@gmail.com>, 2012
 # ABE Tsunehiko, 2013
 # ABE Tsunehiko, 2012
@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2017-07-09 23:42+0200\n"
-"PO-Revision-Date: 2017-06-07 18:53+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2017-08-19 19:26+0200\n"
+"PO-Revision-Date: 2017-08-03 11:12+0000\n"
+"Last-Translator: ABE Tsunehiko\n"
 "Language-Team: Japanese (http://www.transifex.com/audacious/audacious/"
 "language/ja/)\n"
 "Language: ja\n"
@@ -151,9 +151,9 @@ msgstr ""
 "mp3 または ogg ストリームの URL を\n"
 "指定することもできます。\n"
 "\n"
-"リマインダ:\n"
+"リマインダー:\n"
 "アラームが止まった時にリマインダを表示します。\n"
-"表示するには、入力フィールドにリマインダを入力し、\n"
+"表示するには、入力フィールドにリマインダーを入力し、\n"
 "チェックボックスを有効にしてください。"
 
 #: src/alarm/interface.cc:78
@@ -546,6 +546,11 @@ msgid ""
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 "License: GNU GPLv3"
 msgstr ""
+"Ampache Browser for Audacious\n"
+"http://ampache-browser.org/\n"
+"\n"
+"Copyright (C) Róbert Čerňanský and John Lindgren\n"
+"License: GNU GPLv3"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -1129,18 +1134,18 @@ msgstr "ファイルの削除"
 #: src/delete-files/delete-files.cc:86
 #, c-format
 msgid "Error moving %s to trash: %s."
-msgstr "%s をゴミ箱に移動中に次のエラーが発生しました。%s。"
+msgstr "%s をゴミ箱に移動中に次のエラーが発生しました: %s。"
 
 #: src/delete-files/delete-files.cc:97
 #, c-format
 msgid "Error deleting %s: %s."
-msgstr "%s の削除中に次のエラーが発生しました。%s。"
+msgstr "%s の削除中に次のエラーが発生しました: %s。"
 
 #: src/delete-files/delete-files.cc:128
 #, c-format
 msgid "Error deleting %s: not a local file."
 msgstr ""
-"%s の削除中に次のエラーが発生しました。ローカルなファイルではありません。"
+"%s の削除中に次のエラーが発生しました: ローカルファイルではありません。"
 
 #: src/delete-files/delete-files.cc:138
 msgid "Do you want to move the selected files to the trash?"
@@ -1173,7 +1178,7 @@ msgstr "<b>削除の方法</b>"
 
 #: src/delete-files/delete-files.cc:232
 msgid "Move to trash instead of deleting immediately"
-msgstr "直ちに削除するかわりにゴミ箱に移動"
+msgstr "ただちに削除するかわりにゴミ箱に移動"
 
 #: src/echo_plugin/echo.cc:9
 msgid ""
@@ -1871,7 +1876,7 @@ msgstr "カスタムタイトル(_C)"
 #: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:116
 #: src/qtui/menus.cc:133
 msgid "By C_omment"
-msgstr ""
+msgstr "コメント(_O)"
 
 #: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:118
 #: src/qtui/menus.cc:135
@@ -2952,7 +2957,7 @@ msgstr "ログ検査(_L)"
 
 #: src/qtui/menus.cc:143
 msgid "_Find ..."
-msgstr ""
+msgstr "検索(_F)"
 
 #: src/qtui/menus.cc:169 src/skins/menus.cc:80 src/skins-qt/menus.cc:68
 msgid "Audio Settings ..."
@@ -2960,7 +2965,7 @@ msgstr "オーディオの設定..."
 
 #: src/qtui/playlist_header.cc:201
 msgid "Reset to Defaults"
-msgstr ""
+msgstr "デフォルトに戻す"
 
 #: src/qtui/playlist_model.cc:32
 msgid "Now Playing"
@@ -2968,7 +2973,7 @@ msgstr "再生中"
 
 #: src/qtui/playlist_model.cc:33
 msgid "Entry Number"
-msgstr ""
+msgstr "項目数"
 
 #: src/qtui/playlist_model.cc:38
 msgid "Album Artist"
@@ -2976,19 +2981,19 @@ msgstr "アルバムアーティスト"
 
 #: src/qtui/playlist_model.cc:41
 msgid "Queue Position"
-msgstr ""
+msgstr "キューの位置"
 
 #: src/qtui/playlist_model.cc:43
 msgid "File Path"
-msgstr ""
+msgstr "ファイルパス"
 
 #: src/qtui/playlist_model.cc:44
 msgid "File Name"
-msgstr ""
+msgstr "ファイル名"
 
 #: src/qtui/playlist_model.cc:45
 msgid "Custom Title"
-msgstr ""
+msgstr "カスタムタイトル"
 
 #: src/qtui/qtui.cc:39
 msgid "Qt Interface"
@@ -2996,7 +3001,7 @@ msgstr "Qt インターフェイス"
 
 #: src/qtui/search_bar.cc:47
 msgid "Search playlist"
-msgstr ""
+msgstr "プレイリストを検索"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -3187,7 +3192,7 @@ msgstr "ライブラリー"
 #, c-format
 msgid "%d of %d result shown"
 msgid_plural "%d of %d results shown"
-msgstr[0] ""
+msgstr[0] "%d / %d の結果を表示中"
 
 #: src/search-tool-qt/search-tool-qt.cc:492 src/search-tool/search-tool.cc:408
 #, c-format
@@ -3718,7 +3723,7 @@ msgstr "カスタムタイトル"
 #: src/skins/menus.cc:204 src/skins/menus.cc:219 src/skins-qt/menus.cc:198
 #: src/skins-qt/menus.cc:213
 msgid "By Comment"
-msgstr ""
+msgstr "コメント"
 
 #: src/skins/menus.cc:223 src/skins-qt/menus.cc:217
 msgid "Randomize List"
@@ -4188,19 +4193,19 @@ msgstr "テンポとピッチ"
 
 #: src/speedpitch/speed-pitch.cc:247
 msgid "<b>Speed</b>"
-msgstr ""
+msgstr "<b>テンポ</b>"
 
 #: src/speedpitch/speed-pitch.cc:248
 msgid "Decouple from pitch"
-msgstr ""
+msgstr "ピッチと別々に指定"
 
 #: src/speedpitch/speed-pitch.cc:250 src/speedpitch/speed-pitch.cc:258
 msgid "Multiplier:"
-msgstr ""
+msgstr "倍率"
 
 #: src/speedpitch/speed-pitch.cc:254
 msgid "<b>Pitch</b>"
-msgstr ""
+msgstr "<b>ピッチ</b>"
 
 #: src/statusicon-qt/statusicon.cc:43 src/statusicon/statusicon.cc:47
 msgid "Status Icon"

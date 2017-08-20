@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2017-07-09 23:42+0200\n"
-"PO-Revision-Date: 2017-06-07 18:59+0000\n"
+"POT-Creation-Date: 2017-08-19 19:26+0200\n"
+"PO-Revision-Date: 2017-08-10 20:28+0000\n"
 "Last-Translator: French language coordinator <french.coordinator@rbox.me>\n"
 "Language-Team: French (http://www.transifex.com/audacious/audacious/language/"
 "fr/)\n"
@@ -1737,7 +1737,7 @@ msgstr "Rechercher dans _l'audiothèque"
 
 #: src/gtkui/menus.cc:86 src/qtui/menus.cc:75
 msgid "A_bout ..."
-msgstr "À propos _de..."
+msgstr "À _propos..."
 
 #: src/gtkui/menus.cc:87 src/qtui/menus.cc:76
 msgid "_Settings ..."
