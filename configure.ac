@@ -106,6 +106,12 @@ check_allowed () {
             if test $plugin_allowed = no -a $2 = yes ; then
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-qt])
             fi
+            if test $plugin_allowed = yes -a $1 = ampache ; then
+                plugin_allowed=$have_neon
+                if test $plugin_allowed = no -a $2 = yes ; then
+                    AC_MSG_ERROR([--enable-$1 cannot be used without --enable-neon])
+                fi
+            fi
             ;;
         *)
             plugin_allowed=yes
