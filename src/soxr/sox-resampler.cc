@@ -63,6 +63,9 @@ EXPORT SoXResampler aud_plugin_instance;
 const char * const SoXResampler::defaults[] = {
     "quality", aud::numeric_string<SOXR_HQ>::str,
     "rate", "44100",
+    "phase_response", aud::numeric_string<SOXR_LINEAR_PHASE>::str,
+    "allow_aliasing", "FALSE",
+    "use_steep_filter", "FALSE",
     nullptr
 };
 
@@ -96,7 +99,12 @@ void SoXResampler::start (int & channels, int & rate)
     if (new_rate == rate)
         return;
 
-    soxr_quality_spec_t q = soxr_quality_spec (aud_get_int ("soxr", "quality"), 0);
+    int quality = aud_get_int ("soxr", "quality");
+    int phase_response = aud_get_int ("soxr", "phase_response_list");
+    int use_steep_filter = (aud_get_bool ("soxr", "use_steep_filter")) ? SOXR_STEEP_FILTER : 0;
+    int allow_aliasing = (aud_get_bool ("soxr", "allow_aliasing")) ? SOXR_ALLOW_ALIASING : 0;
+
+    soxr_quality_spec_t q = soxr_quality_spec (quality | phase_response | use_steep_filter | allow_aliasing, 0);
 
     soxr = soxr_create (rate, new_rate, channels, & error, nullptr, & q, nullptr);
 
@@ -152,13 +160,25 @@ static const ComboItem method_list[] = {
     ComboItem (N_("Low"), SOXR_LQ),
     ComboItem (N_("Medium"), SOXR_MQ),
     ComboItem (N_("High"), SOXR_HQ),
-    ComboItem (N_("Very High"), SOXR_VHQ)
+    ComboItem (N_("Very High"), SOXR_VHQ),
+    ComboItem (N_("Ultra High"), SOXR_32_BITQ)
+};
+
+static const ComboItem phase_response_list[] = {
+    ComboItem (N_("Minimum"), SOXR_MINIMUM_PHASE),
+    ComboItem (N_("Intermediate"), SOXR_INTERMEDIATE_PHASE),
+    ComboItem (N_("Linear"), SOXR_LINEAR_PHASE)
 };
 
 const PreferencesWidget SoXResampler::widgets[] = {
     WidgetCombo (N_("Quality:"),
         WidgetInt ("soxr", "quality"),
         {{method_list}}),
+    WidgetCombo (N_("Phase:"),
+        WidgetInt ("soxr", "phase_response"),
+        {{phase_response_list}}),
+    WidgetCheck (N_("Allow aliasing"), WidgetBool ("soxr", "allow_aliasing")),
+    WidgetCheck (N_("Use steep filter"), WidgetBool ("soxr", "use_steep_filter")),
     WidgetSpin (N_("Rate:"),
         WidgetInt ("soxr", "rate"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")})
