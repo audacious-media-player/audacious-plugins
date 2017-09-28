@@ -100,7 +100,7 @@ void SoXResampler::start (int & channels, int & rate)
         return;
 
     int quality = aud_get_int ("soxr", "quality");
-    int phase_response = aud_get_int ("soxr", "phase_response_list");
+    int phase_response = aud_get_int ("soxr", "phase_response");
     int use_steep_filter = (aud_get_bool ("soxr", "use_steep_filter")) ? SOXR_STEEP_FILTER : 0;
     int allow_aliasing = (aud_get_bool ("soxr", "allow_aliasing")) ? SOXR_ALLOW_ALIASING : 0;
 
