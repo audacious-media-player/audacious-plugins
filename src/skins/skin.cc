@@ -217,7 +217,7 @@ static bool skin_load_data (const char * path)
     if (file_is_archive (path))
     {
         AUDDBG ("Attempt to load archive\n");
-        archive_path.steal (archive_decompress (path));
+        archive_path = archive_decompress (path);
 
         if (! archive_path)
         {

@@ -310,7 +310,7 @@ void on_skin_view_drag_data_received (GtkWidget * widget, GdkDragContext * conte
     {
         StringBuf path2 = uri_to_filename (path);
         if (path2)
-            path.steal (std::move (path2));
+            path = std::move (path2);
     }
 
     if (file_is_archive (path))
@@ -319,7 +319,7 @@ void on_skin_view_drag_data_received (GtkWidget * widget, GdkDragContext * conte
             return;
 
         view_apply_skin ();
-        skin_install_skin(path);
+        skin_install_skin (path);
 
         if (skin_view)
             skin_view_update ((GtkTreeView *) skin_view);

@@ -64,7 +64,7 @@ static void ui_statusbar_info_change (void *, void * label)
         else if (channels == 2)
             buf.insert (-1, _("stereo"));
         else
-            buf.combine (str_printf (ngettext ("%d channel", "%d channels", channels), channels));
+            str_append_printf (buf, ngettext ("%d channel", "%d channels", channels), channels);
 
         if (samplerate > 0 || bitrate > 0)
             buf.insert (-1, ", ");
@@ -72,13 +72,13 @@ static void ui_statusbar_info_change (void *, void * label)
 
     if (samplerate > 0)
     {
-        buf.combine (str_printf (_("%d kHz"), samplerate / 1000));
+        str_append_printf (buf, _("%d kHz"), samplerate / 1000);
         if (bitrate > 0)
             buf.insert (-1, ", ");
     }
 
     if (bitrate > 0)
-        buf.combine (str_printf (_("%d kbps"), bitrate / 1000));
+        str_append_printf (buf, _("%d kbps"), bitrate / 1000);
 
     gtk_label_set_text ((GtkLabel *) label, buf);
 }

@@ -185,7 +185,7 @@ StringBuf ayemu_vtx_t::sprintname (const char *fmt)
         buf.insert(-1, hdr.title);
         break;
       case 'y':
-        buf.combine(int_to_str(hdr.year));
+        str_insert_int(buf, -1, hdr.year);
         break;
       case 'f':
         buf.insert(-1, hdr.from);
@@ -206,10 +206,10 @@ StringBuf ayemu_vtx_t::sprintname (const char *fmt)
         buf.insert(-1, (hdr.chiptype == AYEMU_AY)? "AY" : "YM" );
         break;
       case 'F':
-        buf.combine(int_to_str(hdr.chipFreq));
+        str_insert_int(buf, -1, hdr.chipFreq);
         break;
       case 'P':
-        buf.combine(int_to_str(hdr.playerFreq));
+        str_insert_int(buf, -1, hdr.playerFreq);
         break;
       default:
         buf.insert(-1, fmt, 1);

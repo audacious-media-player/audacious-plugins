@@ -91,7 +91,7 @@ static StringBuf tone_title(const char *filename)
 
     auto title = str_printf(_("%s %.1f Hz"), _("Tone Generator: "), freqs[0]);
     for (int i = 1; i < freqs.len(); i++)
-        title.combine(str_printf(";%.1f Hz", freqs[i]));
+        str_append_printf(title, ";%.1f Hz", freqs[i]);
 
     return title;
 }

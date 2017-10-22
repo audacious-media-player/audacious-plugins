@@ -57,7 +57,7 @@ static AudguiPixbuf skin_get_preview (const char * path)
     StringBuf archive_path;
     if (file_is_archive (path))
     {
-        archive_path.steal (archive_decompress (path));
+        archive_path = archive_decompress (path);
         if (! archive_path)
             return preview;
 

@@ -236,11 +236,11 @@ static StringBuf format_filename (const char * suffix)
     if (save_original)
     {
         g_return_val_if_fail (base, StringBuf ());
-        filename.insert (0, in_filename, base - in_filename);
+        filename = str_copy (in_filename, base - in_filename);
     }
     else
     {
-        filename.steal (get_file_path ());
+        filename = get_file_path ();
         if (filename[filename.len () - 1] != '/')
             filename.insert (-1, "/");
     }
@@ -249,7 +249,7 @@ static StringBuf format_filename (const char * suffix)
     {
         int number = in_tuple.get_int (Tuple::Track);
         if (number >= 0)
-            filename.combine (str_printf ("%d%%20", number));
+            str_append_printf (filename, "%d%%20", number);
     }
 
     if (aud_get_bool ("filewriter", "filenamefromtags"))
@@ -274,8 +274,7 @@ static StringBuf format_filename (const char * suffix)
         }
 
         /* URI-encode */
-        buf.steal (str_encode_percent (buf));
-        filename.combine (std::move (buf));
+        filename.insert (-1, str_encode_percent (buf));
     }
     else
     {
@@ -289,7 +288,7 @@ static StringBuf format_filename (const char * suffix)
     }
 
     filename.insert (-1, suffix);
-    return filename;
+    return filename.settle ();
 }
 
 bool FileWriter::open_audio (int fmt, int rate, int nch, String & error)

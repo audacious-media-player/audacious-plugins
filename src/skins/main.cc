@@ -218,13 +218,13 @@ static void mainwin_set_song_title (const char * title)
     StringBuf buf;
 
     if (title)
-        buf.steal (str_printf (_("%s - Audacious"), title));
+        buf = str_printf (_("%s - Audacious"), title);
     else
-        buf.steal (str_copy (_("Audacious")));
+        buf = str_copy (_("Audacious"));
 
     int instance = aud_get_instance ();
     if (instance != 1)
-        buf.combine (str_printf (" (%d)", instance));
+        str_append_printf (buf, " (%d)", instance);
 
     mainwin->setWindowTitle ((const char *) buf);
     mainwin_set_info_text (title ? title : "");
