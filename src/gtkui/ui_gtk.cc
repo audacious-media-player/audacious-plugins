@@ -321,8 +321,7 @@ static void do_seek (int time)
     time_counter_cb ();
 }
 
-static gboolean ui_slider_change_value_cb (GtkRange * range,
- GtkScrollType scroll, double value)
+static gboolean ui_slider_change_value_cb (GtkRange *, GtkScrollType, double value)
 {
     int length = aud_drct_get_length ();
     int time = aud::clamp ((int) value, 0, length);
@@ -375,18 +374,18 @@ static gboolean ui_slider_button_release_cb (GtkWidget * widget, GdkEventButton 
     return false;
 }
 
-static gboolean ui_volume_value_changed_cb (GtkButton * button, double volume)
+static gboolean ui_volume_value_changed_cb (GtkButton *, double volume)
 {
     aud_drct_set_volume_main (volume);
     return true;
 }
 
-static void ui_volume_pressed_cb (GtkButton * button)
+static void ui_volume_pressed_cb (GtkButton *)
 {
     volume_slider_is_moving = true;
 }
 
-static void ui_volume_released_cb (GtkButton * button)
+static void ui_volume_released_cb (GtkButton *)
 {
     volume_slider_is_moving = false;
 }
@@ -425,8 +424,10 @@ void update_step_size ()
 
 static void pause_cb ()
 {
+    bool paused = aud_drct_get_paused ();
     gtk_tool_button_set_icon_name ((GtkToolButton *) button_play,
-     aud_drct_get_paused () ? "media-playback-start" : "media-playback-pause");
+     paused ? "media-playback-start" : "media-playback-pause");
+    gtk_tool_item_set_tooltip_text (button_play, paused ? _("Play") : _("Pause"));
 }
 
 static void ui_playback_begin ()
@@ -457,26 +458,29 @@ static void ui_playback_stop ()
 
     title_change ();
     gtk_tool_button_set_icon_name ((GtkToolButton *) button_play, "media-playback-start");
+    gtk_tool_item_set_tooltip_text (button_play, _("Play"));
     gtk_widget_set_sensitive ((GtkWidget *) button_stop, false);
     gtk_widget_hide (slider);
     gtk_widget_hide (label_time);
 }
 
 static GtkToolItem * toolbar_button_add (GtkWidget * toolbar,
- void (* callback) (), const char * icon)
+ void (* callback) (), const char * icon, const char * tooltip)
 {
     GtkToolItem * item = gtk_tool_button_new (nullptr, nullptr);
     gtk_tool_button_set_icon_name ((GtkToolButton *) item, icon);
+    gtk_tool_item_set_tooltip_text (item, tooltip);
     gtk_toolbar_insert ((GtkToolbar *) toolbar, item, -1);
     g_signal_connect (item, "clicked", callback, nullptr);
     return item;
 }
 
-static GtkToolItem * toggle_button_new (const char * icon,
- void (* toggled) (GtkToggleToolButton * button))
+static GtkToolItem * toggle_button_new (const char * icon, const char * tooltip,
+ void (* toggled) (GtkToggleToolButton *))
 {
     GtkToolItem * item = gtk_toggle_tool_button_new ();
     gtk_tool_button_set_icon_name ((GtkToolButton *) item, icon);
+    gtk_tool_item_set_tooltip_text (item, tooltip);
     g_signal_connect (item, "toggled", (GCallback) toggled, nullptr);
     return item;
 }
@@ -488,7 +492,7 @@ static GtkWidget * markup_label_new (const char * str)
     return label;
 }
 
-static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event)
+static gboolean window_keypress_cb (GtkWidget *, GdkEventKey * event)
 {
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
@@ -584,7 +588,7 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event)
     return true;
 }
 
-static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event)
+static gboolean playlist_keypress_cb (GtkWidget *, GdkEventKey * event)
 {
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
@@ -789,7 +793,7 @@ bool GtkUI::init ()
     /* search button */
     if (search_tool)
     {
-        search_button = toggle_button_new ("edit-find", toggle_search_tool);
+        search_button = toggle_button_new ("edit-find", _("Search Library"), toggle_search_tool);
         gtk_toolbar_insert ((GtkToolbar *) toolbar, search_button, -1);
         gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) search_button,
          aud_plugin_get_enabled (search_tool));
@@ -797,18 +801,18 @@ bool GtkUI::init ()
     }
 
     /* open/add buttons */
-    toolbar_button_add (toolbar, button_open_pressed, "document-open");
-    toolbar_button_add (toolbar, button_add_pressed, "list-add");
+    toolbar_button_add (toolbar, button_open_pressed, "document-open", _("Open Files"));
+    toolbar_button_add (toolbar, button_add_pressed, "list-add", _("Add Files"));
 
     gtk_toolbar_insert ((GtkToolbar *) toolbar, gtk_separator_tool_item_new (), -1);
 
     /* playback buttons */
-    toolbar_button_add (toolbar, aud_drct_pl_prev, "media-skip-backward");
-    button_play = toolbar_button_add (toolbar, aud_drct_play_pause, "media-playback-start");
-    button_stop = toolbar_button_add (toolbar, aud_drct_stop, "media-playback-stop");
-    toolbar_button_add (toolbar, aud_drct_pl_next, "media-skip-forward");
+    toolbar_button_add (toolbar, aud_drct_pl_prev, "media-skip-backward", _("Previous"));
+    button_play = toolbar_button_add (toolbar, aud_drct_play_pause, "media-playback-start", _("Play"));
+    button_stop = toolbar_button_add (toolbar, aud_drct_stop, "media-playback-stop", _("Stop"));
+    toolbar_button_add (toolbar, aud_drct_pl_next, "media-skip-forward", _("Next"));
 
-    button_record = toggle_button_new ("media-record", toggle_record);
+    button_record = toggle_button_new ("media-record", _("Record Stream"), toggle_record);
     gtk_widget_set_no_show_all ((GtkWidget *) button_record, true);
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_record, -1);
 
@@ -839,9 +843,9 @@ bool GtkUI::init ()
     gtk_toolbar_insert ((GtkToolbar *) toolbar, gtk_separator_tool_item_new (), -1);
 
     /* repeat and shuffle buttons */
-    button_repeat = toggle_button_new ("media-playlist-repeat", toggle_repeat);
+    button_repeat = toggle_button_new ("media-playlist-repeat", _("Repeat"), toggle_repeat);
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_repeat, -1);
-    button_shuffle = toggle_button_new ("media-playlist-shuffle", toggle_shuffle);
+    button_shuffle = toggle_button_new ("media-playlist-shuffle", _("Shuffle"), toggle_shuffle);
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_shuffle, -1);
 
     /* volume button */
@@ -947,7 +951,7 @@ void GtkUI::cleanup ()
     audgui_cleanup ();
 }
 
-static void menu_position_cb (GtkMenu * menu, int * x, int * y, int * push, void * button)
+static void menu_position_cb (GtkMenu *, int * x, int * y, int * push, void * button)
 {
     GtkAllocation alloc;
     int xorig, yorig, xwin, ywin;
