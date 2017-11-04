@@ -38,7 +38,7 @@
 #include <libaudcore/runtime.h>
 #include <libaudcore/vfs.h>
 
-#include "util.h"
+#include "skins_util.h"
 
 #ifdef S_IRGRP
 #define DIRMODE (S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
@@ -80,14 +80,7 @@ StringBuf find_file_case_path (const char * folder, const char * basename)
 VFSFile open_local_file_nocase (const char * folder, const char * basename)
 {
     StringBuf path = find_file_case_path (folder, basename);
-    if (! path)
-        return VFSFile ();
-
-    StringBuf uri = filename_to_uri (path);
-    if (! uri)
-        return VFSFile ();
-
-    return VFSFile (uri, "r");
+    return path ? VFSFile (filename_to_uri (path), "r") : VFSFile ();
 }
 
 StringBuf skin_pixmap_locate (const char * folder, const char * basename, const char * altname)

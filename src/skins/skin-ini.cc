@@ -25,7 +25,7 @@
 
 #include "skins_cfg.h"
 #include "skin.h"
-#include "util.h"
+#include "skins_util.h"
 
 /*
  * skin.hints parsing

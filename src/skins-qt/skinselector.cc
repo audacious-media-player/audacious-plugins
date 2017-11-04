@@ -31,7 +31,7 @@
 #include "plugin.h"
 #include "skin.h"
 #include "skinselector.h"
-#include "util.h"
+#include "skins_util.h"
 
 Index<SkinNode> skinlist;
 

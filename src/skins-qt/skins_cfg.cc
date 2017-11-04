@@ -36,7 +36,7 @@
 #include "textbox.h"
 #include "skinselector.h"
 #include "vis.h"
-#include "util.h"
+#include "skins_util.h"
 #include "view.h"
 
 static const char * const skins_defaults[] = {

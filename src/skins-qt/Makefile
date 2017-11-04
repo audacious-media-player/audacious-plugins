@@ -24,10 +24,10 @@ SRCS = actions.cc \
        skin.cc \
        skin-ini.cc \
        skins_cfg.cc \
+       skins_util.cc \
        skinselector.cc \
        svis.cc \
        textbox.cc \
-       util.cc \
        view.cc \
        vis-callbacks.cc \
        vis.cc \

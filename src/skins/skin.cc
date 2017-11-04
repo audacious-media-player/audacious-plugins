@@ -37,7 +37,7 @@
 #include "skins_cfg.h"
 #include "surface.h"
 #include "skin.h"
-#include "util.h"
+#include "skins_util.h"
 
 struct SkinPixmapIdMapping {
     const char *name;

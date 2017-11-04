@@ -59,7 +59,7 @@
 #include "textbox.h"
 #include "window.h"
 #include "vis.h"
-#include "util.h"
+#include "skins_util.h"
 #include "view.h"
 
 #define SEEK_THRESHOLD 200 /* milliseconds */

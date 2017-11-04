@@ -36,7 +36,7 @@
 #include "playstatus.h"
 #include "textbox.h"
 #include "vis.h"
-#include "util.h"
+#include "skins_util.h"
 
 class VisCallbacks : public Visualizer
 {
