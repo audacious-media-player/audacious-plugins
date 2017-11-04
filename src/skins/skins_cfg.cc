@@ -304,16 +304,8 @@ void on_skin_view_drag_data_received (GtkWidget * widget, GdkDragContext * conte
     if (! end)
         end = data + strlen (data);
 
-    StringBuf path = str_copy (data, end - data);
-
-    if (strstr (path, "://"))
-    {
-        StringBuf path2 = uri_to_filename (path);
-        if (path2)
-            path = std::move (path2);
-    }
-
-    if (file_is_archive (path))
+    StringBuf path = uri_to_filename (str_copy (data, end - data));
+    if (path && file_is_archive (path))
     {
         if (! skin_load (path))
             return;
