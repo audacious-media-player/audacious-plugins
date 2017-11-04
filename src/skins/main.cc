@@ -441,9 +441,12 @@ static void mainwin_playback_stop ()
 static void record_toggled ()
 {
     if (aud_drct_get_record_enabled ())
-        mainwin_show_status_message (_("Recording on"));
-    else
-        mainwin_show_status_message (_("Recording off"));
+    {
+        if (aud_get_bool (nullptr, "record"))
+            mainwin_show_status_message (_("Recording on"));
+        else
+            mainwin_show_status_message (_("Recording off"));
+    }
 }
 
 static void repeat_toggled ()
@@ -1134,7 +1137,7 @@ static void mainwin_create_window ()
     hook_associate ("playback unpause", (HookFunction) playback_unpause, nullptr);
     hook_associate ("title change", (HookFunction) title_change, nullptr);
     hook_associate ("info change", (HookFunction) info_change, nullptr);
-    hook_associate ("enable record", (HookFunction) record_toggled, nullptr);
+    hook_associate ("set record", (HookFunction) record_toggled, nullptr);
     hook_associate ("set repeat", (HookFunction) repeat_toggled, nullptr);
     hook_associate ("set shuffle", (HookFunction) shuffle_toggled, nullptr);
     hook_associate ("set no_playlist_advance", (HookFunction) no_advance_toggled, nullptr);
@@ -1157,7 +1160,7 @@ void mainwin_unhook ()
     hook_dissociate ("playback unpause", (HookFunction) playback_unpause);
     hook_dissociate ("title change", (HookFunction) title_change);
     hook_dissociate ("info change", (HookFunction) info_change);
-    hook_dissociate ("enable record", (HookFunction) record_toggled);
+    hook_dissociate ("set record", (HookFunction) record_toggled);
     hook_dissociate ("set repeat", (HookFunction) repeat_toggled);
     hook_dissociate ("set shuffle", (HookFunction) shuffle_toggled);
     hook_dissociate ("set no_playlist_advance", (HookFunction) no_advance_toggled);
