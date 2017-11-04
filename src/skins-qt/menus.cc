@@ -24,7 +24,6 @@
 #include <QMenu>
 
 #include <libaudcore/drct.h>
-#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/playlist.h>
@@ -72,7 +71,7 @@ static const audqt::MenuItem main_items[] = {
     audqt::MenuCommand ({N_("Open Files ..."), "document-open", "L"}, action_play_file),
     audqt::MenuCommand ({N_("Open Folder ..."), "document-open", "Shift+L"}, action_play_folder),
     audqt::MenuCommand ({N_("Open URL ..."), "folder-remote", "Ctrl+L"}, action_play_location),
-//    audqt::MenuCommand ({N_("Search Library"), "edit-find", "Y"}, action_search_tool),
+    audqt::MenuCommand ({N_("Search Library"), "edit-find", "Y"}, action_search_tool),
     audqt::MenuSep (),
     audqt::MenuSub ({N_("Playback")}, get_menu_playback),
     audqt::MenuSub ({N_("Playlist")}, get_menu_playlist),

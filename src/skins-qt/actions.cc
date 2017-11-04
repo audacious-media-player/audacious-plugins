@@ -86,7 +86,7 @@ void action_playlist_manager ()
 
 void action_search_tool ()
 {
-    PluginHandle * search = aud_plugin_lookup_basename ("search-tool");
+    PluginHandle * search = aud_plugin_lookup_basename ("search-tool-qt");
     if (search)
     {
         aud_plugin_enable (search, true);

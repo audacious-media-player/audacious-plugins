@@ -36,23 +36,23 @@
 Index<SkinNode> skinlist;
 
 #if 0
-static GdkPixbuf * skin_get_preview (const char * path)
+static AudguiPixbuf skin_get_preview (const char * path)
 {
-    GdkPixbuf * preview = nullptr;
+    AudguiPixbuf preview;
 
     StringBuf archive_path;
     if (file_is_archive (path))
     {
-        archive_path.steal (archive_decompress (path));
+        archive_path = archive_decompress (path);
         if (! archive_path)
-            return nullptr;
+            return preview;
 
         path = archive_path;
     }
 
     StringBuf preview_path = skin_pixmap_locate (path, "main");
     if (preview_path)
-        preview = gdk_pixbuf_new_from_file (preview_path, nullptr);
+        preview.capture (gdk_pixbuf_new_from_file (preview_path, nullptr));
 
     if (archive_path)
         del_directory (archive_path);
@@ -60,16 +60,16 @@ static GdkPixbuf * skin_get_preview (const char * path)
     return preview;
 }
 
-static GdkPixbuf * skin_get_thumbnail (const char * path)
+static AudguiPixbuf skin_get_thumbnail (const char * path)
 {
     StringBuf base = filename_get_base (path);
     base.insert (-1, ".png");
 
     StringBuf thumbname = filename_build ({skins_get_skin_thumb_dir (), base});
-    GdkPixbuf * thumb = nullptr;
+    AudguiPixbuf thumb;
 
     if (g_file_test (thumbname, G_FILE_TEST_EXISTS))
-        thumb = gdk_pixbuf_new_from_file (thumbname, nullptr);
+        thumb.capture (gdk_pixbuf_new_from_file (thumbname, nullptr));
 
     if (! thumb)
     {
@@ -78,12 +78,12 @@ static GdkPixbuf * skin_get_thumbnail (const char * path)
         if (thumb)
         {
             make_directory (skins_get_skin_thumb_dir ());
-            gdk_pixbuf_save (thumb, thumbname, "png", nullptr, nullptr);
+            gdk_pixbuf_save (thumb.get (), thumbname, "png", nullptr, nullptr);
         }
     }
 
     if (thumb)
-        audgui_pixbuf_scale_within (& thumb, audgui_get_dpi () * 3 / 2);
+        audgui_pixbuf_scale_within (thumb, audgui_get_dpi () * 3 / 2);
 
     return thumb;
 }
