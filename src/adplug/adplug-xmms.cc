@@ -23,15 +23,17 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "adplug.h"
-#include "emuopl.h"
-#include "silentopl.h"
-#include "players.h"
+#include <adplug/adplug.h>
+#include <adplug/emuopl.h>
+#include <adplug/silentopl.h>
+#include <adplug/players.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
+
+#include "adplug-xmms.h"
 
 class AdPlugXMMS : public InputPlugin
 {
@@ -126,8 +128,8 @@ bool AdPlugXMMS::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
 {
   CSilentopl tmpopl;
 
-  CFileProvider fp (file);
-  CPlayer *p = CAdPlug::factory (filename, &tmpopl, fp);
+  CFileVFSProvider fp (file);
+  CPlayer *p = CAdPlug::factory (filename, &tmpopl, CAdPlug::players, fp);
 
   if (! p)
     return false;
@@ -169,8 +171,8 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 
   // Try to load module
   dbg_printf ("factory, ");
-  CFileProvider fp (fd);
-  if (!(plr.p = CAdPlug::factory (filename, &opl, fp)))
+  CFileVFSProvider fp (fd);
+  if (!(plr.p = CAdPlug::factory (filename, &opl, CAdPlug::players, fp)))
   {
     dbg_printf ("error!\n");
     // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
@@ -259,8 +261,8 @@ bool AdPlugXMMS::is_our_file (const char * filename, VFSFile & fd)
 {
   CSilentopl tmpopl;
 
-  CFileProvider fp (fd);
-  CPlayer *p = CAdPlug::factory (filename, &tmpopl, fp);
+  CFileVFSProvider fp (fd);
+  CPlayer *p = CAdPlug::factory (filename, &tmpopl, CAdPlug::players, fp);
 
   dbg_printf ("adplug_is_our_file(\"%s\"): returned ", filename);
 
