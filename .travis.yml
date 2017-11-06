@@ -1,8 +1,12 @@
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "Cmx3REBo3fAfNvY6aTsX6cf0Tyzk27XhSCXl397Kls+75I1bUJiUjZv8uBwfwOcpOTGsjNFmQ1/6WrhkR1RJVnJfbUsTRtWba00HIAPWQtjfv3fRrwWGHvsqgV+6DJyD3tuaPRihV8YZe08l2WHTRZyblYJ0DH2L3Zz6C7mpGPs="
 language:
   - cpp
 compiler:
   - gcc
-  - clang
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install libgtk2.0-dev qtbase5-dev qtmultimedia5-dev
@@ -15,6 +19,7 @@ before_install:
   - sudo apt-get install libsamplerate0-dev libsdl1.2-dev libsidplayfp-dev
   - sudo apt-get install libsndfile1-dev libsoxr-dev libvorbis-dev libwavpack-dev
   - sudo apt-get install libxml2-dev libadplug-dev
+  - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 install:
   - git clone git://github.com/audacious-media-player/audacious.git audacious
   - cd audacious
@@ -28,3 +33,12 @@ script:
   - ./autogen.sh
   - ./configure --prefix=/opt/aud --enable-qt
   - make
+addons:
+  coverity_scan:
+    project:
+      name: "audacious-media-player/audacious-plugins"
+      description: "Build submitted via Travis CI"
+    notification_email: john@jlindgren.net
+    build_command_prepend: "./autogen.sh ; PKG_CONFIG_PATH=/opt/aud/lib/pkgconfig ./configure --prefix=/opt/aud --enable-qt"
+    build_command: "make"
+    branch_pattern: coverity_scan
