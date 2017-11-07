@@ -199,7 +199,8 @@ void InfoVis::enable (bool enabled)
 InfoBar::InfoBar (QWidget * parent) :
     QWidget (parent),
     m_vis (new InfoVis (this)),
-    ps (m_vis->pixelSizes ())
+    ps (m_vis->pixelSizes ()),
+    m_stopped (true)
 {
     update_vis ();
     setFixedHeight (ps.Height);
@@ -214,6 +215,7 @@ InfoBar::InfoBar (QWidget * parent) :
 
     if (aud_drct_get_ready ())
     {
+        m_stopped = false;
         update_title ();
         update_album_art ();
 
