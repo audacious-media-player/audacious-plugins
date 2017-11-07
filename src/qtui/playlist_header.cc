@@ -280,7 +280,7 @@ void PlaylistHeader::sectionResized (int logicalIndex, int /*oldSize*/, int newS
         return;
 
     int col = logicalIndex - 1;
-    if (col < 0 || col > PlaylistModel::n_cols)
+    if (col < 0 || col >= PlaylistModel::n_cols)
         return;
 
     // last column expands to fit, so size is not saved
