@@ -117,6 +117,8 @@ MainWindow::MainWindow () :
         ToolBarAction ("media-playback-stop", N_("Stop"), N_("Stop"), aud_drct_stop, & m_stop_action),
         ToolBarAction ("media-playback-stop", N_("Stop After This Song"), N_("Stop After This Song"),
             [] (bool on) { aud_set_bool (nullptr, "stop_after_current_song", on); }, & m_stop_after_action),
+        ToolBarAction ("media-playback-stop", N_("Stop After Each Song"), N_("Stop After Each Song"),
+            [] (bool on) { aud_set_bool (nullptr, "stop_after_each_song", on); }, & m_stop_after_each_action),
         ToolBarAction ("media-skip-forward", N_("Next"), N_("Next"), aud_drct_pl_next),
         ToolBarAction ("media-record", N_("Record Stream"), N_("Record Stream"),
             [] (bool on) { aud_set_bool (nullptr, "record", on); }, & m_record_action),
@@ -229,10 +231,27 @@ void MainWindow::update_toggles ()
     if (m_search_tool)
         m_search_action->setChecked (aud_plugin_get_enabled (m_search_tool));
 
+    bool stop_after_each = aud_get_bool (nullptr, "stop_after_each_song");
     bool stop_after = aud_get_bool (nullptr, "stop_after_current_song");
-    m_stop_action->setVisible (! stop_after);
-    m_stop_after_action->setVisible (stop_after);
-    m_stop_after_action->setChecked (stop_after);
+    if (stop_after_each) {
+        m_stop_action->setVisible (false);
+        m_stop_after_action->setVisible (false);
+        m_stop_after_action->setChecked (false);
+        m_stop_after_each_action->setVisible (true);
+        m_stop_after_each_action->setChecked (true);
+    } else if (stop_after) {
+        m_stop_action->setVisible (false);
+        m_stop_after_action->setVisible (true);
+        m_stop_after_action->setChecked (true);
+        m_stop_after_each_action->setVisible (false);
+        m_stop_after_each_action->setChecked (false);
+    } else {
+        m_stop_action->setVisible (true);
+        m_stop_after_action->setVisible (false);
+        m_stop_after_action->setChecked (false);
+        m_stop_after_each_action->setVisible (false);
+        m_stop_after_each_action->setChecked (false);
+    }
 
     m_record_action->setVisible (aud_drct_get_record_enabled ());
     m_record_action->setChecked (aud_get_bool (nullptr, "record"));

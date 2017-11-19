@@ -92,6 +92,7 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuToggle ({N_("Shuffle by Albu_m")}, {nullptr, "album_shuffle", "set album_shuffle"}),
         audqt::MenuToggle ({N_("N_o Playlist Advance"), nullptr, "Ctrl+N"}, {nullptr, "no_playlist_advance", "set no_playlist_advance"}),
         audqt::MenuToggle ({N_("Stop A_fter This Song"), nullptr, "Ctrl+M"}, {nullptr, "stop_after_current_song", "set stop_after_current_song"}),
+        audqt::MenuToggle ({N_("Stop After _Each Song"), nullptr, "Ctrl+B"}, {nullptr, "stop_after_each_song", "set stop_after_each_song"}),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("Song _Info ..."), "dialog-information", "Ctrl+I"}, audqt::infowin_show_current)
     };

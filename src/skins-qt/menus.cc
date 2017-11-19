@@ -93,6 +93,7 @@ static const audqt::MenuItem playback_items[] = {
     audqt::MenuToggle ({N_("Shuffle by Album")}, {nullptr, "album_shuffle", "set album_shuffle"}),
     audqt::MenuToggle ({N_("No Playlist Advance"), nullptr, "Ctrl+N"}, {nullptr, "no_playlist_advance", "set no_playlist_advance"}),
     audqt::MenuToggle ({N_("Stop After This Song"), nullptr, "Ctrl+M"}, {nullptr, "stop_after_current_song", "set stop_after_current_song"}),
+    audqt::MenuToggle ({N_("Stop After Each Song"), nullptr, "Ctrl+B"}, {nullptr, "stop_after_each_song", "set stop_after_each_song"}),
     audqt::MenuSep (),
     audqt::MenuCommand ({N_("Play"), "media-playback-start", "X"}, aud_drct_play),
     audqt::MenuCommand ({N_("Pause"), "media-playback-pause", "C"}, aud_drct_pause),

@@ -119,6 +119,14 @@ static void stop_after_song_toggled (void *, void * label)
     clear_timeout.start (1000, clear_message, label);
 }
 
+static void stop_after_each_song_toggled (void *, void * label)
+{
+    if (aud_get_bool (nullptr, "stop_after_each_song"))
+        gtk_label_set_text ((GtkLabel *) label, _("Stopping after each song."));
+
+    clear_timeout.start (1000, clear_message, label);
+}
+
 static void ui_statusbar_destroy_cb ()
 {
     clear_timeout.stop ();
@@ -129,6 +137,7 @@ static void ui_statusbar_destroy_cb ()
     hook_dissociate ("playback stop", ui_statusbar_playback_stop);
     hook_dissociate ("set no_playlist_advance", no_advance_toggled);
     hook_dissociate ("set stop_after_current_song", stop_after_song_toggled);
+    hook_dissociate ("set stop_after_each_song", stop_after_each_song_toggled);
     hook_dissociate ("playlist activate", ui_statusbar_update_playlist_length);
     hook_dissociate ("playlist update", ui_statusbar_update_playlist_length);
 }
@@ -151,6 +160,7 @@ GtkWidget * ui_statusbar_new ()
     hook_associate ("playback stop", ui_statusbar_playback_stop, status);
     hook_associate ("set no_playlist_advance", no_advance_toggled, status);
     hook_associate ("set stop_after_current_song", stop_after_song_toggled, status);
+    hook_associate ("set stop_after_each_song", stop_after_each_song_toggled, status);
     hook_associate ("playlist activate", ui_statusbar_update_playlist_length, length);
     hook_associate ("playlist update", ui_statusbar_update_playlist_length, length);
 
