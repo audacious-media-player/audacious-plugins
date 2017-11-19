@@ -84,6 +84,7 @@ static const char * event_desc[EVENT_MAX] = {
     [EVENT_TOGGLE_REPEAT] = N_("Toggle repeat"),
     [EVENT_TOGGLE_SHUFFLE] = N_("Toggle shuffle"),
     [EVENT_TOGGLE_STOP] = N_("Toggle stop after current"),
+    [EVENT_TOGGLE_STOP_EACH] = N_("Toggle stop after each"),
     [EVENT_RAISE] = N_("Raise player window(s)")
 };
 

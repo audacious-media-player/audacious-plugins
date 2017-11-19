@@ -100,6 +100,7 @@ static const AudguiMenuItem playback_items[] = {
     MenuToggle (N_("Shuffle by Albu_m"), nullptr, NONE, nullptr, "album_shuffle", nullptr, "set album_shuffle"),
     MenuToggle (N_("N_o Playlist Advance"), nullptr, 'n', CTRL, nullptr, "no_playlist_advance", nullptr, "set no_playlist_advance"),
     MenuToggle (N_("Stop A_fter This Song"), nullptr, 'm', CTRL, nullptr, "stop_after_current_song", nullptr, "set stop_after_current_song"),
+    MenuToggle (N_("Stop After _Each Song"), nullptr, 'b', CTRL, nullptr, "stop_after_each_song", nullptr, "set stop_after_each_song"),
     MenuSep (),
     MenuCommand (N_("Song _Info ..."), "dialog-information", 'i', CTRL, audgui_infowin_show_current),
     MenuCommand (N_("Jump to _Time ..."), "go-jump", 'k', CTRL, audgui_jump_to_time),
