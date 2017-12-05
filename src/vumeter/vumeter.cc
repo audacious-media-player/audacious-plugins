@@ -121,16 +121,20 @@ void VUMeter::clear ()
 
 static void draw_vu_legend_db(cairo_t * cr, int db, const char *text)
 {
-    cairo_move_to(cr, 0, height - ((DB_RANGE - db - 1) * height / DB_RANGE));
+    cairo_text_extents_t extents;
+    cairo_text_extents (cr, text, &extents);
+    cairo_move_to(cr, (width / bands) - extents.width - 4, height - ((DB_RANGE - db) * height / DB_RANGE) + (extents.height/2));
     cairo_show_text (cr, text);
-    cairo_move_to(cr, (width / bands) * (nchannels + 1) + 2, height - ((DB_RANGE - db - 1) * height / DB_RANGE));
+    cairo_move_to(cr, (width / bands) * (nchannels + 1) + 4, height - ((DB_RANGE - db) * height / DB_RANGE) + (extents.height/2));
     cairo_show_text (cr, text);
 }
 
 static void draw_vu_legend(cairo_t * cr)
 {
     cairo_set_source_rgb (cr, 1, 1, 1);
-    cairo_set_font_size (cr, 2 * height / DB_RANGE);
+    float font_size_width = (width / bands) / 2;
+    float font_size_height = 2 * height / DB_RANGE;
+    cairo_set_font_size (cr, fmin(font_size_width, font_size_height));
     draw_vu_legend_db(cr, 3, "-3");
     draw_vu_legend_db(cr, 5, "-5");
     draw_vu_legend_db(cr, 7, "-7");
