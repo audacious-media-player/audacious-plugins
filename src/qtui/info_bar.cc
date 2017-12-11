@@ -257,8 +257,8 @@ void InfoBar::paintEvent (QPaintEvent *)
         if (d.title.text ().isNull () && ! d.orig_title.isNull ())
         {
             QFontMetrics metrics = p.fontMetrics ();
-            d.title = metrics.elidedText (d.orig_title, Qt::ElideRight,
-             width () - ps.VisWidth - ps.Height - ps.Spacing);
+            d.title = QStaticText(metrics.elidedText (d.orig_title, Qt::ElideRight,
+             width () - ps.VisWidth - ps.Height - ps.Spacing));
         }
 
         p.setPen (QColor (255, 255, 255));
