@@ -61,6 +61,7 @@ static int width, height;
 static int bands = 4;
 static int nchannels = 2;
 static float bars[MAX_BANDS + 1];
+static float peak[MAX_BANDS + 1];
 static int delay[MAX_BANDS + 1];
 
 static float fclamp(float x, float low, float high)
@@ -103,6 +104,7 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
         {
             bars[i] = x;
             delay[i] = VIS_DELAY;
+            peak[i] = x;
         }
     }
 
@@ -113,6 +115,7 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
 void VUMeter::clear ()
 {
     memset (bars, 0, sizeof bars);
+    memset (peak, 0, sizeof peak);
     memset (delay, 0, sizeof delay);
 
     if (spect_widget)
@@ -192,6 +195,14 @@ static void draw_visualizer (cairo_t *cr)
         cairo_set_source_rgb (cr, r, g, b);
         cairo_rectangle (cr, x + 1, height - (size * height / DB_RANGE),
          (width / bands) - 1, (size * height / DB_RANGE));
+        cairo_fill (cr);
+        if (peak[i] > DB_RANGE - 3) {
+            cairo_set_source_rgb (cr, 1, 0, 0);
+        } else if (peak[i] >= DB_RANGE - 9) {
+            cairo_set_source_rgb (cr, 1, 1, 0);
+        }
+        cairo_rectangle (cr, x + 1, height - (peak[i] * height / DB_RANGE),
+         (width / bands) - 1, (0.1 * height / DB_RANGE));
         cairo_fill (cr);
     }
 }
