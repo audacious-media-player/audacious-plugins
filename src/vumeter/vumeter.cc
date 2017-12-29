@@ -135,6 +135,7 @@ static void draw_vu_legend(cairo_t * cr)
     float font_size_width = (width / bands) / 2;
     float font_size_height = 2 * height / DB_RANGE;
     cairo_set_font_size (cr, fmin(font_size_width, font_size_height));
+    draw_vu_legend_db(cr, 1, "-1");
     draw_vu_legend_db(cr, 3, "-3");
     draw_vu_legend_db(cr, 5, "-5");
     draw_vu_legend_db(cr, 7, "-7");
@@ -180,14 +181,14 @@ static void draw_visualizer (cairo_t *cr)
             cairo_fill (cr);
         }
         if (bars[i] >= DB_RANGE - 9) {
-            float size = fclamp (bars[i] - (DB_RANGE - 9), 0, 9) + 2;
+            float size = fclamp (bars[i] - (DB_RANGE - 9), 0, 6) + 2;
             float barsdei = fclamp (bars[i], 0, DB_RANGE - 3);
             cairo_set_source_rgb (cr, 1, 1, 0);
             cairo_rectangle (cr, x + 1, height - (barsdei * height / DB_RANGE),
              (width / bands) - 1, (size * height / DB_RANGE));
             cairo_fill (cr);
         }
-        float size = fclamp (bars[i], 0, DB_RANGE - 10);
+        float size = fclamp (bars[i], 0, DB_RANGE - 9);
         cairo_set_source_rgb (cr, r, g, b);
         cairo_rectangle (cr, x + 1, height - (size * height / DB_RANGE),
          (width / bands) - 1, (size * height / DB_RANGE));
