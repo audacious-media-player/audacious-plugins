@@ -168,30 +168,54 @@ static bool update_tuple (OggVorbis_File * vf, Tuple & tuple)
 
 static bool update_replay_gain (OggVorbis_File * vf, ReplayGainInfo * rg_info)
 {
-    const char *rg_gain, *rg_peak;
-
     vorbis_comment * comment = ov_comment (vf, -1);
     if (! comment)
         return false;
 
-    rg_gain = vorbis_comment_query(comment, "REPLAYGAIN_ALBUM_GAIN", 0);
-    if (!rg_gain) rg_gain = vorbis_comment_query(comment, "RG_AUDIOPHILE", 0);    /* Old */
-    rg_info->album_gain = (rg_gain != nullptr) ? str_to_double (rg_gain) : 0.0;
-    AUDDBG ("Album gain: %s (%f)\n", rg_gain, rg_info->album_gain);
+    const char * album_gain = vorbis_comment_query (comment, "REPLAYGAIN_ALBUM_GAIN", 0);
+    if (! album_gain) album_gain = vorbis_comment_query (comment, "RG_AUDIOPHILE", 0);    /* Old */
+    const char * track_gain = vorbis_comment_query (comment, "REPLAYGAIN_TRACK_GAIN", 0);
+    if (! track_gain) track_gain = vorbis_comment_query (comment, "RG_RADIO", 0);    /* Old */
 
-    rg_gain = vorbis_comment_query(comment, "REPLAYGAIN_TRACK_GAIN", 0);
-    if (!rg_gain) rg_gain = vorbis_comment_query(comment, "RG_RADIO", 0);    /* Old */
-    rg_info->track_gain = (rg_gain != nullptr) ? str_to_double (rg_gain) : 0.0;
-    AUDDBG ("Track gain: %s (%f)\n", rg_gain, rg_info->track_gain);
+    /* stop if we have no gain values */
+    if (! album_gain && ! track_gain)
+        return false;
 
-    rg_peak = vorbis_comment_query(comment, "REPLAYGAIN_ALBUM_PEAK", 0);
-    rg_info->album_peak = rg_peak != nullptr ? str_to_double (rg_peak) : 0.0;
-    AUDDBG ("Album peak: %s (%f)\n", rg_peak, rg_info->album_peak);
+    /* fill in missing values if we can */
+    if (! album_gain)
+        album_gain = track_gain;
+    if (! track_gain)
+        track_gain = album_gain;
 
-    rg_peak = vorbis_comment_query(comment, "REPLAYGAIN_TRACK_PEAK", 0);
-    if (!rg_peak) rg_peak = vorbis_comment_query(comment, "RG_PEAK", 0);  /* Old */
-    rg_info->track_peak = rg_peak != nullptr ? str_to_double (rg_peak) : 0.0;
-    AUDDBG ("Track peak: %s (%f)\n", rg_peak, rg_info->track_peak);
+    rg_info->album_gain = str_to_double (album_gain);
+    rg_info->track_gain = str_to_double (track_gain);
+
+    const char * album_peak = vorbis_comment_query (comment, "REPLAYGAIN_ALBUM_PEAK", 0);
+    const char * track_peak = vorbis_comment_query (comment, "REPLAYGAIN_TRACK_PEAK", 0);
+    if (! track_peak) track_peak = vorbis_comment_query (comment, "RG_PEAK", 0);  /* Old */
+
+    if (! album_peak && ! track_peak)
+    {
+        /* okay, we have gain but no peak values */
+        rg_info->album_peak = 0;
+        rg_info->track_peak = 0;
+    }
+    else
+    {
+        /* fill in missing values if we can */
+        if (! album_peak)
+            album_peak = track_peak;
+        if (! track_peak)
+            track_peak = album_peak;
+
+        rg_info->album_peak = str_to_double (album_peak);
+        rg_info->track_peak = str_to_double (track_peak);
+    }
+
+    AUDDBG ("Album gain: %s (%f)\n", album_gain, rg_info->album_gain);
+    AUDDBG ("Track gain: %s (%f)\n", track_gain, rg_info->track_gain);
+    AUDDBG ("Album peak: %s (%f)\n", album_peak, rg_info->album_peak);
+    AUDDBG ("Track peak: %s (%f)\n", track_peak, rg_info->track_peak);
 
     return true;
 }
