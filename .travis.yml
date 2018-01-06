@@ -5,7 +5,7 @@ compiler:
   - clang
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install libgtk2.0-dev qtbase5-dev qtmultimedia5-dev
+  - sudo apt-get install libgtk-3-dev qtbase5-dev qtmultimedia5-dev
   - sudo apt-get install libasound2-dev libavformat-dev libbinio-dev libbs2b-dev
   - sudo apt-get install libcddb2-dev libcdio-cdda-dev libcue-dev libcurl4-gnutls-dev
   - sudo apt-get install libdbus-glib-1-dev libfaad-dev libflac-dev libfluidsynth-dev
@@ -17,6 +17,7 @@ before_install:
   - sudo apt-get install libxml2-dev libadplug-dev
 install:
   - git clone git://github.com/audacious-media-player/audacious.git audacious
+  - git checkout master-gtk3
   - cd audacious
   - ./autogen.sh
   - ./configure --prefix=/opt/aud --enable-qt
