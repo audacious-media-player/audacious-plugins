@@ -110,7 +110,7 @@ static void open_plugin (const char * path, const LADSPA_Descriptor & desc)
     g_return_if_fail (slash && slash[1]);
     g_return_if_fail (desc.Label && desc.Name);
 
-    PluginData & plugin = * plugins.append (SmartNew<PluginData> (slash + 1, desc));
+    PluginData & plugin = * plugins.append (new PluginData (slash + 1, desc));
 
     for (unsigned i = 0; i < desc.PortCount; i ++)
     {
@@ -204,7 +204,7 @@ static void close_modules ()
 
 LoadedPlugin & enable_plugin_locked (PluginData & plugin)
 {
-    LoadedPlugin & loaded = * loadeds.append (SmartNew<LoadedPlugin> (plugin));
+    LoadedPlugin & loaded = * loadeds.append (new LoadedPlugin (plugin));
 
     for (auto & control : plugin.controls)
         loaded.values.append (control.def);

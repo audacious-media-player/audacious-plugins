@@ -89,9 +89,8 @@ bool PLSLoader::save (const char * filename, VFSFile & file, const char * title,
 
     for (int count = 0; count < entries; count ++)
     {
-        const char * uri = items[count].filename;
-        StringBuf local = uri_to_filename (uri);
-        StringBuf line = str_printf ("File%d=%s\n", 1 + count, local ? local : uri);
+        StringBuf path = uri_deconstruct (items[count].filename, filename);
+        StringBuf line = str_printf ("File%d=%s\n", 1 + count, (const char *) path);
         if (file.fwrite (line, 1, line.len ()) != line.len ())
             return false;
     }

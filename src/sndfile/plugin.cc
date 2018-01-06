@@ -19,9 +19,7 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <math.h>
 #include <stdlib.h>
-
 #include <sndfile.h>
 
 #define WANT_VFS_STDIO_COMPAT
@@ -150,7 +148,10 @@ bool SndfilePlugin::read_tag (const char * filename, VFSFile & file, Tuple & tup
     sf_close (sndfile);
 
     if (sfinfo.samplerate > 0)
-        tuple.set_int (Tuple::Length, ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
+    {
+        int64_t length = aud::rescale<int64_t> (sfinfo.frames, sfinfo.samplerate, 1000);
+        tuple.set_int (Tuple::Length, length);
+    }
 
     switch (sfinfo.format & SF_FORMAT_TYPEMASK)
     {
@@ -320,7 +321,10 @@ bool SndfilePlugin::play (const char * filename, VFSFile & file)
     {
         int seek_value = check_seek ();
         if (seek_value != -1)
-            sf_seek (sndfile, (int64_t) seek_value * sfinfo.samplerate / 1000, SEEK_SET);
+        {
+            int64_t frames = aud::rescale<int64_t> (seek_value, 1000, sfinfo.samplerate);
+            sf_seek (sndfile, aud::min (frames, (int64_t) sfinfo.frames), SEEK_SET);
+        }
 
         int samples = sf_read_float (sndfile, buffer.begin (), buffer.len ());
         if (! samples)

@@ -593,8 +593,8 @@ static void list_get_value (void * user, int row, int column, GValue * value)
     if (item->field != SearchField::Title)
     {
         desc.insert (-1, " ");
-        desc.combine (str_printf (dngettext (PACKAGE, "%d song", "%d songs",
-         item->matches.len ()), item->matches.len ()));
+        str_append_printf (desc, dngettext (PACKAGE, "%d song", "%d songs",
+         item->matches.len ()), item->matches.len ());
     }
 
     if (item->field == SearchField::Genre)

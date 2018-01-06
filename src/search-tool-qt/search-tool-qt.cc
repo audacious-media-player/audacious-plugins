@@ -673,8 +673,8 @@ static StringBuf create_item_label (int row)
     if (item->field != SearchField::Title)
     {
         string.insert (-1, " ");
-        string.combine (str_printf (dngettext (PACKAGE, "%d song", "%d songs",
-         item->matches.len ()), item->matches.len ()));
+        str_append_printf (string, dngettext (PACKAGE, "%d song", "%d songs",
+         item->matches.len ()), item->matches.len ());
     }
 
     if (item->field == SearchField::Genre)

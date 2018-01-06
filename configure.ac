@@ -63,7 +63,7 @@ fi
 dnl Default Set of Plugins
 dnl ======================
 
-INPUT_PLUGINS="adplug metronom psf tonegen vtx xsf"
+INPUT_PLUGINS="metronom psf tonegen vtx xsf"
 OUTPUT_PLUGINS=""
 EFFECT_PLUGINS="compressor crossfade crystalizer mixer silence-removal stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS=""
@@ -105,6 +105,12 @@ check_allowed () {
             plugin_allowed=$USE_QT
             if test $plugin_allowed = no -a $2 = yes ; then
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-qt])
+            fi
+            if test $plugin_allowed = yes -a $1 = ampache ; then
+                plugin_allowed=$have_neon
+                if test $plugin_allowed = no -a $2 = yes ; then
+                    AC_MSG_ERROR([--enable-$1 cannot be used without --enable-neon])
+                fi
             fi
             ;;
         *)
@@ -173,6 +179,13 @@ AC_DEFUN([ENABLE_PLUGIN_WITH_TEST], [
 
 dnl Optional Plugins
 dnl ================
+
+ENABLE_PLUGIN_WITH_DEP(adplug,
+    AdLib support,
+    auto,
+    INPUT,
+    ADLIB,
+    adplug)
 
 ENABLE_PLUGIN_WITH_DEP(cdaudio,
     audio CD support,
@@ -703,7 +716,7 @@ echo "  libsndfile:                             $have_sndfile"
 echo
 echo "  Chiptunes"
 echo "  ---------"
-echo "  AdLib synthesizer (adplug):             yes"
+echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Commodore 64 audio (sid):               $have_sid"
 echo "  Game Music Emu (spc, nsf, gbs, etc.):   $have_console"
 echo "  ModPlug:                                $have_modplug"

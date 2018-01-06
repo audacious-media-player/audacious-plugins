@@ -32,7 +32,7 @@
 #include "plugin.h"
 #include "skin.h"
 #include "skinselector.h"
-#include "util.h"
+#include "skins_util.h"
 #include "view.h"
 
 enum SkinViewCols {
@@ -57,7 +57,7 @@ static AudguiPixbuf skin_get_preview (const char * path)
     StringBuf archive_path;
     if (file_is_archive (path))
     {
-        archive_path.steal (archive_decompress (path));
+        archive_path = archive_decompress (path);
         if (! archive_path)
             return preview;
 

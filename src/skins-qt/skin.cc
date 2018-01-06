@@ -37,7 +37,7 @@
 #include "plugin.h"
 #include "skins_cfg.h"
 #include "skin.h"
-#include "util.h"
+#include "skins_util.h"
 
 struct SkinPixmapIdMapping {
     const char *name;
@@ -230,7 +230,7 @@ static bool skin_load_data (const char * path)
     if (file_is_archive (path))
     {
         AUDDBG ("Attempt to load archive\n");
-        archive_path.steal (archive_decompress (path));
+        archive_path = archive_decompress (path);
 
         if (! archive_path)
         {

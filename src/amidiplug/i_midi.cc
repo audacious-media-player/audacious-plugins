@@ -426,7 +426,6 @@ bool midifile_t::parse_smf (int port_count)
     if (num_tracks < 1 || num_tracks > 1000)
     {
         AUDERR ("%s: invalid number of tracks (%d)\n", (const char *) file_name, num_tracks);
-        num_tracks = 0;
         return false;
     }
 

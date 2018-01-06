@@ -38,7 +38,7 @@
 #include "textbox.h"
 #include "skinselector.h"
 #include "vis.h"
-#include "util.h"
+#include "skins_util.h"
 #include "view.h"
 
 static const char * const skins_defaults[] = {
@@ -304,22 +304,14 @@ void on_skin_view_drag_data_received (GtkWidget * widget, GdkDragContext * conte
     if (! end)
         end = data + strlen (data);
 
-    StringBuf path = str_copy (data, end - data);
-
-    if (strstr (path, "://"))
-    {
-        StringBuf path2 = uri_to_filename (path);
-        if (path2)
-            path.steal (std::move (path2));
-    }
-
-    if (file_is_archive (path))
+    StringBuf path = uri_to_filename (str_copy (data, end - data));
+    if (path && file_is_archive (path))
     {
         if (! skin_load (path))
             return;
 
         view_apply_skin ();
-        skin_install_skin(path);
+        skin_install_skin (path);
 
         if (skin_view)
             skin_view_update ((GtkTreeView *) skin_view);

@@ -23,24 +23,34 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "adplug.h"
-#include "emuopl.h"
-#include "silentopl.h"
-#include "players.h"
+#include <adplug/adplug.h>
+#include <adplug/emuopl.h>
+#include <adplug/silentopl.h>
+#include <adplug/players.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/preferences.h>
+
+#include "adplug-xmms.h"
+
+#define CFG_ID "AdPlug"
 
 class AdPlugXMMS : public InputPlugin
 {
 public:
     static const char * const exts[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
 
     static constexpr PluginInfo info = {
         N_("AdPlug (AdLib Player)"),
-        PACKAGE
+        PACKAGE,
+        nullptr,
+        & prefs
     };
 
     constexpr AdPlugXMMS () : InputPlugin (info, InputInfo ()
@@ -79,12 +89,6 @@ const char * const AdPlugXMMS::exts[] = {
 #define ADPLUG_CONFDIR		".adplug"
 
 /***** Global variables *****/
-
-// Configuration (and defaults)
-static struct {
-  int freq = 44100l;
-  bool bit16 = true, stereo = false, endless = false;
-} conf;
 
 // Player variables
 static struct {
@@ -126,8 +130,8 @@ bool AdPlugXMMS::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
 {
   CSilentopl tmpopl;
 
-  CFileProvider fp (file);
-  CPlayer *p = CAdPlug::factory (filename, &tmpopl, fp);
+  CFileVFSProvider fp (file);
+  CPlayer *p = CAdPlug::factory (filename, &tmpopl, CAdPlug::players, fp);
 
   if (! p)
     return false;
@@ -153,24 +157,29 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 {
   dbg_printf ("adplug_play(\"%s\"): ", filename);
 
+  bool bit16 = aud_get_bool (CFG_ID, "16bit");
+  bool stereo = aud_get_bool (CFG_ID, "Stereo");
+  int freq = aud_get_int (CFG_ID, "Frequency");
+  bool endless = aud_get_bool (CFG_ID, "Endless");
+
   // Set XMMS main window information
   dbg_printf ("xmms, ");
-  int sampsize = (conf.bit16 ? 2 : 1) * (conf.stereo ? 2 : 1);
-  set_stream_bitrate (conf.freq * sampsize * 8);
+  int sampsize = (bit16 ? 2 : 1) * (stereo ? 2 : 1);
+  set_stream_bitrate (freq * sampsize * 8);
 
   // open output plugin
   dbg_printf ("open, ");
-  open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq, conf.stereo ? 2 : 1);
+  open_audio (bit16 ? FORMAT_16 : FORMAT_8, freq, stereo ? 2 : 1);
 
-  CEmuopl opl (conf.freq, conf.bit16, conf.stereo);
+  CEmuopl opl (freq, bit16, stereo);
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
   bool playing = true;  // Song self-end indicator.
 
   // Try to load module
   dbg_printf ("factory, ");
-  CFileProvider fp (fd);
-  if (!(plr.p = CAdPlug::factory (filename, &opl, fp)))
+  CFileVFSProvider fp (fd);
+  if (!(plr.p = CAdPlug::factory (filename, &opl, CAdPlug::players, fp)))
   {
     dbg_printf ("error!\n");
     // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
@@ -197,7 +206,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 
   // main playback loop
   dbg_printf ("loop.\n");
-  while ((playing || conf.endless))
+  while ((playing || endless))
   {
     if (check_stop ())
       break;
@@ -226,7 +235,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
     {
       while (toadd < 0)
       {
-        toadd += conf.freq;
+        toadd += freq;
         playing = plr.p->update ();
         if (playing)
           time += (int) (1000 / plr.p->getrefresh ());
@@ -259,8 +268,8 @@ bool AdPlugXMMS::is_our_file (const char * filename, VFSFile & fd)
 {
   CSilentopl tmpopl;
 
-  CFileProvider fp (fd);
-  CPlayer *p = CAdPlug::factory (filename, &tmpopl, fp);
+  CFileVFSProvider fp (fd);
+  CPlayer *p = CAdPlug::factory (filename, &tmpopl, CAdPlug::players, fp);
 
   dbg_printf ("adplug_is_our_file(\"%s\"): returned ", filename);
 
@@ -277,23 +286,31 @@ bool AdPlugXMMS::is_our_file (const char * filename, VFSFile & fd)
 
 /***** Configuration file handling *****/
 
-#define CFG_VERSION "AdPlug"
-
-static const char * const adplug_defaults[] = {
+const char * const AdPlugXMMS::defaults[] = {
  "16bit", "TRUE",
  "Stereo", "FALSE",
  "Frequency", "44100",
  "Endless", "FALSE",
  nullptr};
 
+const PreferencesWidget AdPlugXMMS::widgets[] = {
+    WidgetLabel (N_("<b>Output</b>")),
+    WidgetCheck (N_("16-bit output (if unchecked, output is 8-bit)"),
+        WidgetBool (CFG_ID, "16bit")),
+    WidgetCheck (N_("Duplicate mono output to two channels"),
+        WidgetBool (CFG_ID, "Stereo")),
+    WidgetSpin (N_("Sample rate"),
+        WidgetInt (CFG_ID, "Frequency"), {8000, 192000, 50, N_("Hz")}),
+    WidgetLabel (N_("<b>Miscellaneous</b>")),
+    WidgetCheck (N_("Repeat song in endless loop"),
+        WidgetBool (CFG_ID, "Endless"))
+};
+
+const PluginPreferences AdPlugXMMS::prefs = {{widgets}};
+
 bool AdPlugXMMS::init ()
 {
-  aud_config_set_defaults (CFG_VERSION, adplug_defaults);
-
-  conf.bit16 = aud_get_bool (CFG_VERSION, "16bit");
-  conf.stereo = aud_get_bool (CFG_VERSION, "Stereo");
-  conf.freq = aud_get_int (CFG_VERSION, "Frequency");
-  conf.endless = aud_get_bool (CFG_VERSION, "Endless");
+  aud_config_set_defaults (CFG_ID, defaults);
 
   // Load database from disk and hand it to AdPlug
   dbg_printf ("database");
@@ -327,9 +344,4 @@ void AdPlugXMMS::cleanup ()
     delete plr.db;
 
   plr.filename = String ();
-
-  aud_set_bool (CFG_VERSION, "16bit", conf.bit16);
-  aud_set_bool (CFG_VERSION, "Stereo", conf.stereo);
-  aud_set_int (CFG_VERSION, "Frequency", conf.freq);
-  aud_set_bool (CFG_VERSION, "Endless", conf.endless);
 }

@@ -45,7 +45,7 @@
 #include "eq-slider.h"
 #include "hslider.h"
 #include "window.h"
-#include "util.h"
+#include "skins_util.h"
 #include "view.h"
 
 class EqWindow : public Window
