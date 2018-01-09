@@ -98,6 +98,7 @@ bool VorbisPlugin::write_tuple (const char * filename, VFSFile & file, const Tup
     insert_str_tuple_field_to_dictionary (tuple, Tuple::Album, dict, "ALBUM");
     insert_str_tuple_field_to_dictionary (tuple, Tuple::AlbumArtist, dict, "ALBUMARTIST");
     insert_str_tuple_field_to_dictionary (tuple, Tuple::Comment, dict, "COMMENT");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Description, dict, "DESCRIPTION");
     insert_str_tuple_field_to_dictionary (tuple, Tuple::Genre, dict, "GENRE");
 
     insert_int_tuple_field_to_dictionary (tuple, Tuple::Year, dict, "DATE");
