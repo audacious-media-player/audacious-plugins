@@ -201,7 +201,8 @@ static const AudguiMenuItem sort_items[] = {
     MenuCommand (N_("By File Name"), nullptr, NO_KEY, sort_filename),
     MenuCommand (N_("By File Path"), nullptr, NO_KEY, sort_path),
     MenuCommand (N_("By Custom Title"), nullptr, NO_KEY, sort_custom_title),
-    MenuCommand (N_("By Comment"), nullptr, NO_KEY, sort_comment)
+    MenuCommand (N_("By Comment"), nullptr, NO_KEY, sort_comment),
+    MenuCommand (N_("By Description"), nullptr, NO_KEY, sort_description)
 };
 
 static const AudguiMenuItem sort_selected_items[] = {
@@ -216,7 +217,8 @@ static const AudguiMenuItem sort_selected_items[] = {
     MenuCommand (N_("By File Name"), nullptr, NO_KEY, sort_sel_filename),
     MenuCommand (N_("By File Path"), nullptr, NO_KEY, sort_sel_path),
     MenuCommand (N_("By Custom Title"), nullptr, NO_KEY, sort_sel_custom_title),
-    MenuCommand (N_("By Comment"), nullptr, NO_KEY, sort_comment)
+    MenuCommand (N_("By Comment"), nullptr, NO_KEY, sort_comment),
+    MenuCommand (N_("By Description"), nullptr, NO_KEY, sort_description)
 };
 
 static const AudguiMenuItem playlist_sort_items[] = {
