@@ -37,6 +37,7 @@ void sort_length ();
 void sort_path ();
 void sort_filename ();
 void sort_custom_title ();
+void sort_description ();
 void sort_comment ();
 void sort_reverse ();
 void sort_random ();

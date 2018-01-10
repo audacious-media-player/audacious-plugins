@@ -38,6 +38,7 @@ void sort_path () { ACTIVE.sort_entries (Playlist::Path); }
 void sort_filename () { ACTIVE.sort_entries (Playlist::Filename); }
 void sort_custom_title () { ACTIVE.sort_entries (Playlist::FormattedTitle); }
 void sort_comment () { ACTIVE.sort_entries (Playlist::Comment); }
+void sort_description () { ACTIVE.sort_entries (Playlist::Description); }
 void sort_reverse () { ACTIVE.reverse_order (); }
 void sort_random () { ACTIVE.randomize_order (); }
 
