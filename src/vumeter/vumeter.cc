@@ -63,6 +63,8 @@ static int nchannels = 2;
 static float bars[MAX_BANDS + 1];
 static float peak[MAX_BANDS + 1];
 static int delay[MAX_BANDS + 1];
+static gint64 last_peak_times[MAX_BANDS + 1]; // Time elapsed since peak was set
+static gint64 peak_hold_time = 1600000; // Time to hold peak in microseconds
 
 static float fclamp(float x, float low, float high)
 {
@@ -71,6 +73,7 @@ static float fclamp(float x, float low, float high)
 
 void VUMeter::render_multi_pcm (const float * pcm, int channels)
 {
+    gint64 current_time = g_get_monotonic_time();
     nchannels = channels;
     bands = channels + 2;
 
@@ -104,7 +107,11 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
         {
             bars[i] = x;
             delay[i] = VIS_DELAY;
+        }
+        gint64 elapsed_peak_time = current_time - last_peak_times[i];
+        if (x > peak[i] || elapsed_peak_time > peak_hold_time) {
             peak[i] = x;
+            last_peak_times[i] = g_get_monotonic_time();
         }
     }
 
@@ -117,6 +124,7 @@ void VUMeter::clear ()
     memset (bars, 0, sizeof bars);
     memset (peak, 0, sizeof peak);
     memset (delay, 0, sizeof delay);
+    memset (last_peak_times, 0, sizeof last_peak_times);
 
     if (spect_widget)
         gtk_widget_queue_draw (spect_widget);
