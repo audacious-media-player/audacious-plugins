@@ -183,6 +183,10 @@ static void draw_visualizer (cairo_t *cr)
         int x = ((width / bands) * (i+1)) + 2;
         float r=0, g=1, b=0;
 
+        cairo_set_source_rgba (cr, 1, 0, 0, 0.2);
+        cairo_rectangle (cr, x + 1, 0, (width / bands) - 1,
+         (3 * height / DB_RANGE) + 1);
+        cairo_fill (cr);
         if (bars[i] > DB_RANGE - 3) {
             float size = fclamp (bars[i] - (DB_RANGE - 3), 0, 3) + 2;
             float barsdei = bars[i];
@@ -191,6 +195,10 @@ static void draw_visualizer (cairo_t *cr)
              (width / bands) - 1, (size * height / DB_RANGE));
             cairo_fill (cr);
         }
+        cairo_set_source_rgba (cr, 1, 1, 0, 0.2);
+        cairo_rectangle (cr, x + 1, height - ((DB_RANGE - 3) * height / DB_RANGE),
+         (width / bands) - 1, (6 * height / DB_RANGE));
+        cairo_fill (cr);
         if (bars[i] >= DB_RANGE - 9) {
             float size = fclamp (bars[i] - (DB_RANGE - 9), 0, 6) + 2;
             float barsdei = fclamp (bars[i], 0, DB_RANGE - 3);
@@ -199,6 +207,10 @@ static void draw_visualizer (cairo_t *cr)
              (width / bands) - 1, (size * height / DB_RANGE));
             cairo_fill (cr);
         }
+        cairo_set_source_rgba (cr, r, g, b, 0.2);
+        cairo_rectangle (cr, x + 1, height - ((DB_RANGE - 9) * height / DB_RANGE),
+         (width / bands) - 1, ((DB_RANGE - 9) * height / DB_RANGE));
+        cairo_fill (cr);
         float size = fclamp (bars[i], 0, DB_RANGE - 9);
         cairo_set_source_rgb (cr, r, g, b);
         cairo_rectangle (cr, x + 1, height - (size * height / DB_RANGE),
