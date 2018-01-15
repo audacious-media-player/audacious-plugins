@@ -21,6 +21,7 @@
 
 #include <QAction>
 #include <QIcon>
+#include <QDebug>
 
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
@@ -32,9 +33,10 @@ ToolBar::ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items)
     setMovable (false);
     setObjectName ("MainToolBar");
 
-#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
-    setIconSize (QSize (22, 22));
-#endif
+    // use the native toolbar icon size (or what/however the user configured).
+// #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
+//     setIconSize (QSize (22, 22));
+// #endif
 
     for (const ToolBarItem & item : items)
     {
