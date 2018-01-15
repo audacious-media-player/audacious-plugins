@@ -72,8 +72,13 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("Search _Library"), "edit-find", "Ctrl+Y"}, show_search_tool),
         audqt::MenuSep (),
+#ifdef Q_OS_MACOS
+        audqt::MenuCommand ({N_("About Audacious"), "help-about"}, aud_ui_show_about_window),
+        audqt::MenuCommand ({N_("Preferences..."), "preferences-system", "Ctrl+,"}, aud_ui_show_prefs_window),
+#else
         audqt::MenuCommand ({N_("A_bout ..."), "help-about"}, aud_ui_show_about_window),
         audqt::MenuCommand ({N_("_Settings ..."), "preferences-system"}, aud_ui_show_prefs_window),
+#endif
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("_Log Inspector ...")}, audqt::log_inspector_show),
         audqt::MenuSep (),
@@ -82,7 +87,11 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
 
     static const audqt::MenuItem playback_items[] = {
         audqt::MenuCommand ({N_("_Play"), "media-playback-start", "Ctrl+Return"}, aud_drct_play),
+#ifdef Q_OS_MACOS
+        audqt::MenuCommand ({N_("Paus_e"), "media-playback-pause", "Space"}, aud_drct_pause),
+#else
         audqt::MenuCommand ({N_("Paus_e"), "media-playback-pause", "Ctrl+,"}, aud_drct_pause),
+#endif
         audqt::MenuCommand ({N_("_Stop"), "media-playback-stop", "Ctrl+."}, aud_drct_stop),
         audqt::MenuCommand ({N_("Pre_vious"), "media-skip-backward", "Alt+Up"}, aud_drct_pl_prev),
         audqt::MenuCommand ({N_("_Next"), "media-skip-forward", "Alt+Down"}, aud_drct_pl_next),
@@ -149,7 +158,14 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("_New"), "document-new", "Ctrl+T"}, pl_new),
         audqt::MenuCommand ({N_("Ren_ame ..."), "insert-text", "F2"}, pl_rename),
+#ifdef Q_OS_MACOS
+        // Command+W is also the system shortcut for closing windows, and thus too
+        // likely too much of a reflex that can lead to closing playlists by accident
+        // (or getting the "are you sure" dialog unintentionally too often).
+        audqt::MenuCommand ({N_("Remo_ve"), "edit-delete", "Ctrl+Shift+W"}, pl_close),
+#else
         audqt::MenuCommand ({N_("Remo_ve"), "edit-delete", "Ctrl+W"}, pl_close),
+#endif
         audqt::MenuSep (),
         //audqt::MenuCommand ({N_("_Import ..."), "document-open"}, TODO),
         //audqt::MenuCommand ({N_("_Export ..."), "document-save"}, TODO),
