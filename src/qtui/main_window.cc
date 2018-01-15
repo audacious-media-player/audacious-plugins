@@ -43,6 +43,7 @@
 #include <QMenuBar>
 #include <QSettings>
 #include <QToolButton>
+#include <QDebug>
 
 class PluginWidget : public QDockWidget
 {
@@ -95,13 +96,21 @@ MainWindow::MainWindow () :
     m_search_tool (aud_plugin_lookup_basename ("search-tool-qt")),
     m_playlist_manager (aud_plugin_lookup_basename ("playlist-manager-qt"))
 {
-#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
-    QIcon::setThemeName ("QtUi");
+    // The icon theme and/or theme search paths may not be set (MSWin, Mac, non-Plasma desktops on Unix)
+    // Check, and if either is true set our theme and add its install location to the search path.
+    if (QIcon::themeName().isEmpty() || QIcon::themeSearchPaths().at(0) == QStringLiteral(":\icons")) {
+        qDebug() << Q_FUNC_INFO << "Icon theme:" << QIcon::themeName() << "searchpath" << QIcon::themeSearchPaths();
+        QIcon::setThemeName ("QtUi");
 
-    QStringList paths = QIcon::themeSearchPaths ();
-    paths.prepend (aud_get_path (AudPath::DataDir));
-    QIcon::setThemeSearchPaths (paths);
-#endif
+        QStringList paths = QIcon::themeSearchPaths ();
+        // install our theme location as a fallback, leaving the door open
+        // to customise it. IOW, insert it just before the entry corresponding
+        // to the embedded resources.
+        int here = paths.size() - 1;
+        paths.insert (here, aud_get_path (AudPath::DataDir));
+        QIcon::setThemeSearchPaths (paths);
+        qDebug() << Q_FUNC_INFO << "New icon theme:" << QIcon::themeName() << "searchpath" << QIcon::themeSearchPaths();
+    }
 
     auto slider = new TimeSlider (this);
 
@@ -132,7 +141,9 @@ MainWindow::MainWindow () :
     };
 
     addToolBar (Qt::TopToolBarArea, new ToolBar (this, items));
-    setUnifiedTitleAndToolBarOnMac (true);
+    // this worked more or less in Qt4 but is not recommended in Qt5, not
+    // if you want to do OpenGL or have dockable widgets
+//     setUnifiedTitleAndToolBarOnMac (true);
 
     if (m_search_tool)
         aud_plugin_add_watch (m_search_tool, plugin_watcher, this);
