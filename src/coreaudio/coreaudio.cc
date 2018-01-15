@@ -39,6 +39,8 @@
 #include <CoreAudio/CoreAudio.h>
 #include <AudioUnit/AudioUnit.h>
 
+#include "audiodevice.h"
+
 class CoreAudioPlugin : public OutputPlugin {
 public:
     static const char about[];
@@ -53,7 +55,10 @@ public:
         & prefs,
     };
 
-    constexpr CoreAudioPlugin () : OutputPlugin (info, 5) {}
+    constexpr CoreAudioPlugin () :
+        OutputPlugin (info, 5),
+        coreAudioDevice (nullptr)
+    {}
 
     bool init ();
     void cleanup ();
@@ -75,6 +80,8 @@ public:
 protected:
     static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
     void check_started ();
+    AudioDevice *coreAudioDevice;
+    bool caDeviceInitialised = false;
 };
 
 EXPORT CoreAudioPlugin aud_plugin_instance;
@@ -126,6 +133,7 @@ static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 static bool is_exclusive = false;
+static bool is_bitperfect = false;
 
 const char CoreAudioPlugin::about[] =
     N_("CoreAudio Output Plugin for Audacious\n"
@@ -137,11 +145,14 @@ const char * const CoreAudioPlugin::defaults[] = {
     "vol_left", "100",
     "vol_right", "100",
     "exclusive_mode", "FALSE",
+    "bitperfect_mode", "FALSE",
     nullptr};
 
 const PreferencesWidget CoreAudioPlugin::widgets[] = {
     WidgetCheck (N_("Use exclusive mode"),
         WidgetBool ("coreaudio", "exclusive_mode")),
+    WidgetCheck (N_("Use bitperfect audio (adapt device sampling rate)"),
+        WidgetBool ("coreaudio", "bitperfect_mode")),
 };
 
 const PluginPreferences CoreAudioPlugin::prefs = {
@@ -173,9 +184,10 @@ bool CoreAudioPlugin::init ()
         return 0;
     }
 
-    if (AudioComponentInstanceNew (output_comp, & output_instance))
+    OSStatus err = AudioComponentInstanceNew (output_comp, & output_instance);
+    if (err != noErr)
     {
-        error ("Failed to open default audio device.\n");
+        error ("Failed to open default audio device (error %d).\n", err);
         return 0;
     }
 
@@ -189,11 +201,40 @@ bool CoreAudioPlugin::init ()
         return 0;
     }
 
+    AudioObjectPropertyAddress prop = { kAudioHardwarePropertyDefaultOutputDevice,
+                                        kAudioObjectPropertyScopeGlobal,
+                                        kAudioObjectPropertyElementMaster };
+
+    UInt32 size = sizeof(AudioDeviceID);
+    AudioDeviceID defaultOutputDeviceID;
+    err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &prop, 0, NULL, &size, &defaultOutputDeviceID);
+    if (err == noErr)
+    {
+        if (coreAudioDevice) {
+            // TODO: check, can this ever happen?
+            coreAudioDevice->ResetNominalSampleRate();
+            delete coreAudioDevice;
+        }
+        coreAudioDevice = AudioDevice::GetDevice(defaultOutputDeviceID, false, coreAudioDevice, true);
+
+        if (aud_get_bool ("coreaudio", "bitperfect_mode"))
+        {
+            AUDINFO ("Using default output device #%d=\"%s\".\n", defaultOutputDeviceID, coreAudioDevice->GetName());
+        }
+    }
+    else
+        error ("Failed to obtain the default device ID (%d) (no bitperfect audio).\n", err);
+
     return 1;
 }
 
 void CoreAudioPlugin::cleanup ()
 {
+    if (coreAudioDevice) {
+        coreAudioDevice->ResetNominalSampleRate();
+    }
+    delete coreAudioDevice;
+    coreAudioDevice = nullptr;
 }
 
 StereoVolume CoreAudioPlugin::get_volume ()
@@ -321,14 +362,25 @@ bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_, String & err
         prop.mScope    = kAudioObjectPropertyScopeGlobal;
         prop.mElement  = kAudioObjectPropertyElementMaster;
 
-        OSStatus err = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, nullptr, sizeof hog_mode, & hog_mode);
-        if (err != noErr)
+        OSStatus result = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, nullptr, sizeof hog_mode, & hog_mode);
+        if (result != noErr)
         {
-            AUDWARN ("Failed to open device for exclusive mode, continuing anyway... [%d]\n", err);
+            AUDWARN ("Failed to open device for exclusive mode, continuing anyway... [%d]\n", result);
             is_exclusive = false;
         }
         else
             is_exclusive = true;
+    }
+
+    if (coreAudioDevice && aud_get_bool ("coreaudio", "bitperfect_mode"))
+    {
+        if (!caDeviceInitialised)
+        {
+            AUDINFO ("Preparing CoreAudio device %s for bitperfect output\n", coreAudioDevice->GetName());
+            coreAudioDevice->Init();
+            caDeviceInitialised = true;
+        }
+        coreAudioDevice->SetNominalSampleRate(rate);
     }
 
     if (AudioOutputUnitStart (output_instance))
@@ -346,6 +398,10 @@ void CoreAudioPlugin::close_audio ()
     AUDDBG ("Closing audio.\n");
 
     AudioOutputUnitStop (output_instance);
+
+    if (coreAudioDevice) {
+        coreAudioDevice->ResetNominalSampleRate();
+    }
 
     if (is_exclusive)
     {
