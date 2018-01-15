@@ -248,29 +248,30 @@ OSStatus CoreAudioPlugin::callback (void *inRefCon, AudioUnitRenderActionFlags *
 // TODO: return error message to core instead of calling aud_ui_show_error
 bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_, String & err)
 {
-    struct AudioUnitFormatDescriptionMap * m = nullptr;
+    struct AudioUnitFormatDescriptionMap m;
 
+    m.aud_format = -1;
     for (struct AudioUnitFormatDescriptionMap it : AUFormatMap)
     {
         if (it.aud_format == format)
         {
-            m = & it;
+            m = it;
             break;
         }
     }
 
-    if (! m)
+    if (m.aud_format != format)
     {
         error ("The requested audio format %d is unsupported.\n", format);
         return 0;
     }
 
-    AUDDBG ("Opening audio for %d channels, %d Hz.\n", chan, rate);
+    AUDDBG ("Opening audio for %d channels, %d Hz.\n", chan_, rate_);
 
     chan = chan_;
     rate = rate_;
 
-    buffer_bytes_per_channel = m->mBytesPerChannel;
+    buffer_bytes_per_channel = m.mBytesPerChannel;
 
     int buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
     buffer.alloc (buffer_size);
@@ -278,19 +279,20 @@ bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_, String & err
     prebuffer_flag = true;
     paused_flag = false;
 
-    if (AudioUnitInitialize (output_instance))
+    OSStatus result = AudioUnitInitialize (output_instance);
+    if (result != noErr)
     {
-        error ("Unable to initialize audio unit instance\n");
+        error ("Unable to initialize audio unit instance, error=%d\n", result);
         return 0;
     }
 
     AudioStreamBasicDescription streamFormat;
     streamFormat.mSampleRate = rate;
     streamFormat.mFormatID = kAudioFormatLinearPCM;
-    streamFormat.mFormatFlags = m->mFormatFlags;
+    streamFormat.mFormatFlags = m.mFormatFlags;
     streamFormat.mFramesPerPacket = 1;
     streamFormat.mChannelsPerFrame = chan;
-    streamFormat.mBitsPerChannel = m->mBitsPerChannel;
+    streamFormat.mBitsPerChannel = m.mBitsPerChannel;
     streamFormat.mBytesPerPacket = chan * buffer_bytes_per_channel;
     streamFormat.mBytesPerFrame = chan * buffer_bytes_per_channel;
 
@@ -300,9 +302,10 @@ bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_, String & err
     AUDDBG(" Bits per channel: %d\n", streamFormat.mBitsPerChannel);
     AUDDBG(" Bytes per frame: %d\n", streamFormat.mBytesPerFrame);
 
-    if (AudioUnitSetProperty (output_instance, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &streamFormat, sizeof(streamFormat)))
+    result = AudioUnitSetProperty (output_instance, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &streamFormat, sizeof(streamFormat));
+    if (result)
     {
-        error ("Failed to set audio unit input property.\n");
+        error ("Failed to set audio unit input property (stream format); error=%d.\n", result);
         buffer.destroy ();
         return 0;
     }
