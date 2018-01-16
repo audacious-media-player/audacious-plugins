@@ -56,8 +56,7 @@ public:
     };
 
     constexpr CoreAudioPlugin () :
-        OutputPlugin (info, 5),
-        coreAudioDevice (nullptr)
+        OutputPlugin (info, 5)
     {}
 
     bool init ();
@@ -80,7 +79,7 @@ public:
 protected:
     static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
     void check_started ();
-    AudioDevice *coreAudioDevice;
+    AudioDevice *coreAudioDevice = nullptr;
     bool caDeviceInitialised = false;
 };
 
@@ -133,7 +132,6 @@ static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 static bool is_exclusive = false;
-static bool is_bitperfect = false;
 
 const char CoreAudioPlugin::about[] =
     N_("CoreAudio Output Plugin for Audacious\n"
@@ -205,8 +203,8 @@ bool CoreAudioPlugin::init ()
                                         kAudioObjectPropertyScopeGlobal,
                                         kAudioObjectPropertyElementMaster };
 
-    UInt32 size = sizeof(AudioDeviceID);
-    AudioDeviceID defaultOutputDeviceID;
+    UInt32 size = sizeof(AudioObjectID);
+    AudioObjectID defaultOutputDeviceID;
     err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &prop, 0, NULL, &size, &defaultOutputDeviceID);
     if (err == noErr)
     {
@@ -214,20 +212,25 @@ bool CoreAudioPlugin::init ()
             // TODO: check, can this ever happen?
             coreAudioDevice->ResetNominalSampleRate();
             delete coreAudioDevice;
+            coreAudioDevice = nullptr;
         }
         coreAudioDevice = AudioDevice::GetDevice(defaultOutputDeviceID, false, coreAudioDevice, true);
-        // we use the quick mode which skips initialisation; cache the device name (in AudioDevice)
-        // using an immediate, blocking look-up.
-        char devName[256];
-        coreAudioDevice->GetName(devName, 256);
-
-        if (aud_get_bool ("coreaudio", "bitperfect_mode"))
+        if (coreAudioDevice != NULL)
         {
-            AUDINFO ("Using default output device #%d=\"%s\".\n", defaultOutputDeviceID, coreAudioDevice->GetName());
+            coreAudioDevice->setDefaultDevice(true);
+            // we use the quick mode which skips initialisation; cache the device name (in AudioDevice)
+            // using an immediate, blocking look-up.
+            char devName[256];
+            coreAudioDevice->GetName(devName, 256);
+
+            AUDINFO ("Using default output device %p #%d=\"%s\".\n",
+                     coreAudioDevice, defaultOutputDeviceID, coreAudioDevice->GetName());
         }
+        else
+            AUDERR ("Failed to obtain a handle on the default device (%p)\n", coreAudioDevice);
     }
     else
-        error ("Failed to obtain the default device ID (%d) (no bitperfect audio).\n", err);
+        AUDERR ("Failed to obtain the default device ID (%d) (no bitperfect audio).\n", err);
 
     return 1;
 }

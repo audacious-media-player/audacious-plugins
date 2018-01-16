@@ -54,10 +54,10 @@
 #include <AvailabilityMacros.h>
 
 #ifndef DEPRECATED_LISTENER_API
-#	if !(defined(MAC_OS_X_VERSION_10_11) && MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_11)
-#		define DEPRECATED_LISTENER_API 1
-#		warning "Using the deprecated PropertyListener API; at least it works"
-#	endif
+#   if !(defined(MAC_OS_X_VERSION_10_11) && MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_11)
+#       define DEPRECATED_LISTENER_API 1
+#       warning "Using the deprecated PropertyListener API; at least it works"
+#   endif
 #endif
 
 #if DEPRECATED_LISTENER_API
@@ -71,8 +71,9 @@ class AudioDeviceList;
 class AudioDevice {
 public:
     AudioDevice();
-    AudioDevice(AudioDeviceID devid, bool isInput=false);
-    AudioDevice(AudioDeviceID devid, AudioPropertyListenerProc lProc, bool isInput=false);
+    AudioDevice(AudioObjectID devid, bool isInput=false);
+    AudioDevice(AudioObjectID devid, bool quick, bool isInput);
+    AudioDevice(AudioObjectID devid, AudioPropertyListenerProc lProc, bool isInput=false);
     ~AudioDevice();
 
     void Init();
@@ -83,8 +84,8 @@ public:
     void SetBufferSize(UInt32 size);
     OSStatus NominalSampleRate(Float64 &sampleRate);
     inline Float64 ClosestNominalSampleRate(Float64 sampleRate);
-    OSStatus SetNominalSampleRate(Float64 sampleRate, Boolean force=false);
-    OSStatus ResetNominalSampleRate(Boolean force=false);
+    OSStatus SetNominalSampleRate(Float64 sampleRate, bool force=false);
+    OSStatus ResetNominalSampleRate(bool force=false);
     OSStatus SetStreamBasicDescription(AudioStreamBasicDescription *desc);
     int CountChannels();
     char *GetName(char *buf=NULL, UInt32 maxlen=0);
@@ -99,16 +100,24 @@ public:
         return currentNominalSR;
     }
 
-    AudioDeviceID ID()
+    AudioObjectID ID()
     {
         return mID;
     }
 
-    static AudioDevice *GetDefaultDevice(Boolean forInput, OSStatus &err, AudioDevice *dev=NULL);
-    static AudioDevice *GetDevice(AudioDeviceID devId, Boolean forInput, AudioDevice *dev=NULL, Boolean quick=false);
+    bool isDefaultDevice()
+    {
+        return mDefaultDevice;
+    }
+    void setDefaultDevice(bool isDefault)
+    {
+        mDefaultDevice = isDefault;
+    }
+
+    static AudioDevice *GetDefaultDevice(bool forInput, OSStatus &err, AudioDevice *dev=NULL);
+    static AudioDevice *GetDevice(AudioObjectID devId, bool forInput, AudioDevice *dev=NULL, bool quick=false);
 
 protected:
-    AudioDevice(AudioDeviceID devid, bool quick, bool isInput);
     AudioStreamBasicDescription mInitialFormat;
     AudioPropertyListenerProc listenerProc;
     OSStatus GetPropertyDataSize( AudioObjectPropertySelector property, UInt32 *size, AudioObjectPropertyAddress *propertyAddress=NULL );
@@ -117,7 +126,7 @@ protected:
     UInt32 nominalSampleRates;
     Float64 *nominalSampleRateList = NULL;
     bool discreteSampleRateList;
-    const AudioDeviceID mID;
+    const AudioObjectID mID;
     const bool mForInput;
     UInt32 mSafetyOffset;
     UInt32 mBufferSizeFrames;
@@ -125,6 +134,7 @@ protected:
     char mDevName[256] = "";
 
     bool mInitialised = false;
+    bool mDefaultDevice = false;
 private:
     bool gettingDevName = false;
 
