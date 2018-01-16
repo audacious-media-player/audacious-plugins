@@ -71,7 +71,7 @@ static Float64 supportedSRateList[] = {6400, 8000, 11025, 12000, 16000, 22050,
                                       };
 static UInt32 supportedSRates = sizeof(supportedSRateList) / sizeof(Float64);
 
-#ifdef DEPRECATED_LISTENER_API
+#if DEPRECATED_LISTENER_API
 
 OSStatus DefaultListener(AudioDeviceID inDevice, UInt32 inChannel, Boolean forInput,
                          AudioDevicePropertyID inPropertyID,
@@ -107,7 +107,7 @@ OSStatus DefaultListener(AudioDeviceID inDevice, UInt32 inChannel, Boolean forIn
             }
             break;
         default:
-            if ((dev && !dev->listenerSilentFor)) {
+            /*if ((dev && !dev->listenerSilentFor))*/ {
                 NSLog(msg);
             }
             break;
@@ -200,10 +200,17 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
     listenerProc = lProc;
     listenerSilentFor = 0;
     if (lProc) {
-#ifdef DEPRECATED_LISTENER_API
-        AudioDeviceAddPropertyListener(mID, 0, false, kAudioDevicePropertyActualSampleRate, lProc, this);
-        AudioDeviceAddPropertyListener(mID, 0, false, kAudioDevicePropertyNominalSampleRate, lProc, this);
-        AudioDeviceAddPropertyListener(mID, 0, false, kAudioHardwarePropertyDefaultOutputDevice, lProc, this);
+#if DEPRECATED_LISTENER_API
+        AUDDBG ("Installing CoreAudio listener procedure (legacy mode).\n");
+        if ((err = AudioDeviceAddPropertyListener(mID, 0, false, kAudioDevicePropertyActualSampleRate, lProc, this)) != noErr) {
+            AUDERR ("Couldn't register property listener for actual sample rate: %d (%s)", err, OSTStr(err));
+        }
+        if ((err = AudioDeviceAddPropertyListener(mID, 0, false, kAudioDevicePropertyNominalSampleRate, lProc, this)) != noErr) {
+            AUDERR ("Couldn't register property listener for nominal sample rate: %d (%s)", err, OSTStr(err));
+        }
+        if ((err = AudioDeviceAddPropertyListener(mID, 0, false, kAudioHardwarePropertyDefaultOutputDevice, lProc, this)) != noErr) {
+            AUDERR ("Couldn't register property listener for selected default device: %d (%s)", err, OSTStr(err));
+        }
 #else
         AudioObjectPropertyAddress prop = { kAudioDevicePropertyActualSampleRate,
                                             kAudioObjectPropertyScopeGlobal,
@@ -240,6 +247,7 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
         if (propsize == 0) {
             propsize = 100 * sizeof(AudioValueRange);
         }
+        AUDWARN ("Allocating %u bytes for sampling rates property\n", propsize);
         if ((list = (AudioValueRange *) calloc(1, propsize))) {
             // this can be slow too, but we cannot really do a background lookup.
 //             fprintf(stderr, "Fetching %d nomrates\n", propsize/sizeof(AudioValueRange)); fflush(stderr);
@@ -248,9 +256,8 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
             if (err == noErr) {
                 UInt32 i;
                 NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-                NSMutableArray *a = [NSMutableArray arrayWithCapacity:nominalSampleRates];
                 nominalSampleRates = propsize / sizeof(AudioValueRange);
-                a = [NSMutableArray arrayWithCapacity:nominalSampleRates];
+                NSMutableArray *a = [NSMutableArray arrayWithCapacity:nominalSampleRates];
                 minNominalSR = list[0].mMinimum;
                 maxNominalSR = list[0].mMaximum;
                 // store the returned sample rates in [a] and record the extreme values
@@ -363,7 +370,7 @@ AudioDevice::~AudioDevice()
                     (unsigned int) mID, GetName(), OSTStr(err), (long) err);
         }
         if (listenerProc) {
-#ifdef DEPRECATED_LISTENER_API
+#if DEPRECATED_LISTENER_API
             AudioDeviceRemovePropertyListener(mID, 0, false, kAudioDevicePropertyActualSampleRate, listenerProc);
             AudioDeviceRemovePropertyListener(mID, 0, false, kAudioDevicePropertyNominalSampleRate, listenerProc);
             AudioDeviceRemovePropertyListener(mID, 0, false, kAudioHardwarePropertyDefaultOutputDevice, listenerProc);

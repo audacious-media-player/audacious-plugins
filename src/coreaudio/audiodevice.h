@@ -55,12 +55,12 @@
 
 #ifndef DEPRECATED_LISTENER_API
 #	if !(defined(MAC_OS_X_VERSION_10_11) && MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_11)
-#		define DEPRECATED_LISTENER_API
+#		define DEPRECATED_LISTENER_API 1
 #		warning "Using the deprecated PropertyListener API; at least it works"
 #	endif
 #endif
 
-#ifdef DEPRECATED_LISTENER_API
+#if DEPRECATED_LISTENER_API
 using AudioPropertyListenerProc = AudioDevicePropertyListenerProc;
 #else
 using AudioPropertyListenerProc = AudioObjectPropertyListenerProc;
