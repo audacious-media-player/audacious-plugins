@@ -92,8 +92,8 @@ void StatusBar::log_handler (audlog::Level level, const char * file, int line,
 {
     tiny_lock (& message_lock);
 
-    /* do not replace a message of same or higher priority */
-    if (level <= current_message_level)
+    /* do not replace a message of higher priority, or non-critical same-level message */
+    if (level <= current_message_level && level < audlog::Warning)
     {
         tiny_unlock (& message_lock);
         return;
