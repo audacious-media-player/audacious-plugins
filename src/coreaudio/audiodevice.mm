@@ -107,7 +107,7 @@ OSStatus DefaultListener(AudioDeviceID inDevice, UInt32 inChannel, Boolean forIn
             }
             break;
         default:
-            /*if ((dev && !dev->listenerSilentFor))*/ {
+            if ((dev && !dev->listenerSilentFor)) {
                 NSLog(msg);
             }
             break;
@@ -208,7 +208,7 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
         if ((err = AudioDeviceAddPropertyListener(mID, 0, false, kAudioDevicePropertyNominalSampleRate, lProc, this)) != noErr) {
             AUDERR ("Couldn't register property listener for nominal sample rate: %d (%s)", err, OSTStr(err));
         }
-        if ((err = AudioDeviceAddPropertyListener(mID, 0, false, kAudioHardwarePropertyDefaultOutputDevice, lProc, this)) != noErr) {
+        if ((err = AudioDeviceAddPropertyListener(kAudioObjectSystemObject, 0, false, kAudioHardwarePropertyDefaultOutputDevice, lProc, this)) != noErr) {
             AUDERR ("Couldn't register property listener for selected default device: %d (%s)", err, OSTStr(err));
         }
 #else
@@ -224,7 +224,7 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
             AUDERR ("Couldn't register property listener for nominal sample rate: %d (%s)", err, OSTStr(err));
         }
         prop.mElement = kAudioHardwarePropertyDefaultOutputDevice;
-        if ((err = AudioObjectAddPropertyListener(mID, &prop, lProc, this)) != noErr) {
+        if ((err = AudioObjectAddPropertyListener(kAudioObjectSystemObject, &prop, lProc, this)) != noErr) {
             AUDERR ("Couldn't register property listener for selected default device: %d (%s)", err, OSTStr(err));
         }
 #endif
@@ -247,7 +247,6 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
         if (propsize == 0) {
             propsize = 100 * sizeof(AudioValueRange);
         }
-        AUDWARN ("Allocating %u bytes for sampling rates property\n", propsize);
         if ((list = (AudioValueRange *) calloc(1, propsize))) {
             // this can be slow too, but we cannot really do a background lookup.
 //             fprintf(stderr, "Fetching %d nomrates\n", propsize/sizeof(AudioValueRange)); fflush(stderr);
@@ -373,7 +372,7 @@ AudioDevice::~AudioDevice()
 #if DEPRECATED_LISTENER_API
             AudioDeviceRemovePropertyListener(mID, 0, false, kAudioDevicePropertyActualSampleRate, listenerProc);
             AudioDeviceRemovePropertyListener(mID, 0, false, kAudioDevicePropertyNominalSampleRate, listenerProc);
-            AudioDeviceRemovePropertyListener(mID, 0, false, kAudioHardwarePropertyDefaultOutputDevice, listenerProc);
+            AudioDeviceRemovePropertyListener(kAudioObjectSystemObject, 0, false, kAudioHardwarePropertyDefaultOutputDevice, listenerProc);
 #else
             AudioObjectPropertyAddress prop = { kAudioDevicePropertyActualSampleRate,
                                                 kAudioObjectPropertyScopeGlobal,
@@ -383,7 +382,7 @@ AudioDevice::~AudioDevice()
             prop.mElement = kAudioDevicePropertyNominalSampleRate;
             verify_noerr(AudioObjectRemovePropertyListener(mID, &prop, listenerProc, this));
             prop.mElement = kAudioHardwarePropertyDefaultOutputDevice;
-            verify_noerr(AudioObjectRemovePropertyListener(mID, &prop, listenerProc, this));
+            verify_noerr(AudioObjectRemovePropertyListener(kAudioObjectSystemObject, &prop, listenerProc, this));
 #endif
         }
         if (nominalSampleRateList) {
