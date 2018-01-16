@@ -216,6 +216,10 @@ bool CoreAudioPlugin::init ()
             delete coreAudioDevice;
         }
         coreAudioDevice = AudioDevice::GetDevice(defaultOutputDeviceID, false, coreAudioDevice, true);
+        // we use the quick mode which skips initialisation; cache the device name (in AudioDevice)
+        // using an immediate, blocking look-up.
+        char devName[256];
+        coreAudioDevice->GetName(devName, 256);
 
         if (aud_get_bool ("coreaudio", "bitperfect_mode"))
         {
@@ -376,7 +380,8 @@ bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_, String & err
     {
         if (!caDeviceInitialised)
         {
-            AUDINFO ("Preparing CoreAudio device %s for bitperfect output\n", coreAudioDevice->GetName());
+            // use the warning loglevel to inform the user this operation can take a while (up to a few seconds)
+            AUDWARN ("Preparing the \"%s\" for bitperfect output (this can take a moment)\n", coreAudioDevice->GetName());
             coreAudioDevice->Init();
             caDeviceInitialised = true;
         }
@@ -400,6 +405,8 @@ void CoreAudioPlugin::close_audio ()
     AudioOutputUnitStop (output_instance);
 
     if (coreAudioDevice) {
+        // always restore the device samplerate when we're done playing
+        // (it's a noop when there's nothing to reset)
         coreAudioDevice->ResetNominalSampleRate();
     }
 
