@@ -73,7 +73,7 @@ static UInt32 supportedSRates = sizeof(supportedSRateList) / sizeof(Float64);
 
 #if DEPRECATED_LISTENER_API
 
-OSStatus DefaultListener(AudioDeviceID inDevice, UInt32 inChannel, Boolean forInput,
+OSStatus DefaultListener(AudioObjectID inDevice, UInt32 inChannel, Boolean forInput,
                          AudioDevicePropertyID inPropertyID,
                          void *inClientData)
 {
@@ -81,8 +81,10 @@ OSStatus DefaultListener(AudioDeviceID inDevice, UInt32 inChannel, Boolean forIn
     Float64 sampleRate;
     AudioDevice *dev = (AudioDevice *) inClientData;
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSString *msg = [NSString stringWithFormat:@"Property %s of device %u changed; data=%p",
-                     OSTStr((OSType)inPropertyID), (unsigned int)inDevice, inClientData ];
+    NSString *msg = [NSString stringWithFormat:@"Property %s for %s device %u changed; data=%p",
+                     OSTStr((OSType)inPropertyID),
+                     forInput ? "input from" : "output to",
+                     (unsigned int)inDevice, inClientData ];
     AudioObjectPropertyAddress theAddress = { inPropertyID,
                                               forInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,
                                               kAudioObjectPropertyElementMaster
@@ -106,6 +108,26 @@ OSStatus DefaultListener(AudioDeviceID inDevice, UInt32 inChannel, Boolean forIn
                 }
             }
             break;
+        case kAudioHardwarePropertyDefaultOutputDevice:
+            if (dev) {
+                if (dev->isDefaultDevice()) {
+                    UInt32 propsize;
+                    AudioObjectID defaultDeviceID;
+
+                    propsize = sizeof(AudioObjectID);
+                    AudioObjectPropertyAddress theAddress = {
+                        forInput ? kAudioHardwarePropertyDefaultInputDevice : kAudioHardwarePropertyDefaultOutputDevice,
+                        kAudioObjectPropertyScopeGlobal,
+                        kAudioObjectPropertyElementMaster
+                    };
+                    if (AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, &defaultDeviceID) == noErr) {
+                        if (dev->ID() != defaultDeviceID) {
+                            NSLog(@"Default device changed from %d to %d", dev->ID(), defaultDeviceID);
+                        }
+                    }
+                }
+            }
+            // fallthrough
         default:
             if ((dev && !dev->listenerSilentFor)) {
                 NSLog(msg);
@@ -153,6 +175,26 @@ static OSStatus DefaultListener(AudioObjectID inObjectID, UInt32 inNumberPropert
                     }
                 }
                 break;
+        case kAudioHardwarePropertyDefaultOutputDevice:
+            if (dev) {
+                if (dev->isDefaultDevice()) {
+                    UInt32 propsize;
+                    AudioObjectID defaultDeviceID;
+
+                    propsize = sizeof(AudioObjectID);
+                    AudioObjectPropertyAddress theAddress = {
+                        forInput ? kAudioHardwarePropertyDefaultInputDevice : kAudioHardwarePropertyDefaultOutputDevice,
+                        kAudioObjectPropertyScopeGlobal,
+                        kAudioObjectPropertyElementMaster
+                    };
+                    if (AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, &defaultDeviceID) == noErr) {
+                        if (dev->ID() != defaultDeviceID) {
+                            NSLog(@"Default device changed from %d to %d", dev->ID(), defaultDeviceID);
+                        }
+                    }
+                }
+            }
+            // fallthrough
             default:
                 if ((dev && !dev->listenerSilentFor)) {
                     NSLog(msg);
@@ -331,14 +373,14 @@ AudioDevice::AudioDevice()
     listenerProc = NULL;
 }
 
-AudioDevice::AudioDevice(AudioDeviceID devid, bool forInput)
+AudioDevice::AudioDevice(AudioObjectID devid, bool forInput)
     : mID(devid)
     , mForInput(forInput)
 {
     Init(DefaultListener);
 }
 
-AudioDevice::AudioDevice(AudioDeviceID devid, bool quick, bool forInput)
+AudioDevice::AudioDevice(AudioObjectID devid, bool quick, bool forInput)
     : mID(devid)
     , mForInput(forInput)
 {
@@ -349,7 +391,7 @@ AudioDevice::AudioDevice(AudioDeviceID devid, bool quick, bool forInput)
     }*/
 }
 
-AudioDevice::AudioDevice(AudioDeviceID devid, AudioPropertyListenerProc lProc, bool forInput)
+AudioDevice::AudioDevice(AudioObjectID devid, AudioPropertyListenerProc lProc, bool forInput)
     : mID(devid)
     , mForInput(forInput)
 {
@@ -360,9 +402,9 @@ AudioDevice::~AudioDevice()
 {
     if (mID != kAudioDeviceUnknown && mInitialised) {
         OSStatus err;
-		AudioDeviceID devId = mID;
+        AudioObjectID devId = mID;
         // RJVB 20120902: setting the StreamFormat to the initially read values will set the channel bitdepth to 16??
-		// so we reset just the nominal sample rate.
+        // so we reset just the nominal sample rate.
         err = SetNominalSampleRate(mInitialFormat.mSampleRate);
         if (err != noErr) {
             AUDERR ("Cannot reset initial settings for device %u (%s): err %s, %ld\n",
@@ -493,7 +535,7 @@ inline Float64 AudioDevice::ClosestNominalSampleRate(Float64 sampleRate)
     return sampleRate;
 }
 
-OSStatus AudioDevice::SetNominalSampleRate(Float64 sampleRate, Boolean force)
+OSStatus AudioDevice::SetNominalSampleRate(Float64 sampleRate, bool force)
 {
     UInt32 size = sizeof(Float64);
     OSStatus err;
@@ -523,7 +565,7 @@ OSStatus AudioDevice::SetNominalSampleRate(Float64 sampleRate, Boolean force)
 /*!
     Reset the nominal sample rate to the value found when opening the device
  */
-OSStatus AudioDevice::ResetNominalSampleRate(Boolean force)
+OSStatus AudioDevice::ResetNominalSampleRate(bool force)
 {
     UInt32 size = sizeof(Float64);
     Float64 sampleRate = mInitialFormat.mSampleRate;
@@ -630,12 +672,12 @@ char *AudioDevice::GetName(char *buf, UInt32 maxlen)
     }
 }
 
-AudioDevice *AudioDevice::GetDefaultDevice(Boolean forInput, OSStatus &err, AudioDevice *dev)
+AudioDevice *AudioDevice::GetDefaultDevice(bool forInput, OSStatus &err, AudioDevice *dev)
 {
     UInt32 propsize;
-    AudioDeviceID defaultDeviceID;
+    AudioObjectID defaultDeviceID;
 
-    propsize = sizeof(AudioDeviceID);
+    propsize = sizeof(AudioObjectID);
     AudioObjectPropertyAddress theAddress = {
         forInput ? kAudioHardwarePropertyDefaultInputDevice : kAudioHardwarePropertyDefaultOutputDevice,
         kAudioObjectPropertyScopeGlobal,
@@ -651,24 +693,23 @@ AudioDevice *AudioDevice::GetDefaultDevice(Boolean forInput, OSStatus &err, Audi
             }
         }
         dev = new AudioDevice(defaultDeviceID, forInput);
+        dev->mDefaultDevice = true;
     }
 bail:
     ;
     return dev;
 }
 
-AudioDevice *AudioDevice::GetDevice(AudioDeviceID devId, Boolean forInput, AudioDevice *dev, Boolean quick)
+AudioDevice *AudioDevice::GetDevice(AudioObjectID devId, bool forInput, AudioDevice *dev, bool quick)
 {
     if (dev) {
         if (dev->ID() != devId) {
             delete dev;
         } else {
-            goto bail;
+            return dev;
         }
     }
     dev = new AudioDevice(devId, quick, forInput);
-bail:
-    ;
     return dev;
 }
 
