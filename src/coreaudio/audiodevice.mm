@@ -605,6 +605,9 @@ char *AudioDevice::GetName(char *buf, UInt32 maxlen)
     if (buf != mDevName) {
         // fetching the device name to a user-provided buffer: let him/her wait.
         verify_noerr(AudioObjectGetPropertyData(mID, &theAddress, 0, NULL, &maxlen, buf));
+        if (maxlen) {
+            strncpy(mDevName, buf, sizeof(mDevName)/sizeof(char));
+        }
         return buf;
     } else {
         // the name lookup can take a while. Use GCD to run it in the background.
