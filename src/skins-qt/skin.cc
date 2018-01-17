@@ -30,6 +30,7 @@
 
 #include <glib.h>
 #include <QPainter>
+#include <QHash>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
@@ -472,6 +473,23 @@ QFont * qfont_from_string (const char * name)
     QFont::Weight weight = QFont::Normal;
     QFont::Style style = QFont::StyleNormal;
     QFont::Stretch stretch = QFont::Unstretched;
+    static QHash<const char*, QFont::Weight> weightMap = {
+        {"Light", QFont::Light},
+        {"Regular", QFont::Normal},
+        {"Normal", QFont::Normal},
+        {"Roman", QFont::Normal},
+        {"Medium", QFont::Medium},
+        {"DemiBold", QFont::DemiBold},
+        {"Bold", QFont::Bold}
+    };
+    static QHash<const char*, QFont::Style> styleMap = {
+        {"Oblique", QFont::StyleOblique},
+        {"Italic", QFont::StyleItalic}
+    };
+    static QHash<const char*, QFont::Stretch> stretchMap = {
+        {"Condensed", QFont::Condensed},
+        {"Expanded", QFont::Expanded},
+    };
 
     while (1)
     {
@@ -488,18 +506,12 @@ QFont * qfont_from_string (const char * name)
 
             if (num > 0)
                 size = num;
-            else if (! strcmp (attr, "Light"))
-                weight = QFont::Light;
-            else if (! strcmp (attr, "Bold"))
-                weight = QFont::Bold;
-            else if (! strcmp (attr, "Oblique"))
-                style = QFont::StyleOblique;
-            else if (! strcmp (attr, "Italic"))
-                style = QFont::StyleItalic;
-            else if (! strcmp (attr, "Condensed"))
-                stretch = QFont::Condensed;
-            else if (! strcmp (attr, "Expanded"))
-                stretch = QFont::Expanded;
+            else if (weightMap.contains(attr))
+                weight = weightMap[attr];
+            else if (styleMap.contains(attr))
+                style = styleMap[attr];
+            else if (stretchMap.contains(attr))
+                stretch = stretchMap[attr];
             else
                 attr_found = false;
         }
