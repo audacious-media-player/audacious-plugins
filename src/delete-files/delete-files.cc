@@ -76,105 +76,154 @@ static GtkWidget * dialog = nullptr;
 static QMessageBox * qdialog = nullptr;
 #endif
 
-static void move_to_trash (const char * filename)
+static bool delete_uri (const char * uri, bool use_trash)
 {
-    GFile * gfile = g_file_new_for_path (filename);
+    GFile * gfile = g_file_new_for_uri (uri);
     GError * gerror = nullptr;
 
-    if (! g_file_trash (gfile, nullptr, & gerror))
+    bool success = use_trash ?
+     g_file_trash (gfile, nullptr, & gerror) :
+     g_file_delete (gfile, nullptr, & gerror);
+
+    if (! success)
     {
-        aud_ui_show_error (str_printf (_("Error moving %s to trash: %s."),
-         filename, gerror->message));
+        aud_ui_show_error (gerror->message);
         g_error_free (gerror);
     }
 
     g_object_unref ((GObject *) gfile);
+    return success;
 }
 
-static void really_delete (const char * filename)
+class DeleteOperation
 {
-    if (g_unlink (filename) < 0)
-        aud_ui_show_error (str_printf (_("Error deleting %s: %s."), filename, strerror (errno)));
-}
-
-static void confirm_delete ()
-{
-    Index<String> files;
-
-    auto playlist = Playlist::active_playlist ();
-    int entry_count = playlist.n_entries ();
-
-    for (int i = 0; i < entry_count; i ++)
+public:
+    DeleteOperation (Playlist playlist) :
+        m_playlist (playlist),
+        m_use_trash (aud_get_bool ("delete_files", "use_trash"))
     {
-        if (playlist.entry_selected (i))
-            files.append (playlist.entry_filename (i));
+        int num_entries = playlist.n_entries ();
+        for (int i = 0; i < num_entries; i ++)
+        {
+            if (playlist.entry_selected (i))
+                m_files.append (playlist.entry_filename (i));
+        }
     }
 
-    playlist.remove_selected ();
-
-    for (const String & uri : files)
+    StringBuf prompt () const
     {
-        StringBuf filename = uri_to_filename (uri);
+        StringBuf buf;
 
-        if (filename)
+        if (! m_files.len ())
         {
-            if (aud_get_bool ("delete_files", "use_trash"))
-                move_to_trash (filename);
-            else
-                really_delete (filename);
+            buf.insert (-1, _("No files are selected."));
+        }
+        else if (m_files.len () == 1)
+        {
+            const char * format = m_use_trash ?
+             _("Do you want to move %s to the trash?") :
+             _("Do you want to permanently delete %s?");
+            StringBuf display = uri_to_display (m_files[0]);
+            str_append_printf (buf, format, (const char *) display);
         }
         else
-            aud_ui_show_error (str_printf
-             (_("Error deleting %s: not a local file."), (const char *) uri));
+        {
+            const char * format = m_use_trash ?
+             _("Do you want to move %d files to the trash?") :
+             _("Do you want to permanently delete %d files?");
+            str_append_printf (buf, format, m_files.len ());
+        }
+
+        return buf;
     }
-}
+
+    const char * action () const
+    {
+        if (! m_files.len ())
+            return nullptr;
+
+        return m_use_trash ? _("Move to trash") : _("Delete");
+    }
+
+    const char * icon () const
+    {
+        if (! m_files.len ())
+            return nullptr;
+
+        return m_use_trash ? "user-trash" : "edit-delete";
+    }
+
+    void run () const
+    {
+        Index<String> deleted;
+
+        for (auto & uri: m_files)
+        {
+            if (delete_uri (uri, m_use_trash))
+                deleted.append (uri);
+        }
+
+        deleted.sort (strcmp);
+
+        /* make sure selection matches what we actually deleted */
+        int num_entries = m_playlist.n_entries ();
+        for (int i = 0; i < num_entries; i++)
+        {
+            int j = deleted.bsearch (m_playlist.entry_filename (i), strcmp);
+            m_playlist.select_entry (i, (j >= 0));
+        }
+
+        m_playlist.remove_selected ();
+    }
+
+private:
+    const Playlist m_playlist;
+    const bool m_use_trash;
+    Index<String> m_files;
+};
 
 static void start_delete ()
 {
-    const char * message, * action, * icon;
+    auto op = new DeleteOperation (Playlist::active_playlist ());
 
-    if (aud_get_bool ("delete_files", "use_trash"))
+    StringBuf prompt = op->prompt ();
+    const char * action = op->action ();
+    const char * icon = op->icon ();
+
+    if (! action)
     {
-        message = _("Do you want to move the selected files to the trash?");
-        action = _("Move to Trash");
-        icon = "user-trash";
-    }
-    else
-    {
-        message = _("Do you want to permanently delete the selected files?");
-        action = _("Delete");
-        icon = "edit-delete";
+        aud_ui_show_error (prompt);
+        delete op;
+        return;
     }
 
 #ifdef USE_GTK
     if (aud_get_mainloop_type () == MainloopType::GLib)
     {
         if (dialog)
-        {
-            gtk_window_present ((GtkWindow *) dialog);
-            return;
-        }
+            gtk_widget_destroy (dialog);
 
-        auto button1 = audgui_button_new (action, icon, (AudguiCallback) confirm_delete, nullptr);
+        auto run_cb = aud::obj_member<DeleteOperation, & DeleteOperation::run>;
+        auto button1 = audgui_button_new (action, icon, run_cb, op);
         auto button2 = audgui_button_new (_("Cancel"), "process-stop", nullptr, nullptr);
 
-        dialog = audgui_dialog_new (GTK_MESSAGE_QUESTION, _("Delete Files"), message, button1, button2);
+        dialog = audgui_dialog_new (GTK_MESSAGE_QUESTION, _("Delete Files"), prompt, button1, button2);
 
         g_signal_connect (dialog, "destroy", (GCallback) gtk_widget_destroyed, & dialog);
+        g_signal_connect_swapped (dialog, "destroy", (GCallback) aud::delete_obj<DeleteOperation>, op);
         gtk_widget_show_all (dialog);
     }
 #endif
 #ifdef USE_QT
     if (aud_get_mainloop_type () == MainloopType::Qt)
     {
-        if (qdialog)
-            return;
+        delete qdialog;
 
         qdialog = new QMessageBox;
         qdialog->setAttribute (Qt::WA_DeleteOnClose);
         qdialog->setIcon (QMessageBox::Question);
         qdialog->setWindowTitle (_("Delete Files"));
-        qdialog->setText (message);
+        qdialog->setText ((const char *) prompt);
 
         auto remove = new QPushButton (action, qdialog);
         auto cancel = new QPushButton (_("Cancel"), qdialog);
@@ -185,9 +234,12 @@ static void start_delete ()
         qdialog->addButton (remove, QMessageBox::AcceptRole);
         qdialog->addButton (cancel, QMessageBox::RejectRole);
 
-        QObject::connect (remove, & QPushButton::clicked, confirm_delete);
-        QObject::connect (qdialog, & QObject::destroyed, [] () {
+        QObject::connect (remove, & QPushButton::clicked, [op] () {
+            op->run ();
+        });
+        QObject::connect (qdialog, & QObject::destroyed, [op] () {
             qdialog = nullptr;
+            delete op;
         });
 
         qdialog->show ();
