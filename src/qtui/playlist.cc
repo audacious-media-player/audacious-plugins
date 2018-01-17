@@ -60,6 +60,7 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, Playlist playlist) :
 
     updateSettings ();
     header->updateColumns ();
+    setSortingEnabled (true);
 
     /* get initial selection and focus from core */
     inUpdate = true;

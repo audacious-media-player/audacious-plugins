@@ -133,6 +133,8 @@ PlaylistHeader::PlaylistHeader (PlaylistWidget * playlist) :
 
     setSectionsMovable (true);
     setStretchLastSection (true);
+    setSectionsClickable (true);
+    setSortIndicatorShown (true);
 
     connect (this, & QHeaderView::sectionResized, this, & PlaylistHeader::sectionResized);
     connect (this, & QHeaderView::sectionMoved, this, & PlaylistHeader::sectionMoved);
