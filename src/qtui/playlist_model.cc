@@ -117,6 +117,7 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
     switch (role)
     {
     case Qt::DisplayRole:
+    case Qt::ToolTipRole:
         if (s_fields[col] != Tuple::Invalid)
         {
             tuple = m_playlist.entry_tuple (index.row (), Playlist::NoWait);
