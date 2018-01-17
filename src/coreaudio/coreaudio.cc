@@ -35,6 +35,7 @@
 #include <libaudcore/ringbuf.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/preferences.h>
+#include <libaudcore/drct.h>
 
 #include <CoreAudio/CoreAudio.h>
 #include <AudioUnit/AudioUnit.h>
@@ -61,6 +62,7 @@ public:
 
     bool init ();
     void cleanup ();
+    void handle_new_default_device(AudioObjectID newID);
 
     StereoVolume get_volume ();
     void set_volume (StereoVolume vol);
@@ -78,7 +80,14 @@ public:
 
 protected:
     static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
+    static OSStatus callback_noop (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData)
+    {
+        return notOpenErr;
+    }
+
     void check_started ();
+
+    bool set_device_samplerate(Float64 rate = 0.0);
     AudioDevice *coreAudioDevice = nullptr;
     bool caDeviceInitialised = false;
 };
@@ -90,6 +99,15 @@ EXPORT CoreAudioPlugin aud_plugin_instance;
 #define error(...) do { \
     aud_ui_show_error (str_printf ("CoreAudio error: " __VA_ARGS__)); \
 } while (0)
+
+static void callDefaultDeviceChangeHandler(AudioObjectID newID, void *data)
+{
+    CoreAudioPlugin *cap = static_cast<CoreAudioPlugin*>(data);
+    if (cap)
+    {
+        cap->handle_new_default_device(newID);
+    }
+}
 
 struct AudioUnitFormatDescriptionMap {
     int aud_format;
@@ -126,7 +144,8 @@ static int block_delay = 0;
 static struct timeval block_time = {0, 0};
 
 static AudioComponent output_comp = nullptr;
-static AudioComponentInstance output_instance = nullptr;
+// static AudioComponentInstance output_instance = nullptr;
+static AudioUnit output_instance = nullptr;
 
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
@@ -135,7 +154,10 @@ static bool is_exclusive = false;
 
 const char CoreAudioPlugin::about[] =
     N_("CoreAudio Output Plugin for Audacious\n"
-       "Copyright 2014 William Pitcock\n\n"
+       "Copyright 2014 William Pitcock\n"
+       "Copyright 2017,18 René J.V. Bertin\n"
+       " (original code and code adapted from\n"
+       "  Apple examples, (C) Apple 2013)\n\n"
        "Based on SDL Output Plugin for Audacious\n"
        "Copyright 2010 John Lindgren");
 
@@ -217,14 +239,13 @@ bool CoreAudioPlugin::init ()
         coreAudioDevice = AudioDevice::GetDevice(defaultOutputDeviceID, false, coreAudioDevice, true);
         if (coreAudioDevice != NULL)
         {
+            coreAudioDevice->installDefaultDeviceChangeHandler(callDefaultDeviceChangeHandler, static_cast<void*>(this));
             coreAudioDevice->setDefaultDevice(true);
-            // we use the quick mode which skips initialisation; cache the device name (in AudioDevice)
-            // using an immediate, blocking look-up.
-            char devName[256];
-            coreAudioDevice->GetName(devName, 256);
 
-            AUDINFO ("Using default output device %p #%d=\"%s\".\n",
-                     coreAudioDevice, defaultOutputDeviceID, coreAudioDevice->GetName());
+            set_device_samplerate();
+
+            AUDINFO ("Using default output device #%d=\"%s\" (%p).\n",
+                     defaultOutputDeviceID, coreAudioDevice->GetName(), coreAudioDevice);
         }
         else
             AUDERR ("Failed to obtain a handle on the default device (%p)\n", coreAudioDevice);
@@ -233,6 +254,85 @@ bool CoreAudioPlugin::init ()
         AUDERR ("Failed to obtain the default device ID (%d) (no bitperfect audio).\n", err);
 
     return 1;
+}
+
+// combined initialisation and rate-setter:
+// initialises the CoreAudio device handle if not yet done
+// @p rate <= 0 : reset the device sampling rate unless the handle was NOT initialised
+// @p rate > 0 : set the device sampling rate after initialisation.
+bool CoreAudioPlugin::set_device_samplerate(Float64 rate)
+{
+    bool ret = false;
+    if (coreAudioDevice)
+    {
+        if (!caDeviceInitialised)
+        {
+            // use the warning loglevel to inform the user this operation can take a while (up to a few seconds)
+            AUDWARN ("Preparing the \"%s\" for bitperfect output (this can take a moment)\n", coreAudioDevice->GetName());
+            coreAudioDevice->Init();
+            caDeviceInitialised = true;
+        }
+        else if (rate <= 0)
+        {
+            coreAudioDevice->ResetNominalSampleRate();
+        }
+        ret = coreAudioDevice->SetNominalSampleRate(rate) == noErr;
+    }
+    return ret;
+}
+
+void CoreAudioPlugin::handle_new_default_device(AudioObjectID newID)
+{
+    int currentPosition = aud_drct_get_position();
+    int currentTime = aud_drct_get_time();
+
+    aud_drct_stop();
+
+    Float64 rate = 0;
+    if (coreAudioDevice)
+    {
+        if (coreAudioDevice->NominalSampleRate(rate) != noErr)
+        {
+            rate = coreAudioDevice->CurrentNominalSampleRate();
+        }
+    }
+
+    AURenderCallbackStruct input = { callback_noop, nullptr };
+    AudioUnitSetProperty (output_instance, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, & input, sizeof input);
+    AudioUnitReset(output_instance, kAudioUnitScope_Global, 0);
+
+    cleanup();
+
+    AudioComponentInstanceDispose(output_instance);
+    output_instance = nullptr;
+    caDeviceInitialised = false;
+
+    init();
+    if (currentPosition > 0 && currentTime > 0)
+    {
+        dispatch_block_t restart_playback = ^{
+            aud_drct_play();
+            aud_drct_seek(currentTime);
+        };
+        if (coreAudioDevice && rate > 0 && aud_get_bool ("coreaudio", "bitperfect_mode"))
+        {
+            // set the rate before starting playback to avoid hickups
+            AUDDBG ("Setting device to content's samplerate %gHz\n", rate);
+            set_device_samplerate(rate);
+            // give the device some time, again to avoid a hickup. A lossless
+            // playback gap is less annoying than a stutter to my ears.
+            // We use GCD to avoid a blocking wait (even if 400ms is hardly
+            // noticeable when you're busy switching the default output device
+            // via a system utility).
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC),
+                           dispatch_get_main_queue(), restart_playback);
+        }
+        else
+        {
+            // playback can be started immediately, just invoke the block.
+            restart_playback();
+        }
+    }
 }
 
 void CoreAudioPlugin::cleanup ()
@@ -379,16 +479,10 @@ bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_, String & err
             is_exclusive = true;
     }
 
-    if (coreAudioDevice && aud_get_bool ("coreaudio", "bitperfect_mode"))
+    if (coreAudioDevice && aud_get_bool ("coreaudio", "bitperfect_mode") && rate != coreAudioDevice->CurrentNominalSampleRate())
     {
-        if (!caDeviceInitialised)
-        {
-            // use the warning loglevel to inform the user this operation can take a while (up to a few seconds)
-            AUDWARN ("Preparing the \"%s\" for bitperfect output (this can take a moment)\n", coreAudioDevice->GetName());
-            coreAudioDevice->Init();
-            caDeviceInitialised = true;
-        }
-        coreAudioDevice->SetNominalSampleRate(rate);
+        AUDDBG ("Setting device to content's samplerate %dHz\n", rate);
+        set_device_samplerate(Float64(rate));
     }
 
     if (AudioOutputUnitStart (output_instance))

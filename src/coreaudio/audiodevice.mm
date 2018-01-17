@@ -122,7 +122,8 @@ OSStatus DefaultListener(AudioObjectID inDevice, UInt32 inChannel, Boolean forIn
                     };
                     if (AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, &defaultDeviceID) == noErr) {
                         if (dev->ID() != defaultDeviceID) {
-                            NSLog(@"Default device changed from %d to %d", dev->ID(), defaultDeviceID);
+                            AUDWARN ("Default device changed from %d to %d\n", dev->ID(), defaultDeviceID);
+                            dev->callDefaultDeviceChangeHandler(defaultDeviceID);
                         }
                     }
                 }
@@ -189,7 +190,7 @@ static OSStatus DefaultListener(AudioObjectID inObjectID, UInt32 inNumberPropert
                     };
                     if (AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, &defaultDeviceID) == noErr) {
                         if (dev->ID() != defaultDeviceID) {
-                            NSLog(@"Default device changed from %d to %d", dev->ID(), defaultDeviceID);
+                            AUDWARN ("Default device changed from %d to %d\n", dev->ID(), defaultDeviceID);
                         }
                     }
                 }
@@ -245,13 +246,13 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
 #if DEPRECATED_LISTENER_API
         AUDDBG ("Installing CoreAudio listener procedure (legacy mode).\n");
         if ((err = AudioDeviceAddPropertyListener(mID, 0, false, kAudioDevicePropertyActualSampleRate, lProc, this)) != noErr) {
-            AUDERR ("Couldn't register property listener for actual sample rate: %d (%s)", err, OSTStr(err));
+            AUDERR ("Couldn't register property listener for actual sample rate: %d (%s)\n", err, OSTStr(err));
         }
         if ((err = AudioDeviceAddPropertyListener(mID, 0, false, kAudioDevicePropertyNominalSampleRate, lProc, this)) != noErr) {
-            AUDERR ("Couldn't register property listener for nominal sample rate: %d (%s)", err, OSTStr(err));
+            AUDERR ("Couldn't register property listener for nominal sample rate: %d (%s)\n", err, OSTStr(err));
         }
         if ((err = AudioDeviceAddPropertyListener(kAudioObjectSystemObject, 0, false, kAudioHardwarePropertyDefaultOutputDevice, lProc, this)) != noErr) {
-            AUDERR ("Couldn't register property listener for selected default device: %d (%s)", err, OSTStr(err));
+            AUDERR ("Couldn't register property listener for selected default device: %d (%s)\n", err, OSTStr(err));
         }
 #else
         AudioObjectPropertyAddress prop = { kAudioDevicePropertyActualSampleRate,
@@ -259,15 +260,15 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
                                             kAudioObjectPropertyElementMaster
                                           };
         if ((err = AudioObjectAddPropertyListener(mID, &prop, lProc, this)) != noErr) {
-            AUDERR ("Couldn't register property listener for actual sample rate: %d (%s)", err, OSTStr(err));
+            AUDERR ("Couldn't register property listener for actual sample rate: %d (%s)\n", err, OSTStr(err));
         }
         prop.mElement = kAudioDevicePropertyNominalSampleRate;
         if ((err = AudioObjectAddPropertyListener(mID, &prop, lProc, this)) != noErr) {
-            AUDERR ("Couldn't register property listener for nominal sample rate: %d (%s)", err, OSTStr(err));
+            AUDERR ("Couldn't register property listener for nominal sample rate: %d (%s)\n", err, OSTStr(err));
         }
         prop.mElement = kAudioHardwarePropertyDefaultOutputDevice;
         if ((err = AudioObjectAddPropertyListener(kAudioObjectSystemObject, &prop, lProc, this)) != noErr) {
-            AUDERR ("Couldn't register property listener for selected default device: %d (%s)", err, OSTStr(err));
+            AUDERR ("Couldn't register property listener for selected default device: %d (%s)\n", err, OSTStr(err));
         }
 #endif
     } else {
@@ -312,6 +313,7 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
                     if (a) {
                         if (list[i].mMinimum != list[i].mMaximum) {
                             UInt32 j;
+                            AUDDBG ("device sample rate #%d is an interval: [%g,%g]\n", i, list[i].mMinimum, list[i].mMaximum);
                             discreteSampleRateList = false;
                             // the 'guessing' case: the device specifies one or more ranges, without
                             // indicating which rates in that range(s) are supported. We assume the
@@ -349,9 +351,15 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
                             nominalSampleRateList[i] = [[a objectAtIndex:i] doubleValue];
                         }
                     }
-                    NSLog(@"Using audio device %u \"%s\", %u sample rates in %u range(s); [%g,%g] %@; current sample rate %gHz",
-                          mID, GetName(), nominalSampleRates, propsize / sizeof(AudioValueRange),
-                          minNominalSR, maxNominalSR, (discreteSampleRateList) ? [a description] : @"continuous", currentNominalSR);
+                    if (discreteSampleRateList) {
+                        NSLog(@"Using audio device %u \"%s\", %u sample rates in %u range(s); [%g,%g] %@; current sample rate %gHz",
+                              mID, GetName(), nominalSampleRates, propsize / sizeof(AudioValueRange),
+                              minNominalSR, maxNominalSR, [a description], currentNominalSR);
+                    } else {
+                        NSLog(@"Using audio device %u \"%s\", %u supported sample rates in %u range(s); [%g,%g] continuous; current sample rate %gHz",
+                              mID, GetName(), nominalSampleRates, propsize / sizeof(AudioValueRange),
+                              minNominalSR, maxNominalSR, currentNominalSR);
+                    }
                 } else {
                     AUDINFO ("Using audio device %u \"%s\", %u sample rates in %u range(s); [%g,%g] %s; current sample rate %gHz",
                           mID, GetName(), nominalSampleRates, propsize / sizeof(AudioValueRange),
@@ -554,7 +562,7 @@ OSStatus AudioDevice::SetNominalSampleRate(Float64 sampleRate, bool force)
         if (err == noErr) {
             currentNominalSR = sampleRate2;
         } else {
-            AUDERR ("Failure setting device \"%s\" to %gHz: %d (%s)", GetName(), sampleRate2, err, OSTStr(err));
+            AUDERR ("Failure setting device \"%s\" to %gHz: %d (%s)\n", GetName(), sampleRate2, err, OSTStr(err));
         }
     } else {
         err = noErr;
@@ -639,36 +647,33 @@ int AudioDevice::CountChannels()
 
 char *AudioDevice::GetName(char *buf, UInt32 maxlen)
 {
-    static char fetching[] = "(Fetching)";
     if (!buf) {
-        buf = gettingDevName ? fetching : mDevName;
+        buf = mDevName;
         if (*buf) {
             return buf;
         }
+        maxlen = sizeof(mDevName) / sizeof(char);
     }
     AudioObjectPropertyAddress theAddress = { kAudioDevicePropertyDeviceName,
                                               mForInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,
                                               kAudioObjectPropertyElementMaster
                                             }; // channel
-    if (buf != mDevName) {
-        // fetching the device name to a user-provided buffer: let him/her wait.
-        verify_noerr(AudioObjectGetPropertyData(mID, &theAddress, 0, NULL, &maxlen, buf));
-        if (maxlen) {
-            strncpy(mDevName, buf, sizeof(mDevName)/sizeof(char));
-        }
-        return buf;
-    } else {
-        // the name lookup can take a while. Use GCD to run it in the background.
-        AUDDBG ("Background lookup for the name of device #%d\n", mID);
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            gettingDevName = true;
-            UInt32 len = sizeof(mDevName) / sizeof(char);
-            verify_noerr(AudioObjectGetPropertyData(mID, &theAddress, 0, NULL, &len, mDevName));
-            gettingDevName = false;
-            AUDDBG ("Got name: %s\n", mDevName);
-        });
-        AUDDBG ("Returning temp name %s\n", fetching);
-        return fetching;
+
+    verify_noerr(AudioObjectGetPropertyData(mID, &theAddress, 0, NULL, &maxlen, buf));
+
+    return buf;
+}
+
+void AudioDevice::installDefaultDeviceChangeHandler(DefaultDeviceChangeHandler *handler, void *data)
+{
+    defDeviceChangeHandler = handler;
+    defDeviceChangeHanderData = data;
+}
+
+void AudioDevice::callDefaultDeviceChangeHandler(AudioObjectID newID)
+{
+    if (defDeviceChangeHandler) {
+        (*defDeviceChangeHandler)(newID, defDeviceChangeHanderData);
     }
 }
 
