@@ -550,7 +550,7 @@ OSStatus AudioDevice::SetNominalSampleRate(Float64 sampleRate, bool force)
     if (sampleRate <= 0) {
         return paramErr;
     }
-    listenerSilentFor = 2;
+    listenerSilentFor = 3;
     Float64 sampleRate2 = ClosestNominalSampleRate(sampleRate);
     AUDINFO ("SetNominalSampleRate(%g) setting rate to %gHz", sampleRate, sampleRate2);
     if (sampleRate2 != currentNominalSR || force) {
@@ -579,7 +579,7 @@ OSStatus AudioDevice::ResetNominalSampleRate(bool force)
     Float64 sampleRate = mInitialFormat.mSampleRate;
     OSStatus err = noErr;
     if (sampleRate != currentNominalSR || force) {
-        listenerSilentFor = 2;
+        listenerSilentFor = 3;
         AudioObjectPropertyAddress theAddress = { kAudioDevicePropertyNominalSampleRate,
                                                   mForInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,
                                                   kAudioObjectPropertyElementMaster
