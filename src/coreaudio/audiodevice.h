@@ -70,6 +70,9 @@ class AudioDeviceList;
 
 class AudioDevice {
 public:
+
+    typedef void (DefaultDeviceChangeHandler)(AudioObjectID newID, void *data);
+
     AudioDevice();
     AudioDevice(AudioObjectID devid, bool isInput=false);
     AudioDevice(AudioObjectID devid, bool quick, bool isInput);
@@ -114,6 +117,9 @@ public:
         mDefaultDevice = isDefault;
     }
 
+    void installDefaultDeviceChangeHandler(DefaultDeviceChangeHandler *handler, void *data);
+    void callDefaultDeviceChangeHandler(AudioObjectID newID);
+
     static AudioDevice *GetDefaultDevice(bool forInput, OSStatus &err, AudioDevice *dev=NULL);
     static AudioDevice *GetDevice(AudioObjectID devId, bool forInput, AudioDevice *dev=NULL, bool quick=false);
 
@@ -135,6 +141,10 @@ protected:
 
     bool mInitialised = false;
     bool mDefaultDevice = false;
+
+    DefaultDeviceChangeHandler *defDeviceChangeHandler = nullptr;
+    void *defDeviceChangeHanderData = nullptr;
+
 private:
     bool gettingDevName = false;
 
