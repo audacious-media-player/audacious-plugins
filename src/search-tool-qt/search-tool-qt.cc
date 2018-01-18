@@ -31,6 +31,10 @@
 #include <QPushButton>
 #include <QTreeView>
 #include <QUrl>
+#include <QApplication>
+#include <QStyledItemDelegate>
+#include <QAbstractTextDocumentLayout>
+#include <QPainter>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
@@ -131,8 +135,74 @@ private:
     int m_rows = 0;
 };
 
+// Allow rich text in QTreeView entries
+// https://stackoverflow.com/questions/1956542/how-to-make-item-view-render-rich-html-text-in-qt
+class HtmlDelegate : public QStyledItemDelegate
+{
+public:
+    HtmlDelegate(QObject *parent)
+        : QStyledItemDelegate(parent) {}
+protected:
+    void paint (QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QStyle *appStyle = nullptr;
+};
+
+void HtmlDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyleOptionViewItemV4 optionV4 = option;
+    initStyleOption(&optionV4, index);
+
+    QStyle *style = optionV4.widget? optionV4.widget->style() : qApp->style();
+
+    QTextDocument doc;
+    doc.setHtml(optionV4.text);
+    doc.setTextWidth(optionV4.rect.width());
+    doc.setDocumentMargin(0);
+    doc.setDefaultFont(optionV4.font);
+
+    /// Painting item without text
+    optionV4.text = QString();
+    style->drawControl(QStyle::CE_ItemViewItem, &optionV4, painter);
+
+    QAbstractTextDocumentLayout::PaintContext ctx;
+
+    // Highlighting text if item is selected
+    if (optionV4.state & QStyle::State_Selected)
+        ctx.palette.setColor(QPalette::Text, optionV4.palette.color(QPalette::Active, QPalette::HighlightedText));
+    else
+        ctx.palette.setColor(QPalette::Text, optionV4.palette.color(QPalette::Active, QPalette::Text));
+
+    QRect textRect = style->subElementRect(QStyle::SE_ItemViewItemText, &optionV4);
+    painter->save();
+    painter->translate(textRect.topLeft());
+    painter->setClipRect(textRect.translated(-textRect.topLeft()));
+    doc.documentLayout()->draw(painter, ctx);
+    painter->restore();
+}
+
+QSize HtmlDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyleOptionViewItemV4 optionV4 = option;
+    initStyleOption(&optionV4, index);
+
+    QTextDocument doc;
+    doc.setHtml(optionV4.text);
+    doc.setTextWidth(optionV4.rect.width());
+    doc.setDocumentMargin(0);
+    doc.setDefaultFont(optionV4.font);
+    return QSize(doc.idealWidth(), doc.size().height());
+}
+
 class ResultsView : public QTreeView
 {
+public:
+    ResultsView()
+        : QTreeView()
+    {
+        setItemDelegate (new HtmlDelegate (this));
+    }
+
 protected:
     void contextMenuEvent (QContextMenuEvent * event);
 };
@@ -668,12 +738,12 @@ static StringBuf create_item_label (int row)
         return StringBuf ();
 
     const Item * item = s_items[row];
-    StringBuf string = str_concat ({item->name, "\n"});
+    StringBuf string = str_concat ({"<u><b>", item->name, "</b></u><br>"});
 
     if (item->field != SearchField::Title)
     {
         string.insert (-1, " ");
-        str_append_printf (string, dngettext (PACKAGE, "%d song", "%d songs",
+        str_append_printf (string, dngettext (PACKAGE, "<b>%d</b> song", "<b>%d</b> songs",
          item->matches.len ()), item->matches.len ());
     }
 
