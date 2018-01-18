@@ -192,7 +192,7 @@ void ResultsModel::update ()
 
 QVariant ResultsModel::data (const QModelIndex & index, int role) const
 {
-    if (role == Qt::DisplayRole)
+    if (role == Qt::DisplayRole || role == Qt::ToolTipRole)
         return QString ((const char *) create_item_label (index.row ()));
     else
         return QVariant ();
@@ -741,9 +741,11 @@ QMimeData * ResultsModel::mimeData (const QModelIndexList & indexes) const
 void * SearchToolQt::get_qt_widget ()
 {
     s_search_entry = new QLineEdit;
-    s_search_entry->setContentsMargins (audqt::margins.TwoPt);
+    QMargins OnePt = audqt::margins.TwoPt / 2;
+    s_search_entry->setContentsMargins (OnePt);
     s_search_entry->setClearButtonEnabled (true);
     s_search_entry->setPlaceholderText (_("Search library"));
+    s_search_entry->setFont (audqt::get_font_for_class ("QListBox"));
 
     s_help_label = new QLabel (_("To import your music library into Audacious, "
      "choose a folder and then click the \"refresh\" icon."));
@@ -762,14 +764,26 @@ void * SearchToolQt::get_qt_widget ()
     s_results_list->setModel (& s_model);
     s_results_list->setSelectionMode (QTreeView::ExtendedSelection);
     s_results_list->setDragDropMode (QTreeView::DragOnly);
+    s_results_list->setFont (audqt::get_font_for_class ("QListView"));
 
     s_stats_label = new QLabel;
     s_stats_label->setAlignment (Qt::AlignCenter);
     s_stats_label->setContentsMargins (audqt::margins.TwoPt);
+    s_stats_label->setFont (audqt::get_font_for_class ("QSmallFont"));
 
     auto chooser = new QLineEdit;
+    chooser->setFont (audqt::get_font_for_class ("QLabel"));
 
     auto button = new QPushButton (QIcon::fromTheme ("view-refresh"), QString ());
+    if (button->icon().isNull())
+    {
+        QFont font (button->font());
+        font.setPixelSize(22);
+        font.setBold(true);
+        button->setFont (font);
+        button->setText (QChar (0x21BA));
+        button->setFixedSize (24, 24);
+    }
     button->setFlat (true);
     button->setFocusPolicy (Qt::NoFocus);
 

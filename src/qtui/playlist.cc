@@ -27,6 +27,7 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
+#include <libaudqt/libaudqt.h>
 
 #include "playlist.h"
 #include "playlist_header.h"
@@ -57,6 +58,8 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, Playlist playlist) :
     setFrameShape (QFrame::NoFrame);
     setSelectionMode (ExtendedSelection);
     setDragDropMode (DragDrop);
+
+    setFont (audqt::get_font_for_class ("QListView"));
 
     updateSettings ();
     header->updateColumns ();

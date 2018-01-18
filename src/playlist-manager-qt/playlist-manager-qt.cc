@@ -20,7 +20,6 @@
 #include <QAbstractListModel>
 #include <QBoxLayout>
 #include <QFont>
-#include <QGuiApplication>
 #include <QHeaderView>
 #include <QIcon>
 #include <QMouseEvent>
@@ -64,7 +63,7 @@ public:
     PlaylistsModel () :
         m_rows (Playlist::n_playlists ()),
         m_playing (Playlist::playing_playlist ().index ()),
-        m_bold (QGuiApplication::font ())
+        m_bold (audqt::get_font_for_class ("QListView"))
     {
         m_bold.setBold (true);
     }
@@ -244,6 +243,7 @@ PlaylistsView::PlaylistsView ()
     setDragDropMode (InternalMove);
     setFrameShape (QFrame::NoFrame);
     setIndentation (0);
+    setFont (audqt::get_font_for_class ("QListView"));
 }
 
 void PlaylistsView::currentChanged (const QModelIndex & current, const QModelIndex & previous)

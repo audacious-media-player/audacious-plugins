@@ -25,6 +25,7 @@
 #include <libaudcore/mainloop.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/tinylock.h>
+#include <libaudqt/libaudqt.h>
 
 #include <QLabel>
 
@@ -52,6 +53,10 @@ StatusBar::StatusBar (QWidget * parent) :
     update_length ();
 
     setStyleSheet (normal_css);
+    QFont font (audqt::get_font_for_class ("QTipLabel"));
+    setFont (font);
+    codec_label->setFont (font);
+    length_label->setFont (font);
 
     audlog::subscribe (log_handler, audlog::Warning);
 
