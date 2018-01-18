@@ -473,7 +473,7 @@ QFont * qfont_from_string (const char * name)
     QFont::Weight weight = QFont::Normal;
     QFont::Style style = QFont::StyleNormal;
     QFont::Stretch stretch = QFont::Unstretched;
-    static QHash<const char*, QFont::Weight> weightMap = {
+    static QHash<const QString, QFont::Weight> weightMap = {
         {"Light", QFont::Light},
         {"Regular", QFont::Normal},
         {"Normal", QFont::Normal},
@@ -482,11 +482,11 @@ QFont * qfont_from_string (const char * name)
         {"DemiBold", QFont::DemiBold},
         {"Bold", QFont::Bold}
     };
-    static QHash<const char*, QFont::Style> styleMap = {
+    static QHash<const QString, QFont::Style> styleMap = {
         {"Oblique", QFont::StyleOblique},
         {"Italic", QFont::StyleItalic}
     };
-    static QHash<const char*, QFont::Stretch> stretchMap = {
+    static QHash<const QString, QFont::Stretch> stretchMap = {
         {"Condensed", QFont::Condensed},
         {"Expanded", QFont::Expanded},
     };
@@ -506,11 +506,11 @@ QFont * qfont_from_string (const char * name)
 
             if (num > 0)
                 size = num;
-            else if (weightMap.contains(attr))
+            else if (weightMap.contains (attr))
                 weight = weightMap[attr];
-            else if (styleMap.contains(attr))
+            else if (styleMap.contains (attr))
                 style = styleMap[attr];
-            else if (stretchMap.contains(attr))
+            else if (stretchMap.contains (attr))
                 stretch = stretchMap[attr];
             else
                 attr_found = false;
