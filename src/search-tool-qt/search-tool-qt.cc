@@ -44,22 +44,29 @@
 #include <libaudcore/mainloop.h>
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/preferences.h>
 #include <libaudqt/libaudqt.h>
 #include <libaudqt/menu.h>
 
 #define MAX_RESULTS 20
 #define SEARCH_DELAY 300
+#define STR(name)   # name
 
 class SearchToolQt : public GeneralPlugin
 {
 public:
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
     static constexpr PluginInfo info = {
         N_("Search Tool"),
         PACKAGE,
         nullptr, // about
-        nullptr, // prefs
+        & prefs, // prefs
         PluginQtOnly
     };
+
+    bool init ();
 
     constexpr SearchToolQt () : GeneralPlugin (info, false) {}
 
@@ -68,6 +75,25 @@ public:
 };
 
 EXPORT SearchToolQt aud_plugin_instance;
+
+static void update_database ();
+
+const char * const SearchToolQt::defaults[] = {
+    "max_results", STR (MAX_RESULTS),
+    nullptr};
+
+const PreferencesWidget SearchToolQt::widgets[] = {
+    WidgetSpin (N_("Maximum number of search results"),
+        WidgetInt ("searchtool", "max_results", update_database),
+        {1, G_MAXINT, MAX_RESULTS}),
+};
+
+const PluginPreferences SearchToolQt::prefs = {
+    {widgets},
+    nullptr,
+    nullptr,
+    nullptr
+};
 
 enum class SearchField {
     Genre,
@@ -441,11 +467,12 @@ static void do_search ()
     /* first sort by number of songs per item */
     s_items.sort (item_compare_pass1);
 
+    int max_results = aud_get_int ("searchtool", "max_results");
     /* limit to items with most songs */
-    if (s_items.len () > MAX_RESULTS)
+    if (s_items.len () > max_results)
     {
-        s_hidden_items = s_items.len () - MAX_RESULTS;
-        s_items.remove (MAX_RESULTS, -1);
+        s_hidden_items = s_items.len () - max_results;
+        s_items.remove (max_results, -1);
     }
 
     /* sort by item type, then item name */
@@ -738,7 +765,7 @@ static StringBuf create_item_label (int row)
         return StringBuf ();
 
     const Item * item = s_items[row];
-    StringBuf string = str_concat ({"<u><b>", item->name, "</b></u><br>"});
+    StringBuf string = str_concat ({"<big><span style=\"font-variant: small-caps;\"><u>", item->name, "</u></span></big><br>"});
 
     if (item->field != SearchField::Title)
     {
@@ -806,6 +833,16 @@ QMimeData * ResultsModel::mimeData (const QModelIndexList & indexes) const
     auto data = new QMimeData;
     data->setUrls (urls);
     return data;
+}
+
+bool SearchToolQt::init ()
+{
+    aud_config_set_defaults ("searchtool", defaults);
+    if (aud_get_int ("searchtool", "max_results") <= 0)
+    {
+        aud_set_int ("searchtool", "max_results", MAX_RESULTS);
+    }
+    return true;
 }
 
 void * SearchToolQt::get_qt_widget ()
