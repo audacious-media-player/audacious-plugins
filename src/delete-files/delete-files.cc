@@ -155,6 +155,10 @@ public:
 
     void run () const
     {
+        /* work around -Wignored-attributes on MinGW */
+        auto string_compare = [] (const String & a, const String & b)
+            { return strcmp (a, b); };
+
         Index<String> deleted;
 
         for (auto & uri: m_files)
@@ -163,13 +167,13 @@ public:
                 deleted.append (uri);
         }
 
-        deleted.sort (strcmp);
+        deleted.sort (string_compare);
 
         /* make sure selection matches what we actually deleted */
         int num_entries = m_playlist.n_entries ();
         for (int i = 0; i < num_entries; i++)
         {
-            int j = deleted.bsearch (m_playlist.entry_filename (i), strcmp);
+            int j = deleted.bsearch (m_playlist.entry_filename (i), string_compare);
             m_playlist.select_entry (i, (j >= 0));
         }
 
