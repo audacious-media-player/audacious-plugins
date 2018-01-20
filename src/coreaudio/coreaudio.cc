@@ -305,7 +305,6 @@ void CoreAudioPlugin::handle_new_default_device(AudioObjectID newID)
 
     AudioComponentInstanceDispose(output_instance);
     output_instance = nullptr;
-    caDeviceInitialised = false;
 
     init();
     if (currentPosition > 0 && currentTime > 0)
@@ -342,6 +341,7 @@ void CoreAudioPlugin::cleanup ()
     }
     delete coreAudioDevice;
     coreAudioDevice = nullptr;
+    caDeviceInitialised = false;
 }
 
 StereoVolume CoreAudioPlugin::get_volume ()
