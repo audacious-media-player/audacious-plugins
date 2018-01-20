@@ -98,7 +98,7 @@ MainWindow::MainWindow () :
 {
     // The icon theme and/or theme search paths may not be set (MSWin, Mac, non-Plasma desktops on Unix)
     // Check, and if either is true set our theme and add its install location to the search path.
-    if (QIcon::themeName().isEmpty() || QIcon::themeSearchPaths().at(0) == QStringLiteral(":\icons")) {
+    if (QIcon::themeName().isEmpty() || QIcon::themeSearchPaths().at(0) == QStringLiteral(":/icons")) {
         qDebug() << Q_FUNC_INFO << "Icon theme:" << QIcon::themeName() << "searchpath" << QIcon::themeSearchPaths();
         QIcon::setThemeName ("QtUi");
 

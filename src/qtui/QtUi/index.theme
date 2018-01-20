@@ -2,7 +2,7 @@
 Name=QtUi
 Comment=Theme for Audacious Qt Interface plugin, includes icons from Faience theme by Matthieu James
 Inherits=default
-Directories=16,22
+Directories=16,22,32,44
 
 [16]
 Size=16
