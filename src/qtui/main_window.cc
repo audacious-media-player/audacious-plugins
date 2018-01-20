@@ -101,15 +101,19 @@ MainWindow::MainWindow () :
     if (QIcon::themeName().isEmpty() || QIcon::themeSearchPaths().at(0) == QStringLiteral(":/icons")) {
         qDebug() << Q_FUNC_INFO << "Icon theme:" << QIcon::themeName() << "searchpath" << QIcon::themeSearchPaths();
         QIcon::setThemeName ("QtUi");
-
-        QStringList paths = QIcon::themeSearchPaths ();
-        // install our theme location as a fallback, leaving the door open
-        // to customise it. IOW, insert it just before the entry corresponding
-        // to the embedded resources.
-        int here = paths.size() - 1;
-        paths.insert (here, aud_get_path (AudPath::DataDir));
-        QIcon::setThemeSearchPaths (paths);
-        qDebug() << Q_FUNC_INFO << "New icon theme:" << QIcon::themeName() << "searchpath" << QIcon::themeSearchPaths();
+        // try looking up one of our icons
+        if (QIcon::fromTheme ("edit-find").isNull ())
+        {
+            // Our theme is not available via an embedded Qt resource, so we
+            // add it's on-disk location as a fallback, leaving the door open
+            // to customise it. IOW, insert it just before the entry corresponding
+            // to the embedded resources.
+            QStringList paths = QIcon::themeSearchPaths ();
+            int here = paths.size() - 1;
+            paths.insert (here, aud_get_path (AudPath::DataDir));
+            QIcon::setThemeSearchPaths (paths);
+            qWarning() << Q_FUNC_INFO << "New icon theme:" << QIcon::themeName() << "in searchpath" << QIcon::themeSearchPaths();
+        }
     }
 
     auto slider = new TimeSlider (this);
