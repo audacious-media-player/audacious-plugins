@@ -96,9 +96,10 @@ MainWindow::MainWindow () :
     m_search_tool (aud_plugin_lookup_basename ("search-tool-qt")),
     m_playlist_manager (aud_plugin_lookup_basename ("playlist-manager-qt"))
 {
-    // The icon theme and/or theme search paths may not be set (MSWin, Mac, non-Plasma desktops on Unix)
-    // Check, and if either is true set our theme and add its install location to the search path.
-    if (QIcon::themeName().isEmpty() || QIcon::themeSearchPaths().at(0) == QStringLiteral(":/icons")) {
+    // The icon theme may not be set (MSWin, Mac, non-Plasma desktops on Unix)
+    // Check, and if true set our theme.
+    if (QIcon::themeName().isEmpty())
+    {
         qDebug() << Q_FUNC_INFO << "Icon theme:" << QIcon::themeName() << "searchpath" << QIcon::themeSearchPaths();
         QIcon::setThemeName ("QtUi");
         // try looking up one of our icons
