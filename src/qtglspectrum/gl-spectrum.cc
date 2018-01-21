@@ -164,12 +164,10 @@ void GLSpectrumQt::render_freq (const float * freq)
 
 void GLSpectrumQt::clear ()
 {
-#ifdef XXX_NOTYET
     memset (s_bars, 0, sizeof s_bars);
 
     if (s_widget)
         s_widget->updateGL ();
-#endif
 }
 
 static void draw_rectangle (float x1, float y1, float z1, float x2, float y2,
