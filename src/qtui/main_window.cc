@@ -162,6 +162,9 @@ MainWindow::MainWindow () :
 
     read_settings ();
     update_visibility ();
+
+    /* set initial keyboard focus on the playlist */
+    m_playlist_tabs->currentPlaylistWidget ()->setFocus (Qt::OtherFocusReason);
 }
 
 MainWindow::~MainWindow ()
