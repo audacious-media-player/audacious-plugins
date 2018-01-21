@@ -95,14 +95,6 @@ MainWindow::MainWindow () :
     m_search_tool (aud_plugin_lookup_basename ("search-tool-qt")),
     m_playlist_manager (aud_plugin_lookup_basename ("playlist-manager-qt"))
 {
-#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
-    QIcon::setThemeName ("QtUi");
-
-    QStringList paths = QIcon::themeSearchPaths ();
-    paths.prepend (aud_get_path (AudPath::DataDir));
-    QIcon::setThemeSearchPaths (paths);
-#endif
-
     auto slider = new TimeSlider (this);
 
     const ToolBarItem items[] = {
