@@ -785,7 +785,7 @@ void * SearchTool::get_gtk_widget ()
 
     GtkWidget * button = gtk_button_new ();
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
-     ("view-refresh", GTK_ICON_SIZE_BUTTON));
+     ("view-refresh", GTK_ICON_SIZE_MENU));
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     gtk_box_pack_start ((GtkBox *) hbox, button, false, false, 0);
 
