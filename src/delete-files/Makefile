@@ -20,5 +20,5 @@ endif
 
 ifeq ($(USE_QT),yes)
 CPPFLAGS += ${QT_CFLAGS}
-LIBS += ${QT_LIBS}
+LIBS += ${QT_LIBS} -laudqt
 endif

@@ -769,7 +769,7 @@ void * SearchToolQt::get_qt_widget ()
 
     auto chooser = new QLineEdit;
 
-    auto button = new QPushButton (QIcon::fromTheme ("view-refresh"), QString ());
+    auto button = new QPushButton (audqt::get_icon ("view-refresh"), QString ());
     button->setFlat (true);
     button->setFocusPolicy (Qt::NoFocus);
 

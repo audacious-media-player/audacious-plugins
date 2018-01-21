@@ -113,7 +113,7 @@ MainWindow::MainWindow () :
             [] () { audqt::fileopener_show (audqt::FileMode::Add); }),
         ToolBarSeparator (),
         ToolBarAction ("media-skip-backward", N_("Previous"), N_("Previous"), aud_drct_pl_prev),
-        ToolBarAction ("media-playback-play", N_("Play"), N_("Play"), aud_drct_play_pause, & m_play_pause_action),
+        ToolBarAction ("media-playback-start", N_("Play"), N_("Play"), aud_drct_play_pause, & m_play_pause_action),
         ToolBarAction ("media-playback-stop", N_("Stop"), N_("Stop"), aud_drct_stop, & m_stop_action),
         ToolBarAction ("media-playback-stop", N_("Stop After This Song"), N_("Stop After This Song"),
             [] (bool on) { aud_set_bool (nullptr, "stop_after_current_song", on); }, & m_stop_after_action),
@@ -255,13 +255,13 @@ void MainWindow::update_play_pause ()
 {
     if (! aud_drct_get_playing () || aud_drct_get_paused ())
     {
-        m_play_pause_action->setIcon (QIcon::fromTheme ("media-playback-start"));
+        m_play_pause_action->setIcon (audqt::get_icon ("media-playback-start"));
         m_play_pause_action->setText (_("Play"));
         m_play_pause_action->setToolTip (_("Play"));
     }
     else
     {
-        m_play_pause_action->setIcon (QIcon::fromTheme ("media-playback-pause"));
+        m_play_pause_action->setIcon (audqt::get_icon ("media-playback-pause"));
         m_play_pause_action->setText (_("Pause"));
         m_play_pause_action->setToolTip (_("Pause"));
     }
