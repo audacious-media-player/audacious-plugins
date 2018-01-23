@@ -631,8 +631,7 @@ static void list_get_value (void * user, int row, int column, GValue * value)
         desc.insert (-1, " ");
         desc.insert (-1, _("of this genre"));
     }
-
-    if (item->parent)
+    else if (item->parent)
     {
         auto parent = (item->parent->parent ? item->parent->parent : item->parent);
 

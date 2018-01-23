@@ -196,9 +196,10 @@ void HtmlDelegate::paint (QPainter * painter, const QStyleOptionViewItem & optio
         ctx.palette.setColor (QPalette::Text, option.palette.color (QPalette::Active, QPalette::Text));
 
     QRect textRect = style->subElementRect (QStyle::SE_ItemViewItemText, & option);
+    QPoint topLeft = textRect.topLeft () + QPoint (audqt::sizes.TwoPt, 0);
     painter->save ();
-    painter->translate (textRect.topLeft ());
-    painter->setClipRect (textRect.translated (-textRect.topLeft ()));
+    painter->translate (topLeft);
+    painter->setClipRect (textRect.translated (-topLeft));
     doc.documentLayout ()->draw (painter, ctx);
     painter->restore ();
 }
@@ -211,7 +212,7 @@ QSize HtmlDelegate::sizeHint (const QStyleOptionViewItem & option_, const QModel
     QTextDocument doc;
     init_text_document (doc, option);
 
-    return QSize (doc.idealWidth (), doc.size ().height ());
+    return QSize (doc.idealWidth () + 2 * audqt::sizes.TwoPt, doc.size ().height ());
 }
 
 class ResultsView : public QTreeView
@@ -227,7 +228,7 @@ private:
     HtmlDelegate m_delegate;
 };
 
-static StringBuf create_item_label (int row);
+static QString create_item_label (int row);
 
 static Playlist s_playlist;
 static Index<String> s_search_terms;
@@ -283,7 +284,7 @@ void ResultsModel::update ()
 QVariant ResultsModel::data (const QModelIndex & index, int role) const
 {
     if (role == Qt::DisplayRole)
-        return QString ((const char *) create_item_label (index.row ()));
+        return create_item_label (index.row ());
     else
         return QVariant ();
 }
@@ -759,42 +760,51 @@ static void action_add_to_playlist ()
         do_add (false, false);
 }
 
-static StringBuf create_item_label (int row)
+static QString create_item_label (int row)
 {
+    static constexpr aud::array<SearchField, const char *> start_tags =
+        {"", "<b>", "<i>", ""};
+    static constexpr aud::array<SearchField, const char *> end_tags =
+        {"", "</b>", "</i>", ""};
+
     if (row < 0 || row >= s_items.len ())
-        return StringBuf ();
+        return QString ();
 
     const Item * item = s_items[row];
 
-    StringBuf string = str_concat ({
-        "<big><span style=\"font-variant: small-caps;\"><u>",
-        QString (item->name).toHtmlEscaped ().toUtf8 (),
-        "</u></span></big><br>"
-    });
+    QString string = start_tags[item->field];
+
+    string += QString ((item->field == SearchField::Genre) ?
+                       str_toupper_utf8 (item->name) : item->name).toHtmlEscaped ();
+
+    string += end_tags[item->field];
+    string += "<br><small>&nbsp;";
 
     if (item->field != SearchField::Title)
     {
-        string.insert (-1, " ");
-        str_append_printf (string, dngettext (PACKAGE, "<b>%d</b> song", "<b>%d</b> songs",
+        string += str_printf (dngettext (PACKAGE, "%d song", "%d songs",
          item->matches.len ()), item->matches.len ());
+
+        if (item->field == SearchField::Genre || item->parent)
+            string += ' ';
     }
 
     if (item->field == SearchField::Genre)
     {
-        string.insert (-1, " ");
-        string.insert (-1, _("of this genre"));
+        string += _("of this genre");
     }
-
-    if (item->parent)
+    else if (item->parent)
     {
         auto parent = (item->parent->parent ? item->parent->parent : item->parent);
 
-        string.insert (-1, " ");
-        string.insert (-1, (parent->field == SearchField::Album) ? _("on") : _("by"));
-        string.insert (-1, " ");
-        string.insert (-1, parent->name);
+        string += (parent->field == SearchField::Album) ? _("on") : _("by");
+        string += ' ';
+        string += start_tags[parent->field];
+        string += QString (parent->name).toHtmlEscaped ();
+        string += end_tags[parent->field];
     }
 
+    string += "</small>";
     return string;
 }
 
