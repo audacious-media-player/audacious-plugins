@@ -1,6 +1,6 @@
 /*
  * search-tool-qt.cc
- * Copyright 2011-2015 John Lindgren
+ * Copyright 2011-2017 John Lindgren and René J.V. Bertin
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -21,6 +21,8 @@
 #include <glib.h>
 
 #include <QAbstractListModel>
+#include <QAbstractTextDocumentLayout>
+#include <QApplication>
 #include <QBoxLayout>
 #include <QContextMenuEvent>
 #include <QIcon>
@@ -28,30 +30,26 @@
 #include <QLineEdit>
 #include <QMenu>
 #include <QMimeData>
+#include <QPainter>
 #include <QPushButton>
+#include <QStyledItemDelegate>
 #include <QTreeView>
 #include <QUrl>
-#include <QApplication>
-#include <QStyledItemDelegate>
-#include <QAbstractTextDocumentLayout>
-#include <QPainter>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/mainloop.h>
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
-#include <libaudcore/preferences.h>
 #include <libaudqt/libaudqt.h>
 #include <libaudqt/menu.h>
 
 #define CFG_ID "search-tool"
-#define MAX_RESULTS 20
 #define SEARCH_DELAY 300
-#define STR(name)   # name
 
 class SearchToolQt : public GeneralPlugin
 {
@@ -59,18 +57,18 @@ public:
     static const char * const defaults[];
     static const PreferencesWidget widgets[];
     static const PluginPreferences prefs;
+
     static constexpr PluginInfo info = {
         N_("Search Tool"),
         PACKAGE,
         nullptr, // about
-        & prefs, // prefs
+        & prefs,
         PluginQtOnly
     };
 
-    bool init ();
-
     constexpr SearchToolQt () : GeneralPlugin (info, false) {}
 
+    bool init ();
     void * get_qt_widget ();
     int take_message (const char * code, const void *, int);
 };
@@ -80,21 +78,17 @@ EXPORT SearchToolQt aud_plugin_instance;
 static void trigger_search ();
 
 const char * const SearchToolQt::defaults[] = {
-    "max_results", STR (MAX_RESULTS),
-    nullptr};
+    "max_results", "10",
+    nullptr
+};
 
 const PreferencesWidget SearchToolQt::widgets[] = {
     WidgetSpin (N_("Maximum number of search results"),
         WidgetInt (CFG_ID, "max_results", trigger_search),
-        {1, G_MAXINT, MAX_RESULTS}),
+         {10, 10000, 10}),
 };
 
-const PluginPreferences SearchToolQt::prefs = {
-    {widgets},
-    nullptr,
-    nullptr,
-    nullptr
-};
+const PluginPreferences SearchToolQt::prefs = {{widgets}};
 
 enum class SearchField {
     Genre,
@@ -166,72 +160,71 @@ private:
 // https://stackoverflow.com/questions/1956542/how-to-make-item-view-render-rich-html-text-in-qt
 class HtmlDelegate : public QStyledItemDelegate
 {
-public:
-    HtmlDelegate(QObject *parent)
-        : QStyledItemDelegate(parent) {}
 protected:
-    void paint (QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    QStyle *appStyle = nullptr;
+    void paint (QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
+    QSize sizeHint (const QStyleOptionViewItem & option, const QModelIndex & index) const;
 };
 
-void HtmlDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option_, const QModelIndex &index) const
+static void init_text_document (QTextDocument & doc, const QStyleOptionViewItem & option)
+{
+    doc.setHtml (option.text);
+    doc.setTextWidth (option.rect.width ());
+    doc.setDocumentMargin (0);
+    doc.setDefaultFont (option.font);
+}
+
+void HtmlDelegate::paint (QPainter * painter, const QStyleOptionViewItem & option_, const QModelIndex & index) const
 {
     QStyleOptionViewItem option = option_;
-    initStyleOption(&option, index);
+    initStyleOption (& option, index);
 
-    QStyle *style = option.widget? option.widget->style() : qApp->style();
+    QStyle * style = option.widget ? option.widget->style () : qApp->style ();
 
     QTextDocument doc;
-    doc.setHtml(option.text);
-    doc.setTextWidth(option.rect.width());
-    doc.setDocumentMargin(0);
-    doc.setDefaultFont(option.font);
+    init_text_document (doc, option);
 
     /// Painting item without text
-    option.text = QString();
-    style->drawControl(QStyle::CE_ItemViewItem, &option, painter);
+    option.text = QString ();
+    style->drawControl (QStyle::CE_ItemViewItem, & option, painter);
 
     QAbstractTextDocumentLayout::PaintContext ctx;
 
     // Highlighting text if item is selected
     if (option.state & QStyle::State_Selected)
-        ctx.palette.setColor(QPalette::Text, option.palette.color(QPalette::Active, QPalette::HighlightedText));
+        ctx.palette.setColor (QPalette::Text, option.palette.color (QPalette::Active, QPalette::HighlightedText));
     else
-        ctx.palette.setColor(QPalette::Text, option.palette.color(QPalette::Active, QPalette::Text));
+        ctx.palette.setColor (QPalette::Text, option.palette.color (QPalette::Active, QPalette::Text));
 
-    QRect textRect = style->subElementRect(QStyle::SE_ItemViewItemText, &option);
-    painter->save();
-    painter->translate(textRect.topLeft());
-    painter->setClipRect(textRect.translated(-textRect.topLeft()));
-    doc.documentLayout()->draw(painter, ctx);
-    painter->restore();
+    QRect textRect = style->subElementRect (QStyle::SE_ItemViewItemText, & option);
+    painter->save ();
+    painter->translate (textRect.topLeft ());
+    painter->setClipRect (textRect.translated (-textRect.topLeft ()));
+    doc.documentLayout ()->draw (painter, ctx);
+    painter->restore ();
 }
 
-QSize HtmlDelegate::sizeHint(const QStyleOptionViewItem &option_, const QModelIndex &index) const
+QSize HtmlDelegate::sizeHint (const QStyleOptionViewItem & option_, const QModelIndex & index) const
 {
     QStyleOptionViewItem option = option_;
-    initStyleOption(&option, index);
+    initStyleOption (& option, index);
 
     QTextDocument doc;
-    doc.setHtml(option.text);
-    doc.setTextWidth(option.rect.width());
-    doc.setDocumentMargin(0);
-    doc.setDefaultFont(option.font);
-    return QSize(doc.idealWidth(), doc.size().height());
+    init_text_document (doc, option);
+
+    return QSize (doc.idealWidth (), doc.size ().height ());
 }
 
 class ResultsView : public QTreeView
 {
 public:
-    ResultsView()
-        : QTreeView()
-    {
-        setItemDelegate (new HtmlDelegate (this));
-    }
+    ResultsView ()
+        { setItemDelegate (& m_delegate); }
 
 protected:
     void contextMenuEvent (QContextMenuEvent * event);
+
+private:
+    HtmlDelegate m_delegate;
 };
 
 static StringBuf create_item_label (int row);
@@ -845,10 +838,6 @@ QMimeData * ResultsModel::mimeData (const QModelIndexList & indexes) const
 bool SearchToolQt::init ()
 {
     aud_config_set_defaults (CFG_ID, defaults);
-    if (aud_get_int (CFG_ID, "max_results") <= 0)
-    {
-        aud_set_int (CFG_ID, "max_results", MAX_RESULTS);
-    }
     return true;
 }
 
