@@ -765,7 +765,12 @@ static StringBuf create_item_label (int row)
         return StringBuf ();
 
     const Item * item = s_items[row];
-    StringBuf string = str_concat ({"<big><span style=\"font-variant: small-caps;\"><u>", item->name, "</u></span></big><br>"});
+
+    StringBuf string = str_concat ({
+        "<big><span style=\"font-variant: small-caps;\"><u>",
+        QString (item->name).toHtmlEscaped ().toUtf8 (),
+        "</u></span></big><br>"
+    });
 
     if (item->field != SearchField::Title)
     {
