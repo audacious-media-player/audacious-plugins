@@ -168,7 +168,6 @@ protected:
 static void init_text_document (QTextDocument & doc, const QStyleOptionViewItem & option)
 {
     doc.setHtml (option.text);
-    doc.setTextWidth (option.rect.width ());
     doc.setDocumentMargin (0);
     doc.setDefaultFont (option.font);
 }
@@ -196,10 +195,10 @@ void HtmlDelegate::paint (QPainter * painter, const QStyleOptionViewItem & optio
         ctx.palette.setColor (QPalette::Text, option.palette.color (QPalette::Active, QPalette::Text));
 
     QRect textRect = style->subElementRect (QStyle::SE_ItemViewItemText, & option);
-    QPoint topLeft = textRect.topLeft () + QPoint (audqt::sizes.TwoPt, 0);
+    textRect.setLeft (textRect.left () + audqt::sizes.TwoPt);
     painter->save ();
-    painter->translate (topLeft);
-    painter->setClipRect (textRect.translated (-topLeft));
+    painter->translate (textRect.topLeft ());
+    painter->setClipRect (textRect.translated (-textRect.topLeft ()));
     doc.documentLayout ()->draw (painter, ctx);
     painter->restore ();
 }
@@ -212,7 +211,7 @@ QSize HtmlDelegate::sizeHint (const QStyleOptionViewItem & option_, const QModel
     QTextDocument doc;
     init_text_document (doc, option);
 
-    return QSize (doc.idealWidth () + 2 * audqt::sizes.TwoPt, doc.size ().height ());
+    return QSize (audqt::sizes.OneInch, doc.size ().height ());
 }
 
 class ResultsView : public QTreeView
