@@ -32,10 +32,6 @@ ToolBar::ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items)
     setMovable (false);
     setObjectName ("MainToolBar");
 
-#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
-    setIconSize (QSize (22, 22));
-#endif
-
     for (const ToolBarItem & item : items)
     {
         if (item.widget)
