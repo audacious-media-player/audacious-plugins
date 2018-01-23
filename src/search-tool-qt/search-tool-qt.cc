@@ -77,7 +77,7 @@ public:
 
 EXPORT SearchToolQt aud_plugin_instance;
 
-static void update_database ();
+static void trigger_search ();
 
 const char * const SearchToolQt::defaults[] = {
     "max_results", STR (MAX_RESULTS),
@@ -85,7 +85,7 @@ const char * const SearchToolQt::defaults[] = {
 
 const PreferencesWidget SearchToolQt::widgets[] = {
     WidgetSpin (N_("Maximum number of search results"),
-        WidgetInt (CFG_ID, "max_results", update_database),
+        WidgetInt (CFG_ID, "max_results", trigger_search),
         {1, G_MAXINT, MAX_RESULTS}),
 };
 
@@ -593,6 +593,12 @@ static void search_timeout (void * = nullptr)
     s_search_pending = false;
 }
 
+static void trigger_search ()
+{
+    s_search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
+    s_search_pending = true;
+}
+
 static void update_database ()
 {
     if (check_playlist (true, true))
@@ -910,8 +916,7 @@ void * SearchToolQt::get_qt_widget ()
     QObject::connect (s_search_entry, & QLineEdit::textEdited, [] (const QString & text)
     {
         s_search_terms = str_list_to_index (str_tolower_utf8 (text.toUtf8 ()), " ");
-        s_search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
-        s_search_pending = true;
+        trigger_search ();
     });
 
     QObject::connect (chooser, & QLineEdit::textEdited, [button] (const QString & text)
