@@ -48,6 +48,7 @@
 #include <libaudqt/libaudqt.h>
 #include <libaudqt/menu.h>
 
+#define CFG_ID "search-tool"
 #define MAX_RESULTS 20
 #define SEARCH_DELAY 300
 #define STR(name)   # name
@@ -84,7 +85,7 @@ const char * const SearchToolQt::defaults[] = {
 
 const PreferencesWidget SearchToolQt::widgets[] = {
     WidgetSpin (N_("Maximum number of search results"),
-        WidgetInt ("searchtool", "max_results", update_database),
+        WidgetInt (CFG_ID, "max_results", update_database),
         {1, G_MAXINT, MAX_RESULTS}),
 };
 
@@ -467,7 +468,7 @@ static void do_search ()
     /* first sort by number of songs per item */
     s_items.sort (item_compare_pass1);
 
-    int max_results = aud_get_int ("searchtool", "max_results");
+    int max_results = aud_get_int (CFG_ID, "max_results");
     /* limit to items with most songs */
     if (s_items.len () > max_results)
     {
@@ -837,10 +838,10 @@ QMimeData * ResultsModel::mimeData (const QModelIndexList & indexes) const
 
 bool SearchToolQt::init ()
 {
-    aud_config_set_defaults ("searchtool", defaults);
-    if (aud_get_int ("searchtool", "max_results") <= 0)
+    aud_config_set_defaults (CFG_ID, defaults);
+    if (aud_get_int (CFG_ID, "max_results") <= 0)
     {
-        aud_set_int ("searchtool", "max_results", MAX_RESULTS);
+        aud_set_int (CFG_ID, "max_results", MAX_RESULTS);
     }
     return true;
 }
