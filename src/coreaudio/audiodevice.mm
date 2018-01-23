@@ -116,7 +116,7 @@ OSStatus DefaultListener(AudioObjectID inDevice, UInt32 inChannel, Boolean forIn
 
                     propsize = sizeof(AudioObjectID);
                     AudioObjectPropertyAddress theAddress = {
-                        forInput ? kAudioHardwarePropertyDefaultInputDevice : kAudioHardwarePropertyDefaultOutputDevice,
+                        kAudioHardwarePropertyDefaultOutputDevice,
                         kAudioObjectPropertyScopeGlobal,
                         kAudioObjectPropertyElementMaster
                     };
@@ -176,26 +176,26 @@ static OSStatus DefaultListener(AudioObjectID inObjectID, UInt32 inNumberPropert
                     }
                 }
                 break;
-        case kAudioHardwarePropertyDefaultOutputDevice:
-            if (dev) {
-                if (dev->isDefaultDevice()) {
-                    UInt32 propsize;
-                    AudioObjectID defaultDeviceID;
+            case kAudioHardwarePropertyDefaultOutputDevice:
+                if (dev) {
+                    if (dev->isDefaultDevice()) {
+                        UInt32 propsize;
+                        AudioObjectID defaultDeviceID;
 
-                    propsize = sizeof(AudioObjectID);
-                    AudioObjectPropertyAddress theAddress = {
-                        forInput ? kAudioHardwarePropertyDefaultInputDevice : kAudioHardwarePropertyDefaultOutputDevice,
-                        kAudioObjectPropertyScopeGlobal,
-                        kAudioObjectPropertyElementMaster
-                    };
-                    if (AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, &defaultDeviceID) == noErr) {
-                        if (dev->ID() != defaultDeviceID) {
-                            AUDWARN ("Default device changed from %d to %d\n", dev->ID(), defaultDeviceID);
+                        propsize = sizeof(AudioObjectID);
+                        AudioObjectPropertyAddress theAddress = {
+                            kAudioHardwarePropertyDefaultOutputDevice,
+                            kAudioObjectPropertyScopeGlobal,
+                            kAudioObjectPropertyElementMaster
+                        };
+                        if (AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, &defaultDeviceID) == noErr) {
+                            if (dev->ID() != defaultDeviceID) {
+                                AUDWARN ("Default device changed from %d to %d\n", dev->ID(), defaultDeviceID);
+                            }
                         }
                     }
                 }
-            }
-            // fallthrough
+                // fallthrough
             default:
                 if ((dev && !dev->listenerSilentFor)) {
                     NSLog(msg);
