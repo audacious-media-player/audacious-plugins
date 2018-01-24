@@ -15,7 +15,7 @@ SRCS = actions.cc \
        menus.cc \
        monostereo.cc \
        number.cc \
-       playlist.cc \
+       playlistwin.cc \
        playlist-slider.cc \
        playlist-widget.cc \
        playstatus.cc \

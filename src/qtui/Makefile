@@ -5,7 +5,7 @@ SRCS = qtui.cc \
        main_window.cc \
        menu-ops.cc \
        menus.cc \
-       playlist.cc \
+       playlist-qt.cc \
        playlist_header.cc \
        playlist_model.cc \
        playlist_tabs.cc \
