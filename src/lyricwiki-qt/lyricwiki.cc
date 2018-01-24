@@ -356,7 +356,7 @@ static void update_lyrics_window (const char * title, const char * artist, const
     cursor.insertHtml ("<br><br>");
     cursor.insertText (lyrics);
 
-    doc.setDefaultFont (audqt::get_font_for_class ("QTipLabel"));
+    doc.setDefaultFont (audqt::get_font_for_class ("LyricWikiQt"));
     textedit->setDocument (doc.clone ());
 }
 

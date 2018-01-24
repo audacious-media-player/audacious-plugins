@@ -59,8 +59,6 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, Playlist playlist) :
     setSelectionMode (ExtendedSelection);
     setDragDropMode (DragDrop);
 
-    setFont (audqt::get_font_for_class ("QListView"));
-
     updateSettings ();
     header->updateColumns ();
     setSortingEnabled (true);

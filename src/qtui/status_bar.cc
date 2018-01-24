@@ -53,7 +53,7 @@ StatusBar::StatusBar (QWidget * parent) :
     update_length ();
 
     setStyleSheet (normal_css);
-    QFont font (audqt::get_font_for_class ("QTipLabel"));
+    QFont font (audqt::get_font_for_class ("StatusBar"));
     setFont (font);
     codec_label->setFont (font);
     length_label->setFont (font);

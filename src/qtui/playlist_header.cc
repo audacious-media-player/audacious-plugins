@@ -136,7 +136,7 @@ PlaylistHeader::PlaylistHeader (PlaylistWidget * playlist) :
     setSectionsClickable (true);
     setSortIndicatorShown (true);
 
-    setFont (audqt::get_font_for_class ("QSmallFont"));
+    setFont (audqt::get_font_for_class ("PlaylistHeader"));
 
     connect (this, & QHeaderView::sectionResized, this, & PlaylistHeader::sectionResized);
     connect (this, & QHeaderView::sectionMoved, this, & PlaylistHeader::sectionMoved);

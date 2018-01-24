@@ -852,7 +852,8 @@ void * SearchToolQt::get_qt_widget ()
     s_search_entry->setContentsMargins (OnePt);
     s_search_entry->setClearButtonEnabled (true);
     s_search_entry->setPlaceholderText (_("Search library"));
-    s_search_entry->setFont (audqt::get_font_for_class ("QListBox"));
+    // match the search entry font to the font of the results view
+    s_search_entry->setFont (audqt::get_font_for_class ("QTreeView"));
 
     s_help_label = new QLabel (_("To import your music library into Audacious, "
      "choose a folder and then click the \"refresh\" icon."));
@@ -871,15 +872,14 @@ void * SearchToolQt::get_qt_widget ()
     s_results_list->setModel (& s_model);
     s_results_list->setSelectionMode (QTreeView::ExtendedSelection);
     s_results_list->setDragDropMode (QTreeView::DragOnly);
-    s_results_list->setFont (audqt::get_font_for_class ("QListView"));
 
     s_stats_label = new QLabel;
     s_stats_label->setAlignment (Qt::AlignCenter);
     s_stats_label->setContentsMargins (audqt::margins.TwoPt);
+    // result stats should use a small font
     s_stats_label->setFont (audqt::get_font_for_class ("QSmallFont"));
 
     auto chooser = new QLineEdit;
-    chooser->setFont (audqt::get_font_for_class ("QLabel"));
 
     auto button = new QPushButton (QIcon::fromTheme ("view-refresh"), QString ());
     if (button->icon().isNull())

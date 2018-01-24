@@ -63,7 +63,7 @@ public:
     PlaylistsModel () :
         m_rows (Playlist::n_playlists ()),
         m_playing (Playlist::playing_playlist ().index ()),
-        m_bold (audqt::get_font_for_class ("QListView"))
+        m_bold (audqt::get_font_for_class ("QTreeView"))
     {
         m_bold.setBold (true);
     }
@@ -243,7 +243,6 @@ PlaylistsView::PlaylistsView ()
     setDragDropMode (InternalMove);
     setFrameShape (QFrame::NoFrame);
     setIndentation (0);
-    setFont (audqt::get_font_for_class ("QListView"));
 }
 
 void PlaylistsView::currentChanged (const QModelIndex & current, const QModelIndex & previous)
