@@ -766,11 +766,10 @@ static void action_add_to_playlist ()
 
 static QString create_item_label (int row)
 {
-    // RJVB: was "<big><span style=\"font-variant: small-caps;\"><u>" for item->name
     static constexpr aud::array<SearchField, const char *> start_tags =
-        {"", "<b>", "<i>", ""};
+        {"<big><span style=\"font-variant: small-caps;\"><u>", "<b>", "<i>", ""};
     static constexpr aud::array<SearchField, const char *> end_tags =
-        {"", "</b>", "</i>", ""};
+        {"</big></span></u>", "</b>", "</i>", ""};
 
     if (row < 0 || row >= s_items.len ())
         return QString ();
@@ -779,8 +778,7 @@ static QString create_item_label (int row)
 
     QString string = start_tags[item->field];
 
-    string += QString ((item->field == SearchField::Genre) ?
-                       str_toupper_utf8 (item->name) : item->name).toHtmlEscaped ();
+    string += QString (item->name).toHtmlEscaped ();
 
     string += end_tags[item->field];
     string += "<br>&nbsp;";
