@@ -783,7 +783,7 @@ static QString create_item_label (int row)
                        str_toupper_utf8 (item->name) : item->name).toHtmlEscaped ();
 
     string += end_tags[item->field];
-    string += "<br><small>&nbsp;";
+    string += "<br>&nbsp;";
 
     if (item->field != SearchField::Title)
     {
@@ -809,7 +809,6 @@ static QString create_item_label (int row)
         string += end_tags[parent->field];
     }
 
-    string += "</small>";
     return string;
 }
 
