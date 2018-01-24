@@ -28,7 +28,7 @@
 
 #include "info_bar.h"
 #include "menus.h"
-#include "playlist.h"
+#include "playlist-qt.h"
 #include "playlist_tabs.h"
 #include "settings.h"
 #include "status_bar.h"

@@ -48,7 +48,7 @@
 #include "equalizer.h"
 #include "main.h"
 #include "vis-callbacks.h"
-#include "playlist.h"
+#include "playlistwin.h"
 #include "button.h"
 #include "hslider.h"
 #include "menurow.h"

@@ -18,7 +18,7 @@
  */
 
 #include "search_bar.h"
-#include "playlist.h"
+#include "playlist-qt.h"
 
 #include <QApplication>
 #include <QHBoxLayout>

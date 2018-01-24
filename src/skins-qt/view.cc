@@ -33,7 +33,7 @@
 #include "equalizer.h"
 #include "main.h"
 #include "vis-callbacks.h"
-#include "playlist.h"
+#include "playlistwin.h"
 #include "button.h"
 #include "eq-graph.h"
 #include "textbox.h"

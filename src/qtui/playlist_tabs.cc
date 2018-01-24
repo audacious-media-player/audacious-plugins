@@ -17,7 +17,7 @@
  * the use of this software.
  */
 
-#include "playlist.h"
+#include "playlist-qt.h"
 #include "playlist_tabs.h"
 #include "menus.h"
 #include "search_bar.h"

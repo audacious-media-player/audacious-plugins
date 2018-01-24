@@ -45,7 +45,7 @@
 #include "plugin.h"
 #include "skins_cfg.h"
 #include "main.h"
-#include "playlist.h"
+#include "playlistwin.h"
 #include "button.h"
 #include "playlist-widget.h"
 #include "playlist-slider.h"

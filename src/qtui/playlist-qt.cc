@@ -28,7 +28,7 @@
 #include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
 
-#include "playlist.h"
+#include "playlist-qt.h"
 #include "playlist_header.h"
 #include "playlist_model.h"
 
