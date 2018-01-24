@@ -78,7 +78,7 @@ EXPORT SearchToolQt aud_plugin_instance;
 static void trigger_search ();
 
 const char * const SearchToolQt::defaults[] = {
-    "max_results", "10",
+    "max_results", "20",
     nullptr
 };
 
