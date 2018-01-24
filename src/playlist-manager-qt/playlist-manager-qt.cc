@@ -255,7 +255,8 @@ void PlaylistsView::currentChanged (const QModelIndex & current, const QModelInd
 
 void PlaylistsView::keyPressEvent (QKeyEvent * event)
 {
-    if (event->modifiers () == Qt::NoModifier)
+    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    if (! (event->modifiers () & CtrlShiftAlt))
     {
         switch (event->key ())
         {

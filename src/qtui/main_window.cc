@@ -185,7 +185,8 @@ void MainWindow::closeEvent (QCloseEvent * e)
 
 void MainWindow::keyPressEvent (QKeyEvent * event)
 {
-    if (event->modifiers () == Qt::NoModifier && event->key () == Qt::Key_Escape)
+    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    if (! (event->modifiers () & CtrlShiftAlt) && event->key () == Qt::Key_Escape)
     {
         auto widget = m_playlist_tabs->currentPlaylistWidget ();
 

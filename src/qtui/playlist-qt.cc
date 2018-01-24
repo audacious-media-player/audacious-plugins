@@ -97,9 +97,9 @@ void PlaylistWidget::contextMenuEvent (QContextMenuEvent * event)
 
 void PlaylistWidget::keyPressEvent (QKeyEvent * event)
 {
-    switch (event->modifiers ())
+    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    if (! (event->modifiers () & CtrlShiftAlt))
     {
-    case Qt::NoModifier:
         switch (event->key ())
         {
         case Qt::Key_Enter:
@@ -134,7 +134,6 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
             aud_drct_pl_next ();
             return;
         }
-        break;
     }
 
     QTreeView::keyPressEvent (event);

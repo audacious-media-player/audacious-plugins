@@ -81,7 +81,8 @@ SearchBar::SearchBar (QWidget * parent, PlaylistWidget * playlistWidget) :
 
 void SearchBar::keyPressEvent (QKeyEvent * event)
 {
-    if (event->modifiers () == Qt::NoModifier)
+    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    if (! (event->modifiers () & CtrlShiftAlt))
     {
         switch (event->key ())
         {
