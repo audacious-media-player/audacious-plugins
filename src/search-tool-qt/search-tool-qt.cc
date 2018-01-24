@@ -90,7 +90,7 @@ const char * const SearchToolQt::defaults[] = {
 const PreferencesWidget SearchToolQt::widgets[] = {
     WidgetSpin (N_("Maximum number of search results"),
         WidgetInt (CFG_ID, "max_results", trigger_search),
-         {10, 10000, 10}),
+         {10, G_MAXINT, 10}),
 };
 
 const PluginPreferences SearchToolQt::prefs = {{widgets}};
