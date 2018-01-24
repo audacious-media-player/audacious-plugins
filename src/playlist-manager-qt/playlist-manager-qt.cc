@@ -254,7 +254,8 @@ void PlaylistsView::currentChanged (const QModelIndex & current, const QModelInd
 
 void PlaylistsView::keyPressEvent (QKeyEvent * event)
 {
-    if (event->modifiers () == Qt::NoModifier)
+    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    if (! (event->modifiers () & CtrlShiftAlt))
     {
         switch (event->key ())
         {
@@ -320,7 +321,7 @@ static PlaylistsView * s_playlists_view = nullptr;
 static QToolButton * new_tool_button (const char * text, const char * icon)
 {
     auto button = new QToolButton;
-    button->setIcon (QIcon::fromTheme (icon));
+    button->setIcon (audqt::get_icon (icon));
     button->setText (audqt::translate_str (text));
     button->setToolButtonStyle (Qt::ToolButtonFollowStyle);
     return button;

@@ -586,7 +586,7 @@ locales: ${MO_FILES}
 	${COMPILE_STATUS}
 	in="$<"; \
 	out="$@"; \
-	if ${WINDRES} ${CPPFLAGS} -J rc -O coff -o $@ $<; then \
+	if ${WINDRES} -J rc -O coff -o $@ $<; then \
 		${COMPILE_OK}; \
 	else \
 		${COMPILE_FAILED}; \
@@ -657,7 +657,7 @@ locales: ${MO_FILES}
 		${COMPILE_PLUGIN_FAILED}; \
 	fi
 
-install: all install-extra
+install: install-extra
 	for i in "" ${SUBDIRS} ${SUBDIRS_AFTER}; do \
 		test x"$$i" = x"" && continue; \
 		${DIR_ENTER}; \
@@ -952,6 +952,6 @@ DELETE_OK = printf "@TERM_EL@@TERM_SETAF4@Deleted @TERM_BOLD@%s@TERM_SGR0@@TERM_
 DELETE_FAILED = err=$$?; printf "@TERM_EL@@TERM_SETAF1@Failed to delete @TERM_BOLD@%s@TERM_SGR0@@TERM_SETAF1@!@TERM_SGR0@\n" "$$i"; exit $$err
 
 .CURDIR ?= .
-include ${.CURDIR}/.deps
+-include ${.CURDIR}/.deps
 
 $(V).SILENT:

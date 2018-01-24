@@ -66,6 +66,12 @@ public:
     void show (bool show)
     {
         window->setVisible (show);
+
+        if (show)
+        {
+            window->activateWindow ();
+            window->raise ();
+        }
     }
 
     void quit ()

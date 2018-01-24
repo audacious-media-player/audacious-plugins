@@ -856,7 +856,8 @@ bool GtkUI::init ()
     gtk_container_add ((GtkContainer *) boxitem2, box2);
 
     volume = gtk_volume_button_new ();
-    g_object_set ((GObject *) volume, "size", GTK_ICON_SIZE_LARGE_TOOLBAR, nullptr);
+    GtkIconSize icon_size = gtk_tool_shell_get_icon_size ((GtkToolShell *) toolbar);
+    g_object_set ((GObject *) volume, "size", icon_size, nullptr);
     gtk_button_set_relief ((GtkButton *) volume, GTK_RELIEF_NONE);
     gtk_scale_button_set_adjustment ((GtkScaleButton *) volume,
      (GtkAdjustment *) gtk_adjustment_new (0, 0, 100, 1, 5, 0));

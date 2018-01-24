@@ -411,9 +411,10 @@ bool PlaylistWidget::handle_keypress (QKeyEvent * event)
 {
     cancel_all ();
 
-    switch (event->modifiers () & (Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier))
+    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    switch (event->modifiers () & CtrlShiftAlt)
     {
-      case 0:
+      case Qt::NoModifier:
         switch (event->key ())
         {
           case Qt::Key_Up:

@@ -19,7 +19,7 @@
 
 #include "playlist_header.h"
 #include "playlist_model.h"
-#include "playlist.h"
+#include "playlist-qt.h"
 #include "settings.h"
 
 #include <string.h>

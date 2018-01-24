@@ -395,10 +395,11 @@ static void set_album_art ()
     g_return_if_fail (area);
 
     area->pb = audgui_pixbuf_request_current ();
-    if (! area->pb)
-        area->pb = audgui_pixbuf_fallback ();
+
     if (area->pb)
         audgui_pixbuf_scale_within (area->pb, ICON_SIZE);
+    else
+        area->pb = audgui_pixbuf_fallback ();
 }
 
 static void infoarea_next ()

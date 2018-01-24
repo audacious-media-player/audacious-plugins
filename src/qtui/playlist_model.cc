@@ -25,6 +25,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
+#include <libaudqt/libaudqt.h>
 
 #include "playlist_model.h"
 
@@ -72,7 +73,7 @@ static_assert (aud::n_elems (s_fields) == PlaylistModel::n_cols, "update s_field
 static inline QPixmap get_icon (const char * name)
 {
     qreal r = qApp->devicePixelRatio ();
-    QPixmap pm = QIcon::fromTheme (name).pixmap (16 * r);
+    QPixmap pm = audqt::get_icon (name).pixmap (16 * r);
     pm.setDevicePixelRatio (r);
     return pm;
 }
