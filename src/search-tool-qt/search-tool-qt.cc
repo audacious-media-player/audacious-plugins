@@ -778,7 +778,7 @@ static QString create_item_label (int row)
 
     string += end_tags[item->field];
 
-#ifdef Q_MAC_OS  // Mac-specific font tweaks
+#ifdef Q_OS_MAC  // Mac-specific font tweaks
     string += "<br>&nbsp;";
 #else
     string += "<br><small>&nbsp;";
@@ -808,7 +808,7 @@ static QString create_item_label (int row)
         string += end_tags[parent->field];
     }
 
-#ifndef Q_MAC_OS  // Mac-specific font tweaks
+#ifndef Q_OS_MAC  // Mac-specific font tweaks
     string += "</small>";
 #endif
 
@@ -892,7 +892,7 @@ void * SearchToolQt::get_qt_widget ()
     s_stats_label->setAlignment (Qt::AlignCenter);
     s_stats_label->setContentsMargins (audqt::margins.TwoPt);
 
-#ifdef Q_MAC_OS  // Mac-specific font tweaks
+#ifdef Q_OS_MAC  // Mac-specific font tweaks
     s_search_entry->setFont (QApplication::font ("QTreeView"));
     s_stats_label->setFont (QApplication::font ("QSmallFont"));
 #endif

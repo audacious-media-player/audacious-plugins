@@ -391,7 +391,7 @@ void * LyricWikiQt::get_qt_widget ()
     textedit = new TextEdit;
     textedit->setReadOnly (true);
 
-#ifdef Q_MAC_OS  // Mac-specific font tweaks
+#ifdef Q_OS_MAC  // Mac-specific font tweaks
     textedit->document ()->setDefaultFont (QApplication::font ("QTipLabel"));
 #endif
 
