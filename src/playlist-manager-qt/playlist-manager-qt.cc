@@ -63,10 +63,17 @@ public:
 
     PlaylistsModel () :
         m_rows (Playlist::n_playlists ()),
-        m_playing (Playlist::playing_playlist ().index ()),
-        m_bold (QGuiApplication::font ())
+        m_playing (Playlist::playing_playlist ().index ())
     {
+    }
+
+    void setFont (const QFont & font)
+    {
+        m_bold = font;
         m_bold.setBold (true);
+
+        if (m_playing >= 0)
+            update_rows (m_playing, 1);
     }
 
     void update (Playlist::UpdateLevel level);
@@ -105,10 +112,18 @@ public:
     PlaylistsView ();
 
 protected:
-    void currentChanged (const QModelIndex & current, const QModelIndex & previous);
-    void keyPressEvent (QKeyEvent * event);
-    void mouseDoubleClickEvent (QMouseEvent * event);
-    void dropEvent (QDropEvent * event);
+    void changeEvent (QEvent * event) override
+    {
+        if (event->type () == QEvent::FontChange)
+            m_model.setFont (font ());
+
+        QTreeView::changeEvent (event);
+    }
+
+    void currentChanged (const QModelIndex & current, const QModelIndex & previous) override;
+    void keyPressEvent (QKeyEvent * event) override;
+    void mouseDoubleClickEvent (QMouseEvent * event) override;
+    void dropEvent (QDropEvent * event) override;
 
 private:
     PlaylistsModel m_model;
@@ -230,6 +245,8 @@ void PlaylistsModel::update (const Playlist::UpdateLevel level)
 
 PlaylistsView::PlaylistsView ()
 {
+    m_model.setFont (font ());
+
     m_in_update ++;
     setModel (& m_model);
     update_sel ();
