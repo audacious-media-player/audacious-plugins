@@ -767,9 +767,9 @@ static void action_add_to_playlist ()
 static QString create_item_label (int row)
 {
     static constexpr aud::array<SearchField, const char *> start_tags =
-        {"<big><span style=\"font-variant: small-caps;\"><u>", "<b>", "<i>", ""};
+        {"<span style=\"font-variant: caps;\"><u>", "<b>", "<i>", ""};
     static constexpr aud::array<SearchField, const char *> end_tags =
-        {"</big></span></u>", "</b>", "</i>", ""};
+        {"</span></u>", "</b>", "</i>", ""};
 
     if (row < 0 || row >= s_items.len ())
         return QString ();
