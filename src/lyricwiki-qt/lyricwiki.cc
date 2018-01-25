@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <string.h>
 
+#include <QApplication>
 #include <QContextMenuEvent>
 #include <QDesktopServices>
 #include <QMenu>
@@ -389,6 +390,10 @@ void * LyricWikiQt::get_qt_widget ()
 {
     textedit = new TextEdit;
     textedit->setReadOnly (true);
+
+#ifdef Q_MAC_OS  // Mac-specific font tweaks
+    textedit->document ()->setDefaultFont (QApplication::font ("QTipLabel"));
+#endif
 
     hook_associate ("tuple change", (HookFunction) lyricwiki_playback_began, nullptr);
     hook_associate ("playback ready", (HookFunction) lyricwiki_playback_began, nullptr);
