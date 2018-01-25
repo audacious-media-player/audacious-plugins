@@ -340,12 +340,12 @@ static QTextEdit * textedit;
 
 static void update_lyrics_window (const char * title, const char * artist, const char * lyrics)
 {
-    QTextDocument doc;
-    QTextCursor cursor (& doc);
-
     if (! textedit)
         return;
 
+    textedit->document ()->clear ();
+
+    QTextCursor cursor (textedit->document ());
     cursor.insertHtml (QString ("<big><b>") + QString (title) + QString ("</b></big>"));
 
     if (artist)
@@ -355,8 +355,6 @@ static void update_lyrics_window (const char * title, const char * artist, const
 
     cursor.insertHtml ("<br><br>");
     cursor.insertText (lyrics);
-
-    textedit->setDocument (doc.clone ());
 }
 
 static void lyricwiki_playback_began ()
