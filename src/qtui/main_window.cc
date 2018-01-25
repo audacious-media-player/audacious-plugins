@@ -124,7 +124,6 @@ MainWindow::MainWindow () :
     };
 
     addToolBar (Qt::TopToolBarArea, new ToolBar (this, items));
-    setUnifiedTitleAndToolBarOnMac (true);
 
     if (m_search_tool)
         aud_plugin_add_watch (m_search_tool, plugin_watcher, this);
