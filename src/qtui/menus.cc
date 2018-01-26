@@ -47,6 +47,8 @@ static void add_url () { audqt::urlopener_show (false); }
 static void pl_find () { hook_call ("qtui find", nullptr); }
 static void pl_rename () { hook_call ("qtui rename playlist", nullptr); }
 static void pl_close () { audqt::playlist_confirm_delete (Playlist::active_playlist ()); }
+static void pl_import () { audqt::fileopener_show (audqt::FileMode::ImportPlaylist); }
+static void pl_export () { audqt::fileopener_show (audqt::FileMode::ExportPlaylist); }
 
 static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
 static void configure_output () { audqt::prefswin_show_plugin_page (PluginType::Output); }
@@ -151,8 +153,8 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuCommand ({N_("Ren_ame ..."), "insert-text", "F2"}, pl_rename),
         audqt::MenuCommand ({N_("Remo_ve"), "edit-delete", "Ctrl+W"}, pl_close),
         audqt::MenuSep (),
-        //audqt::MenuCommand ({N_("_Import ..."), "document-open"}, TODO),
-        //audqt::MenuCommand ({N_("_Export ..."), "document-save"}, TODO),
+        audqt::MenuCommand ({N_("_Import ..."), "document-open"}, pl_import),
+        audqt::MenuCommand ({N_("_Export ..."), "document-save"}, pl_export),
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("Playlist _Manager ..."), "audio-x-generic", "Ctrl+P"}, show_playlist_manager),
         audqt::MenuCommand ({N_("_Queue Manager ..."), nullptr, "Ctrl+U"}, audqt::queue_manager_show)
