@@ -188,11 +188,16 @@ void HtmlDelegate::paint (QPainter * painter, const QStyleOptionViewItem & optio
 
     QAbstractTextDocumentLayout::PaintContext ctx;
 
+    // Color group logic imitating qcommonstyle.cpp
+    QPalette::ColorGroup cg =
+        ! (option.state & QStyle::State_Enabled) ? QPalette::Disabled :
+        ! (option.state & QStyle::State_Active) ? QPalette::Inactive : QPalette::Normal;
+
     // Highlighting text if item is selected
     if (option.state & QStyle::State_Selected)
-        ctx.palette.setColor (QPalette::Text, option.palette.color (QPalette::Active, QPalette::HighlightedText));
+        ctx.palette.setColor (QPalette::Text, option.palette.color (cg, QPalette::HighlightedText));
     else
-        ctx.palette.setColor (QPalette::Text, option.palette.color (QPalette::Active, QPalette::Text));
+        ctx.palette.setColor (QPalette::Text, option.palette.color (cg, QPalette::Text));
 
     QRect textRect = style->subElementRect (QStyle::SE_ItemViewItemText, & option);
     textRect.setLeft (textRect.left () + audqt::sizes.TwoPt);
