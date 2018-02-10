@@ -150,7 +150,25 @@ give_up:
                 if (! strcmp_nocase (ret, "<!-- PUT LYRICS HERE (and delete this entire line) -->"))
                     ret.capture (g_strdup (_("No lyrics available")));
 
+                g_match_info_free (match_info);
                 g_regex_unref (reg);
+
+                if (! ret)
+                {
+                    reg = g_regex_new
+                     ("#REDIRECT \\[\\[([^:]*):(.*)]]",
+                     (GRegexCompileFlags) (G_REGEX_MULTILINE | G_REGEX_DOTALL),
+                     (GRegexMatchFlags) 0, nullptr);
+                    if (g_regex_match (reg, (char *) lyric, G_REGEX_MATCH_NEWLINE_ANY, & match_info))
+                    {
+                        state.artist = String (g_match_info_fetch (match_info, 1));
+                        state.title = String (g_match_info_fetch (match_info, 2));
+                        state.uri = String ();
+                    }
+
+                    g_match_info_free (match_info);
+                    g_regex_unref (reg);
+                }
             }
 
             xmlFree (lyric);
@@ -261,6 +279,8 @@ static String scrape_uri_from_lyricwiki_search_result (const char * buf, int64_t
 
 static void update_lyrics_window (const char * title, const char * artist, const char * lyrics);
 
+static void get_lyrics_step_1 ();
+
 static void get_lyrics_step_3 (const char * uri, const Index<char> & buf, void *)
 {
     if (! state.uri || strcmp (state.uri, uri))
@@ -274,6 +294,12 @@ static void get_lyrics_step_3 (const char * uri, const Index<char> & buf, void *
     }
 
     CharPtr lyrics = scrape_lyrics_from_lyricwiki_edit_page (buf.begin (), buf.len ());
+
+    if (! state.uri)
+    {
+        get_lyrics_step_1 ();
+        return;
+    }
 
     if (! lyrics)
     {
