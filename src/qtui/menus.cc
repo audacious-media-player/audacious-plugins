@@ -160,14 +160,10 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("_New"), "document-new", "Ctrl+T"}, pl_new),
         audqt::MenuCommand ({N_("Ren_ame ..."), "insert-text", "F2"}, pl_rename),
-#ifdef Q_OS_MACOS
         // Command+W is also the system shortcut for closing windows, and thus too
         // likely too much of a reflex that can lead to closing playlists by accident
         // (or getting the "are you sure" dialog unintentionally too often).
         audqt::MenuCommand ({N_("Remo_ve"), "edit-delete", "Ctrl+Shift+W"}, pl_close),
-#else
-        audqt::MenuCommand ({N_("Remo_ve"), "edit-delete", "Ctrl+W"}, pl_close),
-#endif
         audqt::MenuSep (),
         audqt::MenuCommand ({N_("_Import ..."), "document-open"}, pl_import),
         audqt::MenuCommand ({N_("_Export ..."), "document-save"}, pl_export),
