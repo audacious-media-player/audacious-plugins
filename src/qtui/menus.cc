@@ -90,7 +90,7 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
     static const audqt::MenuItem playback_items[] = {
         audqt::MenuCommand ({N_("_Play"), "media-playback-start", "Ctrl+Return"}, aud_drct_play),
 #ifdef Q_OS_MACOS
-        audqt::MenuCommand ({N_("Paus_e"), "media-playback-pause", "Space"}, aud_drct_pause),
+        audqt::MenuCommand ({N_("Paus_e"), "media-playback-pause", "Ctrl+Space"}, aud_drct_pause),
 #else
         audqt::MenuCommand ({N_("Paus_e"), "media-playback-pause", "Ctrl+,"}, aud_drct_pause),
 #endif
