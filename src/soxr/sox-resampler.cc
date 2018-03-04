@@ -64,7 +64,9 @@ const char * const SoXResampler::defaults[] = {
     "quality", aud::numeric_string<SOXR_HQ>::str,
     "rate", "44100",
     "phase_response", aud::numeric_string<SOXR_LINEAR_PHASE>::str,
+#ifdef SOXR_ALLOW_ALIASING
     "allow_aliasing", "FALSE",
+#endif
     "use_steep_filter", "FALSE",
     nullptr
 };
@@ -99,12 +101,14 @@ void SoXResampler::start (int & channels, int & rate)
     if (new_rate == rate)
         return;
 
-    int quality = aud_get_int ("soxr", "quality");
-    int phase_response = aud_get_int ("soxr", "phase_response");
-    int use_steep_filter = (aud_get_bool ("soxr", "use_steep_filter")) ? SOXR_STEEP_FILTER : 0;
-    int allow_aliasing = (aud_get_bool ("soxr", "allow_aliasing")) ? SOXR_ALLOW_ALIASING : 0;
+    int recipe = aud_get_int ("soxr", "quality");
+    recipe |= aud_get_int ("soxr", "phase_response");
+    recipe |= (aud_get_bool ("soxr", "use_steep_filter")) ? SOXR_STEEP_FILTER : 0;
+#ifdef SOXR_ALLOW_ALIASING
+    recipe |= (aud_get_bool ("soxr", "allow_aliasing")) ? SOXR_ALLOW_ALIASING : 0;
+#endif
 
-    soxr_quality_spec_t q = soxr_quality_spec (quality | phase_response | use_steep_filter | allow_aliasing, 0);
+    soxr_quality_spec_t q = soxr_quality_spec (recipe, 0);
 
     soxr = soxr_create (rate, new_rate, channels, & error, nullptr, & q, nullptr);
 
@@ -177,7 +181,9 @@ const PreferencesWidget SoXResampler::widgets[] = {
     WidgetCombo (N_("Phase:"),
         WidgetInt ("soxr", "phase_response"),
         {{phase_response_list}}),
+#ifdef SOXR_ALLOW_ALIASING
     WidgetCheck (N_("Allow aliasing"), WidgetBool ("soxr", "allow_aliasing")),
+#endif
     WidgetCheck (N_("Use steep filter"), WidgetBool ("soxr", "use_steep_filter")),
     WidgetSpin (N_("Rate:"),
         WidgetInt ("soxr", "rate"),

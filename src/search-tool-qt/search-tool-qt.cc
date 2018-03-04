@@ -83,7 +83,7 @@ EXPORT SearchToolQt aud_plugin_instance;
 static void trigger_search ();
 
 const char * const SearchToolQt::defaults[] = {
-    "max_results", "10",
+    "max_results", "20",
     nullptr
 };
 
@@ -193,11 +193,16 @@ void HtmlDelegate::paint (QPainter * painter, const QStyleOptionViewItem & optio
 
     QAbstractTextDocumentLayout::PaintContext ctx;
 
+    // Color group logic imitating qcommonstyle.cpp
+    QPalette::ColorGroup cg =
+        ! (option.state & QStyle::State_Enabled) ? QPalette::Disabled :
+        ! (option.state & QStyle::State_Active) ? QPalette::Inactive : QPalette::Normal;
+
     // Highlighting text if item is selected
     if (option.state & QStyle::State_Selected)
-        ctx.palette.setColor (QPalette::Text, option.palette.color (QPalette::Active, QPalette::HighlightedText));
+        ctx.palette.setColor (QPalette::Text, option.palette.color (cg, QPalette::HighlightedText));
     else
-        ctx.palette.setColor (QPalette::Text, option.palette.color (QPalette::Active, QPalette::Text));
+        ctx.palette.setColor (QPalette::Text, option.palette.color (cg, QPalette::Text));
 
     QRect textRect = style->subElementRect (QStyle::SE_ItemViewItemText, & option);
     textRect.setLeft (textRect.left () + audqt::sizes.TwoPt);
@@ -781,7 +786,12 @@ static QString create_item_label (int row)
     string += QString (item->name).toHtmlEscaped ();
 
     string += end_tags[item->field];
+
+#ifdef Q_OS_MACOS  // Mac-specific font tweaks
     string += "<br>&nbsp;";
+#else
+    string += "<br><small>&nbsp;";
+#endif
 
     if (item->field != SearchField::Title)
     {
@@ -806,6 +816,10 @@ static QString create_item_label (int row)
         string += QString (parent->name).toHtmlEscaped ();
         string += end_tags[parent->field];
     }
+
+#ifndef Q_OS_MACOS  // Mac-specific font tweaks
+    string += "</small>";
+#endif
 
     return string;
 }
@@ -891,6 +905,11 @@ void * SearchToolQt::get_qt_widget ()
     s_stats_label->setContentsMargins (audqt::margins.TwoPt);
     // result stats should use a small font
     s_stats_label->setFont (audqt::get_font_for_class ("QSmallFont"));
+
+#ifdef Q_OS_MAC  // Mac-specific font tweaks
+    s_search_entry->setFont (QApplication::font ("QTreeView"));
+    s_stats_label->setFont (QApplication::font ("QSmallFont"));
+#endif
 
     auto chooser = new QLineEdit;
 

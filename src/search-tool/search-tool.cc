@@ -65,7 +65,7 @@ EXPORT SearchTool aud_plugin_instance;
 static void trigger_search ();
 
 const char * const SearchTool::defaults[] = {
-    "max_results", "10",
+    "max_results", "20",
     nullptr
 };
 

@@ -124,9 +124,6 @@ MainWindow::MainWindow () :
     };
 
     addToolBar (Qt::TopToolBarArea, new ToolBar (this, items));
-    // this worked more or less in Qt4 but setting the unified title-and-toolbar look
-    // is not recommended in Qt5, not if you want to do OpenGL or have dockable widgets
-    setUnifiedTitleAndToolBarOnMac (false);
 
     if (m_search_tool)
         aud_plugin_add_watch (m_search_tool, plugin_watcher, this);
