@@ -183,8 +183,11 @@ static void ffaudio_log_cb (void * avcl, int av_level, const char * fmt, va_list
 
     vsnprintf (message, sizeof message, fmt, va);
 
-    audlog::log (level, __FILE__, __LINE__, avc ? avc->item_name(avcl) : __FUNCTION__,
-                 "<%p> %s", avcl, message);
+    if (!strstr (message, "timescale not set") )
+    {
+        audlog::log (level, __FILE__, __LINE__, avc ? avc->item_name(avcl) : __FUNCTION__,
+                 "%s<%p> %s", avc ? avc->class_name : "", avcl, message);
+    }
 }
 
 bool FFaudio::init ()
