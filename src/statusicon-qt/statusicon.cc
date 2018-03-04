@@ -89,9 +89,6 @@ const audqt::MenuItem StatusIcon::items[] =
     audqt::MenuSep (),
     audqt::MenuCommand ({N_("_Open Files ..."), "document-open"}, StatusIcon::open_files),
     audqt::MenuCommand ({N_("Se_ttings ..."), "preferences-system"}, audqt::prefswin_show),
-#ifdef Q_OS_MACOS
-    audqt::MenuCommand ({N_("_Hide"), "hide-application"}, StatusIcon::toggle_aud_ui),
-#endif
     audqt::MenuCommand ({N_("_Quit"), "application-exit"}, aud_quit),
 };
 
