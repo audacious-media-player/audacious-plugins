@@ -90,7 +90,7 @@ static const AudguiMenuItem file_items[] = {
 
 static const AudguiMenuItem playback_items[] = {
     MenuCommand (N_("_Play"), "media-playback-start", GDK_KEY_Return, CTRL, aud_drct_play),
-    MenuCommand (N_("Paus_e"), "media-playback-pause", ',', CTRL, aud_drct_pause),
+    MenuCommand (N_("Paus_e"), "media-playback-pause", ' ', CTRL, aud_drct_pause),
     MenuCommand (N_("_Stop"), "media-playback-stop", '.', CTRL, aud_drct_stop),
     MenuCommand (N_("Pre_vious"), "media-skip-backward", GDK_KEY_Up, ALT, aud_drct_pl_prev),
     MenuCommand (N_("_Next"), "media-skip-forward", GDK_KEY_Down, ALT, aud_drct_pl_next),
