@@ -31,8 +31,6 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #define MAX_BANDS   (256)
-#define VIS_DELAY 2 /* delay before falloff in frames */
-#define VIS_FALLOFF 2 /* falloff in pixels per frame */
 #define DB_RANGE 65
 
 class VUMeter : public VisPlugin
@@ -62,18 +60,21 @@ static int bands = 4;
 static int nchannels = 2;
 static float bars[MAX_BANDS + 1];
 static float peak[MAX_BANDS + 1];
-static int delay[MAX_BANDS + 1];
 static gint64 last_peak_times[MAX_BANDS + 1]; // Time elapsed since peak was set
 static gint64 peak_hold_time = 1600000; // Time to hold peak in microseconds
+static gint64 last_render_time = 0;
+static float falloff = 13.3/1000000; // 13.3 db/second
 
 static float fclamp(float x, float low, float high)
 {
-    return fmin (fmax (x, low), high);
+    return fminf (fmaxf (x, low), high);
 }
 
 void VUMeter::render_multi_pcm (const float * pcm, int channels)
 {
     gint64 current_time = g_get_monotonic_time();
+    gint64 elapsed_render_time = current_time - last_render_time;
+    last_render_time = current_time;
     nchannels = channels;
     bands = channels + 2;
 
@@ -87,7 +88,7 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
     {
         for (int channel = 0; channel < channels; channel++)
         {
-            peaks[channel] = fmax(peaks[channel], fabs(pcm[i++]));
+            peaks[channel] = fmaxf(peaks[channel], fabsf(pcm[i++]));
         }
     }
 
@@ -98,15 +99,11 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
         float x = DB_RANGE + 20 * log10f (n);
         x = fclamp (x, 0, DB_RANGE);
 
-        bars[i] -= aud::max (0, VIS_FALLOFF - delay[i]);
-
-        if (delay[i])
-            delay[i]--;
+        bars[i] = fclamp(bars[i] - elapsed_render_time * falloff, 0, DB_RANGE);
 
         if (x > bars[i])
         {
             bars[i] = x;
-            delay[i] = VIS_DELAY;
         }
         gint64 elapsed_peak_time = current_time - last_peak_times[i];
         if (x > peak[i] || elapsed_peak_time > peak_hold_time) {
@@ -123,7 +120,6 @@ void VUMeter::clear ()
 {
     memset (bars, 0, sizeof bars);
     memset (peak, 0, sizeof peak);
-    memset (delay, 0, sizeof delay);
     memset (last_peak_times, 0, sizeof last_peak_times);
 
     if (spect_widget)
