@@ -27,6 +27,8 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/preferences.h>
+#include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -37,16 +39,21 @@ class VUMeter : public VisPlugin
 {
 public:
     static const char about[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+    static const char * const prefs_defaults[];
 
     static constexpr PluginInfo info = {
         N_("VU Meter"),
         PACKAGE,
         about,
-        nullptr, // prefs
+        & prefs,
         PluginGLibOnly
     };
 
     constexpr VUMeter () : VisPlugin (info, Visualizer::MultiPCM) {}
+
+    bool init ();
 
     void * get_gtk_widget ();
 
@@ -60,6 +67,28 @@ const char VUMeter::about[] =
  N_("VU Meter Plugin for Audacious\n"
     "Copyright 2017-2018 Marc Sánchez");
 
+const PreferencesWidget VUMeter::widgets[] = {
+    WidgetLabel (N_("<b>VU Meter Settings</b>")),
+    WidgetSpin (
+        N_("Peak hold time:"),
+        WidgetFloat ("vumeter", "peak_hold_time"),
+        {0.1, 30, 0.1, N_("seconds")}
+    ),
+    WidgetSpin (
+        N_("Fall-off time:"),
+        WidgetFloat ("vumeter", "falloff"),
+        {0.1, 96, 0.1, N_("dB/second")}
+    )
+};
+
+const PluginPreferences VUMeter::prefs = {{widgets}};
+
+const char * const VUMeter::prefs_defaults[] = {
+    "peak_hold_time", "1.6",
+    "falloff", "13.3",
+    nullptr
+};
+
 static GtkWidget * spect_widget = nullptr;
 static int width, height;
 static int bands = 4;
@@ -67,9 +96,7 @@ static int nchannels = 2;
 static float bars[MAX_BANDS + 1];
 static float peak[MAX_BANDS + 1];
 static gint64 last_peak_times[MAX_BANDS + 1]; // Time elapsed since peak was set
-static gint64 peak_hold_time = 1600000; // Time to hold peak in microseconds
 static gint64 last_render_time = 0;
-static float falloff = 13.3/1000000; // 13.3 db/second
 
 static float fclamp(float x, float low, float high)
 {
@@ -83,6 +110,8 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
     last_render_time = current_time;
     nchannels = channels;
     bands = channels + 2;
+    float falloff = aud_get_double ("vumeter", "falloff") / 1000000.0;
+    gint64 peak_hold_time = aud_get_double ("vumeter", "peak_hold_time") * 1000000;
 
     float peaks[channels];
     for (int channel = 0; channel < channels; channel++)
@@ -120,6 +149,12 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
 
     if (spect_widget)
         gtk_widget_queue_draw (spect_widget);
+}
+
+bool VUMeter::init ()
+{
+    aud_config_set_defaults ("vumeter", prefs_defaults);
+    return true;
 }
 
 void VUMeter::clear ()
