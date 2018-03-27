@@ -36,10 +36,12 @@
 class VUMeter : public VisPlugin
 {
 public:
+    static const char about[];
+
     static constexpr PluginInfo info = {
         N_("VU Meter"),
         PACKAGE,
-        nullptr, // about
+        about,
         nullptr, // prefs
         PluginGLibOnly
     };
@@ -53,6 +55,10 @@ public:
 };
 
 EXPORT VUMeter aud_plugin_instance;
+
+const char VUMeter::about[] =
+ N_("VU Meter Plugin for Audacious\n"
+    "Copyright 2017-2018 Marc Sánchez");
 
 static GtkWidget * spect_widget = nullptr;
 static int width, height;
