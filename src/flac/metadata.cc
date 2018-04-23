@@ -184,10 +184,7 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
 
     FLAC__metadata_chain_delete(chain);
 
-    return (temp.fseek(0, VFS_SEEK_SET) == 0 &&
-            file.fseek(0, VFS_SEEK_SET) == 0 &&
-            file.ftruncate(0) == 0 &&
-            file.copy_from(temp));
+    return file.replace_with(temp);
 
 ERR:
     status = FLAC__metadata_chain_status(chain);
