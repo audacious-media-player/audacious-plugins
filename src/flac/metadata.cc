@@ -136,6 +136,10 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
 {
     AUDDBG("Update song tuple.\n");
 
+    auto temp = VFSFile::tmpfile();
+    if (!temp)
+        return false;
+
     FLAC__Metadata_Iterator *iter;
     FLAC__Metadata_Chain *chain;
     FLAC__StreamMetadata *vc_block;
@@ -174,11 +178,16 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
     FLAC__metadata_iterator_delete(iter);
     FLAC__metadata_chain_sort_padding(chain);
 
-    if (!FLAC__metadata_chain_write_with_callbacks(chain, true, &file, io_callbacks))
+    if (!FLAC__metadata_chain_write_with_callbacks_and_tempfile(chain, true,
+     &file, io_callbacks, &temp, io_callbacks))
         goto ERR;
 
     FLAC__metadata_chain_delete(chain);
-    return true;
+
+    return (temp.fseek(0, VFS_SEEK_SET) == 0 &&
+            file.fseek(0, VFS_SEEK_SET) == 0 &&
+            file.ftruncate(0) == 0 &&
+            file.copy_from(temp));
 
 ERR:
     status = FLAC__metadata_chain_status(chain);
