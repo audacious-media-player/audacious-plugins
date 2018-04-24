@@ -645,7 +645,7 @@ const char * const FFaudio::exts[] = {
     "vqf",
 
     /* MPEG-4 */
-    "m4a", "mp4",
+    "m4a", "m4v", "mp4",
 
     /* WAV (there are some WAV formats sndfile can't handle) */
     "wav",
