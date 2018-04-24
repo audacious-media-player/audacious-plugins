@@ -26,6 +26,7 @@
 #include <QKeyEvent>
 #include <QLineEdit>
 
+#include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
@@ -80,6 +81,7 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
 
     addRemovePlaylists ();
     updateTitles ();
+    updateIcons ();
     setCurrentIndex (Playlist::active_playlist ().index ());
 
     connect (this, & QTabWidget::currentChanged, this, & PlaylistTabs::currentChangedTrigger);
@@ -156,6 +158,18 @@ void PlaylistTabs::updateTitles ()
     int tabs = count ();
     for (int i = 0; i < tabs; i ++)
         updateTabText (i);
+}
+
+void PlaylistTabs::updateIcons ()
+{
+    QIcon icon;
+    int playing = Playlist::playing_playlist ().index ();
+    if (playing >= 0)
+        icon = audqt::get_icon (aud_drct_get_paused () ? "media-playback-pause" : "media-playback-start");
+
+    int tabs = count ();
+    for (int i = 0; i < tabs; i ++)
+        setTabIcon (i, (i == playing) ? icon : QIcon ());
 }
 
 void PlaylistTabs::currentChangedTrigger (int idx)
