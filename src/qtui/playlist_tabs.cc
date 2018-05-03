@@ -298,9 +298,9 @@ void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)
     setCurrentIndex (Playlist::active_playlist ().index ());
 }
 
-void PlaylistTabs::playlist_position_cb (int list)
+void PlaylistTabs::playlist_position_cb (Playlist list)
 {
-    auto widget = playlistWidget (list);
+    auto widget = playlistWidget (list.index ());
     if (widget)
         widget->scrollToCurrent ();
 }
