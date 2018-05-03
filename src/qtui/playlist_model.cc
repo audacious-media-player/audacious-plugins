@@ -29,6 +29,8 @@
 
 #include "playlist_model.h"
 
+#define ICON_SIZE 16
+
 const char * const PlaylistModel::labels[] = {
     N_("Now Playing"),
     N_("Entry Number"),
@@ -73,7 +75,7 @@ static_assert (aud::n_elems (s_fields) == PlaylistModel::n_cols, "update s_field
 static inline QPixmap get_icon (const char * name)
 {
     qreal r = qApp->devicePixelRatio ();
-    QPixmap pm = audqt::get_icon (name).pixmap (16 * r);
+    QPixmap pm = audqt::get_icon (name).pixmap (ICON_SIZE * r);
     pm.setDevicePixelRatio (r);
     return pm;
 }
@@ -163,6 +165,13 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
                                                      "media-playback-start";
 
             return get_icon (icon_name);
+        }
+        else if (col == NowPlaying && index.row () == 0)
+        {
+            /* put a blank pixmap in the top row for size calculations */
+            QPixmap blank (ICON_SIZE, ICON_SIZE);
+            blank.fill (Qt::transparent);
+            return blank;
         }
         break;
     }
