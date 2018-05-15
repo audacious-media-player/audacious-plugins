@@ -13,6 +13,6 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
 
-CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-sign-compare -Wno-shift-negative-value -Wno-bool-operation
+CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-sign-compare -Wno-shift-negative-value
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. -Ispu/
 LIBS += -lm -lz
