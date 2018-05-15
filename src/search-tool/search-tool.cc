@@ -70,7 +70,7 @@ const char * const SearchTool::defaults[] = {
 };
 
 const PreferencesWidget SearchTool::widgets[] = {
-    WidgetSpin (N_("Maximum number of search results"),
+    WidgetSpin (N_("Number of results to show:"),
         WidgetInt (CFG_ID, "max_results", trigger_search),
          {10, 10000, 10}),
 };
