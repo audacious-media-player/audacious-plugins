@@ -272,7 +272,7 @@ static u32 FASTCALL  OP_UND(armcpu_t *cpu)
      cpu->CPSR.bits.Z = (cpu->R[REG_POS(i,12)]==0);\
      return a;
 
-static u32 FASTCALL  OP_AND_LSL_IMM(register armcpu_t *cpu)
+static u32 FASTCALL  OP_AND_LSL_IMM(armcpu_t *cpu)
 {
      u32 i = cpu->instruction;
      u32 shift_op;
