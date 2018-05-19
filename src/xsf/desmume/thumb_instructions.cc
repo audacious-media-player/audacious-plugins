@@ -365,8 +365,8 @@ static u32 FASTCALL OP_SBC_REG(armcpu_t *cpu)
      cpu->CPSR.bits.N = BIT31(res);
      cpu->CPSR.bits.Z = res == 0;
 
-     cpu->CPSR.bits.C = (!UNSIGNED_UNDERFLOW(a, !cpu->CPSR.bits.C, tmp)) & (!UNSIGNED_OVERFLOW(tmp, b, res));
-     cpu->CPSR.bits.V = SIGNED_UNDERFLOW(a, !cpu->CPSR.bits.C, tmp) | SIGNED_OVERFLOW(tmp, b, res);
+     cpu->CPSR.bits.C = (!UNSIGNED_UNDERFLOW(a, (int)!cpu->CPSR.bits.C, tmp)) & (!UNSIGNED_OVERFLOW(tmp, b, res));
+     cpu->CPSR.bits.V = SIGNED_UNDERFLOW(a, (int)!cpu->CPSR.bits.C, tmp) | SIGNED_OVERFLOW(tmp, b, res);
 
      return 3;
 }
