@@ -132,6 +132,7 @@ static SimpleHash<String, AVInputFormat *> extension_dict;
 
 static void create_extension_dict ();
 
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
 static int lockmgr (void * * mutexp, enum AVLockOp op)
 {
     switch (op)
@@ -154,6 +155,7 @@ static int lockmgr (void * * mutexp, enum AVLockOp op)
 
     return 0;
 }
+#endif
 
 static void ffaudio_log_cb (void * avcl, int av_level, const char * fmt, va_list va)
 {
@@ -192,7 +194,9 @@ bool FFaudio::init ()
 #if ! CHECK_LIBAVFORMAT_VERSION(58, 9, 100, 255, 255, 255)
     av_register_all();
 #endif
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
     av_lockmgr_register (lockmgr);
+#endif
 
     create_extension_dict ();
 
@@ -205,7 +209,9 @@ void FFaudio::cleanup ()
 {
     extension_dict.clear ();
 
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
     av_lockmgr_register (nullptr);
+#endif
 }
 
 static int log_result (const char * func, int ret)
