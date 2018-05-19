@@ -123,7 +123,11 @@ void Gb_Apu::reset()
 		0x84,0x40,0x43,0xAA,0x2D,0x78,0x92,0x3C, // wave table
 		0x60,0x59,0x59,0xB0,0x34,0xB8,0x2E,0xDA
 	};
-	memcpy( wave.wave, initial_wave, sizeof wave.wave );
+
+    /* jlindgren: initial_wave is smaller than wave.wave,
+                  so fill the remainder with zeroes */
+    memset( wave.wave, 0, sizeof wave.wave );
+    memcpy( wave.wave, initial_wave, sizeof initial_wave );
 }
 
 void Gb_Apu::run_until( blip_time_t end_time )
