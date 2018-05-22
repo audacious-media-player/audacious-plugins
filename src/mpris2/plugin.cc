@@ -152,7 +152,7 @@ static void update_metadata (void * data, GObject * object)
     }
 
     GVariant * key = g_variant_new_string ("mpris:trackid");
-    GVariant * str = g_variant_new_string ("/org/mpris/MediaPlayer2/CurrentTrack");
+    GVariant * str = g_variant_new_object_path ("/org/mpris/MediaPlayer2/CurrentTrack");
     GVariant * var = g_variant_new_variant (str);
     elems[nelems ++] = g_variant_new_dict_entry (key, var);
 
