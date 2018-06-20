@@ -93,25 +93,6 @@ const audqt::MenuItem StatusIcon::items[] =
     audqt::MenuCommand ({N_("_Quit"), "application-exit"}, aud_quit),
 };
 
-static bool popup_shown = false;
-static QueuedFunc popup_timer;
-
-static void hide_popup (void * = nullptr)
-{
-    if (popup_shown)
-    {
-        audqt::infopopup_hide ();
-        popup_shown = false;
-    }
-}
-
-static void show_popup ()
-{
-    audqt::infopopup_show_current ();
-    popup_timer.start (5000, hide_popup, nullptr);
-    popup_shown = true;
-}
-
 class SystemTrayIcon : public QSystemTrayIcon
 {
 public:
@@ -122,6 +103,13 @@ public:
 
 protected:
     bool event (QEvent * e) override;
+
+private:
+    bool popup_shown = false;
+    QueuedFunc popup_timer;
+
+    void show_popup ();
+    void hide_popup ();
 };
 
 bool SystemTrayIcon::event (QEvent * e)
@@ -133,6 +121,22 @@ bool SystemTrayIcon::event (QEvent * e)
     }
 
     return QSystemTrayIcon::event (e);
+}
+
+void SystemTrayIcon::show_popup ()
+{
+    audqt::infopopup_show_current ();
+    popup_timer.start (5000, aud::obj_member<SystemTrayIcon, & SystemTrayIcon::hide_popup>, this);
+    popup_shown = true;
+}
+
+void SystemTrayIcon::hide_popup ()
+{
+    if (popup_shown)
+    {
+        audqt::infopopup_hide ();
+        popup_shown = false;
+    }
 }
 
 static SystemTrayIcon * tray = nullptr;
