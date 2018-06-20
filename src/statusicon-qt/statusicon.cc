@@ -92,7 +92,27 @@ const audqt::MenuItem StatusIcon::items[] =
     audqt::MenuCommand ({N_("_Quit"), "application-exit"}, aud_quit),
 };
 
-static QSystemTrayIcon * tray = nullptr;
+class SystemTrayIcon : public QSystemTrayIcon
+{
+public:
+    using QSystemTrayIcon::QSystemTrayIcon;
+
+protected:
+    bool event (QEvent * e) override;
+};
+
+bool SystemTrayIcon::event (QEvent * e)
+{
+    if (e->type () == QEvent::ToolTip)
+    {
+        audqt::infopopup_show_current ();
+        return true;
+    }
+
+    return QSystemTrayIcon::event (e);
+}
+
+static SystemTrayIcon * tray = nullptr;
 static QMenu * menu = nullptr;
 
 bool StatusIcon::init ()
@@ -101,7 +121,7 @@ bool StatusIcon::init ()
 
     audqt::init ();
 
-    tray = new QSystemTrayIcon (qApp->windowIcon ());
+    tray = new SystemTrayIcon (qApp->windowIcon ());
     QObject::connect (tray, & QSystemTrayIcon::activated, activate);
     menu = audqt::menu_build (items);
     tray->setContextMenu (menu);
