@@ -20,6 +20,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/interface.h>
@@ -92,10 +93,32 @@ const audqt::MenuItem StatusIcon::items[] =
     audqt::MenuCommand ({N_("_Quit"), "application-exit"}, aud_quit),
 };
 
+static bool popup_shown = false;
+static QueuedFunc popup_timer;
+
+static void hide_popup (void * = nullptr)
+{
+    if (popup_shown)
+    {
+        audqt::infopopup_hide ();
+        popup_shown = false;
+    }
+}
+
+static void show_popup ()
+{
+    audqt::infopopup_show_current ();
+    popup_timer.start (5000, hide_popup, nullptr);
+    popup_shown = true;
+}
+
 class SystemTrayIcon : public QSystemTrayIcon
 {
 public:
     using QSystemTrayIcon::QSystemTrayIcon;
+
+    ~SystemTrayIcon ()
+        { hide_popup (); }
 
 protected:
     bool event (QEvent * e) override;
@@ -105,7 +128,7 @@ bool SystemTrayIcon::event (QEvent * e)
 {
     if (e->type () == QEvent::ToolTip)
     {
-        audqt::infopopup_show_current (true);
+        show_popup ();
         return true;
     }
 
