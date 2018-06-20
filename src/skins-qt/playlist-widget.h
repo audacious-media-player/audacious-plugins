@@ -60,7 +60,6 @@ private:
     bool button_press (QMouseEvent * event);
     bool button_release (QMouseEvent * event);
     bool motion (QMouseEvent * event);
-    bool leave ();
 
     void update_title ();
     void calc_layout ();
