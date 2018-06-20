@@ -738,6 +738,14 @@ bool PlaylistWidget::motion (QMouseEvent * event)
     return true;
 }
 
+bool PlaylistWidget::leave ()
+{
+    if (! m_drag)
+        cancel_all ();
+
+    return true;
+}
+
 void PlaylistWidget::popup_trigger (int pos)
 {
     audqt::infopopup_hide ();
