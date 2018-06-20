@@ -105,7 +105,7 @@ bool SystemTrayIcon::event (QEvent * e)
 {
     if (e->type () == QEvent::ToolTip)
     {
-        audqt::infopopup_show_current ();
+        audqt::infopopup_show_current (true);
         return true;
     }
 
