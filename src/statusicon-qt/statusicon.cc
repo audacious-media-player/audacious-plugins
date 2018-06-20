@@ -126,7 +126,7 @@ bool SystemTrayIcon::event (QEvent * e)
 void SystemTrayIcon::show_popup ()
 {
     audqt::infopopup_show_current ();
-    popup_timer.start (5000, aud::obj_member<SystemTrayIcon, & SystemTrayIcon::hide_popup>, this);
+    popup_timer.queue (5000, aud::obj_member<SystemTrayIcon, & SystemTrayIcon::hide_popup>, this);
     popup_shown = true;
 }
 
