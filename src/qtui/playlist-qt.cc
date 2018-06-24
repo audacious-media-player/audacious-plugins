@@ -24,11 +24,10 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
-#include <libaudcore/hook.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
+#include <libaudqt/libaudqt.h>
 
-#include "playlist.h"
+#include "playlist-qt.h"
 #include "playlist_header.h"
 #include "playlist_model.h"
 
@@ -57,6 +56,7 @@ PlaylistWidget::PlaylistWidget (QWidget * parent, Playlist playlist) :
     setFrameShape (QFrame::NoFrame);
     setSelectionMode (ExtendedSelection);
     setDragDropMode (DragDrop);
+    setMouseTracking (true);
 
     updateSettings ();
     header->updateColumns ();
@@ -97,9 +97,9 @@ void PlaylistWidget::contextMenuEvent (QContextMenuEvent * event)
 
 void PlaylistWidget::keyPressEvent (QKeyEvent * event)
 {
-    switch (event->modifiers ())
+    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    if (! (event->modifiers () & CtrlShiftAlt))
     {
-    case Qt::NoModifier:
         switch (event->key ())
         {
         case Qt::Key_Enter:
@@ -134,7 +134,6 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
             aud_drct_pl_next ();
             return;
         }
-        break;
     }
 
     QTreeView::keyPressEvent (event);
@@ -148,6 +147,25 @@ void PlaylistWidget::mouseDoubleClickEvent (QMouseEvent * event)
 
     if (event->button () == Qt::LeftButton)
         playCurrentIndex ();
+}
+
+void PlaylistWidget::mouseMoveEvent (QMouseEvent * event)
+{
+    int row = indexToRow (indexAt (event->pos ()));
+
+    if (row < 0)
+    {
+        hidePopup ();
+        return;
+    }
+
+    if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && m_popup_pos != row)
+        triggerPopup (row);
+}
+
+void PlaylistWidget::leaveEvent (QEvent *)
+{
+    hidePopup ();
 }
 
 /* Since Qt doesn't support both DragDrop and InternalMove at once,
@@ -397,6 +415,28 @@ void PlaylistWidget::moveFocus (int distance)
     int row = currentIndex ().row ();
     row = aud::clamp (row + distance, 0, visibleRows - 1);
     setCurrentIndex (proxyModel->index (row, 0));
+}
+
+void PlaylistWidget::showPopup ()
+{
+    audqt::infopopup_show (m_playlist, m_popup_pos);
+}
+
+void PlaylistWidget::triggerPopup (int pos)
+{
+    audqt::infopopup_hide ();
+
+    m_popup_pos = pos;
+    m_popup_timer.queue (aud_get_int (nullptr, "filepopup_delay") * 100,
+     aud::obj_member<PlaylistWidget, & PlaylistWidget::showPopup>, this);
+}
+
+void PlaylistWidget::hidePopup ()
+{
+    audqt::infopopup_hide ();
+
+    m_popup_pos = -1;
+    m_popup_timer.stop ();
 }
 
 void PlaylistWidget::updateSettings ()

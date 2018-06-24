@@ -28,7 +28,7 @@
 
 #include "info_bar.h"
 #include "menus.h"
-#include "playlist.h"
+#include "playlist-qt.h"
 #include "playlist_tabs.h"
 #include "settings.h"
 #include "status_bar.h"
@@ -95,14 +95,6 @@ MainWindow::MainWindow () :
     m_search_tool (aud_plugin_lookup_basename ("search-tool-qt")),
     m_playlist_manager (aud_plugin_lookup_basename ("playlist-manager-qt"))
 {
-#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
-    QIcon::setThemeName ("QtUi");
-
-    QStringList paths = QIcon::themeSearchPaths ();
-    paths.prepend (aud_get_path (AudPath::DataDir));
-    QIcon::setThemeSearchPaths (paths);
-#endif
-
     auto slider = new TimeSlider (this);
 
     const ToolBarItem items[] = {
@@ -113,7 +105,7 @@ MainWindow::MainWindow () :
             [] () { audqt::fileopener_show (audqt::FileMode::Add); }),
         ToolBarSeparator (),
         ToolBarAction ("media-skip-backward", N_("Previous"), N_("Previous"), aud_drct_pl_prev),
-        ToolBarAction ("media-playback-play", N_("Play"), N_("Play"), aud_drct_play_pause, & m_play_pause_action),
+        ToolBarAction ("media-playback-start", N_("Play"), N_("Play"), aud_drct_play_pause, & m_play_pause_action),
         ToolBarAction ("media-playback-stop", N_("Stop"), N_("Stop"), aud_drct_stop, & m_stop_action),
         ToolBarAction ("media-playback-stop", N_("Stop After This Song"), N_("Stop After This Song"),
             [] (bool on) { aud_set_bool (nullptr, "stop_after_current_song", on); }, & m_stop_after_action),
@@ -132,7 +124,6 @@ MainWindow::MainWindow () :
     };
 
     addToolBar (Qt::TopToolBarArea, new ToolBar (this, items));
-    setUnifiedTitleAndToolBarOnMac (true);
 
     if (m_search_tool)
         aud_plugin_add_watch (m_search_tool, plugin_watcher, this);
@@ -162,6 +153,9 @@ MainWindow::MainWindow () :
 
     read_settings ();
     update_visibility ();
+
+    /* set initial keyboard focus on the playlist */
+    m_playlist_tabs->currentPlaylistWidget ()->setFocus (Qt::OtherFocusReason);
 }
 
 MainWindow::~MainWindow ()
@@ -190,7 +184,8 @@ void MainWindow::closeEvent (QCloseEvent * e)
 
 void MainWindow::keyPressEvent (QKeyEvent * event)
 {
-    if (event->modifiers () == Qt::NoModifier && event->key () == Qt::Key_Escape)
+    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    if (! (event->modifiers () & CtrlShiftAlt) && event->key () == Qt::Key_Escape)
     {
         auto widget = m_playlist_tabs->currentPlaylistWidget ();
 
@@ -252,13 +247,13 @@ void MainWindow::update_play_pause ()
 {
     if (! aud_drct_get_playing () || aud_drct_get_paused ())
     {
-        m_play_pause_action->setIcon (QIcon::fromTheme ("media-playback-start"));
+        m_play_pause_action->setIcon (audqt::get_icon ("media-playback-start"));
         m_play_pause_action->setText (_("Play"));
         m_play_pause_action->setToolTip (_("Play"));
     }
     else
     {
-        m_play_pause_action->setIcon (QIcon::fromTheme ("media-playback-pause"));
+        m_play_pause_action->setIcon (audqt::get_icon ("media-playback-pause"));
         m_play_pause_action->setText (_("Pause"));
         m_play_pause_action->setToolTip (_("Pause"));
     }

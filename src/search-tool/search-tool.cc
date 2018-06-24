@@ -1,6 +1,6 @@
 /*
  * search-tool.cc
- * Copyright 2011-2015 John Lindgren
+ * Copyright 2011-2017 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -19,6 +19,7 @@
 
 #include <string.h>
 #include <gtk/gtk.h>
+#include <gdk/gdk.h>
 
 #define AUD_GLIB_INTEGRATION
 #include <libaudcore/audstrings.h>
@@ -29,31 +30,55 @@
 #include <libaudcore/mainloop.h>
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/preferences.h>
 #include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
 #include <libaudgui/menu.h>
 
-#define MAX_RESULTS 20
+#define CFG_ID "search-tool"
 #define SEARCH_DELAY 300
 
 class SearchTool : public GeneralPlugin
 {
 public:
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
     static constexpr PluginInfo info = {
         N_("Search Tool"),
         PACKAGE,
         nullptr, // about
-        nullptr, // prefs
+        & prefs,
         PluginGLibOnly
     };
 
     constexpr SearchTool () : GeneralPlugin (info, false) {}
 
+    bool init ();
     void * get_gtk_widget ();
-    int take_message (const char * code, const void * data, int size);
+    int take_message (const char * code, const void *, int);
 };
 
 EXPORT SearchTool aud_plugin_instance;
+
+static void trigger_search ();
+
+const char * const SearchTool::defaults[] = {
+    "max_results", "20",
+    "rescan_on_startup", "FALSE",
+    nullptr
+};
+
+const PreferencesWidget SearchTool::widgets[] = {
+    WidgetSpin (N_("Number of results to show:"),
+        WidgetInt (CFG_ID, "max_results", trigger_search),
+         {10, 10000, 10}),
+    WidgetCheck (N_("Rescan library at startup"),
+        WidgetBool (CFG_ID, "rescan_on_startup"))
+};
+
+const PluginPreferences SearchTool::prefs = {{widgets}};
 
 enum class SearchField {
     Genre,
@@ -287,11 +312,12 @@ static void do_search ()
     /* first sort by number of songs per item */
     s_items.sort (item_compare_pass1);
 
+    int max_results = aud_get_int (CFG_ID, "max_results");
     /* limit to items with most songs */
-    if (s_items.len () > MAX_RESULTS)
+    if (s_items.len () > max_results)
     {
-        s_hidden_items = s_items.len () - MAX_RESULTS;
-        s_items.remove (MAX_RESULTS, -1);
+        s_hidden_items = s_items.len () - max_results;
+        s_items.remove (max_results, -1);
     }
 
     /* sort by item type, then item name */
@@ -411,6 +437,12 @@ static void search_timeout (void * = nullptr)
     s_search_pending = false;
 }
 
+static void trigger_search ()
+{
+    s_search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
+    s_search_pending = true;
+}
+
 static void update_database ()
 {
     if (check_playlist (true, true))
@@ -485,6 +517,9 @@ static void playlist_update_cb (void *, void *)
 static void search_init ()
 {
     find_playlist ();
+
+    if (aud_get_bool (CFG_ID, "rescan_on_startup"))
+        begin_add (get_uri ());
 
     update_database ();
 
@@ -602,8 +637,7 @@ static void list_get_value (void * user, int row, int column, GValue * value)
         desc.insert (-1, " ");
         desc.insert (-1, _("of this genre"));
     }
-
-    if (item->parent)
+    else if (item->parent)
     {
         auto parent = (item->parent->parent ? item->parent->parent : item->parent);
 
@@ -731,6 +765,12 @@ static void refresh_cb (GtkButton * button, GtkWidget * file_entry)
     }
 }
 
+bool SearchTool::init ()
+{
+    aud_config_set_defaults (CFG_ID, defaults);
+    return true;
+}
+
 void * SearchTool::get_gtk_widget ()
 {
     GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
@@ -785,7 +825,7 @@ void * SearchTool::get_gtk_widget ()
 
     GtkWidget * button = gtk_button_new ();
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
-     ("view-refresh", GTK_ICON_SIZE_BUTTON));
+     ("view-refresh", GTK_ICON_SIZE_MENU));
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     gtk_box_pack_start ((GtkBox *) hbox, button, false, false, 0);
 
@@ -805,7 +845,7 @@ void * SearchTool::get_gtk_widget ()
     return vbox;
 }
 
-int SearchTool::take_message (const char * code, const void * data, int size)
+int SearchTool::take_message (const char * code, const void *, int)
 {
     if (! strcmp (code, "grab focus"))
     {

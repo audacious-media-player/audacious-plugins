@@ -18,7 +18,7 @@
  */
 
 #include "search_bar.h"
-#include "playlist.h"
+#include "playlist-qt.h"
 
 #include <QApplication>
 #include <QHBoxLayout>
@@ -32,7 +32,7 @@
 
 static QPushButton * makeButton (const char * icon, QWidget * parent)
 {
-    auto button = new QPushButton (QIcon::fromTheme (icon), QString (), parent);
+    auto button = new QPushButton (audqt::get_icon (icon), QString (), parent);
     button->setFlat (true);
     button->setFocusPolicy (Qt::NoFocus);
     return button;
@@ -81,7 +81,8 @@ SearchBar::SearchBar (QWidget * parent, PlaylistWidget * playlistWidget) :
 
 void SearchBar::keyPressEvent (QKeyEvent * event)
 {
-    if (event->modifiers () == Qt::NoModifier)
+    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    if (! (event->modifiers () & CtrlShiftAlt))
     {
         switch (event->key ())
         {

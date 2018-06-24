@@ -45,6 +45,7 @@ public:
     constexpr PulseOutput () : OutputPlugin (info, 8) {}
 
     bool init ();
+    void cleanup ();
 
     StereoVolume get_volume ();
     void set_volume (StereoVolume v);
@@ -74,6 +75,9 @@ static pa_mainloop * mainloop = nullptr;
 static bool connected, flushed, polling;
 
 static pa_cvolume volume;
+
+static StereoVolume saved_volume = {0, 0};
+static bool saved_volume_changed = false;
 
 /* Check whether the connection is still alive. */
 static bool alive ()
@@ -170,13 +174,8 @@ static void context_success_cb (pa_context *, int success, void * userdata)
         * (int * ) userdata = success;
 }
 
-StereoVolume PulseOutput::get_volume ()
+static void get_volume_locked ()
 {
-    scoped_lock lock (pulse_mutex);
-
-    if (! connected)
-        return {0, 0};
-
     if (! polling)
     {
         /* read any pending events to get the lastest volume */
@@ -184,40 +183,61 @@ StereoVolume PulseOutput::get_volume ()
             continue;
     }
 
-    StereoVolume v;
     if (volume.channels == 2)
     {
-        v.left = aud::rescale<int> (volume.values[0], PA_VOLUME_NORM, 100);
-        v.right = aud::rescale<int> (volume.values[1], PA_VOLUME_NORM, 100);
+        saved_volume.left = aud::rescale<int> (volume.values[0], PA_VOLUME_NORM, 100);
+        saved_volume.right = aud::rescale<int> (volume.values[1], PA_VOLUME_NORM, 100);
     }
     else
-        v.left = v.right = aud::rescale<int> (pa_cvolume_avg (& volume), PA_VOLUME_NORM, 100);
+    {
+        saved_volume.left = aud::rescale<int> (pa_cvolume_avg (& volume), PA_VOLUME_NORM, 100);
+        saved_volume.right = saved_volume.left;
+    }
 
-    return v;
+    saved_volume_changed = false;
 }
 
-void PulseOutput::set_volume (StereoVolume v)
+StereoVolume PulseOutput::get_volume ()
 {
     scoped_lock lock (pulse_mutex);
 
-    if (! connected)
-        return;
+    if (connected)
+        get_volume_locked ();
 
+    return saved_volume;
+}
+
+static void set_volume_locked (scoped_lock & lock)
+{
     if (volume.channels != 1)
     {
-        volume.values[0] = aud::rescale<int> (v.left, 100, PA_VOLUME_NORM);
-        volume.values[1] = aud::rescale<int> (v.right, 100, PA_VOLUME_NORM);
+        volume.values[0] = aud::rescale<int> (saved_volume.left, 100, PA_VOLUME_NORM);
+        volume.values[1] = aud::rescale<int> (saved_volume.right, 100, PA_VOLUME_NORM);
         volume.channels = 2;
     }
     else
     {
-        volume.values[0] = aud::rescale<int> (aud::max (v.left, v.right), 100, PA_VOLUME_NORM);
+        int mono = aud::max (saved_volume.left, saved_volume.right);
+        volume.values[0] = aud::rescale<int> (mono, 100, PA_VOLUME_NORM);
         volume.channels = 1;
     }
 
     int success = 0;
     CHECK (pa_context_set_sink_input_volume, context,
      pa_stream_get_index (stream), & volume, context_success_cb);
+
+    saved_volume_changed = false;
+}
+
+void PulseOutput::set_volume (StereoVolume v)
+{
+    scoped_lock lock (pulse_mutex);
+
+    saved_volume = v;
+    saved_volume_changed = true;
+
+    if (connected)
+        set_volume_locked (lock);
 }
 
 void PulseOutput::pause (bool pause)
@@ -477,17 +497,35 @@ bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
 
     connected = true;
     flushed = true;
+
+    if (saved_volume_changed)
+        set_volume_locked (lock);
+    else
+        get_volume_locked ();
+
     return true;
 }
 
 bool PulseOutput::init ()
 {
+    /* check for a running server and get initial volume */
     String error;
     if (! open_audio (FMT_S16_NE, 44100, 2, error))
         return false;
 
     close_audio ();
     return true;
+}
+
+void PulseOutput::cleanup ()
+{
+    if (saved_volume_changed)
+    {
+        /* save final volume */
+        String error;
+        if (open_audio (FMT_S16_NE, 44100, 2, error))
+            close_audio ();
+    }
 }
 
 const char PulseOutput::about[] =

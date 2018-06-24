@@ -132,6 +132,7 @@ static SimpleHash<String, AVInputFormat *> extension_dict;
 
 static void create_extension_dict ();
 
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
 static int lockmgr (void * * mutexp, enum AVLockOp op)
 {
     switch (op)
@@ -154,6 +155,7 @@ static int lockmgr (void * * mutexp, enum AVLockOp op)
 
     return 0;
 }
+#endif
 
 static void ffaudio_log_cb (void * avcl, int av_level, const char * fmt, va_list va)
 {
@@ -189,8 +191,12 @@ static void ffaudio_log_cb (void * avcl, int av_level, const char * fmt, va_list
 
 bool FFaudio::init ()
 {
+#if ! CHECK_LIBAVFORMAT_VERSION(58, 9, 100, 255, 255, 255)
     av_register_all();
+#endif
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
     av_lockmgr_register (lockmgr);
+#endif
 
     create_extension_dict ();
 
@@ -203,7 +209,9 @@ void FFaudio::cleanup ()
 {
     extension_dict.clear ();
 
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
     av_lockmgr_register (nullptr);
+#endif
 }
 
 static int log_result (const char * func, int ret)
@@ -225,7 +233,12 @@ static int log_result (const char * func, int ret)
 static void create_extension_dict ()
 {
     AVInputFormat * f;
+#if CHECK_LIBAVFORMAT_VERSION(58, 9, 100, 255, 255, 255)
+    void * iter = nullptr;
+    while ((f = const_cast<AVInputFormat *> (av_demuxer_iterate (& iter))))
+#else
     for (f = av_iformat_next (nullptr); f; f = av_iformat_next (f))
+#endif
     {
         if (! f->extensions)
             continue;
@@ -244,20 +257,19 @@ static AVInputFormat * get_format_by_extension (const char * name)
     if (! ext)
         return nullptr;
 
-    AUDDBG ("Get format by extension: %s\n", name);
     AVInputFormat * * f = extension_dict.lookup (String (str_tolower (ext)));
 
     if (f && * f)
-        AUDDBG ("Format %s.\n", (* f)->name);
+        AUDINFO ("Matched format %s by extension.\n", (* f)->name);
     else
-        AUDDBG ("Format unknown.\n");
+        AUDINFO ("No format matched by extension.\n");
 
     return f ? * f : nullptr;
 }
 
 static AVInputFormat * get_format_by_content (const char * name, VFSFile & file)
 {
-    AUDDBG ("Get format by content: %s\n", name);
+    AUDDBG ("Probing content: %s\n", name);
 
     AVInputFormat * f = nullptr;
 
@@ -289,9 +301,9 @@ static AVInputFormat * get_format_by_content (const char * name, VFSFile & file)
     }
 
     if (f)
-        AUDDBG ("Format %s, buffer size %d, score %d.\n", f->name, filled, score);
+        AUDINFO ("Probe matched format %s, buffer size %d, score %d.\n", f->name, filled, score);
     else
-        AUDDBG ("Format unknown.\n");
+        AUDINFO ("Probe did not match any known formats.\n");
 
     if (file.fseek (0, VFS_SEEK_SET) < 0)
         ; /* ignore errors here */
@@ -645,7 +657,7 @@ const char * const FFaudio::exts[] = {
     "vqf",
 
     /* MPEG-4 */
-    "m4a", "mp4",
+    "m4a", "m4v", "mp4",
 
     /* WAV (there are some WAV formats sndfile can't handle) */
     "wav",

@@ -54,6 +54,9 @@ static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType:
 static void configure_output () { audqt::prefswin_show_plugin_page (PluginType::Output); }
 static void configure_visualizations () { audqt::prefswin_show_plugin_page (PluginType::Vis); }
 
+static void pl_import () { audqt::fileopener_show (audqt::FileMode::ImportPlaylist); }
+static void pl_export () { audqt::fileopener_show (audqt::FileMode::ExportPlaylist); }
+
 static void skins_volume_up () { mainwin_set_volume_diff (5); }
 static void skins_volume_down () { mainwin_set_volume_diff (-5); }
 
@@ -119,11 +122,9 @@ static const audqt::MenuItem playlist_items[] = {
     audqt::MenuCommand ({N_("Previous Playlist"), "media-skip-backward", "Shift+Tab"}, pl_prev),
     audqt::MenuCommand ({N_("Next Playlist"), "media-skip-forward", "Tab"}, pl_next),
     audqt::MenuSep (),
-#if 0
-    audqt::MenuCommand ({N_("Import Playlist ..."), "document-open", "O"}, audgui_import_playlist),
-    audqt::MenuCommand ({N_("Export Playlist ..."), "document-save", "Shift+S"}, audgui_export_playlist),
+    audqt::MenuCommand ({N_("Import Playlist ..."), "document-open", "O"}, pl_import),
+    audqt::MenuCommand ({N_("Export Playlist ..."), "document-save", "Shift+S"}, pl_export),
     audqt::MenuSep (),
-#endif
     audqt::MenuCommand ({N_("Playlist Manager ..."), "audio-x-generic", "P"}, action_playlist_manager),
     audqt::MenuCommand ({N_("Queue Manager ..."), nullptr, "Ctrl+U"}, audqt::queue_manager_show),
     audqt::MenuSep (),

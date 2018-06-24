@@ -32,10 +32,6 @@ ToolBar::ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items)
     setMovable (false);
     setObjectName ("MainToolBar");
 
-#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
-    setIconSize (QSize (22, 22));
-#endif
-
     for (const ToolBarItem & item : items)
     {
         if (item.widget)
@@ -44,7 +40,7 @@ ToolBar::ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items)
             addSeparator ();
         else if (item.icon_name)
         {
-            QAction * a = new QAction (QIcon::fromTheme (item.icon_name),
+            QAction * a = new QAction (audqt::get_icon (item.icon_name),
              audqt::translate_str (item.name), this);
 
             if (item.tooltip_text)

@@ -151,11 +151,13 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
     FLAC__metadata_iterator_init(iter, chain);
 
     while (FLAC__metadata_iterator_next(iter))
+    {
         if (FLAC__metadata_iterator_get_block_type(iter) == FLAC__METADATA_TYPE_VORBIS_COMMENT)
         {
             FLAC__metadata_iterator_delete_block(iter, true);
             break;
         }
+    }
 
     vc_block = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
@@ -174,17 +176,33 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
     FLAC__metadata_iterator_delete(iter);
     FLAC__metadata_chain_sort_padding(chain);
 
-    if (!FLAC__metadata_chain_write_with_callbacks(chain, true, &file, io_callbacks))
-        goto ERR;
+    if (FLAC__metadata_chain_check_if_tempfile_needed(chain, true))
+    {
+        auto temp = VFSFile::tmpfile();
+        if (!temp)
+            goto ERR_RETURN;
+
+        if (!FLAC__metadata_chain_write_with_callbacks_and_tempfile(chain, true,
+         &file, io_callbacks, &temp, io_callbacks))
+            goto ERR;
+
+        if (!file.replace_with(temp))
+            goto ERR_RETURN;
+    }
+    else /* no tempfile needed */
+    {
+        if (!FLAC__metadata_chain_write_with_callbacks(chain, true, &file, io_callbacks))
+            goto ERR;
+    }
 
     FLAC__metadata_chain_delete(chain);
     return true;
 
 ERR:
     status = FLAC__metadata_chain_status(chain);
-    FLAC__metadata_chain_delete(chain);
-
     AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+ERR_RETURN:
+    FLAC__metadata_chain_delete(chain);
     return false;
 }
 

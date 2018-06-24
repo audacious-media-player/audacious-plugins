@@ -17,7 +17,7 @@
  * the use of this software.
  */
 
-#include "playlist.h"
+#include "playlist-qt.h"
 #include "playlist_tabs.h"
 #include "menus.h"
 #include "search_bar.h"
@@ -26,6 +26,7 @@
 #include <QKeyEvent>
 #include <QLineEdit>
 
+#include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
@@ -80,6 +81,7 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
 
     addRemovePlaylists ();
     updateTitles ();
+    updateIcons ();
     setCurrentIndex (Playlist::active_playlist ().index ());
 
     connect (this, & QTabWidget::currentChanged, this, & PlaylistTabs::currentChangedTrigger);
@@ -156,6 +158,18 @@ void PlaylistTabs::updateTitles ()
     int tabs = count ();
     for (int i = 0; i < tabs; i ++)
         updateTabText (i);
+}
+
+void PlaylistTabs::updateIcons ()
+{
+    QIcon icon;
+    int playing = Playlist::playing_playlist ().index ();
+    if (playing >= 0)
+        icon = audqt::get_icon (aud_drct_get_paused () ? "media-playback-pause" : "media-playback-start");
+
+    int tabs = count ();
+    for (int i = 0; i < tabs; i ++)
+        setTabIcon (i, (i == playing) ? icon : QIcon ());
 }
 
 void PlaylistTabs::currentChangedTrigger (int idx)
@@ -284,9 +298,9 @@ void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)
     setCurrentIndex (Playlist::active_playlist ().index ());
 }
 
-void PlaylistTabs::playlist_position_cb (int list)
+void PlaylistTabs::playlist_position_cb (Playlist list)
 {
-    auto widget = playlistWidget (list);
+    auto widget = playlistWidget (list.index ());
     if (widget)
         widget->scrollToCurrent ();
 }

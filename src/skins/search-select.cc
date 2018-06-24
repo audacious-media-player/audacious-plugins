@@ -24,7 +24,7 @@
  */
 
 #include "actions-playlist.h"
-#include "playlist.h"
+#include "playlistwin.h"
 #include "playlist-widget.h"
 
 #include <gdk/gdkkeysyms.h>

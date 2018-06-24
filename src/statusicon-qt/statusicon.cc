@@ -20,6 +20,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/interface.h>
@@ -92,7 +93,53 @@ const audqt::MenuItem StatusIcon::items[] =
     audqt::MenuCommand ({N_("_Quit"), "application-exit"}, aud_quit),
 };
 
-static QSystemTrayIcon * tray = nullptr;
+class SystemTrayIcon : public QSystemTrayIcon
+{
+public:
+    using QSystemTrayIcon::QSystemTrayIcon;
+
+    ~SystemTrayIcon ()
+        { hide_popup (); }
+
+protected:
+    bool event (QEvent * e) override;
+
+private:
+    bool popup_shown = false;
+    QueuedFunc popup_timer;
+
+    void show_popup ();
+    void hide_popup ();
+};
+
+bool SystemTrayIcon::event (QEvent * e)
+{
+    if (e->type () == QEvent::ToolTip)
+    {
+        show_popup ();
+        return true;
+    }
+
+    return QSystemTrayIcon::event (e);
+}
+
+void SystemTrayIcon::show_popup ()
+{
+    audqt::infopopup_show_current ();
+    popup_timer.queue (5000, aud::obj_member<SystemTrayIcon, & SystemTrayIcon::hide_popup>, this);
+    popup_shown = true;
+}
+
+void SystemTrayIcon::hide_popup ()
+{
+    if (popup_shown)
+    {
+        audqt::infopopup_hide ();
+        popup_shown = false;
+    }
+}
+
+static SystemTrayIcon * tray = nullptr;
 static QMenu * menu = nullptr;
 
 bool StatusIcon::init ()
@@ -101,7 +148,7 @@ bool StatusIcon::init ()
 
     audqt::init ();
 
-    tray = new QSystemTrayIcon (qApp->windowIcon ());
+    tray = new SystemTrayIcon (qApp->windowIcon ());
     QObject::connect (tray, & QSystemTrayIcon::activated, activate);
     menu = audqt::menu_build (items);
     tray->setContextMenu (menu);
@@ -145,9 +192,11 @@ void StatusIcon::activate(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason)
     {
+#ifndef Q_OS_MAC
         case QSystemTrayIcon::Trigger:
             toggle_aud_ui ();
             break;
+#endif
 
         case QSystemTrayIcon::MiddleClick:
             aud_drct_pause ();

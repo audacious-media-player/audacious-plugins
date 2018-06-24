@@ -38,6 +38,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/playlist.h>
+#include <libaudqt/libaudqt.h>
 
 enum {
     DRAG_SELECT = 1,
@@ -411,9 +412,10 @@ bool PlaylistWidget::handle_keypress (QKeyEvent * event)
 {
     cancel_all ();
 
-    switch (event->modifiers () & (Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier))
+    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    switch (event->modifiers () & CtrlShiftAlt)
     {
-      case 0:
+      case Qt::NoModifier:
         switch (event->key ())
         {
           case Qt::Key_Up:
@@ -746,28 +748,22 @@ bool PlaylistWidget::leave ()
 
 void PlaylistWidget::popup_trigger (int pos)
 {
-#if 0
-    audgui_infopopup_hide ();
+    audqt::infopopup_hide ();
 
     m_popup_pos = pos;
     m_popup_timer.queue (aud_get_int (nullptr, "filepopup_delay") * 100,
      aud::obj_member<PlaylistWidget, & PlaylistWidget::popup_show>, this);
-#endif
 }
 
 void PlaylistWidget::popup_show ()
 {
-#if 0
-    audgui_infopopup_show (m_playlist, m_popup_pos);
-#endif
+    audqt::infopopup_show (m_playlist, m_popup_pos);
 }
 
 void PlaylistWidget::popup_hide ()
 {
-#if 0
-    audgui_infopopup_hide ();
+    audqt::infopopup_hide ();
 
     m_popup_pos = -1;
     m_popup_timer.stop ();
-#endif
 }

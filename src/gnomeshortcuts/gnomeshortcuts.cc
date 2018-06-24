@@ -239,8 +239,14 @@ bool GNOMEShortcuts::init ()
          "org.gnome.SettingsDaemon",
          "/org/gnome/SettingsDaemon/MediaKeys",
          "org.gnome.SettingsDaemon.MediaKeys");
-        if (media_player_keys_proxy == nullptr)
-            return false;
+        if (media_player_keys_proxy == nullptr) {
+            media_player_keys_proxy = dbus_g_proxy_new_for_name (bus,
+             "org.gnome.SettingsDaemon.MediaKeys",
+             "/org/gnome/SettingsDaemon/MediaKeys",
+             "org.gnome.SettingsDaemon.MediaKeys");
+            if (media_player_keys_proxy == nullptr)
+                return false;
+        }
 
         dbus_g_proxy_call (media_player_keys_proxy,
          "GrabMediaPlayerKeys", &error,
@@ -252,8 +258,7 @@ bool GNOMEShortcuts::init ()
             g_error_free (error);
             error = nullptr;
             g_object_unref(media_player_keys_proxy);
-            media_player_keys_proxy = nullptr;
-             media_player_keys_proxy = dbus_g_proxy_new_for_name (bus,
+            media_player_keys_proxy = dbus_g_proxy_new_for_name (bus,
              "org.gnome.SettingsDaemon",
              "/org/gnome/SettingsDaemon",
              "org.gnome.SettingsDaemon");

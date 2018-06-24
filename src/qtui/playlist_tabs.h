@@ -58,12 +58,13 @@ private:
     void activateSearch ();
     void addRemovePlaylists ();
     void updateTitles ();
+    void updateIcons ();
     void renameCurrent ();
     bool cancelRename ();
 
     void playlist_activate_cb ();
     void playlist_update_cb (Playlist::UpdateLevel global_level);
-    void playlist_position_cb (int list);
+    void playlist_position_cb (Playlist list);
 
     const HookReceiver<PlaylistTabs>
      hook1 {"qtui find", this, & PlaylistTabs::activateSearch},
@@ -71,10 +72,13 @@ private:
      hook3 {"qtui update playlist settings", this, & PlaylistTabs::updateTitles};
 
     const HookReceiver<PlaylistTabs>
-     activate_hook {"playlist activate", this, & PlaylistTabs::playlist_activate_cb};
+     activate_hook {"playlist activate", this, & PlaylistTabs::playlist_activate_cb},
+     set_playing_hook {"playlist set playing", this, & PlaylistTabs::updateIcons},
+     pause_hook {"playback pause", this, & PlaylistTabs::updateIcons},
+     unpause_hook {"playback unpause", this, & PlaylistTabs::updateIcons};
     const HookReceiver<PlaylistTabs, Playlist::UpdateLevel>
      update_hook {"playlist update", this, & PlaylistTabs::playlist_update_cb};
-    const HookReceiver<PlaylistTabs, int>
+    const HookReceiver<PlaylistTabs, Playlist>
      position_hook {"playlist position", this, & PlaylistTabs::playlist_position_cb};
 };
 
