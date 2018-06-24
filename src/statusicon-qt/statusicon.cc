@@ -96,8 +96,8 @@ const audqt::MenuItem StatusIcon::items[] =
 class SystemTrayIcon : public QSystemTrayIcon
 {
 public:
-    using QSystemTrayIcon::QSystemTrayIcon;
-
+    SystemTrayIcon (const QIcon & icon, QObject * parent = nullptr) :
+        QSystemTrayIcon (icon, parent) {}
     ~SystemTrayIcon ()
         { hide_popup (); }
 
