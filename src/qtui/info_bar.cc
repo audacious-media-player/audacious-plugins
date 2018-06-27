@@ -94,18 +94,38 @@ static void get_color (int i, QColor & color, QColor & shadow)
     shadow = QColor (color.redF () * 77, color.greenF () * 77, color.blueF () * 77);
 }
 
+static QGradientStops get_stops (const QColor & base)
+{
+    QColor mid = QColor (64, 64, 64);
+    QColor dark = QColor (38, 38, 38);
+    QColor darker = QColor (26, 26, 26);
+
+    /* In a dark theme, try to match the tone of the base color */
+    int v = base.value ();
+    if (v >= 10 && v < 80)
+    {
+        int r = base.red (), g = base.green (), b = base.blue ();
+        mid = QColor (r * 64 / v, g * 64 / v, b * 64 / v);
+        dark = QColor (r * 38 / v, g * 38 / v, b * 38 / v);
+        darker = QColor (r * 26 / v, g * 26 / v, b * 26 / v);
+    }
+
+    return {
+        {0, mid},
+        {0.499, dark},
+        {0.5, darker},
+        {1, Qt::black}
+    };
+}
+
 InfoVis::InfoVis (QWidget * parent) :
     QWidget (parent),
     Visualizer (Freq),
     ps (audqt::sizes.OneInch),
     m_gradient (0, 0, 0, ps.Height)
 {
-    m_gradient.setStops ({
-        {0, QColor (64, 64, 64)},
-        {0.499, QColor (38, 38, 38)},
-        {0.5, QColor (26, 26, 26)},
-        {1, QColor (0, 0, 0)}
-    });
+    auto & base = palette ().color (QPalette::Window);
+    m_gradient.setStops (get_stops (base));
 
     for (int i = 0; i < VisBands; i ++)
         get_color (i, m_colors[i], m_shadow[i]);
