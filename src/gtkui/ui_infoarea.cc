@@ -136,13 +136,26 @@ void InfoAreaVis::clear ()
 
 static void clear (GtkWidget * widget, cairo_t * cr)
 {
+    double r = 1, g = 1, b = 1;
+
+    /* In a dark theme, try to match the tone of the base color */
+    auto & c = (gtk_widget_get_style (widget))->base[GTK_STATE_NORMAL];
+    int v = aud::max (aud::max (c.red, c.green), c.blue);
+
+    if (v >= 10*256 && v < 80*256)
+    {
+        r = (double)c.red / v;
+        g = (double)c.green / v;
+        b = (double)c.blue / v;
+    }
+
     GtkAllocation alloc;
     gtk_widget_get_allocation (widget, & alloc);
 
     cairo_pattern_t * gradient = cairo_pattern_create_linear (0, 0, 0, alloc.height);
-    cairo_pattern_add_color_stop_rgb (gradient, 0, 0.25, 0.25, 0.25);
-    cairo_pattern_add_color_stop_rgb (gradient, 0.5, 0.15, 0.15, 0.15);
-    cairo_pattern_add_color_stop_rgb (gradient, 0.5, 0.1, 0.1, 0.1);
+    cairo_pattern_add_color_stop_rgb (gradient, 0, 0.25 * r, 0.25 * g, 0.25 * b);
+    cairo_pattern_add_color_stop_rgb (gradient, 0.5, 0.15 * r, 0.15 * g, 0.15 * b);
+    cairo_pattern_add_color_stop_rgb (gradient, 0.5, 0.1 * r, 0.1 * g, 0.1 * b);
     cairo_pattern_add_color_stop_rgb (gradient, 1, 0, 0, 0);
 
     cairo_set_source (cr, gradient);
@@ -241,10 +254,10 @@ static void hsv_to_rgb (float h, float s, float v, float * r, float * g,
 
 static void get_color (GtkWidget * widget, int i, float * r, float * g, float * b)
 {
-    GdkColor * c = (gtk_widget_get_style (widget))->base + GTK_STATE_SELECTED;
+    auto & c = (gtk_widget_get_style (widget))->base[GTK_STATE_SELECTED];
     float h, s, v;
 
-    rgb_to_hsv (c->red / 65535.0, c->green / 65535.0, c->blue / 65535.0, & h, & s, & v);
+    rgb_to_hsv (c.red / 65535.0, c.green / 65535.0, c.blue / 65535.0, & h, & s, & v);
 
     if (s < 0.1) /* monochrome theme? use blue instead */
         h = 4.6;
