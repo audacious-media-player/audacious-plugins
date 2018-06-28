@@ -101,15 +101,15 @@ public:
     ~SystemTrayIcon ()
         { hide_popup (); }
 
+    void show_popup ();
+    void hide_popup ();
+
 protected:
     bool event (QEvent * e) override;
 
 private:
     bool popup_shown = false;
     QueuedFunc popup_timer;
-
-    void show_popup ();
-    void hide_popup ();
 };
 
 bool SystemTrayIcon::event (QEvent * e)
@@ -151,6 +151,7 @@ bool StatusIcon::init ()
     tray = new SystemTrayIcon (qApp->windowIcon ());
     QObject::connect (tray, & QSystemTrayIcon::activated, activate);
     menu = audqt::menu_build (items);
+    QObject::connect (menu, & QMenu::aboutToShow, tray, & SystemTrayIcon::hide_popup);
     tray->setContextMenu (menu);
     tray->show ();
 
