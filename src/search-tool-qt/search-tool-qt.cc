@@ -171,7 +171,7 @@ protected:
 static void init_text_document (QTextDocument & doc, const QStyleOptionViewItem & option)
 {
     doc.setHtml (option.text);
-    doc.setDocumentMargin (0);
+    doc.setDocumentMargin (audqt::sizes.TwoPt);
     doc.setDefaultFont (option.font);
 }
 
@@ -203,7 +203,6 @@ void HtmlDelegate::paint (QPainter * painter, const QStyleOptionViewItem & optio
         ctx.palette.setColor (QPalette::Text, option.palette.color (cg, QPalette::Text));
 
     QRect textRect = style->subElementRect (QStyle::SE_ItemViewItemText, & option);
-    textRect.setLeft (textRect.left () + audqt::sizes.TwoPt);
     painter->save ();
     painter->translate (textRect.topLeft ());
     painter->setClipRect (textRect.translated (-textRect.topLeft ()));
