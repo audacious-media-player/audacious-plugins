@@ -234,18 +234,31 @@ void PlaylistWidget::selectionChanged (const QItemSelection & selected,
     }
 }
 
-void PlaylistWidget::scrollToCurrent (bool force)
+/* returns true if the focus changed or the playlist scrolled */
+bool PlaylistWidget::scrollToCurrent (bool force)
 {
+    bool scrolled = false;
     int entry = m_playlist.get_position ();
 
     if (aud_get_bool ("qtui", "autoscroll") || force)
     {
+        if (m_playlist.get_focus () != entry)
+            scrolled = true;
+
         m_playlist.select_all (false);
         m_playlist.select_entry (entry, true);
         m_playlist.set_focus (entry);
 
-        scrollTo (rowToIndex (entry));
+        auto index = rowToIndex (entry);
+        auto rect = visualRect (index);
+
+        scrollTo (index);
+
+        if (visualRect (index) != rect)
+            scrolled = true;
     }
+
+    return scrolled;
 }
 
 void PlaylistWidget::updatePlaybackIndicator ()

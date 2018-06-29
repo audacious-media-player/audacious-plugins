@@ -189,11 +189,25 @@ void MainWindow::keyPressEvent (QKeyEvent * event)
     {
         auto widget = m_playlist_tabs->currentPlaylistWidget ();
 
-        if (widget->hasFocus ())
-            widget->scrollToCurrent (true);
-        else
+        /* on the first press, set focus to the playlist */
+        if (! widget->hasFocus ())
+        {
             widget->setFocus (Qt::OtherFocusReason);
+            return;
+        }
 
+        /* on the second press, scroll to the current entry */
+        if (widget->scrollToCurrent (true))
+            return;
+
+        /* on the third press, switch to the playing playlist */
+        Playlist::playing_playlist ().activate ();
+
+        /* ensure currentPlaylistWidget() is up to date */
+        Playlist::process_pending_update ();
+        widget = m_playlist_tabs->currentPlaylistWidget ();
+
+        widget->scrollToCurrent (true);
         return;
     }
 
