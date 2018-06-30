@@ -240,7 +240,7 @@ bool PlaylistWidget::scrollToCurrent (bool force)
     bool scrolled = false;
     int entry = m_playlist.get_position ();
 
-    if (aud_get_bool ("qtui", "autoscroll") || force)
+    if (entry >= 0 && (aud_get_bool ("qtui", "autoscroll") || force))
     {
         if (m_playlist.get_focus () != entry)
             scrolled = true;
