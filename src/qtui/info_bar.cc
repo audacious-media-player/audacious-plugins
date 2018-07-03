@@ -284,13 +284,13 @@ void InfoBar::paintEvent (QPaintEvent *)
 
     for (SongData & d : sd)
     {
-        p.setOpacity ((float) d.alpha / FadeSteps);
+        p.setOpacity ((qreal) d.alpha / FadeSteps);
 
         if (! d.art.isNull ())
         {
-            int r = d.art.devicePixelRatio ();
-            int left = ps.Spacing + (ps.IconSize - d.art.width () / r) / 2;
-            int top = ps.Spacing + (ps.IconSize - d.art.height () / r) / 2;
+            auto sz = d.art.size () / d.art.devicePixelRatio ();
+            int left = ps.Spacing + (ps.IconSize - sz.width ()) / 2;
+            int top = ps.Spacing + (ps.IconSize - sz.height ()) / 2;
             p.drawPixmap (left, top, d.art);
         }
 
