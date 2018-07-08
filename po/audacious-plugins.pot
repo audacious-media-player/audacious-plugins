@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-07-01 20:40-0400\n"
+"POT-Creation-Date: 2018-07-08 18:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -879,11 +879,11 @@ msgid "Audio CD Menu Items"
 msgstr ""
 
 #: src/cd-menu-items/cd-menu-items.cc:45
-msgid "Play CD"
+msgid "Pla_y CD"
 msgstr ""
 
 #: src/cd-menu-items/cd-menu-items.cc:45
-msgid "Add CD"
+msgid "_Add CD"
 msgstr ""
 
 #: src/compressor/compressor.cc:45
@@ -979,7 +979,7 @@ msgid "Use exclusive mode"
 msgstr ""
 
 #: src/coreaudio/coreaudio.cc:174
-msgid "Use bitperfect audio (adapt device sampling rate)"
+msgid "Use bit perfect audio (adapt device sampling rate)"
 msgstr ""
 
 #: src/crossfade/crossfade.cc:43
@@ -2125,8 +2125,7 @@ msgstr ""
 
 #: src/hotkey/gui.cc:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modifiers.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
