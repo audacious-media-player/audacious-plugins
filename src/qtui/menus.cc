@@ -84,7 +84,7 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
 
     static const audqt::MenuItem playback_items[] = {
         audqt::MenuCommand ({N_("_Play"), "media-playback-start", "Ctrl+Return"}, aud_drct_play),
-        audqt::MenuCommand ({N_("Paus_e"), "media-playback-pause", "Ctrl+Space"}, aud_drct_pause),
+        audqt::MenuCommand ({N_("Paus_e"), "media-playback-pause", "Ctrl+,"}, aud_drct_pause),
         audqt::MenuCommand ({N_("_Stop"), "media-playback-stop", "Ctrl+."}, aud_drct_stop),
         audqt::MenuCommand ({N_("Pre_vious"), "media-skip-backward", "Alt+Up"}, aud_drct_pl_prev),
         audqt::MenuCommand ({N_("_Next"), "media-skip-forward", "Alt+Down"}, aud_drct_pl_next),
