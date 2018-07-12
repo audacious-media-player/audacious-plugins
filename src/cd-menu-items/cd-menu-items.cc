@@ -42,7 +42,7 @@ public:
 
 EXPORT CDMenuItems aud_plugin_instance;
 
-static constexpr const char * titles[N_ITEMS] = {N_("Play CD"), N_("Add CD")};
+static constexpr const char * titles[N_ITEMS] = {N_("Pla_y CD"), N_("_Add CD")};
 
 static constexpr AudMenuID menus[N_MENUS] = {
     AudMenuID::Main,

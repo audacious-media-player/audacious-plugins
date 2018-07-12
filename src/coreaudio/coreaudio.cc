@@ -171,7 +171,7 @@ const char * const CoreAudioPlugin::defaults[] = {
 const PreferencesWidget CoreAudioPlugin::widgets[] = {
     WidgetCheck (N_("Use exclusive mode"),
         WidgetBool ("coreaudio", "exclusive_mode")),
-    WidgetCheck (N_("Use bitperfect audio (adapt device sampling rate)"),
+    WidgetCheck (N_("Use bit perfect audio (adapt device sampling rate)"),
         WidgetBool ("coreaudio", "bitperfect_mode")),
 };
 
@@ -251,7 +251,7 @@ bool CoreAudioPlugin::init ()
             AUDERR ("Failed to obtain a handle on the default device (%p)\n", coreAudioDevice);
     }
     else
-        AUDERR ("Failed to obtain the default device ID (%d) (no bitperfect audio).\n", err);
+        AUDERR ("Failed to obtain the default device ID (%d) (no bit perfect audio).\n", err);
 
     return 1;
 }
@@ -268,7 +268,7 @@ bool CoreAudioPlugin::set_device_samplerate(Float64 rate)
         if (!caDeviceInitialised)
         {
             // use the warning loglevel to inform the user this operation can take a while (up to a few seconds)
-            AUDWARN ("Preparing the \"%s\" for bitperfect output (this can take a moment)\n", coreAudioDevice->GetName());
+            AUDWARN ("Preparing the \"%s\" for bit perfect output (this can take a moment)\n", coreAudioDevice->GetName());
             coreAudioDevice->Init();
             caDeviceInitialised = true;
         }

@@ -31,6 +31,7 @@
 #include <QApplication>
 #include <QMenu>
 #include <QSystemTrayIcon>
+#include <QWheelEvent>
 
 class StatusIcon : public GeneralPlugin {
 public:
@@ -69,13 +70,35 @@ const char StatusIcon::about[] =
     "This plugin provides a status icon, placed in\n"
     "the system tray area of the window manager.");
 
+enum {
+    SI_CFG_SCROLL_ACTION_VOLUME,
+    SI_CFG_SCROLL_ACTION_SKIP
+};
+
 const char * const StatusIcon::defaults[] = {
+    "scroll_action", aud::numeric_string<SI_CFG_SCROLL_ACTION_VOLUME>::str,
+    "volume_delta", "5",
+    "disable_popup", "FALSE",
     "close_to_tray", "FALSE",
+    "reverse_scroll", "FALSE",
     nullptr
 };
 
 const PreferencesWidget StatusIcon::widgets[] = {
-    WidgetCheck (N_("Close to the system tray"), WidgetBool ("statusicon-qt", "close_to_tray"))
+    WidgetLabel (N_("<b>Mouse Scroll Action</b>")),
+    WidgetRadio (N_("Change volume"),
+        WidgetInt ("statusicon", "scroll_action"),
+        {SI_CFG_SCROLL_ACTION_VOLUME}),
+    WidgetRadio (N_("Change playing song"),
+        WidgetInt ("statusicon", "scroll_action"),
+        {SI_CFG_SCROLL_ACTION_SKIP}),
+    WidgetLabel (N_("<b>Other Settings</b>")),
+    WidgetCheck (N_("Disable the popup window"),
+        WidgetBool ("statusicon", "disable_popup")),
+    WidgetCheck (N_("Close to the system tray"),
+        WidgetBool ("statusicon", "close_to_tray")),
+    WidgetCheck (N_("Advance in playlist when scrolling upward"),
+        WidgetBool ("statusicon", "reverse_scroll"))
 };
 
 const PluginPreferences StatusIcon::prefs = {{widgets}};
@@ -96,31 +119,67 @@ const audqt::MenuItem StatusIcon::items[] =
 class SystemTrayIcon : public QSystemTrayIcon
 {
 public:
-    using QSystemTrayIcon::QSystemTrayIcon;
-
+    SystemTrayIcon (const QIcon & icon, QObject * parent = nullptr) :
+        QSystemTrayIcon (icon, parent) {}
     ~SystemTrayIcon ()
         { hide_popup (); }
 
+    void show_popup ();
+    void hide_popup ();
+
 protected:
+    void scroll (int steps);
     bool event (QEvent * e) override;
 
 private:
+    int scroll_delta = 0;
     bool popup_shown = false;
     QueuedFunc popup_timer;
-
-    void show_popup ();
-    void hide_popup ();
 };
+
+void SystemTrayIcon::scroll (int delta)
+{
+    scroll_delta += delta;
+
+    /* we want discrete steps here */
+    int steps = scroll_delta / 120;
+    if (steps == 0)
+        return;
+
+    scroll_delta -= 120 * steps;
+
+    switch (aud_get_int ("statusicon", "scroll_action"))
+    {
+    case SI_CFG_SCROLL_ACTION_VOLUME:
+        aud_drct_set_volume_main (aud_drct_get_volume_main () +
+         aud_get_int ("statusicon", "volume_delta") * steps);
+        break;
+
+    case SI_CFG_SCROLL_ACTION_SKIP:
+        if ((steps > 0) ^ aud_get_bool ("statusicon", "reverse_scroll"))
+            aud_drct_pl_prev ();
+        else
+            aud_drct_pl_next ();
+        break;
+    }
+}
 
 bool SystemTrayIcon::event (QEvent * e)
 {
-    if (e->type () == QEvent::ToolTip)
+    switch (e->type ())
     {
-        show_popup ();
+    case QEvent::ToolTip:
+        if (! aud_get_bool ("statusicon", "disable_popup"))
+            show_popup ();
         return true;
-    }
 
-    return QSystemTrayIcon::event (e);
+    case QEvent::Wheel:
+        scroll (((QWheelEvent *) e)->angleDelta ().y ());
+        return true;
+
+    default:
+        return QSystemTrayIcon::event (e);
+    }
 }
 
 void SystemTrayIcon::show_popup ()
@@ -144,13 +203,14 @@ static QMenu * menu = nullptr;
 
 bool StatusIcon::init ()
 {
-    aud_config_set_defaults ("statusicon-qt", defaults);
+    aud_config_set_defaults ("statusicon", defaults);
 
     audqt::init ();
 
     tray = new SystemTrayIcon (qApp->windowIcon ());
     QObject::connect (tray, & QSystemTrayIcon::activated, activate);
     menu = audqt::menu_build (items);
+    QObject::connect (menu, & QMenu::aboutToShow, tray, & SystemTrayIcon::hide_popup);
     tray->setContextMenu (menu);
     tray->show ();
 
@@ -181,7 +241,7 @@ void StatusIcon::window_closed (void * data, void * user_data)
 {
     bool * handled = (bool *) data;
 
-    if (aud_get_bool ("statusicon-qt", "close_to_tray") && tray->isVisible ())
+    if (aud_get_bool ("statusicon", "close_to_tray") && tray->isVisible ())
     {
         * handled = true;
         aud_ui_show (false);

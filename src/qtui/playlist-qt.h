@@ -40,7 +40,7 @@ public:
     Playlist playlist () const
         { return m_playlist; }
 
-    void scrollToCurrent (bool force = false);
+    bool scrollToCurrent (bool force = false);
     void updatePlaybackIndicator ();
     void playlistUpdate ();
     void playCurrentIndex ();

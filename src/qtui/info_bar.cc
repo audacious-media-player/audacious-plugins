@@ -27,6 +27,7 @@
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
 
+#include <QEvent>
 #include <QPainter>
 
 static constexpr int FadeSteps = 10;
@@ -34,6 +35,11 @@ static constexpr int FadeSteps = 10;
 static constexpr int VisBands = 12;
 static constexpr int VisDelay = 2; /* delay before falloff in frames */
 static constexpr int VisFalloff = 2; /* falloff in decibels per frame */
+
+struct BarColors
+{
+    QColor main, shadow;
+};
 
 struct PixelSizes
 {
@@ -56,11 +62,6 @@ public:
     InfoVis (QWidget * parent = nullptr);
     ~InfoVis ();
 
-    void render_freq (const float * freq);
-    void clear ();
-
-    void paintEvent (QPaintEvent *);
-
     void enable (bool enabled);
 
     const QGradient & gradient () const
@@ -68,21 +69,28 @@ public:
     const PixelSizes & pixelSizes () const
         { return ps; }
 
+protected:
+    void render_freq (const float * freq);
+    void clear ();
+
+    void changeEvent (QEvent * event);
+    void paintEvent (QPaintEvent *);
+
 private:
+    void update_colors ();
+
     const PixelSizes ps;
     QLinearGradient m_gradient;
-    QColor m_colors[VisBands], m_shadow[VisBands];
+    BarColors m_bar_colors[VisBands];
 
     float m_bars[VisBands] {};
     char m_delay[VisBands] {};
 };
 
-static void get_color (int i, QColor & color, QColor & shadow)
+static BarColors get_bar_colors (const QColor & highlight, int i)
 {
-    color = QWidget ().palette ().color (QPalette::Highlight);
-
     qreal h, s, v;
-    color.getHsvF (& h, & s, & v);
+    highlight.getHsvF (& h, & s, & v);
 
     if (s < 0.1) /* monochrome theme? use blue instead */
         h = 0.67;
@@ -90,8 +98,45 @@ static void get_color (int i, QColor & color, QColor & shadow)
     s = 1 - 0.9 * i / (VisBands - 1);
     v = 0.75 + 0.25 * i / (VisBands - 1);
 
-    color.setHsvF (h, s, v);
-    shadow = QColor (color.redF () * 77, color.greenF () * 77, color.blueF () * 77);
+    return {
+        QColor::fromHsvF (h, s, v),
+        QColor::fromHsvF (h, s, v * 0.3)
+    };
+}
+
+static QGradientStops get_gradient_stops (const QColor & base)
+{
+    QColor mid = QColor (64, 64, 64);
+    QColor dark = QColor (38, 38, 38);
+    QColor darker = QColor (26, 26, 26);
+
+    /* In a dark theme, try to match the tone of the base color */
+    int v = base.value ();
+    if (v >= 10 && v < 80)
+    {
+        int r = base.red (), g = base.green (), b = base.blue ();
+        mid = QColor (r * 64 / v, g * 64 / v, b * 64 / v);
+        dark = QColor (r * 38 / v, g * 38 / v, b * 38 / v);
+        darker = QColor (r * 26 / v, g * 26 / v, b * 26 / v);
+    }
+
+    return {
+        {0, mid},
+        {0.499, dark},
+        {0.5, darker},
+        {1, Qt::black}
+    };
+}
+
+void InfoVis::update_colors ()
+{
+    auto & base = palette ().color (QPalette::Window);
+    auto & highlight = palette ().color (QPalette::Highlight);
+
+    m_gradient.setStops (get_gradient_stops (base));
+
+    for (int i = 0; i < VisBands; i ++)
+        m_bar_colors[i] = get_bar_colors (highlight, i);
 }
 
 InfoVis::InfoVis (QWidget * parent) :
@@ -100,16 +145,7 @@ InfoVis::InfoVis (QWidget * parent) :
     ps (audqt::sizes.OneInch),
     m_gradient (0, 0, 0, ps.Height)
 {
-    m_gradient.setStops ({
-        {0, QColor (64, 64, 64)},
-        {0.499, QColor (38, 38, 38)},
-        {0.5, QColor (26, 26, 26)},
-        {1, QColor (0, 0, 0)}
-    });
-
-    for (int i = 0; i < VisBands; i ++)
-        get_color (i, m_colors[i], m_shadow[i]);
-
+    update_colors ();
     setAttribute (Qt::WA_OpaquePaintEvent);
     resize (ps.VisWidth + 2 * ps.Spacing, ps.Height);
 }
@@ -169,6 +205,14 @@ void InfoVis::clear ()
     update ();
 }
 
+void InfoVis::changeEvent (QEvent * event)
+{
+    if (event->type () == QEvent::PaletteChange)
+        update_colors ();
+
+    QWidget::changeEvent (event);
+}
+
 void InfoVis::paintEvent (QPaintEvent *)
 {
     QPainter p (this);
@@ -180,8 +224,8 @@ void InfoVis::paintEvent (QPaintEvent *)
         int v = aud::clamp ((int) (m_bars[i] * ps.VisScale / 40), 0, ps.VisScale);
         int m = aud::min (ps.VisCenter + v, ps.Height);
 
-        p.fillRect (x, ps.VisCenter - v, ps.BandWidth, v, m_colors[i]);
-        p.fillRect (x, ps.VisCenter, ps.BandWidth, m - ps.VisCenter, m_shadow[i]);
+        p.fillRect (x, ps.VisCenter - v, ps.BandWidth, v, m_bar_colors[i].main);
+        p.fillRect (x, ps.VisCenter, ps.BandWidth, m - ps.VisCenter, m_bar_colors[i].shadow);
     }
 }
 
@@ -240,13 +284,13 @@ void InfoBar::paintEvent (QPaintEvent *)
 
     for (SongData & d : sd)
     {
-        p.setOpacity ((float) d.alpha / FadeSteps);
+        p.setOpacity ((qreal) d.alpha / FadeSteps);
 
         if (! d.art.isNull ())
         {
-            int r = d.art.devicePixelRatio ();
-            int left = ps.Spacing + (ps.IconSize - d.art.width () / r) / 2;
-            int top = ps.Spacing + (ps.IconSize - d.art.height () / r) / 2;
+            auto sz = d.art.size () / d.art.devicePixelRatio ();
+            int left = ps.Spacing + (ps.IconSize - sz.width ()) / 2;
+            int top = ps.Spacing + (ps.IconSize - sz.height ()) / 2;
             p.drawPixmap (left, top, d.art);
         }
 
