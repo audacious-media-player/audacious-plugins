@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-07-08 18:50+0200\n"
+"POT-Creation-Date: 2018-07-29 23:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -857,7 +857,7 @@ msgid "Cannot read start/end LSN for track %d."
 msgstr ""
 
 #: src/cdaudio/cdaudio-ng.cc:611
-msgid "Failed to create the cddb connection."
+msgid "Failed to create the CDDB connection."
 msgstr ""
 
 #: src/cdaudio/cdaudio-ng.cc:677
@@ -871,7 +871,7 @@ msgstr ""
 
 #: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
-msgid "Failed to read the cddb info: %s"
+msgid "Failed to read the CDDB info: %s"
 msgstr ""
 
 #: src/cd-menu-items/cd-menu-items.cc:33
@@ -2912,7 +2912,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/scrobbler2/scrobbler_communication.cc:638
+#: src/scrobbler2/scrobbler_communication.cc:639
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
