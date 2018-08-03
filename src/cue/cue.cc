@@ -32,6 +32,7 @@ extern "C" {
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/probe.h>
+#include <libaudcore/runtime.h>
 
 static const char * const cue_exts[] = {"cue"};
 
@@ -96,8 +97,14 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
             base_tuple = Tuple ();
 
             VFSFile file;
-            if ((decoder = aud_file_find_decoder (filename, false, file)) &&
-             aud_file_read_tag (filename, decoder, file, base_tuple))
+
+            if (filename)
+                decoder = aud_file_find_decoder (filename, false, file);
+            else
+                AUDWARN ("Unable to construct URI for track '%s' in cuesheet '%s'\n",
+                 cur_name, cue_filename);
+
+            if (decoder && aud_file_read_tag (filename, decoder, file, base_tuple))
             {
                 Cdtext * cdtext = cd_get_cdtext (cd);
 
