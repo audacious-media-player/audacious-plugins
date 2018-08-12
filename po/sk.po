@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+# Andrej Časo <andrejcaso@gmail.com>, 2017
 # Andrej Herceg <herceg.andrej@zoznam.sk>, 2007, 2008, 2010, 2011
 # Lukáš Dobránsky <lukas.dobransky@gmail.com>, 2012
 # Tomáš Tomovčík <tomovcik.tomas@gmail.com>, 2016
@@ -12,9 +13,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
-"Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2017-08-19 19:26+0200\n"
-"PO-Revision-Date: 2017-08-03 11:12+0000\n"
+"Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
+"POT-Creation-Date: 2018-08-04 20:48+0200\n"
+"PO-Revision-Date: 2018-07-29 21:54+0000\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: Slovak (http://www.transifex.com/audacious/audacious/language/"
 "sk/)\n"
@@ -22,28 +23,67 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n "
+">= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);\n"
 
 #: src/aac/aac.cc:18
 msgid "AAC (Raw) Decoder"
 msgstr "AAC (Raw) dekodér"
 
-#: src/adplug/adplug-xmms.cc:42
+#: src/adplug/adplug-xmms.cc:50
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib prehrávač)"
 
-#: src/adplug/adplug-xmms.cc:144 src/modplug/modplugbmp.cc:337
+#: src/adplug/adplug-xmms.cc:148 src/modplug/modplugbmp.cc:337
 #: src/psf/plugin.cc:136 src/vtx/vtx.cc:89 src/xsf/plugin.cc:106
 msgid "sequenced"
 msgstr "sekvenčný"
 
+#: src/adplug/adplug-xmms.cc:297 src/sid/xs_config.cc:61
+msgid "<b>Output</b>"
+msgstr "<b>Výstup</b>"
+
+#: src/adplug/adplug-xmms.cc:298
+msgid "16-bit output (if unchecked, output is 8-bit)"
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:300
+msgid "Duplicate mono output to two channels"
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:302
+msgid "Sample rate"
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:303 src/amidiplug/i_configure.cc:152
+#: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
+#: src/modplug/plugin_main.cc:81 src/resample/resample.cc:201
+#: src/resample/resample.cc:207 src/resample/resample.cc:211
+#: src/resample/resample.cc:215 src/resample/resample.cc:219
+#: src/resample/resample.cc:223 src/resample/resample.cc:227
+#: src/resample/resample.cc:231 src/resample/resample.cc:235
+#: src/resample/resample.cc:239 src/resample/resample.cc:243
+#: src/sid/xs_config.cc:67 src/soxr/sox-resampler.cc:190
+msgid "Hz"
+msgstr "Hz"
+
+#: src/adplug/adplug-xmms.cc:304 src/gtkui/settings.cc:46
+#: src/modplug/plugin_main.cc:109 src/qtui/settings.cc:66
+#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
+msgid "<b>Miscellaneous</b>"
+msgstr "<b>Rôzne</b>"
+
+#: src/adplug/adplug-xmms.cc:305
+msgid "Repeat song in endless loop"
+msgstr ""
+
 #: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
 msgid "Alarm"
-msgstr "Alarm"
+msgstr "Budík"
 
 #: src/alarm/alarm.cc:782
 msgid "Set Alarm ..."
-msgstr "Nastaviť alarm..."
+msgstr "_Nastaviť budík..."
 
 #: src/alarm/alarm.cc:810
 msgid ""
@@ -105,6 +145,52 @@ msgid ""
 "    Type the reminder in the input field and enable\n"
 "    the checkbox if you want it to be shown."
 msgstr ""
+"Čas\n"
+"Zobudiť o:\n"
+"Čas Budíka.\n"
+"\n"
+"Ticho po:\n"
+"Zastaviť budík po uplynutí tejto doby.\n"
+"(ak nebude budiace okno zavreté)\n"
+"\n"
+"Dni\n"
+"Deň:\n"
+"Vyberte dni, kedy sa ma budík zapnúť.\n"
+"\n"
+"Čas:\n"
+"Vyberte čas budíka na každý deň,\n"
+"alebo použite predvolený čas.\n"
+"\n"
+"Hlasitosť\n"
+"Zvýšiť hlasitosť:\n"
+"Zvyšuje hlasitosť  na určenú úroveň po zvolenú dobu.\n"
+"\n"
+"Začať na:\n"
+"Zvyšovanie hlasitosti začne na tejto úrovni.\n"
+"\n"
+"Skončiť na:\n"
+"Koniec zvyšovania hlasitosti.\n"
+"Ak je doba zvyšovania hlasitosti nastavená na 0,\n"
+"tak hlasitosť ostane na tejto úrovni a začne sa \n"
+"prehrávanie.\n"
+"\n"
+"Možnosti:\n"
+"Dodatočný príkaz:\n"
+"Tento príkaz sa bude vykonávať počas budenia.\n"
+"\n"
+"Zoznam skladieb:\n"
+"Nahrá zoznam skladieb, z ktorého sa bude\n"
+"prehrávať - musí mať príponu m3u.\n"
+"Ak žiadny zoznam skladieb nieje nahratý použijú sa\n"
+" skladby, ktoré budú v aktuálnom zozname skladieb.\n"
+"Môže byť sem zadaná aj URL MP3/OGG streamu ,\n"
+"ale nahratie zoznamu skladieb z URL\n"
+"nieje v súčasnosti podporované.\n"
+"\n"
+"Pripomienka:\n"
+"Pri vypnutí budíka sa zobrazí odkaz.\n"
+"Text odkazu zapíšte do vstupného poľa a\n"
+"ak si želáte odkaz zobraziť stlačte tlačidlo ."
 
 #: src/alarm/interface.cc:78
 msgid "This is your wakeup call."
@@ -116,7 +202,7 @@ msgstr "Vaša pripomienka na dnes je..."
 
 #: src/alarm/interface.cc:98 src/alarm/interface.cc:372
 msgid "Reminder"
-msgstr "Upozornenie"
+msgstr "Pripomienka"
 
 #: src/alarm/interface.cc:122
 msgid "Monday"
@@ -153,7 +239,7 @@ msgstr "Čas"
 
 #: src/alarm/interface.cc:167
 msgid "Alarm at (default):"
-msgstr "Budiť o (predvolené):"
+msgstr "Zobudiť o (predvolené):"
 
 #: src/alarm/interface.cc:189
 msgid "h"
@@ -165,11 +251,11 @@ msgstr "Ticho po:"
 
 #: src/alarm/interface.cc:204
 msgid "hours"
-msgstr "hodín"
+msgstr "h"
 
 #: src/alarm/interface.cc:215
 msgid "minutes"
-msgstr "minút"
+msgstr "min."
 
 #: src/alarm/interface.cc:224
 msgid "Choose the days for the alarm to come on"
@@ -181,7 +267,7 @@ msgstr "Deň"
 
 #: src/alarm/interface.cc:248 src/bs2b/plugin.cc:130
 msgid "Default"
-msgstr "Štandardné"
+msgstr "Predvolené"
 
 #: src/alarm/interface.cc:277
 msgid "Days"
@@ -189,7 +275,7 @@ msgstr "Dni"
 
 #: src/alarm/interface.cc:286
 msgid "Fading"
-msgstr "Zosilovanie"
+msgstr "Zosilnenie"
 
 #: src/alarm/interface.cc:294 src/console/plugin.cc:41
 #: src/crossfade/crossfade.cc:52 src/crossfade/crossfade.cc:58
@@ -212,7 +298,7 @@ msgstr "Skončiť na"
 
 #: src/alarm/interface.cc:335
 msgid "Current"
-msgstr "Aktuálna"
+msgstr "Aktuálna hlasitosť"
 
 #: src/alarm/interface.cc:348
 msgid "Additional Command"
@@ -228,7 +314,7 @@ msgstr "Zoznam skladieb (voliteľné)"
 
 #: src/alarm/interface.cc:365
 msgid "Select a playlist"
-msgstr "Vyber zoznam skladieb"
+msgstr "Zvoliť zoznam skladieb"
 
 #: src/alarm/interface.cc:385
 msgid "Options"
@@ -314,18 +400,37 @@ msgid ""
 "Tony Vroon\n"
 "for the good help with alpha testing"
 msgstr ""
+"modulárny prehrávač MIDI hudby\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"napísal Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+"\n"
+"zvláštne poďakovanie patrí…\n"
+"\n"
+"Clemensovi Ladischovi a Jaroslavovi Kyselovi\n"
+"za ich úžasné programy aplaymidi a amixer; tieto\n"
+"boli naozaj užitočné, spolu s dokumentáciou alsa-lib,\n"
+"aby som sa dozvedel viac o ALSA API\n"
+" <<<<<<<<<<<\n"
+"Alfredovi Spadafinovi\n"
+"za pekné logo MIDI klávesnice\n"
+"\n"
+"Tonymu Vroonovi\n"
+"za pomoc pri testovaní alfa verzie"
 
 #: src/amidiplug/i_configure.cc:94
 msgid "Override default gain:"
-msgstr ""
+msgstr "Nahradiť predvolené zosilnenie:"
 
 #: src/amidiplug/i_configure.cc:102
 msgid "Override default polyphony:"
-msgstr ""
+msgstr "Potlačiť predvolený mnohohlas:"
 
 #: src/amidiplug/i_configure.cc:110
 msgid "Override default reverb:"
-msgstr ""
+msgstr "Potlačiť predvolený reverb:"
 
 #: src/amidiplug/i_configure.cc:112 src/amidiplug/i_configure.cc:120
 msgid "On"
@@ -333,64 +438,52 @@ msgstr "Zapnúť"
 
 #: src/amidiplug/i_configure.cc:118
 msgid "Override default chorus:"
-msgstr ""
+msgstr "Potlačiť predvolený chór:"
 
 #: src/amidiplug/i_configure.cc:128 src/console/plugin.cc:29
 msgid "<b>Playback</b>"
-msgstr ""
+msgstr "<b>Prehrávanie</b>"
 
 #: src/amidiplug/i_configure.cc:129
 msgid "Transpose:"
-msgstr ""
+msgstr "Transponovať:"
 
 #: src/amidiplug/i_configure.cc:131 src/speedpitch/speed-pitch.cc:257
 msgid "semitones"
-msgstr ""
+msgstr "poltóny"
 
 #: src/amidiplug/i_configure.cc:132
 msgid "Drum shift:"
-msgstr ""
+msgstr "Posun bubnov"
 
 #: src/amidiplug/i_configure.cc:134
 msgid "note numbers"
-msgstr ""
+msgstr "čísla poznámok"
 
 #: src/amidiplug/i_configure.cc:135
 msgid "Skip leading silence"
-msgstr ""
+msgstr "Preskočiť ticho na začiatku"
 
 #: src/amidiplug/i_configure.cc:137
 msgid "Skip trailing silence"
-msgstr ""
+msgstr "Preskočiť ticho na konci"
 
 #: src/amidiplug/i_configure.cc:141
 msgid "<b>SoundFont</b>"
-msgstr ""
+msgstr "<b>SoundFont</b>"
 
 #: src/amidiplug/i_configure.cc:145
 msgid "<b>Synthesizer</b>"
-msgstr ""
+msgstr "<b>Synthesizer</b>"
 
 #: src/amidiplug/i_configure.cc:150 src/console/plugin.cc:45
-#: src/filewriter/filewriter.cc:474 src/sid/xs_config.cc:65
+#: src/filewriter/filewriter.cc:473 src/sid/xs_config.cc:65
 msgid "Sample rate:"
-msgstr ""
-
-#: src/amidiplug/i_configure.cc:152 src/bs2b/plugin.cc:141
-#: src/console/plugin.cc:47 src/modplug/plugin_main.cc:81
-#: src/resample/resample.cc:201 src/resample/resample.cc:207
-#: src/resample/resample.cc:211 src/resample/resample.cc:215
-#: src/resample/resample.cc:219 src/resample/resample.cc:223
-#: src/resample/resample.cc:227 src/resample/resample.cc:231
-#: src/resample/resample.cc:235 src/resample/resample.cc:239
-#: src/resample/resample.cc:243 src/sid/xs_config.cc:67
-#: src/soxr/sox-resampler.cc:164
-msgid "Hz"
-msgstr "Hz"
+msgstr "Vzorkovacia frekvencia:"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:54
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug - vyberte SoundFont súbor"
+msgstr "AMIDI-Plug - zvoľte SoundFont súbor"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:57
 msgid "_Cancel"
@@ -446,7 +539,7 @@ msgstr "Čas. pomer:"
 
 #: src/amidiplug/i_fileinfo.cc:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"smaller\"> Komentáre a slová MIDI skladby </span>"
+msgstr "<span size=\"smaller\"> Komentáre a text MIDI skladby </span>"
 
 #: src/amidiplug/i_fileinfo.cc:284
 msgid "* no comments available in this MIDI file *"
@@ -464,9 +557,9 @@ msgstr "_Zatvoriť"
 msgid "  (invalid UTF-8)"
 msgstr "  (neplatné UTF-8)"
 
-#: src/ampache/ampache.cc:31
+#: src/ampache/ampache.cc:33
 msgid "Ampache Browser"
-msgstr "Ampache Browser"
+msgstr "Ampache Prehliadač"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -476,6 +569,11 @@ msgid ""
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 "License: GNU GPLv3"
 msgstr ""
+"Ampache prehliadač pre Audacious\n"
+"http://ampache-browser.org/\n"
+"\n"
+"Copyright (C) Róbert Čerňanský a John Lindgren\n"
+"Licencia: GNU GPLv3"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -487,6 +585,13 @@ msgid ""
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
 msgstr ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"Napísal Giacomo Lozito <james@develia.org>\n"
+"\n"
+"Čiastočne založené na  Evan Martin's Ghosd knižnici:\n"
+"http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.h:37
 msgid "AOSD (On-Screen Display)"
@@ -523,6 +628,8 @@ msgstr "Zmena názvu"
 #: src/aosd/aosd_trigger.cc:56
 msgid "Triggers OSD when the song title changes (for internet streams)."
 msgstr ""
+"Spustí OSD pri zmene názvu skladby\n"
+"(pre internetové streamy)"
 
 #: src/aosd/aosd_trigger.cc:61
 msgid "Pause On"
@@ -558,7 +665,7 @@ msgstr "Maximálna šírka OSD:"
 
 #: src/aosd/aosd_ui.cc:220
 msgid "Multi-Monitor options"
-msgstr "Nastavenia pre viac monitorov"
+msgstr "Možnosti pre viac monitorov"
 
 #: src/aosd/aosd_ui.cc:224
 msgid "Display OSD using:"
@@ -579,15 +686,15 @@ msgstr "Časovanie (ms)"
 
 #: src/aosd/aosd_ui.cc:286
 msgid "Display:"
-msgstr "Zobrazenie:"
+msgstr "Zobraziť:"
 
 #: src/aosd/aosd_ui.cc:291
 msgid "Fade in:"
-msgstr "Rozsvietenie:"
+msgstr "Zosvetliť:"
 
 #: src/aosd/aosd_ui.cc:296
 msgid "Fade out:"
-msgstr "Zhasnutie:"
+msgstr "Stmavnúť:"
 
 #: src/aosd/aosd_ui.cc:360
 msgid "Fonts"
@@ -692,7 +799,7 @@ msgstr "Test"
 
 #: src/asx3/asx3.cc:35
 msgid "ASXv3 Playlists"
-msgstr ""
+msgstr "Zoznamy skladieb ASXv3"
 
 #: src/asx/asx.cc:33
 msgid "ASXv1/ASXv2 Playlists"
@@ -724,7 +831,7 @@ msgstr "Úroveň zdroja:"
 
 #: src/bs2b/plugin.cc:138
 msgid "x1/10 dB"
-msgstr ""
+msgstr "x1/10 dB"
 
 #: src/bs2b/plugin.cc:139
 msgid "Cut frequency:"
@@ -732,7 +839,7 @@ msgstr "Frekvencia pre vystrihnutie:"
 
 #: src/cairo-spectrum/cairo-spectrum.cc:41
 msgid "Spectrum Analyzer"
-msgstr "Analyzér spektra"
+msgstr "Analyzátor spektra"
 
 #: src/cdaudio/cdaudio-ng.cc:71
 msgid "Audio CD Plugin"
@@ -772,7 +879,7 @@ msgstr "Prepísať zariadenie:"
 
 #: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
-msgstr "&lt;b&gt;Metadáta&lt;/b&gt;"
+msgstr "<b>Metadáta</b>"
 
 #: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
@@ -832,7 +939,7 @@ msgstr "Zlyhalo CD zariadenie %s."
 
 #: src/cdaudio/cdaudio-ng.cc:446
 msgid "No audio capable CD drive found."
-msgstr "Nebolo nájdené žiadne spôsobilé CD zariadenie."
+msgstr "Nebolo nájdené žiadne vhodné CD zariadenie."
 
 #: src/cdaudio/cdaudio-ng.cc:469
 msgid "Drive is empty."
@@ -844,7 +951,7 @@ msgstr "Nepodporovaný typ disku."
 
 #: src/cdaudio/cdaudio-ng.cc:495
 msgid "Failed to finish initializing opened CD drive."
-msgstr "Zlyhalo dokončenie inicializácie otvoreného CD zariadenia."
+msgstr "Zlyhalo dokončenie inicializácie otvorenia CD zariadenia."
 
 #: src/cdaudio/cdaudio-ng.cc:508
 msgid "Failed to retrieve first/last track number."
@@ -856,8 +963,8 @@ msgid "Cannot read start/end LSN for track %d."
 msgstr "Nie je možné prečítať začiatok/koniec LSN pre stopu %d."
 
 #: src/cdaudio/cdaudio-ng.cc:611
-msgid "Failed to create the cddb connection."
-msgstr "Zlyhalo vytvorenie cddb pripojenia."
+msgid "Failed to create the CDDB connection."
+msgstr ""
 
 #: src/cdaudio/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
@@ -870,20 +977,20 @@ msgstr "Nepodaril sa dotaz na CDDB server: %s"
 
 #: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
-msgid "Failed to read the cddb info: %s"
-msgstr "Zlyhalo načítanie cddb info: %s"
+msgid "Failed to read the CDDB info: %s"
+msgstr ""
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
 msgstr "Položky Audio CD menu"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
-msgid "Play CD"
-msgstr "Prehrať CD"
+msgid "Pla_y CD"
+msgstr ""
 
 #: src/cd-menu-items/cd-menu-items.cc:45
-msgid "Add CD"
-msgstr "Pridať CD"
+msgid "_Add CD"
+msgstr ""
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
@@ -902,6 +1009,8 @@ msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Zásuvný modul kompresie dynamického rozsahu pre Audacious\n"
+"Copyright 2010-2014 John Lindgren"
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
@@ -933,7 +1042,7 @@ msgstr "Výšky:"
 
 #: src/console/plugin.cc:36
 msgid "Echo:"
-msgstr ""
+msgstr "Ozvena"
 
 #: src/console/plugin.cc:39
 msgid "Default song length:"
@@ -941,7 +1050,7 @@ msgstr "Predvolená dĺžka skladby:"
 
 #: src/console/plugin.cc:42 src/modplug/plugin_main.cc:62
 msgid "<b>Resampling</b>"
-msgstr ""
+msgstr "<b>Prevzorkovanie</b>"
 
 #: src/console/plugin.cc:43
 msgid "Enable audio resampling"
@@ -949,7 +1058,7 @@ msgstr "Povoliť prevzorkovanie zvuku"
 
 #: src/console/plugin.cc:49
 msgid "<b>SPC</b>"
-msgstr ""
+msgstr "<b>SPC</b>"
 
 #: src/console/plugin.cc:50
 msgid "Ignore length from SPC tags"
@@ -963,21 +1072,28 @@ msgstr "Predĺžiť dozvuk"
 msgid "Game Console Music Decoder"
 msgstr "Dekodér konzolovej hudby"
 
-#: src/coreaudio/coreaudio.cc:50
+#: src/coreaudio/coreaudio.cc:53
 msgid "CoreAudio output"
-msgstr ""
+msgstr "CoreAudio výstup"
 
-#: src/coreaudio/coreaudio.cc:131
+#: src/coreaudio/coreaudio.cc:156
 msgid ""
 "CoreAudio Output Plugin for Audacious\n"
 "Copyright 2014 William Pitcock\n"
+"Copyright 2017,18 René J.V. Bertin\n"
+" (original code and code adapted from\n"
+"  Apple examples, (C) Apple 2013)\n"
 "\n"
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
 
-#: src/coreaudio/coreaudio.cc:143
+#: src/coreaudio/coreaudio.cc:172
 msgid "Use exclusive mode"
+msgstr "Použite exkluzívny mód"
+
+#: src/coreaudio/coreaudio.cc:174
+msgid "Use bit perfect audio (adapt device sampling rate)"
 msgstr ""
 
 #: src/crossfade/crossfade.cc:43
@@ -985,6 +1101,8 @@ msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Prelínanie - zásuvný modul pre Audacious\n"
+"Copyright 2010-2014 John Lindgren"
 
 #: src/crossfade/crossfade.cc:47
 msgid "<b>Crossfade</b>"
@@ -992,7 +1110,7 @@ msgstr "<b>Prelínanie</b>"
 
 #: src/crossfade/crossfade.cc:48
 msgid "On automatic song change"
-msgstr ""
+msgstr "Pri automatickej zmene skladby"
 
 #: src/crossfade/crossfade.cc:50 src/crossfade/crossfade.cc:56
 msgid "Overlap:"
@@ -1000,17 +1118,19 @@ msgstr "Prekrývanie:"
 
 #: src/crossfade/crossfade.cc:54
 msgid "On seek or manual song change"
-msgstr ""
+msgstr "Pri vyhľadávaní alebo pri ručnej zmene skladby"
 
 #: src/crossfade/crossfade.cc:60
 msgid "<b>Tip</b>"
-msgstr ""
+msgstr "<b>Tip</b>"
 
 #: src/crossfade/crossfade.cc:61
 msgid ""
 "For better crossfading, enable\n"
 "the Silence Removal effect."
 msgstr ""
+"Pre lepšie prelínanie, povoľte\n"
+"efekt odstránenia ticha."
 
 #: src/crossfade/crossfade.cc:71
 msgid "Crossfade"
@@ -1026,64 +1146,65 @@ msgstr "Intenzita:"
 
 #: src/crystalizer/crystalizer.cc:43
 msgid "Crystalizer"
-msgstr "Crystalizer"
+msgstr "Krystalizér"
 
-#: src/cue/cue.cc:41
+#: src/cue/cue.cc:42
 msgid "Cue Sheet Plugin"
 msgstr "Cue Sheet zásuvný modul"
 
-#: src/delete-files/delete-files.cc:52 src/delete-files/delete-files.cc:161
-#: src/delete-files/delete-files.cc:176
+#: src/delete-files/delete-files.cc:53 src/delete-files/delete-files.cc:215
+#: src/delete-files/delete-files.cc:230
 msgid "Delete Files"
+msgstr "Odstrániť súbory"
+
+#: src/delete-files/delete-files.cc:120
+msgid "No files are selected."
 msgstr ""
 
-#: src/delete-files/delete-files.cc:86
+#: src/delete-files/delete-files.cc:125
 #, c-format
-msgid "Error moving %s to trash: %s."
+msgid "Do you want to move %s to the trash?"
 msgstr ""
 
-#: src/delete-files/delete-files.cc:97
+#: src/delete-files/delete-files.cc:126
 #, c-format
-msgid "Error deleting %s: %s."
+msgid "Do you want to permanently delete %s?"
 msgstr ""
 
-#: src/delete-files/delete-files.cc:128
+#: src/delete-files/delete-files.cc:133
 #, c-format
-msgid "Error deleting %s: not a local file."
+msgid "Do you want to move %d files to the trash?"
 msgstr ""
 
-#: src/delete-files/delete-files.cc:138
-msgid "Do you want to move the selected files to the trash?"
+#: src/delete-files/delete-files.cc:134
+#, c-format
+msgid "Do you want to permanently delete %d files?"
 msgstr ""
 
-#: src/delete-files/delete-files.cc:139
-msgid "Move to Trash"
+#: src/delete-files/delete-files.cc:146
+msgid "Move to trash"
 msgstr ""
 
-#: src/delete-files/delete-files.cc:144
-msgid "Do you want to permanently delete the selected files?"
-msgstr ""
-
-#: src/delete-files/delete-files.cc:145
+#: src/delete-files/delete-files.cc:146
 msgid "Delete"
-msgstr "Vymazať"
+msgstr "Odstrániť"
 
-#: src/delete-files/delete-files.cc:159 src/delete-files/delete-files.cc:180
+#: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
 #: src/skins/search-select.cc:76
 msgid "Cancel"
 msgstr "Zrušiť"
 
-#: src/delete-files/delete-files.cc:211
+#: src/delete-files/delete-files.cc:268
 msgid "Delete Selected Files"
-msgstr ""
+msgstr "Odstrániť zvolené súbory"
 
-#: src/delete-files/delete-files.cc:231
+#: src/delete-files/delete-files.cc:288
 msgid "<b>Delete Method</b>"
-msgstr ""
+msgstr "<b>Metóda odstraňovania</b>"
 
-#: src/delete-files/delete-files.cc:232
+#: src/delete-files/delete-files.cc:289
 msgid "Move to trash instead of deleting immediately"
-msgstr ""
+msgstr "Namiesto okamžitého odstránenia presunúť do koša"
 
 #: src/echo_plugin/echo.cc:9
 msgid ""
@@ -1092,6 +1213,10 @@ msgid ""
 "Surround echo by Carl van Schaik, 1999\n"
 "Updated for Audacious by William Pitcock and John Lindgren, 2010-2014"
 msgstr ""
+"Zásuvný modul ozvena\n"
+"Od Johan Levin, 1999\n"
+"Priestorová ozvena od Carl van Schaik, 1999\n"
+"Pre Audacious aktualizovali William Pitcock a John Lindgren, 2010-2014"
 
 #: src/echo_plugin/echo.cc:21
 msgid "<b>Echo</b>"
@@ -1123,7 +1248,7 @@ msgstr "Ozvena"
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg zásuvný modul"
 
-#: src/ffaudio/ffaudio-core.cc:615
+#: src/ffaudio/ffaudio-core.cc:627
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1142,9 +1267,9 @@ msgstr ""
 
 #: src/filewriter/filewriter.cc:48
 msgid "FileWriter Plugin"
-msgstr "Zápis do súboru zásuvný modul"
+msgstr "Zásuvný modul FileWriter"
 
-#: src/filewriter/filewriter.cc:351
+#: src/filewriter/filewriter.cc:350
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1160,266 +1285,279 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Tento program je slobodný softvér: môžete ho šíriť a/alebo upravovať podľa "
+"podmienok GNU General Public License publikovanou Free Software Foundation; "
+"a to buď verzie 2 tejto licencie alebo (podľa vlastného zváženia) "
+"ktorejkoľvek novšej verzie.\n"
+"\n"
+"Tento program je šírený v nádeji, že bude užitočný, ale BEZ AKEJKOĽVEK "
+"ZÁRUKY; dokonca aj bez predpokladanej záruky PREDAJNOSTI alebo VHODNOSTI PRE "
+"KONKRÉTNY ÚČEL. Pre bližšie podrobnosti sa pozrite na GNU General Public "
+"License.\n"
+"\n"
+"Spolu s týmto programom by ste mali obdržať aj kópiu GNU General Public "
+"License. Ak tomu tak nieje napíšte do  Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/filewriter/filewriter.cc:378
+#: src/filewriter/filewriter.cc:377
 msgid "Output file format:"
 msgstr "Formát výstupného súboru:"
 
-#: src/filewriter/filewriter.cc:382
+#: src/filewriter/filewriter.cc:381
 msgid "Save into original directory"
-msgstr "Ukladať do pôvodného adresára"
+msgstr "Uložiť do pôvodného priečinka"
 
-#: src/filewriter/filewriter.cc:385
+#: src/filewriter/filewriter.cc:384
 msgid "Save into custom directory:"
-msgstr ""
+msgstr "Uložiť do vlastného priečinka:"
+
+#: src/filewriter/filewriter.cc:392
+msgid "Generate file name from:"
+msgstr "Vygenerovať názov súboru z:"
 
 #: src/filewriter/filewriter.cc:393
-msgid "Generate file name from:"
-msgstr ""
-
-#: src/filewriter/filewriter.cc:394
 msgid "Original file name"
-msgstr ""
+msgstr "Pôvodný názov súboru"
 
-#: src/filewriter/filewriter.cc:397
+#: src/filewriter/filewriter.cc:396
 msgid "Original file name (no suffix)"
-msgstr ""
+msgstr "Pôvodný názov súboru (bez prípony)"
 
-#: src/filewriter/filewriter.cc:400
+#: src/filewriter/filewriter.cc:399
 msgid "Original file tag"
-msgstr ""
+msgstr "Pôvodná značka súboru"
 
-#: src/filewriter/filewriter.cc:404
+#: src/filewriter/filewriter.cc:403
 msgid "Prepend track number to file name"
-msgstr ""
+msgstr "Pridať číslo stopy pred názov súboru"
 
-#: src/filewriter/filewriter.cc:410 src/filewriter/filewriter.cc:442
+#: src/filewriter/filewriter.cc:409 src/filewriter/filewriter.cc:441
 msgid "Auto"
 msgstr "Auto"
 
-#: src/filewriter/filewriter.cc:411
+#: src/filewriter/filewriter.cc:410
 msgid "8000 Hz"
-msgstr ""
+msgstr "8000 Hz"
+
+#: src/filewriter/filewriter.cc:411
+msgid "11025 Hz"
+msgstr "11025 Hz"
 
 #: src/filewriter/filewriter.cc:412
-msgid "11025 Hz"
-msgstr ""
+msgid "12000 Hz"
+msgstr "12000 Hz"
 
 #: src/filewriter/filewriter.cc:413
-msgid "12000 Hz"
-msgstr ""
+msgid "16000 Hz"
+msgstr "16000 Hz"
 
 #: src/filewriter/filewriter.cc:414
-msgid "16000 Hz"
-msgstr ""
+msgid "22050 Hz"
+msgstr "22050 Hz"
 
 #: src/filewriter/filewriter.cc:415
-msgid "22050 Hz"
-msgstr ""
+msgid "24000 Hz"
+msgstr "24000 Hz"
 
 #: src/filewriter/filewriter.cc:416
-msgid "24000 Hz"
-msgstr ""
+msgid "32000 Hz"
+msgstr "32000 Hz"
 
 #: src/filewriter/filewriter.cc:417
-msgid "32000 Hz"
-msgstr ""
+msgid "44100 Hz"
+msgstr "44100 Hz"
 
 #: src/filewriter/filewriter.cc:418
-msgid "44100 Hz"
-msgstr ""
-
-#: src/filewriter/filewriter.cc:419
 msgid "48000 Hz"
-msgstr ""
+msgstr "48000 Hz"
+
+#: src/filewriter/filewriter.cc:422
+msgid "8 kbps"
+msgstr "8 kb/s"
 
 #: src/filewriter/filewriter.cc:423
-msgid "8 kbps"
-msgstr ""
+msgid "16 kbps"
+msgstr "16 kb/s"
 
 #: src/filewriter/filewriter.cc:424
-msgid "16 kbps"
-msgstr ""
+msgid "32 kbps"
+msgstr "32 kb/s"
 
 #: src/filewriter/filewriter.cc:425
-msgid "32 kbps"
-msgstr ""
+msgid "40 kbps"
+msgstr "40kb/s"
 
 #: src/filewriter/filewriter.cc:426
-msgid "40 kbps"
-msgstr ""
+msgid "48 kbps"
+msgstr "48kb/s"
 
 #: src/filewriter/filewriter.cc:427
-msgid "48 kbps"
-msgstr ""
+msgid "56 kbps"
+msgstr "56kb/s"
 
 #: src/filewriter/filewriter.cc:428
-msgid "56 kbps"
-msgstr ""
+msgid "64 kbps"
+msgstr "64kb/s"
 
 #: src/filewriter/filewriter.cc:429
-msgid "64 kbps"
-msgstr ""
+msgid "80 kbps"
+msgstr "80kb/s"
 
 #: src/filewriter/filewriter.cc:430
-msgid "80 kbps"
-msgstr ""
+msgid "96 kbps"
+msgstr "96kb/s"
 
 #: src/filewriter/filewriter.cc:431
-msgid "96 kbps"
-msgstr ""
+msgid "112 kbps"
+msgstr "112kb/s"
 
 #: src/filewriter/filewriter.cc:432
-msgid "112 kbps"
-msgstr ""
+msgid "128 kbps"
+msgstr "128kb/s"
 
 #: src/filewriter/filewriter.cc:433
-msgid "128 kbps"
-msgstr ""
+msgid "160 kbps"
+msgstr "160kb/s"
 
 #: src/filewriter/filewriter.cc:434
-msgid "160 kbps"
-msgstr ""
+msgid "192 kbps"
+msgstr "192kb/s"
 
 #: src/filewriter/filewriter.cc:435
-msgid "192 kbps"
-msgstr ""
+msgid "224 kbps"
+msgstr "224kb/s"
 
 #: src/filewriter/filewriter.cc:436
-msgid "224 kbps"
-msgstr ""
+msgid "256 kbps"
+msgstr "256kb/s"
 
 #: src/filewriter/filewriter.cc:437
-msgid "256 kbps"
-msgstr ""
-
-#: src/filewriter/filewriter.cc:438
 msgid "320 kbps"
-msgstr ""
+msgstr "320 kbps"
 
-#: src/filewriter/filewriter.cc:443
+#: src/filewriter/filewriter.cc:442
 msgid "Joint Stereo"
 msgstr "Joint Stereo"
 
-#: src/filewriter/filewriter.cc:444 src/modplug/plugin_main.cc:61
+#: src/filewriter/filewriter.cc:443 src/modplug/plugin_main.cc:61
 #: src/mpg123/mpg123.cc:245
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/filewriter.cc:445 src/modplug/plugin_main.cc:60
+#: src/filewriter/filewriter.cc:444 src/modplug/plugin_main.cc:60
 #: src/mpg123/mpg123.cc:245
 msgid "Mono"
 msgstr "Mono"
 
-#: src/filewriter/filewriter.cc:449
+#: src/filewriter/filewriter.cc:448
 msgid "VBR"
-msgstr ""
+msgstr "VBR"
 
-#: src/filewriter/filewriter.cc:450
+#: src/filewriter/filewriter.cc:449
 msgid "ABR"
-msgstr ""
+msgstr "ABR"
 
-#: src/filewriter/filewriter.cc:471
+#: src/filewriter/filewriter.cc:470
 msgid "Algorithm quality:"
-msgstr ""
+msgstr "Kvalita algoritmu:"
 
-#: src/filewriter/filewriter.cc:477
+#: src/filewriter/filewriter.cc:476
 msgid "Bitrate:"
 msgstr "Dátový tok:"
 
-#: src/filewriter/filewriter.cc:484
+#: src/filewriter/filewriter.cc:483
 msgid "Compression ratio:"
 msgstr "Kompresný pomer:"
 
-#: src/filewriter/filewriter.cc:491
+#: src/filewriter/filewriter.cc:490
 msgid "Audio mode:"
-msgstr ""
+msgstr "Režim zvuku:"
 
-#: src/filewriter/filewriter.cc:494
+#: src/filewriter/filewriter.cc:493
 msgid "Enforce strict ISO compliance"
-msgstr ""
+msgstr "vynútiť si prísnu zhodu s ISO"
 
-#: src/filewriter/filewriter.cc:496
+#: src/filewriter/filewriter.cc:495
 msgid "Error protection"
 msgstr "Ochrana pred chybami"
 
-#: src/filewriter/filewriter.cc:501
+#: src/filewriter/filewriter.cc:500
 msgid "Enable VBR/ABR"
 msgstr "Povoliť VBR/ABR"
 
-#: src/filewriter/filewriter.cc:503
+#: src/filewriter/filewriter.cc:502
 msgid "Type:"
 msgstr "Typ:"
 
-#: src/filewriter/filewriter.cc:507
+#: src/filewriter/filewriter.cc:506
 msgid "Minimum bitrate:"
-msgstr ""
+msgstr "Minimálny dátový tok:"
 
-#: src/filewriter/filewriter.cc:511
+#: src/filewriter/filewriter.cc:510
 msgid "Maximum bitrate:"
-msgstr ""
+msgstr "Maximálny dátový tok:"
 
-#: src/filewriter/filewriter.cc:515
+#: src/filewriter/filewriter.cc:514
 msgid "Average bitrate:"
-msgstr ""
+msgstr "Priemerný dátový tok:"
 
-#: src/filewriter/filewriter.cc:519
+#: src/filewriter/filewriter.cc:518
 msgid "VBR quality level:"
 msgstr "Úroveň kvality VBR:"
 
-#: src/filewriter/filewriter.cc:523
+#: src/filewriter/filewriter.cc:522
 msgid "Strictly enforce minimum bitrate"
 msgstr "Prísne vynucovať najmenší dátový tok"
 
-#: src/filewriter/filewriter.cc:526
+#: src/filewriter/filewriter.cc:525
 msgid "Omit Xing VBR header"
-msgstr ""
+msgstr "Vynechať Xing VBR hlavičku"
+
+#: src/filewriter/filewriter.cc:531
+msgid "<b>Frame Headers</b>"
+msgstr "<b>Hlavičky rámcov</b>"
 
 #: src/filewriter/filewriter.cc:532
-msgid "<b>Frame Headers</b>"
-msgstr ""
-
-#: src/filewriter/filewriter.cc:533
 msgid "Mark as copyright"
 msgstr "Pridať označenie autorských práv"
 
-#: src/filewriter/filewriter.cc:535
+#: src/filewriter/filewriter.cc:534
 msgid "Mark as original"
 msgstr "Pridať označenie originálu"
 
-#: src/filewriter/filewriter.cc:537
+#: src/filewriter/filewriter.cc:536
 msgid "<b>ID3 Tags</b>"
-msgstr ""
+msgstr "<b>ID3 Tags</b>"
 
-#: src/filewriter/filewriter.cc:538
+#: src/filewriter/filewriter.cc:537
 msgid "Force addition of version 2 tag"
 msgstr "Vynútiť pridanie značiek verzie 2"
 
-#: src/filewriter/filewriter.cc:540
+#: src/filewriter/filewriter.cc:539
 msgid "Only add v1 tag"
 msgstr "Pridávať iba značky verzie 1"
 
-#: src/filewriter/filewriter.cc:542
+#: src/filewriter/filewriter.cc:541
 msgid "Only add v2 tag"
 msgstr "Pridávať iba značky verzie 2"
 
-#: src/filewriter/filewriter.cc:547
+#: src/filewriter/filewriter.cc:546
 msgid "Quality"
 msgstr "Kvalita"
 
-#: src/filewriter/filewriter.cc:548
+#: src/filewriter/filewriter.cc:547
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/filewriter.cc:549
+#: src/filewriter/filewriter.cc:548
 msgid "Tags"
 msgstr "Značky"
 
-#: src/filewriter/filewriter.cc:559
+#: src/filewriter/filewriter.cc:558
 msgid "Quality (0-1):"
-msgstr ""
+msgstr "Kvalita (0-1):"
 
-#: src/filewriter/filewriter.cc:566 src/skins-qt/skins_cfg.cc:304
+#: src/filewriter/filewriter.cc:565 src/skins-qt/skins_cfg.cc:303
 #: src/skins/skins_cfg.cc:285
 msgid "General"
 msgstr "Všeobecné"
@@ -1428,7 +1566,7 @@ msgstr "Všeobecné"
 msgid "FLAC Decoder"
 msgstr "FLAC dekodér"
 
-#: src/flac/metadata.cc:252 src/wavpack/wavpack.cc:209
+#: src/flac/metadata.cc:270 src/wavpack/wavpack.cc:209
 msgid "lossless"
 msgstr "bezstratový"
 
@@ -1458,11 +1596,11 @@ msgstr "GIO zásuvný modul"
 
 #: src/gio/gio.cc:152
 msgid "Read-and-append mode not supported"
-msgstr ""
+msgstr "Režim \"nahrať a pridať\" nieje podporovaný"
 
 #: src/gio/gio.cc:165
 msgid "Invalid open mode"
-msgstr ""
+msgstr "Neplatný spôsob otvárania"
 
 #: src/glspectrum/gl-spectrum.cc:51
 msgid ""
@@ -1475,54 +1613,50 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"OpenGL Analyzátor spektra pre Audacious\n"
+"Copyright 2013 Christophe Budé, John Lindgren a Carlo Bramini\n"
+"\n"
+"Založené na XMMS module:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson a "
+"4Front Technologies\n"
+"\n"
+"Licencia: GPLv2+"
 
 #: src/glspectrum/gl-spectrum.cc:62 src/qtglspectrum/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer"
-msgstr ""
-
-#: src/gnomeshortcuts/gnomeshortcuts.cc:38
-msgid "GNOME Shortcuts"
-msgstr ""
-
-#: src/gnomeshortcuts/gnomeshortcuts.cc:54
-msgid ""
-"GNOME Shortcut Plugin\n"
-"Lets you control the player with GNOME's shortcuts.\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
-msgstr ""
+msgstr "OpenGL analyzátor spektra"
 
 #: src/gtkui/columns.cc:35
 msgid "Entry number"
 msgstr "Číslo položky"
 
 #: src/gtkui/columns.cc:36 src/playlist-manager/playlist-manager.cc:199
-#: src/playlist-manager-qt/playlist-manager-qt.cc:168
-#: src/qtui/playlist_model.cc:34
+#: src/playlist-manager-qt/playlist-manager-qt.cc:183
+#: src/qtui/playlist_model.cc:37
 msgid "Title"
 msgstr "Názov"
 
-#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:38
 msgid "Artist"
 msgstr "Umelec"
 
-#: src/gtkui/columns.cc:38 src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:38 src/qtui/playlist_model.cc:39
 msgid "Year"
 msgstr "Rok"
 
-#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:37
+#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:40
 msgid "Album"
 msgstr "Album"
 
 #: src/gtkui/columns.cc:40
 msgid "Album artist"
-msgstr ""
+msgstr "Umelec albumu"
 
-#: src/gtkui/columns.cc:41 src/qtui/playlist_model.cc:39
+#: src/gtkui/columns.cc:41 src/qtui/playlist_model.cc:42
 msgid "Track"
 msgstr "Stopa"
 
-#: src/gtkui/columns.cc:42 src/qtui/playlist_model.cc:40
+#: src/gtkui/columns.cc:42 src/qtui/playlist_model.cc:43
 msgid "Genre"
 msgstr "Žáner"
 
@@ -1530,7 +1664,7 @@ msgstr "Žáner"
 msgid "Queue position"
 msgstr "Poradie vo fronte"
 
-#: src/gtkui/columns.cc:44 src/qtui/playlist_model.cc:42
+#: src/gtkui/columns.cc:44 src/qtui/playlist_model.cc:45
 msgid "Length"
 msgstr "Dĺžka"
 
@@ -1542,24 +1676,24 @@ msgstr "Cesta k súboru"
 msgid "Custom title"
 msgstr "Vlastný názov"
 
-#: src/gtkui/columns.cc:48 src/qtui/playlist_model.cc:46
+#: src/gtkui/columns.cc:48 src/qtui/playlist_model.cc:49
 msgid "Bitrate"
 msgstr "Dátový tok"
 
-#: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:47
+#: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:50
 msgid "Comment"
 msgstr "Komentár"
 
 #: src/gtkui/columns.cc:315
 msgid "Available columns"
-msgstr ""
+msgstr "Dostupné stĺpce"
 
 #: src/gtkui/columns.cc:341
 msgid "Displayed columns"
-msgstr ""
+msgstr "Zobrazené stĺpce"
 
-#: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:53
-#: src/search-tool/search-tool.cc:43
+#: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:62
+#: src/search-tool/search-tool.cc:49
 msgid "Search Tool"
 msgstr "Vyhľadávací nástroj"
 
@@ -1587,88 +1721,88 @@ msgstr "Uvolniť"
 msgid "Disable"
 msgstr "Zakázať"
 
-#: src/gtkui/menus.cc:79 src/qtui/menus.cc:66
-#: src/statusicon-qt/statusicon.cc:90 src/statusicon/statusicon.cc:283
+#: src/gtkui/menus.cc:79 src/qtui/menus.cc:68
+#: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:283
 msgid "_Open Files ..."
 msgstr "_Otvoriť súbory ..."
 
-#: src/gtkui/menus.cc:80 src/qtui/menus.cc:68
+#: src/gtkui/menus.cc:80 src/qtui/menus.cc:70
 msgid "Open _URL ..."
 msgstr "Otvoriť _URL ..."
 
-#: src/gtkui/menus.cc:81 src/qtui/menus.cc:69
+#: src/gtkui/menus.cc:81 src/qtui/menus.cc:71
 msgid "_Add Files ..."
 msgstr "Prid_ať súbory ..."
 
-#: src/gtkui/menus.cc:82 src/qtui/menus.cc:71
+#: src/gtkui/menus.cc:82 src/qtui/menus.cc:73
 msgid "Add U_RL ..."
 msgstr "Pridať U_RL ..."
 
-#: src/gtkui/menus.cc:84 src/qtui/menus.cc:73
+#: src/gtkui/menus.cc:84 src/qtui/menus.cc:75
 msgid "Search _Library"
-msgstr ""
+msgstr "Pre_hľadať knižnicu"
 
-#: src/gtkui/menus.cc:86 src/qtui/menus.cc:75
+#: src/gtkui/menus.cc:86 src/qtui/menus.cc:77
 msgid "A_bout ..."
-msgstr "_O programe ..."
+msgstr "O _programe ..."
 
-#: src/gtkui/menus.cc:87 src/qtui/menus.cc:76
+#: src/gtkui/menus.cc:87 src/qtui/menus.cc:78
 msgid "_Settings ..."
-msgstr ""
+msgstr "_Nastavenia ..."
 
-#: src/gtkui/menus.cc:88 src/qtui/menus.cc:80
-#: src/statusicon-qt/statusicon.cc:92 src/statusicon/statusicon.cc:285
+#: src/gtkui/menus.cc:88 src/qtui/menus.cc:82
+#: src/statusicon-qt/statusicon.cc:116 src/statusicon/statusicon.cc:285
 msgid "_Quit"
 msgstr "_Koniec"
 
-#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:221 src/qtui/menus.cc:84
-#: src/search-tool-qt/search-tool-qt.cc:702 src/search-tool/search-tool.cc:649
-#: src/statusicon-qt/statusicon.cc:84 src/statusicon/statusicon.cc:277
+#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:221 src/qtui/menus.cc:86
+#: src/search-tool-qt/search-tool-qt.cc:831 src/search-tool/search-tool.cc:683
+#: src/statusicon-qt/statusicon.cc:108 src/statusicon/statusicon.cc:277
 msgid "_Play"
 msgstr "_Hrať"
 
-#: src/gtkui/menus.cc:93 src/qtui/menus.cc:85
-#: src/statusicon-qt/statusicon.cc:85 src/statusicon/statusicon.cc:278
+#: src/gtkui/menus.cc:93 src/qtui/menus.cc:87
+#: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:278
 msgid "Paus_e"
 msgstr "P_ozastaviť"
 
-#: src/gtkui/menus.cc:94 src/qtui/menus.cc:86
-#: src/statusicon-qt/statusicon.cc:86 src/statusicon/statusicon.cc:279
+#: src/gtkui/menus.cc:94 src/qtui/menus.cc:88
+#: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:279
 msgid "_Stop"
 msgstr "Za_staviť"
 
-#: src/gtkui/menus.cc:95 src/qtui/menus.cc:87
-#: src/statusicon-qt/statusicon.cc:87 src/statusicon/statusicon.cc:280
+#: src/gtkui/menus.cc:95 src/qtui/menus.cc:89
+#: src/statusicon-qt/statusicon.cc:111 src/statusicon/statusicon.cc:280
 msgid "Pre_vious"
 msgstr "Pred_chádzajúca"
 
-#: src/gtkui/menus.cc:96 src/qtui/menus.cc:88
-#: src/statusicon-qt/statusicon.cc:88 src/statusicon/statusicon.cc:281
+#: src/gtkui/menus.cc:96 src/qtui/menus.cc:90
+#: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:281
 msgid "_Next"
 msgstr "_Nasledujúca"
 
-#: src/gtkui/menus.cc:98 src/qtui/menus.cc:90
+#: src/gtkui/menus.cc:98 src/qtui/menus.cc:92
 msgid "_Repeat"
 msgstr "O_pakovať"
 
-#: src/gtkui/menus.cc:99 src/qtui/menus.cc:91
+#: src/gtkui/menus.cc:99 src/qtui/menus.cc:93
 msgid "S_huffle"
-msgstr "Ná_hodné prehrávanie"
+msgstr "Náho_dné prehrávanie"
 
-#: src/gtkui/menus.cc:100 src/qtui/menus.cc:92
+#: src/gtkui/menus.cc:100 src/qtui/menus.cc:94
 msgid "Shuffle by Albu_m"
-msgstr ""
+msgstr "Náhodné preh_rávánie v rámci albumu"
 
-#: src/gtkui/menus.cc:101 src/qtui/menus.cc:93
+#: src/gtkui/menus.cc:101 src/qtui/menus.cc:95
 msgid "N_o Playlist Advance"
-msgstr "Nep_okračovať podľa zoznamu skladieb"
+msgstr "N_epokračovať podľa zoznamu skladieb"
 
-#: src/gtkui/menus.cc:102 src/qtui/menus.cc:94
+#: src/gtkui/menus.cc:102 src/qtui/menus.cc:96
 msgid "Stop A_fter This Song"
-msgstr "Zastaviť po tejto skladbe"
+msgstr "Zastaviť _po tejto skladbe"
 
-#: src/gtkui/menus.cc:104 src/gtkui/menus.cc:205 src/qtui/menus.cc:96
-#: src/qtui/menus.cc:198
+#: src/gtkui/menus.cc:104 src/gtkui/menus.cc:205 src/qtui/menus.cc:98
+#: src/qtui/menus.cc:200
 msgid "Song _Info ..."
 msgstr "_Informácie o skladbe ..."
 
@@ -1682,306 +1816,355 @@ msgstr "Skočiť na sk_ladbu ..."
 
 #: src/gtkui/menus.cc:108
 msgid "Set Repeat Point _A"
-msgstr ""
+msgstr "Nastaviť bod opakovania _A"
 
 #: src/gtkui/menus.cc:109
 msgid "Set Repeat Point _B"
-msgstr ""
+msgstr "Nastaviť bod opakovania _B"
 
 #: src/gtkui/menus.cc:110
 msgid "_Clear Repeat Points"
-msgstr ""
+msgstr "Odstrániť bod_y opakovania"
 
 #: src/gtkui/menus.cc:114 src/gtkui/menus.cc:121 src/gtkui/menus.cc:138
-#: src/qtui/menus.cc:100 src/qtui/menus.cc:107 src/qtui/menus.cc:124
+#: src/qtui/menus.cc:102 src/qtui/menus.cc:109 src/qtui/menus.cc:126
 msgid "By _Title"
 msgstr "Podľa _názvu"
 
-#: src/gtkui/menus.cc:115 src/qtui/menus.cc:101
+#: src/gtkui/menus.cc:115 src/qtui/menus.cc:103
 msgid "By _File Name"
-msgstr ""
+msgstr "Podľa ná_zvu súboru"
 
-#: src/gtkui/menus.cc:116 src/qtui/menus.cc:102
+#: src/gtkui/menus.cc:116 src/qtui/menus.cc:104
 msgid "By File _Path"
-msgstr ""
+msgstr "Podľa cesty k _súboru"
 
-#: src/gtkui/menus.cc:120 src/gtkui/menus.cc:137 src/qtui/menus.cc:106
-#: src/qtui/menus.cc:123
+#: src/gtkui/menus.cc:120 src/gtkui/menus.cc:137 src/qtui/menus.cc:108
+#: src/qtui/menus.cc:125
 msgid "By Track _Number"
 msgstr "Podľa čí_sla stopy"
 
-#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:108
-#: src/qtui/menus.cc:125
+#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:110
+#: src/qtui/menus.cc:127
 msgid "By _Artist"
 msgstr "Podľa _umelca"
 
-#: src/gtkui/menus.cc:123 src/gtkui/menus.cc:140 src/qtui/menus.cc:109
-#: src/qtui/menus.cc:126
-msgid "By Al_bum"
-msgstr ""
-
-#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:110
-#: src/qtui/menus.cc:127
-msgid "By Albu_m Artist"
-msgstr ""
-
-#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:111
+#: src/gtkui/menus.cc:123 src/gtkui/menus.cc:140 src/qtui/menus.cc:111
 #: src/qtui/menus.cc:128
+msgid "By Al_bum"
+msgstr "Podľa Al_bumu"
+
+#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:112
+#: src/qtui/menus.cc:129
+msgid "By Albu_m Artist"
+msgstr "Podľa i_nterpréta albumu"
+
+#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:113
+#: src/qtui/menus.cc:130
 msgid "By Release _Date"
 msgstr "Podľa dátumu vy_dania"
 
-#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:112
-#: src/qtui/menus.cc:129
-msgid "By _Genre"
-msgstr ""
-
-#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:113
-#: src/qtui/menus.cc:130
-msgid "By _Length"
-msgstr ""
-
-#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:114
+#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:114
 #: src/qtui/menus.cc:131
+msgid "By _Genre"
+msgstr "Podľa žá_nru"
+
+#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:115
+#: src/qtui/menus.cc:132
+msgid "By _Length"
+msgstr "Podľa _dĺžky"
+
+#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:116
+#: src/qtui/menus.cc:133
 msgid "By _File Path"
 msgstr "Podľa _cesty k súboru"
 
-#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:115
-#: src/qtui/menus.cc:132
+#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:117
+#: src/qtui/menus.cc:134
 msgid "By _Custom Title"
 msgstr "Podľa vlastného ná_zvu"
 
-#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:116
-#: src/qtui/menus.cc:133
-msgid "By C_omment"
-msgstr ""
-
-#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:118
+#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:118
 #: src/qtui/menus.cc:135
-msgid "R_everse Order"
-msgstr "Obrátené poradie"
+msgid "By C_omment"
+msgstr "Podľa k_omentára"
 
-#: src/gtkui/menus.cc:133 src/gtkui/menus.cc:150 src/qtui/menus.cc:119
-#: src/qtui/menus.cc:136
+#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:120
+#: src/qtui/menus.cc:137
+msgid "R_everse Order"
+msgstr "_Obrátené poradie"
+
+#: src/gtkui/menus.cc:133 src/gtkui/menus.cc:150 src/qtui/menus.cc:121
+#: src/qtui/menus.cc:138
 msgid "_Random Order"
 msgstr "Náhodné po_radie"
 
-#: src/gtkui/menus.cc:154 src/qtui/menus.cc:140
+#: src/gtkui/menus.cc:154 src/qtui/menus.cc:142
 msgid "_Play/Resume"
-msgstr ""
+msgstr "_Prehrať/Pokračovať"
 
-#: src/gtkui/menus.cc:155 src/qtui/menus.cc:141
+#: src/gtkui/menus.cc:155 src/qtui/menus.cc:143
 msgid "_Refresh"
 msgstr "_Obnoviť"
 
-#: src/gtkui/menus.cc:157 src/qtui/menus.cc:145
+#: src/gtkui/menus.cc:157 src/qtui/menus.cc:147
 msgid "_Sort"
 msgstr "_Zoradiť"
 
-#: src/gtkui/menus.cc:158 src/qtui/menus.cc:146
+#: src/gtkui/menus.cc:158 src/qtui/menus.cc:148
 msgid "Sort Se_lected"
-msgstr ""
+msgstr "Zoradiť z_volené"
 
-#: src/gtkui/menus.cc:159 src/qtui/menus.cc:147
+#: src/gtkui/menus.cc:159 src/qtui/menus.cc:149
 msgid "Remove _Duplicates"
-msgstr ""
+msgstr "Odstrániť _duplikáty"
 
-#: src/gtkui/menus.cc:160 src/qtui/menus.cc:148
+#: src/gtkui/menus.cc:160 src/qtui/menus.cc:150
 msgid "Remove _Unavailable Files"
 msgstr "Odstrániť nedost_upné súbory"
 
 #: src/gtkui/menus.cc:162 src/playlist-manager/playlist-manager.cc:218
-#: src/playlist-manager-qt/playlist-manager-qt.cc:338 src/qtui/menus.cc:150
+#: src/playlist-manager-qt/playlist-manager-qt.cc:356 src/qtui/menus.cc:152
 msgid "_New"
 msgstr "_Nový"
 
-#: src/gtkui/menus.cc:163 src/qtui/menus.cc:151
+#: src/gtkui/menus.cc:163 src/qtui/menus.cc:153
 msgid "Ren_ame ..."
 msgstr "Pre_menovať ..."
 
-#: src/gtkui/menus.cc:164 src/gtkui/menus.cc:223 src/qtui/menus.cc:152
+#: src/gtkui/menus.cc:164 src/gtkui/menus.cc:223 src/qtui/menus.cc:154
 msgid "Remo_ve"
-msgstr ""
+msgstr "Od_strániť"
 
-#: src/gtkui/menus.cc:166
+#: src/gtkui/menus.cc:166 src/qtui/menus.cc:156
 msgid "_Import ..."
 msgstr "_Importovať ..."
 
-#: src/gtkui/menus.cc:167
+#: src/gtkui/menus.cc:167 src/qtui/menus.cc:157
 msgid "_Export ..."
 msgstr "_Exportovať ..."
 
-#: src/gtkui/menus.cc:169 src/qtui/menus.cc:157
+#: src/gtkui/menus.cc:169 src/qtui/menus.cc:159
 msgid "Playlist _Manager ..."
-msgstr "Správca_zoznamu skladieb ..."
+msgstr "Správca zoznamu s_kladieb ..."
 
-#: src/gtkui/menus.cc:170 src/qtui/menus.cc:158
+#: src/gtkui/menus.cc:170 src/qtui/menus.cc:160
 msgid "_Queue Manager ..."
 msgstr "Správca _fronty .."
 
-#: src/gtkui/menus.cc:174 src/qtui/menus.cc:162
+#: src/gtkui/menus.cc:174 src/qtui/menus.cc:164
 msgid "Volume _Up"
 msgstr "Zo_silniť"
 
-#: src/gtkui/menus.cc:175 src/qtui/menus.cc:163
+#: src/gtkui/menus.cc:175 src/qtui/menus.cc:165
 msgid "Volume _Down"
 msgstr "S_tíšiť"
 
-#: src/gtkui/menus.cc:177 src/qtui/menus.cc:165
+#: src/gtkui/menus.cc:177 src/qtui/menus.cc:167
 msgid "_Equalizer ..."
-msgstr ""
+msgstr "_Ekvalizér..."
 
-#: src/gtkui/menus.cc:178 src/qtui/menus.cc:166
+#: src/gtkui/menus.cc:178 src/qtui/menus.cc:168
 msgid "E_ffects ..."
-msgstr ""
+msgstr "E_fekty ..."
 
 #: src/gtkui/menus.cc:180
 msgid "_Record Stream"
-msgstr ""
+msgstr "Nah_rať stream"
 
 #: src/gtkui/menus.cc:181
 msgid "Audio _Settings ..."
-msgstr ""
+msgstr "Nastavenie _zvuku"
 
-#: src/gtkui/menus.cc:185 src/qtui/menus.cc:173
+#: src/gtkui/menus.cc:185 src/qtui/menus.cc:175
 msgid "Show _Menu Bar"
 msgstr "Zobraziť _panel s ponukou"
 
-#: src/gtkui/menus.cc:186 src/qtui/menus.cc:174
+#: src/gtkui/menus.cc:186 src/qtui/menus.cc:176
 msgid "Show I_nfo Bar"
 msgstr "Zobraziť panel s i_nformáciami"
 
-#: src/gtkui/menus.cc:187 src/qtui/menus.cc:175
+#: src/gtkui/menus.cc:187 src/qtui/menus.cc:177
 msgid "Show Info Bar Vis_ualization"
-msgstr "Zobraziť znázornenie oblasti informácií"
+msgstr "_Zobraziť znázornenie oblasti informácií"
 
-#: src/gtkui/menus.cc:188 src/qtui/menus.cc:176
+#: src/gtkui/menus.cc:188 src/qtui/menus.cc:178
 msgid "Show _Status Bar"
 msgstr "Zobraziť panel so _stavom"
 
-#: src/gtkui/menus.cc:190 src/qtui/menus.cc:178
+#: src/gtkui/menus.cc:190 src/qtui/menus.cc:180
 msgid "Show _Remaining Time"
-msgstr ""
+msgstr "Uká_zať ostávajúci čas"
 
-#: src/gtkui/menus.cc:192 src/qtui/menus.cc:180 src/skins/menus.cc:155
+#: src/gtkui/menus.cc:192 src/qtui/menus.cc:182 src/skins/menus.cc:155
 #: src/skins-qt/menus.cc:150
 msgid "_Visualizations ..."
-msgstr ""
+msgstr "_Vizualizácie"
 
-#: src/gtkui/menus.cc:196 src/qtui/menus.cc:184
+#: src/gtkui/menus.cc:196 src/qtui/menus.cc:186
 msgid "_File"
 msgstr "_Súbor"
 
-#: src/gtkui/menus.cc:197 src/qtui/menus.cc:185
+#: src/gtkui/menus.cc:197 src/qtui/menus.cc:187
 msgid "_Playback"
 msgstr "_Prehrávanie"
 
-#: src/gtkui/menus.cc:198 src/qtui/menus.cc:186
+#: src/gtkui/menus.cc:198 src/qtui/menus.cc:188
 msgid "P_laylist"
 msgstr "Zoznam sk_ladieb"
 
-#: src/gtkui/menus.cc:199 src/gtkui/menus.cc:217 src/qtui/menus.cc:187
-#: src/qtui/menus.cc:210
+#: src/gtkui/menus.cc:199 src/gtkui/menus.cc:217 src/qtui/menus.cc:189
+#: src/qtui/menus.cc:212
 msgid "_Services"
-msgstr "_Služby"
+msgstr "Služ_by"
 
-#: src/gtkui/menus.cc:200 src/qtui/menus.cc:188
+#: src/gtkui/menus.cc:200 src/qtui/menus.cc:190
 msgid "_Output"
 msgstr "_Výstup"
 
-#: src/gtkui/menus.cc:201 src/qtui/menus.cc:189
+#: src/gtkui/menus.cc:201 src/qtui/menus.cc:191
 msgid "_View"
 msgstr "_Zobrazenie"
 
-#: src/gtkui/menus.cc:206 src/qtui/menus.cc:199
+#: src/gtkui/menus.cc:206 src/qtui/menus.cc:201
 msgid "_Queue/Unqueue"
 msgstr "Pridať alebo odobrať z _fronty"
 
-#: src/gtkui/menus.cc:208 src/qtui/menus.cc:201
+#: src/gtkui/menus.cc:208 src/qtui/menus.cc:203
 msgid "_Open Containing Folder"
-msgstr ""
+msgstr "_Otvoriť priečinok"
 
-#: src/gtkui/menus.cc:209 src/qtui/menus.cc:202
+#: src/gtkui/menus.cc:209 src/qtui/menus.cc:204
 msgid "_Refresh Selected"
-msgstr ""
+msgstr "Obnoviť vyb_rané"
 
-#: src/gtkui/menus.cc:211 src/qtui/menus.cc:204
+#: src/gtkui/menus.cc:211 src/qtui/menus.cc:206
 msgid "Cu_t"
 msgstr "Vys_trihnúť"
 
-#: src/gtkui/menus.cc:212 src/qtui/menus.cc:205
+#: src/gtkui/menus.cc:212 src/qtui/menus.cc:207
 msgid "_Copy"
 msgstr "_Kopírovať"
 
-#: src/gtkui/menus.cc:213 src/qtui/menus.cc:206
+#: src/gtkui/menus.cc:213 src/qtui/menus.cc:208
 msgid "_Paste"
 msgstr "V_ložiť"
 
-#: src/gtkui/menus.cc:214 src/qtui/menus.cc:207
+#: src/gtkui/menus.cc:214 src/qtui/menus.cc:209
 msgid "Paste at _End"
-msgstr ""
+msgstr "Vložiť na koni_ec"
 
-#: src/gtkui/menus.cc:215 src/qtui/menus.cc:208
+#: src/gtkui/menus.cc:215 src/qtui/menus.cc:210
 msgid "Select _All"
 msgstr "Ozn_ačiť všetko"
 
 #: src/gtkui/menus.cc:222
 msgid "_Rename ..."
-msgstr "_Premenovať ..."
+msgstr "P_remenovať ..."
 
 #: src/gtkui/settings.cc:35 src/qtui/settings.cc:54
 msgid "<b>Playlist Tabs</b>"
-msgstr ""
+msgstr "<b>Panely zoznamu skladieb</b>"
 
 #: src/gtkui/settings.cc:36 src/qtui/settings.cc:56
 msgid "Always show tabs"
-msgstr ""
+msgstr "Vždy zobrazovať panely"
 
 #: src/gtkui/settings.cc:38 src/qtui/settings.cc:59
 msgid "Show entry counts"
-msgstr ""
+msgstr "Zobrazovať počet skladieb"
 
 #: src/gtkui/settings.cc:40 src/qtui/settings.cc:61
 msgid "Show close buttons"
-msgstr ""
+msgstr "Zobrazovať uzavieracie tlačítko"
 
 #: src/gtkui/settings.cc:42 src/qtui/settings.cc:63
 msgid "<b>Playlist Columns</b>"
-msgstr ""
+msgstr "<b>Stĺpce zoznamu skladieb</b>"
 
 #: src/gtkui/settings.cc:44 src/qtui/settings.cc:64
 msgid "Show column headers"
-msgstr ""
-
-#: src/gtkui/settings.cc:46 src/modplug/plugin_main.cc:109
-#: src/qtui/settings.cc:66 src/skins-qt/skins_cfg.cc:299
-#: src/skins/skins_cfg.cc:280
-msgid "<b>Miscellaneous</b>"
-msgstr "<b>Rôzne</b>"
+msgstr "Zobrazovať hlavičky stĺpcov"
 
 #: src/gtkui/settings.cc:47 src/qtui/settings.cc:67
 msgid "Arrow keys seek by:"
-msgstr ""
+msgstr "Klávesy šipiek posúvajú o:"
 
 #: src/gtkui/settings.cc:50 src/qtui/settings.cc:70
 msgid "Scroll on song change"
-msgstr ""
+msgstr "Posuň pri zmene skladby"
 
 #: src/gtkui/ui_gtk.cc:73
 msgid "GTK Interface"
-msgstr "Rozhranie GTK"
+msgstr "Prostredie GTK"
 
-#: src/gtkui/ui_gtk.cc:221 src/skins/main.cc:221 src/skins-qt/main.cc:221
+#: src/gtkui/ui_gtk.cc:221 src/skins/main.cc:222 src/skins-qt/main.cc:222
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:223 src/qtui/main_window.cc:299
+#: src/gtkui/ui_gtk.cc:223 src/qtui/main_window.cc:308
 msgid "Buffering ..."
 msgstr "Napĺňanie vyrovnávajúcej pamäte ..."
 
-#: src/gtkui/ui_gtk.cc:226 src/skins/main.cc:223 src/skins-qt/main.cc:223
+#: src/gtkui/ui_gtk.cc:226 src/skins/main.cc:224 src/skins-qt/main.cc:224
 msgid "Audacious"
 msgstr "Audacious"
+
+#: src/gtkui/ui_gtk.cc:430 src/gtkui/ui_gtk.cc:461 src/gtkui/ui_gtk.cc:811
+#: src/hotkey/gui.cc:72 src/notify/osd.cc:70 src/qtui/main_window.cc:108
+#: src/qtui/main_window.cc:265 src/qtui/main_window.cc:266
+#: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
+msgid "Play"
+msgstr "Prehrať"
+
+#: src/gtkui/ui_gtk.cc:430 src/notify/osd.cc:67 src/qtui/main_window.cc:271
+#: src/qtui/main_window.cc:272 src/skins/menus.cc:110 src/skins-qt/menus.cc:101
+msgid "Pause"
+msgstr "Pozastaviť"
+
+#: src/gtkui/ui_gtk.cc:796 src/qtui/main_window.cc:101 src/skins/menus.cc:86
+#: src/skins-qt/menus.cc:77
+msgid "Search Library"
+msgstr "Prehľadať knižnicu"
+
+#: src/gtkui/ui_gtk.cc:804 src/qtui/main_window.cc:102
+msgid "Open Files"
+msgstr "Otvoriť súbory"
+
+#: src/gtkui/ui_gtk.cc:805 src/qtui/main_window.cc:104
+msgid "Add Files"
+msgstr "Pridať súbory"
+
+#: src/gtkui/ui_gtk.cc:810 src/qtui/main_window.cc:107 src/skins/menus.cc:112
+#: src/skins-qt/menus.cc:103
+msgid "Previous"
+msgstr "Predchádzajúca"
+
+#: src/gtkui/ui_gtk.cc:812 src/hotkey/gui.cc:74 src/qtui/main_window.cc:109
+#: src/skins/menus.cc:111 src/skins-qt/menus.cc:102
+msgid "Stop"
+msgstr "Zastaviť"
+
+#: src/gtkui/ui_gtk.cc:813 src/notify/osd.cc:74 src/qtui/main_window.cc:112
+#: src/skins/menus.cc:113 src/skins-qt/menus.cc:104
+msgid "Next"
+msgstr "Nasledujúca"
+
+#: src/gtkui/ui_gtk.cc:815 src/qtui/main_window.cc:113 src/qtui/menus.cc:170
+#: src/skins/menus.cc:79 src/skins-qt/menus.cc:69
+msgid "Record Stream"
+msgstr "Záznam streamu"
+
+#: src/gtkui/ui_gtk.cc:846 src/qtui/main_window.cc:119 src/skins/menus.cc:103
+#: src/skins-qt/menus.cc:94
+msgid "Repeat"
+msgstr "Opako_vať"
+
+#: src/gtkui/ui_gtk.cc:848 src/qtui/main_window.cc:121 src/skins/menus.cc:104
+#: src/skins-qt/menus.cc:95
+msgid "Shuffle"
+msgstr "Náhodné prehrávanie"
 
 #: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:153
 msgid "mono"
@@ -1998,26 +2181,27 @@ msgid_plural "%d channels"
 msgstr[0] "%d kanálov"
 msgstr[1] "%d kanál"
 msgstr[2] "%d kanály"
+msgstr[3] "%d kanály"
 
 #: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:165
 #, c-format
 msgid "%d kHz"
-msgstr ""
+msgstr "%d kHz"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:171
 #, c-format
 msgid "%d kbps"
-msgstr "%d kbps"
+msgstr "%d kb/s"
 
-#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:462 src/skins-qt/main.cc:440
+#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:466 src/skins-qt/main.cc:452
 msgid "Single mode."
 msgstr "Režim jednej skladby."
 
-#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:464 src/skins-qt/main.cc:442
+#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:468 src/skins-qt/main.cc:454
 msgid "Playlist mode."
 msgstr "Režim zoznamu skladieb."
 
-#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:470 src/skins-qt/main.cc:448
+#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:474 src/skins-qt/main.cc:460
 msgid "Stopping after song."
 msgstr "Zastaviť po skončení skladby."
 
@@ -2025,20 +2209,9 @@ msgstr "Zastaviť po skončení skladby."
 msgid "Previous track"
 msgstr "Predchádzajúca skladba"
 
-#: src/hotkey/gui.cc:72 src/notify/osd.cc:70 src/qtui/main_window.cc:116
-#: src/qtui/main_window.cc:256 src/qtui/main_window.cc:257
-#: src/skins/menus.cc:109 src/skins-qt/menus.cc:98
-msgid "Play"
-msgstr "Prehrať"
-
 #: src/hotkey/gui.cc:73
 msgid "Pause/Resume"
 msgstr "Pozastaviť/Pokračovať"
-
-#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:117 src/skins/menus.cc:111
-#: src/skins-qt/menus.cc:100
-msgid "Stop"
-msgstr "Zastaviť"
 
 #: src/hotkey/gui.cc:75
 msgid "Next track"
@@ -2070,7 +2243,7 @@ msgstr "Prejsť na súbor"
 
 #: src/hotkey/gui.cc:82
 msgid "Toggle player window(s)"
-msgstr ""
+msgstr "Prepnúť okno prehrávača"
 
 #: src/hotkey/gui.cc:83
 msgid "Show On-Screen-Display"
@@ -2090,7 +2263,7 @@ msgstr "Zastaviť po skončení aktuálnej skladby"
 
 #: src/hotkey/gui.cc:87
 msgid "Raise player window(s)"
-msgstr ""
+msgstr "Vyvolať okno/á prehrávača"
 
 #: src/hotkey/gui.cc:97
 msgid "(none)"
@@ -2098,14 +2271,10 @@ msgstr "(žiadne)"
 
 #: src/hotkey/gui.cc:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modifiers.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
-"Priradenie primárneho tlačidla myši bez modifikátoru nie je odporúčané.\n"
-"\n"
-"Chcete pokračovať?"
 
 #: src/hotkey/gui.cc:236
 msgid "Binding mouse buttons"
@@ -2171,27 +2340,29 @@ msgstr "JACK výstup"
 
 #: src/jack/jack-ng.cc:115
 msgid "Automatically connect to output ports"
-msgstr ""
+msgstr "Automaticky pripojiť k výstupným portom"
 
 #: src/jack/jack-ng.cc:156
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
-msgstr ""
+msgstr "Iba %d JACK výstupných portov bolo nájdených, ale potrebných je%d."
 
 #: src/jack/jack-ng.cc:172
 #, c-format
 msgid "Failed to connect to JACK port %s."
-msgstr ""
+msgstr "Nepodarilo sa pripojiť na JACK port %s."
 
 #: src/jack/jack-ng.cc:192
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
+"JACK podporuje iba audio s plávajúcou desatinou čiarkou. Musíte zmeniť "
+"výstupnú bitovú hĺbku Plávajúcu desatinnú čiarku v nastaveniach JACK výstupu."
 
 #: src/jack/jack-ng.cc:205
 msgid "Failed to connect to the JACK server; is it running?"
-msgstr ""
+msgstr "Nepodarilo sa spojiť s JACK serverom; je spustený?"
 
 #: src/jack/jack-ng.cc:281
 #, c-format
@@ -2199,6 +2370,8 @@ msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
 "%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
 msgstr ""
+"ACK server vyžaduje vzorkovací kmitočet %d Hz, ale Audacious prehráva na %d "
+"Hz.  Prosím použite efekt Prevodník vzorkovacieho kmitočtu na opravu."
 
 #: src/ladspa/plugin.cc:415
 #, c-format
@@ -2216,7 +2389,7 @@ msgid ""
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
 "<small> Oddeliť viac ciest s dvojbodkou.\n"
-"Tieto cesty sú vyhľadávané v rátane do LADSPA_PATH.\n"
+"Tieto cesty sú vyhľadávané vrátane s LADSPA_PATH.\n"
 "Po pridaní novej cesty, stlačte Enter pre vyhľadanie nových modulov. </ "
 "Small>"
 
@@ -2293,51 +2466,51 @@ msgstr "Znovu sa pripojiť k serveru LIRC"
 msgid "Wait before reconnecting:"
 msgstr "Počkajte pred opätovným pripojením:"
 
-#: src/lyricwiki/lyricwiki.cc:42 src/lyricwiki-qt/lyricwiki.cc:69
+#: src/lyricwiki/lyricwiki.cc:42 src/lyricwiki-qt/lyricwiki.cc:70
 msgid "LyricWiki Plugin"
 msgstr "LyricWiki zásuvný modul"
 
-#: src/lyricwiki/lyricwiki.cc:132 src/lyricwiki-qt/lyricwiki.cc:150
-#: src/lyricwiki-qt/lyricwiki.cc:310
+#: src/lyricwiki/lyricwiki.cc:132 src/lyricwiki-qt/lyricwiki.cc:151
+#: src/lyricwiki-qt/lyricwiki.cc:337
 msgid "No lyrics available"
 msgstr "Žiadne texty k dispozícii"
 
 #: src/lyricwiki/lyricwiki.cc:251 src/lyricwiki/lyricwiki.cc:260
 #: src/lyricwiki/lyricwiki.cc:275 src/lyricwiki/lyricwiki.cc:284
-#: src/lyricwiki/lyricwiki.cc:299 src/lyricwiki-qt/lyricwiki.cc:270
-#: src/lyricwiki-qt/lyricwiki.cc:279 src/lyricwiki-qt/lyricwiki.cc:294
-#: src/lyricwiki-qt/lyricwiki.cc:303 src/lyricwiki-qt/lyricwiki.cc:324
+#: src/lyricwiki/lyricwiki.cc:299 src/lyricwiki-qt/lyricwiki.cc:291
+#: src/lyricwiki-qt/lyricwiki.cc:306 src/lyricwiki-qt/lyricwiki.cc:321
+#: src/lyricwiki-qt/lyricwiki.cc:330 src/lyricwiki-qt/lyricwiki.cc:351
 #: src/ui-common/dialogs-qt.cc:38
 msgid "Error"
 msgstr "Chyba"
 
 #: src/lyricwiki/lyricwiki.cc:252 src/lyricwiki/lyricwiki.cc:276
-#: src/lyricwiki-qt/lyricwiki.cc:271 src/lyricwiki-qt/lyricwiki.cc:295
+#: src/lyricwiki-qt/lyricwiki.cc:292 src/lyricwiki-qt/lyricwiki.cc:322
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "Nedá sa načítať %s"
 
 #: src/lyricwiki/lyricwiki.cc:261 src/lyricwiki/lyricwiki.cc:285
-#: src/lyricwiki-qt/lyricwiki.cc:280 src/lyricwiki-qt/lyricwiki.cc:304
+#: src/lyricwiki-qt/lyricwiki.cc:307 src/lyricwiki-qt/lyricwiki.cc:331
 #, c-format
 msgid "Unable to parse %s"
 msgstr "Nedá sa analyzovať %s"
 
-#: src/lyricwiki/lyricwiki.cc:291 src/lyricwiki-qt/lyricwiki.cc:316
+#: src/lyricwiki/lyricwiki.cc:291 src/lyricwiki-qt/lyricwiki.cc:343
 msgid "Looking for lyrics ..."
 msgstr "Vyhľadáva sa text skladby..."
 
-#: src/lyricwiki/lyricwiki.cc:299 src/lyricwiki-qt/lyricwiki.cc:324
+#: src/lyricwiki/lyricwiki.cc:299 src/lyricwiki-qt/lyricwiki.cc:351
 msgid "Missing song metadata"
-msgstr "Chýba metadata skladby"
+msgstr "Chýbajú metadata skladby"
 
-#: src/lyricwiki/lyricwiki.cc:310 src/lyricwiki-qt/lyricwiki.cc:335
+#: src/lyricwiki/lyricwiki.cc:310 src/lyricwiki-qt/lyricwiki.cc:362
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "Pripájanie na lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.cc:351 src/lyricwiki-qt/lyricwiki.cc:413
+#: src/lyricwiki/lyricwiki.cc:351 src/lyricwiki-qt/lyricwiki.cc:442
 msgid "Edit lyrics ..."
-msgstr ""
+msgstr "Upraviť text skladby..."
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
@@ -2397,7 +2570,7 @@ msgstr "MMS zásuvný modul"
 
 #: src/mms/mms.cc:82
 msgid "Error connecting to MMS server"
-msgstr ""
+msgstr "Chyba pri pripojení k MMS serveru"
 
 #: src/modplug/modplugbmp.h:57
 msgid "ModPlug (Module Player)"
@@ -2405,108 +2578,108 @@ msgstr "ModPlug (Module Player) zásuvný modul"
 
 #: src/modplug/plugin_main.cc:56
 msgid "<b>Resolution</b>"
-msgstr ""
+msgstr "<b>Rozlíšenie</b>"
 
 #: src/modplug/plugin_main.cc:57
 msgid "8-bit"
-msgstr ""
+msgstr "8-bit"
 
 #: src/modplug/plugin_main.cc:58
 msgid "16-bit"
-msgstr ""
+msgstr "16-bit"
 
 #: src/modplug/plugin_main.cc:59
 msgid "<b>Channels</b>"
-msgstr ""
+msgstr "<b>Kanály</b>"
 
 #: src/modplug/plugin_main.cc:63
 msgid "Nearest (fastest)"
-msgstr ""
+msgstr "Najbližší (najrychlejší)"
 
 #: src/modplug/plugin_main.cc:64
 msgid "Linear (fast)"
-msgstr ""
+msgstr "Lineárne (rýchle)"
 
 #: src/modplug/plugin_main.cc:65
 msgid "Spline (good)"
-msgstr ""
+msgstr "Krivka (dobré)"
 
 #: src/modplug/plugin_main.cc:66
 msgid "Polyphase (best)"
-msgstr ""
+msgstr "Viacfázové (najlepšie)"
 
 #: src/modplug/plugin_main.cc:67
 msgid "<b>Sample rate</b>"
-msgstr ""
+msgstr "<b>Vzorkovacia frekvencia</b>"
 
 #: src/modplug/plugin_main.cc:68
 msgid "22 kHz"
-msgstr ""
+msgstr "22 kHz"
 
 #: src/modplug/plugin_main.cc:69
 msgid "44 kHz"
-msgstr ""
+msgstr "44 kHz"
 
 #: src/modplug/plugin_main.cc:70
 msgid "48 kHz"
-msgstr ""
+msgstr "48 kHz"
 
 #: src/modplug/plugin_main.cc:71
 msgid "96 kHz"
-msgstr ""
+msgstr "96 kHz"
 
 #: src/modplug/plugin_main.cc:75 src/modplug/plugin_main.cc:80
 #: src/modplug/plugin_main.cc:85
 msgid "Level:"
-msgstr ""
+msgstr "Úroveň:"
 
 #: src/modplug/plugin_main.cc:81
 msgid "Cutoff:"
-msgstr ""
+msgstr "Bod skrátenia"
 
 #: src/modplug/plugin_main.cc:94
 msgid "<b>Reverb</b>"
-msgstr ""
+msgstr "<b>Dozvuk</b>"
 
 #: src/modplug/plugin_main.cc:97
 msgid "<b>Bass Boost</b>"
-msgstr ""
+msgstr "<b>Zvýraznenie basov</b>"
 
 #: src/modplug/plugin_main.cc:100
 msgid "<b>Surround</b>"
-msgstr ""
+msgstr "<b>Priestorový zvuk</b>"
 
 #: src/modplug/plugin_main.cc:103
 msgid "<b>Preamp</b>"
-msgstr ""
+msgstr "<b>Predzosilnenie</b>"
 
 #: src/modplug/plugin_main.cc:110
 msgid "Oversample"
-msgstr ""
+msgstr "Oblasť vzorku"
 
 #: src/modplug/plugin_main.cc:111
 msgid "Noise reduction"
-msgstr ""
+msgstr "Redukcia šumu"
 
 #: src/modplug/plugin_main.cc:112
 msgid "Play Amiga MODs"
-msgstr ""
+msgstr "Prehrať Amiga MOD"
 
 #: src/modplug/plugin_main.cc:113
 msgid "<b>Repeat</b>"
-msgstr ""
+msgstr "<b>Opakovať</b>"
 
 #: src/modplug/plugin_main.cc:114
 msgid "Repeat count:"
-msgstr ""
+msgstr "Počet opakovaní"
 
 #: src/modplug/plugin_main.cc:115
 msgid "To repeat forever, set the repeat count to -1."
-msgstr ""
+msgstr "Pre nekonečné opakovanie, nastavte opakovanie na -1."
 
 #: src/modplug/plugin_main.cc:128 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
-msgstr ""
+msgstr "Tieto nastavenia sa prejavia až po reštartovaní Audacious."
 
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
@@ -2518,7 +2691,7 @@ msgstr "<b>Rozšírené</b>"
 
 #: src/mpg123/mpg123.cc:81
 msgid "Use accurate length calculation (slow)"
-msgstr ""
+msgstr "Použiť presný výpočet dĺžky (pomalé)"
 
 #: src/mpg123/mpg123.cc:245
 msgid "Surround"
@@ -2534,19 +2707,19 @@ msgstr "Neon HTTP/HTTPS zásuvný modul"
 
 #: src/neon/neon.cc:526
 msgid "Error parsing redirect"
-msgstr ""
+msgstr "Počas presmerovania nastala chyba"
 
 #: src/neon/neon.cc:540
 msgid "Unknown HTTP error"
-msgstr ""
+msgstr "Neznáma HTTP chyba"
 
 #: src/neon/neon.cc:574
 msgid "Error parsing URL"
-msgstr ""
+msgstr "Počas spracovania URL nastala chyba"
 
 #: src/neon/neon.cc:637
 msgid "Too many redirects"
-msgstr ""
+msgstr "Príliš veľa presmerovaní"
 
 #: src/notify/event.cc:97
 msgid "Stopped"
@@ -2558,7 +2731,7 @@ msgstr "Audacious teraz neprehráva."
 
 #: src/notify/notify.cc:39
 msgid "Desktop Notifications"
-msgstr "Oznámenia na plochu"
+msgstr "Oznámenia na pracovnú plochu"
 
 #: src/notify/notify.cc:57
 msgid ""
@@ -2579,32 +2752,39 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Oznámenia na pracovnú plochu zásuvný modul pre Audacious\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011-2013 John Lindgren a Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"Tento zásuvný modul je slobodný softvér: môžete ho šíriť a/alebo upravovať "
+"podľa podmienok GNU General Public License publikovanou Free Software "
+"Foundation, aa to buď verzie 3 tejto licencie, alebo (podľa vlastného "
+"zváženia) ktorej kolvek novšej verzie.\n"
+"\n"
+"Tento zásuvný modul je šírený v nádeji, že bude užitočný, ale BEZ AKEJKOĽVEK "
+"ZÁRUKY; dokonca aj bez predpokladanej záruky PREDAJNOSTI alebo VHODNOSTI PRE "
+"KONKRÉTNY ÚČEL. Pre bližšie podrobnosti sa pozrite na GNU General Public "
+"License.\n"
+"\n"
+"Spolu s týmto programom by ste mali obdržať aj kópiu GNU General Public "
+"License. Ak tomu tak nieje pozrite si nasledujúcu adresu <http://www.gnu.org/"
+"licenses/>."
 
 #: src/notify/notify.cc:102
 msgid "Show playback controls"
-msgstr ""
+msgstr "Zobraziť ovládanie prehrávania"
 
 #: src/notify/notify.cc:104
 msgid "Always show notification"
-msgstr ""
+msgstr "Vždy zobraziť upozornenia"
 
 #: src/notify/notify.cc:106
 msgid "Include album name in notification"
-msgstr ""
+msgstr "Do upozornenia zahrnúť aj názov albumu"
 
 #: src/notify/osd.cc:59
 msgid "Show"
-msgstr ""
-
-#: src/notify/osd.cc:67 src/qtui/main_window.cc:262 src/qtui/main_window.cc:263
-#: src/skins/menus.cc:110 src/skins-qt/menus.cc:99
-msgid "Pause"
-msgstr "Pozastaviť"
-
-#: src/notify/osd.cc:74 src/qtui/main_window.cc:120 src/skins/menus.cc:113
-#: src/skins-qt/menus.cc:102
-msgid "Next"
-msgstr "Nasledujúca"
+msgstr "Zobraziť"
 
 #: src/oss4/oss.h:75
 msgid "OSS4 Output"
@@ -2612,11 +2792,11 @@ msgstr "OSS4 výstup"
 
 #: src/oss4/oss.h:77
 msgid "OSS3 Output"
-msgstr ""
+msgstr "OSS3 výstup"
 
 #: src/oss4/plugin.cc:35
 msgid "Default device"
-msgstr ""
+msgstr "Predvolené zariadenie"
 
 #: src/oss4/plugin.cc:78
 msgid "Audio device:"
@@ -2658,17 +2838,17 @@ msgid "Playlist Manager"
 msgstr "Správca zoznamu skladieb"
 
 #: src/playlist-manager/playlist-manager.cc:200
-#: src/playlist-manager-qt/playlist-manager-qt.cc:170
+#: src/playlist-manager-qt/playlist-manager-qt.cc:185
 msgid "Entries"
-msgstr "Položky"
+msgstr "Počet položiek"
 
 #: src/playlist-manager/playlist-manager.cc:220
-#: src/playlist-manager-qt/playlist-manager-qt.cc:346
+#: src/playlist-manager-qt/playlist-manager-qt.cc:364
 msgid "_Remove"
 msgstr "_Odstrániť"
 
 #: src/playlist-manager/playlist-manager.cc:221
-#: src/playlist-manager-qt/playlist-manager-qt.cc:341
+#: src/playlist-manager-qt/playlist-manager-qt.cc:359
 msgid "Ren_ame"
 msgstr "Premenovať"
 
@@ -2684,7 +2864,7 @@ msgstr "OpenPSF PSF1/PSF2 dekodér"
 msgid "PulseAudio Output"
 msgstr "PulseAudio výstup"
 
-#: src/pulse/pulse_audio.cc:494
+#: src/pulse/pulse_audio.cc:532
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -2702,10 +2882,25 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Audacious PulseAudio výstupný zásuvný modul\n"
+"\n"
+"Tento program je slobodný softvér: môžete ho šíriť a/alebo upravovať podľa "
+"podmienok GNU General Public License publikovanou Free Software Foundation; "
+"a to buď verzie 2 tejto licencie alebo (podľa vlastného zváženia) "
+"ktorejkoľvek novšej verzie.\n"
+"\n"
+"Tento program je šírený v nádeji, že bude užitočný, ale BEZ AKEJKOĽVEK "
+"ZÁRUKY; dokonca aj bez predpokladanej záruky PREDAJNOSTI alebo VHODNOSTI PRE "
+"KONKRÉTNY ÚČEL. Pre bližšie podrobnosti sa pozrite na GNU General Public "
+"License.\n"
+"\n"
+"Spolu s týmto programom by ste mali obdržať aj kópiu GNU General Public "
+"License. Ak tomu tak nieje napíšte do  Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
-msgstr ""
+msgstr "Výstup QtMultimedia"
 
 #: src/qtaudio/qtaudio.cc:72
 msgid ""
@@ -2715,6 +2910,11 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Výstupný zásuvný modul QtMultimedia pre Audacious\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"Založené na výstupnom zásuvnom module SDL pre Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/qtglspectrum/gl-spectrum.cc:41
 msgid ""
@@ -2728,99 +2928,79 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"Spektrálny analyzátor OpenGL pre Audacious\n"
+"Copyright 2013 Christophe Budé, John Lindgren a Carlo Bramini\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"Založené na zásuvéom module pre XMMS:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson a "
+"4Front Technologies\n"
+"\n"
+"Licencia: GPLv2+"
 
-#: src/qtui/main_window.cc:109 src/skins/menus.cc:86
-msgid "Search Library"
-msgstr ""
-
-#: src/qtui/main_window.cc:110
-msgid "Open Files"
-msgstr "Otvoriť súbory"
-
-#: src/qtui/main_window.cc:112
-msgid "Add Files"
-msgstr "Pridať súbory"
-
-#: src/qtui/main_window.cc:115 src/skins/menus.cc:112 src/skins-qt/menus.cc:101
-msgid "Previous"
-msgstr "Predchádzajúca"
-
-#: src/qtui/main_window.cc:118 src/skins/menus.cc:107 src/skins-qt/menus.cc:96
+#: src/qtui/main_window.cc:110 src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
-msgstr ""
+msgstr "_Zastaviť po tejto skladbe"
 
-#: src/qtui/main_window.cc:121 src/qtui/menus.cc:168 src/skins/menus.cc:79
-#: src/skins-qt/menus.cc:67
-msgid "Record Stream"
-msgstr ""
-
-#: src/qtui/main_window.cc:127 src/skins/menus.cc:103 src/skins-qt/menus.cc:92
-msgid "Repeat"
-msgstr "Opakovať"
-
-#: src/qtui/main_window.cc:129 src/skins/menus.cc:104 src/skins-qt/menus.cc:93
-msgid "Shuffle"
-msgstr "Náhodné poradie"
-
-#: src/qtui/menus.cc:67
+#: src/qtui/menus.cc:69
 msgid "_Open Folder ..."
-msgstr ""
+msgstr "_Otvoriť priečinok ..."
 
-#: src/qtui/menus.cc:70
+#: src/qtui/menus.cc:72
 msgid "_Add Folder ..."
-msgstr ""
+msgstr "_Pridať priečinok ..."
 
-#: src/qtui/menus.cc:78
+#: src/qtui/menus.cc:80
 msgid "_Log Inspector ..."
-msgstr ""
+msgstr "Inšpektor logov"
 
-#: src/qtui/menus.cc:143
+#: src/qtui/menus.cc:145
 msgid "_Find ..."
-msgstr ""
+msgstr "_Hľadať ..."
 
-#: src/qtui/menus.cc:169 src/skins/menus.cc:80 src/skins-qt/menus.cc:68
+#: src/qtui/menus.cc:171 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
-msgstr ""
+msgstr "Nastavenie zvuku ..."
 
 #: src/qtui/playlist_header.cc:201
 msgid "Reset to Defaults"
-msgstr ""
+msgstr "Obnoviť predvolené nastavenia"
 
-#: src/qtui/playlist_model.cc:32
+#: src/qtui/playlist_model.cc:35
 msgid "Now Playing"
 msgstr "Práve hrá"
 
-#: src/qtui/playlist_model.cc:33
+#: src/qtui/playlist_model.cc:36
 msgid "Entry Number"
-msgstr ""
-
-#: src/qtui/playlist_model.cc:38
-msgid "Album Artist"
-msgstr "Interprét albumu"
+msgstr "Vstupné číslo"
 
 #: src/qtui/playlist_model.cc:41
-msgid "Queue Position"
-msgstr ""
-
-#: src/qtui/playlist_model.cc:43
-msgid "File Path"
-msgstr ""
+msgid "Album Artist"
+msgstr "Umelec albumu"
 
 #: src/qtui/playlist_model.cc:44
-msgid "File Name"
-msgstr ""
+msgid "Queue Position"
+msgstr "Pozícia fronty"
 
-#: src/qtui/playlist_model.cc:45
+#: src/qtui/playlist_model.cc:46
+msgid "File Path"
+msgstr "Cesta súboru"
+
+#: src/qtui/playlist_model.cc:47
+msgid "File Name"
+msgstr "Názov súboru"
+
+#: src/qtui/playlist_model.cc:48
 msgid "Custom Title"
-msgstr ""
+msgstr "Vlastný názov"
 
 #: src/qtui/qtui.cc:39
 msgid "Qt Interface"
-msgstr ""
+msgstr "Qt prostredie"
 
 #: src/qtui/search_bar.cc:47
 msgid "Search playlist"
-msgstr ""
+msgstr "Prehľadať zoznam skladieb"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -2836,7 +3016,7 @@ msgstr ""
 
 #: src/resample/resample.cc:187
 msgid "Skip/repeat samples"
-msgstr "Preskoč/opakuj vzorky"
+msgstr "Preskočiť/opakovať vzorky"
 
 #: src/resample/resample.cc:188
 msgid "Linear interpolation"
@@ -2862,7 +3042,7 @@ msgstr "<b>Prevod</b>"
 msgid "Method:"
 msgstr "Metóda:"
 
-#: src/resample/resample.cc:199 src/soxr/sox-resampler.cc:162
+#: src/resample/resample.cc:199 src/soxr/sox-resampler.cc:188
 msgid "Rate:"
 msgstr "Hodnotenie:"
 
@@ -2888,7 +3068,7 @@ msgstr "22.05 kHz:"
 
 #: src/resample/resample.cc:217
 msgid "32.0 kHz:"
-msgstr ""
+msgstr "32.0 kHz:"
 
 #: src/resample/resample.cc:221
 msgid "44.1 kHz:"
@@ -2900,7 +3080,7 @@ msgstr "48 kHz:"
 
 #: src/resample/resample.cc:229
 msgid "88.2 kHz:"
-msgstr ""
+msgstr "88.2 kHz:"
 
 #: src/resample/resample.cc:233
 msgid "96 kHz:"
@@ -2908,7 +3088,7 @@ msgstr "96 kHz:"
 
 #: src/resample/resample.cc:237
 msgid "176.4 kHz:"
-msgstr ""
+msgstr "176.4 kHz:"
 
 #: src/resample/resample.cc:241
 msgid "192 kHz:"
@@ -2916,50 +3096,59 @@ msgstr "192 kHz:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr ""
+msgstr "Kontroluje sa prístup k Last.fm ..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
 msgstr ""
+"Prehrané skladby sú v počítači uložené len dočasne.  Okamžite ako bude pre "
+"Audacious udelený prístup budú odoslané."
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr ""
+msgstr "Oprávnenie udelené. Scrobbluje sa pre používateľa  %s."
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
+"Oprávnenie zakázané.  Otvorte nasledujúcu URL vo webovom prehliadači a "
+"povoľte prístup Audacious k vášmu účtu, potom kliknite na \"Znovu "
+"skontrolovať oprávnenie\":"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr ""
+msgstr "Vyskytol sa problém s pripojením k Last.fm."
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "Skontrolovať  oprávnenie"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "Zrušiť oprávnenie"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
+"Aby mohol Audacious scrobbleovať skladby do Last.fm účtu je nutné udelenie "
+"oprávnenia."
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
-msgstr ""
+msgstr "Scrobbler 2.0"
 
 #: src/scrobbler2/scrobbler.cc:224
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
+"Zásuvný modul Scrobber nie je možné spustiť.\n"
+"Toto môže spôsobovať problém vo vašej inštalácii."
 
 #: src/scrobbler2/scrobbler.cc:289
 msgid ""
@@ -2971,14 +3160,20 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
+"Audacious Scrobbler zásuvný modul 2.0 od Pitxyoki,\n"
+"\n"
+"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"Poďakovanie patrí Johnimu Lindgrenovi za podanie pomocnej ruky v začiatkoch "
+"tohto projektu.\n"
 
-#: src/scrobbler2/scrobbler_communication.cc:638
+#: src/scrobbler2/scrobbler_communication.cc:639
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
 "Audacious odteraz používa vylepšenú verziu doplnku Last.fm Scrobbler.\n"
-"Prosím, skontrolujte Predvoľby doplnku Scrobbler."
+"Prosím, skontrolujte možnosti doplnku Scrobbler."
 
 #: src/sdlout/sdlout.cc:43
 msgid "SDL Output"
@@ -2992,61 +3187,72 @@ msgstr ""
 "SDL výstupný zásuvný modul pre Aduacious\n"
 "Copyright 2010 John Lindgren"
 
-#: src/search-tool-qt/search-tool-qt.cc:208
-#: src/search-tool-qt/search-tool-qt.cc:219 src/search-tool/search-tool.cc:124
-#: src/search-tool/search-tool.cc:135
+#: src/search-tool-qt/search-tool-qt.cc:87 src/search-tool/search-tool.cc:74
+msgid "Number of results to show:"
+msgstr ""
+
+#: src/search-tool-qt/search-tool-qt.cc:90 src/search-tool/search-tool.cc:77
+msgid "Rescan library at startup"
+msgstr ""
+
+#: src/search-tool-qt/search-tool-qt.cc:305
+#: src/search-tool-qt/search-tool-qt.cc:316 src/search-tool/search-tool.cc:149
+#: src/search-tool/search-tool.cc:160
 msgid "Library"
 msgstr "Knižnica"
 
-#: src/search-tool-qt/search-tool-qt.cc:488 src/search-tool/search-tool.cc:404
+#: src/search-tool-qt/search-tool-qt.cc:586 src/search-tool/search-tool.cc:430
 #, c-format
 msgid "%d of %d result shown"
 msgid_plural "%d of %d results shown"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Zobrazený %d z%d výsledku"
+msgstr[1] "Zobrazené %d z %d výsledkov"
+msgstr[2] "Zobrazené %d z(o) %d výledkov"
+msgstr[3] "Zobrazené %d z(o) %d výledkov"
 
-#: src/search-tool-qt/search-tool-qt.cc:492 src/search-tool/search-tool.cc:408
+#: src/search-tool-qt/search-tool-qt.cc:590 src/search-tool/search-tool.cc:434
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%d výsledok"
+msgstr[1] "%d výsledky"
+msgstr[2] "%d výsledkov"
+msgstr[3] "%d výsledkov"
 
-#: src/search-tool-qt/search-tool-qt.cc:676 src/search-tool/search-tool.cc:596
+#: src/search-tool-qt/search-tool-qt.cc:799 src/search-tool/search-tool.cc:631
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%d skladba"
+msgstr[1] "%d skladby"
+msgstr[2] "%d skladieb"
+msgstr[3] "%d skladieb"
 
-#: src/search-tool-qt/search-tool-qt.cc:683 src/search-tool/search-tool.cc:603
+#: src/search-tool-qt/search-tool-qt.cc:808 src/search-tool/search-tool.cc:638
 msgid "of this genre"
-msgstr ""
+msgstr "tohto žánru"
 
-#: src/search-tool-qt/search-tool-qt.cc:691 src/search-tool/search-tool.cc:611
+#: src/search-tool-qt/search-tool-qt.cc:814 src/search-tool/search-tool.cc:645
 msgid "on"
-msgstr ""
+msgstr "na"
 
-#: src/search-tool-qt/search-tool-qt.cc:691 src/search-tool/search-tool.cc:611
+#: src/search-tool-qt/search-tool-qt.cc:814 src/search-tool/search-tool.cc:645
 msgid "by"
-msgstr ""
+msgstr "od"
 
-#: src/search-tool-qt/search-tool-qt.cc:703 src/search-tool/search-tool.cc:651
+#: src/search-tool-qt/search-tool-qt.cc:832 src/search-tool/search-tool.cc:685
 msgid "_Create Playlist"
 msgstr "_Vytvoriť zoznam skladieb"
 
-#: src/search-tool-qt/search-tool-qt.cc:704 src/search-tool/search-tool.cc:653
+#: src/search-tool-qt/search-tool-qt.cc:833 src/search-tool/search-tool.cc:687
 msgid "_Add to Playlist"
 msgstr "_Pridať do zoznamu skladieb"
 
-#: src/search-tool-qt/search-tool-qt.cc:746 src/search-tool/search-tool.cc:740
+#: src/search-tool-qt/search-tool-qt.cc:881 src/search-tool/search-tool.cc:780
 msgid "Search library"
 msgstr "Vyhľadať knižnicu"
 
-#: src/search-tool-qt/search-tool-qt.cc:748 src/search-tool/search-tool.cc:744
+#: src/search-tool-qt/search-tool-qt.cc:883 src/search-tool/search-tool.cc:784
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -3054,99 +3260,97 @@ msgstr ""
 "Pre import hudobnej knižnice do Audacious, vyberte priečinok a potom "
 "kliknite na ikonu \"obnoviť\"."
 
-#: src/search-tool-qt/search-tool-qt.cc:754 src/search-tool/search-tool.cc:753
+#: src/search-tool-qt/search-tool-qt.cc:889 src/search-tool/search-tool.cc:793
 msgid "Please wait ..."
 msgstr "Čakajte prosím ..."
 
-#: src/search-tool/search-tool.cc:781
+#: src/search-tool/search-tool.cc:821
 msgid "Choose Folder"
 msgstr "Vybrať priečinok"
 
 #: src/sid/xmms-sid.cc:43
 msgid "SID Player"
-msgstr ""
-
-#: src/sid/xs_config.cc:61
-msgid "<b>Output</b>"
-msgstr ""
+msgstr "SID Prehhrávač"
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
-msgstr ""
+msgstr "Kanály:"
 
 #: src/sid/xs_config.cc:68
 msgid "<b>Emulation</b>"
-msgstr ""
+msgstr "<b>Emulácia</b>"
 
 #: src/sid/xs_config.cc:69
 msgid "Emulate MOS 8580 (default: MOS 6581)"
-msgstr ""
+msgstr "Emuluje sa MOS 8580 (predvolené: MOS 6581)"
 
 #: src/sid/xs_config.cc:71
 msgid "Do not automatically select chip model"
-msgstr ""
+msgstr "Nevyberať automaticky model čipu"
 
 #: src/sid/xs_config.cc:73
 msgid "Emulate filter"
-msgstr ""
+msgstr "Emulovať filter"
 
 #: src/sid/xs_config.cc:75
 msgid "Clock speed:"
-msgstr ""
+msgstr "Hodinová frekvencia"
 
 #: src/sid/xs_config.cc:78
 msgid "Do not automatically select clock speed"
-msgstr ""
+msgstr "Nevyberať automaticky hodinovú frekvenciu"
 
 #: src/sid/xs_config.cc:80
 msgid "<b>Playback time</b>"
-msgstr ""
+msgstr "<b>Čas prehrávania</b>"
 
 #: src/sid/xs_config.cc:81
 msgid "Set maximum playback time:"
-msgstr ""
+msgstr "Nastaviť maximálny čas prehrávania:"
 
 #: src/sid/xs_config.cc:87
 msgid "Use only when song length is unknown"
-msgstr ""
+msgstr "Použiť iba v prípade, ak je dĺžka skladby neznáma"
 
 #: src/sid/xs_config.cc:90
 msgid "Set minimum playback time:"
-msgstr ""
+msgstr "Nastaviť minimálny čas prehrávania:"
 
 #: src/sid/xs_config.cc:96
 msgid "<b>Subtunes</b>"
-msgstr ""
+msgstr "<b>Subtunes</b>"
 
 #: src/sid/xs_config.cc:97
 msgid "Enable subtunes"
-msgstr ""
+msgstr "Povoliť subtunes"
 
 #: src/sid/xs_config.cc:99
 msgid "Ignore subtunes shorter than:"
-msgstr ""
+msgstr "Ignorovať subtunes kratšie ako:"
 
 #: src/sid/xs_config.cc:105
 msgid "<b>Note</b>"
-msgstr ""
+msgstr "<b>Poznámka</b>"
 
 #: src/silence-removal/silence-removal.cc:39
 msgid "Silence Removal"
-msgstr ""
+msgstr "Odstránenie ticha"
 
 #: src/silence-removal/silence-removal.cc:58
 msgid ""
 "Silence Removal Plugin for Audacious\n"
 "Copyright 2014 John Lindgren"
 msgstr ""
+"Silence Removal zásuvný modul pre Audacious\n"
+"Copyright 2014 John Lindgren"
 
 #: src/silence-removal/silence-removal.cc:67
 msgid "<b>Silence Removal</b>"
-msgstr ""
+msgstr "<b>Odstránenie ticha</b>"
 
 #: src/silence-removal/silence-removal.cc:68
 msgid "Threshold:"
-msgstr ""
+msgstr "Prah:"
 
 #: src/silence-removal/silence-removal.cc:70
 msgid "dB"
@@ -3154,15 +3358,15 @@ msgstr "dB"
 
 #: src/skins/actions.cc:45 src/skins-qt/actions.cc:43
 msgid "Repeat points cleared."
-msgstr ""
+msgstr "Body opakovania boli odstránené."
 
 #: src/skins/actions.cc:60 src/skins-qt/actions.cc:58
 msgid "Repeat point A set."
-msgstr ""
+msgstr "Nastaviť bod opakovania A."
 
 #: src/skins/actions.cc:65 src/skins-qt/actions.cc:63
 msgid "Repeat point B set."
-msgstr ""
+msgstr "Nastaviť bod opakovania B."
 
 #: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:220
 msgid "Preamp"
@@ -3212,189 +3416,189 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "Ekvalizér Audacious"
 
-#: src/skins/main.cc:444
+#: src/skins/main.cc:447 src/skins-qt/main.cc:433
 msgid "Recording on"
-msgstr ""
+msgstr "Nahrávanie zapnuté"
 
-#: src/skins/main.cc:446
+#: src/skins/main.cc:449 src/skins-qt/main.cc:435
 msgid "Recording off"
-msgstr ""
+msgstr "Nahrávanie vypnuté"
 
-#: src/skins/main.cc:705 src/skins-qt/main.cc:655
+#: src/skins/main.cc:708 src/skins-qt/main.cc:666
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "prejsť na %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/main.cc:722 src/skins-qt/main.cc:672
+#: src/skins/main.cc:725 src/skins-qt/main.cc:683
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Hlasitosť: %d%%"
 
-#: src/skins/main.cc:735 src/skins-qt/main.cc:685
+#: src/skins/main.cc:738 src/skins-qt/main.cc:696
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Vyváženie: %d%% vľavo"
 
-#: src/skins/main.cc:737 src/skins-qt/main.cc:687
+#: src/skins/main.cc:740 src/skins-qt/main.cc:698
 msgid "Balance: center"
 msgstr "Vyváženie: stred"
 
-#: src/skins/main.cc:739 src/skins-qt/main.cc:689
+#: src/skins/main.cc:742 src/skins-qt/main.cc:700
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Vyváženie: %d%% vpravo"
 
-#: src/skins/main.cc:832 src/skins-qt/main.cc:782
+#: src/skins/main.cc:835 src/skins-qt/main.cc:793
 msgid "Options Menu"
 msgstr "Ponuka s možnosťami"
 
-#: src/skins/main.cc:836 src/skins-qt/main.cc:786
+#: src/skins/main.cc:839 src/skins-qt/main.cc:797
 msgid "Disable 'Always On Top'"
 msgstr "Vypnúť „Vždy navrchu“"
 
-#: src/skins/main.cc:838 src/skins-qt/main.cc:788
+#: src/skins/main.cc:841 src/skins-qt/main.cc:799
 msgid "Enable 'Always On Top'"
 msgstr "Zapnúť „Vždy navrchu“"
 
-#: src/skins/main.cc:841 src/skins-qt/main.cc:791
+#: src/skins/main.cc:844 src/skins-qt/main.cc:802
 msgid "File Info Box"
 msgstr "Informácie o súbore"
 
-#: src/skins/main.cc:844 src/skins/menus.cc:147 src/skins-qt/main.cc:794
+#: src/skins/main.cc:847 src/skins/menus.cc:147 src/skins-qt/main.cc:805
 #: src/skins-qt/menus.cc:140
 msgid "Double Size"
-msgstr ""
+msgstr "Dvojnásobná veľkosť"
 
-#: src/skins/main.cc:847 src/skins-qt/main.cc:797
+#: src/skins/main.cc:850 src/skins-qt/main.cc:808
 msgid "Visualizations"
-msgstr ""
+msgstr "Vizualizácia"
 
-#: src/skins/menus.cc:74 src/skins-qt/menus.cc:62
+#: src/skins/menus.cc:74 src/skins-qt/menus.cc:64
 msgid "Volume Up"
 msgstr "Zosilniť"
 
-#: src/skins/menus.cc:75 src/skins-qt/menus.cc:63
+#: src/skins/menus.cc:75 src/skins-qt/menus.cc:65
 msgid "Volume Down"
 msgstr "Stíšiť"
 
-#: src/skins/menus.cc:77 src/skins-qt/menus.cc:65
+#: src/skins/menus.cc:77 src/skins-qt/menus.cc:67
 msgid "Effects ..."
-msgstr ""
+msgstr "Efekty..."
 
-#: src/skins/menus.cc:84 src/skins-qt/menus.cc:72
+#: src/skins/menus.cc:84 src/skins-qt/menus.cc:74
 msgid "Open Files ..."
-msgstr ""
+msgstr "Otvoriť súbory ..."
 
-#: src/skins/menus.cc:85 src/skins-qt/menus.cc:74
+#: src/skins/menus.cc:85 src/skins-qt/menus.cc:76
 msgid "Open URL ..."
-msgstr ""
+msgstr "Otvoriť URL ..."
 
-#: src/skins/menus.cc:88 src/skins-qt/menus.cc:77
+#: src/skins/menus.cc:88 src/skins-qt/menus.cc:79
 msgid "Playback"
 msgstr "Prehrávanie"
 
-#: src/skins/menus.cc:89 src/skins-qt/menus.cc:78
+#: src/skins/menus.cc:89 src/skins-qt/menus.cc:80
 msgid "Playlist"
 msgstr "Zoznam skladieb"
 
-#: src/skins/menus.cc:90 src/skins-qt/menus.cc:79
+#: src/skins/menus.cc:90 src/skins-qt/menus.cc:81
 msgid "Output"
-msgstr ""
+msgstr "Výstup"
 
-#: src/skins/menus.cc:91 src/skins-qt/menus.cc:80
+#: src/skins/menus.cc:91 src/skins-qt/menus.cc:82
 msgid "View"
 msgstr "Zobrazenie"
 
 #: src/skins/menus.cc:93 src/skins/menus.cc:159 src/skins/menus.cc:172
-#: src/skins/menus.cc:241 src/skins-qt/menus.cc:82 src/skins-qt/menus.cc:154
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:154
 #: src/skins-qt/menus.cc:168 src/skins-qt/menus.cc:235
 msgid "Services"
-msgstr ""
+msgstr "Služby"
 
-#: src/skins/menus.cc:95 src/skins-qt/menus.cc:84
+#: src/skins/menus.cc:95 src/skins-qt/menus.cc:86
 msgid "About ..."
-msgstr ""
+msgstr "O programe ..."
 
-#: src/skins/menus.cc:96 src/skins-qt/menus.cc:85
+#: src/skins/menus.cc:96 src/skins-qt/menus.cc:87
 msgid "Settings ..."
-msgstr ""
+msgstr "Nastavenia …"
 
-#: src/skins/menus.cc:97 src/skins-qt/menus.cc:86
+#: src/skins/menus.cc:97 src/skins-qt/menus.cc:88
 msgid "Quit"
-msgstr ""
+msgstr "Ukončiť"
 
-#: src/skins/menus.cc:101 src/skins/menus.cc:231 src/skins-qt/menus.cc:90
+#: src/skins/menus.cc:101 src/skins/menus.cc:231 src/skins-qt/menus.cc:92
 #: src/skins-qt/menus.cc:225
 msgid "Song Info ..."
-msgstr ""
+msgstr "Informácie o skladbe ..."
 
-#: src/skins/menus.cc:105 src/skins-qt/menus.cc:94
+#: src/skins/menus.cc:105 src/skins-qt/menus.cc:96
 msgid "Shuffle by Album"
-msgstr ""
+msgstr "Náhodne vrámci albumu"
 
-#: src/skins/menus.cc:106 src/skins-qt/menus.cc:95
+#: src/skins/menus.cc:106 src/skins-qt/menus.cc:97
 msgid "No Playlist Advance"
 msgstr "Neprehrávať ďalšiu skladbu zo zoznamu"
 
-#: src/skins/menus.cc:115 src/skins-qt/menus.cc:104
+#: src/skins/menus.cc:115 src/skins-qt/menus.cc:106
 msgid "Set A-B Repeat"
-msgstr ""
+msgstr "Nastaviť A-B opakovanie"
 
-#: src/skins/menus.cc:116 src/skins-qt/menus.cc:105
+#: src/skins/menus.cc:116 src/skins-qt/menus.cc:107
 msgid "Clear A-B Repeat"
-msgstr ""
+msgstr "Odstrániť A-B opakovanie"
 
-#: src/skins/menus.cc:118 src/skins-qt/menus.cc:108
+#: src/skins/menus.cc:118 src/skins-qt/menus.cc:110
 msgid "Jump to Song ..."
-msgstr ""
+msgstr "Prejsť na skladbu ..."
 
-#: src/skins/menus.cc:119 src/skins-qt/menus.cc:109
+#: src/skins/menus.cc:119 src/skins-qt/menus.cc:111
 msgid "Jump to Time ..."
-msgstr ""
+msgstr "Prejsť na čas ..."
 
-#: src/skins/menus.cc:123 src/skins-qt/menus.cc:114
+#: src/skins/menus.cc:123 src/skins-qt/menus.cc:116
 msgid "Play/Resume"
-msgstr ""
+msgstr "Prehrať/Pokračovať"
 
-#: src/skins/menus.cc:125 src/skins-qt/menus.cc:116
+#: src/skins/menus.cc:125 src/skins-qt/menus.cc:118
 msgid "New Playlist"
 msgstr "Nový zoznam skladieb"
 
-#: src/skins/menus.cc:126 src/skins-qt/menus.cc:117
+#: src/skins/menus.cc:126 src/skins-qt/menus.cc:119
 msgid "Rename Playlist ..."
-msgstr ""
+msgstr "Premenovať zoznam skladieb ..."
 
-#: src/skins/menus.cc:127 src/skins-qt/menus.cc:118
+#: src/skins/menus.cc:127 src/skins-qt/menus.cc:120
 msgid "Remove Playlist"
 msgstr "Odstrániť zoznam skladieb"
 
-#: src/skins/menus.cc:129 src/skins-qt/menus.cc:120
+#: src/skins/menus.cc:129 src/skins-qt/menus.cc:122
 msgid "Previous Playlist"
-msgstr ""
+msgstr "Predchádzajúci zoznam skladieb"
 
-#: src/skins/menus.cc:130 src/skins-qt/menus.cc:121
+#: src/skins/menus.cc:130 src/skins-qt/menus.cc:123
 msgid "Next Playlist"
-msgstr ""
+msgstr "Nasledujúci zoznam skladieb"
 
-#: src/skins/menus.cc:132 src/skins-qt/menus.cc:124
+#: src/skins/menus.cc:132 src/skins-qt/menus.cc:125
 msgid "Import Playlist ..."
-msgstr ""
+msgstr "Importovať zoznam skladieb ..."
 
-#: src/skins/menus.cc:133 src/skins-qt/menus.cc:125
+#: src/skins/menus.cc:133 src/skins-qt/menus.cc:126
 msgid "Export Playlist ..."
-msgstr ""
+msgstr "Exportovať zoznam skladieb ..."
 
 #: src/skins/menus.cc:135 src/skins-qt/menus.cc:128
 msgid "Playlist Manager ..."
-msgstr ""
+msgstr "Správca zoznamu skladieb ..."
 
 #: src/skins/menus.cc:136 src/skins-qt/menus.cc:129
 msgid "Queue Manager ..."
-msgstr ""
+msgstr "Správca fronty ..."
 
 #: src/skins/menus.cc:138 src/skins-qt/menus.cc:131
 msgid "Refresh Playlist"
-msgstr ""
+msgstr "Obnoviť zoznam skladieb"
 
 #: src/skins/menus.cc:142 src/skins-qt/menus.cc:135
 msgid "Show Playlist Editor"
@@ -3406,7 +3610,7 @@ msgstr "Zobraziť ekvalizér"
 
 #: src/skins/menus.cc:145 src/skins-qt/menus.cc:138
 msgid "Show Remaining Time"
-msgstr ""
+msgstr "Ukázať ostávajúci čas"
 
 #: src/skins/menus.cc:148 src/skins-qt/menus.cc:142
 msgid "Always on Top"
@@ -3414,27 +3618,27 @@ msgstr "Vždy navrchu"
 
 #: src/skins/menus.cc:149 src/skins-qt/menus.cc:143
 msgid "On All Workspaces"
-msgstr ""
+msgstr "Na všetkých plochách"
 
 #: src/skins/menus.cc:151 src/skins-qt/menus.cc:146
 msgid "Roll Up Player"
-msgstr ""
+msgstr "Vybaliť prehrávač"
 
 #: src/skins/menus.cc:152 src/skins-qt/menus.cc:147
 msgid "Roll Up Playlist Editor"
-msgstr ""
+msgstr "Vybaliť editor zoznamu skladieb"
 
 #: src/skins/menus.cc:153 src/skins-qt/menus.cc:148
 msgid "Roll Up Equalizer"
-msgstr ""
+msgstr "Vybaliť ekvalizér"
 
 #: src/skins/menus.cc:161 src/skins-qt/menus.cc:156
 msgid "Add URL ..."
-msgstr ""
+msgstr "Pridať URL ..."
 
 #: src/skins/menus.cc:162 src/skins-qt/menus.cc:158
 msgid "Add Files ..."
-msgstr ""
+msgstr "Pridať súbory …"
 
 #: src/skins/menus.cc:166 src/skins/menus.cc:194 src/skins/menus.cc:209
 #: src/skins-qt/menus.cc:162 src/skins-qt/menus.cc:188
@@ -3446,13 +3650,13 @@ msgstr "Podľa názvu"
 #: src/skins-qt/menus.cc:163 src/skins-qt/menus.cc:195
 #: src/skins-qt/menus.cc:210
 msgid "By File Name"
-msgstr ""
+msgstr "Podľa názvu súboru"
 
 #: src/skins/menus.cc:168 src/skins/menus.cc:202 src/skins/menus.cc:217
 #: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:196
 #: src/skins-qt/menus.cc:211
 msgid "By File Path"
-msgstr ""
+msgstr "Podľa cesty k súboru"
 
 #: src/skins/menus.cc:174 src/skins-qt/menus.cc:170
 msgid "Remove All"
@@ -3460,7 +3664,7 @@ msgstr "Odstrániť všetky"
 
 #: src/skins/menus.cc:175 src/skins-qt/menus.cc:171
 msgid "Clear Queue"
-msgstr "Vyprázdniť front"
+msgstr "Vyprázdniť frontu"
 
 #: src/skins/menus.cc:177 src/skins-qt/menus.cc:173
 msgid "Remove Unavailable Files"
@@ -3512,32 +3716,32 @@ msgstr "Podľa albumu"
 #: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:191
 #: src/skins-qt/menus.cc:206
 msgid "By Album Artist"
-msgstr ""
+msgstr "Podľa umelca albumu"
 
 #: src/skins/menus.cc:198 src/skins/menus.cc:214 src/skins-qt/menus.cc:192
 #: src/skins-qt/menus.cc:208
 msgid "By Release Date"
-msgstr ""
+msgstr "Podľa dátumu vydania"
 
 #: src/skins/menus.cc:199 src/skins/menus.cc:213 src/skins-qt/menus.cc:193
 #: src/skins-qt/menus.cc:207
 msgid "By Genre"
-msgstr ""
+msgstr "Podľa žánru"
 
 #: src/skins/menus.cc:200 src/skins/menus.cc:215 src/skins-qt/menus.cc:194
 #: src/skins-qt/menus.cc:209
 msgid "By Length"
-msgstr ""
+msgstr "Podľa dĺžky"
 
 #: src/skins/menus.cc:203 src/skins/menus.cc:218 src/skins-qt/menus.cc:197
 #: src/skins-qt/menus.cc:212
 msgid "By Custom Title"
-msgstr ""
+msgstr "Podľa vlastného názvu"
 
 #: src/skins/menus.cc:204 src/skins/menus.cc:219 src/skins-qt/menus.cc:198
 #: src/skins-qt/menus.cc:213
 msgid "By Comment"
-msgstr ""
+msgstr "Podľa komentára"
 
 #: src/skins/menus.cc:223 src/skins-qt/menus.cc:217
 msgid "Randomize List"
@@ -3557,7 +3761,7 @@ msgstr "Triediť zoznam"
 
 #: src/skins/menus.cc:232 src/skins-qt/menus.cc:226
 msgid "Open Containing Folder"
-msgstr ""
+msgstr "Otvoriť priečinok"
 
 #: src/skins/menus.cc:234 src/skins-qt/menus.cc:228
 msgid "Cut"
@@ -3573,194 +3777,194 @@ msgstr "Vložiť"
 
 #: src/skins/menus.cc:237 src/skins-qt/menus.cc:231
 msgid "Paste at End"
-msgstr ""
+msgstr "Vložiť na koniec"
 
 #: src/skins/menus.cc:239 src/skins-qt/menus.cc:233
 msgid "Queue/Unqueue"
-msgstr ""
+msgstr "Pridať alebo odobrať z fronty"
 
-#: src/skins/playlist.cc:492 src/skins-qt/playlist.cc:477
-msgid "Audacious Playlist Editor"
-msgstr "Editor zoznamu skladieb"
-
-#: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:52
+#: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:53
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d z %d)"
 
+#: src/skins/playlistwin.cc:492 src/skins-qt/playlistwin.cc:477
+msgid "Audacious Playlist Editor"
+msgstr "Editor zoznamu skladieb"
+
 #: src/skins/plugin.cc:49 src/skins-qt/plugin.cc:51
 msgid "Winamp Classic Interface"
-msgstr "Winamp Classic Interface"
+msgstr "Vzhľad Winamp Classic"
 
-#: src/skins-qt/menus.cc:73
+#: src/skins-qt/menus.cc:75
 msgid "Open Folder ..."
-msgstr ""
+msgstr "Otvoriť priečinok ..."
 
 #: src/skins-qt/menus.cc:157
 msgid "Add Folder ..."
-msgstr ""
+msgstr "Pridať priečinok ..."
 
-#: src/skins-qt/skins_cfg.cc:197 src/skins/skins_cfg.cc:180
+#: src/skins-qt/skins_cfg.cc:196 src/skins/skins_cfg.cc:180
 msgid "Player:"
-msgstr ""
+msgstr "Prehrávač:"
 
-#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:182
+#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:182
 msgid "Select main player window font:"
 msgstr "Vyberte písmo pre hlavné okno prehrávača:"
 
-#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:183
+#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:183
 msgid "Playlist:"
-msgstr ""
+msgstr "Zoznam skladieb:"
 
-#: src/skins-qt/skins_cfg.cc:202 src/skins/skins_cfg.cc:185
+#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:185
 msgid "Select playlist font:"
-msgstr "Vyberte písmo pre zoznam skladieb:"
+msgstr "Zvoliť písmo pre zoznam skladieb:"
 
-#: src/skins-qt/skins_cfg.cc:206 src/skins/skins_cfg.cc:189
+#: src/skins-qt/skins_cfg.cc:205 src/skins/skins_cfg.cc:189
 msgid "<b>Skin</b>"
-msgstr ""
+msgstr "<b>Téma vzhľadu</b>"
 
-#: src/skins-qt/skins_cfg.cc:210 src/skins/skins_cfg.cc:191
+#: src/skins-qt/skins_cfg.cc:209 src/skins/skins_cfg.cc:191
 msgid "<b>Fonts</b>"
-msgstr ""
+msgstr "<b>Písma</b>"
 
-#: src/skins-qt/skins_cfg.cc:212 src/skins/skins_cfg.cc:193
+#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:193
 msgid "Use bitmap fonts (supports ASCII only)"
 msgstr "Použiť bitmapové písma (podporuje iba ASCII)"
 
-#: src/skins-qt/skins_cfg.cc:214 src/skins/skins_cfg.cc:195
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:195
 msgid "Scroll song title"
-msgstr ""
+msgstr "Rolovať názov skladby"
 
-#: src/skins-qt/skins_cfg.cc:216 src/skins/skins_cfg.cc:197
+#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
 msgid "Scroll song title in both directions"
 msgstr "Rolovať názov skladby obidvoma smermi"
 
-#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:202
+#: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:202
 msgid "Analyzer"
 msgstr "Analyzátor"
 
-#: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:203
+#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:203
 msgid "Scope"
 msgstr "Osciloskop"
 
-#: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:204
+#: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:204
 msgid "Voiceprint / VU meter"
-msgstr ""
+msgstr "Zvukový odtlačok / VU meter"
 
-#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:205
+#: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:205
 msgid "Off"
 msgstr "Žiadne"
 
-#: src/skins-qt/skins_cfg.cc:228 src/skins-qt/skins_cfg.cc:253
-#: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:209
+#: src/skins-qt/skins_cfg.cc:227 src/skins-qt/skins_cfg.cc:252
+#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:209
 #: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
 msgid "Normal"
 msgstr "Normálny"
 
-#: src/skins-qt/skins_cfg.cc:229 src/skins-qt/skins_cfg.cc:254
+#: src/skins-qt/skins_cfg.cc:228 src/skins-qt/skins_cfg.cc:253
 #: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
 msgid "Fire"
 msgstr "Oheň"
 
-#: src/skins-qt/skins_cfg.cc:230 src/skins/skins_cfg.cc:211
+#: src/skins-qt/skins_cfg.cc:229 src/skins/skins_cfg.cc:211
 msgid "Vertical lines"
-msgstr ""
+msgstr "Vertikálne čiary"
 
-#: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:215
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:215
 msgid "Lines"
 msgstr "Čiary"
 
-#: src/skins-qt/skins_cfg.cc:235 src/skins/skins_cfg.cc:216
+#: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:216
 msgid "Bars"
 msgstr "Obdĺžniky"
 
-#: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:220
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:220
 msgid "Slowest"
 msgstr "Najpomalšie"
 
-#: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:221
+#: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:221
 msgid "Slow"
 msgstr "Pomaly"
 
-#: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:222
-#: src/soxr/sox-resampler.cc:153
+#: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:222
+#: src/soxr/sox-resampler.cc:165
 msgid "Medium"
 msgstr "Stredne"
 
-#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:223
+#: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:223
 msgid "Fast"
 msgstr "Rýchlo"
 
-#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:224
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
 msgid "Fastest"
 msgstr "Najrýchlejšie"
 
-#: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:228
+#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:228
 msgid "Dots"
-msgstr ""
+msgstr "Body"
 
-#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:229
+#: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:229
 msgid "Line"
-msgstr ""
+msgstr "Čiara"
 
-#: src/skins-qt/skins_cfg.cc:249 src/skins/skins_cfg.cc:230
+#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:230
 msgid "Solid"
-msgstr ""
+msgstr "Plná vlnovka"
 
-#: src/skins-qt/skins_cfg.cc:255 src/skins/skins_cfg.cc:236
+#: src/skins-qt/skins_cfg.cc:254 src/skins/skins_cfg.cc:236
 msgid "Ice"
 msgstr "Ľad"
 
-#: src/skins-qt/skins_cfg.cc:260 src/skins/skins_cfg.cc:241
+#: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:241
 msgid "Smooth"
 msgstr "Plynulý"
 
-#: src/skins-qt/skins_cfg.cc:264 src/skins/skins_cfg.cc:245
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:245
 msgid "Coloring:"
-msgstr ""
+msgstr "Farebná schéma:"
 
-#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:248
+#: src/skins-qt/skins_cfg.cc:266 src/skins/skins_cfg.cc:248
 msgid "Style:"
-msgstr ""
+msgstr "Štýl:"
 
-#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:251
+#: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:251
 msgid "Falloff:"
-msgstr ""
+msgstr "Klesanie:"
 
-#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:254
+#: src/skins-qt/skins_cfg.cc:272 src/skins/skins_cfg.cc:254
 msgid "Peak falloff:"
-msgstr ""
+msgstr "Klesanie vrcholu:"
 
-#: src/skins-qt/skins_cfg.cc:279 src/skins/skins_cfg.cc:260
+#: src/skins-qt/skins_cfg.cc:278 src/skins/skins_cfg.cc:260
 msgid "Scope Style:"
-msgstr ""
+msgstr "Štýl vlnovky:"
 
-#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:263
+#: src/skins-qt/skins_cfg.cc:281 src/skins/skins_cfg.cc:263
 msgid "Voiceprint Coloring:"
-msgstr ""
+msgstr "Farebná schéma zvukového odtlačku:"
 
-#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:266
+#: src/skins-qt/skins_cfg.cc:284 src/skins/skins_cfg.cc:266
 msgid "VU Meter Style:"
-msgstr ""
+msgstr "Štýl VU metera:"
 
-#: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:272
+#: src/skins-qt/skins_cfg.cc:290 src/skins/skins_cfg.cc:272
 msgid "<b>Type</b>"
-msgstr ""
+msgstr "<b>Typ</b>"
 
-#: src/skins-qt/skins_cfg.cc:292 src/skins/skins_cfg.cc:273
+#: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:273
 msgid "Visualization type:"
-msgstr ""
+msgstr "Typ vizualizácie:"
 
-#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:276
+#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:276
 msgid "<b>Analyzer</b>"
-msgstr ""
+msgstr "<b>Analyzátor</b>"
 
-#: src/skins-qt/skins_cfg.cc:296 src/skins/skins_cfg.cc:277
+#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
 msgid "Show peaks"
-msgstr ""
+msgstr "Zobrazovať zvukové špičky"
 
-#: src/skins-qt/skins_cfg.cc:305 src/skins/skins_cfg.cc:286
+#: src/skins-qt/skins_cfg.cc:304 src/skins/skins_cfg.cc:286
 msgid "Visualization"
 msgstr "Vizualizácia"
 
@@ -3778,7 +3982,7 @@ msgstr "Vyhľadať skladby v aktívnom zozname skladieb"
 
 #: src/skins/search-select.cc:76
 msgid "Search"
-msgstr ""
+msgstr "Hľadať"
 
 #: src/skins/search-select.cc:81
 msgid ""
@@ -3794,19 +3998,19 @@ msgstr ""
 
 #: src/skins/search-select.cc:89
 msgid "Title:"
-msgstr ""
+msgstr "Názov: "
 
 #: src/skins/search-select.cc:95
 msgid "Album:"
-msgstr ""
+msgstr "Album: "
 
 #: src/skins/search-select.cc:101
 msgid "Artist:"
-msgstr ""
+msgstr "Umelec: "
 
 #: src/skins/search-select.cc:107
 msgid "File Name:"
-msgstr ""
+msgstr "Názov súboru:"
 
 #: src/skins/search-select.cc:115
 msgid "Clear previous selection before searching"
@@ -3820,11 +4024,11 @@ msgstr "Zhodujúce sa položky pridať do (odstrániť z) frontu"
 msgid "Create a new playlist with matching entries"
 msgstr "Zo zhodujúcich sa položiek vytvoriť nový zoznam skladieb"
 
-#: src/sndfile/plugin.cc:39
+#: src/sndfile/plugin.cc:37
 msgid "Sndfile Plugin"
 msgstr "Sndfile zásuvný modul"
 
-#: src/sndfile/plugin.cc:357
+#: src/sndfile/plugin.cc:361
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -3850,48 +4054,48 @@ msgstr ""
 "\n"
 "Pre Aduacious upravil Tony Vroon <chainsaw@gentoo.org>\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"Tento program je slobodný softvér: môžete ho šíriť a/alebo upravovať podľa "
+"podmienok GNU General Public License publikovanou Free Software Foundation; "
+"a to buď verzie 2 tejto licencie alebo (podľa vlastného zváženia) "
+"ktorejkoľvek novšej verzie.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"Tento program je šírený v nádeji, že bude užitočný, ale BEZ AKEJKOĽVEK "
+"ZÁRUKY; dokonca aj bez predpokladanej záruky PREDAJNOSTI alebo VHODNOSTI PRE "
+"KONKRÉTNY ÚČEL. Pre bližšie podrobnosti sa pozrite na GNU General Public "
+"License.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"Spolu s týmto programom by ste mali obdržať aj kópiu GNU General Public "
+"License. Ak tomu tak nieje napíšte do Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. "
 
 #: src/sndio/sndio.cc:43
 msgid "Sndio Output"
-msgstr ""
+msgstr "Sndio Výstup"
 
 #: src/sndio/sndio.cc:98
 msgid "Device (blank for default):"
-msgstr ""
+msgstr "Zariadenie (prázdne pre predvolené)"
 
 #: src/sndio/sndio.cc:100
 msgid "Save and restore volume:"
-msgstr ""
+msgstr "Uložiť a obnoviť hlasitosť:"
 
 #: src/sndio/sndio.cc:181
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
-msgstr ""
+msgstr "Sndio chyba: Nepodporovaný zvukový formát (%d)"
 
 #: src/sndio/sndio.cc:192
 msgid "Sndio error: sio_open() failed"
-msgstr ""
+msgstr "Sndio chyba: sio_open() zlyhal"
 
 #: src/sndio/sndio.cc:221
 msgid "Sndio error: sio_setpar() failed"
-msgstr ""
+msgstr "Sndio chyba: sio_setpar() zlyhal"
 
 #: src/sndio/sndio.cc:233
 msgid "Sndio error: sio_start() failed"
-msgstr ""
+msgstr "Sndio chyba: sio_start() zlyhal"
 
 #: src/songchange/song_change.cc:33
 msgid "Song Change"
@@ -3899,29 +4103,31 @@ msgstr "Zmena skladby"
 
 #: src/songchange/song_change.cc:268
 msgid "<b>Commands</b>"
-msgstr ""
+msgstr "<b>Príkazy</b>"
 
 #: src/songchange/song_change.cc:270
 msgid "Command to run when starting a new song:"
-msgstr ""
+msgstr "Príkaz sa vykoná na začiatku novej skladby:"
 
 #: src/songchange/song_change.cc:273
 msgid "Command to run at the end of a song:"
-msgstr ""
+msgstr "Príkaz sa vykoná po skončení skladby:"
 
 #: src/songchange/song_change.cc:276
 msgid "Command to run at the end of the playlist:"
-msgstr ""
+msgstr "Príkaz sa vykoná po skončení zoznamu skladieb:"
 
 #: src/songchange/song_change.cc:279
 msgid "Command to run when song title changes (for network streams):"
-msgstr ""
+msgstr "Príkaz sa vykoná, keď sa zmení názov skladby (pre sieťové streamy):"
 
 #: src/songchange/song_change.cc:282
 msgid ""
 "You can use the following format codes, which will be replaced before "
 "running the command (not all are useful for the end-of-playlist command):"
 msgstr ""
+"Môžete použiť nasledujúce formáty, ktoré budú použité pred spustením príkazu "
+"(nie všetky sú použiteľné pre príkaz end-of-playlist):"
 
 #: src/songchange/song_change.cc:285
 msgid ""
@@ -3937,12 +4143,25 @@ msgid ""
 "%t: Playlist position\n"
 "%T: Title (unformatted)"
 msgstr ""
+"%a: Umelec\n"
+"%b: Album\n"
+"%c: Počet kanálov\n"
+"%f: Názov súboru (úplná cesta)\n"
+"%F: Frekvencia (Hz)\n"
+"%l: Dĺžka (v millisekundách)\n"
+"%n alebo %s: Formátovaný názov (pozri nastavenia zoznamu skladieb)\n"
+"%p: Aktuálna prehrávaná skladba (1 alebo 0)\n"
+"%r: Datový tok (bity za sekundu)\n"
+"%t: Pozícia v zozname skladieb\n"
+"%T: Názov (neformátovaný)"
 
 #: src/songchange/song_change.cc:296
 msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.  "
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
+"Parametre poskytované príkazovému riadku by mali byť uzavreté v úvodzovkách. "
+"Parametre v neuzavretých úvodzovkách môžu viesť k neočakávaným výsledkom."
 
 #: src/song-info-qt/song-info.cc:33
 msgid "Song Info"
@@ -3950,9 +4169,9 @@ msgstr "Informácie o skladbe"
 
 #: src/soxr/sox-resampler.cc:44
 msgid "SoX Resampler"
-msgstr ""
+msgstr "SoX Resampler"
 
-#: src/soxr/sox-resampler.cc:145
+#: src/soxr/sox-resampler.cc:157
 msgid ""
 "SoX Resampler Plugin for Audacious\n"
 "Copyright 2013 Michał Lipski\n"
@@ -3960,26 +4179,59 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"SoX Resampler zásuvný modul pre Audacious\n"
+"Copyright 2013 Michał Lipski\n"
+"\n"
+"Na základe zásuvného modulu Sample Rate Converter:\n"
+"Copyright 2010-2012 John Lindgren"
 
-#: src/soxr/sox-resampler.cc:151
+#: src/soxr/sox-resampler.cc:163
 msgid "Quick"
-msgstr ""
+msgstr "Rýchlo"
 
-#: src/soxr/sox-resampler.cc:152
+#: src/soxr/sox-resampler.cc:164
 msgid "Low"
-msgstr ""
+msgstr "Nízka"
 
-#: src/soxr/sox-resampler.cc:154
+#: src/soxr/sox-resampler.cc:166
 msgid "High"
-msgstr ""
+msgstr "Vysoká"
 
-#: src/soxr/sox-resampler.cc:155
+#: src/soxr/sox-resampler.cc:167
 msgid "Very High"
+msgstr "Veľmi vysoká"
+
+#: src/soxr/sox-resampler.cc:168
+msgid "Ultra High"
 msgstr ""
 
-#: src/soxr/sox-resampler.cc:159
+#: src/soxr/sox-resampler.cc:172
+msgid "Minimum"
+msgstr ""
+
+#: src/soxr/sox-resampler.cc:173
+msgid "Intermediate"
+msgstr ""
+
+#: src/soxr/sox-resampler.cc:174
+msgid "Linear"
+msgstr ""
+
+#: src/soxr/sox-resampler.cc:178
 msgid "Quality:"
 msgstr "Kvalita:"
+
+#: src/soxr/sox-resampler.cc:181
+msgid "Phase:"
+msgstr ""
+
+#: src/soxr/sox-resampler.cc:185
+msgid "Allow aliasing"
+msgstr ""
+
+#: src/soxr/sox-resampler.cc:187
+msgid "Use steep filter"
+msgstr ""
 
 #: src/speedpitch/speed-pitch.cc:54
 msgid "Speed and Pitch"
@@ -3987,25 +4239,25 @@ msgstr "Rýchlosť a výška"
 
 #: src/speedpitch/speed-pitch.cc:247
 msgid "<b>Speed</b>"
-msgstr ""
+msgstr "<b>Rýchlosť</b>"
 
 #: src/speedpitch/speed-pitch.cc:248
 msgid "Decouple from pitch"
-msgstr ""
+msgstr "Oddeliť od výšok"
 
 #: src/speedpitch/speed-pitch.cc:250 src/speedpitch/speed-pitch.cc:258
 msgid "Multiplier:"
-msgstr ""
+msgstr "Násobič:"
 
 #: src/speedpitch/speed-pitch.cc:254
 msgid "<b>Pitch</b>"
-msgstr ""
+msgstr "<b>Výška</b>"
 
-#: src/statusicon-qt/statusicon.cc:43 src/statusicon/statusicon.cc:47
+#: src/statusicon-qt/statusicon.cc:45 src/statusicon/statusicon.cc:47
 msgid "Status Icon"
 msgstr "Stavová ikona"
 
-#: src/statusicon-qt/statusicon.cc:64
+#: src/statusicon-qt/statusicon.cc:66
 msgid ""
 "Status Icon Plugin (partial port for Qt interface)\n"
 "\n"
@@ -4016,14 +4268,46 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
+"Zásuvný modul stavovej ikony (čiastočný port Qt prostredia)\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"Copyright 2015 Eugene Paskevich <eugene@raptor.kiev.ua>\n"
+"\n"
+"Tento zásuvný modul poskytuje stavovú ikonu umiestenú v\n"
+"stavovej oblasti správcu okien."
 
-#: src/statusicon-qt/statusicon.cc:77 src/statusicon/statusicon.cc:391
+#: src/statusicon-qt/statusicon.cc:88 src/statusicon/statusicon.cc:381
+msgid "<b>Mouse Scroll Action</b>"
+msgstr "<b>Rolovanie kolieskom myši</b>"
+
+#: src/statusicon-qt/statusicon.cc:89 src/statusicon/statusicon.cc:382
+msgid "Change volume"
+msgstr "Zmeniť hlasitosť"
+
+#: src/statusicon-qt/statusicon.cc:92 src/statusicon/statusicon.cc:385
+msgid "Change playing song"
+msgstr "Zmeniť prehrávanú skladbu"
+
+#: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:388
+msgid "<b>Other Settings</b>"
+msgstr "<b>Ostatné nastavenia</b>"
+
+#: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:389
+msgid "Disable the popup window"
+msgstr "Zakázať vyskakovacie okno"
+
+#: src/statusicon-qt/statusicon.cc:98 src/statusicon/statusicon.cc:391
 msgid "Close to the system tray"
 msgstr "Zatvor do systémového zásobníka"
 
-#: src/statusicon-qt/statusicon.cc:91 src/statusicon/statusicon.cc:284
+#: src/statusicon-qt/statusicon.cc:100 src/statusicon/statusicon.cc:393
+msgid "Advance in playlist when scrolling upward"
+msgstr "Pokračovať v zozname skladieb ak sa posúva smerom hore"
+
+#: src/statusicon-qt/statusicon.cc:115 src/statusicon/statusicon.cc:284
 msgid "Se_ttings ..."
-msgstr ""
+msgstr "Nas_tavenia..."
 
 #: src/statusicon/statusicon.cc:374
 msgid ""
@@ -4042,30 +4326,6 @@ msgstr ""
 "\n"
 "Tento zásuvný modul poskytuje stavovú ikonu, umiestnenú v\n"
 "stavovej oblasti správcu okien."
-
-#: src/statusicon/statusicon.cc:381
-msgid "<b>Mouse Scroll Action</b>"
-msgstr "<b>Rolovanie kolieskom myši</b>"
-
-#: src/statusicon/statusicon.cc:382
-msgid "Change volume"
-msgstr "Zmeniť hlasitosť"
-
-#: src/statusicon/statusicon.cc:385
-msgid "Change playing song"
-msgstr "Zmeniť prehrávanú skladbu"
-
-#: src/statusicon/statusicon.cc:388
-msgid "<b>Other Settings</b>"
-msgstr "<b>Ostatné nastavenia</b>"
-
-#: src/statusicon/statusicon.cc:389
-msgid "Disable the popup window"
-msgstr "Zakázať vyskakovacie okno"
-
-#: src/statusicon/statusicon.cc:393
-msgid "Advance in playlist when scrolling upward"
-msgstr "Pokračovať v zozname skladieb ak sa posúva smerom hore"
 
 #: src/stereo_plugin/stereo.cc:19
 msgid "Extra Stereo"
@@ -4118,13 +4378,13 @@ msgstr "Pracujem..."
 
 #: src/ui-common/dialogs-qt.cc:43
 msgid "Information"
-msgstr ""
+msgstr "Informácie"
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
 msgstr "Odstránenie hlasu"
 
-#: src/vorbis/vorbis.cc:403
+#: src/vorbis/vorbis.cc:427
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4169,7 +4429,7 @@ msgstr "Ogg Vorbis dekodér"
 #: src/vtx/info.cc:24
 #, c-format
 msgid "Details about %s"
-msgstr ""
+msgstr "Podrobnosti o %s"
 
 #: src/vtx/info.cc:26
 msgid ""
@@ -4185,6 +4445,17 @@ msgid ""
 "Player Freq: %P\n"
 "Year: %y"
 msgstr ""
+"Názov: %t\n"
+"Autor: %a\n"
+"Od: %f\n"
+"Tracker: %T\n"
+"Komentár: %C\n"
+"Typ čipu: %c\n"
+"Stereo: %s\n"
+"Slučka: %l\n"
+"Frekvencia čipu: %F\n"
+"Frekvencia prehrávača: %P\n"
+"Rok: %y"
 
 #: src/vtx/vtx.cc:38
 msgid "VTX Decoder"
@@ -4202,13 +4473,15 @@ msgstr ""
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
-msgstr ""
+msgstr "Win32 waveOut"
 
 #: src/waveout/waveout.cc:69
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
 msgstr ""
+"Win32 waveOut zásuvný modul pre Audacious\n"
+"Copyright 2016 John Lindgren"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"
@@ -4238,12 +4511,26 @@ msgstr "2SF dekodér"
 
 #: src/xsf/plugin.cc:231
 msgid "<b>XSF Configuration</b>"
-msgstr ""
+msgstr "<b>Konfigurácia XSF</b>"
 
 #: src/xsf/plugin.cc:232
 msgid "Ignore length from file"
-msgstr ""
+msgstr "Ignorovať dĺžku zo súboru"
 
 #: src/xspf/xspf.cc:91
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Shareable Playlists (XSPF)"
+
+#~ msgid "GNOME Shortcuts"
+#~ msgstr "GNOME Klávesové skratky"
+
+#~ msgid ""
+#~ "GNOME Shortcut Plugin\n"
+#~ "Lets you control the player with GNOME's shortcuts.\n"
+#~ "\n"
+#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
+#~ msgstr ""
+#~ "Zásuvný modul pre klávesové skratky GNOME\n"
+#~ "Ovládajte prehrávač klávesovými skratkami GNOME.\n"
+#~ "\n"
+#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"

@@ -608,7 +608,7 @@ static bool scan_cd ()
         {
             pcddb_conn = cddb_new ();
             if (pcddb_conn == nullptr)
-                cdaudio_error (_("Failed to create the cddb connection."));
+                cdaudio_error (_("Failed to create the CDDB connection."));
             else
             {
                 AUDDBG ("getting CDDB info\n");
@@ -687,7 +687,7 @@ static bool scan_cd ()
                 {
                     if (matches == 0)
                     {
-                        AUDDBG ("no cddb info available for this disc\n");
+                        AUDDBG ("no CDDB info available for this disc\n");
 
                         cddb_disc_destroy (pcddb_disc);
                         pcddb_disc = nullptr;
@@ -700,7 +700,7 @@ static bool scan_cd ()
                         cddb_read (pcddb_conn, pcddb_disc);
                         if (cddb_errno (pcddb_conn) != CDDB_ERR_OK)
                         {
-                            cdaudio_error (_("Failed to read the cddb info: %s"),
+                            cdaudio_error (_("Failed to read the CDDB info: %s"),
                                            cddb_error_str (cddb_errno
                                                            (pcddb_conn)));
                             cddb_disc_destroy (pcddb_disc);

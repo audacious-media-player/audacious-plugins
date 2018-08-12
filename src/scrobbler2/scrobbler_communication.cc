@@ -291,6 +291,7 @@ static void set_timestamp_to_current(char **line) {
     AUDDBG("splitted line's timestamp is now: %s.\n", splitted_line[6]);
     g_free(*line);
     (*line) = g_strjoinv("\t", splitted_line);
+    g_strfreev(splitted_line);
 }
 
 static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, GSList **lines_to_retry_ptr, char *queuepath) {

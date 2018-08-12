@@ -93,7 +93,6 @@ src/flac/metadata.cc
 src/flac/plugin.cc
 src/gio/gio.cc
 src/glspectrum/gl-spectrum.cc
-src/gnomeshortcuts/gnomeshortcuts.cc
 src/gtkui/columns.cc
 src/gtkui/layout.cc
 src/gtkui/menus.cc

@@ -5,7 +5,7 @@ dnl ***
 dnl Initialize
 dnl ==========
 AC_PREREQ([2.59])
-AC_INIT([audacious-plugins], [3.10-beta1])
+AC_INIT([audacious-plugins], [3.10])
 AC_COPYRIGHT([Copyright (C) 2001-2018 Audacious developers and others])
 
 AC_DEFINE_UNQUOTED([PACKAGE], "$PACKAGE_NAME", [Name of package])
@@ -386,13 +386,6 @@ ENABLE_PLUGIN_WITH_DEP(mms,
     TRANSPORT,
     MMS,
     libmms >= 0.3)
-
-ENABLE_PLUGIN_WITH_DEP(gnomeshortcuts,
-    GNOME shortcuts,
-    auto,
-    GENERAL,
-    DBUS,
-    dbus-1 >= 0.60 dbus-glib-1 >= 0.60)
 
 ENABLE_PLUGIN_WITH_DEP(notify,
     libnotify OSD,
@@ -779,7 +772,6 @@ echo "  -------"
 echo "  Alarm (requires GTK+):                  $USE_GTK"
 echo "  Ampache browser (requires Qt):          $have_ampache"
 echo "  Delete Files:                           $USE_GTK_OR_QT"
-echo "  GNOME Shortcuts:                        $have_gnomeshortcuts"
 echo "  libnotify OSD:                          $have_notify"
 echo "  Linux Infrared Remote Control (LIRC):   $have_lirc"
 echo "  MPRIS 2 Server:                         $have_mpris2"
