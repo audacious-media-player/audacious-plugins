@@ -66,6 +66,7 @@ private:
 
     QModelIndex rowToIndex (int row);
     int indexToRow (const QModelIndex & index);
+    QModelIndex visibleIndexNear (int row);
 
     void getSelectedRanges (int rowsBefore, int rowsAfter,
      QItemSelection & selected, QItemSelection & deselected);
