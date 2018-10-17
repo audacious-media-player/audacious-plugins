@@ -427,6 +427,7 @@ static void update_volume_delta ()
     int volume_delta = aud_get_int (0, "volume_delta");
     GtkAdjustment * adjustment = gtk_scale_button_get_adjustment ((GtkScaleButton *) volume);
     gtk_adjustment_set_step_increment (adjustment, volume_delta);
+    gtk_adjustment_set_page_increment (adjustment, volume_delta);
 }
 
 static void pause_cb ()
