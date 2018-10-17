@@ -422,6 +422,13 @@ static void update_step_size ()
     gtk_range_set_increments ((GtkRange *) slider, step_size * 500, step_size * 500);
 }
 
+static void update_volume_delta ()
+{
+    int volume_delta = aud_get_int (0, "volume_delta");
+    GtkAdjustment * adjustment = gtk_scale_button_get_adjustment ((GtkScaleButton *) volume);
+    gtk_adjustment_set_step_increment (adjustment, volume_delta);
+}
+
 static void pause_cb ()
 {
     bool paused = aud_drct_get_paused ();
@@ -695,6 +702,7 @@ static void ui_hooks_associate ()
     hook_associate ("set shuffle", update_toggles, nullptr);
     hook_associate ("set repeat", update_toggles, nullptr);
     hook_associate ("set step_size", (HookFunction) update_step_size, nullptr);
+    hook_associate ("set volume_delta", (HookFunction) update_volume_delta, nullptr);
     hook_associate ("config save", (HookFunction) config_save, nullptr);
 }
 
@@ -715,6 +723,7 @@ static void ui_hooks_disassociate ()
     hook_dissociate ("set shuffle", update_toggles);
     hook_dissociate ("set repeat", update_toggles);
     hook_dissociate ("set step_size", (HookFunction) update_step_size);
+    hook_dissociate ("set volume_delta", (HookFunction) update_volume_delta);
     hook_dissociate ("config save", (HookFunction) config_save);
 }
 
