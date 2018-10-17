@@ -144,7 +144,7 @@ gboolean handle_keyevent (EVENT event)
         return true;
     }
 
-    /* decreace volume */
+    /* decrease volume */
     if (event == EVENT_VOL_DOWN)
     {
         if (mute)
@@ -154,7 +154,7 @@ gboolean handle_keyevent (EVENT event)
             mute = false;
         }
 
-        if ((current_volume -= plugin_cfg.vol_decrement) < 0)
+        if ((current_volume -= aud_get_int (0, "volume_delta")) < 0)
         {
             current_volume = 0;
         }
@@ -178,7 +178,7 @@ gboolean handle_keyevent (EVENT event)
             mute = false;
         }
 
-        if ((current_volume += plugin_cfg.vol_increment) > 100)
+        if ((current_volume += aud_get_int (0, "volume_delta")) > 100)
         {
             current_volume = 100;
         }
@@ -230,17 +230,14 @@ gboolean handle_keyevent (EVENT event)
     /* forward */
     if (event == EVENT_FORWARD)
     {
-        aud_drct_seek (aud_drct_get_time () + 5000);
+        aud_drct_seek (aud_drct_get_time () + aud_get_int (0, "step_size") * 1000);
         return true;
     }
 
     /* backward */
     if (event == EVENT_BACKWARD)
     {
-        int time = aud_drct_get_time ();
-        if (time > 5000) time -= 5000; /* Jump 5s back */
-            else time = 0;
-        aud_drct_seek (time);
+        aud_drct_seek (aud_drct_get_time () - aud_get_int (0, "step_size") * 1000);
         return true;
     }
 
@@ -341,10 +338,6 @@ void load_config ()
 {
     HotkeyConfiguration *hotkey;
     int i,max;
-
-    /* default volume level */
-    plugin_cfg.vol_increment = 4;
-    plugin_cfg.vol_decrement = 4;
 
     hotkey = &(plugin_cfg.first);
     hotkey->next = nullptr;

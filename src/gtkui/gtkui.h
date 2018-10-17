@@ -48,6 +48,5 @@ void popup_menu_rclick (unsigned button, uint32_t time);
 void popup_menu_tab (unsigned button, uint32_t time, Playlist playlist);
 void activate_search_tool ();
 void activate_playlist_manager ();
-void update_step_size ();
 
 #endif

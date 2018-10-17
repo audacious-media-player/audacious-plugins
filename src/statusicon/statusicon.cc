@@ -74,7 +74,6 @@ static void si_popup_hide (void * icon);
 
 const char * const StatusIcon::defaults[] = {
     "scroll_action", aud::numeric_string<SI_CFG_SCROLL_ACTION_VOLUME>::str,
-    "volume_delta", "5",
     "disable_popup", "FALSE",
     "close_to_tray", "FALSE",
     "reverse_scroll", "FALSE",
@@ -142,7 +141,7 @@ static gboolean si_cb_btscroll (GtkStatusIcon * icon, GdkEventScroll * event)
           switch (aud_get_int ("statusicon", "scroll_action"))
           {
             case SI_CFG_SCROLL_ACTION_VOLUME:
-                si_volume_change (aud_get_int ("statusicon", "volume_delta"));
+                si_volume_change (aud_get_int (0, "volume_delta"));
                 break;
             case SI_CFG_SCROLL_ACTION_SKIP:
                 if (aud_get_bool ("statusicon", "reverse_scroll"))
@@ -159,7 +158,7 @@ static gboolean si_cb_btscroll (GtkStatusIcon * icon, GdkEventScroll * event)
         switch (aud_get_int ("statusicon", "scroll_action"))
         {
           case SI_CFG_SCROLL_ACTION_VOLUME:
-              si_volume_change (-aud_get_int ("statusicon", "volume_delta"));
+              si_volume_change (-aud_get_int (0, "volume_delta"));
               break;
           case SI_CFG_SCROLL_ACTION_SKIP:
               if (aud_get_bool ("statusicon", "reverse_scroll"))

@@ -77,7 +77,6 @@ enum {
 
 const char * const StatusIcon::defaults[] = {
     "scroll_action", aud::numeric_string<SI_CFG_SCROLL_ACTION_VOLUME>::str,
-    "volume_delta", "5",
     "disable_popup", "FALSE",
     "close_to_tray", "FALSE",
     "reverse_scroll", "FALSE",
@@ -152,7 +151,7 @@ void SystemTrayIcon::scroll (int delta)
     {
     case SI_CFG_SCROLL_ACTION_VOLUME:
         aud_drct_set_volume_main (aud_drct_get_volume_main () +
-         aud_get_int ("statusicon", "volume_delta") * steps);
+         aud_get_int (0, "volume_delta") * steps);
         break;
 
     case SI_CFG_SCROLL_ACTION_SKIP:

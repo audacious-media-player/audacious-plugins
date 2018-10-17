@@ -479,16 +479,16 @@ bool MainWindow::scroll (GdkEventScroll * event)
     switch (event->direction)
     {
         case GDK_SCROLL_UP:
-            mainwin_set_volume_diff (5);
+            mainwin_set_volume_diff (aud_get_int (0, "volume_delta"));
             break;
         case GDK_SCROLL_DOWN:
-            mainwin_set_volume_diff (-5);
+            mainwin_set_volume_diff (-aud_get_int (0, "volume_delta"));
             break;
         case GDK_SCROLL_LEFT:
-            aud_drct_seek (aud_drct_get_time () - 5000);
+            aud_drct_seek (aud_drct_get_time () - aud_get_int (0, "step_size") * 1000);
             break;
         case GDK_SCROLL_RIGHT:
-            aud_drct_seek (aud_drct_get_time () + 5000);
+            aud_drct_seek (aud_drct_get_time () + aud_get_int (0, "step_size") * 1000);
             break;
         default:
             break;
@@ -533,12 +533,12 @@ bool Window::keypress (GdkEventKey * event)
         case GDK_KEY_Left:
         case GDK_KEY_KP_Left:
         case GDK_KEY_KP_7:
-            aud_drct_seek (aud_drct_get_time () - 5000);
+            aud_drct_seek (aud_drct_get_time () - aud_get_int (0, "step_size") * 1000);
             break;
         case GDK_KEY_Right:
         case GDK_KEY_KP_Right:
         case GDK_KEY_KP_9:
-            aud_drct_seek (aud_drct_get_time () + 5000);
+            aud_drct_seek (aud_drct_get_time () + aud_get_int (0, "step_size") * 1000);
             break;
         case GDK_KEY_KP_4:
             aud_drct_pl_prev ();

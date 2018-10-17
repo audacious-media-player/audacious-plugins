@@ -137,10 +137,10 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
         switch (event->key ())
         {
         case Qt::Key_Right:
-            aud_drct_seek (aud_drct_get_time () + aud_get_double ("qtui", "step_size") * 1000);
+            aud_drct_seek (aud_drct_get_time () + aud_get_int (0, "step_size") * 1000);
             return;
         case Qt::Key_Left:
-            aud_drct_seek (aud_drct_get_time () - aud_get_double ("qtui", "step_size") * 1000);
+            aud_drct_seek (aud_drct_get_time () - aud_get_int (0, "step_size") * 1000);
             return;
         case Qt::Key_Space:
             aud_drct_play_pause ();

@@ -38,9 +38,7 @@ const char * const qtui_defaults[] = {
     "autoscroll", "TRUE",
     "playlist_columns", DEFAULT_COLUMNS,
     "playlist_headers", "TRUE",
-//    "record", "FALSE",
     "show_remaining_time", "FALSE",
-    "step_size", "5",
 
     nullptr
 };
@@ -64,9 +62,6 @@ static const PreferencesWidget qtui_widgets[] = {
     WidgetCheck (N_("Show column headers"),
         WidgetBool ("qtui", "playlist_headers", qtui_update_playlist_settings)),
     WidgetLabel (N_("<b>Miscellaneous</b>")),
-    WidgetSpin (N_("Arrow keys seek by:"),
-        WidgetFloat ("qtui", "step_size"),
-        {0.1, 60, 0.1, N_("seconds")}),
     WidgetCheck (N_("Scroll on song change"),
         WidgetBool ("qtui", "autoscroll"))
 };
