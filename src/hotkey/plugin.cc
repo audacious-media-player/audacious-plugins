@@ -230,15 +230,17 @@ gboolean handle_keyevent (EVENT event)
     /* forward */
     if (event == EVENT_FORWARD)
     {
-        aud_drct_seek (aud_drct_get_time () + 5000);
+        double step_size = aud_get_double ("gtkui", "step_size") * 1000;
+        aud_drct_seek (aud_drct_get_time () + step_size);
         return true;
     }
 
     /* backward */
     if (event == EVENT_BACKWARD)
     {
+        double step_size = aud_get_double ("gtkui", "step_size") * 1000;
         int time = aud_drct_get_time ();
-        if (time > 5000) time -= 5000; /* Jump 5s back */
+        if (time > step_size) time -= step_size; /* Jump step back */
             else time = 0;
         aud_drct_seek (time);
         return true;
