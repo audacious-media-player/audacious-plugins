@@ -4,14 +4,11 @@
  */
 
 #include <sys/types.h>
-#include <sys/wait.h>
-
-#include <signal.h>
-#include <unistd.h>
+#include "songchange_crossplatform.h"
 
 #include <assert.h>
-#include <string.h>
 
+#include <string.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -82,26 +79,6 @@ static StringBuf escape_shell_chars (const char * string)
     assert (out == escaped + escaped.len ());
 
     return escaped;
-}
-
-static void bury_child (int signal)
-{
-    waitpid (-1, nullptr, WNOHANG);
-}
-
-static void execute_command (const char * cmd)
-{
-    const char * argv[4] = {"/bin/sh", "-c", nullptr, nullptr};
-    argv[2] = cmd;
-    signal (SIGCHLD, bury_child);
-
-    if (fork () == 0)
-    {
-        /* We don't want this process to hog the audio device etc */
-        for (int i = 3; i < 255; i ++)
-            close (i);
-        execv (argv[0], (char * *) argv);
-    }
 }
 
 /* Format codes:
@@ -252,7 +229,7 @@ void SongChange::cleanup ()
     cmd_line_end = String ();
     cmd_line_ttc = String ();
 
-    signal (SIGCHLD, SIG_DFL);
+    signal_child();
 }
 
 typedef struct {
