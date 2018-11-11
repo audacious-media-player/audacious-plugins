@@ -101,6 +101,10 @@ private:
         else
             setPixmap (origPixmap.scaled (size ().width () - MARGIN, size ().height () - MARGIN,
                         Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+#ifdef Q_OS_MAC
+	repaint();
+#endif
     }
 };
 
