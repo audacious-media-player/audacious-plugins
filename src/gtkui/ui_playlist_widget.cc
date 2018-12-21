@@ -89,6 +89,24 @@ static const bool pw_col_label[PW_COLS] = {
     true    // comment
 };
 
+static const Playlist::SortType pw_col_sort_types[PW_COLS] = {
+    Playlist::n_sort_types,    // entry number
+    Playlist::Title,           // title
+    Playlist::Artist,          // artist
+    Playlist::Date,            // year
+    Playlist::Album,           // album
+    Playlist::AlbumArtist,     // album artist
+    Playlist::Track,           // track
+    Playlist::Genre,           // genre
+    Playlist::n_sort_types,    // queue position
+    Playlist::Length,          // length
+    Playlist::Path,            // path
+    Playlist::Filename,        // file name
+    Playlist::FormattedTitle,  // custom title
+    Playlist::n_sort_types,    // bitrate
+    Playlist::Comment          // comment
+};
+
 struct PlaylistWidgetData
 {
     Playlist list;
@@ -351,6 +369,14 @@ static void destroy_cb (PlaylistWidgetData * data)
     delete data;
 }
 
+static void column_clicked_cb (GtkTreeViewColumn * column, PlaylistWidgetData * data)
+{
+    auto sort_type_ptr = g_object_get_data ((GObject *) column, "playlist-sort-type");
+    auto sort_type = aud::from_ptr<Playlist::SortType> (sort_type_ptr);
+
+    data->list.sort_entries (sort_type);
+}
+
 GtkWidget * ui_playlist_widget_new (Playlist playlist)
 {
     PlaylistWidgetData * data = new PlaylistWidgetData;
@@ -375,6 +401,16 @@ GtkWidget * ui_playlist_widget_new (Playlist playlist)
         int n = pw_cols[i];
         audgui_list_add_column (list, pw_col_label[n] ? _(pw_col_names[n]) :
          nullptr, i, pw_col_types[n], pw_col_min_widths[n]);
+
+        if (pw_col_sort_types[n] < Playlist::n_sort_types)
+        {
+            auto column = gtk_tree_view_get_column ((GtkTreeView *) list, i);
+            auto sort_type_ptr = aud::to_ptr (pw_col_sort_types[n]);
+
+            gtk_tree_view_column_set_clickable (column, true);
+            g_object_set_data ((GObject *) column, "playlist-sort-type", sort_type_ptr);
+            g_signal_connect (column, "clicked", (GCallback) column_clicked_cb, data);
+        }
     }
 
     return list;
