@@ -61,6 +61,7 @@ static const char * const gtkui_defaults[] = {
     "player_y", "-1000",
     "player_width", "768",
     "player_height", "480",
+    "player_maximized", "FALSE",
 
     nullptr
 };
@@ -135,6 +136,9 @@ static QueuedFunc delayed_title_change;
 
 static void save_window_size ()
 {
+    if (aud_get_bool ("gtkui", "player_maximized"))
+        return;
+
     int x, y, w, h;
     gtk_window_get_position ((GtkWindow *) window, & x, & y);
     gtk_window_get_size ((GtkWindow *) window, & w, & h);
@@ -156,6 +160,18 @@ static void restore_window_size ()
 
     if (x > -1000 && y > -1000)
         gtk_window_move ((GtkWindow *) window, x, y);
+
+    if (aud_get_bool ("gtkui", "player_maximized"))
+        gtk_window_maximize ((GtkWindow *) window);
+}
+
+static gboolean window_state_cb (GtkWidget *, GdkEventWindowState * event)
+{
+    if (event->changed_mask & GDK_WINDOW_STATE_MAXIMIZED)
+        aud_set_bool ("gtkui", "player_maximized",
+         !! (event->new_window_state & GDK_WINDOW_STATE_MAXIMIZED));
+
+    return false;
 }
 
 static gboolean window_delete ()
@@ -914,6 +930,7 @@ bool GtkUI::init ()
 
     g_signal_connect (window, "map-event", (GCallback) pl_notebook_grab_focus, nullptr);
     g_signal_connect (window, "delete-event", (GCallback) window_delete, nullptr);
+    g_signal_connect (window, "window-state-event", (GCallback) window_state_cb, nullptr);
     g_signal_connect (window, "key-press-event", (GCallback) window_keypress_cb, nullptr);
     g_signal_connect (pl_notebook, "key-press-event", (GCallback) playlist_keypress_cb, nullptr);
 
