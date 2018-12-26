@@ -179,18 +179,18 @@ void PlaylistWidget::mouseMoveEvent (QMouseEvent * event)
     int row = indexToRow (indexAt (event->pos ()));
 
     if (row < 0)
-    {
         hidePopup ();
-        return;
-    }
-
-    if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && m_popup_pos != row)
+    else if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && m_popup_pos != row)
         triggerPopup (row);
+
+    QTreeView::mouseMoveEvent (event);
 }
 
-void PlaylistWidget::leaveEvent (QEvent *)
+void PlaylistWidget::leaveEvent (QEvent * event)
 {
     hidePopup ();
+
+    QTreeView::leaveEvent (event);
 }
 
 /* Since Qt doesn't support both DragDrop and InternalMove at once,
