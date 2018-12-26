@@ -5,7 +5,7 @@
 # Translators:
 # aamet <aaydin159@gmail.com>, 2012
 # aamet <aaydin159@gmail.com>, 2012
-# Dragon xarax <dodokur@gmail.com>, 2016
+# Dragon Blogger <dodokur@gmail.com>, 2016
 # elmasevmem <drmxmyt@gmail.com>, 2013
 # elmasevmem <drmxmyt@gmail.com>, 2013
 # Emre FIRAT <emrefirat93@gmail.com>, 2013
@@ -24,13 +24,14 @@
 # tarkan255 <t.oguzman@hotmail.com>, 2012
 # Tolga <tolsen92@outlook.com>, 2014
 # Volkan Gezer <volkangezer@gmail.com>, 2013,2015
+# yaşar çiv <yasarciv67@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-07-29 21:54+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2018-08-04 20:51+0200\n"
+"PO-Revision-Date: 2018-12-26 06:11+0000\n"
+"Last-Translator: yaşar çiv <yasarciv67@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/audacious/audacious/"
 "language/tr/)\n"
 "Language: tr\n"
@@ -54,19 +55,19 @@ msgstr "sıralı"
 
 #: src/adplug/adplug-xmms.cc:297 src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
-msgstr ""
+msgstr "<b>Çıktı</b>"
 
 #: src/adplug/adplug-xmms.cc:298
 msgid "16-bit output (if unchecked, output is 8-bit)"
-msgstr ""
+msgstr "16-bit çıktı (işaretlenmemişse, çıktı 8-bittir)"
 
 #: src/adplug/adplug-xmms.cc:300
 msgid "Duplicate mono output to two channels"
-msgstr ""
+msgstr "İki kanala mono kopya çoğalt"
 
 #: src/adplug/adplug-xmms.cc:302
 msgid "Sample rate"
-msgstr ""
+msgstr "Örnekleme oranı"
 
 #: src/adplug/adplug-xmms.cc:303 src/amidiplug/i_configure.cc:152
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
@@ -88,7 +89,7 @@ msgstr "<b>Karışık</b>"
 
 #: src/adplug/adplug-xmms.cc:305
 msgid "Repeat song in endless loop"
-msgstr ""
+msgstr "Sonsuz döngüde şarkıyı tekrarla"
 
 #: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
 msgid "Alarm"
@@ -324,7 +325,7 @@ msgstr "izin ver"
 
 #: src/alarm/interface.cc:361
 msgid "Playlist (optional)"
-msgstr "Çalma Listesi(isteğe bağlı)"
+msgstr "Çalma Listesi (isteğe bağlı)"
 
 #: src/alarm/interface.cc:365
 msgid "Select a playlist"
@@ -348,7 +349,7 @@ msgstr "Albüm kapağı"
 
 #: src/alsa/alsa.h:64
 msgid "ALSA Output"
-msgstr "ALSA Çıktısı"
+msgstr "ALSA Çıkışı"
 
 #: src/alsa/config.cc:28
 msgid ""
@@ -444,7 +445,7 @@ msgstr "Varsayılan polifoniyi geçersiz kıl:"
 
 #: src/amidiplug/i_configure.cc:110
 msgid "Override default reverb:"
-msgstr "Varsayılan reverb'ı geçersiz kıl:"
+msgstr "Varsayılan yankıyı geçersiz kıl:"
 
 #: src/amidiplug/i_configure.cc:112 src/amidiplug/i_configure.cc:120
 msgid "On"
@@ -452,7 +453,7 @@ msgstr "Açık"
 
 #: src/amidiplug/i_configure.cc:118
 msgid "Override default chorus:"
-msgstr "Varsayılan chorus'u geçersiz kıl:"
+msgstr "Varsayılan koroyu geçersiz kıl:"
 
 #: src/amidiplug/i_configure.cc:128 src/console/plugin.cc:29
 msgid "<b>Playback</b>"
@@ -464,11 +465,11 @@ msgstr "Aktar:"
 
 #: src/amidiplug/i_configure.cc:131 src/speedpitch/speed-pitch.cc:257
 msgid "semitones"
-msgstr "semitonlar"
+msgstr "yarım tonlar"
 
 #: src/amidiplug/i_configure.cc:132
 msgid "Drum shift:"
-msgstr ""
+msgstr "Davul tonlaması:"
 
 #: src/amidiplug/i_configure.cc:134
 msgid "note numbers"
@@ -476,19 +477,19 @@ msgstr "nota sayıları"
 
 #: src/amidiplug/i_configure.cc:135
 msgid "Skip leading silence"
-msgstr ""
+msgstr "Baştaki sessizliği atla"
 
 #: src/amidiplug/i_configure.cc:137
 msgid "Skip trailing silence"
-msgstr ""
+msgstr "Sondaki sessizliği atla"
 
 #: src/amidiplug/i_configure.cc:141
 msgid "<b>SoundFont</b>"
-msgstr ""
+msgstr "<b>SoundFont</b>"
 
 #: src/amidiplug/i_configure.cc:145
 msgid "<b>Synthesizer</b>"
-msgstr ""
+msgstr "<b>Sentezleyici</b>"
 
 #: src/amidiplug/i_configure.cc:150 src/console/plugin.cc:45
 #: src/filewriter/filewriter.cc:473 src/sid/xs_config.cc:65
@@ -533,7 +534,7 @@ msgstr "Uzunluk (ms):"
 
 #: src/amidiplug/i_fileinfo.cc:207
 msgid "No. of Tracks:"
-msgstr ""
+msgstr "Parça Sayısı:"
 
 #: src/amidiplug/i_fileinfo.cc:213
 msgid "variable"
@@ -573,7 +574,7 @@ msgstr "  (geçersiz UTF-8)"
 
 #: src/ampache/ampache.cc:33
 msgid "Ampache Browser"
-msgstr ""
+msgstr "Ampache Tarayıcı"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -583,6 +584,11 @@ msgid ""
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 "License: GNU GPLv3"
 msgstr ""
+"Audacious için Ampache Tarayıcı\n"
+"http://ampache-browser.org/\n"
+"\n"
+"Róbert Čerňanský ve John Lindgren'in Telif Hakları (C)\n"
+"Lisans: GNU GPLv3"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -594,10 +600,17 @@ msgid ""
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
 msgstr ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"Giacomo Lozito tarafından yazıldı <james@develia.org>\n"
+"\n"
+"Evan Martin's Ghosd kütüphanesinde kısmen yer aldı:\n"
+"http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.h:37
 msgid "AOSD (On-Screen Display)"
-msgstr ""
+msgstr "AOSD (On-Screen Display)"
 
 #: src/aosd/aosd_style.cc:54
 msgid "Rectangle"
@@ -621,7 +634,7 @@ msgstr "Çalmayı Başlat"
 
 #: src/aosd/aosd_trigger.cc:50
 msgid "Triggers OSD when a playlist entry is played."
-msgstr "Parça listesindeki girdi oynatıldığında OSD'yi başlatır."
+msgstr "Çalma listesindeki girdi oynatıldığında OSD'yi başlatır."
 
 #: src/aosd/aosd_trigger.cc:55
 msgid "Title Change"
@@ -629,7 +642,7 @@ msgstr "Başlık Değiştirme"
 
 #: src/aosd/aosd_trigger.cc:56
 msgid "Triggers OSD when the song title changes (for internet streams)."
-msgstr ""
+msgstr "Şarkı adı değiştiğinde OSD'yi tetikler (internet akışları için)."
 
 #: src/aosd/aosd_trigger.cc:61
 msgid "Pause On"
@@ -720,7 +733,7 @@ msgstr "Renkler"
 #: src/aosd/aosd_ui.cc:512
 #, c-format
 msgid "Color %i:"
-msgstr "Renkler %i:"
+msgstr "Renk %i:"
 
 #: src/aosd/aosd_ui.cc:599
 msgid "Enable trigger"
@@ -732,7 +745,7 @@ msgstr "Olay"
 
 #: src/aosd/aosd_ui.cc:653
 msgid "Composite manager detected"
-msgstr "Composite yöneticisi tespit edildi"
+msgstr "Bileşiklik yöneticisi tespit edildi"
 
 #: src/aosd/aosd_ui.cc:660
 msgid ""
@@ -740,13 +753,13 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Composite yöneticisi tespit edilemedi;\n"
-"Çalışan bir Composite yöneticisinin olduğundan emin değilseniz lütfen "
-"OSD'nin düzgün çalışması için bir Composite yöneticisi çalıştırınız"
+"Bileşiklik yöneticisi tespit edilemedi;\n"
+"Çalışan bir bileşiklik yöneticisinin olduğundan emin değilseniz lütfen "
+"OSD'nin düzgün çalışması için bir bileşiklik yöneticisi çalıştırınız"
 
 #: src/aosd/aosd_ui.cc:668
 msgid "Composite manager not required for fake transparency"
-msgstr "Sahte şeffaflık için composite yöneticisi gerekli değil"
+msgstr "Sahte şeffaflık için bileşiklik yöneticisi gerekli değil"
 
 #: src/aosd/aosd_ui.cc:705
 msgid "Transparency"
@@ -758,11 +771,11 @@ msgstr "Sahte şeffaflık"
 
 #: src/aosd/aosd_ui.cc:713
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "Gerçek Şeffaflık (X Composite Eklentisi gerekli)"
+msgstr "Gerçek Şeffaflık (X Bileşiklik Eklentisi gerekli)"
 
 #: src/aosd/aosd_ui.cc:754
 msgid "Composite extension not loaded"
-msgstr "Composite eklentisi yüklü değil"
+msgstr "Bileşiklik eklentisi yüklü değil"
 
 #: src/aosd/aosd_ui.cc:771
 #, c-format
@@ -799,15 +812,15 @@ msgstr "Test"
 
 #: src/asx3/asx3.cc:35
 msgid "ASXv3 Playlists"
-msgstr "ASXv3 Parça listesi"
+msgstr "ASXv3 Çalma listesi"
 
 #: src/asx/asx.cc:33
 msgid "ASXv1/ASXv2 Playlists"
-msgstr ""
+msgstr "ASXv1/ASXv2 Çalma Listesi"
 
 #: src/audpl/audpl.cc:33
 msgid "Audacious Playlists (audpl)"
-msgstr ""
+msgstr "Audacious Çalma Listeleri (audpl)"
 
 #: src/blur_scope/blur_scope.cc:39
 msgid "<b>Color</b>"
@@ -815,11 +828,11 @@ msgstr "<b>Renk</b>"
 
 #: src/blur_scope/blur_scope.cc:55
 msgid "Blur Scope"
-msgstr ""
+msgstr "Bulanıklık Kapsamı"
 
 #: src/bs2b/plugin.cc:38
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr ""
+msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
 #: src/bs2b/plugin.cc:129
 msgid "Presets:"
@@ -827,23 +840,23 @@ msgstr "Önayarlar:"
 
 #: src/bs2b/plugin.cc:136
 msgid "Feed level:"
-msgstr ""
+msgstr "Besleme seviyesi:"
 
 #: src/bs2b/plugin.cc:138
 msgid "x1/10 dB"
-msgstr ""
+msgstr "x1/10 dB"
 
 #: src/bs2b/plugin.cc:139
 msgid "Cut frequency:"
-msgstr ""
+msgstr "Kesim frekansı:"
 
 #: src/cairo-spectrum/cairo-spectrum.cc:41
 msgid "Spectrum Analyzer"
-msgstr ""
+msgstr "İzgesel Çözümleyici"
 
 #: src/cdaudio/cdaudio-ng.cc:71
 msgid "Audio CD Plugin"
-msgstr "Ses CD'si eklentisi"
+msgstr "Ses CD'si Eklentisi"
 
 #: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
@@ -856,18 +869,27 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2007 project."
 msgstr ""
+"Telif Hakkı (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> ve diğerleri.\n"
+"\n"
+"Libcdio geliştiricilerine çok teşekkürler <http://www.gnu.org/software/"
+"libcdio/>\n"
+"ve libcddb geliştiricilerine <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Ayrıca bana mentörlük ve rehberlik ettiği için Tony Vroon'a teşekkür "
+"ederim.\n"
+"Bu bir Google Summer of Code 2007 projesiydi."
 
 #: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
-msgstr ""
+msgstr "<b>Aygıt</b>"
 
 #: src/cdaudio/cdaudio-ng.cc:135
 msgid "Read speed:"
-msgstr ""
+msgstr "Okuma hızı:"
 
 #: src/cdaudio/cdaudio-ng.cc:138
 msgid "Override device:"
-msgstr ""
+msgstr "Aygıtı geçersiz kıl:"
 
 #: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
@@ -875,11 +897,11 @@ msgstr "<b>Parça Bilgisi</b>"
 
 #: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
-msgstr ""
+msgstr "CD-Text kullan"
 
 #: src/cdaudio/cdaudio-ng.cc:143
 msgid "Use CDDB"
-msgstr ""
+msgstr "CDDB kullan"
 
 #: src/cdaudio/cdaudio-ng.cc:145
 msgid "Use HTTP instead of CDDBP"
@@ -899,26 +921,26 @@ msgstr "Bağlantı Noktası:"
 
 #: src/cdaudio/cdaudio-ng.cc:220
 msgid "Failed to initialize cdio subsystem."
-msgstr ""
+msgstr "Cdio alt sistemi başlatılamadı."
 
 #: src/cdaudio/cdaudio-ng.cc:250
 #, c-format
 msgid "Invalid URI %s."
-msgstr ""
+msgstr "Geçersiz URL %s."
 
 #: src/cdaudio/cdaudio-ng.cc:252
 #, c-format
 msgid "Track %d not found."
-msgstr ""
+msgstr "%d parçası bulunamadı."
 
 #: src/cdaudio/cdaudio-ng.cc:254
 #, c-format
 msgid "Track %d is a data track."
-msgstr ""
+msgstr "%d bir veri parçasıdır."
 
 #: src/cdaudio/cdaudio-ng.cc:329
 msgid "Error reading audio CD."
-msgstr ""
+msgstr "Ses CD'si okunurken hata oluştu."
 
 #: src/cdaudio/cdaudio-ng.cc:398
 msgid "Audio CD"
@@ -927,11 +949,11 @@ msgstr "Ses CD'si"
 #: src/cdaudio/cdaudio-ng.cc:434 src/cdaudio/cdaudio-ng.cc:443
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr ""
+msgstr "%s CD aygıtı açılamadı."
 
 #: src/cdaudio/cdaudio-ng.cc:446
 msgid "No audio capable CD drive found."
-msgstr ""
+msgstr "Ses özellikli CD sürücüsü bulunamadı."
 
 #: src/cdaudio/cdaudio-ng.cc:469
 msgid "Drive is empty."
@@ -943,68 +965,70 @@ msgstr "Desteklenmeyen disk türü."
 
 #: src/cdaudio/cdaudio-ng.cc:495
 msgid "Failed to finish initializing opened CD drive."
-msgstr ""
+msgstr "Açılan CD sürücüsü başlatılamadı."
 
 #: src/cdaudio/cdaudio-ng.cc:508
 msgid "Failed to retrieve first/last track number."
-msgstr ""
+msgstr "İlk/son parça numarası alınamadı."
 
 #: src/cdaudio/cdaudio-ng.cc:529
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr ""
+msgstr "%d parçası için başlangıç/bitiş LSN okunamıyor."
 
 #: src/cdaudio/cdaudio-ng.cc:611
 msgid "Failed to create the CDDB connection."
-msgstr ""
+msgstr "CDDB bağlantısı oluşturulamadı."
 
 #: src/cdaudio/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
-msgstr ""
+msgstr "CDDB sunucusu sorgulanamadı"
 
 #: src/cdaudio/cdaudio-ng.cc:679
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr ""
+msgstr "CDDB sunucusu sorgulanamadı: %s"
 
 #: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
 msgid "Failed to read the CDDB info: %s"
-msgstr ""
+msgstr "CDDB bilgisi okunamadı: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
-msgstr ""
+msgstr "Ses CD'si Menü Öğeleri"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Pla_y CD"
-msgstr ""
+msgstr "CD'yi o_ynat"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "_Add CD"
-msgstr ""
+msgstr "CD _Ekle"
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
-msgstr ""
+msgstr "<b>Sıkıştırma</b>"
 
 #: src/compressor/compressor.cc:46
 msgid "Center volume:"
-msgstr ""
+msgstr "Merkez ses seviyesi:"
 
 #: src/compressor/compressor.cc:49
 msgid "Dynamic range:"
-msgstr "Dinamik alan:"
+msgstr "Dinamik aralık:"
 
 #: src/compressor/compressor.cc:57
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Audacious için Dinamik Aralık Sıkıştırma Eklentisi\n"
+"Telif Hakkı 2010-2014 John Lindgren"
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
-msgstr ""
+msgstr "Dinamik Aralık Sıkıştırıcısı"
 
 #: src/console/plugin.cc:15
 msgid ""
@@ -1015,6 +1039,12 @@ msgid ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 msgstr ""
+"Game_Music_Emu 0.5.2 tabanlı konsol müzik kod çözücü motoru\n"
+"Desteklenen biçimler: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Audacious eklentisi:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
 
 #: src/console/plugin.cc:30
 msgid "Bass:"
@@ -1034,7 +1064,7 @@ msgstr "Varsayılan şarkı uzunluğu:"
 
 #: src/console/plugin.cc:42 src/modplug/plugin_main.cc:62
 msgid "<b>Resampling</b>"
-msgstr ""
+msgstr "<b>Yeniden örnekleme</b>"
 
 #: src/console/plugin.cc:43
 msgid "Enable audio resampling"
@@ -1042,7 +1072,7 @@ msgstr "Ses örneklemesini etkinleştir"
 
 #: src/console/plugin.cc:49
 msgid "<b>SPC</b>"
-msgstr ""
+msgstr "<b>SPC</b>"
 
 #: src/console/plugin.cc:50
 msgid "Ignore length from SPC tags"
@@ -1058,7 +1088,7 @@ msgstr "Oyun Konsolu Müzik Çözümleyicisi"
 
 #: src/coreaudio/coreaudio.cc:53
 msgid "CoreAudio output"
-msgstr ""
+msgstr "Çekirdek Ses çıkışı"
 
 #: src/coreaudio/coreaudio.cc:156
 msgid ""
@@ -1071,66 +1101,78 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Audacious için Çekirdek Ses çıkışı eklentisi\n"
+"Telif Hakkı 2014 William Pitcock\n"
+"Telif Hakkı 2017,18 René J.V. Bertin\n"
+" (asıl kod ve Apple örneklerinden\n"
+" uyarlanan kod , (C) Apple 2013)\n"
+"\n"
+"Audacious için SDL Çıkış Eklentisine Dayalı\n"
+"Telif Hakkı 2010 John Lindgren"
 
 #: src/coreaudio/coreaudio.cc:172
 msgid "Use exclusive mode"
-msgstr ""
+msgstr "Özel mod kullan"
 
 #: src/coreaudio/coreaudio.cc:174
 msgid "Use bit perfect audio (adapt device sampling rate)"
-msgstr ""
+msgstr "Bit mükemmel ses kullan (cihaz örnekleme oranını uyarla)"
 
 #: src/crossfade/crossfade.cc:43
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
+"Audacious için Çapraz Geçiş Eklentisi\n"
+"Telif Hakkı 2010-2014 John Lindgren"
 
 #: src/crossfade/crossfade.cc:47
 msgid "<b>Crossfade</b>"
-msgstr ""
+msgstr "<b>Çapraz Geçiş</b>"
 
 #: src/crossfade/crossfade.cc:48
 msgid "On automatic song change"
-msgstr ""
+msgstr "Otomatik şarkı değişikliğinde"
 
 #: src/crossfade/crossfade.cc:50 src/crossfade/crossfade.cc:56
 msgid "Overlap:"
-msgstr ""
+msgstr "Üst üste gelme:"
 
 #: src/crossfade/crossfade.cc:54
 msgid "On seek or manual song change"
-msgstr ""
+msgstr "Aramada veya manuel şarkıda değişiklik"
 
 #: src/crossfade/crossfade.cc:60
 msgid "<b>Tip</b>"
-msgstr ""
+msgstr "<b>Uç</b>"
 
 #: src/crossfade/crossfade.cc:61
 msgid ""
 "For better crossfading, enable\n"
 "the Silence Removal effect."
 msgstr ""
+"Daha iyi çapraz geçiş için\n"
+"Sessizlik Kaldırma efektini etkinleştirin."
 
 #: src/crossfade/crossfade.cc:71
 msgid "Crossfade"
-msgstr ""
+msgstr "Çapraz Geçiş"
 
 #: src/crystalizer/crystalizer.cc:31
 msgid "<b>Crystalizer</b>"
-msgstr ""
+msgstr "<b>Billurlaştırıcı</b>"
 
 #: src/crystalizer/crystalizer.cc:32 src/stereo_plugin/stereo.cc:45
 msgid "Intensity:"
-msgstr ""
+msgstr "Yoğunluk:"
 
 #: src/crystalizer/crystalizer.cc:43
 msgid "Crystalizer"
-msgstr ""
+msgstr "Billurlaştırıcı"
 
 #: src/cue/cue.cc:42
 msgid "Cue Sheet Plugin"
-msgstr ""
+msgstr "İşaret Sayfası Eklentisi"
 
 #: src/delete-files/delete-files.cc:53 src/delete-files/delete-files.cc:215
 #: src/delete-files/delete-files.cc:230
@@ -1139,31 +1181,31 @@ msgstr "Dosyaları Sil"
 
 #: src/delete-files/delete-files.cc:120
 msgid "No files are selected."
-msgstr ""
+msgstr "Hiçbir dosya seçilmedi."
 
 #: src/delete-files/delete-files.cc:125
 #, c-format
 msgid "Do you want to move %s to the trash?"
-msgstr ""
+msgstr "%s'i çöpe taşımak istiyor musunuz?"
 
 #: src/delete-files/delete-files.cc:126
 #, c-format
 msgid "Do you want to permanently delete %s?"
-msgstr ""
+msgstr "%s'i kalıcı olarak silmek istiyor musunuz?"
 
 #: src/delete-files/delete-files.cc:133
 #, c-format
 msgid "Do you want to move %d files to the trash?"
-msgstr ""
+msgstr "%d dosyalarını çöp kutusuna taşımak istiyor musunuz? "
 
 #: src/delete-files/delete-files.cc:134
 #, c-format
 msgid "Do you want to permanently delete %d files?"
-msgstr ""
+msgstr "%d dosyaları kalıcı olarak silmek istiyor musunuz?"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Move to trash"
-msgstr ""
+msgstr "Çöpe taşı"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Delete"
@@ -1180,11 +1222,11 @@ msgstr "Seçilen Dosyaları Sil"
 
 #: src/delete-files/delete-files.cc:288
 msgid "<b>Delete Method</b>"
-msgstr ""
+msgstr "<b>Silme Yöntemi</b>"
 
 #: src/delete-files/delete-files.cc:289
 msgid "Move to trash instead of deleting immediately"
-msgstr ""
+msgstr "Hemen silmek yerine çöp kutusuna taşı"
 
 #: src/echo_plugin/echo.cc:9
 msgid ""
@@ -1193,10 +1235,15 @@ msgid ""
 "Surround echo by Carl van Schaik, 1999\n"
 "Updated for Audacious by William Pitcock and John Lindgren, 2010-2014"
 msgstr ""
+"Yankı Eklentisi\n"
+"Johan Levin, 1999\n"
+"Surround yankısı Carl van Schaik, 1999\n"
+"Auducious tarafından William Pitcock ve John Lindgren tarafından "
+"güncellendi, 2010-2014"
 
 #: src/echo_plugin/echo.cc:21
 msgid "<b>Echo</b>"
-msgstr ""
+msgstr "<b>Yankı</b>"
 
 #: src/echo_plugin/echo.cc:22 src/modplug/plugin_main.cc:76
 #: src/modplug/plugin_main.cc:86
@@ -1210,15 +1257,15 @@ msgstr "ms"
 
 #: src/echo_plugin/echo.cc:25
 msgid "Feedback:"
-msgstr ""
+msgstr "Geribesleme:"
 
 #: src/echo_plugin/echo.cc:28 src/modplug/plugin_main.cc:90
 msgid "Volume:"
-msgstr ""
+msgstr "Hacim:"
 
 #: src/echo_plugin/echo.cc:39
 msgid "Echo"
-msgstr ""
+msgstr "Yankı"
 
 #: src/ffaudio/ffaudio-core.cc:49
 msgid "FFmpeg Plugin"
@@ -1233,10 +1280,16 @@ msgid ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
+"FFmpeg multimedya çerçevesini kullanarak Audacious\n"
+" için çok biçimli ses kod çözme eklentisi (http://www.ffmpeg.org/)\n"
+"\n"
+"Audacious eklentisi:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
 
 #: src/filewriter/filewriter.cc:48
 msgid "FileWriter Plugin"
-msgstr ""
+msgstr "Dosya Yazma Eklentisi"
 
 #: src/filewriter/filewriter.cc:350
 msgid ""
@@ -1254,6 +1307,18 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Bu program ücretsiz bir yazılımdır; Özgür Yazılım Vakfı tarafından "
+"yayımlanan GNU Genel Kamu Lisansı şartlarına göre yeniden dağıtabilir ve/"
+"veya değiştirebilirsiniz; lisansın 2 numaralı sürümü veya (seçimlerinize "
+"göre) herhangi bir sonraki sürümü.\n"
+"Bu program yararlı olacağı umuduyla dağıtılır, ancak HERHANGİ BİR GARANTİ "
+"OLMAKSIZIN; SATILABİLİRLİK veya BELİRLİ BİR AMACA UYGUNLUĞU'nun zımni "
+"garantisi dahi olmadan. Daha fazla bilgi için GNU Genel Kamu Lisansına "
+"bakınız.\n"
+"\n"
+"Bu programla birlikte GNU Genel Kamu Lisansının bir kopyasını almış "
+"olmalısınız; eğer değilse, Free Software Foundation, Inc., 51 Franklin "
+"Street, Beşinci Kat, Boston, MA 02110-1301, ABD'ye yazın."
 
 #: src/filewriter/filewriter.cc:377
 msgid "Output file format:"
@@ -1265,27 +1330,27 @@ msgstr "Orjinal dizine kaydet"
 
 #: src/filewriter/filewriter.cc:384
 msgid "Save into custom directory:"
-msgstr ""
+msgstr "Özel dizine kaydet"
 
 #: src/filewriter/filewriter.cc:392
 msgid "Generate file name from:"
-msgstr ""
+msgstr "Şuradan dosya adı oluştur:"
 
 #: src/filewriter/filewriter.cc:393
 msgid "Original file name"
-msgstr "Orijinal dosya adı"
+msgstr "Özgün dosya adı"
 
 #: src/filewriter/filewriter.cc:396
 msgid "Original file name (no suffix)"
-msgstr ""
+msgstr "Özgün dosya adı (son ek yok)"
 
 #: src/filewriter/filewriter.cc:399
 msgid "Original file tag"
-msgstr ""
+msgstr "Özgün dosya etiketi"
 
 #: src/filewriter/filewriter.cc:403
 msgid "Prepend track number to file name"
-msgstr ""
+msgstr "Parça numarasını dosya adına ekle"
 
 #: src/filewriter/filewriter.cc:409 src/filewriter/filewriter.cc:441
 msgid "Auto"
@@ -1407,7 +1472,7 @@ msgstr "Mono"
 
 #: src/filewriter/filewriter.cc:448
 msgid "VBR"
-msgstr "320 kbps"
+msgstr "VBR"
 
 #: src/filewriter/filewriter.cc:449
 msgid "ABR"
@@ -1431,7 +1496,7 @@ msgstr "Ses modu:"
 
 #: src/filewriter/filewriter.cc:493
 msgid "Enforce strict ISO compliance"
-msgstr ""
+msgstr "ISO standartlarına mutlak uyum gözetmeye zorla"
 
 #: src/filewriter/filewriter.cc:495
 msgid "Error protection"
@@ -1447,15 +1512,15 @@ msgstr "Tür:"
 
 #: src/filewriter/filewriter.cc:506
 msgid "Minimum bitrate:"
-msgstr ""
+msgstr "En düşük bit oranı:"
 
 #: src/filewriter/filewriter.cc:510
 msgid "Maximum bitrate:"
-msgstr ""
+msgstr "En yüksek bit oranı:"
 
 #: src/filewriter/filewriter.cc:514
 msgid "Average bitrate:"
-msgstr ""
+msgstr "Ortalama bit oranı:"
 
 #: src/filewriter/filewriter.cc:518
 msgid "VBR quality level:"
@@ -1467,11 +1532,11 @@ msgstr "En düşük bit oranını tam olarak zorla"
 
 #: src/filewriter/filewriter.cc:525
 msgid "Omit Xing VBR header"
-msgstr ""
+msgstr "Xing VBR başlığını atla"
 
 #: src/filewriter/filewriter.cc:531
 msgid "<b>Frame Headers</b>"
-msgstr ""
+msgstr "<b>Çerçeve Başlıkları</b>"
 
 #: src/filewriter/filewriter.cc:532
 msgid "Mark as copyright"
@@ -1479,11 +1544,11 @@ msgstr "Telif hakkı olarak işaretle"
 
 #: src/filewriter/filewriter.cc:534
 msgid "Mark as original"
-msgstr "Orijinal olarak işaretle"
+msgstr "Özgün olarak işaretle"
 
 #: src/filewriter/filewriter.cc:536
 msgid "<b>ID3 Tags</b>"
-msgstr ""
+msgstr "<b>ID3 Etiketleri</b>"
 
 #: src/filewriter/filewriter.cc:537
 msgid "Force addition of version 2 tag"
@@ -1520,7 +1585,7 @@ msgstr "Genel"
 
 #: src/flac/flacng.h:35
 msgid "FLAC Decoder"
-msgstr ""
+msgstr "FLAC Çözücü"
 
 #: src/flac/metadata.cc:270 src/wavpack/wavpack.cc:209
 msgid "lossless"
@@ -1533,24 +1598,30 @@ msgid ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
+"Özgün kod\n"
+"Ralf Ertzinger <ralf@skytale.net> tarafından\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/gio/gio.cc:34
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
+"Audacious için GIO Eklentisi \n"
+"Telif Hakkı 2009-2012 John Lindgren"
 
 #: src/gio/gio.cc:42
 msgid "GIO Plugin"
-msgstr ""
+msgstr "GIO Eklentisi"
 
 #: src/gio/gio.cc:152
 msgid "Read-and-append mode not supported"
-msgstr ""
+msgstr "Okuma-ve-ekleme modu desteklenmiyor"
 
 #: src/gio/gio.cc:165
 msgid "Invalid open mode"
-msgstr ""
+msgstr "Geçersiz açma modu"
 
 #: src/glspectrum/gl-spectrum.cc:51
 msgid ""
@@ -1563,10 +1634,18 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"Auducious için OpenGL İzgesel Çözümleyici\n"
+"Telif Hakkı 2013 Christophe Budé, John Lindgren ve Carlo Bramini\n"
+"\n"
+"XMMS eklentisine dayanarak:\n"
+"Telif Hakkı 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson ve "
+"4Front Technologies\n"
+"\n"
+"Lisans: GPLv2+"
 
 #: src/glspectrum/gl-spectrum.cc:62 src/qtglspectrum/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer"
-msgstr ""
+msgstr "Opengl İzgesel Çözümleyici"
 
 #: src/gtkui/columns.cc:35
 msgid "Entry number"
@@ -1628,11 +1707,11 @@ msgstr "Yorum"
 
 #: src/gtkui/columns.cc:315
 msgid "Available columns"
-msgstr ""
+msgstr "Kullanılabilir sütunlar"
 
 #: src/gtkui/columns.cc:341
 msgid "Displayed columns"
-msgstr ""
+msgstr "Görüntülenen sütunlar"
 
 #: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:62
 #: src/search-tool/search-tool.cc:49
@@ -1670,11 +1749,11 @@ msgstr "_Dosya Aç ..."
 
 #: src/gtkui/menus.cc:80 src/qtui/menus.cc:70
 msgid "Open _URL ..."
-msgstr "URL _Aç ..."
+msgstr "_URL Aç ..."
 
 #: src/gtkui/menus.cc:81 src/qtui/menus.cc:71
 msgid "_Add Files ..."
-msgstr "_Dosyaları Ekle ..."
+msgstr "Dosy_aları Ekle ..."
 
 #: src/gtkui/menus.cc:82 src/qtui/menus.cc:73
 msgid "Add U_RL ..."
@@ -1682,7 +1761,7 @@ msgstr "U_RL Ekle ..."
 
 #: src/gtkui/menus.cc:84 src/qtui/menus.cc:75
 msgid "Search _Library"
-msgstr ""
+msgstr "Kitap_lığı Ara"
 
 #: src/gtkui/menus.cc:86 src/qtui/menus.cc:77
 msgid "A_bout ..."
@@ -1733,15 +1812,15 @@ msgstr "_Karıştır"
 
 #: src/gtkui/menus.cc:100 src/qtui/menus.cc:94
 msgid "Shuffle by Albu_m"
-msgstr ""
+msgstr "Albü_me göre karıştır"
 
 #: src/gtkui/menus.cc:101 src/qtui/menus.cc:95
 msgid "N_o Playlist Advance"
-msgstr ""
+msgstr "Oynatılabilir Çalma Listesi y_ok"
 
 #: src/gtkui/menus.cc:102 src/qtui/menus.cc:96
 msgid "Stop A_fter This Song"
-msgstr ""
+msgstr "Bu Şarkıdan Son_ra Dur"
 
 #: src/gtkui/menus.cc:104 src/gtkui/menus.cc:205 src/qtui/menus.cc:98
 #: src/qtui/menus.cc:200
@@ -1750,15 +1829,15 @@ msgstr "_Şarkı Bilgisi ..."
 
 #: src/gtkui/menus.cc:105
 msgid "Jump to _Time ..."
-msgstr "Süre Atla"
+msgstr "Zamana Gi_t ..."
 
 #: src/gtkui/menus.cc:106
 msgid "_Jump to Song ..."
-msgstr "Şarkı Atla"
+msgstr "Şarkıya Git ..."
 
 #: src/gtkui/menus.cc:108
 msgid "Set Repeat Point _A"
-msgstr "Tekrarlama Başlancığı _A"
+msgstr "Tekrarlama Başlangıcı _A"
 
 #: src/gtkui/menus.cc:109
 msgid "Set Repeat Point _B"
@@ -1775,7 +1854,7 @@ msgstr "_Başlığa Göre"
 
 #: src/gtkui/menus.cc:115 src/qtui/menus.cc:103
 msgid "By _File Name"
-msgstr ""
+msgstr "_Dosya İsmine Göre"
 
 #: src/gtkui/menus.cc:116 src/qtui/menus.cc:104
 msgid "By File _Path"
@@ -1794,12 +1873,12 @@ msgstr "_Sanatçıya Göre"
 #: src/gtkui/menus.cc:123 src/gtkui/menus.cc:140 src/qtui/menus.cc:111
 #: src/qtui/menus.cc:128
 msgid "By Al_bum"
-msgstr ""
+msgstr "Al_büme Göre"
 
 #: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:112
 #: src/qtui/menus.cc:129
 msgid "By Albu_m Artist"
-msgstr ""
+msgstr "Albü_m Sanatçısına Göre"
 
 #: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:113
 #: src/qtui/menus.cc:130
@@ -1809,32 +1888,32 @@ msgstr "Yayın Tarihi"
 #: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:114
 #: src/qtui/menus.cc:131
 msgid "By _Genre"
-msgstr ""
+msgstr "Türüne _Göre"
 
 #: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:115
 #: src/qtui/menus.cc:132
 msgid "By _Length"
-msgstr ""
+msgstr "Uzun_luğuna Göre"
 
 #: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:116
 #: src/qtui/menus.cc:133
 msgid "By _File Path"
-msgstr ""
+msgstr "_Dosya Yoluna Göre"
 
 #: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:117
 #: src/qtui/menus.cc:134
 msgid "By _Custom Title"
-msgstr "Özel Başlık"
+msgstr "Özel _Başlığa Göre"
 
 #: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:118
 #: src/qtui/menus.cc:135
 msgid "By C_omment"
-msgstr ""
+msgstr "Y_oruma Göre"
 
 #: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:120
 #: src/qtui/menus.cc:137
 msgid "R_everse Order"
-msgstr ""
+msgstr "T_ersine Sıra"
 
 #: src/gtkui/menus.cc:133 src/gtkui/menus.cc:150 src/qtui/menus.cc:121
 #: src/qtui/menus.cc:138
@@ -1843,7 +1922,7 @@ msgstr "_Rastgele Sipariş"
 
 #: src/gtkui/menus.cc:154 src/qtui/menus.cc:142
 msgid "_Play/Resume"
-msgstr ""
+msgstr "_Oynat/Devam et"
 
 #: src/gtkui/menus.cc:155 src/qtui/menus.cc:143
 msgid "_Refresh"
@@ -1855,15 +1934,15 @@ msgstr "_Tür"
 
 #: src/gtkui/menus.cc:158 src/qtui/menus.cc:148
 msgid "Sort Se_lected"
-msgstr ""
+msgstr "Seçi_leni Sırala"
 
 #: src/gtkui/menus.cc:159 src/qtui/menus.cc:149
 msgid "Remove _Duplicates"
-msgstr ""
+msgstr "Kopyaları Kal_dır"
 
 #: src/gtkui/menus.cc:160 src/qtui/menus.cc:150
 msgid "Remove _Unavailable Files"
-msgstr ""
+msgstr "K_ullanılamayan Dosyaları Kaldır"
 
 #: src/gtkui/menus.cc:162 src/playlist-manager/playlist-manager.cc:218
 #: src/playlist-manager-qt/playlist-manager-qt.cc:356 src/qtui/menus.cc:152
@@ -1872,11 +1951,11 @@ msgstr "_Yeni"
 
 #: src/gtkui/menus.cc:163 src/qtui/menus.cc:153
 msgid "Ren_ame ..."
-msgstr ""
+msgstr "_Adlandır ..."
 
 #: src/gtkui/menus.cc:164 src/gtkui/menus.cc:223 src/qtui/menus.cc:154
 msgid "Remo_ve"
-msgstr ""
+msgstr "_Kaldır"
 
 #: src/gtkui/menus.cc:166 src/qtui/menus.cc:156
 msgid "_Import ..."
@@ -1888,7 +1967,7 @@ msgstr "_Çıkart ..."
 
 #: src/gtkui/menus.cc:169 src/qtui/menus.cc:159
 msgid "Playlist _Manager ..."
-msgstr ""
+msgstr "Çal_ma Listesi Yöneticisi"
 
 #: src/gtkui/menus.cc:170 src/qtui/menus.cc:160
 msgid "_Queue Manager ..."
@@ -1904,19 +1983,19 @@ msgstr "Sesi_Azalt"
 
 #: src/gtkui/menus.cc:177 src/qtui/menus.cc:167
 msgid "_Equalizer ..."
-msgstr ""
+msgstr "_Ekolayzır ..."
 
 #: src/gtkui/menus.cc:178 src/qtui/menus.cc:168
 msgid "E_ffects ..."
-msgstr ""
+msgstr "E_fektler ..."
 
 #: src/gtkui/menus.cc:180
 msgid "_Record Stream"
-msgstr ""
+msgstr "Akışı _Kaydet"
 
 #: src/gtkui/menus.cc:181
 msgid "Audio _Settings ..."
-msgstr ""
+msgstr "_Ses Ayarları ..."
 
 #: src/gtkui/menus.cc:185 src/qtui/menus.cc:175
 msgid "Show _Menu Bar"
@@ -1928,7 +2007,7 @@ msgstr "Bilgi Çubuğunu Göster"
 
 #: src/gtkui/menus.cc:187 src/qtui/menus.cc:177
 msgid "Show Info Bar Vis_ualization"
-msgstr ""
+msgstr "Bilgi Ç_ubuğu Görselleştirmesini Göster"
 
 #: src/gtkui/menus.cc:188 src/qtui/menus.cc:178
 msgid "Show _Status Bar"
@@ -1936,12 +2015,12 @@ msgstr "Durum Çubuğunu Göster"
 
 #: src/gtkui/menus.cc:190 src/qtui/menus.cc:180
 msgid "Show _Remaining Time"
-msgstr ""
+msgstr "Kalan Sü_reyi göster"
 
 #: src/gtkui/menus.cc:192 src/qtui/menus.cc:182 src/skins/menus.cc:155
 #: src/skins-qt/menus.cc:150
 msgid "_Visualizations ..."
-msgstr ""
+msgstr "_Görselleştirme ..."
 
 #: src/gtkui/menus.cc:196 src/qtui/menus.cc:186
 msgid "_File"
@@ -1970,15 +2049,15 @@ msgstr "_Görünüm"
 
 #: src/gtkui/menus.cc:206 src/qtui/menus.cc:201
 msgid "_Queue/Unqueue"
-msgstr ""
+msgstr "_Kuyruğa Ekle/Kaldır"
 
 #: src/gtkui/menus.cc:208 src/qtui/menus.cc:203
 msgid "_Open Containing Folder"
-msgstr ""
+msgstr "İçeren _Dizini Aç"
 
 #: src/gtkui/menus.cc:209 src/qtui/menus.cc:204
 msgid "_Refresh Selected"
-msgstr ""
+msgstr "Seçilenle_ri Yenile"
 
 #: src/gtkui/menus.cc:211 src/qtui/menus.cc:206
 msgid "Cu_t"
@@ -1994,7 +2073,7 @@ msgstr "_Yapıştır"
 
 #: src/gtkui/menus.cc:214 src/qtui/menus.cc:209
 msgid "Paste at _End"
-msgstr ""
+msgstr "_Sonunda Yapıştır"
 
 #: src/gtkui/menus.cc:215 src/qtui/menus.cc:210
 msgid "Select _All"
@@ -2002,15 +2081,15 @@ msgstr "Tümünü_Seç"
 
 #: src/gtkui/menus.cc:222
 msgid "_Rename ..."
-msgstr ""
+msgstr "Yeniden adlandı_r ..."
 
 #: src/gtkui/settings.cc:35 src/qtui/settings.cc:54
 msgid "<b>Playlist Tabs</b>"
-msgstr ""
+msgstr "<b>Çalma Listesi Sekmeleri</b>"
 
 #: src/gtkui/settings.cc:36 src/qtui/settings.cc:56
 msgid "Always show tabs"
-msgstr ""
+msgstr "Sekmeleri her zaman göster"
 
 #: src/gtkui/settings.cc:38 src/qtui/settings.cc:59
 msgid "Show entry counts"
@@ -2030,11 +2109,11 @@ msgstr "Sütun başlıklarını göster"
 
 #: src/gtkui/settings.cc:47 src/qtui/settings.cc:67
 msgid "Arrow keys seek by:"
-msgstr ""
+msgstr "Ok tuşları ile arama:"
 
 #: src/gtkui/settings.cc:50 src/qtui/settings.cc:70
 msgid "Scroll on song change"
-msgstr ""
+msgstr "Şarkı değişikliğinde kaydır"
 
 #: src/gtkui/ui_gtk.cc:73
 msgid "GTK Interface"
@@ -2068,7 +2147,7 @@ msgstr "Duraklat"
 #: src/gtkui/ui_gtk.cc:796 src/qtui/main_window.cc:101 src/skins/menus.cc:86
 #: src/skins-qt/menus.cc:77
 msgid "Search Library"
-msgstr "Arama Kütüphanesi"
+msgstr "Kitaplığı Ara"
 
 #: src/gtkui/ui_gtk.cc:804 src/qtui/main_window.cc:102
 msgid "Open Files"
@@ -2183,27 +2262,27 @@ msgstr "Dosyaya Atla"
 
 #: src/hotkey/gui.cc:82
 msgid "Toggle player window(s)"
-msgstr ""
+msgstr "Oynatıcı pencere(leri)si aç"
 
 #: src/hotkey/gui.cc:83
 msgid "Show On-Screen-Display"
-msgstr ""
+msgstr "On-Screen-Display Göster"
 
 #: src/hotkey/gui.cc:84
 msgid "Toggle repeat"
-msgstr ""
+msgstr "Tekrarlama yap"
 
 #: src/hotkey/gui.cc:85
 msgid "Toggle shuffle"
-msgstr ""
+msgstr "Karıştırmayı aç"
 
 #: src/hotkey/gui.cc:86
 msgid "Toggle stop after current"
-msgstr ""
+msgstr "Şimdiki çalmadan sonra durdurmayı aç"
 
 #: src/hotkey/gui.cc:87
 msgid "Raise player window(s)"
-msgstr ""
+msgstr "Oynatma pencere(ler)sini yükselt"
 
 #: src/hotkey/gui.cc:97
 msgid "(none)"
@@ -2215,16 +2294,21 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Birincil fare düğmelerini değiştiriciler olmadan bağlamak tavsiye edilmez.\n"
+"\n"
+"Devam etmek istiyor musunuz?"
 
 #: src/hotkey/gui.cc:236
 msgid "Binding mouse buttons"
-msgstr ""
+msgstr "Fare düğmeleri bağlaması"
 
 #: src/hotkey/gui.cc:391
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
+"Bir metin alanının içindeki tuş kombinasyonuna basın.\n"
+"Fare düğmelerini de bağlayabilirsiniz."
 
 #: src/hotkey/gui.cc:396
 msgid "Hotkeys:"
@@ -2236,7 +2320,7 @@ msgstr "<b>Eylem:</b>"
 
 #: src/hotkey/gui.cc:420
 msgid "<b>Key Binding:</b>"
-msgstr ""
+msgstr "<b>Anahtar Bağlama:</b>"
 
 #: src/hotkey/gui.cc:468
 msgid "_Add"
@@ -2244,7 +2328,7 @@ msgstr "_Ekle"
 
 #: src/hotkey/plugin.cc:61
 msgid "Global Hotkeys"
-msgstr ""
+msgstr "Genel Kısayollar"
 
 #: src/hotkey/plugin.cc:80
 msgid ""
@@ -2260,6 +2344,17 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
+"Genel Kısayol Eklentisi\n"
+"Oynatıcıyı genel tuş bileşimleri veya çoklu ortam tuşları ile kontrol edin.\n"
+"\n"
+"Telif Hakkı (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Katkıda bulunanlar:\n"
+"Telif Hakkı (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Telif Hakkı (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/jack/jack-ng.cc:50
 msgid "JACK Output"
@@ -2267,12 +2362,12 @@ msgstr "Jack Çıkış baglantısı"
 
 #: src/jack/jack-ng.cc:115
 msgid "Automatically connect to output ports"
-msgstr ""
+msgstr "Çıkış bağlantı noktalarına otomatik olarak bağlanma"
 
 #: src/jack/jack-ng.cc:156
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
-msgstr ""
+msgstr "Sadece %d JACK çıkış portları bulundu, ancak %d gerekiyor."
 
 #: src/jack/jack-ng.cc:172
 #, c-format
@@ -2284,10 +2379,12 @@ msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
+"JACK yalnızca kayan noktalı sesi destekler. Audacious ayarlarında çıkış biti "
+"derinliğini kayan noktaya değiştirmelisiniz."
 
 #: src/jack/jack-ng.cc:205
 msgid "Failed to connect to the JACK server; is it running?"
-msgstr ""
+msgstr "JACK sunucusuna bağlanılamadı; çalışıyor mu?"
 
 #: src/jack/jack-ng.cc:281
 #, c-format
@@ -2295,6 +2392,9 @@ msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
 "%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
 msgstr ""
+"JACK sunucusu örnek bir %d Hz hızını gerektirir, ancak Audacious %d Hz'de "
+"çalar. Uyumsuzluğu düzeltmek için lütfen Örnek Hızı Dönüştürücü efekti "
+"kullanın."
 
 #: src/ladspa/plugin.cc:415
 #, c-format
@@ -2311,6 +2411,10 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
+"<small>Bir kolon ile birden çok yolu ayırın.\n"
+"Bu yollar LADSPA_PATH'e ek olarak aranır.\n"
+"Yeni yollar ekledikten sonra, yeni eklentileri taramak için Enter tuşuna "
+"basın.</small>"
 
 #: src/ladspa/plugin.cc:502
 msgid "Available plugins:"
@@ -2335,14 +2439,16 @@ msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 msgstr ""
+"Audacious için LADSPA AnaBilgisayar\n"
+"Telif Hakkı 2011 John Lindgren"
 
 #: src/ladspa/plugin.h:78
 msgid "LADSPA Host"
-msgstr ""
+msgstr "LADSPA AnaBilgisayar"
 
 #: src/lirc/lirc.cc:55
 msgid "LIRC Plugin"
-msgstr ""
+msgstr "LIRC Eklentisi"
 
 #: src/lirc/lirc.cc:379
 msgid ""
@@ -2359,27 +2465,41 @@ msgid ""
 "\n"
 "For more information about LIRC, see http://lirc.org."
 msgstr ""
+"LIRC uzaktan kumanda programı kullanarak Audacious'u kontrol etmek için "
+"basit bir eklenti\n"
+"\n"
+"Audacious için uyarlanmış:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"XMMS LIRC eklentisine dayanarak:LIRC hakkında daha fazla bilgi için bkz. "
+"Http://lirc.org.\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"LIRC hakkında daha fazla bilgi için bkz. http://lirc.org."
 
 #: src/lirc/lirc.cc:390
 msgid "<b>Connection</b>"
-msgstr ""
+msgstr "<b>Bağlantı</b>"
 
 #: src/lirc/lirc.cc:391
 msgid "Reconnect to LIRC server"
-msgstr ""
+msgstr "LIRC sunucusuna yeniden bağlan"
 
 #: src/lirc/lirc.cc:393
 msgid "Wait before reconnecting:"
-msgstr ""
+msgstr "Yeniden bağlanmadan önce bekleyin:"
 
 #: src/lyricwiki/lyricwiki.cc:42 src/lyricwiki-qt/lyricwiki.cc:70
 msgid "LyricWiki Plugin"
-msgstr ""
+msgstr "LyricWiki Eklentisi"
 
 #: src/lyricwiki/lyricwiki.cc:132 src/lyricwiki-qt/lyricwiki.cc:151
 #: src/lyricwiki-qt/lyricwiki.cc:337
 msgid "No lyrics available"
-msgstr ""
+msgstr "Şarkı sözleri yok"
 
 #: src/lyricwiki/lyricwiki.cc:251 src/lyricwiki/lyricwiki.cc:260
 #: src/lyricwiki/lyricwiki.cc:275 src/lyricwiki/lyricwiki.cc:284
@@ -2394,37 +2514,37 @@ msgstr "Hata"
 #: src/lyricwiki-qt/lyricwiki.cc:292 src/lyricwiki-qt/lyricwiki.cc:322
 #, c-format
 msgid "Unable to fetch %s"
-msgstr ""
+msgstr "%s getirilemiyor"
 
 #: src/lyricwiki/lyricwiki.cc:261 src/lyricwiki/lyricwiki.cc:285
 #: src/lyricwiki-qt/lyricwiki.cc:307 src/lyricwiki-qt/lyricwiki.cc:331
 #, c-format
 msgid "Unable to parse %s"
-msgstr ""
+msgstr "%s ayrıştırılamıyor"
 
 #: src/lyricwiki/lyricwiki.cc:291 src/lyricwiki-qt/lyricwiki.cc:343
 msgid "Looking for lyrics ..."
-msgstr ""
+msgstr "Şarkı sözü ara ..."
 
 #: src/lyricwiki/lyricwiki.cc:299 src/lyricwiki-qt/lyricwiki.cc:351
 msgid "Missing song metadata"
-msgstr ""
+msgstr "Eksik üst verisi"
 
 #: src/lyricwiki/lyricwiki.cc:310 src/lyricwiki-qt/lyricwiki.cc:362
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr ""
+msgstr "lyrics.wikia.com adresine bağlanıyor ..."
 
 #: src/lyricwiki/lyricwiki.cc:351 src/lyricwiki-qt/lyricwiki.cc:442
 msgid "Edit lyrics ..."
-msgstr ""
+msgstr "Şarkı sözlerini düzenle ..."
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
-msgstr ""
+msgstr "M3U Çalma Listeleri"
 
 #: src/metronom/metronom.cc:44
 msgid "Tact Generator"
-msgstr ""
+msgstr "Takt Oluşturucu"
 
 #: src/metronom/metronom.cc:145
 #, c-format
@@ -2444,20 +2564,27 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
+"Tact Üretici, Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"Kullanmak için URL ekleyin: tact://beats*num/den\n"
+"örneğin tact://77 ile dakikada 77 vurgu ya da\n"
+"tact://60*3/4 ile 60 bpm yi 3/4 tact ile"
 
 #: src/mixer/mixer.cc:38
 msgid "Channel Mixer"
-msgstr ""
+msgstr "Kanal Değiştirici"
 
 #: src/mixer/mixer.cc:227
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
+"Audacious için Kanal Değiştirici Eklentisi \n"
+"Telif Hakkı 2011-2012 John Lindgren ve Michał Lipski"
 
 #: src/mixer/mixer.cc:231
 msgid "<b>Channel Mixer</b>"
-msgstr ""
+msgstr "<b>Kanal Değiştirici</b>"
 
 #: src/mixer/mixer.cc:232
 msgid "Output channels:"
@@ -2465,19 +2592,19 @@ msgstr "Çıkış kanalları:"
 
 #: src/mms/mms.cc:35
 msgid "MMS Plugin"
-msgstr ""
+msgstr "MMS Eklentisi"
 
 #: src/mms/mms.cc:82
 msgid "Error connecting to MMS server"
-msgstr ""
+msgstr "MMS sunucusuna bağlanırken hata oluştu"
 
 #: src/modplug/modplugbmp.h:57
 msgid "ModPlug (Module Player)"
-msgstr ""
+msgstr "ModPlug (Modül Oynatıcı)"
 
 #: src/modplug/plugin_main.cc:56
 msgid "<b>Resolution</b>"
-msgstr ""
+msgstr "<b>Çözünürlük</b>"
 
 #: src/modplug/plugin_main.cc:57
 msgid "8-bit"
@@ -2489,7 +2616,7 @@ msgstr "16-bit"
 
 #: src/modplug/plugin_main.cc:59
 msgid "<b>Channels</b>"
-msgstr ""
+msgstr "<b>Kanallar</b>"
 
 #: src/modplug/plugin_main.cc:63
 msgid "Nearest (fastest)"
@@ -2501,15 +2628,15 @@ msgstr "Lineer (hızlı)"
 
 #: src/modplug/plugin_main.cc:65
 msgid "Spline (good)"
-msgstr ""
+msgstr "Spline (iyi)"
 
 #: src/modplug/plugin_main.cc:66
 msgid "Polyphase (best)"
-msgstr ""
+msgstr "Polifaze (en iyi)"
 
 #: src/modplug/plugin_main.cc:67
 msgid "<b>Sample rate</b>"
-msgstr ""
+msgstr "<b>Örnekleme oranı</b>"
 
 #: src/modplug/plugin_main.cc:68
 msgid "22 kHz"
@@ -2534,27 +2661,27 @@ msgstr "Seviye:"
 
 #: src/modplug/plugin_main.cc:81
 msgid "Cutoff:"
-msgstr ""
+msgstr "Kesme:"
 
 #: src/modplug/plugin_main.cc:94
 msgid "<b>Reverb</b>"
-msgstr ""
+msgstr "<b>Yankı</b>"
 
 #: src/modplug/plugin_main.cc:97
 msgid "<b>Bass Boost</b>"
-msgstr ""
+msgstr "<b>Bas Kuvvetlendirme</b>"
 
 #: src/modplug/plugin_main.cc:100
 msgid "<b>Surround</b>"
-msgstr ""
+msgstr "<b>Kuşatma</b>"
 
 #: src/modplug/plugin_main.cc:103
 msgid "<b>Preamp</b>"
-msgstr ""
+msgstr "<b>Ön güçlendirme</b>"
 
 #: src/modplug/plugin_main.cc:110
 msgid "Oversample"
-msgstr ""
+msgstr "Örnek üzerinde"
 
 #: src/modplug/plugin_main.cc:111
 msgid "Noise reduction"
@@ -2562,27 +2689,27 @@ msgstr "Gürültü azaltma"
 
 #: src/modplug/plugin_main.cc:112
 msgid "Play Amiga MODs"
-msgstr ""
+msgstr "Amiga MOD'ları oynat"
 
 #: src/modplug/plugin_main.cc:113
 msgid "<b>Repeat</b>"
-msgstr ""
+msgstr "<b>Tekrarla</b>"
 
 #: src/modplug/plugin_main.cc:114
 msgid "Repeat count:"
-msgstr ""
+msgstr "Tekrarlama sayısı:"
 
 #: src/modplug/plugin_main.cc:115
 msgid "To repeat forever, set the repeat count to -1."
-msgstr ""
+msgstr "Sonsuza kadar tekrarlamak için, tekrar sayısını -1 olarak ayarlayın."
 
 #: src/modplug/plugin_main.cc:128 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
-msgstr ""
+msgstr "Audacious yeniden başlatıldığında bu ayarlar yürürlüğe girer."
 
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
-msgstr ""
+msgstr "MPG123 Eklentisi"
 
 #: src/mpg123/mpg123.cc:80
 msgid "<b>Advanced</b>"
@@ -2590,7 +2717,7 @@ msgstr "<b>Gelişmiş</b>"
 
 #: src/mpg123/mpg123.cc:81
 msgid "Use accurate length calculation (slow)"
-msgstr ""
+msgstr "Doğru uzunluk hesaplaması kullan (yavaş)"
 
 #: src/mpg123/mpg123.cc:245
 msgid "Surround"
@@ -2598,27 +2725,27 @@ msgstr "Surround"
 
 #: src/mpris2/plugin.cc:38
 msgid "MPRIS 2 Server"
-msgstr ""
+msgstr "MPRIS 2 Sunucusu"
 
 #: src/neon/neon.cc:97
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr ""
+msgstr "Neon HTTP/HTTPS Eklentisi"
 
 #: src/neon/neon.cc:526
 msgid "Error parsing redirect"
-msgstr ""
+msgstr "Yönlendirme ayrıştırılırken hata oluştu"
 
 #: src/neon/neon.cc:540
 msgid "Unknown HTTP error"
-msgstr ""
+msgstr "Bilinmeyen HTTP hatası"
 
 #: src/neon/neon.cc:574
 msgid "Error parsing URL"
-msgstr ""
+msgstr "URL ayrıştırılırken hata oluştu"
 
 #: src/neon/neon.cc:637
 msgid "Too many redirects"
-msgstr ""
+msgstr "Çok fazla yönlendirme var"
 
 #: src/notify/event.cc:97
 msgid "Stopped"
@@ -2651,10 +2778,26 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Audacious için Masaüstü Bildirim Eklentisi\n"
+"Telif Hakkı (C) 2010 Maximilian Bogner\n"
+"Telif Hakkı (C) 2011-2013 John Lindgren ve Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"Bu eklenti ücretsiz bir yazılımdır: Özgür Yazılım Vakfı tarafından "
+"yayımlanan GNU Genel Kamu Lisansı, lisansın 3. sürümü ya da (sizin "
+"tercihinize göre) daha sonraki bir versiyonda bu hakları yeniden dağıtabilir "
+"ve/veya değiştirebilirsiniz.\n"
+"\n"
+"Bu eklenti, yararlı olacağı umuduyla dağıtılır, ancak HERHANGİ BİR GARANTİ "
+"OLMAKSIZIN; SATILABİLİRLİK veya BELİRLİ BİR AMACA UYGUNLUĞU'nun zımni "
+"garantisi dahi olmadan. Daha fazla bilgi için GNU Genel Kamu Lisansına "
+"bakınız.\n"
+"\n"
+"Bu programla birlikte GNU Genel Kamu Lisansının bir kopyasını almış "
+"olmalısınız. Değilse, bkz. <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.cc:102
 msgid "Show playback controls"
-msgstr ""
+msgstr "Oynatma kontrollerini göster"
 
 #: src/notify/notify.cc:104
 msgid "Always show notification"
@@ -2662,7 +2805,7 @@ msgstr "Her zaman bildirim göster"
 
 #: src/notify/notify.cc:106
 msgid "Include album name in notification"
-msgstr ""
+msgstr "Bildirimde albüm adını dahil et"
 
 #: src/notify/osd.cc:59
 msgid "Show"
@@ -2670,15 +2813,15 @@ msgstr "Göster"
 
 #: src/oss4/oss.h:75
 msgid "OSS4 Output"
-msgstr ""
+msgstr "OSS4 Çıkışı"
 
 #: src/oss4/oss.h:77
 msgid "OSS3 Output"
-msgstr ""
+msgstr "OSS3 Çıkışı"
 
 #: src/oss4/plugin.cc:35
 msgid "Default device"
-msgstr ""
+msgstr "Varsayılan Aygıt"
 
 #: src/oss4/plugin.cc:78
 msgid "Audio device:"
@@ -2690,15 +2833,15 @@ msgstr "Farklı aygıt kullan:"
 
 #: src/oss4/plugin.cc:85
 msgid "Save volume between sessions."
-msgstr ""
+msgstr "Oturumlar arasında ses düzeyini kaydet"
 
 #: src/oss4/plugin.cc:87
 msgid "Enable format conversions made by the OSS software."
-msgstr ""
+msgstr "OSS yazılımı tarafından yapılan biçim dönüşümlerini etkinleştir."
 
 #: src/oss4/plugin.cc:89
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr ""
+msgstr "Sanal değiştirmeyi önlemek için özel modu etkinleştirin."
 
 #: src/oss4/plugin.cc:101
 msgid ""
@@ -2708,6 +2851,11 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
+"Audacious için OSS4 Çıkış Eklentisi\n"
+"Telif Hakkı 2010-2012 Michał Lipski\n"
+"\n"
+"#audacious için emeği insanlara teşekkür etmek isterim, özellikle Tony Vroon "
+"ve John Lindgren ve tabii ki önceki OSS eklentisinin yazarlarına."
 
 #: src/playlist-manager/playlist-manager.cc:37
 #: src/playlist-manager-qt/playlist-manager-qt.cc:40
@@ -2731,15 +2879,15 @@ msgstr "_Adlandır"
 
 #: src/pls/pls.cc:35
 msgid "PLS Playlists"
-msgstr ""
+msgstr "PLS Çalma listeleri"
 
 #: src/psf/plugin.cc:45
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr ""
+msgstr "OpenPSF PSF1/PSF2 Çözücüsü"
 
 #: src/pulse/pulse_audio.cc:40
 msgid "PulseAudio Output"
-msgstr ""
+msgstr "PulseAudio Çıkışı"
 
 #: src/pulse/pulse_audio.cc:532
 msgid ""
@@ -2759,10 +2907,25 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Audacious PulseAudio Çıkış Eklentisi\n"
+"\n"
+"Bu program ücretsiz bir yazılımdır; Özgür Yazılım Vakfı tarafından "
+"yayımlanan GNU Genel Kamu Lisansı şartlarına göre yeniden dağıtabilir ve/"
+"veya değiştirebilirsiniz. Lisansın 2 numaralı sürümü veya (seçimlerinize "
+"göre) herhangi bir sonraki sürümü.\n"
+"\n"
+"Bu program yararlı olacağı umuduyla dağıtılır, ancak HERHANGİ BİR GARANTİ "
+"OLMAKSIZIN; SATILABİLİRLİK veya BELİRLİ BİR AMACA UYGUNLUĞU'nun zımni "
+"garantisi dahi olmadan. Daha fazla bilgi için GNU Genel Kamu Lisansına "
+"bakınız.\n"
+"\n"
+"Bu programla birlikte GNU Genel Kamu Lisansının bir kopyasını almış "
+"olmalısınız; eğer değilse, Free Software Foundation, Inc., 51 Franklin "
+"Street, Beşinci Kat, Boston, MA 02110-1301, ABD'ye yazın."
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
-msgstr ""
+msgstr "QtMultimedia Çıkışı"
 
 #: src/qtaudio/qtaudio.cc:72
 msgid ""
@@ -2772,6 +2935,11 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Audacious için QtMultimedia Ses Çıkış Eklentisi\n"
+"Telif Hakkı 2014 William Pitcock\n"
+"\n"
+"Audacious için SDL Çıkış Eklentisine Dayalı\n"
+"Telif Hakkı 2010 John Lindgren"
 
 #: src/qtglspectrum/gl-spectrum.cc:41
 msgid ""
@@ -2785,6 +2953,15 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"Auducious için OpenGL İzgesel Çözümleyici\n"
+"Telif Hakkı 2013 Christophe Budé, John Lindgren ve Carlo Bramini\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"XMMS eklentisine dayanarak:\n"
+"Telif Hakkı 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson ve "
+"4Front Technologies\n"
+"\n"
+"Lisans: GPLv2+"
 
 #: src/qtui/main_window.cc:110 src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
@@ -2800,11 +2977,11 @@ msgstr "_Klasör Ekle ..."
 
 #: src/qtui/menus.cc:80
 msgid "_Log Inspector ..."
-msgstr ""
+msgstr "Günlük Denet_leyici ..."
 
 #: src/qtui/menus.cc:145
 msgid "_Find ..."
-msgstr ""
+msgstr "_Bul ..."
 
 #: src/qtui/menus.cc:171 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
@@ -2812,7 +2989,7 @@ msgstr "Ses Ayarları ..."
 
 #: src/qtui/playlist_header.cc:201
 msgid "Reset to Defaults"
-msgstr ""
+msgstr "Varsayılanlara Dön"
 
 #: src/qtui/playlist_model.cc:35
 msgid "Now Playing"
@@ -2820,7 +2997,7 @@ msgstr "Şimdi Çalınıyor"
 
 #: src/qtui/playlist_model.cc:36
 msgid "Entry Number"
-msgstr ""
+msgstr "Sayı Girin"
 
 #: src/qtui/playlist_model.cc:41
 msgid "Album Artist"
@@ -2828,41 +3005,43 @@ msgstr "Albüm Sanatçısı"
 
 #: src/qtui/playlist_model.cc:44
 msgid "Queue Position"
-msgstr ""
+msgstr "Sıra Konumu"
 
 #: src/qtui/playlist_model.cc:46
 msgid "File Path"
-msgstr ""
+msgstr "Dosya Yolu"
 
 #: src/qtui/playlist_model.cc:47
 msgid "File Name"
-msgstr ""
+msgstr "Dosya Adı"
 
 #: src/qtui/playlist_model.cc:48
 msgid "Custom Title"
-msgstr ""
+msgstr "Özel Başlık"
 
 #: src/qtui/qtui.cc:39
 msgid "Qt Interface"
-msgstr ""
+msgstr "Qt Arayüzü"
 
 #: src/qtui/search_bar.cc:47
 msgid "Search playlist"
-msgstr ""
+msgstr "Çalma listesini ara"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
-msgstr ""
+msgstr "Örnek Oran Dönüştürücü"
 
 #: src/resample/resample.cc:183
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Audacious için Örnek Oran Dönüştürücü Eklentisi\n"
+"Telif Hakkı 2010-2012 John Lindgren"
 
 #: src/resample/resample.cc:187
 msgid "Skip/repeat samples"
-msgstr ""
+msgstr "Örnekleri atla/tekrarla"
 
 #: src/resample/resample.cc:188
 msgid "Linear interpolation"
@@ -2870,15 +3049,15 @@ msgstr "Lineer interpolasyon"
 
 #: src/resample/resample.cc:189
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "Hızlı sinc interpolasyon"
 
 #: src/resample/resample.cc:190
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "Orta sinc interpolasyonu"
 
 #: src/resample/resample.cc:191
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "En iyi sinc interpolasyon"
 
 #: src/resample/resample.cc:195
 msgid "<b>Conversion</b>"
@@ -2894,11 +3073,11 @@ msgstr "Derece:"
 
 #: src/resample/resample.cc:202
 msgid "<b>Rate Mappings</b>"
-msgstr ""
+msgstr "<b>Oran Eşlemeleri</b>"
 
 #: src/resample/resample.cc:203
 msgid "Use rate mappings"
-msgstr ""
+msgstr "Oran eşlemelerini kullan"
 
 #: src/resample/resample.cc:205
 msgid "8 kHz:"
@@ -2949,43 +3128,50 @@ msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
 msgstr ""
+"Skroplamalar geçici olarak bilgisayarınıza kaydediliyor. Audacious erişim "
+"izni verilir verilmez gönderilecektir."
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr ""
+msgstr "İzin verildi. %s kullanıcısı için skroblanıyor."
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
+"İzin reddedildi. Bir tarayıcıda aşağıdaki URL'yi açın, Hesabınıza Audacious "
+"erişim izni verin ve ardından 'İzin Ver'i tekrar tıklayın:"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr ""
+msgstr "Last.fm ile bağlantı kurulurken bir sorun oluştu."
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr ""
+msgstr "İzin Kontrolü"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
+msgstr "İzin İptali"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
+"Audacious'in Last.fm hesabınıza parçaları karıştırmasına izin vermelisiniz."
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
-msgstr ""
+msgstr "Scrobbler 2.0"
 
 #: src/scrobbler2/scrobbler.cc:224
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
+"Scrobbler eklentisi başlatılamadı.\n"
+"Yüklemenizde bir sorun olabilir."
 
 #: src/scrobbler2/scrobbler.cc:289
 msgid ""
@@ -2997,91 +3183,103 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
+"Audacious Scrobbler Eklentisi 2.0 Pitxyoki tarafından,\n"
+"\n"
+"Telif Hakkı  © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"Bu projenin başında bana yardım ettiği için John Lindgren'e teşekkürler.\n"
+"\n"
 
 #: src/scrobbler2/scrobbler_communication.cc:639
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
+"Audacious artık Last.fm Scrobbler'in geliştirilmiş bir sürümünü kullanıyor.\n"
+"Lütfen Scrobbler eklentisi için Tercihleri kontrol edin."
 
 #: src/sdlout/sdlout.cc:43
 msgid "SDL Output"
-msgstr ""
+msgstr "SDL Çıkışı"
 
 #: src/sdlout/sdlout.cc:72
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Audacious için SDL Çıkışı Eklentisi\n"
+"Telif Hakkı 2010 John Lindgren"
 
 #: src/search-tool-qt/search-tool-qt.cc:87 src/search-tool/search-tool.cc:74
 msgid "Number of results to show:"
-msgstr ""
+msgstr "Gösterilecek sonuç sayısı:"
 
 #: src/search-tool-qt/search-tool-qt.cc:90 src/search-tool/search-tool.cc:77
 msgid "Rescan library at startup"
-msgstr ""
+msgstr "Başlangıçta kitaplığı yeniden tara"
 
 #: src/search-tool-qt/search-tool-qt.cc:305
 #: src/search-tool-qt/search-tool-qt.cc:316 src/search-tool/search-tool.cc:149
 #: src/search-tool/search-tool.cc:160
 msgid "Library"
-msgstr "Kütüphane"
+msgstr "Kitaplık"
 
 #: src/search-tool-qt/search-tool-qt.cc:586 src/search-tool/search-tool.cc:430
 #, c-format
 msgid "%d of %d result shown"
 msgid_plural "%d of %d results shown"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d sonucun %di gösteriliyor"
+msgstr[1] "%d sonuçların %d'si gösteriliyor"
 
 #: src/search-tool-qt/search-tool-qt.cc:590 src/search-tool/search-tool.cc:434
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d sonuç"
+msgstr[1] "%d sonuçlar"
 
 #: src/search-tool-qt/search-tool-qt.cc:799 src/search-tool/search-tool.cc:631
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d şarkı"
+msgstr[1] "%d şarkılar"
 
 #: src/search-tool-qt/search-tool-qt.cc:808 src/search-tool/search-tool.cc:638
 msgid "of this genre"
-msgstr ""
+msgstr "bu türün"
 
 #: src/search-tool-qt/search-tool-qt.cc:814 src/search-tool/search-tool.cc:645
 msgid "on"
-msgstr ""
+msgstr "üzerinde"
 
 #: src/search-tool-qt/search-tool-qt.cc:814 src/search-tool/search-tool.cc:645
 msgid "by"
-msgstr ""
+msgstr "tarafından"
 
 #: src/search-tool-qt/search-tool-qt.cc:832 src/search-tool/search-tool.cc:685
 msgid "_Create Playlist"
-msgstr ""
+msgstr "_Çalma Listesi Oluştur"
 
 #: src/search-tool-qt/search-tool-qt.cc:833 src/search-tool/search-tool.cc:687
 msgid "_Add to Playlist"
-msgstr ""
+msgstr "Ç_alma Listesine Ekle"
 
 #: src/search-tool-qt/search-tool-qt.cc:881 src/search-tool/search-tool.cc:780
 msgid "Search library"
-msgstr ""
+msgstr "Kitaplığı ara"
 
 #: src/search-tool-qt/search-tool-qt.cc:883 src/search-tool/search-tool.cc:784
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
+"Müzik kitaplığınızı Audacious'a aktarmak için bir dizin seçin ve ardından "
+"\"yenileme\" simgesine tıklayın."
 
 #: src/search-tool-qt/search-tool-qt.cc:889 src/search-tool/search-tool.cc:793
 msgid "Please wait ..."
-msgstr ""
+msgstr "Lütfen bekleyin ..."
 
 #: src/search-tool/search-tool.cc:821
 msgid "Choose Folder"
@@ -3089,7 +3287,7 @@ msgstr "Klasör Seçin"
 
 #: src/sid/xmms-sid.cc:43
 msgid "SID Player"
-msgstr ""
+msgstr "SID Oynatıcı"
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
@@ -3097,77 +3295,79 @@ msgstr "Kanallar:"
 
 #: src/sid/xs_config.cc:68
 msgid "<b>Emulation</b>"
-msgstr ""
+msgstr "<b>Öykünme</b>"
 
 #: src/sid/xs_config.cc:69
 msgid "Emulate MOS 8580 (default: MOS 6581)"
-msgstr ""
+msgstr "MOS 8580 öykün (varsayılan: MOS 6581)"
 
 #: src/sid/xs_config.cc:71
 msgid "Do not automatically select chip model"
-msgstr ""
+msgstr "Çip modelini otomatik seçmeyin"
 
 #: src/sid/xs_config.cc:73
 msgid "Emulate filter"
-msgstr ""
+msgstr "Süzgeci öykün"
 
 #: src/sid/xs_config.cc:75
 msgid "Clock speed:"
-msgstr ""
+msgstr "Saat hızı:"
 
 #: src/sid/xs_config.cc:78
 msgid "Do not automatically select clock speed"
-msgstr ""
+msgstr "Saat hızını otomatik seçmeyin"
 
 #: src/sid/xs_config.cc:80
 msgid "<b>Playback time</b>"
-msgstr ""
+msgstr "<b>Çalma süresi</b>"
 
 #: src/sid/xs_config.cc:81
 msgid "Set maximum playback time:"
-msgstr ""
+msgstr "En fazla oynatma süresini ayarla:"
 
 #: src/sid/xs_config.cc:87
 msgid "Use only when song length is unknown"
-msgstr ""
+msgstr "Sadece şarkı uzunluğu bilinmiyorsa kullanın"
 
 #: src/sid/xs_config.cc:90
 msgid "Set minimum playback time:"
-msgstr ""
+msgstr "En az oynatma süresini ayarla:"
 
 #: src/sid/xs_config.cc:96
 msgid "<b>Subtunes</b>"
-msgstr ""
+msgstr "<b>AltMelodiler</b>"
 
 #: src/sid/xs_config.cc:97
 msgid "Enable subtunes"
-msgstr ""
+msgstr "AltMelodileri etkinleştir"
 
 #: src/sid/xs_config.cc:99
 msgid "Ignore subtunes shorter than:"
-msgstr ""
+msgstr "Alt melodileri, aşağıdakilerden daha kısa olarak yoksay:"
 
 #: src/sid/xs_config.cc:105
 msgid "<b>Note</b>"
-msgstr ""
+msgstr "<b>Not</b>"
 
 #: src/silence-removal/silence-removal.cc:39
 msgid "Silence Removal"
-msgstr ""
+msgstr "Sessizlik Kaldırma"
 
 #: src/silence-removal/silence-removal.cc:58
 msgid ""
 "Silence Removal Plugin for Audacious\n"
 "Copyright 2014 John Lindgren"
 msgstr ""
+"Audacious için Sessizlik Kaldırma Eklentisi\n"
+"Telif Hakkı 2014 John Lindgren"
 
 #: src/silence-removal/silence-removal.cc:67
 msgid "<b>Silence Removal</b>"
-msgstr ""
+msgstr "<b>Sessizlik Kaldırma</b>"
 
 #: src/silence-removal/silence-removal.cc:68
 msgid "Threshold:"
-msgstr ""
+msgstr "Eşik:"
 
 #: src/silence-removal/silence-removal.cc:70
 msgid "dB"
@@ -3175,19 +3375,19 @@ msgstr "dB"
 
 #: src/skins/actions.cc:45 src/skins-qt/actions.cc:43
 msgid "Repeat points cleared."
-msgstr ""
+msgstr "Tekrarlanan noktalar temizlendi."
 
 #: src/skins/actions.cc:60 src/skins-qt/actions.cc:58
 msgid "Repeat point A set."
-msgstr ""
+msgstr "Tekrarlama noktası A ayarlı"
 
 #: src/skins/actions.cc:65 src/skins-qt/actions.cc:63
 msgid "Repeat point B set."
-msgstr ""
+msgstr "Tekrarlama noktası B ayarlı"
 
 #: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:220
 msgid "Preamp"
-msgstr "Preamp"
+msgstr "Ön güçlendirme"
 
 #: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:224
 msgid "31 Hz"
@@ -3316,7 +3516,7 @@ msgstr "Çal"
 
 #: src/skins/menus.cc:89 src/skins-qt/menus.cc:80
 msgid "Playlist"
-msgstr "Parça Listesi"
+msgstr "Çalma Listesi"
 
 #: src/skins/menus.cc:90 src/skins-qt/menus.cc:81
 msgid "Output"
@@ -3439,15 +3639,15 @@ msgstr "Tüm Çalışma Alanlarında"
 
 #: src/skins/menus.cc:151 src/skins-qt/menus.cc:146
 msgid "Roll Up Player"
-msgstr ""
+msgstr "Çalıcıyı Topla"
 
 #: src/skins/menus.cc:152 src/skins-qt/menus.cc:147
 msgid "Roll Up Playlist Editor"
-msgstr ""
+msgstr "Oynatma Listesi Düzenleyicisi'ni Topla"
 
 #: src/skins/menus.cc:153 src/skins-qt/menus.cc:148
 msgid "Roll Up Equalizer"
-msgstr ""
+msgstr "Ekolayzır'ı Topla"
 
 #: src/skins/menus.cc:161 src/skins-qt/menus.cc:156
 msgid "Add URL ..."
@@ -3461,19 +3661,19 @@ msgstr "Dosyaları Ekle ..."
 #: src/skins-qt/menus.cc:162 src/skins-qt/menus.cc:188
 #: src/skins-qt/menus.cc:203
 msgid "By Title"
-msgstr ""
+msgstr "Başlığa Göre"
 
 #: src/skins/menus.cc:167 src/skins/menus.cc:201 src/skins/menus.cc:216
 #: src/skins-qt/menus.cc:163 src/skins-qt/menus.cc:195
 #: src/skins-qt/menus.cc:210
 msgid "By File Name"
-msgstr ""
+msgstr "Dosya İsmine Göre"
 
 #: src/skins/menus.cc:168 src/skins/menus.cc:202 src/skins/menus.cc:217
 #: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:196
 #: src/skins-qt/menus.cc:211
 msgid "By File Path"
-msgstr ""
+msgstr "Dosya Yoluna Göre"
 
 #: src/skins/menus.cc:174 src/skins-qt/menus.cc:170
 msgid "Remove All"
@@ -3481,7 +3681,7 @@ msgstr "Tümünü Sil"
 
 #: src/skins/menus.cc:175 src/skins-qt/menus.cc:171
 msgid "Clear Queue"
-msgstr ""
+msgstr "Kuyruğu Temizle"
 
 #: src/skins/menus.cc:177 src/skins-qt/menus.cc:173
 msgid "Remove Unavailable Files"
@@ -3553,12 +3753,12 @@ msgstr "Uzunluğuna Göre"
 #: src/skins/menus.cc:203 src/skins/menus.cc:218 src/skins-qt/menus.cc:197
 #: src/skins-qt/menus.cc:212
 msgid "By Custom Title"
-msgstr ""
+msgstr "Özel Başlığa Göre"
 
 #: src/skins/menus.cc:204 src/skins/menus.cc:219 src/skins-qt/menus.cc:198
 #: src/skins-qt/menus.cc:213
 msgid "By Comment"
-msgstr ""
+msgstr "Yoruma Göre"
 
 #: src/skins/menus.cc:223 src/skins-qt/menus.cc:217
 msgid "Randomize List"
@@ -3566,11 +3766,11 @@ msgstr "Rastgele Listele"
 
 #: src/skins/menus.cc:224 src/skins-qt/menus.cc:218
 msgid "Reverse List"
-msgstr ""
+msgstr "Ters Liste"
 
 #: src/skins/menus.cc:226 src/skins-qt/menus.cc:220
 msgid "Sort Selected"
-msgstr ""
+msgstr "Seçileni Sırala"
 
 #: src/skins/menus.cc:227 src/skins-qt/menus.cc:221
 msgid "Sort List"
@@ -3578,7 +3778,7 @@ msgstr "Kısa Liste"
 
 #: src/skins/menus.cc:232 src/skins-qt/menus.cc:226
 msgid "Open Containing Folder"
-msgstr ""
+msgstr "İçeren Dizini Aç"
 
 #: src/skins/menus.cc:234 src/skins-qt/menus.cc:228
 msgid "Cut"
@@ -3594,36 +3794,36 @@ msgstr "Yapıştır"
 
 #: src/skins/menus.cc:237 src/skins-qt/menus.cc:231
 msgid "Paste at End"
-msgstr ""
+msgstr "Sonunda Yapıştır"
 
 #: src/skins/menus.cc:239 src/skins-qt/menus.cc:233
 msgid "Queue/Unqueue"
-msgstr ""
+msgstr "Kuyruğa Ekle/Kaldır"
 
 #: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:53
 #, c-format
 msgid "%s (%d of %d)"
-msgstr ""
+msgstr "%s (%d 'den %d 'si)"
 
 #: src/skins/playlistwin.cc:492 src/skins-qt/playlistwin.cc:477
 msgid "Audacious Playlist Editor"
-msgstr ""
+msgstr "Audacious Çalma Listesi Düzenleyici"
 
 #: src/skins/plugin.cc:49 src/skins-qt/plugin.cc:51
 msgid "Winamp Classic Interface"
-msgstr ""
+msgstr "Winamp Klasik Arayüzü"
 
 #: src/skins-qt/menus.cc:75
 msgid "Open Folder ..."
-msgstr ""
+msgstr "Dizin Aç ..."
 
 #: src/skins-qt/menus.cc:157
 msgid "Add Folder ..."
-msgstr ""
+msgstr "Dizin Ekle ..."
 
 #: src/skins-qt/skins_cfg.cc:196 src/skins/skins_cfg.cc:180
 msgid "Player:"
-msgstr ""
+msgstr "Çalıcı:"
 
 #: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:182
 msgid "Select main player window font:"
@@ -3631,31 +3831,31 @@ msgstr "Arayüz yazı tipini seçiniz:"
 
 #: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:183
 msgid "Playlist:"
-msgstr ""
+msgstr "Çalma Listesi:"
 
 #: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:185
 msgid "Select playlist font:"
-msgstr ""
+msgstr "Çalma listesi yazıtipi seç:"
 
 #: src/skins-qt/skins_cfg.cc:205 src/skins/skins_cfg.cc:189
 msgid "<b>Skin</b>"
-msgstr ""
+msgstr "<b>Kabuk</b>"
 
 #: src/skins-qt/skins_cfg.cc:209 src/skins/skins_cfg.cc:191
 msgid "<b>Fonts</b>"
-msgstr ""
+msgstr "<b>Yazıtipleri</b>"
 
 #: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:193
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr ""
+msgstr "Bitmap yazı tiplerini kullan (yalnızca ASCII'yi destekler)"
 
 #: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:195
 msgid "Scroll song title"
-msgstr ""
+msgstr "Şarkı başlığını kaydır"
 
 #: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
 msgid "Scroll song title in both directions"
-msgstr ""
+msgstr "Her iki yönde şarkı başlığını kaydır"
 
 #: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:202
 msgid "Analyzer"
@@ -3663,11 +3863,11 @@ msgstr "Analiz Et"
 
 #: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:203
 msgid "Scope"
-msgstr ""
+msgstr "Kapsam"
 
 #: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:204
 msgid "Voiceprint / VU meter"
-msgstr ""
+msgstr "Ses izi / VU metre"
 
 #: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:205
 msgid "Off"
@@ -3686,7 +3886,7 @@ msgstr "Ateş"
 
 #: src/skins-qt/skins_cfg.cc:229 src/skins/skins_cfg.cc:211
 msgid "Vertical lines"
-msgstr ""
+msgstr "Dikey çizgiler"
 
 #: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:215
 msgid "Lines"
@@ -3698,7 +3898,7 @@ msgstr "Çubuk"
 
 #: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:220
 msgid "Slowest"
-msgstr ""
+msgstr "En yavaş"
 
 #: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:221
 msgid "Slow"
@@ -3715,11 +3915,11 @@ msgstr "Hızlı"
 
 #: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
 msgid "Fastest"
-msgstr ""
+msgstr "En hızlı"
 
 #: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:228
 msgid "Dots"
-msgstr ""
+msgstr "Noktalar"
 
 #: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:229
 msgid "Line"
@@ -3727,59 +3927,59 @@ msgstr "Satır"
 
 #: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:230
 msgid "Solid"
-msgstr ""
+msgstr "Katı"
 
 #: src/skins-qt/skins_cfg.cc:254 src/skins/skins_cfg.cc:236
 msgid "Ice"
-msgstr ""
+msgstr "Buz"
 
 #: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:241
 msgid "Smooth"
-msgstr ""
+msgstr "Pürüzsüz"
 
 #: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:245
 msgid "Coloring:"
-msgstr ""
+msgstr "Boyama:"
 
 #: src/skins-qt/skins_cfg.cc:266 src/skins/skins_cfg.cc:248
 msgid "Style:"
-msgstr ""
+msgstr "Tarz:"
 
 #: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:251
 msgid "Falloff:"
-msgstr ""
+msgstr "Düşme:"
 
 #: src/skins-qt/skins_cfg.cc:272 src/skins/skins_cfg.cc:254
 msgid "Peak falloff:"
-msgstr ""
+msgstr "Tepe düşme:"
 
 #: src/skins-qt/skins_cfg.cc:278 src/skins/skins_cfg.cc:260
 msgid "Scope Style:"
-msgstr ""
+msgstr "Kapsam Tarzı:"
 
 #: src/skins-qt/skins_cfg.cc:281 src/skins/skins_cfg.cc:263
 msgid "Voiceprint Coloring:"
-msgstr ""
+msgstr "Ses izi Boyama:"
 
 #: src/skins-qt/skins_cfg.cc:284 src/skins/skins_cfg.cc:266
 msgid "VU Meter Style:"
-msgstr ""
+msgstr "VU Metre Tarzı:"
 
 #: src/skins-qt/skins_cfg.cc:290 src/skins/skins_cfg.cc:272
 msgid "<b>Type</b>"
-msgstr ""
+msgstr "<b>Tür</b>"
 
 #: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:273
 msgid "Visualization type:"
-msgstr ""
+msgstr "Görselleştirme türü:"
 
 #: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:276
 msgid "<b>Analyzer</b>"
-msgstr ""
+msgstr "<b>Çözümleyici</b>"
 
 #: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
 msgid "Show peaks"
-msgstr ""
+msgstr "Tepeleri göster"
 
 #: src/skins-qt/skins_cfg.cc:304 src/skins/skins_cfg.cc:286
 msgid "Visualization"
@@ -3787,15 +3987,15 @@ msgstr "Görselleştirme"
 
 #: src/skins-qt/skinselector.cc:98 src/skins/skinselector.cc:111
 msgid "Archived Winamp 2.x skin"
-msgstr ""
+msgstr "Arşivlenmiş Winamp 2.x kabuğu"
 
 #: src/skins-qt/skinselector.cc:102 src/skins/skinselector.cc:115
 msgid "Unarchived Winamp 2.x skin"
-msgstr ""
+msgstr "Arşivlenmemiş Winamp 2.x kabuğu"
 
 #: src/skins/search-select.cc:75
 msgid "Search entries in active playlist"
-msgstr ""
+msgstr "Etkin oynatma listesinde arama girişleri"
 
 #: src/skins/search-select.cc:76
 msgid "Search"
@@ -3808,6 +4008,10 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
+"Bir veya daha fazla alanı doldurarak oynatma listesindeki girişleri seçin. "
+"Alanlarda normal ifadeler sözdizimi, büyük / küçük harf duyarlı değil. "
+"Normal ifadelerin nasıl çalıştığını bilmiyorsanız, aradığınız şeylerin basit "
+"bir kısmını eklemeniz yeterlidir."
 
 #: src/skins/search-select.cc:89
 msgid "Title:"
@@ -3831,15 +4035,15 @@ msgstr "Önceki aramaları temizle"
 
 #: src/skins/search-select.cc:118
 msgid "Automatically toggle queue for matching entries"
-msgstr ""
+msgstr "Eşleşen girişler için sıraya otomatik olarak geçiş yap"
 
 #: src/skins/search-select.cc:121
 msgid "Create a new playlist with matching entries"
-msgstr ""
+msgstr "Eşleşen girişlerle yeni bir oynatma listesi oluşturun"
 
 #: src/sndfile/plugin.cc:37
 msgid "Sndfile Plugin"
-msgstr ""
+msgstr "Sndfile Eklentisi"
 
 #: src/sndfile/plugin.cc:361
 msgid ""
@@ -3862,35 +4066,53 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Xmms_sndfile eklentisine dayanarak:\n"
+"Telif Hakkı (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Audacious için Tony Vroon tarafından uyarlanmıştır <chainsaw@gentoo.org>\n"
+"\n"
+"Bu program ücretsiz bir yazılımdır; Özgür Yazılım Vakfı tarafından "
+"yayımlanan GNU Genel Kamu Lisansı şartlarına göre yeniden dağıtabilir ve / "
+"veya değiştirebilirsiniz. Lisansın 2 numaralı sürümü veya (seçimlerinize "
+"göre) herhangi bir sonraki sürümü.\n"
+"\n"
+"Bu program yararlı olacağı umuduyla dağıtılır, ancak HERHANGİ BİR GARANTİ "
+"OLMAKSIZIN; SATILABİLİRLİK veya BELİRLİ BİR AMACA UYGUNLUĞU'nun zımni "
+"garantisi dahi olmadan. Daha fazla bilgi için GNU Genel Kamu Lisansına "
+"bakınız.\n"
+"\n"
+"Bu programla birlikte GNU Genel Kamu Lisansının bir kopyasını almış "
+"olmalısınız; eğer değilse, Free Software Foundation, Inc., 51 Franklin "
+"Street, Beşinci Kat, Boston, MA 02110-1301, ABD'ye yazın."
 
 #: src/sndio/sndio.cc:43
 msgid "Sndio Output"
-msgstr ""
+msgstr "Sndio Çıkışı"
 
 #: src/sndio/sndio.cc:98
 msgid "Device (blank for default):"
-msgstr ""
+msgstr "Aygıt (varsayılan olarak boş):"
 
 #: src/sndio/sndio.cc:100
 msgid "Save and restore volume:"
-msgstr ""
+msgstr "Sesi kaydet ve geri yükle:"
 
 #: src/sndio/sndio.cc:181
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
-msgstr ""
+msgstr "Sndio hatası: Desteklenmeyen ses biçimi (%d)"
 
 #: src/sndio/sndio.cc:192
 msgid "Sndio error: sio_open() failed"
-msgstr ""
+msgstr "Sndio hatası: sio_open () başarısız oldu"
 
 #: src/sndio/sndio.cc:221
 msgid "Sndio error: sio_setpar() failed"
-msgstr ""
+msgstr "Sndio hatası: sio_setpar () başarısız oldu"
 
 #: src/sndio/sndio.cc:233
 msgid "Sndio error: sio_start() failed"
-msgstr ""
+msgstr "Sndio hatası: sio_start () başarısız oldu"
 
 #: src/songchange/song_change.cc:33
 msgid "Song Change"
@@ -3902,25 +4124,27 @@ msgstr "<b>Komutlar</b>"
 
 #: src/songchange/song_change.cc:270
 msgid "Command to run when starting a new song:"
-msgstr ""
+msgstr "Yeni bir şarkı başlatırken çalıştırılacak komut:"
 
 #: src/songchange/song_change.cc:273
 msgid "Command to run at the end of a song:"
-msgstr ""
+msgstr "Bir şarkının sonunda çalıştırmak için komut:"
 
 #: src/songchange/song_change.cc:276
 msgid "Command to run at the end of the playlist:"
-msgstr ""
+msgstr "Çalma listesinin sonunda çalıştırılacak komut:"
 
 #: src/songchange/song_change.cc:279
 msgid "Command to run when song title changes (for network streams):"
-msgstr ""
+msgstr "Şarkı adı değiştiğinde çalıştırılacak komut (ağ akışları için):"
 
 #: src/songchange/song_change.cc:282
 msgid ""
 "You can use the following format codes, which will be replaced before "
 "running the command (not all are useful for the end-of-playlist command):"
 msgstr ""
+"Komutu çalıştırmadan önce değiştirilecek olan aşağıdaki kodları "
+"kullanabilirsiniz (çalma listesi komutu için hepsi kullanışlı değildir):"
 
 #: src/songchange/song_change.cc:285
 msgid ""
@@ -3936,12 +4160,25 @@ msgid ""
 "%t: Playlist position\n"
 "%T: Title (unformatted)"
 msgstr ""
+"%a: Sanatçı\n"
+"%b: Albüm\n"
+"%c: Kanalların Sayısı\n"
+"%f: Dosya adı (tam yol)\n"
+"%F: Frekans (Hertz)\n"
+"%l: Uzunluk (milisaniye)\n"
+"%n or %s: Biçimlendirilmiş başlık (çalma listesi ayarlarına bakın)\n"
+"%p: Şu anda çalan (1 veya 0)\n"
+"%r: Oran (Saniye başına bit)\n"
+"%t: Çalma listesi konumu\n"
+"%T: Başlık (biçimlendirilmemiş)"
 
 #: src/songchange/song_change.cc:296
 msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.  "
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
+"Kabuğa geçirilen parametreler tırnak içine alınmalıdır. Belirtilmeyen "
+"parametreler beklenmedik sonuçlara yol açabilir."
 
 #: src/song-info-qt/song-info.cc:33
 msgid "Song Info"
@@ -3949,7 +4186,7 @@ msgstr "Şarkı Bilgisi"
 
 #: src/soxr/sox-resampler.cc:44
 msgid "SoX Resampler"
-msgstr ""
+msgstr "SoX Resampler"
 
 #: src/soxr/sox-resampler.cc:157
 msgid ""
@@ -3959,6 +4196,11 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Audacious için Sox Resampler Eklentisi\n"
+"Telif Hakkı 2013 Michał Lipski\n"
+"\n"
+"Örnekleme Hızı Dönüştürücü Eklentisine dayalı:\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/soxr/sox-resampler.cc:163
 msgid "Quick"
@@ -3978,19 +4220,19 @@ msgstr "Daha Yüksek"
 
 #: src/soxr/sox-resampler.cc:168
 msgid "Ultra High"
-msgstr ""
+msgstr "Çok Yüksek"
 
 #: src/soxr/sox-resampler.cc:172
 msgid "Minimum"
-msgstr ""
+msgstr "En az"
 
 #: src/soxr/sox-resampler.cc:173
 msgid "Intermediate"
-msgstr ""
+msgstr "Orta düzey"
 
 #: src/soxr/sox-resampler.cc:174
 msgid "Linear"
-msgstr ""
+msgstr "Doğrusal"
 
 #: src/soxr/sox-resampler.cc:178
 msgid "Quality:"
@@ -3998,35 +4240,35 @@ msgstr "Kalite:"
 
 #: src/soxr/sox-resampler.cc:181
 msgid "Phase:"
-msgstr ""
+msgstr "Faz:"
 
 #: src/soxr/sox-resampler.cc:185
 msgid "Allow aliasing"
-msgstr ""
+msgstr "Allow aliasing"
 
 #: src/soxr/sox-resampler.cc:187
 msgid "Use steep filter"
-msgstr ""
+msgstr "Dik filtre kullan"
 
 #: src/speedpitch/speed-pitch.cc:54
 msgid "Speed and Pitch"
-msgstr ""
+msgstr "Hız ve Saha"
 
 #: src/speedpitch/speed-pitch.cc:247
 msgid "<b>Speed</b>"
-msgstr ""
+msgstr "<b>Hız</b>"
 
 #: src/speedpitch/speed-pitch.cc:248
 msgid "Decouple from pitch"
-msgstr ""
+msgstr "Sahadan çözme"
 
 #: src/speedpitch/speed-pitch.cc:250 src/speedpitch/speed-pitch.cc:258
 msgid "Multiplier:"
-msgstr ""
+msgstr "Çarpan:"
 
 #: src/speedpitch/speed-pitch.cc:254
 msgid "<b>Pitch</b>"
-msgstr ""
+msgstr "<b>Saha</b>"
 
 #: src/statusicon-qt/statusicon.cc:45 src/statusicon/statusicon.cc:47
 msgid "Status Icon"
@@ -4043,6 +4285,13 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
+"Durum Simgesi Eklentisi (Qt arabirimi için kısmi bağlantı noktası)\n"
+"Telif Hakkı 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Telif Hakkı 2010 Michał Lipski <tallica@o2.pl>\n"
+"Telif Hakkı 2015 Eugene Paskevich <eugene@raptor.kiev.ua>\n"
+"\n"
+"Bu eklenti, pencere yöneticisinin sistem tepsisi\n"
+"alanına yerleştirilmiş bir durum simgesi sağlar."
 
 #: src/statusicon-qt/statusicon.cc:88 src/statusicon/statusicon.cc:381
 msgid "<b>Mouse Scroll Action</b>"
@@ -4070,11 +4319,11 @@ msgstr "Sistem tepsisinden çıkar"
 
 #: src/statusicon-qt/statusicon.cc:100 src/statusicon/statusicon.cc:393
 msgid "Advance in playlist when scrolling upward"
-msgstr ""
+msgstr "Yukarı kaydırma yaparken çalma listesinde ilerleyin"
 
 #: src/statusicon-qt/statusicon.cc:115 src/statusicon/statusicon.cc:284
 msgid "Se_ttings ..."
-msgstr ""
+msgstr "A_yarlar ..."
 
 #: src/statusicon/statusicon.cc:374
 msgid ""
@@ -4086,6 +4335,13 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
+"Durum Simgesi Eklentisi\n"
+"\n"
+"Telif Hakkı 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Telif Hakkı 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"Bu eklenti, pencere yöneticisinin sistem tepsisi\n"
+"alanına yerleştirilmiş bir durum simgesi sağlar."
 
 #: src/stereo_plugin/stereo.cc:19
 msgid "Extra Stereo"
@@ -4097,6 +4353,9 @@ msgid ""
 "\n"
 "By Johan Levin, 1999"
 msgstr ""
+"Stereo Artırma Eklentisi\n"
+"\n"
+"Johan Levin tarafından, 1999"
 
 #: src/stereo_plugin/stereo.cc:44
 msgid "<b>Extra Stereo</b>"
@@ -4104,7 +4363,7 @@ msgstr "<b>Extra Stereo</b>"
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
-msgstr ""
+msgstr "Ton Oluşturucu"
 
 #: src/tonegen/tonegen.cc:92
 #, c-format
@@ -4123,6 +4382,11 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 msgstr ""
+"Håvard Kvålen'in ton üreteci <havardk@xmms.org>\n"
+"Daniel J. Peng tarafından değiştirildi <danielpeng@bigfoot.com>\n"
+"\n"
+"Kullanmak için bir URL ekleyin: tone://frequency1;frequency2;frequency3;...\n"
+"örneğin tone://2000;2005 bir 2000 Hz ton ve bir 2005 Hz ton çalmak için"
 
 #: src/ui-common/dialogs-qt.cc:31
 msgid "Working ..."
@@ -4156,6 +4420,23 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
+"Audacious Ogg Vorbis Çözücü\n"
+"\n"
+"Xiph.org Vakfı’nın Ogg Vorbis Eklentisine dayanarak:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Özgün kod:\n"
+"Tony Arcieri tarafından <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Katkıcılar:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
 
 #: src/vorbis/vorbis.h:18
 msgid "Ogg Vorbis Decoder"
@@ -4164,7 +4445,7 @@ msgstr "Ogg Vorbis Çözücü"
 #: src/vtx/info.cc:24
 #, c-format
 msgid "Details about %s"
-msgstr ""
+msgstr "%s hakkında ayrıntılar"
 
 #: src/vtx/info.cc:26
 msgid ""
@@ -4180,6 +4461,17 @@ msgid ""
 "Player Freq: %P\n"
 "Year: %y"
 msgstr ""
+"Başlık: %t\n"
+"Yazar: %a\n"
+"İtibaren: %f\n"
+"Takipçi: %T\n"
+"Yorum: %C\n"
+"Çip türü: %c\n"
+"Stereo: %s\n"
+"Döngü: %l\n"
+"Çip Frekansı: %F\n"
+"Çalıcı Frekansı: %P\n"
+"Yıl: %y"
 
 #: src/vtx/vtx.cc:38
 msgid "VTX Decoder"
@@ -4191,16 +4483,21 @@ msgid ""
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
+"Sashnov Alexander tarafından Vortex dosya biçimi çalıcı <sashnov@ngs.ru>\n"
+"Roman Sherbakov tarafından in_vtx.dll dayanarak <v_soft@microfor.ru>\n"
+"Pavel Vymetalek tarafından Audacious eklentisi <pvymetalek@seznam.cz>"
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
-msgstr ""
+msgstr "Win32 waveOut"
 
 #: src/waveout/waveout.cc:69
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
 msgstr ""
+"Audacious için Win32 waveOut eklentisi\n"
+"Telif Hakkı 2016 John Lindgren"
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"
@@ -4208,11 +4505,11 @@ msgstr "Wav Çözücü"
 
 #: src/wavpack/wavpack.cc:211
 msgid "lossy (hybrid)"
-msgstr ""
+msgstr "yozlaşmış (melez)"
 
 #: src/wavpack/wavpack.cc:213
 msgid "lossy"
-msgstr ""
+msgstr "yozlaşmış"
 
 #: src/wavpack/wavpack.cc:251
 msgid ""
@@ -4231,15 +4528,26 @@ msgstr "2SF Çözücü"
 
 #: src/xsf/plugin.cc:231
 msgid "<b>XSF Configuration</b>"
-msgstr ""
+msgstr "<b>XSF Yapılandırması</b>"
 
 #: src/xsf/plugin.cc:232
 msgid "Ignore length from file"
-msgstr ""
+msgstr "Dosyadan uzunluğu yoksay"
 
 #: src/xspf/xspf.cc:91
 msgid "XML Shareable Playlists (XSPF)"
-msgstr "XML Paylaşılabilir müzik listesi (XSPF)"
+msgstr "XML Paylaşılabilir çalma listesi (XSPF)"
 
 #~ msgid "GNOME Shortcuts"
 #~ msgstr "GNOME Kısayolları"
+
+#~ msgid ""
+#~ "GNOME Shortcut Plugin\n"
+#~ "Lets you control the player with GNOME's shortcuts.\n"
+#~ "\n"
+#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
+#~ msgstr ""
+#~ "GNOME Kısayol Eklentisi\n"
+#~ "Oynatıcıyı GNOME'un kısayollarıyla kontrol etmenizi sağlar.\n"
+#~ "\n"
+#~ "Telif Hakkı (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"

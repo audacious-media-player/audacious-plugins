@@ -9,14 +9,14 @@
 # Henrik Mattsson-Mårn <h@reglage.net>, 2015
 # Jonatan Nyberg, 2018
 # Jonatan Nyberg, 2017-2018
-# Kristoffer Grundström <kristoffer.grundstrom1983@gmail.com>, 2016
+# Kristoffer Grundström <hamnisdude@gmail.com>, 2016
 # Luna Jernberg <bittin@cafe8bitar.se>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-07-31 15:09+0000\n"
+"POT-Creation-Date: 2018-08-04 20:51+0200\n"
+"PO-Revision-Date: 2018-12-26 06:11+0000\n"
 "Last-Translator: Jonatan Nyberg\n"
 "Language-Team: Swedish (http://www.transifex.com/audacious/audacious/"
 "language/sv/)\n"
@@ -660,7 +660,7 @@ msgstr "Relativ Y-utjämning:"
 
 #: src/aosd/aosd_ui.cc:209
 msgid "Max OSD width:"
-msgstr "Max OSD-bredd:"
+msgstr "Största OSD-bredd:"
 
 #: src/aosd/aosd_ui.cc:220
 msgid "Multi-Monitor options"
@@ -1488,7 +1488,7 @@ msgstr "Minsta överföringskapacitet:"
 
 #: src/filewriter/filewriter.cc:510
 msgid "Maximum bitrate:"
-msgstr "Maximal överföringskapacitet:"
+msgstr "Högsta överföringskapacitet:"
 
 #: src/filewriter/filewriter.cc:514
 msgid "Average bitrate:"
@@ -1733,7 +1733,7 @@ msgstr "Lägg till U_RL ..."
 
 #: src/gtkui/menus.cc:84 src/qtui/menus.cc:75
 msgid "Search _Library"
-msgstr "Sök i _bibliotek"
+msgstr "Sök i _biblioteket"
 
 #: src/gtkui/menus.cc:86 src/qtui/menus.cc:77
 msgid "A_bout ..."
@@ -2119,7 +2119,7 @@ msgstr "Pausa"
 #: src/gtkui/ui_gtk.cc:796 src/qtui/main_window.cc:101 src/skins/menus.cc:86
 #: src/skins-qt/menus.cc:77
 msgid "Search Library"
-msgstr "Sök i bibliotek"
+msgstr "Sök i biblioteket"
 
 #: src/gtkui/ui_gtk.cc:804 src/qtui/main_window.cc:102
 msgid "Open Files"
@@ -2351,6 +2351,8 @@ msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
+"JACK stöder endast flyttal-ljud. Du måste ändra utmatningsbitdjupet till "
+"flyttal i Audacious-inställningar."
 
 #: src/jack/jack-ng.cc:205
 msgid "Failed to connect to the JACK server; is it running?"
@@ -2747,6 +2749,22 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Desktop Notifications Plugin för Audacious\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011-2013 John Lindgren och Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"This plugin is free software: you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.cc:102
 msgid "Show playback controls"
@@ -3153,7 +3171,7 @@ msgstr "Antal resultat som ska visas:"
 
 #: src/search-tool-qt/search-tool-qt.cc:90 src/search-tool/search-tool.cc:77
 msgid "Rescan library at startup"
-msgstr "Sök igenom bibliotek vid uppstart"
+msgstr "Sök igenom biblioteket vid uppstart"
 
 #: src/search-tool-qt/search-tool-qt.cc:305
 #: src/search-tool-qt/search-tool-qt.cc:316 src/search-tool/search-tool.cc:149
@@ -3368,7 +3386,7 @@ msgstr "16 kHz"
 
 #: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:267
 msgid "Audacious Equalizer"
-msgstr "Audacious Equalizer"
+msgstr "Audacious-equalizer"
 
 #: src/skins/main.cc:447 src/skins-qt/main.cc:433
 msgid "Recording on"
@@ -4003,6 +4021,24 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Baserat på xmms_sndfile-insticksmodulen:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Anpassad för Audacious av Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/sndio/sndio.cc:43
 msgid "Sndio Output"
@@ -4231,7 +4267,7 @@ msgstr "<b>Andra inställningar</b>"
 
 #: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:389
 msgid "Disable the popup window"
-msgstr "Inaktivera popup-fönstret"
+msgstr "Inaktivera poppupp-fönstret"
 
 #: src/statusicon-qt/statusicon.cc:98 src/statusicon/statusicon.cc:391
 msgid "Close to the system tray"

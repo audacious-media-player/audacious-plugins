@@ -27,8 +27,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-07-30 03:51+0000\n"
+"POT-Creation-Date: 2018-08-04 20:51+0200\n"
+"PO-Revision-Date: 2018-12-26 06:11+0000\n"
 "Last-Translator: No Ne\n"
 "Language-Team: Polish (http://www.transifex.com/audacious/audacious/language/"
 "pl/)\n"
@@ -484,7 +484,7 @@ msgstr "Przeskocz ciszę na zakończeniu"
 
 #: src/amidiplug/i_configure.cc:141
 msgid "<b>SoundFont</b>"
-msgstr "<b>Czcionka</b>"
+msgstr "<b>SoundFont</b>"
 
 #: src/amidiplug/i_configure.cc:145
 msgid "<b>Synthesizer</b>"
@@ -497,7 +497,7 @@ msgstr "Częstotliwość próbkowania:"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:54
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug - wybierz plik czcionki"
+msgstr "AMIDI-Plug - wybierz plik SoundFont"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:57
 msgid "_Cancel"
@@ -533,7 +533,7 @@ msgstr "Długość (ms):"
 
 #: src/amidiplug/i_fileinfo.cc:207
 msgid "No. of Tracks:"
-msgstr "Liczba utworów:"
+msgstr "Liczba ścieżek:"
 
 #: src/amidiplug/i_fileinfo.cc:213
 msgid "variable"
@@ -757,7 +757,7 @@ msgid ""
 msgstr ""
 "Nie wykryto menedżera okien obsługującego kompozycje.\n"
 "Aby menu ekranowe było wyświetlanie prawidłowo, należy uruchomić menedżer "
-"okien obsługujący kompozycje (np. Compiz)."
+"okien obsługujący kompozycje"
 
 #: src/aosd/aosd_ui.cc:668
 msgid "Composite manager not required for fake transparency"
@@ -1064,7 +1064,7 @@ msgstr "Echo:"
 
 #: src/console/plugin.cc:39
 msgid "Default song length:"
-msgstr "Domyślny czas trwania ścieżki:"
+msgstr "Domyślna długość piosenki:"
 
 #: src/console/plugin.cc:42 src/modplug/plugin_main.cc:62
 msgid "<b>Resampling</b>"
@@ -1501,7 +1501,7 @@ msgstr "Współczynnik kompresji:"
 
 #: src/filewriter/filewriter.cc:490
 msgid "Audio mode:"
-msgstr "tryb audio:"
+msgstr "Tryb audio:"
 
 #: src/filewriter/filewriter.cc:493
 msgid "Enforce strict ISO compliance"
@@ -1680,11 +1680,11 @@ msgstr "Album"
 
 #: src/gtkui/columns.cc:40
 msgid "Album artist"
-msgstr "Artysta albumu"
+msgstr "Wykonawca albumu"
 
 #: src/gtkui/columns.cc:41 src/qtui/playlist_model.cc:42
 msgid "Track"
-msgstr "Numer ścieżki"
+msgstr "Ścieżka"
 
 #: src/gtkui/columns.cc:42 src/qtui/playlist_model.cc:43
 msgid "Genre"
@@ -1829,12 +1829,12 @@ msgstr "Odtwarzaj _pojedynczo"
 
 #: src/gtkui/menus.cc:102 src/qtui/menus.cc:96
 msgid "Stop A_fter This Song"
-msgstr "Z_atrzymaj odtwarzanie po tym utworze"
+msgstr "Z_atrzymaj odtwarzanie po tej piosence"
 
 #: src/gtkui/menus.cc:104 src/gtkui/menus.cc:205 src/qtui/menus.cc:98
 #: src/qtui/menus.cc:200
 msgid "Song _Info ..."
-msgstr "_Informacje o ścieżce..."
+msgstr "_Informacje o piosence..."
 
 #: src/gtkui/menus.cc:105
 msgid "Jump to _Time ..."
@@ -1842,15 +1842,15 @@ msgstr "Przejdź do _czasu..."
 
 #: src/gtkui/menus.cc:106
 msgid "_Jump to Song ..."
-msgstr "Przejdź do ścież_ki..."
+msgstr "Przejdź do piosen_ki..."
 
 #: src/gtkui/menus.cc:108
 msgid "Set Repeat Point _A"
-msgstr "Ustaw punkt początkowy pętli"
+msgstr "Ustaw punkt powtarzania _A"
 
 #: src/gtkui/menus.cc:109
 msgid "Set Repeat Point _B"
-msgstr "Ustaw punkt końcowy pętli"
+msgstr "Ustaw punkt powtarzania _B"
 
 #: src/gtkui/menus.cc:110
 msgid "_Clear Repeat Points"
@@ -1931,11 +1931,11 @@ msgstr "Wy_losuj kolejność"
 
 #: src/gtkui/menus.cc:154 src/qtui/menus.cc:142
 msgid "_Play/Resume"
-msgstr "_Odtwórz/Ponów"
+msgstr "_Odtwórz lub wznów"
 
 #: src/gtkui/menus.cc:155 src/qtui/menus.cc:143
 msgid "_Refresh"
-msgstr "_Wczytaj ponownie"
+msgstr "O_dśwież"
 
 #: src/gtkui/menus.cc:157 src/qtui/menus.cc:147
 msgid "_Sort"
@@ -2058,7 +2058,7 @@ msgstr "_Widok"
 
 #: src/gtkui/menus.cc:206 src/qtui/menus.cc:201
 msgid "_Queue/Unqueue"
-msgstr "_Dodaj/Usuń kolejkę"
+msgstr "_Przełącz kolejkę"
 
 #: src/gtkui/menus.cc:208 src/qtui/menus.cc:203
 msgid "_Open Containing Folder"
@@ -2066,7 +2066,7 @@ msgstr "_Otwórz katalog zawierający"
 
 #: src/gtkui/menus.cc:209 src/qtui/menus.cc:204
 msgid "_Refresh Selected"
-msgstr "Odśwież zaznaczone"
+msgstr "O_dśwież zaznaczone"
 
 #: src/gtkui/menus.cc:211 src/qtui/menus.cc:206
 msgid "Cu_t"
@@ -2082,7 +2082,7 @@ msgstr "Wk_lej"
 
 #: src/gtkui/menus.cc:214 src/qtui/menus.cc:209
 msgid "Paste at _End"
-msgstr "Wklej na końcu"
+msgstr "_Wklej na końcu"
 
 #: src/gtkui/menus.cc:215 src/qtui/menus.cc:210
 msgid "Select _All"
@@ -2233,11 +2233,11 @@ msgstr "Tryb listy odtwarzania."
 
 #: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:474 src/skins-qt/main.cc:460
 msgid "Stopping after song."
-msgstr "Zatrzymaj po tym utworze."
+msgstr "Zatrzymaj po tej piosence."
 
 #: src/hotkey/gui.cc:71
 msgid "Previous track"
-msgstr "Poprzedni utwór"
+msgstr "Poprzedna ścieżka"
 
 #: src/hotkey/gui.cc:73
 msgid "Pause/Resume"
@@ -2245,7 +2245,7 @@ msgstr "Wstrzymaj/wznów"
 
 #: src/hotkey/gui.cc:75
 msgid "Next track"
-msgstr "Następny utwór"
+msgstr "Następna ścieżka"
 
 #: src/hotkey/gui.cc:76
 msgid "Forward 5 seconds"
@@ -2540,7 +2540,7 @@ msgstr "Szukanie tekstu piosenk i ..."
 
 #: src/lyricwiki/lyricwiki.cc:299 src/lyricwiki-qt/lyricwiki.cc:351
 msgid "Missing song metadata"
-msgstr "Brakujące metadane utworu"
+msgstr "Brakujące metadane piosenki"
 
 #: src/lyricwiki/lyricwiki.cc:310 src/lyricwiki-qt/lyricwiki.cc:362
 msgid "Connecting to lyrics.wikia.com ..."
@@ -2581,7 +2581,7 @@ msgstr ""
 "Instrukcja: wprowadź adres URL: tact://uderzenia*liczba jednostek "
 "metrycznych/jednostka metryczna\n"
 "na przykład tact://77 aby wygenerować 77 uderzeń na minutę\n"
-"lub tact://60*3/4 aby wygenerować 60 uderzeń na minutę w metrum 3/4."
+"lub tact://60*3/4 aby wygenerować 60 uderzeń na minutę w metrum 3/4"
 
 #: src/mixer/mixer.cc:38
 msgid "Channel Mixer"
@@ -2982,7 +2982,7 @@ msgstr ""
 
 #: src/qtui/main_window.cc:110 src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
-msgstr "Zatrzymaj odtwarzanie po tym utworze"
+msgstr "Zatrzymaj odtwarzanie po tej piosence"
 
 #: src/qtui/menus.cc:69
 msgid "_Open Folder ..."
@@ -3018,7 +3018,7 @@ msgstr "Numer porządkowy"
 
 #: src/qtui/playlist_model.cc:41
 msgid "Album Artist"
-msgstr "Artysta albumu"
+msgstr "Wykonawca albumu"
 
 #: src/qtui/playlist_model.cc:44
 msgid "Queue Position"
@@ -3176,7 +3176,7 @@ msgstr "Unieważnij uprawnienia"
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
-"Musisz pozwolić Audacious wysyłać nazwy utworów do swojego konta Last.fm."
+"Musisz pozwolić Audacious wysyłać nazwy ścieżek do swojego konta Last.fm."
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
@@ -3878,7 +3878,7 @@ msgstr "Przewijaj tytuł piosenki"
 
 #: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
 msgid "Scroll song title in both directions"
-msgstr "Przewijanie tytułu utworu w obydwu kierunkach"
+msgstr "Przewijanie tytułu piosenki w obydwu kierunkach"
 
 #: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:202
 msgid "Analyzer"
@@ -4140,7 +4140,7 @@ msgstr "Błąd Sndio: funkcja sio_start() zwróciła błąd"
 
 #: src/songchange/song_change.cc:33
 msgid "Song Change"
-msgstr "Polecenie przy zmianie ścieżki"
+msgstr "Zmiana piosenki"
 
 #: src/songchange/song_change.cc:268
 msgid "<b>Commands</b>"
@@ -4209,7 +4209,7 @@ msgstr ""
 
 #: src/song-info-qt/song-info.cc:33
 msgid "Song Info"
-msgstr "Informacje o nagraniu"
+msgstr "Informacje o piosence"
 
 #: src/soxr/sox-resampler.cc:44
 msgid "SoX Resampler"
@@ -4331,7 +4331,7 @@ msgstr "Zmiana głośności"
 
 #: src/statusicon-qt/statusicon.cc:92 src/statusicon/statusicon.cc:385
 msgid "Change playing song"
-msgstr "Zmiana bieżącej ścieżki"
+msgstr "Zmiana bieżącej piosenki"
 
 #: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:388
 msgid "<b>Other Settings</b>"
@@ -4413,7 +4413,7 @@ msgstr ""
 "Instrukcja użytkowania: wprowadź URL tone://częstotliwość1;częstotliwość2;"
 "częstotliwość3;...\n"
 "przykładowo wprowadzenie: tone://2000;2005 wytworzy dźwięk o częstotliwości "
-"2000 Hz oraz 2005 Hz."
+"2000 Hz oraz 2005 Hz"
 
 #: src/ui-common/dialogs-qt.cc:31
 msgid "Working ..."
@@ -4491,7 +4491,7 @@ msgstr ""
 "Tytuł: %t\n"
 "Autor: %a\n"
 "Z: %f\n"
-"Tropiciel: %T\n"
+"Tracker: %T\n"
 "Komentarz: %C\n"
 "Rodzaj układu: %c\n"
 "Stereo: %s\n"

@@ -15,14 +15,14 @@
 # Petr Šimáček <petr.simacek@gmail.com>, 2012
 # Petr Šimáček <petr.simacek@gmail.com>, 2012
 # Petr Šimáček <petr.simacek@gmail.com>, 2013-2014,2017
-# Roman Horník <roman.hornik@debian-linux.cz>, 2016
+# Roman Horník <roman.hornik@debian-linux.cz>, 2016,2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-07-29 21:54+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2018-08-04 20:51+0200\n"
+"PO-Revision-Date: 2018-12-26 06:11+0000\n"
+"Last-Translator: Roman Horník <roman.hornik@debian-linux.cz>\n"
 "Language-Team: Czech (http://www.transifex.com/audacious/audacious/language/"
 "cs/)\n"
 "Language: cs\n"
@@ -51,15 +51,15 @@ msgstr "<b>Výstup</b>"
 
 #: src/adplug/adplug-xmms.cc:298
 msgid "16-bit output (if unchecked, output is 8-bit)"
-msgstr ""
+msgstr "16bitový výstup (není-li zaškrtnuto, výstup je 8bitový)"
 
 #: src/adplug/adplug-xmms.cc:300
 msgid "Duplicate mono output to two channels"
-msgstr ""
+msgstr "Duplikovat monofonní výstup do dvou kanálů"
 
 #: src/adplug/adplug-xmms.cc:302
 msgid "Sample rate"
-msgstr ""
+msgstr "Vzorkovací kmitočet"
 
 #: src/adplug/adplug-xmms.cc:303 src/amidiplug/i_configure.cc:152
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
@@ -81,7 +81,7 @@ msgstr "<b>Různé</b>"
 
 #: src/adplug/adplug-xmms.cc:305
 msgid "Repeat song in endless loop"
-msgstr ""
+msgstr "Opakovat nahrávku v nekonečné smyčce"
 
 #: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
 msgid "Alarm"
@@ -817,7 +817,7 @@ msgstr "<b>Barva</b>"
 
 #: src/blur_scope/blur_scope.cc:55
 msgid "Blur Scope"
-msgstr "Rozsah rozostření"
+msgstr "Rozostřený osciloskop"
 
 #: src/bs2b/plugin.cc:38
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
@@ -845,7 +845,7 @@ msgstr "Analyzátor spektra"
 
 #: src/cdaudio/cdaudio-ng.cc:71
 msgid "Audio CD Plugin"
-msgstr "Audio CD Plugin"
+msgstr "Audio CD plugin"
 
 #: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
@@ -966,7 +966,7 @@ msgstr "nelze přečíst začátek/konec LSN pro skladbu %d."
 
 #: src/cdaudio/cdaudio-ng.cc:611
 msgid "Failed to create the CDDB connection."
-msgstr ""
+msgstr "Selhalo vytvoření CDDB spojení."
 
 #: src/cdaudio/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
@@ -980,7 +980,7 @@ msgstr "Nepodařil se dotaz na server CDDB: %s"
 #: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
 msgid "Failed to read the CDDB info: %s"
-msgstr ""
+msgstr "Selhalo čtení CDDB informace: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -988,11 +988,11 @@ msgstr "Položky Audio CD menu"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Pla_y CD"
-msgstr ""
+msgstr "Pře_hrát CD"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "_Add CD"
-msgstr ""
+msgstr "Při_dat CD"
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
@@ -1016,7 +1016,7 @@ msgstr ""
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
-msgstr "Dynamický rozsah kompresoru"
+msgstr "Kompresor dynamického rozsahu"
 
 #: src/console/plugin.cc:15
 msgid ""
@@ -1089,6 +1089,14 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Výstupní plugin CoreAudio pro Audacious\n"
+"Copyright 2014 William Pitcock\n"
+"Copyright 2017-18 René J.V. Bertin\n"
+" (původní kód a kód převzatý z\n"
+"Apple examples, (c) Apple 2013)\n"
+"\n"
+"Založeno na výstupním pluginu SDL pro Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/coreaudio/coreaudio.cc:172
 msgid "Use exclusive mode"
@@ -1096,7 +1104,7 @@ msgstr "Použij exkluzivní mód"
 
 #: src/coreaudio/coreaudio.cc:174
 msgid "Use bit perfect audio (adapt device sampling rate)"
-msgstr ""
+msgstr "Použit bitově dokonalý zvuk (přizpůsobit vzorkovací kmitočet zařízení)"
 
 #: src/crossfade/crossfade.cc:43
 msgid ""
@@ -1161,31 +1169,31 @@ msgstr "Smazat soubory"
 
 #: src/delete-files/delete-files.cc:120
 msgid "No files are selected."
-msgstr ""
+msgstr "Nebyly zvoleny žádné soubory."
 
 #: src/delete-files/delete-files.cc:125
 #, c-format
 msgid "Do you want to move %s to the trash?"
-msgstr ""
+msgstr "Chcete přesunout %s do koše?"
 
 #: src/delete-files/delete-files.cc:126
 #, c-format
 msgid "Do you want to permanently delete %s?"
-msgstr ""
+msgstr "Chcete trvale odstranit %s?"
 
 #: src/delete-files/delete-files.cc:133
 #, c-format
 msgid "Do you want to move %d files to the trash?"
-msgstr ""
+msgstr "Chcete přesunout %d souborů do koše?"
 
 #: src/delete-files/delete-files.cc:134
 #, c-format
 msgid "Do you want to permanently delete %d files?"
-msgstr ""
+msgstr "Chcete trvale odstranit %d souborů?"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Move to trash"
-msgstr ""
+msgstr "Přesunout do koše"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Delete"
@@ -1248,7 +1256,7 @@ msgstr "Ozvěna"
 
 #: src/ffaudio/ffaudio-core.cc:49
 msgid "FFmpeg Plugin"
-msgstr "FFmpeg Plugin"
+msgstr "FFmpeg plugin"
 
 #: src/ffaudio/ffaudio-core.cc:627
 msgid ""
@@ -1564,7 +1572,7 @@ msgstr "Obecné"
 
 #: src/flac/flacng.h:35
 msgid "FLAC Decoder"
-msgstr "FLAC Dekodér"
+msgstr "FLAC dekodér"
 
 #: src/flac/metadata.cc:270 src/wavpack/wavpack.cc:209
 msgid "lossless"
@@ -1592,7 +1600,7 @@ msgstr ""
 
 #: src/gio/gio.cc:42
 msgid "GIO Plugin"
-msgstr "GIO Plugin"
+msgstr "GIO plugin"
 
 #: src/gio/gio.cc:152
 msgid "Read-and-append mode not supported"
@@ -1740,7 +1748,7 @@ msgstr "Přidat U_RL…"
 
 #: src/gtkui/menus.cc:84 src/qtui/menus.cc:75
 msgid "Search _Library"
-msgstr "Prohledej knihovnu"
+msgstr "Prohledat knihovnu"
 
 #: src/gtkui/menus.cc:86 src/qtui/menus.cc:77
 msgid "A_bout ..."
@@ -1934,7 +1942,7 @@ msgstr "Přej_menovat"
 
 #: src/gtkui/menus.cc:164 src/gtkui/menus.cc:223 src/qtui/menus.cc:154
 msgid "Remo_ve"
-msgstr "Odstraň"
+msgstr "Odstranit"
 
 #: src/gtkui/menus.cc:166 src/qtui/menus.cc:156
 msgid "_Import ..."
@@ -2126,7 +2134,7 @@ msgstr "Pozastavit"
 #: src/gtkui/ui_gtk.cc:796 src/qtui/main_window.cc:101 src/skins/menus.cc:86
 #: src/skins-qt/menus.cc:77
 msgid "Search Library"
-msgstr "Prohledej knihovnu"
+msgstr "Prohledat knihovnu"
 
 #: src/gtkui/ui_gtk.cc:804 src/qtui/main_window.cc:102
 msgid "Open Files"
@@ -2275,6 +2283,10 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Nedoporučuje se jako klávesové zkratky používat primární tlačítka myši bez "
+"modifikátorů.\n"
+"\n"
+"Chcete pokračovat?"
 
 #: src/hotkey/gui.cc:236
 msgid "Binding mouse buttons"
@@ -2427,7 +2439,7 @@ msgstr "LADSPA Host"
 
 #: src/lirc/lirc.cc:55
 msgid "LIRC Plugin"
-msgstr "LIRC Plugin"
+msgstr "LIRC plugin"
 
 #: src/lirc/lirc.cc:379
 msgid ""
@@ -2472,7 +2484,7 @@ msgstr "Vyčkat před opětovným připojením:"
 
 #: src/lyricwiki/lyricwiki.cc:42 src/lyricwiki-qt/lyricwiki.cc:70
 msgid "LyricWiki Plugin"
-msgstr "LyricWiki Plugin"
+msgstr "LyricWiki plugin"
 
 #: src/lyricwiki/lyricwiki.cc:132 src/lyricwiki-qt/lyricwiki.cc:151
 #: src/lyricwiki-qt/lyricwiki.cc:337
@@ -2518,7 +2530,7 @@ msgstr "Upravit text skladby..."
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
-msgstr "M3U Playlisty"
+msgstr "M3U seznamy skladeb"
 
 #: src/metronom/metronom.cc:44
 msgid "Tact Generator"
@@ -2570,7 +2582,7 @@ msgstr "Výstupní kanály:"
 
 #: src/mms/mms.cc:35
 msgid "MMS Plugin"
-msgstr "MMS Plugin"
+msgstr "MMS plugin"
 
 #: src/mms/mms.cc:82
 msgid "Error connecting to MMS server"
@@ -2687,7 +2699,7 @@ msgstr "Tyto nastavení se projeví až po restartu Audacious."
 
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
-msgstr "MPG123 Plugin"
+msgstr "MPG123 plugin"
 
 #: src/mpg123/mpg123.cc:80
 msgid "<b>Advanced</b>"
@@ -2703,11 +2715,11 @@ msgstr "Prostorový zvuk"
 
 #: src/mpris2/plugin.cc:38
 msgid "MPRIS 2 Server"
-msgstr "MPRIS 2 Server"
+msgstr "MPRIS 2 server"
 
 #: src/neon/neon.cc:97
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr "Neon HTTP/HTTPS Plugin"
+msgstr "Neon HTTP/HTTPS plugin"
 
 #: src/neon/neon.cc:526
 msgid "Error parsing redirect"
@@ -2861,11 +2873,11 @@ msgstr "PLS seznamy skladeb"
 
 #: src/psf/plugin.cc:45
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr "OpenPSF PSF1/PSF2 Dekodér"
+msgstr "OpenPSF PSF1/PSF2 dekodér"
 
 #: src/pulse/pulse_audio.cc:40
 msgid "PulseAudio Output"
-msgstr "PulseAudio Výstup"
+msgstr "PulseAudio výstup"
 
 #: src/pulse/pulse_audio.cc:532
 msgid ""
@@ -3001,7 +3013,7 @@ msgstr "Qt rozhraní"
 
 #: src/qtui/search_bar.cc:47
 msgid "Search playlist"
-msgstr "Prohledat playlist"
+msgstr "Prohledat seznam skladeb"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -3175,7 +3187,7 @@ msgstr ""
 
 #: src/sdlout/sdlout.cc:43
 msgid "SDL Output"
-msgstr "SDL Výstup"
+msgstr "SDL výstup"
 
 #: src/sdlout/sdlout.cc:72
 msgid ""
@@ -3187,11 +3199,11 @@ msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:87 src/search-tool/search-tool.cc:74
 msgid "Number of results to show:"
-msgstr ""
+msgstr "Počet výsledků k zobrazení:"
 
 #: src/search-tool-qt/search-tool-qt.cc:90 src/search-tool/search-tool.cc:77
 msgid "Rescan library at startup"
-msgstr ""
+msgstr "Při spuštění přeskenovat knihovnu"
 
 #: src/search-tool-qt/search-tool-qt.cc:305
 #: src/search-tool-qt/search-tool-qt.cc:316 src/search-tool/search-tool.cc:149
@@ -3268,7 +3280,7 @@ msgstr "Vybrat složku"
 
 #: src/sid/xmms-sid.cc:43
 msgid "SID Player"
-msgstr "SID Přehrávač"
+msgstr "SID přehrávač"
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
@@ -4068,7 +4080,7 @@ msgstr ""
 
 #: src/sndio/sndio.cc:43
 msgid "Sndio Output"
-msgstr "Sndio Výstup"
+msgstr "Sndio výstup"
 
 #: src/sndio/sndio.cc:98
 msgid "Device (blank for default):"
@@ -4201,19 +4213,19 @@ msgstr "Velmi vysoká"
 
 #: src/soxr/sox-resampler.cc:168
 msgid "Ultra High"
-msgstr ""
+msgstr "Ultra vysoká"
 
 #: src/soxr/sox-resampler.cc:172
 msgid "Minimum"
-msgstr ""
+msgstr "Minimální"
 
 #: src/soxr/sox-resampler.cc:173
 msgid "Intermediate"
-msgstr ""
+msgstr "Střední"
 
 #: src/soxr/sox-resampler.cc:174
 msgid "Linear"
-msgstr ""
+msgstr "Lineární"
 
 #: src/soxr/sox-resampler.cc:178
 msgid "Quality:"
@@ -4221,19 +4233,19 @@ msgstr "Kvalita:"
 
 #: src/soxr/sox-resampler.cc:181
 msgid "Phase:"
-msgstr ""
+msgstr "Fáze:"
 
 #: src/soxr/sox-resampler.cc:185
 msgid "Allow aliasing"
-msgstr ""
+msgstr "Povolit aliasing"
 
 #: src/soxr/sox-resampler.cc:187
 msgid "Use steep filter"
-msgstr ""
+msgstr "Použít strmý filtr"
 
 #: src/speedpitch/speed-pitch.cc:54
 msgid "Speed and Pitch"
-msgstr "Rychlost a výška:"
+msgstr "Rychlost a výška"
 
 #: src/speedpitch/speed-pitch.cc:247
 msgid "<b>Speed</b>"
@@ -4241,7 +4253,7 @@ msgstr "<b>Rychlost</b>"
 
 #: src/speedpitch/speed-pitch.cc:248
 msgid "Decouple from pitch"
-msgstr "Oddělit od výšek"
+msgstr "Oddělit od výšek tónu"
 
 #: src/speedpitch/speed-pitch.cc:250 src/speedpitch/speed-pitch.cc:258
 msgid "Multiplier:"
@@ -4249,7 +4261,7 @@ msgstr "Násobitel:"
 
 #: src/speedpitch/speed-pitch.cc:254
 msgid "<b>Pitch</b>"
-msgstr "<b>Výška</b>"
+msgstr "<b>Výška tónu</b>"
 
 #: src/statusicon-qt/statusicon.cc:45 src/statusicon/statusicon.cc:47
 msgid "Status Icon"
@@ -4327,7 +4339,7 @@ msgstr ""
 
 #: src/stereo_plugin/stereo.cc:19
 msgid "Extra Stereo"
-msgstr "Extra Stereo"
+msgstr "Extra stereo"
 
 #: src/stereo_plugin/stereo.cc:36
 msgid ""
@@ -4335,13 +4347,13 @@ msgid ""
 "\n"
 "By Johan Levin, 1999"
 msgstr ""
-"Extra Stereo modul\n"
+"Extra stereo modul\n"
 "\n"
 "Od Johana Levina, 1999"
 
 #: src/stereo_plugin/stereo.cc:44
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Extra Stereo</b>"
+msgstr "<b>Extra stereo</b>"
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
@@ -4422,7 +4434,7 @@ msgstr ""
 
 #: src/vorbis/vorbis.h:18
 msgid "Ogg Vorbis Decoder"
-msgstr "Ogg Vorbis Dekodér"
+msgstr "Ogg Vorbis dekodér"
 
 #: src/vtx/info.cc:24
 #, c-format
@@ -4457,7 +4469,7 @@ msgstr ""
 
 #: src/vtx/vtx.cc:38
 msgid "VTX Decoder"
-msgstr "VTX Dekodér"
+msgstr "VTX dekodér"
 
 #: src/vtx/vtx.cc:176
 msgid ""
@@ -4483,7 +4495,7 @@ msgstr ""
 
 #: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"
-msgstr "WavPack Dekodér"
+msgstr "WavPack dekodér"
 
 #: src/wavpack/wavpack.cc:211
 msgid "lossy (hybrid)"
@@ -4505,7 +4517,7 @@ msgstr ""
 
 #: src/xsf/plugin.cc:50
 msgid "2SF Decoder"
-msgstr "2SF Dekodér"
+msgstr "2SF dekodér"
 
 #: src/xsf/plugin.cc:231
 msgid "<b>XSF Configuration</b>"

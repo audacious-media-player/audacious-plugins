@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-08-01 16:11+0000\n"
-"Last-Translator: blackc0de <complic@vipmail.hu>\n"
+"POT-Creation-Date: 2018-08-04 20:51+0200\n"
+"PO-Revision-Date: 2018-12-26 06:11+0000\n"
+"Last-Translator: Balázs Meskó <meskobalazs@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/audacious/audacious/"
 "language/hu/)\n"
 "Language: hu\n"
@@ -33,7 +33,7 @@ msgstr "AAC (nyers) dekódoló"
 
 #: src/adplug/adplug-xmms.cc:50
 msgid "AdPlug (AdLib Player)"
-msgstr "AdPlug (AdLib Lejátszó)"
+msgstr "AdPlug (AdLib lejátszó)"
 
 #: src/adplug/adplug-xmms.cc:148 src/modplug/modplugbmp.cc:337
 #: src/psf/plugin.cc:136 src/vtx/vtx.cc:89 src/xsf/plugin.cc:106
@@ -46,7 +46,7 @@ msgstr "<b>Kimenet</b>"
 
 #: src/adplug/adplug-xmms.cc:298
 msgid "16-bit output (if unchecked, output is 8-bit)"
-msgstr ""
+msgstr "16 bites kimenet (ha nincs bejelölve, akkor 8 bites)"
 
 #: src/adplug/adplug-xmms.cc:300
 msgid "Duplicate mono output to two channels"
@@ -54,7 +54,7 @@ msgstr "Mono kimenet duplikálása két csatornára"
 
 #: src/adplug/adplug-xmms.cc:302
 msgid "Sample rate"
-msgstr ""
+msgstr "Mintavételi frekvencia"
 
 #: src/adplug/adplug-xmms.cc:303 src/amidiplug/i_configure.cc:152
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
@@ -76,7 +76,7 @@ msgstr "<b>Egyéb</b>"
 
 #: src/adplug/adplug-xmms.cc:305
 msgid "Repeat song in endless loop"
-msgstr ""
+msgstr "A szám ismétlése végtelen ciklusban"
 
 #: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
 msgid "Alarm"
@@ -290,7 +290,7 @@ msgstr "Hangerő"
 
 #: src/alarm/interface.cc:306
 msgid "Start at"
-msgstr "Kezdjük a"
+msgstr "Kezdés itt:"
 
 #: src/alarm/interface.cc:322
 msgid "Final"
@@ -306,7 +306,7 @@ msgstr "További parancs"
 
 #: src/alarm/interface.cc:354 src/alarm/interface.cc:377
 msgid "enable"
-msgstr "engedélyez"
+msgstr "engedélyezés"
 
 #: src/alarm/interface.cc:361
 msgid "Playlist (optional)"
@@ -318,7 +318,7 @@ msgstr "Lejátszólista választása"
 
 #: src/alarm/interface.cc:385
 msgid "Options"
-msgstr "Opciók"
+msgstr "Beállítások"
 
 #: src/alarm/interface.cc:390
 msgid "What do these options mean?"
@@ -965,7 +965,7 @@ msgstr "Az LSN eleje/vége nem olvasható a %d. sávon."
 
 #: src/cdaudio/cdaudio-ng.cc:611
 msgid "Failed to create the CDDB connection."
-msgstr ""
+msgstr "A CDDB kapcsolat létrehozása meghiúsult."
 
 #: src/cdaudio/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
@@ -979,7 +979,7 @@ msgstr "A CDDB kiszolgáló lekérdezése sikertelen: %s"
 #: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
 msgid "Failed to read the CDDB info: %s"
-msgstr ""
+msgstr "A CDDB információ kiolvasása meghiúsult: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -987,11 +987,11 @@ msgstr "Audio CD menüelemek"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Pla_y CD"
-msgstr ""
+msgstr "CD _lejátszása"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "_Add CD"
-msgstr ""
+msgstr "CD _hozzáadása"
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
@@ -1089,6 +1089,14 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"CoreAudio kimeneti bővítmény az Audacious-hoz\n"
+"Copyright 2014 William Pitcock\n"
+"Copyright 2017,18 René J.V. Bertin\n"
+" (eredeti kód, és az Apple mintákból\n"
+"  átvett példák, (C) Apple 2013)\n"
+"\n"
+"Az SDL kimeneti bővítmény alapján\n"
+"Copyright 2010 John Lindgren"
 
 #: src/coreaudio/coreaudio.cc:172
 msgid "Use exclusive mode"
@@ -1096,7 +1104,7 @@ msgstr "Exkluzív mód használata"
 
 #: src/coreaudio/coreaudio.cc:174
 msgid "Use bit perfect audio (adapt device sampling rate)"
-msgstr ""
+msgstr "Bitpontos hang használata (eszköz mintavételi arányának igazítása)"
 
 #: src/crossfade/crossfade.cc:43
 msgid ""
@@ -1161,31 +1169,31 @@ msgstr "Fájlok törlése"
 
 #: src/delete-files/delete-files.cc:120
 msgid "No files are selected."
-msgstr ""
+msgstr "Nincs fájl kiválasztva."
 
 #: src/delete-files/delete-files.cc:125
 #, c-format
 msgid "Do you want to move %s to the trash?"
-msgstr ""
+msgstr "Kukába helyezi: %s?"
 
 #: src/delete-files/delete-files.cc:126
 #, c-format
 msgid "Do you want to permanently delete %s?"
-msgstr ""
+msgstr "Véglegesen törli: %s?"
 
 #: src/delete-files/delete-files.cc:133
 #, c-format
 msgid "Do you want to move %d files to the trash?"
-msgstr ""
+msgstr "Kukába helyez %d fájlt?"
 
 #: src/delete-files/delete-files.cc:134
 #, c-format
 msgid "Do you want to permanently delete %d files?"
-msgstr ""
+msgstr "Véglegesen töröl %d fájlt?"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Move to trash"
-msgstr ""
+msgstr "Kukába helyezés"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Delete"
@@ -2278,6 +2286,9 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Nem ajánlott az elsődleges egérgombokat módosítók nélkül társítani.\n"
+"\n"
+"Biztos, hogy folytatja?"
 
 #: src/hotkey/gui.cc:236
 msgid "Binding mouse buttons"
@@ -3207,11 +3218,11 @@ msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:87 src/search-tool/search-tool.cc:74
 msgid "Number of results to show:"
-msgstr ""
+msgstr "Megjelenítendő találatok:"
 
 #: src/search-tool-qt/search-tool-qt.cc:90 src/search-tool/search-tool.cc:77
 msgid "Rescan library at startup"
-msgstr ""
+msgstr "Gyűjtemény átvizsgálása indításkor"
 
 #: src/search-tool-qt/search-tool-qt.cc:305
 #: src/search-tool-qt/search-tool-qt.cc:316 src/search-tool/search-tool.cc:149
@@ -4222,15 +4233,15 @@ msgstr "Nagyon magas"
 
 #: src/soxr/sox-resampler.cc:168
 msgid "Ultra High"
-msgstr ""
+msgstr "Nagyon magas"
 
 #: src/soxr/sox-resampler.cc:172
 msgid "Minimum"
-msgstr ""
+msgstr "Legalacsonyabb"
 
 #: src/soxr/sox-resampler.cc:173
 msgid "Intermediate"
-msgstr ""
+msgstr "Közepes"
 
 #: src/soxr/sox-resampler.cc:174
 msgid "Linear"
@@ -4242,15 +4253,15 @@ msgstr "Minőség:"
 
 #: src/soxr/sox-resampler.cc:181
 msgid "Phase:"
-msgstr ""
+msgstr "Fázis:"
 
 #: src/soxr/sox-resampler.cc:185
 msgid "Allow aliasing"
-msgstr ""
+msgstr "Alul-mintavételezés engedélyezése"
 
 #: src/soxr/sox-resampler.cc:187
 msgid "Use steep filter"
-msgstr ""
+msgstr "Meredek szűrő"
 
 #: src/speedpitch/speed-pitch.cc:54
 msgid "Speed and Pitch"
