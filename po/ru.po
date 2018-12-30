@@ -5,7 +5,7 @@
 # Translators:
 # Alexander Orlov <alxorlov@pochta.ru>, 2007
 # Денис <alpi_bel@mail.ru>, 2014
-# Andrei Stepanov, 2014-2015
+# Andrei Stepanov <adem4ik@gmail.com>, 2014-2015
 # Danila E <KnightDanila@gmail.com>, 2018
 # dartraiden, 2018
 # dartraiden, 2018
@@ -41,17 +41,18 @@
 # Someonefree <drag-sasha@mail.ru>, 2013
 # Oleg <kvantarium@gmail.com>, 2012
 # Victor Ponomarev <victor.a.ponomarev@gmail.com>, 2013
-# Volk Daemon <volk-daemon@rambler.ru>, 2016
+# Volk Daemon <volk-daemon@rambler.ru>, 2016,2018
 # Алексей <kvadrocu7@gmail.com>, 2013
 # Денис <alpi_bel@mail.ru>, 2014-2015
 # Денис Локтев <den32ds@gmail.com>, 2017
+# Петро Проценко <petruk3@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-07-29 21:54+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2018-08-04 20:51+0200\n"
+"PO-Revision-Date: 2018-12-26 06:11+0000\n"
+"Last-Translator: Volk Daemon <volk-daemon@rambler.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/audacious/audacious/"
 "language/ru/)\n"
 "Language: ru\n"
@@ -81,11 +82,11 @@ msgstr "<b>Вывод</b>"
 
 #: src/adplug/adplug-xmms.cc:298
 msgid "16-bit output (if unchecked, output is 8-bit)"
-msgstr ""
+msgstr "16-битный вывод (если не выбрано, 8-битный вывод)"
 
 #: src/adplug/adplug-xmms.cc:300
 msgid "Duplicate mono output to two channels"
-msgstr ""
+msgstr "Дублировать вывод на оба канала"
 
 #: src/adplug/adplug-xmms.cc:302
 msgid "Sample rate"
@@ -111,7 +112,7 @@ msgstr "<b>Разное</b>"
 
 #: src/adplug/adplug-xmms.cc:305
 msgid "Repeat song in endless loop"
-msgstr ""
+msgstr "Повторить песню в бесконечном цикле"
 
 #: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
 msgid "Alarm"
@@ -1003,7 +1004,7 @@ msgstr "Невозможно считать начало/конец LSN для �
 
 #: src/cdaudio/cdaudio-ng.cc:611
 msgid "Failed to create the CDDB connection."
-msgstr ""
+msgstr "Не удалось создать соединение CDDB."
 
 #: src/cdaudio/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
@@ -1017,7 +1018,7 @@ msgstr "Не удалось выполнить запрос к базе серв
 #: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
 msgid "Failed to read the CDDB info: %s"
-msgstr ""
+msgstr "Не удалось прочитать информацию CDDB: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -1025,7 +1026,7 @@ msgstr "Пункты меню аудио CD"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Pla_y CD"
-msgstr ""
+msgstr "Воспроизведение компакт-дисков"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "_Add CD"
@@ -1199,27 +1200,27 @@ msgstr "Удалить файлы"
 
 #: src/delete-files/delete-files.cc:120
 msgid "No files are selected."
-msgstr ""
+msgstr "Файлы не выбраны"
 
 #: src/delete-files/delete-files.cc:125
 #, c-format
 msgid "Do you want to move %s to the trash?"
-msgstr ""
+msgstr "Вы хотите переместить %s в корзину?"
 
 #: src/delete-files/delete-files.cc:126
 #, c-format
 msgid "Do you want to permanently delete %s?"
-msgstr ""
+msgstr "Вы хотите удалить навсегда %s?"
 
 #: src/delete-files/delete-files.cc:133
 #, c-format
 msgid "Do you want to move %d files to the trash?"
-msgstr ""
+msgstr "Вы хотите переместить %d файлы в корзину?"
 
 #: src/delete-files/delete-files.cc:134
 #, c-format
 msgid "Do you want to permanently delete %d files?"
-msgstr ""
+msgstr "Вы хотите удалить файлы %d навсегда?"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Move to trash"
@@ -2313,6 +2314,9 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Не рекомендуется связывать основные кнопки мыши без модификаторов.\n"
+"\n"
+"Вы хотите продолжить?"
 
 #: src/hotkey/gui.cc:236
 msgid "Binding mouse buttons"
@@ -3026,7 +3030,7 @@ msgstr "Имя файла"
 
 #: src/qtui/playlist_model.cc:48
 msgid "Custom Title"
-msgstr ""
+msgstr "Пользовательский заголовок"
 
 #: src/qtui/qtui.cc:39
 msgid "Qt Interface"
@@ -3222,11 +3226,11 @@ msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:87 src/search-tool/search-tool.cc:74
 msgid "Number of results to show:"
-msgstr ""
+msgstr "Количество результатов, чтобы показать:"
 
 #: src/search-tool-qt/search-tool-qt.cc:90 src/search-tool/search-tool.cc:77
 msgid "Rescan library at startup"
-msgstr ""
+msgstr "Пересканировать библиотеку при запуске"
 
 #: src/search-tool-qt/search-tool-qt.cc:305
 #: src/search-tool-qt/search-tool-qt.cc:316 src/search-tool/search-tool.cc:149
@@ -4239,19 +4243,19 @@ msgstr "Очень высокое"
 
 #: src/soxr/sox-resampler.cc:168
 msgid "Ultra High"
-msgstr ""
+msgstr "Сверхвысокий"
 
 #: src/soxr/sox-resampler.cc:172
 msgid "Minimum"
-msgstr ""
+msgstr "Минимальный"
 
 #: src/soxr/sox-resampler.cc:173
 msgid "Intermediate"
-msgstr ""
+msgstr "Промежуточный"
 
 #: src/soxr/sox-resampler.cc:174
 msgid "Linear"
-msgstr ""
+msgstr "Линейный"
 
 #: src/soxr/sox-resampler.cc:178
 msgid "Quality:"
@@ -4259,11 +4263,11 @@ msgstr "Качество:"
 
 #: src/soxr/sox-resampler.cc:181
 msgid "Phase:"
-msgstr ""
+msgstr "Фаза"
 
 #: src/soxr/sox-resampler.cc:185
 msgid "Allow aliasing"
-msgstr ""
+msgstr "Разрешить псевдонимы"
 
 #: src/soxr/sox-resampler.cc:187
 msgid "Use steep filter"

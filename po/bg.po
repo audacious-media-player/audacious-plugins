@@ -4,7 +4,7 @@
 #
 # Translators:
 # Ivailo Monev <xakepa10@gmail.com>, 2014
-# Kiril Kirilov <cybercop_montana@abv.bg>, 2014-2015,2017
+# Kiril Kirilov <cybercop_montana@abv.bg>, 2014-2015,2017-2018
 # Myselus, 2016-2017
 # Pandi3a <pandi3a@gmail.com>, 2012
 # Pandi3a <pandi3a@gmail.com>, 2012
@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-07-29 21:54+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2018-08-04 20:51+0200\n"
+"PO-Revision-Date: 2018-12-26 06:11+0000\n"
+"Last-Translator: Kiril Kirilov <cybercop_montana@abv.bg>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/audacious/audacious/"
 "language/bg/)\n"
 "Language: bg\n"
@@ -45,11 +45,11 @@ msgstr "<b>Изход</b>"
 
 #: src/adplug/adplug-xmms.cc:298
 msgid "16-bit output (if unchecked, output is 8-bit)"
-msgstr ""
+msgstr "16 битов изход (ако не е отметнато, изходът е 8 битов)"
 
 #: src/adplug/adplug-xmms.cc:300
 msgid "Duplicate mono output to two channels"
-msgstr ""
+msgstr "Дублиране на моно изход в два канала"
 
 #: src/adplug/adplug-xmms.cc:302
 msgid "Sample rate"
@@ -75,7 +75,7 @@ msgstr "<b>Разни</b>"
 
 #: src/adplug/adplug-xmms.cc:305
 msgid "Repeat song in endless loop"
-msgstr ""
+msgstr "Повторете песента в безкраен цикъл"
 
 #: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
 msgid "Alarm"
@@ -971,7 +971,7 @@ msgstr "Не може да прочете началото/края на LSN з�
 
 #: src/cdaudio/cdaudio-ng.cc:611
 msgid "Failed to create the CDDB connection."
-msgstr ""
+msgstr "Неуспешно създаване на CDDB връзка."
 
 #: src/cdaudio/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
@@ -985,7 +985,7 @@ msgstr "Неуспешна заявка към CDDB сървър: %s"
 #: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
 msgid "Failed to read the CDDB info: %s"
-msgstr ""
+msgstr "Неуспешно четене на CDDB информацията: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -993,11 +993,11 @@ msgstr "Елементи на меню тип Audio CD"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Pla_y CD"
-msgstr ""
+msgstr "_Пусни CD"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "_Add CD"
-msgstr ""
+msgstr "_Добави CD"
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
@@ -1166,31 +1166,31 @@ msgstr "Изтриване на файлове"
 
 #: src/delete-files/delete-files.cc:120
 msgid "No files are selected."
-msgstr ""
+msgstr "Няма избрани файлове."
 
 #: src/delete-files/delete-files.cc:125
 #, c-format
 msgid "Do you want to move %s to the trash?"
-msgstr ""
+msgstr "Наистина ли искате да преместите %s в кошчето?"
 
 #: src/delete-files/delete-files.cc:126
 #, c-format
 msgid "Do you want to permanently delete %s?"
-msgstr ""
+msgstr "Наистина ли искате да изтриете завинаги %s?"
 
 #: src/delete-files/delete-files.cc:133
 #, c-format
 msgid "Do you want to move %d files to the trash?"
-msgstr ""
+msgstr "Наистина ли искате да преместите %d файла в кошчето? "
 
 #: src/delete-files/delete-files.cc:134
 #, c-format
 msgid "Do you want to permanently delete %d files?"
-msgstr ""
+msgstr "Наистина ли искате да изтриете завинаги %d файла?"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Move to trash"
-msgstr ""
+msgstr "Преместване в кошчето"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Delete"
@@ -3193,11 +3193,11 @@ msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:87 src/search-tool/search-tool.cc:74
 msgid "Number of results to show:"
-msgstr ""
+msgstr "Брой на показваните резултати:"
 
 #: src/search-tool-qt/search-tool-qt.cc:90 src/search-tool/search-tool.cc:77
 msgid "Rescan library at startup"
-msgstr ""
+msgstr "Сканиране на библиотеката при стартиране"
 
 #: src/search-tool-qt/search-tool-qt.cc:305
 #: src/search-tool-qt/search-tool-qt.cc:316 src/search-tool/search-tool.cc:149
@@ -4203,19 +4203,19 @@ msgstr "Много високо"
 
 #: src/soxr/sox-resampler.cc:168
 msgid "Ultra High"
-msgstr ""
+msgstr "Изключително високо"
 
 #: src/soxr/sox-resampler.cc:172
 msgid "Minimum"
-msgstr ""
+msgstr "Минимално"
 
 #: src/soxr/sox-resampler.cc:173
 msgid "Intermediate"
-msgstr ""
+msgstr "Средно"
 
 #: src/soxr/sox-resampler.cc:174
 msgid "Linear"
-msgstr ""
+msgstr "Линейно"
 
 #: src/soxr/sox-resampler.cc:178
 msgid "Quality:"
@@ -4223,15 +4223,15 @@ msgstr "Качество:"
 
 #: src/soxr/sox-resampler.cc:181
 msgid "Phase:"
-msgstr ""
+msgstr "Период:"
 
 #: src/soxr/sox-resampler.cc:185
 msgid "Allow aliasing"
-msgstr ""
+msgstr "Позволи псевдоними"
 
 #: src/soxr/sox-resampler.cc:187
 msgid "Use steep filter"
-msgstr ""
+msgstr "Използвай подсилен филтър"
 
 #: src/speedpitch/speed-pitch.cc:54
 msgid "Speed and Pitch"

@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-07-29 21:54+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2018-08-04 20:51+0200\n"
+"PO-Revision-Date: 2018-12-26 06:11+0000\n"
+"Last-Translator: scootergrisen\n"
 "Language-Team: Danish (http://www.transifex.com/audacious/audacious/language/"
 "da/)\n"
 "Language: da\n"
@@ -483,7 +483,7 @@ msgstr "AMIDI-Plug - vælg SoundFont-fil"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:57
 msgid "_Cancel"
-msgstr "_Afbryd"
+msgstr "_Annuller"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:58
 msgid "_Open"
@@ -958,7 +958,7 @@ msgstr "Kan ikke læse start/slut LSN for spor %d."
 
 #: src/cdaudio/cdaudio-ng.cc:611
 msgid "Failed to create the CDDB connection."
-msgstr ""
+msgstr "Kunne ikke oprette CDDB-forbindelsen."
 
 #: src/cdaudio/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
@@ -972,7 +972,7 @@ msgstr "Kunne ikke forespørge CDDB-serveren: %s"
 #: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
 msgid "Failed to read the CDDB info: %s"
-msgstr ""
+msgstr "Kunne ikke læse CDDB-informationen: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -1195,7 +1195,7 @@ msgstr "Slet"
 #: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
 #: src/skins/search-select.cc:76
 msgid "Cancel"
-msgstr "Afbryd"
+msgstr "Annuller"
 
 #: src/delete-files/delete-files.cc:268
 msgid "Delete Selected Files"
@@ -1465,7 +1465,7 @@ msgstr "Algoritmens kvalitet:"
 
 #: src/filewriter/filewriter.cc:476
 msgid "Bitrate:"
-msgstr "Bitfrekvens:"
+msgstr "Bithastighed:"
 
 #: src/filewriter/filewriter.cc:483
 msgid "Compression ratio:"
@@ -1493,15 +1493,15 @@ msgstr "Type:"
 
 #: src/filewriter/filewriter.cc:506
 msgid "Minimum bitrate:"
-msgstr "Minimum bitfrekvens:"
+msgstr "Minimum bithastighed:"
 
 #: src/filewriter/filewriter.cc:510
 msgid "Maximum bitrate:"
-msgstr "Maksimum bitfrekvens:"
+msgstr "Maksimum bithastighed:"
 
 #: src/filewriter/filewriter.cc:514
 msgid "Average bitrate:"
-msgstr "Gennemsnitlig bitfrekvens:"
+msgstr "Gennemsnitlig bithastighed:"
 
 #: src/filewriter/filewriter.cc:518
 msgid "VBR quality level:"
@@ -1509,7 +1509,7 @@ msgstr "VBR-kvalitetsniveau:"
 
 #: src/filewriter/filewriter.cc:522
 msgid "Strictly enforce minimum bitrate"
-msgstr "Fremtving strengt minimum for bitfrekvens"
+msgstr "Fremtving strengt minimum for bithastighed"
 
 #: src/filewriter/filewriter.cc:525
 msgid "Omit Xing VBR header"
@@ -1680,7 +1680,7 @@ msgstr "Tilpasset titel"
 
 #: src/gtkui/columns.cc:48 src/qtui/playlist_model.cc:49
 msgid "Bitrate"
-msgstr "Bitfrekvens"
+msgstr "Bithastighed"
 
 #: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:50
 msgid "Comment"
@@ -3714,7 +3714,7 @@ msgstr "Efter album"
 #: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:191
 #: src/skins-qt/menus.cc:206
 msgid "By Album Artist"
-msgstr "Efter kunster"
+msgstr "Efter kunstner"
 
 #: src/skins/menus.cc:198 src/skins/menus.cc:214 src/skins-qt/menus.cc:192
 #: src/skins-qt/menus.cc:208
@@ -4142,7 +4142,7 @@ msgid ""
 "%t: Playlist position\n"
 "%T: Title (unformatted)"
 msgstr ""
-"%a: Kunster\n"
+"%a: Kunstner\n"
 "%b: Album\n"
 "%c: Antal kanaler\n"
 "%f: Filnavn (fuld sti)\n"

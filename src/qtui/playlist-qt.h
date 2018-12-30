@@ -66,6 +66,7 @@ private:
 
     QModelIndex rowToIndex (int row);
     int indexToRow (const QModelIndex & index);
+    QModelIndex visibleIndexNear (int row);
 
     void getSelectedRanges (int rowsBefore, int rowsAfter,
      QItemSelection & selected, QItemSelection & deselected);
@@ -75,7 +76,7 @@ private:
     void keyPressEvent (QKeyEvent * event);
     void mouseDoubleClickEvent (QMouseEvent * event);
     void mouseMoveEvent (QMouseEvent * event);
-    void leaveEvent (QEvent *);
+    void leaveEvent (QEvent * event);
     void dragMoveEvent (QDragMoveEvent * event);
     void dropEvent (QDropEvent * event);
     void currentChanged (const QModelIndex & current, const QModelIndex & previous);

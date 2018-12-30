@@ -5,6 +5,7 @@
 # Translators:
 # Alexandro Casanova <shorterfire@gmail.com>, 2013
 # Conservador Ressurge, 2014
+# Eduardo Marinho <e@calmaamigo.com>, 2018
 # Eudes Soares <eudes.sp2007@gmail.com>, 2014
 # F Marcelo O Amarante <marcelo.amarante@hotmail.com>, 2015
 # Fuad Saud <fuadksd@gmail.com>, 2012
@@ -25,9 +26,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-07-29 21:54+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2018-08-04 20:51+0200\n"
+"PO-Revision-Date: 2018-12-26 06:11+0000\n"
+"Last-Translator: Eduardo Marinho <e@calmaamigo.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/audacious/"
 "audacious/language/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -3425,7 +3426,7 @@ msgstr "16 kHz"
 
 #: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:267
 msgid "Audacious Equalizer"
-msgstr "Esqualizador do Audacious"
+msgstr "Equalizador do Audacious"
 
 #: src/skins/main.cc:447 src/skins-qt/main.cc:433
 msgid "Recording on"

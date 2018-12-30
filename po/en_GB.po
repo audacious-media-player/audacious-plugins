@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Andi Chandler <andi@gowling.com>, 2013,2016-2017
+# Andi Chandler <andi@gowling.com>, 2013,2016-2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-07-29 21:54+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2018-08-04 20:51+0200\n"
+"PO-Revision-Date: 2018-12-26 06:11+0000\n"
+"Last-Translator: Andi Chandler <andi@gowling.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/audacious/"
 "audacious/language/en_GB/)\n"
 "Language: en_GB\n"
@@ -34,19 +34,19 @@ msgstr "sequenced"
 
 #: src/adplug/adplug-xmms.cc:297 src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
-msgstr ""
+msgstr "<b>Output</b>"
 
 #: src/adplug/adplug-xmms.cc:298
 msgid "16-bit output (if unchecked, output is 8-bit)"
-msgstr ""
+msgstr "16-bit output (if unchecked, output is 8-bit)"
 
 #: src/adplug/adplug-xmms.cc:300
 msgid "Duplicate mono output to two channels"
-msgstr ""
+msgstr "Duplicate mono output to two channels"
 
 #: src/adplug/adplug-xmms.cc:302
 msgid "Sample rate"
-msgstr ""
+msgstr "Sample rate"
 
 #: src/adplug/adplug-xmms.cc:303 src/amidiplug/i_configure.cc:152
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
@@ -64,11 +64,11 @@ msgstr "Hz"
 #: src/modplug/plugin_main.cc:109 src/qtui/settings.cc:66
 #: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
-msgstr ""
+msgstr "<b>Miscellaneous</b>"
 
 #: src/adplug/adplug-xmms.cc:305
 msgid "Repeat song in endless loop"
-msgstr ""
+msgstr "Repeat song in endless loop"
 
 #: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
 msgid "Alarm"
@@ -932,7 +932,7 @@ msgstr "Cannot read start/end LSN for track %d."
 
 #: src/cdaudio/cdaudio-ng.cc:611
 msgid "Failed to create the CDDB connection."
-msgstr ""
+msgstr "Failed to create the CDDB connection."
 
 #: src/cdaudio/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
@@ -946,7 +946,7 @@ msgstr "Failed to query the CDDB server: %s"
 #: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
 msgid "Failed to read the CDDB info: %s"
-msgstr ""
+msgstr "Failed to read the CDDB info: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -954,11 +954,11 @@ msgstr "Audio CD Menu Items"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Pla_y CD"
-msgstr ""
+msgstr "Pla_y CD"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "_Add CD"
-msgstr ""
+msgstr "_Add CD"
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
@@ -1010,7 +1010,7 @@ msgstr "Treble:"
 
 #: src/console/plugin.cc:36
 msgid "Echo:"
-msgstr ""
+msgstr "Echo:"
 
 #: src/console/plugin.cc:39
 msgid "Default song length:"
@@ -1018,7 +1018,7 @@ msgstr "Default song length:"
 
 #: src/console/plugin.cc:42 src/modplug/plugin_main.cc:62
 msgid "<b>Resampling</b>"
-msgstr ""
+msgstr "<b>Resampling</b>"
 
 #: src/console/plugin.cc:43
 msgid "Enable audio resampling"
@@ -3575,7 +3575,7 @@ msgstr ""
 
 #: src/skins/menus.cc:235 src/skins-qt/menus.cc:229
 msgid "Copy"
-msgstr ""
+msgstr "Copy"
 
 #: src/skins/menus.cc:236 src/skins-qt/menus.cc:230
 msgid "Paste"

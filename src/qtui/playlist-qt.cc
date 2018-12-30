@@ -89,6 +89,31 @@ int PlaylistWidget::indexToRow (const QModelIndex & index)
     return proxyModel->mapToSource (index).row ();
 }
 
+QModelIndex PlaylistWidget::visibleIndexNear (int row)
+{
+    QModelIndex index = rowToIndex (row);
+    if (index.isValid ())
+        return index;
+
+    int n_entries = m_playlist.n_entries ();
+
+    for (int r = row + 1; r < n_entries; r ++)
+    {
+        index = rowToIndex (r);
+        if (index.isValid ())
+            return index;
+    }
+
+    for (int r = row - 1; r >= 0; r --)
+    {
+        index = rowToIndex (r);
+        if (index.isValid ())
+            return index;
+    }
+
+    return index;
+}
+
 void PlaylistWidget::contextMenuEvent (QContextMenuEvent * event)
 {
     if (contextMenu)
@@ -154,18 +179,18 @@ void PlaylistWidget::mouseMoveEvent (QMouseEvent * event)
     int row = indexToRow (indexAt (event->pos ()));
 
     if (row < 0)
-    {
         hidePopup ();
-        return;
-    }
-
-    if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && m_popup_pos != row)
+    else if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && m_popup_pos != row)
         triggerPopup (row);
+
+    QTreeView::mouseMoveEvent (event);
 }
 
-void PlaylistWidget::leaveEvent (QEvent *)
+void PlaylistWidget::leaveEvent (QEvent * event)
 {
     hidePopup ();
+
+    QTreeView::leaveEvent (event);
 }
 
 /* Since Qt doesn't support both DragDrop and InternalMove at once,
@@ -379,33 +404,32 @@ void PlaylistWidget::playCurrentIndex ()
 
 void PlaylistWidget::setFilter (const char * text)
 {
+    // Save the current focus before filtering
+    int focus = m_playlist.get_focus ();
+
+    // Empty the model before updating the filter.  This prevents Qt from
+    // performing a series of "rows added" or "rows deleted" updates, which can
+    // be very slow (worst case O(N^2) complexity) on a large playlist.
+    model->entriesRemoved (0, model->rowCount ());
+
+    // Update the filter
     proxyModel->setFilter (text);
 
-    int focus = m_playlist.get_focus ();
-    QModelIndex index;
+    // Repopulate the model
+    model->entriesAdded (0, m_playlist.n_entries ());
 
-    // If there was a valid focus before filtering, Qt updates it for us via
-    // currentChanged().  If not, we will set focus on the first visible row.
+    // If the previously focused row is no longer visible with the new filter,
+    // try to find a nearby one that is, and focus it.
+    auto index = visibleIndexNear (focus);
 
-    if (focus >= 0)
-        index = rowToIndex (focus);
-    else
+    if (index.isValid ())
     {
-        if (! proxyModel->rowCount ())
-            return;
-
-        index = proxyModel->index (0, 0);
         focus = indexToRow (index);
         m_playlist.set_focus (focus);
-    }
-
-    if (! m_playlist.entry_selected (focus))
-    {
         m_playlist.select_all (false);
         m_playlist.select_entry (focus, true);
+        scrollTo (index);
     }
-
-    scrollTo (index);
 }
 
 void PlaylistWidget::setFirstVisibleColumn (int col)

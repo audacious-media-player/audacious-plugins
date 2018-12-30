@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# ABE Tsunehiko, 2015-2017
+# ABE Tsunehiko, 2015-2018
 # natird zoto <dritan86@gmail.com>, 2012
 # ABE Tsunehiko, 2013
 # ABE Tsunehiko, 2012
@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-07-29 21:54+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2018-08-04 20:51+0200\n"
+"PO-Revision-Date: 2018-12-26 06:11+0000\n"
+"Last-Translator: ABE Tsunehiko\n"
 "Language-Team: Japanese (http://www.transifex.com/audacious/audacious/"
 "language/ja/)\n"
 "Language: ja\n"
@@ -47,15 +47,15 @@ msgstr "<b>出力</b>"
 
 #: src/adplug/adplug-xmms.cc:298
 msgid "16-bit output (if unchecked, output is 8-bit)"
-msgstr ""
+msgstr "16-bit 出力 (チェックされていない場合は 8-bit で出力します)"
 
 #: src/adplug/adplug-xmms.cc:300
 msgid "Duplicate mono output to two channels"
-msgstr ""
+msgstr "モノラル出力を2チャンネルに複製する"
 
 #: src/adplug/adplug-xmms.cc:302
 msgid "Sample rate"
-msgstr ""
+msgstr "サンプリングレート"
 
 #: src/adplug/adplug-xmms.cc:303 src/amidiplug/i_configure.cc:152
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
@@ -77,7 +77,7 @@ msgstr "<b>その他</b>"
 
 #: src/adplug/adplug-xmms.cc:305
 msgid "Repeat song in endless loop"
-msgstr ""
+msgstr "曲を無限に繰り返す"
 
 #: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
 msgid "Alarm"
@@ -966,7 +966,7 @@ msgstr ""
 
 #: src/cdaudio/cdaudio-ng.cc:611
 msgid "Failed to create the CDDB connection."
-msgstr ""
+msgstr "CDDB コネクションの作成に失敗しました。"
 
 #: src/cdaudio/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
@@ -980,7 +980,7 @@ msgstr "CDDB サーバへのクエリに失敗しました: %s"
 #: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
 msgid "Failed to read the CDDB info: %s"
-msgstr ""
+msgstr "CDDB 情報の読み取りに失敗しました: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -988,11 +988,11 @@ msgstr "オーディオ CD メニュー項目"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Pla_y CD"
-msgstr ""
+msgstr "CD を再生 (_Y)"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "_Add CD"
-msgstr ""
+msgstr "CD を追加 (_A)"
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
@@ -1089,6 +1089,14 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"CoreAudio 出力プラグイン for Audacious\n"
+"Copyright 2014 William Pitcock\n"
+"Copyright 2017,18 René J.V. Bertin\n"
+" (original code and code adapted from\n"
+" Apple examples, (C) Apple 2013)\n"
+"\n"
+"Based on SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/coreaudio/coreaudio.cc:172
 msgid "Use exclusive mode"
@@ -1097,6 +1105,8 @@ msgstr "排他モードを用いる"
 #: src/coreaudio/coreaudio.cc:174
 msgid "Use bit perfect audio (adapt device sampling rate)"
 msgstr ""
+"ビットパーフェクトオーディオを使用する (デバイスのサンプリングレートを適合さ"
+"せる)"
 
 #: src/crossfade/crossfade.cc:43
 msgid ""
@@ -1161,31 +1171,31 @@ msgstr "ファイルの削除"
 
 #: src/delete-files/delete-files.cc:120
 msgid "No files are selected."
-msgstr ""
+msgstr "ファイルが選択されていません。"
 
 #: src/delete-files/delete-files.cc:125
 #, c-format
 msgid "Do you want to move %s to the trash?"
-msgstr ""
+msgstr "%s をゴミ箱に移動しますか？"
 
 #: src/delete-files/delete-files.cc:126
 #, c-format
 msgid "Do you want to permanently delete %s?"
-msgstr ""
+msgstr "%s を完全に削除しますか？"
 
 #: src/delete-files/delete-files.cc:133
 #, c-format
 msgid "Do you want to move %d files to the trash?"
-msgstr ""
+msgstr "%d 個のファイルをゴミ箱に移動しますか？"
 
 #: src/delete-files/delete-files.cc:134
 #, c-format
 msgid "Do you want to permanently delete %d files?"
-msgstr ""
+msgstr "%d 個のファイルを完全に削除しますか？"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Move to trash"
-msgstr ""
+msgstr "ゴミ箱に移動する"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Delete"
@@ -2273,6 +2283,9 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"修飾キーなしでプライマリーマウスのボタンに割り当てるのはお勧めしません。\n"
+"\n"
+"本当によろしいですか？"
 
 #: src/hotkey/gui.cc:236
 msgid "Binding mouse buttons"
@@ -3191,11 +3204,11 @@ msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:87 src/search-tool/search-tool.cc:74
 msgid "Number of results to show:"
-msgstr ""
+msgstr "検索結果の表示件数:"
 
 #: src/search-tool-qt/search-tool-qt.cc:90 src/search-tool/search-tool.cc:77
 msgid "Rescan library at startup"
-msgstr ""
+msgstr "起動時にライブラリーを再スキャンする"
 
 #: src/search-tool-qt/search-tool-qt.cc:305
 #: src/search-tool-qt/search-tool-qt.cc:316 src/search-tool/search-tool.cc:149
@@ -4196,19 +4209,19 @@ msgstr "最高品質"
 
 #: src/soxr/sox-resampler.cc:168
 msgid "Ultra High"
-msgstr ""
+msgstr "究極品質"
 
 #: src/soxr/sox-resampler.cc:172
 msgid "Minimum"
-msgstr ""
+msgstr "最小限"
 
 #: src/soxr/sox-resampler.cc:173
 msgid "Intermediate"
-msgstr ""
+msgstr "中間"
 
 #: src/soxr/sox-resampler.cc:174
 msgid "Linear"
-msgstr ""
+msgstr "線形"
 
 #: src/soxr/sox-resampler.cc:178
 msgid "Quality:"
@@ -4216,15 +4229,15 @@ msgstr "品質:"
 
 #: src/soxr/sox-resampler.cc:181
 msgid "Phase:"
-msgstr ""
+msgstr "位相応答:"
 
 #: src/soxr/sox-resampler.cc:185
 msgid "Allow aliasing"
-msgstr ""
+msgstr "エイリアシングを許可"
 
 #: src/soxr/sox-resampler.cc:187
 msgid "Use steep filter"
-msgstr ""
+msgstr "急峻なフィルターを使う"
 
 #: src/speedpitch/speed-pitch.cc:54
 msgid "Speed and Pitch"

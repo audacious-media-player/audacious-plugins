@@ -46,6 +46,8 @@
 
 */
 
+#define __ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORES 1
+
 #include "audiodevice.h"
 #import <Cocoa/Cocoa.h>
 
