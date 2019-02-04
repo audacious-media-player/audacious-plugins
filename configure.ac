@@ -258,6 +258,13 @@ ENABLE_PLUGIN_WITH_DEP(modplug,
     MODPLUG,
     libmodplug)
 
+ENABLE_PLUGIN_WITH_DEP(openmpt,
+    libopenmpt,
+    auto,
+    INPUT,
+    OPENMPT,
+    libopenmpt >= 0.3)
+
 ENABLE_PLUGIN_WITH_DEP(sid,
     Commodore 64 audio,
     auto,
@@ -718,6 +725,7 @@ echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Commodore 64 audio (sid):               $have_sid"
 echo "  Game Music Emu (spc, nsf, gbs, etc.):   $have_console"
 echo "  ModPlug:                                $have_modplug"
+echo "  libopenmpt:                             $have_openmpt"
 echo "  Nintendo DS audio (xsf):                yes"
 echo "  PlayStation audio (psf/psf2):           yes"
 echo "  Vortex Tracker (vtx):                   yes"
