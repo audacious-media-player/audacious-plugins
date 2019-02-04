@@ -130,7 +130,7 @@ public:
         {
             MPTWrap mpt(file);
 
-            open_audio(FMT_FLOAT, 44100, 2);
+            open_audio(FMT_FLOAT, mpt.rate(), mpt.channels());
 
             while (!check_stop())
             {

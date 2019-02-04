@@ -71,19 +71,11 @@ public:
     std::int64_t read(void *, std::int64_t);
     void seek(int pos);
 
-    int rate() { return 44100; }
+    int rate() { return 48000; }
     int channels() { return 2; }
-    int depth() { return 16; }
     int duration() { return duration_; }
     std::string title() { return title_; }
     std::string format() { return format_; }
-    int pattern_count() { return pattern_count_; }
-    int channel_count() { return channel_count_; }
-    int instrument_count() { return instrument_count_; }
-    int sample_count() { return sample_count_; }
-    std::vector<std::string> instruments() { return instruments_; }
-    std::vector<std::string> samples() { return samples_; }
-    std::string comment() { return comment_; }
 
 private:
     std::string copystr(const char *);
@@ -104,13 +96,6 @@ private:
     int duration_;
     std::string title_;
     std::string format_;
-    int pattern_count_;
-    int channel_count_;
-    int instrument_count_;
-    int sample_count_;
-    std::vector<std::string> instruments_;
-    std::vector<std::string> samples_;
-    std::string comment_;
 };
 
 #endif

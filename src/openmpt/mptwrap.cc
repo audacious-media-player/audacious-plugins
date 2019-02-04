@@ -47,18 +47,6 @@ MPTWrap::MPTWrap(VFSFile &file)
     duration_ = openmpt_module_get_duration_seconds(mod) * 1000;
     title_ = copystr(openmpt_module_get_metadata(mod, "title"));
     format_ = copystr(openmpt_module_get_metadata(mod, "type_long"));
-    pattern_count_ = openmpt_module_get_num_patterns(mod);
-    instrument_count_ = openmpt_module_get_num_instruments(mod);
-    sample_count_ = openmpt_module_get_num_samples(mod);
-    channel_count_ = openmpt_module_get_num_channels(mod);
-
-    for(int i = 0; i < openmpt_module_get_num_instruments(mod); i++)
-        instruments_.push_back(copystr(openmpt_module_get_instrument_name(mod, i)));
-
-    for(int i = 0; i < openmpt_module_get_num_samples(mod); i++)
-        samples_.push_back(copystr(openmpt_module_get_sample_name(mod, i)));
-
-    comment_ = copystr(openmpt_module_get_metadata(mod, "message_raw"));
 }
 
 MPTWrap::~MPTWrap()
