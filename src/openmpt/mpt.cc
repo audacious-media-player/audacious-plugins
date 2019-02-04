@@ -61,7 +61,10 @@ public:
         &prefs,
     };
 
-    static constexpr auto iinfo = InputInfo(0).with_exts(exts);
+    static constexpr auto iinfo = InputInfo(0)
+        /* For continuity, be at a lower priority than modplug for the time being */
+        .with_priority(1)
+        .with_exts(exts);
 
     constexpr MPTPlugin() : InputPlugin(info, iinfo) { }
 
