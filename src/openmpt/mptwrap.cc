@@ -24,7 +24,6 @@
  * SUCH DAMAGE.
  */
 
-#include <cstdint>
 #include <algorithm>
 #include <iterator>
 
@@ -53,25 +52,25 @@ bool MPTWrap::open(VFSFile &file)
 
     openmpt_module_select_subsong(mod.get(), -1);
 
-    duration_ = openmpt_module_get_duration_seconds(mod.get()) * 1000;
-    title_ = to_aud_str(openmpt_module_get_metadata(mod.get(), "title"));
-    format_ = to_aud_str(openmpt_module_get_metadata(mod.get(), "type_long"));
+    m_duration = openmpt_module_get_duration_seconds(mod.get()) * 1000;
+    m_title = to_aud_str(openmpt_module_get_metadata(mod.get(), "title"));
+    m_format = to_aud_str(openmpt_module_get_metadata(mod.get(), "type_long"));
 
     return true;
 }
 
-size_t MPTWrap::stream_read(void *instance, void *buf, std::size_t n)
+size_t MPTWrap::stream_read(void *instance, void *buf, size_t n)
 {
     return VFS(instance)->fread(buf, 1, n);
 }
 
-int MPTWrap::stream_seek(void *instance, std::int64_t offset, int whence)
+int MPTWrap::stream_seek(void *instance, int64_t offset, int whence)
 {
     VFSSeekType w = to_vfs_seek_type(whence);
     return VFS(instance)->fseek(offset, w) >= 0 ? 0 : -1;
 }
 
-std::int64_t MPTWrap::stream_tell(void *instance)
+int64_t MPTWrap::stream_tell(void *instance)
 {
     return VFS(instance)->ftell();
 }
@@ -101,7 +100,7 @@ void MPTWrap::set_stereo_separation(int separation)
          OPENMPT_MODULE_RENDER_STEREOSEPARATION_PERCENT, separation);
 }
 
-std::int64_t MPTWrap::read(float *buf, std::int64_t bufcnt)
+int64_t MPTWrap::read(float *buf, int64_t bufcnt)
 {
     auto n = openmpt_module_read_interleaved_float_stereo(mod.get(), rate(),
      bufcnt / channels(), buf);

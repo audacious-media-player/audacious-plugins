@@ -27,8 +27,6 @@
 #ifndef AUDACIOUS_MPT_MPTWRAP_H
 #define AUDACIOUS_MPT_MPTWRAP_H
 
-#include <cstdint>
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/vfs.h>
@@ -62,29 +60,29 @@ public:
     void set_stereo_separation(int);
 
     bool open(VFSFile &);
-    std::int64_t read(float *, std::int64_t);
+    int64_t read(float *, int64_t);
     void seek(int pos);
 
     static constexpr int rate() { return 48000; }
     static constexpr int channels() { return 2; }
 
-    int duration() const { return duration_; }
-    const String & title() const { return title_; }
-    const String & format() const { return format_; }
+    int duration() const { return m_duration; }
+    const String & title() const { return m_title; }
+    const String & format() const { return m_format; }
 
 private:
-    static std::size_t stream_read(void *, void *, std::size_t);
-    static int stream_seek(void *, std::int64_t, int);
-    static std::int64_t stream_tell(void *);
+    static size_t stream_read(void *, void *, size_t);
+    static int stream_seek(void *, int64_t, int);
+    static int64_t stream_tell(void *);
     static VFSFile *VFS(void *instance) { return reinterpret_cast<VFSFile *>(instance); }
 
     static constexpr openmpt_stream_callbacks callbacks = { stream_read, stream_seek, stream_tell };
 
     SmartPtr<openmpt_module, openmpt_module_destroy> mod;
 
-    int duration_ = 0;
-    String title_;
-    String format_;
+    int m_duration = 0;
+    String m_title;
+    String m_format;
 };
 
 #endif

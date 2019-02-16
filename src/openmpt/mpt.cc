@@ -24,8 +24,6 @@
  * SUCH DAMAGE.
  */
 
-#include <cstdint>
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
