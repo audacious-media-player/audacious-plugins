@@ -109,8 +109,7 @@ public:
 
         while (!check_stop())
         {
-            unsigned char buffer[65536];
-            std::int64_t n;
+            float buffer[16384];
             int seek_value = check_seek();
 
             if (seek_value >= 0)
@@ -123,11 +122,11 @@ public:
                 force_apply = false;
             }
 
-            n = mpt.read(buffer, sizeof buffer);
+            auto n = mpt.read(buffer, aud::n_elems(buffer));
             if (n == 0)
                 break;
 
-            write_audio(buffer, n);
+            write_audio(buffer, n * sizeof buffer[0]);
         }
 
         return true;

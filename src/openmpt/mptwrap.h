@@ -62,7 +62,7 @@ public:
     void set_stereo_separation(int);
 
     bool open(VFSFile &);
-    std::int64_t read(void *, std::int64_t);
+    std::int64_t read(float *, std::int64_t);
     void seek(int pos);
 
     int rate() { return 48000; }
