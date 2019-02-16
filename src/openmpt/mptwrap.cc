@@ -98,11 +98,6 @@ bool MPTWrap::is_valid_interpolator(int interpolator_value)
             (const Interpolator &interpolator){ return interpolator.value == interpolator_value; });
 }
 
-int MPTWrap::default_interpolator()
-{
-    return interp_windowed;
-}
-
 void MPTWrap::set_interpolator(int interpolator_value)
 {
     if (is_valid_interpolator(interpolator_value))
@@ -112,11 +107,6 @@ void MPTWrap::set_interpolator(int interpolator_value)
 bool MPTWrap::is_valid_stereo_separation(int separation)
 {
     return separation >= 0 && separation <= 100;
-}
-
-int MPTWrap::default_stereo_separation()
-{
-    return 70;
 }
 
 void MPTWrap::set_stereo_separation(int separation)

@@ -24,12 +24,7 @@
  * SUCH DAMAGE.
  */
 
-#include <cctype>
 #include <cstdint>
-#include <cstring>
-#include <iostream>
-#include <memory>
-#include <sstream>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
@@ -42,8 +37,8 @@ static Index<ComboItem> items;
 
 static bool force_apply = false;
 
-static const char *SETTING_STEREO_SEPARATION = "stereo_separation";
-static const char *SETTING_INTERPOLATOR      = "interpolator";
+static constexpr const char *SETTING_STEREO_SEPARATION = "stereo_separation";
+static constexpr const char *SETTING_INTERPOLATOR      = "interpolator";
 
 class MPTPlugin : public InputPlugin
 {
@@ -70,16 +65,10 @@ public:
 
     bool init()
     {
-        std::ostringstream default_stereo_separation;
-        std::ostringstream default_interpolator;
-
-        default_stereo_separation << MPTWrap::default_stereo_separation();
-        default_interpolator << MPTWrap::default_interpolator();
-
-        const char *const defaults[] =
+        static constexpr const char * defaults[] =
         {
-            SETTING_STEREO_SEPARATION, default_stereo_separation.str().c_str(),
-            SETTING_INTERPOLATOR, default_interpolator.str().c_str(),
+            SETTING_STEREO_SEPARATION, aud::numeric_string<MPTWrap::default_stereo_separation>::str,
+            SETTING_INTERPOLATOR, aud::numeric_string<MPTWrap::default_interpolator>::str,
             nullptr,
         };
 

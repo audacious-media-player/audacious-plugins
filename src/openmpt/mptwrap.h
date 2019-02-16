@@ -41,6 +41,14 @@
 class MPTWrap
 {
 public:
+    static constexpr int interp_none = 1;
+    static constexpr int interp_linear = 2;
+    static constexpr int interp_cubic = 4;
+    static constexpr int interp_windowed = 8;
+
+    static constexpr int default_interpolator = interp_windowed;
+    static constexpr int default_stereo_separation = 70;
+
     struct Interpolator
     {
         Interpolator(const char *name, int value) : name(name), value(value) { }
@@ -61,11 +69,9 @@ public:
 
     static std::vector<Interpolator> get_interpolators();
     static bool is_valid_interpolator(int);
-    static int default_interpolator();
     void set_interpolator(int);
 
     static bool is_valid_stereo_separation(int);
-    static int default_stereo_separation();
     void set_stereo_separation(int);
 
     std::int64_t read(void *, std::int64_t);
@@ -84,11 +90,6 @@ private:
     static VFSFile *VFS(void *instance) { return reinterpret_cast<VFSFile *>(instance); }
 
     openmpt_stream_callbacks callbacks = { stream_read, stream_seek, stream_tell };
-
-    static const int interp_none = 1;
-    static const int interp_linear = 2;
-    static const int interp_cubic = 4;
-    static const int interp_windowed = 8;
 
     openmpt_module *mod;
     int duration_;
