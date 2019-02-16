@@ -26,7 +26,6 @@
 
 #include <cstdint>
 #include <algorithm>
-#include <string>
 #include <vector>
 
 #define WANT_VFS_STDIO_COMPAT
@@ -35,6 +34,13 @@
 #include <libopenmpt/libopenmpt.h>
 
 #include "mptwrap.h"
+
+static String to_aud_str(const char * str)
+{
+    String aud_str(str);
+    openmpt_free_string(str);
+    return aud_str;
+}
 
 MPTWrap::MPTWrap(VFSFile &file)
 {
@@ -45,8 +51,8 @@ MPTWrap::MPTWrap(VFSFile &file)
     openmpt_module_select_subsong(mod, -1);
 
     duration_ = openmpt_module_get_duration_seconds(mod) * 1000;
-    title_ = copystr(openmpt_module_get_metadata(mod, "title"));
-    format_ = copystr(openmpt_module_get_metadata(mod, "type_long"));
+    title_ = to_aud_str(openmpt_module_get_metadata(mod, "title"));
+    format_ = to_aud_str(openmpt_module_get_metadata(mod, "type_long"));
 }
 
 MPTWrap::~MPTWrap()
@@ -68,20 +74,6 @@ int MPTWrap::stream_seek(void *instance, std::int64_t offset, int whence)
 std::int64_t MPTWrap::stream_tell(void *instance)
 {
     return VFS(instance)->ftell();
-}
-
-std::string MPTWrap::copystr(const char *src)
-{
-    if (src != nullptr)
-    {
-        std::string dst = src;
-        openmpt_free_string(src);
-        return dst;
-    }
-    else
-    {
-        return "";
-    }
 }
 
 std::vector<MPTWrap::Interpolator> MPTWrap::get_interpolators()

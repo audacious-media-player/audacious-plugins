@@ -107,12 +107,10 @@ public:
         {
             MPTWrap mpt(file);
             tuple.set_filename(filename);
-            tuple.set_format(mpt.format().c_str(), mpt.channels(), mpt.rate(), 0);
+            tuple.set_format(mpt.format(), mpt.channels(), mpt.rate(), 0);
 
             tuple.set_int(Tuple::Length, mpt.duration());
-
-            if (!mpt.title().empty())
-                tuple.set_str(Tuple::Title, mpt.title().c_str());
+            tuple.set_str(Tuple::Title, mpt.title());
 
             return true;
         }

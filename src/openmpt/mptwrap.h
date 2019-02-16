@@ -74,12 +74,10 @@ public:
     int rate() { return 48000; }
     int channels() { return 2; }
     int duration() { return duration_; }
-    std::string title() { return title_; }
-    std::string format() { return format_; }
+    const String & title() { return title_; }
+    const String & format() { return format_; }
 
 private:
-    std::string copystr(const char *);
-
     static std::size_t stream_read(void *, void *, std::size_t);
     static int stream_seek(void *, std::int64_t, int);
     static std::int64_t stream_tell(void *);
@@ -94,8 +92,8 @@ private:
 
     openmpt_module *mod;
     int duration_;
-    std::string title_;
-    std::string format_;
+    String title_;
+    String format_;
 };
 
 #endif
