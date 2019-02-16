@@ -26,13 +26,9 @@
 
 #include <cstdint>
 #include <algorithm>
-#include <vector>
+#include <iterator>
 
 #define WANT_VFS_STDIO_COMPAT
-#include <libaudcore/i18n.h>
-#include <libaudcore/vfs.h>
-#include <libopenmpt/libopenmpt.h>
-
 #include "mptwrap.h"
 
 constexpr ComboItem MPTWrap::interpolators[];
@@ -44,22 +40,23 @@ static String to_aud_str(const char * str)
     return aud_str;
 }
 
-MPTWrap::MPTWrap(VFSFile &file)
+bool MPTWrap::open(VFSFile &file)
 {
-    mod = openmpt_module_create2(callbacks, &file, openmpt_log_func_silent, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
-    if (mod == nullptr)
-        throw InvalidFile();
+    auto m = openmpt_module_create2(callbacks, &file, openmpt_log_func_silent,
+     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
 
-    openmpt_module_select_subsong(mod, -1);
+    if (m == nullptr)
+        return false;
 
-    duration_ = openmpt_module_get_duration_seconds(mod) * 1000;
-    title_ = to_aud_str(openmpt_module_get_metadata(mod, "title"));
-    format_ = to_aud_str(openmpt_module_get_metadata(mod, "type_long"));
-}
+    mod.capture(m);
 
-MPTWrap::~MPTWrap()
-{
-    openmpt_module_destroy(mod);
+    openmpt_module_select_subsong(mod.get(), -1);
+
+    duration_ = openmpt_module_get_duration_seconds(mod.get()) * 1000;
+    title_ = to_aud_str(openmpt_module_get_metadata(mod.get(), "title"));
+    format_ = to_aud_str(openmpt_module_get_metadata(mod.get(), "type_long"));
+
+    return true;
 }
 
 size_t MPTWrap::stream_read(void *instance, void *buf, std::size_t n)
@@ -87,7 +84,8 @@ bool MPTWrap::is_valid_interpolator(int interpolator_value)
 void MPTWrap::set_interpolator(int interpolator_value)
 {
     if (is_valid_interpolator(interpolator_value))
-        openmpt_module_set_render_param(mod, OPENMPT_MODULE_RENDER_INTERPOLATIONFILTER_LENGTH, interpolator_value);
+        openmpt_module_set_render_param(mod.get(),
+         OPENMPT_MODULE_RENDER_INTERPOLATIONFILTER_LENGTH, interpolator_value);
 }
 
 bool MPTWrap::is_valid_stereo_separation(int separation)
@@ -98,7 +96,8 @@ bool MPTWrap::is_valid_stereo_separation(int separation)
 void MPTWrap::set_stereo_separation(int separation)
 {
     if (is_valid_stereo_separation(separation))
-        openmpt_module_set_render_param(mod, OPENMPT_MODULE_RENDER_STEREOSEPARATION_PERCENT, separation);
+        openmpt_module_set_render_param(mod.get(),
+         OPENMPT_MODULE_RENDER_STEREOSEPARATION_PERCENT, separation);
 }
 
 std::int64_t MPTWrap::read(void *buf, std::int64_t bufsiz)
@@ -106,12 +105,12 @@ std::int64_t MPTWrap::read(void *buf, std::int64_t bufsiz)
     bufsiz /= sizeof(float) * channels();
     std::size_t n;
 
-    n = openmpt_module_read_interleaved_float_stereo(mod, rate(), bufsiz, reinterpret_cast<float *>(buf));
+    n = openmpt_module_read_interleaved_float_stereo(mod.get(), rate(), bufsiz, reinterpret_cast<float *>(buf));
 
     return n * channels() * sizeof(float);
 }
 
 void MPTWrap::seek(int pos)
 {
-    openmpt_module_set_position_seconds(mod, pos / 1000.0);
+    openmpt_module_set_position_seconds(mod.get(), pos / 1000.0);
 }

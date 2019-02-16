@@ -78,75 +78,59 @@ public:
 
     bool is_our_file(const char *filename, VFSFile &file)
     {
-        try
-        {
-            MPTWrap mpt(file);
-            return true;
-        }
-        catch(const MPTWrap::InvalidFile &)
-        {
-            return false;
-        }
+        MPTWrap mpt;
+        return mpt.open(file);
     }
 
     bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *)
     {
-        try
-        {
-            MPTWrap mpt(file);
-            tuple.set_filename(filename);
-            tuple.set_format(mpt.format(), mpt.channels(), mpt.rate(), 0);
-
-            tuple.set_int(Tuple::Length, mpt.duration());
-            tuple.set_str(Tuple::Title, mpt.title());
-
-            return true;
-        }
-        catch(const MPTWrap::InvalidFile &)
-        {
+        MPTWrap mpt;
+        if (!mpt.open(file))
             return false;
-        }
+
+        tuple.set_filename(filename);
+        tuple.set_format(mpt.format(), mpt.channels(), mpt.rate(), 0);
+
+        tuple.set_int(Tuple::Length, mpt.duration());
+        tuple.set_str(Tuple::Title, mpt.title());
+
+        return true;
     }
 
     bool play(const char *filename, VFSFile &file)
     {
+        MPTWrap mpt;
+        if (!mpt.open(file))
+            return false;
+
         force_apply = true;
 
-        try
+        open_audio(FMT_FLOAT, mpt.rate(), mpt.channels());
+
+        while (!check_stop())
         {
-            MPTWrap mpt(file);
+            unsigned char buffer[65536];
+            std::int64_t n;
+            int seek_value = check_seek();
 
-            open_audio(FMT_FLOAT, mpt.rate(), mpt.channels());
+            if (seek_value >= 0)
+                mpt.seek(seek_value);
 
-            while (!check_stop())
+            if (force_apply)
             {
-                unsigned char buffer[65536];
-                std::int64_t n;
-                int seek_value = check_seek();
-
-                if (seek_value >= 0)
-                    mpt.seek(seek_value);
-
-                if (force_apply)
-                {
-                    mpt.set_interpolator(aud_get_int(CFG_SECTION, SETTING_INTERPOLATOR));
-                    mpt.set_stereo_separation(aud_get_int(CFG_SECTION, SETTING_STEREO_SEPARATION));
-                    force_apply = false;
-                }
-
-                n = mpt.read(buffer, sizeof buffer);
-                if (n == 0)
-                    break;
-
-                write_audio(buffer, n);
+                mpt.set_interpolator(aud_get_int(CFG_SECTION, SETTING_INTERPOLATOR));
+                mpt.set_stereo_separation(aud_get_int(CFG_SECTION, SETTING_STEREO_SEPARATION));
+                force_apply = false;
             }
 
-            return true;
+            n = mpt.read(buffer, sizeof buffer);
+            if (n == 0)
+                break;
+
+            write_audio(buffer, n);
         }
-        catch(const MPTWrap::InvalidFile &)
-        {
-            return false;
-        }
+
+        return true;
     }
 };
 

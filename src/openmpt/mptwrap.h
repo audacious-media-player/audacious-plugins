@@ -28,7 +28,6 @@
 #define AUDACIOUS_MPT_MPTWRAP_H
 
 #include <cstdint>
-#include <exception>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/preferences.h>
@@ -56,23 +55,13 @@ public:
         {N_("Windowed sinc"), interp_windowed}
     };
 
-    class InvalidFile : public std::exception
-    {
-    public:
-        InvalidFile() : std::exception() { }
-    };
-
-    explicit MPTWrap(VFSFile &);
-    MPTWrap(const MPTWrap &) = delete;
-    MPTWrap &operator=(const MPTWrap &) = delete;
-    ~MPTWrap();
-
     static bool is_valid_interpolator(int);
     void set_interpolator(int);
 
     static bool is_valid_stereo_separation(int);
     void set_stereo_separation(int);
 
+    bool open(VFSFile &);
     std::int64_t read(void *, std::int64_t);
     void seek(int pos);
 
@@ -90,8 +79,9 @@ private:
 
     openmpt_stream_callbacks callbacks = { stream_read, stream_seek, stream_tell };
 
-    openmpt_module *mod;
-    int duration_;
+    SmartPtr<openmpt_module, openmpt_module_destroy> mod;
+
+    int duration_ = 0;
     String title_;
     String format_;
 };
