@@ -65,11 +65,12 @@ public:
     std::int64_t read(float *, std::int64_t);
     void seek(int pos);
 
-    int rate() { return 48000; }
-    int channels() { return 2; }
-    int duration() { return duration_; }
-    const String & title() { return title_; }
-    const String & format() { return format_; }
+    static constexpr int rate() { return 48000; }
+    static constexpr int channels() { return 2; }
+
+    int duration() const { return duration_; }
+    const String & title() const { return title_; }
+    const String & format() const { return format_; }
 
 private:
     static std::size_t stream_read(void *, void *, std::size_t);
@@ -77,7 +78,7 @@ private:
     static std::int64_t stream_tell(void *);
     static VFSFile *VFS(void *instance) { return reinterpret_cast<VFSFile *>(instance); }
 
-    openmpt_stream_callbacks callbacks = { stream_read, stream_seek, stream_tell };
+    static constexpr openmpt_stream_callbacks callbacks = { stream_read, stream_seek, stream_tell };
 
     SmartPtr<openmpt_module, openmpt_module_destroy> mod;
 

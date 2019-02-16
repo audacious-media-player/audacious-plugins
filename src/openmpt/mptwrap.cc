@@ -32,6 +32,7 @@
 #include "mptwrap.h"
 
 constexpr ComboItem MPTWrap::interpolators[];
+constexpr openmpt_stream_callbacks MPTWrap::callbacks;
 
 static String to_aud_str(const char * str)
 {
