@@ -25,11 +25,11 @@
  */
 
 #include <cstdint>
-#include <cstdio>
 #include <algorithm>
 #include <string>
 #include <vector>
 
+#define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/i18n.h>
 #include <libaudcore/vfs.h>
 #include <libopenmpt/libopenmpt.h>
@@ -61,22 +61,7 @@ size_t MPTWrap::stream_read(void *instance, void *buf, std::size_t n)
 
 int MPTWrap::stream_seek(void *instance, std::int64_t offset, int whence)
 {
-    enum VFSSeekType w;
-    switch (whence)
-    {
-        case OPENMPT_STREAM_SEEK_SET:
-            w = VFS_SEEK_SET;
-            break;
-        case OPENMPT_STREAM_SEEK_CUR:
-            w = VFS_SEEK_CUR;
-            break;
-        case OPENMPT_STREAM_SEEK_END:
-            w = VFS_SEEK_END;
-            break;
-        default:
-            return -1;
-    }
-
+    VFSSeekType w = to_vfs_seek_type(whence);
     return VFS(instance)->fseek(offset, w) >= 0 ? 0 : -1;
 }
 
