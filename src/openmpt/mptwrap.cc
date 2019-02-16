@@ -35,6 +35,8 @@
 
 #include "mptwrap.h"
 
+constexpr ComboItem MPTWrap::interpolators[];
+
 static String to_aud_str(const char * str)
 {
     String aud_str(str);
@@ -76,26 +78,10 @@ std::int64_t MPTWrap::stream_tell(void *instance)
     return VFS(instance)->ftell();
 }
 
-std::vector<MPTWrap::Interpolator> MPTWrap::get_interpolators()
-{
-    std::vector<Interpolator> interpolators =
-    {
-        Interpolator(_("None"), interp_none),
-        Interpolator(_("Linear"), interp_linear),
-        Interpolator(_("Cubic"), interp_cubic),
-        Interpolator(_("Windowed sinc"), interp_windowed),
-    };
-
-    return interpolators;
-}
-
 bool MPTWrap::is_valid_interpolator(int interpolator_value)
 {
-    std::vector<Interpolator> interpolators = get_interpolators();
-
-    return std::any_of(interpolators.begin(), interpolators.end(),
-            [&interpolator_value]
-            (const Interpolator &interpolator){ return interpolator.value == interpolator_value; });
+    return std::any_of(std::begin(interpolators), std::end(interpolators),
+     [interpolator_value](const ComboItem &ci) { return ci.num == interpolator_value; });
 }
 
 void MPTWrap::set_interpolator(int interpolator_value)

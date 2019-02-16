@@ -33,8 +33,6 @@
 
 #include "mptwrap.h"
 
-static Index<ComboItem> items;
-
 static bool force_apply = false;
 
 static constexpr const char *CFG_SECTION               = "openmpt";
@@ -163,16 +161,6 @@ const char *const MPTPlugin::exts[] =
     nullptr
 };
 
-static ArrayRef<ComboItem> interpolator_fill()
-{
-    items.clear();
-
-    for(MPTWrap::Interpolator &interpolator : MPTWrap::get_interpolators())
-        items.append(interpolator.name, interpolator.value);
-
-    return { items.begin(), items.len() };
-}
-
 static void values_changed()
 {
     force_apply = true;
@@ -189,7 +177,7 @@ const PreferencesWidget MPTPlugin::widgets[] =
     WidgetCombo(
             N_("Interpolation:"),
             WidgetInt(CFG_SECTION, SETTING_INTERPOLATOR, values_changed),
-            { nullptr, interpolator_fill }
+            { MPTWrap::interpolators }
     )
 };
 

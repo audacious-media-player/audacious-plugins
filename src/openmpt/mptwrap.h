@@ -27,12 +27,11 @@
 #ifndef AUDACIOUS_MPT_MPTWRAP_H
 #define AUDACIOUS_MPT_MPTWRAP_H
 
-#include <cstddef>
 #include <cstdint>
 #include <exception>
-#include <string>
-#include <vector>
 
+#include <libaudcore/i18n.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/vfs.h>
 
 #include <libopenmpt/libopenmpt.h>
@@ -49,11 +48,12 @@ public:
     static constexpr int default_interpolator = interp_windowed;
     static constexpr int default_stereo_separation = 70;
 
-    struct Interpolator
+    static constexpr ComboItem interpolators[] =
     {
-        Interpolator(const char *name, int value) : name(name), value(value) { }
-        const char *name;
-        int value;
+        {N_("None"),          interp_none},
+        {N_("Linear"),        interp_linear},
+        {N_("Cubic"),         interp_cubic},
+        {N_("Windowed sinc"), interp_windowed}
     };
 
     class InvalidFile : public std::exception
@@ -67,7 +67,6 @@ public:
     MPTWrap &operator=(const MPTWrap &) = delete;
     ~MPTWrap();
 
-    static std::vector<Interpolator> get_interpolators();
     static bool is_valid_interpolator(int);
     void set_interpolator(int);
 
