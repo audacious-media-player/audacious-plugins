@@ -37,6 +37,7 @@ static Index<ComboItem> items;
 
 static bool force_apply = false;
 
+static constexpr const char *CFG_SECTION               = "openmpt";
 static constexpr const char *SETTING_STEREO_SEPARATION = "stereo_separation";
 static constexpr const char *SETTING_INTERPOLATOR      = "interpolator";
 
@@ -72,7 +73,7 @@ public:
             nullptr,
         };
 
-        aud_config_set_defaults(PACKAGE, defaults);
+        aud_config_set_defaults(CFG_SECTION, defaults);
 
         return true;
     }
@@ -130,8 +131,8 @@ public:
 
                 if (force_apply)
                 {
-                    mpt.set_interpolator(aud_get_int(PACKAGE, SETTING_INTERPOLATOR));
-                    mpt.set_stereo_separation(aud_get_int(PACKAGE, SETTING_STEREO_SEPARATION));
+                    mpt.set_interpolator(aud_get_int(CFG_SECTION, SETTING_INTERPOLATOR));
+                    mpt.set_stereo_separation(aud_get_int(CFG_SECTION, SETTING_STEREO_SEPARATION));
                     force_apply = false;
                 }
 
@@ -181,13 +182,13 @@ const PreferencesWidget MPTPlugin::widgets[] =
 {
     WidgetSpin(
             N_("Stereo separation:"),
-            WidgetInt(PACKAGE, SETTING_STEREO_SEPARATION, values_changed),
+            WidgetInt(CFG_SECTION, SETTING_STEREO_SEPARATION, values_changed),
             { 0.0, 100.0, 1.0, N_("%") }
     ),
 
     WidgetCombo(
             N_("Interpolation:"),
-            WidgetInt(PACKAGE, SETTING_INTERPOLATOR, values_changed),
+            WidgetInt(CFG_SECTION, SETTING_INTERPOLATOR, values_changed),
             { nullptr, interpolator_fill }
     )
 };
