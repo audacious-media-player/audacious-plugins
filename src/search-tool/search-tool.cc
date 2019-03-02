@@ -124,7 +124,7 @@ static Index<String> s_search_terms;
  * When adding = true, it may only be accessed by the playlist add thread.
  * When adding = false, it may only be accessed by the UI thread.
  * adding may only be set by the UI thread while holding adding_lock. */
-static TinyLock s_adding_lock;
+static aud::spinlock s_adding_lock;
 static bool s_adding = false;
 static SimpleHash<String, bool> s_added_table;
 
@@ -191,6 +191,12 @@ static String get_uri ()
         return to_uri (path2);
 
     return to_uri (g_get_home_dir ());
+}
+
+static void set_adding (bool adding)
+{
+    auto lh = s_adding_lock.take ();
+    s_adding = adding;
 }
 
 static void destroy_database ()
@@ -332,7 +338,7 @@ static void do_search ()
 static bool filter_cb (const char * filename, void * unused)
 {
     bool add = false;
-    tiny_lock (& s_adding_lock);
+    auto lh = s_adding_lock.take ();
 
     if (s_adding)
     {
@@ -344,7 +350,6 @@ static bool filter_cb (const char * filename, void * unused)
             (* added) = true;
     }
 
-    tiny_unlock (& s_adding_lock);
     return add;
 }
 
@@ -379,9 +384,7 @@ static void begin_add (const char * uri)
 
     s_playlist.remove_selected ();
 
-    tiny_lock (& s_adding_lock);
-    s_adding = true;
-    tiny_unlock (& s_adding_lock);
+    set_adding (true);
 
     Index<PlaylistAddItem> add;
     add.append (String (uri));
@@ -467,9 +470,7 @@ static void add_complete_cb (void *, void *)
 
     if (s_adding)
     {
-        tiny_lock (& s_adding_lock);
-        s_adding = false;
-        tiny_unlock (& s_adding_lock);
+        set_adding (false);
 
         int entries = s_playlist.n_entries ();
 
@@ -541,9 +542,7 @@ static void search_cleanup ()
     s_items.clear ();
     s_selection.clear ();
 
-    tiny_lock (& s_adding_lock);
-    s_adding = false;
-    tiny_unlock (& s_adding_lock);
+    set_adding (false);
 
     s_added_table.clear ();
     destroy_database ();
