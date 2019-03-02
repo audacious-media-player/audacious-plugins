@@ -263,7 +263,7 @@ ENABLE_PLUGIN_WITH_DEP(openmpt,
     auto,
     INPUT,
     OPENMPT,
-    libopenmpt >= 0.3)
+    libopenmpt >= 0.2)
 
 ENABLE_PLUGIN_WITH_DEP(sid,
     Commodore 64 audio,

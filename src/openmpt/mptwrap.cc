@@ -28,6 +28,7 @@
 #include <iterator>
 
 #define WANT_VFS_STDIO_COMPAT
+#include <libopenmpt/libopenmpt_version.h>
 #include "mptwrap.h"
 
 constexpr ComboItem MPTWrap::interpolators[];
@@ -42,8 +43,13 @@ static String to_aud_str(const char * str)
 
 bool MPTWrap::open(VFSFile &file)
 {
+#if OPENMPT_API_VERSION_MAJOR <= 0 && OPENMPT_API_VERSION_MINOR < 3
+    auto m = openmpt_module_create(callbacks, &file, openmpt_log_func_silent,
+     nullptr, nullptr);
+#else
     auto m = openmpt_module_create2(callbacks, &file, openmpt_log_func_silent,
      nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+#endif
 
     if (m == nullptr)
         return false;
