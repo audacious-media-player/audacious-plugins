@@ -162,7 +162,7 @@ bool QtAudio::open_audio (int format, int rate, int chan, String & error)
 
     bytes_per_sec = FMT_SIZEOF (format) * chan * rate;
 
-    int buffer_ms = aud_get_int (nullptr, "output_buffer_size");
+    int buffer_ms = aud_get_int ("output_buffer_size");
     int buffer_size = FMT_SIZEOF (format) * chan * aud::rescale (buffer_ms, 1000, rate);
 
     paused = false;

@@ -143,7 +143,7 @@ void SystemTrayIcon::scroll (int delta)
     {
     case SI_CFG_SCROLL_ACTION_VOLUME:
         aud_drct_set_volume_main (aud_drct_get_volume_main () +
-         aud_get_int (0, "volume_delta") * steps);
+         aud_get_int ("volume_delta") * steps);
         break;
 
     case SI_CFG_SCROLL_ACTION_SKIP:

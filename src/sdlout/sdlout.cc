@@ -199,7 +199,7 @@ bool SDLOutput::open_audio (int format, int rate, int chan, String & error)
     sdlout_chan = chan;
     sdlout_rate = rate;
 
-    int buffer_ms = aud_get_int (nullptr, "output_buffer_size");
+    int buffer_ms = aud_get_int ("output_buffer_size");
     buffer.alloc (2 * chan * aud::rescale (buffer_ms, 1000, rate));
 
     prebuffer_flag = true;

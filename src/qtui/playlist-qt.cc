@@ -137,10 +137,10 @@ void PlaylistWidget::keyPressEvent (QKeyEvent * event)
         switch (event->key ())
         {
         case Qt::Key_Right:
-            aud_drct_seek (aud_drct_get_time () + aud_get_int (0, "step_size") * 1000);
+            aud_drct_seek (aud_drct_get_time () + aud_get_int ("step_size") * 1000);
             return;
         case Qt::Key_Left:
-            aud_drct_seek (aud_drct_get_time () - aud_get_int (0, "step_size") * 1000);
+            aud_drct_seek (aud_drct_get_time () - aud_get_int ("step_size") * 1000);
             return;
         case Qt::Key_Space:
             aud_drct_play_pause ();
@@ -175,7 +175,7 @@ void PlaylistWidget::mouseMoveEvent (QMouseEvent * event)
 
     if (row < 0)
         hidePopup ();
-    else if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && m_popup_pos != row)
+    else if (aud_get_bool ("show_filepopup_for_tuple") && m_popup_pos != row)
         triggerPopup (row);
 
     audqt::TreeView::mouseMoveEvent (event);
@@ -453,7 +453,7 @@ void PlaylistWidget::triggerPopup (int pos)
     audqt::infopopup_hide ();
 
     m_popup_pos = pos;
-    m_popup_timer.queue (aud_get_int (nullptr, "filepopup_delay") * 100,
+    m_popup_timer.queue (aud_get_int ("filepopup_delay") * 100,
      aud::obj_member<PlaylistWidget, & PlaylistWidget::showPopup>, this);
 }
 

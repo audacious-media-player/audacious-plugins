@@ -119,6 +119,6 @@ void pl_remove_unselected ()
 }
 
 void volume_up ()
-    { aud_drct_set_volume_main (aud_drct_get_volume_main () + aud_get_int (0, "volume_delta")); }
+    { aud_drct_set_volume_main (aud_drct_get_volume_main () + aud_get_int ("volume_delta")); }
 void volume_down ()
-    { aud_drct_set_volume_main (aud_drct_get_volume_main () - aud_get_int (0, "volume_delta")); }
+    { aud_drct_set_volume_main (aud_drct_get_volume_main () - aud_get_int ("volume_delta")); }

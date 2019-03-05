@@ -141,7 +141,7 @@ static gboolean si_cb_btscroll (GtkStatusIcon * icon, GdkEventScroll * event)
           switch (aud_get_int ("statusicon", "scroll_action"))
           {
             case SI_CFG_SCROLL_ACTION_VOLUME:
-                si_volume_change (aud_get_int (0, "volume_delta"));
+                si_volume_change (aud_get_int ("volume_delta"));
                 break;
             case SI_CFG_SCROLL_ACTION_SKIP:
                 if (aud_get_bool ("statusicon", "reverse_scroll"))
@@ -158,7 +158,7 @@ static gboolean si_cb_btscroll (GtkStatusIcon * icon, GdkEventScroll * event)
         switch (aud_get_int ("statusicon", "scroll_action"))
         {
           case SI_CFG_SCROLL_ACTION_VOLUME:
-              si_volume_change (-aud_get_int (0, "volume_delta"));
+              si_volume_change (-aud_get_int ("volume_delta"));
               break;
           case SI_CFG_SCROLL_ACTION_SKIP:
               if (aud_get_bool ("statusicon", "reverse_scroll"))

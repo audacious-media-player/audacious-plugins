@@ -379,7 +379,7 @@ static bool set_sample_spec (pa_sample_spec & ss, int fmt, int rate, int nch)
 
 static void set_buffer_attr (pa_buffer_attr & buffer, const pa_sample_spec & ss)
 {
-    int buffer_ms = aud_get_int (nullptr, "output_buffer_size");
+    int buffer_ms = aud_get_int ("output_buffer_size");
     size_t buffer_size = pa_usec_to_bytes ((pa_usec_t) 1000 * buffer_ms, & ss);
 
     buffer.maxlength = (uint32_t) -1;

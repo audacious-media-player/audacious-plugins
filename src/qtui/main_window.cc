@@ -238,16 +238,16 @@ void MainWindow::update_toggles ()
     if (m_search_tool)
         m_search_action->setChecked (aud_plugin_get_enabled (m_search_tool));
 
-    bool stop_after = aud_get_bool (nullptr, "stop_after_current_song");
+    bool stop_after = aud_get_bool ("stop_after_current_song");
     m_stop_action->setVisible (! stop_after);
     m_stop_after_action->setVisible (stop_after);
     m_stop_after_action->setChecked (stop_after);
 
     m_record_action->setVisible (aud_drct_get_record_enabled ());
-    m_record_action->setChecked (aud_get_bool (nullptr, "record"));
+    m_record_action->setChecked (aud_get_bool ("record"));
 
-    m_repeat_action->setChecked (aud_get_bool (nullptr, "repeat"));
-    m_shuffle_action->setChecked (aud_get_bool (nullptr, "shuffle"));
+    m_repeat_action->setChecked (aud_get_bool ("repeat"));
+    m_shuffle_action->setChecked (aud_get_bool ("shuffle"));
 }
 
 void MainWindow::update_visibility ()

@@ -433,14 +433,14 @@ static void set_slider_length (int length)
 
 static void update_step_size ()
 {
-    int step_size = aud_get_int (0, "step_size");
+    int step_size = aud_get_int ("step_size");
     // set half the step size because GTK doubles it for scroll events
     gtk_range_set_increments ((GtkRange *) slider, step_size * 500, step_size * 500);
 }
 
 static void update_volume_delta ()
 {
-    int volume_delta = aud_get_int (0, "volume_delta");
+    int volume_delta = aud_get_int ("volume_delta");
     GtkAdjustment * adjustment = gtk_scale_button_get_adjustment ((GtkScaleButton *) volume);
     gtk_adjustment_set_step_increment (adjustment, volume_delta);
     gtk_adjustment_set_page_increment (adjustment, volume_delta);
@@ -557,11 +557,11 @@ static gboolean window_keypress_cb (GtkWidget *, GdkEventKey * event)
             return true;
         case GDK_KEY_Left:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () - aud_get_int (0, "step_size") * 1000);
+                do_seek (aud_drct_get_time () - aud_get_int ("step_size") * 1000);
             return true;
         case GDK_KEY_Right:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () + aud_get_int (0, "step_size") * 1000);
+                do_seek (aud_drct_get_time () + aud_get_int ("step_size") * 1000);
             return true;
         }
 
@@ -596,11 +596,11 @@ static gboolean window_keypress_cb (GtkWidget *, GdkEventKey * event)
         {
           case GDK_KEY_Left:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () - aud_get_int (0, "step_size") * 1000);
+                do_seek (aud_drct_get_time () - aud_get_int ("step_size") * 1000);
             break;
           case GDK_KEY_Right:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () + aud_get_int (0, "step_size") * 1000);
+                do_seek (aud_drct_get_time () + aud_get_int ("step_size") * 1000);
             break;
           default:
             return false;
@@ -659,11 +659,11 @@ static void update_toggles (void * = nullptr, void * = nullptr)
     gtk_widget_set_visible ((GtkWidget *) button_record, aud_drct_get_record_enabled ());
 
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_record,
-     aud_get_bool (nullptr, "record"));
+     aud_get_bool ("record"));
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_repeat,
-     aud_get_bool (nullptr, "repeat"));
+     aud_get_bool ("repeat"));
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_shuffle,
-     aud_get_bool (nullptr, "shuffle"));
+     aud_get_bool ("shuffle"));
 }
 
 static void toggle_repeat (GtkToggleToolButton * button)
@@ -887,7 +887,7 @@ bool GtkUI::init ()
     GtkIconSize icon_size = gtk_tool_shell_get_icon_size ((GtkToolShell *) toolbar);
     g_object_set ((GObject *) volume, "size", icon_size, nullptr);
     gtk_button_set_relief ((GtkButton *) volume, GTK_RELIEF_NONE);
-    int delta = aud_get_int (0, "volume_delta");
+    int delta = aud_get_int ("volume_delta");
     gtk_scale_button_set_adjustment ((GtkScaleButton *) volume,
      (GtkAdjustment *) gtk_adjustment_new (0, 0, 100, delta, delta, 0));
     gtk_widget_set_can_focus (volume, false);

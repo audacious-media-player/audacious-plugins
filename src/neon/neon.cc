@@ -193,7 +193,7 @@ private:
 NeonFile::NeonFile (const char * url) :
     m_url (url)
 {
-    int buffer_kb = aud_get_int (nullptr, "net_buffer_kb");
+    int buffer_kb = aud_get_int ("net_buffer_kb");
     m_rb.alloc (1024 * aud::clamp (buffer_kb, 16, 1024));
 }
 
@@ -434,10 +434,10 @@ void NeonFile::handle_headers ()
 static int neon_proxy_auth_cb (void * userdata, const char * realm, int attempt,
  char * username, char * password)
 {
-    String value = aud_get_str (nullptr, "proxy_user");
+    String value = aud_get_str ("proxy_user");
     g_strlcpy (username, value, NE_ABUFSIZ);
 
-    value = aud_get_str (nullptr, "proxy_pass");
+    value = aud_get_str ("proxy_pass");
     g_strlcpy (password, value, NE_ABUFSIZ);
 
     return attempt;
@@ -555,13 +555,13 @@ int NeonFile::open_handle (int64_t startbyte, String * error)
     String proxy_host;
     int proxy_port = 0;
 
-    bool use_proxy = aud_get_bool (nullptr, "use_proxy");
-    bool use_proxy_auth = aud_get_bool (nullptr, "use_proxy_auth");
+    bool use_proxy = aud_get_bool ("use_proxy");
+    bool use_proxy_auth = aud_get_bool ("use_proxy_auth");
 
     if (use_proxy)
     {
-        proxy_host = aud_get_str (nullptr, "proxy_host");
-        proxy_port = aud_get_int (nullptr, "proxy_port");
+        proxy_host = aud_get_str ("proxy_host");
+        proxy_port = aud_get_int ("proxy_port");
     }
 
     m_redircount = 0;

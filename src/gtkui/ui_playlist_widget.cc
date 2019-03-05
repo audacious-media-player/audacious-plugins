@@ -271,7 +271,7 @@ static void popup_trigger (PlaylistWidgetData * data, int pos)
     audgui_infopopup_hide ();
 
     data->popup_pos = pos;
-    data->popup_timer.queue (aud_get_int (nullptr, "filepopup_delay") * 100,
+    data->popup_timer.queue (aud_get_int ("filepopup_delay") * 100,
      aud::obj_member<PlaylistWidgetData, & PlaylistWidgetData::show_popup>, data);
 }
 
@@ -285,7 +285,7 @@ static void mouse_motion (void * user, GdkEventMotion * event, int row)
         return;
     }
 
-    if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && data->popup_pos != row)
+    if (aud_get_bool ("show_filepopup_for_tuple") && data->popup_pos != row)
         popup_trigger (data, row);
 }
 

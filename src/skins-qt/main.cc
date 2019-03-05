@@ -131,7 +131,7 @@ static void seek_timeout (void * rewind);
 /* always returns a 6-character string */
 static StringBuf format_time (int time, int length)
 {
-    bool zero = aud_get_bool (nullptr, "leading_zero");
+    bool zero = aud_get_bool ("leading_zero");
     bool remaining = aud_get_bool ("skins", "show_remaining_time");
 
     if (remaining && length > 0)
@@ -431,7 +431,7 @@ static void record_toggled ()
 {
     if (aud_drct_get_record_enabled ())
     {
-        if (aud_get_bool (nullptr, "record"))
+        if (aud_get_bool ("record"))
             mainwin_show_status_message (_("Recording on"));
         else
             mainwin_show_status_message (_("Recording off"));
@@ -440,17 +440,17 @@ static void record_toggled ()
 
 static void repeat_toggled ()
 {
-    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
+    mainwin_repeat->set_active (aud_get_bool ("repeat"));
 }
 
 static void shuffle_toggled ()
 {
-    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
+    mainwin_shuffle->set_active (aud_get_bool ("shuffle"));
 }
 
 static void no_advance_toggled ()
 {
-    if (aud_get_bool (nullptr, "no_playlist_advance"))
+    if (aud_get_bool ("no_playlist_advance"))
         mainwin_show_status_message (_("Single mode."));
     else
         mainwin_show_status_message (_("Playlist mode."));
@@ -458,7 +458,7 @@ static void no_advance_toggled ()
 
 static void stop_after_song_toggled ()
 {
-    if (aud_get_bool (nullptr, "stop_after_current_song"))
+    if (aud_get_bool ("stop_after_current_song"))
         mainwin_show_status_message (_("Stopping after song."));
 }
 
@@ -474,14 +474,14 @@ bool MainWindow::scroll (QWheelEvent * event)
     if (steps_x != 0)
     {
         m_scroll_delta_x -= 120 * steps_x;
-        int step_size = aud_get_int (0, "step_size");
+        int step_size = aud_get_int ("step_size");
         aud_drct_seek (aud_drct_get_time () - steps_x * step_size * 1000);
     }
 
     if (steps_y != 0)
     {
         m_scroll_delta_y -= 120 * steps_y;
-        int volume_delta = aud_get_int (0, "volume_delta");
+        int volume_delta = aud_get_int ("volume_delta");
         aud_drct_set_volume_main (aud_drct_get_volume_main () + steps_y * volume_delta);
     }
 
@@ -925,12 +925,12 @@ static void mainwin_create_widgets ()
 
     mainwin_shuffle = new Button (46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP, SKIN_SHUFREP);
     mainwin->put_widget (false, mainwin_shuffle, 164, 89);
-    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
+    mainwin_shuffle->set_active (aud_get_bool ("shuffle"));
     mainwin_shuffle->on_release (mainwin_shuffle_cb);
 
     mainwin_repeat = new Button (28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP, SKIN_SHUFREP);
     mainwin->put_widget (false, mainwin_repeat, 210, 89);
-    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
+    mainwin_repeat->set_active (aud_get_bool ("repeat"));
     mainwin_repeat->on_release (mainwin_repeat_cb);
 
     mainwin_eq = new Button (23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP, SKIN_SHUFREP);

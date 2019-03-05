@@ -152,7 +152,7 @@ bool WaveOut::open_audio (int format, int rate, int chan, String & error)
         return false;
     }
 
-    int block_ms = aud_get_int (nullptr, "output_buffer_size") / NUM_BLOCKS;
+    int block_ms = aud_get_int ("output_buffer_size") / NUM_BLOCKS;
     block_size = FMT_SIZEOF (format) * chan * aud::rescale (block_ms, 1000, rate);
 
     headers.insert (0, NUM_BLOCKS);

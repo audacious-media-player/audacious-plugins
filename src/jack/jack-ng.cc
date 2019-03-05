@@ -217,7 +217,7 @@ bool JACKOutput::open_audio (int format, int rate, int channels, String & error)
         }
     }
 
-    buffer_time = aud_get_int (nullptr, "output_buffer_size");
+    buffer_time = aud_get_int ("output_buffer_size");
     m_buffer.alloc (aud::rescale (buffer_time, 1000, rate) * channels);
 
     m_rate = rate;

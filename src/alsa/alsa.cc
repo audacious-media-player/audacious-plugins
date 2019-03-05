@@ -348,7 +348,7 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels, String & er
     alsa_channels = channels;
     alsa_rate = rate;
 
-    total_buffer = aud_get_int (nullptr, "output_buffer_size");
+    total_buffer = aud_get_int ("output_buffer_size");
     useconds = 1000 * aud::min (1000, total_buffer / 2);
     direction = 0;
     CHECK_STR (error, snd_pcm_hw_params_set_buffer_time_near, alsa_handle,
