@@ -554,6 +554,10 @@ int NeonFile::open_handle (int64_t startbyte, String * error)
     int ret;
     String proxy_host;
     int proxy_port = 0;
+    String proxy_user (""); // ne_session_socks_proxy requires non NULL user and password
+    String proxy_pass ("");
+    bool socks_proxy = false;
+    ne_sock_sversion socks_type = NE_SOCK_SOCKSV4A;
 
     bool use_proxy = aud_get_bool ("use_proxy");
     bool use_proxy_auth = aud_get_bool ("use_proxy_auth");
@@ -562,6 +566,18 @@ int NeonFile::open_handle (int64_t startbyte, String * error)
     {
         proxy_host = aud_get_str ("proxy_host");
         proxy_port = aud_get_int ("proxy_port");
+        socks_proxy = aud_get_bool ("socks_proxy");
+
+        if (use_proxy_auth)
+        {
+            proxy_user = aud_get_str ("proxy_user");
+            proxy_pass = aud_get_str ("proxy_pass");
+        }
+
+        if (socks_proxy)
+        {
+            socks_type = aud_get_int ("socks_type") == 0 ? NE_SOCK_SOCKSV4A : NE_SOCK_SOCKSV5;
+        }
     }
 
     m_redircount = 0;
@@ -597,7 +613,14 @@ int NeonFile::open_handle (int64_t startbyte, String * error)
         if (use_proxy)
         {
             AUDDBG ("<%p> Using proxy: %s:%d\n", this, (const char *) proxy_host, proxy_port);
-            ne_session_proxy (m_session, proxy_host, proxy_port);
+            if (socks_proxy)
+            {
+                ne_session_socks_proxy (m_session, socks_type, proxy_host, proxy_port, proxy_user, proxy_pass);
+            }
+            else
+            {
+                ne_session_proxy (m_session, proxy_host, proxy_port);
+            }
 
             if (use_proxy_auth)
             {
