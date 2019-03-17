@@ -74,7 +74,7 @@ static void equalizerwin_shade_toggle ()
 
 static void eq_on_cb (Button * button, QMouseEvent * event)
 {
-    aud_set_bool (nullptr, "equalizer_active", button->get_active ());
+    aud_set_bool ("equalizer_active", button->get_active ());
 }
 
 static void update_from_config (void *, void *)

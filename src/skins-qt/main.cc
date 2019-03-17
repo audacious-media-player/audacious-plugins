@@ -630,9 +630,9 @@ static void mainwin_fwd_release (Button * button, QMouseEvent * event)
     { seek_release (event, false); }
 
 static void mainwin_shuffle_cb (Button * button, QMouseEvent * event)
-    { aud_set_bool (nullptr, "shuffle", button->get_active ()); }
+    { aud_set_bool ("shuffle", button->get_active ()); }
 static void mainwin_repeat_cb (Button * button, QMouseEvent * event)
-    { aud_set_bool (nullptr, "repeat", button->get_active ()); }
+    { aud_set_bool ("repeat", button->get_active ()); }
 static void mainwin_eq_cb (Button * button, QMouseEvent * event)
     { view_set_show_equalizer (button->get_active ()); }
 static void mainwin_pl_cb (Button * button, QMouseEvent * event)

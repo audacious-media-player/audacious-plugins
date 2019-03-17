@@ -668,17 +668,17 @@ static void update_toggles (void * = nullptr, void * = nullptr)
 
 static void toggle_repeat (GtkToggleToolButton * button)
 {
-    aud_set_bool (nullptr, "repeat", gtk_toggle_tool_button_get_active (button));
+    aud_set_bool ("repeat", gtk_toggle_tool_button_get_active (button));
 }
 
 static void toggle_shuffle (GtkToggleToolButton * button)
 {
-    aud_set_bool (nullptr, "shuffle", gtk_toggle_tool_button_get_active (button));
+    aud_set_bool ("shuffle", gtk_toggle_tool_button_get_active (button));
 }
 
 static void toggle_record (GtkToggleToolButton * button)
 {
-    aud_set_bool (nullptr, "record", gtk_toggle_tool_button_get_active (button));
+    aud_set_bool ("record", gtk_toggle_tool_button_get_active (button));
 }
 
 static void toggle_search_tool (GtkToggleToolButton * button)
