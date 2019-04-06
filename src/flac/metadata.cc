@@ -200,7 +200,7 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
 
 ERR:
     status = FLAC__metadata_chain_status(chain);
-    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    AUDERR("An error occurred: %s\n", FLAC__Metadata_ChainStatusString[status]);
 ERR_RETURN:
     FLAC__metadata_chain_delete(chain);
     return false;
@@ -366,6 +366,6 @@ ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    AUDERR("An error occurred: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return false;
 }

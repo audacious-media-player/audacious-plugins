@@ -80,7 +80,7 @@ const char GlobalHotkeys::about[] =
  N_("Global Hotkey Plugin\n"
     "Control the player with global key combinations or multimedia keys.\n\n"
     "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
-    "Contributers include:\n"
+    "Contributors include:\n"
     "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
     "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
     " Bryn Davies <curious@ihug.com.au>,\n"
