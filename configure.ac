@@ -82,6 +82,7 @@ fi
 if test "x$USE_QT" = "xyes" ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt search-tool-qt song-info-qt statusicon-qt"
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
+    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope-qt"
 fi
 
 USE_GTK_OR_QT=no
@@ -816,6 +817,7 @@ if test "x$USE_QT" = "xyes" ; then
     echo "  Qt Interface:                           yes"
     echo "  Winamp Classic Interface:               yes"
     echo "  Album Art:                              yes"
+    echo "  Blur Scope:                             yes"
     echo "  LyricWiki viewer:                       yes"
     echo "  OpenGL Spectrum Analyzer:               $have_qtglspectrum"
     echo "  Playlist Manager:                       yes"
