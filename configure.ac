@@ -82,7 +82,7 @@ fi
 if test "x$USE_QT" = "xyes" ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt search-tool-qt song-info-qt statusicon-qt"
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
-    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope-qt"
+    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope-qt qt-spectrum"
 fi
 
 USE_GTK_OR_QT=no
@@ -823,6 +823,7 @@ if test "x$USE_QT" = "xyes" ; then
     echo "  Playlist Manager:                       yes"
     echo "  Search Tool:                            yes"
     echo "  Song Info:                              yes"
+    echo "  Spectrum Analyzer (2D):                 yes"
     echo "  Status Icon:                            yes"
     echo
 fi
