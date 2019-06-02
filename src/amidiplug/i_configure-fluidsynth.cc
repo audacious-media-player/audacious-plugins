@@ -20,19 +20,22 @@
 
 #include "i_configure-fluidsynth.h"
 
-#ifdef USE_GTK
-
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 
-#include <glib/gstdio.h>
-#include <gtk/gtk.h>
-
+#include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/index.h>
+
+#include <glib/gstdio.h>
 
 #include "i_configure.h"
+
+#ifdef USE_GTK
+
+#include <gtk/gtk.h>
 
 enum
 {
@@ -277,3 +280,164 @@ void * create_soundfont_list ()
 }
 
 #endif // USE_GTK
+
+#ifdef USE_QT
+
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QAbstractListModel>
+#include <QTreeView>
+
+#include <libaudqt/libaudqt.h>
+
+/* soundfont settings - soundfont files - listview */
+class SoundFontListModel : public QAbstractListModel
+{
+public:
+	enum {
+		FileName = 0,
+		FileSize,
+		NColumns
+	};
+
+	void update ();
+
+	SoundFontListModel (QObject * parent = nullptr) : QAbstractListModel (parent) { update (); }
+	~SoundFontListModel ();
+
+protected:
+	int rowCount (const QModelIndex & parent) const { return m_file_names.len (); }
+	int columnCount (const QModelIndex & parent) const { return NColumns; }
+	QVariant data (const QModelIndex & index, int role) const;
+	QVariant headerData (int section, Qt::Orientation orientation, int role) const;
+
+	Qt::ItemFlags flags (const QModelIndex & index) const
+	{
+		if (index.isValid ())
+			return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+		else
+			return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+	}
+
+private:
+	Index <String> m_file_names;
+	Index <int> m_file_sizes;
+};
+
+SoundFontListModel::~SoundFontListModel ()
+{
+	m_file_names.clear ();
+	m_file_sizes.clear ();
+}
+
+void SoundFontListModel::update ()
+{
+        String soundfont_file = aud_get_str ("amidiplug", "fsyn_soundfont_file");
+
+        if (soundfont_file[0])
+        {
+		char ** sffiles = g_strsplit (soundfont_file, ";", 0);
+		int i = 0;
+
+		while (sffiles[i] != nullptr)
+		{
+			int filesize = -1;
+			GStatBuf finfo;
+
+			if (g_stat (sffiles[i], &finfo) == 0)
+				filesize = finfo.st_size;
+
+			m_file_names.append (String (sffiles[i]));
+			m_file_sizes.append (filesize);
+
+			i++;
+		}
+
+	 	g_strfreev (sffiles);
+        }
+}
+
+QVariant SoundFontListModel::data (const QModelIndex & index, int role) const
+{
+	int col = index.column ();
+	if (col < 0 || col >= NColumns)
+		return QVariant ();
+
+	switch (role)
+	{
+	case Qt::DisplayRole:
+		switch (col)
+		{
+		case FileName:
+			return QString ((const char *) m_file_names[index.row ()]);
+
+		case FileSize:
+			return QString (int_to_str (m_file_sizes[index.row ()]));
+
+		default:
+			return QVariant ();
+		}
+
+		break;
+	default:
+		break;
+	}
+
+	return QVariant ();
+}
+
+QVariant SoundFontListModel::headerData (int section, Qt::Orientation orientation, int role) const
+{
+	if (role != Qt::DisplayRole)
+		return QVariant ();
+
+	switch (section) {
+	case FileName:
+		return QString (_("File name"));
+
+	case FileSize:
+		return QString (_("Size (bytes)"));
+
+	default:
+		return QVariant ();
+	}
+}
+
+class SoundFontWidget : public QWidget
+{
+public:
+	SoundFontWidget (QWidget * parent = nullptr);
+
+private:
+	QVBoxLayout * m_vbox_layout;
+	QTreeView * m_view;
+	SoundFontListModel * m_model;
+	QWidget * m_bbox;
+	QHBoxLayout * m_bbox_layout;
+};
+
+SoundFontWidget::SoundFontWidget (QWidget * parent) :
+	QWidget (parent),
+	m_vbox_layout (new QVBoxLayout (this)),
+	m_view (new QTreeView (this)),
+	m_model (new SoundFontListModel (m_view)),
+	m_bbox (new QWidget (this)),
+	m_bbox_layout (new QHBoxLayout (m_bbox))
+{
+	m_bbox->setLayout (m_bbox_layout);
+
+	m_view->setModel (m_model);
+	m_view->setRootIsDecorated (false);
+
+	m_vbox_layout->addWidget (m_view);
+	m_vbox_layout->addWidget (m_bbox);
+
+	setLayout (m_vbox_layout);
+}
+
+void * create_soundfont_list_qt ()
+{
+	return new SoundFontWidget;
+}
+
+#endif // USE_QT
