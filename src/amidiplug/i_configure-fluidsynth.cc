@@ -287,6 +287,7 @@ void * create_soundfont_list ()
 #include <QVBoxLayout>
 #include <QAbstractListModel>
 #include <QTreeView>
+#include <QPushButton>
 
 #include <libaudqt/libaudqt.h>
 
@@ -301,6 +302,10 @@ public:
 	};
 
 	void update ();
+	void commit ();
+	void delete_selected (QModelIndexList);
+	void shift_selected (QModelIndexList, int);
+	void append (const char *);
 
 	SoundFontListModel (QObject * parent = nullptr) : QAbstractListModel (parent) { update (); }
 	~SoundFontListModel ();
@@ -330,6 +335,23 @@ SoundFontListModel::~SoundFontListModel ()
 	m_file_sizes.clear ();
 }
 
+void SoundFontListModel::append (const char * filename)
+{
+	QAbstractItemModel::beginResetModel ();
+
+	int filesize = -1;
+	GStatBuf finfo;
+
+	if (g_stat (filename, &finfo) == 0)
+		filesize = finfo.st_size;
+
+	m_file_names.append (String (filename));
+	m_file_sizes.append (filesize);
+
+	commit ();
+	QAbstractItemModel::endResetModel ();
+}
+
 void SoundFontListModel::update ()
 {
         String soundfont_file = aud_get_str ("amidiplug", "fsyn_soundfont_file");
@@ -341,20 +363,68 @@ void SoundFontListModel::update ()
 
 		while (sffiles[i] != nullptr)
 		{
-			int filesize = -1;
-			GStatBuf finfo;
-
-			if (g_stat (sffiles[i], &finfo) == 0)
-				filesize = finfo.st_size;
-
-			m_file_names.append (String (sffiles[i]));
-			m_file_sizes.append (filesize);
-
+			append (sffiles[i]);
 			i++;
 		}
 
 	 	g_strfreev (sffiles);
         }
+}
+
+void SoundFontListModel::commit ()
+{
+	std::string sflist_string;
+
+	for (auto str : m_file_names)
+	{
+		if (sflist_string[0])
+			sflist_string.append (";");
+
+		sflist_string.append (str);
+	}
+
+	aud_set_str ("amidiplug", "fsyn_soundfont_file", sflist_string.c_str ());
+
+	/* reset backend at beginning of next song to apply changes */
+	__sync_bool_compare_and_swap (& backend_settings_changed, false, true);
+}
+
+void SoundFontListModel::delete_selected (QModelIndexList selections)
+{
+	QAbstractItemModel::beginResetModel ();
+
+	auto index = selections.first ();
+
+	m_file_names.remove (index.row (), 1);
+	m_file_sizes.remove (index.row (), 1);
+
+	commit ();
+	QAbstractItemModel::endResetModel ();
+}
+
+void SoundFontListModel::shift_selected (QModelIndexList selections, int direction)
+{
+	QAbstractItemModel::beginResetModel ();
+
+	auto index = selections.first ();
+
+	int from_row = index.row ();
+	int to_row = index.row () + direction;
+
+	if (to_row < 0)
+		return;
+
+	String filename[2] = { m_file_names[from_row], m_file_names[to_row] };
+	int filesize[2] = { m_file_sizes[from_row], m_file_sizes[to_row] };
+
+	m_file_names[from_row] = filename[1];
+	m_file_names[to_row] = filename[0];
+
+	m_file_sizes[from_row] = filesize[1];
+	m_file_sizes[to_row] = filesize[0];
+
+	commit ();
+	QAbstractItemModel::endResetModel ();
 }
 
 QVariant SoundFontListModel::data (const QModelIndex & index, int role) const
@@ -414,6 +484,10 @@ private:
 	SoundFontListModel * m_model;
 	QWidget * m_bbox;
 	QHBoxLayout * m_bbox_layout;
+	QPushButton * m_button_sf_add;
+	QPushButton * m_button_sf_del;
+	QPushButton * m_button_sf_up;
+	QPushButton * m_button_sf_down;
 };
 
 SoundFontWidget::SoundFontWidget (QWidget * parent) :
@@ -422,8 +496,22 @@ SoundFontWidget::SoundFontWidget (QWidget * parent) :
 	m_view (new QTreeView (this)),
 	m_model (new SoundFontListModel (m_view)),
 	m_bbox (new QWidget (this)),
-	m_bbox_layout (new QHBoxLayout (m_bbox))
+	m_bbox_layout (new QHBoxLayout (m_bbox)),
+	m_button_sf_add (new QPushButton (m_bbox)),
+	m_button_sf_del (new QPushButton (m_bbox)),
+	m_button_sf_up (new QPushButton (m_bbox)),
+	m_button_sf_down (new QPushButton (m_bbox))
 {
+	m_button_sf_add->setIcon (QIcon::fromTheme ("list-add"));
+	m_button_sf_del->setIcon (QIcon::fromTheme ("list-remove"));
+	m_button_sf_up->setIcon (QIcon::fromTheme ("go-up"));
+	m_button_sf_down->setIcon (QIcon::fromTheme ("go-down"));
+
+	m_bbox_layout->addWidget (m_button_sf_add);
+	m_bbox_layout->addWidget (m_button_sf_del);
+	m_bbox_layout->addWidget (m_button_sf_up);
+	m_bbox_layout->addWidget (m_button_sf_down);
+
 	m_bbox->setLayout (m_bbox_layout);
 
 	m_view->setModel (m_model);
@@ -433,6 +521,24 @@ SoundFontWidget::SoundFontWidget (QWidget * parent) :
 	m_vbox_layout->addWidget (m_bbox);
 
 	setLayout (m_vbox_layout);
+
+	QObject::connect (m_button_sf_add, & QPushButton::clicked, [=] () {
+		auto fn = QFileDialog::getOpenFileName (this, _("AMIDI-Plug - select SoundFont file"));
+
+		m_model->append (fn.toLocal8Bit ());
+	});
+
+	QObject::connect (m_button_sf_del, & QPushButton::clicked, [=] () {
+		m_model->delete_selected (m_view->selectionModel ()->selectedIndexes ());
+	});
+
+	QObject::connect (m_button_sf_up, & QPushButton::clicked, [=] () {
+		m_model->shift_selected (m_view->selectionModel ()->selectedIndexes (), -1);
+	});
+
+	QObject::connect (m_button_sf_down, & QPushButton::clicked, [=] () {
+		m_model->shift_selected (m_view->selectionModel ()->selectedIndexes (), 1);
+	});
 }
 
 void * create_soundfont_list_qt ()
