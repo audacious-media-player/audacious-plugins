@@ -337,10 +337,16 @@ int psf2_seek(u32 t)
  return(0);
 }
 
+static int endless;
+void setendless2(int e)
+{
+ endless=e;
+}
+
 // Counting to 65536 results in full volume offage.
 void setlength2(s32 stop, s32 fade)
 {
- if(stop==~0)
+ if(stop==~0 || endless)
  {
   decaybegin=~0;
  }
