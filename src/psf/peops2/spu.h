@@ -27,6 +27,7 @@
 //
 //*************************************************************************//
 
+void setendless2(int e);
 void setlength2(int32_t stop, int32_t fade);
 
 long SPU2init(void);

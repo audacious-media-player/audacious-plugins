@@ -27,6 +27,7 @@
 void SPUirq(void);
 
 int psf_seek(uint32_t t);
+void setendless(int e);
 void setlength(int32_t stop, int32_t fade);
 
 int SPUasync(uint32_t cycles, void (*update)(const void *, int));
