@@ -102,6 +102,7 @@
 #include "../peops2/externals.h"
 #include "../peops2/regs.h"
 #include "../peops2/dma.h"
+#include "../peops2/spu.h"
 
 ////////////////////////////////////////////////////////////////////////
 // globals
@@ -993,6 +994,7 @@ EXPORT_GCC void CALLBACK SPU2close(void)
  RemoveStreams();                                      // no more streaming
 }
 
+#if 0
 ////////////////////////////////////////////////////////////////////////
 // SPUSHUTDOWN: called by main emu on final exit
 ////////////////////////////////////////////////////////////////////////
@@ -1034,3 +1036,4 @@ EXPORT_GCC void CALLBACK SPU2registerCDDAVolume(void (CALLBACK *CDDAVcallback)(u
 {
  cddavCallback = CDDAVcallback;
 }
+#endif

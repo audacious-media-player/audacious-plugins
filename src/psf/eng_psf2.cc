@@ -50,7 +50,6 @@
 #include <libaudcore/audstrings.h>
 
 #include "ao.h"
-#include "eng_protos.h"
 #include "cpuintrf.h"
 #include "psx.h"
 
@@ -74,8 +73,6 @@
 static corlett_t	*c = nullptr;
 
 // main RAM
-extern uint32_t psx_ram[(2*1024*1024)/4];
-extern uint32_t initial_ram[(2*1024*1024)/4];
 static uint32_t initialPC, initialSP;
 static uint32_t loadAddr, lengthMS, fadeMS;
 
@@ -83,15 +80,6 @@ static uint8_t *filesys[MAX_FS];
 static Index<char> lib_raw_file;
 static uint32_t fssize[MAX_FS];
 static int num_fs;
-
-extern void mips_init( void );
-extern void mips_reset( void *param );
-extern int mips_execute( int cycles );
-extern void mips_set_info(uint32_t state, union cpuinfo *info);
-extern void psx_hw_init(void);
-extern void ps2_hw_slice(void);
-extern void ps2_hw_frame(void);
-extern void setlength2(int32_t stop, int32_t fade);
 
 static void do_iopmod(uint8_t *start, uint32_t offset)
 {

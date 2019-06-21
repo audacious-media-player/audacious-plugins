@@ -285,4 +285,68 @@ extern unsigned DasmMIPS(char *buff, unsigned _pc);
 extern void psxcpu_get_info(uint32_t state, union cpuinfo *info);
 #endif
 
+/* eng_psf.cc */
+extern int psf_refresh;
+
+int32_t psf_start(uint8_t *buffer, uint32_t length);
+int32_t psf_execute(void (*update)(const void *, int));
+int32_t psf_stop(void);
+
+/* eng_psf2.cc */
+uint32_t psf2_load_elf(uint8_t *start, uint32_t len);
+uint32_t psf2_load_file(const char *file, uint8_t *buf, uint32_t buflen);
+int32_t psf2_start(uint8_t *, uint32_t length);
+int32_t psf2_execute(void (*update)(const void *, int));
+int32_t psf2_stop(void);
+int32_t psf2_command(int32_t, int32_t);
+uint32_t psf2_get_loadaddr(void);
+void psf2_set_loadaddr(uint32_t addr);
+
+/* eng_spx.cc */
+int32_t spx_start(uint8_t *buffer, uint32_t length);
+int32_t spx_execute(void (*update)(const void *, int));
+int32_t spx_stop(void);
+
+/* plugin.cc */
+extern bool stop_flag;
+
+/* psx.cc */
+void mips_init(void);
+void mips_reset(void *param);
+void mips_shorten_frame(void);
+int mips_execute(int cycles);
+void mips_set_info(uint32_t state, union cpuinfo *info);
+void mips_get_info(uint32_t state, union cpuinfo *info);
+uint32_t mips_get_cause(void);
+uint32_t mips_get_status(void);
+void mips_set_status(uint32_t status);
+uint32_t mips_get_ePC(void);
+int mips_get_icount(void);
+void mips_set_icount(int count);
+
+/* psx_hw.cc */
+extern uint32_t psx_ram[((2*1024*1024)/4)+4];
+extern uint32_t psx_scratch[0x400];
+extern uint32_t initial_ram[((2*1024*1024)/4)+4];
+extern uint32_t initial_scratch[0x400];
+
+void psx_hw_slice(void);
+void ps2_hw_slice(void);
+void psx_hw_frame(void);
+void ps2_hw_frame(void);
+
+void psx_hw_init(void);
+void psx_bios_hle(uint32_t pc);
+void psx_hw_runcounters(void);
+
+uint8_t program_read_byte_32le(offs_t address);
+uint16_t program_read_word_32le(offs_t address);
+uint32_t program_read_dword_32le(offs_t address);
+
+void program_write_byte_32le(offs_t address, uint8_t data);
+void program_write_word_32le(offs_t address, uint16_t data);
+void program_write_dword_32le(offs_t address, uint32_t data);
+
+void psx_iop_call(uint32_t pc, uint32_t callnum);
+
 #endif

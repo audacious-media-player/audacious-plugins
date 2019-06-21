@@ -906,6 +906,7 @@ EXPORT_GCC unsigned short CALLBACK SPU2read(unsigned long reg)
  return regArea[r>>1];
 }
 
+#if 0
 EXPORT_GCC void CALLBACK SPU2writePS1Port(unsigned long reg, unsigned short val)
 {
  const u32 r=reg&0xfff;
@@ -1109,6 +1110,7 @@ EXPORT_GCC unsigned short CALLBACK SPU2readPS1Port(unsigned long reg)
 
   return 0;
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////////
 // SOUND ON register write

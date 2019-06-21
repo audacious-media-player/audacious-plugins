@@ -57,7 +57,7 @@ int *          sRVBStart[2];
 // START REVERB
 ////////////////////////////////////////////////////////////////////////
 
-void StartREVERB(int ch)
+static void StartREVERB(int ch)
 {
  int core=ch/24;
 
@@ -85,7 +85,7 @@ static inline void InitREVERB(void)
 // STORE REVERB
 ////////////////////////////////////////////////////////////////////////
 
-void StoreREVERB(int ch,int ns)
+static void StoreREVERB(int ch,int ns)
 {
  int core=ch/24;
 
@@ -142,7 +142,7 @@ static inline void s_buffer1(int iOff,int iVal,int core)      // set_buffer (+1 
 
 ////////////////////////////////////////////////////////////////////////
 
-int MixREVERBLeft(int ns,int core)
+static int MixREVERBLeft(int ns,int core)
 {
  if(iUseReverb==1)
   {
@@ -229,7 +229,7 @@ int MixREVERBLeft(int ns,int core)
 
 ////////////////////////////////////////////////////////////////////////
 
-int MixREVERBRight(int core)
+static int MixREVERBRight(int core)
 {
  if(iUseReverb==1)                                     // Neill's reverb:
   {

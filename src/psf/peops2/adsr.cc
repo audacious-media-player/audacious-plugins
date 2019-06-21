@@ -43,7 +43,7 @@
 
 unsigned long RateTable[160];
 
-void InitADSR(void)                                    // INIT ADSR
+static void InitADSR(void)                                    // INIT ADSR
 {
  unsigned long r,rs,rd;int i;
 
@@ -66,7 +66,7 @@ void InitADSR(void)                                    // INIT ADSR
 
 ////////////////////////////////////////////////////////////////////////
 
-void StartADSR(int ch)                          // MIX ADSR
+static void StartADSR(int ch)                          // MIX ADSR
 {
  s_chan[ch].ADSRX.lVolume=1;                           // and init some adsr vars
  s_chan[ch].ADSRX.State=0;
@@ -75,7 +75,7 @@ void StartADSR(int ch)                          // MIX ADSR
 
 ////////////////////////////////////////////////////////////////////////
 
-int MixADSR(int ch)                             // MIX ADSR
+static int MixADSR(int ch)                             // MIX ADSR
 {
  if(s_chan[ch].bStop)                                  // should be stopped:
   {                                                    // do release

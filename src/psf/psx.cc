@@ -61,15 +61,6 @@
 #define CAUSE_CE2 ( 2L << 28 )
 #define CAUSE_BD ( 1L << 31 )
 
-extern void psx_bios_hle(uint32_t pc);
-extern void psx_iop_call(uint32_t pc, uint32_t callnum);
-extern uint8_t program_read_byte_32le(offs_t address);
-extern uint16_t program_read_word_32le(offs_t address);
-extern uint32_t program_read_dword_32le(offs_t address);
-extern void program_write_byte_32le(offs_t address, uint8_t data);
-extern void program_write_word_32le(offs_t address, uint16_t data);
-extern void program_write_dword_32le(offs_t address, uint32_t data);
-
 static uint8_t mips_reg_layout[] =
 {
 	MIPS_PC, 0xFF,
@@ -213,7 +204,7 @@ static uint32_t mips_mtc0_writemask[]=
 };
 
 #if 1
-void GTELOG(const char *a,...)
+static void GTELOG(const char *a,...)
 {
 	va_list va;
 	char s_text[ 1024 ];
@@ -233,7 +224,7 @@ static void setcp2cr( int n_reg, uint32_t n_value );
 static void docop2( int gteop );
 static void mips_exception( int exception );
 
-void mips_stop( void )
+static void mips_stop( void )
 {
 #ifdef MAME_DEBUG
 	extern int debug_key_pressed;
@@ -1723,7 +1714,7 @@ static void set_irq_line( int irqline, int state )
  * Return a formatted string for a register
  ****************************************************************************/
 
-offs_t mips_dasm( char *buffer, offs_t pc )
+static offs_t mips_dasm( char *buffer, offs_t pc )
 {
 	offs_t ret;
 	change_pc( pc );

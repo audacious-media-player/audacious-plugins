@@ -34,7 +34,10 @@
 
 #include "ao.h"
 #include "corlett.h"
-#include "eng_protos.h"
+#include "psx.h"
+
+#include "peops/spu.h"
+#include "peops2/spu.h"
 
 class PSFPlugin : public InputPlugin
 {

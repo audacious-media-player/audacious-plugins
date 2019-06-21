@@ -151,3 +151,5 @@
 #define H_SPU_ADSRLevel22  0x0d68
 #define H_SPU_ADSRLevel23  0x0d78
 
+uint16_t SPUreadRegister(uint32_t reg);
+void SPUwriteRegister(uint32_t reg, uint16_t val);
