@@ -311,10 +311,10 @@ public:
     ~SoundFontListModel ();
 
 protected:
-    int rowCount (const QModelIndex & parent) const { return m_file_names.len (); }
-    int columnCount (const QModelIndex & parent) const { return NColumns; }
+    int rowCount (const QModelIndex &) const { return m_file_names.len (); }
+    int columnCount (const QModelIndex &) const { return NColumns; }
     QVariant data (const QModelIndex & index, int role) const;
-    QVariant headerData (int section, Qt::Orientation orientation, int role) const;
+    QVariant headerData (int section, Qt::Orientation, int role) const;
 
     Qt::ItemFlags flags (const QModelIndex & index) const
     {
@@ -354,10 +354,10 @@ void SoundFontListModel::append (const char * filename)
 
 void SoundFontListModel::update ()
 {
-        String soundfont_file = aud_get_str ("amidiplug", "fsyn_soundfont_file");
+    String soundfont_file = aud_get_str ("amidiplug", "fsyn_soundfont_file");
 
-        if (soundfont_file[0])
-        {
+    if (soundfont_file[0])
+    {
         char ** sffiles = g_strsplit (soundfont_file, ";", 0);
         int i = 0;
 
@@ -368,7 +368,7 @@ void SoundFontListModel::update ()
         }
 
         g_strfreev (sffiles);
-        }
+    }
 }
 
 void SoundFontListModel::commit ()
@@ -391,6 +391,9 @@ void SoundFontListModel::commit ()
 
 void SoundFontListModel::delete_selected (QModelIndexList selections)
 {
+    if (selections.empty ())
+        return;
+
     QAbstractItemModel::beginResetModel ();
 
     auto index = selections.first ();
@@ -404,6 +407,9 @@ void SoundFontListModel::delete_selected (QModelIndexList selections)
 
 void SoundFontListModel::shift_selected (QModelIndexList selections, int direction)
 {
+    if (selections.empty ())
+        return;
+
     QAbstractItemModel::beginResetModel ();
 
     auto index = selections.first ();
@@ -456,7 +462,7 @@ QVariant SoundFontListModel::data (const QModelIndex & index, int role) const
     return QVariant ();
 }
 
-QVariant SoundFontListModel::headerData (int section, Qt::Orientation orientation, int role) const
+QVariant SoundFontListModel::headerData (int section, Qt::Orientation, int role) const
 {
     if (role != Qt::DisplayRole)
         return QVariant ();
@@ -492,20 +498,20 @@ private:
 
 SoundFontWidget::SoundFontWidget (QWidget * parent) :
     QWidget (parent),
-    m_vbox_layout (new QVBoxLayout (this)),
+    m_vbox_layout (audqt::make_vbox (this)),
     m_view (new QTreeView (this)),
     m_model (new SoundFontListModel (m_view)),
     m_bbox (new QWidget (this)),
-    m_bbox_layout (new QHBoxLayout (m_bbox)),
+    m_bbox_layout (audqt::make_hbox (m_bbox)),
     m_button_sf_add (new QPushButton (m_bbox)),
     m_button_sf_del (new QPushButton (m_bbox)),
     m_button_sf_up (new QPushButton (m_bbox)),
     m_button_sf_down (new QPushButton (m_bbox))
 {
-    m_button_sf_add->setIcon (QIcon::fromTheme ("list-add"));
-    m_button_sf_del->setIcon (QIcon::fromTheme ("list-remove"));
-    m_button_sf_up->setIcon (QIcon::fromTheme ("go-up"));
-    m_button_sf_down->setIcon (QIcon::fromTheme ("go-down"));
+    m_button_sf_add->setIcon (audqt::get_icon ("list-add"));
+    m_button_sf_del->setIcon (audqt::get_icon ("list-remove"));
+    m_button_sf_up->setIcon (audqt::get_icon ("go-up"));
+    m_button_sf_down->setIcon (audqt::get_icon ("go-down"));
 
     m_bbox_layout->addWidget (m_button_sf_add);
     m_bbox_layout->addWidget (m_button_sf_del);
@@ -522,10 +528,15 @@ SoundFontWidget::SoundFontWidget (QWidget * parent) :
 
     setLayout (m_vbox_layout);
 
-    QObject::connect (m_button_sf_add, & QPushButton::clicked, [=] () {
-        auto fn = QFileDialog::getOpenFileName (this, _("AMIDI-Plug - select SoundFont file"));
+    QObject::connect (m_button_sf_add, & QPushButton::clicked, [this] () {
+        auto dialog = new QFileDialog (this, _("AMIDI-Plug - select SoundFont file"));
+        dialog->setFileMode (QFileDialog::ExistingFiles);
+        audqt::window_bring_to_front (dialog);
 
-        m_model->append (fn.toLocal8Bit ());
+        QObject::connect (dialog, & QFileDialog::accepted, [this, dialog] () {
+            for (auto & fn : dialog->selectedFiles ())
+                m_model->append (fn.toUtf8 ());
+        });
     });
 
     QObject::connect (m_button_sf_del, & QPushButton::clicked, [=] () {
