@@ -295,61 +295,61 @@ void * create_soundfont_list ()
 class SoundFontListModel : public QAbstractListModel
 {
 public:
-	enum {
-		FileName = 0,
-		FileSize,
-		NColumns
-	};
+    enum {
+        FileName = 0,
+        FileSize,
+        NColumns
+    };
 
-	void update ();
-	void commit ();
-	void delete_selected (QModelIndexList);
-	void shift_selected (QModelIndexList, int);
-	void append (const char *);
+    void update ();
+    void commit ();
+    void delete_selected (QModelIndexList);
+    void shift_selected (QModelIndexList, int);
+    void append (const char *);
 
-	SoundFontListModel (QObject * parent = nullptr) : QAbstractListModel (parent) { update (); }
-	~SoundFontListModel ();
+    SoundFontListModel (QObject * parent = nullptr) : QAbstractListModel (parent) { update (); }
+    ~SoundFontListModel ();
 
 protected:
-	int rowCount (const QModelIndex & parent) const { return m_file_names.len (); }
-	int columnCount (const QModelIndex & parent) const { return NColumns; }
-	QVariant data (const QModelIndex & index, int role) const;
-	QVariant headerData (int section, Qt::Orientation orientation, int role) const;
+    int rowCount (const QModelIndex & parent) const { return m_file_names.len (); }
+    int columnCount (const QModelIndex & parent) const { return NColumns; }
+    QVariant data (const QModelIndex & index, int role) const;
+    QVariant headerData (int section, Qt::Orientation orientation, int role) const;
 
-	Qt::ItemFlags flags (const QModelIndex & index) const
-	{
-		if (index.isValid ())
-			return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
-		else
-			return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-	}
+    Qt::ItemFlags flags (const QModelIndex & index) const
+    {
+        if (index.isValid ())
+            return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
+        else
+            return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    }
 
 private:
-	Index <String> m_file_names;
-	Index <int> m_file_sizes;
+    Index <String> m_file_names;
+    Index <int> m_file_sizes;
 };
 
 SoundFontListModel::~SoundFontListModel ()
 {
-	m_file_names.clear ();
-	m_file_sizes.clear ();
+    m_file_names.clear ();
+    m_file_sizes.clear ();
 }
 
 void SoundFontListModel::append (const char * filename)
 {
-	QAbstractItemModel::beginResetModel ();
+    QAbstractItemModel::beginResetModel ();
 
-	int filesize = -1;
-	GStatBuf finfo;
+    int filesize = -1;
+    GStatBuf finfo;
 
-	if (g_stat (filename, &finfo) == 0)
-		filesize = finfo.st_size;
+    if (g_stat (filename, &finfo) == 0)
+        filesize = finfo.st_size;
 
-	m_file_names.append (String (filename));
-	m_file_sizes.append (filesize);
+    m_file_names.append (String (filename));
+    m_file_sizes.append (filesize);
 
-	commit ();
-	QAbstractItemModel::endResetModel ();
+    commit ();
+    QAbstractItemModel::endResetModel ();
 }
 
 void SoundFontListModel::update ()
@@ -358,192 +358,192 @@ void SoundFontListModel::update ()
 
         if (soundfont_file[0])
         {
-		char ** sffiles = g_strsplit (soundfont_file, ";", 0);
-		int i = 0;
+        char ** sffiles = g_strsplit (soundfont_file, ";", 0);
+        int i = 0;
 
-		while (sffiles[i] != nullptr)
-		{
-			append (sffiles[i]);
-			i++;
-		}
+        while (sffiles[i] != nullptr)
+        {
+            append (sffiles[i]);
+            i++;
+        }
 
-	 	g_strfreev (sffiles);
+        g_strfreev (sffiles);
         }
 }
 
 void SoundFontListModel::commit ()
 {
-	std::string sflist_string;
+    std::string sflist_string;
 
-	for (auto str : m_file_names)
-	{
-		if (sflist_string[0])
-			sflist_string.append (";");
+    for (auto str : m_file_names)
+    {
+        if (sflist_string[0])
+            sflist_string.append (";");
 
-		sflist_string.append (str);
-	}
+        sflist_string.append (str);
+    }
 
-	aud_set_str ("amidiplug", "fsyn_soundfont_file", sflist_string.c_str ());
+    aud_set_str ("amidiplug", "fsyn_soundfont_file", sflist_string.c_str ());
 
-	/* reset backend at beginning of next song to apply changes */
-	__sync_bool_compare_and_swap (& backend_settings_changed, false, true);
+    /* reset backend at beginning of next song to apply changes */
+    __sync_bool_compare_and_swap (& backend_settings_changed, false, true);
 }
 
 void SoundFontListModel::delete_selected (QModelIndexList selections)
 {
-	QAbstractItemModel::beginResetModel ();
+    QAbstractItemModel::beginResetModel ();
 
-	auto index = selections.first ();
+    auto index = selections.first ();
 
-	m_file_names.remove (index.row (), 1);
-	m_file_sizes.remove (index.row (), 1);
+    m_file_names.remove (index.row (), 1);
+    m_file_sizes.remove (index.row (), 1);
 
-	commit ();
-	QAbstractItemModel::endResetModel ();
+    commit ();
+    QAbstractItemModel::endResetModel ();
 }
 
 void SoundFontListModel::shift_selected (QModelIndexList selections, int direction)
 {
-	QAbstractItemModel::beginResetModel ();
+    QAbstractItemModel::beginResetModel ();
 
-	auto index = selections.first ();
+    auto index = selections.first ();
 
-	int from_row = index.row ();
-	int to_row = index.row () + direction;
+    int from_row = index.row ();
+    int to_row = index.row () + direction;
 
-	if (to_row < 0)
-		return;
+    if (to_row < 0)
+        return;
 
-	String filename[2] = { m_file_names[from_row], m_file_names[to_row] };
-	int filesize[2] = { m_file_sizes[from_row], m_file_sizes[to_row] };
+    String filename[2] = { m_file_names[from_row], m_file_names[to_row] };
+    int filesize[2] = { m_file_sizes[from_row], m_file_sizes[to_row] };
 
-	m_file_names[from_row] = filename[1];
-	m_file_names[to_row] = filename[0];
+    m_file_names[from_row] = filename[1];
+    m_file_names[to_row] = filename[0];
 
-	m_file_sizes[from_row] = filesize[1];
-	m_file_sizes[to_row] = filesize[0];
+    m_file_sizes[from_row] = filesize[1];
+    m_file_sizes[to_row] = filesize[0];
 
-	commit ();
-	QAbstractItemModel::endResetModel ();
+    commit ();
+    QAbstractItemModel::endResetModel ();
 }
 
 QVariant SoundFontListModel::data (const QModelIndex & index, int role) const
 {
-	int col = index.column ();
-	if (col < 0 || col >= NColumns)
-		return QVariant ();
+    int col = index.column ();
+    if (col < 0 || col >= NColumns)
+        return QVariant ();
 
-	switch (role)
-	{
-	case Qt::DisplayRole:
-		switch (col)
-		{
-		case FileName:
-			return QString ((const char *) m_file_names[index.row ()]);
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        switch (col)
+        {
+        case FileName:
+            return QString ((const char *) m_file_names[index.row ()]);
 
-		case FileSize:
-			return QString (int_to_str (m_file_sizes[index.row ()]));
+        case FileSize:
+            return QString (int_to_str (m_file_sizes[index.row ()]));
 
-		default:
-			return QVariant ();
-		}
+        default:
+            return QVariant ();
+        }
 
-		break;
-	default:
-		break;
-	}
+        break;
+    default:
+        break;
+    }
 
-	return QVariant ();
+    return QVariant ();
 }
 
 QVariant SoundFontListModel::headerData (int section, Qt::Orientation orientation, int role) const
 {
-	if (role != Qt::DisplayRole)
-		return QVariant ();
+    if (role != Qt::DisplayRole)
+        return QVariant ();
 
-	switch (section) {
-	case FileName:
-		return QString (_("File name"));
+    switch (section) {
+    case FileName:
+        return QString (_("File name"));
 
-	case FileSize:
-		return QString (_("Size (bytes)"));
+    case FileSize:
+        return QString (_("Size (bytes)"));
 
-	default:
-		return QVariant ();
-	}
+    default:
+        return QVariant ();
+    }
 }
 
 class SoundFontWidget : public QWidget
 {
 public:
-	SoundFontWidget (QWidget * parent = nullptr);
+    SoundFontWidget (QWidget * parent = nullptr);
 
 private:
-	QVBoxLayout * m_vbox_layout;
-	QTreeView * m_view;
-	SoundFontListModel * m_model;
-	QWidget * m_bbox;
-	QHBoxLayout * m_bbox_layout;
-	QPushButton * m_button_sf_add;
-	QPushButton * m_button_sf_del;
-	QPushButton * m_button_sf_up;
-	QPushButton * m_button_sf_down;
+    QVBoxLayout * m_vbox_layout;
+    QTreeView * m_view;
+    SoundFontListModel * m_model;
+    QWidget * m_bbox;
+    QHBoxLayout * m_bbox_layout;
+    QPushButton * m_button_sf_add;
+    QPushButton * m_button_sf_del;
+    QPushButton * m_button_sf_up;
+    QPushButton * m_button_sf_down;
 };
 
 SoundFontWidget::SoundFontWidget (QWidget * parent) :
-	QWidget (parent),
-	m_vbox_layout (new QVBoxLayout (this)),
-	m_view (new QTreeView (this)),
-	m_model (new SoundFontListModel (m_view)),
-	m_bbox (new QWidget (this)),
-	m_bbox_layout (new QHBoxLayout (m_bbox)),
-	m_button_sf_add (new QPushButton (m_bbox)),
-	m_button_sf_del (new QPushButton (m_bbox)),
-	m_button_sf_up (new QPushButton (m_bbox)),
-	m_button_sf_down (new QPushButton (m_bbox))
+    QWidget (parent),
+    m_vbox_layout (new QVBoxLayout (this)),
+    m_view (new QTreeView (this)),
+    m_model (new SoundFontListModel (m_view)),
+    m_bbox (new QWidget (this)),
+    m_bbox_layout (new QHBoxLayout (m_bbox)),
+    m_button_sf_add (new QPushButton (m_bbox)),
+    m_button_sf_del (new QPushButton (m_bbox)),
+    m_button_sf_up (new QPushButton (m_bbox)),
+    m_button_sf_down (new QPushButton (m_bbox))
 {
-	m_button_sf_add->setIcon (QIcon::fromTheme ("list-add"));
-	m_button_sf_del->setIcon (QIcon::fromTheme ("list-remove"));
-	m_button_sf_up->setIcon (QIcon::fromTheme ("go-up"));
-	m_button_sf_down->setIcon (QIcon::fromTheme ("go-down"));
+    m_button_sf_add->setIcon (QIcon::fromTheme ("list-add"));
+    m_button_sf_del->setIcon (QIcon::fromTheme ("list-remove"));
+    m_button_sf_up->setIcon (QIcon::fromTheme ("go-up"));
+    m_button_sf_down->setIcon (QIcon::fromTheme ("go-down"));
 
-	m_bbox_layout->addWidget (m_button_sf_add);
-	m_bbox_layout->addWidget (m_button_sf_del);
-	m_bbox_layout->addWidget (m_button_sf_up);
-	m_bbox_layout->addWidget (m_button_sf_down);
+    m_bbox_layout->addWidget (m_button_sf_add);
+    m_bbox_layout->addWidget (m_button_sf_del);
+    m_bbox_layout->addWidget (m_button_sf_up);
+    m_bbox_layout->addWidget (m_button_sf_down);
 
-	m_bbox->setLayout (m_bbox_layout);
+    m_bbox->setLayout (m_bbox_layout);
 
-	m_view->setModel (m_model);
-	m_view->setRootIsDecorated (false);
+    m_view->setModel (m_model);
+    m_view->setRootIsDecorated (false);
 
-	m_vbox_layout->addWidget (m_view);
-	m_vbox_layout->addWidget (m_bbox);
+    m_vbox_layout->addWidget (m_view);
+    m_vbox_layout->addWidget (m_bbox);
 
-	setLayout (m_vbox_layout);
+    setLayout (m_vbox_layout);
 
-	QObject::connect (m_button_sf_add, & QPushButton::clicked, [=] () {
-		auto fn = QFileDialog::getOpenFileName (this, _("AMIDI-Plug - select SoundFont file"));
+    QObject::connect (m_button_sf_add, & QPushButton::clicked, [=] () {
+        auto fn = QFileDialog::getOpenFileName (this, _("AMIDI-Plug - select SoundFont file"));
 
-		m_model->append (fn.toLocal8Bit ());
-	});
+        m_model->append (fn.toLocal8Bit ());
+    });
 
-	QObject::connect (m_button_sf_del, & QPushButton::clicked, [=] () {
-		m_model->delete_selected (m_view->selectionModel ()->selectedIndexes ());
-	});
+    QObject::connect (m_button_sf_del, & QPushButton::clicked, [=] () {
+        m_model->delete_selected (m_view->selectionModel ()->selectedIndexes ());
+    });
 
-	QObject::connect (m_button_sf_up, & QPushButton::clicked, [=] () {
-		m_model->shift_selected (m_view->selectionModel ()->selectedIndexes (), -1);
-	});
+    QObject::connect (m_button_sf_up, & QPushButton::clicked, [=] () {
+        m_model->shift_selected (m_view->selectionModel ()->selectedIndexes (), -1);
+    });
 
-	QObject::connect (m_button_sf_down, & QPushButton::clicked, [=] () {
-		m_model->shift_selected (m_view->selectionModel ()->selectedIndexes (), 1);
-	});
+    QObject::connect (m_button_sf_down, & QPushButton::clicked, [=] () {
+        m_model->shift_selected (m_view->selectionModel ()->selectedIndexes (), 1);
+    });
 }
 
 void * create_soundfont_list_qt ()
 {
-	return new SoundFontWidget;
+    return new SoundFontWidget;
 }
 
 #endif // USE_QT
