@@ -84,7 +84,12 @@ void TextBox::scroll_timeout ()
 void TextBox::render_vector (const char * text)
 {
     QRect ink = m_metrics->tightBoundingRect (text);
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    int logical_width = m_metrics->horizontalAdvance (text);
+#else
     int logical_width = m_metrics->width (text);
+#endif
 
     /* use logical width so as not to trim off the trailing space of the " --- " */
     /* use ink height since vertical space is quite limited */
