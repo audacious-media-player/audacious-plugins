@@ -89,7 +89,7 @@ BlurScopeWidget::~BlurScopeWidget ()
     s_widget = nullptr;
 }
 
-void BlurScopeWidget::paintEvent (QPaintEvent * event)
+void BlurScopeWidget::paintEvent (QPaintEvent *)
 {
     QImage img((unsigned char *) m_image, m_width, m_height, QImage::Format_RGB32);
     QPainter p (this);
@@ -97,7 +97,7 @@ void BlurScopeWidget::paintEvent (QPaintEvent * event)
     p.drawImage (0, 0, img);
 }
 
-void BlurScopeWidget::resizeEvent (QResizeEvent * event)
+void BlurScopeWidget::resizeEvent (QResizeEvent *)
 {
     resize (width (), height ());
 }
@@ -226,23 +226,11 @@ void * BlurScopeQt::get_qt_widget ()
     return s_widget;
 }
 
-class ColorChooserWidget : public audqt::ColorButton {
-public:
-    ColorChooserWidget (QWidget * parent = nullptr);
-    ~ColorChooserWidget ();
-
+class ColorChooserWidget : public audqt::ColorButton
+{
 protected:
-    void onColorChanged ();
+    void onColorChanged () override;
 };
-
-ColorChooserWidget::ColorChooserWidget (QWidget * parent) :
-    audqt::ColorButton (parent)
-{
-}
-
-ColorChooserWidget::~ColorChooserWidget ()
-{
-}
 
 void ColorChooserWidget::onColorChanged ()
 {
@@ -254,13 +242,8 @@ void ColorChooserWidget::onColorChanged ()
     bscope_color = r << 16 | g << 8 | b;
 }
 
-static ColorChooserWidget * s_chooser = nullptr;
-
 static void * bscope_get_color_chooser ()
 {
-    if (s_chooser)
-        return s_chooser;
-
     int r, g, b;
 
     r = (bscope_color & 0xff0000) >> 16;
@@ -269,8 +252,8 @@ static void * bscope_get_color_chooser ()
 
     QColor color = QColor::fromRgb(r, g, b);
 
-    s_chooser = new ColorChooserWidget ();
-    s_chooser->setColor (color);
+    auto chooser = new ColorChooserWidget ();
+    chooser->setColor (color);
 
-    return s_chooser;
+    return chooser;
 }
