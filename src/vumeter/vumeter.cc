@@ -19,8 +19,6 @@
  */
 
 #include <math.h>
-#include <string.h>
-
 #include <gtk/gtk.h>
 
 #include <libaudcore/hook.h>
@@ -31,8 +29,9 @@
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
+#include <stdio.h>
 
-#define MAX_CHANNELS 11
+#define MAX_CHANNELS 20
 #define DB_RANGE 96
 
 class VUMeter : public VisPlugin
@@ -90,13 +89,15 @@ const char * const VUMeter::prefs_defaults[] = {
 };
 
 static GtkWidget * spect_widget = nullptr;
-static int width, height;
+static int width, height, vumeter_height;
 static int bands = 4;
 static int nchannels = 2;
 static float channels_db_level[MAX_CHANNELS];
 static float channels_peaks[MAX_CHANNELS];
 static gint64 last_peak_times[MAX_CHANNELS]; // Time elapsed since peak was set
 static gint64 last_render_time = 0;
+static float vumeter_top_padding = 0;
+static float vumeter_bottom_padding = 0;
 
 static float fclamp(float x, float low, float high)
 {
@@ -115,7 +116,7 @@ static float get_db_factor(float db)
     if (db < -DB_RANGE) {
         factor = 0.0f;
     } else if (db < -60.0f) {
-        factor = (db + DB_RANGE) * 0.25f;
+        factor = (db + DB_RANGE) * 2.5f/(DB_RANGE-60);
     } else if (db < -50.0f) {
         factor = (db + 60.0f) * 0.5f + 2.5f;
     } else if (db < -40.0f) {
@@ -135,12 +136,12 @@ static float get_db_factor(float db)
 
 static float get_height_from_db(float db)
 {
-    return get_db_factor(db) * height;
+    return get_db_factor(db) * vumeter_height;
 }
 
 static float get_y_from_db(float db)
 {
-    return height - get_height_from_db(db);
+    return vumeter_top_padding + vumeter_height - get_height_from_db(db);
 }
 
 void VUMeter::render_multi_pcm (const float * pcm, int channels)
@@ -181,8 +182,8 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
             channels_db_level[i] = db;
         }
         gint64 elapsed_peak_time = current_time - last_peak_times[i];
-        if (db > channels_peaks[i] || elapsed_peak_time > peak_hold_time) {
-            channels_peaks[i] = db;
+        if (channels_db_level[i] > channels_peaks[i] || elapsed_peak_time > peak_hold_time) {
+            channels_peaks[i] = channels_db_level[i];
             last_peak_times[i] = g_get_monotonic_time();
         }
     }
@@ -220,30 +221,41 @@ void VUMeter::clear ()
     }
 }
 
-static void draw_vu_legend_db(cairo_t * cr, int db, const char *text)
+static void draw_vu_legend_db(cairo_t * cr, float db, const char *text)
 {
+    float y = get_y_from_db(db);
     cairo_text_extents_t extents;
     cairo_text_extents (cr, text, &extents);
-    cairo_move_to(cr, (width / bands) - extents.width - 4, get_y_from_db(db) + (extents.height/2));
+    cairo_set_source_rgb (cr, 1, 1, 1);
+    cairo_move_to(cr, (width / bands) - extents.width - 10, y + (extents.height/2));
     cairo_show_text (cr, text);
-    cairo_move_to(cr, (width / bands) * (nchannels + 1) + 8, get_y_from_db(db) + (extents.height/2));
+    cairo_move_to(cr, (width / bands) * (nchannels + 1) + 14, y + (extents.height/2));
     cairo_show_text (cr, text);
+}
+
+static void draw_vu_legend_line(cairo_t * cr, float db, float line_width = 8)
+{
+    float y = get_y_from_db(db) + 1;
+    cairo_move_to(cr, (width / bands) - line_width + 4, y);
+    cairo_line_to(cr, (width / bands) + 4, y);
+    cairo_stroke(cr);
+    cairo_move_to(cr, (width / bands) * (nchannels + 1) + 2, y);
+    cairo_line_to(cr, (width / bands) * (nchannels + 1) + 2 + line_width, y);
+    cairo_stroke(cr);
 }
 
 static void draw_vu_legend(cairo_t * cr)
 {
-    cairo_set_source_rgb (cr, 1, 1, 1);
     float font_size_width = (width / bands) / 3;
-    float font_size_height = 1.5 * height / DB_RANGE;
+    float font_size_height = 1.5 * vumeter_height / DB_RANGE;
     cairo_set_font_size (cr, fmin(font_size_width, font_size_height));
-    draw_vu_legend_db(cr, -1, "-1");
+    draw_vu_legend_db(cr, 0, "0");
     draw_vu_legend_db(cr, -3, "-3");
-    draw_vu_legend_db(cr, -5, "-5");
-    draw_vu_legend_db(cr, -7, "-7");
+    draw_vu_legend_db(cr, -6, "-6");
     draw_vu_legend_db(cr, -9, "-9");
     draw_vu_legend_db(cr, -12, "-12");
     draw_vu_legend_db(cr, -15, "-15");
-    draw_vu_legend_db(cr, -17, "-17");
+    draw_vu_legend_db(cr, -18, "-18");
     draw_vu_legend_db(cr, -20, "-20");
     draw_vu_legend_db(cr, -25, "-25");
     draw_vu_legend_db(cr, -30, "-30");
@@ -251,6 +263,33 @@ static void draw_vu_legend(cairo_t * cr)
     draw_vu_legend_db(cr, -40, "-40");
     draw_vu_legend_db(cr, -50, "-50");
     draw_vu_legend_db(cr, -60, "-60");
+    draw_vu_legend_db(cr, -DB_RANGE, "-inf");
+
+    cairo_set_line_width(cr, 1.0);
+    cairo_set_source_rgb (cr, 120/255.0, 120/255.0, 120/255.0);
+    for (int i = 0; i > -DB_RANGE; i--)
+    {
+        if (i > -30)
+        {
+            draw_vu_legend_line(cr, i);
+            draw_vu_legend_line(cr, i - 0.5, 4);
+        }
+        else if (i > -40)
+        {
+            draw_vu_legend_line(cr, i);
+        }
+        else if (i > -60)
+        {
+            draw_vu_legend_line(cr, i);
+            i -= 1;
+        }
+        else
+        {
+            draw_vu_legend_line(cr, i);
+            i -= (DB_RANGE - 60) / 2;
+        }
+    }
+    draw_vu_legend_line(cr, -DB_RANGE);
 }
 
 static void draw_background (GtkWidget * area, cairo_t * cr)
@@ -267,11 +306,11 @@ static void draw_background (GtkWidget * area, cairo_t * cr)
 
 static cairo_pattern_t* get_meter_pattern(float alpha = 1.0)
 {
-    cairo_pattern_t* meter_pattern = cairo_pattern_create_linear(0.0, 0.0, 0.0, height);
-    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(0)/height, 190/255.0, 40/255.0, 10/255.0, alpha);
-    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(-2)/height, 190/255.0, 40/255.0, 10/255.0, alpha);
-    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(-9)/height, 230/255.0, 230/255.0, 15/255.0, alpha);
-    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(-50)/height, 0/255.0, 190/255.0, 20/255.0, alpha);
+    cairo_pattern_t* meter_pattern = cairo_pattern_create_linear(0.0, 0.0, 0.0, vumeter_height);
+    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(0)/vumeter_height, 190/255.0, 40/255.0, 10/255.0, alpha);
+    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(-2)/vumeter_height, 190/255.0, 40/255.0, 10/255.0, alpha);
+    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(-9)/vumeter_height, 230/255.0, 230/255.0, 15/255.0, alpha);
+    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(-50)/vumeter_height, 0/255.0, 190/255.0, 20/255.0, alpha);
     return meter_pattern;
 }
 
@@ -285,27 +324,70 @@ static void draw_visualizer (cairo_t *cr)
         int x = ((width / bands) * (i+1)) + 4;
 
         cairo_set_source(cr, meter_pattern_background);
-        cairo_rectangle (cr, x, 0,
-            (width / bands) - 2, height);
+        cairo_rectangle (cr, x, vumeter_top_padding,
+            (width / bands) - 2, vumeter_height);
         cairo_fill (cr);
 
         cairo_set_source(cr, meter_pattern);
         cairo_rectangle (cr, x, get_y_from_db(channels_db_level[i]),
             (width / bands) - 2, get_height_from_db(channels_db_level[i]));
         cairo_fill (cr);
-        cairo_rectangle (cr, x, get_y_from_db(channels_peaks[i]),
-            (width / bands) - 2, (0.1 * height / DB_RANGE));
-        cairo_fill (cr);
+        if (channels_peaks[i] > -DB_RANGE)
+        {
+            cairo_rectangle (cr, x, get_y_from_db(channels_peaks[i]),
+                (width / bands) - 2, (0.1 * vumeter_height / DB_RANGE));
+            cairo_fill (cr);
+        }
     }
 
     cairo_pattern_destroy(meter_pattern);
     cairo_pattern_destroy(meter_pattern_background);
 }
 
+static void format_db(char *buf, const float val) {
+    if (val > 0)
+    {
+        sprintf(buf, "%+.1f", 0.0f);
+    }
+    else if (val > -10)
+    {
+        sprintf(buf, "%.1f", val);
+    }
+    else if (val > -DB_RANGE)
+    {
+        sprintf(buf, "%.0f ", val);
+    }
+    else
+    {
+        sprintf(buf, "-inf");
+    }
+}
+
+static void draw_visualizer_peak_legend(cairo_t *cr)
+{
+    float font_size_width = (width / bands) / 3;
+    float font_size_height = 1.5 * vumeter_height / DB_RANGE;
+    cairo_set_font_size (cr, fmin(font_size_width, font_size_height));
+    cairo_set_source_rgb (cr, 1, 1, 1);
+
+    for (int i = 0; i < nchannels; i++)
+    {
+        char text[10];
+        format_db(text, channels_peaks[i]);
+        cairo_text_extents_t extents;
+        cairo_text_extents (cr, text, &extents);
+        cairo_move_to(cr, (width / bands) * (i+1.5) - (extents.width/2) + 4, vumeter_top_padding/2 + (extents.height/2));
+        cairo_show_text (cr, text);
+    }
+}
+
 static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
 {
     width = event->width;
     height = event->height;
+    vumeter_top_padding = 3.0f * height / DB_RANGE;
+    vumeter_bottom_padding = 1.5f * height / DB_RANGE;
+    vumeter_height = event->height - vumeter_top_padding - vumeter_bottom_padding;
     gtk_widget_queue_draw(widget);
 
     return true;
@@ -317,6 +399,7 @@ static gboolean draw_event (GtkWidget * widget)
 
     draw_background (widget, cr);
     draw_visualizer (cr);
+    draw_visualizer_peak_legend(cr);
 
     cairo_destroy (cr);
     return true;
