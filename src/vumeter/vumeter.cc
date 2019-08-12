@@ -345,13 +345,9 @@ static void draw_visualizer (cairo_t *cr)
 }
 
 static void format_db(char *buf, const float val) {
-    if (val > 0)
+    if (val > -10)
     {
-        sprintf(buf, "%+.1f", 0.0f);
-    }
-    else if (val > -10)
-    {
-        sprintf(buf, "%.1f", val);
+        sprintf(buf, "%+.1f", val);
     }
     else if (val > -DB_RANGE)
     {
