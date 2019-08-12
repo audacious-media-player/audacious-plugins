@@ -31,7 +31,6 @@
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
-#include <stdio.h>
 
 #define MAX_CHANNELS 11
 #define DB_RANGE 96
@@ -136,16 +135,7 @@ static float get_db_factor(float db)
 
 static float get_height_from_db(float db)
 {
-    
-
     return get_db_factor(db) * height;
-
-    //return (DB_RANGE + db) * ((float) height / DB_RANGE);
-    if (db >= -20.0) {
-        return (height / 2) + (20 + db) * ((float) height / 40);
-    } else {
-        return (DB_RANGE + db) * ((float) height / 2 / (DB_RANGE - 20));
-    }
 }
 
 static float get_y_from_db(float db)
