@@ -149,7 +149,7 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
     gint64 current_time = g_get_monotonic_time();
     gint64 elapsed_render_time = current_time - last_render_time;
     last_render_time = current_time;
-    nchannels = channels;
+    nchannels = fclamp(channels, 0, MAX_CHANNELS);
     bands = channels + 2;
     float falloff = aud_get_double ("vumeter", "falloff") / 1000000.0;
     gint64 peak_hold_time = aud_get_double ("vumeter", "peak_hold_time") * 1000000;
@@ -168,7 +168,7 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
         }
     }
 
-    for (int i = 0; i < channels && i < MAX_CHANNELS; i ++)
+    for (int i = 0; i < nchannels; i ++)
     {
         float n = peaks[i];
 
