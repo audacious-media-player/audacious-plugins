@@ -89,19 +89,21 @@ const char * const VUMeter::prefs_defaults[] = {
 };
 
 static GtkWidget * spect_widget = nullptr;
-static int width, height, vumeter_height;
-static int bands = 4;
+static int width, height;
+static float legend_width;
+static float vumeter_height;
+static float vumeter_width;
+static float vumeter_top_padding = 0;
+static float vumeter_bottom_padding = 0;
 static int nchannels = 2;
 static float channels_db_level[MAX_CHANNELS];
 static float channels_peaks[MAX_CHANNELS];
 static gint64 last_peak_times[MAX_CHANNELS]; // Time elapsed since peak was set
 static gint64 last_render_time = 0;
-static float vumeter_top_padding = 0;
-static float vumeter_bottom_padding = 0;
 
 static float fclamp(float x, float low, float high)
 {
-    return fminf (fmaxf (x, low), high);
+    return fminf(fmaxf(x, low), high);
 }
 
 static float get_db_on_range(float db)
@@ -150,7 +152,6 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
     gint64 elapsed_render_time = current_time - last_render_time;
     last_render_time = current_time;
     nchannels = fclamp(channels, 0, MAX_CHANNELS);
-    bands = channels + 2;
     float falloff = aud_get_double ("vumeter", "falloff") / 1000000.0;
     gint64 peak_hold_time = aud_get_double ("vumeter", "peak_hold_time") * 1000000;
 
@@ -168,7 +169,7 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
         }
     }
 
-    for (int i = 0; i < nchannels; i ++)
+    for (int i = 0; i < nchannels; i++)
     {
         float n = peaks[i];
 
@@ -196,7 +197,7 @@ void VUMeter::render_multi_pcm (const float * pcm, int channels)
 
 static void initialize_variables()
 {
-    for (int i = 0; i < MAX_CHANNELS; i += 1) {
+    for (int i = 0; i < MAX_CHANNELS; i++) {
         channels_db_level[i] = -DB_RANGE;
         channels_peaks[i] = -DB_RANGE;
     }
@@ -224,30 +225,32 @@ void VUMeter::clear ()
 static void draw_vu_legend_db(cairo_t * cr, float db, const char *text)
 {
     float y = get_y_from_db(db);
+    float padding = fclamp(legend_width * 0.25f, 0, 8) * 1.5f;
     cairo_text_extents_t extents;
     cairo_text_extents (cr, text, &extents);
     cairo_set_source_rgb (cr, 1, 1, 1);
-    cairo_move_to(cr, (width / bands) - extents.width - 10, y + (extents.height/2));
+    cairo_move_to(cr, legend_width - extents.width - padding, y + (extents.height/2));
     cairo_show_text (cr, text);
-    cairo_move_to(cr, (width / bands) * (nchannels + 1) + 14, y + (extents.height/2));
+    cairo_move_to(cr, width - legend_width + padding, y + (extents.height/2));
     cairo_show_text (cr, text);
 }
 
-static void draw_vu_legend_line(cairo_t * cr, float db, float line_width = 8)
+static void draw_vu_legend_line(cairo_t * cr, float db, float line_width_factor = 1)
 {
-    float y = get_y_from_db(db) + 1;
-    cairo_move_to(cr, (width / bands) - line_width + 4, y);
-    cairo_line_to(cr, (width / bands) + 4, y);
+    float y = get_y_from_db(db);
+    float line_width = fclamp(legend_width * 0.25f, 0, 8);
+    cairo_move_to(cr, legend_width - line_width * line_width_factor, y);
+    cairo_line_to(cr, legend_width, y);
     cairo_stroke(cr);
-    cairo_move_to(cr, (width / bands) * (nchannels + 1) + 2, y);
-    cairo_line_to(cr, (width / bands) * (nchannels + 1) + 2 + line_width, y);
+    cairo_move_to(cr, width - legend_width, y);
+    cairo_line_to(cr, width - legend_width + line_width * line_width_factor, y);
     cairo_stroke(cr);
 }
 
 static void draw_vu_legend(cairo_t * cr)
 {
-    float font_size_width = (width / bands) / 3;
-    float font_size_height = 1.5 * vumeter_height / DB_RANGE;
+    float font_size_width = legend_width / 3.5f;
+    float font_size_height = 2.5f * vumeter_height / DB_RANGE;
     cairo_set_font_size (cr, fmin(font_size_width, font_size_height));
     draw_vu_legend_db(cr, 0, "0");
     draw_vu_legend_db(cr, -3, "-3");
@@ -265,14 +268,14 @@ static void draw_vu_legend(cairo_t * cr)
     draw_vu_legend_db(cr, -60, "-60");
     draw_vu_legend_db(cr, -DB_RANGE, "-inf");
 
-    cairo_set_line_width(cr, 1.0);
+    cairo_set_line_width(cr, 0.1 * vumeter_height / DB_RANGE);
     cairo_set_source_rgb (cr, 120/255.0, 120/255.0, 120/255.0);
     for (int i = 0; i > -DB_RANGE; i--)
     {
         if (i > -30)
         {
             draw_vu_legend_line(cr, i);
-            draw_vu_legend_line(cr, i - 0.5, 4);
+            draw_vu_legend_line(cr, i - 0.5, 0.5);
         }
         else if (i > -40)
         {
@@ -307,10 +310,10 @@ static void draw_background (GtkWidget * area, cairo_t * cr)
 static cairo_pattern_t* get_meter_pattern(float alpha = 1.0)
 {
     cairo_pattern_t* meter_pattern = cairo_pattern_create_linear(0.0, 0.0, 0.0, vumeter_height);
-    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(0)/vumeter_height, 190/255.0, 40/255.0, 10/255.0, alpha);
-    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(-2)/vumeter_height, 190/255.0, 40/255.0, 10/255.0, alpha);
-    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(-9)/vumeter_height, 230/255.0, 230/255.0, 15/255.0, alpha);
-    cairo_pattern_add_color_stop_rgba(meter_pattern, get_y_from_db(-50)/vumeter_height, 0/255.0, 190/255.0, 20/255.0, alpha);
+    cairo_pattern_add_color_stop_rgba(meter_pattern, 1 - get_db_factor(0), 190/255.0, 40/255.0, 10/255.0, alpha);
+    cairo_pattern_add_color_stop_rgba(meter_pattern, 1 - get_db_factor(-2), 190/255.0, 40/255.0, 10/255.0, alpha);
+    cairo_pattern_add_color_stop_rgba(meter_pattern, 1 - get_db_factor(-9), 210/255.0, 210/255.0, 15/255.0, alpha);
+    cairo_pattern_add_color_stop_rgba(meter_pattern, 1 - get_db_factor(-50), 0/255.0, 190/255.0, 20/255.0, alpha);
     return meter_pattern;
 }
 
@@ -321,21 +324,30 @@ static void draw_visualizer (cairo_t *cr)
 
     for (int i = 0; i < nchannels; i++)
     {
-        int x = ((width / bands) * (i+1)) + 4;
+        float x = legend_width + vumeter_width * i;
+        float vumeter_padding = fclamp(vumeter_width * 0.02, 0, 2);
+        if (i > 0)
+        {
+            x += vumeter_padding;
+        }
+        else
+        {
+            vumeter_padding = 0.0f;
+        }
 
         cairo_set_source(cr, meter_pattern_background);
         cairo_rectangle (cr, x, vumeter_top_padding,
-            (width / bands) - 2, vumeter_height);
+            vumeter_width - vumeter_padding, vumeter_height);
         cairo_fill (cr);
 
         cairo_set_source(cr, meter_pattern);
         cairo_rectangle (cr, x, get_y_from_db(channels_db_level[i]),
-            (width / bands) - 2, get_height_from_db(channels_db_level[i]));
+            vumeter_width - vumeter_padding, get_height_from_db(channels_db_level[i]));
         cairo_fill (cr);
         if (channels_peaks[i] > -DB_RANGE)
         {
             cairo_rectangle (cr, x, get_y_from_db(channels_peaks[i]),
-                (width / bands) - 2, (0.1 * vumeter_height / DB_RANGE));
+                vumeter_width - vumeter_padding, (0.1f * vumeter_height / DB_RANGE));
             cairo_fill (cr);
         }
     }
@@ -361,8 +373,8 @@ static void format_db(char *buf, const float val) {
 
 static void draw_visualizer_peak_legend(cairo_t *cr)
 {
-    float font_size_width = (width / bands) / 3;
-    float font_size_height = 1.5 * vumeter_height / DB_RANGE;
+    float font_size_width = vumeter_width / 3.0f;
+    float font_size_height = vumeter_top_padding * 0.80f;
     cairo_set_font_size (cr, fmin(font_size_width, font_size_height));
     cairo_set_source_rgb (cr, 1, 1, 1);
 
@@ -372,7 +384,8 @@ static void draw_visualizer_peak_legend(cairo_t *cr)
         format_db(text, channels_peaks[i]);
         cairo_text_extents_t extents;
         cairo_text_extents (cr, text, &extents);
-        cairo_move_to(cr, (width / bands) * (i+1.5) - (extents.width/2) + 4, vumeter_top_padding/2 + (extents.height/2));
+        cairo_move_to(cr, legend_width + vumeter_width*(i+0.5f) - (extents.width/2.0f),
+            vumeter_top_padding/2.0f + (extents.height/2.0f));
         cairo_show_text (cr, text);
     }
 }
@@ -381,9 +394,10 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
 {
     width = event->width;
     height = event->height;
-    vumeter_top_padding = 3.0f * height / DB_RANGE;
-    vumeter_bottom_padding = 1.5f * height / DB_RANGE;
+    vumeter_top_padding = 0.04f * height;
+    vumeter_bottom_padding = 0.015f * height;
     vumeter_height = event->height - vumeter_top_padding - vumeter_bottom_padding;
+    legend_width = width * 0.3f;
     gtk_widget_queue_draw(widget);
 
     return true;
@@ -393,6 +407,7 @@ static gboolean draw_event (GtkWidget * widget)
 {
     cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
+    vumeter_width = width * 0.4f / nchannels;
     draw_background (widget, cr);
     draw_visualizer (cr);
     draw_visualizer_peak_legend(cr);
