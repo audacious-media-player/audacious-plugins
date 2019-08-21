@@ -30,6 +30,7 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 #include <stdio.h>
+#include <string.h>
 
 #define MAX_CHANNELS 20
 #define DB_RANGE 96
