@@ -20,16 +20,12 @@
   USA.
 ***/
 
-#include <condition_variable>
-#include <mutex>
-
 #include <pulse/pulseaudio.h>
 
-#include <libaudcore/runtime.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
-
-using scoped_lock = std::unique_lock<std::mutex>;
+#include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
+#include <libaudcore/threads.h>
 
 class PulseOutput : public OutputPlugin
 {
@@ -65,8 +61,8 @@ public:
 
 EXPORT PulseOutput aud_plugin_instance;
 
-static std::mutex pulse_mutex;
-static std::condition_variable pulse_cond;
+static aud::mutex pulse_mutex;
+static aud::condvar pulse_cond;
 
 static pa_context * context = nullptr;
 static pa_stream * stream = nullptr;
@@ -89,7 +85,7 @@ static bool alive ()
 /* Cooperative polling method.  Only one thread calls the actual poll function,
  * and dispatches the events received.  Any other threads simply wait for the
  * first thread to finish. */
-static void poll_events (scoped_lock & lock)
+static void poll_events (aud::mutex::holder & lock)
 {
     if (polling)
         pulse_cond.wait (lock);
@@ -113,7 +109,7 @@ static void poll_events (scoped_lock & lock)
 
 /* Wait for an asynchronous operation to complete.  Return immediately if the
  * connection dies. */
-static bool finish (pa_operation * op, scoped_lock & lock)
+static bool finish (pa_operation * op, aud::mutex::holder & lock)
 {
     pa_operation_state_t state;
     while ((state = pa_operation_get_state (op)) != PA_OPERATION_DONE && alive ())
@@ -199,7 +195,7 @@ static void get_volume_locked ()
 
 StereoVolume PulseOutput::get_volume ()
 {
-    scoped_lock lock (pulse_mutex);
+    auto lock = pulse_mutex.take ();
 
     if (connected)
         get_volume_locked ();
@@ -207,7 +203,7 @@ StereoVolume PulseOutput::get_volume ()
     return saved_volume;
 }
 
-static void set_volume_locked (scoped_lock & lock)
+static void set_volume_locked (aud::mutex::holder & lock)
 {
     if (volume.channels != 1)
     {
@@ -231,7 +227,7 @@ static void set_volume_locked (scoped_lock & lock)
 
 void PulseOutput::set_volume (StereoVolume v)
 {
-    scoped_lock lock (pulse_mutex);
+    auto lock = pulse_mutex.take ();
 
     saved_volume = v;
     saved_volume_changed = true;
@@ -242,7 +238,7 @@ void PulseOutput::set_volume (StereoVolume v)
 
 void PulseOutput::pause (bool pause)
 {
-    scoped_lock lock (pulse_mutex);
+    auto lock = pulse_mutex.take ();
 
     int success = 0;
     CHECK (pa_stream_cork, stream, pause, stream_success_cb);
@@ -250,7 +246,7 @@ void PulseOutput::pause (bool pause)
 
 int PulseOutput::get_delay ()
 {
-    scoped_lock lock (pulse_mutex);
+    auto lock = pulse_mutex.take ();
 
     pa_usec_t usec;
     int neg;
@@ -263,7 +259,7 @@ int PulseOutput::get_delay ()
 
 void PulseOutput::drain ()
 {
-    scoped_lock lock (pulse_mutex);
+    auto lock = pulse_mutex.take ();
 
     int success = 0;
     CHECK (pa_stream_drain, stream, stream_success_cb);
@@ -271,7 +267,7 @@ void PulseOutput::drain ()
 
 void PulseOutput::flush ()
 {
-    scoped_lock lock (pulse_mutex);
+    auto lock = pulse_mutex.take ();
 
     int success = 0;
     CHECK (pa_stream_flush, stream, stream_success_cb);
@@ -284,7 +280,7 @@ void PulseOutput::flush ()
 
 void PulseOutput::period_wait ()
 {
-    scoped_lock lock (pulse_mutex);
+    auto lock = pulse_mutex.take ();
 
     int success = 0;
     CHECK (pa_stream_trigger, stream, stream_success_cb);
@@ -296,7 +292,7 @@ void PulseOutput::period_wait ()
 
 int PulseOutput::write_audio (const void * ptr, int length)
 {
-    scoped_lock lock (pulse_mutex);
+    auto lock = pulse_mutex.take ();
     int ret = 0;
 
     length = aud::min ((size_t) length, pa_stream_writable_size (stream));
@@ -310,7 +306,7 @@ int PulseOutput::write_audio (const void * ptr, int length)
     return ret;
 }
 
-static void close_audio_locked (scoped_lock & lock)
+static void close_audio_locked (aud::mutex::holder & lock)
 {
     /* wait for any parallel tasks (e.g. set_volume()) to complete */
     while (polling)
@@ -341,7 +337,7 @@ static void close_audio_locked (scoped_lock & lock)
 
 void PulseOutput::close_audio ()
 {
-    scoped_lock lock (pulse_mutex);
+    auto lock = pulse_mutex.take ();
     close_audio_locked (lock);
 }
 
@@ -389,7 +385,7 @@ static void set_buffer_attr (pa_buffer_attr & buffer, const pa_sample_spec & ss)
     buffer.fragsize = buffer_size;
 }
 
-static bool create_context (scoped_lock & lock)
+static bool create_context (aud::mutex::holder & lock)
 {
     if (! (mainloop = pa_mainloop_new ()))
     {
@@ -425,7 +421,7 @@ static bool create_context (scoped_lock & lock)
     return true;
 }
 
-static bool create_stream (scoped_lock & lock, const pa_sample_spec & ss)
+static bool create_stream (aud::mutex::holder & lock, const pa_sample_spec & ss)
 {
     if (! (stream = pa_stream_new (context, "Audacious", & ss, nullptr)))
     {
@@ -460,7 +456,7 @@ static bool create_stream (scoped_lock & lock, const pa_sample_spec & ss)
     return true;
 }
 
-static bool subscribe_events (scoped_lock & lock)
+static bool subscribe_events (aud::mutex::holder & lock)
 {
     pa_context_set_subscribe_callback (context, subscribe_cb, nullptr);
 
@@ -481,7 +477,7 @@ static bool subscribe_events (scoped_lock & lock)
 
 bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
 {
-    scoped_lock lock (pulse_mutex);
+    auto lock = pulse_mutex.take ();
 
     pa_sample_spec ss;
     if (! set_sample_spec (ss, fmt, rate, nch))
