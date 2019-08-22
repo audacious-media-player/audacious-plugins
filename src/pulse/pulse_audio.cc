@@ -170,7 +170,7 @@ static void context_success_cb (pa_context *, int success, void * userdata)
         * (int * ) userdata = success;
 }
 
-static void get_volume_locked ()
+static void get_volume_locked (aud::mutex::holder & lock)
 {
     if (! polling)
     {
@@ -198,7 +198,7 @@ StereoVolume PulseOutput::get_volume ()
     auto lock = pulse_mutex.take ();
 
     if (connected)
-        get_volume_locked ();
+        get_volume_locked (lock);
 
     return saved_volume;
 }
@@ -497,7 +497,7 @@ bool PulseOutput::open_audio (int fmt, int rate, int nch, String & error)
     if (saved_volume_changed)
         set_volume_locked (lock);
     else
-        get_volume_locked ();
+        get_volume_locked (lock);
 
     return true;
 }
