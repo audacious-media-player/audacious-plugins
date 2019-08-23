@@ -18,6 +18,7 @@ subdir('psf')
 subdir('tonegen')
 subdir('vtx')
 subdir('xsf')
+subdir('console')
 
 
 # effect plugins
