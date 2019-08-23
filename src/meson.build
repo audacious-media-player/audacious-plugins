@@ -46,3 +46,14 @@ if xml_dep.found()
   subdir('asx3')
   subdir('xspf')
 endif
+
+
+# Qt-specific plugins
+if get_option('qt')
+  subdir('blur_scope-qt')
+  subdir('qt-spectrum')
+
+#    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt search-tool-qt song-info-qt statusicon-qt"
+  subdir('qtui')
+  subdir('skins-qt')
+endif
