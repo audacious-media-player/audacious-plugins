@@ -1,11 +1,6 @@
 src_inc = include_directories('.')
 
 
-config_h = configure_file(input: 'config.h.meson',
-  output: 'config.h',
-  configuration: conf)
-
-
 config_h_full_path = join_paths(meson.current_build_dir(), 'config.h')
 
 
@@ -78,4 +73,11 @@ subdir('pulse')
 
 # input plugins
 subdir('mpg123')
-subdir('ffaudio')
+if get_option('ffaudio') in ['libav', 'ffmpeg']
+  subdir('ffaudio')
+endif
+
+# config.h stuff
+configure_file(input: 'config.h.meson',
+  output: 'config.h',
+  configuration: conf)
