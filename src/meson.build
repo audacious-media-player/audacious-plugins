@@ -69,7 +69,9 @@ endif
 
 # output plugins
 subdir('pulse')
-
+if host_machine.system() == 'linux'
+  subdir('alsa')
+endif
 
 # input plugins
 subdir('mpg123')
