@@ -1,3 +1,6 @@
+src_inc = include_directories('.')
+
+
 config_h = configure_file(input: 'config.h.meson',
   output: 'config.h',
   configuration: conf)
@@ -35,6 +38,7 @@ subdir('echo_plugin')
 
 # transport plugins
 subdir('gio')
+subdir('neon')
 
 
 # playlist (container) plugins
@@ -53,7 +57,25 @@ if get_option('qt')
   subdir('blur_scope-qt')
   subdir('qt-spectrum')
 
-#    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt search-tool-qt song-info-qt statusicon-qt"
   subdir('qtui')
   subdir('skins-qt')
+
+  subdir('albumart-qt')
+  subdir('lyricwiki-qt')
+  subdir('playlist-manager-qt')
+  subdir('search-tool-qt')
+  subdir('song-info-qt')
+  subdir('statusicon-qt')
+
+  subdir('delete-files')
+  subdir('skins-data')
 endif
+
+
+# output plugins
+subdir('pulse')
+
+
+# input plugins
+subdir('mpg123')
+subdir('ffaudio')

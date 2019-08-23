@@ -37,7 +37,7 @@ skins_qt_sources = [
 
 shared_module('skins-qt',
   skins_qt_sources,
-  dependencies: [audacious_dep, qt_dep, glib_dep],
+  dependencies: [audacious_dep, qt_dep, glib_dep, audqt_dep],
   install: true,
   install_dir: general_plugin_dir
 )

@@ -19,6 +19,20 @@ audacious_req = '>= 3.11'
 audacious_dep = dependency('audacious', version: audacious_req, required: true)
 
 
+# XXX - make this it's own .pc file
+audtag_dep = declare_dependency(link_args: [
+  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('libdir')),
+  '-laudtag'
+])
+
+
+# XXX - make this it's own .pc file
+audqt_dep = declare_dependency(link_args: [
+  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('libdir')),
+  '-laudqt'
+])
+
+
 xml_dep = dependency('libxml-2.0')
 
 
