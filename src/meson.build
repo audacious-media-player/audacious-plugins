@@ -64,6 +64,8 @@ if get_option('qt')
 
   subdir('delete-files')
   subdir('skins-data')
+
+  subdir('qtaudio')
 endif
 
 
