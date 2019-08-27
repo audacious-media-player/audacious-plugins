@@ -419,6 +419,10 @@ int ALSAPlugin::write_audio (const void * data, int length)
     length = aud::min (length, alsa_buffer.space ());
     alsa_buffer.copy_in ((const char *) data, length);
 
+    AUDDBG ("Buffer fill levels: low = %d%%, high = %d%%.\n",
+            (alsa_buffer.len () - length) * 100 / alsa_buffer.size (),
+            alsa_buffer.len () * 100 / alsa_buffer.size ());
+
     if (! alsa_paused)
         pthread_cond_broadcast (& alsa_cond);
 
