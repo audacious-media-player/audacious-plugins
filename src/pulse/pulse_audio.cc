@@ -297,7 +297,7 @@ int PulseOutput::write_audio (const void * ptr, int length)
 
     length = aud::min ((size_t) length, pa_stream_writable_size (stream));
 
-    if (pa_stream_write (stream, ptr, length, nullptr, 0, PA_SEEK_RELATIVE) < 0)
+    if (pa_stream_write (stream, ptr, length, nullptr, 0, flushed ? PA_SEEK_RELATIVE_ON_READ : PA_SEEK_RELATIVE) < 0)
         REPORT ("pa_stream_write");
     else
         ret = length;
