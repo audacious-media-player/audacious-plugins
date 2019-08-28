@@ -106,7 +106,8 @@ uint32_t psf2_load_elf(uint8_t *start, uint32_t len)
 	uint32_t type, addr, offset, size, shent;
 //	uint32_t phoff, phentsize, phnum, shstrndx, name, flags;
 	uint32_t totallen;
-	int i, rec;
+	uint32_t i;
+	uint32_t rec;
 //	FILE *f;
 
 	if (loadAddr & 3)
@@ -260,7 +261,7 @@ uint32_t psf2_load_elf(uint8_t *start, uint32_t len)
 
 static uint32_t load_file_ex(uint8_t *top, uint8_t *start, uint32_t len, const char *file, uint8_t *buf, uint32_t buflen)
 {
-	int32_t numfiles, i, j;
+	uint32_t numfiles, i, j;
 	uint8_t *cptr;
 	uint32_t offs, uncomp, bsize, cofs, uofs;
 	uint32_t X;

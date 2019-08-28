@@ -5,7 +5,7 @@
 //#include "driver.h"
 
 typedef void genf(void);
-typedef int offs_t;
+typedef uint32_t offs_t;
 
 #define cpu_readop32(pc) program_read_dword_32le(pc)
 #define change_pc(pc)																	\

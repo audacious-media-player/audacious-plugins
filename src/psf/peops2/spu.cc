@@ -749,7 +749,7 @@ ENDX:   ;
     if(sampcount>=decaybegin)
      {
       s32 dmul;
-      if(decaybegin!=~0) // Is anyone REALLY going to be playing a song
+      if(decaybegin!=~0U) // Is anyone REALLY going to be playing a song
                          // for 13 hours?
        {
         if(sampcount>=decayend)

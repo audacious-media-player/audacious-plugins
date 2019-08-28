@@ -456,7 +456,7 @@ static uint32_t gpu_stat = 0;
 
 static uint32_t psx_hw_read(offs_t offset, uint32_t mem_mask)
 {
-	if (offset >= 0x00000000 && offset <= 0x007fffff)
+	if (offset <= 0x007fffff)
 	{
 		offset &= 0x1fffff;
 		return LE32(psx_ram[offset>>2]);
@@ -651,7 +651,7 @@ static void psx_hw_write(offs_t offset, uint32_t data, uint32_t mem_mask)
 {
 	union cpuinfo mipsinfo;
 
-	if (offset >= 0x00000000 && offset <= 0x007fffff)
+	if (offset <= 0x007fffff)
 	{
 		offset &= 0x1fffff;
 //		if (offset < 0x10000) printf("Write %x to kernel @ %x\n", data, offset);
@@ -3188,7 +3188,7 @@ void psx_iop_call(uint32_t pc, uint32_t callnum)
 
 				// filter out ESC characters
 				{
-					int ch;
+					size_t ch;
 
 					for (ch = 0; ch < strlen(out); ch++)
 					{
@@ -3239,7 +3239,7 @@ void psx_iop_call(uint32_t pc, uint32_t callnum)
 				if (psf2_load_file(mname, tempmem, 2*1024*1024) != 0xffffffff)
 				{
 					uint32_t start;
-					int i;
+					uint32_t i;
 
 					start = psf2_load_elf(tempmem, 2*1024*1024);
 
