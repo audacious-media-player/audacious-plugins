@@ -4,6 +4,11 @@ option('qt', type: 'boolean', value: true,
        description: 'Whether Qt support is enabled')
 
 
+# container plugins
+option('cue', type: 'boolean', value: true,
+       description: 'Whether libcue support is enabled')
+
+
 # transport plugins
 option('neon', type: 'boolean', value: true,
        description: 'Whether the neon HTTP client is enabled')

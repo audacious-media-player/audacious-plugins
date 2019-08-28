@@ -51,6 +51,9 @@ if xml_dep.found()
   subdir('asx3')
   subdir('xspf')
 endif
+if get_option('cue')
+  subdir('cue')
+endif
 
 
 # Qt-specific plugins
