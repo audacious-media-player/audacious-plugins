@@ -77,7 +77,10 @@ if host_machine.system() == 'linux'
 endif
 
 # input plugins
-subdir('mpg123')
+if get_option('mpg123')
+  subdir('mpg123')
+endif
+
 if get_option('ffaudio') in ['libav', 'ffmpeg']
   subdir('ffaudio')
 endif
