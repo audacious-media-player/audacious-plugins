@@ -22,6 +22,8 @@ option('flac', type: 'boolean', value: true,
        description: 'Whether FLAC support is enabled')
 option('vorbis', type: 'boolean', value: true,
        description: 'Whether Ogg Vorbis support is enabled')
+option('faad', type: 'boolean', value: true,
+       description: 'Whether the FAAD-based raw AAC plugin is enabled')
 
 
 # output plugins
