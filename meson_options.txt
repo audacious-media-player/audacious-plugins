@@ -18,6 +18,8 @@ option('mpg123', type: 'boolean', value: true,
        description: 'Whether MPG123 support is enabled')
 option('adplug', type: 'boolean', value: true,
        description: 'Whether AdPlug support is enabled')
+option('flac', type: 'boolean', value: true,
+       description: 'Whether FLAC support is enabled')
 
 
 # output plugins

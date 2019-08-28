@@ -96,6 +96,10 @@ if get_option('adplug')
   subdir('adplug')
 endif
 
+if get_option('flac')
+  subdir('flac')
+endif
+
 # config.h stuff
 configure_file(input: 'config.h.meson',
   output: 'config.h',
