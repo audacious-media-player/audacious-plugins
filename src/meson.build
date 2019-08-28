@@ -76,8 +76,10 @@ endif
 
 
 # output plugins
-subdir('pulse')
-if host_machine.system() == 'linux'
+if get_option('pulse')
+  subdir('pulse')
+endif
+if host_machine.system() == 'linux' and get_option('alsa')
   subdir('alsa')
 endif
 
@@ -88,6 +90,10 @@ endif
 
 if get_option('ffaudio') in ['libav', 'ffmpeg']
   subdir('ffaudio')
+endif
+
+if get_option('adplug')
+  subdir('adplug')
 endif
 
 # config.h stuff

@@ -2,11 +2,26 @@ option('dbus', type: 'boolean', value: true,
        description: 'Whether DBus support is enabled')
 option('qt', type: 'boolean', value: true,
        description: 'Whether Qt support is enabled')
-option('ffaudio', type: 'string', value: 'ffmpeg',
-       description: 'Choose between ffmpeg, libav or neither')
-option('mpg123', type: 'boolean', value: true,
-       description: 'Whether MPG123 support is enabled')
+
+
+# transport plugins
 option('neon', type: 'boolean', value: true,
        description: 'Whether the neon HTTP client is enabled')
 option('mms', type: 'boolean', value: true,
        description: 'Whether the libmms MMS cllient is enabled')
+
+
+# input plugins
+option('ffaudio', type: 'string', value: 'ffmpeg',
+       description: 'Choose between ffmpeg, libav or neither')
+option('mpg123', type: 'boolean', value: true,
+       description: 'Whether MPG123 support is enabled')
+option('adplug', type: 'boolean', value: true,
+       description: 'Whether AdPlug support is enabled')
+
+
+# output plugins
+option('alsa', type: 'boolean', value: true,
+       description: 'Whether ALSA support is enabled')
+option('pulse', type: 'boolean', value: true,
+       description: 'Whether PulseAudio support is enabled')
