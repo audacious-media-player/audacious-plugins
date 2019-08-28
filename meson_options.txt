@@ -39,6 +39,8 @@ option('sndfile', type: 'boolean', value: true,
        description: 'Whether libsndfile support is enabled')
 option('cdaudio', type: 'boolean', value: true,
        description: 'Whether CD audio support is enabled')
+option('amidiplug', type: 'boolean', value: true,
+       description: 'Whether AMidiPlug plugin is enabled')
 
 
 # output plugins

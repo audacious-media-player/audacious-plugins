@@ -138,6 +138,10 @@ if cdaudio_enabled
   subdir('cdaudio')
 endif
 
+if get_option('amidiplug')
+  subdir('amidiplug')
+endif
+
 
 # config.h stuff
 configure_file(input: 'config.h.meson',
