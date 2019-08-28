@@ -108,6 +108,10 @@ if get_option('faad')
   subdir('aac')
 endif
 
+if get_option('modplug')
+  subdir('modplug')
+endif
+
 
 # config.h stuff
 configure_file(input: 'config.h.meson',
