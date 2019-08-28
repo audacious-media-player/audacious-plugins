@@ -86,6 +86,13 @@ if host_machine.system() == 'linux' and get_option('alsa')
   subdir('alsa')
 endif
 
+
+# general plugins
+if cdaudio_enabled
+  subdir('cd-menu-items')
+endif
+
+
 # input plugins
 if get_option('mpg123')
   subdir('mpg123')
@@ -125,6 +132,10 @@ endif
 
 if get_option('sndfile')
   subdir('sndfile')
+endif
+
+if cdaudio_enabled
+  subdir('cdaudio')
 endif
 
 

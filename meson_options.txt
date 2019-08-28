@@ -37,6 +37,8 @@ option('wavpack', type: 'boolean', value: true,
        description: 'Whether WavPack support is enabled')
 option('sndfile', type: 'boolean', value: true,
        description: 'Whether libsndfile support is enabled')
+option('cdaudio', type: 'boolean', value: true,
+       description: 'Whether CD audio support is enabled')
 
 
 # output plugins

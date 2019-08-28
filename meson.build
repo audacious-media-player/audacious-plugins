@@ -42,6 +42,18 @@ if get_option('qt')
 endif
 
 
+cdaudio_enabled = false
+if get_option('cdaudio')
+  libcdio_dep = dependency('libcdio', version: '>= 0.70', required: false)
+  libcdio_cdda_dep = dependency('libcdio_cdda', version: '>= 0.70', required: false)
+  libcddb_dep = dependency('libcddb', version: '>= 1.2.1', required: false)
+
+  if libcdio_dep.found() and libcdio_cdda_dep.found() and libcddb_dep.found()
+    cdaudio_enabled = true
+  endif
+endif
+
+
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
 
