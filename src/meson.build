@@ -100,6 +100,10 @@ if get_option('flac')
   subdir('flac')
 endif
 
+if get_option('vorbis')
+  subdir('vorbis')
+endif
+
 # config.h stuff
 configure_file(input: 'config.h.meson',
   output: 'config.h',
