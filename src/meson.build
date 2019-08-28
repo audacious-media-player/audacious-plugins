@@ -142,6 +142,10 @@ if get_option('amidiplug')
   subdir('amidiplug')
 endif
 
+if get_option('sid')
+  subdir('sid')
+endif
+
 
 # config.h stuff
 configure_file(input: 'config.h.meson',

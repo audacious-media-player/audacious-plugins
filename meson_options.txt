@@ -41,6 +41,8 @@ option('cdaudio', type: 'boolean', value: true,
        description: 'Whether CD audio support is enabled')
 option('amidiplug', type: 'boolean', value: true,
        description: 'Whether AMidiPlug plugin is enabled')
+option('sid', type: 'boolean', value: true,
+       description: 'Whether SID emulation support is enabled')
 
 
 # output plugins
