@@ -6,3 +6,7 @@ option('ffaudio', type: 'string', value: 'ffmpeg',
        description: 'Choose between ffmpeg, libav or neither')
 option('mpg123', type: 'boolean', value: true,
        description: 'Whether MPG123 support is enabled')
+option('neon', type: 'boolean', value: true,
+       description: 'Whether the neon HTTP client is enabled')
+option('mms', type: 'boolean', value: true,
+       description: 'Whether the libmms MMS cllient is enabled')

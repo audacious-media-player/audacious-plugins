@@ -34,7 +34,12 @@ subdir('echo_plugin')
 
 # transport plugins
 subdir('gio')
-subdir('neon')
+if get_option('neon')
+  subdir('neon')
+endif
+if get_option('mms')
+  subdir('mms')
+endif
 
 
 # playlist (container) plugins
