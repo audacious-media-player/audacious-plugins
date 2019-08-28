@@ -30,6 +30,8 @@ option('openmpt', type: 'boolean', value: true,
        description: 'Whether OpenMPT support is enabled')
 option('wavpack', type: 'boolean', value: true,
        description: 'Whether WavPack support is enabled')
+option('sndfile', type: 'boolean', value: true,
+       description: 'Whether libsndfile support is enabled')
 
 
 # output plugins

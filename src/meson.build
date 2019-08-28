@@ -120,6 +120,10 @@ if get_option('wavpack')
   subdir('wavpack')
 endif
 
+if get_option('sndfile')
+  subdir('sndfile')
+endif
+
 
 # config.h stuff
 configure_file(input: 'config.h.meson',
