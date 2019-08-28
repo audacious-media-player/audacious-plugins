@@ -26,6 +26,10 @@ option('faad', type: 'boolean', value: true,
        description: 'Whether the FAAD-based raw AAC plugin is enabled')
 option('modplug', type: 'boolean', value: true,
        description: 'Whether ModPlug support is enabled')
+option('openmpt', type: 'boolean', value: true,
+       description: 'Whether OpenMPT support is enabled')
+option('wavpack', type: 'boolean', value: true,
+       description: 'Whether WavPack support is enabled')
 
 
 # output plugins

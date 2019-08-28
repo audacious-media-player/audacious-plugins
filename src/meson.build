@@ -112,6 +112,14 @@ if get_option('modplug')
   subdir('modplug')
 endif
 
+if get_option('openmpt')
+  subdir('openmpt')
+endif
+
+if get_option('wavpack')
+  subdir('wavpack')
+endif
+
 
 # config.h stuff
 configure_file(input: 'config.h.meson',
