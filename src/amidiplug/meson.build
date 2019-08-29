@@ -14,7 +14,7 @@ amidiplug_sources = [
 if fluidsynth_dep.found()
   shared_module('amidi-plug',
     amidiplug_sources,
-    dependencies: [audacious_dep, fluidsynth_dep, glib_dep, qt_dep],
+    dependencies: [audacious_dep, fluidsynth_dep, glib_dep, qt_dep, audqt_dep],
     install: true,
     install_dir: input_plugin_dir
   )
