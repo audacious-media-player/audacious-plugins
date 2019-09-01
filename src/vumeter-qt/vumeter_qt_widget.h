@@ -24,11 +24,16 @@
 #include <QWidget>
 #include <QPainter>
 #include <QLinearGradient>
+#include <QColor>
 
 class VUMeterQtWidget : public QWidget
 {
 
 private:
+    static const QColor backgroundColor;
+    static const QColor text_color;
+    static const QColor db_line_color;
+
     QLinearGradient vumeter_pattern;
     QLinearGradient background_vumeter_pattern;
     float legend_width;

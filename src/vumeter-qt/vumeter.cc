@@ -61,6 +61,10 @@ const char * const VUMeterQt::prefs_defaults[] = {
     nullptr
 };
 
+const QColor VUMeterQtWidget::backgroundColor = QColor(40, 40, 40, 255);
+const QColor VUMeterQtWidget::text_color = QColor(255, 255, 255);
+const QColor VUMeterQtWidget::db_line_color = QColor(120, 120, 120);
+
 static VUMeterQtWidget * spect_widget = nullptr;
 static int nchannels = 2;
 static float channels_db_level[VUMeterQt::max_channels];
@@ -183,7 +187,7 @@ void VUMeterQt::clear ()
 
 void VUMeterQtWidget::draw_background(QPainter & p)
 {
-    p.fillRect(0, 0, width(), height(), QColor(40, 40, 40, 255));
+    p.fillRect(0, 0, width(), height(), backgroundColor);
 }
 
 void VUMeterQtWidget::draw_vu_legend(QPainter & p)
@@ -195,9 +199,9 @@ void VUMeterQtWidget::draw_vu_legend(QPainter & p)
     font.setPointSizeF(fminf(font_size_width, font_size_height));
     p.setFont(font);
 
-    QPen pen;
+    QPen pen = p.pen();
     pen.setWidth(1);
-    pen.setColor(QColor(255, 255, 255));
+    pen.setColor(text_color);
     p.setPen(pen);
 
     draw_vu_legend_db(p, 0, "0");
@@ -216,7 +220,7 @@ void VUMeterQtWidget::draw_vu_legend(QPainter & p)
     draw_vu_legend_db(p, -60, "-60");
     draw_vu_legend_db(p, -VUMeterQt::db_range, "-inf");
 
-    pen.setColor(QColor(120, 120, 120));
+    pen.setColor(db_line_color);
     p.setPen(pen);
     for (int i = 0; i > -VUMeterQt::db_range; i--)
     {
@@ -271,8 +275,8 @@ void VUMeterQtWidget::draw_visualizer_peaks(QPainter &p)
     font.setPointSizeF(fminf(font_size_width, font_size_height));
     p.setFont(font);
 
-    QPen pen;
-    pen.setColor(QColor(255, 255, 255));
+    QPen pen = p.pen();
+    pen.setColor(text_color);
     p.setPen(pen);
 
     QFontMetricsF fm(p.font());
@@ -296,6 +300,7 @@ void VUMeterQtWidget::draw_visualizer(QPainter & p)
         if (i > 0)
         {
              x += 1;
+             bar_width -= 1;
         }
 
         p.fillRect (
