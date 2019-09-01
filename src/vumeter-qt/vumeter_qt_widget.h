@@ -27,6 +27,7 @@
 
 class VUMeterQtWidget : public QWidget
 {
+
 private:
     QLinearGradient vumeter_pattern;
     QLinearGradient background_vumeter_pattern;
@@ -36,15 +37,7 @@ private:
     float vumeter_top_padding;
     float vumeter_bottom_padding;
     bool must_draw_vu_legend;
-public:
-    VUMeterQtWidget (QWidget * parent = nullptr);
-    ~VUMeterQtWidget ();
-    static void toggle_display_legend();
-protected:
-    void resizeEvent (QResizeEvent *);
-    void paintEvent (QPaintEvent *);
 
-private:
     void draw_background (QPainter &p);
     void draw_visualizer (QPainter &p);
     void draw_vu_legend(QPainter &p);
@@ -58,6 +51,16 @@ private:
     void update_sizes();
     void format_db(char *buf, const float val);
     float get_db_factor(float db);
+
+public:
+    VUMeterQtWidget (QWidget * parent = nullptr);
+    ~VUMeterQtWidget ();
+    void toggle_display_legend();
+
+protected:
+    void resizeEvent (QResizeEvent *);
+    void paintEvent (QPaintEvent *);
+
 };
 
 #endif

@@ -24,10 +24,14 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/visualizer.h>
+#include <QElapsedTimer>
 
 class VUMeterQt : public VisPlugin
 {
+
 public:
+    static const int max_channels = 20;
+    static const int db_range = 96;
     static const char about[];
     static const PreferencesWidget widgets[];
     static const PluginPreferences prefs;
@@ -49,8 +53,14 @@ public:
 
     void clear ();
     void render_multi_pcm (const float * pcm, int channels);
+    static void toggle_display_legend();
+
 private:
+    QElapsedTimer last_peak_times[max_channels]; // Time elapsed since peak was set
+    QElapsedTimer render_timer;
+
     float get_db_on_range(float db);
+
 };
 
 #endif

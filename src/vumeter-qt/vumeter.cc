@@ -19,7 +19,6 @@
  */
 
 #include <math.h>
-#include <QElapsedTimer>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
@@ -30,9 +29,6 @@
 #include "utils.h"
 #include "vumeter_qt_widget.h"
 #include "vumeter_qt.h"
-
-#define MAX_CHANNELS 20
-#define DB_RANGE 96
 
 EXPORT VUMeterQt aud_plugin_instance;
 
@@ -53,7 +49,7 @@ const PreferencesWidget VUMeterQt::widgets[] = {
         {0.1, 96, 0.1, N_("dB/second")}
     ),
     WidgetCheck (N_("Display legend"),
-        WidgetBool ("vumeter", "display_legend", VUMeterQtWidget::toggle_display_legend)),
+        WidgetBool ("vumeter", "display_legend", toggle_display_legend)),
 };
 
 const PluginPreferences VUMeterQt::prefs = {{widgets}};
@@ -67,24 +63,22 @@ const char * const VUMeterQt::prefs_defaults[] = {
 
 static VUMeterQtWidget * spect_widget = nullptr;
 static int nchannels = 2;
-static float channels_db_level[MAX_CHANNELS];
-static float channels_peaks[MAX_CHANNELS];
-static QElapsedTimer last_peak_times[MAX_CHANNELS]; // Time elapsed since peak was set
-QElapsedTimer render_timer;
+static float channels_db_level[VUMeterQt::max_channels];
+static float channels_peaks[VUMeterQt::max_channels];
 
 float VUMeterQt::get_db_on_range(float db)
 {
-    return fclamp(db, -DB_RANGE, 0);
+    return fclamp(db, -VUMeterQt::db_range, 0);
 }
 
 float VUMeterQtWidget::get_db_factor(float db)
 {
     float factor = 0.0f;
 
-    if (db < -DB_RANGE) {
+    if (db < -VUMeterQt::db_range) {
         factor = 0.0f;
     } else if (db < -60.0f) {
-        factor = (db + DB_RANGE) * 2.5f/(DB_RANGE-60);
+        factor = (db + VUMeterQt::db_range) * 2.5f/(VUMeterQt::db_range-60);
     } else if (db < -50.0f) {
         factor = (db + 60.0f) * 0.5f + 2.5f;
     } else if (db < -40.0f) {
@@ -115,7 +109,7 @@ float VUMeterQtWidget::get_y_from_db(float db)
 void VUMeterQt::render_multi_pcm (const float * pcm, int channels)
 {
     qint64 elapsed_render_time = render_timer.restart();
-    nchannels = fclamp(channels, 0, MAX_CHANNELS);
+    nchannels = fclamp(channels, 0, VUMeterQt::max_channels);
     float falloff = aud_get_double ("vumeter", "falloff") / 1000.0;
     qint64 peak_hold_time = aud_get_double ("vumeter", "peak_hold_time") * 1000;
 
@@ -163,10 +157,10 @@ void VUMeterQt::render_multi_pcm (const float * pcm, int channels)
 bool VUMeterQt::init ()
 {
     render_timer.start();
-    for (int i = 0; i < MAX_CHANNELS; i++) {
+    for (int i = 0; i < VUMeterQt::max_channels; i++) {
         last_peak_times[i].start();
-        channels_db_level[i] = -DB_RANGE;
-        channels_peaks[i] = -DB_RANGE;
+        channels_db_level[i] = -VUMeterQt::db_range;
+        channels_peaks[i] = -VUMeterQt::db_range;
     }
 
     aud_config_set_defaults ("vumeter", prefs_defaults);
@@ -176,10 +170,10 @@ bool VUMeterQt::init ()
 void VUMeterQt::clear ()
 {
     render_timer.restart();
-    for (int i = 0; i < MAX_CHANNELS; i++) {
+    for (int i = 0; i < VUMeterQt::max_channels; i++) {
         last_peak_times[i].restart();
-        channels_db_level[i] = -DB_RANGE;
-        channels_peaks[i] = -DB_RANGE;
+        channels_db_level[i] = -VUMeterQt::db_range;
+        channels_peaks[i] = -VUMeterQt::db_range;
     }
 
     if (spect_widget) {
@@ -220,11 +214,11 @@ void VUMeterQtWidget::draw_vu_legend(QPainter & p)
     draw_vu_legend_db(p, -40, "-40");
     draw_vu_legend_db(p, -50, "-50");
     draw_vu_legend_db(p, -60, "-60");
-    draw_vu_legend_db(p, -DB_RANGE, "-inf");
+    draw_vu_legend_db(p, -VUMeterQt::db_range, "-inf");
 
     pen.setColor(QColor(120, 120, 120));
     p.setPen(pen);
-    for (int i = 0; i > -DB_RANGE; i--)
+    for (int i = 0; i > -VUMeterQt::db_range; i--)
     {
         if (i > -30)
         {
@@ -243,10 +237,10 @@ void VUMeterQtWidget::draw_vu_legend(QPainter & p)
         else
         {
             draw_vu_legend_line(p, i);
-            i -= (DB_RANGE - 60) / 2;
+            i -= (VUMeterQt::db_range - 60) / 2;
         }
     }
-    draw_vu_legend_line(p, -DB_RANGE);
+    draw_vu_legend_line(p, -VUMeterQt::db_range);
 }
 
 void VUMeterQtWidget::draw_vu_legend_line(QPainter &p, float db, float line_width_factor)
@@ -315,7 +309,7 @@ void VUMeterQtWidget::draw_visualizer(QPainter & p)
             vumeter_pattern
         );
 
-        if (channels_peaks[i] > -DB_RANGE)
+        if (channels_peaks[i] > -VUMeterQt::db_range)
         {
             p.fillRect (
                 QRectF(x, get_y_from_db(channels_peaks[i]), bar_width, 1),
@@ -330,7 +324,7 @@ void VUMeterQtWidget::format_db(char *buf, const float val) {
     {
         sprintf(buf, "%+.1f", val);
     }
-    else if (val > -DB_RANGE)
+    else if (val > -VUMeterQt::db_range)
     {
         sprintf(buf, "%.0f ", val);
     }
@@ -393,7 +387,6 @@ VUMeterQtWidget::~VUMeterQtWidget ()
 void VUMeterQtWidget::resizeEvent (QResizeEvent * event)
 {
     update_sizes();
-    update ();
 }
 
 void VUMeterQtWidget::paintEvent (QPaintEvent * event)
@@ -418,10 +411,15 @@ void * VUMeterQt::get_qt_widget ()
     return spect_widget;
 }
 
+void VUMeterQt::toggle_display_legend()
+{
+    if (spect_widget) {
+        spect_widget->toggle_display_legend();
+    }
+}
+
 void VUMeterQtWidget::toggle_display_legend()
 {
-    if (spect_widget)
-    {
-        spect_widget->update_sizes();
-    }
+    update_sizes();
+    update();
 }
