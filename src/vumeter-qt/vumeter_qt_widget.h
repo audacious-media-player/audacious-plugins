@@ -1,0 +1,63 @@
+/*
+ * Copyright (c) 2017-2019 Marc Sanchez Fauste.
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifndef __VUMETER_QT_WIDGET_H
+#define __VUMETER_QT_WIDGET_H
+
+#include <QWidget>
+#include <QPainter>
+#include <QLinearGradient>
+
+class VUMeterQtWidget : public QWidget
+{
+private:
+    QLinearGradient vumeter_pattern;
+    QLinearGradient background_vumeter_pattern;
+    float legend_width;
+    float vumeter_height;
+    float vumeter_width;
+    float vumeter_top_padding;
+    float vumeter_bottom_padding;
+    bool must_draw_vu_legend;
+public:
+    VUMeterQtWidget (QWidget * parent = nullptr);
+    ~VUMeterQtWidget ();
+    static void toggle_display_legend();
+protected:
+    void resizeEvent (QResizeEvent *);
+    void paintEvent (QPaintEvent *);
+
+private:
+    void draw_background (QPainter &p);
+    void draw_visualizer (QPainter &p);
+    void draw_vu_legend(QPainter &p);
+    float get_height_from_db(float db);
+    float get_y_from_db(float db);
+    QLinearGradient get_vumeter_pattern(int alpha = 255);
+    float get_bar_width(int channels);
+    void draw_vu_legend_db(QPainter &p, float db, const char *text);
+    void draw_vu_legend_line(QPainter &p, float db, float line_width_factor = 1.0f);
+    void draw_visualizer_peaks(QPainter &p);
+    void update_sizes();
+    void format_db(char *buf, const float val);
+    float get_db_factor(float db);
+};
+
+#endif
