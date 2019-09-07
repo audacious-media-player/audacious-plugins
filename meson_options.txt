@@ -2,6 +2,8 @@ option('dbus', type: 'boolean', value: true,
        description: 'Whether DBus support is enabled')
 option('qt', type: 'boolean', value: true,
        description: 'Whether Qt support is enabled')
+option('mpris2', type: 'boolean', value: true,
+       description: 'Whether MPRIS 2.0 support is enabled')
 
 
 # container plugins
