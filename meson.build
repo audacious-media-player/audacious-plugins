@@ -71,7 +71,6 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   ]
 
   cxx_flags = [
-    '-Wno-non-virtual-dtor',
     '-Woverloaded-virtual'
   ]
 
