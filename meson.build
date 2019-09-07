@@ -54,6 +54,9 @@ if get_option('cdaudio')
 endif
 
 
+samplerate_dep = dependency('samplerate', required: false)
+
+
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
 

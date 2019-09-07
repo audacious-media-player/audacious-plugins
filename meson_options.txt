@@ -57,3 +57,10 @@ option('songchange', type: 'boolean', value: true,
        description: 'Whether the Song Change plugin is enabled')
 option('scrobbler2', type: 'boolean', value: true,
        description: 'Whether the Scrobbler plugin is enabled')
+
+
+# effect plugins
+option('resample', type: 'boolean', value: true,
+       description: 'Whether the resample effect plugin is enabled')
+option('speedpitch', type: 'boolean', value: true,
+       description: 'Whether the speed / pitch effect plugin is enabled')

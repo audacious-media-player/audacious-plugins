@@ -31,6 +31,16 @@ subdir('stereo_plugin')
 subdir('voice_removal')
 subdir('echo_plugin')
 
+if samplerate_dep.found()
+  if get_option('resample')
+    subdir('resample')
+  endif
+
+  if get_option('speedpitch')
+    subdir('speedpitch')
+  endif
+endif
+
 
 # transport plugins
 subdir('gio')
