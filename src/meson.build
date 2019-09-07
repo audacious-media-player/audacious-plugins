@@ -92,6 +92,10 @@ if cdaudio_enabled
   subdir('cd-menu-items')
 endif
 
+if get_option('songchange')
+  subdir('songchange')
+endif
+
 
 # input plugins
 if get_option('mpg123')
