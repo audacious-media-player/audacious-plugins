@@ -96,6 +96,10 @@ if get_option('songchange')
   subdir('songchange')
 endif
 
+if get_option('scrobbler2') and xml_dep.found()
+  subdir('scrobbler2')
+endif
+
 
 # input plugins
 if get_option('mpg123')

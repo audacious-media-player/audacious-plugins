@@ -55,3 +55,5 @@ option('pulse', type: 'boolean', value: true,
 # general plugins
 option('songchange', type: 'boolean', value: true,
        description: 'Whether the Song Change plugin is enabled')
+option('scrobbler2', type: 'boolean', value: true,
+       description: 'Whether the Scrobbler plugin is enabled')
