@@ -30,6 +30,7 @@ class FLACng : public InputPlugin
 public:
     static const char about[];
     static const char *const exts[];
+    static const char *const mimes[];
 
     static constexpr PluginInfo info = {
         N_("FLAC Decoder"),
@@ -39,7 +40,8 @@ public:
 
     constexpr FLACng() : InputPlugin(info, InputInfo(FlagWritesTag)
         .with_priority(1)
-        .with_exts(exts)) {}
+        .with_exts(exts)
+        .with_mimes(mimes)) {}
 
     bool init();
     void cleanup();

@@ -171,3 +171,5 @@ const char FLACng::about[] =
     "http://www.skytale.net/projects/bmp-flac2/");
 
 const char *const FLACng::exts[] = { "flac", "fla", nullptr };
+
+const char *const FLACng::mimes[] = { "audio/flac", nullptr };
