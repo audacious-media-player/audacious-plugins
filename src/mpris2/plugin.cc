@@ -319,11 +319,17 @@ bool MPRIS2Plugin::init ()
 
     object_core = (GObject *) mpris_media_player2_skeleton_new ();
 
+    // build the schemes array
+    auto schemes = VFSFile::supported_uri_schemes ();
+    auto mimes = aud_plugin_get_supported_mime_types ();
+
     g_object_set (object_core,
      "can-quit", (gboolean) true,
      "can-raise", (gboolean) true,
      "desktop-entry", "audacious",
      "identity", "Audacious",
+     "supported-uri-schemes", schemes.begin (),
+     "supported-mime-types", mimes.begin (),
      nullptr);
 
     g_signal_connect (object_core, "handle-quit", (GCallback) quit_cb, nullptr);

@@ -4,6 +4,8 @@
         <property name="CanRaise" type="b" access="read"/>
         <property name="DesktopEntry" type="s" access="read"/>
         <property name="Identity" type="s" access="read"/>
+        <property name="SupportedUriSchemes" type="as" access="read"/>
+        <property name="SupportedMimeTypes" type="as" access="read"/>
         <method name="Quit"/>
         <method name="Raise"/>
     </interface>
