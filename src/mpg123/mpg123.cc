@@ -47,6 +47,7 @@ class MPG123Plugin : public InputPlugin
 public:
     static const char * const exts[];
     static const char * const defaults[];
+    static const char * const mimes[];
     static const PreferencesWidget widgets[];
     static const PluginPreferences prefs;
 
@@ -58,7 +59,8 @@ public:
     };
 
     constexpr MPG123Plugin() : InputPlugin (info, InputInfo (FlagWritesTag)
-        .with_exts (exts)) {}
+        .with_exts (exts)
+        .with_mimes (mimes)) {}
 
     bool init ();
     void cleanup ();
@@ -70,6 +72,10 @@ public:
 };
 
 EXPORT MPG123Plugin aud_plugin_instance;
+
+const char * const MPG123Plugin::mimes[] = {
+    "audio/mpeg", nullptr
+};
 
 const char * const MPG123Plugin::defaults[] = {
     "full_scan", "FALSE",
