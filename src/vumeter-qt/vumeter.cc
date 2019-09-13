@@ -61,7 +61,7 @@ const char * const VUMeterQt::prefs_defaults[] = {
     nullptr
 };
 
-const QColor VUMeterQtWidget::backgroundColor = QColor(40, 40, 40, 255);
+const QColor VUMeterQtWidget::backgroundColor = QColor(16, 16, 16, 255);
 const QColor VUMeterQtWidget::text_color = QColor(255, 255, 255);
 const QColor VUMeterQtWidget::db_line_color = QColor(120, 120, 120);
 
@@ -362,7 +362,7 @@ void VUMeterQtWidget::update_sizes()
         vumeter_width = width();
     }
     vumeter_pattern = get_vumeter_pattern();
-    background_vumeter_pattern = get_vumeter_pattern(25);
+    background_vumeter_pattern = get_vumeter_pattern(30);
 }
 
 VUMeterQtWidget::VUMeterQtWidget (QWidget * parent) : QWidget (parent)
