@@ -33,6 +33,7 @@ private:
     static const QColor backgroundColor;
     static const QColor text_color;
     static const QColor db_line_color;
+    static const float legend_line_width;
 
     QLinearGradient vumeter_pattern;
     QLinearGradient background_vumeter_pattern;

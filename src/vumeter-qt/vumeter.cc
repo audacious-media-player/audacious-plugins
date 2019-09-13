@@ -64,6 +64,7 @@ const char * const VUMeterQt::prefs_defaults[] = {
 const QColor VUMeterQtWidget::backgroundColor = QColor(16, 16, 16, 255);
 const QColor VUMeterQtWidget::text_color = QColor(255, 255, 255);
 const QColor VUMeterQtWidget::db_line_color = QColor(120, 120, 120);
+const float VUMeterQtWidget::legend_line_width = 1.0f;
 
 static VUMeterQtWidget * spect_widget = nullptr;
 static int nchannels = 2;
@@ -200,7 +201,7 @@ void VUMeterQtWidget::draw_vu_legend(QPainter & p)
     p.setFont(font);
 
     QPen pen = p.pen();
-    pen.setWidth(1);
+    pen.setWidth(legend_line_width);
     pen.setColor(text_color);
     p.setPen(pen);
 
@@ -222,7 +223,7 @@ void VUMeterQtWidget::draw_vu_legend(QPainter & p)
 
     pen.setColor(db_line_color);
     p.setPen(pen);
-    for (int i = 0; i > -VUMeterQt::db_range; i--)
+    for (int i = 0; i >= -60; i--)
     {
         if (i > -30)
         {
@@ -233,15 +234,10 @@ void VUMeterQtWidget::draw_vu_legend(QPainter & p)
         {
             draw_vu_legend_line(p, i);
         }
-        else if (i > -60)
+        else if (i >= -60)
         {
             draw_vu_legend_line(p, i);
             i -= 1;
-        }
-        else
-        {
-            draw_vu_legend_line(p, i);
-            i -= (VUMeterQt::db_range - 60) / 2;
         }
     }
     draw_vu_legend_line(p, -VUMeterQt::db_range);
@@ -250,9 +246,20 @@ void VUMeterQtWidget::draw_vu_legend(QPainter & p)
 void VUMeterQtWidget::draw_vu_legend_line(QPainter &p, float db, float line_width_factor)
 {
     float y = get_y_from_db(db);
+    if (db > -VUMeterQt::db_range) {
+        y += (legend_line_width / 2.0f);
+    } else {
+        y -= (legend_line_width / 2.0f);
+    }
     float line_width = fclamp(legend_width * 0.25f, 1, 8);
-    p.drawLine(QPointF(legend_width - line_width * line_width_factor, y), QPointF(legend_width, y));
-    p.drawLine(QPointF(width() - legend_width, y), QPointF(width() - legend_width + line_width * line_width_factor, y));
+    p.drawLine(
+        QPointF(legend_width - line_width * line_width_factor - (legend_line_width / 2.0f), y),
+        QPointF(legend_width - (legend_line_width / 2.0f), y)
+    );
+    p.drawLine(
+        QPointF(width() - legend_width + (legend_line_width / 2.0f), y),
+        QPointF(width() - legend_width + (legend_line_width / 2.0f) + line_width * line_width_factor, y)
+    );
 }
 
 void VUMeterQtWidget::draw_vu_legend_db(QPainter &p, float db, const char *text)
