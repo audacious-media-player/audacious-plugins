@@ -74,7 +74,11 @@ public:
 EXPORT MPG123Plugin aud_plugin_instance;
 
 const char * const MPG123Plugin::mimes[] = {
-    "audio/mpeg", nullptr
+    "audio/mp3",
+    "audio/mpeg",
+    "audio/x-mp3",
+    "audio/x-mpeg",
+    nullptr
 };
 
 const char * const MPG123Plugin::defaults[] = {

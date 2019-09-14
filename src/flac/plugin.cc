@@ -172,4 +172,4 @@ const char FLACng::about[] =
 
 const char *const FLACng::exts[] = { "flac", "fla", nullptr };
 
-const char *const FLACng::mimes[] = { "audio/flac", nullptr };
+const char *const FLACng::mimes[] = { "audio/flac", "audio/x-flac", nullptr };

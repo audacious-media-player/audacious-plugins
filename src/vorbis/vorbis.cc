@@ -440,4 +440,10 @@ const char VorbisPlugin::about[] =
     "Eugene Zagidullin <e.asphyx@gmail.com>");
 
 const char * const VorbisPlugin::exts[] = {"ogg", "ogm", "oga", nullptr};
-const char * const VorbisPlugin::mimes[] = {"application/ogg", nullptr};
+const char * const VorbisPlugin::mimes[] = {
+    "application/ogg",
+    "application/x-ogg",
+    "audio/ogg",
+    "audio/x-vorbis+ogg",
+    nullptr
+};

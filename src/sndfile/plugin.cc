@@ -32,6 +32,7 @@ class SndfilePlugin : public InputPlugin
 public:
     static const char about[];
     static const char * const exts[];
+    static const char * const mimes[];
 
     static constexpr PluginInfo info = {
         N_("Sndfile Plugin"),
@@ -41,7 +42,8 @@ public:
 
     constexpr SndfilePlugin () : InputPlugin (info, InputInfo ()
         .with_priority (9)  /* low priority fallback (but before ffaudio) */
-        .with_exts (exts)) {}
+        .with_exts (exts)
+        .with_mimes (mimes)) {}
 
     bool is_our_file (const char * filename, VFSFile & file);
     bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
@@ -374,3 +376,4 @@ const char SndfilePlugin::about[] =
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.");
 
 const char * const SndfilePlugin::exts[] = { "aiff", "au", "raw", "wav", nullptr };
+const char * const SndfilePlugin::mimes[] = { "audio/wav", "audio/x-wav", nullptr };

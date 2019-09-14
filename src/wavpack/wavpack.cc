@@ -19,6 +19,7 @@ class WavpackPlugin : public InputPlugin
 public:
     static const char about[];
     static const char * const exts[];
+    static const char * const mimes[];
 
     static constexpr PluginInfo info = {
         N_("WavPack Decoder"),
@@ -27,7 +28,8 @@ public:
     };
 
     constexpr WavpackPlugin() : InputPlugin (info, InputInfo (FlagWritesTag)
-        .with_exts (exts)) {}
+        .with_exts (exts)
+        .with_mimes (mimes)) {}
 
     bool is_our_file (const char * filename, VFSFile & file)
         { return false; }
@@ -256,3 +258,4 @@ const char WavpackPlugin::about[] =
     "Some of the plugin code was by Miles Egan.");
 
 const char * const WavpackPlugin::exts[] = { "wv", nullptr };
+const char * const WavpackPlugin::mimes[] = { "audio/x-wavpack", nullptr };
