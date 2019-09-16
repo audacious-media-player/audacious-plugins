@@ -38,7 +38,7 @@ public:
     static const char * const prefs_defaults[];
 
     static constexpr PluginInfo info = {
-        N_("VU Meter Qt"),
+        N_("VU Meter"),
         PACKAGE,
         about,
         & prefs,
