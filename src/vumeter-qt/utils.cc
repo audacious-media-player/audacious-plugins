@@ -21,29 +21,6 @@
 #include"utils.h"
 #include <math.h>
 
-int min(int a, int b)
-{
-    if (a < b)
-    {
-        return a;
-    }
-    return b;
-}
-
-int max(int a, int b)
-{
-    if (a > b)
-    {
-        return a;
-    }
-    return b;
-}
-
-int clamp(int x, int low, int high)
-{
-    return min(max(x, low), high);
-}
-
 float fclamp(float x, float low, float high)
 {
     return fminf(fmaxf(x, low), high);
