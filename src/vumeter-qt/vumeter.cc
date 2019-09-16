@@ -37,7 +37,8 @@ const char VUMeterQt::about[] =
  N_("VU Meter Plugin for Audacious\n"
     "Copyright 2017-2019 Marc Sánchez Fauste");
 
-const PreferencesWidget VUMeterQt::widgets[] = {
+const PreferencesWidget VUMeterQt::widgets[] =
+{
     WidgetLabel (N_("<b>VU Meter Settings</b>")),
     WidgetSpin (
         N_("Peak hold time:"),
@@ -55,7 +56,8 @@ const PreferencesWidget VUMeterQt::widgets[] = {
 
 const PluginPreferences VUMeterQt::prefs = {{widgets}};
 
-const char * const VUMeterQt::prefs_defaults[] = {
+const char * const VUMeterQt::prefs_defaults[] =
+{
     "peak_hold_time", "1.6",
     "falloff", "13.3",
     "display_legend", "TRUE",
@@ -81,21 +83,36 @@ float VUMeterQtWidget::get_db_factor(float db)
 {
     float factor = 0.0f;
 
-    if (db < -VUMeterQt::db_range) {
+    if (db < -VUMeterQt::db_range)
+    {
         factor = 0.0f;
-    } else if (db < -60.0f) {
+    }
+    else if (db < -60.0f)
+    {
         factor = (db + VUMeterQt::db_range) * 2.5f/(VUMeterQt::db_range-60);
-    } else if (db < -50.0f) {
+    }
+    else if (db < -50.0f)
+    {
         factor = (db + 60.0f) * 0.5f + 2.5f;
-    } else if (db < -40.0f) {
+    }
+    else if (db < -40.0f)
+    {
         factor = (db + 50.0f) * 0.75f + 7.5f;
-    } else if (db < -30.0f) {
+    }
+    else if (db < -30.0f)
+    {
         factor = (db + 40.0f) * 1.5f + 15.0f;
-    } else if (db < -20.0f) {
+    }
+    else if (db < -20.0f)
+    {
         factor = (db + 30.0f) * 2.0f + 30.0f;
-    } else if (db < 0.0f) {
+    }
+    else if (db < 0.0f)
+    {
         factor = (db + 20.0f) * 2.5f + 50.0f;
-    } else {
+    }
+    else
+    {
         factor = 100.0f;
     }
 
@@ -148,14 +165,16 @@ void VUMeterQt::render_multi_pcm (const float * pcm, int channels)
         }
 
         qint64 elapsed_peak_time = last_peak_times[i].elapsed();
-        if (channels_db_level[i] > channels_peaks[i] || elapsed_peak_time > peak_hold_time) {
+        if (channels_db_level[i] > channels_peaks[i] || elapsed_peak_time > peak_hold_time)
+        {
             channels_peaks[i] = channels_db_level[i];
             last_peak_times[i].restart();
         }
 
     }
 
-    if (spect_widget) {
+    if (spect_widget)
+    {
         spect_widget->update();
     }
 }
@@ -163,7 +182,8 @@ void VUMeterQt::render_multi_pcm (const float * pcm, int channels)
 bool VUMeterQt::init ()
 {
     render_timer.start();
-    for (int i = 0; i < VUMeterQt::max_channels; i++) {
+    for (int i = 0; i < VUMeterQt::max_channels; i++)
+    {
         last_peak_times[i].start();
         channels_db_level[i] = -VUMeterQt::db_range;
         channels_peaks[i] = -VUMeterQt::db_range;
@@ -176,13 +196,15 @@ bool VUMeterQt::init ()
 void VUMeterQt::clear ()
 {
     render_timer.restart();
-    for (int i = 0; i < VUMeterQt::max_channels; i++) {
+    for (int i = 0; i < VUMeterQt::max_channels; i++)
+    {
         last_peak_times[i].restart();
         channels_db_level[i] = -VUMeterQt::db_range;
         channels_peaks[i] = -VUMeterQt::db_range;
     }
 
-    if (spect_widget) {
+    if (spect_widget)
+    {
         spect_widget->update();
     }
 }
@@ -247,9 +269,12 @@ void VUMeterQtWidget::draw_vu_legend(QPainter & p)
 void VUMeterQtWidget::draw_vu_legend_line(QPainter &p, float db, float line_width_factor)
 {
     float y = get_y_from_db(db);
-    if (db > -VUMeterQt::db_range) {
+    if (db > -VUMeterQt::db_range)
+    {
         y += (legend_line_width / 2.0f);
-    } else {
+    }
+    else
+    {
         y -= (legend_line_width / 2.0f);
     }
     float line_width = fclamp(legend_width * 0.25f, 1, 8);
@@ -353,14 +378,17 @@ float VUMeterQtWidget::get_bar_width(int channels)
 
 void VUMeterQtWidget::update_sizes()
 {
-    if (height() > 200 && width() > 60 && aud_get_bool("vumeter", "display_legend")) {
+    if (height() > 200 && width() > 60 && aud_get_bool("vumeter", "display_legend"))
+    {
         must_draw_vu_legend = true;
         vumeter_top_padding = height() * 0.03f;
         vumeter_bottom_padding = height() * 0.015f;
         vumeter_height = height() - vumeter_top_padding - vumeter_bottom_padding;
         legend_width = width() * 0.3f;
         vumeter_width = width() - (legend_width * 2);
-    } else {
+    }
+    else
+    {
         must_draw_vu_legend = false;
         vumeter_top_padding = 0;
         vumeter_bottom_padding = 0;
@@ -404,7 +432,8 @@ void VUMeterQtWidget::paintEvent (QPaintEvent * event)
     QPainter p(this);
 
     draw_background(p);
-    if (must_draw_vu_legend) {
+    if (must_draw_vu_legend)
+    {
         draw_vu_legend(p);
         draw_visualizer_peaks(p);
     }
@@ -413,7 +442,8 @@ void VUMeterQtWidget::paintEvent (QPaintEvent * event)
 
 void * VUMeterQt::get_qt_widget ()
 {
-    if (spect_widget) {
+    if (spect_widget)
+    {
         return spect_widget;
     }
 
@@ -423,7 +453,8 @@ void * VUMeterQt::get_qt_widget ()
 
 void VUMeterQt::toggle_display_legend()
 {
-    if (spect_widget) {
+    if (spect_widget)
+    {
         spect_widget->toggle_display_legend();
     }
 }
