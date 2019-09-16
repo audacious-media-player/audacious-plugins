@@ -25,6 +25,7 @@
 #include <libaudcore/runtime.h>
 #include <stdio.h>
 #include <string.h>
+#include <QString>
 
 #include "utils.h"
 #include "vumeter_qt_widget.h"
@@ -287,10 +288,9 @@ void VUMeterQtWidget::draw_visualizer_peaks(QPainter &p)
     p.setPen(pen);
 
     QFontMetricsF fm(p.font());
-    char text[10];
     for (int i = 0; i < nchannels; i++)
     {
-        format_db(text, channels_peaks[i]);
+        QString text = format_db(channels_peaks[i]);
         QSizeF text_size = fm.size(0, text);
         p.drawText(QPointF(legend_width + bar_width*(i+0.5f) - text_size.width()/2.0f,
             vumeter_top_padding/2.0f + (text_size.height()/4.0f)), text
@@ -331,18 +331,18 @@ void VUMeterQtWidget::draw_visualizer(QPainter & p)
     }
 }
 
-void VUMeterQtWidget::format_db(char *buf, const float val) {
+QString VUMeterQtWidget::format_db(const float val) {
     if (val > -10)
     {
-        sprintf(buf, "%+.1f", val);
+        return QString::number(val, 'f', 1);
     }
     else if (val > -VUMeterQt::db_range)
     {
-        sprintf(buf, "%.0f ", val);
+        return QString::number(val, 'f', 0);
     }
     else
     {
-        sprintf(buf, "-inf");
+        return QString("-inf");
     }
 }
 

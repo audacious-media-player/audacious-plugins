@@ -25,6 +25,7 @@
 #include <QPainter>
 #include <QLinearGradient>
 #include <QColor>
+#include <QString>
 
 class VUMeterQtWidget : public QWidget
 {
@@ -55,7 +56,7 @@ private:
     void draw_vu_legend_line(QPainter &p, float db, float line_width_factor = 1.0f);
     void draw_visualizer_peaks(QPainter &p);
     void update_sizes();
-    void format_db(char *buf, const float val);
+    QString format_db(const float val);
     float get_db_factor(float db);
 
 public:
