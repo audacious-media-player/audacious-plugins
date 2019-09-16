@@ -375,8 +375,6 @@ void VUMeterQtWidget::update_sizes()
 VUMeterQtWidget::VUMeterQtWidget (QWidget * parent) : QWidget (parent)
 {
     update_sizes();
-
-    setObjectName ("VUMeterQtWidget");
 }
 
 QLinearGradient VUMeterQtWidget::get_vumeter_pattern(int alpha)
