@@ -300,9 +300,7 @@ void MPRIS2Plugin::cleanup ()
 
 bool MPRIS2Plugin::init ()
 {
-#if ! GLIB_CHECK_VERSION (2, 36, 0)
     g_type_init ();
-#endif
 
     GError * error = nullptr;
     GDBusConnection * bus = g_bus_get_sync (G_BUS_TYPE_SESSION, nullptr, & error);
