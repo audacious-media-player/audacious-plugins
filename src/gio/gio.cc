@@ -202,9 +202,7 @@ FAILED:
 
 VFSImpl * GIOTransport::fopen (const char * filename, const char * mode, String & error)
 {
-#if ! GLIB_CHECK_VERSION (2, 36, 0)
     g_type_init ();
-#endif
 
     try { return new GIOFile (filename, mode); }
     catch (GIOFile::OpenError & ex)
