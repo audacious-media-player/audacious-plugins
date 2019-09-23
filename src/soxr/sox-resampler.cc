@@ -29,7 +29,7 @@
 #include <libaudcore/preferences.h>
 
 #define MIN_RATE 8000
-#define MAX_RATE 192000
+#define MAX_RATE 384000
 #define RATE_STEP 50
 
 class SoXResampler : public EffectPlugin
