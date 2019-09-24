@@ -65,7 +65,7 @@ private:
 	QString format_db(const float val);
 	float get_db_factor(float db);
 
-private slots:
+public slots:
 	void redraw_timer_expired();
 
 public:
