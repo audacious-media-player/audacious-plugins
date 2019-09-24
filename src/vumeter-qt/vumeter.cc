@@ -25,6 +25,7 @@
 #include <libaudcore/runtime.h>
 #include <stdio.h>
 #include <string.h>
+#include <QtGlobal>
 #include <QString>
 #include <QElapsedTimer>
 
