@@ -157,11 +157,9 @@ static void get_lyrics_step_1 ()
     StringBuf title_buf = str_encode_percent (state.title);
     StringBuf artist_buf = str_encode_percent (state.artist);
 
-    state.uri = String (str_printf ("firefox https://search.yahoo.co.jp/search?p=%s+%s+歌詞&ei=UTF-8", (const char *) artist_buf,
+    state.uri = String (str_printf ("x-www-browser https://search.yahoo.co.jp/search?p=%s+%s+歌詞&ei=UTF-8", (const char *) artist_buf,
      (const char *) title_buf));
     system(state.uri);
-    //update_lyrics_window (state.title, state.artist, _("Connecting to lyrics.fandom.com ..."), false);
-    //vfs_async_file_get_contents (state.uri, get_lyrics_step_2, nullptr);
 }
 
 static GtkTextView * textview;
