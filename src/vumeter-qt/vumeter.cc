@@ -159,6 +159,11 @@ void VUMeterQt::render_multi_pcm (const float * pcm, int channels)
 		if (db > channels_db_level[i])
 		{
 			channels_db_level[i] = db;
+		}
+
+		if (db > channels_peaks[i])
+		{
+			channels_peaks[i] = db;
 			last_peak_times[i].start();
 		}
 	}
