@@ -26,6 +26,9 @@
 #include <QLinearGradient>
 #include <QColor>
 #include <QString>
+#include <QTimer>
+#include <QElapsedTimer>
+#include "vumeter_qt.h"
 
 class VUMeterQtWidget : public QWidget
 {
@@ -35,6 +38,7 @@ private:
 	static const QColor text_color;
 	static const QColor db_line_color;
 	static const float legend_line_width;
+	static const int redraw_interval;
 
 	QLinearGradient vumeter_pattern;
 	QLinearGradient background_vumeter_pattern;
@@ -44,6 +48,8 @@ private:
 	float vumeter_top_padding;
 	float vumeter_bottom_padding;
 	bool must_draw_vu_legend;
+	QTimer *redraw_timer;
+	QElapsedTimer redraw_elapsed_timer;
 
 	void draw_background (QPainter &p);
 	void draw_visualizer (QPainter &p);
@@ -58,6 +64,7 @@ private:
 	void update_sizes();
 	QString format_db(const float val);
 	float get_db_factor(float db);
+	void redraw_timer_expired();
 
 public:
 	VUMeterQtWidget (QWidget * parent = nullptr);

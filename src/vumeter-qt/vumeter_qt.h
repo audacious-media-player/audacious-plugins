@@ -24,7 +24,6 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/visualizer.h>
-#include <QElapsedTimer>
 
 class VUMeterQt : public VisPlugin
 {
@@ -54,12 +53,7 @@ public:
 	void clear ();
 	void render_multi_pcm (const float * pcm, int channels);
 	static void toggle_display_legend();
-
-private:
-	QElapsedTimer last_peak_times[max_channels]; // Time elapsed since peak was set
-	QElapsedTimer render_timer;
-
-	float get_db_on_range(float db);
+	static float get_db_on_range(float db);
 
 };
 

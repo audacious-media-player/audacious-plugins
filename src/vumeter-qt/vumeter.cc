@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <QString>
+#include <QElapsedTimer>
 
 #include "utils.h"
 #include "vumeter_qt_widget.h"
@@ -67,11 +68,13 @@ const QColor VUMeterQtWidget::backgroundColor = QColor(16, 16, 16, 255);
 const QColor VUMeterQtWidget::text_color = QColor(255, 255, 255);
 const QColor VUMeterQtWidget::db_line_color = QColor(120, 120, 120);
 const float VUMeterQtWidget::legend_line_width = 1.0f;
+const int VUMeterQtWidget::redraw_interval = 25; // ms
 
 static VUMeterQtWidget * spect_widget = nullptr;
 static int nchannels = 2;
 static float channels_db_level[VUMeterQt::max_channels];
 static float channels_peaks[VUMeterQt::max_channels];
+static QElapsedTimer last_peak_times[VUMeterQt::max_channels]; // Time elapsed since peak was set
 
 float VUMeterQt::get_db_on_range(float db)
 {
@@ -130,10 +133,7 @@ float VUMeterQtWidget::get_y_from_db(float db)
 
 void VUMeterQt::render_multi_pcm (const float * pcm, int channels)
 {
-	qint64 elapsed_render_time = render_timer.restart();
 	nchannels = fclamp(channels, 0, VUMeterQt::max_channels);
-	float falloff = aud_get_double ("vumeter", "falloff") / 1000.0;
-	qint64 peak_hold_time = aud_get_double ("vumeter", "peak_hold_time") * 1000;
 
 	float peaks[channels];
 	for (int channel = 0; channel < channels; channel++)
@@ -156,31 +156,38 @@ void VUMeterQt::render_multi_pcm (const float * pcm, int channels)
 		float db = 20 * log10f(n);
 		db = get_db_on_range(db);
 
-		channels_db_level[i] = get_db_on_range(channels_db_level[i] - elapsed_render_time * falloff);
-
 		if (db > channels_db_level[i])
 		{
 			channels_db_level[i] = db;
+			last_peak_times[i].start();
 		}
+	}
+}
+
+void VUMeterQtWidget::redraw_timer_expired()
+{
+	qint64 elapsed_render_time = redraw_elapsed_timer.restart();
+	float falloff = aud_get_double ("vumeter", "falloff") / 1000.0;
+	qint64 peak_hold_time = aud_get_double ("vumeter", "peak_hold_time") * 1000;
+
+	for (int i = 0; i < nchannels; i++)
+	{
+		float decay_amount = elapsed_render_time * falloff;
+		channels_db_level[i] = VUMeterQt::get_db_on_range(channels_db_level[i] - decay_amount);
 
 		qint64 elapsed_peak_time = last_peak_times[i].elapsed();
 		if (channels_db_level[i] > channels_peaks[i] || elapsed_peak_time > peak_hold_time)
 		{
 			channels_peaks[i] = channels_db_level[i];
-			last_peak_times[i].restart();
+			last_peak_times[i].start();
 		}
-
 	}
 
-	if (spect_widget)
-	{
-		spect_widget->update();
-	}
+	update();
 }
 
-bool VUMeterQt::init ()
+bool VUMeterQt::init()
 {
-	render_timer.start();
 	for (int i = 0; i < VUMeterQt::max_channels; i++)
 	{
 		last_peak_times[i].start();
@@ -192,12 +199,11 @@ bool VUMeterQt::init ()
 	return true;
 }
 
-void VUMeterQt::clear ()
+void VUMeterQt::clear()
 {
-	render_timer.restart();
 	for (int i = 0; i < VUMeterQt::max_channels; i++)
 	{
-		last_peak_times[i].restart();
+		last_peak_times[i].start();
 		channels_db_level[i] = -VUMeterQt::db_range;
 		channels_peaks[i] = -VUMeterQt::db_range;
 	}
@@ -403,8 +409,13 @@ void VUMeterQtWidget::update_sizes()
 	background_vumeter_pattern = get_vumeter_pattern(30);
 }
 
-VUMeterQtWidget::VUMeterQtWidget (QWidget * parent) : QWidget (parent)
+VUMeterQtWidget::VUMeterQtWidget (QWidget * parent)
+	: QWidget (parent),
+	redraw_timer(new QTimer(this))
 {
+	connect(redraw_timer, &QTimer::timeout, this, QOverload<>::of(&VUMeterQtWidget::redraw_timer_expired));
+	redraw_timer->start(redraw_interval);
+	redraw_elapsed_timer.start();
 	update_sizes();
 }
 
@@ -420,7 +431,7 @@ QLinearGradient VUMeterQtWidget::get_vumeter_pattern(int alpha)
 	return vumeter_pattern;
 }
 
-VUMeterQtWidget::~VUMeterQtWidget ()
+VUMeterQtWidget::~VUMeterQtWidget()
 {
 	spect_widget = nullptr;
 }
@@ -443,7 +454,7 @@ void VUMeterQtWidget::paintEvent (QPaintEvent * event)
 	draw_visualizer(p);
 }
 
-void * VUMeterQt::get_qt_widget ()
+void * VUMeterQt::get_qt_widget()
 {
 	if (spect_widget)
 	{
