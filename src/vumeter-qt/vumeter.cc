@@ -25,7 +25,6 @@
 #include <libaudcore/runtime.h>
 #include <stdio.h>
 #include <string.h>
-#include <QtGlobal>
 #include <QString>
 #include <QElapsedTimer>
 
@@ -419,7 +418,7 @@ VUMeterQtWidget::VUMeterQtWidget (QWidget * parent)
 	: QWidget (parent),
 	redraw_timer(new QTimer(this))
 {
-	connect(redraw_timer, &QTimer::timeout, this, QOverload<>::of(&VUMeterQtWidget::redraw_timer_expired));
+	connect(redraw_timer, &QTimer::timeout, this, &VUMeterQtWidget::redraw_timer_expired);
 	redraw_timer->start(redraw_interval);
 	redraw_elapsed_timer.start();
 	update_sizes();
