@@ -204,7 +204,7 @@ static void lw_cleanup (QObject * object = nullptr)
 
 void * Lyric_japanQt::get_qt_widget ()
 {
-    textedit = new TextEdit;
+    textedit = new QTextEdit;
     textedit->setReadOnly (true);
 
 #ifdef Q_OS_MAC  // Mac-specific font tweaks
