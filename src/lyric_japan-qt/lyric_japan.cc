@@ -153,14 +153,10 @@ give_up:
     return ret;
 }
 
-static void update_lyrics_window (const char * title, const char * artist,
- const char * lyrics, bool edit_enabled);
-
 static void get_lyrics_step_1 ()
 {
     if (! state.artist || ! state.title)
     {
-        update_lyrics_window (_("Error"), nullptr, _("Missing song metadata"), false);
         return;
     }
 

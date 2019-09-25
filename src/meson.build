@@ -76,6 +76,7 @@ if get_option('qt')
 
   subdir('albumart-qt')
   subdir('lyricwiki-qt')
+  subdir('lyric_japan-qt')
   subdir('playlist-manager-qt')
   subdir('search-tool-qt')
   subdir('song-info-qt')
