@@ -41,6 +41,7 @@ private:
     bool m_inUpdate = false;
     int m_lastCol = -1;
 
+    void sectionClicked (int logicalIndex);
     void sectionMoved (int logicalIndex, int oldVisualIndex, int newVisualIndex);
     void sectionResized (int logicalIndex, int /*oldSize*/, int newSize);
 
