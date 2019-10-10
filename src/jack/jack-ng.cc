@@ -106,12 +106,15 @@ EXPORT JACKOutput aud_plugin_instance (s_buffer);
 
 const char * const JACKOutput::defaults[] = {
     "auto_connect", "TRUE",
+    "client_name", "audacious",
     "volume_left", "100",
     "volume_right", "100",
     nullptr
 };
 
 const PreferencesWidget JACKOutput::widgets[] = {
+    WidgetEntry (N_("Client name:"),
+        WidgetString ("jack", "client_name")),
     WidgetCheck (N_("Automatically connect to output ports"),
         WidgetBool ("jack", "auto_connect"))
 };
@@ -200,7 +203,7 @@ bool JACKOutput::open_audio (int format, int rate, int channels, String & error)
 
     jack_set_error_function (error_cb);
 
-    if (! (m_client = jack_client_open ("audacious", JackNoStartServer, nullptr)))
+    if (! (m_client = jack_client_open (aud_get_str ("jack", "client_name"), JackNoStartServer, nullptr)))
     {
         error = String (_("Failed to connect to the JACK server; is it running?"));
         goto fail;
