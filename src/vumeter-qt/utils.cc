@@ -23,5 +23,5 @@
 
 float fclamp(float x, float low, float high)
 {
-	return fminf(fmaxf(x, low), high);
+    return fminf(fmaxf(x, low), high);
 }

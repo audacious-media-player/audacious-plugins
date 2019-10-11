@@ -34,48 +34,48 @@ class VUMeterQtWidget : public QWidget
 {
 
 private:
-	static const QColor backgroundColor;
-	static const QColor text_color;
-	static const QColor db_line_color;
-	static const float legend_line_width;
-	static const int redraw_interval;
+    static const QColor backgroundColor;
+    static const QColor text_color;
+    static const QColor db_line_color;
+    static const float legend_line_width;
+    static const int redraw_interval;
 
-	QLinearGradient vumeter_pattern;
-	QLinearGradient background_vumeter_pattern;
-	float legend_width;
-	float vumeter_height;
-	float vumeter_width;
-	float vumeter_top_padding;
-	float vumeter_bottom_padding;
-	bool must_draw_vu_legend;
-	QTimer *redraw_timer;
-	QElapsedTimer redraw_elapsed_timer;
+    QLinearGradient vumeter_pattern;
+    QLinearGradient background_vumeter_pattern;
+    float legend_width;
+    float vumeter_height;
+    float vumeter_width;
+    float vumeter_top_padding;
+    float vumeter_bottom_padding;
+    bool must_draw_vu_legend;
+    QTimer *redraw_timer;
+    QElapsedTimer redraw_elapsed_timer;
 
-	void draw_background (QPainter &p);
-	void draw_visualizer (QPainter &p);
-	void draw_vu_legend(QPainter &p);
-	float get_height_from_db(float db);
-	float get_y_from_db(float db);
-	QLinearGradient get_vumeter_pattern(int alpha = 255);
-	float get_bar_width(int channels);
-	void draw_vu_legend_db(QPainter &p, float db, const char *text);
-	void draw_vu_legend_line(QPainter &p, float db, float line_width_factor = 1.0f);
-	void draw_visualizer_peaks(QPainter &p);
-	void update_sizes();
-	QString format_db(const float val);
-	float get_db_factor(float db);
+    void draw_background (QPainter &p);
+    void draw_visualizer (QPainter &p);
+    void draw_vu_legend(QPainter &p);
+    float get_height_from_db(float db);
+    float get_y_from_db(float db);
+    QLinearGradient get_vumeter_pattern(int alpha = 255);
+    float get_bar_width(int channels);
+    void draw_vu_legend_db(QPainter &p, float db, const char *text);
+    void draw_vu_legend_line(QPainter &p, float db, float line_width_factor = 1.0f);
+    void draw_visualizer_peaks(QPainter &p);
+    void update_sizes();
+    QString format_db(const float val);
+    float get_db_factor(float db);
 
 public slots:
-	void redraw_timer_expired();
+    void redraw_timer_expired();
 
 public:
-	VUMeterQtWidget (QWidget * parent = nullptr);
-	~VUMeterQtWidget ();
-	void toggle_display_legend();
+    VUMeterQtWidget (QWidget * parent = nullptr);
+    ~VUMeterQtWidget ();
+    void toggle_display_legend();
 
 protected:
-	void resizeEvent (QResizeEvent *);
-	void paintEvent (QPaintEvent *);
+    void resizeEvent (QResizeEvent *);
+    void paintEvent (QPaintEvent *);
 
 };
 
