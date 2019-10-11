@@ -42,6 +42,7 @@ static_assert(std::is_same<jack_default_audio_sample_t, float>::value,
 class JACKOutput : public OutputPlugin
 {
 public:
+    static const char client_name_default[];
     static const char * const defaults[];
     static const PreferencesWidget widgets[];
     static const PluginPreferences prefs;
@@ -104,14 +105,19 @@ static RingBuf<float> s_buffer;
 
 EXPORT JACKOutput aud_plugin_instance (s_buffer);
 
+const char JACKOutput::client_name_default[] = "audacious";
+
 const char * const JACKOutput::defaults[] = {
     "auto_connect", "TRUE",
+    "client_name", JACKOutput::client_name_default,
     "volume_left", "100",
     "volume_right", "100",
     nullptr
 };
 
 const PreferencesWidget JACKOutput::widgets[] = {
+    WidgetEntry (N_("Client name:"),
+        WidgetString ("jack", "client_name")),
     WidgetCheck (N_("Automatically connect to output ports"),
         WidgetBool ("jack", "auto_connect"))
 };
@@ -200,7 +206,9 @@ bool JACKOutput::open_audio (int format, int rate, int channels, String & error)
 
     jack_set_error_function (error_cb);
 
-    if (! (m_client = jack_client_open ("audacious", JackNoStartServer, nullptr)))
+    StringBuf client_name = str_copy (aud_get_str ("jack", "client_name"), jack_client_name_size () - 1);
+
+    if (! (m_client = jack_client_open (client_name[0] ? client_name : JACKOutput::client_name_default, JackNoStartServer, nullptr)))
     {
         error = String (_("Failed to connect to the JACK server; is it running?"));
         goto fail;
