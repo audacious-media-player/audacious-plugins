@@ -18,54 +18,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "vumeter_qt.h"
 #include "vumeter_qt_widget.h"
 
 #include <math.h>
-#include <QPointer>
-#include <libaudcore/i18n.h>
-#include <libaudcore/interface.h>
 #include <libaudcore/runtime.h>
-
-EXPORT VUMeterQt aud_plugin_instance;
-
-const char VUMeterQt::about[] =
-    N_("VU Meter Plugin for Audacious\n"
-        "Copyright 2017-2019 Marc Sánchez Fauste");
-
-const PreferencesWidget VUMeterQt::widgets[] = {
-    WidgetLabel (N_("<b>VU Meter Settings</b>")),
-    WidgetSpin (
-        N_("Peak hold time:"),
-        WidgetFloat ("vumeter", "peak_hold_time"),
-        {0.1, 30, 0.1, N_("seconds")}
-    ),
-    WidgetSpin (
-        N_("Fall-off time:"),
-        WidgetFloat ("vumeter", "falloff"),
-        {0.1, 96, 0.1, N_("dB/second")}
-    ),
-    WidgetCheck (N_("Display legend"),
-        WidgetBool ("vumeter", "display_legend", toggle_display_legend)
-    ),
-};
-
-const PluginPreferences VUMeterQt::prefs = {{widgets}};
-
-const char * const VUMeterQt::prefs_defaults[] = {
-    "peak_hold_time", "1.6",
-    "falloff", "13.3",
-    "display_legend", "TRUE",
-    nullptr
-};
 
 const QColor VUMeterQtWidget::backgroundColor = QColor(16, 16, 16, 255);
 const QColor VUMeterQtWidget::text_color = QColor(255, 255, 255);
 const QColor VUMeterQtWidget::db_line_color = QColor(120, 120, 120);
 const float VUMeterQtWidget::legend_line_width = 1.0f;
 const int VUMeterQtWidget::redraw_interval = 25; // ms
-
-static QPointer<VUMeterQtWidget> spect_widget;
 
 float VUMeterQtWidget::get_db_on_range(float db)
 {
@@ -189,29 +151,6 @@ void VUMeterQtWidget::reset()
         last_peak_times[i].start();
         channels_db_level[i] = -db_range;
         channels_peaks[i] = -db_range;
-    }
-}
-
-bool VUMeterQt::init()
-{
-    aud_config_set_defaults ("vumeter", prefs_defaults);
-    return true;
-}
-
-void VUMeterQt::render_multi_pcm(const float * pcm, int channels)
-{
-    if (spect_widget)
-    {
-        spect_widget->render_multi_pcm(pcm, channels);
-    }
-}
-
-void VUMeterQt::clear()
-{
-    if (spect_widget)
-    {
-        spect_widget->reset();
-        spect_widget->update();
     }
 }
 
@@ -450,25 +389,6 @@ void VUMeterQtWidget::paintEvent (QPaintEvent *)
         draw_visualizer_peaks(p);
     }
     draw_visualizer(p);
-}
-
-void * VUMeterQt::get_qt_widget()
-{
-    if (spect_widget)
-    {
-        return spect_widget;
-    }
-
-    spect_widget = new VUMeterQtWidget;
-    return spect_widget;
-}
-
-void VUMeterQt::toggle_display_legend()
-{
-    if (spect_widget)
-    {
-        spect_widget->toggle_display_legend();
-    }
 }
 
 void VUMeterQtWidget::toggle_display_legend()
