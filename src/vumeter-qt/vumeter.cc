@@ -18,18 +18,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <math.h>
+#include "vumeter_qt.h"
+#include "vumeter_qt_widget.h"
 
+#include <math.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/runtime.h>
-#include <stdio.h>
-#include <string.h>
-#include <QString>
-#include <QElapsedTimer>
-
-#include "vumeter_qt_widget.h"
-#include "vumeter_qt.h"
 
 EXPORT VUMeterQt aud_plugin_instance;
 
@@ -369,7 +364,8 @@ void VUMeterQtWidget::draw_visualizer(QPainter & p)
     }
 }
 
-QString VUMeterQtWidget::format_db(const float val) {
+QString VUMeterQtWidget::format_db(const float val)
+{
     if (val > -10)
     {
         return QString::number(val, 'f', 1);
@@ -440,12 +436,12 @@ VUMeterQtWidget::~VUMeterQtWidget()
     spect_widget = nullptr;
 }
 
-void VUMeterQtWidget::resizeEvent (QResizeEvent * event)
+void VUMeterQtWidget::resizeEvent (QResizeEvent *)
 {
     update_sizes();
 }
 
-void VUMeterQtWidget::paintEvent (QPaintEvent * event)
+void VUMeterQtWidget::paintEvent (QPaintEvent *)
 {
     QPainter p(this);
 

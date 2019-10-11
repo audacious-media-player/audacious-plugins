@@ -28,11 +28,9 @@
 #include <QString>
 #include <QTimer>
 #include <QElapsedTimer>
-#include "vumeter_qt.h"
 
 class VUMeterQtWidget : public QWidget
 {
-
 private:
     static const QColor backgroundColor;
     static const QColor text_color;
@@ -76,7 +74,6 @@ public:
 protected:
     void resizeEvent (QResizeEvent *);
     void paintEvent (QPaintEvent *);
-
 };
 
 #endif

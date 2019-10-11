@@ -21,13 +21,12 @@
 #ifndef __VUMETER_QT_H
 #define __VUMETER_QT_H
 
+#include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
-#include <libaudcore/visualizer.h>
 
 class VUMeterQt : public VisPlugin
 {
-
 public:
     static const int max_channels = 20;
     static const int db_range = 96;
@@ -47,14 +46,13 @@ public:
     constexpr VUMeterQt () : VisPlugin (info, Visualizer::MultiPCM) {}
 
     bool init ();
-
     void * get_qt_widget ();
 
     void clear ();
     void render_multi_pcm (const float * pcm, int channels);
+
     static void toggle_display_legend();
     static float get_db_on_range(float db);
-
 };
 
 #endif
