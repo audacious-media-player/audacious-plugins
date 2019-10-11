@@ -28,7 +28,6 @@
 #include <QString>
 #include <QElapsedTimer>
 
-#include "utils.h"
 #include "vumeter_qt_widget.h"
 #include "vumeter_qt.h"
 
@@ -78,7 +77,7 @@ static QElapsedTimer last_peak_times[VUMeterQt::max_channels]; // Time elapsed s
 
 float VUMeterQt::get_db_on_range(float db)
 {
-    return fclamp(db, -VUMeterQt::db_range, 0);
+    return aud::clamp<float>(db, -VUMeterQt::db_range, 0);
 }
 
 float VUMeterQtWidget::get_db_factor(float db)
@@ -133,7 +132,7 @@ float VUMeterQtWidget::get_y_from_db(float db)
 
 void VUMeterQt::render_multi_pcm (const float * pcm, int channels)
 {
-    nchannels = fclamp(channels, 0, VUMeterQt::max_channels);
+    nchannels = aud::clamp(channels, 0, VUMeterQt::max_channels);
 
     float peaks[channels];
     for (int channel = 0; channel < channels; channel++)
@@ -287,7 +286,7 @@ void VUMeterQtWidget::draw_vu_legend_line(QPainter &p, float db, float line_widt
     {
         y -= (legend_line_width / 2.0f);
     }
-    float line_width = fclamp(legend_width * 0.25f, 1, 8);
+    float line_width = aud::clamp<float>(legend_width * 0.25f, 1, 8);
     p.drawLine(
         QPointF(legend_width - line_width * line_width_factor - (legend_line_width / 2.0f), y),
         QPointF(legend_width - (legend_line_width / 2.0f), y)
@@ -303,7 +302,7 @@ void VUMeterQtWidget::draw_vu_legend_db(QPainter &p, float db, const char *text)
     QFontMetricsF fm(p.font());
     QSizeF text_size = fm.size(0, text);
     float y = get_y_from_db(db);
-    float padding = fclamp(legend_width * 0.25f, 1, 8) * 1.5f;
+    float padding = aud::clamp<float>(legend_width * 0.25f, 1, 8) * 1.5f;
     p.drawText(QPointF(legend_width - text_size.width() - padding, y + (text_size.height()/4.0f)), text);
     p.drawText(QPointF(width() - legend_width + padding, y + (text_size.height()/4.0f)), text);
 }
