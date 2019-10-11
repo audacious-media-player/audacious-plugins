@@ -77,7 +77,6 @@ public slots:
 
 public:
     VUMeterQtWidget (QWidget * parent = nullptr);
-    ~VUMeterQtWidget ();
 
     void reset ();
     void render_multi_pcm (const float * pcm, int channels);

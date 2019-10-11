@@ -22,6 +22,7 @@
 #include "vumeter_qt_widget.h"
 
 #include <math.h>
+#include <QPointer>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/runtime.h>
@@ -64,7 +65,7 @@ const QColor VUMeterQtWidget::db_line_color = QColor(120, 120, 120);
 const float VUMeterQtWidget::legend_line_width = 1.0f;
 const int VUMeterQtWidget::redraw_interval = 25; // ms
 
-static VUMeterQtWidget * spect_widget = nullptr;
+static QPointer<VUMeterQtWidget> spect_widget;
 
 float VUMeterQtWidget::get_db_on_range(float db)
 {
@@ -431,11 +432,6 @@ QLinearGradient VUMeterQtWidget::get_vumeter_pattern(int alpha)
     vumeter_pattern.setColorAt(get_db_factor(-9), QColor(210, 210, 15, alpha));
     vumeter_pattern.setColorAt(get_db_factor(-50), QColor(0, 190, 20, alpha));
     return vumeter_pattern;
-}
-
-VUMeterQtWidget::~VUMeterQtWidget()
-{
-    spect_widget = nullptr;
 }
 
 void VUMeterQtWidget::resizeEvent (QResizeEvent *)
