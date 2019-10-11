@@ -32,12 +32,19 @@
 class VUMeterQtWidget : public QWidget
 {
 private:
+    static constexpr int max_channels = 20;
+    static constexpr int db_range = 96;
+
     static const QColor backgroundColor;
     static const QColor text_color;
     static const QColor db_line_color;
     static const float legend_line_width;
     static const int redraw_interval;
 
+    int nchannels = 2;
+    float channels_db_level[max_channels];
+    float channels_peaks[max_channels];
+    QElapsedTimer last_peak_times[max_channels]; // Time elapsed since peak was set
     QLinearGradient vumeter_pattern;
     QLinearGradient background_vumeter_pattern;
     float legend_width;
@@ -60,8 +67,10 @@ private:
     void draw_vu_legend_line(QPainter &p, float db, float line_width_factor = 1.0f);
     void draw_visualizer_peaks(QPainter &p);
     void update_sizes();
-    QString format_db(const float val);
-    float get_db_factor(float db);
+
+    static QString format_db(const float val);
+    static float get_db_on_range(float db);
+    static float get_db_factor(float db);
 
 public slots:
     void redraw_timer_expired();
@@ -69,6 +78,9 @@ public slots:
 public:
     VUMeterQtWidget (QWidget * parent = nullptr);
     ~VUMeterQtWidget ();
+
+    void reset ();
+    void render_multi_pcm (const float * pcm, int channels);
     void toggle_display_legend();
 
 protected:

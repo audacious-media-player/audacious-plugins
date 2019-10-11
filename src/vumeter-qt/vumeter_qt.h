@@ -28,8 +28,6 @@
 class VUMeterQt : public VisPlugin
 {
 public:
-    static const int max_channels = 20;
-    static const int db_range = 96;
     static const char about[];
     static const PreferencesWidget widgets[];
     static const PluginPreferences prefs;
@@ -52,7 +50,6 @@ public:
     void render_multi_pcm (const float * pcm, int channels);
 
     static void toggle_display_legend();
-    static float get_db_on_range(float db);
 };
 
 #endif
