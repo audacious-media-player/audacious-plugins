@@ -825,6 +825,7 @@ if test "x$USE_QT" = "xyes" ; then
     echo "  Song Info:                              yes"
     echo "  Spectrum Analyzer (2D):                 yes"
     echo "  Status Icon:                            yes"
+    echo "  VU Meter:                               yes"
     echo
 fi
 
