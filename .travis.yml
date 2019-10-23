@@ -19,12 +19,12 @@ install:
   - git clone git://github.com/audacious-media-player/audacious.git audacious
   - cd audacious
   - ./autogen.sh
-  - ./configure --prefix=/opt/aud --enable-qt
+  - ./configure --prefix=/opt/aud --enable-gtk
   - make
   - sudo make install
   - cd ..
 script:
   - export PKG_CONFIG_PATH=/opt/aud/lib/pkgconfig
   - ./autogen.sh
-  - ./configure --prefix=/opt/aud --enable-qt
+  - ./configure --prefix=/opt/aud --enable-gtk
   - make
