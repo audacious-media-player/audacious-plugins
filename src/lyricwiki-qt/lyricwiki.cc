@@ -106,6 +106,7 @@ public:
     bool match (LyricsState state);
     void fetch (LyricsState state);
     String edit_uri (LyricsState state) { return String (); }
+    void save (LyricsState state);
 
 private:
     String local_uri_for_entry (LyricsState state);
@@ -163,6 +164,20 @@ bool FileProvider::match (LyricsState state)
         fetch (state);
 
     return exists;
+}
+
+void FileProvider::save (LyricsState state)
+{
+    if (! state.lyrics)
+        return;
+
+    String path = local_uri_for_entry (state);
+    if (! path)
+        return;
+
+    AUDINFO("Saving lyrics to local file: '%s'\n", (const char *) path);
+
+    VFSFile::write_file (path, state.lyrics, strlen (state.lyrics));
 }
 
 // LyricWikiProvider provides a strategy for fetching lyrics from
@@ -352,6 +367,7 @@ give_up:
 
     LyricsState new_state;
 
+    new_state.filename = state.filename;
     new_state.artist = state.artist;
     new_state.title = state.title;
     new_state.lyrics = String (ret);
@@ -411,6 +427,9 @@ LyricsState LyricWikiProvider::scrape_match_api (const char * buf, int64_t len)
 
         xmlFreeDoc (doc);
     }
+
+    // FIXME: don't use g_state
+    result.filename = g_state.filename;
 
     return result;
 }
@@ -495,11 +514,29 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
 
     QMenu * menu = createStandardContextMenu ();
     menu->addSeparator ();
+
     QAction * edit = menu->addAction (_("Edit lyrics ..."));
     QObject::connect (edit, & QAction::triggered, [] () {
         QUrl url = QUrl ((const char *) lyricwiki_provider.edit_uri (g_state));
         QDesktopServices::openUrl (url);
     });
+
+    if (g_state.lyrics && g_state.source != LyricsState::Source::Local)
+    {
+        QAction * save = menu->addAction (_("Save Locally"));
+        QObject::connect (save, & QAction::triggered, [] () {
+            file_provider.save (g_state);
+        });
+    }
+
+    if (g_state.source == LyricsState::Source::Local)
+    {
+        QAction * refresh = menu->addAction (_("Refresh"));
+        QObject::connect (refresh, & QAction::triggered, [] () {
+            lyricwiki_provider.match (g_state);
+        });
+    }
+
     menu->exec (event->globalPos ());
     menu->deleteLater ();
 }
