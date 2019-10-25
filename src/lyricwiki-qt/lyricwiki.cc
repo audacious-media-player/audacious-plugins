@@ -444,5 +444,5 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
         QDesktopServices::openUrl (QUrl ((const char *) state.uri));
     });
     menu->exec (event->globalPos ());
-    delete menu;
+    menu->deleteLater ();
 }
