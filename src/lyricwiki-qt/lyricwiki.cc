@@ -303,8 +303,8 @@ static void get_lyrics_step_3 (const char * uri, const Index<char> & buf, void *
 
     if (! lyrics)
     {
-        update_lyrics_window (_("Error"), nullptr,
-         str_printf (_("Unable to parse %s"), uri));
+        update_lyrics_window (_("No Lyrics Found"), nullptr,
+         str_printf (_("Artist: %s\nTitle: %s"), (const char *) state.artist, (const char *) state.title));
         return;
     }
 
@@ -348,7 +348,7 @@ static void get_lyrics_step_1 ()
 {
     if (! state.artist || ! state.title)
     {
-        update_lyrics_window (_("Error"), nullptr, _("Missing song metadata"));
+        update_lyrics_window (_("Error"), nullptr, _("Missing title and/or artist."));
         return;
     }
 
