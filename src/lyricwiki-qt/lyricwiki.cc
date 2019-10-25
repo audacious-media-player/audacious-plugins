@@ -260,7 +260,7 @@ static String scrape_uri_from_lyricwiki_search_result (const char * buf, int64_t
                 {
                     // Convert normal lyrics link to edit page link
                     char * slash = strrchr (lyric, '/');
-                    if (slash && ! strstr (slash, "lyrics.wikia.com"))
+                    if (slash)
                         uri = String (str_printf ("https://lyrics.fandom.com/index.php?"
                          "action=edit&title=%s", slash + 1));
                     else
