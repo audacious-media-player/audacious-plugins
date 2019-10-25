@@ -49,6 +49,12 @@
 typedef struct {
     String filename; /* of song file */
     String title, artist;
+    String lyrics;
+
+    enum Source {
+        None,
+        LyricWiki
+    } source;
 } LyricsState;
 
 static LyricsState g_state;
@@ -101,7 +107,7 @@ public:
     String edit_uri (LyricsState state);
 
 private:
-    CharPtr scrape_edit_page(const char * buf, int64_t len);
+    LyricsState scrape_edit_page(LyricsState state, const char * buf, int64_t len);
     LyricsState scrape_match_api(const char * buf, int64_t len);
     String match_uri (LyricsState state);
 };
@@ -150,16 +156,17 @@ void LyricWikiProvider::fetch (LyricsState state)
             return;
         }
 
-        CharPtr lyrics = scrape_edit_page (buf.begin (), buf.len ());
+        LyricsState new_state = scrape_edit_page (state, buf.begin (), buf.len ());
 
-        if (! lyrics)
+        if (! new_state.lyrics)
         {
             update_lyrics_window (_("No Lyrics Found"), nullptr,
              str_printf (_("Artist: %s\nTitle: %s"), (const char *) state.artist, (const char *) state.title));
             return;
         }
 
-        update_lyrics_window (state.title, state.artist, lyrics);
+        update_lyrics_window (new_state.title, new_state.artist, new_state.lyrics);
+        g_state = new_state;
     };
 
     vfs_async_file_get_contents (uri, handle_edit_page, nullptr);
@@ -200,7 +207,7 @@ static void libxml_error_handler (void * ctx, const char * msg, ...)
 {
 }
 
-CharPtr LyricWikiProvider::scrape_edit_page (const char * buf, int64_t len)
+LyricsState LyricWikiProvider::scrape_edit_page (LyricsState state, const char * buf, int64_t len)
 {
     xmlDocPtr doc;
     CharPtr ret;
@@ -272,7 +279,14 @@ give_up:
         xmlFreeDoc (doc);
     }
 
-    return ret;
+    LyricsState new_state;
+
+    new_state.artist = state.artist;
+    new_state.title = state.title;
+    new_state.lyrics = String (ret);
+    new_state.source = LyricsState::Source::LyricWiki;
+
+    return new_state;
 }
 
 LyricsState LyricWikiProvider::scrape_match_api (const char * buf, int64_t len)
