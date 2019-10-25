@@ -147,7 +147,7 @@ void FileProvider::fetch (LyricsState state)
     state.lyrics = String (data.begin ());
     state.source = LyricsState::Source::Local;
 
-    update_lyrics_window (state.artist, state.title, state.lyrics);
+    update_lyrics_window (state.title, state.artist, state.lyrics);
     g_state = state;
 }
 
