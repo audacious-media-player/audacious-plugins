@@ -232,7 +232,7 @@ void LyricWikiProvider::fetch (LyricsState state)
 {
     String uri = edit_uri (state);
 
-    VFSConsumer handle_edit_page = [=] (const char *, const Index<char> & buf, void *) {
+    auto handle_edit_page = [=] (const char *, const Index<char> & buf) {
         if (! buf.len ())
         {
             update_lyrics_window (_("Error"), nullptr,
@@ -253,14 +253,14 @@ void LyricWikiProvider::fetch (LyricsState state)
         g_state = new_state;
     };
 
-    vfs_async_file_get_contents (uri, handle_edit_page, nullptr);
+    vfs_async_file_get_contents (uri, handle_edit_page);
 }
 
 bool LyricWikiProvider::match (LyricsState state)
 {
     String uri = match_uri (state);
 
-    VFSConsumer handle_match_api = [=] (const char *, const Index<char> & buf, void *) {
+    auto handle_match_api = [=] (const char *, const Index<char> & buf) {
         if (! buf.len ())
         {
             update_lyrics_window (_("Error"), nullptr,
@@ -279,7 +279,7 @@ bool LyricWikiProvider::match (LyricsState state)
         fetch (new_state);
     };
 
-    vfs_async_file_get_contents (uri, handle_match_api, nullptr);
+    vfs_async_file_get_contents (uri, handle_match_api);
     update_lyrics_window (state.title, state.artist, _("Looking for lyrics ..."));
 
     return true;
