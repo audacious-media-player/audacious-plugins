@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2014 William Pitcock <nenolod@dereferenced.org>
+ * Copyright (c) 2010, 2014, 2019 Ariadne Conill <ariadne@dereferenced.org>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -49,10 +49,9 @@
 typedef struct {
     String filename; /* of song file */
     String title, artist;
-    String uri; /* URI we are trying to retrieve */
 } LyricsState;
 
-static LyricsState state;
+static LyricsState g_state;
 
 class TextEdit : public QTextEdit
 {
@@ -80,13 +79,118 @@ public:
 
 EXPORT LyricWikiQt aud_plugin_instance;
 
+static void update_lyrics_window (const char * title, const char * artist, const char * lyrics);
+
 // LyricProvider encapsulates an entire strategy for fetching lyrics,
 // for example from LyricWiki or local storage.
 class LyricProvider {
 public:
-    virtual bool fetch(LyricsState state) = 0;
-    virtual String edit_uri(LyricsState state) = 0;
+    virtual void match (LyricsState state) = 0;
+    virtual void fetch (LyricsState state) = 0;
+    virtual String edit_uri (LyricsState state) = 0;
 };
+
+// LyricWikiProvider provides a strategy for fetching lyrics from
+// LyricWiki.
+class LyricWikiProvider : public LyricProvider {
+public:
+    LyricWikiProvider() {};
+
+    void match (LyricsState state);
+    void fetch (LyricsState state);
+    String edit_uri (LyricsState state);
+
+private:
+    CharPtr scrape_edit_page(const char * buf, int64_t len);
+    LyricsState scrape_match_api(const char * buf, int64_t len);
+    String match_uri (LyricsState state);
+};
+
+static LyricWikiProvider lyricwiki_provider;
+
+String LyricWikiProvider::edit_uri (LyricsState state)
+{
+    StringBuf title_buf, artist_buf;
+
+    title_buf = str_copy (state.title);
+    str_replace_char (title_buf, ' ', '_');
+    title_buf = str_encode_percent (title_buf, -1);
+
+    artist_buf = str_copy (state.artist);
+    str_replace_char (artist_buf, ' ', '_');
+    artist_buf = str_encode_percent (artist_buf, -1);
+
+    return String (str_printf ("https://lyrics.fandom.com/index.php?action=edit&title=%s:%s",
+     (const char *) artist_buf, (const char *) title_buf));
+}
+
+String LyricWikiProvider::match_uri (LyricsState state)
+{
+    StringBuf title_buf, artist_buf;
+
+    title_buf = str_copy (state.title);
+    title_buf = str_encode_percent (title_buf, -1);
+
+    artist_buf = str_copy (state.artist);
+    artist_buf = str_encode_percent (artist_buf, -1);
+
+    return String (str_printf ("https://lyrics.fandom.com/api.php?action=lyrics&artist=%s&title=%s&fmt=xml",
+     (const char *) artist_buf, (const char *) title_buf));
+}
+
+void LyricWikiProvider::fetch (LyricsState state)
+{
+    String uri = edit_uri (state);
+
+    VFSConsumer handle_edit_page = [=] (const char *, const Index<char> & buf, void *) {
+        if (! buf.len ())
+        {
+            update_lyrics_window (_("Error"), nullptr,
+             str_printf (_("Unable to fetch %s"), (const char *) uri));
+            return;
+        }
+
+        CharPtr lyrics = scrape_edit_page (buf.begin (), buf.len ());
+
+        if (! lyrics)
+        {
+            update_lyrics_window (_("No Lyrics Found"), nullptr,
+             str_printf (_("Artist: %s\nTitle: %s"), (const char *) state.artist, (const char *) state.title));
+            return;
+        }
+
+        update_lyrics_window (state.title, state.artist, lyrics);
+    };
+
+    vfs_async_file_get_contents (uri, handle_edit_page, nullptr);
+}
+
+void LyricWikiProvider::match (LyricsState state)
+{
+    String uri = match_uri (state);
+
+    VFSConsumer handle_match_api = [=] (const char *, const Index<char> & buf, void *) {
+        if (! buf.len ())
+        {
+            update_lyrics_window (_("Error"), nullptr,
+             str_printf (_("Unable to fetch %s"), (const char *) uri));
+            return;
+        }
+
+        LyricsState new_state = scrape_match_api (buf.begin (), buf.len ());
+        if (! new_state.artist || ! new_state.title)
+        {
+            update_lyrics_window (_("Error"), nullptr,
+             str_printf (_("Unable to fetch %s"), (const char *) uri));
+            return;
+        }
+
+        fetch (new_state);
+    };
+
+    vfs_async_file_get_contents (uri, handle_match_api, nullptr);
+    update_lyrics_window (state.title, state.artist, _("Looking for lyrics ..."));
+}
 
 /*
  * Suppress libxml warnings, because lyricwiki does not generate anything near
@@ -96,7 +200,7 @@ static void libxml_error_handler (void * ctx, const char * msg, ...)
 {
 }
 
-static CharPtr scrape_lyrics_from_lyricwiki_edit_page (const char * buf, int64_t len)
+CharPtr LyricWikiProvider::scrape_edit_page (const char * buf, int64_t len)
 {
     xmlDocPtr doc;
     CharPtr ret;
@@ -160,23 +264,6 @@ give_up:
 
                 g_match_info_free (match_info);
                 g_regex_unref (reg);
-
-                if (! ret)
-                {
-                    reg = g_regex_new
-                     ("#REDIRECT \\[\\[([^:]*):(.*)]]",
-                     (GRegexCompileFlags) (G_REGEX_MULTILINE | G_REGEX_DOTALL),
-                     (GRegexMatchFlags) 0, nullptr);
-                    if (g_regex_match (reg, (char *) lyric, G_REGEX_MATCH_NEWLINE_ANY, & match_info))
-                    {
-                        state.artist = String (g_match_info_fetch (match_info, 1));
-                        state.title = String (g_match_info_fetch (match_info, 2));
-                        state.uri = String ();
-                    }
-
-                    g_match_info_free (match_info);
-                    g_regex_unref (reg);
-                }
             }
 
             xmlFree (lyric);
@@ -188,10 +275,10 @@ give_up:
     return ret;
 }
 
-static String scrape_uri_from_lyricwiki_search_result (const char * buf, int64_t len)
+LyricsState LyricWikiProvider::scrape_match_api (const char * buf, int64_t len)
 {
     xmlDocPtr doc;
-    String uri;
+    LyricsState result;
 
     /*
      * workaround buggy lyricwiki search output where it cuts the lyrics
@@ -226,149 +313,21 @@ static String scrape_uri_from_lyricwiki_search_result (const char * buf, int64_t
 
         for (cur = root->xmlChildrenNode; cur; cur = cur->next)
         {
-            if (xmlStrEqual(cur->name, (xmlChar *) "url"))
-            {
-                auto lyric = (char *) xmlNodeGetContent (cur);
+            xmlChar * content = xmlNodeGetContent (cur);
 
-                // If the lyrics are unknown, LyricWiki returns a broken link
-                // to the edit page.  Extract the song ID (artist:title) from
-                // the URI and recreate a working link.
-                char * title = strstr (lyric, "title=");
-                if (title)
-                {
-                    title += 6;
+            if (xmlStrEqual(cur->name, (xmlChar *) "artist"))
+                result.artist = String ((const char *) xmlNodeGetContent (cur));
+            else if (xmlStrEqual(cur->name, (xmlChar *) "song"))
+                result.title = String ((const char *) xmlNodeGetContent (cur));
 
-                    // Strip trailing "&action=edit"
-                    char * amp = strchr (title, '&');
-                    if (amp)
-                        * amp = 0;
-
-                    // Spaces get replaced with plus signs for some reason.
-                    str_replace_char (title, '+', ' ');
-
-                    // LyricWiki interprets UTF-8 as ISO-8859-1, then "converts"
-                    // it to UTF-8 again.  Worse, it will sometimes corrupt only
-                    // the song title in this way while leaving the artist name
-                    // intact.  So we have to percent-decode the URI, split the
-                    // two strings apart, repair them separately, and then
-                    // rebuild the URI.
-                    auto strings = str_list_to_index (str_decode_percent (title), ":");
-                    for (String & s : strings)
-                    {
-                        StringBuf orig_utf8 = str_convert (s, -1, "UTF-8", "ISO-8859-1");
-                        if (orig_utf8 && g_utf8_validate (orig_utf8, -1, nullptr))
-                            s = String (orig_utf8);
-                    }
-
-                    uri = String (str_printf ("https://lyrics.fandom.com/index.php?"
-                     "action=edit&title=%s", (const char *) str_encode_percent
-                     (index_to_str_list (strings, ":"))));
-                }
-                else
-                {
-                    // Convert normal lyrics link to edit page link
-                    char * slash = strrchr (lyric, '/');
-                    if (slash)
-                        uri = String (str_printf ("https://lyrics.fandom.com/index.php?"
-                         "action=edit&title=%s", slash + 1));
-                    else
-                        uri = String ("N/A");
-                }
-
-                xmlFree ((xmlChar *) lyric);
-            }
+            if (content)
+                xmlFree (content);
         }
 
         xmlFreeDoc (doc);
     }
 
-    return uri;
-}
-
-static void update_lyrics_window (const char * title, const char * artist, const char * lyrics);
-
-static void get_lyrics_step_1 ();
-
-static void get_lyrics_step_3 (const char * uri, const Index<char> & buf, void *)
-{
-    if (! state.uri || strcmp (state.uri, uri))
-        return;
-
-    if (! buf.len ())
-    {
-        update_lyrics_window (_("Error"), nullptr,
-         str_printf (_("Unable to fetch %s"), uri));
-        return;
-    }
-
-    CharPtr lyrics = scrape_lyrics_from_lyricwiki_edit_page (buf.begin (), buf.len ());
-
-    if (! state.uri)
-    {
-        get_lyrics_step_1 ();
-        return;
-    }
-
-    if (! lyrics)
-    {
-        update_lyrics_window (_("No Lyrics Found"), nullptr,
-         str_printf (_("Artist: %s\nTitle: %s"), (const char *) state.artist, (const char *) state.title));
-        return;
-    }
-
-    update_lyrics_window (state.title, state.artist, lyrics);
-}
-
-static void get_lyrics_step_2 (const char * uri1, const Index<char> & buf, void *)
-{
-    if (! state.uri || strcmp (state.uri, uri1))
-        return;
-
-    if (! buf.len ())
-    {
-        update_lyrics_window (_("Error"), nullptr,
-         str_printf (_("Unable to fetch %s"), uri1));
-        return;
-    }
-
-    String uri = scrape_uri_from_lyricwiki_search_result (buf.begin (), buf.len ());
-
-    if (! uri)
-    {
-        update_lyrics_window (_("Error"), nullptr,
-         str_printf (_("Unable to parse %s"), uri1));
-        return;
-    }
-    else if (uri == String ("N/A"))
-    {
-        update_lyrics_window (state.title, state.artist,
-         _("No lyrics available"));
-        return;
-    }
-
-    state.uri = uri;
-
-    update_lyrics_window (state.title, state.artist, _("Looking for lyrics ..."));
-    vfs_async_file_get_contents (uri, get_lyrics_step_3, nullptr);
-}
-
-static void get_lyrics_step_1 ()
-{
-    if (! state.artist || ! state.title)
-    {
-        update_lyrics_window (_("Error"), nullptr, _("Missing title and/or artist."));
-        return;
-    }
-
-    StringBuf title_buf = str_encode_percent (state.title);
-    StringBuf artist_buf = str_encode_percent (state.artist);
-
-    state.uri = String (str_printf ("https://lyrics.fandom.com/api.php?"
-     "action=lyrics&artist=%s&song=%s&fmt=xml", (const char *) artist_buf,
-     (const char *) title_buf));
-
-    update_lyrics_window (state.title, state.artist, _("Connecting to lyrics.fandom.com ..."));
-    vfs_async_file_get_contents (state.uri, get_lyrics_step_2, nullptr);
+    return result;
 }
 
 static QTextEdit * textedit;
@@ -396,23 +355,26 @@ static void lyricwiki_playback_began ()
 {
     /* FIXME: cancel previous VFS requests (not possible with current API) */
 
-    state.filename = aud_drct_get_filename ();
+    g_state.filename = aud_drct_get_filename ();
 
     Tuple tuple = aud_drct_get_tuple ();
-    state.title = tuple.get_str (Tuple::Title);
-    state.artist = tuple.get_str (Tuple::Artist);
+    g_state.title = tuple.get_str (Tuple::Title);
+    g_state.artist = tuple.get_str (Tuple::Artist);
 
-    state.uri = String ();
+    if (! g_state.artist || ! g_state.title)
+    {
+        update_lyrics_window (_("Error"), nullptr, _("Missing title and/or artist."));
+        return;
+    }
 
-    get_lyrics_step_1 ();
+    lyricwiki_provider.match (g_state);
 }
 
 static void lw_cleanup (QObject * object = nullptr)
 {
-    state.filename = String ();
-    state.title = String ();
-    state.artist = String ();
-    state.uri = String ();
+    g_state.filename = String ();
+    g_state.title = String ();
+    g_state.artist = String ();
 
     hook_dissociate ("tuple change", (HookFunction) lyricwiki_playback_began);
     hook_dissociate ("playback ready", (HookFunction) lyricwiki_playback_began);
@@ -442,14 +404,15 @@ void * LyricWikiQt::get_qt_widget ()
 
 void TextEdit::contextMenuEvent (QContextMenuEvent * event)
 {
-    if (! state.uri)
+    if (! g_state.artist || ! g_state.title)
         return QTextEdit::contextMenuEvent (event);
 
     QMenu * menu = createStandardContextMenu ();
     menu->addSeparator ();
     QAction * edit = menu->addAction (_("Edit lyrics ..."));
     QObject::connect (edit, & QAction::triggered, [] () {
-        QDesktopServices::openUrl (QUrl ((const char *) state.uri));
+        QUrl url = QUrl ((const char *) lyricwiki_provider.edit_uri (g_state));
+        QDesktopServices::openUrl (url);
     });
     menu->exec (event->globalPos ());
     menu->deleteLater ();
