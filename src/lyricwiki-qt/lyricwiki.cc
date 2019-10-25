@@ -53,6 +53,7 @@ typedef struct {
 
     enum Source {
         None,
+        Local,
         LyricWiki
     } source;
 } LyricsState;
@@ -143,6 +144,8 @@ void FileProvider::fetch (LyricsState state)
         return;
 
     state.lyrics = String (data.begin ());
+    state.source = LyricsState::Source::Local;
+
     update_lyrics_window (state.artist, state.title, state.lyrics);
     g_state = state;
 }
