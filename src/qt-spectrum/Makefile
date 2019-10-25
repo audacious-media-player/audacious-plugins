@@ -10,4 +10,4 @@ plugindir := ${plugindir}/${VISUALIZATION_PLUGIN_DIR}
 LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${QT_CFLAGS}
-LIBS += -lm ${QT_LIBS}
+LIBS += -lm ${QT_LIBS} -laudqt

@@ -87,61 +87,18 @@ private:
     char m_delay[VisBands] {};
 };
 
-static BarColors get_bar_colors (const QColor & highlight, int i)
-{
-    qreal h, s, v;
-    highlight.getHsvF (& h, & s, & v);
-
-    if (s < 0.1) /* monochrome theme? use blue instead */
-        h = 0.67;
-
-    s = 1 - 0.9 * i / (VisBands - 1);
-    v = 0.75 + 0.25 * i / (VisBands - 1);
-
-    return {
-        QColor::fromHsvF (h, s, v),
-        QColor::fromHsvF (h, s, v * 0.3)
-    };
-}
-
-static QGradientStops get_gradient_stops (const QColor & base)
-{
-    constexpr int s[4] = {40, 28, 16, 24};
-
-    QColor c[4];
-    for (int i = 0; i < 4; i ++)
-        c[i] = QColor (s[i], s[i], s[i]);
-
-    /* In a dark theme, try to match the tone of the base color */
-    int v = base.value ();
-    if (v >= 10 && v < 80)
-    {
-        int r = base.red (), g = base.green (), b = base.blue ();
-        for (int i = 0; i < 4; i ++)
-        {
-            c[i] = QColor (r * s[i] / v,
-                           g * s[i] / v,
-                           b * s[i] / v);
-        }
-    }
-
-    return {
-        {0, c[0]},
-        {0.45, c[1]},
-        {0.55, c[2]},
-        {1, c[3]}
-    };
-}
-
 void InfoVis::update_colors ()
 {
     auto & base = palette ().color (QPalette::Window);
     auto & highlight = palette ().color (QPalette::Highlight);
 
-    m_gradient.setStops (get_gradient_stops (base));
+    m_gradient.setStops (audqt::dark_bg_gradient (base));
 
     for (int i = 0; i < VisBands; i ++)
-        m_bar_colors[i] = get_bar_colors (highlight, i);
+    {
+        m_bar_colors[i].main = audqt::vis_bar_color (highlight, i, VisBands);
+        m_bar_colors[i].shadow = m_bar_colors[i].main.darker (333);
+    }
 }
 
 InfoVis::InfoVis (QWidget * parent) :
