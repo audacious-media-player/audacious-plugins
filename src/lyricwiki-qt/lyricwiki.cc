@@ -96,6 +96,72 @@ public:
     virtual String edit_uri (LyricsState state) = 0;
 };
 
+// FileProvider provides a strategy for fetching and saving lyrics
+// in local files.
+class FileProvider : public LyricProvider {
+public:
+    FileProvider() {};
+
+    bool match (LyricsState state);
+    void fetch (LyricsState state);
+    String edit_uri (LyricsState state) { return String (); }
+
+private:
+    String local_uri_for_entry (LyricsState state);
+};
+
+static FileProvider file_provider;
+
+String FileProvider::local_uri_for_entry (LyricsState state)
+{
+    // FIXME: implement support for local lyrics database for
+    // streamed files
+    if (strcmp (uri_get_scheme (state.filename), "file"))
+        return String ();
+
+    // it's a local file: convert our URI to a local path
+    StringBuf filename = uri_to_filename (state.filename);
+
+    // strip off the extension
+    char * ext = strrchr((char *) filename, '.');
+    if (! ext)
+        return String ();
+    *ext = '\0';
+
+    // combine the mangled filename and '.lrc' extension
+    return String (filename_to_uri (str_concat ({filename, ".lrc"})));
+}
+
+void FileProvider::fetch (LyricsState state)
+{
+    String path = local_uri_for_entry (state);
+    if (! path)
+        return;
+
+    auto data = VFSFile::read_file (path, VFS_APPEND_NULL);
+    if (! data.len())
+        return;
+
+    state.lyrics = String (data.begin ());
+    update_lyrics_window (state.artist, state.title, state.lyrics);
+    g_state = state;
+}
+
+bool FileProvider::match (LyricsState state)
+{
+    String path = local_uri_for_entry (state);
+    if (! path)
+        return false;
+
+    AUDINFO("Checking for local lyric file: '%s'\n", (const char *) path);
+
+    bool exists = VFSFile::test_file(path, VFS_IS_REGULAR);
+    if (exists)
+        fetch (state);
+
+    return exists;
+}
+
 // LyricWikiProvider provides a strategy for fetching lyrics from
 // LyricWiki.
 class LyricWikiProvider : public LyricProvider {
@@ -383,7 +449,8 @@ static void lyricwiki_playback_began ()
         return;
     }
 
-    lyricwiki_provider.match (g_state);
+    if (! file_provider.match (g_state))
+        lyricwiki_provider.match (g_state);
 }
 
 static void lw_cleanup (QObject * object = nullptr)
