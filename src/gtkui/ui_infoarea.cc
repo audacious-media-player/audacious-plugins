@@ -88,24 +88,8 @@ void InfoAreaVis::render_freq (const float * freq)
 
     for (int i = 0; i < VIS_BANDS; i ++)
     {
-        int a = ceilf (xscale[i]);
-        int b = floorf (xscale[i + 1]);
-        float n = 0;
-
-        if (b < a)
-            n += freq[b] * (xscale[i + 1] - xscale[i]);
-        else
-        {
-            if (a > 0)
-                n += freq[a - 1] * (a - xscale[i]);
-            for (; a < b; a ++)
-                n += freq[a];
-            if (b < 256)
-                n += freq[b] * (xscale[i + 1] - b);
-        }
-
         /* 40 dB range */
-        float x = 40 + 20 * log10f (n);
+        float x = 40 + compute_freq_band (freq, xscale, i, VIS_BANDS);
 
         bars[i] -= aud::max (0, VIS_FALLOFF - delay[i]);
 

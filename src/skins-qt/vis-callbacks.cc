@@ -124,42 +124,15 @@ static void make_log_graph (const float * freq, int bands, int db_range,
     if (bands != last_bands)
     {
         xscale.resize (bands + 1);
-        for (int i = 0; i <= bands; i ++)
-            xscale[i] = powf (256, (float) i / bands) - 0.5f;
-
+        Visualizer::compute_log_xscale (& xscale[0], bands);
         last_bands = bands;
     }
 
     for (int i = 0; i < bands; i ++)
     {
-        /* sum up values in freq array between xscale[i] and xscale[i + 1],
-           including fractional parts */
-        int a = ceilf (xscale[i]);
-        int b = floorf (xscale[i + 1]);
-        float sum = 0;
-
-        if (b < a)
-            sum += freq[b] * (xscale[i + 1] - xscale[i]);
-        else
-        {
-            if (a > 0)
-                sum += freq[a - 1] * (a - xscale[i]);
-            for (; a < b; a ++)
-                sum += freq[a];
-            if (b < 256)
-                sum += freq[b] * (xscale[i + 1] - b);
-        }
-
-        /* fudge factor to make the graph have the same overall height as a
-           12-band one no matter how many bands there are */
-        sum *= (float) bands / 12;
-
-        /* convert to dB */
-        float val = 20 * log10f (sum);
-
+        float val = Visualizer::compute_freq_band (freq, & xscale[0], i, bands);
         /* scale (-db_range, 0.0) to (0.0, int_range) */
         val = (1 + val / db_range) * int_range;
-
         graph[i] = aud::clamp ((int) val, 0, int_range);
     }
 }

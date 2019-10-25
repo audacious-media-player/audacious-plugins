@@ -61,12 +61,6 @@ static int width, height, bands;
 static int bars[MAX_BANDS + 1];
 static int delay[MAX_BANDS + 1];
 
-static void calculate_xscale ()
-{
-    for (int i = 0; i <= bands; i ++)
-        xscale[i] = powf (256, (float) i / bands) - 0.5f;
-}
-
 void CairoSpectrum::render_freq (const float * freq)
 {
     if (! bands)
@@ -74,28 +68,8 @@ void CairoSpectrum::render_freq (const float * freq)
 
     for (int i = 0; i < bands; i ++)
     {
-        int a = ceilf (xscale[i]);
-        int b = floorf (xscale[i + 1]);
-        float n = 0;
-
-        if (b < a)
-            n += freq[b] * (xscale[i + 1] - xscale[i]);
-        else
-        {
-            if (a > 0)
-                n += freq[a - 1] * (a - xscale[i]);
-            for (; a < b; a ++)
-                n += freq[a];
-            if (b < 256)
-                n += freq[b] * (xscale[i + 1] - b);
-        }
-
-        /* fudge factor to make the graph have the same overall height as a
-           12-band one no matter how many bands there are */
-        n *= (float) bands / 12;
-
         /* 40 dB range */
-        int x = 40 + 20 * log10f (n);
+        int x = 40 + compute_freq_band (freq, xscale, i, bands);
         x = aud::clamp (x, 0, 40);
 
         bars[i] -= aud::max (0, VIS_FALLOFF - delay[i]);
@@ -234,7 +208,7 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
 
     bands = width / 10;
     bands = aud::clamp(bands, 12, MAX_BANDS);
-    calculate_xscale ();
+    Visualizer::compute_log_xscale (xscale, bands);
 
     return true;
 }
