@@ -97,85 +97,6 @@ void CairoSpectrum::clear ()
         gtk_widget_queue_draw (spect_widget);
 }
 
-static void rgb_to_hsv (float r, float g, float b, float * h, float * s, float * v)
-{
-    float max, min;
-
-    max = r;
-    if (g > max)
-        max = g;
-    if (b > max)
-        max = b;
-
-    min = r;
-    if (g < min)
-        min = g;
-    if (b < min)
-        min = b;
-
-    * v = max;
-
-    if (max == min)
-    {
-        * h = 0;
-        * s = 0;
-        return;
-    }
-
-    if (r == max)
-        * h = 1 + (g - b) / (max - min);
-    else if (g == max)
-        * h = 3 + (b - r) / (max - min);
-    else
-        * h = 5 + (r - g) / (max - min);
-
-    * s = (max - min) / max;
-}
-
-static void hsv_to_rgb (float h, float s, float v, float * r, float * g, float * b)
-{
-    for (; h >= 2; h -= 2)
-    {
-        float * p = r;
-        r = g;
-        g = b;
-        b = p;
-    }
-
-    if (h < 1)
-    {
-        * r = 1;
-        * g = 0;
-        * b = 1 - h;
-    }
-    else
-    {
-        * r = 1;
-        * g = h - 1;
-        * b = 0;
-    }
-
-    * r = v * (1 - s * (1 - * r));
-    * g = v * (1 - s * (1 - * g));
-    * b = v * (1 - s * (1 - * b));
-}
-
-static void get_color (GtkWidget * widget, int i, float * r, float * g, float * b)
-{
-    GdkColor * c = (gtk_widget_get_style (widget))->base + GTK_STATE_SELECTED;
-    float h, s, v;
-
-    rgb_to_hsv (c->red / 65535.0, c->green / 65535.0, c->blue / 65535.0, & h, & s, & v);
-
-    if (s < 0.1) /* monochrome theme? use blue instead */
-        h = 4.6;
-
-    s = 1 - 0.9 * i / (bands - 1);
-    v = 0.75 + 0.25 * i / (bands - 1);
-
-    hsv_to_rgb (h, s, v, r, g, b);
-}
-
 static void draw_background (GtkWidget * area, cairo_t * cr)
 {
     GtkAllocation alloc;
@@ -187,12 +108,14 @@ static void draw_background (GtkWidget * area, cairo_t * cr)
 
 static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
 {
+    auto & c = (gtk_widget_get_style (widget))->base[GTK_STATE_SELECTED];
+
     for (int i = 0; i < bands; i++)
     {
         int x = ((width / bands) * i) + 2;
         float r, g, b;
 
-        get_color (widget, i, & r, & g, & b);
+        audgui_vis_bar_color (c, i, bands, r, g, b);
         cairo_set_source_rgb (cr, r, g, b);
         cairo_rectangle (cr, x + 1, height - (bars[i] * height / 40),
          (width / bands) - 1, (bars[i] * height / 40));
