@@ -515,7 +515,7 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
     QMenu * menu = createStandardContextMenu ();
     menu->addSeparator ();
 
-    QAction * edit = menu->addAction (_("Edit lyrics ..."));
+    QAction * edit = menu->addAction (_("Edit Lyrics ..."));
     QObject::connect (edit, & QAction::triggered, [] () {
         QUrl url = QUrl ((const char *) lyricwiki_provider.edit_uri (g_state));
         QDesktopServices::openUrl (url);
