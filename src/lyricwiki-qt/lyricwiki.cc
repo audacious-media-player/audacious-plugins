@@ -91,7 +91,7 @@ static void update_lyrics_window (const char * title, const char * artist, const
 // for example from LyricWiki or local storage.
 class LyricProvider {
 public:
-    virtual void match (LyricsState state) = 0;
+    virtual bool match (LyricsState state) = 0;
     virtual void fetch (LyricsState state) = 0;
     virtual String edit_uri (LyricsState state) = 0;
 };
@@ -102,7 +102,7 @@ class LyricWikiProvider : public LyricProvider {
 public:
     LyricWikiProvider() {};
 
-    void match (LyricsState state);
+    bool match (LyricsState state);
     void fetch (LyricsState state);
     String edit_uri (LyricsState state);
 
@@ -172,7 +172,7 @@ void LyricWikiProvider::fetch (LyricsState state)
     vfs_async_file_get_contents (uri, handle_edit_page, nullptr);
 }
 
-void LyricWikiProvider::match (LyricsState state)
+bool LyricWikiProvider::match (LyricsState state)
 {
     String uri = match_uri (state);
 
@@ -197,6 +197,8 @@ void LyricWikiProvider::match (LyricsState state)
 
     vfs_async_file_get_contents (uri, handle_match_api, nullptr);
     update_lyrics_window (state.title, state.artist, _("Looking for lyrics ..."));
+
+    return true;
 }
 
 /*
