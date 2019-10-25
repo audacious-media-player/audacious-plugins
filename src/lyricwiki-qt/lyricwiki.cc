@@ -80,6 +80,14 @@ public:
 
 EXPORT LyricWikiQt aud_plugin_instance;
 
+// LyricProvider encapsulates an entire strategy for fetching lyrics,
+// for example from LyricWiki or local storage.
+class LyricProvider {
+public:
+    virtual bool fetch(LyricsState state) = 0;
+    virtual String edit_uri(LyricsState state) = 0;
+};
+
 /*
  * Suppress libxml warnings, because lyricwiki does not generate anything near
  * valid HTML.
