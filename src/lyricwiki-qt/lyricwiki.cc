@@ -73,7 +73,7 @@ class LyricWikiQt : public GeneralPlugin
 {
 public:
     static constexpr PluginInfo info = {
-        N_("LyricWiki Plugin"),
+        N_("Lyrics"),
         PACKAGE,
         nullptr, // about
         nullptr, // prefs
