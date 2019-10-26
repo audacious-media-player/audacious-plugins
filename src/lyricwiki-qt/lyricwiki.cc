@@ -41,6 +41,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/plugins.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/vfs_async.h>
@@ -75,19 +76,49 @@ protected:
 class LyricWikiQt : public GeneralPlugin
 {
 public:
+    static const char * const defaults[];
+    static const PluginPreferences prefs;
+    static const PreferencesWidget widgets[];
     static constexpr PluginInfo info = {
         N_("Lyrics"),
         PACKAGE,
         nullptr, // about
-        nullptr, // prefs
+        & prefs,
         PluginQtOnly
     };
 
     constexpr LyricWikiQt () : GeneralPlugin (info, false) {}
+
+    bool init ();
     void * get_qt_widget ();
 };
 
 EXPORT LyricWikiQt aud_plugin_instance;
+
+const char * const LyricWikiQt::defaults[] = {
+    "remote-source", "lyricwiki",
+    nullptr
+};
+
+static const ComboItem remote_sources[] = {
+    ComboItem(N_("LyricWiki"), "lyricwiki"),
+    ComboItem(N_("lyrics.ovh"), "lyrics.ovh")
+};
+
+const PreferencesWidget LyricWikiQt::widgets[] = {
+    WidgetCombo(N_("Fetch Lyrics From:"),
+        WidgetString ("lyricwiki", "remote-source"),
+        {{remote_sources}})
+};
+
+const PluginPreferences LyricWikiQt::prefs = {{widgets}};
+
+bool LyricWikiQt::init ()
+{
+    aud_config_set_defaults ("lyricwiki", defaults);
+
+    return true;
+}
 
 static void update_lyrics_window (const char * title, const char * artist, const char * lyrics);
 
@@ -510,6 +541,19 @@ void LyricsOVHProvider::fetch (LyricsState state)
 
 static LyricsOVHProvider lyrics_ovh_provider;
 
+static LyricProvider * remote_source ()
+{
+    auto source = aud_get_str ("lyricwiki", "remote-source");
+
+    if (! strcmp (source, "lyricwiki"))
+        return &lyricwiki_provider;
+
+    if (! strcmp (source, "lyrics.ovh"))
+        return &lyrics_ovh_provider;
+
+    return nullptr;
+}
+
 static QTextEdit * textedit;
 
 static void update_lyrics_window (const char * title, const char * artist, const char * lyrics)
@@ -549,7 +593,9 @@ static void lyricwiki_playback_began ()
             return;
         }
 
-        lyricwiki_provider.match (g_state);
+        auto rsrc = remote_source ();
+        if (rsrc)
+            rsrc->match (g_state);
     }
 }
 
