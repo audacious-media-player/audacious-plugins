@@ -465,14 +465,16 @@ static void lyricwiki_playback_began ()
     g_state.title = tuple.get_str (Tuple::Title);
     g_state.artist = tuple.get_str (Tuple::Artist);
 
-    if (! g_state.artist || ! g_state.title)
-    {
-        update_lyrics_window (_("Error"), nullptr, _("Missing title and/or artist."));
-        return;
-    }
-
     if (! file_provider.match (g_state))
+    {
+        if (! g_state.artist || ! g_state.title)
+        {
+            update_lyrics_window (_("Error"), nullptr, _("Missing title and/or artist."));
+            return;
+        }
+
         lyricwiki_provider.match (g_state);
+    }
 }
 
 static void lw_cleanup (QObject * object = nullptr)
