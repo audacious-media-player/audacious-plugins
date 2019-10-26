@@ -290,6 +290,11 @@ void LyricWikiProvider::fetch (LyricsState state)
             return;
         }
 
+        // we have to inject our original artist and title back because otherwise
+        // the lyrics will cache wrong.
+        new_state.artist = g_state.artist;
+        new_state.title = g_state.title;
+
         update_lyrics_window (new_state.title, new_state.artist, new_state.lyrics);
         g_state = new_state;
     };
