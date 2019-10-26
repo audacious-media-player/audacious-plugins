@@ -102,15 +102,18 @@ const char * const LyricWikiQt::defaults[] = {
 };
 
 static const ComboItem remote_sources[] = {
+    ComboItem(N_("Nowhere"), "nowhere"),
     ComboItem(N_("LyricWiki"), "lyricwiki"),
     ComboItem(N_("lyrics.ovh"), "lyrics.ovh")
 };
 
 const PreferencesWidget LyricWikiQt::widgets[] = {
+    WidgetLabel(N_("<b>Internet Sources</b>")),
     WidgetCombo(N_("Fetch lyrics from:"),
         WidgetString ("lyricwiki", "remote-source"),
         {{remote_sources}}),
-    WidgetCheck(N_("Load lyric files (.lrc) from disk"),
+    WidgetLabel(N_("<b>Local Storage</b>")),
+    WidgetCheck(N_("Load lyric files (.lrc) from local storage"),
         WidgetBool ("lyricwiki", "enable-file-provider"))
 };
 
