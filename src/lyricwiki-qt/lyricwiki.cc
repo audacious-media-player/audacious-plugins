@@ -114,11 +114,11 @@ const PreferencesWidget LyricWikiQt::widgets[] = {
     WidgetCombo(N_("Fetch lyrics from:"),
         WidgetString ("lyricwiki", "remote-source"),
         {{remote_sources}}),
+    WidgetCheck(N_("Store fetched lyrics in local cache"),
+        WidgetBool ("lyricwiki", "enable-cache")),
     WidgetLabel(N_("<b>Local Storage</b>")),
     WidgetCheck(N_("Load lyric files (.lrc) from local storage"),
-        WidgetBool ("lyricwiki", "enable-file-provider")),
-    WidgetCheck(N_("Store fetched lyrics in local cache"),
-        WidgetBool ("lyricwiki", "enable-cache"))
+        WidgetBool ("lyricwiki", "enable-file-provider"))
 };
 
 const PluginPreferences LyricWikiQt::prefs = {{widgets}};
