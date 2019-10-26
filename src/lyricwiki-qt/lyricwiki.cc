@@ -49,7 +49,7 @@
 
 #include <libaudqt/libaudqt.h>
 
-typedef struct {
+struct LyricsState {
     String filename; /* of song file */
     String title, artist;
     String lyrics;
@@ -60,7 +60,7 @@ typedef struct {
         LyricWiki,
         LyricsOVH
     } source;
-} LyricsState;
+};
 
 static LyricsState g_state;
 
