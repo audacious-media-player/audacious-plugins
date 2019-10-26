@@ -678,7 +678,9 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
     {
         QAction * refresh = menu->addAction (_("Refresh"));
         QObject::connect (refresh, & QAction::triggered, [] () {
-            lyricwiki_provider.match (g_state);
+            auto rsrc = remote_source ();
+            if (rsrc)
+                rsrc->match (g_state);
         });
     }
 
