@@ -19,6 +19,7 @@
  */
 
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <string.h>
 
 #include <QApplication>
@@ -98,6 +99,7 @@ EXPORT LyricWikiQt aud_plugin_instance;
 const char * const LyricWikiQt::defaults[] = {
     "remote-source", "lyricwiki",
     "enable-file-provider", "TRUE",
+    "enable-cache", "TRUE",
     nullptr
 };
 
@@ -114,7 +116,9 @@ const PreferencesWidget LyricWikiQt::widgets[] = {
         {{remote_sources}}),
     WidgetLabel(N_("<b>Local Storage</b>")),
     WidgetCheck(N_("Load lyric files (.lrc) from local storage"),
-        WidgetBool ("lyricwiki", "enable-file-provider"))
+        WidgetBool ("lyricwiki", "enable-file-provider")),
+    WidgetCheck(N_("Store fetched lyrics in local cache"),
+        WidgetBool ("lyricwiki", "enable-cache"))
 };
 
 const PluginPreferences LyricWikiQt::prefs = {{widgets}};
@@ -141,7 +145,7 @@ public:
 };
 
 // FileProvider provides a strategy for fetching and saving lyrics
-// in local files.
+// in local files.  It also manages the local lyrics cache.
 class FileProvider : public LyricProvider {
 public:
     FileProvider() {};
@@ -150,12 +154,56 @@ public:
     void fetch (LyricsState state);
     String edit_uri (LyricsState state) { return String (); }
     void save (LyricsState state);
+    void cache (LyricsState state);
+    void cache_fetch (LyricsState state);
 
 private:
     String local_uri_for_entry (LyricsState state);
+    String cache_uri_for_entry (LyricsState state);
 };
 
 static FileProvider file_provider;
+
+static void persist_state (LyricsState state)
+{
+    g_state = state;
+
+    if (g_state.source == LyricsState::Source::Local || ! aud_get_bool("lyricwiki", "enable-cache"))
+        return;
+
+    file_provider.cache (state);
+}
+
+void FileProvider::cache (LyricsState state)
+{
+    auto uri = cache_uri_for_entry (state);
+    bool exists = VFSFile::test_file (uri, VFS_IS_REGULAR);
+    if (exists)
+        return;
+
+    AUDINFO ("Add to cache: %s\n", (const char *) uri);
+    VFSFile::write_file (uri, state.lyrics, strlen (state.lyrics));
+}
+
+#ifdef S_IRGRP
+#define DIRMODE (S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
+#else
+#define DIRMODE (S_IRWXU)
+#endif
+
+String FileProvider::cache_uri_for_entry (LyricsState state)
+{
+    auto user_dir = aud_get_path (AudPath::UserDir);
+    StringBuf base_path = filename_build ({user_dir, "lyrics"});
+    StringBuf artist_path = filename_build ({base_path, state.artist});
+
+    if (g_mkdir_with_parents (artist_path, DIRMODE) < 0)
+        AUDERR ("Failed to create %s: %s\n", (const char *) artist_path, strerror (errno));
+
+    StringBuf title_path = str_concat({filename_build({artist_path, state.title}), ".lrc"});
+
+    return String (filename_to_uri (title_path));
+}
 
 String FileProvider::local_uri_for_entry (LyricsState state)
 {
@@ -191,7 +239,24 @@ void FileProvider::fetch (LyricsState state)
     state.source = LyricsState::Source::Local;
 
     update_lyrics_window (state.title, state.artist, state.lyrics);
-    g_state = state;
+    persist_state (state);
+}
+
+void FileProvider::cache_fetch (LyricsState state)
+{
+    String path = cache_uri_for_entry (state);
+    if (! path)
+        return;
+
+    auto data = VFSFile::read_file (path, VFS_APPEND_NULL);
+    if (! data.len())
+        return;
+
+    state.lyrics = String (data.begin ());
+    state.source = LyricsState::Source::Local;
+
+    update_lyrics_window (state.title, state.artist, state.lyrics);
+    persist_state (state);
 }
 
 bool FileProvider::match (LyricsState state)
@@ -204,7 +269,20 @@ bool FileProvider::match (LyricsState state)
 
     bool exists = VFSFile::test_file(path, VFS_IS_REGULAR);
     if (exists)
+    {
         fetch (state);
+        return true;
+    }
+
+    path = cache_uri_for_entry (state);
+    if (! path)
+        return false;
+
+    AUDINFO("Checking for cache lyric file: '%s'\n", (const char *) path);
+
+    exists = VFSFile::test_file(path, VFS_IS_REGULAR);
+    if (exists)
+        cache_fetch (state);
 
     return exists;
 }
@@ -296,7 +374,7 @@ void LyricWikiProvider::fetch (LyricsState state)
         new_state.title = g_state.title;
 
         update_lyrics_window (new_state.title, new_state.artist, new_state.lyrics);
-        g_state = new_state;
+        persist_state (new_state);
     };
 
     vfs_async_file_get_contents (uri, handle_edit_page);
@@ -535,7 +613,7 @@ void LyricsOVHProvider::fetch (LyricsState state)
         new_state.source = LyricsState::Source::LyricsOVH;
 
         update_lyrics_window (new_state.title, new_state.artist, new_state.lyrics);
-        g_state = new_state;
+        persist_state (new_state);
     };
 
     auto artist = str_copy (state.artist);
