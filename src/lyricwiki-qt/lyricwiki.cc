@@ -97,6 +97,7 @@ EXPORT LyricWikiQt aud_plugin_instance;
 
 const char * const LyricWikiQt::defaults[] = {
     "remote-source", "lyricwiki",
+    "enable-file-provider", "TRUE",
     nullptr
 };
 
@@ -106,9 +107,11 @@ static const ComboItem remote_sources[] = {
 };
 
 const PreferencesWidget LyricWikiQt::widgets[] = {
-    WidgetCombo(N_("Fetch Lyrics From:"),
+    WidgetCombo(N_("Fetch lyrics from:"),
         WidgetString ("lyricwiki", "remote-source"),
-        {{remote_sources}})
+        {{remote_sources}}),
+    WidgetCheck(N_("Load lyric files (.lrc) from disk"),
+        WidgetBool ("lyricwiki", "enable-file-provider"))
 };
 
 const PluginPreferences LyricWikiQt::prefs = {{widgets}};
@@ -585,7 +588,7 @@ static void lyricwiki_playback_began ()
     g_state.title = tuple.get_str (Tuple::Title);
     g_state.artist = tuple.get_str (Tuple::Artist);
 
-    if (! file_provider.match (g_state))
+    if (! aud_get_bool ("lyricwiki", "enable-file-provider") || ! file_provider.match (g_state))
     {
         if (! g_state.artist || ! g_state.title)
         {
