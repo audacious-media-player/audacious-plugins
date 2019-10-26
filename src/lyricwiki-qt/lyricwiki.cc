@@ -207,8 +207,6 @@ String FileProvider::cache_uri_for_entry (LyricsState state)
 
 String FileProvider::local_uri_for_entry (LyricsState state)
 {
-    // FIXME: implement support for local lyrics database for
-    // streamed files
     if (strcmp (uri_get_scheme (state.filename), "file"))
         return String ();
 
