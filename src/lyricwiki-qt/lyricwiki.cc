@@ -127,6 +127,9 @@ bool LyricWikiQt::init ()
 }
 
 static void update_lyrics_window (const char * title, const char * artist, const char * lyrics);
+static void update_lyrics_window_message (LyricsState state, const char * message);
+static void update_lyrics_window_error (const char * message);
+static void update_lyrics_window_notfound (LyricsState state);
 
 // LyricProvider encapsulates an entire strategy for fetching lyrics,
 // for example from LyricWiki or local storage.
@@ -275,8 +278,7 @@ void LyricWikiProvider::fetch (LyricsState state)
     auto handle_edit_page = [=] (const char *, const Index<char> & buf) {
         if (! buf.len ())
         {
-            update_lyrics_window (_("Error"), nullptr,
-             str_printf (_("Unable to fetch %s"), (const char *) uri));
+            update_lyrics_window_error (str_printf (_("Unable to fetch %s"), (const char *) uri));
             return;
         }
 
@@ -284,8 +286,7 @@ void LyricWikiProvider::fetch (LyricsState state)
 
         if (! new_state.lyrics)
         {
-            update_lyrics_window (_("No Lyrics Found"), nullptr,
-             str_printf (_("Artist: %s\nTitle: %s"), (const char *) state.artist, (const char *) state.title));
+            update_lyrics_window_notfound (new_state);
             return;
         }
 
@@ -303,16 +304,14 @@ bool LyricWikiProvider::match (LyricsState state)
     auto handle_match_api = [=] (const char *, const Index<char> & buf) {
         if (! buf.len ())
         {
-            update_lyrics_window (_("Error"), nullptr,
-             str_printf (_("Unable to fetch %s"), (const char *) uri));
+            update_lyrics_window_error (str_printf (_("Unable to fetch %s"), (const char *) uri));
             return;
         }
 
         LyricsState new_state = scrape_match_api (buf.begin (), buf.len ());
         if (! new_state.artist || ! new_state.title)
         {
-            update_lyrics_window (_("Error"), nullptr,
-             str_printf (_("Unable to fetch %s"), (const char *) uri));
+            update_lyrics_window_error (str_printf (_("Unable to fetch %s"), (const char *) uri));
             return;
         }
 
@@ -320,7 +319,7 @@ bool LyricWikiProvider::match (LyricsState state)
     };
 
     vfs_async_file_get_contents (uri, handle_match_api);
-    update_lyrics_window (state.title, state.artist, _("Looking for lyrics ..."));
+    update_lyrics_window_message (state, _("Looking for lyrics ..."));
 
     return true;
 }
@@ -495,15 +494,17 @@ void LyricsOVHProvider::fetch (LyricsState state)
 {
     auto handle_result_cb = [=] (const char *filename, const Index<char> & buf) {
         if (! buf.len ())
+        {
+            update_lyrics_window_error(str_printf(_("Unable to fetch %s"), filename));
             return;
+        }
 
         QByteArray json = QByteArray (buf.begin (), buf.len ());
         QJsonDocument doc = QJsonDocument::fromJson (json);
 
         if (doc.isNull () || ! doc.isObject ())
         {
-            update_lyrics_window(_("Error"), nullptr,
-             str_printf(_("Unable to parse %s"), filename));
+            update_lyrics_window_error(str_printf(_("Unable to parse %s"), filename));
             return;
         }
 
@@ -520,11 +521,9 @@ void LyricsOVHProvider::fetch (LyricsState state)
                 new_state.lyrics = String (raw_data.data ());
             }
         }
-
-        if (! new_state.lyrics)
+        else
         {
-            update_lyrics_window (_("No Lyrics Found"), nullptr,
-             str_printf (_("Artist: %s\nTitle: %s"), (const char *) new_state.artist, (const char *) new_state.title));
+            update_lyrics_window_notfound (new_state);
             return;
         }
 
@@ -543,6 +542,7 @@ void LyricsOVHProvider::fetch (LyricsState state)
     auto uri = str_concat({"https://api.lyrics.ovh/v1/", artist, "/", title});
 
     vfs_async_file_get_contents(uri, handle_result_cb);
+    update_lyrics_window_message (state, _("Looking for lyrics ..."));
 }
 
 static LyricsOVHProvider lyrics_ovh_provider;
@@ -561,6 +561,21 @@ static LyricProvider * remote_source ()
 }
 
 static QTextEdit * textedit;
+
+static void update_lyrics_window_message (LyricsState state, const char * message)
+{
+    update_lyrics_window (state.title, state.artist, message);
+}
+
+static void update_lyrics_window_error (const char * message)
+{
+    update_lyrics_window (_("Error"), nullptr, message);
+}
+
+static void update_lyrics_window_notfound (LyricsState state)
+{
+    update_lyrics_window (state.title, state.artist, _("Lyrics could not be found."));
+}
 
 static void update_lyrics_window (const char * title, const char * artist, const char * lyrics)
 {
@@ -595,7 +610,7 @@ static void lyricwiki_playback_began ()
     {
         if (! g_state.artist || ! g_state.title)
         {
-            update_lyrics_window (_("Error"), nullptr, _("Missing title and/or artist."));
+            update_lyrics_window_error (_("Missing title and/or artist."));
             return;
         }
 
