@@ -24,6 +24,8 @@
 #include <QApplication>
 #include <QContextMenuEvent>
 #include <QDesktopServices>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMenu>
 #include <QTextCursor>
 #include <QTextDocument>
@@ -54,7 +56,8 @@ typedef struct {
     enum Source {
         None,
         Local,
-        LyricWiki
+        LyricWiki,
+        LyricsOVH
     } source;
 } LyricsState;
 
@@ -433,6 +436,79 @@ LyricsState LyricWikiProvider::scrape_match_api (const char * buf, int64_t len)
 
     return result;
 }
+
+// LyricsOVHProvider provides a strategy for fetching lyrics using the
+// lyrics.ovh search engine.
+class LyricsOVHProvider : public LyricProvider {
+public:
+    LyricsOVHProvider() {};
+
+    bool match (LyricsState state);
+    void fetch (LyricsState state);
+    String edit_uri (LyricsState state) { return String (); }
+};
+
+bool LyricsOVHProvider::match (LyricsState state)
+{
+    fetch (state);
+    return true;
+}
+
+void LyricsOVHProvider::fetch (LyricsState state)
+{
+    auto handle_result_cb = [=] (const char *filename, const Index<char> & buf) {
+        if (! buf.len ())
+            return;
+
+        QByteArray json = QByteArray (buf.begin (), buf.len ());
+        QJsonDocument doc = QJsonDocument::fromJson (json);
+
+        if (doc.isNull () || ! doc.isObject ())
+        {
+            update_lyrics_window(_("Error"), nullptr,
+             str_printf(_("Unable to parse %s"), filename));
+            return;
+        }
+
+        LyricsState new_state = g_state;
+        new_state.lyrics = String ();
+
+        auto obj = doc.object ();
+        if (obj.contains ("lyrics"))
+        {
+            auto str = obj["lyrics"].toString();
+            if (! str.isNull ())
+            {
+                auto raw_data = str.toLocal8Bit();
+                new_state.lyrics = String (raw_data.data ());
+            }
+        }
+
+        if (! new_state.lyrics)
+        {
+            update_lyrics_window (_("No Lyrics Found"), nullptr,
+             str_printf (_("Artist: %s\nTitle: %s"), (const char *) new_state.artist, (const char *) new_state.title));
+            return;
+        }
+
+        new_state.source = LyricsState::Source::LyricsOVH;
+
+        update_lyrics_window (new_state.title, new_state.artist, new_state.lyrics);
+        g_state = new_state;
+    };
+
+    auto artist = str_copy (state.artist);
+    artist = str_encode_percent (state.artist, -1);
+
+    auto title = str_copy (state.title);
+    title = str_encode_percent (state.title, -1);
+
+    auto uri = str_concat({"https://api.lyrics.ovh/v1/", artist, "/", title});
+
+    vfs_async_file_get_contents(uri, handle_result_cb);
+}
+
+static LyricsOVHProvider lyrics_ovh_provider;
 
 static QTextEdit * textedit;
 
