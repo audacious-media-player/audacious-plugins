@@ -30,7 +30,7 @@ const char * const qtui_defaults[] = {
     "infoarea_show_vis", "TRUE",
     "infoarea_visible", "TRUE",
     "menu_visible", "TRUE",
-    "playlist_tabs_visible", "TRUE",
+    "playlist_tabs_visible", aud::numeric_string<PlaylistTabVisibility::AutoHide>::str,
     "statusbar_visible", "TRUE",
     "entry_count_visible", "FALSE",
     "close_button_visible", "TRUE",
@@ -48,12 +48,17 @@ static void qtui_update_playlist_settings ()
     hook_call ("qtui update playlist settings", nullptr);
 }
 
+static const ComboItem playlist_tabs_options[] = {
+    ComboItem (N_("Always"), PlaylistTabVisibility::Always),
+    ComboItem (N_("Auto-hide"), PlaylistTabVisibility::AutoHide),
+    ComboItem (N_("Never"), PlaylistTabVisibility::Never)
+};
+
 static const PreferencesWidget qtui_widgets[] = {
     WidgetLabel (N_("<b>Playlist Tabs</b>")),
-#if QT_VERSION >= 0x050400
-    WidgetCheck (N_("Always show tabs"),
-        WidgetBool ("qtui", "playlist_tabs_visible", qtui_update_playlist_settings)),
-#endif
+    WidgetCombo (N_("Show playlist tabs:"),
+        WidgetInt ("qtui", "playlist_tabs_visible", qtui_update_playlist_settings),
+        {{playlist_tabs_options}}),
     WidgetCheck (N_("Show entry counts"),
         WidgetBool ("qtui", "entry_count_visible", qtui_update_playlist_settings)),
     WidgetCheck (N_("Show close buttons"),

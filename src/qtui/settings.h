@@ -24,6 +24,12 @@
 
 #define DEFAULT_COLUMNS "playing title artist album queued length"
 
+enum PlaylistTabVisibility {
+    Always,
+    AutoHide,
+    Never
+};
+
 struct PluginPreferences;
 extern const PluginPreferences qtui_prefs;
 
