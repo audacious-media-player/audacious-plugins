@@ -170,7 +170,10 @@ void PlaylistTabs::updateIcons ()
 
     int tabs = count ();
     for (int i = 0; i < tabs; i ++)
-        setTabIcon (i, (i == playing) ? icon : QIcon ());
+    {
+        /* hide icon when editing so it doesn't get shown on the wrong side */
+        setTabIcon (i, (i == playing && ! getTabEdit (i)) ? icon : QIcon ());
+    }
 }
 
 void PlaylistTabs::currentChangedTrigger (int idx)
@@ -232,6 +235,7 @@ void PlaylistTabs::editTab (int idx, Playlist playlist)
         });
 
         setupTab (idx, edit, & m_leftbtn);
+        updateIcons ();
     }
 
     edit->selectAll ();
@@ -275,6 +279,7 @@ bool PlaylistTabs::cancelRename ()
         setupTab (i, m_leftbtn, nullptr);
         m_leftbtn = nullptr;
         cancelled = true;
+        updateIcons ();
     }
 
     return cancelled;
