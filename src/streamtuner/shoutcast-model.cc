@@ -1,0 +1,177 @@
+// Copyright (c) 2019 Ariadne Conill <ariadne@dereferenced.org>
+//
+// Permission to use, copy, modify, and/or distribute this software for any
+// purpose with or without fee is hereby granted, provided that the above
+// copyright notice and this permission notice appear in all copies.
+//
+// This software is provided 'as is' and without any warranty, express or
+// implied.  In no event shall the authors be liable for any damages arising
+// from the use of this software.
+
+#include <libaudcore/drct.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/plugins.h>
+#include <libaudcore/preferences.h>
+#include <libaudcore/audstrings.h>
+#include <libaudcore/hook.h>
+#include <libaudcore/runtime.h>
+#include <libaudcore/index.h>
+#include <libaudcore/playlist.h>
+
+#include <QAbstractListModel>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+
+#include "shoutcast-model.h"
+
+ShoutcastTunerModel::ShoutcastTunerModel (QObject * parent) :
+    QAbstractListModel (parent)
+{
+    m_qnam = new QNetworkAccessManager (this);
+
+    fetch_stations ();
+}
+
+void ShoutcastTunerModel::fetch_stations (String genre)
+{
+    auto base = "https://directory.shoutcast.com";
+    StringBuf uri;
+
+    // undefined genre: fetch top 500
+    // TODO: finish support for fetching the genre list
+    if (! genre)
+        uri = str_concat ({base, "/Home/Top"});
+    else
+        uri = str_concat ({base, "/Home/BrowseByGenre"});
+
+    // build the request for the fetch
+    QUrl url = QUrl (QString (uri));
+    QNetworkRequest request = QNetworkRequest (url);
+
+    QNetworkReply * reply = m_qnam->post (request, "");
+    QObject::connect (reply, &QNetworkReply::finished, [reply, this] () {
+        if (200 != reply->attribute (QNetworkRequest::HttpStatusCodeAttribute))
+            return;
+
+       auto data = reply->readAll();
+       auto doc = QJsonDocument::fromJson(data);
+
+       if (! doc.isArray ())
+           return;
+
+       auto stations = doc.array ();
+       process_stations (stations);
+    });
+}
+
+void ShoutcastTunerModel::process_station (QJsonObject object)
+{
+    ShoutcastEntry entry;
+
+    entry.listeners = object["Listeners"].toInt ();
+    entry.bitrate = object["Bitrate"].toInt ();
+    entry.station_id = object["ID"].toInt ();
+    entry.genre = String (object["Genre"].toString ().toLocal8Bit ().data ());
+    entry.title = String (object["Name"].toString ().toLocal8Bit ().data ());
+    entry.type = object["Format"].toString () == QString ("audio/mpeg") ? String ("MP3") : String ("AAC");
+
+    m_results.append (entry);
+}
+
+void ShoutcastTunerModel::process_stations (QJsonArray & stations)
+{
+    AUDINFO ("Retrieved %d stations.\n", stations.size ());
+
+    beginResetModel ();
+
+    m_results.clear ();
+
+    for (auto st : stations)
+    {
+        if (! st.isObject ())
+            continue;
+
+        process_station (st.toObject ());
+    }
+
+    endResetModel ();
+}
+
+QVariant ShoutcastTunerModel::headerData (int section, Qt::Orientation, int role) const
+{
+    if (role != Qt::DisplayRole)
+        return QVariant ();
+
+    switch (section)
+    {
+    case Title:
+        return QString (_("Title"));
+
+    case Genre:
+        return QString (_("Genre"));
+
+    case Listeners:
+        return QString (_("Listeners"));
+
+    case Type:
+        return QString (_("Type"));
+
+    case Bitrate:
+        return QString (_("Bitrate"));
+    }
+
+    return QVariant ();
+}
+
+QVariant ShoutcastTunerModel::data (const QModelIndex &index, int role) const
+{
+    if (role != Qt::DisplayRole)
+        return QVariant ();
+
+    int row = index.row ();
+    if (row > m_results.len ())
+        return QVariant ();
+
+    auto entry = m_results[row];
+
+    switch (index.column ())
+    {
+    case Title:
+        return QString (entry.title);
+
+    case Genre:
+        return QString (entry.genre);
+
+    case Listeners:
+        return QString::number (entry.listeners);
+
+    case Type:
+        return QString (entry.type);
+
+    case Bitrate:
+        return QString::number (entry.bitrate);
+    }
+
+    return QVariant ();
+}
+
+int ShoutcastTunerModel::columnCount (const QModelIndex &) const
+{
+    return NColumns;
+}
+
+int ShoutcastTunerModel::rowCount (const QModelIndex &) const
+{
+    return m_results.len ();
+}
+
+const ShoutcastEntry & ShoutcastTunerModel::entry (int idx) const
+{
+    return m_results[idx];
+}
+

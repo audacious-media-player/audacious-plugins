@@ -80,6 +80,7 @@ if get_option('qt')
   subdir('search-tool-qt')
   subdir('song-info-qt')
   subdir('statusicon-qt')
+  subdir('streamtuner')
 
   subdir('delete-files')
   subdir('skins-data')
