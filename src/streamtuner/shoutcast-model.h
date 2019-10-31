@@ -45,6 +45,8 @@ struct ShoutcastEntry {
 
 class ShoutcastTunerModel : public QAbstractListModel {
 public:
+    static const char *genres[];
+
     enum {
         Title,
         Genre,

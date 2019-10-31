@@ -175,3 +175,30 @@ const ShoutcastEntry & ShoutcastTunerModel::entry (int idx) const
     return m_results[idx];
 }
 
+const char *ShoutcastTunerModel::genres[] = {
+    N_("Alternative"),
+    N_("Blues"),
+    N_("Classical"),
+    N_("Country"),
+    N_("Decades"),
+    N_("Easy Listening"),
+    N_("Electronic"),
+    N_("Folk"),
+    N_("Inspirational"),
+    N_("International"),
+    N_("Jazz"),
+    N_("Latin"),
+    N_("Metal"),
+    N_("Misc"),
+    N_("New Age"),
+    N_("Pop"),
+    N_("Public Radio"),
+    N_("R&B and Urban"),
+    N_("Rap"),
+    N_("Reggae"),
+    N_("Rock"),
+    N_("Seasonal and Holiday"),
+    N_("Soundtracks"),
+    N_("Talk"),
+    N_("Themes")
+};
