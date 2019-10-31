@@ -81,7 +81,7 @@ void ShoutcastTunerModel::process_station (QJsonObject object)
     entry.station_id = object["ID"].toInt ();
     entry.genre = String (object["Genre"].toString ().toLocal8Bit ().data ());
     entry.title = String (object["Name"].toString ().toLocal8Bit ().data ());
-    entry.type = object["Format"].toString () == QString ("audio/mpeg") ? String ("MP3") : String ("AAC");
+    entry.type = object["Format"].toString () == QString ("audio/mpeg") ? ShoutcastEntry::MP3 : ShoutcastEntry::AAC;
 
     m_results.append (entry);
 }
@@ -154,7 +154,7 @@ QVariant ShoutcastTunerModel::data (const QModelIndex &index, int role) const
         return QString::number (entry.listeners);
 
     case Type:
-        return QString (entry.type);
+        return entry.type == ShoutcastEntry::MP3 ? QString ("MP3") : QString ("AAC");
 
     case Bitrate:
         return QString::number (entry.bitrate);

@@ -38,7 +38,12 @@ struct ShoutcastEntry {
     String title;
     String genre;
     int listeners;
-    String type;
+
+    enum {
+        MP3,
+        AAC
+    } type;
+
     int bitrate;
     int station_id;
 };
