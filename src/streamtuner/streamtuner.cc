@@ -34,6 +34,7 @@
 #include "shoutcast-model.h"
 #include "shoutcast-widget.h"
 #include "icecast-widget.h"
+#include "ihr-widget.h"
 
 class StreamTunerWidget : public QTabWidget {
 public:
@@ -42,6 +43,7 @@ public:
 private:
      ShoutcastTunerWidget *m_shoutcast_tuner;
      IcecastListingWidget *m_icecast_tuner;
+     IHRTunerWidget *m_ihr_tuner;
 };
 
 StreamTunerWidget::StreamTunerWidget(QWidget *parent) :
@@ -52,9 +54,11 @@ StreamTunerWidget::StreamTunerWidget(QWidget *parent) :
 
     m_shoutcast_tuner = new ShoutcastTunerWidget (this);
     m_icecast_tuner = new IcecastListingWidget (this);
+    m_ihr_tuner = new IHRTunerWidget (this);
 
     addTab (m_shoutcast_tuner, _("Shoutcast"));
     addTab (m_icecast_tuner, _("Icecast"));
+    addTab (m_ihr_tuner, "iHeartRadio");
 
     tabBar ()->setAutoHide (false);
 }

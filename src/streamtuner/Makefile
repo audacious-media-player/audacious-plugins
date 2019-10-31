@@ -5,7 +5,9 @@ SRCS = \
 	shoutcast-widget.cc \
 	shoutcast-model.cc \
 	icecast-widget.cc \
-	icecast-model.cc
+	icecast-model.cc \
+        ihr-widget.cc \
+        ihr-model.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
