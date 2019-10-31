@@ -3,7 +3,9 @@ PLUGIN = streamtuner${PLUGIN_SUFFIX}
 SRCS = \
 	streamtuner.cc \
 	shoutcast-widget.cc \
-	shoutcast-model.cc
+	shoutcast-model.cc \
+	icecast-widget.cc \
+	icecast-model.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

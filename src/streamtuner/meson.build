@@ -6,6 +6,8 @@ if qtnetwork_dep.found()
     'streamtuner.cc',
     'shoutcast-model.cc',
     'shoutcast-widget.cc',
+    'icecast-widget.cc',
+    'icecast-model.cc',
     dependencies: [qt_dep, qtnetwork_dep, audacious_dep, audqt_dep],
     install: true,
     install_dir: general_plugin_dir

@@ -33,6 +33,7 @@
 
 #include "shoutcast-model.h"
 #include "shoutcast-widget.h"
+#include "icecast-widget.h"
 
 class StreamTunerWidget : public QTabWidget {
 public:
@@ -40,6 +41,7 @@ public:
 
 private:
      ShoutcastTunerWidget *m_shoutcast_tuner;
+     IcecastListingWidget *m_icecast_tuner;
 };
 
 StreamTunerWidget::StreamTunerWidget(QWidget *parent) :
@@ -49,8 +51,11 @@ StreamTunerWidget::StreamTunerWidget(QWidget *parent) :
     setTabPosition (QTabWidget::TabPosition::South);
 
     m_shoutcast_tuner = new ShoutcastTunerWidget (this);
+    m_icecast_tuner = new IcecastListingWidget (this);
 
     addTab (m_shoutcast_tuner, _("Shoutcast"));
+    addTab (m_icecast_tuner, _("Icecast"));
+
     tabBar ()->setAutoHide (false);
 }
 
