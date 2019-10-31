@@ -41,19 +41,22 @@ void ShoutcastTunerModel::fetch_stations (String genre)
 {
     auto base = "https://directory.shoutcast.com";
     StringBuf uri;
+    StringBuf post_data;
 
     // undefined genre: fetch top 500
-    // TODO: finish support for fetching the genre list
-    if (! genre)
+    if (! genre || ! strcmp (genre, "Top 500 Stations"))
         uri = str_concat ({base, "/Home/Top"});
     else
+    {
         uri = str_concat ({base, "/Home/BrowseByGenre"});
+        post_data = str_concat ({"genrename=", genre});
+    }
 
     // build the request for the fetch
     QUrl url = QUrl (QString (uri));
     QNetworkRequest request = QNetworkRequest (url);
 
-    QNetworkReply * reply = m_qnam->post (request, "");
+    QNetworkReply * reply = m_qnam->post (request, (const char *) post_data);
     QObject::connect (reply, &QNetworkReply::finished, [reply, this] () {
         if (200 != reply->attribute (QNetworkRequest::HttpStatusCodeAttribute))
             return;
@@ -176,6 +179,7 @@ const ShoutcastEntry & ShoutcastTunerModel::entry (int idx) const
 }
 
 const char *ShoutcastTunerModel::genres[] = {
+    N_("Top 500 Stations"),
     N_("Alternative"),
     N_("Blues"),
     N_("Classical"),
