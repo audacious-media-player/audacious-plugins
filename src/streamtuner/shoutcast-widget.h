@@ -15,6 +15,8 @@
 
 #include <QWidget>
 #include <QTabWidget>
+#include <QVBoxLayout>
+#include <QSplitter>
 #include <QAbstractListModel>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -25,14 +27,33 @@
 
 #include "shoutcast-model.h"
 
-class ShoutcastTunerWidget : public audqt::TreeView {
+class ShoutcastListingWidget : public audqt::TreeView {
 public:
-     ShoutcastTunerWidget(QWidget * parent = nullptr);
+     ShoutcastListingWidget(QWidget * parent = nullptr);
 
      void activate (const QModelIndex & index);
 
 private:
      ShoutcastTunerModel *m_model;
+};
+
+class ShoutcastGenreWidget : public QTreeView {
+public:
+    ShoutcastGenreWidget(QWidget * parent = nullptr);
+
+private:
+    ShoutcastGenreModel *m_model;
+};
+
+class ShoutcastTunerWidget : public QWidget {
+public:
+    ShoutcastTunerWidget(QWidget * parent = nullptr);
+
+private:
+    ShoutcastListingWidget *m_tuner;
+    ShoutcastGenreWidget *m_genre;
+    QSplitter *m_splitter;
+    QVBoxLayout *m_layout;
 };
 
 #endif

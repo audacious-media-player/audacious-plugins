@@ -206,3 +206,34 @@ const char *ShoutcastTunerModel::genres[] = {
     N_("Talk"),
     N_("Themes")
 };
+
+ShoutcastGenreModel::ShoutcastGenreModel (QObject * parent) :
+    QAbstractListModel (parent)
+{
+}
+
+int ShoutcastGenreModel::columnCount (const QModelIndex &) const
+{
+    return 1;
+}
+
+int ShoutcastGenreModel::rowCount (const QModelIndex &) const
+{
+    return sizeof (ShoutcastTunerModel::genres) / sizeof (ShoutcastTunerModel::genres[0]);
+}
+
+QVariant ShoutcastGenreModel::headerData (int, Qt::Orientation, int role) const
+{
+    if (role != Qt::DisplayRole)
+        return QVariant ();
+
+    return QString (_("Genre"));
+}
+
+QVariant ShoutcastGenreModel::data (const QModelIndex &index, int role) const
+{
+    if (role != Qt::DisplayRole)
+        return QVariant ();
+
+    return QString (ShoutcastTunerModel::genres[index.row ()]);
+}
