@@ -89,15 +89,6 @@ if get_option('qt')
 endif
 
 
-# output plugins
-if get_option('pulse')
-  subdir('pulse')
-endif
-if host_machine.system() == 'linux' and get_option('alsa')
-  subdir('alsa')
-endif
-
-
 # general plugins
 if cdaudio_enabled
   subdir('cd-menu-items')
@@ -167,6 +158,18 @@ endif
 
 if get_option('sid')
   subdir('sid')
+endif
+
+
+# output plugins
+if get_option('pulse')
+  subdir('pulse')
+endif
+if host_machine.system() == 'linux' and get_option('alsa')
+  subdir('alsa')
+endif
+if get_option('filewriter')
+  subdir('filewriter')
 endif
 
 

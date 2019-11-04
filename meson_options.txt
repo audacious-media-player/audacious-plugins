@@ -52,7 +52,14 @@ option('alsa', type: 'boolean', value: true,
        description: 'Whether ALSA support is enabled')
 option('pulse', type: 'boolean', value: true,
        description: 'Whether PulseAudio support is enabled')
-
+option('filewriter', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) support is enabled')
+option('filewriter-mp3', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) MP3 support is enabled')
+option('filewriter-ogg', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) OGG support is enabled')
+option('filewriter-flac', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) FLAC support is enabled')
 
 # general plugins
 option('songchange', type: 'boolean', value: true,
