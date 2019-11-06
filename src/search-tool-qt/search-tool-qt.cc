@@ -875,7 +875,6 @@ bool SearchToolQt::init ()
 void * SearchToolQt::get_qt_widget ()
 {
     s_search_entry = new QLineEdit;
-    s_search_entry->setContentsMargins (audqt::margins.TwoPt);
     s_search_entry->setClearButtonEnabled (true);
     s_search_entry->setPlaceholderText (_("Search library"));
 
@@ -913,21 +912,24 @@ void * SearchToolQt::get_qt_widget ()
     button->setFlat (true);
     button->setFocusPolicy (Qt::NoFocus);
 
-    auto hbox = audqt::make_hbox (nullptr);
-    hbox->setContentsMargins (audqt::margins.TwoPt);
+    auto hbox1 = audqt::make_hbox (nullptr);
+    hbox1->setContentsMargins (audqt::margins.TwoPt);
+    hbox1->addWidget (s_search_entry);
 
-    hbox->addWidget (chooser);
-    hbox->addWidget (button);
+    auto hbox2 = audqt::make_hbox (nullptr);
+    hbox2->setContentsMargins (audqt::margins.TwoPt);
+    hbox2->addWidget (chooser);
+    hbox2->addWidget (button);
 
     auto widget = new QWidget;
     auto vbox = audqt::make_vbox (widget, 0);
 
-    vbox->addWidget (s_search_entry);
+    vbox->addLayout (hbox1);
     vbox->addWidget (s_help_label);
     vbox->addWidget (s_wait_label);
     vbox->addWidget (s_results_list);
     vbox->addWidget (s_stats_label);
-    vbox->addLayout (hbox);
+    vbox->addLayout (hbox2);
 
     audqt::file_entry_set_uri (chooser, get_uri ());
 
