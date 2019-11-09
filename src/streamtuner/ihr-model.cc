@@ -67,9 +67,9 @@ QVariant IHRMarketModel::data (const QModelIndex &index, int role) const
     auto entry = m_results[row];
 
     return QString ("%1, %2, %3 (%4)")
-           .arg ((const char *) entry.city)
-           .arg ((const char *) entry.state)
-           .arg ((const char *) entry.country_code)
+           .arg (entry.city)
+           .arg (entry.state)
+           .arg (entry.country_code)
            .arg (entry.station_count);
 }
 
@@ -101,9 +101,9 @@ void IHRMarketModel::fetch_markets ()
 
            entry.market_id = market["marketId"].toInt ();
            entry.station_count = market["stationCount"].toInt ();
-           entry.city = String (market["city"].toString ().toLocal8Bit ().data ());
-           entry.state = String (market["stateAbbreviation"].toString ().toLocal8Bit ().data ());
-           entry.country_code = String (market["countryAbbreviation"].toString ().toLocal8Bit ().data ());
+           entry.city = market["city"].toString ();
+           entry.state = market["stateAbbreviation"].toString ();
+           entry.country_code = market["countryAbbreviation"].toString ();
 
            m_results.append (entry);
        }
@@ -206,12 +206,12 @@ void IHRTunerModel::fetch_stations (int market_id)
            auto station = station_ref.toObject ();
            IHRStationEntry entry;
 
-           entry.title = String (station["name"].toString ().toLocal8Bit ().data ());
-           entry.description = String (station["description"].toString ().toLocal8Bit ().data ());
-           entry.call_letters = String (station["callLetters"].toString ().toLocal8Bit ().data ());
+           entry.title = station["name"].toString ();
+           entry.description = station["description"].toString ();
+           entry.call_letters = station["callLetters"].toString ();
 
            auto streams = station["streams"].toObject ();
-           entry.stream_uri = String (streams["shoutcast_stream"].toString ().toLocal8Bit ().data ());
+           entry.stream_uri = streams["shoutcast_stream"].toString ();
 
            m_results.append (entry);
        }

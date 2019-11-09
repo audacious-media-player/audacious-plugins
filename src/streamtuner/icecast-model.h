@@ -32,10 +32,10 @@
 #include <QAbstractListModel>
 
 struct IcecastEntry {
-    String title;
-    String genre;
-    String current_song;
-    String stream_uri;
+    QString title;
+    QString genre;
+    QString current_song;
+    QString stream_uri;
 
     enum {
         MP3,

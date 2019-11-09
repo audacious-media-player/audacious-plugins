@@ -27,7 +27,7 @@ void IcecastListingWidget::activate (const QModelIndex & index)
     Playlist::temporary_playlist ().activate ();
     auto entry = m_model->entry (index.row ());
 
-    AUDINFO ("Play radio entry %s [%s].\n", (const char *) entry.title, (const char *) entry.stream_uri);
+    AUDINFO ("Play radio entry %s [%s].\n", (const char *) entry.title.toLocal8Bit (), (const char *) entry.stream_uri.toLocal8Bit ());
 
-    Playlist::temporary_playlist ().insert_entry (-1, entry.stream_uri, Tuple (), true);
+    Playlist::temporary_playlist ().insert_entry (-1, entry.stream_uri.toUtf8 (), Tuple (), true);
 }

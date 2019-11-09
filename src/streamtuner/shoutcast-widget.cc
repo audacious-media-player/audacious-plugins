@@ -39,7 +39,7 @@ void ShoutcastListingWidget::activate (const QModelIndex & index)
     Playlist::temporary_playlist ().activate ();
     auto entry = m_model->entry (index.row ());
 
-    AUDINFO ("Play radio entry %s [%d].\n", (const char *) entry.title, entry.station_id);
+    AUDINFO ("Play radio entry %s [%d].\n", (const char *) entry.title.toLocal8Bit (), entry.station_id);
 
     StringBuf playlist_uri = str_printf ("https://yp.shoutcast.com/sbin/tunein-station.m3u?id=%d", entry.station_id);
 

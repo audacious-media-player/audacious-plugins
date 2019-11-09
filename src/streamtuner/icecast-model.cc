@@ -52,13 +52,13 @@ void IcecastTunerModel::fetch_stations ()
             switch (token_type) {
             case QXmlStreamReader::StartElement:
                 if (! reader.name ().compare (server_name_atom))
-                    entry.title = String (reader.readElementText ().toLocal8Bit ().data ());
+                    entry.title = reader.readElementText ();
                 else if (! reader.name ().compare (listen_url_atom))
-                    entry.stream_uri = String (reader.readElementText ().toLocal8Bit ().data ());
+                    entry.stream_uri = reader.readElementText ();
                 else if (! reader.name ().compare (current_song_atom))
-                    entry.current_song = String (reader.readElementText ().toLocal8Bit ().data ());
+                    entry.current_song = reader.readElementText ();
                 else if (! reader.name ().compare (genre_atom))
-                    entry.genre = String (reader.readElementText ().toLocal8Bit ().data ());
+                    entry.genre = reader.readElementText ();
                 else if (! reader.name ().compare (server_type_atom))
                 {
                     auto server_type = reader.readElementText ();

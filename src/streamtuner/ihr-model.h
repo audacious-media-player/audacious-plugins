@@ -35,18 +35,18 @@
 #include <QJsonObject>
 
 struct IHRMarketEntry {
-    String city;
-    String state;
-    String country_code;
+    QString city;
+    QString state;
+    QString country_code;
     int station_count;
     int market_id;
 };
 
 struct IHRStationEntry {
-    String title;
-    String description;
-    String call_letters;
-    String stream_uri;
+    QString title;
+    QString description;
+    QString call_letters;
+    QString stream_uri;
 };
 
 class IHRMarketModel : public QAbstractListModel {

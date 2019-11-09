@@ -35,8 +35,8 @@
 #include <QJsonObject>
 
 struct ShoutcastEntry {
-    String title;
-    String genre;
+    QString title;
+    QString genre;
     int listeners;
 
     enum {
