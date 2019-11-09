@@ -38,6 +38,7 @@
 
 #define XSPF_ROOT_NODE_NAME "playlist"
 #define XSPF_XMLNS "http://xspf.org/ns/0/"
+#define MB_RECORDING_IRI "https://musicbrainz.org/recording"
 
 typedef struct {
     Tuple::Field tupleField;
@@ -81,6 +82,9 @@ static const xspf_entry_t xspf_entries[] = {
     {Tuple::TrackPeak, "gain-track-peak", true},
     {Tuple::GainDivisor, "gain-gain-unit", true},
     {Tuple::PeakDivisor, "gain-peak-unit", true},
+
+    {Tuple::Description, "description", true},
+    {Tuple::MusicBrainzID, MB_RECORDING_IRI, true},
 };
 
 static const char * const xspf_exts[] = {"xspf"};
