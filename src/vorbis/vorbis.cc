@@ -142,6 +142,8 @@ static void read_comment (vorbis_comment * comment, Tuple & tuple)
     set_tuple_str (tuple, Tuple::AlbumArtist, comment, "ALBUMARTIST");
     set_tuple_str (tuple, Tuple::Genre, comment, "GENRE");
     set_tuple_str (tuple, Tuple::Comment, comment, "COMMENT");
+    set_tuple_str (tuple, Tuple::Description, comment, "DESCRIPTION");
+    set_tuple_str (tuple, Tuple::MusicBrainzID, comment, "musicbrainz_trackid");
 
     if ((tmps = vorbis_comment_query (comment, "TRACKNUMBER", 0)))
         tuple.set_int (Tuple::Track, atoi (tmps));
