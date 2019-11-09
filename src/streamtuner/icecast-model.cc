@@ -20,6 +20,11 @@ IcecastTunerModel::IcecastTunerModel (QObject * parent) :
     fetch_stations ();
 }
 
+IcecastTunerModel::~IcecastTunerModel ()
+{
+    m_results.clear ();
+}
+
 void IcecastTunerModel::fetch_stations ()
 {
     vfs_async_file_get_contents(ICECAST_YP, [&] (const char *, const Index<char> & buf) {

@@ -86,4 +86,3 @@ void * StreamTunerPlugin::get_qt_widget ()
 {
     return new StreamTunerWidget ();
 }
-

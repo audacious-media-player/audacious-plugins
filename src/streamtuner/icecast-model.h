@@ -59,6 +59,7 @@ public:
     };
 
     IcecastTunerModel (QObject * parent = nullptr);
+    ~IcecastTunerModel ();
 
     int columnCount (const QModelIndex &parent = QModelIndex()) const;
     int rowCount (const QModelIndex &parent = QModelIndex()) const;

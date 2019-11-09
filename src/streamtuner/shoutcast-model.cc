@@ -37,6 +37,11 @@ ShoutcastTunerModel::ShoutcastTunerModel (QObject * parent) :
     fetch_stations ();
 }
 
+ShoutcastTunerModel::~ShoutcastTunerModel ()
+{
+    m_results.clear ();
+}
+
 void ShoutcastTunerModel::fetch_stations (String genre)
 {
     auto base = "https://directory.shoutcast.com";

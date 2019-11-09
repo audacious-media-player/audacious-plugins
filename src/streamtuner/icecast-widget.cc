@@ -13,7 +13,7 @@
 IcecastListingWidget::IcecastListingWidget (QWidget * parent) :
     audqt::TreeView (parent)
 {
-    m_model = new IcecastTunerModel ();
+    m_model = new IcecastTunerModel (this);
 
     setModel (m_model);
     setRootIsDecorated (false);

@@ -52,6 +52,7 @@ struct IHRStationEntry {
 class IHRMarketModel : public QAbstractListModel {
 public:
     IHRMarketModel (QObject * parent = nullptr);
+    ~IHRMarketModel ();
 
     int columnCount (const QModelIndex &parent = QModelIndex()) const;
     int rowCount (const QModelIndex &parent = QModelIndex()) const;
@@ -69,6 +70,7 @@ private:
 class IHRTunerModel : public QAbstractListModel {
 public:
     IHRTunerModel (QObject * parent = nullptr);
+    ~IHRTunerModel ();
 
     enum {
         CallLetters,

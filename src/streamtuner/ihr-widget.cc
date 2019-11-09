@@ -25,7 +25,7 @@
 IHRListingWidget::IHRListingWidget (QWidget * parent) :
     audqt::TreeView (parent)
 {
-    m_model = new IHRTunerModel ();
+    m_model = new IHRTunerModel (this);
 
     setModel (m_model);
     setRootIsDecorated (false);
@@ -47,7 +47,7 @@ void IHRListingWidget::activate (const QModelIndex & index)
 IHRMarketWidget::IHRMarketWidget (QWidget * parent) :
     QTreeView (parent)
 {
-    m_model = new IHRMarketModel ();
+    m_model = new IHRMarketModel (this);
 
     setModel (m_model);
     setRootIsDecorated (false);

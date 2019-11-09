@@ -62,6 +62,7 @@ public:
     };
 
     ShoutcastTunerModel (QObject * parent = nullptr);
+    ~ShoutcastTunerModel ();
 
     int columnCount (const QModelIndex &parent = QModelIndex()) const;
     int rowCount (const QModelIndex &parent = QModelIndex()) const;

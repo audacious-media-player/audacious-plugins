@@ -25,7 +25,7 @@
 ShoutcastListingWidget::ShoutcastListingWidget (QWidget * parent) :
     audqt::TreeView (parent)
 {
-    m_model = new ShoutcastTunerModel ();
+    m_model = new ShoutcastTunerModel (this);
 
     setModel (m_model);
     setRootIsDecorated (false);

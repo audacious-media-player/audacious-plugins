@@ -40,6 +40,11 @@ IHRMarketModel::IHRMarketModel (QObject * parent) :
     fetch_markets ();
 }
 
+IHRMarketModel::~IHRMarketModel ()
+{
+    m_results.clear ();
+}
+
 int IHRMarketModel::columnCount (const QModelIndex &) const
 {
     return 1;
@@ -124,6 +129,11 @@ int IHRMarketModel::id_for_idx (const QModelIndex &index) const
 IHRTunerModel::IHRTunerModel (QObject * parent) :
     QAbstractListModel (parent)
 {
+}
+
+IHRTunerModel::~IHRTunerModel ()
+{
+    m_results.clear ();
 }
 
 int IHRTunerModel::columnCount (const QModelIndex &) const
