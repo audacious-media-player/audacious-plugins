@@ -292,7 +292,7 @@ void PlaylistWidget::resize (int width, int height)
 
 void PlaylistWidget::set_font (const char * font)
 {
-    m_font.capture (qfont_from_string (font));
+    m_font.capture (new QFont (audqt::qfont_from_string (font)));
     m_metrics.capture (new QFontMetrics (* m_font, this));
     m_row_height = m_metrics->height ();
     refresh ();
