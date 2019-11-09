@@ -86,6 +86,10 @@ if get_option('qt')
   subdir('skins-data')
 
   subdir('qtaudio')
+
+  if get_option('vumeter')
+    subdir('vumeter-qt')
+  endif
 endif
 
 

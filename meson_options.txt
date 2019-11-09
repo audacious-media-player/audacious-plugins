@@ -73,3 +73,8 @@ option('resample', type: 'boolean', value: true,
        description: 'Whether the resample effect plugin is enabled')
 option('speedpitch', type: 'boolean', value: true,
        description: 'Whether the speed / pitch effect plugin is enabled')
+
+
+# visualization plugins
+option('vumeter', type: 'boolean', value: true,
+       description: 'Whether the VUMeter visualization plugin is enabled')
