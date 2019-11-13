@@ -110,6 +110,10 @@ if get_option('dbus') and get_option('mpris2')
   subdir('mpris2')
 endif
 
+if get_option('notify') and get_option('qt')
+  subdir('notify')
+endif
+
 
 # input plugins
 if get_option('mpg123')

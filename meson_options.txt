@@ -66,6 +66,8 @@ option('songchange', type: 'boolean', value: true,
        description: 'Whether the Song Change plugin is enabled')
 option('scrobbler2', type: 'boolean', value: true,
        description: 'Whether the Scrobbler plugin is enabled')
+option('notify', type: 'boolean', value: true,
+       description: 'Whether the libnotify OSD plugin is enabled')
 
 
 # effect plugins
