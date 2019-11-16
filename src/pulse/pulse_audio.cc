@@ -28,8 +28,6 @@
 #include <libaudcore/threads.h>
 #include <libaudcore/preferences.h>
 
-#include <iostream>
-
 class PulseOutput : public OutputPlugin
 {
 public:
