@@ -60,6 +60,7 @@ void ShoutcastTunerModel::fetch_stations (String genre)
     // build the request for the fetch
     QUrl url = QUrl (QString (uri));
     QNetworkRequest request = QNetworkRequest (url);
+    request.setHeader (QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
     QNetworkReply * reply = m_qnam->post (request, (const char *) post_data);
     QObject::connect (reply, &QNetworkReply::finished, [reply, this] () {
