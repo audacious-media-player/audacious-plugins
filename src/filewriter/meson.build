@@ -20,7 +20,7 @@ if get_option('filewriter-ogg') and ogg_dep.found()
 endif
 
 if get_option('filewriter-mp3')
-  lame_dep = cxx.find_library('mp3lame', has_headers: ['lame.h'])
+  lame_dep = cxx.find_library('mp3lame', has_headers: ['lame/lame.h'])
   filewriter_deps += [lame_dep]
   filewriter_srcs += ['mp3.cc']
 
