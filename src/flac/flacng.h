@@ -39,7 +39,7 @@ public:
     };
 
     constexpr FLACng() : InputPlugin(info, InputInfo(FlagWritesTag)
-        .with_priority(1)
+        .with_priority(_AUD_PLUGIN_DEFAULT_PRIO + 1)
         .with_exts(exts)
         .with_mimes(mimes)) {}
 
