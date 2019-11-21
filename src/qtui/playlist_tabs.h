@@ -91,6 +91,7 @@ protected:
     void tabMoved (int from, int to);
     void mousePressEvent (QMouseEvent * e);
     void mouseDoubleClickEvent (QMouseEvent * e);
+    void contextMenuEvent (QContextMenuEvent * e);
 
 private:
     void updateSettings ();

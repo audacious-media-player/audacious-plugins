@@ -26,6 +26,7 @@
 #include <QBoxLayout>
 #include <QKeyEvent>
 #include <QLineEdit>
+#include <QMenu>
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -350,6 +351,41 @@ void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent * e)
         return;
 
     Playlist::by_index (idx).start_playback ();
+}
+
+void PlaylistTabBar::contextMenuEvent (QContextMenuEvent * e)
+{
+    int idx = tabAt (e->pos ());
+    if (idx < 0)
+        return;
+
+    auto menu = new QMenu (this);
+    auto playlist = Playlist::by_index (idx);
+
+    auto play_act = new QAction (audqt::get_icon ("media-playback-start"),
+                                 audqt::translate_str (N_("_Play")), menu);
+    auto rename_act = new QAction (audqt::get_icon ("insert-text"),
+                                   audqt::translate_str (N_("_Rename ...")), menu);
+    auto remove_act = new QAction (audqt::get_icon ("edit-delete"),
+                                   audqt::translate_str (N_("Remo_ve")), menu);
+
+    QObject::connect (play_act, & QAction::triggered, [playlist] () {
+        playlist.start_playback ();
+    });
+    QObject::connect (rename_act, & QAction::triggered, [playlist] () {
+        if (playlist.exists ())
+            audqt::playlist_show_rename (playlist);
+    });
+    QObject::connect (remove_act, & QAction::triggered, [playlist] () {
+        if (playlist.exists ())
+            audqt::playlist_confirm_delete (playlist);
+    });
+
+    menu->addAction (play_act);
+    menu->addAction (rename_act);
+    menu->addAction (remove_act);
+    menu->setAttribute (Qt::WA_DeleteOnClose);
+    menu->popup (e->globalPos ());
 }
 
 void PlaylistTabBar::updateSettings ()
