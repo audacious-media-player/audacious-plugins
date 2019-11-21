@@ -39,7 +39,6 @@ public:
     PlaylistWidget * currentPlaylistWidget () const;
     PlaylistWidget * playlistWidget (int idx) const;
 
-    void editTab (int idx, Playlist playlist);
     void currentChangedTrigger (int idx);
     void tabEditedTrigger ();
 
@@ -48,19 +47,11 @@ protected:
 
 private:
     QMenu * m_pl_menu;
-    QWidget * m_leftbtn;
     PlaylistTabBar * m_tabbar;
-
-    QLineEdit * getTabEdit (int idx);
-    void updateTabText (int idx);
-    void setupTab (int idx, QWidget * button, QWidget * * oldp);
 
     void activateSearch ();
     void addRemovePlaylists ();
-    void updateTitles ();
-    void updateIcons ();
     void renameCurrent ();
-    bool cancelRename ();
 
     void playlist_activate_cb ();
     void playlist_update_cb (Playlist::UpdateLevel global_level);
@@ -68,14 +59,10 @@ private:
 
     const HookReceiver<PlaylistTabs>
      hook1 {"qtui find", this, & PlaylistTabs::activateSearch},
-     hook2 {"qtui rename playlist", this, & PlaylistTabs::renameCurrent},
-     hook3 {"qtui update playlist settings", this, & PlaylistTabs::updateTitles};
+     hook2 {"qtui rename playlist", this, & PlaylistTabs::renameCurrent};
 
     const HookReceiver<PlaylistTabs>
-     activate_hook {"playlist activate", this, & PlaylistTabs::playlist_activate_cb},
-     set_playing_hook {"playlist set playing", this, & PlaylistTabs::updateIcons},
-     pause_hook {"playback pause", this, & PlaylistTabs::updateIcons},
-     unpause_hook {"playback unpause", this, & PlaylistTabs::updateIcons};
+     activate_hook {"playlist activate", this, & PlaylistTabs::playlist_activate_cb};
     const HookReceiver<PlaylistTabs, Playlist::UpdateLevel>
      update_hook {"playlist update", this, & PlaylistTabs::playlist_update_cb};
     const HookReceiver<PlaylistTabs, Playlist>
@@ -87,17 +74,30 @@ class PlaylistTabBar : public QTabBar
 public:
     PlaylistTabBar (QWidget * parent = nullptr);
 
+    void updateTitles ();
+    void updateIcons ();
+    void editTab (int idx, Playlist playlist);
+    bool cancelRename ();
+
 protected:
-    void tabMoved (int from, int to);
-    void mousePressEvent (QMouseEvent * e);
-    void mouseDoubleClickEvent (QMouseEvent * e);
-    void contextMenuEvent (QContextMenuEvent * e);
+    void mousePressEvent (QMouseEvent * e) override;
+    void mouseDoubleClickEvent (QMouseEvent * e) override;
+    void contextMenuEvent (QContextMenuEvent * e) override;
 
 private:
+    QLineEdit * getTabEdit (int idx);
+    void updateTabText (int idx);
+    void setupTab (int idx, QWidget * button, QWidget * * oldp);
+    void tabMoved (int from, int to);
     void updateSettings ();
 
     const HookReceiver<PlaylistTabBar>
+     pause_hook {"playback pause", this, & PlaylistTabBar::updateIcons},
+     unpause_hook {"playback unpause", this, & PlaylistTabBar::updateIcons},
+     set_playing_hook {"playlist set playing", this, & PlaylistTabBar::updateIcons},
      settings_hook {"qtui update playlist settings", this, & PlaylistTabBar::updateSettings};
+
+    QWidget * m_leftbtn = nullptr;
 };
 
 #endif

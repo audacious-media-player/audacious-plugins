@@ -72,7 +72,6 @@ LayoutWidget::LayoutWidget (QWidget * parent, Playlist playlist, QMenu * context
 PlaylistTabs::PlaylistTabs (QWidget * parent) :
     QTabWidget (parent),
     m_pl_menu (qtui_build_pl_menu (this)),
-    m_leftbtn (nullptr),
     m_tabbar (new PlaylistTabBar (this))
 {
     installEventFilter (this);
@@ -82,8 +81,8 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
     setTabBar (m_tabbar);
 
     addRemovePlaylists ();
-    updateTitles ();
-    updateIcons ();
+    m_tabbar->updateTitles ();
+    m_tabbar->updateIcons ();
     setCurrentIndex (Playlist::active_playlist ().index ());
 
     connect (this, & QTabWidget::currentChanged, this, & PlaylistTabs::currentChangedTrigger);
@@ -155,14 +154,14 @@ void PlaylistTabs::addRemovePlaylists ()
     }
 }
 
-void PlaylistTabs::updateTitles ()
+void PlaylistTabBar::updateTitles ()
 {
     int tabs = count ();
     for (int i = 0; i < tabs; i ++)
         updateTabText (i);
 }
 
-void PlaylistTabs::updateIcons ()
+void PlaylistTabBar::updateIcons ()
 {
     QIcon icon;
     int playing = Playlist::playing_playlist ().index ();
@@ -182,12 +181,12 @@ void PlaylistTabs::currentChangedTrigger (int idx)
     Playlist::by_index (idx).activate ();
 }
 
-QLineEdit * PlaylistTabs::getTabEdit (int idx)
+QLineEdit * PlaylistTabBar::getTabEdit (int idx)
 {
-    return dynamic_cast<QLineEdit *> (m_tabbar->tabButton (idx, QTabBar::LeftSide));
+    return dynamic_cast<QLineEdit *> (tabButton (idx, QTabBar::LeftSide));
 }
 
-void PlaylistTabs::updateTabText (int idx)
+void PlaylistTabBar::updateTabText (int idx)
 {
     QString title;
 
@@ -205,10 +204,10 @@ void PlaylistTabs::updateTabText (int idx)
     setTabText (idx, title);
 }
 
-void PlaylistTabs::setupTab (int idx, QWidget * button, QWidget * * oldp)
+void PlaylistTabBar::setupTab (int idx, QWidget * button, QWidget * * oldp)
 {
-    QWidget * old = m_tabbar->tabButton (idx, QTabBar::LeftSide);
-    m_tabbar->setTabButton (idx, QTabBar::LeftSide, button);
+    QWidget * old = tabButton (idx, QTabBar::LeftSide);
+    setTabButton (idx, QTabBar::LeftSide, button);
 
     if (oldp)
         * oldp = old;
@@ -221,7 +220,7 @@ void PlaylistTabs::setupTab (int idx, QWidget * button, QWidget * * oldp)
     updateTabText (idx);
 }
 
-void PlaylistTabs::editTab (int idx, Playlist playlist)
+void PlaylistTabBar::editTab (int idx, Playlist playlist)
 {
     QLineEdit * edit = getTabEdit (idx);
 
@@ -250,7 +249,7 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
         QKeyEvent * ke = (QKeyEvent *) e;
 
         if (ke->key () == Qt::Key_Escape)
-            return cancelRename ();
+            return m_tabbar->cancelRename ();
     }
 
     return QTabWidget::eventFilter(obj, e);
@@ -264,10 +263,10 @@ void PlaylistTabs::renameCurrent ()
     if (! m_tabbar->isVisible ())
         audqt::playlist_show_rename (playlist);
     else
-        editTab (idx, playlist);
+        m_tabbar->editTab (idx, playlist);
 }
 
-bool PlaylistTabs::cancelRename ()
+bool PlaylistTabBar::cancelRename ()
 {
     bool cancelled = false;
 
@@ -289,7 +288,7 @@ bool PlaylistTabs::cancelRename ()
 void PlaylistTabs::playlist_activate_cb ()
 {
     setCurrentIndex (Playlist::active_playlist ().index ());
-    cancelRename ();
+    m_tabbar->cancelRename ();
 }
 
 void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)
@@ -297,7 +296,7 @@ void PlaylistTabs::playlist_update_cb (Playlist::UpdateLevel global_level)
     if (global_level == Playlist::Structure)
         addRemovePlaylists ();
     if (global_level >= Playlist::Metadata)
-        updateTitles ();
+        m_tabbar->updateTitles ();
 
     for (int i = 0; i < count (); i ++)
         playlistWidget (i)->playlistUpdate ();
@@ -411,4 +410,5 @@ void PlaylistTabBar::updateSettings ()
     }
 
     setTabsClosable (aud_get_bool ("qtui", "close_button_visible"));
+    updateTitles ();
 }
