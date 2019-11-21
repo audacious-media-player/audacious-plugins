@@ -61,6 +61,8 @@ struct LyricsState {
         LyricWiki,
         LyricsOVH
     } source;
+
+    bool error;
 };
 
 static LyricsState g_state;
@@ -167,6 +169,7 @@ static FileProvider file_provider;
 static void persist_state (LyricsState state)
 {
     g_state = state;
+    g_state.error = false;
 
     if (g_state.source == LyricsState::Source::Local || ! aud_get_bool("lyricwiki", "enable-cache"))
         return;
@@ -651,11 +654,13 @@ static void update_lyrics_window_message (LyricsState state, const char * messag
 static void update_lyrics_window_error (const char * message)
 {
     update_lyrics_window (_("Error"), nullptr, message);
+    g_state.error = true;
 }
 
 static void update_lyrics_window_notfound (LyricsState state)
 {
     update_lyrics_window (state.title, state.artist, _("Lyrics could not be found."));
+    g_state.error = true;
 }
 
 static void update_lyrics_window (const char * title, const char * artist, const char * lyrics)
@@ -747,7 +752,7 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
         QDesktopServices::openUrl (url);
     });
 
-    if (g_state.lyrics && g_state.source != LyricsState::Source::Local)
+    if (g_state.lyrics && g_state.source != LyricsState::Source::Local && ! g_state.error)
     {
         QAction * save = menu->addAction (_("Save Locally"));
         QObject::connect (save, & QAction::triggered, [] () {
@@ -755,7 +760,7 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
         });
     }
 
-    if (g_state.source == LyricsState::Source::Local)
+    if (g_state.source == LyricsState::Source::Local || g_state.error)
     {
         QAction * refresh = menu->addAction (_("Refresh"));
         QObject::connect (refresh, & QAction::triggered, [] () {
