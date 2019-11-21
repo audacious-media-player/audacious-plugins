@@ -174,13 +174,12 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
 
 void PlaylistTabs::renameCurrent ()
 {
-    int idx = currentIndex ();
     auto playlist = currentPlaylistWidget ()->playlist ();
 
-    if (! m_tabbar->isVisible ())
-        audqt::playlist_show_rename (playlist);
+    if (m_tabbar->isVisible ())
+        m_tabbar->startRename (playlist);
     else
-        m_tabbar->editTab (idx, playlist);
+        audqt::playlist_show_rename (playlist);
 }
 
 void PlaylistTabs::playlist_activate_cb ()
@@ -243,8 +242,9 @@ void PlaylistTabBar::updateIcons ()
     }
 }
 
-void PlaylistTabBar::editTab (int idx, Playlist playlist)
+void PlaylistTabBar::startRename (Playlist playlist)
 {
+    int idx = playlist.index ();
     QLineEdit * edit = getTabEdit (idx);
 
     if (! edit)
@@ -329,7 +329,7 @@ void PlaylistTabBar::contextMenuEvent (QContextMenuEvent * e)
     });
     QObject::connect (rename_act, & QAction::triggered, [this, playlist] () {
         if (playlist.exists ())
-            editTab (playlist.index (), playlist);
+            startRename (playlist);
     });
     QObject::connect (remove_act, & QAction::triggered, [playlist] () {
         if (playlist.exists ())

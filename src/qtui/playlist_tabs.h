@@ -76,7 +76,7 @@ public:
 
     void updateTitles ();
     void updateIcons ();
-    void editTab (int idx, Playlist playlist);
+    void startRename (Playlist playlist);
     bool cancelRename ();
 
 protected:
