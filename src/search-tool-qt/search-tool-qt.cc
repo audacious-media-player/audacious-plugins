@@ -1,6 +1,7 @@
 /*
  * search-tool-qt.cc
  * Copyright 2011-2017 John Lindgren and René J.V. Bertin
+ * Copyright 2019 Ariadne Conill
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,6 +26,8 @@
 #include <QApplication>
 #include <QBoxLayout>
 #include <QContextMenuEvent>
+#include <QDirIterator>
+#include <QFileSystemWatcher>
 #include <QIcon>
 #include <QLabel>
 #include <QLineEdit>
@@ -76,10 +79,12 @@ public:
 EXPORT SearchToolQt aud_plugin_instance;
 
 static void trigger_search ();
+static void toggle_monitor ();
 
 const char * const SearchToolQt::defaults[] = {
     "max_results", "20",
     "rescan_on_startup", "FALSE",
+    "monitor", "FALSE",
     nullptr
 };
 
@@ -88,7 +93,9 @@ const PreferencesWidget SearchToolQt::widgets[] = {
         WidgetInt (CFG_ID, "max_results", trigger_search),
          {10, 10000, 10}),
     WidgetCheck (N_("Rescan library at startup"),
-        WidgetBool (CFG_ID, "rescan_on_startup"))
+        WidgetBool (CFG_ID, "rescan_on_startup")),
+    WidgetCheck (N_("Monitor library for changes"),
+        WidgetBool (CFG_ID, "monitor", toggle_monitor))
 };
 
 const PluginPreferences SearchToolQt::prefs = {{widgets}};
@@ -238,6 +245,8 @@ static QString create_item_label (int row);
 
 static Playlist s_playlist;
 static Index<String> s_search_terms;
+static QFileSystemWatcher * s_watcher;
+static QStringList s_watcher_paths;
 
 /* Note: added_table is accessed by multiple threads.
  * When adding = true, it may only be accessed by the playlist add thread.
@@ -671,6 +680,74 @@ static void playlist_update_cb (void *, void *)
     }
 }
 
+static QString uri_to_path (const String uri)
+{
+    return QString (uri_to_filename (uri));
+}
+
+// QFileSystemWatcher doesn't support recursion, so we must do it ourselves.
+// TODO: Since MacOS has an abysmally low default per-process FD limit, this
+// means it probably won't work on MacOS with a huge media library.
+// In the case of MacOS, we should use the FSEvents API instead.
+static void walk_library_paths ()
+{
+    auto root = uri_to_path (get_uri ());
+
+    s_watcher_paths.clear ();
+    s_watcher_paths.append (root);
+
+    QDirIterator it (root, QDir::Dirs | QDir::NoDot | QDir::NoDotDot, QDirIterator::Subdirectories);
+
+    while (it.hasNext ())
+        s_watcher_paths.append (it.next ());
+
+    s_watcher->addPaths (s_watcher_paths);
+}
+
+static void setup_monitor ()
+{
+    s_watcher = new QFileSystemWatcher;
+
+    QObject::connect (s_watcher, & QFileSystemWatcher::directoryChanged, [&] (const QString &path) {
+        AUDINFO ("Library directory changed, refreshing library.\n");
+
+        begin_add (get_uri ());
+        update_database ();
+
+        walk_library_paths ();
+    });
+
+    toggle_monitor ();
+}
+
+static void destroy_monitor ()
+{
+    s_watcher_paths.clear ();
+    delete s_watcher;
+}
+
+static void start_monitor ()
+{
+    AUDINFO ("Starting monitoring.\n");
+
+    walk_library_paths ();
+}
+
+static void stop_monitor ()
+{
+    AUDINFO ("Stopping monitoring.\n");
+
+    s_watcher->removePaths (s_watcher_paths);
+}
+
+static void toggle_monitor ()
+{
+    if (aud_get_bool (CFG_ID, "monitor"))
+        start_monitor ();
+    else
+        stop_monitor ();
+}
+
 static void search_init ()
 {
     find_playlist ();
@@ -680,6 +757,8 @@ static void search_init ()
 
     update_database ();
 
+    setup_monitor ();
+
     hook_associate ("playlist add complete", add_complete_cb, nullptr);
     hook_associate ("playlist scan complete", scan_complete_cb, nullptr);
     hook_associate ("playlist update", playlist_update_cb, nullptr);
@@ -687,6 +766,8 @@ static void search_init ()
 
 static void search_cleanup ()
 {
+    destroy_monitor ();
+
     hook_dissociate ("playlist add complete", add_complete_cb);
     hook_dissociate ("playlist scan complete", scan_complete_cb);
     hook_dissociate ("playlist update", playlist_update_cb);
