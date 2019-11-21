@@ -327,9 +327,9 @@ void PlaylistTabBar::contextMenuEvent (QContextMenuEvent * e)
     QObject::connect (play_act, & QAction::triggered, [playlist] () {
         playlist.start_playback ();
     });
-    QObject::connect (rename_act, & QAction::triggered, [playlist] () {
+    QObject::connect (rename_act, & QAction::triggered, [this, playlist] () {
         if (playlist.exists ())
-            audqt::playlist_show_rename (playlist);
+            editTab (playlist.index (), playlist);
     });
     QObject::connect (remove_act, & QAction::triggered, [playlist] () {
         if (playlist.exists ())
