@@ -83,10 +83,7 @@ void pl_paste_end ()
 
 void pl_song_info ()
 {
-    auto list = Playlist::active_playlist ();
-    int focus = list.get_focus ();
-    if (focus >= 0)
-        audqt::infowin_show (list, focus);
+    audqt::infowin_show_selected (Playlist::active_playlist ());
 }
 
 void pl_open_folder ()
