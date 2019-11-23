@@ -79,7 +79,7 @@ public:
 EXPORT SearchToolQt aud_plugin_instance;
 
 static void trigger_search ();
-static void toggle_monitor ();
+static void reset_monitor ();
 
 const char * const SearchToolQt::defaults[] = {
     "max_results", "20",
@@ -95,7 +95,7 @@ const PreferencesWidget SearchToolQt::widgets[] = {
     WidgetCheck (N_("Rescan library at startup"),
         WidgetBool (CFG_ID, "rescan_on_startup")),
     WidgetCheck (N_("Monitor library for changes"),
-        WidgetBool (CFG_ID, "monitor", toggle_monitor))
+        WidgetBool (CFG_ID, "monitor", reset_monitor))
 };
 
 const PluginPreferences SearchToolQt::prefs = {{widgets}};
@@ -680,18 +680,13 @@ static void playlist_update_cb (void *, void *)
     }
 }
 
-static QString uri_to_path (const String uri)
-{
-    return QString (uri_to_filename (uri));
-}
-
 // QFileSystemWatcher doesn't support recursion, so we must do it ourselves.
 // TODO: Since MacOS has an abysmally low default per-process FD limit, this
 // means it probably won't work on MacOS with a huge media library.
 // In the case of MacOS, we should use the FSEvents API instead.
 static void walk_library_paths ()
 {
-    auto root = uri_to_path (get_uri ());
+    QString root = (const char *) uri_to_filename (get_uri ());
 
     s_watcher_paths.clear ();
     s_watcher_paths.append (root);
@@ -706,6 +701,7 @@ static void walk_library_paths ()
 
 static void setup_monitor ()
 {
+    AUDINFO ("Starting monitoring.\n");
     s_watcher = new QFileSystemWatcher;
 
     QObject::connect (s_watcher, & QFileSystemWatcher::directoryChanged, [&] (const QString &path) {
@@ -717,36 +713,26 @@ static void setup_monitor ()
         walk_library_paths ();
     });
 
-    toggle_monitor ();
+    walk_library_paths ();
 }
 
 static void destroy_monitor ()
 {
-    s_watcher_paths.clear ();
-    delete s_watcher;
-}
+    if (! s_watcher)
+        return;
 
-static void start_monitor ()
-{
-    AUDINFO ("Starting monitoring.\n");
-
-    walk_library_paths ();
-}
-
-static void stop_monitor ()
-{
     AUDINFO ("Stopping monitoring.\n");
-
-    if (! s_watcher_paths.isEmpty ())
-        s_watcher->removePaths (s_watcher_paths);
+    delete s_watcher;
+    s_watcher = nullptr;
+    s_watcher_paths.clear ();
 }
 
-static void toggle_monitor ()
+static void reset_monitor ()
 {
+    destroy_monitor ();
+
     if (aud_get_bool (CFG_ID, "monitor"))
-        start_monitor ();
-    else
-        stop_monitor ();
+        setup_monitor ();
 }
 
 static void search_init ()
@@ -757,8 +743,7 @@ static void search_init ()
         begin_add (get_uri ());
 
     update_database ();
-
-    setup_monitor ();
+    reset_monitor ();
 
     hook_associate ("playlist add complete", add_complete_cb, nullptr);
     hook_associate ("playlist scan complete", scan_complete_cb, nullptr);
@@ -1037,6 +1022,7 @@ void * SearchToolQt::get_qt_widget ()
             audqt::file_entry_set_uri (chooser, uri);  // normalize path
             begin_add (uri);
             update_database ();
+            reset_monitor ();
         }
     };
 
