@@ -737,7 +737,8 @@ static void stop_monitor ()
 {
     AUDINFO ("Stopping monitoring.\n");
 
-    s_watcher->removePaths (s_watcher_paths);
+    if (! s_watcher_paths.isEmpty ())
+        s_watcher->removePaths (s_watcher_paths);
 }
 
 static void toggle_monitor ()
