@@ -50,6 +50,7 @@ TimeSlider::TimeSlider (QWidget * parent) :
     m_label->setSizePolicy (QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
 
     connect (this, & QSlider::sliderMoved, this, & TimeSlider::moved);
+    connect (this, & QSlider::sliderPressed, this, & TimeSlider::pressed);
     connect (this, & QSlider::sliderReleased, this, & TimeSlider::released);
 
     start_stop ();
@@ -113,6 +114,11 @@ void TimeSlider::update ()
 void TimeSlider::moved (int value)
 {
     set_label (value, aud_drct_get_length ());
+}
+
+void TimeSlider::pressed ()
+{
+    set_label (value (), aud_drct_get_length ());
 }
 
 void TimeSlider::released ()
