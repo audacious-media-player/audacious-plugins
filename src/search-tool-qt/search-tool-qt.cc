@@ -691,7 +691,7 @@ static void walk_library_paths ()
 
     s_watcher_paths.clear ();
 
-    QString root = (const char *) uri_to_filename (get_uri ());
+    auto root = (QString) uri_to_filename (get_uri ());
     if (root.isEmpty ())
         return;
 
