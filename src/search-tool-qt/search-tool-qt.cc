@@ -686,13 +686,16 @@ static void playlist_update_cb (void *, void *)
 // In the case of MacOS, we should use the FSEvents API instead.
 static void walk_library_paths ()
 {
-    QString root = (const char *) uri_to_filename (get_uri ());
-
+    s_watcher->removePaths (s_watcher_paths);
     s_watcher_paths.clear ();
+
+    QString root = (const char *) uri_to_filename (get_uri ());
+    if (root.isEmpty ())
+        return;
+
     s_watcher_paths.append (root);
 
     QDirIterator it (root, QDir::Dirs | QDir::NoDot | QDir::NoDotDot, QDirIterator::Subdirectories);
-
     while (it.hasNext ())
         s_watcher_paths.append (it.next ());
 
