@@ -686,7 +686,9 @@ static void playlist_update_cb (void *, void *)
 // In the case of MacOS, we should use the FSEvents API instead.
 static void walk_library_paths ()
 {
-    s_watcher->removePaths (s_watcher_paths);
+    if (! s_watcher_paths.isEmpty ())
+        s_watcher->removePaths (s_watcher_paths);
+
     s_watcher_paths.clear ();
 
     QString root = (const char *) uri_to_filename (get_uri ());
