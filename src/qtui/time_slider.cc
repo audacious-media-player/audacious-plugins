@@ -32,10 +32,12 @@ TimeSliderLabel::~TimeSliderLabel () {}
 
 void TimeSliderLabel::mouseDoubleClickEvent (QMouseEvent * event)
 {
-    aud_toggle_bool ("qtui", "show_remaining_time");
-    hook_call ("qtui toggle remaining time", nullptr);
-
-    event->accept ();
+    if (event->button () == Qt::LeftButton)
+    {
+        aud_toggle_bool ("qtui", "show_remaining_time");
+        hook_call ("qtui toggle remaining time", nullptr);
+        event->accept ();
+    }
 
     QLabel::mouseDoubleClickEvent (event);
 }
