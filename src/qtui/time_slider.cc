@@ -27,10 +27,10 @@
 #include <QProxyStyle>
 #include <QStyle>
 
-MyLabel::MyLabel (QWidget * parent) : QLabel (parent) {}
-MyLabel::~MyLabel () {}
+TimeSliderLabel::TimeSliderLabel (QWidget * parent) : QLabel (parent) {}
+TimeSliderLabel::~TimeSliderLabel () {}
 
-void MyLabel::mouseDoubleClickEvent (QMouseEvent * event)
+void TimeSliderLabel::mouseDoubleClickEvent (QMouseEvent * event)
 {
     aud_toggle_bool ("qtui", "show_remaining_time");
     hook_call ("qtui toggle remaining time", nullptr);
@@ -57,7 +57,7 @@ public:
 
 TimeSlider::TimeSlider (QWidget * parent) :
     QSlider (Qt::Horizontal, parent),
-    m_label (new MyLabel (parent))
+    m_label (new TimeSliderLabel (parent))
 {
     setFocusPolicy (Qt::NoFocus);
     setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Fixed);

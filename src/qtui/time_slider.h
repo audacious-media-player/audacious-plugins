@@ -27,11 +27,11 @@
 
 class QMouseEvent;
 
-class MyLabel : public QLabel
+class TimeSliderLabel : public QLabel
 {
 public:
-    MyLabel (QWidget * parent);
-    ~MyLabel ();
+    TimeSliderLabel (QWidget * parent);
+    ~TimeSliderLabel ();
 
 protected:
      void mouseDoubleClickEvent (QMouseEvent * event);
@@ -43,7 +43,7 @@ public:
     TimeSlider (QWidget * parent);
     ~TimeSlider ();
 
-    MyLabel * label ()
+    TimeSliderLabel * label ()
         { return m_label; }
 
 private:
@@ -55,7 +55,7 @@ private:
     void pressed ();
     void released ();
 
-    MyLabel * m_label;
+    TimeSliderLabel * m_label;
 
     const Timer<TimeSlider>
      m_timer {TimerRate::Hz4, this, & TimeSlider::update};
