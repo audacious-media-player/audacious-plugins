@@ -55,8 +55,6 @@ private:
     void pressed ();
     void released ();
 
-    void mousePressEvent (QMouseEvent * event);
-
     MyLabel * m_label;
 
     const Timer<TimeSlider>

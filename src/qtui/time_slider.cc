@@ -24,6 +24,7 @@
 #include <libaudcore/runtime.h>
 
 #include <QMouseEvent>
+#include <QProxyStyle>
 #include <QStyle>
 
 MyLabel::MyLabel (QWidget * parent) : QLabel (parent) {}
@@ -39,12 +40,28 @@ void MyLabel::mouseDoubleClickEvent (QMouseEvent * event)
     QLabel::mouseDoubleClickEvent (event);
 }
 
+class TimeSliderStyle : public QProxyStyle
+{
+public:
+    int styleHint (QStyle::StyleHint hint, const QStyleOption * option = nullptr,
+     const QWidget * widget = nullptr, QStyleHintReturn * returnData = nullptr) const
+    {
+        int styleHint = QProxyStyle::styleHint (hint, option, widget, returnData);
+
+        if (hint == QStyle::SH_Slider_AbsoluteSetButtons)
+            styleHint |= Qt::LeftButton;
+
+        return styleHint;
+    }
+};
+
 TimeSlider::TimeSlider (QWidget * parent) :
     QSlider (Qt::Horizontal, parent),
     m_label (new MyLabel (parent))
 {
     setFocusPolicy (Qt::NoFocus);
     setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Fixed);
+    setStyle (new TimeSliderStyle ());
 
     m_label->setContentsMargins (4, 0, 4, 0);
     m_label->setSizePolicy (QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
@@ -124,15 +141,4 @@ void TimeSlider::pressed ()
 void TimeSlider::released ()
 {
     aud_drct_seek (value ());
-}
-
-void TimeSlider::mousePressEvent (QMouseEvent * event)
-{
-    if (event->button () == Qt::LeftButton)
-    {
-        setValue (QStyle::sliderValueFromPosition (minimum (), maximum (), event->x (), width ()));
-        event->accept ();
-    }
-
-    QSlider::mousePressEvent (event);
 }
