@@ -74,7 +74,7 @@ static_assert (aud::n_elems (s_fields) == PlaylistModel::n_cols, "update s_field
 
 static inline QPixmap get_icon (const char * name)
 {
-    return audqt::get_icon (name).pixmap (ICON_SIZE);
+    return audqt::get_icon (name).pixmap (audqt::to_native_dpi (ICON_SIZE));
 }
 
 PlaylistModel::PlaylistModel (QObject * parent, Playlist playlist) :
