@@ -1,4 +1,4 @@
-pulse_dep = dependency('libpulse', version: '>= 0.9.5')
+pulse_dep = dependency('libpulse', version: '>= 0.9.5', required: false)
 
 
 if pulse_dep.found()
