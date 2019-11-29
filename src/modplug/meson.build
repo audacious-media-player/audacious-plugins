@@ -1,4 +1,4 @@
-modplug_dep = dependency('libmodplug')
+modplug_dep = dependency('libmodplug', required: false)
 
 
 modplug_archive_sources = [
