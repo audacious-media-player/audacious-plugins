@@ -1009,7 +1009,7 @@ void * SearchToolQt::get_qt_widget ()
 
     QObject::connect (widget, & QObject::destroyed, search_cleanup);
     QObject::connect (s_search_entry, & QLineEdit::returnPressed, action_play);
-    QObject::connect (s_results_list, & QTreeView::doubleClicked, action_play);
+    QObject::connect (s_results_list, & QTreeView::activated, action_play);
 
     QObject::connect (s_search_entry, & QLineEdit::textEdited, [] (const QString & text)
     {
