@@ -107,7 +107,6 @@ private:
 };
 
 static Playlist s_playlist;
-static Index<String> s_search_terms;
 static QFileSystemWatcher * s_watcher;
 static QStringList s_watcher_paths;
 
@@ -274,7 +273,9 @@ static void show_hide_widgets ()
 
 static void search_timeout (void * = nullptr)
 {
-    s_model.do_search (s_search_terms, aud_get_int (CFG_ID, "max_results"));
+    auto text = s_search_entry->text ().toUtf8 ();
+    auto terms = str_list_to_index (str_tolower_utf8 (text), " ");
+    s_model.do_search (terms, aud_get_int (CFG_ID, "max_results"));
     s_model.update ();
 
     int shown = s_model.num_items ();
@@ -460,8 +461,6 @@ static void search_cleanup ()
     s_search_timer.stop ();
     s_search_pending = false;
 
-    s_search_terms.clear ();
-
     set_adding (false);
 
     s_added_table.clear ();
@@ -617,14 +616,9 @@ void * SearchToolQt::get_qt_widget ()
     search_init ();
 
     QObject::connect (widget, & QObject::destroyed, search_cleanup);
+    QObject::connect (s_search_entry, & QLineEdit::textEdited, trigger_search);
     QObject::connect (s_search_entry, & QLineEdit::returnPressed, action_play);
     QObject::connect (s_results_list, & QTreeView::activated, action_play);
-
-    QObject::connect (s_search_entry, & QLineEdit::textEdited, [] (const QString & text)
-    {
-        s_search_terms = str_list_to_index (str_tolower_utf8 (text.toUtf8 ()), " ");
-        trigger_search ();
-    });
 
     QObject::connect (chooser, & QLineEdit::textChanged, [button] (const QString & text)
         { button->setDisabled (text.isEmpty ()); });
