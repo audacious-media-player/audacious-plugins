@@ -106,17 +106,46 @@ private:
     HtmlDelegate m_delegate;
 };
 
-static Playlist s_playlist;
+class Library
+{
+public:
+    ~Library () { set_adding (false); }
+
+    Playlist playlist () const { return s_playlist; }
+
+    void find_playlist ();
+    void create_playlist ();
+    bool check_playlist (bool require_added, bool require_scanned);
+    void set_adding (bool adding);
+    void begin_add (const char * uri);
+
+    static bool filter_cb (const char * filename, void *);
+
+    void add_complete (void);
+    void scan_complete (void);
+    void playlist_update (void);
+
+private:
+    Playlist s_playlist;
+    SimpleHash<String, bool> s_added_table;
+
+    /* to allow safe callback access from playlist add thread */
+    static aud::spinlock s_adding_lock;
+    static Library * s_adding_library;
+
+    HookReceiver<Library>
+     hook1 {"playlist add complete", this, & Library::add_complete},
+     hook2 {"playlist scan complete", this, & Library::scan_complete},
+     hook3 {"playlist update", this, & Library::playlist_update};
+};
+
+aud::spinlock Library::s_adding_lock;
+Library * Library::s_adding_library = nullptr;
+
+static Library * s_library = nullptr;
+
 static QFileSystemWatcher * s_watcher;
 static QStringList s_watcher_paths;
-
-/* Note: added_table is accessed by multiple threads.
- * When adding = true, it may only be accessed by the playlist add thread.
- * When adding = false, it may only be accessed by the UI thread.
- * adding may only be set by the UI thread while holding adding_lock. */
-static aud::spinlock s_adding_lock;
-static bool s_adding = false;
-static SimpleHash<String, bool> s_added_table;
 
 static QueuedFunc s_search_timer;
 static bool s_search_pending;
@@ -127,7 +156,7 @@ static QLineEdit * s_search_entry;
 static QTreeView * s_results_list;
 static QMenu * s_menu;
 
-static void find_playlist ()
+void Library::find_playlist ()
 {
     s_playlist = Playlist ();
 
@@ -142,14 +171,14 @@ static void find_playlist ()
     }
 }
 
-static void create_playlist ()
+void Library::create_playlist ()
 {
     s_playlist = Playlist::blank_playlist ();
     s_playlist.set_title (_("Library"));
     s_playlist.active_playlist ();
 }
 
-static bool check_playlist (bool require_added, bool require_scanned)
+bool Library::check_playlist (bool require_added, bool require_scanned)
 {
     if (! s_playlist.exists ())
     {
@@ -181,23 +210,24 @@ static String get_uri ()
     return to_uri (g_get_home_dir ());
 }
 
-static void set_adding (bool adding)
+void Library::set_adding (bool adding)
 {
     auto lh = s_adding_lock.take ();
-    s_adding = adding;
+    s_adding_library = adding ? this : nullptr;
 }
 
-static bool filter_cb (const char * filename, void * unused)
+bool Library::filter_cb (const char * filename, void *)
 {
+
     bool add = false;
     auto lh = s_adding_lock.take ();
 
-    if (s_adding)
+    if (s_adding_library)
     {
-        bool * added = s_added_table.lookup (String (filename));
+        bool * added = s_adding_library->s_added_table.lookup (String (filename));
 
         if ((add = ! added))
-            s_added_table.add (String (filename), true);
+            s_adding_library->s_added_table.add (String (filename), true);
         else
             (* added) = true;
     }
@@ -205,9 +235,9 @@ static bool filter_cb (const char * filename, void * unused)
     return add;
 }
 
-static void begin_add (const char * uri)
+void Library::begin_add (const char * uri)
 {
-    if (s_adding)
+    if (s_adding_library)
         return;
 
     if (! check_playlist (false, false))
@@ -245,7 +275,7 @@ static void begin_add (const char * uri)
 
 static void show_hide_widgets ()
 {
-    if (s_playlist == Playlist ())
+    if (s_library->playlist () == Playlist ())
     {
         s_wait_label->hide ();
         s_results_list->hide ();
@@ -308,9 +338,9 @@ static void trigger_search ()
 
 static void update_database ()
 {
-    if (check_playlist (true, true))
+    if (s_library->check_playlist (true, true))
     {
-        s_model.create_database (s_playlist);
+        s_model.create_database (s_library->playlist ());
         search_timeout ();
     }
     else
@@ -323,12 +353,12 @@ static void update_database ()
     show_hide_widgets ();
 }
 
-static void add_complete_cb (void *, void *)
+void Library::add_complete ()
 {
     if (! check_playlist (true, false))
         return;
 
-    if (s_adding)
+    if (s_adding_library)
     {
         set_adding (false);
 
@@ -357,7 +387,7 @@ static void add_complete_cb (void *, void *)
         update_database ();
 }
 
-static void scan_complete_cb (void *, void *)
+void Library::scan_complete ()
 {
     if (! check_playlist (true, true))
         return;
@@ -366,7 +396,7 @@ static void scan_complete_cb (void *, void *)
         update_database ();
 }
 
-static void playlist_update_cb (void *, void *)
+void Library::playlist_update ()
 {
     if (! s_model.database_valid () || ! check_playlist (true, true) ||
         s_playlist.update_detail ().level >= Playlist::Metadata)
@@ -407,7 +437,7 @@ static void setup_monitor ()
     QObject::connect (s_watcher, & QFileSystemWatcher::directoryChanged, [&] (const QString &path) {
         AUDINFO ("Library directory changed, refreshing library.\n");
 
-        begin_add (get_uri ());
+        s_library->begin_add (get_uri ());
         update_database ();
 
         walk_library_paths ();
@@ -437,33 +467,27 @@ static void reset_monitor ()
 
 static void search_init ()
 {
-    find_playlist ();
+    s_library = new Library;
+    s_library->find_playlist ();
 
     if (aud_get_bool (CFG_ID, "rescan_on_startup"))
-        begin_add (get_uri ());
+        s_library->begin_add (get_uri ());
 
     update_database ();
     reset_monitor ();
 
-    hook_associate ("playlist add complete", add_complete_cb, nullptr);
-    hook_associate ("playlist scan complete", scan_complete_cb, nullptr);
-    hook_associate ("playlist update", playlist_update_cb, nullptr);
 }
 
 static void search_cleanup ()
 {
     destroy_monitor ();
 
-    hook_dissociate ("playlist add complete", add_complete_cb);
-    hook_dissociate ("playlist scan complete", scan_complete_cb);
-    hook_dissociate ("playlist update", playlist_update_cb);
-
     s_search_timer.stop ();
     s_search_pending = false;
 
-    set_adding (false);
+    delete s_library;
+    s_library = nullptr;
 
-    s_added_table.clear ();
     s_model.destroy_database ();
 
     s_help_label = s_wait_label = s_stats_label = nullptr;
@@ -482,6 +506,7 @@ static void do_add (bool play, bool set_title)
     int n_items = s_model.num_items ();
     int n_selected = 0;
 
+    auto list = s_library->playlist ();
     Index<PlaylistAddItem> add;
     String title;
 
@@ -496,9 +521,9 @@ static void do_add (bool play, bool set_title)
         for (int entry : item.matches)
         {
             add.append (
-                s_playlist.entry_filename (entry),
-                s_playlist.entry_tuple (entry, Playlist::NoWait),
-                s_playlist.entry_decoder (entry, Playlist::NoWait)
+                list.entry_filename (entry),
+                list.entry_tuple (entry, Playlist::NoWait),
+                list.entry_decoder (entry, Playlist::NoWait)
             );
         }
 
@@ -528,7 +553,7 @@ static void action_create_playlist ()
 
 static void action_add_to_playlist ()
 {
-    if (s_playlist != Playlist::active_playlist ())
+    if (s_library->playlist () != Playlist::active_playlist ())
         do_add (false, false);
 }
 
@@ -628,7 +653,7 @@ void * SearchToolQt::get_qt_widget ()
         if (uri)
         {
             audqt::file_entry_set_uri (chooser, uri);  // normalize path
-            begin_add (uri);
+            s_library->begin_add (uri);
             update_database ();
             reset_monitor ();
         }
