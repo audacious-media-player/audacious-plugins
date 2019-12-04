@@ -16,6 +16,7 @@
  * implied. In no event shall the authors be liable for any damages arising from
  * the use of this software.
  */
+
 #ifndef HTMLDELEGATE_H
 #define HTMLDELEGATE_H
 
