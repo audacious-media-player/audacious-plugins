@@ -109,31 +109,31 @@ private:
 class Library
 {
 public:
+    Library () { find_playlist (); }
     ~Library () { set_adding (false); }
 
-    Playlist playlist () const { return s_playlist; }
+    Playlist playlist () const { return m_playlist; }
     bool is_ready () const { return m_is_ready; }
 
+    void begin_add (const char * uri);
+    void check_ready_and_update (bool force);
+
+private:
     void find_playlist ();
     void create_playlist ();
     bool check_playlist (bool require_added, bool require_scanned);
     void set_adding (bool adding);
-    void begin_add (const char * uri);
-    void check_ready_and_update (bool force);
-
-    static bool filter_cb (const char * filename, void *);
 
     void add_complete (void);
     void scan_complete (void);
     void playlist_update (void);
 
-    /* implemented externally */
-    static void signal_update ();
+    static bool filter_cb (const char * filename, void *);
+    static void signal_update (); /* implemented externally */
 
-private:
-    Playlist s_playlist;
+    Playlist m_playlist;
     bool m_is_ready = false;
-    SimpleHash<String, bool> s_added_table;
+    SimpleHash<String, bool> m_added_table;
 
     /* to allow safe callback access from playlist add thread */
     static aud::spinlock s_adding_lock;
@@ -164,14 +164,14 @@ static QMenu * s_menu;
 
 void Library::find_playlist ()
 {
-    s_playlist = Playlist ();
+    m_playlist = Playlist ();
 
     for (int p = 0; p < Playlist::n_playlists (); p ++)
     {
         auto playlist = Playlist::by_index (p);
         if (! strcmp (playlist.get_title (), _("Library")))
         {
-            s_playlist = playlist;
+            m_playlist = playlist;
             break;
         }
     }
@@ -179,22 +179,22 @@ void Library::find_playlist ()
 
 void Library::create_playlist ()
 {
-    s_playlist = Playlist::blank_playlist ();
-    s_playlist.set_title (_("Library"));
-    s_playlist.active_playlist ();
+    m_playlist = Playlist::blank_playlist ();
+    m_playlist.set_title (_("Library"));
+    m_playlist.active_playlist ();
 }
 
 bool Library::check_playlist (bool require_added, bool require_scanned)
 {
-    if (! s_playlist.exists ())
+    if (! m_playlist.exists ())
     {
-        s_playlist = Playlist ();
+        m_playlist = Playlist ();
         return false;
     }
 
-    if (require_added && s_playlist.add_in_progress ())
+    if (require_added && m_playlist.add_in_progress ())
         return false;
-    if (require_scanned && s_playlist.scan_in_progress ())
+    if (require_scanned && m_playlist.scan_in_progress ())
         return false;
 
     return true;
@@ -230,10 +230,10 @@ bool Library::filter_cb (const char * filename, void *)
 
     if (s_adding_library)
     {
-        bool * added = s_adding_library->s_added_table.lookup (String (filename));
+        bool * added = s_adding_library->m_added_table.lookup (String (filename));
 
         if ((add = ! added))
-            s_adding_library->s_added_table.add (String (filename), true);
+            s_adding_library->m_added_table.add (String (filename), true);
         else
             (* added) = true;
     }
@@ -253,30 +253,30 @@ void Library::begin_add (const char * uri)
     StringBuf path = uri_to_filename (uri);
     aud_set_str (CFG_ID, "path", path ? path : uri);
 
-    s_added_table.clear ();
+    m_added_table.clear ();
 
-    int entries = s_playlist.n_entries ();
+    int entries = m_playlist.n_entries ();
 
     for (int entry = 0; entry < entries; entry ++)
     {
-        String filename = s_playlist.entry_filename (entry);
+        String filename = m_playlist.entry_filename (entry);
 
-        if (! s_added_table.lookup (filename))
+        if (! m_added_table.lookup (filename))
         {
-            s_playlist.select_entry (entry, false);
-            s_added_table.add (filename, false);
+            m_playlist.select_entry (entry, false);
+            m_added_table.add (filename, false);
         }
         else
-            s_playlist.select_entry (entry, true);
+            m_playlist.select_entry (entry, true);
     }
 
-    s_playlist.remove_selected ();
+    m_playlist.remove_selected ();
 
     set_adding (true);
 
     Index<PlaylistAddItem> add;
     add.append (String (uri));
-    s_playlist.insert_filtered (-1, std::move (add), filter_cb, nullptr, false);
+    m_playlist.insert_filtered (-1, std::move (add), filter_cb, nullptr, false);
 }
 
 static void show_hide_widgets ()
@@ -378,40 +378,40 @@ void Library::add_complete ()
     {
         set_adding (false);
 
-        int entries = s_playlist.n_entries ();
+        int entries = m_playlist.n_entries ();
 
         for (int entry = 0; entry < entries; entry ++)
         {
-            String filename = s_playlist.entry_filename (entry);
-            bool * added = s_added_table.lookup (filename);
+            String filename = m_playlist.entry_filename (entry);
+            bool * added = m_added_table.lookup (filename);
 
-            s_playlist.select_entry (entry, ! added || ! (* added));
+            m_playlist.select_entry (entry, ! added || ! (* added));
         }
 
-        s_added_table.clear ();
+        m_added_table.clear ();
 
         /* don't clear the playlist if nothing was added */
-        if (s_playlist.n_selected () < entries)
-            s_playlist.remove_selected ();
+        if (m_playlist.n_selected () < entries)
+            m_playlist.remove_selected ();
         else
-            s_playlist.select_all (false);
+            m_playlist.select_all (false);
 
-        s_playlist.sort_entries (Playlist::Path);
+        m_playlist.sort_entries (Playlist::Path);
     }
 
-    if (! s_playlist.update_pending ())
+    if (! m_playlist.update_pending ())
         check_ready_and_update (false);
 }
 
 void Library::scan_complete ()
 {
-    if (! s_playlist.update_pending ())
+    if (! m_playlist.update_pending ())
         check_ready_and_update (false);
 }
 
 void Library::playlist_update ()
 {
-    check_ready_and_update (s_playlist.update_detail ().level >= Playlist::Metadata);
+    check_ready_and_update (m_playlist.update_detail ().level >= Playlist::Metadata);
 }
 
 // QFileSystemWatcher doesn't support recursion, so we must do it ourselves.
@@ -477,7 +477,6 @@ static void reset_monitor ()
 static void search_init ()
 {
     s_library = new Library;
-    s_library->find_playlist ();
 
     if (aud_get_bool (CFG_ID, "rescan_on_startup"))
         s_library->begin_add (get_uri ());
