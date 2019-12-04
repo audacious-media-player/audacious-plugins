@@ -224,7 +224,6 @@ void Library::set_adding (bool adding)
 
 bool Library::filter_cb (const char * filename, void *)
 {
-
     bool add = false;
     auto lh = s_adding_lock.take ();
 
@@ -248,10 +247,6 @@ void Library::begin_add (const char * uri)
 
     if (! check_playlist (false, false))
         create_playlist ();
-
-    /* if possible, store local path for compatibility with older versions */
-    StringBuf path = uri_to_filename (uri);
-    aud_set_str (CFG_ID, "path", path ? path : uri);
 
     m_added_table.clear ();
 
@@ -660,6 +655,10 @@ void * SearchToolQt::get_qt_widget ()
         if (uri)
         {
             audqt::file_entry_set_uri (chooser, uri);  // normalize path
+            /* if possible, store local path for compatibility with older versions */
+            StringBuf path = uri_to_filename (uri);
+            aud_set_str (CFG_ID, "path", path ? path : uri);
+
             s_library->begin_add (uri);
             s_library->check_ready_and_update (true);
             reset_monitor ();
