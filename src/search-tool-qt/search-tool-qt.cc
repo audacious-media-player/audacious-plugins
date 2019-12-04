@@ -18,7 +18,6 @@
  * the use of this software.
  */
 
-#include <string.h>
 #include <glib.h>
 
 #include <QBoxLayout>
@@ -32,7 +31,6 @@
 #include <QPushButton>
 #include <QTreeView>
 
-#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
@@ -42,6 +40,7 @@
 #include <libaudqt/menu.h>
 
 #include "html-delegate.h"
+#include "library.h"
 #include "search-model.h"
 
 #define CFG_ID "search-tool"
@@ -106,48 +105,6 @@ private:
     HtmlDelegate m_delegate;
 };
 
-class Library
-{
-public:
-    Library () { find_playlist (); }
-    ~Library () { set_adding (false); }
-
-    Playlist playlist () const { return m_playlist; }
-    bool is_ready () const { return m_is_ready; }
-
-    void begin_add (const char * uri);
-    void check_ready_and_update (bool force);
-
-private:
-    void find_playlist ();
-    void create_playlist ();
-    bool check_playlist (bool require_added, bool require_scanned);
-    void set_adding (bool adding);
-
-    void add_complete (void);
-    void scan_complete (void);
-    void playlist_update (void);
-
-    static bool filter_cb (const char * filename, void *);
-    static void signal_update (); /* implemented externally */
-
-    Playlist m_playlist;
-    bool m_is_ready = false;
-    SimpleHash<String, bool> m_added_table;
-
-    /* to allow safe callback access from playlist add thread */
-    static aud::spinlock s_adding_lock;
-    static Library * s_adding_library;
-
-    HookReceiver<Library>
-     hook1 {"playlist add complete", this, & Library::add_complete},
-     hook2 {"playlist scan complete", this, & Library::scan_complete},
-     hook3 {"playlist update", this, & Library::playlist_update};
-};
-
-aud::spinlock Library::s_adding_lock;
-Library * Library::s_adding_library = nullptr;
-
 static Library * s_library = nullptr;
 
 static QFileSystemWatcher * s_watcher;
@@ -161,44 +118,6 @@ static QLabel * s_help_label, * s_wait_label, * s_stats_label;
 static QLineEdit * s_search_entry;
 static QTreeView * s_results_list;
 static QMenu * s_menu;
-
-void Library::find_playlist ()
-{
-    m_playlist = Playlist ();
-
-    for (int p = 0; p < Playlist::n_playlists (); p ++)
-    {
-        auto playlist = Playlist::by_index (p);
-        if (! strcmp (playlist.get_title (), _("Library")))
-        {
-            m_playlist = playlist;
-            break;
-        }
-    }
-}
-
-void Library::create_playlist ()
-{
-    m_playlist = Playlist::blank_playlist ();
-    m_playlist.set_title (_("Library"));
-    m_playlist.active_playlist ();
-}
-
-bool Library::check_playlist (bool require_added, bool require_scanned)
-{
-    if (! m_playlist.exists ())
-    {
-        m_playlist = Playlist ();
-        return false;
-    }
-
-    if (require_added && m_playlist.add_in_progress ())
-        return false;
-    if (require_scanned && m_playlist.scan_in_progress ())
-        return false;
-
-    return true;
-}
 
 static String get_uri ()
 {
@@ -214,64 +133,6 @@ static String get_uri ()
         return to_uri (path2);
 
     return to_uri (g_get_home_dir ());
-}
-
-void Library::set_adding (bool adding)
-{
-    auto lh = s_adding_lock.take ();
-    s_adding_library = adding ? this : nullptr;
-}
-
-bool Library::filter_cb (const char * filename, void *)
-{
-    bool add = false;
-    auto lh = s_adding_lock.take ();
-
-    if (s_adding_library)
-    {
-        bool * added = s_adding_library->m_added_table.lookup (String (filename));
-
-        if ((add = ! added))
-            s_adding_library->m_added_table.add (String (filename), true);
-        else
-            (* added) = true;
-    }
-
-    return add;
-}
-
-void Library::begin_add (const char * uri)
-{
-    if (s_adding_library)
-        return;
-
-    if (! check_playlist (false, false))
-        create_playlist ();
-
-    m_added_table.clear ();
-
-    int entries = m_playlist.n_entries ();
-
-    for (int entry = 0; entry < entries; entry ++)
-    {
-        String filename = m_playlist.entry_filename (entry);
-
-        if (! m_added_table.lookup (filename))
-        {
-            m_playlist.select_entry (entry, false);
-            m_added_table.add (filename, false);
-        }
-        else
-            m_playlist.select_entry (entry, true);
-    }
-
-    m_playlist.remove_selected ();
-
-    set_adding (true);
-
-    Index<PlaylistAddItem> add;
-    add.append (String (uri));
-    m_playlist.insert_filtered (-1, std::move (add), filter_cb, nullptr, false);
 }
 
 static void show_hide_widgets ()
@@ -352,61 +213,6 @@ void Library::signal_update ()
     }
 
     show_hide_widgets ();
-}
-
-void Library::check_ready_and_update (bool force)
-{
-    bool now_ready = check_playlist (true, true);
-    if (now_ready != m_is_ready || force)
-    {
-        m_is_ready = now_ready;
-        signal_update ();
-    }
-}
-
-void Library::add_complete ()
-{
-    if (! check_playlist (true, false))
-        return;
-
-    if (s_adding_library)
-    {
-        set_adding (false);
-
-        int entries = m_playlist.n_entries ();
-
-        for (int entry = 0; entry < entries; entry ++)
-        {
-            String filename = m_playlist.entry_filename (entry);
-            bool * added = m_added_table.lookup (filename);
-
-            m_playlist.select_entry (entry, ! added || ! (* added));
-        }
-
-        m_added_table.clear ();
-
-        /* don't clear the playlist if nothing was added */
-        if (m_playlist.n_selected () < entries)
-            m_playlist.remove_selected ();
-        else
-            m_playlist.select_all (false);
-
-        m_playlist.sort_entries (Playlist::Path);
-    }
-
-    if (! m_playlist.update_pending ())
-        check_ready_and_update (false);
-}
-
-void Library::scan_complete ()
-{
-    if (! m_playlist.update_pending ())
-        check_ready_and_update (false);
-}
-
-void Library::playlist_update ()
-{
-    check_ready_and_update (m_playlist.update_detail ().level >= Playlist::Metadata);
 }
 
 // QFileSystemWatcher doesn't support recursion, so we must do it ourselves.
