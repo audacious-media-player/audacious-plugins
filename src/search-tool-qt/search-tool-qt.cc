@@ -170,7 +170,7 @@ static String get_uri ()
     auto to_uri = [] (const char * path)
         { return String (filename_to_uri (path)); };
 
-    String path1 = aud_get_str ("search-tool", "path");
+    String path1 = aud_get_str (CFG_ID, "path");
     if (path1[0])
         return strstr (path1, "://") ? path1 : to_uri (path1);
 
@@ -215,7 +215,7 @@ static void begin_add (const char * uri)
 
     /* if possible, store local path for compatibility with older versions */
     StringBuf path = uri_to_filename (uri);
-    aud_set_str ("search-tool", "path", path ? path : uri);
+    aud_set_str (CFG_ID, "path", path ? path : uri);
 
     s_added_table.clear ();
 
