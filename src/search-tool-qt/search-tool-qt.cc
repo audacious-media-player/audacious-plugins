@@ -145,8 +145,8 @@ public:
 
     void update ();
     void destroy_database ();
-    void create_database ();
-    void do_search ();
+    void create_database (Playlist playlist);
+    void do_search (const Index<String> & terms, int max_results);
 
 protected:
     int rowCount (const QModelIndex & parent) const { return m_rows; }
@@ -169,6 +169,7 @@ protected:
     QMimeData * mimeData (const QModelIndexList & indexes) const;
 
 private:
+    Playlist m_playlist;
     SimpleHash<Key, Item> m_database;
     bool m_database_valid = false;
     Index<const Item *> m_items;
@@ -189,7 +190,7 @@ private:
     HtmlDelegate m_delegate;
 };
 
-static QString create_item_label (int row);
+static QString create_item_label (const Item & item);
 
 static Playlist s_playlist;
 static Index<String> s_search_terms;
@@ -242,9 +243,15 @@ void SearchModel::update ()
 QVariant SearchModel::data (const QModelIndex & index, int role) const
 {
     if (role == Qt::DisplayRole)
-        return create_item_label (index.row ());
-    else
-        return QVariant ();
+    {
+        int row = index.row ();
+        if (row < 0 || row >= m_items.len ())
+            return QVariant ();
+
+        return create_item_label (* m_items[row]);
+    }
+
+    return QVariant ();
 }
 
 static void find_playlist ()
@@ -309,21 +316,22 @@ static void set_adding (bool adding)
 
 void SearchModel::destroy_database ()
 {
+    m_playlist = Playlist ();
     m_items.clear ();
     m_hidden_items = 0;
     m_database.clear ();
     m_database_valid = false;
 }
 
-void SearchModel::create_database ()
+void SearchModel::create_database (Playlist playlist)
 {
     destroy_database ();
 
-    int entries = s_playlist.n_entries ();
+    int entries = playlist.n_entries ();
 
     for (int e = 0; e < entries; e ++)
     {
-        Tuple tuple = s_playlist.entry_tuple (e, Playlist::NoWait);
+        Tuple tuple = playlist.entry_tuple (e, Playlist::NoWait);
 
         aud::array<SearchField, String> fields;
         fields[SearchField::Genre] = tuple.get_str (Tuple::Genre);
@@ -356,14 +364,16 @@ void SearchModel::create_database ()
         }
     }
 
+    m_playlist = playlist;
     m_database_valid = true;
 }
 
-static void search_recurse (SimpleHash<Key, Item> & domain, int mask, Index<const Item *> & results)
+static void search_recurse (SimpleHash<Key, Item> & domain,
+ const Index<String> & terms, int mask, Index<const Item *> & results)
 {
-    domain.iterate ([mask, & results] (const Key & key, Item & item)
+    domain.iterate ([&] (const Key & key, Item & item)
     {
-        int count = s_search_terms.len ();
+        int count = terms.len ();
         int new_mask = mask;
 
         for (int t = 0, bit = 1; t < count; t ++, bit <<= 1)
@@ -381,7 +391,7 @@ static void search_recurse (SimpleHash<Key, Item> & domain, int mask, Index<cons
         if (! new_mask && item.children.n_items () != 1)
             results.append (& item);
 
-        search_recurse (item.children, new_mask, results);
+        search_recurse (item.children, terms, new_mask, results);
     });
 }
 
@@ -412,7 +422,7 @@ static int item_compare_pass1 (const Item * const & a, const Item * const & b)
     return item_compare (a, b);
 }
 
-void SearchModel::do_search ()
+void SearchModel::do_search (const Index<String> & terms, int max_results)
 {
     m_items.clear ();
     m_hidden_items = 0;
@@ -421,12 +431,11 @@ void SearchModel::do_search ()
         return;
 
     /* effectively limits number of search terms to 32 */
-    search_recurse (m_database, (1 << s_search_terms.len ()) - 1, m_items);
+    search_recurse (m_database, terms, (1 << terms.len ()) - 1, m_items);
 
     /* first sort by number of songs per item */
     m_items.sort (item_compare_pass1);
 
-    int max_results = aud_get_int (CFG_ID, "max_results");
     /* limit to items with most songs */
     if (m_items.len () > max_results)
     {
@@ -524,7 +533,7 @@ static void show_hide_widgets ()
 
 static void search_timeout (void * = nullptr)
 {
-    s_model.do_search ();
+    s_model.do_search (s_search_terms, aud_get_int (CFG_ID, "max_results"));
     s_model.update ();
 
     int shown = s_model.num_items ();
@@ -559,7 +568,7 @@ static void update_database ()
 {
     if (check_playlist (true, true))
     {
-        s_model.create_database ();
+        s_model.create_database (s_playlist);
         search_timeout ();
     }
     else
@@ -783,17 +792,12 @@ static void action_add_to_playlist ()
         do_add (false, false);
 }
 
-static QString create_item_label (int row)
+static QString create_item_label (const Item & item)
 {
     static constexpr aud::array<SearchField, const char *> start_tags =
         {"", "<b>", "<i>", ""};
     static constexpr aud::array<SearchField, const char *> end_tags =
         {"", "</b>", "</i>", ""};
-
-    if (row < 0 || row >= s_model.num_items ())
-        return QString ();
-
-    auto & item = s_model.item_at (row);
 
     QString string = start_tags[item.field];
 
@@ -855,10 +859,7 @@ void ResultsView::contextMenuEvent (QContextMenuEvent * event)
 
 QMimeData * SearchModel::mimeData (const QModelIndexList & indexes) const
 {
-    if (s_search_pending)
-        search_timeout ();
-
-    s_playlist.select_all (false);
+    m_playlist.select_all (false);
 
     QList<QUrl> urls;
     for (auto & index : indexes)
@@ -869,12 +870,12 @@ QMimeData * SearchModel::mimeData (const QModelIndexList & indexes) const
 
         for (int entry : m_items[row]->matches)
         {
-            urls.append (QString (s_playlist.entry_filename (entry)));
-            s_playlist.select_entry (entry, true);
+            urls.append (QString (m_playlist.entry_filename (entry)));
+            m_playlist.select_entry (entry, true);
         }
     }
 
-    s_playlist.cache_selected ();
+    m_playlist.cache_selected ();
 
     auto data = new QMimeData;
     data->setUrls (urls);
