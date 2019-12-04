@@ -146,7 +146,6 @@ void SearchModel::destroy_database ()
     m_items.clear ();
     m_hidden_items = 0;
     m_database.clear ();
-    m_database_valid = false;
 }
 
 void SearchModel::create_database (Playlist playlist)
@@ -191,7 +190,6 @@ void SearchModel::create_database (Playlist playlist)
     }
 
     m_playlist = playlist;
-    m_database_valid = true;
 }
 
 static void search_recurse (SimpleHash<Key, Item> & domain,
@@ -252,9 +250,6 @@ void SearchModel::do_search (const Index<String> & terms, int max_results)
 {
     m_items.clear ();
     m_hidden_items = 0;
-
-    if (! m_database_valid)
-        return;
 
     /* effectively limits number of search terms to 32 */
     search_recurse (m_database, terms, (1 << terms.len ()) - 1, m_items);

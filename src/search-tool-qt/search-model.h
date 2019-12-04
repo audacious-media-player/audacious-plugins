@@ -66,7 +66,6 @@ struct Item
 class SearchModel : public QAbstractListModel
 {
 public:
-    bool database_valid () const { return m_database_valid; }
     int num_items () const { return m_items.len (); }
     const Item & item_at (int idx) const { return * m_items[idx]; }
     int num_hidden_items () const { return m_hidden_items; }
@@ -99,7 +98,6 @@ protected:
 private:
     Playlist m_playlist;
     SimpleHash<Key, Item> m_database;
-    bool m_database_valid = false;
     Index<const Item *> m_items;
     int m_hidden_items = 0;
     int m_rows = 0;

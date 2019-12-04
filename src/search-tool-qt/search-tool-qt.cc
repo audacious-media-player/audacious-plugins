@@ -112,12 +112,14 @@ public:
     ~Library () { set_adding (false); }
 
     Playlist playlist () const { return s_playlist; }
+    bool is_ready () const { return m_is_ready; }
 
     void find_playlist ();
     void create_playlist ();
     bool check_playlist (bool require_added, bool require_scanned);
     void set_adding (bool adding);
     void begin_add (const char * uri);
+    void check_ready_and_update (bool force);
 
     static bool filter_cb (const char * filename, void *);
 
@@ -125,8 +127,12 @@ public:
     void scan_complete (void);
     void playlist_update (void);
 
+    /* implemented externally */
+    static void signal_update ();
+
 private:
     Playlist s_playlist;
+    bool m_is_ready = false;
     SimpleHash<String, bool> s_added_table;
 
     /* to allow safe callback access from playlist add thread */
@@ -286,7 +292,7 @@ static void show_hide_widgets ()
     {
         s_help_label->hide ();
 
-        if (s_model.database_valid ())
+        if (s_library->is_ready ())
         {
             s_wait_label->hide ();
             s_results_list->show ();
@@ -336,9 +342,9 @@ static void trigger_search ()
     s_search_pending = true;
 }
 
-static void update_database ()
+void Library::signal_update ()
 {
-    if (s_library->check_playlist (true, true))
+    if (s_library->is_ready ())
     {
         s_model.create_database (s_library->playlist ());
         search_timeout ();
@@ -351,6 +357,16 @@ static void update_database ()
     }
 
     show_hide_widgets ();
+}
+
+void Library::check_ready_and_update (bool force)
+{
+    bool now_ready = check_playlist (true, true);
+    if (now_ready != m_is_ready || force)
+    {
+        m_is_ready = now_ready;
+        signal_update ();
+    }
 }
 
 void Library::add_complete ()
@@ -383,26 +399,19 @@ void Library::add_complete ()
         s_playlist.sort_entries (Playlist::Path);
     }
 
-    if (! s_model.database_valid () && ! s_playlist.update_pending ())
-        update_database ();
+    if (! s_playlist.update_pending ())
+        check_ready_and_update (false);
 }
 
 void Library::scan_complete ()
 {
-    if (! check_playlist (true, true))
-        return;
-
-    if (! s_model.database_valid () && ! s_playlist.update_pending ())
-        update_database ();
+    if (! s_playlist.update_pending ())
+        check_ready_and_update (false);
 }
 
 void Library::playlist_update ()
 {
-    if (! s_model.database_valid () || ! check_playlist (true, true) ||
-        s_playlist.update_detail ().level >= Playlist::Metadata)
-    {
-        update_database ();
-    }
+    check_ready_and_update (s_playlist.update_detail ().level >= Playlist::Metadata);
 }
 
 // QFileSystemWatcher doesn't support recursion, so we must do it ourselves.
@@ -438,7 +447,7 @@ static void setup_monitor ()
         AUDINFO ("Library directory changed, refreshing library.\n");
 
         s_library->begin_add (get_uri ());
-        update_database ();
+        s_library->check_ready_and_update (true);
 
         walk_library_paths ();
     });
@@ -473,9 +482,8 @@ static void search_init ()
     if (aud_get_bool (CFG_ID, "rescan_on_startup"))
         s_library->begin_add (get_uri ());
 
-    update_database ();
+    s_library->check_ready_and_update (true);
     reset_monitor ();
-
 }
 
 static void search_cleanup ()
@@ -654,7 +662,7 @@ void * SearchToolQt::get_qt_widget ()
         {
             audqt::file_entry_set_uri (chooser, uri);  // normalize path
             s_library->begin_add (uri);
-            update_database ();
+            s_library->check_ready_and_update (true);
             reset_monitor ();
         }
     };
