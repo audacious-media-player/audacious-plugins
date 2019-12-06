@@ -80,6 +80,11 @@ private:
     void draw (cairo_t * cr);
     bool button_press (GdkEventButton * event);
     bool scroll (GdkEventScroll * event);
+    bool motion (GdkEventMotion * event);
+    bool leave ();
+
+    QueuedFunc m_popup_timer;
+    bool m_popup_shown = false;
 };
 
 Window * mainwin;
@@ -515,6 +520,42 @@ bool MainWindow::button_press (GdkEventButton * event)
     }
 
     return Window::button_press (event);
+}
+
+bool MainWindow::motion (GdkEventMotion * event)
+{
+    if (is_shaded () &&
+        event->x >= 79 * config.scale &&
+        event->x <= 157 * config.scale &&
+        aud_get_bool ("show_filepopup_for_tuple"))
+    {
+        if (! m_popup_shown)
+        {
+            m_popup_timer.queue (aud_get_int ("filepopup_delay") * 100,
+             [] (void *) { audgui_infopopup_show_current (); }, nullptr);
+            m_popup_shown = true;
+        }
+    }
+    else if (m_popup_shown)
+    {
+        audgui_infopopup_hide ();
+        m_popup_timer.stop ();
+        m_popup_shown = false;
+    }
+
+    return Window::motion (event);
+}
+
+bool MainWindow::leave ()
+{
+    if (m_popup_shown)
+    {
+        audgui_infopopup_hide ();
+        m_popup_timer.stop ();
+        m_popup_shown = false;
+    }
+
+    return Window::leave ();
 }
 
 static void mainwin_playback_rpress (Button * button, GdkEventButton * event)
