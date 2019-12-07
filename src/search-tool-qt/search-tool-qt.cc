@@ -76,7 +76,7 @@ public:
     SearchWidget ();
     ~SearchWidget ();
 
-    void grab_focus () { s_search_entry->setFocus (Qt::OtherFocusReason); }
+    void grab_focus () { m_search_entry->setFocus (Qt::OtherFocusReason); }
 
     void trigger_search ();
     void reset_monitor ();
@@ -96,18 +96,18 @@ private:
     void action_add_to_playlist ();
     void show_context_menu (const QPoint & global_pos);
 
-    Library * s_library = nullptr;
-    SearchModel s_model;
+    Library * m_library = nullptr;
+    SearchModel m_model;
 
-    QFileSystemWatcher * s_watcher = nullptr;
-    QStringList s_watcher_paths;
+    QFileSystemWatcher * m_watcher = nullptr;
+    QStringList m_watcher_paths;
 
-    QueuedFunc s_search_timer;
-    bool s_search_pending = false;
+    QueuedFunc m_search_timer;
+    bool m_search_pending = false;
 
-    QLabel * s_help_label, * s_wait_label, * s_stats_label;
-    QLineEdit * s_search_entry;
-    QTreeView * s_results_list;
+    QLabel * m_help_label, * m_wait_label, * m_stats_label;
+    QLineEdit * m_search_entry;
+    QTreeView * m_results_list;
 };
 
 static QPointer<SearchWidget> s_widget;
@@ -159,80 +159,80 @@ static String get_uri ()
 
 void SearchWidget::show_hide_widgets ()
 {
-    if (s_library->playlist () == Playlist ())
+    if (m_library->playlist () == Playlist ())
     {
-        s_wait_label->hide ();
-        s_results_list->hide ();
-        s_stats_label->hide ();
-        s_help_label->show ();
+        m_wait_label->hide ();
+        m_results_list->hide ();
+        m_stats_label->hide ();
+        m_help_label->show ();
     }
     else
     {
-        s_help_label->hide ();
+        m_help_label->hide ();
 
-        if (s_library->is_ready ())
+        if (m_library->is_ready ())
         {
-            s_wait_label->hide ();
-            s_results_list->show ();
-            s_stats_label->show ();
+            m_wait_label->hide ();
+            m_results_list->show ();
+            m_stats_label->show ();
         }
         else
         {
-            s_results_list->hide ();
-            s_stats_label->hide ();
-            s_wait_label->show ();
+            m_results_list->hide ();
+            m_stats_label->hide ();
+            m_wait_label->show ();
         }
     }
 }
 
 void SearchWidget::search_timeout ()
 {
-    auto text = s_search_entry->text ().toUtf8 ();
+    auto text = m_search_entry->text ().toUtf8 ();
     auto terms = str_list_to_index (str_tolower_utf8 (text), " ");
-    s_model.do_search (terms, aud_get_int (CFG_ID, "max_results"));
-    s_model.update ();
+    m_model.do_search (terms, aud_get_int (CFG_ID, "max_results"));
+    m_model.update ();
 
-    int shown = s_model.num_items ();
-    int hidden = s_model.num_hidden_items ();
+    int shown = m_model.num_items ();
+    int hidden = m_model.num_hidden_items ();
     int total = shown + hidden;
 
     if (shown)
     {
-        auto sel = s_results_list->selectionModel ();
-        sel->select (s_model.index (0, 0), sel->Clear | sel->SelectCurrent);
+        auto sel = m_results_list->selectionModel ();
+        sel->select (m_model.index (0, 0), sel->Clear | sel->SelectCurrent);
     }
 
     if (hidden)
-        s_stats_label->setText ((const char *)
+        m_stats_label->setText ((const char *)
          str_printf (dngettext (PACKAGE, "%d of %d result shown",
          "%d of %d results shown", total), shown, total));
     else
-        s_stats_label->setText ((const char *)
+        m_stats_label->setText ((const char *)
          str_printf (dngettext (PACKAGE, "%d result", "%d results", total), total));
 
-    s_search_timer.stop ();
-    s_search_pending = false;
+    m_search_timer.stop ();
+    m_search_pending = false;
 }
 
 void SearchWidget::trigger_search ()
 {
-    s_search_timer.queue (SEARCH_DELAY,
+    m_search_timer.queue (SEARCH_DELAY,
      aud::obj_member<SearchWidget, & SearchWidget::search_timeout>, this);
-    s_search_pending = true;
+    m_search_pending = true;
 }
 
 void SearchWidget::library_updated ()
 {
-    if (s_library->is_ready ())
+    if (m_library->is_ready ())
     {
-        s_model.create_database (s_library->playlist ());
+        m_model.create_database (m_library->playlist ());
         search_timeout ();
     }
     else
     {
-        s_model.destroy_database ();
-        s_model.update ();
-        s_stats_label->clear ();
+        m_model.destroy_database ();
+        m_model.update ();
+        m_stats_label->clear ();
     }
 
     show_hide_widgets ();
@@ -244,34 +244,34 @@ void SearchWidget::library_updated ()
 // In the case of MacOS, we should use the FSEvents API instead.
 void SearchWidget::walk_library_paths ()
 {
-    if (! s_watcher_paths.isEmpty ())
-        s_watcher->removePaths (s_watcher_paths);
+    if (! m_watcher_paths.isEmpty ())
+        m_watcher->removePaths (m_watcher_paths);
 
-    s_watcher_paths.clear ();
+    m_watcher_paths.clear ();
 
     auto root = (QString) uri_to_filename (get_uri ());
     if (root.isEmpty ())
         return;
 
-    s_watcher_paths.append (root);
+    m_watcher_paths.append (root);
 
     QDirIterator it (root, QDir::Dirs | QDir::NoDot | QDir::NoDotDot, QDirIterator::Subdirectories);
     while (it.hasNext ())
-        s_watcher_paths.append (it.next ());
+        m_watcher_paths.append (it.next ());
 
-    s_watcher->addPaths (s_watcher_paths);
+    m_watcher->addPaths (m_watcher_paths);
 }
 
 void SearchWidget::setup_monitor ()
 {
     AUDINFO ("Starting monitoring.\n");
-    s_watcher = new QFileSystemWatcher;
+    m_watcher = new QFileSystemWatcher;
 
-    QObject::connect (s_watcher, & QFileSystemWatcher::directoryChanged, [&] (const QString &path) {
+    QObject::connect (m_watcher, & QFileSystemWatcher::directoryChanged, [&] (const QString &path) {
         AUDINFO ("Library directory changed, refreshing library.\n");
 
-        s_library->begin_add (get_uri ());
-        s_library->check_ready_and_update (true);
+        m_library->begin_add (get_uri ());
+        m_library->check_ready_and_update (true);
 
         walk_library_paths ();
     });
@@ -281,13 +281,13 @@ void SearchWidget::setup_monitor ()
 
 void SearchWidget::destroy_monitor ()
 {
-    if (! s_watcher)
+    if (! m_watcher)
         return;
 
     AUDINFO ("Stopping monitoring.\n");
-    delete s_watcher;
-    s_watcher = nullptr;
-    s_watcher_paths.clear ();
+    delete m_watcher;
+    m_watcher = nullptr;
+    m_watcher_paths.clear ();
 }
 
 void SearchWidget::reset_monitor ()
@@ -300,14 +300,14 @@ void SearchWidget::reset_monitor ()
 
 void SearchWidget::init_library ()
 {
-    s_library = new Library;
-    s_library->connect_update
+    m_library = new Library;
+    m_library->connect_update
      (aud::obj_member<SearchWidget, & SearchWidget::library_updated>, this);
 
     if (aud_get_bool (CFG_ID, "rescan_on_startup"))
-        s_library->begin_add (get_uri ());
+        m_library->begin_add (get_uri ());
 
-    s_library->check_ready_and_update (true);
+    m_library->check_ready_and_update (true);
     reset_monitor ();
 }
 
@@ -315,38 +315,38 @@ SearchWidget::~SearchWidget ()
 {
     destroy_monitor ();
 
-    s_search_timer.stop ();
-    s_search_pending = false;
+    m_search_timer.stop ();
+    m_search_pending = false;
 
-    delete s_library;
-    s_library = nullptr;
+    delete m_library;
+    m_library = nullptr;
 
-    s_model.destroy_database ();
+    m_model.destroy_database ();
 
-    s_help_label = s_wait_label = s_stats_label = nullptr;
-    s_search_entry = nullptr;
-    s_results_list = nullptr;
+    m_help_label = m_wait_label = m_stats_label = nullptr;
+    m_search_entry = nullptr;
+    m_results_list = nullptr;
 }
 
 void SearchWidget::do_add (bool play, bool set_title)
 {
-    if (s_search_pending)
+    if (m_search_pending)
         search_timeout ();
 
-    int n_items = s_model.num_items ();
+    int n_items = m_model.num_items ();
     int n_selected = 0;
 
-    auto list = s_library->playlist ();
+    auto list = m_library->playlist ();
     Index<PlaylistAddItem> add;
     String title;
 
-    for (auto & idx : s_results_list->selectionModel ()->selectedRows ())
+    for (auto & idx : m_results_list->selectionModel ()->selectedRows ())
     {
         int i = idx.row ();
         if (i < 0 || i >= n_items)
             continue;
 
-        auto & item = s_model.item_at (i);
+        auto & item = m_model.item_at (i);
 
         for (int entry : item.matches)
         {
@@ -383,7 +383,7 @@ void SearchWidget::action_create_playlist ()
 
 void SearchWidget::action_add_to_playlist ()
 {
-    if (s_library->playlist () != Playlist::active_playlist ())
+    if (m_library->playlist () != Playlist::active_playlist ())
         do_add (false, false);
 }
 
@@ -418,32 +418,32 @@ bool SearchToolQt::init ()
 
 SearchWidget::SearchWidget ()
 {
-    s_search_entry = new QLineEdit;
-    s_search_entry->setClearButtonEnabled (true);
-    s_search_entry->setPlaceholderText (_("Search library"));
+    m_search_entry = new QLineEdit;
+    m_search_entry->setClearButtonEnabled (true);
+    m_search_entry->setPlaceholderText (_("Search library"));
 
-    s_help_label = new QLabel (_("To import your music library into Audacious, "
+    m_help_label = new QLabel (_("To import your music library into Audacious, "
      "choose a folder and then click the \"refresh\" icon."));
-    s_help_label->setAlignment (Qt::AlignCenter);
-    s_help_label->setContentsMargins (audqt::margins.EightPt);
-    s_help_label->setWordWrap (true);
+    m_help_label->setAlignment (Qt::AlignCenter);
+    m_help_label->setContentsMargins (audqt::margins.EightPt);
+    m_help_label->setWordWrap (true);
 
-    s_wait_label = new QLabel (_("Please wait ..."));
-    s_wait_label->setAlignment (Qt::AlignCenter);
-    s_wait_label->setContentsMargins (audqt::margins.EightPt);
+    m_wait_label = new QLabel (_("Please wait ..."));
+    m_wait_label->setAlignment (Qt::AlignCenter);
+    m_wait_label->setContentsMargins (audqt::margins.EightPt);
 
-    s_results_list = new ResultsView;
-    s_results_list->setFrameStyle (QFrame::NoFrame);
-    s_results_list->setHeaderHidden (true);
-    s_results_list->setIndentation (0);
-    s_results_list->setModel (& s_model);
-    s_results_list->setSelectionMode (QTreeView::ExtendedSelection);
-    s_results_list->setDragDropMode (QTreeView::DragOnly);
-    s_results_list->setContextMenuPolicy (Qt::CustomContextMenu);
+    m_results_list = new ResultsView;
+    m_results_list->setFrameStyle (QFrame::NoFrame);
+    m_results_list->setHeaderHidden (true);
+    m_results_list->setIndentation (0);
+    m_results_list->setModel (& m_model);
+    m_results_list->setSelectionMode (QTreeView::ExtendedSelection);
+    m_results_list->setDragDropMode (QTreeView::DragOnly);
+    m_results_list->setContextMenuPolicy (Qt::CustomContextMenu);
 
-    s_stats_label = new QLabel;
-    s_stats_label->setAlignment (Qt::AlignCenter);
-    s_stats_label->setContentsMargins (audqt::margins.TwoPt);
+    m_stats_label = new QLabel;
+    m_stats_label->setAlignment (Qt::AlignCenter);
+    m_stats_label->setContentsMargins (audqt::margins.TwoPt);
 
 #ifdef Q_OS_MAC  // Mac-specific font tweaks
     s_search_entry->setFont (QApplication::font ("QTreeView"));
@@ -459,7 +459,7 @@ SearchWidget::SearchWidget ()
 
     auto hbox1 = audqt::make_hbox (nullptr);
     hbox1->setContentsMargins (audqt::margins.TwoPt);
-    hbox1->addWidget (s_search_entry);
+    hbox1->addWidget (m_search_entry);
 
     auto hbox2 = audqt::make_hbox (nullptr);
     hbox2->setContentsMargins (audqt::margins.TwoPt);
@@ -468,22 +468,22 @@ SearchWidget::SearchWidget ()
 
     auto vbox = audqt::make_vbox (this, 0);
     vbox->addLayout (hbox1);
-    vbox->addWidget (s_help_label);
-    vbox->addWidget (s_wait_label);
-    vbox->addWidget (s_results_list);
-    vbox->addWidget (s_stats_label);
+    vbox->addWidget (m_help_label);
+    vbox->addWidget (m_wait_label);
+    vbox->addWidget (m_results_list);
+    vbox->addWidget (m_stats_label);
     vbox->addLayout (hbox2);
 
     audqt::file_entry_set_uri (chooser, get_uri ());
 
     init_library ();
 
-    QObject::connect (s_search_entry, & QLineEdit::textEdited, this, & SearchWidget::trigger_search);
-    QObject::connect (s_search_entry, & QLineEdit::returnPressed, this, & SearchWidget::action_play);
-    QObject::connect (s_results_list, & QTreeView::activated, this, & SearchWidget::action_play);
+    QObject::connect (m_search_entry, & QLineEdit::textEdited, this, & SearchWidget::trigger_search);
+    QObject::connect (m_search_entry, & QLineEdit::returnPressed, this, & SearchWidget::action_play);
+    QObject::connect (m_results_list, & QTreeView::activated, this, & SearchWidget::action_play);
 
-    QObject::connect (s_results_list, & QWidget::customContextMenuRequested,
-     [this] (const QPoint & pos) { show_context_menu (s_results_list->mapToGlobal (pos)); });
+    QObject::connect (m_results_list, & QWidget::customContextMenuRequested,
+     [this] (const QPoint & pos) { show_context_menu (m_results_list->mapToGlobal (pos)); });
 
     QObject::connect (chooser, & QLineEdit::textChanged, [button] (const QString & text)
         { button->setDisabled (text.isEmpty ()); });
@@ -497,8 +497,8 @@ SearchWidget::SearchWidget ()
             StringBuf path = uri_to_filename (uri);
             aud_set_str (CFG_ID, "path", path ? path : uri);
 
-            s_library->begin_add (uri);
-            s_library->check_ready_and_update (true);
+            m_library->begin_add (uri);
+            m_library->check_ready_and_update (true);
             reset_monitor ();
         }
     };
