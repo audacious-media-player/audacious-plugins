@@ -85,6 +85,7 @@ private:
     void show_hide_widgets ();
     void search_timeout ();
     void library_updated ();
+    void location_changed ();
     void walk_library_paths ();
     void setup_monitor ();
 
@@ -108,6 +109,8 @@ private:
     QLineEdit m_search_entry;
     QTreeView m_results_list;
     QPushButton m_refresh_btn;
+
+    QLineEdit * m_file_entry;
 };
 
 static QPointer<SearchWidget> s_widget;
@@ -151,7 +154,9 @@ SearchWidget::SearchWidget () :
     m_help_label (_("To import your music library into Audacious, "
      "choose a folder and then click the \"refresh\" icon.")),
     m_wait_label (_("Please wait ...")),
-    m_refresh_btn (audqt::get_icon ("view-refresh"), QString ())
+    m_refresh_btn (audqt::get_icon ("view-refresh"), QString ()),
+    m_file_entry (audqt::file_entry_new (this, _("Choose Folder"),
+     QFileDialog::Directory, QFileDialog::AcceptOpen))
 {
     m_search_entry.setClearButtonEnabled (true);
     m_search_entry.setPlaceholderText (_("Search library"));
@@ -180,9 +185,6 @@ SearchWidget::SearchWidget () :
     m_stats_label.setFont (QApplication::font ("QSmallFont"));
 #endif
 
-    auto chooser = audqt::file_entry_new (this, _("Choose Folder"),
-     QFileDialog::Directory, QFileDialog::AcceptOpen);
-
     m_refresh_btn.setFlat (true);
     m_refresh_btn.setFocusPolicy (Qt::NoFocus);
 
@@ -192,7 +194,7 @@ SearchWidget::SearchWidget () :
 
     auto hbox2 = audqt::make_hbox (nullptr);
     hbox2->setContentsMargins (audqt::margins.TwoPt);
-    hbox2->addWidget (chooser);
+    hbox2->addWidget (m_file_entry);
     hbox2->addWidget (& m_refresh_btn);
 
     auto vbox = audqt::make_vbox (this, 0);
@@ -203,9 +205,10 @@ SearchWidget::SearchWidget () :
     vbox->addWidget (& m_stats_label);
     vbox->addLayout (hbox2);
 
-    audqt::file_entry_set_uri (chooser, get_uri ());
+    audqt::file_entry_set_uri (m_file_entry, get_uri ());
 
     init_library ();
+    reset_monitor ();
 
     QObject::connect (& m_search_entry, & QLineEdit::textEdited, this, & SearchWidget::trigger_search);
     QObject::connect (& m_search_entry, & QLineEdit::returnPressed, this, & SearchWidget::action_play);
@@ -214,26 +217,11 @@ SearchWidget::SearchWidget () :
     QObject::connect (& m_results_list, & QWidget::customContextMenuRequested,
      [this] (const QPoint & pos) { show_context_menu (m_results_list.mapToGlobal (pos)); });
 
-    QObject::connect (chooser, & QLineEdit::textChanged, [this] (const QString & text)
+    QObject::connect (m_file_entry, & QLineEdit::textChanged, [this] (const QString & text)
         { m_refresh_btn.setDisabled (text.isEmpty ()); });
 
-    auto refresh = [this, chooser] () {
-        String uri = audqt::file_entry_get_uri (chooser);
-        if (uri)
-        {
-            audqt::file_entry_set_uri (chooser, uri);  // normalize path
-            /* if possible, store local path for compatibility with older versions */
-            StringBuf path = uri_to_filename (uri);
-            aud_set_str (CFG_ID, "path", path ? path : uri);
-
-            m_library.begin_add (uri);
-            m_library.check_ready_and_update (true);
-            reset_monitor ();
-        }
-    };
-
-    QObject::connect (chooser, & QLineEdit::returnPressed, refresh);
-    QObject::connect (& m_refresh_btn, & QPushButton::clicked, refresh);
+    QObject::connect (m_file_entry, & QLineEdit::returnPressed, this, & SearchWidget::location_changed);
+    QObject::connect (& m_refresh_btn, & QPushButton::clicked, this, & SearchWidget::location_changed);
 }
 
 void SearchWidget::init_library ()
@@ -245,7 +233,6 @@ void SearchWidget::init_library ()
         m_library.begin_add (get_uri ());
 
     m_library.check_ready_and_update (true);
-    reset_monitor ();
 }
 
 void SearchWidget::show_hide_widgets ()
@@ -327,6 +314,23 @@ void SearchWidget::library_updated ()
     }
 
     show_hide_widgets ();
+}
+
+void SearchWidget::location_changed ()
+{
+    auto uri = audqt::file_entry_get_uri (m_file_entry);
+    if (! uri)
+        return;
+
+    audqt::file_entry_set_uri (m_file_entry, uri); // normalize path
+
+    // if possible, store local path for compatibility with older versions
+    StringBuf path = uri_to_filename (uri);
+    aud_set_str (CFG_ID, "path", path ? path : uri);
+
+    m_library.begin_add (uri);
+    m_library.check_ready_and_update (true);
+    reset_monitor ();
 }
 
 // QFileSystemWatcher doesn't support recursion, so we must do it ourselves.
