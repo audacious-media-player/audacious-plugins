@@ -74,7 +74,6 @@ class SearchWidget : public QWidget
 {
 public:
     SearchWidget ();
-    ~SearchWidget ();
 
     void grab_focus () { m_search_entry->setFocus (Qt::OtherFocusReason); }
 
@@ -87,7 +86,6 @@ private:
     void library_updated ();
     void walk_library_paths ();
     void setup_monitor ();
-    void destroy_monitor ();
     void init_library ();
 
     void do_add (bool play, bool set_title);
@@ -96,10 +94,10 @@ private:
     void action_add_to_playlist ();
     void show_context_menu (const QPoint & global_pos);
 
-    Library * m_library = nullptr;
+    Library m_library;
     SearchModel m_model;
 
-    QFileSystemWatcher * m_watcher = nullptr;
+    SmartPtr<QFileSystemWatcher> m_watcher;
     QStringList m_watcher_paths;
 
     QueuedFunc m_search_timer;
@@ -159,7 +157,7 @@ static String get_uri ()
 
 void SearchWidget::show_hide_widgets ()
 {
-    if (m_library->playlist () == Playlist ())
+    if (m_library.playlist () == Playlist ())
     {
         m_wait_label->hide ();
         m_results_list->hide ();
@@ -170,7 +168,7 @@ void SearchWidget::show_hide_widgets ()
     {
         m_help_label->hide ();
 
-        if (m_library->is_ready ())
+        if (m_library.is_ready ())
         {
             m_wait_label->hide ();
             m_results_list->show ();
@@ -223,9 +221,9 @@ void SearchWidget::trigger_search ()
 
 void SearchWidget::library_updated ()
 {
-    if (m_library->is_ready ())
+    if (m_library.is_ready ())
     {
-        m_model.create_database (m_library->playlist ());
+        m_model.create_database (m_library.playlist ());
         search_timeout ();
     }
     else
@@ -265,13 +263,16 @@ void SearchWidget::walk_library_paths ()
 void SearchWidget::setup_monitor ()
 {
     AUDINFO ("Starting monitoring.\n");
-    m_watcher = new QFileSystemWatcher;
+    m_watcher.capture (new QFileSystemWatcher);
+    m_watcher_paths.clear ();
 
-    QObject::connect (m_watcher, & QFileSystemWatcher::directoryChanged, [&] (const QString &path) {
+    QObject::connect (m_watcher.get (), & QFileSystemWatcher::directoryChanged,
+     [this] (const QString &)
+    {
         AUDINFO ("Library directory changed, refreshing library.\n");
 
-        m_library->begin_add (get_uri ());
-        m_library->check_ready_and_update (true);
+        m_library.begin_add (get_uri ());
+        m_library.check_ready_and_update (true);
 
         walk_library_paths ();
     });
@@ -279,53 +280,30 @@ void SearchWidget::setup_monitor ()
     walk_library_paths ();
 }
 
-void SearchWidget::destroy_monitor ()
-{
-    if (! m_watcher)
-        return;
-
-    AUDINFO ("Stopping monitoring.\n");
-    delete m_watcher;
-    m_watcher = nullptr;
-    m_watcher_paths.clear ();
-}
-
 void SearchWidget::reset_monitor ()
 {
-    destroy_monitor ();
-
     if (aud_get_bool (CFG_ID, "monitor"))
+    {
         setup_monitor ();
+    }
+    else if (m_watcher)
+    {
+        AUDINFO ("Stopping monitoring.\n");
+        m_watcher.clear ();
+        m_watcher_paths.clear ();
+    }
 }
 
 void SearchWidget::init_library ()
 {
-    m_library = new Library;
-    m_library->connect_update
+    m_library.connect_update
      (aud::obj_member<SearchWidget, & SearchWidget::library_updated>, this);
 
     if (aud_get_bool (CFG_ID, "rescan_on_startup"))
-        m_library->begin_add (get_uri ());
+        m_library.begin_add (get_uri ());
 
-    m_library->check_ready_and_update (true);
+    m_library.check_ready_and_update (true);
     reset_monitor ();
-}
-
-SearchWidget::~SearchWidget ()
-{
-    destroy_monitor ();
-
-    m_search_timer.stop ();
-    m_search_pending = false;
-
-    delete m_library;
-    m_library = nullptr;
-
-    m_model.destroy_database ();
-
-    m_help_label = m_wait_label = m_stats_label = nullptr;
-    m_search_entry = nullptr;
-    m_results_list = nullptr;
 }
 
 void SearchWidget::do_add (bool play, bool set_title)
@@ -336,7 +314,7 @@ void SearchWidget::do_add (bool play, bool set_title)
     int n_items = m_model.num_items ();
     int n_selected = 0;
 
-    auto list = m_library->playlist ();
+    auto list = m_library.playlist ();
     Index<PlaylistAddItem> add;
     String title;
 
@@ -383,7 +361,7 @@ void SearchWidget::action_create_playlist ()
 
 void SearchWidget::action_add_to_playlist ()
 {
-    if (m_library->playlist () != Playlist::active_playlist ())
+    if (m_library.playlist () != Playlist::active_playlist ())
         do_add (false, false);
 }
 
@@ -497,8 +475,8 @@ SearchWidget::SearchWidget ()
             StringBuf path = uri_to_filename (uri);
             aud_set_str (CFG_ID, "path", path ? path : uri);
 
-            m_library->begin_add (uri);
-            m_library->check_ready_and_update (true);
+            m_library.begin_add (uri);
+            m_library.check_ready_and_update (true);
             reset_monitor ();
         }
     };
