@@ -28,6 +28,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
+#include <QPointer>
 #include <QPushButton>
 #include <QTreeView>
 
@@ -37,7 +38,6 @@
 #include <libaudcore/mainloop.h>
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
-#include <libaudqt/menu.h>
 
 #include "html-delegate.h"
 #include "library.h"
@@ -70,8 +70,47 @@ public:
 
 EXPORT SearchToolQt aud_plugin_instance;
 
-static void trigger_search ();
-static void reset_monitor ();
+class SearchWidget : public QWidget
+{
+public:
+    SearchWidget ();
+    ~SearchWidget ();
+
+    void grab_focus () { s_search_entry->setFocus (Qt::OtherFocusReason); }
+
+    void trigger_search ();
+    void reset_monitor ();
+
+private:
+    void show_hide_widgets ();
+    void search_timeout ();
+    void library_updated ();
+    void walk_library_paths ();
+    void setup_monitor ();
+    void destroy_monitor ();
+    void init_library ();
+
+    void do_add (bool play, bool set_title);
+    void action_play ();
+    void action_create_playlist ();
+    void action_add_to_playlist ();
+    void show_context_menu (const QPoint & global_pos);
+
+    Library * s_library = nullptr;
+    SearchModel s_model;
+
+    QFileSystemWatcher * s_watcher = nullptr;
+    QStringList s_watcher_paths;
+
+    QueuedFunc s_search_timer;
+    bool s_search_pending = false;
+
+    QLabel * s_help_label, * s_wait_label, * s_stats_label;
+    QLineEdit * s_search_entry;
+    QTreeView * s_results_list;
+};
+
+static QPointer<SearchWidget> s_widget;
 
 const char * const SearchToolQt::defaults[] = {
     "max_results", "20",
@@ -82,12 +121,12 @@ const char * const SearchToolQt::defaults[] = {
 
 const PreferencesWidget SearchToolQt::widgets[] = {
     WidgetSpin (N_("Number of results to show:"),
-        WidgetInt (CFG_ID, "max_results", trigger_search),
+        WidgetInt (CFG_ID, "max_results", [] () { s_widget->trigger_search (); }),
          {10, 10000, 10}),
     WidgetCheck (N_("Rescan library at startup"),
         WidgetBool (CFG_ID, "rescan_on_startup")),
     WidgetCheck (N_("Monitor library for changes"),
-        WidgetBool (CFG_ID, "monitor", reset_monitor))
+        WidgetBool (CFG_ID, "monitor", [] () { s_widget->reset_monitor (); }))
 };
 
 const PluginPreferences SearchToolQt::prefs = {{widgets}};
@@ -98,26 +137,9 @@ public:
     ResultsView ()
         { setItemDelegate (& m_delegate); }
 
-protected:
-    void contextMenuEvent (QContextMenuEvent * event);
-
 private:
     HtmlDelegate m_delegate;
 };
-
-static Library * s_library = nullptr;
-
-static QFileSystemWatcher * s_watcher;
-static QStringList s_watcher_paths;
-
-static QueuedFunc s_search_timer;
-static bool s_search_pending;
-
-static SearchModel s_model;
-static QLabel * s_help_label, * s_wait_label, * s_stats_label;
-static QLineEdit * s_search_entry;
-static QTreeView * s_results_list;
-static QMenu * s_menu;
 
 static String get_uri ()
 {
@@ -135,7 +157,7 @@ static String get_uri ()
     return to_uri (g_get_home_dir ());
 }
 
-static void show_hide_widgets ()
+void SearchWidget::show_hide_widgets ()
 {
     if (s_library->playlist () == Playlist ())
     {
@@ -163,7 +185,7 @@ static void show_hide_widgets ()
     }
 }
 
-static void search_timeout (void * = nullptr)
+void SearchWidget::search_timeout ()
 {
     auto text = s_search_entry->text ().toUtf8 ();
     auto terms = str_list_to_index (str_tolower_utf8 (text), " ");
@@ -192,13 +214,14 @@ static void search_timeout (void * = nullptr)
     s_search_pending = false;
 }
 
-static void trigger_search ()
+void SearchWidget::trigger_search ()
 {
-    s_search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
+    s_search_timer.queue (SEARCH_DELAY,
+     aud::obj_member<SearchWidget, & SearchWidget::search_timeout>, this);
     s_search_pending = true;
 }
 
-void Library::signal_update ()
+void SearchWidget::library_updated ()
 {
     if (s_library->is_ready ())
     {
@@ -219,7 +242,7 @@ void Library::signal_update ()
 // TODO: Since MacOS has an abysmally low default per-process FD limit, this
 // means it probably won't work on MacOS with a huge media library.
 // In the case of MacOS, we should use the FSEvents API instead.
-static void walk_library_paths ()
+void SearchWidget::walk_library_paths ()
 {
     if (! s_watcher_paths.isEmpty ())
         s_watcher->removePaths (s_watcher_paths);
@@ -239,7 +262,7 @@ static void walk_library_paths ()
     s_watcher->addPaths (s_watcher_paths);
 }
 
-static void setup_monitor ()
+void SearchWidget::setup_monitor ()
 {
     AUDINFO ("Starting monitoring.\n");
     s_watcher = new QFileSystemWatcher;
@@ -256,7 +279,7 @@ static void setup_monitor ()
     walk_library_paths ();
 }
 
-static void destroy_monitor ()
+void SearchWidget::destroy_monitor ()
 {
     if (! s_watcher)
         return;
@@ -267,7 +290,7 @@ static void destroy_monitor ()
     s_watcher_paths.clear ();
 }
 
-static void reset_monitor ()
+void SearchWidget::reset_monitor ()
 {
     destroy_monitor ();
 
@@ -275,9 +298,11 @@ static void reset_monitor ()
         setup_monitor ();
 }
 
-static void search_init ()
+void SearchWidget::init_library ()
 {
     s_library = new Library;
+    s_library->connect_update
+     (aud::obj_member<SearchWidget, & SearchWidget::library_updated>, this);
 
     if (aud_get_bool (CFG_ID, "rescan_on_startup"))
         s_library->begin_add (get_uri ());
@@ -286,7 +311,7 @@ static void search_init ()
     reset_monitor ();
 }
 
-static void search_cleanup ()
+SearchWidget::~SearchWidget ()
 {
     destroy_monitor ();
 
@@ -301,12 +326,9 @@ static void search_cleanup ()
     s_help_label = s_wait_label = s_stats_label = nullptr;
     s_search_entry = nullptr;
     s_results_list = nullptr;
-
-    delete s_menu;
-    s_menu = nullptr;
 }
 
-static void do_add (bool play, bool set_title)
+void SearchWidget::do_add (bool play, bool set_title)
 {
     if (s_search_pending)
         search_timeout ();
@@ -347,36 +369,45 @@ static void do_add (bool play, bool set_title)
         list2.set_title (title);
 }
 
-static void action_play ()
+void SearchWidget::action_play ()
 {
     Playlist::temporary_playlist ().activate ();
     do_add (true, false);
 }
 
-static void action_create_playlist ()
+void SearchWidget::action_create_playlist ()
 {
     Playlist::new_playlist ();
     do_add (false, true);
 }
 
-static void action_add_to_playlist ()
+void SearchWidget::action_add_to_playlist ()
 {
     if (s_library->playlist () != Playlist::active_playlist ())
         do_add (false, false);
 }
 
-void ResultsView::contextMenuEvent (QContextMenuEvent * event)
+void SearchWidget::show_context_menu (const QPoint & global_pos)
 {
-    static const audqt::MenuItem items[] = {
-        audqt::MenuCommand ({N_("_Play"), "media-playback-start"}, action_play),
-        audqt::MenuCommand ({N_("_Create Playlist"), "document-new"}, action_create_playlist),
-        audqt::MenuCommand ({N_("_Add to Playlist"), "list-add"}, action_add_to_playlist)
-    };
+    auto menu = new QMenu (this);
 
-    if (! s_menu)
-        s_menu = audqt::menu_build ({items});
+    auto play_act = new QAction (audqt::get_icon ("media-playback-start"),
+                                 audqt::translate_str (N_("_Play")), menu);
+    auto create_act = new QAction (audqt::get_icon ("document-new"),
+                                   audqt::translate_str (N_("_Create Playlist")), menu);
+    auto add_act = new QAction (audqt::get_icon ("list-add"),
+                                audqt::translate_str (N_("_Add to Playlist")), menu);
 
-    s_menu->popup (event->globalPos ());
+    QObject::connect (play_act, & QAction::triggered, this, & SearchWidget::action_play);
+    QObject::connect (create_act, & QAction::triggered, this, & SearchWidget::action_create_playlist);
+    QObject::connect (add_act, & QAction::triggered, this, & SearchWidget::action_add_to_playlist);
+
+    menu->addAction (play_act);
+    menu->addAction (create_act);
+    menu->addAction (add_act);
+
+    menu->setAttribute (Qt::WA_DeleteOnClose);
+    menu->popup (global_pos);
 }
 
 bool SearchToolQt::init ()
@@ -385,7 +416,7 @@ bool SearchToolQt::init ()
     return true;
 }
 
-void * SearchToolQt::get_qt_widget ()
+SearchWidget::SearchWidget ()
 {
     s_search_entry = new QLineEdit;
     s_search_entry->setClearButtonEnabled (true);
@@ -408,6 +439,7 @@ void * SearchToolQt::get_qt_widget ()
     s_results_list->setModel (& s_model);
     s_results_list->setSelectionMode (QTreeView::ExtendedSelection);
     s_results_list->setDragDropMode (QTreeView::DragOnly);
+    s_results_list->setContextMenuPolicy (Qt::CustomContextMenu);
 
     s_stats_label = new QLabel;
     s_stats_label->setAlignment (Qt::AlignCenter);
@@ -434,9 +466,7 @@ void * SearchToolQt::get_qt_widget ()
     hbox2->addWidget (chooser);
     hbox2->addWidget (button);
 
-    auto widget = new QWidget;
-    auto vbox = audqt::make_vbox (widget, 0);
-
+    auto vbox = audqt::make_vbox (this, 0);
     vbox->addLayout (hbox1);
     vbox->addWidget (s_help_label);
     vbox->addWidget (s_wait_label);
@@ -446,17 +476,19 @@ void * SearchToolQt::get_qt_widget ()
 
     audqt::file_entry_set_uri (chooser, get_uri ());
 
-    search_init ();
+    init_library ();
 
-    QObject::connect (widget, & QObject::destroyed, search_cleanup);
-    QObject::connect (s_search_entry, & QLineEdit::textEdited, trigger_search);
-    QObject::connect (s_search_entry, & QLineEdit::returnPressed, action_play);
-    QObject::connect (s_results_list, & QTreeView::activated, action_play);
+    QObject::connect (s_search_entry, & QLineEdit::textEdited, this, & SearchWidget::trigger_search);
+    QObject::connect (s_search_entry, & QLineEdit::returnPressed, this, & SearchWidget::action_play);
+    QObject::connect (s_results_list, & QTreeView::activated, this, & SearchWidget::action_play);
+
+    QObject::connect (s_results_list, & QWidget::customContextMenuRequested,
+     [this] (const QPoint & pos) { show_context_menu (s_results_list->mapToGlobal (pos)); });
 
     QObject::connect (chooser, & QLineEdit::textChanged, [button] (const QString & text)
         { button->setDisabled (text.isEmpty ()); });
 
-    auto refresh = [chooser] () {
+    auto refresh = [this, chooser] () {
         String uri = audqt::file_entry_get_uri (chooser);
         if (uri)
         {
@@ -473,15 +505,21 @@ void * SearchToolQt::get_qt_widget ()
 
     QObject::connect (chooser, & QLineEdit::returnPressed, refresh);
     QObject::connect (button, & QPushButton::clicked, refresh);
+}
 
-    return widget;
+void * SearchToolQt::get_qt_widget ()
+{
+    if (! s_widget)
+        s_widget = new SearchWidget;
+
+    return s_widget;
 }
 
 int SearchToolQt::take_message (const char * code, const void *, int)
 {
-    if (! strcmp (code, "grab focus") && s_search_entry)
+    if (! strcmp (code, "grab focus") && s_widget)
     {
-        s_search_entry->setFocus (Qt::OtherFocusReason);
+        s_widget->grab_focus ();
         return 0;
     }
 

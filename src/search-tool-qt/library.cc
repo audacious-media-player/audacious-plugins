@@ -127,7 +127,8 @@ void Library::check_ready_and_update (bool force)
     if (now_ready != m_is_ready || force)
     {
         m_is_ready = now_ready;
-        signal_update ();
+        if (update_func)
+            update_func (update_data);
     }
 }
 

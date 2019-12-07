@@ -36,6 +36,11 @@ public:
     void begin_add (const char * uri);
     void check_ready_and_update (bool force);
 
+    void connect_update (void (* func) (void *), void * data) {
+        update_func = func;
+        update_data = data;
+    };
+
 private:
     void find_playlist ();
     void create_playlist ();
@@ -48,8 +53,6 @@ private:
     void scan_complete (void);
     void playlist_update (void);
 
-    static void signal_update (); /* implemented externally */
-
     Playlist m_playlist;
     bool m_is_ready = false;
     SimpleHash<String, bool> m_added_table;
@@ -57,6 +60,9 @@ private:
     /* to allow safe callback access from playlist add thread */
     static aud::spinlock s_adding_lock;
     static Library * s_adding_library;
+
+    void (* update_func) (void *) = nullptr;
+    void * update_data = nullptr;
 
     HookReceiver<Library>
      hook1 {"playlist add complete", this, & Library::add_complete},
