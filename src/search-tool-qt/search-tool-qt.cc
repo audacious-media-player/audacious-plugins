@@ -1,7 +1,6 @@
 /*
  * search-tool-qt.cc
- * Copyright 2011-2017 John Lindgren and René J.V. Bertin
- * Copyright 2019 Ariadne Conill
+ * Copyright 2011-2019 John Lindgren, Ariadne Conill, and René J.V. Bertin
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
