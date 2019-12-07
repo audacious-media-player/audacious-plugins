@@ -22,6 +22,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/runtime.h>
+#include <libaudqt/libaudqt.h>
 
 #include <QMouseEvent>
 #include <QProxyStyle>
@@ -68,7 +69,7 @@ TimeSlider::TimeSlider (QWidget * parent) :
     setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Fixed);
     setStyle (new TimeSliderStyle ());
 
-    m_label->setContentsMargins (4, 0, 4, 0);
+    m_label->setContentsMargins (audqt::sizes.FourPt, 0, 0, 0);
     m_label->setSizePolicy (QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
 
     connect (this, & QSlider::sliderMoved, this, & TimeSlider::moved);
