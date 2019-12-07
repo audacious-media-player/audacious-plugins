@@ -27,7 +27,10 @@
 #include <QProxyStyle>
 #include <QStyle>
 
-TimeSliderLabel::TimeSliderLabel (QWidget * parent) : QLabel (parent) {}
+TimeSliderLabel::TimeSliderLabel (QWidget * parent) : QLabel (parent)
+{
+    setStyleSheet ("font-weight: bold");
+}
 TimeSliderLabel::~TimeSliderLabel () {}
 
 void TimeSliderLabel::mouseDoubleClickEvent (QMouseEvent * event)
