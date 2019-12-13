@@ -69,6 +69,44 @@ public:
 
 EXPORT SearchToolQt aud_plugin_instance;
 
+class SearchEntry : public QLineEdit
+{
+public:
+    QTreeView * list = nullptr;
+
+protected:
+    void keyPressEvent (QKeyEvent * event)
+    {
+        auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+        if (list && ! (event->modifiers () & CtrlShiftAlt) && event->key () == Qt::Key_Down)
+        {
+            list->setCurrentIndex (list->model ()->index (0, 0));
+            list->setFocus (Qt::OtherFocusReason);
+            return;
+        }
+        QLineEdit::keyPressEvent (event);
+    }
+};
+
+class ResultsList : public QTreeView
+{
+public:
+    QWidget * entry = nullptr;
+
+protected:
+    void keyPressEvent (QKeyEvent * event)
+    {
+        auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+        if (entry && ! (event->modifiers () & CtrlShiftAlt) &&
+            event->key () == Qt::Key_Up && currentIndex ().row () == 0)
+        {
+            entry->setFocus (Qt::OtherFocusReason);
+            return;
+        }
+        QTreeView::keyPressEvent (event);
+    }
+};
+
 class SearchWidget : public QWidget
 {
 public:
@@ -105,8 +143,8 @@ private:
     bool m_search_pending = false;
 
     QLabel m_help_label, m_wait_label, m_stats_label;
-    QLineEdit m_search_entry;
-    QTreeView m_results_list;
+    SearchEntry m_search_entry;
+    ResultsList m_results_list;
     QPushButton m_refresh_btn;
 
     QLineEdit * m_file_entry;
@@ -186,6 +224,9 @@ SearchWidget::SearchWidget () :
 
     m_refresh_btn.setFlat (true);
     m_refresh_btn.setFocusPolicy (Qt::NoFocus);
+
+    m_search_entry.list = & m_results_list;
+    m_results_list.entry = & m_search_entry;
 
     auto hbox1 = audqt::make_hbox (nullptr);
     hbox1->setContentsMargins (audqt::margins.TwoPt);
