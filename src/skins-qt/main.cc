@@ -520,10 +520,10 @@ bool Window::keypress (QKeyEvent * event)
     switch (event->key ())
     {
         case Qt::Key_Left:
-            aud_drct_seek (aud_drct_get_time () - 5000);
+            aud_drct_seek (aud_drct_get_time () - aud_get_int ("step_size") * 1000);
             break;
         case Qt::Key_Right:
-            aud_drct_seek (aud_drct_get_time () + 5000);
+            aud_drct_seek (aud_drct_get_time () + aud_get_int ("step_size") * 1000);
             break;
         case Qt::Key_Space:
             aud_drct_pause ();
