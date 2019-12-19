@@ -23,9 +23,22 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef USE_GTK
+#include <gtk/gtk.h>
+#endif
+
+#ifdef USE_QT
+#include <QVBoxLayout>
+#include <QCheckBox>
+#include <libaudqt/libaudqt.h>
+#endif
+
 #include <adplug/adplug.h>
 #include <adplug/emuopl.h>
 #include <adplug/silentopl.h>
+#include <adplug/nemuopl.h>
+#include <adplug/wemuopl.h>
+#include <adplug/kemuopl.h>
 #include <adplug/players.h>
 
 #include <libaudcore/audstrings.h>
@@ -37,6 +50,11 @@
 #include "adplug-xmms.h"
 
 #define CFG_ID "AdPlug"
+
+#define ADPLUG_NUKED 0
+#define ADPLUG_WOODY 1
+#define ADPLUG_MAME  2
+#define ADPLUG_KS    3
 
 class AdPlugXMMS : public InputPlugin
 {
@@ -157,8 +175,11 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 {
   dbg_printf ("adplug_play(\"%s\"): ", filename);
 
-  bool bit16 = aud_get_bool (CFG_ID, "16bit");
-  bool stereo = aud_get_bool (CFG_ID, "Stereo");
+  int emulator = aud_get_int (CFG_ID, "Emulator");
+  // ADPLUG_NUKED only emits 16 bit
+  bool bit16 = emulator == ADPLUG_NUKED ? true : aud_get_bool (CFG_ID, "16bit");
+  // ADPLUG_NUKED only emits stereo
+  bool stereo = emulator == ADPLUG_NUKED ? true : aud_get_bool (CFG_ID, "Stereo");
   int freq = aud_get_int (CFG_ID, "Frequency");
   bool endless = aud_get_bool (CFG_ID, "Endless");
 
@@ -171,7 +192,22 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   dbg_printf ("open, ");
   open_audio (bit16 ? FORMAT_16 : FORMAT_8, freq, stereo ? 2 : 1);
 
-  CEmuopl opl (freq, bit16, stereo);
+  Copl *opl = nullptr;
+  switch (emulator) {
+    case ADPLUG_NUKED:
+      opl = new CNemuopl (freq);
+      break;
+    case ADPLUG_WOODY:
+      opl = new CWemuopl (freq, bit16, stereo);
+      break;
+    case ADPLUG_MAME:
+      opl = new CEmuopl (freq, bit16, stereo);
+      break;
+    case ADPLUG_KS:
+      opl = new CKemuopl (freq, bit16, stereo);
+      break;
+  }
+
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
   bool playing = true;  // Song self-end indicator.
@@ -179,7 +215,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   // Try to load module
   dbg_printf ("factory, ");
   CFileVFSProvider fp (fd);
-  if (!(plr.p = CAdPlug::factory (filename, &opl, CAdPlug::players, fp)))
+  if (!(plr.p = CAdPlug::factory (filename, opl, CAdPlug::players, fp)))
   {
     dbg_printf ("error!\n");
     // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
@@ -241,7 +277,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
           time += (int) (1000 / plr.p->getrefresh ());
       }
       i = std::min (towrite, (long) (toadd / plr.p->getrefresh () + 4) & ~3);
-      opl.update ((short *) sndbufpos, i);
+      opl->update ((short *) sndbufpos, i);
       sndbufpos += i * sampsize;
       towrite -= i;
       toadd -= (long) (plr.p->getrefresh () * i);
@@ -253,6 +289,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   // free everything and exit
   dbg_printf ("free");
   delete plr.p;
+  delete opl;
   plr.p = 0;
   free (sndbuf);
   dbg_printf (".\n");
@@ -291,14 +328,139 @@ const char * const AdPlugXMMS::defaults[] = {
  "Stereo", "FALSE",
  "Frequency", "44100",
  "Endless", "FALSE",
+ "Emulator", "0",
  nullptr};
+
+/***** Configuration UI *****/
+
+#ifdef USE_GTK
+static GtkWidget * output_16bit_cbtn, * output_stereo_cbtn;
+
+void emulator_changed ()
+{
+    if (aud_get_int (CFG_ID, "Emulator") == ADPLUG_NUKED) {
+        aud_set_bool (CFG_ID, "16bit", true);
+        aud_set_bool (CFG_ID, "Stereo", true);
+        gtk_toggle_button_set_active ((GtkToggleButton *) output_16bit_cbtn,
+            true);
+        gtk_widget_set_sensitive (output_16bit_cbtn, false);
+        gtk_toggle_button_set_active ((GtkToggleButton *) output_stereo_cbtn,
+            true);
+        gtk_widget_set_sensitive (output_stereo_cbtn, false);
+    }
+    else {
+        gtk_widget_set_sensitive (output_16bit_cbtn, true);
+        gtk_widget_set_sensitive (output_stereo_cbtn, true);
+    }
+}
+
+void optional_check_changed (GtkWidget * widget, const void * ignored)
+{
+    if (widget == output_16bit_cbtn)
+        aud_set_bool (CFG_ID, "16bit", 
+            gtk_toggle_button_get_active ((GtkToggleButton *) widget));
+    else if (widget == output_stereo_cbtn)
+        aud_set_bool (CFG_ID, "Stereo", 
+            gtk_toggle_button_get_active ((GtkToggleButton *) widget));
+}
+
+void * create_optional_checks ()
+{
+    GtkWidget * output_checks_box;
+
+    output_checks_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+    output_16bit_cbtn = gtk_check_button_new_with_label (
+        N_("16-bit output (if unchecked, output is 8-bit)"));
+    gtk_toggle_button_set_active ((GtkToggleButton *) output_16bit_cbtn,
+        aud_get_bool (CFG_ID, "16bit"));
+    g_signal_connect (output_16bit_cbtn, "toggled", 
+        (GCallback) optional_check_changed, 0);
+    output_stereo_cbtn = gtk_check_button_new_with_label (
+        N_("Duplicate mono output to two channels"));
+    gtk_toggle_button_set_active ((GtkToggleButton *) output_stereo_cbtn,
+        aud_get_bool (CFG_ID, "Stereo"));
+    g_signal_connect (output_stereo_cbtn, "toggled", 
+        (GCallback) optional_check_changed, 0);
+    gtk_box_pack_start ((GtkBox *) output_checks_box, output_16bit_cbtn, false,
+        false, 0);
+    gtk_box_pack_start ((GtkBox *) output_checks_box, output_stereo_cbtn, false,
+        false, 0);
+
+    emulator_changed ();
+
+    return output_checks_box;
+}
+#endif
+
+#ifdef USE_QT
+static QCheckBox * output_16bit_cbtn, * output_stereo_cbtn;
+
+void emulator_changed ()
+{
+    if (aud_get_int (CFG_ID, "Emulator") == ADPLUG_NUKED) {
+        aud_set_bool (CFG_ID, "16bit", true);
+        aud_set_bool (CFG_ID, "Stereo", true);
+        output_16bit_cbtn->setCheckState(Qt::Checked);
+        output_16bit_cbtn->setEnabled (false);
+        output_stereo_cbtn->setCheckState(Qt::Checked);
+        output_stereo_cbtn->setEnabled (false);
+    }
+    else {
+        output_16bit_cbtn->setEnabled (true);
+        output_stereo_cbtn->setEnabled (true);
+    }
+}
+
+void * create_optional_checks ()
+{
+    QWidget * output_checks_widget;
+    QVBoxLayout * output_checks_box;
+
+    output_checks_widget = new QWidget ();
+    output_checks_box = audqt::make_vbox (output_checks_widget, audqt::sizes.TwoPt);
+    output_16bit_cbtn = new QCheckBox (
+        N_("16-bit output (if unchecked, output is 8-bit)"));
+    output_16bit_cbtn->setCheckState(
+        aud_get_bool (CFG_ID, "16bit") ? Qt::Checked : Qt::Unchecked);
+    QObject::connect (output_16bit_cbtn, & QCheckBox::stateChanged, 
+        [] (int state) {
+            aud_set_bool (CFG_ID, "16bit", state != Qt::Unchecked);
+        });
+    output_stereo_cbtn = new QCheckBox (
+        N_("Duplicate mono output to two channels"));
+    output_stereo_cbtn->setCheckState(
+        aud_get_bool (CFG_ID, "Stereo") ? Qt::Checked : Qt::Unchecked);
+    QObject::connect (output_stereo_cbtn, & QCheckBox::stateChanged, 
+        [] (int state) {
+            aud_set_bool (CFG_ID, "Stereo", state != Qt::Unchecked);
+        });
+    output_checks_box->addWidget(output_16bit_cbtn);
+    output_checks_box->addWidget(output_stereo_cbtn);
+
+    emulator_changed ();
+
+    return output_checks_widget;
+}
+#endif
+
+static const ComboItem plugin_combo[] = {
+    ComboItem ("Nuked OPL3 (Nuke.YKT, 2018)", ADPLUG_NUKED),
+    ComboItem ("WoodyOPL (DOSBox, 2016)", ADPLUG_WOODY),
+    ComboItem ("Tatsuyuki Satoh 0.72 (MAME, 2003)", ADPLUG_MAME),
+    ComboItem ("Ken Silverman (2001)", ADPLUG_KS),
+};
 
 const PreferencesWidget AdPlugXMMS::widgets[] = {
     WidgetLabel (N_("<b>Output</b>")),
-    WidgetCheck (N_("16-bit output (if unchecked, output is 8-bit)"),
-        WidgetBool (CFG_ID, "16bit")),
-    WidgetCheck (N_("Duplicate mono output to two channels"),
-        WidgetBool (CFG_ID, "Stereo")),
+    WidgetCombo (N_("OPL Emulator:"),
+        WidgetInt (CFG_ID, "Emulator", emulator_changed),
+        {{plugin_combo}}),
+#ifdef USE_GTK
+    WidgetCustomGTK (create_optional_checks),
+#endif
+#ifdef USE_QT
+    WidgetCustomQt (create_optional_checks),
+#endif
     WidgetSpin (N_("Sample rate"),
         WidgetInt (CFG_ID, "Frequency"), {8000, 192000, 50, N_("Hz")}),
     WidgetLabel (N_("<b>Miscellaneous</b>")),
