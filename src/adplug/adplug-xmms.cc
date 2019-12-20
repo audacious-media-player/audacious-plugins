@@ -360,7 +360,11 @@ const char * const AdPlugXMMS::defaults[] = {
 /***** Configuration UI *****/
 
 #ifdef USE_GTK
-static GtkWidget * output_16bit_cbtn, * output_stereo_cbtn;
+static GtkWidget * output_16bit_cbtn_gtk, * output_stereo_cbtn_gtk;
+#endif
+#ifdef USE_QT
+static QCheckBox * output_16bit_cbtn_qt, * output_stereo_cbtn_qt;
+#endif
 
 void emulator_changed ()
 {
@@ -368,52 +372,81 @@ void emulator_changed ()
   if (aud_get_int (CFG_ID, "Emulator") == ADPLUG_NUKED) {
     aud_set_bool (CFG_ID, "16bit", true);
     aud_set_bool (CFG_ID, "Stereo", true);
-    gtk_toggle_button_set_active ((GtkToggleButton *) output_16bit_cbtn,
-        true);
-    gtk_widget_set_sensitive (output_16bit_cbtn, false);
-    gtk_toggle_button_set_active ((GtkToggleButton *) output_stereo_cbtn,
-        true);
-    gtk_widget_set_sensitive (output_stereo_cbtn, false);
+# ifdef USE_GTK
+    if (output_16bit_cbtn_gtk && output_stereo_cbtn_gtk) {
+      gtk_toggle_button_set_active ((GtkToggleButton *) output_16bit_cbtn_gtk,
+          true);
+      gtk_widget_set_sensitive (output_16bit_cbtn_gtk, false);
+      gtk_toggle_button_set_active ((GtkToggleButton *) output_stereo_cbtn_gtk,
+          true);
+      gtk_widget_set_sensitive (output_stereo_cbtn_gtk, false);
+    }
+# endif
+# ifdef USE_QT
+    if (output_16bit_cbtn_qt && output_stereo_cbtn_qt) {
+      output_16bit_cbtn_qt->setCheckState(Qt::Checked);
+      output_16bit_cbtn_qt->setEnabled (false);
+      output_stereo_cbtn_qt->setCheckState(Qt::Checked);
+      output_stereo_cbtn_qt->setEnabled (false);
+    }
+# endif
   }
   else {
 #endif
-    gtk_widget_set_sensitive (output_16bit_cbtn, true);
-    gtk_widget_set_sensitive (output_stereo_cbtn, true);
+#ifdef USE_GTK
+    if (output_16bit_cbtn_gtk && output_stereo_cbtn_gtk) {
+      gtk_widget_set_sensitive (output_16bit_cbtn_gtk, true);
+      gtk_widget_set_sensitive (output_stereo_cbtn_gtk, true);
+    }
+#endif
+#ifdef USE_QT
+    if (output_16bit_cbtn_qt && output_stereo_cbtn_qt) {
+      output_16bit_cbtn_qt->setEnabled (true);
+      output_stereo_cbtn_qt->setEnabled (true);
+    }
+#endif
 #ifdef HAVE_ADPLUG_NEMUOPL_H
   }
 #endif
 }
 
-void optional_check_changed (GtkWidget * widget, const void * ignored)
+#ifdef USE_GTK
+void optional_check_changed_gtk (GtkWidget * widget, const void * ignored)
 {
-  if (widget == output_16bit_cbtn)
+  if (widget == output_16bit_cbtn_gtk)
     aud_set_bool (CFG_ID, "16bit", 
       gtk_toggle_button_get_active ((GtkToggleButton *) widget));
-  else if (widget == output_stereo_cbtn)
+  else if (widget == output_stereo_cbtn_gtk)
     aud_set_bool (CFG_ID, "Stereo", 
       gtk_toggle_button_get_active ((GtkToggleButton *) widget));
 }
 
-void * create_optional_checks ()
+void * create_optional_checks_gtk ()
 {
+# ifdef USE_QT
+  // only necessary when both GTK and QT support are compiled in
+  output_16bit_cbtn_qt = nullptr;
+  output_stereo_cbtn_qt = nullptr;
+# endif
+
   GtkWidget * output_checks_box;
 
-  output_checks_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-  output_16bit_cbtn = gtk_check_button_new_with_label (
+  output_checks_box = gtk_vbox_new (false, 6);
+  output_16bit_cbtn_gtk = gtk_check_button_new_with_label (
     N_("16-bit output (if unchecked, output is 8-bit)"));
-  gtk_toggle_button_set_active ((GtkToggleButton *) output_16bit_cbtn,
+  gtk_toggle_button_set_active ((GtkToggleButton *) output_16bit_cbtn_gtk,
     aud_get_bool (CFG_ID, "16bit"));
-  g_signal_connect (output_16bit_cbtn, "toggled", 
-    (GCallback) optional_check_changed, 0);
-  output_stereo_cbtn = gtk_check_button_new_with_label (
+  g_signal_connect (output_16bit_cbtn_gtk, "toggled", 
+    (GCallback) optional_check_changed_gtk, 0);
+  output_stereo_cbtn_gtk = gtk_check_button_new_with_label (
     N_("Duplicate mono output to two channels"));
-  gtk_toggle_button_set_active ((GtkToggleButton *) output_stereo_cbtn,
+  gtk_toggle_button_set_active ((GtkToggleButton *) output_stereo_cbtn_gtk,
     aud_get_bool (CFG_ID, "Stereo"));
-  g_signal_connect (output_stereo_cbtn, "toggled", 
-    (GCallback) optional_check_changed, 0);
-  gtk_box_pack_start ((GtkBox *) output_checks_box, output_16bit_cbtn, false,
+  g_signal_connect (output_stereo_cbtn_gtk, "toggled", 
+    (GCallback) optional_check_changed_gtk, 0);
+  gtk_box_pack_start ((GtkBox *) output_checks_box, output_16bit_cbtn_gtk, false,
     false, 0);
-  gtk_box_pack_start ((GtkBox *) output_checks_box, output_stereo_cbtn, false,
+  gtk_box_pack_start ((GtkBox *) output_checks_box, output_stereo_cbtn_gtk, false,
     false, 0);
 
   emulator_changed ();
@@ -423,53 +456,37 @@ void * create_optional_checks ()
 #endif
 
 #ifdef USE_QT
-static QCheckBox * output_16bit_cbtn, * output_stereo_cbtn;
-
-void emulator_changed ()
+void * create_optional_checks_qt ()
 {
-#ifdef HAVE_ADPLUG_NEMUOPL_H
-  if (aud_get_int (CFG_ID, "Emulator") == ADPLUG_NUKED) {
-    aud_set_bool (CFG_ID, "16bit", true);
-    aud_set_bool (CFG_ID, "Stereo", true);
-    output_16bit_cbtn->setCheckState(Qt::Checked);
-    output_16bit_cbtn->setEnabled (false);
-    output_stereo_cbtn->setCheckState(Qt::Checked);
-    output_stereo_cbtn->setEnabled (false);
-  }
-  else {
-#endif
-    output_16bit_cbtn->setEnabled (true);
-    output_stereo_cbtn->setEnabled (true);
-#ifdef HAVE_ADPLUG_NEMUOPL_H
-  }
-#endif
-}
+# ifdef USE_GTK
+  // only necessary when both GTK and QT support are compiled in
+  output_16bit_cbtn_gtk = nullptr;
+  output_stereo_cbtn_gtk = nullptr;
+# endif
 
-void * create_optional_checks ()
-{
   QWidget * output_checks_widget;
   QVBoxLayout * output_checks_box;
 
   output_checks_widget = new QWidget ();
   output_checks_box = audqt::make_vbox (output_checks_widget, audqt::sizes.TwoPt);
-  output_16bit_cbtn = new QCheckBox (
+  output_16bit_cbtn_qt = new QCheckBox (
     N_("16-bit output (if unchecked, output is 8-bit)"));
-  output_16bit_cbtn->setCheckState(
+  output_16bit_cbtn_qt->setCheckState(
     aud_get_bool (CFG_ID, "16bit") ? Qt::Checked : Qt::Unchecked);
-  QObject::connect (output_16bit_cbtn, & QCheckBox::stateChanged, 
+  QObject::connect (output_16bit_cbtn_qt, & QCheckBox::stateChanged, 
     [] (int state) {
       aud_set_bool (CFG_ID, "16bit", state != Qt::Unchecked);
     });
-  output_stereo_cbtn = new QCheckBox (
+  output_stereo_cbtn_qt = new QCheckBox (
     N_("Duplicate mono output to two channels"));
-  output_stereo_cbtn->setCheckState(
+  output_stereo_cbtn_qt->setCheckState(
     aud_get_bool (CFG_ID, "Stereo") ? Qt::Checked : Qt::Unchecked);
-  QObject::connect (output_stereo_cbtn, & QCheckBox::stateChanged, 
+  QObject::connect (output_stereo_cbtn_qt, & QCheckBox::stateChanged, 
     [] (int state) {
       aud_set_bool (CFG_ID, "Stereo", state != Qt::Unchecked);
     });
-  output_checks_box->addWidget(output_16bit_cbtn);
-  output_checks_box->addWidget(output_stereo_cbtn);
+  output_checks_box->addWidget(output_16bit_cbtn_qt);
+  output_checks_box->addWidget(output_stereo_cbtn_qt);
 
   emulator_changed ();
 
@@ -496,10 +513,10 @@ const PreferencesWidget AdPlugXMMS::widgets[] = {
     WidgetInt (CFG_ID, "Emulator", emulator_changed),
     {{plugin_combo}}),
 #ifdef USE_GTK
-  WidgetCustomGTK (create_optional_checks),
+  WidgetCustomGTK (create_optional_checks_gtk),
 #endif
 #ifdef USE_QT
-  WidgetCustomQt (create_optional_checks),
+  WidgetCustomQt (create_optional_checks_qt),
 #endif
   WidgetSpin (N_("Sample rate"),
     WidgetInt (CFG_ID, "Frequency"), {8000, 192000, 50, N_("Hz")}),

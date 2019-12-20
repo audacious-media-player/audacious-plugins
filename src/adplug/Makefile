@@ -11,8 +11,7 @@ LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${QT_CFLAGS} ${ADLIB_CFLAGS} -I../..
+LIBS += ${QT_LIBS} ${GTK_LIBS} ${ADLIB_LIBS}
 ifeq ($(USE_QT),yes)
-	LIBS += ${QT_LIBS} ${ADLIB_LIBS} -laudqt
-else
-	LIBS += ${GTK_LIBS} ${ADLIB_LIBS}
+	LIBS += -laudqt
 endif
