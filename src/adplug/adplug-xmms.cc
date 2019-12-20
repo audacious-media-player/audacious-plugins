@@ -36,9 +36,15 @@
 #include <adplug/adplug.h>
 #include <adplug/emuopl.h>
 #include <adplug/silentopl.h>
-#include <adplug/nemuopl.h>
-#include <adplug/wemuopl.h>
-#include <adplug/kemuopl.h>
+#ifdef HAVE_ADPLUG_NEMUOPL_H
+# include <adplug/nemuopl.h>
+#endif
+#ifdef HAVE_ADPLUG_WEMUOPL_H
+# include <adplug/wemuopl.h>
+#endif
+#ifdef HAVE_ADPLUG_KEMUOPL_H
+# include <adplug/kemuopl.h>
+#endif
 #include <adplug/players.h>
 
 #include <libaudcore/audstrings.h>
@@ -51,10 +57,16 @@
 
 #define CFG_ID "AdPlug"
 
-#define ADPLUG_NUKED 0
-#define ADPLUG_WOODY 1
-#define ADPLUG_MAME  2
-#define ADPLUG_KS    3
+#define ADPLUG_MAME  0
+#ifdef HAVE_ADPLUG_NEMUOPL_H
+# define ADPLUG_NUKED 1
+#endif
+#ifdef HAVE_ADPLUG_WEMUOPL_H
+# define ADPLUG_WOODY 2
+#endif
+#ifdef HAVE_ADPLUG_KEMUOPL_H
+# define ADPLUG_KS    3
+#endif
 
 class AdPlugXMMS : public InputPlugin
 {
@@ -177,9 +189,17 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 
   int emulator = aud_get_int (CFG_ID, "Emulator");
   // ADPLUG_NUKED only emits 16 bit
+#ifdef HAVE_ADPLUG_NEMUOPL_H
   bool bit16 = emulator == ADPLUG_NUKED ? true : aud_get_bool (CFG_ID, "16bit");
+#else
+  bool bit16 = aud_get_bool (CFG_ID, "16bit");
+#endif
   // ADPLUG_NUKED only emits stereo
+#ifdef HAVE_ADPLUG_NEMUOPL_H
   bool stereo = emulator == ADPLUG_NUKED ? true : aud_get_bool (CFG_ID, "Stereo");
+#else
+  bool stereo = aud_get_bool (CFG_ID, "Stereo");
+#endif
   int freq = aud_get_int (CFG_ID, "Frequency");
   bool endless = aud_get_bool (CFG_ID, "Endless");
 
@@ -194,18 +214,24 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 
   Copl *opl = nullptr;
   switch (emulator) {
+#ifdef HAVE_ADPLUG_NEMUOPL_H
     case ADPLUG_NUKED:
       opl = new CNemuopl (freq);
       break;
+#endif
+#ifdef HAVE_ADPLUG_WEMUOPL_H
     case ADPLUG_WOODY:
       opl = new CWemuopl (freq, bit16, stereo);
       break;
-    case ADPLUG_MAME:
-      opl = new CEmuopl (freq, bit16, stereo);
-      break;
+#endif
+#ifdef HAVE_ADPLUG_KEMUOPL_H
     case ADPLUG_KS:
       opl = new CKemuopl (freq, bit16, stereo);
       break;
+#endif
+    case ADPLUG_MAME:
+    default:
+      opl = new CEmuopl (freq, bit16, stereo);
   }
 
   long toadd = 0, i, towrite;
@@ -338,6 +364,7 @@ static GtkWidget * output_16bit_cbtn, * output_stereo_cbtn;
 
 void emulator_changed ()
 {
+#ifdef HAVE_ADPLUG_NEMUOPL_H
   if (aud_get_int (CFG_ID, "Emulator") == ADPLUG_NUKED) {
     aud_set_bool (CFG_ID, "16bit", true);
     aud_set_bool (CFG_ID, "Stereo", true);
@@ -349,9 +376,12 @@ void emulator_changed ()
     gtk_widget_set_sensitive (output_stereo_cbtn, false);
   }
   else {
+#endif
     gtk_widget_set_sensitive (output_16bit_cbtn, true);
     gtk_widget_set_sensitive (output_stereo_cbtn, true);
+#ifdef HAVE_ADPLUG_NEMUOPL_H
   }
+#endif
 }
 
 void optional_check_changed (GtkWidget * widget, const void * ignored)
@@ -397,6 +427,7 @@ static QCheckBox * output_16bit_cbtn, * output_stereo_cbtn;
 
 void emulator_changed ()
 {
+#ifdef HAVE_ADPLUG_NEMUOPL_H
   if (aud_get_int (CFG_ID, "Emulator") == ADPLUG_NUKED) {
     aud_set_bool (CFG_ID, "16bit", true);
     aud_set_bool (CFG_ID, "Stereo", true);
@@ -406,9 +437,12 @@ void emulator_changed ()
     output_stereo_cbtn->setEnabled (false);
   }
   else {
+#endif
     output_16bit_cbtn->setEnabled (true);
     output_stereo_cbtn->setEnabled (true);
+#ifdef HAVE_ADPLUG_NEMUOPL_H
   }
+#endif
 }
 
 void * create_optional_checks ()
@@ -445,9 +479,15 @@ void * create_optional_checks ()
 
 static const ComboItem plugin_combo[] = {
   ComboItem ("Tatsuyuki Satoh 0.72 (MAME, 2003)", ADPLUG_MAME),
+#ifdef HAVE_ADPLUG_NEMUOPL_H
   ComboItem ("Nuked OPL3 (Nuke.YKT, 2018)", ADPLUG_NUKED),
+#endif
+#ifdef HAVE_ADPLUG_WEMUOPL_H
   ComboItem ("WoodyOPL (DOSBox, 2016)", ADPLUG_WOODY),
+#endif
+#ifdef HAVE_ADPLUG_KEMUOPL_H
   ComboItem ("Ken Silverman (2001)", ADPLUG_KS),
+#endif
 };
 
 const PreferencesWidget AdPlugXMMS::widgets[] = {
