@@ -59,36 +59,36 @@
 class AdPlugXMMS : public InputPlugin
 {
 public:
-    static const char * const exts[];
-    static const char * const defaults[];
-    static const PreferencesWidget widgets[];
-    static const PluginPreferences prefs;
+  static const char * const exts[];
+  static const char * const defaults[];
+  static const PreferencesWidget widgets[];
+  static const PluginPreferences prefs;
 
-    static constexpr PluginInfo info = {
-        N_("AdPlug (AdLib Player)"),
-        PACKAGE,
-        nullptr,
-        & prefs
-    };
+  static constexpr PluginInfo info = {
+    N_("AdPlug (AdLib Player)"),
+    PACKAGE,
+    nullptr,
+    & prefs
+  };
 
-    constexpr AdPlugXMMS () : InputPlugin (info, InputInfo ()
-        .with_exts (exts)) {}
+  constexpr AdPlugXMMS () : InputPlugin (info, InputInfo ()
+    .with_exts (exts)) {}
 
-    bool init ();
-    void cleanup ();
+  bool init ();
+  void cleanup ();
 
-    bool is_our_file (const char * filename, VFSFile & file);
-    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
-    bool play (const char * filename, VFSFile & file);
+  bool is_our_file (const char * filename, VFSFile & file);
+  bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
+  bool play (const char * filename, VFSFile & file);
 };
 
 EXPORT AdPlugXMMS aud_plugin_instance;
 
 const char * const AdPlugXMMS::exts[] = {
-    "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
-    "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
-    "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
-    "sng", "wlf", "xad", "xsm", nullptr
+  "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
+  "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
+  "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
+  "sng", "wlf", "xad", "xsm", nullptr
 };
 
 /***** Defines *****/
@@ -338,57 +338,57 @@ static GtkWidget * output_16bit_cbtn, * output_stereo_cbtn;
 
 void emulator_changed ()
 {
-    if (aud_get_int (CFG_ID, "Emulator") == ADPLUG_NUKED) {
-        aud_set_bool (CFG_ID, "16bit", true);
-        aud_set_bool (CFG_ID, "Stereo", true);
-        gtk_toggle_button_set_active ((GtkToggleButton *) output_16bit_cbtn,
-            true);
-        gtk_widget_set_sensitive (output_16bit_cbtn, false);
-        gtk_toggle_button_set_active ((GtkToggleButton *) output_stereo_cbtn,
-            true);
-        gtk_widget_set_sensitive (output_stereo_cbtn, false);
-    }
-    else {
-        gtk_widget_set_sensitive (output_16bit_cbtn, true);
-        gtk_widget_set_sensitive (output_stereo_cbtn, true);
-    }
+  if (aud_get_int (CFG_ID, "Emulator") == ADPLUG_NUKED) {
+    aud_set_bool (CFG_ID, "16bit", true);
+    aud_set_bool (CFG_ID, "Stereo", true);
+    gtk_toggle_button_set_active ((GtkToggleButton *) output_16bit_cbtn,
+        true);
+    gtk_widget_set_sensitive (output_16bit_cbtn, false);
+    gtk_toggle_button_set_active ((GtkToggleButton *) output_stereo_cbtn,
+        true);
+    gtk_widget_set_sensitive (output_stereo_cbtn, false);
+  }
+  else {
+    gtk_widget_set_sensitive (output_16bit_cbtn, true);
+    gtk_widget_set_sensitive (output_stereo_cbtn, true);
+  }
 }
 
 void optional_check_changed (GtkWidget * widget, const void * ignored)
 {
-    if (widget == output_16bit_cbtn)
-        aud_set_bool (CFG_ID, "16bit", 
-            gtk_toggle_button_get_active ((GtkToggleButton *) widget));
-    else if (widget == output_stereo_cbtn)
-        aud_set_bool (CFG_ID, "Stereo", 
-            gtk_toggle_button_get_active ((GtkToggleButton *) widget));
+  if (widget == output_16bit_cbtn)
+    aud_set_bool (CFG_ID, "16bit", 
+      gtk_toggle_button_get_active ((GtkToggleButton *) widget));
+  else if (widget == output_stereo_cbtn)
+    aud_set_bool (CFG_ID, "Stereo", 
+      gtk_toggle_button_get_active ((GtkToggleButton *) widget));
 }
 
 void * create_optional_checks ()
 {
-    GtkWidget * output_checks_box;
+  GtkWidget * output_checks_box;
 
-    output_checks_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-    output_16bit_cbtn = gtk_check_button_new_with_label (
-        N_("16-bit output (if unchecked, output is 8-bit)"));
-    gtk_toggle_button_set_active ((GtkToggleButton *) output_16bit_cbtn,
-        aud_get_bool (CFG_ID, "16bit"));
-    g_signal_connect (output_16bit_cbtn, "toggled", 
-        (GCallback) optional_check_changed, 0);
-    output_stereo_cbtn = gtk_check_button_new_with_label (
-        N_("Duplicate mono output to two channels"));
-    gtk_toggle_button_set_active ((GtkToggleButton *) output_stereo_cbtn,
-        aud_get_bool (CFG_ID, "Stereo"));
-    g_signal_connect (output_stereo_cbtn, "toggled", 
-        (GCallback) optional_check_changed, 0);
-    gtk_box_pack_start ((GtkBox *) output_checks_box, output_16bit_cbtn, false,
-        false, 0);
-    gtk_box_pack_start ((GtkBox *) output_checks_box, output_stereo_cbtn, false,
-        false, 0);
+  output_checks_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  output_16bit_cbtn = gtk_check_button_new_with_label (
+    N_("16-bit output (if unchecked, output is 8-bit)"));
+  gtk_toggle_button_set_active ((GtkToggleButton *) output_16bit_cbtn,
+    aud_get_bool (CFG_ID, "16bit"));
+  g_signal_connect (output_16bit_cbtn, "toggled", 
+    (GCallback) optional_check_changed, 0);
+  output_stereo_cbtn = gtk_check_button_new_with_label (
+    N_("Duplicate mono output to two channels"));
+  gtk_toggle_button_set_active ((GtkToggleButton *) output_stereo_cbtn,
+    aud_get_bool (CFG_ID, "Stereo"));
+  g_signal_connect (output_stereo_cbtn, "toggled", 
+    (GCallback) optional_check_changed, 0);
+  gtk_box_pack_start ((GtkBox *) output_checks_box, output_16bit_cbtn, false,
+    false, 0);
+  gtk_box_pack_start ((GtkBox *) output_checks_box, output_stereo_cbtn, false,
+    false, 0);
 
-    emulator_changed ();
+  emulator_changed ();
 
-    return output_checks_box;
+  return output_checks_box;
 }
 #endif
 
@@ -397,75 +397,75 @@ static QCheckBox * output_16bit_cbtn, * output_stereo_cbtn;
 
 void emulator_changed ()
 {
-    if (aud_get_int (CFG_ID, "Emulator") == ADPLUG_NUKED) {
-        aud_set_bool (CFG_ID, "16bit", true);
-        aud_set_bool (CFG_ID, "Stereo", true);
-        output_16bit_cbtn->setCheckState(Qt::Checked);
-        output_16bit_cbtn->setEnabled (false);
-        output_stereo_cbtn->setCheckState(Qt::Checked);
-        output_stereo_cbtn->setEnabled (false);
-    }
-    else {
-        output_16bit_cbtn->setEnabled (true);
-        output_stereo_cbtn->setEnabled (true);
-    }
+  if (aud_get_int (CFG_ID, "Emulator") == ADPLUG_NUKED) {
+    aud_set_bool (CFG_ID, "16bit", true);
+    aud_set_bool (CFG_ID, "Stereo", true);
+    output_16bit_cbtn->setCheckState(Qt::Checked);
+    output_16bit_cbtn->setEnabled (false);
+    output_stereo_cbtn->setCheckState(Qt::Checked);
+    output_stereo_cbtn->setEnabled (false);
+  }
+  else {
+    output_16bit_cbtn->setEnabled (true);
+    output_stereo_cbtn->setEnabled (true);
+  }
 }
 
 void * create_optional_checks ()
 {
-    QWidget * output_checks_widget;
-    QVBoxLayout * output_checks_box;
+  QWidget * output_checks_widget;
+  QVBoxLayout * output_checks_box;
 
-    output_checks_widget = new QWidget ();
-    output_checks_box = audqt::make_vbox (output_checks_widget, audqt::sizes.TwoPt);
-    output_16bit_cbtn = new QCheckBox (
-        N_("16-bit output (if unchecked, output is 8-bit)"));
-    output_16bit_cbtn->setCheckState(
-        aud_get_bool (CFG_ID, "16bit") ? Qt::Checked : Qt::Unchecked);
-    QObject::connect (output_16bit_cbtn, & QCheckBox::stateChanged, 
-        [] (int state) {
-            aud_set_bool (CFG_ID, "16bit", state != Qt::Unchecked);
-        });
-    output_stereo_cbtn = new QCheckBox (
-        N_("Duplicate mono output to two channels"));
-    output_stereo_cbtn->setCheckState(
-        aud_get_bool (CFG_ID, "Stereo") ? Qt::Checked : Qt::Unchecked);
-    QObject::connect (output_stereo_cbtn, & QCheckBox::stateChanged, 
-        [] (int state) {
-            aud_set_bool (CFG_ID, "Stereo", state != Qt::Unchecked);
-        });
-    output_checks_box->addWidget(output_16bit_cbtn);
-    output_checks_box->addWidget(output_stereo_cbtn);
+  output_checks_widget = new QWidget ();
+  output_checks_box = audqt::make_vbox (output_checks_widget, audqt::sizes.TwoPt);
+  output_16bit_cbtn = new QCheckBox (
+    N_("16-bit output (if unchecked, output is 8-bit)"));
+  output_16bit_cbtn->setCheckState(
+    aud_get_bool (CFG_ID, "16bit") ? Qt::Checked : Qt::Unchecked);
+  QObject::connect (output_16bit_cbtn, & QCheckBox::stateChanged, 
+    [] (int state) {
+      aud_set_bool (CFG_ID, "16bit", state != Qt::Unchecked);
+    });
+  output_stereo_cbtn = new QCheckBox (
+    N_("Duplicate mono output to two channels"));
+  output_stereo_cbtn->setCheckState(
+    aud_get_bool (CFG_ID, "Stereo") ? Qt::Checked : Qt::Unchecked);
+  QObject::connect (output_stereo_cbtn, & QCheckBox::stateChanged, 
+    [] (int state) {
+      aud_set_bool (CFG_ID, "Stereo", state != Qt::Unchecked);
+    });
+  output_checks_box->addWidget(output_16bit_cbtn);
+  output_checks_box->addWidget(output_stereo_cbtn);
 
-    emulator_changed ();
+  emulator_changed ();
 
-    return output_checks_widget;
+  return output_checks_widget;
 }
 #endif
 
 static const ComboItem plugin_combo[] = {
-    ComboItem ("Nuked OPL3 (Nuke.YKT, 2018)", ADPLUG_NUKED),
-    ComboItem ("WoodyOPL (DOSBox, 2016)", ADPLUG_WOODY),
-    ComboItem ("Tatsuyuki Satoh 0.72 (MAME, 2003)", ADPLUG_MAME),
-    ComboItem ("Ken Silverman (2001)", ADPLUG_KS),
+  ComboItem ("Tatsuyuki Satoh 0.72 (MAME, 2003)", ADPLUG_MAME),
+  ComboItem ("Nuked OPL3 (Nuke.YKT, 2018)", ADPLUG_NUKED),
+  ComboItem ("WoodyOPL (DOSBox, 2016)", ADPLUG_WOODY),
+  ComboItem ("Ken Silverman (2001)", ADPLUG_KS),
 };
 
 const PreferencesWidget AdPlugXMMS::widgets[] = {
-    WidgetLabel (N_("<b>Output</b>")),
-    WidgetCombo (N_("OPL Emulator:"),
-        WidgetInt (CFG_ID, "Emulator", emulator_changed),
-        {{plugin_combo}}),
+  WidgetLabel (N_("<b>Output</b>")),
+  WidgetCombo (N_("OPL Emulator:"),
+    WidgetInt (CFG_ID, "Emulator", emulator_changed),
+    {{plugin_combo}}),
 #ifdef USE_GTK
-    WidgetCustomGTK (create_optional_checks),
+  WidgetCustomGTK (create_optional_checks),
 #endif
 #ifdef USE_QT
-    WidgetCustomQt (create_optional_checks),
+  WidgetCustomQt (create_optional_checks),
 #endif
-    WidgetSpin (N_("Sample rate"),
-        WidgetInt (CFG_ID, "Frequency"), {8000, 192000, 50, N_("Hz")}),
-    WidgetLabel (N_("<b>Miscellaneous</b>")),
-    WidgetCheck (N_("Repeat song in endless loop"),
-        WidgetBool (CFG_ID, "Endless"))
+  WidgetSpin (N_("Sample rate"),
+    WidgetInt (CFG_ID, "Frequency"), {8000, 192000, 50, N_("Hz")}),
+  WidgetLabel (N_("<b>Miscellaneous</b>")),
+  WidgetCheck (N_("Repeat song in endless loop"),
+    WidgetBool (CFG_ID, "Endless"))
 };
 
 const PluginPreferences AdPlugXMMS::prefs = {{widgets}};
