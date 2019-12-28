@@ -82,6 +82,7 @@ private:
     void draw (QPainter & cr);
     bool button_press (QMouseEvent * event);
     bool scroll (QWheelEvent * event);
+    void enterEvent (QEvent * event);
 };
 
 Window * mainwin;
@@ -505,6 +506,24 @@ bool MainWindow::button_press (QMouseEvent * event)
     }
 
     return Window::button_press (event);
+}
+
+void MainWindow::enterEvent (QEvent * event)
+{
+    if (! is_shaded() || ! aud_get_bool (nullptr, "show_filepopup_for_tuple"))
+        return;
+
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    int mousey = mouseEvent->y ();
+
+    if (mousey > 78 && mousey < 165)
+    {
+        auto pl = Playlist::active_playlist ();
+        auto pos = pl.get_position ();
+
+        if (pos >= 0)
+            audqt::infopopup_show (pl, pos);
+    }
 }
 
 static void mainwin_playback_rpress (Button * button, QMouseEvent * event)
