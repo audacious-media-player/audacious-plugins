@@ -79,7 +79,6 @@ const char * const AdPlugXMMS::exts[] = {
 #define SNDBUFSIZE	512
 
 // AdPlug's 8 and 16 bit audio formats
-#define FORMAT_8	FMT_U8
 #define FORMAT_16	FMT_S16_NE
 
 // Default file name of AdPlug's database file
@@ -157,21 +156,20 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 {
   dbg_printf ("adplug_play(\"%s\"): ", filename);
 
-  bool bit16 = aud_get_bool (CFG_ID, "16bit");
   bool stereo = aud_get_bool (CFG_ID, "Stereo");
   int freq = aud_get_int (CFG_ID, "Frequency");
   bool endless = aud_get_bool (CFG_ID, "Endless");
 
   // Set XMMS main window information
   dbg_printf ("xmms, ");
-  int sampsize = (bit16 ? 2 : 1) * (stereo ? 2 : 1);
+  int sampsize = 2 * (stereo ? 2 : 1);
   set_stream_bitrate (freq * sampsize * 8);
 
   // open output plugin
   dbg_printf ("open, ");
-  open_audio (bit16 ? FORMAT_16 : FORMAT_8, freq, stereo ? 2 : 1);
+  open_audio (FORMAT_16, freq, stereo ? 2 : 1);
 
-  CEmuopl opl (freq, bit16, stereo);
+  CEmuopl opl (freq, true, stereo);
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
   bool playing = true;  // Song self-end indicator.
@@ -287,7 +285,6 @@ bool AdPlugXMMS::is_our_file (const char * filename, VFSFile & fd)
 /***** Configuration file handling *****/
 
 const char * const AdPlugXMMS::defaults[] = {
- "16bit", "TRUE",
  "Stereo", "FALSE",
  "Frequency", "44100",
  "Endless", "FALSE",
@@ -295,8 +292,6 @@ const char * const AdPlugXMMS::defaults[] = {
 
 const PreferencesWidget AdPlugXMMS::widgets[] = {
     WidgetLabel (N_("<b>Output</b>")),
-    WidgetCheck (N_("16-bit output (if unchecked, output is 8-bit)"),
-        WidgetBool (CFG_ID, "16bit")),
     WidgetCheck (N_("Duplicate mono output to two channels"),
         WidgetBool (CFG_ID, "Stereo")),
     WidgetSpin (N_("Sample rate"),
