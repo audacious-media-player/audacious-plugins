@@ -111,8 +111,8 @@ const char * const AdPlugXMMS::exts[] = {
 
 // Player variables
 static struct {
-  CPlayer *p = nullptr;
-  CAdPlugDatabase *db = nullptr;
+  SmartPtr<CPlayer> p;
+  SmartPtr<CAdPlugDatabase> db;
   unsigned int subsong = 0, songlength = 0;
   String filename;
 } plr;
@@ -188,26 +188,26 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   dbg_printf ("open, ");
   open_audio (FMT_S16_NE, freq, 2);
 
-  Copl *opl = nullptr;
+  SmartPtr<Copl> opl;
   switch (emulator) {
 #ifdef HAVE_ADPLUG_NEMUOPL_H
     case ADPLUG_NUKED:
-      opl = new CNemuopl (freq);
+      opl.capture(new CNemuopl (freq));
       break;
 #endif
 #ifdef HAVE_ADPLUG_WEMUOPL_H
     case ADPLUG_WOODY:
-      opl = new CWemuopl (freq, true, true);
+      opl.capture(new CWemuopl (freq, true, true));
       break;
 #endif
 #ifdef HAVE_ADPLUG_KEMUOPL_H
     case ADPLUG_KS:
-      opl = new CKemuopl (freq, true, true);
+      opl.capture(new CKemuopl (freq, true, true));
       break;
 #endif
     case ADPLUG_MAME:
     default:
-      opl = new CEmuopl (freq, true, true);
+      opl.capture(new CEmuopl (freq, true, true));
   }
 
   long toadd = 0, i, towrite;
@@ -217,7 +217,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   // Try to load module
   dbg_printf ("factory, ");
   CFileVFSProvider fp (fd);
-  if (!(plr.p = CAdPlug::factory (filename, opl, CAdPlug::players, fp)))
+  if (!(plr.p.capture(CAdPlug::factory (filename, opl.get (), CAdPlug::players, fp))))
   {
     dbg_printf ("error!\n");
     // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
@@ -291,9 +291,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 
   // free everything and exit
   dbg_printf ("free");
-  delete plr.p;
-  delete opl;
-  plr.p = 0;
+  plr.p.clear ();
   free (sndbuf);
   dbg_printf (".\n");
   return true;
@@ -374,10 +372,10 @@ bool AdPlugXMMS::init ()
 
       if (VFSFile::test_file (userdb.c_str (), VFS_EXISTS))
       {
-        plr.db = new CAdPlugDatabase;
+        plr.db.capture(new CAdPlugDatabase);
         plr.db->load (userdb);    // load user's database
         dbg_printf (" (userdb=\"%s\")", userdb.c_str());
-        CAdPlug::set_database (plr.db);
+        CAdPlug::set_database (plr.db.get ());
       }
     }
   }
@@ -390,8 +388,6 @@ void AdPlugXMMS::cleanup ()
 {
   // Close database
   dbg_printf ("db, ");
-  if (plr.db)
-    delete plr.db;
-
+  plr.db.clear ();
   plr.filename = String ();
 }
