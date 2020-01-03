@@ -1,6 +1,3 @@
-zlib_dep = dependency('zlib')
-
-
 gme_sources = [
   'Ay_Apu.cc',
   'Ay_Cpu.cc',
@@ -61,12 +58,10 @@ plugin_sources = [
 ]
 
 
-if zlib_dep.found()
-  shared_module('console',
-    gme_sources,
-    plugin_sources,
-    dependencies: [audacious_dep, zlib_dep],
-    install: true,
-    install_dir: input_plugin_dir
-  )
-endif
+shared_module('console',
+  gme_sources,
+  plugin_sources,
+  dependencies: [audacious_dep, zlib_dep],
+  install: true,
+  install_dir: input_plugin_dir
+)

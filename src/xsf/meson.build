@@ -24,7 +24,7 @@ desmume_sources = [
 shared_module('xsf',
   plugin_sources,
   desmume_sources,
-  dependencies: [audacious_dep],
+  dependencies: [audacious_dep, zlib_dep],
   install: true,
   install_dir: input_plugin_dir
 )
