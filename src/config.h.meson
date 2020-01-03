@@ -27,3 +27,5 @@
 #mesondefine FILEWRITER_MP3
 #mesondefine FILEWRITER_FLAC
 #mesondefine FILEWRITER_VORBIS
+
+#mesondefine HAVE_LIBCUE2

@@ -15,20 +15,23 @@ glib_dep = dependency('glib-2.0', version: glib_req, required: true)
 gmodule_dep = dependency('gmodule-2.0', version: glib_req, required: true)
 
 
+zlib_dep = dependency('zlib', required: true)
+
+
 audacious_req = '>= 3.11'
 audacious_dep = dependency('audacious', version: audacious_req, required: true)
 
 
 # XXX - make this it's own .pc file
 audtag_dep = declare_dependency(link_args: [
-  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('libdir')),
+  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('lib_dir')),
   '-laudtag'
 ])
 
 
 # XXX - make this it's own .pc file
 audqt_dep = declare_dependency(link_args: [
-  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('libdir')),
+  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('lib_dir')),
   '-laudqt'
 ])
 
@@ -122,7 +125,7 @@ elif cc.get_id() == 'gcc' or cc.get_id() == 'clang'
 endif
 
 
-install_plugindir = join_paths(get_option('libdir'), 'audacious')
+install_plugindir = audacious_dep.get_pkgconfig_variable('plugin_dir')
 
 
 conf.set_quoted('INSTALL_PLUGINDIR', install_plugindir)
