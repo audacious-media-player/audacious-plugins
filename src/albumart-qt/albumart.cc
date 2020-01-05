@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#include <QApplication>
 #include <QLabel>
 #include <QPixmap>
 
@@ -58,7 +59,7 @@ public:
     void update_art ()
     {
         origPixmap = QPixmap (audqt::art_request_current (0, 0));
-        qreal r = devicePixelRatioF();
+        qreal r = qApp->devicePixelRatio ();
         origPixmap.setDevicePixelRatio (r);
         origSize = origPixmap.size ();
         drawArt ();
@@ -101,7 +102,7 @@ private:
             origSize.height () <= size ().height() - MARGIN)
             setPixmap (origPixmap);
         else {
-            qreal r = devicePixelRatioF();
+            qreal r = qApp->devicePixelRatio ();
             setPixmap (origPixmap.scaled ((size ().width () - MARGIN) * r,
                                           (size ().height () - MARGIN) * r,
                                           Qt::KeepAspectRatio,
