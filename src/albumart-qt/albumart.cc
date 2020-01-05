@@ -58,6 +58,8 @@ public:
     void update_art ()
     {
         origPixmap = QPixmap (audqt::art_request_current (0, 0));
+        qreal r = devicePixelRatioF();
+        origPixmap.setDevicePixelRatio (r);
         origSize = origPixmap.size ();
         drawArt ();
     }
@@ -98,9 +100,13 @@ private:
         if (origSize.width () <= size ().width () - MARGIN &&
             origSize.height () <= size ().height() - MARGIN)
             setPixmap (origPixmap);
-        else
-            setPixmap (origPixmap.scaled (size ().width () - MARGIN, size ().height () - MARGIN,
-                        Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        else {
+            qreal r = devicePixelRatioF();
+            setPixmap (origPixmap.scaled ((size ().width () - MARGIN) * r,
+                                          (size ().height () - MARGIN) * r,
+                                          Qt::KeepAspectRatio,
+                                          Qt::SmoothTransformation));
+        }
 
 #ifdef Q_OS_MAC
 	repaint();
