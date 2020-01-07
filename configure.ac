@@ -189,6 +189,16 @@ ENABLE_PLUGIN_WITH_DEP(adplug,
     ADLIB,
     adplug)
 
+if test $have_adplug = yes ; then
+    AC_LANG_PUSH([C++])
+    CPPFLAGS_adplug_backup="${CPPFLAGS}"
+    CPPFLAGS="${CPPFLAGS} ${ADLIB_CFLAGS}"
+    AC_CHECK_HEADERS([adplug/nemuopl.h adplug/wemuopl.h adplug/kemuopl.h], [],
+        [], [#include <adplug/adplug.h>])
+    CPPFLAGS="${CPPFLAGS_adplug_backup}"
+    AC_LANG_POP([C++])
+fi
+
 ENABLE_PLUGIN_WITH_DEP(cdaudio,
     audio CD support,
     auto,

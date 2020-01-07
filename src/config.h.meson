@@ -29,3 +29,7 @@
 #mesondefine FILEWRITER_VORBIS
 
 #mesondefine HAVE_LIBCUE2
+
+#mesondefine HAVE_ADPLUG_NEMUOPL_H
+#mesondefine HAVE_ADPLUG_WEMUOPL_H
+#mesondefine HAVE_ADPLUG_KEMUOPL_H
