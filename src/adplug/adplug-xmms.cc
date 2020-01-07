@@ -208,6 +208,8 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
     case ADPLUG_MAME:
     default:
       opl.capture(new CEmuopl (freq, true, true));
+      // otherwise sound only comes out of left
+      static_cast<CEmuopl *>(opl.get())->settype(Copl::TYPE_OPL2);
   }
 
   long toadd = 0, i, towrite;
