@@ -88,6 +88,8 @@ QMenuBar * qtui_build_menubar (QWidget * parent)
         audqt::MenuCommand ({N_("_Stop"), "media-playback-stop", "Ctrl+."}, aud_drct_stop),
         audqt::MenuCommand ({N_("Pre_vious"), "media-skip-backward", "Alt+Up"}, aud_drct_pl_prev),
         audqt::MenuCommand ({N_("_Next"), "media-skip-forward", "Alt+Down"}, aud_drct_pl_next),
+        audqt::MenuCommand ({N_("Previous Album")}, aud_drct_pl_prev_album),
+        audqt::MenuCommand ({N_("Next Album")}, aud_drct_pl_next_album),
         audqt::MenuSep (),
         audqt::MenuToggle ({N_("_Repeat"), "media-playlist-repeat", "Ctrl+R"}, {nullptr, "repeat", "set repeat"}),
         audqt::MenuToggle ({N_("S_huffle"), "media-playlist-shuffle", "Ctrl+S"}, {nullptr, "shuffle", "set shuffle"}),
