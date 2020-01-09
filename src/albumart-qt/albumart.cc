@@ -98,14 +98,22 @@ private:
 
     void drawArt ()
     {
-        if (origSize.width () <= size ().width () - MARGIN &&
-            origSize.height () <= size ().height() - MARGIN)
+        qreal r = qApp->devicePixelRatio();
+        if (std::abs(r - 1.0) <= 0.01 &&
+            origSize.width () <= size ().width () - MARGIN &&
+            origSize.height () <= size ().height() - MARGIN) {
+            // If device pixel ratio is close to 1:1 (within 1%) and art is
+            // smaller than widget, set pixels directly w/o scaling
             setPixmap (origPixmap);
-        else {
-            qreal r = qApp->devicePixelRatio ();
-            setPixmap (origPixmap.scaled ((size ().width () - MARGIN) * r,
-                                          (size ().height () - MARGIN) * r,
-                                          Qt::KeepAspectRatio,
+        } else {
+            // Otherwise scale image with device pixel ratio, but limit size to
+            // widget dimensions.
+            auto width = std::min(r * (size().width() - MARGIN),
+                                  r * origSize.width());
+            auto height = std::min(r * (size().height() - MARGIN),
+                                   r * origSize.height());
+
+            setPixmap (origPixmap.scaled (width, height, Qt::KeepAspectRatio,
                                           Qt::SmoothTransformation));
         }
 
