@@ -514,9 +514,8 @@ void MainWindow::enterEvent (QEvent * event)
         return;
 
     auto enterEvent = static_cast<QEnterEvent *> (event);
-    int x = enterEvent->x ();
-
-    if (x > 78 && x < 165)
+    if (enterEvent->x () >= 79 * config.scale &&
+        enterEvent->x () <= 157 * config.scale)
     {
         auto pl = Playlist::active_playlist ();
         auto pos = pl.get_position ();
