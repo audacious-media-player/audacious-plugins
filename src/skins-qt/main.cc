@@ -517,11 +517,7 @@ void MainWindow::enterEvent (QEvent * event)
     if (enterEvent->x () >= 79 * config.scale &&
         enterEvent->x () <= 157 * config.scale)
     {
-        auto pl = Playlist::active_playlist ();
-        auto pos = pl.get_position ();
-
-        if (pos >= 0)
-            audqt::infopopup_show (pl, pos);
+        audqt::infopopup_show_current ();
     }
 }
 
