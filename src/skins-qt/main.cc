@@ -513,10 +513,10 @@ void MainWindow::enterEvent (QEvent * event)
     if (! is_shaded() || ! aud_get_bool (nullptr, "show_filepopup_for_tuple"))
         return;
 
-    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-    int mousey = mouseEvent->y ();
+    auto enterEvent = static_cast<QEnterEvent *> (event);
+    int x = enterEvent->x ();
 
-    if (mousey > 78 && mousey < 165)
+    if (x > 78 && x < 165)
     {
         auto pl = Playlist::active_playlist ();
         auto pos = pl.get_position ();
