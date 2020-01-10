@@ -30,11 +30,12 @@ class QLabel;
 class StatusBar : public QStatusBar
 {
 public:
-    StatusBar (QWidget * parent);
-    ~StatusBar ();
+    StatusBar(QWidget * parent);
+    ~StatusBar();
 
 private:
-    struct Message {
+    struct Message
+    {
         audlog::Level level;
         QString text;
     };
@@ -42,24 +43,24 @@ private:
     QLabel * codec_label;
     QLabel * length_label;
 
-    static void log_handler (audlog::Level level, const char * file, int line,
-     const char * func, const char * text);
+    static void log_handler(audlog::Level level, const char * file, int line,
+                            const char * func, const char * text);
 
-    void log_message (const Message * message);
+    void log_message(const Message * message);
 
-    void update_codec ();
-    void update_length ();
+    void update_codec();
+    void update_length();
 
-    const HookReceiver<StatusBar, const Message *>
-     log_hook {"qtui log message", this, & StatusBar::log_message};
+    const HookReceiver<StatusBar, const Message *> log_hook{
+        "qtui log message", this, &StatusBar::log_message};
 
-    const HookReceiver<StatusBar>
-     hook1 {"playlist activate", this, & StatusBar::update_length},
-     hook2 {"playlist update", this, & StatusBar::update_length},
-     hook3 {"playback ready", this, & StatusBar::update_codec},
-     hook4 {"playback stop", this, & StatusBar::update_codec},
-     hook5 {"info change", this, & StatusBar::update_codec},
-     hook6 {"tuple change", this, & StatusBar::update_codec};
+    const HookReceiver<StatusBar> hook1{"playlist activate", this,
+                                        &StatusBar::update_length},
+        hook2{"playlist update", this, &StatusBar::update_length},
+        hook3{"playback ready", this, &StatusBar::update_codec},
+        hook4{"playback stop", this, &StatusBar::update_codec},
+        hook5{"info change", this, &StatusBar::update_codec},
+        hook6{"tuple change", this, &StatusBar::update_codec};
 };
 
 #endif

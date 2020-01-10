@@ -30,43 +30,41 @@ class QMouseEvent;
 class TimeSliderLabel : public QLabel
 {
 public:
-    TimeSliderLabel (QWidget * parent);
-    ~TimeSliderLabel ();
+    TimeSliderLabel(QWidget * parent);
+    ~TimeSliderLabel();
 
 protected:
-     void mouseDoubleClickEvent (QMouseEvent * event);
+    void mouseDoubleClickEvent(QMouseEvent * event);
 };
 
 class TimeSlider : public QSlider
 {
 public:
-    TimeSlider (QWidget * parent);
-    ~TimeSlider ();
+    TimeSlider(QWidget * parent);
+    ~TimeSlider();
 
-    TimeSliderLabel * label ()
-        { return m_label; }
+    TimeSliderLabel * label() { return m_label; }
 
 private:
-    void set_label (int time, int length);
+    void set_label(int time, int length);
 
-    void start_stop ();
-    void update ();
-    void moved (int value);
-    void pressed ();
-    void released ();
+    void start_stop();
+    void update();
+    void moved(int value);
+    void pressed();
+    void released();
 
     TimeSliderLabel * m_label;
 
-    const Timer<TimeSlider>
-     m_timer {TimerRate::Hz4, this, & TimeSlider::update};
+    const Timer<TimeSlider> m_timer{TimerRate::Hz4, this, &TimeSlider::update};
 
-    const HookReceiver<TimeSlider>
-     hook1 {"playback ready", this, & TimeSlider::start_stop},
-     hook2 {"playback pause", this, & TimeSlider::start_stop},
-     hook3 {"playback unpause", this, & TimeSlider::start_stop},
-     hook4 {"playback seek", this, & TimeSlider::update},
-     hook5 {"playback stop", this, & TimeSlider::start_stop},
-     hook6 {"qtui toggle remaining time", this, & TimeSlider::start_stop};
+    const HookReceiver<TimeSlider> hook1{"playback ready", this,
+                                         &TimeSlider::start_stop},
+        hook2{"playback pause", this, &TimeSlider::start_stop},
+        hook3{"playback unpause", this, &TimeSlider::start_stop},
+        hook4{"playback seek", this, &TimeSlider::update},
+        hook5{"playback stop", this, &TimeSlider::start_stop},
+        hook6{"qtui toggle remaining time", this, &TimeSlider::start_stop};
 };
 
 #endif

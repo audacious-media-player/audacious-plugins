@@ -33,21 +33,19 @@ class QMenu;
 class PlaylistWidget : public audqt::TreeView
 {
 public:
-    PlaylistWidget (QWidget * parent, Playlist playlist);
-    ~PlaylistWidget ();
+    PlaylistWidget(QWidget * parent, Playlist playlist);
+    ~PlaylistWidget();
 
-    Playlist playlist () const
-        { return m_playlist; }
+    Playlist playlist() const { return m_playlist; }
 
-    bool scrollToCurrent (bool force = false);
-    void updatePlaybackIndicator ();
-    void playlistUpdate ();
-    void setFilter (const char * text);
-    void setFirstVisibleColumn (int col);
-    void moveFocus (int distance);
+    bool scrollToCurrent(bool force = false);
+    void updatePlaybackIndicator();
+    void playlistUpdate();
+    void setFilter(const char * text);
+    void setFirstVisibleColumn(int col);
+    void moveFocus(int distance);
 
-    void setContextMenu (QMenu * menu)
-        { contextMenu = menu; }
+    void setContextMenu(QMenu * menu) { contextMenu = menu; }
 
 private:
     Playlist m_playlist;
@@ -62,32 +60,35 @@ private:
     int m_popup_pos = -1;
     QueuedFunc m_popup_timer;
 
-    QModelIndex rowToIndex (int row);
-    int indexToRow (const QModelIndex & index);
-    QModelIndex visibleIndexNear (int row);
+    QModelIndex rowToIndex(int row);
+    int indexToRow(const QModelIndex & index);
+    QModelIndex visibleIndexNear(int row);
 
-    void getSelectedRanges (int rowsBefore, int rowsAfter,
-     QItemSelection & selected, QItemSelection & deselected);
-    void updateSelection (int rowsBefore, int rowsAfter);
+    void getSelectedRanges(int rowsBefore, int rowsAfter,
+                           QItemSelection & selected,
+                           QItemSelection & deselected);
+    void updateSelection(int rowsBefore, int rowsAfter);
 
-    void activate (const QModelIndex & index);
-    void contextMenuEvent (QContextMenuEvent * event);
-    void keyPressEvent (QKeyEvent * event);
-    void mouseMoveEvent (QMouseEvent * event);
-    void leaveEvent (QEvent * event);
-    void dragMoveEvent (QDragMoveEvent * event);
-    void dropEvent (QDropEvent * event);
-    void currentChanged (const QModelIndex & current, const QModelIndex & previous);
-    void selectionChanged (const QItemSelection & selected, const QItemSelection & deselected);
+    void activate(const QModelIndex & index);
+    void contextMenuEvent(QContextMenuEvent * event);
+    void keyPressEvent(QKeyEvent * event);
+    void mouseMoveEvent(QMouseEvent * event);
+    void leaveEvent(QEvent * event);
+    void dragMoveEvent(QDragMoveEvent * event);
+    void dropEvent(QDropEvent * event);
+    void currentChanged(const QModelIndex & current,
+                        const QModelIndex & previous);
+    void selectionChanged(const QItemSelection & selected,
+                          const QItemSelection & deselected);
 
-    void showPopup ();
-    void triggerPopup (int pos);
-    void hidePopup ();
+    void showPopup();
+    void triggerPopup(int pos);
+    void hidePopup();
 
-    void updateSettings ();
+    void updateSettings();
 
-    const HookReceiver<PlaylistWidget>
-     hook1 {"qtui update playlist settings", this, & PlaylistWidget::updateSettings};
+    const HookReceiver<PlaylistWidget> hook1{
+        "qtui update playlist settings", this, &PlaylistWidget::updateSettings};
 };
 
 #endif

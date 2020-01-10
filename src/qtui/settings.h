@@ -24,7 +24,8 @@
 
 #define DEFAULT_COLUMNS "playing title artist album queued length"
 
-enum PlaylistTabVisibility {
+enum PlaylistTabVisibility
+{
     Always,
     AutoHide,
     Never

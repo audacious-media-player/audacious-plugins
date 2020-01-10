@@ -23,8 +23,8 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
-#include <libaudqt/libaudqt.h>
 #include <libaudqt/iface.h>
+#include <libaudqt/libaudqt.h>
 
 #include "main_window.h"
 #include "settings.h"
@@ -35,49 +35,41 @@ private:
     MainWindow * window = nullptr;
 
 public:
-    constexpr QtUI () : audqt::QtIfacePlugin ({
-        N_("Qt Interface"),
-        PACKAGE,
-        nullptr,
-        & qtui_prefs,
-        PluginQtOnly
-    }) {}
-
-    bool init ()
+    constexpr QtUI()
+        : audqt::QtIfacePlugin(
+              {N_("Qt Interface"), PACKAGE, nullptr, &qtui_prefs, PluginQtOnly})
     {
-        audqt::init ();
-        aud_config_set_defaults ("qtui", qtui_defaults);
+    }
+
+    bool init()
+    {
+        audqt::init();
+        aud_config_set_defaults("qtui", qtui_defaults);
         window = new MainWindow;
         return true;
     }
 
-    void cleanup ()
+    void cleanup()
     {
         delete window;
         window = nullptr;
-        audqt::cleanup ();
+        audqt::cleanup();
     }
 
-    void run ()
-    {
-        audqt::run ();
-    }
+    void run() { audqt::run(); }
 
-    void show (bool show)
+    void show(bool show)
     {
-        window->setVisible (show);
+        window->setVisible(show);
 
         if (show)
         {
-            window->activateWindow ();
-            window->raise ();
+            window->activateWindow();
+            window->raise();
         }
     }
 
-    void quit ()
-    {
-        audqt::quit ();
-    }
+    void quit() { audqt::quit(); }
 };
 
 EXPORT QtUI aud_plugin_instance;

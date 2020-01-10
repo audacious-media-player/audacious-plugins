@@ -28,7 +28,8 @@
 class PlaylistModel : public QAbstractListModel
 {
 public:
-    enum {
+    enum
+    {
         NowPlaying,
         EntryNumber,
         Title,
@@ -50,44 +51,46 @@ public:
 
     static const char * const labels[];
 
-    PlaylistModel (QObject * parent, Playlist playlist);
+    PlaylistModel(QObject * parent, Playlist playlist);
 
-    int rowCount (const QModelIndex & parent = QModelIndex ()) const;
-    int columnCount (const QModelIndex & parent = QModelIndex ()) const;
-    QVariant data (const QModelIndex & index, int role = Qt::DisplayRole) const;
-    QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    int columnCount(const QModelIndex & parent = QModelIndex()) const;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+    QVariant headerData(int section, Qt::Orientation orientation,
+                        int role = Qt::DisplayRole) const;
 
-    Qt::DropActions supportedDropActions () const;
-    Qt::ItemFlags flags (const QModelIndex & index) const;
+    Qt::DropActions supportedDropActions() const;
+    Qt::ItemFlags flags(const QModelIndex & index) const;
 
-    QStringList mimeTypes () const;
-    QMimeData * mimeData (const QModelIndexList & indexes) const;
-    bool dropMimeData (const QMimeData * data, Qt::DropAction action, int row,
-     int column, const QModelIndex & parent);
+    QStringList mimeTypes() const;
+    QMimeData * mimeData(const QModelIndexList & indexes) const;
+    bool dropMimeData(const QMimeData * data, Qt::DropAction action, int row,
+                      int column, const QModelIndex & parent);
 
-    void entriesAdded (int row, int count);
-    void entriesRemoved (int row, int count);
-    void entriesChanged (int row, int count);
+    void entriesAdded(int row, int count);
+    void entriesRemoved(int row, int count);
+    void entriesChanged(int row, int count);
 
 private:
     Playlist m_playlist;
     int m_rows;
 
-    QVariant alignment (int col) const;
-    QString queuePos (int row) const;
+    QVariant alignment(int col) const;
+    QString queuePos(int row) const;
 };
 
 class PlaylistProxyModel : public QSortFilterProxyModel
 {
 public:
-    PlaylistProxyModel (QObject * parent, Playlist playlist) :
-        QSortFilterProxyModel (parent),
-        m_playlist (playlist) {}
+    PlaylistProxyModel(QObject * parent, Playlist playlist)
+        : QSortFilterProxyModel(parent), m_playlist(playlist)
+    {
+    }
 
-    void setFilter (const char * filter);
+    void setFilter(const char * filter);
 
 private:
-    bool filterAcceptsRow (int source_row, const QModelIndex &) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &) const;
 
     Playlist m_playlist;
     Index<String> m_searchTerms;

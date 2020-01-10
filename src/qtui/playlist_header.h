@@ -31,24 +31,24 @@ class QMenu;
 class PlaylistHeader : public QHeaderView
 {
 public:
-    PlaylistHeader (PlaylistWidget * parent);
+    PlaylistHeader(PlaylistWidget * parent);
 
     /* this should be called by the playlist after adding the header */
-    void updateColumns ();
+    void updateColumns();
 
 private:
     PlaylistWidget * m_playlist;
     bool m_inUpdate = false;
     int m_lastCol = -1;
 
-    void sectionClicked (int logicalIndex);
-    void sectionMoved (int logicalIndex, int oldVisualIndex, int newVisualIndex);
-    void sectionResized (int logicalIndex, int /*oldSize*/, int newSize);
+    void sectionClicked(int logicalIndex);
+    void sectionMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex);
+    void sectionResized(int logicalIndex, int /*oldSize*/, int newSize);
 
-    void contextMenuEvent (QContextMenuEvent * event);
+    void contextMenuEvent(QContextMenuEvent * event);
 
-    const HookReceiver<PlaylistHeader>
-     hook1 {"qtui update playlist columns", this, & PlaylistHeader::updateColumns};
+    const HookReceiver<PlaylistHeader> hook1{
+        "qtui update playlist columns", this, &PlaylistHeader::updateColumns};
 };
 
 #endif // PLAYLIST_HEADER_H
