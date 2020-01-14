@@ -251,8 +251,8 @@ static bool read_mpg123_info (const char * filename, VFSFile & file, Tuple & tup
         return false;
 
     tuple.set_str (Tuple::Codec, make_format_string (& s.info));
-    tuple.set_str (Tuple::Quality, str_printf ("%s, %d Hz", (s.channels == 2) ?
-     _("Stereo") : (s.channels > 2) ? _("Surround") : _("Mono"), (int) s.rate));
+    tuple.set_str (Tuple::Quality, str_printf ("%s, %d Hz, %s", (s.channels == 2) ?
+     _("Stereo") : (s.channels > 2) ? _("Surround") : _("Mono"), (int) s.rate, (s.info.vbr == MPG123_CBR) ? "CBR" : s.info.vbr == MPG123_VBR ? "VBR" : "ABR"));
     tuple.set_int (Tuple::Bitrate, s.info.bitrate);
 
     if (! stream)
