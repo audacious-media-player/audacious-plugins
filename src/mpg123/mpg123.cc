@@ -263,7 +263,8 @@ static bool read_mpg123_info (const char * filename, VFSFile & file, Tuple & tup
         if (length > 0)
         {
             tuple.set_int (Tuple::Length, length);
-            tuple.set_int (Tuple::Bitrate, 8 * size / length);
+            if (s.info.vbr == MPG123_CBR) tuple.set_int (Tuple::Bitrate, s.info.bitrate);
+            else tuple.set_int (Tuple::Bitrate, 8 * size / length);
         }
     }
 
