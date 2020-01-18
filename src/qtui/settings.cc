@@ -73,17 +73,3 @@ static const PreferencesWidget qtui_widgets[] = {
     WidgetCheck(N_("Scroll on song change"), WidgetBool("qtui", "autoscroll"))};
 
 const PluginPreferences qtui_prefs = {{qtui_widgets}};
-
-int getDPI()
-{
-    static int dpi = 0;
-
-    if (!dpi)
-    {
-        auto desktop = qApp->desktop();
-        dpi =
-            aud::max(96, (desktop->logicalDpiX() + desktop->logicalDpiY()) / 2);
-    }
-
-    return dpi;
-}
