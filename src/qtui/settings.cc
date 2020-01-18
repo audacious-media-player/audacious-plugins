@@ -27,30 +27,20 @@
 #include <QDesktopWidget>
 
 const char * const qtui_defaults[] = {
-    "infoarea_show_vis",
-    "TRUE",
-    "infoarea_visible",
-    "TRUE",
-    "menu_visible",
-    "TRUE",
-    "playlist_tabs_visible",
-    aud::numeric_string<PlaylistTabVisibility::AutoHide>::str,
-    "statusbar_visible",
-    "TRUE",
-    "entry_count_visible",
-    "FALSE",
-    "close_button_visible",
-    "TRUE",
+    // clang-format off
+    "infoarea_show_vis", "TRUE",
+    "infoarea_visible", "TRUE",
+    "menu_visible", "TRUE",
+    "playlist_tabs_visible", aud::numeric_string<PlaylistTabVisibility::AutoHide>::str,
+    "statusbar_visible", "TRUE",
+    "entry_count_visible", "FALSE",
+    "close_button_visible", "TRUE",
 
-    "autoscroll",
-    "TRUE",
-    "playlist_columns",
-    DEFAULT_COLUMNS,
-    "playlist_headers",
-    "TRUE",
-    "show_remaining_time",
-    "FALSE",
-
+    "autoscroll", "TRUE",
+    "playlist_columns", DEFAULT_COLUMNS,
+    "playlist_headers", "TRUE",
+    "show_remaining_time", "FALSE",
+    // clang-format on
     nullptr};
 
 static void qtui_update_playlist_settings()
