@@ -253,11 +253,8 @@ static bool read_mpg123_info(const char * filename, VFSFile & file,
     const char * chan_str = (s.channels == 2)
                                 ? _("Stereo")
                                 : (s.channels > 2) ? _("Surround") : _("Mono");
-    const char * mode_str = (s.info.vbr == MPG123_VBR)
-                                ? "VBR"
-                                : s.info.vbr == MPG123_ABR ? "ABR" : "CBR";
     tuple.set_str(Tuple::Quality,
-                  str_printf("%s, %d Hz, %s", chan_str, (int)s.rate, mode_str));
+                  str_printf("%s, %d Hz", chan_str, (int)s.rate));
 
     if (!stream)
     {
@@ -267,10 +264,7 @@ static bool read_mpg123_info(const char * filename, VFSFile & file,
         if (length > 0)
         {
             tuple.set_int(Tuple::Length, length);
-            if (s.info.vbr == MPG123_CBR)
-                tuple.set_int(Tuple::Bitrate, s.info.bitrate);
-            else
-                tuple.set_int(Tuple::Bitrate, 8 * size / length);
+            tuple.set_int(Tuple::Bitrate, 8 * size / length);
         }
     }
 
