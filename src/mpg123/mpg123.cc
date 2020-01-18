@@ -31,10 +31,7 @@
 #ifdef DEBUG_MPG123_IO
 #define MPG123_IODBG(...) AUDDBG(__VA_ARGS__)
 #else
-#define MPG123_IODBG(...)                                                      \
-    do                                                                         \
-    {                                                                          \
-    } while (0)
+#define MPG123_IODBG(...)
 #endif
 
 #define WANT_VFS_STDIO_COMPAT
@@ -56,12 +53,10 @@ public:
 
     static constexpr PluginInfo info = {N_("MPG123 Plugin"), PACKAGE, nullptr,
                                         &prefs};
+    static constexpr InputInfo iinfo =
+        InputInfo(FlagWritesTag).with_exts(exts).with_mimes(mimes);
 
-    constexpr MPG123Plugin()
-        : InputPlugin(
-              info, InputInfo(FlagWritesTag).with_exts(exts).with_mimes(mimes))
-    {
-    }
+    constexpr MPG123Plugin() : InputPlugin(info, iinfo) {}
 
     bool init();
     void cleanup();
@@ -79,7 +74,8 @@ EXPORT MPG123Plugin aud_plugin_instance;
 const char * const MPG123Plugin::mimes[] = {
     "audio/mp3", "audio/mpeg", "audio/x-mp3", "audio/x-mpeg", nullptr};
 
-const char * const MPG123Plugin::defaults[] = {"full_scan", "FALSE", nullptr};
+const char * const MPG123Plugin::defaults[] = {"full_scan", "FALSE", //
+                                               nullptr};
 
 const PreferencesWidget MPG123Plugin::widgets[] = {
     WidgetLabel(N_("<b>Advanced</b>")),
@@ -159,8 +155,8 @@ bool DecodeState::init(const char * filename, VFSFile & file, bool probing,
 
     mpg123_format_none(dec);
 
-    for (int rate :
-         {8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000})
+    auto rates = {8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000};
+    for (int rate : rates)
         mpg123_format(dec, rate, MPG123_MONO | MPG123_STEREO,
                       MPG123_ENC_FLOAT_32);
 
@@ -236,8 +232,8 @@ bool MPG123Plugin::is_our_file(const char * filename, VFSFile & file)
     if (!s.init(filename, file, true, stream))
         return false;
 
-    AUDDBG("Accepted as %s: %s.\n", (const char *)make_format_string(&s.info),
-           filename);
+    auto fmt = make_format_string(&s.info);
+    AUDDBG("Accepted as %s: %s.\n", &fmt[0], filename);
     return true;
 }
 
@@ -251,17 +247,17 @@ static bool read_mpg123_info(const char * filename, VFSFile & file,
     if (!s.init(filename, file, false, stream))
         return false;
 
-    tuple.set_str(Tuple::Codec, make_format_string(&s.info));
-    tuple.set_str(Tuple::Quality,
-                  str_printf("%s, %d Hz, %s",
-                             (s.channels == 2)
-                                 ? _("Stereo")
-                                 : (s.channels > 2) ? _("Surround") : _("Mono"),
-                             (int)s.rate,
-                             (s.info.vbr == MPG123_CBR)
-                                 ? "CBR"
-                                 : s.info.vbr == MPG123_VBR ? "VBR" : "ABR"));
     tuple.set_int(Tuple::Bitrate, s.info.bitrate);
+    tuple.set_str(Tuple::Codec, make_format_string(&s.info));
+
+    const char * chan_str = (s.channels == 2)
+                                ? _("Stereo")
+                                : (s.channels > 2) ? _("Surround") : _("Mono");
+    const char * mode_str = (s.info.vbr == MPG123_VBR)
+                                ? "VBR"
+                                : s.info.vbr == MPG123_ABR ? "ABR" : "CBR";
+    tuple.set_str(Tuple::Quality,
+                  str_printf("%s, %d Hz, %s", chan_str, (int)s.rate, mode_str));
 
     if (!stream)
     {
