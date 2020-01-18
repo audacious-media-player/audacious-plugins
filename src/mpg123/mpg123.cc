@@ -129,9 +129,11 @@ struct DecodeState
 {
     mpg123_handle * dec = nullptr;
 
-    bool init(const char * filename, VFSFile & file, bool probing, bool stream);
-
+    DecodeState(const char * filename, VFSFile & file, bool probing,
+                bool stream);
     ~DecodeState() { mpg123_delete(dec); }
+
+    bool valid() const { return dec != nullptr; }
 
     long rate;
     int channels, encoding;
@@ -140,8 +142,8 @@ struct DecodeState
     float buf[4096];
 };
 
-bool DecodeState::init(const char * filename, VFSFile & file, bool probing,
-                       bool stream)
+DecodeState::DecodeState(const char * filename, VFSFile & file, bool probing,
+                         bool stream)
 {
     dec = mpg123_new(nullptr, nullptr);
     mpg123_param(dec, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
@@ -182,7 +184,7 @@ bool DecodeState::init(const char * filename, VFSFile & file, bool probing,
         if (mpg123_info(dec, &info) < 0)
             goto err;
 
-        return dec;
+        return;
     }
 
 err:
@@ -193,8 +195,6 @@ err:
 
     mpg123_delete(dec);
     dec = nullptr;
-
-    return false;
 }
 
 // with better buffering in Audacious 3.7, this is now safe for streams
@@ -228,8 +228,8 @@ bool MPG123Plugin::is_our_file(const char * filename, VFSFile & file)
     if (detect_id3(file))
         return true;
 
-    DecodeState s;
-    if (!s.init(filename, file, true, stream))
+    DecodeState s(filename, file, true, stream);
+    if (!s.valid())
         return false;
 
     auto fmt = make_format_string(&s.info);
@@ -243,8 +243,8 @@ static bool read_mpg123_info(const char * filename, VFSFile & file,
     int64_t size = file.fsize();
     bool stream = (size < 0);
 
-    DecodeState s;
-    if (!s.init(filename, file, false, stream))
+    DecodeState s(filename, file, false, stream);
+    if (!s.valid())
         return false;
 
     tuple.set_int(Tuple::Bitrate, s.info.bitrate);
@@ -304,8 +304,8 @@ bool MPG123Plugin::play(const char * filename, VFSFile & file)
             set_playback_tuple(tuple.ref());
     }
 
-    DecodeState s;
-    if (!s.init(filename, file, false, stream))
+    DecodeState s(filename, file, false, stream);
+    if (!s.valid())
         return false;
 
     int bitrate = s.info.bitrate * 1000;
