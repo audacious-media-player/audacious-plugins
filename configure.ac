@@ -50,8 +50,8 @@ if test $HAVE_DARWIN = yes ; then
      [with_system_libxml2=yes])
 
     if test $with_system_libxml2 = yes ; then
-        XML_LIBS="-lxml2"
-        XML_CFLAGS="-I/usr/include/libxml2"
+        XML_LIBS=$(xml2-config --libs)
+        XML_CFLAGS=$(xml2-config --cflags)
         AC_SUBST(XML_LIBS)
         AC_SUBST(XML_CFLAGS)
     else
