@@ -241,5 +241,5 @@ QVariant ShoutcastGenreModel::data (const QModelIndex &index, int role) const
     if (role != Qt::DisplayRole)
         return QVariant ();
 
-    return QString (ShoutcastTunerModel::genres[index.row ()]);
+    return QString (_(ShoutcastTunerModel::genres[index.row ()]));
 }
