@@ -19,6 +19,7 @@
 
 #include <glib.h>
 
+#include <QApplication>
 #include <QBoxLayout>
 #include <QContextMenuEvent>
 #include <QDirIterator>
