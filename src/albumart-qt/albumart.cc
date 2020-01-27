@@ -25,6 +25,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/templates.h>
 
 #include <libaudqt/libaudqt.h>
 
@@ -99,7 +100,7 @@ private:
     void drawArt ()
     {
         qreal r = qApp->devicePixelRatio();
-        if (std::abs(r - 1.0) <= 0.01 &&
+        if (aud::abs(r - 1.0) <= 0.01 &&
             origSize.width () <= size ().width () - MARGIN &&
             origSize.height () <= size ().height() - MARGIN) {
             // If device pixel ratio is close to 1:1 (within 1%) and art is
