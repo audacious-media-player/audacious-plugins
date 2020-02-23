@@ -247,26 +247,25 @@ static bool read_mpg123_info(const char * filename, VFSFile & file,
     if (!s.valid())
         return false;
 
-    tuple.set_int(Tuple::Bitrate, s.info.bitrate);
-    tuple.set_str(Tuple::Codec, make_format_string(&s.info));
-
-    const char * chan_str = (s.channels == 2)
-                                ? _("Stereo")
-                                : (s.channels > 2) ? _("Surround") : _("Mono");
-    tuple.set_str(Tuple::Quality,
-                  str_printf("%s, %d Hz", chan_str, (int)s.rate));
+    tuple.set_int (Tuple::Bitrate, s.info.bitrate);
 
     if (!stream)
     {
         int64_t samples = mpg123_length(s.dec);
+        int calculated_bitrate = 0;
         int length = (s.rate > 0) ? samples * 1000 / s.rate : 0;
 
         if (length > 0)
         {
             tuple.set_int(Tuple::Length, length);
-            tuple.set_int(Tuple::Bitrate, 8 * size / length);
+            calculated_bitrate= (((80 * size)  / length) + 5) / 10; // Round instead of truncating digits
+            tuple.set_int (Tuple::Bitrate, calculated_bitrate);
         }
+        tuple.set_str (Tuple::Codec, make_format_string (& s.info));
+        tuple.set_str (Tuple::Quality, str_printf ("%s, %d Hz, %s", (s.channels == 2) ?
+         _("Stereo") : (s.channels > 2) ? _("Surround") : _("Mono"),  (int) s.rate, s.info.vbr == MPG123_VBR ? "VBR" : s.info.vbr == MPG123_ABR ? "ABR" : calculated_bitrate == s.info.bitrate ? "CBR" : "VBR"));
     }
+
 
     return true;
 }
