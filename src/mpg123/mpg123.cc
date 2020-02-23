@@ -256,15 +256,15 @@ static bool read_mpg123_info(const char * filename, VFSFile & file,
     tuple.set_str(Tuple::Quality,
                   str_printf("%s, %d Hz", chan_str, (int)s.rate));
 
-    if (!stream)
+    if (!stream && s.rate > 0)
     {
         int64_t samples = mpg123_length(s.dec);
-        int length = (s.rate > 0) ? samples * 1000 / s.rate : 0;
+        int length = aud::rescale<int64_t>(samples, s.rate, 1000);
 
         if (length > 0)
         {
             tuple.set_int(Tuple::Length, length);
-            tuple.set_int(Tuple::Bitrate, 8 * size / length);
+            tuple.set_int(Tuple::Bitrate, aud::rdiv<int64_t>(8 * size, length));
         }
     }
 
@@ -325,7 +325,8 @@ bool MPG123Plugin::play(const char * filename, VFSFile & file)
 
         if (seek >= 0)
         {
-            if (mpg123_seek(s.dec, (int64_t)seek * s.rate / 1000, SEEK_SET) < 0)
+            int64_t sample = aud::rescale<int64_t>(seek, 1000, s.rate);
+            if (mpg123_seek(s.dec, sample, SEEK_SET) < 0)
                 print_mpg123_error(filename, s.dec);
 
             s.bytes_read = 0;
@@ -335,10 +336,11 @@ bool MPG123Plugin::play(const char * filename, VFSFile & file)
         bitrate_sum += s.info.bitrate;
         bitrate_count++;
 
-        if (bitrate_sum / bitrate_count != bitrate && bitrate_count >= 16)
+        int new_bitrate = aud::rdiv(bitrate_sum, bitrate_count);
+        if (new_bitrate != bitrate && bitrate_count >= 16)
         {
-            set_stream_bitrate(bitrate_sum / bitrate_count * 1000);
-            bitrate = bitrate_sum / bitrate_count;
+            set_stream_bitrate(new_bitrate * 1000);
+            bitrate = new_bitrate;
             bitrate_sum = 0;
             bitrate_count = 0;
         }
