@@ -256,6 +256,8 @@ static bool read_mpg123_info(const char * filename, VFSFile & file,
     tuple.set_str(Tuple::Quality,
                   str_printf("%s, %d Hz", chan_str, (int)s.rate));
 
+    int vbr = MPG123_CBR;
+
     if (!stream && s.rate > 0)
     {
         int64_t samples = mpg123_length(s.dec);
@@ -265,8 +267,16 @@ static bool read_mpg123_info(const char * filename, VFSFile & file,
         {
             tuple.set_int(Tuple::Length, length);
             tuple.set_int(Tuple::Bitrate, aud::rdiv<int64_t>(8 * size, length));
+            if (aud::rdiv<int64_t>(8 * size, length) !=  s.info.bitrate) vbr = MPG123_VBR;
         }
     }
+    
+    if (s.info.vbr != MPG123_CBR)
+        vbr = s.info.vbr;
+
+    tuple.set_str(Tuple::Quality,
+                  str_printf("%s, %d Hz, %s", chan_str, (int)s.rate, 
+                  vbr == MPG123_CBR ? "CBR" : vbr == MPG123_VBR ? "VBR" : "ABR"));
 
     return true;
 }
