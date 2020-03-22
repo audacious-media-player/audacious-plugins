@@ -31,6 +31,8 @@
 #include <QGLWidget>
 #include <QGLFunctions>
 
+#include <GL/gl.h>
+
 #define NUM_BANDS 32
 #define DB_RANGE 40
 
