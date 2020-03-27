@@ -43,6 +43,10 @@ void view_show_player (bool show)
 {
     if (show)
     {
+        // "Move" the window to the position it's already at. This seems
+        // to work around a GTK+ bug causing the main window to end up
+        // at a random position after the gtk_window_present() call.
+        mainwin->move (config.player_x, config.player_y);
         gtk_window_present ((GtkWindow *) mainwin->gtk ());
         show_plugin_windows ();
     }
