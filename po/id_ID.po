@@ -1,7 +1,7 @@
 # Indonesian translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-#
+# 
 # Translators:
 # Rahman Yusri Aftian <aftian@yahoo.com>, 2012
 # Andika Triwidada <andika@gmail.com>, 2012
@@ -11,10 +11,11 @@
 # Bervianto Leo Pratama <bervianto.leo@gmail.com>, 2016
 #  <bu0ncu3@yahoo.com>, 2012
 # Catur Susetyo <satyafree@gmail.com>, 2013
+# IMAM MUJAHIDIN <amangimam@hotmail.com>, 2018
 #  <kokabiel9@gmail.com>, 2012
 # Liffindra Angga Zaaldian <findrakecil@gmail.com>, 2015
 # martadinata666 <martadinata666@gmail.com>, 2012
-# se7entime <se7entime@openmailbox.org>, 2012-2013
+# se7entime <se7entime@disroot.org>, 2012-2013
 #  <pri_yess@yahoo.com>, 2012
 # Rahman Yusri Aftian <aftian@yahoo.com>, 2012-2014
 # Rizki Aulia Rachman <rizkiaulia.r@gmail.com>, 2013
@@ -25,49 +26,44 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2018-08-04 20:48+0200\n"
-"PO-Revision-Date: 2018-07-29 21:54+0000\n"
-"Last-Translator: Thomas Lange\n"
-"Language-Team: Indonesian (Indonesia) (http://www.transifex.com/audacious/"
-"audacious/language/id_ID/)\n"
-"Language: id_ID\n"
+"POT-Creation-Date: 2020-01-26 13:18+0100\n"
+"PO-Revision-Date: 2020-01-26 12:22+0000\n"
+"Last-Translator: Rahman Yusri Aftian <aftian@yahoo.com>\n"
+"Language-Team: Indonesian (Indonesia) (http://www.transifex.com/audacious/audacious/language/id_ID/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: id_ID\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/aac/aac.cc:18
+#: src/aac/aac.cc:19
 msgid "AAC (Raw) Decoder"
 msgstr "Dekoder AAC (orisinal)"
 
-#: src/adplug/adplug-xmms.cc:50
+#: src/adplug/adplug-xmms.cc:70
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (Pemutar AdLib)"
 
-#: src/adplug/adplug-xmms.cc:148 src/modplug/modplugbmp.cc:337
-#: src/psf/plugin.cc:136 src/vtx/vtx.cc:89 src/xsf/plugin.cc:106
+#: src/adplug/adplug-xmms.cc:167 src/modplug/modplugbmp.cc:321
+#: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:106
 msgid "sequenced"
 msgstr "telah diurutkan"
 
-#: src/adplug/adplug-xmms.cc:297 src/sid/xs_config.cc:61
+#: src/adplug/adplug-xmms.cc:348 src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:298
-msgid "16-bit output (if unchecked, output is 8-bit)"
+#: src/adplug/adplug-xmms.cc:349
+msgid "OPL Emulator:"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:300
-msgid "Duplicate mono output to two channels"
-msgstr ""
-
-#: src/adplug/adplug-xmms.cc:302
+#: src/adplug/adplug-xmms.cc:352
 msgid "Sample rate"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:303 src/amidiplug/i_configure.cc:152
+#: src/adplug/adplug-xmms.cc:353 src/amidiplug/i_configure.cc:155
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
-#: src/modplug/plugin_main.cc:81 src/resample/resample.cc:201
+#: src/modplug/plugin_main.cc:77 src/resample/resample.cc:201
 #: src/resample/resample.cc:207 src/resample/resample.cc:211
 #: src/resample/resample.cc:215 src/resample/resample.cc:219
 #: src/resample/resample.cc:223 src/resample/resample.cc:227
@@ -77,13 +73,13 @@ msgstr ""
 msgid "Hz"
 msgstr "Hz"
 
-#: src/adplug/adplug-xmms.cc:304 src/gtkui/settings.cc:46
-#: src/modplug/plugin_main.cc:109 src/qtui/settings.cc:66
+#: src/adplug/adplug-xmms.cc:354 src/gtkui/settings.cc:46
+#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:72
 #: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Miscellaneous</b>"
 
-#: src/adplug/adplug-xmms.cc:305
+#: src/adplug/adplug-xmms.cc:355
 msgid "Repeat song in endless loop"
 msgstr ""
 
@@ -100,10 +96,7 @@ msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
-msgstr ""
-"Sebuah plugin yang dapat digunakan untuk mulai bermain pada waktu tertentu.\n"
-"\n"
-"Awalnya ditulis oleh Adam Feakin dan Daniel Stodden."
+msgstr "Sebuah plugin yang dapat digunakan untuk mulai bermain pada waktu tertentu.\n\nAwalnya ditulis oleh Adam Feakin dan Daniel Stodden."
 
 #: src/alarm/interface.cc:28
 msgid ""
@@ -243,8 +236,8 @@ msgstr "Memudar"
 
 #: src/alarm/interface.cc:294 src/console/plugin.cc:41
 #: src/crossfade/crossfade.cc:52 src/crossfade/crossfade.cc:58
-#: src/gtkui/settings.cc:49 src/lirc/lirc.cc:395 src/qtui/settings.cc:69
-#: src/sid/xs_config.cc:85 src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
+#: src/lirc/lirc.cc:395 src/sid/xs_config.cc:85 src/sid/xs_config.cc:94
+#: src/sid/xs_config.cc:103 src/vumeter-qt/vumeter_qt.cc:39
 msgid "seconds"
 msgstr "detik"
 
@@ -292,7 +285,7 @@ msgstr "Apa yang dimaksud dengan opsi ini?"
 msgid "Help"
 msgstr "Bantuan"
 
-#: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:33
+#: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:34
 msgid "Album Art"
 msgstr "Sampul Album"
 
@@ -305,15 +298,8 @@ msgid ""
 "ALSA Output Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
-"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
-"code served as a reference when the ALSA manual was not enough."
-msgstr ""
-"Pengaya Keluaran ALSA untuk Audacious\n"
-"Hak cipta 2009-2012 John Lindgren\n"
-"\n"
-"Terima kasih dari saya kepada William Pitcock, pencipta dari Pengaya "
-"Keluaran ALSA NG, yang kodenya telah disajikan sebagai sebuah rujukan ketika "
-"panduan ALSA tidak cukup memadai."
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
+msgstr "Pengaya Keluaran ALSA untuk Audacious\nHak cipta 2009-2012 John Lindgren\n\nTerima kasih dari saya kepada William Pitcock, pencipta dari Pengaya Keluaran ALSA NG, yang kodenya telah disajikan sebagai sebuah rujukan ketika panduan ALSA tidak cukup memadai."
 
 #: src/alsa/config.cc:61
 msgid "(no description)"
@@ -339,11 +325,11 @@ msgstr "Perangkat mixer:"
 msgid "Mixer element:"
 msgstr "Elemen mixer:"
 
-#: src/amidiplug/amidi-plug.cc:41
+#: src/amidiplug/amidi-plug.cc:42
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (Pemutar MIDI)"
 
-#: src/amidiplug/amidi-plug.cc:435
+#: src/amidiplug/amidi-plug.cc:438
 msgid ""
 "AMIDI-Plug\n"
 "modular MIDI music player\n"
@@ -418,32 +404,35 @@ msgstr "Lompati hening yang mengikuti"
 msgid "<b>SoundFont</b>"
 msgstr "<b>SoundFont</b>"
 
-#: src/amidiplug/i_configure.cc:145
+#: src/amidiplug/i_configure.cc:148
 msgid "<b>Synthesizer</b>"
 msgstr "<b>Synthesizer</b>"
 
-#: src/amidiplug/i_configure.cc:150 src/console/plugin.cc:45
-#: src/filewriter/filewriter.cc:473 src/sid/xs_config.cc:65
+#: src/amidiplug/i_configure.cc:153 src/console/plugin.cc:45
+#: src/filewriter/filewriter.cc:481 src/sid/xs_config.cc:65
 msgid "Sample rate:"
 msgstr "Kadar contoh:"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:54
+#: src/amidiplug/i_configure-fluidsynth.cc:57
+#: src/amidiplug/i_configure-fluidsynth.cc:532
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - pilih berkas SoundFont"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:57
+#: src/amidiplug/i_configure-fluidsynth.cc:60
 msgid "_Cancel"
 msgstr "_Batal"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:58
+#: src/amidiplug/i_configure-fluidsynth.cc:61
 msgid "_Open"
 msgstr "Bu_ka"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:227 src/gtkui/columns.cc:46
+#: src/amidiplug/i_configure-fluidsynth.cc:230
+#: src/amidiplug/i_configure-fluidsynth.cc:472 src/gtkui/columns.cc:46
 msgid "File name"
 msgstr "Nama berkas"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:231
+#: src/amidiplug/i_configure-fluidsynth.cc:234
+#: src/amidiplug/i_configure-fluidsynth.cc:475
 msgid "Size (bytes)"
 msgstr "Ukuran (bytes)"
 
@@ -543,7 +532,7 @@ msgstr "Persegi Bersudut Bundar"
 msgid "Concave Rectangle"
 msgstr "Persegi Bersudut Cekung"
 
-#: src/aosd/aosd_style.cc:69
+#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50
 msgid "None"
 msgstr "Tidak ada"
 
@@ -669,12 +658,8 @@ msgstr "Manajer komposisi terdeteksi"
 #: src/aosd/aosd_ui.cc:660
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
-msgstr ""
-"Manajer gabungan tidak terdeteksi\n"
-"kecuali kalau kamu tahu bahwa kamu punya satu yang berjalan, harap "
-"diaktifkan sebaliknya OSD tidak akan bekerja dengan baik"
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+msgstr "Manajer gabungan tidak terdeteksi\nkecuali kalau kamu tahu bahwa kamu punya satu yang berjalan, harap diaktifkan sebaliknya OSD tidak akan bekerja dengan baik"
 
 #: src/aosd/aosd_ui.cc:668
 msgid "Composite manager not required for fake transparency"
@@ -721,7 +706,7 @@ msgstr "Dekorasi"
 msgid "Trigger"
 msgstr "Pemicu"
 
-#: src/aosd/aosd_ui.cc:859
+#: src/aosd/aosd_ui.cc:859 src/streamtuner/shoutcast-model.cc:202
 msgid "Misc"
 msgstr "Misc"
 
@@ -741,11 +726,11 @@ msgstr "Daftar Putar ASXv1/ASXv2 "
 msgid "Audacious Playlists (audpl)"
 msgstr "Daftar Putar Audacious (audpl)"
 
-#: src/blur_scope/blur_scope.cc:39
+#: src/blur_scope/blur_scope.cc:39 src/blur_scope-qt/blur_scope.cc:45
 msgid "<b>Color</b>"
 msgstr "<b>Warna</b>"
 
-#: src/blur_scope/blur_scope.cc:55
+#: src/blur_scope/blur_scope.cc:55 src/blur_scope-qt/blur_scope.cc:158
 msgid "Blur Scope"
 msgstr "Blur Scope"
 
@@ -769,7 +754,7 @@ msgstr "x1/10 dB"
 msgid "Cut frequency:"
 msgstr "Frekuensi potong:"
 
-#: src/cairo-spectrum/cairo-spectrum.cc:41
+#: src/cairo-spectrum/cairo-spectrum.cc:41 src/qt-spectrum/qt-spectrum.cc:107
 msgid "Spectrum Analyzer"
 msgstr "Penelaah spektrum"
 
@@ -787,17 +772,7 @@ msgid ""
 "Also thank you to Tony Vroon for mentoring and guiding me.\n"
 "\n"
 "This was a Google Summer of Code 2007 project."
-msgstr ""
-"Hak cipta (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> dan kawan-kawan.\n"
-"\n"
-"Banyak terima kasih kepada para pengembang libcdio <http://www.gnu.org/"
-"software/libcdio/>\n"
-"dan kepada para pengembang libcddb <http://libcddb.sourceforge.net/>.\n"
-"\n"
-"Juga terima kasih kepada Tony Vroon karena telah mengajari dan membimbing "
-"saya.\n"
-"\n"
-"Ini adalah sebuah proyek Google Summer of Code 2007."
+msgstr "Hak cipta (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> dan kawan-kawan.\n\nBanyak terima kasih kepada para pengembang libcdio <http://www.gnu.org/software/libcdio/>\ndan kepada para pengembang libcddb <http://libcddb.sourceforge.net/>.\n\nJuga terima kasih kepada Tony Vroon karena telah mengajari dan membimbing saya.\n\nIni adalah sebuah proyek Google Summer of Code 2007."
 
 #: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
@@ -942,9 +917,7 @@ msgstr "Jangkauan dinamis:"
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
-msgstr ""
-"Pengaya Dynamic Range Compression untuk Audacious\n"
-"Hak cipta 2010-2014 John Lindgren"
+msgstr "Pengaya Dynamic Range Compression untuk Audacious\nHak cipta 2010-2014 John Lindgren"
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
@@ -976,7 +949,7 @@ msgstr "Echo:"
 msgid "Default song length:"
 msgstr "Panjang standar lagu:"
 
-#: src/console/plugin.cc:42 src/modplug/plugin_main.cc:62
+#: src/console/plugin.cc:42 src/modplug/plugin_main.cc:58
 msgid "<b>Resampling</b>"
 msgstr ""
 
@@ -1028,9 +1001,7 @@ msgstr ""
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
-msgstr ""
-"Pengaya Crossfade untuk Audacious\n"
-"Hak cipta 2010-2014 John Lindgren"
+msgstr "Pengaya Crossfade untuk Audacious\nHak cipta 2010-2014 John Lindgren"
 
 #: src/crossfade/crossfade.cc:47
 msgid "<b>Crossfade</b>"
@@ -1085,31 +1056,31 @@ msgstr "Hapus Berkas"
 
 #: src/delete-files/delete-files.cc:120
 msgid "No files are selected."
-msgstr ""
+msgstr "Tidak ada berkas yang dipilih"
 
 #: src/delete-files/delete-files.cc:125
 #, c-format
 msgid "Do you want to move %s to the trash?"
-msgstr ""
+msgstr "Anda ingin memindahkan %sberkas ke keranjang sampah?"
 
 #: src/delete-files/delete-files.cc:126
 #, c-format
 msgid "Do you want to permanently delete %s?"
-msgstr ""
+msgstr "Anda ingin menghapus %sberkas secara permanen?"
 
 #: src/delete-files/delete-files.cc:133
 #, c-format
 msgid "Do you want to move %d files to the trash?"
-msgstr ""
+msgstr "Anda ingin memindahkan %dberkas ke tempat sampah?"
 
 #: src/delete-files/delete-files.cc:134
 #, c-format
 msgid "Do you want to permanently delete %d files?"
-msgstr ""
+msgstr "Anda ingin menghapus %dberkas secara permanen?"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Move to trash"
-msgstr ""
+msgstr "Pindahkan ke keranjang sampah"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Delete"
@@ -1120,15 +1091,15 @@ msgstr "Hapus"
 msgid "Cancel"
 msgstr "Batal"
 
-#: src/delete-files/delete-files.cc:268
+#: src/delete-files/delete-files.cc:266
 msgid "Delete Selected Files"
 msgstr "Hapus Berkas Dipilih"
 
-#: src/delete-files/delete-files.cc:288
+#: src/delete-files/delete-files.cc:286
 msgid "<b>Delete Method</b>"
 msgstr "<b>Metode Menghapus</b>"
 
-#: src/delete-files/delete-files.cc:289
+#: src/delete-files/delete-files.cc:287
 msgid "Move to trash instead of deleting immediately"
 msgstr ""
 
@@ -1144,13 +1115,13 @@ msgstr ""
 msgid "<b>Echo</b>"
 msgstr "<b>Echo</b>"
 
-#: src/echo_plugin/echo.cc:22 src/modplug/plugin_main.cc:76
-#: src/modplug/plugin_main.cc:86
+#: src/echo_plugin/echo.cc:22 src/modplug/plugin_main.cc:72
+#: src/modplug/plugin_main.cc:82
 msgid "Delay:"
 msgstr "Penundaan"
 
-#: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:76
-#: src/modplug/plugin_main.cc:86
+#: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:72
+#: src/modplug/plugin_main.cc:82
 msgid "ms"
 msgstr "ms"
 
@@ -1158,7 +1129,7 @@ msgstr "ms"
 msgid "Feedback:"
 msgstr "Umpan balik:"
 
-#: src/echo_plugin/echo.cc:28 src/modplug/plugin_main.cc:90
+#: src/echo_plugin/echo.cc:28 src/modplug/plugin_main.cc:86
 msgid "Volume:"
 msgstr "Volume"
 
@@ -1184,291 +1155,290 @@ msgstr ""
 msgid "FileWriter Plugin"
 msgstr "Pengaya FileWriter"
 
-#: src/filewriter/filewriter.cc:350
+#: src/filewriter/filewriter.cc:316
+#, c-format
 msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"Error opening %s:\n"
+"%s"
+msgstr "Gagal membuka %s:\n%s"
+
+#: src/filewriter/filewriter.cc:358
+msgid ""
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
-#: src/filewriter/filewriter.cc:377
+#: src/filewriter/filewriter.cc:385
 msgid "Output file format:"
 msgstr "Format berkas keluaran:"
 
-#: src/filewriter/filewriter.cc:381
+#: src/filewriter/filewriter.cc:389
 msgid "Save into original directory"
 msgstr "Simpan di dalam direktori asli"
 
-#: src/filewriter/filewriter.cc:384
+#: src/filewriter/filewriter.cc:392
 msgid "Save into custom directory:"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:392
+#: src/filewriter/filewriter.cc:400
 msgid "Generate file name from:"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:393
+#: src/filewriter/filewriter.cc:401
 msgid "Original file name"
 msgstr "Nama file asli"
 
-#: src/filewriter/filewriter.cc:396
+#: src/filewriter/filewriter.cc:404
 msgid "Original file name (no suffix)"
 msgstr "Nama file asli (tanpa suffiks)"
 
-#: src/filewriter/filewriter.cc:399
+#: src/filewriter/filewriter.cc:407
 msgid "Original file tag"
 msgstr "Berkas tag asli"
 
-#: src/filewriter/filewriter.cc:403
+#: src/filewriter/filewriter.cc:411
 msgid "Prepend track number to file name"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:409 src/filewriter/filewriter.cc:441
+#: src/filewriter/filewriter.cc:417 src/filewriter/filewriter.cc:449
 msgid "Auto"
 msgstr "Otomatis"
 
-#: src/filewriter/filewriter.cc:410
+#: src/filewriter/filewriter.cc:418
 msgid "8000 Hz"
 msgstr "8000 Hz"
 
-#: src/filewriter/filewriter.cc:411
+#: src/filewriter/filewriter.cc:419
 msgid "11025 Hz"
 msgstr "11025 Hz"
 
-#: src/filewriter/filewriter.cc:412
+#: src/filewriter/filewriter.cc:420
 msgid "12000 Hz"
 msgstr "12000 Hz"
 
-#: src/filewriter/filewriter.cc:413
+#: src/filewriter/filewriter.cc:421
 msgid "16000 Hz"
 msgstr "16000 Hz"
 
-#: src/filewriter/filewriter.cc:414
+#: src/filewriter/filewriter.cc:422
 msgid "22050 Hz"
 msgstr "22050 Hz"
 
-#: src/filewriter/filewriter.cc:415
+#: src/filewriter/filewriter.cc:423
 msgid "24000 Hz"
 msgstr "24000 Hz"
 
-#: src/filewriter/filewriter.cc:416
+#: src/filewriter/filewriter.cc:424
 msgid "32000 Hz"
 msgstr "32000 Hz"
 
-#: src/filewriter/filewriter.cc:417
+#: src/filewriter/filewriter.cc:425
 msgid "44100 Hz"
 msgstr "44100 Hz"
 
-#: src/filewriter/filewriter.cc:418
+#: src/filewriter/filewriter.cc:426
 msgid "48000 Hz"
 msgstr "48000 Hz"
 
-#: src/filewriter/filewriter.cc:422
+#: src/filewriter/filewriter.cc:430
 msgid "8 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:423
+#: src/filewriter/filewriter.cc:431
 msgid "16 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:424
+#: src/filewriter/filewriter.cc:432
 msgid "32 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:425
+#: src/filewriter/filewriter.cc:433
 msgid "40 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:426
+#: src/filewriter/filewriter.cc:434
 msgid "48 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:427
+#: src/filewriter/filewriter.cc:435
 msgid "56 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:428
+#: src/filewriter/filewriter.cc:436
 msgid "64 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:429
+#: src/filewriter/filewriter.cc:437
 msgid "80 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:430
+#: src/filewriter/filewriter.cc:438
 msgid "96 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:431
+#: src/filewriter/filewriter.cc:439
 msgid "112 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:432
+#: src/filewriter/filewriter.cc:440
 msgid "128 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:433
+#: src/filewriter/filewriter.cc:441
 msgid "160 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:434
+#: src/filewriter/filewriter.cc:442
 msgid "192 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:435
+#: src/filewriter/filewriter.cc:443
 msgid "224 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:436
+#: src/filewriter/filewriter.cc:444
 msgid "256 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:437
+#: src/filewriter/filewriter.cc:445
 msgid "320 kbps"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:442
+#: src/filewriter/filewriter.cc:450
 msgid "Joint Stereo"
 msgstr "Gabung stereo"
 
-#: src/filewriter/filewriter.cc:443 src/modplug/plugin_main.cc:61
-#: src/mpg123/mpg123.cc:245
+#: src/filewriter/filewriter.cc:451 src/modplug/plugin_main.cc:57
+#: src/mpg123/mpg123.cc:254
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/filewriter.cc:444 src/modplug/plugin_main.cc:60
-#: src/mpg123/mpg123.cc:245
+#: src/filewriter/filewriter.cc:452 src/modplug/plugin_main.cc:56
+#: src/mpg123/mpg123.cc:255
 msgid "Mono"
 msgstr "Mono"
 
-#: src/filewriter/filewriter.cc:448
+#: src/filewriter/filewriter.cc:456
 msgid "VBR"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:449
+#: src/filewriter/filewriter.cc:457
 msgid "ABR"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:470
+#: src/filewriter/filewriter.cc:478
 msgid "Algorithm quality:"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:476
+#: src/filewriter/filewriter.cc:484
 msgid "Bitrate:"
 msgstr "Bitrate:"
 
-#: src/filewriter/filewriter.cc:483
+#: src/filewriter/filewriter.cc:491
 msgid "Compression ratio:"
 msgstr "Rasio kompresi:"
 
-#: src/filewriter/filewriter.cc:490
+#: src/filewriter/filewriter.cc:498
 msgid "Audio mode:"
 msgstr "Mode suara:"
 
-#: src/filewriter/filewriter.cc:493
+#: src/filewriter/filewriter.cc:501
 msgid "Enforce strict ISO compliance"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:495
+#: src/filewriter/filewriter.cc:503
 msgid "Error protection"
 msgstr "Pengaman kesalahan"
 
-#: src/filewriter/filewriter.cc:500
+#: src/filewriter/filewriter.cc:508
 msgid "Enable VBR/ABR"
 msgstr "Aktifkan VBR/ABR"
 
-#: src/filewriter/filewriter.cc:502
+#: src/filewriter/filewriter.cc:510
 msgid "Type:"
 msgstr "Tipe:"
 
-#: src/filewriter/filewriter.cc:506
+#: src/filewriter/filewriter.cc:514
 msgid "Minimum bitrate:"
 msgstr "Bitrate minimum:"
 
-#: src/filewriter/filewriter.cc:510
+#: src/filewriter/filewriter.cc:518
 msgid "Maximum bitrate:"
 msgstr "Bitrate maksimum:"
 
-#: src/filewriter/filewriter.cc:514
+#: src/filewriter/filewriter.cc:522
 msgid "Average bitrate:"
 msgstr "Bitrate rata-rata:"
 
-#: src/filewriter/filewriter.cc:518
+#: src/filewriter/filewriter.cc:526
 msgid "VBR quality level:"
 msgstr "Tingkat kualitas VBR:"
 
-#: src/filewriter/filewriter.cc:522
+#: src/filewriter/filewriter.cc:530
 msgid "Strictly enforce minimum bitrate"
 msgstr "Memaksakan dengan ketat bitrate terendah"
 
-#: src/filewriter/filewriter.cc:525
+#: src/filewriter/filewriter.cc:533
 msgid "Omit Xing VBR header"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:531
+#: src/filewriter/filewriter.cc:539
 msgid "<b>Frame Headers</b>"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:532
+#: src/filewriter/filewriter.cc:540
 msgid "Mark as copyright"
 msgstr "Tandai sebagai hak cipta"
 
-#: src/filewriter/filewriter.cc:534
+#: src/filewriter/filewriter.cc:542
 msgid "Mark as original"
 msgstr "Tandai sebagai orisinil"
 
-#: src/filewriter/filewriter.cc:536
+#: src/filewriter/filewriter.cc:544
 msgid "<b>ID3 Tags</b>"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:537
+#: src/filewriter/filewriter.cc:545
 msgid "Force addition of version 2 tag"
 msgstr "Memaksa tambahan tag versi 2"
 
-#: src/filewriter/filewriter.cc:539
+#: src/filewriter/filewriter.cc:547
 msgid "Only add v1 tag"
 msgstr "Hanya tambahkan tag v1"
 
-#: src/filewriter/filewriter.cc:541
+#: src/filewriter/filewriter.cc:549
 msgid "Only add v2 tag"
 msgstr "Hanya tambahkan tag v2"
 
-#: src/filewriter/filewriter.cc:546
+#: src/filewriter/filewriter.cc:554
 msgid "Quality"
 msgstr "Kualitas"
 
-#: src/filewriter/filewriter.cc:547
+#: src/filewriter/filewriter.cc:555
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/filewriter.cc:548
+#: src/filewriter/filewriter.cc:556
 msgid "Tags"
 msgstr "Tags"
 
-#: src/filewriter/filewriter.cc:558
+#: src/filewriter/filewriter.cc:566
 msgid "Quality (0-1):"
 msgstr ""
 
-#: src/filewriter/filewriter.cc:565 src/skins-qt/skins_cfg.cc:303
+#: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:303
 #: src/skins/skins_cfg.cc:285
 msgid "General"
 msgstr "Umum"
 
-#: src/flac/flacng.h:35
+#: src/flac/flacng.h:36
 msgid "FLAC Decoder"
 msgstr "Dekoder FLAC"
 
-#: src/flac/metadata.cc:270 src/wavpack/wavpack.cc:209
+#: src/flac/metadata.cc:274 src/wavpack/wavpack.cc:215
 msgid "lossless"
 msgstr ""
 
@@ -1504,8 +1474,7 @@ msgid ""
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
 "\n"
 "Based on the XMMS plugin:\n"
-"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
-"4Front Technologies\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and 4Front Technologies\n"
 "\n"
 "License: GPLv2+"
 msgstr ""
@@ -1519,20 +1488,21 @@ msgid "Entry number"
 msgstr "Masukkan angka"
 
 #: src/gtkui/columns.cc:36 src/playlist-manager/playlist-manager.cc:199
-#: src/playlist-manager-qt/playlist-manager-qt.cc:183
-#: src/qtui/playlist_model.cc:37
+#: src/playlist-manager-qt/playlist-manager-qt.cc:184
+#: src/qtui/playlist_model.cc:35 src/streamtuner/icecast-model.cc:120
+#: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:122
 msgid "Title"
 msgstr "Judul"
 
-#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:38
+#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:36
 msgid "Artist"
 msgstr "Artis"
 
-#: src/gtkui/columns.cc:38 src/qtui/playlist_model.cc:39
+#: src/gtkui/columns.cc:38 src/qtui/playlist_model.cc:36
 msgid "Year"
 msgstr "Tahun"
 
-#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:40
+#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:36
 msgid "Album"
 msgstr "Album"
 
@@ -1540,11 +1510,13 @@ msgstr "Album"
 msgid "Album artist"
 msgstr ""
 
-#: src/gtkui/columns.cc:41 src/qtui/playlist_model.cc:42
+#: src/gtkui/columns.cc:41 src/qtui/playlist_model.cc:37
 msgid "Track"
 msgstr "Track"
 
-#: src/gtkui/columns.cc:42 src/qtui/playlist_model.cc:43
+#: src/gtkui/columns.cc:42 src/qtui/playlist_model.cc:37
+#: src/streamtuner/icecast-model.cc:123 src/streamtuner/shoutcast-model.cc:125
+#: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
 msgstr "Aliran"
 
@@ -1552,7 +1524,7 @@ msgstr "Aliran"
 msgid "Queue position"
 msgstr "Posisi antri"
 
-#: src/gtkui/columns.cc:44 src/qtui/playlist_model.cc:45
+#: src/gtkui/columns.cc:44 src/qtui/playlist_model.cc:38
 msgid "Length"
 msgstr "Panjang"
 
@@ -1564,11 +1536,12 @@ msgstr "Tempat Berkas"
 msgid "Custom title"
 msgstr "Title pilihan"
 
-#: src/gtkui/columns.cc:48 src/qtui/playlist_model.cc:49
+#: src/gtkui/columns.cc:48 src/qtui/playlist_model.cc:39
+#: src/streamtuner/icecast-model.cc:129 src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
 msgstr "Bitrate"
 
-#: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:50
+#: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:40
 msgid "Comment"
 msgstr "Komentar"
 
@@ -1580,8 +1553,8 @@ msgstr "Kolom tersedia"
 msgid "Displayed columns"
 msgstr "Tampilan kolom"
 
-#: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:62
-#: src/search-tool/search-tool.cc:49
+#: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:56
+#: src/search-tool/search-tool.cc:48
 msgid "Search Tool"
 msgstr "Alat Pencari"
 
@@ -1609,376 +1582,384 @@ msgstr "Tidak didok"
 msgid "Disable"
 msgstr "Nonaktifkan"
 
-#: src/gtkui/menus.cc:79 src/qtui/menus.cc:68
-#: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:283
+#: src/gtkui/menus.cc:79 src/qtui/menus.cc:103
+#: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:282
 msgid "_Open Files ..."
 msgstr "_Buka Berkas..."
 
-#: src/gtkui/menus.cc:80 src/qtui/menus.cc:70
+#: src/gtkui/menus.cc:80 src/qtui/menus.cc:107
 msgid "Open _URL ..."
 msgstr "Buka _URL..."
 
-#: src/gtkui/menus.cc:81 src/qtui/menus.cc:71
+#: src/gtkui/menus.cc:81 src/qtui/menus.cc:109
 msgid "_Add Files ..."
 msgstr "_Tambah Berkas ..."
 
-#: src/gtkui/menus.cc:82 src/qtui/menus.cc:73
+#: src/gtkui/menus.cc:82 src/qtui/menus.cc:113
 msgid "Add U_RL ..."
 msgstr "Tambah U_RL..."
 
-#: src/gtkui/menus.cc:84 src/qtui/menus.cc:75
+#: src/gtkui/menus.cc:84 src/qtui/menus.cc:115
 msgid "Search _Library"
 msgstr "Cari _Pustaka"
 
-#: src/gtkui/menus.cc:86 src/qtui/menus.cc:77
+#: src/gtkui/menus.cc:86 src/qtui/menus.cc:118
 msgid "A_bout ..."
 msgstr "Te_ntang..."
 
-#: src/gtkui/menus.cc:87 src/qtui/menus.cc:78
+#: src/gtkui/menus.cc:87 src/qtui/menus.cc:120
 msgid "_Settings ..."
 msgstr "_Pengaturan...."
 
-#: src/gtkui/menus.cc:88 src/qtui/menus.cc:82
-#: src/statusicon-qt/statusicon.cc:116 src/statusicon/statusicon.cc:285
+#: src/gtkui/menus.cc:88 src/qtui/menus.cc:126
+#: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:284
 msgid "_Quit"
 msgstr "_Keluar"
 
-#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:221 src/qtui/menus.cc:86
-#: src/search-tool-qt/search-tool-qt.cc:831 src/search-tool/search-tool.cc:683
-#: src/statusicon-qt/statusicon.cc:108 src/statusicon/statusicon.cc:277
+#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:223 src/qtui/menus.cc:130
+#: src/qtui/playlist_tabs.cc:323 src/search-tool-qt/search-tool-qt.cc:498
+#: src/search-tool/search-tool.cc:343 src/statusicon-qt/statusicon.cc:106
+#: src/statusicon/statusicon.cc:276
 msgid "_Play"
 msgstr "_Putar"
 
-#: src/gtkui/menus.cc:93 src/qtui/menus.cc:87
-#: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:278
+#: src/gtkui/menus.cc:93 src/qtui/menus.cc:132
+#: src/statusicon-qt/statusicon.cc:107 src/statusicon/statusicon.cc:277
 msgid "Paus_e"
 msgstr "Paus_e"
 
-#: src/gtkui/menus.cc:94 src/qtui/menus.cc:88
-#: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:279
+#: src/gtkui/menus.cc:94 src/qtui/menus.cc:134
+#: src/statusicon-qt/statusicon.cc:108 src/statusicon/statusicon.cc:278
 msgid "_Stop"
 msgstr "_Stop"
 
-#: src/gtkui/menus.cc:95 src/qtui/menus.cc:89
-#: src/statusicon-qt/statusicon.cc:111 src/statusicon/statusicon.cc:280
+#: src/gtkui/menus.cc:95 src/qtui/menus.cc:136
+#: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:279
 msgid "Pre_vious"
 msgstr "Se_belumnya"
 
-#: src/gtkui/menus.cc:96 src/qtui/menus.cc:90
-#: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:281
+#: src/gtkui/menus.cc:96 src/qtui/menus.cc:138
+#: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:280
 msgid "_Next"
 msgstr "Sela_njutnya"
 
-#: src/gtkui/menus.cc:98 src/qtui/menus.cc:92
+#: src/gtkui/menus.cc:97 src/qtui/menus.cc:140 src/skins/menus.cc:114
+#: src/skins-qt/menus.cc:105
+msgid "Previous Album"
+msgstr ""
+
+#: src/gtkui/menus.cc:98 src/qtui/menus.cc:141 src/skins/menus.cc:115
+#: src/skins-qt/menus.cc:106
+msgid "Next Album"
+msgstr ""
+
+#: src/gtkui/menus.cc:100 src/qtui/menus.cc:143
 msgid "_Repeat"
 msgstr "_Ulangi"
 
-#: src/gtkui/menus.cc:99 src/qtui/menus.cc:93
+#: src/gtkui/menus.cc:101 src/qtui/menus.cc:145
 msgid "S_huffle"
 msgstr "_Acak"
 
-#: src/gtkui/menus.cc:100 src/qtui/menus.cc:94
+#: src/gtkui/menus.cc:102 src/qtui/menus.cc:147
 msgid "Shuffle by Albu_m"
 msgstr "Acak berdasarkan Albu_m"
 
-#: src/gtkui/menus.cc:101 src/qtui/menus.cc:95
+#: src/gtkui/menus.cc:103 src/qtui/menus.cc:150
 msgid "N_o Playlist Advance"
 msgstr "N_o Kemajuan Playlist"
 
-#: src/gtkui/menus.cc:102 src/qtui/menus.cc:96
+#: src/gtkui/menus.cc:104 src/qtui/menus.cc:152
 msgid "Stop A_fter This Song"
 msgstr "Berhenti Setela_h Lagu Ini"
 
-#: src/gtkui/menus.cc:104 src/gtkui/menus.cc:205 src/qtui/menus.cc:98
-#: src/qtui/menus.cc:200
+#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:207 src/qtui/menus.cc:157
+#: src/qtui/menus.cc:278
 msgid "Song _Info ..."
 msgstr "Informasi _Lagu..."
 
-#: src/gtkui/menus.cc:105
+#: src/gtkui/menus.cc:107
 msgid "Jump to _Time ..."
 msgstr "Loncat ke _Waktu..."
 
-#: src/gtkui/menus.cc:106
+#: src/gtkui/menus.cc:108
 msgid "_Jump to Song ..."
 msgstr "_Loncat ke Lagu..."
 
-#: src/gtkui/menus.cc:108
+#: src/gtkui/menus.cc:110
 msgid "Set Repeat Point _A"
 msgstr ""
 
-#: src/gtkui/menus.cc:109
+#: src/gtkui/menus.cc:111
 msgid "Set Repeat Point _B"
 msgstr ""
 
-#: src/gtkui/menus.cc:110
+#: src/gtkui/menus.cc:112
 msgid "_Clear Repeat Points"
 msgstr ""
 
-#: src/gtkui/menus.cc:114 src/gtkui/menus.cc:121 src/gtkui/menus.cc:138
-#: src/qtui/menus.cc:102 src/qtui/menus.cc:109 src/qtui/menus.cc:126
+#: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:140
+#: src/qtui/menus.cc:161 src/qtui/menus.cc:168 src/qtui/menus.cc:185
 msgid "By _Title"
 msgstr "Oleh _Judul"
 
-#: src/gtkui/menus.cc:115 src/qtui/menus.cc:103
+#: src/gtkui/menus.cc:117 src/qtui/menus.cc:162
 msgid "By _File Name"
 msgstr "Oleh Nama _Berkas"
 
-#: src/gtkui/menus.cc:116 src/qtui/menus.cc:104
+#: src/gtkui/menus.cc:118 src/qtui/menus.cc:163
 msgid "By File _Path"
 msgstr ""
 
-#: src/gtkui/menus.cc:120 src/gtkui/menus.cc:137 src/qtui/menus.cc:108
-#: src/qtui/menus.cc:125
+#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:167
+#: src/qtui/menus.cc:184
 msgid "By Track _Number"
 msgstr "Oleh No_Track"
 
-#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:110
-#: src/qtui/menus.cc:127
+#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:169
+#: src/qtui/menus.cc:186
 msgid "By _Artist"
 msgstr "Oleh_Artis"
 
-#: src/gtkui/menus.cc:123 src/gtkui/menus.cc:140 src/qtui/menus.cc:111
-#: src/qtui/menus.cc:128
+#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:170
+#: src/qtui/menus.cc:187
 msgid "By Al_bum"
 msgstr ""
 
-#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:112
-#: src/qtui/menus.cc:129
+#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:171
+#: src/qtui/menus.cc:188
 msgid "By Albu_m Artist"
 msgstr ""
 
-#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:113
-#: src/qtui/menus.cc:130
+#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:172
+#: src/qtui/menus.cc:189
 msgid "By Release _Date"
 msgstr "Oleh _Tanggal Release"
 
-#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:114
-#: src/qtui/menus.cc:131
+#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:173
+#: src/qtui/menus.cc:190
 msgid "By _Genre"
 msgstr ""
 
-#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:115
-#: src/qtui/menus.cc:132
+#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:174
+#: src/qtui/menus.cc:191
 msgid "By _Length"
 msgstr ""
 
-#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:116
-#: src/qtui/menus.cc:133
+#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:175
+#: src/qtui/menus.cc:192
 msgid "By _File Path"
 msgstr "Berdasarkan tempat"
 
-#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:117
-#: src/qtui/menus.cc:134
+#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:148 src/qtui/menus.cc:176
+#: src/qtui/menus.cc:193
 msgid "By _Custom Title"
 msgstr "By _Judul Terkustomisasi"
 
-#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:118
-#: src/qtui/menus.cc:135
+#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:177
+#: src/qtui/menus.cc:194
 msgid "By C_omment"
 msgstr ""
 
-#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:120
-#: src/qtui/menus.cc:137
+#: src/gtkui/menus.cc:134 src/gtkui/menus.cc:151 src/qtui/menus.cc:179
+#: src/qtui/menus.cc:196
 msgid "R_everse Order"
 msgstr "B_alik Urutan"
 
-#: src/gtkui/menus.cc:133 src/gtkui/menus.cc:150 src/qtui/menus.cc:121
-#: src/qtui/menus.cc:138
+#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:152 src/qtui/menus.cc:181
+#: src/qtui/menus.cc:198
 msgid "_Random Order"
 msgstr "_Acak Urutan"
 
-#: src/gtkui/menus.cc:154 src/qtui/menus.cc:142
+#: src/gtkui/menus.cc:156 src/qtui/menus.cc:202
 msgid "_Play/Resume"
 msgstr ""
 
-#: src/gtkui/menus.cc:155 src/qtui/menus.cc:143
+#: src/gtkui/menus.cc:157 src/qtui/menus.cc:204
 msgid "_Refresh"
 msgstr "Sega_rkan"
 
-#: src/gtkui/menus.cc:157 src/qtui/menus.cc:147
+#: src/gtkui/menus.cc:159 src/qtui/menus.cc:208
 msgid "_Sort"
 msgstr "Uru_tkan"
 
-#: src/gtkui/menus.cc:158 src/qtui/menus.cc:148
+#: src/gtkui/menus.cc:160 src/qtui/menus.cc:209
 msgid "Sort Se_lected"
 msgstr ""
 
-#: src/gtkui/menus.cc:159 src/qtui/menus.cc:149
+#: src/gtkui/menus.cc:161 src/qtui/menus.cc:211
 msgid "Remove _Duplicates"
 msgstr ""
 
-#: src/gtkui/menus.cc:160 src/qtui/menus.cc:150
+#: src/gtkui/menus.cc:162 src/qtui/menus.cc:212
 msgid "Remove _Unavailable Files"
 msgstr ""
 
-#: src/gtkui/menus.cc:162 src/playlist-manager/playlist-manager.cc:218
-#: src/playlist-manager-qt/playlist-manager-qt.cc:356 src/qtui/menus.cc:152
+#: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:218
+#: src/playlist-manager-qt/playlist-manager-qt.cc:332 src/qtui/menus.cc:215
 msgid "_New"
 msgstr "_Baru"
 
-#: src/gtkui/menus.cc:163 src/qtui/menus.cc:153
+#: src/gtkui/menus.cc:165 src/qtui/menus.cc:216
 msgid "Ren_ame ..."
 msgstr ""
 
-#: src/gtkui/menus.cc:164 src/gtkui/menus.cc:223 src/qtui/menus.cc:154
+#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:225 src/qtui/menus.cc:217
+#: src/qtui/playlist_tabs.cc:328
 msgid "Remo_ve"
 msgstr "Hap_us"
 
-#: src/gtkui/menus.cc:166 src/qtui/menus.cc:156
+#: src/gtkui/menus.cc:168 src/qtui/menus.cc:219
 msgid "_Import ..."
 msgstr "_Import..."
 
-#: src/gtkui/menus.cc:167 src/qtui/menus.cc:157
+#: src/gtkui/menus.cc:169 src/qtui/menus.cc:220
 msgid "_Export ..."
 msgstr "_Export..."
 
-#: src/gtkui/menus.cc:169 src/qtui/menus.cc:159
+#: src/gtkui/menus.cc:171 src/qtui/menus.cc:223
 msgid "Playlist _Manager ..."
 msgstr ""
 
-#: src/gtkui/menus.cc:170 src/qtui/menus.cc:160
+#: src/gtkui/menus.cc:172 src/qtui/menus.cc:225
 msgid "_Queue Manager ..."
 msgstr "_Manajer Antrian ..."
 
-#: src/gtkui/menus.cc:174 src/qtui/menus.cc:164
+#: src/gtkui/menus.cc:176 src/qtui/menus.cc:229
 msgid "Volume _Up"
 msgstr "Volume _Naik"
 
-#: src/gtkui/menus.cc:175 src/qtui/menus.cc:165
+#: src/gtkui/menus.cc:177 src/qtui/menus.cc:231
 msgid "Volume _Down"
 msgstr "Volume _Turun"
 
-#: src/gtkui/menus.cc:177 src/qtui/menus.cc:167
+#: src/gtkui/menus.cc:179 src/qtui/menus.cc:235
 msgid "_Equalizer ..."
 msgstr ""
 
-#: src/gtkui/menus.cc:178 src/qtui/menus.cc:168
+#: src/gtkui/menus.cc:180 src/qtui/menus.cc:237
 msgid "E_ffects ..."
 msgstr ""
 
-#: src/gtkui/menus.cc:180
+#: src/gtkui/menus.cc:182
 msgid "_Record Stream"
 msgstr ""
 
-#: src/gtkui/menus.cc:181
+#: src/gtkui/menus.cc:183
 msgid "Audio _Settings ..."
 msgstr ""
 
-#: src/gtkui/menus.cc:185 src/qtui/menus.cc:175
+#: src/gtkui/menus.cc:187 src/qtui/menus.cc:246
 msgid "Show _Menu Bar"
 msgstr "Perlihatkan Bar _Menu"
 
-#: src/gtkui/menus.cc:186 src/qtui/menus.cc:176
+#: src/gtkui/menus.cc:188 src/qtui/menus.cc:248
 msgid "Show I_nfo Bar"
 msgstr "Perlihatkan _Bar Info"
 
-#: src/gtkui/menus.cc:187 src/qtui/menus.cc:177
+#: src/gtkui/menus.cc:189 src/qtui/menus.cc:250
 msgid "Show Info Bar Vis_ualization"
 msgstr ""
 
-#: src/gtkui/menus.cc:188 src/qtui/menus.cc:178
+#: src/gtkui/menus.cc:190 src/qtui/menus.cc:252
 msgid "Show _Status Bar"
 msgstr "Perlihatkan Bar _Status"
 
-#: src/gtkui/menus.cc:190 src/qtui/menus.cc:180
+#: src/gtkui/menus.cc:192 src/qtui/menus.cc:256
 msgid "Show _Remaining Time"
 msgstr ""
 
-#: src/gtkui/menus.cc:192 src/qtui/menus.cc:182 src/skins/menus.cc:155
-#: src/skins-qt/menus.cc:150
+#: src/gtkui/menus.cc:194 src/qtui/menus.cc:260 src/skins/menus.cc:157
+#: src/skins-qt/menus.cc:152
 msgid "_Visualizations ..."
 msgstr "_Visualisasi"
 
-#: src/gtkui/menus.cc:196 src/qtui/menus.cc:186
+#: src/gtkui/menus.cc:198 src/qtui/menus.cc:264
 msgid "_File"
 msgstr "_Berkas"
 
-#: src/gtkui/menus.cc:197 src/qtui/menus.cc:187
+#: src/gtkui/menus.cc:199 src/qtui/menus.cc:265
 msgid "_Playback"
 msgstr "_Pemutaran"
 
-#: src/gtkui/menus.cc:198 src/qtui/menus.cc:188
+#: src/gtkui/menus.cc:200 src/qtui/menus.cc:266
 msgid "P_laylist"
 msgstr "Daftar P_utar"
 
-#: src/gtkui/menus.cc:199 src/gtkui/menus.cc:217 src/qtui/menus.cc:189
-#: src/qtui/menus.cc:212
+#: src/gtkui/menus.cc:201 src/gtkui/menus.cc:219 src/qtui/menus.cc:267
+#: src/qtui/menus.cc:296
 msgid "_Services"
 msgstr "_Layanan"
 
-#: src/gtkui/menus.cc:200 src/qtui/menus.cc:190
+#: src/gtkui/menus.cc:202 src/qtui/menus.cc:268
 msgid "_Output"
 msgstr "_Keluaran"
 
-#: src/gtkui/menus.cc:201 src/qtui/menus.cc:191
+#: src/gtkui/menus.cc:203 src/qtui/menus.cc:269
 msgid "_View"
 msgstr "_Lihat"
 
-#: src/gtkui/menus.cc:206 src/qtui/menus.cc:201
+#: src/gtkui/menus.cc:208 src/qtui/menus.cc:280
 msgid "_Queue/Unqueue"
 msgstr "_Antre/Tidak Antre"
 
-#: src/gtkui/menus.cc:208 src/qtui/menus.cc:203
+#: src/gtkui/menus.cc:210 src/qtui/menus.cc:283
 msgid "_Open Containing Folder"
 msgstr ""
 
-#: src/gtkui/menus.cc:209 src/qtui/menus.cc:204
+#: src/gtkui/menus.cc:211 src/qtui/menus.cc:285
 msgid "_Refresh Selected"
 msgstr ""
 
-#: src/gtkui/menus.cc:211 src/qtui/menus.cc:206
+#: src/gtkui/menus.cc:213 src/qtui/menus.cc:288
 msgid "Cu_t"
 msgstr "Potong"
 
-#: src/gtkui/menus.cc:212 src/qtui/menus.cc:207
+#: src/gtkui/menus.cc:214 src/qtui/menus.cc:289
 msgid "_Copy"
 msgstr "_Salin"
 
-#: src/gtkui/menus.cc:213 src/qtui/menus.cc:208
+#: src/gtkui/menus.cc:215 src/qtui/menus.cc:290
 msgid "_Paste"
 msgstr "_Tempel"
 
-#: src/gtkui/menus.cc:214 src/qtui/menus.cc:209
+#: src/gtkui/menus.cc:216 src/qtui/menus.cc:291
 msgid "Paste at _End"
 msgstr ""
 
-#: src/gtkui/menus.cc:215 src/qtui/menus.cc:210
+#: src/gtkui/menus.cc:217 src/qtui/menus.cc:293
 msgid "Select _All"
 msgstr "Pilih _Semua"
 
-#: src/gtkui/menus.cc:222
+#: src/gtkui/menus.cc:224 src/qtui/playlist_tabs.cc:326
 msgid "_Rename ..."
 msgstr "_Ubah nama ..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:54
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:57
 msgid "<b>Playlist Tabs</b>"
 msgstr ""
 
-#: src/gtkui/settings.cc:36 src/qtui/settings.cc:56
+#: src/gtkui/settings.cc:36
 msgid "Always show tabs"
 msgstr ""
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:59
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:62
 msgid "Show entry counts"
 msgstr ""
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:61
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:65
 msgid "Show close buttons"
 msgstr ""
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:63
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:68
 msgid "<b>Playlist Columns</b>"
 msgstr ""
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:64
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:70
 msgid "Show column headers"
 msgstr ""
 
-#: src/gtkui/settings.cc:47 src/qtui/settings.cc:67
-msgid "Arrow keys seek by:"
-msgstr ""
-
-#: src/gtkui/settings.cc:50 src/qtui/settings.cc:70
+#: src/gtkui/settings.cc:47 src/qtui/settings.cc:73
 msgid "Scroll on song change"
 msgstr ""
 
@@ -1986,70 +1967,71 @@ msgstr ""
 msgid "GTK Interface"
 msgstr "Tampilan GTK"
 
-#: src/gtkui/ui_gtk.cc:221 src/skins/main.cc:222 src/skins-qt/main.cc:222
+#: src/gtkui/ui_gtk.cc:236 src/skins/main.cc:227 src/skins-qt/main.cc:225
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:223 src/qtui/main_window.cc:308
+#: src/gtkui/ui_gtk.cc:238 src/qtui/main_window.cc:315
 msgid "Buffering ..."
 msgstr ""
 
-#: src/gtkui/ui_gtk.cc:226 src/skins/main.cc:224 src/skins-qt/main.cc:224
+#: src/gtkui/ui_gtk.cc:241 src/skins/main.cc:229 src/skins-qt/main.cc:227
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:430 src/gtkui/ui_gtk.cc:461 src/gtkui/ui_gtk.cc:811
-#: src/hotkey/gui.cc:72 src/notify/osd.cc:70 src/qtui/main_window.cc:108
-#: src/qtui/main_window.cc:265 src/qtui/main_window.cc:266
+#: src/gtkui/ui_gtk.cc:454 src/gtkui/ui_gtk.cc:485 src/gtkui/ui_gtk.cc:839
+#: src/hotkey/gui.cc:72 src/notify/osd.cc:70 src/qtui/main_window.cc:106
+#: src/qtui/main_window.cc:273 src/qtui/main_window.cc:274
 #: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
 msgid "Play"
 msgstr "Putar"
 
-#: src/gtkui/ui_gtk.cc:430 src/notify/osd.cc:67 src/qtui/main_window.cc:271
-#: src/qtui/main_window.cc:272 src/skins/menus.cc:110 src/skins-qt/menus.cc:101
+#: src/gtkui/ui_gtk.cc:454 src/notify/osd.cc:67 src/qtui/main_window.cc:279
+#: src/qtui/main_window.cc:280 src/skins/menus.cc:110
+#: src/skins-qt/menus.cc:101
 msgid "Pause"
 msgstr "Istirahat"
 
-#: src/gtkui/ui_gtk.cc:796 src/qtui/main_window.cc:101 src/skins/menus.cc:86
+#: src/gtkui/ui_gtk.cc:824 src/qtui/main_window.cc:97 src/skins/menus.cc:86
 #: src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr ""
 
-#: src/gtkui/ui_gtk.cc:804 src/qtui/main_window.cc:102
+#: src/gtkui/ui_gtk.cc:832 src/qtui/main_window.cc:99
 msgid "Open Files"
 msgstr "Buka Berkas"
 
-#: src/gtkui/ui_gtk.cc:805 src/qtui/main_window.cc:104
+#: src/gtkui/ui_gtk.cc:833 src/qtui/main_window.cc:101
 msgid "Add Files"
 msgstr "Tambah Berkas"
 
-#: src/gtkui/ui_gtk.cc:810 src/qtui/main_window.cc:107 src/skins/menus.cc:112
+#: src/gtkui/ui_gtk.cc:838 src/qtui/main_window.cc:104 src/skins/menus.cc:112
 #: src/skins-qt/menus.cc:103
 msgid "Previous"
 msgstr "Sebelumnya"
 
-#: src/gtkui/ui_gtk.cc:812 src/hotkey/gui.cc:74 src/qtui/main_window.cc:109
+#: src/gtkui/ui_gtk.cc:840 src/hotkey/gui.cc:74 src/qtui/main_window.cc:108
 #: src/skins/menus.cc:111 src/skins-qt/menus.cc:102
 msgid "Stop"
 msgstr "Berhenti"
 
-#: src/gtkui/ui_gtk.cc:813 src/notify/osd.cc:74 src/qtui/main_window.cc:112
+#: src/gtkui/ui_gtk.cc:841 src/notify/osd.cc:74 src/qtui/main_window.cc:115
 #: src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
 msgstr "Selanjutnya"
 
-#: src/gtkui/ui_gtk.cc:815 src/qtui/main_window.cc:113 src/qtui/menus.cc:170
+#: src/gtkui/ui_gtk.cc:843 src/qtui/main_window.cc:118 src/qtui/menus.cc:240
 #: src/skins/menus.cc:79 src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr ""
 
-#: src/gtkui/ui_gtk.cc:846 src/qtui/main_window.cc:119 src/skins/menus.cc:103
+#: src/gtkui/ui_gtk.cc:874 src/qtui/main_window.cc:125 src/skins/menus.cc:103
 #: src/skins-qt/menus.cc:94
 msgid "Repeat"
 msgstr "Ulang"
 
-#: src/gtkui/ui_gtk.cc:848 src/qtui/main_window.cc:121 src/skins/menus.cc:104
+#: src/gtkui/ui_gtk.cc:876 src/qtui/main_window.cc:128 src/skins/menus.cc:104
 #: src/skins-qt/menus.cc:95
 msgid "Shuffle"
 msgstr "Acak"
@@ -2062,31 +2044,34 @@ msgstr "mono"
 msgid "stereo"
 msgstr "stereo"
 
-#: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:157
+#: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:158
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
 msgstr[0] "%d kanal"
 
-#: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:165
+#: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:166
 #, c-format
 msgid "%d kHz"
 msgstr ""
 
-#: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:171
+#: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:172
 #, c-format
 msgid "%d kbps"
 msgstr "%d kbps"
 
-#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:466 src/skins-qt/main.cc:452
+#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471
+#: src/skins-qt/main.cc:455
 msgid "Single mode."
 msgstr "mode Single."
 
-#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:468 src/skins-qt/main.cc:454
+#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:473
+#: src/skins-qt/main.cc:457
 msgid "Playlist mode."
 msgstr "mode Playlist."
 
-#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:474 src/skins-qt/main.cc:460
+#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:479
+#: src/skins-qt/main.cc:463
 msgid "Stopping after song."
 msgstr "Berhenti setelah lagu"
 
@@ -2103,11 +2088,11 @@ msgid "Next track"
 msgstr ""
 
 #: src/hotkey/gui.cc:76
-msgid "Forward 5 seconds"
+msgid "Step forward"
 msgstr ""
 
 #: src/hotkey/gui.cc:77
-msgid "Rewind 5 seconds"
+msgid "Step backward"
 msgstr ""
 
 #: src/hotkey/gui.cc:78
@@ -2169,9 +2154,7 @@ msgstr "Mengikat tombol mouse"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr ""
-"Tekan kombinasi tombol didalam bidang teks.\n"
-"Kamu juga dapat mengikat tombol mouse."
+msgstr "Tekan kombinasi tombol didalam bidang teks.\nKamu juga dapat mengikat tombol mouse."
 
 #: src/hotkey/gui.cc:396
 msgid "Hotkeys:"
@@ -2200,7 +2183,7 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
-"Contributers include:\n"
+"Contributors include:\n"
 "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
 "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
 " Bryn Davies <curious@ihug.com.au>,\n"
@@ -2208,39 +2191,68 @@ msgid ""
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
 
-#: src/jack/jack-ng.cc:50
+#: src/jack/jack-ng.cc:51
 msgid "JACK Output"
 msgstr "Keluaran Jack"
 
-#: src/jack/jack-ng.cc:115
+#: src/jack/jack-ng.cc:123
+msgid "Client name:"
+msgstr ""
+
+#: src/jack/jack-ng.cc:125
 msgid "Automatically connect to output ports"
 msgstr ""
 
-#: src/jack/jack-ng.cc:156
+#: src/jack/jack-ng.cc:127
+msgid "Filter ports (regex, use any port if blank):"
+msgstr ""
+
+#: src/jack/jack-ng.cc:133
+msgid "Connect to physical ports only"
+msgstr ""
+
+#: src/jack/jack-ng.cc:136
+msgid "Upmix to"
+msgstr ""
+
+#: src/jack/jack-ng.cc:138
+msgid "ports if input has fewer channels"
+msgstr ""
+
+#: src/jack/jack-ng.cc:140
+msgid "Ignore insufficient number of ports"
+msgstr ""
+
+#: src/jack/jack-ng.cc:178
+msgid "No JACK output ports were found. Please check settings."
+msgstr ""
+
+#: src/jack/jack-ng.cc:192
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr ""
 
-#: src/jack/jack-ng.cc:172
+#: src/jack/jack-ng.cc:207
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr ""
 
-#: src/jack/jack-ng.cc:192
+#: src/jack/jack-ng.cc:227
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
 
-#: src/jack/jack-ng.cc:205
+#: src/jack/jack-ng.cc:242
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr ""
 
-#: src/jack/jack-ng.cc:281
+#: src/jack/jack-ng.cc:318
 #, c-format
 msgid ""
-"The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
-"%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
+"The JACK server requires a sample rate of %d Hz, but Audacious is playing at"
+" %d Hz.  Please use the Sample Rate Converter effect to correct the "
+"mismatch."
 msgstr ""
 
 #: src/ladspa/plugin.cc:415
@@ -2257,19 +2269,15 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr ""
-"<small>Pisahkan kelipatan path dengan tanda titik dua.\n"
-"Path tersebut dapat dicari sebagai tambahan untuk LADSPA_PATH.\n"
-"Setelah menambahkan path baru, tekan Enter untuk mengamati plugin baru.</"
-"small>"
+msgstr "<small>Pisahkan kelipatan path dengan tanda titik dua.\nPath tersebut dapat dicari sebagai tambahan untuk LADSPA_PATH.\nSetelah menambahkan path baru, tekan Enter untuk mengamati plugin baru.</small>"
 
 #: src/ladspa/plugin.cc:502
 msgid "Available plugins:"
 msgstr "Pengaya tersedia:"
 
-#: src/ladspa/plugin.cc:515 src/modplug/plugin_main.cc:95
-#: src/modplug/plugin_main.cc:98 src/modplug/plugin_main.cc:101
-#: src/modplug/plugin_main.cc:104
+#: src/ladspa/plugin.cc:515 src/modplug/plugin_main.cc:91
+#: src/modplug/plugin_main.cc:94 src/modplug/plugin_main.cc:97
+#: src/modplug/plugin_main.cc:100
 msgid "Enable"
 msgstr "Gunakan"
 
@@ -2323,50 +2331,105 @@ msgstr "Menyambung kembali ke server LIRC"
 msgid "Wait before reconnecting:"
 msgstr "Tunggu sebelum menyambung kembali:"
 
-#: src/lyricwiki/lyricwiki.cc:42 src/lyricwiki-qt/lyricwiki.cc:70
+#: src/lyricwiki/lyricwiki.cc:42
 msgid "LyricWiki Plugin"
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.cc:132 src/lyricwiki-qt/lyricwiki.cc:151
-#: src/lyricwiki-qt/lyricwiki.cc:337
+#: src/lyricwiki/lyricwiki.cc:132 src/lyricwiki-qt/lyricwiki.cc:481
 msgid "No lyrics available"
 msgstr "Tidak ada lirik tersedia"
 
 #: src/lyricwiki/lyricwiki.cc:251 src/lyricwiki/lyricwiki.cc:260
 #: src/lyricwiki/lyricwiki.cc:275 src/lyricwiki/lyricwiki.cc:284
-#: src/lyricwiki/lyricwiki.cc:299 src/lyricwiki-qt/lyricwiki.cc:291
-#: src/lyricwiki-qt/lyricwiki.cc:306 src/lyricwiki-qt/lyricwiki.cc:321
-#: src/lyricwiki-qt/lyricwiki.cc:330 src/lyricwiki-qt/lyricwiki.cc:351
+#: src/lyricwiki/lyricwiki.cc:299 src/lyricwiki-qt/lyricwiki.cc:658
 #: src/ui-common/dialogs-qt.cc:38
 msgid "Error"
 msgstr "Kesalahan"
 
 #: src/lyricwiki/lyricwiki.cc:252 src/lyricwiki/lyricwiki.cc:276
-#: src/lyricwiki-qt/lyricwiki.cc:292 src/lyricwiki-qt/lyricwiki.cc:322
+#: src/lyricwiki-qt/lyricwiki.cc:362 src/lyricwiki-qt/lyricwiki.cc:393
+#: src/lyricwiki-qt/lyricwiki.cc:400 src/lyricwiki-qt/lyricwiki.cc:584
 #, c-format
 msgid "Unable to fetch %s"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.cc:261 src/lyricwiki/lyricwiki.cc:285
-#: src/lyricwiki-qt/lyricwiki.cc:307 src/lyricwiki-qt/lyricwiki.cc:331
+#: src/lyricwiki-qt/lyricwiki.cc:593
 #, c-format
 msgid "Unable to parse %s"
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.cc:291 src/lyricwiki-qt/lyricwiki.cc:343
+#: src/lyricwiki/lyricwiki.cc:291 src/lyricwiki-qt/lyricwiki.cc:408
+#: src/lyricwiki-qt/lyricwiki.cc:631
 msgid "Looking for lyrics ..."
 msgstr "Mencari lirik ..."
 
-#: src/lyricwiki/lyricwiki.cc:299 src/lyricwiki-qt/lyricwiki.cc:351
+#: src/lyricwiki/lyricwiki.cc:299
 msgid "Missing song metadata"
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.cc:310 src/lyricwiki-qt/lyricwiki.cc:362
-msgid "Connecting to lyrics.wikia.com ..."
-msgstr "Menyambungkan ke lyrics.wikia.com ..."
+#: src/lyricwiki/lyricwiki.cc:310
+msgid "Connecting to lyrics.fandom.com ..."
+msgstr ""
 
-#: src/lyricwiki/lyricwiki.cc:351 src/lyricwiki-qt/lyricwiki.cc:442
+#: src/lyricwiki/lyricwiki.cc:351
 msgid "Edit lyrics ..."
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:88
+msgid "Lyrics"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:111
+msgid "Nowhere"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:112
+msgid "LyricWiki"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:113
+msgid "lyrics.ovh"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:117
+msgid "<b>Internet Sources</b>"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:118
+msgid "Fetch lyrics from:"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:121
+msgid "Store fetched lyrics in local cache"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:123
+msgid "<b>Local Storage</b>"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:124
+msgid "Load lyric files (.lrc) from local storage"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:664
+msgid "Lyrics could not be found."
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:701
+msgid "Missing title and/or artist."
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:751
+msgid "Edit Lyrics ..."
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:759
+msgid "Save Locally"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:767
+msgid "Refresh"
 msgstr ""
 
 #: src/m3u/m3u.cc:32
@@ -2426,108 +2489,96 @@ msgstr ""
 msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:56
-msgid "<b>Resolution</b>"
-msgstr "<b>Resolusi</b>"
-
-#: src/modplug/plugin_main.cc:57
-msgid "8-bit"
-msgstr "8-bit"
-
-#: src/modplug/plugin_main.cc:58
-msgid "16-bit"
-msgstr "16-bit"
-
-#: src/modplug/plugin_main.cc:59
+#: src/modplug/plugin_main.cc:55
 msgid "<b>Channels</b>"
 msgstr "<b>Cennel</b>"
 
-#: src/modplug/plugin_main.cc:63
+#: src/modplug/plugin_main.cc:59
 msgid "Nearest (fastest)"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:64
+#: src/modplug/plugin_main.cc:60
 msgid "Linear (fast)"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:65
+#: src/modplug/plugin_main.cc:61
 msgid "Spline (good)"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:66
+#: src/modplug/plugin_main.cc:62
 msgid "Polyphase (best)"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:67
+#: src/modplug/plugin_main.cc:63
 msgid "<b>Sample rate</b>"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:68
+#: src/modplug/plugin_main.cc:64
 msgid "22 kHz"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:69
+#: src/modplug/plugin_main.cc:65
 msgid "44 kHz"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:70
+#: src/modplug/plugin_main.cc:66
 msgid "48 kHz"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:71
+#: src/modplug/plugin_main.cc:67
 msgid "96 kHz"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:75 src/modplug/plugin_main.cc:80
-#: src/modplug/plugin_main.cc:85
+#: src/modplug/plugin_main.cc:71 src/modplug/plugin_main.cc:76
+#: src/modplug/plugin_main.cc:81
 msgid "Level:"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:81
+#: src/modplug/plugin_main.cc:77
 msgid "Cutoff:"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:94
+#: src/modplug/plugin_main.cc:90
 msgid "<b>Reverb</b>"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:97
+#: src/modplug/plugin_main.cc:93
 msgid "<b>Bass Boost</b>"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:100
+#: src/modplug/plugin_main.cc:96
 msgid "<b>Surround</b>"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:103
+#: src/modplug/plugin_main.cc:99
 msgid "<b>Preamp</b>"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:110
+#: src/modplug/plugin_main.cc:106
 msgid "Oversample"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:111
+#: src/modplug/plugin_main.cc:107
 msgid "Noise reduction"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:112
+#: src/modplug/plugin_main.cc:108
 msgid "Play Amiga MODs"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:113
+#: src/modplug/plugin_main.cc:109
 msgid "<b>Repeat</b>"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:114
+#: src/modplug/plugin_main.cc:110
 msgid "Repeat count:"
 msgstr ""
 
-#: src/modplug/plugin_main.cc:115
+#: src/modplug/plugin_main.cc:111
 msgid "To repeat forever, set the repeat count to -1."
 msgstr ""
 
-#: src/modplug/plugin_main.cc:128 src/sid/xs_config.cc:106
+#: src/modplug/plugin_main.cc:124 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
 msgstr ""
 
@@ -2535,15 +2586,15 @@ msgstr ""
 msgid "MPG123 Plugin"
 msgstr "Pengaya MPG123"
 
-#: src/mpg123/mpg123.cc:80
+#: src/mpg123/mpg123.cc:81
 msgid "<b>Advanced</b>"
 msgstr "<b>Lanjutan</b>"
 
-#: src/mpg123/mpg123.cc:81
+#: src/mpg123/mpg123.cc:82
 msgid "Use accurate length calculation (slow)"
 msgstr ""
 
-#: src/mpg123/mpg123.cc:245
+#: src/mpg123/mpg123.cc:255
 msgid "Surround"
 msgstr "Surround"
 
@@ -2563,11 +2614,11 @@ msgstr ""
 msgid "Unknown HTTP error"
 msgstr ""
 
-#: src/neon/neon.cc:574
+#: src/neon/neon.cc:590
 msgid "Error parsing URL"
 msgstr ""
 
-#: src/neon/neon.cc:637
+#: src/neon/neon.cc:660
 msgid "Too many redirects"
 msgstr ""
 
@@ -2589,18 +2640,11 @@ msgid ""
 "Copyright (C) 2010 Maximilian Bogner\n"
 "Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
 "\n"
-"This plugin is free software: you can redistribute it and/or modify it under "
-"the terms of the GNU General Public License as published by the Free "
-"Software Foundation, either version 3 of the License, or (at your option) "
-"any later version.\n"
+"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
 "\n"
-"This plugin is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 
 #: src/notify/notify.cc:102
@@ -2617,6 +2661,41 @@ msgstr ""
 
 #: src/notify/osd.cc:59
 msgid "Show"
+msgstr ""
+
+#: src/openmpt/mpt.cc:50
+msgid "OpenMPT (Module Player)"
+msgstr ""
+
+#: src/openmpt/mpt.cc:134
+msgid ""
+"Module player based on libopenmpt\n"
+"\n"
+"Written by: Chris Spiegel <cspiegel@gmail.com>"
+msgstr ""
+
+#: src/openmpt/mpt.cc:153
+msgid "Stereo separation:"
+msgstr ""
+
+#: src/openmpt/mpt.cc:155
+msgid "%"
+msgstr "%"
+
+#: src/openmpt/mpt.cc:159
+msgid "Interpolation:"
+msgstr ""
+
+#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:174
+msgid "Linear"
+msgstr ""
+
+#: src/openmpt/mptwrap.h:52
+msgid "Cubic"
+msgstr ""
+
+#: src/openmpt/mptwrap.h:53
+msgid "Windowed sinc"
 msgstr ""
 
 #: src/oss4/oss.h:75
@@ -2656,8 +2735,7 @@ msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010-2012 Michał Lipski\n"
 "\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John "
-"Lindgren and of course the authors of the previous OSS plugin."
+"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
 
 #: src/playlist-manager/playlist-manager.cc:37
@@ -2666,17 +2744,17 @@ msgid "Playlist Manager"
 msgstr "Manajer Daftar Main"
 
 #: src/playlist-manager/playlist-manager.cc:200
-#: src/playlist-manager-qt/playlist-manager-qt.cc:185
+#: src/playlist-manager-qt/playlist-manager-qt.cc:186
 msgid "Entries"
 msgstr "Masukan"
 
 #: src/playlist-manager/playlist-manager.cc:220
-#: src/playlist-manager-qt/playlist-manager-qt.cc:364
+#: src/playlist-manager-qt/playlist-manager-qt.cc:340
 msgid "_Remove"
 msgstr "_Hapus"
 
 #: src/playlist-manager/playlist-manager.cc:221
-#: src/playlist-manager-qt/playlist-manager-qt.cc:359
+#: src/playlist-manager-qt/playlist-manager-qt.cc:335
 msgid "Ren_ame"
 msgstr "Ganti N_ama"
 
@@ -2684,31 +2762,39 @@ msgstr "Ganti N_ama"
 msgid "PLS Playlists"
 msgstr ""
 
-#: src/psf/plugin.cc:45
+#: src/psf/plugin.cc:53
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr ""
 
-#: src/pulse/pulse_audio.cc:40
+#: src/psf/plugin.cc:269
+msgid "<b>OpenPSF Configuration</b>"
+msgstr ""
+
+#: src/psf/plugin.cc:270 src/xsf/plugin.cc:232
+msgid "Ignore length from file"
+msgstr "Abaikan panjang dari berkas"
+
+#: src/pulse/pulse_audio.cc:42
 msgid "PulseAudio Output"
 msgstr ""
 
-#: src/pulse/pulse_audio.cc:532
+#: src/pulse/pulse_audio.cc:72
+msgid "Context name:"
+msgstr ""
+
+#: src/pulse/pulse_audio.cc:74
+msgid "Stream name:"
+msgstr ""
+
+#: src/pulse/pulse_audio.cc:575
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
 #: src/qtaudio/qtaudio.cc:44
@@ -2731,37 +2817,37 @@ msgid ""
 "Copyright 2014 William Pitcock\n"
 "\n"
 "Based on the XMMS plugin:\n"
-"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
-"4Front Technologies\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and 4Front Technologies\n"
 "\n"
 "License: GPLv2+"
 msgstr ""
 
-#: src/qtui/main_window.cc:110 src/skins/menus.cc:107 src/skins-qt/menus.cc:98
+#: src/qtui/main_window.cc:111 src/qtui/main_window.cc:112
+#: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
 msgstr "Stop Setelah Lagu Ini"
 
-#: src/qtui/menus.cc:69
+#: src/qtui/menus.cc:105
 msgid "_Open Folder ..."
 msgstr ""
 
-#: src/qtui/menus.cc:72
+#: src/qtui/menus.cc:111
 msgid "_Add Folder ..."
 msgstr ""
 
-#: src/qtui/menus.cc:80
+#: src/qtui/menus.cc:123
 msgid "_Log Inspector ..."
 msgstr ""
 
-#: src/qtui/menus.cc:145
+#: src/qtui/menus.cc:206
 msgid "_Find ..."
 msgstr ""
 
-#: src/qtui/menus.cc:171 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
+#: src/qtui/menus.cc:242 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
 msgstr ""
 
-#: src/qtui/playlist_header.cc:201
+#: src/qtui/playlist_header.cc:214
 msgid "Reset to Defaults"
 msgstr ""
 
@@ -2769,36 +2855,52 @@ msgstr ""
 msgid "Now Playing"
 msgstr "Sedang Diputar"
 
-#: src/qtui/playlist_model.cc:36
+#: src/qtui/playlist_model.cc:35
 msgid "Entry Number"
 msgstr ""
 
-#: src/qtui/playlist_model.cc:41
+#: src/qtui/playlist_model.cc:37
 msgid "Album Artist"
 msgstr "Album Artis"
 
-#: src/qtui/playlist_model.cc:44
+#: src/qtui/playlist_model.cc:38
 msgid "Queue Position"
 msgstr ""
 
-#: src/qtui/playlist_model.cc:46
+#: src/qtui/playlist_model.cc:38
 msgid "File Path"
 msgstr ""
 
-#: src/qtui/playlist_model.cc:47
+#: src/qtui/playlist_model.cc:39
 msgid "File Name"
 msgstr ""
 
-#: src/qtui/playlist_model.cc:48
+#: src/qtui/playlist_model.cc:39
 msgid "Custom Title"
 msgstr ""
 
-#: src/qtui/qtui.cc:39
+#: src/qtui/qtui.cc:40
 msgid "Qt Interface"
 msgstr ""
 
-#: src/qtui/search_bar.cc:47
+#: src/qtui/search_bar.cc:46
 msgid "Search playlist"
+msgstr ""
+
+#: src/qtui/settings.cc:52
+msgid "Always"
+msgstr ""
+
+#: src/qtui/settings.cc:53
+msgid "Auto-hide"
+msgstr ""
+
+#: src/qtui/settings.cc:54
+msgid "Never"
+msgstr ""
+
+#: src/qtui/settings.cc:58
+msgid "Show playlist tabs:"
 msgstr ""
 
 #: src/resample/resample.cc:43
@@ -2925,7 +3027,8 @@ msgid "Revoke Permission"
 msgstr ""
 
 #: src/scrobbler2/config_window.cc:91
-msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
+msgid ""
+"You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
 
 #: src/scrobbler2/scrobbler.cc:29
@@ -2944,8 +3047,7 @@ msgid ""
 "\n"
 "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "\n"
-"Thanks to John Lindgren for giving me a hand at the beginning of this "
-"project.\n"
+"Thanks to John Lindgren for giving me a hand at the beginning of this project.\n"
 "\n"
 msgstr ""
 
@@ -2965,75 +3067,78 @@ msgid ""
 "Copyright 2010 John Lindgren"
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:87 src/search-tool/search-tool.cc:74
-msgid "Number of results to show:"
-msgstr ""
-
-#: src/search-tool-qt/search-tool-qt.cc:90 src/search-tool/search-tool.cc:77
-msgid "Rescan library at startup"
-msgstr ""
-
-#: src/search-tool-qt/search-tool-qt.cc:305
-#: src/search-tool-qt/search-tool-qt.cc:316 src/search-tool/search-tool.cc:149
-#: src/search-tool/search-tool.cc:160
+#: src/search-tool/library.cc:35 src/search-tool/library.cc:46
+#: src/search-tool-qt/library.cc:35 src/search-tool-qt/library.cc:46
 msgid "Library"
 msgstr "Pustaka"
 
-#: src/search-tool-qt/search-tool-qt.cc:586 src/search-tool/search-tool.cc:430
-#, c-format
-msgid "%d of %d result shown"
-msgid_plural "%d of %d results shown"
-msgstr[0] ""
-
-#: src/search-tool-qt/search-tool-qt.cc:590 src/search-tool/search-tool.cc:434
-#, c-format
-msgid "%d result"
-msgid_plural "%d results"
-msgstr[0] ""
-
-#: src/search-tool-qt/search-tool-qt.cc:799 src/search-tool/search-tool.cc:631
+#: src/search-tool-qt/search-model.cc:49 src/search-tool/search-tool.cc:291
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
 msgstr[0] ""
 
-#: src/search-tool-qt/search-tool-qt.cc:808 src/search-tool/search-tool.cc:638
+#: src/search-tool-qt/search-model.cc:58 src/search-tool/search-tool.cc:298
 msgid "of this genre"
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:814 src/search-tool/search-tool.cc:645
+#: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
 msgid "on"
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:814 src/search-tool/search-tool.cc:645
+#: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
 msgid "by"
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:832 src/search-tool/search-tool.cc:685
-msgid "_Create Playlist"
-msgstr "_Buat Daftar Putar"
+#: src/search-tool-qt/search-tool-qt.cc:163 src/search-tool/search-tool.cc:73
+msgid "Number of results to show:"
+msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:833 src/search-tool/search-tool.cc:687
-msgid "_Add to Playlist"
-msgstr "_Tambah ke Daftar Putar"
+#: src/search-tool-qt/search-tool-qt.cc:166 src/search-tool/search-tool.cc:76
+msgid "Rescan library at startup"
+msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:881 src/search-tool/search-tool.cc:780
-msgid "Search library"
-msgstr "Cari pustaka"
+#: src/search-tool-qt/search-tool-qt.cc:168
+msgid "Monitor library for changes"
+msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:883 src/search-tool/search-tool.cc:784
+#: src/search-tool-qt/search-tool-qt.cc:191 src/search-tool/search-tool.cc:446
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:889 src/search-tool/search-tool.cc:793
+#: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:455
 msgid "Please wait ..."
 msgstr "Mohon tunggu ..."
 
-#: src/search-tool/search-tool.cc:821
+#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:483
 msgid "Choose Folder"
 msgstr "Pilih Folder"
+
+#: src/search-tool-qt/search-tool-qt.cc:199
+msgid "Search library"
+msgstr "Cari pustaka"
+
+#: src/search-tool-qt/search-tool-qt.cc:325 src/search-tool/search-tool.cc:155
+#, c-format
+msgid "%d of %d result shown"
+msgid_plural "%d of %d results shown"
+msgstr[0] ""
+
+#: src/search-tool-qt/search-tool-qt.cc:329 src/search-tool/search-tool.cc:159
+#, c-format
+msgid "%d result"
+msgid_plural "%d results"
+msgstr[0] ""
+
+#: src/search-tool-qt/search-tool-qt.cc:500 src/search-tool/search-tool.cc:345
+msgid "_Create Playlist"
+msgstr "_Buat Daftar Putar"
+
+#: src/search-tool-qt/search-tool-qt.cc:502 src/search-tool/search-tool.cc:347
+msgid "_Add to Playlist"
+msgstr "_Tambah ke Daftar Putar"
 
 #: src/sid/xmms-sid.cc:43
 msgid "SID Player"
@@ -3181,60 +3286,60 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "Audacious Equalizer"
 
-#: src/skins/main.cc:447 src/skins-qt/main.cc:433
+#: src/skins/main.cc:452 src/skins-qt/main.cc:436
 msgid "Recording on"
 msgstr ""
 
-#: src/skins/main.cc:449 src/skins-qt/main.cc:435
+#: src/skins/main.cc:454 src/skins-qt/main.cc:438
 msgid "Recording off"
 msgstr ""
 
-#: src/skins/main.cc:708 src/skins-qt/main.cc:666
+#: src/skins/main.cc:749 src/skins-qt/main.cc:690
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Berusaha untuk %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/main.cc:725 src/skins-qt/main.cc:683
+#: src/skins/main.cc:766 src/skins-qt/main.cc:707
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Volume: %d%%"
 
-#: src/skins/main.cc:738 src/skins-qt/main.cc:696
+#: src/skins/main.cc:779 src/skins-qt/main.cc:720
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Keseimbangan: %d%% left"
 
-#: src/skins/main.cc:740 src/skins-qt/main.cc:698
+#: src/skins/main.cc:781 src/skins-qt/main.cc:722
 msgid "Balance: center"
 msgstr "Keseimbangan: tengah"
 
-#: src/skins/main.cc:742 src/skins-qt/main.cc:700
+#: src/skins/main.cc:783 src/skins-qt/main.cc:724
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Keseimbangan: %d%% kanan"
 
-#: src/skins/main.cc:835 src/skins-qt/main.cc:793
+#: src/skins/main.cc:876 src/skins-qt/main.cc:817
 msgid "Options Menu"
 msgstr "Menu Opsi"
 
-#: src/skins/main.cc:839 src/skins-qt/main.cc:797
+#: src/skins/main.cc:880 src/skins-qt/main.cc:821
 msgid "Disable 'Always On Top'"
 msgstr "Nonaktifkan 'Always On Top'"
 
-#: src/skins/main.cc:841 src/skins-qt/main.cc:799
+#: src/skins/main.cc:882 src/skins-qt/main.cc:823
 msgid "Enable 'Always On Top'"
 msgstr "Bolehkan 'Always On Top'"
 
-#: src/skins/main.cc:844 src/skins-qt/main.cc:802
+#: src/skins/main.cc:885 src/skins-qt/main.cc:826
 msgid "File Info Box"
 msgstr "Kotak Info Berkas"
 
-#: src/skins/main.cc:847 src/skins/menus.cc:147 src/skins-qt/main.cc:805
-#: src/skins-qt/menus.cc:140
+#: src/skins/main.cc:888 src/skins/menus.cc:149 src/skins-qt/main.cc:829
+#: src/skins-qt/menus.cc:142
 msgid "Double Size"
 msgstr ""
 
-#: src/skins/main.cc:850 src/skins-qt/main.cc:808
+#: src/skins/main.cc:891 src/skins-qt/main.cc:832
 msgid "Visualizations"
 msgstr ""
 
@@ -3274,9 +3379,9 @@ msgstr ""
 msgid "View"
 msgstr "Lihat"
 
-#: src/skins/menus.cc:93 src/skins/menus.cc:159 src/skins/menus.cc:172
-#: src/skins/menus.cc:241 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:154
-#: src/skins-qt/menus.cc:168 src/skins-qt/menus.cc:235
+#: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
+#: src/skins/menus.cc:243 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
+#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:237
 msgid "Services"
 msgstr "Servis"
 
@@ -3292,8 +3397,8 @@ msgstr "Pengaturan"
 msgid "Quit"
 msgstr "Keluar"
 
-#: src/skins/menus.cc:101 src/skins/menus.cc:231 src/skins-qt/menus.cc:92
-#: src/skins-qt/menus.cc:225
+#: src/skins/menus.cc:101 src/skins/menus.cc:233 src/skins-qt/menus.cc:92
+#: src/skins-qt/menus.cc:227
 msgid "Song Info ..."
 msgstr "Info Lagu"
 
@@ -3305,246 +3410,246 @@ msgstr ""
 msgid "No Playlist Advance"
 msgstr "Tidak ada kemajuan Playlist"
 
-#: src/skins/menus.cc:115 src/skins-qt/menus.cc:106
+#: src/skins/menus.cc:117 src/skins-qt/menus.cc:108
 msgid "Set A-B Repeat"
 msgstr ""
 
-#: src/skins/menus.cc:116 src/skins-qt/menus.cc:107
+#: src/skins/menus.cc:118 src/skins-qt/menus.cc:109
 msgid "Clear A-B Repeat"
 msgstr ""
 
-#: src/skins/menus.cc:118 src/skins-qt/menus.cc:110
+#: src/skins/menus.cc:120 src/skins-qt/menus.cc:112
 msgid "Jump to Song ..."
 msgstr "Lompat ke Lagu ..."
 
-#: src/skins/menus.cc:119 src/skins-qt/menus.cc:111
+#: src/skins/menus.cc:121 src/skins-qt/menus.cc:113
 msgid "Jump to Time ..."
 msgstr "Lompat ke Waktu ..."
 
-#: src/skins/menus.cc:123 src/skins-qt/menus.cc:116
+#: src/skins/menus.cc:125 src/skins-qt/menus.cc:118
 msgid "Play/Resume"
 msgstr ""
 
-#: src/skins/menus.cc:125 src/skins-qt/menus.cc:118
+#: src/skins/menus.cc:127 src/skins-qt/menus.cc:120
 msgid "New Playlist"
 msgstr "Daftar Lagu Baru"
 
-#: src/skins/menus.cc:126 src/skins-qt/menus.cc:119
+#: src/skins/menus.cc:128 src/skins-qt/menus.cc:121
 msgid "Rename Playlist ..."
 msgstr "Ganti Nama Daftar Putar ..."
 
-#: src/skins/menus.cc:127 src/skins-qt/menus.cc:120
+#: src/skins/menus.cc:129 src/skins-qt/menus.cc:122
 msgid "Remove Playlist"
 msgstr "Hapus Daftar Putar"
 
-#: src/skins/menus.cc:129 src/skins-qt/menus.cc:122
+#: src/skins/menus.cc:131 src/skins-qt/menus.cc:124
 msgid "Previous Playlist"
 msgstr "Daftar Putar Sebelumnya"
 
-#: src/skins/menus.cc:130 src/skins-qt/menus.cc:123
+#: src/skins/menus.cc:132 src/skins-qt/menus.cc:125
 msgid "Next Playlist"
 msgstr "Daftar Putar Selanjutnya"
 
-#: src/skins/menus.cc:132 src/skins-qt/menus.cc:125
+#: src/skins/menus.cc:134 src/skins-qt/menus.cc:127
 msgid "Import Playlist ..."
 msgstr "Impor Daftar Putar ..."
 
-#: src/skins/menus.cc:133 src/skins-qt/menus.cc:126
+#: src/skins/menus.cc:135 src/skins-qt/menus.cc:128
 msgid "Export Playlist ..."
 msgstr "Ekspor Daftar Putar ..."
 
-#: src/skins/menus.cc:135 src/skins-qt/menus.cc:128
+#: src/skins/menus.cc:137 src/skins-qt/menus.cc:130
 msgid "Playlist Manager ..."
 msgstr "Manager Daftar Putar ..."
 
-#: src/skins/menus.cc:136 src/skins-qt/menus.cc:129
+#: src/skins/menus.cc:138 src/skins-qt/menus.cc:131
 msgid "Queue Manager ..."
 msgstr ""
 
-#: src/skins/menus.cc:138 src/skins-qt/menus.cc:131
+#: src/skins/menus.cc:140 src/skins-qt/menus.cc:133
 msgid "Refresh Playlist"
 msgstr "Segarkan Daftar Putar"
 
-#: src/skins/menus.cc:142 src/skins-qt/menus.cc:135
+#: src/skins/menus.cc:144 src/skins-qt/menus.cc:137
 msgid "Show Playlist Editor"
 msgstr "Munculkan Perubah Daftar Lagu"
 
-#: src/skins/menus.cc:143 src/skins-qt/menus.cc:136
+#: src/skins/menus.cc:145 src/skins-qt/menus.cc:138
 msgid "Show Equalizer"
 msgstr "Munculkan Equalizer"
 
-#: src/skins/menus.cc:145 src/skins-qt/menus.cc:138
+#: src/skins/menus.cc:147 src/skins-qt/menus.cc:140
 msgid "Show Remaining Time"
 msgstr ""
 
-#: src/skins/menus.cc:148 src/skins-qt/menus.cc:142
+#: src/skins/menus.cc:150 src/skins-qt/menus.cc:144
 msgid "Always on Top"
 msgstr "Selalu di Atas"
 
-#: src/skins/menus.cc:149 src/skins-qt/menus.cc:143
+#: src/skins/menus.cc:151 src/skins-qt/menus.cc:145
 msgid "On All Workspaces"
 msgstr ""
 
-#: src/skins/menus.cc:151 src/skins-qt/menus.cc:146
+#: src/skins/menus.cc:153 src/skins-qt/menus.cc:148
 msgid "Roll Up Player"
 msgstr ""
 
-#: src/skins/menus.cc:152 src/skins-qt/menus.cc:147
+#: src/skins/menus.cc:154 src/skins-qt/menus.cc:149
 msgid "Roll Up Playlist Editor"
 msgstr ""
 
-#: src/skins/menus.cc:153 src/skins-qt/menus.cc:148
+#: src/skins/menus.cc:155 src/skins-qt/menus.cc:150
 msgid "Roll Up Equalizer"
 msgstr ""
 
-#: src/skins/menus.cc:161 src/skins-qt/menus.cc:156
+#: src/skins/menus.cc:163 src/skins-qt/menus.cc:158
 msgid "Add URL ..."
 msgstr "Tambah URL"
 
-#: src/skins/menus.cc:162 src/skins-qt/menus.cc:158
+#: src/skins/menus.cc:164 src/skins-qt/menus.cc:160
 msgid "Add Files ..."
 msgstr "Tambah Berkas ..."
 
-#: src/skins/menus.cc:166 src/skins/menus.cc:194 src/skins/menus.cc:209
-#: src/skins-qt/menus.cc:162 src/skins-qt/menus.cc:188
-#: src/skins-qt/menus.cc:203
+#: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:211
+#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:190
+#: src/skins-qt/menus.cc:205
 msgid "By Title"
 msgstr "Dari Judul"
 
-#: src/skins/menus.cc:167 src/skins/menus.cc:201 src/skins/menus.cc:216
-#: src/skins-qt/menus.cc:163 src/skins-qt/menus.cc:195
-#: src/skins-qt/menus.cc:210
+#: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:218
+#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:197
+#: src/skins-qt/menus.cc:212
 msgid "By File Name"
 msgstr ""
 
-#: src/skins/menus.cc:168 src/skins/menus.cc:202 src/skins/menus.cc:217
-#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:196
-#: src/skins-qt/menus.cc:211
+#: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:219
+#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:198
+#: src/skins-qt/menus.cc:213
 msgid "By File Path"
 msgstr "Oleh Path Berkas"
 
-#: src/skins/menus.cc:174 src/skins-qt/menus.cc:170
+#: src/skins/menus.cc:176 src/skins-qt/menus.cc:172
 msgid "Remove All"
 msgstr "Hapus Semua"
 
-#: src/skins/menus.cc:175 src/skins-qt/menus.cc:171
+#: src/skins/menus.cc:177 src/skins-qt/menus.cc:173
 msgid "Clear Queue"
 msgstr "Bersihkan Antrian"
 
-#: src/skins/menus.cc:177 src/skins-qt/menus.cc:173
+#: src/skins/menus.cc:179 src/skins-qt/menus.cc:175
 msgid "Remove Unavailable Files"
 msgstr "Hapus File yang Tidak Tersedia"
 
-#: src/skins/menus.cc:178 src/skins-qt/menus.cc:174
+#: src/skins/menus.cc:180 src/skins-qt/menus.cc:176
 msgid "Remove Duplicates"
 msgstr "Hapus Duplikat"
 
-#: src/skins/menus.cc:180 src/skins-qt/menus.cc:176
+#: src/skins/menus.cc:182 src/skins-qt/menus.cc:178
 msgid "Remove Unselected"
 msgstr "Hapus yang tidak Terpilih"
 
-#: src/skins/menus.cc:181 src/skins-qt/menus.cc:177
+#: src/skins/menus.cc:183 src/skins-qt/menus.cc:179
 msgid "Remove Selected"
 msgstr "Hapus Yang Dipilih"
 
-#: src/skins/menus.cc:185
+#: src/skins/menus.cc:187
 msgid "Search and Select"
 msgstr "Cari dan Pilih"
 
-#: src/skins/menus.cc:187 src/skins-qt/menus.cc:181
+#: src/skins/menus.cc:189 src/skins-qt/menus.cc:183
 msgid "Invert Selection"
 msgstr "Balik Pilihan"
 
-#: src/skins/menus.cc:188 src/skins-qt/menus.cc:182
+#: src/skins/menus.cc:190 src/skins-qt/menus.cc:184
 msgid "Select None"
 msgstr "Jangan Pilih Apapun"
 
-#: src/skins/menus.cc:189 src/skins-qt/menus.cc:183
+#: src/skins/menus.cc:191 src/skins-qt/menus.cc:185
 msgid "Select All"
 msgstr "Pilih Semua"
 
-#: src/skins/menus.cc:193 src/skins/menus.cc:208 src/skins-qt/menus.cc:187
-#: src/skins-qt/menus.cc:202
+#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:189
+#: src/skins-qt/menus.cc:204
 msgid "By Track Number"
 msgstr "Oleh Nomor Trek"
 
-#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:189
-#: src/skins-qt/menus.cc:204
+#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:191
+#: src/skins-qt/menus.cc:206
 msgid "By Artist"
 msgstr "Dari Artis"
 
-#: src/skins/menus.cc:196 src/skins/menus.cc:211 src/skins-qt/menus.cc:190
-#: src/skins-qt/menus.cc:205
+#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:192
+#: src/skins-qt/menus.cc:207
 msgid "By Album"
 msgstr "Dari Album"
 
-#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:191
-#: src/skins-qt/menus.cc:206
+#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:193
+#: src/skins-qt/menus.cc:208
 msgid "By Album Artist"
 msgstr ""
 
-#: src/skins/menus.cc:198 src/skins/menus.cc:214 src/skins-qt/menus.cc:192
-#: src/skins-qt/menus.cc:208
+#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:194
+#: src/skins-qt/menus.cc:210
 msgid "By Release Date"
 msgstr "Oleh Tanggal Rilis"
 
-#: src/skins/menus.cc:199 src/skins/menus.cc:213 src/skins-qt/menus.cc:193
-#: src/skins-qt/menus.cc:207
+#: src/skins/menus.cc:201 src/skins/menus.cc:215 src/skins-qt/menus.cc:195
+#: src/skins-qt/menus.cc:209
 msgid "By Genre"
 msgstr ""
 
-#: src/skins/menus.cc:200 src/skins/menus.cc:215 src/skins-qt/menus.cc:194
-#: src/skins-qt/menus.cc:209
+#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:196
+#: src/skins-qt/menus.cc:211
 msgid "By Length"
 msgstr ""
 
-#: src/skins/menus.cc:203 src/skins/menus.cc:218 src/skins-qt/menus.cc:197
-#: src/skins-qt/menus.cc:212
+#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:199
+#: src/skins-qt/menus.cc:214
 msgid "By Custom Title"
 msgstr ""
 
-#: src/skins/menus.cc:204 src/skins/menus.cc:219 src/skins-qt/menus.cc:198
-#: src/skins-qt/menus.cc:213
+#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:200
+#: src/skins-qt/menus.cc:215
 msgid "By Comment"
 msgstr ""
 
-#: src/skins/menus.cc:223 src/skins-qt/menus.cc:217
+#: src/skins/menus.cc:225 src/skins-qt/menus.cc:219
 msgid "Randomize List"
 msgstr "Acak Daftar"
 
-#: src/skins/menus.cc:224 src/skins-qt/menus.cc:218
+#: src/skins/menus.cc:226 src/skins-qt/menus.cc:220
 msgid "Reverse List"
 msgstr "Balikkan Daftar"
 
-#: src/skins/menus.cc:226 src/skins-qt/menus.cc:220
+#: src/skins/menus.cc:228 src/skins-qt/menus.cc:222
 msgid "Sort Selected"
 msgstr "Urutkan yang Terpilih"
 
-#: src/skins/menus.cc:227 src/skins-qt/menus.cc:221
+#: src/skins/menus.cc:229 src/skins-qt/menus.cc:223
 msgid "Sort List"
 msgstr "Urutkan Daftar"
 
-#: src/skins/menus.cc:232 src/skins-qt/menus.cc:226
+#: src/skins/menus.cc:234 src/skins-qt/menus.cc:228
 msgid "Open Containing Folder"
 msgstr ""
 
-#: src/skins/menus.cc:234 src/skins-qt/menus.cc:228
+#: src/skins/menus.cc:236 src/skins-qt/menus.cc:230
 msgid "Cut"
 msgstr "Potong"
 
-#: src/skins/menus.cc:235 src/skins-qt/menus.cc:229
+#: src/skins/menus.cc:237 src/skins-qt/menus.cc:231
 msgid "Copy"
 msgstr "Salin"
 
-#: src/skins/menus.cc:236 src/skins-qt/menus.cc:230
+#: src/skins/menus.cc:238 src/skins-qt/menus.cc:232
 msgid "Paste"
 msgstr "Tempel"
 
-#: src/skins/menus.cc:237 src/skins-qt/menus.cc:231
+#: src/skins/menus.cc:239 src/skins-qt/menus.cc:233
 msgid "Paste at End"
 msgstr ""
 
-#: src/skins/menus.cc:239 src/skins-qt/menus.cc:233
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:235
 msgid "Queue/Unqueue"
 msgstr ""
 
@@ -3565,7 +3670,7 @@ msgstr "Tampilan Winamp Klasik"
 msgid "Open Folder ..."
 msgstr ""
 
-#: src/skins-qt/menus.cc:157
+#: src/skins-qt/menus.cc:159
 msgid "Add Folder ..."
 msgstr ""
 
@@ -3751,15 +3856,11 @@ msgstr "Cari"
 
 #: src/skins/search-select.cc:81
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr ""
-"Pilih entri dalam daftar putar dengan mengisi satu atau lebih bidang. Fields "
-"menggunakan ekspresi reguler sintaks, case-insensitive. Jika Anda tidak tahu "
-"bagaimana ekspresi reguler bekerja, cukup memasukkan sebagian literal dari "
-"apa yang Anda cari."
+msgstr "Pilih entri dalam daftar putar dengan mengisi satu atau lebih bidang. Fields menggunakan ekspresi reguler sintaks, case-insensitive. Jika Anda tidak tahu bagaimana ekspresi reguler bekerja, cukup memasukkan sebagian literal dari apa yang Anda cari."
 
 #: src/skins/search-select.cc:89
 msgid "Title:"
@@ -3789,30 +3890,22 @@ msgstr ""
 msgid "Create a new playlist with matching entries"
 msgstr "Buat daftar putar baru dengan mencocokan entri"
 
-#: src/sndfile/plugin.cc:37
+#: src/sndfile/plugin.cc:38
 msgid "Sndfile Plugin"
 msgstr ""
 
-#: src/sndfile/plugin.cc:361
+#: src/sndfile/plugin.cc:363
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
 "\n"
 "Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
 #: src/sndio/sndio.cc:43
@@ -3844,37 +3937,37 @@ msgstr ""
 msgid "Sndio error: sio_start() failed"
 msgstr ""
 
-#: src/songchange/song_change.cc:33
+#: src/songchange/song_change.cc:30
 msgid "Song Change"
 msgstr "Ubah Lagu"
 
-#: src/songchange/song_change.cc:268
+#: src/songchange/song_change.cc:245
 msgid "<b>Commands</b>"
 msgstr ""
 
-#: src/songchange/song_change.cc:270
+#: src/songchange/song_change.cc:247
 msgid "Command to run when starting a new song:"
 msgstr ""
 
-#: src/songchange/song_change.cc:273
+#: src/songchange/song_change.cc:250
 msgid "Command to run at the end of a song:"
 msgstr ""
 
-#: src/songchange/song_change.cc:276
+#: src/songchange/song_change.cc:253
 msgid "Command to run at the end of the playlist:"
 msgstr ""
 
-#: src/songchange/song_change.cc:279
+#: src/songchange/song_change.cc:256
 msgid "Command to run when song title changes (for network streams):"
 msgstr ""
 
-#: src/songchange/song_change.cc:282
+#: src/songchange/song_change.cc:259
 msgid ""
 "You can use the following format codes, which will be replaced before "
 "running the command (not all are useful for the end-of-playlist command):"
 msgstr ""
 
-#: src/songchange/song_change.cc:285
+#: src/songchange/song_change.cc:262
 msgid ""
 "%a: Artist\n"
 "%b: Album\n"
@@ -3889,7 +3982,7 @@ msgid ""
 "%T: Title (unformatted)"
 msgstr ""
 
-#: src/songchange/song_change.cc:296
+#: src/songchange/song_change.cc:273
 msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.  "
 "Unquoted parameters may lead to unexpected results."
@@ -3940,10 +4033,6 @@ msgstr ""
 msgid "Intermediate"
 msgstr ""
 
-#: src/soxr/sox-resampler.cc:174
-msgid "Linear"
-msgstr ""
-
 #: src/soxr/sox-resampler.cc:178
 msgid "Quality:"
 msgstr "Kualitas"
@@ -3980,11 +4069,11 @@ msgstr ""
 msgid "<b>Pitch</b>"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:45 src/statusicon/statusicon.cc:47
+#: src/statusicon-qt/statusicon.cc:44 src/statusicon/statusicon.cc:47
 msgid "Status Icon"
 msgstr "Ikon Status"
 
-#: src/statusicon-qt/statusicon.cc:66
+#: src/statusicon-qt/statusicon.cc:65
 msgid ""
 "Status Icon Plugin (partial port for Qt interface)\n"
 "\n"
@@ -3996,39 +4085,39 @@ msgid ""
 "the system tray area of the window manager."
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:88 src/statusicon/statusicon.cc:381
+#: src/statusicon-qt/statusicon.cc:86 src/statusicon/statusicon.cc:380
 msgid "<b>Mouse Scroll Action</b>"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:89 src/statusicon/statusicon.cc:382
+#: src/statusicon-qt/statusicon.cc:87 src/statusicon/statusicon.cc:381
 msgid "Change volume"
 msgstr "Ubah volume"
 
-#: src/statusicon-qt/statusicon.cc:92 src/statusicon/statusicon.cc:385
+#: src/statusicon-qt/statusicon.cc:90 src/statusicon/statusicon.cc:384
 msgid "Change playing song"
 msgstr "Ubah lagu yang sedang diputar"
 
-#: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:388
+#: src/statusicon-qt/statusicon.cc:93 src/statusicon/statusicon.cc:387
 msgid "<b>Other Settings</b>"
 msgstr "<b>Pengaturan Lain</b>"
 
-#: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:389
+#: src/statusicon-qt/statusicon.cc:94 src/statusicon/statusicon.cc:388
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:98 src/statusicon/statusicon.cc:391
+#: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:390
 msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:100 src/statusicon/statusicon.cc:393
+#: src/statusicon-qt/statusicon.cc:98 src/statusicon/statusicon.cc:392
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:115 src/statusicon/statusicon.cc:284
+#: src/statusicon-qt/statusicon.cc:113 src/statusicon/statusicon.cc:283
 msgid "Se_ttings ..."
 msgstr "Se_ttings ..."
 
-#: src/statusicon/statusicon.cc:374
+#: src/statusicon/statusicon.cc:373
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -4053,6 +4142,146 @@ msgstr ""
 #: src/stereo_plugin/stereo.cc:44
 msgid "<b>Extra Stereo</b>"
 msgstr "<b>Extra Stereo</b>"
+
+#: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:131
+msgid "Type"
+msgstr ""
+
+#: src/streamtuner/icecast-model.cc:132
+msgid "Current Song"
+msgstr ""
+
+#: src/streamtuner/icecast-model.cc:164
+msgid "Other"
+msgstr ""
+
+#: src/streamtuner/ihr-model.cc:63
+msgid "Market"
+msgstr ""
+
+#: src/streamtuner/ihr-model.cc:156
+msgid "Call Letters"
+msgstr ""
+
+#: src/streamtuner/ihr-model.cc:162
+msgid "Description"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:128
+msgid "Listeners"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:188
+msgid "Top 500 Stations"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:189
+msgid "Alternative"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:190
+msgid "Blues"
+msgstr "Blues"
+
+#: src/streamtuner/shoutcast-model.cc:191
+msgid "Classical"
+msgstr "Klasik"
+
+#: src/streamtuner/shoutcast-model.cc:192
+msgid "Country"
+msgstr "Country"
+
+#: src/streamtuner/shoutcast-model.cc:193
+msgid "Decades"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:194
+msgid "Easy Listening"
+msgstr "Mudah Didengarkan"
+
+#: src/streamtuner/shoutcast-model.cc:195
+msgid "Electronic"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:196
+msgid "Folk"
+msgstr "Folk"
+
+#: src/streamtuner/shoutcast-model.cc:197
+msgid "Inspirational"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:198
+msgid "International"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:199
+msgid "Jazz"
+msgstr "Jazz"
+
+#: src/streamtuner/shoutcast-model.cc:200
+msgid "Latin"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:201
+msgid "Metal"
+msgstr "Metal"
+
+#: src/streamtuner/shoutcast-model.cc:203
+msgid "New Age"
+msgstr "New Age"
+
+#: src/streamtuner/shoutcast-model.cc:204
+msgid "Pop"
+msgstr "Pop"
+
+#: src/streamtuner/shoutcast-model.cc:205
+msgid "Public Radio"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:206
+msgid "R&B and Urban"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:207
+msgid "Rap"
+msgstr "Rap"
+
+#: src/streamtuner/shoutcast-model.cc:208
+msgid "Reggae"
+msgstr "Reggae"
+
+#: src/streamtuner/shoutcast-model.cc:209
+msgid "Rock"
+msgstr "Rock"
+
+#: src/streamtuner/shoutcast-model.cc:210
+msgid "Seasonal and Holiday"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:211
+msgid "Soundtracks"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:212
+msgid "Talk"
+msgstr ""
+
+#: src/streamtuner/shoutcast-model.cc:213
+msgid "Themes"
+msgstr ""
+
+#: src/streamtuner/streamtuner.cc:59
+msgid "Shoutcast"
+msgstr ""
+
+#: src/streamtuner/streamtuner.cc:60
+msgid "Icecast"
+msgstr ""
+
+#: src/streamtuner/streamtuner.cc:71
+msgid "Stream Tuner"
+msgstr ""
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
@@ -4088,7 +4317,7 @@ msgstr "Informasi"
 msgid "Voice Removal"
 msgstr ""
 
-#: src/vorbis/vorbis.cc:427
+#: src/vorbis/vorbis.cc:429
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4144,6 +4373,36 @@ msgid ""
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
 
+#: src/vumeter-qt/vumeter_qt.cc:31
+msgid ""
+"VU Meter Plugin for Audacious\n"
+"Copyright 2017-2019 Marc Sánchez Fauste"
+msgstr ""
+
+#: src/vumeter-qt/vumeter_qt.cc:35
+msgid "<b>VU Meter Settings</b>"
+msgstr ""
+
+#: src/vumeter-qt/vumeter_qt.cc:37
+msgid "Peak hold time:"
+msgstr ""
+
+#: src/vumeter-qt/vumeter_qt.cc:42
+msgid "Fall-off time:"
+msgstr ""
+
+#: src/vumeter-qt/vumeter_qt.cc:44
+msgid "dB/second"
+msgstr ""
+
+#: src/vumeter-qt/vumeter_qt.cc:46
+msgid "Display legend"
+msgstr ""
+
+#: src/vumeter-qt/vumeter_qt.h:37
+msgid "VU Meter"
+msgstr ""
+
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
 msgstr ""
@@ -4154,27 +4413,24 @@ msgid ""
 "Copyright 2016 John Lindgren"
 msgstr ""
 
-#: src/wavpack/wavpack.cc:24
+#: src/wavpack/wavpack.cc:25
 msgid "WavPack Decoder"
 msgstr "Dekoder WavPack"
 
-#: src/wavpack/wavpack.cc:211
+#: src/wavpack/wavpack.cc:217
 msgid "lossy (hybrid)"
 msgstr "yang berkurang (gabungan)"
 
-#: src/wavpack/wavpack.cc:213
+#: src/wavpack/wavpack.cc:219
 msgid "lossy"
 msgstr "yang berkurang"
 
-#: src/wavpack/wavpack.cc:251
+#: src/wavpack/wavpack.cc:257
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
 "Some of the plugin code was by Miles Egan."
-msgstr ""
-"Hak cipta 2006 William Pitcock <nenolod@nenolod.net>\n"
-"\n"
-"Beberapa kode pengaya ditulis oleh Miles Egan."
+msgstr "Hak cipta 2006 William Pitcock <nenolod@nenolod.net>\n\nBeberapa kode pengaya ditulis oleh Miles Egan."
 
 #: src/xsf/plugin.cc:50
 msgid "2SF Decoder"
@@ -4184,10 +4440,6 @@ msgstr "Dekoder 2SF"
 msgid "<b>XSF Configuration</b>"
 msgstr "<b>Pengaturan XSF</b>"
 
-#: src/xsf/plugin.cc:232
-msgid "Ignore length from file"
-msgstr "Abaikan panjang dari berkas"
-
-#: src/xspf/xspf.cc:91
+#: src/xspf/xspf.cc:95
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Shareable Playlists (XSPF)"
