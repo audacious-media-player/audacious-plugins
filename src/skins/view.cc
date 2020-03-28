@@ -79,6 +79,8 @@ void view_apply_show_playlist ()
 
     if (show && gtk_widget_get_visible (main))
     {
+        // Same workaround as for the main window
+        playlistwin->move (config.playlist_x, config.playlist_y);
         gtk_window_set_transient_for ((GtkWindow *) pl, (GtkWindow *) main);
         gtk_window_present ((GtkWindow *) pl);
     }
@@ -105,6 +107,8 @@ void view_apply_show_equalizer ()
 
     if (show && gtk_widget_get_visible (main))
     {
+        // Same workaround as for the main window
+        equalizerwin->move (config.equalizer_x, config.equalizer_y);
         gtk_window_set_transient_for ((GtkWindow *) eq, (GtkWindow *) main);
         gtk_window_present ((GtkWindow *) eq);
     }
