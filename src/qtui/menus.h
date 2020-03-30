@@ -24,7 +24,7 @@ class QMenu;
 class QMenuBar;
 class QWidget;
 
-QMenuBar * qtui_build_menubar (QWidget * parent);
-QMenu * qtui_build_pl_menu (QWidget * parent);
+QMenuBar * qtui_build_menubar(QWidget * parent);
+QMenu * qtui_build_pl_menu(QWidget * parent);
 
 #endif // MENUS_H

@@ -30,24 +30,37 @@
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/runtime.h>
 
 #include "ao.h"
 #include "corlett.h"
-#include "eng_protos.h"
+#include "psx.h"
+
+#include "peops/spu.h"
+#include "peops2/spu.h"
 
 class PSFPlugin : public InputPlugin
 {
 public:
     static const char *const exts[];
+    static const char *const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
 
     static constexpr PluginInfo info = {
         N_("OpenPSF PSF1/PSF2 Decoder"),
-        PACKAGE
+        PACKAGE,
+        nullptr,
+        & prefs
+
     };
 
     constexpr PSFPlugin() : InputPlugin(info, InputInfo()
         .with_exts(exts)) {}
+
+    bool init();
 
     bool is_our_file(const char *filename, VFSFile &file);
     bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image);
@@ -80,6 +93,18 @@ static PSFEngineFunctors psf_functor_map[ENG_COUNT] = {
     {psf2_start, psf2_stop, psf2_seek, psf2_execute},
     {spx_start, spx_stop, psf_seek, spx_execute},
 };
+
+const char* const PSFPlugin::defaults[] =
+{
+    "ignore_length", "FALSE",
+    nullptr
+};
+
+bool PSFPlugin::init()
+{
+    aud_config_set_defaults("psf", defaults);
+    return true;
+}
 
 static PSFEngineFunctors *f;
 static String dirpath;
@@ -153,12 +178,20 @@ bool PSFPlugin::play(const char *filename, VFSFile &file)
 
     Index<char> buf = file.read_all ();
 
+    bool ignore_len = aud_get_bool("psf", "ignore_length");
+
     PSFEngine eng = psf_probe(buf.begin(), buf.len());
     if (eng == ENG_NONE || eng == ENG_COUNT)
     {
         error = true;
         goto cleanup;
     }
+
+    if(eng == ENG_PSF1 || eng == ENG_SPX)
+        setendless(ignore_len);
+
+    if(eng == ENG_PSF2)
+        setendless2(ignore_len);
 
     f = &psf_functor_map[eng];
 
@@ -231,3 +264,10 @@ bool PSFPlugin::is_our_file(const char *filename, VFSFile &file)
 }
 
 const char *const PSFPlugin::exts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", nullptr };
+
+const PreferencesWidget PSFPlugin::widgets[] = {
+    WidgetLabel(N_("<b>OpenPSF Configuration</b>")),
+    WidgetCheck(N_("Ignore length from file"), WidgetBool("psf", "ignore_length")),
+};
+
+const PluginPreferences PSFPlugin::prefs = {{widgets}};

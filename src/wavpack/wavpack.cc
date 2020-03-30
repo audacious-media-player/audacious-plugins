@@ -11,14 +11,15 @@
 #include <libaudcore/audstrings.h>
 
 #define BUFFER_SIZE 256 /* read buffer size, in samples / frames */
-#define SAMPLE_SIZE(a) (a == 8 ? sizeof(uint8_t) : (a == 16 ? sizeof(uint16_t) : sizeof(uint32_t)))
-#define SAMPLE_FMT(a) (a == 8 ? FMT_S8 : (a == 16 ? FMT_S16_NE : (a == 24 ? FMT_S24_NE : FMT_S32_NE)))
+#define SAMPLE_SIZE(a) (a <= 8 ? sizeof(uint8_t) : (a <= 16 ? sizeof(uint16_t) : sizeof(uint32_t)))
+#define SAMPLE_FMT(a) (a <= 8 ? FMT_S8 : (a <= 16 ? FMT_S16_NE : (a <= 24 ? FMT_S24_NE : FMT_S32_NE)))
 
 class WavpackPlugin : public InputPlugin
 {
 public:
     static const char about[];
     static const char * const exts[];
+    static const char * const mimes[];
 
     static constexpr PluginInfo info = {
         N_("WavPack Decoder"),
@@ -27,7 +28,8 @@ public:
     };
 
     constexpr WavpackPlugin() : InputPlugin (info, InputInfo (FlagWritesTag)
-        .with_exts (exts)) {}
+        .with_exts (exts)
+        .with_mimes (mimes)) {}
 
     bool is_our_file (const char * filename, VFSFile & file)
         { return false; }
@@ -139,7 +141,11 @@ bool WavpackPlugin::play (const char * filename, VFSFile & file)
     num_samples = WavpackGetNumSamples(ctx);
 
     set_stream_bitrate(WavpackGetAverageBitrate(ctx, num_channels));
-    open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels);
+
+    if(bits_per_sample == 32 && (WavpackGetMode(ctx) & MODE_FLOAT))
+        open_audio(FMT_FLOAT, sample_rate, num_channels);
+    else
+        open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels);
 
     Index<int32_t> input;
     input.resize (BUFFER_SIZE * num_channels);
@@ -174,17 +180,17 @@ bool WavpackPlugin::play (const char * filename, VFSFile & file)
             int16_t * wp2 = (int16_t *) output.begin ();
             int32_t * wp4 = (int32_t *) output.begin ();
 
-            if (bits_per_sample == 8)
+            if (bits_per_sample <= 8)
             {
                 for (int i = 0; i < ret * num_channels; i++, wp++, rp++)
                     *wp = *rp & 0xff;
             }
-            else if (bits_per_sample == 16)
+            else if (bits_per_sample <= 16)
             {
                 for (int i = 0; i < ret * num_channels; i++, wp2++, rp++)
                     *wp2 = *rp & 0xffff;
             }
-            else if (bits_per_sample == 24 || bits_per_sample == 32)
+            else
             {
                 for (int i = 0; i < ret * num_channels; i++, wp4++, rp++)
                     *wp4 = *rp;
@@ -252,3 +258,4 @@ const char WavpackPlugin::about[] =
     "Some of the plugin code was by Miles Egan.");
 
 const char * const WavpackPlugin::exts[] = { "wv", nullptr };
+const char * const WavpackPlugin::mimes[] = { "audio/x-wavpack", nullptr };

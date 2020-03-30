@@ -88,24 +88,8 @@ void InfoAreaVis::render_freq (const float * freq)
 
     for (int i = 0; i < VIS_BANDS; i ++)
     {
-        int a = ceilf (xscale[i]);
-        int b = floorf (xscale[i + 1]);
-        float n = 0;
-
-        if (b < a)
-            n += freq[b] * (xscale[i + 1] - xscale[i]);
-        else
-        {
-            if (a > 0)
-                n += freq[a - 1] * (a - xscale[i]);
-            for (; a < b; a ++)
-                n += freq[a];
-            if (b < 256)
-                n += freq[b] * (xscale[i + 1] - b);
-        }
-
         /* 40 dB range */
-        float x = 40 + 20 * log10f (n);
+        float x = 40 + compute_freq_band (freq, xscale, i, VIS_BANDS);
 
         bars[i] -= aud::max (0, VIS_FALLOFF - delay[i]);
 
@@ -139,11 +123,8 @@ static void clear (GtkWidget * widget, cairo_t * cr)
     GtkAllocation alloc;
     gtk_widget_get_allocation (widget, & alloc);
 
-    cairo_pattern_t * gradient = cairo_pattern_create_linear (0, 0, 0, alloc.height);
-    cairo_pattern_add_color_stop_rgb (gradient, 0, 0.25, 0.25, 0.25);
-    cairo_pattern_add_color_stop_rgb (gradient, 0.5, 0.15, 0.15, 0.15);
-    cairo_pattern_add_color_stop_rgb (gradient, 0.5, 0.1, 0.1, 0.1);
-    cairo_pattern_add_color_stop_rgb (gradient, 1, 0, 0, 0);
+    auto & c = (gtk_widget_get_style (widget))->base[GTK_STATE_NORMAL];
+    cairo_pattern_t * gradient = audgui_dark_bg_gradient (c, alloc.height);
 
     cairo_set_source (cr, gradient);
     cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
@@ -174,49 +155,10 @@ static void draw_text (GtkWidget * widget, cairo_t * cr, int x, int y, int
 
 /****************************************************************************/
 
-static void hsv_to_rgb (float h, float s, float v, float * r, float * g,
- float * b)
-{
-    for (; h >= 2; h -= 2)
-    {
-        float * p = r;
-        r = g;
-        g = b;
-        b = p;
-    }
-
-    if (h < 1)
-    {
-        * r = 1;
-        * g = 0;
-        * b = 1 - h;
-    }
-    else
-    {
-        * r = 1;
-        * g = h - 1;
-        * b = 0;
-    }
-
-    * r = v * (1 - s * (1 - * r));
-    * g = v * (1 - s * (1 - * g));
-    * b = v * (1 - s * (1 - * b));
-}
-
-static void get_color (int i, float * r, float * g, float * b)
-{
-    float h, s, v;
-
-    h = 4.6; /* hard-coded to blue due to repeatedly broken theming in GTK3 */
-
-    s = 1 - 0.9 * i / (VIS_BANDS - 1);
-    v = 0.75 + 0.25 * i / (VIS_BANDS - 1);
-
-    hsv_to_rgb (h, s, v, r, g, b);
-}
-
 static gboolean draw_vis_cb (GtkWidget * widget, cairo_t * cr)
 {
+    auto & c = (gtk_widget_get_style (widget))->base[GTK_STATE_SELECTED];
+
     clear (widget, cr);
 
     for (int i = 0; i < VIS_BANDS; i++)
@@ -226,7 +168,7 @@ static gboolean draw_vis_cb (GtkWidget * widget, cairo_t * cr)
         int m = aud::min (VIS_CENTER + v, HEIGHT);
 
         float r, g, b;
-        get_color (i, & r, & g, & b);
+        audgui_vis_bar_color (c, i, VIS_BANDS, r, g, b);
 
         cairo_set_source_rgb (cr, r, g, b);
         cairo_rectangle (cr, x, VIS_CENTER - v, BAND_WIDTH, v);

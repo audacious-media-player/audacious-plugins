@@ -74,13 +74,13 @@ static void equalizerwin_shade_toggle ()
 
 static void eq_on_cb (Button * button, QMouseEvent * event)
 {
-    aud_set_bool (nullptr, "equalizer_active", button->get_active ());
+    aud_set_bool ("equalizer_active", button->get_active ());
 }
 
 static void update_from_config (void *, void *)
 {
-    equalizerwin_on->set_active (aud_get_bool (nullptr, "equalizer_active"));
-    equalizerwin_preamp->set_value (aud_get_double (nullptr, "equalizer_preamp"));
+    equalizerwin_on->set_active (aud_get_bool ("equalizer_active"));
+    equalizerwin_preamp->set_value (aud_get_double ("equalizer_preamp"));
 
     double bands[AUD_EQ_NBANDS];
     aud_eq_get_bands (bands);
@@ -187,7 +187,7 @@ static void equalizerwin_create_widgets ()
 {
     equalizerwin_on = new Button (25, 12, 10, 119, 128, 119, 69, 119, 187, 119, SKIN_EQMAIN, SKIN_EQMAIN);
     equalizerwin->put_widget (false, equalizerwin_on, 14, 18);
-    equalizerwin_on->set_active (aud_get_bool (nullptr, "equalizer_active"));
+    equalizerwin_on->set_active (aud_get_bool ("equalizer_active"));
     equalizerwin_on->on_release (eq_on_cb);
 
     // AUTO button currently does nothing
@@ -219,7 +219,7 @@ static void equalizerwin_create_widgets ()
 
     equalizerwin_preamp = new EqSlider (_("Preamp"), -1);
     equalizerwin->put_widget (false, equalizerwin_preamp, 21, 38);
-    equalizerwin_preamp->set_value (aud_get_double (nullptr, "equalizer_preamp"));
+    equalizerwin_preamp->set_value (aud_get_double ("equalizer_preamp"));
 
     const char * const bandnames[AUD_EQ_NBANDS] = {N_("31 Hz"),
      N_("63 Hz"), N_("125 Hz"), N_("250 Hz"), N_("500 Hz"), N_("1 kHz"),

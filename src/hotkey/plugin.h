@@ -40,9 +40,6 @@ typedef struct _HotkeyConfiguration {
 } HotkeyConfiguration;
 
 typedef struct {
-    int vol_increment;
-    int vol_decrement;
-
     /* keyboard */
     HotkeyConfiguration first;
 } PluginConfig;

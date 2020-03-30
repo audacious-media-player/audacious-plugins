@@ -28,10 +28,10 @@ class QLineEdit;
 class SearchBar : public QWidget
 {
 public:
-    SearchBar (QWidget * parent, PlaylistWidget * playlistWidget);
+    SearchBar(QWidget * parent, PlaylistWidget * playlistWidget);
 
 private:
-    void keyPressEvent (QKeyEvent * event);
+    void keyPressEvent(QKeyEvent * event);
 
     PlaylistWidget * m_playlistWidget;
     QLineEdit * m_entry;

@@ -161,7 +161,7 @@ void PlaylistWidget::draw (QPainter & cr)
 
     /* entry numbers */
 
-    if (aud_get_bool (nullptr, "show_numbers_in_pl"))
+    if (aud_get_bool ("show_numbers_in_pl"))
     {
         width = 0;
 
@@ -292,7 +292,7 @@ void PlaylistWidget::resize (int width, int height)
 
 void PlaylistWidget::set_font (const char * font)
 {
-    m_font.capture (qfont_from_string (font));
+    m_font.capture (new QFont (audqt::qfont_from_string (font)));
     m_metrics.capture (new QFontMetrics (* m_font, this));
     m_row_height = m_metrics->height ();
     refresh ();
@@ -728,7 +728,7 @@ bool PlaylistWidget::motion (QMouseEvent * event)
     {
         if (position == -1 || position == m_length)
             cancel_all ();
-        else if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && m_popup_pos != position)
+        else if (aud_get_bool ("show_filepopup_for_tuple") && m_popup_pos != position)
         {
             cancel_all ();
             popup_trigger (position);
@@ -751,7 +751,7 @@ void PlaylistWidget::popup_trigger (int pos)
     audqt::infopopup_hide ();
 
     m_popup_pos = pos;
-    m_popup_timer.queue (aud_get_int (nullptr, "filepopup_delay") * 100,
+    m_popup_timer.queue (aud_get_int ("filepopup_delay") * 100,
      aud::obj_member<PlaylistWidget, & PlaylistWidget::popup_show>, this);
 }
 

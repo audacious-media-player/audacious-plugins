@@ -21,7 +21,7 @@ public:
     };
 
     constexpr VorbisPlugin () : InputPlugin (info, InputInfo (FlagWritesTag)
-        .with_priority (2)  /* medium-high priority (a little slow) */
+        .with_priority (_AUD_PLUGIN_DEFAULT_PRIO + 2)  /* medium-high priority (a little slow) */
         .with_exts (exts)
         .with_mimes (mimes)) {}
 

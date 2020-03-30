@@ -111,6 +111,8 @@ static const AudguiMenuItem playback_items[] = {
     MenuCommand (N_("Stop"), "media-playback-stop", 'v', NO_MOD, aud_drct_stop),
     MenuCommand (N_("Previous"), "media-skip-backward", 'z', NO_MOD, aud_drct_pl_prev),
     MenuCommand (N_("Next"), "media-skip-forward", 'b', NO_MOD, aud_drct_pl_next),
+    MenuCommand (N_("Previous Album"), nullptr, NO_KEY, aud_drct_pl_prev_album),
+    MenuCommand (N_("Next Album"), nullptr, NO_KEY, aud_drct_pl_next_album),
     MenuSep (),
     MenuCommand (N_("Set A-B Repeat"), nullptr, 'a', NO_MOD, action_ab_set),
     MenuCommand (N_("Clear A-B Repeat"), nullptr, 'a', SHIFT, action_ab_clear),

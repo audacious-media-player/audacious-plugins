@@ -30,61 +30,59 @@
 #include <libaudcore/i18n.h>
 #include <libaudqt/libaudqt.h>
 
-static QPushButton * makeButton (const char * icon, QWidget * parent)
+static QPushButton * makeButton(const char * icon, QWidget * parent)
 {
-    auto button = new QPushButton (audqt::get_icon (icon), QString (), parent);
-    button->setFlat (true);
-    button->setFocusPolicy (Qt::NoFocus);
+    auto button = new QPushButton(audqt::get_icon(icon), QString(), parent);
+    button->setFlat(true);
+    button->setFocusPolicy(Qt::NoFocus);
     return button;
 }
 
-SearchBar::SearchBar (QWidget * parent, PlaylistWidget * playlistWidget) :
-    QWidget (parent),
-    m_playlistWidget (playlistWidget),
-    m_entry (new QLineEdit (this))
+SearchBar::SearchBar(QWidget * parent, PlaylistWidget * playlistWidget)
+    : QWidget(parent), m_playlistWidget(playlistWidget),
+      m_entry(new QLineEdit(this))
 {
-    m_entry->setClearButtonEnabled (true);
-    m_entry->setPlaceholderText (_("Search playlist"));
+    m_entry->setClearButtonEnabled(true);
+    m_entry->setPlaceholderText(_("Search playlist"));
 
-    auto upButton = makeButton ("go-up", this);
-    auto downButton = makeButton ("go-down", this);
-    auto closeButton = makeButton ("window-close", this);
+    auto upButton = makeButton("go-up", this);
+    auto downButton = makeButton("go-down", this);
+    auto closeButton = makeButton("window-close", this);
 
-    auto layout = audqt::make_hbox (this);
-    layout->setContentsMargins (audqt::margins.TwoPt);
+    auto layout = audqt::make_hbox(this);
+    layout->setContentsMargins(audqt::margins.TwoPt);
 
-    layout->addWidget (m_entry);
-    layout->addWidget (upButton);
-    layout->addWidget (downButton);
-    layout->addWidget (closeButton);
+    layout->addWidget(m_entry);
+    layout->addWidget(upButton);
+    layout->addWidget(downButton);
+    layout->addWidget(closeButton);
 
-    setFocusProxy (m_entry);
+    setFocusProxy(m_entry);
 
-    connect (m_entry, & QLineEdit::textChanged, [this] (const QString & text) {
-        m_playlistWidget->setFilter (text.toUtf8 ());
+    connect(m_entry, &QLineEdit::textChanged, [this](const QString & text) {
+        m_playlistWidget->setFilter(text.toUtf8());
     });
 
-    connect (upButton, & QPushButton::clicked, [this] (bool) {
-        m_playlistWidget->moveFocus (-1);
-    });
+    connect(upButton, &QPushButton::clicked,
+            [this](bool) { m_playlistWidget->moveFocus(-1); });
 
-    connect (downButton, & QPushButton::clicked, [this] (bool) {
-        m_playlistWidget->moveFocus (1);
-    });
+    connect(downButton, &QPushButton::clicked,
+            [this](bool) { m_playlistWidget->moveFocus(1); });
 
-    connect (closeButton, & QPushButton::clicked, [this] (bool) {
-        m_entry->clear ();
-        m_playlistWidget->setFocus ();
-        hide ();
+    connect(closeButton, &QPushButton::clicked, [this](bool) {
+        m_entry->clear();
+        m_playlistWidget->setFocus();
+        hide();
     });
 }
 
-void SearchBar::keyPressEvent (QKeyEvent * event)
+void SearchBar::keyPressEvent(QKeyEvent * event)
 {
-    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
-    if (! (event->modifiers () & CtrlShiftAlt))
+    auto CtrlShiftAlt =
+        Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    if (!(event->modifiers() & CtrlShiftAlt))
     {
-        switch (event->key ())
+        switch (event->key())
         {
         case Qt::Key_Enter:
         case Qt::Key_Return:
@@ -92,16 +90,16 @@ void SearchBar::keyPressEvent (QKeyEvent * event)
         case Qt::Key_Down:
         case Qt::Key_PageUp:
         case Qt::Key_PageDown:
-            QApplication::sendEvent (m_playlistWidget, event);
+            QApplication::sendEvent(m_playlistWidget, event);
             return;
 
         case Qt::Key_Escape:
-            m_entry->clear ();
-            m_playlistWidget->setFocus ();
-            hide ();
+            m_entry->clear();
+            m_playlistWidget->setFocus();
+            hide();
             return;
         }
     }
 
-    QWidget::keyPressEvent (event);
+    QWidget::keyPressEvent(event);
 }

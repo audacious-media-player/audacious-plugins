@@ -269,7 +269,7 @@ bool CDAudio::play (const char * name, VFSFile & file)
 
     playing = true;
 
-    int buffer_size = aud_get_int (nullptr, "output_buffer_size");
+    int buffer_size = aud_get_int ("output_buffer_size");
     int speed = aud_get_int ("CDDA", "disc_speed");
     speed = aud::clamp (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
     int sectors = aud::clamp (buffer_size / 2, 50, 250) * speed * 75 / 1000;
@@ -620,12 +620,12 @@ static bool scan_cd ()
                 String path = aud_get_str ("CDDA", "cddbpath");
                 int port = aud_get_int ("CDDA", "cddbport");
 
-                if (aud_get_bool (nullptr, "use_proxy"))
+                if (aud_get_bool ("use_proxy"))
                 {
-                    String prhost = aud_get_str (nullptr, "proxy_host");
-                    int prport = aud_get_int (nullptr, "proxy_port");
-                    String pruser = aud_get_str (nullptr, "proxy_user");
-                    String prpass = aud_get_str (nullptr, "proxy_pass");
+                    String prhost = aud_get_str ("proxy_host");
+                    int prport = aud_get_int ("proxy_port");
+                    String pruser = aud_get_str ("proxy_user");
+                    String prpass = aud_get_str ("proxy_pass");
 
                     cddb_http_proxy_enable (pcddb_conn);
                     cddb_set_http_proxy_server_name (pcddb_conn, prhost);

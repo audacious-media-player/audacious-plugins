@@ -44,7 +44,6 @@
 
 #include "../peops/externals.h"
 #include "../peops/registers.h"
-#include "../peops/regs.h"
 
 static void SoundOn(int start,int end,u16 val);
 static void SoundOff(int start,int end,u16 val);

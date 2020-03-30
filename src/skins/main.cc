@@ -80,6 +80,11 @@ private:
     void draw (cairo_t * cr);
     bool button_press (GdkEventButton * event);
     bool scroll (GdkEventScroll * event);
+    bool motion (GdkEventMotion * event);
+    bool leave ();
+
+    QueuedFunc m_popup_timer;
+    bool m_popup_shown = false;
 };
 
 Window * mainwin;
@@ -129,7 +134,7 @@ static void seek_timeout (void * rewind);
 /* always returns a 6-character string */
 static StringBuf format_time (int time, int length)
 {
-    bool zero = aud_get_bool (nullptr, "leading_zero");
+    bool zero = aud_get_bool ("leading_zero");
     bool remaining = aud_get_bool ("skins", "show_remaining_time");
 
     if (remaining && length > 0)
@@ -443,7 +448,7 @@ static void record_toggled ()
 {
     if (aud_drct_get_record_enabled ())
     {
-        if (aud_get_bool (nullptr, "record"))
+        if (aud_get_bool ("record"))
             mainwin_show_status_message (_("Recording on"));
         else
             mainwin_show_status_message (_("Recording off"));
@@ -452,17 +457,17 @@ static void record_toggled ()
 
 static void repeat_toggled ()
 {
-    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
+    mainwin_repeat->set_active (aud_get_bool ("repeat"));
 }
 
 static void shuffle_toggled ()
 {
-    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
+    mainwin_shuffle->set_active (aud_get_bool ("shuffle"));
 }
 
 static void no_advance_toggled ()
 {
-    if (aud_get_bool (nullptr, "no_playlist_advance"))
+    if (aud_get_bool ("no_playlist_advance"))
         mainwin_show_status_message (_("Single mode."));
     else
         mainwin_show_status_message (_("Playlist mode."));
@@ -470,7 +475,7 @@ static void no_advance_toggled ()
 
 static void stop_after_song_toggled ()
 {
-    if (aud_get_bool (nullptr, "stop_after_current_song"))
+    if (aud_get_bool ("stop_after_current_song"))
         mainwin_show_status_message (_("Stopping after song."));
 }
 
@@ -479,16 +484,16 @@ bool MainWindow::scroll (GdkEventScroll * event)
     switch (event->direction)
     {
         case GDK_SCROLL_UP:
-            mainwin_set_volume_diff (5);
+            mainwin_set_volume_diff (aud_get_int ("volume_delta"));
             break;
         case GDK_SCROLL_DOWN:
-            mainwin_set_volume_diff (-5);
+            mainwin_set_volume_diff (-aud_get_int ("volume_delta"));
             break;
         case GDK_SCROLL_LEFT:
-            aud_drct_seek (aud_drct_get_time () - 5000);
+            aud_drct_seek (aud_drct_get_time () - aud_get_int ("step_size") * 1000);
             break;
         case GDK_SCROLL_RIGHT:
-            aud_drct_seek (aud_drct_get_time () + 5000);
+            aud_drct_seek (aud_drct_get_time () + aud_get_int ("step_size") * 1000);
             break;
         default:
             break;
@@ -517,6 +522,42 @@ bool MainWindow::button_press (GdkEventButton * event)
     return Window::button_press (event);
 }
 
+bool MainWindow::motion (GdkEventMotion * event)
+{
+    if (is_shaded () &&
+        event->x >= 79 * config.scale &&
+        event->x <= 157 * config.scale &&
+        aud_get_bool ("show_filepopup_for_tuple"))
+    {
+        if (! m_popup_shown)
+        {
+            m_popup_timer.queue (aud_get_int ("filepopup_delay") * 100,
+             [] (void *) { audgui_infopopup_show_current (); }, nullptr);
+            m_popup_shown = true;
+        }
+    }
+    else if (m_popup_shown)
+    {
+        audgui_infopopup_hide ();
+        m_popup_timer.stop ();
+        m_popup_shown = false;
+    }
+
+    return Window::motion (event);
+}
+
+bool MainWindow::leave ()
+{
+    if (m_popup_shown)
+    {
+        audgui_infopopup_hide ();
+        m_popup_timer.stop ();
+        m_popup_shown = false;
+    }
+
+    return Window::leave ();
+}
+
 static void mainwin_playback_rpress (Button * button, GdkEventButton * event)
 {
     menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, false, false,
@@ -533,12 +574,12 @@ bool Window::keypress (GdkEventKey * event)
         case GDK_KEY_Left:
         case GDK_KEY_KP_Left:
         case GDK_KEY_KP_7:
-            aud_drct_seek (aud_drct_get_time () - 5000);
+            aud_drct_seek (aud_drct_get_time () - aud_get_int ("step_size") * 1000);
             break;
         case GDK_KEY_Right:
         case GDK_KEY_KP_Right:
         case GDK_KEY_KP_9:
-            aud_drct_seek (aud_drct_get_time () + 5000);
+            aud_drct_seek (aud_drct_get_time () + aud_get_int ("step_size") * 1000);
             break;
         case GDK_KEY_KP_4:
             aud_drct_pl_prev ();
@@ -662,9 +703,9 @@ static void mainwin_fwd_release (Button * button, GdkEventButton * event)
     { seek_release (event, false); }
 
 static void mainwin_shuffle_cb (Button * button, GdkEventButton * event)
-    { aud_set_bool (nullptr, "shuffle", button->get_active ()); }
+    { aud_set_bool ("shuffle", button->get_active ()); }
 static void mainwin_repeat_cb (Button * button, GdkEventButton * event)
-    { aud_set_bool (nullptr, "repeat", button->get_active ()); }
+    { aud_set_bool ("repeat", button->get_active ()); }
 static void mainwin_eq_cb (Button * button, GdkEventButton * event)
     { view_set_show_equalizer (button->get_active ()); }
 static void mainwin_pl_cb (Button * button, GdkEventButton * event)
@@ -958,12 +999,12 @@ static void mainwin_create_widgets ()
 
     mainwin_shuffle = new Button (46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP, SKIN_SHUFREP);
     mainwin->put_widget (false, mainwin_shuffle, 164, 89);
-    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
+    mainwin_shuffle->set_active (aud_get_bool ("shuffle"));
     mainwin_shuffle->on_release (mainwin_shuffle_cb);
 
     mainwin_repeat = new Button (28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP, SKIN_SHUFREP);
     mainwin->put_widget (false, mainwin_repeat, 210, 89);
-    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
+    mainwin_repeat->set_active (aud_get_bool ("repeat"));
     mainwin_repeat->on_release (mainwin_repeat_cb);
 
     mainwin_eq = new Button (23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP, SKIN_SHUFREP);

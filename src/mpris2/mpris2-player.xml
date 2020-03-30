@@ -8,7 +8,9 @@
         <property name="CanSeek" type="b" access="read"/>
         <property name="Metadata" type="a{sv}" access="read"/>
         <property name="PlaybackStatus" type="s" access="read"/>
-        <property name="Position" type="x" access="read"/>
+        <property name="Position" type="x" access="read">
+            <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+        </property>
         <property name="Volume" type="d" access="readwrite"/>
         <method name="Next"/>
         <method name="Pause"/>

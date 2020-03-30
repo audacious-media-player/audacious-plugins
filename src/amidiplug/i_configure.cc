@@ -142,6 +142,9 @@ static const PreferencesWidget amidiplug_widgets[] = {
 #ifdef USE_GTK
     WidgetCustomGTK (create_soundfont_list),
 #endif
+#ifdef USE_QT
+    WidgetCustomQt (create_soundfont_list_qt),
+#endif
     WidgetLabel (N_("<b>Synthesizer</b>")),
     WidgetBox ({{gain_widgets}, true}),
     WidgetBox ({{polyphony_widgets}, true}),

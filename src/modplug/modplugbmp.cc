@@ -165,30 +165,15 @@ void ModplugXMMS::PlayLoop()
 
         if(mModProps.mPreamp)
         {
-            //apply preamp
-            if(mModProps.mBits == 16)
-            {
-                unsigned n = mBufSize >> 1;
-                for(unsigned i = 0; i < n; i++) {
-                    short old = ((short*)mBuffer)[i];
-                    ((short*)mBuffer)[i] *= (short int)mPreampFactor;
-                    // detect overflow and clip!
-                    if ((old & 0x8000) !=
-                     (((short*)mBuffer)[i] & 0x8000))
-                      ((short*)mBuffer)[i] = old | 0x7FFF;
+            unsigned n = mBufSize >> 1;
 
-                }
-            }
-            else
-            {
-                for(unsigned i = 0; i < mBufSize; i++) {
-                    unsigned char old = ((unsigned char*)mBuffer)[i];
-                    ((unsigned char*)mBuffer)[i] *= (short int)mPreampFactor;
-                    // detect overflow and clip!
-                    if ((old & 0x80) !=
-                     (((unsigned char*)mBuffer)[i] & 0x80))
-                      ((unsigned char*)mBuffer)[i] = old | 0x7F;
-                }
+            for(unsigned i = 0; i < n; i++) {
+                short old = ((short*)mBuffer)[i];
+                ((short*)mBuffer)[i] *= (short int)mPreampFactor;
+
+                // detect overflow and clip!
+                if ((old & 0x8000) != (((short*)mBuffer)[i] & 0x8000))
+                    ((short*)mBuffer)[i] = old | 0x7FFF;
             }
         }
 
@@ -215,14 +200,14 @@ bool ModplugXMMS::play (const char * filename, VFSFile & file)
     mBufSize *= mModProps.mFrequency;
     mBufSize /= 1000;    //milliseconds
     mBufSize *= mModProps.mChannels;
-    mBufSize *= mModProps.mBits / 8;
+    mBufSize *= 2;
 
     mBuffer = new unsigned char[mBufSize];
 
     CSoundFile::SetWaveConfig
     (
         mModProps.mFrequency,
-        mModProps.mBits,
+        16,
         mModProps.mChannels
     );
     CSoundFile::SetWaveConfigEx
@@ -275,8 +260,7 @@ bool ModplugXMMS::play (const char * filename, VFSFile & file)
 
     set_stream_bitrate(mSoundFile->GetNumChannels() * 1000);
 
-    int fmt = (mModProps.mBits == 16) ? FMT_S16_NE : FMT_U8;
-    open_audio(fmt, mModProps.mFrequency, mModProps.mChannels);
+    open_audio(FMT_S16_NE, mModProps.mFrequency, mModProps.mChannels);
 
     PlayLoop();
 

@@ -348,7 +348,7 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels, String & er
     alsa_channels = channels;
     alsa_rate = rate;
 
-    total_buffer = aud_get_int (nullptr, "output_buffer_size");
+    total_buffer = aud_get_int ("output_buffer_size");
     useconds = 1000 * aud::min (1000, total_buffer / 2);
     direction = 0;
     CHECK_STR (error, snd_pcm_hw_params_set_buffer_time_near, alsa_handle,
@@ -418,6 +418,10 @@ int ALSAPlugin::write_audio (const void * data, int length)
 
     length = aud::min (length, alsa_buffer.space ());
     alsa_buffer.copy_in ((const char *) data, length);
+
+    AUDDBG ("Buffer fill levels: low = %d%%, high = %d%%.\n",
+            (alsa_buffer.len () - length) * 100 / alsa_buffer.size (),
+            alsa_buffer.len () * 100 / alsa_buffer.size ());
 
     if (! alsa_paused)
         pthread_cond_broadcast (& alsa_cond);

@@ -42,6 +42,7 @@ static_assert(std::is_same<jack_default_audio_sample_t, float>::value,
 class JACKOutput : public OutputPlugin
 {
 public:
+    static const char client_name_default[];
     static const char * const defaults[];
     static const PreferencesWidget widgets[];
     static const PluginPreferences prefs;
@@ -104,16 +105,41 @@ static RingBuf<float> s_buffer;
 
 EXPORT JACKOutput aud_plugin_instance (s_buffer);
 
+const char JACKOutput::client_name_default[] = "audacious";
+
 const char * const JACKOutput::defaults[] = {
     "auto_connect", "TRUE",
+    "client_name", JACKOutput::client_name_default,
+    "ports_filter", "",
+    "ports_ignore", "FALSE",
+    "ports_physical", "TRUE",
+    "ports_upmix", "2",
     "volume_left", "100",
     "volume_right", "100",
     nullptr
 };
 
 const PreferencesWidget JACKOutput::widgets[] = {
+    WidgetEntry (N_("Client name:"),
+        WidgetString ("jack", "client_name")),
     WidgetCheck (N_("Automatically connect to output ports"),
-        WidgetBool ("jack", "auto_connect"))
+        WidgetBool ("jack", "auto_connect")),
+    WidgetLabel (N_("Filter ports (regex, use any port if blank):"),
+        WIDGET_CHILD),
+    WidgetEntry (nullptr,
+        WidgetString ("jack", "ports_filter"),
+        {false},
+        WIDGET_CHILD),
+    WidgetCheck (N_("Connect to physical ports only"),
+        WidgetBool ("jack", "ports_physical"),
+        WIDGET_CHILD),
+    WidgetSpin (N_("Upmix to"),
+        WidgetInt ("jack", "ports_upmix"),
+        {1, 96, 1, N_("ports if input has fewer channels")},
+        WIDGET_CHILD),
+    WidgetCheck (N_("Ignore insufficient number of ports"),
+        WidgetBool ("jack", "ports_ignore"),
+        WIDGET_CHILD)
 };
 
 const PluginPreferences JACKOutput::prefs = {{widgets}};
@@ -141,29 +167,38 @@ bool JACKOutput::connect_ports (int channels, String & error)
     const char * * ports = nullptr;
     int count = 0;
 
-    if (! (ports = jack_get_ports (m_client, nullptr, nullptr,
-     JackPortIsPhysical | JackPortIsInput)))
-    {
-        AUDERR ("jack_get_ports() failed\n");
-        goto fail;
-    }
+    unsigned long ports_flags = JackPortIsInput;
+    if (aud_get_bool ("jack", "ports_physical"))
+        ports_flags |= JackPortIsPhysical;
 
-    while (ports[count])
-        count ++;
+    if (! (ports = jack_get_ports (m_client, aud_get_str ("jack", "ports_filter"), nullptr, ports_flags)))
+    {
+        if (! aud_get_bool ("jack", "ports_ignore"))
+        {
+            error = String (_("No JACK output ports were found. Please check settings."));
+            goto fail;
+        }
+    }
+    else
+    {
+        while (ports[count])
+            count ++;
+    }
 
     if (count < channels)
     {
-        error = String (str_printf (_("Only %d JACK output ports were "
-         "found but %d are required."), count, channels));
-        goto fail;
+        if (! aud_get_bool ("jack", "ports_ignore"))
+        {
+            error = String (str_printf (_("Only %d JACK output ports were "
+            "found but %d are required."), count, channels));
+            goto fail;
+        }
+        else
+            AUDWARN ("Not enough output ports available. Playing %d of %d channels.\n", count, channels);
     }
 
-    // upmix mono to stereo
-    // for all other arrangements, use a one-to-one mapping
-    if (channels == 1)
-        count = aud::min (count, 2);
-    else
-        count = aud::min (count, channels);
+    // upmix
+    count = aud::min (count, aud::max (aud_get_int ("jack", "ports_upmix"), channels));
 
     for (int i = 0; i < count; i ++)
     {
@@ -200,7 +235,9 @@ bool JACKOutput::open_audio (int format, int rate, int channels, String & error)
 
     jack_set_error_function (error_cb);
 
-    if (! (m_client = jack_client_open ("audacious", JackNoStartServer, nullptr)))
+    StringBuf client_name = str_copy (aud_get_str ("jack", "client_name"), jack_client_name_size () - 1);
+
+    if (! (m_client = jack_client_open (client_name[0] ? client_name : JACKOutput::client_name_default, JackNoStartServer, nullptr)))
     {
         error = String (_("Failed to connect to the JACK server; is it running?"));
         goto fail;
@@ -217,7 +254,7 @@ bool JACKOutput::open_audio (int format, int rate, int channels, String & error)
         }
     }
 
-    buffer_time = aud_get_int (nullptr, "output_buffer_size");
+    buffer_time = aud_get_int ("output_buffer_size");
     m_buffer.alloc (aud::rescale (buffer_time, 1000, rate) * channels);
 
     m_rate = rate;

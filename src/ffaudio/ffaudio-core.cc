@@ -681,4 +681,8 @@ const char * const FFaudio::exts[] = {
     nullptr
 };
 
-const char * const FFaudio::mimes[] = {"application/ogg", nullptr};
+const char * const FFaudio::mimes[] = {
+    "application/ogg",
+    "audio/mp4",
+    nullptr
+};

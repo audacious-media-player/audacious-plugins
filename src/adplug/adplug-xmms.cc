@@ -26,6 +26,15 @@
 #include <adplug/adplug.h>
 #include <adplug/emuopl.h>
 #include <adplug/silentopl.h>
+#ifdef HAVE_ADPLUG_NEMUOPL_H
+# include <adplug/nemuopl.h>
+#endif
+#ifdef HAVE_ADPLUG_WEMUOPL_H
+# include <adplug/wemuopl.h>
+#endif
+#ifdef HAVE_ADPLUG_KEMUOPL_H
+# include <adplug/kemuopl.h>
+#endif
 #include <adplug/players.h>
 
 #include <libaudcore/audstrings.h>
@@ -38,39 +47,50 @@
 
 #define CFG_ID "AdPlug"
 
+#define ADPLUG_MAME  0
+#ifdef HAVE_ADPLUG_NEMUOPL_H
+# define ADPLUG_NUKED 1
+#endif
+#ifdef HAVE_ADPLUG_WEMUOPL_H
+# define ADPLUG_WOODY 2
+#endif
+#ifdef HAVE_ADPLUG_KEMUOPL_H
+# define ADPLUG_KS    3
+#endif
+
 class AdPlugXMMS : public InputPlugin
 {
 public:
-    static const char * const exts[];
-    static const char * const defaults[];
-    static const PreferencesWidget widgets[];
-    static const PluginPreferences prefs;
+  static const char * const exts[];
+  static const char * const defaults[];
+  static const PreferencesWidget widgets[];
+  static const PluginPreferences prefs;
 
-    static constexpr PluginInfo info = {
-        N_("AdPlug (AdLib Player)"),
-        PACKAGE,
-        nullptr,
-        & prefs
-    };
+  static constexpr PluginInfo info = {
+    N_("AdPlug (AdLib Player)"),
+    PACKAGE,
+    nullptr,
+    & prefs
+  };
 
-    constexpr AdPlugXMMS () : InputPlugin (info, InputInfo ()
-        .with_exts (exts)) {}
+  constexpr AdPlugXMMS () : InputPlugin (info, InputInfo ()
+    .with_exts (exts)) {}
 
-    bool init ();
-    void cleanup ();
+  bool init ();
+  void cleanup ();
 
-    bool is_our_file (const char * filename, VFSFile & file);
-    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
-    bool play (const char * filename, VFSFile & file);
+  bool is_our_file (const char * filename, VFSFile & file);
+  bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
+  bool play (const char * filename, VFSFile & file);
 };
 
 EXPORT AdPlugXMMS aud_plugin_instance;
 
 const char * const AdPlugXMMS::exts[] = {
-    "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
-    "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
-    "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
-    "sng", "wlf", "xad", "xsm", nullptr
+  "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
+  "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
+  "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
+  "sng", "wlf", "xad", "xsm", nullptr
 };
 
 /***** Defines *****/
@@ -78,9 +98,8 @@ const char * const AdPlugXMMS::exts[] = {
 // Sound buffer size in samples
 #define SNDBUFSIZE	512
 
-// AdPlug's 8 and 16 bit audio formats
-#define FORMAT_8	FMT_U8
-#define FORMAT_16	FMT_S16_NE
+// 4 byte sample size (16 bit depth & stereo)
+#define SAMPLESIZE 4
 
 // Default file name of AdPlug's database file
 #define ADPLUGDB_FILE		"adplug.db"
@@ -92,8 +111,8 @@ const char * const AdPlugXMMS::exts[] = {
 
 // Player variables
 static struct {
-  CPlayer *p = nullptr;
-  CAdPlugDatabase *db = nullptr;
+  SmartPtr<CPlayer> p;
+  SmartPtr<CAdPlugDatabase> db;
   unsigned int subsong = 0, songlength = 0;
   String filename;
 } plr;
@@ -157,21 +176,42 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 {
   dbg_printf ("adplug_play(\"%s\"): ", filename);
 
-  bool bit16 = aud_get_bool (CFG_ID, "16bit");
-  bool stereo = aud_get_bool (CFG_ID, "Stereo");
+  int emulator = aud_get_int (CFG_ID, "Emulator");
   int freq = aud_get_int (CFG_ID, "Frequency");
   bool endless = aud_get_bool (CFG_ID, "Endless");
 
   // Set XMMS main window information
   dbg_printf ("xmms, ");
-  int sampsize = (bit16 ? 2 : 1) * (stereo ? 2 : 1);
-  set_stream_bitrate (freq * sampsize * 8);
+  set_stream_bitrate (freq * SAMPLESIZE * 8);
 
   // open output plugin
   dbg_printf ("open, ");
-  open_audio (bit16 ? FORMAT_16 : FORMAT_8, freq, stereo ? 2 : 1);
+  open_audio (FMT_S16_NE, freq, 2);
 
-  CEmuopl opl (freq, bit16, stereo);
+  SmartPtr<Copl> opl;
+  switch (emulator) {
+#ifdef HAVE_ADPLUG_NEMUOPL_H
+    case ADPLUG_NUKED:
+      opl.capture(new CNemuopl (freq));
+      break;
+#endif
+#ifdef HAVE_ADPLUG_WEMUOPL_H
+    case ADPLUG_WOODY:
+      opl.capture(new CWemuopl (freq, true, true));
+      break;
+#endif
+#ifdef HAVE_ADPLUG_KEMUOPL_H
+    case ADPLUG_KS:
+      opl.capture(new CKemuopl (freq, true, true));
+      break;
+#endif
+    case ADPLUG_MAME:
+    default:
+      opl.capture(new CEmuopl (freq, true, true));
+      // otherwise sound only comes out of left
+      static_cast<CEmuopl *>(opl.get())->settype(Copl::TYPE_OPL2);
+  }
+
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
   bool playing = true;  // Song self-end indicator.
@@ -179,7 +219,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   // Try to load module
   dbg_printf ("factory, ");
   CFileVFSProvider fp (fd);
-  if (!(plr.p = CAdPlug::factory (filename, &opl, CAdPlug::players, fp)))
+  if (!(plr.p.capture(CAdPlug::factory (filename, opl.get (), CAdPlug::players, fp))))
   {
     dbg_printf ("error!\n");
     // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
@@ -196,7 +236,8 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 
   // Allocate audio buffer
   dbg_printf ("buffer, ");
-  sndbuf = (char *) malloc (SNDBUFSIZE * sampsize);
+  // 4 byte sample size
+  sndbuf = (char *) malloc (SNDBUFSIZE * 4);
 
   // Rewind player to right subsong
   dbg_printf ("rewind, ");
@@ -241,26 +282,22 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
           time += (int) (1000 / plr.p->getrefresh ());
       }
       i = std::min (towrite, (long) (toadd / plr.p->getrefresh () + 4) & ~3);
-      opl.update ((short *) sndbufpos, i);
-      sndbufpos += i * sampsize;
+      opl->update ((short *) sndbufpos, i);
+      sndbufpos += i * SAMPLESIZE;
       towrite -= i;
       toadd -= (long) (plr.p->getrefresh () * i);
     }
 
-    write_audio (sndbuf, SNDBUFSIZE * sampsize);
+    write_audio (sndbuf, SNDBUFSIZE * SAMPLESIZE);
   }
 
   // free everything and exit
   dbg_printf ("free");
-  delete plr.p;
-  plr.p = 0;
+  plr.p.clear ();
   free (sndbuf);
   dbg_printf (".\n");
   return true;
 }
-
-// sampsize macro not useful anymore.
-#undef sampsize
 
 /***** Informational *****/
 
@@ -287,23 +324,36 @@ bool AdPlugXMMS::is_our_file (const char * filename, VFSFile & fd)
 /***** Configuration file handling *****/
 
 const char * const AdPlugXMMS::defaults[] = {
- "16bit", "TRUE",
- "Stereo", "FALSE",
  "Frequency", "44100",
  "Endless", "FALSE",
+ "Emulator", "0",
  nullptr};
 
+/***** Configuration UI *****/
+
+static const ComboItem plugin_combo[] = {
+  ComboItem ("Tatsuyuki Satoh 0.72 (MAME, 2003)", ADPLUG_MAME),
+#ifdef HAVE_ADPLUG_NEMUOPL_H
+  ComboItem ("Nuked OPL3 (Nuke.YKT, 2018)", ADPLUG_NUKED),
+#endif
+#ifdef HAVE_ADPLUG_WEMUOPL_H
+  ComboItem ("WoodyOPL (DOSBox, 2016)", ADPLUG_WOODY),
+#endif
+#ifdef HAVE_ADPLUG_KEMUOPL_H
+  ComboItem ("Ken Silverman (2001)", ADPLUG_KS),
+#endif
+};
+
 const PreferencesWidget AdPlugXMMS::widgets[] = {
-    WidgetLabel (N_("<b>Output</b>")),
-    WidgetCheck (N_("16-bit output (if unchecked, output is 8-bit)"),
-        WidgetBool (CFG_ID, "16bit")),
-    WidgetCheck (N_("Duplicate mono output to two channels"),
-        WidgetBool (CFG_ID, "Stereo")),
-    WidgetSpin (N_("Sample rate"),
-        WidgetInt (CFG_ID, "Frequency"), {8000, 192000, 50, N_("Hz")}),
-    WidgetLabel (N_("<b>Miscellaneous</b>")),
-    WidgetCheck (N_("Repeat song in endless loop"),
-        WidgetBool (CFG_ID, "Endless"))
+  WidgetLabel (N_("<b>Output</b>")),
+  WidgetCombo (N_("OPL Emulator:"),
+    WidgetInt (CFG_ID, "Emulator"),
+    {{plugin_combo}}),
+  WidgetSpin (N_("Sample rate"),
+    WidgetInt (CFG_ID, "Frequency"), {8000, 192000, 50, N_("Hz")}),
+  WidgetLabel (N_("<b>Miscellaneous</b>")),
+  WidgetCheck (N_("Repeat song in endless loop"),
+    WidgetBool (CFG_ID, "Endless"))
 };
 
 const PluginPreferences AdPlugXMMS::prefs = {{widgets}};
@@ -324,10 +374,10 @@ bool AdPlugXMMS::init ()
 
       if (VFSFile::test_file (userdb.c_str (), VFS_EXISTS))
       {
-        plr.db = new CAdPlugDatabase;
+        plr.db.capture(new CAdPlugDatabase);
         plr.db->load (userdb);    // load user's database
         dbg_printf (" (userdb=\"%s\")", userdb.c_str());
-        CAdPlug::set_database (plr.db);
+        CAdPlug::set_database (plr.db.get ());
       }
     }
   }
@@ -340,8 +390,6 @@ void AdPlugXMMS::cleanup ()
 {
   // Close database
   dbg_printf ("db, ");
-  if (plr.db)
-    delete plr.db;
-
+  plr.db.clear ();
   plr.filename = String ();
 }

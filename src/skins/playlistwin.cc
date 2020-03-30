@@ -118,7 +118,7 @@ static void update_rollup_text ()
         String title = tuple.get_str (Tuple::FormattedTitle);
         int length = tuple.get_int (Tuple::Length);
 
-        if (aud_get_bool (nullptr, "show_numbers_in_pl"))
+        if (aud_get_bool ("show_numbers_in_pl"))
             APPEND (scratch, "%d. ", 1 + entry);
 
         APPEND (scratch, "%s", (const char *) title);

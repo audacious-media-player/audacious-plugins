@@ -103,7 +103,7 @@ static void clear_message (void * label)
 
 static void no_advance_toggled (void *, void * label)
 {
-    if (aud_get_bool (nullptr, "no_playlist_advance"))
+    if (aud_get_bool ("no_playlist_advance"))
         gtk_label_set_text ((GtkLabel *) label, _("Single mode."));
     else
         gtk_label_set_text ((GtkLabel *) label, _("Playlist mode."));
@@ -113,7 +113,7 @@ static void no_advance_toggled (void *, void * label)
 
 static void stop_after_song_toggled (void *, void * label)
 {
-    if (aud_get_bool (nullptr, "stop_after_current_song"))
+    if (aud_get_bool ("stop_after_current_song"))
         gtk_label_set_text ((GtkLabel *) label, _("Stopping after song."));
 
     clear_timeout.start (1000, clear_message, label);

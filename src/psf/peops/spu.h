@@ -24,16 +24,19 @@
 //
 //*************************************************************************//
 
-void sexyd_update(unsigned char* pSound,long lBytes);
+void SPUirq(void);
 
-int SPUasync(u32 cycles, void (*update)(const void *, int));
+int psf_seek(uint32_t t);
+void setendless(int e);
+void setlength(int32_t stop, int32_t fade);
+
+int SPUasync(uint32_t cycles, void (*update)(const void *, int));
 void SPU_flushboot(void);
 int SPUinit(void);
 int SPUopen(void);
 int SPUclose(void);
 int SPUshutdown(void);
-void SPUinjectRAMImage(u16 *pIncoming);
-void SPUreadDMAMem(u32 usPSXMem,int iSize);
-void SPUwriteDMAMem(u32 usPSXMem,int iSize);
-u16 SPUreadRegister(u32 reg);
-
+void SPUinjectRAMImage(uint16_t *pIncoming);
+void SPUreadDMAMem(uint32_t usPSXMem, int iSize);
+void SPUwriteDMAMem(uint32_t usPSXMem, int iSize);
+uint16_t SPUreadRegister(uint32_t reg);

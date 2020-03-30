@@ -30,6 +30,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/objects.h>
+#include <libaudqt/libaudqt.h>
 
 #include "skins_cfg.h"
 #include "skin.h"
@@ -84,7 +85,12 @@ void TextBox::scroll_timeout ()
 void TextBox::render_vector (const char * text)
 {
     QRect ink = m_metrics->tightBoundingRect (text);
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    int logical_width = m_metrics->horizontalAdvance (text);
+#else
     int logical_width = m_metrics->width (text);
+#endif
 
     /* use logical width so as not to trim off the trailing space of the " --- " */
     /* use ink height since vertical space is quite limited */
@@ -246,7 +252,7 @@ void TextBox::set_font (const char * font)
 {
     if (font)
     {
-        m_font.capture (qfont_from_string (font));
+        m_font.capture (new QFont (audqt::qfont_from_string (font)));
         m_metrics.capture (new QFontMetrics (* m_font, this));
     }
     else

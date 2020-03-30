@@ -1,6 +1,6 @@
 /*
  * search-tool-qt.cc
- * Copyright 2011-2017 John Lindgren and René J.V. Bertin
+ * Copyright 2011-2019 John Lindgren, Ariadne Conill, and René J.V. Bertin
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,36 +17,31 @@
  * the use of this software.
  */
 
-#include <string.h>
 #include <glib.h>
 
-#include <QAbstractListModel>
-#include <QAbstractTextDocumentLayout>
 #include <QApplication>
 #include <QBoxLayout>
 #include <QContextMenuEvent>
+#include <QDirIterator>
+#include <QFileSystemWatcher>
 #include <QIcon>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
-#include <QMimeData>
-#include <QPainter>
+#include <QPointer>
 #include <QPushButton>
-#include <QStyledItemDelegate>
 #include <QTreeView>
-#include <QUrl>
 
-#include <libaudcore/audstrings.h>
-#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/mainloop.h>
-#include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
-#include <libaudqt/menu.h>
+
+#include "html-delegate.h"
+#include "library.h"
+#include "search-model.h"
 
 #define CFG_ID "search-tool"
 #define SEARCH_DELAY 300
@@ -75,270 +70,114 @@ public:
 
 EXPORT SearchToolQt aud_plugin_instance;
 
-static void trigger_search ();
+class SearchEntry : public QLineEdit
+{
+public:
+    QTreeView * list = nullptr;
+
+protected:
+    void keyPressEvent (QKeyEvent * event)
+    {
+        auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+        if (list && ! (event->modifiers () & CtrlShiftAlt) && event->key () == Qt::Key_Down)
+        {
+            list->setCurrentIndex (list->model ()->index (0, 0));
+            list->setFocus (Qt::OtherFocusReason);
+            return;
+        }
+        QLineEdit::keyPressEvent (event);
+    }
+};
+
+class ResultsList : public QTreeView
+{
+public:
+    QWidget * entry = nullptr;
+
+protected:
+    void keyPressEvent (QKeyEvent * event)
+    {
+        auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+        if (entry && ! (event->modifiers () & CtrlShiftAlt) &&
+            event->key () == Qt::Key_Up && currentIndex ().row () == 0)
+        {
+            entry->setFocus (Qt::OtherFocusReason);
+            return;
+        }
+        QTreeView::keyPressEvent (event);
+    }
+};
+
+class SearchWidget : public QWidget
+{
+public:
+    SearchWidget ();
+
+    void grab_focus () { m_search_entry.setFocus (Qt::OtherFocusReason); }
+
+    void trigger_search ();
+    void reset_monitor ();
+
+private:
+    void init_library ();
+    void show_hide_widgets ();
+    void search_timeout ();
+    void library_updated ();
+    void location_changed ();
+    void walk_library_paths ();
+    void setup_monitor ();
+
+    void do_add (bool play, bool set_title);
+    void action_play ();
+    void action_create_playlist ();
+    void action_add_to_playlist ();
+    void show_context_menu (const QPoint & global_pos);
+
+    Library m_library;
+    SearchModel m_model;
+    HtmlDelegate m_delegate;
+
+    SmartPtr<QFileSystemWatcher> m_watcher;
+    QStringList m_watcher_paths;
+
+    QueuedFunc m_search_timer;
+    bool m_search_pending = false;
+
+    QLabel m_help_label, m_wait_label, m_stats_label;
+    SearchEntry m_search_entry;
+    ResultsList m_results_list;
+    QPushButton m_refresh_btn;
+
+    QLineEdit * m_file_entry;
+};
+
+static QPointer<SearchWidget> s_widget;
 
 const char * const SearchToolQt::defaults[] = {
     "max_results", "20",
     "rescan_on_startup", "FALSE",
+    "monitor", "FALSE",
     nullptr
 };
 
 const PreferencesWidget SearchToolQt::widgets[] = {
     WidgetSpin (N_("Number of results to show:"),
-        WidgetInt (CFG_ID, "max_results", trigger_search),
+        WidgetInt (CFG_ID, "max_results", [] () { s_widget->trigger_search (); }),
          {10, 10000, 10}),
     WidgetCheck (N_("Rescan library at startup"),
-        WidgetBool (CFG_ID, "rescan_on_startup"))
+        WidgetBool (CFG_ID, "rescan_on_startup")),
+    WidgetCheck (N_("Monitor library for changes"),
+        WidgetBool (CFG_ID, "monitor", [] () { s_widget->reset_monitor (); }))
 };
 
 const PluginPreferences SearchToolQt::prefs = {{widgets}};
-
-enum class SearchField {
-    Genre,
-    Artist,
-    Album,
-    Title,
-    count
-};
-
-struct Key
-{
-    SearchField field;
-    String name;
-
-    bool operator== (const Key & b) const
-        { return field == b.field && name == b.name; }
-    unsigned hash () const
-        { return (unsigned) field + name.hash (); }
-};
-
-struct Item
-{
-    SearchField field;
-    String name, folded;
-    Item * parent;
-    SimpleHash<Key, Item> children;
-    Index<int> matches;
-
-    Item (SearchField field, const String & name, Item * parent) :
-        field (field),
-        name (name),
-        folded (str_tolower_utf8 (name)),
-        parent (parent) {}
-
-    Item (Item &&) = default;
-    Item & operator= (Item &&) = default;
-};
-
-class ResultsModel : public QAbstractListModel
-{
-public:
-    void update ();
-
-protected:
-    int rowCount (const QModelIndex & parent) const { return m_rows; }
-    int columnCount (const QModelIndex & parent) const { return 1; }
-    QVariant data (const QModelIndex & index, int role) const;
-
-    Qt::ItemFlags flags (const QModelIndex & index) const
-    {
-        if (index.isValid ())
-            return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
-        else
-            return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-    }
-
-    QStringList mimeTypes () const
-    {
-        return QStringList ("text/uri-list");
-    }
-
-    QMimeData * mimeData (const QModelIndexList & indexes) const;
-
-private:
-    int m_rows = 0;
-};
-
-// Allow rich text in QTreeView entries
-// https://stackoverflow.com/questions/1956542/how-to-make-item-view-render-rich-html-text-in-qt
-class HtmlDelegate : public QStyledItemDelegate
-{
-protected:
-    void paint (QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
-    QSize sizeHint (const QStyleOptionViewItem & option, const QModelIndex & index) const;
-};
-
-static void init_text_document (QTextDocument & doc, const QStyleOptionViewItem & option)
-{
-    doc.setHtml (option.text);
-    doc.setDocumentMargin (audqt::sizes.TwoPt);
-    doc.setDefaultFont (option.font);
-}
-
-void HtmlDelegate::paint (QPainter * painter, const QStyleOptionViewItem & option_, const QModelIndex & index) const
-{
-    QStyleOptionViewItem option = option_;
-    initStyleOption (& option, index);
-
-    QStyle * style = option.widget ? option.widget->style () : qApp->style ();
-
-    QTextDocument doc;
-    init_text_document (doc, option);
-
-    /// Painting item without text
-    option.text = QString ();
-    style->drawControl (QStyle::CE_ItemViewItem, & option, painter);
-
-    QAbstractTextDocumentLayout::PaintContext ctx;
-
-    // Color group logic imitating qcommonstyle.cpp
-    QPalette::ColorGroup cg =
-        ! (option.state & QStyle::State_Enabled) ? QPalette::Disabled :
-        ! (option.state & QStyle::State_Active) ? QPalette::Inactive : QPalette::Normal;
-
-    // Highlighting text if item is selected
-    if (option.state & QStyle::State_Selected)
-        ctx.palette.setColor (QPalette::Text, option.palette.color (cg, QPalette::HighlightedText));
-    else
-        ctx.palette.setColor (QPalette::Text, option.palette.color (cg, QPalette::Text));
-
-    QRect textRect = style->subElementRect (QStyle::SE_ItemViewItemText, & option);
-    painter->save ();
-    painter->translate (textRect.topLeft ());
-    painter->setClipRect (textRect.translated (-textRect.topLeft ()));
-    doc.documentLayout ()->draw (painter, ctx);
-    painter->restore ();
-}
-
-QSize HtmlDelegate::sizeHint (const QStyleOptionViewItem & option_, const QModelIndex & index) const
-{
-    QStyleOptionViewItem option = option_;
-    initStyleOption (& option, index);
-
-    QTextDocument doc;
-    init_text_document (doc, option);
-
-    return QSize (audqt::sizes.OneInch, doc.size ().height ());
-}
-
-class ResultsView : public QTreeView
-{
-public:
-    ResultsView ()
-        { setItemDelegate (& m_delegate); }
-
-protected:
-    void contextMenuEvent (QContextMenuEvent * event);
-
-private:
-    HtmlDelegate m_delegate;
-};
-
-static QString create_item_label (int row);
-
-static Playlist s_playlist;
-static Index<String> s_search_terms;
-
-/* Note: added_table is accessed by multiple threads.
- * When adding = true, it may only be accessed by the playlist add thread.
- * When adding = false, it may only be accessed by the UI thread.
- * adding may only be set by the UI thread while holding adding_lock. */
-static TinyLock s_adding_lock;
-static bool s_adding = false;
-static SimpleHash<String, bool> s_added_table;
-
-static SimpleHash<Key, Item> s_database;
-static bool s_database_valid;
-static Index<const Item *> s_items;
-static int s_hidden_items;
-
-static QueuedFunc s_search_timer;
-static bool s_search_pending;
-
-static ResultsModel s_model;
-static QLabel * s_help_label, * s_wait_label, * s_stats_label;
-static QLineEdit * s_search_entry;
-static QTreeView * s_results_list;
-static QMenu * s_menu;
-
-void ResultsModel::update ()
-{
-    int rows = s_items.len ();
-    int keep = aud::min (rows, m_rows);
-
-    if (rows < m_rows)
-    {
-        beginRemoveRows (QModelIndex (), rows, m_rows - 1);
-        m_rows = rows;
-        endRemoveRows ();
-    }
-    else if (rows > m_rows)
-    {
-        beginInsertRows (QModelIndex (), m_rows, rows - 1);
-        m_rows = rows;
-        endInsertRows ();
-    }
-
-    if (keep > 0)
-    {
-        auto topLeft = createIndex (0, 0);
-        auto bottomRight = createIndex (keep - 1, 0);
-        emit dataChanged (topLeft, bottomRight);
-    }
-}
-
-QVariant ResultsModel::data (const QModelIndex & index, int role) const
-{
-    if (role == Qt::DisplayRole)
-        return create_item_label (index.row ());
-    else
-        return QVariant ();
-}
-
-static void find_playlist ()
-{
-    s_playlist = Playlist ();
-
-    for (int p = 0; p < Playlist::n_playlists (); p ++)
-    {
-        auto playlist = Playlist::by_index (p);
-        if (! strcmp (playlist.get_title (), _("Library")))
-        {
-            s_playlist = playlist;
-            break;
-        }
-    }
-}
-
-static void create_playlist ()
-{
-    s_playlist = Playlist::blank_playlist ();
-    s_playlist.set_title (_("Library"));
-    s_playlist.active_playlist ();
-}
-
-static bool check_playlist (bool require_added, bool require_scanned)
-{
-    if (! s_playlist.exists ())
-    {
-        s_playlist = Playlist ();
-        return false;
-    }
-
-    if (require_added && s_playlist.add_in_progress ())
-        return false;
-    if (require_scanned && s_playlist.scan_in_progress ())
-        return false;
-
-    return true;
-}
 
 static String get_uri ()
 {
     auto to_uri = [] (const char * path)
         { return String (filename_to_uri (path)); };
 
-    String path1 = aud_get_str ("search-tool", "path");
+    String path1 = aud_get_str (CFG_ID, "path");
     if (path1[0])
         return strstr (path1, "://") ? path1 : to_uri (path1);
 
@@ -349,399 +188,282 @@ static String get_uri ()
     return to_uri (g_get_home_dir ());
 }
 
-static void destroy_database ()
+SearchWidget::SearchWidget () :
+    m_help_label (_("To import your music library into Audacious, "
+     "choose a folder and then click the \"refresh\" icon.")),
+    m_wait_label (_("Please wait ...")),
+    m_refresh_btn (audqt::get_icon ("view-refresh"), QString ()),
+    m_file_entry (audqt::file_entry_new (this, _("Choose Folder"),
+     QFileDialog::Directory, QFileDialog::AcceptOpen))
 {
-    s_items.clear ();
-    s_hidden_items = 0;
-    s_database.clear ();
-    s_database_valid = false;
+    m_search_entry.setClearButtonEnabled (true);
+    m_search_entry.setPlaceholderText (_("Search library"));
+
+    m_help_label.setAlignment (Qt::AlignCenter);
+    m_help_label.setContentsMargins (audqt::margins.EightPt);
+    m_help_label.setWordWrap (true);
+
+    m_wait_label.setAlignment (Qt::AlignCenter);
+    m_wait_label.setContentsMargins (audqt::margins.EightPt);
+
+    m_results_list.setFrameStyle (QFrame::NoFrame);
+    m_results_list.setHeaderHidden (true);
+    m_results_list.setIndentation (0);
+    m_results_list.setModel (& m_model);
+    m_results_list.setItemDelegate (& m_delegate);
+    m_results_list.setSelectionMode (QTreeView::ExtendedSelection);
+    m_results_list.setDragDropMode (QTreeView::DragOnly);
+    m_results_list.setContextMenuPolicy (Qt::CustomContextMenu);
+
+    m_stats_label.setAlignment (Qt::AlignCenter);
+    m_stats_label.setContentsMargins (audqt::margins.TwoPt);
+
+#ifdef Q_OS_MAC  // Mac-specific font tweaks
+    m_search_entry.setFont (QApplication::font ("QTreeView"));
+    m_stats_label.setFont (QApplication::font ("QSmallFont"));
+#endif
+
+    m_refresh_btn.setFlat (true);
+    m_refresh_btn.setFocusPolicy (Qt::NoFocus);
+
+    m_search_entry.list = & m_results_list;
+    m_results_list.entry = & m_search_entry;
+
+    auto hbox1 = audqt::make_hbox (nullptr);
+    hbox1->setContentsMargins (audqt::margins.TwoPt);
+    hbox1->addWidget (& m_search_entry);
+
+    auto hbox2 = audqt::make_hbox (nullptr);
+    hbox2->setContentsMargins (audqt::margins.TwoPt);
+    hbox2->addWidget (m_file_entry);
+    hbox2->addWidget (& m_refresh_btn);
+
+    auto vbox = audqt::make_vbox (this, 0);
+    vbox->addLayout (hbox1);
+    vbox->addWidget (& m_help_label);
+    vbox->addWidget (& m_wait_label);
+    vbox->addWidget (& m_results_list);
+    vbox->addWidget (& m_stats_label);
+    vbox->addLayout (hbox2);
+
+    audqt::file_entry_set_uri (m_file_entry, get_uri ());
+
+    init_library ();
+    reset_monitor ();
+
+    QObject::connect (& m_search_entry, & QLineEdit::textEdited, this, & SearchWidget::trigger_search);
+    QObject::connect (& m_search_entry, & QLineEdit::returnPressed, this, & SearchWidget::action_play);
+    QObject::connect (& m_results_list, & QTreeView::activated, this, & SearchWidget::action_play);
+
+    QObject::connect (& m_results_list, & QWidget::customContextMenuRequested,
+     [this] (const QPoint & pos) { show_context_menu (m_results_list.mapToGlobal (pos)); });
+
+    QObject::connect (m_file_entry, & QLineEdit::textChanged, [this] (const QString & text)
+        { m_refresh_btn.setDisabled (text.isEmpty ()); });
+
+    QObject::connect (m_file_entry, & QLineEdit::returnPressed, this, & SearchWidget::location_changed);
+    QObject::connect (& m_refresh_btn, & QPushButton::clicked, this, & SearchWidget::location_changed);
 }
 
-static void create_database ()
+void SearchWidget::init_library ()
 {
-    destroy_database ();
+    m_library.connect_update
+     (aud::obj_member<SearchWidget, & SearchWidget::library_updated>, this);
 
-    int entries = s_playlist.n_entries ();
+    if (aud_get_bool (CFG_ID, "rescan_on_startup"))
+        m_library.begin_add (get_uri ());
 
-    for (int e = 0; e < entries; e ++)
+    m_library.check_ready_and_update (true);
+}
+
+void SearchWidget::show_hide_widgets ()
+{
+    if (m_library.playlist () == Playlist ())
     {
-        Tuple tuple = s_playlist.entry_tuple (e, Playlist::NoWait);
-
-        aud::array<SearchField, String> fields;
-        fields[SearchField::Genre] = tuple.get_str (Tuple::Genre);
-        fields[SearchField::Artist] = tuple.get_str (Tuple::Artist);
-        fields[SearchField::Album] = tuple.get_str (Tuple::Album);
-        fields[SearchField::Title] = tuple.get_str (Tuple::Title);
-
-        Item * parent = nullptr;
-        SimpleHash<Key, Item> * hash = & s_database;
-
-        for (auto f : aud::range<SearchField> ())
-        {
-            if (fields[f])
-            {
-                Key key = {f, fields[f]};
-                Item * item = hash->lookup (key);
-
-                if (! item)
-                    item = hash->add (key, Item (f, fields[f], parent));
-
-                item->matches.append (e);
-
-                /* genre is outside the normal hierarchy */
-                if (f != SearchField::Genre)
-                {
-                    parent = item;
-                    hash = & item->children;
-                }
-            }
-        }
-    }
-
-    s_database_valid = true;
-}
-
-static void search_recurse (SimpleHash<Key, Item> & domain, int mask, Index<const Item *> & results)
-{
-    domain.iterate ([mask, & results] (const Key & key, Item & item)
-    {
-        int count = s_search_terms.len ();
-        int new_mask = mask;
-
-        for (int t = 0, bit = 1; t < count; t ++, bit <<= 1)
-        {
-            if (! (new_mask & bit))
-                continue; /* skip term if it is already found */
-
-            if (strstr (item.folded, s_search_terms[t]))
-                new_mask &= ~bit; /* we found it */
-            else if (! item.children.n_items ())
-                break; /* quit early if there are no children to search */
-        }
-
-        /* adding an item with exactly one child is redundant, so avoid it */
-        if (! new_mask && item.children.n_items () != 1)
-            results.append (& item);
-
-        search_recurse (item.children, new_mask, results);
-    });
-}
-
-static int item_compare (const Item * const & a, const Item * const & b)
-{
-    if (a->field < b->field)
-        return -1;
-    if (a->field > b->field)
-        return 1;
-
-    int val = str_compare (a->name, b->name);
-    if (val)
-        return val;
-
-    if (a->parent)
-        return b->parent ? item_compare (a->parent, b->parent) : 1;
-    else
-        return b->parent ? -1 : 0;
-}
-
-static int item_compare_pass1 (const Item * const & a, const Item * const & b)
-{
-    if (a->matches.len () > b->matches.len ())
-        return -1;
-    if (a->matches.len () < b->matches.len ())
-        return 1;
-
-    return item_compare (a, b);
-}
-
-static void do_search ()
-{
-    s_items.clear ();
-    s_hidden_items = 0;
-
-    if (! s_database_valid)
-        return;
-
-    /* effectively limits number of search terms to 32 */
-    search_recurse (s_database, (1 << s_search_terms.len ()) - 1, s_items);
-
-    /* first sort by number of songs per item */
-    s_items.sort (item_compare_pass1);
-
-    int max_results = aud_get_int (CFG_ID, "max_results");
-    /* limit to items with most songs */
-    if (s_items.len () > max_results)
-    {
-        s_hidden_items = s_items.len () - max_results;
-        s_items.remove (max_results, -1);
-    }
-
-    /* sort by item type, then item name */
-    s_items.sort (item_compare);
-}
-
-static bool filter_cb (const char * filename, void * unused)
-{
-    bool add = false;
-    tiny_lock (& s_adding_lock);
-
-    if (s_adding)
-    {
-        bool * added = s_added_table.lookup (String (filename));
-
-        if ((add = ! added))
-            s_added_table.add (String (filename), true);
-        else
-            (* added) = true;
-    }
-
-    tiny_unlock (& s_adding_lock);
-    return add;
-}
-
-static void begin_add (const char * uri)
-{
-    if (s_adding)
-        return;
-
-    if (! check_playlist (false, false))
-        create_playlist ();
-
-    /* if possible, store local path for compatibility with older versions */
-    StringBuf path = uri_to_filename (uri);
-    aud_set_str ("search-tool", "path", path ? path : uri);
-
-    s_added_table.clear ();
-
-    int entries = s_playlist.n_entries ();
-
-    for (int entry = 0; entry < entries; entry ++)
-    {
-        String filename = s_playlist.entry_filename (entry);
-
-        if (! s_added_table.lookup (filename))
-        {
-            s_playlist.select_entry (entry, false);
-            s_added_table.add (filename, false);
-        }
-        else
-            s_playlist.select_entry (entry, true);
-    }
-
-    s_playlist.remove_selected ();
-
-    tiny_lock (& s_adding_lock);
-    s_adding = true;
-    tiny_unlock (& s_adding_lock);
-
-    Index<PlaylistAddItem> add;
-    add.append (String (uri));
-    s_playlist.insert_filtered (-1, std::move (add), filter_cb, nullptr, false);
-}
-
-static void show_hide_widgets ()
-{
-    if (s_playlist == Playlist ())
-    {
-        s_wait_label->hide ();
-        s_results_list->hide ();
-        s_stats_label->hide ();
-        s_help_label->show ();
+        m_wait_label.hide ();
+        m_results_list.hide ();
+        m_stats_label.hide ();
+        m_help_label.show ();
     }
     else
     {
-        s_help_label->hide ();
+        m_help_label.hide ();
 
-        if (s_database_valid)
+        if (m_library.is_ready ())
         {
-            s_wait_label->hide ();
-            s_results_list->show ();
-            s_stats_label->show ();
+            m_wait_label.hide ();
+            m_results_list.show ();
+            m_stats_label.show ();
         }
         else
         {
-            s_results_list->hide ();
-            s_stats_label->hide ();
-            s_wait_label->show ();
+            m_results_list.hide ();
+            m_stats_label.hide ();
+            m_wait_label.show ();
         }
     }
 }
 
-static void search_timeout (void * = nullptr)
+void SearchWidget::search_timeout ()
 {
-    do_search ();
+    auto text = m_search_entry.text ().toUtf8 ();
+    auto terms = str_list_to_index (str_tolower_utf8 (text), " ");
+    m_model.do_search (terms, aud_get_int (CFG_ID, "max_results"));
+    m_model.update ();
 
-    s_model.update ();
+    int shown = m_model.num_items ();
+    int hidden = m_model.num_hidden_items ();
+    int total = shown + hidden;
 
-    if (s_items.len ())
+    if (shown)
     {
-        auto sel = s_results_list->selectionModel ();
-        sel->select (s_model.index (0, 0), sel->Clear | sel->SelectCurrent);
+        auto sel = m_results_list.selectionModel ();
+        sel->select (m_model.index (0, 0), sel->Clear | sel->SelectCurrent);
     }
 
-    int total = s_items.len () + s_hidden_items;
-
-    if (s_hidden_items)
-        s_stats_label->setText ((const char *)
+    if (hidden)
+        m_stats_label.setText ((const char *)
          str_printf (dngettext (PACKAGE, "%d of %d result shown",
-         "%d of %d results shown", total), s_items.len (), total));
+         "%d of %d results shown", total), shown, total));
     else
-        s_stats_label->setText ((const char *)
+        m_stats_label.setText ((const char *)
          str_printf (dngettext (PACKAGE, "%d result", "%d results", total), total));
 
-    s_search_timer.stop ();
-    s_search_pending = false;
+    m_search_timer.stop ();
+    m_search_pending = false;
 }
 
-static void trigger_search ()
+void SearchWidget::trigger_search ()
 {
-    s_search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
-    s_search_pending = true;
+    m_search_timer.queue (SEARCH_DELAY,
+     aud::obj_member<SearchWidget, & SearchWidget::search_timeout>, this);
+    m_search_pending = true;
 }
 
-static void update_database ()
+void SearchWidget::library_updated ()
 {
-    if (check_playlist (true, true))
+    if (m_library.is_ready ())
     {
-        create_database ();
+        m_model.create_database (m_library.playlist ());
         search_timeout ();
     }
     else
     {
-        destroy_database ();
-        s_model.update ();
-        s_stats_label->clear ();
+        m_model.destroy_database ();
+        m_model.update ();
+        m_stats_label.clear ();
     }
 
     show_hide_widgets ();
 }
 
-static void add_complete_cb (void *, void *)
+void SearchWidget::location_changed ()
 {
-    if (! check_playlist (true, false))
+    auto uri = audqt::file_entry_get_uri (m_file_entry);
+    if (! uri)
         return;
 
-    if (s_adding)
-    {
-        tiny_lock (& s_adding_lock);
-        s_adding = false;
-        tiny_unlock (& s_adding_lock);
+    audqt::file_entry_set_uri (m_file_entry, uri); // normalize path
 
-        int entries = s_playlist.n_entries ();
+    // if possible, store local path for compatibility with older versions
+    StringBuf path = uri_to_filename (uri);
+    aud_set_str (CFG_ID, "path", path ? path : uri);
 
-        for (int entry = 0; entry < entries; entry ++)
-        {
-            String filename = s_playlist.entry_filename (entry);
-            bool * added = s_added_table.lookup (filename);
-
-            s_playlist.select_entry (entry, ! added || ! (* added));
-        }
-
-        s_added_table.clear ();
-
-        /* don't clear the playlist if nothing was added */
-        if (s_playlist.n_selected () < entries)
-            s_playlist.remove_selected ();
-        else
-            s_playlist.select_all (false);
-
-        s_playlist.sort_entries (Playlist::Path);
-    }
-
-    if (! s_database_valid && ! s_playlist.update_pending ())
-        update_database ();
+    m_library.begin_add (uri);
+    m_library.check_ready_and_update (true);
+    reset_monitor ();
 }
 
-static void scan_complete_cb (void *, void *)
+// QFileSystemWatcher doesn't support recursion, so we must do it ourselves.
+// TODO: Since MacOS has an abysmally low default per-process FD limit, this
+// means it probably won't work on MacOS with a huge media library.
+// In the case of MacOS, we should use the FSEvents API instead.
+void SearchWidget::walk_library_paths ()
 {
-    if (! check_playlist (true, true))
+    if (! m_watcher_paths.isEmpty ())
+        m_watcher->removePaths (m_watcher_paths);
+
+    m_watcher_paths.clear ();
+
+    auto root = (QString) uri_to_filename (get_uri ());
+    if (root.isEmpty ())
         return;
 
-    if (! s_database_valid && ! s_playlist.update_pending ())
-        update_database ();
+    m_watcher_paths.append (root);
+
+    QDirIterator it (root, QDir::Dirs | QDir::NoDot | QDir::NoDotDot, QDirIterator::Subdirectories);
+    while (it.hasNext ())
+        m_watcher_paths.append (it.next ());
+
+    m_watcher->addPaths (m_watcher_paths);
 }
 
-static void playlist_update_cb (void *, void *)
+void SearchWidget::setup_monitor ()
 {
-    if (! s_database_valid || ! check_playlist (true, true) ||
-        s_playlist.update_detail ().level >= Playlist::Metadata)
+    AUDINFO ("Starting monitoring.\n");
+    m_watcher.capture (new QFileSystemWatcher);
+    m_watcher_paths.clear ();
+
+    QObject::connect (m_watcher.get (), & QFileSystemWatcher::directoryChanged,
+     [this] (const QString &)
     {
-        update_database ();
+        AUDINFO ("Library directory changed, refreshing library.\n");
+
+        m_library.begin_add (get_uri ());
+        m_library.check_ready_and_update (true);
+
+        walk_library_paths ();
+    });
+
+    walk_library_paths ();
+}
+
+void SearchWidget::reset_monitor ()
+{
+    if (aud_get_bool (CFG_ID, "monitor"))
+    {
+        setup_monitor ();
+    }
+    else if (m_watcher)
+    {
+        AUDINFO ("Stopping monitoring.\n");
+        m_watcher.clear ();
+        m_watcher_paths.clear ();
     }
 }
 
-static void search_init ()
+void SearchWidget::do_add (bool play, bool set_title)
 {
-    find_playlist ();
-
-    if (aud_get_bool (CFG_ID, "rescan_on_startup"))
-        begin_add (get_uri ());
-
-    update_database ();
-
-    hook_associate ("playlist add complete", add_complete_cb, nullptr);
-    hook_associate ("playlist scan complete", scan_complete_cb, nullptr);
-    hook_associate ("playlist update", playlist_update_cb, nullptr);
-}
-
-static void search_cleanup ()
-{
-    hook_dissociate ("playlist add complete", add_complete_cb);
-    hook_dissociate ("playlist scan complete", scan_complete_cb);
-    hook_dissociate ("playlist update", playlist_update_cb);
-
-    s_search_timer.stop ();
-    s_search_pending = false;
-
-    s_search_terms.clear ();
-    s_items.clear ();
-
-    tiny_lock (& s_adding_lock);
-    s_adding = false;
-    tiny_unlock (& s_adding_lock);
-
-    s_added_table.clear ();
-    destroy_database ();
-
-    s_help_label = s_wait_label = s_stats_label = nullptr;
-    s_search_entry = nullptr;
-    s_results_list = nullptr;
-
-    delete s_menu;
-    s_menu = nullptr;
-}
-
-static void do_add (bool play, bool set_title)
-{
-    if (s_search_pending)
+    if (m_search_pending)
         search_timeout ();
 
-    int n_items = s_items.len ();
+    int n_items = m_model.num_items ();
     int n_selected = 0;
 
+    auto list = m_library.playlist ();
     Index<PlaylistAddItem> add;
     String title;
 
-    for (auto & idx : s_results_list->selectionModel ()->selectedRows ())
+    for (auto & idx : m_results_list.selectionModel ()->selectedRows ())
     {
         int i = idx.row ();
         if (i < 0 || i >= n_items)
             continue;
 
-        const Item * item = s_items[i];
+        auto & item = m_model.item_at (i);
 
-        for (int entry : item->matches)
+        for (int entry : item.matches)
         {
             add.append (
-                s_playlist.entry_filename (entry),
-                s_playlist.entry_tuple (entry, Playlist::NoWait),
-                s_playlist.entry_decoder (entry, Playlist::NoWait)
+                list.entry_filename (entry),
+                list.entry_tuple (entry, Playlist::NoWait),
+                list.entry_decoder (entry, Playlist::NoWait)
             );
         }
 
         n_selected ++;
         if (n_selected == 1)
-            title = item->name;
+            title = item.name;
     }
 
     auto list2 = Playlist::active_playlist ();
@@ -751,120 +473,45 @@ static void do_add (bool play, bool set_title)
         list2.set_title (title);
 }
 
-static void action_play ()
+void SearchWidget::action_play ()
 {
     Playlist::temporary_playlist ().activate ();
     do_add (true, false);
 }
 
-static void action_create_playlist ()
+void SearchWidget::action_create_playlist ()
 {
     Playlist::new_playlist ();
     do_add (false, true);
 }
 
-static void action_add_to_playlist ()
+void SearchWidget::action_add_to_playlist ()
 {
-    if (s_playlist != Playlist::active_playlist ())
+    if (m_library.playlist () != Playlist::active_playlist ())
         do_add (false, false);
 }
 
-static QString create_item_label (int row)
+void SearchWidget::show_context_menu (const QPoint & global_pos)
 {
-    static constexpr aud::array<SearchField, const char *> start_tags =
-        {"", "<b>", "<i>", ""};
-    static constexpr aud::array<SearchField, const char *> end_tags =
-        {"", "</b>", "</i>", ""};
+    auto menu = new QMenu (this);
 
-    if (row < 0 || row >= s_items.len ())
-        return QString ();
+    auto play_act = new QAction (audqt::get_icon ("media-playback-start"),
+                                 audqt::translate_str (N_("_Play")), menu);
+    auto create_act = new QAction (audqt::get_icon ("document-new"),
+                                   audqt::translate_str (N_("_Create Playlist")), menu);
+    auto add_act = new QAction (audqt::get_icon ("list-add"),
+                                audqt::translate_str (N_("_Add to Playlist")), menu);
 
-    const Item * item = s_items[row];
+    QObject::connect (play_act, & QAction::triggered, this, & SearchWidget::action_play);
+    QObject::connect (create_act, & QAction::triggered, this, & SearchWidget::action_create_playlist);
+    QObject::connect (add_act, & QAction::triggered, this, & SearchWidget::action_add_to_playlist);
 
-    QString string = start_tags[item->field];
+    menu->addAction (play_act);
+    menu->addAction (create_act);
+    menu->addAction (add_act);
 
-    string += QString ((item->field == SearchField::Genre) ?
-                       str_toupper_utf8 (item->name) : item->name).toHtmlEscaped ();
-
-    string += end_tags[item->field];
-
-#ifdef Q_OS_MAC  // Mac-specific font tweaks
-    string += "<br>&nbsp;";
-#else
-    string += "<br><small>&nbsp;";
-#endif
-
-    if (item->field != SearchField::Title)
-    {
-        string += str_printf (dngettext (PACKAGE, "%d song", "%d songs",
-         item->matches.len ()), item->matches.len ());
-
-        if (item->field == SearchField::Genre || item->parent)
-            string += ' ';
-    }
-
-    if (item->field == SearchField::Genre)
-    {
-        string += _("of this genre");
-    }
-    else if (item->parent)
-    {
-        auto parent = (item->parent->parent ? item->parent->parent : item->parent);
-
-        string += (parent->field == SearchField::Album) ? _("on") : _("by");
-        string += ' ';
-        string += start_tags[parent->field];
-        string += QString (parent->name).toHtmlEscaped ();
-        string += end_tags[parent->field];
-    }
-
-#ifndef Q_OS_MAC  // Mac-specific font tweaks
-    string += "</small>";
-#endif
-
-    return string;
-}
-
-void ResultsView::contextMenuEvent (QContextMenuEvent * event)
-{
-    static const audqt::MenuItem items[] = {
-        audqt::MenuCommand ({N_("_Play"), "media-playback-start"}, action_play),
-        audqt::MenuCommand ({N_("_Create Playlist"), "document-new"}, action_create_playlist),
-        audqt::MenuCommand ({N_("_Add to Playlist"), "list-add"}, action_add_to_playlist)
-    };
-
-    if (! s_menu)
-        s_menu = audqt::menu_build ({items});
-
-    s_menu->popup (event->globalPos ());
-}
-
-QMimeData * ResultsModel::mimeData (const QModelIndexList & indexes) const
-{
-    if (s_search_pending)
-        search_timeout ();
-
-    s_playlist.select_all (false);
-
-    QList<QUrl> urls;
-    for (auto & index : indexes)
-    {
-        int row = index.row ();
-        if (row < 0 || row >= s_items.len ())
-            continue;
-
-        for (int entry : s_items[row]->matches)
-        {
-            urls.append (QString (s_playlist.entry_filename (entry)));
-            s_playlist.select_entry (entry, true);
-        }
-    }
-
-    s_playlist.cache_selected ();
-
-    auto data = new QMimeData;
-    data->setUrls (urls);
-    return data;
+    menu->setAttribute (Qt::WA_DeleteOnClose);
+    menu->popup (global_pos);
 }
 
 bool SearchToolQt::init ()
@@ -875,99 +522,17 @@ bool SearchToolQt::init ()
 
 void * SearchToolQt::get_qt_widget ()
 {
-    s_search_entry = new QLineEdit;
-    s_search_entry->setContentsMargins (audqt::margins.TwoPt);
-    s_search_entry->setClearButtonEnabled (true);
-    s_search_entry->setPlaceholderText (_("Search library"));
+    if (! s_widget)
+        s_widget = new SearchWidget;
 
-    s_help_label = new QLabel (_("To import your music library into Audacious, "
-     "choose a folder and then click the \"refresh\" icon."));
-    s_help_label->setAlignment (Qt::AlignCenter);
-    s_help_label->setContentsMargins (audqt::margins.EightPt);
-    s_help_label->setWordWrap (true);
-
-    s_wait_label = new QLabel (_("Please wait ..."));
-    s_wait_label->setAlignment (Qt::AlignCenter);
-    s_wait_label->setContentsMargins (audqt::margins.EightPt);
-
-    s_results_list = new ResultsView;
-    s_results_list->setFrameStyle (QFrame::NoFrame);
-    s_results_list->setHeaderHidden (true);
-    s_results_list->setIndentation (0);
-    s_results_list->setModel (& s_model);
-    s_results_list->setSelectionMode (QTreeView::ExtendedSelection);
-    s_results_list->setDragDropMode (QTreeView::DragOnly);
-
-    s_stats_label = new QLabel;
-    s_stats_label->setAlignment (Qt::AlignCenter);
-    s_stats_label->setContentsMargins (audqt::margins.TwoPt);
-
-#ifdef Q_OS_MAC  // Mac-specific font tweaks
-    s_search_entry->setFont (QApplication::font ("QTreeView"));
-    s_stats_label->setFont (QApplication::font ("QSmallFont"));
-#endif
-
-    auto chooser = new QLineEdit;
-
-    auto button = new QPushButton (audqt::get_icon ("view-refresh"), QString ());
-    button->setFlat (true);
-    button->setFocusPolicy (Qt::NoFocus);
-
-    auto hbox = audqt::make_hbox (nullptr);
-    hbox->setContentsMargins (audqt::margins.TwoPt);
-
-    hbox->addWidget (chooser);
-    hbox->addWidget (button);
-
-    auto widget = new QWidget;
-    auto vbox = audqt::make_vbox (widget, 0);
-
-    vbox->addWidget (s_search_entry);
-    vbox->addWidget (s_help_label);
-    vbox->addWidget (s_wait_label);
-    vbox->addWidget (s_results_list);
-    vbox->addWidget (s_stats_label);
-    vbox->addLayout (hbox);
-
-    String uri = get_uri ();
-    StringBuf path = uri_to_filename (uri, false);
-    chooser->setText (path ? path : uri);
-
-    search_init ();
-
-    QObject::connect (widget, & QObject::destroyed, search_cleanup);
-    QObject::connect (s_search_entry, & QLineEdit::returnPressed, action_play);
-    QObject::connect (s_results_list, & QTreeView::doubleClicked, action_play);
-
-    QObject::connect (s_search_entry, & QLineEdit::textEdited, [] (const QString & text)
-    {
-        s_search_terms = str_list_to_index (str_tolower_utf8 (text.toUtf8 ()), " ");
-        trigger_search ();
-    });
-
-    QObject::connect (chooser, & QLineEdit::textEdited, [button] (const QString & text)
-        { button->setDisabled (text.isEmpty ()); });
-
-    auto refresh = [chooser] () {
-        QByteArray path = chooser->text ().toUtf8 ();
-        if (! path.isEmpty ())
-        {
-            begin_add (strstr (path, "://") ? path : filename_to_uri (path));
-            update_database ();
-        }
-    };
-
-    QObject::connect (chooser, & QLineEdit::returnPressed, refresh);
-    QObject::connect (button, & QPushButton::clicked, refresh);
-
-    return widget;
+    return s_widget;
 }
 
 int SearchToolQt::take_message (const char * code, const void *, int)
 {
-    if (! strcmp (code, "grab focus") && s_search_entry)
+    if (! strcmp (code, "grab focus") && s_widget)
     {
-        s_search_entry->setFocus (Qt::OtherFocusReason);
+        s_widget->grab_focus ();
         return 0;
     }
 

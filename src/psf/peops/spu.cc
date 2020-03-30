@@ -81,7 +81,6 @@
 
 #include "../peops/stdafx.h"
 #include "../peops/externals.h"
-#include "../peops/regs.h"
 #include "../peops/registers.h"
 #include "../peops/spu.h"
 
@@ -89,8 +88,6 @@
 // Currently it is too aggressive, destroying the rhythm of some songs
 // See http://redmine.audacious-media-player.org/issues/201
 // #define ENABLE_SILENCE_SKIPPING
-
-void SPUirq(void) ;
 
 //#include "PsxMem.h"
 //#include "driver.h"
@@ -197,10 +194,16 @@ int psf_seek(u32 t)
  return(0);
 }
 
+static int endless;
+void setendless(int e)
+{
+ endless=e;
+}
+
 // Counting to 65536 results in full volume offage.
 void setlength(s32 stop, s32 fade)
 {
- if(stop==~0)
+ if(stop==~0 || endless)
  {
   decaybegin=~0;
  }
@@ -461,7 +464,7 @@ int SPUasync(u32 cycles, void (*update)(const void *, int))
   if(sampcount>=decaybegin)
   {
    s32 dmul;
-   if(decaybegin!=~0) // Is anyone REALLY going to be playing a song
+   if(decaybegin!=~0U) // Is anyone REALLY going to be playing a song
 		      // for 13 hours?
    {
     if(sampcount>=decayend)
@@ -573,7 +576,7 @@ int SPUinit(void)
 // SETUPSTREAMS: init most of the spu buffers
 ////////////////////////////////////////////////////////////////////////
 
-void SetupStreams(void)
+static void SetupStreams(void)
 {
  int i;
 
@@ -594,7 +597,7 @@ void SetupStreams(void)
 // REMOVESTREAMS: free most buffer
 ////////////////////////////////////////////////////////////////////////
 
-void RemoveStreams(void)
+static void RemoveStreams(void)
 {
  free(pSpuBuffer);                                     // free mixing buffer
  pSpuBuffer=nullptr;

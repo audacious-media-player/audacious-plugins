@@ -36,6 +36,7 @@ class AMIDIPlug : public InputPlugin
 public:
     static const char about[];
     static const char * const exts[];
+    static const char * const mimes[];
 
     static constexpr PluginInfo info = {
         N_("AMIDI-Plug (MIDI Player)"),
@@ -45,7 +46,8 @@ public:
     };
 
     constexpr AMIDIPlug () : InputPlugin (info, InputInfo ()
-        .with_exts (exts)) {}
+        .with_exts (exts)
+        .with_mimes (mimes)) {}
 
     bool init ();
     void cleanup ();
@@ -74,6 +76,7 @@ protected:
 EXPORT AMIDIPlug aud_plugin_instance;
 
 const char * const AMIDIPlug::exts[] = {"mid", "midi", "rmi", "rmid", nullptr};
+const char * const AMIDIPlug::mimes[] = {"audio/midi", nullptr};
 
 void AMIDIPlug::cleanup ()
 {

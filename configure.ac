@@ -5,8 +5,8 @@ dnl ***
 dnl Initialize
 dnl ==========
 AC_PREREQ([2.59])
-AC_INIT([audacious-plugins], [3.10])
-AC_COPYRIGHT([Copyright (C) 2001-2018 Audacious developers and others])
+AC_INIT([audacious-plugins], [4.0-beta1])
+AC_COPYRIGHT([Copyright (C) 2001-2019 Audacious developers and others])
 
 AC_DEFINE_UNQUOTED([PACKAGE], "$PACKAGE_NAME", [Name of package])
 AC_DEFINE_UNQUOTED([VERSION], "$PACKAGE_VERSION", [Version number of package])
@@ -32,9 +32,9 @@ LIBS="$LIBS $LIBINTL"
 dnl Check for Audacious
 dnl ===================
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.10],
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 4.0],
     [],
-    [AC_MSG_ERROR([Cannot find Audacious 3.10; have you installed Audacious yet?])]
+    [AC_MSG_ERROR([Cannot find Audacious 4.0; have you installed Audacious yet?])]
 )
 
 CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS"
@@ -50,8 +50,8 @@ if test $HAVE_DARWIN = yes ; then
      [with_system_libxml2=yes])
 
     if test $with_system_libxml2 = yes ; then
-        XML_LIBS="-lxml2"
-        XML_CFLAGS="-I/usr/include/libxml2"
+        XML_LIBS=$(xml2-config --libs)
+        XML_CFLAGS=$(xml2-config --cflags)
         AC_SUBST(XML_LIBS)
         AC_SUBST(XML_CFLAGS)
     else
@@ -82,6 +82,7 @@ fi
 if test "x$USE_QT" = "xyes" ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt search-tool-qt song-info-qt statusicon-qt"
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
+    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope-qt qt-spectrum vumeter-qt"
 fi
 
 USE_GTK_OR_QT=no
@@ -188,6 +189,16 @@ ENABLE_PLUGIN_WITH_DEP(adplug,
     ADLIB,
     adplug)
 
+if test $have_adplug = yes ; then
+    AC_LANG_PUSH([C++])
+    CPPFLAGS_adplug_backup="${CPPFLAGS}"
+    CPPFLAGS="${CPPFLAGS} ${ADLIB_CFLAGS}"
+    AC_CHECK_HEADERS([adplug/nemuopl.h adplug/wemuopl.h adplug/kemuopl.h], [],
+        [], [#include <adplug/adplug.h>])
+    CPPFLAGS="${CPPFLAGS_adplug_backup}"
+    AC_LANG_POP([C++])
+fi
+
 ENABLE_PLUGIN_WITH_DEP(cdaudio,
     audio CD support,
     auto,
@@ -257,6 +268,13 @@ ENABLE_PLUGIN_WITH_DEP(modplug,
     INPUT,
     MODPLUG,
     libmodplug)
+
+ENABLE_PLUGIN_WITH_DEP(openmpt,
+    libopenmpt,
+    auto,
+    INPUT,
+    OPENMPT,
+    libopenmpt >= 0.2)
 
 ENABLE_PLUGIN_WITH_DEP(sid,
     Commodore 64 audio,
@@ -414,7 +432,11 @@ ENABLE_PLUGIN_WITH_TEST(mpris2,
     GENERAL)
 
 test_songchange () {
-    AC_CHECK_HEADERS(sys/wait.h, have_songchange=yes, have_songchange=no)
+    if test $HAVE_MSWINDOWS = yes ; then
+        have_songchange=yes
+    else
+        AC_CHECK_HEADERS(sys/wait.h, have_songchange=yes, have_songchange=no)
+    fi
 }
 
 ENABLE_PLUGIN_WITH_TEST(songchange,
@@ -480,6 +502,13 @@ ENABLE_PLUGIN_WITH_DEP(qtaudio,
     OUTPUT,
     QTMULTIMEDIA,
     Qt5Multimedia)
+
+ENABLE_PLUGIN_WITH_DEP(streamtuner,
+    Stream tuner,
+    auto,
+    GENERAL,
+    QTNETWORK,
+    Qt5Network)
 
 test_qtglspectrum () {
     PKG_CHECK_MODULES(QTOPENGL, Qt5OpenGL, [
@@ -714,6 +743,7 @@ echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  Commodore 64 audio (sid):               $have_sid"
 echo "  Game Music Emu (spc, nsf, gbs, etc.):   $have_console"
 echo "  ModPlug:                                $have_modplug"
+echo "  OpenMPT:                                $have_openmpt"
 echo "  Nintendo DS audio (xsf):                yes"
 echo "  PlayStation audio (psf/psf2):           yes"
 echo "  Vortex Tracker (vtx):                   yes"
@@ -804,12 +834,16 @@ if test "x$USE_QT" = "xyes" ; then
     echo "  Qt Interface:                           yes"
     echo "  Winamp Classic Interface:               yes"
     echo "  Album Art:                              yes"
+    echo "  Blur Scope:                             yes"
     echo "  LyricWiki viewer:                       yes"
     echo "  OpenGL Spectrum Analyzer:               $have_qtglspectrum"
     echo "  Playlist Manager:                       yes"
     echo "  Search Tool:                            yes"
     echo "  Song Info:                              yes"
+    echo "  Spectrum Analyzer (2D):                 yes"
     echo "  Status Icon:                            yes"
+    echo "  Stream Tuner:                           $have_streamtuner"
+    echo "  VU Meter:                               yes"
     echo
 fi
 

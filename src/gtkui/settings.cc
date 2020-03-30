@@ -44,9 +44,6 @@ static const PreferencesWidget gtkui_widgets[] = {
     WidgetCheck (N_("Show column headers"),
         WidgetBool ("gtkui", "playlist_headers", redisplay_playlists)),
     WidgetLabel (N_("<b>Miscellaneous</b>")),
-    WidgetSpin (N_("Arrow keys seek by:"),
-        WidgetFloat ("gtkui", "step_size", update_step_size),
-        {0.1, 60, 0.1, N_("seconds")}),
     WidgetCheck (N_("Scroll on song change"),
         WidgetBool ("gtkui", "autoscroll"))
 };

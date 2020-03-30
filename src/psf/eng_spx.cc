@@ -36,22 +36,13 @@
 #include <stdlib.h>
 
 #include "ao.h"
-#include "eng_protos.h"
 #include "cpuintrf.h"
 #include "psx.h"
 
 #include "peops/stdafx.h"
 #include "peops/externals.h"
-#include "peops/regs.h"
 #include "peops/registers.h"
 #include "peops/spu.h"
-
-extern int SPUinit(void);
-extern int SPUopen(void);
-extern int SPUclose(void);
-extern void SPUinjectRAMImage(unsigned short *source);
-
-extern void setlength(int32_t stop, int32_t fade);
 
 static uint8_t *start_of_file, *song_ptr;
 static uint32_t cur_tick, cur_event, num_events, next_tick, end_tick;

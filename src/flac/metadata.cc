@@ -167,6 +167,8 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::AlbumArtist, "ALBUMARTIST");
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Genre, "GENRE");
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Comment, "COMMENT");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Description, "DESCRIPTION");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::MusicBrainzID, "musicbrainz_trackid");
 
     insert_int_tuple_to_vc(vc_block, tuple, Tuple::Year, "DATE");
     insert_int_tuple_to_vc(vc_block, tuple, Tuple::Track, "TRACKNUMBER");
@@ -200,7 +202,7 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
 
 ERR:
     status = FLAC__metadata_chain_status(chain);
-    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    AUDERR("An error occurred: %s\n", FLAC__Metadata_ChainStatusString[status]);
 ERR_RETURN:
     FLAC__metadata_chain_delete(chain);
     return false;
@@ -228,7 +230,9 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
         {"ALBUMARTIST", Tuple::AlbumArtist},
         {"TITLE", Tuple::Title},
         {"COMMENT", Tuple::Comment},
-        {"GENRE", Tuple::Genre}
+        {"GENRE", Tuple::Genre},
+        {"DESCRIPTION", Tuple::Description},
+        {"musicbrainz_trackid", Tuple::MusicBrainzID},
     };
 
     for (auto & tfield : tfields)
@@ -366,6 +370,6 @@ ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    AUDERR("An error occurred: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return false;
 }

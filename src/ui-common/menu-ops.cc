@@ -19,6 +19,7 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/playlist.h>
+#include <libaudcore/runtime.h>
 
 #define ACTIVE Playlist::active_playlist ()
 
@@ -117,5 +118,7 @@ void pl_remove_unselected ()
     pl_select_all ();
 }
 
-void volume_up () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
-void volume_down () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
+void volume_up ()
+    { aud_drct_set_volume_main (aud_drct_get_volume_main () + aud_get_int ("volume_delta")); }
+void volume_down ()
+    { aud_drct_set_volume_main (aud_drct_get_volume_main () - aud_get_int ("volume_delta")); }

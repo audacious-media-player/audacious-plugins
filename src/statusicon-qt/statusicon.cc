@@ -20,7 +20,6 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
-#include <libaudcore/mainloop.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/interface.h>
@@ -77,7 +76,6 @@ enum {
 
 const char * const StatusIcon::defaults[] = {
     "scroll_action", aud::numeric_string<SI_CFG_SCROLL_ACTION_VOLUME>::str,
-    "volume_delta", "5",
     "disable_popup", "FALSE",
     "close_to_tray", "FALSE",
     "reverse_scroll", "FALSE",
@@ -121,11 +119,6 @@ class SystemTrayIcon : public QSystemTrayIcon
 public:
     SystemTrayIcon (const QIcon & icon, QObject * parent = nullptr) :
         QSystemTrayIcon (icon, parent) {}
-    ~SystemTrayIcon ()
-        { hide_popup (); }
-
-    void show_popup ();
-    void hide_popup ();
 
 protected:
     void scroll (int steps);
@@ -133,8 +126,6 @@ protected:
 
 private:
     int scroll_delta = 0;
-    bool popup_shown = false;
-    QueuedFunc popup_timer;
 };
 
 void SystemTrayIcon::scroll (int delta)
@@ -152,7 +143,7 @@ void SystemTrayIcon::scroll (int delta)
     {
     case SI_CFG_SCROLL_ACTION_VOLUME:
         aud_drct_set_volume_main (aud_drct_get_volume_main () +
-         aud_get_int ("statusicon", "volume_delta") * steps);
+         aud_get_int ("volume_delta") * steps);
         break;
 
     case SI_CFG_SCROLL_ACTION_SKIP:
@@ -170,7 +161,7 @@ bool SystemTrayIcon::event (QEvent * e)
     {
     case QEvent::ToolTip:
         if (! aud_get_bool ("statusicon", "disable_popup"))
-            show_popup ();
+            audqt::infopopup_show_current ();
         return true;
 
     case QEvent::Wheel:
@@ -179,22 +170,6 @@ bool SystemTrayIcon::event (QEvent * e)
 
     default:
         return QSystemTrayIcon::event (e);
-    }
-}
-
-void SystemTrayIcon::show_popup ()
-{
-    audqt::infopopup_show_current ();
-    popup_timer.queue (5000, aud::obj_member<SystemTrayIcon, & SystemTrayIcon::hide_popup>, this);
-    popup_shown = true;
-}
-
-void SystemTrayIcon::hide_popup ()
-{
-    if (popup_shown)
-    {
-        audqt::infopopup_hide ();
-        popup_shown = false;
     }
 }
 
@@ -210,7 +185,6 @@ bool StatusIcon::init ()
     tray = new SystemTrayIcon (qApp->windowIcon ());
     QObject::connect (tray, & QSystemTrayIcon::activated, activate);
     menu = audqt::menu_build (items);
-    QObject::connect (menu, & QMenu::aboutToShow, tray, & SystemTrayIcon::hide_popup);
     tray->setContextMenu (menu);
     tray->show ();
 

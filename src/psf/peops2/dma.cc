@@ -31,6 +31,7 @@
 
 #define _IN_DMA
 
+#include "../peops2/dma.h"
 #include "../peops2/externals.h"
 #include "../peops2/registers.h"
 //#include "debug.h"

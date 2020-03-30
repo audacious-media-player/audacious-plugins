@@ -2,7 +2,6 @@
 #define MODPLUG_SETTINGS_H
 
 typedef struct {
-    int mBits;
     int mChannels;
     int mResamplingMode;
     int mFrequency;

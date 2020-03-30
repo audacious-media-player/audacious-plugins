@@ -25,13 +25,13 @@
 #include <QIcon>
 #include <QMouseEvent>
 #include <QToolButton>
-#include <QTreeView>
 
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudqt/libaudqt.h>
+#include <libaudqt/treeview.h>
 
 class PlaylistManagerQt : public GeneralPlugin
 {
@@ -106,7 +106,7 @@ private:
     QFont m_bold;
 };
 
-class PlaylistsView : public QTreeView
+class PlaylistsView : public audqt::TreeView
 {
 public:
     PlaylistsView ();
@@ -117,12 +117,10 @@ protected:
         if (event->type () == QEvent::FontChange)
             m_model.setFont (font ());
 
-        QTreeView::changeEvent (event);
+        audqt::TreeView::changeEvent (event);
     }
 
     void currentChanged (const QModelIndex & current, const QModelIndex & previous) override;
-    void keyPressEvent (QKeyEvent * event) override;
-    void mouseDoubleClickEvent (QMouseEvent * event) override;
     void dropEvent (QDropEvent * event) override;
 
 private:
@@ -131,8 +129,11 @@ private:
     void update (Playlist::UpdateLevel level);
     void update_sel ();
 
-    void play_current ()
-        { Playlist::by_index (currentIndex ().row ()).start_playback (); }
+    void activate (const QModelIndex & index) override
+    {
+        if (index.isValid ())
+            Playlist::by_index (index.row ()).start_playback ();
+    }
 
     const HookReceiver<PlaylistsView, Playlist::UpdateLevel>
      update_hook {"playlist update", this, & PlaylistsView::update};
@@ -265,34 +266,9 @@ PlaylistsView::PlaylistsView ()
 
 void PlaylistsView::currentChanged (const QModelIndex & current, const QModelIndex & previous)
 {
-    QTreeView::currentChanged (current, previous);
+    audqt::TreeView::currentChanged (current, previous);
     if (! m_in_update)
         Playlist::by_index (current.row ()).activate ();
-}
-
-void PlaylistsView::keyPressEvent (QKeyEvent * event)
-{
-    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
-    if (! (event->modifiers () & CtrlShiftAlt))
-    {
-        switch (event->key ())
-        {
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-            play_current ();
-            return;
-        default:
-            break;
-        }
-    }
-
-    QTreeView::keyPressEvent (event);
-}
-
-void PlaylistsView::mouseDoubleClickEvent (QMouseEvent * event)
-{
-    if (event->button () == Qt::LeftButton)
-        play_current ();
 }
 
 void PlaylistsView::dropEvent (QDropEvent * event)
