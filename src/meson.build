@@ -90,6 +90,10 @@ if get_option('qt')
   if get_option('vumeter')
     subdir('vumeter-qt')
   endif
+
+  if get_option('gl-spectrum')
+    subdir('qtglspectrum')
+  endif
 endif
 
 

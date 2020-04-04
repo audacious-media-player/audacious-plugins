@@ -80,3 +80,5 @@ option('speedpitch', type: 'boolean', value: true,
 # visualization plugins
 option('vumeter', type: 'boolean', value: true,
        description: 'Whether the VUMeter visualization plugin is enabled')
+option('gl-spectrum', type: 'boolean', value: true,
+       description: 'Whether the OpenGL spectrum visualization plugin is enabled')
