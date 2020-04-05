@@ -38,6 +38,7 @@
 #include <libaudcore/mainloop.h>
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
+#include <libaudqt/treeview.h>
 
 #include "html-delegate.h"
 #include "library.h"
@@ -89,7 +90,7 @@ protected:
     }
 };
 
-class ResultsList : public QTreeView
+class ResultsList : public audqt::TreeView
 {
 public:
     QWidget * entry = nullptr;
@@ -253,7 +254,7 @@ SearchWidget::SearchWidget () :
 
     QObject::connect (& m_search_entry, & QLineEdit::textEdited, this, & SearchWidget::trigger_search);
     QObject::connect (& m_search_entry, & QLineEdit::returnPressed, this, & SearchWidget::action_play);
-    QObject::connect (& m_results_list, & QTreeView::doubleClicked, this, & SearchWidget::action_play);
+    QObject::connect (& m_results_list, & QTreeView::activated, this, & SearchWidget::action_play);
 
     QObject::connect (& m_results_list, & QWidget::customContextMenuRequested,
      [this] (const QPoint & pos) { show_context_menu (m_results_list.mapToGlobal (pos)); });
