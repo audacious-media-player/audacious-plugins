@@ -69,7 +69,7 @@ private:
                            QItemSelection & deselected);
     void updateSelection(int rowsBefore, int rowsAfter);
 
-    void doubleClick(const QModelIndex & index);
+    void activate(const QModelIndex & index);
     void contextMenuEvent(QContextMenuEvent * event);
     void keyPressEvent(QKeyEvent * event);
     void mouseMoveEvent(QMouseEvent * event);

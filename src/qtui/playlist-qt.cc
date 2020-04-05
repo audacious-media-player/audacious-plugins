@@ -60,7 +60,7 @@ PlaylistWidget::PlaylistWidget(QWidget * parent, Playlist playlist)
     setDragDropMode(DragDrop);
     setMouseTracking(true);
 
-    connect(this, &QTreeView::activated, this, &PlaylistWidget::doubleClick);
+    connect(this, &QTreeView::activated, this, &PlaylistWidget::activate);
 
     updateSettings();
     header->updateColumns();
@@ -118,7 +118,7 @@ QModelIndex PlaylistWidget::visibleIndexNear(int row)
     return index;
 }
 
-void PlaylistWidget::doubleClick(const QModelIndex & index)
+void PlaylistWidget::activate(const QModelIndex & index)
 {
     if (index.isValid())
     {
