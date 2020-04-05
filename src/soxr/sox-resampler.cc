@@ -73,6 +73,9 @@ const char * const SoXResampler::defaults[] = {
 
 static soxr_t soxr;
 static soxr_error_t error;
+static soxr_quality_spec_t q;
+static int stored_rate;
+static int target_rate;
 static int stored_channels;
 static double ratio;
 static Index<float> buffer;
@@ -95,11 +98,13 @@ void SoXResampler::start (int & channels, int & rate)
     soxr_delete (soxr);
     soxr = 0;
 
-    int new_rate = aud_get_int ("soxr", "rate");
-    new_rate = aud::clamp (new_rate, MIN_RATE, MAX_RATE);
+    target_rate = aud_get_int ("soxr", "rate");
+    target_rate = aud::clamp (target_rate, MIN_RATE, MAX_RATE);
 
-    if (new_rate == rate)
+    if (target_rate == rate)
         return;
+
+    stored_rate = rate;
 
     int recipe = aud_get_int ("soxr", "quality");
     recipe |= aud_get_int ("soxr", "phase_response");
@@ -108,9 +113,9 @@ void SoXResampler::start (int & channels, int & rate)
     recipe |= (aud_get_bool ("soxr", "allow_aliasing")) ? SOXR_ALLOW_ALIASING : 0;
 #endif
 
-    soxr_quality_spec_t q = soxr_quality_spec (recipe, 0);
+    q = soxr_quality_spec (recipe, 0);
 
-    soxr = soxr_create (rate, new_rate, channels, & error, nullptr, & q, nullptr);
+    soxr = soxr_create (rate, target_rate, channels, & error, nullptr, & q, nullptr);
 
     if (error)
     {
@@ -119,8 +124,8 @@ void SoXResampler::start (int & channels, int & rate)
     }
 
     stored_channels = channels;
-    ratio = (double) new_rate / rate;
-    rate = new_rate;
+    ratio = (double) target_rate / rate;
+    rate = target_rate;
 }
 
 Index<float> & SoXResampler::process (Index<float> & data)
@@ -147,8 +152,18 @@ Index<float> & SoXResampler::process (Index<float> & data)
 
 bool SoXResampler::flush (bool force)
 {
-    if (soxr && (error = soxr_process (soxr, nullptr, 0, nullptr, nullptr, 0, nullptr)))
+    if (! soxr)
+        return true;
+
+    soxr_delete (soxr);
+
+    soxr = soxr_create (stored_rate, target_rate, stored_channels, & error, nullptr, & q, nullptr);
+
+    if (error)
+    {
         AUDERR ("%s\n", error);
+        return true;
+    }
 
     return true;
 }
