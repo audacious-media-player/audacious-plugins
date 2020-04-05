@@ -75,6 +75,8 @@ option('resample', type: 'boolean', value: true,
        description: 'Whether the resample effect plugin is enabled')
 option('speedpitch', type: 'boolean', value: true,
        description: 'Whether the speed / pitch effect plugin is enabled')
+option('soxr', type: 'boolean', value: true,
+       description: 'Whether the SoX resampler effect plugin is enabled')
 
 
 # visualization plugins

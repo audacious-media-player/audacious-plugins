@@ -41,6 +41,10 @@ if samplerate_dep.found()
   endif
 endif
 
+if get_option('soxr')
+  subdir('soxr')
+endif
+
 
 # transport plugins
 subdir('gio')
