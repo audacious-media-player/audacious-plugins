@@ -183,9 +183,12 @@ void MainWindow::closeEvent(QCloseEvent * e)
     hook_call("window close", &handled);
 
     if (!handled)
+    {
+        e->accept();
         aud_quit();
-
-    e->ignore();
+    }
+    else
+        e->ignore();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent * event)
