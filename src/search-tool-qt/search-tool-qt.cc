@@ -253,7 +253,7 @@ SearchWidget::SearchWidget () :
 
     QObject::connect (& m_search_entry, & QLineEdit::textEdited, this, & SearchWidget::trigger_search);
     QObject::connect (& m_search_entry, & QLineEdit::returnPressed, this, & SearchWidget::action_play);
-    QObject::connect (& m_results_list, & QTreeView::activated, this, & SearchWidget::action_play);
+    QObject::connect (& m_results_list, & QTreeView::doubleClicked, this, & SearchWidget::action_play);
 
     QObject::connect (& m_results_list, & QWidget::customContextMenuRequested,
      [this] (const QPoint & pos) { show_context_menu (m_results_list.mapToGlobal (pos)); });
