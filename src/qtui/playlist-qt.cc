@@ -34,22 +34,6 @@
 
 #include "../ui-common/menu-ops.h"
 
-/* Suppress single-click activation on platforms which provide it (KDE). */
-class PlaylistStyle : public QProxyStyle
-{
-public:
-    int styleHint(StyleHint hint,
-                  const QStyleOption * option = nullptr,
-                  const QWidget * widget = nullptr,
-                  QStyleHintReturn * returnData = nullptr) const override
-    {
-        if (hint == QStyle::SH_ItemView_ActivateItemOnSingleClick)
-            return 0;
-
-        return QProxyStyle::styleHint(hint, option, widget, returnData);
-    }
-};
-
 PlaylistWidget::PlaylistWidget(QWidget * parent, Playlist playlist)
     : audqt::TreeView(parent), m_playlist(playlist),
       model(new PlaylistModel(this, playlist)),
@@ -75,7 +59,8 @@ PlaylistWidget::PlaylistWidget(QWidget * parent, Playlist playlist)
     setSelectionMode(ExtendedSelection);
     setDragDropMode(DragDrop);
     setMouseTracking(true);
-    setStyle(new PlaylistStyle);
+
+    connect(this, &QTreeView::doubleClicked, this, &PlaylistWidget::doubleClick);
 
     updateSettings();
     header->updateColumns();
@@ -133,7 +118,7 @@ QModelIndex PlaylistWidget::visibleIndexNear(int row)
     return index;
 }
 
-void PlaylistWidget::activate(const QModelIndex & index)
+void PlaylistWidget::doubleClick(const QModelIndex & index)
 {
     if (index.isValid())
     {
