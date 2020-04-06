@@ -18,6 +18,7 @@ before_install:
 install:
   - git clone git://github.com/audacious-media-player/audacious.git audacious
   - cd audacious
+  - git checkout 4.0.x
   - ./autogen.sh
   - ./configure --prefix=/opt/aud --enable-gtk
   - make
