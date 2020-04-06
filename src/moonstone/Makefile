@@ -8,7 +8,8 @@ SRCS = moonstone.cc \
        playlist.cc \
        playlist_tabs.cc \
        playlist_header.cc \
-       playlist_model.cc
+       playlist_model.cc \
+       playlist_selection.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

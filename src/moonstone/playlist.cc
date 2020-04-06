@@ -488,7 +488,7 @@ void PlaylistWidget::hidePopup()
 
 void PlaylistWidget::updateSettings()
 {
-    setHeaderHidden(!aud_get_bool("qtui", "playlist_headers"));
+    setHeaderHidden(true);
 }
 
 }

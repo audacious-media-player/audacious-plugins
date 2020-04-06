@@ -25,6 +25,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
 
 #include "playlist_model.h"

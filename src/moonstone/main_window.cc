@@ -19,6 +19,7 @@
  */
 
 #include <QToolButton>
+#include <QSplitter>
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -31,15 +32,21 @@
 #include "info_bar.h"
 #include "tool_bar.h"
 #include "time_slider.h"
+#include "playlist.h"
 #include "playlist_tabs.h"
+#include "playlist_selection.h"
 
 namespace Moonstone {
 
 MainWindow::MainWindow() :
     m_center_widget(new QWidget(this)),
     m_center_layout(audqt::make_vbox(m_center_widget, 0)),
-    m_playlist_tabs(new PlaylistTabs(this))
+    m_splitter(new QSplitter(this)),
+    m_playlist_tabs(new PlaylistTabs),
+    m_playlists_view(new PlaylistsView)
 {
+    resize(1000, 600);
+
     setCentralWidget(m_center_widget);
 
     auto slider = new TimeSlider(this);
@@ -86,7 +93,11 @@ MainWindow::MainWindow() :
     m_infobar = new InfoBar(this, m_toolbar);
 
     m_center_layout->addWidget(m_infobar);
-    m_center_layout->addWidget(m_playlist_tabs);
+    m_center_layout->addWidget(m_splitter);
+
+    m_splitter->addWidget(m_playlists_view);
+    m_splitter->addWidget(m_playlist_tabs);
+    m_splitter->setStretchFactor(1, 2);
 
     update_toggles();
 }
@@ -139,20 +150,19 @@ void MainWindow::title_change_cb()
 void MainWindow::playback_begin_cb()
 {
     update_play_pause();
-#if 0
+
     auto last_widget = m_playlist_tabs->playlistWidget(m_last_playing.index());
     if (last_widget)
         last_widget->updatePlaybackIndicator();
-#endif
 
     auto playing = Playlist::playing_playlist();
-#if 0
+
     auto widget = m_playlist_tabs->playlistWidget(playing.index());
     if (widget)
         widget->scrollToCurrent();
     if (widget && widget != last_widget)
         widget->updatePlaybackIndicator();
-#endif
+
     m_last_playing = playing;
 
     m_buffering_timer.queue(
@@ -165,11 +175,9 @@ void MainWindow::pause_cb()
 {
     update_play_pause();
 
-#if 0
     auto widget = m_playlist_tabs->playlistWidget(m_last_playing.index());
     if (widget)
         widget->updatePlaybackIndicator();
-#endif
 }
 
 void MainWindow::playback_stop_cb()
@@ -179,11 +187,9 @@ void MainWindow::playback_stop_cb()
 
     update_play_pause();
 
-#if 0
     auto last_widget = m_playlist_tabs->playlistWidget(m_last_playing.index());
     if (last_widget)
         last_widget->updatePlaybackIndicator();
-#endif
 
     m_last_playing = Playlist();
 }

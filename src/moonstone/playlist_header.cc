@@ -96,7 +96,7 @@ static void loadConfig(bool force = false)
         return;
 
     auto columns =
-        str_list_to_index(aud_get_str("qtui", "playlist_columns"), " ");
+        str_list_to_index("playing number artist album title length", " ");
     int n_columns = aud::min(columns.len(), (int)PlaylistModel::n_cols);
 
     s_cols.clear();
@@ -111,12 +111,7 @@ static void loadConfig(bool force = false)
             s_cols.append(i);
     }
 
-    auto widths = str_list_to_index(aud_get_str("qtui", "column_widths"), ", ");
-    int n_widths = aud::min(widths.len(), (int)PlaylistModel::n_cols);
-
-    for (int i = 0; i < n_widths; i++)
-        s_col_widths[i] = audqt::to_native_dpi(str_to_int(widths[i]));
-    for (int i = n_widths; i < PlaylistModel::n_cols; i++)
+    for (int i = 0; i < PlaylistModel::n_cols; i++)
         s_col_widths[i] = audqt::to_native_dpi(s_default_widths[i]);
 
     loaded = true;

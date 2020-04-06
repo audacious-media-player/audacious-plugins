@@ -191,7 +191,7 @@ InfoBar::InfoBar(QWidget * parent, ToolBar * toolbar)
       m_stopped(true)
 {
     update_vis();
-    setMinimumHeight(ps.Height + toolbar->height());
+    setFixedHeight(ps.Height + toolbar->height());
 
     m_vis->raise();
 

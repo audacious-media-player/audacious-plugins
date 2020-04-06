@@ -29,12 +29,14 @@
 
 #include <QMainWindow>
 #include <QVBoxLayout>
+#include <QSplitter>
 
 namespace Moonstone {
 
 class InfoBar;
 class ToolBar;
 class PlaylistTabs;
+class PlaylistsView;
 
 class MainWindow : public QMainWindow {
 public:
@@ -46,7 +48,9 @@ private:
     InfoBar * m_infobar;
     ToolBar * m_toolbar;
 
+    QSplitter * m_splitter;
     PlaylistTabs * m_playlist_tabs;
+    PlaylistsView * m_playlists_view;
 
     QAction *m_search_action;
     QAction *m_play_pause_action, *m_stop_action, *m_stop_after_action;
