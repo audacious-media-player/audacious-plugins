@@ -84,3 +84,8 @@ option('vumeter', type: 'boolean', value: true,
        description: 'Whether the VUMeter visualization plugin is enabled')
 option('gl-spectrum', type: 'boolean', value: true,
        description: 'Whether the OpenGL spectrum visualization plugin is enabled')
+
+
+# interface plugins
+option('moonstone', type: 'boolean', value: true,
+       description: 'Whether the Moonstone UI plugin is enabled')

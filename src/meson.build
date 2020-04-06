@@ -98,6 +98,10 @@ if get_option('qt')
   if get_option('gl-spectrum')
     subdir('qtglspectrum')
   endif
+
+  if get_option('moonstone')
+    subdir('moonstone')
+  endif
 endif
 
 
