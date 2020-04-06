@@ -3,7 +3,11 @@ moonstone_sources = [
   'main_window.cc',
   'info_bar.cc',
   'tool_bar.cc',
-  'time_slider.cc'
+  'time_slider.cc',
+  'playlist.cc',
+  'playlist_header.cc',
+  'playlist_model.cc',
+  'playlist_tabs.cc'
 ]
 
 

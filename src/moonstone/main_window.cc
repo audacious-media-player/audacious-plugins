@@ -31,12 +31,14 @@
 #include "info_bar.h"
 #include "tool_bar.h"
 #include "time_slider.h"
+#include "playlist_tabs.h"
 
 namespace Moonstone {
 
 MainWindow::MainWindow() :
     m_center_widget(new QWidget(this)),
-    m_center_layout(audqt::make_vbox(m_center_widget, 0))
+    m_center_layout(audqt::make_vbox(m_center_widget, 0)),
+    m_playlist_tabs(new PlaylistTabs(this))
 {
     setCentralWidget(m_center_widget);
 
@@ -84,6 +86,7 @@ MainWindow::MainWindow() :
     m_infobar = new InfoBar(this, m_toolbar);
 
     m_center_layout->addWidget(m_infobar);
+    m_center_layout->addWidget(m_playlist_tabs);
 
     update_toggles();
 }

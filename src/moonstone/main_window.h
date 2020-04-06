@@ -34,6 +34,7 @@ namespace Moonstone {
 
 class InfoBar;
 class ToolBar;
+class PlaylistTabs;
 
 class MainWindow : public QMainWindow {
 public:
@@ -44,6 +45,8 @@ private:
     QVBoxLayout * m_center_layout;
     InfoBar * m_infobar;
     ToolBar * m_toolbar;
+
+    PlaylistTabs * m_playlist_tabs;
 
     QAction *m_search_action;
     QAction *m_play_pause_action, *m_stop_action, *m_stop_after_action;
