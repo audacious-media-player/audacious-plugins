@@ -26,6 +26,7 @@
 #include <libaudcore/hook.h>
 
 class QMouseEvent;
+class TimeSliderStyle;
 
 class TimeSliderLabel : public QLabel
 {
@@ -55,6 +56,7 @@ private:
     void released();
 
     TimeSliderLabel * m_label;
+    TimeSliderStyle * m_style;
 
     const Timer<TimeSlider> m_timer{TimerRate::Hz4, this, &TimeSlider::update};
 
