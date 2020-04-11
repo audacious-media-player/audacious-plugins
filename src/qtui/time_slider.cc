@@ -116,7 +116,6 @@ void TimeSlider::start_stop()
     bool ready = aud_drct_get_ready();
     bool paused = aud_drct_get_paused();
 
-    setEnabled(ready);
     m_label->setEnabled(ready);
 
     update();
@@ -136,6 +135,7 @@ void TimeSlider::update()
             int time = aud_drct_get_time();
             int length = aud_drct_get_length();
 
+            setEnabled(length >= 0);
             setRange(0, length);
             setValue(time);
 
@@ -144,6 +144,7 @@ void TimeSlider::update()
     }
     else
     {
+        setEnabled(false);
         setRange(0, 0);
         set_label(0, 0);
     }
