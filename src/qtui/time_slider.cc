@@ -28,10 +28,7 @@
 #include <QProxyStyle>
 #include <QStyle>
 
-TimeSliderLabel::TimeSliderLabel(QWidget * parent) : QLabel(parent)
-{
-    setStyleSheet("font-weight: bold");
-}
+TimeSliderLabel::TimeSliderLabel(QWidget * parent) : QLabel(parent) {}
 TimeSliderLabel::~TimeSliderLabel() {}
 
 void TimeSliderLabel::mouseDoubleClickEvent(QMouseEvent * event)
@@ -88,14 +85,28 @@ void TimeSlider::set_label(int time, int length)
     QString text;
 
     if (length >= 0)
+    {
+        auto length_str = str_format_time(length);
+        auto time_pad = length_str.len();
+
+        QString time_str;
         if (aud_get_bool("qtui", "show_remaining_time"))
-            text = str_concat({str_format_time(time - length), " / ",
-                               str_format_time(length)});
+        {
+            time = aud::max(0, length - time);
+            time_str = QString('-') + str_format_time(time);
+            time_pad++;
+        }
         else
-            text = str_concat(
-                {str_format_time(time), " / ", str_format_time(length)});
+            time_str = str_format_time(time);
+
+        // To avoid the label changing width as time progresses, use
+        // monospaced digits and pad the time to the width of the song
+        // length (which should be the widest time we'll display).
+        text = "<b><tt>" + time_str.rightJustified(time_pad, QChar::Nbsp) +
+               "</tt> / <tt>" + length_str + "</tt></b>";
+    }
     else
-        text = str_format_time(time);
+        text = "<b><tt>" + QString(str_format_time(time)) + "</tt></b>";
 
     m_label->setText(text);
 }
