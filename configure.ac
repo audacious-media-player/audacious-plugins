@@ -103,7 +103,7 @@ check_allowed () {
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-gtk])
             fi
             ;;
-        ampache|qtaudio|qtglspectrum)
+        ampache|qtaudio|qtglspectrum|qthotkey)
             plugin_allowed=$USE_QT
             if test $plugin_allowed = no -a $2 = yes ; then
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-qt])
@@ -533,6 +533,13 @@ ENABLE_PLUGIN_WITH_TEST(qtglspectrum,
     auto,
     VISUALIZATION)
 
+ENABLE_PLUGIN_WITH_DEP(qthotkey,
+    global hotkeys (X11),
+    auto,
+    GENERAL,
+    QTX11EXTRAS,
+    Qt5X11Extras)
+
 dnl CoreAudio
 dnl =========
 
@@ -844,6 +851,7 @@ if test "x$USE_QT" = "xyes" ; then
     echo "  Status Icon:                            yes"
     echo "  Stream Tuner:                           $have_streamtuner"
     echo "  VU Meter:                               yes"
+    echo "  X11 Global Hotkeys:                     $have_qthotkey"
     echo
 fi
 
