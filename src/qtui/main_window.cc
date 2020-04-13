@@ -129,7 +129,8 @@ MainWindow::MainWindow()
             [](bool on) { aud_set_bool("shuffle", on); }, &m_shuffle_action),
         ToolBarCustom(audqt::volume_button_new(this))};
 
-    addToolBar(Qt::TopToolBarArea, new ToolBar(this, items));
+    auto toolbar = new ToolBar(this, items);
+    addToolBar(Qt::TopToolBarArea, toolbar);
 
     if (m_search_tool)
         aud_plugin_add_watch(m_search_tool, plugin_watcher, this);
@@ -159,6 +160,12 @@ MainWindow::MainWindow()
 
     read_settings();
     update_visibility();
+
+    /* Make sure toolbar is visible, in case restoreState() hid it. It's
+     * not clear exactly how the toolbar ever gets hidden in the first
+     * place, but user screenshots show that it somehow happens, and in
+     * that case we don't want it to be gone forever. */
+    toolbar->show();
 
     /* set initial keyboard focus on the playlist */
     m_playlist_tabs->currentPlaylistWidget()->setFocus(Qt::OtherFocusReason);
