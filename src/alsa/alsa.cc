@@ -465,12 +465,23 @@ void ALSAPlugin::drain ()
 
     pump_stop ();
 
-    int d = get_delay_locked ();
-    timespec delay = {d / 1000, d % 1000 * 1000000};
+    if (! alsa_prebuffer)
+    {
+        timespec ts {};
+        clock_gettime (CLOCK_REALTIME, & ts);
 
-    pthread_mutex_unlock (& alsa_mutex);
-    nanosleep (& delay, nullptr);
-    pthread_mutex_lock (& alsa_mutex);
+        int d = get_delay_locked ();
+        ts.tv_sec += d / 1000;
+        ts.tv_nsec += d % 1000 * 1000000;
+
+        if (ts.tv_nsec >= 1000000000)
+        {
+            ts.tv_sec ++;
+            ts.tv_nsec -= 1000000000;
+        }
+
+        pthread_cond_timedwait (& alsa_cond, & alsa_mutex, & ts);
+    }
 
     pump_start ();
 
