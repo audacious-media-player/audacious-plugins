@@ -12,4 +12,4 @@ LD = ${CXX}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${ALSA_CFLAGS} -I../..
-LIBS += ${ALSA_LIBS}
+LIBS += ${ALSA_LIBS} -lrt
