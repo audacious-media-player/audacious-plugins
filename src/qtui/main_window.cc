@@ -161,11 +161,13 @@ MainWindow::MainWindow()
     read_settings();
     update_visibility();
 
-    /* Make sure toolbar is visible, in case restoreState() hid it. It's
-     * not clear exactly how the toolbar ever gets hidden in the first
+    /* Make sure UI elements are visible, in case restoreState() hid
+     * them. It's not clear exactly how they can get hidden in the first
      * place, but user screenshots show that it somehow happens, and in
-     * that case we don't want it to be gone forever. */
+     * that case we don't want them to be gone forever. */
     toolbar->show();
+    for (auto w : m_dock_widgets)
+        w->show();
 
     /* set initial keyboard focus on the playlist */
     m_playlist_tabs->currentPlaylistWidget()->setFocus(Qt::OtherFocusReason);
@@ -381,6 +383,8 @@ void MainWindow::add_dock_plugin_cb(PluginHandle * plugin)
 
     if (!restoreDockWidget(w))
         addDockWidget(Qt::LeftDockWidgetArea, w);
+
+    w->show(); /* in case restoreDockWidget() hid it */
 }
 
 void MainWindow::remove_dock_plugin_cb(PluginHandle * plugin)
