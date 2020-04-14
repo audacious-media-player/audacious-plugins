@@ -259,6 +259,7 @@ PlaylistsView::PlaylistsView ()
     hdr->setSectionResizeMode (PlaylistsModel::ColumnEntries, QHeaderView::Interactive);
     hdr->resizeSection (PlaylistsModel::ColumnEntries, audqt::to_native_dpi (64));
 
+    setAllColumnsShowFocus (true);
     setDragDropMode (InternalMove);
     setFrameShape (QFrame::NoFrame);
     setIndentation (0);
