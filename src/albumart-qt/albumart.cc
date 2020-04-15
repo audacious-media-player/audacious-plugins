@@ -43,8 +43,6 @@ public:
     void * get_qt_widget ();
 };
 
-#define MARGIN 4
-
 class ArtLabel : public QLabel {
 public:
     ArtLabel (QWidget * parent = 0, Qt::WindowFlags f = 0) : QLabel(parent, f)
@@ -87,6 +85,12 @@ protected:
     }
 
 private:
+    static constexpr int MARGIN = 4;
+
+    const HookReceiver<ArtLabel>
+        update_hook{"playback ready", this, &ArtLabel::update_art},
+        clear_hook{"playback stop", this, &ArtLabel::clear};
+
     QPixmap origPixmap;
     QSize origSize;
 
@@ -95,6 +99,9 @@ private:
         clear ();
         setMinimumSize (MARGIN + 1, MARGIN + 1);
         setAlignment (Qt::AlignCenter);
+
+        if (aud_drct_get_ready())
+            update_art();
     }
 
     void drawArt ()
@@ -124,37 +131,9 @@ private:
     }
 };
 
-#undef MARGIN
-
-static void update (void *, ArtLabel * widget)
-{
-    widget->update_art ();
-}
-
-static void clear (void *, ArtLabel * widget)
-{
-    widget->clear ();
-}
-
-static void widget_cleanup (QObject * widget)
-{
-    hook_dissociate ("playback ready", (HookFunction) update, widget);
-    hook_dissociate ("playback stop", (HookFunction) clear, widget);
-}
-
 void * AlbumArtQt::get_qt_widget ()
 {
-    ArtLabel * widget = new ArtLabel;
-
-    QObject::connect (widget, &QObject::destroyed, widget_cleanup);
-
-    hook_associate ("playback ready", (HookFunction) update, widget);
-    hook_associate ("playback stop", (HookFunction) clear, widget);
-
-    if (aud_drct_get_ready ())
-        widget->update_art ();
-
-    return widget;
+    return new ArtLabel;
 }
 
 EXPORT AlbumArtQt aud_plugin_instance;
