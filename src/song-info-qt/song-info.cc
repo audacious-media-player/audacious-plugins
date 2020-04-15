@@ -20,11 +20,8 @@
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
-#include <libaudcore/probe.h>
 
-#include <libaudqt/libaudqt.h>
 #include <libaudqt/info-widget.h>
 
 class SongInfo : public GeneralPlugin {
@@ -39,68 +36,27 @@ public:
 
     constexpr SongInfo () : GeneralPlugin (info, false) {}
     void * get_qt_widget ();
-
-private:
-    static void update (void * unused, audqt::InfoWidget * widget);
-    static void clear (void * unused, audqt::InfoWidget * widget);
-    static void widget_cleanup (QObject * widget);
 };
 
-void SongInfo::update (void * unused, audqt::InfoWidget * widget)
+class SongInfoWidget : public audqt::InfoWidget
 {
-    if (! aud_drct_get_playing ())
-        return;
+public:
+    SongInfoWidget() { update(); }
 
-    if (! widget)
-        return;
+private:
+    const HookReceiver<SongInfoWidget>
+        update_hook{"playback ready", this, &SongInfoWidget::update},
+        clear_hook{"playback stop", this, &SongInfoWidget::update};
 
-    auto playlist = Playlist::playing_playlist ();
-
-    if (playlist == Playlist ())
-        playlist = Playlist::active_playlist ();
-
-    int position = playlist.get_position ();
-    if (position == -1)
-        return;
-
-    String filename = playlist.entry_filename (position);
-    if (! filename)
-        return;
-
-    PluginHandle * decoder = playlist.entry_decoder (position);
-    if (! decoder)
-        return;
-
-    Tuple tuple = playlist.entry_tuple (position);
-    if (tuple.valid ())
-        widget->fillInfo (filename, tuple, decoder,
-                aud_file_can_write_tuple (filename, decoder));
-}
-
-void SongInfo::clear (void * unused, audqt::InfoWidget * widget)
-{
-    if (! widget)
-        return;
-}
-
-void SongInfo::widget_cleanup (QObject * widget)
-{
-    hook_dissociate ("playback begin", (HookFunction) update, widget);
-    hook_dissociate ("playback stop", (HookFunction) clear, widget);
-}
+    void update()
+    {
+        fillInfo(aud_drct_get_filename(), aud_drct_get_tuple(), nullptr, false);
+    }
+};
 
 void * SongInfo::get_qt_widget ()
 {
-    audqt::InfoWidget * widget = new audqt::InfoWidget;
-
-    QObject::connect (widget, &QObject::destroyed, widget_cleanup);
-
-    hook_associate ("playback begin", (HookFunction) update, widget);
-    hook_associate ("playback stop", (HookFunction) clear, widget);
-
-    update(nullptr, widget);
-
-    return widget;
+    return new SongInfoWidget;
 }
 
 EXPORT SongInfo aud_plugin_instance;
