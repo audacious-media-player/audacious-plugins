@@ -24,6 +24,7 @@
 #include <QHeaderView>
 #include <QIcon>
 #include <QMouseEvent>
+#include <QPointer>
 #include <QToolButton>
 
 #include <libaudcore/hook.h>
@@ -311,7 +312,7 @@ void PlaylistsView::update_sel ()
     m_in_update --;
 }
 
-static PlaylistsView * s_playlists_view = nullptr;
+static QPointer<PlaylistsView> s_playlists_view;
 
 static QToolButton * new_tool_button (const char * text, const char * icon)
 {
@@ -325,10 +326,6 @@ static QToolButton * new_tool_button (const char * text, const char * icon)
 void * PlaylistManagerQt::get_qt_widget ()
 {
     s_playlists_view = new PlaylistsView;
-
-    QObject::connect (s_playlists_view, & QObject::destroyed, [] () {
-        s_playlists_view = nullptr;
-    });
 
     auto new_button = new_tool_button (N_("_New"), "document-new");
     QObject::connect (new_button, & QToolButton::clicked, Playlist::new_playlist);
