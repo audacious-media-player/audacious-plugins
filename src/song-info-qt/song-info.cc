@@ -45,6 +45,7 @@ public:
 
 private:
     const HookReceiver<SongInfoWidget>
+        change_hook{"tuple change", this, &SongInfoWidget::update},
         update_hook{"playback ready", this, &SongInfoWidget::update},
         clear_hook{"playback stop", this, &SongInfoWidget::update};
 
