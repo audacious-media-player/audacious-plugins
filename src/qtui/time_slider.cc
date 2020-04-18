@@ -65,7 +65,7 @@ TimeSlider::TimeSlider(QWidget * parent)
       m_style(new TimeSliderStyle)
 {
     setFocusPolicy(Qt::NoFocus);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     setStyle(m_style);
 
     m_label->setContentsMargins(audqt::sizes.FourPt, 0, 0, 0);
