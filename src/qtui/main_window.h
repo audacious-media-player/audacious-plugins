@@ -54,7 +54,7 @@ private:
     PluginHandle *m_search_tool, *m_playlist_manager;
     Index<PluginWidget *> m_dock_widgets;
 
-    QAction * m_search_action;
+    QAction *m_menu_action, *m_search_action;
     QAction *m_play_pause_action, *m_stop_action, *m_stop_after_action;
     QAction * m_record_action;
     QAction *m_repeat_action, *m_shuffle_action;

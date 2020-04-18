@@ -81,6 +81,19 @@ static void toggle_search_tool(bool enable)
         aud_plugin_enable(search_tool, enable);
 }
 
+static QToolButton * create_menu_button(QWidget * parent, QMenuBar * menubar)
+{
+    auto button = new QToolButton(parent);
+    button->setIcon(audqt::get_icon("audacious"));
+    button->setPopupMode(QToolButton::InstantPopup);
+    button->setToolTip(_("Menu"));
+
+    for (auto action : menubar->actions())
+        button->addAction(action);
+
+    return button;
+}
+
 MainWindow::MainWindow()
     : m_config_name(get_config_name()), m_dialogs(this),
       m_menubar(qtui_build_menubar(this)),
@@ -94,6 +107,7 @@ MainWindow::MainWindow()
     auto slider = new TimeSlider(this);
 
     const ToolBarItem items[] = {
+        ToolBarCustom(create_menu_button(this, m_menubar), &m_menu_action),
         ToolBarAction("edit-find", N_("Search Library"), N_("Search Library"),
                       toggle_search_tool, &m_search_action),
         ToolBarAction("document-open", N_("Open Files"), N_("Open Files"),
@@ -272,7 +286,10 @@ void MainWindow::update_toggles()
 
 void MainWindow::update_visibility()
 {
-    m_menubar->setVisible(aud_get_bool("qtui", "menu_visible"));
+    bool menu_visible = aud_get_bool("qtui", "menu_visible");
+    m_menubar->setVisible(menu_visible);
+    m_menu_action->setVisible(!menu_visible);
+
     m_infobar->setVisible(aud_get_bool("qtui", "infoarea_visible"));
     m_statusbar->setVisible(aud_get_bool("qtui", "statusbar_visible"));
 }
