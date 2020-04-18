@@ -34,14 +34,16 @@ ToolBar::ToolBar(QWidget * parent, ArrayRef<ToolBarItem> items)
 
     for (const ToolBarItem & item : items)
     {
+        QAction * a = nullptr;
+
         if (item.widget)
-            addWidget(item.widget);
+            a = addWidget(item.widget);
         else if (item.sep)
-            addSeparator();
+            a = addSeparator();
         else if (item.icon_name)
         {
-            QAction * a = new QAction(audqt::get_icon(item.icon_name),
-                                      audqt::translate_str(item.name), this);
+            a = new QAction(audqt::get_icon(item.icon_name),
+                            audqt::translate_str(item.name), this);
 
             if (item.tooltip_text)
                 a->setToolTip(audqt::translate_str(item.tooltip_text));
@@ -56,9 +58,9 @@ ToolBar::ToolBar(QWidget * parent, ArrayRef<ToolBarItem> items)
             }
 
             addAction(a);
-
-            if (item.action_ptr)
-                *item.action_ptr = a;
         }
+
+        if (item.action_ptr)
+            *item.action_ptr = a;
     }
 }
