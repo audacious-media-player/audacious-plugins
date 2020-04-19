@@ -77,7 +77,6 @@ private:
     SimpleHash<Key, Item> m_database;
     Index<const Item *> m_items;
     int m_hidden_items = 0;
-    int m_rows = 0;
 };
 
 #endif // SEARCHMODEL_H
