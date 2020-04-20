@@ -20,8 +20,8 @@
 #include <QHeaderView>
 #include <QKeyEvent>
 #include <QMenu>
-#include <QSortFilterProxyModel>
 #include <QProxyStyle>
+#include <QSortFilterProxyModel>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
