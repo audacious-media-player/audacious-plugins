@@ -476,7 +476,10 @@ void ALSAPlugin::drain ()
             ts.tv_nsec -= 1000000000;
         }
 
+        /* Avoid calling snd_pcm_delay() after this point, otherwise it
+         * prints a warning that underrun has occurred */
         alsa_prebuffer = true;
+        alsa_paused_delay = 0;
 
         poll_wake (); /* wake pump so it's ready */
         pthread_cond_timedwait (& alsa_cond, & alsa_mutex, & ts);
