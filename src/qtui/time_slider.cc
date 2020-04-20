@@ -99,11 +99,20 @@ void TimeSlider::set_label(int time, int length)
         else
             time_str = str_format_time(time);
 
+        int a, b;
+        aud_drct_get_ab_repeat(a, b);
+
+        QString ab_str;
+        if (a >= 0)
+            ab_str += " A=<tt>" + QString(str_format_time(a)) + "</tt>";
+        if (b >= 0)
+            ab_str += " B=<tt>" + QString(str_format_time(b)) + "</tt>";
+
         // To avoid the label changing width as time progresses, use
         // monospaced digits and pad the time to the width of the song
         // length (which should be the widest time we'll display).
         text = "<b><tt>" + time_str.rightJustified(time_pad, QChar::Nbsp) +
-               "</tt> / <tt>" + length_str + "</tt></b>";
+               "</tt> / <tt>" + length_str + "</tt>" + ab_str + "</b>";
     }
     else
         text = "<b><tt>" + QString(str_format_time(time)) + "</tt></b>";
