@@ -149,7 +149,6 @@ static void poll_cleanup ()
 static void * pump (void *)
 {
     pthread_mutex_lock (& alsa_mutex);
-    pthread_cond_broadcast (& alsa_cond); /* signal thread started */
 
     bool failed_once = false;
     bool use_timed_wait = false;
@@ -224,15 +223,14 @@ static void pump_start ()
 {
     AUDDBG ("Starting pump.\n");
     pthread_create (& pump_thread, nullptr, pump, nullptr);
-    pthread_cond_wait (& alsa_cond, & alsa_mutex);
 }
 
 static void pump_stop ()
 {
     AUDDBG ("Stopping pump.\n");
     pump_quit = true;
-    pthread_cond_broadcast (& alsa_cond);
     poll_wake ();
+    pthread_cond_broadcast (& alsa_cond);
     pthread_mutex_unlock (& alsa_mutex);
     pthread_join (pump_thread, nullptr);
     pthread_mutex_lock (& alsa_mutex);
@@ -423,7 +421,7 @@ int ALSAPlugin::write_audio (const void * data, int length)
             (alsa_buffer.len () - length) * 100 / alsa_buffer.size (),
             alsa_buffer.len () * 100 / alsa_buffer.size ());
 
-    if (! alsa_paused)
+    if (! alsa_prebuffer && ! alsa_paused)
         pthread_cond_broadcast (& alsa_cond);
 
     pthread_mutex_unlock (& alsa_mutex);
@@ -463,8 +461,6 @@ void ALSAPlugin::drain ()
     while (snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer.len ()))
         pthread_cond_wait (& alsa_cond, & alsa_mutex);
 
-    pump_stop ();
-
     if (! alsa_prebuffer)
     {
         timespec ts {};
@@ -480,10 +476,11 @@ void ALSAPlugin::drain ()
             ts.tv_nsec -= 1000000000;
         }
 
+        alsa_prebuffer = true;
+
+        poll_wake (); /* wake pump so it's ready */
         pthread_cond_timedwait (& alsa_cond, & alsa_mutex, & ts);
     }
-
-    pump_start ();
 
     pthread_mutex_unlock (& alsa_mutex);
 }
@@ -509,7 +506,6 @@ void ALSAPlugin::flush ()
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& alsa_mutex);
 
-    pump_stop ();
     CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
@@ -518,10 +514,8 @@ FAILED:
     alsa_prebuffer = true;
     alsa_paused_delay = 0;
 
+    poll_wake (); /* wake pump so it's ready */
     pthread_cond_broadcast (& alsa_cond); /* interrupt period wait */
-
-    pump_start ();
-
     pthread_mutex_unlock (& alsa_mutex);
 }
 
@@ -541,7 +535,7 @@ void ALSAPlugin::pause (bool pause)
     }
 
 DONE:
-    if (! pause)
+    if (! alsa_prebuffer && ! pause)
         pthread_cond_broadcast (& alsa_cond);
 
     pthread_mutex_unlock (& alsa_mutex);
