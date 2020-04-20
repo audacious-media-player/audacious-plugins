@@ -118,6 +118,33 @@ void pl_remove_unselected ()
     pl_select_all ();
 }
 
+void set_ab_repeat_a ()
+{
+    if (! aud_drct_get_playing ())
+        return;
+
+    int a, b;
+    aud_drct_get_ab_repeat (a, b);
+    a = aud_drct_get_time ();
+    aud_drct_set_ab_repeat (a, b);
+}
+
+void set_ab_repeat_b ()
+{
+    if (! aud_drct_get_playing ())
+        return;
+
+    int a, b;
+    aud_drct_get_ab_repeat (a, b);
+    b = aud_drct_get_time ();
+    aud_drct_set_ab_repeat (a, b);
+}
+
+void clear_ab_repeat ()
+{
+    aud_drct_set_ab_repeat (-1, -1);
+}
+
 void volume_up ()
     { aud_drct_set_volume_main (aud_drct_get_volume_main () + aud_get_int ("volume_delta")); }
 void volume_down ()

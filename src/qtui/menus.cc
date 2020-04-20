@@ -155,7 +155,14 @@ QMenuBar * qtui_build_menubar(QWidget * parent)
         audqt::MenuSep(),
         audqt::MenuCommand(
             {N_("Song _Info ..."), "dialog-information", "Ctrl+I"},
-            audqt::infowin_show_current)};
+            audqt::infowin_show_current),
+        audqt::MenuSep(),
+        audqt::MenuCommand({N_("Set Repeat Point _A"), nullptr, "Ctrl+1"},
+                           set_ab_repeat_a),
+        audqt::MenuCommand({N_("Set Repeat Point _B"), nullptr, "Ctrl+2"},
+                           set_ab_repeat_b),
+        audqt::MenuCommand({N_("_Clear Repeat Points"), nullptr, "Ctrl+3"},
+                           clear_ab_repeat)};
 
     static const audqt::MenuItem dupe_items[] = {
         audqt::MenuCommand({N_("By _Title")}, rm_dupes_title),
