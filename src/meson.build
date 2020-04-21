@@ -102,6 +102,10 @@ if get_option('qt')
   if get_option('moonstone')
     subdir('moonstone')
   endif
+
+  if qtx11extras_dep.found()
+    subdir('qthotkey')
+  endif
 endif
 
 
