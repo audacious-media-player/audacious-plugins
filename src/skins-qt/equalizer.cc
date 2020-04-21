@@ -31,6 +31,7 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
+#include <libaudqt/libaudqt.h>
 
 #include "menus.h"
 #include "plugin.h"
@@ -196,7 +197,7 @@ static void equalizerwin_create_widgets ()
 
     equalizerwin_presets = new Button (44, 12, 224, 164, 224, 176, SKIN_EQMAIN, SKIN_EQMAIN);
     equalizerwin->put_widget (false, equalizerwin_presets, 217, 18);
-//    equalizerwin_presets->on_release ((ButtonCB) audgui_show_eq_preset_window);
+    equalizerwin_presets->on_release ((ButtonCB) audqt::eq_presets_show);
 
     equalizerwin_close = new Button (9, 9, 0, 116, 0, 125, SKIN_EQMAIN, SKIN_EQMAIN);
     equalizerwin->put_widget (false, equalizerwin_close, 264, 3);
