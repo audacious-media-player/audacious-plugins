@@ -140,8 +140,10 @@ static const audqt::MenuItem view_items[] = {
     audqt::MenuToggle ({N_("Show Remaining Time"), nullptr, "Ctrl+R"}, {"skins", "show_remaining_time", "skins set show_remaining_time"}, view_apply_show_remaining),
     audqt::MenuSep (),
     audqt::MenuToggle ({N_("Double Size"), nullptr, "Ctrl+D"}, {"skins", "double_size", "skins set double_size"}, view_apply_double_size),
-#if 0
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     audqt::MenuToggle ({N_("Always on Top"), nullptr, "Ctrl+O"}, {"skins", "always_on_top", "skins set always_on_top"}, view_apply_on_top),
+#endif
+#if 0
     audqt::MenuToggle ({N_("On All Workspaces"), nullptr, "Ctrl+S"}, {"skins", "sticky", "skins set sticky"}, view_apply_sticky),
 #endif
     audqt::MenuSep (),

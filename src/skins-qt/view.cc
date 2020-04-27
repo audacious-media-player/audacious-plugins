@@ -198,12 +198,23 @@ void view_set_on_top (bool on_top)
 
 void view_apply_on_top ()
 {
-#if 0
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     bool on_top = aud_get_bool ("skins", "always_on_top");
+    bool mainwin_visible = mainwin->isVisible ();
+    bool equalizer_visible = equalizerwin->isVisible ();
+    bool playlist_visible = playlistwin->isVisible ();
 
-    gtk_window_set_keep_above ((GtkWindow *) mainwin->gtk (), on_top);
-    gtk_window_set_keep_above ((GtkWindow *) equalizerwin->gtk (), on_top);
-    gtk_window_set_keep_above ((GtkWindow *) playlistwin->gtk (), on_top);
+    mainwin->setWindowFlag (Qt::WindowStaysOnTopHint, on_top);
+    if (mainwin_visible)
+        mainwin->show ();
+
+    equalizerwin->setWindowFlag (Qt::WindowStaysOnTopHint, on_top);
+    if (equalizer_visible)
+        equalizerwin->show ();
+
+    playlistwin->setWindowFlag (Qt::WindowStaysOnTopHint, on_top);
+    if (playlist_visible)
+        playlistwin->show ();
 #endif
 
     mainwin_menurow->refresh ();
