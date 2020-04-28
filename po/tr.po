@@ -25,13 +25,14 @@
 # Tolga <tolsen92@outlook.com>, 2014
 # Volkan Gezer <volkangezer@gmail.com>, 2013,2015
 # Yaşar Çiv <yasarciv@protonmail.com>, 2018
+# Yaşar Çiv <yasarciv@protonmail.com>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2020-01-26 13:18+0100\n"
-"PO-Revision-Date: 2020-01-26 12:22+0000\n"
-"Last-Translator: Thomas Lange\n"
+"PO-Revision-Date: 2020-04-28 09:16+0000\n"
+"Last-Translator: Yaşar Çiv <yasarciv@protonmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/audacious/audacious/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,7 +59,7 @@ msgstr "<b>Çıktı</b>"
 
 #: src/adplug/adplug-xmms.cc:349
 msgid "OPL Emulator:"
-msgstr ""
+msgstr "OPL Emülatorü:"
 
 #: src/adplug/adplug-xmms.cc:352
 msgid "Sample rate"
@@ -1649,12 +1650,12 @@ msgstr "_Sonraki"
 #: src/gtkui/menus.cc:97 src/qtui/menus.cc:140 src/skins/menus.cc:114
 #: src/skins-qt/menus.cc:105
 msgid "Previous Album"
-msgstr ""
+msgstr "Önceki Albüm"
 
 #: src/gtkui/menus.cc:98 src/qtui/menus.cc:141 src/skins/menus.cc:115
 #: src/skins-qt/menus.cc:106
 msgid "Next Album"
-msgstr ""
+msgstr "Sonraki Albüm"
 
 #: src/gtkui/menus.cc:100 src/qtui/menus.cc:143
 msgid "_Repeat"
@@ -2093,11 +2094,11 @@ msgstr "Sonraki parça"
 
 #: src/hotkey/gui.cc:76
 msgid "Step forward"
-msgstr ""
+msgstr "İleri git"
 
 #: src/hotkey/gui.cc:77
 msgid "Step backward"
-msgstr ""
+msgstr "Geri git"
 
 #: src/hotkey/gui.cc:78
 msgid "Mute"
@@ -2193,7 +2194,7 @@ msgid ""
 " Bryn Davies <curious@ihug.com.au>,\n"
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
-msgstr ""
+msgstr "Küresel Kısayol Tuşu Eklentisi\nKüresel tuş kombinasyonları veya multimedya tuşları ile oynatıcıyı kontrol edin.\n\nTelif Hakkı (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\nKatkıda bulunanlar şunları içerir:\nTelif Hakkı (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\nTelif Hakkı (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n Bryn Davies <curious@ihug.com.au>,\n Jonathan A. Davis <davis@jdhouse.org>,\n Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/jack/jack-ng.cc:51
 msgid "JACK Output"
@@ -2201,7 +2202,7 @@ msgstr "Jack Çıkış baglantısı"
 
 #: src/jack/jack-ng.cc:123
 msgid "Client name:"
-msgstr ""
+msgstr "İstemci adı:"
 
 #: src/jack/jack-ng.cc:125
 msgid "Automatically connect to output ports"
@@ -2209,27 +2210,27 @@ msgstr "Çıkış bağlantı noktalarına otomatik olarak bağlanma"
 
 #: src/jack/jack-ng.cc:127
 msgid "Filter ports (regex, use any port if blank):"
-msgstr ""
+msgstr "Bağlantı noktalarını süz (normal ifade, boşsa herhangi bir bağlantı noktasını kullanın):"
 
 #: src/jack/jack-ng.cc:133
 msgid "Connect to physical ports only"
-msgstr ""
+msgstr "Yalnızca fiziksel bağlantı noktalarına bağlan"
 
 #: src/jack/jack-ng.cc:136
 msgid "Upmix to"
-msgstr ""
+msgstr "Karıştır"
 
 #: src/jack/jack-ng.cc:138
 msgid "ports if input has fewer channels"
-msgstr ""
+msgstr "girişte daha az kanal varsa bağlantı noktaları"
 
 #: src/jack/jack-ng.cc:140
 msgid "Ignore insufficient number of ports"
-msgstr ""
+msgstr "Yetersiz sayıda bağlantı noktasını yoksay"
 
 #: src/jack/jack-ng.cc:178
 msgid "No JACK output ports were found. Please check settings."
-msgstr ""
+msgstr "JACK çıkış bağlantı noktası bulunamadı. Lütfen ayarları kontrol edin."
 
 #: src/jack/jack-ng.cc:192
 #, c-format
@@ -2374,7 +2375,7 @@ msgstr "Eksik üst verisi"
 
 #: src/lyricwiki/lyricwiki.cc:310
 msgid "Connecting to lyrics.fandom.com ..."
-msgstr ""
+msgstr "lyrics.fandom.com sitesine bağlanıyor..."
 
 #: src/lyricwiki/lyricwiki.cc:351
 msgid "Edit lyrics ..."
@@ -2382,59 +2383,59 @@ msgstr "Şarkı sözlerini düzenle ..."
 
 #: src/lyricwiki-qt/lyricwiki.cc:88
 msgid "Lyrics"
-msgstr ""
+msgstr "Şarkı sözleri"
 
 #: src/lyricwiki-qt/lyricwiki.cc:111
 msgid "Nowhere"
-msgstr ""
+msgstr "Nowhere"
 
 #: src/lyricwiki-qt/lyricwiki.cc:112
 msgid "LyricWiki"
-msgstr ""
+msgstr "LyricWiki"
 
 #: src/lyricwiki-qt/lyricwiki.cc:113
 msgid "lyrics.ovh"
-msgstr ""
+msgstr "lyrics.ovh"
 
 #: src/lyricwiki-qt/lyricwiki.cc:117
 msgid "<b>Internet Sources</b>"
-msgstr ""
+msgstr "<b>Internet Kaynakları</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:118
 msgid "Fetch lyrics from:"
-msgstr ""
+msgstr "Şuradan şarkı sözleri al:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:121
 msgid "Store fetched lyrics in local cache"
-msgstr ""
+msgstr "Alınan şarkı sözlerini yerel önbellekte depola"
 
 #: src/lyricwiki-qt/lyricwiki.cc:123
 msgid "<b>Local Storage</b>"
-msgstr ""
+msgstr "<b>Yerel Depolama</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:124
 msgid "Load lyric files (.lrc) from local storage"
-msgstr ""
+msgstr "Yerel depodan şarkı sözü dosyaları (.lrc) yükle"
 
 #: src/lyricwiki-qt/lyricwiki.cc:664
 msgid "Lyrics could not be found."
-msgstr ""
+msgstr "Şarkı sözleri bulunamadı."
 
 #: src/lyricwiki-qt/lyricwiki.cc:701
 msgid "Missing title and/or artist."
-msgstr ""
+msgstr "Başlık ve/veya sanatçı eksik."
 
 #: src/lyricwiki-qt/lyricwiki.cc:751
 msgid "Edit Lyrics ..."
-msgstr ""
+msgstr "Şarkı sözlerini düzenle ..."
 
 #: src/lyricwiki-qt/lyricwiki.cc:759
 msgid "Save Locally"
-msgstr ""
+msgstr "Yerel Olarak Kaydet"
 
 #: src/lyricwiki-qt/lyricwiki.cc:767
 msgid "Refresh"
-msgstr ""
+msgstr "Yenile"
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
@@ -2669,18 +2670,18 @@ msgstr "Göster"
 
 #: src/openmpt/mpt.cc:50
 msgid "OpenMPT (Module Player)"
-msgstr ""
+msgstr "OpenMPT (Modül Oynatıcı)"
 
 #: src/openmpt/mpt.cc:134
 msgid ""
 "Module player based on libopenmpt\n"
 "\n"
 "Written by: Chris Spiegel <cspiegel@gmail.com>"
-msgstr ""
+msgstr "Libopenmpt tabanlı modül oynatıcı\n\nYazan: Chris Spiegel <cspiegel@gmail.com>"
 
 #: src/openmpt/mpt.cc:153
 msgid "Stereo separation:"
-msgstr ""
+msgstr "Stereo ayırma:"
 
 #: src/openmpt/mpt.cc:155
 msgid "%"
@@ -2688,7 +2689,7 @@ msgstr "%"
 
 #: src/openmpt/mpt.cc:159
 msgid "Interpolation:"
-msgstr ""
+msgstr "İnterpolasyon:"
 
 #: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:174
 msgid "Linear"
@@ -2696,11 +2697,11 @@ msgstr "Doğrusal"
 
 #: src/openmpt/mptwrap.h:52
 msgid "Cubic"
-msgstr ""
+msgstr "Kübik"
 
 #: src/openmpt/mptwrap.h:53
 msgid "Windowed sinc"
-msgstr ""
+msgstr "Pencereli sinc"
 
 #: src/oss4/oss.h:75
 msgid "OSS4 Output"
@@ -2772,7 +2773,7 @@ msgstr "OpenPSF PSF1/PSF2 Çözücüsü"
 
 #: src/psf/plugin.cc:269
 msgid "<b>OpenPSF Configuration</b>"
-msgstr ""
+msgstr "<b>OpenPSF Yapılandırması</b>"
 
 #: src/psf/plugin.cc:270 src/xsf/plugin.cc:232
 msgid "Ignore length from file"
@@ -2784,11 +2785,11 @@ msgstr "PulseAudio Çıkışı"
 
 #: src/pulse/pulse_audio.cc:72
 msgid "Context name:"
-msgstr ""
+msgstr "Bağlam adı:"
 
 #: src/pulse/pulse_audio.cc:74
 msgid "Stream name:"
-msgstr ""
+msgstr "Akış adı:"
 
 #: src/pulse/pulse_audio.cc:575
 msgid ""
@@ -2893,19 +2894,19 @@ msgstr "Çalma listesini ara"
 
 #: src/qtui/settings.cc:52
 msgid "Always"
-msgstr ""
+msgstr "Her zaman"
 
 #: src/qtui/settings.cc:53
 msgid "Auto-hide"
-msgstr ""
+msgstr "Otomatik gizle"
 
 #: src/qtui/settings.cc:54
 msgid "Never"
-msgstr ""
+msgstr "Asla"
 
 #: src/qtui/settings.cc:58
 msgid "Show playlist tabs:"
-msgstr ""
+msgstr "Çalma listesi sekmelerini göster:"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -3105,7 +3106,7 @@ msgstr "Başlangıçta kitaplığı yeniden tara"
 
 #: src/search-tool-qt/search-tool-qt.cc:168
 msgid "Monitor library for changes"
-msgstr ""
+msgstr "Kütüphaneleri değişiklikler için izleyin"
 
 #: src/search-tool-qt/search-tool-qt.cc:191 src/search-tool/search-tool.cc:446
 msgid ""
@@ -4152,39 +4153,39 @@ msgstr "<b>Extra Stereo</b>"
 
 #: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:131
 msgid "Type"
-msgstr ""
+msgstr "Tür"
 
 #: src/streamtuner/icecast-model.cc:132
 msgid "Current Song"
-msgstr ""
+msgstr "Geçerli Şarkı"
 
 #: src/streamtuner/icecast-model.cc:164
 msgid "Other"
-msgstr ""
+msgstr "Diğer"
 
 #: src/streamtuner/ihr-model.cc:63
 msgid "Market"
-msgstr ""
+msgstr "Market"
 
 #: src/streamtuner/ihr-model.cc:156
 msgid "Call Letters"
-msgstr ""
+msgstr "Çağrı Mektupları"
 
 #: src/streamtuner/ihr-model.cc:162
 msgid "Description"
-msgstr ""
+msgstr "Açıklama"
 
 #: src/streamtuner/shoutcast-model.cc:128
 msgid "Listeners"
-msgstr ""
+msgstr "Dinleyiciler"
 
 #: src/streamtuner/shoutcast-model.cc:188
 msgid "Top 500 Stations"
-msgstr ""
+msgstr "En İyi 500 İstasyon"
 
 #: src/streamtuner/shoutcast-model.cc:189
 msgid "Alternative"
-msgstr ""
+msgstr "Alternatif"
 
 #: src/streamtuner/shoutcast-model.cc:190
 msgid "Blues"
@@ -4200,7 +4201,7 @@ msgstr "Country"
 
 #: src/streamtuner/shoutcast-model.cc:193
 msgid "Decades"
-msgstr ""
+msgstr "Yıllar"
 
 #: src/streamtuner/shoutcast-model.cc:194
 msgid "Easy Listening"
@@ -4208,7 +4209,7 @@ msgstr "Kolay Dinleme"
 
 #: src/streamtuner/shoutcast-model.cc:195
 msgid "Electronic"
-msgstr ""
+msgstr "Elektronik"
 
 #: src/streamtuner/shoutcast-model.cc:196
 msgid "Folk"
@@ -4216,11 +4217,11 @@ msgstr "Folk"
 
 #: src/streamtuner/shoutcast-model.cc:197
 msgid "Inspirational"
-msgstr ""
+msgstr "İlham"
 
 #: src/streamtuner/shoutcast-model.cc:198
 msgid "International"
-msgstr ""
+msgstr "Uluslararası"
 
 #: src/streamtuner/shoutcast-model.cc:199
 msgid "Jazz"
@@ -4228,7 +4229,7 @@ msgstr "Caz"
 
 #: src/streamtuner/shoutcast-model.cc:200
 msgid "Latin"
-msgstr ""
+msgstr "Latin"
 
 #: src/streamtuner/shoutcast-model.cc:201
 msgid "Metal"
@@ -4244,11 +4245,11 @@ msgstr "Pop"
 
 #: src/streamtuner/shoutcast-model.cc:205
 msgid "Public Radio"
-msgstr ""
+msgstr "Genel Radyo"
 
 #: src/streamtuner/shoutcast-model.cc:206
 msgid "R&B and Urban"
-msgstr ""
+msgstr "R&B ve Kentsel"
 
 #: src/streamtuner/shoutcast-model.cc:207
 msgid "Rap"
@@ -4264,31 +4265,31 @@ msgstr "Rock"
 
 #: src/streamtuner/shoutcast-model.cc:210
 msgid "Seasonal and Holiday"
-msgstr ""
+msgstr "Sezonluk ve Tatil"
 
 #: src/streamtuner/shoutcast-model.cc:211
 msgid "Soundtracks"
-msgstr ""
+msgstr "Film Müzikleri"
 
 #: src/streamtuner/shoutcast-model.cc:212
 msgid "Talk"
-msgstr ""
+msgstr "Konuşma"
 
 #: src/streamtuner/shoutcast-model.cc:213
 msgid "Themes"
-msgstr ""
+msgstr "Temalar"
 
 #: src/streamtuner/streamtuner.cc:59
 msgid "Shoutcast"
-msgstr ""
+msgstr "Shoutcast"
 
 #: src/streamtuner/streamtuner.cc:60
 msgid "Icecast"
-msgstr ""
+msgstr "Icecast"
 
 #: src/streamtuner/streamtuner.cc:71
 msgid "Stream Tuner"
-msgstr ""
+msgstr "Akış Ayarlayıcı"
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
@@ -4384,31 +4385,31 @@ msgstr "Sashnov Alexander tarafından Vortex dosya biçimi çalıcı <sashnov@ng
 msgid ""
 "VU Meter Plugin for Audacious\n"
 "Copyright 2017-2019 Marc Sánchez Fauste"
-msgstr ""
+msgstr "Audacious için VU Metre Eklentisi\nTelif Hakkı 2017-2019 Marc Sánchez Fauste"
 
 #: src/vumeter-qt/vumeter_qt.cc:35
 msgid "<b>VU Meter Settings</b>"
-msgstr ""
+msgstr "<b>VU Metre Ayarları</b>"
 
 #: src/vumeter-qt/vumeter_qt.cc:37
 msgid "Peak hold time:"
-msgstr ""
+msgstr "Pik tutma süresi:"
 
 #: src/vumeter-qt/vumeter_qt.cc:42
 msgid "Fall-off time:"
-msgstr ""
+msgstr "Düşme zamanı:"
 
 #: src/vumeter-qt/vumeter_qt.cc:44
 msgid "dB/second"
-msgstr ""
+msgstr "dB/saniye"
 
 #: src/vumeter-qt/vumeter_qt.cc:46
 msgid "Display legend"
-msgstr ""
+msgstr "Zirveyi göster"
 
 #: src/vumeter-qt/vumeter_qt.h:37
 msgid "VU Meter"
-msgstr ""
+msgstr "VU Metre"
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"

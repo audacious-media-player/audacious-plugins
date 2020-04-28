@@ -8,14 +8,15 @@
 # Catalanoic <catalanoic@gmail.com>, 2012
 # David Surroca Estrada <david.tb303@gmail.com>, 2015-2016
 # Francesc Gordillo i Cortínez <inactive+frangor@transifex.com>, 2013
+# Marc Sánchez <sanchezfauste@gmail.com>, 2020
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2016-2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2020-01-26 13:18+0100\n"
-"PO-Revision-Date: 2020-01-26 12:22+0000\n"
-"Last-Translator: John Lindgren <john@jlindgren.net>\n"
+"PO-Revision-Date: 2020-04-27 17:44+0000\n"
+"Last-Translator: Marc Sánchez <sanchezfauste@gmail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/audacious/audacious/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4368,31 +4369,31 @@ msgstr "Reproductor del format de fitxer Vortex per Sashnov Alexander <sashnov@n
 msgid ""
 "VU Meter Plugin for Audacious\n"
 "Copyright 2017-2019 Marc Sánchez Fauste"
-msgstr ""
+msgstr "Connector de vúmetre per Audacious\nDrets d'autor 2017-2019 Marc Sánchez Fauste"
 
 #: src/vumeter-qt/vumeter_qt.cc:35
 msgid "<b>VU Meter Settings</b>"
-msgstr ""
+msgstr "Ajusts del vúmetre"
 
 #: src/vumeter-qt/vumeter_qt.cc:37
 msgid "Peak hold time:"
-msgstr ""
+msgstr "Temps que es manté el pic:"
 
 #: src/vumeter-qt/vumeter_qt.cc:42
 msgid "Fall-off time:"
-msgstr ""
+msgstr "Temps de caiguda:"
 
 #: src/vumeter-qt/vumeter_qt.cc:44
 msgid "dB/second"
-msgstr ""
+msgstr "dB/segon"
 
 #: src/vumeter-qt/vumeter_qt.cc:46
 msgid "Display legend"
-msgstr ""
+msgstr "Mostrar llegenda"
 
 #: src/vumeter-qt/vumeter_qt.h:37
 msgid "VU Meter"
-msgstr ""
+msgstr "Vúmetre"
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
