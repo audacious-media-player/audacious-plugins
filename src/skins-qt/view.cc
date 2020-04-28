@@ -198,24 +198,29 @@ void view_set_on_top (bool on_top)
 
 void view_apply_on_top ()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
-    bool on_top = aud_get_bool ("skins", "always_on_top");
     bool mainwin_visible = mainwin->isVisible ();
     bool equalizer_visible = equalizerwin->isVisible ();
     bool playlist_visible = playlistwin->isVisible ();
 
-    mainwin->setWindowFlag (Qt::WindowStaysOnTopHint, on_top);
+    if (aud_get_bool ("skins", "always_on_top"))
+    {
+        mainwin->setWindowFlags (mainwin->windowFlags () | Qt::WindowStaysOnTopHint);
+        equalizerwin->setWindowFlags (equalizerwin->windowFlags () | Qt::WindowStaysOnTopHint);
+        playlistwin->setWindowFlags (playlistwin->windowFlags () | Qt::WindowStaysOnTopHint);
+    }
+    else
+    {
+        mainwin->setWindowFlags (mainwin->windowFlags () & ~Qt::WindowStaysOnTopHint);
+        equalizerwin->setWindowFlags (equalizerwin->windowFlags () & ~Qt::WindowStaysOnTopHint);
+        playlistwin->setWindowFlags (playlistwin->windowFlags () & ~Qt::WindowStaysOnTopHint);
+    }
+
     if (mainwin_visible)
         mainwin->show ();
-
-    equalizerwin->setWindowFlag (Qt::WindowStaysOnTopHint, on_top);
     if (equalizer_visible)
         equalizerwin->show ();
-
-    playlistwin->setWindowFlag (Qt::WindowStaysOnTopHint, on_top);
     if (playlist_visible)
         playlistwin->show ();
-#endif
 
     mainwin_menurow->refresh ();
 }
