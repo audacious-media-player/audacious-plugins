@@ -44,6 +44,7 @@
 # Victor Ponomarev <victor.a.ponomarev@gmail.com>, 2013
 # Volk Daemon <volk-daemon@rambler.ru>, 2016,2018
 # Алексей <kvadrocu7@gmail.com>, 2013
+# Виктор Голованенко <drygdryg2014@yandex.ru>, 2020
 # Денис <alpi_bel@mail.ru>, 2014-2015
 # Денис Локтев <den32ds@gmail.com>, 2017
 # Петро Проценко <petruk3@gmail.com>, 2018
@@ -52,8 +53,8 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2020-01-26 13:18+0100\n"
-"PO-Revision-Date: 2020-01-26 12:22+0000\n"
-"Last-Translator: John Lindgren <john@jlindgren.net>\n"
+"PO-Revision-Date: 2020-04-18 07:12+0000\n"
+"Last-Translator: Виктор Голованенко <drygdryg2014@yandex.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/audacious/audacious/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1671,12 +1672,12 @@ msgstr "_Следующий"
 #: src/gtkui/menus.cc:97 src/qtui/menus.cc:140 src/skins/menus.cc:114
 #: src/skins-qt/menus.cc:105
 msgid "Previous Album"
-msgstr ""
+msgstr "Предыдущий альбом"
 
 #: src/gtkui/menus.cc:98 src/qtui/menus.cc:141 src/skins/menus.cc:115
 #: src/skins-qt/menus.cc:106
 msgid "Next Album"
-msgstr ""
+msgstr "Следующий альбом"
 
 #: src/gtkui/menus.cc:100 src/qtui/menus.cc:143
 msgid "_Repeat"
@@ -2253,7 +2254,7 @@ msgstr ""
 
 #: src/jack/jack-ng.cc:178
 msgid "No JACK output ports were found. Please check settings."
-msgstr ""
+msgstr "Никаких выходных портов JACK не обнаружено. Пожалуйста, проверьте настройки."
 
 #: src/jack/jack-ng.cc:192
 #, c-format
@@ -2398,7 +2399,7 @@ msgstr "Метаданные песни отсутствуют"
 
 #: src/lyricwiki/lyricwiki.cc:310
 msgid "Connecting to lyrics.fandom.com ..."
-msgstr ""
+msgstr "Соединение с lyrics.fandom.com ..."
 
 #: src/lyricwiki/lyricwiki.cc:351
 msgid "Edit lyrics ..."
@@ -2406,11 +2407,11 @@ msgstr "Редактировать текст песни ..."
 
 #: src/lyricwiki-qt/lyricwiki.cc:88
 msgid "Lyrics"
-msgstr ""
+msgstr "Текст песни"
 
 #: src/lyricwiki-qt/lyricwiki.cc:111
 msgid "Nowhere"
-msgstr ""
+msgstr "Нет"
 
 #: src/lyricwiki-qt/lyricwiki.cc:112
 msgid "LyricWiki"
@@ -2426,11 +2427,11 @@ msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:118
 msgid "Fetch lyrics from:"
-msgstr ""
+msgstr "Извлекать слова из:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:121
 msgid "Store fetched lyrics in local cache"
-msgstr ""
+msgstr "Сохранять извлечённые тексты в локальном кэше"
 
 #: src/lyricwiki-qt/lyricwiki.cc:123
 msgid "<b>Local Storage</b>"
@@ -2442,23 +2443,23 @@ msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:664
 msgid "Lyrics could not be found."
-msgstr ""
+msgstr "Не удалось найти текст песни."
 
 #: src/lyricwiki-qt/lyricwiki.cc:701
 msgid "Missing title and/or artist."
-msgstr ""
+msgstr "Отсутствует название и/или исполнитель."
 
 #: src/lyricwiki-qt/lyricwiki.cc:751
 msgid "Edit Lyrics ..."
-msgstr ""
+msgstr "Редактировать слова..."
 
 #: src/lyricwiki-qt/lyricwiki.cc:759
 msgid "Save Locally"
-msgstr ""
+msgstr "Сохранить локально"
 
 #: src/lyricwiki-qt/lyricwiki.cc:767
 msgid "Refresh"
-msgstr ""
+msgstr "Обновить"
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
@@ -2812,7 +2813,7 @@ msgstr ""
 
 #: src/pulse/pulse_audio.cc:74
 msgid "Stream name:"
-msgstr ""
+msgstr "Имя трансляции:"
 
 #: src/pulse/pulse_audio.cc:575
 msgid ""
@@ -2917,7 +2918,7 @@ msgstr "Найти список воспроизведения"
 
 #: src/qtui/settings.cc:52
 msgid "Always"
-msgstr ""
+msgstr "Всегда"
 
 #: src/qtui/settings.cc:53
 msgid "Auto-hide"
@@ -2925,7 +2926,7 @@ msgstr ""
 
 #: src/qtui/settings.cc:54
 msgid "Never"
-msgstr ""
+msgstr "Никогда"
 
 #: src/qtui/settings.cc:58
 msgid "Show playlist tabs:"
@@ -4182,11 +4183,11 @@ msgstr "<b>Расширенное стерео</b>"
 
 #: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:131
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 #: src/streamtuner/icecast-model.cc:132
 msgid "Current Song"
-msgstr ""
+msgstr "Текущая песня"
 
 #: src/streamtuner/icecast-model.cc:164
 msgid "Other"
@@ -4202,31 +4203,31 @@ msgstr ""
 
 #: src/streamtuner/ihr-model.cc:162
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #: src/streamtuner/shoutcast-model.cc:128
 msgid "Listeners"
-msgstr ""
+msgstr "Слушатели"
 
 #: src/streamtuner/shoutcast-model.cc:188
 msgid "Top 500 Stations"
-msgstr ""
+msgstr "Топ-500 станций"
 
 #: src/streamtuner/shoutcast-model.cc:189
 msgid "Alternative"
-msgstr ""
+msgstr "Альтернативная музыка"
 
 #: src/streamtuner/shoutcast-model.cc:190
 msgid "Blues"
-msgstr "Blues"
+msgstr "Блюз"
 
 #: src/streamtuner/shoutcast-model.cc:191
 msgid "Classical"
-msgstr "Classical"
+msgstr "Классическая"
 
 #: src/streamtuner/shoutcast-model.cc:192
 msgid "Country"
-msgstr "Country"
+msgstr "Кантри"
 
 #: src/streamtuner/shoutcast-model.cc:193
 msgid "Decades"
@@ -4234,79 +4235,79 @@ msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:194
 msgid "Easy Listening"
-msgstr "Easy Listening"
+msgstr "Лёгкая музыка"
 
 #: src/streamtuner/shoutcast-model.cc:195
 msgid "Electronic"
-msgstr ""
+msgstr "Электронная"
 
 #: src/streamtuner/shoutcast-model.cc:196
 msgid "Folk"
-msgstr "Folk"
+msgstr "Народная"
 
 #: src/streamtuner/shoutcast-model.cc:197
 msgid "Inspirational"
-msgstr ""
+msgstr "Вдохновляющая"
 
 #: src/streamtuner/shoutcast-model.cc:198
 msgid "International"
-msgstr ""
+msgstr "Интернациональная"
 
 #: src/streamtuner/shoutcast-model.cc:199
 msgid "Jazz"
-msgstr "Jazz"
+msgstr "Джаз"
 
 #: src/streamtuner/shoutcast-model.cc:200
 msgid "Latin"
-msgstr ""
+msgstr "Латинская"
 
 #: src/streamtuner/shoutcast-model.cc:201
 msgid "Metal"
-msgstr "Metal"
+msgstr "Метал"
 
 #: src/streamtuner/shoutcast-model.cc:203
 msgid "New Age"
-msgstr "New Age"
+msgstr "Нью-эйдж"
 
 #: src/streamtuner/shoutcast-model.cc:204
 msgid "Pop"
-msgstr "Pop"
+msgstr "Попса"
 
 #: src/streamtuner/shoutcast-model.cc:205
 msgid "Public Radio"
-msgstr ""
+msgstr "Общественное радио"
 
 #: src/streamtuner/shoutcast-model.cc:206
 msgid "R&B and Urban"
-msgstr ""
+msgstr "Ритм-н-Блюз и городская"
 
 #: src/streamtuner/shoutcast-model.cc:207
 msgid "Rap"
-msgstr "Rap"
+msgstr "Рэп"
 
 #: src/streamtuner/shoutcast-model.cc:208
 msgid "Reggae"
-msgstr "Reggae"
+msgstr "Регги"
 
 #: src/streamtuner/shoutcast-model.cc:209
 msgid "Rock"
-msgstr "Rock"
+msgstr "Рок"
 
 #: src/streamtuner/shoutcast-model.cc:210
 msgid "Seasonal and Holiday"
-msgstr ""
+msgstr "Сезонная и праздничная"
 
 #: src/streamtuner/shoutcast-model.cc:211
 msgid "Soundtracks"
-msgstr ""
+msgstr "Аудиодорожки"
 
 #: src/streamtuner/shoutcast-model.cc:212
 msgid "Talk"
-msgstr ""
+msgstr "Беседы"
 
 #: src/streamtuner/shoutcast-model.cc:213
 msgid "Themes"
-msgstr ""
+msgstr "Тематики"
 
 #: src/streamtuner/streamtuner.cc:59
 msgid "Shoutcast"
@@ -4318,7 +4319,7 @@ msgstr ""
 
 #: src/streamtuner/streamtuner.cc:71
 msgid "Stream Tuner"
-msgstr ""
+msgstr "Тюнер трансляций"
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
