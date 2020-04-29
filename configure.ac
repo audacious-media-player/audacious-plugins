@@ -103,7 +103,7 @@ check_allowed () {
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-gtk])
             fi
             ;;
-        ampache|qtaudio|qtglspectrum|qthotkey)
+        ampache|qtaudio|qtglspectrum|qthotkey|streamtuner)
             plugin_allowed=$USE_QT
             if test $plugin_allowed = no -a $2 = yes ; then
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-qt])
