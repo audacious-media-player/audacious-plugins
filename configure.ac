@@ -504,8 +504,8 @@ ENABLE_PLUGIN_WITH_DEP(qtaudio,
     Qt5Multimedia)
 
 ENABLE_PLUGIN_WITH_DEP(streamtuner,
-    Stream tuner,
-    auto,
+    Stream tuner (experimental),
+    no,
     GENERAL,
     QTNETWORK,
     Qt5Network)
@@ -842,7 +842,7 @@ if test "x$USE_QT" = "xyes" ; then
     echo "  Song Info:                              yes"
     echo "  Spectrum Analyzer (2D):                 yes"
     echo "  Status Icon:                            yes"
-    echo "  Stream Tuner:                           $have_streamtuner"
+    echo "  Stream Tuner (experimental):            $have_streamtuner"
     echo "  VU Meter:                               yes"
     echo
 fi
