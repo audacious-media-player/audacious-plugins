@@ -20,7 +20,6 @@
 #include <QHeaderView>
 #include <QKeyEvent>
 #include <QMenu>
-#include <QProxyStyle>
 #include <QSortFilterProxyModel>
 
 #include <libaudcore/audstrings.h>
