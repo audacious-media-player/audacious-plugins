@@ -61,12 +61,14 @@ public:
 };
 
 TimeSlider::TimeSlider(QWidget * parent)
-    : QSlider(Qt::Horizontal, parent), m_label(new TimeSliderLabel(parent)),
-      m_style(new TimeSliderStyle)
+    : QSlider(Qt::Horizontal, parent), m_label(new TimeSliderLabel(parent))
 {
     setFocusPolicy(Qt::NoFocus);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-    setStyle(m_style);
+
+    auto style = new TimeSliderStyle;
+    style->setParent(this);
+    setStyle(style);
 
     m_label->setContentsMargins(audqt::sizes.FourPt, 0, 0, 0);
     m_label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
@@ -77,8 +79,6 @@ TimeSlider::TimeSlider(QWidget * parent)
 
     start_stop();
 }
-
-TimeSlider::~TimeSlider() { delete m_style; }
 
 void TimeSlider::set_label(int time, int length)
 {
