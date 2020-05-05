@@ -36,7 +36,8 @@
  * 3. Repeat the process for windows docked to the right edge of this one.
  */
 
-#include <stdlib.h>
+#include <QGuiApplication>
+#include <QScreen>
 
 #include "window.h"
 
@@ -264,14 +265,9 @@ void dock_move (int x, int y)
     hori = SNAP_DISTANCE + 1;
     vert = SNAP_DISTANCE + 1;
 
-#if 0
-    GdkScreen * screen = gdk_screen_get_default ();
-    int monitors = gdk_screen_get_n_monitors (screen);
-
-    for (int m = 0; m < monitors; m ++)
+    for (auto screen : QGuiApplication::screens ())
     {
-        GdkRectangle rect;
-        gdk_screen_get_monitor_geometry (screen, m, & rect);
+        auto rect = screen->availableGeometry ();
 
         for (DockWindow & dw : windows)
         {
@@ -282,13 +278,12 @@ void dock_move (int x, int y)
                helpful to have e.g. the right edge of a window touching the left
                edge of a monitor (think about it). */
 
-            hori = least_abs (hori, rect.x - * dw.x);
-            hori = least_abs (hori, (rect.x + rect.width) - (* dw.x + dw.w));
-            vert = least_abs (vert, rect.y - * dw.y);
-            vert = least_abs (vert, (rect.y + rect.height) - (* dw.y + dw.h));
+            hori = least_abs (hori, rect.x () - * dw.x);
+            hori = least_abs (hori, (rect.x () + rect.width ()) - (* dw.x + dw.w));
+            vert = least_abs (vert, rect.y () - * dw.y);
+            vert = least_abs (vert, (rect.y () + rect.height ()) - (* dw.y + dw.h));
         }
     }
-#endif
 
     for (DockWindow & dw : windows)
     {
