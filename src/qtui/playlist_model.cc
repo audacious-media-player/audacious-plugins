@@ -182,11 +182,6 @@ QVariant PlaylistModel::headerData(int section, Qt::Orientation orientation,
     }
 }
 
-Qt::DropActions PlaylistModel::supportedDropActions() const
-{
-    return Qt::CopyAction | Qt::MoveAction;
-}
-
 Qt::ItemFlags PlaylistModel::flags(const QModelIndex & index) const
 {
     if (index.isValid())
