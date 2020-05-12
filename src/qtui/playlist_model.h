@@ -59,7 +59,6 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation,
                         int role = Qt::DisplayRole) const;
 
-    Qt::DropActions supportedDropActions() const;
     Qt::ItemFlags flags(const QModelIndex & index) const;
 
     QStringList mimeTypes() const;
