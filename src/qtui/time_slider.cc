@@ -24,6 +24,7 @@
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
 
+#include <QApplication>
 #include <QMouseEvent>
 #include <QProxyStyle>
 #include <QStyle>
@@ -46,6 +47,13 @@ void TimeSliderLabel::mouseDoubleClickEvent(QMouseEvent * event)
 class TimeSliderStyle : public QProxyStyle
 {
 public:
+    TimeSliderStyle()
+    {
+        // detect and respond to application-wide style change
+        connect(qApp->style(), &QObject::destroyed, this,
+                &TimeSliderStyle::resetBaseStyle);
+    }
+
     int styleHint(QStyle::StyleHint hint, const QStyleOption * option = nullptr,
                   const QWidget * widget = nullptr,
                   QStyleHintReturn * returnData = nullptr) const
@@ -57,6 +65,14 @@ public:
             styleHint |= Qt::LeftButton;
 
         return styleHint;
+    }
+
+private:
+    void resetBaseStyle()
+    {
+        setBaseStyle(nullptr);
+        connect(qApp->style(), &QObject::destroyed, this,
+                &TimeSliderStyle::resetBaseStyle);
     }
 };
 
