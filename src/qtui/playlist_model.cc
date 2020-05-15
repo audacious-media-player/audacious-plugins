@@ -29,8 +29,6 @@
 
 #include "playlist_model.h"
 
-#define ICON_SIZE 16
-
 const char * const PlaylistModel::labels[] = {
     N_("Now Playing"),    N_("Entry Number"), N_("Title"),
     N_("Artist"),         N_("Year"),         N_("Album"),
@@ -49,11 +47,6 @@ static_assert(aud::n_elems(PlaylistModel::labels) == PlaylistModel::n_cols,
               "update PlaylistModel::labels");
 static_assert(aud::n_elems(s_fields) == PlaylistModel::n_cols,
               "update s_fields");
-
-static inline QPixmap get_icon(const char * name)
-{
-    return audqt::get_icon(name).pixmap(audqt::to_native_dpi(ICON_SIZE));
-}
 
 PlaylistModel::PlaylistModel(QObject * parent, Playlist playlist)
     : QAbstractListModel(parent), m_playlist(playlist),
@@ -137,14 +130,19 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
                 icon_name = aud_drct_get_paused() ? "media-playback-pause"
                                                   : "media-playback-start";
 
-            return get_icon(icon_name);
+            return audqt::get_icon(icon_name);
         }
-        else if (col == NowPlaying && index.row() == 0)
+        else if (col == NowPlaying)
         {
-            /* put a blank pixmap in the top row for size calculations */
-            QPixmap blank(ICON_SIZE, ICON_SIZE);
-            blank.fill(Qt::transparent);
-            return blank;
+            // Reserve space for the icon in other rows so that row
+            // heights don't change at song change. Undocumented but
+            // longstanding Qt behavior is that any isValid(),
+            // non-isNull() variant in the DecorationRole will set the
+            // QStyleOptionViewItem::HasDecoration feature, which will
+            // generally cause the QStyle to reserve space for an icon.
+            // See QStyledItemDelegate::initStyleOption() and
+            // QCommonStylePrivate::viewItemSize().
+            return QVariant(true);
         }
         break;
     }
