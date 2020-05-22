@@ -107,10 +107,10 @@ const PreferencesWidget NotifyPlugin::widgets[] = {
         WidgetBool ("notify", "resident", reinit)),
     WidgetCheck (N_("Include album name in notification"),
         WidgetBool ("notify", "album", reinit)),
-    WidgetCheck (N_("Custom notification duration"),
-        WidgetBool ("notify", "custom_duration_enabled", reinit)),
-    WidgetSpin (N_("Duration :"),
-        WidgetInt ("notify", "custom_duration", reinit), {1, 100, 1, N_("seconds")}, WIDGET_CHILD)
+    WidgetCheck (N_("Custom notification duration:"),
+        WidgetBool ("notify", "custom_duration_enabled")),
+    WidgetSpin (nullptr,
+        WidgetInt ("notify", "custom_duration"), {1, 100, 1, N_("seconds")}, WIDGET_CHILD)
 };
 
 const PluginPreferences NotifyPlugin::prefs = {{widgets}};
