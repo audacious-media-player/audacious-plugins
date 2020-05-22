@@ -72,6 +72,8 @@ const char * const NotifyPlugin::defaults[] = {
  "actions", "TRUE",
  "resident", "FALSE",
  "album", "TRUE",
+ "custom_duration_enabled", "FALSE",
+ "custom_duration", "1",
  nullptr
 };
 
@@ -104,7 +106,11 @@ const PreferencesWidget NotifyPlugin::widgets[] = {
     WidgetCheck (N_("Always show notification"),
         WidgetBool ("notify", "resident", reinit)),
     WidgetCheck (N_("Include album name in notification"),
-        WidgetBool ("notify", "album", reinit))
+        WidgetBool ("notify", "album", reinit)),
+    WidgetCheck (N_("Custom notification duration"),
+        WidgetBool ("notify", "custom_duration_enabled", reinit)),
+    WidgetSpin (N_("Duration :"),
+        WidgetInt ("notify", "custom_duration", reinit), {1, 100, 1, N_("seconds")}, WIDGET_CHILD)
 };
 
 const PluginPreferences NotifyPlugin::prefs = {{widgets}};
