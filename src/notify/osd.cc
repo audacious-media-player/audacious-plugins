@@ -33,6 +33,22 @@ static void show_cb ()
     aud_ui_show (true);
 }
 
+static int get_notification_timeout (bool resident)
+{
+    if (resident)
+    {
+        return NOTIFY_EXPIRES_NEVER;
+    }
+    else if (aud_get_bool("notify", "custom_duration_enabled"))
+    {
+        return aud_get_int("notify", "custom_duration") * 1000;
+    }
+    else
+    {
+        return NOTIFY_EXPIRES_DEFAULT;
+    }
+}
+
 static void osd_setup (NotifyNotification *notification)
 {
     bool resident = aud_get_bool ("notify", "resident");
@@ -45,8 +61,7 @@ static void osd_setup (NotifyNotification *notification)
     notify_notification_set_hint (notification, "transient", g_variant_new_boolean (! resident));
 
     notify_notification_set_urgency (notification, NOTIFY_URGENCY_LOW);
-    notify_notification_set_timeout (notification, resident ?
-     NOTIFY_EXPIRES_NEVER : NOTIFY_EXPIRES_DEFAULT);
+    notify_notification_set_timeout (notification, get_notification_timeout (resident));
 }
 
 void osd_setup_buttons (NotifyNotification *notification)
