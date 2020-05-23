@@ -104,6 +104,7 @@ const char * const LyricWikiQt::defaults[] = {
     "remote-source", "lyricwiki",
     "enable-file-provider", "TRUE",
     "enable-cache", "TRUE",
+    "split-title-on-hyphen", "FALSE",
     nullptr
 };
 
@@ -114,6 +115,9 @@ static const ComboItem remote_sources[] = {
 };
 
 const PreferencesWidget LyricWikiQt::widgets[] = {
+    WidgetLabel(N_("<b>General</b>")),
+    WidgetCheck(N_("Split title into artist and title on hyphen (' - ')"),
+        WidgetBool ("lyricwiki", "split-title-on-hyphen")),
     WidgetLabel(N_("<b>Internet Sources</b>")),
     WidgetCombo(N_("Fetch lyrics from:"),
         WidgetString ("lyricwiki", "remote-source"),
@@ -693,6 +697,24 @@ static void lyricwiki_playback_began ()
     Tuple tuple = aud_drct_get_tuple ();
     g_state.title = tuple.get_str (Tuple::Title);
     g_state.artist = tuple.get_str (Tuple::Artist);
+
+    if (aud_get_bool ("lyricwiki", "split-title-on-hyphen"))
+    {
+        GRegex * reg;
+        GMatchInfo * match_info;
+
+        reg = g_regex_new("^(.*) - (.*)$", (GRegexCompileFlags) G_REGEX_DOTALL, (GRegexMatchFlags) 0, nullptr);
+        if (g_regex_match (reg, g_state.title, G_REGEX_MATCH_NEWLINE_ANY, & match_info))
+        {
+            g_state.artist = String ();
+            g_state.title = String ();
+
+            g_state.artist = String (g_match_info_fetch (match_info, 1));
+            g_state.title = String (g_match_info_fetch (match_info, 2));
+        }
+        g_match_info_free (match_info);
+        g_regex_unref (reg);
+    }
 
     if (! aud_get_bool ("lyricwiki", "enable-file-provider") || ! file_provider.match (g_state))
     {
