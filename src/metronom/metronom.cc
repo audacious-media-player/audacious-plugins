@@ -227,6 +227,7 @@ bool Metronome::read_tag(const char *filename, VFSFile &file, Tuple &tuple, Inde
         return false;
 
     tuple.set_str(Tuple::Title, desc);
+    tuple.set_int(Tuple::Channels, 1);
     return true;
 }
 

@@ -153,6 +153,7 @@ bool ToneGen::read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<
         return false;
 
     tuple.set_str(Tuple::Title, title);
+    tuple.set_int(Tuple::Channels, 1);
     return true;
 }
 

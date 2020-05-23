@@ -320,6 +320,7 @@ bool ModplugXMMS::read_tag (const char * filename, VFSFile & file, Tuple & tuple
     tuple.set_str (Tuple::Codec, tmps);
     tuple.set_str (Tuple::Quality, _("sequenced"));
     tuple.set_int (Tuple::Length, lSoundFile->GetSongTime() * 1000);
+    tuple.set_int (Tuple::Channels, lSoundFile->GetNumChannels());
 
     const char *tmps2 = lSoundFile->GetTitle();
     // Chop any leading spaces off. They are annoying in the playlist.
