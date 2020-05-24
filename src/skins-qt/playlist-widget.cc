@@ -34,11 +34,14 @@
 #include "playlist-slider.h"
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/playlist.h>
 #include <libaudqt/libaudqt.h>
+
+#include <QMimeData>
 
 enum {
     DRAG_SELECT = 1,
@@ -279,6 +282,8 @@ PlaylistWidget::PlaylistWidget (int width, int height, const char * font) :
 {
     add_input (m_width, m_height, true, true);
     set_font (font);  /* calls refresh() */
+
+    setAcceptDrops(true);
 }
 
 void PlaylistWidget::resize (int width, int height)
@@ -736,6 +741,37 @@ bool PlaylistWidget::motion (QMouseEvent * event)
     }
 
     return true;
+}
+
+void PlaylistWidget::dragEnterEvent (QDragEnterEvent * event)
+{
+    const QMimeData * mimedata = event->mimeData();
+
+    if (mimedata->hasUrls())
+    {
+        event->setAccepted(true);
+    }
+}
+
+void PlaylistWidget::dropEvent (QDropEvent * event)
+{
+    int position = calc_position (event->pos().y());
+    const QMimeData * mimedata = event->mimeData();
+
+    if (mimedata->hasUrls())
+    {
+        Index<PlaylistAddItem> files;
+
+        for (const auto &url: mimedata->urls())
+        {
+            if (url.isLocalFile())
+                files.append(String(url.toString().toLocal8Bit().data()));
+        }
+
+        aud_drct_pl_add_list (std::move (files), (position >= 0) ? position : 0);
+    }
+
+    event->acceptProposedAction();
 }
 
 bool PlaylistWidget::leave ()

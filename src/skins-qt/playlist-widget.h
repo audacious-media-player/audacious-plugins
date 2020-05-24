@@ -60,6 +60,8 @@ private:
     bool button_press (QMouseEvent * event);
     bool button_release (QMouseEvent * event);
     bool motion (QMouseEvent * event);
+    void dragEnterEvent (QDragEnterEvent * event) override;
+    void dropEvent (QDropEvent * event) override;
     bool leave ();
 
     void update_title ();
