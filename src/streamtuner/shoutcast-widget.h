@@ -15,8 +15,7 @@
 
 #include <QWidget>
 #include <QTabWidget>
-#include <QVBoxLayout>
-#include <QSplitter>
+#include <QHBoxLayout>
 #include <QAbstractListModel>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -52,8 +51,7 @@ public:
 private:
     ShoutcastListingWidget *m_tuner;
     ShoutcastGenreWidget *m_genre;
-    QSplitter *m_splitter;
-    QVBoxLayout *m_layout;
+    QHBoxLayout *m_layout;
 };
 
 #endif

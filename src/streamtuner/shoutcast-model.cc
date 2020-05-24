@@ -139,7 +139,7 @@ QVariant ShoutcastTunerModel::headerData (int section, Qt::Orientation, int role
 
 QVariant ShoutcastTunerModel::data (const QModelIndex &index, int role) const
 {
-    if (role != Qt::DisplayRole)
+    if (role != Qt::DisplayRole && ! (role == Qt::ToolTipRole && index.column () == Title))
         return QVariant ();
 
     int row = index.row ();

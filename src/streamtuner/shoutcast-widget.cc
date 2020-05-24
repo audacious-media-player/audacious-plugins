@@ -22,6 +22,9 @@
 #include "shoutcast-model.h"
 #include "shoutcast-widget.h"
 
+#include <QHeaderView>
+#include <QScrollBar>
+
 ShoutcastListingWidget::ShoutcastListingWidget (QWidget * parent) :
     audqt::TreeView (parent)
 {
@@ -29,6 +32,10 @@ ShoutcastListingWidget::ShoutcastListingWidget (QWidget * parent) :
 
     setModel (m_model);
     setRootIsDecorated (false);
+
+    auto hdr = header ();
+    hdr->setStretchLastSection (false);
+    hdr->setSectionResizeMode (0, QHeaderView::Stretch);
 }
 
 void ShoutcastListingWidget::activate (const QModelIndex & index)
@@ -57,23 +64,31 @@ ShoutcastGenreWidget::ShoutcastGenreWidget (QWidget * parent) :
     auto idx = m_model->index (0);
     auto selection = selectionModel ();
     selection->select (idx, QItemSelectionModel::Select);
+
+    auto hdr = header ();
+    hdr->setStretchLastSection (false);
+    hdr->setSectionResizeMode (QHeaderView::ResizeToContents);
+
+    int w = 0;
+    for (int i=0; i < m_model->columnCount (); i++)
+    {
+        resizeColumnToContents (i);
+        w += columnWidth (i);
+    }
+
+    setFixedWidth (w + verticalScrollBar ()->width () + 2);
 }
 
 ShoutcastTunerWidget::ShoutcastTunerWidget (QWidget * parent) :
     QWidget (parent)
 {
-    m_layout = new QVBoxLayout (this);
-
-    m_splitter = new QSplitter ();
+    m_layout = new QHBoxLayout (this);
 
     m_genre = new ShoutcastGenreWidget ();
-    m_splitter->addWidget (m_genre);
+    m_layout->addWidget (m_genre);
 
     m_tuner = new ShoutcastListingWidget ();
-    m_splitter->addWidget (m_tuner);
-    m_splitter->setStretchFactor (1, 2);
-
-    m_layout->addWidget (m_splitter);
+    m_layout->addWidget (m_tuner);
 
     auto genre_selection_model = m_genre->selectionModel ();
     connect(genre_selection_model, &QItemSelectionModel::selectionChanged, [&] (const QItemSelection &selected, const QItemSelection &) {
@@ -85,5 +100,12 @@ ShoutcastTunerWidget::ShoutcastTunerWidget (QWidget * parent) :
 
         ShoutcastTunerModel *model = (ShoutcastTunerModel *) m_tuner->model ();
         model->fetch_stations (String (ShoutcastTunerModel::genres [idx.row ()]));
+    });
+
+    connect(m_tuner->model (), &QAbstractItemModel::modelReset, [&] () {
+        auto model = m_tuner->model ();
+        m_tuner->scrollTo (model->index (0,0));
+        for (int i=1; i < model->columnCount (); i++)
+            m_tuner->resizeColumnToContents (i);
     });
 }
