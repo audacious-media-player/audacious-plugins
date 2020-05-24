@@ -30,6 +30,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMenu>
+#include <QRegularExpression>
 #include <QTextCursor>
 #include <QTextDocument>
 #include <QTextEdit>
@@ -104,7 +105,10 @@ const char * const LyricWikiQt::defaults[] = {
     "remote-source", "lyricwiki",
     "enable-file-provider", "TRUE",
     "enable-cache", "TRUE",
-    "split-title-on-hyphen", "FALSE",
+    "split-title-on-chars", "FALSE",
+    "split-on-chars", "-",
+    "truncate-fields-on-chars", "FALSE",
+    "truncate-on-chars", "|",
     nullptr
 };
 
@@ -114,10 +118,24 @@ static const ComboItem remote_sources[] = {
     ComboItem(N_("lyrics.ovh"), "lyrics.ovh")
 };
 
+static const PreferencesWidget truncate_elements[] = {
+    WidgetLabel(N_("<small>Artist is truncated at the start, Title -- at the end</small>")),
+    WidgetEntry(N_("Chars to truncate on:"), WidgetString ("lyricwiki", "truncate-on-chars"))
+};
+
+static const PreferencesWidget split_elements[] = {
+    WidgetLabel(N_("<small>Chars are ORed in RegExp, surrounded by whitespace</small>")),
+    WidgetEntry(N_("Chars to split on:"), WidgetString ("lyricwiki", "split-on-chars")),
+    WidgetCheck(N_("Further truncate those on chars"),
+        WidgetBool ("lyricwiki", "truncate-fields-on-chars")),
+    WidgetTable({{truncate_elements}}, WIDGET_CHILD)
+};
+
 const PreferencesWidget LyricWikiQt::widgets[] = {
     WidgetLabel(N_("<b>General</b>")),
-    WidgetCheck(N_("Split title into artist and title on hyphen (' - ')"),
-        WidgetBool ("lyricwiki", "split-title-on-hyphen")),
+    WidgetCheck(N_("Split title into artist and title on chars"),
+        WidgetBool ("lyricwiki", "split-title-on-chars")),
+    WidgetTable({{split_elements}}, WIDGET_CHILD),
     WidgetLabel(N_("<b>Internet Sources</b>")),
     WidgetCombo(N_("Fetch lyrics from:"),
         WidgetString ("lyricwiki", "remote-source"),
@@ -698,22 +716,35 @@ static void lyricwiki_playback_began ()
     g_state.title = tuple.get_str (Tuple::Title);
     g_state.artist = tuple.get_str (Tuple::Artist);
 
-    if (aud_get_bool ("lyricwiki", "split-title-on-hyphen"))
+    if (aud_get_bool ("lyricwiki", "split-title-on-chars"))
     {
-        GRegex * reg;
-        GMatchInfo * match_info;
+        QString artist = QString (g_state.artist);
+        QString title = QString (g_state.title);
 
-        reg = g_regex_new("^(.*) - (.*)$", (GRegexCompileFlags) G_REGEX_DOTALL, (GRegexMatchFlags) 0, nullptr);
-        if (g_regex_match (reg, g_state.title, G_REGEX_MATCH_NEWLINE_ANY, & match_info))
+        QRegularExpression qre;
+        qre.setPattern (QString ("^(.*)\\s+[") + aud_get_str ("lyricwiki", "split-on-chars") + "]\\s+(.*)$");
+
+        QRegularExpressionMatch qrematch = qre.match (title);
+
+        if (qrematch.hasMatch ())
         {
-            g_state.artist = String ();
-            g_state.title = String ();
+            artist = qrematch.captured (1);
+            title  = qrematch.captured (2);
 
-            g_state.artist = String (g_match_info_fetch (match_info, 1));
-            g_state.title = String (g_match_info_fetch (match_info, 2));
+            if (aud_get_bool ("lyricwiki", "truncate-fields-on-chars"))
+            {
+                qre.setPattern (QString ("^.*\\s+[") + aud_get_str ("lyricwiki", "truncate-on-chars") + "]\\s+");
+                artist.remove (qre);
+
+                qre.setPattern (QString ("\\s+[") + aud_get_str ("lyricwiki", "truncate-on-chars") + "]\\s+.*$");
+                title.remove (qre);
+            }
+
+            g_state.artist = String ();
+            g_state.title  = String ();
+            g_state.artist = String (artist.toUtf8 ());
+            g_state.title  = String (title.toUtf8 ());
         }
-        g_match_info_free (match_info);
-        g_regex_unref (reg);
     }
 
     if (! aud_get_bool ("lyricwiki", "enable-file-provider") || ! file_provider.match (g_state))
