@@ -56,13 +56,15 @@ public:
     int hover_end ();
 
 private:
-    void draw (QPainter & cr);
-    bool button_press (QMouseEvent * event);
-    bool button_release (QMouseEvent * event);
-    bool motion (QMouseEvent * event);
+    void draw (QPainter & cr) override;
+    bool button_press (QMouseEvent * event) override;
+    bool button_release (QMouseEvent * event) override;
+    bool motion (QMouseEvent * event) override;
     void dragEnterEvent (QDragEnterEvent * event) override;
+    void dragMoveEvent (QDragMoveEvent * event) override;
+    void dragLeaveEvent (QDragLeaveEvent *) override;
     void dropEvent (QDropEvent * event) override;
-    bool leave ();
+    bool leave () override;
 
     void update_title ();
     void calc_layout ();
