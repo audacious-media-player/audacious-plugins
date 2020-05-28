@@ -102,13 +102,14 @@ QMenuBar * qtui_build_menubar(QWidget * parent)
     static const audqt::MenuItem file_items[] = {
         audqt::MenuCommand({N_("_Open Files ..."), "document-open", "Ctrl+O"},
                            open_files),
-        audqt::MenuCommand({N_("_Open Folder ..."), "document-open"},
+        audqt::MenuCommand({N_("_Open Folder ..."), "document-open", "Ctrl+K"},
                            open_folder),
         audqt::MenuCommand({N_("Open _URL ..."), "folder-remote", "Ctrl+L"},
                            open_url),
         audqt::MenuCommand({N_("_Add Files ..."), "list-add", "Ctrl+Shift+O"},
                            add_files),
-        audqt::MenuCommand({N_("_Add Folder ..."), "list-add"}, add_folder),
+        audqt::MenuCommand({N_("_Add Folder ..."), "list-add", "Ctrl+Shift+K"},
+                           add_folder),
         audqt::MenuCommand(
             {N_("Add U_RL ..."), "folder-remote", "Ctrl+Shift+L"}, add_url),
         audqt::MenuSep(),
