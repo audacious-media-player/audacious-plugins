@@ -181,6 +181,8 @@ void InfoVis::enable(bool enabled)
         aud_visualizer_remove(this);
         clear();
     }
+
+    setVisible(enabled);
 }
 
 InfoBar::InfoBar(QWidget * parent)
@@ -211,6 +213,7 @@ InfoBar::InfoBar(QWidget * parent)
 
 void InfoBar::resizeEvent(QResizeEvent *)
 {
+    // re-ellipsize text on next paintEvent
     for (SongData & d : sd)
         d.title.setText(QString());
 
@@ -221,7 +224,8 @@ void InfoBar::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
 
-    p.fillRect(0, 0, width() - ps.VisWidth, ps.Height, m_vis->gradient());
+    int viswidth = m_vis->isVisible() ? ps.VisWidth : 0;
+    p.fillRect(0, 0, width() - viswidth, ps.Height, m_vis->gradient());
 
     for (SongData & d : sd)
     {
@@ -244,7 +248,7 @@ void InfoBar::paintEvent(QPaintEvent *)
             QFontMetrics metrics = p.fontMetrics();
             d.title = QStaticText(metrics.elidedText(
                 d.orig_title, Qt::ElideRight,
-                width() - ps.VisWidth - ps.Height - ps.Spacing));
+                width() - viswidth - ps.Height - ps.Spacing));
         }
 
         p.setPen(QColor(255, 255, 255));
@@ -329,5 +333,10 @@ void InfoBar::playback_stop_cb()
 
 void InfoBar::update_vis()
 {
+    // re-ellipsize text on next paintEvent
+    for (SongData & d : sd)
+        d.title.setText(QString());
+
     m_vis->enable(aud_get_bool("qtui", "infoarea_show_vis"));
+    update();
 }
