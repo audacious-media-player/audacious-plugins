@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2020-01-26 13:18+0100\n"
-"PO-Revision-Date: 2020-02-18 17:05+0000\n"
+"PO-Revision-Date: 2020-04-30 18:51+0000\n"
 "Last-Translator: AO <ao@localizationlab.org>\n"
 "Language-Team: French (http://www.transifex.com/audacious/audacious/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -301,7 +301,7 @@ msgstr "Périphérique PCM par défaut"
 
 #: src/alsa/config.cc:188
 msgid "Default mixer device"
-msgstr "Mélangeur audio par défaut"
+msgstr "Mélangeur de son par défaut"
 
 #: src/alsa/config.cc:296
 msgid "PCM device:"
@@ -985,7 +985,7 @@ msgstr "Utiliser le mode exclusif"
 
 #: src/coreaudio/coreaudio.cc:174
 msgid "Use bit perfect audio (adapt device sampling rate)"
-msgstr "Utiliser la reproduction au bit près de l’audio (adapter la fréquence d’échantillonnage du périphérique)"
+msgstr "Utiliser la reproduction du son au bit près (adapter la fréquence d’échantillonnage du périphérique)"
 
 #: src/crossfade/crossfade.cc:43
 msgid ""
@@ -1333,7 +1333,7 @@ msgstr "Taux de compression :"
 
 #: src/filewriter/filewriter.cc:498
 msgid "Audio mode:"
-msgstr "Mode audio :"
+msgstr "Mode son :"
 
 #: src/filewriter/filewriter.cc:501
 msgid "Enforce strict ISO compliance"
@@ -1837,7 +1837,7 @@ msgstr "Enregistrer le flu_x"
 
 #: src/gtkui/menus.cc:183
 msgid "Audio _Settings ..."
-msgstr "_Paramètres audio…"
+msgstr "_Paramètres du son…"
 
 #: src/gtkui/menus.cc:187 src/qtui/menus.cc:246
 msgid "Show _Menu Bar"
@@ -2232,7 +2232,7 @@ msgstr "Échec de connexion au port JACK %s."
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
-msgstr "JACK ne prend en charge que l’audio à virgule flottante. Vous devez changer la profondeur de sortie binaire à « virgule flottante » dans les paramètres d’Audacious."
+msgstr "JACK ne prend en charge que le son à virgule flottante. Vous devez changer la profondeur de sortie binaire à « virgule flottante » dans les paramètres d’Audacious."
 
 #: src/jack/jack-ng.cc:242
 msgid "Failed to connect to the JACK server; is it running?"
@@ -2799,7 +2799,7 @@ msgid ""
 "\n"
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
-msgstr "Sortie Audio QtMultimédia pour Audacious\nTous droits réservés © 2014 Willian Pitcock\n\nFondé sur le greffon de sortie SDL pour Audacious\nTous droits réservés © 2010 John Lindgren"
+msgstr "Sortie son QtMultimédia pour Audacious\nTous droits réservés © 2014 Willian Pitcock\n\nFondé sur le greffon de sortie SDL pour Audacious\nTous droits réservés © 2010 John Lindgren"
 
 #: src/qtglspectrum/gl-spectrum.cc:41
 msgid ""
@@ -2836,7 +2836,7 @@ msgstr "_Trouver…"
 
 #: src/qtui/menus.cc:242 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
-msgstr "Paramètres audio…"
+msgstr "Paramètres du son…"
 
 #: src/qtui/playlist_header.cc:214
 msgid "Reset to Defaults"
@@ -3917,7 +3917,7 @@ msgstr "Enregistrer et restaurer le volume :"
 #: src/sndio/sndio.cc:181
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
-msgstr "Erreur sndio : le format audio n’est pas pris en charge (%d)"
+msgstr "Erreur sndio : le format son n’est pas pris en charge (%d)"
 
 #: src/sndio/sndio.cc:192
 msgid "Sndio error: sio_open() failed"

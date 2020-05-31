@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 # 
 # Translators:
-# Joe Hansen <joedalton2@yahoo.dk>, 2013-2014,2016
+# Joe Hansen <joedalton2@yahoo.dk>, 2013-2014,2016,2020
 # scootergrisen, 2017-2019
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2020-01-26 13:18+0100\n"
-"PO-Revision-Date: 2020-01-26 12:22+0000\n"
-"Last-Translator: Thomas Lange\n"
+"PO-Revision-Date: 2020-05-13 11:34+0000\n"
+"Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish (http://www.transifex.com/audacious/audacious/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +38,7 @@ msgstr "<b>Output</b>"
 
 #: src/adplug/adplug-xmms.cc:349
 msgid "OPL Emulator:"
-msgstr ""
+msgstr "OPL-emulator:"
 
 #: src/adplug/adplug-xmms.cc:352
 msgid "Sample rate"
@@ -1629,12 +1629,12 @@ msgstr "_Næste"
 #: src/gtkui/menus.cc:97 src/qtui/menus.cc:140 src/skins/menus.cc:114
 #: src/skins-qt/menus.cc:105
 msgid "Previous Album"
-msgstr ""
+msgstr "Forrige album"
 
 #: src/gtkui/menus.cc:98 src/qtui/menus.cc:141 src/skins/menus.cc:115
 #: src/skins-qt/menus.cc:106
 msgid "Next Album"
-msgstr ""
+msgstr "Næste album"
 
 #: src/gtkui/menus.cc:100 src/qtui/menus.cc:143
 msgid "_Repeat"
@@ -2073,11 +2073,11 @@ msgstr "Næste spor"
 
 #: src/hotkey/gui.cc:76
 msgid "Step forward"
-msgstr ""
+msgstr "Trin fremad"
 
 #: src/hotkey/gui.cc:77
 msgid "Step backward"
-msgstr ""
+msgstr "Trin baglæns"
 
 #: src/hotkey/gui.cc:78
 msgid "Mute"
@@ -2173,7 +2173,7 @@ msgid ""
 " Bryn Davies <curious@ihug.com.au>,\n"
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
-msgstr ""
+msgstr "Global Hotkey-udvidelsesmodul\nStyr afspilleren med globale genvejstaster eller multimedietaster.\n\nOphavsret (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\nBidrag inkluderer:\nOphavsret (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\nOphavsret (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n Bryn Davies <curious@ihug.com.au>,\n Jonathan A. Davis <davis@jdhouse.org>,\n Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/jack/jack-ng.cc:51
 msgid "JACK Output"
@@ -2181,7 +2181,7 @@ msgstr "JACK-output"
 
 #: src/jack/jack-ng.cc:123
 msgid "Client name:"
-msgstr ""
+msgstr "Klientnavn:"
 
 #: src/jack/jack-ng.cc:125
 msgid "Automatically connect to output ports"
@@ -2189,15 +2189,15 @@ msgstr "Forbind automatisk til output-porte"
 
 #: src/jack/jack-ng.cc:127
 msgid "Filter ports (regex, use any port if blank):"
-msgstr ""
+msgstr "Filtrer porte (regulært udtryk, brug enhver port hvis blank):"
 
 #: src/jack/jack-ng.cc:133
 msgid "Connect to physical ports only"
-msgstr ""
+msgstr "Forbind kun til fysiske porte"
 
 #: src/jack/jack-ng.cc:136
 msgid "Upmix to"
-msgstr ""
+msgstr "Upmix til"
 
 #: src/jack/jack-ng.cc:138
 msgid "ports if input has fewer channels"
@@ -2205,11 +2205,11 @@ msgstr ""
 
 #: src/jack/jack-ng.cc:140
 msgid "Ignore insufficient number of ports"
-msgstr ""
+msgstr "Ignorer utilstrækkeligt antal porte"
 
 #: src/jack/jack-ng.cc:178
 msgid "No JACK output ports were found. Please check settings."
-msgstr ""
+msgstr "Ingen JACK-udgangsporte blev fundet. Kontroller venligst indstillingerne."
 
 #: src/jack/jack-ng.cc:192
 #, c-format
@@ -2354,7 +2354,7 @@ msgstr "Manglende sangmetadata"
 
 #: src/lyricwiki/lyricwiki.cc:310
 msgid "Connecting to lyrics.fandom.com ..."
-msgstr ""
+msgstr "Forbinder til lyrics.fandom.com ..."
 
 #: src/lyricwiki/lyricwiki.cc:351
 msgid "Edit lyrics ..."
@@ -2362,59 +2362,59 @@ msgstr "Rediger sangtekster ..."
 
 #: src/lyricwiki-qt/lyricwiki.cc:88
 msgid "Lyrics"
-msgstr ""
+msgstr "Sangtekster"
 
 #: src/lyricwiki-qt/lyricwiki.cc:111
 msgid "Nowhere"
-msgstr ""
+msgstr "Intet sted"
 
 #: src/lyricwiki-qt/lyricwiki.cc:112
 msgid "LyricWiki"
-msgstr ""
+msgstr "LyricWiki"
 
 #: src/lyricwiki-qt/lyricwiki.cc:113
 msgid "lyrics.ovh"
-msgstr ""
+msgstr "lyrics.ovh"
 
 #: src/lyricwiki-qt/lyricwiki.cc:117
 msgid "<b>Internet Sources</b>"
-msgstr ""
+msgstr "<b>Internetkilder</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:118
 msgid "Fetch lyrics from:"
-msgstr ""
+msgstr "Hent sangtekster fra:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:121
 msgid "Store fetched lyrics in local cache"
-msgstr ""
+msgstr "Lagr hentede sangtekster i lokalt mellemlager"
 
 #: src/lyricwiki-qt/lyricwiki.cc:123
 msgid "<b>Local Storage</b>"
-msgstr ""
+msgstr "<b>Lokalt lager</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:124
 msgid "Load lyric files (.lrc) from local storage"
-msgstr ""
+msgstr "Indlæs sangtekstfiler (.lrc) fra lokalt lager"
 
 #: src/lyricwiki-qt/lyricwiki.cc:664
 msgid "Lyrics could not be found."
-msgstr ""
+msgstr "Sangtekster kunne ikke findes."
 
 #: src/lyricwiki-qt/lyricwiki.cc:701
 msgid "Missing title and/or artist."
-msgstr ""
+msgstr "Manglende titel og/eller kunstner."
 
 #: src/lyricwiki-qt/lyricwiki.cc:751
 msgid "Edit Lyrics ..."
-msgstr ""
+msgstr "Rediger sangtekster ..."
 
 #: src/lyricwiki-qt/lyricwiki.cc:759
 msgid "Save Locally"
-msgstr ""
+msgstr "Gem lokalt"
 
 #: src/lyricwiki-qt/lyricwiki.cc:767
 msgid "Refresh"
-msgstr ""
+msgstr "Opdater"
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
@@ -2649,26 +2649,26 @@ msgstr "Vis"
 
 #: src/openmpt/mpt.cc:50
 msgid "OpenMPT (Module Player)"
-msgstr ""
+msgstr "OpenMPT (modulafspiller)"
 
 #: src/openmpt/mpt.cc:134
 msgid ""
 "Module player based on libopenmpt\n"
 "\n"
 "Written by: Chris Spiegel <cspiegel@gmail.com>"
-msgstr ""
+msgstr "Modulafspiller baseret på libopenmpt\n\nSkrevet af: Chris Spiegel <cspiegel@gmail.com>"
 
 #: src/openmpt/mpt.cc:153
 msgid "Stereo separation:"
-msgstr ""
+msgstr "Stereoadskillelse:"
 
 #: src/openmpt/mpt.cc:155
 msgid "%"
-msgstr ""
+msgstr "%"
 
 #: src/openmpt/mpt.cc:159
 msgid "Interpolation:"
-msgstr ""
+msgstr "Interpolation:"
 
 #: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:174
 msgid "Linear"
@@ -2764,7 +2764,7 @@ msgstr "PulseAudio-output"
 
 #: src/pulse/pulse_audio.cc:72
 msgid "Context name:"
-msgstr ""
+msgstr "Kontekstnavn:"
 
 #: src/pulse/pulse_audio.cc:74
 msgid "Stream name:"
@@ -2873,7 +2873,7 @@ msgstr "Søg i afspilningsliste"
 
 #: src/qtui/settings.cc:52
 msgid "Always"
-msgstr ""
+msgstr "Altid"
 
 #: src/qtui/settings.cc:53
 msgid "Auto-hide"
@@ -2881,7 +2881,7 @@ msgstr ""
 
 #: src/qtui/settings.cc:54
 msgid "Never"
-msgstr ""
+msgstr "Aldrig"
 
 #: src/qtui/settings.cc:58
 msgid "Show playlist tabs:"
@@ -4132,19 +4132,19 @@ msgstr "<b>Ekstra stereo</b>"
 
 #: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:131
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: src/streamtuner/icecast-model.cc:132
 msgid "Current Song"
-msgstr ""
+msgstr "Nuværende sang"
 
 #: src/streamtuner/icecast-model.cc:164
 msgid "Other"
-msgstr ""
+msgstr "Anden"
 
 #: src/streamtuner/ihr-model.cc:63
 msgid "Market"
-msgstr ""
+msgstr "Marked"
 
 #: src/streamtuner/ihr-model.cc:156
 msgid "Call Letters"
@@ -4152,19 +4152,19 @@ msgstr ""
 
 #: src/streamtuner/ihr-model.cc:162
 msgid "Description"
-msgstr ""
+msgstr "Beskrivelse"
 
 #: src/streamtuner/shoutcast-model.cc:128
 msgid "Listeners"
-msgstr ""
+msgstr "Lyttere"
 
 #: src/streamtuner/shoutcast-model.cc:188
 msgid "Top 500 Stations"
-msgstr ""
+msgstr "Top 500-stationer"
 
 #: src/streamtuner/shoutcast-model.cc:189
 msgid "Alternative"
-msgstr ""
+msgstr "Alternativt"
 
 #: src/streamtuner/shoutcast-model.cc:190
 msgid "Blues"
@@ -4180,7 +4180,7 @@ msgstr "Country"
 
 #: src/streamtuner/shoutcast-model.cc:193
 msgid "Decades"
-msgstr ""
+msgstr "Årtier"
 
 #: src/streamtuner/shoutcast-model.cc:194
 msgid "Easy Listening"
@@ -4188,7 +4188,7 @@ msgstr "Blød pop"
 
 #: src/streamtuner/shoutcast-model.cc:195
 msgid "Electronic"
-msgstr ""
+msgstr "Elektronik"
 
 #: src/streamtuner/shoutcast-model.cc:196
 msgid "Folk"
@@ -4208,7 +4208,7 @@ msgstr "Jazz"
 
 #: src/streamtuner/shoutcast-model.cc:200
 msgid "Latin"
-msgstr ""
+msgstr "Latin"
 
 #: src/streamtuner/shoutcast-model.cc:201
 msgid "Metal"
@@ -4224,11 +4224,11 @@ msgstr "Pop"
 
 #: src/streamtuner/shoutcast-model.cc:205
 msgid "Public Radio"
-msgstr ""
+msgstr "Offentlig radio"
 
 #: src/streamtuner/shoutcast-model.cc:206
 msgid "R&B and Urban"
-msgstr ""
+msgstr "R&B og urban"
 
 #: src/streamtuner/shoutcast-model.cc:207
 msgid "Rap"
@@ -4248,7 +4248,7 @@ msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:211
 msgid "Soundtracks"
-msgstr ""
+msgstr "Filmmusik"
 
 #: src/streamtuner/shoutcast-model.cc:212
 msgid "Talk"
@@ -4256,7 +4256,7 @@ msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:213
 msgid "Themes"
-msgstr ""
+msgstr "Temaer"
 
 #: src/streamtuner/streamtuner.cc:59
 msgid "Shoutcast"
@@ -4368,7 +4368,7 @@ msgstr ""
 
 #: src/vumeter-qt/vumeter_qt.cc:35
 msgid "<b>VU Meter Settings</b>"
-msgstr ""
+msgstr "<b>Indstillinger for VU-viser</b>"
 
 #: src/vumeter-qt/vumeter_qt.cc:37
 msgid "Peak hold time:"
@@ -4388,7 +4388,7 @@ msgstr ""
 
 #: src/vumeter-qt/vumeter_qt.h:37
 msgid "VU Meter"
-msgstr ""
+msgstr "VU-viser"
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"

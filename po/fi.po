@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2020-01-26 13:18+0100\n"
-"PO-Revision-Date: 2020-04-25 23:12+0000\n"
+"PO-Revision-Date: 2020-05-07 17:16+0000\n"
 "Last-Translator: Kimmo Kujansuu <mrkujansuu@gmail.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/audacious/audacious/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -375,7 +375,7 @@ msgstr "Rummun siirto:"
 
 #: src/amidiplug/i_configure.cc:134
 msgid "note numbers"
-msgstr "Sisällysnumerot"
+msgstr "sisällysnumerot"
 
 #: src/amidiplug/i_configure.cc:135
 msgid "Skip leading silence"
@@ -801,7 +801,7 @@ msgstr "Portti:"
 
 #: src/cdaudio/cdaudio-ng.cc:220
 msgid "Failed to initialize cdio subsystem."
-msgstr "cdio-alijärjestelmää ei voitu alustaa."
+msgstr "Ei voitu alustaa cdio-alijärjestelmää."
 
 #: src/cdaudio/cdaudio-ng.cc:250
 #, c-format
@@ -3793,7 +3793,7 @@ msgstr "Pudotus:"
 
 #: src/skins-qt/skins_cfg.cc:272 src/skins/skins_cfg.cc:254
 msgid "Peak falloff:"
-msgstr "Huippujen pudotus"
+msgstr "Huippujen pudotus:"
 
 #: src/skins-qt/skins_cfg.cc:278 src/skins/skins_cfg.cc:260
 msgid "Scope Style:"
@@ -4283,7 +4283,7 @@ msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.cc:92
 msgid "Tone Generator: "
-msgstr "Sointugeneraattori:"
+msgstr "Sointugeneraattori: "
 
 #: src/tonegen/tonegen.cc:160
 msgid ""

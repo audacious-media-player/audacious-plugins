@@ -9,14 +9,14 @@
 # Ioannis LM, 2018,2020
 # DImitrios Zakas <jim.thomas.zks@gmail.com>, 2013
 # Wasilis Mandratzis-Walz, 2015
-# Wasilis Mandratzis-Walz, 2015
+# 79353a696ad19dc202b261b3067b7640_bec941e, 2015
 # Yannis Anthymidis, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2020-01-26 13:18+0100\n"
-"PO-Revision-Date: 2020-04-19 07:34+0000\n"
+"PO-Revision-Date: 2020-05-03 07:07+0000\n"
 "Last-Translator: Ioannis LM\n"
 "Language-Team: Greek (http://www.transifex.com/audacious/audacious/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -1677,11 +1677,11 @@ msgstr "Μετάβαση στο _τραγούδι ..."
 
 #: src/gtkui/menus.cc:110
 msgid "Set Repeat Point _A"
-msgstr "Καθορισμός σημείου _Α για την επανάληψη"
+msgstr "Ορισμός σημείου επανάληψης _Α"
 
 #: src/gtkui/menus.cc:111
 msgid "Set Repeat Point _B"
-msgstr "Καθορισμός σημείου _Β για την επανάληψη"
+msgstr "Ορισμός σημείου επανάληψης _Β"
 
 #: src/gtkui/menus.cc:112
 msgid "_Clear Repeat Points"
