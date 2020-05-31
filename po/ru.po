@@ -5,6 +5,7 @@
 # Translators:
 # Alexander B <beliy@yandex.ru>, 2019
 # Alexander Orlov <alxorlov@pochta.ru>, 2007
+# Alexa Poruch <alexa.poruch@gmail.com>, 2020
 # Денис <alpi_bel@mail.ru>, 2014
 # Andrei Stepanov <adem4ik@gmail.com>, 2014-2015
 # Danila E <KnightDanila@gmail.com>, 2018
@@ -53,8 +54,8 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2020-01-26 13:18+0100\n"
-"PO-Revision-Date: 2020-04-18 07:12+0000\n"
-"Last-Translator: Виктор Голованенко <drygdryg2014@yandex.ru>\n"
+"PO-Revision-Date: 2020-05-28 17:10+0000\n"
+"Last-Translator: Alexa Poruch <alexa.poruch@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/audacious/audacious/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2226,7 +2227,7 @@ msgstr "Вывод JACK"
 
 #: src/jack/jack-ng.cc:123
 msgid "Client name:"
-msgstr ""
+msgstr "Название клиента"
 
 #: src/jack/jack-ng.cc:125
 msgid "Automatically connect to output ports"
@@ -2238,7 +2239,7 @@ msgstr ""
 
 #: src/jack/jack-ng.cc:133
 msgid "Connect to physical ports only"
-msgstr ""
+msgstr "Подключаться только к физическим портам"
 
 #: src/jack/jack-ng.cc:136
 msgid "Upmix to"
@@ -2415,7 +2416,7 @@ msgstr "Нет"
 
 #: src/lyricwiki-qt/lyricwiki.cc:112
 msgid "LyricWiki"
-msgstr ""
+msgstr "LyricWiki"
 
 #: src/lyricwiki-qt/lyricwiki.cc:113
 msgid "lyrics.ovh"
@@ -2435,7 +2436,7 @@ msgstr "Сохранять извлечённые тексты в локальн
 
 #: src/lyricwiki-qt/lyricwiki.cc:123
 msgid "<b>Local Storage</b>"
-msgstr ""
+msgstr "<b>Локальное хранилище</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:124
 msgid "Load lyric files (.lrc) from local storage"
@@ -2701,11 +2702,11 @@ msgid ""
 "Module player based on libopenmpt\n"
 "\n"
 "Written by: Chris Spiegel <cspiegel@gmail.com>"
-msgstr ""
+msgstr "Модульный плеер основан на libopenmpt\n\nНаписан: Chris Spiegel <cspiegel@gmail.com>"
 
 #: src/openmpt/mpt.cc:153
 msgid "Stereo separation:"
-msgstr ""
+msgstr "Разделение стерео:"
 
 #: src/openmpt/mpt.cc:155
 msgid "%"
@@ -2713,7 +2714,7 @@ msgstr "%"
 
 #: src/openmpt/mpt.cc:159
 msgid "Interpolation:"
-msgstr ""
+msgstr "Интерполяция:"
 
 #: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:174
 msgid "Linear"
@@ -2721,7 +2722,7 @@ msgstr "Линейный"
 
 #: src/openmpt/mptwrap.h:52
 msgid "Cubic"
-msgstr ""
+msgstr "Кубический"
 
 #: src/openmpt/mptwrap.h:53
 msgid "Windowed sinc"
@@ -2797,7 +2798,7 @@ msgstr "Декодер OpenPSF PSF1/PSF2"
 
 #: src/psf/plugin.cc:269
 msgid "<b>OpenPSF Configuration</b>"
-msgstr ""
+msgstr "<b>Настройка OpenPSF</b>"
 
 #: src/psf/plugin.cc:270 src/xsf/plugin.cc:232
 msgid "Ignore length from file"
@@ -2809,7 +2810,7 @@ msgstr "Вывод PulseAudio"
 
 #: src/pulse/pulse_audio.cc:72
 msgid "Context name:"
-msgstr ""
+msgstr "Название контекста:"
 
 #: src/pulse/pulse_audio.cc:74
 msgid "Stream name:"
@@ -2930,7 +2931,7 @@ msgstr "Никогда"
 
 #: src/qtui/settings.cc:58
 msgid "Show playlist tabs:"
-msgstr ""
+msgstr "Отобразить вкладки списка воспроизведения:"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -4191,7 +4192,7 @@ msgstr "Текущая песня"
 
 #: src/streamtuner/icecast-model.cc:164
 msgid "Other"
-msgstr ""
+msgstr "Другой"
 
 #: src/streamtuner/ihr-model.cc:63
 msgid "Market"
@@ -4311,11 +4312,11 @@ msgstr "Тематики"
 
 #: src/streamtuner/streamtuner.cc:59
 msgid "Shoutcast"
-msgstr ""
+msgstr "Shoutcast"
 
 #: src/streamtuner/streamtuner.cc:60
 msgid "Icecast"
-msgstr ""
+msgstr "Icecast"
 
 #: src/streamtuner/streamtuner.cc:71
 msgid "Stream Tuner"
@@ -4415,31 +4416,31 @@ msgstr "Проигрыватель файлов Vortex от Sashnov Alexander <s
 msgid ""
 "VU Meter Plugin for Audacious\n"
 "Copyright 2017-2019 Marc Sánchez Fauste"
-msgstr ""
+msgstr "Плагин измерителя VU для Audacious\nCopyright 2017-2019 Marc Sánchez Fauste"
 
 #: src/vumeter-qt/vumeter_qt.cc:35
 msgid "<b>VU Meter Settings</b>"
-msgstr ""
+msgstr "<b>Настройки измерителя VU</b>"
 
 #: src/vumeter-qt/vumeter_qt.cc:37
 msgid "Peak hold time:"
-msgstr ""
+msgstr "Время удержания пика:"
 
 #: src/vumeter-qt/vumeter_qt.cc:42
 msgid "Fall-off time:"
-msgstr ""
+msgstr "Время спада:"
 
 #: src/vumeter-qt/vumeter_qt.cc:44
 msgid "dB/second"
-msgstr ""
+msgstr "dB/сек"
 
 #: src/vumeter-qt/vumeter_qt.cc:46
 msgid "Display legend"
-msgstr ""
+msgstr "Отобразить шкалу"
 
 #: src/vumeter-qt/vumeter_qt.h:37
 msgid "VU Meter"
-msgstr ""
+msgstr "Измеритель VU"
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
