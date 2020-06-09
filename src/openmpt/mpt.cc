@@ -91,6 +91,7 @@ public:
 
         tuple.set_int(Tuple::Length, mpt.duration());
         tuple.set_str(Tuple::Title, mpt.title());
+        tuple.set_int(Tuple::Channels, mpt.channels());
 
         return true;
     }

@@ -239,6 +239,8 @@ bool WavpackPlugin::read_tag (const char * filename, VFSFile & file, Tuple & tup
 
     tuple.set_str (Tuple::Quality, wv_get_quality (ctx));
 
+    tuple.set_int (Tuple::Channels,  WavpackGetNumChannels(ctx));
+
     WavpackCloseFile(ctx);
 
     if (! file.fseek (0, VFS_SEEK_SET))

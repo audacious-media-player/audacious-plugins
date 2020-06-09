@@ -192,6 +192,7 @@ bool ConsolePlugin::read_tag(const char *filename, VFSFile &file, Tuple &tuple, 
         tuple.set_subtunes(info.track_count, nullptr);
 
     tuple.set_int (Tuple::Length, get_track_length (info));
+    tuple.set_int (Tuple::Channels, 2);
 
     return true;
 }
