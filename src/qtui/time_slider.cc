@@ -96,6 +96,19 @@ TimeSlider::TimeSlider(QWidget * parent)
     start_stop();
 }
 
+void TimeSlider::wheelEvent(QWheelEvent *event)
+{
+    m_scroll_delta += event->angleDelta().y();
+
+    /* we want discrete steps here */
+    int steps = m_scroll_delta / 120;
+    if (steps != 0)
+    {
+        m_scroll_delta -= 120 * steps;
+        aud_drct_seek(aud_drct_get_time() + steps * aud_get_int("step_size") * 1000);
+    }
+}
+
 void TimeSlider::set_label(int time, int length)
 {
     QString text;
