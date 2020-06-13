@@ -48,6 +48,7 @@ protected:
 private:
     QMenu * m_pl_menu;
     PlaylistTabBar * m_tabbar;
+    bool m_in_update = false;
 
     void activateSearch();
     void addRemovePlaylists();
