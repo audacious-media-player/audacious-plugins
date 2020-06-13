@@ -158,7 +158,8 @@ void PlaylistTabs::addRemovePlaylists()
 
 void PlaylistTabs::currentChangedTrigger(int idx)
 {
-    Playlist::by_index(idx).activate();
+    if (!m_in_update)
+        Playlist::by_index(idx).activate();
 }
 
 bool PlaylistTabs::eventFilter(QObject * obj, QEvent * e)
@@ -186,12 +187,15 @@ void PlaylistTabs::renameCurrent()
 
 void PlaylistTabs::playlist_activate_cb()
 {
+    m_in_update = true;
     setCurrentIndex(Playlist::active_playlist().index());
     m_tabbar->cancelRename();
+    m_in_update = false;
 }
 
 void PlaylistTabs::playlist_update_cb(Playlist::UpdateLevel global_level)
 {
+    m_in_update = true;
     if (global_level == Playlist::Structure)
         addRemovePlaylists();
     if (global_level >= Playlist::Metadata)
@@ -201,6 +205,7 @@ void PlaylistTabs::playlist_update_cb(Playlist::UpdateLevel global_level)
         playlistWidget(i)->playlistUpdate();
 
     setCurrentIndex(Playlist::active_playlist().index());
+    m_in_update = false;
 }
 
 void PlaylistTabs::playlist_position_cb(Playlist list)
