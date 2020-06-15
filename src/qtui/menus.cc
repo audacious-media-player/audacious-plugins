@@ -91,6 +91,10 @@ static void toggle_infoarea_vis()
 {
     hook_call("qtui toggle infoarea_vis", nullptr);
 }
+static void toggle_infoarea_art()
+{
+    hook_call("qtui toggle infoarea_art", nullptr);
+}
 static void toggle_statusbar() { hook_call("qtui toggle statusbar", nullptr); }
 static void toggle_remaining_time()
 {
@@ -257,6 +261,8 @@ QMenuBar * qtui_build_menubar(QWidget * parent)
                           {"qtui", "infoarea_visible"}, toggle_infoarea),
         audqt::MenuToggle({N_("Show Info Bar Vis_ualization")},
                           {"qtui", "infoarea_show_vis"}, toggle_infoarea_vis),
+        audqt::MenuToggle({N_("Show Info Bar _Album Art")},
+                          {"qtui", "infoarea_show_art"}, toggle_infoarea_art),
         audqt::MenuToggle({N_("Show _Status Bar"), nullptr, "Shift+Ctrl+S"},
                           {"qtui", "statusbar_visible"}, toggle_statusbar),
         audqt::MenuSep(),

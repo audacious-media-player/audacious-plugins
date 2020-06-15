@@ -192,6 +192,8 @@ InfoBar::InfoBar(QWidget * parent)
     update_vis();
     setFixedHeight(ps.Height);
 
+    m_art_enabled = aud_get_bool("qtui", "infoarea_show_art");
+
     for (SongData & d : sd)
     {
         d.title.setTextFormat(Qt::PlainText);
@@ -213,10 +215,7 @@ InfoBar::InfoBar(QWidget * parent)
 
 void InfoBar::resizeEvent(QResizeEvent *)
 {
-    // re-ellipsize text on next paintEvent
-    for (SongData & d : sd)
-        d.title.setText(QString());
-
+    reellipsize_title();
     m_vis->move(width() - ps.VisWidth, 0);
 }
 
@@ -225,13 +224,15 @@ void InfoBar::paintEvent(QPaintEvent *)
     QPainter p(this);
 
     int viswidth = m_vis->isVisible() ? ps.VisWidth : 0;
+    int offset = m_art_enabled ? ps.Height : ps.Spacing;
+
     p.fillRect(0, 0, width() - viswidth, ps.Height, m_vis->gradient());
 
     for (SongData & d : sd)
     {
         p.setOpacity((qreal)d.alpha / FadeSteps);
 
-        if (!d.art.isNull())
+        if (m_art_enabled && !d.art.isNull())
         {
             auto sz = d.art.size() / d.art.devicePixelRatio();
             int left = ps.Spacing + (ps.IconSize - sz.width()) / 2;
@@ -248,19 +249,19 @@ void InfoBar::paintEvent(QPaintEvent *)
             QFontMetrics metrics = p.fontMetrics();
             d.title = QStaticText(metrics.elidedText(
                 d.orig_title, Qt::ElideRight,
-                width() - viswidth - ps.Height - ps.Spacing));
+                width() - viswidth - offset - ps.Spacing));
         }
 
         p.setPen(QColor(255, 255, 255));
-        p.drawStaticText(ps.Height, ps.Spacing, d.title);
+        p.drawStaticText(offset, ps.Spacing, d.title);
 
         font.setPointSize(9);
         p.setFont(font);
 
-        p.drawStaticText(ps.Height, ps.Spacing + ps.IconSize / 2, d.artist);
+        p.drawStaticText(offset, ps.Spacing + ps.IconSize / 2, d.artist);
 
         p.setPen(QColor(179, 179, 179));
-        p.drawStaticText(ps.Height, ps.Spacing + ps.IconSize * 3 / 4, d.album);
+        p.drawStaticText(offset, ps.Spacing + ps.IconSize * 3 / 4, d.album);
     }
 }
 
@@ -331,12 +332,23 @@ void InfoBar::playback_stop_cb()
     fade_timer.start();
 }
 
-void InfoBar::update_vis()
+void InfoBar::reellipsize_title()
 {
     // re-ellipsize text on next paintEvent
     for (SongData & d : sd)
         d.title.setText(QString());
+}
 
+void InfoBar::update_vis()
+{
+    reellipsize_title();
     m_vis->enable(aud_get_bool("qtui", "infoarea_show_vis"));
+    update();
+}
+
+void InfoBar::update_art()
+{
+    reellipsize_title();
+    m_art_enabled = aud_get_bool("qtui", "infoarea_show_art");
     update();
 }
