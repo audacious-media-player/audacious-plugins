@@ -107,7 +107,11 @@ void StatusBar::log_handler(audlog::Level level, const char * file, int line,
 
     QString s = text;
     if (s.contains('\n'))
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+        s = s.split('\n', Qt::SkipEmptyParts).last();
+#else
         s = s.split('\n', QString::SkipEmptyParts).last();
+#endif
 
     event_queue("qtui log message", new Message{level, s},
                 aud::delete_obj<Message>);
