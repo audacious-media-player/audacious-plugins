@@ -54,7 +54,10 @@ PlaylistModel::PlaylistModel(QObject * parent, Playlist playlist)
 {
 }
 
-int PlaylistModel::rowCount(const QModelIndex & parent) const { return m_rows; }
+int PlaylistModel::rowCount(const QModelIndex & parent) const
+{
+    return (parent == QModelIndex()) ? m_rows : 0;
+}
 
 int PlaylistModel::columnCount(const QModelIndex & parent) const
 {
