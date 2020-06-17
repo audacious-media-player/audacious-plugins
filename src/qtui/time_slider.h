@@ -44,6 +44,9 @@ public:
 
     TimeSliderLabel * label() { return m_label; }
 
+protected:
+    void wheelEvent(QWheelEvent *event);
+
 private:
     void set_label(int time, int length);
 
@@ -54,6 +57,8 @@ private:
     void released();
 
     TimeSliderLabel * m_label;
+
+    int m_scroll_delta = 0;
 
     const Timer<TimeSlider> m_timer{TimerRate::Hz4, this, &TimeSlider::update};
 
