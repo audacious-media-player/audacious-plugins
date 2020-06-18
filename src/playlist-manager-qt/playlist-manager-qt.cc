@@ -80,7 +80,11 @@ public:
     void update (Playlist::UpdateLevel level);
 
 protected:
-    int rowCount (const QModelIndex & parent) const { return m_rows; }
+    int rowCount (const QModelIndex & parent) const
+    {
+        return parent.isValid() ? 0 : m_rows;
+    }
+
     int columnCount (const QModelIndex & parent) const { return NColumns; }
 
     Qt::DropActions supportedDropActions () const { return Qt::MoveAction; }
