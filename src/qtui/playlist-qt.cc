@@ -38,6 +38,8 @@ PlaylistWidget::PlaylistWidget(QWidget * parent, Playlist playlist)
       model(new PlaylistModel(this, playlist)),
       proxyModel(new PlaylistProxyModel(this, playlist))
 {
+    model->setFont(font());
+
     /* setting up filtering model */
     proxyModel->setSourceModel(model);
 
@@ -124,6 +126,14 @@ void PlaylistWidget::activate(const QModelIndex & index)
         m_playlist.set_position(indexToRow(index));
         m_playlist.start_playback();
     }
+}
+
+void PlaylistWidget::changeEvent(QEvent * event)
+{
+    if (event->type() == QEvent::FontChange)
+        model->setFont(font());
+
+    audqt::TreeView::changeEvent(event);
 }
 
 void PlaylistWidget::contextMenuEvent(QContextMenuEvent * event)

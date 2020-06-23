@@ -64,6 +64,12 @@ int PlaylistModel::columnCount(const QModelIndex & parent) const
     return 1 + n_cols;
 }
 
+void PlaylistModel::setFont(const QFont & font)
+{
+    m_bold = font;
+    m_bold.setBold(true);
+}
+
 QVariant PlaylistModel::alignment(int col) const
 {
     switch (col)
@@ -120,6 +126,11 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
         default:
             return QString("%1").arg(val);
         }
+
+    case Qt::FontRole:
+        if (index.row() == m_playlist.get_position())
+            return m_bold;
+        break;
 
     case Qt::TextAlignmentRole:
         return alignment(col);

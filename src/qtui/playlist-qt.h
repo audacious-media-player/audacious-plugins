@@ -70,6 +70,7 @@ private:
     void updateSelection(int rowsBefore, int rowsAfter);
 
     void activate(const QModelIndex & index);
+    void changeEvent(QEvent * event);
     void contextMenuEvent(QContextMenuEvent * event);
     void keyPressEvent(QKeyEvent * event);
     void mouseMoveEvent(QMouseEvent * event);
