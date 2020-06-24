@@ -1,10 +1,11 @@
 #include "directory-structure-model.h"
 
-DirectoryStructureModel::DirectoryStructureModel(QObject *parent)
-	: QFileSystemModel(parent) {}
+DirectoryStructureModel::DirectoryStructureModel(QObject* parent)
+    : QFileSystemModel(parent) {}
 
 QModelIndex DirectoryStructureModel::set_root_path(QString path) {
-    if(rootPath() == path)return index(rootPath());
+    if(rootPath() == path)
+        return index(rootPath());
     beginResetModel();
     auto index = setRootPath(path);
     endResetModel();
@@ -12,5 +13,5 @@ QModelIndex DirectoryStructureModel::set_root_path(QString path) {
 }
 
 int DirectoryStructureModel::columnCount(const QModelIndex &index) const {
-	return 1;
+    return 1;
 }

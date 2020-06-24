@@ -14,7 +14,7 @@
 
 constexpr auto DEFAULT_LIBRARY_PATH = "~";
 constexpr auto DEFAULT_PLAYLIST_TITLE = "Library view";
-constexpr auto DEFAULT_PLAYING_TITLE = "Playing";
+constexpr auto DEFAULT_PLAYING_TITLE = "Now Playing";   // Todo:We need a way to know the translated title.
 
 class LibraryTreeView;
 class LibraryViewQt : public GeneralPlugin {
@@ -23,8 +23,8 @@ class LibraryViewQt : public GeneralPlugin {
     static const PreferencesWidget widgets[];
     static const PluginPreferences prefs;
     static constexpr PluginInfo info = {N_("Library View"), PACKAGE,
-					nullptr, // about
-					&prefs, PluginQtOnly};
+                                        nullptr, // about
+                                        &prefs, PluginQtOnly};
     constexpr LibraryViewQt() : GeneralPlugin(info, false) {}
     static LibraryTreeView* get_tree_widget();
     bool init();
@@ -48,10 +48,7 @@ class PreferenceWidget : public QWidget {
     void update_text_color(QString new_path);
 };
 
-void set_pref_uri(QString filename);
+void set_pref_uri(String uri);
 String get_pref_uri();
-bool test_uri(QString path);
-inline bool test_uri(String path) {
-    return test_uri(static_cast<const char*>(path));
-}
+bool test_uri(String path);
 Playlist find_playlist(const char* title);
