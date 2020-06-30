@@ -126,7 +126,7 @@ const char * const CDAudio::defaults[] = {
  "use_cdtext", "TRUE",
  "use_cddb", "TRUE",
  "cddbhttp", "FALSE",
- "cddbserver", "freedb.org",
+ "cddbserver", "gnudb.gnudb.org",
  "cddbport", "8880",
  nullptr};
 
