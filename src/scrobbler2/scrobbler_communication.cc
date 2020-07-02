@@ -98,7 +98,7 @@ static String create_message_to_lastfm (const char * method_name, int n_args, ..
         buf.insert (-1, "&");
         buf.insert (-1, name);
         buf.insert (-1, "=");
-        buf.insert (-1, esc);
+        buf.insert (-1, esc ? esc : "");
         curl_free (esc);
     }
 
