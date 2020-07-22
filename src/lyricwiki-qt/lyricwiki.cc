@@ -63,9 +63,9 @@ struct LyricsState {
         Local,
         LyricWiki,
         LyricsOVH
-    } source;
+    } source = None;
 
-    bool error;
+    bool error = false;
 };
 
 static LyricsState g_state;
