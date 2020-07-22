@@ -38,6 +38,8 @@ PlaylistWidget::PlaylistWidget(QWidget * parent, Playlist playlist)
       model(new PlaylistModel(this, playlist)),
       proxyModel(new PlaylistProxyModel(this, playlist))
 {
+    model->setFont(font());
+
     /* setting up filtering model */
     proxyModel->setSourceModel(model);
 
@@ -58,6 +60,8 @@ PlaylistWidget::PlaylistWidget(QWidget * parent, Playlist playlist)
     setSelectionMode(ExtendedSelection);
     setDragDropMode(DragDrop);
     setMouseTracking(true);
+
+    connect(this, &QTreeView::activated, this, &PlaylistWidget::activate);
 
     updateSettings();
     header->updateColumns();
@@ -122,6 +126,14 @@ void PlaylistWidget::activate(const QModelIndex & index)
         m_playlist.set_position(indexToRow(index));
         m_playlist.start_playback();
     }
+}
+
+void PlaylistWidget::changeEvent(QEvent * event)
+{
+    if (event->type() == QEvent::FontChange)
+        model->setFont(font());
+
+    audqt::TreeView::changeEvent(event);
 }
 
 void PlaylistWidget::contextMenuEvent(QContextMenuEvent * event)
@@ -304,6 +316,14 @@ void PlaylistWidget::getSelectedRanges(int rowsBefore, int rowsAfter,
                                        QItemSelection & deselected)
 {
     int entries = m_playlist.n_entries();
+    int last_col = model->columnCount() - 1;
+
+    auto make_range = [last_col](const QModelIndex & first,
+                                 const QModelIndex & last) {
+        // expand the range to cover all columns
+        return QItemSelectionRange(first.sibling(first.row(), 0),
+                                   last.sibling(last.row(), last_col));
+    };
 
     QItemSelection ranges[2];
     QModelIndex first, last;
@@ -318,8 +338,7 @@ void PlaylistWidget::getSelectedRanges(int rowsBefore, int rowsAfter,
         bool sel = m_playlist.entry_selected(row);
 
         if (sel != prev && first.isValid())
-            ranges[prev].merge(QItemSelection(first, last),
-                               QItemSelectionModel::Select);
+            ranges[prev] += make_range(first, last);
 
         if (sel != prev || !first.isValid())
             first = idx;
@@ -329,8 +348,7 @@ void PlaylistWidget::getSelectedRanges(int rowsBefore, int rowsAfter,
     }
 
     if (first.isValid())
-        ranges[prev].merge(QItemSelection(first, last),
-                           QItemSelectionModel::Select);
+        ranges[prev] += make_range(first, last);
 
     selected = std::move(ranges[true]);
     deselected = std::move(ranges[false]);
@@ -342,13 +360,56 @@ void PlaylistWidget::updateSelection(int rowsBefore, int rowsAfter)
     getSelectedRanges(rowsBefore, rowsAfter, selected, deselected);
 
     auto sel = selectionModel();
+    auto old = sel->selection();
 
-    if (!selected.isEmpty())
-        sel->select(selected, sel->Select | sel->Rows);
-    if (!deselected.isEmpty())
-        sel->select(deselected, sel->Deselect | sel->Rows);
+    // Qt's selection model is complex, with two layers that our internal
+    // playlist selection model doesn't mirror. To avoid interfering with
+    // interactive selections, we need to avoid changing Qt's model unless
+    // it's actually out of sync. So, we start by computing the difference
+    // between the two models.
+    auto diff = old;
+    diff.merge(selected, sel->Select);
+    diff.merge(deselected, sel->Deselect);
+    diff.merge(old, sel->Toggle);
 
-    sel->setCurrentIndex(rowToIndex(m_playlist.get_focus()), sel->NoUpdate);
+    if (!diff.isEmpty())
+    {
+        // Toggle any cells that need to be toggled to bring the two
+        // models in sync.
+        sel->select(diff, sel->Toggle);
+
+        // The prior call will have left any cells that were toggled
+        // sitting in the interactive layer. Force Qt to finalize this
+        // layer by making an empty selection, so that the next interactive
+        // selection doesn't behave unexpectedly.
+        sel->select(QModelIndex(), sel->Select);
+    }
+
+    auto focus = rowToIndex(m_playlist.get_focus());
+    if (sel->currentIndex().row() != focus.row())
+    {
+        // The documentation for QAbstractItemView::setCurrentIndex says:
+        //
+        //     Unless the current selection mode is NoSelection, the
+        //     item is also selected. Note that this function also updates
+        //     the starting position for any new selections the user
+        //     performs.
+        //
+        //     To set an item as the current item without selecting it,
+        //     call:
+        //
+        //       selectionModel()->
+        //         setCurrentIndex(index, QItemSelectionModel::NoUpdate);
+        //
+        // We need to update that starting position (see bug #981), so
+        // selectionModel()->setCurrentIndex() isn't enough here, but
+        // we don't want to change the selection. Temporarily changing
+        // the selection mode to NoSelection accomplishes what we want.
+        //
+        setSelectionMode(NoSelection);
+        setCurrentIndex(focus);
+        setSelectionMode(ExtendedSelection);
+    }
 }
 
 void PlaylistWidget::playlistUpdate()

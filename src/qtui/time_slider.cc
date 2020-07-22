@@ -24,14 +24,12 @@
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
 
+#include <QApplication>
 #include <QMouseEvent>
 #include <QProxyStyle>
 #include <QStyle>
 
-TimeSliderLabel::TimeSliderLabel(QWidget * parent) : QLabel(parent)
-{
-    setStyleSheet("font-weight: bold");
-}
+TimeSliderLabel::TimeSliderLabel(QWidget * parent) : QLabel(parent) {}
 TimeSliderLabel::~TimeSliderLabel() {}
 
 void TimeSliderLabel::mouseDoubleClickEvent(QMouseEvent * event)
@@ -49,6 +47,13 @@ void TimeSliderLabel::mouseDoubleClickEvent(QMouseEvent * event)
 class TimeSliderStyle : public QProxyStyle
 {
 public:
+    TimeSliderStyle()
+    {
+        // detect and respond to application-wide style change
+        connect(qApp->style(), &QObject::destroyed, this,
+                &TimeSliderStyle::resetBaseStyle);
+    }
+
     int styleHint(QStyle::StyleHint hint, const QStyleOption * option = nullptr,
                   const QWidget * widget = nullptr,
                   QStyleHintReturn * returnData = nullptr) const
@@ -61,14 +66,25 @@ public:
 
         return styleHint;
     }
+
+private:
+    void resetBaseStyle()
+    {
+        setBaseStyle(nullptr);
+        connect(qApp->style(), &QObject::destroyed, this,
+                &TimeSliderStyle::resetBaseStyle);
+    }
 };
 
 TimeSlider::TimeSlider(QWidget * parent)
     : QSlider(Qt::Horizontal, parent), m_label(new TimeSliderLabel(parent))
 {
     setFocusPolicy(Qt::NoFocus);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    setStyle(new TimeSliderStyle());
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+
+    auto style = new TimeSliderStyle;
+    style->setParent(this);
+    setStyle(style);
 
     m_label->setContentsMargins(audqt::sizes.FourPt, 0, 0, 0);
     m_label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
@@ -80,21 +96,55 @@ TimeSlider::TimeSlider(QWidget * parent)
     start_stop();
 }
 
-TimeSlider::~TimeSlider() {}
+void TimeSlider::wheelEvent(QWheelEvent *event)
+{
+    m_scroll_delta += event->angleDelta().y();
+
+    /* we want discrete steps here */
+    int steps = m_scroll_delta / 120;
+    if (steps != 0)
+    {
+        m_scroll_delta -= 120 * steps;
+        aud_drct_seek(aud_drct_get_time() + steps * aud_get_int("step_size") * 1000);
+    }
+}
 
 void TimeSlider::set_label(int time, int length)
 {
     QString text;
 
     if (length >= 0)
+    {
+        auto length_str = str_format_time(length);
+        auto time_pad = length_str.len();
+
+        QString time_str;
         if (aud_get_bool("qtui", "show_remaining_time"))
-            text = str_concat({str_format_time(time - length), " / ",
-                               str_format_time(length)});
+        {
+            time = aud::max(0, length - time);
+            time_str = QString('-') + str_format_time(time);
+            time_pad++;
+        }
         else
-            text = str_concat(
-                {str_format_time(time), " / ", str_format_time(length)});
+            time_str = str_format_time(time);
+
+        int a, b;
+        aud_drct_get_ab_repeat(a, b);
+
+        QString ab_str;
+        if (a >= 0)
+            ab_str += " A=<tt>" + QString(str_format_time(a)) + "</tt>";
+        if (b >= 0)
+            ab_str += " B=<tt>" + QString(str_format_time(b)) + "</tt>";
+
+        // To avoid the label changing width as time progresses, use
+        // monospaced digits and pad the time to the width of the song
+        // length (which should be the widest time we'll display).
+        text = "<b><tt>" + time_str.rightJustified(time_pad, QChar::Nbsp) +
+               "</tt> / <tt>" + length_str + "</tt>" + ab_str + "</b>";
+    }
     else
-        text = str_format_time(time);
+        text = "<b><tt>" + QString(str_format_time(time)) + "</tt></b>";
 
     m_label->setText(text);
 }
@@ -104,7 +154,6 @@ void TimeSlider::start_stop()
     bool ready = aud_drct_get_ready();
     bool paused = aud_drct_get_paused();
 
-    setEnabled(ready);
     m_label->setEnabled(ready);
 
     update();
@@ -124,6 +173,7 @@ void TimeSlider::update()
             int time = aud_drct_get_time();
             int length = aud_drct_get_length();
 
+            setEnabled(length >= 0);
             setRange(0, length);
             setValue(time);
 
@@ -132,6 +182,7 @@ void TimeSlider::update()
     }
     else
     {
+        setEnabled(false);
         setRange(0, 0);
         set_label(0, 0);
     }

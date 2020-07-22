@@ -59,7 +59,6 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation,
                         int role = Qt::DisplayRole) const;
 
-    Qt::DropActions supportedDropActions() const;
     Qt::ItemFlags flags(const QModelIndex & index) const;
 
     QStringList mimeTypes() const;
@@ -71,9 +70,12 @@ public:
     void entriesRemoved(int row, int count);
     void entriesChanged(int row, int count);
 
+    void setFont(const QFont & font);
+
 private:
     Playlist m_playlist;
     int m_rows;
+    QFont m_bold;
 
     QVariant alignment(int col) const;
     QString queuePos(int row) const;

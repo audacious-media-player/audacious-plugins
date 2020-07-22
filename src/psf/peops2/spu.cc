@@ -129,8 +129,8 @@ int             iUseInterpolation=2;
 
 // MAIN infos struct for each channel
 
-SPUCHAN         s_chan[MAXCHAN+1];                     // channel + 1 infos (1 is security for fmod handling)
-REVERBInfo      rvb[2];
+SPUCHAN2         s_chan[MAXCHAN+1];                     // channel + 1 infos (1 is security for fmod handling)
+REVERBInfo2      rvb[2];
 
 unsigned long   dwNoiseVal=1;                          // global noise generator
 
@@ -837,8 +837,8 @@ EXPORT_GCC void CALLBACK SPU2async(void (*update)(const void *, int))
 EXPORT_GCC long CALLBACK SPU2init(void)
 {
  spuMemC=(unsigned char *)spuMem;                      // just small setup
- memset((void *)s_chan,0,MAXCHAN*sizeof(SPUCHAN));
- memset(rvb,0,2*sizeof(REVERBInfo));
+ memset((void *)s_chan,0,MAXCHAN*sizeof(SPUCHAN2));
+ memset(rvb,0,2*sizeof(REVERBInfo2));
 
  sampcount = 0;
  seektime = 0;
@@ -947,7 +947,7 @@ EXPORT_GCC long CALLBACK SPU2open(void *pDsp)
  bEndThread=0;
  bThreadEnded=0;
  spuMemC=(unsigned char *)spuMem;
- memset((void *)s_chan,0,(MAXCHAN+1)*sizeof(SPUCHAN));
+ memset((void *)s_chan,0,(MAXCHAN+1)*sizeof(SPUCHAN2));
  pSpuIrq[0]=0;
  pSpuIrq[1]=0;
  iSPUIRQWait=1;

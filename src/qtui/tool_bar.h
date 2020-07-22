@@ -64,9 +64,11 @@ constexpr ToolBarItem ToolBarAction(const char * icon_name, const char * name,
             toggled,   nullptr, false,        action_ptr};
 }
 
-constexpr ToolBarItem ToolBarCustom(QWidget * item)
+constexpr ToolBarItem ToolBarCustom(QWidget * item,
+                                    QAction ** action_ptr = nullptr)
 {
-    return {nullptr, nullptr, nullptr, nullptr, nullptr, item};
+    return {nullptr, nullptr, nullptr, nullptr,
+            nullptr, item,    false,   action_ptr};
 }
 
 constexpr ToolBarItem ToolBarSeparator()

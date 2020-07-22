@@ -38,6 +38,7 @@
 #include <libaudcore/mainloop.h>
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
+#include <libaudqt/treeview.h>
 
 #include "html-delegate.h"
 #include "library.h"
@@ -89,7 +90,7 @@ protected:
     }
 };
 
-class ResultsList : public QTreeView
+class ResultsList : public audqt::TreeView
 {
 public:
     QWidget * entry = nullptr;

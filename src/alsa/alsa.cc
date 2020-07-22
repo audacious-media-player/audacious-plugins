@@ -149,7 +149,6 @@ static void poll_cleanup ()
 static void * pump (void *)
 {
     pthread_mutex_lock (& alsa_mutex);
-    pthread_cond_broadcast (& alsa_cond); /* signal thread started */
 
     bool failed_once = false;
     bool use_timed_wait = false;
@@ -224,15 +223,14 @@ static void pump_start ()
 {
     AUDDBG ("Starting pump.\n");
     pthread_create (& pump_thread, nullptr, pump, nullptr);
-    pthread_cond_wait (& alsa_cond, & alsa_mutex);
 }
 
 static void pump_stop ()
 {
     AUDDBG ("Stopping pump.\n");
     pump_quit = true;
-    pthread_cond_broadcast (& alsa_cond);
     poll_wake ();
+    pthread_cond_broadcast (& alsa_cond);
     pthread_mutex_unlock (& alsa_mutex);
     pthread_join (pump_thread, nullptr);
     pthread_mutex_lock (& alsa_mutex);
@@ -423,7 +421,7 @@ int ALSAPlugin::write_audio (const void * data, int length)
             (alsa_buffer.len () - length) * 100 / alsa_buffer.size (),
             alsa_buffer.len () * 100 / alsa_buffer.size ());
 
-    if (! alsa_paused)
+    if (! alsa_prebuffer && ! alsa_paused)
         pthread_cond_broadcast (& alsa_cond);
 
     pthread_mutex_unlock (& alsa_mutex);
@@ -463,16 +461,29 @@ void ALSAPlugin::drain ()
     while (snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer.len ()))
         pthread_cond_wait (& alsa_cond, & alsa_mutex);
 
-    pump_stop ();
+    if (! alsa_prebuffer)
+    {
+        timespec ts {};
+        clock_gettime (CLOCK_REALTIME, & ts);
 
-    int d = get_delay_locked ();
-    timespec delay = {d / 1000, d % 1000 * 1000000};
+        int d = get_delay_locked ();
+        ts.tv_sec += d / 1000;
+        ts.tv_nsec += d % 1000 * 1000000;
 
-    pthread_mutex_unlock (& alsa_mutex);
-    nanosleep (& delay, nullptr);
-    pthread_mutex_lock (& alsa_mutex);
+        if (ts.tv_nsec >= 1000000000)
+        {
+            ts.tv_sec ++;
+            ts.tv_nsec -= 1000000000;
+        }
 
-    pump_start ();
+        /* Avoid calling snd_pcm_delay() after this point, otherwise it
+         * prints a warning that underrun has occurred */
+        alsa_prebuffer = true;
+        alsa_paused_delay = 0;
+
+        poll_wake (); /* wake pump so it's ready */
+        pthread_cond_timedwait (& alsa_cond, & alsa_mutex, & ts);
+    }
 
     pthread_mutex_unlock (& alsa_mutex);
 }
@@ -498,7 +509,6 @@ void ALSAPlugin::flush ()
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& alsa_mutex);
 
-    pump_stop ();
     CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
@@ -507,10 +517,8 @@ FAILED:
     alsa_prebuffer = true;
     alsa_paused_delay = 0;
 
+    poll_wake (); /* wake pump so it's ready */
     pthread_cond_broadcast (& alsa_cond); /* interrupt period wait */
-
-    pump_start ();
-
     pthread_mutex_unlock (& alsa_mutex);
 }
 
@@ -530,7 +538,7 @@ void ALSAPlugin::pause (bool pause)
     }
 
 DONE:
-    if (! pause)
+    if (! alsa_prebuffer && ! pause)
         pthread_cond_broadcast (& alsa_cond);
 
     pthread_mutex_unlock (& alsa_mutex);

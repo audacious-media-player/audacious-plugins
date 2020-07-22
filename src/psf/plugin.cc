@@ -160,6 +160,7 @@ bool PSFPlugin::read_tag(const char *filename, VFSFile &file, Tuple &tuple, Inde
     tuple.set_str(Tuple::Copyright, c->inf_copy);
     tuple.set_str(Tuple::Quality, _("sequenced"));
     tuple.set_str(Tuple::Codec, "PlayStation 1/2 Audio");
+    tuple.set_int(Tuple::Channels, 2);
 
     free(c);
 

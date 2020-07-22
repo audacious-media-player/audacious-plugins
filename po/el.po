@@ -9,14 +9,14 @@
 # Ioannis LM, 2018,2020
 # DImitrios Zakas <jim.thomas.zks@gmail.com>, 2013
 # Wasilis Mandratzis-Walz, 2015
-# Wasilis Mandratzis-Walz, 2015
+# 79353a696ad19dc202b261b3067b7640_bec941e, 2015
 # Yannis Anthymidis, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2020-01-26 13:18+0100\n"
-"PO-Revision-Date: 2020-03-25 11:10+0000\n"
+"PO-Revision-Date: 2020-05-03 07:07+0000\n"
 "Last-Translator: Ioannis LM\n"
 "Language-Team: Greek (http://www.transifex.com/audacious/audacious/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -339,7 +339,7 @@ msgid ""
 "\n"
 "Tony Vroon\n"
 "for the good help with alpha testing"
-msgstr "Πρόσθετο AMIDI-Plug\nαρθρωτό πρόγραμμα αναπαραγωγής μουσικής MIDI\nhttp://www.develia.org/projects.php?p=amidiplug\n\nγράφτηκε από τον Giacomo Lozito\n<james@develia.org>\n\nΙδιαίτερες ευχαριστίες προς τους...\n\nClemens Ladisch και Jaroslav Kysela\nγια τα συναρπαστικά προγράμματα τους aplaymidi και amixer, που\nπραγματικά χρησίμευσαν μαζί με τα alsa-lib docs, προκειμένου\nγια να μάθουμε περισσότερα σχετικά με το API ALSA\n\nAlfredo Spadafina\nγια το ωραίο λογότυπο του πληκτρολογίου midi\n\nTony Vroon\nγια την βοήθεια του στη δοκιμή άλφα"
+msgstr "Πρόσθετο AMIDI-Plug\nαρθρωτό πρόγραμμα αναπαραγωγής μουσικής MIDI\nhttp://www.develia.org/projects.php?p=amidiplug\n\nΓράφτηκε από τον Giacomo Lozito\n<james@develia.org>\n\nΙδιαίτερες ευχαριστίες προς τους...\n\nClemens Ladisch και Jaroslav Kysela\nγια τα συναρπαστικά προγράμματα τους aplaymidi και amixer, που πραγματικά χρησίμευσαν μαζί με τα alsa-lib docs, προκειμένου να μάθουμε περισσότερα σχετικά με το API ALSA\n\nAlfredo Spadafina\nγια το ωραίο λογότυπο του πληκτρολογίου midi\n\nTony Vroon\nγια την βοήθεια του στη δοκιμή άλφα"
 
 #: src/amidiplug/i_configure.cc:94
 msgid "Override default gain:"
@@ -375,11 +375,11 @@ msgstr "ημιτόνια"
 
 #: src/amidiplug/i_configure.cc:132
 msgid "Drum shift:"
-msgstr "Μετατόπιση τυμπάνου:"
+msgstr "Μετακίνηση Drum:"
 
 #: src/amidiplug/i_configure.cc:134
 msgid "note numbers"
-msgstr "αριθμοί υπό σημείωση"
+msgstr "αριθμοί"
 
 #: src/amidiplug/i_configure.cc:135
 msgid "Skip leading silence"
@@ -492,7 +492,7 @@ msgid ""
 "\n"
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 "License: GNU GPLv3"
-msgstr "Ampache Browser για το Audacious\nhttp://ampache-browser.org/\n\nΠνευματικά δικαιώματα Róbert Čerňanský και John Lindgren\nΆδεια: GNU GPLv3"
+msgstr "Ampache Browser για το Audacious\nhttp://ampache-browser.org/\n\nΠνευματικά δικαιώματα (C) Róbert Čerňanský και John Lindgren\nΆδεια: GNU GPLv3"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -761,7 +761,7 @@ msgid ""
 "Also thank you to Tony Vroon for mentoring and guiding me.\n"
 "\n"
 "This was a Google Summer of Code 2007 project."
-msgstr "Πνευματικά δικαιώματα 2007-2012 Calin Crisan <ccrisan@gmail.com> και άλλοι.\n\nΠολλά ευχαριστώ στους δημιουργούς του \nlibcdio <http://www.gnu.org/software/libcdio/> και του\nlibcddb <http://libcddb.sourceforge.net/>.\n\nΕπίσης ευχαριστώ τον Tony Vroon για την καθοδήγησή του.\n\nΑυτό το πρόσθετο δημιουργήθηκε κατά το Google Summer of Code 2007."
+msgstr "Πνευματικά δικαιώματα (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> και άλλοι.\n\nΠολλά ευχαριστώ στους δημιουργούς του \nlibcdio <http://www.gnu.org/software/libcdio/> και του\nlibcddb <http://libcddb.sourceforge.net/>.\n\nΕπίσης ευχαριστώ τον Tony Vroon για την καθοδήγησή του.\n\nΔημιουργήθηκε κατά το Google Summer of Code 2007."
 
 #: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
@@ -952,7 +952,7 @@ msgstr "<b>SPC</b>"
 
 #: src/console/plugin.cc:50
 msgid "Ignore length from SPC tags"
-msgstr "Παράβλεψη διάρκειας από ετικέτες SPC"
+msgstr "Παράβλεψη διάρκειας από tags SPC"
 
 #: src/console/plugin.cc:52
 msgid "Increase reverb"
@@ -976,7 +976,7 @@ msgid ""
 "\n"
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
-msgstr "Πρόσθετο Έξοδος CoreAudio για το Audacious\nΠνευματικά δικαιώματα 2014 William Pitcock\nΠνευματικά δικαιώματα 2017,18 René J.V. Bertin\n(αρχικός κώδικας και προσαρμογή από\n     Apple examples, Apple 2013)\n\nΒασισμένο στο πρόσθετο SDL Output για το Audacious\nΠνευματικά δικαιώματα 2010 John Lindgren"
+msgstr "Πρόσθετο Έξοδος CoreAudio για το Audacious\nΠνευματικά δικαιώματα 2014 William Pitcock\nΠνευματικά δικαιώματα 2017,18 René J.V. Bertin\n(αρχικός κώδικας και προσαρμογή από\n     Apple examples, (C) Apple 2013)\n\nΒασισμένο στο πρόσθετο SDL Output για το Audacious\nΠνευματικά δικαιώματα 2010 John Lindgren"
 
 #: src/coreaudio/coreaudio.cc:172
 msgid "Use exclusive mode"
@@ -1186,7 +1186,7 @@ msgstr "Αρχικό όνομα αρχείου (χωρίς κατάληξη)"
 
 #: src/filewriter/filewriter.cc:407
 msgid "Original file tag"
-msgstr "Πρωτότυπη ετικέτα αρχείου"
+msgstr "Αρχικό tag αρχείου"
 
 #: src/filewriter/filewriter.cc:411
 msgid "Prepend track number to file name"
@@ -1376,31 +1376,31 @@ msgstr "Παράλειψη Xing VBR header"
 
 #: src/filewriter/filewriter.cc:539
 msgid "<b>Frame Headers</b>"
-msgstr ""
+msgstr "<b>Τίτλοι πλαισίου</b>"
 
 #: src/filewriter/filewriter.cc:540
 msgid "Mark as copyright"
-msgstr "Σημείωση σαν πνευματικά δικαιώματα"
+msgstr "Πνευματικά δικαιώματα"
 
 #: src/filewriter/filewriter.cc:542
 msgid "Mark as original"
-msgstr "Σημείωση σαν πρωτότυπο"
+msgstr "Πρωτότυπο"
 
 #: src/filewriter/filewriter.cc:544
 msgid "<b>ID3 Tags</b>"
-msgstr "<b>Ετικέτες ID3</b>"
+msgstr "<b>Tags ID3</b>"
 
 #: src/filewriter/filewriter.cc:545
 msgid "Force addition of version 2 tag"
-msgstr "Δυναμική προσθήκη της ετικέτας έκδοσης 2"
+msgstr "Δυναμική προσθήκη tag έκδοσης 2"
 
 #: src/filewriter/filewriter.cc:547
 msgid "Only add v1 tag"
-msgstr "Προσθήκη μόνο της ετικέτας v1"
+msgstr "Προσθήκη μόνο tag v1"
 
 #: src/filewriter/filewriter.cc:549
 msgid "Only add v2 tag"
-msgstr "Προσθήκη μόνο της ετικέτας v2"
+msgstr "Προσθήκη μόνο tag v2"
 
 #: src/filewriter/filewriter.cc:554
 msgid "Quality"
@@ -1412,7 +1412,7 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/filewriter.cc:556
 msgid "Tags"
-msgstr "Ετικέτες"
+msgstr "Tags"
 
 #: src/filewriter/filewriter.cc:566
 msgid "Quality (0-1):"
@@ -1574,7 +1574,7 @@ msgstr "Απενεργοποίηση"
 #: src/gtkui/menus.cc:79 src/qtui/menus.cc:103
 #: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:282
 msgid "_Open Files ..."
-msgstr "_Άνοιγμα αρχείων..."
+msgstr "Άνοιγμα _αρχείων..."
 
 #: src/gtkui/menus.cc:80 src/qtui/menus.cc:107
 msgid "Open _URL ..."
@@ -1590,7 +1590,7 @@ msgstr "Προσ_θήκη URL ..."
 
 #: src/gtkui/menus.cc:84 src/qtui/menus.cc:115
 msgid "Search _Library"
-msgstr "Αναζήτηση _βιβλιοθήκης"
+msgstr "Έρευνα _δισκοθήκης"
 
 #: src/gtkui/menus.cc:86 src/qtui/menus.cc:118
 msgid "A_bout ..."
@@ -1648,7 +1648,7 @@ msgstr "Επα_νάληψη"
 
 #: src/gtkui/menus.cc:101 src/qtui/menus.cc:145
 msgid "S_huffle"
-msgstr "Τ_υχαία εναλλαγή"
+msgstr "Τυ_χαία εναλλαγή"
 
 #: src/gtkui/menus.cc:102 src/qtui/menus.cc:147
 msgid "Shuffle by Albu_m"
@@ -1656,7 +1656,7 @@ msgstr "Τυχαία εναλλαγή κατά άλμπου_μ"
 
 #: src/gtkui/menus.cc:103 src/qtui/menus.cc:150
 msgid "N_o Playlist Advance"
-msgstr "_Χωρίς προώθηση στο επόμενο"
+msgstr "Χωρίς π_ροώθηση στο επόμενο"
 
 #: src/gtkui/menus.cc:104 src/qtui/menus.cc:152
 msgid "Stop A_fter This Song"
@@ -1677,11 +1677,11 @@ msgstr "Μετάβαση στο _τραγούδι ..."
 
 #: src/gtkui/menus.cc:110
 msgid "Set Repeat Point _A"
-msgstr "Καθορισμός σημείου _Α για την επανάληψη"
+msgstr "Ορισμός σημείου επανάληψης _Α"
 
 #: src/gtkui/menus.cc:111
 msgid "Set Repeat Point _B"
-msgstr "Καθορισμός σημείου _Β για την επανάληψη"
+msgstr "Ορισμός σημείου επανάληψης _Β"
 
 #: src/gtkui/menus.cc:112
 msgid "_Clear Repeat Points"
@@ -1698,17 +1698,17 @@ msgstr "Κατά όνομα _αρχείου"
 
 #: src/gtkui/menus.cc:118 src/qtui/menus.cc:163
 msgid "By File _Path"
-msgstr "Κατά _διαδρομή αρχείου"
+msgstr "Κατά διαδ_ρομή αρχείου"
 
 #: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:167
 #: src/qtui/menus.cc:184
 msgid "By Track _Number"
-msgstr "Κατά αριθμό _κομματιού"
+msgstr "Κατά _αριθμό κομματιού"
 
 #: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:169
 #: src/qtui/menus.cc:186
 msgid "By _Artist"
-msgstr "Κατά καλλι_τέχνη"
+msgstr "Κατά _καλλιτέχνη"
 
 #: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:170
 #: src/qtui/menus.cc:187
@@ -1718,7 +1718,7 @@ msgstr "Κατά ά_λμπουμ"
 #: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:171
 #: src/qtui/menus.cc:188
 msgid "By Albu_m Artist"
-msgstr "Κατά καλλιτέχνη άλμ_πουμ"
+msgstr "Κατά καλλιτέχνη άλ_μπουμ"
 
 #: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:172
 #: src/qtui/menus.cc:189
@@ -1733,12 +1733,12 @@ msgstr "Κατά _είδος μουσικής"
 #: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:174
 #: src/qtui/menus.cc:191
 msgid "By _Length"
-msgstr "Κατά διάρ_κεια αρχείου"
+msgstr "Κατά _διάρκεια αρχείου"
 
 #: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:175
 #: src/qtui/menus.cc:192
 msgid "By _File Path"
-msgstr "Κατά _διαδρομή αρχείου"
+msgstr "Κατά διαδ_ρομή αρχείου"
 
 #: src/gtkui/menus.cc:131 src/gtkui/menus.cc:148 src/qtui/menus.cc:176
 #: src/qtui/menus.cc:193
@@ -1758,7 +1758,7 @@ msgstr "Α_ντίστροφη σειρά"
 #: src/gtkui/menus.cc:135 src/gtkui/menus.cc:152 src/qtui/menus.cc:181
 #: src/qtui/menus.cc:198
 msgid "_Random Order"
-msgstr "_Τυχαία σειρά"
+msgstr "Τυ_χαία σειρά"
 
 #: src/gtkui/menus.cc:156 src/qtui/menus.cc:202
 msgid "_Play/Resume"
@@ -1778,16 +1778,16 @@ msgstr "Ταξινόμηση επιλε_γμένων"
 
 #: src/gtkui/menus.cc:161 src/qtui/menus.cc:211
 msgid "Remove _Duplicates"
-msgstr "Α_φαίρεση διπλών"
+msgstr "Αφαίρεση _διπλών"
 
 #: src/gtkui/menus.cc:162 src/qtui/menus.cc:212
 msgid "Remove _Unavailable Files"
-msgstr "Αφαίρεση μη _διαθέσιμων αρχείων"
+msgstr "Αφαίρεση μη δια_θέσιμων αρχείων"
 
 #: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:218
 #: src/playlist-manager-qt/playlist-manager-qt.cc:332 src/qtui/menus.cc:215
 msgid "_New"
-msgstr "_Νέο"
+msgstr "_Νέα"
 
 #: src/gtkui/menus.cc:165 src/qtui/menus.cc:216
 msgid "Ren_ame ..."
@@ -1796,7 +1796,7 @@ msgstr "Μετ_ονομασία ..."
 #: src/gtkui/menus.cc:166 src/gtkui/menus.cc:225 src/qtui/menus.cc:217
 #: src/qtui/playlist_tabs.cc:328
 msgid "Remo_ve"
-msgstr "Αφα_ίρεση"
+msgstr "Α_φαίρεση"
 
 #: src/gtkui/menus.cc:168 src/qtui/menus.cc:219
 msgid "_Import ..."
@@ -1832,11 +1832,11 @@ msgstr "Ε_φέ ..."
 
 #: src/gtkui/menus.cc:182
 msgid "_Record Stream"
-msgstr "_Καταγραφή ροής"
+msgstr "_Εγγραφή ροής"
 
 #: src/gtkui/menus.cc:183
 msgid "Audio _Settings ..."
-msgstr "Ρυθμί_σεις ήχου ..."
+msgstr "_Ρυθμίσεις ήχου ..."
 
 #: src/gtkui/menus.cc:187 src/qtui/menus.cc:246
 msgid "Show _Menu Bar"
@@ -1882,7 +1882,7 @@ msgstr "_Υπηρεσίες"
 
 #: src/gtkui/menus.cc:202 src/qtui/menus.cc:268
 msgid "_Output"
-msgstr "_Έξοδος"
+msgstr "_Έξοδοι"
 
 #: src/gtkui/menus.cc:203 src/qtui/menus.cc:269
 msgid "_View"
@@ -1934,7 +1934,7 @@ msgstr "Να εμφανίζονται πάντα οι καρτέλες"
 
 #: src/gtkui/settings.cc:38 src/qtui/settings.cc:62
 msgid "Show entry counts"
-msgstr "Εμφάνιση αριθμού καταχωρήσεων"
+msgstr "Εμφάνιση αριθμού περιεχομένων"
 
 #: src/gtkui/settings.cc:40 src/qtui/settings.cc:65
 msgid "Show close buttons"
@@ -1946,11 +1946,11 @@ msgstr "<b>Στήλες λίστας αναπαραγωγής</b>"
 
 #: src/gtkui/settings.cc:44 src/qtui/settings.cc:70
 msgid "Show column headers"
-msgstr "Εμφάνιση κεφαλίδων στηλών"
+msgstr "Εμφάνιση επικεφαλίδας"
 
 #: src/gtkui/settings.cc:47 src/qtui/settings.cc:73
 msgid "Scroll on song change"
-msgstr "Αλλαγή τραγουδιού στη μετακίνηση"
+msgstr "Μετακίνηση στην αλλαγή τραγουδιού"
 
 #: src/gtkui/ui_gtk.cc:73
 msgid "GTK Interface"
@@ -1985,7 +1985,7 @@ msgstr "Παύση"
 #: src/gtkui/ui_gtk.cc:824 src/qtui/main_window.cc:97 src/skins/menus.cc:86
 #: src/skins-qt/menus.cc:77
 msgid "Search Library"
-msgstr "Αναζήτηση βιβλιοθήκης"
+msgstr "Έρευνα δισκοθήκης"
 
 #: src/gtkui/ui_gtk.cc:832 src/qtui/main_window.cc:99
 msgid "Open Files"
@@ -2013,7 +2013,7 @@ msgstr "Επόμενο"
 #: src/gtkui/ui_gtk.cc:843 src/qtui/main_window.cc:118 src/qtui/menus.cc:240
 #: src/skins/menus.cc:79 src/skins-qt/menus.cc:69
 msgid "Record Stream"
-msgstr "Καταγραφή ροής"
+msgstr "Εγγραφή ροής"
 
 #: src/gtkui/ui_gtk.cc:874 src/qtui/main_window.cc:125 src/skins/menus.cc:103
 #: src/skins-qt/menus.cc:94
@@ -2179,7 +2179,7 @@ msgid ""
 " Bryn Davies <curious@ihug.com.au>,\n"
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
-msgstr "Πρόσθετο Global Hotkey\nΈλεγχος της αναπαραγωγής με καθολικούς συνδυασμούς πλήκτρων ή με τα πλήκτρα πολυμέσων\nΠνευματικά δικαιώματα 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\nΣτους συντελεστές περιλαμβάνονται:\nΠνευματικά δικαιώματα 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\nΠνευματικά δικαιώματα 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\nBryn Davies <curious@ihug.com.au>,\nJonathan A. Davis <davis@jdhouse.org>,\nJeremy Tan <nsx@nsx.homeip.net>"
+msgstr "Πρόσθετο Global Hotkey\nΈλεγχος της αναπαραγωγής με καθολικούς συνδυασμούς πλήκτρων ή με τα πλήκτρα πολυμέσων\nΠνευματικά δικαιώματα (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\nΣτους συντελεστές περιλαμβάνονται:\nΠνευματικά δικαιώματα (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\nΠνευματικά δικαιώματα (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\nBryn Davies <curious@ihug.com.au>,\nJonathan A. Davis <davis@jdhouse.org>,\nJeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/jack/jack-ng.cc:51
 msgid "JACK Output"
@@ -2231,7 +2231,7 @@ msgstr "Αποτυχία σύνδεσης στην θύρα JACK %s."
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
-msgstr "Το JACK υποστηρίζει μόνο ήχο κινητής υποδιαστολής. Πρέπει στις ρυθμίσεις του Audacious, ν' αλλάξετε το βάθος bit εξόδου, σε κινητή υποδιαστολή."
+msgstr "Το JACK υποστηρίζει μόνο ήχο κινητής υποδιαστολής. Στις ρυθμίσεις του Audacious πρέπει ν' αλλάξετε το βάθος bit εξόδου, σε κινητή υποδιαστολή."
 
 #: src/jack/jack-ng.cc:242
 msgid "Failed to connect to the JACK server; is it running?"
@@ -2428,17 +2428,17 @@ msgstr "Λίστες αναπαραγωγής M3U"
 
 #: src/metronom/metronom.cc:44
 msgid "Tact Generator"
-msgstr ""
+msgstr "Tact Generator"
 
 #: src/metronom/metronom.cc:145
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr ""
+msgstr "Tact generator: %d bpm"
 
 #: src/metronom/metronom.cc:147
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr ""
+msgstr "Tact generator: %d bpm %d/%d"
 
 #: src/metronom/metronom.cc:234
 msgid ""
@@ -2447,7 +2447,7 @@ msgid ""
 "To use it, add a URL: tact://beats*num/den\n"
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
-msgstr ""
+msgstr "Ένα Tact Generator από τον Martin Strauss <mys@faveve.uni-stuttgart.de>\n\nΓια να το χρησιμοποιήσετε, προσθέστε ένα URL: tact://beats*num/den\nπ.χ. tact://77 για να παίξει 77 beats ανά λεπτό\nή tact://60*3/4 για να παίξει 60 bpm in 3/4 tacts"
 
 #: src/mixer/mixer.cc:38
 msgid "Channel Mixer"
@@ -2562,7 +2562,7 @@ msgstr "<b>Επανάληψη</b>"
 
 #: src/modplug/plugin_main.cc:110
 msgid "Repeat count:"
-msgstr "Μέτρηση επαναλήψεων:"
+msgstr "Αριθμός επαναλήψεων:"
 
 #: src/modplug/plugin_main.cc:111
 msgid "To repeat forever, set the repeat count to -1."
@@ -2635,7 +2635,7 @@ msgid ""
 "This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
 "You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
-msgstr "Πρόσθετο Ειδοποιήσεις στην επιφάνεια εργασίας, για το Audacious\nΠνευματικά δικαιώματα 2010 Maximilian Bogner\nΠνευματικά δικαιώματα 2011-2013  John Lindgren και ο Jean-Alexandre Anglès d'Auriac\n\nΤο πρόγραμμα αυτό είναι ελεύθερο λογισμικό. Επιτρέπεται η αναδιανομή ή/και η τροποποίησή του υπό τους όρους της άδειας GNU General Public όπως αυτή δημοσιεύεται από το Free Software Foundation, είτε την έκδοση 2 είτε (κατά την επιλογή σας) σε οποιαδήποτε μεταγενέστερη έκδοση της άδειας.\n\nΔιανέμεται με την ελπίδα ότι θα είναι χρήσιμο, αλλά ΧΩΡΙΣ ΟΠΟΙΑΔΗΠΟΤΕ ΕΓΓΥΗΣΗ, χωρίς καν την σιωπηρή εγγύηση ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΕΝΑ ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ. Για περισσότερες λεπτομέρειες δείτε την άδεια GNU General Public.\n\nΜαζί με το πρόγραμμα αυτό θα πρέπει να έχετε λάβει ένα αντίγραφο της άδειας δημόσιας χρήσης GNU General. \nΕάν όχι, κοιτάξτε εδώ <http://www.gnu.org/licenses/>."
+msgstr "Πρόσθετο Ειδοποιήσεις στην επιφάνεια εργασίας, για το Audacious\nΠνευματικά δικαιώματα (C) 2010 Maximilian Bogner\nΠνευματικά δικαιώματα (C) 2011-2013  John Lindgren και ο Jean-Alexandre Anglès d'Auriac\n\nΤο πρόσθετο αυτό είναι ελεύθερο λογισμικό. Επιτρέπεται η αναδιανομή ή/και η τροποποίησή του υπό τους όρους της άδειας GNU General Public, όπως αυτή δημοσιεύεται από το Free Software Foundation είτε την έκδοση 2 είτε (κατά την επιλογή σας) σε οποιαδήποτε μεταγενέστερη έκδοση της.\n\nΔιανέμεται με την ελπίδα ότι θα είναι χρήσιμο, αλλά ΧΩΡΙΣ ΟΠΟΙΑΔΗΠΟΤΕ ΕΓΓΥΗΣΗ, χωρίς καν την σιωπηρή εγγύηση ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΕΝΑ ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ. Για περισσότερες λεπτομέρειες δείτε την άδεια GNU General Public.\n\nΜαζί με το πρόγραμμα αυτό θα πρέπει να έχετε λάβει ένα αντίγραφο της άδειας δημόσιας χρήσης GNU General. Εάν όχι, κοιτάξτε εδώ <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.cc:102
 msgid "Show playback controls"
@@ -2758,7 +2758,7 @@ msgstr "Αποκωδικοποιητής OpenPSF PSF1/PSF2"
 
 #: src/psf/plugin.cc:269
 msgid "<b>OpenPSF Configuration</b>"
-msgstr ""
+msgstr "<b>OpenPSF Ρυθμίσεις</b>"
 
 #: src/psf/plugin.cc:270 src/xsf/plugin.cc:232
 msgid "Ignore length from file"
@@ -2785,7 +2785,7 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
 "You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr "Πρόσθετο Έξοδος PulseAudio\nΤο πρόγραμμα αυτό είναι ελεύθερο λογισμικό. Επιτρέπεται η αναδιανομή ή/και η τροποποίησή του υπό τους όρους της άδειας GNU General Public όπως αυτή δημοσιεύεται από το Free Software Foundation, είτε την έκδοση 2 είτε (κατά την επιλογή σας) σε οποιαδήποτε μεταγενέστερη έκδοση της άδειας.\n\nΔιανέμεται με την ελπίδα ότι θα είναι χρήσιμο, αλλά ΧΩΡΙΣ ΟΠΟΙΑΔΗΠΟΤΕ ΕΓΓΥΗΣΗ, χωρίς καν την σιωπηρή εγγύηση ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΕΝΑ ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ. Για περισσότερες λεπτομέρειες δείτε την άδεια GNU General Public.\n\nΜαζί με αυτό το πρόγραμμα θα πρέπει να έχετε λάβει ένα αντίγραφο της άδειας GNU General Public. Εάν όχι, γράψτε στο Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr "Πρόσθετο Έξοδος PulseAudio\n\nΤο πρόσθετο αυτό είναι ελεύθερο λογισμικό. Επιτρέπεται η αναδιανομή ή/και η τροποποίησή του υπό τους όρους της άδειας GNU General Public, όπως αυτή δημοσιεύεται από το Free Software Foundation είτε την έκδοση 2 είτε (κατά την επιλογή σας) σε οποιαδήποτε μεταγενέστερη έκδοση της.\n\nΔιανέμεται με την ελπίδα ότι θα είναι χρήσιμο, αλλά ΧΩΡΙΣ ΟΠΟΙΑΔΗΠΟΤΕ ΕΓΓΥΗΣΗ, χωρίς καν την σιωπηρή εγγύηση ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΕΝΑ ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ. Για περισσότερες λεπτομέρειες δείτε την άδεια GNU General Public.\n\nΜαζί με αυτό το πρόγραμμα θα πρέπει να έχετε λάβει ένα αντίγραφο της άδειας GNU General Public. Εάν όχι, γράψτε στο Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
@@ -2798,7 +2798,7 @@ msgid ""
 "\n"
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
-msgstr "Πρόσθετο Έξοδος QtMultimedia Audio για το Audacious\nΠνευματικά δικαιώματα 2014 William Pitcock\nΜε βάση το Πρόσθετο SDL Output για το Audacious\nΠνευματικά δικαιώματα 2010 John Lindgren"
+msgstr "Πρόσθετο Έξοδος QtMultimedia Audio για το Audacious\nΠνευματικά δικαιώματα 2014 William Pitcock\n\nΜε βάση το Πρόσθετο SDL Output για το Audacious\nΠνευματικά δικαιώματα 2010 John Lindgren"
 
 #: src/qtglspectrum/gl-spectrum.cc:41
 msgid ""
@@ -2819,15 +2819,15 @@ msgstr "Διακοπή στο τέλος του κομματιού"
 
 #: src/qtui/menus.cc:105
 msgid "_Open Folder ..."
-msgstr "_Άνοιγμα φακέλου ..."
+msgstr "Άνοιγμα _φακέλου ..."
 
 #: src/qtui/menus.cc:111
 msgid "_Add Folder ..."
-msgstr "_Προσθήκη φακέλου ..."
+msgstr "Πρ_οσθήκη φακέλου ..."
 
 #: src/qtui/menus.cc:123
 msgid "_Log Inspector ..."
-msgstr "_Επιθεωρητής σύνδεσης ..."
+msgstr "_Καταγραφές ..."
 
 #: src/qtui/menus.cc:206
 msgid "_Find ..."
@@ -2875,7 +2875,7 @@ msgstr "Διεπαφή Qt"
 
 #: src/qtui/search_bar.cc:46
 msgid "Search playlist"
-msgstr "Αναζήτηση λίστας αναπαραγωγής"
+msgstr "Έρευνα λίστας αναπαραγωγής"
 
 #: src/qtui/settings.cc:52
 msgid "Always"
@@ -2891,7 +2891,7 @@ msgstr "Ποτέ"
 
 #: src/qtui/settings.cc:58
 msgid "Show playlist tabs:"
-msgstr "Εμφάνιση καρτέλας για τις λίστες αναπαραγωγής:"
+msgstr "Εμφάνιση καρτέλας στις λίστες αναπαραγωγής:"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -3060,7 +3060,7 @@ msgstr "Πρόσθετο Εξόδου SDL για το Audacious\nΠνευματ�
 #: src/search-tool/library.cc:35 src/search-tool/library.cc:46
 #: src/search-tool-qt/library.cc:35 src/search-tool-qt/library.cc:46
 msgid "Library"
-msgstr "Βιβλιοθήκη"
+msgstr "Δισκοθήκη"
 
 #: src/search-tool-qt/search-model.cc:49 src/search-tool/search-tool.cc:291
 #, c-format
@@ -3087,11 +3087,11 @@ msgstr "Αριθμός αποτελεσμάτων για εμφάνιση:"
 
 #: src/search-tool-qt/search-tool-qt.cc:166 src/search-tool/search-tool.cc:76
 msgid "Rescan library at startup"
-msgstr "Επανάληψη σάρωσης στη βιβλιοθήκη κατά στην εκκίνηση "
+msgstr "Επανέλεγχος δισκοθήκης στην εκκίνηση"
 
 #: src/search-tool-qt/search-tool-qt.cc:168
 msgid "Monitor library for changes"
-msgstr "Παρακολούθηση βιβλιοθήκης για αλλαγές"
+msgstr "Παρακολούθηση αλλαγών από τη δισκοθήκη"
 
 #: src/search-tool-qt/search-tool-qt.cc:191 src/search-tool/search-tool.cc:446
 msgid ""
@@ -3109,7 +3109,7 @@ msgstr "Επιλογή φακέλου"
 
 #: src/search-tool-qt/search-tool-qt.cc:199
 msgid "Search library"
-msgstr "Αναζήτηση βιβλιοθήκης"
+msgstr "Έρευνα δισκοθήκης"
 
 #: src/search-tool-qt/search-tool-qt.cc:325 src/search-tool/search-tool.cc:155
 #, c-format
@@ -3281,11 +3281,11 @@ msgstr "Ισοσταθμιστής Audacious"
 
 #: src/skins/main.cc:452 src/skins-qt/main.cc:436
 msgid "Recording on"
-msgstr "Καταγραφή ενεργή"
+msgstr "Ενεργή εγγραφή"
 
 #: src/skins/main.cc:454 src/skins-qt/main.cc:438
 msgid "Recording off"
-msgstr "Καταγραφή ανενεργή"
+msgstr "Ανενεργή εγγραφή"
 
 #: src/skins/main.cc:749 src/skins-qt/main.cc:690
 #, c-format
@@ -3899,7 +3899,7 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
 "You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr "Βασισμένο στο πρόσθετο xmms_sndfile:\nΠνευματικά δικαιώματα 2000, 2002, Erik de Castro Lopo\n\nΠροσαρμοσμένο για το Audacious από τον Tony Vroon <chainsaw@gentoo.org>\n\nΤο πρόγραμμα αυτό είναι ελεύθερο λογισμικό. Επιτρέπεται η αναδιανομή ή/και τροποποίησή του υπό τους όρους της άδειας GNU General Public όπως αυτή έχει δημοσιευθεί από το Ίδρυμα Ελεύθερου Λογισμικού είτε την έκδοση 2 είτε (κατά την επιλογή σας) σε οποιαδήποτε μεταγενέστερη έκδοση της άδειας,.\n\nΔιανέμεται με την ελπίδα ότι θα είναι χρήσιμο,\nαλλά ΧΩΡΙΣ ΚΑΜΙΑ ΕΓΓΥΗΣΗ, χωρίς καν την υπονοούμενη εγγύηση της ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΕΝΑ ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ.  Για περισσότερες λεπτομέρειες δείτε την άδεια GNU General Public.\n\nΘα πρέπει να έχετε λάβει ένα αντίγραφο της άδειας GNU General Public μαζί με αυτό το πρόγραμμα. Εάν όχι, γράψτε στο Ελεύθερο Λογισμικό Foundation, Inc., 51 Franklin Street, στον πέμπτο όροφο, Boston, MA 02110-1301, ΗΠΑ."
+msgstr "Βασισμένο στο πρόσθετο xmms_sndfile:\nΠνευματικά δικαιώματα (C) 2000, 2002, Erik de Castro Lopo\n\nΠροσαρμοσμένο για το Audacious από τον Tony Vroon <chainsaw@gentoo.org>\n\nΤο πρόγραμμα αυτό είναι ελεύθερο λογισμικό. Επιτρέπεται η αναδιανομή ή/και τροποποίησή του υπό τους όρους της άδειας GNU General Public, όπως αυτή έχει δημοσιευθεί από το Ίδρυμα Ελεύθερου Λογισμικού είτε την έκδοση 2 είτε (κατά την επιλογή σας) σε οποιαδήποτε μεταγενέστερη έκδοση της.\n\nΔιανέμεται με την ελπίδα ότι θα είναι χρήσιμο, αλλά ΧΩΡΙΣ ΚΑΜΙΑ ΕΓΓΥΗΣΗ, χωρίς καν την υπονοούμενη εγγύηση της ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΕΝΑ ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ. Για περισσότερες λεπτομέρειες δείτε την άδεια GNU General Public.\n\nΘα πρέπει να έχετε λάβει ένα αντίγραφο της άδειας GNU General Public μαζί με αυτό το πρόγραμμα. Εάν όχι, γράψτε στο Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/sndio/sndio.cc:43
 msgid "Sndio Output"
@@ -4104,7 +4104,7 @@ msgstr "Κλείσιμο του δίσκου συστήματος"
 
 #: src/statusicon-qt/statusicon.cc:98 src/statusicon/statusicon.cc:392
 msgid "Advance in playlist when scrolling upward"
-msgstr "Προώθηση της λίστας αναπαραγωγής, κατά την κύλιση του δρομέα ποντικιού προς τα επάνω"
+msgstr "Προώθηση της λίστας αναπαραγωγής, κατά την κύλιση προς τα επάνω"
 
 #: src/statusicon-qt/statusicon.cc:113 src/statusicon/statusicon.cc:283
 msgid "Se_ttings ..."
@@ -4296,7 +4296,7 @@ msgid ""
 "\n"
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
-msgstr "Γεννήτρια τόνων Sine από τον Håvard Kvålen <havardk@xmms.org>\nΤροποποιήθηκε από τον Daniel J. Peng <danielpeng@bigfoot.com>\n\nΓια να την χρησιμοποιήσετε, προσθέστε ένα URL: τόνος://συχνότητα1;συχνότητα2;συχνότητα 3;...\nπ.χ. τόνος://2000;2005 για να παίξει ένα τόνο 2000 Hz και ένα τόνο 2005 Hz"
+msgstr "Γεννήτρια τόνων Sine από τον Håvard Kvålen <havardk@xmms.org>\nΤροποποιήθηκε από τον Daniel J. Peng <danielpeng@bigfoot.com>\n\nΓια να την χρησιμοποιήσετε, προσθέστε ένα URL: tone://frequency1;frequency2;frequency3;..\nπ.χ. τόνος://2000;2005 για να παίξει ένα τόνο 2000 Hz και ένα τόνο 2005 Hz"
 
 #: src/ui-common/dialogs-qt.cc:31
 msgid "Working ..."
@@ -4374,7 +4374,7 @@ msgstr "Πρόσθετο VU Meter για το Audacious\nΠνευματικά δ
 
 #: src/vumeter-qt/vumeter_qt.cc:35
 msgid "<b>VU Meter Settings</b>"
-msgstr "<b>Ρυθμίσεις VU Meter</b>"
+msgstr "<b>VU Meter Ρυθμίσεις</b>"
 
 #: src/vumeter-qt/vumeter_qt.cc:37
 msgid "Peak hold time:"
@@ -4390,11 +4390,11 @@ msgstr "dB/δευτερόλεπτο"
 
 #: src/vumeter-qt/vumeter_qt.cc:46
 msgid "Display legend"
-msgstr ""
+msgstr "Εμφάνιση μετρητή"
 
 #: src/vumeter-qt/vumeter_qt.h:37
 msgid "VU Meter"
-msgstr ""
+msgstr "VU Meter"
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"

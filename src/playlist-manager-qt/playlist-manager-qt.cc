@@ -24,6 +24,7 @@
 #include <QHeaderView>
 #include <QIcon>
 #include <QMouseEvent>
+#include <QPointer>
 #include <QToolButton>
 
 #include <libaudcore/hook.h>
@@ -79,7 +80,11 @@ public:
     void update (Playlist::UpdateLevel level);
 
 protected:
-    int rowCount (const QModelIndex & parent) const { return m_rows; }
+    int rowCount (const QModelIndex & parent) const
+    {
+        return parent.isValid() ? 0 : m_rows;
+    }
+
     int columnCount (const QModelIndex & parent) const { return NColumns; }
 
     Qt::DropActions supportedDropActions () const { return Qt::MoveAction; }
@@ -259,6 +264,7 @@ PlaylistsView::PlaylistsView ()
     hdr->setSectionResizeMode (PlaylistsModel::ColumnEntries, QHeaderView::Interactive);
     hdr->resizeSection (PlaylistsModel::ColumnEntries, audqt::to_native_dpi (64));
 
+    setAllColumnsShowFocus (true);
     setDragDropMode (InternalMove);
     setFrameShape (QFrame::NoFrame);
     setIndentation (0);
@@ -310,7 +316,7 @@ void PlaylistsView::update_sel ()
     m_in_update --;
 }
 
-static PlaylistsView * s_playlists_view = nullptr;
+static QPointer<PlaylistsView> s_playlists_view;
 
 static QToolButton * new_tool_button (const char * text, const char * icon)
 {
@@ -324,10 +330,6 @@ static QToolButton * new_tool_button (const char * text, const char * icon)
 void * PlaylistManagerQt::get_qt_widget ()
 {
     s_playlists_view = new PlaylistsView;
-
-    QObject::connect (s_playlists_view, & QObject::destroyed, [] () {
-        s_playlists_view = nullptr;
-    });
 
     auto new_button = new_tool_button (N_("_New"), "document-new");
     QObject::connect (new_button, & QToolButton::clicked, Playlist::new_playlist);

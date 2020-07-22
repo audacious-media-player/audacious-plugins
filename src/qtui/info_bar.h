@@ -44,13 +44,16 @@ private:
 
     void playback_ready_cb();
     void playback_stop_cb();
+    void reellipsize_title();
     void update_vis();
+    void update_art();
 
-    const HookReceiver<InfoBar> hook1{"tuple change", this,
-                                      &InfoBar::update_title},
+    const HookReceiver<InfoBar>
+        hook1{"tuple change", this, &InfoBar::update_title},
         hook2{"playback ready", this, &InfoBar::playback_ready_cb},
         hook3{"playback stop", this, &InfoBar::playback_stop_cb},
-        hook4{"qtui toggle infoarea_vis", this, &InfoBar::update_vis};
+        hook4{"qtui toggle infoarea_vis", this, &InfoBar::update_vis},
+        hook5{"qtui toggle infoarea_art", this, &InfoBar::update_art};
 
     const Timer<InfoBar> fade_timer{TimerRate::Hz30, this, &InfoBar::do_fade};
 
@@ -73,6 +76,7 @@ private:
 
     SongData sd[2];
     bool m_stopped;
+    bool m_art_enabled;
 };
 
 #endif

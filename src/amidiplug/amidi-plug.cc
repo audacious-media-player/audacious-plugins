@@ -148,8 +148,15 @@ bool AMIDIPlug::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
     if (! mf.parse_from_file (filename, file))
         return false;
 
+    int channels;
+    int bitdepth;
+    int samplerate;
+
+    backend_audio_info (& channels, & bitdepth, & samplerate);
+
     tuple.set_str (Tuple::Codec, "MIDI");
     tuple.set_int (Tuple::Length, mf.length / 1000);
+    tuple.set_int (Tuple::Channels, channels);
 
     return true;
 }

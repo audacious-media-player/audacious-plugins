@@ -126,7 +126,7 @@ const char * const CDAudio::defaults[] = {
  "use_cdtext", "TRUE",
  "use_cddb", "TRUE",
  "cddbhttp", "FALSE",
- "cddbserver", "freedb.org",
+ "cddbserver", "gnudb.gnudb.org",
  "cddbport", "8880",
  nullptr};
 
@@ -399,6 +399,7 @@ bool CDAudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
         tuple.set_int (Tuple::Track, trackno);
         tuple.set_int (Tuple::Length, calculate_track_length
          (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
+        tuple.set_int (Tuple::Channels, 2);
 
         if (trackinfo[trackno].name)
             tuple.set_str (Tuple::Title, trackinfo[trackno].name);

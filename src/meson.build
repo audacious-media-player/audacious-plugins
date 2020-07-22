@@ -41,6 +41,10 @@ if samplerate_dep.found()
   endif
 endif
 
+if get_option('soxr')
+  subdir('soxr')
+endif
+
 
 # transport plugins
 subdir('gio')
@@ -89,6 +93,18 @@ if get_option('qt')
 
   if get_option('vumeter')
     subdir('vumeter-qt')
+  endif
+
+  if get_option('gl-spectrum')
+    subdir('qtglspectrum')
+  endif
+
+  if get_option('moonstone')
+    subdir('moonstone')
+  endif
+
+  if qtx11extras_dep.found()
+    subdir('qthotkey')
   endif
 endif
 

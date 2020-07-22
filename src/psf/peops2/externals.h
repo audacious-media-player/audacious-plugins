@@ -106,7 +106,7 @@ typedef struct
  long           ReleaseVol;
  long           lTime;
  long           lVolume;
-} ADSRInfo;
+} ADSRInfo2;
 
 typedef struct
 {
@@ -124,7 +124,7 @@ typedef struct
  long           lVolume;
  long           lDummy1;
  long           lDummy2;
-} ADSRInfoEx;
+} ADSRInfoEx2;
 
 ///////////////////////////////////////////////////////////
 
@@ -186,10 +186,10 @@ typedef struct
  int               bNoise;                             // noise active flag
  int               bFMod;                              // freq mod (0=off, 1=sound channel, 2=freq channel)
  int               iOldNoise;                          // old noise val for this channel
- ADSRInfo          ADSR;                               // active ADSR settings
- ADSRInfoEx        ADSRX;                              // next ADSR settings (will be moved to active on sample start)
+ ADSRInfo2          ADSR;                               // active ADSR settings
+ ADSRInfoEx2        ADSRX;                              // next ADSR settings (will be moved to active on sample start)
 
-} SPUCHAN;
+} SPUCHAN2;
 
 ///////////////////////////////////////////////////////////
 
@@ -239,7 +239,7 @@ typedef struct
  int MIX_DEST_B1;    // (offset)
  int IN_COEF_L;      // (coef.)
  int IN_COEF_R;      // (coef.)
-} REVERBInfo;
+} REVERBInfo2;
 
 #ifdef _WINDOWS
 //extern HINSTANCE hInst;
@@ -274,8 +274,8 @@ extern int        iUseInterpolation;
 extern int        iDisStereo;
 // MISC
 
-extern SPUCHAN s_chan[];
-extern REVERBInfo rvb[];
+extern SPUCHAN2 s_chan[];
+extern REVERBInfo2 rvb[];
 
 extern unsigned long dwNoiseVal;
 extern unsigned short spuCtrl2[];

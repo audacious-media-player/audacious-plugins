@@ -75,8 +75,17 @@ option('resample', type: 'boolean', value: true,
        description: 'Whether the resample effect plugin is enabled')
 option('speedpitch', type: 'boolean', value: true,
        description: 'Whether the speed / pitch effect plugin is enabled')
+option('soxr', type: 'boolean', value: true,
+       description: 'Whether the SoX resampler effect plugin is enabled')
 
 
 # visualization plugins
 option('vumeter', type: 'boolean', value: true,
        description: 'Whether the VUMeter visualization plugin is enabled')
+option('gl-spectrum', type: 'boolean', value: true,
+       description: 'Whether the OpenGL spectrum visualization plugin is enabled')
+
+
+# interface plugins
+option('moonstone', type: 'boolean', value: true,
+       description: 'Whether the Moonstone UI plugin is enabled')

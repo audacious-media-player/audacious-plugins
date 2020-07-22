@@ -91,6 +91,10 @@ static void toggle_infoarea_vis()
 {
     hook_call("qtui toggle infoarea_vis", nullptr);
 }
+static void toggle_infoarea_art()
+{
+    hook_call("qtui toggle infoarea_art", nullptr);
+}
 static void toggle_statusbar() { hook_call("qtui toggle statusbar", nullptr); }
 static void toggle_remaining_time()
 {
@@ -102,13 +106,14 @@ QMenuBar * qtui_build_menubar(QWidget * parent)
     static const audqt::MenuItem file_items[] = {
         audqt::MenuCommand({N_("_Open Files ..."), "document-open", "Ctrl+O"},
                            open_files),
-        audqt::MenuCommand({N_("_Open Folder ..."), "document-open"},
+        audqt::MenuCommand({N_("_Open Folder ..."), "document-open", "Ctrl+K"},
                            open_folder),
         audqt::MenuCommand({N_("Open _URL ..."), "folder-remote", "Ctrl+L"},
                            open_url),
         audqt::MenuCommand({N_("_Add Files ..."), "list-add", "Ctrl+Shift+O"},
                            add_files),
-        audqt::MenuCommand({N_("_Add Folder ..."), "list-add"}, add_folder),
+        audqt::MenuCommand({N_("_Add Folder ..."), "list-add", "Ctrl+Shift+K"},
+                           add_folder),
         audqt::MenuCommand(
             {N_("Add U_RL ..."), "folder-remote", "Ctrl+Shift+L"}, add_url),
         audqt::MenuSep(),
@@ -155,7 +160,14 @@ QMenuBar * qtui_build_menubar(QWidget * parent)
         audqt::MenuSep(),
         audqt::MenuCommand(
             {N_("Song _Info ..."), "dialog-information", "Ctrl+I"},
-            audqt::infowin_show_current)};
+            audqt::infowin_show_current),
+        audqt::MenuSep(),
+        audqt::MenuCommand({N_("Set Repeat Point _A"), nullptr, "Ctrl+1"},
+                           set_ab_repeat_a),
+        audqt::MenuCommand({N_("Set Repeat Point _B"), nullptr, "Ctrl+2"},
+                           set_ab_repeat_b),
+        audqt::MenuCommand({N_("_Clear Repeat Points"), nullptr, "Ctrl+3"},
+                           clear_ab_repeat)};
 
     static const audqt::MenuItem dupe_items[] = {
         audqt::MenuCommand({N_("By _Title")}, rm_dupes_title),
@@ -249,6 +261,8 @@ QMenuBar * qtui_build_menubar(QWidget * parent)
                           {"qtui", "infoarea_visible"}, toggle_infoarea),
         audqt::MenuToggle({N_("Show Info Bar Vis_ualization")},
                           {"qtui", "infoarea_show_vis"}, toggle_infoarea_vis),
+        audqt::MenuToggle({N_("Show Info Bar _Album Art")},
+                          {"qtui", "infoarea_show_art"}, toggle_infoarea_art),
         audqt::MenuToggle({N_("Show _Status Bar"), nullptr, "Shift+Ctrl+S"},
                           {"qtui", "statusbar_visible"}, toggle_statusbar),
         audqt::MenuSep(),

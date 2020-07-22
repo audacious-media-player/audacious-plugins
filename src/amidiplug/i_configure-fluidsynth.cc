@@ -310,7 +310,11 @@ public:
     ~SoundFontListModel ();
 
 protected:
-    int rowCount (const QModelIndex &) const { return m_file_names.len (); }
+    int rowCount (const QModelIndex & parent) const
+    {
+        return parent.isValid() ? 0 : m_file_names.len();
+    }
+
     int columnCount (const QModelIndex &) const { return NColumns; }
     QVariant data (const QModelIndex & index, int role) const;
     QVariant headerData (int section, Qt::Orientation, int role) const;

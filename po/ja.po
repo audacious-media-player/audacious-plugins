@@ -8,6 +8,7 @@
 # ABE Tsunehiko, 2013
 # ABE Tsunehiko, 2012
 # Mika Kobayashi, 2014-2015
+# NipponGo, 2020
 # Shuuji TAKAHASHI <shuuji3@gmail.com>, 2012-2014
 # Shuuji TAKAHASHI <shuuji3@gmail.com>, 2015
 # Warui-chan  <>, 2012
@@ -18,8 +19,8 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2020-01-26 13:18+0100\n"
-"PO-Revision-Date: 2020-01-26 12:22+0000\n"
-"Last-Translator: Shuuji TAKAHASHI <shuuji3@gmail.com>\n"
+"PO-Revision-Date: 2020-05-09 08:57+0000\n"
+"Last-Translator: NipponGo\n"
 "Language-Team: Japanese (http://www.transifex.com/audacious/audacious/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1632,17 +1633,17 @@ msgstr "前の曲へ(_V)"
 #: src/gtkui/menus.cc:96 src/qtui/menus.cc:138
 #: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:280
 msgid "_Next"
-msgstr "次の曲へ(_N)"
+msgstr "次へ(_N)"
 
 #: src/gtkui/menus.cc:97 src/qtui/menus.cc:140 src/skins/menus.cc:114
 #: src/skins-qt/menus.cc:105
 msgid "Previous Album"
-msgstr ""
+msgstr "前のアルバム"
 
 #: src/gtkui/menus.cc:98 src/qtui/menus.cc:141 src/skins/menus.cc:115
 #: src/skins-qt/menus.cc:106
 msgid "Next Album"
-msgstr ""
+msgstr "次のアルバム"
 
 #: src/gtkui/menus.cc:100 src/qtui/menus.cc:143
 msgid "_Repeat"
@@ -1896,7 +1897,7 @@ msgstr "キュー/アンキュー (_Q)"
 
 #: src/gtkui/menus.cc:210 src/qtui/menus.cc:283
 msgid "_Open Containing Folder"
-msgstr "このファイルを含むフォルダを追加(_O)"
+msgstr "保存先フォルダーを開く(_O)"
 
 #: src/gtkui/menus.cc:211 src/qtui/menus.cc:285
 msgid "_Refresh Selected"
@@ -2000,7 +2001,7 @@ msgstr "ファイルを追加"
 #: src/gtkui/ui_gtk.cc:838 src/qtui/main_window.cc:104 src/skins/menus.cc:112
 #: src/skins-qt/menus.cc:103
 msgid "Previous"
-msgstr "前の曲"
+msgstr "前へ"
 
 #: src/gtkui/ui_gtk.cc:840 src/hotkey/gui.cc:74 src/qtui/main_window.cc:108
 #: src/skins/menus.cc:111 src/skins-qt/menus.cc:102
@@ -2010,7 +2011,7 @@ msgstr "停止"
 #: src/gtkui/ui_gtk.cc:841 src/notify/osd.cc:74 src/qtui/main_window.cc:115
 #: src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
-msgstr "次の曲"
+msgstr "次へ"
 
 #: src/gtkui/ui_gtk.cc:843 src/qtui/main_window.cc:118 src/qtui/menus.cc:240
 #: src/skins/menus.cc:79 src/skins-qt/menus.cc:69
@@ -2824,7 +2825,7 @@ msgstr "フォルダを開く(_O)"
 
 #: src/qtui/menus.cc:111
 msgid "_Add Folder ..."
-msgstr "フォルダを追加(_A)"
+msgstr "フォルダーを追加(_A)"
 
 #: src/qtui/menus.cc:123
 msgid "_Log Inspector ..."
@@ -3663,7 +3664,7 @@ msgstr "フォルダを開く"
 
 #: src/skins-qt/menus.cc:159
 msgid "Add Folder ..."
-msgstr "フォルダを追加"
+msgstr "フォルダーを追加"
 
 #: src/skins-qt/skins_cfg.cc:196 src/skins/skins_cfg.cc:180
 msgid "Player:"

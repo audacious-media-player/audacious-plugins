@@ -391,6 +391,7 @@ static const struct {
     {Tuple::String, Tuple::Artist, {"author", "hor", "artist", nullptr}},
     {Tuple::String, Tuple::Title, {"title", "le", nullptr}},
     {Tuple::String, Tuple::Album, {"album", "WM/AlbumTitle", nullptr}},
+    {Tuple::String, Tuple::AlbumArtist, {"album_artist", nullptr}},
     {Tuple::String, Tuple::Performer, {"performer", nullptr}},
     {Tuple::String, Tuple::Copyright, {"copyright", nullptr}},
     {Tuple::String, Tuple::Genre, {"genre", "WM/Genre", nullptr}},

@@ -81,6 +81,19 @@ static void toggle_search_tool(bool enable)
         aud_plugin_enable(search_tool, enable);
 }
 
+static QToolButton * create_menu_button(QWidget * parent, QMenuBar * menubar)
+{
+    auto button = new QToolButton(parent);
+    button->setIcon(audqt::get_icon("audacious"));
+    button->setPopupMode(QToolButton::InstantPopup);
+    button->setToolTip(_("Menu"));
+
+    for (auto action : menubar->actions())
+        button->addAction(action);
+
+    return button;
+}
+
 MainWindow::MainWindow()
     : m_config_name(get_config_name()), m_dialogs(this),
       m_menubar(qtui_build_menubar(this)),
@@ -94,6 +107,7 @@ MainWindow::MainWindow()
     auto slider = new TimeSlider(this);
 
     const ToolBarItem items[] = {
+        ToolBarCustom(create_menu_button(this, m_menubar), &m_menu_action),
         ToolBarAction("edit-find", N_("Search Library"), N_("Search Library"),
                       toggle_search_tool, &m_search_action),
         ToolBarAction("document-open", N_("Open Files"), N_("Open Files"),
@@ -129,7 +143,8 @@ MainWindow::MainWindow()
             [](bool on) { aud_set_bool("shuffle", on); }, &m_shuffle_action),
         ToolBarCustom(audqt::volume_button_new(this))};
 
-    addToolBar(Qt::TopToolBarArea, new ToolBar(this, items));
+    auto toolbar = new ToolBar(this, items);
+    addToolBar(Qt::TopToolBarArea, toolbar);
 
     if (m_search_tool)
         aud_plugin_add_watch(m_search_tool, plugin_watcher, this);
@@ -160,6 +175,14 @@ MainWindow::MainWindow()
     read_settings();
     update_visibility();
 
+    /* Make sure UI elements are visible, in case restoreState() hid
+     * them. It's not clear exactly how they can get hidden in the first
+     * place, but user screenshots show that it somehow happens, and in
+     * that case we don't want them to be gone forever. */
+    toolbar->show();
+    for (auto w : m_dock_widgets)
+        w->show();
+
     /* set initial keyboard focus on the playlist */
     m_playlist_tabs->currentPlaylistWidget()->setFocus(Qt::OtherFocusReason);
 }
@@ -183,9 +206,12 @@ void MainWindow::closeEvent(QCloseEvent * e)
     hook_call("window close", &handled);
 
     if (!handled)
+    {
+        e->accept();
         aud_quit();
-
-    e->ignore();
+    }
+    else
+        e->ignore();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent * event)
@@ -260,7 +286,10 @@ void MainWindow::update_toggles()
 
 void MainWindow::update_visibility()
 {
-    m_menubar->setVisible(aud_get_bool("qtui", "menu_visible"));
+    bool menu_visible = aud_get_bool("qtui", "menu_visible");
+    m_menubar->setVisible(menu_visible);
+    m_menu_action->setVisible(!menu_visible);
+
     m_infobar->setVisible(aud_get_bool("qtui", "infoarea_visible"));
     m_statusbar->setVisible(aud_get_bool("qtui", "statusbar_visible"));
 }
@@ -371,6 +400,8 @@ void MainWindow::add_dock_plugin_cb(PluginHandle * plugin)
 
     if (!restoreDockWidget(w))
         addDockWidget(Qt::LeftDockWidgetArea, w);
+
+    w->show(); /* in case restoreDockWidget() hid it */
 }
 
 void MainWindow::remove_dock_plugin_cb(PluginHandle * plugin)
