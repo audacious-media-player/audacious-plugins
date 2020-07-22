@@ -1,8 +1,6 @@
 # Please don't update this file manually - use ./update-potfiles.sh instead!
 src/aac/aac.cc
 src/adplug/adplug-xmms.cc
-src/adplug/core/rix.cc
-src/adplug/core/rix.h
 src/alarm/alarm.cc
 src/alarm/interface.cc
 src/albumart/albumart.cc
@@ -95,7 +93,6 @@ src/flac/metadata.cc
 src/flac/plugin.cc
 src/gio/gio.cc
 src/glspectrum/gl-spectrum.cc
-src/gnomeshortcuts/gnomeshortcuts.cc
 src/gtkui/columns.cc
 src/gtkui/layout.cc
 src/gtkui/menus.cc
@@ -156,15 +153,15 @@ src/skins/actions.cc
 src/skins/equalizer.cc
 src/skins/main.cc
 src/skins/menus.cc
-src/skins/playlist.cc
 src/skins/playlist-widget.cc
+src/skins/playlistwin.cc
 src/skins/plugin.cc
 src/skins-qt/actions.cc
 src/skins-qt/equalizer.cc
 src/skins-qt/main.cc
 src/skins-qt/menus.cc
-src/skins-qt/playlist.cc
 src/skins-qt/playlist-widget.cc
+src/skins-qt/playlistwin.cc
 src/skins-qt/plugin.cc
 src/skins-qt/skins_cfg.cc
 src/skins-qt/skinselector.cc

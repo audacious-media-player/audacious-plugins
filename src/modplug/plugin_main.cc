@@ -24,7 +24,6 @@ const char * const ModplugXMMS::exts[] =
       nullptr };
 
 const char * const ModplugXMMS::defaults[] = {
- "Bits", "16",
  "Channels", "2",
  "ResamplingMode", aud::numeric_string<SRCMODE_POLYPHASE>::str,
  "Frequency", "44100",
@@ -53,9 +52,6 @@ const char * const ModplugXMMS::defaults[] = {
 };
 
 static const PreferencesWidget quality_widgets[] = {
-    WidgetLabel (N_("<b>Resolution</b>")),
-    WidgetRadio (N_("8-bit"), WidgetInt (MODPLUG_CFGID, "Bits"), {8}),
-    WidgetRadio (N_("16-bit"), WidgetInt (MODPLUG_CFGID, "Bits"), {16}),
     WidgetLabel (N_("<b>Channels</b>")),
     WidgetRadio (N_("Mono"), WidgetInt (MODPLUG_CFGID, "Channels"), {1}),
     WidgetRadio (N_("Stereo"), WidgetInt (MODPLUG_CFGID, "Channels"), {2}),
@@ -134,7 +130,6 @@ void ModplugXMMS::load_settings ()
 {
     aud_config_set_defaults (MODPLUG_CFGID, defaults);
 
-    mModProps.mBits = aud_get_int (MODPLUG_CFGID, "Bits");
     mModProps.mChannels = aud_get_int (MODPLUG_CFGID, "Channels");
     mModProps.mResamplingMode = aud_get_int (MODPLUG_CFGID, "ResamplingMode");
     mModProps.mFrequency = aud_get_int (MODPLUG_CFGID, "Frequency");

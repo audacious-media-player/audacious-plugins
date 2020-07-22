@@ -1,6 +1,6 @@
 PLUGIN = search-tool-qt${PLUGIN_SUFFIX}
 
-SRCS = search-tool-qt.cc
+SRCS = html-delegate.cc library.cc search-model.cc search-tool-qt.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

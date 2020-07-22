@@ -10,4 +10,5 @@ plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 LD = ${CXX}
 
 CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} -I../..
+LIBS += ${GLIB_LIBS}

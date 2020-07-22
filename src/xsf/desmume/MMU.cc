@@ -2809,7 +2809,7 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 				return;
                         case REG_GCROMCTRL :
 				{
-					int i;
+					u32 i;
 
                                         if(MEM_8(MMU.MMU_MEM[proc], REG_GCCMDOUT) == 0xB7)
 					{

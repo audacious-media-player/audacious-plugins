@@ -73,8 +73,8 @@ static const char * event_desc[EVENT_MAX] = {
     [EVENT_PAUSE] = N_("Pause/Resume"),
     [EVENT_STOP] = N_("Stop"),
     [EVENT_NEXT_TRACK] = N_("Next track"),
-    [EVENT_FORWARD] = N_("Forward 5 seconds"),
-    [EVENT_BACKWARD] = N_("Rewind 5 seconds"),
+    [EVENT_FORWARD] = N_("Step forward"),
+    [EVENT_BACKWARD] = N_("Step backward"),
     [EVENT_MUTE] = N_("Mute"),
     [EVENT_VOL_UP] = N_("Volume up"),
     [EVENT_VOL_DOWN] = N_("Volume down"),
@@ -231,7 +231,7 @@ on_entry_button_press_event(GtkWidget * widget,
             GTK_DIALOG_MODAL,
             GTK_MESSAGE_WARNING,
             GTK_BUTTONS_YES_NO,
-            _("It is not recommended to bind the primary mouse buttons without modificators.\n\n"
+            _("It is not recommended to bind the primary mouse buttons without modifiers.\n\n"
               "Do you want to continue?"));
         gtk_window_set_title(GTK_WINDOW(dialog), _("Binding mouse buttons"));
         response = gtk_dialog_run(GTK_DIALOG(dialog));

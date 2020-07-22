@@ -56,12 +56,12 @@ static const char * const gtkui_defaults[] = {
     "playlist_columns", "title artist album queued length",
     "playlist_headers", "TRUE",
     "show_remaining_time", "FALSE",
-    "step_size", "5",
 
     "player_x", "-1000",
     "player_y", "-1000",
     "player_width", "768",
     "player_height", "480",
+    "player_maximized", "FALSE",
 
     nullptr
 };
@@ -136,6 +136,9 @@ static QueuedFunc delayed_title_change;
 
 static void save_window_size ()
 {
+    if (aud_get_bool ("gtkui", "player_maximized"))
+        return;
+
     int x, y, w, h;
     gtk_window_get_position ((GtkWindow *) window, & x, & y);
     gtk_window_get_size ((GtkWindow *) window, & w, & h);
@@ -157,6 +160,18 @@ static void restore_window_size ()
 
     if (x > -1000 && y > -1000)
         gtk_window_move ((GtkWindow *) window, x, y);
+
+    if (aud_get_bool ("gtkui", "player_maximized"))
+        gtk_window_maximize ((GtkWindow *) window);
+}
+
+static gboolean window_state_cb (GtkWidget *, GdkEventWindowState * event)
+{
+    if (event->changed_mask & GDK_WINDOW_STATE_MAXIMIZED)
+        aud_set_bool ("gtkui", "player_maximized",
+         !! (event->new_window_state & GDK_WINDOW_STATE_MAXIMIZED));
+
+    return false;
 }
 
 static gboolean window_delete ()
@@ -180,33 +195,6 @@ static void button_open_pressed ()
 static void button_add_pressed ()
 {
     audgui_run_filebrowser (false);
-}
-
-void set_ab_repeat_a ()
-{
-    if (! aud_drct_get_playing ())
-        return;
-
-    int a, b;
-    aud_drct_get_ab_repeat (a, b);
-    a = aud_drct_get_time ();
-    aud_drct_set_ab_repeat (a, b);
-}
-
-void set_ab_repeat_b ()
-{
-    if (! aud_drct_get_playing ())
-        return;
-
-    int a, b;
-    aud_drct_get_ab_repeat (a, b);
-    b = aud_drct_get_time ();
-    aud_drct_set_ab_repeat (a, b);
-}
-
-void clear_ab_repeat ()
-{
-    aud_drct_set_ab_repeat (-1, -1);
 }
 
 static void title_change (void * = nullptr)
@@ -416,10 +404,19 @@ static void set_slider_length (int length)
         gtk_widget_hide (slider);
 }
 
-void update_step_size ()
+static void update_step_size ()
 {
-    double step_size = aud_get_double ("gtkui", "step_size");
-    gtk_range_set_increments ((GtkRange *) slider, step_size * 1000, step_size * 1000);
+    int step_size = aud_get_int ("step_size");
+    // set half the step size because GTK doubles it for scroll events
+    gtk_range_set_increments ((GtkRange *) slider, step_size * 500, step_size * 500);
+}
+
+static void update_volume_delta ()
+{
+    int volume_delta = aud_get_int ("volume_delta");
+    GtkAdjustment * adjustment = gtk_scale_button_get_adjustment ((GtkScaleButton *) volume);
+    gtk_adjustment_set_step_increment (adjustment, volume_delta);
+    gtk_adjustment_set_page_increment (adjustment, volume_delta);
 }
 
 static void pause_cb ()
@@ -533,11 +530,11 @@ static gboolean window_keypress_cb (GtkWidget *, GdkEventKey * event)
             return true;
         case GDK_KEY_Left:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () - aud_get_double ("gtkui", "step_size") * 1000);
+                do_seek (aud_drct_get_time () - aud_get_int ("step_size") * 1000);
             return true;
         case GDK_KEY_Right:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () + aud_get_double ("gtkui", "step_size") * 1000);
+                do_seek (aud_drct_get_time () + aud_get_int ("step_size") * 1000);
             return true;
         }
 
@@ -572,11 +569,11 @@ static gboolean window_keypress_cb (GtkWidget *, GdkEventKey * event)
         {
           case GDK_KEY_Left:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () - aud_get_double ("gtkui", "step_size") * 1000);
+                do_seek (aud_drct_get_time () - aud_get_int ("step_size") * 1000);
             break;
           case GDK_KEY_Right:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () + aud_get_double ("gtkui", "step_size") * 1000);
+                do_seek (aud_drct_get_time () + aud_get_int ("step_size") * 1000);
             break;
           default:
             return false;
@@ -635,26 +632,26 @@ static void update_toggles (void * = nullptr, void * = nullptr)
     gtk_widget_set_visible ((GtkWidget *) button_record, aud_drct_get_record_enabled ());
 
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_record,
-     aud_get_bool (nullptr, "record"));
+     aud_get_bool ("record"));
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_repeat,
-     aud_get_bool (nullptr, "repeat"));
+     aud_get_bool ("repeat"));
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_shuffle,
-     aud_get_bool (nullptr, "shuffle"));
+     aud_get_bool ("shuffle"));
 }
 
 static void toggle_repeat (GtkToggleToolButton * button)
 {
-    aud_set_bool (nullptr, "repeat", gtk_toggle_tool_button_get_active (button));
+    aud_set_bool ("repeat", gtk_toggle_tool_button_get_active (button));
 }
 
 static void toggle_shuffle (GtkToggleToolButton * button)
 {
-    aud_set_bool (nullptr, "shuffle", gtk_toggle_tool_button_get_active (button));
+    aud_set_bool ("shuffle", gtk_toggle_tool_button_get_active (button));
 }
 
 static void toggle_record (GtkToggleToolButton * button)
 {
-    aud_set_bool (nullptr, "record", gtk_toggle_tool_button_get_active (button));
+    aud_set_bool ("record", gtk_toggle_tool_button_get_active (button));
 }
 
 static void toggle_search_tool (GtkToggleToolButton * button)
@@ -694,6 +691,8 @@ static void ui_hooks_associate ()
     hook_associate ("set record", update_toggles, nullptr);
     hook_associate ("set shuffle", update_toggles, nullptr);
     hook_associate ("set repeat", update_toggles, nullptr);
+    hook_associate ("set step_size", (HookFunction) update_step_size, nullptr);
+    hook_associate ("set volume_delta", (HookFunction) update_volume_delta, nullptr);
     hook_associate ("config save", (HookFunction) config_save, nullptr);
 }
 
@@ -713,6 +712,8 @@ static void ui_hooks_disassociate ()
     hook_dissociate ("set record", update_toggles);
     hook_dissociate ("set shuffle", update_toggles);
     hook_dissociate ("set repeat", update_toggles);
+    hook_dissociate ("set step_size", (HookFunction) update_step_size);
+    hook_dissociate ("set volume_delta", (HookFunction) update_volume_delta);
     hook_dissociate ("config save", (HookFunction) config_save);
 }
 
@@ -856,10 +857,12 @@ bool GtkUI::init ()
     gtk_container_add ((GtkContainer *) boxitem2, box2);
 
     volume = gtk_volume_button_new ();
-    g_object_set ((GObject *) volume, "size", GTK_ICON_SIZE_LARGE_TOOLBAR, nullptr);
+    GtkIconSize icon_size = gtk_tool_shell_get_icon_size ((GtkToolShell *) toolbar);
+    g_object_set ((GObject *) volume, "size", icon_size, nullptr);
     gtk_button_set_relief ((GtkButton *) volume, GTK_RELIEF_NONE);
+    int delta = aud_get_int ("volume_delta");
     gtk_scale_button_set_adjustment ((GtkScaleButton *) volume,
-     (GtkAdjustment *) gtk_adjustment_new (0, 0, 100, 1, 5, 0));
+     (GtkAdjustment *) gtk_adjustment_new (0, 0, 100, delta, delta, 0));
     gtk_widget_set_can_focus (volume, false);
 
     gtk_scale_button_set_value ((GtkScaleButton *) volume, aud_drct_get_volume_main ());
@@ -900,6 +903,7 @@ bool GtkUI::init ()
 
     g_signal_connect (window, "map-event", (GCallback) pl_notebook_grab_focus, nullptr);
     g_signal_connect (window, "delete-event", (GCallback) window_delete, nullptr);
+    g_signal_connect (window, "window-state-event", (GCallback) window_state_cb, nullptr);
     g_signal_connect (window, "key-press-event", (GCallback) window_keypress_cb, nullptr);
     g_signal_connect (pl_notebook, "key-press-event", (GCallback) playlist_keypress_cb, nullptr);
 

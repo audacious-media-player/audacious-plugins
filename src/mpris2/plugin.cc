@@ -152,7 +152,7 @@ static void update_metadata (void * data, GObject * object)
     }
 
     GVariant * key = g_variant_new_string ("mpris:trackid");
-    GVariant * str = g_variant_new_string ("/org/mpris/MediaPlayer2/CurrentTrack");
+    GVariant * str = g_variant_new_object_path ("/org/mpris/MediaPlayer2/CurrentTrack");
     GVariant * var = g_variant_new_variant (str);
     elems[nelems ++] = g_variant_new_dict_entry (key, var);
 
@@ -300,9 +300,7 @@ void MPRIS2Plugin::cleanup ()
 
 bool MPRIS2Plugin::init ()
 {
-#if ! GLIB_CHECK_VERSION (2, 36, 0)
     g_type_init ();
-#endif
 
     GError * error = nullptr;
     GDBusConnection * bus = g_bus_get_sync (G_BUS_TYPE_SESSION, nullptr, & error);
@@ -319,11 +317,17 @@ bool MPRIS2Plugin::init ()
 
     object_core = (GObject *) mpris_media_player2_skeleton_new ();
 
+    // build the schemes array
+    auto schemes = VFSFile::supported_uri_schemes ();
+    auto mimes = aud_plugin_get_supported_mime_types ();
+
     g_object_set (object_core,
      "can-quit", (gboolean) true,
      "can-raise", (gboolean) true,
      "desktop-entry", "audacious",
      "identity", "Audacious",
+     "supported-uri-schemes", schemes.begin (),
+     "supported-mime-types", mimes.begin (),
      nullptr);
 
     g_signal_connect (object_core, "handle-quit", (GCallback) quit_cb, nullptr);

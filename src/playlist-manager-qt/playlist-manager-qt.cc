@@ -24,14 +24,15 @@
 #include <QHeaderView>
 #include <QIcon>
 #include <QMouseEvent>
+#include <QPointer>
 #include <QToolButton>
-#include <QTreeView>
 
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudqt/libaudqt.h>
+#include <libaudqt/treeview.h>
 
 class PlaylistManagerQt : public GeneralPlugin
 {
@@ -63,16 +64,27 @@ public:
 
     PlaylistsModel () :
         m_rows (Playlist::n_playlists ()),
-        m_playing (Playlist::playing_playlist ().index ()),
-        m_bold (QGuiApplication::font ())
+        m_playing (Playlist::playing_playlist ().index ())
     {
+    }
+
+    void setFont (const QFont & font)
+    {
+        m_bold = font;
         m_bold.setBold (true);
+
+        if (m_playing >= 0)
+            update_rows (m_playing, 1);
     }
 
     void update (Playlist::UpdateLevel level);
 
 protected:
-    int rowCount (const QModelIndex & parent) const { return m_rows; }
+    int rowCount (const QModelIndex & parent) const
+    {
+        return parent.isValid() ? 0 : m_rows;
+    }
+
     int columnCount (const QModelIndex & parent) const { return NColumns; }
 
     Qt::DropActions supportedDropActions () const { return Qt::MoveAction; }
@@ -99,16 +111,22 @@ private:
     QFont m_bold;
 };
 
-class PlaylistsView : public QTreeView
+class PlaylistsView : public audqt::TreeView
 {
 public:
     PlaylistsView ();
 
 protected:
-    void currentChanged (const QModelIndex & current, const QModelIndex & previous);
-    void keyPressEvent (QKeyEvent * event);
-    void mouseDoubleClickEvent (QMouseEvent * event);
-    void dropEvent (QDropEvent * event);
+    void changeEvent (QEvent * event) override
+    {
+        if (event->type () == QEvent::FontChange)
+            m_model.setFont (font ());
+
+        audqt::TreeView::changeEvent (event);
+    }
+
+    void currentChanged (const QModelIndex & current, const QModelIndex & previous) override;
+    void dropEvent (QDropEvent * event) override;
 
 private:
     PlaylistsModel m_model;
@@ -116,8 +134,11 @@ private:
     void update (Playlist::UpdateLevel level);
     void update_sel ();
 
-    void play_current ()
-        { Playlist::by_index (currentIndex ().row ()).start_playback (); }
+    void activate (const QModelIndex & index) override
+    {
+        if (index.isValid ())
+            Playlist::by_index (index.row ()).start_playback ();
+    }
 
     const HookReceiver<PlaylistsView, Playlist::UpdateLevel>
      update_hook {"playlist update", this, & PlaylistsView::update};
@@ -230,6 +251,8 @@ void PlaylistsModel::update (const Playlist::UpdateLevel level)
 
 PlaylistsView::PlaylistsView ()
 {
+    m_model.setFont (font ());
+
     m_in_update ++;
     setModel (& m_model);
     update_sel ();
@@ -241,6 +264,7 @@ PlaylistsView::PlaylistsView ()
     hdr->setSectionResizeMode (PlaylistsModel::ColumnEntries, QHeaderView::Interactive);
     hdr->resizeSection (PlaylistsModel::ColumnEntries, audqt::to_native_dpi (64));
 
+    setAllColumnsShowFocus (true);
     setDragDropMode (InternalMove);
     setFrameShape (QFrame::NoFrame);
     setIndentation (0);
@@ -248,33 +272,9 @@ PlaylistsView::PlaylistsView ()
 
 void PlaylistsView::currentChanged (const QModelIndex & current, const QModelIndex & previous)
 {
-    QTreeView::currentChanged (current, previous);
+    audqt::TreeView::currentChanged (current, previous);
     if (! m_in_update)
         Playlist::by_index (current.row ()).activate ();
-}
-
-void PlaylistsView::keyPressEvent (QKeyEvent * event)
-{
-    if (event->modifiers () == Qt::NoModifier)
-    {
-        switch (event->key ())
-        {
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-            play_current ();
-            return;
-        default:
-            break;
-        }
-    }
-
-    QTreeView::keyPressEvent (event);
-}
-
-void PlaylistsView::mouseDoubleClickEvent (QMouseEvent * event)
-{
-    if (event->button () == Qt::LeftButton)
-        play_current ();
 }
 
 void PlaylistsView::dropEvent (QDropEvent * event)
@@ -316,12 +316,12 @@ void PlaylistsView::update_sel ()
     m_in_update --;
 }
 
-static PlaylistsView * s_playlists_view = nullptr;
+static QPointer<PlaylistsView> s_playlists_view;
 
 static QToolButton * new_tool_button (const char * text, const char * icon)
 {
     auto button = new QToolButton;
-    button->setIcon (QIcon::fromTheme (icon));
+    button->setIcon (audqt::get_icon (icon));
     button->setText (audqt::translate_str (text));
     button->setToolButtonStyle (Qt::ToolButtonTextBesideIcon);
     return button;
@@ -330,10 +330,6 @@ static QToolButton * new_tool_button (const char * text, const char * icon)
 void * PlaylistManagerQt::get_qt_widget ()
 {
     s_playlists_view = new PlaylistsView;
-
-    QObject::connect (s_playlists_view, & QObject::destroyed, [] () {
-        s_playlists_view = nullptr;
-    });
 
     auto new_button = new_tool_button (N_("_New"), "document-new");
     QObject::connect (new_button, & QToolButton::clicked, Playlist::new_playlist);

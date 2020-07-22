@@ -133,18 +133,31 @@ static int find_dock_plugin (PluginHandle * plugin)
     return -1;
 }
 
-static void remove_dock_plugin (PluginHandle * plugin, void * unused)
+static PluginWindow * remove_dock_plugin (PluginHandle * plugin)
 {
     int idx = find_dock_plugin (plugin);
     if (idx < 0)
-        return;
+        return nullptr;
 
     auto window = windows[idx];
     windows.remove (idx, 1);
 
     window->save_size ();
     delete window->widget ();
-    window->deleteLater ();
+
+    /* After this point the destroy sequence differs.  When responding to a GUI
+     * event, we need to guard against deleting an object from within its member
+     * function, so we'll use QObject::deleteLater().  At shutdown, however, we
+     * we need to delete the plugin window immediately since the event loop has
+     * already ended. */
+    return window;
+}
+
+static void remove_dock_plugin_idle (PluginHandle * plugin, void * unused)
+{
+    auto window = remove_dock_plugin (plugin);
+    if (window)
+        window->deleteLater ();
 }
 
 void create_plugin_windows ()
@@ -162,7 +175,7 @@ void create_plugin_windows ()
     }
 
     hook_associate ("dock plugin enabled", (HookFunction) add_dock_plugin, nullptr);
-    hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin, nullptr);
+    hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin_idle, nullptr);
 }
 
 void show_plugin_windows ()
@@ -194,15 +207,15 @@ void destroy_plugin_windows ()
     for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
-            remove_dock_plugin (plugin, nullptr);
+            delete remove_dock_plugin (plugin);
     }
 
     for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
     {
         if (aud_plugin_get_enabled (plugin))
-            remove_dock_plugin (plugin, nullptr);
+            delete remove_dock_plugin (plugin);
     }
 
     hook_dissociate ("dock plugin enabled", (HookFunction) add_dock_plugin);
-    hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin);
+    hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin_idle);
 }

@@ -27,48 +27,48 @@
 
 class QMouseEvent;
 
-class MyLabel : public QLabel
+class TimeSliderLabel : public QLabel
 {
 public:
-    MyLabel (QWidget * parent);
-    ~MyLabel ();
+    TimeSliderLabel(QWidget * parent);
+    ~TimeSliderLabel();
 
 protected:
-     void mouseDoubleClickEvent (QMouseEvent * event);
+    void mouseDoubleClickEvent(QMouseEvent * event);
 };
 
 class TimeSlider : public QSlider
 {
 public:
-    TimeSlider (QWidget * parent);
-    ~TimeSlider ();
+    TimeSlider(QWidget * parent);
 
-    MyLabel * label ()
-        { return m_label; }
+    TimeSliderLabel * label() { return m_label; }
+
+protected:
+    void wheelEvent(QWheelEvent *event);
 
 private:
-    void set_label (int time, int length);
+    void set_label(int time, int length);
 
-    void start_stop ();
-    void update ();
-    void moved (int value);
-    void pressed ();
-    void released ();
+    void start_stop();
+    void update();
+    void moved(int value);
+    void pressed();
+    void released();
 
-    void mousePressEvent (QMouseEvent * event);
+    TimeSliderLabel * m_label;
 
-    MyLabel * m_label;
+    int m_scroll_delta = 0;
 
-    const Timer<TimeSlider>
-     m_timer {TimerRate::Hz4, this, & TimeSlider::update};
+    const Timer<TimeSlider> m_timer{TimerRate::Hz4, this, &TimeSlider::update};
 
-    const HookReceiver<TimeSlider>
-     hook1 {"playback ready", this, & TimeSlider::start_stop},
-     hook2 {"playback pause", this, & TimeSlider::start_stop},
-     hook3 {"playback unpause", this, & TimeSlider::start_stop},
-     hook4 {"playback seek", this, & TimeSlider::update},
-     hook5 {"playback stop", this, & TimeSlider::start_stop},
-     hook6 {"qtui toggle remaining time", this, & TimeSlider::start_stop};
+    const HookReceiver<TimeSlider> hook1{"playback ready", this,
+                                         &TimeSlider::start_stop},
+        hook2{"playback pause", this, &TimeSlider::start_stop},
+        hook3{"playback unpause", this, &TimeSlider::start_stop},
+        hook4{"playback seek", this, &TimeSlider::update},
+        hook5{"playback stop", this, &TimeSlider::start_stop},
+        hook6{"qtui toggle remaining time", this, &TimeSlider::start_stop};
 };
 
 #endif

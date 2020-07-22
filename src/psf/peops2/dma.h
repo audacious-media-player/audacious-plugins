@@ -24,6 +24,14 @@
 //
 //*************************************************************************//
 
+#include <stdint.h>
+
 void InterruptDMA4(void);
-void InterruptDMA7(void); 
- 
+void InterruptDMA7(void);
+
+void SPU2readDMA4Mem(uint32_t usPSXMem,int iSize);
+void SPU2writeDMA4Mem(uint32_t usPSXMem,int iSize);
+void SPU2readDMA7Mem(uint32_t usPSXMem,int iSize);
+void SPU2writeDMA7Mem(uint32_t usPSXMem,int iSize);
+void SPU2interruptDMA4(void);
+void SPU2interruptDMA7(void);

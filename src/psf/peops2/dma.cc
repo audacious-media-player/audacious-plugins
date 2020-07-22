@@ -31,11 +31,12 @@
 
 #define _IN_DMA
 
+#include "../peops2/dma.h"
 #include "../peops2/externals.h"
 #include "../peops2/registers.h"
 //#include "debug.h"
 
-extern uint32_t psx_ram[(2*1024*1024)/4];
+extern uint32_t psx_ram[(2*1024*1024)/4+4];
 
 ////////////////////////////////////////////////////////////////////////
 // READ DMA (many values)

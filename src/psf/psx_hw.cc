@@ -52,6 +52,12 @@
 #include "cpuintrf.h"
 #include "psx.h"
 
+#include "peops/dma.h"
+#include "peops/registers.h"
+#include "peops/spu.h"
+#include "peops2/dma.h"
+#include "peops2/registers.h"
+
 #define DEBUG_HLE_BIOS	(0)		// debug PS1 HLE BIOS
 #define DEBUG_SPU	(0)		// debug PS1 SPU read/write
 #define DEBUG_SPU2	(0)		// debug PS2 SPU read/write
@@ -61,41 +67,12 @@
 
 #define LE32(x) FROM_LE32(x)
 
-extern void mips_get_info(uint32_t state, union cpuinfo *info);
-extern void mips_set_info(uint32_t state, union cpuinfo *info);
-extern int psxcpu_verbose;
-extern uint16_t SPUreadRegister(uint32_t reg);
-extern void SPUwriteRegister(uint32_t reg, uint16_t val);
-extern void SPUwriteDMAMem(uint32_t usPSXMem,int iSize);
-extern void SPUreadDMAMem(uint32_t usPSXMem,int iSize);
-extern void mips_shorten_frame(void);
-extern int mips_execute( int cycles );
-extern uint32_t psf2_load_file(const char *file, uint8_t *buf, uint32_t buflen);
-extern uint32_t psf2_load_elf(uint8_t *start, uint32_t len);
-void psx_hw_runcounters(void);
-int mips_get_icount(void);
-void mips_set_icount(int count);
-
-extern int psf_refresh;
-
-// SPU2
-extern void SPU2write(unsigned long reg, unsigned short val);
-extern unsigned short SPU2read(unsigned long reg);
-extern void SPU2readDMA4Mem(uint32_t usPSXMem,int iSize);
-extern void SPU2writeDMA4Mem(uint32_t usPSXMem,int iSize);
-extern void SPU2readDMA7Mem(uint32_t usPSXMem,int iSize);
-extern void SPU2writeDMA7Mem(uint32_t usPSXMem,int iSize);
-extern void SPU2interruptDMA4(void);
-extern void SPU2interruptDMA7(void);
-
 #define MAX_FILE_SLOTS	(32)
 
 static volatile int softcall_target = 0;
 static int filestat[MAX_FILE_SLOTS];
 static uint8_t *filedata[MAX_FILE_SLOTS];
 static uint32_t filesize[MAX_FILE_SLOTS], filepos[MAX_FILE_SLOTS];
-uint32_t psf2_get_loadaddr(void);
-void psf2_set_loadaddr(uint32_t addr);
 static void call_irq_routine(uint32_t routine, uint32_t parameter);
 static int intr_susp = 0;
 
@@ -236,10 +213,10 @@ static EvtCtrlBlk *CounterEvent;
 #define EvMdNOINTR	0x2000
 
 // PSX main RAM
-uint32_t psx_ram[(2*1024*1024)/4];
+uint32_t psx_ram[(2*1024*1024)/4+4];
 uint32_t psx_scratch[0x400];
 // backup image to restart songs
-uint32_t initial_ram[(2*1024*1024)/4];
+uint32_t initial_ram[(2*1024*1024)/4+4];
 uint32_t initial_scratch[0x400];
 
 static uint32_t spu_delay, dma_icr, irq_data, irq_mask, dma_timer, WAI;
@@ -468,7 +445,7 @@ static void psx_irq_update(void)
 	}
 }
 
-void psx_irq_set(uint32_t irq)
+static void psx_irq_set(uint32_t irq)
 {
 	irq_data |= irq;
 
@@ -477,9 +454,9 @@ void psx_irq_set(uint32_t irq)
 
 static uint32_t gpu_stat = 0;
 
-uint32_t psx_hw_read(offs_t offset, uint32_t mem_mask)
+static uint32_t psx_hw_read(offs_t offset, uint32_t mem_mask)
 {
-	if (offset >= 0x00000000 && offset <= 0x007fffff)
+	if (offset <= 0x007fffff)
 	{
 		offset &= 0x1fffff;
 		return LE32(psx_ram[offset>>2]);
@@ -670,11 +647,11 @@ static void ps2_dma7(uint32_t madr, uint32_t bcr, uint32_t chcr)
 	dma7_delay = 80;
 }
 
-void psx_hw_write(offs_t offset, uint32_t data, uint32_t mem_mask)
+static void psx_hw_write(offs_t offset, uint32_t data, uint32_t mem_mask)
 {
 	union cpuinfo mipsinfo;
 
-	if (offset >= 0x00000000 && offset <= 0x007fffff)
+	if (offset <= 0x007fffff)
 	{
 		offset &= 0x1fffff;
 //		if (offset < 0x10000) printf("Write %x to kernel @ %x\n", data, offset);
@@ -953,11 +930,6 @@ enum
 
 static uint32_t heap_addr, entry_int = 0;
 
-extern uint32_t mips_get_cause(void);
-extern uint32_t mips_get_status(void);
-extern void mips_set_status(uint32_t status);
-extern uint32_t mips_get_ePC(void);
-
 static uint32_t irq_regs[37];
 
 static int irq_mutex = 0;
@@ -1038,7 +1010,7 @@ static void call_irq_routine(uint32_t routine, uint32_t parameter)
 	irq_mutex = 0;
 }
 
-void psx_bios_exception(uint32_t pc)
+static void psx_bios_exception(uint32_t pc)
 {
 	uint32_t a0, status;
 	union cpuinfo mipsinfo;
@@ -3216,7 +3188,7 @@ void psx_iop_call(uint32_t pc, uint32_t callnum)
 
 				// filter out ESC characters
 				{
-					int ch;
+					size_t ch;
 
 					for (ch = 0; ch < strlen(out); ch++)
 					{
@@ -3267,7 +3239,7 @@ void psx_iop_call(uint32_t pc, uint32_t callnum)
 				if (psf2_load_file(mname, tempmem, 2*1024*1024) != 0xffffffff)
 				{
 					uint32_t start;
-					int i;
+					uint32_t i;
 
 					start = psf2_load_elf(tempmem, 2*1024*1024);
 

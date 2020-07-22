@@ -98,7 +98,7 @@ static String create_message_to_lastfm (const char * method_name, int n_args, ..
         buf.insert (-1, "&");
         buf.insert (-1, name);
         buf.insert (-1, "=");
-        buf.insert (-1, esc);
+        buf.insert (-1, esc ? esc : "");
         curl_free (esc);
     }
 
@@ -285,12 +285,13 @@ static void set_timestamp_to_current(char **line) {
     //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]
     //artist  album   title   number  length  "L"     timestamp nullptr
 
-    char **splitted_line = g_strsplit(*line, "\t", 0);
-    g_free(splitted_line[6]);
-    splitted_line[6] = g_strdup_printf("%" G_GINT64_FORMAT, g_get_real_time() / G_USEC_PER_SEC);
-    AUDDBG("splitted line's timestamp is now: %s.\n", splitted_line[6]);
+    char **split_line = g_strsplit(*line, "\t", 0);
+    g_free(split_line[6]);
+    split_line[6] = g_strdup_printf("%" G_GINT64_FORMAT, g_get_real_time() / G_USEC_PER_SEC);
+    AUDDBG("split line's timestamp is now: %s.\n", split_line[6]);
     g_free(*line);
-    (*line) = g_strjoinv("\t", splitted_line);
+    (*line) = g_strjoinv("\t", split_line);
+    g_strfreev(split_line);
 }
 
 static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, GSList **lines_to_retry_ptr, char *queuepath) {

@@ -33,7 +33,7 @@
 #include "equalizer.h"
 #include "main.h"
 #include "vis-callbacks.h"
-#include "playlist.h"
+#include "playlistwin.h"
 #include "button.h"
 #include "eq-graph.h"
 #include "textbox.h"
@@ -198,13 +198,29 @@ void view_set_on_top (bool on_top)
 
 void view_apply_on_top ()
 {
-#if 0
-    bool on_top = aud_get_bool ("skins", "always_on_top");
+    bool mainwin_visible = mainwin->isVisible ();
+    bool equalizer_visible = equalizerwin->isVisible ();
+    bool playlist_visible = playlistwin->isVisible ();
 
-    gtk_window_set_keep_above ((GtkWindow *) mainwin->gtk (), on_top);
-    gtk_window_set_keep_above ((GtkWindow *) equalizerwin->gtk (), on_top);
-    gtk_window_set_keep_above ((GtkWindow *) playlistwin->gtk (), on_top);
-#endif
+    if (aud_get_bool ("skins", "always_on_top"))
+    {
+        mainwin->setWindowFlags (mainwin->windowFlags () | Qt::WindowStaysOnTopHint);
+        equalizerwin->setWindowFlags (equalizerwin->windowFlags () | Qt::WindowStaysOnTopHint);
+        playlistwin->setWindowFlags (playlistwin->windowFlags () | Qt::WindowStaysOnTopHint);
+    }
+    else
+    {
+        mainwin->setWindowFlags (mainwin->windowFlags () & ~Qt::WindowStaysOnTopHint);
+        equalizerwin->setWindowFlags (equalizerwin->windowFlags () & ~Qt::WindowStaysOnTopHint);
+        playlistwin->setWindowFlags (playlistwin->windowFlags () & ~Qt::WindowStaysOnTopHint);
+    }
+
+    if (mainwin_visible)
+        mainwin->show ();
+    if (equalizer_visible)
+        equalizerwin->show ();
+    if (playlist_visible)
+        playlistwin->show ();
 
     mainwin_menurow->refresh ();
 }

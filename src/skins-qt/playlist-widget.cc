@@ -34,10 +34,14 @@
 #include "playlist-slider.h"
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/playlist.h>
+#include <libaudqt/libaudqt.h>
+
+#include <QMimeData>
 
 enum {
     DRAG_SELECT = 1,
@@ -160,7 +164,7 @@ void PlaylistWidget::draw (QPainter & cr)
 
     /* entry numbers */
 
-    if (aud_get_bool (nullptr, "show_numbers_in_pl"))
+    if (aud_get_bool ("show_numbers_in_pl"))
     {
         width = 0;
 
@@ -257,19 +261,13 @@ void PlaylistWidget::draw (QPainter & cr)
         cr.drawRect (0, m_offset + m_row_height * (focus - m_first), m_width - 1, m_row_height - 1);
     }
 
-#if 0
     /* hover line */
 
     if (m_hover >= m_first && m_hover <= m_first + m_rows)
     {
-        cairo_new_path (cr);
-        cairo_set_line_width (cr, 2);
-        cairo_move_to (cr, 0, m_offset + m_row_height * (m_hover - m_first));
-        cairo_rel_line_to (cr, m_width, 0);
-        set_cairo_color (cr, skin.colors[SKIN_PLEDIT_NORMAL]);
-        cairo_stroke (cr);
+        cr.fillRect (0, m_offset + m_row_height * (m_hover - m_first) - 1, m_width, 2,
+                     QColor (skin.colors[SKIN_PLEDIT_NORMAL]));
     }
-#endif
 }
 
 PlaylistWidget::PlaylistWidget (int width, int height, const char * font) :
@@ -278,6 +276,8 @@ PlaylistWidget::PlaylistWidget (int width, int height, const char * font) :
 {
     add_input (m_width, m_height, true, true);
     set_font (font);  /* calls refresh() */
+
+    setAcceptDrops(true);
 }
 
 void PlaylistWidget::resize (int width, int height)
@@ -291,7 +291,7 @@ void PlaylistWidget::resize (int width, int height)
 
 void PlaylistWidget::set_font (const char * font)
 {
-    m_font.capture (qfont_from_string (font));
+    m_font.capture (new QFont (audqt::qfont_from_string (font)));
     m_metrics.capture (new QFontMetrics (* m_font, this));
     m_row_height = m_metrics->height ();
     refresh ();
@@ -411,9 +411,10 @@ bool PlaylistWidget::handle_keypress (QKeyEvent * event)
 {
     cancel_all ();
 
-    switch (event->modifiers () & (Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier))
+    auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+    switch (event->modifiers () & CtrlShiftAlt)
     {
-      case 0:
+      case Qt::NoModifier:
         switch (event->key ())
         {
           case Qt::Key_Up:
@@ -726,7 +727,7 @@ bool PlaylistWidget::motion (QMouseEvent * event)
     {
         if (position == -1 || position == m_length)
             cancel_all ();
-        else if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && m_popup_pos != position)
+        else if (aud_get_bool ("show_filepopup_for_tuple") && m_popup_pos != position)
         {
             cancel_all ();
             popup_trigger (position);
@@ -734,6 +735,51 @@ bool PlaylistWidget::motion (QMouseEvent * event)
     }
 
     return true;
+}
+
+void PlaylistWidget::dragEnterEvent (QDragEnterEvent * event)
+{
+    dragMoveEvent (event);
+}
+
+void PlaylistWidget::dragMoveEvent (QDragMoveEvent * event)
+{
+    const QMimeData * mimedata = event->mimeData();
+
+    if (event->proposedAction () == Qt::CopyAction && mimedata->hasUrls ())
+    {
+        auto p = event->pos ();
+        hover (p.x (), p.y ());
+        event->acceptProposedAction ();
+    }
+}
+
+void PlaylistWidget::dragLeaveEvent (QDragLeaveEvent *)
+{
+    hover_end ();
+}
+
+void PlaylistWidget::dropEvent (QDropEvent * event)
+{
+    const QMimeData * mimedata = event->mimeData();
+
+    if (event->proposedAction () == Qt::CopyAction && mimedata->hasUrls ())
+    {
+        auto p = event->pos ();
+        hover (p.x (), p.y ());
+
+        Index<PlaylistAddItem> files;
+
+        for (const auto &url: mimedata->urls())
+            files.append (String (url.toEncoded ()));
+
+        aud_drct_pl_add_list (std::move (files), hover_end ());
+        event->acceptProposedAction ();
+    }
+    else
+    {
+        hover_end ();
+    }
 }
 
 bool PlaylistWidget::leave ()
@@ -746,28 +792,22 @@ bool PlaylistWidget::leave ()
 
 void PlaylistWidget::popup_trigger (int pos)
 {
-#if 0
-    audgui_infopopup_hide ();
+    audqt::infopopup_hide ();
 
     m_popup_pos = pos;
-    m_popup_timer.queue (aud_get_int (nullptr, "filepopup_delay") * 100,
+    m_popup_timer.queue (aud_get_int ("filepopup_delay") * 100,
      aud::obj_member<PlaylistWidget, & PlaylistWidget::popup_show>, this);
-#endif
 }
 
 void PlaylistWidget::popup_show ()
 {
-#if 0
-    audgui_infopopup_show (m_playlist, m_popup_pos);
-#endif
+    audqt::infopopup_show (m_playlist, m_popup_pos);
 }
 
 void PlaylistWidget::popup_hide ()
 {
-#if 0
-    audgui_infopopup_hide ();
+    audqt::infopopup_hide ();
 
     m_popup_pos = -1;
     m_popup_timer.stop ();
-#endif
 }

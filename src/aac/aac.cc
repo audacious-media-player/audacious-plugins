@@ -13,6 +13,7 @@ class AACDecoder : public InputPlugin
 {
 public:
     static const char * const exts[];
+    static const char * const mimes[];
 
     static constexpr PluginInfo info = {
         N_("AAC (Raw) Decoder"),
@@ -20,7 +21,8 @@ public:
     };
 
     constexpr AACDecoder () : InputPlugin (info, InputInfo ()
-        .with_exts (exts)) {}
+        .with_exts (exts)
+        .with_mimes (mimes)) {}
 
     bool is_our_file (const char * filename, VFSFile & file);
     bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
@@ -30,6 +32,7 @@ public:
 EXPORT AACDecoder aud_plugin_instance;
 
 const char * const AACDecoder::exts[] = {"aac", nullptr};
+const char * const AACDecoder::mimes[] = {"audio/aac", nullptr};
 
 /*
  * BUFFER_SIZE is the highest amount of memory that can be pulled.
@@ -266,6 +269,8 @@ bool AACDecoder::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
         tuple.set_int (Tuple::Length, length);
     if (bitrate > 0)
         tuple.set_int (Tuple::Bitrate, bitrate);
+    if (channels > 0)
+        tuple.set_int (Tuple::Channels, channels);
 
     tuple.fetch_stream_info (file);
 

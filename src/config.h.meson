@@ -1,0 +1,35 @@
+#mesondefine PACKAGE
+#mesondefine BUILDSTAMP
+#mesondefine VERSION
+#mesondefine COPYRIGHT
+#mesondefine EXPORT
+#mesondefine PLUGIN_SUFFIX
+
+#define PACKAGE_VERSION VERSION
+#define ICONV_CONST
+
+#mesondefine INSTALL_BINDIR
+#mesondefine INSTALL_DATADIR
+#mesondefine INSTALL_PLUGINDIR
+#mesondefine INSTALL_LOCALEDIR
+#mesondefine INSTALL_DESKTOPFILE
+#mesondefine INSTALL_ICONFILE
+
+#mesondefine USE_DBUS
+#mesondefine USE_QT
+
+#mesondefine HAVE_FFMPEG
+#mesondefine HAVE_LIBAV
+
+#define GLIB_VERSION_MIN_REQUIRED GLIB_VERSION_2_32
+#define GLIB_VERSION_MAX_ALLOWED GLIB_VERSION_2_32
+
+#mesondefine FILEWRITER_MP3
+#mesondefine FILEWRITER_FLAC
+#mesondefine FILEWRITER_VORBIS
+
+#mesondefine HAVE_LIBCUE2
+
+#mesondefine HAVE_ADPLUG_NEMUOPL_H
+#mesondefine HAVE_ADPLUG_WEMUOPL_H
+#mesondefine HAVE_ADPLUG_KEMUOPL_H

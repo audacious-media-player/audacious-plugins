@@ -54,6 +54,9 @@ static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType:
 static void configure_output () { audqt::prefswin_show_plugin_page (PluginType::Output); }
 static void configure_visualizations () { audqt::prefswin_show_plugin_page (PluginType::Vis); }
 
+static void pl_import () { audqt::fileopener_show (audqt::FileMode::ImportPlaylist); }
+static void pl_export () { audqt::fileopener_show (audqt::FileMode::ExportPlaylist); }
+
 static void skins_volume_up () { mainwin_set_volume_diff (5); }
 static void skins_volume_down () { mainwin_set_volume_diff (-5); }
 
@@ -99,6 +102,8 @@ static const audqt::MenuItem playback_items[] = {
     audqt::MenuCommand ({N_("Stop"), "media-playback-stop", "V"}, aud_drct_stop),
     audqt::MenuCommand ({N_("Previous"), "media-skip-backward", "Z"}, aud_drct_pl_prev),
     audqt::MenuCommand ({N_("Next"), "media-skip-forward", "B"}, aud_drct_pl_next),
+    audqt::MenuCommand ({N_("Previous Album")}, aud_drct_pl_prev_album),
+    audqt::MenuCommand ({N_("Next Album")}, aud_drct_pl_next_album),
     audqt::MenuSep (),
     audqt::MenuCommand ({N_("Set A-B Repeat"), nullptr, "A"}, action_ab_set),
     audqt::MenuCommand ({N_("Clear A-B Repeat"), nullptr, "Shift+A"}, action_ab_clear),
@@ -119,11 +124,9 @@ static const audqt::MenuItem playlist_items[] = {
     audqt::MenuCommand ({N_("Previous Playlist"), "media-skip-backward", "Shift+Tab"}, pl_prev),
     audqt::MenuCommand ({N_("Next Playlist"), "media-skip-forward", "Tab"}, pl_next),
     audqt::MenuSep (),
-#if 0
-    audqt::MenuCommand ({N_("Import Playlist ..."), "document-open", "O"}, audgui_import_playlist),
-    audqt::MenuCommand ({N_("Export Playlist ..."), "document-save", "Shift+S"}, audgui_export_playlist),
+    audqt::MenuCommand ({N_("Import Playlist ..."), "document-open", "O"}, pl_import),
+    audqt::MenuCommand ({N_("Export Playlist ..."), "document-save", "Shift+S"}, pl_export),
     audqt::MenuSep (),
-#endif
     audqt::MenuCommand ({N_("Playlist Manager ..."), "audio-x-generic", "P"}, action_playlist_manager),
     audqt::MenuCommand ({N_("Queue Manager ..."), nullptr, "Ctrl+U"}, audqt::queue_manager_show),
     audqt::MenuSep (),
@@ -137,8 +140,8 @@ static const audqt::MenuItem view_items[] = {
     audqt::MenuToggle ({N_("Show Remaining Time"), nullptr, "Ctrl+R"}, {"skins", "show_remaining_time", "skins set show_remaining_time"}, view_apply_show_remaining),
     audqt::MenuSep (),
     audqt::MenuToggle ({N_("Double Size"), nullptr, "Ctrl+D"}, {"skins", "double_size", "skins set double_size"}, view_apply_double_size),
-#if 0
     audqt::MenuToggle ({N_("Always on Top"), nullptr, "Ctrl+O"}, {"skins", "always_on_top", "skins set always_on_top"}, view_apply_on_top),
+#if 0
     audqt::MenuToggle ({N_("On All Workspaces"), nullptr, "Ctrl+S"}, {"skins", "sticky", "skins set sticky"}, view_apply_sticky),
 #endif
     audqt::MenuSep (),

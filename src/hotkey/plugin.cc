@@ -80,7 +80,7 @@ const char GlobalHotkeys::about[] =
  N_("Global Hotkey Plugin\n"
     "Control the player with global key combinations or multimedia keys.\n\n"
     "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
-    "Contributers include:\n"
+    "Contributors include:\n"
     "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
     "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
     " Bryn Davies <curious@ihug.com.au>,\n"
@@ -144,7 +144,7 @@ gboolean handle_keyevent (EVENT event)
         return true;
     }
 
-    /* decreace volume */
+    /* decrease volume */
     if (event == EVENT_VOL_DOWN)
     {
         if (mute)
@@ -154,7 +154,7 @@ gboolean handle_keyevent (EVENT event)
             mute = false;
         }
 
-        if ((current_volume -= plugin_cfg.vol_decrement) < 0)
+        if ((current_volume -= aud_get_int ("volume_delta")) < 0)
         {
             current_volume = 0;
         }
@@ -178,7 +178,7 @@ gboolean handle_keyevent (EVENT event)
             mute = false;
         }
 
-        if ((current_volume += plugin_cfg.vol_increment) > 100)
+        if ((current_volume += aud_get_int ("volume_delta")) > 100)
         {
             current_volume = 100;
         }
@@ -230,17 +230,14 @@ gboolean handle_keyevent (EVENT event)
     /* forward */
     if (event == EVENT_FORWARD)
     {
-        aud_drct_seek (aud_drct_get_time () + 5000);
+        aud_drct_seek (aud_drct_get_time () + aud_get_int ("step_size") * 1000);
         return true;
     }
 
     /* backward */
     if (event == EVENT_BACKWARD)
     {
-        int time = aud_drct_get_time ();
-        if (time > 5000) time -= 5000; /* Jump 5s back */
-            else time = 0;
-        aud_drct_seek (time);
+        aud_drct_seek (aud_drct_get_time () - aud_get_int ("step_size") * 1000);
         return true;
     }
 
@@ -267,19 +264,19 @@ gboolean handle_keyevent (EVENT event)
 
     if (event == EVENT_TOGGLE_REPEAT)
     {
-        aud_toggle_bool (nullptr, "repeat");
+        aud_toggle_bool ("repeat");
         return true;
     }
 
     if (event == EVENT_TOGGLE_SHUFFLE)
     {
-        aud_toggle_bool (nullptr, "shuffle");
+        aud_toggle_bool ("shuffle");
         return true;
     }
 
     if (event == EVENT_TOGGLE_STOP)
     {
-        aud_toggle_bool (nullptr, "stop_after_current_song");
+        aud_toggle_bool ("stop_after_current_song");
         return true;
     }
 
@@ -341,10 +338,6 @@ void load_config ()
 {
     HotkeyConfiguration *hotkey;
     int i,max;
-
-    /* default volume level */
-    plugin_cfg.vol_increment = 4;
-    plugin_cfg.vol_decrement = 4;
 
     hotkey = &(plugin_cfg.first);
     hotkey->next = nullptr;

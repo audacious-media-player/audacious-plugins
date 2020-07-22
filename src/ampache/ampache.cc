@@ -5,6 +5,8 @@
 //
 // Copyright (C) 2015-2016 Róbert Čerňanský and John Lindgren
 
+#include <QWidget>
+
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -37,8 +39,6 @@ public:
 
     constexpr AmpacheBrowserPlugin(): GeneralPlugin(pluginInfo, false) {}
 
-    bool init() override;
-    void cleanup() override;
     void* get_qt_widget() override;
 };
 
@@ -93,7 +93,7 @@ static void initSettings(ampache_browser::Settings &settings)
     });
 }
 
-bool AmpacheBrowserPlugin::init()
+void* AmpacheBrowserPlugin::get_qt_widget()
 {
     s_app.capture(new ampache_browser::ApplicationQt);
 
@@ -117,18 +117,14 @@ bool AmpacheBrowserPlugin::init()
 
     initSettings(s_app->getSettings());
 
-    return true;
-}
-
-void AmpacheBrowserPlugin::cleanup()
-{
-    s_app.clear();
-}
-
-void* AmpacheBrowserPlugin::get_qt_widget()
-{
     s_app->run();
-    return s_app->getMainWidget();
+    auto widget = s_app->getMainWidget();
+
+    QObject::connect(widget, &QObject::destroyed, [] {
+        s_app.clear();
+    });
+
+    return widget;
 }
 
 EXPORT AmpacheBrowserPlugin aud_plugin_instance;

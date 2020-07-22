@@ -20,6 +20,8 @@
 #ifndef ADPLUG_XMMS_H
 #define ADPLUG_XMMS_H
 
+#include "config.h"
+
 #include <libbinio/binio.h>
 #include <adplug/fprovide.h>
 

@@ -272,7 +272,7 @@ static u32 FASTCALL  OP_UND(armcpu_t *cpu)
      cpu->CPSR.bits.Z = (cpu->R[REG_POS(i,12)]==0);\
      return a;
 
-static u32 FASTCALL  OP_AND_LSL_IMM(register armcpu_t *cpu)
+static u32 FASTCALL  OP_AND_LSL_IMM(armcpu_t *cpu)
 {
      u32 i = cpu->instruction;
      u32 shift_op;
@@ -1329,8 +1329,8 @@ static u32 FASTCALL  OP_SBC_IMM_VAL(armcpu_t *cpu)
      }\
      cpu->CPSR.bits.N = BIT31(cpu->R[REG_POS(i,12)]);\
      cpu->CPSR.bits.Z = (cpu->R[REG_POS(i,12)]==0);\
-     cpu->CPSR.bits.C = (!UNSIGNED_UNDERFLOW(v, (!cpu->CPSR.bits.C), tmp)) & (!UNSIGNED_UNDERFLOW(tmp, shift_op, cpu->R[REG_POS(i,12)]));\
-     cpu->CPSR.bits.V = SIGNED_UNDERFLOW(v, (!cpu->CPSR.bits.C), tmp) | SIGNED_UNDERFLOW(tmp, shift_op, cpu->R[REG_POS(i,12)]);\
+     cpu->CPSR.bits.C = (!UNSIGNED_UNDERFLOW(v, (int)(!cpu->CPSR.bits.C), tmp)) & (!UNSIGNED_UNDERFLOW(tmp, shift_op, cpu->R[REG_POS(i,12)]));\
+     cpu->CPSR.bits.V = SIGNED_UNDERFLOW(v, (int)(!cpu->CPSR.bits.C), tmp) | SIGNED_UNDERFLOW(tmp, shift_op, cpu->R[REG_POS(i,12)]);\
      return a; \
      }
 
@@ -1502,8 +1502,8 @@ static u32 FASTCALL  OP_RSC_IMM_VAL(armcpu_t *cpu)
           }\
      cpu->CPSR.bits.N = BIT31(cpu->R[REG_POS(i,12)]);\
      cpu->CPSR.bits.Z = (cpu->R[REG_POS(i,12)]==0);\
-     cpu->CPSR.bits.C = (!UNSIGNED_UNDERFLOW(shift_op, (!cpu->CPSR.bits.C), tmp)) & (!UNSIGNED_UNDERFLOW(tmp, v, cpu->R[REG_POS(i,12)]));\
-     cpu->CPSR.bits.V = SIGNED_UNDERFLOW(shift_op, (!cpu->CPSR.bits.C), tmp) | SIGNED_UNDERFLOW(tmp, v, cpu->R[REG_POS(i,12)]);\
+     cpu->CPSR.bits.C = (!UNSIGNED_UNDERFLOW(shift_op, (int)(!cpu->CPSR.bits.C), tmp)) & (!UNSIGNED_UNDERFLOW(tmp, v, cpu->R[REG_POS(i,12)]));\
+     cpu->CPSR.bits.V = SIGNED_UNDERFLOW(shift_op, (int)(!cpu->CPSR.bits.C), tmp) | SIGNED_UNDERFLOW(tmp, v, cpu->R[REG_POS(i,12)]);\
      return a; \
      }
 

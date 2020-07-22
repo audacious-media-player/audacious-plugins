@@ -9,7 +9,6 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
-# FIXME: Turning off warnings for now; this code is awful
-CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-sign-compare -Wno-shift-negative-value
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${ADLIB_CFLAGS} -I../..
-LIBS += ${ADLIB_LIBS}
+CXXFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${QT_CFLAGS} ${ADLIB_CFLAGS} -I../..
+LIBS += ${QT_LIBS} ${GTK_LIBS} ${ADLIB_LIBS}

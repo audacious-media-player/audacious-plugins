@@ -151,11 +151,13 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
     FLAC__metadata_iterator_init(iter, chain);
 
     while (FLAC__metadata_iterator_next(iter))
+    {
         if (FLAC__metadata_iterator_get_block_type(iter) == FLAC__METADATA_TYPE_VORBIS_COMMENT)
         {
             FLAC__metadata_iterator_delete_block(iter, true);
             break;
         }
+    }
 
     vc_block = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
@@ -165,6 +167,8 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::AlbumArtist, "ALBUMARTIST");
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Genre, "GENRE");
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Comment, "COMMENT");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Description, "DESCRIPTION");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::MusicBrainzID, "musicbrainz_trackid");
 
     insert_int_tuple_to_vc(vc_block, tuple, Tuple::Year, "DATE");
     insert_int_tuple_to_vc(vc_block, tuple, Tuple::Track, "TRACKNUMBER");
@@ -174,17 +178,33 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
     FLAC__metadata_iterator_delete(iter);
     FLAC__metadata_chain_sort_padding(chain);
 
-    if (!FLAC__metadata_chain_write_with_callbacks(chain, true, &file, io_callbacks))
-        goto ERR;
+    if (FLAC__metadata_chain_check_if_tempfile_needed(chain, true))
+    {
+        auto temp = VFSFile::tmpfile();
+        if (!temp)
+            goto ERR_RETURN;
+
+        if (!FLAC__metadata_chain_write_with_callbacks_and_tempfile(chain, true,
+         &file, io_callbacks, &temp, io_callbacks))
+            goto ERR;
+
+        if (!file.replace_with(temp))
+            goto ERR_RETURN;
+    }
+    else /* no tempfile needed */
+    {
+        if (!FLAC__metadata_chain_write_with_callbacks(chain, true, &file, io_callbacks))
+            goto ERR;
+    }
 
     FLAC__metadata_chain_delete(chain);
     return true;
 
 ERR:
     status = FLAC__metadata_chain_status(chain);
+    AUDERR("An error occurred: %s\n", FLAC__Metadata_ChainStatusString[status]);
+ERR_RETURN:
     FLAC__metadata_chain_delete(chain);
-
-    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return false;
 }
 
@@ -210,7 +230,9 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
         {"ALBUMARTIST", Tuple::AlbumArtist},
         {"TITLE", Tuple::Title},
         {"COMMENT", Tuple::Comment},
-        {"GENRE", Tuple::Genre}
+        {"GENRE", Tuple::Genre},
+        {"DESCRIPTION", Tuple::Description},
+        {"musicbrainz_trackid", Tuple::MusicBrainzID},
     };
 
     for (auto & tfield : tfields)
@@ -315,6 +337,9 @@ bool FLACng::read_tag (const char * filename, VFSFile & file, Tuple & tuple, Ind
 
                     tuple.set_int (Tuple::Bitrate, (bitrate + 500) / 1000);
                 }
+
+                if (metadata->data.stream_info.channels > 0)
+                    tuple.set_int(Tuple::Channels, metadata->data.stream_info.channels);
                 break;
             }
 
@@ -348,6 +373,6 @@ ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    AUDERR("An error occurred: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return false;
 }

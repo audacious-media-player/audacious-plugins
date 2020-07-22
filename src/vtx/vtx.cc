@@ -91,6 +91,8 @@ bool VTXPlugin::read_tag(const char *filename, VFSFile &file, Tuple &tuple, Inde
 
     tuple.set_int(Tuple::Year, tmp.hdr.year);
 
+    tuple.set_int(Tuple::Channels, chans);
+
     return true;
 }
 

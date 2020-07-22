@@ -64,13 +64,18 @@ const char * const SoXResampler::defaults[] = {
     "quality", aud::numeric_string<SOXR_HQ>::str,
     "rate", "44100",
     "phase_response", aud::numeric_string<SOXR_LINEAR_PHASE>::str,
+#ifdef SOXR_ALLOW_ALIASING
     "allow_aliasing", "FALSE",
+#endif
     "use_steep_filter", "FALSE",
     nullptr
 };
 
 static soxr_t soxr;
 static soxr_error_t error;
+static soxr_quality_spec_t q;
+static int stored_rate;
+static int target_rate;
 static int stored_channels;
 static double ratio;
 static Index<float> buffer;
@@ -93,20 +98,24 @@ void SoXResampler::start (int & channels, int & rate)
     soxr_delete (soxr);
     soxr = 0;
 
-    int new_rate = aud_get_int ("soxr", "rate");
-    new_rate = aud::clamp (new_rate, MIN_RATE, MAX_RATE);
+    target_rate = aud_get_int ("soxr", "rate");
+    target_rate = aud::clamp (target_rate, MIN_RATE, MAX_RATE);
 
-    if (new_rate == rate)
+    if (target_rate == rate)
         return;
 
-    int quality = aud_get_int ("soxr", "quality");
-    int phase_response = aud_get_int ("soxr", "phase_response");
-    int use_steep_filter = (aud_get_bool ("soxr", "use_steep_filter")) ? SOXR_STEEP_FILTER : 0;
-    int allow_aliasing = (aud_get_bool ("soxr", "allow_aliasing")) ? SOXR_ALLOW_ALIASING : 0;
+    stored_rate = rate;
 
-    soxr_quality_spec_t q = soxr_quality_spec (quality | phase_response | use_steep_filter | allow_aliasing, 0);
+    int recipe = aud_get_int ("soxr", "quality");
+    recipe |= aud_get_int ("soxr", "phase_response");
+    recipe |= (aud_get_bool ("soxr", "use_steep_filter")) ? SOXR_STEEP_FILTER : 0;
+#ifdef SOXR_ALLOW_ALIASING
+    recipe |= (aud_get_bool ("soxr", "allow_aliasing")) ? SOXR_ALLOW_ALIASING : 0;
+#endif
 
-    soxr = soxr_create (rate, new_rate, channels, & error, nullptr, & q, nullptr);
+    q = soxr_quality_spec (recipe, 0);
+
+    soxr = soxr_create (rate, target_rate, channels, & error, nullptr, & q, nullptr);
 
     if (error)
     {
@@ -115,8 +124,8 @@ void SoXResampler::start (int & channels, int & rate)
     }
 
     stored_channels = channels;
-    ratio = (double) new_rate / rate;
-    rate = new_rate;
+    ratio = (double) target_rate / rate;
+    rate = target_rate;
 }
 
 Index<float> & SoXResampler::process (Index<float> & data)
@@ -143,8 +152,18 @@ Index<float> & SoXResampler::process (Index<float> & data)
 
 bool SoXResampler::flush (bool force)
 {
-    if (soxr && (error = soxr_process (soxr, nullptr, 0, nullptr, nullptr, 0, nullptr)))
+    if (! soxr)
+        return true;
+
+    soxr_delete (soxr);
+
+    soxr = soxr_create (stored_rate, target_rate, stored_channels, & error, nullptr, & q, nullptr);
+
+    if (error)
+    {
         AUDERR ("%s\n", error);
+        return true;
+    }
 
     return true;
 }
@@ -177,7 +196,9 @@ const PreferencesWidget SoXResampler::widgets[] = {
     WidgetCombo (N_("Phase:"),
         WidgetInt ("soxr", "phase_response"),
         {{phase_response_list}}),
+#ifdef SOXR_ALLOW_ALIASING
     WidgetCheck (N_("Allow aliasing"), WidgetBool ("soxr", "allow_aliasing")),
+#endif
     WidgetCheck (N_("Use steep filter"), WidgetBool ("soxr", "use_steep_filter")),
     WidgetSpin (N_("Rate:"),
         WidgetInt ("soxr", "rate"),

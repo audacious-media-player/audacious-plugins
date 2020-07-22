@@ -25,44 +25,42 @@
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
 
-ToolBar::ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items)
-    : QToolBar (parent)
+ToolBar::ToolBar(QWidget * parent, ArrayRef<ToolBarItem> items)
+    : QToolBar(parent)
 {
-    setContextMenuPolicy (Qt::PreventContextMenu);
-    setMovable (false);
-    setObjectName ("MainToolBar");
-
-#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
-    setIconSize (QSize (22, 22));
-#endif
+    setContextMenuPolicy(Qt::PreventContextMenu);
+    setMovable(false);
+    setObjectName("MainToolBar");
 
     for (const ToolBarItem & item : items)
     {
+        QAction * a = nullptr;
+
         if (item.widget)
-            addWidget (item.widget);
+            a = addWidget(item.widget);
         else if (item.sep)
-            addSeparator ();
+            a = addSeparator();
         else if (item.icon_name)
         {
-            QAction * a = new QAction (QIcon::fromTheme (item.icon_name),
-             audqt::translate_str (item.name), this);
+            a = new QAction(audqt::get_icon(item.icon_name),
+                            audqt::translate_str(item.name), this);
 
             if (item.tooltip_text)
-                a->setToolTip (audqt::translate_str (item.tooltip_text));
+                a->setToolTip(audqt::translate_str(item.tooltip_text));
 
             if (item.callback)
-                connect (a, & QAction::triggered, item.callback);
+                connect(a, &QAction::triggered, item.callback);
 
             if (item.toggled)
             {
-                a->setCheckable (true);
-                connect (a, & QAction::toggled, item.toggled);
+                a->setCheckable(true);
+                connect(a, &QAction::toggled, item.toggled);
             }
 
-            addAction (a);
-
-            if (item.action_ptr)
-                * item.action_ptr = a;
+            addAction(a);
         }
+
+        if (item.action_ptr)
+            *item.action_ptr = a;
     }
 }

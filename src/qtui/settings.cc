@@ -27,10 +27,12 @@
 #include <QDesktopWidget>
 
 const char * const qtui_defaults[] = {
+    // clang-format off
     "infoarea_show_vis", "TRUE",
+    "infoarea_show_art", "TRUE",
     "infoarea_visible", "TRUE",
     "menu_visible", "TRUE",
-    "playlist_tabs_visible", "TRUE",
+    "playlist_tabs_visible", aud::numeric_string<PlaylistTabVisibility::AutoHide>::str,
     "statusbar_visible", "TRUE",
     "entry_count_visible", "FALSE",
     "close_button_visible", "TRUE",
@@ -38,50 +40,37 @@ const char * const qtui_defaults[] = {
     "autoscroll", "TRUE",
     "playlist_columns", DEFAULT_COLUMNS,
     "playlist_headers", "TRUE",
-//    "record", "FALSE",
     "show_remaining_time", "FALSE",
-    "step_size", "5",
+    // clang-format on
+    nullptr};
 
-    nullptr
-};
-
-static void qtui_update_playlist_settings ()
+static void qtui_update_playlist_settings()
 {
-    hook_call ("qtui update playlist settings", nullptr);
+    hook_call("qtui update playlist settings", nullptr);
 }
+
+static const ComboItem playlist_tabs_options[] = {
+    ComboItem(N_("Always"), PlaylistTabVisibility::Always),
+    ComboItem(N_("Auto-hide"), PlaylistTabVisibility::AutoHide),
+    ComboItem(N_("Never"), PlaylistTabVisibility::Never)};
 
 static const PreferencesWidget qtui_widgets[] = {
-    WidgetLabel (N_("<b>Playlist Tabs</b>")),
-#if QT_VERSION >= 0x050400
-    WidgetCheck (N_("Always show tabs"),
-        WidgetBool ("qtui", "playlist_tabs_visible", qtui_update_playlist_settings)),
-#endif
-    WidgetCheck (N_("Show entry counts"),
-        WidgetBool ("qtui", "entry_count_visible", qtui_update_playlist_settings)),
-    WidgetCheck (N_("Show close buttons"),
-        WidgetBool ("qtui", "close_button_visible", qtui_update_playlist_settings)),
-    WidgetLabel (N_("<b>Playlist Columns</b>")),
-    WidgetCheck (N_("Show column headers"),
-        WidgetBool ("qtui", "playlist_headers", qtui_update_playlist_settings)),
-    WidgetLabel (N_("<b>Miscellaneous</b>")),
-    WidgetSpin (N_("Arrow keys seek by:"),
-        WidgetFloat ("qtui", "step_size"),
-        {0.1, 60, 0.1, N_("seconds")}),
-    WidgetCheck (N_("Scroll on song change"),
-        WidgetBool ("qtui", "autoscroll"))
-};
+    WidgetLabel(N_("<b>Playlist Tabs</b>")),
+    WidgetCombo(N_("Show playlist tabs:"),
+                WidgetInt("qtui", "playlist_tabs_visible",
+                          qtui_update_playlist_settings),
+                {{playlist_tabs_options}}),
+    WidgetCheck(N_("Show entry counts"),
+                WidgetBool("qtui", "entry_count_visible",
+                           qtui_update_playlist_settings)),
+    WidgetCheck(N_("Show close buttons"),
+                WidgetBool("qtui", "close_button_visible",
+                           qtui_update_playlist_settings)),
+    WidgetLabel(N_("<b>Playlist Columns</b>")),
+    WidgetCheck(
+        N_("Show column headers"),
+        WidgetBool("qtui", "playlist_headers", qtui_update_playlist_settings)),
+    WidgetLabel(N_("<b>Miscellaneous</b>")),
+    WidgetCheck(N_("Scroll on song change"), WidgetBool("qtui", "autoscroll"))};
 
 const PluginPreferences qtui_prefs = {{qtui_widgets}};
-
-int getDPI ()
-{
-    static int dpi = 0;
-
-    if (! dpi)
-    {
-        auto desktop = qApp->desktop ();
-        dpi = aud::max (96, (desktop->logicalDpiX () + desktop->logicalDpiY ()) / 2);
-    }
-
-    return dpi;
-}

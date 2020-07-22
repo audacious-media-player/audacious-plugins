@@ -1,7 +1,7 @@
 /*
  * OpenGL Spectrum Analyzer for Audacious
  * Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini
- * Copyright 2014 William Pitcock
+ * Copyright 2014, 2020 Ariadne Conill
  *
  * Based on the XMMS plugin:
  * Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and
@@ -28,8 +28,8 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
-#include <QGLWidget>
-#include <QGLFunctions>
+#include <QOpenGLWidget>
+#include <QOpenGLFunctions_2_0>
 
 #define NUM_BANDS 32
 #define DB_RANGE 40
@@ -40,7 +40,7 @@
 static const char gl_about[] =
  N_("OpenGL Spectrum Analyzer for Audacious\n"
     "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
-    "Copyright 2014 William Pitcock\n\n"
+    "Copyright 2014, 2020 Ariadne Conill\n\n"
     "Based on the XMMS plugin:\n"
     "Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, "
     "and 4Front Technologies\n\n"
@@ -76,7 +76,7 @@ static int s_pos = 0;
 static float s_angle = 25, s_anglespeed = 0.05f;
 static float s_bars[NUM_BANDS][NUM_BANDS];
 
-class GLSpectrumWidget : public QGLWidget, protected QGLFunctions
+class GLSpectrumWidget : public QOpenGLWidget, protected QOpenGLFunctions_2_0
 {
 public:
     GLSpectrumWidget (QWidget *parent = nullptr);
@@ -85,6 +85,12 @@ public:
 private:
     void paintGL ();
     void resizeGL (int w, int h);
+    void initializeGL ();
+
+    void draw_bars ();
+    void draw_bar (float x, float z, float h, float r, float g, float b);
+    void draw_rectangle (float x1, float y1, float z1, float x2, float y2,
+                         float z2, float r, float g, float b);
 };
 
 GLSpectrumWidget * s_widget = nullptr;
@@ -159,23 +165,21 @@ void GLSpectrumQt::render_freq (const float * freq)
         s_anglespeed = -s_anglespeed;
 
     if (s_widget)
-        s_widget->updateGL ();
+        s_widget->update ();
 }
 
 void GLSpectrumQt::clear ()
 {
-#ifdef XXX_NOTYET
     memset (s_bars, 0, sizeof s_bars);
 
     if (s_widget)
-        s_widget->updateGL ();
-#endif
+        s_widget->update ();
 }
 
-static void draw_rectangle (float x1, float y1, float z1, float x2, float y2,
+void GLSpectrumWidget::draw_rectangle (float x1, float y1, float z1, float x2, float y2,
  float z2, float r, float g, float b)
 {
-    glColor3f (r, g, b);
+    glColor4f (r, g, b, 1.0f);
 
     glBegin (GL_POLYGON);
     glVertex3f (x1, y2, z1);
@@ -184,7 +188,7 @@ static void draw_rectangle (float x1, float y1, float z1, float x2, float y2,
     glVertex3f (x1, y2, z2);
     glEnd ();
 
-    glColor3f (0.65f * r, 0.65f * g, 0.65f * b);
+    glColor4f (0.65f * r, 0.65f * g, 0.65f * b, 1.0f);
 
     glBegin (GL_POLYGON);
     glVertex3f (x1, y1, z1);
@@ -200,7 +204,7 @@ static void draw_rectangle (float x1, float y1, float z1, float x2, float y2,
     glVertex3f (x2, y2, z2);
     glEnd ();
 
-    glColor3f (0.8f * r, 0.8f * g, 0.8f * b);
+    glColor4f (0.8f * r, 0.8f * g, 0.8f * b, 1.0f);
 
     glBegin (GL_POLYGON);
     glVertex3f (x1, y1, z1);
@@ -210,13 +214,13 @@ static void draw_rectangle (float x1, float y1, float z1, float x2, float y2,
     glEnd ();
 }
 
-static void draw_bar (float x, float z, float h, float r, float g, float b)
+void GLSpectrumWidget::draw_bar (float x, float z, float h, float r, float g, float b)
 {
     draw_rectangle (x, 0, z, x + BAR_WIDTH, h, z + BAR_WIDTH,
      r * (0.2f + 0.8f * h), g * (0.2f + 0.8f * h), b * (0.2f + 0.8f * h));
 }
 
-static void draw_bars ()
+void GLSpectrumWidget::draw_bars ()
 {
     glPushMatrix ();
     glTranslatef (0.0f, -0.5f, -5.0f);
@@ -240,9 +244,12 @@ static void draw_bars ()
     glPopMatrix ();
 }
 
-GLSpectrumWidget::GLSpectrumWidget (QWidget * parent) : QGLWidget (parent)
+GLSpectrumWidget::GLSpectrumWidget (QWidget * parent) : QOpenGLWidget (parent)
 {
-    setObjectName ("GLSpectrumWidget");
+    QSurfaceFormat format;
+
+    format.setDepthBufferSize (24);
+    setFormat (format);
 }
 
 GLSpectrumWidget::~GLSpectrumWidget ()
@@ -281,7 +288,11 @@ void GLSpectrumWidget::paintGL ()
 
 void GLSpectrumWidget::resizeGL (int w, int h)
 {
-    glViewport (0, 0, w, h);
+}
+
+void GLSpectrumWidget::initializeGL ()
+{
+    initializeOpenGLFunctions ();
 }
 
 void * GLSpectrumQt::get_qt_widget ()

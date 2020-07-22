@@ -188,8 +188,6 @@ void skin_draw_playlistwin_shaded (QPainter & cr, int width, bool focus);
 void skin_draw_playlistwin_frame (QPainter & cr, int width, int height, bool focus);
 void skin_draw_mainwin_titlebar (QPainter & cr, bool shaded, bool focus);
 
-QFont * qfont_from_string (const char * name);
-
 /* ui_skin_load_ini.c */
 void skin_load_hints (const char * path);
 void skin_load_pl_colors (const char * path);

@@ -24,39 +24,56 @@
 
 #include <libaudcore/objects.h>
 
-struct ToolBarItem {
+struct ToolBarItem
+{
     const char * icon_name;
     const char * name;
     const char * tooltip_text;
 
-    void (* callback) ();
-    void (* toggled) (bool on);
+    void (*callback)();
+    void (*toggled)(bool on);
 
     QWidget * widget;
 
     bool sep;
 
-    QAction * * action_ptr;
+    QAction ** action_ptr;
 };
 
 class ToolBar : public QToolBar
 {
 public:
-    ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items);
+    ToolBar(QWidget * parent, ArrayRef<ToolBarItem> items);
 };
 
-constexpr ToolBarItem ToolBarAction (const char * icon_name, const char * name,
- const char * tooltip_text, void (* callback) (), QAction * * action_ptr = nullptr)
-    { return { icon_name, name, tooltip_text, callback, nullptr, nullptr, false, action_ptr }; }
+constexpr ToolBarItem ToolBarAction(const char * icon_name, const char * name,
+                                    const char * tooltip_text,
+                                    void (*callback)(),
+                                    QAction ** action_ptr = nullptr)
+{
+    return {icon_name, name,    tooltip_text, callback,
+            nullptr,   nullptr, false,        action_ptr};
+}
 
-constexpr ToolBarItem ToolBarAction (const char * icon_name, const char * name,
- const char * tooltip_text, void (* toggled) (bool), QAction * * action_ptr = nullptr)
-    { return { icon_name, name, tooltip_text, nullptr, toggled, nullptr, false, action_ptr }; }
+constexpr ToolBarItem ToolBarAction(const char * icon_name, const char * name,
+                                    const char * tooltip_text,
+                                    void (*toggled)(bool),
+                                    QAction ** action_ptr = nullptr)
+{
+    return {icon_name, name,    tooltip_text, nullptr,
+            toggled,   nullptr, false,        action_ptr};
+}
 
-constexpr ToolBarItem ToolBarCustom (QWidget * item)
-    { return { nullptr, nullptr, nullptr, nullptr, nullptr, item }; }
+constexpr ToolBarItem ToolBarCustom(QWidget * item,
+                                    QAction ** action_ptr = nullptr)
+{
+    return {nullptr, nullptr, nullptr, nullptr,
+            nullptr, item,    false,   action_ptr};
+}
 
-constexpr ToolBarItem ToolBarSeparator ()
-    { return { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, true }; }
+constexpr ToolBarItem ToolBarSeparator()
+{
+    return {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, true};
+}
 
 #endif

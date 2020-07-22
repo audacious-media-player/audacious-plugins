@@ -24,8 +24,7 @@
 //
 //*************************************************************************//
 
+#include <stdint.h>
 
-u16 CALLBACK SPUreadDMA(void);
-void CALLBACK SPUreadDMAMem(u16 * pusPSXMem,int iSize);
-void CALLBACK SPUwriteDMA(u16 val);
-void CALLBACK SPUwriteDMAMem(u16 * pusPSXMem,int iSize);
+void SPUwriteDMAMem(uint32_t usPSXMem, int iSize);
+void SPUreadDMAMem(uint32_t usPSXMem, int iSize);

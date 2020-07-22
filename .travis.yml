@@ -18,20 +18,21 @@ before_install:
   - sudo apt-get install libneon27-gnutls-dev libnotify-dev libpulse-dev
   - sudo apt-get install libsamplerate0-dev libsdl1.2-dev libsidplayfp-dev
   - sudo apt-get install libsndfile1-dev libsoxr-dev libvorbis-dev libwavpack-dev
-  - sudo apt-get install libxml2-dev libadplug-dev
+  - sudo apt-get install libxml2-dev libadplug-dev libqt5opengl5-dev
+  - sudo apt-get install libarchive-dev
   - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 install:
   - git clone git://github.com/audacious-media-player/audacious.git audacious
   - cd audacious
   - ./autogen.sh
-  - ./configure --prefix=/opt/aud --enable-qt
+  - ./configure --prefix=/opt/aud --enable-gtk
   - make
   - sudo make install
   - cd ..
 script:
   - export PKG_CONFIG_PATH=/opt/aud/lib/pkgconfig
   - ./autogen.sh
-  - ./configure --prefix=/opt/aud --enable-qt
+  - ./configure --prefix=/opt/aud --enable-gtk
   - make
 addons:
   coverity_scan:

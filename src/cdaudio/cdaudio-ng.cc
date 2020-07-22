@@ -126,7 +126,7 @@ const char * const CDAudio::defaults[] = {
  "use_cdtext", "TRUE",
  "use_cddb", "TRUE",
  "cddbhttp", "FALSE",
- "cddbserver", "freedb.org",
+ "cddbserver", "gnudb.gnudb.org",
  "cddbport", "8880",
  nullptr};
 
@@ -269,7 +269,7 @@ bool CDAudio::play (const char * name, VFSFile & file)
 
     playing = true;
 
-    int buffer_size = aud_get_int (nullptr, "output_buffer_size");
+    int buffer_size = aud_get_int ("output_buffer_size");
     int speed = aud_get_int ("CDDA", "disc_speed");
     speed = aud::clamp (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
     int sectors = aud::clamp (buffer_size / 2, 50, 250) * speed * 75 / 1000;
@@ -399,6 +399,7 @@ bool CDAudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
         tuple.set_int (Tuple::Track, trackno);
         tuple.set_int (Tuple::Length, calculate_track_length
          (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
+        tuple.set_int (Tuple::Channels, 2);
 
         if (trackinfo[trackno].name)
             tuple.set_str (Tuple::Title, trackinfo[trackno].name);
@@ -608,7 +609,7 @@ static bool scan_cd ()
         {
             pcddb_conn = cddb_new ();
             if (pcddb_conn == nullptr)
-                cdaudio_error (_("Failed to create the cddb connection."));
+                cdaudio_error (_("Failed to create the CDDB connection."));
             else
             {
                 AUDDBG ("getting CDDB info\n");
@@ -620,12 +621,12 @@ static bool scan_cd ()
                 String path = aud_get_str ("CDDA", "cddbpath");
                 int port = aud_get_int ("CDDA", "cddbport");
 
-                if (aud_get_bool (nullptr, "use_proxy"))
+                if (aud_get_bool ("use_proxy"))
                 {
-                    String prhost = aud_get_str (nullptr, "proxy_host");
-                    int prport = aud_get_int (nullptr, "proxy_port");
-                    String pruser = aud_get_str (nullptr, "proxy_user");
-                    String prpass = aud_get_str (nullptr, "proxy_pass");
+                    String prhost = aud_get_str ("proxy_host");
+                    int prport = aud_get_int ("proxy_port");
+                    String pruser = aud_get_str ("proxy_user");
+                    String prpass = aud_get_str ("proxy_pass");
 
                     cddb_http_proxy_enable (pcddb_conn);
                     cddb_set_http_proxy_server_name (pcddb_conn, prhost);
@@ -687,7 +688,7 @@ static bool scan_cd ()
                 {
                     if (matches == 0)
                     {
-                        AUDDBG ("no cddb info available for this disc\n");
+                        AUDDBG ("no CDDB info available for this disc\n");
 
                         cddb_disc_destroy (pcddb_disc);
                         pcddb_disc = nullptr;
@@ -700,7 +701,7 @@ static bool scan_cd ()
                         cddb_read (pcddb_conn, pcddb_disc);
                         if (cddb_errno (pcddb_conn) != CDDB_ERR_OK)
                         {
-                            cdaudio_error (_("Failed to read the cddb info: %s"),
+                            cdaudio_error (_("Failed to read the CDDB info: %s"),
                                            cddb_error_str (cddb_errno
                                                            (pcddb_conn)));
                             cddb_disc_destroy (pcddb_disc);

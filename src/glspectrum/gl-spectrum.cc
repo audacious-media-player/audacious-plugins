@@ -300,7 +300,7 @@ static void widget_realized ()
      GLX_RED_SIZE, 1,
      GLX_GREEN_SIZE, 1,
      GLX_BLUE_SIZE, 1,
-     GLX_ALPHA_SIZE, 1,
+     GLX_ALPHA_SIZE, 0,
      GLX_DOUBLEBUFFER,
      GLX_DEPTH_SIZE, 1,
      None

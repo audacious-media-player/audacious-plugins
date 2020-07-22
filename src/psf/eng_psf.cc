@@ -31,13 +31,11 @@
 #include <libaudcore/audstrings.h>
 
 #include "ao.h"
-#include "eng_protos.h"
 #include "cpuintrf.h"
 #include "psx.h"
 
 #include "peops/stdafx.h"
 #include "peops/externals.h"
-#include "peops/regs.h"
 #include "peops/registers.h"
 #include "peops/spu.h"
 
@@ -51,22 +49,7 @@ static corlett_t	*c = nullptr;
 static char 		psfby[256];
 int			psf_refresh  = -1;
 
-
-// main RAM
-extern uint32_t psx_ram[((2*1024*1024)/4)+4];
-extern uint32_t psx_scratch[0x400];
-extern uint32_t initial_ram[((2*1024*1024)/4)+4];
-extern uint32_t initial_scratch[0x400];
 static uint32_t initialPC, initialGP, initialSP;
-
-extern void mips_init( void );
-extern void mips_reset( void *param );
-extern int mips_execute( int cycles );
-extern void mips_set_info(uint32_t state, union cpuinfo *info);
-extern void psx_hw_init(void);
-extern void psx_hw_slice(void);
-extern void psx_hw_frame(void);
-extern void setlength(int32_t stop, int32_t fade);
 
 int32_t psf_start(uint8_t *buffer, uint32_t length)
 {

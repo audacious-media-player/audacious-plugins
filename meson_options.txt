@@ -1,0 +1,91 @@
+option('dbus', type: 'boolean', value: true,
+       description: 'Whether DBus support is enabled')
+option('qt', type: 'boolean', value: true,
+       description: 'Whether Qt support is enabled')
+option('mpris2', type: 'boolean', value: true,
+       description: 'Whether MPRIS 2.0 support is enabled')
+
+
+# container plugins
+option('cue', type: 'boolean', value: true,
+       description: 'Whether libcue support is enabled')
+
+
+# transport plugins
+option('neon', type: 'boolean', value: true,
+       description: 'Whether the neon HTTP client is enabled')
+option('mms', type: 'boolean', value: true,
+       description: 'Whether the libmms MMS client is enabled')
+
+
+# input plugins
+option('ffaudio', type: 'string', value: 'ffmpeg',
+       description: 'Choose between ffmpeg, libav or neither')
+option('mpg123', type: 'boolean', value: true,
+       description: 'Whether MPG123 support is enabled')
+option('adplug', type: 'boolean', value: true,
+       description: 'Whether AdPlug support is enabled')
+option('flac', type: 'boolean', value: true,
+       description: 'Whether FLAC support is enabled')
+option('vorbis', type: 'boolean', value: true,
+       description: 'Whether Ogg Vorbis support is enabled')
+option('faad', type: 'boolean', value: true,
+       description: 'Whether the FAAD-based raw AAC plugin is enabled')
+option('modplug', type: 'boolean', value: true,
+       description: 'Whether ModPlug support is enabled')
+option('openmpt', type: 'boolean', value: true,
+       description: 'Whether OpenMPT support is enabled')
+option('wavpack', type: 'boolean', value: true,
+       description: 'Whether WavPack support is enabled')
+option('sndfile', type: 'boolean', value: true,
+       description: 'Whether libsndfile support is enabled')
+option('cdaudio', type: 'boolean', value: true,
+       description: 'Whether CD audio support is enabled')
+option('amidiplug', type: 'boolean', value: true,
+       description: 'Whether AMidiPlug plugin is enabled')
+option('sid', type: 'boolean', value: true,
+       description: 'Whether SID emulation support is enabled')
+
+
+# output plugins
+option('alsa', type: 'boolean', value: true,
+       description: 'Whether ALSA support is enabled')
+option('pulse', type: 'boolean', value: true,
+       description: 'Whether PulseAudio support is enabled')
+option('filewriter', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) support is enabled')
+option('filewriter-mp3', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) MP3 support is enabled')
+option('filewriter-ogg', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) OGG support is enabled')
+option('filewriter-flac', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) FLAC support is enabled')
+
+# general plugins
+option('songchange', type: 'boolean', value: true,
+       description: 'Whether the Song Change plugin is enabled')
+option('scrobbler2', type: 'boolean', value: true,
+       description: 'Whether the Scrobbler plugin is enabled')
+option('notify', type: 'boolean', value: true,
+       description: 'Whether the libnotify OSD plugin is enabled')
+
+
+# effect plugins
+option('resample', type: 'boolean', value: true,
+       description: 'Whether the resample effect plugin is enabled')
+option('speedpitch', type: 'boolean', value: true,
+       description: 'Whether the speed / pitch effect plugin is enabled')
+option('soxr', type: 'boolean', value: true,
+       description: 'Whether the SoX resampler effect plugin is enabled')
+
+
+# visualization plugins
+option('vumeter', type: 'boolean', value: true,
+       description: 'Whether the VUMeter visualization plugin is enabled')
+option('gl-spectrum', type: 'boolean', value: true,
+       description: 'Whether the OpenGL spectrum visualization plugin is enabled')
+
+
+# interface plugins
+option('moonstone', type: 'boolean', value: true,
+       description: 'Whether the Moonstone UI plugin is enabled')

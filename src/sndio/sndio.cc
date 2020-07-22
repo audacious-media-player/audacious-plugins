@@ -201,7 +201,7 @@ bool SndioPlugin::open_audio (int format, int rate, int channels, String & error
     m_last_write_time = timeval ();
     m_flush_count = 0;
 
-    int buffer_ms = aud_get_int (nullptr, "output_buffer_size");
+    int buffer_ms = aud_get_int ("output_buffer_size");
 
     sio_par par;
     sio_initpar (& par);

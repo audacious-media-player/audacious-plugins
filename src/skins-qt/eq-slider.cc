@@ -55,7 +55,7 @@ void EqSlider::moved (int pos)
     m_value = (float) (25 - m_pos) * AUD_EQ_MAX_GAIN / 25;
 
     if (m_band < 0)
-        aud_set_double (nullptr, "equalizer_preamp", m_value);
+        aud_set_double ("equalizer_preamp", m_value);
     else
         aud_eq_set_band (m_band, m_value);
 

@@ -86,6 +86,11 @@ void pl_paste_end ();
 void pl_song_info ();
 void pl_open_folder ();
 
+// A-B repeat
+void set_ab_repeat_a ();
+void set_ab_repeat_b ();
+void clear_ab_repeat ();
+
 // volume control
 void volume_up ();
 void volume_down ();

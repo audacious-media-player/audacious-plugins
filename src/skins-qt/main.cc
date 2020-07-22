@@ -48,7 +48,7 @@
 #include "equalizer.h"
 #include "main.h"
 #include "vis-callbacks.h"
-#include "playlist.h"
+#include "playlistwin.h"
 #include "button.h"
 #include "hslider.h"
 #include "menurow.h"
@@ -76,10 +76,13 @@ public:
 
 private:
     DialogWindows m_dialogs;
+    int m_scroll_delta_x = 0;
+    int m_scroll_delta_y = 0;
 
     void draw (QPainter & cr);
     bool button_press (QMouseEvent * event);
     bool scroll (QWheelEvent * event);
+    void enterEvent (QEvent * event);
 };
 
 Window * mainwin;
@@ -126,9 +129,10 @@ static void mainwin_position_motion_cb ();
 static void mainwin_position_release_cb ();
 static void seek_timeout (void * rewind);
 
-static void format_time (char buf[7], int time, int length)
+/* always returns a 6-character string */
+static StringBuf format_time (int time, int length)
 {
-    bool zero = aud_get_bool (nullptr, "leading_zero");
+    bool zero = aud_get_bool ("leading_zero");
     bool remaining = aud_get_bool ("skins", "show_remaining_time");
 
     if (remaining && length > 0)
@@ -137,11 +141,11 @@ static void format_time (char buf[7], int time, int length)
         time = aud::clamp(0, time, 359999); // 99:59:59
 
         if (time < 60)
-            snprintf (buf, 7, zero ? "-00:%02d" : " -0:%02d", time);
+            return str_printf (zero ? "-00:%02d" : " -0:%02d", time);
         else if (time < 6000)
-            snprintf (buf, 7, zero ? "%03d:%02d" : "%3d:%02d", -time / 60, time % 60);
+            return str_printf (zero ? "%03d:%02d" : "%3d:%02d", -time / 60, time % 60);
         else
-            snprintf (buf, 7, "%3d:%02d", -time / 3600, time / 60 % 60);
+            return str_printf ("%3d:%02d", -time / 3600, time / 60 % 60);
     }
     else
     {
@@ -149,11 +153,11 @@ static void format_time (char buf[7], int time, int length)
         time = aud::clamp(0, time, 3599999); // 999:59:59
 
         if (time < 6000)
-            snprintf (buf, 7, zero ? " %02d:%02d" : " %2d:%02d", time / 60, time % 60);
+            return str_printf (zero ? " %02d:%02d" : " %2d:%02d", time / 60, time % 60);
         else if (time < 60000)
-            snprintf (buf, 7, "%3d:%02d", time / 60, time % 60);
+            return str_printf ("%3d:%02d", time / 60, time % 60);
         else
-            snprintf (buf, 7, "%3d:%02d", time / 3600, time / 60 % 60);
+            return str_printf ("%3d:%02d", time / 3600, time / 60 % 60);
     }
 }
 
@@ -428,7 +432,7 @@ static void record_toggled ()
 {
     if (aud_drct_get_record_enabled ())
     {
-        if (aud_get_bool (nullptr, "record"))
+        if (aud_get_bool ("record"))
             mainwin_show_status_message (_("Recording on"));
         else
             mainwin_show_status_message (_("Recording off"));
@@ -437,17 +441,17 @@ static void record_toggled ()
 
 static void repeat_toggled ()
 {
-    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
+    mainwin_repeat->set_active (aud_get_bool ("repeat"));
 }
 
 static void shuffle_toggled ()
 {
-    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
+    mainwin_shuffle->set_active (aud_get_bool ("shuffle"));
 }
 
 static void no_advance_toggled ()
 {
-    if (aud_get_bool (nullptr, "no_playlist_advance"))
+    if (aud_get_bool ("no_playlist_advance"))
         mainwin_show_status_message (_("Single mode."));
     else
         mainwin_show_status_message (_("Playlist mode."));
@@ -455,24 +459,32 @@ static void no_advance_toggled ()
 
 static void stop_after_song_toggled ()
 {
-    if (aud_get_bool (nullptr, "stop_after_current_song"))
+    if (aud_get_bool ("stop_after_current_song"))
         mainwin_show_status_message (_("Stopping after song."));
 }
 
 bool MainWindow::scroll (QWheelEvent * event)
 {
-    int delta = event->angleDelta ().y () / 24;
-    if (delta)
-        mainwin_set_volume_diff (delta);
+    m_scroll_delta_x += event->angleDelta ().x ();
+    m_scroll_delta_y += event->angleDelta ().y ();
 
-#if 0
-        case GDK_SCROLL_LEFT:
-            aud_drct_seek (aud_drct_get_time () - 5000);
-            break;
-        case GDK_SCROLL_RIGHT:
-            aud_drct_seek (aud_drct_get_time () + 5000);
-            break;
-#endif
+    /* we want discrete steps here */
+    int steps_x = m_scroll_delta_x / 120;
+    int steps_y = m_scroll_delta_y / 120;
+
+    if (steps_x != 0)
+    {
+        m_scroll_delta_x -= 120 * steps_x;
+        int step_size = aud_get_int ("step_size");
+        aud_drct_seek (aud_drct_get_time () - steps_x * step_size * 1000);
+    }
+
+    if (steps_y != 0)
+    {
+        m_scroll_delta_y -= 120 * steps_y;
+        int volume_delta = aud_get_int ("volume_delta");
+        aud_drct_set_volume_main (aud_drct_get_volume_main () + steps_y * volume_delta);
+    }
 
     return true;
 }
@@ -496,6 +508,19 @@ bool MainWindow::button_press (QMouseEvent * event)
     return Window::button_press (event);
 }
 
+void MainWindow::enterEvent (QEvent * event)
+{
+    if (! is_shaded() || ! aud_get_bool (nullptr, "show_filepopup_for_tuple"))
+        return;
+
+    auto enterEvent = static_cast<QEnterEvent *> (event);
+    if (enterEvent->x () >= 79 * config.scale &&
+        enterEvent->x () <= 157 * config.scale)
+    {
+        audqt::infopopup_show_current ();
+    }
+}
+
 static void mainwin_playback_rpress (Button * button, QMouseEvent * event)
 {
     menu_popup (UI_MENU_PLAYBACK, event->globalX (), event->globalY (), false, false);
@@ -509,10 +534,10 @@ bool Window::keypress (QKeyEvent * event)
     switch (event->key ())
     {
         case Qt::Key_Left:
-            aud_drct_seek (aud_drct_get_time () - 5000);
+            aud_drct_seek (aud_drct_get_time () - aud_get_int ("step_size") * 1000);
             break;
         case Qt::Key_Right:
-            aud_drct_seek (aud_drct_get_time () + 5000);
+            aud_drct_seek (aud_drct_get_time () + aud_get_int ("step_size") * 1000);
             break;
         case Qt::Key_Space:
             aud_drct_pause ();
@@ -619,9 +644,9 @@ static void mainwin_fwd_release (Button * button, QMouseEvent * event)
     { seek_release (event, false); }
 
 static void mainwin_shuffle_cb (Button * button, QMouseEvent * event)
-    { aud_set_bool (nullptr, "shuffle", button->get_active ()); }
+    { aud_set_bool ("shuffle", button->get_active ()); }
 static void mainwin_repeat_cb (Button * button, QMouseEvent * event)
-    { aud_set_bool (nullptr, "repeat", button->get_active ()); }
+    { aud_set_bool ("repeat", button->get_active ()); }
 static void mainwin_eq_cb (Button * button, QMouseEvent * event)
     { view_set_show_equalizer (button->get_active ()); }
 static void mainwin_pl_cb (Button * button, QMouseEvent * event)
@@ -642,8 +667,7 @@ static void mainwin_spos_motion_cb ()
     int length = aud_drct_get_length ();
     int time = (pos - 1) * length / 12;
 
-    char buf[7];
-    format_time (buf, time, length);
+    StringBuf buf = format_time (time, length);
 
     mainwin_stime_min->set_text (buf);
     mainwin_stime_sec->set_text (buf + 4);
@@ -915,12 +939,12 @@ static void mainwin_create_widgets ()
 
     mainwin_shuffle = new Button (46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP, SKIN_SHUFREP);
     mainwin->put_widget (false, mainwin_shuffle, 164, 89);
-    mainwin_shuffle->set_active (aud_get_bool (nullptr, "shuffle"));
+    mainwin_shuffle->set_active (aud_get_bool ("shuffle"));
     mainwin_shuffle->on_release (mainwin_shuffle_cb);
 
     mainwin_repeat = new Button (28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP, SKIN_SHUFREP);
     mainwin->put_widget (false, mainwin_repeat, 210, 89);
-    mainwin_repeat->set_active (aud_get_bool (nullptr, "repeat"));
+    mainwin_repeat->set_active (aud_get_bool ("repeat"));
     mainwin_repeat->on_release (mainwin_repeat_cb);
 
     mainwin_eq = new Button (23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP, SKIN_SHUFREP);
@@ -1153,8 +1177,7 @@ static void mainwin_update_volume ()
 
 static void mainwin_update_time_display (int time, int length)
 {
-    char scratch[7];
-    format_time (scratch, time, length);
+    StringBuf scratch = format_time (time, length);
 
     mainwin_minus_num->set (scratch[0]);
     mainwin_10min_num->set (scratch[1]);

@@ -30,7 +30,7 @@
 #include "skins_cfg.h"
 #include "main.h"
 #include "vis-callbacks.h"
-#include "playlist.h"
+#include "playlistwin.h"
 #include "skin.h"
 #include "playlist-widget.h"
 #include "textbox.h"

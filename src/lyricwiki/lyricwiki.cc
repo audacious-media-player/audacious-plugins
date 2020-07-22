@@ -215,7 +215,7 @@ static String scrape_uri_from_lyricwiki_search_result (const char * buf, int64_t
                             s = String (orig_utf8);
                     }
 
-                    uri = String (str_printf ("http://lyrics.wikia.com/index.php?"
+                    uri = String (str_printf ("https://lyrics.fandom.com/index.php?"
                      "action=edit&title=%s", (const char *) str_encode_percent
                      (index_to_str_list (strings, ":"))));
                 }
@@ -224,7 +224,7 @@ static String scrape_uri_from_lyricwiki_search_result (const char * buf, int64_t
                     // Convert normal lyrics link to edit page link
                     char * slash = strrchr (lyric, '/');
                     if (slash)
-                        uri = String (str_printf ("http://lyrics.wikia.com/index.php?"
+                        uri = String (str_printf ("https://lyrics.fandom.com/index.php?"
                          "action=edit&title=%s", slash + 1));
                 }
 
@@ -303,11 +303,11 @@ static void get_lyrics_step_1 ()
     StringBuf title_buf = str_encode_percent (state.title);
     StringBuf artist_buf = str_encode_percent (state.artist);
 
-    state.uri = String (str_printf ("http://lyrics.wikia.com/api.php?"
+    state.uri = String (str_printf ("https://lyrics.fandom.com/api.php?"
      "action=lyrics&artist=%s&song=%s&fmt=xml", (const char *) artist_buf,
      (const char *) title_buf));
 
-    update_lyrics_window (state.title, state.artist, _("Connecting to lyrics.wikia.com ..."), false);
+    update_lyrics_window (state.title, state.artist, _("Connecting to lyrics.fandom.com ..."), false);
     vfs_async_file_get_contents (state.uri, get_lyrics_step_2, nullptr);
 }
 

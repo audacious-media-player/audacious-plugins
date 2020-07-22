@@ -102,6 +102,7 @@
 #include "../peops2/externals.h"
 #include "../peops2/regs.h"
 #include "../peops2/dma.h"
+#include "../peops2/spu.h"
 
 ////////////////////////////////////////////////////////////////////////
 // globals
@@ -128,8 +129,8 @@ int             iUseInterpolation=2;
 
 // MAIN infos struct for each channel
 
-SPUCHAN         s_chan[MAXCHAN+1];                     // channel + 1 infos (1 is security for fmod handling)
-REVERBInfo      rvb[2];
+SPUCHAN2         s_chan[MAXCHAN+1];                     // channel + 1 infos (1 is security for fmod handling)
+REVERBInfo2      rvb[2];
 
 unsigned long   dwNoiseVal=1;                          // global noise generator
 
@@ -336,10 +337,16 @@ int psf2_seek(u32 t)
  return(0);
 }
 
+static int endless;
+void setendless2(int e)
+{
+ endless=e;
+}
+
 // Counting to 65536 results in full volume offage.
 void setlength2(s32 stop, s32 fade)
 {
- if(stop==~0)
+ if(stop==~0 || endless)
  {
   decaybegin=~0;
  }
@@ -742,7 +749,7 @@ ENDX:   ;
     if(sampcount>=decaybegin)
      {
       s32 dmul;
-      if(decaybegin!=~0) // Is anyone REALLY going to be playing a song
+      if(decaybegin!=~0U) // Is anyone REALLY going to be playing a song
                          // for 13 hours?
        {
         if(sampcount>=decayend)
@@ -830,8 +837,8 @@ EXPORT_GCC void CALLBACK SPU2async(void (*update)(const void *, int))
 EXPORT_GCC long CALLBACK SPU2init(void)
 {
  spuMemC=(unsigned char *)spuMem;                      // just small setup
- memset((void *)s_chan,0,MAXCHAN*sizeof(SPUCHAN));
- memset(rvb,0,2*sizeof(REVERBInfo));
+ memset((void *)s_chan,0,MAXCHAN*sizeof(SPUCHAN2));
+ memset(rvb,0,2*sizeof(REVERBInfo2));
 
  sampcount = 0;
  seektime = 0;
@@ -940,7 +947,7 @@ EXPORT_GCC long CALLBACK SPU2open(void *pDsp)
  bEndThread=0;
  bThreadEnded=0;
  spuMemC=(unsigned char *)spuMem;
- memset((void *)s_chan,0,(MAXCHAN+1)*sizeof(SPUCHAN));
+ memset((void *)s_chan,0,(MAXCHAN+1)*sizeof(SPUCHAN2));
  pSpuIrq[0]=0;
  pSpuIrq[1]=0;
  iSPUIRQWait=1;
@@ -993,6 +1000,7 @@ EXPORT_GCC void CALLBACK SPU2close(void)
  RemoveStreams();                                      // no more streaming
 }
 
+#if 0
 ////////////////////////////////////////////////////////////////////////
 // SPUSHUTDOWN: called by main emu on final exit
 ////////////////////////////////////////////////////////////////////////
@@ -1034,3 +1042,4 @@ EXPORT_GCC void CALLBACK SPU2registerCDDAVolume(void (CALLBACK *CDDAVcallback)(u
 {
  cddavCallback = CDDAVcallback;
 }
+#endif

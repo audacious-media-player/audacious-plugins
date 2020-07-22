@@ -618,9 +618,9 @@ struct _GPU
 #define BGBmpBB BG_bmp_ram
 #define BGChBB BG_tile_ram
 
-	u8 *(BG_bmp_ram[4]);
-	u8 *(BG_tile_ram[4]);
-	u8 *(BG_map_ram[4]);
+	u8 * BG_bmp_ram[4];
+	u8 * BG_tile_ram[4];
+	u8 * BG_map_ram[4];
 
 	u8 BGExtPalSlot[4];
 	u32 BGSize[4][2];
