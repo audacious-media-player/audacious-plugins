@@ -483,6 +483,20 @@ ENABLE_PLUGIN_WITH_DEP(hotkey,
     GDKX11,
     gdk-x11-2.0)
 
+
+test_hotkeyw32 () {
+     if test $HAVE_MSWINDOWS = yes ; then
+         have_hotkeyw32=yes
+     else
+         have_hotkeyw32=no
+     fi
+ }
+
+ENABLE_PLUGIN_WITH_TEST(hotkeyw32,
+    Windows hotkeys plugin,
+    auto,
+    GENERAL)
+
 ENABLE_PLUGIN_WITH_DEP(aosd,
     X11 OSD,
     auto,
@@ -834,6 +848,7 @@ if test "x$USE_GTK" = "xyes" ; then
     echo "  Status Icon:                            yes"
     echo "  X11 Global Hotkeys:                     $have_hotkey"
     echo "  X11 On-Screen Display (aosd):           $have_aosd"
+    echo "  Windows Global hotkeys:                 $have_hotkeyw32"
     echo
 fi
 
