@@ -1,6 +1,5 @@
 
 
-
 #include "../hotkey/grab.h"
 
 #include <gtk/gtk.h>
@@ -12,9 +11,5 @@
 
 #include "../hotkey/plugin.h"
 
-void grab_keys (){
-  AUDDBG("lHotkeyFlow:w_grab: grab_keys");
-}
-void ungrab_keys (){
-  AUDDBG("lHotkeyFlow:w_grab: ungrab_keys");
-}
+void grab_keys() { AUDDBG("lHotkeyFlow:w_grab: grab_keys"); }
+void ungrab_keys() { AUDDBG("lHotkeyFlow:w_grab: ungrab_keys"); }

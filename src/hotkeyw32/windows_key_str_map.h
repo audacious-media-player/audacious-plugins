@@ -4,7 +4,7 @@
 // https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 // As defined in WinUser.h
 
-constexpr const char *const WIN_VK_NAMES[] = {
+constexpr const char * const WIN_VK_NAMES[] = {
     "UNKNOWN_KEY: 0",
     "LBUTTON",
     "RBUTTON",
@@ -260,7 +260,6 @@ constexpr const char *const WIN_VK_NAMES[] = {
     "NONAME",
     "PA1",
     "OEM_CLEAR",
-    "UNKNOWN_KEY: 255"
-};
+    "UNKNOWN_KEY: 255"};
 
-#endif //AUDACIOUS_PLUGINS_WINDOWS_KEY_STRINGS_HPP
+#endif // AUDACIOUS_PLUGINS_WINDOWS_KEY_STRINGS_HPP

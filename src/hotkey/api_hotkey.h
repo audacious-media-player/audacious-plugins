@@ -9,29 +9,29 @@
 #endif
 #include "plugin.h"
 
+class Hotkey
+{
 
-
-class Hotkey {
-
-//#ifdef _WIN32
-//#define OS_KeySym int
-//#else
-//#define OS_KeySym KeySym
-//#endif
+    //#ifdef _WIN32
+    //#define OS_KeySym int
+    //#else
+    //#define OS_KeySym KeySym
+    //#endif
 
 #ifdef _WIN32
-  typedef  int OS_KeySym;
+    typedef int OS_KeySym;
 #else
-  typedef KeySym OS_KeySym;
+    typedef KeySym OS_KeySym;
 #endif
 
- public:
-  static void set_keytext(GtkWidget *entry, int key, int mask, int type);
-  static std::pair<int, int> get_is_mod(GdkEventKey *event);
-  template <typename T_GDK_EVENT>
-  static int calculate_mod(T_GDK_EVENT *event);
-  static void add_hotkey(HotkeyConfiguration **pphotkey, OS_KeySym keysym, int mask, int type, EVENT event);
-  static void key_to_string(int key, char **out_keytext);
+public:
+    static void set_keytext(GtkWidget * entry, int key, int mask, int type);
+    static std::pair<int, int> get_is_mod(GdkEventKey * event);
+    template<typename T_GDK_EVENT>
+    static int calculate_mod(T_GDK_EVENT * event);
+    static void add_hotkey(HotkeyConfiguration ** pphotkey, OS_KeySym keysym,
+                           int mask, int type, EVENT event);
+    static void key_to_string(int key, char ** out_keytext);
 };
 
 #ifndef _WIN32
