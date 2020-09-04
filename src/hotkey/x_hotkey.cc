@@ -1,3 +1,30 @@
+/*
+ *  x_hotkey.cc
+ *  Audacious
+ *
+ *  Copyright (C) 2005-2020  Audacious team
+ *
+ *  XMMS - Cross-platform multimedia player
+ *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2003  Haavard Kvaalen
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; under version 3 of the License.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses>.
+ *
+ *  The Audacious team does not consider modular code linking to
+ *  Audacious or using our public API to be a derived work.
+*/
+
 #include <X11/X.h>
 #include <X11/XKBlib.h>
 #include <gdk/gdkx.h>
@@ -47,4 +74,25 @@ void Hotkey::key_to_string(int key, char ** out_keytext)
     {
         *out_keytext = g_strdup(XKeysymToString(keysym));
     }
+}
+
+char* Hotkey::create_human_readable_keytext(const char* const keytext, int key, int mask)
+{
+    static const constexpr unsigned int modifiers[] = {
+        HK_CONTROL_MASK, HK_SHIFT_MASK, HK_MOD1_ALT_MASK, HK_MOD2_MASK,
+        HK_MOD3_MASK,    HK_MOD4_MASK,  HK_MOD5_MASK};
+    static const constexpr char * const modifier_string[] = {
+        "Control", "Shift", "Alt", "Mod2", "Mod3", "Super", "Mod5"};
+    const char * strings[9];
+    int i, j;
+    for (i = 0, j = 0; j < 7; j++)
+    {
+        if (mask & modifiers[j])
+            strings[i++] = modifier_string[j];
+    }
+    if (key != 0)
+        strings[i++] = keytext;
+    strings[i] = nullptr;
+
+    return g_strjoinv(" + ", (char **)strings);
 }

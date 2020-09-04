@@ -1,4 +1,29 @@
-
+/*
+ *  hotkey_api_common.cc
+ *  Audacious
+ *
+ *  Copyright (C) 2005-2020  Audacious team
+ *
+ *  XMMS - Cross-platform multimedia player
+ *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2003  Haavard Kvaalen
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; under version 3 of the License.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses>.
+ *
+ *  The Audacious team does not consider modular code linking to
+ *  Audacious or using our public API to be a derived work.
+*/
 
 #include "api_hotkey.h"
 #include <X11/X.h>
@@ -38,10 +63,6 @@ template int Hotkey::calculate_mod<GdkEventButton>(GdkEventButton * event);
 
 std::pair<int, int> Hotkey::get_is_mod(GdkEventKey * event)
 {
-#ifdef _WIN32
-    AUDDBG("lHotkeyFlow:Win call: get_is_mod.%s",
-           gdk_keyval_name(event->keyval));
-#endif
     int mod = 0;
     int is_mod = 0;
 
@@ -83,14 +104,7 @@ void Hotkey::set_keytext(GtkWidget * entry, int key, int mask, int type)
     }
     else
     {
-        static const char * modifier_string[] = {
-            "Control", "Shift", "Alt", "Mod2", "Mod3", "Super", "Mod5"};
-        static const unsigned int modifiers[] = {
-            HK_CONTROL_MASK, HK_SHIFT_MASK, HK_MOD1_ALT_MASK, HK_MOD2_MASK,
-            HK_MOD3_MASK,    HK_MOD4_MASK,  HK_MOD5_MASK};
-        const char * strings[9];
         char * keytext = nullptr;
-        int i, j;
         if (type == TYPE_KEY)
         {
             Hotkey::key_to_string(key, &keytext);
@@ -99,17 +113,7 @@ void Hotkey::set_keytext(GtkWidget * entry, int key, int mask, int type)
         {
             keytext = g_strdup_printf("Button%d", key);
         }
-
-        for (i = 0, j = 0; j < 7; j++)
-        {
-            if (mask & modifiers[j])
-                strings[i++] = modifier_string[j];
-        }
-        if (key != 0)
-            strings[i++] = keytext;
-        strings[i] = nullptr;
-
-        text = g_strjoinv(" + ", (char **)strings);
+        text = Hotkey::create_human_readable_keytext(keytext, key, mask);
         g_free(keytext);
     }
 
