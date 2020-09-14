@@ -182,6 +182,9 @@ static void persist_state (LyricsState state)
 void FileProvider::cache (LyricsState state)
 {
     auto uri = cache_uri_for_entry (state);
+    if (! uri)
+        return;
+
     bool exists = VFSFile::test_file (uri, VFS_IS_REGULAR);
     if (exists)
         return;
@@ -198,6 +201,9 @@ void FileProvider::cache (LyricsState state)
 
 String FileProvider::cache_uri_for_entry (LyricsState state)
 {
+    if (! state.artist)
+        return String ();
+
     auto user_dir = aud_get_path (AudPath::UserDir);
     StringBuf base_path = filename_build ({user_dir, "lyrics"});
     StringBuf artist_path = filename_build ({base_path, state.artist});
