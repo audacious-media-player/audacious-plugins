@@ -63,7 +63,7 @@
 namespace GlobalHotkeys
 {
 
-class GlobalHotkeys : public GeneralPlugin, public QAbstractNativeEventFilter
+class GlobalHotkeys : public GeneralPlugin
 {
 public:
     static const char about[];
@@ -71,17 +71,21 @@ public:
     static constexpr PluginInfo info = {N_("Global Hotkeys"), PACKAGE, about,
                                         &hotkey_prefs, PluginQtOnly};
 
-    GlobalHotkeys();
+    constexpr GlobalHotkeys() : GeneralPlugin(info, false) {}
 
     bool init() override;
     void cleanup() override;
+};
 
+class GlobalHotkeysEventFilter : public QAbstractNativeEventFilter
+{
 private:
     bool nativeEventFilter(const QByteArray & eventType, void * message,
                            long * result) override;
 };
 
 /* global vars */
+static GlobalHotkeysEventFilter event_filter;
 static PluginConfig plugin_cfg;
 
 static int grabbed = 0;
@@ -422,8 +426,6 @@ void save_config()
     aud_set_int("globalHotkey", "NumHotkeys", max);
 }
 
-GlobalHotkeys::GlobalHotkeys() : GeneralPlugin(info, false) {}
-
 bool GlobalHotkeys::init()
 {
     audqt::init();
@@ -437,22 +439,22 @@ bool GlobalHotkeys::init()
 
     load_config();
     grab_keys();
-    QCoreApplication::instance()->installNativeEventFilter(this);
+    QCoreApplication::instance()->installNativeEventFilter(&event_filter);
 
     return true;
 }
 
 void GlobalHotkeys::cleanup()
 {
-    QCoreApplication::instance()->removeNativeEventFilter(this);
+    QCoreApplication::instance()->removeNativeEventFilter(&event_filter);
     ungrab_keys();
     plugin_cfg.hotkeys_list.clear();
 
     audqt::cleanup();
 }
 
-bool GlobalHotkeys::nativeEventFilter(const QByteArray & eventType,
-                                      void * message, long * result)
+bool GlobalHotkeysEventFilter::nativeEventFilter(const QByteArray & eventType,
+                                                 void * message, long * result)
 {
     Q_UNUSED(eventType);
     Q_UNUSED(result);
