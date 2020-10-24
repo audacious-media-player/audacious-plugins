@@ -3,51 +3,55 @@
 
 #include <QtCore/QList>
 
-namespace GlobalHotkeys {
+namespace GlobalHotkeys
+{
 
 /*
  * Values in this enum must not be skipped and must start with 0,
  * otherwise event_desc in gui.cc and it's use must be updated.
  * All values except for Event::Max must be present in event_desc map.
  */
-enum class Event {
-	PrevTrack = 0,
-	Play,
-	Pause,
-	Stop,
-	NextTrack,
+enum class Event
+{
+    PrevTrack = 0,
+    Play,
+    Pause,
+    Stop,
+    NextTrack,
 
-	Forward,
-	Backward,
-	Mute,
-	VolumeUp,
-	VolumeDown,
-	JumpToFile,
-	ToggleWindow,
-	ShowAOSD,
+    Forward,
+    Backward,
+    Mute,
+    VolumeUp,
+    VolumeDown,
+    JumpToFile,
+    ToggleWindow,
+    ShowAOSD,
 
-	ToggleRepeat,
-	ToggleShuffle,
-	ToggleStop,
+    ToggleRepeat,
+    ToggleShuffle,
+    ToggleStop,
 
-	Raise,
+    Raise,
 
-	Max
+    Max
 };
 
-struct HotkeyConfiguration {
-	unsigned key, mask;
-	Event event;
+struct HotkeyConfiguration
+{
+    unsigned key, mask;
+    Event event;
 };
 
-struct PluginConfig {
-	/* keyboard */
-	QList<HotkeyConfiguration> hotkeys_list;
+struct PluginConfig
+{
+    /* keyboard */
+    QList<HotkeyConfiguration> hotkeys_list;
 };
 
 void load_config();
 void save_config();
-PluginConfig* get_config();
+PluginConfig * get_config();
 bool handle_keyevent(Event event);
 
 void grab_keys();
