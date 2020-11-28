@@ -82,6 +82,7 @@ private:
     void show_dock_plugin(PluginHandle * plugin);
 
     void add_dock_item(audqt::DockItem * item) override;
+    void focus_dock_item(audqt::DockItem * item) override;
     void remove_dock_item(audqt::DockItem * item) override;
 
     void show_search_tool()

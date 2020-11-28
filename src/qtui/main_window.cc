@@ -380,7 +380,10 @@ void MainWindow::playback_stop_cb()
 void MainWindow::show_dock_plugin(PluginHandle * plugin)
 {
     aud_plugin_enable(plugin, true);
-    aud_plugin_send_message(plugin, "grab focus", nullptr, 0);
+
+    auto item = audqt::DockItem::find_by_plugin(plugin);
+    if (item)
+        item->grab_focus();
 }
 
 void MainWindow::add_dock_item(audqt::DockItem * item)
@@ -398,6 +401,13 @@ void MainWindow::add_dock_item(audqt::DockItem * item)
     }
 
     w->show(); /* in case restoreDockWidget() hid it */
+}
+
+void MainWindow::focus_dock_item(audqt::DockItem * item)
+{
+    auto w = (DockWidget *)item->host_data();
+    if (w->isFloating())
+        w->activateWindow();
 }
 
 void MainWindow::remove_dock_item(audqt::DockItem * item)
