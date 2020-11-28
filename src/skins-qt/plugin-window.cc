@@ -69,6 +69,8 @@ public:
     void show ()
     {
         winId ();
+        // FIXME: this breaks when double-size is enabled/disabled
+        // (because the main window is recreated).
         windowHandle ()->setTransientParent (mainwin->windowHandle ());
         QWidget::show ();
     }
