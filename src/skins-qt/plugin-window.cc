@@ -33,6 +33,7 @@
 #include <libaudcore/plugins.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/runtime.h>
+#include <libaudqt/dock.h>
 #include <libaudqt/libaudqt.h>
 
 #include "main.h"
@@ -41,15 +42,14 @@
 class PluginWindow : public QWidget
 {
 public:
-    PluginWindow (PluginHandle * plugin, QWidget * widget) :
-        m_plugin (plugin),
-        m_widget (widget)
+    PluginWindow (audqt::DockItem * item) : m_item (item)
     {
         setWindowFlags (Qt::Dialog);
-        setWindowTitle (aud_plugin_get_name (plugin));
+        setWindowTitle (item->name ());
 
-        const char * basename = aud_plugin_get_basename (plugin);
-        String pos_str = aud_get_str ("skins-layout", basename);
+        item->set_host_data (this);
+
+        String pos_str = aud_get_str ("skins-layout", item->id ());
         int pos[4];
 
         if (pos_str && str_to_int_array (pos_str, pos, 4))
@@ -61,11 +61,10 @@ public:
             resize (3 * audqt::sizes.OneInch, 2 * audqt::sizes.OneInch);
 
         auto vbox = audqt::make_vbox (this);
-        vbox->addWidget (widget);
+        vbox->addWidget (item->widget ());
     }
 
-    PluginHandle * plugin () const { return m_plugin; }
-    QWidget * widget () const { return m_widget; }
+    QWidget * widget () const { return m_item->widget (); }
 
     void show ()
     {
@@ -79,103 +78,81 @@ public:
         if (! isVisible ())
             return;
 
-        const char * basename = aud_plugin_get_basename (m_plugin);
         int pos[4] = {x (), y (), width (), height ()};
-        aud_set_str ("skins-layout", basename, int_array_to_str (pos, 4));
+        aud_set_str ("skins-layout", m_item->id (), int_array_to_str (pos, 4));
+    }
+
+    void destroy()
+    {
+        if (in_event)
+            deleteLater();
+        else
+            delete this;
     }
 
 protected:
-    void closeEvent (QCloseEvent * event)
+    void closeEvent (QCloseEvent * event) override
     {
-        aud_plugin_enable (m_plugin, false);
+        in_event = true;
+        m_item->user_close ();
         event->ignore ();
+        in_event = false;
     }
 
-    void keyPressEvent (QKeyEvent * event)
+    void keyPressEvent (QKeyEvent * event) override
     {
-        if (event->key () == Qt::Key_Escape)
+        auto mods = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+        if (! (event->modifiers () & mods) && event->key () == Qt::Key_Escape)
         {
-            aud_plugin_enable (m_plugin, false);
+            in_event = true;
+            m_item->user_close ();
             event->accept ();
+            in_event = false;
         }
     }
 
 private:
-    PluginHandle * m_plugin;
-    QWidget * m_widget;
+    audqt::DockItem * m_item;
+    bool in_event = false;
 };
 
+class PluginWindowHost : public audqt::DockHost
+{
+public:
+    void add_dock_item(audqt::DockItem * item) override;
+    void focus_dock_item(audqt::DockItem * item) override;
+    void remove_dock_item(audqt::DockItem * item) override;
+};
+
+static PluginWindowHost window_host;
 static Index<PluginWindow *> windows;
 
-static void add_dock_plugin (PluginHandle * plugin, void *)
+void PluginWindowHost::add_dock_item (audqt::DockItem * item)
 {
-    auto widget = (QWidget *) aud_plugin_get_qt_widget (plugin);
+    auto window = new PluginWindow (item);
+    windows.append (window);
 
-    if (widget)
-    {
-        auto window = new PluginWindow (plugin, widget);
-        windows.append (window);
-
-        if (aud_ui_is_shown ())
-            window->show ();
-    }
+    if (aud_ui_is_shown ())
+        window->show ();
 }
 
-static int find_dock_plugin (PluginHandle * plugin)
+void PluginWindowHost::focus_dock_item (audqt::DockItem * item)
 {
-    int count = windows.len ();
-    for (int i = 0; i < count; i ++)
-    {
-        if (windows[i]->plugin () == plugin)
-            return i;
-    }
-
-    return -1;
+    auto window = (PluginWindow *) item->host_data ();
+    window->activateWindow ();
 }
 
-static PluginWindow * remove_dock_plugin (PluginHandle * plugin)
+void PluginWindowHost::remove_dock_item (audqt::DockItem * item)
 {
-    int idx = find_dock_plugin (plugin);
-    if (idx < 0)
-        return nullptr;
-
-    auto window = windows[idx];
-    windows.remove (idx, 1);
-
+    auto window = (PluginWindow *) item->host_data ();
+    windows.remove (windows.find (window), 1);
     window->save_size ();
-    delete window->widget ();
-
-    /* After this point the destroy sequence differs.  When responding to a GUI
-     * event, we need to guard against deleting an object from within its member
-     * function, so we'll use QObject::deleteLater().  At shutdown, however, we
-     * we need to delete the plugin window immediately since the event loop has
-     * already ended. */
-    return window;
-}
-
-static void remove_dock_plugin_idle (PluginHandle * plugin, void * unused)
-{
-    auto window = remove_dock_plugin (plugin);
-    if (window)
-        window->deleteLater ();
+    window->destroy ();
 }
 
 void create_plugin_windows ()
 {
-    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
-    {
-        if (aud_plugin_get_enabled (plugin))
-            add_dock_plugin (plugin, nullptr);
-    }
-
-    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
-    {
-        if (aud_plugin_get_enabled (plugin))
-            add_dock_plugin (plugin, nullptr);
-    }
-
-    hook_associate ("dock plugin enabled", (HookFunction) add_dock_plugin, nullptr);
-    hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin_idle, nullptr);
+    audqt::register_dock_host (& window_host);
 }
 
 void show_plugin_windows ()
@@ -186,11 +163,9 @@ void show_plugin_windows ()
 
 void focus_plugin_window (PluginHandle * plugin)
 {
-    int idx = find_dock_plugin (plugin);
-    if (idx >= 0)
-        windows[idx]->activateWindow ();
-
-    aud_plugin_send_message (plugin, "grab focus", nullptr, 0);
+    auto item = audqt::DockItem::find_by_plugin (plugin);
+    if (item)
+        item->grab_focus ();
 }
 
 void hide_plugin_windows ()
@@ -204,18 +179,5 @@ void hide_plugin_windows ()
 
 void destroy_plugin_windows ()
 {
-    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
-    {
-        if (aud_plugin_get_enabled (plugin))
-            delete remove_dock_plugin (plugin);
-    }
-
-    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
-    {
-        if (aud_plugin_get_enabled (plugin))
-            delete remove_dock_plugin (plugin);
-    }
-
-    hook_dissociate ("dock plugin enabled", (HookFunction) add_dock_plugin);
-    hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin_idle);
+    audqt::unregister_dock_host ();
 }
