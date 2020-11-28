@@ -44,27 +44,37 @@
 #include <QSettings>
 #include <QToolButton>
 
-class PluginWidget : public QDockWidget
+class DockWidget : public QDockWidget
 {
 public:
-    PluginWidget(PluginHandle * plugin) : m_plugin(plugin)
+    DockWidget(audqt::DockItem * item) : m_item(item)
     {
-        setObjectName(aud_plugin_get_basename(plugin));
-        setWindowTitle(aud_plugin_get_name(plugin));
+        setObjectName(item->id());
+        setWindowTitle(item->name());
+        setWidget(item->widget());
         setContextMenuPolicy(Qt::PreventContextMenu);
     }
 
-    PluginHandle * plugin() const { return m_plugin; }
+    void destroy()
+    {
+        if (in_event)
+            deleteLater();
+        else
+            delete this;
+    }
 
 protected:
     void closeEvent(QCloseEvent * event)
     {
-        aud_plugin_enable(m_plugin, false);
+        in_event = true;
+        m_item->user_close();
         event->ignore();
+        in_event = false;
     }
 
 private:
-    PluginHandle * m_plugin;
+    audqt::DockItem * m_item;
+    bool in_event = false;
 };
 
 static QString get_config_name()
@@ -161,7 +171,8 @@ MainWindow::MainWindow()
 
     setMenuBar(m_menubar);
     setDockNestingEnabled(true);
-    add_dock_plugins();
+
+    audqt::register_dock_host(this);
 
     if (aud_drct_get_playing())
     {
@@ -193,7 +204,7 @@ MainWindow::~MainWindow()
     settings.setValue("geometry", saveGeometry());
     settings.setValue("windowState", saveState());
 
-    remove_dock_plugins();
+    audqt::unregister_dock_host();
 
     if (m_search_tool)
         aud_plugin_remove_watch(m_search_tool, plugin_watcher, this);
@@ -366,37 +377,17 @@ void MainWindow::playback_stop_cb()
     m_last_playing = Playlist();
 }
 
-PluginWidget * MainWindow::find_dock_plugin(PluginHandle * plugin)
-{
-    for (PluginWidget * w : m_dock_widgets)
-    {
-        if (w->plugin() == plugin)
-            return w;
-    }
-
-    return nullptr;
-}
-
 void MainWindow::show_dock_plugin(PluginHandle * plugin)
 {
     aud_plugin_enable(plugin, true);
     aud_plugin_send_message(plugin, "grab focus", nullptr, 0);
 }
 
-void MainWindow::add_dock_plugin_cb(PluginHandle * plugin)
+void MainWindow::add_dock_item(audqt::DockItem * item)
 {
-    QWidget * widget = (QWidget *)aud_plugin_get_qt_widget(plugin);
-    if (!widget)
-        return;
-
-    auto w = find_dock_plugin(plugin);
-    if (!w)
-    {
-        w = new PluginWidget(plugin);
-        m_dock_widgets.append(w);
-    }
-
-    w->setWidget(widget);
+    auto w = new DockWidget(item);
+    item->set_host_data(w);
+    m_dock_widgets.append(w);
 
     if (!restoreDockWidget(w))
         addDockWidget(Qt::LeftDockWidgetArea, w);
@@ -404,41 +395,9 @@ void MainWindow::add_dock_plugin_cb(PluginHandle * plugin)
     w->show(); /* in case restoreDockWidget() hid it */
 }
 
-void MainWindow::remove_dock_plugin_cb(PluginHandle * plugin)
+void MainWindow::remove_dock_item(audqt::DockItem * item)
 {
-    if (auto w = find_dock_plugin(plugin))
-    {
-        removeDockWidget(w);
-        delete w->widget();
-    }
-}
-
-void MainWindow::add_dock_plugins()
-{
-    for (PluginHandle * plugin : aud_plugin_list(PluginType::General))
-    {
-        if (aud_plugin_get_enabled(plugin))
-            add_dock_plugin_cb(plugin);
-    }
-
-    for (PluginHandle * plugin : aud_plugin_list(PluginType::Vis))
-    {
-        if (aud_plugin_get_enabled(plugin))
-            add_dock_plugin_cb(plugin);
-    }
-}
-
-void MainWindow::remove_dock_plugins()
-{
-    for (PluginHandle * plugin : aud_plugin_list(PluginType::General))
-    {
-        if (aud_plugin_get_enabled(plugin))
-            remove_dock_plugin_cb(plugin);
-    }
-
-    for (PluginHandle * plugin : aud_plugin_list(PluginType::Vis))
-    {
-        if (aud_plugin_get_enabled(plugin))
-            remove_dock_plugin_cb(plugin);
-    }
+    auto w = (DockWidget *)item->host_data();
+    m_dock_widgets.remove(m_dock_widgets.find(w), 1);
+    w->destroy();
 }

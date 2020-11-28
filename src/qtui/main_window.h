@@ -23,6 +23,7 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/mainloop.h>
 #include <libaudcore/playlist.h>
+#include <libaudqt/dock.h>
 
 #include "../ui-common/dialogs-qt.h"
 
@@ -31,11 +32,11 @@
 class InfoBar;
 class PlaylistTabs;
 class PluginHandle;
-class PluginWidget;
+class DockWidget;
 class QVBoxLayout;
 class StatusBar;
 
-class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow, audqt::DockHost
 {
 public:
     MainWindow();
@@ -52,7 +53,7 @@ private:
     StatusBar * m_statusbar;
 
     PluginHandle *m_search_tool, *m_playlist_manager;
-    Index<PluginWidget *> m_dock_widgets;
+    Index<DockWidget *> m_dock_widgets;
 
     QAction *m_menu_action, *m_search_action;
     QAction *m_play_pause_action, *m_stop_action, *m_stop_after_action;
@@ -62,8 +63,8 @@ private:
     QueuedFunc m_buffering_timer;
     Playlist m_last_playing;
 
-    void closeEvent(QCloseEvent * e);
-    void keyPressEvent(QKeyEvent * event);
+    void closeEvent(QCloseEvent * e) override;
+    void keyPressEvent(QKeyEvent * event) override;
 
     void read_settings();
     void set_title(const QString & title);
@@ -78,12 +79,10 @@ private:
     void pause_cb();
     void playback_stop_cb();
 
-    PluginWidget * find_dock_plugin(PluginHandle * plugin);
     void show_dock_plugin(PluginHandle * plugin);
-    void add_dock_plugin_cb(PluginHandle * plugin);
-    void remove_dock_plugin_cb(PluginHandle * plugin);
-    void add_dock_plugins();
-    void remove_dock_plugins();
+
+    void add_dock_item(audqt::DockItem * item) override;
+    void remove_dock_item(audqt::DockItem * item) override;
 
     void show_search_tool()
     {
@@ -120,11 +119,6 @@ private:
         hook15{"qtui show search tool", this, &MainWindow::show_search_tool},
         hook16{"qtui show playlist manager", this,
                &MainWindow::show_playlist_manager};
-
-    const HookReceiver<MainWindow, PluginHandle *> plugin_hook1{
-        "dock plugin enabled", this, &MainWindow::add_dock_plugin_cb},
-        plugin_hook2{"dock plugin disabled", this,
-                     &MainWindow::remove_dock_plugin_cb};
 };
 
 #endif
