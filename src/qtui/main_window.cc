@@ -390,7 +390,12 @@ void MainWindow::add_dock_item(audqt::DockItem * item)
     m_dock_widgets.append(w);
 
     if (!restoreDockWidget(w))
+    {
         addDockWidget(Qt::LeftDockWidgetArea, w);
+        // only the search tool is docked by default
+        if (strcmp(item->id(), "search-tool-qt"))
+            w->setFloating(true);
+    }
 
     w->show(); /* in case restoreDockWidget() hid it */
 }
