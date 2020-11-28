@@ -32,7 +32,6 @@
 class InfoBar;
 class PlaylistTabs;
 class PluginHandle;
-class DockWidget;
 class QVBoxLayout;
 class StatusBar;
 
@@ -53,7 +52,6 @@ private:
     StatusBar * m_statusbar;
 
     PluginHandle *m_search_tool, *m_playlist_manager;
-    Index<DockWidget *> m_dock_widgets;
 
     QAction *m_menu_action, *m_search_action;
     QAction *m_play_pause_action, *m_stop_action, *m_stop_after_action;

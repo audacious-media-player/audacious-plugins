@@ -47,12 +47,15 @@
 class DockWidget : public QDockWidget
 {
 public:
-    DockWidget(audqt::DockItem * item) : m_item(item)
+    DockWidget(QWidget * parent, audqt::DockItem * item)
+        : QDockWidget(parent), m_item(item)
     {
         setObjectName(item->id());
         setWindowTitle(item->name());
         setWidget(item->widget());
         setContextMenuPolicy(Qt::PreventContextMenu);
+
+        item->set_host_data(this);
     }
 
     void destroy()
@@ -64,12 +67,28 @@ public:
     }
 
 protected:
-    void closeEvent(QCloseEvent * event)
+    void closeEvent(QCloseEvent * event) override
     {
         in_event = true;
         m_item->user_close();
         event->ignore();
         in_event = false;
+    }
+
+    void keyPressEvent(QKeyEvent * event) override
+    {
+        auto mods = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+        if (!(event->modifiers() & mods) && event->key() == Qt::Key_Escape &&
+            isFloating())
+        {
+            in_event = true;
+            m_item->user_close();
+            event->accept();
+            in_event = false;
+            return;
+        }
+
+        QDockWidget::keyPressEvent(event);
     }
 
 private:
@@ -191,7 +210,7 @@ MainWindow::MainWindow()
      * place, but user screenshots show that it somehow happens, and in
      * that case we don't want them to be gone forever. */
     toolbar->show();
-    for (auto w : m_dock_widgets)
+    for (auto w : findChildren<DockWidget *>())
         w->show();
 
     /* set initial keyboard focus on the playlist */
@@ -388,9 +407,7 @@ void MainWindow::show_dock_plugin(PluginHandle * plugin)
 
 void MainWindow::add_dock_item(audqt::DockItem * item)
 {
-    auto w = new DockWidget(item);
-    item->set_host_data(w);
-    m_dock_widgets.append(w);
+    auto w = new DockWidget(this, item);
 
     if (!restoreDockWidget(w))
     {
@@ -413,6 +430,5 @@ void MainWindow::focus_dock_item(audqt::DockItem * item)
 void MainWindow::remove_dock_item(audqt::DockItem * item)
 {
     auto w = (DockWidget *)item->host_data();
-    m_dock_widgets.remove(m_dock_widgets.find(w), 1);
     w->destroy();
 }
