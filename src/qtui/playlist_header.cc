@@ -47,7 +47,7 @@ static const int s_default_widths[] = {
     50,  // year
     175, // album
     175, // album artist
-    75,  // track
+    25,  // track
     100, // genre
     25,  // queue position
     75,  // length
