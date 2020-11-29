@@ -511,7 +511,7 @@ ENABLE_PLUGIN_WITH_DEP(streamtuner,
     Qt5Network)
 
 test_qtglspectrum () {
-    PKG_CHECK_MODULES(QTOPENGL, Qt5OpenGL, [
+    PKG_CHECK_MODULES(QTOPENGL, Qt5OpenGL >= 5.4, [
         QTOPENGL_CFLAGS="$QTOPENGL_CFLAGS -fPIC"
         if test $have_glspectrum = yes ; then
             have_qtglspectrum=yes
