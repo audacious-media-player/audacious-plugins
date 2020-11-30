@@ -74,7 +74,7 @@ TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
     EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart lyricwiki playlist-manager search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart playlist-manager search-tool statusicon"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope cairo-spectrum"
 fi
@@ -824,7 +824,6 @@ if test "x$USE_GTK" = "xyes" ; then
     echo "  Album Art:                              yes"
     echo "  Blur Scope:                             yes"
     echo "  OpenGL Spectrum Analyzer:               $have_glspectrum"
-    echo "  LyricWiki viewer:                       yes"
     echo "  Playlist Manager:                       yes"
     echo "  Search Tool:                            yes"
     echo "  Spectrum Analyzer (2D):                 yes"
