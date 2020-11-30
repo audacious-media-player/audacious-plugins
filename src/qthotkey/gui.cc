@@ -142,7 +142,9 @@ public:
 protected:
     void keyPressEvent(QKeyEvent * event) override
     {
-        set_keytext(event->nativeScanCode(), event->nativeModifiers());
+        set_keytext(event->nativeScanCode(),
+                    event->nativeModifiers() &
+                        ~(scrolllock_mask | numlock_mask | capslock_mask));
     }
 
 private:

@@ -49,6 +49,10 @@ struct PluginConfig
     QList<HotkeyConfiguration> hotkeys_list;
 };
 
+extern unsigned int numlock_mask;
+extern unsigned int scrolllock_mask;
+extern unsigned int capslock_mask;
+
 void load_config();
 void save_config();
 PluginConfig * get_config();

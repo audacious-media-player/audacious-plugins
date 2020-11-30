@@ -89,9 +89,9 @@ static GlobalHotkeysEventFilter event_filter;
 static PluginConfig plugin_cfg;
 
 static int grabbed = 0;
-static unsigned int numlock_mask = 0;
-static unsigned int scrolllock_mask = 0;
-static unsigned int capslock_mask = 0;
+unsigned int numlock_mask = 0;
+unsigned int scrolllock_mask = 0;
+unsigned int capslock_mask = 0;
 
 const char GlobalHotkeys::about[] =
     N_("Global Hotkey Plugin\n"
