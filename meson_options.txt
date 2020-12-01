@@ -60,6 +60,8 @@ option('filewriter-ogg', type: 'boolean', value: true,
        description: 'Whether FileWriter (transcoding) OGG support is enabled')
 option('filewriter-flac', type: 'boolean', value: true,
        description: 'Whether FileWriter (transcoding) FLAC support is enabled')
+option('qtaudio', type: 'boolean', value: true,
+       description: 'Whether QtMultimedia support is enabled')
 
 # general plugins
 option('songchange', type: 'boolean', value: true,

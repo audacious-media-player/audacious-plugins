@@ -89,7 +89,9 @@ if get_option('qt')
   subdir('delete-files')
   subdir('skins-data')
 
-  subdir('qtaudio')
+  if get_option('qtaudio')
+    subdir('qtaudio')
+  endif
 
   if get_option('vumeter')
     subdir('vumeter-qt')
