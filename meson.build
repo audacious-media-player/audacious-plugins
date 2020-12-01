@@ -1,9 +1,9 @@
 project('audacious-plugins', 'c', 'cpp',
-        version: '4.0-devel',
+        version: '4.1-devel',
         meson_version: '>= 0.50')
 
 
-copyright = 'Copyright (C) 2001-2018 Audacious developers and others'
+copyright = 'Copyright (C) 2001-2020 Audacious developers and others'
 
 
 qt5 = import('qt5')
@@ -18,7 +18,7 @@ gmodule_dep = dependency('gmodule-2.0', version: glib_req, required: true)
 zlib_dep = dependency('zlib', required: true)
 
 
-audacious_req = '>= 3.11'
+audacious_req = '>= 4.1'
 audacious_dep = dependency('audacious', version: audacious_req, required: true)
 
 
