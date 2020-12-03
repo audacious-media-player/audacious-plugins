@@ -115,6 +115,7 @@ static QToolButton * create_menu_button(QWidget * parent, QMenuBar * menubar)
     auto button = new QToolButton(parent);
     button->setIcon(audqt::get_icon("audacious"));
     button->setPopupMode(QToolButton::InstantPopup);
+    button->setStyleSheet("QToolButton::menu-indicator { image: none; }");
     button->setToolTip(_("Menu"));
 
     for (auto action : menubar->actions())
