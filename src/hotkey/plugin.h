@@ -6,7 +6,8 @@
 #define TYPE_KEY 0
 #define TYPE_MOUSE 1
 
-typedef enum {
+typedef enum
+{
     EVENT_PREV_TRACK = 0,
     EVENT_PLAY,
     EVENT_PAUSE,
@@ -31,24 +32,23 @@ typedef enum {
     EVENT_MAX
 } EVENT;
 
-
-typedef struct _HotkeyConfiguration {
+typedef struct _HotkeyConfiguration
+{
     unsigned key, mask;
     unsigned type;
     EVENT event;
-    struct _HotkeyConfiguration *next;
+    struct _HotkeyConfiguration * next;
 } HotkeyConfiguration;
 
-typedef struct {
+typedef struct
+{
     /* keyboard */
     HotkeyConfiguration first;
 } PluginConfig;
 
-
-
-void load_config ();
-void save_config ();
-PluginConfig* get_config ();
+void load_config();
+void save_config();
+PluginConfig * get_config();
 gboolean handle_keyevent(EVENT event);
 
 #endif
