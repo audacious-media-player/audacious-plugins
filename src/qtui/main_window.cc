@@ -418,6 +418,11 @@ void MainWindow::add_dock_item(audqt::DockItem * item)
             w->setFloating(true);
     }
 
+    /* workaround for QTBUG-89144 */
+    auto flags = w->windowFlags();
+    if (flags & Qt::X11BypassWindowManagerHint)
+        w->setWindowFlags(flags & ~Qt::X11BypassWindowManagerHint);
+
     w->show(); /* in case restoreDockWidget() hid it */
 }
 
