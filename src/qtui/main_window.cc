@@ -105,9 +105,14 @@ static QString get_config_name()
 
 static void toggle_search_tool(bool enable)
 {
-    auto search_tool = aud_plugin_lookup_basename("search-tool-qt");
-    if (search_tool)
-        aud_plugin_enable(search_tool, enable);
+    if (enable)
+        hook_call("qtui show search tool", nullptr);
+    else
+    {
+        auto search_tool = aud_plugin_lookup_basename("search-tool-qt");
+        if (search_tool)
+            aud_plugin_enable(search_tool, false);
+    }
 }
 
 static QToolButton * create_menu_button(QWidget * parent, QMenuBar * menubar)
