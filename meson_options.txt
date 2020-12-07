@@ -91,5 +91,5 @@ option('gl-spectrum', type: 'boolean', value: true,
 
 
 # interface plugins
-option('moonstone', type: 'boolean', value: true,
+option('moonstone', type: 'boolean', value: false,
        description: 'Whether the Moonstone UI plugin is enabled')
