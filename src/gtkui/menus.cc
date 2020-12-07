@@ -186,6 +186,7 @@ static const AudguiMenuItem output_items[] = {
 static const AudguiMenuItem view_items[] = {
     MenuToggle (N_("Show _Menu Bar"), nullptr, 'm', SHIFT_CTRL, "gtkui", "menu_visible", show_hide_menu),
     MenuToggle (N_("Show I_nfo Bar"), nullptr, 'i', SHIFT_CTRL, "gtkui", "infoarea_visible", show_hide_infoarea),
+    MenuToggle (N_("Show Info Bar _Album Art"), nullptr, NONE, "gtkui", "infoarea_show_art", show_hide_infoarea_art),
     MenuToggle (N_("Show Info Bar Vis_ualization"), nullptr, NONE, "gtkui", "infoarea_show_vis", show_hide_infoarea_vis),
     MenuToggle (N_("Show _Status Bar"), nullptr, 's', SHIFT_CTRL, "gtkui", "statusbar_visible", show_hide_statusbar),
     MenuSep (),

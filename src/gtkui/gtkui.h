@@ -39,6 +39,7 @@ extern const PluginPreferences gtkui_prefs;
 /* ui_gtk.c */
 void show_hide_menu ();
 void show_hide_infoarea ();
+void show_hide_infoarea_art ();
 void show_hide_infoarea_vis ();
 void show_hide_statusbar ();
 void popup_menu_rclick (unsigned button, uint32_t time);
