@@ -422,8 +422,12 @@ ENABLE_PLUGIN_WITH_TEST(lirc,
     GENERAL)
 
 test_mpris2 () {
-    unset have_mpris2
-    AC_CHECK_PROG(have_mpris2, gdbus-codegen, yes, no)
+    if test $HAVE_MSWINDOWS = yes ; then
+        have_mpris2=no
+    else
+        unset have_mpris2
+        AC_CHECK_PROG(have_mpris2, gdbus-codegen, yes, no)
+    fi
 }
 
 ENABLE_PLUGIN_WITH_TEST(mpris2,
