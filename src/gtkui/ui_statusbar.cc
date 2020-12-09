@@ -108,7 +108,7 @@ static void no_advance_toggled (void *, void * label)
     else
         gtk_label_set_text ((GtkLabel *) label, _("Playlist mode."));
 
-    clear_timeout.start (1000, clear_message, label);
+    clear_timeout.start (1000, std::bind (clear_message, label));
 }
 
 static void stop_after_song_toggled (void *, void * label)
@@ -116,7 +116,7 @@ static void stop_after_song_toggled (void *, void * label)
     if (aud_get_bool ("stop_after_current_song"))
         gtk_label_set_text ((GtkLabel *) label, _("Stopping after song."));
 
-    clear_timeout.start (1000, clear_message, label);
+    clear_timeout.start (1000, std::bind (clear_message, label));
 }
 
 static void ui_statusbar_destroy_cb ()

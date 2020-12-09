@@ -185,7 +185,7 @@ void view_set_double_size (bool double_size)
 void view_apply_double_size ()
 {
     static QueuedFunc restart;
-    restart.queue ((QueuedFunc::Func) skins_restart, nullptr);
+    restart.queue (skins_restart);
 }
 
 void view_set_on_top (bool on_top)

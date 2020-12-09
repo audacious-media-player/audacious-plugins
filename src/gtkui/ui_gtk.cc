@@ -198,7 +198,7 @@ static void button_add_pressed ()
     audgui_run_filebrowser (false);
 }
 
-static void title_change (void * = nullptr)
+static void title_change ()
 {
     delayed_title_change.stop ();
 
@@ -435,7 +435,7 @@ static void ui_playback_begin ()
 
     /* If "title change" is not called by 1/4 second after starting playback,
      * show "Buffering ..." as the window title. */
-    delayed_title_change.queue (250, title_change, nullptr);
+    delayed_title_change.queue (250, title_change);
 }
 
 static void ui_playback_ready ()

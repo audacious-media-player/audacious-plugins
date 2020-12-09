@@ -72,7 +72,6 @@ private:
 
     void title_change_cb();
     void playback_begin_cb();
-    void buffering_cb();
     void playback_ready_cb();
     void pause_cb();
     void playback_stop_cb();

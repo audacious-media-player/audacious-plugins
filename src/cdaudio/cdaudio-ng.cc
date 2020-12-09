@@ -190,7 +190,7 @@ static void purge_playlist (Playlist playlist)
 }
 
 /* main thread only */
-static void purge_all_playlists (void * = nullptr)
+static void purge_all_playlists ()
 {
     int playlists = Playlist::n_playlists ();
 
@@ -759,7 +759,7 @@ static bool refresh_trackinfo (bool warning)
 
 fail:
     reset_trackinfo ();
-    purge_func.queue (purge_all_playlists, nullptr);
+    purge_func.queue (purge_all_playlists);
     return false;
 }
 
