@@ -19,8 +19,8 @@ option('mms', type: 'boolean', value: true,
 
 
 # input plugins
-option('ffaudio', type: 'string', value: 'ffmpeg',
-       description: 'Choose between ffmpeg, libav or neither')
+option('ffaudio', type: 'combo', choices: ['ffmpeg', 'libav', 'disabled'],
+       description: 'Choose between ffmpeg, libav or disabled')
 option('mpg123', type: 'boolean', value: true,
        description: 'Whether MPG123 support is enabled')
 option('adplug', type: 'boolean', value: true,
