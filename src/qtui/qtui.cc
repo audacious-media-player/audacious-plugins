@@ -75,7 +75,6 @@ public:
 
     void quit()
     {
-        window->teardown();
         window->deleteLater();
         window = nullptr;
     }

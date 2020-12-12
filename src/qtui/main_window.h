@@ -41,8 +41,6 @@ public:
     MainWindow();
     ~MainWindow();
 
-    void teardown();
-
 private:
     QString m_config_name;
     DialogWindows m_dialogs;
