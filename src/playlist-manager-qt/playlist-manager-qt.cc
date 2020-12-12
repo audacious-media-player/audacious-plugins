@@ -134,12 +134,6 @@ private:
     void update (Playlist::UpdateLevel level);
     void update_sel ();
 
-    void activate (const QModelIndex & index) override
-    {
-        if (index.isValid ())
-            Playlist::by_index (index.row ()).start_playback ();
-    }
-
     const HookReceiver<PlaylistsView, Playlist::UpdateLevel>
      update_hook {"playlist update", this, & PlaylistsView::update};
     const HookReceiver<PlaylistsView>
@@ -268,6 +262,11 @@ PlaylistsView::PlaylistsView ()
     setDragDropMode (InternalMove);
     setFrameShape (QFrame::NoFrame);
     setIndentation (0);
+
+    connect (this, & QTreeView::activated, [] (const QModelIndex & index) {
+        if (index.isValid ())
+            Playlist::by_index (index.row ()).start_playback ();
+    });
 }
 
 void PlaylistsView::currentChanged (const QModelIndex & current, const QModelIndex & previous)
