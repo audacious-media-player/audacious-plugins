@@ -58,8 +58,8 @@ private:
     void playlist_update_cb(Playlist::UpdateLevel global_level);
     void playlist_position_cb(Playlist list);
 
-    const HookReceiver<PlaylistTabs> hook1{"qtui find", this,
-                                           &PlaylistTabs::activateSearch},
+    const HookReceiver<PlaylistTabs> //
+        hook1{"qtui find", this, &PlaylistTabs::activateSearch},
         hook2{"qtui rename playlist", this, &PlaylistTabs::renameCurrent};
 
     const HookReceiver<PlaylistTabs> activate_hook{
@@ -92,8 +92,8 @@ private:
     void tabMoved(int from, int to);
     void updateSettings();
 
-    const HookReceiver<PlaylistTabBar> pause_hook{"playback pause", this,
-                                                  &PlaylistTabBar::updateIcons},
+    const HookReceiver<PlaylistTabBar> //
+        pause_hook{"playback pause", this, &PlaylistTabBar::updateIcons},
         unpause_hook{"playback unpause", this, &PlaylistTabBar::updateIcons},
         set_playing_hook{"playlist set playing", this,
                          &PlaylistTabBar::updateIcons},

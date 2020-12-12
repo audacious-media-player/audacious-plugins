@@ -84,12 +84,13 @@ if get_option('qt')
   subdir('search-tool-qt')
   subdir('song-info-qt')
   subdir('statusicon-qt')
-  subdir('streamtuner')
 
   subdir('delete-files')
   subdir('skins-data')
 
-  subdir('qtaudio')
+  if get_option('qtaudio')
+    subdir('qtaudio')
+  endif
 
   if get_option('vumeter')
     subdir('vumeter-qt')
@@ -97,6 +98,10 @@ if get_option('qt')
 
   if get_option('gl-spectrum')
     subdir('qtglspectrum')
+  endif
+
+  if get_option('streamtuner')
+    subdir('streamtuner')
   endif
 
   if get_option('moonstone')

@@ -44,27 +44,55 @@
 #include <QSettings>
 #include <QToolButton>
 
-class PluginWidget : public QDockWidget
+class DockWidget : public QDockWidget
 {
 public:
-    PluginWidget(PluginHandle * plugin) : m_plugin(plugin)
+    DockWidget(QWidget * parent, audqt::DockItem * item)
+        : QDockWidget(parent), m_item(item)
     {
-        setObjectName(aud_plugin_get_basename(plugin));
-        setWindowTitle(aud_plugin_get_name(plugin));
+        setObjectName(item->id());
+        setWindowTitle(item->name());
+        setWidget(item->widget());
         setContextMenuPolicy(Qt::PreventContextMenu);
+
+        item->set_host_data(this);
     }
 
-    PluginHandle * plugin() const { return m_plugin; }
+    void destroy()
+    {
+        if (in_event)
+            deleteLater();
+        else
+            delete this;
+    }
 
 protected:
-    void closeEvent(QCloseEvent * event)
+    void closeEvent(QCloseEvent * event) override { close_for_event(event); }
+
+    void keyPressEvent(QKeyEvent * event) override
     {
-        aud_plugin_enable(m_plugin, false);
-        event->ignore();
+        auto mods = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+        if (!(event->modifiers() & mods) && event->key() == Qt::Key_Escape &&
+            isFloating())
+        {
+            close_for_event(event);
+            return;
+        }
+
+        QDockWidget::keyPressEvent(event);
     }
 
 private:
-    PluginHandle * m_plugin;
+    void close_for_event(QEvent * event)
+    {
+        in_event = true;
+        m_item->user_close();
+        in_event = false;
+        event->accept();
+    }
+
+    audqt::DockItem * m_item;
+    bool in_event = false;
 };
 
 static QString get_config_name()
@@ -76,9 +104,14 @@ static QString get_config_name()
 
 static void toggle_search_tool(bool enable)
 {
-    auto search_tool = aud_plugin_lookup_basename("search-tool-qt");
-    if (search_tool)
-        aud_plugin_enable(search_tool, enable);
+    if (enable)
+        hook_call("qtui show search tool", nullptr);
+    else
+    {
+        auto search_tool = aud_plugin_lookup_basename("search-tool-qt");
+        if (search_tool)
+            aud_plugin_enable(search_tool, false);
+    }
 }
 
 static QToolButton * create_menu_button(QWidget * parent, QMenuBar * menubar)
@@ -86,6 +119,7 @@ static QToolButton * create_menu_button(QWidget * parent, QMenuBar * menubar)
     auto button = new QToolButton(parent);
     button->setIcon(audqt::get_icon("audacious"));
     button->setPopupMode(QToolButton::InstantPopup);
+    button->setStyleSheet("QToolButton::menu-indicator { image: none; }");
     button->setToolTip(_("Menu"));
 
     for (auto action : menubar->actions())
@@ -161,7 +195,8 @@ MainWindow::MainWindow()
 
     setMenuBar(m_menubar);
     setDockNestingEnabled(true);
-    add_dock_plugins();
+
+    audqt::register_dock_host(this);
 
     if (aud_drct_get_playing())
     {
@@ -180,7 +215,7 @@ MainWindow::MainWindow()
      * place, but user screenshots show that it somehow happens, and in
      * that case we don't want them to be gone forever. */
     toolbar->show();
-    for (auto w : m_dock_widgets)
+    for (auto w : findChildren<DockWidget *>())
         w->show();
 
     /* set initial keyboard focus on the playlist */
@@ -193,7 +228,7 @@ MainWindow::~MainWindow()
     settings.setValue("geometry", saveGeometry());
     settings.setValue("windowState", saveState());
 
-    remove_dock_plugins();
+    audqt::unregister_dock_host();
 
     if (m_search_tool)
         aud_plugin_remove_watch(m_search_tool, plugin_watcher, this);
@@ -337,11 +372,8 @@ void MainWindow::playback_begin_cb()
 
     m_last_playing = playing;
 
-    m_buffering_timer.queue(
-        250, aud::obj_member<MainWindow, &MainWindow::buffering_cb>, this);
+    m_buffering_timer.queue(250, [this]() { set_title(_("Buffering ...")); });
 }
-
-void MainWindow::buffering_cb() { set_title(_("Buffering ...")); }
 
 void MainWindow::pause_cb()
 {
@@ -366,79 +398,44 @@ void MainWindow::playback_stop_cb()
     m_last_playing = Playlist();
 }
 
-PluginWidget * MainWindow::find_dock_plugin(PluginHandle * plugin)
-{
-    for (PluginWidget * w : m_dock_widgets)
-    {
-        if (w->plugin() == plugin)
-            return w;
-    }
-
-    return nullptr;
-}
-
 void MainWindow::show_dock_plugin(PluginHandle * plugin)
 {
     aud_plugin_enable(plugin, true);
-    aud_plugin_send_message(plugin, "grab focus", nullptr, 0);
+
+    auto item = audqt::DockItem::find_by_plugin(plugin);
+    if (item)
+        item->grab_focus();
 }
 
-void MainWindow::add_dock_plugin_cb(PluginHandle * plugin)
+void MainWindow::add_dock_item(audqt::DockItem * item)
 {
-    QWidget * widget = (QWidget *)aud_plugin_get_qt_widget(plugin);
-    if (!widget)
-        return;
-
-    auto w = find_dock_plugin(plugin);
-    if (!w)
-    {
-        w = new PluginWidget(plugin);
-        m_dock_widgets.append(w);
-    }
-
-    w->setWidget(widget);
+    auto w = new DockWidget(this, item);
 
     if (!restoreDockWidget(w))
+    {
         addDockWidget(Qt::LeftDockWidgetArea, w);
+        // only the search tool is docked by default
+        if (strcmp(item->id(), "search-tool-qt"))
+            w->setFloating(true);
+    }
+
+    /* workaround for QTBUG-89144 */
+    auto flags = w->windowFlags();
+    if (flags & Qt::X11BypassWindowManagerHint)
+        w->setWindowFlags(flags & ~Qt::X11BypassWindowManagerHint);
 
     w->show(); /* in case restoreDockWidget() hid it */
 }
 
-void MainWindow::remove_dock_plugin_cb(PluginHandle * plugin)
+void MainWindow::focus_dock_item(audqt::DockItem * item)
 {
-    if (auto w = find_dock_plugin(plugin))
-    {
-        removeDockWidget(w);
-        delete w->widget();
-    }
+    auto w = (DockWidget *)item->host_data();
+    if (w->isFloating())
+        w->activateWindow();
 }
 
-void MainWindow::add_dock_plugins()
+void MainWindow::remove_dock_item(audqt::DockItem * item)
 {
-    for (PluginHandle * plugin : aud_plugin_list(PluginType::General))
-    {
-        if (aud_plugin_get_enabled(plugin))
-            add_dock_plugin_cb(plugin);
-    }
-
-    for (PluginHandle * plugin : aud_plugin_list(PluginType::Vis))
-    {
-        if (aud_plugin_get_enabled(plugin))
-            add_dock_plugin_cb(plugin);
-    }
-}
-
-void MainWindow::remove_dock_plugins()
-{
-    for (PluginHandle * plugin : aud_plugin_list(PluginType::General))
-    {
-        if (aud_plugin_get_enabled(plugin))
-            remove_dock_plugin_cb(plugin);
-    }
-
-    for (PluginHandle * plugin : aud_plugin_list(PluginType::Vis))
-    {
-        if (aud_plugin_get_enabled(plugin))
-            remove_dock_plugin_cb(plugin);
-    }
+    auto w = (DockWidget *)item->host_data();
+    w->destroy();
 }

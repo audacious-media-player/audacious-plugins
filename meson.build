@@ -1,9 +1,10 @@
 project('audacious-plugins', 'c', 'cpp',
-        version: '4.0-devel',
-        meson_version: '>= 0.50')
+        version: '4.1-devel',
+        meson_version: '>= 0.50',
+        default_options: ['c_std=gnu99', 'cpp_std=gnu++11'])
 
 
-copyright = 'Copyright (C) 2001-2018 Audacious developers and others'
+copyright = 'Copyright (C) 2001-2020 Audacious developers and others'
 
 
 qt5 = import('qt5')
@@ -18,7 +19,7 @@ gmodule_dep = dependency('gmodule-2.0', version: glib_req, required: true)
 zlib_dep = dependency('zlib', required: true)
 
 
-audacious_req = '>= 3.11'
+audacious_req = '>= 4.1'
 audacious_dep = dependency('audacious', version: audacious_req, required: true)
 
 
@@ -66,9 +67,7 @@ cxx = meson.get_compiler('cpp')
 
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   common_flags = [
-    '-pipe',
     '-ffast-math',
-    '-Wall',
     '-Wtype-limits',
     '-Wno-stringop-truncation'
   ]
@@ -78,8 +77,8 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Woverloaded-virtual'
   ]
 
-  check_cflags = ['-std=gnu99'] + common_flags
-  check_cxxflags = ['-std=gnu++11'] + common_flags + cxx_flags
+  check_cflags = common_flags
+  check_cxxflags = common_flags + cxx_flags
 
   foreach arg : check_cflags
     if cc.has_argument(arg)

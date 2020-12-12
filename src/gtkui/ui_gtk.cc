@@ -44,6 +44,7 @@
 #include "../ui-common/menu-ops.h"
 
 static const char * const gtkui_defaults[] = {
+    "infoarea_show_art", "TRUE",
     "infoarea_show_vis", "TRUE",
     "infoarea_visible", "TRUE",
     "menu_visible", "TRUE",
@@ -197,7 +198,7 @@ static void button_add_pressed ()
     audgui_run_filebrowser (false);
 }
 
-static void title_change (void * = nullptr)
+static void title_change ()
 {
     delayed_title_change.stop ();
 
@@ -434,7 +435,7 @@ static void ui_playback_begin ()
 
     /* If "title change" is not called by 1/4 second after starting playback,
      * show "Buffering ..." as the window title. */
-    delayed_title_change.queue (250, title_change, nullptr);
+    delayed_title_change.queue (250, title_change);
 }
 
 static void ui_playback_ready ()
@@ -1021,6 +1022,7 @@ void show_hide_menu ()
         {
             menu_button = gtk_toggle_tool_button_new ();
             gtk_tool_button_set_icon_name ((GtkToolButton *) menu_button, "audacious");
+            gtk_tool_item_set_tooltip_text (menu_button, _("Menu"));
             g_signal_connect (menu_button, "destroy", (GCallback)
              gtk_widget_destroyed, & menu_button);
             gtk_widget_show ((GtkWidget *) menu_button);
@@ -1041,6 +1043,7 @@ void show_hide_infoarea ()
         gtk_box_pack_end ((GtkBox *) vbox, infoarea, false, false, 0);
         gtk_widget_show_all (infoarea);
 
+        show_hide_infoarea_art ();
         show_hide_infoarea_vis ();
     }
 
@@ -1049,6 +1052,11 @@ void show_hide_infoarea ()
         gtk_widget_destroy (infoarea);
         infoarea = nullptr;
     }
+}
+
+void show_hide_infoarea_art ()
+{
+    ui_infoarea_show_art (aud_get_bool ("gtkui", "infoarea_show_art"));
 }
 
 void show_hide_infoarea_vis ()

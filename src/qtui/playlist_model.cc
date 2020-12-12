@@ -77,9 +77,11 @@ QVariant PlaylistModel::alignment(int col) const
     case NowPlaying:
         return Qt::AlignCenter;
     case Length:
-        return Qt::AlignRight + Qt::AlignVCenter;
+        return static_cast<Qt::Alignment::Int>(Qt::AlignRight |
+                                               Qt::AlignVCenter);
     default:
-        return Qt::AlignLeft + Qt::AlignVCenter;
+        return static_cast<Qt::Alignment::Int>(Qt::AlignLeft |
+                                               Qt::AlignVCenter);
     }
 }
 
@@ -179,15 +181,25 @@ QVariant PlaylistModel::headerData(int section, Qt::Orientation orientation,
         switch (col)
         {
         case NowPlaying:
-        case EntryNumber:
-        case QueuePos:
             return QVariant();
+        case EntryNumber:
+            return QString("#");
+        case QueuePos:
+            return QString(_("Q#"));
+        case Track:
+            return QString(_("T#"));
         }
 
         return QString(_(labels[col]));
 
     case Qt::TextAlignmentRole:
         return alignment(col);
+
+    case Qt::DecorationRole:
+        if (col == NowPlaying)
+            return audqt::get_icon("media-playback-start");
+
+        return QVariant();
 
     default:
         return QVariant();

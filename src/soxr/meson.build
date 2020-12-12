@@ -1,4 +1,4 @@
-soxr_dep = dependency('soxr', optional: true)
+soxr_dep = dependency('soxr', required: false)
 
 
 if soxr_dep.found()

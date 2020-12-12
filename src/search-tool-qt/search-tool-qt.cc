@@ -336,8 +336,7 @@ void SearchWidget::search_timeout ()
 
 void SearchWidget::trigger_search ()
 {
-    m_search_timer.queue (SEARCH_DELAY,
-     aud::obj_member<SearchWidget, & SearchWidget::search_timeout>, this);
+    m_search_timer.queue (SEARCH_DELAY, [this] () { search_timeout (); });
     m_search_pending = true;
 }
 

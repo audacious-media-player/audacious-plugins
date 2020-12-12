@@ -192,7 +192,7 @@ static void mainwin_lock_info_text (const char * text)
     locked_textbox->set_text (text);
 }
 
-static void mainwin_release_info_text (void * = nullptr)
+static void mainwin_release_info_text ()
 {
     if (locked_textbox)
     {
@@ -216,7 +216,7 @@ static void set_info_text (TextBox * textbox, const char * text)
 void mainwin_show_status_message (const char * message)
 {
     mainwin_lock_info_text (message);
-    status_message_timeout.queue (1000, mainwin_release_info_text, nullptr);
+    status_message_timeout.queue (1000, mainwin_release_info_text);
 }
 
 static void mainwin_set_song_title (const char * title)
@@ -532,7 +532,7 @@ bool MainWindow::motion (GdkEventMotion * event)
         if (! m_popup_shown)
         {
             m_popup_timer.queue (aud_get_int ("filepopup_delay") * 100,
-             [] (void *) { audgui_infopopup_show_current (); }, nullptr);
+             audgui_infopopup_show_current);
             m_popup_shown = true;
         }
     }
@@ -864,8 +864,7 @@ void mainwin_set_volume_diff (int diff)
     mainwin_set_volume_slider (vol);
     equalizerwin_set_volume_slider (vol);
 
-    mainwin_volume_release_timeout.queue (700,
-     [] (void *) { mainwin_volume_release_cb (); }, nullptr);
+    mainwin_volume_release_timeout.queue (700, mainwin_volume_release_cb);
 }
 
 void mainwin_mr_change (MenuRowItem i)

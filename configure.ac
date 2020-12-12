@@ -74,7 +74,7 @@ TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
     EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart lyricwiki playlist-manager search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart playlist-manager search-tool statusicon"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope cairo-spectrum"
 fi
@@ -422,8 +422,12 @@ ENABLE_PLUGIN_WITH_TEST(lirc,
     GENERAL)
 
 test_mpris2 () {
-    unset have_mpris2
-    AC_CHECK_PROG(have_mpris2, gdbus-codegen, yes, no)
+    if test $HAVE_MSWINDOWS = yes ; then
+        have_mpris2=no
+    else
+        unset have_mpris2
+        AC_CHECK_PROG(have_mpris2, gdbus-codegen, yes, no)
+    fi
 }
 
 ENABLE_PLUGIN_WITH_TEST(mpris2,
@@ -504,14 +508,14 @@ ENABLE_PLUGIN_WITH_DEP(qtaudio,
     Qt5Multimedia)
 
 ENABLE_PLUGIN_WITH_DEP(streamtuner,
-    Stream tuner,
-    auto,
+    Stream tuner (experimental),
+    no,
     GENERAL,
     QTNETWORK,
     Qt5Network)
 
 test_qtglspectrum () {
-    PKG_CHECK_MODULES(QTOPENGL, Qt5OpenGL, [
+    PKG_CHECK_MODULES(QTOPENGL, Qt5OpenGL >= 5.4, [
         QTOPENGL_CFLAGS="$QTOPENGL_CFLAGS -fPIC"
         if test $have_glspectrum = yes ; then
             have_qtglspectrum=yes
@@ -824,7 +828,6 @@ if test "x$USE_GTK" = "xyes" ; then
     echo "  Album Art:                              yes"
     echo "  Blur Scope:                             yes"
     echo "  OpenGL Spectrum Analyzer:               $have_glspectrum"
-    echo "  LyricWiki viewer:                       yes"
     echo "  Playlist Manager:                       yes"
     echo "  Search Tool:                            yes"
     echo "  Spectrum Analyzer (2D):                 yes"
@@ -849,7 +852,7 @@ if test "x$USE_QT" = "xyes" ; then
     echo "  Song Info:                              yes"
     echo "  Spectrum Analyzer (2D):                 yes"
     echo "  Status Icon:                            yes"
-    echo "  Stream Tuner:                           $have_streamtuner"
+    echo "  Stream Tuner (experimental):            $have_streamtuner"
     echo "  VU Meter:                               yes"
     echo "  X11 Global Hotkeys:                     $have_qthotkey"
     echo

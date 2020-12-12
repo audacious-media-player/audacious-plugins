@@ -45,7 +45,7 @@ public:
     TimeSliderLabel * label() { return m_label; }
 
 protected:
-    void wheelEvent(QWheelEvent *event);
+    void wheelEvent(QWheelEvent * event);
 
 private:
     void set_label(int time, int length);
@@ -62,8 +62,8 @@ private:
 
     const Timer<TimeSlider> m_timer{TimerRate::Hz4, this, &TimeSlider::update};
 
-    const HookReceiver<TimeSlider> hook1{"playback ready", this,
-                                         &TimeSlider::start_stop},
+    const HookReceiver<TimeSlider> //
+        hook1{"playback ready", this, &TimeSlider::start_stop},
         hook2{"playback pause", this, &TimeSlider::start_stop},
         hook3{"playback unpause", this, &TimeSlider::start_stop},
         hook4{"playback seek", this, &TimeSlider::update},

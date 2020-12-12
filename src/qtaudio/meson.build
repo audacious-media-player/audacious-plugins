@@ -1,4 +1,4 @@
-qt_multimedia_dep = dependency('qt5', version: qt_req, modules: ['Multimedia'])
+qt_multimedia_dep = dependency('qt5', version: qt_req, required: false, modules: ['Multimedia'])
 
 
 if qt_multimedia_dep.found()

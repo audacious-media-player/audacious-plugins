@@ -61,8 +61,6 @@ PlaylistWidget::PlaylistWidget(QWidget * parent, Playlist playlist)
     setDragDropMode(DragDrop);
     setMouseTracking(true);
 
-    connect(this, &QTreeView::activated, this, &PlaylistWidget::activate);
-
     updateSettings();
     header->updateColumns();
 
@@ -70,6 +68,14 @@ PlaylistWidget::PlaylistWidget(QWidget * parent, Playlist playlist)
     inUpdate = true;
     updateSelection(0, 0);
     inUpdate = false;
+
+    connect(this, &QTreeView::activated, [this](const QModelIndex & index) {
+        if (index.isValid())
+        {
+            m_playlist.set_position(indexToRow(index));
+            m_playlist.start_playback();
+        }
+    });
 }
 
 PlaylistWidget::~PlaylistWidget()
@@ -117,15 +123,6 @@ QModelIndex PlaylistWidget::visibleIndexNear(int row)
     }
 
     return index;
-}
-
-void PlaylistWidget::activate(const QModelIndex & index)
-{
-    if (index.isValid())
-    {
-        m_playlist.set_position(indexToRow(index));
-        m_playlist.start_playback();
-    }
 }
 
 void PlaylistWidget::changeEvent(QEvent * event)
@@ -529,9 +526,8 @@ void PlaylistWidget::triggerPopup(int pos)
     audqt::infopopup_hide();
 
     m_popup_pos = pos;
-    m_popup_timer.queue(
-        aud_get_int("filepopup_delay") * 100,
-        aud::obj_member<PlaylistWidget, &PlaylistWidget::showPopup>, this);
+    m_popup_timer.queue(aud_get_int("filepopup_delay") * 100,
+                        [this]() { showPopup(); });
 }
 
 void PlaylistWidget::hidePopup()

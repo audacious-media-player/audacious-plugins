@@ -61,6 +61,7 @@ public:
     };
 
     constexpr ModplugXMMS () : InputPlugin (info, InputInfo (FlagSubtunes)
+        .with_priority(_AUD_PLUGIN_DEFAULT_PRIO + 1) // prefer openmpt
         .with_exts (exts)) {}
 
     bool init ();

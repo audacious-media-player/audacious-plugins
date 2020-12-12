@@ -164,7 +164,7 @@ void TextBox::render_bitmap (const char * text)
 
     auto ucs4 = QString (text).toUcs4 ();
 
-    m_buf_width = aud::max (cw * ucs4.length (), m_width);
+    m_buf_width = aud::max (cw * (int) ucs4.length (), m_width);
     m_buf.capture (new QImage (m_buf_width * config.scale, ch * config.scale,
      QImage::Format_RGB32));
 

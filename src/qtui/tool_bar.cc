@@ -32,6 +32,11 @@ ToolBar::ToolBar(QWidget * parent, ArrayRef<ToolBarItem> items)
     setMovable(false);
     setObjectName("MainToolBar");
 
+#ifdef _WIN32
+    // avoid double border with the tab bar below
+    setStyleSheet("QToolBar { border: 0px; }");
+#endif
+
     for (const ToolBarItem & item : items)
     {
         QAction * a = nullptr;

@@ -63,9 +63,9 @@ struct LyricsState {
         Local,
         LyricWiki,
         LyricsOVH
-    } source;
+    } source = None;
 
-    bool error;
+    bool error = false;
 };
 
 static LyricsState g_state;
@@ -102,7 +102,7 @@ public:
 EXPORT LyricWikiQt aud_plugin_instance;
 
 const char * const LyricWikiQt::defaults[] = {
-    "remote-source", "lyricwiki",
+    "remote-source", "lyrics.ovh",
     "enable-file-provider", "TRUE",
     "enable-cache", "TRUE",
     "split-title-on-chars", "FALSE",
@@ -114,7 +114,6 @@ const char * const LyricWikiQt::defaults[] = {
 
 static const ComboItem remote_sources[] = {
     ComboItem(N_("Nowhere"), "nowhere"),
-    ComboItem(N_("LyricWiki"), "lyricwiki"),
     ComboItem(N_("lyrics.ovh"), "lyrics.ovh")
 };
 
@@ -204,6 +203,9 @@ static void persist_state (LyricsState state)
 void FileProvider::cache (LyricsState state)
 {
     auto uri = cache_uri_for_entry (state);
+    if (! uri)
+        return;
+
     bool exists = VFSFile::test_file (uri, VFS_IS_REGULAR);
     if (exists)
         return;
@@ -220,6 +222,9 @@ void FileProvider::cache (LyricsState state)
 
 String FileProvider::cache_uri_for_entry (LyricsState state)
 {
+    if (! state.artist)
+        return String ();
+
     auto user_dir = aud_get_path (AudPath::UserDir);
     StringBuf base_path = filename_build ({user_dir, "lyrics"});
     StringBuf artist_path = filename_build ({base_path, state.artist});
@@ -326,261 +331,6 @@ void FileProvider::save (LyricsState state)
     VFSFile::write_file (path, state.lyrics, strlen (state.lyrics));
 }
 
-// LyricWikiProvider provides a strategy for fetching lyrics from
-// LyricWiki.
-class LyricWikiProvider : public LyricProvider {
-public:
-    LyricWikiProvider() {};
-
-    bool match (LyricsState state);
-    void fetch (LyricsState state);
-    String edit_uri (LyricsState state);
-
-private:
-    LyricsState scrape_edit_page(LyricsState state, const char * buf, int64_t len);
-    LyricsState scrape_match_api(const char * buf, int64_t len);
-    String match_uri (LyricsState state);
-};
-
-static LyricWikiProvider lyricwiki_provider;
-
-String LyricWikiProvider::edit_uri (LyricsState state)
-{
-    StringBuf title_buf, artist_buf;
-
-    title_buf = str_copy (state.title);
-    str_replace_char (title_buf, ' ', '_');
-    title_buf = str_encode_percent (title_buf, -1);
-
-    artist_buf = str_copy (state.artist);
-    str_replace_char (artist_buf, ' ', '_');
-    artist_buf = str_encode_percent (artist_buf, -1);
-
-    return String (str_printf ("https://lyrics.fandom.com/index.php?action=edit&title=%s:%s",
-     (const char *) artist_buf, (const char *) title_buf));
-}
-
-String LyricWikiProvider::match_uri (LyricsState state)
-{
-    StringBuf title_buf, artist_buf;
-
-    title_buf = str_copy (state.title);
-    title_buf = str_encode_percent (title_buf, -1);
-
-    artist_buf = str_copy (state.artist);
-    artist_buf = str_encode_percent (artist_buf, -1);
-
-    return String (str_printf ("https://lyrics.fandom.com/api.php?action=lyrics&artist=%s&title=%s&fmt=xml",
-     (const char *) artist_buf, (const char *) title_buf));
-}
-
-void LyricWikiProvider::fetch (LyricsState state)
-{
-    String uri = edit_uri (state);
-
-    auto handle_edit_page = [=] (const char *, const Index<char> & buf) {
-        if (! buf.len ())
-        {
-            update_lyrics_window_error (str_printf (_("Unable to fetch %s"), (const char *) uri));
-            return;
-        }
-
-        LyricsState new_state = scrape_edit_page (state, buf.begin (), buf.len ());
-
-        if (! new_state.lyrics)
-        {
-            update_lyrics_window_notfound (new_state);
-            return;
-        }
-
-        // we have to inject our original artist and title back because otherwise
-        // the lyrics will cache wrong.
-        new_state.artist = g_state.artist;
-        new_state.title = g_state.title;
-
-        update_lyrics_window (new_state.title, new_state.artist, new_state.lyrics);
-        persist_state (new_state);
-    };
-
-    vfs_async_file_get_contents (uri, handle_edit_page);
-}
-
-bool LyricWikiProvider::match (LyricsState state)
-{
-    String uri = match_uri (state);
-
-    auto handle_match_api = [=] (const char *, const Index<char> & buf) {
-        if (! buf.len ())
-        {
-            update_lyrics_window_error (str_printf (_("Unable to fetch %s"), (const char *) uri));
-            return;
-        }
-
-        LyricsState new_state = scrape_match_api (buf.begin (), buf.len ());
-        if (! new_state.artist || ! new_state.title)
-        {
-            update_lyrics_window_error (str_printf (_("Unable to fetch %s"), (const char *) uri));
-            return;
-        }
-
-        fetch (new_state);
-    };
-
-    vfs_async_file_get_contents (uri, handle_match_api);
-    update_lyrics_window_message (state, _("Looking for lyrics ..."));
-
-    return true;
-}
-
-/*
- * Suppress libxml warnings, because lyricwiki does not generate anything near
- * valid HTML.
- */
-static void libxml_error_handler (void * ctx, const char * msg, ...)
-{
-}
-
-LyricsState LyricWikiProvider::scrape_edit_page (LyricsState state, const char * buf, int64_t len)
-{
-    xmlDocPtr doc;
-    CharPtr ret;
-
-    /*
-     * temporarily set our error-handling functor to our suppression function,
-     * but we have to set it back because other components of Audacious depend
-     * on libxml and we don't want to step on their code paths.
-     *
-     * unfortunately, libxml is anti-social and provides us with no way to get
-     * the previous error functor, so we just have to set it back to default after
-     * parsing and hope for the best.
-     */
-    xmlSetGenericErrorFunc (nullptr, libxml_error_handler);
-    doc = htmlReadMemory (buf, (int) len, nullptr, "utf-8", (HTML_PARSE_RECOVER | HTML_PARSE_NONET));
-    xmlSetGenericErrorFunc (nullptr, nullptr);
-
-    if (doc)
-    {
-        xmlXPathContextPtr xpath_ctx = nullptr;
-        xmlXPathObjectPtr xpath_obj = nullptr;
-        xmlNodePtr node = nullptr;
-
-        xpath_ctx = xmlXPathNewContext (doc);
-        if (! xpath_ctx)
-            goto give_up;
-
-        xpath_obj = xmlXPathEvalExpression ((xmlChar *) "//*[@id=\"wpTextbox1\"]", xpath_ctx);
-        if (! xpath_obj)
-            goto give_up;
-
-        if (! xpath_obj->nodesetval->nodeMax)
-            goto give_up;
-
-        node = xpath_obj->nodesetval->nodeTab[0];
-give_up:
-        if (xpath_obj)
-            xmlXPathFreeObject (xpath_obj);
-
-        if (xpath_ctx)
-            xmlXPathFreeContext (xpath_ctx);
-
-        if (node)
-        {
-            xmlChar * lyric = xmlNodeGetContent (node);
-
-            if (lyric)
-            {
-                GMatchInfo * match_info;
-                GRegex * reg;
-
-                reg = g_regex_new
-                 ("<(lyrics?)>[[:space:]]*(.*?)[[:space:]]*</\\1>",
-                 (GRegexCompileFlags) (G_REGEX_MULTILINE | G_REGEX_DOTALL),
-                 (GRegexMatchFlags) 0, nullptr);
-                g_regex_match (reg, (char *) lyric, G_REGEX_MATCH_NEWLINE_ANY, & match_info);
-
-                ret.capture (g_match_info_fetch (match_info, 2));
-                if (! strcmp_nocase (ret, "<!-- PUT LYRICS HERE (and delete this entire line) -->"))
-                    ret.capture (g_strdup (_("No lyrics available")));
-
-                g_match_info_free (match_info);
-                g_regex_unref (reg);
-            }
-
-            xmlFree (lyric);
-        }
-
-        xmlFreeDoc (doc);
-    }
-
-    LyricsState new_state;
-
-    new_state.filename = state.filename;
-    new_state.artist = state.artist;
-    new_state.title = state.title;
-    new_state.lyrics = String (ret);
-    new_state.source = LyricsState::Source::LyricWiki;
-
-    return new_state;
-}
-
-LyricsState LyricWikiProvider::scrape_match_api (const char * buf, int64_t len)
-{
-    xmlDocPtr doc;
-    LyricsState result;
-
-    /*
-     * workaround buggy lyricwiki search output where it cuts the lyrics
-     * halfway through the UTF-8 symbol resulting in invalid XML.
-     */
-    GRegex * reg;
-
-    reg = g_regex_new ("<(lyrics?)>.*</\\1>", (GRegexCompileFlags)
-     (G_REGEX_MULTILINE | G_REGEX_DOTALL | G_REGEX_UNGREEDY),
-     (GRegexMatchFlags) 0, nullptr);
-    CharPtr newbuf (g_regex_replace_literal (reg, buf, len, 0, "", G_REGEX_MATCH_NEWLINE_ANY, nullptr));
-    g_regex_unref (reg);
-
-    /*
-     * temporarily set our error-handling functor to our suppression function,
-     * but we have to set it back because other components of Audacious depend
-     * on libxml and we don't want to step on their code paths.
-     *
-     * unfortunately, libxml is anti-social and provides us with no way to get
-     * the previous error functor, so we just have to set it back to default after
-     * parsing and hope for the best.
-     */
-    xmlSetGenericErrorFunc (nullptr, libxml_error_handler);
-    doc = xmlParseMemory (newbuf, strlen (newbuf));
-    xmlSetGenericErrorFunc (nullptr, nullptr);
-
-    if (doc != nullptr)
-    {
-        xmlNodePtr root, cur;
-
-        root = xmlDocGetRootElement(doc);
-
-        for (cur = root->xmlChildrenNode; cur; cur = cur->next)
-        {
-            xmlChar * content = xmlNodeGetContent (cur);
-
-            if (xmlStrEqual(cur->name, (xmlChar *) "artist"))
-                result.artist = String ((const char *) xmlNodeGetContent (cur));
-            else if (xmlStrEqual(cur->name, (xmlChar *) "song"))
-                result.title = String ((const char *) xmlNodeGetContent (cur));
-
-            if (content)
-                xmlFree (content);
-        }
-
-        xmlFreeDoc (doc);
-    }
-
-    // FIXME: don't use g_state
-    result.filename = g_state.filename;
-
-    return result;
-}
-
 // LyricsOVHProvider provides a strategy for fetching lyrics using the
 // lyrics.ovh search engine.
 class LyricsOVHProvider : public LyricProvider {
@@ -658,9 +408,6 @@ static LyricsOVHProvider lyrics_ovh_provider;
 static LyricProvider * remote_source ()
 {
     auto source = aud_get_str ("lyricwiki", "remote-source");
-
-    if (! strcmp (source, "lyricwiki"))
-        return &lyricwiki_provider;
 
     if (! strcmp (source, "lyrics.ovh"))
         return &lyrics_ovh_provider;
@@ -800,12 +547,6 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
 
     QMenu * menu = createStandardContextMenu ();
     menu->addSeparator ();
-
-    QAction * edit = menu->addAction (_("Edit Lyrics ..."));
-    QObject::connect (edit, & QAction::triggered, [] () {
-        QUrl url = QUrl ((const char *) lyricwiki_provider.edit_uri (g_state));
-        QDesktopServices::openUrl (url);
-    });
 
     if (g_state.lyrics && g_state.source != LyricsState::Source::Local && ! g_state.error)
     {

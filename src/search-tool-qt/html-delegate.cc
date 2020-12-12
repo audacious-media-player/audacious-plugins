@@ -54,9 +54,11 @@ void HtmlDelegate::paint (QPainter * painter, const QStyleOptionViewItem & optio
         ! (option.state & QStyle::State_Active) ? QPalette::Inactive : QPalette::Normal;
 
     // Highlighting text if item is selected
+#ifndef _WIN32 // QWindowsVistaStyle does not use the HighlightedText color :(
     if (option.state & QStyle::State_Selected)
         ctx.palette.setColor (QPalette::Text, option.palette.color (cg, QPalette::HighlightedText));
     else
+#endif
         ctx.palette.setColor (QPalette::Text, option.palette.color (cg, QPalette::Text));
 
     QRect textRect = style->subElementRect (QStyle::SE_ItemViewItemText, & option);

@@ -101,12 +101,14 @@ AC_REQUIRE([AC_SYS_LARGEFILE])
 
 if test "x$GCC" = "xyes"; then
     CFLAGS="$CFLAGS -std=gnu99 -ffast-math -Wall -pipe"
-    if test "x$HAVE_DARWIN" = "xyes"; then
-        CXXFLAGS="$CXXFLAGS -std=gnu++11 -ffast-math -Wall -pipe"
-        LDFLAGS="$LDFLAGS"
-    else
-        CXXFLAGS="$CXXFLAGS -std=gnu++11 -ffast-math -Wall -pipe"
+    CXXFLAGS="$CXXFLAGS -ffast-math -Wall -pipe"
+
+    # use C++17 if possible (Qt 6 requires it)
+    AUD_CHECK_CXXFLAGS(-std=gnu++17)
+    if test "${CXXFLAGS%gnu++17}" = "$CXXFLAGS" ; then
+        CXXFLAGS="$CXXFLAGS -std=gnu++11"
     fi
+
     AUD_CHECK_CFLAGS(-Wtype-limits)
     AUD_CHECK_CFLAGS(-Wno-stringop-truncation)
     AUD_CHECK_CXXFLAGS(-Woverloaded-virtual)
@@ -183,8 +185,8 @@ dnl GTK+ support
 dnl =============
 
 AC_ARG_ENABLE(gtk,
- AS_HELP_STRING(--enable-gtk, [Enable GTK+ support (default=disabled)]),
- USE_GTK=$enableval, USE_GTK=no)
+ AS_HELP_STRING(--enable-gtk, [Enable GTK+ support (default=enabled)]),
+ USE_GTK=$enableval, USE_GTK=yes)
 
 if test $USE_GTK = yes ; then
     PKG_CHECK_MODULES(GTK, gtk+-3.0 >= 3.4)

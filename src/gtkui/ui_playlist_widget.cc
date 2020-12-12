@@ -272,7 +272,7 @@ static void popup_trigger (PlaylistWidgetData * data, int pos)
 
     data->popup_pos = pos;
     data->popup_timer.queue (aud_get_int ("filepopup_delay") * 100,
-     aud::obj_member<PlaylistWidgetData, & PlaylistWidgetData::show_popup>, data);
+     [data] () { data->show_popup (); });
 }
 
 static void mouse_motion (void * user, GdkEventMotion * event, int row)

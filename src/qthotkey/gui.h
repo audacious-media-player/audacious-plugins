@@ -3,63 +3,65 @@
 
 #include <QtCore/QList>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QWidget>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QToolButton>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QWidget>
 
 #include "plugin.h"
 
 struct PluginPreferences;
 
-namespace GlobalHotkeys {
+namespace GlobalHotkeys
+{
 
 class LineKeyEdit;
 
 extern const PluginPreferences hotkey_prefs;
 
-struct KeyControls {
-	QComboBox *combobox;
-	LineKeyEdit *keytext;
-	QToolButton *button;
+struct KeyControls
+{
+    QComboBox * combobox;
+    LineKeyEdit * keytext;
+    QToolButton * button;
 
-	HotkeyConfiguration hotkey;
+    HotkeyConfiguration hotkey;
 
-	~KeyControls();
+    ~KeyControls();
 };
 
-class PrefWidget: public QWidget
+class PrefWidget : public QWidget
 {
 public:
-	explicit PrefWidget(QWidget *parent = nullptr);
-	~PrefWidget();
+    explicit PrefWidget(QWidget * parent = nullptr);
+    ~PrefWidget();
 
-	QList<HotkeyConfiguration> getConfig() const;
+    QList<HotkeyConfiguration> getConfig() const;
 
-	static void* make_config_widget();
-	static void ok_callback();
-	static void destroy_callback();
+    static void * make_config_widget();
+    static void ok_callback();
+    static void destroy_callback();
 
 private:
-	QVBoxLayout *main_widget_layout;
-	QLabel *information_pixmap;
-	QLabel *information_label;
-	QHBoxLayout *information_layout;
-	QGroupBox *group_box;
-	QGridLayout *group_box_layout;
-	QLabel *action_label;
-	QLabel *key_binding_label;
-	QPushButton *add_button;
-	QHBoxLayout *add_button_layout;
+    QVBoxLayout * main_widget_layout;
+    QLabel * information_pixmap;
+    QLabel * information_label;
+    QHBoxLayout * information_layout;
+    QGroupBox * group_box;
+    QGridLayout * group_box_layout;
+    QLabel * action_label;
+    QLabel * key_binding_label;
+    QPushButton * add_button;
+    QHBoxLayout * add_button_layout;
 
-	QList<KeyControls* > controls_list;
+    QList<KeyControls *> controls_list;
 
-	void add_event_control(const HotkeyConfiguration *hotkey);
+    void add_event_control(const HotkeyConfiguration * hotkey);
 };
 
 } /* namespace GlobalHotkeys */

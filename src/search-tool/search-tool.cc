@@ -132,7 +132,7 @@ static void show_hide_widgets ()
     }
 }
 
-static void search_timeout (void * = nullptr)
+static void search_timeout ()
 {
     const char * text = gtk_entry_get_text ((GtkEntry *) entry);
     auto terms = str_list_to_index (str_tolower_utf8 (text), " ");
@@ -164,7 +164,7 @@ static void search_timeout (void * = nullptr)
 
 static void trigger_search ()
 {
-    s_search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
+    s_search_timer.queue (SEARCH_DELAY, search_timeout);
     s_search_pending = true;
 }
 
@@ -403,7 +403,7 @@ static const AudguiListCallbacks list_callbacks = {
 
 static void entry_cb (GtkEntry * entry, void * unused)
 {
-    s_search_timer.queue (SEARCH_DELAY, search_timeout, nullptr);
+    s_search_timer.queue (SEARCH_DELAY, search_timeout);
     s_search_pending = true;
 }
 

@@ -74,15 +74,6 @@ static aud::spinlock message_lock;
 static int current_message_level = -1;
 static unsigned current_message_serial = 0;
 
-static void one_second_cb(void * serial)
-{
-    auto lh = message_lock.take();
-
-    /* allow new messages after one second */
-    if (aud::from_ptr<unsigned>(serial) == current_message_serial)
-        current_message_level = -1;
-}
-
 static bool set_message_level(audlog::Level level)
 {
     auto lh = message_lock.take();
@@ -94,8 +85,15 @@ static bool set_message_level(audlog::Level level)
     current_message_level = level;
     current_message_serial++;
 
-    message_func.queue(1000, one_second_cb,
-                       aud::to_ptr(current_message_serial));
+    unsigned serial = current_message_serial;
+    message_func.queue(1000, [serial]() {
+        auto lh = message_lock.take();
+
+        /* allow new messages after one second */
+        if (current_message_serial == serial)
+            current_message_level = -1;
+    });
+
     return true;
 }
 
