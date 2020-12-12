@@ -69,7 +69,11 @@ public:
         }
     }
 
-    void quit() { audqt::quit(); }
+    void quit()
+    {
+        window->teardown();
+        audqt::quit();
+    }
 };
 
 EXPORT QtUI aud_plugin_instance;

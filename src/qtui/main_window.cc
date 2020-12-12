@@ -224,14 +224,26 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-    QSettings settings(m_config_name, "QtUi");
-    settings.setValue("geometry", saveGeometry());
-    settings.setValue("windowState", saveState());
-
+    // should have already been called in teardown(), but we'll
+    // make sure so that audqt isn't left with a dangling pointer
     audqt::unregister_dock_host();
 
     if (m_search_tool)
         aud_plugin_remove_watch(m_search_tool, plugin_watcher, this);
+}
+
+// should be called before QApplication::quit() in
+// order to tear down the UI in an orderly fashion
+void MainWindow::teardown()
+{
+    QSettings settings(m_config_name, "QtUi");
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("windowState", saveState());
+
+    // destroy plugin windows explicitly, otherwise Qt may send close
+    // events to them during QApplication shutdown, causing plugins to
+    // be disabled at next startup
+    audqt::unregister_dock_host();
 }
 
 void MainWindow::closeEvent(QCloseEvent * e)
