@@ -46,6 +46,7 @@ public:
         audqt::init();
         aud_config_set_defaults("qtui", qtui_defaults);
         window = new MainWindow;
+        QObject::connect(window, &QObject::destroyed, audqt::quit);
         return true;
     }
 
@@ -60,6 +61,9 @@ public:
 
     void show(bool show)
     {
+        if (!window)
+            return;
+
         window->setVisible(show);
 
         if (show)
@@ -72,7 +76,8 @@ public:
     void quit()
     {
         window->teardown();
-        audqt::quit();
+        window->deleteLater();
+        window = nullptr;
     }
 };
 
