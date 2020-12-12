@@ -99,8 +99,8 @@ private:
         return true;
     }
 
-    const HookReceiver<MainWindow> hook1{"title change", this,
-                                         &MainWindow::title_change_cb},
+    const HookReceiver<MainWindow> //
+        hook1{"title change", this, &MainWindow::title_change_cb},
         hook2{"playback begin", this, &MainWindow::playback_begin_cb},
         hook3{"playback ready", this, &MainWindow::title_change_cb},
         hook4{"playback pause", this, &MainWindow::pause_cb},

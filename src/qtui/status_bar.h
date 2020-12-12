@@ -54,8 +54,8 @@ private:
     const HookReceiver<StatusBar, const Message *> log_hook{
         "qtui log message", this, &StatusBar::log_message};
 
-    const HookReceiver<StatusBar> hook1{"playlist activate", this,
-                                        &StatusBar::update_length},
+    const HookReceiver<StatusBar> //
+        hook1{"playlist activate", this, &StatusBar::update_length},
         hook2{"playlist update", this, &StatusBar::update_length},
         hook3{"playback ready", this, &StatusBar::update_codec},
         hook4{"playback stop", this, &StatusBar::update_codec},

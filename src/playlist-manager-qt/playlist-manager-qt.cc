@@ -136,10 +136,10 @@ private:
     void update(Playlist::UpdateLevel level);
     void update_sel();
 
-    const HookReceiver<PlaylistsView, Playlist::UpdateLevel> update_hook{
-        "playlist update", this, &PlaylistsView::update};
-    const HookReceiver<PlaylistsView> activate_hook{"playlist activate", this,
-                                                    &PlaylistsView::update_sel};
+    const HookReceiver<PlaylistsView, Playlist::UpdateLevel> //
+        update_hook{"playlist update", this, &PlaylistsView::update};
+    const HookReceiver<PlaylistsView> //
+        activate_hook{"playlist activate", this, &PlaylistsView::update_sel};
 
     int m_in_update = 0;
 };
