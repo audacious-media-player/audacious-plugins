@@ -60,6 +60,12 @@
 
 #include <stdlib.h>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+typedef qintptr filter_result_t;
+#else
+typedef long filter_result_t;
+#endif
+
 namespace GlobalHotkeys
 {
 
@@ -81,7 +87,7 @@ class GlobalHotkeysEventFilter : public QAbstractNativeEventFilter
 {
 private:
     bool nativeEventFilter(const QByteArray & eventType, void * message,
-                           long * result) override;
+                           filter_result_t * result) override;
 };
 
 /* global vars */
@@ -454,7 +460,8 @@ void GlobalHotkeys::cleanup()
 }
 
 bool GlobalHotkeysEventFilter::nativeEventFilter(const QByteArray & eventType,
-                                                 void * message, long * result)
+                                                 void * message,
+                                                 filter_result_t * result)
 {
     Q_UNUSED(eventType);
     Q_UNUSED(result);

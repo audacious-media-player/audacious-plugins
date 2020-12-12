@@ -23,9 +23,6 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/preferences.h>
 
-#include <QApplication>
-#include <QDesktopWidget>
-
 const char * const qtui_defaults[] = {
     // clang-format off
     "infoarea_show_vis", "TRUE",

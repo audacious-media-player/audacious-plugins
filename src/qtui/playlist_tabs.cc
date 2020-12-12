@@ -293,7 +293,7 @@ bool PlaylistTabBar::cancelRename()
 
 void PlaylistTabBar::mousePressEvent(QMouseEvent * e)
 {
-    if (e->button() == Qt::MidButton)
+    if (e->button() == Qt::MiddleButton)
     {
         int index = tabAt(e->pos());
         if (index >= 0)

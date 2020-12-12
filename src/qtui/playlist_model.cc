@@ -77,9 +77,11 @@ QVariant PlaylistModel::alignment(int col) const
     case NowPlaying:
         return Qt::AlignCenter;
     case Length:
-        return Qt::AlignRight + Qt::AlignVCenter;
+        return static_cast<Qt::Alignment::Int>(Qt::AlignRight |
+                                               Qt::AlignVCenter);
     default:
-        return Qt::AlignLeft + Qt::AlignVCenter;
+        return static_cast<Qt::Alignment::Int>(Qt::AlignLeft |
+                                               Qt::AlignVCenter);
     }
 }
 
