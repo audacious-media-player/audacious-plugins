@@ -67,13 +67,7 @@ public:
     }
 
 protected:
-    void closeEvent(QCloseEvent * event) override
-    {
-        in_event = true;
-        m_item->user_close();
-        event->ignore();
-        in_event = false;
-    }
+    void closeEvent(QCloseEvent * event) override { close_for_event(event); }
 
     void keyPressEvent(QKeyEvent * event) override
     {
@@ -81,10 +75,7 @@ protected:
         if (!(event->modifiers() & mods) && event->key() == Qt::Key_Escape &&
             isFloating())
         {
-            in_event = true;
-            m_item->user_close();
-            event->accept();
-            in_event = false;
+            close_for_event(event);
             return;
         }
 
@@ -92,6 +83,14 @@ protected:
     }
 
 private:
+    void close_for_event(QEvent * event)
+    {
+        in_event = true;
+        m_item->user_close();
+        in_event = false;
+        event->accept();
+    }
+
     audqt::DockItem * m_item;
     bool in_event = false;
 };
