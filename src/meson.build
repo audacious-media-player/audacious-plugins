@@ -114,6 +114,13 @@ if get_option('qt')
 endif
 
 
+# GTK-specific plugins
+if get_option('gtk')
+  subdir('gtkui')
+  subdir('skins')
+endif
+
+
 # general plugins
 if cdaudio_enabled
   subdir('cd-menu-items')

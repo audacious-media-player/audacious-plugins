@@ -12,9 +12,20 @@ amidiplug_sources = [
 
 
 if fluidsynth_dep.found()
+  amidiplug_deps = [audacious_dep, fluidsynth_dep, glib_dep]
+
+  if conf.has('USE_QT')
+    amidiplug_deps += [qt_dep, audqt_dep]
+  endif
+
+  if conf.has('USE_GTK')
+    amidiplug_deps += [gtk_dep, audgui_dep]
+  endif
+
+
   shared_module('amidi-plug',
     amidiplug_sources,
-    dependencies: [audacious_dep, fluidsynth_dep, glib_dep, qt_dep, audqt_dep],
+    dependencies: amidiplug_deps,
     install: true,
     install_dir: input_plugin_dir
   )

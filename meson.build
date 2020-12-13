@@ -36,6 +36,13 @@ audqt_dep = declare_dependency(link_args: [
 ])
 
 
+# XXX - make this its own .pc file
+audgui_dep = declare_dependency(link_args: [
+  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('lib_dir')),
+  '-laudgui'
+])
+
+
 xml_dep = dependency('libxml-2.0')
 
 
@@ -44,6 +51,13 @@ if get_option('qt')
   qt_dep = dependency('qt5', version: qt_req, required: true, modules: ['Core', 'Widgets', 'Gui'])
   qtx11extras_dep = dependency('qt5', version: qt_req, required: false, modules: ['X11Extras'])
 endif
+
+
+if get_option('gtk')
+  gtk_req = '>= 2.24'
+  gtk_dep = dependency('gtk+-2.0', version: gtk_req, required: true)
+endif
+
 
 cdaudio_enabled = false
 if get_option('cdaudio')
@@ -57,11 +71,12 @@ if get_option('cdaudio')
 endif
 
 
-samplerate_dep = dependency('samplerate', required: false)
-
-
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
+
+
+math_dep = cxx.find_library('m', required: false)
+samplerate_dep = dependency('samplerate', required: false)
 
 
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
@@ -113,6 +128,13 @@ elif cc.get_id() == 'gcc' or cc.get_id() == 'clang'
 endif
 
 
+# XXX - why do we have to define this manually?
+if (cxx.has_header('libintl.h'))
+  add_project_arguments('-DHAVE_GETTEXT', language: 'c')
+  add_project_arguments('-DHAVE_GETTEXT', language: 'cpp')
+endif
+
+
 install_plugindir = audacious_dep.get_pkgconfig_variable('plugin_dir')
 
 
@@ -136,6 +158,11 @@ endif
 
 if get_option('qt')
   conf.set10('USE_QT', true)
+endif
+
+
+if get_option('gtk')
+  conf.set10('USE_GTK', true)
 endif
 
 

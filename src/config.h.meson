@@ -16,6 +16,7 @@
 
 #mesondefine USE_DBUS
 #mesondefine USE_QT
+#mesondefine USE_GTK
 
 #mesondefine HAVE_FFMPEG
 #mesondefine HAVE_LIBAV
