@@ -8,7 +8,6 @@ copyright = 'Copyright (C) 2001-2020 Audacious developers and others'
 
 
 qt5 = import('qt5')
-gnome = import('gnome')
 
 
 glib_req = '>= 2.32'
@@ -23,14 +22,14 @@ audacious_req = '>= 4.1'
 audacious_dep = dependency('audacious', version: audacious_req, required: true)
 
 
-# XXX - make this it's own .pc file
+# XXX - make this its own .pc file
 audtag_dep = declare_dependency(link_args: [
   '-L@0@'.format(audacious_dep.get_pkgconfig_variable('lib_dir')),
   '-laudtag'
 ])
 
 
-# XXX - make this it's own .pc file
+# XXX - make this its own .pc file
 audqt_dep = declare_dependency(link_args: [
   '-L@0@'.format(audacious_dep.get_pkgconfig_variable('lib_dir')),
   '-laudqt'
@@ -80,22 +79,12 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   check_cflags = common_flags
   check_cxxflags = common_flags + cxx_flags
 
-  foreach arg : check_cflags
-    if cc.has_argument(arg)
-      add_project_arguments(arg, language: 'c')
-    endif
-  endforeach
-
-  foreach arg : check_cxxflags
-    if cxx.has_argument(arg)
-      add_project_arguments(arg, language: 'cpp')
-    endif
-  endforeach
+  add_project_arguments(cc.get_supported_arguments(check_cflags), language: 'c')
+  add_project_arguments(cxx.get_supported_arguments(check_cxxflags), language: 'cpp')
 endif
 
 
 conf = configuration_data()
-conf.set_quoted('BUILDSTAMP', '???')
 conf.set_quoted('COPYRIGHT', copyright)
 conf.set_quoted('PACKAGE', meson.project_name())
 conf.set_quoted('VERSION', meson.project_version())
@@ -106,17 +95,17 @@ endif
 
 
 # XXX - investigate to see if we can do better
-conf.set_quoted('PLUGIN_SUFFIX', '.so')
 if host_machine.system() == 'windows'
   conf.set_quoted('PLUGIN_SUFFIX', '.dll')
 elif host_machine.system() == 'darwin'
   conf.set_quoted('PLUGIN_SUFFIX', '.dylib')
+else
+  conf.set_quoted('PLUGIN_SUFFIX', '.so')
 endif
 
 
 if host_machine.system() == 'windows'
   conf.set('EXPORT', '__declspec(dllexport)')
-  conf.set_quoted('PLUGIN_SUFFIX', '.dll')
 elif cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   add_project_arguments('-fvisibility=hidden', language: 'c')
   add_project_arguments('-fvisibility=hidden', language: 'cpp')

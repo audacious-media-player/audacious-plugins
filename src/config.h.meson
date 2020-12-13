@@ -1,5 +1,4 @@
 #mesondefine PACKAGE
-#mesondefine BUILDSTAMP
 #mesondefine VERSION
 #mesondefine COPYRIGHT
 #mesondefine EXPORT
