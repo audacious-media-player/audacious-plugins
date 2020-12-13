@@ -23,7 +23,7 @@
  *
  *  The Audacious team does not consider modular code linking to
  *  Audacious or using our public API to be a derived work.
-*/
+ */
 
 #ifndef _GUI_H_INCLUDED_
 #define _GUI_H_INCLUDED_

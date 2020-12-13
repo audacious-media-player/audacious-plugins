@@ -23,7 +23,7 @@
  *
  *  The Audacious team does not consider modular code linking to
  *  Audacious or using our public API to be a derived work.
-*/
+ */
 
 #ifndef _X_HOTKEY_H_INCLUDED
 #define _X_HOTKEY_H_INCLUDED
@@ -59,7 +59,8 @@ public:
     static void add_hotkey(HotkeyConfiguration ** pphotkey, OS_KeySym keysym,
                            int mask, int type, EVENT event);
     static void key_to_string(int key, char ** out_keytext);
-    static char* create_human_readable_keytext(const char* const keytext, int key, int mask);
+    static char * create_human_readable_keytext(const char * const keytext,
+                                                int key, int mask);
 };
 
 #ifndef _WIN32

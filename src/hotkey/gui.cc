@@ -129,7 +129,8 @@ static gboolean on_entry_key_press_event(GtkWidget * widget,
 
     Hotkey::set_keytext(controls->keytext, is_mod ? 0 : event->hardware_keycode,
                         mod, TYPE_KEY);
-    // Returning TRUE indicates that the event has been handled, and that it should not propagate further.
+    // Returning TRUE indicates that the event has been handled, and that it
+    // should not propagate further.
     return true;
 }
 

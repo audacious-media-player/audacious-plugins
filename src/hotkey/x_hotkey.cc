@@ -23,7 +23,7 @@
  *
  *  The Audacious team does not consider modular code linking to
  *  Audacious or using our public API to be a derived work.
-*/
+ */
 
 #include <X11/X.h>
 #include <X11/XKBlib.h>
@@ -76,7 +76,8 @@ void Hotkey::key_to_string(int key, char ** out_keytext)
     }
 }
 
-char* Hotkey::create_human_readable_keytext(const char* const keytext, int key, int mask)
+char * Hotkey::create_human_readable_keytext(const char * const keytext,
+                                             int key, int mask)
 {
     static const constexpr unsigned int modifiers[] = {
         HK_CONTROL_MASK, HK_SHIFT_MASK, HK_MOD1_ALT_MASK, HK_MOD2_MASK,

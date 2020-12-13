@@ -23,7 +23,7 @@
  *
  *  The Audacious team does not consider modular code linking to
  *  Audacious or using our public API to be a derived work.
-*/
+ */
 
 #include "api_hotkey.h"
 #include <X11/X.h>

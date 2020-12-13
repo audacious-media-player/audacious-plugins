@@ -47,10 +47,6 @@
 #include "grab.h"
 #include "gui.h"
 
-#ifdef BUILT_FROM_CMAKE
-#include "../../audacious-plugins_simpleAF/src/thirdparty/d_custom_logger.hpp"
-#endif
-
 extern bool system_up_and_running;
 
 class GlobalHotkeys : public GeneralPlugin
@@ -91,9 +87,6 @@ PluginConfig * get_config() { return &plugin_cfg_gtk_global_hk; }
  */
 bool GlobalHotkeys::init()
 {
-#ifdef BUILT_FROM_CMAKE
-    audlog::subscribe(&DCustomLogger::go, audlog::Level::Debug);
-#endif
     if (!gtk_init_check(nullptr, nullptr))
     {
         AUDERR("GTK+ initialization failed.\n");
@@ -305,19 +298,11 @@ void load_defaults()
     Hotkey::add_hotkey(&hotkey, OS_KEY_AudioStop, 0, TYPE_KEY, EVENT_STOP);
     Hotkey::add_hotkey(&hotkey, OS_KEY_AudioNext, 0, TYPE_KEY,
                        EVENT_NEXT_TRACK);
-
-    /*    add_hotkey(&hotkey, OS_KEY_AudioRewind, 0, TYPE_KEY, EVENT_BACKWARD);
-     */
-
     Hotkey::add_hotkey(&hotkey, OS_KEY_AudioMute, 0, TYPE_KEY, EVENT_MUTE);
     Hotkey::add_hotkey(&hotkey, OS_KEY_AudioRaiseVolume, 0, TYPE_KEY,
                        EVENT_VOL_UP);
     Hotkey::add_hotkey(&hotkey, OS_KEY_AudioLowerVolume, 0, TYPE_KEY,
                        EVENT_VOL_DOWN);
-
-    /*    add_hotkey(&hotkey, OS_KEY_AudioMedia, 0, TYPE_KEY,
-       EVENT_JUMP_TO_FILE); add_hotkey(&hotkey, XF86XK_Music, 0, TYPE_KEY,
-       EVENT_TOGGLE_WIN); */
 }
 
 /* load plugin configuration */
@@ -410,10 +395,6 @@ void GlobalHotkeys::cleanup()
 {
 #ifdef _WIN32
     system_up_and_running = false;
-#endif
-#ifdef BUILT_FROM_CMAKE
-    AUDWARN("Cleanup of globalHotkeys");
-    audlog::unsubscribe(&DCustomLogger::go);
 #endif
     HotkeyConfiguration * hotkey;
     ungrab_keys();

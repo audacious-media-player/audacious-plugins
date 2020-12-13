@@ -23,7 +23,7 @@
  *
  *  The Audacious team does not consider modular code linking to
  *  Audacious or using our public API to be a derived work.
-*/
+ */
 
 #ifndef _AUD_PLUGINS_HOTKEYW32_WINDOWS_WINDOW_H_INCLUDED_
 #define _AUD_PLUGINS_HOTKEYW32_WINDOWS_WINDOW_H_INCLUDED_
@@ -51,7 +51,8 @@ struct WindowsWindow
     WindowsWindow & operator=(WindowsWindow && right) = default;
     WindowsWindow(WindowsWindow && right) = default;
 
-    WindowsWindow(HWND handle, std::string className, std::string winHeader,                  AudaciousWindowKind kind);
+    WindowsWindow(HWND handle, std::string className, std::string winHeader,
+                  AudaciousWindowKind kind);
     static std::string translated_title();
     bool is_main_window(bool allow_hidden = false) const;
     explicit operator std::string() const;

@@ -23,7 +23,7 @@
  *
  *  The Audacious team does not consider modular code linking to
  *  Audacious or using our public API to be a derived work.
-*/
+ */
 
 #include <src/hotkey/api_hotkey.h>
 
@@ -92,9 +92,6 @@ void Hotkey::add_hotkey(HotkeyConfiguration ** pphotkey,
     photkey = *pphotkey;
     if (photkey == nullptr)
         return;
-    // keycode =
-    // XKeysymToKeycode(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()),
-    // keysym); if (keycode == 0) return;
     if (photkey->key)
     {
         photkey->next = g_new(HotkeyConfiguration, 1);
@@ -119,54 +116,6 @@ void register_global_keys(HWND handle)
     }
 }
 
-// void assign(wchar_t *ptr_first_element, const wchar_t *text) {
-//  int loc = 0;
-//  while (text[loc]) {
-//    ptr_first_element[loc] = text[loc];
-//    ++loc;
-//  }
-//  ptr_first_element[loc] = 0;
-//}
-
-//HRESULT AddThumbarButtons(HWND hwnd)
-//{
-//    // Define an array of two buttons. These buttons provide images through an
-//    // image list and also provide tooltips.
-//    THUMBBUTTONMASK dwMask = THB_BITMAP | THB_TOOLTIP | THB_FLAGS;
-//
-//    /*
-//      THUMBBUTTONMASK dwMask;
-//      UINT iId;
-//      UINT iBitmap;
-//      HICON hIcon;
-//      WCHAR szTip[260];
-//      THUMBBUTTONFLAGS dwFlags;
-//      */
-//
-//    THUMBBUTTON btn[]{
-//        {dwMask, W_KEY_ID_PREV, 0, nullptr, L"Previous song", THBF_ENABLED},
-//        {dwMask, W_KEY_ID_PLAY, 0, nullptr, L"Play/pause", THBF_ENABLED},
-//        {dwMask, W_KEY_ID_NEXT, 0, nullptr, L"Next song", THBF_ENABLED}};
-//
-//    ITaskbarList3 * ptbl;
-//    HRESULT hr = CoCreateInstance(CLSID_TaskbarList, NULL, CLSCTX_INPROC_SERVER,
-//                                  IID_PPV_ARGS(&ptbl));
-//
-//    if (SUCCEEDED(hr))
-//    {
-//        // Declare the image list that contains the button images.
-//        // hr = ptbl->ThumbBarSetImageList(hwnd, himl);
-//
-//        if (SUCCEEDED(hr))
-//        {
-//            // Attach the toolbar to the thumbnail.
-//            hr = ptbl->ThumbBarAddButtons(hwnd, ARRAYSIZE(btn), btn);
-//        }
-//        ptbl->Release();
-//    }
-//    return hr;
-//}
-
 GdkFilterReturn w32_events_filter_first_everything(GdkXEvent * gdk_xevent,
                                                    GdkEvent * event,
                                                    gpointer user_data)
@@ -188,8 +137,7 @@ GdkFilterReturn w32_events_filter_first_everything(GdkXEvent * gdk_xevent,
                    (static_cast<std::string>(event_window)).c_str());
             if (event_window.is_main_window(true))
             {
-                event_window.
-                WindowsWindow::main_window_hidden_ = false;
+                event_window.WindowsWindow::main_window_hidden_ = false;
                 AUDDBG(
                     "TRANSFER EventReceivingWindow from %s to mainwindow HWND "
                     "%p",
@@ -200,32 +148,6 @@ GdkFilterReturn w32_events_filter_first_everything(GdkXEvent * gdk_xevent,
                 grab_keys_onto_window();
             }
         }
-        //        else
-        //        {
-        //            // leaving us.
-        //            AUDDBG("(GettingDown)FALSE %s; %s",
-        //                   stringify_win_evt(msg->message).c_str(),
-        //                   (static_cast<std::string>(event_window)).c_str());
-        //        }
-    }
-    //    else if (msg->message == WM_CLOSE)
-    //    {
-    //        auto event_window = WindowsWindow::get_window_data(msg->hwnd);
-    //        AUDDBG("%s: ; %s", stringify_win_evt(msg->message).c_str(),
-    //               (static_cast<std::string>(event_window)).c_str());
-    //    }
-    //    else if (msg->message == WM_CREATE)
-    //    {
-    //        auto event_window = WindowsWindow::get_window_data(msg->hwnd);
-    //        AUDDBG("%s: ; %s", stringify_win_evt(msg->message).c_str(),
-    //               (static_cast<std::string>(event_window)).c_str());
-    //    }
-    //    else if (msg->message == WM_DESTROY)
-    //    {
-    //        auto event_window = WindowsWindow::get_window_data(msg->hwnd);
-    //        AUDDBG("%s: ; %s", stringify_win_evt(msg->message).c_str(),
-    //               (static_cast<std::string>(event_window)).c_str());
-    //    }
     return GDK_FILTER_CONTINUE;
 }
 
@@ -310,50 +232,7 @@ void release_filter()
                              w32_evts_filter, nullptr);
     message_receiving_window = nullptr;
 }
-//
-// void main_window_created_from_statusbar(
-//    MainWindowSearchFilterData * const passed_data,
-//    WindowsWindow & created_main_window)
-//{
-//    // When window fully shows, must add windows buttons.
-//    gdk_window_remove_filter(
-//        reinterpret_cast<GdkWindow *>(passed_data->window_),
-//        reinterpret_cast<GdkFilterFunc>(passed_data->function_ptr_),
-//        passed_data);
-//    ungrab_keys();
-//    release_filter();
-//    delete passed_data;
-//}
-//
-// GdkFilterReturn main_window_missing_filter(GdkXEvent * gdk_xevent,
-//                                           GdkEvent * event, gpointer
-//                                           user_data)
-//{
-//    auto msg = reinterpret_cast<MSG *>(gdk_xevent);
-//    if (msg->message == WM_SHOWWINDOW && msg->wParam)
-//    {
-//        auto win_data = WindowsWindow::get_window_data(msg->hwnd);
-//        if (win_data.is_main_window())
-//        {
-//            main_window_created_from_statusbar(
-//                reinterpret_cast<MainWindowSearchFilterData *>(user_data),
-//                win_data);
-//        }
-//    }
-//    return GDK_FILTER_CONTINUE;
-//}
 
-/**
- * GSourceFunc:
- * @user_data: data passed to the function, set when the source was
- *     created with one of the above functions
- *
- * Specifies the type of function passed to g_timeout_add(),
- * g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
- *
- * Returns: %FALSE if the source should be removed. #G_SOURCE_CONTINUE and
- * #G_SOURCE_REMOVE are more memorable names for the return value.
- */
 gboolean window_created_callback(gpointer user_data)
 {
     AUDDBG("Window created. Do real stuff.");
@@ -363,10 +242,7 @@ gboolean window_created_callback(gpointer user_data)
     return G_SOURCE_REMOVE;
 }
 
-void win_init()
-{
-    g_idle_add(&window_created_callback, nullptr);
-}
+void win_init() { g_idle_add(&window_created_callback, nullptr); }
 
 void Hotkey::key_to_string(int key, char ** out_keytext)
 {
@@ -375,7 +251,7 @@ void Hotkey::key_to_string(int key, char ** out_keytext)
     switch (key)
     {
     case VK_OEM_NEC_EQUAL:
-        // case VK_OEM_FJ_JISHO: (note: same as EQUAL)
+    // case VK_OEM_FJ_JISHO: (note: same as EQUAL)
     case VK_OEM_FJ_MASSHOU:
     case VK_OEM_FJ_TOUROKU:
     case VK_OEM_FJ_LOYA:

@@ -23,7 +23,7 @@
  *
  *  The Audacious team does not consider modular code linking to
  *  Audacious or using our public API to be a derived work.
-*/
+ */
 
 #ifndef AUDACIOUS_PLUGINS_WINDOWS_KEY_STRINGS_HPP
 #define AUDACIOUS_PLUGINS_WINDOWS_KEY_STRINGS_HPP
