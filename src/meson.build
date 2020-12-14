@@ -209,6 +209,9 @@ endif
 if get_option('jack')
   subdir('jack')
 endif
+if get_option('sndio')
+  subdir('sndio')
+endif
 if get_option('filewriter')
   subdir('filewriter')
 endif

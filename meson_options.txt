@@ -56,6 +56,8 @@ option('jack', type: 'boolean', value: true,
        description: 'Whether JACK support is enabled')
 option('pulse', type: 'boolean', value: true,
        description: 'Whether PulseAudio support is enabled')
+option('sndio', type: 'boolean', value: true,
+       description: 'Whether sndio support is enabled')
 option('filewriter', type: 'boolean', value: true,
        description: 'Whether FileWriter (transcoding) support is enabled')
 option('filewriter-mp3', type: 'boolean', value: true,
