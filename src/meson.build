@@ -70,6 +70,14 @@ if get_option('cue')
 endif
 
 
+# Qt/GTK-specific plugins
+if get_option('qt') or get_option('gtk')
+  subdir('delete-files')
+  subdir('notify')
+  subdir('skins-data')
+endif
+
+
 # Qt-specific plugins
 if get_option('qt')
   subdir('blur_scope-qt')
@@ -84,9 +92,6 @@ if get_option('qt')
   subdir('search-tool-qt')
   subdir('song-info-qt')
   subdir('statusicon-qt')
-
-  subdir('delete-files')
-  subdir('skins-data')
 
   if get_option('qtaudio')
     subdir('qtaudio')
@@ -136,10 +141,6 @@ endif
 
 if host_machine.system() != 'windows' and get_option('dbus') and get_option('mpris2')
   subdir('mpris2')
-endif
-
-if get_option('notify') and get_option('qt')
-  subdir('notify')
 endif
 
 
