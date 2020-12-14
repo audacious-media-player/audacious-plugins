@@ -206,6 +206,9 @@ endif
 if host_machine.system() == 'linux' and get_option('alsa')
   subdir('alsa')
 endif
+if get_option('jack')
+  subdir('jack')
+endif
 if get_option('filewriter')
   subdir('filewriter')
 endif

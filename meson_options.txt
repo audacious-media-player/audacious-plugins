@@ -52,6 +52,8 @@ option('sid', type: 'boolean', value: true,
 # output plugins
 option('alsa', type: 'boolean', value: true,
        description: 'Whether ALSA support is enabled')
+option('jack', type: 'boolean', value: true,
+       description: 'Whether JACK support is enabled')
 option('pulse', type: 'boolean', value: true,
        description: 'Whether PulseAudio support is enabled')
 option('filewriter', type: 'boolean', value: true,
