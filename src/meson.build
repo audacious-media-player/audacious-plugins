@@ -88,6 +88,7 @@ if get_option('qt')
   subdir('skins-qt')
 
   subdir('albumart-qt')
+  subdir('ampache')
   subdir('lyricwiki-qt')
   subdir('playlist-manager-qt')
   subdir('search-tool-qt')
