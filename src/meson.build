@@ -122,8 +122,20 @@ endif
 
 # GTK-specific plugins
 if get_option('gtk')
+  subdir('alarm')
+  subdir('albumart')
+  subdir('aosd')
+  subdir('blur_scope')
+  subdir('cairo-spectrum')
+  subdir('glspectrum')
   subdir('gtkui')
+  subdir('hotkey')
+  subdir('ladspa')
+  subdir('lirc')
+  subdir('playlist-manager')
+  subdir('search-tool')
   subdir('skins')
+  subdir('statusicon')
 endif
 
 
