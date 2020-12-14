@@ -22,6 +22,7 @@ subdir('console')
 
 
 # effect plugins
+subdir('bs2b')
 subdir('compressor')
 subdir('crossfade')
 subdir('crystalizer')
