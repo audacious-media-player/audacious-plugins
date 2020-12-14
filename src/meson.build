@@ -134,7 +134,7 @@ if get_option('scrobbler2') and xml_dep.found()
   subdir('scrobbler2')
 endif
 
-if get_option('dbus') and get_option('mpris2')
+if host_machine.system() != 'windows' and get_option('dbus') and get_option('mpris2')
   subdir('mpris2')
 endif
 
