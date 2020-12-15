@@ -13,12 +13,12 @@ else
 endif
 
 
-libavcodec_dep = dependency('libavcodec', version: libavcodec_req)
-libavformat_dep = dependency('libavformat', version: libavformat_req)
-libavutil_dep = dependency('libavutil', version: libavutil_req)
+libavcodec_dep = dependency('libavcodec', version: libavcodec_req, required: false)
+libavformat_dep = dependency('libavformat', version: libavformat_req, required: false)
+libavutil_dep = dependency('libavutil', version: libavutil_req, required: false)
 
 
-if libavcodec_dep.found()
+if libavcodec_dep.found() and libavformat_dep.found() and libavutil_dep.found()
   shared_module('ffaudio',
     'ffaudio-core.cc',
     'ffaudio-io.cc',

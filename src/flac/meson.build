@@ -1,4 +1,4 @@
-flac_dep = dependency('flac', version: '>= 1.2.1')
+flac_dep = dependency('flac', version: '>= 1.2.1', required: false)
 
 
 if flac_dep.found()

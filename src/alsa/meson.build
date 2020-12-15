@@ -1,4 +1,4 @@
-alsa_dep = dependency('alsa', version: '>= 1.0.16')
+alsa_dep = dependency('alsa', version: '>= 1.0.16', required: false)
 
 
 if alsa_dep.found()

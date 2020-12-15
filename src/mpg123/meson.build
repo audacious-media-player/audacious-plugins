@@ -1,4 +1,4 @@
-mpg123_dep = dependency('libmpg123', version: '>= 1.12')
+mpg123_dep = dependency('libmpg123', version: '>= 1.12', required: false)
 
 
 if mpg123_dep.found()

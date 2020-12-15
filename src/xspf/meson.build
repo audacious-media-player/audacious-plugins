@@ -1,7 +1,9 @@
-shared_module('xspf',
-  'xspf.cc',
-  dependencies: [audacious_dep, xml_dep, glib_dep],
-  name_prefix: '',
-  install: true,
-  install_dir: container_plugin_dir
-)
+if xml_dep.found()
+  shared_module('xspf',
+    'xspf.cc',
+    dependencies: [audacious_dep, xml_dep, glib_dep],
+    name_prefix: '',
+    install: true,
+    install_dir: container_plugin_dir
+  )
+endif

@@ -1,4 +1,4 @@
-qtnetwork_dep = dependency('qt5', version: qt_req, required: true, modules: ['Network'])
+qtnetwork_dep = dependency('qt5', version: qt_req, required: false, modules: ['Network'])
 
 
 if qtnetwork_dep.found()

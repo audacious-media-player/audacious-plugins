@@ -47,13 +47,12 @@ audgui_dep = declare_dependency(link_args: [
 ])
 
 
-xml_dep = dependency('libxml-2.0')
+xml_dep = dependency('libxml-2.0', required: false)
 
 
 if get_option('qt')
   qt_req = '>= 5.2'
   qt_dep = dependency('qt5', version: qt_req, required: true, modules: ['Core', 'Widgets', 'Gui'])
-  qtx11extras_dep = dependency('qt5', version: qt_req, required: false, modules: ['X11Extras'])
 endif
 
 

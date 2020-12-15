@@ -1,4 +1,4 @@
-faad_dep = cxx.find_library('faad', has_headers: ['neaacdec.h'])
+faad_dep = cxx.find_library('faad', has_headers: ['neaacdec.h'], required: false)
 
 
 if faad_dep.found()

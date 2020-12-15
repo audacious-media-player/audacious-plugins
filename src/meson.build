@@ -13,12 +13,12 @@ endif
 
 
 # input plugins
+subdir('console')
 subdir('metronom')
 subdir('psf')
 subdir('tonegen')
 subdir('vtx')
 subdir('xsf')
-subdir('console')
 
 
 # effect plugins
@@ -26,46 +26,45 @@ subdir('bs2b')
 subdir('compressor')
 subdir('crossfade')
 subdir('crystalizer')
+subdir('echo_plugin')
 subdir('mixer')
 subdir('silence-removal')
 subdir('stereo_plugin')
 subdir('voice_removal')
-subdir('echo_plugin')
 
-if samplerate_dep.found()
-  if get_option('resample')
-    subdir('resample')
-  endif
-
-  if get_option('speedpitch')
-    subdir('speedpitch')
-  endif
+if get_option('resample')
+  subdir('resample')
 endif
 
 if get_option('soxr')
   subdir('soxr')
 endif
 
+if get_option('speedpitch')
+  subdir('speedpitch')
+endif
+
 
 # transport plugins
 subdir('gio')
+
 if get_option('neon')
   subdir('neon')
 endif
+
 if get_option('mms')
   subdir('mms')
 endif
 
 
 # playlist (container) plugins
-subdir('audpl')
 subdir('asx')
+subdir('asx3')
+subdir('audpl')
 subdir('m3u')
 subdir('pls')
-if xml_dep.found()
-  subdir('asx3')
-  subdir('xspf')
-endif
+subdir('xspf')
+
 if get_option('cue')
   subdir('cue')
 endif
@@ -91,6 +90,7 @@ if get_option('qt')
   subdir('ampache')
   subdir('lyricwiki-qt')
   subdir('playlist-manager-qt')
+  subdir('qthotkey')
   subdir('search-tool-qt')
   subdir('song-info-qt')
   subdir('statusicon-qt')
@@ -113,10 +113,6 @@ if get_option('qt')
 
   if get_option('moonstone')
     subdir('moonstone')
-  endif
-
-  if qtx11extras_dep.found()
-    subdir('qthotkey')
   endif
 endif
 
@@ -149,7 +145,7 @@ if get_option('songchange')
   subdir('songchange')
 endif
 
-if get_option('scrobbler2') and xml_dep.found()
+if get_option('scrobbler2')
   subdir('scrobbler2')
 endif
 
@@ -213,23 +209,28 @@ endif
 
 
 # output plugins
-if get_option('pulse')
-  subdir('pulse')
-endif
 if host_machine.system() == 'linux' and get_option('alsa')
   subdir('alsa')
 endif
+
+if get_option('filewriter')
+  subdir('filewriter')
+endif
+
 if get_option('jack')
   subdir('jack')
 endif
+
 if get_option('oss')
   subdir('oss4')
 endif
+
+if get_option('pulse')
+  subdir('pulse')
+endif
+
 if get_option('sndio')
   subdir('sndio')
-endif
-if get_option('filewriter')
-  subdir('filewriter')
 endif
 
 

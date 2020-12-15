@@ -1,4 +1,4 @@
-x11_dep = dependency('x11', modules: ['xrender', 'xcomposite'], required: false)
+x11_dep = dependency('x11', required: false, modules: ['xrender', 'xcomposite'])
 
 
 aosd_sources = [
