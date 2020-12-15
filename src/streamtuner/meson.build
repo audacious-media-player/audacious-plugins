@@ -11,6 +11,7 @@ if qtnetwork_dep.found()
     'ihr-widget.cc',
     'ihr-model.cc',
     dependencies: [qt_dep, qtnetwork_dep, audacious_dep, audqt_dep],
+    name_prefix: '',
     install: true,
     install_dir: general_plugin_dir
   )

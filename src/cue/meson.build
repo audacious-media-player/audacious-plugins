@@ -17,6 +17,7 @@ if cue_dep.found()
   shared_module('cue',
     'cue.cc',
     dependencies: [audacious_dep, cue_dep],
+    name_prefix: '',
     install: true,
     install_dir: container_plugin_dir
   )

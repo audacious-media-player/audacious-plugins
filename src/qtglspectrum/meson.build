@@ -7,6 +7,7 @@ qt_opengl_dep = dependency('qt5',
 shared_module('gl-spectrum-qt',
   'gl-spectrum.cc',
   dependencies: [audacious_dep, qt_dep, audqt_dep, qt_opengl_dep],
+  name_prefix: '',
   install: true,
   install_dir: visualization_plugin_dir
 )

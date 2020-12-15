@@ -13,6 +13,7 @@ if cxx.has_header('soundcard.h', args: '-I' + oss_inc)
   shared_module('oss4',
     oss_sources,
     dependencies: [audacious_dep],
+    name_prefix: '',
     include_directories: oss_inc,
     install: true,
     install_dir: output_plugin_dir

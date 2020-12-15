@@ -5,6 +5,7 @@ if ampache_dep.found()
   shared_module('ampache',
     'ampache.cc',
     dependencies: [audacious_dep, qt_dep, ampache_dep],
+    name_prefix: '',
     install: true,
     install_dir: general_plugin_dir
   )

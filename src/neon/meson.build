@@ -6,6 +6,7 @@ if neon_dep.found()
     'neon.cc',
     'cert_verification.cc',
     dependencies: [audacious_dep, neon_dep, glib_dep],
+    name_prefix: '',
     install: true,
     install_dir: transport_plugin_dir
   )

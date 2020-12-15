@@ -30,6 +30,7 @@ shared_module('mpris2',
   mpris2_player_src,
   'plugin.cc',
   dependencies: [audacious_dep, glib_dep] + aud_dbus_deps,
+  name_prefix: '',
   install: true,
   install_dir: general_plugin_dir
 )

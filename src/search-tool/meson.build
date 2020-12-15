@@ -8,6 +8,7 @@ search_tool_sources = [
 shared_module('search-tool',
   search_tool_sources,
   dependencies: [audacious_dep, gtk_dep, audgui_dep],
+  name_prefix: '',
   install: true,
   install_dir: general_plugin_dir
 )

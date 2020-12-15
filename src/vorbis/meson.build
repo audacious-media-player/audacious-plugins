@@ -10,10 +10,9 @@ if ogg_dep.found()
     'vcedit.cc',
     'vorbis.cc',
     dependencies: [audacious_dep, ogg_dep, vorbis_dep, vorbisenc_dep, vorbisfile_dep, glib_dep],
+    name_prefix: '',
     include_directories: [src_inc],
     install: true,
     install_dir: input_plugin_dir,
   )
 endif
-
-

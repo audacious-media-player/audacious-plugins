@@ -5,8 +5,8 @@ if pulse_dep.found()
   shared_module('pulse_audio',
     'pulse_audio.cc',
     dependencies: [audacious_dep, pulse_dep, glib_dep],
+    name_prefix: '',
     install: true,
     install_dir: output_plugin_dir
   )
 endif
-

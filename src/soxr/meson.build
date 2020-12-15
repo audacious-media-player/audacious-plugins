@@ -6,6 +6,7 @@ if soxr_dep.found()
     'sox-resampler.cc',
     include_directories: [src_inc],
     dependencies: [audacious_dep, soxr_dep],
+    name_prefix: '',
     install: true,
     install_dir: effect_plugin_dir
   )

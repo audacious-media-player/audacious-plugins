@@ -9,6 +9,7 @@ ladspa_sources = [
 shared_module('ladspa',
   ladspa_sources,
   dependencies: [audacious_dep, math_dep, gtk_dep, gmodule_dep, audgui_dep],
+  name_prefix: '',
   install: true,
   install_dir: effect_plugin_dir
 )

@@ -8,6 +8,7 @@ if curl_dep.found()
     'scrobbler_xml_parsing.cc',
     'config_window.cc',
     dependencies: [audacious_dep, glib_dep, curl_dep, xml_dep],
+    name_prefix: '',
     install: true,
     install_dir: general_plugin_dir
   )

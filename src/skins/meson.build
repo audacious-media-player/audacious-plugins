@@ -39,6 +39,7 @@ skins_sources = [
 shared_module('skins',
   skins_sources,
   dependencies: [audacious_dep, math_dep, gtk_dep, audgui_dep],
+  name_prefix: '',
   install: true,
   install_dir: general_plugin_dir
 )

@@ -12,6 +12,7 @@ endif
 shared_module('delete-files',
   'delete-files.cc',
   dependencies: delete_files_deps,
+  name_prefix: '',
   install: true,
   install_dir: general_plugin_dir
 )

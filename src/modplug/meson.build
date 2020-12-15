@@ -19,9 +19,9 @@ if modplug_dep.found()
     modplug_archive_sources,
     modplug_plugin_sources,
     dependencies: [audacious_dep, modplug_dep],
+    name_prefix: '',
     include_directories: [src_inc],
     install: true,
     install_dir: input_plugin_dir,
   )
 endif
-

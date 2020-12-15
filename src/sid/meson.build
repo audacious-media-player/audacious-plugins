@@ -10,6 +10,7 @@ if sidplayfp_dep.found()
     'xs_sidplay2.cc',
     cpp_args: ['-DSIDDATADIR="@0@"'.format(siddatadir)],
     dependencies: [audacious_dep, sidplayfp_dep],
+    name_prefix: '',
     install: true,
     install_dir: input_plugin_dir
   )

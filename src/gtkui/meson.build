@@ -15,6 +15,7 @@ gtkui_sources = [
 shared_module('gtkui',
   gtkui_sources,
   dependencies: [audacious_dep, math_dep, gtk_dep, audgui_dep],
+  name_prefix: '',
   install: true,
   install_dir: general_plugin_dir
 )

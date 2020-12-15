@@ -5,6 +5,7 @@ if qt_multimedia_dep.found()
   shared_module('qtaudio',
     'qtaudio.cc',
     dependencies: [audacious_dep, qt_multimedia_dep],
+    name_prefix: '',
     install: true,
     install_dir: output_plugin_dir
   )

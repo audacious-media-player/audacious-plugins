@@ -9,6 +9,7 @@ if jack_dep.found()
   shared_module('jack-ng',
     'jack-ng.cc',
     dependencies: [audacious_dep, jack_dep],
+    name_prefix: '',
     install: true,
     install_dir: output_plugin_dir
   )

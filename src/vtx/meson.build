@@ -18,6 +18,7 @@ endif
 shared_module('vtx',
   vtx_sources,
   dependencies: vtx_deps,
+  name_prefix: '',
   install: true,
   install_dir: input_plugin_dir
 )

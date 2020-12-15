@@ -30,6 +30,7 @@ endif
 shared_module('filewriter',
   filewriter_srcs,
   dependencies: filewriter_deps,
+  name_prefix: '',
   install: true,
   install_dir: output_plugin_dir
 )

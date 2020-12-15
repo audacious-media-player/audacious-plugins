@@ -62,6 +62,7 @@ shared_module('console',
   gme_sources,
   plugin_sources,
   dependencies: [audacious_dep, zlib_dep],
+  name_prefix: '',
   install: true,
   install_dir: input_plugin_dir
 )

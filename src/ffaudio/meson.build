@@ -23,6 +23,7 @@ if libavcodec_dep.found()
     'ffaudio-core.cc',
     'ffaudio-io.cc',
     dependencies: [audacious_dep, libavcodec_dep, libavformat_dep, libavutil_dep, audtag_dep],
+    name_prefix: '',
     install: true,
     install_dir: input_plugin_dir
   )

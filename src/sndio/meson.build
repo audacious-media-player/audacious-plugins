@@ -5,6 +5,7 @@ if sndio_dep.found()
   shared_module('sndio-ng',
     'sndio.cc',
     dependencies: [audacious_dep, sndio_dep],
+    name_prefix: '',
     link_args: ['-lsndio'],
     install: true,
     install_dir: output_plugin_dir

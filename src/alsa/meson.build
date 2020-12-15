@@ -6,8 +6,8 @@ if alsa_dep.found()
     'alsa.cc',
     'config.cc',
     dependencies: [audacious_dep, alsa_dep, glib_dep],
+    name_prefix: '',
     install: true,
     install_dir: output_plugin_dir
   )
 endif
-

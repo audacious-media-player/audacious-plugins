@@ -25,6 +25,7 @@ shared_module('xsf',
   plugin_sources,
   desmume_sources,
   dependencies: [audacious_dep, zlib_dep],
+  name_prefix: '',
   install: true,
   install_dir: input_plugin_dir
 )

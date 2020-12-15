@@ -18,6 +18,7 @@ if notify_dep.found() and pixbuf_dep.found()
     'notify.cc',
     'osd.cc',
     dependencies: notify_deps,
+    name_prefix: '',
     install: true,
     install_dir: general_plugin_dir
   )

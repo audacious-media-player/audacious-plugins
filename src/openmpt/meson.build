@@ -6,6 +6,7 @@ if openmpt_dep.found()
     'mpt.cc',
     'mptwrap.cc',
     dependencies: [audacious_dep, openmpt_dep],
+    name_prefix: '',
     include_directories: [src_inc],
     install: true,
     install_dir: input_plugin_dir,

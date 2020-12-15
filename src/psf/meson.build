@@ -26,7 +26,7 @@ shared_module('psf',
   peops_sources,
   peops2_sources,
   dependencies: [audacious_dep, zlib_dep],
+  name_prefix: '',
   install: true,
   install_dir: input_plugin_dir
 )
-

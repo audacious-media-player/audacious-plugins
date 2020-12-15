@@ -26,6 +26,7 @@ if fluidsynth_dep.found()
   shared_module('amidi-plug',
     amidiplug_sources,
     dependencies: amidiplug_deps,
+    name_prefix: '',
     install: true,
     install_dir: input_plugin_dir
   )
