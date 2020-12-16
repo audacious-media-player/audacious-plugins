@@ -82,11 +82,12 @@ math_dep = cxx.find_library('m', required: false)
 samplerate_dep = dependency('samplerate', required: false)
 
 
-if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+if cc.get_id() in ['gcc', 'clang']
   common_flags = [
     '-ffast-math',
     '-Wtype-limits',
-    '-Wno-stringop-truncation'
+    '-Wno-stringop-truncation',
+    '-fvisibility=hidden'
   ]
 
   cxx_flags = [
@@ -124,10 +125,10 @@ endif
 
 if host_machine.system() == 'windows'
   conf.set('EXPORT', '__declspec(dllexport)')
-elif cc.get_id() == 'gcc' or cc.get_id() == 'clang'
-  add_project_arguments('-fvisibility=hidden', language: 'c')
-  add_project_arguments('-fvisibility=hidden', language: 'cpp')
+elif cxx.has_argument('-fvisibility=default')
   conf.set('EXPORT', '__attribute__((visibility("default")))')
+else
+  error('Could not define EXPORT keyword for public symbols.')
 endif
 
 
