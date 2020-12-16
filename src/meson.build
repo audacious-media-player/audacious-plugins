@@ -229,6 +229,10 @@ if get_option('pulse')
   subdir('pulse')
 endif
 
+if get_option('sdl')
+  subdir('sdlout')
+endif
+
 if get_option('sndio')
   subdir('sndio')
 endif

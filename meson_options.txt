@@ -58,6 +58,8 @@ option('oss', type: 'boolean', value: true,
        description: 'Whether OSS support is enabled')
 option('pulse', type: 'boolean', value: true,
        description: 'Whether PulseAudio support is enabled')
+option('sdl', type: 'boolean', value: true,
+       description: 'Whether SDL support is enabled')
 option('sndio', type: 'boolean', value: true,
        description: 'Whether sndio support is enabled')
 option('filewriter', type: 'boolean', value: true,
