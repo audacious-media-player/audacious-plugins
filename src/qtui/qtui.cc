@@ -55,7 +55,7 @@ public:
         audqt::cleanup();
     }
 
-    void run() { audqt::run(); }
+    void run() { QApplication::exec(); }
 
     void show(bool show)
     {
@@ -73,7 +73,7 @@ public:
 
     void quit()
     {
-        QObject::connect(window, &QObject::destroyed, audqt::quit);
+        QObject::connect(window, &QObject::destroyed, QApplication::quit);
         window->deleteLater();
     }
 };

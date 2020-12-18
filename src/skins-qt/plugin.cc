@@ -60,8 +60,8 @@ public:
     bool init ();
     void cleanup ();
 
-    void run () { audqt::run (); }
-    void quit () { audqt::quit (); }
+    void run () { QApplication::exec (); }
+    void quit () { QApplication::quit (); }
 
     void show (bool show)
         { view_show_player (show); }
