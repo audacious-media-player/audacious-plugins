@@ -319,7 +319,9 @@ static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, GSList
         lines = g_strsplit(contents, "\n", 0);
 
         n_finallines = 0;
-        for (int i = 0 ; lines[i] != nullptr && strlen(lines[i]) > 0; i++) {
+        for (int i = 0 ; lines[i] != nullptr; i++) {
+            if (!strlen(lines[i])) continue;
+
             if (lines_to_remove != nullptr && *((int *) (lines_to_remove->data)) == i) {
                 //this line is to remove
                 lines_to_remove = g_slist_next(lines_to_remove);
@@ -369,6 +371,23 @@ static void save_line_to_remove(GSList **lines_to_remove, int linenumber) {
     (*lines_to_remove) = g_slist_prepend((*lines_to_remove), rem);
 }
 
+static gboolean is_valid_scrobble_format(char **line) {
+    if (line == nullptr) return false;
+
+    guint num_fields = g_strv_length(line);
+
+    //scrobbler.log entry is expected to have 7 fields
+    if (num_fields != 7) return false;
+
+    //string literal "L" in the 6th field is part of scrobbler.log format
+    if (g_strcmp0(line[5], "L") != 0) return false;
+
+    //artist, title and timestamp are mandatory parameters of last.fm track.Scrobble API
+    if (!strlen(line[0]) || !strlen(line[2]) || !strlen(line[6])) return false;
+
+    return true;
+}
+
 static void scrobble_cached_queue() {
 
     char *queuepath = g_build_filename(aud_get_path(AudPath::UserDir),"scrobbler.log", nullptr);
@@ -388,13 +407,15 @@ static void scrobble_cached_queue() {
 
         lines = g_strsplit(contents, "\n", 0);
 
-        for (int i = 0; lines[i] != nullptr && strlen(lines[i]) > 0 && scrobbling_enabled; i++) {
+        for (int i = 0; lines[i] != nullptr && scrobbling_enabled; i++) {
+            if (!strlen(lines[i])) continue;
+
             line = g_strsplit(lines[i], "\t", 0);
 
             //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]
             //artist  album   title   number  length  "L"     timestamp nullptr
 
-            if (line[0] && line[2] && (strcmp(line[5], "L") == 0) && line[6] && (line[7] == nullptr))
+            if (is_valid_scrobble_format(line))
             {
                 String scrobblemsg = create_message_to_lastfm ("track.scrobble",
                  8, "artist", line[0], "album", line[1], "track", line[2],
