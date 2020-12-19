@@ -33,3 +33,5 @@
 #mesondefine HAVE_ADPLUG_NEMUOPL_H
 #mesondefine HAVE_ADPLUG_WEMUOPL_H
 #mesondefine HAVE_ADPLUG_KEMUOPL_H
+
+#mesondefine HAVE_SYS_SOUNDCARD_H
