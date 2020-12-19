@@ -282,8 +282,8 @@ gboolean scrobbler_communication_init() {
 }
 
 static void set_timestamp_to_current(char **line) {
-    //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]
-    //artist  album   title   number  length  "L"     timestamp nullptr
+    //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]      line[8]
+    //artist  album   title   number  length  "L"     timestamp album_artist nullptr
 
     char **split_line = g_strsplit(*line, "\t", 0);
     g_free(split_line[6]);
@@ -376,8 +376,9 @@ static gboolean is_valid_scrobble_format(char **line) {
 
     guint num_fields = g_strv_length(line);
 
-    //scrobbler.log entry is expected to have 7 fields
-    if (num_fields != 7) return false;
+    //in normal circumstances cache entry is expected to have 8 fields,
+    //but allow entries with 7 fields (i.e. without album artist) for compatibility with old cache format
+    if (num_fields != 8 && num_fields != 7) return false;
 
     //string literal "L" in the 6th field is part of scrobbler.log format
     if (g_strcmp0(line[5], "L") != 0) return false;
@@ -412,16 +413,17 @@ static void scrobble_cached_queue() {
 
             line = g_strsplit(lines[i], "\t", 0);
 
-            //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]
-            //artist  album   title   number  length  "L"     timestamp nullptr
+            //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]      line[8]
+            //artist  album   title   number  length  "L"     timestamp album_artist nullptr
 
             if (is_valid_scrobble_format(line))
             {
                 String scrobblemsg = create_message_to_lastfm ("track.scrobble",
-                 8, "artist", line[0], "album", line[1], "track", line[2],
+                 9, "artist", line[0], "album", line[1], "track", line[2],
                  "trackNumber", line[3], "duration", line[4],
-                 "timestamp", line[6], "api_key", SCROBBLER_API_KEY,
-                 "sk", (const char *) session_key);
+                 "timestamp", line[6],
+                 "albumArtist", line[7] != nullptr ? line[7] : "",  //in case cache uses old format without album artist field
+                 "api_key", SCROBBLER_API_KEY, "sk", (const char *) session_key);
 
                 if (send_message_to_lastfm(scrobblemsg) == true) {
                     String error_code;
@@ -524,6 +526,7 @@ static void send_now_playing() {
   StringBuf artist = clean_string (curr_track.get_str (Tuple::Artist));
   StringBuf title = clean_string (curr_track.get_str (Tuple::Title));
   StringBuf album = clean_string (curr_track.get_str (Tuple::Album));
+  StringBuf album_artist = clean_string (curr_track.get_str (Tuple::AlbumArtist));
 
   int track  = curr_track.get_int (Tuple::Track);
   int length = curr_track.get_int (Tuple::Length);
@@ -532,11 +535,11 @@ static void send_now_playing() {
     StringBuf track_str = (track > 0) ? int_to_str (track) : StringBuf (0);
     StringBuf length_str = int_to_str (length / 1000);
 
-    String playingmsg = create_message_to_lastfm ("track.updateNowPlaying", 7,
+    String playingmsg = create_message_to_lastfm ("track.updateNowPlaying", 8,
      "artist", (const char *) artist, "album", (const char *) album,
      "track", (const char *) title, "trackNumber", (const char *) track_str,
-     "duration", (const char *) length_str, "api_key", SCROBBLER_API_KEY,
-     "sk", (const char *) session_key);
+     "duration", (const char *) length_str, "albumArtist", (const char *) album_artist,
+     "api_key", SCROBBLER_API_KEY, "sk", (const char *) session_key);
 
     gboolean success = send_message_to_lastfm(playingmsg);
 
