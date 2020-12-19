@@ -21,7 +21,7 @@ peops2_sources = [
 ]
 
 
-shared_module('psf',
+shared_module('psf2',
   plugin_sources,
   peops_sources,
   peops2_sources,
