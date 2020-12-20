@@ -1,7 +1,8 @@
 openmpt_dep = dependency('libopenmpt', version: '>= 0.2', required: false)
+have_openmpt = openmpt_dep.found()
 
 
-if openmpt_dep.found()
+if have_openmpt
   shared_module('openmpt',
     'mpt.cc',
     'mptwrap.cc',

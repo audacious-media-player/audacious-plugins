@@ -13,7 +13,10 @@ else
 endif
 
 
-if cue_dep.found()
+have_cue = cue_dep.found()
+
+
+if have_cue
   shared_module('cue',
     'cue.cc',
     dependencies: [audacious_dep, cue_dep],

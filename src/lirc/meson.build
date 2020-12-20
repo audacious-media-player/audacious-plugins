@@ -1,7 +1,8 @@
 lirc_dep = cxx.find_library('lirc', has_headers: ['lirc/lirc_client.h'], required: false)
+have_lirc = lirc_dep.found()
 
 
-if lirc_dep.found()
+if have_lirc
   shared_module('lirc',
     'lirc.cc',
     dependencies: [audacious_dep, glib_dep, lirc_dep],

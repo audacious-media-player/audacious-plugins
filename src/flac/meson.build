@@ -1,7 +1,8 @@
 flac_dep = dependency('flac', version: '>= 1.2.1', required: false)
+have_flac = flac_dep.found()
 
 
-if flac_dep.found()
+if have_flac
   shared_module('flacng',
     'plugin.cc',
     'tools.cc',

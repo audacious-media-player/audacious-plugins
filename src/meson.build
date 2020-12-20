@@ -71,15 +71,18 @@ endif
 
 
 # Qt/GTK-specific plugins
-if get_option('qt') or get_option('gtk')
+if conf.has('USE_GTK_OR_QT')
   subdir('delete-files')
-  subdir('notify')
   subdir('skins-data')
+
+  if get_option('notify')
+    subdir('notify')
+  endif
 endif
 
 
 # Qt-specific plugins
-if get_option('qt')
+if conf.has('USE_QT')
   subdir('blur_scope-qt')
   subdir('qt-spectrum')
 
@@ -118,13 +121,12 @@ endif
 
 
 # GTK-specific plugins
-if get_option('gtk')
+if conf.has('USE_GTK')
   subdir('alarm')
   subdir('albumart')
   subdir('aosd')
   subdir('blur_scope')
   subdir('cairo-spectrum')
-  subdir('glspectrum')
   subdir('gtkui')
   subdir('hotkey')
   subdir('ladspa')
@@ -133,11 +135,15 @@ if get_option('gtk')
   subdir('search-tool')
   subdir('skins')
   subdir('statusicon')
+
+  if get_option('gl-spectrum')
+    subdir('glspectrum')
+  endif
 endif
 
 
 # general plugins
-if cdaudio_enabled
+if have_cdaudio
   subdir('cd-menu-items')
 endif
 
@@ -149,7 +155,7 @@ if get_option('scrobbler2')
   subdir('scrobbler2')
 endif
 
-if host_machine.system() != 'windows' and get_option('dbus') and get_option('mpris2')
+if get_option('mpris2') and get_option('dbus') and not have_windows
   subdir('mpris2')
 endif
 
@@ -195,7 +201,7 @@ if get_option('sndfile')
   subdir('sndfile')
 endif
 
-if cdaudio_enabled
+if have_cdaudio
   subdir('cdaudio')
 endif
 
@@ -209,7 +215,7 @@ endif
 
 
 # output plugins
-if host_machine.system() == 'linux' and get_option('alsa')
+if get_option('alsa')
   subdir('alsa')
 endif
 
@@ -237,7 +243,7 @@ if get_option('sndio')
   subdir('sndio')
 endif
 
-if host_machine.system() == 'windows'
+if have_windows
   subdir('waveout')
 endif
 

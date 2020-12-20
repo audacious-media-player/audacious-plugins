@@ -1,4 +1,5 @@
 x11_dep = dependency('x11', required: false, modules: ['xrender', 'xcomposite'])
+have_aosd = x11_dep.found()
 
 
 aosd_sources = [
@@ -13,7 +14,7 @@ aosd_sources = [
 ]
 
 
-if x11_dep.found()
+if have_aosd
   shared_module('aosd',
     aosd_sources,
     dependencies: [audacious_dep, math_dep, gtk_dep, glib_dep, x11_dep],

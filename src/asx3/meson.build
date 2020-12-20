@@ -1,4 +1,7 @@
-if xml_dep.found()
+have_asx3 = xml_dep.found()
+
+
+if have_asx3
   shared_module('asx3',
     'asx3.cc',
     dependencies: [audacious_dep, xml_dep],

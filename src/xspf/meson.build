@@ -1,4 +1,7 @@
-if xml_dep.found()
+have_xspf = xml_dep.found()
+
+
+if have_xspf
   shared_module('xspf',
     'xspf.cc',
     dependencies: [audacious_dep, xml_dep, glib_dep],

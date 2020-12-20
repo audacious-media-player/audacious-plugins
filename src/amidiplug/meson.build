@@ -1,4 +1,5 @@
 fluidsynth_dep = dependency('fluidsynth', version: '>= 1.0.6', required: false)
+have_amidiplug = fluidsynth_dep.found()
 
 
 amidiplug_sources = [
@@ -11,7 +12,7 @@ amidiplug_sources = [
 ]
 
 
-if fluidsynth_dep.found()
+if have_amidiplug
   amidiplug_deps = [audacious_dep, fluidsynth_dep, glib_dep]
 
   if conf.has('USE_QT')

@@ -18,7 +18,12 @@ libavformat_dep = dependency('libavformat', version: libavformat_req, required: 
 libavutil_dep = dependency('libavutil', version: libavutil_req, required: false)
 
 
-if libavcodec_dep.found() and libavformat_dep.found() and libavutil_dep.found()
+have_ffaudio = libavcodec_dep.found() and \
+               libavformat_dep.found() and \
+               libavutil_dep.found()
+
+
+if have_ffaudio
   shared_module('ffaudio',
     'ffaudio-core.cc',
     'ffaudio-io.cc',

@@ -1,4 +1,7 @@
-if xml_dep.found()
+have_lyrics = xml_dep.found()
+
+
+if have_lyrics
   shared_module('lyricwiki-qt',
     'lyricwiki.cc',
     dependencies: [audacious_dep, qt_dep, glib_dep, xml_dep, audqt_dep],

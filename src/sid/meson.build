@@ -1,7 +1,8 @@
 sidplayfp_dep = dependency('libsidplayfp', version: '>= 2.0', required: false)
+have_sid = sidplayfp_dep.found()
 
 
-if sidplayfp_dep.found()
+if have_sid
   siddatadir = join_paths(get_option('prefix'), get_option('datadir'))
 
   shared_module('sid',

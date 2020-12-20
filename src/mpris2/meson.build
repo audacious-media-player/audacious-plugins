@@ -5,7 +5,7 @@ gio_dep = dependency('gio-2.0', required: true)
 aud_dbus_deps = [gio_dep]
 
 
-if host_machine.system() != 'windows'
+if not have_windows
   gio_unix_dep = dependency('gio-unix-2.0', required: true)
   aud_dbus_deps += [gio_unix_dep]
 endif
@@ -23,6 +23,9 @@ mpris2_player_src = gnome.gdbus_codegen('object-player',
   interface_prefix: 'org.mpris.',
   namespace: 'Mpris'
 )
+
+
+have_mpris2 = true
 
 
 shared_module('mpris2',

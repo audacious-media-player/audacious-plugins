@@ -1,4 +1,5 @@
 modplug_dep = dependency('libmodplug', required: false)
+have_modplug = modplug_dep.found()
 
 
 modplug_archive_sources = [
@@ -14,7 +15,7 @@ modplug_plugin_sources = [
 ]
 
 
-if modplug_dep.found()
+if have_modplug
   shared_module('modplug',
     modplug_archive_sources,
     modplug_plugin_sources,

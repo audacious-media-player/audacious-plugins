@@ -1,7 +1,8 @@
 faad_dep = cxx.find_library('faad', has_headers: ['neaacdec.h'], required: false)
+have_aac = faad_dep.found()
 
 
-if faad_dep.found()
+if have_aac
   shared_module('aac-raw',
     'aac.cc',
     dependencies: [audacious_dep, faad_dep, audtag_dep],

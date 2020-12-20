@@ -1,7 +1,8 @@
 adplug_dep = dependency('adplug', required: false)
+have_adplug = adplug_dep.found()
 
 
-if adplug_dep.found()
+if have_adplug
   adplug_inc = '-I' + adplug_dep.get_pkgconfig_variable('includedir')
   if cxx.has_header('adplug/nemuopl.h', args: adplug_inc)
     conf.set10('HAVE_ADPLUG_NEMUOPL_H', true)

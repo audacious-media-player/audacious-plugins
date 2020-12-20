@@ -1,4 +1,7 @@
-if samplerate_dep.found()
+have_resample = samplerate_dep.found()
+
+
+if have_resample
   shared_module('resample',
     'resample.cc',
     include_directories: [src_inc],

@@ -1,7 +1,9 @@
 notify_dep = dependency('libnotify', version: '>= 0.7', required: false)
 pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>= 2.26', required: false)
+have_notify = notify_dep.found() and pixbuf_dep.found()
 
-if notify_dep.found() and pixbuf_dep.found()
+
+if have_notify
   notify_deps = [audacious_dep, notify_dep, pixbuf_dep]
 
   if conf.has('USE_QT')
