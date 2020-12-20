@@ -94,7 +94,7 @@ public:
 
         if ((key == 0) && (mask == 0))
         {
-            text = audqt::translate_str("(none)");
+            text = _("(none)");
         }
         else
         {
@@ -161,18 +161,15 @@ KeyControls::~KeyControls()
 PrefWidget::PrefWidget(QWidget * parent)
     : QWidget(parent), main_widget_layout(new QVBoxLayout(this)),
       information_pixmap(new QLabel(this)),
-      information_label(new QLabel(
-          audqt::translate_str("Press a key combination inside a text field."),
-          this)),
+      information_label(
+          new QLabel(_("Press a key combination inside a text field."), this)),
       information_layout(new QHBoxLayout()),
-      group_box(new QGroupBox(audqt::translate_str("Hotkeys:"), this)),
+      group_box(new QGroupBox(_("Hotkeys:"), this)),
       group_box_layout(new QGridLayout(group_box)),
-      action_label(
-          new QLabel(audqt::translate_str("<b>Action:</b>"), group_box)),
-      key_binding_label(
-          new QLabel(audqt::translate_str("<b>Key Binding:</b>"), group_box)),
+      action_label(new QLabel(_("<b>Action:</b>"), group_box)),
+      key_binding_label(new QLabel(_("<b>Key Binding:</b>"), group_box)),
       add_button(new QPushButton(audqt::get_icon("list-add"),
-                                 audqt::translate_str("_Add"), this)),
+                                 audqt::translate_str(N_("_Add")), this)),
       add_button_layout(new QHBoxLayout)
 {
     int icon_size =
@@ -256,7 +253,7 @@ void PrefWidget::add_event_control(const HotkeyConfiguration * hotkey)
 
     for (const auto & desc_item : event_desc)
     {
-        control->combobox->addItem(audqt::translate_str(desc_item));
+        control->combobox->addItem(_(desc_item));
     }
 
     if (hotkey != nullptr)
