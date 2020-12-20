@@ -237,6 +237,10 @@ if get_option('sndio')
   subdir('sndio')
 endif
 
+if host_machine.system() == 'windows'
+  subdir('waveout')
+endif
+
 
 # config.h stuff
 configure_file(input: 'config.h.meson',
