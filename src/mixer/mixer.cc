@@ -17,7 +17,12 @@
  * the use of this software.
  */
 
-/* TODO: implement more surround converters */
+/* TODO: implement more surround converters.
+         There should be more options for in * out cases (for example,
+         the user may wish to mix stereo up to quadro but keep 5.1 as-is,
+         rather than downmixing 5.1 to quadro). A possible design might
+         be a choice of output channels for each input channel count that
+         we care about. */
 
 #include <stdlib.h>
 
@@ -114,6 +119,27 @@ static Index<float> & quadro_to_stereo (Index<float> & data)
     return mixer_buf;
 }
 
+static Index<float> & stereo_to_quadro (Index<float> & data)
+{
+    int frames = data.len () / 2;
+    mixer_buf.resize (4 * frames);
+
+    float * get = data.begin ();
+    float * set = mixer_buf.begin();
+
+    while (frames --)
+    {
+        float left  = * get ++;
+        float right = * get ++;
+        * set ++ = left;   // front left
+        * set ++ = right;  // front right
+        * set ++ = left;   // rear left
+        * set ++ = right;  // rear right
+    }
+
+    return mixer_buf;
+}
+
 static Index<float> & surround_5p1_to_stereo (Index<float> & data)
 {
     int frames = data.len () / 6;
@@ -166,6 +192,8 @@ static Converter get_converter (int in, int out)
         return mono_to_stereo;
     if (in == 2 && out == 1)
         return stereo_to_mono;
+    if (in == 2 && out == 4)
+        return stereo_to_quadro;
     if (in == 4 && out == 2)
         return quadro_to_stereo;
     if (in == 5 && out == 2)
