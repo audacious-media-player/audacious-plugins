@@ -1,7 +1,7 @@
 # Japanese translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-# 
+#
 # Translators:
 # ABE Tsunehiko, 2015-2018
 # natird zoto <dritan86@gmail.com>, 2012
@@ -9,8 +9,8 @@
 # ABE Tsunehiko, 2012
 # Mika Kobayashi, 2014-2015
 # NipponGo, 2020
-# Shuuji TAKAHASHI <shuuji3@gmail.com>, 2012-2014
-# Shuuji TAKAHASHI <shuuji3@gmail.com>, 2015
+# TAKAHASHI Shuuji <shuuji3@gmail.com>, 2012-2014
+# TAKAHASHI Shuuji <shuuji3@gmail.com>, 2015
 # Warui-chan  <>, 2012
 # ABE Tsunehiko, 2012
 # ABE Tsunehiko, 2013
@@ -18,14 +18,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2020-01-26 13:18+0100\n"
-"PO-Revision-Date: 2020-05-09 08:57+0000\n"
-"Last-Translator: NipponGo\n"
-"Language-Team: Japanese (http://www.transifex.com/audacious/audacious/language/ja/)\n"
+"POT-Creation-Date: 2020-12-27 18:17+0100\n"
+"PO-Revision-Date: 2020-12-20 23:15+0000\n"
+"Last-Translator: Thomas Lange\n"
+"Language-Team: Japanese (http://www.transifex.com/audacious/audacious/"
+"language/ja/)\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/aac/aac.cc:19
@@ -41,19 +42,19 @@ msgstr "AdPlug (AdLib プレイヤー)"
 msgid "sequenced"
 msgstr "シーケンス"
 
-#: src/adplug/adplug-xmms.cc:348 src/sid/xs_config.cc:61
+#: src/adplug/adplug-xmms.cc:349 src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
 msgstr "<b>出力</b>"
 
-#: src/adplug/adplug-xmms.cc:349
+#: src/adplug/adplug-xmms.cc:350
 msgid "OPL Emulator:"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:352
+#: src/adplug/adplug-xmms.cc:353
 msgid "Sample rate"
 msgstr "サンプリングレート"
 
-#: src/adplug/adplug-xmms.cc:353 src/amidiplug/i_configure.cc:155
+#: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:155
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
 #: src/modplug/plugin_main.cc:77 src/resample/resample.cc:201
 #: src/resample/resample.cc:207 src/resample/resample.cc:211
@@ -61,17 +62,17 @@ msgstr "サンプリングレート"
 #: src/resample/resample.cc:223 src/resample/resample.cc:227
 #: src/resample/resample.cc:231 src/resample/resample.cc:235
 #: src/resample/resample.cc:239 src/resample/resample.cc:243
-#: src/sid/xs_config.cc:67 src/soxr/sox-resampler.cc:190
+#: src/sid/xs_config.cc:67 src/soxr/sox-resampler.cc:205
 msgid "Hz"
 msgstr "Hz"
 
-#: src/adplug/adplug-xmms.cc:354 src/gtkui/settings.cc:46
-#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:72
+#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:46
+#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:79
 #: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>その他</b>"
 
-#: src/adplug/adplug-xmms.cc:355
+#: src/adplug/adplug-xmms.cc:356
 msgid "Repeat song in endless loop"
 msgstr "曲を無限に繰り返す"
 
@@ -88,7 +89,10 @@ msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
-msgstr "設定した時間に再生を開始するためのプラグイン\n\n元の作者: Adam Feakin および Daniel Stodden"
+msgstr ""
+"設定した時間に再生を開始するためのプラグイン\n"
+"\n"
+"元の作者: Adam Feakin および Daniel Stodden"
 
 #: src/alarm/interface.cc:28
 msgid ""
@@ -139,7 +143,53 @@ msgid ""
 "    Display a reminder when the alarm goes off.\n"
 "    Type the reminder in the input field and enable\n"
 "    the checkbox if you want it to be shown."
-msgstr "時刻\nアラーム時刻(デフォルト):\nアラームが鳴る時刻です。\n\n静かになるまでの時間\nアラームが鳴り止むまでの時間です。\n(めざましダイアログを閉じなかった場合)\n\n\n曜日\n曜日:\nアラームが鳴る曜日を選択します。\n\n時刻:\nそれぞれの曜日のアラーム時刻を選択するか、\nトグルボタンを選択し、デフォルト時刻に設定します。\n\n\n音量:\nフェード:\n指定した時間をかけて、音量を徐々に変更します。\n\n開始:\nこの音量からフェードを始めます。\n\n終了:\nこの音量でフェードを終わります。\nフェード時間が 0 のときには、\nこの音量で再生を始めます。\n\n\nオプション:\n追加コマンド:\nアラーム時刻になると、このコマンドを実行します。\n\nプレイリスト:\nこのプレイリストをロードします。\nプレイリストを指定しなかった場合には、\n現在のものが使われます。\nmp3 または ogg ストリームの URL を\n指定することもできます。\n\nリマインダー:\nアラームが止まった時にリマインダを表示します。\n表示するには、入力フィールドにリマインダーを入力し、\nチェックボックスを有効にしてください。"
+msgstr ""
+"時刻\n"
+"アラーム時刻(デフォルト):\n"
+"アラームが鳴る時刻です。\n"
+"\n"
+"静かになるまでの時間\n"
+"アラームが鳴り止むまでの時間です。\n"
+"(めざましダイアログを閉じなかった場合)\n"
+"\n"
+"\n"
+"曜日\n"
+"曜日:\n"
+"アラームが鳴る曜日を選択します。\n"
+"\n"
+"時刻:\n"
+"それぞれの曜日のアラーム時刻を選択するか、\n"
+"トグルボタンを選択し、デフォルト時刻に設定します。\n"
+"\n"
+"\n"
+"音量:\n"
+"フェード:\n"
+"指定した時間をかけて、音量を徐々に変更します。\n"
+"\n"
+"開始:\n"
+"この音量からフェードを始めます。\n"
+"\n"
+"終了:\n"
+"この音量でフェードを終わります。\n"
+"フェード時間が 0 のときには、\n"
+"この音量で再生を始めます。\n"
+"\n"
+"\n"
+"オプション:\n"
+"追加コマンド:\n"
+"アラーム時刻になると、このコマンドを実行します。\n"
+"\n"
+"プレイリスト:\n"
+"このプレイリストをロードします。\n"
+"プレイリストを指定しなかった場合には、\n"
+"現在のものが使われます。\n"
+"mp3 または ogg ストリームの URL を\n"
+"指定することもできます。\n"
+"\n"
+"リマインダー:\n"
+"アラームが止まった時にリマインダを表示します。\n"
+"表示するには、入力フィールドにリマインダーを入力し、\n"
+"チェックボックスを有効にしてください。"
 
 #: src/alarm/interface.cc:78
 msgid "This is your wakeup call."
@@ -228,8 +278,9 @@ msgstr "フェード"
 
 #: src/alarm/interface.cc:294 src/console/plugin.cc:41
 #: src/crossfade/crossfade.cc:52 src/crossfade/crossfade.cc:58
-#: src/lirc/lirc.cc:395 src/sid/xs_config.cc:85 src/sid/xs_config.cc:94
-#: src/sid/xs_config.cc:103 src/vumeter-qt/vumeter_qt.cc:39
+#: src/lirc/lirc.cc:395 src/notify/notify.cc:113 src/sid/xs_config.cc:85
+#: src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
+#: src/vumeter-qt/vumeter_qt.cc:39
 msgid "seconds"
 msgstr "秒"
 
@@ -277,7 +328,7 @@ msgstr "オプションの説明"
 msgid "Help"
 msgstr "ヘルプ"
 
-#: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:34
+#: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:35
 msgid "Album Art"
 msgstr "アルバムアート"
 
@@ -290,8 +341,14 @@ msgid ""
 "ALSA Output Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
-"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
-msgstr "ALSA 出力プラグイン for Audacious\nCopyright 2009-2012 John Lindgren\n\nALSA 出力プラグイン NG の作者 William Pitcock に感謝します。ALSA のマニュアルでは不十分な時に参考にさせてもらいました。"
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
+"code served as a reference when the ALSA manual was not enough."
+msgstr ""
+"ALSA 出力プラグイン for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"ALSA 出力プラグイン NG の作者 William Pitcock に感謝します。ALSA のマニュアル"
+"では不十分な時に参考にさせてもらいました。"
 
 #: src/alsa/config.cc:61
 msgid "(no description)"
@@ -321,7 +378,7 @@ msgstr "ミキサーエレメント"
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (MIDI プレイヤー)"
 
-#: src/amidiplug/amidi-plug.cc:438
+#: src/amidiplug/amidi-plug.cc:445
 msgid ""
 "AMIDI-Plug\n"
 "modular MIDI music player\n"
@@ -342,7 +399,27 @@ msgid ""
 "\n"
 "Tony Vroon\n"
 "for the good help with alpha testing"
-msgstr "AMIDI-Plug\nモジュラー MIDI 音楽プレイヤー\nhttp://www.develia.org/projects.php?p=amidiplug\n\n作者: Giacomo Lozito\n<james@develia.org>\n\nスペシャルサンクス...\n\nClemens Ladisch および Jaroslav Kysela\n　彼らの創った素晴らしいプログラム\n　aplaymidi  amixerについて。\n　実に便利で、alsa-lib の文書に沿っており、\n　ALSA API の習得に適っている。\n\nAlfredo Spadafina\n　彼の、素敵な MIDI キーボードのロゴについて。\n\nTony Vroon\n　アルファテスト時にとてもよく手伝ってくれた。"
+msgstr ""
+"AMIDI-Plug\n"
+"モジュラー MIDI 音楽プレイヤー\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"作者: Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"スペシャルサンクス...\n"
+"\n"
+"Clemens Ladisch および Jaroslav Kysela\n"
+"　彼らの創った素晴らしいプログラム\n"
+"　aplaymidi  amixerについて。\n"
+"　実に便利で、alsa-lib の文書に沿っており、\n"
+"　ALSA API の習得に適っている。\n"
+"\n"
+"Alfredo Spadafina\n"
+"　彼の、素敵な MIDI キーボードのロゴについて。\n"
+"\n"
+"Tony Vroon\n"
+"　アルファテスト時にとてもよく手伝ってくれた。"
 
 #: src/amidiplug/i_configure.cc:94
 msgid "Override default gain:"
@@ -406,7 +483,7 @@ msgid "Sample rate:"
 msgstr "サンプリングレート:"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:57
-#: src/amidiplug/i_configure-fluidsynth.cc:532
+#: src/amidiplug/i_configure-fluidsynth.cc:536
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - サウンドフォント ファイルの選択"
 
@@ -419,12 +496,12 @@ msgid "_Open"
 msgstr "開く(_O)"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:230
-#: src/amidiplug/i_configure-fluidsynth.cc:472 src/gtkui/columns.cc:46
+#: src/amidiplug/i_configure-fluidsynth.cc:476 src/gtkui/columns.cc:46
 msgid "File name"
 msgstr "ファイル名"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:234
-#: src/amidiplug/i_configure-fluidsynth.cc:475
+#: src/amidiplug/i_configure-fluidsynth.cc:479
 msgid "Size (bytes)"
 msgstr "サイズ (バイト)"
 
@@ -495,7 +572,12 @@ msgid ""
 "\n"
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 "License: GNU GPLv3"
-msgstr "Ampache Browser for Audacious\nhttp://ampache-browser.org/\n\nCopyright (C) Róbert Čerňanský and John Lindgren\nLicense: GNU GPLv3"
+msgstr ""
+"Ampache Browser for Audacious\n"
+"http://ampache-browser.org/\n"
+"\n"
+"Copyright (C) Róbert Čerňanský and John Lindgren\n"
+"License: GNU GPLv3"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -506,7 +588,14 @@ msgid ""
 "\n"
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
-msgstr "Audacious OSD\nhttp://www.develia.org/projects.php?p=audacious#aosd\n\n作者 Giacomo Lozito <james@develia.org>\n\n一部は Evan Martin 作の Ghosd ライブラリーに基づきます:\nhttp://neugierig.org/software/ghosd/"
+msgstr ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"作者 Giacomo Lozito <james@develia.org>\n"
+"\n"
+"一部は Evan Martin 作の Ghosd ライブラリーに基づきます:\n"
+"http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.h:37
 msgid "AOSD (On-Screen Display)"
@@ -650,8 +739,12 @@ msgstr "コンポジットマネージャーが検出されました"
 #: src/aosd/aosd_ui.cc:660
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
-msgstr "コンポジットマネージャーが検出されませんでした。\n動作させているかわからなければ、Composite マネージャーを有効にしてください。そうしなければ OSD は正常に動作しないでしょう。"
+"unless you know that you have one running, please activate a composite "
+"manager otherwise the OSD won't work properly"
+msgstr ""
+"コンポジットマネージャーが検出されませんでした。\n"
+"動作させているかわからなければ、Composite マネージャーを有効にしてください。"
+"そうしなければ OSD は正常に動作しないでしょう。"
 
 #: src/aosd/aosd_ui.cc:668
 msgid "Composite manager not required for fake transparency"
@@ -764,7 +857,15 @@ msgid ""
 "Also thank you to Tony Vroon for mentoring and guiding me.\n"
 "\n"
 "This was a Google Summer of Code 2007 project."
-msgstr "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n\nlibcdio developers <http://www.gnu.org/software/libcdio/>と\nlibcddb developers <http://libcddb.sourceforge.net/>に感謝します。\n\nメンターとして導いてくれた Tony Vroon にも感謝します。\n\nこのプラグインは、Google Summer of Code 2007 のプロジェクトです。"
+msgstr ""
+"Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
+"\n"
+"libcdio developers <http://www.gnu.org/software/libcdio/>と\n"
+"libcddb developers <http://libcddb.sourceforge.net/>に感謝します。\n"
+"\n"
+"メンターとして導いてくれた Tony Vroon にも感謝します。\n"
+"\n"
+"このプラグインは、Google Summer of Code 2007 のプロジェクトです。"
 
 #: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
@@ -833,50 +934,51 @@ msgstr " オーディオ CD の読み込み中にエラーが発生しました�
 msgid "Audio CD"
 msgstr "オーディオ CD"
 
-#: src/cdaudio/cdaudio-ng.cc:434 src/cdaudio/cdaudio-ng.cc:443
+#: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "CD デバイス %s のオープンに失敗しました。"
 
-#: src/cdaudio/cdaudio-ng.cc:446
+#: src/cdaudio/cdaudio-ng.cc:447
 msgid "No audio capable CD drive found."
 msgstr "オーディオが利用可能な CD ドライブが見つかりません。"
 
-#: src/cdaudio/cdaudio-ng.cc:469
+#: src/cdaudio/cdaudio-ng.cc:470
 msgid "Drive is empty."
 msgstr "ドライブにディスクがありません。"
 
-#: src/cdaudio/cdaudio-ng.cc:471
+#: src/cdaudio/cdaudio-ng.cc:472
 msgid "Unsupported disk type."
 msgstr "非対応のディスクです。"
 
-#: src/cdaudio/cdaudio-ng.cc:495
+#: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
 msgstr "オープンされた CD ドライブの初期化が完了できませんでした。"
 
-#: src/cdaudio/cdaudio-ng.cc:508
+#: src/cdaudio/cdaudio-ng.cc:509
 msgid "Failed to retrieve first/last track number."
 msgstr "最初または最後のトラックナンバーを取得できませんでした。"
 
-#: src/cdaudio/cdaudio-ng.cc:529
+#: src/cdaudio/cdaudio-ng.cc:530
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr "トラック %d の LSN (論理セクタ番号) の開始または終了が読み取れませんでした。"
+msgstr ""
+"トラック %d の LSN (論理セクタ番号) の開始または終了が読み取れませんでした。"
 
-#: src/cdaudio/cdaudio-ng.cc:611
+#: src/cdaudio/cdaudio-ng.cc:612
 msgid "Failed to create the CDDB connection."
 msgstr "CDDB コネクションの作成に失敗しました。"
 
-#: src/cdaudio/cdaudio-ng.cc:677
+#: src/cdaudio/cdaudio-ng.cc:678
 msgid "Failed to query the CDDB server"
 msgstr "CDDB サーバへのクエリに失敗しました。"
 
-#: src/cdaudio/cdaudio-ng.cc:679
+#: src/cdaudio/cdaudio-ng.cc:680
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "CDDB サーバへのクエリに失敗しました: %s"
 
-#: src/cdaudio/cdaudio-ng.cc:703
+#: src/cdaudio/cdaudio-ng.cc:704
 #, c-format
 msgid "Failed to read the CDDB info: %s"
 msgstr "CDDB 情報の読み取りに失敗しました: %s"
@@ -909,7 +1011,9 @@ msgstr "ダイナミックレンジ:"
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
-msgstr "ダイナミックレンジ圧縮プラグイン for Audacious\nCopyright 2010-2014 John Lindgren"
+msgstr ""
+"ダイナミックレンジ圧縮プラグイン for Audacious\n"
+"Copyright 2010-2014 John Lindgren"
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
@@ -923,7 +1027,13 @@ msgid ""
 "Audacious plugin by:\n"
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
-msgstr "コンソール音楽デコーダーエンジン based on Game_Music_Emu 0.5.2\n対応形式: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n\nAudacious plugin by:\nWilliam Pitcock <nenolod@dereferenced.org>\nShay Green <gblargg@gmail.com>"
+msgstr ""
+"コンソール音楽デコーダーエンジン based on Game_Music_Emu 0.5.2\n"
+"対応形式: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
 
 #: src/console/plugin.cc:30
 msgid "Bass:"
@@ -979,7 +1089,15 @@ msgid ""
 "\n"
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
-msgstr "CoreAudio 出力プラグイン for Audacious\nCopyright 2014 William Pitcock\nCopyright 2017,18 René J.V. Bertin\n (original code and code adapted from\n Apple examples, (C) Apple 2013)\n\nBased on SDL Output Plugin for Audacious\nCopyright 2010 John Lindgren"
+msgstr ""
+"CoreAudio 出力プラグイン for Audacious\n"
+"Copyright 2014 William Pitcock\n"
+"Copyright 2017,18 René J.V. Bertin\n"
+" (original code and code adapted from\n"
+" Apple examples, (C) Apple 2013)\n"
+"\n"
+"Based on SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/coreaudio/coreaudio.cc:172
 msgid "Use exclusive mode"
@@ -987,13 +1105,17 @@ msgstr "排他モードを用いる"
 
 #: src/coreaudio/coreaudio.cc:174
 msgid "Use bit perfect audio (adapt device sampling rate)"
-msgstr "ビットパーフェクトオーディオを使用する (デバイスのサンプリングレートを適合させる)"
+msgstr ""
+"ビットパーフェクトオーディオを使用する (デバイスのサンプリングレートを適合さ"
+"せる)"
 
 #: src/crossfade/crossfade.cc:43
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
-msgstr "クロスフェードプラグイン for Audacious\nCopyright 2010-2014 John Lindgren"
+msgstr ""
+"クロスフェードプラグイン for Audacious\n"
+"Copyright 2010-2014 John Lindgren"
 
 #: src/crossfade/crossfade.cc:47
 msgid "<b>Crossfade</b>"
@@ -1019,7 +1141,9 @@ msgstr "<b>参考</b>"
 msgid ""
 "For better crossfading, enable\n"
 "the Silence Removal effect."
-msgstr "より効果的なクロスフェードのために\n無音部の除去プラグインも有効にしてください。"
+msgstr ""
+"より効果的なクロスフェードのために\n"
+"無音部の除去プラグインも有効にしてください。"
 
 #: src/crossfade/crossfade.cc:71
 msgid "Crossfade"
@@ -1101,7 +1225,11 @@ msgid ""
 "By Johan Levin, 1999\n"
 "Surround echo by Carl van Schaik, 1999\n"
 "Updated for Audacious by William Pitcock and John Lindgren, 2010-2014"
-msgstr "エコープラグイン\nBy Johan Levin, 1999\nサラウンドエコー by Carl van Schaik, 1999\nAudacious用に更新 by William Pitcock and John Lindgren, 2010-2014"
+msgstr ""
+"エコープラグイン\n"
+"By Johan Levin, 1999\n"
+"サラウンドエコー by Carl van Schaik, 1999\n"
+"Audacious用に更新 by William Pitcock and John Lindgren, 2010-2014"
 
 #: src/echo_plugin/echo.cc:21
 msgid "<b>Echo</b>"
@@ -1133,7 +1261,7 @@ msgstr "エコー"
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg プラグイン"
 
-#: src/ffaudio/ffaudio-core.cc:627
+#: src/ffaudio/ffaudio-core.cc:628
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1141,7 +1269,13 @@ msgid ""
 "Audacious plugin by:\n"
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
-msgstr "マルチフォーマット オーディオデコードプラグイン for Audacious using\nFFmpeg マルチメディアフレームワーク (http://www.ffmpeg.org/)\n\nAudacious plugin by:\nWilliam Pitcock <nenolod@nenolod.net>\nMatti Hämäläinen <ccr@tnsp.org>"
+msgstr ""
+"マルチフォーマット オーディオデコードプラグイン for Audacious using\n"
+"FFmpeg マルチメディアフレームワーク (http://www.ffmpeg.org/)\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
 
 #: src/filewriter/filewriter.cc:48
 msgid "FileWriter Plugin"
@@ -1152,16 +1286,39 @@ msgstr "ファイル出力プラグイン"
 msgid ""
 "Error opening %s:\n"
 "%s"
-msgstr "%s を開く際にエラー:\n%s"
+msgstr ""
+"%s を開く際にエラー:\n"
+"%s"
 
 #: src/filewriter/filewriter.cc:358
 msgid ""
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/filewriter/filewriter.cc:385
 msgid "Output file format:"
@@ -1304,12 +1461,12 @@ msgid "Joint Stereo"
 msgstr "ジョイントステレオ"
 
 #: src/filewriter/filewriter.cc:451 src/modplug/plugin_main.cc:57
-#: src/mpg123/mpg123.cc:254
+#: src/mpg123/mpg123.cc:255
 msgid "Stereo"
 msgstr "ステレオ"
 
 #: src/filewriter/filewriter.cc:452 src/modplug/plugin_main.cc:56
-#: src/mpg123/mpg123.cc:255
+#: src/mpg123/mpg123.cc:256
 msgid "Mono"
 msgstr "モノラル"
 
@@ -1440,13 +1597,19 @@ msgid ""
 "Ralf Ertzinger <ralf@skytale.net>\n"
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
-msgstr "Original code by\nRalf Ertzinger <ralf@skytale.net>\n\nhttp://www.skytale.net/projects/bmp-flac2/"
+msgstr ""
+"Original code by\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/gio/gio.cc:34
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
-msgstr "GIO プラグイン for Audacious\nCopyright 2009-2012 John Lindgren"
+msgstr ""
+"GIO プラグイン for Audacious\n"
+"Copyright 2009-2012 John Lindgren"
 
 #: src/gio/gio.cc:42
 msgid "GIO Plugin"
@@ -1466,10 +1629,19 @@ msgid ""
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
 "\n"
 "Based on the XMMS plugin:\n"
-"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and 4Front Technologies\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
 "\n"
 "License: GPLv2+"
-msgstr "OpenGL スペクトラムアナライザー for Audacious\nCopyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n\n派生元: XMMS プラグイン:\nCopyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and 4Front Technologies\n\nライセンス: GPLv2+"
+msgstr ""
+"OpenGL スペクトラムアナライザー for Audacious\n"
+"Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
+"\n"
+"派生元: XMMS プラグイン:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
+"\n"
+"ライセンス: GPLv2+"
 
 #: src/glspectrum/gl-spectrum.cc:62 src/qtglspectrum/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer"
@@ -1479,22 +1651,27 @@ msgstr "OpenGL スペクトラムアナライザー"
 msgid "Entry number"
 msgstr "リスト番号"
 
-#: src/gtkui/columns.cc:36 src/playlist-manager/playlist-manager.cc:199
-#: src/playlist-manager-qt/playlist-manager-qt.cc:184
-#: src/qtui/playlist_model.cc:35 src/streamtuner/icecast-model.cc:120
+#: src/gtkui/columns.cc:36 src/moonstone/playlist_model.cc:38
+#: src/moonstone/playlist_selection.cc:62
+#: src/playlist-manager/playlist-manager.cc:199
+#: src/playlist-manager-qt/playlist-manager-qt.cc:186
+#: src/qtui/playlist_model.cc:33 src/streamtuner/icecast-model.cc:120
 #: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:122
 msgid "Title"
 msgstr "タイトル"
 
-#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:39
+#: src/qtui/playlist_model.cc:34
 msgid "Artist"
 msgstr "アーティスト"
 
-#: src/gtkui/columns.cc:38 src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
+#: src/qtui/playlist_model.cc:34
 msgid "Year"
 msgstr "年"
 
-#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:39 src/moonstone/playlist_model.cc:39
+#: src/qtui/playlist_model.cc:34
 msgid "Album"
 msgstr "アルバム"
 
@@ -1502,12 +1679,14 @@ msgstr "アルバム"
 msgid "Album artist"
 msgstr "アルバムアーティスト"
 
-#: src/gtkui/columns.cc:41 src/qtui/playlist_model.cc:37
+#: src/gtkui/columns.cc:41 src/moonstone/playlist_model.cc:40
+#: src/qtui/playlist_model.cc:35
 msgid "Track"
 msgstr "トラック"
 
-#: src/gtkui/columns.cc:42 src/qtui/playlist_model.cc:37
-#: src/streamtuner/icecast-model.cc:123 src/streamtuner/shoutcast-model.cc:125
+#: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
+#: src/qtui/playlist_model.cc:35 src/streamtuner/icecast-model.cc:123
+#: src/streamtuner/shoutcast-model.cc:125
 #: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
 msgstr "ジャンル"
@@ -1516,7 +1695,8 @@ msgstr "ジャンル"
 msgid "Queue position"
 msgstr "キューの位置"
 
-#: src/gtkui/columns.cc:44 src/qtui/playlist_model.cc:38
+#: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
+#: src/qtui/playlist_model.cc:36
 msgid "Length"
 msgstr "長さ"
 
@@ -1528,12 +1708,14 @@ msgstr "ファイルパス"
 msgid "Custom title"
 msgstr "カスタムタイトル"
 
-#: src/gtkui/columns.cc:48 src/qtui/playlist_model.cc:39
-#: src/streamtuner/icecast-model.cc:129 src/streamtuner/shoutcast-model.cc:134
+#: src/gtkui/columns.cc:48 src/moonstone/playlist_model.cc:42
+#: src/qtui/playlist_model.cc:37 src/streamtuner/icecast-model.cc:129
+#: src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
 msgstr "ビットレート"
 
-#: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:40
+#: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:43
+#: src/qtui/playlist_model.cc:38
 msgid "Comment"
 msgstr "コメント"
 
@@ -1545,7 +1727,7 @@ msgstr "利用できる列"
 msgid "Displayed columns"
 msgstr "表示された列"
 
-#: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:56
+#: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:58
 #: src/search-tool/search-tool.cc:48
 msgid "Search Tool"
 msgstr "検索ツール"
@@ -1574,99 +1756,100 @@ msgstr "ドッキングを解く"
 msgid "Disable"
 msgstr "無効"
 
-#: src/gtkui/menus.cc:79 src/qtui/menus.cc:103
+#: src/gtkui/menus.cc:79 src/qtui/menus.cc:107
 #: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:282
 msgid "_Open Files ..."
 msgstr "ファイルを開く(_O)"
 
-#: src/gtkui/menus.cc:80 src/qtui/menus.cc:107
+#: src/gtkui/menus.cc:80 src/qtui/menus.cc:111
 msgid "Open _URL ..."
 msgstr "URL を開く(_U)"
 
-#: src/gtkui/menus.cc:81 src/qtui/menus.cc:109
+#: src/gtkui/menus.cc:81 src/qtui/menus.cc:113
 msgid "_Add Files ..."
 msgstr "ファイルを追加(_A)"
 
-#: src/gtkui/menus.cc:82 src/qtui/menus.cc:113
+#: src/gtkui/menus.cc:82 src/qtui/menus.cc:118
 msgid "Add U_RL ..."
 msgstr "URL を追加(_R)"
 
-#: src/gtkui/menus.cc:84 src/qtui/menus.cc:115
+#: src/gtkui/menus.cc:84 src/qtui/menus.cc:120
 msgid "Search _Library"
 msgstr "ライブラリーを検索(_L)"
 
-#: src/gtkui/menus.cc:86 src/qtui/menus.cc:118
+#: src/gtkui/menus.cc:86 src/qtui/menus.cc:123
 msgid "A_bout ..."
 msgstr "プログラムの情報(_B)"
 
-#: src/gtkui/menus.cc:87 src/qtui/menus.cc:120
+#: src/gtkui/menus.cc:87 src/qtui/menus.cc:125
 msgid "_Settings ..."
 msgstr "設定(_S)"
 
-#: src/gtkui/menus.cc:88 src/qtui/menus.cc:126
+#: src/gtkui/menus.cc:88 src/qtui/menus.cc:131
 #: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:284
 msgid "_Quit"
 msgstr "終了(_Q)"
 
-#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:223 src/qtui/menus.cc:130
-#: src/qtui/playlist_tabs.cc:323 src/search-tool-qt/search-tool-qt.cc:498
+#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:224
+#: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
+#: src/qtui/playlist_tabs.cc:328 src/search-tool-qt/search-tool-qt.cc:499
 #: src/search-tool/search-tool.cc:343 src/statusicon-qt/statusicon.cc:106
 #: src/statusicon/statusicon.cc:276
 msgid "_Play"
 msgstr "再生(_P)"
 
-#: src/gtkui/menus.cc:93 src/qtui/menus.cc:132
+#: src/gtkui/menus.cc:93 src/qtui/menus.cc:137
 #: src/statusicon-qt/statusicon.cc:107 src/statusicon/statusicon.cc:277
 msgid "Paus_e"
 msgstr "一時停止(_E)"
 
-#: src/gtkui/menus.cc:94 src/qtui/menus.cc:134
+#: src/gtkui/menus.cc:94 src/qtui/menus.cc:139
 #: src/statusicon-qt/statusicon.cc:108 src/statusicon/statusicon.cc:278
 msgid "_Stop"
 msgstr "停止(_S)"
 
-#: src/gtkui/menus.cc:95 src/qtui/menus.cc:136
+#: src/gtkui/menus.cc:95 src/qtui/menus.cc:141
 #: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:279
 msgid "Pre_vious"
 msgstr "前の曲へ(_V)"
 
-#: src/gtkui/menus.cc:96 src/qtui/menus.cc:138
+#: src/gtkui/menus.cc:96 src/qtui/menus.cc:143
 #: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:280
 msgid "_Next"
 msgstr "次へ(_N)"
 
-#: src/gtkui/menus.cc:97 src/qtui/menus.cc:140 src/skins/menus.cc:114
+#: src/gtkui/menus.cc:97 src/qtui/menus.cc:145 src/skins/menus.cc:114
 #: src/skins-qt/menus.cc:105
 msgid "Previous Album"
 msgstr "前のアルバム"
 
-#: src/gtkui/menus.cc:98 src/qtui/menus.cc:141 src/skins/menus.cc:115
+#: src/gtkui/menus.cc:98 src/qtui/menus.cc:146 src/skins/menus.cc:115
 #: src/skins-qt/menus.cc:106
 msgid "Next Album"
 msgstr "次のアルバム"
 
-#: src/gtkui/menus.cc:100 src/qtui/menus.cc:143
+#: src/gtkui/menus.cc:100 src/qtui/menus.cc:148
 msgid "_Repeat"
 msgstr "リピート(_R)"
 
-#: src/gtkui/menus.cc:101 src/qtui/menus.cc:145
+#: src/gtkui/menus.cc:101 src/qtui/menus.cc:150
 msgid "S_huffle"
 msgstr "シャッフル(_H)"
 
-#: src/gtkui/menus.cc:102 src/qtui/menus.cc:147
+#: src/gtkui/menus.cc:102 src/qtui/menus.cc:152
 msgid "Shuffle by Albu_m"
 msgstr "アルバムごとにシャッフル (_M)"
 
-#: src/gtkui/menus.cc:103 src/qtui/menus.cc:150
+#: src/gtkui/menus.cc:103 src/qtui/menus.cc:155
 msgid "N_o Playlist Advance"
 msgstr "1 曲リピート(_O)"
 
-#: src/gtkui/menus.cc:104 src/qtui/menus.cc:152
+#: src/gtkui/menus.cc:104 src/qtui/menus.cc:157
 msgid "Stop A_fter This Song"
 msgstr "曲の再生後に停止(_A)"
 
-#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:207 src/qtui/menus.cc:157
-#: src/qtui/menus.cc:278
+#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:208 src/qtui/menus.cc:162
+#: src/qtui/menus.cc:292
 msgid "Song _Info ..."
 msgstr "曲の情報(_I)"
 
@@ -1678,158 +1861,159 @@ msgstr "指定した時間にジャンプ(_T)"
 msgid "_Jump to Song ..."
 msgstr "指定した曲にジャンプ(_J)"
 
-#: src/gtkui/menus.cc:110
+#: src/gtkui/menus.cc:110 src/qtui/menus.cc:165
 msgid "Set Repeat Point _A"
 msgstr "リピートポイントAを設定(_A)"
 
-#: src/gtkui/menus.cc:111
+#: src/gtkui/menus.cc:111 src/qtui/menus.cc:167
 msgid "Set Repeat Point _B"
 msgstr "リピートポイントBを設定(_B)"
 
-#: src/gtkui/menus.cc:112
+#: src/gtkui/menus.cc:112 src/qtui/menus.cc:169
 msgid "_Clear Repeat Points"
 msgstr "リピートポイントを解除(_C)"
 
 #: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:140
-#: src/qtui/menus.cc:161 src/qtui/menus.cc:168 src/qtui/menus.cc:185
+#: src/qtui/menus.cc:173 src/qtui/menus.cc:180 src/qtui/menus.cc:197
 msgid "By _Title"
 msgstr "タイトル(_T)"
 
-#: src/gtkui/menus.cc:117 src/qtui/menus.cc:162
+#: src/gtkui/menus.cc:117 src/qtui/menus.cc:174
 msgid "By _File Name"
 msgstr "ファイル名(_F)"
 
-#: src/gtkui/menus.cc:118 src/qtui/menus.cc:163
+#: src/gtkui/menus.cc:118 src/qtui/menus.cc:175
 msgid "By File _Path"
 msgstr "パス(_P)"
 
-#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:167
-#: src/qtui/menus.cc:184
+#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:179
+#: src/qtui/menus.cc:196
 msgid "By Track _Number"
 msgstr "トラックナンバー(_N)"
 
-#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:169
-#: src/qtui/menus.cc:186
+#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:181
+#: src/qtui/menus.cc:198
 msgid "By _Artist"
 msgstr "アーティスト(_A)"
 
-#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:170
-#: src/qtui/menus.cc:187
+#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:182
+#: src/qtui/menus.cc:199
 msgid "By Al_bum"
 msgstr "アルバム(_L)"
 
-#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:171
-#: src/qtui/menus.cc:188
+#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:183
+#: src/qtui/menus.cc:200
 msgid "By Albu_m Artist"
 msgstr "アルバムアーティスト(_M)"
 
-#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:172
-#: src/qtui/menus.cc:189
+#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:184
+#: src/qtui/menus.cc:201
 msgid "By Release _Date"
 msgstr "リリース日(_D)"
 
-#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:173
-#: src/qtui/menus.cc:190
+#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:185
+#: src/qtui/menus.cc:202
 msgid "By _Genre"
 msgstr "ジャンル(_G)"
 
-#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:174
-#: src/qtui/menus.cc:191
+#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:186
+#: src/qtui/menus.cc:203
 msgid "By _Length"
 msgstr "曲の長さ(_L)"
 
-#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:175
-#: src/qtui/menus.cc:192
+#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:187
+#: src/qtui/menus.cc:204
 msgid "By _File Path"
 msgstr "ファイルパス(_F)"
 
-#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:148 src/qtui/menus.cc:176
-#: src/qtui/menus.cc:193
+#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:148 src/qtui/menus.cc:188
+#: src/qtui/menus.cc:205
 msgid "By _Custom Title"
 msgstr "カスタムタイトル(_C)"
 
-#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:177
-#: src/qtui/menus.cc:194
+#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:189
+#: src/qtui/menus.cc:206
 msgid "By C_omment"
 msgstr "コメント(_O)"
 
-#: src/gtkui/menus.cc:134 src/gtkui/menus.cc:151 src/qtui/menus.cc:179
-#: src/qtui/menus.cc:196
+#: src/gtkui/menus.cc:134 src/gtkui/menus.cc:151 src/qtui/menus.cc:191
+#: src/qtui/menus.cc:208
 msgid "R_everse Order"
 msgstr "逆順にする(_E)"
 
-#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:152 src/qtui/menus.cc:181
-#: src/qtui/menus.cc:198
+#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:152 src/qtui/menus.cc:193
+#: src/qtui/menus.cc:210
 msgid "_Random Order"
 msgstr "ランダムに並べる(_R)"
 
-#: src/gtkui/menus.cc:156 src/qtui/menus.cc:202
+#: src/gtkui/menus.cc:156 src/qtui/menus.cc:214
 msgid "_Play/Resume"
 msgstr "再生/再開(_P)"
 
-#: src/gtkui/menus.cc:157 src/qtui/menus.cc:204
+#: src/gtkui/menus.cc:157 src/qtui/menus.cc:216
 msgid "_Refresh"
 msgstr "再読み込み(_R)"
 
-#: src/gtkui/menus.cc:159 src/qtui/menus.cc:208
+#: src/gtkui/menus.cc:159 src/qtui/menus.cc:220
 msgid "_Sort"
 msgstr "ソート(_S)"
 
-#: src/gtkui/menus.cc:160 src/qtui/menus.cc:209
+#: src/gtkui/menus.cc:160 src/qtui/menus.cc:221
 msgid "Sort Se_lected"
 msgstr "選択したトラックをソート(_L)"
 
-#: src/gtkui/menus.cc:161 src/qtui/menus.cc:211
+#: src/gtkui/menus.cc:161 src/qtui/menus.cc:223
 msgid "Remove _Duplicates"
 msgstr "重複している曲を削除(_D)"
 
-#: src/gtkui/menus.cc:162 src/qtui/menus.cc:212
+#: src/gtkui/menus.cc:162 src/qtui/menus.cc:224
 msgid "Remove _Unavailable Files"
 msgstr "再生できないファイルを削除(_U)"
 
 #: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:218
-#: src/playlist-manager-qt/playlist-manager-qt.cc:332 src/qtui/menus.cc:215
+#: src/playlist-manager-qt/playlist-manager-qt.cc:346 src/qtui/menus.cc:227
 msgid "_New"
 msgstr "新しいプレイリスト(_N)"
 
-#: src/gtkui/menus.cc:165 src/qtui/menus.cc:216
+#: src/gtkui/menus.cc:165 src/qtui/menus.cc:228
 msgid "Ren_ame ..."
 msgstr "名前の変更(_A)"
 
-#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:225 src/qtui/menus.cc:217
-#: src/qtui/playlist_tabs.cc:328
+#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:226
+#: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:229
+#: src/qtui/playlist_tabs.cc:333
 msgid "Remo_ve"
 msgstr "削除(_V)"
 
-#: src/gtkui/menus.cc:168 src/qtui/menus.cc:219
+#: src/gtkui/menus.cc:168 src/qtui/menus.cc:231
 msgid "_Import ..."
 msgstr "インポート(_I)"
 
-#: src/gtkui/menus.cc:169 src/qtui/menus.cc:220
+#: src/gtkui/menus.cc:169 src/qtui/menus.cc:232
 msgid "_Export ..."
 msgstr "エクスポート(_E)"
 
-#: src/gtkui/menus.cc:171 src/qtui/menus.cc:223
+#: src/gtkui/menus.cc:171 src/qtui/menus.cc:235
 msgid "Playlist _Manager ..."
 msgstr "プレイリストマネージャー(_M)"
 
-#: src/gtkui/menus.cc:172 src/qtui/menus.cc:225
+#: src/gtkui/menus.cc:172 src/qtui/menus.cc:237
 msgid "_Queue Manager ..."
 msgstr "キューマネージャー(_Q)"
 
-#: src/gtkui/menus.cc:176 src/qtui/menus.cc:229
+#: src/gtkui/menus.cc:176 src/qtui/menus.cc:241
 msgid "Volume _Up"
 msgstr "音量を上げる(_U)"
 
-#: src/gtkui/menus.cc:177 src/qtui/menus.cc:231
+#: src/gtkui/menus.cc:177 src/qtui/menus.cc:243
 msgid "Volume _Down"
 msgstr "音量を下げる(_D)"
 
-#: src/gtkui/menus.cc:179 src/qtui/menus.cc:235
+#: src/gtkui/menus.cc:179 src/qtui/menus.cc:247
 msgid "_Equalizer ..."
 msgstr "イコライザー... (_E)"
 
-#: src/gtkui/menus.cc:180 src/qtui/menus.cc:237
+#: src/gtkui/menus.cc:180 src/qtui/menus.cc:249
 msgid "E_ffects ..."
 msgstr "エフェクト(_E)"
 
@@ -1841,93 +2025,98 @@ msgstr "ストリームの録音 (_R)"
 msgid "Audio _Settings ..."
 msgstr "オーディオの設定... (_S)"
 
-#: src/gtkui/menus.cc:187 src/qtui/menus.cc:246
+#: src/gtkui/menus.cc:187 src/qtui/menus.cc:258
 msgid "Show _Menu Bar"
 msgstr "メニューバーを表示(_M)"
 
-#: src/gtkui/menus.cc:188 src/qtui/menus.cc:248
+#: src/gtkui/menus.cc:188 src/qtui/menus.cc:260
 msgid "Show I_nfo Bar"
 msgstr "情報バーを表示(_N)"
 
-#: src/gtkui/menus.cc:189 src/qtui/menus.cc:250
+#: src/gtkui/menus.cc:189 src/qtui/menus.cc:262
+msgid "Show Info Bar _Album Art"
+msgstr ""
+
+#: src/gtkui/menus.cc:190 src/qtui/menus.cc:264
 msgid "Show Info Bar Vis_ualization"
 msgstr "情報バーに視覚効果を表示(_U)"
 
-#: src/gtkui/menus.cc:190 src/qtui/menus.cc:252
+#: src/gtkui/menus.cc:191 src/qtui/menus.cc:266
 msgid "Show _Status Bar"
 msgstr "ステータスバーを表示(_S)"
 
-#: src/gtkui/menus.cc:192 src/qtui/menus.cc:256
+#: src/gtkui/menus.cc:193 src/qtui/menus.cc:270
 msgid "Show _Remaining Time"
 msgstr "残り時間を表示(_R)"
 
-#: src/gtkui/menus.cc:194 src/qtui/menus.cc:260 src/skins/menus.cc:157
+#: src/gtkui/menus.cc:195 src/qtui/menus.cc:274 src/skins/menus.cc:157
 #: src/skins-qt/menus.cc:152
 msgid "_Visualizations ..."
 msgstr "視覚化(_V)"
 
-#: src/gtkui/menus.cc:198 src/qtui/menus.cc:264
+#: src/gtkui/menus.cc:199 src/qtui/menus.cc:278
 msgid "_File"
 msgstr "ファイル(_F)"
 
-#: src/gtkui/menus.cc:199 src/qtui/menus.cc:265
+#: src/gtkui/menus.cc:200 src/qtui/menus.cc:279
 msgid "_Playback"
 msgstr "再生(_P)"
 
-#: src/gtkui/menus.cc:200 src/qtui/menus.cc:266
+#: src/gtkui/menus.cc:201 src/qtui/menus.cc:280
 msgid "P_laylist"
 msgstr "プレイリスト(_L)"
 
-#: src/gtkui/menus.cc:201 src/gtkui/menus.cc:219 src/qtui/menus.cc:267
-#: src/qtui/menus.cc:296
+#: src/gtkui/menus.cc:202 src/gtkui/menus.cc:220 src/qtui/menus.cc:281
+#: src/qtui/menus.cc:310
 msgid "_Services"
 msgstr "サービス(_S)"
 
-#: src/gtkui/menus.cc:202 src/qtui/menus.cc:268
+#: src/gtkui/menus.cc:203 src/qtui/menus.cc:282
 msgid "_Output"
 msgstr "出力(_O)"
 
-#: src/gtkui/menus.cc:203 src/qtui/menus.cc:269
+#: src/gtkui/menus.cc:204 src/qtui/menus.cc:283
 msgid "_View"
 msgstr "表示(_V)"
 
-#: src/gtkui/menus.cc:208 src/qtui/menus.cc:280
+#: src/gtkui/menus.cc:209 src/qtui/menus.cc:294
 msgid "_Queue/Unqueue"
 msgstr "キュー/アンキュー (_Q)"
 
-#: src/gtkui/menus.cc:210 src/qtui/menus.cc:283
+#: src/gtkui/menus.cc:211 src/qtui/menus.cc:297
 msgid "_Open Containing Folder"
 msgstr "保存先フォルダーを開く(_O)"
 
-#: src/gtkui/menus.cc:211 src/qtui/menus.cc:285
+#: src/gtkui/menus.cc:212 src/qtui/menus.cc:299
 msgid "_Refresh Selected"
 msgstr "選択された項目を再読み込み(_R)"
 
-#: src/gtkui/menus.cc:213 src/qtui/menus.cc:288
+#: src/gtkui/menus.cc:214 src/qtui/menus.cc:302
 msgid "Cu_t"
 msgstr "切り取り(_T)"
 
-#: src/gtkui/menus.cc:214 src/qtui/menus.cc:289
+#: src/gtkui/menus.cc:215 src/qtui/menus.cc:303
 msgid "_Copy"
 msgstr "コピー(_C)"
 
-#: src/gtkui/menus.cc:215 src/qtui/menus.cc:290
+#: src/gtkui/menus.cc:216 src/qtui/menus.cc:304
 msgid "_Paste"
 msgstr "貼り付け(_P)"
 
-#: src/gtkui/menus.cc:216 src/qtui/menus.cc:291
+#: src/gtkui/menus.cc:217 src/qtui/menus.cc:305
 msgid "Paste at _End"
 msgstr "末尾に貼り付け(_E)"
 
-#: src/gtkui/menus.cc:217 src/qtui/menus.cc:293
+#: src/gtkui/menus.cc:218 src/qtui/menus.cc:307
 msgid "Select _All"
 msgstr "すべて選択(_A)"
 
-#: src/gtkui/menus.cc:224 src/qtui/playlist_tabs.cc:326
+#: src/gtkui/menus.cc:225 src/moonstone/playlist_tabs.cc:309
+#: src/qtui/playlist_tabs.cc:331
 msgid "_Rename ..."
 msgstr "名前の変更(_R)"
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:57
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:61
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>プレイリストタブ</b>"
 
@@ -1935,240 +2124,254 @@ msgstr "<b>プレイリストタブ</b>"
 msgid "Always show tabs"
 msgstr "常にタブを表示する"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:62
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:66
 msgid "Show entry counts"
 msgstr "項目の総数を表示する"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:65
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:69
 msgid "Show close buttons"
 msgstr "閉じるボタンを表示する"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:68
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:72
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>プレイリスト列</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:70
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:74
 msgid "Show column headers"
 msgstr "列のヘッダーを表示する"
 
-#: src/gtkui/settings.cc:47 src/qtui/settings.cc:73
+#: src/gtkui/settings.cc:47 src/qtui/settings.cc:80
 msgid "Scroll on song change"
 msgstr "曲が変わったらスクロールする"
 
-#: src/gtkui/ui_gtk.cc:73
+#: src/gtkui/ui_gtk.cc:74
 msgid "GTK Interface"
 msgstr "GTK インターフェイス"
 
-#: src/gtkui/ui_gtk.cc:236 src/skins/main.cc:227 src/skins-qt/main.cc:225
+#: src/gtkui/ui_gtk.cc:210 src/skins/main.cc:227 src/skins-qt/main.cc:225
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:238 src/qtui/main_window.cc:315
+#: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:172
+#: src/qtui/main_window.cc:375
 msgid "Buffering ..."
 msgstr "バッファ中 ..."
 
-#: src/gtkui/ui_gtk.cc:241 src/skins/main.cc:229 src/skins-qt/main.cc:227
+#: src/gtkui/ui_gtk.cc:215 src/skins/main.cc:229 src/skins-qt/main.cc:227
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:454 src/gtkui/ui_gtk.cc:485 src/gtkui/ui_gtk.cc:839
-#: src/hotkey/gui.cc:72 src/notify/osd.cc:70 src/qtui/main_window.cc:106
-#: src/qtui/main_window.cc:273 src/qtui/main_window.cc:274
+#: src/gtkui/ui_gtk.cc:428 src/gtkui/ui_gtk.cc:459 src/gtkui/ui_gtk.cc:813
+#: src/hotkey/gui.cc:71 src/moonstone/main_window.cc:66
+#: src/moonstone/main_window.cc:129 src/moonstone/main_window.cc:130
+#: src/notify/osd.cc:85 src/qthotkey/gui.cc:64 src/qtui/main_window.cc:154
+#: src/qtui/main_window.cc:337 src/qtui/main_window.cc:338
 #: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
 msgid "Play"
 msgstr "再生"
 
-#: src/gtkui/ui_gtk.cc:454 src/notify/osd.cc:67 src/qtui/main_window.cc:279
-#: src/qtui/main_window.cc:280 src/skins/menus.cc:110
-#: src/skins-qt/menus.cc:101
+#: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:135
+#: src/moonstone/main_window.cc:136 src/notify/osd.cc:82
+#: src/qtui/main_window.cc:343 src/qtui/main_window.cc:344
+#: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Pause"
 msgstr "一時停止"
 
-#: src/gtkui/ui_gtk.cc:824 src/qtui/main_window.cc:97 src/skins/menus.cc:86
-#: src/skins-qt/menus.cc:77
+#: src/gtkui/ui_gtk.cc:798 src/moonstone/main_window.cc:56
+#: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr "ライブラリーを検索"
 
-#: src/gtkui/ui_gtk.cc:832 src/qtui/main_window.cc:99
+#: src/gtkui/ui_gtk.cc:806 src/moonstone/main_window.cc:59
+#: src/qtui/main_window.cc:147
 msgid "Open Files"
 msgstr "ファイルを開く"
 
-#: src/gtkui/ui_gtk.cc:833 src/qtui/main_window.cc:101
+#: src/gtkui/ui_gtk.cc:807 src/moonstone/main_window.cc:61
+#: src/qtui/main_window.cc:149
 msgid "Add Files"
 msgstr "ファイルを追加"
 
-#: src/gtkui/ui_gtk.cc:838 src/qtui/main_window.cc:104 src/skins/menus.cc:112
-#: src/skins-qt/menus.cc:103
+#: src/gtkui/ui_gtk.cc:812 src/moonstone/main_window.cc:64
+#: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Previous"
 msgstr "前へ"
 
-#: src/gtkui/ui_gtk.cc:840 src/hotkey/gui.cc:74 src/qtui/main_window.cc:108
-#: src/skins/menus.cc:111 src/skins-qt/menus.cc:102
+#: src/gtkui/ui_gtk.cc:814 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:68
+#: src/qthotkey/gui.cc:66 src/qtui/main_window.cc:156 src/skins/menus.cc:111
+#: src/skins-qt/menus.cc:102
 msgid "Stop"
 msgstr "停止"
 
-#: src/gtkui/ui_gtk.cc:841 src/notify/osd.cc:74 src/qtui/main_window.cc:115
-#: src/skins/menus.cc:113 src/skins-qt/menus.cc:104
+#: src/gtkui/ui_gtk.cc:815 src/moonstone/main_window.cc:75 src/notify/osd.cc:89
+#: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
 msgstr "次へ"
 
-#: src/gtkui/ui_gtk.cc:843 src/qtui/main_window.cc:118 src/qtui/menus.cc:240
-#: src/skins/menus.cc:79 src/skins-qt/menus.cc:69
+#: src/gtkui/ui_gtk.cc:817 src/moonstone/main_window.cc:78
+#: src/qtui/main_window.cc:166 src/qtui/menus.cc:252 src/skins/menus.cc:79
+#: src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "ストリームの録音"
 
-#: src/gtkui/ui_gtk.cc:874 src/qtui/main_window.cc:125 src/skins/menus.cc:103
-#: src/skins-qt/menus.cc:94
+#: src/gtkui/ui_gtk.cc:848 src/moonstone/main_window.cc:85
+#: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
 msgid "Repeat"
 msgstr "リピート"
 
-#: src/gtkui/ui_gtk.cc:876 src/qtui/main_window.cc:128 src/skins/menus.cc:104
-#: src/skins-qt/menus.cc:95
+#: src/gtkui/ui_gtk.cc:850 src/moonstone/main_window.cc:88
+#: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
 msgid "Shuffle"
 msgstr "シャッフル"
 
-#: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:153
+#: src/gtkui/ui_gtk.cc:1024 src/qtui/main_window.cc:123
+msgid "Menu"
+msgstr ""
+
+#: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:155
 msgid "mono"
 msgstr "モノラル"
 
-#: src/gtkui/ui_statusbar.cc:65 src/qtui/status_bar.cc:155
+#: src/gtkui/ui_statusbar.cc:65 src/qtui/status_bar.cc:157
 msgid "stereo"
 msgstr "ステレオ"
 
-#: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:158
+#: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:160
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
 msgstr[0] "%d チャンネル"
 
-#: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:166
+#: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:168
 #, c-format
 msgid "%d kHz"
 msgstr "%d kHz"
 
-#: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:172
+#: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:174
 #, c-format
 msgid "%d kbps"
 msgstr "%d kbps"
 
-#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471
-#: src/skins-qt/main.cc:455
+#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471 src/skins-qt/main.cc:455
 msgid "Single mode."
 msgstr "シングルモード"
 
-#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:473
-#: src/skins-qt/main.cc:457
+#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:473 src/skins-qt/main.cc:457
 msgid "Playlist mode."
 msgstr "プレイリストモード"
 
-#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:479
-#: src/skins-qt/main.cc:463
+#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:479 src/skins-qt/main.cc:463
 msgid "Stopping after song."
 msgstr "曲の再生後に停止する"
 
-#: src/hotkey/gui.cc:71
+#: src/hotkey/gui.cc:70 src/qthotkey/gui.cc:63
 msgid "Previous track"
 msgstr "前のトラック"
 
-#: src/hotkey/gui.cc:73
+#: src/hotkey/gui.cc:72 src/qthotkey/gui.cc:65
 msgid "Pause/Resume"
 msgstr "一時停止/再開"
 
-#: src/hotkey/gui.cc:75
+#: src/hotkey/gui.cc:74 src/qthotkey/gui.cc:67
 msgid "Next track"
 msgstr "次のトラック"
 
-#: src/hotkey/gui.cc:76
+#: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:68
 msgid "Step forward"
 msgstr ""
 
-#: src/hotkey/gui.cc:77
+#: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:69
 msgid "Step backward"
 msgstr ""
 
-#: src/hotkey/gui.cc:78
+#: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:70
 msgid "Mute"
 msgstr "ミュート"
 
-#: src/hotkey/gui.cc:79
+#: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:71
 msgid "Volume up"
 msgstr "音量を上げる"
 
-#: src/hotkey/gui.cc:80
+#: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:72
 msgid "Volume down"
 msgstr "音量を下げる"
 
-#: src/hotkey/gui.cc:81
+#: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:73
 msgid "Jump to file"
 msgstr "指定したファイルへ移動"
 
-#: src/hotkey/gui.cc:82
+#: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:74
 msgid "Toggle player window(s)"
 msgstr "プレイヤーウィンドウをトグル"
 
-#: src/hotkey/gui.cc:83
+#: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:75
 msgid "Show On-Screen-Display"
 msgstr "On-Screen-Display を表示する"
 
-#: src/hotkey/gui.cc:84
+#: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:76
 msgid "Toggle repeat"
 msgstr "リピートをトグル"
 
-#: src/hotkey/gui.cc:85
+#: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:77
 msgid "Toggle shuffle"
 msgstr "シャッフルをトグル"
 
-#: src/hotkey/gui.cc:86
+#: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:78
 msgid "Toggle stop after current"
 msgstr "現在の曲の再生後に停止する"
 
-#: src/hotkey/gui.cc:87
+#: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:79
 msgid "Raise player window(s)"
 msgstr "プレイヤウィンドウを表示する"
 
-#: src/hotkey/gui.cc:97
+#: src/hotkey/gui.cc:97 src/qthotkey/gui.cc:97
 msgid "(none)"
 msgstr "(なし)"
 
-#: src/hotkey/gui.cc:234
+#: src/hotkey/gui.cc:260
 msgid ""
 "It is not recommended to bind the primary mouse buttons without modifiers.\n"
 "\n"
 "Do you want to continue?"
-msgstr "修飾キーなしでプライマリーマウスのボタンに割り当てるのはお勧めしません。\n\n本当によろしいですか？"
+msgstr ""
+"修飾キーなしでプライマリーマウスのボタンに割り当てるのはお勧めしません。\n"
+"\n"
+"本当によろしいですか？"
 
-#: src/hotkey/gui.cc:236
+#: src/hotkey/gui.cc:263
 msgid "Binding mouse buttons"
 msgstr "マウスボタンの割り当て"
 
-#: src/hotkey/gui.cc:391
+#: src/hotkey/gui.cc:426
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr "テキストフィールド内でキーコンビネーションを押してください。\nマウスボタンを組み合わせることもできます。"
+msgstr ""
+"テキストフィールド内でキーコンビネーションを押してください。\n"
+"マウスボタンを組み合わせることもできます。"
 
-#: src/hotkey/gui.cc:396
+#: src/hotkey/gui.cc:432 src/qthotkey/gui.cc:167
 msgid "Hotkeys:"
 msgstr "ホットキー:"
 
-#: src/hotkey/gui.cc:413
+#: src/hotkey/gui.cc:448 src/qthotkey/gui.cc:169
 msgid "<b>Action:</b>"
 msgstr "<b>動作:</b>"
 
-#: src/hotkey/gui.cc:420
+#: src/hotkey/gui.cc:454 src/qthotkey/gui.cc:170
 msgid "<b>Key Binding:</b>"
 msgstr "<b>キーバインド:</b>"
 
-#: src/hotkey/gui.cc:468
+#: src/hotkey/gui.cc:501 src/qthotkey/gui.cc:172
 msgid "_Add"
 msgstr "追加 (_A)"
 
-#: src/hotkey/plugin.cc:61
+#: src/hotkey/plugin.cc:61 src/qthotkey/plugin.cc:77
 msgid "Global Hotkeys"
 msgstr "グローバルホットキー"
 
-#: src/hotkey/plugin.cc:80
+#: src/hotkey/plugin.cc:76
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -2233,7 +2436,9 @@ msgstr "JACK ポート %s への接続に失敗"
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
-msgstr "JACK は浮動小数点のオーディオにのみ対応しています。Audacious のオーディオ出力の設定で、ビット深度を浮動小数点に変更する必要があります。"
+msgstr ""
+"JACK は浮動小数点のオーディオにのみ対応しています。Audacious のオーディオ出力"
+"の設定で、ビット深度を浮動小数点に変更する必要があります。"
 
 #: src/jack/jack-ng.cc:242
 msgid "Failed to connect to the JACK server; is it running?"
@@ -2242,10 +2447,12 @@ msgstr "JACK サーバへの接続に失敗しました。JACK サーバは本�
 #: src/jack/jack-ng.cc:318
 #, c-format
 msgid ""
-"The JACK server requires a sample rate of %d Hz, but Audacious is playing at"
-" %d Hz.  Please use the Sample Rate Converter effect to correct the "
-"mismatch."
-msgstr "JACK サーバには %d Hzのサンプリング周波数が必要ですが、 Audacious は %d Hz で再生しています。サンプリング周波数コンバーターを用いて周波数を合わせてください。"
+"The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
+"%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
+msgstr ""
+"JACK サーバには %d Hzのサンプリング周波数が必要ですが、 Audacious は %d Hz で"
+"再生しています。サンプリング周波数コンバーターを用いて周波数を合わせてくださ"
+"い。"
 
 #: src/ladspa/plugin.cc:415
 #, c-format
@@ -2261,7 +2468,11 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr "<small>複数のパスはコロンで区切ってください。\nこれらのパスが、LADSPA_PATH の他に検索されます。\nパスを追加した後は、新しいプラグインをスキャンするためにEnter キーを押してください。</small>"
+msgstr ""
+"<small>複数のパスはコロンで区切ってください。\n"
+"これらのパスが、LADSPA_PATH の他に検索されます。\n"
+"パスを追加した後は、新しいプラグインをスキャンするためにEnter キーを押してく"
+"ださい。</small>"
 
 #: src/ladspa/plugin.cc:502
 msgid "Available plugins:"
@@ -2285,7 +2496,9 @@ msgstr "設定:"
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
-msgstr "LADSPA ホスト for Audacious\nCopyright 2011 John Lindgren"
+msgstr ""
+"LADSPA ホスト for Audacious\n"
+"Copyright 2011 John Lindgren"
 
 #: src/ladspa/plugin.h:78
 msgid "LADSPA Host"
@@ -2309,7 +2522,19 @@ msgid ""
 "Andrew O. Shadoura <bugzilla@tut.by>\n"
 "\n"
 "For more information about LIRC, see http://lirc.org."
-msgstr "LIRC リモートコントロールデーモンを用いた、シンプルな Audacious コントロールプラグイン\nAudacious 用に移植:\nTony Vroon <chainsaw@gentoo.org>\nJoonas Harjumäki <jharjuma@gmail.com>\n\n派生元: XMMS LIRC プラグイン、作者:\nCarl van Schaik <carl@leg.uct.ac.za>\nChristoph Bartelmus <xmms@bartelmus.de>\nAndrew O. Shadoura <bugzilla@tut.by>\n\nLIRC についての詳細は http://lirc.org を参照"
+msgstr ""
+"LIRC リモートコントロールデーモンを用いた、シンプルな Audacious コントロール"
+"プラグイン\n"
+"Audacious 用に移植:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"派生元: XMMS LIRC プラグイン、作者:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"LIRC についての詳細は http://lirc.org を参照"
 
 #: src/lirc/lirc.cc:390
 msgid "<b>Connection</b>"
@@ -2323,104 +2548,97 @@ msgstr "LIRC サーバーへ再接続する"
 msgid "Wait before reconnecting:"
 msgstr "再接続の待機時間:"
 
-#: src/lyricwiki/lyricwiki.cc:42
-msgid "LyricWiki Plugin"
-msgstr "LyricWiki プラグイン"
+#: src/lyricwiki-qt/lyricwiki.cc:89
+msgid "Lyrics"
+msgstr ""
 
-#: src/lyricwiki/lyricwiki.cc:132 src/lyricwiki-qt/lyricwiki.cc:481
-msgid "No lyrics available"
-msgstr "歌詞が見つかりません"
+#: src/lyricwiki-qt/lyricwiki.cc:116
+msgid "Nowhere"
+msgstr ""
 
-#: src/lyricwiki/lyricwiki.cc:251 src/lyricwiki/lyricwiki.cc:260
-#: src/lyricwiki/lyricwiki.cc:275 src/lyricwiki/lyricwiki.cc:284
-#: src/lyricwiki/lyricwiki.cc:299 src/lyricwiki-qt/lyricwiki.cc:658
-#: src/ui-common/dialogs-qt.cc:38
-msgid "Error"
-msgstr "エラー"
+#: src/lyricwiki-qt/lyricwiki.cc:117
+msgid "lyrics.ovh"
+msgstr ""
 
-#: src/lyricwiki/lyricwiki.cc:252 src/lyricwiki/lyricwiki.cc:276
-#: src/lyricwiki-qt/lyricwiki.cc:362 src/lyricwiki-qt/lyricwiki.cc:393
-#: src/lyricwiki-qt/lyricwiki.cc:400 src/lyricwiki-qt/lyricwiki.cc:584
+#: src/lyricwiki-qt/lyricwiki.cc:121
+msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:122
+msgid "Chars to truncate on:"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:126
+msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:127
+msgid "Chars to split on:"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:128
+msgid "Further truncate those on chars"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:134
+msgid "<b>General</b>"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:135
+msgid "Split title into artist and title on chars"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:138
+msgid "<b>Internet Sources</b>"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:139
+msgid "Fetch lyrics from:"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:142
+msgid "Store fetched lyrics in local cache"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:144
+msgid "<b>Local Storage</b>"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:145
+msgid "Load lyric files (.lrc) from local storage"
+msgstr ""
+
+#: src/lyricwiki-qt/lyricwiki.cc:356
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "%s が取得できません"
 
-#: src/lyricwiki/lyricwiki.cc:261 src/lyricwiki/lyricwiki.cc:285
-#: src/lyricwiki-qt/lyricwiki.cc:593
+#: src/lyricwiki-qt/lyricwiki.cc:365
 #, c-format
 msgid "Unable to parse %s"
 msgstr "%s が解析できません"
 
-#: src/lyricwiki/lyricwiki.cc:291 src/lyricwiki-qt/lyricwiki.cc:408
-#: src/lyricwiki-qt/lyricwiki.cc:631
+#: src/lyricwiki-qt/lyricwiki.cc:403
 msgid "Looking for lyrics ..."
 msgstr "歌詞を検索しています ..."
 
-#: src/lyricwiki/lyricwiki.cc:299
-msgid "Missing song metadata"
-msgstr "曲のメタデータが見つかりません"
+#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:38
+msgid "Error"
+msgstr "エラー"
 
-#: src/lyricwiki/lyricwiki.cc:310
-msgid "Connecting to lyrics.fandom.com ..."
-msgstr ""
-
-#: src/lyricwiki/lyricwiki.cc:351
-msgid "Edit lyrics ..."
-msgstr "歌詞を編集 ..."
-
-#: src/lyricwiki-qt/lyricwiki.cc:88
-msgid "Lyrics"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:111
-msgid "Nowhere"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:112
-msgid "LyricWiki"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:113
-msgid "lyrics.ovh"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:117
-msgid "<b>Internet Sources</b>"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:118
-msgid "Fetch lyrics from:"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:121
-msgid "Store fetched lyrics in local cache"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:123
-msgid "<b>Local Storage</b>"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:124
-msgid "Load lyric files (.lrc) from local storage"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:664
+#: src/lyricwiki-qt/lyricwiki.cc:433
 msgid "Lyrics could not be found."
 msgstr ""
 
-#: src/lyricwiki-qt/lyricwiki.cc:701
+#: src/lyricwiki-qt/lyricwiki.cc:501
 msgid "Missing title and/or artist."
 msgstr ""
 
-#: src/lyricwiki-qt/lyricwiki.cc:751
-msgid "Edit Lyrics ..."
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:759
+#: src/lyricwiki-qt/lyricwiki.cc:553
 msgid "Save Locally"
 msgstr ""
 
-#: src/lyricwiki-qt/lyricwiki.cc:767
+#: src/lyricwiki-qt/lyricwiki.cc:561
 msgid "Refresh"
 msgstr ""
 
@@ -2442,30 +2660,42 @@ msgstr "タクトジェネレーター: %d bpm"
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "タクトジェネレーター: %d bpm %d/%d"
 
-#: src/metronom/metronom.cc:234
+#: src/metronom/metronom.cc:235
 msgid ""
 "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
 "To use it, add a URL: tact://beats*num/den\n"
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
-msgstr "タクトジェネレーター by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\nこのプラグインを使用するには、URL に次のフォーマットで文字列を入力してください。\n\ntact://beats*num/den\n\n例: \ntact://77 (77bpmのビートを作る)\ntact://60*3/4 (3/4 拍子で 60 bpmのビートを作る)"
+msgstr ""
+"タクトジェネレーター by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"このプラグインを使用するには、URL に次のフォーマットで文字列を入力してくださ"
+"い。\n"
+"\n"
+"tact://beats*num/den\n"
+"\n"
+"例: \n"
+"tact://77 (77bpmのビートを作る)\n"
+"tact://60*3/4 (3/4 拍子で 60 bpmのビートを作る)"
 
-#: src/mixer/mixer.cc:38
+#: src/mixer/mixer.cc:43
 msgid "Channel Mixer"
 msgstr "チャンネルミキサー"
 
-#: src/mixer/mixer.cc:227
+#: src/mixer/mixer.cc:255
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
-msgstr "チャンネルミキサープラグイン for Audacious\nCopyright 2011-2012 John Lindgren and Michał Lipski"
+msgstr ""
+"チャンネルミキサープラグイン for Audacious\n"
+"Copyright 2011-2012 John Lindgren and Michał Lipski"
 
-#: src/mixer/mixer.cc:231
+#: src/mixer/mixer.cc:259
 msgid "<b>Channel Mixer</b>"
 msgstr "<b>チャンネルミキサー</b>"
 
-#: src/mixer/mixer.cc:232
+#: src/mixer/mixer.cc:260
 msgid "Output channels:"
 msgstr "出力チャンネル:"
 
@@ -2574,6 +2804,54 @@ msgstr "ずっとリピートするにはリピート回数を-1にしてくだ�
 msgid "These settings will take effect when Audacious is restarted."
 msgstr "これらの設定は、Audacious の再起動後に反映されます。"
 
+#: src/moonstone/main_window.cc:71 src/moonstone/main_window.cc:72
+#: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
+#: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
+msgid "Stop After This Song"
+msgstr "曲の再生後に停止"
+
+#: src/moonstone/moonstone.cc:39
+msgid "Moonstone"
+msgstr ""
+
+#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:215
+msgid "Reset to Defaults"
+msgstr "デフォルトに戻す"
+
+#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_model.cc:33
+msgid "Now Playing"
+msgstr "再生中"
+
+#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_model.cc:33
+msgid "Entry Number"
+msgstr "項目数"
+
+#: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:35
+msgid "Album Artist"
+msgstr "アルバムアーティスト"
+
+#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:36
+msgid "Queue Position"
+msgstr "キューの位置"
+
+#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:36
+msgid "File Path"
+msgstr "ファイルパス"
+
+#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:37
+msgid "File Name"
+msgstr "ファイル名"
+
+#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:37
+msgid "Custom Title"
+msgstr "カスタムタイトル"
+
+#: src/moonstone/playlist_selection.cc:64
+#: src/playlist-manager/playlist-manager.cc:200
+#: src/playlist-manager-qt/playlist-manager-qt.cc:188
+msgid "Entries"
+msgstr "項目数"
+
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
 msgstr "MPG123 プラグイン"
@@ -2586,7 +2864,7 @@ msgstr "<b>高度な設定</b>"
 msgid "Use accurate length calculation (slow)"
 msgstr "正確な長さを計算する(遅い)"
 
-#: src/mpg123/mpg123.cc:255
+#: src/mpg123/mpg123.cc:256
 msgid "Surround"
 msgstr "サラウンド"
 
@@ -2632,26 +2910,56 @@ msgid ""
 "Copyright (C) 2010 Maximilian Bogner\n"
 "Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
 "\n"
-"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
+"This plugin is free software: you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
-msgstr "デスクトップ通知プラグイン for Audacious\nCopyright (C) 2010 Maximilian Bogner\nCopyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n\nこのプログラムはフリーソフトウェアです。あなたはこれを、フリーソフ トウェア財団によって発行されたGNU一般公衆利用許諾書(バージョン3か、それ以降のバージョンのうちどれか)が定める条件の下で再頒布または改変することができます。\n\nこのプログラムは有用であることを願って頒布されますが、*全くの無保証 *です。商業可能性の保証や特定目的への適合性は、言外に示されたものも含め、全く存在しません。詳しくはGNU一般公衆利用許諾書をご覧ください。\n\nあなたはこのプログラムと共に、GNU一般公衆利用許諾書のコピーを一部受け取っているはずです。もし受け取っていなければ、<http://www.gnu.org/licenses/> をご覧ください。\n\n（このGPLの翻訳は非公式なもので、フリーソフトウェアファウンデーションによって法的効力があると承認されたものではありません。何が許可されているか厳密に確認するためには、(英語で書かれた)オリジナルのGPLを参照してください。）"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"デスクトップ通知プラグイン for Audacious\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"このプログラムはフリーソフトウェアです。あなたはこれを、フリーソフ トウェア財"
+"団によって発行されたGNU一般公衆利用許諾書(バージョン3か、それ以降のバージョン"
+"のうちどれか)が定める条件の下で再頒布または改変することができます。\n"
+"\n"
+"このプログラムは有用であることを願って頒布されますが、*全くの無保証 *です。商"
+"業可能性の保証や特定目的への適合性は、言外に示されたものも含め、全く存在しま"
+"せん。詳しくはGNU一般公衆利用許諾書をご覧ください。\n"
+"\n"
+"あなたはこのプログラムと共に、GNU一般公衆利用許諾書のコピーを一部受け取ってい"
+"るはずです。もし受け取っていなければ、<http://www.gnu.org/licenses/> をご覧く"
+"ださい。\n"
+"\n"
+"（このGPLの翻訳は非公式なもので、フリーソフトウェアファウンデーションによって"
+"法的効力があると承認されたものではありません。何が許可されているか厳密に確認"
+"するためには、(英語で書かれた)オリジナルのGPLを参照してください。）"
 
-#: src/notify/notify.cc:102
+#: src/notify/notify.cc:104
 msgid "Show playback controls"
 msgstr "再生コントロールを表示する"
 
-#: src/notify/notify.cc:104
+#: src/notify/notify.cc:106
 msgid "Always show notification"
 msgstr "常に通知を表示する"
 
-#: src/notify/notify.cc:106
+#: src/notify/notify.cc:108
 msgid "Include album name in notification"
 msgstr "アルバムの名前も通知に含める"
 
-#: src/notify/osd.cc:59
+#: src/notify/notify.cc:110
+msgid "Custom notification duration:"
+msgstr ""
+
+#: src/notify/osd.cc:74
 msgid "Show"
 msgstr "表示する"
 
@@ -2659,26 +2967,26 @@ msgstr "表示する"
 msgid "OpenMPT (Module Player)"
 msgstr ""
 
-#: src/openmpt/mpt.cc:134
+#: src/openmpt/mpt.cc:133
 msgid ""
 "Module player based on libopenmpt\n"
 "\n"
 "Written by: Chris Spiegel <cspiegel@gmail.com>"
 msgstr ""
 
-#: src/openmpt/mpt.cc:153
+#: src/openmpt/mpt.cc:152
 msgid "Stereo separation:"
 msgstr ""
 
-#: src/openmpt/mpt.cc:155
+#: src/openmpt/mpt.cc:154
 msgid "%"
 msgstr "%"
 
-#: src/openmpt/mpt.cc:159
+#: src/openmpt/mpt.cc:158
 msgid "Interpolation:"
 msgstr ""
 
-#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:174
+#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189
 msgid "Linear"
 msgstr "線形"
 
@@ -2720,33 +3028,35 @@ msgstr "OSS ソフトウェアのフォーマット変換を有効にする"
 
 #: src/oss4/plugin.cc:89
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr "バーチャルミキシングを防ぐために排他的モード (exclusive mode) を有効にする"
+msgstr ""
+"バーチャルミキシングを防ぐために排他的モード (exclusive mode) を有効にする"
 
 #: src/oss4/plugin.cc:101
 msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010-2012 Michał Lipski\n"
 "\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
-msgstr "OSS4 出力プラグイン for Audacious\nCopyright 2010-2012 Michał Lipski\n\n#audacious の人々、特に Tony Vroon および John Lindgren、そしてもちろん、OSS plugin の前作者に感謝します。"
+"I would like to thank people on #audacious, especially Tony Vroon and John "
+"Lindgren and of course the authors of the previous OSS plugin."
+msgstr ""
+"OSS4 出力プラグイン for Audacious\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"#audacious の人々、特に Tony Vroon および John Lindgren、そしてもちろん、OSS "
+"plugin の前作者に感謝します。"
 
 #: src/playlist-manager/playlist-manager.cc:37
 #: src/playlist-manager-qt/playlist-manager-qt.cc:40
 msgid "Playlist Manager"
 msgstr "プレイリストマネージャー"
 
-#: src/playlist-manager/playlist-manager.cc:200
-#: src/playlist-manager-qt/playlist-manager-qt.cc:186
-msgid "Entries"
-msgstr "項目数"
-
 #: src/playlist-manager/playlist-manager.cc:220
-#: src/playlist-manager-qt/playlist-manager-qt.cc:340
+#: src/playlist-manager-qt/playlist-manager-qt.cc:354
 msgid "_Remove"
 msgstr "削除(_R)"
 
 #: src/playlist-manager/playlist-manager.cc:221
-#: src/playlist-manager-qt/playlist-manager-qt.cc:335
+#: src/playlist-manager-qt/playlist-manager-qt.cc:349
 msgid "Ren_ame"
 msgstr "名前の変更(_A)"
 
@@ -2758,11 +3068,11 @@ msgstr "PLS プレイリスト"
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "OpenPSF PSF1/PSF2 デコーダー"
 
-#: src/psf/plugin.cc:269
+#: src/psf/plugin.cc:270
 msgid "<b>OpenPSF Configuration</b>"
 msgstr ""
 
-#: src/psf/plugin.cc:270 src/xsf/plugin.cc:232
+#: src/psf/plugin.cc:271 src/xsf/plugin.cc:233
 msgid "Ignore length from file"
 msgstr "ファイルに記録されている再生時間を無視"
 
@@ -2782,12 +3092,35 @@ msgstr ""
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr "Audacious PulseAudio Output Plugin\n\nThis program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Audacious PulseAudio Output Plugin\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
@@ -2800,76 +3133,73 @@ msgid ""
 "\n"
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
-msgstr "QtMultimedia Audio 出力プラグイン for Audacious\nCopyright 2014 William Pitcock\n\n派生元: SDL 出力プラグイン for Audacious\nCopyright 2010 John Lindgren"
+msgstr ""
+"QtMultimedia Audio 出力プラグイン for Audacious\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"派生元: SDL 出力プラグイン for Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/qtglspectrum/gl-spectrum.cc:41
 msgid ""
 "OpenGL Spectrum Analyzer for Audacious\n"
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
-"Copyright 2014 William Pitcock\n"
+"Copyright 2014, 2020 Ariadne Conill\n"
 "\n"
 "Based on the XMMS plugin:\n"
-"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and 4Front Technologies\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
 "\n"
 "License: GPLv2+"
-msgstr "OpenGL スペクトラムアナライザー for Audacious\nCopyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\nCopyright 2014 William Pitcock\n\n派生元: XMMS プラグイン:\nCopyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and 4Front Technologies\n\nライセンス: GPLv2+"
+msgstr ""
 
-#: src/qtui/main_window.cc:111 src/qtui/main_window.cc:112
-#: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
-msgid "Stop After This Song"
-msgstr "曲の再生後に停止"
+#: src/qthotkey/gui.cc:165
+msgid "Press a key combination inside a text field."
+msgstr ""
 
-#: src/qtui/menus.cc:105
+#: src/qthotkey/plugin.cc:103
+msgid ""
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
+"\n"
+"Copyright (C) 2020 i.Dark_Templar <darktemplar@dark-templar-archives.net>\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributors include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
+msgstr ""
+
+#: src/qtui/menus.cc:109
 msgid "_Open Folder ..."
 msgstr "フォルダを開く(_O)"
 
-#: src/qtui/menus.cc:111
+#: src/qtui/menus.cc:115
 msgid "_Add Folder ..."
 msgstr "フォルダーを追加(_A)"
 
-#: src/qtui/menus.cc:123
+#: src/qtui/menus.cc:128
 msgid "_Log Inspector ..."
 msgstr "ログ検査(_L)"
 
-#: src/qtui/menus.cc:206
+#: src/qtui/menus.cc:218
 msgid "_Find ..."
 msgstr "検索(_F)"
 
-#: src/qtui/menus.cc:242 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
+#: src/qtui/menus.cc:254 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
 msgstr "オーディオの設定..."
 
-#: src/qtui/playlist_header.cc:214
-msgid "Reset to Defaults"
-msgstr "デフォルトに戻す"
+#: src/qtui/playlist_model.cc:188
+msgid "Q#"
+msgstr ""
 
-#: src/qtui/playlist_model.cc:35
-msgid "Now Playing"
-msgstr "再生中"
-
-#: src/qtui/playlist_model.cc:35
-msgid "Entry Number"
-msgstr "項目数"
-
-#: src/qtui/playlist_model.cc:37
-msgid "Album Artist"
-msgstr "アルバムアーティスト"
-
-#: src/qtui/playlist_model.cc:38
-msgid "Queue Position"
-msgstr "キューの位置"
-
-#: src/qtui/playlist_model.cc:38
-msgid "File Path"
-msgstr "ファイルパス"
-
-#: src/qtui/playlist_model.cc:39
-msgid "File Name"
-msgstr "ファイル名"
-
-#: src/qtui/playlist_model.cc:39
-msgid "Custom Title"
-msgstr "カスタムタイトル"
+#: src/qtui/playlist_model.cc:190
+msgid "T#"
+msgstr ""
 
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
@@ -2879,20 +3209,24 @@ msgstr "Qt インターフェイス"
 msgid "Search playlist"
 msgstr "プレイリストを検索"
 
-#: src/qtui/settings.cc:52
+#: src/qtui/settings.cc:56
 msgid "Always"
 msgstr ""
 
-#: src/qtui/settings.cc:53
+#: src/qtui/settings.cc:57
 msgid "Auto-hide"
 msgstr ""
 
-#: src/qtui/settings.cc:54
+#: src/qtui/settings.cc:58
 msgid "Never"
 msgstr ""
 
-#: src/qtui/settings.cc:58
+#: src/qtui/settings.cc:62
 msgid "Show playlist tabs:"
+msgstr ""
+
+#: src/qtui/settings.cc:76
+msgid "Use bold font for column headers"
 msgstr ""
 
 #: src/resample/resample.cc:43
@@ -2903,7 +3237,9 @@ msgstr "サンプリング周波数コンバーター"
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
-msgstr "サンプリング周波数コンバータープラグイン for Audacious\nCopyright 2010-2012 John Lindgren"
+msgstr ""
+"サンプリング周波数コンバータープラグイン for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/resample/resample.cc:187
 msgid "Skip/repeat samples"
@@ -2933,7 +3269,7 @@ msgstr "<b>変換</b>"
 msgid "Method:"
 msgstr "方法"
 
-#: src/resample/resample.cc:199 src/soxr/sox-resampler.cc:188
+#: src/resample/resample.cc:199 src/soxr/sox-resampler.cc:203
 msgid "Rate:"
 msgstr "レート:"
 
@@ -2993,7 +3329,9 @@ msgstr "Last.fm に接続しています…"
 msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
-msgstr "scrobble を一時的にコンピューター内に保存しました。Audacious がアクセス可能になり次第投稿されます。"
+msgstr ""
+"scrobble を一時的にコンピューター内に保存しました。Audacious がアクセス可能に"
+"なり次第投稿されます。"
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
@@ -3004,7 +3342,9 @@ msgstr "許可が与えられました。ユーザー %s に scrobble してい�
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
-msgstr "許可がありません。以下の URL をブラウザーで開いて Audacious にアクセス権を与えた後、再度 '許可を確認' をクリックしてください。"
+msgstr ""
+"許可がありません。以下の URL をブラウザーで開いて Audacious にアクセス権を与"
+"えた後、再度 '許可を確認' をクリックしてください。"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
@@ -3019,35 +3359,42 @@ msgid "Revoke Permission"
 msgstr "許可を取り消す"
 
 #: src/scrobbler2/config_window.cc:91
-msgid ""
-"You need to allow Audacious to scrobble tracks to your Last.fm account."
+msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr "Audacious に Last.fm へ曲を scrobble する許可を与える必要があります。"
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
 msgstr "Scrobbler 2.0"
 
-#: src/scrobbler2/scrobbler.cc:224
+#: src/scrobbler2/scrobbler.cc:226
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
-msgstr "Scrobbler プラグインを起動できませんでした。\\n\nインストール方法に問題がある可能性があります。"
+msgstr ""
+"Scrobbler プラグインを起動できませんでした。\\n\n"
+"インストール方法に問題がある可能性があります。"
 
-#: src/scrobbler2/scrobbler.cc:289
+#: src/scrobbler2/scrobbler.cc:291
 msgid ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
 "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "\n"
-"Thanks to John Lindgren for giving me a hand at the beginning of this project.\n"
+"Thanks to John Lindgren for giving me a hand at the beginning of this "
+"project.\n"
 "\n"
-msgstr "Pitxyoki による、 Audacious Scrobbler プラグイン 2.0 です。\\n\\n\nCopyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\\n\\n\nプロジェクト開始時に手助けしてくれた John Lindgren に感謝します。\\n\\n\n"
+msgstr ""
+"Pitxyoki による、 Audacious Scrobbler プラグイン 2.0 です。\\n\\n\n"
+"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\\n\\n\n"
+"プロジェクト開始時に手助けしてくれた John Lindgren に感謝します。\\n\\n\n"
 
-#: src/scrobbler2/scrobbler_communication.cc:639
+#: src/scrobbler2/scrobbler_communication.cc:663
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
-msgstr "Audacious は Last.fm Scrobbler のバージョンを更新しました。\nScrobbler プラグインの設定をご確認ください。"
+msgstr ""
+"Audacious は Last.fm Scrobbler のバージョンを更新しました。\n"
+"Scrobbler プラグインの設定をご確認ください。"
 
 #: src/sdlout/sdlout.cc:43
 msgid "SDL Output"
@@ -3057,7 +3404,9 @@ msgstr "SDL 出力"
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
-msgstr "SDL 出力プラグイン for Audacious\nCopyright 2010 John Lindgren"
+msgstr ""
+"SDL 出力プラグイン for Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/search-tool/library.cc:35 src/search-tool/library.cc:46
 #: src/search-tool-qt/library.cc:35 src/search-tool-qt/library.cc:46
@@ -3082,53 +3431,55 @@ msgstr "アルバム:"
 msgid "by"
 msgstr "アーティスト:"
 
-#: src/search-tool-qt/search-tool-qt.cc:163 src/search-tool/search-tool.cc:73
+#: src/search-tool-qt/search-tool-qt.cc:165 src/search-tool/search-tool.cc:73
 msgid "Number of results to show:"
 msgstr "検索結果の表示件数:"
 
-#: src/search-tool-qt/search-tool-qt.cc:166 src/search-tool/search-tool.cc:76
+#: src/search-tool-qt/search-tool-qt.cc:168 src/search-tool/search-tool.cc:76
 msgid "Rescan library at startup"
 msgstr "起動時にライブラリーを再スキャンする"
 
-#: src/search-tool-qt/search-tool-qt.cc:168
+#: src/search-tool-qt/search-tool-qt.cc:170
 msgid "Monitor library for changes"
 msgstr ""
 
-#: src/search-tool-qt/search-tool-qt.cc:191 src/search-tool/search-tool.cc:446
+#: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:446
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr "音楽ライブラリーを Audacious へインポートするには、フォルダを選択し、\"再読み込み\" アイコンをクリックしてください。"
+msgstr ""
+"音楽ライブラリーを Audacious へインポートするには、フォルダを選択し、\"再読み"
+"込み\" アイコンをクリックしてください。"
 
-#: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:455
+#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:455
 msgid "Please wait ..."
 msgstr "お待ちください..."
 
-#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:483
+#: src/search-tool-qt/search-tool-qt.cc:197 src/search-tool/search-tool.cc:483
 msgid "Choose Folder"
 msgstr "フォルダーを選択"
 
-#: src/search-tool-qt/search-tool-qt.cc:199
+#: src/search-tool-qt/search-tool-qt.cc:201
 msgid "Search library"
 msgstr "ライブラリーを検索"
 
-#: src/search-tool-qt/search-tool-qt.cc:325 src/search-tool/search-tool.cc:155
+#: src/search-tool-qt/search-tool-qt.cc:327 src/search-tool/search-tool.cc:155
 #, c-format
 msgid "%d of %d result shown"
 msgid_plural "%d of %d results shown"
 msgstr[0] "%d / %d の結果を表示中"
 
-#: src/search-tool-qt/search-tool-qt.cc:329 src/search-tool/search-tool.cc:159
+#: src/search-tool-qt/search-tool-qt.cc:331 src/search-tool/search-tool.cc:159
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
 msgstr[0] "%d 件"
 
-#: src/search-tool-qt/search-tool-qt.cc:500 src/search-tool/search-tool.cc:345
+#: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:345
 msgid "_Create Playlist"
 msgstr "プレイリストを作成(_C)"
 
-#: src/search-tool-qt/search-tool-qt.cc:502 src/search-tool/search-tool.cc:347
+#: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:347
 msgid "_Add to Playlist"
 msgstr "プレイリストに追加(_A)"
 
@@ -3204,7 +3555,9 @@ msgstr "無音部の除去"
 msgid ""
 "Silence Removal Plugin for Audacious\n"
 "Copyright 2014 John Lindgren"
-msgstr "無音部の除去プラグイン for Audacious\nCopyright 2014 John Lindgren"
+msgstr ""
+"無音部の除去プラグイン for Audacious\n"
+"Copyright 2014 John Lindgren"
 
 #: src/silence-removal/silence-removal.cc:67
 msgid "<b>Silence Removal</b>"
@@ -3230,51 +3583,51 @@ msgstr "リピートポイントAを設定します。"
 msgid "Repeat point B set."
 msgstr "リピートポイントBを設定します。"
 
-#: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:220
+#: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:221
 msgid "Preamp"
 msgstr "プリアンプ"
 
-#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:224
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:225
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:225
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:225
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:225
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:225
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:225
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:267
+#: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:268
 msgid "Audacious Equalizer"
 msgstr "Audacious イコライザー"
 
@@ -3310,28 +3663,28 @@ msgstr "バランス: 中央"
 msgid "Balance: %d%% right"
 msgstr "バランス: %d%% 右"
 
-#: src/skins/main.cc:876 src/skins-qt/main.cc:817
+#: src/skins/main.cc:875 src/skins-qt/main.cc:816
 msgid "Options Menu"
 msgstr "オプションメニュー"
 
-#: src/skins/main.cc:880 src/skins-qt/main.cc:821
+#: src/skins/main.cc:879 src/skins-qt/main.cc:820
 msgid "Disable 'Always On Top'"
 msgstr "「常に最前面に配置」無効"
 
-#: src/skins/main.cc:882 src/skins-qt/main.cc:823
+#: src/skins/main.cc:881 src/skins-qt/main.cc:822
 msgid "Enable 'Always On Top'"
 msgstr "「常に最前面に配置」有効"
 
-#: src/skins/main.cc:885 src/skins-qt/main.cc:826
+#: src/skins/main.cc:884 src/skins-qt/main.cc:825
 msgid "File Info Box"
 msgstr "ファイル情報ボックス"
 
-#: src/skins/main.cc:888 src/skins/menus.cc:149 src/skins-qt/main.cc:829
+#: src/skins/main.cc:887 src/skins/menus.cc:149 src/skins-qt/main.cc:828
 #: src/skins-qt/menus.cc:142
 msgid "Double Size"
 msgstr "2倍の大きさで表示"
 
-#: src/skins/main.cc:891 src/skins-qt/main.cc:832
+#: src/skins/main.cc:890 src/skins-qt/main.cc:831
 msgid "Visualizations"
 msgstr "視覚化"
 
@@ -3474,7 +3827,7 @@ msgstr "イコライザーを表示する"
 msgid "Show Remaining Time"
 msgstr "残り時間を表示する"
 
-#: src/skins/menus.cc:150 src/skins-qt/menus.cc:144
+#: src/skins/menus.cc:150 src/skins-qt/menus.cc:143
 msgid "Always on Top"
 msgstr "常に最前面に配置する"
 
@@ -3645,7 +3998,7 @@ msgstr "末尾に貼り付け"
 msgid "Queue/Unqueue"
 msgstr "キュー/アンキュー"
 
-#: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:53
+#: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:56
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d / %d)"
@@ -3654,7 +4007,7 @@ msgstr "%s (%d / %d)"
 msgid "Audacious Playlist Editor"
 msgstr "Audacious プレイリストエディター"
 
-#: src/skins/plugin.cc:49 src/skins-qt/plugin.cc:51
+#: src/skins/plugin.cc:49 src/skins-qt/plugin.cc:64
 msgid "Winamp Classic Interface"
 msgstr "Winamp クラシックインターフェイス"
 
@@ -3750,7 +4103,7 @@ msgid "Slow"
 msgstr "遅い"
 
 #: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:222
-#: src/soxr/sox-resampler.cc:165
+#: src/soxr/sox-resampler.cc:180
 msgid "Medium"
 msgstr "中"
 
@@ -3848,11 +4201,14 @@ msgstr "検索"
 
 #: src/skins/search-select.cc:81
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular"
-" expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr "1 つ以上の項目を入力すると、プレイリストのエントリーが選択できます。項目には正規表現が使え、大文字と小文字を区別しません。正規表現の動作がわからない場合は、検索したい文字をそのまま入力してください。"
+msgstr ""
+"1 つ以上の項目を入力すると、プレイリストのエントリーが選択できます。項目には"
+"正規表現が使え、大文字と小文字を区別しません。正規表現の動作がわからない場合"
+"は、検索したい文字をそのまま入力してください。"
 
 #: src/skins/search-select.cc:89
 msgid "Title:"
@@ -3893,12 +4249,38 @@ msgid ""
 "\n"
 "Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr "Based on the xmms_sndfile plugin:\nCopyright (C) 2000, 2002 Erik de Castro Lopo\n\nAdapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n\nThis program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Based on the xmms_sndfile plugin:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/sndio/sndio.cc:43
 msgid "Sndio Output"
@@ -3951,13 +4333,16 @@ msgstr "プレイリストの終了時に実行するコマンド:"
 
 #: src/songchange/song_change.cc:256
 msgid "Command to run when song title changes (for network streams):"
-msgstr "曲タイトルが替わったときに実行するコマンド (ネットワークストリーミング用):"
+msgstr ""
+"曲タイトルが替わったときに実行するコマンド (ネットワークストリーミング用):"
 
 #: src/songchange/song_change.cc:259
 msgid ""
 "You can use the following format codes, which will be replaced before "
 "running the command (not all are useful for the end-of-playlist command):"
-msgstr "次のフォーマットコードが使用できます。コードはコマンドの実行前に置き換えられます。（プレイリストの最後の曲には使用できないものもあります）"
+msgstr ""
+"次のフォーマットコードが使用できます。コードはコマンドの実行前に置き換えられ"
+"ます。（プレイリストの最後の曲には使用できないものもあります）"
 
 #: src/songchange/song_change.cc:262
 msgid ""
@@ -3972,15 +4357,28 @@ msgid ""
 "%r: Rate (bits per second)\n"
 "%t: Playlist position\n"
 "%T: Title (unformatted)"
-msgstr "%a: アーティスト\n%b: アルバム\n%c: チャンネル数\n%f: ファイル名 (フルパス)\n%F: 周波数 (Hz)\n%l: 長さ (milliseconds)\n%n または %s: フォーマット化したタイトル (プレイリストの設定を参照)\n%p: 再生中かどうか (1 または 0)\n%r: ビットレート (bps)\n%t: プレイリストの位置\n%T: タイトル (フォーマット化していないもの)"
+msgstr ""
+"%a: アーティスト\n"
+"%b: アルバム\n"
+"%c: チャンネル数\n"
+"%f: ファイル名 (フルパス)\n"
+"%F: 周波数 (Hz)\n"
+"%l: 長さ (milliseconds)\n"
+"%n または %s: フォーマット化したタイトル (プレイリストの設定を参照)\n"
+"%p: 再生中かどうか (1 または 0)\n"
+"%r: ビットレート (bps)\n"
+"%t: プレイリストの位置\n"
+"%T: タイトル (フォーマット化していないもの)"
 
 #: src/songchange/song_change.cc:273
 msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.  "
 "Unquoted parameters may lead to unexpected results."
-msgstr "シェルに渡すパラメーターは引用符でくくってください。引用符がない場合、思わぬ結果が起きることがあります。"
+msgstr ""
+"シェルに渡すパラメーターは引用符でくくってください。引用符がない場合、思わぬ"
+"結果が起きることがあります。"
 
-#: src/song-info-qt/song-info.cc:33
+#: src/song-info-qt/song-info.cc:30
 msgid "Song Info"
 msgstr "曲の情報"
 
@@ -3988,56 +4386,61 @@ msgstr "曲の情報"
 msgid "SoX Resampler"
 msgstr "SoX リサンプラー"
 
-#: src/soxr/sox-resampler.cc:157
+#: src/soxr/sox-resampler.cc:172
 msgid ""
 "SoX Resampler Plugin for Audacious\n"
 "Copyright 2013 Michał Lipski\n"
 "\n"
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
-msgstr "SoX リサンプラープラグイン for Audacious\nCopyright 2013 Michał Lipski\n\n派生元: サンプリング周波数コンバータプラグイン\nCopyright 2010-2012 John Lindgren"
+msgstr ""
+"SoX リサンプラープラグイン for Audacious\n"
+"Copyright 2013 Michał Lipski\n"
+"\n"
+"派生元: サンプリング周波数コンバータプラグイン\n"
+"Copyright 2010-2012 John Lindgren"
 
-#: src/soxr/sox-resampler.cc:163
+#: src/soxr/sox-resampler.cc:178
 msgid "Quick"
 msgstr "高速"
 
-#: src/soxr/sox-resampler.cc:164
+#: src/soxr/sox-resampler.cc:179
 msgid "Low"
 msgstr "低品質"
 
-#: src/soxr/sox-resampler.cc:166
+#: src/soxr/sox-resampler.cc:181
 msgid "High"
 msgstr "高品質"
 
-#: src/soxr/sox-resampler.cc:167
+#: src/soxr/sox-resampler.cc:182
 msgid "Very High"
 msgstr "最高品質"
 
-#: src/soxr/sox-resampler.cc:168
+#: src/soxr/sox-resampler.cc:183
 msgid "Ultra High"
 msgstr "究極品質"
 
-#: src/soxr/sox-resampler.cc:172
+#: src/soxr/sox-resampler.cc:187
 msgid "Minimum"
 msgstr "最小限"
 
-#: src/soxr/sox-resampler.cc:173
+#: src/soxr/sox-resampler.cc:188
 msgid "Intermediate"
 msgstr "中間"
 
-#: src/soxr/sox-resampler.cc:178
+#: src/soxr/sox-resampler.cc:193
 msgid "Quality:"
 msgstr "品質:"
 
-#: src/soxr/sox-resampler.cc:181
+#: src/soxr/sox-resampler.cc:196
 msgid "Phase:"
 msgstr "位相応答:"
 
-#: src/soxr/sox-resampler.cc:185
+#: src/soxr/sox-resampler.cc:200
 msgid "Allow aliasing"
 msgstr "エイリアシングを許可"
 
-#: src/soxr/sox-resampler.cc:187
+#: src/soxr/sox-resampler.cc:202
 msgid "Use steep filter"
 msgstr "急峻なフィルターを使う"
 
@@ -4075,7 +4478,15 @@ msgid ""
 "\n"
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
-msgstr "ステータスアイコンプラグイン (partial port for Qt interface)\n\nCopyright 2005-2007 Giacomo Lozito <james@develia.org>\nCopyright 2010 Michał Lipski <tallica@o2.pl>\nCopyright 2015 Eugene Paskevich <eugene@raptor.kiev.ua>\n\nこのプラグインはウィンドウマネージャーの\nシステムトレイにアイコンを表示します。"
+msgstr ""
+"ステータスアイコンプラグイン (partial port for Qt interface)\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"Copyright 2015 Eugene Paskevich <eugene@raptor.kiev.ua>\n"
+"\n"
+"このプラグインはウィンドウマネージャーの\n"
+"システムトレイにアイコンを表示します。"
 
 #: src/statusicon-qt/statusicon.cc:86 src/statusicon/statusicon.cc:380
 msgid "<b>Mouse Scroll Action</b>"
@@ -4118,7 +4529,14 @@ msgid ""
 "\n"
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
-msgstr "ステータスアイコンプラグイン\n\nCopyright 2005-2007 Giacomo Lozito <james@develia.org>\nCopyright 2010 Michał Lipski <tallica@o2.pl>\n\nこのプラグインはステータスアイコンを\nウインドウマネージャが定めるシステムトレイ内に表示する"
+msgstr ""
+"ステータスアイコンプラグイン\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"このプラグインはステータスアイコンを\n"
+"ウインドウマネージャが定めるシステムトレイ内に表示する"
 
 #: src/stereo_plugin/stereo.cc:19
 msgid "Extra Stereo"
@@ -4129,7 +4547,10 @@ msgid ""
 "Extra Stereo Plugin\n"
 "\n"
 "By Johan Levin, 1999"
-msgstr "エクストラステレオプラグイン\n\nBy Johan Levin, 1999"
+msgstr ""
+"エクストラステレオプラグイン\n"
+"\n"
+"By Johan Levin, 1999"
 
 #: src/stereo_plugin/stereo.cc:44
 msgid "<b>Extra Stereo</b>"
@@ -4288,14 +4709,24 @@ msgstr "%s %.1f Hz"
 msgid "Tone Generator: "
 msgstr "トーンジェネレーター: "
 
-#: src/tonegen/tonegen.cc:160
+#: src/tonegen/tonegen.cc:161
 msgid ""
 "Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
 "\n"
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
-msgstr "サイン音色 (sine tone) ジェネレータ by Håvard Kvålen <havardk@xmms.org>\nModified by Daniel J. Peng <danielpeng@bigfoot.com>\n\nこのプラグインを使用するには、URL に次のフォーマットで文字列を入力してください。\n\ntone://frequency1;frequency2;frequency3;...\n\n例:\ntone://2000;2005 (2000Hz と 2005Hz のトーンを再生する)"
+msgstr ""
+"サイン音色 (sine tone) ジェネレータ by Håvard Kvålen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"このプラグインを使用するには、URL に次のフォーマットで文字列を入力してくださ"
+"い。\n"
+"\n"
+"tone://frequency1;frequency2;frequency3;...\n"
+"\n"
+"例:\n"
+"tone://2000;2005 (2000Hz と 2005Hz のトーンを再生する)"
 
 #: src/ui-common/dialogs-qt.cc:31
 msgid "Working ..."
@@ -4328,7 +4759,24 @@ msgid ""
 "Håvard Kvålen <havardk@xmms.org>\n"
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
-msgstr "Audacious Ogg Vorbis デコーダー\n\n派生元: Xiph.org Foundation の Ogg Vorbis プラグイン\nhttp://www.xiph.org/\n\n元のコードの作者:\nTony Arcieri <bascule@inferno.tusculum.edu>\n\n貢献者:\nChris Montgomery <monty@xiph.org>\nPeter Alm <peter@xmms.org>\nMichael Smith <msmith@labyrinth.edu.au>\nJack Moffitt <jack@icecast.org>\nJorn Baayen <jorn@nl.linux.org>\nHåvard Kvålen <havardk@xmms.org>\nGian-Carlo Pascutto <gcp@sjeng.org>\nEugene Zagidullin <e.asphyx@gmail.com>"
+msgstr ""
+"Audacious Ogg Vorbis デコーダー\n"
+"\n"
+"派生元: Xiph.org Foundation の Ogg Vorbis プラグイン\n"
+"http://www.xiph.org/\n"
+"\n"
+"元のコードの作者:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"貢献者:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
 
 #: src/vorbis/vorbis.h:18
 msgid "Ogg Vorbis Decoder"
@@ -4352,18 +4800,33 @@ msgid ""
 "Chip freq: %F\n"
 "Player Freq: %P\n"
 "Year: %y"
-msgstr "タイトル: %t\n作者: %a\n由来: %f\nトラッカー: %T\nコメント: %C\nチップ型式: %c\nステレオ: %s\nループ: %l\nチップ周波数: %F\nプレイヤー周波数: %P\n年: %y"
+msgstr ""
+"タイトル: %t\n"
+"作者: %a\n"
+"由来: %f\n"
+"トラッカー: %T\n"
+"コメント: %C\n"
+"チップ型式: %c\n"
+"ステレオ: %s\n"
+"ループ: %l\n"
+"チップ周波数: %F\n"
+"プレイヤー周波数: %P\n"
+"年: %y"
 
 #: src/vtx/vtx.cc:38
 msgid "VTX Decoder"
 msgstr "VTX デコーダー"
 
-#: src/vtx/vtx.cc:176
+#: src/vtx/vtx.cc:178
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
-msgstr "Sashnov Alexander <sashnov@ngs.ru> による Vortex ファイル形式プレイヤーです。\nRoman Sherbakov <v_soft@microfor.ru> の in_vtx.dll を基にしています。\nAudacious への実装は、Pavel Vymetalek <pvymetalek@seznam.cz> が行いました。"
+msgstr ""
+"Sashnov Alexander <sashnov@ngs.ru> による Vortex ファイル形式プレイヤーで"
+"す。\n"
+"Roman Sherbakov <v_soft@microfor.ru> の in_vtx.dll を基にしています。\n"
+"Audacious への実装は、Pavel Vymetalek <pvymetalek@seznam.cz> が行いました。"
 
 #: src/vumeter-qt/vumeter_qt.cc:31
 msgid ""
@@ -4403,7 +4866,9 @@ msgstr "Win32 waveOut"
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
-msgstr "Win32 waveOut Plugin for Audacious\nCopyright 2016 John Lindgren"
+msgstr ""
+"Win32 waveOut Plugin for Audacious\n"
+"Copyright 2016 John Lindgren"
 
 #: src/wavpack/wavpack.cc:25
 msgid "WavPack Decoder"
@@ -4417,18 +4882,21 @@ msgstr "非可逆 (ハイブリッド)"
 msgid "lossy"
 msgstr "非可逆"
 
-#: src/wavpack/wavpack.cc:257
+#: src/wavpack/wavpack.cc:259
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
 "Some of the plugin code was by Miles Egan."
-msgstr "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n\nプラグインのコードの一部は Miles Egan によるものです。"
+msgstr ""
+"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"プラグインのコードの一部は Miles Egan によるものです。"
 
 #: src/xsf/plugin.cc:50
 msgid "2SF Decoder"
 msgstr "2SF デコーダー"
 
-#: src/xsf/plugin.cc:231
+#: src/xsf/plugin.cc:232
 msgid "<b>XSF Configuration</b>"
 msgstr "<b>XSF の設定</b>"
 
