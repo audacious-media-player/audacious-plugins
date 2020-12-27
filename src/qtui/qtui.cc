@@ -73,7 +73,7 @@ public:
 
     void quit()
     {
-        QObject::connect(window, &QObject::destroyed, QApplication::quit);
+        QObject::connect(window.data(), &QObject::destroyed, QApplication::quit);
         window->deleteLater();
     }
 };

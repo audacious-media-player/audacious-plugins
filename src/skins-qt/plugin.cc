@@ -82,7 +82,7 @@ public:
 
     void quit ()
     {
-        QObject::connect (proxy, & QObject::destroyed, QApplication::quit);
+        QObject::connect (proxy.data (), & QObject::destroyed, QApplication::quit);
         proxy->deleteLater ();
     }
 
