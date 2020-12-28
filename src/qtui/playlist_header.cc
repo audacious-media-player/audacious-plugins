@@ -35,12 +35,11 @@
 #include <libaudqt/libaudqt.h>
 
 static const char * const s_col_keys[] = {
-    "playing",      "number", "title",   "artist", "year",   "album",
-    "album-artist", "track",  "genre",   "queued", "length", "path",
-    "filename",     "custom", "bitrate", "comment"};
+    "number",       "title",    "artist", "year",    "album",
+    "album-artist", "track",    "genre",  "queued",  "length",
+    "path",         "filename", "custom", "bitrate", "comment"};
 
 static const int s_default_widths[] = {
-    25,  // now playing
     25,  // entry number
     275, // title
     175, // artist
@@ -59,7 +58,6 @@ static const int s_default_widths[] = {
 };
 
 static const Playlist::SortType s_sort_types[] = {
-    Playlist::n_sort_types,   // now playing
     Playlist::n_sort_types,   // entry number
     Playlist::Title,          // title
     Playlist::Artist,         // artist
@@ -86,6 +84,7 @@ static_assert(aud::n_elems(s_sort_types) == PlaylistModel::n_cols,
 
 static Index<int> s_cols;
 static int s_col_widths[PlaylistModel::n_cols];
+static bool s_show_playing = false;
 
 static void loadConfig(bool force = false)
 {
@@ -102,6 +101,13 @@ static void loadConfig(bool force = false)
 
     for (int c = 0; c < n_columns; c++)
     {
+        /* "playing" used to be a separate column */
+        if (!strcmp(columns[c], "playing"))
+        {
+            s_show_playing = true;
+            continue;
+        }
+
         int i = 0;
         while (i < PlaylistModel::n_cols && strcmp(columns[c], s_col_keys[i]))
             i++;
@@ -111,6 +117,10 @@ static void loadConfig(bool force = false)
     }
 
     auto widths = str_list_to_index(aud_get_str("qtui", "column_widths"), ", ");
+    /* ignore width of former "playing" column */
+    if (widths.len() >= 1)
+        widths.remove(0, 1);
+
     int n_widths = aud::min(widths.len(), (int)PlaylistModel::n_cols);
 
     for (int i = 0; i < n_widths; i++)
@@ -124,12 +134,18 @@ static void loadConfig(bool force = false)
 static void saveConfig()
 {
     Index<String> index;
+
+    if (s_show_playing)
+        index.append(String("playing"));
     for (int col : s_cols)
         index.append(String(s_col_keys[col]));
 
-    int widths[PlaylistModel::n_cols];
+    int widths[1 + PlaylistModel::n_cols];
+    /* set dummy width for former "playing" column */
+    widths[0] = 25;
+
     for (int i = 0; i < PlaylistModel::n_cols; i++)
-        widths[i] = audqt::to_portable_dpi(s_col_widths[i]);
+        widths[1 + i] = audqt::to_portable_dpi(s_col_widths[i]);
 
     aud_set_str("qtui", "playlist_columns", index_to_str_list(index, " "));
     aud_set_str("qtui", "column_widths",
@@ -151,6 +167,19 @@ PlaylistHeader::PlaylistHeader(PlaylistWidget * playlist)
             &PlaylistHeader::sectionResized);
     connect(this, &QHeaderView::sectionMoved, this,
             &PlaylistHeader::sectionMoved);
+}
+
+static void toggleShowPlaying(bool on)
+{
+    if (s_show_playing == on)
+        return;
+
+    s_show_playing = on;
+
+    saveConfig();
+
+    // update all playlists
+    hook_call("qtui update playlist columns", nullptr);
 }
 
 static void toggleColumn(int col, bool on)
@@ -192,6 +221,13 @@ static void resetToDefaults()
 void PlaylistHeader::contextMenuEvent(QContextMenuEvent * event)
 {
     auto menu = new QMenu(this);
+
+    auto playing = new QAction(_("Now Playing"), menu);
+    playing->setCheckable(true);
+    playing->setChecked(s_show_playing);
+    connect(playing, &QAction::toggled, toggleShowPlaying);
+    menu->addAction(playing);
+
     QAction * actions[PlaylistModel::n_cols];
 
     for (int col = 0; col < PlaylistModel::n_cols; col++)
@@ -259,6 +295,8 @@ void PlaylistHeader::updateColumns()
 
     // this should come after all setColumnHidden() calls
     m_playlist->setFirstVisibleColumn((n_shown > 0) ? 1 + s_cols[0] : 0);
+    m_playlist->playlistModel()->setPlayingCol(
+        (n_shown > 0 && s_show_playing) ? s_cols[0] : -1);
 
     m_inUpdate = false;
     m_lastCol = last;

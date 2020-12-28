@@ -30,7 +30,6 @@ class PlaylistModel : public QAbstractListModel
 public:
     enum
     {
-        NowPlaying,
         EntryNumber,
         Title,
         Artist,
@@ -72,10 +71,13 @@ public:
 
     void setFont(const QFont & font);
 
+    void setPlayingCol(int playing_col) { m_playing_col = playing_col; }
+
 private:
     Playlist m_playlist;
     int m_rows;
     QFont m_bold;
+    int m_playing_col = -1;
 
     QVariant alignment(int col) const;
     QString queuePos(int row) const;
