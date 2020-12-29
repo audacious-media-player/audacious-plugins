@@ -68,6 +68,12 @@ void PlaylistModel::setFont(const QFont & font)
     m_bold.setBold(true);
 }
 
+void PlaylistModel::setPlayingCol(int playing_col)
+{
+    m_playing_col = playing_col;
+    entriesChanged(0, m_rows);
+}
+
 QVariant PlaylistModel::alignment(int col) const
 {
     switch (col)

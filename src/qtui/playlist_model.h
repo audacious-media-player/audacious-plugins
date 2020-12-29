@@ -70,8 +70,7 @@ public:
     void entriesChanged(int row, int count);
 
     void setFont(const QFont & font);
-
-    void setPlayingCol(int playing_col) { m_playing_col = playing_col; }
+    void setPlayingCol(int playing_col);
 
 private:
     Playlist m_playlist;
