@@ -29,6 +29,8 @@ const char * const qtui_defaults[] = {
     "infoarea_show_art", "TRUE",
     "infoarea_visible", "TRUE",
     "menu_visible", "TRUE",
+    "player_width", "768",
+    "player_height", "480",
     "playlist_tabs_visible", aud::numeric_string<PlaylistTabVisibility::AutoHide>::str,
     "statusbar_visible", "TRUE",
     "entry_count_visible", "FALSE",
