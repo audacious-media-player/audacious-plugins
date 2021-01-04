@@ -67,24 +67,26 @@ static void add_callback(GtkWidget * widget, void * data);
 static void destroy_callback();
 static void ok_callback();
 
-static const char * event_desc[EVENT_MAX] = {
-    [EVENT_PREV_TRACK] = N_("Previous track"),
-    [EVENT_PLAY] = N_("Play"),
-    [EVENT_PAUSE] = N_("Pause/Resume"),
-    [EVENT_STOP] = N_("Stop"),
-    [EVENT_NEXT_TRACK] = N_("Next track"),
-    [EVENT_FORWARD] = N_("Step forward"),
-    [EVENT_BACKWARD] = N_("Step backward"),
-    [EVENT_MUTE] = N_("Mute"),
-    [EVENT_VOL_UP] = N_("Volume up"),
-    [EVENT_VOL_DOWN] = N_("Volume down"),
-    [EVENT_JUMP_TO_FILE] = N_("Jump to file"),
-    [EVENT_TOGGLE_WIN] = N_("Toggle player window(s)"),
-    [EVENT_SHOW_AOSD] = N_("Show On-Screen-Display"),
-    [EVENT_TOGGLE_REPEAT] = N_("Toggle repeat"),
-    [EVENT_TOGGLE_SHUFFLE] = N_("Toggle shuffle"),
-    [EVENT_TOGGLE_STOP] = N_("Toggle stop after current"),
-    [EVENT_RAISE] = N_("Raise player window(s)")};
+static const char * event_desc[] = {N_("Previous track"),
+                                    N_("Play"),
+                                    N_("Pause/Resume"),
+                                    N_("Stop"),
+                                    N_("Next track"),
+                                    N_("Step forward"),
+                                    N_("Step backward"),
+                                    N_("Mute"),
+                                    N_("Volume up"),
+                                    N_("Volume down"),
+                                    N_("Jump to file"),
+                                    N_("Toggle player window(s)"),
+                                    N_("Show On-Screen-Display"),
+                                    N_("Toggle repeat"),
+                                    N_("Toggle shuffle"),
+                                    N_("Toggle stop after current"),
+                                    N_("Raise player window(s)")};
+
+static_assert(aud::n_elems(event_desc) == EVENT_MAX,
+              "event_desc table is not up to date");
 
 static void set_keytext(GtkWidget * entry, int key, int mask, int type)
 {

@@ -21,12 +21,12 @@ peops2_sources = [
 ]
 
 
-shared_module('psf',
+shared_module('psf2',
   plugin_sources,
   peops_sources,
   peops2_sources,
   dependencies: [audacious_dep, zlib_dep],
+  name_prefix: '',
   install: true,
   install_dir: input_plugin_dir
 )
-

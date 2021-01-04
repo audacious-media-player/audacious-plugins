@@ -20,7 +20,9 @@
 
 #include <stdlib.h>
 #include <glib.h>
+
 #include <QApplication>
+#include <QPointer>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
@@ -44,6 +46,17 @@
 #include "window.h"
 #include "view.h"
 
+/* In Qt 6, QApplication::quit() calls closeEvent() on any remaining
+ * windows. To ensure that our cleanup function is called before that
+ * happens, it's convenient to tie it to the lifetime of a QObject. */
+class QtSkinsProxy : public QObject
+{
+public:
+    ~QtSkinsProxy ();
+};
+
+static QPointer<QtSkinsProxy> proxy;
+
 class QtSkins : public audqt::QtIfacePlugin
 {
 public:
@@ -58,13 +71,26 @@ public:
     constexpr QtSkins () : audqt::QtIfacePlugin (info) {}
 
     bool init ();
-    void cleanup ();
 
-    void run () { audqt::run (); }
-    void quit () { audqt::quit (); }
+    void cleanup ()
+    {
+        delete proxy;
+        audqt::cleanup ();
+    }
+
+    void run () { QApplication::exec (); }
+
+    void quit ()
+    {
+        QObject::connect (proxy.data (), & QObject::destroyed, QApplication::quit);
+        proxy->deleteLater ();
+    }
 
     void show (bool show)
-        { view_show_player (show); }
+    {
+        if (proxy)
+            view_show_player (show);
+    }
 };
 
 EXPORT QtSkins aud_plugin_instance;
@@ -148,6 +174,8 @@ bool QtSkins::init ()
 
     create_plugin_windows ();
 
+    proxy = new QtSkinsProxy;
+
     return true;
 }
 
@@ -164,14 +192,13 @@ static void skins_cleanup_main ()
     delete equalizerwin; equalizerwin = nullptr;
 }
 
-void QtSkins::cleanup ()
+QtSkinsProxy::~QtSkinsProxy ()
 {
     skins_cfg_save ();
 
     destroy_plugin_windows ();
 
     skins_cleanup_main ();
-    audqt::cleanup ();
 
     skin = Skin ();
 

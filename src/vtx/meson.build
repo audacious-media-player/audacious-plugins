@@ -7,9 +7,18 @@ vtx_sources = [
 ]
 
 
+vtx_deps = [audacious_dep]
+
+
+if (conf.has('USE_GTK'))
+  vtx_deps += [gtk_dep, audgui_dep]
+endif
+
+
 shared_module('vtx',
   vtx_sources,
-  dependencies: [audacious_dep],
+  dependencies: vtx_deps,
+  name_prefix: '',
   install: true,
   install_dir: input_plugin_dir
 )

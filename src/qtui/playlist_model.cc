@@ -30,18 +30,16 @@
 #include "playlist_model.h"
 
 const char * const PlaylistModel::labels[] = {
-    N_("Now Playing"),    N_("Entry Number"), N_("Title"),
-    N_("Artist"),         N_("Year"),         N_("Album"),
-    N_("Album Artist"),   N_("Track"),        N_("Genre"),
-    N_("Queue Position"), N_("Length"),       N_("File Path"),
-    N_("File Name"),      N_("Custom Title"), N_("Bitrate"),
-    N_("Comment")};
+    N_("Entry Number"),   N_("Title"),        N_("Artist"),    N_("Year"),
+    N_("Album"),          N_("Album Artist"), N_("Track"),     N_("Genre"),
+    N_("Queue Position"), N_("Length"),       N_("File Path"), N_("File Name"),
+    N_("Custom Title"),   N_("Bitrate"),      N_("Comment")};
 
 static const Tuple::Field s_fields[] = {
-    Tuple::Invalid,  Tuple::Invalid,        Tuple::Title,       Tuple::Artist,
-    Tuple::Year,     Tuple::Album,          Tuple::AlbumArtist, Tuple::Track,
-    Tuple::Genre,    Tuple::Invalid,        Tuple::Length,      Tuple::Path,
-    Tuple::Basename, Tuple::FormattedTitle, Tuple::Bitrate,     Tuple::Comment};
+    Tuple::Invalid,        Tuple::Title,       Tuple::Artist, Tuple::Year,
+    Tuple::Album,          Tuple::AlbumArtist, Tuple::Track,  Tuple::Genre,
+    Tuple::Invalid,        Tuple::Length,      Tuple::Path,   Tuple::Basename,
+    Tuple::FormattedTitle, Tuple::Bitrate,     Tuple::Comment};
 
 static_assert(aud::n_elems(PlaylistModel::labels) == PlaylistModel::n_cols,
               "update PlaylistModel::labels");
@@ -70,12 +68,16 @@ void PlaylistModel::setFont(const QFont & font)
     m_bold.setBold(true);
 }
 
+void PlaylistModel::setPlayingCol(int playing_col)
+{
+    m_playing_col = playing_col;
+    entriesChanged(0, m_rows);
+}
+
 QVariant PlaylistModel::alignment(int col) const
 {
     switch (col)
     {
-    case NowPlaying:
-        return Qt::AlignCenter;
     case Length:
         return static_cast<Qt::Alignment::Int>(Qt::AlignRight |
                                                Qt::AlignVCenter);
@@ -115,8 +117,6 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
 
         switch (col)
         {
-        case NowPlaying:
-            return QVariant();
         case EntryNumber:
             return QString("%1").arg(index.row() + 1);
         case QueuePos:
@@ -138,7 +138,7 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
         return alignment(col);
 
     case Qt::DecorationRole:
-        if (col == NowPlaying && index.row() == m_playlist.get_position())
+        if (col == m_playing_col && index.row() == m_playlist.get_position())
         {
             const char * icon_name = "media-playback-stop";
 
@@ -148,7 +148,7 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
 
             return audqt::get_icon(icon_name);
         }
-        else if (col == NowPlaying)
+        else if (col == m_playing_col)
         {
             // Reserve space for the icon in other rows so that row
             // heights don't change at song change. Undocumented but
@@ -180,8 +180,6 @@ QVariant PlaylistModel::headerData(int section, Qt::Orientation orientation,
     case Qt::DisplayRole:
         switch (col)
         {
-        case NowPlaying:
-            return QVariant();
         case EntryNumber:
             return QString("#");
         case QueuePos:
@@ -194,12 +192,6 @@ QVariant PlaylistModel::headerData(int section, Qt::Orientation orientation,
 
     case Qt::TextAlignmentRole:
         return alignment(col);
-
-    case Qt::DecorationRole:
-        if (col == NowPlaying)
-            return audqt::get_icon("media-playback-start");
-
-        return QVariant();
 
     default:
         return QVariant();

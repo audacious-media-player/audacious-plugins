@@ -2,6 +2,8 @@ option('dbus', type: 'boolean', value: true,
        description: 'Whether DBus support is enabled')
 option('qt', type: 'boolean', value: true,
        description: 'Whether Qt support is enabled')
+option('gtk', type: 'boolean', value: true,
+       description: 'Whether GTK support is enabled')
 option('mpris2', type: 'boolean', value: true,
        description: 'Whether MPRIS 2.0 support is enabled')
 
@@ -50,8 +52,16 @@ option('sid', type: 'boolean', value: true,
 # output plugins
 option('alsa', type: 'boolean', value: true,
        description: 'Whether ALSA support is enabled')
+option('jack', type: 'boolean', value: true,
+       description: 'Whether JACK support is enabled')
+option('oss', type: 'boolean', value: true,
+       description: 'Whether OSS support is enabled')
 option('pulse', type: 'boolean', value: true,
        description: 'Whether PulseAudio support is enabled')
+option('sdl', type: 'boolean', value: true,
+       description: 'Whether SDL support is enabled')
+option('sndio', type: 'boolean', value: true,
+       description: 'Whether sndio support is enabled')
 option('filewriter', type: 'boolean', value: true,
        description: 'Whether FileWriter (transcoding) support is enabled')
 option('filewriter-mp3', type: 'boolean', value: true,

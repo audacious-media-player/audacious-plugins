@@ -94,6 +94,7 @@ static gboolean queue_track_to_scrobble (void * data) {
     StringBuf artist = clean_string (playing_track.get_str (Tuple::Artist));
     StringBuf title  = clean_string (playing_track.get_str (Tuple::Title));
     StringBuf album  = clean_string (playing_track.get_str (Tuple::Album));
+    StringBuf album_artist = clean_string (playing_track.get_str (Tuple::AlbumArtist));
 
     int track  = playing_track.get_int (Tuple::Track);
     int length = playing_track.get_int (Tuple::Length);
@@ -111,9 +112,10 @@ static gboolean queue_track_to_scrobble (void * data) {
             //This isn't exactly the scrobbler.log format because the header
             //is missing, but we're sticking to it anyway...
             //See http://www.audioscrobbler.net/wiki/Portable_Player_Logging
-            if (fprintf(f, "%s\t%s\t%s\t%s\t%i\tL\t%" G_GINT64_FORMAT "\n",
+            if (fprintf(f, "%s\t%s\t%s\t%s\t%i\tL\t%" G_GINT64_FORMAT "\t%s\n",
              (const char *)artist, (const char *)album, (const char *)title,
-             (const char *)track_str, length / 1000, timestamp) < 0) {
+             (const char *)track_str, length / 1000, timestamp,
+             (const char *)album_artist ) < 0) {
                 perror("fprintf");
             } else {
                 pthread_mutex_lock(&communication_mutex);

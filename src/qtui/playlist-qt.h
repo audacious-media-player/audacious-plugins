@@ -37,6 +37,7 @@ public:
     ~PlaylistWidget();
 
     Playlist playlist() const { return m_playlist; }
+    PlaylistModel * playlistModel() const { return model; }
 
     bool scrollToCurrent(bool force = false);
     void updatePlaybackIndicator();

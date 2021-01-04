@@ -46,13 +46,16 @@ public:
         audqt::init();
         aud_config_set_defaults("qtui", qtui_defaults);
         window = new MainWindow;
-        QObject::connect(window, &QObject::destroyed, audqt::quit);
         return true;
     }
 
-    void cleanup() { audqt::cleanup(); }
+    void cleanup()
+    {
+        delete window;
+        audqt::cleanup();
+    }
 
-    void run() { audqt::run(); }
+    void run() { QApplication::exec(); }
 
     void show(bool show)
     {
@@ -68,7 +71,11 @@ public:
         }
     }
 
-    void quit() { window->deleteLater(); }
+    void quit()
+    {
+        QObject::connect(window.data(), &QObject::destroyed, QApplication::quit);
+        window->deleteLater();
+    }
 };
 
 EXPORT QtUI aud_plugin_instance;

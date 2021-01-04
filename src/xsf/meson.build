@@ -21,10 +21,18 @@ desmume_sources = [
 ]
 
 
+cpp_args = cxx.get_supported_arguments([
+  '-Wno-sign-compare',
+  '-Wno-shift-negative-value'
+])
+
+
 shared_module('xsf',
   plugin_sources,
   desmume_sources,
   dependencies: [audacious_dep, zlib_dep],
+  cpp_args: cpp_args,
+  name_prefix: '',
   install: true,
   install_dir: input_plugin_dir
 )

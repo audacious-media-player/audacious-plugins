@@ -46,7 +46,7 @@ void HtmlDelegate::paint (QPainter * painter, const QStyleOptionViewItem & optio
 
     // Painting item without text
     option.text = QString ();
-    style->drawControl (QStyle::CE_ItemViewItem, & option, painter);
+    style->drawControl (QStyle::CE_ItemViewItem, & option, painter, option.widget);
 
     // Color group logic imitating qcommonstyle.cpp
     QPalette::ColorGroup cg =

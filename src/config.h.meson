@@ -1,5 +1,4 @@
 #mesondefine PACKAGE
-#mesondefine BUILDSTAMP
 #mesondefine VERSION
 #mesondefine COPYRIGHT
 #mesondefine EXPORT
@@ -17,6 +16,8 @@
 
 #mesondefine USE_DBUS
 #mesondefine USE_QT
+#mesondefine USE_GTK
+#mesondefine USE_GTK_OR_QT
 
 #mesondefine HAVE_FFMPEG
 #mesondefine HAVE_LIBAV
@@ -33,3 +34,5 @@
 #mesondefine HAVE_ADPLUG_NEMUOPL_H
 #mesondefine HAVE_ADPLUG_WEMUOPL_H
 #mesondefine HAVE_ADPLUG_KEMUOPL_H
+
+#mesondefine HAVE_SYS_SOUNDCARD_H

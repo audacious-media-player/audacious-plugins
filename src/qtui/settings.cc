@@ -29,6 +29,8 @@ const char * const qtui_defaults[] = {
     "infoarea_show_art", "TRUE",
     "infoarea_visible", "TRUE",
     "menu_visible", "TRUE",
+    "player_width", "768",
+    "player_height", "480",
     "playlist_tabs_visible", aud::numeric_string<PlaylistTabVisibility::AutoHide>::str,
     "statusbar_visible", "TRUE",
     "entry_count_visible", "FALSE",
@@ -37,6 +39,7 @@ const char * const qtui_defaults[] = {
     "autoscroll", "TRUE",
     "playlist_columns", DEFAULT_COLUMNS,
     "playlist_headers", "TRUE",
+    "playlist_headers_bold", "FALSE",
     "show_remaining_time", "FALSE",
     // clang-format on
     nullptr};
@@ -44,6 +47,11 @@ const char * const qtui_defaults[] = {
 static void qtui_update_playlist_settings()
 {
     hook_call("qtui update playlist settings", nullptr);
+}
+
+static void qtui_update_playlist_headers()
+{
+    hook_call("qtui update playlist headers", nullptr);
 }
 
 static const ComboItem playlist_tabs_options[] = {
@@ -67,6 +75,9 @@ static const PreferencesWidget qtui_widgets[] = {
     WidgetCheck(
         N_("Show column headers"),
         WidgetBool("qtui", "playlist_headers", qtui_update_playlist_settings)),
+    WidgetCheck(N_("Use bold font for column headers"),
+                WidgetBool("qtui", "playlist_headers_bold",
+                           qtui_update_playlist_headers)),
     WidgetLabel(N_("<b>Miscellaneous</b>")),
     WidgetCheck(N_("Scroll on song change"), WidgetBool("qtui", "autoscroll"))};
 

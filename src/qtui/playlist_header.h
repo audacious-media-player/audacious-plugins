@@ -47,8 +47,13 @@ private:
 
     void contextMenuEvent(QContextMenuEvent * event);
 
-    const HookReceiver<PlaylistHeader> hook1{
-        "qtui update playlist columns", this, &PlaylistHeader::updateColumns};
+    void updateStyle();
+
+    const HookReceiver<PlaylistHeader> //
+        hook1{"qtui update playlist columns", this,
+              &PlaylistHeader::updateColumns},
+        hook2{"qtui update playlist headers", this,
+              &PlaylistHeader::updateStyle};
 };
 
 #endif // PLAYLIST_HEADER_H

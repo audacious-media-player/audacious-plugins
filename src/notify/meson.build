@@ -1,12 +1,26 @@
-notify_dep = dependency('libnotify', required: false)
+notify_dep = dependency('libnotify', version: '>= 0.7', required: false)
+pixbuf_dep = dependency('gdk-pixbuf-2.0', version: '>= 2.26', required: false)
+have_notify = notify_dep.found() and pixbuf_dep.found()
 
 
-if notify_dep.found()
+if have_notify
+  notify_deps = [audacious_dep, notify_dep, pixbuf_dep]
+
+  if conf.has('USE_QT')
+    notify_deps += [qt_dep, audqt_dep]
+  endif
+
+  if conf.has('USE_GTK')
+    notify_deps += [gtk_dep, audgui_dep]
+  endif
+
+
   shared_module('notify',
     'event.cc',
     'notify.cc',
     'osd.cc',
-    dependencies: [audacious_dep, notify_dep, qt_dep, audqt_dep],
+    dependencies: notify_deps,
+    name_prefix: '',
     install: true,
     install_dir: general_plugin_dir
   )

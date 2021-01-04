@@ -20,7 +20,7 @@ qtui_sources = [
 shared_module('qtui',
   qtui_sources,
   dependencies: [audacious_dep, qt_dep, audqt_dep],
+  name_prefix: '',
   install: true,
   install_dir: general_plugin_dir
 )
-

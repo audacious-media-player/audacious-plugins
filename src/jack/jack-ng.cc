@@ -34,7 +34,10 @@
 #include <pthread.h>
 #include <sys/time.h>
 
+/* jack/types.h uses "register" as a parameter name :( */
+#define register register_
 #include <jack/jack.h>
+#undef register
 
 static_assert(std::is_same<jack_default_audio_sample_t, float>::value,
  "JACK must be compiled to use float samples");

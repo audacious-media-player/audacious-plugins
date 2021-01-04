@@ -32,18 +32,20 @@
 
 /* Default audio rendering frequency in Hz
  */
-#define XS_AUDIO_FREQ           (44100)
+#define XS_AUDIO_FREQ (44100)
 
 /* Plugin-wide typedefs
  */
-typedef struct {
+struct xs_subtuneinfo_t
+{
     int tuneLength = -1;
-} xs_subtuneinfo_t;
+};
 
-typedef struct {
+struct xs_tuneinfo_t
+{
     String sidName, sidComposer, sidCopyright, sidFormat;
     int nsubTunes, startTune;
     Index<xs_subtuneinfo_t> subTunes;
-} xs_tuneinfo_t;
+};
 
 #endif /* XMMS_SID_H */
