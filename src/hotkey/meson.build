@@ -1,4 +1,4 @@
-gdk_x11_dep = dependency('gdk-x11-2.0', version: gtk_req, required: false)
+gdk_x11_dep = dependency('gdk-x11-3.0', version: gtk_req, required: false)
 have_hotkey = gdk_x11_dep.found()
 
 
