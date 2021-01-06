@@ -7,6 +7,11 @@ config_h_full_path = join_paths(meson.current_build_dir(), 'config.h')
 if cc.get_id() in ['gcc', 'clang']
   add_project_arguments('-include', config_h_full_path, language: 'c')
   add_project_arguments('-include', config_h_full_path, language: 'cpp')
+
+  if have_darwin
+    add_project_arguments('-include', config_h_full_path, language: 'objc')
+    add_project_arguments('-include', config_h_full_path, language: 'objcpp')
+  endif
 else
   error('Please implement -include handling for your chosen compiler.')
 endif
@@ -155,6 +160,10 @@ if get_option('scrobbler2')
   subdir('scrobbler2')
 endif
 
+if get_option('mac-media-keys') and have_darwin
+  subdir('mac-media-keys')
+endif
+
 if get_option('mpris2') and get_option('dbus') and not have_windows
   subdir('mpris2')
 endif
@@ -217,6 +226,10 @@ endif
 # output plugins
 if get_option('alsa')
   subdir('alsa')
+endif
+
+if get_option('coreaudio') and have_darwin
+  subdir('coreaudio')
 endif
 
 if get_option('filewriter')

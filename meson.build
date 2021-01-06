@@ -11,6 +11,15 @@ project('audacious-plugins', 'c', 'cpp',
 copyright = 'Copyright (C) 2001-2021 Audacious developers and others'
 
 
+have_darwin = host_machine.system() == 'darwin'
+have_windows = host_machine.system() == 'windows'
+
+
+if have_darwin
+  add_languages('objc', 'objcpp')
+endif
+
+
 qt5 = import('qt5')
 
 
@@ -80,10 +89,6 @@ cxx = meson.get_compiler('cpp')
 
 math_dep = cxx.find_library('m', required: false)
 samplerate_dep = dependency('samplerate', required: false)
-
-
-have_darwin = host_machine.system() == 'darwin'
-have_windows = host_machine.system() == 'windows'
 
 
 if cc.get_id() in ['gcc', 'clang']
@@ -318,12 +323,10 @@ if meson.version().version_compare('>= 0.53')
     }, section: 'GTK Support')
   endif
 
-# XXX - Not yet ported to Meson
-# -----------------------------
-# if have_darwin
-#   summary({
-#     'CoreAudio Output': get_variable('have_coreaudio', false),
-#     'Media Keys': get_variable('have_mac_media_keys', false),
-#   }, section: 'Mac OS X Support')
-# endif
+  if have_darwin
+    summary({
+      'CoreAudio Output': get_option('coreaudio'),
+      'Media Keys': get_option('mac-media-keys'),
+    }, section: 'Mac OS X Support')
+  endif
 endif

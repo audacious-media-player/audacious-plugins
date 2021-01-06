@@ -52,6 +52,8 @@ option('sid', type: 'boolean', value: true,
 # output plugins
 option('alsa', type: 'boolean', value: true,
        description: 'Whether ALSA support is enabled')
+option('coreaudio', type: 'boolean', value: true,
+       description: 'Whether CoreAudio support is enabled')
 option('jack', type: 'boolean', value: true,
        description: 'Whether JACK support is enabled')
 option('oss', type: 'boolean', value: true,
@@ -74,6 +76,8 @@ option('qtaudio', type: 'boolean', value: true,
        description: 'Whether QtMultimedia support is enabled')
 
 # general plugins
+option('mac-media-keys', type: 'boolean', value: false,
+       description: 'Whether the Mac Media Keys plugin is enabled')
 option('songchange', type: 'boolean', value: true,
        description: 'Whether the Song Change plugin is enabled')
 option('scrobbler2', type: 'boolean', value: true,
