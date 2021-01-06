@@ -15,8 +15,14 @@ have_darwin = host_machine.system() == 'darwin'
 have_windows = host_machine.system() == 'windows'
 
 
+cc = meson.get_compiler('c')
+cxx = meson.get_compiler('cpp')
+
 if have_darwin
   add_languages('objc', 'objcpp')
+
+  objc = meson.get_compiler('objc')
+  objcpp = meson.get_compiler('objcpp')
 endif
 
 
@@ -83,10 +89,6 @@ if get_option('cdaudio')
 endif
 
 
-cc = meson.get_compiler('c')
-cxx = meson.get_compiler('cpp')
-
-
 math_dep = cxx.find_library('m', required: false)
 samplerate_dep = dependency('samplerate', required: false)
 
@@ -109,6 +111,11 @@ if cc.get_id() in ['gcc', 'clang']
 
   add_project_arguments(cc.get_supported_arguments(check_cflags), language: 'c')
   add_project_arguments(cxx.get_supported_arguments(check_cxxflags), language: 'cpp')
+
+  if have_darwin
+    add_project_arguments(objc.get_supported_arguments(check_cflags), language: 'objc')
+    add_project_arguments(objcpp.get_supported_arguments(check_cxxflags), language: 'objcpp')
+  endif
 endif
 
 
