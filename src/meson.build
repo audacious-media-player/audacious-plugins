@@ -5,12 +5,10 @@ config_h_full_path = join_paths(meson.current_build_dir(), 'config.h')
 
 
 if cc.get_id() in ['gcc', 'clang']
-  add_project_arguments('-include', config_h_full_path, language: 'c')
-  add_project_arguments('-include', config_h_full_path, language: 'cpp')
+  add_project_arguments('-include', config_h_full_path, language: ['c', 'cpp'])
 
   if have_darwin
-    add_project_arguments('-include', config_h_full_path, language: 'objc')
-    add_project_arguments('-include', config_h_full_path, language: 'objcpp')
+    add_project_arguments('-include', config_h_full_path, language: ['objc', 'objcpp'])
   endif
 else
   error('Please implement -include handling for your chosen compiler.')
@@ -18,16 +16,18 @@ endif
 
 
 # input plugins
-subdir('console')
 subdir('metronom')
 subdir('psf')
 subdir('tonegen')
 subdir('vtx')
 subdir('xsf')
 
+if get_option('console')
+  subdir('console')
+endif
+
 
 # effect plugins
-subdir('bs2b')
 subdir('compressor')
 subdir('crossfade')
 subdir('crystalizer')
@@ -36,6 +36,10 @@ subdir('mixer')
 subdir('silence-removal')
 subdir('stereo_plugin')
 subdir('voice_removal')
+
+if get_option('bs2b')
+  subdir('bs2b')
+endif
 
 if get_option('resample')
   subdir('resample')
@@ -88,20 +92,28 @@ endif
 
 # Qt-specific plugins
 if conf.has('USE_QT')
-  subdir('blur_scope-qt')
-  subdir('qt-spectrum')
-
-  subdir('qtui')
-  subdir('skins-qt')
-
   subdir('albumart-qt')
-  subdir('ampache')
+  subdir('blur_scope-qt')
   subdir('lyricwiki-qt')
   subdir('playlist-manager-qt')
-  subdir('qthotkey')
+  subdir('qt-spectrum')
+  subdir('qtui')
   subdir('search-tool-qt')
+  subdir('skins-qt')
   subdir('song-info-qt')
   subdir('statusicon-qt')
+
+  if get_option('ampache')
+    subdir('ampache')
+  endif
+
+  if get_option('gl-spectrum')
+    subdir('qtglspectrum')
+  endif
+
+  if get_option('hotkey')
+    subdir('qthotkey')
+  endif
 
   if get_option('qtaudio')
     subdir('qtaudio')
@@ -109,10 +121,6 @@ if conf.has('USE_QT')
 
   if get_option('vumeter')
     subdir('vumeter-qt')
-  endif
-
-  if get_option('gl-spectrum')
-    subdir('qtglspectrum')
   endif
 
   if get_option('streamtuner')
@@ -129,20 +137,25 @@ endif
 if conf.has('USE_GTK')
   subdir('alarm')
   subdir('albumart')
-  subdir('aosd')
   subdir('blur_scope')
   subdir('cairo-spectrum')
   subdir('gtkui')
-  subdir('hotkey')
   subdir('ladspa')
-  subdir('lirc')
   subdir('playlist-manager')
   subdir('search-tool')
   subdir('skins')
   subdir('statusicon')
 
+  if get_option('aosd')
+    subdir('aosd')
+  endif
+
   if get_option('gl-spectrum')
     subdir('glspectrum')
+  endif
+
+  if get_option('hotkey')
+    subdir('hotkey')
   endif
 endif
 
@@ -150,6 +163,10 @@ endif
 # general plugins
 if have_cdaudio
   subdir('cd-menu-items')
+endif
+
+if get_option('lirc')
+  subdir('lirc')
 endif
 
 if get_option('songchange')
@@ -190,7 +207,7 @@ if get_option('vorbis')
   subdir('vorbis')
 endif
 
-if get_option('faad')
+if get_option('aac')
   subdir('aac')
 endif
 
@@ -248,7 +265,7 @@ if get_option('pulse')
   subdir('pulse')
 endif
 
-if get_option('sdl')
+if get_option('sdlout')
   subdir('sdlout')
 endif
 

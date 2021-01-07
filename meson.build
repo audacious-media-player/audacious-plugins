@@ -26,9 +26,6 @@ if have_darwin
 endif
 
 
-qt5 = import('qt5')
-
-
 glib_req = '>= 2.32'
 glib_dep = dependency('glib-2.0', version: glib_req, required: true)
 gmodule_dep = dependency('gmodule-2.0', version: glib_req, required: true)
@@ -229,7 +226,7 @@ if meson.version().version_compare('>= 0.53')
   summary({
     'AdLib synthesizer (adplug)': get_variable('have_adplug', false),
     'Commodore 64 audio (sid)': get_variable('have_sid', false),
-    'Game Music Emu (spc, nsf, gbs, etc.)': true,
+    'Game Music Emu (spc, nsf, gbs, etc.)': get_option('console'),
     'ModPlug': get_variable('have_modplug', false),
     'OpenMPT': get_variable('have_openmpt', false),
     'Nintendo DS audio (xsf)': true,
