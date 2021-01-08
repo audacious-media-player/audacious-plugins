@@ -1,5 +1,5 @@
-lirc_dep = cxx.find_library('lirc', has_headers: ['lirc/lirc_client.h'], required: false)
-have_lirc = lirc_dep.found()
+lirc_dep = cxx.find_library('lirc', required: false)
+have_lirc = lirc_dep.found() and cxx.has_header('lirc/lirc_client.h')
 
 
 if have_lirc

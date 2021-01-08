@@ -34,9 +34,9 @@ endif
 
 
 if get_option('filewriter-mp3')
-  lame_dep = cxx.find_library('mp3lame', has_headers: ['lame/lame.h'], required: false)
+  lame_dep = cxx.find_library('mp3lame', required: false)
 
-  if lame_dep.found()
+  if lame_dep.found() and cxx.has_header('lame/lame.h')
     filewriter_deps += [lame_dep]
     filewriter_srcs += ['mp3.cc']
 
