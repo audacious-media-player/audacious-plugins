@@ -1,19 +1,10 @@
-cue2_dep = dependency('libcue', version: '>= 2.0', required: false)
-
-
-if cue2_dep.found()
-  cue_dep = cue2_dep
-  conf.set10('HAVE_LIBCUE2', true)
-else
-  cue1_dep = dependency('libcue', required: false)
-
-  if cue1_dep.found()
-    cue_dep = cue1_dep
-  endif
-endif
-
-
+cue_dep = dependency('libcue', required: false)
 have_cue = cue_dep.found()
+
+
+if cue_dep.version().version_compare('>= 2.0')
+  conf.set10('HAVE_LIBCUE2', true)
+endif
 
 
 if have_cue

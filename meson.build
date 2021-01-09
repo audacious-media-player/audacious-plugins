@@ -1,6 +1,6 @@
 project('audacious-plugins', 'c', 'cpp',
         version: '4.1-beta1',
-        meson_version: '>= 0.50',
+        meson_version: '>= 0.46',
         default_options: [
           'c_std=gnu99',
           'cpp_std=gnu++11',
@@ -11,7 +11,19 @@ project('audacious-plugins', 'c', 'cpp',
 copyright = 'Copyright (C) 2001-2021 Audacious developers and others'
 
 
-qt5 = import('qt5')
+have_darwin = host_machine.system() == 'darwin'
+have_windows = host_machine.system() == 'windows'
+
+
+cc = meson.get_compiler('c')
+cxx = meson.get_compiler('cpp')
+
+if have_darwin
+  add_languages('objc', 'objcpp')
+
+  objc = meson.get_compiler('objc')
+  objcpp = meson.get_compiler('objcpp')
+endif
 
 
 glib_req = '>= 2.32'
@@ -74,16 +86,8 @@ if get_option('cdaudio')
 endif
 
 
-cc = meson.get_compiler('c')
-cxx = meson.get_compiler('cpp')
-
-
 math_dep = cxx.find_library('m', required: false)
 samplerate_dep = dependency('samplerate', required: false)
-
-
-have_darwin = host_machine.system() == 'darwin'
-have_windows = host_machine.system() == 'windows'
 
 
 if cc.get_id() in ['gcc', 'clang']
@@ -104,6 +108,11 @@ if cc.get_id() in ['gcc', 'clang']
 
   add_project_arguments(cc.get_supported_arguments(check_cflags), language: 'c')
   add_project_arguments(cxx.get_supported_arguments(check_cxxflags), language: 'cpp')
+
+  if have_darwin
+    add_project_arguments(objc.get_supported_arguments(check_cflags), language: 'objc')
+    add_project_arguments(objcpp.get_supported_arguments(check_cxxflags), language: 'objcpp')
+  endif
 endif
 
 
@@ -138,8 +147,11 @@ endif
 
 # XXX - why do we have to define this manually?
 if (cxx.has_header('libintl.h'))
-  add_project_arguments('-DHAVE_GETTEXT', language: 'c')
-  add_project_arguments('-DHAVE_GETTEXT', language: 'cpp')
+  add_project_arguments('-DHAVE_GETTEXT', language: ['c', 'cpp'])
+
+  if have_darwin or have_windows
+    add_project_link_arguments('-lintl', language: ['c', 'cpp'])
+  endif
 endif
 
 
@@ -214,7 +226,7 @@ if meson.version().version_compare('>= 0.53')
   summary({
     'AdLib synthesizer (adplug)': get_variable('have_adplug', false),
     'Commodore 64 audio (sid)': get_variable('have_sid', false),
-    'Game Music Emu (spc, nsf, gbs, etc.)': true,
+    'Game Music Emu (spc, nsf, gbs, etc.)': get_option('console'),
     'ModPlug': get_variable('have_modplug', false),
     'OpenMPT': get_variable('have_openmpt', false),
     'Nintendo DS audio (xsf)': true,
@@ -318,12 +330,10 @@ if meson.version().version_compare('>= 0.53')
     }, section: 'GTK Support')
   endif
 
-# XXX - Not yet ported to Meson
-# -----------------------------
-# if have_darwin
-#   summary({
-#     'CoreAudio Output': get_variable('have_coreaudio', false),
-#     'Media Keys': get_variable('have_mac_media_keys', false),
-#   }, section: 'Mac OS X Support')
-# endif
+  if have_darwin
+    summary({
+      'CoreAudio Output': get_option('coreaudio'),
+      'Media Keys': get_option('mac-media-keys'),
+    }, section: 'Mac OS X Support')
+  endif
 endif

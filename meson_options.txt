@@ -27,11 +27,13 @@ option('mpg123', type: 'boolean', value: true,
        description: 'Whether MPG123 support is enabled')
 option('adplug', type: 'boolean', value: true,
        description: 'Whether AdPlug support is enabled')
+option('console', type: 'boolean', value: true,
+       description: 'Whether Game Music Emu support is enabled')
 option('flac', type: 'boolean', value: true,
        description: 'Whether FLAC support is enabled')
 option('vorbis', type: 'boolean', value: true,
        description: 'Whether Ogg Vorbis support is enabled')
-option('faad', type: 'boolean', value: true,
+option('aac', type: 'boolean', value: true,
        description: 'Whether the FAAD-based raw AAC plugin is enabled')
 option('modplug', type: 'boolean', value: true,
        description: 'Whether ModPlug support is enabled')
@@ -52,13 +54,15 @@ option('sid', type: 'boolean', value: true,
 # output plugins
 option('alsa', type: 'boolean', value: true,
        description: 'Whether ALSA support is enabled')
+option('coreaudio', type: 'boolean', value: true,
+       description: 'Whether CoreAudio support is enabled')
 option('jack', type: 'boolean', value: true,
        description: 'Whether JACK support is enabled')
 option('oss', type: 'boolean', value: true,
        description: 'Whether OSS support is enabled')
 option('pulse', type: 'boolean', value: true,
        description: 'Whether PulseAudio support is enabled')
-option('sdl', type: 'boolean', value: true,
+option('sdlout', type: 'boolean', value: true,
        description: 'Whether SDL support is enabled')
 option('sndio', type: 'boolean', value: true,
        description: 'Whether sndio support is enabled')
@@ -74,17 +78,29 @@ option('qtaudio', type: 'boolean', value: true,
        description: 'Whether QtMultimedia support is enabled')
 
 # general plugins
-option('songchange', type: 'boolean', value: true,
-       description: 'Whether the Song Change plugin is enabled')
-option('scrobbler2', type: 'boolean', value: true,
-       description: 'Whether the Scrobbler plugin is enabled')
-option('streamtuner', type: 'boolean', value: false,
-       description: 'Whether the Stream Tuner plugin is enabled')
+option('aosd', type: 'boolean', value: true,
+       description: 'Whether the OSD plugin (X11) is enabled')
+option('ampache', type: 'boolean', value: true,
+       description: 'Whether the Ampache browser plugin is enabled')
+option('hotkey', type: 'boolean', value: true,
+       description: 'Whether the global hotkey plugin (X11) is enabled')
+option('lirc', type: 'boolean', value: true,
+       description: 'Whether the LIRC plugin is enabled')
+option('mac-media-keys', type: 'boolean', value: false,
+       description: 'Whether the Mac Media Keys plugin is enabled')
 option('notify', type: 'boolean', value: true,
        description: 'Whether the libnotify OSD plugin is enabled')
+option('scrobbler2', type: 'boolean', value: true,
+       description: 'Whether the Scrobbler plugin is enabled')
+option('songchange', type: 'boolean', value: true,
+       description: 'Whether the Song Change plugin is enabled')
+option('streamtuner', type: 'boolean', value: false,
+       description: 'Whether the Stream Tuner plugin is enabled')
 
 
 # effect plugins
+option('bs2b', type: 'boolean', value: true,
+       description: 'Whether the BS2B effect plugin is enabled')
 option('resample', type: 'boolean', value: true,
        description: 'Whether the resample effect plugin is enabled')
 option('speedpitch', type: 'boolean', value: true,

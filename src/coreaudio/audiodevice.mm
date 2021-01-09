@@ -133,7 +133,7 @@ OSStatus DefaultListener(AudioObjectID inDevice, UInt32 inChannel, Boolean forIn
             // fallthrough
         default:
             if ((dev && !dev->listenerSilentFor)) {
-                NSLog(msg);
+                NSLog(@"%@", msg);
             }
             break;
     }
@@ -200,7 +200,7 @@ static OSStatus DefaultListener(AudioObjectID inObjectID, UInt32 inNumberPropert
                 // fallthrough
             default:
                 if ((dev && !dev->listenerSilentFor)) {
-                    NSLog(msg);
+                    NSLog(@"%@", msg);
                 }
                 break;
         }
@@ -354,16 +354,16 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
                         }
                     }
                     if (discreteSampleRateList) {
-                        NSLog(@"Using audio device %u \"%s\", %u sample rates in %u range(s); [%g,%g] %@; current sample rate %gHz",
+                        NSLog(@"Using audio device %u \"%s\", %u sample rates in %lu range(s); [%g,%g] %@; current sample rate %gHz",
                               mID, GetName(), nominalSampleRates, propsize / sizeof(AudioValueRange),
                               minNominalSR, maxNominalSR, [a description], currentNominalSR);
                     } else {
-                        NSLog(@"Using audio device %u \"%s\", %u supported sample rates in %u range(s); [%g,%g] continuous; current sample rate %gHz",
+                        NSLog(@"Using audio device %u \"%s\", %u supported sample rates in %lu range(s); [%g,%g] continuous; current sample rate %gHz",
                               mID, GetName(), nominalSampleRates, propsize / sizeof(AudioValueRange),
                               minNominalSR, maxNominalSR, currentNominalSR);
                     }
                 } else {
-                    AUDINFO ("Using audio device %u \"%s\", %u sample rates in %u range(s); [%g,%g] %s; current sample rate %gHz",
+                    AUDINFO ("Using audio device %u \"%s\", %u sample rates in %lu range(s); [%g,%g] %s; current sample rate %gHz",
                           mID, GetName(), nominalSampleRates, propsize / sizeof(AudioValueRange),
                           minNominalSR, maxNominalSR, (discreteSampleRateList) ? "" : "continuous", currentNominalSR);
                 }
