@@ -150,7 +150,7 @@ if conf.has('USE_GTK')
     subdir('aosd')
   endif
 
-  if get_option('gl-spectrum')
+  if get_option('gl-spectrum') and not have_darwin
     subdir('glspectrum')
   endif
 

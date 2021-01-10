@@ -459,7 +459,9 @@ ENABLE_PLUGIN_WITH_DEP(scrobbler2,
     libcurl >= 7.9.7)
 
 test_glspectrum () {
-    if test $HAVE_MSWINDOWS = yes ; then
+    if test $HAVE_DARWIN = yes ; then
+        have_glspectrum=no
+    elif test $HAVE_MSWINDOWS = yes ; then
         have_glspectrum=yes
         GL_LIBS="-lopengl32"
     else
