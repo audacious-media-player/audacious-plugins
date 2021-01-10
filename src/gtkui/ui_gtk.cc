@@ -657,7 +657,11 @@ static void toggle_record (GtkToggleToolButton * button)
 
 static void toggle_search_tool (GtkToggleToolButton * button)
 {
-    aud_plugin_enable (search_tool, gtk_toggle_tool_button_get_active (button));
+    bool enable = gtk_toggle_tool_button_get_active (button);
+    aud_plugin_enable (search_tool, enable);
+
+    if (enable)
+        layout_focus (search_tool);
 }
 
 static bool search_tool_toggled (PluginHandle * plugin, void *)
