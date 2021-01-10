@@ -171,11 +171,6 @@ transport_plugin_dir = join_paths(install_plugindir, 'Transport')
 visualization_plugin_dir = join_paths(install_plugindir, 'Visualization')
 
 
-if get_option('dbus')
-  conf.set10('USE_DBUS', true)
-endif
-
-
 if get_option('qt')
   conf.set10('USE_QT', true)
 endif

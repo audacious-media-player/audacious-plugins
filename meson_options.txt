@@ -1,5 +1,3 @@
-option('dbus', type: 'boolean', value: true,
-       description: 'Whether DBus support is enabled')
 option('qt', type: 'boolean', value: true,
        description: 'Whether Qt support is enabled')
 option('gtk', type: 'boolean', value: true,
