@@ -80,7 +80,11 @@ TimeSlider::TimeSlider(QWidget * parent)
     : QSlider(Qt::Horizontal, parent), m_label(new TimeSliderLabel(parent))
 {
     setFocusPolicy(Qt::NoFocus);
+#ifdef Q_OS_MAC
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+#else
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+#endif
 
     auto style = new TimeSliderStyle;
     style->setParent(this);
