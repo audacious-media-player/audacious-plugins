@@ -165,11 +165,8 @@ void MainWindow::playback_begin_cb()
 
     m_last_playing = playing;
 
-    m_buffering_timer.queue(
-        250, aud::obj_member<MainWindow, &MainWindow::buffering_cb>, this);
+    m_buffering_timer.queue(250, [this]() { set_title(_("Buffering ...")); });
 }
-
-void MainWindow::buffering_cb() { set_title(_("Buffering ...")); }
 
 void MainWindow::pause_cb()
 {

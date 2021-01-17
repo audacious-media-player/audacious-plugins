@@ -18,6 +18,7 @@
  */
 
 #include <QApplication>
+#include <QPointer>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
@@ -28,11 +29,10 @@
 
 #include "main_window.h"
 
+static QPointer<Moonstone::MainWindow> s_window;
+
 class MoonstoneUI : public audqt::QtIfacePlugin
 {
-private:
-    Moonstone::MainWindow *m_window = nullptr;
-
 public:
     constexpr MoonstoneUI()
         : audqt::QtIfacePlugin(
@@ -44,32 +44,37 @@ public:
     {
         audqt::init();
 //        aud_config_set_defaults("moonstoneui", moonstoneui_defaults);
-        m_window = new Moonstone::MainWindow;
+        s_window = new Moonstone::MainWindow;
         return true;
     }
 
     void cleanup()
     {
-        delete m_window;
-        m_window = nullptr;
-
+        delete s_window;
         audqt::cleanup();
     }
 
-    void run() { audqt::run(); }
+    void run() { QApplication::exec(); }
 
     void show(bool show)
     {
-        m_window->setVisible(show);
+        if (!s_window)
+            return;
+
+        s_window->setVisible(show);
 
         if (show)
         {
-            m_window->activateWindow();
-            m_window->raise();
+            s_window->activateWindow();
+            s_window->raise();
         }
     }
 
-    void quit() { audqt::quit(); }
+    void quit()
+    {
+        QObject::connect(s_window.data(), &QObject::destroyed, QApplication::quit);
+        s_window->deleteLater();
+    }
 };
 
 EXPORT MoonstoneUI aud_plugin_instance;
