@@ -18,8 +18,9 @@
  * the use of this software.
  */
 
-#include <QToolButton>
+#include <QCloseEvent>
 #include <QSplitter>
+#include <QToolButton>
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -100,6 +101,21 @@ MainWindow::MainWindow() :
     m_splitter->setStretchFactor(1, 2);
 
     update_toggles();
+}
+
+void MainWindow::closeEvent(QCloseEvent * e)
+{
+    bool handled = false;
+
+    hook_call("window close", &handled);
+
+    if (!handled)
+    {
+        e->accept();
+        aud_quit();
+    }
+    else
+        e->ignore();
 }
 
 void MainWindow::update_toggles()

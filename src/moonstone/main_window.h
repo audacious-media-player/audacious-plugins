@@ -60,6 +60,8 @@ private:
     QueuedFunc m_buffering_timer;
     Playlist m_last_playing;
 
+    void closeEvent(QCloseEvent * e) override;
+
     void set_title(const QString & title);
 
     void update_toggles();
