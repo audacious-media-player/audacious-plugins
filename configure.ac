@@ -23,6 +23,7 @@ BUILDSYS_SHARED_LIB
 dnl gettext
 dnl =======
 AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION(0.18.1)
 if test "$MSGFMT" = ":" ; then
     AC_MSG_ERROR([msgfmt was not found; have you installed gettext?])
 fi
