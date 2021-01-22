@@ -474,11 +474,12 @@ static GtkToolItem * toolbar_button_add (GtkWidget * toolbar,
 }
 
 static GtkToolItem * toggle_button_new (const char * icon, const char * tooltip,
- void (* toggled) (GtkToggleToolButton *))
+ void (* toggled) (GtkToggleToolButton *), bool is_toggled)
 {
     GtkToolItem * item = gtk_toggle_tool_button_new ();
     gtk_tool_button_set_icon_name ((GtkToolButton *) item, icon);
     gtk_tool_item_set_tooltip_text (item, tooltip);
+    gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) item, is_toggled);
     g_signal_connect (item, "toggled", (GCallback) toggled, nullptr);
     return item;
 }
@@ -799,10 +800,9 @@ bool GtkUI::init ()
     /* search button */
     if (search_tool)
     {
-        search_button = toggle_button_new ("edit-find", _("Search Library"), toggle_search_tool);
+        search_button = toggle_button_new ("edit-find", _("Search Library"),
+         toggle_search_tool, aud_plugin_get_enabled (search_tool));
         gtk_toolbar_insert ((GtkToolbar *) toolbar, search_button, -1);
-        gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) search_button,
-         aud_plugin_get_enabled (search_tool));
         aud_plugin_add_watch (search_tool, search_tool_toggled, nullptr);
     }
 
@@ -818,8 +818,10 @@ bool GtkUI::init ()
     button_stop = toolbar_button_add (toolbar, aud_drct_stop, "media-playback-stop", _("Stop"));
     toolbar_button_add (toolbar, aud_drct_pl_next, "media-skip-forward", _("Next"));
 
-    button_record = toggle_button_new ("media-record", _("Record Stream"), toggle_record);
+    button_record = toggle_button_new ("media-record", _("Record Stream"),
+     toggle_record, aud_get_bool ("record"));
     gtk_widget_set_no_show_all ((GtkWidget *) button_record, true);
+    gtk_widget_set_visible ((GtkWidget *) button_record, aud_drct_get_record_enabled ());
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_record, -1);
 
     gtk_toolbar_insert ((GtkToolbar *) toolbar, gtk_separator_tool_item_new (), -1);
@@ -849,9 +851,11 @@ bool GtkUI::init ()
     gtk_toolbar_insert ((GtkToolbar *) toolbar, gtk_separator_tool_item_new (), -1);
 
     /* repeat and shuffle buttons */
-    button_repeat = toggle_button_new ("media-playlist-repeat", _("Repeat"), toggle_repeat);
+    button_repeat = toggle_button_new ("media-playlist-repeat", _("Repeat"),
+     toggle_repeat, aud_get_bool ("repeat"));
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_repeat, -1);
-    button_shuffle = toggle_button_new ("media-playlist-shuffle", _("Shuffle"), toggle_shuffle);
+    button_shuffle = toggle_button_new ("media-playlist-shuffle", _("Shuffle"),
+     toggle_shuffle, aud_get_bool ("shuffle"));
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_shuffle, -1);
 
     /* volume button */
@@ -922,8 +926,6 @@ bool GtkUI::init ()
         ui_playback_stop ();
 
     title_change ();
-
-    update_toggles ();
 
     gtk_widget_show_all (vbox_outer);
 
