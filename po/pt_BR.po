@@ -10,7 +10,7 @@
 # Fabiano Ramos <fabiano.suporteinfo@gmail.com>, 2018
 # F Marcelo O Amarante <marcelo.amarante@hotmail.com>, 2015
 # Fuad Saud <fuadksd@gmail.com>, 2012
-# Fúlvio Alves <fga.fulvio@gmail.com>, 2020
+# Fúlvio Alves <fga.fulvio@gmail.com>, 2020-2021
 # mcnd2 <glauber_gf@hotmail.com>, 2012
 # Iuri Suzano <isuzano@netkings.cc>, 2017
 # John_Norum <john.norum4@gmail.com>, 2012
@@ -29,9 +29,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2020-12-27 18:17+0100\n"
-"PO-Revision-Date: 2020-12-20 23:15+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2021-02-01 19:27+0100\n"
+"PO-Revision-Date: 2021-01-10 20:36+0000\n"
+"Last-Translator: Fúlvio Alves <fga.fulvio@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/audacious/"
 "audacious/language/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -78,7 +78,7 @@ msgid "Hz"
 msgstr "Hertz"
 
 #: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:46
-#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:79
+#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:81
 #: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Diversos</b>"
@@ -1649,17 +1649,17 @@ msgid ""
 "License: GPLv2+"
 msgstr ""
 "Analisador de Espectro OpenGL para Audacious\n"
-"Direitos Autorais 2013 Christophe Budé, John Lindgren, e Carlo Bramini\n"
+"Copyright 2013 Christophe Budé, John Lindgren, e Carlo Bramini\n"
 "\n"
 "Baseado no plugin XMMS:\n"
-"Direitos Autorais 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas "
-"Nilsson, e 4Front Technologies\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, e "
+"4Front Technologies\n"
 "\n"
 "Licença: GPLv2+"
 
 #: src/glspectrum/gl-spectrum.cc:62 src/qtglspectrum/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer"
-msgstr "Analisador Espectro OpenGL"
+msgstr "Analisador de Espectro OpenGL"
 
 #: src/gtkui/columns.cc:35
 msgid "Entry number"
@@ -1675,12 +1675,12 @@ msgid "Title"
 msgstr "Título"
 
 #: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:39
-#: src/qtui/playlist_model.cc:34
+#: src/qtui/playlist_model.cc:33
 msgid "Artist"
 msgstr "Artista"
 
 #: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
-#: src/qtui/playlist_model.cc:34
+#: src/qtui/playlist_model.cc:33
 msgid "Year"
 msgstr "Ano"
 
@@ -1694,12 +1694,12 @@ msgid "Album artist"
 msgstr "Artista do Álbum"
 
 #: src/gtkui/columns.cc:41 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:35
+#: src/qtui/playlist_model.cc:34
 msgid "Track"
 msgstr "Faixa"
 
 #: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:35 src/streamtuner/icecast-model.cc:123
+#: src/qtui/playlist_model.cc:34 src/streamtuner/icecast-model.cc:123
 #: src/streamtuner/shoutcast-model.cc:125
 #: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
@@ -1710,7 +1710,7 @@ msgid "Queue position"
 msgstr "Posição na fila de reprodução"
 
 #: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
-#: src/qtui/playlist_model.cc:36
+#: src/qtui/playlist_model.cc:35
 msgid "Length"
 msgstr "Duração"
 
@@ -1723,13 +1723,13 @@ msgid "Custom title"
 msgstr "Título personalizado"
 
 #: src/gtkui/columns.cc:48 src/moonstone/playlist_model.cc:42
-#: src/qtui/playlist_model.cc:37 src/streamtuner/icecast-model.cc:129
+#: src/qtui/playlist_model.cc:36 src/streamtuner/icecast-model.cc:129
 #: src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
 msgstr "Taxa de dados"
 
 #: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:43
-#: src/qtui/playlist_model.cc:38
+#: src/qtui/playlist_model.cc:36
 msgid "Comment"
 msgstr "Comentário"
 
@@ -2049,7 +2049,7 @@ msgstr "Mostrar Barra de _Informação"
 
 #: src/gtkui/menus.cc:189 src/qtui/menus.cc:262
 msgid "Show Info Bar _Album Art"
-msgstr ""
+msgstr "Mostrar _arte do álbum na barra de informações"
 
 #: src/gtkui/menus.cc:190 src/qtui/menus.cc:264
 msgid "Show Info Bar Vis_ualization"
@@ -2130,7 +2130,7 @@ msgstr "Selecionar _Tudo"
 msgid "_Rename ..."
 msgstr "_Renomear ..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:61
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:63
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Abas da Lista de Reprodução</b>"
 
@@ -2138,23 +2138,23 @@ msgstr "<b>Abas da Lista de Reprodução</b>"
 msgid "Always show tabs"
 msgstr "Sempre exibir abas"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:66
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:68
 msgid "Show entry counts"
 msgstr "Mostrar contagens de entrada"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:69
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:71
 msgid "Show close buttons"
 msgstr "Mostrar botão fechar"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:72
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:74
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Colunas da Lista de Reprodução</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:74
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:76
 msgid "Show column headers"
 msgstr "Mostrar cabeçalho das colunas"
 
-#: src/gtkui/settings.cc:47 src/qtui/settings.cc:80
+#: src/gtkui/settings.cc:47 src/qtui/settings.cc:82
 msgid "Scroll on song change"
 msgstr "Deslocar ao mudar de faixa"
 
@@ -2167,8 +2167,8 @@ msgstr "Interface GTK"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:172
-#: src/qtui/main_window.cc:375
+#: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:184
+#: src/qtui/main_window.cc:384
 msgid "Buffering ..."
 msgstr "A processar ..."
 
@@ -2176,72 +2176,72 @@ msgstr "A processar ..."
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:428 src/gtkui/ui_gtk.cc:459 src/gtkui/ui_gtk.cc:813
-#: src/hotkey/gui.cc:71 src/moonstone/main_window.cc:66
-#: src/moonstone/main_window.cc:129 src/moonstone/main_window.cc:130
+#: src/gtkui/ui_gtk.cc:428 src/gtkui/ui_gtk.cc:459 src/gtkui/ui_gtk.cc:817
+#: src/hotkey/gui.cc:71 src/moonstone/main_window.cc:67
+#: src/moonstone/main_window.cc:145 src/moonstone/main_window.cc:146
 #: src/notify/osd.cc:85 src/qthotkey/gui.cc:64 src/qtui/main_window.cc:154
-#: src/qtui/main_window.cc:337 src/qtui/main_window.cc:338
+#: src/qtui/main_window.cc:346 src/qtui/main_window.cc:347
 #: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
 msgid "Play"
 msgstr "Reproduzir"
 
-#: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:135
-#: src/moonstone/main_window.cc:136 src/notify/osd.cc:82
-#: src/qtui/main_window.cc:343 src/qtui/main_window.cc:344
+#: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:151
+#: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
+#: src/qtui/main_window.cc:352 src/qtui/main_window.cc:353
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Pause"
 msgstr "Pausa"
 
-#: src/gtkui/ui_gtk.cc:798 src/moonstone/main_window.cc:56
+#: src/gtkui/ui_gtk.cc:803 src/moonstone/main_window.cc:57
 #: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr "Procurar Biblioteca"
 
-#: src/gtkui/ui_gtk.cc:806 src/moonstone/main_window.cc:59
+#: src/gtkui/ui_gtk.cc:810 src/moonstone/main_window.cc:60
 #: src/qtui/main_window.cc:147
 msgid "Open Files"
 msgstr "Abrir arquivos"
 
-#: src/gtkui/ui_gtk.cc:807 src/moonstone/main_window.cc:61
+#: src/gtkui/ui_gtk.cc:811 src/moonstone/main_window.cc:62
 #: src/qtui/main_window.cc:149
 msgid "Add Files"
 msgstr "Adicionar arquivos"
 
-#: src/gtkui/ui_gtk.cc:812 src/moonstone/main_window.cc:64
+#: src/gtkui/ui_gtk.cc:816 src/moonstone/main_window.cc:65
 #: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Previous"
 msgstr "Anterior"
 
-#: src/gtkui/ui_gtk.cc:814 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:68
+#: src/gtkui/ui_gtk.cc:818 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:69
 #: src/qthotkey/gui.cc:66 src/qtui/main_window.cc:156 src/skins/menus.cc:111
 #: src/skins-qt/menus.cc:102
 msgid "Stop"
 msgstr "Parar"
 
-#: src/gtkui/ui_gtk.cc:815 src/moonstone/main_window.cc:75 src/notify/osd.cc:89
+#: src/gtkui/ui_gtk.cc:819 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
 #: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
 msgstr "Próxima"
 
-#: src/gtkui/ui_gtk.cc:817 src/moonstone/main_window.cc:78
+#: src/gtkui/ui_gtk.cc:821 src/moonstone/main_window.cc:79
 #: src/qtui/main_window.cc:166 src/qtui/menus.cc:252 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "Fluxo do arquivo"
 
-#: src/gtkui/ui_gtk.cc:848 src/moonstone/main_window.cc:85
+#: src/gtkui/ui_gtk.cc:854 src/moonstone/main_window.cc:86
 #: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
 msgid "Repeat"
 msgstr "Repetir"
 
-#: src/gtkui/ui_gtk.cc:850 src/moonstone/main_window.cc:88
+#: src/gtkui/ui_gtk.cc:857 src/moonstone/main_window.cc:89
 #: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
 msgid "Shuffle"
 msgstr "Embaralhar"
 
-#: src/gtkui/ui_gtk.cc:1024 src/qtui/main_window.cc:123
+#: src/gtkui/ui_gtk.cc:1030 src/qtui/main_window.cc:123
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:155
 msgid "mono"
@@ -2414,56 +2414,56 @@ msgstr ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>."
 
-#: src/jack/jack-ng.cc:51
+#: src/jack/jack-ng.cc:54
 msgid "JACK Output"
 msgstr "Saída JACK"
 
-#: src/jack/jack-ng.cc:123
+#: src/jack/jack-ng.cc:126
 msgid "Client name:"
 msgstr "Nome do cliente:"
 
-#: src/jack/jack-ng.cc:125
+#: src/jack/jack-ng.cc:128
 msgid "Automatically connect to output ports"
 msgstr "Conectar-se automaticamente às portas de saída"
 
-#: src/jack/jack-ng.cc:127
+#: src/jack/jack-ng.cc:130
 msgid "Filter ports (regex, use any port if blank):"
 msgstr "Filtrar portas (regex, usa qualquer porta se estiver em branco):"
 
-#: src/jack/jack-ng.cc:133
+#: src/jack/jack-ng.cc:136
 msgid "Connect to physical ports only"
 msgstr "Conectar apenas a portas físicas"
 
-#: src/jack/jack-ng.cc:136
+#: src/jack/jack-ng.cc:139
 msgid "Upmix to"
 msgstr "Upmix para"
 
-#: src/jack/jack-ng.cc:138
+#: src/jack/jack-ng.cc:141
 msgid "ports if input has fewer channels"
 msgstr "portas se a entrada tiver menos canais"
 
-#: src/jack/jack-ng.cc:140
+#: src/jack/jack-ng.cc:143
 msgid "Ignore insufficient number of ports"
 msgstr "Ignorar número insuficiente de portas"
 
-#: src/jack/jack-ng.cc:178
+#: src/jack/jack-ng.cc:181
 msgid "No JACK output ports were found. Please check settings."
 msgstr ""
 "Não foram encontradas portas de saída JACK. Por favor, verifique as "
 "configurações."
 
-#: src/jack/jack-ng.cc:192
+#: src/jack/jack-ng.cc:195
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr ""
 "Apenas %d portas de saída JACK foram encontradas, mas %d são necessárias."
 
-#: src/jack/jack-ng.cc:207
+#: src/jack/jack-ng.cc:210
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr "Falha ao conectar a porta JACK %s."
 
-#: src/jack/jack-ng.cc:227
+#: src/jack/jack-ng.cc:230
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
@@ -2472,11 +2472,11 @@ msgstr ""
 "profundidade de bits de saída para ponto-flutuante nas configurações do "
 "Audacious."
 
-#: src/jack/jack-ng.cc:242
+#: src/jack/jack-ng.cc:245
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr "Falha ao conectar ao servidor JACK; Está em funcionamento?"
 
-#: src/jack/jack-ng.cc:318
+#: src/jack/jack-ng.cc:321
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -2596,31 +2596,33 @@ msgstr "lyrics.ovh"
 
 #: src/lyricwiki-qt/lyricwiki.cc:121
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
-msgstr ""
+msgstr "<small>Artista é truncado no início, Título -- no fim</small>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:122
 msgid "Chars to truncate on:"
-msgstr ""
+msgstr "Caracteres para truncar em:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:126
 msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
 msgstr ""
+"<small>Os caracteres são ORed em RegExp, cercados por espaços em branco</"
+"small>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:127
 msgid "Chars to split on:"
-msgstr ""
+msgstr "Caracteres para dividir em:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:128
 msgid "Further truncate those on chars"
-msgstr ""
+msgstr "Truncar ainda mais aqueles em caracteres"
 
 #: src/lyricwiki-qt/lyricwiki.cc:134
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Geral</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:135
 msgid "Split title into artist and title on chars"
-msgstr ""
+msgstr "Dividir título entre artista e título nos caracteres"
 
 #: src/lyricwiki-qt/lyricwiki.cc:138
 msgid "<b>Internet Sources</b>"
@@ -2833,7 +2835,7 @@ msgstr "Para repetir para sempre, definir a contagem de repetição para -1."
 msgid "These settings will take effect when Audacious is restarted."
 msgstr "Essas configurações entrarão em vigor quando Audacious for reiniciado."
 
-#: src/moonstone/main_window.cc:71 src/moonstone/main_window.cc:72
+#: src/moonstone/main_window.cc:72 src/moonstone/main_window.cc:73
 #: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
 #: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
@@ -2841,13 +2843,13 @@ msgstr "Parar Após Esta Faixa"
 
 #: src/moonstone/moonstone.cc:39
 msgid "Moonstone"
-msgstr ""
+msgstr "Moonstone"
 
-#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:215
+#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:251
 msgid "Reset to Defaults"
 msgstr "Redefinir para o Padrão"
 
-#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_model.cc:33
+#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:225
 msgid "Now Playing"
 msgstr "Reproduzindo"
 
@@ -2855,23 +2857,23 @@ msgstr "Reproduzindo"
 msgid "Entry Number"
 msgstr "Número de Entrada"
 
-#: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:35
+#: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:34
 msgid "Album Artist"
 msgstr "Artista do Álbum"
 
-#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:36
+#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
 msgid "Queue Position"
 msgstr "Posição Na Fila De Reprodução"
 
-#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:36
+#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
 msgid "File Path"
 msgstr "Diretório Do Arquivo"
 
-#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:37
+#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:35
 msgid "File Name"
 msgstr "Nome do Arquivo"
 
-#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:37
+#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:36
 msgid "Custom Title"
 msgstr "Título personalizado"
 
@@ -2982,7 +2984,7 @@ msgstr "Incluir nome do álbum na notificação"
 
 #: src/notify/notify.cc:110
 msgid "Custom notification duration:"
-msgstr ""
+msgstr "Duração de notificação personalizada:"
 
 #: src/notify/osd.cc:74
 msgid "Show"
@@ -3024,7 +3026,7 @@ msgstr "Cúbica"
 
 #: src/openmpt/mptwrap.h:53
 msgid "Windowed sinc"
-msgstr ""
+msgstr "Sinc em janela"
 
 #: src/oss4/oss.h:75
 msgid "OSS4 Output"
@@ -3180,10 +3182,19 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"Analisador de Espectro OpenGL para Audacious\n"
+"Copyright 2013 Christophe Budé, John Lindgren, e Carlo Bramini\n"
+"Copyright 2014, 2020 Ariadne Conill\n"
+"\n"
+"Baseado no plugin XMMS:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, e "
+"4Front \n"
+"\n"
+"Licença: GPLv2+"
 
 #: src/qthotkey/gui.cc:165
 msgid "Press a key combination inside a text field."
-msgstr ""
+msgstr "Pressione uma combinação de teclas dentro de um campo de texto."
 
 #: src/qthotkey/plugin.cc:103
 msgid ""
@@ -3200,6 +3211,19 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
+"Plugin Global Hotkey\n"
+"Controla o reprodutor com combinações de teclas globais ou teclas "
+"multimídia.\n"
+"\n"
+"Copyright (C) 2020 i.Dark_Templar <darktemplar@dark-templar-archives.net>\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Os colaboradores incluem:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+"Bryn Davies <curious@ihug.com.au>,\n"
+"Jonathan A. Davis <davis@jdhouse.org>,\n"
+"Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/qtui/menus.cc:109
 msgid "_Open Folder ..."
@@ -3221,13 +3245,13 @@ msgstr "_Procurar ..."
 msgid "Audio Settings ..."
 msgstr "Configurações de Audio ..."
 
-#: src/qtui/playlist_model.cc:188
+#: src/qtui/playlist_model.cc:186
 msgid "Q#"
-msgstr ""
+msgstr "Q#"
 
-#: src/qtui/playlist_model.cc:190
+#: src/qtui/playlist_model.cc:188
 msgid "T#"
-msgstr ""
+msgstr "F#"
 
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
@@ -3237,25 +3261,25 @@ msgstr "Interface Qt"
 msgid "Search playlist"
 msgstr "Procurar lista de reprodução "
 
-#: src/qtui/settings.cc:56
+#: src/qtui/settings.cc:58
 msgid "Always"
 msgstr "Sempre"
 
-#: src/qtui/settings.cc:57
+#: src/qtui/settings.cc:59
 msgid "Auto-hide"
 msgstr "Ocultar automaticamente"
 
-#: src/qtui/settings.cc:58
+#: src/qtui/settings.cc:60
 msgid "Never"
 msgstr "Nunca"
 
-#: src/qtui/settings.cc:62
+#: src/qtui/settings.cc:64
 msgid "Show playlist tabs:"
 msgstr "Mostrar guias da lista de reprodução:"
 
-#: src/qtui/settings.cc:76
+#: src/qtui/settings.cc:78
 msgid "Use bold font for column headers"
-msgstr ""
+msgstr "Usar fonte em negrito nos cabeçalhos de coluna"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"

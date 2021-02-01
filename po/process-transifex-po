@@ -121,6 +121,9 @@ sk.po)
 sl.po)
     LANGUAGE="Slovenian"
     ;;
+sq.po)
+    LANGUAGE="Albanian"
+    ;;
 sr.po)
     LANGUAGE="Serbian"
     ;;

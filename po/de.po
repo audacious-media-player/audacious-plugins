@@ -10,13 +10,13 @@
 # mschwendt <mschwendt@fedoraproject.org>, 2012
 # mschwendt <mschwendt@fedoraproject.org>, 2012
 # Chris <ppt23@lkj.hopto.org>, 2012
-# Thomas Lange, 2014-2015,2018-2019
+# Thomas Lange, 2014-2015,2018-2019,2021
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2020-12-27 18:17+0100\n"
-"PO-Revision-Date: 2020-12-20 23:24+0000\n"
+"POT-Creation-Date: 2021-02-01 19:27+0100\n"
+"PO-Revision-Date: 2021-01-16 23:24+0000\n"
 "Last-Translator: Thomas Lange\n"
 "Language-Team: German (http://www.transifex.com/audacious/audacious/language/"
 "de/)\n"
@@ -64,7 +64,7 @@ msgid "Hz"
 msgstr "Hz"
 
 #: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:46
-#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:79
+#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:81
 #: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Sonstiges</b>"
@@ -1657,12 +1657,12 @@ msgid "Title"
 msgstr "Titel"
 
 #: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:39
-#: src/qtui/playlist_model.cc:34
+#: src/qtui/playlist_model.cc:33
 msgid "Artist"
 msgstr "Künstler"
 
 #: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
-#: src/qtui/playlist_model.cc:34
+#: src/qtui/playlist_model.cc:33
 msgid "Year"
 msgstr "Jahr"
 
@@ -1676,12 +1676,12 @@ msgid "Album artist"
 msgstr "Album-Künstler"
 
 #: src/gtkui/columns.cc:41 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:35
+#: src/qtui/playlist_model.cc:34
 msgid "Track"
 msgstr "Titelnummer"
 
 #: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:35 src/streamtuner/icecast-model.cc:123
+#: src/qtui/playlist_model.cc:34 src/streamtuner/icecast-model.cc:123
 #: src/streamtuner/shoutcast-model.cc:125
 #: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
@@ -1692,7 +1692,7 @@ msgid "Queue position"
 msgstr "Warteschlangenposition"
 
 #: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
-#: src/qtui/playlist_model.cc:36
+#: src/qtui/playlist_model.cc:35
 msgid "Length"
 msgstr "Länge"
 
@@ -1705,13 +1705,13 @@ msgid "Custom title"
 msgstr "Benutzerdefinierter Titel"
 
 #: src/gtkui/columns.cc:48 src/moonstone/playlist_model.cc:42
-#: src/qtui/playlist_model.cc:37 src/streamtuner/icecast-model.cc:129
+#: src/qtui/playlist_model.cc:36 src/streamtuner/icecast-model.cc:129
 #: src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
 msgstr "Bitrate"
 
 #: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:43
-#: src/qtui/playlist_model.cc:38
+#: src/qtui/playlist_model.cc:36
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -2112,7 +2112,7 @@ msgstr "_Alles auswählen"
 msgid "_Rename ..."
 msgstr "_Umbenennen ..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:61
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:63
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Wiedergabelistenreiter</b>"
 
@@ -2120,23 +2120,23 @@ msgstr "<b>Wiedergabelistenreiter</b>"
 msgid "Always show tabs"
 msgstr "Wiedergabelistenreiter immer anzeigen"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:66
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:68
 msgid "Show entry counts"
 msgstr "Titelanzahl anzeigen"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:69
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:71
 msgid "Show close buttons"
 msgstr "Schließen-Buttons anzeigen"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:72
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:74
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Wiedergabelistenspalten</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:74
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:76
 msgid "Show column headers"
 msgstr "Spaltenüberschriften anzeigen"
 
-#: src/gtkui/settings.cc:47 src/qtui/settings.cc:80
+#: src/gtkui/settings.cc:47 src/qtui/settings.cc:82
 msgid "Scroll on song change"
 msgstr "Mit Titelwechsel scrollen"
 
@@ -2149,8 +2149,8 @@ msgstr "GTK Interface"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:172
-#: src/qtui/main_window.cc:375
+#: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:184
+#: src/qtui/main_window.cc:384
 msgid "Buffering ..."
 msgstr "Puffern ..."
 
@@ -2158,70 +2158,70 @@ msgstr "Puffern ..."
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:428 src/gtkui/ui_gtk.cc:459 src/gtkui/ui_gtk.cc:813
-#: src/hotkey/gui.cc:71 src/moonstone/main_window.cc:66
-#: src/moonstone/main_window.cc:129 src/moonstone/main_window.cc:130
+#: src/gtkui/ui_gtk.cc:428 src/gtkui/ui_gtk.cc:459 src/gtkui/ui_gtk.cc:817
+#: src/hotkey/gui.cc:71 src/moonstone/main_window.cc:67
+#: src/moonstone/main_window.cc:145 src/moonstone/main_window.cc:146
 #: src/notify/osd.cc:85 src/qthotkey/gui.cc:64 src/qtui/main_window.cc:154
-#: src/qtui/main_window.cc:337 src/qtui/main_window.cc:338
+#: src/qtui/main_window.cc:346 src/qtui/main_window.cc:347
 #: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
 msgid "Play"
 msgstr "Wiedergabe"
 
-#: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:135
-#: src/moonstone/main_window.cc:136 src/notify/osd.cc:82
-#: src/qtui/main_window.cc:343 src/qtui/main_window.cc:344
+#: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:151
+#: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
+#: src/qtui/main_window.cc:352 src/qtui/main_window.cc:353
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Pause"
 msgstr "Pause"
 
-#: src/gtkui/ui_gtk.cc:798 src/moonstone/main_window.cc:56
+#: src/gtkui/ui_gtk.cc:803 src/moonstone/main_window.cc:57
 #: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr "Bibliothek durchsuchen"
 
-#: src/gtkui/ui_gtk.cc:806 src/moonstone/main_window.cc:59
+#: src/gtkui/ui_gtk.cc:810 src/moonstone/main_window.cc:60
 #: src/qtui/main_window.cc:147
 msgid "Open Files"
 msgstr "Dateien öffnen"
 
-#: src/gtkui/ui_gtk.cc:807 src/moonstone/main_window.cc:61
+#: src/gtkui/ui_gtk.cc:811 src/moonstone/main_window.cc:62
 #: src/qtui/main_window.cc:149
 msgid "Add Files"
 msgstr "Dateien hinzufügen"
 
-#: src/gtkui/ui_gtk.cc:812 src/moonstone/main_window.cc:64
+#: src/gtkui/ui_gtk.cc:816 src/moonstone/main_window.cc:65
 #: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Previous"
 msgstr "Vorheriger"
 
-#: src/gtkui/ui_gtk.cc:814 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:68
+#: src/gtkui/ui_gtk.cc:818 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:69
 #: src/qthotkey/gui.cc:66 src/qtui/main_window.cc:156 src/skins/menus.cc:111
 #: src/skins-qt/menus.cc:102
 msgid "Stop"
 msgstr "Stopp"
 
-#: src/gtkui/ui_gtk.cc:815 src/moonstone/main_window.cc:75 src/notify/osd.cc:89
+#: src/gtkui/ui_gtk.cc:819 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
 #: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
 msgstr "Nächster"
 
-#: src/gtkui/ui_gtk.cc:817 src/moonstone/main_window.cc:78
+#: src/gtkui/ui_gtk.cc:821 src/moonstone/main_window.cc:79
 #: src/qtui/main_window.cc:166 src/qtui/menus.cc:252 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "Audio aufnehmen"
 
-#: src/gtkui/ui_gtk.cc:848 src/moonstone/main_window.cc:85
+#: src/gtkui/ui_gtk.cc:854 src/moonstone/main_window.cc:86
 #: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
 msgid "Repeat"
 msgstr "Wiederholen"
 
-#: src/gtkui/ui_gtk.cc:850 src/moonstone/main_window.cc:88
+#: src/gtkui/ui_gtk.cc:857 src/moonstone/main_window.cc:89
 #: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
 msgid "Shuffle"
 msgstr "Zufällige Wiedergabe"
 
-#: src/gtkui/ui_gtk.cc:1024 src/qtui/main_window.cc:123
+#: src/gtkui/ui_gtk.cc:1030 src/qtui/main_window.cc:123
 msgid "Menu"
 msgstr "Menü"
 
@@ -2394,54 +2394,54 @@ msgstr ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 
-#: src/jack/jack-ng.cc:51
+#: src/jack/jack-ng.cc:54
 msgid "JACK Output"
 msgstr "JACK Ausgabe"
 
-#: src/jack/jack-ng.cc:123
+#: src/jack/jack-ng.cc:126
 msgid "Client name:"
 msgstr "Client-Name:"
 
-#: src/jack/jack-ng.cc:125
+#: src/jack/jack-ng.cc:128
 msgid "Automatically connect to output ports"
 msgstr "Automatisch mit Ausgabeports verbinden"
 
-#: src/jack/jack-ng.cc:127
+#: src/jack/jack-ng.cc:130
 msgid "Filter ports (regex, use any port if blank):"
 msgstr "Ports filtern (Regex, wenn leer benutze jeden Port):"
 
-#: src/jack/jack-ng.cc:133
+#: src/jack/jack-ng.cc:136
 msgid "Connect to physical ports only"
 msgstr "Verbinde nur zu physikalischen Ports"
 
-#: src/jack/jack-ng.cc:136
+#: src/jack/jack-ng.cc:139
 msgid "Upmix to"
 msgstr "Verwende Upmix auf"
 
-#: src/jack/jack-ng.cc:138
+#: src/jack/jack-ng.cc:141
 msgid "ports if input has fewer channels"
 msgstr "Ports wenn Eingabe weniger Kanäle hat"
 
-#: src/jack/jack-ng.cc:140
+#: src/jack/jack-ng.cc:143
 msgid "Ignore insufficient number of ports"
 msgstr "Ignoriere nicht ausreichende Anzahl an Ports"
 
-#: src/jack/jack-ng.cc:178
+#: src/jack/jack-ng.cc:181
 msgid "No JACK output ports were found. Please check settings."
 msgstr ""
 "Es wurde kein JACK Ausgabeport gefunden. Bitte prüfen Sie die Einstellungen."
 
-#: src/jack/jack-ng.cc:192
+#: src/jack/jack-ng.cc:195
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr "Nur %d JACK Ausgabeports gefunden, aber %d erforderlich."
 
-#: src/jack/jack-ng.cc:207
+#: src/jack/jack-ng.cc:210
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr "Verbinden zu JACK Port %s fehlgeschlagen."
 
-#: src/jack/jack-ng.cc:227
+#: src/jack/jack-ng.cc:230
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
@@ -2449,11 +2449,11 @@ msgstr ""
 "JACK unterstützt nur Gleitkomma Audio. Sie müssen die Ausgabe Bittiefe in "
 "den Audacious Einstellungen auf »Gleitkomma« ändern."
 
-#: src/jack/jack-ng.cc:242
+#: src/jack/jack-ng.cc:245
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr "Verbinden zum JACK Server fehlgeschlagen. Ist er aktiv?"
 
-#: src/jack/jack-ng.cc:318
+#: src/jack/jack-ng.cc:321
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -2810,7 +2810,7 @@ msgstr "Für eine endlose Wiederholung, den obigen Wert auf -1 setzen."
 msgid "These settings will take effect when Audacious is restarted."
 msgstr "Diese Einstellungen treten in Kraft, wenn Audacious neugestartet wird."
 
-#: src/moonstone/main_window.cc:71 src/moonstone/main_window.cc:72
+#: src/moonstone/main_window.cc:72 src/moonstone/main_window.cc:73
 #: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
 #: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
@@ -2818,13 +2818,13 @@ msgstr "Nach diesem Titel stoppen"
 
 #: src/moonstone/moonstone.cc:39
 msgid "Moonstone"
-msgstr "Moonstein"
+msgstr "Mondstein"
 
-#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:215
+#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:251
 msgid "Reset to Defaults"
 msgstr "Auf Standardwerte zurücksetzen"
 
-#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_model.cc:33
+#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:225
 msgid "Now Playing"
 msgstr "Momentane Wiedergabe"
 
@@ -2832,23 +2832,23 @@ msgstr "Momentane Wiedergabe"
 msgid "Entry Number"
 msgstr "Eintragsnummer"
 
-#: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:35
+#: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:34
 msgid "Album Artist"
 msgstr "Album-Künstler"
 
-#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:36
+#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
 msgid "Queue Position"
 msgstr "Warteschlangenposition"
 
-#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:36
+#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
 msgid "File Path"
 msgstr "Dateipfad"
 
-#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:37
+#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:35
 msgid "File Name"
 msgstr "Dateiname"
 
-#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:37
+#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:36
 msgid "Custom Title"
 msgstr "Benutzerdefinierter Titel"
 
@@ -3219,11 +3219,11 @@ msgstr "_Suchen ..."
 msgid "Audio Settings ..."
 msgstr "Audio-Einstellungen ..."
 
-#: src/qtui/playlist_model.cc:188
+#: src/qtui/playlist_model.cc:186
 msgid "Q#"
 msgstr "W#"
 
-#: src/qtui/playlist_model.cc:190
+#: src/qtui/playlist_model.cc:188
 msgid "T#"
 msgstr "T#"
 
@@ -3235,23 +3235,23 @@ msgstr "Qt Interface"
 msgid "Search playlist"
 msgstr "Wiedergabeliste durchsuchen"
 
-#: src/qtui/settings.cc:56
+#: src/qtui/settings.cc:58
 msgid "Always"
 msgstr "Immer"
 
-#: src/qtui/settings.cc:57
+#: src/qtui/settings.cc:59
 msgid "Auto-hide"
 msgstr "Automatisch verstecken"
 
-#: src/qtui/settings.cc:58
+#: src/qtui/settings.cc:60
 msgid "Never"
 msgstr "Nie"
 
-#: src/qtui/settings.cc:62
+#: src/qtui/settings.cc:64
 msgid "Show playlist tabs:"
 msgstr "Wiedergabelistenreiter anzeigen:"
 
-#: src/qtui/settings.cc:76
+#: src/qtui/settings.cc:78
 msgid "Use bold font for column headers"
 msgstr "Für Spaltenüberschriften fettgedruckte Schrift verwenden"
 

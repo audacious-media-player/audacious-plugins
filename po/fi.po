@@ -9,9 +9,9 @@
 # Kimmo Kujansuu <mrkujansuu@gmail.com>, 2020
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2020-12-27 18:17+0100\n"
+"POT-Creation-Date: 2021-02-01 19:27+0100\n"
 "PO-Revision-Date: 2020-12-22 17:15+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (http://www.transifex.com/audacious/audacious/"
@@ -60,7 +60,7 @@ msgid "Hz"
 msgstr "Hz"
 
 #: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:46
-#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:79
+#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:81
 #: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Sekalaiset</b>"
@@ -1652,12 +1652,12 @@ msgid "Title"
 msgstr "Nimi"
 
 #: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:39
-#: src/qtui/playlist_model.cc:34
+#: src/qtui/playlist_model.cc:33
 msgid "Artist"
 msgstr "Esittäjä"
 
 #: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
-#: src/qtui/playlist_model.cc:34
+#: src/qtui/playlist_model.cc:33
 msgid "Year"
 msgstr "Vuosi"
 
@@ -1671,12 +1671,12 @@ msgid "Album artist"
 msgstr "Albumin esittäjä"
 
 #: src/gtkui/columns.cc:41 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:35
+#: src/qtui/playlist_model.cc:34
 msgid "Track"
 msgstr "Raita"
 
 #: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:35 src/streamtuner/icecast-model.cc:123
+#: src/qtui/playlist_model.cc:34 src/streamtuner/icecast-model.cc:123
 #: src/streamtuner/shoutcast-model.cc:125
 #: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
@@ -1687,7 +1687,7 @@ msgid "Queue position"
 msgstr "Sijainti jonossa"
 
 #: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
-#: src/qtui/playlist_model.cc:36
+#: src/qtui/playlist_model.cc:35
 msgid "Length"
 msgstr "Kesto"
 
@@ -1700,13 +1700,13 @@ msgid "Custom title"
 msgstr "Mukautettu nimi"
 
 #: src/gtkui/columns.cc:48 src/moonstone/playlist_model.cc:42
-#: src/qtui/playlist_model.cc:37 src/streamtuner/icecast-model.cc:129
+#: src/qtui/playlist_model.cc:36 src/streamtuner/icecast-model.cc:129
 #: src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
 msgstr "Bittinopeus"
 
 #: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:43
-#: src/qtui/playlist_model.cc:38
+#: src/qtui/playlist_model.cc:36
 msgid "Comment"
 msgstr "Kommentti"
 
@@ -2107,7 +2107,7 @@ msgstr "Valitse _kaikki"
 msgid "_Rename ..."
 msgstr "_Nimeä uudelleen..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:61
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:63
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Soittolistan välilehdet</b>"
 
@@ -2115,23 +2115,23 @@ msgstr "<b>Soittolistan välilehdet</b>"
 msgid "Always show tabs"
 msgstr "Näytä aina välilehdet"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:66
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:68
 msgid "Show entry counts"
 msgstr "Näytä esiintymäkerrat"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:69
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:71
 msgid "Show close buttons"
 msgstr "Näytä sulkemispainikkeet"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:72
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:74
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Soittolistan sarakkeet</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:74
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:76
 msgid "Show column headers"
 msgstr "Näytä sarakkeiden otsakkeet"
 
-#: src/gtkui/settings.cc:47 src/qtui/settings.cc:80
+#: src/gtkui/settings.cc:47 src/qtui/settings.cc:82
 msgid "Scroll on song change"
 msgstr "Vieritä kappaleen vaihtuessa"
 
@@ -2144,8 +2144,8 @@ msgstr "GTK-käyttöliittymä"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:172
-#: src/qtui/main_window.cc:375
+#: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:184
+#: src/qtui/main_window.cc:384
 msgid "Buffering ..."
 msgstr "Puskuroidaan..."
 
@@ -2153,70 +2153,70 @@ msgstr "Puskuroidaan..."
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:428 src/gtkui/ui_gtk.cc:459 src/gtkui/ui_gtk.cc:813
-#: src/hotkey/gui.cc:71 src/moonstone/main_window.cc:66
-#: src/moonstone/main_window.cc:129 src/moonstone/main_window.cc:130
+#: src/gtkui/ui_gtk.cc:428 src/gtkui/ui_gtk.cc:459 src/gtkui/ui_gtk.cc:817
+#: src/hotkey/gui.cc:71 src/moonstone/main_window.cc:67
+#: src/moonstone/main_window.cc:145 src/moonstone/main_window.cc:146
 #: src/notify/osd.cc:85 src/qthotkey/gui.cc:64 src/qtui/main_window.cc:154
-#: src/qtui/main_window.cc:337 src/qtui/main_window.cc:338
+#: src/qtui/main_window.cc:346 src/qtui/main_window.cc:347
 #: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
 msgid "Play"
 msgstr "Toista"
 
-#: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:135
-#: src/moonstone/main_window.cc:136 src/notify/osd.cc:82
-#: src/qtui/main_window.cc:343 src/qtui/main_window.cc:344
+#: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:151
+#: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
+#: src/qtui/main_window.cc:352 src/qtui/main_window.cc:353
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Pause"
 msgstr "Keskeytä"
 
-#: src/gtkui/ui_gtk.cc:798 src/moonstone/main_window.cc:56
+#: src/gtkui/ui_gtk.cc:803 src/moonstone/main_window.cc:57
 #: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr "Etsi kirjastosta"
 
-#: src/gtkui/ui_gtk.cc:806 src/moonstone/main_window.cc:59
+#: src/gtkui/ui_gtk.cc:810 src/moonstone/main_window.cc:60
 #: src/qtui/main_window.cc:147
 msgid "Open Files"
 msgstr "Avaa tiedostoja"
 
-#: src/gtkui/ui_gtk.cc:807 src/moonstone/main_window.cc:61
+#: src/gtkui/ui_gtk.cc:811 src/moonstone/main_window.cc:62
 #: src/qtui/main_window.cc:149
 msgid "Add Files"
 msgstr "Lisää tiedostoja"
 
-#: src/gtkui/ui_gtk.cc:812 src/moonstone/main_window.cc:64
+#: src/gtkui/ui_gtk.cc:816 src/moonstone/main_window.cc:65
 #: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Previous"
 msgstr "Edellinen"
 
-#: src/gtkui/ui_gtk.cc:814 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:68
+#: src/gtkui/ui_gtk.cc:818 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:69
 #: src/qthotkey/gui.cc:66 src/qtui/main_window.cc:156 src/skins/menus.cc:111
 #: src/skins-qt/menus.cc:102
 msgid "Stop"
 msgstr "Pysäytä"
 
-#: src/gtkui/ui_gtk.cc:815 src/moonstone/main_window.cc:75 src/notify/osd.cc:89
+#: src/gtkui/ui_gtk.cc:819 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
 #: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
 msgstr "Seuraava"
 
-#: src/gtkui/ui_gtk.cc:817 src/moonstone/main_window.cc:78
+#: src/gtkui/ui_gtk.cc:821 src/moonstone/main_window.cc:79
 #: src/qtui/main_window.cc:166 src/qtui/menus.cc:252 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "Tallenna suoratoisto"
 
-#: src/gtkui/ui_gtk.cc:848 src/moonstone/main_window.cc:85
+#: src/gtkui/ui_gtk.cc:854 src/moonstone/main_window.cc:86
 #: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
 msgid "Repeat"
 msgstr "Kertaus"
 
-#: src/gtkui/ui_gtk.cc:850 src/moonstone/main_window.cc:88
+#: src/gtkui/ui_gtk.cc:857 src/moonstone/main_window.cc:89
 #: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
 msgid "Shuffle"
 msgstr "Sekoitus"
 
-#: src/gtkui/ui_gtk.cc:1024 src/qtui/main_window.cc:123
+#: src/gtkui/ui_gtk.cc:1030 src/qtui/main_window.cc:123
 msgid "Menu"
 msgstr "Valikko"
 
@@ -2389,53 +2389,53 @@ msgstr ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 
-#: src/jack/jack-ng.cc:51
+#: src/jack/jack-ng.cc:54
 msgid "JACK Output"
 msgstr "JACK-lähtö"
 
-#: src/jack/jack-ng.cc:123
+#: src/jack/jack-ng.cc:126
 msgid "Client name:"
 msgstr "Asiakasohjelman nimi:"
 
-#: src/jack/jack-ng.cc:125
+#: src/jack/jack-ng.cc:128
 msgid "Automatically connect to output ports"
 msgstr "Yhdistä automaattisesti ulostuloportteihin"
 
-#: src/jack/jack-ng.cc:127
+#: src/jack/jack-ng.cc:130
 msgid "Filter ports (regex, use any port if blank):"
 msgstr "Suodatinportit (regex, käytä mitä tahansa porttia, jos tyhjä):"
 
-#: src/jack/jack-ng.cc:133
+#: src/jack/jack-ng.cc:136
 msgid "Connect to physical ports only"
 msgstr "Yhdistä ainoastaan fyysisiin portteihin"
 
-#: src/jack/jack-ng.cc:136
+#: src/jack/jack-ng.cc:139
 msgid "Upmix to"
 msgstr "Sekoita"
 
-#: src/jack/jack-ng.cc:138
+#: src/jack/jack-ng.cc:141
 msgid "ports if input has fewer channels"
 msgstr "portteja, jos sisääntulossa on vähemmän kanavia"
 
-#: src/jack/jack-ng.cc:140
+#: src/jack/jack-ng.cc:143
 msgid "Ignore insufficient number of ports"
 msgstr "Ohita riittämätön määrä portteja"
 
-#: src/jack/jack-ng.cc:178
+#: src/jack/jack-ng.cc:181
 msgid "No JACK output ports were found. Please check settings."
 msgstr "JACK-lähtöportteja ei löytynyt. Tarkista asetukset."
 
-#: src/jack/jack-ng.cc:192
+#: src/jack/jack-ng.cc:195
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
 msgstr "Vain %d JACK-lähtön portteja löytyi, %d mutta käyttää niitä."
 
-#: src/jack/jack-ng.cc:207
+#: src/jack/jack-ng.cc:210
 #, c-format
 msgid "Failed to connect to JACK port %s."
 msgstr "Yhteys JACK-porttiin %s epäonnistui."
 
-#: src/jack/jack-ng.cc:227
+#: src/jack/jack-ng.cc:230
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
@@ -2443,11 +2443,11 @@ msgstr ""
 "JACK tukee vain liukulukujen ääntä. Lähtöbitin syvyys on vaihdettava "
 "liukulukuun Audacious-asetuksissa."
 
-#: src/jack/jack-ng.cc:242
+#: src/jack/jack-ng.cc:245
 msgid "Failed to connect to the JACK server; is it running?"
 msgstr "Yhteys JACK-palvelimeen epäonnistui. Onhan se käynnissä?"
 
-#: src/jack/jack-ng.cc:318
+#: src/jack/jack-ng.cc:321
 #, c-format
 msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
@@ -2801,7 +2801,7 @@ msgstr "Jos haluat kerrata ikuisesti, aseta kertojen määräksi -1."
 msgid "These settings will take effect when Audacious is restarted."
 msgstr "Nämä asetukset tulevat voimaan, kun Audacious käynnistetään uudelleen."
 
-#: src/moonstone/main_window.cc:71 src/moonstone/main_window.cc:72
+#: src/moonstone/main_window.cc:72 src/moonstone/main_window.cc:73
 #: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
 #: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
@@ -2811,11 +2811,11 @@ msgstr "Lopeta tämän kappaleen jälkeen"
 msgid "Moonstone"
 msgstr "Kuukivi"
 
-#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:215
+#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:251
 msgid "Reset to Defaults"
 msgstr "Palauta oletusarvoihin"
 
-#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_model.cc:33
+#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:225
 msgid "Now Playing"
 msgstr "Soi nyt"
 
@@ -2823,23 +2823,23 @@ msgstr "Soi nyt"
 msgid "Entry Number"
 msgstr "Tapahtuman numero"
 
-#: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:35
+#: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:34
 msgid "Album Artist"
 msgstr "Albumi / esittäjä"
 
-#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:36
+#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
 msgid "Queue Position"
 msgstr "Sijainti jonossa"
 
-#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:36
+#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
 msgid "File Path"
 msgstr "Tiedostopolku"
 
-#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:37
+#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:35
 msgid "File Name"
 msgstr "Tiedostonimi"
 
-#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:37
+#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:36
 msgid "Custom Title"
 msgstr "Mukautettu nimi"
 
@@ -3211,11 +3211,11 @@ msgstr "_Etsi..."
 msgid "Audio Settings ..."
 msgstr "Ääniasetukset..."
 
-#: src/qtui/playlist_model.cc:188
+#: src/qtui/playlist_model.cc:186
 msgid "Q#"
 msgstr "Q#"
 
-#: src/qtui/playlist_model.cc:190
+#: src/qtui/playlist_model.cc:188
 msgid "T#"
 msgstr "T#"
 
@@ -3227,23 +3227,23 @@ msgstr "Qt-käyttöliittymä"
 msgid "Search playlist"
 msgstr "Etsi soittolista"
 
-#: src/qtui/settings.cc:56
+#: src/qtui/settings.cc:58
 msgid "Always"
 msgstr "Aina"
 
-#: src/qtui/settings.cc:57
+#: src/qtui/settings.cc:59
 msgid "Auto-hide"
 msgstr "Piilota automaattisesti"
 
-#: src/qtui/settings.cc:58
+#: src/qtui/settings.cc:60
 msgid "Never"
 msgstr "Ei koskaan"
 
-#: src/qtui/settings.cc:62
+#: src/qtui/settings.cc:64
 msgid "Show playlist tabs:"
 msgstr "Näytä soittolistan välilehdet:"
 
-#: src/qtui/settings.cc:76
+#: src/qtui/settings.cc:78
 msgid "Use bold font for column headers"
 msgstr "Käytä lihavoitua fonttia sarakkeiden otsakkeille"
 
