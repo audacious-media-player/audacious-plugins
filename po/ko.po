@@ -16,7 +16,7 @@
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2012-2015,2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2021-02-01 19:27+0100\n"
 "PO-Revision-Date: 2020-12-20 23:15+0000\n"
