@@ -18,8 +18,9 @@
  * the use of this software.
  */
 
-#include <QToolButton>
+#include <QCloseEvent>
 #include <QSplitter>
+#include <QToolButton>
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
@@ -102,6 +103,21 @@ MainWindow::MainWindow() :
     update_toggles();
 }
 
+void MainWindow::closeEvent(QCloseEvent * e)
+{
+    bool handled = false;
+
+    hook_call("window close", &handled);
+
+    if (!handled)
+    {
+        e->accept();
+        aud_quit();
+    }
+    else
+        e->ignore();
+}
+
 void MainWindow::update_toggles()
 {
 #if 0
@@ -165,11 +181,8 @@ void MainWindow::playback_begin_cb()
 
     m_last_playing = playing;
 
-    m_buffering_timer.queue(
-        250, aud::obj_member<MainWindow, &MainWindow::buffering_cb>, this);
+    m_buffering_timer.queue(250, [this]() { set_title(_("Buffering ...")); });
 }
-
-void MainWindow::buffering_cb() { set_title(_("Buffering ...")); }
 
 void MainWindow::pause_cb()
 {

@@ -423,7 +423,8 @@ Index<String> GIOTransport::read_folder (const char * filename, String & error)
 
     GError * gerr = nullptr;
     GFileEnumerator * dir = g_file_enumerate_children (file,
-     G_FILE_ATTRIBUTE_STANDARD_NAME, G_FILE_QUERY_INFO_NONE, nullptr, & gerr);
+     G_FILE_ATTRIBUTE_STANDARD_NAME "," G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
+     G_FILE_QUERY_INFO_NONE, nullptr, & gerr);
 
     if (! dir)
     {
@@ -435,6 +436,8 @@ Index<String> GIOTransport::read_folder (const char * filename, String & error)
         GFileInfo * info;
         while ((info = g_file_enumerator_next_file (dir, nullptr, nullptr)))
         {
+            if (g_file_info_get_is_hidden (info))
+                continue;
             StringBuf enc = str_encode_percent (g_file_info_get_name (info));
             files.append (String (str_concat ({filename, "/", enc})));
             g_object_unref (info);

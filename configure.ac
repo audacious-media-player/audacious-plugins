@@ -5,7 +5,7 @@ dnl ***
 dnl Initialize
 dnl ==========
 AC_PREREQ([2.59])
-AC_INIT([audacious-plugins], [4.1-beta1])
+AC_INIT([audacious-plugins], [4.1])
 AC_COPYRIGHT([Copyright (C) 2001-2021 Audacious developers and others])
 
 AC_DEFINE_UNQUOTED([PACKAGE], "$PACKAGE_NAME", [Name of package])
@@ -23,6 +23,7 @@ BUILDSYS_SHARED_LIB
 dnl gettext
 dnl =======
 AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION(0.18.1)
 if test "$MSGFMT" = ":" ; then
     AC_MSG_ERROR([msgfmt was not found; have you installed gettext?])
 fi
@@ -459,7 +460,9 @@ ENABLE_PLUGIN_WITH_DEP(scrobbler2,
     libcurl >= 7.9.7)
 
 test_glspectrum () {
-    if test $HAVE_MSWINDOWS = yes ; then
+    if test $HAVE_DARWIN = yes ; then
+        have_glspectrum=no
+    elif test $HAVE_MSWINDOWS = yes ; then
         have_glspectrum=yes
         GL_LIBS="-lopengl32"
     else

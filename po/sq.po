@@ -1,70 +1,50 @@
-# Polish translation for Audacious Plugins
+# Albanian translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Chris <259095+transifex@gmail.com>, 2012
-# d5197d93c063a2b1e22d1630a39b7aef_d173d74, 2016
-# HrabiaN <bohopicasso@gmail.com>, 2015
-# Chris <259095+transifex@gmail.com>, 2012
-# Chris <259095+transifex@gmail.com>, 2012
-# felikstayson <felikstayson@o2.pl>, 2012
-# felikstayson <felikstayson@o2.pl>, 2012
-# mkkot <marcin2006@gmail.com>, 2013
-# Marco Oliver Grunwald <m@mgrvnwald.com>, 2013
-# Marco Oliver Grunwald <m@mgrvnwald.com>, 2013
-# Marco Oliver Grunwald <m@mgrvnwald.com>, 2013
-# mkkot <marcin2006@gmail.com>, 2013-2014
-# No Ne, 2020
-# No Ne, 2017-2018,2020
-# Piotr Sokół <psokol.l10n@gmail.com>, 2012
-# Piotr Strębski <strebski@gmail.com>, 2017
-# Piotr Strębski <strebski@gmail.com>, 2014-2015
-# Szymon Weihs <sz.weihs@gmail.com>, 2011
-# Szymon Weihs <sz.weihs@gmail.com>, 2011-2012
-# Wojciech Myrda <vojcek@tlen.pl>, 2013
-# Wojciech Myrda <vojcek@tlen.pl>, 2013
+# natird zoto <dritan86@gmail.com>, 2012
+# Milot Shala <milot.shala@gmail.com>, 2013
+# natird zoto <dritan86@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2021-02-01 19:27+0100\n"
-"PO-Revision-Date: 2020-12-21 06:36+0000\n"
-"Last-Translator: No Ne\n"
-"Language-Team: Polish (http://www.transifex.com/audacious/audacious/language/"
-"pl/)\n"
-"Language: pl\n"
+"PO-Revision-Date: 2021-01-17 21:35+0000\n"
+"Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
+"Language-Team: Albanian (http://www.transifex.com/audacious/audacious/"
+"language/sq/)\n"
+"Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
-"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
-"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/aac/aac.cc:19
 msgid "AAC (Raw) Decoder"
-msgstr "Dekoder AAC (surowe dane)"
+msgstr "Shkodues AAC (E papërpunuar)"
 
 #: src/adplug/adplug-xmms.cc:70
 msgid "AdPlug (AdLib Player)"
-msgstr "AdPlug (Odtwarzacz AdLib)"
+msgstr ""
 
 #: src/adplug/adplug-xmms.cc:167 src/modplug/modplugbmp.cc:321
 #: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:106
 msgid "sequenced"
-msgstr "sekwencjonowane"
+msgstr ""
 
 #: src/adplug/adplug-xmms.cc:349 src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
-msgstr "<b>Wyjście</b>"
+msgstr ""
 
 #: src/adplug/adplug-xmms.cc:350
 msgid "OPL Emulator:"
-msgstr "Emulator OPL:"
+msgstr "Emulues OPL:"
 
 #: src/adplug/adplug-xmms.cc:353
 msgid "Sample rate"
-msgstr "Częstotliwość próbkowania"
+msgstr ""
 
 #: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:155
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
@@ -82,11 +62,11 @@ msgstr "Hz"
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:81
 #: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
-msgstr "<b>Różne</b>"
+msgstr "<b>Të ndryshme</b>"
 
 #: src/adplug/adplug-xmms.cc:356
 msgid "Repeat song in endless loop"
-msgstr "Powtarzaj piosenkę w nieskończonej pętli"
+msgstr ""
 
 #: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
 msgid "Alarm"
@@ -94,7 +74,7 @@ msgstr "Alarm"
 
 #: src/alarm/alarm.cc:782
 msgid "Set Alarm ..."
-msgstr "Ustaw alarm..."
+msgstr "Caktoni Alarm …"
 
 #: src/alarm/alarm.cc:810
 msgid ""
@@ -102,8 +82,6 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
-"Wtyczka do zaplanowania odtwarzania w określonym czasie.\n"
-"Pierwotni autorzy: Adam Feakin i Daniel Stodden."
 
 #: src/alarm/interface.cc:28
 msgid ""
@@ -155,138 +133,91 @@ msgid ""
 "    Type the reminder in the input field and enable\n"
 "    the checkbox if you want it to be shown."
 msgstr ""
-"Czas\n"
-"  Alarm o: \n"
-"    Określ czas uruchomienia.\n"
-"\n"
-"  Wycisz po: \n"
-"    Zatrzymaj alarm po upływie określonego czasu.\n"
-"       (jeśli okno alarmu nie zostanie wcześniej zamknięte)\n"
-"\n"
-"\n"
-"Dni\n"
-"  Dzień:\n"
-"    Wybierz dni, w których alarm zostanie włączony.\n"
-"\n"
-"  Czas:\n"
-"    Wybierz czas dla budzika każdego dnia,\n"
-"    albo ustaw opcję domyślną.\n"
-"\n"
-"\n"
-"Głośność\n"
-"  Narastanie: \n"
-"    Ustaw czas narastania głośności \n"
-"    do wybranej wartości.\n"
-"\n"
-"  Narastaj od: \n"
-"    Narastaj od tej głośności.\n"
-"\n"
-"  Końcowa głośność: \n"
-"    Końcowa głośność dla alarmu. Jeśli czas narastania\n"
-"    ustawiony jest na 0, to wtedy następuje natychmiastowe\n"
-"    ustawienie tej głośności i rozpoczęcie odtwarzania.\n"
-"\n"
-"\n"
-"Ustawienia:\n"
-"  Dodatkowe komendy:\n"
-"    Uruchom wybrane programy/skrypty podczas alarmu.\n"
-"\n"
-"  Playlista: \n"
-"    Załaduj wybraną listę odtwarzania. Jeśli nie wybrano\n"
-"    playlisty, to zostaną użyte utwory znajdujące się\n"
-"    w danej chwili na liście.\n"
-"    Adres URL strumienia mp3/ogg może również zostać\n"
-"    tutaj użyty.\n"
-"\n"
-"  Przypominacz:\n"
-"    Wyświetl powiadomienie, gdy alarm zostanie wyłączony.\n"
-"    Wpisz treść komunkatu i zaznacz odpowiednią\n"
-"    opcję, jeśli chcesz, aby było ono pokazywane.."
 
 #: src/alarm/interface.cc:78
 msgid "This is your wakeup call."
-msgstr "To jest twój sygnał budzenia."
+msgstr "Kjo është thirrja juaj për t’u zgjuar."
 
 #: src/alarm/interface.cc:96
 msgid "Your reminder for today is..."
-msgstr "Twoje przypomnienie na dzisiaj to..."
+msgstr "Kujtuesi juaj për sot është…"
 
 #: src/alarm/interface.cc:98 src/alarm/interface.cc:372
 msgid "Reminder"
-msgstr "Przypominacz"
+msgstr "Kujtues"
 
 #: src/alarm/interface.cc:122
 msgid "Monday"
-msgstr "Poniedziałek"
+msgstr "E hënë"
 
 #: src/alarm/interface.cc:122
 msgid "Tuesday"
-msgstr "Wtorek"
+msgstr "E martë"
 
 #: src/alarm/interface.cc:122
 msgid "Wednesday"
-msgstr "Środa"
+msgstr "E mërkurë"
 
 #: src/alarm/interface.cc:123
 msgid "Thursday"
-msgstr "Czwartek"
+msgstr "E enjte"
 
 #: src/alarm/interface.cc:123
 msgid "Friday"
-msgstr "Piątek"
+msgstr "E premte"
 
 #: src/alarm/interface.cc:123
 msgid "Saturday"
-msgstr "Sobota"
+msgstr "E shtunë"
 
 #: src/alarm/interface.cc:123
 msgid "Sunday"
-msgstr "Niedziela"
+msgstr "E diel"
 
 #: src/alarm/interface.cc:160 src/alarm/interface.cc:219
 #: src/alarm/interface.cc:234
 msgid "Time"
-msgstr "Czas"
+msgstr "Kohë"
 
 #: src/alarm/interface.cc:167
 msgid "Alarm at (default):"
-msgstr "Domyślnie alarm o:"
+msgstr "Alarm më (parazgjedhje):"
 
 #: src/alarm/interface.cc:189
 msgid "h"
-msgstr "[hh:mm]"
+msgstr "h"
 
 #: src/alarm/interface.cc:192
 msgid "Quiet after:"
-msgstr "Wyciszenie po:"
+msgstr "Qetësi pas:"
 
 #: src/alarm/interface.cc:204
 msgid "hours"
-msgstr "godziny"
+msgstr "orë"
 
 #: src/alarm/interface.cc:215
 msgid "minutes"
-msgstr "minuty"
+msgstr "minuta"
 
 #: src/alarm/interface.cc:224
 msgid "Choose the days for the alarm to come on"
-msgstr "Wybierz dni, w których alarm będzie aktywny"
+msgstr "Zgjidhni ditët për të cilat të punojë alarmi"
 
 #: src/alarm/interface.cc:231
 msgid "Day"
-msgstr "Dzień"
+msgstr "Ditë"
 
 #: src/alarm/interface.cc:248 src/bs2b/plugin.cc:130
 msgid "Default"
-msgstr "Domyślny"
+msgstr "Parazgjedhje"
 
 #: src/alarm/interface.cc:277
 msgid "Days"
-msgstr "Dni"
+msgstr "Ditë"
 
 #: src/alarm/interface.cc:286
 msgid "Fading"
-msgstr "Czas przejścia"
+msgstr "Ndërzbehje"
 
 #: src/alarm/interface.cc:294 src/console/plugin.cc:41
 #: src/crossfade/crossfade.cc:52 src/crossfade/crossfade.cc:58
@@ -294,59 +225,59 @@ msgstr "Czas przejścia"
 #: src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
 #: src/vumeter-qt/vumeter_qt.cc:39
 msgid "seconds"
-msgstr "sekundy"
+msgstr "sekonda"
 
 #: src/alarm/interface.cc:301 src/alarm/interface.cc:342
 msgid "Volume"
-msgstr "Głośność"
+msgstr "Volum"
 
 #: src/alarm/interface.cc:306
 msgid "Start at"
-msgstr "Początkowa"
+msgstr "Fillo në"
 
 #: src/alarm/interface.cc:322
 msgid "Final"
-msgstr "Końcowa"
+msgstr "Finalr"
 
 #: src/alarm/interface.cc:335
 msgid "Current"
-msgstr "Bieżąca"
+msgstr "Aktual"
 
 #: src/alarm/interface.cc:348
 msgid "Additional Command"
-msgstr "Dodatkowe polecenie"
+msgstr "Urdhër Shtesë"
 
 #: src/alarm/interface.cc:354 src/alarm/interface.cc:377
 msgid "enable"
-msgstr "włącz"
+msgstr "aktivizoje"
 
 #: src/alarm/interface.cc:361
 msgid "Playlist (optional)"
-msgstr "Lista odtwarzania (opcjonalnie)"
+msgstr "Luajlistë (opsionale)"
 
 #: src/alarm/interface.cc:365
 msgid "Select a playlist"
-msgstr "Wybierz listę odtwarzania"
+msgstr "Përzgjidhni një luajlistë"
 
 #: src/alarm/interface.cc:385
 msgid "Options"
-msgstr "Ustawienia"
+msgstr "Mundësi"
 
 #: src/alarm/interface.cc:390
 msgid "What do these options mean?"
-msgstr "Co oznaczają te ustawienia?"
+msgstr "Ç’do të thonë këto mundësi?"
 
 #: src/alarm/interface.cc:404
 msgid "Help"
-msgstr "Pomoc"
+msgstr "Ndihmë"
 
 #: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:35
 msgid "Album Art"
-msgstr "Okładka albumu"
+msgstr "Figurë Albumi"
 
 #: src/alsa/alsa.h:64
 msgid "ALSA Output"
-msgstr "Wyjście ALSA"
+msgstr "Output ALSA"
 
 #: src/alsa/config.cc:28
 msgid ""
@@ -356,39 +287,34 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
-"Wtyczka wyjścia ALSY dla Audaciousa\n"
-"Prawa autorskie: 2009-2012 John Lindgren\n"
-"\n"
-"Podziękowania kieruję do Williama Pitcocka, autora ALSA Output Plugin NG, "
-"którego kod służył za odniesienie, gdy podręcznik ALSY nie wystarczał."
 
 #: src/alsa/config.cc:61
 msgid "(no description)"
-msgstr "(brak opisu)"
+msgstr "(pa përshkrim)"
 
 #: src/alsa/config.cc:166
 msgid "Default PCM device"
-msgstr "Domyślne urządzenie PCM"
+msgstr "Pajisje PCM Parazgjedhje"
 
 #: src/alsa/config.cc:188
 msgid "Default mixer device"
-msgstr "Domyślne urządzenie miksera"
+msgstr "Pajisje përzierëse parazgjedhje"
 
 #: src/alsa/config.cc:296
 msgid "PCM device:"
-msgstr "Urządzenie PCM:"
+msgstr "Pajisje PCM:"
 
 #: src/alsa/config.cc:299
 msgid "Mixer device:"
-msgstr "Urządzenie miksera:"
+msgstr "Pajisje përzierëse:"
 
 #: src/alsa/config.cc:302
 msgid "Mixer element:"
-msgstr "Element miksera:"
+msgstr "Element përzierësi:"
 
 #: src/amidiplug/amidi-plug.cc:42
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "AMIDI-Plug (Odtwarzacz MIDI)"
+msgstr "AMIDI-Plug (Lojtës MIDI-sh)"
 
 #: src/amidiplug/amidi-plug.cc:445
 msgid ""
@@ -412,73 +338,54 @@ msgid ""
 "Tony Vroon\n"
 "for the good help with alpha testing"
 msgstr ""
-"AMIDI-Plug\n"
-"modułowy odtwarzacz MIDI\n"
-"http://www.develia.org/projects.php?p=amidiplug\n"
-"\n"
-"autorstwa Giacomo Lozito\n"
-"<james@develia.org>\n"
-"\n"
-"szczególne podziękowania kieruję do:\n"
-"\n"
-"Clemensa Ladischa and Jaroslava Kysela\n"
-"za ich świetne programy aplaymidi i amixer; były one\n"
-"naprawdę pomocne wraz z alsa-lib docs, które przydały się\n"
-"do nauki ALSA API\n"
-"\n"
-"Alfredo Spadafina\n"
-"za logo klawiatury MIDI\n"
-"\n"
-"Tony'ego Vroona\n"
-"za pomoc w testowaniu wersji alfa"
 
 #: src/amidiplug/i_configure.cc:94
 msgid "Override default gain:"
-msgstr "Zmień domyślną głośność:"
+msgstr ""
 
 #: src/amidiplug/i_configure.cc:102
 msgid "Override default polyphony:"
-msgstr "Zmień domyślną polifonię:"
+msgstr "Anashkalo polifoni parazgjedhje"
 
 #: src/amidiplug/i_configure.cc:110
 msgid "Override default reverb:"
-msgstr "Zmień domyślne echo:"
+msgstr "Anashkalo reverb parazgjedhje"
 
 #: src/amidiplug/i_configure.cc:112 src/amidiplug/i_configure.cc:120
 msgid "On"
-msgstr "Włączone"
+msgstr ""
 
 #: src/amidiplug/i_configure.cc:118
 msgid "Override default chorus:"
-msgstr "Zmień domyślny chorus:"
+msgstr "Anashkalo kor parazgjedhje"
 
 #: src/amidiplug/i_configure.cc:128 src/console/plugin.cc:29
 msgid "<b>Playback</b>"
-msgstr "<b>Odtwarzanie</b>"
+msgstr ""
 
 #: src/amidiplug/i_configure.cc:129
 msgid "Transpose:"
-msgstr "Przesunięcie:"
+msgstr "Ndërkëmbeje:"
 
 #: src/amidiplug/i_configure.cc:131 src/speedpitch/speed-pitch.cc:257
 msgid "semitones"
-msgstr "półtony"
+msgstr ""
 
 #: src/amidiplug/i_configure.cc:132
 msgid "Drum shift:"
-msgstr "Przesunięcie perkusji:"
+msgstr ""
 
 #: src/amidiplug/i_configure.cc:134
 msgid "note numbers"
-msgstr "numery nut"
+msgstr ""
 
 #: src/amidiplug/i_configure.cc:135
 msgid "Skip leading silence"
-msgstr "Przeskocz ciszę na wprowadzeniu"
+msgstr ""
 
 #: src/amidiplug/i_configure.cc:137
 msgid "Skip trailing silence"
-msgstr "Przeskocz ciszę na zakończeniu"
+msgstr ""
 
 #: src/amidiplug/i_configure.cc:141
 msgid "<b>SoundFont</b>"
@@ -486,43 +393,43 @@ msgstr "<b>SoundFont</b>"
 
 #: src/amidiplug/i_configure.cc:148
 msgid "<b>Synthesizer</b>"
-msgstr "<b>Syntezator</b>"
+msgstr "<b>Syntetizator</b>"
 
 #: src/amidiplug/i_configure.cc:153 src/console/plugin.cc:45
 #: src/filewriter/filewriter.cc:481 src/sid/xs_config.cc:65
 msgid "Sample rate:"
-msgstr "Częstotliwość próbkowania:"
+msgstr ""
 
 #: src/amidiplug/i_configure-fluidsynth.cc:57
 #: src/amidiplug/i_configure-fluidsynth.cc:536
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug - wybierz plik SoundFont"
+msgstr "AMIDI-Plug - përzgjidhni kartelë SoundFont"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:60
 msgid "_Cancel"
-msgstr "_Anuluj"
+msgstr "_Anuloje"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:61
 msgid "_Open"
-msgstr "_Otwórz"
+msgstr "_Hape"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:230
 #: src/amidiplug/i_configure-fluidsynth.cc:476 src/gtkui/columns.cc:46
 msgid "File name"
-msgstr "Nazwa pliku"
+msgstr "Emër kartele"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:234
 #: src/amidiplug/i_configure-fluidsynth.cc:479
 msgid "Size (bytes)"
-msgstr "Wielkość (w bajtach)"
+msgstr "Madhësi (bajte)"
 
 #: src/amidiplug/i_fileinfo.cc:169
 msgid "Name:"
-msgstr "Nazwa:"
+msgstr "Emër:"
 
 #: src/amidiplug/i_fileinfo.cc:187
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr "<span size=\"smaller\"> Informacje MIDI </span>"
+msgstr "<span size=\"smaller\"> Të dhëna MIDI </span>"
 
 #: src/amidiplug/i_fileinfo.cc:201
 msgid "Format:"
@@ -530,51 +437,51 @@ msgstr "Format:"
 
 #: src/amidiplug/i_fileinfo.cc:204
 msgid "Length (msec):"
-msgstr "Długość (ms):"
+msgstr "Gjatësi (ms):"
 
 #: src/amidiplug/i_fileinfo.cc:207
 msgid "No. of Tracks:"
-msgstr "Liczba ścieżek:"
+msgstr "Nr. Pjesësh:"
 
 #: src/amidiplug/i_fileinfo.cc:213
 msgid "variable"
-msgstr "zmienna"
+msgstr "i luhatshëm"
 
 #: src/amidiplug/i_fileinfo.cc:215
 msgid "BPM:"
-msgstr "Uderzenia na minutę:"
+msgstr "BPM:"
 
 #: src/amidiplug/i_fileinfo.cc:223
 msgid "BPM (wavg):"
-msgstr "Uderzenia na minutę (średnia ważona):"
+msgstr "BPM (wavg):"
 
 #: src/amidiplug/i_fileinfo.cc:226
 msgid "Time Div:"
-msgstr "Podział czasu:"
+msgstr "Koha Div:"
 
 #: src/amidiplug/i_fileinfo.cc:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"smaller\"> Komentarze i teksty utworów MIDI </span>"
+msgstr "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 
 #: src/amidiplug/i_fileinfo.cc:284
 msgid "* no comments available in this MIDI file *"
-msgstr "* brak dostępnych komentarzy w tym pliku MIDI *"
+msgstr "* s’ka komentet në këtë kartelë MIDI *"
 
 #: src/amidiplug/i_fileinfo.cc:296
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* brak dostępnych tekstów utworów w tym pliku MIDI *"
+msgstr "* s’ka vargje në këtë kartelë MIDI *"
 
 #: src/amidiplug/i_fileinfo.cc:306 src/ladspa/plugin.cc:417
 msgid "_Close"
-msgstr "_Zamknij"
+msgstr "_Mbylle"
 
 #: src/amidiplug/i_fileinfo.cc:331
 msgid "  (invalid UTF-8)"
-msgstr "  (niepoprawne kodowanie UTF-8)"
+msgstr "  (UTF-8 e pavlefshme)"
 
 #: src/ampache/ampache.cc:33
 msgid "Ampache Browser"
-msgstr "Przeglądarka Ampache"
+msgstr "Shfletues Ampache"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -584,11 +491,6 @@ msgid ""
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 "License: GNU GPLv3"
 msgstr ""
-"Przeglądarka Ampache dla Audacious\n"
-"http://ampache-browser.org/\n"
-"\n"
-"Prawa autorskie (C) Róbert Čerňanský i John Lindgren\n"
-"Licencja: GNU GPLv3"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -600,155 +502,145 @@ msgid ""
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
 msgstr ""
-"OSD Audaciousa\n"
-"http://www.develia.org/projects.php?p=audacious#aosd\n"
-"\n"
-"Autor: Giacomo Lozito <james@develia.org>\n"
-"\n"
-"Wykorzystano fragmenty kodu biblioteki Ghosd Evana Martina:\n"
-"http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.h:37
 msgid "AOSD (On-Screen Display)"
-msgstr "AOSD (informacja ekranowa)"
+msgstr ""
 
 #: src/aosd/aosd_style.cc:54
 msgid "Rectangle"
-msgstr "Prostokąt"
+msgstr "Drejtkëndësh"
 
 #: src/aosd/aosd_style.cc:59
 msgid "Rounded Rectangle"
-msgstr "Zaokrąglony prostokąt"
+msgstr "Drejtkëndësh i Rrumbullakosur"
 
 #: src/aosd/aosd_style.cc:64
 msgid "Concave Rectangle"
-msgstr "Wklęsły prostokąt"
+msgstr "Drejtkëndësh i Lugët"
 
 #: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50
 msgid "None"
-msgstr "Brak"
+msgstr "Asnjë"
 
 #: src/aosd/aosd_trigger.cc:49
 msgid "Playback Start"
-msgstr "Rozpocznij odtwarzanie"
+msgstr "Fillo Playback"
 
 #: src/aosd/aosd_trigger.cc:50
 msgid "Triggers OSD when a playlist entry is played."
-msgstr ""
-"Wyświetla informację ekranową po zmianie pozycji na liście odtwarzania."
+msgstr "Shfaq OSD kur një element lëshohet nga lista."
 
 #: src/aosd/aosd_trigger.cc:55
 msgid "Title Change"
-msgstr "Zmiana tytułu"
+msgstr "Ndryshim Titulli"
 
 #: src/aosd/aosd_trigger.cc:56
 msgid "Triggers OSD when the song title changes (for internet streams)."
 msgstr ""
-"Wyzwala OSD, gdy następuje zmiana tytułu piosenki (dla strumieniowania "
-"internetowego)"
 
 #: src/aosd/aosd_trigger.cc:61
 msgid "Pause On"
-msgstr "Wstrzymaj"
+msgstr "Pusho"
 
 #: src/aosd/aosd_trigger.cc:62
 msgid "Triggers OSD when playback is paused."
-msgstr "Wyświetla informację ekranową po wstrzymaniu odtwarzania."
+msgstr ""
 
 #: src/aosd/aosd_trigger.cc:67
 msgid "Pause Off"
-msgstr "Wznów"
+msgstr "Vazhdo"
 
 #: src/aosd/aosd_trigger.cc:68
 msgid "Triggers OSD when playback is unpaused."
-msgstr "Wyświetla informację ekranową po wznowieniu odtwarzania."
+msgstr ""
 
 #: src/aosd/aosd_ui.cc:162
 msgid "Placement"
-msgstr "Rozmieszczenie"
+msgstr "Vendosje"
 
 #: src/aosd/aosd_ui.cc:195
 msgid "Relative X offset:"
-msgstr "Przesunięcie wzdłuż osi X:"
+msgstr "Shmangie X relative:"
 
 #: src/aosd/aosd_ui.cc:202
 msgid "Relative Y offset:"
-msgstr "Przesunięcie wzdłuż osi Y:"
+msgstr "Shmangie Y relative:"
 
 #: src/aosd/aosd_ui.cc:209
 msgid "Max OSD width:"
-msgstr "Maksymalna szerokość informacji:"
+msgstr "Gjerësi maksimum OSD-je:"
 
 #: src/aosd/aosd_ui.cc:220
 msgid "Multi-Monitor options"
-msgstr "Wiele ekranów"
+msgstr "Mundësi Për Multi-Monitor"
 
 #: src/aosd/aosd_ui.cc:224
 msgid "Display OSD using:"
-msgstr "Wyświetlanie informacji ekranowej na:"
+msgstr ""
 
 #: src/aosd/aosd_ui.cc:226
 msgid "all monitors"
-msgstr "wszystkie ekrany"
+msgstr "krejt monitorët"
 
 #: src/aosd/aosd_ui.cc:229
 #, c-format
 msgid "monitor %i"
-msgstr "ekran %i"
+msgstr "monitori %i"
 
 #: src/aosd/aosd_ui.cc:281
 msgid "Timing (ms)"
-msgstr "Czas (ms)"
+msgstr ""
 
 #: src/aosd/aosd_ui.cc:286
 msgid "Display:"
-msgstr "Wyświetlanie:"
+msgstr "Shfaq:"
 
 #: src/aosd/aosd_ui.cc:291
 msgid "Fade in:"
-msgstr "Pojawianie się:"
+msgstr ""
 
 #: src/aosd/aosd_ui.cc:296
 msgid "Fade out:"
-msgstr "Zanikanie:"
+msgstr ""
 
 #: src/aosd/aosd_ui.cc:360
 msgid "Fonts"
-msgstr "Czcionki"
+msgstr "Shkronja"
 
 #: src/aosd/aosd_ui.cc:367
 #, c-format
 msgid "Font %i:"
-msgstr "Czcionka %i:"
+msgstr "Shkronja %i:"
 
 #: src/aosd/aosd_ui.cc:381
 msgid "Shadow"
-msgstr "Cień"
+msgstr "Hije"
 
 #: src/aosd/aosd_ui.cc:485
 msgid "Render Style"
-msgstr "Kształt"
+msgstr "Stil Vizatimi"
 
 #: src/aosd/aosd_ui.cc:501
 msgid "Colors"
-msgstr "Kolory"
+msgstr "Ngjyra"
 
 #: src/aosd/aosd_ui.cc:512
 #, c-format
 msgid "Color %i:"
-msgstr "Kolor %i:"
+msgstr "Ngjyrë %i:"
 
 #: src/aosd/aosd_ui.cc:599
 msgid "Enable trigger"
-msgstr "Włączenie"
+msgstr ""
 
 #: src/aosd/aosd_ui.cc:626
 msgid "Event"
-msgstr "Zdarzenia"
+msgstr "Akt"
 
 #: src/aosd/aosd_ui.cc:653
 msgid "Composite manager detected"
-msgstr "Wykryto menedżer okien obsługujący kompozycje"
+msgstr ""
 
 #: src/aosd/aosd_ui.cc:660
 msgid ""
@@ -756,44 +648,39 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Nie wykryto menedżera okien obsługującego kompozycje.\n"
-"Aby menu ekranowe było wyświetlanie prawidłowo, należy uruchomić menedżer "
-"okien obsługujący kompozycje"
 
 #: src/aosd/aosd_ui.cc:668
 msgid "Composite manager not required for fake transparency"
 msgstr ""
-"Menedżer okien obsługujący kompozycje nie jest wymagany dla udawanej "
-"przezroczystości"
 
 #: src/aosd/aosd_ui.cc:705
 msgid "Transparency"
-msgstr "Przezroczystość"
+msgstr "Tejdukshmëri"
 
 #: src/aosd/aosd_ui.cc:711
 msgid "Fake transparency"
-msgstr "Udawana przeźroczystość"
+msgstr "Tejdukshmëri e rreme"
 
 #: src/aosd/aosd_ui.cc:713
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "Prawdziwa przezroczystość (wymaga rozszerzenia X Composite)"
+msgstr ""
 
 #: src/aosd/aosd_ui.cc:754
 msgid "Composite extension not loaded"
-msgstr "Nie wczytano rozszerzenia kompozycji"
+msgstr ""
 
 #: src/aosd/aosd_ui.cc:771
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr "<span font_desc='%s'>Audacious OSD</span>"
+msgstr ""
 
 #: src/aosd/aosd_ui.cc:834
 msgid "Position"
-msgstr "Pozycja"
+msgstr "Pozicion"
 
 #: src/aosd/aosd_ui.cc:839
 msgid "Animation"
-msgstr "Animacja"
+msgstr "Animacion"
 
 #: src/aosd/aosd_ui.cc:844
 msgid "Text"
@@ -801,51 +688,51 @@ msgstr "Tekst"
 
 #: src/aosd/aosd_ui.cc:849
 msgid "Decoration"
-msgstr "Obramowanie"
+msgstr "Zbukurim"
 
 #: src/aosd/aosd_ui.cc:854
 msgid "Trigger"
-msgstr "Wyzwalanie"
+msgstr ""
 
 #: src/aosd/aosd_ui.cc:859 src/streamtuner/shoutcast-model.cc:202
 msgid "Misc"
-msgstr "Różne"
+msgstr "Të ndryshme"
 
 #: src/aosd/aosd_ui.cc:868
 msgid "Test"
-msgstr "Przetestuj"
+msgstr "Provë"
 
 #: src/asx3/asx3.cc:35
 msgid "ASXv3 Playlists"
-msgstr "Lista odtwarzania ASXv3"
+msgstr "Luajlista ASXv3"
 
 #: src/asx/asx.cc:33
 msgid "ASXv1/ASXv2 Playlists"
-msgstr "Listy odtwarzania ASXv1/ASXv2"
+msgstr "Luajlista ASXv1/ASXv2"
 
 #: src/audpl/audpl.cc:33
 msgid "Audacious Playlists (audpl)"
-msgstr "Listy odtwarzania Audacious (audpl)"
+msgstr "Luajlista Audacious (audpl)"
 
 #: src/blur_scope/blur_scope.cc:39 src/blur_scope-qt/blur_scope.cc:45
 msgid "<b>Color</b>"
-msgstr "<b>Kolor</b>"
+msgstr "<b>Ngjyrë</b>"
 
 #: src/blur_scope/blur_scope.cc:55 src/blur_scope-qt/blur_scope.cc:158
 msgid "Blur Scope"
-msgstr "Rozmyty zakres"
+msgstr ""
 
 #: src/bs2b/plugin.cc:38
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr ""
 
 #: src/bs2b/plugin.cc:129
 msgid "Presets:"
-msgstr "Profile ustawień:"
+msgstr "Paracaktime:"
 
 #: src/bs2b/plugin.cc:136
 msgid "Feed level:"
-msgstr "Poziom sygnału wejściowego:"
+msgstr ""
 
 #: src/bs2b/plugin.cc:138
 msgid "x1/10 dB"
@@ -853,15 +740,15 @@ msgstr "x1/10 dB"
 
 #: src/bs2b/plugin.cc:139
 msgid "Cut frequency:"
-msgstr "Częstotliwość obcięcia:"
+msgstr ""
 
 #: src/cairo-spectrum/cairo-spectrum.cc:41 src/qt-spectrum/qt-spectrum.cc:107
 msgid "Spectrum Analyzer"
-msgstr "Analizator spektrum"
+msgstr "Analizues Spektri"
 
 #: src/cdaudio/cdaudio-ng.cc:71
 msgid "Audio CD Plugin"
-msgstr "Wtyczka Audio CD"
+msgstr "Shtojcë CD Audio"
 
 #: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
@@ -874,166 +761,165 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2007 project."
 msgstr ""
-"Prawa autorskie: (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> i inni.\n"
+"Të drejta kopjimi (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> dhe të "
+"tjerë.\n"
 "\n"
-"Podziękowania kieruję do programistów libcdio <http://www.gnu.org/software/"
+"Shumë falënderime zhvilluesve të libcdio-s <http://www.gnu.org/software/"
 "libcdio/>\n"
-"oraz libcddb <http://libcddb.sourceforge.net/>.\n"
+"dhe zhvilluesve të libcddb-sës <http://libcddb.sourceforge.net/>.\n"
 "\n"
-"Dziękuję także Tony'emu Vroonowi za opiekę i wskazówki.\n"
+"Falënderime gjithashtu për Tony Vroon për drejtimin dhe udhëheqjen time.\n"
 "\n"
-"Zrealizowano w ramach programu Google Summer of Code 2007."
+"Ky qe një projekt Google Summer of Code 2007."
 
 #: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
-msgstr "<b>Urządzenie</b>"
+msgstr "<b>Pajisje</b>"
 
 #: src/cdaudio/cdaudio-ng.cc:135
 msgid "Read speed:"
-msgstr "Prędkość odczytu:"
+msgstr "Shpejtësi leximi:"
 
 #: src/cdaudio/cdaudio-ng.cc:138
 msgid "Override device:"
-msgstr "Zastąp urządzenie:"
+msgstr "Anashkalo pajisje:"
 
 #: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
-msgstr "<b>Metadane</b>"
+msgstr "<b>Tejtëdhëna</b>"
 
 #: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
-msgstr "Użyj CD-Tekstu"
+msgstr "Përdor CD-Text"
 
 #: src/cdaudio/cdaudio-ng.cc:143
 msgid "Use CDDB"
-msgstr "Użyj CDDB"
+msgstr "Përdor CDDB"
 
 #: src/cdaudio/cdaudio-ng.cc:145
 msgid "Use HTTP instead of CDDBP"
-msgstr "Używanie protokołu HTTP zamiast CDDBP"
+msgstr "Përdor HTTP, në vend se CDDBP"
 
 #: src/cdaudio/cdaudio-ng.cc:148
 msgid "Server:"
-msgstr "Serwer:"
+msgstr "Shërbyes:"
 
 #: src/cdaudio/cdaudio-ng.cc:152
 msgid "Path:"
-msgstr "Ścieżka:"
+msgstr "Shteg:"
 
 #: src/cdaudio/cdaudio-ng.cc:156
 msgid "Port:"
-msgstr "Port:"
+msgstr "Portë:"
 
 #: src/cdaudio/cdaudio-ng.cc:220
 msgid "Failed to initialize cdio subsystem."
-msgstr "Nie udało się zainicjalizować podsystemu cdio."
+msgstr ""
 
 #: src/cdaudio/cdaudio-ng.cc:250
 #, c-format
 msgid "Invalid URI %s."
-msgstr "Nieprawidłowy URI %s."
+msgstr "URI %s e pavlefshme."
 
 #: src/cdaudio/cdaudio-ng.cc:252
 #, c-format
 msgid "Track %d not found."
-msgstr "Ścieżka %d nie znaleziona."
+msgstr "Pjesa %d s’u gjet."
 
 #: src/cdaudio/cdaudio-ng.cc:254
 #, c-format
 msgid "Track %d is a data track."
-msgstr "Ścieżka %d jest ścieżką danych."
+msgstr "Pjesa %d është pjesë të dhënash."
 
 #: src/cdaudio/cdaudio-ng.cc:329
 msgid "Error reading audio CD."
-msgstr "Wystąpił błąd przy odczycie płyty CD Audio."
+msgstr "Gabim gjatë leximit të CD-së audio."
 
 #: src/cdaudio/cdaudio-ng.cc:398
 msgid "Audio CD"
-msgstr "Audio CD"
+msgstr "CD Audio"
 
 #: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr "Nie udało się otworzyć urządzenia CD %s."
+msgstr "S’u arrit të hapet pajisje CD %s."
 
 #: src/cdaudio/cdaudio-ng.cc:447
 msgid "No audio capable CD drive found."
-msgstr "Nie znaleziono napędu CD."
+msgstr ""
 
 #: src/cdaudio/cdaudio-ng.cc:470
 msgid "Drive is empty."
-msgstr "Brak płyty w napędzie."
+msgstr "Pajisja është e zbrazët."
 
 #: src/cdaudio/cdaudio-ng.cc:472
 msgid "Unsupported disk type."
-msgstr "Nieobsługiwany rodzaj płyty."
+msgstr "Lloj i pambuluar disku."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
-msgstr "Nie udało się zainicjalizować otwarcia napędu CD."
+msgstr ""
 
 #: src/cdaudio/cdaudio-ng.cc:509
 msgid "Failed to retrieve first/last track number."
-msgstr "Nie udało się odzyskać pierwszego/ostatniego numeru ścieżki."
+msgstr ""
 
 #: src/cdaudio/cdaudio-ng.cc:530
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr "Nie mogę odczytać LSN początku/końca ścieżki %d."
+msgstr ""
 
 #: src/cdaudio/cdaudio-ng.cc:612
 msgid "Failed to create the CDDB connection."
-msgstr "Nie udało się połączyć z CDDB."
+msgstr "S’u arrit të krijohet lidhja CDDB."
 
 #: src/cdaudio/cdaudio-ng.cc:678
 msgid "Failed to query the CDDB server"
-msgstr "Nie udało się uzyskać odpowiedzi z serwera CDDB"
+msgstr "S’u arrit të kërkohej te shërbyesi CDDB"
 
 #: src/cdaudio/cdaudio-ng.cc:680
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr "Nie udało się uzyskać odpowiedzi z serwera CDDB: %s"
+msgstr "S’u arrit të kërkohej te shërbyesi CDDB: %s"
 
 #: src/cdaudio/cdaudio-ng.cc:704
 #, c-format
 msgid "Failed to read the CDDB info: %s"
-msgstr "Nie udało się odczytać informacji z CDDB: %s"
+msgstr "S’u arrit të lexohen të dhëna CDDB: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
-msgstr "Pozycje menu Audio CD"
+msgstr ""
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Pla_y CD"
-msgstr "_Odtwórz płytę CD"
+msgstr ""
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "_Add CD"
-msgstr "_Dodaj płytę CD"
+msgstr ""
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
-msgstr "<b>Kompresja</b>"
+msgstr "<b>Ngjeshje</b>"
 
 #: src/compressor/compressor.cc:46
 msgid "Center volume:"
-msgstr "Centralna głośność:"
+msgstr ""
 
 #: src/compressor/compressor.cc:49
 msgid "Dynamic range:"
-msgstr "Zakres dynamiki:"
+msgstr "Gamë dinamike:"
 
 #: src/compressor/compressor.cc:57
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
-"Wtyczka kompresora zakresu dynamicznego dla Audacious\n"
-"Prawa autorskie 2010-2014 John Lindgren"
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
-msgstr "Kompresor zakresu dynamicznego"
+msgstr "Ngjeshës Game Dinamike"
 
 #: src/console/plugin.cc:15
 msgid ""
@@ -1044,38 +930,30 @@ msgid ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 msgstr ""
-"Odtwarzacz muzyki z konsol do gier bazowany na Game_Music_Emu 0.5.2\n"
-"Obsługiwane formaty: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"\n"
-"Wtyczka dla Audaciousa:\n"
-"William Pitcock <nenolod@dereferenced.org>\n"
-"Shay Green <gblargg@gmail.com>"
 
 #: src/console/plugin.cc:30
 msgid "Bass:"
-msgstr "Basy:"
+msgstr "Bas:"
 
 #: src/console/plugin.cc:33
 msgid "Treble:"
-msgstr "Soprany:"
+msgstr "Treble:"
 
 #: src/console/plugin.cc:36
 msgid "Echo:"
-msgstr "Echo:"
+msgstr "Eko:"
 
 #: src/console/plugin.cc:39
 msgid "Default song length:"
-msgstr "Domyślna długość piosenki:"
+msgstr "Gjatësi parazgjedhje kënge:"
 
 #: src/console/plugin.cc:42 src/modplug/plugin_main.cc:58
 msgid "<b>Resampling</b>"
 msgstr ""
-"<b>Konwersja częstotliwości\n"
-"próbkowania</b>"
 
 #: src/console/plugin.cc:43
 msgid "Enable audio resampling"
-msgstr "Włączenie"
+msgstr ""
 
 #: src/console/plugin.cc:49
 msgid "<b>SPC</b>"
@@ -1083,19 +961,19 @@ msgstr "<b>SPC</b>"
 
 #: src/console/plugin.cc:50
 msgid "Ignore length from SPC tags"
-msgstr "Ignorowanie czasu trwania w etykietach SPC"
+msgstr ""
 
 #: src/console/plugin.cc:52
 msgid "Increase reverb"
-msgstr "Zwiększenie pogłosu"
+msgstr "Shtoje reverbin"
 
 #: src/console/plugin.h:26
 msgid "Game Console Music Decoder"
-msgstr "Dekoder muzyki z konsol gier"
+msgstr ""
 
 #: src/coreaudio/coreaudio.cc:53
 msgid "CoreAudio output"
-msgstr "Wyjście CoreAudio"
+msgstr ""
 
 #: src/coreaudio/coreaudio.cc:156
 msgid ""
@@ -1108,133 +986,122 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
-"Wtyczka wyjścia CoreAudio dla Audacious\n"
-"Prawa autorskie 2014 William Pitcock\n"
-"Prawa autorskie 2017,18 René J.V. Bertin\n"
-" (oryginalny kod i kod dostosowany z\n"
-" przykładów Apple, (C) Apple 2013)\n"
-"\n"
-"Oparta na wtyczce wyjścia SDL dla Audacious\n"
-"Prawa autorskie 2010 John Lindgren"
 
 #: src/coreaudio/coreaudio.cc:172
 msgid "Use exclusive mode"
-msgstr "Użyj trybu wyłączności"
+msgstr ""
 
 #: src/coreaudio/coreaudio.cc:174
 msgid "Use bit perfect audio (adapt device sampling rate)"
 msgstr ""
-"Użyj dźwięku bit perfect (dostosuj częstotliwość próbkowania urządzenia)"
 
 #: src/crossfade/crossfade.cc:43
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
-"Wtyczka przenikania ścieżek dla Audacious\n"
-"Prawa autorskie 2010-2014 John Lindgren"
+"Shtojcë Ndërzbehjeje për Audacious\n"
+"Të drejta kopjimi 2010-2014 John Lindgren"
 
 #: src/crossfade/crossfade.cc:47
 msgid "<b>Crossfade</b>"
-msgstr "<b>Przenikanie ścieżek</b>"
+msgstr "<b>Ndërzbehje</b>"
 
 #: src/crossfade/crossfade.cc:48
 msgid "On automatic song change"
-msgstr "Przy automatycznej zmianie piosenki"
+msgstr ""
 
 #: src/crossfade/crossfade.cc:50 src/crossfade/crossfade.cc:56
 msgid "Overlap:"
-msgstr "Nakładanie się:"
+msgstr ""
 
 #: src/crossfade/crossfade.cc:54
 msgid "On seek or manual song change"
-msgstr "Przy wyszukiwaniu lub ręcznej zmianie piosenki"
+msgstr ""
 
 #: src/crossfade/crossfade.cc:60
 msgid "<b>Tip</b>"
-msgstr "<b>Podpowiedź</b>"
+msgstr ""
 
 #: src/crossfade/crossfade.cc:61
 msgid ""
 "For better crossfading, enable\n"
 "the Silence Removal effect."
 msgstr ""
-"Dla lepszego przenikania ścieżek, \n"
-"włącz efekt usuwania ciszy."
 
 #: src/crossfade/crossfade.cc:71
 msgid "Crossfade"
-msgstr "Przenikanie ścieżek"
+msgstr ""
 
 #: src/crystalizer/crystalizer.cc:31
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Krystaliczność</b>"
+msgstr ""
 
 #: src/crystalizer/crystalizer.cc:32 src/stereo_plugin/stereo.cc:45
 msgid "Intensity:"
-msgstr "Intensywność:"
+msgstr "Intensitet:"
 
 #: src/crystalizer/crystalizer.cc:43
 msgid "Crystalizer"
-msgstr "Krystalizator"
+msgstr ""
 
 #: src/cue/cue.cc:42
 msgid "Cue Sheet Plugin"
-msgstr "Wtyczka Cue Sheet"
+msgstr ""
 
 #: src/delete-files/delete-files.cc:53 src/delete-files/delete-files.cc:215
 #: src/delete-files/delete-files.cc:230
 msgid "Delete Files"
-msgstr "Usuń pliki"
+msgstr "Fshini Kartela"
 
 #: src/delete-files/delete-files.cc:120
 msgid "No files are selected."
-msgstr "Nie zaznaczono żadnych plików."
+msgstr "S’janë përzgjedhur kartela."
 
 #: src/delete-files/delete-files.cc:125
 #, c-format
 msgid "Do you want to move %s to the trash?"
-msgstr "Czy chcesz przenieść %s do kosza?"
+msgstr "Doni të shpihet %s te hedhurinat?"
 
 #: src/delete-files/delete-files.cc:126
 #, c-format
 msgid "Do you want to permanently delete %s?"
-msgstr "Czy chcesz trwale usunąć %s?"
+msgstr "Doni të fshihet përgjithmonë %s?"
 
 #: src/delete-files/delete-files.cc:133
 #, c-format
 msgid "Do you want to move %d files to the trash?"
-msgstr "Czy chcesz przenieść plików %d do kosza?"
+msgstr ""
 
 #: src/delete-files/delete-files.cc:134
 #, c-format
 msgid "Do you want to permanently delete %d files?"
-msgstr "Czy chcesz całkowicie usunąć plików %d?"
+msgstr "Doni të fshihen përgjithmonë %d kartela?"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Move to trash"
-msgstr "Przenieś do kosza"
+msgstr "Shpjere te hedhurinat"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Delete"
-msgstr "Usuń"
+msgstr "Fshije"
 
 #: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
 #: src/skins/search-select.cc:76
 msgid "Cancel"
-msgstr "Anuluj"
+msgstr "Anuloje"
 
 #: src/delete-files/delete-files.cc:266
 msgid "Delete Selected Files"
-msgstr "Usuń zaznaczone pliki"
+msgstr "Fshiji Kartelat e Përzgjedhura"
 
 #: src/delete-files/delete-files.cc:286
 msgid "<b>Delete Method</b>"
-msgstr "<b>Sposób usuwania</b>"
+msgstr "<b>Metodë Fshirjeje</b>"
 
 #: src/delete-files/delete-files.cc:287
 msgid "Move to trash instead of deleting immediately"
-msgstr "Przesuń do kosza zamiast kasować"
+msgstr ""
 
 #: src/echo_plugin/echo.cc:9
 msgid ""
@@ -1243,20 +1110,15 @@ msgid ""
 "Surround echo by Carl van Schaik, 1999\n"
 "Updated for Audacious by William Pitcock and John Lindgren, 2010-2014"
 msgstr ""
-"Wtyczka echa\n"
-"Autor: Johan Levin, 1999\n"
-"Otaczające echo autorstwa Carla van Schaika, 1999\n"
-"Zaktualizowano dla potrzeb Audacious przez Williama Pitcocka i Johna "
-"Lindgrena, 2010-2014"
 
 #: src/echo_plugin/echo.cc:21
 msgid "<b>Echo</b>"
-msgstr "<b>Echo</b>"
+msgstr "<b>Eko</b>"
 
 #: src/echo_plugin/echo.cc:22 src/modplug/plugin_main.cc:72
 #: src/modplug/plugin_main.cc:82
 msgid "Delay:"
-msgstr "Opóźnienie:"
+msgstr "Vonesë:"
 
 #: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:72
 #: src/modplug/plugin_main.cc:82
@@ -1265,19 +1127,19 @@ msgstr "ms"
 
 #: src/echo_plugin/echo.cc:25
 msgid "Feedback:"
-msgstr "Sprzężenie zwrotne:"
+msgstr "Përshtypje:"
 
 #: src/echo_plugin/echo.cc:28 src/modplug/plugin_main.cc:86
 msgid "Volume:"
-msgstr "Głośność:"
+msgstr "Volum:"
 
 #: src/echo_plugin/echo.cc:39
 msgid "Echo"
-msgstr "Echo"
+msgstr "Eko"
 
 #: src/ffaudio/ffaudio-core.cc:49
 msgid "FFmpeg Plugin"
-msgstr "Wtyczka FFmpeg"
+msgstr "Shtojcë FFmpeg"
 
 #: src/ffaudio/ffaudio-core.cc:628
 msgid ""
@@ -1288,16 +1150,10 @@ msgid ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
-"Wieloformatowa wtyczka dekodująca Audaciousa wykorzystująca\n"
-"dekodery FFmpeg (http://www.ffmpeg.org/)\n"
-"\n"
-"Implementacja Audaciousa napisana przez:\n"
-"William Pitcock <nenolod@nenolod.net>\n"
-"Matti Hämäläinen <ccr@tnsp.org>"
 
 #: src/filewriter/filewriter.cc:48
 msgid "FileWriter Plugin"
-msgstr "Zapis do pliku"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:316
 #, c-format
@@ -1305,7 +1161,7 @@ msgid ""
 "Error opening %s:\n"
 "%s"
 msgstr ""
-"Błąd otwierania %s:\n"
+"Gabim gjatë hapjes së %s:\n"
 "%s"
 
 #: src/filewriter/filewriter.cc:358
@@ -1324,56 +1180,55 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
-"Niniejszy program jest wolnym oprogramowaniem; możesz go rozprowadzać dalej "
-"i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej "
-"przez Fundację Wolnego Oprogramowania - według wersji 2-giej tej Licencji "
-"lub którejś z późniejszych wersji.\n"
+"Ky program është software i lirë; mund ta rishpërndani dhe/ose ndryshoni atë "
+"sipas kushteve të Licencës së Përgjithshme Publike GNU, ashtu si botohet nga "
+"Free Software Foundation; versioni 2 i kësaj Licence, ose (sipas dëshirës "
+"suaj) çfarëdo version i mëvonshëm.\n"
 "\n"
-"Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny - "
-"jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej gwarancji PRZYDATNOŚCI "
-"HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania "
-"bliższych informacji - Powszechna Licencja Publiczna GNU.\n"
+"Ky program shpërndahet me shpresën se do të jetë i dobishëm, por PA ASNJË "
+"GARANCI; madje pa as edhe garancinë e nënkuptuar të TREGTUESHMËRISË ose "
+"PËRSHTATSHMËRISË PËR NJË QËLLIM TË VEÇANTË.  Për më tepër hollësi, shihni "
+"licencën GNU General Public License.\n"
 "\n"
-"Z pewnością wraz z niniejszym programem otrzymałeś też egzemplarz "
-"Powszechnej Licencji Publicznej GNU (GNU General Public License); jeśli nie "
-"- napisz do Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, "
-"Boston, MA 02110-1301, USA."
+"Do të duhej të kishit marrë një kopje të licencës GNU General Public License "
+"tok me këtë program; nëse jo, shkruajini Free Software Foundation, Inc., 59 "
+"Temple Place, Suite 330, Boston, MA  02111-1307  USA."
 
 #: src/filewriter/filewriter.cc:385
 msgid "Output file format:"
-msgstr "Format pliku wyjściowego:"
+msgstr "Format kartele output-i."
 
 #: src/filewriter/filewriter.cc:389
 msgid "Save into original directory"
-msgstr "Zapisywanie w pierwotnym położeniu"
+msgstr "Ruaje te drejtoria origjinale"
 
 #: src/filewriter/filewriter.cc:392
 msgid "Save into custom directory:"
-msgstr "Zapisywanie we własnym położeniu:"
+msgstr "Ruajeni në drejtori vetjake"
 
 #: src/filewriter/filewriter.cc:400
 msgid "Generate file name from:"
-msgstr "Utwórz nazwę pliku z:"
+msgstr "Prodho emër kartele prej:"
 
 #: src/filewriter/filewriter.cc:401
 msgid "Original file name"
-msgstr "Pierwotna nazwa pliku"
+msgstr "Emër i kartela origjinale"
 
 #: src/filewriter/filewriter.cc:404
 msgid "Original file name (no suffix)"
-msgstr "Pierwotna nazwa pliku (brak sufiksu)"
+msgstr "Emër i kartela origjinale (pa prapashtesë)"
 
 #: src/filewriter/filewriter.cc:407
 msgid "Original file tag"
-msgstr "Pierwotny tag pliku"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:411
 msgid "Prepend track number to file name"
-msgstr "Dodanie do nazwy pliku numeru ścieżki"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:417 src/filewriter/filewriter.cc:449
 msgid "Auto"
-msgstr "Automatycznie"
+msgstr "Auto"
 
 #: src/filewriter/filewriter.cc:418
 msgid "8000 Hz"
@@ -1477,7 +1332,7 @@ msgstr "320 kbps"
 
 #: src/filewriter/filewriter.cc:450
 msgid "Joint Stereo"
-msgstr "Połączone stereo"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:451 src/modplug/plugin_main.cc:57
 #: src/mpg123/mpg123.cc:255
@@ -1499,7 +1354,7 @@ msgstr "ABR"
 
 #: src/filewriter/filewriter.cc:478
 msgid "Algorithm quality:"
-msgstr "Jakość algorytmu:"
+msgstr "Cilësi algoritmi:"
 
 #: src/filewriter/filewriter.cc:484
 msgid "Bitrate:"
@@ -1507,83 +1362,83 @@ msgstr "Bitrate:"
 
 #: src/filewriter/filewriter.cc:491
 msgid "Compression ratio:"
-msgstr "Współczynnik kompresji:"
+msgstr "Përpjesëtim ngjeshjeje:"
 
 #: src/filewriter/filewriter.cc:498
 msgid "Audio mode:"
-msgstr "Tryb audio:"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:501
 msgid "Enforce strict ISO compliance"
-msgstr "Wymuszenie ścisłej zgodności z ISO"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:503
 msgid "Error protection"
-msgstr "Zabezpieczenie przed błędami"
+msgstr "Mbrojtje nga gabime"
 
 #: src/filewriter/filewriter.cc:508
 msgid "Enable VBR/ABR"
-msgstr "Włączenie"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:510
 msgid "Type:"
-msgstr "Rodzaj:"
+msgstr "Lloj:"
 
 #: src/filewriter/filewriter.cc:514
 msgid "Minimum bitrate:"
-msgstr "Minimalny bitrate:"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:518
 msgid "Maximum bitrate:"
-msgstr "Maksymalny bitrate:"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:522
 msgid "Average bitrate:"
-msgstr "Średni bitrate:"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:526
 msgid "VBR quality level:"
-msgstr "Jakość algorytmu VBR:"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:530
 msgid "Strictly enforce minimum bitrate"
-msgstr "Wymuszenie wartości minimalnej"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:533
 msgid "Omit Xing VBR header"
-msgstr "Pominięcie nagłówka Xing VBR"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:539
 msgid "<b>Frame Headers</b>"
-msgstr "<b>Nagłówki ramki</b>"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:540
 msgid "Mark as copyright"
-msgstr "Oznaczenie prawem autorskim"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:542
 msgid "Mark as original"
-msgstr "Oznaczenie jako oryginalne"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:544
 msgid "<b>ID3 Tags</b>"
-msgstr "<b>Tagi ID3</b>"
+msgstr "<b>Etiketa ID3</b>"
 
 #: src/filewriter/filewriter.cc:545
 msgid "Force addition of version 2 tag"
-msgstr "Wymuś dodawanie tagów wersji 2"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:547
 msgid "Only add v1 tag"
-msgstr "Dodawanie tagów tylko wersji 1"
+msgstr "Shto vetëm etiketë v1"
 
 #: src/filewriter/filewriter.cc:549
 msgid "Only add v2 tag"
-msgstr "Dodawanie tagów tylko wersji 2"
+msgstr "Shto vetëm etiketë v2"
 
 #: src/filewriter/filewriter.cc:554
 msgid "Quality"
-msgstr "Jakość"
+msgstr "Cilësi"
 
 #: src/filewriter/filewriter.cc:555
 msgid "VBR/ABR"
@@ -1591,24 +1446,24 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/filewriter.cc:556
 msgid "Tags"
-msgstr "Tagi"
+msgstr "Etiketa"
 
 #: src/filewriter/filewriter.cc:566
 msgid "Quality (0-1):"
-msgstr "Jakość (0-1):"
+msgstr "Cilësi (0-1):"
 
 #: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:303
 #: src/skins/skins_cfg.cc:285
 msgid "General"
-msgstr "Ogólne"
+msgstr "Të përgjithshme"
 
 #: src/flac/flacng.h:36
 msgid "FLAC Decoder"
-msgstr "Dekoder FLAC"
+msgstr "Shkodues FLAC"
 
 #: src/flac/metadata.cc:274 src/wavpack/wavpack.cc:215
 msgid "lossless"
-msgstr "bezstratna"
+msgstr "pa humbje"
 
 #: src/flac/plugin.cc:169
 msgid ""
@@ -1617,30 +1472,26 @@ msgid ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
-"Oryginalny kod autorstwa\n"
-"Ralfa Ertzingera <ralf@skytale.net>\n"
-"\n"
-"http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/gio/gio.cc:34
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
-"Wtyczka GIO dla Audaciousa\n"
-"Prawa autorskie 2009-2012 John Lindgren"
+"Shtojcë GIO për Audacious\n"
+"Të drejta kopjimi 2009-2012 John Lindgren"
 
 #: src/gio/gio.cc:42
 msgid "GIO Plugin"
-msgstr "Wtyczka GIO"
+msgstr "Shtojcë GIO"
 
 #: src/gio/gio.cc:152
 msgid "Read-and-append mode not supported"
-msgstr "Tryb odczytu i dołączania nie jest obsługiwany"
+msgstr ""
 
 #: src/gio/gio.cc:165
 msgid "Invalid open mode"
-msgstr "Nieprawidłowy tryb otwierania"
+msgstr ""
 
 #: src/glspectrum/gl-spectrum.cc:51
 msgid ""
@@ -1653,22 +1504,14 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
-"Analizator spektrum OpenGL dla Audaciousa\n"
-"Prawa autorskie (2003): Christophe Budé, John Lindgren i Carlo Bramini\n"
-"\n"
-"Napisano na podstawie wtyczki XMMS-a:\n"
-"Prawa autorskie: 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas "
-"Nilsson i 4Front Technologies\n"
-"\n"
-"Licencja: GPLv2+"
 
 #: src/glspectrum/gl-spectrum.cc:62 src/qtglspectrum/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer"
-msgstr "Analizator spektrum OpenGL"
+msgstr "Analizues OpenGL Spektri"
 
 #: src/gtkui/columns.cc:35
 msgid "Entry number"
-msgstr "Numer porządkowy"
+msgstr ""
 
 #: src/gtkui/columns.cc:36 src/moonstone/playlist_model.cc:38
 #: src/moonstone/playlist_selection.cc:62
@@ -1677,17 +1520,17 @@ msgstr "Numer porządkowy"
 #: src/qtui/playlist_model.cc:33 src/streamtuner/icecast-model.cc:120
 #: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:122
 msgid "Title"
-msgstr "Tytuł"
+msgstr "Titull"
 
 #: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:33
 msgid "Artist"
-msgstr "Wykonawca"
+msgstr "Artist"
 
 #: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:33
 msgid "Year"
-msgstr "Rok"
+msgstr "Vit"
 
 #: src/gtkui/columns.cc:39 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:34
@@ -1696,118 +1539,118 @@ msgstr "Album"
 
 #: src/gtkui/columns.cc:40
 msgid "Album artist"
-msgstr "Wykonawca albumu"
+msgstr "Artist albumi"
 
 #: src/gtkui/columns.cc:41 src/moonstone/playlist_model.cc:40
 #: src/qtui/playlist_model.cc:34
 msgid "Track"
-msgstr "Ścieżka"
+msgstr "Pjesë"
 
 #: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
 #: src/qtui/playlist_model.cc:34 src/streamtuner/icecast-model.cc:123
 #: src/streamtuner/shoutcast-model.cc:125
 #: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
-msgstr "Gatunek"
+msgstr "Zhanër"
 
 #: src/gtkui/columns.cc:43
 msgid "Queue position"
-msgstr "Pozycja w kolejce"
+msgstr ""
 
 #: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
 #: src/qtui/playlist_model.cc:35
 msgid "Length"
-msgstr "Czas trwania"
+msgstr "Gjatësi"
 
 #: src/gtkui/columns.cc:45
 msgid "File path"
-msgstr "Położenie pliku"
+msgstr "Shteg kartele"
 
 #: src/gtkui/columns.cc:47
 msgid "Custom title"
-msgstr "Własny tytuł (z ustawień)"
+msgstr "Titull vetjak"
 
 #: src/gtkui/columns.cc:48 src/moonstone/playlist_model.cc:42
 #: src/qtui/playlist_model.cc:36 src/streamtuner/icecast-model.cc:129
 #: src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
-msgstr "Tempo transmisji"
+msgstr "Bitrate"
 
 #: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:43
 #: src/qtui/playlist_model.cc:36
 msgid "Comment"
-msgstr "Komentarz"
+msgstr "Koment"
 
 #: src/gtkui/columns.cc:315
 msgid "Available columns"
-msgstr "Dostępne kolumny"
+msgstr "Shtylla të Mundshme"
 
 #: src/gtkui/columns.cc:341
 msgid "Displayed columns"
-msgstr "Wyświetlane kolumny"
+msgstr "Shtylla të Shfaqura"
 
 #: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:58
 #: src/search-tool/search-tool.cc:48
 msgid "Search Tool"
-msgstr "Narzędzie wyszukiwania"
+msgstr "Mjet Kërkimi"
 
 #: src/gtkui/layout.cc:168
 msgid "Dock at Left"
-msgstr "Zaczep po lewej"
+msgstr "Fiksoje Majtas"
 
 #: src/gtkui/layout.cc:168
 msgid "Dock at Right"
-msgstr "Zaczep po prawej"
+msgstr "Fiksoje Djathtas"
 
 #: src/gtkui/layout.cc:169
 msgid "Dock at Top"
-msgstr "Zaczep na górze"
+msgstr "Fiksoje Në Krye"
 
 #: src/gtkui/layout.cc:169
 msgid "Dock at Bottom"
-msgstr "Zaczep na dole"
+msgstr "Fiskoje Në Fund"
 
 #: src/gtkui/layout.cc:169
 msgid "Undock"
-msgstr "Odczep"
+msgstr ""
 
 #: src/gtkui/layout.cc:169 src/ladspa/plugin.cc:534
 msgid "Disable"
-msgstr "Wyłącz"
+msgstr "Çaktivizoje"
 
 #: src/gtkui/menus.cc:79 src/qtui/menus.cc:107
 #: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:282
 msgid "_Open Files ..."
-msgstr "_Otwórz pliki..."
+msgstr "_Hapni Kartela …"
 
 #: src/gtkui/menus.cc:80 src/qtui/menus.cc:111
 msgid "Open _URL ..."
-msgstr "Otwórz adres _URL..."
+msgstr "Hapni _URL …"
 
 #: src/gtkui/menus.cc:81 src/qtui/menus.cc:113
 msgid "_Add Files ..."
-msgstr "_Dodaj pliki..."
+msgstr "_Shtoni Kartela …"
 
 #: src/gtkui/menus.cc:82 src/qtui/menus.cc:118
 msgid "Add U_RL ..."
-msgstr "Dodaj adres U_RL..."
+msgstr "Shtoni U_RL …"
 
 #: src/gtkui/menus.cc:84 src/qtui/menus.cc:120
 msgid "Search _Library"
-msgstr "_Wyszukaj w bibliotece"
+msgstr ""
 
 #: src/gtkui/menus.cc:86 src/qtui/menus.cc:123
 msgid "A_bout ..."
-msgstr "In_formacje o..."
+msgstr "_Mbi …"
 
 #: src/gtkui/menus.cc:87 src/qtui/menus.cc:125
 msgid "_Settings ..."
-msgstr "_Ustawienia..."
+msgstr "_Rregullime …"
 
 #: src/gtkui/menus.cc:88 src/qtui/menus.cc:131
 #: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:284
 msgid "_Quit"
-msgstr "Za_kończ"
+msgstr "_Dil"
 
 #: src/gtkui/menus.cc:92 src/gtkui/menus.cc:224
 #: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
@@ -1815,357 +1658,357 @@ msgstr "Za_kończ"
 #: src/search-tool/search-tool.cc:343 src/statusicon-qt/statusicon.cc:106
 #: src/statusicon/statusicon.cc:276
 msgid "_Play"
-msgstr "_Odtwarzaj"
+msgstr "_Luaje"
 
 #: src/gtkui/menus.cc:93 src/qtui/menus.cc:137
 #: src/statusicon-qt/statusicon.cc:107 src/statusicon/statusicon.cc:277
 msgid "Paus_e"
-msgstr "_Wstrzymaj"
+msgstr "Pushi_m"
 
 #: src/gtkui/menus.cc:94 src/qtui/menus.cc:139
 #: src/statusicon-qt/statusicon.cc:108 src/statusicon/statusicon.cc:278
 msgid "_Stop"
-msgstr "_Zatrzymaj"
+msgstr "_Ndal"
 
 #: src/gtkui/menus.cc:95 src/qtui/menus.cc:141
 #: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:279
 msgid "Pre_vious"
-msgstr "P_oprzednie"
+msgstr "I_mëparshmi"
 
 #: src/gtkui/menus.cc:96 src/qtui/menus.cc:143
 #: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:280
 msgid "_Next"
-msgstr "_Następne"
+msgstr "_Tjetëri"
 
 #: src/gtkui/menus.cc:97 src/qtui/menus.cc:145 src/skins/menus.cc:114
 #: src/skins-qt/menus.cc:105
 msgid "Previous Album"
-msgstr "Poprzedni album"
+msgstr "Albumi i Mëparshëm"
 
 #: src/gtkui/menus.cc:98 src/qtui/menus.cc:146 src/skins/menus.cc:115
 #: src/skins-qt/menus.cc:106
 msgid "Next Album"
-msgstr "Następny album"
+msgstr "Albumi Pasues"
 
 #: src/gtkui/menus.cc:100 src/qtui/menus.cc:148
 msgid "_Repeat"
-msgstr "Powta_rzanie"
+msgstr "_Përsërit"
 
 #: src/gtkui/menus.cc:101 src/qtui/menus.cc:150
 msgid "S_huffle"
-msgstr "_Losowo"
+msgstr ""
 
 #: src/gtkui/menus.cc:102 src/qtui/menus.cc:152
 msgid "Shuffle by Albu_m"
-msgstr "Losowa kolejność albu_mów"
+msgstr ""
 
 #: src/gtkui/menus.cc:103 src/qtui/menus.cc:155
 msgid "N_o Playlist Advance"
-msgstr "Odtwarzaj _pojedynczo"
+msgstr ""
 
 #: src/gtkui/menus.cc:104 src/qtui/menus.cc:157
 msgid "Stop A_fter This Song"
-msgstr "Z_atrzymaj odtwarzanie po tej piosence"
+msgstr "Ndalu _Pas Kësaj Kënge"
 
 #: src/gtkui/menus.cc:106 src/gtkui/menus.cc:208 src/qtui/menus.cc:162
 #: src/qtui/menus.cc:292
 msgid "Song _Info ..."
-msgstr "_Informacje o piosence..."
+msgstr "Të _dhëna Kënge …"
 
 #: src/gtkui/menus.cc:107
 msgid "Jump to _Time ..."
-msgstr "Przejdź do _czasu..."
+msgstr ""
 
 #: src/gtkui/menus.cc:108
 msgid "_Jump to Song ..."
-msgstr "Przejdź do piosen_ki..."
+msgstr ""
 
 #: src/gtkui/menus.cc:110 src/qtui/menus.cc:165
 msgid "Set Repeat Point _A"
-msgstr "Ustaw punkt powtarzania _A"
+msgstr ""
 
 #: src/gtkui/menus.cc:111 src/qtui/menus.cc:167
 msgid "Set Repeat Point _B"
-msgstr "Ustaw punkt powtarzania _B"
+msgstr ""
 
 #: src/gtkui/menus.cc:112 src/qtui/menus.cc:169
 msgid "_Clear Repeat Points"
-msgstr "_Resetuj punkty graniczne pętli"
+msgstr "_Spastro Pika Përsëritjesh"
 
 #: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:140
 #: src/qtui/menus.cc:173 src/qtui/menus.cc:180 src/qtui/menus.cc:197
 msgid "By _Title"
-msgstr "według _tytułu"
+msgstr "Sipas _Titujsh"
 
 #: src/gtkui/menus.cc:117 src/qtui/menus.cc:174
 msgid "By _File Name"
-msgstr "według _nazwy pliku"
+msgstr "Sipas _Emri Kartele"
 
 #: src/gtkui/menus.cc:118 src/qtui/menus.cc:175
 msgid "By File _Path"
-msgstr "według ścieżki _pliku"
+msgstr "Sipas Shte_g Kartele"
 
 #: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:179
 #: src/qtui/menus.cc:196
 msgid "By Track _Number"
-msgstr "według _numeru ścieżki"
+msgstr "Sipas _Numër Pjese"
 
 #: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:181
 #: src/qtui/menus.cc:198
 msgid "By _Artist"
-msgstr "według _wykonawcy"
+msgstr "Sipas _Artistësh"
 
 #: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:182
 #: src/qtui/menus.cc:199
 msgid "By Al_bum"
-msgstr "według al_bumu"
+msgstr "Sipas Al_bumi"
 
 #: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:183
 #: src/qtui/menus.cc:200
 msgid "By Albu_m Artist"
-msgstr "według wykonawcy albu_mu"
+msgstr "Sipas Artistësh Albu_mi"
 
 #: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:184
 #: src/qtui/menus.cc:201
 msgid "By Release _Date"
-msgstr "według daty w_ydania"
+msgstr "Sipas _Datash Hedhjeje Në Qarkullim"
 
 #: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:185
 #: src/qtui/menus.cc:202
 msgid "By _Genre"
-msgstr "według _gatunku"
+msgstr "Sipas _Zhanresh"
 
 #: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:186
 #: src/qtui/menus.cc:203
 msgid "By _Length"
-msgstr "według _długości"
+msgstr "Sipas _Gjatësish"
 
 #: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:187
 #: src/qtui/menus.cc:204
 msgid "By _File Path"
-msgstr "według p_ołożenia pliku"
+msgstr "Sipas Sh_tegu Kartele"
 
 #: src/gtkui/menus.cc:131 src/gtkui/menus.cc:148 src/qtui/menus.cc:188
 #: src/qtui/menus.cc:205
 msgid "By _Custom Title"
-msgstr "według wła_snego tytułu"
+msgstr "Sipas Titulli _Vetjak"
 
 #: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:189
 #: src/qtui/menus.cc:206
 msgid "By C_omment"
-msgstr "według k_omentarza"
+msgstr "Sipas K_omentesh"
 
 #: src/gtkui/menus.cc:134 src/gtkui/menus.cc:151 src/qtui/menus.cc:191
 #: src/qtui/menus.cc:208
 msgid "R_everse Order"
-msgstr "_Odwróć kolejność"
+msgstr ""
 
 #: src/gtkui/menus.cc:135 src/gtkui/menus.cc:152 src/qtui/menus.cc:193
 #: src/qtui/menus.cc:210
 msgid "_Random Order"
-msgstr "Wy_losuj kolejność"
+msgstr ""
 
 #: src/gtkui/menus.cc:156 src/qtui/menus.cc:214
 msgid "_Play/Resume"
-msgstr "_Odtwórz lub wznów"
+msgstr ""
 
 #: src/gtkui/menus.cc:157 src/qtui/menus.cc:216
 msgid "_Refresh"
-msgstr "O_dśwież"
+msgstr "_Rifreskoje"
 
 #: src/gtkui/menus.cc:159 src/qtui/menus.cc:220
 msgid "_Sort"
-msgstr "_Sortuj"
+msgstr "_Renditi"
 
 #: src/gtkui/menus.cc:160 src/qtui/menus.cc:221
 msgid "Sort Se_lected"
-msgstr "Sortuj _wybrane"
+msgstr ""
 
 #: src/gtkui/menus.cc:161 src/qtui/menus.cc:223
 msgid "Remove _Duplicates"
-msgstr "Usuń _duplikaty"
+msgstr "Hiq Përsëdytje"
 
 #: src/gtkui/menus.cc:162 src/qtui/menus.cc:224
 msgid "Remove _Unavailable Files"
-msgstr "_Usuń niedostępne pliki"
+msgstr ""
 
 #: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:218
 #: src/playlist-manager-qt/playlist-manager-qt.cc:346 src/qtui/menus.cc:227
 msgid "_New"
-msgstr "_Nowa"
+msgstr "E _re"
 
 #: src/gtkui/menus.cc:165 src/qtui/menus.cc:228
 msgid "Ren_ame ..."
-msgstr "Z_mień nazwę..."
+msgstr "Ri_emëro ..."
 
 #: src/gtkui/menus.cc:166 src/gtkui/menus.cc:226
 #: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:229
 #: src/qtui/playlist_tabs.cc:333
 msgid "Remo_ve"
-msgstr "_Usuń"
+msgstr "_Hiqe"
 
 #: src/gtkui/menus.cc:168 src/qtui/menus.cc:231
 msgid "_Import ..."
-msgstr "_Importuj..."
+msgstr "_Importoni …"
 
 #: src/gtkui/menus.cc:169 src/qtui/menus.cc:232
 msgid "_Export ..."
-msgstr "_Eksportuj..."
+msgstr "_Eksportoni …"
 
 #: src/gtkui/menus.cc:171 src/qtui/menus.cc:235
 msgid "Playlist _Manager ..."
-msgstr "Menedżer _listy odtwarzania..."
+msgstr "_Përgjegjës Luajlistash …"
 
 #: src/gtkui/menus.cc:172 src/qtui/menus.cc:237
 msgid "_Queue Manager ..."
-msgstr "Menedżer _kolejki..."
+msgstr "_Përgjegjës Radhe …"
 
 #: src/gtkui/menus.cc:176 src/qtui/menus.cc:241
 msgid "Volume _Up"
-msgstr "Z_większ głośność"
+msgstr "_Ngrije Volumin"
 
 #: src/gtkui/menus.cc:177 src/qtui/menus.cc:243
 msgid "Volume _Down"
-msgstr "Z_mniejsz głośność"
+msgstr "_Ule Volumin"
 
 #: src/gtkui/menus.cc:179 src/qtui/menus.cc:247
 msgid "_Equalizer ..."
-msgstr "_Korektor graficzny..."
+msgstr "_Balancues …"
 
 #: src/gtkui/menus.cc:180 src/qtui/menus.cc:249
 msgid "E_ffects ..."
-msgstr "E_fekty..."
+msgstr "Efekte …"
 
 #: src/gtkui/menus.cc:182
 msgid "_Record Stream"
-msgstr "Nag_raj strumień"
+msgstr "_Incizo Rrrjedhë"
 
 #: src/gtkui/menus.cc:183
 msgid "Audio _Settings ..."
-msgstr "U_stawienia dźwięku..."
+msgstr "_Rregullime për Audion …"
 
 #: src/gtkui/menus.cc:187 src/qtui/menus.cc:258
 msgid "Show _Menu Bar"
-msgstr "Pasek _menu"
+msgstr ""
 
 #: src/gtkui/menus.cc:188 src/qtui/menus.cc:260
 msgid "Show I_nfo Bar"
-msgstr "Pasek _informacji"
+msgstr ""
 
 #: src/gtkui/menus.cc:189 src/qtui/menus.cc:262
 msgid "Show Info Bar _Album Art"
-msgstr "Pokaż _okładkę albumu na pasku informacji"
+msgstr ""
 
 #: src/gtkui/menus.cc:190 src/qtui/menus.cc:264
 msgid "Show Info Bar Vis_ualization"
-msgstr "Pokaż pasek wiz_ualizacji"
+msgstr ""
 
 #: src/gtkui/menus.cc:191 src/qtui/menus.cc:266
 msgid "Show _Status Bar"
-msgstr "Pokaż pasek _stanu"
+msgstr ""
 
 #: src/gtkui/menus.cc:193 src/qtui/menus.cc:270
 msgid "Show _Remaining Time"
-msgstr "Pokaż _pozostały czas"
+msgstr ""
 
 #: src/gtkui/menus.cc:195 src/qtui/menus.cc:274 src/skins/menus.cc:157
 #: src/skins-qt/menus.cc:152
 msgid "_Visualizations ..."
-msgstr "_Wizualizacje..."
+msgstr "_Vizualizime …"
 
 #: src/gtkui/menus.cc:199 src/qtui/menus.cc:278
 msgid "_File"
-msgstr "_Plik"
+msgstr "_Kartelë"
 
 #: src/gtkui/menus.cc:200 src/qtui/menus.cc:279
 msgid "_Playback"
-msgstr "Odt_warzanie"
+msgstr "_Luaj përsëri"
 
 #: src/gtkui/menus.cc:201 src/qtui/menus.cc:280
 msgid "P_laylist"
-msgstr "_Lista"
+msgstr ""
 
 #: src/gtkui/menus.cc:202 src/gtkui/menus.cc:220 src/qtui/menus.cc:281
 #: src/qtui/menus.cc:310
 msgid "_Services"
-msgstr "W_tyczki"
+msgstr "_Shërbime"
 
 #: src/gtkui/menus.cc:203 src/qtui/menus.cc:282
 msgid "_Output"
-msgstr "_Dźwięk"
+msgstr ""
 
 #: src/gtkui/menus.cc:204 src/qtui/menus.cc:283
 msgid "_View"
-msgstr "_Widok"
+msgstr "_Pamje"
 
 #: src/gtkui/menus.cc:209 src/qtui/menus.cc:294
 msgid "_Queue/Unqueue"
-msgstr "_Przełącz kolejkę"
+msgstr ""
 
 #: src/gtkui/menus.cc:211 src/qtui/menus.cc:297
 msgid "_Open Containing Folder"
-msgstr "_Otwórz katalog zawierający"
+msgstr ""
 
 #: src/gtkui/menus.cc:212 src/qtui/menus.cc:299
 msgid "_Refresh Selected"
-msgstr "O_dśwież zaznaczone"
+msgstr ""
 
 #: src/gtkui/menus.cc:214 src/qtui/menus.cc:302
 msgid "Cu_t"
-msgstr "_Wytnij"
+msgstr "_Prije"
 
 #: src/gtkui/menus.cc:215 src/qtui/menus.cc:303
 msgid "_Copy"
-msgstr "K_opiuj"
+msgstr "_Kopjoje"
 
 #: src/gtkui/menus.cc:216 src/qtui/menus.cc:304
 msgid "_Paste"
-msgstr "Wk_lej"
+msgstr "_Ngjite"
 
 #: src/gtkui/menus.cc:217 src/qtui/menus.cc:305
 msgid "Paste at _End"
-msgstr "_Wklej na końcu"
+msgstr "Ngjite në _Fund"
 
 #: src/gtkui/menus.cc:218 src/qtui/menus.cc:307
 msgid "Select _All"
-msgstr "_Zaznacz wszystko"
+msgstr "Përzgjidhe _Krejt"
 
 #: src/gtkui/menus.cc:225 src/moonstone/playlist_tabs.cc:309
 #: src/qtui/playlist_tabs.cc:331
 msgid "_Rename ..."
-msgstr "Z_mień nazwę..."
+msgstr "_Riemërtoni…"
 
 #: src/gtkui/settings.cc:35 src/qtui/settings.cc:63
 msgid "<b>Playlist Tabs</b>"
-msgstr "<b>Karty listy odtwarzania</b>"
+msgstr "<b>Skeda Luajliste</b>"
 
 #: src/gtkui/settings.cc:36
 msgid "Always show tabs"
-msgstr "Zawsze pokazuj karty"
+msgstr "Shfaq skeda përherë"
 
 #: src/gtkui/settings.cc:38 src/qtui/settings.cc:68
 msgid "Show entry counts"
-msgstr "Pokaż statystykę nagrań"
+msgstr ""
 
 #: src/gtkui/settings.cc:40 src/qtui/settings.cc:71
 msgid "Show close buttons"
-msgstr "Pokaż przyciski zamykania"
+msgstr "Shfaq butona mbylljesh"
 
 #: src/gtkui/settings.cc:42 src/qtui/settings.cc:74
 msgid "<b>Playlist Columns</b>"
-msgstr "<b>Kolumny listy odtwarzania</b>"
+msgstr "<b>Shtylla Luajliste</b>"
 
 #: src/gtkui/settings.cc:44 src/qtui/settings.cc:76
 msgid "Show column headers"
-msgstr "Pokaż nagłówki listy odtwarzania"
+msgstr ""
 
 #: src/gtkui/settings.cc:47 src/qtui/settings.cc:82
 msgid "Scroll on song change"
-msgstr "Przewiń przy zmianie piosenki"
+msgstr ""
 
 #: src/gtkui/ui_gtk.cc:74
 msgid "GTK Interface"
-msgstr "Interfejs GTK"
+msgstr "Ndërfaqe GTK"
 
 #: src/gtkui/ui_gtk.cc:210 src/skins/main.cc:227 src/skins-qt/main.cc:225
 #, c-format
@@ -2175,7 +2018,7 @@ msgstr "%s - Audacious"
 #: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:184
 #: src/qtui/main_window.cc:384
 msgid "Buffering ..."
-msgstr "Buforowanie..."
+msgstr ""
 
 #: src/gtkui/ui_gtk.cc:215 src/skins/main.cc:229 src/skins-qt/main.cc:227
 msgid "Audacious"
@@ -2188,61 +2031,61 @@ msgstr "Audacious"
 #: src/qtui/main_window.cc:346 src/qtui/main_window.cc:347
 #: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
 msgid "Play"
-msgstr "Odtwarzaj"
+msgstr "Luaje"
 
 #: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:151
 #: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
 #: src/qtui/main_window.cc:352 src/qtui/main_window.cc:353
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Pause"
-msgstr "Wstrzymaj"
+msgstr "Pushim"
 
 #: src/gtkui/ui_gtk.cc:803 src/moonstone/main_window.cc:57
 #: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
-msgstr "Przeszukaj bibliotekę"
+msgstr "Kërkoni në Fonotekë"
 
 #: src/gtkui/ui_gtk.cc:810 src/moonstone/main_window.cc:60
 #: src/qtui/main_window.cc:147
 msgid "Open Files"
-msgstr "Otwórz pliki"
+msgstr "Hapni Kartela"
 
 #: src/gtkui/ui_gtk.cc:811 src/moonstone/main_window.cc:62
 #: src/qtui/main_window.cc:149
 msgid "Add Files"
-msgstr "Dodaj pliki"
+msgstr "Shto Kartela"
 
 #: src/gtkui/ui_gtk.cc:816 src/moonstone/main_window.cc:65
 #: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Previous"
-msgstr "Poprzednie"
+msgstr "E mëparshmja"
 
 #: src/gtkui/ui_gtk.cc:818 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:69
 #: src/qthotkey/gui.cc:66 src/qtui/main_window.cc:156 src/skins/menus.cc:111
 #: src/skins-qt/menus.cc:102
 msgid "Stop"
-msgstr "Zatrzymaj"
+msgstr "Ndale"
 
 #: src/gtkui/ui_gtk.cc:819 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
 #: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
-msgstr "Następne"
+msgstr "Pasuesja"
 
 #: src/gtkui/ui_gtk.cc:821 src/moonstone/main_window.cc:79
 #: src/qtui/main_window.cc:166 src/qtui/menus.cc:252 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:69
 msgid "Record Stream"
-msgstr "Nagraj strumień"
+msgstr ""
 
 #: src/gtkui/ui_gtk.cc:854 src/moonstone/main_window.cc:86
 #: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
 msgid "Repeat"
-msgstr "Powtarzaj"
+msgstr "Përsërite"
 
 #: src/gtkui/ui_gtk.cc:857 src/moonstone/main_window.cc:89
 #: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
 msgid "Shuffle"
-msgstr "Losowa kolejność"
+msgstr "Përzieji"
 
 #: src/gtkui/ui_gtk.cc:1030 src/qtui/main_window.cc:123
 msgid "Menu"
@@ -2260,10 +2103,8 @@ msgstr "stereo"
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "%d kanał"
-msgstr[1] "%d kanały"
-msgstr[2] "%d kanałów"
-msgstr[3] "%d kanałów"
+msgstr[0] "%d kanal"
+msgstr[1] "%d kanale"
 
 #: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:168
 #, c-format
@@ -2273,83 +2114,83 @@ msgstr "%d kHz"
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:174
 #, c-format
 msgid "%d kbps"
-msgstr "%d kb/s"
+msgstr "%d kbps"
 
 #: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471 src/skins-qt/main.cc:455
 msgid "Single mode."
-msgstr "Tryb prosty."
+msgstr ""
 
 #: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:473 src/skins-qt/main.cc:457
 msgid "Playlist mode."
-msgstr "Tryb listy odtwarzania."
+msgstr ""
 
 #: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:479 src/skins-qt/main.cc:463
 msgid "Stopping after song."
-msgstr "Zatrzymaj po tej piosence."
+msgstr ""
 
 #: src/hotkey/gui.cc:70 src/qthotkey/gui.cc:63
 msgid "Previous track"
-msgstr "Poprzedna ścieżka"
+msgstr "Pjesa e mëparshme"
 
 #: src/hotkey/gui.cc:72 src/qthotkey/gui.cc:65
 msgid "Pause/Resume"
-msgstr "Wstrzymaj/wznów"
+msgstr "Pushim/Vazhdim"
 
 #: src/hotkey/gui.cc:74 src/qthotkey/gui.cc:67
 msgid "Next track"
-msgstr "Następna ścieżka"
+msgstr "Pjesa pasuese"
 
 #: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:68
 msgid "Step forward"
-msgstr "Krok do przodu"
+msgstr ""
 
 #: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:69
 msgid "Step backward"
-msgstr "Krok do tyłu"
+msgstr ""
 
 #: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:70
 msgid "Mute"
-msgstr "Wyciszenie dźwięku"
+msgstr "Pa zë"
 
 #: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:71
 msgid "Volume up"
-msgstr "Zwiększ głośność"
+msgstr "Ngrije volumin"
 
 #: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:72
 msgid "Volume down"
-msgstr "Zmniejsz głośność"
+msgstr "Ule volumin"
 
 #: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:73
 msgid "Jump to file"
-msgstr "Przejdź do pliku"
+msgstr "Hidhu te kartelë"
 
 #: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:74
 msgid "Toggle player window(s)"
-msgstr "Przełącz okno(a) odtwarzacza"
+msgstr ""
 
 #: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:75
 msgid "Show On-Screen-Display"
-msgstr "Pokaż menu ekranowe"
+msgstr ""
 
 #: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:76
 msgid "Toggle repeat"
-msgstr "Włącz/Wyłącz powtarzanie"
+msgstr ""
 
 #: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:77
 msgid "Toggle shuffle"
-msgstr "Włącz/Wyłącz odtwaranie losowe"
+msgstr ""
 
 #: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:78
 msgid "Toggle stop after current"
-msgstr "Zatrzymanie po bieżącej ścieżce"
+msgstr ""
 
 #: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:79
 msgid "Raise player window(s)"
-msgstr "Przesuń na wierzch okno(a) odtwarzacza"
+msgstr ""
 
 #: src/hotkey/gui.cc:97 src/qthotkey/gui.cc:97
 msgid "(none)"
-msgstr "(brak)"
+msgstr "(asnjë)"
 
 #: src/hotkey/gui.cc:260
 msgid ""
@@ -2357,42 +2198,36 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"Niezalecane jest dowiązywanie podstawowych przycisków myszy bez "
-"modyfikatorów.\n"
-"\n"
-"Czy chcesz kontynuować?"
 
 #: src/hotkey/gui.cc:263
 msgid "Binding mouse buttons"
-msgstr "Przyciski dowiązań myszy"
+msgstr ""
 
 #: src/hotkey/gui.cc:426
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
-"Proszę wcisnąć kombinację klawiszy wewnątrz pola\n"
-"tekstowego. Można również użyć przycisków myszy."
 
 #: src/hotkey/gui.cc:432 src/qthotkey/gui.cc:167
 msgid "Hotkeys:"
-msgstr "Skróty klawiszowe:"
+msgstr ""
 
 #: src/hotkey/gui.cc:448 src/qthotkey/gui.cc:169
 msgid "<b>Action:</b>"
-msgstr "<b>Czynność:</b>"
+msgstr "<b>Veprim</b>"
 
 #: src/hotkey/gui.cc:454 src/qthotkey/gui.cc:170
 msgid "<b>Key Binding:</b>"
-msgstr "<b>Kombinacja klawiszy:</b>"
+msgstr ""
 
 #: src/hotkey/gui.cc:501 src/qthotkey/gui.cc:172
 msgid "_Add"
-msgstr "_Dodaj"
+msgstr "_Shtoje"
 
 #: src/hotkey/plugin.cc:61 src/qthotkey/plugin.cc:77
 msgid "Global Hotkeys"
-msgstr "Globalne skróty klawiszowe"
+msgstr ""
 
 #: src/hotkey/plugin.cc:76
 msgid ""
@@ -2408,76 +2243,62 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
-"Wtyczka globalnych skrótów klawiszowych\n"
-"Steruj odtwarzaniem przy użyciu globalnych skrótów klawiszowych lub "
-"przycisków multimedialnych.\n"
-"\n"
-"Prawa autorskie (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-"Przyczynili się:\n"
-"Prawa autorskie (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-"Prawa autorskie (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
-" Bryn Davies <curious@ihug.com.au>,\n"
-" Jonathan A. Davis <davis@jdhouse.org>,\n"
-" Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/jack/jack-ng.cc:54
 msgid "JACK Output"
-msgstr "Wyjście JACK"
+msgstr ""
 
 #: src/jack/jack-ng.cc:126
 msgid "Client name:"
-msgstr "Nazwa klienta:"
+msgstr "Emër klienti:"
 
 #: src/jack/jack-ng.cc:128
 msgid "Automatically connect to output ports"
-msgstr "Automatycznie połącz z portami wyjścia"
+msgstr ""
 
 #: src/jack/jack-ng.cc:130
 msgid "Filter ports (regex, use any port if blank):"
-msgstr "Filtruj porty (regex, użyje dowolnego portu, jeśli jest pusty):"
+msgstr ""
 
 #: src/jack/jack-ng.cc:136
 msgid "Connect to physical ports only"
-msgstr "Podłącz tylko do fizycznych portów"
+msgstr ""
 
 #: src/jack/jack-ng.cc:139
 msgid "Upmix to"
-msgstr "Upmix do"
+msgstr ""
 
 #: src/jack/jack-ng.cc:141
 msgid "ports if input has fewer channels"
-msgstr "portów, jeśli wejście ma mniej kanałów"
+msgstr ""
 
 #: src/jack/jack-ng.cc:143
 msgid "Ignore insufficient number of ports"
-msgstr "Zignoruj niewystarczającą liczbę portów"
+msgstr ""
 
 #: src/jack/jack-ng.cc:181
 msgid "No JACK output ports were found. Please check settings."
-msgstr "Nie znaleziono portów wyjściowych JACK. Sprawdź ustawienia."
+msgstr ""
 
 #: src/jack/jack-ng.cc:195
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
-msgstr "Odnaleziono tylko %d portów wyjścia JACK, ale wymaganych jest %d."
+msgstr ""
 
 #: src/jack/jack-ng.cc:210
 #, c-format
 msgid "Failed to connect to JACK port %s."
-msgstr "Wystąpił błąd przy połączeniu z portem JACK %s."
+msgstr ""
 
 #: src/jack/jack-ng.cc:230
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
-"JACK obsługuje tylko dźwięk zmiennoprzecinkowy. Musisz zmienić rozdzielczość "
-"bitową w ustawieniach dźwięku Audaciousa na tryb zmiennopozycyjny."
 
 #: src/jack/jack-ng.cc:245
 msgid "Failed to connect to the JACK server; is it running?"
-msgstr "Wystąpił błąd przy połączeniu z serwerem JACK. Czy jest uruchomiony?"
+msgstr ""
 
 #: src/jack/jack-ng.cc:321
 #, c-format
@@ -2485,18 +2306,15 @@ msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
 "%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
 msgstr ""
-"Serwer JACK wymaga częstotliwości próbkowania %d HZ, a Audacious odtwarza %d "
-"Hz. Użyj proszę Konwertera częstotliwości próbkowania (wtyczki) aby usunąć "
-"niezgodność."
 
 #: src/ladspa/plugin.cc:415
 #, c-format
 msgid "%s Settings"
-msgstr "Ustawienia %s"
+msgstr "Rregullime për %s"
 
 #: src/ladspa/plugin.cc:481
 msgid "Module paths:"
-msgstr "Położenia modułów:"
+msgstr "Shtigje modulesh:"
 
 #: src/ladspa/plugin.cc:486
 msgid ""
@@ -2504,44 +2322,38 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>Ścieżki należy rozdzielać dwukropkiem.\n"
-"Wprowadzone położenia będą przeszukiwane wraz z położeniem LADSPA_PATH.\n"
-"Po dodaniu nowych ścieżek proszę wcisnąć Enter, aby wyszukać nowe wtyczki.</"
-"small>"
 
 #: src/ladspa/plugin.cc:502
 msgid "Available plugins:"
-msgstr "Dostępne wtyczki:"
+msgstr "Shtojca të gatshme:"
 
 #: src/ladspa/plugin.cc:515 src/modplug/plugin_main.cc:91
 #: src/modplug/plugin_main.cc:94 src/modplug/plugin_main.cc:97
 #: src/modplug/plugin_main.cc:100
 msgid "Enable"
-msgstr "Włącz"
+msgstr "Aktivizoje"
 
 #: src/ladspa/plugin.cc:521
 msgid "Enabled plugins:"
-msgstr "Włączone wtyczki:"
+msgstr "Shtojca të aktivizuara:"
 
 #: src/ladspa/plugin.cc:537
 msgid "Settings"
-msgstr "Ustawienia"
+msgstr "Rregullime"
 
 #: src/ladspa/plugin.cc:554
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 msgstr ""
-"Serwer LADSPA dla Audacious\n"
-"Prawa autorskie 2011 John Lindgren"
 
 #: src/ladspa/plugin.h:78
 msgid "LADSPA Host"
-msgstr "Serwer LADSPA"
+msgstr ""
 
 #: src/lirc/lirc.cc:55
 msgid "LIRC Plugin"
-msgstr "Wtyczka LIRC"
+msgstr "Shtojcë LIRC"
 
 #: src/lirc/lirc.cc:379
 msgid ""
@@ -2558,39 +2370,26 @@ msgid ""
 "\n"
 "For more information about LIRC, see http://lirc.org."
 msgstr ""
-"Prosta wtyczka do kontroli Audaciousa za pomocą demona zdalnej kontroli "
-"LIRC.\n"
-"\n"
-"Port na Audaciousa:\n"
-"Tony Vroon <chainsaw@gentoo.org>\n"
-"Joonas Harjumäki <jharjuma@gmail.com>\n"
-"\n"
-"Stworzono na podstawie wtyczki LIRC dla XMMS-a autorstwa:\n"
-"Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de>\n"
-"Andrew O. Shadoura <bugzilla@tut.by>\n"
-"\n"
-"Więcej informacji LIRC-u, znajdziesz na stronie: http://lirc.org."
 
 #: src/lirc/lirc.cc:390
 msgid "<b>Connection</b>"
-msgstr "<b>Połącznenie</b>"
+msgstr "<b>Lidhje</b>"
 
 #: src/lirc/lirc.cc:391
 msgid "Reconnect to LIRC server"
-msgstr "Podłącz ponownie do serwera LIRC"
+msgstr "Rilidhu me shërbyesin LIRC"
 
 #: src/lirc/lirc.cc:393
 msgid "Wait before reconnecting:"
-msgstr "Odczekaj przed ponownym połączeniem:"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:89
 msgid "Lyrics"
-msgstr "Teksty utworów"
+msgstr "Vargje"
 
 #: src/lyricwiki-qt/lyricwiki.cc:116
 msgid "Nowhere"
-msgstr "Nigdzie"
+msgstr "Askund"
 
 #: src/lyricwiki-qt/lyricwiki.cc:117
 msgid "lyrics.ovh"
@@ -2598,103 +2397,103 @@ msgstr "lyrics.ovh"
 
 #: src/lyricwiki-qt/lyricwiki.cc:121
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
-msgstr "<small>Wykonawca jest skracany na początku, tytuł -- na końcu</small>"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:122
 msgid "Chars to truncate on:"
-msgstr "Znaki do obcięcia:"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:126
 msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
-msgstr "<small>Znaki są OR-owane w RegExp, otoczone białymi znakami</small>"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:127
 msgid "Chars to split on:"
-msgstr "Znaki do podziału:"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:128
 msgid "Further truncate those on chars"
-msgstr "Dalsze obcięcie tych na znakach"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:134
 msgid "<b>General</b>"
-msgstr "<b>Główne</b>"
+msgstr "<b>Të përgjithshme</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:135
 msgid "Split title into artist and title on chars"
-msgstr "Podziel tytuł na wykonawcę i tytuł na znakach"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:138
 msgid "<b>Internet Sources</b>"
-msgstr "<b>Źródła internetowe</b>"
+msgstr "<b>Burime Internet</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:139
 msgid "Fetch lyrics from:"
-msgstr "Pobierz teksty utworów z:"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:142
 msgid "Store fetched lyrics in local cache"
-msgstr "Przechowuj pobrane teksty utworów w lokalnej pamięci podręcznej"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:144
 msgid "<b>Local Storage</b>"
-msgstr "<b>Pamięć lokalna</b>"
+msgstr "<b>Depozitim Vendor</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:145
 msgid "Load lyric files (.lrc) from local storage"
-msgstr "Załaduj pliki tekstów utworów (.lrc) z pamięci lokalnej"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:356
 #, c-format
 msgid "Unable to fetch %s"
-msgstr "Nie można pobrać %s"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:365
 #, c-format
 msgid "Unable to parse %s"
-msgstr "Nie można odczytać %s"
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:403
 msgid "Looking for lyrics ..."
-msgstr "Szukanie tekstu piosenki ..."
+msgstr "Po kërkohet për vargje …"
 
 #: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:38
 msgid "Error"
-msgstr "Błąd"
+msgstr "Gabim"
 
 #: src/lyricwiki-qt/lyricwiki.cc:433
 msgid "Lyrics could not be found."
-msgstr "Nie można znaleźć tekstu utworu."
+msgstr "S’u gjetën vargje."
 
 #: src/lyricwiki-qt/lyricwiki.cc:501
 msgid "Missing title and/or artist."
-msgstr "Brak tytułu i/lub wykonawcy."
+msgstr ""
 
 #: src/lyricwiki-qt/lyricwiki.cc:553
 msgid "Save Locally"
-msgstr "Zapisz lokalnie"
+msgstr "Ruaje Lokalisht"
 
 #: src/lyricwiki-qt/lyricwiki.cc:561
 msgid "Refresh"
-msgstr "Odśwież"
+msgstr "Rifreskoje"
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
-msgstr "Lista odtwarzania M3U"
+msgstr "Luajlista M3U"
 
 #: src/metronom/metronom.cc:44
 msgid "Tact Generator"
-msgstr "Generator taktu"
+msgstr ""
 
 #: src/metronom/metronom.cc:145
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "Generator taktu: %d uderzeń na minutę"
+msgstr ""
 
 #: src/metronom/metronom.cc:147
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "Generator taktu: %d bpm %d/%d"
+msgstr ""
 
 #: src/metronom/metronom.cc:235
 msgid ""
@@ -2704,68 +2503,60 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
-"Generator taktu autorstwa Martina Straussa <mys@faveve.uni-stuttgart.de>\n"
-"\n"
-"Instrukcja: wprowadź adres URL: tact://uderzenia*liczba jednostek "
-"metrycznych/jednostka metryczna\n"
-"na przykład tact://77 aby wygenerować 77 uderzeń na minutę\n"
-"lub tact://60*3/4 aby wygenerować 60 uderzeń na minutę w metrum 3/4"
 
 #: src/mixer/mixer.cc:43
 msgid "Channel Mixer"
-msgstr "Mikser kanałów"
+msgstr "Përzierës Kanalesh"
 
 #: src/mixer/mixer.cc:255
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
-"Wtyczka miksera kanałów dla Audacious\n"
-"Prawa autorskie 2011-2012 John Lindgren i Michał Lipski"
 
 #: src/mixer/mixer.cc:259
 msgid "<b>Channel Mixer</b>"
-msgstr "<b>Mikser kanałów</b>"
+msgstr "<b>Përzierës Kanalesh</b>"
 
 #: src/mixer/mixer.cc:260
 msgid "Output channels:"
-msgstr "Ilość kanałów wyjściowych:"
+msgstr ""
 
 #: src/mms/mms.cc:35
 msgid "MMS Plugin"
-msgstr "Wtyczka MMS"
+msgstr "Shtojcë MMS"
 
 #: src/mms/mms.cc:82
 msgid "Error connecting to MMS server"
-msgstr "Błąd połączenia z serwerem MMS"
+msgstr "Gabim gjatë lidhjes me shërbyesin MMS"
 
 #: src/modplug/modplugbmp.h:57
 msgid "ModPlug (Module Player)"
-msgstr "ModPlug (odtwarzacz modułów)"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:55
 msgid "<b>Channels</b>"
-msgstr "<b>Kanały</b>"
+msgstr "<b>Kanale</b>"
 
 #: src/modplug/plugin_main.cc:59
 msgid "Nearest (fastest)"
-msgstr "Najbliższa (najszybsza)"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:60
 msgid "Linear (fast)"
-msgstr "Liniowa (szybka)"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:61
 msgid "Spline (good)"
-msgstr "Krzywa (dobra)"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:62
 msgid "Polyphase (best)"
-msgstr "Przesunięcie fazowe (najlepsza)"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:63
 msgid "<b>Sample rate</b>"
-msgstr "<b>Częstotliwość próbkowania</b>"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:64
 msgid "22 kHz"
@@ -2786,156 +2577,155 @@ msgstr "96 kHz"
 #: src/modplug/plugin_main.cc:71 src/modplug/plugin_main.cc:76
 #: src/modplug/plugin_main.cc:81
 msgid "Level:"
-msgstr "Poziom:"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:77
 msgid "Cutoff:"
-msgstr "Odcięcie:"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:90
 msgid "<b>Reverb</b>"
-msgstr "<b>Echo</b>"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:93
 msgid "<b>Bass Boost</b>"
-msgstr "<b>Podbicie basów</b>"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:96
 msgid "<b>Surround</b>"
-msgstr "<b>Dźwięk przestrzenny</b>"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:99
 msgid "<b>Preamp</b>"
-msgstr "<b>Przedwzmacniacz</b>"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:106
 msgid "Oversample"
-msgstr "Próbkowanie nadmiarowe"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:107
 msgid "Noise reduction"
-msgstr "Redukcja szumów"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:108
 msgid "Play Amiga MODs"
-msgstr "Odtwórz MOD-y Amigi"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:109
 msgid "<b>Repeat</b>"
-msgstr "<b>Powtórz</b>"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:110
 msgid "Repeat count:"
-msgstr "Ilość powtórzeń:"
+msgstr ""
 
 #: src/modplug/plugin_main.cc:111
 msgid "To repeat forever, set the repeat count to -1."
-msgstr "By powtarzać bez końca ustaw -1."
+msgstr ""
 
 #: src/modplug/plugin_main.cc:124 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
 msgstr ""
-"Poniższe ustawienia zostaną wprowadzone w życie po restarcie Audaciousa."
 
 #: src/moonstone/main_window.cc:72 src/moonstone/main_window.cc:73
 #: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
 #: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
-msgstr "Zatrzymaj odtwarzanie po tej piosence"
+msgstr "Ndalu Pas Kësaj Kënge"
 
 #: src/moonstone/moonstone.cc:39
 msgid "Moonstone"
-msgstr "Kamień księżycowy"
+msgstr ""
 
 #: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:251
 msgid "Reset to Defaults"
-msgstr "Przywróć do domyślnych"
+msgstr "Riktheji te Parazgjedhjet"
 
 #: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:225
 msgid "Now Playing"
-msgstr "Teraz odtwarzane"
+msgstr "Po Luhet Tani"
 
 #: src/moonstone/playlist_model.cc:38 src/qtui/playlist_model.cc:33
 msgid "Entry Number"
-msgstr "Numer porządkowy"
+msgstr ""
 
 #: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:34
 msgid "Album Artist"
-msgstr "Wykonawca albumu"
+msgstr "Artist Albumi"
 
 #: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
 msgid "Queue Position"
-msgstr "Pozycja w kolejce"
+msgstr ""
 
 #: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
 msgid "File Path"
-msgstr "Ścieżka pliku"
+msgstr "Shteg Kartele"
 
 #: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:35
 msgid "File Name"
-msgstr "Nazwa pliku"
+msgstr "Emër Kartele"
 
 #: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:36
 msgid "Custom Title"
-msgstr "Własny tytuł"
+msgstr "Titull Vetjak"
 
 #: src/moonstone/playlist_selection.cc:64
 #: src/playlist-manager/playlist-manager.cc:200
 #: src/playlist-manager-qt/playlist-manager-qt.cc:188
 msgid "Entries"
-msgstr "Wpisy"
+msgstr "Zëra"
 
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
-msgstr "Wtyczka MPG123"
+msgstr "Shtojcë MPG123"
 
 #: src/mpg123/mpg123.cc:81
 msgid "<b>Advanced</b>"
-msgstr "<b>Zaawansowane</b>"
+msgstr "<b>Të mëtejshme</b>"
 
 #: src/mpg123/mpg123.cc:82
 msgid "Use accurate length calculation (slow)"
-msgstr "Użyj dokładnego obliczania długości (wolne)"
+msgstr ""
 
 #: src/mpg123/mpg123.cc:256
 msgid "Surround"
-msgstr "Dźwięk przestrzenny"
+msgstr ""
 
 #: src/mpris2/plugin.cc:38
 msgid "MPRIS 2 Server"
-msgstr "Serwer MPRIS 2"
+msgstr "Shërbyes MPRIS 2"
 
 #: src/neon/neon.cc:97
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr "Wtyczka Neon HTTP/HTTPS"
+msgstr "Shtojcë HTTP/HTTPS Neon"
 
 #: src/neon/neon.cc:526
 msgid "Error parsing redirect"
-msgstr "Błąd przetwarzania przekierowania"
+msgstr "Gabim në përtypje ridrejtimi"
 
 #: src/neon/neon.cc:540
 msgid "Unknown HTTP error"
-msgstr "Nieznany błąd HTTP"
+msgstr "Gabim HTTP i panjohur"
 
 #: src/neon/neon.cc:590
 msgid "Error parsing URL"
-msgstr "Błąd przetwarzania adresu URL"
+msgstr "Gabim gjatë përtypjeje URL-je"
 
 #: src/neon/neon.cc:660
 msgid "Too many redirects"
-msgstr "Za dużo przekierowań"
+msgstr "Shumë ridrejtime"
 
 #: src/notify/event.cc:97
 msgid "Stopped"
-msgstr "Zatrzymany"
+msgstr "U ndal"
 
 #: src/notify/event.cc:97
 msgid "Audacious is not playing."
-msgstr "Audacious nie odtwarza."
+msgstr "Audacious nuk po luan."
 
 #: src/notify/notify.cc:39
 msgid "Desktop Notifications"
-msgstr "Powiadomienia na pulpicie"
+msgstr "Njoftime Desktopi"
 
 #: src/notify/notify.cc:57
 msgid ""
@@ -2956,48 +2746,47 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Wtyczka powiadomień pulpitowych dla Audaciousa\n"
-"Prawa autorskie (C) 2010: Maximilian Bogner\n"
-"Prawa autorskie (C) 2011-2013 John Lindgren i Jean-Alexandre Anglès "
+"Shtojcë Njoftimesh Desktop për Audacious\n"
+"Të drejta kopjimi (C) 2010 Maximilian Bogner\n"
+"Të drejta kopjimi (C) 2011-2013 John Lindgren dhe Jean-Alexandre Anglès "
 "d'Auriac\n"
 "\n"
-"Niniejsza wtyczka jest wolnym oprogramowaniem; można ją rozprowadzać dalej i/"
-"lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej "
-"przez Fundację Wolnego Oprogramowania - według wersji trzeciej tej Licencji "
-"lub którejś z późniejszych wersji.\n"
+"Kjo shtojcë është software i lirë: mund ta rishpërndani dhe/ose ndryshoni "
+"sipas kushteve të licencës GNU General Public License, siç botohet nga Free "
+"Software Foundation, qoftë versioni 3 i Licencës, ose (në dëshirën tuaj) "
+"cilindo version i mëvonshëm.\n"
 "\n"
-"Wtyczka jest rozpowszechniana jest z nadzieją, iż będzie użyteczna, jednak "
-"BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej gwarancji PRZYDATNOŚCI "
-"HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania "
-"bliższych informacji przeczytaj Powszechną Licencję Publiczną GNU.\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-" Z pewnością wraz z wtyczką otrzymałeś też egzemplarz Powszechnej Licencji "
-"Publicznej GNU (GNU General Public License); jeśli nie, odwiedź <http://www."
-"gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.cc:104
 msgid "Show playback controls"
-msgstr "Pokaż kontrolki odtwarzania"
+msgstr "Shfaq kontrolle luajtjeje"
 
 #: src/notify/notify.cc:106
 msgid "Always show notification"
-msgstr "Zawsze pokazuj powiadomienia"
+msgstr "Shfaqe përherë njoftime"
 
 #: src/notify/notify.cc:108
 msgid "Include album name in notification"
-msgstr "Dołącz nazwę albumu do powiadomienia"
+msgstr "Përfshi emër albumi në njoftim"
 
 #: src/notify/notify.cc:110
 msgid "Custom notification duration:"
-msgstr "Niestandardowy czas trwania powiadomienia:"
+msgstr "Kohëzgjatje vetjake njoftimesh:"
 
 #: src/notify/osd.cc:74
 msgid "Show"
-msgstr "Pokaż"
+msgstr ""
 
 #: src/openmpt/mpt.cc:50
 msgid "OpenMPT (Module Player)"
-msgstr "OpenMPT (odtwarzacz modułów)"
+msgstr ""
 
 #: src/openmpt/mpt.cc:133
 msgid ""
@@ -3005,13 +2794,10 @@ msgid ""
 "\n"
 "Written by: Chris Spiegel <cspiegel@gmail.com>"
 msgstr ""
-"Odtwarzacz modułów oparty na libopenmpt\n"
-"\n"
-"Napisany przez: Chris Spiegel <cspiegel@gmail.com>"
 
 #: src/openmpt/mpt.cc:152
 msgid "Stereo separation:"
-msgstr "Separacja stereo:"
+msgstr "Ndarje stereo:"
 
 #: src/openmpt/mpt.cc:154
 msgid "%"
@@ -3019,51 +2805,51 @@ msgstr "%"
 
 #: src/openmpt/mpt.cc:158
 msgid "Interpolation:"
-msgstr "Interpolacja:"
+msgstr ""
 
 #: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189
 msgid "Linear"
-msgstr "Liniowa"
+msgstr ""
 
 #: src/openmpt/mptwrap.h:52
 msgid "Cubic"
-msgstr "Kubiczna"
+msgstr ""
 
 #: src/openmpt/mptwrap.h:53
 msgid "Windowed sinc"
-msgstr "Okienkowa sinc"
+msgstr ""
 
 #: src/oss4/oss.h:75
 msgid "OSS4 Output"
-msgstr "Wyjście OSS4"
+msgstr ""
 
 #: src/oss4/oss.h:77
 msgid "OSS3 Output"
-msgstr "Wyjście OSS3"
+msgstr ""
 
 #: src/oss4/plugin.cc:35
 msgid "Default device"
-msgstr "Domyślne urządzenie"
+msgstr "Pajisje parazgjedhje"
 
 #: src/oss4/plugin.cc:78
 msgid "Audio device:"
-msgstr "Urządzenie dźwiękowe:"
+msgstr "Pajisje audio:"
 
 #: src/oss4/plugin.cc:81
 msgid "Use alternate device:"
-msgstr "Użyj alternatywnego urządzenia:"
+msgstr "Përdor pajisje alternative:"
 
 #: src/oss4/plugin.cc:85
 msgid "Save volume between sessions."
-msgstr "Zapisz poziom głośności."
+msgstr "Ruaje volumin mes sesionesh."
 
 #: src/oss4/plugin.cc:87
 msgid "Enable format conversions made by the OSS software."
-msgstr "Włącz konwersje formatu poprzez oprogramowanie OSS."
+msgstr ""
 
 #: src/oss4/plugin.cc:89
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr "Włącz tryb wyłączności, aby wyłączyć programowe miksowanie."
+msgstr ""
 
 #: src/oss4/plugin.cc:101
 msgid ""
@@ -3073,55 +2859,49 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
-"Wtyczka wyjścia OSS4 dla Audaciousa Prawa autorskie: 2010-2012 Michał "
-"Lipski\n"
-"\n"
-"Chciałbym wyrazić wdzięczność bywalcom kanału #audacious, szczególnie "
-"Tony'emu Vroonowi oraz Johnowi Lindgrenowi, a także, naturalnie, autorom "
-"poprzedniej wtyczki OSS."
 
 #: src/playlist-manager/playlist-manager.cc:37
 #: src/playlist-manager-qt/playlist-manager-qt.cc:40
 msgid "Playlist Manager"
-msgstr "Menedżer list odtwarzania"
+msgstr "Përgjegjësi Luajlistash"
 
 #: src/playlist-manager/playlist-manager.cc:220
 #: src/playlist-manager-qt/playlist-manager-qt.cc:354
 msgid "_Remove"
-msgstr "_Usuń"
+msgstr "_Hiqe"
 
 #: src/playlist-manager/playlist-manager.cc:221
 #: src/playlist-manager-qt/playlist-manager-qt.cc:349
 msgid "Ren_ame"
-msgstr "_Zmień nazwę"
+msgstr ""
 
 #: src/pls/pls.cc:35
 msgid "PLS Playlists"
-msgstr "Listy odtwarzania PLS"
+msgstr "Luajlista PLS"
 
 #: src/psf/plugin.cc:53
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr "Dekoder OpenPSF PSF1/PSF2"
+msgstr "Shkodues OpenPSF PSF1/PSF2"
 
 #: src/psf/plugin.cc:270
 msgid "<b>OpenPSF Configuration</b>"
-msgstr "<b>Konfiguracja OpenPSF</b>"
+msgstr "<b>Formësim OpenPFS-je</b>"
 
 #: src/psf/plugin.cc:271 src/xsf/plugin.cc:233
 msgid "Ignore length from file"
-msgstr "Ignorowanie czasu trwania z pliku"
+msgstr "Shpërfille gjatësinë prej kartele"
 
 #: src/pulse/pulse_audio.cc:42
 msgid "PulseAudio Output"
-msgstr "Wyjście PulseAudio"
+msgstr ""
 
 #: src/pulse/pulse_audio.cc:72
 msgid "Context name:"
-msgstr "Nazwa kontekstu:"
+msgstr ""
 
 #: src/pulse/pulse_audio.cc:74
 msgid "Stream name:"
-msgstr "Nazwa strumienia:"
+msgstr ""
 
 #: src/pulse/pulse_audio.cc:575
 msgid ""
@@ -3141,25 +2921,10 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
-"Plugin wyjściowy Audacious PulseAudio\n"
-"\n"
-"Ten program jest darmowym oprogramowaniem; możesz go re-dystrybuować i/lub "
-"modyfikować zgodnie z warunkami licencji GNU General Public License, która "
-"została opublikowana przez Free Software Foundation; zarówno w wersji 2 lub "
-"(wedle życzenia) którejkolwiek późniejszej wersji licencji.\n"
-"\n"
-"Ten program jest dystrybuowany w nadziei, że będzie użyteczny, ale BEZ "
-"JAKIEJKOLWIEK GWARANCJI; Nawet bez domyślnej gwarancji HANDLOWEJ lub "
-"PRZYDATNOŚCI DO OKREŚLONEGO CELU.  Zobacz licencję GNU General Public "
-"License w celu poznania szczegółów.\n"
-"\n"
-"Powinieneś otrzymać kopię licencji GNU General Public License razem z tym "
-"programem; Jeżeli tak się nie stało, napisz do Free Software Foundation, "
-"Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
-msgstr "Wyjście QtMultimedia"
+msgstr ""
 
 #: src/qtaudio/qtaudio.cc:72
 msgid ""
@@ -3169,11 +2934,6 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
-"Wtyczka wyjścia dźwiękowego QtMultimedia dla Audacious\n"
-"Prawa autorskie 2014 William Pitcock\n"
-"\n"
-"Oparta na wtyczce wyjścia SDL dla Audacious\n"
-"Prawa autorskie 2010 John Lindgren"
 
 #: src/qtglspectrum/gl-spectrum.cc:41
 msgid ""
@@ -3187,19 +2947,10 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
-"Analizator spektrum OpenGL dla Audaciousa\n"
-"Prawa autorskie: 2013 Christophe Budé, John Lindgren i Carlo Bramini\n"
-"Prawa autorskie 2014, 2020 Ariadne Conill\n"
-"\n"
-"Na podstawie wtyczki XMMS-a:\n"
-"Prawa autorskie 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas "
-"Nilsson i 4Front Technologies\n"
-"\n"
-"Licencja: GPL wersja 2 i późniejsze"
 
 #: src/qthotkey/gui.cc:165
 msgid "Press a key combination inside a text field."
-msgstr "Naciśnij kombinację klawiszy w polu tekstowym."
+msgstr ""
 
 #: src/qthotkey/plugin.cc:103
 msgid ""
@@ -3216,128 +2967,112 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
-"Wtyczka globalnych skrótów klawiszowych\n"
-"Steruj odtwarzaniem przy użyciu globalnych skrótów klawiszowych lub "
-"przycisków multimedialnych.\n"
-"\n"
-"Prawa autorskie (C) 2020 i.Dark_Templar <darktemplar@dark-templar-archives."
-"net>\n"
-"Prawa autorskie (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-"Przyczynili się:\n"
-"Prawa autorskie (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-"Prawa autorskie (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
-" Bryn Davies <curious@ihug.com.au>,\n"
-" Jonathan A. Davis <davis@jdhouse.org>,\n"
-" Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/qtui/menus.cc:109
 msgid "_Open Folder ..."
-msgstr "_Otwórz katalog..."
+msgstr ""
 
 #: src/qtui/menus.cc:115
 msgid "_Add Folder ..."
-msgstr "_Dodaj katalog..."
+msgstr ""
 
 #: src/qtui/menus.cc:128
 msgid "_Log Inspector ..."
-msgstr "_Dziennik programu..."
+msgstr "Mbikëqyrës _Regjistrash …"
 
 #: src/qtui/menus.cc:218
 msgid "_Find ..."
-msgstr "_Znajdź ..."
+msgstr ""
 
 #: src/qtui/menus.cc:254 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
-msgstr "Ustawienia dźwięku..."
+msgstr "Rregullime Për Audion …"
 
 #: src/qtui/playlist_model.cc:186
 msgid "Q#"
-msgstr "P#"
+msgstr ""
 
 #: src/qtui/playlist_model.cc:188
 msgid "T#"
-msgstr "Ś#"
+msgstr ""
 
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
-msgstr "Interfejs Qt"
+msgstr "Ndërfaqe Qt"
 
 #: src/qtui/search_bar.cc:46
 msgid "Search playlist"
-msgstr "Wyszukaj listę odtwarzania"
+msgstr ""
 
 #: src/qtui/settings.cc:58
 msgid "Always"
-msgstr "Zawsze"
+msgstr "Përherë"
 
 #: src/qtui/settings.cc:59
 msgid "Auto-hide"
-msgstr "Automatyczne ukrywaj"
+msgstr "Vetëfshihu"
 
 #: src/qtui/settings.cc:60
 msgid "Never"
-msgstr "Nigdy"
+msgstr "Kurrë"
 
 #: src/qtui/settings.cc:64
 msgid "Show playlist tabs:"
-msgstr "Pokaż karty listy odtwarzania:"
+msgstr "Shfaq skeda luajliste:"
 
 #: src/qtui/settings.cc:78
 msgid "Use bold font for column headers"
-msgstr "Użyj pogrubionej czcionki w nagłówkach kolumn"
+msgstr ""
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
-msgstr "Konwerter częstotliwości próbkowania"
+msgstr ""
 
 #: src/resample/resample.cc:183
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"Wtyczka konwertera częstotliwości próbkowania dla Audacious\n"
-"Prawa autorskie 2010-2012 John Lindgren"
 
 #: src/resample/resample.cc:187
 msgid "Skip/repeat samples"
-msgstr "Pomiń/powtórz próbki"
+msgstr ""
 
 #: src/resample/resample.cc:188
 msgid "Linear interpolation"
-msgstr "Liniowa interpolacja"
+msgstr ""
 
 #: src/resample/resample.cc:189
 msgid "Fast sinc interpolation"
-msgstr "Szybka interpolacja funkcji sinc"
+msgstr ""
 
 #: src/resample/resample.cc:190
 msgid "Medium sinc interpolation"
-msgstr "Pośrednia interpolacja funkcji sinc"
+msgstr ""
 
 #: src/resample/resample.cc:191
 msgid "Best sinc interpolation"
-msgstr "Najlepsza interpolacja funkcji sinc"
+msgstr ""
 
 #: src/resample/resample.cc:195
 msgid "<b>Conversion</b>"
-msgstr "<b>Konwersja</b>"
+msgstr "<b>Shndërrim</b>"
 
 #: src/resample/resample.cc:196
 msgid "Method:"
-msgstr "Metoda:"
+msgstr "Metodë:"
 
 #: src/resample/resample.cc:199 src/soxr/sox-resampler.cc:203
 msgid "Rate:"
-msgstr "Klasa:"
+msgstr ""
 
 #: src/resample/resample.cc:202
 msgid "<b>Rate Mappings</b>"
-msgstr "<b>Mapowanie klasy</b>"
+msgstr ""
 
 #: src/resample/resample.cc:203
 msgid "Use rate mappings"
-msgstr "Użyj klasy mapowania"
+msgstr ""
 
 #: src/resample/resample.cc:205
 msgid "8 kHz:"
@@ -3381,45 +3116,40 @@ msgstr "192 kHz:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr "Sprawdzam dostęp do Last.fm ..."
+msgstr ""
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
 msgstr ""
-"Twoje nazwy odtworzonych utworów są tymczasowo zapisywane na twoim "
-"komputerze. Zostaną wysłane kiedy tylko Audacious będzie miał dostęp."
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr "Uprawnienia przyznane.  Scrobbling dla użytkownika %s."
+msgstr ""
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
-"Brak uprawnień. Otwórz następujący URL w przeglądarce, zezwól Audacious na "
-"dostęp do swojego konta i następnie kliknij ponownie 'Sprawdź uprawnienia':"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr "Wystąpił problem łączenia z Last.fm."
+msgstr "Pati një problem në lidhjen me Last.fm."
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr "Sprawdź uprawnienia"
+msgstr "Kontrolloni Leje"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr "Unieważnij uprawnienia"
+msgstr "Shfuqizo Leje"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
-"Musisz pozwolić Audacious wysyłać nazwy ścieżek do swojego konta Last.fm."
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
@@ -3430,8 +3160,6 @@ msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
-"Wtyczka Scrobbler nie mogła zostać uruchomiona.\n"
-"Prawdopodobnie wystąpił problem z Twoją instalacją."
 
 #: src/scrobbler2/scrobbler.cc:291
 msgid ""
@@ -3443,200 +3171,180 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
-"Wtyczka Scrobbler dla Audacious 2.0, przez Pitxyoki,\n"
-"\n"
-"Prawa autorskie © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
-"\n"
-"Podziękowania dla John Lindgren za wsparcie na początku projektu.\n"
-"\n"
 
 #: src/scrobbler2/scrobbler_communication.cc:663
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
-"Audacious używa obecnie poprawionej wersji Scrobblera Last.fm.\n"
-"Proszę sprawdź ustawienia dla wtyczki Scrobbler."
 
 #: src/sdlout/sdlout.cc:43
 msgid "SDL Output"
-msgstr "Wyjście SDL"
+msgstr ""
 
 #: src/sdlout/sdlout.cc:72
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
-"Wtyczka wyjścia SDL dla Audacious\n"
-"Prawa autorskie 2010 John Lindgren"
 
 #: src/search-tool/library.cc:35 src/search-tool/library.cc:46
 #: src/search-tool-qt/library.cc:35 src/search-tool-qt/library.cc:46
 msgid "Library"
-msgstr "Biblioteka"
+msgstr ""
 
 #: src/search-tool-qt/search-model.cc:49 src/search-tool/search-tool.cc:291
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
-msgstr[0] "%d piosenka"
-msgstr[1] "%d piosenki"
-msgstr[2] "%d piosenek"
-msgstr[3] "%d piosenek"
+msgstr[0] "%d këngë"
+msgstr[1] "%d këngë"
 
 #: src/search-tool-qt/search-model.cc:58 src/search-tool/search-tool.cc:298
 msgid "of this genre"
-msgstr "tego gatunku"
+msgstr "të këtij zhanri"
 
 #: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
 msgid "on"
-msgstr "na"
+msgstr ""
 
 #: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
 msgid "by"
-msgstr "przez"
+msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:165 src/search-tool/search-tool.cc:73
 msgid "Number of results to show:"
-msgstr "Liczba pokazanych wyników:"
+msgstr "Numër përfundimesh për shfaqje:"
 
 #: src/search-tool-qt/search-tool-qt.cc:168 src/search-tool/search-tool.cc:76
 msgid "Rescan library at startup"
-msgstr "Przeszukaj bibliotekę podczas uruchamiania"
+msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:170
 msgid "Monitor library for changes"
-msgstr "Monitoruj bibliotekę pod kątem zmian"
+msgstr "Mbikëqyr fonotekën për ndryshime"
 
 #: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:446
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"Aby zaimportować kolekcję muzyczną, proszę wybrać katalog i kliknąć przycisk "
-"ponownego wczytywania."
 
 #: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:455
 msgid "Please wait ..."
-msgstr "Proszę czekać ..."
+msgstr "Ju lutemi, prisni …"
 
 #: src/search-tool-qt/search-tool-qt.cc:197 src/search-tool/search-tool.cc:483
 msgid "Choose Folder"
-msgstr "Wybierz katalog"
+msgstr "Zgjidhni Dosje"
 
 #: src/search-tool-qt/search-tool-qt.cc:201
 msgid "Search library"
-msgstr "Przeszukaj bibliotekę"
+msgstr "Kërkoni në fonotekë"
 
 #: src/search-tool-qt/search-tool-qt.cc:327 src/search-tool/search-tool.cc:155
 #, c-format
 msgid "%d of %d result shown"
 msgid_plural "%d of %d results shown"
-msgstr[0] "%d z %d pokazanego wyniku"
-msgstr[1] "%d z %d pokazanych wyników"
-msgstr[2] "%d z %d pokazanych wyników"
-msgstr[3] "%d z %d pokazanych wyników"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/search-tool-qt/search-tool-qt.cc:331 src/search-tool/search-tool.cc:159
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
-msgstr[0] "%d wynik"
-msgstr[1] "%d wyniki"
-msgstr[2] "%d wyników"
-msgstr[3] "%d wyników"
+msgstr[0] "%d përfundim"
+msgstr[1] "%d përfundime"
 
 #: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:345
 msgid "_Create Playlist"
-msgstr "_Utwórz listę odtwarzania"
+msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:347
 msgid "_Add to Playlist"
-msgstr "_Dodaj do listy odtwarzania"
+msgstr ""
 
 #: src/sid/xmms-sid.cc:43
 msgid "SID Player"
-msgstr "Odtwarzacz SID"
+msgstr ""
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
-msgstr "Kanały:"
+msgstr "Kanale:"
 
 #: src/sid/xs_config.cc:68
 msgid "<b>Emulation</b>"
-msgstr "<b>Emulacja</b>"
+msgstr ""
 
 #: src/sid/xs_config.cc:69
 msgid "Emulate MOS 8580 (default: MOS 6581)"
-msgstr "Emuluj MOS 8580 (domyślnie: MOS 6581)"
+msgstr ""
 
 #: src/sid/xs_config.cc:71
 msgid "Do not automatically select chip model"
-msgstr "Nie wybieraj automatycznie modela czipu"
+msgstr ""
 
 #: src/sid/xs_config.cc:73
 msgid "Emulate filter"
-msgstr "Emuluj filtr"
+msgstr ""
 
 #: src/sid/xs_config.cc:75
 msgid "Clock speed:"
-msgstr "Taktowanie zegara:"
+msgstr ""
 
 #: src/sid/xs_config.cc:78
 msgid "Do not automatically select clock speed"
-msgstr "Nie wybieraj automatycznie taktowania zegara"
+msgstr ""
 
 #: src/sid/xs_config.cc:80
 msgid "<b>Playback time</b>"
-msgstr "<b>Czas odtwarzania</b>"
+msgstr ""
 
 #: src/sid/xs_config.cc:81
 msgid "Set maximum playback time:"
-msgstr "Ustaw najdłuższy czas odtwarzania:"
+msgstr ""
 
 #: src/sid/xs_config.cc:87
 msgid "Use only when song length is unknown"
-msgstr "Użyj tylko, jeśli długość piosenki jest nieznana"
+msgstr ""
 
 #: src/sid/xs_config.cc:90
 msgid "Set minimum playback time:"
-msgstr "Ustaw najkrótszy czas odtwarzania:"
+msgstr ""
 
 #: src/sid/xs_config.cc:96
 msgid "<b>Subtunes</b>"
-msgstr "<b>Tony pośrednie</b>"
+msgstr ""
 
 #: src/sid/xs_config.cc:97
 msgid "Enable subtunes"
-msgstr "Włącz tony pośrednie"
+msgstr ""
 
 #: src/sid/xs_config.cc:99
 msgid "Ignore subtunes shorter than:"
-msgstr "Pomijaj tony pośrednie krótsze niż:"
+msgstr ""
 
 #: src/sid/xs_config.cc:105
 msgid "<b>Note</b>"
-msgstr "<b>Uwaga</b>"
+msgstr ""
 
 #: src/silence-removal/silence-removal.cc:39
 msgid "Silence Removal"
-msgstr "Usuwanie ciszy"
+msgstr ""
 
 #: src/silence-removal/silence-removal.cc:58
 msgid ""
 "Silence Removal Plugin for Audacious\n"
 "Copyright 2014 John Lindgren"
 msgstr ""
-"Wtyczka usuwania ciszy dla Audacious\n"
-"Prawa autorskie 2014 John Lindgren"
 
 #: src/silence-removal/silence-removal.cc:67
 msgid "<b>Silence Removal</b>"
-msgstr "<b>Usuwanie ciszy</b>"
+msgstr ""
 
 #: src/silence-removal/silence-removal.cc:68
 msgid "Threshold:"
-msgstr "Próg:"
+msgstr "Prag:"
 
 #: src/silence-removal/silence-removal.cc:70
 msgid "dB"
@@ -3644,19 +3352,19 @@ msgstr "dB"
 
 #: src/skins/actions.cc:45 src/skins-qt/actions.cc:43
 msgid "Repeat points cleared."
-msgstr "Zresetowano punkty graniczne pętli."
+msgstr ""
 
 #: src/skins/actions.cc:60 src/skins-qt/actions.cc:58
 msgid "Repeat point A set."
-msgstr "Ustawiono punkt początkowy pętli."
+msgstr ""
 
 #: src/skins/actions.cc:65 src/skins-qt/actions.cc:63
 msgid "Repeat point B set."
-msgstr "Ustawiono punkt końcowy pętli."
+msgstr ""
 
 #: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:221
 msgid "Preamp"
-msgstr "Przedwzmacniacz"
+msgstr "Paraamplifikator"
 
 #: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:225
 msgid "31 Hz"
@@ -3700,575 +3408,575 @@ msgstr "16 kHz"
 
 #: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:268
 msgid "Audacious Equalizer"
-msgstr "Korektor graficzny Audacious"
+msgstr "Balancues Audacious"
 
 #: src/skins/main.cc:452 src/skins-qt/main.cc:436
 msgid "Recording on"
-msgstr "Nagrywanie włączone"
+msgstr ""
 
 #: src/skins/main.cc:454 src/skins-qt/main.cc:438
 msgid "Recording off"
-msgstr "Nagrywanie wyłączone"
+msgstr ""
 
 #: src/skins/main.cc:749 src/skins-qt/main.cc:690
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Skocz do: %d:%-2.2d / %d:%-2.2d"
+msgstr ""
 
 #: src/skins/main.cc:766 src/skins-qt/main.cc:707
 #, c-format
 msgid "Volume: %d%%"
-msgstr "Głośność: %d%%"
+msgstr "Volum: %d%%"
 
 #: src/skins/main.cc:779 src/skins-qt/main.cc:720
 #, c-format
 msgid "Balance: %d%% left"
-msgstr "Balans: %d%% lewy"
+msgstr "Balancë: %d%% majtas"
 
 #: src/skins/main.cc:781 src/skins-qt/main.cc:722
 msgid "Balance: center"
-msgstr "Balans: centralny"
+msgstr "Balancë: në qendër"
 
 #: src/skins/main.cc:783 src/skins-qt/main.cc:724
 #, c-format
 msgid "Balance: %d%% right"
-msgstr "Balans: %d%% prawy"
+msgstr "Balancë: %d%% djathtas"
 
 #: src/skins/main.cc:875 src/skins-qt/main.cc:816
 msgid "Options Menu"
-msgstr "Menu opcji"
+msgstr "Menu Mundësish"
 
 #: src/skins/main.cc:879 src/skins-qt/main.cc:820
 msgid "Disable 'Always On Top'"
-msgstr "Wyłącz 'Zawsze na wierzchu'"
+msgstr ""
 
 #: src/skins/main.cc:881 src/skins-qt/main.cc:822
 msgid "Enable 'Always On Top'"
-msgstr "Włącz 'Zawsze na wierzchu'"
+msgstr ""
 
 #: src/skins/main.cc:884 src/skins-qt/main.cc:825
 msgid "File Info Box"
-msgstr "Obszar informacji o pliku"
+msgstr ""
 
 #: src/skins/main.cc:887 src/skins/menus.cc:149 src/skins-qt/main.cc:828
 #: src/skins-qt/menus.cc:142
 msgid "Double Size"
-msgstr "Podwójny rozmiar"
+msgstr ""
 
 #: src/skins/main.cc:890 src/skins-qt/main.cc:831
 msgid "Visualizations"
-msgstr "Wizualizacje"
+msgstr "Vizualizime"
 
 #: src/skins/menus.cc:74 src/skins-qt/menus.cc:64
 msgid "Volume Up"
-msgstr "Zwiększenie głośności"
+msgstr "Ngrije Volumin"
 
 #: src/skins/menus.cc:75 src/skins-qt/menus.cc:65
 msgid "Volume Down"
-msgstr "Zmniejszenie głośności"
+msgstr "Ule Volumin"
 
 #: src/skins/menus.cc:77 src/skins-qt/menus.cc:67
 msgid "Effects ..."
-msgstr "Efekty..."
+msgstr "Efekte …"
 
 #: src/skins/menus.cc:84 src/skins-qt/menus.cc:74
 msgid "Open Files ..."
-msgstr "Otwórz pliki..."
+msgstr "Hapni Kartela …"
 
 #: src/skins/menus.cc:85 src/skins-qt/menus.cc:76
 msgid "Open URL ..."
-msgstr "Otwórz URL..."
+msgstr "Hap URL …"
 
 #: src/skins/menus.cc:88 src/skins-qt/menus.cc:79
 msgid "Playback"
-msgstr "Odtwarzanie"
+msgstr "Luajtje"
 
 #: src/skins/menus.cc:89 src/skins-qt/menus.cc:80
 msgid "Playlist"
-msgstr "Lista odtwarzania"
+msgstr "Luajlistë"
 
 #: src/skins/menus.cc:90 src/skins-qt/menus.cc:81
 msgid "Output"
-msgstr "Wyjście"
+msgstr "Dalje"
 
 #: src/skins/menus.cc:91 src/skins-qt/menus.cc:82
 msgid "View"
-msgstr "Widok"
+msgstr "Parje"
 
 #: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
 #: src/skins/menus.cc:243 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
 #: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:237
 msgid "Services"
-msgstr "Usługi"
+msgstr "Shërbime"
 
 #: src/skins/menus.cc:95 src/skins-qt/menus.cc:86
 msgid "About ..."
-msgstr "Informacje o ..."
+msgstr "Mbi …"
 
 #: src/skins/menus.cc:96 src/skins-qt/menus.cc:87
 msgid "Settings ..."
-msgstr "Ustawienia..."
+msgstr "Rregullime …"
 
 #: src/skins/menus.cc:97 src/skins-qt/menus.cc:88
 msgid "Quit"
-msgstr "Zakończ"
+msgstr "Dil"
 
 #: src/skins/menus.cc:101 src/skins/menus.cc:233 src/skins-qt/menus.cc:92
 #: src/skins-qt/menus.cc:227
 msgid "Song Info ..."
-msgstr "Informacje o piosence..."
+msgstr "Të dhëna Kënge …"
 
 #: src/skins/menus.cc:105 src/skins-qt/menus.cc:96
 msgid "Shuffle by Album"
-msgstr "Losowa kolejność albumów"
+msgstr "Përzieji sipas Albumesh"
 
 #: src/skins/menus.cc:106 src/skins-qt/menus.cc:97
 msgid "No Playlist Advance"
-msgstr "Odtwarzaj pojedynczo"
+msgstr ""
 
 #: src/skins/menus.cc:117 src/skins-qt/menus.cc:108
 msgid "Set A-B Repeat"
-msgstr "Ustaw powtarzanie od punktu A do punktu B"
+msgstr "Caktoni Përsëritje A-B"
 
 #: src/skins/menus.cc:118 src/skins-qt/menus.cc:109
 msgid "Clear A-B Repeat"
-msgstr "Usuń powtarzanie A-B"
+msgstr "Spastro Përsëritje A-B"
 
 #: src/skins/menus.cc:120 src/skins-qt/menus.cc:112
 msgid "Jump to Song ..."
-msgstr "Przejdź do piosenki..."
+msgstr ""
 
 #: src/skins/menus.cc:121 src/skins-qt/menus.cc:113
 msgid "Jump to Time ..."
-msgstr "Przejdź do czasu..."
+msgstr ""
 
 #: src/skins/menus.cc:125 src/skins-qt/menus.cc:118
 msgid "Play/Resume"
-msgstr "Odtwórz/Ponów"
+msgstr ""
 
 #: src/skins/menus.cc:127 src/skins-qt/menus.cc:120
 msgid "New Playlist"
-msgstr "Nowa lista odtwarzania"
+msgstr "Luajlistë e Re"
 
 #: src/skins/menus.cc:128 src/skins-qt/menus.cc:121
 msgid "Rename Playlist ..."
-msgstr "Zmień nazwę listy odtwarzania..."
+msgstr "Riemërtoni Luajlistën …"
 
 #: src/skins/menus.cc:129 src/skins-qt/menus.cc:122
 msgid "Remove Playlist"
-msgstr "Usuń listę odtwarzania"
+msgstr "Hiqe Luajlistën"
 
 #: src/skins/menus.cc:131 src/skins-qt/menus.cc:124
 msgid "Previous Playlist"
-msgstr "Poprzednia lista odtwarzania"
+msgstr "Luajlista e Mëparshme"
 
 #: src/skins/menus.cc:132 src/skins-qt/menus.cc:125
 msgid "Next Playlist"
-msgstr "Następna lista odtwarzania"
+msgstr "Luajlista Pasuese"
 
 #: src/skins/menus.cc:134 src/skins-qt/menus.cc:127
 msgid "Import Playlist ..."
-msgstr "Importuj listę odtwarzania..."
+msgstr "Importoni Luajlistë …"
 
 #: src/skins/menus.cc:135 src/skins-qt/menus.cc:128
 msgid "Export Playlist ..."
-msgstr "Eksportuj listę odtwarzania..."
+msgstr "Eksportoni Luajlistë …"
 
 #: src/skins/menus.cc:137 src/skins-qt/menus.cc:130
 msgid "Playlist Manager ..."
-msgstr "Menedżer list odtwarzania..."
+msgstr "Përgjegjës Luajlistash …"
 
 #: src/skins/menus.cc:138 src/skins-qt/menus.cc:131
 msgid "Queue Manager ..."
-msgstr "Menedżer kolejki..."
+msgstr "Përgjegjës Radhe …"
 
 #: src/skins/menus.cc:140 src/skins-qt/menus.cc:133
 msgid "Refresh Playlist"
-msgstr "Odśwież listę odtwarzania"
+msgstr "Rifresko Luajlistën"
 
 #: src/skins/menus.cc:144 src/skins-qt/menus.cc:137
 msgid "Show Playlist Editor"
-msgstr "Okno listy odtwarzania"
+msgstr "Shfaq Përpunues Luajlistash"
 
 #: src/skins/menus.cc:145 src/skins-qt/menus.cc:138
 msgid "Show Equalizer"
-msgstr "Okno korektora graficznego"
+msgstr "Shfaq Balancues"
 
 #: src/skins/menus.cc:147 src/skins-qt/menus.cc:140
 msgid "Show Remaining Time"
-msgstr "Pokaż pozostały czas"
+msgstr "Shfaq Kohë të Mbetur"
 
 #: src/skins/menus.cc:150 src/skins-qt/menus.cc:143
 msgid "Always on Top"
-msgstr "Zawsze na wierzchu"
+msgstr "Përherë në Krye"
 
 #: src/skins/menus.cc:151 src/skins-qt/menus.cc:145
 msgid "On All Workspaces"
-msgstr "Na wszystkich pulpitach"
+msgstr "Në Tërë Hapësirat e Punës"
 
 #: src/skins/menus.cc:153 src/skins-qt/menus.cc:148
 msgid "Roll Up Player"
-msgstr "Zwiń odtwarzacz"
+msgstr ""
 
 #: src/skins/menus.cc:154 src/skins-qt/menus.cc:149
 msgid "Roll Up Playlist Editor"
-msgstr "Zwiń okno listy odtwarzania"
+msgstr ""
 
 #: src/skins/menus.cc:155 src/skins-qt/menus.cc:150
 msgid "Roll Up Equalizer"
-msgstr "Zwiń okno korektora graficznego"
+msgstr ""
 
 #: src/skins/menus.cc:163 src/skins-qt/menus.cc:158
 msgid "Add URL ..."
-msgstr "Dodaj adres URL..."
+msgstr "Shtoni URL …"
 
 #: src/skins/menus.cc:164 src/skins-qt/menus.cc:160
 msgid "Add Files ..."
-msgstr "Dodaj pliki..."
+msgstr "Shtoni Kartela …"
 
 #: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:211
 #: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:190
 #: src/skins-qt/menus.cc:205
 msgid "By Title"
-msgstr "Według tytułu"
+msgstr "Sipas Titujsh"
 
 #: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:218
 #: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:197
 #: src/skins-qt/menus.cc:212
 msgid "By File Name"
-msgstr "Według nazwy pliku"
+msgstr "Sipas Emrash Kartelash"
 
 #: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:219
 #: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:198
 #: src/skins-qt/menus.cc:213
 msgid "By File Path"
-msgstr "Według ścieżki dostępu"
+msgstr "Sipas Shtigjesh Kartelash"
 
 #: src/skins/menus.cc:176 src/skins-qt/menus.cc:172
 msgid "Remove All"
-msgstr "Usuń wszystkie"
+msgstr "Hiqi Krejt"
 
 #: src/skins/menus.cc:177 src/skins-qt/menus.cc:173
 msgid "Clear Queue"
-msgstr "Wyczyść kolejkę"
+msgstr "Spastro Radhën"
 
 #: src/skins/menus.cc:179 src/skins-qt/menus.cc:175
 msgid "Remove Unavailable Files"
-msgstr "Usuń niedostępne"
+msgstr ""
 
 #: src/skins/menus.cc:180 src/skins-qt/menus.cc:176
 msgid "Remove Duplicates"
-msgstr "Usuń duplikaty"
+msgstr "Hiq Përsëdytje"
 
 #: src/skins/menus.cc:182 src/skins-qt/menus.cc:178
 msgid "Remove Unselected"
-msgstr "Usuń niezaznaczone"
+msgstr ""
 
 #: src/skins/menus.cc:183 src/skins-qt/menus.cc:179
 msgid "Remove Selected"
-msgstr "Usuń zaznaczone"
+msgstr "Hiq të Përzgjedhurën"
 
 #: src/skins/menus.cc:187
 msgid "Search and Select"
-msgstr "Szukaj i wybierz"
+msgstr "Kërkoni dhe Përzgjidhni"
 
 #: src/skins/menus.cc:189 src/skins-qt/menus.cc:183
 msgid "Invert Selection"
-msgstr "Odwróć zaznaczenie"
+msgstr ""
 
 #: src/skins/menus.cc:190 src/skins-qt/menus.cc:184
 msgid "Select None"
-msgstr "Wyczyść zaznaczenie"
+msgstr "Mos Përzgjidh Gjë"
 
 #: src/skins/menus.cc:191 src/skins-qt/menus.cc:185
 msgid "Select All"
-msgstr "Zaznacz wszystko"
+msgstr "Përzgjidhi Krejt"
 
 #: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:189
 #: src/skins-qt/menus.cc:204
 msgid "By Track Number"
-msgstr "według numeru ścieżki"
+msgstr "Sipas Numrash Pjesësh"
 
 #: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:191
 #: src/skins-qt/menus.cc:206
 msgid "By Artist"
-msgstr "według wykonawcy"
+msgstr "Sipas Artistësh"
 
 #: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:192
 #: src/skins-qt/menus.cc:207
 msgid "By Album"
-msgstr "według albumu"
+msgstr ""
 
 #: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:193
 #: src/skins-qt/menus.cc:208
 msgid "By Album Artist"
-msgstr "według wykonawcy albumu"
+msgstr ""
 
 #: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:194
 #: src/skins-qt/menus.cc:210
 msgid "By Release Date"
-msgstr "według daty wydania"
+msgstr ""
 
 #: src/skins/menus.cc:201 src/skins/menus.cc:215 src/skins-qt/menus.cc:195
 #: src/skins-qt/menus.cc:209
 msgid "By Genre"
-msgstr "Według gatunku"
+msgstr ""
 
 #: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:196
 #: src/skins-qt/menus.cc:211
 msgid "By Length"
-msgstr "Według długości"
+msgstr ""
 
 #: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:199
 #: src/skins-qt/menus.cc:214
 msgid "By Custom Title"
-msgstr "Według własnego tytułu"
+msgstr ""
 
 #: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:200
 #: src/skins-qt/menus.cc:215
 msgid "By Comment"
-msgstr "Według komentarza"
+msgstr ""
 
 #: src/skins/menus.cc:225 src/skins-qt/menus.cc:219
 msgid "Randomize List"
-msgstr "Wymieszaj listę odtwarzania"
+msgstr ""
 
 #: src/skins/menus.cc:226 src/skins-qt/menus.cc:220
 msgid "Reverse List"
-msgstr "Odwróć kolejność listy odtwarzania"
+msgstr ""
 
 #: src/skins/menus.cc:228 src/skins-qt/menus.cc:222
 msgid "Sort Selected"
-msgstr "Posortuj zaznaczone"
+msgstr ""
 
 #: src/skins/menus.cc:229 src/skins-qt/menus.cc:223
 msgid "Sort List"
-msgstr "Sortuj"
+msgstr ""
 
 #: src/skins/menus.cc:234 src/skins-qt/menus.cc:228
 msgid "Open Containing Folder"
-msgstr "Otwórz nadrzędny katalog"
+msgstr "Hap Dosjen Që e Përmban"
 
 #: src/skins/menus.cc:236 src/skins-qt/menus.cc:230
 msgid "Cut"
-msgstr "Wytnij"
+msgstr "Prije"
 
 #: src/skins/menus.cc:237 src/skins-qt/menus.cc:231
 msgid "Copy"
-msgstr "Kopiuj"
+msgstr "Kopjoje"
 
 #: src/skins/menus.cc:238 src/skins-qt/menus.cc:232
 msgid "Paste"
-msgstr "Wklej"
+msgstr "Ngjite"
 
 #: src/skins/menus.cc:239 src/skins-qt/menus.cc:233
 msgid "Paste at End"
-msgstr "Wklej na końcu"
+msgstr "Ngjite në Fund"
 
 #: src/skins/menus.cc:241 src/skins-qt/menus.cc:235
 msgid "Queue/Unqueue"
-msgstr "Przełącz kolejkę"
+msgstr ""
 
 #: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:56
 #, c-format
 msgid "%s (%d of %d)"
-msgstr "%s (%d z %d)"
+msgstr "%s (%d nga %d)"
 
 #: src/skins/playlistwin.cc:492 src/skins-qt/playlistwin.cc:477
 msgid "Audacious Playlist Editor"
-msgstr "Edytor listy odtwarzania Audacious"
+msgstr ""
 
 #: src/skins/plugin.cc:49 src/skins-qt/plugin.cc:64
 msgid "Winamp Classic Interface"
-msgstr "Klasyczny interfejs Winampa"
+msgstr ""
 
 #: src/skins-qt/menus.cc:75
 msgid "Open Folder ..."
-msgstr "Otwórz katalog..."
+msgstr "Hapni Dosje …"
 
 #: src/skins-qt/menus.cc:159
 msgid "Add Folder ..."
-msgstr "Dodaj katalog..."
+msgstr "Shtoni Dosje …"
 
 #: src/skins-qt/skins_cfg.cc:196 src/skins/skins_cfg.cc:180
 msgid "Player:"
-msgstr "Odtwarzacz:"
+msgstr "Lojtës:"
 
 #: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:182
 msgid "Select main player window font:"
-msgstr "Wybór czcionki okna odtwarzacza:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:183
 msgid "Playlist:"
-msgstr "Lista odtwarzania:"
+msgstr "Luajlistë:"
 
 #: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:185
 msgid "Select playlist font:"
-msgstr "Wybór czcionki listy odtwarzania:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:205 src/skins/skins_cfg.cc:189
 msgid "<b>Skin</b>"
-msgstr "<b>Skórka</b>"
+msgstr "<b>Lëkurçe</b>"
 
 #: src/skins-qt/skins_cfg.cc:209 src/skins/skins_cfg.cc:191
 msgid "<b>Fonts</b>"
-msgstr "<b>Czcionki</b>"
+msgstr "<b>Shkronja</b>"
 
 #: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:193
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Czcionki bitmapowe (obsługuje tylko kodowanie ASCII)"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:195
 msgid "Scroll song title"
-msgstr "Przewijaj tytuł piosenki"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
 msgid "Scroll song title in both directions"
-msgstr "Przewijanie tytułu piosenki w obydwu kierunkach"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:202
 msgid "Analyzer"
-msgstr "Analizator"
+msgstr "Analizues"
 
 #: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:203
 msgid "Scope"
-msgstr "Zakres"
+msgstr "Fokus"
 
 #: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:204
 msgid "Voiceprint / VU meter"
-msgstr "Spektogram / wskaźnik wysterowania"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:205
 msgid "Off"
-msgstr "Wyłączony"
+msgstr "Off"
 
 #: src/skins-qt/skins_cfg.cc:227 src/skins-qt/skins_cfg.cc:252
 #: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:209
 #: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
 msgid "Normal"
-msgstr "Zwykły"
+msgstr "Normal"
 
 #: src/skins-qt/skins_cfg.cc:228 src/skins-qt/skins_cfg.cc:253
 #: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
 msgid "Fire"
-msgstr "Ognisty"
+msgstr "Zjarr"
 
 #: src/skins-qt/skins_cfg.cc:229 src/skins/skins_cfg.cc:211
 msgid "Vertical lines"
-msgstr "Pionowe linie"
+msgstr "Vija vertikale"
 
 #: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:215
 msgid "Lines"
-msgstr "Linie"
+msgstr "Vija"
 
 #: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:216
 msgid "Bars"
-msgstr "Kolumny"
+msgstr "Shtylla"
 
 #: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:220
 msgid "Slowest"
-msgstr "Najwolniejszy"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:221
 msgid "Slow"
-msgstr "Wolny"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:222
 #: src/soxr/sox-resampler.cc:180
 msgid "Medium"
-msgstr "Średni"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:223
 msgid "Fast"
-msgstr "Szybki"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
 msgid "Fastest"
-msgstr "Najszybszy"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:228
 msgid "Dots"
-msgstr "Kropki"
+msgstr "Pika"
 
 #: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:229
 msgid "Line"
-msgstr "Linia"
+msgstr "Vijë"
 
 #: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:230
 msgid "Solid"
-msgstr "Zwykły"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:254 src/skins/skins_cfg.cc:236
 msgid "Ice"
-msgstr "Lodowy"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:241
 msgid "Smooth"
-msgstr "Wygładzony"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:245
 msgid "Coloring:"
-msgstr "Kolorowanie:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:266 src/skins/skins_cfg.cc:248
 msgid "Style:"
-msgstr "Styl:"
+msgstr "Stil:"
 
 #: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:251
 msgid "Falloff:"
-msgstr "Upadanie:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:272 src/skins/skins_cfg.cc:254
 msgid "Peak falloff:"
-msgstr "Upadanie wartości szczytowych:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:278 src/skins/skins_cfg.cc:260
 msgid "Scope Style:"
-msgstr "Stylistyka kształtu:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:281 src/skins/skins_cfg.cc:263
 msgid "Voiceprint Coloring:"
-msgstr "Kolor spektogramu:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:284 src/skins/skins_cfg.cc:266
 msgid "VU Meter Style:"
-msgstr "Styl wskaźnika wysterowania:"
+msgstr "Stil Matësi VU:"
 
 #: src/skins-qt/skins_cfg.cc:290 src/skins/skins_cfg.cc:272
 msgid "<b>Type</b>"
-msgstr "<b>Sposób</b>"
+msgstr "<b>Lloj</b>"
 
 #: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:273
 msgid "Visualization type:"
-msgstr "Sposób wizualizacji:"
+msgstr "Lloj vizualizimi:"
 
 #: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:276
 msgid "<b>Analyzer</b>"
-msgstr "<b>Analizator</b>"
+msgstr "<b>Analizues</b>"
 
 #: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
 msgid "Show peaks"
-msgstr "Pokaż wartości szczytowe"
+msgstr "Shfaq kulme"
 
 #: src/skins-qt/skins_cfg.cc:304 src/skins/skins_cfg.cc:286
 msgid "Visualization"
-msgstr "Wizualizacja"
+msgstr "Vizualizim"
 
 #: src/skins-qt/skinselector.cc:98 src/skins/skinselector.cc:111
 msgid "Archived Winamp 2.x skin"
-msgstr "Zarchiwizowany styl programu Winamp 2.x"
+msgstr ""
 
 #: src/skins-qt/skinselector.cc:102 src/skins/skinselector.cc:115
 msgid "Unarchived Winamp 2.x skin"
-msgstr "Styl programu Winamp 2.x"
+msgstr ""
 
 #: src/skins/search-select.cc:75
 msgid "Search entries in active playlist"
-msgstr "Wyszukaj wpisy w aktywnej playliście"
+msgstr ""
 
 #: src/skins/search-select.cc:76
 msgid "Search"
-msgstr "Szukaj"
+msgstr ""
 
 #: src/skins/search-select.cc:81
 msgid ""
@@ -4277,14 +3985,10 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
-"Zaznacz wpisy na playliście poprzez wypełnienie jednego lub więcej pól. Pola "
-"używają składni wyrażeń regularnych, z uwzględnieniem wielkości liter. Jeśli "
-"nie wiesz, jak działają wyrażenia regularne, wpisz po prostu to, czego "
-"szukasz."
 
 #: src/skins/search-select.cc:89
 msgid "Title:"
-msgstr "Tytuł:"
+msgstr "Titull:"
 
 #: src/skins/search-select.cc:95
 msgid "Album:"
@@ -4292,27 +3996,27 @@ msgstr "Album:"
 
 #: src/skins/search-select.cc:101
 msgid "Artist:"
-msgstr "Artysta:"
+msgstr "Artist:"
 
 #: src/skins/search-select.cc:107
 msgid "File Name:"
-msgstr "Nazwa pliku:"
+msgstr "Emër Kartele:"
 
 #: src/skins/search-select.cc:115
 msgid "Clear previous selection before searching"
-msgstr "Wyczyść poprzednie zaznaczenie przed szukaniem"
+msgstr ""
 
 #: src/skins/search-select.cc:118
 msgid "Automatically toggle queue for matching entries"
-msgstr "Automatycznie przełącz kolejkę dla pasujących wpisów"
+msgstr ""
 
 #: src/skins/search-select.cc:121
 msgid "Create a new playlist with matching entries"
-msgstr "Utwórz nową playlistę z pasującymi wpisami"
+msgstr ""
 
 #: src/sndfile/plugin.cc:38
 msgid "Sndfile Plugin"
-msgstr "Wtyczka Sndfile"
+msgstr ""
 
 #: src/sndfile/plugin.cc:363
 msgid ""
@@ -4335,89 +4039,65 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
-"Stworzono na podstawie wtyczki xmms_sndfile:\n"
-"Prawa autorskie (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"Port na Audaciousa: Tony Vroon <chainsaw@gentoo.org>\n"
-"\n"
-"Niniejszy program jest wolnym oprogramowaniem; możesz go rozprowadzać dalej "
-"i/lub modyfikować na warunkach PowszechnejLicencji Publicznej GNU, wydanej "
-"przez Fundację WolnegoOprogramowania - według wersji 2-giej tej Licencji lub "
-"którejśz późniejszych wersji.\n"
-"\n"
-"Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on użyteczny - "
-"jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej gwarancji PRZYDATNOŚCI "
-"HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania "
-"bliższych informacji - Powszechna Licencja Publiczna GNU.\n"
-"\n"
-"Z pewnością wraz z niniejszym programem otrzymałeś też egzemplarz "
-"Powszechnej Licencji Publicznej GNU (GNU General Public License);jeśli nie - "
-"napisz do Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, "
-"Boston, MA 02110-1301, USA."
 
 #: src/sndio/sndio.cc:43
 msgid "Sndio Output"
-msgstr "Wyjście Sndio"
+msgstr ""
 
 #: src/sndio/sndio.cc:98
 msgid "Device (blank for default):"
-msgstr "Urządzenie (puste oznacza domyślne):"
+msgstr ""
 
 #: src/sndio/sndio.cc:100
 msgid "Save and restore volume:"
-msgstr "Zapisz i przywróć głośność:"
+msgstr ""
 
 #: src/sndio/sndio.cc:181
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
-msgstr "Błąd Sndio: Nieobsługiwany format dźwięku (%d)"
+msgstr ""
 
 #: src/sndio/sndio.cc:192
 msgid "Sndio error: sio_open() failed"
-msgstr "Błąd Sndio: funkcja sio_open() zwróciła błąd"
+msgstr ""
 
 #: src/sndio/sndio.cc:221
 msgid "Sndio error: sio_setpar() failed"
-msgstr "Błąd Sndio: funkcja sio_setpar() zwróciła błąd"
+msgstr ""
 
 #: src/sndio/sndio.cc:233
 msgid "Sndio error: sio_start() failed"
-msgstr "Błąd Sndio: funkcja sio_start() zwróciła błąd"
+msgstr ""
 
 #: src/songchange/song_change.cc:30
 msgid "Song Change"
-msgstr "Zmiana piosenki"
+msgstr "Ndryshim Kënge"
 
 #: src/songchange/song_change.cc:245
 msgid "<b>Commands</b>"
-msgstr "<b>Polecenia</b>"
+msgstr "<b>Urdhra</b>"
 
 #: src/songchange/song_change.cc:247
 msgid "Command to run when starting a new song:"
-msgstr "Polecenie do uruchomienia przy rozpoczęciu nowej piosenki:"
+msgstr ""
 
 #: src/songchange/song_change.cc:250
 msgid "Command to run at the end of a song:"
-msgstr "Polecenie do uruchomienia przy zakończeniu piosenki:"
+msgstr "Urdhër për t’u xhiruar në fundin e një kënge:"
 
 #: src/songchange/song_change.cc:253
 msgid "Command to run at the end of the playlist:"
-msgstr "Polecenie do uruchomienia przy zakończeniu listy odtwarzania:"
+msgstr "Urdhër për t’u xhiruar në fundin e luajlistës:"
 
 #: src/songchange/song_change.cc:256
 msgid "Command to run when song title changes (for network streams):"
 msgstr ""
-"Polecenie do uruchomienia, gdy zmieni się tytuł piosenki (dla "
-"strumieniowania sieciowego):"
 
 #: src/songchange/song_change.cc:259
 msgid ""
 "You can use the following format codes, which will be replaced before "
 "running the command (not all are useful for the end-of-playlist command):"
 msgstr ""
-"Możesz użyć następujących kodów formatujących, które zostaną zastąpione "
-"przed uruchomieniem polecenia (nie wszystkie są użyteczne dla polecenia end-"
-"of-playlist):"
 
 #: src/songchange/song_change.cc:262
 msgid ""
@@ -4433,33 +4113,20 @@ msgid ""
 "%t: Playlist position\n"
 "%T: Title (unformatted)"
 msgstr ""
-"%a: Wykonawca\n"
-"%b: Album\n"
-"%c: Liczba kanałów\n"
-"%f: Nazwa pliku (pełna ścieżka)\n"
-"%F: Częstotliwość (Herce)\n"
-"%l: Długość (milisekundy)\n"
-"%n lub %s: Sformatowany tytuł (zobacz ustawienia listy odtwarzania)\n"
-"%p: Teraz gra (1 lub 0)\n"
-"%r: Rate (bitów na sekundę)\n"
-"%t: Pozycja listy odtwarzania\n"
-"%T: Tytuł (niesformatowany)"
 
 #: src/songchange/song_change.cc:273
 msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.  "
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
-"Parametry przekazywane do powłoki powinny być zawarte w cudzysłowach. Ich "
-"brak może prowadzić do nieoczekiwanych rezultatów."
 
 #: src/song-info-qt/song-info.cc:30
 msgid "Song Info"
-msgstr "Informacje o piosence"
+msgstr "Të dhëna Kënge"
 
 #: src/soxr/sox-resampler.cc:44
 msgid "SoX Resampler"
-msgstr "Konwerter częstotliwości SoX"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:172
 msgid ""
@@ -4469,79 +4136,74 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"Wtyczka SoX Resampler dla Audacious\n"
-"Prawa autorskie 2013 Michał Lipski\n"
-"\n"
-"Oparty na wtyczce Sample Rate Converter:\n"
-"Prawa autorskie 2010-2012 John Lindgren"
 
 #: src/soxr/sox-resampler.cc:178
 msgid "Quick"
-msgstr "Szybki"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:179
 msgid "Low"
-msgstr "Wolny"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:181
 msgid "High"
-msgstr "Wysoki"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:182
 msgid "Very High"
-msgstr "Bardzo wysoki"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:183
 msgid "Ultra High"
-msgstr "Utrawysoka"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:187
 msgid "Minimum"
-msgstr "Minimalna"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:188
 msgid "Intermediate"
-msgstr "Pośrednia"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:193
 msgid "Quality:"
-msgstr "Jakość:"
+msgstr "Cilësi:"
 
 #: src/soxr/sox-resampler.cc:196
 msgid "Phase:"
-msgstr "Faza:"
+msgstr "Fazë:"
 
 #: src/soxr/sox-resampler.cc:200
 msgid "Allow aliasing"
-msgstr "Zezwalaj na aliasing"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:202
 msgid "Use steep filter"
-msgstr "Użyj filtra stromego"
+msgstr ""
 
 #: src/speedpitch/speed-pitch.cc:54
 msgid "Speed and Pitch"
-msgstr "Szybkość i wysokość tonu"
+msgstr "Shpejtësia dhe Intonimi"
 
 #: src/speedpitch/speed-pitch.cc:247
 msgid "<b>Speed</b>"
-msgstr "<b>Szybkość</b>"
+msgstr ""
 
 #: src/speedpitch/speed-pitch.cc:248
 msgid "Decouple from pitch"
-msgstr "Odłącz od tonu"
+msgstr ""
 
 #: src/speedpitch/speed-pitch.cc:250 src/speedpitch/speed-pitch.cc:258
 msgid "Multiplier:"
-msgstr "Mnożnik:"
+msgstr ""
 
 #: src/speedpitch/speed-pitch.cc:254
 msgid "<b>Pitch</b>"
-msgstr "<b>Ton</b>"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:44 src/statusicon/statusicon.cc:47
 msgid "Status Icon"
-msgstr "Ikona statusu"
+msgstr "Ikonë Gjendjeje"
 
 #: src/statusicon-qt/statusicon.cc:65
 msgid ""
@@ -4554,46 +4216,38 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
-"Wtyczka ikony stanu (częściowy port dla interfejsu Qt)\n"
-"\n"
-"Prawa autorskie 2005-2007 Giacomo Lozito <james@develia.org>\n"
-"Prawa autorskie 2010 Michał Lipski <tallica@o2.pl>\n"
-"Prawa autorskie 2015 Eugene Paskevich <eugene@raptor.kiev.ua>\n"
-"\n"
-"Wtyczka wyświetla ikonę stanu, umieszczoną\n"
-"w obszarze ikon powiadomienia menedżera okien."
 
 #: src/statusicon-qt/statusicon.cc:86 src/statusicon/statusicon.cc:380
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "<b>Akcja dla przewijania kółkiem myszy</b>"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:87 src/statusicon/statusicon.cc:381
 msgid "Change volume"
-msgstr "Zmiana głośności"
+msgstr "Ndryshoni volumin"
 
 #: src/statusicon-qt/statusicon.cc:90 src/statusicon/statusicon.cc:384
 msgid "Change playing song"
-msgstr "Zmiana bieżącej piosenki"
+msgstr "Ndryshoni këngën që po luhet"
 
 #: src/statusicon-qt/statusicon.cc:93 src/statusicon/statusicon.cc:387
 msgid "<b>Other Settings</b>"
-msgstr "<b>Inne ustawienia</b>"
+msgstr "<b>Rregullime të Tjera</b>"
 
 #: src/statusicon-qt/statusicon.cc:94 src/statusicon/statusicon.cc:388
 msgid "Disable the popup window"
-msgstr "Wyłączenie wyskakujących komunikatów"
+msgstr "Çaktivizo dritaren flluskë"
 
 #: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:390
 msgid "Close to the system tray"
-msgstr "Zamknij do zasobnika systemowego"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:98 src/statusicon/statusicon.cc:392
 msgid "Advance in playlist when scrolling upward"
-msgstr "Przejdź do następnej ścieżki przewijając w górę"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:113 src/statusicon/statusicon.cc:283
 msgid "Se_ttings ..."
-msgstr "_Ustawienia..."
+msgstr ""
 
 #: src/statusicon/statusicon.cc:373
 msgid ""
@@ -4605,15 +4259,17 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
-"Wtyczka ikony statusu\n"
-"Prawa autorskie: 2005-2007 Giacomo Lozito <james@develia.org>\n"
-"Prawa autorskie 2010 Michał Lipski <tallica@o2.pl>\n"
-"Wtyczka wyświetla ikonę statusu, umieszczoną w obszarze ikon powiadomienia "
-"menedżera okien."
+"Shtojcë Ikone Gjendjesh\n"
+"\n"
+"Të drejta kopjimi 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Të drejta kopjimi 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"Kjo shtojcë furnizon një ikonë gjendjesh, të vendosur te\n"
+"zona e shtyllës së sistemit të përgjegjësit të dritareve."
 
 #: src/stereo_plugin/stereo.cc:19
 msgid "Extra Stereo"
-msgstr "Dodatkowe stereo"
+msgstr ""
 
 #: src/stereo_plugin/stereo.cc:36
 msgid ""
@@ -4621,48 +4277,49 @@ msgid ""
 "\n"
 "By Johan Levin, 1999"
 msgstr ""
-"Wtyczka generująca dodatkowy efekt stereo\n"
-"Autor: Johan Levin, 1999"
+"Shtojcë Stereo Ekstra\n"
+"\n"
+"Nga Johan Levin, 1999"
 
 #: src/stereo_plugin/stereo.cc:44
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Dodatkowe stereo</b>"
+msgstr "<b>Stereo Ekstra</b>"
 
 #: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:131
 msgid "Type"
-msgstr "Typ"
+msgstr "Lloj"
 
 #: src/streamtuner/icecast-model.cc:132
 msgid "Current Song"
-msgstr "Bieżąca ścieżka"
+msgstr "Kënga e Tanishme"
 
 #: src/streamtuner/icecast-model.cc:164
 msgid "Other"
-msgstr "Inne"
+msgstr "Tjetër"
 
 #: src/streamtuner/ihr-model.cc:63
 msgid "Market"
-msgstr "Rynek"
+msgstr "Treg"
 
 #: src/streamtuner/ihr-model.cc:156
 msgid "Call Letters"
-msgstr "Znaki wywoławcze"
+msgstr ""
 
 #: src/streamtuner/ihr-model.cc:162
 msgid "Description"
-msgstr "Opis"
+msgstr "Përshkrim"
 
 #: src/streamtuner/shoutcast-model.cc:128
 msgid "Listeners"
-msgstr "Słuchacze"
+msgstr "Dëgjues"
 
 #: src/streamtuner/shoutcast-model.cc:188
 msgid "Top 500 Stations"
-msgstr "Najlepsze 500 stacji"
+msgstr "500 Stacionet Kryesuese"
 
 #: src/streamtuner/shoutcast-model.cc:189
 msgid "Alternative"
-msgstr "Alternatywna"
+msgstr "Alternative"
 
 #: src/streamtuner/shoutcast-model.cc:190
 msgid "Blues"
@@ -4670,7 +4327,7 @@ msgstr "Blues"
 
 #: src/streamtuner/shoutcast-model.cc:191
 msgid "Classical"
-msgstr "Klasyczna"
+msgstr "Klasike"
 
 #: src/streamtuner/shoutcast-model.cc:192
 msgid "Country"
@@ -4678,15 +4335,15 @@ msgstr "Country"
 
 #: src/streamtuner/shoutcast-model.cc:193
 msgid "Decades"
-msgstr "Dekady"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:194
 msgid "Easy Listening"
-msgstr "Lekka muzyka"
+msgstr "Easy Listening"
 
 #: src/streamtuner/shoutcast-model.cc:195
 msgid "Electronic"
-msgstr "Elektroniczna"
+msgstr "Elektronike"
 
 #: src/streamtuner/shoutcast-model.cc:196
 msgid "Folk"
@@ -4694,19 +4351,19 @@ msgstr "Folk"
 
 #: src/streamtuner/shoutcast-model.cc:197
 msgid "Inspirational"
-msgstr "Inspirująca"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:198
 msgid "International"
-msgstr "Międzynarodowa"
+msgstr "Ndërkombëtare"
 
 #: src/streamtuner/shoutcast-model.cc:199
 msgid "Jazz"
-msgstr "Jazz"
+msgstr "Xhaz"
 
 #: src/streamtuner/shoutcast-model.cc:200
 msgid "Latin"
-msgstr "Łacińska"
+msgstr "Latin"
 
 #: src/streamtuner/shoutcast-model.cc:201
 msgid "Metal"
@@ -4722,11 +4379,11 @@ msgstr "Pop"
 
 #: src/streamtuner/shoutcast-model.cc:205
 msgid "Public Radio"
-msgstr "Radio publiczne"
+msgstr "Radio Publike"
 
 #: src/streamtuner/shoutcast-model.cc:206
 msgid "R&B and Urban"
-msgstr "R&B i urban"
+msgstr "R&B dhe Urban"
 
 #: src/streamtuner/shoutcast-model.cc:207
 msgid "Rap"
@@ -4738,23 +4395,23 @@ msgstr "Reggae"
 
 #: src/streamtuner/shoutcast-model.cc:209
 msgid "Rock"
-msgstr "Rock"
+msgstr "Rok"
 
 #: src/streamtuner/shoutcast-model.cc:210
 msgid "Seasonal and Holiday"
-msgstr "Sezonowa i świąteczna"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:211
 msgid "Soundtracks"
-msgstr "Ścieżki dźwiękowe"
+msgstr "Muzikë filmash"
 
 #: src/streamtuner/shoutcast-model.cc:212
 msgid "Talk"
-msgstr "Rozmowy"
+msgstr "Bisedë"
 
 #: src/streamtuner/shoutcast-model.cc:213
 msgid "Themes"
-msgstr "Motywy"
+msgstr "Tema"
 
 #: src/streamtuner/streamtuner.cc:59
 msgid "Shoutcast"
@@ -4766,11 +4423,11 @@ msgstr "Icecast"
 
 #: src/streamtuner/streamtuner.cc:71
 msgid "Stream Tuner"
-msgstr "Tuner strumienia"
+msgstr ""
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
-msgstr "Generator sygnałów"
+msgstr "Prodhues Tonesh"
 
 #: src/tonegen/tonegen.cc:92
 #, c-format
@@ -4779,7 +4436,7 @@ msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.cc:92
 msgid "Tone Generator: "
-msgstr "Generator sygnałów: "
+msgstr "Prodhues Tonesh: "
 
 #: src/tonegen/tonegen.cc:161
 msgid ""
@@ -4789,25 +4446,18 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 msgstr ""
-"Autor generatora sinusoidalnego: Håvard Kvålen <havardk@xmms.org>\n"
-"Poprawki: Daniel J. Peng <danielpeng@bigfoot.com>\n"
-"\n"
-"Instrukcja użytkowania: wprowadź URL tone://częstotliwość1;częstotliwość2;"
-"częstotliwość3;...\n"
-"przykładowo wprowadzenie: tone://2000;2005 wytworzy dźwięk o częstotliwości "
-"2000 Hz oraz 2005 Hz"
 
 #: src/ui-common/dialogs-qt.cc:31
 msgid "Working ..."
-msgstr "Działanie..."
+msgstr "Po punohet …"
 
 #: src/ui-common/dialogs-qt.cc:43
 msgid "Information"
-msgstr "Informacje"
+msgstr "Informacion"
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
-msgstr "Usuwanie głosu (karaoke)"
+msgstr "Heqje Zëri"
 
 #: src/vorbis/vorbis.cc:429
 msgid ""
@@ -4829,32 +4479,15 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
-"Dekoder OGG Vorbis dla Audaciousa\n"
-"\n"
-"Oparty na kodzie wtyczki Ogg Vorbis fundacji Xiph.org:\n"
-"http://www.xiph.org/\n"
-"\n"
-"Autor oryginalnego kodu:\n"
-"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-"\n"
-"Przyczynili się:\n"
-"Chris Montgomery <monty@xiph.org>\n"
-"Peter Alm <peter@xmms.org>\n"
-"Michael Smith <msmith@labyrinth.edu.au>\n"
-"Jack Moffitt <jack@icecast.org>\n"
-"Jorn Baayen <jorn@nl.linux.org>\n"
-"Håvard Kvålen <havardk@xmms.org>\n"
-"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-"Eugene Zagidullin <e.asphyx@gmail.com>"
 
 #: src/vorbis/vorbis.h:18
 msgid "Ogg Vorbis Decoder"
-msgstr "Dekoder Ogg Vorbis"
+msgstr "Shkodues OGG Vorbis"
 
 #: src/vtx/info.cc:24
 #, c-format
 msgid "Details about %s"
-msgstr "Szczegóły o %s"
+msgstr "Hollësi për %s"
 
 #: src/vtx/info.cc:26
 msgid ""
@@ -4870,21 +4503,10 @@ msgid ""
 "Player Freq: %P\n"
 "Year: %y"
 msgstr ""
-"Tytuł: %t\n"
-"Autor: %a\n"
-"Z: %f\n"
-"Tracker: %T\n"
-"Komentarz: %C\n"
-"Rodzaj układu: %c\n"
-"Stereo: %s\n"
-"Pętla: %l\n"
-"Częstotliwość układu: %F\n"
-"Częstotliwość odtwarzacza: %P\n"
-"Rok: %y"
 
 #: src/vtx/vtx.cc:38
 msgid "VTX Decoder"
-msgstr "Dekoder VTX"
+msgstr "Shkodues VTX"
 
 #: src/vtx/vtx.cc:178
 msgid ""
@@ -4892,66 +4514,58 @@ msgid ""
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
-"Odtwarzacz formatu Vortex, Sashnov Alexander <sashnov@ngs.ru>\n"
-"Napisano na podstawie _vtx.dll autorstwa Romana Sherbakova <v_soft@microfor."
-"ru>\n"
-"Wtyczka Audaciousa napisana przez Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/vumeter-qt/vumeter_qt.cc:31
 msgid ""
 "VU Meter Plugin for Audacious\n"
 "Copyright 2017-2019 Marc Sánchez Fauste"
 msgstr ""
-"Wtyczka wskaźnika wysterowania dla Audaciousa\n"
-"Prawa autorskie 2017-2019 Marc Sánchez Fauste"
 
 #: src/vumeter-qt/vumeter_qt.cc:35
 msgid "<b>VU Meter Settings</b>"
-msgstr "<b>Ustawienia wskaźnika wysterowania</b>"
+msgstr "<b>Rregullime VU Meter:</b>"
 
 #: src/vumeter-qt/vumeter_qt.cc:37
 msgid "Peak hold time:"
-msgstr "Okres wstrzymania wartości szczytowych:"
+msgstr ""
 
 #: src/vumeter-qt/vumeter_qt.cc:42
 msgid "Fall-off time:"
-msgstr "Okres upadania:"
+msgstr ""
 
 #: src/vumeter-qt/vumeter_qt.cc:44
 msgid "dB/second"
-msgstr "dB/sekundy"
+msgstr "dB/sekondë"
 
 #: src/vumeter-qt/vumeter_qt.cc:46
 msgid "Display legend"
-msgstr "Wyświetlanie legendy"
+msgstr ""
 
 #: src/vumeter-qt/vumeter_qt.h:37
 msgid "VU Meter"
-msgstr "Wskaźnik wysterowania"
+msgstr "VU Meter"
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
-msgstr "Win32 waveOut"
+msgstr ""
 
 #: src/waveout/waveout.cc:69
 msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
 msgstr ""
-"Wtyczka Win32 waveOut dla Audacious\n"
-"Prawa autorskie 2016 John Lindgren"
 
 #: src/wavpack/wavpack.cc:25
 msgid "WavPack Decoder"
-msgstr "Dekoder WavPack"
+msgstr "Shkodues WavPack"
 
 #: src/wavpack/wavpack.cc:217
 msgid "lossy (hybrid)"
-msgstr "stratna (hybryda)"
+msgstr ""
 
 #: src/wavpack/wavpack.cc:219
 msgid "lossy"
-msgstr "stratna"
+msgstr "me humbje"
 
 #: src/wavpack/wavpack.cc:259
 msgid ""
@@ -4959,18 +4573,18 @@ msgid ""
 "\n"
 "Some of the plugin code was by Miles Egan."
 msgstr ""
-"Prawa autorskie: 2006 William Pitcock <nenolod@nenolod.net>\n"
+"Të drejta kopjimi 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
-"Część kodu napisana przez Milesa Egana."
+"Një pjesë e kodit të shtojcës qe nga Miles Egan."
 
 #: src/xsf/plugin.cc:50
 msgid "2SF Decoder"
-msgstr "Dekoder 2SF"
+msgstr "Shkodues 2SF"
 
 #: src/xsf/plugin.cc:232
 msgid "<b>XSF Configuration</b>"
-msgstr "<b>Konfiguracja XSF</b>"
+msgstr "<b>Formësim XSF-je</b>"
 
 #: src/xspf/xspf.cc:95
 msgid "XML Shareable Playlists (XSPF)"
-msgstr "Współdzielone listy odtwarzania XML (XSPF)"
+msgstr "Listat e dëgjimit XML shareable (XSPF)"

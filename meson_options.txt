@@ -1,11 +1,8 @@
-option('dbus', type: 'boolean', value: true,
-       description: 'Whether DBus support is enabled')
-option('qt', type: 'boolean', value: true,
-       description: 'Whether Qt support is enabled')
+# GUI toolkits
 option('gtk', type: 'boolean', value: true,
        description: 'Whether GTK support is enabled')
-option('mpris2', type: 'boolean', value: true,
-       description: 'Whether MPRIS 2.0 support is enabled')
+option('qt', type: 'boolean', value: true,
+       description: 'Whether Qt support is enabled')
 
 
 # container plugins
@@ -14,41 +11,41 @@ option('cue', type: 'boolean', value: true,
 
 
 # transport plugins
-option('neon', type: 'boolean', value: true,
-       description: 'Whether the neon HTTP client is enabled')
 option('mms', type: 'boolean', value: true,
        description: 'Whether the libmms MMS client is enabled')
+option('neon', type: 'boolean', value: true,
+       description: 'Whether the neon HTTP client is enabled')
 
 
 # input plugins
-option('ffaudio', type: 'combo', choices: ['ffmpeg', 'libav', 'disabled'],
-       description: 'Choose between ffmpeg, libav or disabled')
-option('mpg123', type: 'boolean', value: true,
-       description: 'Whether MPG123 support is enabled')
-option('adplug', type: 'boolean', value: true,
-       description: 'Whether AdPlug support is enabled')
-option('console', type: 'boolean', value: true,
-       description: 'Whether Game Music Emu support is enabled')
-option('flac', type: 'boolean', value: true,
-       description: 'Whether FLAC support is enabled')
-option('vorbis', type: 'boolean', value: true,
-       description: 'Whether Ogg Vorbis support is enabled')
 option('aac', type: 'boolean', value: true,
        description: 'Whether the FAAD-based raw AAC plugin is enabled')
-option('modplug', type: 'boolean', value: true,
-       description: 'Whether ModPlug support is enabled')
-option('openmpt', type: 'boolean', value: true,
-       description: 'Whether OpenMPT support is enabled')
-option('wavpack', type: 'boolean', value: true,
-       description: 'Whether WavPack support is enabled')
-option('sndfile', type: 'boolean', value: true,
-       description: 'Whether libsndfile support is enabled')
-option('cdaudio', type: 'boolean', value: true,
-       description: 'Whether CD audio support is enabled')
+option('adplug', type: 'boolean', value: true,
+       description: 'Whether AdPlug support is enabled')
 option('amidiplug', type: 'boolean', value: true,
        description: 'Whether AMidiPlug plugin is enabled')
+option('cdaudio', type: 'boolean', value: true,
+       description: 'Whether CD audio support is enabled')
+option('console', type: 'boolean', value: true,
+       description: 'Whether Game Music Emu support is enabled')
+option('ffaudio', type: 'combo', choices: ['ffmpeg', 'libav', 'disabled'],
+       description: 'Choose between ffmpeg, libav or disabled')
+option('flac', type: 'boolean', value: true,
+       description: 'Whether FLAC support is enabled')
+option('modplug', type: 'boolean', value: true,
+       description: 'Whether ModPlug support is enabled')
+option('mpg123', type: 'boolean', value: true,
+       description: 'Whether MPG123 support is enabled')
+option('openmpt', type: 'boolean', value: true,
+       description: 'Whether OpenMPT support is enabled')
 option('sid', type: 'boolean', value: true,
        description: 'Whether SID emulation support is enabled')
+option('sndfile', type: 'boolean', value: true,
+       description: 'Whether libsndfile support is enabled')
+option('vorbis', type: 'boolean', value: true,
+       description: 'Whether Ogg Vorbis support is enabled')
+option('wavpack', type: 'boolean', value: true,
+       description: 'Whether WavPack support is enabled')
 
 
 # output plugins
@@ -56,42 +53,45 @@ option('alsa', type: 'boolean', value: true,
        description: 'Whether ALSA support is enabled')
 option('coreaudio', type: 'boolean', value: true,
        description: 'Whether CoreAudio support is enabled')
+option('filewriter', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) support is enabled')
+option('filewriter-flac', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) FLAC support is enabled')
+option('filewriter-mp3', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) MP3 support is enabled')
+option('filewriter-ogg', type: 'boolean', value: true,
+       description: 'Whether FileWriter (transcoding) OGG support is enabled')
 option('jack', type: 'boolean', value: true,
        description: 'Whether JACK support is enabled')
 option('oss', type: 'boolean', value: true,
        description: 'Whether OSS support is enabled')
 option('pulse', type: 'boolean', value: true,
        description: 'Whether PulseAudio support is enabled')
+option('qtaudio', type: 'boolean', value: true,
+       description: 'Whether QtMultimedia support is enabled')
 option('sdlout', type: 'boolean', value: true,
        description: 'Whether SDL support is enabled')
 option('sndio', type: 'boolean', value: true,
        description: 'Whether sndio support is enabled')
-option('filewriter', type: 'boolean', value: true,
-       description: 'Whether FileWriter (transcoding) support is enabled')
-option('filewriter-mp3', type: 'boolean', value: true,
-       description: 'Whether FileWriter (transcoding) MP3 support is enabled')
-option('filewriter-ogg', type: 'boolean', value: true,
-       description: 'Whether FileWriter (transcoding) OGG support is enabled')
-option('filewriter-flac', type: 'boolean', value: true,
-       description: 'Whether FileWriter (transcoding) FLAC support is enabled')
-option('qtaudio', type: 'boolean', value: true,
-       description: 'Whether QtMultimedia support is enabled')
+
 
 # general plugins
-option('aosd', type: 'boolean', value: true,
-       description: 'Whether the OSD plugin (X11) is enabled')
 option('ampache', type: 'boolean', value: true,
        description: 'Whether the Ampache browser plugin is enabled')
+option('aosd', type: 'boolean', value: true,
+       description: 'Whether the OSD plugin (X11) is enabled')
 option('hotkey', type: 'boolean', value: true,
        description: 'Whether the global hotkey plugin (X11) is enabled')
 option('lirc', type: 'boolean', value: true,
        description: 'Whether the LIRC plugin is enabled')
 option('mac-media-keys', type: 'boolean', value: false,
        description: 'Whether the Mac Media Keys plugin is enabled')
+option('mpris2', type: 'boolean', value: true,
+       description: 'Whether MPRIS 2.0 support is enabled')
 option('notify', type: 'boolean', value: true,
        description: 'Whether the libnotify OSD plugin is enabled')
 option('scrobbler2', type: 'boolean', value: true,
-       description: 'Whether the Scrobbler plugin is enabled')
+       description: 'Whether the Last.fm Scrobbler plugin is enabled')
 option('songchange', type: 'boolean', value: true,
        description: 'Whether the Song Change plugin is enabled')
 option('streamtuner', type: 'boolean', value: false,
@@ -103,17 +103,17 @@ option('bs2b', type: 'boolean', value: true,
        description: 'Whether the BS2B effect plugin is enabled')
 option('resample', type: 'boolean', value: true,
        description: 'Whether the resample effect plugin is enabled')
-option('speedpitch', type: 'boolean', value: true,
-       description: 'Whether the speed / pitch effect plugin is enabled')
 option('soxr', type: 'boolean', value: true,
        description: 'Whether the SoX resampler effect plugin is enabled')
+option('speedpitch', type: 'boolean', value: true,
+       description: 'Whether the speed / pitch effect plugin is enabled')
 
 
 # visualization plugins
-option('vumeter', type: 'boolean', value: true,
-       description: 'Whether the VUMeter visualization plugin is enabled')
 option('gl-spectrum', type: 'boolean', value: true,
        description: 'Whether the OpenGL spectrum visualization plugin is enabled')
+option('vumeter', type: 'boolean', value: true,
+       description: 'Whether the VUMeter visualization plugin is enabled')
 
 
 # interface plugins

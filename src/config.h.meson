@@ -14,7 +14,6 @@
 #mesondefine INSTALL_DESKTOPFILE
 #mesondefine INSTALL_ICONFILE
 
-#mesondefine USE_DBUS
 #mesondefine USE_QT
 #mesondefine USE_GTK
 #mesondefine USE_GTK_OR_QT

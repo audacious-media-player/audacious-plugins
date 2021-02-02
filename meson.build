@@ -1,5 +1,5 @@
 project('audacious-plugins', 'c', 'cpp',
-        version: '4.1-beta1',
+        version: '4.1',
         meson_version: '>= 0.46',
         default_options: [
           'c_std=gnu99',
@@ -169,11 +169,6 @@ input_plugin_dir = join_paths(install_plugindir, 'Input')
 output_plugin_dir = join_paths(install_plugindir, 'Output')
 transport_plugin_dir = join_paths(install_plugindir, 'Transport')
 visualization_plugin_dir = join_paths(install_plugindir, 'Visualization')
-
-
-if get_option('dbus')
-  conf.set10('USE_DBUS', true)
-endif
 
 
 if get_option('qt')

@@ -57,12 +57,12 @@ endif
 # transport plugins
 subdir('gio')
 
-if get_option('neon')
-  subdir('neon')
-endif
-
 if get_option('mms')
   subdir('mms')
+endif
+
+if get_option('neon')
+  subdir('neon')
 endif
 
 
@@ -115,20 +115,20 @@ if conf.has('USE_QT')
     subdir('qthotkey')
   endif
 
-  if get_option('qtaudio')
-    subdir('qtaudio')
+  if get_option('moonstone')
+    subdir('moonstone')
   endif
 
-  if get_option('vumeter')
-    subdir('vumeter-qt')
+  if get_option('qtaudio')
+    subdir('qtaudio')
   endif
 
   if get_option('streamtuner')
     subdir('streamtuner')
   endif
 
-  if get_option('moonstone')
-    subdir('moonstone')
+  if get_option('vumeter')
+    subdir('vumeter-qt')
   endif
 endif
 
@@ -150,7 +150,7 @@ if conf.has('USE_GTK')
     subdir('aosd')
   endif
 
-  if get_option('gl-spectrum')
+  if get_option('gl-spectrum') and not have_darwin
     subdir('glspectrum')
   endif
 
@@ -169,74 +169,74 @@ if get_option('lirc')
   subdir('lirc')
 endif
 
-if get_option('songchange')
-  subdir('songchange')
+if get_option('mac-media-keys') and have_darwin
+  subdir('mac-media-keys')
+endif
+
+if get_option('mpris2') and not have_windows
+  subdir('mpris2')
 endif
 
 if get_option('scrobbler2')
   subdir('scrobbler2')
 endif
 
-if get_option('mac-media-keys') and have_darwin
-  subdir('mac-media-keys')
-endif
-
-if get_option('mpris2') and get_option('dbus') and not have_windows
-  subdir('mpris2')
+if get_option('songchange')
+  subdir('songchange')
 endif
 
 
 # input plugins
-if get_option('mpg123')
-  subdir('mpg123')
-endif
-
-if get_option('ffaudio') in ['libav', 'ffmpeg']
-  subdir('ffaudio')
+if get_option('aac')
+  subdir('aac')
 endif
 
 if get_option('adplug')
   subdir('adplug')
 endif
 
-if get_option('flac')
-  subdir('flac')
-endif
-
-if get_option('vorbis')
-  subdir('vorbis')
-endif
-
-if get_option('aac')
-  subdir('aac')
-endif
-
-if get_option('modplug')
-  subdir('modplug')
-endif
-
-if get_option('openmpt')
-  subdir('openmpt')
-endif
-
-if get_option('wavpack')
-  subdir('wavpack')
-endif
-
-if get_option('sndfile')
-  subdir('sndfile')
+if get_option('amidiplug')
+  subdir('amidiplug')
 endif
 
 if have_cdaudio
   subdir('cdaudio')
 endif
 
-if get_option('amidiplug')
-  subdir('amidiplug')
+if get_option('ffaudio') in ['ffmpeg', 'libav']
+  subdir('ffaudio')
+endif
+
+if get_option('flac')
+  subdir('flac')
+endif
+
+if get_option('modplug')
+  subdir('modplug')
+endif
+
+if get_option('mpg123')
+  subdir('mpg123')
+endif
+
+if get_option('openmpt')
+  subdir('openmpt')
 endif
 
 if get_option('sid')
   subdir('sid')
+endif
+
+if get_option('sndfile')
+  subdir('sndfile')
+endif
+
+if get_option('vorbis')
+  subdir('vorbis')
+endif
+
+if get_option('wavpack')
+  subdir('wavpack')
 endif
 
 
