@@ -54,7 +54,7 @@ static inline s8 read_s8(u32 addr) { return (s8)_MMU_read08<ARMCPU_ARM7,MMU_AT_D
 SPU_struct *SPU_core = 0;
 int SPU_currentCoreNum = SNDCORE_DUMMY;
 static int volume = 100;
-static SampleCache sampleCache;
+SampleCache spuSampleCache;
 
 static size_t buffersize = 0;
 static ESynchMode synchmode = ESynchMode_Synchronous;
@@ -1067,7 +1067,7 @@ FORCEINLINE static void ____SPU_ChanUpdate(SPU_struct* const SPU, channel_struct
       } else if (FORMAT == 3) {
         FetchPSGData(chan, &data);
       } else {
-        const SampleData& sample = sampleCache.getSample(chan->addr, chan->loopstart, chan->length, SampleData::Format(FORMAT));
+        const SampleData& sample = spuSampleCache.getSample(chan->addr, chan->loopstart, chan->length, SampleData::Format(FORMAT));
         data = sample.sampleAt(chan->sampcnt, IInterpolator::allInterpolators[CommonSettings.spuInterpolationMode]);
       }
       SPU_Mix<CHANNELS>(SPU, chan, data);

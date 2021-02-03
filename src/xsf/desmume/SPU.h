@@ -28,6 +28,7 @@
 #include "types.h"
 #include "matrix.h"
 #include "metaspu.h"
+#include "../spu/samplecache.h"
 
 class EMUFILE;
 
@@ -263,5 +264,7 @@ size_t SPU_DefaultPostProcessSamples(s16 *postProcessBuffer, size_t requestedSam
 
 extern double DESMUME_SAMPLE_RATE;
 void SetDesmumeSampleRate(double rate);
+
+extern SampleCache spuSampleCache;
 
 #endif
