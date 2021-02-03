@@ -410,8 +410,8 @@ const PreferencesWidget XSFPlugin::widgets[] = {
 	WidgetLabel(N_("<b>XSF Configuration</b>")),
 	WidgetCheck(N_("Ignore length from file"), WidgetBool(CFG_ID, "ignore_length")),
   WidgetSpin(N_("Default fade time"), WidgetInt(CFG_ID, "fade"), { 0, 15000, 100, "ms" }),
-  WidgetCombo(N_("Sample rate"), WidgetInt(CFG_ID, "sample_rate"), (WidgetVCombo){ sampleRateItems }),
-  WidgetCombo(N_("Interpolation mode"), WidgetString(CFG_ID, "interpolation_mode"), (WidgetVCombo){ interpItems })
+  WidgetCombo(N_("Sample rate"), WidgetInt(CFG_ID, "sample_rate"), (WidgetVCombo){ ArrayRef<ComboItem>(sampleRateItems) }),
+  WidgetCombo(N_("Interpolation mode"), WidgetString(CFG_ID, "interpolation_mode"), (WidgetVCombo){ ArrayRef<ComboItem>(interpItems) })
 };
 
 const PluginPreferences XSFPlugin::prefs = {{widgets}};
