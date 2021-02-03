@@ -1,187 +1,82 @@
-/*  Copyright (C) 2006 yopyop
-    yopyop156@ifrance.com
-    yopyop156.ifrance.com
+/*
+	Copyright (C) 2006 yopyop
+	Copyright (C) 2009-2012 DeSmuME team
 
-    This file is part of DeSmuME
+	This file is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 2 of the License, or
+	(at your option) any later version.
 
-    DeSmuME is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+	This file is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    DeSmuME is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DeSmuME; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+	You should have received a copy of the GNU General Public License
+	along with the this software.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "arm_instructions.h"
-#include "thumb_instructions.h"
+#include <algorithm>
+#include <cstdlib>
+#include <cstdio>
+#include <cassert>
+#include "types.h"
+#include "instructions.h"
 #include "cp15.h"
 #include "bios.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include "NDSSystem.h"
+#include "MMU_timing.h"
+#ifdef HAVE_LUA
+#include "lua-engine.h"
+#endif
 
-const unsigned char arm_cond_table[16*16] = {
-    /* N=0, Z=0, C=0, V=0 */
-    0x00,0xFF,0x00,0xFF,0x00,0xFF,0x00,0xFF,
-    0x00,0xFF,0xFF,0x00,0xFF,0x00,0xFF,0x20,
-    /* N=0, Z=0, C=0, V=1 */
-    0x00,0xFF,0x00,0xFF,0x00,0xFF,0xFF,0x00,
-    0x00,0xFF,0x00,0xFF,0x00,0xFF,0xFF,0x20,
-    /* N=0, Z=0, C=1, V=0 */
-    0x00,0xFF,0xFF,0x00,0x00,0xFF,0x00,0xFF,
-    0xFF,0x00,0xFF,0x00,0xFF,0x00,0xFF,0x20,
-    /* N=0, Z=0, C=1, V=1 */
-    0x00,0xFF,0xFF,0x00,0x00,0xFF,0xFF,0x00,
-    0xFF,0x00,0x00,0xFF,0x00,0xFF,0xFF,0x20,
-    /* N=0, Z=1, C=0, V=0 */
-    0xFF,0x00,0x00,0xFF,0x00,0xFF,0x00,0xFF,
-    0x00,0xFF,0xFF,0x00,0x00,0xFF,0xFF,0x20,
-    /* N=0, Z=1, C=0, V=1 */
-    0xFF,0x00,0x00,0xFF,0x00,0xFF,0xFF,0x00,
-    0x00,0xFF,0x00,0xFF,0x00,0xFF,0xFF,0x20,
-    /* N=0, Z=1, C=1, V=0 */
-    0xFF,0x00,0xFF,0x00,0x00,0xFF,0x00,0xFF,
-    0x00,0xFF,0xFF,0x00,0x00,0xFF,0xFF,0x20,
-    /* N=0, Z=1, C=1, V=1 */
-    0xFF,0x00,0xFF,0x00,0x00,0xFF,0xFF,0x00,
-    0x00,0xFF,0x00,0xFF,0x00,0xFF,0xFF,0x20,
-    /* N=1, Z=0, C=0, V=0 */
-    0x00,0xFF,0x00,0xFF,0xFF,0x00,0x00,0xFF,
-    0x00,0xFF,0x00,0xFF,0x00,0xFF,0xFF,0x20,
-    /* N=1, Z=0, C=0, V=1 */
-    0x00,0xFF,0x00,0xFF,0xFF,0x00,0xFF,0x00,
-    0x00,0xFF,0xFF,0x00,0xFF,0x00,0xFF,0x20,
-    /* N=1, Z=0, C=1, V=0 */
-    0x00,0xFF,0xFF,0x00,0xFF,0x00,0x00,0xFF,
-    0xFF,0x00,0x00,0xFF,0x00,0xFF,0xFF,0x20,
-    /* N=1, Z=0, C=1, V=1 */
-    0x00,0xFF,0xFF,0x00,0xFF,0x00,0xFF,0x00,
-    0xFF,0x00,0xFF,0x00,0xFF,0x00,0xFF,0x20,
-    /* N=1, Z=1, C=0, V=0 */
-    0xFF,0x00,0x00,0xFF,0xFF,0x00,0x00,0xFF,
-    0x00,0xFF,0x00,0xFF,0x00,0xFF,0xFF,0x20,
-    /* N=1, Z=1, C=0, V=1 */
-    0xFF,0x00,0x00,0xFF,0xFF,0x00,0xFF,0x00,
-    0x00,0xFF,0xFF,0x00,0x00,0xFF,0xFF,0x20,
-    /* N=1, Z=1, C=1, V=0 */
-    0xFF,0x00,0xFF,0x00,0xFF,0x00,0x00,0xFF,
-    0x00,0xFF,0x00,0xFF,0x00,0xFF,0xFF,0x20,
-    /* N=1, Z=1, C=1, V=1 */
-    0xFF,0x00,0xFF,0x00,0xFF,0x00,0xFF,0x00,
-    0x00,0xFF,0xFF,0x00,0x00,0xFF,0xFF,0x20,
-};
+template<uint32_t> static uint32_t armcpu_prefetch();
+
+static inline uint32_t armcpu_prefetch(armcpu_t *armcpu)
+{
+	if (!armcpu->proc_ID)
+		return armcpu_prefetch<0>();
+	else
+		return armcpu_prefetch<1>();
+}
 
 armcpu_t NDS_ARM7;
 armcpu_t NDS_ARM9;
 
-#define SWAP(a, b, c) do      \
-	              {       \
-                         c=a; \
-                         a=b; \
-                         b=c; \
-		      }       \
-                      while(0)
-
-#ifdef GDB_STUB
-
-#define STALLED_CYCLE_COUNT 10
-
-static void
-stall_cpu( void *instance) {
-  armcpu_t *armcpu = (armcpu_t *)instance;
-
-  armcpu->stalled = 1;
-}
-
-static void
-unstall_cpu( void *instance) {
-  armcpu_t *armcpu = (armcpu_t *)instance;
-
-  armcpu->stalled = 0;
-}
-
-static void
-install_post_exec_fn( void *instance,
-                      void (*ex_fn)( void *, u32 adr, int thumb),
-                      void *fn_data) {
-  armcpu_t *armcpu = (armcpu_t *)instance;
-
-  armcpu->post_ex_fn = ex_fn;
-  armcpu->post_ex_fn_data = fn_data;
-}
-
-static void
-remove_post_exec_fn( void *instance) {
-  armcpu_t *armcpu = (armcpu_t *)instance;
-
-  armcpu->post_ex_fn = nullptr;
-}
-#endif
-
-#ifdef GDB_STUB
-int armcpu_new( armcpu_t *armcpu, u32 id,
-                struct armcpu_memory_iface *mem_if,
-                struct armcpu_ctrl_iface **ctrl_iface_ret)
-#else
-int armcpu_new( armcpu_t *armcpu, u32 id)
-#endif
+int armcpu_new(armcpu_t *armcpu, uint32_t id)
 {
 	armcpu->proc_ID = id;
 
-	if(id==0)
-		armcpu->swi_tab = ARM9_swi_tab;
-	else
-		armcpu->swi_tab = ARM7_swi_tab;
-
-#ifdef GDB_STUB
-	armcpu->mem_if = mem_if;
-
-	/* populate the control interface */
-	armcpu->ctrl_iface.stall = stall_cpu;
-	armcpu->ctrl_iface.unstall = unstall_cpu;
-	armcpu->ctrl_iface.read_reg = read_cpu_reg;
-	armcpu->ctrl_iface.set_reg = set_cpu_reg;
-	armcpu->ctrl_iface.install_post_ex_fn = install_post_exec_fn;
-	armcpu->ctrl_iface.remove_post_ex_fn = remove_post_exec_fn;
-	armcpu->ctrl_iface.data = armcpu;
-
-	*ctrl_iface_ret = &armcpu->ctrl_iface;
-
 	armcpu->stalled = 0;
-	armcpu->post_ex_fn = nullptr;
-#endif
 
 	armcpu_init(armcpu, 0);
 
 	return 0;
 }
 
-void armcpu_init(armcpu_t *armcpu, u32 adr)
+// call this whenever CPSR is changed (other than CNVZQ or T flags); interrupts may need to be unleashed
+void armcpu_t::changeCPSR()
 {
-   u32 i;
+	// but all it does is give them a chance to unleash by forcing an immediate reschedule
+	// TODO - we could actually set CPSR through here and look for a change in the I bit
+	// that would be a little optimization as well as a safety measure if we prevented setting CPSR directly
+	NDS_Reschedule();
+}
 
-	armcpu->LDTBit = (armcpu->proc_ID==0); //Si ARM9 utiliser le syte v5 pour le load
-	armcpu->intVector = 0xFFFF0000 * (armcpu->proc_ID==0);
-	armcpu->waitIRQ = false;
-	armcpu->wirq = false;
-
-#ifdef GDB_STUB
-    armcpu->irq_flag = 0;
+void armcpu_init(armcpu_t *armcpu, uint32_t adr)
+{
+#if defined(_M_X64) || defined(__x86_64__)
+	memcpy(&armcpu->cond_table[0], &arm_cond_table[0], sizeof(arm_cond_table));
 #endif
 
-	if(armcpu->coproc[15]) free(armcpu->coproc[15]);
+	armcpu->LDTBit = !armcpu->proc_ID; // Si ARM9 utiliser le syte v5 pour le load
+	armcpu->intVector = 0xFFFF0000 * !armcpu->proc_ID;
+	armcpu->waitIRQ = false;
+	armcpu->halt_IE_and_IF = false;
+	armcpu->intrWaitARM_state = 0;
 
-   for(i = 0; i < 15; ++i)
-	{
+	for (int i = 0; i < 16; ++i)
 		armcpu->R[i] = 0;
-		armcpu->coproc[i] = nullptr;
-   }
 
 	armcpu->CPSR.val = armcpu->SPSR.val = SYS;
 
@@ -194,294 +89,272 @@ void armcpu_init(armcpu_t *armcpu, u32 adr)
 
 	armcpu->SPSR_svc.val = armcpu->SPSR_abt.val = armcpu->SPSR_und.val = armcpu->SPSR_irq.val = armcpu->SPSR_fiq.val = 0;
 
-#ifdef GDB_STUB
-    armcpu->instruct_adr = adr;
-	armcpu->R[15] = adr + 8;
-#else
-	armcpu->R[15] = adr;
-#endif
-
 	armcpu->next_instruction = adr;
 
-	armcpu->coproc[15] = (armcp_t*)armcp15_new(armcpu);
-
-#ifndef GDB_STUB
 	armcpu_prefetch(armcpu);
-#endif
 }
 
-u32 armcpu_switchMode(armcpu_t *armcpu, u8 mode)
+uint32_t armcpu_switchMode(armcpu_t *armcpu, uint8_t mode)
 {
-        u32 oldmode = armcpu->CPSR.bits.mode;
+	uint32_t oldmode = armcpu->CPSR.bits.mode;
 
-	switch(oldmode)
+	switch (oldmode)
 	{
-		case USR :
-		case SYS :
+		case USR:
+		case SYS:
 			armcpu->R13_usr = armcpu->R[13];
 			armcpu->R14_usr = armcpu->R[14];
 			break;
-
-		case FIQ :
-			{
-                                u32 tmp;
-				SWAP(armcpu->R[8], armcpu->R8_fiq, tmp);
-				SWAP(armcpu->R[9], armcpu->R9_fiq, tmp);
-				SWAP(armcpu->R[10], armcpu->R10_fiq, tmp);
-				SWAP(armcpu->R[11], armcpu->R11_fiq, tmp);
-				SWAP(armcpu->R[12], armcpu->R12_fiq, tmp);
-				armcpu->R13_fiq = armcpu->R[13];
-				armcpu->R14_fiq = armcpu->R[14];
-				armcpu->SPSR_fiq = armcpu->SPSR;
-				break;
-			}
-		case IRQ :
+		case FIQ:
+			std::swap(armcpu->R[8], armcpu->R8_fiq);
+			std::swap(armcpu->R[9], armcpu->R9_fiq);
+			std::swap(armcpu->R[10], armcpu->R10_fiq);
+			std::swap(armcpu->R[11], armcpu->R11_fiq);
+			std::swap(armcpu->R[12], armcpu->R12_fiq);
+			armcpu->R13_fiq = armcpu->R[13];
+			armcpu->R14_fiq = armcpu->R[14];
+			armcpu->SPSR_fiq = armcpu->SPSR;
+			break;
+		case IRQ:
 			armcpu->R13_irq = armcpu->R[13];
 			armcpu->R14_irq = armcpu->R[14];
 			armcpu->SPSR_irq = armcpu->SPSR;
 			break;
-
-		case SVC :
+		case SVC:
 			armcpu->R13_svc = armcpu->R[13];
 			armcpu->R14_svc = armcpu->R[14];
 			armcpu->SPSR_svc = armcpu->SPSR;
 			break;
-
-		case ABT :
+		case ABT:
 			armcpu->R13_abt = armcpu->R[13];
 			armcpu->R14_abt = armcpu->R[14];
 			armcpu->SPSR_abt = armcpu->SPSR;
 			break;
-
-		case UND :
+		case UND:
 			armcpu->R13_und = armcpu->R[13];
 			armcpu->R14_und = armcpu->R[14];
 			armcpu->SPSR_und = armcpu->SPSR;
 			break;
-		default :
+		default:
+			fprintf(stderr, "switchMode: WRONG mode %02X\n",mode);
+	}
+
+	switch (mode)
+	{
+		case USR:
+		case SYS:
+			armcpu->R[13] = armcpu->R13_usr;
+			armcpu->R[14] = armcpu->R14_usr;
+			//SPSR = CPSR;
 			break;
-		}
-
-		switch(mode)
-		{
-			case USR :
-			case SYS :
-				armcpu->R[13] = armcpu->R13_usr;
-				armcpu->R[14] = armcpu->R14_usr;
-				//SPSR = CPSR;
-				break;
-
-			case FIQ :
-				{
-                                        u32 tmp;
-					SWAP(armcpu->R[8], armcpu->R8_fiq, tmp);
-					SWAP(armcpu->R[9], armcpu->R9_fiq, tmp);
-					SWAP(armcpu->R[10], armcpu->R10_fiq, tmp);
-					SWAP(armcpu->R[11], armcpu->R11_fiq, tmp);
-					SWAP(armcpu->R[12], armcpu->R12_fiq, tmp);
-					armcpu->R[13] = armcpu->R13_fiq;
-					armcpu->R[14] = armcpu->R14_fiq;
-					armcpu->SPSR = armcpu->SPSR_fiq;
-					break;
-				}
-
-			case IRQ :
-				armcpu->R[13] = armcpu->R13_irq;
-				armcpu->R[14] = armcpu->R14_irq;
-				armcpu->SPSR = armcpu->SPSR_irq;
-				break;
-
-			case SVC :
-				armcpu->R[13] = armcpu->R13_svc;
-				armcpu->R[14] = armcpu->R14_svc;
-				armcpu->SPSR = armcpu->SPSR_svc;
-				break;
-
-			case ABT :
-				armcpu->R[13] = armcpu->R13_abt;
-				armcpu->R[14] = armcpu->R14_abt;
-				armcpu->SPSR = armcpu->SPSR_abt;
-				break;
-
-          case UND :
-				armcpu->R[13] = armcpu->R13_und;
-				armcpu->R[14] = armcpu->R14_und;
-				armcpu->SPSR = armcpu->SPSR_und;
-				break;
-
-				default :
-					break;
+		case FIQ:
+			std::swap(armcpu->R[8], armcpu->R8_fiq);
+			std::swap(armcpu->R[9], armcpu->R9_fiq);
+			std::swap(armcpu->R[10], armcpu->R10_fiq);
+			std::swap(armcpu->R[11], armcpu->R11_fiq);
+			std::swap(armcpu->R[12], armcpu->R12_fiq);
+			armcpu->R[13] = armcpu->R13_fiq;
+			armcpu->R[14] = armcpu->R14_fiq;
+			armcpu->SPSR = armcpu->SPSR_fiq;
+			break;
+		case IRQ:
+			armcpu->R[13] = armcpu->R13_irq;
+			armcpu->R[14] = armcpu->R14_irq;
+			armcpu->SPSR = armcpu->SPSR_irq;
+			break;
+		case SVC:
+			armcpu->R[13] = armcpu->R13_svc;
+			armcpu->R[14] = armcpu->R14_svc;
+			armcpu->SPSR = armcpu->SPSR_svc;
+			break;
+		case ABT:
+			armcpu->R[13] = armcpu->R13_abt;
+			armcpu->R[14] = armcpu->R14_abt;
+			armcpu->SPSR = armcpu->SPSR_abt;
+			break;
+		case UND:
+			armcpu->R[13] = armcpu->R13_und;
+			armcpu->R[14] = armcpu->R14_und;
+			armcpu->SPSR = armcpu->SPSR_und;
+			break;
+		default:
+			break;
 	}
 
 	armcpu->CPSR.bits.mode = mode & 0x1F;
+	armcpu->changeCPSR();
 	return oldmode;
 }
 
-u32 armcpu_prefetch(armcpu_t *armcpu)
+uint32_t armcpu_Wait4IRQ(armcpu_t *cpu)
 {
-#ifdef GDB_STUB
-	u32 temp_instruction;
-#endif
-
-	if(armcpu->CPSR.bits.T == 0)
-	{
-#ifdef GDB_STUB
-		temp_instruction =
-			armcpu->mem_if->prefetch32( armcpu->mem_if->data,
-			armcpu->next_instruction);
-
-		if ( !armcpu->stalled) {
-			armcpu->instruction = temp_instruction;
-			armcpu->instruct_adr = armcpu->next_instruction;
-			armcpu->next_instruction += 4;
-			armcpu->R[15] = armcpu->next_instruction + 4;
-		}
-#else
-		armcpu->instruction = MMU_read32_acl(armcpu->proc_ID, armcpu->next_instruction,CP15_ACCESS_EXECUTE);
-
-		armcpu->instruct_adr = armcpu->next_instruction;
-		armcpu->next_instruction += 4;
-		armcpu->R[15] = armcpu->next_instruction + 4;
-#endif
-
-        return MMU.MMU_WAIT32[armcpu->proc_ID][(armcpu->instruct_adr>>24)&0xF];
-	}
-
-#ifdef GDB_STUB
-	temp_instruction =
-          armcpu->mem_if->prefetch16( armcpu->mem_if->data,
-                                      armcpu->next_instruction);
-
-	if ( !armcpu->stalled) {
-		armcpu->instruction = temp_instruction;
-		armcpu->instruct_adr = armcpu->next_instruction;
-		armcpu->next_instruction = armcpu->next_instruction + 2;
-		armcpu->R[15] = armcpu->next_instruction + 2;
-	}
-#else
-	armcpu->instruction = MMU_read16_acl(armcpu->proc_ID, armcpu->next_instruction,CP15_ACCESS_EXECUTE);
-
-	armcpu->instruct_adr = armcpu->next_instruction;
-	armcpu->next_instruction += 2;
-	armcpu->R[15] = armcpu->next_instruction + 2;
-#endif
-
-	return MMU.MMU_WAIT16[armcpu->proc_ID][(armcpu->instruct_adr>>24)&0xF];
+	cpu->waitIRQ = true;
+	cpu->halt_IE_and_IF = true;
+	return 1;
 }
 
-
-BOOL armcpu_irqExeption(armcpu_t *armcpu)
+template<uint32_t PROCNUM> static inline uint32_t armcpu_prefetch()
 {
-    Status_Reg tmp;
+	armcpu_t *const armcpu = &ARMPROC;
+	uint32_t curInstruction = armcpu->next_instruction;
 
-	if(armcpu->CPSR.bits.I) return false;
+	if (!armcpu->CPSR.bits.T)
+	{
+		curInstruction &= 0xFFFFFFFC; // please don't change this to 0x0FFFFFFC -- the NDS will happily run on 0xF******* addresses all day long
+		// please note that we must setup R[15] before reading the instruction since there is a protection
+		// which prevents PC > 0x3FFF from reading the bios region
+		armcpu->instruct_adr = curInstruction;
+		armcpu->next_instruction = curInstruction + 4;
+		armcpu->R[15] = curInstruction + 8;
+		armcpu->instruction = _MMU_read32<PROCNUM, MMU_AT_CODE>(curInstruction);
 
-#ifdef GDB_STUB
-	armcpu->irq_flag = 0;
-#endif
+		return MMU_codeFetchCycles<PROCNUM, 32>(curInstruction);
+	}
+	curInstruction &= 0xFFFFFFFE; // please don't change this to 0x0FFFFFFE -- the NDS will happily run on 0xF******* addresses all day long
+	// please note that we must setup R[15] before reading the instruction since there is a protection
+	// which prevents PC > 0x3FFF from reading the bios region
+	armcpu->instruct_adr = curInstruction;
+	armcpu->next_instruction = curInstruction + 2;
+	armcpu->R[15] = curInstruction + 4;
+	armcpu->instruction = _MMU_read16<PROCNUM, MMU_AT_CODE>(curInstruction);
+
+	if (!PROCNUM)
+	{
+		// arm9 fetches 2 instructions at a time in thumb mode
+		if (!(curInstruction == armcpu->instruct_adr + 2 && (curInstruction & 2)))
+			return MMU_codeFetchCycles<PROCNUM, 32>(curInstruction);
+		else
+			return 0;
+	}
+
+	return MMU_codeFetchCycles<PROCNUM, 16>(curInstruction);
+}
+
+// TODO - merge with armcpu_irqException?
+// http://www.ethernut.de/en/documents/arm-exceptions.html
+// http://docs.google.com/viewer?a=v&q=cache:V4ht1YkxprMJ:www.cs.nctu.edu.tw/~wjtsai/EmbeddedSystemDesign/Ch3-1.pdf+arm+exception+handling&hl=en&gl=us&pid=bl&srcid=ADGEEShx9VTHbUhWdDOrTVRzLkcCsVfJiijncNDkkgkrlJkLa7D0LCpO8fQ_hhU3DTcgZh9rcZWWQq4TYhhCovJ625h41M0ZUX3WGasyzWQFxYzDCB-VS6bsUmpoJnRxAc-bdkD0qmsu&sig=AHIEtbR9VHvDOCRmZFQDUVwy53iJDjoSPQ
+void armcpu_exception(armcpu_t *cpu, uint32_t number)
+{
+	Mode cpumode = USR;
+	switch (number)
+	{
+		case EXCEPTION_RESET:
+			cpumode = SVC;
+			break;
+		case EXCEPTION_UNDEFINED_INSTRUCTION:
+			cpumode = UND;
+			break;
+		case EXCEPTION_SWI:
+			cpumode = SVC;
+			break;
+		case EXCEPTION_PREFETCH_ABORT:
+			cpumode = ABT;
+			break;
+		case EXCEPTION_DATA_ABORT:
+			cpumode = ABT;
+			break;
+		case EXCEPTION_RESERVED_0x14:
+			execute = false;
+			break;
+		case EXCEPTION_IRQ:
+			cpumode = IRQ;
+			break;
+		case EXCEPTION_FAST_IRQ:
+			cpumode = FIQ;
+	}
+
+	Status_Reg tmp = cpu->CPSR;
+	armcpu_switchMode(cpu, cpumode); // enter new mode
+	cpu->R[14] = cpu->next_instruction;
+	cpu->SPSR = tmp; // save old CPSR as new SPSR
+	cpu->CPSR.bits.T = 0; // handle as ARM32 code
+	cpu->CPSR.bits.I = 1;
+	cpu->changeCPSR();
+	cpu->R[15] = cpu->intVector + number;
+	cpu->next_instruction = cpu->R[15];
+	fprintf(stderr, "armcpu_exception!\n");
+
+	// HOW DOES THIS WORTK WITHOUT A PREFETCH, LIKE IRQ BELOW?
+	// I REALLY WISH WE DIDNT PREFETCH BEFORE EXECUTING
+}
+
+bool armcpu_irqException(armcpu_t *armcpu)
+{
+	Status_Reg tmp;
 
 	tmp = armcpu->CPSR;
 	armcpu_switchMode(armcpu, IRQ);
 
-#ifdef GDB_STUB
-	armcpu->R[14] = armcpu->next_instruction + 4;
-#else
 	armcpu->R[14] = armcpu->instruct_adr + 4;
-#endif
 	armcpu->SPSR = tmp;
 	armcpu->CPSR.bits.T = 0;
 	armcpu->CPSR.bits.I = 1;
 	armcpu->next_instruction = armcpu->intVector + 0x18;
 	armcpu->waitIRQ = 0;
 
-#ifndef GDB_STUB
-	armcpu->R[15] = armcpu->next_instruction + 8;
+	// must retain invariant of having next instruction to be executed prefetched
+	// (yucky)
 	armcpu_prefetch(armcpu);
-#endif
 
 	return true;
 }
-/*
-static BOOL armcpu_prefetchExeption(armcpu_t *armcpu)
+
+uint32_t TRAPUNDEF(armcpu_t *cpu)
 {
-        Status_Reg tmp;
-	if(armcpu->CPSR.bits.I) return false;
-        tmp = armcpu->CPSR;
-	armcpu_switchMode(armcpu, ABT);
-	armcpu->R[14] = armcpu->next_instruction + 4;
-	armcpu->SPSR = tmp;
-	armcpu->CPSR.bits.T = 0;
-	armcpu->CPSR.bits.I = 1;
-	armcpu->next_instruction = armcpu->intVector + 0xC;
-	armcpu->R[15] = armcpu->next_instruction + 8;
-	armcpu->waitIRQ = 0;
-	return true;
-}
-*/
-
-BOOL
-armcpu_flagIrq( armcpu_t *armcpu) {
-  if(armcpu->CPSR.bits.I) return false;
-
-  armcpu->waitIRQ = 0;
-
-#ifdef GDB_STUB
-  armcpu->irq_flag = 1;
-#endif
-
-  return true;
-}
-
-
-u32 armcpu_exec(armcpu_t *armcpu)
-{
-        u32 c = 1;
-
-#ifdef GDB_STUB
-        if ( armcpu->stalled)
-          return STALLED_CYCLE_COUNT;
-
-        /* check for interrupts */
-        if ( armcpu->irq_flag) {
-          armcpu_irqExeption( armcpu);
-        }
-
-        c = armcpu_prefetch(armcpu);
-
-        if ( armcpu->stalled) {
-          return c;
-        }
-#endif
-
-	if(armcpu->CPSR.bits.T == 0)
+	if (!!cpu->intVector ^ (cpu->proc_ID == ARMCPU_ARM9))
 	{
-/*        if((TEST_COND(CONDITION(armcpu->instruction), armcpu->CPSR)) || ((CONDITION(armcpu->instruction)==0xF)&&(CODE(armcpu->instruction)==0x5)))*/
-        if((TEST_COND(CONDITION(armcpu->instruction), CODE(armcpu->instruction), armcpu->CPSR)))
+		armcpu_exception(&NDS_ARM9, EXCEPTION_UNDEFINED_INSTRUCTION);
+		return 4;
+	}
+	else
+	{
+		execute = false;
+		return 4;
+	}
+}
+
+template<int PROCNUM> uint32_t armcpu_exec()
+{
+	// Usually, fetching and executing are processed parallelly.
+	// So this function stores the cycles of each process to
+	// the variables below, and returns appropriate cycle count.
+	uint32_t cFetch = 0;
+	uint32_t cExecute = 0;
+
+	// this assert is annoying. but sometimes it is handy.
+	//assert(ARMPROC.instruct_adr!=0x00000000);
+
+	//cFetch = armcpu_prefetch(&ARMPROC);
+
+	//fprintf(stderr, "%d: %08X\n",PROCNUM,ARMPROC.instruct_adr);
+
+	if (!ARMPROC.CPSR.bits.T)
+	{
+		if (
+			CONDITION(ARMPROC.instruction) == 0x0E  // fast path for unconditional instructions
+			|| (TEST_COND(CONDITION(ARMPROC.instruction), CODE(ARMPROC.instruction), ARMPROC.CPSR)) // handles any condition
+		)
 		{
-			c += arm_instructions_set[INSTRUCTION_INDEX(armcpu->instruction)](armcpu);
-		}
-#ifdef GDB_STUB
-        if ( armcpu->post_ex_fn != nullptr) {
-            /* call the external post execute function */
-            armcpu->post_ex_fn( armcpu->post_ex_fn_data,
-                                armcpu->instruct_adr, 0);
-        }
-#else
-		c += armcpu_prefetch(armcpu);
+#ifdef HAVE_LUA
+			CallRegisteredLuaMemHook(ARMPROC.instruct_adr, 4, ARMPROC.instruction, LUAMEMHOOK_EXEC); // should report even if condition=false?
 #endif
-		return c;
+			cExecute = arm_instructions_set[PROCNUM][INSTRUCTION_INDEX(ARMPROC.instruction)](ARMPROC.instruction);
+		}
+		else
+			cExecute = 1; // If condition=false: 1S cycle
+		cFetch = armcpu_prefetch<PROCNUM>();
+		return MMU_fetchExecuteCycles<PROCNUM>(cExecute, cFetch);
 	}
 
-	c += thumb_instructions_set[armcpu->instruction>>6](armcpu);
-
-#ifdef GDB_STUB
-    if ( armcpu->post_ex_fn != nullptr) {
-        /* call the external post execute function */
-        armcpu->post_ex_fn( armcpu->post_ex_fn_data, armcpu->instruct_adr, 1);
-    }
-#else
-	c += armcpu_prefetch(armcpu);
+#ifdef HAVE_LUA
+	CallRegisteredLuaMemHook(ARMPROC.instruct_adr, 2, ARMPROC.instruction, LUAMEMHOOK_EXEC);
 #endif
-	return c;
+	cExecute = thumb_instructions_set[PROCNUM][ARMPROC.instruction>>6](ARMPROC.instruction);
+
+	cFetch = armcpu_prefetch<PROCNUM>();
+	return MMU_fetchExecuteCycles<PROCNUM>(cExecute, cFetch);
 }
 
+// these templates needed to be instantiated manually
+template uint32_t armcpu_exec<0>();
+template uint32_t armcpu_exec<1>();
