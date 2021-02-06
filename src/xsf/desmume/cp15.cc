@@ -1,90 +1,91 @@
-/*  Copyright (C) 2006 yopyop
-    yopyop156@ifrance.com
-    yopyop156.ifrance.com
+/*
+	Copyright (C) 2006 yopyop
+	Copyright (C) 2006-2011 DeSmuME team
 
-    This file is part of DeSmuME
+	This file is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 2 of the License, or
+	(at your option) any later version.
 
-    DeSmuME is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+	This file is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    DeSmuME is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with DeSmuME; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+	You should have received a copy of the GNU General Public License
+	along with the this software.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdlib.h>
-
+#include <cstdlib>
 #include "cp15.h"
-#include "debug.h"
 #include "MMU.h"
 
-armcp15_t *armcp15_new(armcpu_t * c)
+armcp15_t cp15;
+
+bool armcp15_t::reset(armcpu_t *c)
 {
-	int i;
-	armcp15_t *armcp15 = (armcp15_t*)malloc(sizeof(armcp15_t));
-	if(!armcp15) return nullptr;
+	//fprintf(stderr, "CP15 Reset\n");
+	this->cpu = c;
+	this->IDCode = 0x41059461;
+	this->cacheType = 0x0F0D2112;
+	this->TCMSize = 0x00140180;
+	this->ctrl = 0x00012078;
+	this->DCConfig = 0x0;
+	this->ICConfig = 0x0;
+	this->writeBuffCtrl = 0x0;
+	this->und = 0x0;
+	this->DaccessPerm = 0x22222222;
+	this->IaccessPerm = 0x22222222;
+	this->protectBaseSize0 = 0x0;
+	this->protectBaseSize1 = 0x0;
+	this->protectBaseSize2 = 0x0;
+	this->protectBaseSize3 = 0x0;
+	this->protectBaseSize4 = 0x0;
+	this->protectBaseSize5 = 0x0;
+	this->protectBaseSize6 = 0x0;
+	this->protectBaseSize7 = 0x0;
+	this->cacheOp = 0x0;
+	this->DcacheLock = 0x0;
+	this->IcacheLock = 0x0;
+	this->ITCMRegion = 0x0C;
+	this->DTCMRegion = 0x0080000A;
+	this->processID = 0;
 
-	armcp15->cpu = c;
-	armcp15->IDCode = 0x41049460;
-	armcp15->cacheType = 0x0F0D2112;
-	armcp15->TCMSize = 0x00140140;
-	armcp15->ctrl = 0x00000000;
-	armcp15->DCConfig = 0x0;
-	armcp15->ICConfig = 0x0;
-	armcp15->writeBuffCtrl = 0x0;
-	armcp15->und = 0x0;
-	armcp15->DaccessPerm = 0x22222222;
-	armcp15->IaccessPerm = 0x22222222;
-	armcp15->protectBaseSize0 = 0x0;
-	armcp15->protectBaseSize1 = 0x0;
-	armcp15->protectBaseSize2 = 0x0;
-	armcp15->protectBaseSize3 = 0x0;
-	armcp15->protectBaseSize4 = 0x0;
-	armcp15->protectBaseSize5 = 0x0;
-	armcp15->protectBaseSize6 = 0x0;
-	armcp15->protectBaseSize7 = 0x0;
-	armcp15->cacheOp = 0x0;
-	armcp15->DcacheLock = 0x0;
-	armcp15->IcacheLock = 0x0;
-	armcp15->ITCMRegion = 0x0C;
-	armcp15->DTCMRegion = 0x0080000A;
-	armcp15->processID = 0;
+	MMU.ARM9_RW_MODE = BIT7(this->ctrl);
+	this->cpu->intVector = 0xFFFF0000 * BIT13(this->ctrl);
+	this->cpu->LDTBit = !BIT15(this->ctrl); // TBit
 
-    /* preset calculated regionmasks */
-	for (i=0;i<8;i++) {
-        armcp15->regionWriteMask_USR[i] = 0 ;
-        armcp15->regionWriteMask_SYS[i] = 0 ;
-        armcp15->regionReadMask_USR[i] = 0 ;
-        armcp15->regionReadMask_SYS[i] = 0 ;
-        armcp15->regionExecuteMask_USR[i] = 0 ;
-        armcp15->regionExecuteMask_SYS[i] = 0 ;
-        armcp15->regionWriteSet_USR[i] = 0 ;
-        armcp15->regionWriteSet_SYS[i] = 0 ;
-        armcp15->regionReadSet_USR[i] = 0 ;
-        armcp15->regionReadSet_SYS[i] = 0 ;
-        armcp15->regionExecuteSet_USR[i] = 0 ;
-        armcp15->regionExecuteSet_SYS[i] = 0 ;
-    } ;
+	/* preset calculated regionmasks */
+	for (uint8_t i = 0; i < 8; ++i)
+	{
+		this->regionWriteMask_USR[i] = 0;
+		this->regionWriteMask_SYS[i] = 0;
+		this->regionReadMask_USR[i] = 0;
+		this->regionReadMask_SYS[i] = 0;
+		this->regionExecuteMask_USR[i] = 0;
+		this->regionExecuteMask_SYS[i] = 0;
+		this->regionWriteSet_USR[i] = 0;
+		this->regionWriteSet_SYS[i] = 0;
+		this->regionReadSet_USR[i] = 0;
+		this->regionReadSet_SYS[i] = 0;
+		this->regionExecuteSet_USR[i] = 0;
+		this->regionExecuteSet_SYS[i] = 0;
+	}
 
-	return armcp15;
+	return true;
 }
 
-#define ACCESSTYPE(val,n)   (((val) >> (4*n)) & 0x0F)
-#define SIZEIDENTIFIER(val) ((((val) >> 1) & 0x1F))
-#define SIZEBINARY(val)     (1 << (SIZEIDENTIFIER(val)+1))
-#define MASKFROMREG(val)    (~((SIZEBINARY(val)-1) | 0x3F))
-#define SETFROMREG(val)     ((val) & MASKFROMREG(val))
+static inline uint32_t ACCESSTYPE(uint32_t val, unsigned char n) { return (val >> (4 * n)) & 0x0F; }
+static inline uint32_t SIZEIDENTIFIER(uint32_t val) { return (val >> 1) & 0x1F; }
+static inline uint32_t SIZEBINARY(uint32_t val) { return 1 << (SIZEIDENTIFIER(val) + 1); }
+static inline uint32_t MASKFROMREG(uint32_t val) { return ~((SIZEBINARY(val) - 1) | 0x3F); }
+static inline uint32_t SETFROMREG(uint32_t val) { return val & MASKFROMREG(val); }
 /* sets the precalculated regions to mask,set for the affected accesstypes */
-void armcp15_setSingleRegionAccess(armcp15_t *armcp15,unsigned long dAccess,unsigned long iAccess,unsigned char num, unsigned long mask,unsigned long set) {
+void armcp15_t::setSingleRegionAccess(uint32_t dAccess, uint32_t iAccess, unsigned char num, uint32_t mask, uint32_t set)
+{
 
-	switch (ACCESSTYPE(dAccess,num)) {
+	switch (ACCESSTYPE(dAccess, num))
+	{
 		case 4: /* UNP */
 		case 7: /* UNP */
 		case 8: /* UNP */
@@ -96,67 +97,67 @@ void armcp15_setSingleRegionAccess(armcp15_t *armcp15,unsigned long dAccess,unsi
 		case 14: /* UNP */
 		case 15: /* UNP */
 		case 0: /* no access at all */
-			armcp15->regionWriteMask_USR[num] = 0 ;
-			armcp15->regionWriteSet_USR[num] = 0xFFFFFFFF ;
-			armcp15->regionReadMask_USR[num] = 0 ;
-			armcp15->regionReadSet_USR[num] = 0xFFFFFFFF ;
-			armcp15->regionWriteMask_SYS[num] = 0 ;
-			armcp15->regionWriteSet_SYS[num] = 0xFFFFFFFF ;
-			armcp15->regionReadMask_SYS[num] = 0 ;
-			armcp15->regionReadSet_SYS[num] = 0xFFFFFFFF ;
-			break ;
+			this->regionWriteMask_USR[num] = 0;
+			this->regionWriteSet_USR[num] = 0xFFFFFFFF;
+			this->regionReadMask_USR[num] = 0;
+			this->regionReadSet_USR[num] = 0xFFFFFFFF;
+			this->regionWriteMask_SYS[num] = 0;
+			this->regionWriteSet_SYS[num] = 0xFFFFFFFF;
+			this->regionReadMask_SYS[num] = 0;
+			this->regionReadSet_SYS[num] = 0xFFFFFFFF;
+			break;
 		case 1: /* no access at USR, all to sys */
-			armcp15->regionWriteMask_USR[num] = 0 ;
-			armcp15->regionWriteSet_USR[num] = 0xFFFFFFFF ;
-			armcp15->regionReadMask_USR[num] = 0 ;
-			armcp15->regionReadSet_USR[num] = 0xFFFFFFFF ;
-			armcp15->regionWriteMask_SYS[num] = mask ;
-			armcp15->regionWriteSet_SYS[num] = set ;
-			armcp15->regionReadMask_SYS[num] = mask ;
-			armcp15->regionReadSet_SYS[num] = set ;
-			break ;
+			this->regionWriteMask_USR[num] = 0;
+			this->regionWriteSet_USR[num] = 0xFFFFFFFF;
+			this->regionReadMask_USR[num] = 0;
+			this->regionReadSet_USR[num] = 0xFFFFFFFF;
+			this->regionWriteMask_SYS[num] = mask;
+			this->regionWriteSet_SYS[num] = set;
+			this->regionReadMask_SYS[num] = mask;
+			this->regionReadSet_SYS[num] = set;
+			break;
 		case 2: /* read at USR, all to sys */
-			armcp15->regionWriteMask_USR[num] = 0 ;
-			armcp15->regionWriteSet_USR[num] = 0xFFFFFFFF ;
-			armcp15->regionReadMask_USR[num] = mask ;
-			armcp15->regionReadSet_USR[num] = set ;
-			armcp15->regionWriteMask_SYS[num] = mask ;
-			armcp15->regionWriteSet_SYS[num] = set ;
-			armcp15->regionReadMask_SYS[num] = mask ;
-			armcp15->regionReadSet_SYS[num] = set ;
-			break ;
+			this->regionWriteMask_USR[num] = 0;
+			this->regionWriteSet_USR[num] = 0xFFFFFFFF;
+			this->regionReadMask_USR[num] = mask;
+			this->regionReadSet_USR[num] = set;
+			this->regionWriteMask_SYS[num] = mask;
+			this->regionWriteSet_SYS[num] = set;
+			this->regionReadMask_SYS[num] = mask;
+			this->regionReadSet_SYS[num] = set;
+			break;
 		case 3: /* all to USR, all to sys */
-			armcp15->regionWriteMask_USR[num] = mask ;
-			armcp15->regionWriteSet_USR[num] = set ;
-			armcp15->regionReadMask_USR[num] = mask ;
-			armcp15->regionReadSet_USR[num] = set ;
-			armcp15->regionWriteMask_SYS[num] = mask ;
-			armcp15->regionWriteSet_SYS[num] = set ;
-			armcp15->regionReadMask_SYS[num] = mask ;
-			armcp15->regionReadSet_SYS[num] = set ;
-			break ;
+			this->regionWriteMask_USR[num] = mask;
+			this->regionWriteSet_USR[num] = set;
+			this->regionReadMask_USR[num] = mask;
+			this->regionReadSet_USR[num] = set;
+			this->regionWriteMask_SYS[num] = mask;
+			this->regionWriteSet_SYS[num] = set;
+			this->regionReadMask_SYS[num] = mask;
+			this->regionReadSet_SYS[num] = set;
+			break;
 		case 5: /* no access at USR, read to sys */
-			armcp15->regionWriteMask_USR[num] = 0 ;
-			armcp15->regionWriteSet_USR[num] = 0xFFFFFFFF ;
-			armcp15->regionReadMask_USR[num] = 0 ;
-			armcp15->regionReadSet_USR[num] = 0xFFFFFFFF ;
-			armcp15->regionWriteMask_SYS[num] = 0 ;
-			armcp15->regionWriteSet_SYS[num] = 0xFFFFFFFF ;
-			armcp15->regionReadMask_SYS[num] = mask ;
-			armcp15->regionReadSet_SYS[num] = set ;
-			break ;
+			this->regionWriteMask_USR[num] = 0;
+			this->regionWriteSet_USR[num] = 0xFFFFFFFF;
+			this->regionReadMask_USR[num] = 0;
+			this->regionReadSet_USR[num] = 0xFFFFFFFF;
+			this->regionWriteMask_SYS[num] = 0;
+			this->regionWriteSet_SYS[num] = 0xFFFFFFFF;
+			this->regionReadMask_SYS[num] = mask;
+			this->regionReadSet_SYS[num] = set;
+			break;
 		case 6: /* read at USR, read to sys */
-			armcp15->regionWriteMask_USR[num] = 0 ;
-			armcp15->regionWriteSet_USR[num] = 0xFFFFFFFF ;
-			armcp15->regionReadMask_USR[num] = mask ;
-			armcp15->regionReadSet_USR[num] = set ;
-			armcp15->regionWriteMask_SYS[num] = 0 ;
-			armcp15->regionWriteSet_SYS[num] = 0xFFFFFFFF ;
-			armcp15->regionReadMask_SYS[num] = mask ;
-			armcp15->regionReadSet_SYS[num] = set ;
-			break ;
+			this->regionWriteMask_USR[num] = 0;
+			this->regionWriteSet_USR[num] = 0xFFFFFFFF;
+			this->regionReadMask_USR[num] = mask;
+			this->regionReadSet_USR[num] = set;
+			this->regionWriteMask_SYS[num] = 0;
+			this->regionWriteSet_SYS[num] = 0xFFFFFFFF;
+			this->regionReadMask_SYS[num] = mask;
+			this->regionReadSet_SYS[num] = set;
 	}
-	switch (ACCESSTYPE(iAccess,num)) {
+	switch (ACCESSTYPE(iAccess, num))
+	{
 		case 4: /* UNP */
 		case 7: /* UNP */
 		case 8: /* UNP */
@@ -168,423 +169,386 @@ void armcp15_setSingleRegionAccess(armcp15_t *armcp15,unsigned long dAccess,unsi
 		case 14: /* UNP */
 		case 15: /* UNP */
 		case 0: /* no access at all */
-			armcp15->regionExecuteMask_USR[num] = 0 ;
-			armcp15->regionExecuteSet_USR[num] = 0xFFFFFFFF ;
-			armcp15->regionExecuteMask_SYS[num] = 0 ;
-			armcp15->regionExecuteSet_SYS[num] = 0xFFFFFFFF ;
-			break ;
+			this->regionExecuteMask_USR[num] = 0;
+			this->regionExecuteSet_USR[num] = 0xFFFFFFFF;
+			this->regionExecuteMask_SYS[num] = 0;
+			this->regionExecuteSet_SYS[num] = 0xFFFFFFFF;
+			break;
 		case 1:
-			armcp15->regionExecuteMask_USR[num] = 0 ;
-			armcp15->regionExecuteSet_USR[num] = 0xFFFFFFFF ;
-			armcp15->regionExecuteMask_SYS[num] = mask ;
-			armcp15->regionExecuteSet_SYS[num] = set ;
-			break ;
+			this->regionExecuteMask_USR[num] = 0;
+			this->regionExecuteSet_USR[num] = 0xFFFFFFFF;
+			this->regionExecuteMask_SYS[num] = mask;
+			this->regionExecuteSet_SYS[num] = set;
+			break;
 		case 2:
 		case 3:
 		case 6:
-			armcp15->regionExecuteMask_USR[num] = mask ;
-			armcp15->regionExecuteSet_USR[num] = set ;
-			armcp15->regionExecuteMask_SYS[num] = mask ;
-			armcp15->regionExecuteSet_SYS[num] = set ;
-			break ;
+			this->regionExecuteMask_USR[num] = mask;
+			this->regionExecuteSet_USR[num] = set;
+			this->regionExecuteMask_SYS[num] = mask;
+			this->regionExecuteSet_SYS[num] = set;
 	}
 }
 
 /* precalculate region masks/sets from cp15 register */
-void armcp15_maskPrecalc(armcp15_t *armcp15)
+void armcp15_t::maskPrecalc()
 {
-	#define precalc(num) {  \
-	u32 mask = 0, set = 0xFFFFFFFF ; /* (x & 0) == 0xFF..FF is allways false (disabled) */  \
-	if (BIT_N(armcp15->protectBaseSize##num,0)) /* if region is enabled */ \
-	{    /* reason for this define: naming includes var */  \
-		mask = MASKFROMREG(armcp15->protectBaseSize##num) ;   \
-		set = SETFROMREG(armcp15->protectBaseSize##num) ; \
-		if (SIZEIDENTIFIER(armcp15->protectBaseSize##num)==0x1F)  \
-		{   /* for the 4GB region, u32 suffers wraparound */   \
-		mask = 0 ; set = 0 ;   /* (x & 0) == 0  is allways true (enabled) */  \
+#define precalc(num) \
+{ \
+	uint32_t mask = 0, set = 0xFFFFFFFF; /* (x & 0) == 0xFF..FF is allways false (disabled) */ \
+	if (BIT_N(this->protectBaseSize##num, 0)) /* if region is enabled */ \
+	{ \
+		/* reason for this define: naming includes var */ \
+		mask = MASKFROMREG(this->protectBaseSize##num); \
+		set = SETFROMREG(this->protectBaseSize##num); \
+		if (SIZEIDENTIFIER(this->protectBaseSize##num) == 0x1F) \
+		{ \
+			/* for the 4GB region, u32 suffers wraparound */ \
+			mask = 0; \
+			set = 0; /* (x & 0) == 0  is allways true (enabled) */ \
 		} \
-	}  \
-		armcp15_setSingleRegionAccess(armcp15,armcp15->DaccessPerm,armcp15->IaccessPerm,num,mask,set) ;  \
-	}
-	precalc(0) ;
-	precalc(1) ;
-	precalc(2) ;
-	precalc(3) ;
-	precalc(4) ;
-	precalc(5) ;
-	precalc(6) ;
-	precalc(7) ;
+	} \
+	this->setSingleRegionAccess(this->DaccessPerm, this->IaccessPerm, num, mask, set); \
+}
+	precalc(0);
+	precalc(1);
+	precalc(2);
+	precalc(3);
+	precalc(4);
+	precalc(5);
+	precalc(6);
+	precalc(7);
+#undef precalc
 }
 
-INLINE BOOL armcp15_isAccessAllowed(armcp15_t *armcp15,u32 address,u32 access)
+bool armcp15_t::moveCP2ARM(uint32_t *R, uint8_t CRn, uint8_t CRm, uint8_t opcode1, uint8_t opcode2)
 {
-	int i ;
-	if (!(armcp15->ctrl & 1)) return true ;        /* protection checking is not enabled */
-	for (i=0;i<8;i++) {
-		switch (access) {
-		case CP15_ACCESS_WRITEUSR:
-			if ((address & armcp15->regionWriteMask_USR[i]) == armcp15->regionWriteSet_USR[i]) return true ;
-			break ;
-		case CP15_ACCESS_WRITESYS:
-			if ((address & armcp15->regionWriteMask_SYS[i]) == armcp15->regionWriteSet_SYS[i]) return true ;
-			break ;
-		case CP15_ACCESS_READUSR:
-			if ((address & armcp15->regionReadMask_USR[i]) == armcp15->regionReadSet_USR[i]) return true ;
-			break ;
-		case CP15_ACCESS_READSYS:
-			if ((address & armcp15->regionReadMask_SYS[i]) == armcp15->regionReadSet_SYS[i]) return true ;
-			break ;
-		case CP15_ACCESS_EXECUSR:
-			if ((address & armcp15->regionExecuteMask_USR[i]) == armcp15->regionExecuteSet_USR[i]) return true ;
-			break ;
-		case CP15_ACCESS_EXECSYS:
-			if ((address & armcp15->regionExecuteMask_SYS[i]) == armcp15->regionExecuteSet_SYS[i]) return true ;
-			break ;
-		}
-	}
-	/* when protections are enabled, but no region allows access, deny access */
-	return false ;
-}
-
-BOOL armcp15_dataProcess(armcp15_t *armcp15, u8 CRd, u8 CRn, u8 CRm, u8 opcode1, u8 opcode2)
-{
-   return false;
-}
-
-BOOL armcp15_load(armcp15_t *armcp15, u8 CRd, u8 adr)
-{
-   return false;
-}
-
-BOOL armcp15_store(armcp15_t *armcp15, u8 CRd, u8 adr)
-{
-   return false;
-}
-
-BOOL armcp15_moveCP2ARM(armcp15_t *armcp15, u32 * R, u8 CRn, u8 CRm, u8 opcode1, u8 opcode2)
-{
-	if(armcp15->cpu->CPSR.bits.mode == USR) return false;
-
-	switch(CRn)
+	if (!this->cpu)
 	{
-		case 0 :
-			if((opcode1 == 0)&&(CRm==0))
-			{
-			switch(opcode2)
-			{
-				case 1 :
-					*R = armcp15->cacheType;
-					return true;
-				case 2 :
-					*R = armcp15->TCMSize;
-					return true;
-				default :
-					*R = armcp15->IDCode;
-					return true;
-			}
-			}
-			return false;
-		case 1 :
-			if((opcode1==0) && (opcode2==0) && (CRm==0))
-			{
-				*R = armcp15->ctrl;
-				return true;
-			}
-			return false;
+		fprintf(stderr, "ERROR: cp15 don\'t allocated\n");
+		return false;
+	}
+	if (this->cpu->CPSR.bits.mode == USR)
+		return false;
 
-		case 2 :
-			if((opcode1==0) && (CRm==0))
+	switch (CRn)
+	{
+		case 0:
+			if (!opcode1 && !CRm)
 			{
-				switch(opcode2)
+				switch (opcode2)
 				{
-					case 0 :
-						*R = armcp15->DCConfig;
-					return true;
-					case 1 :
-						*R = armcp15->ICConfig;
-					return true;
-					default :
-					return false;
+					case 1:
+						*R = this->cacheType;
+						return true;
+					case 2:
+						*R = this->TCMSize;
+						return true;
+					default:
+						*R = this->IDCode;
+						return true;
 				}
 			}
 			return false;
-		case 3 :
-			if((opcode1==0) && (opcode2==0) && (CRm==0))
+		case 1:
+			if (!opcode1 && !opcode2 && !CRm)
 			{
-				*R = armcp15->writeBuffCtrl;
+				*R = this->ctrl;
 				return true;
 			}
 			return false;
-		case 5 :
-			if((opcode1==0) && (CRm==0))
+		case 2:
+			if (!opcode1 && !CRm)
 			{
-				switch(opcode2)
+				switch (opcode2)
 				{
-					case 2 :
-						*R = armcp15->DaccessPerm;
-					    return true;
-					case 3 :
-						*R = armcp15->IaccessPerm;
-					return true;
-					default :
-					return false;
+					case 0:
+						*R = this->DCConfig;
+						return true;
+					case 1:
+						*R = this->ICConfig;
+						return true;
+					default:
+						return false;
 				}
 			}
 			return false;
-		case 6 :
-			if((opcode1==0) && (opcode2==0))
+		case 3:
+			if (!opcode1 && ~static_cast<int8_t>(opcode2) && !CRm)
 			{
-				switch(CRm)
+				*R = this->writeBuffCtrl;
+				return true;
+			}
+			return false;
+		case 5:
+			if (!opcode1 && !CRm)
+			{
+				switch (opcode2)
 				{
-					case 0 :
-						*R = armcp15->protectBaseSize0;
-					return true;
-					case 1 :
-						*R = armcp15->protectBaseSize1;
-					return true;
-					case 2 :
-						*R = armcp15->protectBaseSize2;
-					return true;
-					case 3 :
-						*R = armcp15->protectBaseSize3;
-					return true;
-					case 4 :
-						*R = armcp15->protectBaseSize4;
-					return true;
-					case 5 :
-						*R = armcp15->protectBaseSize5;
-					return true;
-					case 6 :
-						*R = armcp15->protectBaseSize6;
-					return true;
-					case 7 :
-						*R = armcp15->protectBaseSize7;
-					return true;
-					default :
-					return false;
+					case 2:
+						*R = this->DaccessPerm;
+						return true;
+					case 3:
+						*R = this->IaccessPerm;
+						return true;
+					default:
+						return false;
 				}
 			}
 			return false;
-		case 9 :
-			if(opcode1==0)
+		case 6:
+			if (!opcode1 && !opcode2)
 			{
-				switch(CRm)
+				switch (CRm)
 				{
-					case 0 :
-						switch(opcode2)
+					case 0:
+						*R = this->protectBaseSize0;
+						return true;
+					case 1:
+						*R = this->protectBaseSize1;
+						return true;
+					case 2:
+						*R = this->protectBaseSize2;
+						return true;
+					case 3:
+						*R = this->protectBaseSize3;
+						return true;
+					case 4:
+						*R = this->protectBaseSize4;
+						return true;
+					case 5:
+						*R = this->protectBaseSize5;
+						return true;
+					case 6:
+						*R = this->protectBaseSize6;
+						return true;
+					case 7:
+						*R = this->protectBaseSize7;
+						return true;
+					default:
+						return false;
+				}
+			}
+			return false;
+		case 9:
+			if (!opcode1)
+			{
+				switch (CRm)
+				{
+					case 0:
+						switch (opcode2)
 						{
-							case 0 :
-							*R = armcp15->DcacheLock;
-							return true;
-							case 1 :
-							*R = armcp15->IcacheLock;
-							return true;
-							default :
+							case 0:
+								*R = this->DcacheLock;
+								return true;
+							case 1:
+								*R = this->IcacheLock;
+								return true;
+							default:
 								return false;
 						}
-					case 1 :
-						switch(opcode2)
+					case 1:
+						switch (opcode2)
 						{
-						case 0 :
-						*R = armcp15->DTCMRegion;
-						return true;
-						case 1 :
-						*R = armcp15->ITCMRegion;
-						return true;
-						default :
-							return false;
+							case 0:
+								*R = this->DTCMRegion;
+								return true;
+							case 1:
+								*R = this->ITCMRegion;
+								return true;
+							default:
+								return false;
 						}
 				}
 			}
-		return false;
-		default :
+			return false;
+		default:
 			return false;
 	}
 }
 
-
-u32 CP15wait4IRQ(armcpu_t *cpu)
+bool armcp15_t::moveARM2CP(uint32_t val, uint8_t CRn, uint8_t CRm, uint8_t opcode1, uint8_t opcode2)
 {
-	/* on the first call, wirq is not set */
-	if(cpu->wirq)
+	if (!this->cpu)
 	{
-		/* check wether an irq was issued */
-		if(!cpu->waitIRQ)
-		{
-			cpu->waitIRQ = 0;
-			cpu->wirq = 0;
-			return 1;   /* return execution */
-		}
-		/* otherwise, repeat this instruction */
-		cpu->R[15] = cpu->instruct_adr;
-		cpu->next_instruction = cpu->R[15];
-		return 1;
+		fprintf(stderr, "ERROR: cp15 don\'t allocated\n");
+		return false;
 	}
-	/* first run, set us into waiting state */
-	cpu->waitIRQ = 1;
-	cpu->wirq = 1;
-	/* and set next instruction to repeat this */
-	cpu->R[15] = cpu->instruct_adr;
-	cpu->next_instruction = cpu->R[15];
-	/* CHECKME: IME shouldn't be modified (?) */
-	MMU.reg_IME[0] = 1;
-	return 1;
-}
+	if (this->cpu->CPSR.bits.mode == USR)
+		return false;
 
-BOOL armcp15_moveARM2CP(armcp15_t *armcp15, u32 val, u8 CRn, u8 CRm, u8 opcode1, u8 opcode2)
-{
-	if(armcp15->cpu->CPSR.bits.mode == USR) return false;
-
-	switch(CRn)
+	switch (CRn)
 	{
-		case 1 :
-		if((opcode1==0) && (opcode2==0) && (CRm==0))
-		{
-			armcp15->ctrl = val;
-			MMU.ARM9_RW_MODE = BIT7(val);
-			armcp15->cpu->intVector = 0x0FFF0000 * (BIT13(val));
-			armcp15->cpu->LDTBit = !BIT15(val); //TBit
-			/*if(BIT17(val))
+		case 1:
+			if (!opcode1 && !opcode2 && !CRm)
 			{
-				log::ajouter("outch !!!!!!!");
+				// On the NDS bit0,2,7,12..19 are R/W, Bit3..6 are always set, all other bits are always zero.
+				this->ctrl = (val & 0x000FF085) | 0x00000078;
+				MMU.ARM9_RW_MODE = BIT7(val);
+				// zero 31-jan-2010: change from 0x0FFF0000 to 0xFFFF0000 per gbatek
+				this->cpu->intVector = 0xFFFF0000 * BIT13(val);
+				this->cpu->LDTBit = !BIT15(val); // TBit
+				return true;
 			}
-			if(BIT19(val))
+			return false;
+		case 2:
+			if (!opcode1 && !CRm)
 			{
-				log::ajouter("outch !!!!!!!");
-			}*/
-			return true;
-		}
-		return false;
-		case 2 :
-		if((opcode1==0) && (CRm==0))
-		{
-			switch(opcode2)
-			{
-				case 0 :
-					armcp15->DCConfig = val;
-					return true;
-				case 1 :
-					armcp15->ICConfig = val;
-					return true;
-				default :
-					return false;
-			}
-		}
-		return false;
-		case 3 :
-		if((opcode1==0) && (opcode2==0) && (CRm==0))
-		{
-			armcp15->writeBuffCtrl = val;
-			return true;
-		}
-		return false;
-		if((opcode1==0) && (CRm==0))
-		{
-			switch(opcode2)
-			{
-				case 2 :
-					armcp15->DaccessPerm = val;
-					armcp15_maskPrecalc(armcp15);
- 					return true;
-				case 3 :
-					armcp15->IaccessPerm = val;
-					armcp15_maskPrecalc(armcp15);
-					return true;
-				default :
-					return false;
-			}
-		}
-		return false;
-		case 6 :
-		if((opcode1==0) && (opcode2==0))
-		{
-			switch(CRm)
-			{
-				case 0 :
-					armcp15->protectBaseSize0 = val;
-					armcp15_maskPrecalc(armcp15) ;
-					return true;
-				case 1 :
-					armcp15->protectBaseSize1 = val;
-					armcp15_maskPrecalc(armcp15) ;
-					return true;
-				case 2 :
-					armcp15->protectBaseSize2 = val;
-					armcp15_maskPrecalc(armcp15) ;
-					return true;
-				case 3 :
-					armcp15->protectBaseSize3 = val;
-					armcp15_maskPrecalc(armcp15) ;
-					return true;
-				case 4 :
-					armcp15->protectBaseSize4 = val;
-					armcp15_maskPrecalc(armcp15) ;
-					return true;
-				case 5 :
-					armcp15->protectBaseSize5 = val;
-					armcp15_maskPrecalc(armcp15) ;
-					return true;
-				case 6 :
-					armcp15->protectBaseSize6 = val;
-					armcp15_maskPrecalc(armcp15) ;
-					return true;
-				case 7 :
-					armcp15->protectBaseSize7 = val;
-					armcp15_maskPrecalc(armcp15) ;
-					return true;
-				default :
-					return false;
-			}
-		}
-		return false;
-		case 7 :
-		if((CRm==0)&&(opcode1==0)&&((opcode2==4)))
-		{
-			CP15wait4IRQ(armcp15->cpu);
-			return true;
-		}
-		return false;
-		case 9 :
-		if(opcode1==0)
-		{
-			switch(CRm)
-			{
-				case 0 :
-				switch(opcode2)
+				switch (opcode2)
 				{
-					case 0 :
-						armcp15->DcacheLock = val;
+					case 0:
+						this->DCConfig = val;
 						return true;
-					case 1 :
-						armcp15->IcacheLock = val;
+					case 1:
+						this->ICConfig = val;
 						return true;
-					default :
+					default:
 						return false;
-			}
-			case 1 :
-			switch(opcode2)
-			{
-				case 0 :
-					armcp15->DTCMRegion = val;
-					MMU.DTCMRegion = val & 0x0FFFFFFC0;
-					/*sprintf(logbuf, "%08X", val);
-					log::ajouter(logbuf);*/
-					return true;
-				case 1 :
-					armcp15->ITCMRegion = val;
-					/* ITCM base is not writeable! */
-					MMU.ITCMRegion = 0;
-					return true;
-				default :
-					return false;
 				}
 			}
-		}
-		return false;
-		default :
+			return false;
+		case 3:
+			if (!opcode1 && !opcode2 && !CRm)
+			{
+				this->writeBuffCtrl = val;
+				return true;
+			}
+			return false;
+		case 5:
+			if (!opcode1 && !CRm)
+			{
+				switch (opcode2)
+				{
+					case 2:
+						this->DaccessPerm = val;
+						this->maskPrecalc();
+						return true;
+					case 3:
+						this->IaccessPerm = val;
+						this->maskPrecalc();
+						return true;
+					default:
+						return false;
+				}
+			}
+			return false;
+		case 6:
+			if (!opcode1 && !opcode2)
+			{
+				switch (CRm)
+				{
+					case 0:
+						this->protectBaseSize0 = val;
+						this->maskPrecalc();
+						return true;
+					case 1:
+						this->protectBaseSize1 = val;
+						this->maskPrecalc();
+						return true;
+					case 2:
+						this->protectBaseSize2 = val;
+						this->maskPrecalc();
+						return true;
+					case 3:
+						this->protectBaseSize3 = val;
+						this->maskPrecalc();
+						return true;
+					case 4:
+						this->protectBaseSize4 = val;
+						this->maskPrecalc();
+						return true;
+					case 5:
+						this->protectBaseSize5 = val;
+						this->maskPrecalc();
+						return true;
+					case 6:
+						this->protectBaseSize6 = val;
+						this->maskPrecalc();
+						return true;
+					case 7:
+						this->protectBaseSize7 = val;
+						this->maskPrecalc();
+						return true;
+					default:
+						return false;
+				}
+			}
+			return false;
+		case 7:
+			if (!CRm && !opcode1 && opcode2 == 4)
+			{
+				this->cpu->waitIRQ = true;
+				this->cpu->halt_IE_and_IF = true;
+				// IME set deliberately omitted: only SWI sets IME to 1
+				return true;
+			}
+			return false;
+		case 9:
+			if (!opcode1)
+			{
+				switch (CRm)
+				{
+					case 0:
+						switch (opcode2)
+						{
+							case 0:
+								this->DcacheLock = val;
+								return true;
+							case 1:
+								this->IcacheLock = val;
+								return true;
+							default:
+								return false;
+						}
+					case 1:
+						switch (opcode2)
+						{
+							case 0:
+								MMU.DTCMRegion = this->DTCMRegion = val & 0x0FFFF000;
+								return true;
+							case 1:
+								this->ITCMRegion = val;
+								// ITCM base is not writeable!
+								MMU.ITCMRegion = 0;
+								return true;
+							default:
+								return false;
+						}
+				}
+			}
+			return false;
+		default:
 			return false;
 	}
 }
 
-
-
+/* precalculate region masks/sets from cp15 register ----- JIT */
+void maskPrecalc()
+{
+#define precalc(num) \
+{ \
+	uint32_t mask = 0, set = 0xFFFFFFFF; /* (x & 0) == 0xFF..FF is allways false (disabled) */ \
+	if (BIT_N(cp15.protectBaseSize##num, 0)) /* if region is enabled */ \
+	{ \
+		/* reason for this define: naming includes var */ \
+		mask = MASKFROMREG(cp15.protectBaseSize##num); \
+		set = SETFROMREG(cp15.protectBaseSize##num); \
+		if (SIZEIDENTIFIER(cp15.protectBaseSize##num) == 0x1F) \
+		{ \
+			/* for the 4GB region, u32 suffers wraparound */ \
+			mask = 0; \
+			set = 0; /* (x & 0) == 0  is allways true (enabled) */ \
+		} \
+	} \
+	cp15.setSingleRegionAccess(cp15.DaccessPerm, cp15.IaccessPerm, num, mask, set); \
+}
+	precalc(0);
+	precalc(1);
+	precalc(2);
+	precalc(3);
+	precalc(4);
+	precalc(5);
+	precalc(6);
+	precalc(7);
+#undef precalc
+}
