@@ -104,9 +104,6 @@ void SetDesmumeSampleRate(double rate) {
   DESMUME_SAMPLE_RATE = rate;
   sampleLength = DESMUME_SAMPLE_RATE / 32728.498;
   samples_per_hline = (DESMUME_SAMPLE_RATE / 59.8261f) / 263.0f;
-  for (int i = 0; i < 16; i++) {
-    channel_struct *chan = &SPU_core->channels[i];
-  }
 }
 
 static double samples = 0;
@@ -1202,7 +1199,7 @@ static void SPU_MixAudio_Advanced(bool actuallyMix, SPU_struct *SPU, int length)
 
     s32 mixout[2] = {mix[0],mix[1]};
     s32 capmixout[2] = {capmix[0],capmix[1]};
-    s32 sndout[2];
+    s32 sndout[2] = { 0, 0 };
     s32 capout[2];
 
     //create SPU output
