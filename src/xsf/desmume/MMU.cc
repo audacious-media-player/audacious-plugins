@@ -715,7 +715,7 @@ static inline void MMU_VRAMmapControl(uint8_t block, uint8_t VRAMBankCnt)
 
 void MMU_Init()
 {
-	memset(&MMU, 0, sizeof(MMU_struct));
+	memset((void*)&MMU, 0, sizeof(MMU_struct));
 
 	MMU.CART_ROM = MMU.UNUSED_RAM;
 

@@ -626,7 +626,8 @@ bool BackupDevice::load_raw(const char *fn, uint32_t force_size)
 
 	this->raw_applyUserSettings(size, force_size > 0);
 
-	fread(&this->data[0], 1, size - left, inf);
+	int bytesRead = fread(&this->data[0], 1, size - left, inf);
+  (void)bytesRead;
 	fclose(inf);
 
 	return true;
