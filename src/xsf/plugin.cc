@@ -162,6 +162,8 @@ public:
 /* xsf_get_lib: called to load secondary files */
 static String dirpath;
 
+bool ignore_length;
+
 #define CFG_ID "xsf"
 
 const char* const XSFPlugin::defaults[] =
@@ -281,13 +283,7 @@ bool recursiveLoad2SF(std::vector<uint8_t>& rom, XSFFile* xsf, int level)
   return true;
 }
 
-bool XSFPlugin::play(const char *filename, VFSFile &file)
-{
-	int length = -1;
-	bool error = false;
-  int fade = aud_get_int(CFG_ID, "fade");
-  int frameSkip = -1;
-	float pos = 0.0;
+void setInterp() {
   std::string interp = (const char*)aud_get_str(CFG_ID, "interpolation_mode");
   int interpMode = 0;
   if (interp == "linear") {
@@ -298,6 +294,16 @@ bool XSFPlugin::play(const char *filename, VFSFile &file)
     interpMode = 3;
   }
   CommonSettings.spuInterpolationMode = (SPUInterpolationMode)interpMode;
+}
+
+bool XSFPlugin::play(const char *filename, VFSFile &file)
+{
+	int length = -1;
+	bool error = false;
+  int fade = aud_get_int(CFG_ID, "fade");
+  int frameSkip = -1;
+	float pos = 0.0;
+	setInterp();
 
 	const char * slash = strrchr(filename, '/');
 	if (!slash)
@@ -351,7 +357,7 @@ bool XSFPlugin::play(const char *filename, VFSFile &file)
     set_stream_bitrate(DESMUME_SAMPLE_RATE*2*2*8);
     open_audio(FMT_S16_NE, DESMUME_SAMPLE_RATE, 2);
 
-    bool ignore_length = aud_get_bool(CFG_ID, "ignore_length");
+    ignore_length = aud_get_bool(CFG_ID, "ignore_length");
     while (!check_stop() && (pos < length || ignore_length))
     {
       int seek_value = check_seek();
@@ -380,7 +386,7 @@ bool XSFPlugin::play(const char *filename, VFSFile &file)
       }
       while (buffer_rope.size() && !check_stop()) {
         auto& front = buffer_rope.front();
-        if (pos > length - fade) {
+        if (pos > length - fade && !ignore_length) {
           float fadeFactor = (length - pos) / (1.0 * fade);
           int sampleCount = front.size() / 2;
           int16_t* sampleBuffer = reinterpret_cast<int16_t*>(front.data());
@@ -435,10 +441,10 @@ static const ComboItem interpItems[] = {
 
 const PreferencesWidget XSFPlugin::widgets[] = {
 	WidgetLabel(N_("<b>XSF Configuration</b>")),
-	WidgetCheck(N_("Ignore length from file"), WidgetBool(CFG_ID, "ignore_length")),
+	WidgetCheck(N_("Ignore length from file"), WidgetBool(CFG_ID, "ignore_length", []{ ignore_length = aud_get_bool(CFG_ID, "ignore_length"); } )),
   WidgetSpin(N_("Default fade time"), WidgetInt(CFG_ID, "fade"), { 0, 15000, 100, "ms" }),
   WidgetCombo(N_("Sample rate"), WidgetInt(CFG_ID, "sample_rate"), (WidgetVCombo){ ArrayRef<ComboItem>(sampleRateItems) }),
-  WidgetCombo(N_("Interpolation mode"), WidgetString(CFG_ID, "interpolation_mode"), (WidgetVCombo){ ArrayRef<ComboItem>(interpItems) })
+  WidgetCombo(N_("Interpolation mode"), WidgetString(CFG_ID, "interpolation_mode", setInterp), (WidgetVCombo){ ArrayRef<ComboItem>(interpItems) })
 };
 
 const PluginPreferences XSFPlugin::prefs = {{widgets}};
