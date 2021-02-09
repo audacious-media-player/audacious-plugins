@@ -168,11 +168,11 @@ bool ignore_length;
 
 const char* const XSFPlugin::defaults[] =
 {
-	"ignore_length", "FALSE",
+  "ignore_length", "FALSE",
   "fade", "5000",
   "sample_rate", "32728",
   "interpolation_mode", "none",
-	nullptr
+  nullptr
 };
 
 bool XSFPlugin::init()
@@ -426,25 +426,25 @@ bool XSFPlugin::is_our_file(const char *filename, VFSFile &file)
 const char *const XSFPlugin::exts[] = { "2sf", "mini2sf", nullptr };
 
 static const ComboItem sampleRateItems[] = {
-  ComboItem("32728 (default)", 32728),
-  ComboItem("44100", 44100),
-  ComboItem("48000", 48000),
-  ComboItem("65456", 65456)
+  ComboItem(N_("32728 Hz"), 32728),
+  ComboItem(N_("44100 Hz"), 44100),
+  ComboItem(N_("48000 Hz"), 48000),
+  ComboItem(N_("65456 Hz"), 65456)
 };
 
 static const ComboItem interpItems[] = {
-  ComboItem("None", "none"),
-  ComboItem("Linear", "linear"),
-  ComboItem("Cosine", "cosine"),
-  ComboItem("Sharp", "sharp")
+  ComboItem(N_("None"), "none"),
+  ComboItem(N_("Linear"), "linear"),
+  ComboItem(N_("Cosine"), "cosine"),
+  ComboItem(N_("Sharp"), "sharp")
 };
 
 const PreferencesWidget XSFPlugin::widgets[] = {
-	WidgetLabel(N_("<b>XSF Configuration</b>")),
-	WidgetCheck(N_("Ignore length from file"), WidgetBool(CFG_ID, "ignore_length", []{ ignore_length = aud_get_bool(CFG_ID, "ignore_length"); } )),
-  WidgetSpin(N_("Default fade time"), WidgetInt(CFG_ID, "fade"), { 0, 15000, 100, "ms" }),
-  WidgetCombo(N_("Sample rate"), WidgetInt(CFG_ID, "sample_rate"), (WidgetVCombo){ ArrayRef<ComboItem>(sampleRateItems) }),
-  WidgetCombo(N_("Interpolation mode"), WidgetString(CFG_ID, "interpolation_mode", setInterp), (WidgetVCombo){ ArrayRef<ComboItem>(interpItems) })
+  WidgetLabel(N_("<b>XSF Configuration</b>")),
+  WidgetCheck(N_("Ignore length from file"), WidgetBool(CFG_ID, "ignore_length", [] { ignore_length = aud_get_bool(CFG_ID, "ignore_length"); } )),
+  WidgetSpin(N_("Default fade time:"), WidgetInt(CFG_ID, "fade"), { 0, 15000, 100, N_("ms") }),
+  WidgetCombo(N_("Sample rate:"), WidgetInt(CFG_ID, "sample_rate"), {{ sampleRateItems }}),
+  WidgetCombo(N_("Interpolation mode:"), WidgetString(CFG_ID, "interpolation_mode", setInterp), {{ interpItems }})
 };
 
 const PluginPreferences XSFPlugin::prefs = {{widgets}};
