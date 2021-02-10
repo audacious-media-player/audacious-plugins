@@ -70,6 +70,18 @@ bool Window::close ()
     return true;
 }
 
+bool Window::event(QEvent * event)
+{
+    if (event->type() == QEvent::WindowActivate) {
+        m_is_focused = true;
+    } else if (event->type() == QEvent::WindowDeactivate) {
+        m_is_focused = false;
+    }
+
+    Window::update();
+    return QWidget::event(event);
+}
+
 Window::~Window ()
 {
     dock_remove_window (m_id);

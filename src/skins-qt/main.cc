@@ -1096,7 +1096,7 @@ void MainWindow::draw (QPainter & cr)
     int height = is_shaded () ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height;
 
     skin_draw_pixbuf (cr, SKIN_MAIN, 0, 0, 0, 0, width, height);
-    skin_draw_mainwin_titlebar (cr, is_shaded (), true);
+    skin_draw_mainwin_titlebar (cr, is_shaded (), is_focused());
 }
 
 static void mainwin_create_window ()
