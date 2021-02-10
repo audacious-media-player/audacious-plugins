@@ -72,13 +72,11 @@ bool Window::close ()
 
 bool Window::event(QEvent * event)
 {
-    if (event->type() == QEvent::WindowActivate) {
-        m_is_focused = true;
-    } else if (event->type() == QEvent::WindowDeactivate) {
-        m_is_focused = false;
+    if (event->type() == QEvent::WindowActivate || event->type() == QEvent::WindowDeactivate) {
+        m_is_focused = event->type() == QEvent::WindowActivate;
+        Window::update();
     }
 
-    Window::update();
     return QWidget::event(event);
 }
 
