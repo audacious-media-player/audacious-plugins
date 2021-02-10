@@ -59,7 +59,7 @@ protected:
 
 private:
     void apply_shape ();
-    bool event(QEvent * event);
+    bool event (QEvent * event);
 
     const int m_id;
     bool m_is_shaded = false;
