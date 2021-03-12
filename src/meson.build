@@ -36,6 +36,8 @@ subdir('mixer')
 subdir('silence-removal')
 subdir('stereo_plugin')
 subdir('voice_removal')
+subdir('echo_plugin')
+subdir('bitcrusher')
 
 if get_option('bs2b')
   subdir('bs2b')
