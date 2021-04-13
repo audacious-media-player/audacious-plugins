@@ -99,6 +99,7 @@ void error_callback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderError
 void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data);
 
 /* tools.c */
+bool is_ogg_flac(VFSFile &file);
 bool read_metadata(FLAC__StreamDecoder* decoder, callback_info* info);
 
 #endif
