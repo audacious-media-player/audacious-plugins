@@ -26,7 +26,10 @@
 #include <QUrl>
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
 #include <libaudcore/playlist.h>
+#include <libaudcore/vfs.h>
 #include <libaudqt/libaudqt.h>
 
 void pl_copy ()
@@ -100,5 +103,16 @@ void pl_open_folder ()
         return;
 
     /* don't trim trailing slash, it may be important */
-    QDesktopServices::openUrl (QString::fromUtf8 (filename, slash + 1 - filename));
+    StringBuf folder = str_copy (filename, slash + 1 - filename);
+
+    /* check that it's really a folder so as to prevent opening random
+     * files from a malicious playlist */
+    if (! VFSFile::test_file (folder, VFS_IS_DIR))
+    {
+        aud_ui_show_error (str_printf
+            (_("%s does not appear to be a valid folder."), & filename[0]));
+        return;
+    }
+
+    QDesktopServices::openUrl (QString::fromUtf8 (folder));
 }
