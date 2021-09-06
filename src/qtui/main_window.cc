@@ -117,7 +117,7 @@ static void toggle_search_tool(bool enable)
 static QToolButton * create_menu_button(QWidget * parent, QMenuBar * menubar)
 {
     auto button = new QToolButton(parent);
-    button->setIcon(audqt::get_icon("audacious"));
+    button->setIcon(QIcon::fromTheme("audacious"));
     button->setPopupMode(QToolButton::InstantPopup);
     button->setStyleSheet("QToolButton::menu-indicator { image: none; }");
     button->setToolTip(_("Menu"));
@@ -342,13 +342,13 @@ void MainWindow::update_play_pause()
 {
     if (!aud_drct_get_playing() || aud_drct_get_paused())
     {
-        m_play_pause_action->setIcon(audqt::get_icon("media-playback-start"));
+        m_play_pause_action->setIcon(QIcon::fromTheme("media-playback-start"));
         m_play_pause_action->setText(_("Play"));
         m_play_pause_action->setToolTip(_("Play"));
     }
     else
     {
-        m_play_pause_action->setIcon(audqt::get_icon("media-playback-pause"));
+        m_play_pause_action->setIcon(QIcon::fromTheme("media-playback-pause"));
         m_play_pause_action->setText(_("Pause"));
         m_play_pause_action->setToolTip(_("Pause"));
     }
