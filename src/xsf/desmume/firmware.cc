@@ -18,6 +18,9 @@
 #include "firmware.h"
 #include "NDSSystem.h"
 
+#define WANT_AUD_BSWAP
+#include <libaudcore/audio.h>
+
 static inline uint32_t DWNUM(uint32_t i) { return i >> 2; }
 
 bool CFIRMWARE::getKeyBuf()
@@ -72,7 +75,6 @@ void CFIRMWARE::crypt64BitDown(uint32_t *ptr)
 	ptr[1] = Y ^ this->keyBuf[DWNUM(0x00)];
 }
 
-static inline uint32_t bswap32(uint32_t val) { return ((val & 0x000000FF) << 24) | ((val & 0x0000FF00) << 8) | ((val & 0x00FF0000) >> 8) | ((val & 0xFF000000) >> 24); }
 void CFIRMWARE::applyKeycode(uint32_t modulo)
 {
 	this->crypt64BitUp(&this->keyCode[1]);
