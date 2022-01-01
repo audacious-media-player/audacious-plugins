@@ -20,6 +20,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "samplecache.h"
+#include <tuple>
 
 static inline constexpr uint64_t makeKey(uint32_t base, uint16_t loop, uint32_t length)
 {

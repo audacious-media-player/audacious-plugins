@@ -23,8 +23,10 @@
 #include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/playlist.h>
+#include <libaudcore/vfs.h>
 #include <libaudgui/libaudgui.h>
 
 static void uri_get_func (GtkClipboard *, GtkSelectionData * sel, unsigned, void * data)
@@ -121,6 +123,15 @@ void pl_open_folder ()
 
     /* don't trim trailing slash, it may be important */
     StringBuf folder = str_copy (filename, slash + 1 - filename);
+
+    /* check that it's really a folder so as to prevent opening random
+     * files from a malicious playlist */
+    if (! VFSFile::test_file (folder, VFS_IS_DIR))
+    {
+        aud_ui_show_error (str_printf
+            (_("%s does not appear to be a valid folder."), & filename[0]));
+        return;
+    }
 
     GError * error = nullptr;
     gtk_show_uri (gdk_screen_get_default (), folder, GDK_CURRENT_TIME, & error);

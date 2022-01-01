@@ -146,7 +146,7 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
                 icon_name = aud_drct_get_paused() ? "media-playback-pause"
                                                   : "media-playback-start";
 
-            return audqt::get_icon(icon_name);
+            return QIcon::fromTheme(icon_name);
         }
         else if (col == m_playing_col)
         {

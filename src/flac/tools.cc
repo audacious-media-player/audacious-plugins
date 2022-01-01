@@ -25,6 +25,13 @@
 
 #include "flacng.h"
 
+bool is_ogg_flac(VFSFile &file)
+{
+    /* TODO: detect Ogg FLAC by content too (not just MIME type) */
+    String mime = file.get_metadata("content-type");
+    return (mime && strstr(mime, "ogg"));
+}
+
 bool read_metadata(FLAC__StreamDecoder *decoder, callback_info *info)
 {
     FLAC__StreamDecoderState ret;

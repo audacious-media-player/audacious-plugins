@@ -678,6 +678,9 @@ const char * const FFaudio::exts[] = {
     /* WebM */
     "webm",
 
+    /* Matroska */
+    "mka", "mkv",
+
     /* end of table */
     nullptr
 };

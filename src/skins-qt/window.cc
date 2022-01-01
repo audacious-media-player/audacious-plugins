@@ -91,7 +91,10 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
     m_is_shaded (shaded)
 {
     if (id == WINDOW_MAIN)
-        setWindowFlags (Qt::Window | Qt::FramelessWindowHint);
+        // Qt::WindowMinimizeButtonHint is necessary on Windows
+        // to allow the window to be minimized via the taskbar
+        setWindowFlags (Qt::Window | Qt::FramelessWindowHint |
+                        Qt::WindowMinimizeButtonHint);
     else
         setWindowFlags (Qt::Dialog | Qt::FramelessWindowHint);
 

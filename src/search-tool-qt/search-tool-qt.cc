@@ -193,7 +193,7 @@ SearchWidget::SearchWidget () :
     m_help_label (_("To import your music library into Audacious, "
      "choose a folder and then click the \"refresh\" icon.")),
     m_wait_label (_("Please wait ...")),
-    m_refresh_btn (audqt::get_icon ("view-refresh"), QString ()),
+    m_refresh_btn (QIcon::fromTheme ("view-refresh"), QString ()),
     m_file_entry (audqt::file_entry_new (this, _("Choose Folder"),
      QFileDialog::Directory, QFileDialog::AcceptOpen))
 {
@@ -495,11 +495,11 @@ void SearchWidget::show_context_menu (const QPoint & global_pos)
 {
     auto menu = new QMenu (this);
 
-    auto play_act = new QAction (audqt::get_icon ("media-playback-start"),
+    auto play_act = new QAction (QIcon::fromTheme ("media-playback-start"),
                                  audqt::translate_str (N_("_Play")), menu);
-    auto create_act = new QAction (audqt::get_icon ("document-new"),
+    auto create_act = new QAction (QIcon::fromTheme ("document-new"),
                                    audqt::translate_str (N_("_Create Playlist")), menu);
-    auto add_act = new QAction (audqt::get_icon ("list-add"),
+    auto add_act = new QAction (QIcon::fromTheme ("list-add"),
                                 audqt::translate_str (N_("_Add to Playlist")), menu);
 
     QObject::connect (play_act, & QAction::triggered, this, & SearchWidget::action_play);
