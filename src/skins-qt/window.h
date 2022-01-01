@@ -42,7 +42,7 @@ public:
     void resize (int w, int h);
     void set_shapes (QRegion * shape, QRegion * sshape);
     bool is_shaded () { return m_is_shaded; }
-    bool is_focused () { return m_is_focused; }
+    bool is_focused ();
     void set_shaded (bool shaded);
     void put_widget (bool shaded, Widget * widget, int x, int y);
     void move_widget (bool shaded, Widget * widget, int x, int y);
@@ -59,7 +59,7 @@ protected:
 
 private:
     void apply_shape ();
-    bool event (QEvent * event);
+    void changeEvent (QEvent * event);
 
     const int m_id;
     bool m_is_shaded = false;
@@ -75,5 +75,7 @@ void dock_set_size (int id, int w, int h);
 void dock_move_start (int id, int x, int y);
 void dock_move (int x, int y);
 void dock_change_scale (int old_scale, int new_scale);
+void dock_draw_all ();
+bool dock_is_focused ();
 
 #endif
