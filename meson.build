@@ -3,7 +3,7 @@ project('audacious-plugins', 'c', 'cpp',
         meson_version: '>= 0.46',
         default_options: [
           'c_std=gnu99',
-          'cpp_std=gnu++11',
+          'cpp_std=gnu++17',
           'warning_level=1'
         ])
 
@@ -63,8 +63,13 @@ xml_dep = dependency('libxml-2.0', required: false)
 
 
 if get_option('qt')
-  qt_req = '>= 5.2'
-  qt_dep = dependency('qt5', version: qt_req, required: true, modules: ['Core', 'Widgets', 'Gui'])
+  if get_option('qt6')
+    qt_req = '>= 6.0'
+    qt_dep = dependency('qt6', version: qt_req, required: true, modules: ['Core', 'Widgets', 'Gui'])
+  else
+    qt_req = '>= 5.2'
+    qt_dep = dependency('qt5', version: qt_req, required: true, modules: ['Core', 'Widgets', 'Gui'])
+  endif
 endif
 
 
@@ -199,8 +204,9 @@ if meson.version().version_compare('>= 0.53')
   }, section: 'Directories')
 
   summary({
-    'Qt support': conf.has('USE_QT'),
-    'GTK support': conf.has('USE_GTK'),
+    'Qt 5 support': get_option('qt') and not get_option('qt6'),
+    'Qt 6 support': get_option('qt6'),
+    'GTK support': get_option('gtk'),
   }, section: 'GUI Toolkits')
 
   summary({

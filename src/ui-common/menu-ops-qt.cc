@@ -114,5 +114,5 @@ void pl_open_folder ()
         return;
     }
 
-    QDesktopServices::openUrl (QString::fromUtf8 (folder));
+    QDesktopServices::openUrl (QString (folder));
 }
