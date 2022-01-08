@@ -39,6 +39,7 @@ typedef struct {
     int vu_mode;
     int analyzer_falloff, peaks_falloff;
     bool mainwin_use_bitmapfont;
+    bool active_titlebar_any;
 } skins_cfg_t;
 
 extern skins_cfg_t config;

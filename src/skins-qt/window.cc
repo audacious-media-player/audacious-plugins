@@ -70,6 +70,17 @@ bool Window::close ()
     return true;
 }
 
+void Window::changeEvent (QEvent * event)
+{
+    if (event->type () == QEvent::ActivationChange)
+    {
+        m_is_focused = isActiveWindow ();
+        config.active_titlebar_any ? dock_draw_all () : Window::queue_draw ();
+    }
+
+    QWidget::changeEvent (event);
+}
+
 Window::~Window ()
 {
     dock_remove_window (m_id);
@@ -161,4 +172,9 @@ void Window::put_widget (bool shaded, Widget * widget, int x, int y)
 void Window::move_widget (bool shaded, Widget * widget, int x, int y)
 {
     widget->move (x * config.scale, y * config.scale);
+}
+
+bool Window::is_focused ()
+{
+    return config.active_titlebar_any ? dock_is_focused () : isActiveWindow ();
 }
