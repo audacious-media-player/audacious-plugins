@@ -1,6 +1,6 @@
 project('audacious-plugins', 'c', 'cpp',
         version: '4.2-devel',
-        meson_version: '>= 0.46',
+        meson_version: '>= 0.51',
         default_options: [
           'c_std=gnu99',
           'cpp_std=gnu++17',
@@ -40,21 +40,21 @@ audacious_dep = dependency('audacious', version: audacious_req, required: true)
 
 # XXX - make this its own .pc file
 audtag_dep = declare_dependency(link_args: [
-  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('lib_dir')),
+  '-L@0@'.format(audacious_dep.get_variable(pkgconfig: 'lib_dir')),
   '-laudtag'
 ])
 
 
 # XXX - make this its own .pc file
 audqt_dep = declare_dependency(link_args: [
-  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('lib_dir')),
+  '-L@0@'.format(audacious_dep.get_variable(pkgconfig: 'lib_dir')),
   '-laudqt'
 ])
 
 
 # XXX - make this its own .pc file
 audgui_dep = declare_dependency(link_args: [
-  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('lib_dir')),
+  '-L@0@'.format(audacious_dep.get_variable(pkgconfig: 'lib_dir')),
   '-laudgui'
 ])
 
@@ -160,7 +160,7 @@ if (cxx.has_header('libintl.h'))
 endif
 
 
-install_plugindir = audacious_dep.get_pkgconfig_variable('plugin_dir')
+install_plugindir = audacious_dep.get_variable(pkgconfig: 'plugin_dir')
 
 
 conf.set_quoted('INSTALL_PLUGINDIR', install_plugindir)
