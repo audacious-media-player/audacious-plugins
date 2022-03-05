@@ -102,30 +102,16 @@ struct ScopedPacket : public AVPacket
     ScopedPacket () : AVPacket ()
         { av_init_packet (this); }
 
-#if CHECK_LIBAVCODEC_VERSION (55, 25, 100)
     ~ScopedPacket () { av_packet_unref (this); }
-#else
-    ~ScopedPacket () { av_free_packet (this); }
-#endif
 };
 
 struct ScopedFrame
 {
-#if CHECK_LIBAVCODEC_VERSION (55, 45, 101)
     AVFrame * ptr = av_frame_alloc ();
-#else
-    AVFrame * ptr = avcodec_alloc_frame ();
-#endif
 
     AVFrame * operator-> () { return ptr; }
 
-#if CHECK_LIBAVCODEC_VERSION (55, 45, 101)
     ~ScopedFrame () { av_frame_free (& ptr); }
-#elif CHECK_LIBAVCODEC_VERSION (54, 59, 100)
-    ~ScopedFrame () { avcodec_free_frame (& ptr); }
-#else
-    ~ScopedFrame () { av_free (ptr); }
-#endif
 };
 
 static SimpleHash<String, AVInputFormat *> extension_dict;
@@ -446,7 +432,6 @@ bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, In
     if (! file.fseek (0, VFS_SEEK_SET))
         audtag::read_tag (file, tuple, image);
 
-#if CHECK_LIBAVFORMAT_VERSION (54, 2, 100)
     if (image && ! image->len ())
     {
         for (unsigned i = 0; i < ic->nb_streams; i ++)
@@ -459,7 +444,6 @@ bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, In
             }
         }
     }
-#endif
 
     return true;
 }
