@@ -274,7 +274,7 @@ static AVInputFormat * get_format_by_content (const char * name, VFSFile & file)
         AVProbeData d = {name, buf, filled};
         score = target;
 
-        f = av_probe_input_format2 (& d, true, & score);
+        f = (AVInputFormat *) av_probe_input_format2 (& d, true, & score);
         if (f)
             break;
 
@@ -347,7 +347,7 @@ static bool find_codec (AVFormatContext * c, CodecInfo * cinfo)
 #endif
         if (stream && stream->codecpar && stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
         {
-            AVCodec * codec = avcodec_find_decoder (stream->codecpar->codec_id);
+            AVCodec * codec = (AVCodec *) avcodec_find_decoder (stream->codecpar->codec_id);
 
             if (codec)
             {
