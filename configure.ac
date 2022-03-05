@@ -256,6 +256,13 @@ ENABLE_PLUGIN_WITH_DEP(wavpack,
     WAVPACK,
     wavpack >= 4.31)
 
+ENABLE_PLUGIN_WITH_DEP(ffaudio,
+    FFmpeg decoder,
+    auto,
+    INPUT,
+    FFMPEG,
+    libavcodec >= 53.40.0 libavformat >= 53.25.0 libavutil >= 51.27.0)
+
 ENABLE_PLUGIN_WITH_DEP(sndfile,
     libsndfile decoder,
     auto,
@@ -566,24 +573,6 @@ else
     AC_MSG_RESULT([*** CoreAudio output plugin disabled per user request ***])
 fi
 
-dnl *** FFaudio
-
-AC_ARG_WITH([ffmpeg],
- AS_HELP_STRING([--with-ffmpeg=ffmpeg,libav,none], [choose between FFmpeg, libav, or neither (default=ffmpeg)]),
- [ffmpeg_variant=$withval], [ffmpeg_variant=ffmpeg])
-
-if test $ffmpeg_variant = ffmpeg ; then
-    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.40.0 libavformat >= 53.25.0 libavutil >= 51.27.0],
-     [INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"
-      AC_DEFINE([HAVE_FFMPEG], [1], [Define if using FFmpeg])],
-     [AC_MSG_ERROR([FFmpeg is not installed or too old (required: libavcodec 53.40.0, libavformat 53.25.0, libavutil 51.27.0).  Use --with-ffmpeg=none to disable the ffaudio plugin or --with-ffmpeg=libav to use libav instead.])])
-elif test $ffmpeg_variant = libav ; then
-    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.25.0 libavformat >= 53.17.0 libavutil >= 51.18.0],
-     [INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"
-      AC_DEFINE([HAVE_LIBAV], [1], [Define if using libav])],
-     [AC_MSG_ERROR([libav is not installed or too old (required: libavcodec 53.25.0, libavformat 53.17.0, libavutil 51.18.0).])])
-fi
-
 dnl SDL Output
 dnl ==========
 
@@ -748,7 +737,7 @@ echo "  WavPack:                                $have_wavpack"
 echo
 echo "  External Decoders"
 echo "  -----------------"
-echo "  FFmpeg/Libav:                           $ffmpeg_variant"
+echo "  FFmpeg:                                 $have_ffaudio"
 echo "  libsndfile:                             $have_sndfile"
 echo
 echo "  Chiptunes"

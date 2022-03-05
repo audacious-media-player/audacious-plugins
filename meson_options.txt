@@ -30,8 +30,8 @@ option('cdaudio', type: 'boolean', value: true,
        description: 'Whether CD audio support is enabled')
 option('console', type: 'boolean', value: true,
        description: 'Whether Game Music Emu support is enabled')
-option('ffaudio', type: 'combo', choices: ['ffmpeg', 'libav', 'disabled'],
-       description: 'Choose between ffmpeg, libav or disabled')
+option('ffaudio', type: 'boolean', value: true,
+       description: 'Whether FFmpeg support is enabled')
 option('flac', type: 'boolean', value: true,
        description: 'Whether FLAC support is enabled')
 option('modplug', type: 'boolean', value: true,

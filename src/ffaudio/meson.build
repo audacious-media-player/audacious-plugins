@@ -1,21 +1,6 @@
-if get_option('ffaudio') == 'ffmpeg'
-  conf.set10('HAVE_FFMPEG', true)
-
-  libavcodec_req = '>= 53.40.0'
-  libavformat_req = '>= 53.25.0'
-  libavutil_req = '>= 51.27.0'
-else
-  conf.set10('HAVE_LIBAV', true)
-
-  libavcodec_req = '>= 53.25.0'
-  libavformat_req = '>= 53.17.0'
-  libavutil_req = '>= 51.18.0'
-endif
-
-
-libavcodec_dep = dependency('libavcodec', version: libavcodec_req, required: false)
-libavformat_dep = dependency('libavformat', version: libavformat_req, required: false)
-libavutil_dep = dependency('libavutil', version: libavutil_req, required: false)
+libavcodec_dep = dependency('libavcodec', version: '>= 53.40.0', required: false)
+libavformat_dep = dependency('libavformat', version: '>= 53.25.0', required: false)
+libavutil_dep = dependency('libavutil', version: '>= 51.27.0', required: false)
 
 
 have_ffaudio = libavcodec_dep.found() and \

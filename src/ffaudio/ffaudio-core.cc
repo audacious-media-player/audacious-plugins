@@ -31,11 +31,11 @@
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
 
-#if CHECK_LIBAVFORMAT_VERSION (57, 33, 100, 57, 5, 0)
+#if CHECK_LIBAVFORMAT_VERSION (57, 33, 100)
 #define ALLOC_CONTEXT 1
 #endif
 
-#if CHECK_LIBAVCODEC_VERSION (57, 37, 100, 57, 16, 0)
+#if CHECK_LIBAVCODEC_VERSION (57, 37, 100)
 #define SEND_PACKET 1
 #endif
 
@@ -102,7 +102,7 @@ struct ScopedPacket : public AVPacket
     ScopedPacket () : AVPacket ()
         { av_init_packet (this); }
 
-#if CHECK_LIBAVCODEC_VERSION (55, 25, 100, 55, 16, 0)
+#if CHECK_LIBAVCODEC_VERSION (55, 25, 100)
     ~ScopedPacket () { av_packet_unref (this); }
 #else
     ~ScopedPacket () { av_free_packet (this); }
@@ -111,7 +111,7 @@ struct ScopedPacket : public AVPacket
 
 struct ScopedFrame
 {
-#if CHECK_LIBAVCODEC_VERSION (55, 45, 101, 55, 28, 1)
+#if CHECK_LIBAVCODEC_VERSION (55, 45, 101)
     AVFrame * ptr = av_frame_alloc ();
 #else
     AVFrame * ptr = avcodec_alloc_frame ();
@@ -119,9 +119,9 @@ struct ScopedFrame
 
     AVFrame * operator-> () { return ptr; }
 
-#if CHECK_LIBAVCODEC_VERSION (55, 45, 101, 55, 28, 1)
+#if CHECK_LIBAVCODEC_VERSION (55, 45, 101)
     ~ScopedFrame () { av_frame_free (& ptr); }
-#elif CHECK_LIBAVCODEC_VERSION (54, 59, 100, 54, 28, 0)
+#elif CHECK_LIBAVCODEC_VERSION (54, 59, 100)
     ~ScopedFrame () { avcodec_free_frame (& ptr); }
 #else
     ~ScopedFrame () { av_free (ptr); }
@@ -132,7 +132,7 @@ static SimpleHash<String, AVInputFormat *> extension_dict;
 
 static void create_extension_dict ();
 
-#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100)
 static int lockmgr (void * * mutexp, enum AVLockOp op)
 {
     switch (op)
@@ -191,10 +191,10 @@ static void ffaudio_log_cb (void * avcl, int av_level, const char * fmt, va_list
 
 bool FFaudio::init ()
 {
-#if ! CHECK_LIBAVFORMAT_VERSION(58, 9, 100, 255, 255, 255)
+#if ! CHECK_LIBAVFORMAT_VERSION(58, 9, 100)
     av_register_all();
 #endif
-#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100)
     av_lockmgr_register (lockmgr);
 #endif
 
@@ -209,7 +209,7 @@ void FFaudio::cleanup ()
 {
     extension_dict.clear ();
 
-#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100)
     av_lockmgr_register (nullptr);
 #endif
 }
@@ -233,7 +233,7 @@ static int log_result (const char * func, int ret)
 static void create_extension_dict ()
 {
     AVInputFormat * f;
-#if CHECK_LIBAVFORMAT_VERSION(58, 9, 100, 255, 255, 255)
+#if CHECK_LIBAVFORMAT_VERSION(58, 9, 100)
     void * iter = nullptr;
     while ((f = const_cast<AVInputFormat *> (av_demuxer_iterate (& iter))))
 #else
@@ -446,7 +446,7 @@ bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, In
     if (! file.fseek (0, VFS_SEEK_SET))
         audtag::read_tag (file, tuple, image);
 
-#if CHECK_LIBAVFORMAT_VERSION (54, 2, 100, 54, 2, 0)
+#if CHECK_LIBAVFORMAT_VERSION (54, 2, 100)
     if (image && ! image->len ())
     {
         for (unsigned i = 0; i < ic->nb_streams; i ++)
