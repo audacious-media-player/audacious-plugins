@@ -97,20 +97,46 @@ struct ScopedContext
 #endif
 };
 
-struct ScopedPacket : public AVPacket
+struct ScopedPacket
 {
-    ScopedPacket () : AVPacket ()
-        { av_init_packet (this); }
+    AVPacket * ptr;
+    AVPacket * operator-> () { return ptr; }
 
-    ~ScopedPacket () { av_packet_unref (this); }
+#if CHECK_LIBAVCODEC_VERSION(57, 12, 100)
+    ScopedPacket () { ptr = av_packet_alloc (); }
+    ~ScopedPacket () { av_packet_free (& ptr); }
+
+    void clear ()
+    {
+        av_packet_free (& ptr);
+        ptr = av_packet_alloc ();
+    }
+#else
+    ScopedPacket ()
+    {
+        ptr = new AVPacket ();
+        av_init_packet (ptr);
+    }
+
+    ~ScopedPacket ()
+    {
+        av_packet_unref (ptr);
+        delete ptr;
+    }
+
+    void clear ()
+    {
+        av_packet_unref (ptr);
+        * ptr = AVPacket ();
+        av_init_packet (ptr);
+    }
+#endif
 };
 
 struct ScopedFrame
 {
     AVFrame * ptr = av_frame_alloc ();
-
     AVFrame * operator-> () { return ptr; }
-
     ~ScopedFrame () { av_frame_free (& ptr); }
 };
 
@@ -527,12 +553,16 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
         /* Read next frame (or more) of data */
         ScopedPacket pkt;
-        int ret = LOG (av_read_frame, ic.get (), & pkt);
+        int ret = LOG (av_read_frame, ic.get (), pkt.ptr);
 
         if (ret < 0)
         {
             if (ret == (int) AVERROR_EOF)
+            {
+                /* On EOF, send an empty packet to "flush" the decoder */
+                pkt.clear ();
                 eof = true;
+            }
             else if (++ errcount > 4)
                 return false;
             else
@@ -543,24 +573,17 @@ bool FFaudio::play (const char * filename, VFSFile & file)
             errcount = 0;
 
             /* Ignore any other substreams */
-            if (pkt.stream_index != cinfo.stream_idx)
+            if (pkt->stream_index != cinfo.stream_idx)
                 continue;
         }
 
         /* Decode and play packet/frame */
-        /* On EOF, send an empty packet to "flush" the decoder */
-        /* Otherwise, make a mutable (shallow) copy of the real packet */
-        AVPacket tmp;
-        if (eof) {
-            tmp = AVPacket ();
-            av_init_packet (& tmp);
-        }
-        else
-            tmp = pkt;
-
 #ifdef SEND_PACKET
-        if ((ret = LOG (avcodec_send_packet, context.ptr, & tmp)) < 0)
+        if ((ret = LOG (avcodec_send_packet, context.ptr, pkt.ptr)) < 0)
             return false; /* defensive, errors not expected here */
+#else
+        /* Make a mutable (shallow) copy of the real packet */
+        AVPacket tmp = * pkt.ptr;
 #endif
 
         while (! check_stop ())
