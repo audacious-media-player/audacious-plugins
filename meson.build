@@ -220,7 +220,7 @@ if meson.version().version_compare('>= 0.53')
   }, section: 'Audio Formats')
 
   summary({
-    'FFmpeg/Libav': get_variable('have_ffaudio', false),
+    'FFmpeg': get_variable('have_ffaudio', false),
     'Libsndfile': get_variable('have_sndfile', false),
   }, section: 'External Decoders')
 
