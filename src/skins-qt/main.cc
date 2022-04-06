@@ -483,7 +483,7 @@ bool MainWindow::scroll (QWheelEvent * event)
     {
         m_scroll_delta_y -= 120 * steps_y;
         int volume_delta = aud_get_int ("volume_delta");
-        aud_drct_set_volume_main (aud_drct_get_volume_main () + steps_y * volume_delta);
+        mainwin_set_volume_diff (steps_y * volume_delta);
     }
 
     return true;
