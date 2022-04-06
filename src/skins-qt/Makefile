@@ -21,6 +21,7 @@ SRCS = actions.cc \
        playstatus.cc \
        plugin.cc \
        plugin-window.cc \
+       search-select.cc \
        skin.cc \
        skin-ini.cc \
        skins_cfg.cc \

@@ -180,6 +180,8 @@ static const audqt::MenuItem playlist_remove_items[] = {
 };
 
 static const audqt::MenuItem playlist_select_items[] = {
+    audqt::MenuCommand ({N_("Search and Select"), "edit-find", "Ctrl+F"}, action_playlist_search_and_select),
+    audqt::MenuSep (),
     audqt::MenuCommand ({N_("Invert Selection")}, pl_select_invert),
     audqt::MenuCommand ({N_("Select None"), nullptr, "Shift+Ctrl+A"}, pl_select_none),
     audqt::MenuCommand ({N_("Select All"), "edit-select-all", "Ctrl+A"}, pl_select_all),
