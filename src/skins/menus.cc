@@ -67,8 +67,8 @@ static void configure_effects () { audgui_show_prefs_for_plugin_type (PluginType
 static void configure_output () { audgui_show_prefs_for_plugin_type (PluginType::Output); }
 static void configure_visualizations () { audgui_show_prefs_for_plugin_type (PluginType::Vis); }
 
-static void skins_volume_up () { mainwin_set_volume_diff (5); }
-static void skins_volume_down () { mainwin_set_volume_diff (-5); }
+static void skins_volume_up () { mainwin_set_volume_diff (aud_get_int ("volume_delta")); }
+static void skins_volume_down () { mainwin_set_volume_diff (-aud_get_int ("volume_delta")); }
 
 static const AudguiMenuItem output_items[] = {
     MenuCommand (N_("Volume Up"), "audio-volume-high", '+', NO_MOD, skins_volume_up),

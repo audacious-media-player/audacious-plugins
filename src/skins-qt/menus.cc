@@ -57,8 +57,8 @@ static void configure_visualizations () { audqt::prefswin_show_plugin_page (Plug
 static void pl_import () { audqt::fileopener_show (audqt::FileMode::ImportPlaylist); }
 static void pl_export () { audqt::fileopener_show (audqt::FileMode::ExportPlaylist); }
 
-static void skins_volume_up () { mainwin_set_volume_diff (5); }
-static void skins_volume_down () { mainwin_set_volume_diff (-5); }
+static void skins_volume_up () { mainwin_set_volume_diff (aud_get_int ("volume_delta")); }
+static void skins_volume_down () { mainwin_set_volume_diff (-aud_get_int ("volume_delta")); }
 
 static const audqt::MenuItem output_items[] = {
     audqt::MenuCommand ({N_("Volume Up"), "audio-volume-high", "+"}, skins_volume_up),
