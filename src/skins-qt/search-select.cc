@@ -147,7 +147,8 @@ void SearchSelectDialog::copy_selected_to_new (Playlist playlist)
         {
             items.append
              (playlist.entry_filename (entry),
-              playlist.entry_tuple (entry, Playlist::NoWait));
+              playlist.entry_tuple (entry, Playlist::NoWait),
+              playlist.entry_decoder (entry, Playlist::NoWait));
         }
     }
 
