@@ -369,6 +369,13 @@ ENABLE_PLUGIN_WITH_TEST(oss4,
     auto,
     OUTPUT)
 
+ENABLE_PLUGIN_WITH_DEP(pipewire,
+    PipeWire output,
+    auto,
+    OUTPUT,
+    PIPEWIRE,
+    libpipewire-0.3 >= 0.3.26 libspa-0.2 >= 0.2)
+
 ENABLE_PLUGIN_WITH_DEP(pulse,
     PulseAudio output,
     auto,
@@ -777,6 +784,7 @@ echo "  -------"
 echo "  Advanced Linux Sound Architecture:      $have_alsa"
 echo "  Jack Audio Connection Kit:              $have_jack"
 echo "  Open Sound System:                      $have_oss4"
+echo "  PipeWire:                               $have_pipewire"
 echo "  PulseAudio:                             $have_pulse"
 echo "  Simple DirectMedia Layer:               $have_sdlout"
 echo "  Sndio:                                  $have_sndio"

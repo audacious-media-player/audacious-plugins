@@ -262,6 +262,10 @@ if get_option('oss')
   subdir('oss4')
 endif
 
+if get_option('pipewire')
+  subdir('pipewire')
+endif
+
 if get_option('pulse')
   subdir('pulse')
 endif

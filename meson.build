@@ -260,6 +260,7 @@ if meson.version().version_compare('>= 0.53')
     'Advanced Linux Sound Architecture': get_variable('have_alsa', false),
     'Jack Audio Connection Kit': get_variable('have_jack', false),
     'Open Sound System': get_variable('have_oss4', false),
+    'PipeWire': get_variable('have_pipewire', false),
     'PulseAudio': get_variable('have_pulse', false),
     'Simple DirectMedia Layer': get_variable('have_sdlout', false),
     'Sndio': get_variable('have_sndio', false),

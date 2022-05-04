@@ -67,6 +67,8 @@ option('jack', type: 'boolean', value: true,
        description: 'Whether JACK support is enabled')
 option('oss', type: 'boolean', value: true,
        description: 'Whether OSS support is enabled')
+option('pipewire', type: 'boolean', value: true,
+       description: 'Whether PipeWire support is enabled')
 option('pulse', type: 'boolean', value: true,
        description: 'Whether PulseAudio support is enabled')
 option('qtaudio', type: 'boolean', value: true,
