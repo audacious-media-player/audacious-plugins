@@ -345,7 +345,7 @@ static void mainwin_set_song_info (int bitrate, int samplerate, int channels)
     mainwin_monostereo->set_num_channels (channels);
 
     if (bitrate > 0)
-        snprintf (scratch, sizeof scratch, "%d kbps", bitrate / 1000);
+        snprintf (scratch, sizeof scratch, "%d kbit/s", bitrate / 1000);
     else
         scratch[0] = 0;
 

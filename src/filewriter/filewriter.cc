@@ -427,22 +427,22 @@ static const ComboItem mp3_sample_rates[] = {
 };
 
 static const ComboItem mp3_bitrates[] = {
-    ComboItem(N_("8 kbps"), 8),
-    ComboItem(N_("16 kbps"), 16),
-    ComboItem(N_("32 kbps"), 32),
-    ComboItem(N_("40 kbps"), 40),
-    ComboItem(N_("48 kbps"), 48),
-    ComboItem(N_("56 kbps"), 56),
-    ComboItem(N_("64 kbps"), 64),
-    ComboItem(N_("80 kbps"), 80),
-    ComboItem(N_("96 kbps"), 96),
-    ComboItem(N_("112 kbps"), 112),
-    ComboItem(N_("128 kbps"), 128),
-    ComboItem(N_("160 kbps"), 160),
-    ComboItem(N_("192 kbps"), 192),
-    ComboItem(N_("224 kbps"), 224),
-    ComboItem(N_("256 kbps"), 256),
-    ComboItem(N_("320 kbps"), 320)
+    ComboItem(N_("8 kbit/s"), 8),
+    ComboItem(N_("16 kbit/s"), 16),
+    ComboItem(N_("32 kbit/s"), 32),
+    ComboItem(N_("40 kbit/s"), 40),
+    ComboItem(N_("48 kbit/s"), 48),
+    ComboItem(N_("56 kbit/s"), 56),
+    ComboItem(N_("64 kbit/s"), 64),
+    ComboItem(N_("80 kbit/s"), 80),
+    ComboItem(N_("96 kbit/s"), 96),
+    ComboItem(N_("112 kbit/s"), 112),
+    ComboItem(N_("128 kbit/s"), 128),
+    ComboItem(N_("160 kbit/s"), 160),
+    ComboItem(N_("192 kbit/s"), 192),
+    ComboItem(N_("224 kbit/s"), 224),
+    ComboItem(N_("256 kbit/s"), 256),
+    ComboItem(N_("320 kbit/s"), 320)
 };
 
 static const ComboItem mp3_modes[] = {
