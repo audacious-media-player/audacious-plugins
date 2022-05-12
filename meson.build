@@ -242,6 +242,7 @@ if meson.version().version_compare('>= 0.53')
 
   summary({
     'Bauer stereophonic-to-binaural (bs2b)': get_variable('have_bs2b', false),
+    'Bitcrusher': true,
     'Channel Mixer': true,
     'Crystalizer': true,
     'Dynamic Range Compressor': true,
