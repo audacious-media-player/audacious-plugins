@@ -48,32 +48,14 @@ static inline void Set32BitsLE(uint32_t input, uint8_t *output)
 	output[3] = (input >> 24) & 0xFF;
 }
 
-// The whitespace trimming was modified from the following answer on Stack Overflow:
-// http://stackoverflow.com/a/217605
+// The whitespace trimming is from the following answer on Stack Overflow:
+// https://stackoverflow.com/a/17976541
 
-struct IsWhitespace : std::unary_function<char, bool>
+static inline std::string TrimWhitespace(const std::string &s)
 {
-	bool operator()(const char &x) const
-	{
-		return x >= 0x01 && x <= 0x20;
-	}
-};
-
-static inline std::string LeftTrimWhitespace(const std::string &orig)
-{
-	auto first_non_space = std::find_if(orig.begin(), orig.end(), std::not1(IsWhitespace()));
-	return std::string(first_non_space, orig.end());
-}
-
-static inline std::string RightTrimWhitespace(const std::string &orig)
-{
-	auto last_non_space = std::find_if(orig.rbegin(), orig.rend(), std::not1(IsWhitespace())).base();
-	return std::string(orig.begin(), last_non_space);
-}
-
-static inline std::string TrimWhitespace(const std::string &orig)
-{
-	return LeftTrimWhitespace(RightTrimWhitespace(orig));
+	auto wsfront = std::find_if_not(s.begin(), s.end(), [](int c) { return std::isspace(c); });
+	auto wsback = std::find_if_not(s.rbegin(), s.rend(), [](int c) { return std::isspace(c); }).base();
+	return (wsback <= wsfront ? std::string() : std::string(wsfront, wsback));
 }
 
 XSFFile::XSFFile() : xSFType(0), hasFile(false), rawData(), reservedSection(), programSection(), tags()
