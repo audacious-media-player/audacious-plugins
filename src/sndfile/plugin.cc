@@ -219,7 +219,7 @@ bool SndfilePlugin::read_tag (const char * filename, VFSFile & file, Tuple & tup
             format = "Core Audio File";
             break;
         default:
-            format = "Unknown sndfile";
+            format = nullptr;
     }
 
     switch (sfinfo.format & SF_FORMAT_SUBMASK)
@@ -292,6 +292,24 @@ bool SndfilePlugin::read_tag (const char * filename, VFSFile & file, Tuple & tup
             break;
         default:
             subformat = nullptr;
+    }
+
+    SF_FORMAT_INFO format_info;
+
+    if (format == nullptr)
+    {
+        // show codec information, similar to ffaudio plugin
+        format_info.format = sfinfo.format & SF_FORMAT_SUBMASK;
+        format = "Unknown sndfile"; // fallback
+
+        bool format_found = sf_command (sndfile, SFC_GET_FORMAT_INFO, & format_info,
+         sizeof (format_info)) == 0;
+
+        if ( format_found )
+        {
+            format = format_info.name;
+            subformat = nullptr;
+        }
     }
 
     if (subformat != nullptr)
