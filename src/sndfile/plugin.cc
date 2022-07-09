@@ -296,11 +296,11 @@ bool SndfilePlugin::read_tag (const char * filename, VFSFile & file, Tuple & tup
 
     if (format == nullptr)
     {
-	SF_FORMAT_INFO info = {.format = sfinfo.format & SF_FORMAT_SUBMASK};
-	if (sf_command (sndfile, SFC_GET_FORMAT_INFO, & info, sizeof (info)) == 0)
-	    format = info.name;
-	else
-	    format = "Unknown format";
+        SF_FORMAT_INFO info = {.format = sfinfo.format & SF_FORMAT_SUBMASK};
+        if (sf_command (sndfile, SFC_GET_FORMAT_INFO, & info, sizeof (info)) == 0)
+            format = info.name;
+        else
+            format = "Unknown format";
     }
 
     if (subformat != nullptr)
