@@ -1,51 +1,51 @@
-# Arabic translation for Audacious Plugins
+# Uzbek translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# abouzakaria kov <zakariakov@gmail.com>, 2016
-# Rached Noureddine <rached.noureddine@gmail.com>, 2019
-# Riyadh Talal <a.shamil77@yahoo.com>, 2020,2022
+# Umidjon Almasov <umidjon@almasov.uz>, 2022
+# Umidjon Almasov <umidjon@almasov.uz>, 2013
+# Umidjon Almasov <umidjon@almasov.uz>, 2022
+# 9ce67d7e9a84f219fd63ae516bbe9dee_5a4e663 <a742c1cf3329adaf6cfd74d7f32449f9_621413>, 2022
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2022-07-09 23:25+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
-"Last-Translator: Riyadh Talal <a.shamil77@yahoo.com>, 2020,2022\n"
-"Language-Team: Arabic (http://www.transifex.com/audacious/audacious/language/"
-"ar/)\n"
-"Language: ar\n"
+"Last-Translator: Umidjon Almasov <umidjon@almasov.uz>, 2022\n"
+"Language-Team: Uzbek (http://www.transifex.com/audacious/audacious/language/"
+"uz/)\n"
+"Language: uz\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/aac/aac.cc:19
 msgid "AAC (Raw) Decoder"
-msgstr " مرمز AAC  (الخام)"
+msgstr "AAC (Raw) dekoder"
 
 #: src/adplug/adplug-xmms.cc:70
 msgid "AdPlug (AdLib Player)"
-msgstr "مكتبة AdPlug (مشغّل AdLib)"
+msgstr "AdPlug (AdLib pleyer)"
 
 #: src/adplug/adplug-xmms.cc:167 src/modplug/modplugbmp.cc:321
 #: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:204
 msgid "sequenced"
-msgstr "متسلسلة"
+msgstr "ketma-ket"
 
 #: src/adplug/adplug-xmms.cc:349 src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
-msgstr "<b>المُخرَج</b>"
+msgstr "<b>Chiqarish</b>"
 
 #: src/adplug/adplug-xmms.cc:350
 msgid "OPL Emulator:"
-msgstr "محاكي OPL:"
+msgstr "OPL emulyatori:"
 
 #: src/adplug/adplug-xmms.cc:353
 msgid "Sample rate"
-msgstr "معدَّل العيّنة:"
+msgstr "Namuna tezligi"
 
 #: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:155
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
@@ -57,25 +57,25 @@ msgstr "معدَّل العيّنة:"
 #: src/resample/resample.cc:239 src/resample/resample.cc:243
 #: src/sid/xs_config.cc:67 src/soxr/sox-resampler.cc:205
 msgid "Hz"
-msgstr "هرتز"
+msgstr "Gts"
 
 #: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:46
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:81
 #: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
-msgstr "<b>متفرقات</b>"
+msgstr "<b>Turli xil</b>"
 
 #: src/adplug/adplug-xmms.cc:356
 msgid "Repeat song in endless loop"
-msgstr "كرر المقطوعة بحلقة غير منتهية"
+msgstr "Qo'shiqni cheksiz siklda takrorlash"
 
 #: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
 msgid "Alarm"
-msgstr "منبّه"
+msgstr "Signal"
 
 #: src/alarm/alarm.cc:782
 msgid "Set Alarm ..."
-msgstr "ضبط المنبه ..."
+msgstr "Signal sozlash..."
 
 #: src/alarm/alarm.cc:810
 msgid ""
@@ -83,9 +83,9 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
-"ملحقة يمكن استخدامها لبدء التشغيل في وقت معين.\n"
+"Muayyan vaqtda o'ynashni boshlash uchun ishlatilishi mumkin bo'lgan plagin.\n"
 "\n"
-"كتبها أصلاً Adam Feakin و Daniel Stodden."
+"Dastlab Adam Feakin va Daniel Stodden tomonidan yozilgan."
 
 #: src/alarm/interface.cc:28
 msgid ""
@@ -137,138 +137,137 @@ msgid ""
 "    Type the reminder in the input field and enable\n"
 "    the checkbox if you want it to be shown."
 msgstr ""
-"الوقت\n"
-"تنبيه في:\n"
-"    وقت حلول التنبيه.\n"
+"Vaqt\n"
+"Signal:\n"
+"Signal chalish vaqti.\n"
 "\n"
-"  الهدوء بعد:\n"
-"    أوقف المنبه بعد هذا المقدار من الوقت.\n"
-"       (إذا لم يغلق حوار الإيقاظ)\n"
-"\n"
-"\n"
-"الأيام\n"
-"  اليوم:\n"
-"    حدد أيام تنشيط التنبيه.\n"
-"\n"
-"  الوقت:\n"
-"    اختر وقت التنبيه لكل يوم،\n"
-"    او حدد زر التبديل لاستخدام الوقت\n"
-"    المبدئي.\n"
+"Jimlik:\n"
+"Bu vaqtdan keyin signalni to'xtatish.\n"
+"(uyg'otish oynasi yopiq bo'lmasa)\n"
 "\n"
 "\n"
-"العلوّ\n"
-"  إبهات:\n"
-"    زد خمود العلوّ لغاية العلوّ المطلوب\n"
-"    بهذا المقدار من الوقت.\n"
+"Kunlar\n"
+"Kun:\n"
+"Signalni yoqish uchun kunlarni tanlang.\n"
 "\n"
-"  بداية في:\n"
-"    ابدأ الإبهات من هذا العلوّ.\n"
-"\n"
-"  النهاية:\n"
-"العلوّ الذي يتوقف عنده الإبهات. إذا كان\n"
-"وقت الإبهات 0 فاجعل العلوّ بهذا المقدار وابدأ\n"
-"التشغيل.\n"
+"Vaqt:\n"
+"Har kuni signal uchun vaqtni tanlang,\n"
+"yoki standartni ishlatish uchun almashtirish tugmasini tanlang\n"
+"vaqt.\n"
 "\n"
 "\n"
-"خيارات:\n"
-"  أوامر إضافية:\n"
-"    شغّل هذا الأمر في وقت التنبيه.\n"
+"Ovoz balandligi\n"
+"Pasaygan:\n"
+"Ovozni tanlangan ovoz balandligigacha o'chiring\n"
+"bu vaqt uchun.\n"
 "\n"
-"  قائمة التشغيل:\n"
-"حمّل قائمة التشغيل هذه. إذا لم تحدد أية\n"
-"قائمة، فتُستخدم الحالية.\n"
-"يمكن أن تُدخل هنا رابط\n"
-"دفق mp3/ogg أيضاً.\n"
+"Boshlash:\n"
+"Ushbu ovoz balandligidan pasayish boshlansin.\n"
 "\n"
-"  تذكير:\n"
-"إعرض تذكيراً عندمايتنحّى المنبّه.\n"
-"اكتب التذكير في حقل الإدخال ومكّن\n"
-"مربع التأشير إذا اردته أن يظهر."
+"Yakun:\n"
+"Pasayishni toʻxtatish uchun ovoz balandligi. Agar pasaigan bo'lsa\n"
+"vaqt 0 ga teng, keyin ovoz balandligini o'rnating va boshlang.\n"
+"\n"
+"\n"
+"Variantlar:\n"
+"Qo'shimcha buyruq:\n"
+"Ushbu buyruqni signal vaqtida ishga tushiring.\n"
+"\n"
+"Pleylist:\n"
+"Ushbu pleylistni yuklang. Agar pleylist berilmagan bo'lsa,\n"
+"joriyidan foydalaniladi.\n"
+"Mp3/ogg oqimining URL manzilini\n"
+"bu yerga ham kiritish mumkin.\n"
+"\n"
+"Eslatma:\n"
+"Signal o'chganda eslatmani ko'rsatish.\n"
+"Kiritish maydoniga eslatmani kiriting va yoqing\n"
+"ko'rsatilishini xohlasangiz, katagiga belgi qo'ying."
 
 #: src/alarm/interface.cc:78
 msgid "This is your wakeup call."
-msgstr "هذا هو نداء إيقاظك."
+msgstr "Bu sizning uyg'otuvchi qo'ng'iroqingiz."
 
 #: src/alarm/interface.cc:96
 msgid "Your reminder for today is..."
-msgstr "تذكيرك لهذا اليوم هو ..."
+msgstr "Bugungi eslatmangiz..."
 
 #: src/alarm/interface.cc:98 src/alarm/interface.cc:372
 msgid "Reminder"
-msgstr "التذكير"
+msgstr "Eslatma"
 
 #: src/alarm/interface.cc:122
 msgid "Monday"
-msgstr "الإثنين"
+msgstr "Dushanba"
 
 #: src/alarm/interface.cc:122
 msgid "Tuesday"
-msgstr "الثلاثاء"
+msgstr "Seshanba"
 
 #: src/alarm/interface.cc:122
 msgid "Wednesday"
-msgstr "الأربعاء"
+msgstr "Chorshanba"
 
 #: src/alarm/interface.cc:123
 msgid "Thursday"
-msgstr "الخميس"
+msgstr "Payshanba"
 
 #: src/alarm/interface.cc:123
 msgid "Friday"
-msgstr "الجمعة"
+msgstr "Juma"
 
 #: src/alarm/interface.cc:123
 msgid "Saturday"
-msgstr "السبت"
+msgstr "Shanba"
 
 #: src/alarm/interface.cc:123
 msgid "Sunday"
-msgstr "الأحد"
+msgstr "Yakshanba"
 
 #: src/alarm/interface.cc:160 src/alarm/interface.cc:219
 #: src/alarm/interface.cc:234
 msgid "Time"
-msgstr "وقت"
+msgstr "Vaqt"
 
 #: src/alarm/interface.cc:167
 msgid "Alarm at (default):"
-msgstr "التنبيه في (الافتراضي):"
+msgstr "Signal (standart):"
 
 #: src/alarm/interface.cc:189
 msgid "h"
-msgstr "س"
+msgstr "s"
 
 #: src/alarm/interface.cc:192
 msgid "Quiet after:"
-msgstr "اصمت بعد:"
+msgstr "Jimlik:"
 
 #: src/alarm/interface.cc:204
 msgid "hours"
-msgstr "ساعات"
+msgstr "soat"
 
 #: src/alarm/interface.cc:215
 msgid "minutes"
-msgstr "دقائق"
+msgstr "daqiqa"
 
 #: src/alarm/interface.cc:224
 msgid "Choose the days for the alarm to come on"
-msgstr "اختر الأيام التي يأتي فيها التنبيه"
+msgstr "Signal chalinadigan kunlarni tanlang"
 
 #: src/alarm/interface.cc:231
 msgid "Day"
-msgstr "يوم"
+msgstr "Kun"
 
 #: src/alarm/interface.cc:248 src/bs2b/plugin.cc:130
 msgid "Default"
-msgstr "افتراضي"
+msgstr "Standart"
 
 #: src/alarm/interface.cc:277
 msgid "Days"
-msgstr "أيام"
+msgstr "Kun"
 
 #: src/alarm/interface.cc:286
 msgid "Fading"
-msgstr "تضاؤل"
+msgstr "Pasaygan"
 
 #: src/alarm/interface.cc:294 src/console/plugin.cc:41
 #: src/crossfade/crossfade.cc:52 src/crossfade/crossfade.cc:58
@@ -276,59 +275,59 @@ msgstr "تضاؤل"
 #: src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
 #: src/vumeter-qt/vumeter_qt.cc:39
 msgid "seconds"
-msgstr "ثواني"
+msgstr "soniya"
 
 #: src/alarm/interface.cc:301 src/alarm/interface.cc:342
 msgid "Volume"
-msgstr "العلوّ"
+msgstr "Ovoz balandligi"
 
 #: src/alarm/interface.cc:306
 msgid "Start at"
-msgstr "إبدأ في"
+msgstr "Boshlash"
 
 #: src/alarm/interface.cc:322
 msgid "Final"
-msgstr "نهائي"
+msgstr "Yakun"
 
 #: src/alarm/interface.cc:335
 msgid "Current"
-msgstr "حالي"
+msgstr "Joriy"
 
 #: src/alarm/interface.cc:348
 msgid "Additional Command"
-msgstr "أمر اضافي"
+msgstr "Qo'shimcha buyruq"
 
 #: src/alarm/interface.cc:354 src/alarm/interface.cc:377
 msgid "enable"
-msgstr "تمكين"
+msgstr "yoqish"
 
 #: src/alarm/interface.cc:361
 msgid "Playlist (optional)"
-msgstr "قائمة التشغيل (اختياري)"
+msgstr "Pleylist (ixtiyoriy)"
 
 #: src/alarm/interface.cc:365
 msgid "Select a playlist"
-msgstr "حدد قائمة التشغيل"
+msgstr "Pleylistni tanlang"
 
 #: src/alarm/interface.cc:385
 msgid "Options"
-msgstr "خيارات"
+msgstr "Variantlar"
 
 #: src/alarm/interface.cc:390
 msgid "What do these options mean?"
-msgstr "ماذا تعني هذه الخيارات؟"
+msgstr "Bu variantlar nimani anglatadi?"
 
 #: src/alarm/interface.cc:404
 msgid "Help"
-msgstr "مساعدة"
+msgstr "Yordam"
 
 #: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:35
 msgid "Album Art"
-msgstr "لوحة الألبوم"
+msgstr "Albom qoplamasi"
 
 #: src/alsa/alsa.h:64
 msgid "ALSA Output"
-msgstr "مُخرجات ALSA"
+msgstr "ALSA chiqishi"
 
 #: src/alsa/config.cc:28
 msgid ""
@@ -338,39 +337,39 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
-"ملحقة مخرَجات ALSA لأوادشيَس\n"
-"حقوق النشر 2009-2012 John Lindgren\n"
+"Audacious uchun ALSA chiqish plagini\n"
+"Mualliflik huquqi 2009-2012 Jon Lindgren\n"
 "\n"
-"شكري إلى William Pitcock، مؤلف ملحقة مخرَجات ALSA NG، الذي أفادني نصه البرمجي "
-"كمرجع عندما لم يكن مرشد ALSA كافيا."
+"ALSA qoʻllanmasi yetarli boʻlmaganda kodi maʼlumotnoma boʻlib xizmat qilgan "
+"ALSA Output Plugin NG muallifi Uilyam Pitkokka rahmat."
 
 #: src/alsa/config.cc:61
 msgid "(no description)"
-msgstr "(بدون وصف)"
+msgstr "(tavsif yo'q)"
 
 #: src/alsa/config.cc:166
 msgid "Default PCM device"
-msgstr "الجهاز الافتراضي PCM"
+msgstr "Standart PCM qurilmasi"
 
 #: src/alsa/config.cc:188
 msgid "Default mixer device"
-msgstr "لجهاز الخالط الافتراضي"
+msgstr "Standart mikser qurilmasi"
 
 #: src/alsa/config.cc:296
 msgid "PCM device:"
-msgstr "جهاز PCM:"
+msgstr "PCM qurilmasi:"
 
 #: src/alsa/config.cc:299
 msgid "Mixer device:"
-msgstr "جهاز الخالط:"
+msgstr "Mikser qurilmasi:"
 
 #: src/alsa/config.cc:302
 msgid "Mixer element:"
-msgstr "عنصر خالط:"
+msgstr "Mikser elementi:"
 
 #: src/amidiplug/amidi-plug.cc:42
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "AMIDI-التوصيل(MIDI مشغل)"
+msgstr "AMIDI-Plug (MIDI pleyer)"
 
 #: src/amidiplug/amidi-plug.cc:445
 msgid ""
@@ -395,72 +394,72 @@ msgid ""
 "for the good help with alpha testing"
 msgstr ""
 "AMIDI-Plug\n"
-"modular MIDI music player\n"
+"modulli MIDI musiqa pleyeri\n"
 "http://www.develia.org/projects.php?p=amidiplug\n"
 "\n"
-"written by Giacomo Lozito\n"
+"Giakomo Lozito tomonidan yozilgan\n"
 "<james@develia.org>\n"
 "\n"
-"special thanks to...\n"
+"alohida rahmat...\n"
 "\n"
-"Clemens Ladisch and Jaroslav Kysela\n"
-"for their cool programs aplaymidi and amixer; those\n"
-"were really useful, along with alsa-lib docs, in order\n"
-"to learn more about the ALSA API\n"
+"Klemens Ladish va Yaroslav Kisela\n"
+"aplaymidi va amikser ajoyib dasturlari uchun; bular\n"
+"alsa-lib hujjatlari bilan bir qatorda haqiqatdan ham foydali edi\n"
+"ALSA API haqida ko'proq ma'lumot olish uchun\n"
 "\n"
 "Alfredo Spadafina\n"
-"for the nice midi keyboard logo\n"
+"Chiroyli midi klaviatura logotipi uchun\n"
 "\n"
-"Tony Vroon\n"
-"for the good help with alpha testing"
+"Toni Vroon\n"
+"alfa sinovida yaxshi yordam uchun"
 
 #: src/amidiplug/i_configure.cc:94
 msgid "Override default gain:"
-msgstr "تجاوز الكاسب الافتراضي:"
+msgstr "Standart kuchayishni o'zgartirish"
 
 #: src/amidiplug/i_configure.cc:102
 msgid "Override default polyphony:"
-msgstr "تجاوز تعدد الأصوات الافتراضية:"
+msgstr "Standart polifoniyani o'zgartirish:"
 
 #: src/amidiplug/i_configure.cc:110
 msgid "Override default reverb:"
-msgstr "تجاوز التردد الافتراضي:"
+msgstr "Standart reverberatsiyani o'zgartirish:"
 
 #: src/amidiplug/i_configure.cc:112 src/amidiplug/i_configure.cc:120
 msgid "On"
-msgstr "مفتوح"
+msgstr "Yoqilgan"
 
 #: src/amidiplug/i_configure.cc:118
 msgid "Override default chorus:"
-msgstr "تجاوز الجوقة الافتراضية:"
+msgstr "Standart xorni o'zgartirish:"
 
 #: src/amidiplug/i_configure.cc:128 src/console/plugin.cc:29
 msgid "<b>Playback</b>"
-msgstr "<b>التشغيل</b>"
+msgstr "<b>Ijro</b>"
 
 #: src/amidiplug/i_configure.cc:129
 msgid "Transpose:"
-msgstr "ترجم:"
+msgstr "Ko'chirish:"
 
 #: src/amidiplug/i_configure.cc:131 src/speedpitch/speed-pitch.cc:257
 msgid "semitones"
-msgstr "نصف نغمة"
+msgstr "yarim tonlar"
 
 #: src/amidiplug/i_configure.cc:132
 msgid "Drum shift:"
-msgstr "تحول الطبل:"
+msgstr "Baraban almashinuvi:"
 
 #: src/amidiplug/i_configure.cc:134
 msgid "note numbers"
-msgstr "ارقام النوتة"
+msgstr "raqamlarga e'tibor berish"
 
 #: src/amidiplug/i_configure.cc:135
 msgid "Skip leading silence"
-msgstr "تخطي  leading silence"
+msgstr "Oldingi jimlikni o'tkazib yuborish"
 
 #: src/amidiplug/i_configure.cc:137
 msgid "Skip trailing silence"
-msgstr "تخطي  trailing silence"
+msgstr "Keyingi jimlikni o'tkazib yuborish"
 
 #: src/amidiplug/i_configure.cc:141
 msgid "<b>SoundFont</b>"
@@ -468,60 +467,60 @@ msgstr "<b>SoundFont</b>"
 
 #: src/amidiplug/i_configure.cc:148
 msgid "<b>Synthesizer</b>"
-msgstr "<b>المزج</b>"
+msgstr "<b>Sintezator</b>"
 
 #: src/amidiplug/i_configure.cc:153 src/console/plugin.cc:45
 #: src/filewriter/filewriter.cc:481 src/sid/xs_config.cc:65
 #: src/xsf/plugin.cc:446
 msgid "Sample rate:"
-msgstr "معدل العينة:"
+msgstr "Namuna tezligi:"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:57
 #: src/amidiplug/i_configure-fluidsynth.cc:536
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug - حدد ملف  SoundFont "
+msgstr "AMIDI-Plug - SoundFont faylini tanlang"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:60
 msgid "_Cancel"
-msgstr "_إلغ"
+msgstr "_Bekor qilish"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:61
 msgid "_Open"
-msgstr "_افتح"
+msgstr "_Ochish"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:230
 #: src/amidiplug/i_configure-fluidsynth.cc:476 src/gtkui/columns.cc:46
 msgid "File name"
-msgstr "إسم الملف"
+msgstr "Fayl nomi"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:234
 #: src/amidiplug/i_configure-fluidsynth.cc:479
 msgid "Size (bytes)"
-msgstr "حجم(بايت)"
+msgstr "Hajmi (bayt)"
 
 #: src/amidiplug/i_fileinfo.cc:169
 msgid "Name:"
-msgstr "اسم:"
+msgstr "Nomi:"
 
 #: src/amidiplug/i_fileinfo.cc:187
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr "<span size=\"smaller\"> ميدي معلومات</span>"
+msgstr "<span size=\"smaller\">MIDI haqida ma'lumot</span>"
 
 #: src/amidiplug/i_fileinfo.cc:201
 msgid "Format:"
-msgstr "صِيغة:"
+msgstr "Format:"
 
 #: src/amidiplug/i_fileinfo.cc:204
 msgid "Length (msec):"
-msgstr "طول (مللي ثانية):"
+msgstr "Uzunlik (msek):"
 
 #: src/amidiplug/i_fileinfo.cc:207
 msgid "No. of Tracks:"
-msgstr "عدد المقاطع:"
+msgstr "Qo'shiqlar raqami:"
 
 #: src/amidiplug/i_fileinfo.cc:213
 msgid "variable"
-msgstr "متغير"
+msgstr "o'zgaruvchan"
 
 #: src/amidiplug/i_fileinfo.cc:215
 msgid "BPM:"
@@ -533,32 +532,32 @@ msgstr "BPM (wavg):"
 
 #: src/amidiplug/i_fileinfo.cc:226
 msgid "Time Div:"
-msgstr "الوقت Div:"
+msgstr "Vaqt taqsimoti:"
 
 #: src/amidiplug/i_fileinfo.cc:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"smaller\">تعليقات  MIDI and Lyrics </span>"
+msgstr "<span size=\"smaller\">MIDI izohlari va matni</span>"
 
 #: src/amidiplug/i_fileinfo.cc:284
 msgid "* no comments available in this MIDI file *"
-msgstr "* لا يوجد تعليقات متاحة في ملف MIDI *"
+msgstr "* ushbu MIDI faylida hech qanday izoh mavjud emas *"
 
 #: src/amidiplug/i_fileinfo.cc:296
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* لا كلمات متاحة في ملف MIDI *"
+msgstr "* ushbu MIDI faylda hech qanday matn mavjud emas *"
 
 #: src/amidiplug/i_fileinfo.cc:306 src/ladspa/plugin.cc:417
 #: src/ui-common/dialogs-qt.cc:32
 msgid "_Close"
-msgstr "_اخرج"
+msgstr "_Yopish"
 
 #: src/amidiplug/i_fileinfo.cc:331
 msgid "  (invalid UTF-8)"
-msgstr "  (غير صالحة UTF-8)"
+msgstr "(yaroqsiz UTF-8)"
 
 #: src/ampache/ampache.cc:33
 msgid "Ampache Browser"
-msgstr "Ampache متصفخ"
+msgstr "Ampache brauzeri"
 
 #: src/ampache/ampache.cc:46
 msgid ""
@@ -568,11 +567,11 @@ msgid ""
 "Copyright (C) Róbert Čerňanský and John Lindgren\n"
 "License: GNU GPLv3"
 msgstr ""
-"المتصفح Ampache لأوداسيش\n"
+"Audacious uchun Ampache brauzeri\n"
 "http://ampache-browser.org/\n"
 "\n"
-"حقوق النشر (C) Róbert Čerňanský و John Lindgren\n"
-"الرخصة: GNU GPLv3"
+"Mualliflik huquqi (C) Róbert Čerňanski va Jon Lindgren\n"
+"Litsenziya: GNU GPLv3"
 
 #: src/aosd/aosd.cc:31
 msgid ""
@@ -587,149 +586,150 @@ msgstr ""
 "Audacious OSD\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
 "\n"
-"Written by Giacomo Lozito <james@develia.org>\n"
+"Giakomo Lozito tomonidan yozilgan <james@develia.org>\n"
 "\n"
-"Based in part on Evan Martin's Ghosd library:\n"
+"Qisman Evan Martinning Ghosd kutubxonasiga asoslangan:\n"
 "http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.h:37
 msgid "AOSD (On-Screen Display)"
-msgstr "AOSD (العرض على الشاشة)"
+msgstr "AOSD (ekrandagi displey)"
 
 #: src/aosd/aosd_style.cc:54
 msgid "Rectangle"
-msgstr "مستطيل"
+msgstr "To'rtburchak"
 
 #: src/aosd/aosd_style.cc:59
 msgid "Rounded Rectangle"
-msgstr "مستطيل دائري"
+msgstr "Dumaloq to'rtburchak"
 
 #: src/aosd/aosd_style.cc:64
 msgid "Concave Rectangle"
-msgstr "مستطيل مقعر"
+msgstr "Botiq to'rtburchak"
 
 #: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50 src/xsf/plugin.cc:436
 msgid "None"
-msgstr "لا شيء"
+msgstr "Yo'q"
 
 #: src/aosd/aosd_trigger.cc:49
 msgid "Playback Start"
-msgstr "بداية التشغيل"
+msgstr "Ijroni boshlash"
 
 #: src/aosd/aosd_trigger.cc:50
 msgid "Triggers OSD when a playlist entry is played."
-msgstr "اطلق OSD عند تشغيل القائمة."
+msgstr "Pleylist yozuvi ijro etilganda OSD ni ishga tushiradi."
 
 #: src/aosd/aosd_trigger.cc:55
 msgid "Title Change"
-msgstr "تغير العنوان"
+msgstr "Sarlavhani o'zgartirish"
 
 #: src/aosd/aosd_trigger.cc:56
 msgid "Triggers OSD when the song title changes (for internet streams)."
-msgstr "اطلق OSD عند تغيير عنوان المقطع (لتيارات الإنترنت)."
+msgstr ""
+"Qo'shiq nomi o'zgarganda OSD ni ishga tushiradi (internet oqimlari uchun)."
 
 #: src/aosd/aosd_trigger.cc:61
 msgid "Pause On"
-msgstr "اللبث مشغل"
+msgstr "Pauza yoqilgan"
 
 #: src/aosd/aosd_trigger.cc:62
 msgid "Triggers OSD when playback is paused."
-msgstr "يطلق OSD عند لبث التشغيل."
+msgstr "Ijro toʻxtatilganda OSD ni ishga tushiradi."
 
 #: src/aosd/aosd_trigger.cc:67
 msgid "Pause Off"
-msgstr "الليث متوقف"
+msgstr "Pauza oʻchirilgan"
 
 #: src/aosd/aosd_trigger.cc:68
 msgid "Triggers OSD when playback is unpaused."
-msgstr "يطلق OSD عندما التشغيل يتم إيقافه مؤقتا."
+msgstr "Ijro davom etganda OSD ni ishga tushiradi."
 
 #: src/aosd/aosd_ui.cc:162
 msgid "Placement"
-msgstr "الموضع"
+msgstr "Joylashuv"
 
 #: src/aosd/aosd_ui.cc:195
 msgid "Relative X offset:"
-msgstr "نسبية X أوفسات:"
+msgstr "Nisbiy X ofset:"
 
 #: src/aosd/aosd_ui.cc:202
 msgid "Relative Y offset:"
-msgstr "نسبية  Y أوفسات:"
+msgstr "Nisbiy Y ofset:"
 
 #: src/aosd/aosd_ui.cc:209
 msgid "Max OSD width:"
-msgstr "اكبر عرض OSD  :"
+msgstr "Maksimal OSD kengligi:"
 
 #: src/aosd/aosd_ui.cc:220
 msgid "Multi-Monitor options"
-msgstr "خيارات الشاشه المتعددة "
+msgstr "Ko'p monitorli variantlar"
 
 #: src/aosd/aosd_ui.cc:224
 msgid "Display OSD using:"
-msgstr "عرض OSD باستخدام:"
+msgstr "OSD ni ko'rsatish:"
 
 #: src/aosd/aosd_ui.cc:226
 msgid "all monitors"
-msgstr "كل الشاشات"
+msgstr "hamma monitorlarda"
 
 #: src/aosd/aosd_ui.cc:229
 #, c-format
 msgid "monitor %i"
-msgstr "شاشة%i"
+msgstr "%i monitorda"
 
 #: src/aosd/aosd_ui.cc:281
 msgid "Timing (ms)"
-msgstr "توقيت (مللي ثانية)"
+msgstr "Vaqt (ms)"
 
 #: src/aosd/aosd_ui.cc:286
 msgid "Display:"
-msgstr "عرض:"
+msgstr "Displey:"
 
 #: src/aosd/aosd_ui.cc:291
 msgid "Fade in:"
-msgstr "تتلاشى في:"
+msgstr "Paydo bo'lish"
 
 #: src/aosd/aosd_ui.cc:296
 msgid "Fade out:"
-msgstr "تتلاشى خارج:"
+msgstr "Yo'qolish"
 
 #: src/aosd/aosd_ui.cc:360
 msgid "Fonts"
-msgstr "خطوط"
+msgstr "Shriftlar"
 
 #: src/aosd/aosd_ui.cc:367
 #, c-format
 msgid "Font %i:"
-msgstr "خط %i:"
+msgstr "Shrift %i:"
 
 #: src/aosd/aosd_ui.cc:381
 msgid "Shadow"
-msgstr "ظل"
+msgstr "Soya"
 
 #: src/aosd/aosd_ui.cc:485
 msgid "Render Style"
-msgstr "نمط الاداء"
+msgstr "Render uslubi"
 
 #: src/aosd/aosd_ui.cc:501
 msgid "Colors"
-msgstr "الوان"
+msgstr "Ranglar"
 
 #: src/aosd/aosd_ui.cc:512
 #, c-format
 msgid "Color %i:"
-msgstr "خط %i:"
+msgstr "Rang %i:"
 
 #: src/aosd/aosd_ui.cc:599
 msgid "Enable trigger"
-msgstr "تمكين المشغل"
+msgstr "Triggerni yoqish"
 
 #: src/aosd/aosd_ui.cc:626
 msgid "Event"
-msgstr "حدث"
+msgstr "Voqea"
 
 #: src/aosd/aosd_ui.cc:653
 msgid "Composite manager detected"
-msgstr "Composite manager عثر على"
+msgstr "Kompozit boshqaruvchi aniqlandi"
 
 #: src/aosd/aosd_ui.cc:660
 msgid ""
@@ -737,97 +737,98 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"لم يعثر على Composite manager;\n"
-"إلا إذا كنت تعرف أن لديك  واحد مشغل, الرجاء تنشيط Composite manager   "
+"Kompozit boshqaruvchi aniqlanmadi;\n"
+"Agar siz uni ishlayotganini bilmangiz, kompozit boshqaruvchini "
+"faollashtiring, aks holda OSD to‘g‘ri ishlamaydi."
 
 #: src/aosd/aosd_ui.cc:668
 msgid "Composite manager not required for fake transparency"
-msgstr "مدير مركب غير مطلوب للشفافية "
+msgstr "Soxta shaffoflik uchun kompozit menejer talab qilinmaydi"
 
 #: src/aosd/aosd_ui.cc:705
 msgid "Transparency"
-msgstr "الشفافية"
+msgstr "Shaffoflik"
 
 #: src/aosd/aosd_ui.cc:711
 msgid "Fake transparency"
-msgstr "شفافية وهمية"
+msgstr "Soxta shaffoflik"
 
 #: src/aosd/aosd_ui.cc:713
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "الشفافية الحقيقية (تتطلب X Composite Ext.)"
+msgstr "Haqiqiy shaffoflik (X Composite Ext. talab qilinadi)"
 
 #: src/aosd/aosd_ui.cc:754
 msgid "Composite extension not loaded"
-msgstr "Composite extension لم يحمل"
+msgstr "Kompozit kengaytma yuklanmagan"
 
 #: src/aosd/aosd_ui.cc:771
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr "<span font_desc='%s'>OSD لأوداشْيَس</span>"
+msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
 #: src/aosd/aosd_ui.cc:834
 msgid "Position"
-msgstr "الموضع"
+msgstr "Joy"
 
 #: src/aosd/aosd_ui.cc:839
 msgid "Animation"
-msgstr "الحركة"
+msgstr "Animatsiya"
 
 #: src/aosd/aosd_ui.cc:844
 msgid "Text"
-msgstr "نص"
+msgstr "Matn"
 
 #: src/aosd/aosd_ui.cc:849
 msgid "Decoration"
-msgstr "زخرفة"
+msgstr "Bezatish"
 
 #: src/aosd/aosd_ui.cc:854
 msgid "Trigger"
-msgstr "أثار"
+msgstr "Trigger"
 
 #: src/aosd/aosd_ui.cc:859 src/streamtuner/shoutcast-model.cc:202
 msgid "Misc"
-msgstr "متفرقات"
+msgstr "Boshqa"
 
 #: src/aosd/aosd_ui.cc:868
 msgid "Test"
-msgstr "تجربة"
+msgstr "Sinov"
 
 #: src/asx3/asx3.cc:35
 msgid "ASXv3 Playlists"
-msgstr "قوائم ASXv3"
+msgstr "ASXv3 pleylistlari"
 
 #: src/asx/asx.cc:33
 msgid "ASXv1/ASXv2 Playlists"
-msgstr "قوائم ASXv1/ASXv2"
+msgstr "ASXv1/ASXv2 pleylistlari"
 
 #: src/audpl/audpl.cc:33
 msgid "Audacious Playlists (audpl)"
-msgstr "قوائم Audacious (audpl)"
+msgstr "Audacious pleylistlari (audpl)"
 
 #: src/bitcrusher/bitcrusher.cc:33
 msgid "<b>Bitcrusher</b>"
-msgstr "<b>ماحق البت</b>"
+msgstr ""
 
 #: src/bitcrusher/bitcrusher.cc:34
 msgid "Bit Depth:"
-msgstr "عمق البت:"
+msgstr ""
 
 #: src/bitcrusher/bitcrusher.cc:37
 msgid "Downsample ratio:"
-msgstr "نسبة إنقاص العيّنة"
+msgstr ""
 
 #: src/bitcrusher/bitcrusher.cc:48
 msgid "Bitcrusher"
-msgstr "ماحق البت"
+msgstr ""
 
 #: src/blur_scope/blur_scope.cc:39 src/blur_scope-qt/blur_scope.cc:45
 msgid "<b>Color</b>"
-msgstr "<b>لون</b>"
+msgstr "<b>Rang</b>"
 
 #: src/blur_scope/blur_scope.cc:55 src/blur_scope-qt/blur_scope.cc:158
 msgid "Blur Scope"
-msgstr "نطاق الضباب"
+msgstr "Blur Scope"
 
 #: src/bs2b/plugin.cc:38
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
@@ -835,11 +836,11 @@ msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
 #: src/bs2b/plugin.cc:129
 msgid "Presets:"
-msgstr "معادلات:"
+msgstr "Sozlamalar:"
 
 #: src/bs2b/plugin.cc:136
 msgid "Feed level:"
-msgstr "مستوى التغذية:"
+msgstr "Ta'minot darajasi:"
 
 #: src/bs2b/plugin.cc:138
 msgid "x1/10 dB"
@@ -847,15 +848,15 @@ msgstr "x1/10 dB"
 
 #: src/bs2b/plugin.cc:139
 msgid "Cut frequency:"
-msgstr "قطع التردد:"
+msgstr "Kesish chastotasi:"
 
 #: src/cairo-spectrum/cairo-spectrum.cc:41 src/qt-spectrum/qt-spectrum.cc:107
 msgid "Spectrum Analyzer"
-msgstr "محلل الطيف"
+msgstr "Spektr analizatori"
 
 #: src/cdaudio/cdaudio-ng.cc:71
 msgid "Audio CD Plugin"
-msgstr "ملحقة الأقراص الصوتية"
+msgstr "Audio CD plagini"
 
 #: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
@@ -868,165 +869,167 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2007 project."
 msgstr ""
-"Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
+"Mualliflik huquqi (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> va "
+"boshqalar.\n"
 "\n"
-"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
-"and to libcddb developers <http://libcddb.sourceforge.net/>.\n"
+"Libcdio dasturchilariga katta rahmat <http://www.gnu.org/software/libcdio/>\n"
+"va libcddb dasturchilariga <http://libcddb.sourceforge.net/>.\n"
 "\n"
-"Also thank you to Tony Vroon for mentoring and guiding me.\n"
+"Toni Vroonga ham menga maslahat bergani va yo'l-yo'riq ko'rsatgani uchun "
+"rahmat.\n"
 "\n"
-"This was a Google Summer of Code 2007 project."
+"Bu Google Summer of Code 2007 loyihasi edi."
 
 #: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
-msgstr "<b>الجهاز</b>"
+msgstr "<b>Qurilma</b>"
 
 #: src/cdaudio/cdaudio-ng.cc:135
 msgid "Read speed:"
-msgstr "سرعة القراءة:"
+msgstr "O'qish tezligi:"
 
 #: src/cdaudio/cdaudio-ng.cc:138
 msgid "Override device:"
-msgstr "تجاوز الجهاز:"
+msgstr "Qurilmani o'zgartirish"
 
 #: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
-msgstr "<b>البيانات الوصفية</b>"
+msgstr "<b>Metamaʼlumot</b>"
 
 #: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
-msgstr "استخدم CD-Text"
+msgstr "CD-Text dan foydalanish"
 
 #: src/cdaudio/cdaudio-ng.cc:143
 msgid "Use CDDB"
-msgstr "استخدم CDDB"
+msgstr "CDDB dan foydalanish"
 
 #: src/cdaudio/cdaudio-ng.cc:145
 msgid "Use HTTP instead of CDDBP"
-msgstr "استخدم HTTP بدلا من CDDBP"
+msgstr "CDDBP o'rniga HTTP dan foydalanish"
 
 #: src/cdaudio/cdaudio-ng.cc:148
 msgid "Server:"
-msgstr "الخادم:"
+msgstr "Server:"
 
 #: src/cdaudio/cdaudio-ng.cc:152
 msgid "Path:"
-msgstr "المسار:"
+msgstr "Yoʻl:"
 
 #: src/cdaudio/cdaudio-ng.cc:156
 msgid "Port:"
-msgstr "المنفذ:"
+msgstr "Port:"
 
 #: src/cdaudio/cdaudio-ng.cc:220
 msgid "Failed to initialize cdio subsystem."
-msgstr "فشل تهيئة cdio الفرعي."
+msgstr "cdio quyi tizimini ishga tushirib boʻlmadi."
 
 #: src/cdaudio/cdaudio-ng.cc:250
 #, c-format
 msgid "Invalid URI %s."
-msgstr "غير صالح  URI %s."
+msgstr "Yaroqsiz URI %s."
 
 #: src/cdaudio/cdaudio-ng.cc:252
 #, c-format
 msgid "Track %d not found."
-msgstr "المقطع %d غير موجود."
+msgstr "Trek %d topilmadi."
 
 #: src/cdaudio/cdaudio-ng.cc:254
 #, c-format
 msgid "Track %d is a data track."
-msgstr "المسار %d هو مسار البيانات."
+msgstr "Trek %d bu ma'lumotlar treki."
 
 #: src/cdaudio/cdaudio-ng.cc:329
 msgid "Error reading audio CD."
-msgstr "خطأ في قراءة صوت CD."
+msgstr "Audio CD ni o'qishda xatolik yuz berdi."
 
 #: src/cdaudio/cdaudio-ng.cc:398
 msgid "Audio CD"
-msgstr "صوت CD"
+msgstr "Audio CD"
 
 #: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr "خطأ في فتح جهاز CD %s."
+msgstr "%s CD qurilmasini ochib bo'lmadi."
 
 #: src/cdaudio/cdaudio-ng.cc:447
 msgid "No audio capable CD drive found."
-msgstr "لم يتم العثور على الصوت محرك الأقراص قادرة."
+msgstr "Hech qanday audio moslamasi mavjud CD drayvi topilmadi."
 
 #: src/cdaudio/cdaudio-ng.cc:470
 msgid "Drive is empty."
-msgstr "القرص فارغ"
+msgstr "Drayv bo'sh."
 
 #: src/cdaudio/cdaudio-ng.cc:472
 msgid "Unsupported disk type."
-msgstr "نوع القرص غير معتمد."
+msgstr "Qo'llab-quvvatlanmaydigan disk turi."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
-msgstr "فشل في إنهاء تهيئة فتح محرك الأقراص."
+msgstr "Ochiq CD diskini ishga tushirishni tugatib bo'lmadi."
 
 #: src/cdaudio/cdaudio-ng.cc:509
 msgid "Failed to retrieve first/last track number."
-msgstr "فشل في استرداد الأول / آخر عدد المسار."
+msgstr "Birinchi/oxirgi trek raqamini olib bo‘lmadi."
 
 #: src/cdaudio/cdaudio-ng.cc:530
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr "لا يمكن قراءة بداية / نهاية LSN للمسار %d."
+msgstr "%d Trek uchun boshlash/tugatish LSNni o'qib bo'lmadi."
 
 #: src/cdaudio/cdaudio-ng.cc:612
 msgid "Failed to create the CDDB connection."
-msgstr "فشل إنشاء اتصال CDDB."
+msgstr "CDDB ulanishini yaratib bo‘lmadi."
 
 #: src/cdaudio/cdaudio-ng.cc:678
 msgid "Failed to query the CDDB server"
-msgstr "فشل الاستعلام عن الخادم CDDB"
+msgstr "CDDB serverini so‘rash bajarilmadi"
 
 #: src/cdaudio/cdaudio-ng.cc:680
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr "فشل الاستعلام عن الخادم  CDDB: %s"
+msgstr "CDDB serverini so'rash bajarilmadi: %s"
 
 #: src/cdaudio/cdaudio-ng.cc:704
 #, c-format
 msgid "Failed to read the CDDB info: %s"
-msgstr "فشلت قراءة معلومات CDDB: %s"
+msgstr "CDDB ma'lumotlarini o'qib bo'lmadi: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
-msgstr "Audio CD قائمة عناصر"
+msgstr "Audio CD menyu bandlari"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Pla_y CD"
-msgstr "تشغيل قرص"
+msgstr "CD ni ijro ettirish"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "_Add CD"
-msgstr "إضافة قرص"
+msgstr "CD qo'shish"
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
-msgstr "<b>ضغط</b>"
+msgstr "<b>Siqish</b>"
 
 #: src/compressor/compressor.cc:46
 msgid "Center volume:"
-msgstr "وسط حجم الصوت"
+msgstr "Markaz ovoz balandligi:"
 
 #: src/compressor/compressor.cc:49
 msgid "Dynamic range:"
-msgstr "النطاق الديناميكي:"
+msgstr "Dinamik diapazon:"
 
 #: src/compressor/compressor.cc:57
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
-"ملحقة الضغط بالنطاق الديناميكي لأوادشيَس\n"
-"حقوق النشر 2010-2014 John Lindgren"
+"Audacious uchun dinamik diapazonni siqish plagini\n"
+"Mualliflik huquqi 2010-2014 Jon Lindgren"
 
 #: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
-msgstr "ضغط النطاق الديناميكي"
+msgstr "Dinamik diapazon kompressori"
 
 #: src/console/plugin.cc:15
 msgid ""
@@ -1037,38 +1040,37 @@ msgid ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 msgstr ""
-"محرك تشفير موسيقى طرفيّ مستند إلى Game_Music_Emu 0.5.2\n"
-"الصيغ المدعومة: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"Game_Music_Emu 0.5.2 asosidagi konsol musiqa dekoder mexanizmi\n"
+"Qo'llab-quvvatlanadigan formatlar: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, "
+"SPC, VGM, VGZ\n"
 "\n"
-"ملحَقة أوادشيَس من قبَل:\n"
-"William Pitcock <nenolod@dereferenced.org>\n"
+"Audacious plagin mualliflari:\n"
+"Uilyam Pitkok <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 
 #: src/console/plugin.cc:30
 msgid "Bass:"
-msgstr "صوت عميق:"
+msgstr "Bass:"
 
 #: src/console/plugin.cc:33
 msgid "Treble:"
-msgstr "صوت مرتفع:"
+msgstr "Treble:"
 
 #: src/console/plugin.cc:36
 msgid "Echo:"
-msgstr "صدى:"
+msgstr "Aks sado:"
 
 #: src/console/plugin.cc:39
 msgid "Default song length:"
-msgstr "المدة الافتراضية للقطعة:"
+msgstr "Standart qo‘shiq uzunligi:"
 
 #: src/console/plugin.cc:42 src/modplug/plugin_main.cc:58
 msgid "<b>Resampling</b>"
-msgstr ""
-"<b>\n"
-"اختزال</b>"
+msgstr "<b>Qayta namuna olish</b>"
 
 #: src/console/plugin.cc:43
 msgid "Enable audio resampling"
-msgstr "تمكين اختزال الصوت"
+msgstr "Ovozni qayta namuna olishni yoqish"
 
 #: src/console/plugin.cc:49
 msgid "<b>SPC</b>"
@@ -1076,19 +1078,19 @@ msgstr "<b>SPC</b>"
 
 #: src/console/plugin.cc:50
 msgid "Ignore length from SPC tags"
-msgstr "تجاهل الطول من علاماتSPC"
+msgstr "SPC teglaridan uzunlikni e'tiborsiz qoldirish"
 
 #: src/console/plugin.cc:52
 msgid "Increase reverb"
-msgstr "زيادة التردد"
+msgstr "Reverberatsiyani ko'paytirish"
 
 #: src/console/plugin.h:26
 msgid "Game Console Music Decoder"
-msgstr "فك لعبة وحدة تحكم الموسيقى"
+msgstr "O'yin konsoli musiqa dekoderi"
 
 #: src/coreaudio/coreaudio.cc:53
 msgid "CoreAudio output"
-msgstr "إخراج الصوت الأساسي"
+msgstr "CoreAudio chiqishi"
 
 #: src/coreaudio/coreaudio.cc:156
 msgid ""
@@ -1101,132 +1103,134 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
-"ملحَقة مخرَجات CoreAudio لأوادشيَس\n"
-"حقوق النشر 2014 William Pitcock\n"
-"حقوق النشر 2017,18 René J.V. Bertin\n"
-" (الشفرة الأصلية وشفرة مطوَّعة من\n"
-"أمثلة أبل  Apple، (C) Apple 2013)\n"
+"Audacious uchun CoreAudio chiqish plagini\n"
+"Mualliflik huquqi 2014 Uilyam Pitkok\n"
+"Mualliflik huquqi 2017,18 René J.V. Bertin\n"
+"(asl kod va kod moslashtirilgan\n"
+"Apple misollari, (C) Apple 2013)\n"
 "\n"
-"مستندة إلى ملحَقة مخرَجات SDL لأوادشيَس\n"
-"حقوق النشر 2010 John Lindgren"
+"Audacious uchun SDL chiqish plaginiga asoslangan\n"
+"Mualliflik huquqi 2010 Jon Lindgren"
 
 #: src/coreaudio/coreaudio.cc:172
 msgid "Use exclusive mode"
-msgstr "استخدام وضع خاص"
+msgstr "Maxsus rejimdan foydalanish"
 
 #: src/coreaudio/coreaudio.cc:174
 msgid "Use bit perfect audio (adapt device sampling rate)"
-msgstr "استخدم صوت تام البت (يتبنّى معدل نمذجة الجهاز)"
+msgstr ""
+"Bit mukammal audiodan foydalanish (qurilma namuna olish tezligini "
+"moslashtirish)"
 
 #: src/crossfade/crossfade.cc:43
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
 msgstr ""
-"ملحَقة الخفوت المتعابر لأوادشيَس\n"
-"حقوق النشر 2010-2014 John Lindgren"
+"Audacious uchun Crossfade plagini\n"
+"Mualliflik huquqi 2010-2014 Jon Lindgren"
 
 #: src/crossfade/crossfade.cc:47
 msgid "<b>Crossfade</b>"
-msgstr "<b>الخافت</b>"
+msgstr "<b>Oʻzaro oʻtish</b>"
 
 #: src/crossfade/crossfade.cc:48
 msgid "On automatic song change"
-msgstr "عند التغيير التلقائي للمقطوعة"
+msgstr "Qo'shiqni avtomatik o'zgartirishda"
 
 #: src/crossfade/crossfade.cc:50 src/crossfade/crossfade.cc:56
 msgid "Overlap:"
-msgstr "التداخل:"
+msgstr "Overlap:"
 
 #: src/crossfade/crossfade.cc:54
 msgid "On seek or manual song change"
-msgstr "عند التطبيق او تغيير المقطوعة يدويا"
+msgstr "Qidiruv yoki qo'lda qo'shiqni o'zgartirishda"
 
 #: src/crossfade/crossfade.cc:60
 msgid "<b>Tip</b>"
-msgstr "<b>Tip</b>"
+msgstr "<b>Maslahat</b>"
 
 #: src/crossfade/crossfade.cc:61
 msgid ""
 "For better crossfading, enable\n"
 "the Silence Removal effect."
 msgstr ""
-"لأفضل إبهات متداخل، تمكين\n"
-"تأثير إزالة الصمت."
+"Yaxshiroq oʻzaro oʻtish uchun\n"
+"jimlikni olib tashlash effektini yoqing."
 
 #: src/crossfade/crossfade.cc:71
 msgid "Crossfade"
-msgstr "خافت"
+msgstr "Oʻzaro oʻtish"
 
 #: src/crystalizer/crystalizer.cc:31
 msgid "<b>Crystalizer</b>"
-msgstr "<b>الكريستال</b>"
+msgstr "<b>Kristalizator</b>"
 
 #: src/crystalizer/crystalizer.cc:32 src/stereo_plugin/stereo.cc:45
 msgid "Intensity:"
-msgstr "الكثافة:"
+msgstr "Intensivlik:"
 
 #: src/crystalizer/crystalizer.cc:43
 msgid "Crystalizer"
-msgstr "الكريستال"
+msgstr "Kristalizator"
 
 #: src/cue/cue.cc:42
 msgid "Cue Sheet Plugin"
-msgstr "ملحَقة قطعة النغمات التحفيزية"
+msgstr "Cue Sheet plagini"
 
 #: src/delete-files/delete-files.cc:53 src/delete-files/delete-files.cc:215
 #: src/delete-files/delete-files.cc:230
 msgid "Delete Files"
-msgstr "حذف ملفات"
+msgstr "Fayllarni o'chirish"
 
 #: src/delete-files/delete-files.cc:120
 msgid "No files are selected."
-msgstr "لم تحدَّد ملفات."
+msgstr "Hech qanday fayl tanlanmagan."
 
 #: src/delete-files/delete-files.cc:125
 #, c-format
 msgid "Do you want to move %s to the trash?"
-msgstr "أتريد نقل %s إلى سلة المهملات؟"
+msgstr "%s chiqindiga o'tkazmoqchimisiz?"
 
 #: src/delete-files/delete-files.cc:126
 #, c-format
 msgid "Do you want to permanently delete %s?"
-msgstr "أتريد أن تحذف %s نهائيا؟"
+msgstr "%s butunlay o'chirib tashlamoqchimisiz?"
 
 #: src/delete-files/delete-files.cc:133
 #, c-format
 msgid "Do you want to move %d files to the trash?"
-msgstr "أتريد نقل %d ملف إلى سلة المهملات؟"
+msgstr "%dfayllarni chiqindiga o'tkazmoqchimisiz?"
 
 #: src/delete-files/delete-files.cc:134
 #, c-format
 msgid "Do you want to permanently delete %d files?"
-msgstr "أتريد أن تحذف %d ملف نهائيا؟"
+msgstr "%d fayllarni butunlay oʻchirib tashlamoqchimisiz?"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Move to trash"
-msgstr "نقل إلى سلة المهملات"
+msgstr "Chiqindiga o'tkazish"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Delete"
-msgstr "حذف"
+msgstr "Oʻchirish"
 
 #: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
 #: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:77
 msgid "Cancel"
-msgstr "إلغ"
+msgstr "Bekor qilish"
 
 #: src/delete-files/delete-files.cc:266
 msgid "Delete Selected Files"
-msgstr "حذف الملفات المحددة"
+msgstr "Tanlangan fayllarni o'chirish"
 
 #: src/delete-files/delete-files.cc:286
 msgid "<b>Delete Method</b>"
-msgstr "<b>طريقة الحذف</b>"
+msgstr "<b>O'chirish usuli</b>"
 
 #: src/delete-files/delete-files.cc:287
 msgid "Move to trash instead of deleting immediately"
-msgstr "النقل إلى سلة المهملات بدلا من الحذف الفوري"
+msgstr "Darhol oʻchirish oʻrniga chiqindiga oʻtkazish"
 
 #: src/echo_plugin/echo.cc:9
 msgid ""
@@ -1235,40 +1239,41 @@ msgid ""
 "Surround echo by Carl van Schaik, 1999\n"
 "Updated for Audacious by William Pitcock and John Lindgren, 2010-2014"
 msgstr ""
-"ملحَقة الصدى\n"
-"بواسطة Johan Levin, 1999\n"
-"الصدى المحيطي بواسطة Carl van Schaik, 1999\n"
-"حدّثها لأوادشيَس William Pitcock و John Lindgren, 2010-2014"
+"Aks sado plagini\n"
+"Yohan Levin tomonidan, 1999 yil\n"
+"Surround echo Karl van Schaik tomonidan, 1999 yil\n"
+"Uilyam Pitkok va Jon Lindgren tomonidan Audacious uchun yangilangan, "
+"2010-2014"
 
 #: src/echo_plugin/echo.cc:21
 msgid "<b>Echo</b>"
-msgstr "<b>ضدى</b>"
+msgstr "<b>Aks sado</b>"
 
 #: src/echo_plugin/echo.cc:22 src/modplug/plugin_main.cc:72
 #: src/modplug/plugin_main.cc:82
 msgid "Delay:"
-msgstr "تأخير:"
+msgstr "Kechikish:"
 
 #: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:72
 #: src/modplug/plugin_main.cc:82 src/xsf/plugin.cc:445
 msgid "ms"
-msgstr "م ث"
+msgstr "ms"
 
 #: src/echo_plugin/echo.cc:25
 msgid "Feedback:"
-msgstr "التردد:"
+msgstr "Fikr-mulohaza:"
 
 #: src/echo_plugin/echo.cc:28 src/modplug/plugin_main.cc:86
 msgid "Volume:"
-msgstr "الصوت:"
+msgstr "Ovoz balandligi:"
 
 #: src/echo_plugin/echo.cc:39
 msgid "Echo"
-msgstr "صدى"
+msgstr "Aks sado"
 
 #: src/ffaudio/ffaudio-core.cc:49
 msgid "FFmpeg Plugin"
-msgstr "ملحَقة FFmpeg"
+msgstr "FFmpeg plagini"
 
 #: src/ffaudio/ffaudio-core.cc:635
 msgid ""
@@ -1279,16 +1284,16 @@ msgid ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
-"ملحَقة تشفير لصيغ متعددة لأوادشيَس\n"
-"نَسَق FFmpeg للوسائط المتعددة (http://www.ffmpeg.org/)\n"
+"Audacious foydalanish uchun ko'p formatli audio dekodlash plagini\n"
+"FFmpeg multimedia freymvorki (http://www.ffmpeg.org/)\n"
 "\n"
-"ملحَقة أوادشيَس بواسطة:\n"
+"Audacious plagin mualliflari:\n"
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
 #: src/filewriter/filewriter.cc:48
 msgid "FileWriter Plugin"
-msgstr "ملحَقة FileWriter"
+msgstr "FileWriter plagini"
 
 #: src/filewriter/filewriter.cc:316
 #, c-format
@@ -1296,8 +1301,8 @@ msgid ""
 "Error opening %s:\n"
 "%s"
 msgstr ""
-"خطأ فتح %s:\n"
-" %s"
+" %s ochilishda xatolik:\n"
+"%s"
 
 #: src/filewriter/filewriter.cc:358
 msgid ""
@@ -1315,169 +1320,169 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"Bu dastur bepul dastur hisoblanadi; siz uni qayta tarqatishingiz va/yoki uni "
+"Free Software Foundation tomonidan nashr etilgan GNU General Public License "
+"shartlariga muvofiq o'zgartirishingiz mumkin; Litsenziyaning 2-versiyasi "
+"yoki (sizning xohishingizga ko'ra) har qanday keyingi versiyasi.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"Ushbu dastur foydali bo'ladi degan umidda tarqatiladi, lekin HECH QANDAY "
+"KAFOLATSIZ; SOVLASH MUVOFIQligi yoki MAQSUS MAQSADGA MUVOFIQligi haqidagi "
+"nazarda tutilgan kafolatsiz. Batafsil ma'lumot uchun GNU General Public "
+"License-ga qarang.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"Siz ushbu dastur bilan birga GNU General Public License nusxasini olishingiz "
+"kerak edi; bo'lmasa, Free Software Foundation, Inc., 51 Franklin Street, "
+"Fifth Floor, Boston, MA 02110-1301, AQSH ga yozing."
 
 #: src/filewriter/filewriter.cc:385
 msgid "Output file format:"
-msgstr "صيغة اخراج الملف:"
+msgstr "Chiqarish fayl formati:"
 
 #: src/filewriter/filewriter.cc:389
 msgid "Save into original directory"
-msgstr "حفظ في المجلد الاصلي"
+msgstr "Asl katalogga saqlash"
 
 #: src/filewriter/filewriter.cc:392
 msgid "Save into custom directory:"
-msgstr "حفظ في مجلد مخصص:"
+msgstr "Maxsus katalogga saqlash:"
 
 #: src/filewriter/filewriter.cc:400
 msgid "Generate file name from:"
-msgstr "توليد اسم ملف من:"
+msgstr "Fayl nomini quyidagidan yarating:"
 
 #: src/filewriter/filewriter.cc:401
 msgid "Original file name"
-msgstr "اسم الملف الاصلي"
+msgstr "Asl fayl nomi"
 
 #: src/filewriter/filewriter.cc:404
 msgid "Original file name (no suffix)"
-msgstr "اسم الملف الاصلي  (بدون ملحق)"
+msgstr "Asl fayl nomi (qo'shimchasi yo'q)"
 
 #: src/filewriter/filewriter.cc:407
 msgid "Original file tag"
-msgstr "وسم الملف الاصلي"
+msgstr "Asl fayl yorlig'i"
 
 #: src/filewriter/filewriter.cc:411
 msgid "Prepend track number to file name"
-msgstr "ارفق رقم المقطوعة في اسم الملف"
+msgstr "Fayl nomiga trek raqamini qo'ying"
 
 #: src/filewriter/filewriter.cc:417 src/filewriter/filewriter.cc:449
 msgid "Auto"
-msgstr "تلقائي"
+msgstr "Avtomatik"
 
 #: src/filewriter/filewriter.cc:418
 msgid "8000 Hz"
-msgstr "8000 هرتز"
+msgstr "8000 Gts"
 
 #: src/filewriter/filewriter.cc:419
 msgid "11025 Hz"
-msgstr "11025 هرتز"
+msgstr "11025 Gts"
 
 #: src/filewriter/filewriter.cc:420
 msgid "12000 Hz"
-msgstr "12000 هرتز"
+msgstr "12000 Gts"
 
 #: src/filewriter/filewriter.cc:421
 msgid "16000 Hz"
-msgstr "16000 هرتز"
+msgstr "16000 Gts"
 
 #: src/filewriter/filewriter.cc:422
 msgid "22050 Hz"
-msgstr "22050 هرتز"
+msgstr "22050 Gts"
 
 #: src/filewriter/filewriter.cc:423
 msgid "24000 Hz"
-msgstr "24000 هرتز"
+msgstr "24000 Gts"
 
 #: src/filewriter/filewriter.cc:424
 msgid "32000 Hz"
-msgstr "32000 هرتز"
+msgstr "32000 Gts"
 
 #: src/filewriter/filewriter.cc:425 src/xsf/plugin.cc:430
 msgid "44100 Hz"
-msgstr "44100 هرتز"
+msgstr "44100 Gts"
 
 #: src/filewriter/filewriter.cc:426 src/xsf/plugin.cc:431
 msgid "48000 Hz"
-msgstr "48000 هرتز"
+msgstr "48000 Gts"
 
 #: src/filewriter/filewriter.cc:430
 msgid "8 kbit/s"
-msgstr "8 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:431
 msgid "16 kbit/s"
-msgstr "16 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:432
 msgid "32 kbit/s"
-msgstr "32 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:433
 msgid "40 kbit/s"
-msgstr "40 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:434
 msgid "48 kbit/s"
-msgstr "48 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:435
 msgid "56 kbit/s"
-msgstr "56 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:436
 msgid "64 kbit/s"
-msgstr "64 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:437
 msgid "80 kbit/s"
-msgstr "80 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:438
 msgid "96 kbit/s"
-msgstr "96 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:439
 msgid "112 kbit/s"
-msgstr "112 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:440
 msgid "128 kbit/s"
-msgstr "128 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:441
 msgid "160 kbit/s"
-msgstr "160 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:442
 msgid "192 kbit/s"
-msgstr "192 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:443
 msgid "224 kbit/s"
-msgstr "224 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:444
 msgid "256 kbit/s"
-msgstr "256 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:445
 msgid "320 kbit/s"
-msgstr "320 ك‌بت/ث"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:450
 msgid "Joint Stereo"
-msgstr "صوت مُجَسَّم  مشترك"
+msgstr "Joint Stereo"
 
 #: src/filewriter/filewriter.cc:451 src/modplug/plugin_main.cc:57
 #: src/mpg123/mpg123.cc:255
 msgid "Stereo"
-msgstr "صوت مُجَسَّم"
+msgstr "Stereo"
 
 #: src/filewriter/filewriter.cc:452 src/modplug/plugin_main.cc:56
 #: src/mpg123/mpg123.cc:256
 msgid "Mono"
-msgstr "أحادي"
+msgstr "Mono"
 
 #: src/filewriter/filewriter.cc:456
 msgid "VBR"
@@ -1489,91 +1494,91 @@ msgstr "ABR"
 
 #: src/filewriter/filewriter.cc:478
 msgid "Algorithm quality:"
-msgstr "جودة اللغة ريتم:"
+msgstr "Algoritm sifati:"
 
 #: src/filewriter/filewriter.cc:484
 msgid "Bitrate:"
-msgstr "معدل البت:"
+msgstr "Bit tezligi:"
 
 #: src/filewriter/filewriter.cc:491
 msgid "Compression ratio:"
-msgstr "نسبة الضغط:"
+msgstr "Siqish nisbati:"
 
 #: src/filewriter/filewriter.cc:498
 msgid "Audio mode:"
-msgstr "الوضع الصوتي:"
+msgstr "Audio rejimi:"
 
 #: src/filewriter/filewriter.cc:501
 msgid "Enforce strict ISO compliance"
-msgstr "إنفاذ الامتثال الصارم ل ISO"
+msgstr "ISO talablariga qat'iy rioya qilish"
 
 #: src/filewriter/filewriter.cc:503
 msgid "Error protection"
-msgstr "خطأ الحماية"
+msgstr "Xatolardan himoya qilish"
 
 #: src/filewriter/filewriter.cc:508
 msgid "Enable VBR/ABR"
-msgstr "تفعيل VBR/ABR"
+msgstr "VBR/ABR ni yoqish"
 
 #: src/filewriter/filewriter.cc:510
 msgid "Type:"
-msgstr "نوع:"
+msgstr "Turi:"
 
 #: src/filewriter/filewriter.cc:514
 msgid "Minimum bitrate:"
-msgstr "الحد الأدنى لمعدل البت:"
+msgstr "Minimal bit tezligi:"
 
 #: src/filewriter/filewriter.cc:518
 msgid "Maximum bitrate:"
-msgstr "معدل البت الأقصى:"
+msgstr "Maksimal bit tezligi:"
 
 #: src/filewriter/filewriter.cc:522
 msgid "Average bitrate:"
-msgstr "متوسط معدل البت:"
+msgstr "O'rtacha bit tezligi:"
 
 #: src/filewriter/filewriter.cc:526
 msgid "VBR quality level:"
-msgstr "VBR مستوى الجودة:"
+msgstr "VBR sifat darajasi:"
 
 #: src/filewriter/filewriter.cc:530
 msgid "Strictly enforce minimum bitrate"
-msgstr "فرض بدقة الحد الأدنى لمعدل البت"
+msgstr "Minimal bit tezligiga qat'iy rioya qilish"
 
 #: src/filewriter/filewriter.cc:533
 msgid "Omit Xing VBR header"
-msgstr "اهمل رأس Xing VBR"
+msgstr "Xing VBR sarlavhasini o'tkazib yubormaslik"
 
 #: src/filewriter/filewriter.cc:539
 msgid "<b>Frame Headers</b>"
-msgstr "<b>رؤوس الإطار</b>"
+msgstr "<b>Kadr sarlavhalari</b>"
 
 #: src/filewriter/filewriter.cc:540
 msgid "Mark as copyright"
-msgstr "إجعلها حقوق التأليف والنشر"
+msgstr "Mualliflik huquqi sifatida belgilash"
 
 #: src/filewriter/filewriter.cc:542
 msgid "Mark as original"
-msgstr "إجعلها الأصلية"
+msgstr "Asl sifatida belgilash"
 
 #: src/filewriter/filewriter.cc:544
 msgid "<b>ID3 Tags</b>"
-msgstr "<b>ID3 Tags</b>"
+msgstr "<b>ID3 teglari</b>"
 
 #: src/filewriter/filewriter.cc:545
 msgid "Force addition of version 2 tag"
-msgstr "اجبر اضافته الى النسخة 2 tag"
+msgstr "2 versiya tegini majburan qo‘shish"
 
 #: src/filewriter/filewriter.cc:547
 msgid "Only add v1 tag"
-msgstr "إضافة فقط v1 tag"
+msgstr "Faqat v1 tegini qo'shish"
 
 #: src/filewriter/filewriter.cc:549
 msgid "Only add v2 tag"
-msgstr "إضافة فقط v2 tag"
+msgstr "Faqat v2 tegini qo'shish"
 
 #: src/filewriter/filewriter.cc:554
 msgid "Quality"
-msgstr "جودة"
+msgstr "Sifat"
 
 #: src/filewriter/filewriter.cc:555
 msgid "VBR/ABR"
@@ -1581,24 +1586,24 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/filewriter.cc:556
 msgid "Tags"
-msgstr "الاوسمة"
+msgstr "Teglar"
 
 #: src/filewriter/filewriter.cc:566
 msgid "Quality (0-1):"
-msgstr "الجودة (0-1):"
+msgstr "Sifat (0-1):"
 
 #: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:307
 #: src/skins/skins_cfg.cc:285
 msgid "General"
-msgstr "عامْ"
+msgstr "Umumiy"
 
 #: src/flac/flacng.h:36
 msgid "FLAC Decoder"
-msgstr "FLAC مفكك"
+msgstr "FLAC dekoder"
 
 #: src/flac/metadata.cc:280 src/wavpack/wavpack.cc:215
 msgid "lossless"
-msgstr "lossless"
+msgstr "yo'qotishsiz"
 
 #: src/flac/plugin.cc:180
 msgid ""
@@ -1607,7 +1612,7 @@ msgid ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
-"الكود الاصلي بواسطة\n"
+"Asl kod muallifi\n"
 "Ralf Ertzinger <ralf@skytale.net>\n"
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
@@ -1617,20 +1622,20 @@ msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
-"ملحَقة GIO لأوادشيَس\n"
-"حقوق النشر 2009-2012 John Lindgren"
+"Audacious uchun GIO plagini\n"
+"Mualliflik huquqi 2009-2012 Jon Lindgren"
 
 #: src/gio/gio.cc:42
 msgid "GIO Plugin"
-msgstr "ملحَقة GIO"
+msgstr "GIO plagini"
 
 #: src/gio/gio.cc:152
 msgid "Read-and-append mode not supported"
-msgstr "وضع القراءة وإلاحاق غير معتمد"
+msgstr "O‘qish va qo‘shish rejimi qo‘llab-quvvatlanmaydi"
 
 #: src/gio/gio.cc:165
 msgid "Invalid open mode"
-msgstr "وضع الفتح غير صالح"
+msgstr "Yaroqsiz ochiq rejim"
 
 #: src/glspectrum/gl-spectrum.cc:51
 msgid ""
@@ -1643,22 +1648,22 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
-"محلل طيف OpenGL لأوادشيَس\n"
-"حقوق النشر 2013 Christophe Budé و John Lindgren و Carlo Bramini\n"
+"Audacious uchun OpenGL spektr analizatori\n"
+"Mualliflik huquqi 2013 Kristof Bude, Jon Lindgren va Karlo Bramini\n"
 "\n"
-"مستندة إلى ملحَقة XMMS:\n"
-"حقوق النشر 1998-2000 Peter Alm و Mikael Alm و Olle Hallnas و Thomas Nilsson "
-"و 4Front Technologies\n"
+"XMMS plagini asosida:\n"
+"Mualliflik huquqi 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Tomas "
+"Nilsson va 4Front Technologies\n"
 "\n"
-"الرخصة: GPLv2‪+"
+"Litsenziya: GPLv2+"
 
 #: src/glspectrum/gl-spectrum.cc:62 src/qtglspectrum/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer"
-msgstr "محلل الطيف برنامج OpenGL"
+msgstr "OpenGL spektr analizatori"
 
 #: src/gtkui/columns.cc:35
 msgid "Entry number"
-msgstr "رقم المدخلة"
+msgstr "Kirish raqami"
 
 #: src/gtkui/columns.cc:36 src/moonstone/playlist_model.cc:38
 #: src/moonstone/playlist_selection.cc:62
@@ -1667,137 +1672,137 @@ msgstr "رقم المدخلة"
 #: src/qtui/playlist_model.cc:33 src/streamtuner/icecast-model.cc:120
 #: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:122
 msgid "Title"
-msgstr "العنوان"
+msgstr "Sarlavha"
 
 #: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:33
 msgid "Artist"
-msgstr "المؤدي"
+msgstr "Artist"
 
 #: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:33
 msgid "Year"
-msgstr "السَّنة"
+msgstr "Yil"
 
 #: src/gtkui/columns.cc:39 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:34
 msgid "Album"
-msgstr "الألبوم"
+msgstr "Albom"
 
 #: src/gtkui/columns.cc:40
 msgid "Album artist"
-msgstr "ألبوم المؤدي"
+msgstr "Albom artisti"
 
 #: src/gtkui/columns.cc:41 src/moonstone/playlist_model.cc:40
 #: src/qtui/playlist_model.cc:34
 msgid "Track"
-msgstr "المقطع"
+msgstr "Trek"
 
 #: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
 #: src/qtui/playlist_model.cc:34 src/streamtuner/icecast-model.cc:123
 #: src/streamtuner/shoutcast-model.cc:125
 #: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
-msgstr "النوع"
+msgstr "Janr"
 
 #: src/gtkui/columns.cc:43
 msgid "Queue position"
-msgstr "موقع اضافة قائمة الانتظار"
+msgstr "Navbat holati"
 
 #: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
 #: src/qtui/playlist_model.cc:35
 msgid "Length"
-msgstr "المُدة"
+msgstr "Uzunligi"
 
 #: src/gtkui/columns.cc:45
 msgid "File path"
-msgstr "مسار الملف"
+msgstr "Fayl yo'li"
 
 #: src/gtkui/columns.cc:47
 msgid "Custom title"
-msgstr "خصص العنوان"
+msgstr "Maxsus sarlavha"
 
 #: src/gtkui/columns.cc:48 src/moonstone/playlist_model.cc:42
 #: src/qtui/playlist_model.cc:36 src/streamtuner/icecast-model.cc:129
 #: src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
-msgstr "معدل البت"
+msgstr "Bit tezligi"
 
 #: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:43
 #: src/qtui/playlist_model.cc:36
 msgid "Comment"
-msgstr "تعليق"
+msgstr "Izoh"
 
 #: src/gtkui/columns.cc:315
 msgid "Available columns"
-msgstr "الأعمدة المتوفرة"
+msgstr "Mavjud ustunlar"
 
 #: src/gtkui/columns.cc:341
 msgid "Displayed columns"
-msgstr "الأعمدة المعروضة"
+msgstr "Ko'rsatilgan ustunlar"
 
 #: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:58
 #: src/search-tool/search-tool.cc:48
 msgid "Search Tool"
-msgstr "أداة البحث"
+msgstr "Qidiruv vositasi"
 
 #: src/gtkui/layout.cc:168
 msgid "Dock at Left"
-msgstr "ارساء على اليسار"
+msgstr "Chapga o'rnatish"
 
 #: src/gtkui/layout.cc:168
 msgid "Dock at Right"
-msgstr "ارساء على اليمين"
+msgstr "Oʻngga oʻrnatish"
 
 #: src/gtkui/layout.cc:169
 msgid "Dock at Top"
-msgstr "ارساء الى الفوق"
+msgstr "Yuqoriga oʻrnatish"
 
 #: src/gtkui/layout.cc:169
 msgid "Dock at Bottom"
-msgstr "ارساء الى الاسفل"
+msgstr "Pastga o'rnatish"
 
 #: src/gtkui/layout.cc:169
 msgid "Undock"
-msgstr "لا ترسي"
+msgstr "Yechish"
 
 #: src/gtkui/layout.cc:169 src/ladspa/plugin.cc:534
 msgid "Disable"
-msgstr "تعطيل"
+msgstr "Oʻchirish"
 
 #: src/gtkui/menus.cc:79 src/qtui/menus.cc:107
 #: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:282
 msgid "_Open Files ..."
-msgstr "_افتح ملفات..."
+msgstr "_Fayllarni ochish..."
 
 #: src/gtkui/menus.cc:80 src/qtui/menus.cc:111
 msgid "Open _URL ..."
-msgstr "إفتح ال‍ _‍رابط ..."
+msgstr "URL ochish..."
 
 #: src/gtkui/menus.cc:81 src/qtui/menus.cc:113
 msgid "_Add Files ..."
-msgstr "أضف  _ملفات ..."
+msgstr "Fayllarni qo'shish..."
 
 #: src/gtkui/menus.cc:82 src/qtui/menus.cc:118
 msgid "Add U_RL ..."
-msgstr "أ_ضف الرابط ..."
+msgstr "URL qo'shish..."
 
 #: src/gtkui/menus.cc:84 src/qtui/menus.cc:120
 msgid "Search _Library"
-msgstr "مكتبة البح_ث"
+msgstr "Kutubxonani qidirish"
 
 #: src/gtkui/menus.cc:86 src/qtui/menus.cc:123
 msgid "A_bout ..."
-msgstr "_عن البرنامج ..."
+msgstr "Haqida..."
 
 #: src/gtkui/menus.cc:87 src/qtui/menus.cc:125
 msgid "_Settings ..."
-msgstr "_اعدادات ..."
+msgstr "Sozlamalar..."
 
 #: src/gtkui/menus.cc:88 src/qtui/menus.cc:131
 #: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:284
 msgid "_Quit"
-msgstr "_خروج"
+msgstr "Chiqish"
 
 #: src/gtkui/menus.cc:92 src/gtkui/menus.cc:224
 #: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
@@ -1805,357 +1810,357 @@ msgstr "_خروج"
 #: src/search-tool/search-tool.cc:343 src/statusicon-qt/statusicon.cc:106
 #: src/statusicon/statusicon.cc:276
 msgid "_Play"
-msgstr "تش‍_‍غيل"
+msgstr "Ijro ettirish"
 
 #: src/gtkui/menus.cc:93 src/qtui/menus.cc:137
 #: src/statusicon-qt/statusicon.cc:107 src/statusicon/statusicon.cc:277
 msgid "Paus_e"
-msgstr "لب‍_‍ث"
+msgstr "Pauza"
 
 #: src/gtkui/menus.cc:94 src/qtui/menus.cc:139
 #: src/statusicon-qt/statusicon.cc:108 src/statusicon/statusicon.cc:278
 msgid "_Stop"
-msgstr "تو_قف"
+msgstr "To'xtatish"
 
 #: src/gtkui/menus.cc:95 src/qtui/menus.cc:141
 #: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:279
 msgid "Pre_vious"
-msgstr "ال‍_سابق"
+msgstr "Oldingi"
 
 #: src/gtkui/menus.cc:96 src/qtui/menus.cc:143
 #: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:280
 msgid "_Next"
-msgstr "ال‍_‍تالي"
+msgstr "_Keyingi"
 
 #: src/gtkui/menus.cc:97 src/qtui/menus.cc:145 src/skins/menus.cc:114
 #: src/skins-qt/menus.cc:105
 msgid "Previous Album"
-msgstr "الألبوم السابق"
+msgstr "Oldingi albom"
 
 #: src/gtkui/menus.cc:98 src/qtui/menus.cc:146 src/skins/menus.cc:115
 #: src/skins-qt/menus.cc:106
 msgid "Next Album"
-msgstr "الألبوم التالي"
+msgstr "Keyingi albom"
 
 #: src/gtkui/menus.cc:100 src/qtui/menus.cc:148
 msgid "_Repeat"
-msgstr "تك‍_رار"
+msgstr "Takrorlash"
 
 #: src/gtkui/menus.cc:101 src/qtui/menus.cc:150
 msgid "S_huffle"
-msgstr "_خلط"
+msgstr "Aralashtirish"
 
 #: src/gtkui/menus.cc:102 src/qtui/menus.cc:152
 msgid "Shuffle by Albu_m"
-msgstr "_عشوائي حسب الالبوم"
+msgstr "Albom bo'yicha aralashtirish"
 
 #: src/gtkui/menus.cc:103 src/qtui/menus.cc:155
 msgid "N_o Playlist Advance"
-msgstr "_لا تتابع قائمة التشغيل"
+msgstr "Pleylist harakati yo'q"
 
 #: src/gtkui/menus.cc:104 src/qtui/menus.cc:157
 msgid "Stop A_fter This Song"
-msgstr "توقف _بعد هذا المقطع"
+msgstr "Ushbu qo'shiqdan keyin to'xtash"
 
 #: src/gtkui/menus.cc:106 src/gtkui/menus.cc:208 src/qtui/menus.cc:162
 #: src/qtui/menus.cc:292
 msgid "Song _Info ..."
-msgstr "_معلومات المقطع ..."
+msgstr "Qo'shiq haqida ma'lumot..."
 
 #: src/gtkui/menus.cc:107
 msgid "Jump to _Time ..."
-msgstr "الا_نتقال السريع إلى الوقت ..."
+msgstr "Vaqtga o'tish..."
 
 #: src/gtkui/menus.cc:108
 msgid "_Jump to Song ..."
-msgstr "إذهب للمق‍_طع ..."
+msgstr "Qo'shiqqa o'tish..."
 
 #: src/gtkui/menus.cc:110 src/qtui/menus.cc:165
 msgid "Set Repeat Point _A"
-msgstr "نقطة التكرار _أ"
+msgstr "A takrorlash nuqtasini sozlash"
 
 #: src/gtkui/menus.cc:111 src/qtui/menus.cc:167
 msgid "Set Repeat Point _B"
-msgstr "نقطة التكرار _ب"
+msgstr "B takrorlash nuqtasini sozlash"
 
 #: src/gtkui/menus.cc:112 src/qtui/menus.cc:169
 msgid "_Clear Repeat Points"
-msgstr "مسح _نقطة التكرار"
+msgstr "Takrorlash nuqtalarini tozalash"
 
 #: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:140
 #: src/qtui/menus.cc:173 src/qtui/menus.cc:180 src/qtui/menus.cc:197
 msgid "By _Title"
-msgstr "حسب ال_عنوان"
+msgstr "Sarlavha bo'yicha"
 
 #: src/gtkui/menus.cc:117 src/qtui/menus.cc:174
 msgid "By _File Name"
-msgstr "حسب إسم ال_ملف"
+msgstr "Fayl nomi bo'yicha"
 
 #: src/gtkui/menus.cc:118 src/qtui/menus.cc:175
 msgid "By File _Path"
-msgstr "حسب م_سار الملف"
+msgstr "Fayl yo'li bo'yicha"
 
 #: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:179
 #: src/qtui/menus.cc:196
 msgid "By Track _Number"
-msgstr "حسب ر_قم المقطع"
+msgstr "Trek raqami bo'yicha"
 
 #: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:181
 #: src/qtui/menus.cc:198
 msgid "By _Artist"
-msgstr "حسب المؤ_دي"
+msgstr "Artist bo'yicha"
 
 #: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:182
 #: src/qtui/menus.cc:199
 msgid "By Al_bum"
-msgstr "حسب _الألبوم"
+msgstr "Albom bo'yicha"
 
 #: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:183
 #: src/qtui/menus.cc:200
 msgid "By Albu_m Artist"
-msgstr "حسب الالبوم ال_مؤدي"
+msgstr "Albom artisti bo'yicha"
 
 #: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:184
 #: src/qtui/menus.cc:201
 msgid "By Release _Date"
-msgstr "حسب _تاريخ الإصدار"
+msgstr "Chiqarilgan sana bo'yicha"
 
 #: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:185
 #: src/qtui/menus.cc:202
 msgid "By _Genre"
-msgstr "حسب ال_نوع"
+msgstr "Janr bo'yicha"
 
 #: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:186
 #: src/qtui/menus.cc:203
 msgid "By _Length"
-msgstr "حسب ال_طول"
+msgstr "Uzunlik bo'yicha"
 
 #: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:187
 #: src/qtui/menus.cc:204
 msgid "By _File Path"
-msgstr "حسب مسار المل_ف"
+msgstr "Fayl yo'li bo'yicha"
 
 #: src/gtkui/menus.cc:131 src/gtkui/menus.cc:148 src/qtui/menus.cc:188
 #: src/qtui/menus.cc:205
 msgid "By _Custom Title"
-msgstr "حسب العنوان المخص_ص"
+msgstr "Maxsus sarlavha bo'yicha"
 
 #: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:189
 #: src/qtui/menus.cc:206
 msgid "By C_omment"
-msgstr "حسب التعليق"
+msgstr "Izoh bo'yicha"
 
 #: src/gtkui/menus.cc:134 src/gtkui/menus.cc:151 src/qtui/menus.cc:191
 #: src/qtui/menus.cc:208
 msgid "R_everse Order"
-msgstr "اقلب ال_ترتيب"
+msgstr "Teskari tartib"
 
 #: src/gtkui/menus.cc:135 src/gtkui/menus.cc:152 src/qtui/menus.cc:193
 #: src/qtui/menus.cc:210
 msgid "_Random Order"
-msgstr "ترتيب ع_شوائي"
+msgstr "Tasodifiy tartib"
 
 #: src/gtkui/menus.cc:156 src/qtui/menus.cc:214
 msgid "_Play/Resume"
-msgstr "_قراءة/استأناف"
+msgstr "Ijro ettirish/Davom etish"
 
 #: src/gtkui/menus.cc:157 src/qtui/menus.cc:216
 msgid "_Refresh"
-msgstr "_تحديث"
+msgstr "Yangilash"
 
 #: src/gtkui/menus.cc:159 src/qtui/menus.cc:220
 msgid "_Sort"
-msgstr "_ترتيب"
+msgstr "Saralash"
 
 #: src/gtkui/menus.cc:160 src/qtui/menus.cc:221
 msgid "Sort Se_lected"
-msgstr "ترتيب ال_محددة"
+msgstr "Tanlangan saralash"
 
 #: src/gtkui/menus.cc:161 src/qtui/menus.cc:223
 msgid "Remove _Duplicates"
-msgstr "ازالة المك_ررة"
+msgstr "Dublikatlarni olib tashlash"
 
 #: src/gtkui/menus.cc:162 src/qtui/menus.cc:224
 msgid "Remove _Unavailable Files"
-msgstr "إزالة الملفات _غير متوفر"
+msgstr "Mavjud bo'lmagan fayllarni olib tashlash"
 
 #: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:218
 #: src/playlist-manager-qt/playlist-manager-qt.cc:346 src/qtui/menus.cc:227
 msgid "_New"
-msgstr "_جديد"
+msgstr "Yangi"
 
 #: src/gtkui/menus.cc:165 src/qtui/menus.cc:228
 msgid "Ren_ame ..."
-msgstr "اع_د التسمية"
+msgstr "Nomini o'zgartirish..."
 
 #: src/gtkui/menus.cc:166 src/gtkui/menus.cc:226
 #: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:229
 #: src/qtui/playlist_tabs.cc:333
 msgid "Remo_ve"
-msgstr "ح_ذف"
+msgstr "O'chirish"
 
 #: src/gtkui/menus.cc:168 src/qtui/menus.cc:231
 msgid "_Import ..."
-msgstr "ا_ستيراد ..."
+msgstr "Import..."
 
 #: src/gtkui/menus.cc:169 src/qtui/menus.cc:232
 msgid "_Export ..."
-msgstr "_صدر ..."
+msgstr "Eksport..."
 
 #: src/gtkui/menus.cc:171 src/qtui/menus.cc:235
 msgid "Playlist _Manager ..."
-msgstr "مدير _قائمة التشغيل"
+msgstr "Pleylist menejeri..."
 
 #: src/gtkui/menus.cc:172 src/qtui/menus.cc:237
 msgid "_Queue Manager ..."
-msgstr "_مدير قوائم الانتظار ..."
+msgstr "Navbat menejeri..."
 
 #: src/gtkui/menus.cc:176 src/qtui/menus.cc:241
 msgid "Volume _Up"
-msgstr "رف_ع الصوت"
+msgstr "Ovozni oshirish"
 
 #: src/gtkui/menus.cc:177 src/qtui/menus.cc:243
 msgid "Volume _Down"
-msgstr "_خفض الصوت"
+msgstr "Ovozni pasaytirish"
 
 #: src/gtkui/menus.cc:179 src/qtui/menus.cc:247
 msgid "_Equalizer ..."
-msgstr "ال_خالط..."
+msgstr "Ekvalayzer..."
 
 #: src/gtkui/menus.cc:180 src/qtui/menus.cc:249
 msgid "E_ffects ..."
-msgstr "مؤ_ثرات ..."
+msgstr "Effektlar..."
 
 #: src/gtkui/menus.cc:182
 msgid "_Record Stream"
-msgstr "سجل _ستريم"
+msgstr "Oqim yozib olish"
 
 #: src/gtkui/menus.cc:183
 msgid "Audio _Settings ..."
-msgstr "إعدادات ال_صوت ..."
+msgstr "Audio sozlamalari..."
 
 #: src/gtkui/menus.cc:187 src/qtui/menus.cc:258
 msgid "Show _Menu Bar"
-msgstr "عرض لوحة ال_قائمة"
+msgstr "Menyu panelini ko'rsatish"
 
 #: src/gtkui/menus.cc:188 src/qtui/menus.cc:260
 msgid "Show I_nfo Bar"
-msgstr "عرض لوحة الم_علومات"
+msgstr "Ma'lumot panelini ko'rsatish"
 
 #: src/gtkui/menus.cc:189 src/qtui/menus.cc:262
 msgid "Show Info Bar _Album Art"
-msgstr "إظهار صورة أل_بوم شريط المعلومات"
+msgstr "Ma'lumot panelidagi albom qoplamasini ko'rsatish"
 
 #: src/gtkui/menus.cc:190 src/qtui/menus.cc:264
 msgid "Show Info Bar Vis_ualization"
-msgstr "عرض لوحة _معلومات المرئيات"
+msgstr "Ma'lumot paneli vizualizatsiyasini ko'rsatish"
 
 #: src/gtkui/menus.cc:191 src/qtui/menus.cc:266
 msgid "Show _Status Bar"
-msgstr "عرض لوحة ال_حالة"
+msgstr "Holat panelini ko‘rsatish"
 
 #: src/gtkui/menus.cc:193 src/qtui/menus.cc:270
 msgid "Show _Remaining Time"
-msgstr "عرض الو_قت المتبقي"
+msgstr "Qolgan vaqtni ko'rsatish"
 
 #: src/gtkui/menus.cc:195 src/qtui/menus.cc:274 src/skins/menus.cc:157
 #: src/skins-qt/menus.cc:152
 msgid "_Visualizations ..."
-msgstr "ال_مرئيات ..."
+msgstr "Vizualizatsiya..."
 
 #: src/gtkui/menus.cc:199 src/qtui/menus.cc:278
 msgid "_File"
-msgstr "_ملف"
+msgstr "Fayl"
 
 #: src/gtkui/menus.cc:200 src/qtui/menus.cc:279
 msgid "_Playback"
-msgstr "_تشغيل"
+msgstr "Ijro ettirish"
 
 #: src/gtkui/menus.cc:201 src/qtui/menus.cc:280
 msgid "P_laylist"
-msgstr "ال_قائمة"
+msgstr "Pleylist"
 
 #: src/gtkui/menus.cc:202 src/gtkui/menus.cc:220 src/qtui/menus.cc:281
 #: src/qtui/menus.cc:310
 msgid "_Services"
-msgstr "_خدمات"
+msgstr "Xizmatlar"
 
 #: src/gtkui/menus.cc:203 src/qtui/menus.cc:282
 msgid "_Output"
-msgstr "الم‍_خرَجات"
+msgstr "Chiqarish"
 
 #: src/gtkui/menus.cc:204 src/qtui/menus.cc:283
 msgid "_View"
-msgstr "_عرض"
+msgstr "Ko'rinish"
 
 #: src/gtkui/menus.cc:209 src/qtui/menus.cc:294
 msgid "_Queue/Unqueue"
-msgstr "_اضف/ازل من قائمة الانتظار"
+msgstr "Navbat/navbatni bekor qilish"
 
 #: src/gtkui/menus.cc:211 src/qtui/menus.cc:297
 msgid "_Open Containing Folder"
-msgstr "فتح الم_جلد المحتوي"
+msgstr "O'z ichiga olgan jildni ochish"
 
 #: src/gtkui/menus.cc:212 src/qtui/menus.cc:299
 msgid "_Refresh Selected"
-msgstr "تحدي_ث المحددة"
+msgstr "Tanlanganni yangilash"
 
 #: src/gtkui/menus.cc:214 src/qtui/menus.cc:302
 msgid "Cu_t"
-msgstr "ق_ص"
+msgstr "Kesish"
 
 #: src/gtkui/menus.cc:215 src/qtui/menus.cc:303
 msgid "_Copy"
-msgstr "_نسخ"
+msgstr "Nusxalash"
 
 #: src/gtkui/menus.cc:216 src/qtui/menus.cc:304
 msgid "_Paste"
-msgstr "_لصق"
+msgstr "Joylashtirish"
 
 #: src/gtkui/menus.cc:217 src/qtui/menus.cc:305
 msgid "Paste at _End"
-msgstr "لص_ق عند الانتهاء"
+msgstr "Oxirida joylashtirish"
 
 #: src/gtkui/menus.cc:218 src/qtui/menus.cc:307
 msgid "Select _All"
-msgstr "تحديد ال_كل"
+msgstr "Hammasini belgilash"
 
 #: src/gtkui/menus.cc:225 src/moonstone/playlist_tabs.cc:309
 #: src/qtui/playlist_tabs.cc:331
 msgid "_Rename ..."
-msgstr "_اعد الت_سمية ..."
+msgstr "Nomini oʻzgartirish..."
 
 #: src/gtkui/settings.cc:35 src/qtui/settings.cc:63
 msgid "<b>Playlist Tabs</b>"
-msgstr "<b>علامات قائمة التبويب </b>"
+msgstr "<b>Pleylist yorliqlari</b>"
 
 #: src/gtkui/settings.cc:36
 msgid "Always show tabs"
-msgstr "اظهر دائما علامات التبويب"
+msgstr "Har doim yorliqlarni ko'rsatish"
 
 #: src/gtkui/settings.cc:38 src/qtui/settings.cc:68
 msgid "Show entry counts"
-msgstr "عرض عدد المدخلاة"
+msgstr "Kiritilgan sonlarni ko'rsatish"
 
 #: src/gtkui/settings.cc:40 src/qtui/settings.cc:71
 msgid "Show close buttons"
-msgstr "عرض زر الخروج"
+msgstr "Yopish tugmalarini ko'rsatish"
 
 #: src/gtkui/settings.cc:42 src/qtui/settings.cc:74
 msgid "<b>Playlist Columns</b>"
-msgstr "<b>أعمدة القائمة</b>"
+msgstr "<b>Pleylist ustunlari</b>"
 
 #: src/gtkui/settings.cc:44 src/qtui/settings.cc:76
 msgid "Show column headers"
-msgstr "اعرض رؤوس الأعمدة"
+msgstr "Ustun sarlavhalarini ko'rsatish"
 
 #: src/gtkui/settings.cc:47 src/qtui/settings.cc:82
 msgid "Scroll on song change"
-msgstr "انتقل عند تغير المقطع"
+msgstr "Qo'shiqni o'zgartirish uchun aylantiring"
 
 #: src/gtkui/ui_gtk.cc:74
 msgid "GTK Interface"
-msgstr "مظهر GTK "
+msgstr "GTK interfeysi"
 
 #: src/gtkui/ui_gtk.cc:210 src/skins/main.cc:227 src/skins-qt/main.cc:225
 #, c-format
@@ -2165,7 +2170,7 @@ msgstr "%s - Audacious"
 #: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:184
 #: src/qtui/main_window.cc:384
 msgid "Buffering ..."
-msgstr "التخزين المؤقت ..."
+msgstr "Buferlash..."
 
 #: src/gtkui/ui_gtk.cc:215 src/skins/main.cc:229 src/skins-qt/main.cc:227
 msgid "Audacious"
@@ -2178,170 +2183,165 @@ msgstr "Audacious"
 #: src/qtui/main_window.cc:346 src/qtui/main_window.cc:347
 #: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
 msgid "Play"
-msgstr "شغل"
+msgstr "Ijro ettirish"
 
 #: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:151
 #: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
 #: src/qtui/main_window.cc:352 src/qtui/main_window.cc:353
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Pause"
-msgstr "البث"
+msgstr "Pauza"
 
 #: src/gtkui/ui_gtk.cc:803 src/moonstone/main_window.cc:57
 #: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
-msgstr "مكتبة البحث"
+msgstr "Kutubxonani qidirish"
 
 #: src/gtkui/ui_gtk.cc:810 src/moonstone/main_window.cc:60
 #: src/qtui/main_window.cc:147
 msgid "Open Files"
-msgstr "إفتح ملفات"
+msgstr "Fayllarni ochish"
 
 #: src/gtkui/ui_gtk.cc:811 src/moonstone/main_window.cc:62
 #: src/qtui/main_window.cc:149
 msgid "Add Files"
-msgstr "أضف ملفات"
+msgstr "Fayllarni qo'shish"
 
 #: src/gtkui/ui_gtk.cc:816 src/moonstone/main_window.cc:65
 #: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Previous"
-msgstr "السابق"
+msgstr "Oldingi"
 
 #: src/gtkui/ui_gtk.cc:818 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:69
 #: src/qthotkey/gui.cc:66 src/qtui/main_window.cc:156 src/skins/menus.cc:111
 #: src/skins-qt/menus.cc:102
 msgid "Stop"
-msgstr "توقف"
+msgstr "To'xtatish"
 
 #: src/gtkui/ui_gtk.cc:819 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
 #: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
-msgstr "التالي"
+msgstr "Keyingi"
 
 #: src/gtkui/ui_gtk.cc:821 src/moonstone/main_window.cc:79
 #: src/qtui/main_window.cc:166 src/qtui/menus.cc:252 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:69
 msgid "Record Stream"
-msgstr "سجل ستريم"
+msgstr "Oqim yozib olish"
 
 #: src/gtkui/ui_gtk.cc:854 src/moonstone/main_window.cc:86
 #: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
 msgid "Repeat"
-msgstr "تكرار"
+msgstr "Takrorlash"
 
 #: src/gtkui/ui_gtk.cc:857 src/moonstone/main_window.cc:89
 #: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
 msgid "Shuffle"
-msgstr "عشوائي"
+msgstr "Aralashtirish"
 
 #: src/gtkui/ui_gtk.cc:1030 src/qtui/main_window.cc:123
 msgid "Menu"
-msgstr "القائمة"
+msgstr "Menyu"
 
 #: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:155
 msgid "mono"
-msgstr "احادي"
+msgstr "mono"
 
 #: src/gtkui/ui_statusbar.cc:65 src/qtui/status_bar.cc:157
 msgid "stereo"
-msgstr "ستيريو"
+msgstr "stereo"
 
 #: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:160
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "%d قناة"
-msgstr[1] "%d قناة"
-msgstr[2] "%d قناتين"
-msgstr[3] "%d قنوات"
-msgstr[4] "%d قنوات"
-msgstr[5] "%d قنوات"
+msgstr[0] "%d kanal"
 
 #: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:168
 #, c-format
 msgid "%d kHz"
-msgstr "%d كيلوهرتز"
+msgstr "%d kGts"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:174
 #, c-format
 msgid "%d kbit/s"
-msgstr "%d ك‌بت/ث"
+msgstr ""
 
 #: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471 src/skins-qt/main.cc:455
 msgid "Single mode."
-msgstr "وضع فردي."
+msgstr "Yagona rejim."
 
 #: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:473 src/skins-qt/main.cc:457
 msgid "Playlist mode."
-msgstr "وضع قائمة التشغيل."
+msgstr "Pleylist rejimi."
 
 #: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:479 src/skins-qt/main.cc:463
 msgid "Stopping after song."
-msgstr "توقف بعد المقطوعة."
+msgstr "Qo'shiqdan keyin to'xtash."
 
 #: src/hotkey/gui.cc:70 src/qthotkey/gui.cc:63
 msgid "Previous track"
-msgstr "المقطوعة السابقة"
+msgstr "Oldingi trek"
 
 #: src/hotkey/gui.cc:72 src/qthotkey/gui.cc:65
 msgid "Pause/Resume"
-msgstr "لبث/استئناف"
+msgstr "To'xtatib turish/Davom ettirish"
 
 #: src/hotkey/gui.cc:74 src/qthotkey/gui.cc:67
 msgid "Next track"
-msgstr "المقطوعة التالية"
+msgstr "Keyingi trek"
 
 #: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:68
 msgid "Step forward"
-msgstr "خطوة للأمام"
+msgstr "Oldinga qadam"
 
 #: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:69
 msgid "Step backward"
-msgstr "خطوة للخلف"
+msgstr "Orqaga qadam"
 
 #: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:70
 msgid "Mute"
-msgstr "كتم"
+msgstr "Ovozsiz"
 
 #: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:71
 msgid "Volume up"
-msgstr "رفع الصوت"
+msgstr "Ovozni ko'tarish"
 
 #: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:72
 msgid "Volume down"
-msgstr "خفض الصوت"
+msgstr "Ovozni pasaytirish"
 
 #: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:73
 msgid "Jump to file"
-msgstr "انتقال إلى ملف"
+msgstr "Faylga o'tish"
 
 #: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:74
 msgid "Toggle player window(s)"
-msgstr "تبديل نافذة(ت) التشغيل"
+msgstr "Pleyer oynasini (oynalarini) almashtirish"
 
 #: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:75
 msgid "Show On-Screen-Display"
-msgstr "اظهار في شاشة العرض"
+msgstr "Ekrandagi displeyni ko'rsatish"
 
 #: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:76
 msgid "Toggle repeat"
-msgstr "تبديل التكرار"
+msgstr "Takrorlashni yoqish/o‘chirish"
 
 #: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:77
 msgid "Toggle shuffle"
-msgstr "تبديل الخلط"
+msgstr "Aralashtirishni yoqish/o‘chirish"
 
 #: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:78
 msgid "Toggle stop after current"
-msgstr "تبديل التوقف بعد الحالية"
+msgstr "Joriydan keyin almashtirishni to'xtatish"
 
 #: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:79
 msgid "Raise player window(s)"
-msgstr "رفع نافذة التشغيل(s)"
+msgstr "Pleyer oynasini (oynalarini) ko'tarish"
 
 #: src/hotkey/gui.cc:97 src/qthotkey/gui.cc:97
 msgid "(none)"
-msgstr "(لا شيئ)"
+msgstr "(yo'q)"
 
 #: src/hotkey/gui.cc:260
 msgid ""
@@ -2349,41 +2349,42 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"من غير المستحسَن ربط أزرار الفأرة الأساسية دون معدِّلات.\n"
+"Sichqonchaning asosiy tugmalarini modifikatorlarsiz bog'lash tavsiya "
+"etilmaydi.\n"
 "\n"
-"أتريد الاستمرار؟"
+"Davom etishni xohlaysizmi?"
 
 #: src/hotkey/gui.cc:263
 msgid "Binding mouse buttons"
-msgstr "ربط أزرار الماوس"
+msgstr "Sichqoncha tugmachalarini bog'lash"
 
 #: src/hotkey/gui.cc:426
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
-"اضغط تركيبة مفاتيح داخل حقل النص..\n"
-"يمكنك أيضا ربط أزرار الماوس."
+"Matn maydonidagi tugmalar birikmasini bosing.\n"
+"Sichqoncha tugmachalarini ham bog'lashingiz mumkin."
 
 #: src/hotkey/gui.cc:432 src/qthotkey/gui.cc:167
 msgid "Hotkeys:"
-msgstr "المفاتيخ الساخنة:"
+msgstr "Tezkor tugmalar:"
 
 #: src/hotkey/gui.cc:448 src/qthotkey/gui.cc:169
 msgid "<b>Action:</b>"
-msgstr "<b>أمر:</b>"
+msgstr "<b>Harakat:</b>"
 
 #: src/hotkey/gui.cc:454 src/qthotkey/gui.cc:170
 msgid "<b>Key Binding:</b>"
-msgstr "<b>مفتاح الربط:</b>"
+msgstr "<b>Kalit bog'lash:</b>"
 
 #: src/hotkey/gui.cc:501 src/qthotkey/gui.cc:172
 msgid "_Add"
-msgstr "_أضف"
+msgstr "_Qo'shish"
 
 #: src/hotkey/plugin.cc:61 src/qthotkey/plugin.cc:77
 msgid "Global Hotkeys"
-msgstr "المفاتيح العامة"
+msgstr "Global tezkor tugmalar"
 
 #: src/hotkey/plugin.cc:76
 msgid ""
@@ -2399,75 +2400,78 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
-"ملحَقة المفاتيح الساخنة العمومية Global Hotkey\n"
-"تحكّم بالمشغّل بتركيبة مفاتيح عمومية أو مفاتيح الوسائط.\n"
+"Global tezkor tugmalar plagini\n"
+"Pleyerni global tugmalar birikmalari yoki multimedia tugmalari bilan "
+"boshqarish.\n"
 "\n"
-"حقوق النشر (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"Mualliflik huquqi (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
-"المساهمون بضمنهم:\n"
-"حقوق النشر (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-"حقوق النشر (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>،\n"
-" Bryn Davies <curious@ihug.com.au>،\n"
-" Jonathan A. Davis <davis@jdhouse.org>،\n"
-" Jeremy Tan <nsx@nsx.homeip.net>"
+"Ishtirokchilar:\n"
+"Mualliflik huquqi (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Mualliflik huquqi (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+"Bryn Davies <curious@ihug.com.au>,\n"
+"Jonatan A. Davis <davis@jdhouse.org>,\n"
+"Jeremi Tan <nsx@nsx.homeip.net>"
 
 #: src/jack/jack-ng.cc:54
 msgid "JACK Output"
-msgstr "JACK مخرج"
+msgstr "JACK chiqishi"
 
 #: src/jack/jack-ng.cc:126
 msgid "Client name:"
-msgstr "اسم العميل:"
+msgstr "Mijoz nomi:"
 
 #: src/jack/jack-ng.cc:128
 msgid "Automatically connect to output ports"
-msgstr "الاتصال تلقائيا إلى منافذ الإخراج"
+msgstr "Chiqarish portlariga avtomatik ulanish"
 
 #: src/jack/jack-ng.cc:130
 msgid "Filter ports (regex, use any port if blank):"
-msgstr "تصفية المنافذ (تعبير نظامي regex، يستخدم أي منفذ إذا كان فارغا):"
+msgstr ""
+"Portlarni filtrlash (regex, bo'sh bo'lsa, istalgan portdan foydalaning):"
 
 #: src/jack/jack-ng.cc:136
 msgid "Connect to physical ports only"
-msgstr "الارتباط بمنافذ مادية فقط"
+msgstr "Faqat jismoniy portlarga ulanish"
 
 #: src/jack/jack-ng.cc:139
 msgid "Upmix to"
-msgstr "صعّد المزج إلى"
+msgstr "Upmix to"
 
 #: src/jack/jack-ng.cc:141
 msgid "ports if input has fewer channels"
-msgstr "منفذاً إذا كان للمُدخَلات قنوات أقل"
+msgstr "ports if input has fewer channels"
 
 #: src/jack/jack-ng.cc:143
 msgid "Ignore insufficient number of ports"
-msgstr "أهمل عدد المنافذ غير الكافي"
+msgstr "Portlar soni yetarli emasligiga e'tibor bermaslik"
 
 #: src/jack/jack-ng.cc:181
 msgid "No JACK output ports were found. Please check settings."
-msgstr "لم يُعثر على منافذ إخراج صوتي. رجاءا تأكد من الإعدادات."
+msgstr "JACK chiqish portlari topilmadi. Iltimos, sozlamalarni tekshiring."
 
 #: src/jack/jack-ng.cc:195
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
-msgstr "تم العثور على %d فقط منافذ الإخراج JACK ولكن يلزم %d ."
+msgstr "Faqat %d JACK chiqish portlari topildi, lekin %d talab qilinadi."
 
 #: src/jack/jack-ng.cc:210
 #, c-format
 msgid "Failed to connect to JACK port %s."
-msgstr "فشل الاتصال بمنفذ الخادم   %s."
+msgstr "%s JACK portiga ulanib bo‘lmadi.."
 
 #: src/jack/jack-ng.cc:230
 msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
-"جاك يدعم فقط الفاصلة العائمة للصوت. يجب تغيير عمق الاخراج قليلا لالفاصلة "
-"العائمة في إعدادات اوداسيو"
+"JACK faqat suzuvchi nuqtali audioni qo'llab-quvvatlaydi. Audacious "
+"sozlamalarida chiqish bit chuqurligini suzuvchi nuqtaga o'zgartirishingiz "
+"kerak."
 
 #: src/jack/jack-ng.cc:245
 msgid "Failed to connect to the JACK server; is it running?"
-msgstr "فشل الاتصال بالخادم JACK. وتشغيله؟"
+msgstr "JACK serveriga ulanib bo'lmadi, ishga tushirilganmi?"
 
 #: src/jack/jack-ng.cc:321
 #, c-format
@@ -2475,17 +2479,18 @@ msgid ""
 "The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
 "%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
 msgstr ""
-"يتطلب خادم جاك معدل عينة من %d هرتز، ولكن يشغل اوداسيو في %d  هرتز. يرجى "
-"استخدام نموذج تأثير محول معدل العينة لتصحيح عدم التوافق."
+"JACK serveri %dGts namuna tezligini talab qiladi, lekin Audacious %d Gts da "
+"ijro ettirmoqda. Iltimos, nomuvofiqlikni tuzatish uchun Sample Rate "
+"Converter effektidan foydalaning."
 
 #: src/ladspa/plugin.cc:415
 #, c-format
 msgid "%s Settings"
-msgstr "%s إعدادات"
+msgstr "%s sozlamalari"
 
 #: src/ladspa/plugin.cc:481
 msgid "Module paths:"
-msgstr "مسار الموديول:"
+msgstr "Modul yo'llari:"
 
 #: src/ladspa/plugin.cc:486
 msgid ""
@@ -2493,43 +2498,44 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>افصل المسارات المتعددة بنقطتين عموديتين.\n"
-"يُبحَث في هذه المسارات إضافة إلى LADSPA_PATH.\n"
-"بعد إضافة مسارات جديدة، اضغط مفتاح الإدخال للفحص عن ملحَقات جديدة.</small>"
+"I<small>kki nuqta bilan bir nechta yo'llarni ajrating.\n"
+"Bu yoʻllar LADSPA_PATH ga qoʻshimcha ravishda qidiriladi.\n"
+"Yangi yo'llarni qo'shgandan so'ng, yangi plaginlarni skanerlash uchun Enter "
+"tugmasini bosing.</small>"
 
 #: src/ladspa/plugin.cc:502
 msgid "Available plugins:"
-msgstr "الملحَقات المتوفرة:"
+msgstr "Mavjud plaginlar:"
 
 #: src/ladspa/plugin.cc:515 src/modplug/plugin_main.cc:91
 #: src/modplug/plugin_main.cc:94 src/modplug/plugin_main.cc:97
 #: src/modplug/plugin_main.cc:100
 msgid "Enable"
-msgstr "تمكين"
+msgstr "Yoqish"
 
 #: src/ladspa/plugin.cc:521
 msgid "Enabled plugins:"
-msgstr "الماحَقات النشطة:"
+msgstr "Yoqilgan plaginlar:"
 
 #: src/ladspa/plugin.cc:537
 msgid "Settings"
-msgstr "الإعدادات"
+msgstr "Sozlamalar"
 
 #: src/ladspa/plugin.cc:554
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 msgstr ""
-"LADSPA Host for Audacious\n"
-"Copyright 2011 John Lindgren"
+"Audacious uchun LADSPA xosti\n"
+"Mualliflik huquqi 2011 Jon Lindgren"
 
 #: src/ladspa/plugin.h:78
 msgid "LADSPA Host"
-msgstr "LADSPA Host"
+msgstr "LADSPA xosti"
 
 #: src/lirc/lirc.cc:55
 msgid "LIRC Plugin"
-msgstr "ملحَقة LIRC"
+msgstr "LIRC plagini"
 
 #: src/lirc/lirc.cc:379
 msgid ""
@@ -2546,38 +2552,39 @@ msgid ""
 "\n"
 "For more information about LIRC, see http://lirc.org."
 msgstr ""
-"ملحَقة بسيطة للتحكم في أوادشيَس باستخدام معالج التحكم عن بُعد LIRC\n"
+"LIRC masofadan boshqarish pulti yordamida Audacious ni boshqarish uchun "
+"oddiy plagin\n"
 "\n"
-"مطوَّعة لأوادشيَس بواسطة:\n"
-"Tony Vroon <chainsaw@gentoo.org>\n"
-"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"Audacious uchun moslashtirilgan:\n"
+"Toni Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki  <jharjuma@gmail.com>\n"
 "\n"
-"مستندة إلى ملحَقة XMMS LIRC من طرف:\n"
-"Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de>\n"
-"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"XMMS LIRC plaginida asoslangan:\n"
+"Karl van Schaik <carl@leg.uct.ac.za>\n"
+"Kristof Bartelmus <xmms@bartelmus.de>\n"
+"Endryu O. Shadoura <bugzilla@tut.by>\n"
 "\n"
-"لمزيد من المعلومات عن LIRC، راجع http://lirc.org."
+"LIRC haqida ko'proq ma'lumot olish uchun http://lirc.org ga qarang."
 
 #: src/lirc/lirc.cc:390
 msgid "<b>Connection</b>"
-msgstr "<b>اتصال</b>"
+msgstr "<b>Ulanish</b>"
 
 #: src/lirc/lirc.cc:391
 msgid "Reconnect to LIRC server"
-msgstr "إعادة الاتصال بخادم LIRC"
+msgstr "LIRC serveriga qayta ulanish"
 
 #: src/lirc/lirc.cc:393
 msgid "Wait before reconnecting:"
-msgstr "الانتظار حتى إعادةالاتصال:"
+msgstr "Qayta ulanishdan oldin kutish:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:89
 msgid "Lyrics"
-msgstr "Lyrics"
+msgstr "Qo'shiq matni"
 
 #: src/lyricwiki-qt/lyricwiki.cc:116
 msgid "Nowhere"
-msgstr "Nowhere"
+msgstr "Hech qayerda"
 
 #: src/lyricwiki-qt/lyricwiki.cc:117
 msgid "lyrics.ovh"
@@ -2585,103 +2592,103 @@ msgstr "lyrics.ovh"
 
 #: src/lyricwiki-qt/lyricwiki.cc:121
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
-msgstr "<small>الفنان يُقتَطع عند البداية، العنوان -- عند النهاية</small>"
+msgstr "<small>Artist boshida, sarlavha - oxirida qisqartiriladi</small>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:122
 msgid "Chars to truncate on:"
-msgstr "الحروف التي سيُقتَطع عندها:"
+msgstr "Kesish uchun belgilar:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:126
 msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
-msgstr "<small>الحروف محكومة بـ OR في التعبير النظامي، محاطة بفراغ</small>"
+msgstr "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:127
 msgid "Chars to split on:"
-msgstr "الحروف التي سيُقسَم عندها:"
+msgstr "Bo'lish uchun belgilar:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:128
 msgid "Further truncate those on chars"
-msgstr "زيادة اقتطاع هذا عند الحروف"
+msgstr "Belgilardagilarni yanada qisqartirish"
 
 #: src/lyricwiki-qt/lyricwiki.cc:134
 msgid "<b>General</b>"
-msgstr "<b>عمومي</b>"
+msgstr "<b>Umumiy</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:135
 msgid "Split title into artist and title on chars"
-msgstr "اقتطع العنوان إلى فنان و عنوان عند الحروف"
+msgstr "Sarlavhani artistga va sarlavhani belgilarga ajrating"
 
 #: src/lyricwiki-qt/lyricwiki.cc:138
 msgid "<b>Internet Sources</b>"
-msgstr "<b>مصادر الإنترنت</b>"
+msgstr "<b>Internet manbalari</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:139
 msgid "Fetch lyrics from:"
-msgstr "جلب الأشعار من:"
+msgstr "Qo'shiq matnni yuklab oling:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:142
 msgid "Store fetched lyrics in local cache"
-msgstr "اخزن الأشعار المجلوبة في الذاكرة الخبيئة المحلية"
+msgstr "Olingan qo'shiq matnlarini mahalliy keshda saqlash"
 
 #: src/lyricwiki-qt/lyricwiki.cc:144
 msgid "<b>Local Storage</b>"
-msgstr "<b>الخزن المحلي</b>"
+msgstr "<b>Mahalliy saqlash joyi</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:145
 msgid "Load lyric files (.lrc) from local storage"
-msgstr "تحميل ملفات الاشعار (‎.lrc) من الخزن المحلي"
+msgstr "Qo'shiq matnlarini fayllarni (.lrc) mahalliy xotiradan yuklash"
 
 #: src/lyricwiki-qt/lyricwiki.cc:356
 #, c-format
 msgid "Unable to fetch %s"
-msgstr "غير قادر على جلب %s"
+msgstr "%s olib bo‘lmadi"
 
 #: src/lyricwiki-qt/lyricwiki.cc:365
 #, c-format
 msgid "Unable to parse %s"
-msgstr "Unable to parse %s"
+msgstr "%s tahlil qilib boʻlmadi"
 
 #: src/lyricwiki-qt/lyricwiki.cc:403
 msgid "Looking for lyrics ..."
-msgstr "أبحث عن lyrics ..."
+msgstr "Qo'shiq matni qidirilmoqda..."
 
 #: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:62
 msgid "Error"
-msgstr "خطأ"
+msgstr "Xato"
 
 #: src/lyricwiki-qt/lyricwiki.cc:433
 msgid "Lyrics could not be found."
-msgstr "لم يُعثر على الأشعار."
+msgstr "Qoʻshiq matni topilmadi."
 
 #: src/lyricwiki-qt/lyricwiki.cc:501
 msgid "Missing title and/or artist."
-msgstr "عنوان و/أو فنان مفقود."
+msgstr "Sarlavha va/yoki artist yetishmayapti."
 
 #: src/lyricwiki-qt/lyricwiki.cc:553
 msgid "Save Locally"
-msgstr "حفظ محلياً"
+msgstr "Mahalliy ravishda saqlash"
 
 #: src/lyricwiki-qt/lyricwiki.cc:561
 msgid "Refresh"
-msgstr "إعادة تحميل"
+msgstr "Yangilash"
 
 #: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
-msgstr "قوائم M3U"
+msgstr "M3U pleylistlari"
 
 #: src/metronom/metronom.cc:44
 msgid "Tact Generator"
-msgstr "مولّد المضمار"
+msgstr "Takt generatori"
 
 #: src/metronom/metronom.cc:145
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "مولّد المضمار: %d ضربة بالدقيقة"
+msgstr "Takt generatori: %d zarba/daq "
 
 #: src/metronom/metronom.cc:147
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "مولّد المضمار: %d ضربة بالدقيقة %d/%d"
+msgstr " Takt generatori: %d zarba/daq %d/%d"
 
 #: src/metronom/metronom.cc:235
 msgid ""
@@ -2691,146 +2698,142 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
-"مولد مضمار أنشأه  Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"Martin Strauss tomonidan Takt generatori <mys@faveve.uni-stuttgart.de>\n"
 "\n"
-"لتستخدمه، أضف رابطاً: tact://beats*num/den\n"
-"مثلا tact://77 لتشغّل 77 ضربة بالدقيقة\n"
-"أو tact://60*3/4 لتشغّل 60 ضربة بالدقيقة في 3/4 مضمار"
+"Undan foydalanish uchun URL manzilini qo'shing: tact://beats*num/den\n"
+"masalan daqiqada 77 zarba ijro ettirish uchun tact://77\n"
+"yoki tact://60*3/4 3/4 taktda 60 zarba/daqiqada ijro ettirish uchun"
 
 #: src/mixer/mixer.cc:43
 msgid "Channel Mixer"
-msgstr "خلاط القنوات"
+msgstr "Kanal mikser"
 
 #: src/mixer/mixer.cc:255
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
-"ملحَقة مازج القنوات لأوادشيَس\n"
-"حقوق النشر 2011-2012 John Lindgren و Michał Lipski"
+"Audacious uchun kanal mikser plagini\n"
+"Mualliflik huquqi 2011-2012 Jon Lindgren va Mixal Lipski"
 
 #: src/mixer/mixer.cc:259
 msgid "<b>Channel Mixer</b>"
-msgstr "<b>خلاط القنوات</b>"
+msgstr "<b>Kanal mikser</b>"
 
 #: src/mixer/mixer.cc:260
 msgid "Output channels:"
-msgstr "مخرج القنوات:"
+msgstr "Chiqish kanallari:"
 
 #: src/mms/mms.cc:35
 msgid "MMS Plugin"
-msgstr "ملحَقة MMS"
+msgstr "MMS plagin"
 
 #: src/mms/mms.cc:82
 msgid "Error connecting to MMS server"
-msgstr "خطأ في الاتصال بخادم MMS"
+msgstr "MMS serveriga ulanishda xatolik yuz berdi"
 
 #: src/modplug/modplugbmp.h:57
 msgid "ModPlug (Module Player)"
-msgstr "ModPlug (مشغّل موديول)"
+msgstr "ModPlug (modul pleyer)"
 
 #: src/modplug/plugin_main.cc:55
 msgid "<b>Channels</b>"
-msgstr "<b>قنوات</b>"
+msgstr "<b>Kanallar</b>"
 
 #: src/modplug/plugin_main.cc:59
 msgid "Nearest (fastest)"
-msgstr "الأقرب (أسرع)"
+msgstr "Eng yaqin (eng tez)"
 
 #: src/modplug/plugin_main.cc:60
 msgid "Linear (fast)"
-msgstr "الخطي (سريع)"
+msgstr "Chiziqli (tez)"
 
 #: src/modplug/plugin_main.cc:61
 msgid "Spline (good)"
-msgstr ""
-"13/5000\n"
-"المفتاح (جيد)"
+msgstr "Splayn (yaxshi)"
 
 #: src/modplug/plugin_main.cc:62
 msgid "Polyphase (best)"
-msgstr "الأطوار (أفضل)"
+msgstr "Ko'p fazali (eng yaxshi)"
 
 #: src/modplug/plugin_main.cc:63
 msgid "<b>Sample rate</b>"
-msgstr "<b>معدل العينة</b>"
+msgstr "Namuna tezligi"
 
 #: src/modplug/plugin_main.cc:64
 msgid "22 kHz"
-msgstr "22 كيلوهرتز"
+msgstr "22 kGts"
 
 #: src/modplug/plugin_main.cc:65
 msgid "44 kHz"
-msgstr "44 كيلوهرتز"
+msgstr "44 kGts"
 
 #: src/modplug/plugin_main.cc:66
 msgid "48 kHz"
-msgstr "48 كيلوهرتز"
+msgstr "48 kGts"
 
 #: src/modplug/plugin_main.cc:67
 msgid "96 kHz"
-msgstr "96 كيلوهرتز"
+msgstr "96 kGts"
 
 #: src/modplug/plugin_main.cc:71 src/modplug/plugin_main.cc:76
 #: src/modplug/plugin_main.cc:81
 msgid "Level:"
-msgstr "مستوى:"
+msgstr "Daraja:"
 
 #: src/modplug/plugin_main.cc:77
 msgid "Cutoff:"
-msgstr "قطع:"
+msgstr "Kesish:"
 
 #: src/modplug/plugin_main.cc:90
 msgid "<b>Reverb</b>"
-msgstr "<b>تردد</b>"
+msgstr "<b>Reverberatsiya</b>"
 
 #: src/modplug/plugin_main.cc:93
 msgid "<b>Bass Boost</b>"
-msgstr "<b>صوت إستهجان</b>"
+msgstr "<b>Bass kuchaytirish</b>"
 
 #: src/modplug/plugin_main.cc:96
 msgid "<b>Surround</b>"
-msgstr "<b>إحاطة</b>"
+msgstr "<b>Surround</b>"
 
 #: src/modplug/plugin_main.cc:99
 msgid "<b>Preamp</b>"
-msgstr "<b>Preamp</b>"
+msgstr "<b>Oldindan kuchaytirgich</b>"
 
 #: src/modplug/plugin_main.cc:106
 msgid "Oversample"
-msgstr "Oversample"
+msgstr "Ortiqcha namuna"
 
 #: src/modplug/plugin_main.cc:107
 msgid "Noise reduction"
-msgstr "تقليل الضوضاء"
+msgstr "Shovqinni kamaytirish"
 
 #: src/modplug/plugin_main.cc:108
 msgid "Play Amiga MODs"
-msgstr "قراءة Amiga MODs"
+msgstr "Amiga MOD larini ijro ettirish"
 
 #: src/modplug/plugin_main.cc:109
 msgid "<b>Repeat</b>"
-msgstr "<b>تكرار</b>"
+msgstr "<b>Takrorlash</b>"
 
 #: src/modplug/plugin_main.cc:110
 msgid "Repeat count:"
-msgstr "عدد التكرار:"
+msgstr "Takrorlanish soni:"
 
 #: src/modplug/plugin_main.cc:111
 msgid "To repeat forever, set the repeat count to -1."
-msgstr "للتكرار لا نهائي، تعيين تكرار العد إلى -1."
+msgstr "Abadiy takrorlash uchun takrorlash sonini -1 ga o'rnating."
 
 #: src/modplug/plugin_main.cc:124 src/sid/xs_config.cc:106
 msgid "These settings will take effect when Audacious is restarted."
-msgstr ""
-"60/5000\n"
-"وهذه الإعدادات نافذة المفعول عند إعادة تشغيل اوداسيو."
+msgstr "Ushbu sozlamalar Audacious qayta ishga tushirilganda kuchga kiradi."
 
 #: src/moonstone/main_window.cc:72 src/moonstone/main_window.cc:73
 #: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
 #: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
-msgstr "توقف بعد هذا المقطع"
+msgstr "Bu qo'shiqdan keyin to'xtatish"
 
 #: src/moonstone/moonstone.cc:39
 msgid "Moonstone"
@@ -2838,93 +2841,93 @@ msgstr "Moonstone"
 
 #: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:251
 msgid "Reset to Defaults"
-msgstr "التصفير إلى القيم الإفتراضية"
+msgstr "Asl holatiga qaytarish"
 
 #: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:225
 msgid "Now Playing"
-msgstr "المُشَغّل الأن"
+msgstr "Hozir ijro etilmoqda"
 
 #: src/moonstone/playlist_model.cc:38 src/qtui/playlist_model.cc:33
 msgid "Entry Number"
-msgstr "رقم البدأ"
+msgstr "Kiritish raqami"
 
 #: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:34
 msgid "Album Artist"
-msgstr "ألبوم المؤدي"
+msgstr "Albom artisti"
 
 #: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
 msgid "Queue Position"
-msgstr "موضع القائمة المنتظرة"
+msgstr "Navbatdagi joylashuv"
 
 #: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
 msgid "File Path"
-msgstr "مسار الملف"
+msgstr "Fayl yo'li"
 
 #: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:35
 msgid "File Name"
-msgstr "اسم الملف"
+msgstr "Fayl nomi"
 
 #: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:36
 msgid "Custom Title"
-msgstr "عنوان مخصص"
+msgstr "Maxsus sarlavha"
 
 #: src/moonstone/playlist_selection.cc:64
 #: src/playlist-manager/playlist-manager.cc:200
 #: src/playlist-manager-qt/playlist-manager-qt.cc:188
 msgid "Entries"
-msgstr "المدخلات"
+msgstr "Yozuvlar"
 
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
-msgstr "ملحَقة MPG123"
+msgstr "MPG123 plagin"
 
 #: src/mpg123/mpg123.cc:81
 msgid "<b>Advanced</b>"
-msgstr "<b>متقدم</b>"
+msgstr "<b>Kengaytirilgan</b>"
 
 #: src/mpg123/mpg123.cc:82
 msgid "Use accurate length calculation (slow)"
-msgstr "استخدام دقة حساب طويل (بطيء)"
+msgstr "To'g'ri uzunlik hisobini ishlatish (sekin)"
 
 #: src/mpg123/mpg123.cc:256
 msgid "Surround"
-msgstr "إحاطة"
+msgstr "Surround"
 
 #: src/mpris2/plugin.cc:38
 msgid "MPRIS 2 Server"
-msgstr "MPRIS 2 خادم"
+msgstr "MPRIS 2 serveri"
 
 #: src/neon/neon.cc:97
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr "ملحَقة Neon HTTP/HTTPS"
+msgstr "Neon HTTP/HTTPS plagini"
 
 #: src/neon/neon.cc:526
 msgid "Error parsing redirect"
-msgstr "خطأ في توزيع إعادة توجيه"
+msgstr "Qayta yoʻnaltirishni tahlil qilishda xatolik yuz berdi"
 
 #: src/neon/neon.cc:540
 msgid "Unknown HTTP error"
-msgstr "خطأ HTTP غير معروف"
+msgstr "Noma'lum HTTP xatosi"
 
 #: src/neon/neon.cc:590
 msgid "Error parsing URL"
-msgstr "تحليل عنوان خطأ"
+msgstr "URL ni tahlil qilishda xatolik yuz berdi"
 
 #: src/neon/neon.cc:660
 msgid "Too many redirects"
-msgstr "الكثير من الموجهات"
+msgstr "Yo‘naltirishlar juda ko‘p"
 
 #: src/notify/event.cc:97
 msgid "Stopped"
-msgstr "توقفت"
+msgstr "To'xtatildi"
 
 #: src/notify/event.cc:97
 msgid "Audacious is not playing."
-msgstr "Audacious ليس في حاة تشغيل."
+msgstr "Audacious ijro ettirilmayapti."
 
 #: src/notify/notify.cc:39
 msgid "Desktop Notifications"
-msgstr "تنبيهات سطح المكتب"
+msgstr "Ish stoli bildirishnomalari"
 
 #: src/notify/notify.cc:57
 msgid ""
@@ -2945,46 +2948,47 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"ملحَقة إشعارات سطح المكتب لأوداشيَس\n"
-"حقوق النشر (C) 2010 Maximilian Bogner\n"
-"حقوق النشر (C) 2011-2013 John Lindgren و Jean-Alexandre Anglès d'Auriac\n"
+"Audacious uchun ish stoli bildirishnomalari plagini\n"
+"Mualliflik huquqi (C) 2010 Maksimilian Bogner\n"
+"Mualliflik huquqi (C) 2011-2013 Jon Lindgren va Jan-Aleksandr Angles "
+"d'Auriak\n"
 "\n"
-"هذه الملحَقة برنامج مجاني: يمكنك إعادة توزيعها و/أو تعديلها وفق بنود الرخصة "
-"الشعبية العامة GNU General Public License كما تنشرها مؤسسة البرمجيات الحرة "
-"Free Software Foundation، إمّا الإصدار 3 من الرخصة، أو (وفق خيارك) أي إصدار "
-"لاحق.\n"
+"Ushbu plagin bepul dasturiy ta'minotdir: siz uni qayta tarqatishingiz va/"
+"yoki uni Free Software Foundation tomonidan e'lon qilingan GNU General "
+"Public License shartlariga muvofiq, Litsenziyaning 3-versiyasi yoki (sizning "
+"xohishingizga ko'ra) har qanday keyingi versiyada o'zgartirishingiz mumkin.\n"
 "\n"
-"هذه الملحَقة موزَّعة على أمل أنها ستكون مفيدة، لكن بلا أية ضمانات: حتى بدون "
-"الضمانة الضمنية بالموائمة التجارية أو الموائمة لغرض بعينه. انظر الرخصة "
-"الشعبية العامة GNU General Public License لمزيد من التفاصيل.\n"
+"Ushbu plagin foydali bo'ladi degan umidda tarqatiladi, lekin HAR QANDAY "
+"KAFOLATSIZ; SOVLASH MUVOFIQligi yoki MAQSUS MAQSADGA MUVOFIQligi "
+"to'g'risidagi nazarda tutilgan kafolatsiz ham. Batafsil ma'lumot uchun GNU "
+"General Public License-ga qarang.\n"
 "\n"
-"ينبغي ان تكون قد تلقيت نسخة من الرخصة الشعبية العامة GNU General Public "
-"License مع هذا البرنامج.  إن لم يكن الأمر كذلك، راجع <http://www.gnu.org/"
-"licenses/>."
+"Siz ushbu dastur bilan birga GNU General Public License nusxasini olishingiz "
+"kerak edi. Aks holda, <http://www.gnu.org/licenses/> ga qarang. "
 
 #: src/notify/notify.cc:104
 msgid "Show playback controls"
-msgstr "اظهر عناصر التحكم بالتشغيل"
+msgstr "Ijro qilish boshqaruvlarini ko‘rsatish"
 
 #: src/notify/notify.cc:106
 msgid "Always show notification"
-msgstr "اعرض دائما الاخطارات"
+msgstr "Har doim bildirishnomani ko'rsatish"
 
 #: src/notify/notify.cc:108
 msgid "Include album name in notification"
-msgstr "اعرض اسم الالبوم في الاخطارات"
+msgstr "Bildirishnomaga albom nomini kiritish"
 
 #: src/notify/notify.cc:110
 msgid "Custom notification duration:"
-msgstr "فترة الإشعار المخصصة:"
+msgstr "Moslashtirilgan bildirishnoma muddati:"
 
 #: src/notify/osd.cc:74
 msgid "Show"
-msgstr "اظهار"
+msgstr "Ko'rsatish"
 
 #: src/openmpt/mpt.cc:50
 msgid "OpenMPT (Module Player)"
-msgstr "OpenMPT (مشغّل موديول)"
+msgstr "OpenMPT (modul pleyer)"
 
 #: src/openmpt/mpt.cc:133
 msgid ""
@@ -2992,65 +2996,67 @@ msgid ""
 "\n"
 "Written by: Chris Spiegel <cspiegel@gmail.com>"
 msgstr ""
-"مشغّل موديول مستمَد من libopenmpt\n"
+"Libopenmpt asosidagi modul pleer\n"
 "\n"
-"كتبه: Chris Spiegel <cspiegel@gmail.com>"
+"Muallif: Chris Spiegel <cspiegel@gmail.com> "
 
 #: src/openmpt/mpt.cc:152
 msgid "Stereo separation:"
-msgstr "فصل الستريو:"
+msgstr "Stereo ajratish:"
 
 #: src/openmpt/mpt.cc:154
 msgid "%"
-msgstr "%"
+msgstr "foiz"
 
 #: src/openmpt/mpt.cc:158
 msgid "Interpolation:"
-msgstr "الاستيفاء:"
+msgstr "Interpolyatsiya:"
 
 #: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189 src/xsf/plugin.cc:437
 msgid "Linear"
-msgstr "خطّيّ"
+msgstr "Chiziqli"
 
 #: src/openmpt/mptwrap.h:52
 msgid "Cubic"
-msgstr "مكعّب"
+msgstr "Kubik"
 
 #: src/openmpt/mptwrap.h:53
 msgid "Windowed sinc"
-msgstr "دالة sinc محتواة"
+msgstr "Oynali sinc"
 
 #: src/oss4/oss.h:75
 msgid "OSS4 Output"
-msgstr "OSS4 الناتج"
+msgstr "OSS4 chiqishi"
 
 #: src/oss4/oss.h:77
 msgid "OSS3 Output"
-msgstr "OSS3 الناتج"
+msgstr "OSS3 chiqishi"
 
 #: src/oss4/plugin.cc:35
 msgid "Default device"
-msgstr "الجهاز الافتراضي"
+msgstr "Standart qurilma"
 
 #: src/oss4/plugin.cc:78
 msgid "Audio device:"
-msgstr "جهاز الصوت:"
+msgstr "Audio qurilma:"
 
 #: src/oss4/plugin.cc:81
 msgid "Use alternate device:"
-msgstr "استخدام جهاز بديل:"
+msgstr "Muqobil qurilmadan foydalanish:"
 
 #: src/oss4/plugin.cc:85
 msgid "Save volume between sessions."
-msgstr "حفظ الصوت بين الجلسات."
+msgstr "Seanslar orasidagi ovoz balandligini saqlash."
 
 #: src/oss4/plugin.cc:87
 msgid "Enable format conversions made by the OSS software."
-msgstr "تمكين تنسيق التحويلات التي أدلى بها البرنامج OSS."
+msgstr ""
+"OSS dasturi tomonidan amalga oshirilgan formatni o'zgartirishni yoqish."
 
 #: src/oss4/plugin.cc:89
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr "تمكين وضع خاص لمنع الاختلاط الظاهري."
+msgstr ""
+"Virtual aralashtirishning oldini olish uchun eksklyuziv rejimni yoqish."
 
 #: src/oss4/plugin.cc:101
 msgid ""
@@ -3060,54 +3066,55 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
-"OSS4 Output Plugin for Audacious\n"
-"Copyright 2010-2012 Michał Lipski\n"
+"Audacious uchun OSS4 chiqish plagini\n"
+"Mualliflik huquqi 2010-2012 Michał Lipski\n"
 "\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John "
-"Lindgren and of course the authors of the previous OSS plugin."
+"Men #audacious-dagi odamlarga, ayniqsa Toni Vroon va Jon Lindgrenga va, "
+"albatta, avvalgi OSS plaginining mualliflariga minnatdorchilik "
+"bildirmoqchiman. "
 
 #: src/playlist-manager/playlist-manager.cc:37
 #: src/playlist-manager-qt/playlist-manager-qt.cc:40
 msgid "Playlist Manager"
-msgstr "مدير قائمة التشغيل"
+msgstr "Pleylist menejeri"
 
 #: src/playlist-manager/playlist-manager.cc:220
 #: src/playlist-manager-qt/playlist-manager-qt.cc:354
 msgid "_Remove"
-msgstr "_حذف"
+msgstr "_O'chirish"
 
 #: src/playlist-manager/playlist-manager.cc:221
 #: src/playlist-manager-qt/playlist-manager-qt.cc:349
 msgid "Ren_ame"
-msgstr "اع_د التسمية"
+msgstr "Nomini o'zgartirish"
 
 #: src/pls/pls.cc:35
 msgid "PLS Playlists"
-msgstr "قوائم PLS"
+msgstr "PLS pleylistlari"
 
 #: src/psf/plugin.cc:53
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr "OpenPSF PSF1/PSF2 مفكك"
+msgstr "OpenPSF PSF1/PSF2 dekoderi"
 
 #: src/psf/plugin.cc:270
 msgid "<b>OpenPSF Configuration</b>"
-msgstr "<b>إعدادات OpenPSF</b>"
+msgstr "<b>OpenPSF konfiguratsiyasi</b>"
 
 #: src/psf/plugin.cc:271 src/xsf/plugin.cc:444
 msgid "Ignore length from file"
-msgstr "تجاهل الطول من الملف"
+msgstr "Fayldagi uzunlikka e'tibor bermaslik"
 
 #: src/pulse/pulse_audio.cc:42
 msgid "PulseAudio Output"
-msgstr "ناتج PulseAudio"
+msgstr "PulseAudio chiqishi"
 
 #: src/pulse/pulse_audio.cc:72
 msgid "Context name:"
-msgstr "إسم السياق:"
+msgstr "Kontekst nomi:"
 
 #: src/pulse/pulse_audio.cc:74
 msgid "Stream name:"
-msgstr "إسم الدفق:"
+msgstr "Oqim nomi:"
 
 #: src/pulse/pulse_audio.cc:575
 msgid ""
@@ -3127,25 +3134,25 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
-"Audacious PulseAudio Output Plugin\n"
+"Audacious PulseAudio chiqish plagini\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"Bu dastur bepul dastur hisoblanadi; siz uni qayta tarqatishingiz va/yoki uni "
+"Free Software Foundation tomonidan e'lon qilingan GNU General Public License "
+"shartlariga muvofiq o'zgartirishingiz mumkin; Litsenziyaning 2-versiyasi "
+"yoki (sizning xohishingizga ko'ra) har qanday keyingi versiyasi.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"Ushbu dastur foydali bo'ladi degan umidda tarqatiladi, lekin HAR QANDAY "
+"KAFOLATSIZ; SOVLASH MUVOFIQligi yoki MAQSUS MAQSADGA MUVOFIQligi "
+"to'g'risidagi nazarda tutilgan kafolatsiz ham. Batafsil ma'lumot uchun GNU "
+"General Public License-ga qarang.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"Siz ushbu dastur bilan birga GNU General Public License nusxasini olishingiz "
+"kerak edi; bo'lmasa, Free Software Foundation, Inc., 51 Franklin Street, "
+"Fifth Floor, Boston, MA 02110-1301, AQSH ga yozing."
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
-msgstr "ناتج QtMultimedia"
+msgstr "QtMultimedia chiqishi"
 
 #: src/qtaudio/qtaudio.cc:72
 msgid ""
@@ -3155,11 +3162,11 @@ msgid ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
-"QtMultimedia Audio Output Plugin for Audacious\n"
-"Copyright 2014 William Pitcock\n"
+"Audacious uchun QtMultimedia audio chiqish plagini\n"
+"Mualliflik huquqi 2014 Uilyam Pitkok\n"
 "\n"
-"Based on SDL Output Plugin for Audacious\n"
-"Copyright 2010 John Lindgren"
+"Audacious uchun SDL chiqish plaginiga asoslangan\n"
+"Mualliflik huquqi 2010 Jon Lindgren"
 
 #: src/qtglspectrum/gl-spectrum.cc:41
 msgid ""
@@ -3173,19 +3180,19 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
-"محلل طيفOpenGL لأوداشْيَس\n"
-"حقوق النشر لسنة 2013 لـ Christophe Budé و John Lindgren و Carlo Bramini\n"
-"حقوق النشر 2014, 2020 لـ Ariadne Conill\n"
+"Audacious uchun OpenGL Spektr analizatori\n"
+"Mualliflik huquqi 2013 Kristof Bude, Jon Lindgren va Karlo Bramini\n"
+"Mualliflik huquqi 2014, 2020 Ariadne Conill\n"
 "\n"
-"مستمد من ملحَقة XMMS:\n"
-"حقوق النشر 1998-2000 لـ Peter Alm و Mikael Alm و Olle Hallnas و Thomas "
-"Nilsson و 4Front Technologies\n"
+"XMMS plagini asosida:\n"
+"Mualliflik huquqi 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Tomas "
+"Nilsson va 4Front Technologies\n"
 "\n"
-"الرخصة: GPLv2‭+"
+"Litsenziya: GPLv2+ "
 
 #: src/qthotkey/gui.cc:165
 msgid "Press a key combination inside a text field."
-msgstr "اضغط تركيبة مفاتيح داخل حقل نص."
+msgstr "Matn maydoni ichiga tugmalar birikmasini bosing."
 
 #: src/qthotkey/plugin.cc:103
 msgid ""
@@ -3202,210 +3209,212 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
-"ملحَقة المفاتيح الساخنة العمومية Global Hotkey\n"
-"تحكّم بالمشغّل بتركيبة مفاتيح عمومية أو مفاتيح الوسائط.\n"
+"Global tezkor tugma plagini\n"
+"Pleyerni global tugmalar birikmalari yoki multimedia tugmalari bilan "
+"boshqaring.\n"
 "\n"
-"حقوق النشر (C) لسنة 2020 لـ i.Dark_Templar <darktemplar@dark-templar-"
-"archives.net>\n"
-"حقوق النشر (C) لسنة 2007-2008 لـ Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"Mualliflik huquqi (C) 2020 i.Dark_Templar <darktemplar@dark-templar-archives."
+"net>\n"
+"Mualliflik huquqi (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
-"المساهمون يتضمنون:\n"
-"حقوق النشر (C) لسنة 2006-2007 لـ Vladimir Paskov <vlado.paskov@gmail.com>\n"
-"حقوق النشر(C) لسنة 2000-2002 لـ Ville Syrjälä <syrjala@sci.fi>،\n"
-" Bryn Davies <curious@ihug.com.au>،\n"
-" Jonathan A. Davis <davis@jdhouse.org>،\n"
-" Jeremy Tan <nsx@nsx.homeip.net>"
+"Ishtirokchilar:\n"
+"Mualliflik huquqi (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Mualliflik huquqi (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+"Bryn Davies <curious@ihug.com.au>,\n"
+"Jonatan A. Devis <davis@jdhouse.org>,\n"
+"Jeremi Tan <nsx@nsx.homeip.net> "
 
 #: src/qtui/menus.cc:109
 msgid "_Open Folder ..."
-msgstr "_افتح مجلد ..."
+msgstr "Jildni ochish..."
 
 #: src/qtui/menus.cc:115
 msgid "_Add Folder ..."
-msgstr "_اضافة مجلد..."
+msgstr "Jild qo'shish..."
 
 #: src/qtui/menus.cc:128
 msgid "_Log Inspector ..."
-msgstr "_سجل المفتش..."
+msgstr "Jurnal inspektori..."
 
 #: src/qtui/menus.cc:218
 msgid "_Find ..."
-msgstr "_بحث..."
+msgstr "Topish..."
 
 #: src/qtui/menus.cc:254 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
-msgstr "إعدادات الصوت ..."
+msgstr "Audio sozlamalari..."
 
 #: src/qtui/playlist_model.cc:186
 msgid "Q#"
-msgstr "ط#"
+msgstr "Q#"
 
 #: src/qtui/playlist_model.cc:188
 msgid "T#"
-msgstr "م#"
+msgstr "T#"
 
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
-msgstr "مظهر كيوتي"
+msgstr "Qt interfeysi"
 
 #: src/qtui/search_bar.cc:46
 msgid "Search playlist"
-msgstr "البحث في قائمة التشغيل"
+msgstr "Pleylistni qidirish"
 
 #: src/qtui/settings.cc:58
 msgid "Always"
-msgstr "دائما"
+msgstr "Har doim"
 
 #: src/qtui/settings.cc:59
 msgid "Auto-hide"
-msgstr "إخفاء تلقائي"
+msgstr "Avtomatik yashirish"
 
 #: src/qtui/settings.cc:60
 msgid "Never"
-msgstr "مطلقا"
+msgstr "Hech qachon"
 
 #: src/qtui/settings.cc:64
 msgid "Show playlist tabs:"
-msgstr "إظهار تبويبات قائمة التشغيل:"
+msgstr "Pleylist yorliqlarini ko'rsatish:"
 
 #: src/qtui/settings.cc:78
 msgid "Use bold font for column headers"
-msgstr "استخدم نصاً ثخيناً لترويسات الأعمدة"
+msgstr "Ustun sarlavhalari uchun qalin shriftdan foydalanish"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
-msgstr "محول معدل العينة"
+msgstr "Namuna tezligi konvertori"
 
 #: src/resample/resample.cc:183
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"Sample Rate Converter Plugin for Audacious\n"
-"Copyright 2010-2012 John Lindgren"
+"Audacious uchun namuna tezligi plagini\n"
+"Mualliflik huquqi 2010-2012 Jon Lindgren "
 
 #: src/resample/resample.cc:187
 msgid "Skip/repeat samples"
-msgstr "تخطي/تكرار العينات"
+msgstr "Namunalarni o'tkazib yuborish/takrorlash"
 
 #: src/resample/resample.cc:188
 msgid "Linear interpolation"
-msgstr "استيفاء خطي"
+msgstr "Chiziqli interpolyatsiya"
 
 #: src/resample/resample.cc:189
 msgid "Fast sinc interpolation"
-msgstr "استيفاء سينك sinc السريع"
+msgstr "Tez sink interpolatsiyasi"
 
 #: src/resample/resample.cc:190
 msgid "Medium sinc interpolation"
-msgstr "استيفاء سينك sinc متوسط"
+msgstr "O'rta sink interpolyatsiyasi"
 
 #: src/resample/resample.cc:191
 msgid "Best sinc interpolation"
-msgstr "استيفاء سينك sinc الأفضل"
+msgstr "Eng yaxshi sink interpolyatsiyasi"
 
 #: src/resample/resample.cc:195
 msgid "<b>Conversion</b>"
-msgstr "<b>تحويل</b>"
+msgstr "<b>Konvertatsiya</b>"
 
 #: src/resample/resample.cc:196
 msgid "Method:"
-msgstr "طريقة:"
+msgstr "Usul:"
 
 #: src/resample/resample.cc:199 src/soxr/sox-resampler.cc:203
 msgid "Rate:"
-msgstr "معدل:"
+msgstr "Baho:"
 
 #: src/resample/resample.cc:202
 msgid "<b>Rate Mappings</b>"
-msgstr "<b>تعيينات معدل</b>"
+msgstr "<b>Baholash xaritalari</b>"
 
 #: src/resample/resample.cc:203
 msgid "Use rate mappings"
-msgstr "استخدم تعيينات المعدل"
+msgstr "Daraja xaritalashdan foydalanish"
 
 #: src/resample/resample.cc:205
 msgid "8 kHz:"
-msgstr "8 كيلوهرتز:"
+msgstr "8 kGts:"
 
 #: src/resample/resample.cc:209
 msgid "16 kHz:"
-msgstr "16 كيلوهرتز:"
+msgstr "16 kGts:"
 
 #: src/resample/resample.cc:213
 msgid "22.05 kHz:"
-msgstr "22.05 كيلوهرتز:"
+msgstr "22.05 kGts:"
 
 #: src/resample/resample.cc:217
 msgid "32.0 kHz:"
-msgstr "32.0 كيلوهرتز:"
+msgstr "32.0 kGts:"
 
 #: src/resample/resample.cc:221
 msgid "44.1 kHz:"
-msgstr "44.1 كيلوهرتز:"
+msgstr "44.1 kGts:"
 
 #: src/resample/resample.cc:225
 msgid "48 kHz:"
-msgstr "48 كيلوهرتز:"
+msgstr "48 kGts:"
 
 #: src/resample/resample.cc:229
 msgid "88.2 kHz:"
-msgstr "88.2 كيلوهرتز:"
+msgstr "88.2 kGts:"
 
 #: src/resample/resample.cc:233
 msgid "96 kHz:"
-msgstr "96 كيلوهرتز:"
+msgstr "96 kGts:"
 
 #: src/resample/resample.cc:237
 msgid "176.4 kHz:"
-msgstr "176.4 كيلوهرتز:"
+msgstr "176.4 kGts:"
 
 #: src/resample/resample.cc:241
 msgid "192 kHz:"
-msgstr "192 كيلوهرتز:"
+msgstr "192 kGts:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr "Checking Last.fm access ..."
+msgstr "Last.fm ga kirish tekshirilmoqda..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
 msgstr ""
-"يتم حفظ scrobbles على جهاز الكمبيوتر الخاص بك مؤقتا. أنها ستقدم في أقرب وقت "
-"يسمح Audacious بالوصول."
+"Scrobbllar kompyuteringizda vaqtinchalik saqlanmoqda. Ular Audacious ga "
+"kirishga ruxsat berilgan zahoti yuboriladi."
 
 #: src/scrobbler2/config_window.cc:33
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr "تم تأمين التصريح Scrobbling للمستخدم  %s."
+msgstr "Ruxsat berildi. %s foydalanuvchi uchun scrobbling."
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
-"طلب الاذن مرفوض. فتح الرابط التالي في متصفح، سماح بالوصول Audacious إلى "
-"حسابك، ومن ثم انقر فوق \"تحقق تصريح 'مرة أخرى:"
+"Ruxsat berilmadi. Brauzerda quyidagi URL manzilini oching, Audacious ga "
+"hisobingizga kirishga ruxsat bering va “Ruxsatni tekshirish” tugmasini yana "
+"bir marta bosing:"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
-msgstr "كانت هناك مشكلة الاتصال Last.fm."
+msgstr "Last.fm bilan bog‘lanishda muammo yuz berdi."
 
 #: src/scrobbler2/config_window.cc:86
 msgid "Check Permission"
-msgstr "التحقق من الاإذن"
+msgstr "Ruxsatni tekshiring"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr ""
-"17/5000\n"
-"إلغاء التراخيص"
+msgstr "Ruxsatni bekor qilish"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
-msgstr "تحتاج إلى سماح Audacious  لscrobble المسارات لحساب  Last.fm الخاص بك."
+msgstr ""
+"Audacious ga Last.fm hisobingizga treklarni siljitishga ruxsat berishingiz "
+"kerak."
 
 #: src/scrobbler2/scrobbler.cc:29
 msgid "Scrobbler 2.0"
@@ -3416,8 +3425,8 @@ msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
-"تعذر بدء البرنامج المساعد Scrobbler.\n"
-"قد تكون هناك مشكلة مع التثبيت."
+"Scrobbler plaginini ishga tushirib bo‘lmadi.\n"
+"O'rnatishingizda muammo bo'lishi mumkin."
 
 #: src/scrobbler2/scrobbler.cc:291
 msgid ""
@@ -3429,12 +3438,12 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
-"Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
+"itxyoki tomonidan Audacious Scrobbler plagini 2.0,\n"
 "\n"
-"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"Mualliflik huquqi © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail."
+"com>\n"
 "\n"
-"Thanks to John Lindgren for giving me a hand at the beginning of this "
-"project.\n"
+"Ushbu loyihaning boshida menga yordam bergani uchun Jon Lindgrenga rahmat.\n"
 "\n"
 
 #: src/scrobbler2/scrobbler_communication.cc:663
@@ -3442,158 +3451,144 @@ msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
-"اوداسيو الآن تستخدم نسخة محسنة من Last.fm Scrobbler.\n"
-"يرجى التحقق من تفضيلات البرنامج المساعد Scrobbler."
+"Audacious endi Last.fm Scrobblerning takomillashtirilgan versiyasidan "
+"foydalanmoqda.\n"
+"Iltimos, Scrobbler plaginining imkoniyatlarini tekshiring."
 
 #: src/sdlout/sdlout.cc:43
 msgid "SDL Output"
-msgstr "SDL ناتج"
+msgstr "SDL chiqishi"
 
 #: src/sdlout/sdlout.cc:72
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
-"SDL Output Plugin for Audacious\n"
-"Copyright 2010 John Lindgren"
+"Audacious uchun SDL chiqish plagini\n"
+"Mualliflik huquqi 2010 Jon Lindgren"
 
 #: src/search-tool/library.cc:35 src/search-tool/library.cc:46
 #: src/search-tool-qt/library.cc:35 src/search-tool-qt/library.cc:46
 msgid "Library"
-msgstr "مكتبة"
+msgstr "Kutubxona"
 
 #: src/search-tool-qt/search-model.cc:49 src/search-tool/search-tool.cc:291
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
-msgstr[0] "%d مقطوعة"
-msgstr[1] "%d مقطوعة"
-msgstr[2] "%d مقطوعات"
-msgstr[3] "%d مقطوعات"
-msgstr[4] "%d مقطوعات"
-msgstr[5] "%d مقطوعات"
+msgstr[0] "%d qo'shiq "
 
 #: src/search-tool-qt/search-model.cc:58 src/search-tool/search-tool.cc:298
 msgid "of this genre"
-msgstr "من هذا النوع"
+msgstr "ushbu janrdan"
 
 #: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
 msgid "on"
-msgstr "مشغل"
+msgstr ""
 
 #: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
 msgid "by"
-msgstr "بواسطة"
+msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:165 src/search-tool/search-tool.cc:73
 msgid "Number of results to show:"
-msgstr "عدد النتائج لإظهارها:"
+msgstr "Ko'rsatiladigan natijalar soni:"
 
 #: src/search-tool-qt/search-tool-qt.cc:168 src/search-tool/search-tool.cc:76
 msgid "Rescan library at startup"
-msgstr "إعادة فحص المكتبة عند البدء"
+msgstr "Ishga tushganda kutubxonani qayta ko'rib chiqish"
 
 #: src/search-tool-qt/search-tool-qt.cc:170
 msgid "Monitor library for changes"
-msgstr "مراقبة المكتبة عن التغييرات"
+msgstr "O'zgarishlar uchun kutubxonani kuzatib borish"
 
 #: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:446
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"لاستيراد مكتبة الموسيقى الخاصة بك إلى أوداشيَس، اختر المجلد ثم انقر أيقونة "
-"\"التحديث\" ."
+"Musiqa kutubxonangizni Audacious ga import qilish uchun jildni tanlang va "
+"keyin “yangilash” belgisini bosing."
 
 #: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:455
 msgid "Please wait ..."
-msgstr "الرجاء الانتظار ..."
+msgstr "Iltimos kuting... "
 
 #: src/search-tool-qt/search-tool-qt.cc:197 src/search-tool/search-tool.cc:483
 msgid "Choose Folder"
-msgstr "اختر مجلد"
+msgstr "Jildni tanlang"
 
 #: src/search-tool-qt/search-tool-qt.cc:201
 msgid "Search library"
-msgstr "مكتبة البحث"
+msgstr "Kutubxonani qidirish"
 
 #: src/search-tool-qt/search-tool-qt.cc:327 src/search-tool/search-tool.cc:155
 #, c-format
 msgid "%d of %d result shown"
 msgid_plural "%d of %d results shown"
-msgstr[0] "تظهر %d من %d من النتائج"
-msgstr[1] "تظهر %d من %d من النتائج"
-msgstr[2] "تظهر %d من %d من النتائج"
-msgstr[3] "تظهر %d من %d من النتائج"
-msgstr[4] "تظهر %d من %d من النتائج"
-msgstr[5] "تظهر %d من %d من النتائج"
+msgstr[0] "%d %d dan natijalari ko'rsatilgan"
 
 #: src/search-tool-qt/search-tool-qt.cc:331 src/search-tool/search-tool.cc:159
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
-msgstr[0] "%d ناتج"
-msgstr[1] "%d ناتج"
-msgstr[2] "%d نتيجتين"
-msgstr[3] "%d نتائج"
-msgstr[4] "%d نتائج"
-msgstr[5] "%d النتائج"
+msgstr[0] "%d natija"
 
 #: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:345
 msgid "_Create Playlist"
-msgstr "_انشاء قائمة"
+msgstr "Pleylist yaratish"
 
 #: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:347
 msgid "_Add to Playlist"
-msgstr "_اضافة للقائمة"
+msgstr "Pleylistga qo'shish"
 
 #: src/sid/xmms-sid.cc:43
 msgid "SID Player"
-msgstr "قارئ SID "
+msgstr "SID pleyer"
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
-msgstr "قنوات:"
+msgstr "Kanallar:"
 
 #: src/sid/xs_config.cc:68
 msgid "<b>Emulation</b>"
-msgstr "<b>محاكاة</b>"
+msgstr "<b>Emulyatsiya</b>"
 
 #: src/sid/xs_config.cc:69
 msgid "Emulate MOS 8580 (default: MOS 6581)"
-msgstr "حاكي MOS 8580 (الافتراضي: MOS 6581)"
+msgstr "MOS 8580 ni emulyatsiya qilish (standart: MOS 6581)"
 
 #: src/sid/xs_config.cc:71
 msgid "Do not automatically select chip model"
-msgstr "لا تحدد تلقائيا نموذج الرقاقة"
+msgstr "Chip modelini avtomatik tanlamaslik"
 
 #: src/sid/xs_config.cc:73
 msgid "Emulate filter"
-msgstr "فلتر المحاكاة"
+msgstr "Filtrni emulyatsiya qilish"
 
 #: src/sid/xs_config.cc:75
 msgid "Clock speed:"
-msgstr "سرعة الساعة:"
+msgstr "Soat tezligi:"
 
 #: src/sid/xs_config.cc:78
 msgid "Do not automatically select clock speed"
-msgstr "لاتحدد تلقائيا سرعة الساعة"
+msgstr "Soat tezligini avtomatik tanlamaslik"
 
 #: src/sid/xs_config.cc:80
 msgid "<b>Playback time</b>"
-msgstr "<b>وقت التشغيل</b>"
+msgstr "<b>Ijro vaqti</b>"
 
 #: src/sid/xs_config.cc:81
 msgid "Set maximum playback time:"
-msgstr "السرعة القصوى لساعة التشغيل"
+msgstr "Maksimal ijro vaqtini sozlash:"
 
 #: src/sid/xs_config.cc:87
 msgid "Use only when song length is unknown"
-msgstr "استخدم فقط عندما يمون طول المقطوعة غير معروف"
+msgstr "Faqat qo'shiq uzunligi noma'lum bo'lganda foydalanish"
 
 #: src/sid/xs_config.cc:90
 msgid "Set minimum playback time:"
-msgstr "السرعة الدنيا لساعة التشغيل"
+msgstr "Minimal ijro vaqtini sozlash:"
 
 #: src/sid/xs_config.cc:96
 msgid "<b>Subtunes</b>"
@@ -3601,35 +3596,35 @@ msgstr "<b>Subtunes</b>"
 
 #: src/sid/xs_config.cc:97
 msgid "Enable subtunes"
-msgstr "تمكين subtunes"
+msgstr "Subtunes yoqish"
 
 #: src/sid/xs_config.cc:99
 msgid "Ignore subtunes shorter than:"
-msgstr "تجاهل subtunes أقصر من:"
+msgstr ""
 
 #: src/sid/xs_config.cc:105
 msgid "<b>Note</b>"
-msgstr "<b>ملاحظة</b>"
+msgstr "<b>Eslatma</b>"
 
 #: src/silence-removal/silence-removal.cc:39
 msgid "Silence Removal"
-msgstr "إزالة الصمت"
+msgstr "Sukunatni olib tashlash"
 
 #: src/silence-removal/silence-removal.cc:58
 msgid ""
 "Silence Removal Plugin for Audacious\n"
 "Copyright 2014 John Lindgren"
 msgstr ""
-"Silence Removal Plugin for Audacious\n"
-"Copyright 2014 John Lindgren"
+"Audacious uchun Sukunatni olib tashlash plagini\n"
+"Mualliflik huquqi 2014 Jon Lindgren "
 
 #: src/silence-removal/silence-removal.cc:67
 msgid "<b>Silence Removal</b>"
-msgstr "<b>إزالة الصمت</b>"
+msgstr "<b>Sukunatni olib tashlash</b>"
 
 #: src/silence-removal/silence-removal.cc:68
 msgid "Threshold:"
-msgstr "عتبة:"
+msgstr "Chegara:"
 
 #: src/silence-removal/silence-removal.cc:70
 msgid "dB"
@@ -3637,455 +3632,455 @@ msgstr "dB"
 
 #: src/skins/actions.cc:45 src/skins-qt/actions.cc:43
 msgid "Repeat points cleared."
-msgstr "كرر نقاط التصفية"
+msgstr "Takrorlash nuqtalari tozalandi."
 
 #: src/skins/actions.cc:60 src/skins-qt/actions.cc:58
 msgid "Repeat point A set."
-msgstr "كرر النقطة A  مجموعة."
+msgstr "A nuqta to'plamini takrorlash."
 
 #: src/skins/actions.cc:65 src/skins-qt/actions.cc:63
 msgid "Repeat point B set."
-msgstr "كرر النقطة B مجموعة."
+msgstr "B nuqta to'plamini takrorlash."
 
 #: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:221
 msgid "Preamp"
-msgstr "Preamp"
+msgstr "Kuchaytirgich"
 
 #: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:225
 msgid "31 Hz"
-msgstr "31 هرتز"
+msgstr "31 Gts"
 
 #: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
 msgid "63 Hz"
-msgstr "63 هرتز"
+msgstr "63 Gts"
 
 #: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
 msgid "125 Hz"
-msgstr "125 هرتز"
+msgstr "125 Gts"
 
 #: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
 msgid "250 Hz"
-msgstr "250 هرتز"
+msgstr "250 Gts"
 
 #: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
 msgid "500 Hz"
-msgstr "500 هرتز"
+msgstr "500 Gts"
 
 #: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
 msgid "1 kHz"
-msgstr "1 هرتز"
+msgstr "1 kGts"
 
 #: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
 msgid "2 kHz"
-msgstr "2 هرتز"
+msgstr "2 kGts"
 
 #: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
 msgid "4 kHz"
-msgstr "4 هرتز"
+msgstr "4 kGts"
 
 #: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
 msgid "8 kHz"
-msgstr "8 هرتز"
+msgstr "8 kGts"
 
 #: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
 msgid "16 kHz"
-msgstr "16 هرتز"
+msgstr "16 kGts"
 
 #: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:268
 msgid "Audacious Equalizer"
-msgstr "خالط Audacious"
+msgstr "Audacious ekvalayzeri"
 
 #: src/skins/main.cc:452 src/skins-qt/main.cc:436
 msgid "Recording on"
-msgstr "التسجيل مفعل"
+msgstr "Yozib olish yoqilgan"
 
 #: src/skins/main.cc:454 src/skins-qt/main.cc:438
 msgid "Recording off"
-msgstr "التسجيل متوقف"
+msgstr "Yozib olish oʻchirilgan"
 
 #: src/skins/main.cc:749 src/skins-qt/main.cc:690
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "انتقل الى %d:%-2.2d / %d:%-2.2d"
+msgstr "Izlash  %d:%-2.2d / %d:%-2.2d"
 
 #: src/skins/main.cc:766 src/skins-qt/main.cc:707
 #, c-format
 msgid "Volume: %d%%"
-msgstr "الصوت: %d%%"
+msgstr "Ovoz balandligi: %d%%"
 
 #: src/skins/main.cc:779 src/skins-qt/main.cc:720
 #, c-format
 msgid "Balance: %d%% left"
-msgstr "توازن: %d%% يسار"
+msgstr "Balans: %d%% chap"
 
 #: src/skins/main.cc:781 src/skins-qt/main.cc:722
 msgid "Balance: center"
-msgstr "توازن: وسط"
+msgstr "Balans: markaz"
 
 #: src/skins/main.cc:783 src/skins-qt/main.cc:724
 #, c-format
 msgid "Balance: %d%% right"
-msgstr "توازن: %d%% يمين"
+msgstr "Balans: %d%% oʻng"
 
 #: src/skins/main.cc:875 src/skins-qt/main.cc:816
 msgid "Options Menu"
-msgstr "خيارات القائمة"
+msgstr "Variantlar menyusi"
 
 #: src/skins/main.cc:879 src/skins-qt/main.cc:820
 msgid "Disable 'Always On Top'"
-msgstr "تعطيل 'دائما فوق الكل'"
+msgstr "\"Har doim ustida\" ni o'chirish"
 
 #: src/skins/main.cc:881 src/skins-qt/main.cc:822
 msgid "Enable 'Always On Top'"
-msgstr "تفعيل 'دائما فوق الكل'"
+msgstr "“Har doim ustida”ni yoqish"
 
 #: src/skins/main.cc:884 src/skins-qt/main.cc:825
 msgid "File Info Box"
-msgstr "مربع معلومات الملف"
+msgstr "Fayl ma'lumotlar qutisi"
 
 #: src/skins/main.cc:887 src/skins/menus.cc:149 src/skins-qt/main.cc:828
 #: src/skins-qt/menus.cc:142
 msgid "Double Size"
-msgstr "ضعف الحجم"
+msgstr "Ikki o'lchamli"
 
 #: src/skins/main.cc:890 src/skins-qt/main.cc:831
 msgid "Visualizations"
-msgstr "المرئيات"
+msgstr "Vizualizatsiya"
 
 #: src/skins/menus.cc:74 src/skins-qt/menus.cc:64
 msgid "Volume Up"
-msgstr "رفع الصوت"
+msgstr "Ovozni oshirish"
 
 #: src/skins/menus.cc:75 src/skins-qt/menus.cc:65
 msgid "Volume Down"
-msgstr "خفض الصوت"
+msgstr "Ovozni pasaytirish"
 
 #: src/skins/menus.cc:77 src/skins-qt/menus.cc:67
 msgid "Effects ..."
-msgstr "مؤثرات ..."
+msgstr "Effektlar..."
 
 #: src/skins/menus.cc:84 src/skins-qt/menus.cc:74
 msgid "Open Files ..."
-msgstr "إفتح الملفات ..."
+msgstr "Fayllarni ochish..."
 
 #: src/skins/menus.cc:85 src/skins-qt/menus.cc:76
 msgid "Open URL ..."
-msgstr "إفتح الرابط ..."
+msgstr "URL ni ochish..."
 
 #: src/skins/menus.cc:88 src/skins-qt/menus.cc:79
 msgid "Playback"
-msgstr "التشغيل"
+msgstr "Ijro"
 
 #: src/skins/menus.cc:89 src/skins-qt/menus.cc:80
 msgid "Playlist"
-msgstr "قائمة التشغيل"
+msgstr "Pleylist"
 
 #: src/skins/menus.cc:90 src/skins-qt/menus.cc:81
 msgid "Output"
-msgstr "الناتج"
+msgstr "Chiqarish"
 
 #: src/skins/menus.cc:91 src/skins-qt/menus.cc:82
 msgid "View"
-msgstr "عرض"
+msgstr "Ko'rinish"
 
 #: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
 #: src/skins/menus.cc:243 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
 #: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:239
 msgid "Services"
-msgstr "خدمات"
+msgstr "Xizmatlar"
 
 #: src/skins/menus.cc:95 src/skins-qt/menus.cc:86
 msgid "About ..."
-msgstr "حول ..."
+msgstr "Haqida..."
 
 #: src/skins/menus.cc:96 src/skins-qt/menus.cc:87
 msgid "Settings ..."
-msgstr "الإعدادات..."
+msgstr "Sozlamalar..."
 
 #: src/skins/menus.cc:97 src/skins-qt/menus.cc:88
 msgid "Quit"
-msgstr "اخرج"
+msgstr "Chiqish"
 
 #: src/skins/menus.cc:101 src/skins/menus.cc:233 src/skins-qt/menus.cc:92
 #: src/skins-qt/menus.cc:229
 msgid "Song Info ..."
-msgstr "معلومات المقطع ..."
+msgstr "Qo'shiq haqida ma'lumot..."
 
 #: src/skins/menus.cc:105 src/skins-qt/menus.cc:96
 msgid "Shuffle by Album"
-msgstr "عشوائي حسب الالبوم"
+msgstr "Albom bo'yicha aralashtirish"
 
 #: src/skins/menus.cc:106 src/skins-qt/menus.cc:97
 msgid "No Playlist Advance"
-msgstr "لا قائمة التشغيل مسبقة"
+msgstr ""
 
 #: src/skins/menus.cc:117 src/skins-qt/menus.cc:108
 msgid "Set A-B Repeat"
-msgstr "تكرار أ-ي"
+msgstr ""
 
 #: src/skins/menus.cc:118 src/skins-qt/menus.cc:109
 msgid "Clear A-B Repeat"
-msgstr "مسح تكرار أ-ي"
+msgstr ""
 
 #: src/skins/menus.cc:120 src/skins-qt/menus.cc:111
 msgid "Jump to Song ..."
-msgstr "إذهب للمقطع ..."
+msgstr "Qo'shiqqa o'tish..."
 
 #: src/skins/menus.cc:121 src/skins-qt/menus.cc:113
 msgid "Jump to Time ..."
-msgstr "الانتقال السريع للوقت ..."
+msgstr "Jump to Time..."
 
 #: src/skins/menus.cc:125 src/skins-qt/menus.cc:118
 msgid "Play/Resume"
-msgstr "لبث/استئناف"
+msgstr "Ijro etish/Davom etish"
 
 #: src/skins/menus.cc:127 src/skins-qt/menus.cc:120
 msgid "New Playlist"
-msgstr "قائمة تشغيل جديدة"
+msgstr "Yangi pleylist"
 
 #: src/skins/menus.cc:128 src/skins-qt/menus.cc:121
 msgid "Rename Playlist ..."
-msgstr "اعادة تسمية القائمة ..."
+msgstr "Pleylist nomini oʻzgartirish..."
 
 #: src/skins/menus.cc:129 src/skins-qt/menus.cc:122
 msgid "Remove Playlist"
-msgstr "إزالة قائمة التشغيل ..."
+msgstr "Pleylistni olib tashlash"
 
 #: src/skins/menus.cc:131 src/skins-qt/menus.cc:124
 msgid "Previous Playlist"
-msgstr "قائمة النشغيل السابقة"
+msgstr "Oldingi pleylist"
 
 #: src/skins/menus.cc:132 src/skins-qt/menus.cc:125
 msgid "Next Playlist"
-msgstr "قائمة التشغيل التالية"
+msgstr "Keyingi pleylist"
 
 #: src/skins/menus.cc:134 src/skins-qt/menus.cc:127
 msgid "Import Playlist ..."
-msgstr "استورد قائمة التشغيل"
+msgstr "Pleylistni import qilish..."
 
 #: src/skins/menus.cc:135 src/skins-qt/menus.cc:128
 msgid "Export Playlist ..."
-msgstr "صدر قائمة التشغيل"
+msgstr "Pleylistni eksport qilish..."
 
 #: src/skins/menus.cc:137 src/skins-qt/menus.cc:130
 msgid "Playlist Manager ..."
-msgstr "مدير قائمة التشغيل"
+msgstr "Pleylist menejeri..."
 
 #: src/skins/menus.cc:138 src/skins-qt/menus.cc:131
 msgid "Queue Manager ..."
-msgstr "مدير قوائم الانتظار ..."
+msgstr "Navbat menejeri..."
 
 #: src/skins/menus.cc:140 src/skins-qt/menus.cc:133
 msgid "Refresh Playlist"
-msgstr "حدث قائمة التشغيل"
+msgstr "Pleylistni yangilash"
 
 #: src/skins/menus.cc:144 src/skins-qt/menus.cc:137
 msgid "Show Playlist Editor"
-msgstr "اظهار قائمة التشغيل"
+msgstr "Pleylist muharririni ko'rsatish"
 
 #: src/skins/menus.cc:145 src/skins-qt/menus.cc:138
 msgid "Show Equalizer"
-msgstr "إظهار الخالط"
+msgstr "Ekvalayzerni ko'rsatish"
 
 #: src/skins/menus.cc:147 src/skins-qt/menus.cc:140
 msgid "Show Remaining Time"
-msgstr "إظهار الوقت المتبقي"
+msgstr "Qolgan vaqtni ko'rsatish"
 
 #: src/skins/menus.cc:150 src/skins-qt/menus.cc:143
 msgid "Always on Top"
-msgstr "دائما فوق الكل"
+msgstr "Har doim ustida"
 
 #: src/skins/menus.cc:151 src/skins-qt/menus.cc:145
 msgid "On All Workspaces"
-msgstr "على كل اسطح المكتب"
+msgstr "Barcha ish joylarida"
 
 #: src/skins/menus.cc:153 src/skins-qt/menus.cc:148
 msgid "Roll Up Player"
-msgstr "ظلل المشغل"
+msgstr "Roll Up pleyeri"
 
 #: src/skins/menus.cc:154 src/skins-qt/menus.cc:149
 msgid "Roll Up Playlist Editor"
-msgstr "ظلل قائمة التشغيل"
+msgstr "Roll Up pleylist muharriri"
 
 #: src/skins/menus.cc:155 src/skins-qt/menus.cc:150
 msgid "Roll Up Equalizer"
-msgstr "ظلل الخاط"
+msgstr "Roll Up ekvalayzeri"
 
 #: src/skins/menus.cc:163 src/skins-qt/menus.cc:158
 msgid "Add URL ..."
-msgstr "أضف رابط ..."
+msgstr "URL qo‘shish..."
 
 #: src/skins/menus.cc:164 src/skins-qt/menus.cc:160
 msgid "Add Files ..."
-msgstr "أضف ملفات ..."
+msgstr "Fayllarni qo'shish..."
 
 #: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:211
 #: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:192
 #: src/skins-qt/menus.cc:207
 msgid "By Title"
-msgstr "حسب العنوان"
+msgstr "Sarlavha bo'yicha"
 
 #: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:218
 #: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:199
 #: src/skins-qt/menus.cc:214
 msgid "By File Name"
-msgstr "حسب إسم الملف"
+msgstr "Fayl nomi bo'yicha"
 
 #: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:219
 #: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
 #: src/skins-qt/menus.cc:215
 msgid "By File Path"
-msgstr "حسب مسار الملف"
+msgstr "Fayl yo'li bo'yicha"
 
 #: src/skins/menus.cc:176 src/skins-qt/menus.cc:172
 msgid "Remove All"
-msgstr "حذف الكل"
+msgstr "Hammasini o'chirish"
 
 #: src/skins/menus.cc:177 src/skins-qt/menus.cc:173
 msgid "Clear Queue"
-msgstr "مسح قائمة انتظار"
+msgstr "Navbatni tozalash"
 
 #: src/skins/menus.cc:179 src/skins-qt/menus.cc:175
 msgid "Remove Unavailable Files"
-msgstr "إزالة الملفات غير متوفر"
+msgstr "Mavjud bo'lmagan fayllarni o'chirish"
 
 #: src/skins/menus.cc:180 src/skins-qt/menus.cc:176
 msgid "Remove Duplicates"
-msgstr "ازالة المكررة"
+msgstr "Dublikatlarni o'chirish"
 
 #: src/skins/menus.cc:182 src/skins-qt/menus.cc:178
 msgid "Remove Unselected"
-msgstr "حذف الغير محددة"
+msgstr "Tanlanmaganni o'chirish"
 
 #: src/skins/menus.cc:183 src/skins-qt/menus.cc:179
 msgid "Remove Selected"
-msgstr "حذف المحددة"
+msgstr "Tanlanganni o'chirish"
 
 #: src/skins/menus.cc:187 src/skins-qt/menus.cc:183
 msgid "Search and Select"
-msgstr "ابحث و حدد"
+msgstr "Qidirish va tanlash"
 
 #: src/skins/menus.cc:189 src/skins-qt/menus.cc:185
 msgid "Invert Selection"
-msgstr "عكس التحديد"
+msgstr "Tanlovni teskari aylantirish"
 
 #: src/skins/menus.cc:190 src/skins-qt/menus.cc:186
 msgid "Select None"
-msgstr "لا تحدد شيء"
+msgstr "Hech birini tanlamaslik"
 
 #: src/skins/menus.cc:191 src/skins-qt/menus.cc:187
 msgid "Select All"
-msgstr "تحديد الكل"
+msgstr "Hammasini belgilash"
 
 #: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:191
 #: src/skins-qt/menus.cc:206
 msgid "By Track Number"
-msgstr "حسب رقم المقطع"
+msgstr "Trek raqami bo'yicha"
 
 #: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:193
 #: src/skins-qt/menus.cc:208
 msgid "By Artist"
-msgstr "حسب المؤدي"
+msgstr "Artist bo'yicha"
 
 #: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:194
 #: src/skins-qt/menus.cc:209
 msgid "By Album"
-msgstr "حسب الألبوم"
+msgstr "Albom bo'yicha"
 
 #: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:195
 #: src/skins-qt/menus.cc:210
 msgid "By Album Artist"
-msgstr "حسب الالبوم المؤدي"
+msgstr "Albom artisti bo'yicha"
 
 #: src/skins/menus.cc:200 src/skins/menus.cc:215 src/skins-qt/menus.cc:196
 #: src/skins-qt/menus.cc:211
 msgid "By Release Date"
-msgstr "حسب تاريخ الإصدار"
+msgstr "Chiqarilgan sana bo'yicha"
 
 #: src/skins/menus.cc:201 src/skins/menus.cc:216 src/skins-qt/menus.cc:197
 #: src/skins-qt/menus.cc:212
 msgid "By Genre"
-msgstr "حسب النوع"
+msgstr "Janr bo'yicha"
 
 #: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:198
 #: src/skins-qt/menus.cc:213
 msgid "By Length"
-msgstr "حسب الطول"
+msgstr "Uzunlik bo'yicha"
 
 #: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:201
 #: src/skins-qt/menus.cc:216
 msgid "By Custom Title"
-msgstr "حسب العنوان المخصص"
+msgstr "Maxsus sarlavha bo'yicha"
 
 #: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:202
 #: src/skins-qt/menus.cc:217
 msgid "By Comment"
-msgstr "حسب التعليق"
+msgstr "Izoh bo'yicha"
 
 #: src/skins/menus.cc:225 src/skins-qt/menus.cc:221
 msgid "Randomize List"
-msgstr "قائمة عشوائية"
+msgstr "Ro'yxatni tasodifiy qilish"
 
 #: src/skins/menus.cc:226 src/skins-qt/menus.cc:222
 msgid "Reverse List"
-msgstr "عكس القائمة"
+msgstr "Ro'yxatni teskari qilish"
 
 #: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
 msgid "Sort Selected"
-msgstr "عرض المحدد"
+msgstr "Tanlanganlarni saralash"
 
 #: src/skins/menus.cc:229 src/skins-qt/menus.cc:225
 msgid "Sort List"
-msgstr "عرض القائمة"
+msgstr "Roʻyxatni saralash"
 
 #: src/skins/menus.cc:234 src/skins-qt/menus.cc:230
 msgid "Open Containing Folder"
-msgstr "فتح المجلد المحتوي"
+msgstr "O'z ichiga olgan jildni ochish"
 
 #: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
 msgid "Cut"
-msgstr "قص"
+msgstr "Kesish"
 
 #: src/skins/menus.cc:237 src/skins-qt/menus.cc:233
 msgid "Copy"
-msgstr "نسخ"
+msgstr "Nusxalash"
 
 #: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
 msgid "Paste"
-msgstr "لصق"
+msgstr "Joylashtirish"
 
 #: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
 msgid "Paste at End"
-msgstr "لصق عند الانتهاء"
+msgstr "Oxirida joylashtirish"
 
 #: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
 msgid "Queue/Unqueue"
-msgstr "اضف/ازل من قائمة الانتظار"
+msgstr "Navbat/navbatni bekor qilish"
 
 #: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:56
 #, c-format
 msgid "%s (%d of %d)"
-msgstr "%s (%d الى %d)"
+msgstr "%s (%d %d dan)"
 
 #: src/skins/playlistwin.cc:491 src/skins-qt/playlistwin.cc:476
 msgid "Audacious Playlist Editor"
-msgstr "محرر قائمة أوداشيَس"
+msgstr "Audacious pleylist muharriri"
 
 #: src/skins/plugin.cc:49 src/skins-qt/plugin.cc:64
 msgid "Winamp Classic Interface"
-msgstr "مظهر Winamp  الكلاسيكي"
+msgstr "Winamp klassik interfeysi"
 
 #: src/skins-qt/menus.cc:75
 msgid "Open Folder ..."
-msgstr "افتح مجلد ..."
+msgstr "Jildni ochish..."
 
 #: src/skins-qt/menus.cc:159
 msgid "Add Folder ..."
-msgstr "اضافة مجلد..."
+msgstr "Jild qo'shish..."
 
 #: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:76
 msgid "Search entries in active playlist"
-msgstr "بحث عن مدخلة في قائمة التشغيل النشطة"
+msgstr ""
 
 #: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:82
 msgid ""
@@ -4094,221 +4089,218 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
-"تحديد إدخالات في قائمة التشغيل عن طريق تعبئة حقل واحد أو أكثر.  استخدام "
-"تعبيرات تركيب منتظم، تحسس حالة الأحرف. إذا كنت لا تعرف كيفية التعبير "
-"العادية ، ببساطة إدراج جزء من الحروف لما تبحث عنه"
 
 #: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:90
 msgid "Title:"
-msgstr "العنوان:"
+msgstr ""
 
 #: src/skins-qt/search-select.cc:78 src/skins/search-select.cc:96
 msgid "Album:"
-msgstr "الألبوم:"
+msgstr ""
 
 #: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:102
 msgid "Artist:"
-msgstr "المؤدي:"
+msgstr ""
 
 #: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:108
 msgid "File Name:"
-msgstr "اسم الملف:"
+msgstr ""
 
 #: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:116
 msgid "Clear previous selection before searching"
-msgstr "مسح التحديد السابقة قبل البحث"
+msgstr ""
 
 #: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:119
 msgid "Automatically toggle queue for matching entries"
-msgstr "تبديل تلقائيا لقائمة الانتظار لمطابقة الإدخالات"
+msgstr ""
 
 #: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:122
 msgid "Create a new playlist with matching entries"
-msgstr "إنشاء قائمة تشغيل جديدة مع إدخالات مطابقة"
+msgstr ""
 
 #: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:77
 msgid "Search"
-msgstr "بحث"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:180
 msgid "Player:"
-msgstr "مشغل:"
+msgstr "Pleyer:"
 
 #: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:182
 msgid "Select main player window font:"
-msgstr "حدد الخط الرئيسي لنافذة التشغيل:"
+msgstr "Asosiy pleyer oynasi shriftini tanlash:"
 
 #: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:183
 msgid "Playlist:"
-msgstr "قائمة التشغيل:"
+msgstr "Pleylist:"
 
 #: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:185
 msgid "Select playlist font:"
-msgstr "كحدد خط قائمة التشغيل"
+msgstr "Pleylist shriftini tanlash:"
 
 #: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:189
 msgid "<b>Skin</b>"
-msgstr "<b>المظهر</b>"
+msgstr "<b>Skin</b>"
 
 #: src/skins-qt/skins_cfg.cc:211
 msgid "Display active titlebar when any window is focused"
-msgstr "اعرِض شريط العنوان النشط عندما تكون أية نافذة مستحوِذة"
+msgstr "Har qanday oyna fokuslanganda faol sarlavha panelini ko'rsatish"
 
 #: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:191
 msgid "<b>Fonts</b>"
-msgstr "<b>خطوط</b>"
+msgstr "<b>Shriftlar</b>"
 
 #: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:193
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "استخدم صورة خطوط (supports ASCII only)"
+msgstr "Bitmap shriftlaridan foydalaning (faqat ASCII ni qo'llab-quvvatlaydi)"
 
 #: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:195
 msgid "Scroll song title"
-msgstr "تمرير عنوان المقطع"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:197
 msgid "Scroll song title in both directions"
-msgstr "تمرير عنوان المقطع في كلا الاتجاهين"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:202
 msgid "Analyzer"
-msgstr "محلل"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:203
 msgid "Scope"
-msgstr "نطاق"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:204
 msgid "Voiceprint / VU meter"
-msgstr "Voiceprint / VU meter"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:205
 msgid "Off"
-msgstr "إيقاف"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:231 src/skins-qt/skins_cfg.cc:256
 #: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:209
 #: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
 msgid "Normal"
-msgstr "عادي"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:232 src/skins-qt/skins_cfg.cc:257
 #: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
 msgid "Fire"
-msgstr "ناري"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:211
 msgid "Vertical lines"
-msgstr "خطوط افقية"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:215
 msgid "Lines"
-msgstr "خطوط"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:216
 msgid "Bars"
-msgstr "اشرطة"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:220
 msgid "Slowest"
-msgstr "أبطأ"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:221
 msgid "Slow"
-msgstr "بطيء"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:222
 #: src/soxr/sox-resampler.cc:180
 msgid "Medium"
-msgstr "متوسطة"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:223
 msgid "Fast"
-msgstr "سرعة"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:224
 msgid "Fastest"
-msgstr "أسرع"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:228
 msgid "Dots"
-msgstr "النقاط"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:229
 msgid "Line"
-msgstr "خط"
+msgstr "Satr"
 
 #: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:230
 msgid "Solid"
-msgstr "صلب"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:236
 msgid "Ice"
-msgstr "جليد"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:241
 msgid "Smooth"
-msgstr "ناعم"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:245
 msgid "Coloring:"
-msgstr "تلوين:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:248
 msgid "Style:"
-msgstr "نمط:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:251
 msgid "Falloff:"
-msgstr "سقوط"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:254
 msgid "Peak falloff:"
-msgstr "سقوط الذروة:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:260
 msgid "Scope Style:"
-msgstr "نمط النطاق:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:263
 msgid "Voiceprint Coloring:"
-msgstr "تلوين Voiceprint"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:266
 msgid "VU Meter Style:"
-msgstr "نمط ميتر"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:272
 msgid "<b>Type</b>"
-msgstr "<b>النمط</b>"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:273
 msgid "Visualization type:"
-msgstr "نوع مرئيات:"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:276
 msgid "<b>Analyzer</b>"
-msgstr "<b>محلل</b>"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:277
 msgid "Show peaks"
-msgstr "اظهار القمة"
+msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:286
 msgid "Visualization"
-msgstr "مرئيات"
+msgstr "Vizualizatsiya"
 
 #: src/skins-qt/skinselector.cc:98 src/skins/skinselector.cc:111
 msgid "Archived Winamp 2.x skin"
-msgstr "ارشفة مظهر Winamp 2.x "
+msgstr ""
 
 #: src/skins-qt/skinselector.cc:102 src/skins/skinselector.cc:115
 msgid "Unarchived Winamp 2.x skin"
-msgstr "إلغاء أرشفة مظهر Winamp 2.x "
+msgstr ""
 
 #: src/sndfile/plugin.cc:38
 msgid "Sndfile Plugin"
-msgstr "Sndfile اضافة"
+msgstr ""
 
 #: src/sndfile/plugin.cc:372
 msgid ""
@@ -4331,85 +4323,65 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
-"Based on the xmms_sndfile plugin:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/sndio/sndio.cc:43
 msgid "Sndio Output"
-msgstr "Sndio مخرج"
+msgstr ""
 
 #: src/sndio/sndio.cc:98
 msgid "Device (blank for default):"
-msgstr "الجهاز (فارغ لالافتراضي):"
+msgstr ""
 
 #: src/sndio/sndio.cc:100
 msgid "Save and restore volume:"
-msgstr "حفظ واستعادة حجم الصوت"
+msgstr ""
 
 #: src/sndio/sndio.cc:181
 #, c-format
 msgid "Sndio error: Unsupported audio format (%d)"
-msgstr "Sndio خطأ: تنسيق الصوت غير معتمد (%d)"
+msgstr ""
 
 #: src/sndio/sndio.cc:192
 msgid "Sndio error: sio_open() failed"
-msgstr "Sndio خطأ: sio_open() فشل"
+msgstr ""
 
 #: src/sndio/sndio.cc:221
 msgid "Sndio error: sio_setpar() failed"
-msgstr "Sndio خطأ: sio_setpar() فشل"
+msgstr ""
 
 #: src/sndio/sndio.cc:233
 msgid "Sndio error: sio_start() failed"
-msgstr "Sndio خطأ: sio_start() فشل"
+msgstr ""
 
 #: src/songchange/song_change.cc:30
 msgid "Song Change"
-msgstr "تغير المقطوعة الصوتية"
+msgstr ""
 
 #: src/songchange/song_change.cc:245
 msgid "<b>Commands</b>"
-msgstr "<b>أوامر</b>"
+msgstr ""
 
 #: src/songchange/song_change.cc:247
 msgid "Command to run when starting a new song:"
-msgstr "الأوامر لتشغيل عند بدء مقطوعة جديدة:"
+msgstr ""
 
 #: src/songchange/song_change.cc:250
 msgid "Command to run at the end of a song:"
-msgstr "امر لتشغيل في نهاية تشغيل المقطوعة:"
+msgstr ""
 
 #: src/songchange/song_change.cc:253
 msgid "Command to run at the end of the playlist:"
-msgstr "امر لتشغيل في نهاية قائمة التشغيل:"
+msgstr ""
 
 #: src/songchange/song_change.cc:256
 msgid "Command to run when song title changes (for network streams):"
-msgstr "اوامر لتشغيل عند تغيير عنوان الأغنية (لتدفق الشبكة):"
+msgstr ""
 
 #: src/songchange/song_change.cc:259
 msgid ""
 "You can use the following format codes, which will be replaced before "
 "running the command (not all are useful for the end-of-playlist command):"
 msgstr ""
-"يمكنك استخدام رموز تنسيق التالية التي سيتم استبدالها قبل تشغيل الأمر (ليست "
-"كلها مفيدة للأمر في نهاية قائمة التشغيل):"
 
 #: src/songchange/song_change.cc:262
 msgid ""
@@ -4425,33 +4397,20 @@ msgid ""
 "%t: Playlist position\n"
 "%T: Title (unformatted)"
 msgstr ""
-"%a: المؤدي\n"
-"%b: الالبوم\n"
-"%c: عدد القنوات\n"
-"%f: اسم الملف (المسار كاملا)\n"
-"%F: التردد (هرتز)\n"
-"%l: الطول (الثانية على الالف)\n"
-"%n أو %s: تنسيق العنوان (انظر اعدادات القائمة)\n"
-"%p: القراءة الحالية (1 or 0)\n"
-"%r: المعدل (بايت في الثانية)\n"
-"%t: وضعية القائمة\n"
-"%T: العنوان (غير منسق)"
 
 #: src/songchange/song_change.cc:273
 msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.  "
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
-"يجب أن يرفق المعلمات التي تم تمريرها في علامات اقتباس. قد يؤدي المعلمات غير "
-"منسقة إلى نتائج غير متوقعة."
 
 #: src/song-info-qt/song-info.cc:30
 msgid "Song Info"
-msgstr "معلومات المقطوعة"
+msgstr "Qo'shiq haqida ma'lumot"
 
 #: src/soxr/sox-resampler.cc:44
 msgid "SoX Resampler"
-msgstr "SoX إعادة إعداد"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:172
 msgid ""
@@ -4461,79 +4420,74 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"SoX Resampler Plugin for Audacious\n"
-"Copyright 2013 Michał Lipski\n"
-"\n"
-"Based on Sample Rate Converter Plugin:\n"
-"Copyright 2010-2012 John Lindgren"
 
 #: src/soxr/sox-resampler.cc:178
 msgid "Quick"
-msgstr "سريع"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:179
 msgid "Low"
-msgstr "منخفض"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:181
 msgid "High"
-msgstr "عالي"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:182
 msgid "Very High"
-msgstr "عالي جدا"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:183
 msgid "Ultra High"
-msgstr "شديد العلوّ"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:187
 msgid "Minimum"
-msgstr "الحد الأدنى"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:188
 msgid "Intermediate"
-msgstr "متوسط"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:193
 msgid "Quality:"
-msgstr "جودة:"
+msgstr "Sifat:"
 
 #: src/soxr/sox-resampler.cc:196
 msgid "Phase:"
-msgstr "الطور:"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:200
 msgid "Allow aliasing"
-msgstr "السماح بالتعرج"
+msgstr ""
 
 #: src/soxr/sox-resampler.cc:202
 msgid "Use steep filter"
-msgstr "استخدم تصفية الإنحدار"
+msgstr ""
 
 #: src/speedpitch/speed-pitch.cc:54
 msgid "Speed and Pitch"
-msgstr "السرعة والنغمة"
+msgstr ""
 
 #: src/speedpitch/speed-pitch.cc:247
 msgid "<b>Speed</b>"
-msgstr "<b>السرعة</b>"
+msgstr ""
 
 #: src/speedpitch/speed-pitch.cc:248
 msgid "Decouple from pitch"
-msgstr "فكّ عن الحدّة"
+msgstr ""
 
 #: src/speedpitch/speed-pitch.cc:250 src/speedpitch/speed-pitch.cc:258
 msgid "Multiplier:"
-msgstr "المضخم:"
+msgstr ""
 
 #: src/speedpitch/speed-pitch.cc:254
 msgid "<b>Pitch</b>"
-msgstr "<b>الشدة</b>"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:44 src/statusicon/statusicon.cc:47
 msgid "Status Icon"
-msgstr "ايقونة النظام"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:65
 msgid ""
@@ -4546,46 +4500,38 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
-"Status Icon Plugin (partial port for Qt interface)\n"
-"\n"
-"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
-"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
-"Copyright 2015 Eugene Paskevich <eugene@raptor.kiev.ua>\n"
-"\n"
-"This plugin provides a status icon, placed in\n"
-"the system tray area of the window manager."
 
 #: src/statusicon-qt/statusicon.cc:86 src/statusicon/statusicon.cc:380
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "<b>عملية تمرير المؤشر</b>"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:87 src/statusicon/statusicon.cc:381
 msgid "Change volume"
-msgstr "تغيير الصوت"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:90 src/statusicon/statusicon.cc:384
 msgid "Change playing song"
-msgstr "تغيير تشغيل المقطوعة"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:93 src/statusicon/statusicon.cc:387
 msgid "<b>Other Settings</b>"
-msgstr "<b>اعدادات اخرى</b>"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:94 src/statusicon/statusicon.cc:388
 msgid "Disable the popup window"
-msgstr "تعطيل النافذة المنبثقة"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:390
 msgid "Close to the system tray"
-msgstr "الخروج من علبة النظام"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:98 src/statusicon/statusicon.cc:392
 msgid "Advance in playlist when scrolling upward"
-msgstr "التقدم في قائمة التشغيل عند التمرير إلى الأعلى"
+msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:113 src/statusicon/statusicon.cc:283
 msgid "Se_ttings ..."
-msgstr "إع_دادات ..."
+msgstr ""
 
 #: src/statusicon/statusicon.cc:373
 msgid ""
@@ -4597,17 +4543,10 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
-"Status Icon Plugin\n"
-"\n"
-"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
-"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
-"\n"
-"This plugin provides a status icon, placed in\n"
-"the system tray area of the window manager."
 
 #: src/stereo_plugin/stereo.cc:19
 msgid "Extra Stereo"
-msgstr "ستيريو إضافية"
+msgstr ""
 
 #: src/stereo_plugin/stereo.cc:36
 msgid ""
@@ -4615,166 +4554,163 @@ msgid ""
 "\n"
 "By Johan Levin, 1999"
 msgstr ""
-"اضافة ستيريو إضافية\n"
-"\n"
-"بواسطة Johan Levin, 1999"
 
 #: src/stereo_plugin/stereo.cc:44
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>ستيريو إضافية</b>"
+msgstr ""
 
 #: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:131
 msgid "Type"
-msgstr "النوع"
+msgstr ""
 
 #: src/streamtuner/icecast-model.cc:132
 msgid "Current Song"
-msgstr "المقطع الحالي"
+msgstr ""
 
 #: src/streamtuner/icecast-model.cc:164
 msgid "Other"
-msgstr "آخر"
+msgstr ""
 
 #: src/streamtuner/ihr-model.cc:63
 msgid "Market"
-msgstr "السوق"
+msgstr ""
 
 #: src/streamtuner/ihr-model.cc:156
 msgid "Call Letters"
-msgstr "حروف اتصال"
+msgstr ""
 
 #: src/streamtuner/ihr-model.cc:162
 msgid "Description"
-msgstr "الوصف"
+msgstr "Tavsif"
 
 #: src/streamtuner/shoutcast-model.cc:128
 msgid "Listeners"
-msgstr "المستمعون"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:188
 msgid "Top 500 Stations"
-msgstr "أعلى 500 محطة"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:189
 msgid "Alternative"
-msgstr "البديل"
+msgstr "Alternative"
 
 #: src/streamtuner/shoutcast-model.cc:190
 msgid "Blues"
-msgstr "بلوز"
+msgstr "Blues"
 
 #: src/streamtuner/shoutcast-model.cc:191
 msgid "Classical"
-msgstr "كلاسيكي"
+msgstr "Classical"
 
 #: src/streamtuner/shoutcast-model.cc:192
 msgid "Country"
-msgstr "ريفي"
+msgstr "Country"
 
 #: src/streamtuner/shoutcast-model.cc:193
 msgid "Decades"
-msgstr "العقود"
+msgstr "Decades"
 
 #: src/streamtuner/shoutcast-model.cc:194
 msgid "Easy Listening"
-msgstr "استماع سهل"
+msgstr "Easy Listening"
 
 #: src/streamtuner/shoutcast-model.cc:195
 msgid "Electronic"
-msgstr "الكتروني"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:196
 msgid "Folk"
-msgstr "قوم"
+msgstr "Folk"
 
 #: src/streamtuner/shoutcast-model.cc:197
 msgid "Inspirational"
-msgstr "إلهامي"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:198
 msgid "International"
-msgstr "دولي"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:199
 msgid "Jazz"
-msgstr "جاز"
+msgstr "Jazz"
 
 #: src/streamtuner/shoutcast-model.cc:200
 msgid "Latin"
-msgstr "لاتيني"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:201
 msgid "Metal"
-msgstr "ميتال"
+msgstr "Metal"
 
 #: src/streamtuner/shoutcast-model.cc:203
 msgid "New Age"
-msgstr "عصر جديد"
+msgstr "New Age"
 
 #: src/streamtuner/shoutcast-model.cc:204
 msgid "Pop"
-msgstr "بوب"
+msgstr "Pop"
 
 #: src/streamtuner/shoutcast-model.cc:205
 msgid "Public Radio"
-msgstr "راديو عام"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:206
 msgid "R&B and Urban"
-msgstr "R&B وحضري"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:207
 msgid "Rap"
-msgstr "راب"
+msgstr "Rap"
 
 #: src/streamtuner/shoutcast-model.cc:208
 msgid "Reggae"
-msgstr "ريڭي"
+msgstr "Reggae"
 
 #: src/streamtuner/shoutcast-model.cc:209
 msgid "Rock"
-msgstr "روك"
+msgstr "Rock"
 
 #: src/streamtuner/shoutcast-model.cc:210
 msgid "Seasonal and Holiday"
-msgstr "فصلي وعطلات"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:211
 msgid "Soundtracks"
-msgstr "مقاطع صوتية"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:212
 msgid "Talk"
-msgstr "حديث"
+msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:213
 msgid "Themes"
-msgstr "سِمات"
+msgstr ""
 
 #: src/streamtuner/streamtuner.cc:59
 msgid "Shoutcast"
-msgstr "شاوتكاست Shoutcast"
+msgstr ""
 
 #: src/streamtuner/streamtuner.cc:60
 msgid "Icecast"
-msgstr "آيسكاست Icecast"
+msgstr "Icecast"
 
 #: src/streamtuner/streamtuner.cc:71
 msgid "Stream Tuner"
-msgstr "منعّم الدفق"
+msgstr "Stream Tuner"
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
-msgstr "مولد النغمة"
+msgstr "Ohang generatori"
 
 #: src/tonegen/tonegen.cc:92
 #, c-format
 msgid "%s %.1f Hz"
-msgstr "%s %.1f هرتز"
+msgstr "%s %.1f Gts"
 
 #: src/tonegen/tonegen.cc:92
 msgid "Tone Generator: "
-msgstr "مولد النغمة"
+msgstr "Ohang generatori:"
 
 #: src/tonegen/tonegen.cc:161
 msgid ""
@@ -4784,11 +4720,12 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 msgstr ""
-"Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
-"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"Håvard Kvålen tomonidan sinus ohang generatori <havardk@xmms.org>\n"
+"Daniel J. Peng tomonidan tahrirlangan <danielpeng@bigfoot.com>\n"
 "\n"
-"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
-"e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
+"Undan foydalanish uchun URL manzilini qo'shing: tone://frequency1;frequency2;"
+"frequency3;...\n"
+"masalan tone://2000;2005 2000 Gts ohang va 2005 Gts ohangni ijro etish uchun "
 
 #: src/ui-common/dialogs-qt.cc:40
 msgid ""
@@ -4796,24 +4733,24 @@ msgid ""
 "(Further messages have been hidden.)"
 msgstr ""
 "\n"
-"(تنبيهات أخرى تم إخفائها.)"
+"(Qo'shimcha xabarlar yashirilgan.)"
 
 #: src/ui-common/dialogs-qt.cc:52
 msgid "Working ..."
-msgstr "جاري العمل..."
+msgstr "Ishlamoqda..."
 
 #: src/ui-common/dialogs-qt.cc:72
 msgid "Information"
-msgstr "معلومات"
+msgstr "Ma'lumot"
 
 #: src/ui-common/menu-ops-gtk.cc:132 src/ui-common/menu-ops-qt.cc:113
 #, c-format
 msgid "%s does not appear to be a valid folder."
-msgstr "%s لا يبدو مجلداً صحيحًا."
+msgstr ""
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
-msgstr "إزالة صوت"
+msgstr "Ovozni olib tashlash"
 
 #: src/vorbis/vorbis.cc:429
 msgid ""
@@ -4835,15 +4772,15 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
-"Audacious Ogg Vorbis Decoder\n"
+"Audacious Ogg Vorbis dekoderi\n"
 "\n"
-"Based on the Xiph.org Foundation's Ogg Vorbis Plugin:\n"
+"Xiph.org fondining Ogg Vorbis plaginiga asoslangan:\n"
 "http://www.xiph.org/\n"
 "\n"
-"Original code by:\n"
+"Asl kod:\n"
 "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
 "\n"
-"Contributions from:\n"
+"Quyidagilardan hissalar:\n"
 "Chris Montgomery <monty@xiph.org>\n"
 "Peter Alm <peter@xmms.org>\n"
 "Michael Smith <msmith@labyrinth.edu.au>\n"
@@ -4855,12 +4792,12 @@ msgstr ""
 
 #: src/vorbis/vorbis.h:18
 msgid "Ogg Vorbis Decoder"
-msgstr "Ogg Vorbis مفكك"
+msgstr ""
 
 #: src/vtx/info.cc:24
 #, c-format
 msgid "Details about %s"
-msgstr " تفاصيل حول %s"
+msgstr ""
 
 #: src/vtx/info.cc:26
 msgid ""
@@ -4876,21 +4813,10 @@ msgid ""
 "Player Freq: %P\n"
 "Year: %y"
 msgstr ""
-"العنوان: %t\n"
-"المؤلف: %a\n"
-"من عند: %f\n"
-"Tracker: %T\n"
-"التعليق: %C\n"
-"نوع الرقاقة: %c\n"
-"ستيريو: %s\n"
-"حلقة: %l\n"
-"تردد الرقاقة: %F\n"
-"تكرار القراءة: %P\n"
-"عام: %y"
 
 #: src/vtx/vtx.cc:38
 msgid "VTX Decoder"
-msgstr "VTX مفكك"
+msgstr ""
 
 #: src/vtx/vtx.cc:178
 msgid ""
@@ -4898,41 +4824,36 @@ msgid ""
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
-"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
-"Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
-"Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/vumeter-qt/vumeter_qt.cc:31
 msgid ""
 "VU Meter Plugin for Audacious\n"
 "Copyright 2017-2019 Marc Sánchez Fauste"
 msgstr ""
-"ملحَقة مقياس VU لأوداشيَس\n"
-"حقوق النشر 2017-2019 لـ Marc Sánchez Fauste"
 
 #: src/vumeter-qt/vumeter_qt.cc:35
 msgid "<b>VU Meter Settings</b>"
-msgstr "<b>إعدادات مقياس VU</b>"
+msgstr ""
 
 #: src/vumeter-qt/vumeter_qt.cc:37
 msgid "Peak hold time:"
-msgstr "وقت إبقاء الذروة:"
+msgstr "Maksimal ushlab turish vaqti:"
 
 #: src/vumeter-qt/vumeter_qt.cc:42
 msgid "Fall-off time:"
-msgstr "وقت النزول:"
+msgstr "Tushish vaqti:"
 
 #: src/vumeter-qt/vumeter_qt.cc:44
 msgid "dB/second"
-msgstr "ديسبل/ثانية"
+msgstr "dB/sekund"
 
 #: src/vumeter-qt/vumeter_qt.cc:46
 msgid "Display legend"
-msgstr "مفاتيح تعريف العَرض"
+msgstr "Afsonani ko'rsatish"
 
 #: src/vumeter-qt/vumeter_qt.h:37
 msgid "VU Meter"
-msgstr "مقياس VU"
+msgstr "VU metr"
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
@@ -4943,20 +4864,20 @@ msgid ""
 "Win32 waveOut Plugin for Audacious\n"
 "Copyright 2016 John Lindgren"
 msgstr ""
-"Win32 waveOut Plugin for Audacious\n"
-"Copyright 2016 John Lindgren"
+"Audacious uchun Win32 waveOut plagini\n"
+"Mualliflik huquqi 2016 John Lindgren "
 
 #: src/wavpack/wavpack.cc:25
 msgid "WavPack Decoder"
-msgstr "WavPack فك"
+msgstr "WavPack dekoder"
 
 #: src/wavpack/wavpack.cc:217
 msgid "lossy (hybrid)"
-msgstr "lossy (hybrid)"
+msgstr "yo'qotadigan (gibrid)"
 
 #: src/wavpack/wavpack.cc:219
 msgid "lossy"
-msgstr "lossy"
+msgstr "yo'qotadigan"
 
 #: src/wavpack/wavpack.cc:259
 msgid ""
@@ -4964,42 +4885,42 @@ msgid ""
 "\n"
 "Some of the plugin code was by Miles Egan."
 msgstr ""
-"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"Mualliflik huquqi 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
-"Some of the plugin code was by Miles Egan."
+"Plagin kodlarining ba'zilari Miles Egan tomonidan yaratilgan."
 
 #: src/xsf/plugin.cc:74
 msgid "2SF Decoder"
-msgstr "2SF مفكك"
+msgstr "2SF dekoder"
 
 #: src/xsf/plugin.cc:429
 msgid "32728 Hz"
-msgstr "32728 هرتز"
+msgstr "32728 Gts"
 
 #: src/xsf/plugin.cc:432
 msgid "65456 Hz"
-msgstr "65456 هرتز"
+msgstr "65456 Gts"
 
 #: src/xsf/plugin.cc:438
 msgid "Cosine"
-msgstr "جيب تمام"
+msgstr "Kosinus"
 
 #: src/xsf/plugin.cc:439
 msgid "Sharp"
-msgstr "حادّ"
+msgstr "Keskin"
 
 #: src/xsf/plugin.cc:443
 msgid "<b>XSF Configuration</b>"
-msgstr "<b>XSF خيارات</b>"
+msgstr "<b>XSF konfiguratsiyasi</b>"
 
 #: src/xsf/plugin.cc:445
 msgid "Default fade time:"
-msgstr "وقت التلاشي المبدئي:"
+msgstr "Odatiy o'chirish vaqti:"
 
 #: src/xsf/plugin.cc:447
 msgid "Interpolation mode:"
-msgstr "نمط الاستيفاء:"
+msgstr "Interpolatsiya rejimi:"
 
 #: src/xspf/xspf.cc:95
 msgid "XML Shareable Playlists (XSPF)"
-msgstr "قوائم تشغيل XML قابلة للمشاركة (XSPF)"
+msgstr "XML almashish mumkin pleylistlar (XSPF)"
