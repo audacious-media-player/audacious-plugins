@@ -294,22 +294,13 @@ bool SndfilePlugin::read_tag (const char * filename, VFSFile & file, Tuple & tup
             subformat = nullptr;
     }
 
-    SF_FORMAT_INFO format_info;
-
     if (format == nullptr)
     {
-        // show codec information, similar to ffaudio plugin
-        format_info.format = sfinfo.format & SF_FORMAT_SUBMASK;
-        format = "Unknown sndfile"; // fallback
-
-        bool format_found = sf_command (sndfile, SFC_GET_FORMAT_INFO, & format_info,
-         sizeof (format_info)) == 0;
-
-        if ( format_found )
-        {
-            format = format_info.name;
-            subformat = nullptr;
-        }
+	SF_FORMAT_INFO info = {.format = sfinfo.format & SF_FORMAT_SUBMASK};
+	if (sf_command (sndfile, SFC_GET_FORMAT_INFO, & info, sizeof (info)) == 0)
+	    format = info.name;
+	else
+	    format = "Unknown format";
     }
 
     if (subformat != nullptr)
