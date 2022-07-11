@@ -171,7 +171,7 @@ void StatusBar::update_codec()
     }
 
     if (bitrate > 0)
-        str_append_printf(buf, _("%d kbps"), bitrate / 1000);
+        str_append_printf(buf, _("%d kbit/s"), bitrate / 1000);
 
     codec_label->setText((const char *)buf);
     codec_label->show();

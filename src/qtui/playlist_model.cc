@@ -124,7 +124,7 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
         case Length:
             return QString(str_format_time(val));
         case Bitrate:
-            return QString("%1 kbps").arg(val);
+            return QString("%1 kbit/s").arg(val);
         default:
             return QString("%1").arg(val);
         }
@@ -146,7 +146,7 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
                 icon_name = aud_drct_get_paused() ? "media-playback-pause"
                                                   : "media-playback-start";
 
-            return audqt::get_icon(icon_name);
+            return QIcon::fromTheme(icon_name);
         }
         else if (col == m_playing_col)
         {

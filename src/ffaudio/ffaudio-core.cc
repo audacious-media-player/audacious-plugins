@@ -31,11 +31,11 @@
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
 
-#if CHECK_LIBAVFORMAT_VERSION (57, 33, 100, 57, 5, 0)
+#if CHECK_LIBAVFORMAT_VERSION (57, 33, 100)
 #define ALLOC_CONTEXT 1
 #endif
 
-#if CHECK_LIBAVCODEC_VERSION (57, 37, 100, 57, 16, 0)
+#if CHECK_LIBAVCODEC_VERSION (57, 37, 100)
 #define SEND_PACKET 1
 #endif
 
@@ -97,42 +97,54 @@ struct ScopedContext
 #endif
 };
 
-struct ScopedPacket : public AVPacket
+struct ScopedPacket
 {
-    ScopedPacket () : AVPacket ()
-        { av_init_packet (this); }
+    AVPacket * ptr;
+    AVPacket * operator-> () { return ptr; }
 
-#if CHECK_LIBAVCODEC_VERSION (55, 25, 100, 55, 16, 0)
-    ~ScopedPacket () { av_packet_unref (this); }
+#if CHECK_LIBAVCODEC_VERSION(57, 12, 100)
+    ScopedPacket () { ptr = av_packet_alloc (); }
+    ~ScopedPacket () { av_packet_free (& ptr); }
+
+    void clear ()
+    {
+        av_packet_free (& ptr);
+        ptr = av_packet_alloc ();
+    }
 #else
-    ~ScopedPacket () { av_free_packet (this); }
+    ScopedPacket ()
+    {
+        ptr = new AVPacket ();
+        av_init_packet (ptr);
+    }
+
+    ~ScopedPacket ()
+    {
+        av_packet_unref (ptr);
+        delete ptr;
+    }
+
+    void clear ()
+    {
+        av_packet_unref (ptr);
+        * ptr = AVPacket ();
+        av_init_packet (ptr);
+    }
 #endif
 };
 
 struct ScopedFrame
 {
-#if CHECK_LIBAVCODEC_VERSION (55, 45, 101, 55, 28, 1)
     AVFrame * ptr = av_frame_alloc ();
-#else
-    AVFrame * ptr = avcodec_alloc_frame ();
-#endif
-
     AVFrame * operator-> () { return ptr; }
-
-#if CHECK_LIBAVCODEC_VERSION (55, 45, 101, 55, 28, 1)
     ~ScopedFrame () { av_frame_free (& ptr); }
-#elif CHECK_LIBAVCODEC_VERSION (54, 59, 100, 54, 28, 0)
-    ~ScopedFrame () { avcodec_free_frame (& ptr); }
-#else
-    ~ScopedFrame () { av_free (ptr); }
-#endif
 };
 
 static SimpleHash<String, AVInputFormat *> extension_dict;
 
 static void create_extension_dict ();
 
-#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100)
 static int lockmgr (void * * mutexp, enum AVLockOp op)
 {
     switch (op)
@@ -191,10 +203,10 @@ static void ffaudio_log_cb (void * avcl, int av_level, const char * fmt, va_list
 
 bool FFaudio::init ()
 {
-#if ! CHECK_LIBAVFORMAT_VERSION(58, 9, 100, 255, 255, 255)
+#if ! CHECK_LIBAVFORMAT_VERSION(58, 9, 100)
     av_register_all();
 #endif
-#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100)
     av_lockmgr_register (lockmgr);
 #endif
 
@@ -209,7 +221,7 @@ void FFaudio::cleanup ()
 {
     extension_dict.clear ();
 
-#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100, 255, 255, 255)
+#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100)
     av_lockmgr_register (nullptr);
 #endif
 }
@@ -233,7 +245,7 @@ static int log_result (const char * func, int ret)
 static void create_extension_dict ()
 {
     AVInputFormat * f;
-#if CHECK_LIBAVFORMAT_VERSION(58, 9, 100, 255, 255, 255)
+#if CHECK_LIBAVFORMAT_VERSION(58, 9, 100)
     void * iter = nullptr;
     while ((f = const_cast<AVInputFormat *> (av_demuxer_iterate (& iter))))
 #else
@@ -288,7 +300,7 @@ static AVInputFormat * get_format_by_content (const char * name, VFSFile & file)
         AVProbeData d = {name, buf, filled};
         score = target;
 
-        f = av_probe_input_format2 (& d, true, & score);
+        f = (AVInputFormat *) av_probe_input_format2 (& d, true, & score);
         if (f)
             break;
 
@@ -361,7 +373,7 @@ static bool find_codec (AVFormatContext * c, CodecInfo * cinfo)
 #endif
         if (stream && stream->codecpar && stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
         {
-            AVCodec * codec = avcodec_find_decoder (stream->codecpar->codec_id);
+            AVCodec * codec = (AVCodec *) avcodec_find_decoder (stream->codecpar->codec_id);
 
             if (codec)
             {
@@ -446,7 +458,6 @@ bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, In
     if (! file.fseek (0, VFS_SEEK_SET))
         audtag::read_tag (file, tuple, image);
 
-#if CHECK_LIBAVFORMAT_VERSION (54, 2, 100, 54, 2, 0)
     if (image && ! image->len ())
     {
         for (unsigned i = 0; i < ic->nb_streams; i ++)
@@ -459,7 +470,6 @@ bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, In
             }
         }
     }
-#endif
 
     return true;
 }
@@ -543,12 +553,16 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
         /* Read next frame (or more) of data */
         ScopedPacket pkt;
-        int ret = LOG (av_read_frame, ic.get (), & pkt);
+        int ret = LOG (av_read_frame, ic.get (), pkt.ptr);
 
         if (ret < 0)
         {
             if (ret == (int) AVERROR_EOF)
+            {
+                /* On EOF, send an empty packet to "flush" the decoder */
+                pkt.clear ();
                 eof = true;
+            }
             else if (++ errcount > 4)
                 return false;
             else
@@ -559,24 +573,17 @@ bool FFaudio::play (const char * filename, VFSFile & file)
             errcount = 0;
 
             /* Ignore any other substreams */
-            if (pkt.stream_index != cinfo.stream_idx)
+            if (pkt->stream_index != cinfo.stream_idx)
                 continue;
         }
 
         /* Decode and play packet/frame */
-        /* On EOF, send an empty packet to "flush" the decoder */
-        /* Otherwise, make a mutable (shallow) copy of the real packet */
-        AVPacket tmp;
-        if (eof) {
-            tmp = AVPacket ();
-            av_init_packet (& tmp);
-        }
-        else
-            tmp = pkt;
-
 #ifdef SEND_PACKET
-        if ((ret = LOG (avcodec_send_packet, context.ptr, & tmp)) < 0)
+        if ((ret = LOG (avcodec_send_packet, context.ptr, pkt.ptr)) < 0)
             return false; /* defensive, errors not expected here */
+#else
+        /* Make a mutable (shallow) copy of the real packet */
+        AVPacket tmp = * pkt.ptr;
 #endif
 
         while (! check_stop ())
@@ -677,6 +684,9 @@ const char * const FFaudio::exts[] = {
 
     /* WebM */
     "webm",
+
+    /* Matroska */
+    "mka", "mkv",
 
     /* end of table */
     nullptr

@@ -5,8 +5,8 @@ dnl ***
 dnl Initialize
 dnl ==========
 AC_PREREQ([2.59])
-AC_INIT([audacious-plugins], [4.1])
-AC_COPYRIGHT([Copyright (C) 2001-2021 Audacious developers and others])
+AC_INIT([audacious-plugins], [4.2])
+AC_COPYRIGHT([Copyright (C) 2001-2022 Audacious developers and others])
 
 AC_DEFINE_UNQUOTED([PACKAGE], "$PACKAGE_NAME", [Name of package])
 AC_DEFINE_UNQUOTED([VERSION], "$PACKAGE_VERSION", [Version number of package])
@@ -33,9 +33,9 @@ LIBS="$LIBS $LIBINTL"
 dnl Check for Audacious
 dnl ===================
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 4.1],
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 4.2],
     [],
-    [AC_MSG_ERROR([Cannot find Audacious 4.1; have you installed Audacious yet?])]
+    [AC_MSG_ERROR([Cannot find Audacious 4.2; have you installed Audacious yet?])]
 )
 
 CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS"
@@ -67,7 +67,7 @@ dnl ======================
 
 INPUT_PLUGINS="metronom psf tonegen vtx xsf"
 OUTPUT_PLUGINS=""
-EFFECT_PLUGINS="compressor crossfade crystalizer mixer silence-removal stereo_plugin voice_removal echo_plugin"
+EFFECT_PLUGINS="bitcrusher compressor crossfade crystalizer mixer silence-removal stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS=""
 VISUALIZATION_PLUGINS=""
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
@@ -255,6 +255,13 @@ ENABLE_PLUGIN_WITH_DEP(wavpack,
     INPUT,
     WAVPACK,
     wavpack >= 4.31)
+
+ENABLE_PLUGIN_WITH_DEP(ffaudio,
+    FFmpeg decoder,
+    auto,
+    INPUT,
+    FFMPEG,
+    libavcodec >= 56.60.100 libavformat >= 56.40.101 libavutil >= 54.31.100)
 
 ENABLE_PLUGIN_WITH_DEP(sndfile,
     libsndfile decoder,
@@ -566,24 +573,6 @@ else
     AC_MSG_RESULT([*** CoreAudio output plugin disabled per user request ***])
 fi
 
-dnl *** FFaudio
-
-AC_ARG_WITH([ffmpeg],
- AS_HELP_STRING([--with-ffmpeg=ffmpeg,libav,none], [choose between FFmpeg, libav, or neither (default=ffmpeg)]),
- [ffmpeg_variant=$withval], [ffmpeg_variant=ffmpeg])
-
-if test $ffmpeg_variant = ffmpeg ; then
-    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.40.0 libavformat >= 53.25.0 libavutil >= 51.27.0],
-     [INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"
-      AC_DEFINE([HAVE_FFMPEG], [1], [Define if using FFmpeg])],
-     [AC_MSG_ERROR([FFmpeg is not installed or too old (required: libavcodec 53.40.0, libavformat 53.25.0, libavutil 51.27.0).  Use --with-ffmpeg=none to disable the ffaudio plugin or --with-ffmpeg=libav to use libav instead.])])
-elif test $ffmpeg_variant = libav ; then
-    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.25.0 libavformat >= 53.17.0 libavutil >= 51.18.0],
-     [INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"
-      AC_DEFINE([HAVE_LIBAV], [1], [Define if using libav])],
-     [AC_MSG_ERROR([libav is not installed or too old (required: libavcodec 53.25.0, libavformat 53.17.0, libavutil 51.18.0).])])
-fi
-
 dnl SDL Output
 dnl ==========
 
@@ -748,7 +737,7 @@ echo "  WavPack:                                $have_wavpack"
 echo
 echo "  External Decoders"
 echo "  -----------------"
-echo "  FFmpeg/Libav:                           $ffmpeg_variant"
+echo "  FFmpeg:                                 $have_ffaudio"
 echo "  libsndfile:                             $have_sndfile"
 echo
 echo "  Chiptunes"
@@ -770,6 +759,7 @@ echo
 echo "  Effects"
 echo "  -------"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
+echo "  Bitcrusher:                             yes"
 echo "  Channel Mixer:                          yes"
 echo "  Crystalizer:                            yes"
 echo "  Dynamic Range Compressor:               yes"

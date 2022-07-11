@@ -134,6 +134,12 @@ static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
 
 bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple)
 {
+    if (is_ogg_flac(file))
+    {
+        AUDERR("Writing Ogg FLAC tags is not currently supported!\n");
+        return false;
+    }
+
     AUDDBG("Update song tuple.\n");
 
     FLAC__Metadata_Iterator *iter;
@@ -275,7 +281,11 @@ bool FLACng::read_tag (const char * filename, VFSFile & file, Tuple & tuple, Ind
 
     chain = FLAC__metadata_chain_new();
 
-    if (!FLAC__metadata_chain_read_with_callbacks(chain, &file, io_callbacks))
+    auto metadata_chain_read = is_ogg_flac(file) ?
+        FLAC__metadata_chain_read_ogg_with_callbacks :
+        FLAC__metadata_chain_read_with_callbacks;
+
+    if (!metadata_chain_read(chain, &file, io_callbacks))
         goto ERR;
 
     iter = FLAC__metadata_iterator_new();

@@ -168,7 +168,7 @@ PrefWidget::PrefWidget(QWidget * parent)
       group_box_layout(new QGridLayout(group_box)),
       action_label(new QLabel(_("<b>Action:</b>"), group_box)),
       key_binding_label(new QLabel(_("<b>Key Binding:</b>"), group_box)),
-      add_button(new QPushButton(audqt::get_icon("list-add"),
+      add_button(new QPushButton(QIcon::fromTheme("list-add"),
                                  audqt::translate_str(N_("_Add")), this)),
       add_button_layout(new QHBoxLayout)
 {
@@ -270,7 +270,7 @@ void PrefWidget::add_event_control(const HotkeyConfiguration * hotkey)
     }
 
     control->button = new QToolButton(group_box);
-    control->button->setIcon(audqt::get_icon("edit-delete"));
+    control->button->setIcon(QIcon::fromTheme("edit-delete"));
 
     int row = group_box_layout->rowCount();
 

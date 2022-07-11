@@ -1,0 +1,4991 @@
+# Afrikaans translation for Audacious Plugins
+# Copyright (C) Audacious translators
+# This file is distributed under the same license as the Audacious Plugins package.
+#
+# Translators:
+# Reynier West, 2022
+msgid ""
+msgstr ""
+"Project-Id-Version: Audacious Plugins\n"
+"Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
+"POT-Creation-Date: 2022-07-09 23:25+0200\n"
+"PO-Revision-Date: 2011-10-10 17:43+0000\n"
+"Last-Translator: Reynier West, 2022\n"
+"Language-Team: Afrikaans (http://www.transifex.com/audacious/audacious/"
+"language/af/)\n"
+"Language: af\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/aac/aac.cc:19
+msgid "AAC (Raw) Decoder"
+msgstr "AAC (Rou) Dekodeerder"
+
+#: src/adplug/adplug-xmms.cc:70
+msgid "AdPlug (AdLib Player)"
+msgstr "AdPlug (AdLib Speler)"
+
+#: src/adplug/adplug-xmms.cc:167 src/modplug/modplugbmp.cc:321
+#: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:204
+msgid "sequenced"
+msgstr "gerangskik"
+
+#: src/adplug/adplug-xmms.cc:349 src/sid/xs_config.cc:61
+msgid "<b>Output</b>"
+msgstr "<b>Uitsette</b>"
+
+#: src/adplug/adplug-xmms.cc:350
+msgid "OPL Emulator:"
+msgstr "OPL Emuleerder:"
+
+#: src/adplug/adplug-xmms.cc:353
+msgid "Sample rate"
+msgstr "Monstertempo"
+
+#: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:155
+#: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
+#: src/modplug/plugin_main.cc:77 src/resample/resample.cc:201
+#: src/resample/resample.cc:207 src/resample/resample.cc:211
+#: src/resample/resample.cc:215 src/resample/resample.cc:219
+#: src/resample/resample.cc:223 src/resample/resample.cc:227
+#: src/resample/resample.cc:231 src/resample/resample.cc:235
+#: src/resample/resample.cc:239 src/resample/resample.cc:243
+#: src/sid/xs_config.cc:67 src/soxr/sox-resampler.cc:205
+msgid "Hz"
+msgstr "Hz"
+
+#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:46
+#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:81
+#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:280
+msgid "<b>Miscellaneous</b>"
+msgstr "<b>Allerlei</b>"
+
+#: src/adplug/adplug-xmms.cc:356
+msgid "Repeat song in endless loop"
+msgstr "Herhaal liedjie in eindelose lus"
+
+#: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
+msgid "Alarm"
+msgstr "Wekker"
+
+#: src/alarm/alarm.cc:782
+msgid "Set Alarm ..."
+msgstr "Stel Wekker..."
+
+#: src/alarm/alarm.cc:810
+msgid ""
+"A plugin that can be used to start playing at a certain time.\n"
+"\n"
+"Originally written by Adam Feakin and Daniel Stodden."
+msgstr ""
+"'n Inprop wat gebruik kan word om op 'n sekere tyd te begin speel.\n"
+"\n"
+"Oorspronklik geskryf deur Adam Feakin en Daniel Stodden."
+
+#: src/alarm/interface.cc:28
+msgid ""
+"Time\n"
+"  Alarm at:\n"
+"    The time for the alarm to come on.\n"
+"\n"
+"  Quiet after:\n"
+"    Stop alarm after this amount of time.\n"
+"       (if the wakeup dialog is not closed)\n"
+"\n"
+"\n"
+"Days\n"
+"  Day:\n"
+"    Select the days for the alarm to activate.\n"
+"\n"
+"  Time:\n"
+"    Choose the time for the alarm on each day,\n"
+"    or select the toggle button to use the default\n"
+"    time.\n"
+"\n"
+"\n"
+"Volume\n"
+"  Fading:\n"
+"    Fade the volume up to the chosen volume\n"
+"    for this amount of time.\n"
+"\n"
+"  Start at:\n"
+"    Start fading from this volume.\n"
+"\n"
+"  Final:\n"
+"    The volume to stop fading at.  If the fading\n"
+"    time is 0 then set volume to this and start\n"
+"    playing.\n"
+"\n"
+"\n"
+"Options:\n"
+"  Additional Command:\n"
+"    Run this command at the alarm time.\n"
+"\n"
+"  Playlist:\n"
+"    Load this playlist. If no playlist\n"
+"    is given, the current one will be used.\n"
+"    The URL of an mp3/ogg stream\n"
+"    can also be entered here.\n"
+"\n"
+"  Reminder:\n"
+"    Display a reminder when the alarm goes off.\n"
+"    Type the reminder in the input field and enable\n"
+"    the checkbox if you want it to be shown."
+msgstr ""
+"Tyd\n"
+"  Lui teen:\n"
+"    Die tyd vir die Wekker om aan te kom.\n"
+"\n"
+"  Stil na:\n"
+"    Stop die wekker na hierdie hoeveelheid tyd.\n"
+"       (as die word-wakker dialoog nog oop is)\n"
+"\n"
+"\n"
+"Dae\n"
+"  Dag:\n"
+"    Kies dae wanneer die wekker aktief moet wees.\n"
+"\n"
+"  Tyd:\n"
+"    Kies die tyd vir die wekker op elke dag,\n"
+"    of kies die wissel knoppie om die verstek tyd te gebruik.\n"
+"\n"
+"\n"
+"Volume\n"
+"  Vervaging:\n"
+"    Vervaag die volume op na die gekose volume\n"
+"    vir dié hoeveelheid tyd.\n"
+"\n"
+"  Begin teen:\n"
+"    Begin van hierdie volume te vervaag.\n"
+"\n"
+"  Finaal:\n"
+"     Die volume waar die vervaging moet stop.\n"
+"     As die vervaging-tyd 0 is, dan stel die volume\n"
+"     na dit en begin te speel.\n"
+"\n"
+"\n"
+"Opsies:\n"
+"  Bykomende Bevel:\n"
+"    Hardloop hierdie bevel wanneer die wekker\n"
+"    af gaan.\n"
+"\n"
+"  Snitlys:\n"
+"    Laai hierdie snitlys.  As geen snitlys\n"
+"    gegee is nie, dan sal die huidige een\n"
+"    gebruik word. Die URL van 'n mp3/ogg\n"
+"    stroom kan ook hier gebruik word.\n"
+"\n"
+"  Herinnering:\n"
+"    Wys 'n herinnering wanneer die wekker af\n"
+"    gaan. Tik die herinnering in die invoer veld\n"
+"    en aktiveer die merkblokkie as jy dit wil wys."
+
+#: src/alarm/interface.cc:78
+msgid "This is your wakeup call."
+msgstr "Dit is jou wekroep."
+
+#: src/alarm/interface.cc:96
+msgid "Your reminder for today is..."
+msgstr "Jou herinnering vir vandag is..."
+
+#: src/alarm/interface.cc:98 src/alarm/interface.cc:372
+msgid "Reminder"
+msgstr "Herinnering"
+
+#: src/alarm/interface.cc:122
+msgid "Monday"
+msgstr "Maandag"
+
+#: src/alarm/interface.cc:122
+msgid "Tuesday"
+msgstr "Dinsdag"
+
+#: src/alarm/interface.cc:122
+msgid "Wednesday"
+msgstr "Woensdag"
+
+#: src/alarm/interface.cc:123
+msgid "Thursday"
+msgstr "Donderdag"
+
+#: src/alarm/interface.cc:123
+msgid "Friday"
+msgstr "Vrydag"
+
+#: src/alarm/interface.cc:123
+msgid "Saturday"
+msgstr "Saterdag"
+
+#: src/alarm/interface.cc:123
+msgid "Sunday"
+msgstr "Sondag"
+
+#: src/alarm/interface.cc:160 src/alarm/interface.cc:219
+#: src/alarm/interface.cc:234
+msgid "Time"
+msgstr "Tyd"
+
+#: src/alarm/interface.cc:167
+msgid "Alarm at (default):"
+msgstr "Stel Wekker vir (verstek):"
+
+#: src/alarm/interface.cc:189
+msgid "h"
+msgstr "u"
+
+#: src/alarm/interface.cc:192
+msgid "Quiet after:"
+msgstr "Stil na:"
+
+#: src/alarm/interface.cc:204
+msgid "hours"
+msgstr "ure"
+
+#: src/alarm/interface.cc:215
+msgid "minutes"
+msgstr "minute"
+
+#: src/alarm/interface.cc:224
+msgid "Choose the days for the alarm to come on"
+msgstr "Kies die dae vir die wekker op aan te skakel"
+
+#: src/alarm/interface.cc:231
+msgid "Day"
+msgstr "Dag"
+
+#: src/alarm/interface.cc:248 src/bs2b/plugin.cc:130
+msgid "Default"
+msgstr "Verstek"
+
+#: src/alarm/interface.cc:277
+msgid "Days"
+msgstr "Dae"
+
+#: src/alarm/interface.cc:286
+msgid "Fading"
+msgstr "Vervaging"
+
+#: src/alarm/interface.cc:294 src/console/plugin.cc:41
+#: src/crossfade/crossfade.cc:52 src/crossfade/crossfade.cc:58
+#: src/lirc/lirc.cc:395 src/notify/notify.cc:113 src/sid/xs_config.cc:85
+#: src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
+#: src/vumeter-qt/vumeter_qt.cc:39
+msgid "seconds"
+msgstr "sekondes"
+
+#: src/alarm/interface.cc:301 src/alarm/interface.cc:342
+msgid "Volume"
+msgstr "Volume"
+
+#: src/alarm/interface.cc:306
+msgid "Start at"
+msgstr "Begin teen"
+
+#: src/alarm/interface.cc:322
+msgid "Final"
+msgstr "Finaal"
+
+#: src/alarm/interface.cc:335
+msgid "Current"
+msgstr "Huidige"
+
+#: src/alarm/interface.cc:348
+msgid "Additional Command"
+msgstr "Bykomende Bevel"
+
+#: src/alarm/interface.cc:354 src/alarm/interface.cc:377
+msgid "enable"
+msgstr "aktiveer"
+
+#: src/alarm/interface.cc:361
+msgid "Playlist (optional)"
+msgstr "Snitlys (opsioneel)"
+
+#: src/alarm/interface.cc:365
+msgid "Select a playlist"
+msgstr "Kies 'n snitlys"
+
+#: src/alarm/interface.cc:385
+msgid "Options"
+msgstr "Opsies"
+
+#: src/alarm/interface.cc:390
+msgid "What do these options mean?"
+msgstr "Wat beteken hierdie opsies?"
+
+#: src/alarm/interface.cc:404
+msgid "Help"
+msgstr "Hulp"
+
+#: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:35
+msgid "Album Art"
+msgstr "Albumkuns"
+
+#: src/alsa/alsa.h:64
+msgid "ALSA Output"
+msgstr "ALSA Uitset"
+
+#: src/alsa/config.cc:28
+msgid ""
+"ALSA Output Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
+"code served as a reference when the ALSA manual was not enough."
+msgstr ""
+"ALSA Uitset Inprop vir Audacious\n"
+"Kopiereg 2009-2012 John Lindgren\n"
+"\n"
+"My dank aan William Pitcock, skrywer van die ALSA Uitset Inprop NG, wie se "
+"kode as 'n verwysing gedien het toe die ALSA handleiding nie genoeg was nie."
+
+#: src/alsa/config.cc:61
+msgid "(no description)"
+msgstr "(geen beskrywing)"
+
+#: src/alsa/config.cc:166
+msgid "Default PCM device"
+msgstr "Verstek PCM toestel"
+
+#: src/alsa/config.cc:188
+msgid "Default mixer device"
+msgstr "Verstek menger toestel"
+
+#: src/alsa/config.cc:296
+msgid "PCM device:"
+msgstr "PCM toestel:"
+
+#: src/alsa/config.cc:299
+msgid "Mixer device:"
+msgstr "Menger toestel:"
+
+#: src/alsa/config.cc:302
+msgid "Mixer element:"
+msgstr "Menger element"
+
+#: src/amidiplug/amidi-plug.cc:42
+msgid "AMIDI-Plug (MIDI Player)"
+msgstr "AMIDI-Plug (MIDI Speler)"
+
+#: src/amidiplug/amidi-plug.cc:445
+msgid ""
+"AMIDI-Plug\n"
+"modular MIDI music player\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"special thanks to...\n"
+"\n"
+"Clemens Ladisch and Jaroslav Kysela\n"
+"for their cool programs aplaymidi and amixer; those\n"
+"were really useful, along with alsa-lib docs, in order\n"
+"to learn more about the ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"for the nice midi keyboard logo\n"
+"\n"
+"Tony Vroon\n"
+"for the good help with alpha testing"
+msgstr ""
+"AMIDI-Plug\n"
+"modulêre MIDI-musiekspeler\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"geskryf deur Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"spesiale dank aan...\n"
+"\n"
+"Clemens Ladisch en Jaroslav Kysela\n"
+"vir hulle kwaai programme aplaymidi en amixer; hulle\n"
+"was regtig nuttig, saam met die alsa-lib doks, om\n"
+"meer te leer van die ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"vir die mooi midi-sleutelbord logo\n"
+"\n"
+"Tony Vroon\n"
+"vir die goeie hulp met alpha-toetsing"
+
+#: src/amidiplug/i_configure.cc:94
+msgid "Override default gain:"
+msgstr "Oorskryf verstek versterking:"
+
+#: src/amidiplug/i_configure.cc:102
+msgid "Override default polyphony:"
+msgstr "Oorskryf verstek polifonie:"
+
+#: src/amidiplug/i_configure.cc:110
+msgid "Override default reverb:"
+msgstr "Oorskryf verstek galm:"
+
+#: src/amidiplug/i_configure.cc:112 src/amidiplug/i_configure.cc:120
+msgid "On"
+msgstr "Aan"
+
+#: src/amidiplug/i_configure.cc:118
+msgid "Override default chorus:"
+msgstr "Oorskryf verstek koor:"
+
+#: src/amidiplug/i_configure.cc:128 src/console/plugin.cc:29
+msgid "<b>Playback</b>"
+msgstr "<b>Terugspeel</b>"
+
+#: src/amidiplug/i_configure.cc:129
+msgid "Transpose:"
+msgstr "Transponeer:"
+
+#: src/amidiplug/i_configure.cc:131 src/speedpitch/speed-pitch.cc:257
+msgid "semitones"
+msgstr "halftone"
+
+#: src/amidiplug/i_configure.cc:132
+msgid "Drum shift:"
+msgstr "Dromme skuif:"
+
+#: src/amidiplug/i_configure.cc:134
+msgid "note numbers"
+msgstr "noot nommers"
+
+#: src/amidiplug/i_configure.cc:135
+msgid "Skip leading silence"
+msgstr "Slaan leiende stilte oor"
+
+#: src/amidiplug/i_configure.cc:137
+msgid "Skip trailing silence"
+msgstr "Slaan agterstilte oor"
+
+#: src/amidiplug/i_configure.cc:141
+msgid "<b>SoundFont</b>"
+msgstr "<b>SoundFont</b>"
+
+#: src/amidiplug/i_configure.cc:148
+msgid "<b>Synthesizer</b>"
+msgstr "<b>Sintetiseerder</b>"
+
+#: src/amidiplug/i_configure.cc:153 src/console/plugin.cc:45
+#: src/filewriter/filewriter.cc:481 src/sid/xs_config.cc:65
+#: src/xsf/plugin.cc:446
+msgid "Sample rate:"
+msgstr "Monstertempo:"
+
+#: src/amidiplug/i_configure-fluidsynth.cc:57
+#: src/amidiplug/i_configure-fluidsynth.cc:536
+msgid "AMIDI-Plug - select SoundFont file"
+msgstr "AMIDI-Plug - kies SoundFont lêer"
+
+#: src/amidiplug/i_configure-fluidsynth.cc:60
+msgid "_Cancel"
+msgstr "_Kanselleer"
+
+#: src/amidiplug/i_configure-fluidsynth.cc:61
+msgid "_Open"
+msgstr "_Oop"
+
+#: src/amidiplug/i_configure-fluidsynth.cc:230
+#: src/amidiplug/i_configure-fluidsynth.cc:476 src/gtkui/columns.cc:46
+msgid "File name"
+msgstr "Lêer naam"
+
+#: src/amidiplug/i_configure-fluidsynth.cc:234
+#: src/amidiplug/i_configure-fluidsynth.cc:479
+msgid "Size (bytes)"
+msgstr "Grote (grepe)"
+
+#: src/amidiplug/i_fileinfo.cc:169
+msgid "Name:"
+msgstr "Naam:"
+
+#: src/amidiplug/i_fileinfo.cc:187
+msgid "<span size=\"smaller\"> MIDI Info </span>"
+msgstr "<span size=\"smaller\">MIDI Info</span>"
+
+#: src/amidiplug/i_fileinfo.cc:201
+msgid "Format:"
+msgstr "Formaat:"
+
+#: src/amidiplug/i_fileinfo.cc:204
+msgid "Length (msec):"
+msgstr "Lengte (msek):"
+
+#: src/amidiplug/i_fileinfo.cc:207
+msgid "No. of Tracks:"
+msgstr "Aantal Snitte:"
+
+#: src/amidiplug/i_fileinfo.cc:213
+msgid "variable"
+msgstr "veranderlik"
+
+#: src/amidiplug/i_fileinfo.cc:215
+msgid "BPM:"
+msgstr "SPM:"
+
+#: src/amidiplug/i_fileinfo.cc:223
+msgid "BPM (wavg):"
+msgstr "SPM (ggem):"
+
+#: src/amidiplug/i_fileinfo.cc:226
+msgid "Time Div:"
+msgstr "Tydverdeling:"
+
+#: src/amidiplug/i_fileinfo.cc:237
+msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
+msgstr "<span size=\"smaller\">MIDI Kommentaar en Lirieke</span>"
+
+#: src/amidiplug/i_fileinfo.cc:284
+msgid "* no comments available in this MIDI file *"
+msgstr "* geen kommentaar beskikbaar in hierdie MIDI lêer nie *"
+
+#: src/amidiplug/i_fileinfo.cc:296
+msgid "* no lyrics available in this MIDI file *"
+msgstr "* geen lirieke beskikbaar in hierdie MIDI lêer nie *"
+
+#: src/amidiplug/i_fileinfo.cc:306 src/ladspa/plugin.cc:417
+#: src/ui-common/dialogs-qt.cc:32
+msgid "_Close"
+msgstr "_Toe"
+
+#: src/amidiplug/i_fileinfo.cc:331
+msgid "  (invalid UTF-8)"
+msgstr "(ongeldige UTF-8)"
+
+#: src/ampache/ampache.cc:33
+msgid "Ampache Browser"
+msgstr "Ampache Blaaier"
+
+#: src/ampache/ampache.cc:46
+msgid ""
+"Ampache Browser for Audacious\n"
+"http://ampache-browser.org/\n"
+"\n"
+"Copyright (C) Róbert Čerňanský and John Lindgren\n"
+"License: GNU GPLv3"
+msgstr ""
+"Ampache Blaaier vir Audacious\n"
+"http://ampache-browser.org/\n"
+"\n"
+"Kopiereg (K) Róbert Čerňanský en John Lindgren\n"
+"Lisensie: GNU GPLv3"
+
+#: src/aosd/aosd.cc:31
+msgid ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"Written by Giacomo Lozito <james@develia.org>\n"
+"\n"
+"Based in part on Evan Martin's Ghosd library:\n"
+"http://neugierig.org/software/ghosd/"
+msgstr ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"Geskryf deur Giacomo Lozito <james@develia.org>\n"
+"\n"
+"Gedeeltelik gebaseer op Evan Martin se Ghosd biblioteek:\n"
+"http://neugierig.org/software/ghosd/"
+
+#: src/aosd/aosd.h:37
+msgid "AOSD (On-Screen Display)"
+msgstr "AOSD (Op-Skerm-Vertoon)"
+
+#: src/aosd/aosd_style.cc:54
+msgid "Rectangle"
+msgstr "Reghoek"
+
+#: src/aosd/aosd_style.cc:59
+msgid "Rounded Rectangle"
+msgstr "Geronde reghoek"
+
+#: src/aosd/aosd_style.cc:64
+msgid "Concave Rectangle"
+msgstr "Konkawe reghoek"
+
+#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50 src/xsf/plugin.cc:436
+msgid "None"
+msgstr "Geen"
+
+#: src/aosd/aosd_trigger.cc:49
+msgid "Playback Start"
+msgstr "Begin Terugspeel"
+
+#: src/aosd/aosd_trigger.cc:50
+msgid "Triggers OSD when a playlist entry is played."
+msgstr "Aktiveer OSV wanneer 'n snitlys item gespeel word."
+
+#: src/aosd/aosd_trigger.cc:55
+msgid "Title Change"
+msgstr "Titel verandering"
+
+#: src/aosd/aosd_trigger.cc:56
+msgid "Triggers OSD when the song title changes (for internet streams)."
+msgstr "Aktiveer OSV wanneer die lied se titel verander (vir internet strome)"
+
+#: src/aosd/aosd_trigger.cc:61
+msgid "Pause On"
+msgstr "Pouse Aan"
+
+#: src/aosd/aosd_trigger.cc:62
+msgid "Triggers OSD when playback is paused."
+msgstr "Aktiveer OSV wanneer terugspeel pouse aan geskakel word."
+
+#: src/aosd/aosd_trigger.cc:67
+msgid "Pause Off"
+msgstr "Pouse Af"
+
+#: src/aosd/aosd_trigger.cc:68
+msgid "Triggers OSD when playback is unpaused."
+msgstr "Aktiveer OSV wanneer terugspeel pouse af geskakel word."
+
+#: src/aosd/aosd_ui.cc:162
+msgid "Placement"
+msgstr "Plasing"
+
+#: src/aosd/aosd_ui.cc:195
+msgid "Relative X offset:"
+msgstr "Relatiewe X verreken:"
+
+#: src/aosd/aosd_ui.cc:202
+msgid "Relative Y offset:"
+msgstr "Relatiewe Y verreken:"
+
+#: src/aosd/aosd_ui.cc:209
+msgid "Max OSD width:"
+msgstr "Maks. OSV wydte:"
+
+#: src/aosd/aosd_ui.cc:220
+msgid "Multi-Monitor options"
+msgstr "Multi-Skerm opsies"
+
+#: src/aosd/aosd_ui.cc:224
+msgid "Display OSD using:"
+msgstr "Vertoon OSV met:"
+
+#: src/aosd/aosd_ui.cc:226
+msgid "all monitors"
+msgstr "alle skerms"
+
+#: src/aosd/aosd_ui.cc:229
+#, c-format
+msgid "monitor %i"
+msgstr "skerm %i"
+
+#: src/aosd/aosd_ui.cc:281
+msgid "Timing (ms)"
+msgstr "Tydsberekening (ms)"
+
+#: src/aosd/aosd_ui.cc:286
+msgid "Display:"
+msgstr "Vertoon:"
+
+#: src/aosd/aosd_ui.cc:291
+msgid "Fade in:"
+msgstr "Vervaag in:"
+
+#: src/aosd/aosd_ui.cc:296
+msgid "Fade out:"
+msgstr "Vervaag uit:"
+
+#: src/aosd/aosd_ui.cc:360
+msgid "Fonts"
+msgstr "Lettertipes"
+
+#: src/aosd/aosd_ui.cc:367
+#, c-format
+msgid "Font %i:"
+msgstr "Lettertipe %i:"
+
+#: src/aosd/aosd_ui.cc:381
+msgid "Shadow"
+msgstr "Skaduwee"
+
+#: src/aosd/aosd_ui.cc:485
+msgid "Render Style"
+msgstr "Lewer styl"
+
+#: src/aosd/aosd_ui.cc:501
+msgid "Colors"
+msgstr "Kleure"
+
+#: src/aosd/aosd_ui.cc:512
+#, c-format
+msgid "Color %i:"
+msgstr "Kleur %i:"
+
+#: src/aosd/aosd_ui.cc:599
+msgid "Enable trigger"
+msgstr "Aktiveer sneller"
+
+#: src/aosd/aosd_ui.cc:626
+msgid "Event"
+msgstr "Gebeurtenis"
+
+#: src/aosd/aosd_ui.cc:653
+msgid "Composite manager detected"
+msgstr "Saamgestelde bestuurder bespeur"
+
+#: src/aosd/aosd_ui.cc:660
+msgid ""
+"Composite manager not detected;\n"
+"unless you know that you have one running, please activate a composite "
+"manager otherwise the OSD won't work properly"
+msgstr ""
+"Saamgestelde bestuurder nie bespeur nie;\n"
+"tensy jy weet dat jy een het wat hardloop, aktiveer een asseblief anders sal "
+"die OSV nie reg werk nie"
+
+#: src/aosd/aosd_ui.cc:668
+msgid "Composite manager not required for fake transparency"
+msgstr "Saamgestelde bestuurder word nie vereis vir vals deursigtigheid nie"
+
+#: src/aosd/aosd_ui.cc:705
+msgid "Transparency"
+msgstr "Deursigtigheid "
+
+#: src/aosd/aosd_ui.cc:711
+msgid "Fake transparency"
+msgstr "Vals deursigtigheid"
+
+#: src/aosd/aosd_ui.cc:713
+msgid "Real transparency (requires X Composite Ext.)"
+msgstr "Egte deursigtigheid  (vereis X Composite Ext.)"
+
+#: src/aosd/aosd_ui.cc:754
+msgid "Composite extension not loaded"
+msgstr "Saamgestelde uitbreiding nie gelaai nie"
+
+#: src/aosd/aosd_ui.cc:771
+#, c-format
+msgid "<span font_desc='%s'>Audacious OSD</span>"
+msgstr "<span font_desc='%s'>Audacious OSV</span>"
+
+#: src/aosd/aosd_ui.cc:834
+msgid "Position"
+msgstr "Posisie"
+
+#: src/aosd/aosd_ui.cc:839
+msgid "Animation"
+msgstr "Animasie"
+
+#: src/aosd/aosd_ui.cc:844
+msgid "Text"
+msgstr "Teks"
+
+#: src/aosd/aosd_ui.cc:849
+msgid "Decoration"
+msgstr "Versiering"
+
+#: src/aosd/aosd_ui.cc:854
+msgid "Trigger"
+msgstr "Sneller"
+
+#: src/aosd/aosd_ui.cc:859 src/streamtuner/shoutcast-model.cc:202
+msgid "Misc"
+msgstr "Allerlei"
+
+#: src/aosd/aosd_ui.cc:868
+msgid "Test"
+msgstr "Toets"
+
+#: src/asx3/asx3.cc:35
+msgid "ASXv3 Playlists"
+msgstr "ASXv3 Snitlyste"
+
+#: src/asx/asx.cc:33
+msgid "ASXv1/ASXv2 Playlists"
+msgstr "ASXv1/ASXv2 Snitlyste"
+
+#: src/audpl/audpl.cc:33
+msgid "Audacious Playlists (audpl)"
+msgstr "Audacious Snitlyste (audpl)"
+
+#: src/bitcrusher/bitcrusher.cc:33
+msgid "<b>Bitcrusher</b>"
+msgstr ""
+
+#: src/bitcrusher/bitcrusher.cc:34
+msgid "Bit Depth:"
+msgstr ""
+
+#: src/bitcrusher/bitcrusher.cc:37
+msgid "Downsample ratio:"
+msgstr ""
+
+#: src/bitcrusher/bitcrusher.cc:48
+msgid "Bitcrusher"
+msgstr ""
+
+#: src/blur_scope/blur_scope.cc:39 src/blur_scope-qt/blur_scope.cc:45
+msgid "<b>Color</b>"
+msgstr "<b>Kleur</b>"
+
+#: src/blur_scope/blur_scope.cc:55 src/blur_scope-qt/blur_scope.cc:158
+msgid "Blur Scope"
+msgstr "Vervaag Skoop"
+
+#: src/bs2b/plugin.cc:38
+msgid "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr "Bauer Stereofonies-tot-Binauraal (BS2B)"
+
+#: src/bs2b/plugin.cc:129
+msgid "Presets:"
+msgstr "Voorinstellings"
+
+#: src/bs2b/plugin.cc:136
+msgid "Feed level:"
+msgstr "Voervlak:"
+
+#: src/bs2b/plugin.cc:138
+msgid "x1/10 dB"
+msgstr "x1/10 dB"
+
+#: src/bs2b/plugin.cc:139
+msgid "Cut frequency:"
+msgstr "Uitsny frekwensie:"
+
+#: src/cairo-spectrum/cairo-spectrum.cc:41 src/qt-spectrum/qt-spectrum.cc:107
+msgid "Spectrum Analyzer"
+msgstr "Spektrum ontleder"
+
+#: src/cdaudio/cdaudio-ng.cc:71
+msgid "Audio CD Plugin"
+msgstr "Oudio CD Inprop"
+
+#: src/cdaudio/cdaudio-ng.cc:118
+msgid ""
+"Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
+"\n"
+"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+"and to libcddb developers <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Also thank you to Tony Vroon for mentoring and guiding me.\n"
+"\n"
+"This was a Google Summer of Code 2007 project."
+msgstr ""
+"Kopiereg (K) 2007-2012 Calin Crisan <ccrisan@gmail.com> en ander.\n"
+"\n"
+"Baie dank aan die libcdio onwikkelaars <http://www.gnu.org/software/libcdio/"
+">\n"
+"en aan die libcddb ontwikkelaars<http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Ook, dankie aan Tony Vroon vir my mentorskap en leiding.\n"
+"\n"
+"Dit was 'n Google Summer of Code 2007 projek."
+
+#: src/cdaudio/cdaudio-ng.cc:134
+msgid "<b>Device</b>"
+msgstr "<b>Toestel</b>"
+
+#: src/cdaudio/cdaudio-ng.cc:135
+msgid "Read speed:"
+msgstr "Lees spoed:"
+
+#: src/cdaudio/cdaudio-ng.cc:138
+msgid "Override device:"
+msgstr "Oorheers toestel:"
+
+#: src/cdaudio/cdaudio-ng.cc:140
+msgid "<b>Metadata</b>"
+msgstr "<b>Metadata</b>"
+
+#: src/cdaudio/cdaudio-ng.cc:141
+msgid "Use CD-Text"
+msgstr "Gebruik CD-Teks"
+
+#: src/cdaudio/cdaudio-ng.cc:143
+msgid "Use CDDB"
+msgstr "Gebruik CDDB"
+
+#: src/cdaudio/cdaudio-ng.cc:145
+msgid "Use HTTP instead of CDDBP"
+msgstr "Gebruik HTTP inplaas van CDDBP"
+
+#: src/cdaudio/cdaudio-ng.cc:148
+msgid "Server:"
+msgstr "Bediener:"
+
+#: src/cdaudio/cdaudio-ng.cc:152
+msgid "Path:"
+msgstr "Pad:"
+
+#: src/cdaudio/cdaudio-ng.cc:156
+msgid "Port:"
+msgstr "Poort:"
+
+#: src/cdaudio/cdaudio-ng.cc:220
+msgid "Failed to initialize cdio subsystem."
+msgstr "Kon nie die CDIO-substelsel inisialiseer nie."
+
+#: src/cdaudio/cdaudio-ng.cc:250
+#, c-format
+msgid "Invalid URI %s."
+msgstr "Ongeldige URI %s."
+
+#: src/cdaudio/cdaudio-ng.cc:252
+#, c-format
+msgid "Track %d not found."
+msgstr "Snit %d nie gevind nie."
+
+#: src/cdaudio/cdaudio-ng.cc:254
+#, c-format
+msgid "Track %d is a data track."
+msgstr "Snit %d is 'n data baan."
+
+#: src/cdaudio/cdaudio-ng.cc:329
+msgid "Error reading audio CD."
+msgstr "Fout met die lees van die oudio-CD."
+
+#: src/cdaudio/cdaudio-ng.cc:398
+msgid "Audio CD"
+msgstr "Oudio-CD"
+
+#: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
+#, c-format
+msgid "Failed to open CD device %s."
+msgstr "Kon nie CD-toestel %s oopmaak nie."
+
+#: src/cdaudio/cdaudio-ng.cc:447
+msgid "No audio capable CD drive found."
+msgstr "Geen oudio-bekwame CD-aandrywer gevind nie."
+
+#: src/cdaudio/cdaudio-ng.cc:470
+msgid "Drive is empty."
+msgstr "Aandrywer is leeg."
+
+#: src/cdaudio/cdaudio-ng.cc:472
+msgid "Unsupported disk type."
+msgstr "Onondersteunde skyftipe."
+
+#: src/cdaudio/cdaudio-ng.cc:496
+msgid "Failed to finish initializing opened CD drive."
+msgstr "Kon nie die inisialisering van geopende CD-aandrywer voltooi nie."
+
+#: src/cdaudio/cdaudio-ng.cc:509
+msgid "Failed to retrieve first/last track number."
+msgstr "Kon nie eerste/laaste snitnommer herwin nie."
+
+#: src/cdaudio/cdaudio-ng.cc:530
+#, c-format
+msgid "Cannot read start/end LSN for track %d."
+msgstr "Kan nie begin/ einde LSN vir snit %d lees nie."
+
+#: src/cdaudio/cdaudio-ng.cc:612
+msgid "Failed to create the CDDB connection."
+msgstr "Kon nie die CDDB-verbinding skep nie."
+
+#: src/cdaudio/cdaudio-ng.cc:678
+msgid "Failed to query the CDDB server"
+msgstr "Navraag by die CDDB-bediener het misluk"
+
+#: src/cdaudio/cdaudio-ng.cc:680
+#, c-format
+msgid "Failed to query the CDDB server: %s"
+msgstr "Navraag het misluk by die CDDB-bediener: %s"
+
+#: src/cdaudio/cdaudio-ng.cc:704
+#, c-format
+msgid "Failed to read the CDDB info: %s"
+msgstr "Lees het misluk by die CDDB-bediener: %s"
+
+#: src/cd-menu-items/cd-menu-items.cc:33
+msgid "Audio CD Menu Items"
+msgstr "Oudio-CD kieslysitems"
+
+#: src/cd-menu-items/cd-menu-items.cc:45
+msgid "Pla_y CD"
+msgstr "Speel CD"
+
+#: src/cd-menu-items/cd-menu-items.cc:45
+msgid "_Add CD"
+msgstr "Voeg CD by"
+
+#: src/compressor/compressor.cc:45
+msgid "<b>Compression</b>"
+msgstr "<b>Kompressie</b>"
+
+#: src/compressor/compressor.cc:46
+msgid "Center volume:"
+msgstr "Sentrale volume:"
+
+#: src/compressor/compressor.cc:49
+msgid "Dynamic range:"
+msgstr "Dinamiese reikwydte:"
+
+#: src/compressor/compressor.cc:57
+msgid ""
+"Dynamic Range Compression Plugin for Audacious\n"
+"Copyright 2010-2014 John Lindgren"
+msgstr ""
+"Dinamiese Reikwydte Kompressie Inprop vir Audacious\n"
+"Kopiereg 2010-2014 John Lindgren"
+
+#: src/compressor/compressor.cc:64
+msgid "Dynamic Range Compressor"
+msgstr "Dinamiese reeks kompressor"
+
+#: src/console/plugin.cc:15
+msgid ""
+"Console music decoder engine based on Game_Music_Emu 0.5.2\n"
+"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
+msgstr ""
+"Konsole musiek dekodeerder enjin gebaseer op Game_Music_Emu 0.5.2\n"
+"Ondersteunde formate: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Audacious inprop deur:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
+
+#: src/console/plugin.cc:30
+msgid "Bass:"
+msgstr "Bas:"
+
+#: src/console/plugin.cc:33
+msgid "Treble:"
+msgstr "Sopraan:"
+
+#: src/console/plugin.cc:36
+msgid "Echo:"
+msgstr "Eggo:"
+
+#: src/console/plugin.cc:39
+msgid "Default song length:"
+msgstr "Verstek lied lengte:"
+
+#: src/console/plugin.cc:42 src/modplug/plugin_main.cc:58
+msgid "<b>Resampling</b>"
+msgstr "<b>Hermonster</b>"
+
+#: src/console/plugin.cc:43
+msgid "Enable audio resampling"
+msgstr "Aktiveer oudi-hermonstering"
+
+#: src/console/plugin.cc:49
+msgid "<b>SPC</b>"
+msgstr "<b>SPC</b>"
+
+#: src/console/plugin.cc:50
+msgid "Ignore length from SPC tags"
+msgstr "Ignoreer lengte van SPC-etikette"
+
+#: src/console/plugin.cc:52
+msgid "Increase reverb"
+msgstr "Verhoog galm"
+
+#: src/console/plugin.h:26
+msgid "Game Console Music Decoder"
+msgstr "Spelkonsole Musiek-dekodeerder"
+
+#: src/coreaudio/coreaudio.cc:53
+msgid "CoreAudio output"
+msgstr "CoreAudio uitset"
+
+#: src/coreaudio/coreaudio.cc:156
+msgid ""
+"CoreAudio Output Plugin for Audacious\n"
+"Copyright 2014 William Pitcock\n"
+"Copyright 2017,18 René J.V. Bertin\n"
+" (original code and code adapted from\n"
+"  Apple examples, (C) Apple 2013)\n"
+"\n"
+"Based on SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+msgstr ""
+"CoreAudio-uitvoer-inprop vir Audacious\n"
+"Kopiereg 2014 William Pitcock\n"
+"Kopiereg 2017/2018 René J.V. Bertin\n"
+"(oorspronklike kode en kode aangepas vanaf\n"
+"Apple voorbeelde, (K) Apple 2013)\n"
+"\n"
+"Gebaseer op SDL Output Plugin vir Audacious\n"
+"Kopiereg 2010 John Lindgren"
+
+#: src/coreaudio/coreaudio.cc:172
+msgid "Use exclusive mode"
+msgstr "Gebruik eksklusiewe modus"
+
+#: src/coreaudio/coreaudio.cc:174
+msgid "Use bit perfect audio (adapt device sampling rate)"
+msgstr "Gebruik bis perfekte oudio (pas toestelmonstertempo aan)"
+
+#: src/crossfade/crossfade.cc:43
+msgid ""
+"Crossfade Plugin for Audacious\n"
+"Copyright 2010-2014 John Lindgren"
+msgstr ""
+"Kruisvervaag Inprop vir Audacious\n"
+"Kopiereg 2010-2014 John Lindgren"
+
+#: src/crossfade/crossfade.cc:47
+msgid "<b>Crossfade</b>"
+msgstr "<b>Kruisvervaag</b>"
+
+#: src/crossfade/crossfade.cc:48
+msgid "On automatic song change"
+msgstr "Op outomatiese lied verander"
+
+#: src/crossfade/crossfade.cc:50 src/crossfade/crossfade.cc:56
+msgid "Overlap:"
+msgstr "Oorvleuel:"
+
+#: src/crossfade/crossfade.cc:54
+msgid "On seek or manual song change"
+msgstr "Op soek of handmatige liedjieverandering"
+
+#: src/crossfade/crossfade.cc:60
+msgid "<b>Tip</b>"
+msgstr "<b>Wenk</b>"
+
+#: src/crossfade/crossfade.cc:61
+msgid ""
+"For better crossfading, enable\n"
+"the Silence Removal effect."
+msgstr ""
+"Vir beter kruisvervaag, aktiveer \n"
+"die Stilte-Verwyder effek."
+
+#: src/crossfade/crossfade.cc:71
+msgid "Crossfade"
+msgstr "Kruisvervaag"
+
+#: src/crystalizer/crystalizer.cc:31
+msgid "<b>Crystalizer</b>"
+msgstr "<b>Kristaliseerder</b>"
+
+#: src/crystalizer/crystalizer.cc:32 src/stereo_plugin/stereo.cc:45
+msgid "Intensity:"
+msgstr "Intensiteit:"
+
+#: src/crystalizer/crystalizer.cc:43
+msgid "Crystalizer"
+msgstr "Kristaliseerder"
+
+#: src/cue/cue.cc:42
+msgid "Cue Sheet Plugin"
+msgstr "Tou Blad Inprop"
+
+#: src/delete-files/delete-files.cc:53 src/delete-files/delete-files.cc:215
+#: src/delete-files/delete-files.cc:230
+msgid "Delete Files"
+msgstr "Skrap lêers"
+
+#: src/delete-files/delete-files.cc:120
+msgid "No files are selected."
+msgstr "Geen lêers was geselekteer nie."
+
+#: src/delete-files/delete-files.cc:125
+#, c-format
+msgid "Do you want to move %s to the trash?"
+msgstr "Wil jy %s na die drom skuif?"
+
+#: src/delete-files/delete-files.cc:126
+#, c-format
+msgid "Do you want to permanently delete %s?"
+msgstr "Wil jy %s permanent skrap?"
+
+#: src/delete-files/delete-files.cc:133
+#, c-format
+msgid "Do you want to move %d files to the trash?"
+msgstr "Wil jy %dlêers na die drom skuif?"
+
+#: src/delete-files/delete-files.cc:134
+#, c-format
+msgid "Do you want to permanently delete %d files?"
+msgstr "Wil jy permanent %d lêers skrap?"
+
+#: src/delete-files/delete-files.cc:146
+msgid "Move to trash"
+msgstr "Skuif na drom"
+
+#: src/delete-files/delete-files.cc:146
+msgid "Delete"
+msgstr "Skrap"
+
+#: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
+#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:77
+msgid "Cancel"
+msgstr "Kanselleer"
+
+#: src/delete-files/delete-files.cc:266
+msgid "Delete Selected Files"
+msgstr "Skrap geselekteerde lêers"
+
+#: src/delete-files/delete-files.cc:286
+msgid "<b>Delete Method</b>"
+msgstr "<b>Skrap Metode</b>"
+
+#: src/delete-files/delete-files.cc:287
+msgid "Move to trash instead of deleting immediately"
+msgstr "Skuif na drom inplaas van skrap onmiddelik"
+
+#: src/echo_plugin/echo.cc:9
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin, 1999\n"
+"Surround echo by Carl van Schaik, 1999\n"
+"Updated for Audacious by William Pitcock and John Lindgren, 2010-2014"
+msgstr ""
+"Echo-inprop \n"
+"Deur Johan Levin, 1999 \n"
+"Omringende eggo deur Carl van Schaik, 1999\n"
+"Opgedateer vir Audacious deur William Pitcock en John Lindgren, 2010-2014"
+
+#: src/echo_plugin/echo.cc:21
+msgid "<b>Echo</b>"
+msgstr "<b>Eggo</b>"
+
+#: src/echo_plugin/echo.cc:22 src/modplug/plugin_main.cc:72
+#: src/modplug/plugin_main.cc:82
+msgid "Delay:"
+msgstr "Vertraag:"
+
+#: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:72
+#: src/modplug/plugin_main.cc:82 src/xsf/plugin.cc:445
+msgid "ms"
+msgstr "ms"
+
+#: src/echo_plugin/echo.cc:25
+msgid "Feedback:"
+msgstr "Terugvoer:"
+
+#: src/echo_plugin/echo.cc:28 src/modplug/plugin_main.cc:86
+msgid "Volume:"
+msgstr "Volume:"
+
+#: src/echo_plugin/echo.cc:39
+msgid "Echo"
+msgstr "Eggo"
+
+#: src/ffaudio/ffaudio-core.cc:49
+msgid "FFmpeg Plugin"
+msgstr "FFmpeg Inprop"
+
+#: src/ffaudio/ffaudio-core.cc:635
+msgid ""
+"Multi-format audio decoding plugin for Audacious using\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
+msgstr ""
+"Multi-formaat klank dekodering inprop vir Audacious, \n"
+"wat gebruik maak van FFmpeg multimedia-raamwerk \n"
+"(http://www.ffmpeg.org/)\n"
+"\n"
+"Audacious inprop deur:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
+
+#: src/filewriter/filewriter.cc:48
+msgid "FileWriter Plugin"
+msgstr "Lêerskrywer-inprop"
+
+#: src/filewriter/filewriter.cc:316
+#, c-format
+msgid ""
+"Error opening %s:\n"
+"%s"
+msgstr ""
+"Fout tydens oopmaak van %s:\n"
+"%s"
+
+#: src/filewriter/filewriter.cc:358
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Hierdie program is gratis sagteware; jy kan dit herverdeel en/of wysig onder "
+"die bepalings van die GNU General Public License soos gepubliseer deur die "
+"Free Software Foundation; óf weergawe 2 van die lisensie, óf (na jou keuse) "
+"enige latere weergawe.\n"
+"\n"
+"Hierdie program word versprei in die hoop dat dit nuttig sal wees, maar "
+"SONDER ENIGE WAARBORG; selfs sonder die stilswyende waarborg van "
+"VERHANDELBAARHEID of GESKIKTHEID VIR 'N SPESIFIEKE DOEL. Sien die GNU "
+"General Public License vir meer besonderhede.\n"
+"\n"
+"Jy moes 'n afskrif van die GNU General Public License saam met hierdie "
+"program ontvang het; indien nie, skryf aan die Free Software Foundation, "
+"Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, VSA."
+
+#: src/filewriter/filewriter.cc:385
+msgid "Output file format:"
+msgstr "Uitset lêer formaat:"
+
+#: src/filewriter/filewriter.cc:389
+msgid "Save into original directory"
+msgstr "Stoor in oorspronklike gids"
+
+#: src/filewriter/filewriter.cc:392
+msgid "Save into custom directory:"
+msgstr "Stoor in pasgemaakte gids:"
+
+#: src/filewriter/filewriter.cc:400
+msgid "Generate file name from:"
+msgstr "Genereer lêernaam vanaf:"
+
+#: src/filewriter/filewriter.cc:401
+msgid "Original file name"
+msgstr "Oorspronklike lêernaam"
+
+#: src/filewriter/filewriter.cc:404
+msgid "Original file name (no suffix)"
+msgstr "Oorspronklike lêernaam (geen agtervoegsel)"
+
+#: src/filewriter/filewriter.cc:407
+msgid "Original file tag"
+msgstr "Oorspronklike lêeretiket"
+
+#: src/filewriter/filewriter.cc:411
+msgid "Prepend track number to file name"
+msgstr "Las snitnommer voor aan lêernaam"
+
+#: src/filewriter/filewriter.cc:417 src/filewriter/filewriter.cc:449
+msgid "Auto"
+msgstr "Outo"
+
+#: src/filewriter/filewriter.cc:418
+msgid "8000 Hz"
+msgstr "8000 Hz"
+
+#: src/filewriter/filewriter.cc:419
+msgid "11025 Hz"
+msgstr "11025 Hz"
+
+#: src/filewriter/filewriter.cc:420
+msgid "12000 Hz"
+msgstr "12000 Hz"
+
+#: src/filewriter/filewriter.cc:421
+msgid "16000 Hz"
+msgstr "16000 Hz"
+
+#: src/filewriter/filewriter.cc:422
+msgid "22050 Hz"
+msgstr "22050 Hz"
+
+#: src/filewriter/filewriter.cc:423
+msgid "24000 Hz"
+msgstr "24000 Hz"
+
+#: src/filewriter/filewriter.cc:424
+msgid "32000 Hz"
+msgstr "32000 Hz"
+
+#: src/filewriter/filewriter.cc:425 src/xsf/plugin.cc:430
+msgid "44100 Hz"
+msgstr "44100 Hz"
+
+#: src/filewriter/filewriter.cc:426 src/xsf/plugin.cc:431
+msgid "48000 Hz"
+msgstr "48000 Hz"
+
+#: src/filewriter/filewriter.cc:430
+msgid "8 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:431
+msgid "16 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:432
+msgid "32 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:433
+msgid "40 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:434
+msgid "48 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:435
+msgid "56 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:436
+msgid "64 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:437
+msgid "80 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:438
+msgid "96 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:439
+msgid "112 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:440
+msgid "128 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:441
+msgid "160 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:442
+msgid "192 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:443
+msgid "224 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:444
+msgid "256 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:445
+msgid "320 kbit/s"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:450
+msgid "Joint Stereo"
+msgstr "Gesamentlike stereo"
+
+#: src/filewriter/filewriter.cc:451 src/modplug/plugin_main.cc:57
+#: src/mpg123/mpg123.cc:255
+msgid "Stereo"
+msgstr "Stereo"
+
+#: src/filewriter/filewriter.cc:452 src/modplug/plugin_main.cc:56
+#: src/mpg123/mpg123.cc:256
+msgid "Mono"
+msgstr "Mono"
+
+#: src/filewriter/filewriter.cc:456
+msgid "VBR"
+msgstr "VBT"
+
+#: src/filewriter/filewriter.cc:457
+msgid "ABR"
+msgstr "ABT"
+
+#: src/filewriter/filewriter.cc:478
+msgid "Algorithm quality:"
+msgstr "Algoritme kwaliteit:"
+
+#: src/filewriter/filewriter.cc:484
+msgid "Bitrate:"
+msgstr "Bistempo:"
+
+#: src/filewriter/filewriter.cc:491
+msgid "Compression ratio:"
+msgstr "Kompressieverhouding:"
+
+#: src/filewriter/filewriter.cc:498
+msgid "Audio mode:"
+msgstr "Oudio modus:"
+
+#: src/filewriter/filewriter.cc:501
+msgid "Enforce strict ISO compliance"
+msgstr "Handhaaf streng ISO-nakoming"
+
+#: src/filewriter/filewriter.cc:503
+msgid "Error protection"
+msgstr "Foutbeskerming"
+
+#: src/filewriter/filewriter.cc:508
+msgid "Enable VBR/ABR"
+msgstr "Aktiveer VBT/ABT"
+
+#: src/filewriter/filewriter.cc:510
+msgid "Type:"
+msgstr "Tipe:"
+
+#: src/filewriter/filewriter.cc:514
+msgid "Minimum bitrate:"
+msgstr "Minimum bistempo:"
+
+#: src/filewriter/filewriter.cc:518
+msgid "Maximum bitrate:"
+msgstr "Maksimum bistempo:"
+
+#: src/filewriter/filewriter.cc:522
+msgid "Average bitrate:"
+msgstr "Gemiddelde bistempo:"
+
+#: src/filewriter/filewriter.cc:526
+msgid "VBR quality level:"
+msgstr "VBT kwaliteit vlak:"
+
+#: src/filewriter/filewriter.cc:530
+msgid "Strictly enforce minimum bitrate"
+msgstr "Handhaaf streng minimum bistempo"
+
+#: src/filewriter/filewriter.cc:533
+msgid "Omit Xing VBR header"
+msgstr "Laat Xing VBT kopskrif weg"
+
+#: src/filewriter/filewriter.cc:539
+msgid "<b>Frame Headers</b>"
+msgstr "<b>Raam Kopskrif</b>"
+
+#: src/filewriter/filewriter.cc:540
+msgid "Mark as copyright"
+msgstr "Merk as kopiereg"
+
+#: src/filewriter/filewriter.cc:542
+msgid "Mark as original"
+msgstr "Merk as oorspronklik"
+
+#: src/filewriter/filewriter.cc:544
+msgid "<b>ID3 Tags</b>"
+msgstr "<b>ID3-etikette</b>"
+
+#: src/filewriter/filewriter.cc:545
+msgid "Force addition of version 2 tag"
+msgstr "Forseer toevoeging van weergawe 2 etiket"
+
+#: src/filewriter/filewriter.cc:547
+msgid "Only add v1 tag"
+msgstr "Voeg slegs v1 etiket by"
+
+#: src/filewriter/filewriter.cc:549
+msgid "Only add v2 tag"
+msgstr "Voeg slegs v2 etiket by"
+
+#: src/filewriter/filewriter.cc:554
+msgid "Quality"
+msgstr "Kwaliteit"
+
+#: src/filewriter/filewriter.cc:555
+msgid "VBR/ABR"
+msgstr "VBT/ABT"
+
+#: src/filewriter/filewriter.cc:556
+msgid "Tags"
+msgstr "Etikette"
+
+#: src/filewriter/filewriter.cc:566
+msgid "Quality (0-1):"
+msgstr "Kwaliteit (0-1):"
+
+#: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:307
+#: src/skins/skins_cfg.cc:285
+msgid "General"
+msgstr "Algemeen"
+
+#: src/flac/flacng.h:36
+msgid "FLAC Decoder"
+msgstr "FLAC Dekodeerder"
+
+#: src/flac/metadata.cc:280 src/wavpack/wavpack.cc:215
+msgid "lossless"
+msgstr "verliesvry"
+
+#: src/flac/plugin.cc:180
+msgid ""
+"Original code by\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+msgstr ""
+"Oorspronklike kode deur\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+
+#: src/gio/gio.cc:34
+msgid ""
+"GIO Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren"
+msgstr ""
+"GIO Inprop vir Audacious\n"
+"Kopiereg 2009-2012 John Lindgren"
+
+#: src/gio/gio.cc:42
+msgid "GIO Plugin"
+msgstr "GIO Inprop"
+
+#: src/gio/gio.cc:152
+msgid "Read-and-append mode not supported"
+msgstr "Lees-en-byvoeg modus word nie ondersteun nie"
+
+#: src/gio/gio.cc:165
+msgid "Invalid open mode"
+msgstr "Ongeldige oop modus"
+
+#: src/glspectrum/gl-spectrum.cc:51
+msgid ""
+"OpenGL Spectrum Analyzer for Audacious\n"
+"Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
+"\n"
+"Based on the XMMS plugin:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
+"\n"
+"License: GPLv2+"
+msgstr ""
+"OpenGL Spektrum Ontleder vir Audacious\n"
+"Kopiereg 2013 Christophe Budé, John Lindgren en Carlo Bramini\n"
+"\n"
+"Gebaseer op die XMMS-inprop:\n"
+"Kopiereg 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson en "
+"4Front Technologies\n"
+"\n"
+"Lisensie: GPLv2+"
+
+#: src/glspectrum/gl-spectrum.cc:62 src/qtglspectrum/gl-spectrum.cc:53
+msgid "OpenGL Spectrum Analyzer"
+msgstr "OpenGL Spektrum Ontleder"
+
+#: src/gtkui/columns.cc:35
+msgid "Entry number"
+msgstr "Inskrywingsnommer"
+
+#: src/gtkui/columns.cc:36 src/moonstone/playlist_model.cc:38
+#: src/moonstone/playlist_selection.cc:62
+#: src/playlist-manager/playlist-manager.cc:199
+#: src/playlist-manager-qt/playlist-manager-qt.cc:186
+#: src/qtui/playlist_model.cc:33 src/streamtuner/icecast-model.cc:120
+#: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:122
+msgid "Title"
+msgstr "Titel"
+
+#: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:39
+#: src/qtui/playlist_model.cc:33
+msgid "Artist"
+msgstr "Kunstenaar"
+
+#: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
+#: src/qtui/playlist_model.cc:33
+msgid "Year"
+msgstr "Jaar"
+
+#: src/gtkui/columns.cc:39 src/moonstone/playlist_model.cc:39
+#: src/qtui/playlist_model.cc:34
+msgid "Album"
+msgstr "Album"
+
+#: src/gtkui/columns.cc:40
+msgid "Album artist"
+msgstr "Album kunstenaar"
+
+#: src/gtkui/columns.cc:41 src/moonstone/playlist_model.cc:40
+#: src/qtui/playlist_model.cc:34
+msgid "Track"
+msgstr "Snit"
+
+#: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
+#: src/qtui/playlist_model.cc:34 src/streamtuner/icecast-model.cc:123
+#: src/streamtuner/shoutcast-model.cc:125
+#: src/streamtuner/shoutcast-model.cc:236
+msgid "Genre"
+msgstr "Genre"
+
+#: src/gtkui/columns.cc:43
+msgid "Queue position"
+msgstr "Tou posisie"
+
+#: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
+#: src/qtui/playlist_model.cc:35
+msgid "Length"
+msgstr "Lengte"
+
+#: src/gtkui/columns.cc:45
+msgid "File path"
+msgstr "Lêer pad"
+
+#: src/gtkui/columns.cc:47
+msgid "Custom title"
+msgstr "Pasgemaakte titel"
+
+#: src/gtkui/columns.cc:48 src/moonstone/playlist_model.cc:42
+#: src/qtui/playlist_model.cc:36 src/streamtuner/icecast-model.cc:129
+#: src/streamtuner/shoutcast-model.cc:134
+msgid "Bitrate"
+msgstr "Bistempo"
+
+#: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:43
+#: src/qtui/playlist_model.cc:36
+msgid "Comment"
+msgstr "Kommentaar"
+
+#: src/gtkui/columns.cc:315
+msgid "Available columns"
+msgstr "Beskikbare kolomme"
+
+#: src/gtkui/columns.cc:341
+msgid "Displayed columns"
+msgstr "Vertoonde kolomme"
+
+#: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:58
+#: src/search-tool/search-tool.cc:48
+msgid "Search Tool"
+msgstr "Soek gereedskap"
+
+#: src/gtkui/layout.cc:168
+msgid "Dock at Left"
+msgstr "Dok aan Linkerkant"
+
+#: src/gtkui/layout.cc:168
+msgid "Dock at Right"
+msgstr "Dok aan Regterkant"
+
+#: src/gtkui/layout.cc:169
+msgid "Dock at Top"
+msgstr "Dok aan Bokant"
+
+#: src/gtkui/layout.cc:169
+msgid "Dock at Bottom"
+msgstr "Dok aan Onderkant"
+
+#: src/gtkui/layout.cc:169
+msgid "Undock"
+msgstr "Ontdok"
+
+#: src/gtkui/layout.cc:169 src/ladspa/plugin.cc:534
+msgid "Disable"
+msgstr "Deaktiveer"
+
+#: src/gtkui/menus.cc:79 src/qtui/menus.cc:107
+#: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:282
+msgid "_Open Files ..."
+msgstr "Maak Lêers _Oop ..."
+
+#: src/gtkui/menus.cc:80 src/qtui/menus.cc:111
+msgid "Open _URL ..."
+msgstr "Maak _URL Oop ..."
+
+#: src/gtkui/menus.cc:81 src/qtui/menus.cc:113
+msgid "_Add Files ..."
+msgstr "Voeg Lêers By ..."
+
+#: src/gtkui/menus.cc:82 src/qtui/menus.cc:118
+msgid "Add U_RL ..."
+msgstr "Voeg U_RL By ..."
+
+#: src/gtkui/menus.cc:84 src/qtui/menus.cc:120
+msgid "Search _Library"
+msgstr "Deursoek Biblioteek "
+
+#: src/gtkui/menus.cc:86 src/qtui/menus.cc:123
+msgid "A_bout ..."
+msgstr "Aangaande ..."
+
+#: src/gtkui/menus.cc:87 src/qtui/menus.cc:125
+msgid "_Settings ..."
+msgstr "_Stellings ..."
+
+#: src/gtkui/menus.cc:88 src/qtui/menus.cc:131
+#: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:284
+msgid "_Quit"
+msgstr "Verlaat"
+
+#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:224
+#: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
+#: src/qtui/playlist_tabs.cc:328 src/search-tool-qt/search-tool-qt.cc:499
+#: src/search-tool/search-tool.cc:343 src/statusicon-qt/statusicon.cc:106
+#: src/statusicon/statusicon.cc:276
+msgid "_Play"
+msgstr "_Speel"
+
+#: src/gtkui/menus.cc:93 src/qtui/menus.cc:137
+#: src/statusicon-qt/statusicon.cc:107 src/statusicon/statusicon.cc:277
+msgid "Paus_e"
+msgstr "Pous_eer"
+
+#: src/gtkui/menus.cc:94 src/qtui/menus.cc:139
+#: src/statusicon-qt/statusicon.cc:108 src/statusicon/statusicon.cc:278
+msgid "_Stop"
+msgstr "_Stop"
+
+#: src/gtkui/menus.cc:95 src/qtui/menus.cc:141
+#: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:279
+msgid "Pre_vious"
+msgstr "Vorige"
+
+#: src/gtkui/menus.cc:96 src/qtui/menus.cc:143
+#: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:280
+msgid "_Next"
+msgstr "Volgende"
+
+#: src/gtkui/menus.cc:97 src/qtui/menus.cc:145 src/skins/menus.cc:114
+#: src/skins-qt/menus.cc:105
+msgid "Previous Album"
+msgstr "Vorige Album"
+
+#: src/gtkui/menus.cc:98 src/qtui/menus.cc:146 src/skins/menus.cc:115
+#: src/skins-qt/menus.cc:106
+msgid "Next Album"
+msgstr "Volgende Album"
+
+#: src/gtkui/menus.cc:100 src/qtui/menus.cc:148
+msgid "_Repeat"
+msgstr "Herhaal"
+
+#: src/gtkui/menus.cc:101 src/qtui/menus.cc:150
+msgid "S_huffle"
+msgstr "Skommel"
+
+#: src/gtkui/menus.cc:102 src/qtui/menus.cc:152
+msgid "Shuffle by Albu_m"
+msgstr "Skoffel volgens Albu_ms"
+
+#: src/gtkui/menus.cc:103 src/qtui/menus.cc:155
+msgid "N_o Playlist Advance"
+msgstr "Geen Snitlys Outo-vordering Nie"
+
+#: src/gtkui/menus.cc:104 src/qtui/menus.cc:157
+msgid "Stop A_fter This Song"
+msgstr "Stop Na Hierdie Lied"
+
+#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:208 src/qtui/menus.cc:162
+#: src/qtui/menus.cc:292
+msgid "Song _Info ..."
+msgstr "Lied _Info ..."
+
+#: src/gtkui/menus.cc:107
+msgid "Jump to _Time ..."
+msgstr "Spring tot _Tyd ..."
+
+#: src/gtkui/menus.cc:108
+msgid "_Jump to Song ..."
+msgstr "Spring tot Lied ..."
+
+#: src/gtkui/menus.cc:110 src/qtui/menus.cc:165
+msgid "Set Repeat Point _A"
+msgstr "Stel Herhaal Punt _A"
+
+#: src/gtkui/menus.cc:111 src/qtui/menus.cc:167
+msgid "Set Repeat Point _B"
+msgstr "Stel Herhaal Punt _B"
+
+#: src/gtkui/menus.cc:112 src/qtui/menus.cc:169
+msgid "_Clear Repeat Points"
+msgstr "Maak herhalingspunte skoon"
+
+#: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:140
+#: src/qtui/menus.cc:173 src/qtui/menus.cc:180 src/qtui/menus.cc:197
+msgid "By _Title"
+msgstr "Volgens _Titel"
+
+#: src/gtkui/menus.cc:117 src/qtui/menus.cc:174
+msgid "By _File Name"
+msgstr "Volgens Lêer Naam"
+
+#: src/gtkui/menus.cc:118 src/qtui/menus.cc:175
+msgid "By File _Path"
+msgstr "Volgens Lêer Pad"
+
+#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:179
+#: src/qtui/menus.cc:196
+msgid "By Track _Number"
+msgstr "Volgens Snit _Nommer"
+
+#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:181
+#: src/qtui/menus.cc:198
+msgid "By _Artist"
+msgstr "Volgens Kunstenaar"
+
+#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:182
+#: src/qtui/menus.cc:199
+msgid "By Al_bum"
+msgstr "Volgens Al_bum"
+
+#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:183
+#: src/qtui/menus.cc:200
+msgid "By Albu_m Artist"
+msgstr "Volgens Albu_m Kunstenaar"
+
+#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:184
+#: src/qtui/menus.cc:201
+msgid "By Release _Date"
+msgstr "Volgens Vrystelling _Datum"
+
+#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:185
+#: src/qtui/menus.cc:202
+msgid "By _Genre"
+msgstr "Volgens _Genre"
+
+#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:186
+#: src/qtui/menus.cc:203
+msgid "By _Length"
+msgstr "Volgens _Lengte"
+
+#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:187
+#: src/qtui/menus.cc:204
+msgid "By _File Path"
+msgstr "Volgens Lêer Pad"
+
+#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:148 src/qtui/menus.cc:188
+#: src/qtui/menus.cc:205
+msgid "By _Custom Title"
+msgstr "By Pasgemaakte Titel"
+
+#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:189
+#: src/qtui/menus.cc:206
+msgid "By C_omment"
+msgstr "By K_ommentaar"
+
+#: src/gtkui/menus.cc:134 src/gtkui/menus.cc:151 src/qtui/menus.cc:191
+#: src/qtui/menus.cc:208
+msgid "R_everse Order"
+msgstr "Omg_ekeerde Volgorde"
+
+#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:152 src/qtui/menus.cc:193
+#: src/qtui/menus.cc:210
+msgid "_Random Order"
+msgstr "Ewekansige Volgorde"
+
+#: src/gtkui/menus.cc:156 src/qtui/menus.cc:214
+msgid "_Play/Resume"
+msgstr "Speel/Hervat"
+
+#: src/gtkui/menus.cc:157 src/qtui/menus.cc:216
+msgid "_Refresh"
+msgstr "Verfris"
+
+#: src/gtkui/menus.cc:159 src/qtui/menus.cc:220
+msgid "_Sort"
+msgstr "_Sorteer"
+
+#: src/gtkui/menus.cc:160 src/qtui/menus.cc:221
+msgid "Sort Se_lected"
+msgstr "Sorteer Seleksie"
+
+#: src/gtkui/menus.cc:161 src/qtui/menus.cc:223
+msgid "Remove _Duplicates"
+msgstr "Verwyder _Duplikate"
+
+#: src/gtkui/menus.cc:162 src/qtui/menus.cc:224
+msgid "Remove _Unavailable Files"
+msgstr "Verwyder Onbeskikbare Lêers"
+
+#: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:218
+#: src/playlist-manager-qt/playlist-manager-qt.cc:346 src/qtui/menus.cc:227
+msgid "_New"
+msgstr "_Nuwe"
+
+#: src/gtkui/menus.cc:165 src/qtui/menus.cc:228
+msgid "Ren_ame ..."
+msgstr "Hernoem ..."
+
+#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:226
+#: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:229
+#: src/qtui/playlist_tabs.cc:333
+msgid "Remo_ve"
+msgstr "Verwyder"
+
+#: src/gtkui/menus.cc:168 src/qtui/menus.cc:231
+msgid "_Import ..."
+msgstr "Voer in ..."
+
+#: src/gtkui/menus.cc:169 src/qtui/menus.cc:232
+msgid "_Export ..."
+msgstr "Voer uit ..."
+
+#: src/gtkui/menus.cc:171 src/qtui/menus.cc:235
+msgid "Playlist _Manager ..."
+msgstr "Snitlys Bestuurder ..."
+
+#: src/gtkui/menus.cc:172 src/qtui/menus.cc:237
+msgid "_Queue Manager ..."
+msgstr "Tou Bestuurder ..."
+
+#: src/gtkui/menus.cc:176 src/qtui/menus.cc:241
+msgid "Volume _Up"
+msgstr "Volume Op"
+
+#: src/gtkui/menus.cc:177 src/qtui/menus.cc:243
+msgid "Volume _Down"
+msgstr "Volume Af"
+
+#: src/gtkui/menus.cc:179 src/qtui/menus.cc:247
+msgid "_Equalizer ..."
+msgstr "Gelykmaker ..."
+
+#: src/gtkui/menus.cc:180 src/qtui/menus.cc:249
+msgid "E_ffects ..."
+msgstr "E_ffekte ..."
+
+#: src/gtkui/menus.cc:182
+msgid "_Record Stream"
+msgstr "Neem Stroom Op"
+
+#: src/gtkui/menus.cc:183
+msgid "Audio _Settings ..."
+msgstr "Oudio _Stellings ..."
+
+#: src/gtkui/menus.cc:187 src/qtui/menus.cc:258
+msgid "Show _Menu Bar"
+msgstr "Wys kieslysbalk"
+
+#: src/gtkui/menus.cc:188 src/qtui/menus.cc:260
+msgid "Show I_nfo Bar"
+msgstr "Wys Infobalk"
+
+#: src/gtkui/menus.cc:189 src/qtui/menus.cc:262
+msgid "Show Info Bar _Album Art"
+msgstr "Wys Infobalk _Album Kuns"
+
+#: src/gtkui/menus.cc:190 src/qtui/menus.cc:264
+msgid "Show Info Bar Vis_ualization"
+msgstr "Wys Infobalk Vis_ualisering"
+
+#: src/gtkui/menus.cc:191 src/qtui/menus.cc:266
+msgid "Show _Status Bar"
+msgstr "Wys _Status Balk"
+
+#: src/gtkui/menus.cc:193 src/qtui/menus.cc:270
+msgid "Show _Remaining Time"
+msgstr "Wys Oorblywende Tyd"
+
+#: src/gtkui/menus.cc:195 src/qtui/menus.cc:274 src/skins/menus.cc:157
+#: src/skins-qt/menus.cc:152
+msgid "_Visualizations ..."
+msgstr "_Visualiserings ..."
+
+#: src/gtkui/menus.cc:199 src/qtui/menus.cc:278
+msgid "_File"
+msgstr "Lêer ..."
+
+#: src/gtkui/menus.cc:200 src/qtui/menus.cc:279
+msgid "_Playback"
+msgstr "Terugspeel"
+
+#: src/gtkui/menus.cc:201 src/qtui/menus.cc:280
+msgid "P_laylist"
+msgstr "Snit_lys"
+
+#: src/gtkui/menus.cc:202 src/gtkui/menus.cc:220 src/qtui/menus.cc:281
+#: src/qtui/menus.cc:310
+msgid "_Services"
+msgstr "Dienste"
+
+#: src/gtkui/menus.cc:203 src/qtui/menus.cc:282
+msgid "_Output"
+msgstr "Uitset"
+
+#: src/gtkui/menus.cc:204 src/qtui/menus.cc:283
+msgid "_View"
+msgstr "Aansig"
+
+#: src/gtkui/menus.cc:209 src/qtui/menus.cc:294
+msgid "_Queue/Unqueue"
+msgstr "Tou/Ontou"
+
+#: src/gtkui/menus.cc:211 src/qtui/menus.cc:297
+msgid "_Open Containing Folder"
+msgstr "Maak Bevattende Gids _Oop"
+
+#: src/gtkui/menus.cc:212 src/qtui/menus.cc:299
+msgid "_Refresh Selected"
+msgstr "Verfris Seleksie"
+
+#: src/gtkui/menus.cc:214 src/qtui/menus.cc:302
+msgid "Cu_t"
+msgstr "Sny"
+
+#: src/gtkui/menus.cc:215 src/qtui/menus.cc:303
+msgid "_Copy"
+msgstr "Kopie"
+
+#: src/gtkui/menus.cc:216 src/qtui/menus.cc:304
+msgid "_Paste"
+msgstr "_Plak"
+
+#: src/gtkui/menus.cc:217 src/qtui/menus.cc:305
+msgid "Paste at _End"
+msgstr "Plak op _Einde"
+
+#: src/gtkui/menus.cc:218 src/qtui/menus.cc:307
+msgid "Select _All"
+msgstr "Selekteer _Alles"
+
+#: src/gtkui/menus.cc:225 src/moonstone/playlist_tabs.cc:309
+#: src/qtui/playlist_tabs.cc:331
+msgid "_Rename ..."
+msgstr "Hernoem ..."
+
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:63
+msgid "<b>Playlist Tabs</b>"
+msgstr "<b>Snitlys Oortjies</b>"
+
+#: src/gtkui/settings.cc:36
+msgid "Always show tabs"
+msgstr "Wys oortjies altyd"
+
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:68
+msgid "Show entry counts"
+msgstr "Wys item tellings"
+
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:71
+msgid "Show close buttons"
+msgstr "Wys maak toe knoppies"
+
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:74
+msgid "<b>Playlist Columns</b>"
+msgstr "<b>Snitlys Kolomme</b>"
+
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:76
+msgid "Show column headers"
+msgstr "Wys kolom opskrifte"
+
+#: src/gtkui/settings.cc:47 src/qtui/settings.cc:82
+msgid "Scroll on song change"
+msgstr "Rollees op lied verandering"
+
+#: src/gtkui/ui_gtk.cc:74
+msgid "GTK Interface"
+msgstr "GTK Koppelvlak"
+
+#: src/gtkui/ui_gtk.cc:210 src/skins/main.cc:227 src/skins-qt/main.cc:225
+#, c-format
+msgid "%s - Audacious"
+msgstr "%s - Audacious"
+
+#: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:184
+#: src/qtui/main_window.cc:384
+msgid "Buffering ..."
+msgstr "Buffer tans..."
+
+#: src/gtkui/ui_gtk.cc:215 src/skins/main.cc:229 src/skins-qt/main.cc:227
+msgid "Audacious"
+msgstr "Audacious"
+
+#: src/gtkui/ui_gtk.cc:428 src/gtkui/ui_gtk.cc:459 src/gtkui/ui_gtk.cc:817
+#: src/hotkey/gui.cc:71 src/moonstone/main_window.cc:67
+#: src/moonstone/main_window.cc:145 src/moonstone/main_window.cc:146
+#: src/notify/osd.cc:85 src/qthotkey/gui.cc:64 src/qtui/main_window.cc:154
+#: src/qtui/main_window.cc:346 src/qtui/main_window.cc:347
+#: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
+msgid "Play"
+msgstr "Speel"
+
+#: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:151
+#: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
+#: src/qtui/main_window.cc:352 src/qtui/main_window.cc:353
+#: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
+msgid "Pause"
+msgstr "Pouseer"
+
+#: src/gtkui/ui_gtk.cc:803 src/moonstone/main_window.cc:57
+#: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
+msgid "Search Library"
+msgstr "Deursoek Biblioteek"
+
+#: src/gtkui/ui_gtk.cc:810 src/moonstone/main_window.cc:60
+#: src/qtui/main_window.cc:147
+msgid "Open Files"
+msgstr "Maak Lêers Oop"
+
+#: src/gtkui/ui_gtk.cc:811 src/moonstone/main_window.cc:62
+#: src/qtui/main_window.cc:149
+msgid "Add Files"
+msgstr "Voeg Lêers By"
+
+#: src/gtkui/ui_gtk.cc:816 src/moonstone/main_window.cc:65
+#: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
+msgid "Previous"
+msgstr "Vorige"
+
+#: src/gtkui/ui_gtk.cc:818 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:69
+#: src/qthotkey/gui.cc:66 src/qtui/main_window.cc:156 src/skins/menus.cc:111
+#: src/skins-qt/menus.cc:102
+msgid "Stop"
+msgstr "Stop"
+
+#: src/gtkui/ui_gtk.cc:819 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
+#: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
+msgid "Next"
+msgstr "Volgende"
+
+#: src/gtkui/ui_gtk.cc:821 src/moonstone/main_window.cc:79
+#: src/qtui/main_window.cc:166 src/qtui/menus.cc:252 src/skins/menus.cc:79
+#: src/skins-qt/menus.cc:69
+msgid "Record Stream"
+msgstr "Neem Stroom Op"
+
+#: src/gtkui/ui_gtk.cc:854 src/moonstone/main_window.cc:86
+#: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
+msgid "Repeat"
+msgstr "Herhaal"
+
+#: src/gtkui/ui_gtk.cc:857 src/moonstone/main_window.cc:89
+#: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
+msgid "Shuffle"
+msgstr "Skoffel"
+
+#: src/gtkui/ui_gtk.cc:1030 src/qtui/main_window.cc:123
+msgid "Menu"
+msgstr "Kieslys"
+
+#: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:155
+msgid "mono"
+msgstr "mono"
+
+#: src/gtkui/ui_statusbar.cc:65 src/qtui/status_bar.cc:157
+msgid "stereo"
+msgstr "stereo"
+
+#: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:160
+#, c-format
+msgid "%d channel"
+msgid_plural "%d channels"
+msgstr[0] "%d kanaal"
+msgstr[1] "%d kanale"
+
+#: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:168
+#, c-format
+msgid "%d kHz"
+msgstr "%d kHz"
+
+#: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:174
+#, c-format
+msgid "%d kbit/s"
+msgstr ""
+
+#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471 src/skins-qt/main.cc:455
+msgid "Single mode."
+msgstr "Enkel modus."
+
+#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:473 src/skins-qt/main.cc:457
+msgid "Playlist mode."
+msgstr "Snitlys modus."
+
+#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:479 src/skins-qt/main.cc:463
+msgid "Stopping after song."
+msgstr "Gaan stop na lied."
+
+#: src/hotkey/gui.cc:70 src/qthotkey/gui.cc:63
+msgid "Previous track"
+msgstr "Vorige snit"
+
+#: src/hotkey/gui.cc:72 src/qthotkey/gui.cc:65
+msgid "Pause/Resume"
+msgstr "Pouseer/Hervat"
+
+#: src/hotkey/gui.cc:74 src/qthotkey/gui.cc:67
+msgid "Next track"
+msgstr "Volgende snit"
+
+#: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:68
+msgid "Step forward"
+msgstr "Tree voorwaarts"
+
+#: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:69
+msgid "Step backward"
+msgstr "Tree terugwaarts"
+
+#: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:70
+msgid "Mute"
+msgstr "Demp"
+
+#: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:71
+msgid "Volume up"
+msgstr "Volume op"
+
+#: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:72
+msgid "Volume down"
+msgstr "Volume af"
+
+#: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:73
+msgid "Jump to file"
+msgstr "Spring tot lêer"
+
+#: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:74
+msgid "Toggle player window(s)"
+msgstr "Wissel speler venster(s)"
+
+#: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:75
+msgid "Show On-Screen-Display"
+msgstr "Wys Op-Skerm-Vertoon"
+
+#: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:76
+msgid "Toggle repeat"
+msgstr "Wissel herhaal"
+
+#: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:77
+msgid "Toggle shuffle"
+msgstr "Wissel skoffel"
+
+#: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:78
+msgid "Toggle stop after current"
+msgstr "Wissel stop na huidige"
+
+#: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:79
+msgid "Raise player window(s)"
+msgstr "Lig speler venster(s) op"
+
+#: src/hotkey/gui.cc:97 src/qthotkey/gui.cc:97
+msgid "(none)"
+msgstr "(geen)"
+
+#: src/hotkey/gui.cc:260
+msgid ""
+"It is not recommended to bind the primary mouse buttons without modifiers.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Dit word nie aanbeveel om die primêre muisknoppies te sonder wysigers te "
+"bind nie.\n"
+"\n"
+"Wil jy voortgaan?"
+
+#: src/hotkey/gui.cc:263
+msgid "Binding mouse buttons"
+msgstr "Binding van muisknoppies"
+
+#: src/hotkey/gui.cc:426
+msgid ""
+"Press a key combination inside a text field.\n"
+"You can also bind mouse buttons."
+msgstr ""
+"Druk 'n sleutelkombinasie binne 'n teksveld.\n"
+"Jy kan ook muisknoppies bind."
+
+#: src/hotkey/gui.cc:432 src/qthotkey/gui.cc:167
+msgid "Hotkeys:"
+msgstr "Snelsleutels:"
+
+#: src/hotkey/gui.cc:448 src/qthotkey/gui.cc:169
+msgid "<b>Action:</b>"
+msgstr "<b>Aksie:</b>"
+
+#: src/hotkey/gui.cc:454 src/qthotkey/gui.cc:170
+msgid "<b>Key Binding:</b>"
+msgstr "<b>Sleutel Binding:</b>"
+
+#: src/hotkey/gui.cc:501 src/qthotkey/gui.cc:172
+msgid "_Add"
+msgstr "Voeg by"
+
+#: src/hotkey/plugin.cc:61 src/qthotkey/plugin.cc:77
+msgid "Global Hotkeys"
+msgstr "Globale Snelsleutels"
+
+#: src/hotkey/plugin.cc:76
+msgid ""
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributors include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
+msgstr ""
+"Globale Snelsleutel Inprop\n"
+"Beheer die speler met globale sleutelkombinasies of multimediasleutels.\n"
+"\n"
+"Kopiereg (K) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Bydraers sluit in:\n"
+"Kopiereg (K) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Kopiereg (K) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+"Bryn Davies <curious@ihug.com.au>,\n"
+"Jonathan A. Davis <davis@jdhouse.org>,\n"
+"Jeremy Tan <nsx@nsx.homeip.net>"
+
+#: src/jack/jack-ng.cc:54
+msgid "JACK Output"
+msgstr "JACK Uitset"
+
+#: src/jack/jack-ng.cc:126
+msgid "Client name:"
+msgstr "Kliënt naam:"
+
+#: src/jack/jack-ng.cc:128
+msgid "Automatically connect to output ports"
+msgstr "Konnekteer outomaties aan uitset poorte"
+
+#: src/jack/jack-ng.cc:130
+msgid "Filter ports (regex, use any port if blank):"
+msgstr "Filtreer poorte (regex, gebruik enige poort as leeg):"
+
+#: src/jack/jack-ng.cc:136
+msgid "Connect to physical ports only"
+msgstr "Koppel slegs aan fisiese poorte"
+
+#: src/jack/jack-ng.cc:139
+msgid "Upmix to"
+msgstr "\"Upmix\" na"
+
+#: src/jack/jack-ng.cc:141
+msgid "ports if input has fewer channels"
+msgstr "poorte as invoeg minder kanale het"
+
+#: src/jack/jack-ng.cc:143
+msgid "Ignore insufficient number of ports"
+msgstr "Ignoreer onvoldoende aantal poorte"
+
+#: src/jack/jack-ng.cc:181
+msgid "No JACK output ports were found. Please check settings."
+msgstr "Geen JACK uitset poorte was gevind nie. Hersien asseblief stellings."
+
+#: src/jack/jack-ng.cc:195
+#, c-format
+msgid "Only %d JACK output ports were found but %d are required."
+msgstr "Slegs %dJACK uitset poorte was gevind maar %dword benodig."
+
+#: src/jack/jack-ng.cc:210
+#, c-format
+msgid "Failed to connect to JACK port %s."
+msgstr "Kon nie aan JACK-poort %s koppel nie."
+
+#: src/jack/jack-ng.cc:230
+msgid ""
+"JACK supports only floating-point audio.  You must change the output bit "
+"depth to floating-point in Audacious settings."
+msgstr ""
+"JACK ondersteun slegs drywende-punt-klank. Jy moet die uitset bisdiepte na "
+"drywende-punt in Audacious-instellings verander."
+
+#: src/jack/jack-ng.cc:245
+msgid "Failed to connect to the JACK server; is it running?"
+msgstr "Kon nie aan JACK-bediener koppel nie; Hardloop dit?"
+
+#: src/jack/jack-ng.cc:321
+#, c-format
+msgid ""
+"The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
+"%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
+msgstr ""
+"Die JACK-bediener vereis 'n monstertempo van %d Hz, maar Audacious speel "
+"teen %d Hz. Gebruik asseblief die MonsterTempoOmsitter-effek om die "
+"wanpassing reg te stel."
+
+#: src/ladspa/plugin.cc:415
+#, c-format
+msgid "%s Settings"
+msgstr "%s Stellings"
+
+#: src/ladspa/plugin.cc:481
+msgid "Module paths:"
+msgstr "Module paaie:"
+
+#: src/ladspa/plugin.cc:486
+msgid ""
+"<small>Separate multiple paths with a colon.\n"
+"These paths are searched in addition to LADSPA_PATH.\n"
+"After adding new paths, press Enter to scan for new plugins.</small>"
+msgstr ""
+"<small>Skei verskeie paaie met 'n dubbelpunt.\n"
+"Hierdie paaie, so wel as LADSPA_PATH, word deursoek.\n"
+"Nadat u nuwe paaie bygevoeg het, druk Enter om vir nuwe inproppe te soek.</"
+"small>"
+
+#: src/ladspa/plugin.cc:502
+msgid "Available plugins:"
+msgstr "Beskikbare inproppe:"
+
+#: src/ladspa/plugin.cc:515 src/modplug/plugin_main.cc:91
+#: src/modplug/plugin_main.cc:94 src/modplug/plugin_main.cc:97
+#: src/modplug/plugin_main.cc:100
+msgid "Enable"
+msgstr "Aktiveer"
+
+#: src/ladspa/plugin.cc:521
+msgid "Enabled plugins:"
+msgstr "Aktiveer inproppe:"
+
+#: src/ladspa/plugin.cc:537
+msgid "Settings"
+msgstr "Stellings"
+
+#: src/ladspa/plugin.cc:554
+msgid ""
+"LADSPA Host for Audacious\n"
+"Copyright 2011 John Lindgren"
+msgstr ""
+"LADSPA Gasheer vir Audacious\n"
+"Kopiereg 2011 John Lindgren"
+
+#: src/ladspa/plugin.h:78
+msgid "LADSPA Host"
+msgstr "LADSPA Gasheer"
+
+#: src/lirc/lirc.cc:55
+msgid "LIRC Plugin"
+msgstr "LIRC Inprop"
+
+#: src/lirc/lirc.cc:379
+msgid ""
+"A simple plugin to control Audacious using the LIRC remote control daemon\n"
+"\n"
+"Adapted for Audacious by:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Based on the XMMS LIRC plugin by:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"For more information about LIRC, see http://lirc.org."
+msgstr ""
+"'n Eenvoudige inprop om Audacious te beheer deur die LIRC-afstandbeheer "
+"damonion te gebruik\n"
+"\n"
+"Aangepas vir Audacious deur:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Gebaseer op die XMMS LIRC-inprop deur:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"Vir meer inligting oor LIRC, sien http://lirc.org."
+
+#: src/lirc/lirc.cc:390
+msgid "<b>Connection</b>"
+msgstr "<b>Konneksie</b>"
+
+#: src/lirc/lirc.cc:391
+msgid "Reconnect to LIRC server"
+msgstr "Herkoppel aan LIRC-bediener"
+
+#: src/lirc/lirc.cc:393
+msgid "Wait before reconnecting:"
+msgstr "Wag voor herkoppel:"
+
+#: src/lyricwiki-qt/lyricwiki.cc:89
+msgid "Lyrics"
+msgstr "Lirieke"
+
+#: src/lyricwiki-qt/lyricwiki.cc:116
+msgid "Nowhere"
+msgstr "Nêrens nie"
+
+#: src/lyricwiki-qt/lyricwiki.cc:117
+msgid "lyrics.ovh"
+msgstr "lyrics.ovh"
+
+#: src/lyricwiki-qt/lyricwiki.cc:121
+msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
+msgstr ""
+"<small>Kunstenaar word aan die begin afgekap, Titel -- aan die einde</small>"
+
+#: src/lyricwiki-qt/lyricwiki.cc:122
+msgid "Chars to truncate on:"
+msgstr "Karakters om af te kap:"
+
+#: src/lyricwiki-qt/lyricwiki.cc:126
+msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
+msgstr "<small>Karakters word ge-OF in RegExp, omring deur witspasie</small>"
+
+#: src/lyricwiki-qt/lyricwiki.cc:127
+msgid "Chars to split on:"
+msgstr "Karakters om op te verdeel:"
+
+#: src/lyricwiki-qt/lyricwiki.cc:128
+msgid "Further truncate those on chars"
+msgstr "Knip dié op karakters verder af"
+
+#: src/lyricwiki-qt/lyricwiki.cc:134
+msgid "<b>General</b>"
+msgstr "<b>Algemeen</b>"
+
+#: src/lyricwiki-qt/lyricwiki.cc:135
+msgid "Split title into artist and title on chars"
+msgstr "Verdeel titel in kunstenaar en titel op karakters"
+
+#: src/lyricwiki-qt/lyricwiki.cc:138
+msgid "<b>Internet Sources</b>"
+msgstr "<b>Internet Bronne</b>"
+
+#: src/lyricwiki-qt/lyricwiki.cc:139
+msgid "Fetch lyrics from:"
+msgstr "Gaan haal lirieke van:"
+
+#: src/lyricwiki-qt/lyricwiki.cc:142
+msgid "Store fetched lyrics in local cache"
+msgstr "Stoor afgehaalde lirieke in plaaslike kas"
+
+#: src/lyricwiki-qt/lyricwiki.cc:144
+msgid "<b>Local Storage</b>"
+msgstr "<b>Plaaslike Berging</b>"
+
+#: src/lyricwiki-qt/lyricwiki.cc:145
+msgid "Load lyric files (.lrc) from local storage"
+msgstr "Laai lirieklêers (.lrc) vanaf plaaslike berging"
+
+#: src/lyricwiki-qt/lyricwiki.cc:356
+#, c-format
+msgid "Unable to fetch %s"
+msgstr "Kan nie %s gaan haal nie"
+
+#: src/lyricwiki-qt/lyricwiki.cc:365
+#, c-format
+msgid "Unable to parse %s"
+msgstr "Kan nie %s ontleed nie"
+
+#: src/lyricwiki-qt/lyricwiki.cc:403
+msgid "Looking for lyrics ..."
+msgstr "Soek vir lirieke ..."
+
+#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:62
+msgid "Error"
+msgstr "Fout"
+
+#: src/lyricwiki-qt/lyricwiki.cc:433
+msgid "Lyrics could not be found."
+msgstr "Lirieke kon nie gevind word nie."
+
+#: src/lyricwiki-qt/lyricwiki.cc:501
+msgid "Missing title and/or artist."
+msgstr "Titel en/of kunstenaar ontbreek."
+
+#: src/lyricwiki-qt/lyricwiki.cc:553
+msgid "Save Locally"
+msgstr "Stoor Plaaslik"
+
+#: src/lyricwiki-qt/lyricwiki.cc:561
+msgid "Refresh"
+msgstr "Verfris"
+
+#: src/m3u/m3u.cc:32
+msgid "M3U Playlists"
+msgstr "M3U Snitlyste"
+
+#: src/metronom/metronom.cc:44
+msgid "Tact Generator"
+msgstr "Tact Generator"
+
+#: src/metronom/metronom.cc:145
+#, c-format
+msgid "Tact generator: %d bpm"
+msgstr "Tact generator: %d spm"
+
+#: src/metronom/metronom.cc:147
+#, c-format
+msgid "Tact generator: %d bpm %d/%d"
+msgstr "Tact generator: %d spm %d/%d"
+
+#: src/metronom/metronom.cc:235
+msgid ""
+"A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"To use it, add a URL: tact://beats*num/den\n"
+"e.g. tact://77 to play 77 beats per minute\n"
+"or tact://60*3/4 to play 60 bpm in 3/4 tacts"
+msgstr ""
+"A Tact Generator deur Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"Om dit te gebruik, voeg 'n URL by: tact://beats*num/den\n"
+"bv. tact://77 om 77 slae per minuut te speel\n"
+"of tact://60*3/4 om 60 spm in 3/4 takte te speel"
+
+#: src/mixer/mixer.cc:43
+msgid "Channel Mixer"
+msgstr "Kanaal Menger"
+
+#: src/mixer/mixer.cc:255
+msgid ""
+"Channel Mixer Plugin for Audacious\n"
+"Copyright 2011-2012 John Lindgren and Michał Lipski"
+msgstr ""
+"Kanaal Menger Inprop vir Audacious\n"
+"Kopiereg 2011-2012 John Lindgren en Michał Lipski"
+
+#: src/mixer/mixer.cc:259
+msgid "<b>Channel Mixer</b>"
+msgstr "<b>Kanaal Menger</b>"
+
+#: src/mixer/mixer.cc:260
+msgid "Output channels:"
+msgstr "Uitset kanale:"
+
+#: src/mms/mms.cc:35
+msgid "MMS Plugin"
+msgstr "MMS Inprop"
+
+#: src/mms/mms.cc:82
+msgid "Error connecting to MMS server"
+msgstr "Kon nie aan MMS bediener koppel nie"
+
+#: src/modplug/modplugbmp.h:57
+msgid "ModPlug (Module Player)"
+msgstr "ModPlug (Module Speler)"
+
+#: src/modplug/plugin_main.cc:55
+msgid "<b>Channels</b>"
+msgstr "<b>Kanale</b>"
+
+#: src/modplug/plugin_main.cc:59
+msgid "Nearest (fastest)"
+msgstr "Naaste (vinnigste)"
+
+#: src/modplug/plugin_main.cc:60
+msgid "Linear (fast)"
+msgstr "Lineêr (vinnig)"
+
+#: src/modplug/plugin_main.cc:61
+msgid "Spline (good)"
+msgstr "Spline (goed)"
+
+#: src/modplug/plugin_main.cc:62
+msgid "Polyphase (best)"
+msgstr "Polifase (beste)"
+
+#: src/modplug/plugin_main.cc:63
+msgid "<b>Sample rate</b>"
+msgstr "<b>Monstertempo</b>"
+
+#: src/modplug/plugin_main.cc:64
+msgid "22 kHz"
+msgstr "22 kHz"
+
+#: src/modplug/plugin_main.cc:65
+msgid "44 kHz"
+msgstr "44 kHz"
+
+#: src/modplug/plugin_main.cc:66
+msgid "48 kHz"
+msgstr "48 kHz"
+
+#: src/modplug/plugin_main.cc:67
+msgid "96 kHz"
+msgstr "96 kHz"
+
+#: src/modplug/plugin_main.cc:71 src/modplug/plugin_main.cc:76
+#: src/modplug/plugin_main.cc:81
+msgid "Level:"
+msgstr "Vlak:"
+
+#: src/modplug/plugin_main.cc:77
+msgid "Cutoff:"
+msgstr "Afsnypunt:"
+
+#: src/modplug/plugin_main.cc:90
+msgid "<b>Reverb</b>"
+msgstr "<b>Weerklank</b>"
+
+#: src/modplug/plugin_main.cc:93
+msgid "<b>Bass Boost</b>"
+msgstr "<b>Basversterking</b>"
+
+#: src/modplug/plugin_main.cc:96
+msgid "<b>Surround</b>"
+msgstr "<b>Omring</b>"
+
+#: src/modplug/plugin_main.cc:99
+msgid "<b>Preamp</b>"
+msgstr "<b>Voorversterk</b>"
+
+#: src/modplug/plugin_main.cc:106
+msgid "Oversample"
+msgstr "Oormonster"
+
+#: src/modplug/plugin_main.cc:107
+msgid "Noise reduction"
+msgstr "Geraas vermindering"
+
+#: src/modplug/plugin_main.cc:108
+msgid "Play Amiga MODs"
+msgstr "Speel Amiga MODs"
+
+#: src/modplug/plugin_main.cc:109
+msgid "<b>Repeat</b>"
+msgstr "<b>Herhaal</b>"
+
+#: src/modplug/plugin_main.cc:110
+msgid "Repeat count:"
+msgstr "Herhaal telling:"
+
+#: src/modplug/plugin_main.cc:111
+msgid "To repeat forever, set the repeat count to -1."
+msgstr "Om vir ewig te herhaal, stel die herhalingtelling op -1."
+
+#: src/modplug/plugin_main.cc:124 src/sid/xs_config.cc:106
+msgid "These settings will take effect when Audacious is restarted."
+msgstr ""
+"Hierdie instellings sal in werking tree wanneer Audacious herbegin word."
+
+#: src/moonstone/main_window.cc:72 src/moonstone/main_window.cc:73
+#: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
+#: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
+msgid "Stop After This Song"
+msgstr "Stop na hierdie lied"
+
+#: src/moonstone/moonstone.cc:39
+msgid "Moonstone"
+msgstr "Maansteen"
+
+#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:251
+msgid "Reset to Defaults"
+msgstr "Stel terug na verstek waardes"
+
+#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:225
+msgid "Now Playing"
+msgstr "Speel nou"
+
+#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_model.cc:33
+msgid "Entry Number"
+msgstr "Inskrywingsnommer"
+
+#: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:34
+msgid "Album Artist"
+msgstr "Album Kunstenaar"
+
+#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
+msgid "Queue Position"
+msgstr "Tou Posisie"
+
+#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
+msgid "File Path"
+msgstr "Lêer Pad"
+
+#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:35
+msgid "File Name"
+msgstr "Lêer Naam"
+
+#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:36
+msgid "Custom Title"
+msgstr "Pas gemaakte titel"
+
+#: src/moonstone/playlist_selection.cc:64
+#: src/playlist-manager/playlist-manager.cc:200
+#: src/playlist-manager-qt/playlist-manager-qt.cc:188
+msgid "Entries"
+msgstr "Inskrywings"
+
+#: src/mpg123/mpg123.cc:54
+msgid "MPG123 Plugin"
+msgstr "MPG123 Inprop"
+
+#: src/mpg123/mpg123.cc:81
+msgid "<b>Advanced</b>"
+msgstr "<b>Gevorderd</b>"
+
+#: src/mpg123/mpg123.cc:82
+msgid "Use accurate length calculation (slow)"
+msgstr "Gebruik akkurate lengte berekeninge (stadig)"
+
+#: src/mpg123/mpg123.cc:256
+msgid "Surround"
+msgstr "Omsingel"
+
+#: src/mpris2/plugin.cc:38
+msgid "MPRIS 2 Server"
+msgstr "MPRIS 2 Bediener"
+
+#: src/neon/neon.cc:97
+msgid "Neon HTTP/HTTPS Plugin"
+msgstr "Neon HTTP/HTTPS Inprop"
+
+#: src/neon/neon.cc:526
+msgid "Error parsing redirect"
+msgstr "Kon nie herleiding ontleed nie"
+
+#: src/neon/neon.cc:540
+msgid "Unknown HTTP error"
+msgstr "Onbekende HTTP fout"
+
+#: src/neon/neon.cc:590
+msgid "Error parsing URL"
+msgstr "Kon nie URL ontleed nie"
+
+#: src/neon/neon.cc:660
+msgid "Too many redirects"
+msgstr "Te veel herleidings"
+
+#: src/notify/event.cc:97
+msgid "Stopped"
+msgstr "Gestop"
+
+#: src/notify/event.cc:97
+msgid "Audacious is not playing."
+msgstr "Audacious is nie besig om te speel nie."
+
+#: src/notify/notify.cc:39
+msgid "Desktop Notifications"
+msgstr "Werkskermkennisgewings"
+
+#: src/notify/notify.cc:57
+msgid ""
+"Desktop Notifications Plugin for Audacious\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"This plugin is free software: you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Werkskermkennisgewings-inprop vir Audacious\n"
+"Kopiereg (C) 2010 Maximilian Bogner\n"
+"Kopiereg (C) 2011-2013 John Lindgren en Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"Hierdie inprop is gratis sagteware: jy kan dit herverdeel en/of wysig onder "
+"die bepalings van die GNU General Public License soos gepubliseer deur die "
+"Free Software Foundation, óf weergawe 3 van die lisensie, óf (na jou keuse) "
+"enige latere weergawe.\n"
+"\n"
+"Hierdie inprop word versprei in die hoop dat dit nuttig sal wees, maar "
+"SONDER ENIGE WAARBORG; selfs sonder die stilswyende waarborg van "
+"VERHANDELBAARHEID of GESKIKTHEID VIR 'N SPESIFIEKE DOEL. Sien die GNU "
+"General Public License vir meer besonderhede.\n"
+"\n"
+"Jy moes 'n afskrif van die GNU General Public License saam met hierdie "
+"program ontvang het. Indien nie, sien <http://www.gnu.org/licenses/>."
+
+#: src/notify/notify.cc:104
+msgid "Show playback controls"
+msgstr "Wys terugspeel kontroles"
+
+#: src/notify/notify.cc:106
+msgid "Always show notification"
+msgstr "Wys altyd 'n kennisgewing"
+
+#: src/notify/notify.cc:108
+msgid "Include album name in notification"
+msgstr "Sluit album naam in kennisgewing in"
+
+#: src/notify/notify.cc:110
+msgid "Custom notification duration:"
+msgstr "Pas gemaakte kennisgewingsduur:"
+
+#: src/notify/osd.cc:74
+msgid "Show"
+msgstr "Wys"
+
+#: src/openmpt/mpt.cc:50
+msgid "OpenMPT (Module Player)"
+msgstr "OpenMPT (Module Speler)"
+
+#: src/openmpt/mpt.cc:133
+msgid ""
+"Module player based on libopenmpt\n"
+"\n"
+"Written by: Chris Spiegel <cspiegel@gmail.com>"
+msgstr ""
+"Module speler gebaseer op libopenmpt\n"
+"\n"
+"Geskryf deur: Chris Spiegel <cspiegel@gmail.com>"
+
+#: src/openmpt/mpt.cc:152
+msgid "Stereo separation:"
+msgstr "Stereo skeiding:"
+
+#: src/openmpt/mpt.cc:154
+msgid "%"
+msgstr "%"
+
+#: src/openmpt/mpt.cc:158
+msgid "Interpolation:"
+msgstr "Interpolasie:"
+
+#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189 src/xsf/plugin.cc:437
+msgid "Linear"
+msgstr "Lineêr"
+
+#: src/openmpt/mptwrap.h:52
+msgid "Cubic"
+msgstr "Kubies"
+
+#: src/openmpt/mptwrap.h:53
+msgid "Windowed sinc"
+msgstr "Venster sink"
+
+#: src/oss4/oss.h:75
+msgid "OSS4 Output"
+msgstr "OSS4 Uitset"
+
+#: src/oss4/oss.h:77
+msgid "OSS3 Output"
+msgstr "OSS3 Uitset"
+
+#: src/oss4/plugin.cc:35
+msgid "Default device"
+msgstr "Verstek toestel"
+
+#: src/oss4/plugin.cc:78
+msgid "Audio device:"
+msgstr "Oudio toestel:"
+
+#: src/oss4/plugin.cc:81
+msgid "Use alternate device:"
+msgstr "Gebruik alternatiewe toestel:"
+
+#: src/oss4/plugin.cc:85
+msgid "Save volume between sessions."
+msgstr "Berg volume tussen sessies."
+
+#: src/oss4/plugin.cc:87
+msgid "Enable format conversions made by the OSS software."
+msgstr "Aktiveer formaatomskakelings wat deur die OSS-sagteware gemaak word."
+
+#: src/oss4/plugin.cc:89
+msgid "Enable exclusive mode to prevent virtual mixing."
+msgstr "Aktiveer eksklusiewe modus om virtuele menging te voorkom."
+
+#: src/oss4/plugin.cc:101
+msgid ""
+"OSS4 Output Plugin for Audacious\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"I would like to thank people on #audacious, especially Tony Vroon and John "
+"Lindgren and of course the authors of the previous OSS plugin."
+msgstr ""
+"OSS4-uitvoerinprop vir Audacious\n"
+"Kopiereg 2010-2012 Michał Lipski\n"
+"\n"
+"Ek wil graag mense op #audacious bedank, veral Tony Vroon en John Lindgren "
+"en natuurlik die skrywers van die vorige OSS-inprop."
+
+#: src/playlist-manager/playlist-manager.cc:37
+#: src/playlist-manager-qt/playlist-manager-qt.cc:40
+msgid "Playlist Manager"
+msgstr "Snitlys Bestuurder"
+
+#: src/playlist-manager/playlist-manager.cc:220
+#: src/playlist-manager-qt/playlist-manager-qt.cc:354
+msgid "_Remove"
+msgstr "_Verwyder"
+
+#: src/playlist-manager/playlist-manager.cc:221
+#: src/playlist-manager-qt/playlist-manager-qt.cc:349
+msgid "Ren_ame"
+msgstr "Hernoem"
+
+#: src/pls/pls.cc:35
+msgid "PLS Playlists"
+msgstr "PLS Snilyste"
+
+#: src/psf/plugin.cc:53
+msgid "OpenPSF PSF1/PSF2 Decoder"
+msgstr "OpenPSF PSF1/PSF2 Dekodeerder"
+
+#: src/psf/plugin.cc:270
+msgid "<b>OpenPSF Configuration</b>"
+msgstr "<b>OpenPSF Konfigurasie</b>"
+
+#: src/psf/plugin.cc:271 src/xsf/plugin.cc:444
+msgid "Ignore length from file"
+msgstr "Ignoreer lengte van lêer"
+
+#: src/pulse/pulse_audio.cc:42
+msgid "PulseAudio Output"
+msgstr "PulseAudio Uitset"
+
+#: src/pulse/pulse_audio.cc:72
+msgid "Context name:"
+msgstr "Konteksnaam:"
+
+#: src/pulse/pulse_audio.cc:74
+msgid "Stream name:"
+msgstr "Stroom naam:"
+
+#: src/pulse/pulse_audio.cc:575
+msgid ""
+"Audacious PulseAudio Output Plugin\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Audacious PulseAudio Uitset-inprop\n"
+"\n"
+"Hierdie program is gratis sagteware; jy kan dit herverdeel en/of wysig onder "
+"die bepalings van die GNU General Public License soos gepubliseer deur die "
+"Free Software Foundation; óf weergawe 2 van die lisensie, óf (na jou keuse) "
+"enige latere weergawe.\n"
+"\n"
+"Hierdie program word versprei in die hoop dat dit nuttig sal wees, maar "
+"SONDER ENIGE WAARBORG; selfs sonder die stilswyende waarborg van "
+"VERHANDELBAARHEID of GESKIKTHEID VIR 'N SPESIFIEKE DOEL. Sien die GNU "
+"General Public License vir meer besonderhede.\n"
+"\n"
+"Jy moes 'n afskrif van die GNU General Public License saam met hierdie "
+"program ontvang het; indien nie, skryf aan die Free Software Foundation, "
+"Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, VSA."
+
+#: src/qtaudio/qtaudio.cc:44
+msgid "QtMultimedia Output"
+msgstr "QtMultimedia Uitset"
+
+#: src/qtaudio/qtaudio.cc:72
+msgid ""
+"QtMultimedia Audio Output Plugin for Audacious\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"Based on SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+msgstr ""
+"QtMultimedia oudio-uitvoer-inprop vir Audacious\n"
+"Kopiereg 2014 William Pitcock\n"
+"\n"
+"Gebaseer op SDL Output Plugin vir Audacious\n"
+"Kopiereg 2010 John Lindgren"
+
+#: src/qtglspectrum/gl-spectrum.cc:41
+msgid ""
+"OpenGL Spectrum Analyzer for Audacious\n"
+"Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
+"Copyright 2014, 2020 Ariadne Conill\n"
+"\n"
+"Based on the XMMS plugin:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
+"\n"
+"License: GPLv2+"
+msgstr ""
+"OpenGL Spectrum Analyzer vir Audacious\n"
+"Kopiereg 2013 Christophe Budé, John Lindgren en Carlo Bramini\n"
+"Kopiereg 2014, 2020 Ariadne Conill\n"
+"\n"
+"Gebaseer op die XMMS-inprop:\n"
+"Kopiereg 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson en "
+"4Front Technologies\n"
+"\n"
+"Lisensie: GPLv2+"
+
+#: src/qthotkey/gui.cc:165
+msgid "Press a key combination inside a text field."
+msgstr "Druk 'n sleutelkombinasie binne 'n teksveld."
+
+#: src/qthotkey/plugin.cc:103
+msgid ""
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
+"\n"
+"Copyright (C) 2020 i.Dark_Templar <darktemplar@dark-templar-archives.net>\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributors include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
+msgstr ""
+"Global Hotkey Plugin\n"
+"Beheer die speler met globale sleutelkombinasies of multimediasleutels.\n"
+"\n"
+"Kopiereg (C) 2020 i.Dark_Templar <darktemplar@dark-templar-archives.net>\n"
+"Kopiereg (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Bydraers sluit in:\n"
+"Kopiereg (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Kopiereg (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+"Bryn Davies <curious@ihug.com.au>,\n"
+"Jonathan A. Davis <davis@jdhouse.org>,\n"
+"Jeremy Tan <nsx@nsx.homeip.net>"
+
+#: src/qtui/menus.cc:109
+msgid "_Open Folder ..."
+msgstr "Maak vouer oop..."
+
+#: src/qtui/menus.cc:115
+msgid "_Add Folder ..."
+msgstr "Voeg vouer by..."
+
+#: src/qtui/menus.cc:128
+msgid "_Log Inspector ..."
+msgstr "_Log inspekteur..."
+
+#: src/qtui/menus.cc:218
+msgid "_Find ..."
+msgstr "Vind..."
+
+#: src/qtui/menus.cc:254 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
+msgid "Audio Settings ..."
+msgstr "Oudio Instellings..."
+
+#: src/qtui/playlist_model.cc:186
+msgid "Q#"
+msgstr "T#"
+
+#: src/qtui/playlist_model.cc:188
+msgid "T#"
+msgstr "S#"
+
+#: src/qtui/qtui.cc:40
+msgid "Qt Interface"
+msgstr "Qt-Kopperlvlak"
+
+#: src/qtui/search_bar.cc:46
+msgid "Search playlist"
+msgstr "Deursoek snitlys"
+
+#: src/qtui/settings.cc:58
+msgid "Always"
+msgstr "Altyd"
+
+#: src/qtui/settings.cc:59
+msgid "Auto-hide"
+msgstr "Versteek outomaties"
+
+#: src/qtui/settings.cc:60
+msgid "Never"
+msgstr "Nooit"
+
+#: src/qtui/settings.cc:64
+msgid "Show playlist tabs:"
+msgstr "Wys snitlys oortjies:"
+
+#: src/qtui/settings.cc:78
+msgid "Use bold font for column headers"
+msgstr "Gebruik vetdruk vir kolomopskrifte"
+
+#: src/resample/resample.cc:43
+msgid "Sample Rate Converter"
+msgstr "Monstertempo Omskakelaar"
+
+#: src/resample/resample.cc:183
+msgid ""
+"Sample Rate Converter Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+"Monstertempo Omskakelaar Inprop vir Audacious\n"
+"Kopiereg 2010-2012 John Lindgren"
+
+#: src/resample/resample.cc:187
+msgid "Skip/repeat samples"
+msgstr "Slaan oor/herhaal monsters"
+
+#: src/resample/resample.cc:188
+msgid "Linear interpolation"
+msgstr "Lineêre interpolasie"
+
+#: src/resample/resample.cc:189
+msgid "Fast sinc interpolation"
+msgstr "Vinnige sinc interpolasie"
+
+#: src/resample/resample.cc:190
+msgid "Medium sinc interpolation"
+msgstr "Medium sinc interpolasie"
+
+#: src/resample/resample.cc:191
+msgid "Best sinc interpolation"
+msgstr "Beste sinc interpolasie"
+
+#: src/resample/resample.cc:195
+msgid "<b>Conversion</b>"
+msgstr "<b>Omskakeling</b>"
+
+#: src/resample/resample.cc:196
+msgid "Method:"
+msgstr "Metode:"
+
+#: src/resample/resample.cc:199 src/soxr/sox-resampler.cc:203
+msgid "Rate:"
+msgstr "Tempo:"
+
+#: src/resample/resample.cc:202
+msgid "<b>Rate Mappings</b>"
+msgstr "<b>Tempo Karterings</b>"
+
+#: src/resample/resample.cc:203
+msgid "Use rate mappings"
+msgstr "Gebruik tempo karterings"
+
+#: src/resample/resample.cc:205
+msgid "8 kHz:"
+msgstr "8 kHz:"
+
+#: src/resample/resample.cc:209
+msgid "16 kHz:"
+msgstr "16 kHz:"
+
+#: src/resample/resample.cc:213
+msgid "22.05 kHz:"
+msgstr "22.05 kHz:"
+
+#: src/resample/resample.cc:217
+msgid "32.0 kHz:"
+msgstr "32.0 kHz:"
+
+#: src/resample/resample.cc:221
+msgid "44.1 kHz:"
+msgstr "44.1 kHz:"
+
+#: src/resample/resample.cc:225
+msgid "48 kHz:"
+msgstr "48 kHz:"
+
+#: src/resample/resample.cc:229
+msgid "88.2 kHz:"
+msgstr "88.2 kHz:"
+
+#: src/resample/resample.cc:233
+msgid "96 kHz:"
+msgstr "96 kHz:"
+
+#: src/resample/resample.cc:237
+msgid "176.4 kHz:"
+msgstr "176.4 kHz:"
+
+#: src/resample/resample.cc:241
+msgid "192 kHz:"
+msgstr "192 kHz:"
+
+#: src/scrobbler2/config_window.cc:19
+msgid "Checking Last.fm access ..."
+msgstr "Gaan Last.fm-toegang na ..."
+
+#: src/scrobbler2/config_window.cc:27
+msgid ""
+"Your scrobbles are being saved on your computer temporarily.  They will be "
+"submitted as soon as Audacious is allowed access."
+msgstr ""
+"Jou scrobbles word tydelik op jou rekenaar gestoor. Dit sal ingedien word "
+"sodra Audacious toegang kry."
+
+#: src/scrobbler2/config_window.cc:33
+#, c-format
+msgid "Permission granted.  Scrobbling for user %s."
+msgstr "Toestemming verleen. Scrobbling vir gebruiker %s."
+
+#: src/scrobbler2/config_window.cc:37
+msgid ""
+"Permission denied.  Open the following URL in a browser, allow Audacious "
+"access to your account, and then click 'Check Permission' again:"
+msgstr ""
+"Toestemming geweier. Maak die volgende URL in 'n blaaier oop, laat Audacious "
+"toegang tot jou rekening toe, en klik dan weer 'Kontroleer toestemming':"
+
+#: src/scrobbler2/config_window.cc:47
+msgid "There was a problem contacting Last.fm."
+msgstr "Daar was 'n probleem om Last.fm te kontak."
+
+#: src/scrobbler2/config_window.cc:86
+msgid "Check Permission"
+msgstr "Gaan toestemming na"
+
+#: src/scrobbler2/config_window.cc:87
+msgid "Revoke Permission"
+msgstr "Herroep toestemming"
+
+#: src/scrobbler2/config_window.cc:91
+msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
+msgstr ""
+"Jy moet Audacious toelaat om snitte na jou Last.fm-rekening te scrobble."
+
+#: src/scrobbler2/scrobbler.cc:29
+msgid "Scrobbler 2.0"
+msgstr "Scrobbler 2.0"
+
+#: src/scrobbler2/scrobbler.cc:226
+msgid ""
+"The Scrobbler plugin could not be started.\n"
+"There might be a problem with your installation."
+msgstr ""
+"Die Scrobbler-inprop kon nie begin word nie.\n"
+"Daar is dalk 'n probleem met jou installasie."
+
+#: src/scrobbler2/scrobbler.cc:291
+msgid ""
+"Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
+"\n"
+"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"Thanks to John Lindgren for giving me a hand at the beginning of this "
+"project.\n"
+"\n"
+msgstr ""
+"Audacious Scrobbler Plugin 2.0 deur Pitxyoki,\n"
+"\n"
+"Kopiereg © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"Dankie aan John Lindgren wat my 'n hand gegee het aan die begin van hierdie "
+"projek.\n"
+"\n"
+
+#: src/scrobbler2/scrobbler_communication.cc:663
+msgid ""
+"Audacious is now using an improved version of the Last.fm Scrobbler.\n"
+"Please check the Preferences for the Scrobbler plugin."
+msgstr ""
+"Audacious gebruik nou 'n verbeterde weergawe van die Last.fm Scrobbler.\n"
+"Gaan asseblief die Voorkeure vir die Scrobbler-inprop na."
+
+#: src/sdlout/sdlout.cc:43
+msgid "SDL Output"
+msgstr "SDL-uitset"
+
+#: src/sdlout/sdlout.cc:72
+msgid ""
+"SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+msgstr ""
+"SDL-uitvoerinprop vir Audacious\n"
+"Kopiereg 2010 John Lindgren"
+
+#: src/search-tool/library.cc:35 src/search-tool/library.cc:46
+#: src/search-tool-qt/library.cc:35 src/search-tool-qt/library.cc:46
+msgid "Library"
+msgstr "Biblioteek"
+
+#: src/search-tool-qt/search-model.cc:49 src/search-tool/search-tool.cc:291
+#, c-format
+msgid "%d song"
+msgid_plural "%d songs"
+msgstr[0] "%dlied"
+msgstr[1] "%dliedjies"
+
+#: src/search-tool-qt/search-model.cc:58 src/search-tool/search-tool.cc:298
+msgid "of this genre"
+msgstr "van hierdie genre"
+
+#: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
+msgid "on"
+msgstr "op"
+
+#: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
+msgid "by"
+msgstr "deur"
+
+#: src/search-tool-qt/search-tool-qt.cc:165 src/search-tool/search-tool.cc:73
+msgid "Number of results to show:"
+msgstr "Aantal resultate om te wys:"
+
+#: src/search-tool-qt/search-tool-qt.cc:168 src/search-tool/search-tool.cc:76
+msgid "Rescan library at startup"
+msgstr "Skandeer biblioteek weer gedurende begin"
+
+#: src/search-tool-qt/search-tool-qt.cc:170
+msgid "Monitor library for changes"
+msgstr "Monitor biblioteek vir veranderinge"
+
+#: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:446
+msgid ""
+"To import your music library into Audacious, choose a folder and then click "
+"the \"refresh\" icon."
+msgstr ""
+"Om jou musiekbiblioteek in Audacious in te voer, kies 'n vouer en klik dan "
+"op die \"herlaai\"-ikoon."
+
+#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:455
+msgid "Please wait ..."
+msgstr "Wag asseblief ..."
+
+#: src/search-tool-qt/search-tool-qt.cc:197 src/search-tool/search-tool.cc:483
+msgid "Choose Folder"
+msgstr "Kies Omslag"
+
+#: src/search-tool-qt/search-tool-qt.cc:201
+msgid "Search library"
+msgstr "Deursoek biblioteek"
+
+#: src/search-tool-qt/search-tool-qt.cc:327 src/search-tool/search-tool.cc:155
+#, c-format
+msgid "%d of %d result shown"
+msgid_plural "%d of %d results shown"
+msgstr[0] "%d of %d resultaat word gewys"
+msgstr[1] "%d van %d resultate word gewys"
+
+#: src/search-tool-qt/search-tool-qt.cc:331 src/search-tool/search-tool.cc:159
+#, c-format
+msgid "%d result"
+msgid_plural "%d results"
+msgstr[0] "%d resultaat"
+msgstr[1] "%d resultate"
+
+#: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:345
+msgid "_Create Playlist"
+msgstr "Maak Snitlys"
+
+#: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:347
+msgid "_Add to Playlist"
+msgstr "Voeg Snitlys by"
+
+#: src/sid/xmms-sid.cc:43
+msgid "SID Player"
+msgstr "SID Speler"
+
+#: src/sid/xs_config.cc:62
+msgid "Channels:"
+msgstr "Kanale:"
+
+#: src/sid/xs_config.cc:68
+msgid "<b>Emulation</b>"
+msgstr "<b>Emulasie</b>"
+
+#: src/sid/xs_config.cc:69
+msgid "Emulate MOS 8580 (default: MOS 6581)"
+msgstr "Emuleer MOS 8580 (verstek: MOS 6581)"
+
+#: src/sid/xs_config.cc:71
+msgid "Do not automatically select chip model"
+msgstr "Moenie outomaties skyfiemodel kies nie"
+
+#: src/sid/xs_config.cc:73
+msgid "Emulate filter"
+msgstr "Emulasie filtreerder"
+
+#: src/sid/xs_config.cc:75
+msgid "Clock speed:"
+msgstr "Klokspoed:"
+
+#: src/sid/xs_config.cc:78
+msgid "Do not automatically select clock speed"
+msgstr "Moenie outomaties klokspoed kies nie"
+
+#: src/sid/xs_config.cc:80
+msgid "<b>Playback time</b>"
+msgstr "<b>Terugspeel tyd</b>"
+
+#: src/sid/xs_config.cc:81
+msgid "Set maximum playback time:"
+msgstr "Stel maksimum terugspeel tyd:"
+
+#: src/sid/xs_config.cc:87
+msgid "Use only when song length is unknown"
+msgstr "Gebruik slegs wanneer die lengte van die liedjie onbekend is"
+
+#: src/sid/xs_config.cc:90
+msgid "Set minimum playback time:"
+msgstr "Stel minimum speeltyd:"
+
+#: src/sid/xs_config.cc:96
+msgid "<b>Subtunes</b>"
+msgstr "<b>Subtunes</b>"
+
+#: src/sid/xs_config.cc:97
+msgid "Enable subtunes"
+msgstr "Aktiveer subtunes"
+
+#: src/sid/xs_config.cc:99
+msgid "Ignore subtunes shorter than:"
+msgstr "Ignoreer subtunes korter as:"
+
+#: src/sid/xs_config.cc:105
+msgid "<b>Note</b>"
+msgstr "<b>Nota</b>"
+
+#: src/silence-removal/silence-removal.cc:39
+msgid "Silence Removal"
+msgstr "Stilte verwydering"
+
+#: src/silence-removal/silence-removal.cc:58
+msgid ""
+"Silence Removal Plugin for Audacious\n"
+"Copyright 2014 John Lindgren"
+msgstr ""
+"Stilte Verwydering Inprop vir Audacious\n"
+"Kopiereg 2014 John Lindgren"
+
+#: src/silence-removal/silence-removal.cc:67
+msgid "<b>Silence Removal</b>"
+msgstr "<b>Stilte Verwydering</b>"
+
+#: src/silence-removal/silence-removal.cc:68
+msgid "Threshold:"
+msgstr "Drempel:"
+
+#: src/silence-removal/silence-removal.cc:70
+msgid "dB"
+msgstr "dB"
+
+#: src/skins/actions.cc:45 src/skins-qt/actions.cc:43
+msgid "Repeat points cleared."
+msgstr "Herhaal punte uitgevee."
+
+#: src/skins/actions.cc:60 src/skins-qt/actions.cc:58
+msgid "Repeat point A set."
+msgstr "Herhaal punt A gestel."
+
+#: src/skins/actions.cc:65 src/skins-qt/actions.cc:63
+msgid "Repeat point B set."
+msgstr "Herhaal punt B gestel."
+
+#: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:221
+msgid "Preamp"
+msgstr "Voorversterker"
+
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:225
+msgid "31 Hz"
+msgstr "31 Hz"
+
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+msgid "63 Hz"
+msgstr "63 Hz"
+
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+msgid "125 Hz"
+msgstr "125 Hz"
+
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+msgid "250 Hz"
+msgstr "250 Hz"
+
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+msgid "500 Hz"
+msgstr "500 Hz"
+
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+msgid "1 kHz"
+msgstr "1 kHz"
+
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+msgid "2 kHz"
+msgstr "2 kHz"
+
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+msgid "4 kHz"
+msgstr "4 kHz"
+
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+msgid "8 kHz"
+msgstr "8 kHz"
+
+#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+msgid "16 kHz"
+msgstr "16 kHz"
+
+#: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:268
+msgid "Audacious Equalizer"
+msgstr "Audacious-gelykmaker"
+
+#: src/skins/main.cc:452 src/skins-qt/main.cc:436
+msgid "Recording on"
+msgstr "Opname aan"
+
+#: src/skins/main.cc:454 src/skins-qt/main.cc:438
+msgid "Recording off"
+msgstr "Opname af"
+
+#: src/skins/main.cc:749 src/skins-qt/main.cc:690
+#, c-format
+msgid "Seek to %d:%-2.2d / %d:%-2.2d"
+msgstr "Soek tot %d:%-2.2d / %d:%-2.2d"
+
+#: src/skins/main.cc:766 src/skins-qt/main.cc:707
+#, c-format
+msgid "Volume: %d%%"
+msgstr "Volume: %d%%"
+
+#: src/skins/main.cc:779 src/skins-qt/main.cc:720
+#, c-format
+msgid "Balance: %d%% left"
+msgstr "Balans: %d%% links"
+
+#: src/skins/main.cc:781 src/skins-qt/main.cc:722
+msgid "Balance: center"
+msgstr "Balans: middel"
+
+#: src/skins/main.cc:783 src/skins-qt/main.cc:724
+#, c-format
+msgid "Balance: %d%% right"
+msgstr "Balans: %d%% regs"
+
+#: src/skins/main.cc:875 src/skins-qt/main.cc:816
+msgid "Options Menu"
+msgstr "Opsieskieslys"
+
+#: src/skins/main.cc:879 src/skins-qt/main.cc:820
+msgid "Disable 'Always On Top'"
+msgstr "Deaktiveer 'Altyd bo-op'"
+
+#: src/skins/main.cc:881 src/skins-qt/main.cc:822
+msgid "Enable 'Always On Top'"
+msgstr "Aktiveer 'Altyd bo-op'"
+
+#: src/skins/main.cc:884 src/skins-qt/main.cc:825
+msgid "File Info Box"
+msgstr "Lêer inligtingskassie"
+
+#: src/skins/main.cc:887 src/skins/menus.cc:149 src/skins-qt/main.cc:828
+#: src/skins-qt/menus.cc:142
+msgid "Double Size"
+msgstr "Dubbel grootte"
+
+#: src/skins/main.cc:890 src/skins-qt/main.cc:831
+msgid "Visualizations"
+msgstr "Visualisasies"
+
+#: src/skins/menus.cc:74 src/skins-qt/menus.cc:64
+msgid "Volume Up"
+msgstr "Volume Op"
+
+#: src/skins/menus.cc:75 src/skins-qt/menus.cc:65
+msgid "Volume Down"
+msgstr "Volume Af"
+
+#: src/skins/menus.cc:77 src/skins-qt/menus.cc:67
+msgid "Effects ..."
+msgstr "Effekte ..."
+
+#: src/skins/menus.cc:84 src/skins-qt/menus.cc:74
+msgid "Open Files ..."
+msgstr "Maak lêers oop ..."
+
+#: src/skins/menus.cc:85 src/skins-qt/menus.cc:76
+msgid "Open URL ..."
+msgstr "Maak URL oop ..."
+
+#: src/skins/menus.cc:88 src/skins-qt/menus.cc:79
+msgid "Playback"
+msgstr "Terugspeel"
+
+#: src/skins/menus.cc:89 src/skins-qt/menus.cc:80
+msgid "Playlist"
+msgstr "Snitlys"
+
+#: src/skins/menus.cc:90 src/skins-qt/menus.cc:81
+msgid "Output"
+msgstr "Uitset"
+
+#: src/skins/menus.cc:91 src/skins-qt/menus.cc:82
+msgid "View"
+msgstr "Aansig"
+
+#: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
+#: src/skins/menus.cc:243 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
+#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:239
+msgid "Services"
+msgstr "Dienste"
+
+#: src/skins/menus.cc:95 src/skins-qt/menus.cc:86
+msgid "About ..."
+msgstr "Aangaande ..."
+
+#: src/skins/menus.cc:96 src/skins-qt/menus.cc:87
+msgid "Settings ..."
+msgstr "Stellings ..."
+
+#: src/skins/menus.cc:97 src/skins-qt/menus.cc:88
+msgid "Quit"
+msgstr "Verlaat"
+
+#: src/skins/menus.cc:101 src/skins/menus.cc:233 src/skins-qt/menus.cc:92
+#: src/skins-qt/menus.cc:229
+msgid "Song Info ..."
+msgstr "Lied Info ..."
+
+#: src/skins/menus.cc:105 src/skins-qt/menus.cc:96
+msgid "Shuffle by Album"
+msgstr "Skommel volgens Album"
+
+#: src/skins/menus.cc:106 src/skins-qt/menus.cc:97
+msgid "No Playlist Advance"
+msgstr "Geen Snitlys Bevordering nie"
+
+#: src/skins/menus.cc:117 src/skins-qt/menus.cc:108
+msgid "Set A-B Repeat"
+msgstr "Stel A-B Herhaal"
+
+#: src/skins/menus.cc:118 src/skins-qt/menus.cc:109
+msgid "Clear A-B Repeat"
+msgstr "Verwyder A-B Herhaal"
+
+#: src/skins/menus.cc:120 src/skins-qt/menus.cc:111
+msgid "Jump to Song ..."
+msgstr "Spring tot Lied ..."
+
+#: src/skins/menus.cc:121 src/skins-qt/menus.cc:113
+msgid "Jump to Time ..."
+msgstr "Spring tot Tyd ..."
+
+#: src/skins/menus.cc:125 src/skins-qt/menus.cc:118
+msgid "Play/Resume"
+msgstr "Speel/Hervat"
+
+#: src/skins/menus.cc:127 src/skins-qt/menus.cc:120
+msgid "New Playlist"
+msgstr "Nuwe Snitlys"
+
+#: src/skins/menus.cc:128 src/skins-qt/menus.cc:121
+msgid "Rename Playlist ..."
+msgstr "Hernoem Snitlys ..."
+
+#: src/skins/menus.cc:129 src/skins-qt/menus.cc:122
+msgid "Remove Playlist"
+msgstr "Verwyder Snitlys"
+
+#: src/skins/menus.cc:131 src/skins-qt/menus.cc:124
+msgid "Previous Playlist"
+msgstr "Vorige Snitlys"
+
+#: src/skins/menus.cc:132 src/skins-qt/menus.cc:125
+msgid "Next Playlist"
+msgstr "Volgende Snitlys"
+
+#: src/skins/menus.cc:134 src/skins-qt/menus.cc:127
+msgid "Import Playlist ..."
+msgstr "Voer Snitlys in ..."
+
+#: src/skins/menus.cc:135 src/skins-qt/menus.cc:128
+msgid "Export Playlist ..."
+msgstr "Voer Snitlys uit ..."
+
+#: src/skins/menus.cc:137 src/skins-qt/menus.cc:130
+msgid "Playlist Manager ..."
+msgstr "Snitlys Bestuurder ..."
+
+#: src/skins/menus.cc:138 src/skins-qt/menus.cc:131
+msgid "Queue Manager ..."
+msgstr "Tou Bestuurder ..."
+
+#: src/skins/menus.cc:140 src/skins-qt/menus.cc:133
+msgid "Refresh Playlist"
+msgstr "Verfris Snitlys"
+
+#: src/skins/menus.cc:144 src/skins-qt/menus.cc:137
+msgid "Show Playlist Editor"
+msgstr "Wys Snitlys Redigeerder"
+
+#: src/skins/menus.cc:145 src/skins-qt/menus.cc:138
+msgid "Show Equalizer"
+msgstr "Wys Gelykmaker"
+
+#: src/skins/menus.cc:147 src/skins-qt/menus.cc:140
+msgid "Show Remaining Time"
+msgstr "Wys Oorblywende Tyd"
+
+#: src/skins/menus.cc:150 src/skins-qt/menus.cc:143
+msgid "Always on Top"
+msgstr "Altyd Bo-op"
+
+#: src/skins/menus.cc:151 src/skins-qt/menus.cc:145
+msgid "On All Workspaces"
+msgstr "Op Alle Werkskerms"
+
+#: src/skins/menus.cc:153 src/skins-qt/menus.cc:148
+msgid "Roll Up Player"
+msgstr "Rol Speler Op"
+
+#: src/skins/menus.cc:154 src/skins-qt/menus.cc:149
+msgid "Roll Up Playlist Editor"
+msgstr "Rol Snitlys Redigeerder Op"
+
+#: src/skins/menus.cc:155 src/skins-qt/menus.cc:150
+msgid "Roll Up Equalizer"
+msgstr "Rol Gelykmaker Op"
+
+#: src/skins/menus.cc:163 src/skins-qt/menus.cc:158
+msgid "Add URL ..."
+msgstr "Voeg URL by ..."
+
+#: src/skins/menus.cc:164 src/skins-qt/menus.cc:160
+msgid "Add Files ..."
+msgstr "Voeg Lêers by ..."
+
+#: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:211
+#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:192
+#: src/skins-qt/menus.cc:207
+msgid "By Title"
+msgstr "Volgens Titel"
+
+#: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:218
+#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:199
+#: src/skins-qt/menus.cc:214
+msgid "By File Name"
+msgstr "Volgens Lêer Naam"
+
+#: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:219
+#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
+#: src/skins-qt/menus.cc:215
+msgid "By File Path"
+msgstr "Volgens Lêer Pad"
+
+#: src/skins/menus.cc:176 src/skins-qt/menus.cc:172
+msgid "Remove All"
+msgstr "Verwyder Alles"
+
+#: src/skins/menus.cc:177 src/skins-qt/menus.cc:173
+msgid "Clear Queue"
+msgstr "Vee tou uit"
+
+#: src/skins/menus.cc:179 src/skins-qt/menus.cc:175
+msgid "Remove Unavailable Files"
+msgstr "Verwyder onbeskikbare lêers"
+
+#: src/skins/menus.cc:180 src/skins-qt/menus.cc:176
+msgid "Remove Duplicates"
+msgstr "Verwyder Duplikate"
+
+#: src/skins/menus.cc:182 src/skins-qt/menus.cc:178
+msgid "Remove Unselected"
+msgstr "Verwyder Ongekiesdes"
+
+#: src/skins/menus.cc:183 src/skins-qt/menus.cc:179
+msgid "Remove Selected"
+msgstr "Verwyder Gekiesdes"
+
+#: src/skins/menus.cc:187 src/skins-qt/menus.cc:183
+msgid "Search and Select"
+msgstr "Soek en kies"
+
+#: src/skins/menus.cc:189 src/skins-qt/menus.cc:185
+msgid "Invert Selection"
+msgstr "Keer Seleksie Om"
+
+#: src/skins/menus.cc:190 src/skins-qt/menus.cc:186
+msgid "Select None"
+msgstr "Kies Geen"
+
+#: src/skins/menus.cc:191 src/skins-qt/menus.cc:187
+msgid "Select All"
+msgstr "Kies Alles"
+
+#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:191
+#: src/skins-qt/menus.cc:206
+msgid "By Track Number"
+msgstr "Volgens Snit Nommer"
+
+#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:193
+#: src/skins-qt/menus.cc:208
+msgid "By Artist"
+msgstr "Volgens Kunstenaar"
+
+#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:194
+#: src/skins-qt/menus.cc:209
+msgid "By Album"
+msgstr "Volgens Album"
+
+#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:195
+#: src/skins-qt/menus.cc:210
+msgid "By Album Artist"
+msgstr "Volgens Album Kunstenaar"
+
+#: src/skins/menus.cc:200 src/skins/menus.cc:215 src/skins-qt/menus.cc:196
+#: src/skins-qt/menus.cc:211
+msgid "By Release Date"
+msgstr "Volgens Vrystellingsdatum"
+
+#: src/skins/menus.cc:201 src/skins/menus.cc:216 src/skins-qt/menus.cc:197
+#: src/skins-qt/menus.cc:212
+msgid "By Genre"
+msgstr "Volgens Genre"
+
+#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:198
+#: src/skins-qt/menus.cc:213
+msgid "By Length"
+msgstr "Volgens Lengte"
+
+#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:201
+#: src/skins-qt/menus.cc:216
+msgid "By Custom Title"
+msgstr "Volgens Pasgemaakte Titel"
+
+#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:202
+#: src/skins-qt/menus.cc:217
+msgid "By Comment"
+msgstr "Volgens Kommentaar"
+
+#: src/skins/menus.cc:225 src/skins-qt/menus.cc:221
+msgid "Randomize List"
+msgstr "Maak Lys Ewekansig"
+
+#: src/skins/menus.cc:226 src/skins-qt/menus.cc:222
+msgid "Reverse List"
+msgstr "Keer Lys Om"
+
+#: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
+msgid "Sort Selected"
+msgstr "Sorteer Gekiesdes"
+
+#: src/skins/menus.cc:229 src/skins-qt/menus.cc:225
+msgid "Sort List"
+msgstr "Sorteer lys"
+
+#: src/skins/menus.cc:234 src/skins-qt/menus.cc:230
+msgid "Open Containing Folder"
+msgstr "Maak Bevat-vouer oop"
+
+#: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
+msgid "Cut"
+msgstr "Sny"
+
+#: src/skins/menus.cc:237 src/skins-qt/menus.cc:233
+msgid "Copy"
+msgstr "Kopieer"
+
+#: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
+msgid "Paste"
+msgstr "Plak"
+
+#: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
+msgid "Paste at End"
+msgstr "Plak op Einde"
+
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
+msgid "Queue/Unqueue"
+msgstr "Sit in Tou/Haal uit Tou"
+
+#: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:56
+#, c-format
+msgid "%s (%d of %d)"
+msgstr "%s (%d of %d)"
+
+#: src/skins/playlistwin.cc:491 src/skins-qt/playlistwin.cc:476
+msgid "Audacious Playlist Editor"
+msgstr "Audacious Snitlys Redigeerder"
+
+#: src/skins/plugin.cc:49 src/skins-qt/plugin.cc:64
+msgid "Winamp Classic Interface"
+msgstr "Winamp Klassieke Koppelvlak"
+
+#: src/skins-qt/menus.cc:75
+msgid "Open Folder ..."
+msgstr "Maak Vouer Oop ..."
+
+#: src/skins-qt/menus.cc:159
+msgid "Add Folder ..."
+msgstr "Voeg Vouer By ..."
+
+#: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:76
+msgid "Search entries in active playlist"
+msgstr "Soek inskrywings in aktiewe snitlys"
+
+#: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:82
+msgid ""
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
+"expressions work, simply insert a literal portion of what you're searching "
+"for."
+msgstr ""
+"Kies inskrywings in snitlys deur een of meer velde in te vul. Velde gebruik "
+"gewone uitdrukkings sintaksis, hoofletter-onsensitief. As jy nie weet hoe "
+"gereelde uitdrukkings werk nie, voeg eenvoudig dan 'n letterlike gedeelte in "
+"van waarna jy soek."
+
+#: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:90
+msgid "Title:"
+msgstr "Titel:"
+
+#: src/skins-qt/search-select.cc:78 src/skins/search-select.cc:96
+msgid "Album:"
+msgstr "Album:"
+
+#: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:102
+msgid "Artist:"
+msgstr "Kunstenaar:"
+
+#: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:108
+msgid "File Name:"
+msgstr "Lêer Naam:"
+
+#: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:116
+msgid "Clear previous selection before searching"
+msgstr "Vee vorige keuse uit voordat jy soek"
+
+#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:119
+msgid "Automatically toggle queue for matching entries"
+msgstr "Wissel outomaties tou vir bypassende inskrywings"
+
+#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:122
+msgid "Create a new playlist with matching entries"
+msgstr "Skep 'n nuwe snitlys met bypassende inskrywings"
+
+#: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:77
+msgid "Search"
+msgstr "Soek"
+
+#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:180
+msgid "Player:"
+msgstr "Speler:"
+
+#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:182
+msgid "Select main player window font:"
+msgstr "Kies hoof speler venster lettertipe:"
+
+#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:183
+msgid "Playlist:"
+msgstr "Snitlys:"
+
+#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:185
+msgid "Select playlist font:"
+msgstr "Kies snitlys lettertipe:"
+
+#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:189
+msgid "<b>Skin</b>"
+msgstr "<b>Vel</b>"
+
+#: src/skins-qt/skins_cfg.cc:211
+msgid "Display active titlebar when any window is focused"
+msgstr "Vertoon aktiewe titelbalk wanneer enige venster gefokus is"
+
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:191
+msgid "<b>Fonts</b>"
+msgstr "<b>Lettertipes</b>"
+
+#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:193
+msgid "Use bitmap fonts (supports ASCII only)"
+msgstr "Gebruik bitmap-lettertipes (ondersteun slegs ASCII)"
+
+#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:195
+msgid "Scroll song title"
+msgstr "Rollees liedjie titel"
+
+#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:197
+msgid "Scroll song title in both directions"
+msgstr "Rollees liedjie titel in beide rigtings"
+
+#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:202
+msgid "Analyzer"
+msgstr "Ontleder"
+
+#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:203
+msgid "Scope"
+msgstr "Skoop"
+
+#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:204
+msgid "Voiceprint / VU meter"
+msgstr "Stemafdruk / VU meter"
+
+#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:205
+msgid "Off"
+msgstr "Af"
+
+#: src/skins-qt/skins_cfg.cc:231 src/skins-qt/skins_cfg.cc:256
+#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:209
+#: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
+msgid "Normal"
+msgstr "Normaal"
+
+#: src/skins-qt/skins_cfg.cc:232 src/skins-qt/skins_cfg.cc:257
+#: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
+msgid "Fire"
+msgstr "Vuur"
+
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:211
+msgid "Vertical lines"
+msgstr "Vertikale lyne"
+
+#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:215
+msgid "Lines"
+msgstr "Lyne"
+
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:216
+msgid "Bars"
+msgstr "Balke"
+
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:220
+msgid "Slowest"
+msgstr "Stadigste"
+
+#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:221
+msgid "Slow"
+msgstr "Stadig"
+
+#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:222
+#: src/soxr/sox-resampler.cc:180
+msgid "Medium"
+msgstr "Medium"
+
+#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:223
+msgid "Fast"
+msgstr "Vinnig"
+
+#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:224
+msgid "Fastest"
+msgstr "Vinnigste"
+
+#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:228
+msgid "Dots"
+msgstr "Kolletjies"
+
+#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:229
+msgid "Line"
+msgstr "Lyne"
+
+#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:230
+msgid "Solid"
+msgstr "Solied"
+
+#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:236
+msgid "Ice"
+msgstr "Ys"
+
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:241
+msgid "Smooth"
+msgstr "Glad"
+
+#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:245
+msgid "Coloring:"
+msgstr "Kleur:"
+
+#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:248
+msgid "Style:"
+msgstr "Style:"
+
+#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:251
+msgid "Falloff:"
+msgstr "Daling:"
+
+#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:254
+msgid "Peak falloff:"
+msgstr "Piek daling:"
+
+#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:260
+msgid "Scope Style:"
+msgstr "Skoop styl:"
+
+#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:263
+msgid "Voiceprint Coloring:"
+msgstr "Stemafdruk Kleur:"
+
+#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:266
+msgid "VU Meter Style:"
+msgstr "VU Meter Styl:"
+
+#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:272
+msgid "<b>Type</b>"
+msgstr "<b>Tipe</b>"
+
+#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:273
+msgid "Visualization type:"
+msgstr "Visualisering tipe:"
+
+#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:276
+msgid "<b>Analyzer</b>"
+msgstr "<b>Ontleder</b>"
+
+#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:277
+msgid "Show peaks"
+msgstr "Wys pieke:"
+
+#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:286
+msgid "Visualization"
+msgstr "Visualisering"
+
+#: src/skins-qt/skinselector.cc:98 src/skins/skinselector.cc:111
+msgid "Archived Winamp 2.x skin"
+msgstr "Geargiveer Winamp 2.x vel"
+
+#: src/skins-qt/skinselector.cc:102 src/skins/skinselector.cc:115
+msgid "Unarchived Winamp 2.x skin"
+msgstr "Gedeargiveerde Winamp 2.x vel"
+
+#: src/sndfile/plugin.cc:38
+msgid "Sndfile Plugin"
+msgstr "Sndfile Inprop"
+
+#: src/sndfile/plugin.cc:372
+msgid ""
+"Based on the xmms_sndfile plugin:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Gebaseer op die xmms_sndfile-inprop:\n"
+"Kopiereg (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Aangepas vir Audacious deur Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"Hierdie program is gratis sagteware; jy kan dit herverdeel en/of wysig onder "
+"die bepalings van die GNU General Public License soos gepubliseer deur die "
+"Free Software Foundation; óf weergawe 2 van die lisensie, óf (na jou keuse) "
+"enige latere weergawe.\n"
+"\n"
+"Hierdie program word versprei in die hoop dat dit nuttig sal wees, maar "
+"SONDER ENIGE WAARBORG; selfs sonder die stilswyende waarborg van "
+"VERHANDELBAARHEID of GESKIKTHEID VIR 'N SPESIFIEKE DOEL. Sien die GNU "
+"General Public License vir meer besonderhede.\n"
+"\n"
+"Jy moes 'n afskrif van die GNU General Public License saam met hierdie "
+"program ontvang het; indien nie, skryf aan die Free Software Foundation, "
+"Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, VSA."
+
+#: src/sndio/sndio.cc:43
+msgid "Sndio Output"
+msgstr "Sndio Uitset"
+
+#: src/sndio/sndio.cc:98
+msgid "Device (blank for default):"
+msgstr "Toestel (leeg vir verstek):"
+
+#: src/sndio/sndio.cc:100
+msgid "Save and restore volume:"
+msgstr "Stoor en herstel volume:"
+
+#: src/sndio/sndio.cc:181
+#, c-format
+msgid "Sndio error: Unsupported audio format (%d)"
+msgstr "Sndio-fout: ongesteunde oudioformaat (%d)"
+
+#: src/sndio/sndio.cc:192
+msgid "Sndio error: sio_open() failed"
+msgstr "Sndio-fout: sio_open() het misluk"
+
+#: src/sndio/sndio.cc:221
+msgid "Sndio error: sio_setpar() failed"
+msgstr "Sndio-fout: sio_setpar() het misluk"
+
+#: src/sndio/sndio.cc:233
+msgid "Sndio error: sio_start() failed"
+msgstr "Sndio-fout: sio_start() het misluk"
+
+#: src/songchange/song_change.cc:30
+msgid "Song Change"
+msgstr "Lied Verander"
+
+#: src/songchange/song_change.cc:245
+msgid "<b>Commands</b>"
+msgstr "<b>Bevele</b>"
+
+#: src/songchange/song_change.cc:247
+msgid "Command to run when starting a new song:"
+msgstr "Bevel om te hardloop wanneer 'n nuwe lied begin:"
+
+#: src/songchange/song_change.cc:250
+msgid "Command to run at the end of a song:"
+msgstr "Bevel om te hardloop na die einde van 'n lied:"
+
+#: src/songchange/song_change.cc:253
+msgid "Command to run at the end of the playlist:"
+msgstr "Bevel om te hardloop na die einde van die snitlys:"
+
+#: src/songchange/song_change.cc:256
+msgid "Command to run when song title changes (for network streams):"
+msgstr ""
+"Bevel om uit te voer wanneer liedjietitel verander (vir netwerkstrome):"
+
+#: src/songchange/song_change.cc:259
+msgid ""
+"You can use the following format codes, which will be replaced before "
+"running the command (not all are useful for the end-of-playlist command):"
+msgstr ""
+"Jy kan die volgende formaatkodes gebruik, wat vervang sal word voordat die "
+"bevel uitgevoer word (nie almal is nuttig vir die einde-van-snitlys-opdrag "
+"nie):"
+
+#: src/songchange/song_change.cc:262
+msgid ""
+"%a: Artist\n"
+"%b: Album\n"
+"%c: Number of channels\n"
+"%f: File name (full path)\n"
+"%F: Frequency (Hertz)\n"
+"%l: Length (milliseconds)\n"
+"%n or %s: Formatted title (see playlist settings)\n"
+"%p: Currently playing (1 or 0)\n"
+"%r: Rate (bits per second)\n"
+"%t: Playlist position\n"
+"%T: Title (unformatted)"
+msgstr ""
+"%a: Kunstenaar\n"
+"%b: Album\n"
+"%c: Aantal kanale\n"
+"%f: Lêernaam (volledige pad)\n"
+"%F: Frekwensie (Hertz)\n"
+"%l: Lengte (millisekondes)\n"
+"%n of %s: Geformateerde titel (sien snitlys instellings)\n"
+"%p: Speel tans (1 of 0)\n"
+"%r: Koers (bisse per sekonde)\n"
+"%t: Snitlys Posisie\n"
+"%T: Titel (ongeformateer)"
+
+#: src/songchange/song_change.cc:273
+msgid ""
+"Parameters passed to the shell should be enclosed in quotation marks.  "
+"Unquoted parameters may lead to unexpected results."
+msgstr ""
+"Parameters wat na die dop oorgedra word, moet tussen aanhalingstekens "
+"ingesluit word. Onaangehaalde parameters kan tot onverwagte resultate lei."
+
+#: src/song-info-qt/song-info.cc:30
+msgid "Song Info"
+msgstr "Lied Info"
+
+#: src/soxr/sox-resampler.cc:44
+msgid "SoX Resampler"
+msgstr "SoX Hermonster"
+
+#: src/soxr/sox-resampler.cc:172
+msgid ""
+"SoX Resampler Plugin for Audacious\n"
+"Copyright 2013 Michał Lipski\n"
+"\n"
+"Based on Sample Rate Converter Plugin:\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+"SoX Hermonster Inprop vir Audacious\n"
+"Kopiereg 2013 Michał Lipski\n"
+"\n"
+"Gebaseer op Sample Rate Converter Plugin:\n"
+"Kopiereg 2010-2012 John Lindgren"
+
+#: src/soxr/sox-resampler.cc:178
+msgid "Quick"
+msgstr "Vinnig"
+
+#: src/soxr/sox-resampler.cc:179
+msgid "Low"
+msgstr "Laag"
+
+#: src/soxr/sox-resampler.cc:181
+msgid "High"
+msgstr "Hoog"
+
+#: src/soxr/sox-resampler.cc:182
+msgid "Very High"
+msgstr "Baie Hoog"
+
+#: src/soxr/sox-resampler.cc:183
+msgid "Ultra High"
+msgstr "Ultra Hoog"
+
+#: src/soxr/sox-resampler.cc:187
+msgid "Minimum"
+msgstr "Minimum"
+
+#: src/soxr/sox-resampler.cc:188
+msgid "Intermediate"
+msgstr "Intermediêr"
+
+#: src/soxr/sox-resampler.cc:193
+msgid "Quality:"
+msgstr "Kwaliteit:"
+
+#: src/soxr/sox-resampler.cc:196
+msgid "Phase:"
+msgstr "Fase:"
+
+#: src/soxr/sox-resampler.cc:200
+msgid "Allow aliasing"
+msgstr "Laat aliasering toe"
+
+#: src/soxr/sox-resampler.cc:202
+msgid "Use steep filter"
+msgstr "Gebruik steil filtreerder"
+
+#: src/speedpitch/speed-pitch.cc:54
+msgid "Speed and Pitch"
+msgstr "Spoed en Toonhoogte"
+
+#: src/speedpitch/speed-pitch.cc:247
+msgid "<b>Speed</b>"
+msgstr "<b>Spoed</b>"
+
+#: src/speedpitch/speed-pitch.cc:248
+msgid "Decouple from pitch"
+msgstr "Ontkoppel van Toonhoogte"
+
+#: src/speedpitch/speed-pitch.cc:250 src/speedpitch/speed-pitch.cc:258
+msgid "Multiplier:"
+msgstr "Vermenigvuldiger:"
+
+#: src/speedpitch/speed-pitch.cc:254
+msgid "<b>Pitch</b>"
+msgstr "<b>Toonhoogte</b>"
+
+#: src/statusicon-qt/statusicon.cc:44 src/statusicon/statusicon.cc:47
+msgid "Status Icon"
+msgstr "Status Ikoon"
+
+#: src/statusicon-qt/statusicon.cc:65
+msgid ""
+"Status Icon Plugin (partial port for Qt interface)\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"Copyright 2015 Eugene Paskevich <eugene@raptor.kiev.ua>\n"
+"\n"
+"This plugin provides a status icon, placed in\n"
+"the system tray area of the window manager."
+msgstr ""
+"Status Ikoon Inprop (gedeeltelike poort vir Qt-koppelvlak)\n"
+"\n"
+"Kopiereg 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Kopiereg 2010 Michał Lipski <tallica@o2.pl>\n"
+"Kopiereg 2015 Eugene Paskevich <eugene@raptor.kiev.ua>\n"
+"\n"
+"Hierdie inprop verskaf 'n status ikoon, geplaas in\n"
+"die sisteem laai area van die venster bestuurder."
+
+#: src/statusicon-qt/statusicon.cc:86 src/statusicon/statusicon.cc:380
+msgid "<b>Mouse Scroll Action</b>"
+msgstr "<b>Muis Rollees Aksie</b>"
+
+#: src/statusicon-qt/statusicon.cc:87 src/statusicon/statusicon.cc:381
+msgid "Change volume"
+msgstr "Verander volume"
+
+#: src/statusicon-qt/statusicon.cc:90 src/statusicon/statusicon.cc:384
+msgid "Change playing song"
+msgstr "Verander spelende lied"
+
+#: src/statusicon-qt/statusicon.cc:93 src/statusicon/statusicon.cc:387
+msgid "<b>Other Settings</b>"
+msgstr "<b>Ander Stellings</b>"
+
+#: src/statusicon-qt/statusicon.cc:94 src/statusicon/statusicon.cc:388
+msgid "Disable the popup window"
+msgstr "Deaktiveer die opspring venster"
+
+#: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:390
+msgid "Close to the system tray"
+msgstr "Maak toe na die sisteem laai"
+
+#: src/statusicon-qt/statusicon.cc:98 src/statusicon/statusicon.cc:392
+msgid "Advance in playlist when scrolling upward"
+msgstr "Bevorder die snitlys wanneer jy rollees opwaarts"
+
+#: src/statusicon-qt/statusicon.cc:113 src/statusicon/statusicon.cc:283
+msgid "Se_ttings ..."
+msgstr "S_tellings ..."
+
+#: src/statusicon/statusicon.cc:373
+msgid ""
+"Status Icon Plugin\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"This plugin provides a status icon, placed in\n"
+"the system tray area of the window manager."
+msgstr ""
+"Status-ikoon-inprop\n"
+"\n"
+"Kopiereg 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Kopiereg 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"Hierdie inprop verskaf 'n statusikoon, geplaas in\n"
+"die system tray area van die vensterbestuurder."
+
+#: src/stereo_plugin/stereo.cc:19
+msgid "Extra Stereo"
+msgstr "Ekstra Stereo"
+
+#: src/stereo_plugin/stereo.cc:36
+msgid ""
+"Extra Stereo Plugin\n"
+"\n"
+"By Johan Levin, 1999"
+msgstr ""
+"Ekstra Stereo Inprop\n"
+"\n"
+"Deur Johan Levin, 1999"
+
+#: src/stereo_plugin/stereo.cc:44
+msgid "<b>Extra Stereo</b>"
+msgstr "<b>Ekstra Stereo</b>"
+
+#: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:131
+msgid "Type"
+msgstr "Tipe"
+
+#: src/streamtuner/icecast-model.cc:132
+msgid "Current Song"
+msgstr "Huidige Lied"
+
+#: src/streamtuner/icecast-model.cc:164
+msgid "Other"
+msgstr "Ander"
+
+#: src/streamtuner/ihr-model.cc:63
+msgid "Market"
+msgstr "Mark"
+
+#: src/streamtuner/ihr-model.cc:156
+msgid "Call Letters"
+msgstr "Roep Letters"
+
+#: src/streamtuner/ihr-model.cc:162
+msgid "Description"
+msgstr "Beskrywing"
+
+#: src/streamtuner/shoutcast-model.cc:128
+msgid "Listeners"
+msgstr "Luisteraars"
+
+#: src/streamtuner/shoutcast-model.cc:188
+msgid "Top 500 Stations"
+msgstr "Top 500 Stasies"
+
+#: src/streamtuner/shoutcast-model.cc:189
+msgid "Alternative"
+msgstr "Alternatief"
+
+#: src/streamtuner/shoutcast-model.cc:190
+msgid "Blues"
+msgstr "Blues"
+
+#: src/streamtuner/shoutcast-model.cc:191
+msgid "Classical"
+msgstr "Klassieke"
+
+#: src/streamtuner/shoutcast-model.cc:192
+msgid "Country"
+msgstr "Country"
+
+#: src/streamtuner/shoutcast-model.cc:193
+msgid "Decades"
+msgstr "Dekades"
+
+#: src/streamtuner/shoutcast-model.cc:194
+msgid "Easy Listening"
+msgstr "Gemaklike Luister"
+
+#: src/streamtuner/shoutcast-model.cc:195
+msgid "Electronic"
+msgstr "Elektronies"
+
+#: src/streamtuner/shoutcast-model.cc:196
+msgid "Folk"
+msgstr "Volk"
+
+#: src/streamtuner/shoutcast-model.cc:197
+msgid "Inspirational"
+msgstr "Inspirerend"
+
+#: src/streamtuner/shoutcast-model.cc:198
+msgid "International"
+msgstr "Internasionaal"
+
+#: src/streamtuner/shoutcast-model.cc:199
+msgid "Jazz"
+msgstr "Jazz"
+
+#: src/streamtuner/shoutcast-model.cc:200
+msgid "Latin"
+msgstr "Latyns"
+
+#: src/streamtuner/shoutcast-model.cc:201
+msgid "Metal"
+msgstr "Metal"
+
+#: src/streamtuner/shoutcast-model.cc:203
+msgid "New Age"
+msgstr "Nuwe Era"
+
+#: src/streamtuner/shoutcast-model.cc:204
+msgid "Pop"
+msgstr "Pop"
+
+#: src/streamtuner/shoutcast-model.cc:205
+msgid "Public Radio"
+msgstr "Publieke Radio"
+
+#: src/streamtuner/shoutcast-model.cc:206
+msgid "R&B and Urban"
+msgstr "R&B en Urban"
+
+#: src/streamtuner/shoutcast-model.cc:207
+msgid "Rap"
+msgstr "Rap"
+
+#: src/streamtuner/shoutcast-model.cc:208
+msgid "Reggae"
+msgstr "Reggae"
+
+#: src/streamtuner/shoutcast-model.cc:209
+msgid "Rock"
+msgstr "Rock"
+
+#: src/streamtuner/shoutcast-model.cc:210
+msgid "Seasonal and Holiday"
+msgstr "Seisoenale en Vakansie"
+
+#: src/streamtuner/shoutcast-model.cc:211
+msgid "Soundtracks"
+msgstr "Klankbane"
+
+#: src/streamtuner/shoutcast-model.cc:212
+msgid "Talk"
+msgstr "Praat"
+
+#: src/streamtuner/shoutcast-model.cc:213
+msgid "Themes"
+msgstr "Temas"
+
+#: src/streamtuner/streamtuner.cc:59
+msgid "Shoutcast"
+msgstr "Shoutcast"
+
+#: src/streamtuner/streamtuner.cc:60
+msgid "Icecast"
+msgstr "Icecast"
+
+#: src/streamtuner/streamtuner.cc:71
+msgid "Stream Tuner"
+msgstr "Stroomontvanger"
+
+#: src/tonegen/tonegen.cc:45
+msgid "Tone Generator"
+msgstr "Toongenerator"
+
+#: src/tonegen/tonegen.cc:92
+#, c-format
+msgid "%s %.1f Hz"
+msgstr "%s %.1f Hz"
+
+#: src/tonegen/tonegen.cc:92
+msgid "Tone Generator: "
+msgstr "Toongenerator:"
+
+#: src/tonegen/tonegen.cc:161
+msgid ""
+"Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
+msgstr ""
+"Sinustoongenerator deur Håvard Kvålen <havardk@xmms.org>\n"
+"Gewysig deur Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"Om dit te gebruik, voeg 'n URL by: tone://frekwensie1;frekwensie2;"
+"frekwensie3;...\n"
+"bv. tone://2000;2005 om 'n 2000 Hz-toon en 'n 2005 Hz-toon te speel"
+
+#: src/ui-common/dialogs-qt.cc:40
+msgid ""
+"\n"
+"(Further messages have been hidden.)"
+msgstr ""
+"\n"
+"(Verdere boodskappe is versteek.)"
+
+#: src/ui-common/dialogs-qt.cc:52
+msgid "Working ..."
+msgstr "In Werking ..."
+
+#: src/ui-common/dialogs-qt.cc:72
+msgid "Information"
+msgstr "Informasie"
+
+#: src/ui-common/menu-ops-gtk.cc:132 src/ui-common/menu-ops-qt.cc:113
+#, c-format
+msgid "%s does not appear to be a valid folder."
+msgstr ""
+
+#: src/voice_removal/voice_removal.cc:28
+msgid "Voice Removal"
+msgstr "Stem Verwydering"
+
+#: src/vorbis/vorbis.cc:429
+msgid ""
+"Audacious Ogg Vorbis Decoder\n"
+"\n"
+"Based on the Xiph.org Foundation's Ogg Vorbis Plugin:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Original code by:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Contributions from:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
+msgstr ""
+"Audacious Ogg Vorbis-dekodeerder\n"
+"\n"
+"Gebaseer op die Xiph.org-stigting se Ogg Vorbis-inprop:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Oorspronklike kode deur:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Bydraes van:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
+
+#: src/vorbis/vorbis.h:18
+msgid "Ogg Vorbis Decoder"
+msgstr "Ogg Vorbis Dekodeerder"
+
+#: src/vtx/info.cc:24
+#, c-format
+msgid "Details about %s"
+msgstr "Besonderhede oor %s"
+
+#: src/vtx/info.cc:26
+msgid ""
+"Title: %t\n"
+"Author: %a\n"
+"From: %f\n"
+"Tracker: %T\n"
+"Comment: %C\n"
+"Chip type: %c\n"
+"Stereo: %s\n"
+"Loop: %l\n"
+"Chip freq: %F\n"
+"Player Freq: %P\n"
+"Year: %y"
+msgstr ""
+"Titel: %t\n"
+"Skrywer: %a\n"
+"Van: %f\n"
+"Spoor: %T\n"
+"Kommentaar: %C\n"
+"Chip tipe: %c\n"
+"Stereo: %s\n"
+"Lus: %l\n"
+"Chip frekwensie: %F\n"
+"Speler frekwensie: %P\n"
+"Jaar: %y"
+
+#: src/vtx/vtx.cc:38
+msgid "VTX Decoder"
+msgstr "VTX Dekodeerder"
+
+#: src/vtx/vtx.cc:178
+msgid ""
+"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+"Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+"Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
+msgstr ""
+"Vortex-lêerformaatspeler deur Sashnov Alexander <sashnov@ngs.ru>\n"
+"Gebaseer op in_vtx.dll deur Roman Sherbakov <v_soft@microfor.ru>\n"
+"Audacious plugin deur Pavel Vymetalek <pvymetalek@seznam.cz>"
+
+#: src/vumeter-qt/vumeter_qt.cc:31
+msgid ""
+"VU Meter Plugin for Audacious\n"
+"Copyright 2017-2019 Marc Sánchez Fauste"
+msgstr ""
+"VU Meter-inprop vir Audacious\n"
+"Kopiereg 2017-2019 Marc Sánchez Faustea"
+
+#: src/vumeter-qt/vumeter_qt.cc:35
+msgid "<b>VU Meter Settings</b>"
+msgstr "<b>VU Meter Stellings</b>"
+
+#: src/vumeter-qt/vumeter_qt.cc:37
+msgid "Peak hold time:"
+msgstr "Piek hou tyd:"
+
+#: src/vumeter-qt/vumeter_qt.cc:42
+msgid "Fall-off time:"
+msgstr "Daling tyd:"
+
+#: src/vumeter-qt/vumeter_qt.cc:44
+msgid "dB/second"
+msgstr "dB/sekonde"
+
+#: src/vumeter-qt/vumeter_qt.cc:46
+msgid "Display legend"
+msgstr "Wys legende"
+
+#: src/vumeter-qt/vumeter_qt.h:37
+msgid "VU Meter"
+msgstr "VU Meter"
+
+#: src/waveout/waveout.cc:43
+msgid "Win32 waveOut"
+msgstr "Win32 waveOut"
+
+#: src/waveout/waveout.cc:69
+msgid ""
+"Win32 waveOut Plugin for Audacious\n"
+"Copyright 2016 John Lindgren"
+msgstr ""
+"Win32 waveOut-inprop vir Audacious\n"
+"Kopiereg 2016 John Lindgren"
+
+#: src/wavpack/wavpack.cc:25
+msgid "WavPack Decoder"
+msgstr "WavPack-dekodeerder"
+
+#: src/wavpack/wavpack.cc:217
+msgid "lossy (hybrid)"
+msgstr "verliesagtig (hibriede)"
+
+#: src/wavpack/wavpack.cc:219
+msgid "lossy"
+msgstr "verliesagtig"
+
+#: src/wavpack/wavpack.cc:259
+msgid ""
+"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Some of the plugin code was by Miles Egan."
+msgstr ""
+"Kopiereg 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Sommige van die inpropkode was deur Miles Egan."
+
+#: src/xsf/plugin.cc:74
+msgid "2SF Decoder"
+msgstr "2SF dekodeerder"
+
+#: src/xsf/plugin.cc:429
+msgid "32728 Hz"
+msgstr "32728 Hz"
+
+#: src/xsf/plugin.cc:432
+msgid "65456 Hz"
+msgstr "65456 Hz"
+
+#: src/xsf/plugin.cc:438
+msgid "Cosine"
+msgstr "Cosinus"
+
+#: src/xsf/plugin.cc:439
+msgid "Sharp"
+msgstr "Skerp"
+
+#: src/xsf/plugin.cc:443
+msgid "<b>XSF Configuration</b>"
+msgstr "<b>XSF Konfigurasie</b>"
+
+#: src/xsf/plugin.cc:445
+msgid "Default fade time:"
+msgstr "Verstek vervaag tyd:"
+
+#: src/xsf/plugin.cc:447
+msgid "Interpolation mode:"
+msgstr "Interpolasiemodus:"
+
+#: src/xspf/xspf.cc:95
+msgid "XML Shareable Playlists (XSPF)"
+msgstr "XML deelbare snitlyste (XSPF)"

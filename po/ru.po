@@ -7,7 +7,8 @@
 # Alexander Orlov <alxorlov@pochta.ru>, 2007
 # Alexa Poruch <alexa.poruch@gmail.com>, 2020
 # Денис <alpi_bel@mail.ru>, 2014
-# Andrei Stepanov <adem4ik@gmail.com>, 2014-2015
+# Andrei Stepanov, 2014-2015
+# Arnold Layne, 2021
 # Danila E <KnightDanila@gmail.com>, 2018
 # dartraiden, 2018
 # 85f5ad14c5f803c69d22f4aeb4ef6a7e, 2018
@@ -45,6 +46,7 @@
 # Oleg <kvantarium@gmail.com>, 2012
 # Victor Ponomarev <victor.a.ponomarev@gmail.com>, 2013
 # Volk Daemon <volk-daemon@rambler.ru>, 2016,2018
+# Алексей <aleshtorm@gmail.com>, 2022
 # Алексей <kvadrocu7@gmail.com>, 2013
 # Виктор Голованенко <drygdryg2014@yandex.ru>, 2020
 # Денис <alpi_bel@mail.ru>, 2014-2015
@@ -54,18 +56,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2021-02-01 19:27+0100\n"
-"PO-Revision-Date: 2020-12-20 23:15+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2022-07-09 23:25+0200\n"
+"PO-Revision-Date: 2011-10-10 17:43+0000\n"
+"Last-Translator: Алексей <aleshtorm@gmail.com>, 2022\n"
 "Language-Team: Russian (http://www.transifex.com/audacious/audacious/"
 "language/ru/)\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: src/aac/aac.cc:19
 msgid "AAC (Raw) Decoder"
@@ -76,7 +78,7 @@ msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (проигрыватель AdLib)"
 
 #: src/adplug/adplug-xmms.cc:167 src/modplug/modplugbmp.cc:321
-#: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:106
+#: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:204
 msgid "sequenced"
 msgstr "последовательный"
 
@@ -106,7 +108,7 @@ msgstr "Гц"
 
 #: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:46
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:81
-#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
+#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Разное</b>"
 
@@ -516,6 +518,7 @@ msgstr "<b>Синтезатор</b>"
 
 #: src/amidiplug/i_configure.cc:153 src/console/plugin.cc:45
 #: src/filewriter/filewriter.cc:481 src/sid/xs_config.cc:65
+#: src/xsf/plugin.cc:446
 msgid "Sample rate:"
 msgstr "Частота дискретизации:"
 
@@ -591,6 +594,7 @@ msgid "* no lyrics available in this MIDI file *"
 msgstr "* в этом MIDI-файле нет текстов *"
 
 #: src/amidiplug/i_fileinfo.cc:306 src/ladspa/plugin.cc:417
+#: src/ui-common/dialogs-qt.cc:32
 msgid "_Close"
 msgstr "Закрыть"
 
@@ -650,7 +654,7 @@ msgstr "Скруглённый прямоугольник"
 msgid "Concave Rectangle"
 msgstr "Вогнутый прямоугольник"
 
-#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50
+#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50 src/xsf/plugin.cc:436
 msgid "None"
 msgstr "Нет"
 
@@ -850,6 +854,22 @@ msgstr "Списки воспроизведения ASXv1/ASXv2"
 #: src/audpl/audpl.cc:33
 msgid "Audacious Playlists (audpl)"
 msgstr "Списки воспроизведения Audacious (audpl)"
+
+#: src/bitcrusher/bitcrusher.cc:33
+msgid "<b>Bitcrusher</b>"
+msgstr ""
+
+#: src/bitcrusher/bitcrusher.cc:34
+msgid "Bit Depth:"
+msgstr "Разрядность:"
+
+#: src/bitcrusher/bitcrusher.cc:37
+msgid "Downsample ratio:"
+msgstr "Коэффициент понижения дискретизации:"
+
+#: src/bitcrusher/bitcrusher.cc:48
+msgid "Bitcrusher"
+msgstr ""
 
 #: src/blur_scope/blur_scope.cc:39 src/blur_scope-qt/blur_scope.cc:45
 msgid "<b>Color</b>"
@@ -1244,7 +1264,7 @@ msgid "Delete"
 msgstr "Удалить"
 
 #: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
-#: src/skins/search-select.cc:76
+#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:77
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -1282,7 +1302,7 @@ msgid "Delay:"
 msgstr "Задержка:"
 
 #: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:72
-#: src/modplug/plugin_main.cc:82
+#: src/modplug/plugin_main.cc:82 src/xsf/plugin.cc:445
 msgid "ms"
 msgstr "мс"
 
@@ -1302,7 +1322,7 @@ msgstr "Эхо"
 msgid "FFmpeg Plugin"
 msgstr "Модуль FFmpeg"
 
-#: src/ffaudio/ffaudio-core.cc:628
+#: src/ffaudio/ffaudio-core.cc:635
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1424,76 +1444,76 @@ msgstr "24000 Гц"
 msgid "32000 Hz"
 msgstr "32000 Гц"
 
-#: src/filewriter/filewriter.cc:425
+#: src/filewriter/filewriter.cc:425 src/xsf/plugin.cc:430
 msgid "44100 Hz"
 msgstr "44100 Гц"
 
-#: src/filewriter/filewriter.cc:426
+#: src/filewriter/filewriter.cc:426 src/xsf/plugin.cc:431
 msgid "48000 Hz"
 msgstr "48000 Гц"
 
 #: src/filewriter/filewriter.cc:430
-msgid "8 kbps"
+msgid "8 kbit/s"
 msgstr "8 кбит/с"
 
 #: src/filewriter/filewriter.cc:431
-msgid "16 kbps"
+msgid "16 kbit/s"
 msgstr "16 кбит/с"
 
 #: src/filewriter/filewriter.cc:432
-msgid "32 kbps"
+msgid "32 kbit/s"
 msgstr "32 кбит/с"
 
 #: src/filewriter/filewriter.cc:433
-msgid "40 kbps"
+msgid "40 kbit/s"
 msgstr "40 кбит/с"
 
 #: src/filewriter/filewriter.cc:434
-msgid "48 kbps"
+msgid "48 kbit/s"
 msgstr "48 кбит/с"
 
 #: src/filewriter/filewriter.cc:435
-msgid "56 kbps"
+msgid "56 kbit/s"
 msgstr "56 кбит/с"
 
 #: src/filewriter/filewriter.cc:436
-msgid "64 kbps"
+msgid "64 kbit/s"
 msgstr "64 кбит/с"
 
 #: src/filewriter/filewriter.cc:437
-msgid "80 kbps"
+msgid "80 kbit/s"
 msgstr "80 кбит/с"
 
 #: src/filewriter/filewriter.cc:438
-msgid "96 kbps"
+msgid "96 kbit/s"
 msgstr "96 кбит/с"
 
 #: src/filewriter/filewriter.cc:439
-msgid "112 kbps"
+msgid "112 kbit/s"
 msgstr "112 кбит/с"
 
 #: src/filewriter/filewriter.cc:440
-msgid "128 kbps"
+msgid "128 kbit/s"
 msgstr "128 кбит/с"
 
 #: src/filewriter/filewriter.cc:441
-msgid "160 kbps"
+msgid "160 kbit/s"
 msgstr "160 кбит/с"
 
 #: src/filewriter/filewriter.cc:442
-msgid "192 kbps"
+msgid "192 kbit/s"
 msgstr "192 кбит/с"
 
 #: src/filewriter/filewriter.cc:443
-msgid "224 kbps"
+msgid "224 kbit/s"
 msgstr "224 кбит/с"
 
 #: src/filewriter/filewriter.cc:444
-msgid "256 kbps"
+msgid "256 kbit/s"
 msgstr "256 кбит/с"
 
 #: src/filewriter/filewriter.cc:445
-msgid "320 kbps"
+msgid "320 kbit/s"
 msgstr "320 кбит/с"
 
 #: src/filewriter/filewriter.cc:450
@@ -1618,7 +1638,7 @@ msgstr "Теги"
 msgid "Quality (0-1):"
 msgstr "Качество (0-1):"
 
-#: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:303
+#: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:307
 #: src/skins/skins_cfg.cc:285
 msgid "General"
 msgstr "Основной"
@@ -1627,11 +1647,11 @@ msgstr "Основной"
 msgid "FLAC Decoder"
 msgstr "Декодер FLAC"
 
-#: src/flac/metadata.cc:274 src/wavpack/wavpack.cc:215
+#: src/flac/metadata.cc:280 src/wavpack/wavpack.cc:215
 msgid "lossless"
 msgstr "lossless"
 
-#: src/flac/plugin.cc:169
+#: src/flac/plugin.cc:180
 msgid ""
 "Original code by\n"
 "Ralf Ertzinger <ralf@skytale.net>\n"
@@ -2075,7 +2095,7 @@ msgstr "Показывать п_анель информации"
 
 #: src/gtkui/menus.cc:189 src/qtui/menus.cc:262
 msgid "Show Info Bar _Album Art"
-msgstr ""
+msgstr "Показать информационную панель _Обложка альбома"
 
 #: src/gtkui/menus.cc:190 src/qtui/menus.cc:264
 msgid "Show Info Bar Vis_ualization"
@@ -2267,7 +2287,7 @@ msgstr "Вразброс"
 
 #: src/gtkui/ui_gtk.cc:1030 src/qtui/main_window.cc:123
 msgid "Menu"
-msgstr ""
+msgstr "Меню"
 
 #: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:155
 msgid "mono"
@@ -2293,7 +2313,7 @@ msgstr "%d кГц"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:174
 #, c-format
-msgid "%d kbps"
+msgid "%d kbit/s"
 msgstr "%d кбит/с"
 
 #: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471 src/skins-qt/main.cc:455
@@ -2620,31 +2640,31 @@ msgstr "текст.ovh"
 
 #: src/lyricwiki-qt/lyricwiki.cc:121
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
-msgstr ""
+msgstr "<small>Исполнитель -- с начала, Название -- с конца</small>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:122
 msgid "Chars to truncate on:"
-msgstr ""
+msgstr "Обрезать до:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:126
 msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
-msgstr ""
+msgstr "<small>Варианты перечисляются через пробел</small>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:127
 msgid "Chars to split on:"
-msgstr ""
+msgstr "Разделители:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:128
 msgid "Further truncate those on chars"
-msgstr ""
+msgstr "Далее обрезать до символа"
 
 #: src/lyricwiki-qt/lyricwiki.cc:134
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Основные</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:135
 msgid "Split title into artist and title on chars"
-msgstr ""
+msgstr "Разделить название на название и исполнителя"
 
 #: src/lyricwiki-qt/lyricwiki.cc:138
 msgid "<b>Internet Sources</b>"
@@ -2680,7 +2700,7 @@ msgstr "Не удалось проанализировать %s"
 msgid "Looking for lyrics ..."
 msgstr "Поиск текста песни ..."
 
-#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:38
+#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:62
 msgid "Error"
 msgstr "Ошибка"
 
@@ -2865,7 +2885,7 @@ msgstr "Остановить после этой песни"
 
 #: src/moonstone/moonstone.cc:39
 msgid "Moonstone"
-msgstr ""
+msgstr "Moonstone"
 
 #: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:251
 msgid "Reset to Defaults"
@@ -3002,7 +3022,7 @@ msgstr "Включить название альбома в уведомлени
 
 #: src/notify/notify.cc:110
 msgid "Custom notification duration:"
-msgstr ""
+msgstr "Длительность уведомления:"
 
 #: src/notify/osd.cc:74
 msgid "Show"
@@ -3034,7 +3054,7 @@ msgstr "%"
 msgid "Interpolation:"
 msgstr "Интерполяция:"
 
-#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189
+#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189 src/xsf/plugin.cc:437
 msgid "Linear"
 msgstr "Линейный"
 
@@ -3119,7 +3139,7 @@ msgstr "Декодер OpenPSF PSF1/PSF2"
 msgid "<b>OpenPSF Configuration</b>"
 msgstr "<b>Настройка OpenPSF</b>"
 
-#: src/psf/plugin.cc:271 src/xsf/plugin.cc:233
+#: src/psf/plugin.cc:271 src/xsf/plugin.cc:444
 msgid "Ignore length from file"
 msgstr "Не придавать значение длительности из файла"
 
@@ -3198,10 +3218,19 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"OpenGL спектральный анализатор для Audacious\n"
+"Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
+"Copyright 2014, 2020 Ariadne Conill\n"
+"\n"
+"Основан на плагине XMMS:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
+"\n"
+"Лицензия: GPLv2+"
 
 #: src/qthotkey/gui.cc:165
 msgid "Press a key combination inside a text field."
-msgstr ""
+msgstr "Нажмите комбинацию клавиш в текстовом поле."
 
 #: src/qthotkey/plugin.cc:103
 msgid ""
@@ -3218,6 +3247,18 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
+"Плагин горячих клавиш\n"
+"Управление проигрывателем горячими клавишами или кнопками мультимедиа.\n"
+"\n"
+"Copyright (C) 2020 i.Dark_Templar <darktemplar@dark-templar-archives.net>\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributors include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/qtui/menus.cc:109
 msgid "_Open Folder ..."
@@ -3241,11 +3282,11 @@ msgstr "Настройки звука ..."
 
 #: src/qtui/playlist_model.cc:186
 msgid "Q#"
-msgstr ""
+msgstr "Q#"
 
 #: src/qtui/playlist_model.cc:188
 msgid "T#"
-msgstr ""
+msgstr "T#"
 
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
@@ -3273,7 +3314,7 @@ msgstr "Отобразить вкладки списка воспроизвед�
 
 #: src/qtui/settings.cc:78
 msgid "Use bold font for column headers"
-msgstr ""
+msgstr "Использовать жирный шрифт в заголовках колонок"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -3786,7 +3827,7 @@ msgstr "Вид"
 
 #: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
 #: src/skins/menus.cc:243 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
-#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:237
+#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:239
 msgid "Services"
 msgstr "Службы"
 
@@ -3803,7 +3844,7 @@ msgid "Quit"
 msgstr "Выход"
 
 #: src/skins/menus.cc:101 src/skins/menus.cc:233 src/skins-qt/menus.cc:92
-#: src/skins-qt/menus.cc:227
+#: src/skins-qt/menus.cc:229
 msgid "Song Info ..."
 msgstr "Информация о песне"
 
@@ -3823,7 +3864,7 @@ msgstr "Установить A-B повтор"
 msgid "Clear A-B Repeat"
 msgstr "Удалить A-B повтор"
 
-#: src/skins/menus.cc:120 src/skins-qt/menus.cc:112
+#: src/skins/menus.cc:120 src/skins-qt/menus.cc:111
 msgid "Jump to Song ..."
 msgstr "Перейти к песне ..."
 
@@ -3916,20 +3957,20 @@ msgid "Add Files ..."
 msgstr "Добавить файлы..."
 
 #: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:211
-#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:190
-#: src/skins-qt/menus.cc:205
+#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:192
+#: src/skins-qt/menus.cc:207
 msgid "By Title"
 msgstr "По названию"
 
 #: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:218
-#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:197
-#: src/skins-qt/menus.cc:212
+#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:199
+#: src/skins-qt/menus.cc:214
 msgid "By File Name"
 msgstr "По имени файла"
 
 #: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:219
-#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:198
-#: src/skins-qt/menus.cc:213
+#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
+#: src/skins-qt/menus.cc:215
 msgid "By File Path"
 msgstr "По расположению _файла"
 
@@ -3957,104 +3998,104 @@ msgstr "Удалить не отмеченные"
 msgid "Remove Selected"
 msgstr "Удалить выбранные"
 
-#: src/skins/menus.cc:187
+#: src/skins/menus.cc:187 src/skins-qt/menus.cc:183
 msgid "Search and Select"
 msgstr "Найти и выбрать"
 
-#: src/skins/menus.cc:189 src/skins-qt/menus.cc:183
+#: src/skins/menus.cc:189 src/skins-qt/menus.cc:185
 msgid "Invert Selection"
 msgstr "Инвертировать выбор"
 
-#: src/skins/menus.cc:190 src/skins-qt/menus.cc:184
+#: src/skins/menus.cc:190 src/skins-qt/menus.cc:186
 msgid "Select None"
 msgstr "Снять выделение"
 
-#: src/skins/menus.cc:191 src/skins-qt/menus.cc:185
+#: src/skins/menus.cc:191 src/skins-qt/menus.cc:187
 msgid "Select All"
 msgstr "Выбрать все"
 
-#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:189
-#: src/skins-qt/menus.cc:204
+#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:191
+#: src/skins-qt/menus.cc:206
 msgid "By Track Number"
 msgstr "По номеру дорожки"
 
-#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:191
-#: src/skins-qt/menus.cc:206
+#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:193
+#: src/skins-qt/menus.cc:208
 msgid "By Artist"
 msgstr "По исполнителю"
 
-#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:192
-#: src/skins-qt/menus.cc:207
+#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:194
+#: src/skins-qt/menus.cc:209
 msgid "By Album"
 msgstr "По альбому"
 
-#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:193
-#: src/skins-qt/menus.cc:208
+#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:195
+#: src/skins-qt/menus.cc:210
 msgid "By Album Artist"
 msgstr "По исполнителю"
 
-#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:194
-#: src/skins-qt/menus.cc:210
+#: src/skins/menus.cc:200 src/skins/menus.cc:215 src/skins-qt/menus.cc:196
+#: src/skins-qt/menus.cc:211
 msgid "By Release Date"
 msgstr "По _дате выпуска"
 
-#: src/skins/menus.cc:201 src/skins/menus.cc:215 src/skins-qt/menus.cc:195
-#: src/skins-qt/menus.cc:209
+#: src/skins/menus.cc:201 src/skins/menus.cc:216 src/skins-qt/menus.cc:197
+#: src/skins-qt/menus.cc:212
 msgid "By Genre"
 msgstr "По жанру"
 
-#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:196
-#: src/skins-qt/menus.cc:211
+#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:198
+#: src/skins-qt/menus.cc:213
 msgid "By Length"
 msgstr "По длительности"
 
-#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:199
-#: src/skins-qt/menus.cc:214
+#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:201
+#: src/skins-qt/menus.cc:216
 msgid "By Custom Title"
 msgstr "По _заданному названию файла"
 
-#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:200
-#: src/skins-qt/menus.cc:215
+#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:202
+#: src/skins-qt/menus.cc:217
 msgid "By Comment"
 msgstr "По комментарию"
 
-#: src/skins/menus.cc:225 src/skins-qt/menus.cc:219
+#: src/skins/menus.cc:225 src/skins-qt/menus.cc:221
 msgid "Randomize List"
 msgstr "Сортировать в случайном порядке"
 
-#: src/skins/menus.cc:226 src/skins-qt/menus.cc:220
+#: src/skins/menus.cc:226 src/skins-qt/menus.cc:222
 msgid "Reverse List"
 msgstr "В обратном порядке"
 
-#: src/skins/menus.cc:228 src/skins-qt/menus.cc:222
+#: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
 msgid "Sort Selected"
 msgstr "Сортировать выбранные"
 
-#: src/skins/menus.cc:229 src/skins-qt/menus.cc:223
+#: src/skins/menus.cc:229 src/skins-qt/menus.cc:225
 msgid "Sort List"
 msgstr "Сортировать список"
 
-#: src/skins/menus.cc:234 src/skins-qt/menus.cc:228
+#: src/skins/menus.cc:234 src/skins-qt/menus.cc:230
 msgid "Open Containing Folder"
 msgstr "Открыть директорию"
 
-#: src/skins/menus.cc:236 src/skins-qt/menus.cc:230
+#: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
 msgid "Cut"
 msgstr "Вырезать"
 
-#: src/skins/menus.cc:237 src/skins-qt/menus.cc:231
+#: src/skins/menus.cc:237 src/skins-qt/menus.cc:233
 msgid "Copy"
 msgstr "Копировать"
 
-#: src/skins/menus.cc:238 src/skins-qt/menus.cc:232
+#: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
 msgid "Paste"
 msgstr "Вставить"
 
-#: src/skins/menus.cc:239 src/skins-qt/menus.cc:233
+#: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
 msgid "Paste at End"
 msgstr "Вставить в конец"
 
-#: src/skins/menus.cc:241 src/skins-qt/menus.cc:235
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
 msgid "Queue/Unqueue"
 msgstr "В очередь/Из очереди"
 
@@ -4063,7 +4104,7 @@ msgstr "В очередь/Из очереди"
 msgid "%s (%d of %d)"
 msgstr "%s (%d из %d)"
 
-#: src/skins/playlistwin.cc:492 src/skins-qt/playlistwin.cc:477
+#: src/skins/playlistwin.cc:491 src/skins-qt/playlistwin.cc:476
 msgid "Audacious Playlist Editor"
 msgstr "Редактор списков воспроизведения Audacious"
 
@@ -4079,187 +4120,11 @@ msgstr "Oткрыть каталог ..."
 msgid "Add Folder ..."
 msgstr "Добавить каталог ..."
 
-#: src/skins-qt/skins_cfg.cc:196 src/skins/skins_cfg.cc:180
-msgid "Player:"
-msgstr "Проигрыватель:"
-
-#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:182
-msgid "Select main player window font:"
-msgstr "Выберите шрифт основного окна проигрывателя:"
-
-#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:183
-msgid "Playlist:"
-msgstr "Список:"
-
-#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:185
-msgid "Select playlist font:"
-msgstr "Выберите шрифт плейлиста:"
-
-#: src/skins-qt/skins_cfg.cc:205 src/skins/skins_cfg.cc:189
-msgid "<b>Skin</b>"
-msgstr "<b>Скин</b>"
-
-#: src/skins-qt/skins_cfg.cc:209 src/skins/skins_cfg.cc:191
-msgid "<b>Fonts</b>"
-msgstr "<b>Шрифты</b>"
-
-#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:193
-msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Использовать растровые шрифты (поддерживает только ASCII)"
-
-#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:195
-msgid "Scroll song title"
-msgstr "Прокручивать название песни "
-
-#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
-msgid "Scroll song title in both directions"
-msgstr "Прокручивать название песни в обоих направлениях"
-
-#: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:202
-msgid "Analyzer"
-msgstr "Анализатор"
-
-#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:203
-msgid "Scope"
-msgstr "Осциллограмма"
-
-#: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:204
-msgid "Voiceprint / VU meter"
-msgstr "Отпечаток голоса / VU измеритель"
-
-#: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:205
-msgid "Off"
-msgstr "Выкл."
-
-#: src/skins-qt/skins_cfg.cc:227 src/skins-qt/skins_cfg.cc:252
-#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:209
-#: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
-msgid "Normal"
-msgstr "Обычный"
-
-#: src/skins-qt/skins_cfg.cc:228 src/skins-qt/skins_cfg.cc:253
-#: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
-msgid "Fire"
-msgstr "Огонь"
-
-#: src/skins-qt/skins_cfg.cc:229 src/skins/skins_cfg.cc:211
-msgid "Vertical lines"
-msgstr "Вертикальные линии"
-
-#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:215
-msgid "Lines"
-msgstr "Линии"
-
-#: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:216
-msgid "Bars"
-msgstr "Полоски"
-
-#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:220
-msgid "Slowest"
-msgstr "Очень медленно"
-
-#: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:221
-msgid "Slow"
-msgstr "Медленно"
-
-#: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:222
-#: src/soxr/sox-resampler.cc:180
-msgid "Medium"
-msgstr "Средне"
-
-#: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:223
-msgid "Fast"
-msgstr "Быстро"
-
-#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
-msgid "Fastest"
-msgstr "Очень быстро"
-
-#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:228
-msgid "Dots"
-msgstr "Точки"
-
-#: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:229
-msgid "Line"
-msgstr "Линия"
-
-#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:230
-msgid "Solid"
-msgstr "Сплошная"
-
-#: src/skins-qt/skins_cfg.cc:254 src/skins/skins_cfg.cc:236
-msgid "Ice"
-msgstr "Лёд"
-
-#: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:241
-msgid "Smooth"
-msgstr "Сглаженный"
-
-#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:245
-msgid "Coloring:"
-msgstr "Окраска:"
-
-#: src/skins-qt/skins_cfg.cc:266 src/skins/skins_cfg.cc:248
-msgid "Style:"
-msgstr "Стиль:"
-
-#: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:251
-msgid "Falloff:"
-msgstr "Спад:"
-
-#: src/skins-qt/skins_cfg.cc:272 src/skins/skins_cfg.cc:254
-msgid "Peak falloff:"
-msgstr "Спад пиков:"
-
-#: src/skins-qt/skins_cfg.cc:278 src/skins/skins_cfg.cc:260
-msgid "Scope Style:"
-msgstr "Стиль осциллограммы:"
-
-#: src/skins-qt/skins_cfg.cc:281 src/skins/skins_cfg.cc:263
-msgid "Voiceprint Coloring:"
-msgstr "Окраска отпечатка голоса:"
-
-#: src/skins-qt/skins_cfg.cc:284 src/skins/skins_cfg.cc:266
-msgid "VU Meter Style:"
-msgstr "Стиль VU измерителя:"
-
-#: src/skins-qt/skins_cfg.cc:290 src/skins/skins_cfg.cc:272
-msgid "<b>Type</b>"
-msgstr "<b>Тип</b>"
-
-#: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:273
-msgid "Visualization type:"
-msgstr "Тип визуализации:"
-
-#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:276
-msgid "<b>Analyzer</b>"
-msgstr "<b>Анализатор</b>"
-
-#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
-msgid "Show peaks"
-msgstr "Показывать пики"
-
-#: src/skins-qt/skins_cfg.cc:304 src/skins/skins_cfg.cc:286
-msgid "Visualization"
-msgstr "Визуализация"
-
-#: src/skins-qt/skinselector.cc:98 src/skins/skinselector.cc:111
-msgid "Archived Winamp 2.x skin"
-msgstr "Архивированная тема Winamp 2.x"
-
-#: src/skins-qt/skinselector.cc:102 src/skins/skinselector.cc:115
-msgid "Unarchived Winamp 2.x skin"
-msgstr "Не архивированная тема Winamp 2.x"
-
-#: src/skins/search-select.cc:75
+#: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:76
 msgid "Search entries in active playlist"
 msgstr "Поиск записей в активном списке воспроизведения"
 
-#: src/skins/search-select.cc:76
-msgid "Search"
-msgstr "Поиск"
-
-#: src/skins/search-select.cc:81
+#: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:82
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -4271,39 +4136,219 @@ msgstr ""
 "регистру. Если вы не знаете, как работают регулярные выражения, просто "
 "вставьте часть букв из слова, которые хотите найти."
 
-#: src/skins/search-select.cc:89
+#: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:90
 msgid "Title:"
 msgstr "Заголовок:"
 
-#: src/skins/search-select.cc:95
+#: src/skins-qt/search-select.cc:78 src/skins/search-select.cc:96
 msgid "Album:"
 msgstr "Альбом:"
 
-#: src/skins/search-select.cc:101
+#: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:102
 msgid "Artist:"
 msgstr "Артист:"
 
-#: src/skins/search-select.cc:107
+#: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:108
 msgid "File Name:"
 msgstr "Имя файла:"
 
-#: src/skins/search-select.cc:115
+#: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:116
 msgid "Clear previous selection before searching"
 msgstr "Очистить предыдущий выбор до начала поиска"
 
-#: src/skins/search-select.cc:118
+#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:119
 msgid "Automatically toggle queue for matching entries"
 msgstr "Автоматически переключать поочерёдно на соответствующим записям"
 
-#: src/skins/search-select.cc:121
+#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:122
 msgid "Create a new playlist with matching entries"
 msgstr "Создать новый список воспроизведения с соответствующими записями"
+
+#: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:77
+msgid "Search"
+msgstr "Поиск"
+
+#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:180
+msgid "Player:"
+msgstr "Проигрыватель:"
+
+#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:182
+msgid "Select main player window font:"
+msgstr "Выберите шрифт основного окна проигрывателя:"
+
+#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:183
+msgid "Playlist:"
+msgstr "Список:"
+
+#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:185
+msgid "Select playlist font:"
+msgstr "Выберите шрифт плейлиста:"
+
+#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:189
+msgid "<b>Skin</b>"
+msgstr "<b>Скин</b>"
+
+#: src/skins-qt/skins_cfg.cc:211
+msgid "Display active titlebar when any window is focused"
+msgstr "Отображать активный заголовок, когда любые окна находятся в фокусе"
+
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:191
+msgid "<b>Fonts</b>"
+msgstr "<b>Шрифты</b>"
+
+#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:193
+msgid "Use bitmap fonts (supports ASCII only)"
+msgstr "Использовать растровые шрифты (поддерживает только ASCII)"
+
+#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:195
+msgid "Scroll song title"
+msgstr "Прокручивать название песни "
+
+#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:197
+msgid "Scroll song title in both directions"
+msgstr "Прокручивать название песни в обоих направлениях"
+
+#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:202
+msgid "Analyzer"
+msgstr "Анализатор"
+
+#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:203
+msgid "Scope"
+msgstr "Осциллограмма"
+
+#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:204
+msgid "Voiceprint / VU meter"
+msgstr "Отпечаток голоса / VU измеритель"
+
+#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:205
+msgid "Off"
+msgstr "Выкл."
+
+#: src/skins-qt/skins_cfg.cc:231 src/skins-qt/skins_cfg.cc:256
+#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:209
+#: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
+msgid "Normal"
+msgstr "Обычный"
+
+#: src/skins-qt/skins_cfg.cc:232 src/skins-qt/skins_cfg.cc:257
+#: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
+msgid "Fire"
+msgstr "Огонь"
+
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:211
+msgid "Vertical lines"
+msgstr "Вертикальные линии"
+
+#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:215
+msgid "Lines"
+msgstr "Линии"
+
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:216
+msgid "Bars"
+msgstr "Полоски"
+
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:220
+msgid "Slowest"
+msgstr "Очень медленно"
+
+#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:221
+msgid "Slow"
+msgstr "Медленно"
+
+#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:222
+#: src/soxr/sox-resampler.cc:180
+msgid "Medium"
+msgstr "Средне"
+
+#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:223
+msgid "Fast"
+msgstr "Быстро"
+
+#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:224
+msgid "Fastest"
+msgstr "Очень быстро"
+
+#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:228
+msgid "Dots"
+msgstr "Точки"
+
+#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:229
+msgid "Line"
+msgstr "Линия"
+
+#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:230
+msgid "Solid"
+msgstr "Сплошная"
+
+#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:236
+msgid "Ice"
+msgstr "Лёд"
+
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:241
+msgid "Smooth"
+msgstr "Сглаженный"
+
+#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:245
+msgid "Coloring:"
+msgstr "Окраска:"
+
+#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:248
+msgid "Style:"
+msgstr "Стиль:"
+
+#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:251
+msgid "Falloff:"
+msgstr "Спад:"
+
+#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:254
+msgid "Peak falloff:"
+msgstr "Спад пиков:"
+
+#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:260
+msgid "Scope Style:"
+msgstr "Стиль осциллограммы:"
+
+#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:263
+msgid "Voiceprint Coloring:"
+msgstr "Окраска отпечатка голоса:"
+
+#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:266
+msgid "VU Meter Style:"
+msgstr "Стиль VU измерителя:"
+
+#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:272
+msgid "<b>Type</b>"
+msgstr "<b>Тип</b>"
+
+#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:273
+msgid "Visualization type:"
+msgstr "Тип визуализации:"
+
+#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:276
+msgid "<b>Analyzer</b>"
+msgstr "<b>Анализатор</b>"
+
+#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:277
+msgid "Show peaks"
+msgstr "Показывать пики"
+
+#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:286
+msgid "Visualization"
+msgstr "Визуализация"
+
+#: src/skins-qt/skinselector.cc:98 src/skins/skinselector.cc:111
+msgid "Archived Winamp 2.x skin"
+msgstr "Архивированная тема Winamp 2.x"
+
+#: src/skins-qt/skinselector.cc:102 src/skins/skinselector.cc:115
+msgid "Unarchived Winamp 2.x skin"
+msgstr "Не архивированная тема Winamp 2.x"
 
 #: src/sndfile/plugin.cc:38
 msgid "Sndfile Plugin"
 msgstr "Модуль Sndfile"
 
-#: src/sndfile/plugin.cc:363
+#: src/sndfile/plugin.cc:372
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -4788,13 +4833,26 @@ msgstr ""
 "частота1;частота2;частота3;...\n"
 "Например, tone://2000;2005 для воспроизведения сигналов 2000 Гц и 2005 Гц"
 
-#: src/ui-common/dialogs-qt.cc:31
+#: src/ui-common/dialogs-qt.cc:40
+msgid ""
+"\n"
+"(Further messages have been hidden.)"
+msgstr ""
+"\n"
+"(Подробные сообщения были скрыты.)"
+
+#: src/ui-common/dialogs-qt.cc:52
 msgid "Working ..."
 msgstr "Работаю ..."
 
-#: src/ui-common/dialogs-qt.cc:43
+#: src/ui-common/dialogs-qt.cc:72
 msgid "Information"
 msgstr "Информация"
+
+#: src/ui-common/menu-ops-gtk.cc:132 src/ui-common/menu-ops-qt.cc:113
+#, c-format
+msgid "%s does not appear to be a valid folder."
+msgstr "%s является недопустимой папкой."
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
@@ -4953,13 +5011,37 @@ msgstr ""
 "\n"
 "Частично код от Miles Egan."
 
-#: src/xsf/plugin.cc:50
+#: src/xsf/plugin.cc:74
 msgid "2SF Decoder"
 msgstr "Декодер 2SF"
 
-#: src/xsf/plugin.cc:232
+#: src/xsf/plugin.cc:429
+msgid "32728 Hz"
+msgstr "32728 Гц"
+
+#: src/xsf/plugin.cc:432
+msgid "65456 Hz"
+msgstr "65456 Гц"
+
+#: src/xsf/plugin.cc:438
+msgid "Cosine"
+msgstr ""
+
+#: src/xsf/plugin.cc:439
+msgid "Sharp"
+msgstr ""
+
+#: src/xsf/plugin.cc:443
 msgid "<b>XSF Configuration</b>"
 msgstr "<b>Настройки XSF</b>"
+
+#: src/xsf/plugin.cc:445
+msgid "Default fade time:"
+msgstr "Время затухания по умолчанию:"
+
+#: src/xsf/plugin.cc:447
+msgid "Interpolation mode:"
+msgstr "Режим интерполяции:"
 
 #: src/xspf/xspf.cc:95
 msgid "XML Shareable Playlists (XSPF)"

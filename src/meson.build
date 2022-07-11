@@ -28,6 +28,7 @@ endif
 
 
 # effect plugins
+subdir('bitcrusher')
 subdir('compressor')
 subdir('crossfade')
 subdir('crystalizer')
@@ -203,7 +204,7 @@ if have_cdaudio
   subdir('cdaudio')
 endif
 
-if get_option('ffaudio') in ['ffmpeg', 'libav']
+if get_option('ffaudio')
   subdir('ffaudio')
 endif
 

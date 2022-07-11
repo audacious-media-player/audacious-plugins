@@ -21,7 +21,7 @@ endif
 
 
 if have_oss4
-  cmd = run_command('test', '-d', oss_inc)
+  cmd = run_command('test', '-d', oss_inc, check: false)
   if cmd.returncode() == 0
     oss_inc_dirs += oss_inc
   endif

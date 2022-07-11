@@ -57,8 +57,8 @@ static void configure_visualizations () { audqt::prefswin_show_plugin_page (Plug
 static void pl_import () { audqt::fileopener_show (audqt::FileMode::ImportPlaylist); }
 static void pl_export () { audqt::fileopener_show (audqt::FileMode::ExportPlaylist); }
 
-static void skins_volume_up () { mainwin_set_volume_diff (5); }
-static void skins_volume_down () { mainwin_set_volume_diff (-5); }
+static void skins_volume_up () { mainwin_set_volume_diff (aud_get_int ("volume_delta")); }
+static void skins_volume_down () { mainwin_set_volume_diff (-aud_get_int ("volume_delta")); }
 
 static const audqt::MenuItem output_items[] = {
     audqt::MenuCommand ({N_("Volume Up"), "audio-volume-high", "+"}, skins_volume_up),
@@ -107,9 +107,9 @@ static const audqt::MenuItem playback_items[] = {
     audqt::MenuSep (),
     audqt::MenuCommand ({N_("Set A-B Repeat"), nullptr, "A"}, action_ab_set),
     audqt::MenuCommand ({N_("Clear A-B Repeat"), nullptr, "Shift+A"}, action_ab_clear),
-#if 0
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Jump to Song ..."), "go-jump", "J"}, audgui_jump_to_track),
+    audqt::MenuCommand ({N_("Jump to Song ..."), "go-jump", "J"}, aud_ui_show_jump_to_song),
+#if 0
     audqt::MenuCommand ({N_("Jump to Time ..."), "go-jump", "Ctrl+J"}, audgui_jump_to_time)
 #endif
 };
@@ -180,6 +180,8 @@ static const audqt::MenuItem playlist_remove_items[] = {
 };
 
 static const audqt::MenuItem playlist_select_items[] = {
+    audqt::MenuCommand ({N_("Search and Select"), "edit-find", "Ctrl+F"}, action_playlist_search_and_select),
+    audqt::MenuSep (),
     audqt::MenuCommand ({N_("Invert Selection")}, pl_select_invert),
     audqt::MenuCommand ({N_("Select None"), nullptr, "Shift+Ctrl+A"}, pl_select_none),
     audqt::MenuCommand ({N_("Select All"), "edit-select-all", "Ctrl+A"}, pl_select_all),
@@ -206,8 +208,8 @@ static const audqt::MenuItem sort_selected_items[] = {
     audqt::MenuCommand ({N_("By Artist")}, sort_sel_artist),
     audqt::MenuCommand ({N_("By Album")}, sort_sel_album),
     audqt::MenuCommand ({N_("By Album Artist")}, sort_sel_album_artist),
-    audqt::MenuCommand ({N_("By Genre")}, sort_sel_genre),
     audqt::MenuCommand ({N_("By Release Date")}, sort_sel_date),
+    audqt::MenuCommand ({N_("By Genre")}, sort_sel_genre),
     audqt::MenuCommand ({N_("By Length")}, sort_sel_length),
     audqt::MenuCommand ({N_("By File Name")}, sort_sel_filename),
     audqt::MenuCommand ({N_("By File Path")}, sort_sel_path),

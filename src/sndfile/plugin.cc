@@ -219,7 +219,7 @@ bool SndfilePlugin::read_tag (const char * filename, VFSFile & file, Tuple & tup
             format = "Core Audio File";
             break;
         default:
-            format = "Unknown sndfile";
+            format = nullptr;
     }
 
     switch (sfinfo.format & SF_FORMAT_SUBMASK)
@@ -292,6 +292,15 @@ bool SndfilePlugin::read_tag (const char * filename, VFSFile & file, Tuple & tup
             break;
         default:
             subformat = nullptr;
+    }
+
+    if (format == nullptr)
+    {
+        SF_FORMAT_INFO info = {.format = sfinfo.format & SF_FORMAT_SUBMASK};
+        if (sf_command (sndfile, SFC_GET_FORMAT_INFO, & info, sizeof (info)) == 0)
+            format = info.name;
+        else
+            format = "Unknown format";
     }
 
     if (subformat != nullptr)

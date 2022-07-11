@@ -3,22 +3,24 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Nejc Bertoncelj <nbert@siol.net>, 2020
+# Arnold Marko <arnold.marko@gmail.com>, 2021
+# Nejc Bertoncelj, 2020
+# Nejc Bertoncelj <nejc@bertoncelj.eu.org>, 2020-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2021-02-01 19:27+0100\n"
-"PO-Revision-Date: 2020-12-27 17:36+0000\n"
-"Last-Translator: Thomas Lange\n"
+"POT-Creation-Date: 2022-07-09 23:25+0200\n"
+"PO-Revision-Date: 2011-10-10 17:43+0000\n"
+"Last-Translator: Arnold Marko <arnold.marko@gmail.com>, 2021\n"
 "Language-Team: Slovenian (http://www.transifex.com/audacious/audacious/"
 "language/sl/)\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
-"%100==4 ? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
+"n%100==4 ? 2 : 3);\n"
 
 #: src/aac/aac.cc:19
 msgid "AAC (Raw) Decoder"
@@ -29,7 +31,7 @@ msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib Player)"
 
 #: src/adplug/adplug-xmms.cc:167 src/modplug/modplugbmp.cc:321
-#: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:106
+#: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:204
 msgid "sequenced"
 msgstr "sekvenčno"
 
@@ -39,11 +41,11 @@ msgstr "<b>Izhod</b>"
 
 #: src/adplug/adplug-xmms.cc:350
 msgid "OPL Emulator:"
-msgstr "Emulator OPL:"
+msgstr "OPL emulator:"
 
 #: src/adplug/adplug-xmms.cc:353
 msgid "Sample rate"
-msgstr "Hitrost vzorčenja"
+msgstr "Frekvenca vzorčenja"
 
 #: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:155
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
@@ -59,13 +61,13 @@ msgstr "Hz"
 
 #: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:46
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:81
-#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
+#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Razno</b>"
 
 #: src/adplug/adplug-xmms.cc:356
 msgid "Repeat song in endless loop"
-msgstr "Ponavljaj skladbe v neskončni zanki"
+msgstr "Ponavljaj skladbo v neskončni zanki"
 
 #: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
 msgid "Alarm"
@@ -73,7 +75,7 @@ msgstr "Alarm"
 
 #: src/alarm/alarm.cc:782
 msgid "Set Alarm ..."
-msgstr "Nastavi alarm ..."
+msgstr "Nastavi alarm"
 
 #: src/alarm/alarm.cc:810
 msgid ""
@@ -81,9 +83,9 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
-"Vtičnik, ki zažene predvajanje ob določenem času.\n"
+"A plugin that can be used to start playing at a certain time.\n"
 "\n"
-"Avtorja: Adam Feakin in Daniel Stodden."
+"Originally written by Adam Feakin and Daniel Stodden."
 
 #: src/alarm/interface.cc:28
 msgid ""
@@ -169,7 +171,7 @@ msgstr ""
 "    Zaženi ta ukaz ob bujenju.\n"
 "\n"
 "  Seznam predvajanja:\n"
-"    Naloži ta seznam. Če ni vnešen, se bo uporabil trenutni.\n"
+"    Naloži ta seznam. Če ni vnesen, se bo uporabil trenutni.\n"
 "    Lahko vnesete tudi naslov URL pretoka mp3/ogg.\n"
 "\n"
 "  Opomnik:\n"
@@ -178,11 +180,11 @@ msgstr ""
 
 #: src/alarm/interface.cc:78
 msgid "This is your wakeup call."
-msgstr "To je vaš klic bujenja."
+msgstr "Zbudite se."
 
 #: src/alarm/interface.cc:96
 msgid "Your reminder for today is..."
-msgstr "Vaš opomnik za danes..."
+msgstr "Vaš opomnik za danes je..."
 
 #: src/alarm/interface.cc:98 src/alarm/interface.cc:372
 msgid "Reminder"
@@ -231,7 +233,7 @@ msgstr "h"
 
 #: src/alarm/interface.cc:192
 msgid "Quiet after:"
-msgstr "Utišaj čez:"
+msgstr "Utišaj po:"
 
 #: src/alarm/interface.cc:204
 msgid "hours"
@@ -243,7 +245,7 @@ msgstr "min"
 
 #: src/alarm/interface.cc:224
 msgid "Choose the days for the alarm to come on"
-msgstr "Ob katerih dneh se alarm vklopi?"
+msgstr "Določite dneve za vklop alarma"
 
 #: src/alarm/interface.cc:231
 msgid "Day"
@@ -267,7 +269,7 @@ msgstr "Pojemanje"
 #: src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
 #: src/vumeter-qt/vumeter_qt.cc:39
 msgid "seconds"
-msgstr "sekund"
+msgstr "sek"
 
 #: src/alarm/interface.cc:301 src/alarm/interface.cc:342
 msgid "Volume"
@@ -295,7 +297,7 @@ msgstr "omogoči"
 
 #: src/alarm/interface.cc:361
 msgid "Playlist (optional)"
-msgstr "Seznam predvajanja (neobvezno)"
+msgstr "Seznam predvajanja (neobvezen)"
 
 #: src/alarm/interface.cc:365
 msgid "Select a playlist"
@@ -315,11 +317,11 @@ msgstr "Pomoč"
 
 #: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:35
 msgid "Album Art"
-msgstr "Platnica albuma"
+msgstr "Naslovnica albuma"
 
 #: src/alsa/alsa.h:64
 msgid "ALSA Output"
-msgstr "Izhod ALSA"
+msgstr "ALSA"
 
 #: src/alsa/config.cc:28
 msgid ""
@@ -345,7 +347,7 @@ msgstr "Privzeta naprava PCM"
 
 #: src/alsa/config.cc:188
 msgid "Default mixer device"
-msgstr "Privzet mešalnik"
+msgstr "Privzeta mešalka"
 
 #: src/alsa/config.cc:296
 msgid "PCM device:"
@@ -353,11 +355,11 @@ msgstr "Naprava PCM:"
 
 #: src/alsa/config.cc:299
 msgid "Mixer device:"
-msgstr "Mešalnik:"
+msgstr "Mešalka:"
 
 #: src/alsa/config.cc:302
 msgid "Mixer element:"
-msgstr "Mešalniški element:"
+msgstr "Element mešalke:"
 
 #: src/amidiplug/amidi-plug.cc:42
 msgid "AMIDI-Plug (MIDI Player)"
@@ -415,15 +417,15 @@ msgstr "Prezri privzeto polifonijo:"
 
 #: src/amidiplug/i_configure.cc:110
 msgid "Override default reverb:"
-msgstr "Prezri privzet reverb:"
+msgstr "Prezri privzeti odjek:"
 
 #: src/amidiplug/i_configure.cc:112 src/amidiplug/i_configure.cc:120
 msgid "On"
-msgstr "Vklop"
+msgstr "vklopi"
 
 #: src/amidiplug/i_configure.cc:118
 msgid "Override default chorus:"
-msgstr "Prezri privzet zbor:"
+msgstr "Prezri privzeti odmev:"
 
 #: src/amidiplug/i_configure.cc:128 src/console/plugin.cc:29
 msgid "<b>Playback</b>"
@@ -431,15 +433,15 @@ msgstr "<b>Predvajanje</b>"
 
 #: src/amidiplug/i_configure.cc:129
 msgid "Transpose:"
-msgstr "Transponiraj:"
+msgstr "Transpozicija:"
 
 #: src/amidiplug/i_configure.cc:131 src/speedpitch/speed-pitch.cc:257
 msgid "semitones"
-msgstr "poltoni"
+msgstr "poltonov"
 
 #: src/amidiplug/i_configure.cc:132
 msgid "Drum shift:"
-msgstr "Zamik bobnov:"
+msgstr "Premik bobnov:"
 
 #: src/amidiplug/i_configure.cc:134
 msgid "note numbers"
@@ -463,8 +465,9 @@ msgstr "<b>Sintetizator</b>"
 
 #: src/amidiplug/i_configure.cc:153 src/console/plugin.cc:45
 #: src/filewriter/filewriter.cc:481 src/sid/xs_config.cc:65
+#: src/xsf/plugin.cc:446
 msgid "Sample rate:"
-msgstr "Hitrost vzorčenja:"
+msgstr "Frekvenca vzorčenja:"
 
 #: src/amidiplug/i_configure-fluidsynth.cc:57
 #: src/amidiplug/i_configure-fluidsynth.cc:536
@@ -503,7 +506,7 @@ msgstr "Vrsta:"
 
 #: src/amidiplug/i_fileinfo.cc:204
 msgid "Length (msec):"
-msgstr "Dolžina (msec):"
+msgstr "Dolžina (ms):"
 
 #: src/amidiplug/i_fileinfo.cc:207
 msgid "No. of Tracks:"
@@ -531,13 +534,14 @@ msgstr "<span size=\"smaller\"> MIDI komentarji in besedila </span>"
 
 #: src/amidiplug/i_fileinfo.cc:284
 msgid "* no comments available in this MIDI file *"
-msgstr "* ta datoteka MIDI ne vsebuje komentarjev *"
+msgstr "* ta MIDI datoteka ne vsebuje komentarjev *"
 
 #: src/amidiplug/i_fileinfo.cc:296
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* ta datoteka MIDI ne vsebuje besedil *"
+msgstr "* ta MIDI datoteka ne vsebuje besedil *"
 
 #: src/amidiplug/i_fileinfo.cc:306 src/ladspa/plugin.cc:417
+#: src/ui-common/dialogs-qt.cc:32
 msgid "_Close"
 msgstr "_Zapri"
 
@@ -597,7 +601,7 @@ msgstr "Zaobljen pravokotnik"
 msgid "Concave Rectangle"
 msgstr "Udrti pravokotnik"
 
-#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50
+#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50 src/xsf/plugin.cc:436
 msgid "None"
 msgstr "Ničesar"
 
@@ -794,13 +798,29 @@ msgstr "Seznami predvajanja ASXv1/ASXv2"
 msgid "Audacious Playlists (audpl)"
 msgstr "Seznami predvajanja Audacious Playlists (audpl)"
 
+#: src/bitcrusher/bitcrusher.cc:33
+msgid "<b>Bitcrusher</b>"
+msgstr ""
+
+#: src/bitcrusher/bitcrusher.cc:34
+msgid "Bit Depth:"
+msgstr ""
+
+#: src/bitcrusher/bitcrusher.cc:37
+msgid "Downsample ratio:"
+msgstr ""
+
+#: src/bitcrusher/bitcrusher.cc:48
+msgid "Bitcrusher"
+msgstr ""
+
 #: src/blur_scope/blur_scope.cc:39 src/blur_scope-qt/blur_scope.cc:45
 msgid "<b>Color</b>"
 msgstr "<b>Barva</b>"
 
 #: src/blur_scope/blur_scope.cc:55 src/blur_scope-qt/blur_scope.cc:158
 msgid "Blur Scope"
-msgstr "Obseg zabrisa"
+msgstr "Osciloskop"
 
 #: src/bs2b/plugin.cc:38
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
@@ -936,7 +956,7 @@ msgstr "Nepodprt tip nosilca."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
-msgstr "Napaka inicializiranja odprtega CD-pogona."
+msgstr "Napaka inicializacije odprtega CD-pogona."
 
 #: src/cdaudio/cdaudio-ng.cc:509
 msgid "Failed to retrieve first/last track number."
@@ -967,15 +987,15 @@ msgstr "Napaka branja baze CDDB: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
-msgstr "Elementi glasbenega CD"
+msgstr "Menijski vnos za predvajanje CD-nosilca"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Pla_y CD"
-msgstr "Predvaja_j CD"
+msgstr "_Predvajaj CD"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "_Add CD"
-msgstr "Dod_aj CD"
+msgstr "_Dodaj CD"
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
@@ -1059,7 +1079,7 @@ msgstr "Dekodirnik glasbe igralnih konzol"
 
 #: src/coreaudio/coreaudio.cc:53
 msgid "CoreAudio output"
-msgstr "Izhod CoreAudio"
+msgstr "CoreAudio"
 
 #: src/coreaudio/coreaudio.cc:156
 msgid ""
@@ -1148,7 +1168,7 @@ msgstr "Vtičnik za seznam skladb (cue sheet)"
 #: src/delete-files/delete-files.cc:53 src/delete-files/delete-files.cc:215
 #: src/delete-files/delete-files.cc:230
 msgid "Delete Files"
-msgstr "Izbiši datoteke"
+msgstr "Izbris datotek"
 
 #: src/delete-files/delete-files.cc:120
 msgid "No files are selected."
@@ -1167,12 +1187,12 @@ msgstr "Želite trajno izbrisati %s?"
 #: src/delete-files/delete-files.cc:133
 #, c-format
 msgid "Do you want to move %d files to the trash?"
-msgstr "Želite premakniti %d datotek v koš?"
+msgstr "Želite premakniti toliko datotek v koš: %d?"
 
 #: src/delete-files/delete-files.cc:134
 #, c-format
 msgid "Do you want to permanently delete %d files?"
-msgstr "Želite trajno izbrisati %d datotek?"
+msgstr "Želite trajno izbrisati toliko datotek: %d?"
 
 #: src/delete-files/delete-files.cc:146
 msgid "Move to trash"
@@ -1183,7 +1203,7 @@ msgid "Delete"
 msgstr "Izbriši"
 
 #: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
-#: src/skins/search-select.cc:76
+#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:77
 msgid "Cancel"
 msgstr "Prekliči"
 
@@ -1221,7 +1241,7 @@ msgid "Delay:"
 msgstr "Zamik:"
 
 #: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:72
-#: src/modplug/plugin_main.cc:82
+#: src/modplug/plugin_main.cc:82 src/xsf/plugin.cc:445
 msgid "ms"
 msgstr "ms"
 
@@ -1241,7 +1261,7 @@ msgstr "Odmev"
 msgid "FFmpeg Plugin"
 msgstr "Vtičnik FFmpeg"
 
-#: src/ffaudio/ffaudio-core.cc:628
+#: src/ffaudio/ffaudio-core.cc:635
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1259,7 +1279,7 @@ msgstr ""
 
 #: src/filewriter/filewriter.cc:48
 msgid "FileWriter Plugin"
-msgstr "Vtičnik FileWriter"
+msgstr "FileWriter"
 
 #: src/filewriter/filewriter.cc:316
 #, c-format
@@ -1330,7 +1350,7 @@ msgstr "Izvirna datotečna značka"
 
 #: src/filewriter/filewriter.cc:411
 msgid "Prepend track number to file name"
-msgstr "Pripni številko skladbe imenu datoteke"
+msgstr "Pred ime datoteke pripiši številko skladbe"
 
 #: src/filewriter/filewriter.cc:417 src/filewriter/filewriter.cc:449
 msgid "Auto"
@@ -1364,77 +1384,77 @@ msgstr "24000 Hz"
 msgid "32000 Hz"
 msgstr "32000 Hz"
 
-#: src/filewriter/filewriter.cc:425
+#: src/filewriter/filewriter.cc:425 src/xsf/plugin.cc:430
 msgid "44100 Hz"
 msgstr "44100 Hz"
 
-#: src/filewriter/filewriter.cc:426
+#: src/filewriter/filewriter.cc:426 src/xsf/plugin.cc:431
 msgid "48000 Hz"
 msgstr "48000 Hz"
 
 #: src/filewriter/filewriter.cc:430
-msgid "8 kbps"
-msgstr "8 kbps"
+msgid "8 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:431
-msgid "16 kbps"
-msgstr "16 kbps"
+msgid "16 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:432
-msgid "32 kbps"
-msgstr "32 kbps"
+msgid "32 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:433
-msgid "40 kbps"
-msgstr "40 kbps"
+msgid "40 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:434
-msgid "48 kbps"
-msgstr "48 kbps"
+msgid "48 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:435
-msgid "56 kbps"
-msgstr "56 kbps"
+msgid "56 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:436
-msgid "64 kbps"
-msgstr "64 kbps"
+msgid "64 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:437
-msgid "80 kbps"
-msgstr "80 kbps"
+msgid "80 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:438
-msgid "96 kbps"
-msgstr "96 kbps"
+msgid "96 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:439
-msgid "112 kbps"
-msgstr "112 kbps"
+msgid "112 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:440
-msgid "128 kbps"
-msgstr "128 kbps"
+msgid "128 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:441
-msgid "160 kbps"
-msgstr "160 kbps"
+msgid "160 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:442
-msgid "192 kbps"
-msgstr "192 kbps"
+msgid "192 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:443
-msgid "224 kbps"
-msgstr "224 kbps"
+msgid "224 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:444
-msgid "256 kbps"
-msgstr "256 kbps"
+msgid "256 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:445
-msgid "320 kbps"
-msgstr "320 kbps"
+msgid "320 kbit/s"
+msgstr ""
 
 #: src/filewriter/filewriter.cc:450
 msgid "Joint Stereo"
@@ -1460,7 +1480,7 @@ msgstr "ABR"
 
 #: src/filewriter/filewriter.cc:478
 msgid "Algorithm quality:"
-msgstr "Kvaliteta algoritma:"
+msgstr "Kakovost algoritma:"
 
 #: src/filewriter/filewriter.cc:484
 msgid "Bitrate:"
@@ -1558,7 +1578,7 @@ msgstr "Značke"
 msgid "Quality (0-1):"
 msgstr "Kakovost (0-1):"
 
-#: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:303
+#: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:307
 #: src/skins/skins_cfg.cc:285
 msgid "General"
 msgstr "Splošno"
@@ -1567,11 +1587,11 @@ msgstr "Splošno"
 msgid "FLAC Decoder"
 msgstr "Dekodirnik FLAC"
 
-#: src/flac/metadata.cc:274 src/wavpack/wavpack.cc:215
+#: src/flac/metadata.cc:280 src/wavpack/wavpack.cc:215
 msgid "lossless"
 msgstr "brezizgubno"
 
-#: src/flac/plugin.cc:169
+#: src/flac/plugin.cc:180
 msgid ""
 "Original code by\n"
 "Ralf Ertzinger <ralf@skytale.net>\n"
@@ -1739,36 +1759,36 @@ msgstr "Onemogoči"
 #: src/gtkui/menus.cc:79 src/qtui/menus.cc:107
 #: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:282
 msgid "_Open Files ..."
-msgstr "Odpri datoteke ..."
+msgstr "Odpri _datoteke"
 
 #: src/gtkui/menus.cc:80 src/qtui/menus.cc:111
 msgid "Open _URL ..."
-msgstr "Odpri URL ..."
+msgstr "Odpri _URL"
 
 #: src/gtkui/menus.cc:81 src/qtui/menus.cc:113
 msgid "_Add Files ..."
-msgstr "Dodaj datoteke ..."
+msgstr "Dodaj datotek_e"
 
 #: src/gtkui/menus.cc:82 src/qtui/menus.cc:118
 msgid "Add U_RL ..."
-msgstr "Dodaj URL ..."
+msgstr "Dodaj UR_L"
 
 #: src/gtkui/menus.cc:84 src/qtui/menus.cc:120
 msgid "Search _Library"
-msgstr "Išči po knjižnici"
+msgstr "Išči po _knjižnici"
 
 #: src/gtkui/menus.cc:86 src/qtui/menus.cc:123
 msgid "A_bout ..."
-msgstr "O Audacious ..."
+msgstr "O programu _Audacious"
 
 #: src/gtkui/menus.cc:87 src/qtui/menus.cc:125
 msgid "_Settings ..."
-msgstr "Nastavitve ..."
+msgstr "_Nastavitve"
 
 #: src/gtkui/menus.cc:88 src/qtui/menus.cc:131
 #: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:284
 msgid "_Quit"
-msgstr "Izhod ..."
+msgstr "_Izhod"
 
 #: src/gtkui/menus.cc:92 src/gtkui/menus.cc:224
 #: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
@@ -1776,70 +1796,70 @@ msgstr "Izhod ..."
 #: src/search-tool/search-tool.cc:343 src/statusicon-qt/statusicon.cc:106
 #: src/statusicon/statusicon.cc:276
 msgid "_Play"
-msgstr "Predvajaj"
+msgstr "_Predvajaj"
 
 #: src/gtkui/menus.cc:93 src/qtui/menus.cc:137
 #: src/statusicon-qt/statusicon.cc:107 src/statusicon/statusicon.cc:277
 msgid "Paus_e"
-msgstr "Premor"
+msgstr "P_remor"
 
 #: src/gtkui/menus.cc:94 src/qtui/menus.cc:139
 #: src/statusicon-qt/statusicon.cc:108 src/statusicon/statusicon.cc:278
 msgid "_Stop"
-msgstr "Ustavi"
+msgstr "_Ustavi"
 
 #: src/gtkui/menus.cc:95 src/qtui/menus.cc:141
 #: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:279
 msgid "Pre_vious"
-msgstr "Prejšnja"
+msgstr "Pr_ejšnja"
 
 #: src/gtkui/menus.cc:96 src/qtui/menus.cc:143
 #: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:280
 msgid "_Next"
-msgstr "Naslednja"
+msgstr "Nas_lednja"
 
 #: src/gtkui/menus.cc:97 src/qtui/menus.cc:145 src/skins/menus.cc:114
 #: src/skins-qt/menus.cc:105
 msgid "Previous Album"
-msgstr "Prejšnji album"
+msgstr "Prejš_nji album"
 
 #: src/gtkui/menus.cc:98 src/qtui/menus.cc:146 src/skins/menus.cc:115
 #: src/skins-qt/menus.cc:106
 msgid "Next Album"
-msgstr "Naslednji album"
+msgstr "Nasledn_ji album"
 
 #: src/gtkui/menus.cc:100 src/qtui/menus.cc:148
 msgid "_Repeat"
-msgstr "Ponavljaj"
+msgstr "P_onavljaj"
 
 #: src/gtkui/menus.cc:101 src/qtui/menus.cc:150
 msgid "S_huffle"
-msgstr "Mešaj"
+msgstr "_Mešaj"
 
 #: src/gtkui/menus.cc:102 src/qtui/menus.cc:152
 msgid "Shuffle by Albu_m"
-msgstr "Mešaj med albumi"
+msgstr "Me_šaj med albumi"
 
 #: src/gtkui/menus.cc:103 src/qtui/menus.cc:155
 msgid "N_o Playlist Advance"
-msgstr "Ne nadaljuj po seznamu predvajanja"
+msgstr "Ne nadaljuj po _seznamu predvajanja"
 
 #: src/gtkui/menus.cc:104 src/qtui/menus.cc:157
 msgid "Stop A_fter This Song"
-msgstr "Ustavi po tej skladbi"
+msgstr "Ustavi po _tej skladbi"
 
 #: src/gtkui/menus.cc:106 src/gtkui/menus.cc:208 src/qtui/menus.cc:162
 #: src/qtui/menus.cc:292
 msgid "Song _Info ..."
-msgstr "Informacije o skladbi ..."
+msgstr "_Informacije o skladbi"
 
 #: src/gtkui/menus.cc:107
 msgid "Jump to _Time ..."
-msgstr "Skoči na ..."
+msgstr "Skoči na"
 
 #: src/gtkui/menus.cc:108
 msgid "_Jump to Song ..."
-msgstr "Skoči na skladbo ..."
+msgstr "Skoči na skladbo"
 
 #: src/gtkui/menus.cc:110 src/qtui/menus.cc:165
 msgid "Set Repeat Point _A"
@@ -1851,7 +1871,7 @@ msgstr "Nastavi točko ponavljanja _B"
 
 #: src/gtkui/menus.cc:112 src/qtui/menus.cc:169
 msgid "_Clear Repeat Points"
-msgstr "Počisti točke ponavljanja"
+msgstr "Počisti to_čki ponavljanja"
 
 #: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:140
 #: src/qtui/menus.cc:173 src/qtui/menus.cc:180 src/qtui/menus.cc:197
@@ -1928,111 +1948,111 @@ msgstr "Naključen vrstni red"
 
 #: src/gtkui/menus.cc:156 src/qtui/menus.cc:214
 msgid "_Play/Resume"
-msgstr "Predvajaj/premor"
+msgstr "_Predvajaj/nadaljuj"
 
 #: src/gtkui/menus.cc:157 src/qtui/menus.cc:216
 msgid "_Refresh"
-msgstr "Osveži"
+msgstr "_Osveži"
 
 #: src/gtkui/menus.cc:159 src/qtui/menus.cc:220
 msgid "_Sort"
-msgstr "Razvrsti"
+msgstr "_Razvrsti"
 
 #: src/gtkui/menus.cc:160 src/qtui/menus.cc:221
 msgid "Sort Se_lected"
-msgstr "Razvrsti izbrane"
+msgstr "Razvrsti _izbrane"
 
 #: src/gtkui/menus.cc:161 src/qtui/menus.cc:223
 msgid "Remove _Duplicates"
-msgstr "Odstani dvojnike"
+msgstr "Odstrani _dvojnike"
 
 #: src/gtkui/menus.cc:162 src/qtui/menus.cc:224
 msgid "Remove _Unavailable Files"
-msgstr "Odstrani nedosegljive datoteke"
+msgstr "Odstrani _nedosegljive datoteke"
 
 #: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:218
 #: src/playlist-manager-qt/playlist-manager-qt.cc:346 src/qtui/menus.cc:227
 msgid "_New"
-msgstr "Novo"
+msgstr "No_v"
 
 #: src/gtkui/menus.cc:165 src/qtui/menus.cc:228
 msgid "Ren_ame ..."
-msgstr "Preimenuj ..."
+msgstr "Pr_eimenuj"
 
 #: src/gtkui/menus.cc:166 src/gtkui/menus.cc:226
 #: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:229
 #: src/qtui/playlist_tabs.cc:333
 msgid "Remo_ve"
-msgstr "Odstrani"
+msgstr "Od_strani"
 
 #: src/gtkui/menus.cc:168 src/qtui/menus.cc:231
 msgid "_Import ..."
-msgstr "Uvozi ..."
+msgstr "_Uvozi"
 
 #: src/gtkui/menus.cc:169 src/qtui/menus.cc:232
 msgid "_Export ..."
-msgstr "Izvozi ..."
+msgstr "I_zvozi"
 
 #: src/gtkui/menus.cc:171 src/qtui/menus.cc:235
 msgid "Playlist _Manager ..."
-msgstr "Upravljalnik seznamov predvajanj ..."
+msgstr "Upravljalnik seznamov predvajan_j"
 
 #: src/gtkui/menus.cc:172 src/qtui/menus.cc:237
 msgid "_Queue Manager ..."
-msgstr "Upravljalnik vrste ..."
+msgstr "Upravljalnik vrs_te"
 
 #: src/gtkui/menus.cc:176 src/qtui/menus.cc:241
 msgid "Volume _Up"
-msgstr "Zvišaj glasnost"
+msgstr "Z_višaj glasnost"
 
 #: src/gtkui/menus.cc:177 src/qtui/menus.cc:243
 msgid "Volume _Down"
-msgstr "Znižaj glasnost"
+msgstr "Z_nižaj glasnost"
 
 #: src/gtkui/menus.cc:179 src/qtui/menus.cc:247
 msgid "_Equalizer ..."
-msgstr "Uravnalnik"
+msgstr "_Izenačevalnik"
 
 #: src/gtkui/menus.cc:180 src/qtui/menus.cc:249
 msgid "E_ffects ..."
-msgstr "Učinki ..."
+msgstr "_Učinki"
 
 #: src/gtkui/menus.cc:182
 msgid "_Record Stream"
-msgstr "Snemanje pretoka"
+msgstr "Snemanje _pretoka"
 
 #: src/gtkui/menus.cc:183
 msgid "Audio _Settings ..."
-msgstr "Zvočne nastavitve"
+msgstr "_Zvočne nastavitve"
 
 #: src/gtkui/menus.cc:187 src/qtui/menus.cc:258
 msgid "Show _Menu Bar"
-msgstr "Prikaži vrstico z meniji"
+msgstr "Prikaži _menijsko vrstico"
 
 #: src/gtkui/menus.cc:188 src/qtui/menus.cc:260
 msgid "Show I_nfo Bar"
-msgstr "Prikažo informacijsko vrstico"
+msgstr "Prikaži _informacijsko vrstico"
 
 #: src/gtkui/menus.cc:189 src/qtui/menus.cc:262
 msgid "Show Info Bar _Album Art"
-msgstr ""
+msgstr "V informacijski vrstici prikaži _platnico"
 
 #: src/gtkui/menus.cc:190 src/qtui/menus.cc:264
 msgid "Show Info Bar Vis_ualization"
-msgstr "Prikaži stolpično vizualizacijo"
+msgstr "Prikaži stolpčno _vizualizacijo"
 
 #: src/gtkui/menus.cc:191 src/qtui/menus.cc:266
 msgid "Show _Status Bar"
-msgstr "Prikaži vrstico stanja"
+msgstr "Prikaži vrstico _stanja"
 
 #: src/gtkui/menus.cc:193 src/qtui/menus.cc:270
 msgid "Show _Remaining Time"
-msgstr "Prikaži preostali čas"
+msgstr "Prikaži preostali _čas"
 
 #: src/gtkui/menus.cc:195 src/qtui/menus.cc:274 src/skins/menus.cc:157
 #: src/skins-qt/menus.cc:152
 msgid "_Visualizations ..."
-msgstr "Vizualizacije ..."
+msgstr "Vi_zualizacije"
 
 #: src/gtkui/menus.cc:199 src/qtui/menus.cc:278
 msgid "_File"
@@ -2057,7 +2077,7 @@ msgstr "Izhod"
 
 #: src/gtkui/menus.cc:204 src/qtui/menus.cc:283
 msgid "_View"
-msgstr "Poglej"
+msgstr "Pogled"
 
 #: src/gtkui/menus.cc:209 src/qtui/menus.cc:294
 msgid "_Queue/Unqueue"
@@ -2094,7 +2114,7 @@ msgstr "Izberi vse"
 #: src/gtkui/menus.cc:225 src/moonstone/playlist_tabs.cc:309
 #: src/qtui/playlist_tabs.cc:331
 msgid "_Rename ..."
-msgstr "Preimenuj ..."
+msgstr "Preimenuj"
 
 #: src/gtkui/settings.cc:35 src/qtui/settings.cc:63
 msgid "<b>Playlist Tabs</b>"
@@ -2106,23 +2126,23 @@ msgstr "Vselej prikaži zavihke"
 
 #: src/gtkui/settings.cc:38 src/qtui/settings.cc:68
 msgid "Show entry counts"
-msgstr "Prikaži števec vnosov"
+msgstr "Prikaži število skladb v naslovu zavihka"
 
 #: src/gtkui/settings.cc:40 src/qtui/settings.cc:71
 msgid "Show close buttons"
-msgstr "Prikaži gumbe za zaprtje"
+msgstr "Prikaži gumb za zaprtje zavihka"
 
 #: src/gtkui/settings.cc:42 src/qtui/settings.cc:74
 msgid "<b>Playlist Columns</b>"
-msgstr "<b>Stolpci seznamov predvajanj</b>"
+msgstr "<b>Glava seznama predvajanja</b>"
 
 #: src/gtkui/settings.cc:44 src/qtui/settings.cc:76
 msgid "Show column headers"
-msgstr "Prikaži glave stolpcev"
+msgstr "Prikaži glavo"
 
 #: src/gtkui/settings.cc:47 src/qtui/settings.cc:82
 msgid "Scroll on song change"
-msgstr "Pomakni seznam ob zamenjavi skladbe"
+msgstr "Zamakni dolg seznam ob zamenjavi skladbe"
 
 #: src/gtkui/ui_gtk.cc:74
 msgid "GTK Interface"
@@ -2161,7 +2181,7 @@ msgstr "Premor"
 #: src/gtkui/ui_gtk.cc:803 src/moonstone/main_window.cc:57
 #: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
-msgstr "Knjižnjica iskanja"
+msgstr "Knjižnica iskanja"
 
 #: src/gtkui/ui_gtk.cc:810 src/moonstone/main_window.cc:60
 #: src/qtui/main_window.cc:147
@@ -2207,7 +2227,7 @@ msgstr "Mešaj"
 
 #: src/gtkui/ui_gtk.cc:1030 src/qtui/main_window.cc:123
 msgid "Menu"
-msgstr ""
+msgstr "Meni"
 
 #: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:155
 msgid "mono"
@@ -2233,8 +2253,8 @@ msgstr "%d kHz"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:174
 #, c-format
-msgid "%d kbps"
-msgstr "%d kbps"
+msgid "%d kbit/s"
+msgstr "%d kbit/s"
 
 #: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471 src/skins-qt/main.cc:455
 msgid "Single mode."
@@ -2254,7 +2274,7 @@ msgstr "Prejšnja skladba"
 
 #: src/hotkey/gui.cc:72 src/qthotkey/gui.cc:65
 msgid "Pause/Resume"
-msgstr "Premor/predvajaj"
+msgstr "Premor/nadaljuj"
 
 #: src/hotkey/gui.cc:74 src/qthotkey/gui.cc:67
 msgid "Next track"
@@ -2302,7 +2322,7 @@ msgstr "Preklopi mešanje"
 
 #: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:78
 msgid "Toggle stop after current"
-msgstr "Preklopi ustavitev po trenutnjem"
+msgstr "Preklopi ustavitev po trenutnem"
 
 #: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:79
 msgid "Raise player window(s)"
@@ -2382,7 +2402,7 @@ msgstr ""
 
 #: src/jack/jack-ng.cc:54
 msgid "JACK Output"
-msgstr "Izhod JACK"
+msgstr "JACK"
 
 #: src/jack/jack-ng.cc:126
 msgid "Client name:"
@@ -2406,7 +2426,7 @@ msgstr "Upmix na"
 
 #: src/jack/jack-ng.cc:141
 msgid "ports if input has fewer channels"
-msgstr "vrat, če ima vhod manj kanalov"
+msgstr "vrat(a), če ima vhod manj kanalov"
 
 #: src/jack/jack-ng.cc:143
 msgid "Ignore insufficient number of ports"
@@ -2420,7 +2440,7 @@ msgstr ""
 #: src/jack/jack-ng.cc:195
 #, c-format
 msgid "Only %d JACK output ports were found but %d are required."
-msgstr "Le %d izhodnih vrat za JACK je bilo najdenih, potrebnih pa je %d"
+msgstr "Najdenih toliko izhodnih vrat za JACK: %d, potrebnih pa toliko: %d."
 
 #: src/jack/jack-ng.cc:210
 #, c-format
@@ -2433,7 +2453,7 @@ msgid ""
 "depth to floating-point in Audacious settings."
 msgstr ""
 "JACK podpira le zvok s plavajočo vejico. V nastavitvah za Audacious morate "
-"nastaviti ozhodno bitno globino na tisto s plavajočo vejico."
+"nastaviti izhodno bitno globino na tisto s plavajočo vejico."
 
 #: src/jack/jack-ng.cc:245
 msgid "Failed to connect to the JACK server; is it running?"
@@ -2544,11 +2564,11 @@ msgstr "Počakaj pred ponovnim povezovanjem:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:89
 msgid "Lyrics"
-msgstr "Besedilo"
+msgstr "Besedilo skladbe"
 
 #: src/lyricwiki-qt/lyricwiki.cc:116
 msgid "Nowhere"
-msgstr "Nikamor"
+msgstr "ne išči"
 
 #: src/lyricwiki-qt/lyricwiki.cc:117
 msgid "lyrics.ovh"
@@ -2556,31 +2576,33 @@ msgstr "lyrics.ovh"
 
 #: src/lyricwiki-qt/lyricwiki.cc:121
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
-msgstr ""
+msgstr "<small>Izvajalec je skrajšan na začetku, naslov -- na koncu</small>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:122
 msgid "Chars to truncate on:"
-msgstr ""
+msgstr "Skrajšaj na znakih:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:126
 msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
 msgstr ""
+"<small>Nad regularnimi izrazi, ločenimi s presledkom, je izvedena operacija "
+"OR</small>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:127
 msgid "Chars to split on:"
-msgstr ""
+msgstr "Razdruži na znakih:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:128
 msgid "Further truncate those on chars"
-msgstr ""
+msgstr "Nadalje skrajšaj na znakih"
 
 #: src/lyricwiki-qt/lyricwiki.cc:134
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Splošno</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:135
 msgid "Split title into artist and title on chars"
-msgstr ""
+msgstr "Razdeli naslov v izvajalca in naslov na znakih"
 
 #: src/lyricwiki-qt/lyricwiki.cc:138
 msgid "<b>Internet Sources</b>"
@@ -2588,7 +2610,7 @@ msgstr "<b>Internetni viri</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:139
 msgid "Fetch lyrics from:"
-msgstr "Išči besedila na:"
+msgstr "Storitev za besedila:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:142
 msgid "Store fetched lyrics in local cache"
@@ -2614,9 +2636,9 @@ msgstr "Napaka pri obdelovanju %s"
 
 #: src/lyricwiki-qt/lyricwiki.cc:403
 msgid "Looking for lyrics ..."
-msgstr "Iščem besedilo ..."
+msgstr "Iščem besedilo..."
 
-#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:38
+#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:62
 msgid "Error"
 msgstr "Napaka"
 
@@ -2686,7 +2708,7 @@ msgstr "<b>Mešalnik kanalov</b>"
 
 #: src/mixer/mixer.cc:260
 msgid "Output channels:"
-msgstr "Izhodni kanali:"
+msgstr "Št. izhodnih kanalov:"
 
 #: src/mms/mms.cc:35
 msgid "MMS Plugin"
@@ -2710,15 +2732,15 @@ msgstr "Najbližji (najhitrejši)"
 
 #: src/modplug/plugin_main.cc:60
 msgid "Linear (fast)"
-msgstr "Linearno (hitro)"
+msgstr "Linearni (hitro)"
 
 #: src/modplug/plugin_main.cc:61
 msgid "Spline (good)"
-msgstr "Zlepek (dobro)"
+msgstr "Spline (dobro)"
 
 #: src/modplug/plugin_main.cc:62
 msgid "Polyphase (best)"
-msgstr "Polifazno (najboljše)"
+msgstr "Polifazni (najboljše)"
 
 #: src/modplug/plugin_main.cc:63
 msgid "<b>Sample rate</b>"
@@ -2747,7 +2769,7 @@ msgstr "Nivo:"
 
 #: src/modplug/plugin_main.cc:77
 msgid "Cutoff:"
-msgstr "Odrez:"
+msgstr "Odreži pri:"
 
 #: src/modplug/plugin_main.cc:90
 msgid "<b>Reverb</b>"
@@ -2801,7 +2823,7 @@ msgstr "Ustavi po tej skladbi"
 
 #: src/moonstone/moonstone.cc:39
 msgid "Moonstone"
-msgstr ""
+msgstr "Moonstone"
 
 #: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:251
 msgid "Reset to Defaults"
@@ -2931,7 +2953,7 @@ msgstr ""
 
 #: src/notify/notify.cc:104
 msgid "Show playback controls"
-msgstr "Prikaži nadzornike predvajanja"
+msgstr "Prikaži gumbe za nadzor predvajanja"
 
 #: src/notify/notify.cc:106
 msgid "Always show notification"
@@ -2943,7 +2965,7 @@ msgstr "V obvestilu prikaži ime albuma"
 
 #: src/notify/notify.cc:110
 msgid "Custom notification duration:"
-msgstr ""
+msgstr "Trajanje po meri:"
 
 #: src/notify/osd.cc:74
 msgid "Show"
@@ -2975,25 +2997,25 @@ msgstr "%"
 msgid "Interpolation:"
 msgstr "Interpolacija:"
 
-#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189
+#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189 src/xsf/plugin.cc:437
 msgid "Linear"
-msgstr "Linearno"
+msgstr "Linearna"
 
 #: src/openmpt/mptwrap.h:52
 msgid "Cubic"
-msgstr "Kubično"
+msgstr "Kubična"
 
 #: src/openmpt/mptwrap.h:53
 msgid "Windowed sinc"
-msgstr "Okenski sinc"
+msgstr "Oknjeni sinc"
 
 #: src/oss4/oss.h:75
 msgid "OSS4 Output"
-msgstr "Izhod OSS4"
+msgstr "OSS4"
 
 #: src/oss4/oss.h:77
 msgid "OSS3 Output"
-msgstr "Izhod OSS3"
+msgstr "OSS3"
 
 #: src/oss4/plugin.cc:35
 msgid "Default device"
@@ -3001,7 +3023,7 @@ msgstr "Privzeta naprava"
 
 #: src/oss4/plugin.cc:78
 msgid "Audio device:"
-msgstr "Zvokona naprava:"
+msgstr "Zvočna naprava:"
 
 #: src/oss4/plugin.cc:81
 msgid "Use alternate device:"
@@ -3060,13 +3082,13 @@ msgstr "Dekodirnik OpenPSF PSF1/PSF2"
 msgid "<b>OpenPSF Configuration</b>"
 msgstr "<b>Nastavitve OpenPSF</b>"
 
-#: src/psf/plugin.cc:271 src/xsf/plugin.cc:233
+#: src/psf/plugin.cc:271 src/xsf/plugin.cc:444
 msgid "Ignore length from file"
 msgstr "Prezri dolžino iz datoteke"
 
 #: src/pulse/pulse_audio.cc:42
 msgid "PulseAudio Output"
-msgstr "Izhod PulseAudio"
+msgstr "PulseAudio"
 
 #: src/pulse/pulse_audio.cc:72
 msgid "Context name:"
@@ -3112,7 +3134,7 @@ msgstr ""
 
 #: src/qtaudio/qtaudio.cc:44
 msgid "QtMultimedia Output"
-msgstr "Izhod QtMultimedia"
+msgstr "QtMultimedia"
 
 #: src/qtaudio/qtaudio.cc:72
 msgid ""
@@ -3140,10 +3162,19 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"OpenGL Spectrum Analyzer for Audacious\n"
+"Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
+"Copyright 2014, 2020 Ariadne Conill\n"
+"\n"
+"Based on the XMMS plugin:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
+"\n"
+"License: GPLv2+"
 
 #: src/qthotkey/gui.cc:165
 msgid "Press a key combination inside a text field."
-msgstr ""
+msgstr "Vnesite tipkovno kombinacijo v besedilno polje."
 
 #: src/qthotkey/plugin.cc:103
 msgid ""
@@ -3160,34 +3191,46 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
+"\n"
+"Copyright (C) 2020 i.Dark_Templar <darktemplar@dark-templar-archives.net>\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributors include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/qtui/menus.cc:109
 msgid "_Open Folder ..."
-msgstr "_Odpri mapo ..."
+msgstr "_Odpri mapo"
 
 #: src/qtui/menus.cc:115
 msgid "_Add Folder ..."
-msgstr "_Dodaj mapo ..."
+msgstr "Dodaj _mapo"
 
 #: src/qtui/menus.cc:128
 msgid "_Log Inspector ..."
-msgstr "Pregledovalnik _zapisnika ..."
+msgstr "Pregledovalnik _zapisnika"
 
 #: src/qtui/menus.cc:218
 msgid "_Find ..."
-msgstr "_Išči ..."
+msgstr "_Išči"
 
 #: src/qtui/menus.cc:254 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
-msgstr "Zvočne nastavitve ..."
+msgstr "Zvočne nastavitve"
 
 #: src/qtui/playlist_model.cc:186
 msgid "Q#"
-msgstr ""
+msgstr "Q#"
 
 #: src/qtui/playlist_model.cc:188
 msgid "T#"
-msgstr ""
+msgstr "T#"
 
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
@@ -3203,7 +3246,7 @@ msgstr "Vselej"
 
 #: src/qtui/settings.cc:59
 msgid "Auto-hide"
-msgstr "Samodejno skrij"
+msgstr "Če je odprt več kot eden"
 
 #: src/qtui/settings.cc:60
 msgid "Never"
@@ -3215,7 +3258,7 @@ msgstr "Prikaži zavihke seznama predvajanja:"
 
 #: src/qtui/settings.cc:78
 msgid "Use bold font for column headers"
-msgstr ""
+msgstr "Prikaži z odebeljeno pisavo"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -3259,7 +3302,7 @@ msgstr "Način:"
 
 #: src/resample/resample.cc:199 src/soxr/sox-resampler.cc:203
 msgid "Rate:"
-msgstr "Hitrost:"
+msgstr "Hitrost vzorčenja:"
 
 #: src/resample/resample.cc:202
 msgid "<b>Rate Mappings</b>"
@@ -3311,7 +3354,7 @@ msgstr "192 kHz:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr "Preverjam dostop do Last.fm ..."
+msgstr "Preverjam dostop do Last.fm..."
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
@@ -3344,7 +3387,7 @@ msgstr "Preveri pravice"
 
 #: src/scrobbler2/config_window.cc:87
 msgid "Revoke Permission"
-msgstr "Odvzemi pravico"
+msgstr "Odvzemi pravice"
 
 #: src/scrobbler2/config_window.cc:91
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
@@ -3391,7 +3434,7 @@ msgstr ""
 
 #: src/sdlout/sdlout.cc:43
 msgid "SDL Output"
-msgstr "Izhod SDL"
+msgstr "SDL"
 
 #: src/sdlout/sdlout.cc:72
 msgid ""
@@ -3404,7 +3447,7 @@ msgstr ""
 #: src/search-tool/library.cc:35 src/search-tool/library.cc:46
 #: src/search-tool-qt/library.cc:35 src/search-tool-qt/library.cc:46
 msgid "Library"
-msgstr "Knjižnjica"
+msgstr "Knjižnica"
 
 #: src/search-tool-qt/search-model.cc:49 src/search-tool/search-tool.cc:291
 #, c-format
@@ -3433,23 +3476,23 @@ msgstr "Število zadetkov za prikaz:"
 
 #: src/search-tool-qt/search-tool-qt.cc:168 src/search-tool/search-tool.cc:76
 msgid "Rescan library at startup"
-msgstr "Vnovič preišči knjižnjico ob zagonu"
+msgstr "Ob zagonu ponovno preišči knjižnico"
 
 #: src/search-tool-qt/search-tool-qt.cc:170
 msgid "Monitor library for changes"
-msgstr "Opazuj knjižnjico za spremembe"
+msgstr "Opazuj knjižnico za spremembe"
 
 #: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:446
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"Za uvoz vaše knjižnjice v program Audacious izberite mapo in kliknite ikono "
+"Za uvoz vaše knjižnice v program Audacious izberite mapo in kliknite ikono "
 "za osvežitev."
 
 #: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:455
 msgid "Please wait ..."
-msgstr "Prosimo počajakte ..."
+msgstr "Prosimo počakajte..."
 
 #: src/search-tool-qt/search-tool-qt.cc:197 src/search-tool/search-tool.cc:483
 msgid "Choose Folder"
@@ -3457,7 +3500,7 @@ msgstr "Izberite mapo"
 
 #: src/search-tool-qt/search-tool-qt.cc:201
 msgid "Search library"
-msgstr "Išči po knjižnjici"
+msgstr "Išči po knjižnici"
 
 #: src/search-tool-qt/search-tool-qt.cc:327 src/search-tool/search-tool.cc:155
 #, c-format
@@ -3491,7 +3534,7 @@ msgstr "Predvajalnik SID"
 
 #: src/sid/xs_config.cc:62
 msgid "Channels:"
-msgstr "Kanali:"
+msgstr "Št. kanalov:"
 
 #: src/sid/xs_config.cc:68
 msgid "<b>Emulation</b>"
@@ -3523,7 +3566,7 @@ msgstr "<b>Čas predvajanja</b>"
 
 #: src/sid/xs_config.cc:81
 msgid "Set maximum playback time:"
-msgstr "Nastavi največji čas predvajanja:"
+msgstr "Nastavi najdaljši čas predvajanja:"
 
 #: src/sid/xs_config.cc:87
 msgid "Use only when song length is unknown"
@@ -3531,7 +3574,7 @@ msgstr "Uporabi le, ko je dolžina skladbe neznana"
 
 #: src/sid/xs_config.cc:90
 msgid "Set minimum playback time:"
-msgstr "Nastavi najmanjši čas predvajanja:"
+msgstr "Nastavi najkrajši čas predvajanja:"
 
 #: src/sid/xs_config.cc:96
 msgid "<b>Subtunes</b>"
@@ -3547,7 +3590,7 @@ msgstr "Prezri podskladbe, krajše od:"
 
 #: src/sid/xs_config.cc:105
 msgid "<b>Note</b>"
-msgstr "<b>Nota</b>"
+msgstr "<b>Opomba</b>"
 
 #: src/silence-removal/silence-removal.cc:39
 msgid "Silence Removal"
@@ -3575,7 +3618,7 @@ msgstr "dB"
 
 #: src/skins/actions.cc:45 src/skins-qt/actions.cc:43
 msgid "Repeat points cleared."
-msgstr "Točke ponavljanja izbrisane."
+msgstr "Točki ponavljanja izbrisani."
 
 #: src/skins/actions.cc:60 src/skins-qt/actions.cc:58
 msgid "Repeat point A set."
@@ -3631,7 +3674,7 @@ msgstr "16 kHz"
 
 #: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:268
 msgid "Audacious Equalizer"
-msgstr "Uravnalnik Audacious"
+msgstr "Izenačevalnik Audacious"
 
 #: src/skins/main.cc:452 src/skins-qt/main.cc:436
 msgid "Recording on"
@@ -3700,15 +3743,15 @@ msgstr "Znižaj glasnost"
 
 #: src/skins/menus.cc:77 src/skins-qt/menus.cc:67
 msgid "Effects ..."
-msgstr "Učinki ..."
+msgstr "Učinki"
 
 #: src/skins/menus.cc:84 src/skins-qt/menus.cc:74
 msgid "Open Files ..."
-msgstr "Odpri datoteke ..."
+msgstr "Odpri datoteke"
 
 #: src/skins/menus.cc:85 src/skins-qt/menus.cc:76
 msgid "Open URL ..."
-msgstr "Odpri URL ..."
+msgstr "Odpri URL"
 
 #: src/skins/menus.cc:88 src/skins-qt/menus.cc:79
 msgid "Playback"
@@ -3724,30 +3767,30 @@ msgstr "Izhod"
 
 #: src/skins/menus.cc:91 src/skins-qt/menus.cc:82
 msgid "View"
-msgstr "Poglej"
+msgstr "Pogled"
 
 #: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
 #: src/skins/menus.cc:243 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
-#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:237
+#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:239
 msgid "Services"
 msgstr "Storitve"
 
 #: src/skins/menus.cc:95 src/skins-qt/menus.cc:86
 msgid "About ..."
-msgstr "O programu ..."
+msgstr "O programu"
 
 #: src/skins/menus.cc:96 src/skins-qt/menus.cc:87
 msgid "Settings ..."
-msgstr "Nastavitve ..."
+msgstr "Nastavitve"
 
 #: src/skins/menus.cc:97 src/skins-qt/menus.cc:88
 msgid "Quit"
 msgstr "Izhod"
 
 #: src/skins/menus.cc:101 src/skins/menus.cc:233 src/skins-qt/menus.cc:92
-#: src/skins-qt/menus.cc:227
+#: src/skins-qt/menus.cc:229
 msgid "Song Info ..."
-msgstr "Podatki o skladbi ..."
+msgstr "Podatki o skladbi"
 
 #: src/skins/menus.cc:105 src/skins-qt/menus.cc:96
 msgid "Shuffle by Album"
@@ -3765,13 +3808,13 @@ msgstr "Nastavi ponavljanje A-B"
 msgid "Clear A-B Repeat"
 msgstr "Počisti ponavljanje A-B"
 
-#: src/skins/menus.cc:120 src/skins-qt/menus.cc:112
+#: src/skins/menus.cc:120 src/skins-qt/menus.cc:111
 msgid "Jump to Song ..."
-msgstr "Skoči na skladbo ..."
+msgstr "Skoči na skladbo"
 
 #: src/skins/menus.cc:121 src/skins-qt/menus.cc:113
 msgid "Jump to Time ..."
-msgstr "Skoči na čas ..."
+msgstr "Skoči na čas"
 
 #: src/skins/menus.cc:125 src/skins-qt/menus.cc:118
 msgid "Play/Resume"
@@ -3783,7 +3826,7 @@ msgstr "Nov seznam predvajanja"
 
 #: src/skins/menus.cc:128 src/skins-qt/menus.cc:121
 msgid "Rename Playlist ..."
-msgstr "Preimenuj seznam predvajanja ..."
+msgstr "Preimenuj seznam predvajanja"
 
 #: src/skins/menus.cc:129 src/skins-qt/menus.cc:122
 msgid "Remove Playlist"
@@ -3799,19 +3842,19 @@ msgstr "Naslednji seznam predvajanja"
 
 #: src/skins/menus.cc:134 src/skins-qt/menus.cc:127
 msgid "Import Playlist ..."
-msgstr "Uvozi seznam predvajanja ..."
+msgstr "Uvozi seznam predvajanja"
 
 #: src/skins/menus.cc:135 src/skins-qt/menus.cc:128
 msgid "Export Playlist ..."
-msgstr "Izvozi seznam predvajanja ..."
+msgstr "Izvozi seznam predvajanja"
 
 #: src/skins/menus.cc:137 src/skins-qt/menus.cc:130
 msgid "Playlist Manager ..."
-msgstr "Upravljalnik seznamov predvajanj ..."
+msgstr "Upravljalnik seznamov predvajanj"
 
 #: src/skins/menus.cc:138 src/skins-qt/menus.cc:131
 msgid "Queue Manager ..."
-msgstr "Upravljalnik vrste ..."
+msgstr "Upravljalnik vrste"
 
 #: src/skins/menus.cc:140 src/skins-qt/menus.cc:133
 msgid "Refresh Playlist"
@@ -3823,7 +3866,7 @@ msgstr "Prikaži urejevalnik seznamov predvajanj"
 
 #: src/skins/menus.cc:145 src/skins-qt/menus.cc:138
 msgid "Show Equalizer"
-msgstr "Prikaži uravnalnik"
+msgstr "Prikaži izenačevalnik"
 
 #: src/skins/menus.cc:147 src/skins-qt/menus.cc:140
 msgid "Show Remaining Time"
@@ -3847,31 +3890,31 @@ msgstr "Privzdigni urejevalnik seznamov predvajanj"
 
 #: src/skins/menus.cc:155 src/skins-qt/menus.cc:150
 msgid "Roll Up Equalizer"
-msgstr "Privzdigni uravnalnik"
+msgstr "Privzdigni izenačevalnik"
 
 #: src/skins/menus.cc:163 src/skins-qt/menus.cc:158
 msgid "Add URL ..."
-msgstr "Dodaj URL ..."
+msgstr "Dodaj URL"
 
 #: src/skins/menus.cc:164 src/skins-qt/menus.cc:160
 msgid "Add Files ..."
-msgstr "Dodaj datoteke ..."
+msgstr "Dodaj datoteke"
 
 #: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:211
-#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:190
-#: src/skins-qt/menus.cc:205
+#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:192
+#: src/skins-qt/menus.cc:207
 msgid "By Title"
 msgstr "Po naslovu"
 
 #: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:218
-#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:197
-#: src/skins-qt/menus.cc:212
+#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:199
+#: src/skins-qt/menus.cc:214
 msgid "By File Name"
 msgstr "Po imenu datoteke"
 
 #: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:219
-#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:198
-#: src/skins-qt/menus.cc:213
+#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
+#: src/skins-qt/menus.cc:215
 msgid "By File Path"
 msgstr "Po poti datoteke"
 
@@ -3899,104 +3942,104 @@ msgstr "Odstrani neizbrane"
 msgid "Remove Selected"
 msgstr "Odstrani izbrane"
 
-#: src/skins/menus.cc:187
+#: src/skins/menus.cc:187 src/skins-qt/menus.cc:183
 msgid "Search and Select"
 msgstr "Išči in izberi"
 
-#: src/skins/menus.cc:189 src/skins-qt/menus.cc:183
+#: src/skins/menus.cc:189 src/skins-qt/menus.cc:185
 msgid "Invert Selection"
 msgstr "Obrni izbor"
 
-#: src/skins/menus.cc:190 src/skins-qt/menus.cc:184
+#: src/skins/menus.cc:190 src/skins-qt/menus.cc:186
 msgid "Select None"
 msgstr "Izberi nič"
 
-#: src/skins/menus.cc:191 src/skins-qt/menus.cc:185
+#: src/skins/menus.cc:191 src/skins-qt/menus.cc:187
 msgid "Select All"
 msgstr "Izberi vse"
 
-#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:189
-#: src/skins-qt/menus.cc:204
+#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:191
+#: src/skins-qt/menus.cc:206
 msgid "By Track Number"
 msgstr "Po številki skladbe"
 
-#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:191
-#: src/skins-qt/menus.cc:206
+#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:193
+#: src/skins-qt/menus.cc:208
 msgid "By Artist"
 msgstr "Po izvajalcu"
 
-#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:192
-#: src/skins-qt/menus.cc:207
+#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:194
+#: src/skins-qt/menus.cc:209
 msgid "By Album"
 msgstr "Po albumu"
 
-#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:193
-#: src/skins-qt/menus.cc:208
+#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:195
+#: src/skins-qt/menus.cc:210
 msgid "By Album Artist"
 msgstr "Po izvajalcu albuma"
 
-#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:194
-#: src/skins-qt/menus.cc:210
+#: src/skins/menus.cc:200 src/skins/menus.cc:215 src/skins-qt/menus.cc:196
+#: src/skins-qt/menus.cc:211
 msgid "By Release Date"
 msgstr "Po datumu izdaje"
 
-#: src/skins/menus.cc:201 src/skins/menus.cc:215 src/skins-qt/menus.cc:195
-#: src/skins-qt/menus.cc:209
+#: src/skins/menus.cc:201 src/skins/menus.cc:216 src/skins-qt/menus.cc:197
+#: src/skins-qt/menus.cc:212
 msgid "By Genre"
 msgstr "Po žanru"
 
-#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:196
-#: src/skins-qt/menus.cc:211
+#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:198
+#: src/skins-qt/menus.cc:213
 msgid "By Length"
 msgstr "Po dolžini"
 
-#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:199
-#: src/skins-qt/menus.cc:214
+#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:201
+#: src/skins-qt/menus.cc:216
 msgid "By Custom Title"
 msgstr "Po naslovu po meri"
 
-#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:200
-#: src/skins-qt/menus.cc:215
+#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:202
+#: src/skins-qt/menus.cc:217
 msgid "By Comment"
 msgstr "Po komentarju"
 
-#: src/skins/menus.cc:225 src/skins-qt/menus.cc:219
+#: src/skins/menus.cc:225 src/skins-qt/menus.cc:221
 msgid "Randomize List"
 msgstr "Razvrsti seznam naključno"
 
-#: src/skins/menus.cc:226 src/skins-qt/menus.cc:220
+#: src/skins/menus.cc:226 src/skins-qt/menus.cc:222
 msgid "Reverse List"
 msgstr "Razvrsti seznam vzvratno "
 
-#: src/skins/menus.cc:228 src/skins-qt/menus.cc:222
+#: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
 msgid "Sort Selected"
 msgstr "Razvrsti izbrane"
 
-#: src/skins/menus.cc:229 src/skins-qt/menus.cc:223
+#: src/skins/menus.cc:229 src/skins-qt/menus.cc:225
 msgid "Sort List"
 msgstr "Razvrsti seznam"
 
-#: src/skins/menus.cc:234 src/skins-qt/menus.cc:228
+#: src/skins/menus.cc:234 src/skins-qt/menus.cc:230
 msgid "Open Containing Folder"
 msgstr "Odpri vsebujočo mapo"
 
-#: src/skins/menus.cc:236 src/skins-qt/menus.cc:230
+#: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
 msgid "Cut"
 msgstr "Izreži"
 
-#: src/skins/menus.cc:237 src/skins-qt/menus.cc:231
+#: src/skins/menus.cc:237 src/skins-qt/menus.cc:233
 msgid "Copy"
 msgstr "Kopiraj"
 
-#: src/skins/menus.cc:238 src/skins-qt/menus.cc:232
+#: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
 msgid "Paste"
 msgstr "Prilepi"
 
-#: src/skins/menus.cc:239 src/skins-qt/menus.cc:233
+#: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
 msgid "Paste at End"
 msgstr "Prilepi na konec"
 
-#: src/skins/menus.cc:241 src/skins-qt/menus.cc:235
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
 msgid "Queue/Unqueue"
 msgstr "Dodaj/odstrani iz vrste"
 
@@ -4005,7 +4048,7 @@ msgstr "Dodaj/odstrani iz vrste"
 msgid "%s (%d of %d)"
 msgstr "%s (%d od %d)"
 
-#: src/skins/playlistwin.cc:492 src/skins-qt/playlistwin.cc:477
+#: src/skins/playlistwin.cc:491 src/skins-qt/playlistwin.cc:476
 msgid "Audacious Playlist Editor"
 msgstr "Urejevalnik seznamov predvajanj Audacious"
 
@@ -4015,173 +4058,224 @@ msgstr "Vmesnik Winamp Classic"
 
 #: src/skins-qt/menus.cc:75
 msgid "Open Folder ..."
-msgstr "Odpri mapo ..."
+msgstr "Odpri mapo"
 
 #: src/skins-qt/menus.cc:159
 msgid "Add Folder ..."
-msgstr "Dodaj mapo ..."
+msgstr "Dodaj mapo"
 
-#: src/skins-qt/skins_cfg.cc:196 src/skins/skins_cfg.cc:180
+#: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:76
+msgid "Search entries in active playlist"
+msgstr "Išči v dejavnem seznamu predvajanja"
+
+#: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:82
+msgid ""
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
+"expressions work, simply insert a literal portion of what you're searching "
+"for."
+msgstr ""
+"Iščite po seznamu predvajanja z izpolnjevanjem enega ali več polj. Uporablja "
+"se regex, neodvisen od velikosti črk. Če sintakse regex ne poznate, "
+"dobesedno vpišite termine za iskanje."
+
+#: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:90
+msgid "Title:"
+msgstr "Naslov:"
+
+#: src/skins-qt/search-select.cc:78 src/skins/search-select.cc:96
+msgid "Album:"
+msgstr "Album:"
+
+#: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:102
+msgid "Artist:"
+msgstr "Izvajalec:"
+
+#: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:108
+msgid "File Name:"
+msgstr "Ime datoteke:"
+
+#: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:116
+msgid "Clear previous selection before searching"
+msgstr "Počisti prejšnji izbor pred iskanjem"
+
+#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:119
+msgid "Automatically toggle queue for matching entries"
+msgstr "Samodejno prikaži vrsto za ujemajoče zadetke"
+
+#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:122
+msgid "Create a new playlist with matching entries"
+msgstr "Ustvari nov seznam predvajanja z ujemajočimi zadetki"
+
+#: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:77
+msgid "Search"
+msgstr "Išči"
+
+#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:180
 msgid "Player:"
 msgstr "Predvajalnik:"
 
-#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:182
+#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:182
 msgid "Select main player window font:"
 msgstr "Izberite pisavo glavnega okna predvajalnika:"
 
-#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:183
+#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:183
 msgid "Playlist:"
 msgstr "Seznam predvajanja:"
 
-#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:185
+#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:185
 msgid "Select playlist font:"
 msgstr "Izberite pisavo seznama predvajanja:"
 
-#: src/skins-qt/skins_cfg.cc:205 src/skins/skins_cfg.cc:189
+#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:189
 msgid "<b>Skin</b>"
 msgstr "<b>Preobleka</b>"
 
-#: src/skins-qt/skins_cfg.cc:209 src/skins/skins_cfg.cc:191
+#: src/skins-qt/skins_cfg.cc:211
+msgid "Display active titlebar when any window is focused"
+msgstr ""
+
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:191
 msgid "<b>Fonts</b>"
 msgstr "<b>Pisave</b>"
 
-#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:193
+#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:193
 msgid "Use bitmap fonts (supports ASCII only)"
 msgstr "Uporabi bitne pisave (podpirajo le znake ASCII, brez šumnikov)"
 
-#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:195
+#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:195
 msgid "Scroll song title"
 msgstr "Drseč naslov skladbe"
 
-#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
+#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:197
 msgid "Scroll song title in both directions"
 msgstr "Drseč naslov skladbe v obeh smereh"
 
-#: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:202
+#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:202
 msgid "Analyzer"
 msgstr "Analizator"
 
-#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:203
+#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:203
 msgid "Scope"
 msgstr "Osciloskop"
 
-#: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:204
+#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:204
 msgid "Voiceprint / VU meter"
 msgstr "Spektrogram / VU-meter"
 
-#: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:205
+#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:205
 msgid "Off"
 msgstr "Izklop"
 
-#: src/skins-qt/skins_cfg.cc:227 src/skins-qt/skins_cfg.cc:252
-#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:209
+#: src/skins-qt/skins_cfg.cc:231 src/skins-qt/skins_cfg.cc:256
+#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:209
 #: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
 msgid "Normal"
 msgstr "Običajno"
 
-#: src/skins-qt/skins_cfg.cc:228 src/skins-qt/skins_cfg.cc:253
+#: src/skins-qt/skins_cfg.cc:232 src/skins-qt/skins_cfg.cc:257
 #: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
 msgid "Fire"
 msgstr "Ogenj"
 
-#: src/skins-qt/skins_cfg.cc:229 src/skins/skins_cfg.cc:211
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:211
 msgid "Vertical lines"
 msgstr "Navpične črte"
 
-#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:215
+#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:215
 msgid "Lines"
 msgstr "Črte"
 
-#: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:216
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:216
 msgid "Bars"
 msgstr "Vrstice"
 
-#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:220
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:220
 msgid "Slowest"
 msgstr "Najpočasneje"
 
-#: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:221
+#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:221
 msgid "Slow"
 msgstr "Počasi"
 
-#: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:222
+#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:222
 #: src/soxr/sox-resampler.cc:180
 msgid "Medium"
 msgstr "Srednje"
 
-#: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:223
+#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:223
 msgid "Fast"
 msgstr "Hitro"
 
-#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
+#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:224
 msgid "Fastest"
 msgstr "Najhitreje"
 
-#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:228
+#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:228
 msgid "Dots"
 msgstr "Pike"
 
-#: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:229
+#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:229
 msgid "Line"
 msgstr "Črta"
 
-#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:230
+#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:230
 msgid "Solid"
 msgstr "Trdno"
 
-#: src/skins-qt/skins_cfg.cc:254 src/skins/skins_cfg.cc:236
+#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:236
 msgid "Ice"
 msgstr "Led"
 
-#: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:241
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:241
 msgid "Smooth"
 msgstr "Gladko"
 
-#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:245
+#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:245
 msgid "Coloring:"
 msgstr "Barvanje:"
 
-#: src/skins-qt/skins_cfg.cc:266 src/skins/skins_cfg.cc:248
+#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:248
 msgid "Style:"
 msgstr "Slog:"
 
-#: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:251
+#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:251
 msgid "Falloff:"
 msgstr "Padec:"
 
-#: src/skins-qt/skins_cfg.cc:272 src/skins/skins_cfg.cc:254
+#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:254
 msgid "Peak falloff:"
 msgstr "Vrh padca:"
 
-#: src/skins-qt/skins_cfg.cc:278 src/skins/skins_cfg.cc:260
+#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:260
 msgid "Scope Style:"
 msgstr "Slog osciloskopa:"
 
-#: src/skins-qt/skins_cfg.cc:281 src/skins/skins_cfg.cc:263
+#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:263
 msgid "Voiceprint Coloring:"
 msgstr "Barve spektrograma:"
 
-#: src/skins-qt/skins_cfg.cc:284 src/skins/skins_cfg.cc:266
+#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:266
 msgid "VU Meter Style:"
-msgstr "Stil VU-metra:"
+msgstr "Slog VU-metra:"
 
-#: src/skins-qt/skins_cfg.cc:290 src/skins/skins_cfg.cc:272
+#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:272
 msgid "<b>Type</b>"
 msgstr "<b>Vrsta</b>"
 
-#: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:273
+#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:273
 msgid "Visualization type:"
 msgstr "Vrsta vizualizacije:"
 
-#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:276
+#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:276
 msgid "<b>Analyzer</b>"
 msgstr "<b>Analizator</b>"
 
-#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
+#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:277
 msgid "Show peaks"
 msgstr "Prikaži vrhe"
 
-#: src/skins-qt/skins_cfg.cc:304 src/skins/skins_cfg.cc:286
+#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:286
 msgid "Visualization"
 msgstr "Vizualizacija"
 
@@ -4193,58 +4287,11 @@ msgstr "Arhivirane Winamp 2.x preobleke"
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Nearhivirane Winamp 2.x preobleke"
 
-#: src/skins/search-select.cc:75
-msgid "Search entries in active playlist"
-msgstr "Išči v dejavnem seznamu predvajanja"
-
-#: src/skins/search-select.cc:76
-msgid "Search"
-msgstr "Išči"
-
-#: src/skins/search-select.cc:81
-msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
-"expressions work, simply insert a literal portion of what you're searching "
-"for."
-msgstr ""
-"Iščite po seznamu predvajanja z izpolnjevanjem enega ali več polj. Uporablja "
-"se regex, neodvisen od velikosti črk. Če sintakse regex ne poznate, "
-"dobesedno vpišite termine za iskanje."
-
-#: src/skins/search-select.cc:89
-msgid "Title:"
-msgstr "Naslov:"
-
-#: src/skins/search-select.cc:95
-msgid "Album:"
-msgstr "Album:"
-
-#: src/skins/search-select.cc:101
-msgid "Artist:"
-msgstr "Izvajalec:"
-
-#: src/skins/search-select.cc:107
-msgid "File Name:"
-msgstr "Ime datoteke:"
-
-#: src/skins/search-select.cc:115
-msgid "Clear previous selection before searching"
-msgstr "Počisti prejšen izbor pred iskanjem"
-
-#: src/skins/search-select.cc:118
-msgid "Automatically toggle queue for matching entries"
-msgstr "Samodejno prikaži vrsto za ujemajoče zadetke"
-
-#: src/skins/search-select.cc:121
-msgid "Create a new playlist with matching entries"
-msgstr "Ustvari nov seznam predvajanja z ujemajočimi zadetki"
-
 #: src/sndfile/plugin.cc:38
 msgid "Sndfile Plugin"
 msgstr "Vtičnik Sndfile"
 
-#: src/sndfile/plugin.cc:363
+#: src/sndfile/plugin.cc:372
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -4286,7 +4333,7 @@ msgstr ""
 
 #: src/sndio/sndio.cc:43
 msgid "Sndio Output"
-msgstr "Izhod Sndio"
+msgstr "Sndio"
 
 #: src/sndio/sndio.cc:98
 msgid "Device (blank for default):"
@@ -4315,7 +4362,7 @@ msgstr "Napaka Sndio: sio_start() spodletel"
 
 #: src/songchange/song_change.cc:30
 msgid "Song Change"
-msgstr "Sprememba skladbe"
+msgstr "Dejanja ob spremembi skladbe"
 
 #: src/songchange/song_change.cc:245
 msgid "<b>Commands</b>"
@@ -4376,8 +4423,8 @@ msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.  "
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
-"Parametri, podani ukazni lupini morajo biti obdani z narekovaji, da se "
-"izognete nepričakovanim ukazom."
+"Parametri, podani ukazni lupini, morajo biti obdani z narekovaji, da se "
+"izognete nepričakovanim odzivom."
 
 #: src/song-info-qt/song-info.cc:30
 msgid "Song Info"
@@ -4403,31 +4450,31 @@ msgstr ""
 
 #: src/soxr/sox-resampler.cc:178
 msgid "Quick"
-msgstr "Hitro"
+msgstr "hitra"
 
 #: src/soxr/sox-resampler.cc:179
 msgid "Low"
-msgstr "Nizko"
+msgstr "nizka"
 
 #: src/soxr/sox-resampler.cc:181
 msgid "High"
-msgstr "Visoko"
+msgstr "visoka"
 
 #: src/soxr/sox-resampler.cc:182
 msgid "Very High"
-msgstr "Zelo visoko"
+msgstr "zelo visoka"
 
 #: src/soxr/sox-resampler.cc:183
 msgid "Ultra High"
-msgstr "Izjemno visoko"
+msgstr "izjemno visoka"
 
 #: src/soxr/sox-resampler.cc:187
 msgid "Minimum"
-msgstr "Najmanjše"
+msgstr "najmanjša"
 
 #: src/soxr/sox-resampler.cc:188
 msgid "Intermediate"
-msgstr "Srednje"
+msgstr "srednja"
 
 #: src/soxr/sox-resampler.cc:193
 msgid "Quality:"
@@ -4455,11 +4502,11 @@ msgstr "<b>Hitrost</b>"
 
 #: src/speedpitch/speed-pitch.cc:248
 msgid "Decouple from pitch"
-msgstr "Loči od višine tona"
+msgstr "Razdruži od višine tona"
 
 #: src/speedpitch/speed-pitch.cc:250 src/speedpitch/speed-pitch.cc:258
 msgid "Multiplier:"
-msgstr "Množilnik:"
+msgstr "Faktor:"
 
 #: src/speedpitch/speed-pitch.cc:254
 msgid "<b>Pitch</b>"
@@ -4467,7 +4514,7 @@ msgstr "<b>Višina tona</b>"
 
 #: src/statusicon-qt/statusicon.cc:44 src/statusicon/statusicon.cc:47
 msgid "Status Icon"
-msgstr "Statusna ikona"
+msgstr "Ikona v orodni vrstici"
 
 #: src/statusicon-qt/statusicon.cc:65
 msgid ""
@@ -4519,7 +4566,7 @@ msgstr "Napreduj po seznamu predvajanja ob drsenju navzgor"
 
 #: src/statusicon-qt/statusicon.cc:113 src/statusicon/statusicon.cc:283
 msgid "Se_ttings ..."
-msgstr "Nas_tavitve ..."
+msgstr "Nas_tavitve"
 
 #: src/statusicon/statusicon.cc:373
 msgid ""
@@ -4575,7 +4622,7 @@ msgstr "Trg"
 
 #: src/streamtuner/ihr-model.cc:156
 msgid "Call Letters"
-msgstr "Klicne črke"
+msgstr "Klicni znak"
 
 #: src/streamtuner/ihr-model.cc:162
 msgid "Description"
@@ -4651,7 +4698,7 @@ msgstr "Pop"
 
 #: src/streamtuner/shoutcast-model.cc:205
 msgid "Public Radio"
-msgstr "Javni radio"
+msgstr "Public Radio"
 
 #: src/streamtuner/shoutcast-model.cc:206
 msgid "R&B and Urban"
@@ -4708,7 +4755,7 @@ msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.cc:92
 msgid "Tone Generator: "
-msgstr "Generator tonov: "
+msgstr "Generator tonov:"
 
 #: src/tonegen/tonegen.cc:161
 msgid ""
@@ -4724,13 +4771,26 @@ msgstr ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 
-#: src/ui-common/dialogs-qt.cc:31
-msgid "Working ..."
-msgstr "Nalagam ..."
+#: src/ui-common/dialogs-qt.cc:40
+msgid ""
+"\n"
+"(Further messages have been hidden.)"
+msgstr ""
+"\n"
+"(nadaljnja sporočila so bila skrita)"
 
-#: src/ui-common/dialogs-qt.cc:43
+#: src/ui-common/dialogs-qt.cc:52
+msgid "Working ..."
+msgstr "Nalagam..."
+
+#: src/ui-common/dialogs-qt.cc:72
 msgid "Information"
 msgstr "Podatki"
+
+#: src/ui-common/menu-ops-gtk.cc:132 src/ui-common/menu-ops-qt.cc:113
+#, c-format
+msgid "%s does not appear to be a valid folder."
+msgstr ""
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
@@ -4889,13 +4949,37 @@ msgstr ""
 "\n"
 "Some of the plugin code was by Miles Egan."
 
-#: src/xsf/plugin.cc:50
+#: src/xsf/plugin.cc:74
 msgid "2SF Decoder"
 msgstr "Dekodirnik 2SF"
 
-#: src/xsf/plugin.cc:232
+#: src/xsf/plugin.cc:429
+msgid "32728 Hz"
+msgstr ""
+
+#: src/xsf/plugin.cc:432
+msgid "65456 Hz"
+msgstr ""
+
+#: src/xsf/plugin.cc:438
+msgid "Cosine"
+msgstr ""
+
+#: src/xsf/plugin.cc:439
+msgid "Sharp"
+msgstr ""
+
+#: src/xsf/plugin.cc:443
 msgid "<b>XSF Configuration</b>"
 msgstr "<b>Nastavitve XSF</b>"
+
+#: src/xsf/plugin.cc:445
+msgid "Default fade time:"
+msgstr ""
+
+#: src/xsf/plugin.cc:447
+msgid "Interpolation mode:"
+msgstr ""
 
 #: src/xspf/xspf.cc:95
 msgid "XML Shareable Playlists (XSPF)"

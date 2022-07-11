@@ -20,6 +20,7 @@ src/aosd/aosd_ui.cc
 src/asx3/asx3.cc
 src/asx/asx.cc
 src/audpl/audpl.cc
+src/bitcrusher/bitcrusher.cc
 src/blur_scope/blur_scope.cc
 src/blur_scope-qt/blur_scope.cc
 src/bs2b/plugin.cc
@@ -178,6 +179,7 @@ src/skins-qt/menus.cc
 src/skins-qt/playlist-widget.cc
 src/skins-qt/playlistwin.cc
 src/skins-qt/plugin.cc
+src/skins-qt/search-select.cc
 src/skins-qt/skins_cfg.cc
 src/skins-qt/skinselector.cc
 src/skins/search-select.cc
@@ -198,6 +200,8 @@ src/streamtuner/shoutcast-model.cc
 src/streamtuner/streamtuner.cc
 src/tonegen/tonegen.cc
 src/ui-common/dialogs-qt.cc
+src/ui-common/menu-ops-gtk.cc
+src/ui-common/menu-ops-qt.cc
 src/voice_removal/voice_removal.cc
 src/vorbis/vorbis.cc
 src/vorbis/vorbis.h
@@ -207,6 +211,8 @@ src/vumeter-qt/vumeter_qt.cc
 src/vumeter-qt/vumeter_qt.h
 src/waveout/waveout.cc
 src/wavpack/wavpack.cc
+src/xsf/desmume/arm_instructions.cc
+src/xsf/desmume/PACKED.h
 src/xsf/desmume/types.h
 src/xsf/plugin.cc
 src/xspf/xspf.cc

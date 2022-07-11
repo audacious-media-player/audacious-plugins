@@ -8,15 +8,16 @@
 # dragnadh, 2015,2017
 # Farioko <fabianbakkum@hotmail.com>, 2014
 # Freek1A <fjvluijt@hotmail.com>, 2012
-# Heimen Stoffels <vistausss@outlook.com>, 2018,2020
+# Heimen Stoffels <vistausss@fastmail.com>, 2022
+# Heimen Stoffels <vistausss@fastmail.com>, 2018,2020
 # shured <shured1@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2021-02-01 19:27+0100\n"
-"PO-Revision-Date: 2020-12-21 11:30+0000\n"
-"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
+"POT-Creation-Date: 2022-07-09 23:25+0200\n"
+"PO-Revision-Date: 2011-10-10 17:43+0000\n"
+"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>, 2022\n"
 "Language-Team: Dutch (http://www.transifex.com/audacious/audacious/language/"
 "nl/)\n"
 "Language: nl\n"
@@ -27,14 +28,14 @@ msgstr ""
 
 #: src/aac/aac.cc:19
 msgid "AAC (Raw) Decoder"
-msgstr "AAC (Raw) Decoder"
+msgstr "AAC (Raw)-decodering"
 
 #: src/adplug/adplug-xmms.cc:70
 msgid "AdPlug (AdLib Player)"
-msgstr "AdPlug (AdLib Player)"
+msgstr "AdPlug (AdLib-speler)"
 
 #: src/adplug/adplug-xmms.cc:167 src/modplug/modplugbmp.cc:321
-#: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:106
+#: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:204
 msgid "sequenced"
 msgstr "stapsgewijs"
 
@@ -64,7 +65,7 @@ msgstr "Hz"
 
 #: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:46
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:81
-#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
+#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Overig</b>"
 
@@ -78,7 +79,7 @@ msgstr "Alarm"
 
 #: src/alarm/alarm.cc:782
 msgid "Set Alarm ..."
-msgstr "Alarm instellen..."
+msgstr "Alarm instellen…"
 
 #: src/alarm/alarm.cc:810
 msgid ""
@@ -156,7 +157,7 @@ msgstr ""
 "\n"
 "  Tijd:\n"
 "    Kies de tijd waarop het alarm op elke dag moet aangaan,\n"
-"    of selecteer de aan/uit knop om de standaard tijd te \n"
+"    of selecteer de aan-/uitknop om de standaardtijd te \n"
 "    selecteren.\n"
 "\n"
 "\n"
@@ -170,7 +171,7 @@ msgstr ""
 "\n"
 "  Laatste:\n"
 "    Het volume laten stoppen bij.  Als de tijd voor \n"
-"    vervagen 0 is zet dan het volume naar dit en\n"
+"    vervagen 0 is, zet dan het volume naar dit en\n"
 "    start het afspelen.\n"
 "\n"
 "Opties:\n"
@@ -179,9 +180,9 @@ msgstr ""
 "\n"
 "  Afspeellijst:\n"
 "    Laad deze afspeellijst.  Als geen afspeellijst is\n"
-"    opgegeven dan zullen de tracks die op dit moment\n"
-"    in de lijst staan gebruikt worden.\n"
-"    Het URL van een mp3/ogg stream kan ook hier \n"
+"    opgegeven, dan zullen de nummers die op dat moment\n"
+"    op de lijst staan gebruikt worden.\n"
+"    De url van een mp3-/ogg-stream kan ook hier \n"
 "    ingevoerd worden\n"
 "\n"
 "  Herinnering:\n"
@@ -195,7 +196,7 @@ msgstr "Dit is je waarschuwingsmelding."
 
 #: src/alarm/interface.cc:96
 msgid "Your reminder for today is..."
-msgstr "Je herinnering voor vandaag is..."
+msgstr "Je herinnering voor vandaag is…"
 
 #: src/alarm/interface.cc:98 src/alarm/interface.cc:372
 msgid "Reminder"
@@ -405,7 +406,7 @@ msgstr ""
 "\n"
 "Gemaakt door Giacomo Lozito\n"
 "<james@develia.org>\n"
-"Met speciale dank aan...\n"
+"Met speciale dank aan…\n"
 "\n"
 "Clemens Ladisch en Jaroslav Kysela\n"
 "Voor hun coole programma's aplaymidi en amixer; \n"
@@ -476,6 +477,7 @@ msgstr "<b>Synthesizer</b>"
 
 #: src/amidiplug/i_configure.cc:153 src/console/plugin.cc:45
 #: src/filewriter/filewriter.cc:481 src/sid/xs_config.cc:65
+#: src/xsf/plugin.cc:446
 msgid "Sample rate:"
 msgstr "Sample-rate:"
 
@@ -551,6 +553,7 @@ msgid "* no lyrics available in this MIDI file *"
 msgstr "* geen songtekst beschikbaar in dit MIDI-bestand *"
 
 #: src/amidiplug/i_fileinfo.cc:306 src/ladspa/plugin.cc:417
+#: src/ui-common/dialogs-qt.cc:32
 msgid "_Close"
 msgstr "_Sluiten"
 
@@ -610,7 +613,7 @@ msgstr "Vierkant met afgeronde hoeken"
 msgid "Concave Rectangle"
 msgstr "Vierkant met bolle hoeken"
 
-#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50
+#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50 src/xsf/plugin.cc:436
 msgid "None"
 msgstr "Geen"
 
@@ -808,6 +811,22 @@ msgstr "ASXv1/ASXv2-afspeellijsten"
 msgid "Audacious Playlists (audpl)"
 msgstr "Audacious-afspeellijsten (audpl)"
 
+#: src/bitcrusher/bitcrusher.cc:33
+msgid "<b>Bitcrusher</b>"
+msgstr "<b>Bitvertraging</b>"
+
+#: src/bitcrusher/bitcrusher.cc:34
+msgid "Bit Depth:"
+msgstr "Bitdiepte:"
+
+#: src/bitcrusher/bitcrusher.cc:37
+msgid "Downsample ratio:"
+msgstr "Downsample-verhouding:"
+
+#: src/bitcrusher/bitcrusher.cc:48
+msgid "Bitcrusher"
+msgstr "Bitvertraging"
+
 #: src/blur_scope/blur_scope.cc:39 src/blur_scope-qt/blur_scope.cc:45
 msgid "<b>Color</b>"
 msgstr "<b>Kleur</b>"
@@ -842,7 +861,7 @@ msgstr "Spectrum-analyse"
 
 #: src/cdaudio/cdaudio-ng.cc:71
 msgid "Audio CD Plugin"
-msgstr "Audio-CD-plug-in"
+msgstr "Audio-cd-plug-in"
 
 #: src/cdaudio/cdaudio-ng.cc:118
 msgid ""
@@ -908,7 +927,7 @@ msgstr "Fout bij initialiseren van cdio-subsysteem."
 #: src/cdaudio/cdaudio-ng.cc:250
 #, c-format
 msgid "Invalid URI %s."
-msgstr "Ongeldige URI %s."
+msgstr "Ongeldige uri: %s."
 
 #: src/cdaudio/cdaudio-ng.cc:252
 #, c-format
@@ -922,20 +941,20 @@ msgstr "Nummer %d bevat alleen gegevens."
 
 #: src/cdaudio/cdaudio-ng.cc:329
 msgid "Error reading audio CD."
-msgstr "Fout bij lezen van Audio-CD"
+msgstr "De audio-cd kan niet worden uitgelezen"
 
 #: src/cdaudio/cdaudio-ng.cc:398
 msgid "Audio CD"
-msgstr "Audio-CD"
+msgstr "Audio-cd"
 
 #: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr "Het openen van het CD-apparaat '%s' is mislukt."
+msgstr "Het openen van het cd-apparaat ‘%s’ is mislukt."
 
 #: src/cdaudio/cdaudio-ng.cc:447
 msgid "No audio capable CD drive found."
-msgstr "Geen CD-speler met audiomogelijkheid aangetroffen."
+msgstr "Geen cd-speler met audiomogelijkheid aangetroffen."
 
 #: src/cdaudio/cdaudio-ng.cc:470
 msgid "Drive is empty."
@@ -947,7 +966,7 @@ msgstr "Niet-ondersteund schijftype."
 
 #: src/cdaudio/cdaudio-ng.cc:496
 msgid "Failed to finish initializing opened CD drive."
-msgstr "Het initialiseren van de geopende CD-schijf is mislukt."
+msgstr "Het initialiseren van de geopende cd-schijf is mislukt."
 
 #: src/cdaudio/cdaudio-ng.cc:509
 msgid "Failed to retrieve first/last track number."
@@ -956,7 +975,7 @@ msgstr "Het herstellen van het eerste/laatste titelnummer is mislukt."
 #: src/cdaudio/cdaudio-ng.cc:530
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr "Kan begin-/eind-LSN van het nummer '%d' niet lezen."
+msgstr "Kan begin-/eind-LSN van het nummer ‘%d’ niet uitlezen."
 
 #: src/cdaudio/cdaudio-ng.cc:612
 msgid "Failed to create the CDDB connection."
@@ -978,7 +997,7 @@ msgstr "Fout bij uitlezen van CDDB-informatie: %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
-msgstr "Audio-CD - menu-items"
+msgstr "Audio-cd - menu-items"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "Pla_y CD"
@@ -1196,7 +1215,7 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 #: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
-#: src/skins/search-select.cc:76
+#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:77
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -1234,7 +1253,7 @@ msgid "Delay:"
 msgstr "Vertraging:"
 
 #: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:72
-#: src/modplug/plugin_main.cc:82
+#: src/modplug/plugin_main.cc:82 src/xsf/plugin.cc:445
 msgid "ms"
 msgstr "ms"
 
@@ -1254,7 +1273,7 @@ msgstr "Echo"
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg-plug-in"
 
-#: src/ffaudio/ffaudio-core.cc:628
+#: src/ffaudio/ffaudio-core.cc:635
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1379,77 +1398,77 @@ msgstr "24000 Hz"
 msgid "32000 Hz"
 msgstr "32000 Hz"
 
-#: src/filewriter/filewriter.cc:425
+#: src/filewriter/filewriter.cc:425 src/xsf/plugin.cc:430
 msgid "44100 Hz"
 msgstr "44100 Hz"
 
-#: src/filewriter/filewriter.cc:426
+#: src/filewriter/filewriter.cc:426 src/xsf/plugin.cc:431
 msgid "48000 Hz"
 msgstr "48000 Hz"
 
 #: src/filewriter/filewriter.cc:430
-msgid "8 kbps"
-msgstr "8 kbps"
+msgid "8 kbit/s"
+msgstr "8 kbit/s"
 
 #: src/filewriter/filewriter.cc:431
-msgid "16 kbps"
-msgstr "16 kbps"
+msgid "16 kbit/s"
+msgstr "16 kbit/s"
 
 #: src/filewriter/filewriter.cc:432
-msgid "32 kbps"
-msgstr "32 kbps"
+msgid "32 kbit/s"
+msgstr "32 kbit/s"
 
 #: src/filewriter/filewriter.cc:433
-msgid "40 kbps"
-msgstr "40 kbps"
+msgid "40 kbit/s"
+msgstr "40 kbit/s"
 
 #: src/filewriter/filewriter.cc:434
-msgid "48 kbps"
-msgstr "48 kbps"
+msgid "48 kbit/s"
+msgstr "48 kbit/s"
 
 #: src/filewriter/filewriter.cc:435
-msgid "56 kbps"
-msgstr "56 kbps"
+msgid "56 kbit/s"
+msgstr "56 kbit/s"
 
 #: src/filewriter/filewriter.cc:436
-msgid "64 kbps"
-msgstr "64 kbps"
+msgid "64 kbit/s"
+msgstr "64 kbit/s"
 
 #: src/filewriter/filewriter.cc:437
-msgid "80 kbps"
-msgstr "80 kbps"
+msgid "80 kbit/s"
+msgstr "80 kbit/s"
 
 #: src/filewriter/filewriter.cc:438
-msgid "96 kbps"
-msgstr "96 kbps"
+msgid "96 kbit/s"
+msgstr "96 kbit/s"
 
 #: src/filewriter/filewriter.cc:439
-msgid "112 kbps"
-msgstr "112 kbps"
+msgid "112 kbit/s"
+msgstr "112 kbit/s"
 
 #: src/filewriter/filewriter.cc:440
-msgid "128 kbps"
-msgstr "128 kbps"
+msgid "128 kbit/s"
+msgstr "128 kbit/s"
 
 #: src/filewriter/filewriter.cc:441
-msgid "160 kbps"
-msgstr "160 kbps"
+msgid "160 kbit/s"
+msgstr "160 kbit/s"
 
 #: src/filewriter/filewriter.cc:442
-msgid "192 kbps"
-msgstr "192 kbps"
+msgid "192 kbit/s"
+msgstr "192 kbit/s"
 
 #: src/filewriter/filewriter.cc:443
-msgid "224 kbps"
-msgstr "224 kbps"
+msgid "224 kbit/s"
+msgstr "224 kbit/s"
 
 #: src/filewriter/filewriter.cc:444
-msgid "256 kbps"
-msgstr "256 kbps"
+msgid "256 kbit/s"
+msgstr "256 kbit/s"
 
 #: src/filewriter/filewriter.cc:445
-msgid "320 kbps"
-msgstr "320 kbps"
+msgid "320 kbit/s"
+msgstr "320 kbit/s"
 
 #: src/filewriter/filewriter.cc:450
 msgid "Joint Stereo"
@@ -1573,7 +1592,7 @@ msgstr "Labels"
 msgid "Quality (0-1):"
 msgstr "Kwaliteit (0-1):"
 
-#: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:303
+#: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:307
 #: src/skins/skins_cfg.cc:285
 msgid "General"
 msgstr "Algemeen"
@@ -1582,11 +1601,11 @@ msgstr "Algemeen"
 msgid "FLAC Decoder"
 msgstr "FLAC-decoder"
 
-#: src/flac/metadata.cc:274 src/wavpack/wavpack.cc:215
+#: src/flac/metadata.cc:280 src/wavpack/wavpack.cc:215
 msgid "lossless"
 msgstr "lossless"
 
-#: src/flac/plugin.cc:169
+#: src/flac/plugin.cc:180
 msgid ""
 "Original code by\n"
 "Ralf Ertzinger <ralf@skytale.net>\n"
@@ -1755,19 +1774,19 @@ msgstr "Uitschakelen"
 #: src/gtkui/menus.cc:79 src/qtui/menus.cc:107
 #: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:282
 msgid "_Open Files ..."
-msgstr "Bestanden _openen..."
+msgstr "Bestanden _openen…"
 
 #: src/gtkui/menus.cc:80 src/qtui/menus.cc:111
 msgid "Open _URL ..."
-msgstr "_URL openen..."
+msgstr "_URL openen…"
 
 #: src/gtkui/menus.cc:81 src/qtui/menus.cc:113
 msgid "_Add Files ..."
-msgstr "Best_anden toevoegen..."
+msgstr "Best_anden toevoegen…"
 
 #: src/gtkui/menus.cc:82 src/qtui/menus.cc:118
 msgid "Add U_RL ..."
-msgstr "U_RL toevoegen..."
+msgstr "U_RL toevoegen…"
 
 #: src/gtkui/menus.cc:84 src/qtui/menus.cc:120
 msgid "Search _Library"
@@ -1775,11 +1794,11 @@ msgstr "Bib_liotheek doorzoeken"
 
 #: src/gtkui/menus.cc:86 src/qtui/menus.cc:123
 msgid "A_bout ..."
-msgstr "O_ver..."
+msgstr "O_ver…"
 
 #: src/gtkui/menus.cc:87 src/qtui/menus.cc:125
 msgid "_Settings ..."
-msgstr "In_stellingen..."
+msgstr "In_stellingen…"
 
 #: src/gtkui/menus.cc:88 src/qtui/menus.cc:131
 #: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:284
@@ -1847,15 +1866,15 @@ msgstr "Stoppen n_a dit nummer"
 #: src/gtkui/menus.cc:106 src/gtkui/menus.cc:208 src/qtui/menus.cc:162
 #: src/qtui/menus.cc:292
 msgid "Song _Info ..."
-msgstr "Nummer_informatie..."
+msgstr "Nummer_informatie…"
 
 #: src/gtkui/menus.cc:107
 msgid "Jump to _Time ..."
-msgstr "Spoelen naar _tijd..."
+msgstr "Spoelen naar _tijd…"
 
 #: src/gtkui/menus.cc:108
 msgid "_Jump to Song ..."
-msgstr "_Spoelen naar nummer..."
+msgstr "_Spoelen naar nummer…"
 
 #: src/gtkui/menus.cc:110 src/qtui/menus.cc:165
 msgid "Set Repeat Point _A"
@@ -1973,7 +1992,7 @@ msgstr "_Nieuw"
 
 #: src/gtkui/menus.cc:165 src/qtui/menus.cc:228
 msgid "Ren_ame ..."
-msgstr "_Naam wijzigen..."
+msgstr "_Naam wijzigen…"
 
 #: src/gtkui/menus.cc:166 src/gtkui/menus.cc:226
 #: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:229
@@ -1983,19 +2002,19 @@ msgstr "_Verwijderen"
 
 #: src/gtkui/menus.cc:168 src/qtui/menus.cc:231
 msgid "_Import ..."
-msgstr "_Importeren..."
+msgstr "_Importeren…"
 
 #: src/gtkui/menus.cc:169 src/qtui/menus.cc:232
 msgid "_Export ..."
-msgstr "_Exporteren..."
+msgstr "_Exporteren…"
 
 #: src/gtkui/menus.cc:171 src/qtui/menus.cc:235
 msgid "Playlist _Manager ..."
-msgstr "Afspeellijst_beheer..."
+msgstr "Afspeellijst_beheer…"
 
 #: src/gtkui/menus.cc:172 src/qtui/menus.cc:237
 msgid "_Queue Manager ..."
-msgstr "_Wachtrijbeheer..."
+msgstr "_Wachtrijbeheer…"
 
 #: src/gtkui/menus.cc:176 src/qtui/menus.cc:241
 msgid "Volume _Up"
@@ -2007,11 +2026,11 @@ msgstr "Volume _omlaag"
 
 #: src/gtkui/menus.cc:179 src/qtui/menus.cc:247
 msgid "_Equalizer ..."
-msgstr "_Equalizer..."
+msgstr "_Equalizer…"
 
 #: src/gtkui/menus.cc:180 src/qtui/menus.cc:249
 msgid "E_ffects ..."
-msgstr "E_ffecten..."
+msgstr "E_ffecten…"
 
 #: src/gtkui/menus.cc:182
 msgid "_Record Stream"
@@ -2019,7 +2038,7 @@ msgstr "_Stream opnemen"
 
 #: src/gtkui/menus.cc:183
 msgid "Audio _Settings ..."
-msgstr "Audio-in_stellingen..."
+msgstr "Audio-in_stellingen…"
 
 #: src/gtkui/menus.cc:187 src/qtui/menus.cc:258
 msgid "Show _Menu Bar"
@@ -2048,7 +2067,7 @@ msgstr "_Resterende tijd tonen"
 #: src/gtkui/menus.cc:195 src/qtui/menus.cc:274 src/skins/menus.cc:157
 #: src/skins-qt/menus.cc:152
 msgid "_Visualizations ..."
-msgstr "_Visualisaties..."
+msgstr "_Visualisaties…"
 
 #: src/gtkui/menus.cc:199 src/qtui/menus.cc:278
 msgid "_File"
@@ -2110,7 +2129,7 @@ msgstr "_Alles selecteren"
 #: src/gtkui/menus.cc:225 src/moonstone/playlist_tabs.cc:309
 #: src/qtui/playlist_tabs.cc:331
 msgid "_Rename ..."
-msgstr "_Naam wijzigen..."
+msgstr "_Naam wijzigen…"
 
 #: src/gtkui/settings.cc:35 src/qtui/settings.cc:63
 msgid "<b>Playlist Tabs</b>"
@@ -2152,7 +2171,7 @@ msgstr "%s - Audacious"
 #: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:184
 #: src/qtui/main_window.cc:384
 msgid "Buffering ..."
-msgstr "Bezig met bufferen..."
+msgstr "Bezig met bufferen…"
 
 #: src/gtkui/ui_gtk.cc:215 src/skins/main.cc:229 src/skins-qt/main.cc:227
 msgid "Audacious"
@@ -2247,8 +2266,8 @@ msgstr "%d kHz"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:174
 #, c-format
-msgid "%d kbps"
-msgstr "%d kbps"
+msgid "%d kbit/s"
+msgstr "%d kbit/s"
 
 #: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471 src/skins-qt/main.cc:455
 msgid "Single mode."
@@ -2632,9 +2651,9 @@ msgstr "Kan %s niet verwerken"
 
 #: src/lyricwiki-qt/lyricwiki.cc:403
 msgid "Looking for lyrics ..."
-msgstr "Bezig met zoeken naar songteksten..."
+msgstr "Bezig met zoeken naar songteksten…"
 
-#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:38
+#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:62
 msgid "Error"
 msgstr "Fout"
 
@@ -2682,7 +2701,7 @@ msgid ""
 msgstr ""
 "Een Tactgenerator door Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
-"Om het te gebruiken, voeg een URL toe: tact://beats*num/den\n"
+"Voeg een url toe om te gebruiken: tact://beats*num/den\n"
 "bijv. tact://77 om 77 beats per minuut (bpm) af te spelen\n"
 "of tact://60*3/4 om 60 bpm af te spelen in 3/4 tacts"
 
@@ -2894,7 +2913,7 @@ msgstr "Onbekende HTTP-fout"
 
 #: src/neon/neon.cc:590
 msgid "Error parsing URL"
-msgstr "Fout bij verwerken van URL"
+msgstr "De url kan niet worden verwerkt"
 
 #: src/neon/neon.cc:660
 msgid "Too many redirects"
@@ -2995,7 +3014,7 @@ msgstr "%"
 msgid "Interpolation:"
 msgstr "Interpolatie:"
 
-#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189
+#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189 src/xsf/plugin.cc:437
 msgid "Linear"
 msgstr "Lineair"
 
@@ -3050,8 +3069,8 @@ msgstr ""
 "OSS4-uitvoerplug-in voor Audacious\n"
 "Auteursrecht 2010-2012 Michał Lipski\n"
 "\n"
-"Ik wil graag de mensen op #audacious bedanken. Speciaal Tony Vroon en John "
-"Lindgren en natuurlijk de auteurs van de vorige OSS-plug-in."
+"Ik wil graag de mensen op #audacious bedanken, in het bijzonder Tony Vroon "
+"en John Lindgren en natuurlijk de auteurs van de vorige OSS-plug-in."
 
 #: src/playlist-manager/playlist-manager.cc:37
 #: src/playlist-manager-qt/playlist-manager-qt.cc:40
@@ -3080,7 +3099,7 @@ msgstr "OpenPSF PSF1/PSF2-decoder"
 msgid "<b>OpenPSF Configuration</b>"
 msgstr "<b>OpenPSF-instellingen</b>"
 
-#: src/psf/plugin.cc:271 src/xsf/plugin.cc:233
+#: src/psf/plugin.cc:271 src/xsf/plugin.cc:444
 msgid "Ignore length from file"
 msgstr "Duur negeren volgens bestand"
 
@@ -3205,23 +3224,23 @@ msgstr ""
 
 #: src/qtui/menus.cc:109
 msgid "_Open Folder ..."
-msgstr "Map _openen..."
+msgstr "Map _openen…"
 
 #: src/qtui/menus.cc:115
 msgid "_Add Folder ..."
-msgstr "M_ap toevoegen..."
+msgstr "M_ap toevoegen…"
 
 #: src/qtui/menus.cc:128
 msgid "_Log Inspector ..."
-msgstr "_Logboekinspectie..."
+msgstr "_Logboekinspectie…"
 
 #: src/qtui/menus.cc:218
 msgid "_Find ..."
-msgstr "_Zoeken..."
+msgstr "_Zoeken…"
 
 #: src/qtui/menus.cc:254 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
-msgstr "Audio-instellingen..."
+msgstr "Audio-instellingen…"
 
 #: src/qtui/playlist_model.cc:186
 msgid "Q#"
@@ -3353,7 +3372,7 @@ msgstr "192 kHz:"
 
 #: src/scrobbler2/config_window.cc:19
 msgid "Checking Last.fm access ..."
-msgstr "Bezig met controleren op Last.fm-toegang..."
+msgstr "Bezig met controleren op Last.fm-toegang…"
 
 #: src/scrobbler2/config_window.cc:27
 msgid ""
@@ -3366,15 +3385,15 @@ msgstr ""
 #: src/scrobbler2/config_window.cc:33
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr "Machtiging afgegeven; scrobbling voor gebruiker %s."
+msgstr "Machtiging verleend; scrobbling voor gebruiker %s."
 
 #: src/scrobbler2/config_window.cc:37
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
-"Geen machtiging. Open de volgende URL in een browser, geef Audacious toegang "
-"tot je account en klik vervolgens opnieuw op 'Machtiging controleren':"
+"Niet bevoegd. Open de volgende url in een browser, geef Audacious toegang "
+"tot je account en klik vervolgens opnieuw op ‘Machtiging controleren’:"
 
 #: src/scrobbler2/config_window.cc:47
 msgid "There was a problem contacting Last.fm."
@@ -3485,11 +3504,11 @@ msgid ""
 "the \"refresh\" icon."
 msgstr ""
 "Om je muziekbibliotheek in Audacious te importeren, kies je een map en klik "
-"je vervolgens op het pictogram 'Vernieuwen'."
+"je vervolgens op het pictogram ‘Vernieuwen’."
 
 #: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:455
 msgid "Please wait ..."
-msgstr "Even geduld..."
+msgstr "Even geduld…"
 
 #: src/search-tool-qt/search-tool-qt.cc:197 src/search-tool/search-tool.cc:483
 msgid "Choose Folder"
@@ -3707,11 +3726,11 @@ msgstr "Optiesmenu"
 
 #: src/skins/main.cc:879 src/skins-qt/main.cc:820
 msgid "Disable 'Always On Top'"
-msgstr "'Altijd bovenaan' uitschakelen"
+msgstr "‘Altijd bovenaan’ uitschakelen"
 
 #: src/skins/main.cc:881 src/skins-qt/main.cc:822
 msgid "Enable 'Always On Top'"
-msgstr "'Altijd bovenaan' inschakelen"
+msgstr "‘Altijd bovenaan’ inschakelen"
 
 #: src/skins/main.cc:884 src/skins-qt/main.cc:825
 msgid "File Info Box"
@@ -3736,15 +3755,15 @@ msgstr "Volume omlaag"
 
 #: src/skins/menus.cc:77 src/skins-qt/menus.cc:67
 msgid "Effects ..."
-msgstr "Effecten..."
+msgstr "Effecten…"
 
 #: src/skins/menus.cc:84 src/skins-qt/menus.cc:74
 msgid "Open Files ..."
-msgstr "Bestanden openen..."
+msgstr "Bestanden openen…"
 
 #: src/skins/menus.cc:85 src/skins-qt/menus.cc:76
 msgid "Open URL ..."
-msgstr "URL openen..."
+msgstr "URL openen…"
 
 #: src/skins/menus.cc:88 src/skins-qt/menus.cc:79
 msgid "Playback"
@@ -3764,26 +3783,26 @@ msgstr "Tonen"
 
 #: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
 #: src/skins/menus.cc:243 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
-#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:237
+#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:239
 msgid "Services"
 msgstr "Diensten"
 
 #: src/skins/menus.cc:95 src/skins-qt/menus.cc:86
 msgid "About ..."
-msgstr "Over..."
+msgstr "Over…"
 
 #: src/skins/menus.cc:96 src/skins-qt/menus.cc:87
 msgid "Settings ..."
-msgstr "Instellingen..."
+msgstr "Instellingen…"
 
 #: src/skins/menus.cc:97 src/skins-qt/menus.cc:88
 msgid "Quit"
 msgstr "Afsluiten"
 
 #: src/skins/menus.cc:101 src/skins/menus.cc:233 src/skins-qt/menus.cc:92
-#: src/skins-qt/menus.cc:227
+#: src/skins-qt/menus.cc:229
 msgid "Song Info ..."
-msgstr "Nummerinformatie..."
+msgstr "Nummerinformatie…"
 
 #: src/skins/menus.cc:105 src/skins-qt/menus.cc:96
 msgid "Shuffle by Album"
@@ -3801,13 +3820,13 @@ msgstr "A-B-herhaling instellen"
 msgid "Clear A-B Repeat"
 msgstr "A-B-herhaling wissen"
 
-#: src/skins/menus.cc:120 src/skins-qt/menus.cc:112
+#: src/skins/menus.cc:120 src/skins-qt/menus.cc:111
 msgid "Jump to Song ..."
-msgstr "Spoelen naar nummer..."
+msgstr "Spoelen naar nummer…"
 
 #: src/skins/menus.cc:121 src/skins-qt/menus.cc:113
 msgid "Jump to Time ..."
-msgstr "Spoelen naar tijd..."
+msgstr "Spoelen naar tijd…"
 
 #: src/skins/menus.cc:125 src/skins-qt/menus.cc:118
 msgid "Play/Resume"
@@ -3819,7 +3838,7 @@ msgstr "Nieuwe afspeellijst"
 
 #: src/skins/menus.cc:128 src/skins-qt/menus.cc:121
 msgid "Rename Playlist ..."
-msgstr "Afspeellijstnaam wijzigen..."
+msgstr "Afspeellijstnaam wijzigen…"
 
 #: src/skins/menus.cc:129 src/skins-qt/menus.cc:122
 msgid "Remove Playlist"
@@ -3835,19 +3854,19 @@ msgstr "Volgende afspeellijst"
 
 #: src/skins/menus.cc:134 src/skins-qt/menus.cc:127
 msgid "Import Playlist ..."
-msgstr "Afspeellijst importeren..."
+msgstr "Afspeellijst importeren…"
 
 #: src/skins/menus.cc:135 src/skins-qt/menus.cc:128
 msgid "Export Playlist ..."
-msgstr "Afspeellijst exporteren..."
+msgstr "Afspeellijst exporteren…"
 
 #: src/skins/menus.cc:137 src/skins-qt/menus.cc:130
 msgid "Playlist Manager ..."
-msgstr "Afspeellijstbeheer..."
+msgstr "Afspeellijstbeheer…"
 
 #: src/skins/menus.cc:138 src/skins-qt/menus.cc:131
 msgid "Queue Manager ..."
-msgstr "Wachtrijbeheer..."
+msgstr "Wachtrijbeheer…"
 
 #: src/skins/menus.cc:140 src/skins-qt/menus.cc:133
 msgid "Refresh Playlist"
@@ -3887,27 +3906,27 @@ msgstr "Equalizer oprollen"
 
 #: src/skins/menus.cc:163 src/skins-qt/menus.cc:158
 msgid "Add URL ..."
-msgstr "URL toevoegen..."
+msgstr "URL toevoegen…"
 
 #: src/skins/menus.cc:164 src/skins-qt/menus.cc:160
 msgid "Add Files ..."
-msgstr "Bestanden toevoegen..."
+msgstr "Bestanden toevoegen…"
 
 #: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:211
-#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:190
-#: src/skins-qt/menus.cc:205
+#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:192
+#: src/skins-qt/menus.cc:207
 msgid "By Title"
 msgstr "Op titel"
 
 #: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:218
-#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:197
-#: src/skins-qt/menus.cc:212
+#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:199
+#: src/skins-qt/menus.cc:214
 msgid "By File Name"
 msgstr "Op bestandsnaam"
 
 #: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:219
-#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:198
-#: src/skins-qt/menus.cc:213
+#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
+#: src/skins-qt/menus.cc:215
 msgid "By File Path"
 msgstr "Op bestandspad"
 
@@ -3935,104 +3954,104 @@ msgstr "Niet-geselecteerde verwijderen"
 msgid "Remove Selected"
 msgstr "Selectie verwijderen"
 
-#: src/skins/menus.cc:187
+#: src/skins/menus.cc:187 src/skins-qt/menus.cc:183
 msgid "Search and Select"
 msgstr "Zoeken-en-selecteren"
 
-#: src/skins/menus.cc:189 src/skins-qt/menus.cc:183
+#: src/skins/menus.cc:189 src/skins-qt/menus.cc:185
 msgid "Invert Selection"
 msgstr "Selectie omkeren"
 
-#: src/skins/menus.cc:190 src/skins-qt/menus.cc:184
+#: src/skins/menus.cc:190 src/skins-qt/menus.cc:186
 msgid "Select None"
 msgstr "Niks selecteren"
 
-#: src/skins/menus.cc:191 src/skins-qt/menus.cc:185
+#: src/skins/menus.cc:191 src/skins-qt/menus.cc:187
 msgid "Select All"
 msgstr "Alles selecteren"
 
-#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:189
-#: src/skins-qt/menus.cc:204
+#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:191
+#: src/skins-qt/menus.cc:206
 msgid "By Track Number"
 msgstr "Op nummer"
 
-#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:191
-#: src/skins-qt/menus.cc:206
+#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:193
+#: src/skins-qt/menus.cc:208
 msgid "By Artist"
 msgstr "Op artiest"
 
-#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:192
-#: src/skins-qt/menus.cc:207
+#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:194
+#: src/skins-qt/menus.cc:209
 msgid "By Album"
 msgstr "Op album"
 
-#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:193
-#: src/skins-qt/menus.cc:208
+#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:195
+#: src/skins-qt/menus.cc:210
 msgid "By Album Artist"
 msgstr "Op albumartiest"
 
-#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:194
-#: src/skins-qt/menus.cc:210
+#: src/skins/menus.cc:200 src/skins/menus.cc:215 src/skins-qt/menus.cc:196
+#: src/skins-qt/menus.cc:211
 msgid "By Release Date"
 msgstr "Op uitgavedatum"
 
-#: src/skins/menus.cc:201 src/skins/menus.cc:215 src/skins-qt/menus.cc:195
-#: src/skins-qt/menus.cc:209
+#: src/skins/menus.cc:201 src/skins/menus.cc:216 src/skins-qt/menus.cc:197
+#: src/skins-qt/menus.cc:212
 msgid "By Genre"
 msgstr "Op genre"
 
-#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:196
-#: src/skins-qt/menus.cc:211
+#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:198
+#: src/skins-qt/menus.cc:213
 msgid "By Length"
 msgstr "Op duur"
 
-#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:199
-#: src/skins-qt/menus.cc:214
+#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:201
+#: src/skins-qt/menus.cc:216
 msgid "By Custom Title"
 msgstr "Op aangepaste titel"
 
-#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:200
-#: src/skins-qt/menus.cc:215
+#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:202
+#: src/skins-qt/menus.cc:217
 msgid "By Comment"
 msgstr "Op commentaar"
 
-#: src/skins/menus.cc:225 src/skins-qt/menus.cc:219
+#: src/skins/menus.cc:225 src/skins-qt/menus.cc:221
 msgid "Randomize List"
 msgstr "Lijst in willekeurige volgorde"
 
-#: src/skins/menus.cc:226 src/skins-qt/menus.cc:220
+#: src/skins/menus.cc:226 src/skins-qt/menus.cc:222
 msgid "Reverse List"
 msgstr "Lijst omkeren"
 
-#: src/skins/menus.cc:228 src/skins-qt/menus.cc:222
+#: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
 msgid "Sort Selected"
 msgstr "Selectie sorteren"
 
-#: src/skins/menus.cc:229 src/skins-qt/menus.cc:223
+#: src/skins/menus.cc:229 src/skins-qt/menus.cc:225
 msgid "Sort List"
 msgstr "Lijst sorteren"
 
-#: src/skins/menus.cc:234 src/skins-qt/menus.cc:228
+#: src/skins/menus.cc:234 src/skins-qt/menus.cc:230
 msgid "Open Containing Folder"
 msgstr "Bijbehorende map openen"
 
-#: src/skins/menus.cc:236 src/skins-qt/menus.cc:230
+#: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
 msgid "Cut"
 msgstr "Knippen"
 
-#: src/skins/menus.cc:237 src/skins-qt/menus.cc:231
+#: src/skins/menus.cc:237 src/skins-qt/menus.cc:233
 msgid "Copy"
 msgstr "Kopiëren"
 
-#: src/skins/menus.cc:238 src/skins-qt/menus.cc:232
+#: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
 msgid "Paste"
 msgstr "Plakken"
 
-#: src/skins/menus.cc:239 src/skins-qt/menus.cc:233
+#: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
 msgid "Paste at End"
 msgstr "Plakken aan het einde"
 
-#: src/skins/menus.cc:241 src/skins-qt/menus.cc:235
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
 msgid "Queue/Unqueue"
 msgstr "In/Uit wachtrij"
 
@@ -4041,7 +4060,7 @@ msgstr "In/Uit wachtrij"
 msgid "%s (%d of %d)"
 msgstr "%s (%d van %d)"
 
-#: src/skins/playlistwin.cc:492 src/skins-qt/playlistwin.cc:477
+#: src/skins/playlistwin.cc:491 src/skins-qt/playlistwin.cc:476
 msgid "Audacious Playlist Editor"
 msgstr "Audacious-afspeellijstbewerker"
 
@@ -4051,193 +4070,17 @@ msgstr "Winamp klassiek uiterlijk"
 
 #: src/skins-qt/menus.cc:75
 msgid "Open Folder ..."
-msgstr "Map openen..."
+msgstr "Map openen…"
 
 #: src/skins-qt/menus.cc:159
 msgid "Add Folder ..."
-msgstr "Map toevoegen..."
+msgstr "Map toevoegen…"
 
-#: src/skins-qt/skins_cfg.cc:196 src/skins/skins_cfg.cc:180
-msgid "Player:"
-msgstr "Speler:"
-
-#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:182
-msgid "Select main player window font:"
-msgstr "Selecteer het hoofdvensterlettertype:"
-
-#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:183
-msgid "Playlist:"
-msgstr "Afspeellijst:"
-
-#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:185
-msgid "Select playlist font:"
-msgstr "Selecteer het afspeellijstlettertype:"
-
-#: src/skins-qt/skins_cfg.cc:205 src/skins/skins_cfg.cc:189
-msgid "<b>Skin</b>"
-msgstr "<b>Thema</b>"
-
-#: src/skins-qt/skins_cfg.cc:209 src/skins/skins_cfg.cc:191
-msgid "<b>Fonts</b>"
-msgstr "<b>Lettertypen</b>"
-
-#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:193
-msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Bitmap-lettertypen gebruiken (ondersteunt alleen ASCII)"
-
-#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:195
-msgid "Scroll song title"
-msgstr "Titel scrollen"
-
-#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
-msgid "Scroll song title in both directions"
-msgstr "Titel in beide richtingen scrollen"
-
-#: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:202
-msgid "Analyzer"
-msgstr "Analyse"
-
-#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:203
-msgid "Scope"
-msgstr "Omvang"
-
-#: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:204
-msgid "Voiceprint / VU meter"
-msgstr "Stemafdruk / VU-meter"
-
-#: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:205
-msgid "Off"
-msgstr "Uit"
-
-#: src/skins-qt/skins_cfg.cc:227 src/skins-qt/skins_cfg.cc:252
-#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:209
-#: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
-msgid "Normal"
-msgstr "Normaal"
-
-#: src/skins-qt/skins_cfg.cc:228 src/skins-qt/skins_cfg.cc:253
-#: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
-msgid "Fire"
-msgstr "Vuur"
-
-#: src/skins-qt/skins_cfg.cc:229 src/skins/skins_cfg.cc:211
-msgid "Vertical lines"
-msgstr "Verticale strepen"
-
-#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:215
-msgid "Lines"
-msgstr "Strepen"
-
-#: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:216
-msgid "Bars"
-msgstr "Horizontale strepen"
-
-#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:220
-msgid "Slowest"
-msgstr "Traagst"
-
-#: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:221
-msgid "Slow"
-msgstr "Traag"
-
-#: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:222
-#: src/soxr/sox-resampler.cc:180
-msgid "Medium"
-msgstr "Matig"
-
-#: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:223
-msgid "Fast"
-msgstr "Snel"
-
-#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
-msgid "Fastest"
-msgstr "Snelst"
-
-#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:228
-msgid "Dots"
-msgstr "Punten"
-
-#: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:229
-msgid "Line"
-msgstr "Streep"
-
-#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:230
-msgid "Solid"
-msgstr "Solide"
-
-#: src/skins-qt/skins_cfg.cc:254 src/skins/skins_cfg.cc:236
-msgid "Ice"
-msgstr "IJs"
-
-#: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:241
-msgid "Smooth"
-msgstr "Glad"
-
-#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:245
-msgid "Coloring:"
-msgstr "Verkleuring:"
-
-#: src/skins-qt/skins_cfg.cc:266 src/skins/skins_cfg.cc:248
-msgid "Style:"
-msgstr "Stijl:"
-
-#: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:251
-msgid "Falloff:"
-msgstr "Uitvallen:"
-
-#: src/skins-qt/skins_cfg.cc:272 src/skins/skins_cfg.cc:254
-msgid "Peak falloff:"
-msgstr "Hoogtepunt afzwakken:"
-
-#: src/skins-qt/skins_cfg.cc:278 src/skins/skins_cfg.cc:260
-msgid "Scope Style:"
-msgstr "Omvangstijl:"
-
-#: src/skins-qt/skins_cfg.cc:281 src/skins/skins_cfg.cc:263
-msgid "Voiceprint Coloring:"
-msgstr "Stemafdrukverkleuring:"
-
-#: src/skins-qt/skins_cfg.cc:284 src/skins/skins_cfg.cc:266
-msgid "VU Meter Style:"
-msgstr "VU-meterstijl:"
-
-#: src/skins-qt/skins_cfg.cc:290 src/skins/skins_cfg.cc:272
-msgid "<b>Type</b>"
-msgstr "<b>Type</b>"
-
-#: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:273
-msgid "Visualization type:"
-msgstr "Visualisatietype:"
-
-#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:276
-msgid "<b>Analyzer</b>"
-msgstr "<b>Analyse</b>"
-
-#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
-msgid "Show peaks"
-msgstr "Pieken tonen"
-
-#: src/skins-qt/skins_cfg.cc:304 src/skins/skins_cfg.cc:286
-msgid "Visualization"
-msgstr "Visualisatie "
-
-#: src/skins-qt/skinselector.cc:98 src/skins/skinselector.cc:111
-msgid "Archived Winamp 2.x skin"
-msgstr "Gearchiveerd Winamp 2.x-thema"
-
-#: src/skins-qt/skinselector.cc:102 src/skins/skinselector.cc:115
-msgid "Unarchived Winamp 2.x skin"
-msgstr "Niet-gearchiveerd Winamp 2.x-thema"
-
-#: src/skins/search-select.cc:75
+#: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:76
 msgid "Search entries in active playlist"
 msgstr "Items doorzoeken in actieve afspeellijst"
 
-#: src/skins/search-select.cc:76
-msgid "Search"
-msgstr "Zoeken"
-
-#: src/skins/search-select.cc:81
+#: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:82
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -4249,39 +4092,219 @@ msgstr ""
 "niet hoofdlettergevoelig zijn. Als je niet weet hoe reguliere expressies "
 "werken, voer dan gewoon een letterlijk gedeelte in van wat je zoekt."
 
-#: src/skins/search-select.cc:89
+#: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:90
 msgid "Title:"
 msgstr "Titel:"
 
-#: src/skins/search-select.cc:95
+#: src/skins-qt/search-select.cc:78 src/skins/search-select.cc:96
 msgid "Album:"
 msgstr "Album:"
 
-#: src/skins/search-select.cc:101
+#: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:102
 msgid "Artist:"
 msgstr "Artiest:"
 
-#: src/skins/search-select.cc:107
+#: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:108
 msgid "File Name:"
 msgstr "Bestandsnaam:"
 
-#: src/skins/search-select.cc:115
+#: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:116
 msgid "Clear previous selection before searching"
 msgstr "Vorige selectie wissen voordat zoekopdracht start"
 
-#: src/skins/search-select.cc:118
+#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:119
 msgid "Automatically toggle queue for matching entries"
 msgstr "Wachtrij automatisch omschakelen voor overeenkomende items"
 
-#: src/skins/search-select.cc:121
+#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:122
 msgid "Create a new playlist with matching entries"
 msgstr "Nieuwe afspeellijst creëren met overeenkomende items"
+
+#: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:77
+msgid "Search"
+msgstr "Zoeken"
+
+#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:180
+msgid "Player:"
+msgstr "Speler:"
+
+#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:182
+msgid "Select main player window font:"
+msgstr "Selecteer het hoofdvensterlettertype:"
+
+#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:183
+msgid "Playlist:"
+msgstr "Afspeellijst:"
+
+#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:185
+msgid "Select playlist font:"
+msgstr "Selecteer het afspeellijstlettertype:"
+
+#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:189
+msgid "<b>Skin</b>"
+msgstr "<b>Thema</b>"
+
+#: src/skins-qt/skins_cfg.cc:211
+msgid "Display active titlebar when any window is focused"
+msgstr "Actieve titelbalk tonen na focussen van eender welk venster"
+
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:191
+msgid "<b>Fonts</b>"
+msgstr "<b>Lettertypen</b>"
+
+#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:193
+msgid "Use bitmap fonts (supports ASCII only)"
+msgstr "Bitmap-lettertypen gebruiken (ondersteunt alleen ASCII)"
+
+#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:195
+msgid "Scroll song title"
+msgstr "Titel scrollen"
+
+#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:197
+msgid "Scroll song title in both directions"
+msgstr "Titel in beide richtingen scrollen"
+
+#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:202
+msgid "Analyzer"
+msgstr "Analyse"
+
+#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:203
+msgid "Scope"
+msgstr "Omvang"
+
+#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:204
+msgid "Voiceprint / VU meter"
+msgstr "Stemafdruk / VU-meter"
+
+#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:205
+msgid "Off"
+msgstr "Uit"
+
+#: src/skins-qt/skins_cfg.cc:231 src/skins-qt/skins_cfg.cc:256
+#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:209
+#: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
+msgid "Normal"
+msgstr "Normaal"
+
+#: src/skins-qt/skins_cfg.cc:232 src/skins-qt/skins_cfg.cc:257
+#: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
+msgid "Fire"
+msgstr "Vuur"
+
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:211
+msgid "Vertical lines"
+msgstr "Verticale strepen"
+
+#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:215
+msgid "Lines"
+msgstr "Strepen"
+
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:216
+msgid "Bars"
+msgstr "Horizontale strepen"
+
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:220
+msgid "Slowest"
+msgstr "Traagst"
+
+#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:221
+msgid "Slow"
+msgstr "Traag"
+
+#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:222
+#: src/soxr/sox-resampler.cc:180
+msgid "Medium"
+msgstr "Matig"
+
+#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:223
+msgid "Fast"
+msgstr "Snel"
+
+#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:224
+msgid "Fastest"
+msgstr "Snelst"
+
+#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:228
+msgid "Dots"
+msgstr "Punten"
+
+#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:229
+msgid "Line"
+msgstr "Streep"
+
+#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:230
+msgid "Solid"
+msgstr "Solide"
+
+#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:236
+msgid "Ice"
+msgstr "IJs"
+
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:241
+msgid "Smooth"
+msgstr "Glad"
+
+#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:245
+msgid "Coloring:"
+msgstr "Verkleuring:"
+
+#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:248
+msgid "Style:"
+msgstr "Stijl:"
+
+#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:251
+msgid "Falloff:"
+msgstr "Uitvallen:"
+
+#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:254
+msgid "Peak falloff:"
+msgstr "Hoogtepunt afzwakken:"
+
+#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:260
+msgid "Scope Style:"
+msgstr "Omvangstijl:"
+
+#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:263
+msgid "Voiceprint Coloring:"
+msgstr "Stemafdrukverkleuring:"
+
+#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:266
+msgid "VU Meter Style:"
+msgstr "VU-meterstijl:"
+
+#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:272
+msgid "<b>Type</b>"
+msgstr "<b>Type</b>"
+
+#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:273
+msgid "Visualization type:"
+msgstr "Visualisatietype:"
+
+#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:276
+msgid "<b>Analyzer</b>"
+msgstr "<b>Analyse</b>"
+
+#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:277
+msgid "Show peaks"
+msgstr "Pieken tonen"
+
+#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:286
+msgid "Visualization"
+msgstr "Visualisatie "
+
+#: src/skins-qt/skinselector.cc:98 src/skins/skinselector.cc:111
+msgid "Archived Winamp 2.x skin"
+msgstr "Gearchiveerd Winamp 2.x-thema"
+
+#: src/skins-qt/skinselector.cc:102 src/skins/skinselector.cc:115
+msgid "Unarchived Winamp 2.x skin"
+msgstr "Niet-gearchiveerd Winamp 2.x-thema"
 
 #: src/sndfile/plugin.cc:38
 msgid "Sndfile Plugin"
 msgstr "Sndfile-plug-in"
 
-#: src/sndfile/plugin.cc:363
+#: src/sndfile/plugin.cc:372
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -4558,7 +4581,7 @@ msgstr "Vooruit in afspeellijst bij naar boven scrollen"
 
 #: src/statusicon-qt/statusicon.cc:113 src/statusicon/statusicon.cc:283
 msgid "Se_ttings ..."
-msgstr "Ins_tellingen..."
+msgstr "Ins_tellingen…"
 
 #: src/statusicon/statusicon.cc:373
 msgid ""
@@ -4757,20 +4780,32 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 msgstr ""
-"Sinus toongenerator door Håvard Kvålen <havardk@xmms.org>\n"
+"Sinus-toongenerator door Håvard Kvålen <havardk@xmms.org>\n"
 "Aangepast door Daniel J. Peng <danielpeng@bigfoot.com>\n"
 "\n"
-"Om deze te gebruiken, voeg een URL toe: tone://frequency1;frequency2;"
-"frequency3;...\n"
+"Voeg een url toe om te gebruiken: tone://frequency1;frequency2;frequency3;…\n"
 "bijv. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 
-#: src/ui-common/dialogs-qt.cc:31
-msgid "Working ..."
-msgstr "Bezig met werken..."
+#: src/ui-common/dialogs-qt.cc:40
+msgid ""
+"\n"
+"(Further messages have been hidden.)"
+msgstr ""
+"\n"
+"(Verdere berichten zijn verborgen.)"
 
-#: src/ui-common/dialogs-qt.cc:43
+#: src/ui-common/dialogs-qt.cc:52
+msgid "Working ..."
+msgstr "Bezig met uitvoeren…"
+
+#: src/ui-common/dialogs-qt.cc:72
 msgid "Information"
 msgstr "Informatie"
+
+#: src/ui-common/menu-ops-gtk.cc:132 src/ui-common/menu-ops-qt.cc:113
+#, c-format
+msgid "%s does not appear to be a valid folder."
+msgstr "%s lijkt geen geldige map te zijn."
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
@@ -4929,13 +4964,37 @@ msgstr ""
 "\n"
 "Enkele regels code van de plugin zijn door Miles Egan."
 
-#: src/xsf/plugin.cc:50
+#: src/xsf/plugin.cc:74
 msgid "2SF Decoder"
 msgstr "2SF Decoder"
 
-#: src/xsf/plugin.cc:232
+#: src/xsf/plugin.cc:429
+msgid "32728 Hz"
+msgstr "32728 Hz"
+
+#: src/xsf/plugin.cc:432
+msgid "65456 Hz"
+msgstr "65456 Hz"
+
+#: src/xsf/plugin.cc:438
+msgid "Cosine"
+msgstr "Cosinus"
+
+#: src/xsf/plugin.cc:439
+msgid "Sharp"
+msgstr "Scherp"
+
+#: src/xsf/plugin.cc:443
 msgid "<b>XSF Configuration</b>"
 msgstr "<b>XSF Configuratie</b>"
+
+#: src/xsf/plugin.cc:445
+msgid "Default fade time:"
+msgstr "Standaard vervaagtijd::"
+
+#: src/xsf/plugin.cc:447
+msgid "Interpolation mode:"
+msgstr "Interpolatiemodus:"
 
 #: src/xspf/xspf.cc:95
 msgid "XML Shareable Playlists (XSPF)"

@@ -65,15 +65,11 @@ void backend_init ()
     if (polyphony != -1)
         fluid_settings_setint (sc.settings, "synth.polyphony", polyphony);
 
-    if (reverb == 1)
-        fluid_settings_setstr (sc.settings, "synth.reverb.active", "yes");
-    else if (reverb == 0)
-        fluid_settings_setstr (sc.settings, "synth.reverb.active", "no");
+    if (reverb != -1)
+        fluid_settings_setint (sc.settings, "synth.reverb.active", reverb);
 
-    if (chorus == 1)
-        fluid_settings_setstr (sc.settings, "synth.chorus.active", "yes");
-    else if (chorus == 0)
-        fluid_settings_setstr (sc.settings, "synth.chorus.active", "no");
+    if (chorus != -1)
+        fluid_settings_setint (sc.settings, "synth.chorus.active", chorus);
 
     sc.synth = new_fluid_synth (sc.settings);
 

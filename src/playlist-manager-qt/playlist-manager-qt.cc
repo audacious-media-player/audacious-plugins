@@ -333,7 +333,7 @@ static QPointer<PlaylistsView> s_playlists_view;
 static QToolButton * new_tool_button(const char * text, const char * icon)
 {
     auto button = new QToolButton;
-    button->setIcon(audqt::get_icon(icon));
+    button->setIcon(QIcon::fromTheme(icon));
     button->setText(audqt::translate_str(text));
     button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     return button;

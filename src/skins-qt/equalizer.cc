@@ -251,9 +251,9 @@ void EqWindow::draw (QPainter & cr)
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, is_shaded () ? 14 : 116);
 
     if (is_shaded ())
-        skin_draw_pixbuf (cr, SKIN_EQ_EX, 0, 0, 0, 0, 275, 14);
+        skin_draw_pixbuf (cr, SKIN_EQ_EX, 0, is_focused () ? 0 : 15, 0, 0, 275, 14);
     else
-        skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 134, 0, 0, 275, 14);
+        skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, is_focused () ? 134 : 149, 0, 0, 275, 14);
 }
 
 static void equalizerwin_create_window ()

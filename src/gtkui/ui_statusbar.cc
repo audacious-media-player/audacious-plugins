@@ -78,7 +78,7 @@ static void ui_statusbar_info_change (void *, void * label)
     }
 
     if (bitrate > 0)
-        str_append_printf (buf, _("%d kbps"), bitrate / 1000);
+        str_append_printf (buf, _("%d kbit/s"), bitrate / 1000);
 
     gtk_label_set_text ((GtkLabel *) label, buf);
 }

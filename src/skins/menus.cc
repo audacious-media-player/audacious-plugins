@@ -67,8 +67,8 @@ static void configure_effects () { audgui_show_prefs_for_plugin_type (PluginType
 static void configure_output () { audgui_show_prefs_for_plugin_type (PluginType::Output); }
 static void configure_visualizations () { audgui_show_prefs_for_plugin_type (PluginType::Vis); }
 
-static void skins_volume_up () { mainwin_set_volume_diff (5); }
-static void skins_volume_down () { mainwin_set_volume_diff (-5); }
+static void skins_volume_up () { mainwin_set_volume_diff (aud_get_int ("volume_delta")); }
+static void skins_volume_down () { mainwin_set_volume_diff (-aud_get_int ("volume_delta")); }
 
 static const AudguiMenuItem output_items[] = {
     MenuCommand (N_("Volume Up"), "audio-volume-high", '+', NO_MOD, skins_volume_up),
@@ -212,8 +212,8 @@ static const AudguiMenuItem sort_selected_items[] = {
     MenuCommand (N_("By Artist"), nullptr, NO_KEY, sort_sel_artist),
     MenuCommand (N_("By Album"), nullptr, NO_KEY, sort_sel_album),
     MenuCommand (N_("By Album Artist"), nullptr, NO_KEY, sort_sel_album_artist),
-    MenuCommand (N_("By Genre"), nullptr, NO_KEY, sort_sel_genre),
     MenuCommand (N_("By Release Date"), nullptr, NO_KEY, sort_sel_date),
+    MenuCommand (N_("By Genre"), nullptr, NO_KEY, sort_sel_genre),
     MenuCommand (N_("By Length"), nullptr, NO_KEY, sort_sel_length),
     MenuCommand (N_("By File Name"), nullptr, NO_KEY, sort_sel_filename),
     MenuCommand (N_("By File Path"), nullptr, NO_KEY, sort_sel_path),

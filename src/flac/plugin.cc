@@ -26,48 +26,49 @@
 
 EXPORT FLACng aud_plugin_instance;
 
-static FLAC__StreamDecoder *decoder;
-static callback_info *cinfo;
+using StreamDecoderPtr = SmartPtr<FLAC__StreamDecoder, FLAC__stream_decoder_delete>;
+static StreamDecoderPtr s_decoder, s_ogg_decoder;
+static callback_info s_cinfo;
 
 bool FLACng::init()
 {
-    FLAC__StreamDecoderInitStatus ret;
-
     /* Callback structure and decoder for main decoding loop */
+    auto flac_decoder = StreamDecoderPtr(FLAC__stream_decoder_new());
+    auto ogg_flac_decoder = StreamDecoderPtr(FLAC__stream_decoder_new());
 
-    cinfo = new callback_info;
-
-    if ((decoder = FLAC__stream_decoder_new()) == nullptr)
+    if (!flac_decoder || !ogg_flac_decoder)
     {
-        AUDERR("Could not create the main FLAC decoder instance!\n");
+        AUDERR("Could not create the FLAC decoder instances!\n");
         return false;
     }
 
-    if (FLAC__STREAM_DECODER_INIT_STATUS_OK != (ret = FLAC__stream_decoder_init_stream(
-        decoder,
-        read_callback,
-        seek_callback,
-        tell_callback,
-        length_callback,
-        eof_callback,
-        write_callback,
-        metadata_callback,
-        error_callback,
-        cinfo)))
+    auto ret1 = FLAC__stream_decoder_init_stream(flac_decoder.get(),
+        read_callback, seek_callback, tell_callback, length_callback,
+        eof_callback, write_callback, metadata_callback, error_callback,
+        &s_cinfo);
+
+    auto ret2 = FLAC__stream_decoder_init_ogg_stream(ogg_flac_decoder.get(),
+        read_callback, seek_callback, tell_callback, length_callback,
+        eof_callback, write_callback, metadata_callback, error_callback,
+        &s_cinfo);
+
+    if (ret1 != FLAC__STREAM_DECODER_INIT_STATUS_OK ||
+        ret2 != FLAC__STREAM_DECODER_INIT_STATUS_OK)
     {
-        AUDERR("Could not initialize the main FLAC decoder: %s(%d)\n",
-            FLAC__StreamDecoderInitStatusString[ret], ret);
+        AUDERR("Could not initialize the FLAC decoders!\n");
         return false;
     }
 
-    AUDDBG("Plugin initialized.\n");
+    s_decoder = std::move(flac_decoder);
+    s_ogg_decoder = std::move(ogg_flac_decoder);
+
     return true;
 }
 
 void FLACng::cleanup()
 {
-    FLAC__stream_decoder_delete(decoder);
-    delete cinfo;
+    s_decoder.clear();
+    s_ogg_decoder.clear();
 }
 
 bool FLACng::is_our_file(const char *filename, VFSFile &file)
@@ -115,20 +116,26 @@ bool FLACng::play(const char *filename, VFSFile &file)
 {
     Index<char> play_buffer;
     bool error = false;
+    bool stream = (file.fsize() < 0);
+    auto tuple = stream ? get_playback_tuple() : Tuple();
+    auto decoder = is_ogg_flac(file) ? s_ogg_decoder.get() : s_decoder.get();
 
-    cinfo->fd = &file;
+    s_cinfo.fd = &file;
 
-    if (read_metadata(decoder, cinfo) == false)
+    if (read_metadata(decoder, &s_cinfo) == false)
     {
         AUDERR("Could not prepare file for playing!\n");
         error = true;
-        goto ERR_NO_CLOSE;
+        goto ERR;
     }
 
     play_buffer.resize(BUFFER_SIZE_BYTE);
 
-    set_stream_bitrate(cinfo->bitrate);
-    open_audio(SAMPLE_FMT(cinfo->bits_per_sample), cinfo->sample_rate, cinfo->channels);
+    if (stream && tuple.fetch_stream_info(file))
+        set_playback_tuple(tuple.ref());
+
+    set_stream_bitrate(s_cinfo.bitrate);
+    open_audio(SAMPLE_FMT(s_cinfo.bits_per_sample), s_cinfo.sample_rate, s_cinfo.channels);
 
     while (FLAC__stream_decoder_get_state(decoder) != FLAC__STREAM_DECODER_END_OF_STREAM)
     {
@@ -138,7 +145,7 @@ bool FLACng::play(const char *filename, VFSFile &file)
         int seek_value = check_seek ();
         if (seek_value >= 0)
             FLAC__stream_decoder_seek_absolute (decoder, (int64_t)
-             seek_value * cinfo->sample_rate / 1000);
+             seek_value * s_cinfo.sample_rate / 1000);
 
         /* Try to decode a single frame of audio */
         if (FLAC__stream_decoder_process_single(decoder) == false)
@@ -148,20 +155,24 @@ bool FLACng::play(const char *filename, VFSFile &file)
             break;
         }
 
-        squeeze_audio(cinfo->output_buffer.begin(), play_buffer.begin(),
-         cinfo->buffer_used, cinfo->bits_per_sample);
-        write_audio(play_buffer.begin(), cinfo->buffer_used *
-         SAMPLE_SIZE(cinfo->bits_per_sample));
+        if (stream && tuple.fetch_stream_info(file))
+            set_playback_tuple(tuple.ref());
 
-        cinfo->reset();
+        squeeze_audio(s_cinfo.output_buffer.begin(), play_buffer.begin(),
+         s_cinfo.buffer_used, s_cinfo.bits_per_sample);
+        write_audio(play_buffer.begin(), s_cinfo.buffer_used *
+         SAMPLE_SIZE(s_cinfo.bits_per_sample));
+
+        s_cinfo.reset();
     }
 
-ERR_NO_CLOSE:
-    cinfo->reset();
+ERR:
+    s_cinfo.reset();
 
     if (FLAC__stream_decoder_flush(decoder) == false)
         AUDERR("Could not flush decoder state!\n");
 
+    s_cinfo = callback_info();
     return ! error;
 }
 
@@ -172,4 +183,5 @@ const char FLACng::about[] =
 
 const char *const FLACng::exts[] = { "flac", "fla", nullptr };
 
-const char *const FLACng::mimes[] = { "audio/flac", "audio/x-flac", nullptr };
+const char *const FLACng::mimes[] = { "audio/flac", "audio/x-flac", "audio/ogg",
+                                      "application/ogg", nullptr };

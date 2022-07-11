@@ -55,7 +55,7 @@ static_assert(aud::n_elems(s_fields) == PlaylistModel::n_cols,
 
 static inline QPixmap get_icon(const char * name)
 {
-    return audqt::get_icon(name).pixmap(audqt::to_native_dpi(ICON_SIZE));
+    return QIcon::fromTheme(name).pixmap(audqt::to_native_dpi(ICON_SIZE));
 }
 
 PlaylistModel::PlaylistModel(QObject * parent, Playlist playlist)
@@ -123,7 +123,7 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
         case Length:
             return QString(str_format_time(val));
         case Bitrate:
-            return QString("%1 kbps").arg(val);
+            return QString("%1 kbit/s").arg(val);
         default:
             return QString("%1").arg(val);
         }

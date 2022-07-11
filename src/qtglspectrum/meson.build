@@ -1,4 +1,9 @@
-qt_opengl_dep = dependency('qt5', version: '>= 5.4', required: false, modules: ['OpenGL'])
+if get_option('qt6')
+  qt_opengl_dep = dependency('qt6', version: qt_req, required: false, modules: ['OpenGL', 'OpenGLWidgets'])
+else
+  qt_opengl_dep = dependency('qt5', version: '>= 5.4', required: false, modules: ['OpenGL'])
+endif
+
 have_qtglspectrum = qt_opengl_dep.found()
 
 

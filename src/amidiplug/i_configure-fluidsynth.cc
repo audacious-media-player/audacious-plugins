@@ -511,10 +511,10 @@ SoundFontWidget::SoundFontWidget (QWidget * parent) :
     m_button_sf_up (new QPushButton (m_bbox)),
     m_button_sf_down (new QPushButton (m_bbox))
 {
-    m_button_sf_add->setIcon (audqt::get_icon ("list-add"));
-    m_button_sf_del->setIcon (audqt::get_icon ("list-remove"));
-    m_button_sf_up->setIcon (audqt::get_icon ("go-up"));
-    m_button_sf_down->setIcon (audqt::get_icon ("go-down"));
+    m_button_sf_add->setIcon (QIcon::fromTheme ("list-add"));
+    m_button_sf_del->setIcon (QIcon::fromTheme ("list-remove"));
+    m_button_sf_up->setIcon (QIcon::fromTheme ("go-up"));
+    m_button_sf_down->setIcon (QIcon::fromTheme ("go-down"));
 
     m_bbox_layout->addWidget (m_button_sf_add);
     m_bbox_layout->addWidget (m_button_sf_del);

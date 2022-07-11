@@ -16,7 +16,8 @@
 # Luke <runningwaterpro@gmail.com>, 2012
 # shan dong <sd542927172@live.cn>, 2013
 # shan dong <sd542927172@live.cn>, 2013
-# WhiredPlanck <fungdaat31@outlook.com>, 2020
+# WhiredPlanck <whiredplanck@outlook.com>, 2020
+# WhiredPlanck <whiredplanck@outlook.com>, 2022
 # yinsigan <ganweiliang886@gmail.com>, 2012
 # zhangmin <zm1990s@gmail.com>, 2013-2015
 # zhangmin <zm1990s@gmail.com>, 2013
@@ -28,9 +29,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2021-02-01 19:27+0100\n"
-"PO-Revision-Date: 2021-01-29 07:34+0000\n"
-"Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
+"POT-Creation-Date: 2022-07-09 23:25+0200\n"
+"PO-Revision-Date: 2011-10-10 17:43+0000\n"
+"Last-Translator: WhiredPlanck <whiredplanck@outlook.com>, 2022\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/audacious/audacious/"
 "language/zh_CN/)\n"
 "Language: zh_CN\n"
@@ -48,7 +49,7 @@ msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib 播放器)"
 
 #: src/adplug/adplug-xmms.cc:167 src/modplug/modplugbmp.cc:321
-#: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:106
+#: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:204
 msgid "sequenced"
 msgstr "连续的"
 
@@ -78,7 +79,7 @@ msgstr "赫兹"
 
 #: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:46
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:81
-#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
+#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>杂项</b>"
 
@@ -485,6 +486,7 @@ msgstr "<b>合成器</b>"
 
 #: src/amidiplug/i_configure.cc:153 src/console/plugin.cc:45
 #: src/filewriter/filewriter.cc:481 src/sid/xs_config.cc:65
+#: src/xsf/plugin.cc:446
 msgid "Sample rate:"
 msgstr "采样率："
 
@@ -560,6 +562,7 @@ msgid "* no lyrics available in this MIDI file *"
 msgstr "* MIDI文件不包含歌词 *"
 
 #: src/amidiplug/i_fileinfo.cc:306 src/ladspa/plugin.cc:417
+#: src/ui-common/dialogs-qt.cc:32
 msgid "_Close"
 msgstr "关闭(_C)"
 
@@ -619,7 +622,7 @@ msgstr "圆角矩形"
 msgid "Concave Rectangle"
 msgstr "凹角矩形"
 
-#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50
+#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50 src/xsf/plugin.cc:436
 msgid "None"
 msgstr "无"
 
@@ -815,6 +818,22 @@ msgstr "ASXv1/ASXv2 播放列表"
 #: src/audpl/audpl.cc:33
 msgid "Audacious Playlists (audpl)"
 msgstr "Audacious 播放列表 (audpl)"
+
+#: src/bitcrusher/bitcrusher.cc:33
+msgid "<b>Bitcrusher</b>"
+msgstr "<b>比特失真器</b>"
+
+#: src/bitcrusher/bitcrusher.cc:34
+msgid "Bit Depth:"
+msgstr "位深度："
+
+#: src/bitcrusher/bitcrusher.cc:37
+msgid "Downsample ratio:"
+msgstr "降采样比率："
+
+#: src/bitcrusher/bitcrusher.cc:48
+msgid "Bitcrusher"
+msgstr "比特失真器"
 
 #: src/blur_scope/blur_scope.cc:39 src/blur_scope-qt/blur_scope.cc:45
 msgid "<b>Color</b>"
@@ -1204,7 +1223,7 @@ msgid "Delete"
 msgstr "删除"
 
 #: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
-#: src/skins/search-select.cc:76
+#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:77
 msgid "Cancel"
 msgstr "取消"
 
@@ -1242,7 +1261,7 @@ msgid "Delay:"
 msgstr "延迟："
 
 #: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:72
-#: src/modplug/plugin_main.cc:82
+#: src/modplug/plugin_main.cc:82 src/xsf/plugin.cc:445
 msgid "ms"
 msgstr "毫秒"
 
@@ -1262,7 +1281,7 @@ msgstr "回响"
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg 插件"
 
-#: src/ffaudio/ffaudio-core.cc:628
+#: src/ffaudio/ffaudio-core.cc:635
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1382,77 +1401,77 @@ msgstr "24000 Hz"
 msgid "32000 Hz"
 msgstr "32000 Hz"
 
-#: src/filewriter/filewriter.cc:425
+#: src/filewriter/filewriter.cc:425 src/xsf/plugin.cc:430
 msgid "44100 Hz"
 msgstr "44100 Hz"
 
-#: src/filewriter/filewriter.cc:426
+#: src/filewriter/filewriter.cc:426 src/xsf/plugin.cc:431
 msgid "48000 Hz"
 msgstr "48000 Hz"
 
 #: src/filewriter/filewriter.cc:430
-msgid "8 kbps"
-msgstr "8 kbps"
+msgid "8 kbit/s"
+msgstr "8 千比特/秒"
 
 #: src/filewriter/filewriter.cc:431
-msgid "16 kbps"
-msgstr "16 kbps"
+msgid "16 kbit/s"
+msgstr "16 千比特/秒"
 
 #: src/filewriter/filewriter.cc:432
-msgid "32 kbps"
-msgstr "32 kbps"
+msgid "32 kbit/s"
+msgstr "32 千比特/秒"
 
 #: src/filewriter/filewriter.cc:433
-msgid "40 kbps"
-msgstr "40 kbps"
+msgid "40 kbit/s"
+msgstr "40 千比特/秒"
 
 #: src/filewriter/filewriter.cc:434
-msgid "48 kbps"
-msgstr "48 kbps"
+msgid "48 kbit/s"
+msgstr "48 千比特/秒"
 
 #: src/filewriter/filewriter.cc:435
-msgid "56 kbps"
-msgstr "56 kbps"
+msgid "56 kbit/s"
+msgstr "56 千比特/秒"
 
 #: src/filewriter/filewriter.cc:436
-msgid "64 kbps"
-msgstr "64 kbps"
+msgid "64 kbit/s"
+msgstr "64 千比特/秒"
 
 #: src/filewriter/filewriter.cc:437
-msgid "80 kbps"
-msgstr "80 kbps"
+msgid "80 kbit/s"
+msgstr "80 千比特/秒"
 
 #: src/filewriter/filewriter.cc:438
-msgid "96 kbps"
-msgstr "96 kbps"
+msgid "96 kbit/s"
+msgstr "96 千比特/秒"
 
 #: src/filewriter/filewriter.cc:439
-msgid "112 kbps"
-msgstr "112 kbps"
+msgid "112 kbit/s"
+msgstr "112 千比特/秒"
 
 #: src/filewriter/filewriter.cc:440
-msgid "128 kbps"
-msgstr "128 kbps"
+msgid "128 kbit/s"
+msgstr "128 千比特/秒"
 
 #: src/filewriter/filewriter.cc:441
-msgid "160 kbps"
-msgstr "160 kbps"
+msgid "160 kbit/s"
+msgstr "160 千比特/秒"
 
 #: src/filewriter/filewriter.cc:442
-msgid "192 kbps"
-msgstr "192 kbps"
+msgid "192 kbit/s"
+msgstr "192 千比特/秒"
 
 #: src/filewriter/filewriter.cc:443
-msgid "224 kbps"
-msgstr "224 kbps"
+msgid "224 kbit/s"
+msgstr "224 千比特/秒"
 
 #: src/filewriter/filewriter.cc:444
-msgid "256 kbps"
-msgstr "256 kbps"
+msgid "256 kbit/s"
+msgstr "256 千比特/秒"
 
 #: src/filewriter/filewriter.cc:445
-msgid "320 kbps"
-msgstr "320 kbps"
+msgid "320 kbit/s"
+msgstr "320 千比特/秒"
 
 #: src/filewriter/filewriter.cc:450
 msgid "Joint Stereo"
@@ -1576,7 +1595,7 @@ msgstr "标签"
 msgid "Quality (0-1):"
 msgstr "质量（0-1）："
 
-#: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:303
+#: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:307
 #: src/skins/skins_cfg.cc:285
 msgid "General"
 msgstr "常规"
@@ -1585,11 +1604,11 @@ msgstr "常规"
 msgid "FLAC Decoder"
 msgstr "FLAC 解码器"
 
-#: src/flac/metadata.cc:274 src/wavpack/wavpack.cc:215
+#: src/flac/metadata.cc:280 src/wavpack/wavpack.cc:215
 msgid "lossless"
 msgstr "无损的"
 
-#: src/flac/plugin.cc:169
+#: src/flac/plugin.cc:180
 msgid ""
 "Original code by\n"
 "Ralf Ertzinger <ralf@skytale.net>\n"
@@ -2248,8 +2267,8 @@ msgstr "%d kHz"
 
 #: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:174
 #, c-format
-msgid "%d kbps"
-msgstr "%d kbps"
+msgid "%d kbit/s"
+msgstr "%d 千比特/秒"
 
 #: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471 src/skins-qt/main.cc:455
 msgid "Single mode."
@@ -2565,7 +2584,7 @@ msgstr "lyrics.ovh"
 
 #: src/lyricwiki-qt/lyricwiki.cc:121
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
-msgstr ""
+msgstr "<small>艺术家名称截断于开头处，标题 -- 于末尾处</small>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:122
 msgid "Chars to truncate on:"
@@ -2573,15 +2592,15 @@ msgstr "要截断的字符:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:126
 msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
-msgstr ""
+msgstr "<small>字符以正则表达式表达并进行或运算，由空白字符包围</small>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:127
 msgid "Chars to split on:"
-msgstr ""
+msgstr "用以拆分的字符："
 
 #: src/lyricwiki-qt/lyricwiki.cc:128
 msgid "Further truncate those on chars"
-msgstr ""
+msgstr "进一步用字符截断标题"
 
 #: src/lyricwiki-qt/lyricwiki.cc:134
 msgid "<b>General</b>"
@@ -2589,7 +2608,7 @@ msgstr "<b>常规</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:135
 msgid "Split title into artist and title on chars"
-msgstr ""
+msgstr "用字符将标题分割为艺术家名称和标题"
 
 #: src/lyricwiki-qt/lyricwiki.cc:138
 msgid "<b>Internet Sources</b>"
@@ -2625,7 +2644,7 @@ msgstr "无法解析 %s"
 msgid "Looking for lyrics ..."
 msgstr "正在搜索歌词..."
 
-#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:38
+#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:62
 msgid "Error"
 msgstr "错误"
 
@@ -2810,7 +2829,7 @@ msgstr "在这首歌后停止"
 
 #: src/moonstone/moonstone.cc:39
 msgid "Moonstone"
-msgstr ""
+msgstr "月光石"
 
 #: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:251
 msgid "Reset to Defaults"
@@ -2984,7 +3003,7 @@ msgstr "%"
 msgid "Interpolation:"
 msgstr "插值："
 
-#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189
+#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189 src/xsf/plugin.cc:437
 msgid "Linear"
 msgstr "线性"
 
@@ -3069,7 +3088,7 @@ msgstr "OpenPSF PSF1/PSF2 解码器"
 msgid "<b>OpenPSF Configuration</b>"
 msgstr "<b>OpenPSF 配置</b>"
 
-#: src/psf/plugin.cc:271 src/xsf/plugin.cc:233
+#: src/psf/plugin.cc:271 src/xsf/plugin.cc:444
 msgid "Ignore length from file"
 msgstr "忽略文件长度"
 
@@ -3212,11 +3231,11 @@ msgstr "音频设置..."
 
 #: src/qtui/playlist_model.cc:186
 msgid "Q#"
-msgstr ""
+msgstr "Q#"
 
 #: src/qtui/playlist_model.cc:188
 msgid "T#"
-msgstr ""
+msgstr "T#"
 
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
@@ -3744,7 +3763,7 @@ msgstr "外观"
 
 #: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
 #: src/skins/menus.cc:243 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
-#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:237
+#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:239
 msgid "Services"
 msgstr "服务"
 
@@ -3761,7 +3780,7 @@ msgid "Quit"
 msgstr "退出"
 
 #: src/skins/menus.cc:101 src/skins/menus.cc:233 src/skins-qt/menus.cc:92
-#: src/skins-qt/menus.cc:227
+#: src/skins-qt/menus.cc:229
 msgid "Song Info ..."
 msgstr "歌曲信息 ..."
 
@@ -3781,7 +3800,7 @@ msgstr "设置 A-B 点重复"
 msgid "Clear A-B Repeat"
 msgstr "清除 A-B 点重复"
 
-#: src/skins/menus.cc:120 src/skins-qt/menus.cc:112
+#: src/skins/menus.cc:120 src/skins-qt/menus.cc:111
 msgid "Jump to Song ..."
 msgstr "跳至曲目 ..."
 
@@ -3874,20 +3893,20 @@ msgid "Add Files ..."
 msgstr "添加文件 ..."
 
 #: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:211
-#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:190
-#: src/skins-qt/menus.cc:205
+#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:192
+#: src/skins-qt/menus.cc:207
 msgid "By Title"
 msgstr "按标题"
 
 #: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:218
-#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:197
-#: src/skins-qt/menus.cc:212
+#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:199
+#: src/skins-qt/menus.cc:214
 msgid "By File Name"
 msgstr "按文件名"
 
 #: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:219
-#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:198
-#: src/skins-qt/menus.cc:213
+#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
+#: src/skins-qt/menus.cc:215
 msgid "By File Path"
 msgstr "按文件路径"
 
@@ -3915,104 +3934,104 @@ msgstr "删除未被选中的"
 msgid "Remove Selected"
 msgstr "删除已选中的"
 
-#: src/skins/menus.cc:187
+#: src/skins/menus.cc:187 src/skins-qt/menus.cc:183
 msgid "Search and Select"
 msgstr "搜索/选择"
 
-#: src/skins/menus.cc:189 src/skins-qt/menus.cc:183
+#: src/skins/menus.cc:189 src/skins-qt/menus.cc:185
 msgid "Invert Selection"
 msgstr "反选"
 
-#: src/skins/menus.cc:190 src/skins-qt/menus.cc:184
+#: src/skins/menus.cc:190 src/skins-qt/menus.cc:186
 msgid "Select None"
 msgstr "取消选中"
 
-#: src/skins/menus.cc:191 src/skins-qt/menus.cc:185
+#: src/skins/menus.cc:191 src/skins-qt/menus.cc:187
 msgid "Select All"
 msgstr "选中全部"
 
-#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:189
-#: src/skins-qt/menus.cc:204
+#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:191
+#: src/skins-qt/menus.cc:206
 msgid "By Track Number"
 msgstr "按音轨号码"
 
-#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:191
-#: src/skins-qt/menus.cc:206
+#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:193
+#: src/skins-qt/menus.cc:208
 msgid "By Artist"
 msgstr "按艺术家"
 
-#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:192
-#: src/skins-qt/menus.cc:207
+#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:194
+#: src/skins-qt/menus.cc:209
 msgid "By Album"
 msgstr "按专辑"
 
-#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:193
-#: src/skins-qt/menus.cc:208
+#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:195
+#: src/skins-qt/menus.cc:210
 msgid "By Album Artist"
 msgstr "按专辑艺术家"
 
-#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:194
-#: src/skins-qt/menus.cc:210
+#: src/skins/menus.cc:200 src/skins/menus.cc:215 src/skins-qt/menus.cc:196
+#: src/skins-qt/menus.cc:211
 msgid "By Release Date"
 msgstr "按发表日期"
 
-#: src/skins/menus.cc:201 src/skins/menus.cc:215 src/skins-qt/menus.cc:195
-#: src/skins-qt/menus.cc:209
+#: src/skins/menus.cc:201 src/skins/menus.cc:216 src/skins-qt/menus.cc:197
+#: src/skins-qt/menus.cc:212
 msgid "By Genre"
 msgstr "按照类型"
 
-#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:196
-#: src/skins-qt/menus.cc:211
+#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:198
+#: src/skins-qt/menus.cc:213
 msgid "By Length"
 msgstr "按照长度"
 
-#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:199
-#: src/skins-qt/menus.cc:214
+#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:201
+#: src/skins-qt/menus.cc:216
 msgid "By Custom Title"
 msgstr "按照自定义标题"
 
-#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:200
-#: src/skins-qt/menus.cc:215
+#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:202
+#: src/skins-qt/menus.cc:217
 msgid "By Comment"
 msgstr "根据评论"
 
-#: src/skins/menus.cc:225 src/skins-qt/menus.cc:219
+#: src/skins/menus.cc:225 src/skins-qt/menus.cc:221
 msgid "Randomize List"
 msgstr "打乱列表"
 
-#: src/skins/menus.cc:226 src/skins-qt/menus.cc:220
+#: src/skins/menus.cc:226 src/skins-qt/menus.cc:222
 msgid "Reverse List"
 msgstr "反转列表"
 
-#: src/skins/menus.cc:228 src/skins-qt/menus.cc:222
+#: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
 msgid "Sort Selected"
 msgstr "排序已选中的"
 
-#: src/skins/menus.cc:229 src/skins-qt/menus.cc:223
+#: src/skins/menus.cc:229 src/skins-qt/menus.cc:225
 msgid "Sort List"
 msgstr "排序列表"
 
-#: src/skins/menus.cc:234 src/skins-qt/menus.cc:228
+#: src/skins/menus.cc:234 src/skins-qt/menus.cc:230
 msgid "Open Containing Folder"
 msgstr "打开包含的文件夹"
 
-#: src/skins/menus.cc:236 src/skins-qt/menus.cc:230
+#: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
 msgid "Cut"
 msgstr "剪切"
 
-#: src/skins/menus.cc:237 src/skins-qt/menus.cc:231
+#: src/skins/menus.cc:237 src/skins-qt/menus.cc:233
 msgid "Copy"
 msgstr "复制"
 
-#: src/skins/menus.cc:238 src/skins-qt/menus.cc:232
+#: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
 msgid "Paste"
 msgstr "粘贴"
 
-#: src/skins/menus.cc:239 src/skins-qt/menus.cc:233
+#: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
 msgid "Paste at End"
 msgstr "在末尾粘贴"
 
-#: src/skins/menus.cc:241 src/skins-qt/menus.cc:235
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
 msgid "Queue/Unqueue"
 msgstr "加入/移出列表"
 
@@ -4021,7 +4040,7 @@ msgstr "加入/移出列表"
 msgid "%s (%d of %d)"
 msgstr "%s (%d of %d)"
 
-#: src/skins/playlistwin.cc:492 src/skins-qt/playlistwin.cc:477
+#: src/skins/playlistwin.cc:491 src/skins-qt/playlistwin.cc:476
 msgid "Audacious Playlist Editor"
 msgstr "Audacious播放列表编辑器"
 
@@ -4037,167 +4056,217 @@ msgstr "打开文件夹 ..."
 msgid "Add Folder ..."
 msgstr "添加文件夹 ..."
 
-#: src/skins-qt/skins_cfg.cc:196 src/skins/skins_cfg.cc:180
+#: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:76
+msgid "Search entries in active playlist"
+msgstr "从当前播放列表中搜索条目"
+
+#: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:82
+msgid ""
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
+"expressions work, simply insert a literal portion of what you're searching "
+"for."
+msgstr ""
+"按部分字段搜索播放列表中的条目。各个字段都可以使用正则表达式，而且是不分大小"
+"字的。如果你不知道何为正则表达式，简单的输入部分你想搜索的文字亦可。"
+
+#: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:90
+msgid "Title:"
+msgstr "标题："
+
+#: src/skins-qt/search-select.cc:78 src/skins/search-select.cc:96
+msgid "Album:"
+msgstr "专辑："
+
+#: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:102
+msgid "Artist:"
+msgstr "艺术家："
+
+#: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:108
+msgid "File Name:"
+msgstr "文件名："
+
+#: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:116
+msgid "Clear previous selection before searching"
+msgstr "搜索前清空之前的结果"
+
+#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:119
+msgid "Automatically toggle queue for matching entries"
+msgstr "自动为区配条目切换队列"
+
+#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:122
+msgid "Create a new playlist with matching entries"
+msgstr "用匹配的条目创建新的播放列表"
+
+#: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:77
+msgid "Search"
+msgstr "搜索"
+
+#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:180
 msgid "Player:"
 msgstr "播放器："
 
-#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:182
+#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:182
 msgid "Select main player window font:"
 msgstr "选择主界面字体："
 
-#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:183
+#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:183
 msgid "Playlist:"
 msgstr "播放列表："
 
-#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:185
+#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:185
 msgid "Select playlist font:"
 msgstr "选择播放列表字体："
 
-#: src/skins-qt/skins_cfg.cc:205 src/skins/skins_cfg.cc:189
+#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:189
 msgid "<b>Skin</b>"
 msgstr "<b>皮肤</b>"
 
-#: src/skins-qt/skins_cfg.cc:209 src/skins/skins_cfg.cc:191
+#: src/skins-qt/skins_cfg.cc:211
+msgid "Display active titlebar when any window is focused"
+msgstr "当聚焦到任意窗口时显示活动的标题栏"
+
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:191
 msgid "<b>Fonts</b>"
 msgstr "<b>字体</b>"
 
-#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:193
+#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:193
 msgid "Use bitmap fonts (supports ASCII only)"
 msgstr "使用点阵字体（仅支持ASCII字符）"
 
-#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:195
+#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:195
 msgid "Scroll song title"
 msgstr "滚动曲目标题"
 
-#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
+#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:197
 msgid "Scroll song title in both directions"
 msgstr "来回滚动歌曲标题"
 
-#: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:202
+#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:202
 msgid "Analyzer"
 msgstr "分析器"
 
-#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:203
+#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:203
 msgid "Scope"
 msgstr "示波器"
 
-#: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:204
+#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:204
 msgid "Voiceprint / VU meter"
 msgstr "声纹 / VU 表"
 
-#: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:205
+#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:205
 msgid "Off"
 msgstr "关闭"
 
-#: src/skins-qt/skins_cfg.cc:227 src/skins-qt/skins_cfg.cc:252
-#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:209
+#: src/skins-qt/skins_cfg.cc:231 src/skins-qt/skins_cfg.cc:256
+#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:209
 #: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
 msgid "Normal"
 msgstr "一般"
 
-#: src/skins-qt/skins_cfg.cc:228 src/skins-qt/skins_cfg.cc:253
+#: src/skins-qt/skins_cfg.cc:232 src/skins-qt/skins_cfg.cc:257
 #: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
 msgid "Fire"
 msgstr "火炎"
 
-#: src/skins-qt/skins_cfg.cc:229 src/skins/skins_cfg.cc:211
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:211
 msgid "Vertical lines"
 msgstr "竖线"
 
-#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:215
+#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:215
 msgid "Lines"
 msgstr "细线"
 
-#: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:216
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:216
 msgid "Bars"
 msgstr "柱状"
 
-#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:220
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:220
 msgid "Slowest"
 msgstr "最慢"
 
-#: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:221
+#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:221
 msgid "Slow"
 msgstr "慢"
 
-#: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:222
+#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:222
 #: src/soxr/sox-resampler.cc:180
 msgid "Medium"
 msgstr "中速"
 
-#: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:223
+#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:223
 msgid "Fast"
 msgstr "快"
 
-#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
+#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:224
 msgid "Fastest"
 msgstr "最快"
 
-#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:228
+#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:228
 msgid "Dots"
 msgstr "点"
 
-#: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:229
+#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:229
 msgid "Line"
 msgstr "线"
 
-#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:230
+#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:230
 msgid "Solid"
 msgstr "色块"
 
-#: src/skins-qt/skins_cfg.cc:254 src/skins/skins_cfg.cc:236
+#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:236
 msgid "Ice"
 msgstr "冷蓝"
 
-#: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:241
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:241
 msgid "Smooth"
 msgstr "平滑"
 
-#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:245
+#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:245
 msgid "Coloring:"
 msgstr "上色："
 
-#: src/skins-qt/skins_cfg.cc:266 src/skins/skins_cfg.cc:248
+#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:248
 msgid "Style:"
 msgstr "风格："
 
-#: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:251
+#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:251
 msgid "Falloff:"
 msgstr "减退："
 
-#: src/skins-qt/skins_cfg.cc:272 src/skins/skins_cfg.cc:254
+#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:254
 msgid "Peak falloff:"
 msgstr "峰值减退速度："
 
-#: src/skins-qt/skins_cfg.cc:278 src/skins/skins_cfg.cc:260
+#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:260
 msgid "Scope Style:"
 msgstr "示波器风格："
 
-#: src/skins-qt/skins_cfg.cc:281 src/skins/skins_cfg.cc:263
+#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:263
 msgid "Voiceprint Coloring:"
 msgstr "声纹上色："
 
-#: src/skins-qt/skins_cfg.cc:284 src/skins/skins_cfg.cc:266
+#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:266
 msgid "VU Meter Style:"
 msgstr "VU 表风格："
 
-#: src/skins-qt/skins_cfg.cc:290 src/skins/skins_cfg.cc:272
+#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:272
 msgid "<b>Type</b>"
 msgstr "<b>类型</b>"
 
-#: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:273
+#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:273
 msgid "Visualization type:"
 msgstr "可视化类型："
 
-#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:276
+#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:276
 msgid "<b>Analyzer</b>"
 msgstr "<b>分析器</b>"
 
-#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
+#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:277
 msgid "Show peaks"
 msgstr "显示峰值"
 
-#: src/skins-qt/skins_cfg.cc:304 src/skins/skins_cfg.cc:286
+#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:286
 msgid "Visualization"
 msgstr "可视化效果"
 
@@ -4209,57 +4278,11 @@ msgstr "已打包的Winamp 2.x主题"
 msgid "Unarchived Winamp 2.x skin"
 msgstr "未打包的Winamp 2.x主题"
 
-#: src/skins/search-select.cc:75
-msgid "Search entries in active playlist"
-msgstr "从当前播放列表中搜索条目"
-
-#: src/skins/search-select.cc:76
-msgid "Search"
-msgstr "搜索"
-
-#: src/skins/search-select.cc:81
-msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
-"expressions work, simply insert a literal portion of what you're searching "
-"for."
-msgstr ""
-"按部分字段搜索播放列表中的条目。各个字段都可以使用正则表达式，而且是不分大小"
-"字的。如果你不知道何为正则表达式，简单的输入部分你想搜索的文字亦可。"
-
-#: src/skins/search-select.cc:89
-msgid "Title:"
-msgstr "标题："
-
-#: src/skins/search-select.cc:95
-msgid "Album:"
-msgstr "专辑："
-
-#: src/skins/search-select.cc:101
-msgid "Artist:"
-msgstr "艺术家："
-
-#: src/skins/search-select.cc:107
-msgid "File Name:"
-msgstr "文件名："
-
-#: src/skins/search-select.cc:115
-msgid "Clear previous selection before searching"
-msgstr "搜索前清空之前的结果"
-
-#: src/skins/search-select.cc:118
-msgid "Automatically toggle queue for matching entries"
-msgstr "自动为区配条目切换队列"
-
-#: src/skins/search-select.cc:121
-msgid "Create a new playlist with matching entries"
-msgstr "用匹配的条目创建新的播放列表"
-
 #: src/sndfile/plugin.cc:38
 msgid "Sndfile Plugin"
 msgstr "Sndfile 插件"
 
-#: src/sndfile/plugin.cc:363
+#: src/sndfile/plugin.cc:372
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -4736,13 +4759,26 @@ msgstr ""
 "要使用这个生成器，添加一个 URL：tone://frequency1;frequency2;frequency3;...\n"
 "实例 tone://2000;2005 以播放一个 2000 Hz 以及 2005 Hz 的音调"
 
-#: src/ui-common/dialogs-qt.cc:31
+#: src/ui-common/dialogs-qt.cc:40
+msgid ""
+"\n"
+"(Further messages have been hidden.)"
+msgstr ""
+"\n"
+"（详细信息已隐藏。）"
+
+#: src/ui-common/dialogs-qt.cc:52
 msgid "Working ..."
 msgstr "工作中 ..."
 
-#: src/ui-common/dialogs-qt.cc:43
+#: src/ui-common/dialogs-qt.cc:72
 msgid "Information"
 msgstr "信息"
+
+#: src/ui-common/menu-ops-gtk.cc:132 src/ui-common/menu-ops-qt.cc:113
+#, c-format
+msgid "%s does not appear to be a valid folder."
+msgstr "%s 似乎不是有效的文件夹。"
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
@@ -4901,13 +4937,37 @@ msgstr ""
 "\n"
 "一部分插件代码由 Miles Egan 编写。"
 
-#: src/xsf/plugin.cc:50
+#: src/xsf/plugin.cc:74
 msgid "2SF Decoder"
 msgstr "2SF 解码器"
 
-#: src/xsf/plugin.cc:232
+#: src/xsf/plugin.cc:429
+msgid "32728 Hz"
+msgstr "32728 赫兹"
+
+#: src/xsf/plugin.cc:432
+msgid "65456 Hz"
+msgstr "65456 赫兹"
+
+#: src/xsf/plugin.cc:438
+msgid "Cosine"
+msgstr "余弦"
+
+#: src/xsf/plugin.cc:439
+msgid "Sharp"
+msgstr "尖波"
+
+#: src/xsf/plugin.cc:443
 msgid "<b>XSF Configuration</b>"
 msgstr "<b>XSF 设置</b>"
+
+#: src/xsf/plugin.cc:445
+msgid "Default fade time:"
+msgstr "默认淡出时间："
+
+#: src/xsf/plugin.cc:447
+msgid "Interpolation mode:"
+msgstr "插值模式："
 
 #: src/xspf/xspf.cc:95
 msgid "XML Shareable Playlists (XSPF)"

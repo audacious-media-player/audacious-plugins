@@ -32,7 +32,7 @@
 
 static QPushButton * makeButton(const char * icon, QWidget * parent)
 {
-    auto button = new QPushButton(audqt::get_icon(icon), QString(), parent);
+    auto button = new QPushButton(QIcon::fromTheme(icon), QString(), parent);
     button->setFlat(true);
     button->setFocusPolicy(Qt::NoFocus);
     return button;

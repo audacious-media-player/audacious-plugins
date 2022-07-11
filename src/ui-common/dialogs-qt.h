@@ -21,6 +21,7 @@
 #define DIALOG_WINDOWS_H
 
 #include <libaudcore/hook.h>
+#include <QPointer>
 
 class QMessageBox;
 class QWidget;
@@ -33,7 +34,7 @@ public:
 
 private:
     QWidget * m_parent;
-    QMessageBox * m_progress = nullptr;
+    QPointer<QMessageBox> m_progress, m_info, m_error;
 
     void create_progress ();
     void show_error (const char * message);

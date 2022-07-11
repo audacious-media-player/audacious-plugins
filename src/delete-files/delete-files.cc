@@ -233,8 +233,8 @@ static void start_delete ()
         auto remove = new QPushButton (action, qdialog);
         auto cancel = new QPushButton (_("Cancel"), qdialog);
 
-        remove->setIcon (audqt::get_icon (icon));
-        cancel->setIcon (audqt::get_icon ("process-stop"));
+        remove->setIcon (QIcon::fromTheme (icon));
+        cancel->setIcon (QIcon::fromTheme ("process-stop"));
 
         qdialog->addButton (remove, QMessageBox::AcceptRole);
         qdialog->addButton (cancel, QMessageBox::RejectRole);

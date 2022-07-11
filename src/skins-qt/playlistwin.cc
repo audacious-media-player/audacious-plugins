@@ -90,7 +90,6 @@ static Button * button_add, * button_sub, * button_sel, * button_misc, * button_
 
 static int resize_base_width, resize_base_height;
 //static int drop_position;
-static bool song_changed;
 
 static void update_info ()
 {
@@ -463,10 +462,10 @@ static void playlistwin_create_widgets ()
 void PlWindow::draw (QPainter & cr)
 {
     if (is_shaded ())
-        skin_draw_playlistwin_shaded (cr, config.playlist_width, true);
+        skin_draw_playlistwin_shaded (cr, config.playlist_width, is_focused ());
     else
         skin_draw_playlistwin_frame (cr, config.playlist_width,
-         config.playlist_height, true);
+         config.playlist_height, is_focused ());
 }
 
 static void playlistwin_create_window ()
@@ -492,12 +491,6 @@ static void update_cb (void *, void *)
 {
     playlistwin_list->refresh ();
 
-    if (song_changed)
-    {
-        playlistwin_list->set_focused (Playlist::active_playlist ().get_position ());
-        song_changed = false;
-    }
-
     update_info ();
     update_rollup_text ();
 }
@@ -509,10 +502,11 @@ static void follow_cb (void * data, void *)
 
     int row = list.get_position ();
     if (row >= 0)
+    {
         list.select_entry (row, true);
-
-    if (list == Playlist::active_playlist ())
-        song_changed = true;
+        if (list == Playlist::active_playlist ())
+            playlistwin_list->set_focused (row);
+    }
 }
 
 void playlistwin_create ()
@@ -522,8 +516,6 @@ void playlistwin_create ()
 
     update_info ();
     update_rollup_text ();
-
-    song_changed = false;
 
     hook_associate ("playlist position", follow_cb, nullptr);
     hook_associate ("playlist activate", update_cb, nullptr);

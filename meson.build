@@ -1,14 +1,14 @@
 project('audacious-plugins', 'c', 'cpp',
-        version: '4.1',
-        meson_version: '>= 0.46',
+        version: '4.2',
+        meson_version: '>= 0.51',
         default_options: [
           'c_std=gnu99',
-          'cpp_std=gnu++11',
+          'cpp_std=gnu++17',
           'warning_level=1'
         ])
 
 
-copyright = 'Copyright (C) 2001-2021 Audacious developers and others'
+copyright = 'Copyright (C) 2001-2022 Audacious developers and others'
 
 
 have_darwin = host_machine.system() == 'darwin'
@@ -34,27 +34,27 @@ gmodule_dep = dependency('gmodule-2.0', version: glib_req, required: true)
 zlib_dep = dependency('zlib', required: true)
 
 
-audacious_req = '>= 4.1'
+audacious_req = '>= 4.2'
 audacious_dep = dependency('audacious', version: audacious_req, required: true)
 
 
 # XXX - make this its own .pc file
 audtag_dep = declare_dependency(link_args: [
-  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('lib_dir')),
+  '-L@0@'.format(audacious_dep.get_variable(pkgconfig: 'lib_dir')),
   '-laudtag'
 ])
 
 
 # XXX - make this its own .pc file
 audqt_dep = declare_dependency(link_args: [
-  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('lib_dir')),
+  '-L@0@'.format(audacious_dep.get_variable(pkgconfig: 'lib_dir')),
   '-laudqt'
 ])
 
 
 # XXX - make this its own .pc file
 audgui_dep = declare_dependency(link_args: [
-  '-L@0@'.format(audacious_dep.get_pkgconfig_variable('lib_dir')),
+  '-L@0@'.format(audacious_dep.get_variable(pkgconfig: 'lib_dir')),
   '-laudgui'
 ])
 
@@ -63,8 +63,13 @@ xml_dep = dependency('libxml-2.0', required: false)
 
 
 if get_option('qt')
-  qt_req = '>= 5.2'
-  qt_dep = dependency('qt5', version: qt_req, required: true, modules: ['Core', 'Widgets', 'Gui'])
+  if get_option('qt6')
+    qt_req = '>= 6.0'
+    qt_dep = dependency('qt6', version: qt_req, required: true, modules: ['Core', 'Widgets', 'Gui'])
+  else
+    qt_req = '>= 5.2'
+    qt_dep = dependency('qt5', version: qt_req, required: true, modules: ['Core', 'Widgets', 'Gui'])
+  endif
 endif
 
 
@@ -155,7 +160,7 @@ if (cxx.has_header('libintl.h'))
 endif
 
 
-install_plugindir = audacious_dep.get_pkgconfig_variable('plugin_dir')
+install_plugindir = audacious_dep.get_variable(pkgconfig: 'plugin_dir')
 
 
 conf.set_quoted('INSTALL_PLUGINDIR', install_plugindir)
@@ -199,8 +204,9 @@ if meson.version().version_compare('>= 0.53')
   }, section: 'Directories')
 
   summary({
-    'Qt support': conf.has('USE_QT'),
-    'GTK support': conf.has('USE_GTK'),
+    'Qt 5 support': get_option('qt') and not get_option('qt6'),
+    'Qt 6 support': get_option('qt6'),
+    'GTK support': get_option('gtk'),
   }, section: 'GUI Toolkits')
 
   summary({
@@ -214,7 +220,7 @@ if meson.version().version_compare('>= 0.53')
   }, section: 'Audio Formats')
 
   summary({
-    'FFmpeg/Libav': get_variable('have_ffaudio', false),
+    'FFmpeg': get_variable('have_ffaudio', false),
     'Libsndfile': get_variable('have_sndfile', false),
   }, section: 'External Decoders')
 
@@ -236,6 +242,7 @@ if meson.version().version_compare('>= 0.53')
 
   summary({
     'Bauer stereophonic-to-binaural (bs2b)': get_variable('have_bs2b', false),
+    'Bitcrusher': true,
     'Channel Mixer': true,
     'Crystalizer': true,
     'Dynamic Range Compressor': true,

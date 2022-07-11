@@ -166,10 +166,16 @@ bool QtSkins::init ()
 {
     skins_cfg_load ();
 
-    if (! load_initial_skin ())
-        return false;
-
+    // At least one 3rd-party QImage plugin will abort() if loaded before
+    // QGuiApplication, so call audqt::init() before loading the skin!
     audqt::init ();
+
+    if (! load_initial_skin ())
+    {
+        audqt::cleanup ();
+        return false;
+    }
+
     skins_init_main (false);
 
     create_plugin_windows ();

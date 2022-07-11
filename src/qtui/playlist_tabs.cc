@@ -239,7 +239,7 @@ void PlaylistTabBar::updateIcons()
     QIcon icon;
     int playing = Playlist::playing_playlist().index();
     if (playing >= 0)
-        icon = audqt::get_icon(aud_drct_get_paused() ? "media-playback-pause"
+        icon = QIcon::fromTheme(aud_drct_get_paused() ? "media-playback-pause"
                                                      : "media-playback-start");
 
     int tabs = count();
@@ -324,12 +324,12 @@ void PlaylistTabBar::contextMenuEvent(QContextMenuEvent * e)
     auto menu = new QMenu(this);
     auto playlist = Playlist::by_index(idx);
 
-    auto play_act = new QAction(audqt::get_icon("media-playback-start"),
+    auto play_act = new QAction(QIcon::fromTheme("media-playback-start"),
                                 audqt::translate_str(N_("_Play")), menu);
     auto rename_act =
-        new QAction(audqt::get_icon("insert-text"),
+        new QAction(QIcon::fromTheme("insert-text"),
                     audqt::translate_str(N_("_Rename ...")), menu);
-    auto remove_act = new QAction(audqt::get_icon("edit-delete"),
+    auto remove_act = new QAction(QIcon::fromTheme("edit-delete"),
                                   audqt::translate_str(N_("Remo_ve")), menu);
 
     QObject::connect(play_act, &QAction::triggered,

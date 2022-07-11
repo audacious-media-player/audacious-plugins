@@ -493,10 +493,14 @@ int Snes_Spc::cpu_read( int addr, rel_time_t time )
 			{
 				result = cpu_read_smp_reg( reg + r_t0out, time );
 			}
-			else // 1%
+			else if ( reg + (r_t0out + 0xF0 - 0x10000) < 0x100 ) // 1%
 			{
-				assert( reg + (r_t0out + 0xF0 - 0x10000) < 0x100 );
 				result = cpu_read( reg + (r_t0out + 0xF0 - 0x10000), time );
+			}
+			else
+			{
+				// this branch would cause an assertion failure in the
+				// original.  not really sure what to do here ...
 			}
 		}
 	}
