@@ -23,6 +23,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
 static const char * const m3u_exts[] = {"m3u", "m3u8"};
 
@@ -64,6 +65,9 @@ bool M3ULoader::load (const char * filename, VFSFile & file, String & title,
 
     text.append (0);  /* null-terminate */
 
+    bool firstline = true;
+    bool extm3u = false;
+
     char * parse = text.begin ();
     if (! strncmp (parse, "\xef\xbb\xbf", 3)) /* byte order mark */
         parse += 3;
@@ -75,16 +79,33 @@ bool M3ULoader::load (const char * filename, VFSFile & file, String & title,
         while (* parse == ' ' || * parse == '\t')
             parse ++;
 
-        if (* parse && * parse != '#')
+        if (* parse == '#')
+        {
+            if (firstline && ! strncmp (parse, "#EXTM3U", 7))
+                extm3u = true;
+            else if (extm3u && ! strncmp (parse, "#EXT-X-", 7))
+                goto HLS;
+        }
+        else if (* parse)
         {
             StringBuf s = uri_construct (parse, filename);
             if (s)
                 items.append (String (s));
         }
 
+        firstline = false;
         parse = next;
     }
 
+    return true;
+
+HLS:
+    AUDINFO ("Detected HLS stream: %s\n", filename);
+    /* Though it shares the .m3u8 extension, an HLS stream is not really
+     * a playlist at all.  Add (only) the original .m3u8 filename to the
+     * playlist and let an input plugin (e.g. ffaudio) handle it. */
+    items.clear ();
+    items.append (String (filename));
     return true;
 }
 
