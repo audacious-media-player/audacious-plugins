@@ -1,0 +1,38 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        repository: audacious-media-player/audacious
+        path: audacious
+    - uses: actions/checkout@v3
+      with:
+        repository: audacious-media-player/audacious-plugins
+        path: audacious-plugins
+    - name: dependencies
+      run: sudo apt-get -qq update && sudo apt-get install libadplug-dev libasound2-dev libavformat-dev libbinio-dev libbs2b-dev libcddb2-dev libcdio-cdda-dev libcue-dev libcurl4-gnutls-dev libdbus-glib-1-dev libfaad-dev libflac-dev libfluidsynth-dev libgl1-mesa-dev libgtk2.0-dev libjack-jackd2-dev liblircclient-dev libmms-dev libmodplug-dev libmp3lame-dev libmpg123-dev libneon27-gnutls-dev libnotify-dev libpulse-dev libqt5opengl5-dev libsamplerate0-dev libsdl1.2-dev libsidplayfp-dev libsndfile1-dev libsoxr-dev libvorbis-dev libwavpack-dev libxml2-dev qtbase5-dev qtmultimedia5-dev
+    - name: autogen.sh (core)
+      run: (cd audacious && ./autogen.sh)
+    - name: configure (core)
+      run: (cd audacious && ./configure)
+    - name: make (core)
+      run: (cd audacious && make -j$(nproc))
+    - name: make install (core)
+      run: (cd audacious && sudo make install)
+    - name: autogen.sh (plugins)
+      run: (cd audacious-plugins && ./autogen.sh)
+    - name: configure (plugins)
+      run: (cd audacious-plugins && ./configure)
+    - name: make (plugins)
+      run: (cd audacious-plugins && make -j$(nproc))
+    - name: make install (plugins)
+      run: (cd audacious-plugins && sudo make install)
