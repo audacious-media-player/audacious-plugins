@@ -695,5 +695,6 @@ const char * const FFaudio::exts[] = {
 const char * const FFaudio::mimes[] = {
     "application/ogg",
     "audio/mp4",
+    "audio/ogg",
     nullptr
 };
