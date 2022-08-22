@@ -20,6 +20,8 @@
  * the use of this software.
  */
 
+#include <cmath>
+
 #include <pipewire/pipewire.h>
 #include <spa/param/audio/format-utils.h>
 #include <spa/param/props.h>
@@ -62,8 +64,12 @@ public:
     void flush();
 
 private:
-    struct pw_stream * create_stream(int rate);
-    bool connect_stream(int format, int rate, int channels);
+    bool init_core();
+    bool init_stream();
+    void init_buffer();
+
+    struct pw_stream * create_stream();
+    bool connect_stream(enum spa_audio_format format);
 
     static void on_core_event_done(void * data, uint32_t id, int seq);
     static void on_registry_event_global(void * data, uint32_t id, uint32_t permissions,
@@ -91,6 +97,7 @@ private:
     bool m_has_sinks = false;
     bool m_ignore_state_change = false;
 
+    int m_aud_format = 0;
     int m_core_init_seq = 0;
 
     unsigned char * m_buffer = nullptr;
@@ -134,13 +141,13 @@ void PipeWireOutput::set_volume(StereoVolume v)
 
     if (m_channels == 2)
     {
-        values[0] = float(v.left) / 100.0;
-        values[1] = float(v.right) / 100.0;
+        values[0] = v.left / 100.0f;
+        values[1] = v.right / 100.0f;
     }
     else
     {
         for (unsigned int i = 0; i < m_channels; i++)
-            values[i] = float(aud::max(v.left, v.right)) / 100.0;
+            values[i] = aud::max(v.left, v.right) / 100.0f;
     }
 
     pw_thread_loop_lock(m_loop);
@@ -181,21 +188,17 @@ void PipeWireOutput::flush()
 
 void PipeWireOutput::period_wait()
 {
-    // TODO: Implement
+    if (m_buffer_at != m_buffer_size)
+        return;
+
+    pw_thread_loop_lock(m_loop);
+    pw_thread_loop_timed_wait(m_loop, 1);
+    pw_thread_loop_unlock(m_loop);
 }
 
 int PipeWireOutput::write_audio(const void * data, int length)
 {
     pw_thread_loop_lock(m_loop);
-
-    if (m_buffer_at == m_buffer_size)
-    {
-        if (pw_thread_loop_timed_wait(m_loop, 1) != 0)
-        {
-            pw_thread_loop_unlock(m_loop);
-            return 0;
-        }
-    }
 
     auto size = aud::min<size_t>(m_buffer_size - m_buffer_at, length);
     memcpy(m_buffer + m_buffer_at, data, size);
@@ -254,6 +257,33 @@ void PipeWireOutput::close_audio()
 
 bool PipeWireOutput::open_audio(int format, int rate, int channels, String & error)
 {
+    m_aud_format = format;
+    m_rate = rate;
+    m_channels = channels;
+
+    if (!init_core() || !init_stream())
+    {
+        close_audio();
+        return false;
+    }
+
+    return true;
+}
+
+bool PipeWireOutput::init()
+{
+    aud_config_set_defaults("pipewire", defaults);
+    pw_init(nullptr, nullptr);
+    return true;
+}
+
+void PipeWireOutput::cleanup()
+{
+    pw_deinit();
+}
+
+bool PipeWireOutput::init_core()
+{
     static const struct pw_core_events core_events = {
         .version = PW_VERSION_CORE_EVENTS,
         .done = PipeWireOutput::on_core_event_done
@@ -262,13 +292,6 @@ bool PipeWireOutput::open_audio(int format, int rate, int channels, String & err
     static const struct pw_registry_events registry_events = {
         .version = PW_VERSION_REGISTRY_EVENTS,
         .global = PipeWireOutput::on_registry_event_global
-    };
-
-    static const struct pw_stream_events stream_events = {
-        .version = PW_VERSION_STREAM_EVENTS,
-        .state_changed = PipeWireOutput::on_state_changed,
-        .process = PipeWireOutput::on_process,
-        .drained = PipeWireOutput::on_drained
     };
 
     if (!(m_loop = pw_thread_loop_new("pipewire-main-loop", nullptr)))
@@ -288,13 +311,14 @@ bool PipeWireOutput::open_audio(int format, int rate, int channels, String & err
         AUDERR("PipeWireOutput: unable to connect context\n");
         return false;
     }
-    pw_core_add_listener(m_core, &m_core_listener, &core_events, this);
 
     if (!(m_registry = pw_core_get_registry(m_core, PW_VERSION_REGISTRY, 0)))
     {
         AUDERR("PipeWireOutput: unable to get registry interface\n");
         return false;
     }
+
+    pw_core_add_listener(m_core, &m_core_listener, &core_events, this);
     pw_registry_add_listener(m_registry, &m_registry_listener, &registry_events, this);
 
     m_core_init_seq = pw_core_sync(m_core, PW_ID_CORE, m_core_init_seq);
@@ -319,20 +343,30 @@ bool PipeWireOutput::open_audio(int format, int rate, int channels, String & err
         return false;
     }
 
-    // TODO: Don't hardcode values, use aud_get_int("output_buffer_size")?
-    //
-    // m_stride = AudioParameters::sampleSize(format) * map.count();
-    // m_frames = qBound(64, qCeil(2048.0 * rate / 48000.0), 8192);
-    // m_buffer_size = m_frames * m_stride;
-    // m_buffer = new unsigned char[m_buffer_size];
-    m_stride = 4;
-    m_frames = 128;
-    m_buffer_size = 1024;
+    init_buffer();
+    return true;
+}
+
+void PipeWireOutput::init_buffer()
+{
+    m_stride = FMT_SIZEOF(m_aud_format) * m_channels;
+    m_frames = aud::clamp<int>(64, ceilf(2048.0 * m_rate / 48000.0), 8192);
+    m_buffer_size = m_frames * m_stride;
     m_buffer = new unsigned char[m_buffer_size];
+}
+
+bool PipeWireOutput::init_stream()
+{
+    static const struct pw_stream_events stream_events = {
+        .version = PW_VERSION_STREAM_EVENTS,
+        .state_changed = PipeWireOutput::on_state_changed,
+        .process = PipeWireOutput::on_process,
+        .drained = PipeWireOutput::on_drained
+    };
 
     pw_thread_loop_lock(m_loop);
 
-    if (!(m_stream = create_stream(rate)))
+    if (!(m_stream = create_stream()))
     {
         AUDERR("PipeWireOutput: unable to create stream\n");
         pw_thread_loop_unlock(m_loop);
@@ -342,32 +376,26 @@ bool PipeWireOutput::open_audio(int format, int rate, int channels, String & err
     m_stream_listener = {};
     pw_stream_add_listener(m_stream, &m_stream_listener, &stream_events, this);
 
-    if (!connect_stream(format, rate, channels))
+    auto pw_format = to_pipewire_format(m_aud_format);
+    if (pw_format == SPA_AUDIO_FORMAT_UNKNOWN)
     {
+        AUDERR("PipeWireOutput: unknown audio format\n");
         pw_thread_loop_unlock(m_loop);
-        AUDERR("PipeWireOutput: unable to connect stream");
+        return false;
+    }
+
+    if (!connect_stream(pw_format))
+    {
+        AUDERR("PipeWireOutput: unable to connect stream\n");
+        pw_thread_loop_unlock(m_loop);
         return false;
     }
 
     pw_thread_loop_unlock(m_loop);
-    AUDINFO("PipeWireOutput: ready\n");
-
     return true;
 }
 
-bool PipeWireOutput::init()
-{
-    aud_config_set_defaults("pipewire", defaults);
-    pw_init(nullptr, nullptr);
-    return true;
-}
-
-void PipeWireOutput::cleanup()
-{
-    pw_deinit();
-}
-
-struct pw_stream * PipeWireOutput::create_stream(int rate)
+struct pw_stream * PipeWireOutput::create_stream()
 {
     struct pw_properties * props =
         pw_properties_new(PW_KEY_MEDIA_TYPE, "Audio",
@@ -378,30 +406,27 @@ struct pw_stream * PipeWireOutput::create_stream(int rate)
                           PW_KEY_APP_NAME, _("Audacious"),
                           nullptr);
 
-    pw_properties_setf(props, PW_KEY_NODE_LATENCY, "%u/%d", m_frames, rate);
+    pw_properties_setf(props, PW_KEY_NODE_LATENCY, "%u/%u", m_frames, m_rate);
 
     return pw_stream_new(m_core, _("Playback"), props);
 }
 
-bool PipeWireOutput::connect_stream(int format, int rate, int channels)
+bool PipeWireOutput::connect_stream(enum spa_audio_format format)
 {
-    m_rate = rate;
-    m_channels = channels;
-
     uint8_t buffer[1024];
     struct spa_pod_builder b = SPA_POD_BUILDER_INIT(buffer, sizeof buffer);
 
-    struct spa_audio_info_raw info = {
-        .format = to_pipewire_format(format),
+    struct spa_audio_info_raw audio_info = {
+        .format = format,
         .flags = SPA_AUDIO_FLAG_NONE,
         .rate = m_rate,
         .channels = m_channels
     };
 
-    set_channel_map(&info, channels);
+    set_channel_map(&audio_info, m_channels);
 
     const struct spa_pod * params[1];
-    params[0] = spa_format_audio_raw_build(&b, SPA_PARAM_EnumFormat, &info);
+    params[0] = spa_format_audio_raw_build(&b, SPA_PARAM_EnumFormat, &audio_info);
 
     auto stream_flags = static_cast<pw_stream_flags>(PW_STREAM_FLAG_AUTOCONNECT |
                                                      PW_STREAM_FLAG_MAP_BUFFERS |
@@ -464,6 +489,9 @@ void PipeWireOutput::on_state_changed(void * data, enum pw_stream_state old,
 void PipeWireOutput::on_process(void * data)
 {
     PipeWireOutput * o = static_cast<PipeWireOutput *>(data);
+    struct pw_buffer * b;
+    struct spa_buffer * buf;
+    void * dst;
 
     if (!o->m_buffer_at)
     {
@@ -471,11 +499,22 @@ void PipeWireOutput::on_process(void * data)
         return;
     }
 
-    struct pw_buffer * b = pw_stream_dequeue_buffer(o->m_stream);
-    struct spa_buffer * buf = b->buffer;
+    if (!(b = pw_stream_dequeue_buffer(o->m_stream)))
+    {
+        AUDWARN("PipeWireOutput: out of buffers\n");
+        return;
+    }
+
+    buf = b->buffer;
+
+    if (!(dst = buf->datas[0].data))
+    {
+        AUDWARN("PipeWireOutput: no data pointer\n");
+        return;
+    }
 
     auto size = aud::min<uint32_t>(buf->datas[0].maxsize, o->m_buffer_at);
-    memcpy(buf->datas[0].data, o->m_buffer, size);
+    memcpy(dst, o->m_buffer, size);
     o->m_buffer_at -= size;
     memmove(o->m_buffer, o->m_buffer + size, o->m_buffer_at);
 
@@ -530,23 +569,6 @@ void PipeWireOutput::set_channel_map(struct spa_audio_info_raw * info, int chann
 {
     switch (channels)
     {
-        case 18:
-            info->position[15] = SPA_AUDIO_CHANNEL_TRL;
-            info->position[16] = SPA_AUDIO_CHANNEL_TRC;
-            info->position[17] = SPA_AUDIO_CHANNEL_TRR;
-            // Fall through
-        case 15:
-            info->position[12] = SPA_AUDIO_CHANNEL_TFL;
-            info->position[13] = SPA_AUDIO_CHANNEL_TFC;
-            info->position[14] = SPA_AUDIO_CHANNEL_TFR;
-            // Fall through
-        case 12:
-            info->position[11] = SPA_AUDIO_CHANNEL_TC;
-            // Fall through
-        case 11:
-            info->position[9]  = SPA_AUDIO_CHANNEL_SL;
-            info->position[10] = SPA_AUDIO_CHANNEL_SR;
-            // Fall through
         case 9:
             info->position[8] = SPA_AUDIO_CHANNEL_RC;
             // Fall through
