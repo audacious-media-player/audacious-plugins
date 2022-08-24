@@ -23,6 +23,7 @@
 
 #include "ffaudio-stdinc.h"
 
+#include <limits.h>
 #include <pthread.h>
 
 #include <audacious/audtag.h>
@@ -444,8 +445,10 @@ bool FFaudio::read_tag (const char * filename, VFSFile & file, Tuple & tuple, In
     if (! find_codec (ic.get (), & cinfo))
         return false;
 
-    tuple.set_int (Tuple::Length, ic->duration / 1000);
-    tuple.set_int (Tuple::Bitrate, ic->bit_rate / 1000);
+    if (ic->duration > 0 && ic->duration / 1000 <= INT_MAX)
+        tuple.set_int (Tuple::Length, ic->duration / 1000);
+    if (ic->bit_rate > 0 && ic->bit_rate / 1000 <= INT_MAX)
+        tuple.set_int (Tuple::Bitrate, ic->bit_rate / 1000);
 
     if (cinfo.codec->long_name)
         tuple.set_str (Tuple::Codec, cinfo.codec->long_name);
