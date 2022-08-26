@@ -532,9 +532,15 @@ bool FFaudio::play (const char * filename, VFSFile & file)
     if (! convert_format (context->sample_fmt, out_fmt, planar))
         return false;
 
+#if CHECK_LIBAVCODEC_VERSION(59, 37, 100)
+    int channels = context->ch_layout.nb_channels;
+#else
+    int channels = context->channels;
+#endif
+
     /* Open audio output */
     set_stream_bitrate(ic->bit_rate);
-    open_audio(out_fmt, context->sample_rate, context->channels);
+    open_audio(out_fmt, context->sample_rate, channels);
 
     int errcount = 0;
     bool eof = false;
@@ -615,7 +621,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
             }
 #endif
 
-            int size = FMT_SIZEOF (out_fmt) * context->channels * frame->nb_samples;
+            int size = FMT_SIZEOF (out_fmt) * channels * frame->nb_samples;
 
             if (planar)
             {
@@ -623,7 +629,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
                     buf.resize (size);
 
                 audio_interlace ((const void * *) frame->data, out_fmt,
-                 context->channels, buf.begin (), frame->nb_samples);
+                 channels, buf.begin (), frame->nb_samples);
                 write_audio (buf.begin (), size);
             }
             else
