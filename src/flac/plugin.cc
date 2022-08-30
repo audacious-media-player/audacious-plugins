@@ -52,11 +52,20 @@ bool FLACng::init()
         eof_callback, write_callback, metadata_callback, error_callback,
         &s_cinfo);
 
-    if (ret1 != FLAC__STREAM_DECODER_INIT_STATUS_OK ||
-        ret2 != FLAC__STREAM_DECODER_INIT_STATUS_OK)
+    if (ret1 != FLAC__STREAM_DECODER_INIT_STATUS_OK)
     {
-        AUDERR("Could not initialize the FLAC decoders!\n");
+        AUDERR("Could not initialize the main FLAC decoder!\n");
         return false;
+    }
+
+    if (ret2 != FLAC__STREAM_DECODER_INIT_STATUS_OK)
+    {
+        /* Only treat this as error if Ogg FLAC support is available */
+        if (FLAC_API_SUPPORTS_OGG_FLAC)
+        {
+            AUDERR("Could not initialize the Ogg FLAC decoder!\n");
+            return false;
+        }
     }
 
     s_decoder = std::move(flac_decoder);
@@ -117,8 +126,16 @@ bool FLACng::play(const char *filename, VFSFile &file)
     Index<char> play_buffer;
     bool error = false;
     bool stream = (file.fsize() < 0);
+    bool _is_ogg_flac = is_ogg_flac(file);
     auto tuple = stream ? get_playback_tuple() : Tuple();
-    auto decoder = is_ogg_flac(file) ? s_ogg_decoder.get() : s_decoder.get();
+    auto decoder = _is_ogg_flac && FLAC_API_SUPPORTS_OGG_FLAC
+                       ? s_ogg_decoder.get() : s_decoder.get();
+
+    if (_is_ogg_flac && !FLAC_API_SUPPORTS_OGG_FLAC)
+    {
+        AUDWARN("Ogg FLAC file detected, but your FLAC library does not support "
+                "this format. Falling back to the main FLAC decoder.\n");
+    }
 
     s_cinfo.fd = &file;
 
