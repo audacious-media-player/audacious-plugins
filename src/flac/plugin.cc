@@ -34,20 +34,13 @@ bool FLACng::init()
 {
     /* Callback structure and decoder for main decoding loop */
     auto flac_decoder = StreamDecoderPtr(FLAC__stream_decoder_new());
-    auto ogg_flac_decoder = StreamDecoderPtr(FLAC__stream_decoder_new());
-
-    if (!flac_decoder || !ogg_flac_decoder)
+    if (!flac_decoder)
     {
-        AUDERR("Could not create the FLAC decoder instances!\n");
+        AUDERR("Could not create the main FLAC decoder instance!\n");
         return false;
     }
 
     auto ret1 = FLAC__stream_decoder_init_stream(flac_decoder.get(),
-        read_callback, seek_callback, tell_callback, length_callback,
-        eof_callback, write_callback, metadata_callback, error_callback,
-        &s_cinfo);
-
-    auto ret2 = FLAC__stream_decoder_init_ogg_stream(ogg_flac_decoder.get(),
         read_callback, seek_callback, tell_callback, length_callback,
         eof_callback, write_callback, metadata_callback, error_callback,
         &s_cinfo);
@@ -58,18 +51,30 @@ bool FLACng::init()
         return false;
     }
 
-    if (ret2 != FLAC__STREAM_DECODER_INIT_STATUS_OK)
+    if (FLAC_API_SUPPORTS_OGG_FLAC)
     {
-        /* Only treat this as error if Ogg FLAC support is available */
-        if (FLAC_API_SUPPORTS_OGG_FLAC)
+        auto ogg_flac_decoder = StreamDecoderPtr(FLAC__stream_decoder_new());
+        if (!ogg_flac_decoder)
+        {
+            AUDERR("Could not create the Ogg FLAC decoder instance!\n");
+            return false;
+        }
+
+        auto ret2 = FLAC__stream_decoder_init_ogg_stream(ogg_flac_decoder.get(),
+            read_callback, seek_callback, tell_callback, length_callback,
+            eof_callback, write_callback, metadata_callback, error_callback,
+            &s_cinfo);
+
+        if (ret2 != FLAC__STREAM_DECODER_INIT_STATUS_OK)
         {
             AUDERR("Could not initialize the Ogg FLAC decoder!\n");
             return false;
         }
+
+        s_ogg_decoder = std::move(ogg_flac_decoder);
     }
 
     s_decoder = std::move(flac_decoder);
-    s_ogg_decoder = std::move(ogg_flac_decoder);
 
     return true;
 }
