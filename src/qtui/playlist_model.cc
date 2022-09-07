@@ -33,13 +33,15 @@ const char * const PlaylistModel::labels[] = {
     N_("Entry Number"),   N_("Title"),        N_("Artist"),    N_("Year"),
     N_("Album"),          N_("Album Artist"), N_("Track"),     N_("Genre"),
     N_("Queue Position"), N_("Length"),       N_("File Path"), N_("File Name"),
-    N_("Custom Title"),   N_("Bitrate"),      N_("Comment")};
+    N_("Custom Title"),   N_("Bitrate"),      N_("Comment"), N_("Publisher"),
+    N_("Catalog Number")};
 
 static const Tuple::Field s_fields[] = {
     Tuple::Invalid,        Tuple::Title,       Tuple::Artist, Tuple::Year,
     Tuple::Album,          Tuple::AlbumArtist, Tuple::Track,  Tuple::Genre,
     Tuple::Invalid,        Tuple::Length,      Tuple::Path,   Tuple::Basename,
-    Tuple::FormattedTitle, Tuple::Bitrate,     Tuple::Comment};
+    Tuple::FormattedTitle, Tuple::Bitrate,     Tuple::Comment, Tuple::Publisher,
+    Tuple::CatalogNum};
 
 static_assert(aud::n_elems(PlaylistModel::labels) == PlaylistModel::n_cols,
               "update PlaylistModel::labels");
@@ -186,6 +188,8 @@ QVariant PlaylistModel::headerData(int section, Qt::Orientation orientation,
             return QString(_("Q#"));
         case Track:
             return QString(_("T#"));
+        case CatalogNum:
+            return QString(_("C#"));
         }
 
         return QString(_(labels[col]));

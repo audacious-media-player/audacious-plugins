@@ -37,7 +37,8 @@
 static const char * const s_col_keys[] = {
     "number",       "title",    "artist", "year",    "album",
     "album-artist", "track",    "genre",  "queued",  "length",
-    "path",         "filename", "custom", "bitrate", "comment"};
+    "path",         "filename", "custom", "bitrate", "comment",
+    "publisher",    "catalog-number"};
 
 static const int s_default_widths[] = {
     25,  // entry number
@@ -54,7 +55,9 @@ static const int s_default_widths[] = {
     275, // filename
     275, // custom title
     75,  // bitrate
-    275  // comment
+    275, // comment
+    175, // publisher
+    75   // catalog number
 };
 
 static const Playlist::SortType s_sort_types[] = {
@@ -72,7 +75,9 @@ static const Playlist::SortType s_sort_types[] = {
     Playlist::Filename,       // file name
     Playlist::FormattedTitle, // custom title
     Playlist::n_sort_types,   // bitrate
-    Playlist::Comment         // comment
+    Playlist::Comment,        // comment,
+    Playlist::Publisher,      // publisher
+    Playlist::CatalogNum      // catalog number
 };
 
 static_assert(aud::n_elems(s_col_keys) == PlaylistModel::n_cols,
