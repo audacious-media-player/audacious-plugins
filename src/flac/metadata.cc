@@ -179,6 +179,9 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
     insert_int_tuple_to_vc(vc_block, tuple, Tuple::Year, "DATE");
     insert_int_tuple_to_vc(vc_block, tuple, Tuple::Track, "TRACKNUMBER");
 
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Publisher, "publisher");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::CatalogNum, "CATALOGNUMBER");
+
     FLAC__metadata_iterator_insert_block_after(iter, vc_block);
 
     FLAC__metadata_iterator_delete(iter);
@@ -239,6 +242,8 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
         {"GENRE", Tuple::Genre},
         {"DESCRIPTION", Tuple::Description},
         {"musicbrainz_trackid", Tuple::MusicBrainzID},
+        {"publisher", Tuple::Publisher},
+        {"CATALOGNUMBER", Tuple::CatalogNum},
     };
 
     for (auto & tfield : tfields)
