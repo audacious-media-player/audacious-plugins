@@ -105,6 +105,9 @@ bool VorbisPlugin::write_tuple (const char * filename, VFSFile & file, const Tup
     insert_int_tuple_field_to_dictionary (tuple, Tuple::Year, dict, "DATE");
     insert_int_tuple_field_to_dictionary (tuple, Tuple::Track, dict, "TRACKNUMBER");
 
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::Publisher, dict, "publisher");
+    insert_str_tuple_field_to_dictionary (tuple, Tuple::CatalogNum, dict, "CATALOGNUMBER");
+
     dictionary_to_vorbis_comment (& edit.vc, dict);
 
     auto temp_vfs = VFSFile::tmpfile ();
