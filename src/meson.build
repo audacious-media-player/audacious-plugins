@@ -136,7 +136,6 @@ endif
 
 # GTK-specific plugins
 if conf.has('USE_GTK')
-  subdir('alarm')
   subdir('albumart')
   subdir('blur_scope')
   subdir('cairo-spectrum')

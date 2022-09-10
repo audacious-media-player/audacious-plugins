@@ -75,7 +75,7 @@ TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
     EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart playlist-manager search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart playlist-manager search-tool statusicon"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope cairo-spectrum"
 fi
@@ -811,7 +811,6 @@ echo "  MMS (via libmms):                       $have_mms"
 echo
 echo "  General"
 echo "  -------"
-echo "  Alarm (requires GTK+):                  $USE_GTK"
 echo "  Ampache browser (requires Qt):          $have_ampache"
 echo "  Delete Files:                           $USE_GTK_OR_QT"
 echo "  libnotify OSD:                          $have_notify"
