@@ -91,7 +91,7 @@ static const bool pw_col_label[PW_COLS] = {
     true,   // custom title
     false,  // bitrate
     true,   // comment
-    false,  // publisher
+    true,   // publisher
     false   // catalog number
 };
 
