@@ -1,5 +1,5 @@
 project('audacious-plugins', 'c', 'cpp',
-        version: '4.2',
+        version: '4.3-devel',
         meson_version: '>= 0.51',
         default_options: [
           'c_std=gnu99',
@@ -34,7 +34,7 @@ gmodule_dep = dependency('gmodule-2.0', version: glib_req, required: true)
 zlib_dep = dependency('zlib', required: true)
 
 
-audacious_req = '>= 4.2'
+audacious_req = '>= 4.3'
 audacious_dep = dependency('audacious', version: audacious_req, required: true)
 
 
