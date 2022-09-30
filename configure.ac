@@ -383,14 +383,12 @@ ENABLE_PLUGIN_WITH_DEP(pulse,
     PULSE,
     libpulse >= 0.9.5)
 
-test_sndio () {
-    AC_CHECK_LIB(sndio, sio_open, have_sndio=yes, have_sndio=no)
-}
-
 ENABLE_PLUGIN_WITH_TEST(sndio,
     Sndio output,
     auto,
-    OUTPUT)
+    OUTPUT,
+    SNDIO,
+    sndio)
 
 test_cue () {
     PKG_CHECK_MODULES(CUE, libcue >= 2.0, [
