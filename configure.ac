@@ -383,7 +383,7 @@ ENABLE_PLUGIN_WITH_DEP(pulse,
     PULSE,
     libpulse >= 0.9.5)
 
-ENABLE_PLUGIN_WITH_TEST(sndio,
+ENABLE_PLUGIN_WITH_DEP(sndio,
     Sndio output,
     auto,
     OUTPUT,
