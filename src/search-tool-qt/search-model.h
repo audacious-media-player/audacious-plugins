@@ -100,6 +100,8 @@ protected:
     QMimeData * mimeData (const QModelIndexList & indexes) const;
 
 private:
+    void add_to_database (int entry, std::initializer_list<Key> keys);
+
     Playlist m_playlist;
     SimpleHash<Key, Item> m_database;
     Index<const Item *> m_items;
