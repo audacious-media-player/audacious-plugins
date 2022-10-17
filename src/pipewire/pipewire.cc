@@ -66,7 +66,6 @@ public:
 private:
     bool init_core();
     bool init_stream();
-    void init_buffer();
 
     struct pw_stream * create_stream();
     bool connect_stream(enum spa_audio_format format);
@@ -343,16 +342,12 @@ bool PipeWireOutput::init_core()
         return false;
     }
 
-    init_buffer();
-    return true;
-}
-
-void PipeWireOutput::init_buffer()
-{
     m_stride = FMT_SIZEOF(m_aud_format) * m_channels;
-    m_frames = aud::clamp<int>(64, ceilf(2048.0 * m_rate / 48000.0), 8192);
+    m_frames = aud::clamp<int>(64, ceilf(2048 * m_rate / 48000.0f), 8192);
     m_buffer_size = m_frames * m_stride;
     m_buffer = new unsigned char[m_buffer_size];
+
+    return true;
 }
 
 bool PipeWireOutput::init_stream()
