@@ -73,6 +73,8 @@ public:
     void do_search (const Index<String> & terms, int max_results);
 
 private:
+    void add_to_database (int entry, std::initializer_list<Key> keys);
+
     Playlist m_playlist;
     SimpleHash<Key, Item> m_database;
     Index<const Item *> m_items;
