@@ -73,10 +73,7 @@ bool Window::close ()
 void Window::changeEvent (QEvent * event)
 {
     if (event->type () == QEvent::ActivationChange)
-    {
-        m_is_focused = isActiveWindow ();
         config.active_titlebar_any ? dock_draw_all () : Window::queue_draw ();
-    }
 
     QWidget::changeEvent (event);
 }

@@ -63,7 +63,6 @@ private:
 
     const int m_id;
     bool m_is_shaded = false;
-    bool m_is_focused = false;
     bool m_is_moving = false;
     QWidget * m_normal = nullptr, * m_shaded = nullptr;
     SmartPtr<QRegion> m_shape, m_sshape;
