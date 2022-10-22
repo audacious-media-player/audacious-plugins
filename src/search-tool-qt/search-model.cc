@@ -43,18 +43,19 @@ static QString create_item_label (const Item & item)
     {
         string += str_printf (dngettext (PACKAGE, "%d song", "%d songs",
          item.matches.len ()), item.matches.len ());
+
+        if (item.field == SearchField::Genre || item.parent)
+            string += ' ';
     }
 
     if (item.field == SearchField::Genre)
     {
-        string += ' ';
         string += _("of this genre");
     }
     else if (item.parent)
     {
         auto parent = (item.parent->parent ? item.parent->parent : item.parent);
 
-        string += ' ';
         string += parent_prefix (parent->field);
         string += ' ';
         string += start_tags[parent->field];
