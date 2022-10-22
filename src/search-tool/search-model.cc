@@ -68,8 +68,12 @@ void SearchModel::create_database (Playlist playlist)
             add_to_database (e,
              {{SearchField::Artist, album_artist},
               {SearchField::Album, tuple.get_str (Tuple::Album)}});
+            /* add Title node under a HiddenAlbum node so that it can
+             * still be searched by album name (without listing the
+             * album twice) */
             add_to_database (e,
              {{SearchField::Artist, artist},
+              {SearchField::HiddenAlbum, tuple.get_str (Tuple::Album)},
               {SearchField::Title, tuple.get_str (Tuple::Title)}});
         }
         else
@@ -110,7 +114,8 @@ static void search_recurse (SimpleHash<Key, Item> & domain,
         }
 
         /* adding an item with exactly one child is redundant, so avoid it */
-        if (! new_mask && item.children.n_items () != 1)
+        if (! new_mask && item.children.n_items () != 1 &&
+         item.field != SearchField::HiddenAlbum)
             results.append (& item);
 
         search_recurse (item.children, terms, new_mask, results);
