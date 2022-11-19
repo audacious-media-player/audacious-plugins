@@ -12,9 +12,6 @@ oss_sources = [
 
 if cxx.has_header('sys/soundcard.h', args: '-I' + oss_inc)
   have_oss4 = true
-  conf.set10('HAVE_SYS_SOUNDCARD_H', true)
-elif cxx.has_header('soundcard.h', args: '-I' + oss_inc)
-  have_oss4 = true
 else
   have_oss4 = false
 endif

@@ -357,7 +357,7 @@ test_oss4 () {
     OLD_CPPFLAGS="$CPPFLAGS"
     CPPFLAGS="$CPPFLAGS $OSS_CFLAGS"
     have_oss4=no
-    AC_CHECK_HEADERS(sys/soundcard.h soundcard.h, [
+    AC_CHECK_HEADERS(sys/soundcard.h, [
         have_oss4=yes
         break
     ])
