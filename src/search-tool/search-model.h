@@ -21,6 +21,7 @@
 #define SEARCHMODEL_H
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/multihash.h>
 #include <libaudcore/playlist.h>
 
@@ -28,9 +29,21 @@ enum class SearchField {
     Genre,
     Artist,
     Album,
+    HiddenAlbum,
     Title,
     count
 };
+
+static constexpr aud::array<SearchField, const char *> start_tags =
+    {"", "<b>", "<i>", "<i>", ""};
+static constexpr aud::array<SearchField, const char *> end_tags =
+    {"", "</b>", "</i>", "</i>", ""};
+
+static inline const char * parent_prefix (SearchField parent)
+{
+    return (parent == SearchField::Album || parent ==
+     SearchField::HiddenAlbum) ? _("on") : _("by");
+}
 
 struct Key
 {
@@ -73,6 +86,8 @@ public:
     void do_search (const Index<String> & terms, int max_results);
 
 private:
+    void add_to_database (int entry, std::initializer_list<Key> keys);
+
     Playlist m_playlist;
     SimpleHash<Key, Item> m_database;
     Index<const Item *> m_items;

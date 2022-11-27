@@ -26,12 +26,7 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/ioctl.h>
-
-#ifdef HAVE_SYS_SOUNDCARD_H
 #include <sys/soundcard.h>
-#else
-#include <soundcard.h>
-#endif
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>

@@ -136,7 +136,6 @@ endif
 
 # GTK-specific plugins
 if conf.has('USE_GTK')
-  subdir('alarm')
   subdir('albumart')
   subdir('blur_scope')
   subdir('cairo-spectrum')
@@ -260,6 +259,10 @@ endif
 
 if get_option('oss')
   subdir('oss4')
+endif
+
+if get_option('pipewire')
+  subdir('pipewire')
 endif
 
 if get_option('pulse')

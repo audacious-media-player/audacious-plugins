@@ -43,6 +43,8 @@ enum {
     PW_COL_CUSTOM,
     PW_COL_BITRATE,
     PW_COL_COMMENT,
+    PW_COL_PUBLISHER,
+    PW_COL_CATALOG_NUM,
     PW_COLS
 };
 

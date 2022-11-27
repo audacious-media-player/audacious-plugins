@@ -30,7 +30,6 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 
-#include "i_configure.h"
 /* this is needed to retrieve information */
 #include "i_midi.h"
 /* icon from gnome-mime-audio-midi.png of the GNOME ICON SET */
@@ -43,7 +42,7 @@ void i_fileinfo_ev_close (GtkWidget * button, void * fileinfowin)
 }
 
 
-void i_fileinfo_grid_add_entry (char * field_text, char * value_text,
+void i_fileinfo_grid_add_entry (const char * field_text, const char * value_text,
                                 GtkWidget * grid, unsigned line, PangoAttrList * attrlist)
 {
     GtkWidget * field, *value;

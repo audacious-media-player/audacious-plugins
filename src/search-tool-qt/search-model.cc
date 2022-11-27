@@ -26,11 +26,6 @@
 
 static QString create_item_label (const Item & item)
 {
-    static constexpr aud::array<SearchField, const char *> start_tags =
-        {"", "<b>", "<i>", ""};
-    static constexpr aud::array<SearchField, const char *> end_tags =
-        {"", "</b>", "</i>", ""};
-
     QString string = start_tags[item.field];
 
     string += QString ((item.field == SearchField::Genre) ?
@@ -61,7 +56,7 @@ static QString create_item_label (const Item & item)
     {
         auto parent = (item.parent->parent ? item.parent->parent : item.parent);
 
-        string += (parent->field == SearchField::Album) ? _("on") : _("by");
+        string += parent_prefix (parent->field);
         string += ' ';
         string += start_tags[parent->field];
         string += QString (parent->name).toHtmlEscaped ();
@@ -148,6 +143,27 @@ void SearchModel::destroy_database ()
     m_database.clear ();
 }
 
+void SearchModel::add_to_database (int entry, std::initializer_list<Key> keys)
+{
+    Item * parent = nullptr;
+    auto hash = & m_database;
+
+    for (auto & key : keys)
+    {
+        if (! key.name)
+            continue;
+
+        Item * item = hash->lookup (key);
+        if (! item)
+            item = hash->add (key, Item (key.field, key.name, parent));
+
+        item->matches.append (entry);
+
+        parent = item;
+        hash = & item->children;
+    }
+}
+
 void SearchModel::create_database (Playlist playlist)
 {
     destroy_database ();
@@ -157,36 +173,37 @@ void SearchModel::create_database (Playlist playlist)
     for (int e = 0; e < entries; e ++)
     {
         Tuple tuple = playlist.entry_tuple (e, Playlist::NoWait);
+        String album_artist = tuple.get_str (Tuple::AlbumArtist);
+        String artist = tuple.get_str (Tuple::Artist);
 
-        aud::array<SearchField, String> fields;
-        fields[SearchField::Genre] = tuple.get_str (Tuple::Genre);
-        fields[SearchField::Artist] = tuple.get_str (Tuple::Artist);
-        fields[SearchField::Album] = tuple.get_str (Tuple::Album);
-        fields[SearchField::Title] = tuple.get_str (Tuple::Title);
-
-        Item * parent = nullptr;
-        SimpleHash<Key, Item> * hash = & m_database;
-
-        for (auto f : aud::range<SearchField> ())
+        if (album_artist && album_artist != artist)
         {
-            if (fields[f])
-            {
-                Key key = {f, fields[f]};
-                Item * item = hash->lookup (key);
-
-                if (! item)
-                    item = hash->add (key, Item (f, fields[f], parent));
-
-                item->matches.append (e);
-
-                /* genre is outside the normal hierarchy */
-                if (f != SearchField::Genre)
-                {
-                    parent = item;
-                    hash = & item->children;
-                }
-            }
+            /* album and song have different artists;
+             * add separately under respective artists */
+            add_to_database (e,
+             {{SearchField::Artist, album_artist},
+              {SearchField::Album, tuple.get_str (Tuple::Album)}});
+            /* add Title node under a HiddenAlbum node so that it can
+             * still be searched by album name (without listing the
+             * album twice) */
+            add_to_database (e,
+             {{SearchField::Artist, artist},
+              {SearchField::HiddenAlbum, tuple.get_str (Tuple::Album)},
+              {SearchField::Title, tuple.get_str (Tuple::Title)}});
         }
+        else
+        {
+            /* album and song have the same artist;
+             * add hierarchically under that artist */
+            add_to_database (e,
+             {{SearchField::Artist, artist},
+              {SearchField::Album, tuple.get_str (Tuple::Album)},
+              {SearchField::Title, tuple.get_str (Tuple::Title)}});
+        }
+
+        /* add separately under genre */
+        add_to_database (e,
+         {{SearchField::Genre, tuple.get_str (Tuple::Genre)}});
     }
 
     m_playlist = playlist;
@@ -212,7 +229,8 @@ static void search_recurse (SimpleHash<Key, Item> & domain,
         }
 
         /* adding an item with exactly one child is redundant, so avoid it */
-        if (! new_mask && item.children.n_items () != 1)
+        if (! new_mask && item.children.n_items () != 1 &&
+         item.field != SearchField::HiddenAlbum)
             results.append (& item);
 
         search_recurse (item.children, terms, new_mask, results);

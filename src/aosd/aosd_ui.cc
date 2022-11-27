@@ -242,7 +242,7 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg )
 
 
 static GtkWidget *
-aosd_ui_configure_animation_timing ( char * label_string )
+aosd_ui_configure_animation_timing ( const char * label_string )
 {
   GtkWidget *hbox, *desc_label, *spinbt;
   hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );

@@ -268,11 +268,6 @@ static void action_add_to_playlist ()
 
 static void list_get_value (void * user, int row, int column, GValue * value)
 {
-    static constexpr aud::array<SearchField, const char *> start_tags =
-        {"", "<b>", "<i>", ""};
-    static constexpr aud::array<SearchField, const char *> end_tags =
-        {"", "</b>", "</i>", ""};
-
     auto escape = [] (const char * s)
         { return CharPtr (g_markup_escape_text (s, -1)); };
 
@@ -302,7 +297,7 @@ static void list_get_value (void * user, int row, int column, GValue * value)
         auto parent = (item.parent->parent ? item.parent->parent : item.parent);
 
         desc.insert (-1, " ");
-        desc.insert (-1, (parent->field == SearchField::Album) ? _("on") : _("by"));
+        desc.insert (-1, parent_prefix (parent->field));
         desc.insert (-1, " ");
         desc.insert (-1, start_tags[parent->field]);
         desc.insert (-1, escape (parent->name));

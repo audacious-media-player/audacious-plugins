@@ -5,7 +5,7 @@ dnl ***
 dnl Initialize
 dnl ==========
 AC_PREREQ([2.59])
-AC_INIT([audacious-plugins], [4.2])
+AC_INIT([audacious-plugins], [4.3-devel])
 AC_COPYRIGHT([Copyright (C) 2001-2022 Audacious developers and others])
 
 AC_DEFINE_UNQUOTED([PACKAGE], "$PACKAGE_NAME", [Name of package])
@@ -33,9 +33,9 @@ LIBS="$LIBS $LIBINTL"
 dnl Check for Audacious
 dnl ===================
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 4.2],
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 4.3],
     [],
-    [AC_MSG_ERROR([Cannot find Audacious 4.2; have you installed Audacious yet?])]
+    [AC_MSG_ERROR([Cannot find Audacious 4.3; have you installed Audacious yet?])]
 )
 
 CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS"
@@ -75,7 +75,7 @@ TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
     EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart playlist-manager search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart playlist-manager search-tool statusicon"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope cairo-spectrum"
 fi
@@ -357,7 +357,7 @@ test_oss4 () {
     OLD_CPPFLAGS="$CPPFLAGS"
     CPPFLAGS="$CPPFLAGS $OSS_CFLAGS"
     have_oss4=no
-    AC_CHECK_HEADERS(sys/soundcard.h soundcard.h, [
+    AC_CHECK_HEADERS(sys/soundcard.h, [
         have_oss4=yes
         break
     ])
@@ -369,6 +369,13 @@ ENABLE_PLUGIN_WITH_TEST(oss4,
     auto,
     OUTPUT)
 
+ENABLE_PLUGIN_WITH_DEP(pipewire,
+    PipeWire output,
+    auto,
+    OUTPUT,
+    PIPEWIRE,
+    libpipewire-0.3 >= 0.3.26 libspa-0.2 >= 0.2)
+
 ENABLE_PLUGIN_WITH_DEP(pulse,
     PulseAudio output,
     auto,
@@ -376,14 +383,12 @@ ENABLE_PLUGIN_WITH_DEP(pulse,
     PULSE,
     libpulse >= 0.9.5)
 
-test_sndio () {
-    AC_CHECK_LIB(sndio, sio_open, have_sndio=yes, have_sndio=no)
-}
-
-ENABLE_PLUGIN_WITH_TEST(sndio,
+ENABLE_PLUGIN_WITH_DEP(sndio,
     Sndio output,
     auto,
-    OUTPUT)
+    OUTPUT,
+    SNDIO,
+    sndio)
 
 test_cue () {
     PKG_CHECK_MODULES(CUE, libcue >= 2.0, [
@@ -777,6 +782,7 @@ echo "  -------"
 echo "  Advanced Linux Sound Architecture:      $have_alsa"
 echo "  Jack Audio Connection Kit:              $have_jack"
 echo "  Open Sound System:                      $have_oss4"
+echo "  PipeWire:                               $have_pipewire"
 echo "  PulseAudio:                             $have_pulse"
 echo "  Simple DirectMedia Layer:               $have_sdlout"
 echo "  Sndio:                                  $have_sndio"
@@ -803,7 +809,6 @@ echo "  MMS (via libmms):                       $have_mms"
 echo
 echo "  General"
 echo "  -------"
-echo "  Alarm (requires GTK+):                  $USE_GTK"
 echo "  Ampache browser (requires Qt):          $have_ampache"
 echo "  Delete Files:                           $USE_GTK_OR_QT"
 echo "  libnotify OSD:                          $have_notify"
