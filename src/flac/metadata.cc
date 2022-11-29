@@ -106,6 +106,9 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     String val = tuple.get_str (field);
 
+    FLAC__metadata_object_vorbiscomment_remove_entries_matching(vc_block,
+        field_name);
+
     if (! val)
         return;
 
@@ -121,6 +124,9 @@ static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     int val = tuple.get_int (field);
+
+    FLAC__metadata_object_vorbiscomment_remove_entries_matching(vc_block,
+        field_name);
 
     if (val <= 0)
         return;
@@ -144,7 +150,7 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
 
     FLAC__Metadata_Iterator *iter;
     FLAC__Metadata_Chain *chain;
-    FLAC__StreamMetadata *vc_block;
+    FLAC__StreamMetadata *vc_block = nullptr;
     FLAC__Metadata_ChainStatus status;
 
     chain = FLAC__metadata_chain_new();
@@ -160,12 +166,16 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
     {
         if (FLAC__metadata_iterator_get_block_type(iter) == FLAC__METADATA_TYPE_VORBIS_COMMENT)
         {
-            FLAC__metadata_iterator_delete_block(iter, true);
+            vc_block = FLAC__metadata_iterator_get_block(iter);
             break;
         }
     }
 
-    vc_block = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
+    if (!vc_block)
+    {
+        vc_block = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
+        FLAC__metadata_iterator_insert_block_after(iter, vc_block);
+    }
 
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Title, "TITLE");
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Artist, "ARTIST");
@@ -181,8 +191,6 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
 
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Publisher, "publisher");
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::CatalogNum, "CATALOGNUMBER");
-
-    FLAC__metadata_iterator_insert_block_after(iter, vc_block);
 
     FLAC__metadata_iterator_delete(iter);
     FLAC__metadata_chain_sort_padding(chain);
