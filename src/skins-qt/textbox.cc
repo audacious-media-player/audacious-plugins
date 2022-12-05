@@ -99,7 +99,7 @@ void TextBox::render_vector (const char * text)
 
     resize (m_width * config.scale, height);
 
-    m_buf_width = aud::max ((width + config.scale - 1) / config.scale, m_width);
+    m_buf_width = aud::max ((int) ((width + config.scale - 1) / config.scale), m_width);
     m_buf.capture (new QImage (m_buf_width * config.scale, height, QImage::Format_RGB32));
 
     QPainter cr (m_buf.get ());

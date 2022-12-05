@@ -28,7 +28,7 @@ typedef struct {
     int equalizer_x, equalizer_y;
     int playlist_x, playlist_y;
     int playlist_width, playlist_height;
-    int scale;
+    double scale;
     bool autoscroll;
     bool analyzer_peaks;
     bool twoway_scroll;

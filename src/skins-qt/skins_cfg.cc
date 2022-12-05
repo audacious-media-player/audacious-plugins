@@ -62,7 +62,6 @@ static const char * const skins_defaults[] = {
     /* windows */
     "active_titlebar_any", "TRUE",
     "always_on_top", "FALSE",
-    "double_size", "FALSE",
     "equalizer_shaded", "FALSE",
     "equalizer_visible", "FALSE",
     "equalizer_x", "20",
@@ -77,6 +76,7 @@ static const char * const skins_defaults[] = {
     "playlist_width", "275",
     "playlist_height", "232",
     "sticky", "FALSE",
+    "scale_factor", "1.0",
 
     nullptr
 };
@@ -208,6 +208,9 @@ static const PreferencesWidget skins_widgets_general[] = {
     WidgetCombo (nullptr,
         WidgetString (selected_skin, skin_select_cb),
         {nullptr, skin_combo_fill}),
+    WidgetSpin(N_("Fractional scale"),
+        WidgetFloat("skins", "scale_factor", view_apply_fractional_scale),
+        {1.0, 3.0, 0.1, N_("times")}),
     WidgetCheck (N_("Display active titlebar when any window is focused"),
         WidgetBool (config.active_titlebar_any, nullptr)),
     WidgetLabel (N_("<b>Fonts</b>")),

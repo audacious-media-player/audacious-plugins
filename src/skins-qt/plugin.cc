@@ -130,9 +130,8 @@ static bool load_initial_skin ()
 
 static void skins_init_main (bool restart)
 {
-    int old_scale = config.scale;
-
-    config.scale = aud_get_bool ("skins", "double_size") ? 2 : 1;
+    double old_scale = config.scale;
+    config.scale = aud_get_double ("skins", "scale_factor");
 
     if (restart && config.scale != old_scale)
         dock_change_scale (old_scale, config.scale);

@@ -174,18 +174,15 @@ void view_apply_equalizer_shaded ()
     equalizerwin->resize (275, shaded ? 14 : 116);
 }
 
-void view_set_double_size (bool double_size)
+void view_apply_fractional_scale ()
 {
-    aud_set_bool ("skins", "double_size", double_size);
-    hook_call ("skins set double_size", nullptr);
-
-    view_apply_double_size ();
+    static QueuedFunc restart;
+    restart.queue (skins_restart);
 }
 
 void view_apply_double_size ()
 {
-    static QueuedFunc restart;
-    restart.queue (skins_restart);
+    view_apply_fractional_scale ();
 }
 
 void view_set_on_top (bool on_top)

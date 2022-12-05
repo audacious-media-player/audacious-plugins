@@ -824,9 +824,6 @@ void mainwin_mr_change (MenuRowItem i)
         case MENUROW_FILEINFOBOX:
             mainwin_lock_info_text (_("File Info Box"));
             break;
-        case MENUROW_SCALE:
-            mainwin_lock_info_text (_("Double Size"));
-            break;
         case MENUROW_VISUALIZATION:
             mainwin_lock_info_text (_("Visualizations"));
             break;
@@ -847,9 +844,6 @@ void mainwin_mr_release (MenuRowItem i, QMouseEvent * event)
             break;
         case MENUROW_FILEINFOBOX:
             audqt::infowin_show_current ();
-            break;
-        case MENUROW_SCALE:
-            view_set_double_size (! aud_get_bool ("skins", "double_size"));
             break;
         case MENUROW_VISUALIZATION:
             audqt::prefswin_show_plugin_page (PluginType::Vis);

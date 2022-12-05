@@ -46,7 +46,7 @@ bool HSlider::button_press (QMouseEvent * event)
         return false;
 
     m_pressed = true;
-    m_pos = aud::clamp ((int) event->x () / config.scale - m_kw / 2, m_min, m_max);
+    m_pos = aud::clamp ((int) (event->x () / config.scale - m_kw / 2), m_min, m_max);
 
     if (move)
         move ();
@@ -64,7 +64,7 @@ bool HSlider::button_release (QMouseEvent * event)
         return true;
 
     m_pressed = false;
-    m_pos = aud::clamp ((int) event->x () / config.scale - m_kw / 2, m_min, m_max);
+    m_pos = aud::clamp ((int) (event->x () / config.scale - m_kw / 2), m_min, m_max);
 
     if (release)
         release ();
@@ -79,7 +79,7 @@ bool HSlider::motion (QMouseEvent * event)
         return true;
 
     m_pressed = true;
-    m_pos = aud::clamp ((int) event->x () / config.scale - m_kw / 2, m_min, m_max);
+    m_pos = aud::clamp ((int) (event->x () / config.scale - m_kw / 2), m_min, m_max);
 
     if (move)
         move ();

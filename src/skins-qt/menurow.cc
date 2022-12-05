@@ -47,8 +47,6 @@ void MenuRow::draw (QPainter & cr)
     {
         if (aud_get_bool ("skins", "always_on_top"))
             skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 54, 0, 10, 8, 8);
-        if (aud_get_bool ("skins", "double_size"))
-            skin_draw_pixbuf (cr, SKIN_TITLEBAR, 328, 70, 0, 26, 8, 8);
     }
 }
 
@@ -62,8 +60,6 @@ static MenuRowItem menurow_find_selected (int x, int y)
             return MENUROW_ALWAYS;
         if (y >= 18 && y < 26)
             return MENUROW_FILEINFOBOX;
-        if (y >= 26 && y < 34)
-            return MENUROW_SCALE;
         if (y >= 34 && y < 43)
             return MENUROW_VISUALIZATION;
     }
