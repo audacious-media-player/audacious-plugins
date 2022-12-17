@@ -40,6 +40,8 @@ option('mpg123', type: 'boolean', value: true,
        description: 'Whether MPG123 support is enabled')
 option('openmpt', type: 'boolean', value: true,
        description: 'Whether OpenMPT support is enabled')
+option('opus', type: 'boolean', value: true,
+       description: 'Whether Opus support is enabled')
 option('sid', type: 'boolean', value: true,
        description: 'Whether SID emulation support is enabled')
 option('sndfile', type: 'boolean', value: true,
