@@ -225,6 +225,13 @@ ENABLE_PLUGIN_WITH_DEP(vorbis,
     VORBIS,
     ogg >= 1.0 vorbis >= 1.0 vorbisenc >= 1.0 vorbisfile >= 1.0)
 
+ENABLE_PLUGIN_WITH_DEP(opus,
+    Opus support,
+    yes,
+    INPUT,
+    OPUS,
+    opus >= 1.0.1 opusfile >= 0.4)
+
 ENABLE_PLUGIN_WITH_DEP(amidiplug,
     MIDI synthesizer,
     auto,
@@ -735,6 +742,7 @@ echo "  -------------"
 echo "  Audio CD:                               $have_cdaudio"
 echo "  Free Lossless Audio Codec:              $have_flac"
 echo "  Ogg Vorbis:                             $have_vorbis"
+echo "  Opus:                                   $have_opus"
 echo "  MIDI (via FluidSynth):                  $have_amidiplug"
 echo "  MPEG-1 Layer I/II/III (via mpg123):     $have_mpg123"
 echo "  MPEG-2/4 AAC:                           $have_aac"

@@ -223,6 +223,10 @@ if get_option('openmpt')
   subdir('openmpt')
 endif
 
+if get_option('opus')
+  subdir('opus')
+endif
+
 if get_option('sid')
   subdir('sid')
 endif
