@@ -62,7 +62,8 @@ struct LyricsState {
         None,
         Local,
         LyricWiki,
-        LyricsOVH
+        LyricsOVH,
+        MakeitpersonalCO
     } source = None;
 
     bool error = false;
@@ -102,7 +103,7 @@ public:
 EXPORT LyricWikiQt aud_plugin_instance;
 
 const char * const LyricWikiQt::defaults[] = {
-    "remote-source", "lyrics.ovh",
+    "remote-source", "makeitpersonal.co",
     "enable-file-provider", "TRUE",
     "enable-cache", "TRUE",
     "split-title-on-chars", "FALSE",
@@ -114,7 +115,8 @@ const char * const LyricWikiQt::defaults[] = {
 
 static const ComboItem remote_sources[] = {
     ComboItem(N_("Nowhere"), "nowhere"),
-    ComboItem(N_("lyrics.ovh"), "lyrics.ovh")
+    ComboItem(N_("lyrics.ovh"), "lyrics.ovh"),
+    ComboItem(N_("makeitpersonal.co"), "makeitpersonal.co")
 };
 
 static const PreferencesWidget truncate_elements[] = {
@@ -405,12 +407,67 @@ void LyricsOVHProvider::fetch (LyricsState state)
 
 static LyricsOVHProvider lyrics_ovh_provider;
 
+
+// MakeitpersonalCoProvider provides a strategy for fetching lyrics using the
+// makeitpersonal.co search engine api.
+class MakeitpersonalCoProvider : public LyricProvider {
+public:
+    MakeitpersonalCoProvider() {};
+
+    bool match (LyricsState state);
+    void fetch (LyricsState state);
+    String edit_uri (LyricsState state) { return String (); }
+};
+
+bool MakeitpersonalCoProvider::match (LyricsState state)
+{
+    fetch (state);
+    return true;
+}
+
+void MakeitpersonalCoProvider::fetch (LyricsState state)
+{
+    auto handle_result_cb = [=] (const char *filename, const Index<char> & buf) {
+        if (! buf.len ())
+        {
+            update_lyrics_window_error(str_printf(_("Unable to fetch %s"), filename));
+            return;
+        }
+
+        QByteArray text = QByteArray (buf.begin (), buf.len ());
+
+        LyricsState new_state = g_state;
+        new_state.lyrics = String (text);
+
+        new_state.source = LyricsState::Source::MakeitpersonalCO;
+
+        update_lyrics_window (new_state.title, new_state.artist, new_state.lyrics);
+        persist_state (new_state);
+    };
+
+    auto artist = str_copy (state.artist);
+    artist = str_encode_percent (state.artist, -1);
+
+    auto title = str_copy (state.title);
+    title = str_encode_percent (state.title, -1);
+
+    auto uri = str_concat({"https://makeitpersonal.co/lyrics?artist=", artist, "&title=", title});
+
+    vfs_async_file_get_contents(uri, handle_result_cb);
+    update_lyrics_window_message (state, _("Looking for lyrics ..."));
+}
+
+static MakeitpersonalCoProvider makeitpersonal_co_provider;
+
 static LyricProvider * remote_source ()
 {
     auto source = aud_get_str ("lyricwiki", "remote-source");
 
     if (! strcmp (source, "lyrics.ovh"))
         return &lyrics_ovh_provider;
+
+    if (! strcmp (source, "makeitpersonal.co"))
+        return &makeitpersonal_co_provider;
 
     return nullptr;
 }
