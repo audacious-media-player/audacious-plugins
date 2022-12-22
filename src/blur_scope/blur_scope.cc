@@ -149,7 +149,7 @@ void * BlurScope::get_gtk_widget ()
 {
     area = gtk_drawing_area_new ();
 
-    g_signal_connect (area, "draw_cb", (GCallback) draw_cb, this);
+    g_signal_connect (area, "draw", (GCallback) draw_cb, this);
     g_signal_connect (area, "configure-event", (GCallback) configure_event, this);
     g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed, & area);
 
