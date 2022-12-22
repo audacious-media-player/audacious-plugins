@@ -232,7 +232,8 @@ static void /* GtkWidget */ * bscope_get_color_chooser ()
     GdkRGBA rgba = {
         ((bscope_color & 0xff0000) >> 16) / 255.0,
         ((bscope_color & 0xff00) >> 8) / 255.0,
-        (bscope_color & 0xff) / 255.0
+        (bscope_color & 0xff) / 255.0,
+        1.0
     };
 
     GtkWidget * chooser = gtk_color_button_new_with_rgba (& rgba);
