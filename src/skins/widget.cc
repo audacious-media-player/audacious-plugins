@@ -19,6 +19,8 @@
  * using our public API to be a derived work.
  */
 
+#include <libaudgui/gtk-compat.h>
+
 #include "widget.h"
 
 typedef GtkWidget DrawingArea;
@@ -55,7 +57,7 @@ void Widget::set_drawable (GtkWidget * widget)
 {
     m_drawable = widget;
     g_signal_connect (widget, "realize", (GCallback) Widget::realize_cb, this);
-    g_signal_connect (widget, "expose-event", (GCallback) Widget::draw_cb, this);
+    g_signal_connect (widget, AUDGUI_DRAW_SIGNAL, (GCallback) Widget::draw_cb, this);
 
     if (! m_widget)
     {
@@ -96,6 +98,37 @@ void Widget::add_drawable (int width, int height)
     set_drawable (widget);
 }
 
+#ifdef USE_GTK3
+void Widget::draw_now ()
+{
+    if (! m_drawable || ! gtk_widget_is_drawable (m_drawable))
+        return;
+
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (m_drawable));
+
+    if (! gtk_widget_get_has_window (m_drawable))
+    {
+        GtkAllocation alloc;
+        gtk_widget_get_allocation (m_drawable, & alloc);
+        cairo_translate (cr, alloc.x, alloc.y);
+        cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
+        cairo_clip (cr);
+    }
+
+    draw_cb (m_drawable, cr, this);
+
+    cairo_destroy (cr);
+}
+
+gboolean Widget::draw_cb (GtkWidget * widget, cairo_t * cr, Widget * me)
+{
+    if (me->m_scale != 1)
+        cairo_scale (cr, me->m_scale, me->m_scale);
+
+    me->draw (cr);
+    return false;
+}
+#else
 void Widget::draw_now ()
 {
     if (m_drawable && gtk_widget_is_drawable (m_drawable))
@@ -123,3 +156,4 @@ gboolean Widget::draw_cb (GtkWidget * widget, GdkEventExpose * event, Widget * m
     cairo_destroy (cr);
     return false;
 }
+#endif

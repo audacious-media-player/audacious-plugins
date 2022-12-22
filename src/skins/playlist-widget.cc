@@ -683,7 +683,7 @@ bool PlaylistWidget::button_press (GdkEventButton * event)
 
             menu_popup ((position == -1) ? UI_MENU_PLAYLIST :
              UI_MENU_PLAYLIST_CONTEXT, event->x_root, event->y_root, false,
-             false, 3, event->time);
+             false, event);
             break;
           default:
             return false;

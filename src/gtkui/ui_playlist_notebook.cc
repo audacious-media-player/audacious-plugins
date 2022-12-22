@@ -27,6 +27,7 @@
 #include <libaudcore/playlist.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudgui/gtk-compat.h>
 #include <libaudgui/list.h>
 #include <libaudgui/libaudgui.h>
 
@@ -59,6 +60,10 @@ void apply_column_widths (GtkWidget * treeview)
     {
         GtkTreeViewColumn * col = gtk_tree_view_get_column ((GtkTreeView *) treeview, i);
         gtk_tree_view_column_set_fixed_width (col, pw_col_widths[pw_cols[i]]);
+
+#ifdef USE_GTK3
+        gtk_tree_view_column_set_expand (col, false);
+#endif
     }
 }
 
@@ -115,6 +120,7 @@ static void close_button_cb (GtkWidget * button, void * data)
     audgui_confirm_playlist_delete (aud::from_ptr<Playlist> (data));
 }
 
+#ifndef USE_GTK3
 static void close_button_style_set (GtkWidget * button)
 {
     int w, h;
@@ -122,6 +128,7 @@ static void close_button_style_set (GtkWidget * button)
      GTK_ICON_SIZE_MENU, & w, & h);
     gtk_widget_set_size_request (button, w + 2, h + 2);
 }
+#endif
 
 static GtkWidget * make_close_button (GtkWidget * ebox, Playlist list)
 {
@@ -129,10 +136,31 @@ static GtkWidget * make_close_button (GtkWidget * ebox, Playlist list)
     GtkWidget * image = gtk_image_new_from_icon_name ("window-close", GTK_ICON_SIZE_MENU);
     gtk_button_set_image ((GtkButton *) button, image);
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
-    gtk_button_set_focus_on_click ((GtkButton *) button, false);
     gtk_widget_set_name (button, "gtkui-tab-close-button");
 
     g_signal_connect (button, "clicked", (GCallback) close_button_cb, aud::to_ptr (list));
+
+#ifdef USE_GTK3
+    gtk_widget_set_focus_on_click (button, false);
+
+    GtkCssProvider * provider = gtk_css_provider_new ();
+    gtk_css_provider_load_from_data (provider,
+     "#gtkui-tab-close-button {"
+     " -GtkButton-default-border: 0;"
+     " -GtkButton-default-outside-border: 0;"
+     " -GtkButton-inner-border: 0;"
+     " -GtkWidget-focus-padding: 0;"
+     " -GtkWidget-focus-line-width: 0;"
+     " margin: 0;"
+     " padding: 0; }",
+     -1, nullptr);
+
+    gtk_style_context_add_provider (gtk_widget_get_style_context (button),
+     GTK_STYLE_PROVIDER (provider),
+     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    g_object_unref (provider);
+#else
+    gtk_button_set_focus_on_click ((GtkButton *) button, false);
 
     gtk_rc_parse_string (
      "style \"gtkui-tab-close-button-style\" {"
@@ -147,6 +175,7 @@ static GtkWidget * make_close_button (GtkWidget * ebox, Playlist list)
     );
 
     g_signal_connect (button, "style-set", (GCallback) close_button_style_set, nullptr);
+#endif
 
     gtk_widget_show (button);
 
@@ -194,7 +223,7 @@ static gboolean tab_button_press_cb (GtkWidget * ebox, GdkEventButton * event)
         audgui_confirm_playlist_delete (list);
 
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-        popup_menu_tab (event->button, event->time, list);
+        popup_menu_tab ((const GdkEvent *) event, list);
 
     return false;
 }
@@ -302,7 +331,7 @@ static void create_tab (int list_idx, Playlist list)
     GtkWidget * ebox = gtk_event_box_new ();
     gtk_event_box_set_visible_window ((GtkEventBox *) ebox, false);
 
-    GtkWidget * hbox = gtk_hbox_new (false, 2);
+    GtkWidget * hbox = audgui_hbox_new (2);
 
     GtkWidget * label = gtk_label_new ("");
     update_tab_label ((GtkLabel *) label, list);

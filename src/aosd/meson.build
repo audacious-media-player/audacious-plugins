@@ -17,7 +17,7 @@ aosd_sources = [
 if have_aosd
   shared_module('aosd',
     aosd_sources,
-    dependencies: [audacious_dep, math_dep, gtk_dep, glib_dep, x11_dep],
+    dependencies: [audacious_dep, audgui_dep, math_dep, gtk_dep, glib_dep, x11_dep],
     name_prefix: '',
     install: true,
     install_dir: general_plugin_dir

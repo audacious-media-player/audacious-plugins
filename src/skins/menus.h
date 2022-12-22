@@ -41,6 +41,6 @@ void menu_init ();
 void menu_cleanup ();
 
 GtkAccelGroup * menu_get_accel_group ();
-void menu_popup (int id, int x, int y, gboolean leftward, gboolean upward, int button, int time);
+void menu_popup (int id, int x, int y, gboolean leftward, gboolean upward, const GdkEventButton * event);
 
 #endif /* SKINS_MENUS_H */

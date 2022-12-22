@@ -30,6 +30,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
+#include <libaudgui/gtk-compat.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "plugin.h"
@@ -424,7 +425,7 @@ static void configure_plugin (LoadedPlugin & loaded)
     {
         ControlData & control = plugin.controls[i];
 
-        GtkWidget * hbox = gtk_hbox_new (false, 6);
+        GtkWidget * hbox = audgui_hbox_new (6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
         if (control.is_toggle)
@@ -472,10 +473,10 @@ static void * make_config_widget ()
 {
     int dpi = audgui_get_dpi ();
 
-    GtkWidget * vbox = gtk_vbox_new (false, 6);
+    GtkWidget * vbox = audgui_vbox_new (6);
     gtk_widget_set_size_request (vbox, 5 * dpi, 4 * dpi);
 
-    GtkWidget * hbox = gtk_hbox_new (false, 6);
+    GtkWidget * hbox = audgui_hbox_new (6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
     GtkWidget * label = gtk_label_new (_("Module paths:"));
@@ -486,17 +487,22 @@ static void * make_config_widget ()
      _("<small>Separate multiple paths with a colon.\n"
      "These paths are searched in addition to LADSPA_PATH.\n"
      "After adding new paths, press Enter to scan for new plugins.</small>"));
+#ifdef USE_GTK3
+    gtk_widget_set_margin_start (label, 12);
+    gtk_widget_set_halign (label, GTK_ALIGN_START);
+#else
     gtk_misc_set_padding ((GtkMisc *) label, 12, 6);
     gtk_misc_set_alignment ((GtkMisc *) label, 0, 0);
+#endif
     gtk_box_pack_start ((GtkBox *) vbox, label, 0, 0, 0);
 
     GtkWidget * entry = gtk_entry_new ();
     gtk_box_pack_start ((GtkBox *) hbox, entry, 1, 1, 0);
 
-    hbox = gtk_hbox_new (false, 6);
+    hbox = audgui_hbox_new (6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 1, 1, 0);
 
-    GtkWidget * vbox2 = gtk_vbox_new (false, 6);
+    GtkWidget * vbox2 = audgui_vbox_new (6);
     gtk_box_pack_start ((GtkBox *) hbox, vbox2, 1, 1, 0);
 
     label = gtk_label_new (_("Available plugins:"));
@@ -509,13 +515,13 @@ static void * make_config_widget ()
     plugin_list = create_plugin_list ();
     gtk_container_add ((GtkContainer *) scrolled, plugin_list);
 
-    GtkWidget * hbox2 = gtk_hbox_new (false, 6);
+    GtkWidget * hbox2 = audgui_hbox_new (6);
     gtk_box_pack_start ((GtkBox *) vbox2, hbox2, 0, 0, 0);
 
     GtkWidget * enable_button = gtk_button_new_with_label (_("Enable"));
     gtk_box_pack_end ((GtkBox *) hbox2, enable_button, 0, 0, 0);
 
-    vbox2 = gtk_vbox_new (false, 6);
+    vbox2 = audgui_vbox_new (6);
     gtk_box_pack_start ((GtkBox *) hbox, vbox2, 1, 1, 0);
 
     label = gtk_label_new (_("Enabled plugins:"));
@@ -528,7 +534,7 @@ static void * make_config_widget ()
     loaded_list = create_loaded_list ();
     gtk_container_add ((GtkContainer *) scrolled, loaded_list);
 
-    hbox2 = gtk_hbox_new (false, 6);
+    hbox2 = audgui_hbox_new (6);
     gtk_box_pack_start ((GtkBox *) vbox2, hbox2, 0, 0, 0);
 
     GtkWidget * disable_button = gtk_button_new_with_label (_("Disable"));

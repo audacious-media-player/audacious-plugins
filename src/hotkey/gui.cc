@@ -37,6 +37,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/preferences.h>
 
+#include <libaudgui/gtk-compat.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include <gdk/gdkkeysyms-compat.h>
@@ -361,12 +362,8 @@ KeyControls * add_event_controls(KeyControls * list, GtkWidget * grid, int row,
     }
     gtk_combo_box_set_active(GTK_COMBO_BOX(controls->combobox),
                              controls->hotkey.event);
-    gtk_table_attach_defaults(GTK_TABLE(grid), controls->combobox, 0, 1, row,
-                              row + 1);
 
     controls->keytext = gtk_entry_new();
-    gtk_table_attach_defaults(GTK_TABLE(grid), controls->keytext, 1, 2, row,
-                              row + 1);
     gtk_editable_set_editable(GTK_EDITABLE(controls->keytext), false);
 
     set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask,
@@ -384,10 +381,24 @@ KeyControls * add_event_controls(KeyControls * list, GtkWidget * grid, int row,
     gtk_button_set_image(
         GTK_BUTTON(controls->button),
         gtk_image_new_from_icon_name("edit-delete", GTK_ICON_SIZE_BUTTON));
-    gtk_table_attach_defaults(GTK_TABLE(grid), controls->button, 2, 3, row,
-                              row + 1);
     g_signal_connect(G_OBJECT(controls->button), "clicked",
                      G_CALLBACK(clear_keyboard), controls);
+
+#ifdef USE_GTK3
+    gtk_widget_set_hexpand(controls->combobox, true);
+    gtk_widget_set_hexpand(controls->keytext, true);
+
+    gtk_grid_attach(GTK_GRID(grid), controls->combobox, 0, row, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), controls->keytext, 1, row, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), controls->button, 2, row, 1, 1);
+#else
+    gtk_table_attach_defaults(GTK_TABLE(grid), controls->combobox, 0, 1, row,
+                              row + 1);
+    gtk_table_attach_defaults(GTK_TABLE(grid), controls->keytext, 1, 2, row,
+                              row + 1);
+    gtk_table_attach_defaults(GTK_TABLE(grid), controls->button, 2, 3, row,
+                              row + 1);
+#endif
 
     gtk_widget_grab_focus(GTK_WIDGET(controls->keytext));
     return controls;
@@ -396,15 +407,14 @@ KeyControls * add_event_controls(KeyControls * list, GtkWidget * grid, int row,
 void * make_config_widget()
 {
     KeyControls * current_controls;
-    GtkWidget *main_vbox, *hbox;
-    GtkWidget * alignment;
+    GtkWidget * main_vbox, * hbox;
     GtkWidget * frame;
-    GtkWidget * label;
+    GtkWidget * label1, * label2, * label3;
     GtkWidget * image;
     GtkWidget * grid;
-    GtkWidget *button_box, *button;
+    GtkWidget * button_box, * button;
     PluginConfig * plugin_cfg;
-    HotkeyConfiguration *hotkey, temphotkey;
+    HotkeyConfiguration * hotkey, temphotkey;
     int i;
 
     load_config();
@@ -413,46 +423,52 @@ void * make_config_widget()
 
     ungrab_keys();
 
-    main_vbox = gtk_vbox_new(false, 4);
+    main_vbox = audgui_vbox_new(4);
 
-    alignment = gtk_alignment_new(0.5, 0.5, 1, 1);
-    gtk_box_pack_start(GTK_BOX(main_vbox), alignment, false, true, 0);
-    gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 4, 0, 0, 0);
-    hbox = gtk_hbox_new(false, 2);
-    gtk_container_add(GTK_CONTAINER(alignment), hbox);
+    hbox = audgui_hbox_new(2);
+    gtk_box_pack_start(GTK_BOX(main_vbox), hbox, false, true, 0);
     image = gtk_image_new_from_icon_name("dialog-information",
                                          GTK_ICON_SIZE_DIALOG);
     gtk_box_pack_start(GTK_BOX(hbox), image, false, true, 0);
-    label = gtk_label_new(_("Press a key combination inside a text field.\nYou "
-                            "can also bind mouse buttons."));
-    gtk_box_pack_start(GTK_BOX(hbox), label, true, true, 0);
-    gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+    label1 = gtk_label_new(_("Press a key combination inside a text field.\nYou "
+                             "can also bind mouse buttons."));
+#ifdef USE_GTK3
+    gtk_widget_set_halign(label1, GTK_ALIGN_START);
+#else
+    gtk_misc_set_alignment(GTK_MISC(label1), 0, 0.5);
+#endif
+    gtk_box_pack_start(GTK_BOX(hbox), label1, true, true, 0);
 
-    label = gtk_label_new(nullptr);
-    gtk_label_set_markup(GTK_LABEL(label), _("Hotkeys:"));
+    label1 = gtk_label_new(nullptr);
+    gtk_label_set_markup(GTK_LABEL(label1), _("Hotkeys:"));
     frame = gtk_frame_new(nullptr);
-    gtk_frame_set_label_widget(GTK_FRAME(frame), label);
+    gtk_frame_set_label_widget(GTK_FRAME(frame), label1);
     gtk_box_pack_start(GTK_BOX(main_vbox), frame, true, true, 0);
     gtk_frame_set_shadow_type(GTK_FRAME(frame), GTK_SHADOW_ETCHED_IN);
-    alignment = gtk_alignment_new(0, 0, 1, 0);
-    gtk_container_add(GTK_CONTAINER(frame), alignment);
-    gtk_alignment_set_padding(GTK_ALIGNMENT(alignment), 3, 3, 3, 3);
 
-    grid = gtk_table_new(0, 0, false);
-    gtk_table_set_col_spacings(GTK_TABLE(grid), 2);
-    gtk_container_add(GTK_CONTAINER(alignment), grid);
+    grid = audgui_grid_new();
+    audgui_grid_set_column_spacing(grid, 2);
+    gtk_container_set_border_width(GTK_CONTAINER(grid), 3);
+    gtk_container_add(GTK_CONTAINER(frame), grid);
 
-    label = gtk_label_new(nullptr);
-    gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_CENTER);
-    gtk_misc_set_alignment(GTK_MISC(label), 0.5, 0.5);
-    gtk_label_set_markup(GTK_LABEL(label), _("<b>Action:</b>"));
-    gtk_table_attach_defaults(GTK_TABLE(grid), label, 0, 1, 0, 1);
+    label2 = gtk_label_new(nullptr);
+    gtk_label_set_justify(GTK_LABEL(label2), GTK_JUSTIFY_CENTER);
+    gtk_label_set_markup(GTK_LABEL(label2), _("<b>Action:</b>"));
 
-    label = gtk_label_new(nullptr);
-    gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_CENTER);
-    gtk_misc_set_alignment(GTK_MISC(label), 0.5, 0.5);
-    gtk_label_set_markup(GTK_LABEL(label), _("<b>Key Binding:</b>"));
-    gtk_table_attach_defaults(GTK_TABLE(grid), label, 1, 2, 0, 1);
+    label3 = gtk_label_new(nullptr);
+    gtk_label_set_justify(GTK_LABEL(label3), GTK_JUSTIFY_CENTER);
+    gtk_label_set_markup(GTK_LABEL(label3), _("<b>Key Binding:</b>"));
+
+#ifdef USE_GTK3
+    gtk_grid_attach(GTK_GRID(grid), label2, 0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), label3, 1, 0, 1, 1);
+#else
+    gtk_misc_set_alignment(GTK_MISC(label2), 0.5, 0.5);
+    gtk_misc_set_alignment(GTK_MISC(label3), 0.5, 0.5);
+
+    gtk_table_attach_defaults(GTK_TABLE(grid), label2, 0, 1, 0, 1);
+    gtk_table_attach_defaults(GTK_TABLE(grid), label3, 1, 2, 0, 1);
+#endif
 
     hotkey = &(plugin_cfg->first);
     i = 1;
@@ -490,10 +506,10 @@ void * make_config_widget()
         temphotkey.event = (EVENT)0;
     add_event_controls(current_controls, grid, i, &temphotkey);
 
-    hbox = gtk_hbox_new(false, 0);
+    hbox = audgui_hbox_new(0);
     gtk_box_pack_start(GTK_BOX(main_vbox), hbox, false, true, 0);
 
-    button_box = gtk_hbutton_box_new();
+    button_box = audgui_button_box_new(GTK_ORIENTATION_HORIZONTAL);
     gtk_box_pack_start(GTK_BOX(hbox), button_box, false, true, 0);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(button_box), GTK_BUTTONBOX_START);
     gtk_box_set_spacing(GTK_BOX(button_box), 4);
@@ -558,13 +574,18 @@ static void clear_keyboard(GtkWidget * widget, void * data)
             gtk_container_remove(GTK_CONTAINER(c->grid), c->keytext);
             gtk_container_remove(GTK_CONTAINER(c->grid), c->button);
 
+#ifdef USE_GTK3
+            gtk_grid_attach(GTK_GRID(c->grid), c->combobox, 0, row, 1, 1);
+            gtk_grid_attach(GTK_GRID(c->grid), c->keytext, 1, row, 1, 1);
+            gtk_grid_attach(GTK_GRID(c->grid), c->button, 2, row, 1, 1);
+#else
             gtk_table_attach_defaults(GTK_TABLE(c->grid), c->combobox, 0, 1,
                                       row, row + 1);
             gtk_table_attach_defaults(GTK_TABLE(c->grid), c->keytext, 1, 2, row,
                                       row + 1);
             gtk_table_attach_defaults(GTK_TABLE(c->grid), c->button, 2, 3, row,
                                       row + 1);
-
+#endif
             g_object_unref(c->combobox);
             g_object_unref(c->keytext);
             g_object_unref(c->button);

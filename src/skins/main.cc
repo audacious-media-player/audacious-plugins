@@ -163,12 +163,12 @@ static StringBuf format_time (int time, int length)
     }
 }
 
-static void mainwin_menubtn_cb ()
+static void mainwin_menubtn_cb (Button * button, GdkEventButton * event)
 {
     int x, y;
     mainwin->getPosition (& x, & y);
     menu_popup (UI_MENU_MAIN, x + 6 * config.scale,
-     y + MAINWIN_SHADED_HEIGHT * config.scale, false, false, 1, GDK_CURRENT_TIME);
+     y + MAINWIN_SHADED_HEIGHT * config.scale, false, false, event);
 }
 
 static void mainwin_minimize_cb ()
@@ -514,8 +514,7 @@ bool MainWindow::button_press (GdkEventButton * event)
 
     if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
     {
-        menu_popup (UI_MENU_MAIN, event->x_root, event->y_root, false, false,
-         event->button, event->time);
+        menu_popup (UI_MENU_MAIN, event->x_root, event->y_root, false, false, event);
         return true;
     }
 
@@ -560,8 +559,7 @@ bool MainWindow::leave ()
 
 static void mainwin_playback_rpress (Button * button, GdkEventButton * event)
 {
-    menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, false, false,
-     event->button, event->time);
+    menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, false, false, event);
 }
 
 bool Window::keypress (GdkEventKey * event)
@@ -899,7 +897,7 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
     switch (i)
     {
         case MENUROW_OPTIONS:
-            menu_popup (UI_MENU_VIEW, event->x_root, event->y_root, false, false, 1, event->time);
+            menu_popup (UI_MENU_VIEW, event->x_root, event->y_root, false, false, event);
             break;
         case MENUROW_ALWAYS:
             view_set_on_top (! aud_get_bool ("skins", "always_on_top"));
@@ -933,8 +931,7 @@ static bool mainwin_info_button_press (GdkEventButton * event)
 {
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
     {
-        menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, false,
-         false, event->button, event->time);
+        menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, false, false, event);
         return true;
     }
 

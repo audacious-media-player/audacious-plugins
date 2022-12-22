@@ -27,6 +27,7 @@
 #include <libaudcore/preferences.h>
 #include <libaudcore/mainloop.h>
 #include <libaudcore/runtime.h>
+#include <libaudgui/gtk-compat.h>
 #include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
 #include <libaudgui/menu.h>
@@ -345,7 +346,12 @@ static void list_right_click (void * user, GdkEventButton * event)
 
     GtkWidget * menu = gtk_menu_new ();
     audgui_menu_init (menu, {items}, nullptr);
+
+#ifdef USE_GTK3
+    gtk_menu_popup_at_pointer ((GtkMenu *) menu, (const GdkEvent *) event);
+#else
     gtk_menu_popup ((GtkMenu *) menu, nullptr, nullptr, nullptr, nullptr, event->button, event->time);
+#endif
 }
 
 static Index<char> list_get_data (void * user)
@@ -431,10 +437,13 @@ bool SearchTool::init ()
 
 void * SearchTool::get_gtk_widget ()
 {
-    GtkWidget * vbox = gtk_vbox_new (false, 6);
+    GtkWidget * vbox = audgui_vbox_new (6);
 
     entry = gtk_entry_new ();
     gtk_entry_set_icon_from_icon_name ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, "edit-find");
+#ifdef USE_GTK3
+    gtk_entry_set_placeholder_text ((GtkEntry *) entry, _("Search library"));
+#endif
     g_signal_connect (entry, "destroy", (GCallback) gtk_widget_destroyed, & entry);
     gtk_box_pack_start ((GtkBox *) vbox, entry, false, false, 0);
 
@@ -471,7 +480,7 @@ void * SearchTool::get_gtk_widget ()
     gtk_widget_set_no_show_all (stats_label, true);
     gtk_box_pack_start ((GtkBox *) vbox, stats_label, false, false, 0);
 
-    GtkWidget * hbox = gtk_hbox_new (false, 6);
+    GtkWidget * hbox = audgui_hbox_new (6);
     gtk_box_pack_end ((GtkBox *) vbox, hbox, false, false, 0);
 
     GtkWidget * file_entry = audgui_file_entry_new

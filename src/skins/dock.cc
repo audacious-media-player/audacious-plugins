@@ -264,14 +264,23 @@ void dock_move (int x, int y)
     hori = SNAP_DISTANCE + 1;
     vert = SNAP_DISTANCE + 1;
 
+#ifdef USE_GTK3
+    GdkDisplay * display = gdk_display_get_default ();
+    int monitors = gdk_display_get_n_monitors (display);
+#else
     GdkScreen * screen = gdk_screen_get_default ();
     int monitors = gdk_screen_get_n_monitors (screen);
+#endif
 
     for (int m = 0; m < monitors; m ++)
     {
         GdkRectangle rect;
-        gdk_screen_get_monitor_geometry (screen, m, & rect);
 
+#ifdef USE_GTK3
+        gdk_monitor_get_geometry (gdk_display_get_monitor (display, m), & rect);
+#else
+        gdk_screen_get_monitor_geometry (screen, m, & rect);
+#endif
         for (DockWindow & dw : windows)
         {
             if (! dw.docked)
