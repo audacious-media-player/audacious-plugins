@@ -213,6 +213,7 @@ if meson.version().version_compare('>= 0.53')
     'Audio CD': get_variable('have_cdaudio', false),
     'Free Lossless Audio Codec': get_variable('have_flac', false),
     'Ogg Vorbis': get_variable('have_vorbis', false),
+    'Opus': get_variable('have_opus', false),
     'MIDI (via FluidSynth)': get_variable('have_amidiplug', false),
     'MPEG-1 Layer I/II/III (via mpg123)': get_variable('have_mpg123', false),
     'MPEG-2/4 AAC': get_variable('have_aac', false),
