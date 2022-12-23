@@ -255,7 +255,7 @@ static void activate_row (void * user, int row)
 
 static void right_click (void * user, GdkEventButton * event)
 {
-    popup_menu_rclick (event->button, event->time);
+    popup_menu_rclick ((const GdkEvent *) event);
 }
 
 static void shift_rows (void * user, int row, int before)

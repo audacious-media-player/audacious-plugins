@@ -1,6 +1,8 @@
 # GUI toolkits
 option('gtk', type: 'boolean', value: true,
        description: 'Whether GTK support is enabled')
+option('gtk3', type: 'boolean', value: false,
+       description: 'Whether GTK3 support is enabled')
 option('qt', type: 'boolean', value: true,
        description: 'Whether Qt support is enabled')
 option('qt6', type: 'boolean', value: false,

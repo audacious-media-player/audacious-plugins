@@ -33,7 +33,9 @@ void Window::apply_shape ()
 
 void Window::realize ()
 {
+#ifndef USE_GTK3
     gdk_window_set_back_pixmap (gtk_widget_get_window (gtk ()), nullptr, false);
+#endif
     apply_shape ();
 }
 
@@ -108,11 +110,13 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
     gtk_window_add_accel_group ((GtkWindow *) window, menu_get_accel_group ());
 
+#ifndef USE_GTK3
     /* We set None as the background pixmap in order to avoid flickering.
      * Setting a blank GtkStyle prevents GTK 2.x from overriding this. */
     GtkStyle * style = gtk_style_new ();
     gtk_widget_set_style (window, style);
     g_object_unref (style);
+#endif
 
     set_input (window);
     set_drawable (window);
@@ -144,7 +148,11 @@ void Window::resize (int w, int h)
     dock_set_size (m_id, w, h);
 }
 
+#ifdef USE_GTK3
+void Window::set_shapes (cairo_region_t * shape, cairo_region_t * sshape)
+#else
 void Window::set_shapes (GdkRegion * shape, GdkRegion * sshape)
+#endif
 {
     m_shape.capture (shape);
     m_sshape.capture (sshape);

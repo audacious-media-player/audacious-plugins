@@ -20,7 +20,7 @@ LIBS += ${FLUIDSYNTH_LIBS} ${GLIB_LIBS} -lm
 
 ifeq ($(USE_GTK),yes)
 CPPFLAGS += ${GTK_CFLAGS}
-LIBS += ${GTK_LIBS}
+LIBS += ${GTK_LIBS} -laudgui
 endif
 
 ifeq ($(USE_QT),yes)

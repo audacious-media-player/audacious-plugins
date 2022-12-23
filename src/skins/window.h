@@ -40,7 +40,11 @@ public:
     ~Window ();
 
     void resize (int w, int h);
+#ifdef USE_GTK3
+    void set_shapes (cairo_region_t * shape, cairo_region_t * sshape);
+#else
     void set_shapes (GdkRegion * shape, GdkRegion * sshape);
+#endif
     bool is_shaded () { return m_is_shaded; }
     void set_shaded (bool shaded);
     void put_widget (bool shaded, Widget * widget, int x, int y);
@@ -68,7 +72,11 @@ private:
     bool m_is_shaded = false;
     bool m_is_moving = false;
     GtkWidget * m_normal = nullptr, * m_shaded = nullptr;
+#ifdef USE_GTK3
+    SmartPtr<cairo_region_t, cairo_region_destroy> m_shape, m_sshape;
+#else
     SmartPtr<GdkRegion, gdk_region_destroy> m_shape, m_sshape;
+#endif
 };
 
 void dock_add_window (int id, Window * window, int * x, int * y, int w, int h);

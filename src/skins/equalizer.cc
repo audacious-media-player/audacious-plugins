@@ -106,8 +106,7 @@ bool EqWindow::button_press (GdkEventButton * event)
 
     if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
     {
-        menu_popup (UI_MENU_MAIN, event->x_root, event->y_root, false, false,
-         event->button, event->time);
+        menu_popup (UI_MENU_MAIN, event->x_root, event->y_root, false, false, event);
         return true;
     }
 

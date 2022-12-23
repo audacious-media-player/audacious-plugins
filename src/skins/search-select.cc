@@ -33,6 +33,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
+#include <libaudgui/gtk-compat.h>
 
 static void search_cbt_cb (GtkWidget * called_cbt, GtkWidget * other_cbt)
 {
@@ -77,7 +78,7 @@ void action_playlist_search_and_select ()
      _("Cancel"), GTK_RESPONSE_REJECT, _("Search"), GTK_RESPONSE_ACCEPT, nullptr);
 
     /* help text and logo */
-    GtkWidget * hbox = gtk_hbox_new (false, 6);
+    GtkWidget * hbox = audgui_hbox_new (6);
     GtkWidget * logo = gtk_image_new_from_icon_name ("edit-find", GTK_ICON_SIZE_DIALOG);
     GtkWidget * helptext = gtk_label_new (_("Select entries in playlist by filling one or more "
      "fields. Fields use regular expressions syntax, case-insensitive. If you don't know how "
@@ -88,28 +89,45 @@ void action_playlist_search_and_select ()
 
     /* title */
     GtkWidget * label_title = gtk_label_new (_("Title:"));
-    gtk_misc_set_alignment ((GtkMisc *) label_title, 1, 0.5);
     GtkWidget * entry_title = gtk_entry_new ();
     g_signal_connect (entry_title, "key-press-event", (GCallback) search_kp_cb, dialog);
 
     /* album */
     GtkWidget * label_album = gtk_label_new (_("Album:"));
-    gtk_misc_set_alignment ((GtkMisc *) label_album, 1, 0.5);
     GtkWidget * entry_album = gtk_entry_new ();
     g_signal_connect (entry_album, "key-press-event", (GCallback) search_kp_cb, dialog);
 
     /* artist */
     GtkWidget * label_performer = gtk_label_new (_("Artist:"));
-    gtk_misc_set_alignment ((GtkMisc *) label_performer, 1, 0.5);
     GtkWidget * entry_performer = gtk_entry_new ();
     g_signal_connect (entry_performer, "key-press-event", (GCallback) search_kp_cb, dialog);
 
     /* file name */
     GtkWidget * label_file_name = gtk_label_new (_("File Name:"));
-    gtk_misc_set_alignment ((GtkMisc *) label_file_name, 1, 0.5);
     GtkWidget * entry_file_name = gtk_entry_new ();
     g_signal_connect (entry_file_name, "key-press-event",
      (GCallback) search_kp_cb, dialog);
+
+#ifdef USE_GTK3
+    gtk_label_set_max_width_chars ((GtkLabel *) helptext, 60);
+
+    gtk_widget_set_hexpand (entry_title, true);
+    gtk_widget_set_halign (label_title, GTK_ALIGN_START);
+
+    gtk_widget_set_hexpand (entry_album, true);
+    gtk_widget_set_halign (label_album, GTK_ALIGN_START);
+
+    gtk_widget_set_hexpand (entry_performer, true);
+    gtk_widget_set_halign (label_performer, GTK_ALIGN_START);
+
+    gtk_widget_set_hexpand (entry_file_name, true);
+    gtk_widget_set_halign (label_file_name, GTK_ALIGN_START);
+#else
+    gtk_misc_set_alignment ((GtkMisc *) label_title, 1, 0.5);
+    gtk_misc_set_alignment ((GtkMisc *) label_album, 1, 0.5);
+    gtk_misc_set_alignment ((GtkMisc *) label_performer, 1, 0.5);
+    gtk_misc_set_alignment ((GtkMisc *) label_file_name, 1, 0.5);
+#endif
 
     /* some options that control behaviour */
     GtkWidget * checkbt_clearprevsel = gtk_check_button_new_with_label (
@@ -128,9 +146,29 @@ void action_playlist_search_and_select ()
      (GCallback) search_cbt_cb, checkbt_autoenqueue);
 
     /* place fields in grid */
-    GtkTable * grid = (GtkTable *) gtk_table_new (0, 0, false);
-    gtk_table_set_row_spacings (grid, 6);
-    gtk_table_set_col_spacings (grid, 6);
+    GtkWidget * main_grid = audgui_grid_new ();
+    audgui_grid_set_row_spacing (main_grid, 6);
+    audgui_grid_set_column_spacing (main_grid, 6);
+
+#ifdef USE_GTK3
+    gtk_widget_set_margin_bottom (hbox, 8);
+    gtk_widget_set_margin_top (checkbt_clearprevsel, 8);
+
+    GtkGrid * grid = (GtkGrid *) main_grid;
+    gtk_grid_attach (grid, hbox, 0, 0, 2, 1);
+    gtk_grid_attach (grid, label_title, 0, 1, 1, 1);
+    gtk_grid_attach (grid, entry_title, 1, 1, 1, 1);
+    gtk_grid_attach (grid, label_album, 0, 2, 1, 1);
+    gtk_grid_attach (grid, entry_album, 1, 2, 1, 1);
+    gtk_grid_attach (grid, label_performer, 0, 3, 1, 1);
+    gtk_grid_attach (grid, entry_performer, 1, 3, 1, 1);
+    gtk_grid_attach (grid, label_file_name, 0, 4, 1, 1);
+    gtk_grid_attach (grid, entry_file_name, 1, 4, 1, 1);
+    gtk_grid_attach (grid, checkbt_clearprevsel, 0, 5, 2, 1);
+    gtk_grid_attach (grid, checkbt_autoenqueue, 0, 6, 2, 1);
+    gtk_grid_attach (grid, checkbt_newplaylist, 0, 7, 2, 1);
+#else
+    GtkTable * grid = (GtkTable *) main_grid;
     gtk_table_attach_defaults (grid, hbox, 0, 2, 0, 1);
     gtk_table_attach (grid, label_title, 0, 1, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
     gtk_table_attach_defaults (grid, entry_title, 1, 2, 1, 2);
@@ -143,10 +181,11 @@ void action_playlist_search_and_select ()
     gtk_table_attach_defaults (grid, checkbt_clearprevsel, 0, 2, 5, 6);
     gtk_table_attach_defaults (grid, checkbt_autoenqueue, 0, 2, 6, 7);
     gtk_table_attach_defaults (grid, checkbt_newplaylist, 0, 2, 7, 8);
+#endif
 
-    gtk_container_set_border_width ((GtkContainer *) grid, 5);
+    gtk_container_set_border_width ((GtkContainer *) main_grid, 5);
     gtk_container_add ((GtkContainer *) gtk_dialog_get_content_area
-     ((GtkDialog *) dialog), (GtkWidget *) grid);
+     ((GtkDialog *) dialog), main_grid);
     gtk_widget_show_all (dialog);
 
     if (gtk_dialog_run ((GtkDialog *) dialog) == GTK_RESPONSE_ACCEPT)

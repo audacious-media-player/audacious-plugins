@@ -31,6 +31,7 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
+#include <libaudgui/gtk-compat.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -601,7 +602,7 @@ static gboolean playlist_keypress_cb (GtkWidget *, GdkEventKey * event)
             pl_remove_selected ();
             return true;
         case GDK_KEY_Menu:
-            popup_menu_rclick (0, event->time);
+            popup_menu_rclick ((const GdkEvent *) event);
             return true;
         }
 
@@ -786,16 +787,21 @@ bool GtkUI::init ()
     accel = gtk_accel_group_new ();
     gtk_window_add_accel_group ((GtkWindow *) window, accel);
 
-    vbox_outer = gtk_vbox_new (false, 0);
+    vbox_outer = audgui_vbox_new (0);
     gtk_container_add ((GtkContainer *) window, vbox_outer);
 
-    menu_box = gtk_hbox_new (false, 0);
+    menu_box = audgui_hbox_new (0);
     gtk_box_pack_start ((GtkBox *) vbox_outer, menu_box, false, false, 0);
 
     toolbar = gtk_toolbar_new ();
     gtk_toolbar_set_style ((GtkToolbar *) toolbar, GTK_TOOLBAR_ICONS);
     gtk_toolbar_set_show_arrow ((GtkToolbar *) toolbar, false);
     gtk_box_pack_start ((GtkBox *) vbox_outer, toolbar, false, false, 0);
+
+#ifdef USE_GTK3
+    GtkStyleContext * context = gtk_widget_get_style_context (toolbar);
+    gtk_style_context_add_class (context, GTK_STYLE_CLASS_PRIMARY_TOOLBAR);
+#endif
 
     /* search button */
     if (search_tool)
@@ -831,10 +837,10 @@ bool GtkUI::init ()
     gtk_tool_item_set_expand (boxitem1, true);
     gtk_toolbar_insert ((GtkToolbar *) toolbar, boxitem1, -1);
 
-    GtkWidget * box1 = gtk_hbox_new (false, 0);
+    GtkWidget * box1 = audgui_hbox_new (0);
     gtk_container_add ((GtkContainer *) boxitem1, box1);
 
-    slider = gtk_hscale_new (nullptr);
+    slider = audgui_scale_new (GTK_ORIENTATION_HORIZONTAL, nullptr);
     gtk_scale_set_draw_value ((GtkScale *) slider, false);
     gtk_widget_set_size_request (slider, audgui_get_dpi () * 5 / 4, -1);
     gtk_widget_set_can_focus (slider, false);
@@ -862,7 +868,7 @@ bool GtkUI::init ()
     GtkToolItem * boxitem2 = gtk_tool_item_new ();
     gtk_toolbar_insert ((GtkToolbar *) toolbar, boxitem2, -1);
 
-    GtkWidget * box2 = gtk_hbox_new (false, 0);
+    GtkWidget * box2 = audgui_hbox_new (0);
     gtk_container_add ((GtkContainer *) boxitem2, box2);
 
     volume = gtk_volume_button_new ();
@@ -884,7 +890,7 @@ bool GtkUI::init ()
     GtkWidget * layout = layout_new ();
     gtk_box_pack_start ((GtkBox *) vbox_outer, layout, true, true, 0);
 
-    vbox = gtk_vbox_new (false, 6);
+    vbox = audgui_vbox_new (6);
     layout_add_center (vbox);
 
     gtk_box_pack_start ((GtkBox *) vbox, pl_notebook_new (), true, true, 0);
@@ -962,6 +968,7 @@ void GtkUI::cleanup ()
     audgui_cleanup ();
 }
 
+#ifndef USE_GTK3
 static void menu_position_cb (GtkMenu *, int * x, int * y, int * push, void * button)
 {
     GtkAllocation alloc;
@@ -975,14 +982,23 @@ static void menu_position_cb (GtkMenu *, int * x, int * y, int * push, void * bu
     * y = yorig + ywin + alloc.height;
     * push = true;
 }
+#endif
 
 static void menu_button_cb ()
 {
-    if (gtk_toggle_tool_button_get_active ((GtkToggleToolButton *) menu_button))
-        gtk_menu_popup ((GtkMenu *) menu_main, nullptr, nullptr, menu_position_cb,
-         menu_button, 0, gtk_get_current_event_time ());
-    else
+    if (! gtk_toggle_tool_button_get_active ((GtkToggleToolButton *) menu_button))
+    {
         gtk_widget_hide (menu_main);
+        return;
+    }
+
+#ifdef USE_GTK3
+    gtk_menu_popup_at_widget ((GtkMenu *) menu_main, (GtkWidget *) menu_button,
+     GDK_GRAVITY_SOUTH_WEST, GDK_GRAVITY_STATIC, nullptr);
+#else
+    gtk_menu_popup ((GtkMenu *) menu_main, nullptr, nullptr, menu_position_cb,
+     menu_button, 0, gtk_get_current_event_time ());
+#endif
 }
 
 static void menu_hide_cb ()
@@ -1090,16 +1106,26 @@ void show_hide_statusbar ()
     }
 }
 
-void popup_menu_rclick (unsigned button, uint32_t time)
+static void popup_menu (GtkMenu * menu, const GdkEvent * event)
 {
-    gtk_menu_popup ((GtkMenu *) menu_rclick, nullptr, nullptr, nullptr, nullptr, button,
-     time);
+#ifdef USE_GTK3
+    gtk_menu_popup_at_pointer (menu, event);
+#else
+    GdkEventButton * button_event = (GdkEventButton *) event;
+    gtk_menu_popup ((GtkMenu *) menu, nullptr, nullptr, nullptr, nullptr,
+     button_event->button, button_event->time);
+#endif
 }
 
-void popup_menu_tab (unsigned button, uint32_t time, Playlist playlist)
+void popup_menu_rclick (const GdkEvent * event)
+{
+    popup_menu ((GtkMenu *) menu_rclick, event);
+}
+
+void popup_menu_tab (const GdkEvent * event, Playlist playlist)
 {
     menu_tab_playlist = playlist;
-    gtk_menu_popup ((GtkMenu *) menu_tab, nullptr, nullptr, nullptr, nullptr, button, time);
+    popup_menu ((GtkMenu *) menu_tab, event);
 }
 
 void activate_search_tool ()

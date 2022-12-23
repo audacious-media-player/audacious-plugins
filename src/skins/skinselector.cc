@@ -199,7 +199,9 @@ void skin_view_realize (GtkTreeView * treeview)
 {
     gtk_widget_show_all ((GtkWidget *) treeview);
 
+#ifndef USE_GTK3
     gtk_tree_view_set_rules_hint (treeview, true);
+#endif
     gtk_tree_view_set_headers_visible (treeview, false);
 
     GtkListStore * store = gtk_list_store_new (SKIN_VIEW_N_COLS, GDK_TYPE_PIXBUF,

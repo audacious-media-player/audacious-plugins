@@ -284,6 +284,7 @@ GtkAccelGroup * menu_get_accel_group ()
     return accel;
 }
 
+#ifndef USE_GTK3
 typedef struct {
     int x, y;
     gboolean leftward, upward;
@@ -309,10 +310,16 @@ static void position_menu (GtkMenu * menu, int * x, int * y, gboolean * push_in,
     else
         * y = aud::min (pos->y, geom.y + geom.height - request.height);
 }
+#endif
 
 void menu_popup (int id, int x, int y, gboolean leftward, gboolean upward,
- int button, int time)
+ const GdkEventButton * event)
 {
+#ifdef USE_GTK3
+    gtk_menu_popup_at_pointer ((GtkMenu *) menus[id], (const GdkEvent *) event);
+#else
     const MenuPosition pos = {x, y, leftward, upward};
-    gtk_menu_popup ((GtkMenu *) menus[id], nullptr, nullptr, position_menu, (void *) & pos, button, time);
+    gtk_menu_popup ((GtkMenu *) menus[id], nullptr, nullptr, position_menu,
+     (void *) & pos, event->button, event->time);
+#endif
 }

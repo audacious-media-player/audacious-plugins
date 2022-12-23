@@ -27,6 +27,7 @@
 #include <cairo/cairo.h>
 #include <pango/pangocairo.h>
 #include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
@@ -157,7 +158,15 @@ aosd_osd_create ( void )
   {
     /* adjust coordinates and size according to selected monitor */
     GdkRectangle rect;
+
+#ifdef USE_GTK3
+    GdkDisplay *display = gdk_screen_get_display( screen );
+    GdkMonitor *monitor = gdk_display_get_monitor( display, osd_data->cfg_osd->position.multimon_id );
+    gdk_monitor_get_geometry( monitor, &rect );
+#else
     gdk_screen_get_monitor_geometry( screen , osd_data->cfg_osd->position.multimon_id , &rect );
+#endif
+
     pos_x = rect.x;
     pos_y = rect.y;
     screen_width = rect.width;
@@ -165,9 +174,12 @@ aosd_osd_create ( void )
   }
   else
   {
-    /* use total space available, even when composed by multiple monitor */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+    /* use total space available, even when composed by multiple monitor,
+       unfortunately there is no non-deprecated method for the aggregation */
     screen_width = gdk_screen_get_width( screen );
     screen_height = gdk_screen_get_height( screen );
+G_GNUC_END_IGNORE_DEPRECATIONS
     pos_x = 0;
     pos_y = 0;
   }
