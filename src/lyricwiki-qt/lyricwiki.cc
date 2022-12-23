@@ -103,7 +103,7 @@ public:
 EXPORT LyricWikiQt aud_plugin_instance;
 
 const char * const LyricWikiQt::defaults[] = {
-    "remote-source", "makeitpersonal.co",
+    "remote-source", "lyrics.ovh",
     "enable-file-provider", "TRUE",
     "enable-cache", "TRUE",
     "split-title-on-chars", "FALSE",
