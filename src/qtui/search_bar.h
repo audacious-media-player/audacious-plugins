@@ -29,6 +29,7 @@ class SearchBar : public QWidget
 {
 public:
     SearchBar(QWidget * parent, PlaylistWidget * playlistWidget);
+    void setFocus();
 
 private:
     void keyPressEvent(QKeyEvent * event);

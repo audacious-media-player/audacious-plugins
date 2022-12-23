@@ -103,3 +103,13 @@ void SearchBar::keyPressEvent(QKeyEvent * event)
 
     QWidget::keyPressEvent(event);
 }
+
+void SearchBar::setFocus()
+{
+	QWidget::setFocus();
+	if (m_entry->text().length() > 0)
+	{
+		m_entry->selectAll();
+	}
+}
+
