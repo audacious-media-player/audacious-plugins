@@ -146,11 +146,6 @@ static GtkWidget * make_close_button (GtkWidget * ebox, Playlist list)
     GtkCssProvider * provider = gtk_css_provider_new ();
     gtk_css_provider_load_from_data (provider,
      "#gtkui-tab-close-button {"
-     " -GtkButton-default-border: 0;"
-     " -GtkButton-default-outside-border: 0;"
-     " -GtkButton-inner-border: 0;"
-     " -GtkWidget-focus-padding: 0;"
-     " -GtkWidget-focus-line-width: 0;"
      " margin: 0;"
      " padding: 0; }",
      -1, nullptr);
