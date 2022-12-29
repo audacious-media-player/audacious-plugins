@@ -44,6 +44,8 @@ static const PreferencesWidget gtkui_widgets[] = {
     WidgetCheck (N_("Show column headers"),
         WidgetBool ("gtkui", "playlist_headers", redisplay_playlists)),
     WidgetLabel (N_("<b>Miscellaneous</b>")),
+    WidgetCheck (N_("Use symbolic icons in toolbar"),
+        WidgetBool ("gtkui", "symbolic_icons", update_toolbar_icons)),
     WidgetCheck (N_("Scroll on song change"),
         WidgetBool ("gtkui", "autoscroll"))
 };

@@ -46,5 +46,6 @@ void popup_menu_rclick (const GdkEvent * event);
 void popup_menu_tab (const GdkEvent * event, Playlist playlist);
 void activate_search_tool ();
 void activate_playlist_manager ();
+void update_toolbar_icons ();
 
 #endif

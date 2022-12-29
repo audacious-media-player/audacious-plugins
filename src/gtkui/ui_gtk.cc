@@ -59,6 +59,12 @@ static const char * const gtkui_defaults[] = {
     "playlist_headers", "TRUE",
     "show_remaining_time", "FALSE",
 
+#ifdef USE_GTK3
+    "symbolic_icons", "TRUE",
+#else
+    "symbolic_icons", "FALSE",
+#endif
+
     "player_x", "-1000",
     "player_y", "-1000",
     "player_width", "768",
@@ -127,8 +133,9 @@ static GtkAccelGroup * accel;
 
 static GtkWidget * window, * vbox_outer, * menu_box, * menu, * toolbar, * vbox,
  * infoarea, * statusbar;
-static GtkToolItem * menu_button, * search_button, * button_play, * button_stop,
- * button_record, * button_shuffle, * button_repeat;
+static GtkToolItem * menu_button, * search_button, * button_open, * button_add,
+ * button_prev, * button_play, * button_stop, * button_next, * button_record,
+ * button_repeat, * button_shuffle;
 static GtkWidget * slider, * label_time;
 static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
@@ -421,10 +428,18 @@ static void update_volume_delta ()
     gtk_adjustment_set_page_increment (adjustment, volume_delta);
 }
 
+static void set_button_icon (GtkToolButton * button, const char * icon)
+{
+    if (aud_get_bool ("gtkui", "symbolic_icons"))
+        gtk_tool_button_set_icon_name (button, str_concat ({icon, "-symbolic"}));
+    else
+        gtk_tool_button_set_icon_name (button, icon);
+}
+
 static void pause_cb ()
 {
     bool paused = aud_drct_get_paused ();
-    gtk_tool_button_set_icon_name ((GtkToolButton *) button_play,
+    set_button_icon ((GtkToolButton *) button_play,
      paused ? "media-playback-start" : "media-playback-pause");
     gtk_tool_item_set_tooltip_text (button_play, paused ? _("Play") : _("Pause"));
 }
@@ -456,7 +471,7 @@ static void ui_playback_stop ()
     timer_remove (TimerRate::Hz4, time_counter_cb);
 
     title_change ();
-    gtk_tool_button_set_icon_name ((GtkToolButton *) button_play, "media-playback-start");
+    set_button_icon ((GtkToolButton *) button_play, "media-playback-start");
     gtk_tool_item_set_tooltip_text (button_play, _("Play"));
     gtk_widget_set_sensitive ((GtkWidget *) button_stop, false);
     gtk_widget_hide (slider);
@@ -467,7 +482,7 @@ static GtkToolItem * toolbar_button_add (GtkWidget * toolbar,
  void (* callback) (), const char * icon, const char * tooltip)
 {
     GtkToolItem * item = gtk_tool_button_new (nullptr, nullptr);
-    gtk_tool_button_set_icon_name ((GtkToolButton *) item, icon);
+    set_button_icon ((GtkToolButton *) item, icon);
     gtk_tool_item_set_tooltip_text (item, tooltip);
     gtk_toolbar_insert ((GtkToolbar *) toolbar, item, -1);
     g_signal_connect (item, "clicked", callback, nullptr);
@@ -478,7 +493,7 @@ static GtkToolItem * toggle_button_new (const char * icon, const char * tooltip,
  void (* toggled) (GtkToggleToolButton *), bool is_toggled)
 {
     GtkToolItem * item = gtk_toggle_tool_button_new ();
-    gtk_tool_button_set_icon_name ((GtkToolButton *) item, icon);
+    set_button_icon ((GtkToolButton *) item, icon);
     gtk_tool_item_set_tooltip_text (item, tooltip);
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) item, is_toggled);
     g_signal_connect (item, "toggled", (GCallback) toggled, nullptr);
@@ -813,16 +828,16 @@ bool GtkUI::init ()
     }
 
     /* open/add buttons */
-    toolbar_button_add (toolbar, button_open_pressed, "document-open", _("Open Files"));
-    toolbar_button_add (toolbar, button_add_pressed, "list-add", _("Add Files"));
+    button_open = toolbar_button_add (toolbar, button_open_pressed, "document-open", _("Open Files"));
+    button_add = toolbar_button_add (toolbar, button_add_pressed, "list-add", _("Add Files"));
 
     gtk_toolbar_insert ((GtkToolbar *) toolbar, gtk_separator_tool_item_new (), -1);
 
     /* playback buttons */
-    toolbar_button_add (toolbar, aud_drct_pl_prev, "media-skip-backward", _("Previous"));
+    button_prev = toolbar_button_add (toolbar, aud_drct_pl_prev, "media-skip-backward", _("Previous"));
     button_play = toolbar_button_add (toolbar, aud_drct_play_pause, "media-playback-start", _("Play"));
     button_stop = toolbar_button_add (toolbar, aud_drct_stop, "media-playback-stop", _("Stop"));
-    toolbar_button_add (toolbar, aud_drct_pl_next, "media-skip-forward", _("Next"));
+    button_next = toolbar_button_add (toolbar, aud_drct_pl_next, "media-skip-forward", _("Next"));
 
     button_record = toggle_button_new ("media-record", _("Record Stream"),
      toggle_record, aud_get_bool ("record"));
@@ -1145,4 +1160,19 @@ void activate_playlist_manager ()
 
     aud_plugin_enable (manager, true);
     layout_focus (manager);
+}
+
+void update_toolbar_icons ()
+{
+    set_button_icon ((GtkToolButton *) search_button, "edit-find");
+    set_button_icon ((GtkToolButton *) button_open, "document-open");
+    set_button_icon ((GtkToolButton *) button_add, "list-add");
+    set_button_icon ((GtkToolButton *) button_prev, "media-skip-backward");
+    set_button_icon ((GtkToolButton *) button_play, aud_drct_get_playing ()
+     ? "media-playback-pause" : "media-playback-start");
+    set_button_icon ((GtkToolButton *) button_stop, "media-playback-stop");
+    set_button_icon ((GtkToolButton *) button_next, "media-skip-forward");
+    set_button_icon ((GtkToolButton *) button_record, "media-record");
+    set_button_icon ((GtkToolButton *) button_repeat, "media-playlist-repeat");
+    set_button_icon ((GtkToolButton *) button_shuffle, "media-playlist-shuffle");
 }
