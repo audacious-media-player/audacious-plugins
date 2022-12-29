@@ -27,7 +27,6 @@
 #include <cairo/cairo.h>
 #include <pango/pangocairo.h>
 #include <gdk/gdk.h>
-#include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
