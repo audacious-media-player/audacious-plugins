@@ -8,7 +8,7 @@ project('audacious-plugins', 'c', 'cpp',
         ])
 
 
-copyright = 'Copyright (C) 2001-2022 Audacious developers and others'
+copyright = 'Copyright (C) 2001-2023 Audacious developers and others'
 
 
 have_darwin = host_machine.system() == 'darwin'
