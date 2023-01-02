@@ -45,7 +45,9 @@ public:
     void activateSearch()
     {
         m_searchBar->show();
-        m_searchBar->setFocus();
+        // use ShortcutFocusReason to select text in the search entry
+        // (the default OtherFocusReason does not select text)
+        m_searchBar->setFocus(Qt::ShortcutFocusReason);
     }
 
 private:
