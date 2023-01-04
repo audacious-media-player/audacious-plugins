@@ -498,12 +498,18 @@ ENABLE_PLUGIN_WITH_TEST(glspectrum,
     auto,
     VISUALIZATION)
 
+if test "x$USE_GTK3" = "xyes"; then
+    GDK_X11_DEP=gdk-x11-3.0
+else
+    GDK_X11_DEP=gdk-x11-2.0
+fi
+
 ENABLE_PLUGIN_WITH_DEP(hotkey,
     global hotkeys (X11),
     auto,
     GENERAL,
     GDKX11,
-    gdk-x11-2.0)
+    $GDK_X11_DEP)
 
 ENABLE_PLUGIN_WITH_DEP(aosd,
     X11 OSD,
