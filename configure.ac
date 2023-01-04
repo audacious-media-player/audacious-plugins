@@ -468,15 +468,15 @@ ENABLE_PLUGIN_WITH_TEST(songchange,
     auto,
     GENERAL)
 
-dnl Optional plugins (GTK-only)
-dnl ===========================
-
 ENABLE_PLUGIN_WITH_DEP(scrobbler2,
     Scrobbler 2,
     auto,
     GENERAL,
     CURL,
     libcurl >= 7.9.7)
+
+dnl Optional plugins (GTK-only)
+dnl ===========================
 
 test_glspectrum () {
     if test $HAVE_DARWIN = yes ; then
