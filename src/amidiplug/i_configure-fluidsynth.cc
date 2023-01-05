@@ -28,7 +28,6 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/index.h>
-#include <libaudgui/gtk-compat.h>
 
 #include <glib/gstdio.h>
 
@@ -36,6 +35,7 @@
 
 #ifdef USE_GTK
 
+#include <libaudgui/gtk-compat.h>
 #include <gtk/gtk.h>
 
 enum
