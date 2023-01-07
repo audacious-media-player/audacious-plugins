@@ -29,8 +29,10 @@ static constexpr const char * const CONFIG_VALUE_DYNAMIC_RANGE =
 static constexpr const char * const CONFIG_VALUE_MAXIMUM_AMPLIFICATION =
     "maximum_amplification";
 
-static constexpr double SHORT_INTEGRATION_SECONDS = 0.2;
-static constexpr double LONG_INTEGRATION_SECONDS = 3.2;
+static constexpr double SMOOTHER_INTEGRATION_SECONDS = 0.025;
+static constexpr double SHORT_INTEGRATION_SECONDS = 0.200;
+static constexpr double SHORT_INTEGRATION_WEIGHT = M_SQRT1_2;
+static constexpr double LONG_INTEGRATION_SECONDS = 3.200;
 
 /*
  * The standard "center" volume is set to 0.25 while the dynamic range is set to
@@ -81,15 +83,20 @@ static constexpr PluginInfo background_music_info = {
  */
 static int
 get_root_integrate_square_rc_time_samples(const Integrator & integrator,
+                                          const Integrator & smoother,
                                           int maximum_samples)
 {
     double integrated = 0;
+    double smooth_intermediate = 0;
+    double smooth_integrated = 0;
     double rc_value = 1.0 - 1.0 / M_E;
     double sqr_value = rc_value * rc_value;
     for (int i = 0; i < maximum_samples; i++)
     {
         integrator.integrate(integrated, 1);
-        if (integrated >= sqr_value)
+        smoother.integrate(smooth_intermediate, integrated);
+        smoother.integrate(smooth_integrated, smooth_intermediate);
+        if (smooth_integrated >= sqr_value)
         {
             return i;
         }
@@ -110,7 +117,7 @@ const char * BackgroundMusicEngine::name() const
 void BackgroundMusicEngine::update_config(bool is_processing)
 {
     double target_level_in_db = aud_get_double(CONFIG_SECTION_BACKGROUND_MUSIC,
-                            CONFIG_VALUE_TARGET_LEVEL);
+                                               CONFIG_VALUE_TARGET_LEVEL);
     target_level = exp10(aud::clamp(target_level_in_db, -20.0, 0.0) / 10);
     range = aud_get_double(CONFIG_SECTION_BACKGROUND_MUSIC,
                            CONFIG_VALUE_DYNAMIC_RANGE);
@@ -149,15 +156,19 @@ bool BackgroundMusicEngine::after_finished(bool end_of_playlist)
 void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
 {
     processed_frames = 0;
-    long_integrated = target_level * target_level;
-    short_integrated = long_integrated;
+    smooth_integrated = smooth_intermediate = short_integrated =
+        long_integrated = target_level * target_level;
+
     // Configure the integrators
     short_integration = {SHORT_INTEGRATION_SECONDS, rate()};
     long_integration = {LONG_INTEGRATION_SECONDS, rate()};
+    smooth_integration = {SMOOTHER_INTEGRATION_SECONDS, rate()};
+
     // Determine how much we must read ahead for the short integration period to
     // track signals quickly enough.
     read_ahead = get_root_integrate_square_rc_time_samples(
-        short_integration, narrow_clamp<int>(SHORT_INTEGRATION_SECONDS * rate()) * 3);
+        short_integration, smooth_integration,
+        narrow_clamp<int>(SHORT_INTEGRATION_SECONDS * rate()) * 3);
 
     // As data is added, then fetched, we need 1 extra frame in the buffer.
     int alloc_size = channels() * (read_ahead + 1);
@@ -200,8 +211,12 @@ bool BackgroundMusicEngine::offer_frame_return_if_output(
     }
     long_integration.integrate(long_integrated, square_sum);
     short_integration.integrate(short_integrated, square_sum);
-    double detection =
-        (sqrt(long_integrated) + 0.5 * sqrt(short_integrated)) * M_SQRT2;
+    double max_square =
+        std::max(short_integrated * SHORT_INTEGRATION_WEIGHT, long_integrated);
+    smooth_integration.integrate(smooth_intermediate, max_square);
+    smooth_integration.integrate(smooth_integrated, smooth_intermediate);
+
+    double detection = sqrt(smooth_integrated) * M_SQRT2;
     double ratio = detection / target_level;
     double amplify =
         aud::clamp(pow(ratio, range - 1), 0.0, maximum_amplification);
