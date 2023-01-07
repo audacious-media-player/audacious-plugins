@@ -29,8 +29,8 @@ static constexpr const char * const CONFIG_VALUE_DYNAMIC_RANGE =
 static constexpr const char * const CONFIG_VALUE_MAXIMUM_AMPLIFICATION =
     "maximum_amplification";
 
-static constexpr double SHORT_INTEGRATION = 0.2;
-static constexpr double LONG_INTEGRATION = 3.2;
+static constexpr double SHORT_INTEGRATION_SECONDS = 0.2;
+static constexpr double LONG_INTEGRATION_SECONDS = 3.2;
 
 /*
  * The standard "center" volume is set to 0.25 while the dynamic range is set to
@@ -152,12 +152,12 @@ void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
     long_integrated = target_level * target_level;
     short_integrated = long_integrated;
     // Configure the integrators
-    short_integration = {SHORT_INTEGRATION, rate()};
-    long_integration = {LONG_INTEGRATION, rate()};
+    short_integration = {SHORT_INTEGRATION_SECONDS, rate()};
+    long_integration = {LONG_INTEGRATION_SECONDS, rate()};
     // Determine how much we must read ahead for the short integration period to
     // track signals quickly enough.
     read_ahead = get_root_integrate_square_rc_time_samples(
-        short_integration, narrow_clamp<int>(SHORT_INTEGRATION * rate()) * 3);
+        short_integration, narrow_clamp<int>(SHORT_INTEGRATION_SECONDS * rate()) * 3);
 
     // As data is added, then fetched, we need 1 extra frame in the buffer.
     int alloc_size = channels() * (read_ahead + 1);
