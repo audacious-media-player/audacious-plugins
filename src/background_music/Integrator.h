@@ -22,6 +22,7 @@
 
 class Integrator
 {
+protected:
     double history_multiply;
     double input_multiply;
 
@@ -43,13 +44,48 @@ public:
         history = history_multiply * history + input_multiply * input;
     }
 
-    static inline double calculate_history_multiplier_from_samples(double samples)
+    static inline double
+    calculate_history_multiplier_from_samples(double samples)
     {
         return fabs(samples) < 1e-6 ? 0 : exp(-1.0 / fabs(samples));
     }
+
+    [[nodiscard]] double history_multiplication() const
+    {
+        return history_multiply;
+    }
+    [[nodiscard]] double input_multiplication() const { return input_multiply; }
+
+    /**
+     * Determines how many samples it takes until the threshold is reach when a
+     * step response is provided to the integrators.
+     *
+     * @param squares_integrator The integrator
+     * @param maximum_samples After how many samples to bail out.
+     * @return The sample count needed to reach teh desired value.
+     */
+    static int
+    get_samples_until_threshold_step(const Integrator & squares_integrator,
+                                     const Integrator & smoother_integrator,
+                                     double threshold, int maximum_samples)
+    {
+        double integrated = 0;
+        double smooth_intermediate = 0;
+        double smooth_integrated = 0;
+        for (int i = 0; i < maximum_samples; i++)
+        {
+            squares_integrator.integrate(integrated, 1);
+            smoother_integrator.integrate(smooth_intermediate, integrated);
+            smoother_integrator.integrate(smooth_integrated,
+                                          smooth_intermediate);
+            if (smooth_integrated >= threshold)
+            {
+                return i;
+            }
+        }
+        return maximum_samples;
+    }
 };
-
-
 
 
 #endif // AUDACIOUS_PLUGINS_INTEGRATOR_H

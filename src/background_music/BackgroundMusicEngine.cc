@@ -86,22 +86,10 @@ get_root_integrate_square_rc_time_samples(const Integrator & integrator,
                                           const Integrator & smoother,
                                           int maximum_samples)
 {
-    double integrated = 0;
-    double smooth_intermediate = 0;
-    double smooth_integrated = 0;
     double rc_value = 1.0 - 1.0 / M_E;
     double sqr_value = rc_value * rc_value;
-    for (int i = 0; i < maximum_samples; i++)
-    {
-        integrator.integrate(integrated, 1);
-        smoother.integrate(smooth_intermediate, integrated);
-        smoother.integrate(smooth_integrated, smooth_intermediate);
-        if (smooth_integrated >= sqr_value)
-        {
-            return i;
-        }
-    }
-    return maximum_samples;
+    return Integrator::get_samples_until_threshold_step(
+        integrator, smoother, sqr_value, maximum_samples);
 }
 
 BackgroundMusicEngine::BackgroundMusicEngine(int order)
@@ -127,7 +115,7 @@ void BackgroundMusicEngine::update_config(bool is_processing)
 
 int BackgroundMusicEngine::latency() const
 {
-    return read_ahead_buffer.len() / channels() - 1;
+    return read_ahead / channels() - 1;
 }
 
 bool BackgroundMusicEngine::on_flush(bool force)
@@ -175,8 +163,8 @@ void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
     if (read_ahead_buffer.size() < alloc_size)
     {
         read_ahead_buffer.alloc(alloc_size);
-        read_ahead_buffer.discard();
     }
+    read_ahead_buffer.discard();
 }
 
 void BackgroundMusicEngine::on_cleanup(bool was_enabled)
