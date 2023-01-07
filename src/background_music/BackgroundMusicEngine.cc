@@ -95,7 +95,7 @@ get_root_integrate_square_rc_time_samples(const Integrator & integrator,
 BackgroundMusicEngine::BackgroundMusicEngine(int order)
     : FrameBasedPlugin(background_music_info, order)
 {
-    short_integration.set_scale(M_SQRT2);
+    short_integration.set_scale(SHORT_INTEGRATION_WEIGHT);
     long_integration.set_scale(1.0);
 }
 
@@ -146,9 +146,11 @@ bool BackgroundMusicEngine::after_finished(bool end_of_playlist)
 void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
 {
     processed_frames = 0;
-    smooth_integrated = smooth_intermediate = target_level;
-    short_integration.set_value(target_level);
-    long_integration.set_value(target_level);
+
+    double squared_target_level = target_level * target_level;
+    smooth_integration.set_value(squared_target_level);
+    short_integration.set_value(squared_target_level);
+    long_integration.set_value(squared_target_level);
 
     // Configure the integrators
     short_integration = {SHORT_INTEGRATION_SECONDS, rate()};
@@ -158,7 +160,7 @@ void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
     // Determine how much we must read ahead for the short integration period to
     // track signals quickly enough.
     read_ahead = get_root_integrate_square_rc_time_samples(
-        short_integration.integrator(), smooth_integration,
+        short_integration.integrator(), smooth_integration.integrator(),
         narrow_clamp<int>(SHORT_INTEGRATION_SECONDS * rate()) * 3);
 
     // As data is added, then fetched, we need 1 extra frame in the buffer.
@@ -203,12 +205,12 @@ bool BackgroundMusicEngine::offer_frame_return_if_output(
     long_integration.integrate(square_sum);
     short_integration.integrate(square_sum);
     double max_square =
-        std::max(short_integration.integrated() * SHORT_INTEGRATION_WEIGHT, long_integration.integrated());
+        std::max(short_integration.integrated(), long_integration.integrated());
 
-    smooth_integration.integrate(smooth_intermediate, max_square);
-    smooth_integration.integrate(smooth_integrated, smooth_intermediate);
+    smooth_integration.integrate(max_square);
+    smooth_integration.integrate(max_square);
 
-    double detection = sqrt(smooth_integrated) * M_SQRT2;
+    double detection = sqrt(smooth_integration.integrated()) * M_SQRT2;
     double ratio = detection / target_level;
     double amplify =
         aud::clamp(pow(ratio, range - 1), 0.0, maximum_amplification);

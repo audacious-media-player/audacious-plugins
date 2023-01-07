@@ -126,4 +126,38 @@ public:
     }
 };
 
+class DoubleIntegrator
+{
+    double intermediate_ = 0;
+    double integrated_ = 0;
+    Integrator integrator_;
+
+public:
+    explicit DoubleIntegrator(const Integrator & s) : integrator_(s) {}
+    DoubleIntegrator() = default;
+
+    inline double integrate(double input)
+    {
+        integrator_.integrate(intermediate_, input);
+        integrator_.integrate(integrated_, intermediate_);
+        return integrated_;
+    }
+
+    DoubleIntegrator & operator=(const Integrator & source)
+    {
+        integrator_ = source;
+    }
+
+    void set_value(double new_value)
+    {
+        integrated_ = intermediate_ = new_value;
+    }
+
+    [[nodiscard]] double integrated() const { return integrated_; }
+    [[nodiscard]] inline const Integrator & integrator() const
+    {
+        return integrator_;
+    }
+};
+
 #endif // AUDACIOUS_PLUGINS_INTEGRATOR_H
