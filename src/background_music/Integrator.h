@@ -87,5 +87,43 @@ public:
     }
 };
 
+class ScaledIntegrator
+{
+    double scale_ = 1.0;
+    double integrated_ = 0;
+    Integrator integrator_;
+
+public:
+    explicit ScaledIntegrator(const Integrator & s) : integrator_(s) {}
+    ScaledIntegrator() = default;
+
+    inline double integrate(double input)
+    {
+        integrator_.integrate(integrated_, input);
+        return scale_ * integrated_;
+    }
+
+    ScaledIntegrator & operator=(const Integrator & source)
+    {
+        integrator_ = source;
+    }
+
+    void set_value(double new_value) { integrated_ = new_value; }
+
+    void set_scale(double new_scale)
+    {
+        if (new_scale >= 0 && new_scale <= 1e6)
+        {
+            scale_ = new_scale;
+        }
+    }
+
+    [[nodiscard]] double integrated() const { return integrated_; }
+    [[nodiscard]] double scale() const { return scale_; }
+    [[nodiscard]] inline const Integrator & integrator() const
+    {
+        return integrator_;
+    }
+};
 
 #endif // AUDACIOUS_PLUGINS_INTEGRATOR_H
