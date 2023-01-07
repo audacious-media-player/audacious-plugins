@@ -10,4 +10,4 @@ plugindir := ${plugindir}/${OUTPUT_PLUGIN_DIR}
 LD = ${CXX}
 CPPFLAGS += -I../..
 CXXFLAGS += ${PLUGIN_CFLAGS}
-LIBS += -lm -framework CoreAudio
+LIBS += -lm -framework AudioUnit -framework CoreAudio -framework Foundation
