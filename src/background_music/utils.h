@@ -59,23 +59,4 @@ static inline bool is_multiple_of(M multiple_of, N numerator, D denominator)
 }
 
 
-class Integrator
-{
-    double history_multiply;
-    double input_multiply;
-
-public:
-    Integrator();
-    explicit Integrator(double samples);
-    Integrator(double time, int sample_rate);
-
-    inline void integrate(double & history, double input) const
-    {
-        history = history_multiply * history + input_multiply * input;
-    }
-
-    static inline double
-    calculate_history_multiplier_from_samples(double samples);
-};
-
 #endif // AUDACIOUS_PLUGINS_UTILS_H
