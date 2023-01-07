@@ -1,6 +1,6 @@
 PLUGIN = background_music${PLUGIN_SUFFIX}
 
-SRCS = background_music.cc
+SRCS = background_music.cc FrameBasedPlugin.cc BackgroundMusicEngine.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
