@@ -35,14 +35,12 @@ class BackgroundMusicEngine : public FrameBasedPlugin
     int processed_frames = 0;
     Index<float> frame_in;
     Index<float> frame_out;
-    
-    double short_integrated = 0;
-    Integrator short_integration;
-    double long_integrated = 0;
-    Integrator long_integration;
+
+    ScaledIntegrator short_integration;
+    ScaledIntegrator long_integration;
+    Integrator smooth_integration;
     double smooth_intermediate = 0;
     double smooth_integrated = 0;
-    Integrator smooth_integration;
     RingBuf<float> read_ahead_buffer;
     Index<float> output;
     int read_ahead = 0;
