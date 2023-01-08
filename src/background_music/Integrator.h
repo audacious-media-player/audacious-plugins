@@ -18,7 +18,9 @@
  * implied. In no event shall the authors be liable for any damages arising from
  * the use of this software.
  */
+#include "utils.h"
 #include <cmath>
+#include <stdexcept>
 
 class Integrator
 {
@@ -97,15 +99,15 @@ public:
     explicit ScaledIntegrator(const Integrator & s) : integrator_(s) {}
     ScaledIntegrator() = default;
 
-    inline double integrate(double input)
+    inline void integrate(double input)
     {
         integrator_.integrate(integrated_, input);
-        return scale_ * integrated_;
     }
 
     ScaledIntegrator & operator=(const Integrator & source)
     {
         integrator_ = source;
+        return *this;
     }
 
     void set_value(double new_value) { integrated_ = new_value; }
@@ -118,7 +120,7 @@ public:
         }
     }
 
-    [[nodiscard]] double integrated() const { return integrated_; }
+    [[nodiscard]] double integrated() const { return scale_ * integrated_; }
     [[nodiscard]] double scale() const { return scale_; }
     [[nodiscard]] inline const Integrator & integrator() const
     {
@@ -146,6 +148,7 @@ public:
     DoubleIntegrator & operator=(const Integrator & source)
     {
         integrator_ = source;
+        return *this;
     }
 
     void set_value(double new_value)
@@ -157,6 +160,165 @@ public:
     [[nodiscard]] inline const Integrator & integrator() const
     {
         return integrator_;
+    }
+};
+
+template<size_t N>
+class MultiIntegrator
+{
+    static_assert(N >= 1 && N <= 100); // Ah well, a hundred it is!
+
+    DoubleIntegrator smoothing_;
+    ScaledIntegrator integrator_[N];
+    int look_ahead_[N];
+    int reduced_look_ahead_[N];
+    int max_look_ahead = 0;
+    CircularBuffer<double> buffer_;
+
+public:
+    MultiIntegrator() { reset_lookahead(); }
+
+    [[nodiscard]] const Integrator & integrator(size_t i) const
+    {
+        if (i < (size_t)N)
+        {
+            return integrator_[i].integrator();
+        }
+        throw std::out_of_range(
+            "MultiIntegrator::integrator(i): index out of bounds");
+    }
+
+    [[nodiscard]] double scale(size_t i) const
+    {
+        if (i < (size_t)N)
+        {
+            return integrator_[i].scale();
+        }
+        throw std::out_of_range(
+            "MultiIntegrator::scale(i): index out of bounds");
+    }
+
+    [[nodiscard]] const Integrator & smoothing() const
+    {
+        return smoothing_.integrator();
+    }
+
+    [[nodiscard]] size_t number_of_integrators() const { return N; }
+
+    [[nodiscard]] const int * look_ahead() const { return look_ahead_; }
+    [[nodiscard]] const int * reduced_look_ahead() const
+    {
+        return reduced_look_ahead_;
+    }
+
+    [[nodiscard]] double integrated() const { return smoothing_.integrated(); }
+
+    void integrate(double input)
+    {
+        double oldest_value = buffer_.get_and_set(input);
+
+        integrator_[0].integrate(
+            reduced_look_ahead_[0] == max_look_ahead
+                ? oldest_value
+                : buffer_.peek_back(reduced_look_ahead_[0]));
+        double max_integrated = integrator_[0].integrated();
+        if constexpr (N > 1)
+        {
+            for (size_t n = 1; n < N; n++)
+            {
+                double value = reduced_look_ahead_[n] == max_look_ahead
+                                   ? oldest_value
+                                   : buffer_.peek_back(reduced_look_ahead_[n]);
+                integrator_[n].integrate(value);
+                max_integrated =
+                    std::max(max_integrated, integrator_[n].integrated());
+            }
+        }
+        smoothing_.integrate(max_integrated);
+    }
+
+    void set_value(double new_value)
+    {
+        integrator_[0].set_value(new_value);
+        smoothing_.set_value(new_value);
+        if constexpr (N > 1)
+        {
+            for (size_t n = 1; n < N; n++)
+            {
+                integrator_[n].set_value(new_value);
+            }
+        }
+    }
+
+    void set_multipliers(size_t i, const Integrator & multipliers)
+    {
+        if (i < (size_t)N)
+        {
+            integrator_[i] = multipliers;
+            return;
+        }
+        throw std::out_of_range(
+            "MultiIntegrator::set_multipliers: index out of bounds");
+    }
+
+    void set_scale(size_t i, double scale)
+    {
+        if (i < (size_t)N)
+        {
+            integrator_[i].set_scale(scale);
+            return;
+        }
+        throw std::out_of_range(
+            "MultiIntegrator::set_scale: index out of bounds");
+    }
+
+    void set_smoothing(const Integrator & new_smoothing)
+    {
+        smoothing_ = new_smoothing;
+    }
+
+    void reset_lookahead()
+    {
+        for (size_t i = 0; i < N; i++)
+        {
+            look_ahead_[i] = 0;
+            reduced_look_ahead_[i] = 0;
+        }
+    }
+
+    int
+    prepare_lookahead(size_t integrator_with_maximum_lookahead,
+                      double fill_value,
+                      int max_samples_to_try = std::numeric_limits<int>::max())
+    {
+        if (integrator_with_maximum_lookahead < N)
+        {
+            double threshold = 1 - 1 / M_E;
+            threshold *= threshold;
+            max_look_ahead =
+                Integrator::get_samples_until_threshold_step(
+                    integrator_[integrator_with_maximum_lookahead].integrator(), smoothing_.integrator(),
+                    threshold, max_samples_to_try);
+            look_ahead_[integrator_with_maximum_lookahead] = max_look_ahead;
+            for (size_t n = 0; n < N; n++)
+            {
+                if (n != integrator_with_maximum_lookahead)
+                {
+                    look_ahead_[n] = Integrator::get_samples_until_threshold_step(
+                        integrator_[n].integrator(), smoothing_.integrator(),
+                        threshold, max_look_ahead + 1);
+                }
+            }
+            for (size_t n = 0; n < N; n++)
+            {
+                reduced_look_ahead_[n] =
+                    std::max(0, max_look_ahead - look_ahead_[n]);
+            }
+            buffer_.set_size(max_look_ahead, fill_value, false);
+            return max_look_ahead;
+        }
+        throw std::out_of_range(
+            "MultiIntegrator::calculate_lookahead: index out of bounds");
     }
 };
 

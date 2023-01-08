@@ -29,10 +29,19 @@ static constexpr const char * const CONFIG_VALUE_DYNAMIC_RANGE =
 static constexpr const char * const CONFIG_VALUE_MAXIMUM_AMPLIFICATION =
     "maximum_amplification";
 
-static constexpr double SMOOTHER_INTEGRATION_SECONDS = 0.025;
-static constexpr double SHORT_INTEGRATION_SECONDS = 0.200;
-static constexpr double SHORT_INTEGRATION_WEIGHT = M_SQRT1_2;
-static constexpr double LONG_INTEGRATION_SECONDS = 3.200;
+static constexpr double SMOOTHER_INTEGRATION_SECONDS = 0.010;
+
+static constexpr unsigned PEAK_INTEGRATOR = 0;
+static constexpr double PEAK_INTEGRATION_SECONDS = 0.020;
+static constexpr double PEAK_INTEGRATION_WEIGHT = 0.25;
+
+static constexpr unsigned SHORT_INTEGRATOR = 1;
+static constexpr double SHORT_INTEGRATION_SECONDS = 0.2;//;0.200;
+static constexpr double SHORT_INTEGRATION_WEIGHT = 0.5;
+
+static constexpr unsigned LONG_INTEGRATOR = 2;
+static constexpr double LONG_INTEGRATION_SECONDS = 3.2;
+static constexpr double LONG_INTEGRATION_WEIGHT = 1.0;
 
 /*
  * The standard "center" volume is set to 0.25 while the dynamic range is set to
@@ -95,8 +104,9 @@ get_root_integrate_square_rc_time_samples(const Integrator & integrator,
 BackgroundMusicEngine::BackgroundMusicEngine(int order)
     : FrameBasedPlugin(background_music_info, order)
 {
-    short_integration.set_scale(SHORT_INTEGRATION_WEIGHT);
-    long_integration.set_scale(1.0);
+    multi_integrator.set_scale(PEAK_INTEGRATOR, PEAK_INTEGRATION_WEIGHT);
+    multi_integrator.set_scale(SHORT_INTEGRATOR, SHORT_INTEGRATION_WEIGHT);
+    multi_integrator.set_scale(LONG_INTEGRATOR, LONG_INTEGRATION_WEIGHT);
 }
 
 const char * BackgroundMusicEngine::name() const
@@ -109,6 +119,7 @@ void BackgroundMusicEngine::update_config(bool is_processing)
     double target_level_in_db = aud_get_double(CONFIG_SECTION_BACKGROUND_MUSIC,
                                                CONFIG_VALUE_TARGET_LEVEL);
     target_level = exp10(aud::clamp(target_level_in_db, -20.0, 0.0) / 10);
+
     range = aud_get_double(CONFIG_SECTION_BACKGROUND_MUSIC,
                            CONFIG_VALUE_DYNAMIC_RANGE);
     maximum_amplification = aud_get_double(CONFIG_SECTION_BACKGROUND_MUSIC,
@@ -147,21 +158,22 @@ void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
 {
     processed_frames = 0;
 
-    double squared_target_level = target_level * target_level;
-    smooth_integration.set_value(squared_target_level);
-    short_integration.set_value(squared_target_level);
-    long_integration.set_value(squared_target_level);
-
     // Configure the integrators
-    short_integration = {SHORT_INTEGRATION_SECONDS, rate()};
-    long_integration = {LONG_INTEGRATION_SECONDS, rate()};
-    smooth_integration = {SMOOTHER_INTEGRATION_SECONDS, rate()};
+    multi_integrator.set_value(target_level * target_level);
+    multi_integrator.set_multipliers(PEAK_INTEGRATOR, {PEAK_INTEGRATION_SECONDS, rate()});
+    multi_integrator.set_multipliers(SHORT_INTEGRATOR, {SHORT_INTEGRATION_SECONDS, rate()});
+    multi_integrator.set_multipliers(LONG_INTEGRATOR, {LONG_INTEGRATION_SECONDS, rate()});
+    multi_integrator.set_smoothing({SMOOTHER_INTEGRATION_SECONDS, rate()});
 
     // Determine how much we must read ahead for the short integration period to
     // track signals quickly enough.
-    read_ahead = get_root_integrate_square_rc_time_samples(
-        short_integration.integrator(), smooth_integration.integrator(),
-        narrow_clamp<int>(SHORT_INTEGRATION_SECONDS * rate()) * 3);
+    read_ahead = multi_integrator.prepare_lookahead(SHORT_INTEGRATOR, target_level * target_level);
+    const int * la = multi_integrator.look_ahead();
+    const int * rla = multi_integrator.reduced_look_ahead();
+
+    for (size_t i = 0; i < multi_integrator.number_of_integrators(); i++) {
+        printf("%s: [%i] read-ahead=%i; reduced read_ahead=%i; scale=%lf\n", name(), (int)i, la[i], rla[i], multi_integrator.scale(i));
+    }
 
     // As data is added, then fetched, we need 1 extra frame in the buffer.
     int alloc_size = channels() * (read_ahead + 1);
@@ -202,15 +214,9 @@ bool BackgroundMusicEngine::offer_frame_return_if_output(
     {
         square_sum += (sample * sample);
     }
-    long_integration.integrate(square_sum);
-    short_integration.integrate(square_sum);
-    double max_square =
-        std::max(short_integration.integrated(), long_integration.integrated());
+    multi_integrator.integrate(square_sum);
 
-    smooth_integration.integrate(max_square);
-    smooth_integration.integrate(max_square);
-
-    double detection = sqrt(smooth_integration.integrated()) * M_SQRT2;
+    double detection = sqrt(multi_integrator.integrated()) * M_SQRT2;
     double ratio = detection / target_level;
     double amplify =
         aud::clamp(pow(ratio, range - 1), 0.0, maximum_amplification);
