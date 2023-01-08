@@ -13,4 +13,4 @@ LD = ${OBJCXX}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..
-LIBS += -framework AppKit
+LIBS += -framework AppKit -framework Carbon
