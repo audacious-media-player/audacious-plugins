@@ -21,12 +21,6 @@
 #include "utils.h"
 #include <cstdio>
 
-#ifdef BACKGROUND_MUSIC_PRINT_STATUS_MESSAGES
-#define print_status(...) print_status(__VA_ARGS__);
-#else
-#define print_status(...)
-#endif
-
 FrameBasedPlugin::FrameBasedPlugin(const PluginInfo info, int order)
     : EffectPlugin(info, order, true)
 {
@@ -40,7 +34,7 @@ Index<float> & FrameBasedPlugin::process(Index<float> & data)
 
 bool FrameBasedPlugin::init()
 {
-    print_status("%s: init()\n", name())
+    print_debug("%s: init()\n", name())
     enabled = false;
     current_channels = 0;
     current_rate = 0;
@@ -49,7 +43,7 @@ bool FrameBasedPlugin::init()
 
 void FrameBasedPlugin::cleanup()
 {
-    print_status("%s: cleanup()\n", name())
+    print_debug("%s: cleanup()\n", name())
     bool en = enabled;
     enabled = false;
     frame_in.clear();
@@ -61,14 +55,14 @@ void FrameBasedPlugin::cleanup()
 }
 
 bool FrameBasedPlugin::flush (bool force) {
-    print_status("%s: flush(%i)\n", name(), (int)force)
+    print_debug("%s: flush(%i)\n", name(), (int)force)
     return on_flush(force);
 }
 
 Index<float> & FrameBasedPlugin::finish(Index<float> & data,
                                         bool end_of_playlist)
 {
-    print_status("%s: finish()\n", name())
+    print_debug("%s: finish()\n", name())
     Index<float> & index = process_buffer(data, end_of_playlist);
     after_finished(end_of_playlist);
     return index;
@@ -76,7 +70,7 @@ Index<float> & FrameBasedPlugin::finish(Index<float> & data,
 
 void FrameBasedPlugin::start(int & channels, int & rate)
 {
-    print_status("%s: start(channels=%i, rate=%i)\n", name(), channels, rate)
+    print_debug("%s: start(channels=%i, rate=%i)\n", name(), channels, rate)
     if (channels <= 0 || rate <= 0)
     {
         fprintf(stderr,
@@ -125,7 +119,7 @@ Index<float> & FrameBasedPlugin::process_buffer(Index<float> & input,
         disabled_frame_count++;
         if (is_multiple_of(10, disabled_frame_count, rate()))
         {
-            print_status("%s: disabled for %lf seconds\n", name(),
+            print_debug("%s: disabled for %lf seconds\n", name(),
                    1.0 * disabled_frame_count / rate())
         }
         // We bluntly copy input to output

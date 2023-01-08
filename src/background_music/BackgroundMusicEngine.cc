@@ -171,8 +171,10 @@ void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
     const int * la = multi_integrator.look_ahead();
     const int * rla = multi_integrator.reduced_look_ahead();
 
-    for (size_t i = 0; i < multi_integrator.number_of_integrators(); i++) {
-        printf("%s: [%i] read-ahead=%i; reduced read_ahead=%i; scale=%lf\n", name(), (int)i, la[i], rla[i], multi_integrator.scale(i));
+    if constexpr (enabled_print_debug) {
+        for (size_t i = 0; i < multi_integrator.number_of_integrators(); i++) {
+            printf("%s: [%i] read-ahead=%i; reduced read_ahead=%i; scale=%lf\n", name(), (int)i, la[i], rla[i], multi_integrator.scale(i));
+        }
     }
 
     // As data is added, then fetched, we need 1 extra frame in the buffer.

@@ -21,6 +21,16 @@
 #include <limits>
 #include <type_traits>
 
+
+#ifdef BACKGROUND_MUSIC_PRINT_DEBUG_MESSAGES
+#define print_debug(...) printf(__VA_ARGS__);
+static constexpr bool enabled_print_debug = true;
+#else
+#define print_debug(...)
+static constexpr bool enabled_print_debug = false;
+#endif
+
+
 template<typename T, typename V>
 static inline constexpr T narrow_clamp(const V & v)
 {
