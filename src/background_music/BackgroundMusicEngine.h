@@ -52,19 +52,34 @@ static constexpr auto conf_maximum_amplification =
         .withDefault(10, "10.0")
         .withMaximum(100.0);
 
-static constexpr double SMOOTHER_INTEGRATION_SECONDS = 0.010;
+static constexpr double SMOOTHER_INTEGRATION_SECONDS = 0.003;
 
-static constexpr unsigned PEAK_INTEGRATOR = 0;
-static constexpr double PEAK_INTEGRATION_SECONDS = 0.020;
-static constexpr double PEAK_INTEGRATION_WEIGHT = 0.25;
+static constexpr double PEAK_INTEGRATION_SECONDS = 0.005;
+static constexpr double PEAK_INTEGRATION_WEIGHT = 0.5;
 
-static constexpr unsigned SHORT_INTEGRATOR = 1;
-static constexpr double SHORT_INTEGRATION_SECONDS = 0.2; //;0.200;
-static constexpr double SHORT_INTEGRATION_WEIGHT = 0.5;
+static constexpr double SHORT_INTEGRATION_SECONDS = 0.8; //;0.200;
+static constexpr double SHORT_INTEGRATION_WEIGHT = 1.0;
 
-static constexpr unsigned LONG_INTEGRATOR = 2;
 static constexpr double LONG_INTEGRATION_SECONDS = 3.2;
 static constexpr double LONG_INTEGRATION_WEIGHT = 1.0;
+
+class BackgroundMultiIntegrator : public MultiIntegrator
+{
+public:
+    BackgroundMultiIntegrator(size_t number_of_integrators)
+        : MultiIntegrator(number_of_integrators)
+    {
+    }
+    [[maybe_unused]] void set_hold_integrator(const Integrator &);
+    [[maybe_unused]] void set_short_hold_integrator(const Integrator & v);
+
+protected:
+    double on_integration() override;
+    void on_set_value(double value) override;
+private:
+    ScaledIntegrator peak_hold_integrator;
+    ScaledIntegrator short_hold_integrator;
+};
 
 class BackgroundMusicEngine : public FrameBasedPlugin
 {
@@ -75,7 +90,7 @@ class BackgroundMusicEngine : public FrameBasedPlugin
     Index<float> frame_in;
     Index<float> frame_out;
 
-    MultiIntegrator<3> multi_integrator;
+    BackgroundMultiIntegrator multi_integrator;
 
     RingBuf<float> read_ahead_buffer;
     Index<float> output;

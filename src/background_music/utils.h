@@ -68,6 +68,39 @@ static inline bool is_multiple_of(M multiple_of, N numerator, D denominator)
 }
 
 template<typename T>
+static constexpr size_t get_max_array_size()
+{
+    const size_t max = std::numeric_limits<size_t>::max();
+    const size_t size = sizeof(T);
+    return size > 0 ? max / size : max;
+}
+
+template<typename T>
+static constexpr size_t verified_above_min_below_max(size_t elements,
+                                                     size_t minimum = 1)
+{
+    if (elements > minimum && elements <= get_max_array_size<T>())
+    {
+        return elements;
+    }
+    throw std::invalid_argument(
+        "verified_above_min_below_max(elements,minimum): number of elements "
+        "below minimum or larger than maximum array size for type.");
+}
+
+template<typename T>
+static T * allocate_if_valid(size_t elements, size_t limit)
+{
+    size_t valid_elements = verified_above_min_below_max<T>(elements, 1);
+    if (limit == 0 || valid_elements <= limit)
+    {
+        return new T[elements];
+    }
+    throw std::invalid_argument("allocate_if_valid(elements,limit): number of "
+                                "elements larger than supplied limit");
+}
+
+template<typename T>
 struct ConfigValue
 {
     static_assert(std::is_trivial_v<T>);
@@ -85,9 +118,8 @@ struct ConfigValue
     {
     }
     constexpr ConfigValue(const char * section_, const char * name_,
-                          const char * variable_,
-                          const char * default_string_, T value_default_,
-                          T value_min_, T value_max_)
+                          const char * variable_, const char * default_string_,
+                          T value_default_, T value_min_, T value_max_)
         : section(section_), name(name_), variable(variable_),
           default_string(default_string_), value_default(value_default_),
           value_min(value_min_), value_max(value_max_)

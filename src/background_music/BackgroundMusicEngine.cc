@@ -20,6 +20,10 @@
 #include "BackgroundMusicEngine.h"
 #include <cmath>
 
+static constexpr unsigned PEAK_INTEGRATOR = 0;
+static constexpr unsigned SHORT_INTEGRATOR = 1;
+static constexpr unsigned LONG_INTEGRATOR = 2;
+
 /*
  * The standard "center" volume is set to 0.25 while the dynamic range is set to
  * zero, meaning all songs will be equally loud according to the detected
@@ -64,26 +68,8 @@ static constexpr PluginInfo background_music_info = {
     N_("Background music (equal loudness)"), PACKAGE, background_music_about,
     &background_music_preferences};
 
-/**
- * Determines how fast the step response for the square root of the integrator
- * reaches 1 - 1/e, the usual characteristic "RC" value for an integrator.
- * @param integrator The integrator
- * @param maximum_samples After how many samples to bail out.
- * @return The sample count needed to reach teh desired value.
- */
-static int
-get_root_integrate_square_rc_time_samples(const Integrator & integrator,
-                                          const Integrator & smoother,
-                                          int maximum_samples)
-{
-    double rc_value = 1.0 - 1.0 / M_E;
-    double sqr_value = rc_value * rc_value;
-    return Integrator::get_samples_until_threshold_step(
-        integrator, smoother, sqr_value, maximum_samples);
-}
-
 BackgroundMusicEngine::BackgroundMusicEngine(int order)
-    : FrameBasedPlugin(background_music_info, order)
+    : FrameBasedPlugin(background_music_info, order), multi_integrator(3)
 {
     multi_integrator.set_scale(PEAK_INTEGRATOR, PEAK_INTEGRATION_WEIGHT);
     multi_integrator.set_scale(SHORT_INTEGRATOR, SHORT_INTEGRATION_WEIGHT);
@@ -135,27 +121,29 @@ void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
 
     // Configure the integrators
     multi_integrator.set_value(target_level * target_level);
+    multi_integrator.set_multipliers(LONG_INTEGRATOR,
+                                     {LONG_INTEGRATION_SECONDS, rate()});
     multi_integrator.set_multipliers(PEAK_INTEGRATOR,
                                      {PEAK_INTEGRATION_SECONDS, rate()});
     multi_integrator.set_multipliers(SHORT_INTEGRATOR,
                                      {SHORT_INTEGRATION_SECONDS, rate()});
-    multi_integrator.set_multipliers(LONG_INTEGRATOR,
-                                     {LONG_INTEGRATION_SECONDS, rate()});
     multi_integrator.set_smoothing({SMOOTHER_INTEGRATION_SECONDS, rate()});
 
     // Determine how much we must read ahead for the short integration period to
     // track signals quickly enough.
     read_ahead = multi_integrator.prepare_lookahead(
         SHORT_INTEGRATOR, target_level * target_level);
-    const int * la = multi_integrator.look_ahead();
-    const int * rla = multi_integrator.reduced_look_ahead();
 
-    if constexpr (enabled_print_debug)
+    multi_integrator.set_hold_integrator({SHORT_INTEGRATION_SECONDS * 2, rate()});
+    multi_integrator.set_short_hold_integrator({0.5 * (LONG_INTEGRATION_SECONDS + SHORT_INTEGRATION_SECONDS), rate()});
+
+//    if constexpr (enabled_print_debug)
     {
         for (size_t i = 0; i < multi_integrator.number_of_integrators(); i++)
         {
+            auto entry = multi_integrator.get_entry(i);
             printf("%s: [%i] read-ahead=%i; reduced read_ahead=%i; scale=%lf\n",
-                   name(), (int)i, la[i], rla[i], multi_integrator.scale(i));
+                   name(), (int)i, entry.look_ahead_, entry.reduced_look_ahead_, multi_integrator.scale(i));
         }
     }
 
@@ -200,7 +188,7 @@ bool BackgroundMusicEngine::offer_frame_return_if_output(
     }
     multi_integrator.integrate(square_sum);
 
-    double detection = sqrt(multi_integrator.integrated()) * M_SQRT2;
+    double detection = sqrt(multi_integrator.integrated()) * 2;
     double ratio = detection / target_level;
     double amplify =
         aud::clamp(pow(ratio, range - 1), 0.0, maximum_amplification);
@@ -220,4 +208,44 @@ bool BackgroundMusicEngine::offer_frame_return_if_output(
     }
 
     return false;
+}
+
+double BackgroundMultiIntegrator::on_integration()
+{
+    double peak = do_integrate_from_buffer(PEAK_INTEGRATOR);
+
+    if (peak > peak_hold_integrator.integrated()) {
+        peak_hold_integrator.set_value(peak);
+    }
+    else {
+        peak_hold_integrator.integrate(peak);
+    }
+
+    double short_looked_ahead = get_buffered_value_to_integrate(SHORT_INTEGRATOR);
+    double short_value = integrate_value(SHORT_INTEGRATOR, std::max(peak_hold_integrator.integrated(), short_looked_ahead));
+
+    if (short_value > short_hold_integrator.integrated()) {
+        short_hold_integrator.set_value(short_value);
+    }
+    else {
+        short_hold_integrator.integrate(short_value);
+    }
+    double long_looked_ahead = get_buffered_value_to_integrate(LONG_INTEGRATOR);
+    double short_integrated_value = short_hold_integrator.integrated();
+    double long_value = integrate_value(LONG_INTEGRATOR, std::max(short_integrated_value, long_looked_ahead));
+    return std::max(short_integrated_value, long_value);
+}
+
+void BackgroundMultiIntegrator::on_set_value(double value)
+{
+    peak_hold_integrator.set_value(value);
+    short_hold_integrator.set_value(value);
+}
+
+[[maybe_unused]] void BackgroundMultiIntegrator::set_hold_integrator(const Integrator & v) {
+    peak_hold_integrator = v;
+}
+
+[[maybe_unused]] void BackgroundMultiIntegrator::set_short_hold_integrator(const Integrator & v) {
+    short_hold_integrator = v;
 }
