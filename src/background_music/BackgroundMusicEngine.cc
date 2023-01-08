@@ -19,29 +19,6 @@
 
 #include "BackgroundMusicEngine.h"
 #include <cmath>
-#include <libaudcore/runtime.h>
-
-static constexpr const char * const CONFIG_SECTION_BACKGROUND_MUSIC =
-    "background_music";
-static constexpr const char * const CONFIG_VALUE_TARGET_LEVEL = "target_level";
-static constexpr const char * const CONFIG_VALUE_DYNAMIC_RANGE =
-    "dynamic_range";
-static constexpr const char * const CONFIG_VALUE_MAXIMUM_AMPLIFICATION =
-    "maximum_amplification";
-
-static constexpr double SMOOTHER_INTEGRATION_SECONDS = 0.010;
-
-static constexpr unsigned PEAK_INTEGRATOR = 0;
-static constexpr double PEAK_INTEGRATION_SECONDS = 0.020;
-static constexpr double PEAK_INTEGRATION_WEIGHT = 0.25;
-
-static constexpr unsigned SHORT_INTEGRATOR = 1;
-static constexpr double SHORT_INTEGRATION_SECONDS = 0.2;//;0.200;
-static constexpr double SHORT_INTEGRATION_WEIGHT = 0.5;
-
-static constexpr unsigned LONG_INTEGRATOR = 2;
-static constexpr double LONG_INTEGRATION_SECONDS = 3.2;
-static constexpr double LONG_INTEGRATION_WEIGHT = 1.0;
 
 /*
  * The standard "center" volume is set to 0.25 while the dynamic range is set to
@@ -49,28 +26,32 @@ static constexpr double LONG_INTEGRATION_WEIGHT = 1.0;
  * loudness, that is.
  */
 static constexpr const char * const background_music_defaults[] = {
-    CONFIG_VALUE_TARGET_LEVEL,
-    "-10",
-    CONFIG_VALUE_DYNAMIC_RANGE,
-    "0.0",
-    CONFIG_VALUE_MAXIMUM_AMPLIFICATION,
-    "10",
+    conf_target_level.variable,
+    conf_target_level.default_string,
+    conf_dynamic_range.variable,
+    conf_dynamic_range.default_string,
+    conf_maximum_amplification.variable,
+    conf_maximum_amplification.default_string,
     nullptr};
 
 static constexpr const PreferencesWidget background_music_widgets[] = {
     WidgetLabel(N_("<b>Background music</b>")),
+    WidgetSpin(N_(conf_target_level.name),
+               WidgetFloat(BACKGROUND_MUSIC_CONFIG, conf_target_level.variable),
+               {conf_target_level.value_min, conf_target_level.value_max,
+                conf_target_level
+                    .value_default}), // Limited until limiter feature arrives
     WidgetSpin(
-        N_("Target level (dB):"),
-        WidgetFloat(CONFIG_SECTION_BACKGROUND_MUSIC, CONFIG_VALUE_TARGET_LEVEL),
-        {-20.0, -6.0, -12.0}), // Limited until limiter feature arrives
-    WidgetSpin(N_("Dynamic range:"),
-               WidgetFloat(CONFIG_SECTION_BACKGROUND_MUSIC,
-                           CONFIG_VALUE_DYNAMIC_RANGE),
-               {0.0, 1.0, 0.1}),
-    WidgetSpin(N_("Maximum amplification:"),
-               WidgetFloat(CONFIG_SECTION_BACKGROUND_MUSIC,
-                           CONFIG_VALUE_MAXIMUM_AMPLIFICATION),
-               {1.0, 100.0, 10.0})};
+        N_(conf_dynamic_range.name),
+        WidgetFloat(BACKGROUND_MUSIC_CONFIG, conf_dynamic_range.variable),
+        {conf_dynamic_range.value_min, conf_dynamic_range.value_max,
+         conf_dynamic_range.value_default}),
+    WidgetSpin(N_(conf_maximum_amplification.name),
+               WidgetFloat(BACKGROUND_MUSIC_CONFIG,
+                           conf_maximum_amplification.variable),
+               {conf_maximum_amplification.value_min,
+                conf_maximum_amplification.value_max,
+                conf_maximum_amplification.value_default})};
 
 static constexpr const PluginPreferences background_music_preferences = {
     {background_music_widgets}};
@@ -116,14 +97,9 @@ const char * BackgroundMusicEngine::name() const
 
 void BackgroundMusicEngine::update_config(bool is_processing)
 {
-    double target_level_in_db = aud_get_double(CONFIG_SECTION_BACKGROUND_MUSIC,
-                                               CONFIG_VALUE_TARGET_LEVEL);
-    target_level = exp10(aud::clamp(target_level_in_db, -20.0, 0.0) / 10);
-
-    range = aud_get_double(CONFIG_SECTION_BACKGROUND_MUSIC,
-                           CONFIG_VALUE_DYNAMIC_RANGE);
-    maximum_amplification = aud_get_double(CONFIG_SECTION_BACKGROUND_MUSIC,
-                                           CONFIG_VALUE_MAXIMUM_AMPLIFICATION);
+    target_level = exp10(conf_target_level.get_value() / 20);
+    range = conf_dynamic_range.get_value();
+    maximum_amplification = conf_maximum_amplification.get_value();
 }
 
 int BackgroundMusicEngine::latency() const
@@ -139,8 +115,7 @@ bool BackgroundMusicEngine::on_flush(bool force)
 
 bool BackgroundMusicEngine::on_init()
 {
-    aud_config_set_defaults(CONFIG_SECTION_BACKGROUND_MUSIC,
-                            background_music_defaults);
+    aud_config_set_defaults(BACKGROUND_MUSIC_CONFIG, background_music_defaults);
     update_config(false);
     return true;
 }
@@ -160,20 +135,27 @@ void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
 
     // Configure the integrators
     multi_integrator.set_value(target_level * target_level);
-    multi_integrator.set_multipliers(PEAK_INTEGRATOR, {PEAK_INTEGRATION_SECONDS, rate()});
-    multi_integrator.set_multipliers(SHORT_INTEGRATOR, {SHORT_INTEGRATION_SECONDS, rate()});
-    multi_integrator.set_multipliers(LONG_INTEGRATOR, {LONG_INTEGRATION_SECONDS, rate()});
+    multi_integrator.set_multipliers(PEAK_INTEGRATOR,
+                                     {PEAK_INTEGRATION_SECONDS, rate()});
+    multi_integrator.set_multipliers(SHORT_INTEGRATOR,
+                                     {SHORT_INTEGRATION_SECONDS, rate()});
+    multi_integrator.set_multipliers(LONG_INTEGRATOR,
+                                     {LONG_INTEGRATION_SECONDS, rate()});
     multi_integrator.set_smoothing({SMOOTHER_INTEGRATION_SECONDS, rate()});
 
     // Determine how much we must read ahead for the short integration period to
     // track signals quickly enough.
-    read_ahead = multi_integrator.prepare_lookahead(SHORT_INTEGRATOR, target_level * target_level);
+    read_ahead = multi_integrator.prepare_lookahead(
+        SHORT_INTEGRATOR, target_level * target_level);
     const int * la = multi_integrator.look_ahead();
     const int * rla = multi_integrator.reduced_look_ahead();
 
-    if constexpr (enabled_print_debug) {
-        for (size_t i = 0; i < multi_integrator.number_of_integrators(); i++) {
-            printf("%s: [%i] read-ahead=%i; reduced read_ahead=%i; scale=%lf\n", name(), (int)i, la[i], rla[i], multi_integrator.scale(i));
+    if constexpr (enabled_print_debug)
+    {
+        for (size_t i = 0; i < multi_integrator.number_of_integrators(); i++)
+        {
+            printf("%s: [%i] read-ahead=%i; reduced read_ahead=%i; scale=%lf\n",
+                   name(), (int)i, la[i], rla[i], multi_integrator.scale(i));
         }
     }
 

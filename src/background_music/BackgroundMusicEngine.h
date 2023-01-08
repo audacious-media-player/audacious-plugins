@@ -27,6 +27,45 @@
 #include "Integrator.h"
 #include "utils.h"
 
+static constexpr const char * const BACKGROUND_MUSIC_CONFIG =
+    "background_music";
+
+static constexpr auto conf_dynamic_range = ConfigDouble(BACKGROUND_MUSIC_CONFIG)
+                                               .withName("Dynamic range")
+                                               .withVariable("dynamic_range")
+                                               .withMinimum(0.0)
+                                               .withDefault(0.0, "0.0")
+                                               .withMaximum(1.0);
+
+static constexpr auto conf_target_level = ConfigDouble(BACKGROUND_MUSIC_CONFIG)
+                                              .withName("Target level (dB):")
+                                              .withVariable("target_level")
+                                              .withMinimum(-30.0)
+                                              .withDefault(-12, "-12.0")
+                                              .withMaximum(-6);
+
+static constexpr auto conf_maximum_amplification =
+    ConfigDouble(BACKGROUND_MUSIC_CONFIG)
+        .withName("Maximum amplification:")
+        .withVariable("maximum_amplification")
+        .withMinimum(1.0)
+        .withDefault(10, "10.0")
+        .withMaximum(100.0);
+
+static constexpr double SMOOTHER_INTEGRATION_SECONDS = 0.010;
+
+static constexpr unsigned PEAK_INTEGRATOR = 0;
+static constexpr double PEAK_INTEGRATION_SECONDS = 0.020;
+static constexpr double PEAK_INTEGRATION_WEIGHT = 0.25;
+
+static constexpr unsigned SHORT_INTEGRATOR = 1;
+static constexpr double SHORT_INTEGRATION_SECONDS = 0.2; //;0.200;
+static constexpr double SHORT_INTEGRATION_WEIGHT = 0.5;
+
+static constexpr unsigned LONG_INTEGRATOR = 2;
+static constexpr double LONG_INTEGRATION_SECONDS = 3.2;
+static constexpr double LONG_INTEGRATION_WEIGHT = 1.0;
+
 class BackgroundMusicEngine : public FrameBasedPlugin
 {
     double target_level = 0.3;
@@ -55,7 +94,8 @@ public:
     bool on_init() override;
     void on_start(int channels, int rate) override;
     void on_cleanup(bool was_enabled) override;
-    bool after_finished(bool end_of_playlist) override;;
+    bool after_finished(bool end_of_playlist) override;
+    ;
 };
 
 #endif // AUDACIOUS_PLUGINS_BACKGROUND_MUSIC_PLUGIN_H
