@@ -242,10 +242,10 @@ void BackgroundMultiIntegrator::on_set_value(double value)
     short_hold_integrator.set_value(value);
 }
 
-[[maybe_unused]] void BackgroundMultiIntegrator::set_hold_integrator(const Integrator & v) {
+[[maybe_unused]] void BackgroundMultiIntegrator::set_hold_integrator(const Integrator<double> & v) {
     peak_hold_integrator = v;
 }
 
-[[maybe_unused]] void BackgroundMultiIntegrator::set_short_hold_integrator(const Integrator & v) {
+[[maybe_unused]] void BackgroundMultiIntegrator::set_short_hold_integrator(const Integrator<double> & v) {
     short_hold_integrator = v;
 }

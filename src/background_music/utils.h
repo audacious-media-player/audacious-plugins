@@ -19,7 +19,10 @@
  * the use of this software.
  */
 #include <libaudcore/runtime.h>
+#include <algorithm>
+#include <cstddef>
 #include <limits>
+#include <stdexcept>
 #include <type_traits>
 
 #ifdef BACKGROUND_MUSIC_PRINT_DEBUG_MESSAGES
@@ -156,7 +159,7 @@ struct ConfigValue
     {
         if constexpr (std::is_same_v<double, T>)
         {
-            return aud::clamp(aud_get_double(section, variable), value_min,
+            return std::clamp(aud_get_double(section, variable), value_min,
                               value_max);
         }
         else if constexpr (std::is_same_v<bool, T>)
@@ -165,7 +168,7 @@ struct ConfigValue
         }
         else if constexpr (std::is_same_v<int, T>)
         {
-            return aud::clamp(aud_get_int(section, variable), value_min,
+            return std::clamp(aud_get_int(section, variable), value_min,
                               value_max);
         }
         else

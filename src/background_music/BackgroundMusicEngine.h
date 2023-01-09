@@ -63,22 +63,22 @@ static constexpr double SHORT_INTEGRATION_WEIGHT = 1.0;
 static constexpr double LONG_INTEGRATION_SECONDS = 3.2;
 static constexpr double LONG_INTEGRATION_WEIGHT = 1.0;
 
-class BackgroundMultiIntegrator : public MultiIntegrator
+class BackgroundMultiIntegrator : public MultiIntegrator<double>
 {
 public:
     BackgroundMultiIntegrator(size_t number_of_integrators)
         : MultiIntegrator(number_of_integrators)
     {
     }
-    [[maybe_unused]] void set_hold_integrator(const Integrator &);
-    [[maybe_unused]] void set_short_hold_integrator(const Integrator & v);
+    [[maybe_unused]] void set_hold_integrator(const Integrator<double> &);
+    [[maybe_unused]] void set_short_hold_integrator(const Integrator<double> & v);
 
 protected:
     double on_integration() override;
     void on_set_value(double value) override;
 private:
-    ScaledIntegrator peak_hold_integrator;
-    ScaledIntegrator short_hold_integrator;
+    ScaledIntegrator<double> peak_hold_integrator;
+    ScaledIntegrator<double> short_hold_integrator;
 };
 
 class BackgroundMusicEngine : public FrameBasedPlugin

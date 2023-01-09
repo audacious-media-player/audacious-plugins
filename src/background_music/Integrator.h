@@ -20,114 +20,179 @@
  */
 #include "utils.h"
 #include <cmath>
+#include <limits>
 #include <stdexcept>
+#include <type_traits>
 
+template<typename S>
 class Integrator
 {
-protected:
-    double history_multiply;
-    double input_multiply;
+    static_assert(std::is_floating_point_v<S>);
+
+    S history_multiplier_;
+    S input_multiplier_;
 
 public:
-    inline Integrator() : history_multiply(0), input_multiply(1) {}
-    [[maybe_unused]] inline explicit Integrator(double samples)
-        : history_multiply(calculate_history_multiplier_from_samples(samples)),
-          input_multiply(1.0 - history_multiply)
+    /**
+     * Below this fraction of a sample the input multiplier cannot be
+     * distinguished from 1.0 and the history multiplier would become de-normal.
+     */
+    static S minimum_samples()
     {
-    }
-
-    [[maybe_unused]] inline Integrator(double time, int sample_rate)
-        : Integrator(time * sample_rate)
-    {
-    }
-
-    inline void integrate(double & history, double input) const
-    {
-        history = history_multiply * history + input_multiply * input;
-    }
-
-    [[nodiscard]] double history_multiplication() const
-    {
-        return history_multiply;
-    }
-
-    [[nodiscard]] double input_multiplication() const { return input_multiply; }
-
-    [[nodiscard]] double estimate_integration_samples() const
-    {
-        return calculate_samples_from_history_multiplier(history_multiply);
-    }
-
-    static inline double
-    calculate_history_multiplier_from_samples(double samples)
-    {
-        double absolute = fabs(samples);
-        return absolute < 1e-2 ? 0 : exp(-1.0 / absolute);
-    }
-
-    static inline double
-    calculate_samples_from_history_multiplier(double history_multiplier)
-    {
-        return history_multiplier > std::numeric_limits<double>::epsilon()
-                   ? -1.0 / log(history_multiplier)
-                   : 0;
+        static S min = -1 / (std::log(std::numeric_limits<S>::epsilon()));
+        return min;
     }
 
     /**
-     * Determines how many samples it takes until the threshold is reach when a
-     * step response is provided to the integrators.
-     *
-     * @param squares_integrator The integrator
-     * @param maximum_samples After how many samples to bail out.
-     * @return The sample count needed to reach teh desired value.
+     * Above this number of samples, the history multiplier cannot be
+     * distinguished from 1.0, which leads to unstable results.
      */
-    static int
-    get_samples_until_threshold_step(const Integrator & squares_integrator,
-                                     const Integrator & smoother_integrator,
-                                     double threshold, int maximum_samples)
+    static S maximum_samples()
     {
-        double integrated = 0;
-        double smooth_intermediate = 0;
-        double smooth_integrated = 0;
-        for (int i = 0; i < maximum_samples; i++)
+        static S max = -1 / (1 - std::log(std::numeric_limits<S>::epsilon()));
+        return max;
+    }
+
+    /**
+     * Returns the history multiplier for integration over the provided number
+     * of samples, that can be a fraction. If the fraction is smaller than
+     * {@code minimum_samples}, zero is returned. If the number is bigger than
+     * {@code maximum_samples} the history multiplier for {@code
+     * maximum_samples} is returned.
+     * @param samples The number of samples
+     * @return the history multiplier that lies between [0 .. 1>.
+     */
+    static inline S calculate_history_multiplier_from_samples(S samples)
+    {
+        S absolute = fabs(samples);
+        return absolute < minimum_samples()   ? 0
+               : absolute > maximum_samples() ? exp(-1 / maximum_samples())
+                                            : exp(-1.0 / absolute);
+    }
+
+    /**
+     * Calculates the history multiplier from a given input multiplier and vice
+     * versa.
+     * @param multiplier The multiplier
+     * @return The other multiplier
+     */
+    static inline S calculate_other_multiplier(S multiplier)
+    {
+        return 1 - multiplier;
+    }
+
+    /**
+     * Calculates the number of samples for the provided history multiplier. The
+     * result is always positive or zero, but not always a whole number. If the
+     * history multiplier is not valid, std::invalid_argument is thrown.
+     * The choice was made not to return -1 on error, as that easily leads to
+     * segfaults.
+     */
+    static inline S
+    calculate_samples_from_history_multiplier(S history_multiplier)
+    {
+        double absolute = fabs(history_multiplier);
+        if (absolute < std::numeric_limits<S>::epsilon()())
         {
-            squares_integrator.integrate(integrated, 1);
-            smoother_integrator.integrate(smooth_intermediate, integrated);
-            smoother_integrator.integrate(smooth_integrated,
-                                          smooth_intermediate);
-            if (smooth_integrated >= threshold)
-            {
-                return i;
-            }
+            return 0;
         }
-        return maximum_samples;
+        else if (absolute <= (1 - std::numeric_limits<S>::epsilon()()))
+        {
+            return 1.0 / log(absolute);
+        }
+        throw std::invalid_argument(
+            "IntegratorBase::calculate_samples_from_history_multiplier("
+            "multiplier): multiplier out of range.");
+    }
+
+    /**
+     * By default, the integrator does not integrate and just passes-through the
+     * input.
+     */
+    inline Integrator() : history_multiplier_(0), input_multiplier_(1) {}
+
+    /**
+     * Creates an integrator over the provided number of samples.
+     * @param samples The number of samples
+     */
+    [[maybe_unused]] inline explicit Integrator(S samples)
+        : history_multiplier_(
+              calculate_history_multiplier_from_samples(samples)),
+          input_multiplier_(1.0 - history_multiplier_)
+    {
+    }
+
+    /**
+     * Creates an integrator of the the provided number of samples that is
+     * calculated from the time and sample rate.
+     * @param time The number of time units
+     * @param sample_rate The sample-rate samples per unit of time
+     */
+    [[maybe_unused]] inline Integrator(S time, S sample_rate)
+        : Integrator(time * sample_rate)
+    {
+    }
+    template<typename T1, typename T2>
+    [[maybe_unused]] inline Integrator(T1 time, T2 sample_rate)
+        : Integrator(static_cast<S>(time) * static_cast<S>(sample_rate))
+    {
+        // Replace with requires in on C++20 adoption
+        static_assert(std::is_arithmetic_v<T1>);
+        static_assert(std::is_arithmetic_v<T2>);
+    }
+
+    /**
+     * Integrates value input using history as integrated value.
+     * @param history The historic integrated value
+     * @param input The new input
+     */
+    inline void integrate(S & history, S input) const
+    {
+        history = history_multiplier_ * history + input_multiplier_ * input;
+    }
+
+    /**
+     * Getters
+     */
+    [[nodiscard]] S history_multiplier() const { return history_multiplier_; }
+
+    [[nodiscard]] S input_multiplier() const { return input_multiplier_; }
+
+    /**
+     * Returns the number of samples that is integrated over. This is calculated
+     * from the constants and not totally accurate.
+     */
+    [[nodiscard]] S estimate_integration_samples() const
+    {
+        return -1 / log(history_multiplier_);
     }
 };
 
+template<typename S>
 class ScaledIntegrator
 {
-    double scale_ = 1.0;
-    double integrated_ = 0;
-    Integrator integrator_;
+    S scale_ = 1.0;
+    S integrated_ = 0;
+    Integrator<S> integrator_;
 
 public:
-    explicit ScaledIntegrator(const Integrator & s) : integrator_(s) {}
+    explicit ScaledIntegrator(const Integrator<S> & s) : integrator_(s) {}
     ScaledIntegrator() = default;
 
-    inline void integrate(double input)
+    inline void integrate(S input)
     {
         integrator_.integrate(integrated_, input);
     }
 
-    ScaledIntegrator & operator=(const Integrator & source)
+    ScaledIntegrator<S> & operator=(const Integrator<S> & source)
     {
         integrator_ = source;
         return *this;
     }
 
-    void set_value(double new_value) { integrated_ = new_value; }
+    void set_value(S new_value) { integrated_ = new_value; }
 
-    void set_scale(double new_scale)
+    void set_scale(S new_scale)
     {
         if (new_scale >= 0 && new_scale <= 1e6)
         {
@@ -135,22 +200,23 @@ public:
         }
     }
 
-    [[nodiscard]] double integrated() const { return scale_ * integrated_; }
-    [[nodiscard]] double scale() const { return scale_; }
-    [[nodiscard]] inline const Integrator & integrator() const
+    [[nodiscard]] S integrated() const { return scale_ * integrated_; }
+    [[nodiscard]] S scale() const { return scale_; }
+    [[nodiscard]] inline const Integrator<S> & integrator() const
     {
         return integrator_;
     }
 };
 
+template<typename S>
 class DoubleIntegrator
 {
     double intermediate_ = 0;
     double integrated_ = 0;
-    Integrator integrator_;
+    Integrator<S> integrator_;
 
 public:
-    explicit DoubleIntegrator(const Integrator & s) : integrator_(s) {}
+    explicit DoubleIntegrator(const Integrator<S> & s) : integrator_(s) {}
     DoubleIntegrator() = default;
 
     inline double integrate(double input)
@@ -160,7 +226,7 @@ public:
         return integrated_;
     }
 
-    DoubleIntegrator & operator=(const Integrator & source)
+    DoubleIntegrator<S> & operator=(const Integrator<S> & source)
     {
         integrator_ = source;
         return *this;
@@ -172,19 +238,20 @@ public:
     }
 
     [[nodiscard]] double integrated() const { return integrated_; }
-    [[nodiscard]] inline const Integrator & integrator() const
+    [[nodiscard]] inline const Integrator<S> & integrator() const
     {
         return integrator_;
     }
 };
 
+template<typename S>
 class MultiIntegrator
 {
 
 public:
     struct Entry
     {
-        ScaledIntegrator integrator_;
+        ScaledIntegrator<S> integrator_;
         int look_ahead_;
         int reduced_look_ahead_;
     };
@@ -196,14 +263,14 @@ public:
         reset_lookahead();
     }
 
-    [[nodiscard]] const Integrator & integrator(size_t i) const
+    [[nodiscard]] const Integrator<S> & integrator(size_t i) const
     {
         if (i < (size_t)number_of_integrators_)
         {
             return entry_[i].integrator_.integrator();
         }
         throw std::out_of_range(
-            "MultiIntegrator::integrator(i): index out of bounds");
+            "MultiIntegratorBase::integrator(i): index out of bounds");
     }
 
     const Entry & get_entry(size_t i)
@@ -218,10 +285,10 @@ public:
             return entry_[i].integrator_.scale();
         }
         throw std::out_of_range(
-            "MultiIntegrator::scale(i): index out of bounds");
+            "MultiIntegratorBase::scale(i): index out of bounds");
     }
 
-    [[nodiscard]] const Integrator & smoothing() const
+    [[nodiscard]] const Integrator<S> & smoothing() const
     {
         return smoothing_.integrator();
     }
@@ -267,7 +334,7 @@ public:
         on_set_value(new_value);
     }
 
-    void set_multipliers(size_t i, const Integrator & multipliers)
+    void set_multipliers(size_t i, const Integrator<S> & multipliers)
     {
         if (i < (size_t)number_of_integrators_)
         {
@@ -275,7 +342,7 @@ public:
             return;
         }
         throw std::out_of_range(
-            "MultiIntegrator::set_multipliers: index out of bounds");
+            "MultiIntegratorBase::set_multipliers: index out of bounds");
     }
 
     void set_scale(size_t i, double scale)
@@ -286,10 +353,10 @@ public:
             return;
         }
         throw std::out_of_range(
-            "MultiIntegrator::set_scale: index out of bounds");
+            "MultiIntegratorBase::set_scale: index out of bounds");
     }
 
-    void set_smoothing(const Integrator & new_smoothing)
+    void set_smoothing(const Integrator<S> & new_smoothing)
     {
         smoothing_ = new_smoothing;
     }
@@ -312,7 +379,7 @@ public:
         {
             double threshold = 1 - 1 / M_E;
             threshold *= threshold;
-            max_look_ahead_ = Integrator::get_samples_until_threshold_step(
+            max_look_ahead_ = get_samples_until_threshold_step(
                 entry_[integrator_with_maximum_lookahead]
                     .integrator_.integrator(),
                 smoothing_.integrator(), threshold, max_samples_to_try);
@@ -322,11 +389,10 @@ public:
             {
                 if (n != integrator_with_maximum_lookahead)
                 {
-                    entry_[n].look_ahead_ =
-                        Integrator::get_samples_until_threshold_step(
-                            entry_[n].integrator_.integrator(),
-                            smoothing_.integrator(), threshold,
-                            max_look_ahead_ + 1);
+                    entry_[n].look_ahead_ = get_samples_until_threshold_step(
+                        entry_[n].integrator_.integrator(),
+                        smoothing_.integrator(), threshold,
+                        max_look_ahead_ + 1);
                 }
             }
             for (size_t n = 0; n < number_of_integrators_; n++)
@@ -338,10 +404,40 @@ public:
             return max_look_ahead_;
         }
         throw std::out_of_range(
-            "MultiIntegrator::calculate_lookahead: index out of bounds");
+            "MultiIntegratorBase::calculate_lookahead: index out of bounds");
     }
 
     ~MultiIntegrator() = default;
+
+    /**
+     * Determines how many samples it takes until the threshold is reach when a
+     * step response is provided to the integrators.
+     *
+     * @param squares_integrator The integrator
+     * @param maximum_samples After how many samples to bail out.
+     * @return The sample count needed to reach teh desired value.
+     */
+    static int
+    get_samples_until_threshold_step(const Integrator<S> & squares_integrator,
+                                     const Integrator<S> & smoother_integrator,
+                                     double threshold, int maximum_samples)
+    {
+        double integrated = 0;
+        double smooth_intermediate = 0;
+        double smooth_integrated = 0;
+        for (int i = 0; i < maximum_samples; i++)
+        {
+            squares_integrator.integrate(integrated, 1);
+            smoother_integrator.integrate(smooth_intermediate, integrated);
+            smoother_integrator.integrate(smooth_integrated,
+                                          smooth_intermediate);
+            if (smooth_integrated >= threshold)
+            {
+                return i;
+            }
+        }
+        return maximum_samples;
+    }
 
 protected:
     double do_integrate_from_buffer(size_t i)
@@ -360,9 +456,7 @@ protected:
     [[maybe_unused]] double get_buffered_value_to_integrate(size_t i)
     {
         auto rla = entry_[i].reduced_look_ahead_;
-        return rla == max_look_ahead_
-                   ? last_read_
-                   : buffer_.peek_back(rla);
+        return rla == max_look_ahead_ ? last_read_ : buffer_.peek_back(rla);
     }
 
     virtual void on_set_value(double value) {}
@@ -372,7 +466,7 @@ protected:
 private:
     Entry * entry_;
     size_t number_of_integrators_;
-    DoubleIntegrator smoothing_;
+    DoubleIntegrator<S> smoothing_;
     int max_look_ahead_ = 0;
     CircularBuffer<double> buffer_;
     double last_read_;
