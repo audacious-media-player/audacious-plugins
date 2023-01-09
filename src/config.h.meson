@@ -19,9 +19,6 @@
 #mesondefine USE_GTK3
 #mesondefine USE_GTK_OR_QT
 
-#mesondefine HAVE_FFMPEG
-#mesondefine HAVE_LIBAV
-
 #define GLIB_VERSION_MIN_REQUIRED GLIB_VERSION_2_32
 
 #mesondefine FILEWRITER_MP3
