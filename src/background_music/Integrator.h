@@ -211,15 +211,15 @@ public:
 template<typename S>
 class DoubleIntegrator
 {
-    double intermediate_ = 0;
-    double integrated_ = 0;
+    S intermediate_ = 0;
+    S integrated_ = 0;
     Integrator<S> integrator_;
 
 public:
     explicit DoubleIntegrator(const Integrator<S> & s) : integrator_(s) {}
     DoubleIntegrator() = default;
 
-    inline double integrate(double input)
+    inline S integrate(S input)
     {
         integrator_.integrate(intermediate_, input);
         integrator_.integrate(integrated_, intermediate_);
@@ -232,15 +232,36 @@ public:
         return *this;
     }
 
-    void set_value(double new_value)
+    void set_value(S new_value)
     {
         integrated_ = intermediate_ = new_value;
     }
 
-    [[nodiscard]] double integrated() const { return integrated_; }
+    [[nodiscard]] S integrated() const { return integrated_; }
     [[nodiscard]] inline const Integrator<S> & integrator() const
     {
         return integrator_;
+    }
+
+    size_t samples_to_ir_peak(size_t max_samples = std::numeric_limits<size_t>::max()) {
+        S intermediate = intermediate_;
+        S old_integrated = integrated_;
+
+        S previous = 0;
+
+        integrate((S)1.0);
+        for (size_t i = 1; i < max_samples; i++) {
+            integrate((S)0);
+            if (integrated() < previous) {
+                return i - 1;
+            }
+            previous = integrated();
+        }
+
+        intermediate_ = intermediate;
+        integrated_ = old_integrated;
+
+        return max_samples;
     }
 };
 
