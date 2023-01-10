@@ -69,7 +69,7 @@ static constexpr PluginInfo background_music_info = {
     &background_music_preferences};
 
 BackgroundMusicEngine::BackgroundMusicEngine(int order)
-    : FrameBasedPlugin(background_music_info, order), multi_integrator(10)
+    : FrameBasedPlugin(background_music_info, order), multi_integrator(12)
 {
 }
 
@@ -162,7 +162,6 @@ bool BackgroundMusicEngine::offer_frame_return_if_output(
     {
         square_sum += (sample * sample);
     }
-    slow.integrate(square_sum);
     double mean_square = multi_integrator.get_mean_squared(square_sum);
     if (mean_square > release.integrated()) {
         release.set_value(mean_square);
@@ -170,8 +169,9 @@ bool BackgroundMusicEngine::offer_frame_return_if_output(
     else {
         release.integrate(mean_square);
     }
+    slow.integrate(release.integrated());
     double weighted = std::max(slow.integrated(), SHORT_INTEGRATION_WEIGHT * release.integrated());
-    double detection = sqrt(weighted) * 2;
+    double detection = sqrt(weighted) * 4;
     smooth.integrate(detection);
 
     double ratio = smooth.integrated() / target_level;

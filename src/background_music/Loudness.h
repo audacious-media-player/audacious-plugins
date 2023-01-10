@@ -35,7 +35,7 @@ public:
     struct Metrics
     {
         static constexpr double perception_center_seconds = 0.400;
-        static constexpr double perception_peak_seconds = 0.001;
+        static constexpr double perception_peak_seconds = 0.0003;
         static constexpr double perception_weight_power = 0.25;
 
         static constexpr double get_relative_seconds(double seconds)

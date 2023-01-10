@@ -53,9 +53,9 @@ static constexpr auto conf_maximum_amplification =
         .withDefault(10, "10.0")
         .withMaximum(100.0);
 
-static constexpr double SMOOTHER_INTEGRATION_SECONDS = 0.003;
+static constexpr double SMOOTHER_INTEGRATION_SECONDS = 0.0015;
 
-static constexpr double SHORT_INTEGRATION_SECONDS = 0.8; //;0.200;
+static constexpr double SHORT_INTEGRATION_SECONDS = 0.8;
 static constexpr double SHORT_INTEGRATION_WEIGHT = 0.5;
 
 static constexpr double LONG_INTEGRATION_SECONDS = 3.2;
