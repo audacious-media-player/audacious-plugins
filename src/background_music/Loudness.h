@@ -106,23 +106,46 @@ class PerceptiveRMS
     {
         uint64_t window_sum_ = 0;
         size_t window_size_ = 0;
+        size_t hold_samples_ = 0;
+        size_t hold_count_ = 0;
         double window_multiplier_ = 1;
+        ScaledIntegrator<double> release_;
 
     public:
-
-        double get() const { return window_multiplier_ * window_sum_; }
+        double get() const
+        {
+            return window_multiplier_ * release_.integrated();
+        }
 
         double add_and_take_and_get(uint64_t add, uint64_t take)
         {
             window_sum_ += add;
             window_sum_ -= take;
+            if (hold_samples_ && window_sum_ >= release_.integrated())
+            {
+                hold_count_ = hold_samples_;
+                release_.set_value(window_sum_);
+            }
+            else if (hold_count_ > 0)
+            {
+                hold_count_--;
+            }
+            else
+            {
+                release_.integrate(window_sum_);
+            }
             return get();
         }
 
-        void set_multiplier(size_t window_size, double weight)
+        void set_multiplier(size_t window_size, double weight,
+                            size_t hold_samples)
         {
             window_size_ = window_size;
             window_multiplier_ = window_size > 0 ? weight / window_size : 1;
+            hold_samples_ = hold_samples;
+            hold_count_ = 0;
+            Integrator<double> i((double)hold_count_);
+            release_ = i;
         }
 
         void set_value(uint64_t value)
@@ -131,6 +154,7 @@ class PerceptiveRMS
         }
 
         size_t window_size() const { return window_size_; }
+        size_t hold_samples() const { return hold_samples_; }
     };
 
     CircularBuffer<uint64_t> buffer_;
@@ -141,7 +165,8 @@ class PerceptiveRMS
 
     void init_detection(uint64_t sample_rate)
     {
-        printf("Initialising %zu steps:\n", steps_);
+        const size_t max_window = seconds_to_window(
+            Loudness::Metrics::perception_center_seconds, sample_rate);
         for (size_t step = 0; step <= steps_; step++)
         {
             double seconds;
@@ -150,14 +175,26 @@ class PerceptiveRMS
                                                      steps_);
             size_t window_size = seconds_to_window(seconds, sample_rate);
             WindowedRMS & rms = rms_[step];
-            rms.set_multiplier(window_size, weight * weight / input_scale_);
+            rms.set_multiplier(window_size, weight * weight / input_scale_,
+                               max_window - window_size);
             rms.set_value(0);
         }
-        double peak_fill = 1 - 1.0 / M_E;
-        peak_fill *= peak_fill;
-        peak_fill = 1 - peak_fill;
-        latency_ = seconds_to_window(
-            Loudness::Metrics::perception_center_seconds, sample_rate) + peak_fill * rms_[steps_].window_size();
+
+        latency_ = max_window;
+        if (enabled_print_debug)
+        {
+            double factor = 1.0 / sample_rate;
+            print_debug("Loudness: steps=%-6zu latency=%-6zu  %8lf s\n", steps_,
+                        latency_, factor * latency_);
+
+            for (size_t i = 0; i <= steps_; i++)
+            {
+                const auto rms = rms_[i];
+                print_debug("- [%2zu] window=%-6zu  %5.4lf s  hold=%-6zu %5.4lf s\n",
+                            i, rms.window_size(), factor * rms.window_size(),
+                            rms.hold_samples(), factor * rms.hold_samples());
+            }
+        }
     }
 
     uint64_t get_stored_value(double squared_input_value) const
@@ -187,7 +224,8 @@ public:
         init_detection(sample_rate);
         buffer_.set_size(latency_, 0);
 
-        for(size_t i = 0; i <= latency_; i++) {
+        for (size_t i = 0; i <= latency_; i++)
+        {
             get_mean_squared(squared_initial_value);
         }
     }
@@ -202,11 +240,14 @@ public:
         uint64_t oldest = buffer_.get_and_set(internal_value);
 
         double max = rms_[0].add_and_take_and_get(internal_value, oldest);
+
         for (size_t step = 1; step <= steps_; step++)
         {
+            auto & rms = rms_[step];
             max = std::max(
-                max, rms_[step].add_and_take_and_get(
-                         internal_value, buffer_.peek_back(rms_[step].window_size())));
+                max, rms.add_and_take_and_get(
+                         internal_value,
+                         buffer_.peek_back(rms.window_size())));
         }
 
         return max;
