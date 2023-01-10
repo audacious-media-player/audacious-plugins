@@ -69,7 +69,7 @@ static constexpr PluginInfo background_music_info = {
     &background_music_preferences};
 
 BackgroundMusicEngine::BackgroundMusicEngine(int order)
-    : FrameBasedPlugin(background_music_info, order), multi_integrator(12)
+    : FrameBasedPlugin(background_music_info, order), perceptive_integrator(12)
 {
 }
 
@@ -87,12 +87,12 @@ void BackgroundMusicEngine::update_config(bool is_processing)
 
 int BackgroundMusicEngine::latency() const
 {
-    return read_ahead / channels() - 1;
+    return total_latency / channels();
 }
 
 bool BackgroundMusicEngine::on_flush(bool force)
 {
-    read_ahead_buffer.discard();
+    buffer.set_size(0, 0);
     return true;
 }
 
@@ -107,7 +107,7 @@ bool BackgroundMusicEngine::after_finished(bool end_of_playlist)
 {
     if (end_of_playlist)
     {
-        read_ahead_buffer.discard();
+        buffer.set_size(0, 0);
     }
     return true;
 }
@@ -116,71 +116,55 @@ void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
 {
     processed_frames = 0;
 
-    multi_integrator.set_rate_and_value(rate(), target_level * target_level);
-    read_ahead = multi_integrator.latency();
     slow = {LONG_INTEGRATION_SECONDS, rate()};
     release = {SHORT_INTEGRATION_SECONDS, rate()};
-    smooth = {SMOOTHER_INTEGRATION_SECONDS, rate()};
 
-    // As data is added, then fetched, we need 1 extra frame in the buffer.
-    int alloc_size = channels() * (read_ahead + 1);
-    if (read_ahead_buffer.size() < alloc_size)
-    {
-        read_ahead_buffer.alloc(alloc_size);
-    }
-    read_ahead_buffer.discard();
+    perceptive_integrator.set_rate_and_value(rate(), target_level * target_level);
+    size_t perceptive_latency = perceptive_integrator.latency();
+
+    total_latency = perceptive_latency;
+
+    print_debug("Total latency=%-zu\n", total_latency);
+
+    buffer.set_size(total_latency * channels(), 0);
 }
 
 void BackgroundMusicEngine::on_cleanup(bool was_enabled)
 {
-    read_ahead_buffer.destroy();
     output.clear();
 }
 
 bool BackgroundMusicEngine::offer_frame_return_if_output(
     const Index<float> & in, Index<float> & out)
 {
-
-    /**
-     * Add samples to the delay buffer so that the detection can be
-     * applied ion a predictive fashion.
-     */
-    read_ahead_buffer.copy_in(in.begin(), channels());
-
-    /*
-     * Detection is based on a kind-of RMS value. The sum of the squared sample
-     * values in each frame is integrated over two time periods. The square root
-     * of those integrated values is a pretty nice indication of loudness
-     * for a first implementation.
-     * The detection does nothing fancy and just uses a weighted sum of the
-     * square roots of both integrations. In the future it will use multiple
-     * frequency bands, actual RMS, ear-loudness curves and actual perceived
-     * weighting of RMS windows.
-     */
     double square_sum = 0.0;
-    for (float sample : in)
-    {
+    for (int channel = 0; channel < channels(); channel++) {
+        float sample = buffer.get_and_set(in[channel]);
         square_sum += (sample * sample);
+        out[channel] = sample;
     }
-    double mean_square = multi_integrator.get_mean_squared(square_sum);
-    if (mean_square > release.integrated()) {
-        release.set_value(mean_square);
+
+    double perceptive_mean_square = perceptive_integrator.get_mean_squared(square_sum);
+    slow.integrate(perceptive_mean_square);
+    double slow_measured = slow.integrated();
+
+    double weighted_square = std::max(slow_measured, SHORT_INTEGRATION_WEIGHT * perceptive_mean_square);
+
+    double weighted_scaled_rms = sqrt(weighted_square) * 3;
+    if (weighted_scaled_rms > release.integrated()) {
+        release.set_value(weighted_scaled_rms);
     }
     else {
-        release.integrate(mean_square);
+        release.integrate(weighted_scaled_rms);
     }
-    slow.integrate(release.integrated());
-    double weighted = std::max(slow.integrated(), SHORT_INTEGRATION_WEIGHT * release.integrated());
-    double detection = sqrt(weighted) * 4;
-    smooth.integrate(detection);
 
-    double ratio = smooth.integrated() / target_level;
+    double detection = release.integrated();
+    double ratio = detection / target_level;
     double amplify =
         aud::clamp(pow(ratio, range - 1), 0.0, maximum_amplification);
 
-    if (processed_frames >= read_ahead)
+    if (processed_frames >= total_latency)
     {
-        read_ahead_buffer.move_out(out.begin(), channels());
         for (float & sample : out)
         {
             sample *= (float)amplify;
@@ -193,56 +177,4 @@ bool BackgroundMusicEngine::offer_frame_return_if_output(
     }
 
     return false;
-}
-
-double BackgroundMultiIntegrator::on_integration()
-{
-    double peak = do_integrate_from_buffer(PEAK_INTEGRATOR);
-
-    if (peak > peak_hold_integrator.integrated())
-    {
-        peak_hold_integrator.set_value(peak);
-    }
-    else
-    {
-        peak_hold_integrator.integrate(peak);
-    }
-
-    double short_looked_ahead =
-        get_buffered_value_to_integrate(SHORT_INTEGRATOR);
-    double short_value = integrate_value(
-        SHORT_INTEGRATOR,
-        std::max(peak_hold_integrator.integrated(), short_looked_ahead));
-
-    if (short_value > short_hold_integrator.integrated())
-    {
-        short_hold_integrator.set_value(short_value);
-    }
-    else
-    {
-        short_hold_integrator.integrate(short_value);
-    }
-    double long_looked_ahead = get_buffered_value_to_integrate(LONG_INTEGRATOR);
-    double short_integrated_value = short_hold_integrator.integrated();
-    double long_value = integrate_value(
-        LONG_INTEGRATOR, std::max(short_integrated_value, long_looked_ahead));
-    return std::max(short_integrated_value, long_value);
-}
-
-void BackgroundMultiIntegrator::on_set_value(double value)
-{
-    peak_hold_integrator.set_value(value);
-    short_hold_integrator.set_value(value);
-}
-
-[[maybe_unused]] void
-BackgroundMultiIntegrator::set_hold_integrator(const Integrator<double> & v)
-{
-    peak_hold_integrator = v;
-}
-
-[[maybe_unused]] void BackgroundMultiIntegrator::set_short_hold_integrator(
-    const Integrator<double> & v)
-{
-    short_hold_integrator = v;
 }

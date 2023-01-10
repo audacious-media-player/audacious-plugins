@@ -53,48 +53,27 @@ static constexpr auto conf_maximum_amplification =
         .withDefault(10, "10.0")
         .withMaximum(100.0);
 
-static constexpr double SMOOTHER_INTEGRATION_SECONDS = 0.0015;
-
-static constexpr double SHORT_INTEGRATION_SECONDS = 0.8;
+static constexpr double SHORT_INTEGRATION_SECONDS = 0.4;
 static constexpr double SHORT_INTEGRATION_WEIGHT = 0.5;
 
 static constexpr double LONG_INTEGRATION_SECONDS = 3.2;
-
-class BackgroundMultiIntegrator : public MultiIntegrator<double>
-{
-public:
-    BackgroundMultiIntegrator(size_t number_of_integrators)
-        : MultiIntegrator(number_of_integrators)
-    {
-    }
-    [[maybe_unused]] void set_hold_integrator(const Integrator<double> &);
-    [[maybe_unused]] void set_short_hold_integrator(const Integrator<double> & v);
-
-protected:
-    double on_integration() override;
-    void on_set_value(double value) override;
-private:
-    ScaledIntegrator<double> peak_hold_integrator;
-    ScaledIntegrator<double> short_hold_integrator;
-};
 
 class BackgroundMusicEngine : public FrameBasedPlugin
 {
     double target_level = 0.3;
     double range = 0;
     double maximum_amplification = 10;
-    int processed_frames = 0;
+    size_t processed_frames = 0;
     Index<float> frame_in;
     Index<float> frame_out;
 
-    PerceptiveRMS multi_integrator;
+    PerceptiveRMS perceptive_integrator;
     ScaledIntegrator<double> release;
     ScaledIntegrator<double> slow;
-    DoubleIntegrator<double> smooth;
 
-    RingBuf<float> read_ahead_buffer;
+    CircularBuffer<float> buffer;
     Index<float> output;
-    int read_ahead = 0;
+    size_t total_latency = 0;
 
 public:
     explicit BackgroundMusicEngine(int order);
