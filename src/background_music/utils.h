@@ -29,7 +29,7 @@
 #define print_debug(...) printf(__VA_ARGS__);
 static constexpr bool enabled_print_debug = true;
 #else
-#define print_debug(...)
+#define print_debug(...) //
 static constexpr bool enabled_print_debug = false;
 #endif
 
