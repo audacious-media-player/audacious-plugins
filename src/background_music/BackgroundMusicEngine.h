@@ -25,6 +25,7 @@
 
 #include "FrameBasedPlugin.h"
 #include "Integrator.h"
+#include "Loudness.h"
 #include "utils.h"
 
 static constexpr const char * const BACKGROUND_MUSIC_CONFIG =
@@ -90,7 +91,7 @@ class BackgroundMusicEngine : public FrameBasedPlugin
     Index<float> frame_in;
     Index<float> frame_out;
 
-    BackgroundMultiIntegrator multi_integrator;
+    PerceptiveRMS multi_integrator;
 
     RingBuf<float> read_ahead_buffer;
     Index<float> output;

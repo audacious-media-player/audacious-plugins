@@ -1,5 +1,5 @@
 /*
-* RC-circuit style integrator.
+* Perceived loudness tools.
 * Copyright 2023 Michel Fleur
 *
 * Heavily inspired by my speakerman and org-simple projects.
@@ -16,7 +16,6 @@
 * This software is provided "as is" and without any warranty, express or
 * implied. In no event shall the authors be liable for any damages arising from
 * the use of this software.
- */
-
-#include "Integrator.h"
+*/
+#include "Loudness.h"
 

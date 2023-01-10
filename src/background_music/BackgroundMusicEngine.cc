@@ -69,11 +69,8 @@ static constexpr PluginInfo background_music_info = {
     &background_music_preferences};
 
 BackgroundMusicEngine::BackgroundMusicEngine(int order)
-    : FrameBasedPlugin(background_music_info, order), multi_integrator(3)
+    : FrameBasedPlugin(background_music_info, order), multi_integrator(10)
 {
-    multi_integrator.set_scale(PEAK_INTEGRATOR, PEAK_INTEGRATION_WEIGHT);
-    multi_integrator.set_scale(SHORT_INTEGRATOR, SHORT_INTEGRATION_WEIGHT);
-    multi_integrator.set_scale(LONG_INTEGRATOR, LONG_INTEGRATION_WEIGHT);
 }
 
 const char * BackgroundMusicEngine::name() const
@@ -119,33 +116,8 @@ void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
 {
     processed_frames = 0;
 
-    // Configure the integrators
-    multi_integrator.set_value(target_level * target_level);
-    multi_integrator.set_multipliers(LONG_INTEGRATOR,
-                                     {LONG_INTEGRATION_SECONDS, rate()});
-    multi_integrator.set_multipliers(PEAK_INTEGRATOR,
-                                     {PEAK_INTEGRATION_SECONDS, rate()});
-    multi_integrator.set_multipliers(SHORT_INTEGRATOR,
-                                     {SHORT_INTEGRATION_SECONDS, rate()});
-    multi_integrator.set_smoothing({SMOOTHER_INTEGRATION_SECONDS, rate()});
-
-    // Determine how much we must read ahead for the short integration period to
-    // track signals quickly enough.
-    read_ahead = multi_integrator.prepare_lookahead(
-        SHORT_INTEGRATOR, target_level * target_level);
-
-    multi_integrator.set_hold_integrator({SHORT_INTEGRATION_SECONDS * 2, rate()});
-    multi_integrator.set_short_hold_integrator({0.5 * (LONG_INTEGRATION_SECONDS + SHORT_INTEGRATION_SECONDS), rate()});
-
-//    if constexpr (enabled_print_debug)
-    {
-        for (size_t i = 0; i < multi_integrator.number_of_integrators(); i++)
-        {
-            auto entry = multi_integrator.get_entry(i);
-            printf("%s: [%i] read-ahead=%i; reduced read_ahead=%i; scale=%lf\n",
-                   name(), (int)i, entry.look_ahead_, entry.reduced_look_ahead_, multi_integrator.scale(i));
-        }
-    }
+    multi_integrator.set_rate_and_value(rate(), target_level * target_level);
+    read_ahead = multi_integrator.latency();
 
     // As data is added, then fetched, we need 1 extra frame in the buffer.
     int alloc_size = channels() * (read_ahead + 1);
@@ -165,6 +137,7 @@ void BackgroundMusicEngine::on_cleanup(bool was_enabled)
 bool BackgroundMusicEngine::offer_frame_return_if_output(
     const Index<float> & in, Index<float> & out)
 {
+
     /**
      * Add samples to the delay buffer so that the detection can be
      * applied ion a predictive fashion.
@@ -186,9 +159,9 @@ bool BackgroundMusicEngine::offer_frame_return_if_output(
     {
         square_sum += (sample * sample);
     }
-    multi_integrator.integrate(square_sum);
+    double mean_square = multi_integrator.get_mean_squared(square_sum);
 
-    double detection = sqrt(multi_integrator.integrated()) * 2;
+    double detection = sqrt(mean_square) * 2;
     double ratio = detection / target_level;
     double amplify =
         aud::clamp(pow(ratio, range - 1), 0.0, maximum_amplification);
@@ -214,25 +187,33 @@ double BackgroundMultiIntegrator::on_integration()
 {
     double peak = do_integrate_from_buffer(PEAK_INTEGRATOR);
 
-    if (peak > peak_hold_integrator.integrated()) {
+    if (peak > peak_hold_integrator.integrated())
+    {
         peak_hold_integrator.set_value(peak);
     }
-    else {
+    else
+    {
         peak_hold_integrator.integrate(peak);
     }
 
-    double short_looked_ahead = get_buffered_value_to_integrate(SHORT_INTEGRATOR);
-    double short_value = integrate_value(SHORT_INTEGRATOR, std::max(peak_hold_integrator.integrated(), short_looked_ahead));
+    double short_looked_ahead =
+        get_buffered_value_to_integrate(SHORT_INTEGRATOR);
+    double short_value = integrate_value(
+        SHORT_INTEGRATOR,
+        std::max(peak_hold_integrator.integrated(), short_looked_ahead));
 
-    if (short_value > short_hold_integrator.integrated()) {
+    if (short_value > short_hold_integrator.integrated())
+    {
         short_hold_integrator.set_value(short_value);
     }
-    else {
+    else
+    {
         short_hold_integrator.integrate(short_value);
     }
     double long_looked_ahead = get_buffered_value_to_integrate(LONG_INTEGRATOR);
     double short_integrated_value = short_hold_integrator.integrated();
-    double long_value = integrate_value(LONG_INTEGRATOR, std::max(short_integrated_value, long_looked_ahead));
+    double long_value = integrate_value(
+        LONG_INTEGRATOR, std::max(short_integrated_value, long_looked_ahead));
     return std::max(short_integrated_value, long_value);
 }
 
@@ -242,10 +223,14 @@ void BackgroundMultiIntegrator::on_set_value(double value)
     short_hold_integrator.set_value(value);
 }
 
-[[maybe_unused]] void BackgroundMultiIntegrator::set_hold_integrator(const Integrator<double> & v) {
+[[maybe_unused]] void
+BackgroundMultiIntegrator::set_hold_integrator(const Integrator<double> & v)
+{
     peak_hold_integrator = v;
 }
 
-[[maybe_unused]] void BackgroundMultiIntegrator::set_short_hold_integrator(const Integrator<double> & v) {
+[[maybe_unused]] void BackgroundMultiIntegrator::set_short_hold_integrator(
+    const Integrator<double> & v)
+{
     short_hold_integrator = v;
 }

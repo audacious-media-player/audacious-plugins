@@ -39,7 +39,7 @@ public:
      */
     static S minimum_samples()
     {
-        static S min = -1 / (std::log(std::numeric_limits<S>::epsilon()));
+        static S min = -1.0 / (std::log(std::numeric_limits<S>::epsilon()));
         return min;
     }
 
@@ -49,7 +49,7 @@ public:
      */
     static S maximum_samples()
     {
-        static S max = -1 / (1 - std::log(std::numeric_limits<S>::epsilon()));
+        static S max = -1.0 / std::log(1.0 - std::numeric_limits<S>::epsilon());
         return max;
     }
 
