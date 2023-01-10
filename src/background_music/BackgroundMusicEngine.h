@@ -31,13 +31,6 @@
 static constexpr const char * const BACKGROUND_MUSIC_CONFIG =
     "background_music";
 
-static constexpr auto conf_dynamic_range = ConfigDouble(BACKGROUND_MUSIC_CONFIG)
-                                               .withName("Dynamic range")
-                                               .withVariable("dynamic_range")
-                                               .withMinimum(0.0)
-                                               .withDefault(0.0, "0.0")
-                                               .withMaximum(1.0);
-
 static constexpr auto conf_target_level = ConfigDouble(BACKGROUND_MUSIC_CONFIG)
                                               .withName("Target level (dB):")
                                               .withVariable("target_level")
@@ -47,22 +40,45 @@ static constexpr auto conf_target_level = ConfigDouble(BACKGROUND_MUSIC_CONFIG)
 
 static constexpr auto conf_maximum_amplification =
     ConfigDouble(BACKGROUND_MUSIC_CONFIG)
-        .withName("Maximum amplification:")
+        .withName("Maximum amplification (dB):")
         .withVariable("maximum_amplification")
-        .withMinimum(1.0)
+        .withMinimum(0.0)
         .withDefault(10, "10.0")
-        .withMaximum(100.0);
+        .withMaximum(40.0);
 
-static constexpr double SHORT_INTEGRATION_SECONDS = 0.4;
-static constexpr double SHORT_INTEGRATION_WEIGHT = 0.5;
+static constexpr auto conf_slow_measurement =
+    ConfigDouble(BACKGROUND_MUSIC_CONFIG)
+        .withName("Slow seconds:")
+        .withVariable("slow_seconds")
+        .withMinimum(1.0)
+        .withDefault(6.3, "6.3")
+        .withMaximum(10.0);
 
-static constexpr double LONG_INTEGRATION_SECONDS = 3.2;
+static constexpr auto conf_fast_measurement =
+    ConfigDouble(BACKGROUND_MUSIC_CONFIG)
+        .withName("Fast seconds:")
+        .withVariable("fast_seconds")
+        .withMinimum(0.2)
+        .withDefault(0.8, "0.8")
+        .withMaximum(1.0);
+
+static constexpr auto conf_perceived_slow_balance = ConfigDouble(BACKGROUND_MUSIC_CONFIG)
+                                                  .withName("Perception - slow balance")
+                                                  .withVariable("perceived_slow_balance")
+                                                  .withMinimum(-1)
+                                                  .withDefault(0.3, "0.3")
+                                                  .withMaximum(1);
 
 class BackgroundMusicEngine : public FrameBasedPlugin
 {
-    double target_level = 0.3;
-    double range = 0;
-    double maximum_amplification = 10;
+    double target_level;
+    double maximum_amplification;
+    double perceived_weight;
+    double slow_weight;
+    double slow_seconds;
+    double fast_seconds;
+    double minimum_detection;
+
     size_t processed_frames = 0;
     Index<float> frame_in;
     Index<float> frame_out;
