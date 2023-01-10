@@ -82,7 +82,12 @@ private:
     void draw (QPainter & cr);
     bool button_press (QMouseEvent * event);
     bool scroll (QWheelEvent * event);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    void enterEvent (QEnterEvent * enterEvent);
+#else
     void enterEvent (QEvent * event);
+#endif
 };
 
 Window * mainwin;
@@ -508,12 +513,17 @@ bool MainWindow::button_press (QMouseEvent * event)
     return Window::button_press (event);
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void MainWindow::enterEvent (QEnterEvent * enterEvent)
+{
+#else
 void MainWindow::enterEvent (QEvent * event)
 {
+    auto enterEvent = static_cast<QEnterEvent *> (event);
+#endif
     if (! is_shaded() || ! aud_get_bool (nullptr, "show_filepopup_for_tuple"))
         return;
 
-    auto enterEvent = static_cast<QEnterEvent *> (event);
     if (enterEvent->x () >= 79 * config.scale &&
         enterEvent->x () <= 157 * config.scale)
     {
