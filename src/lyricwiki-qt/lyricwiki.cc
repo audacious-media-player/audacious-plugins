@@ -60,6 +60,7 @@ struct LyricsState {
 
     enum Source {
         None,
+        Embedded,
         Local,
         LyricWiki,
         LyricsOVH
@@ -109,6 +110,7 @@ const char * const LyricWikiQt::defaults[] = {
     "split-on-chars", "-",
     "truncate-fields-on-chars", "FALSE",
     "truncate-on-chars", "|",
+    "use-embedded", "TRUE",
     nullptr
 };
 
@@ -135,8 +137,10 @@ const PreferencesWidget LyricWikiQt::widgets[] = {
     WidgetCheck(N_("Split title into artist and title on chars"),
         WidgetBool ("lyricwiki", "split-title-on-chars")),
     WidgetTable({{split_elements}}, WIDGET_CHILD),
-    WidgetLabel(N_("<b>Internet Sources</b>")),
-    WidgetCombo(N_("Fetch lyrics from:"),
+    WidgetLabel(N_("<b>Sources</b>")),
+    WidgetCheck(N_("Use embedded lyrics (from Lyrics tag)"),
+        WidgetBool ("lyricwiki", "use-embedded")),
+    WidgetCombo(N_("Fetch lyrics from internet:"),
         WidgetString ("lyricwiki", "remote-source"),
         {{remote_sources}}),
     WidgetCheck(N_("Store fetched lyrics in local cache"),
@@ -462,6 +466,20 @@ static void lyricwiki_playback_began ()
     Tuple tuple = aud_drct_get_tuple ();
     g_state.title = tuple.get_str (Tuple::Title);
     g_state.artist = tuple.get_str (Tuple::Artist);
+
+    update_lyrics_window_notfound(g_state); // Set default state
+    if (aud_get_bool ("lyricwiki", "use-embedded"))
+    {
+      String embedded_lyrics = tuple.get_str (Tuple::Lyrics);
+      if (embedded_lyrics && embedded_lyrics[0])
+      {
+        g_state.lyrics = embedded_lyrics;
+        g_state.source = LyricsState::Source::Embedded;
+        g_state.error = false;
+        update_lyrics_window(g_state.title, g_state.artist, g_state.lyrics);
+        return;
+      }
+    }
 
     if (aud_get_bool ("lyricwiki", "split-title-on-chars"))
     {
