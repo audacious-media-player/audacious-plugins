@@ -20,7 +20,6 @@
  * the use of this software.
  */
 
-#include "Integrator.h"
 #include "utils.h"
 #include <algorithm>
 #include <cmath>
@@ -153,10 +152,6 @@ class PerceptiveRMS
             WindowedRMS & rms = rms_[step];
             rms.set_multiplier(window_size, weight * weight / input_scale_);
             rms.set_value(0);
-
-            printf("\tinit_detection[%02zu] { seconds=%-5lf  weight=%-5lf  "
-                   "window=%-zu}\n",
-                   step, seconds, weight, window_size);
         }
         double peak_fill = 1 - 1.0 / M_E;
         peak_fill *= peak_fill;
@@ -190,7 +185,6 @@ public:
     void set_rate_and_value(uint64_t sample_rate, double squared_initial_value)
     {
         init_detection(sample_rate);
-        printf("Buffer size: %zu\n", latency_);
         buffer_.set_size(latency_, 0);
 
         for(size_t i = 0; i <= latency_; i++) {

@@ -118,6 +118,9 @@ void BackgroundMusicEngine::on_start(int previous_channels, int previous_rate)
 
     multi_integrator.set_rate_and_value(rate(), target_level * target_level);
     read_ahead = multi_integrator.latency();
+    slow = {LONG_INTEGRATION_SECONDS, rate()};
+    release = {SHORT_INTEGRATION_SECONDS, rate()};
+    smooth = {SMOOTHER_INTEGRATION_SECONDS, rate()};
 
     // As data is added, then fetched, we need 1 extra frame in the buffer.
     int alloc_size = channels() * (read_ahead + 1);
@@ -159,10 +162,19 @@ bool BackgroundMusicEngine::offer_frame_return_if_output(
     {
         square_sum += (sample * sample);
     }
+    slow.integrate(square_sum);
     double mean_square = multi_integrator.get_mean_squared(square_sum);
+    if (mean_square > release.integrated()) {
+        release.set_value(mean_square);
+    }
+    else {
+        release.integrate(mean_square);
+    }
+    double weighted = std::max(slow.integrated(), SHORT_INTEGRATION_WEIGHT * release.integrated());
+    double detection = sqrt(weighted) * 2;
+    smooth.integrate(detection);
 
-    double detection = sqrt(mean_square) * 2;
-    double ratio = detection / target_level;
+    double ratio = smooth.integrated() / target_level;
     double amplify =
         aud::clamp(pow(ratio, range - 1), 0.0, maximum_amplification);
 

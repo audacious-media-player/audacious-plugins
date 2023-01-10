@@ -55,14 +55,10 @@ static constexpr auto conf_maximum_amplification =
 
 static constexpr double SMOOTHER_INTEGRATION_SECONDS = 0.003;
 
-static constexpr double PEAK_INTEGRATION_SECONDS = 0.005;
-static constexpr double PEAK_INTEGRATION_WEIGHT = 0.5;
-
 static constexpr double SHORT_INTEGRATION_SECONDS = 0.8; //;0.200;
-static constexpr double SHORT_INTEGRATION_WEIGHT = 1.0;
+static constexpr double SHORT_INTEGRATION_WEIGHT = 0.5;
 
 static constexpr double LONG_INTEGRATION_SECONDS = 3.2;
-static constexpr double LONG_INTEGRATION_WEIGHT = 1.0;
 
 class BackgroundMultiIntegrator : public MultiIntegrator<double>
 {
@@ -92,6 +88,9 @@ class BackgroundMusicEngine : public FrameBasedPlugin
     Index<float> frame_out;
 
     PerceptiveRMS multi_integrator;
+    ScaledIntegrator<double> release;
+    ScaledIntegrator<double> slow;
+    DoubleIntegrator<double> smooth;
 
     RingBuf<float> read_ahead_buffer;
     Index<float> output;
