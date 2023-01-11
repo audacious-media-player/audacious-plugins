@@ -181,7 +181,7 @@ class PerceptiveRMS
         }
 
         latency_ = max_window;
-        if (enabled_print_debug)
+        if constexpr (enabled_print_debug)
         {
             double factor = 1.0 / sample_rate;
             print_debug("Loudness: steps=%-6zu latency=%-6zu  %8lf s\n", steps_,
@@ -190,7 +190,7 @@ class PerceptiveRMS
             for (size_t i = 0; i <= steps_; i++)
             {
                 const auto rms = rms_[i];
-                print_debug("- [%2zu] window=%-6zu  %5.4lf s  hold=%-6zu %5.4lf s\n",
+                printf("- [%2zu] window=%-6zu  %5.4lf s  hold=%-6zu %5.4lf s\n",
                             i, rms.window_size(), factor * rms.window_size(),
                             rms.hold_samples(), factor * rms.hold_samples());
             }

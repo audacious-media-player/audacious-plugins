@@ -62,7 +62,7 @@ bool FrameBasedPlugin::flush (bool force) {
 Index<float> & FrameBasedPlugin::finish(Index<float> & data,
                                         bool end_of_playlist)
 {
-    print_debug("%s: finish()\n", name())
+    print_debug("%s: finish(%i, %i)\n", name(), data.len(), end_of_playlist);
     Index<float> & index = process_buffer(data, end_of_playlist);
     after_finished(end_of_playlist);
     return index;
@@ -123,31 +123,28 @@ Index<float> & FrameBasedPlugin::process_buffer(Index<float> & input,
                    1.0 * disabled_frame_count / rate())
         }
         // We bluntly copy input to output
-        output.move_from(input, 0, 0, input.len(), true, false);
+        output.insert(input.begin(), -1, input.len());
         return output;
     }
 
     update_config(true);
-    int output_samples = 0;
 
     // It is assumed data always contains a multiple of channels, but we don't
     // care.
     for (float sample : input)
     {
-        frame_in[channel_last_read++] = sample;
-        if (channel_last_read == current_channels)
-        {
-            // Processing happens per frame. Because of read-ahead there is not
-            // always output available yet.
-            if (offer_frame_return_if_output(frame_in, frame_out))
-            {
-                output.move_from(frame_out, 0, output_samples, current_channels,
-                                 true, false);
-                output_samples += current_channels;
-            }
-            channel_last_read = 0;
+        handle_sample(sample);
+    }
+    if (end_of_playlist) {
+        int samples = channels() * latency();
+        for (int i = 0; i < samples; i++) {
+            handle_sample(0.0);
         }
+    }
+    if (channel_last_read) {
+        printf("Buffer contained incomplete frames (size in=%i; out=%i)\n", input.len(), output.len());
     }
 
     return output;
 }
+

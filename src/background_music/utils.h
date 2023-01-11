@@ -18,12 +18,14 @@
  * implied. In no event shall the authors be liable for any damages arising from
  * the use of this software.
  */
-#include <libaudcore/runtime.h>
 #include <algorithm>
 #include <cstddef>
+#include <libaudcore/runtime.h>
 #include <limits>
 #include <stdexcept>
 #include <type_traits>
+
+#define BACKGROUND_MUSIC_PRINT_DEBUG_MESSAGES
 
 #ifdef BACKGROUND_MUSIC_PRINT_DEBUG_MESSAGES
 #define print_debug(...) printf(__VA_ARGS__);
@@ -174,6 +176,26 @@ struct ConfigValue
         else
         {
             return aud_get_str(section, variable);
+        }
+    }
+
+    void set_value(const T & value) const
+    {
+        if constexpr (std::is_same_v<double, T>)
+        {
+            aud_set_double(section, variable, std::clamp(value, value_min, value_max));
+        }
+        else if constexpr (std::is_same_v<bool, T>)
+        {
+            aud_set_bool(section, variable, value);
+        }
+        else if constexpr (std::is_same_v<int, T>)
+        {
+            aud_set_int(section, variable, std::clamp(value, value_min, value_max));
+        }
+        else
+        {
+            aud_set_str(section, variable, value);
         }
     }
 };

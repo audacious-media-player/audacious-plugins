@@ -25,7 +25,6 @@
 class FrameBasedPlugin : public EffectPlugin
 {
 public:
-
     bool init() final;
     void cleanup() final;
 
@@ -33,7 +32,7 @@ public:
     Index<float> & process(Index<float> & data) final;
     Index<float> & finish(Index<float> & data, bool end_of_playlist) final;
     int adjust_delay(int delay) final;
-    bool flush (bool force) final;
+    bool flush(bool force) final;
 
     [[nodiscard]] virtual const char * name() const = 0;
 
@@ -47,7 +46,7 @@ protected:
     virtual bool on_init() = 0;
     virtual void on_start(int previous_channels, int previous_rate) = 0;
     virtual void on_cleanup(bool was_enabled) = 0;
-    virtual bool on_flush (bool force) = 0;
+    virtual bool on_flush(bool force) = 0;
     virtual bool after_finished(bool end_of_playlist) = 0;
     virtual Index<float> & process_buffer(Index<float> & input,
                                           bool end_of_playlist);
@@ -64,6 +63,20 @@ private:
     int channel_last_read = 0;
     bool enabled = false;
     uint16_t disabled_frame_count = 0;
+    inline void handle_sample(float sample)
+    {
+        frame_in[channel_last_read++] = sample;
+        if (channel_last_read == current_channels)
+        {
+            // Processing happens per frame. Because of read-ahead there is not
+            // always output available yet.
+            if (offer_frame_return_if_output(frame_in, frame_out))
+            {
+                output.insert(frame_out.begin(), -1, current_channels);
+            }
+            channel_last_read = 0;
+        }
+    }
 };
 
 #endif // AUDACIOUS_PLUGINS_FRAMEBASEDPLUGIN_H
