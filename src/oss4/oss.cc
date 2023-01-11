@@ -118,7 +118,7 @@ static int log2(int x)
 
 bool OSSPlugin::set_buffer(String &error)
 {
-    int milliseconds = aud_get_int(nullptr, "output_buffer_size");
+    int milliseconds = aud_get_int("output_buffer_size");
     int bytes = frames_to_bytes(aud::rescale(milliseconds, 1000, m_rate));
     int fragorder = aud::clamp(log2(bytes / 4), 9, 15);
     int numfrags = aud::clamp(aud::rdiv(bytes, 1 << fragorder), 4, 32767);
