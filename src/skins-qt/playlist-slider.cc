@@ -33,6 +33,8 @@
 #include "playlist-widget.h"
 #include "playlist-slider.h"
 
+#include "../ui-common/qt-compat.h"
+
 void PlaylistSlider::draw (QPainter & cr)
 {
     int rows, first;
@@ -69,7 +71,7 @@ bool PlaylistSlider::button_press (QMouseEvent * event)
         return false;
 
     m_pressed = true;
-    set_pos (event->y () / config.scale - 9);
+    set_pos (QtCompat::y (event) / config.scale - 9);
 
     queue_draw ();
     return true;
@@ -84,7 +86,7 @@ bool PlaylistSlider::button_release (QMouseEvent * event)
         return true;
 
     m_pressed = false;
-    set_pos (event->y () / config.scale - 9);
+    set_pos (QtCompat::y (event) / config.scale - 9);
 
     queue_draw ();
     return true;
@@ -95,7 +97,7 @@ bool PlaylistSlider::motion (QMouseEvent * event)
     if (! m_pressed)
         return true;
 
-    set_pos (event->y () / config.scale - 9);
+    set_pos (QtCompat::y (event) / config.scale - 9);
 
     queue_draw ();
     return true;

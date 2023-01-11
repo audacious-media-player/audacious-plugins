@@ -46,6 +46,8 @@
 #include "skins_util.h"
 #include "view.h"
 
+#include "../ui-common/qt-compat.h"
+
 class EqWindow : public Window
 {
 public:
@@ -96,7 +98,7 @@ bool EqWindow::button_press (QMouseEvent * event)
 {
     if (event->button () == Qt::LeftButton &&
      event->type () == QEvent::MouseButtonDblClick &&
-     event->y () < 14 * config.scale)
+     QtCompat::y (event) < 14 * config.scale)
     {
         equalizerwin_shade_toggle ();
         return true;
@@ -104,7 +106,7 @@ bool EqWindow::button_press (QMouseEvent * event)
 
     if (event->button () == Qt::RightButton && event->type () == QEvent::MouseButtonPress)
     {
-        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), false, false);
+        menu_popup (UI_MENU_MAIN, QtCompat::globalX (event), QtCompat::globalY (event), false, false);
         return true;
     }
 

@@ -23,6 +23,8 @@
 #include "plugin.h"
 #include "skins_cfg.h"
 
+#include "../ui-common/qt-compat.h"
+
 void Window::apply_shape ()
 {
     QRegion * mask = m_is_shaded ? m_sshape.get () : m_shape.get ();
@@ -41,7 +43,7 @@ bool Window::button_press (QMouseEvent * event)
     if (m_is_moving)
         return true;
 
-    dock_move_start (m_id, event->globalX (), event->globalY ());
+    dock_move_start (m_id, QtCompat::globalX (event), QtCompat::globalY (event));
     m_is_moving = true;
     return true;
 }
@@ -60,7 +62,7 @@ bool Window::motion (QMouseEvent * event)
     if (! m_is_moving)
         return true;
 
-    dock_move (event->globalX (), event->globalY ());
+    dock_move (QtCompat::globalX (event), QtCompat::globalY (event));
     return true;
 }
 
