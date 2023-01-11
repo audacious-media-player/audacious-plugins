@@ -32,11 +32,17 @@ static constexpr unsigned LONG_INTEGRATOR = 2;
 static constexpr const char * const background_music_defaults[] = {
     conf_target_level.variable,
     conf_target_level.default_string,
-    conf_perceived_slow_balance.variable,
-    conf_perceived_slow_balance.default_string,
     conf_maximum_amplification.variable,
     conf_maximum_amplification.default_string,
+    conf_slow_measurement.variable,
+    conf_slow_measurement.default_string,
+    conf_fast_measurement.variable,
+    conf_fast_measurement.default_string,
+    conf_perceived_slow_balance.variable,
+    conf_perceived_slow_balance.default_string,
     nullptr};
+
+#define plugin_version "0.1.0"
 
 static constexpr const PreferencesWidget background_music_widgets[] = {
     WidgetLabel(N_("<b>Background music</b>")),
@@ -73,12 +79,25 @@ static constexpr const PluginPreferences background_music_preferences = {
     {background_music_widgets}};
 
 static constexpr const char background_music_about[] =
-    N_("Background music (equal loudness) Plugin for Audacious\n"
+    N_("Background music\nEqual loudness plugin for Audacious \n"
+       "version " plugin_version "\n"
        "Copyright 2023 Michel Fleur");
 
 static constexpr PluginInfo background_music_info = {
-    N_("Background music (equal loudness)"), PACKAGE, background_music_about,
+    N_("Background music (equal loudness) "), PACKAGE, background_music_about,
     &background_music_preferences};
+
+static void set_defaults(bool on_init) {
+    int version = conf_version.get_value();
+    bool legacy = version < config_version;
+    bool set_defaults = on_init || legacy;
+    if (set_defaults) {
+        aud_config_set_defaults(BACKGROUND_MUSIC_CONFIG, background_music_defaults);
+    }
+    if (legacy) {
+        conf_version.set_value(config_version);
+    }
+}
 
 BackgroundMusicEngine::BackgroundMusicEngine(int order)
     : FrameBasedPlugin(background_music_info, order), perceptive_integrator(12)
@@ -92,6 +111,7 @@ const char * BackgroundMusicEngine::name() const
 
 void BackgroundMusicEngine::update_config(bool is_processing)
 {
+    set_defaults(false);
     // dB
     target_level = exp10(conf_target_level.get_value() / 20);
     double balance = conf_perceived_slow_balance.get_value();
@@ -150,7 +170,7 @@ bool BackgroundMusicEngine::on_flush(bool force)
 
 bool BackgroundMusicEngine::on_init()
 {
-    aud_config_set_defaults(BACKGROUND_MUSIC_CONFIG, background_music_defaults);
+    set_defaults(true);
     update_config(false);
     return true;
 }

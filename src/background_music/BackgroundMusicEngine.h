@@ -31,6 +31,16 @@
 static constexpr const char * const BACKGROUND_MUSIC_CONFIG =
     "background_music";
 
+static constexpr int config_version = 1;
+
+static constexpr auto conf_version =
+    ConfigInt(BACKGROUND_MUSIC_CONFIG)
+        .withName("config_version")
+        .withVariable("config_version")
+        .withMinimum(0)
+        .withDefault(0, "0")
+        .withMaximum(std::numeric_limits<int>::max());
+
 static constexpr auto conf_target_level = ConfigDouble(BACKGROUND_MUSIC_CONFIG)
                                               .withName("Target level (dB):")
                                               .withVariable("target_level")
@@ -62,12 +72,13 @@ static constexpr auto conf_fast_measurement =
         .withDefault(0.8, "0.8")
         .withMaximum(1.0);
 
-static constexpr auto conf_perceived_slow_balance = ConfigDouble(BACKGROUND_MUSIC_CONFIG)
-                                                  .withName("Perception - slow balance")
-                                                  .withVariable("perceived_slow_balance")
-                                                  .withMinimum(-1)
-                                                  .withDefault(0.3, "0.3")
-                                                  .withMaximum(1);
+static constexpr auto conf_perceived_slow_balance =
+    ConfigDouble(BACKGROUND_MUSIC_CONFIG)
+        .withName("Perception - slow balance")
+        .withVariable("perceived_slow_balance")
+        .withMinimum(-1)
+        .withDefault(0.3, "0.3")
+        .withMaximum(1);
 
 class BackgroundMusicEngine : public FrameBasedPlugin
 {
@@ -105,7 +116,6 @@ public:
     void on_start(int channels, int rate) override;
     void on_cleanup(bool was_enabled) override;
     bool after_finished(bool end_of_playlist) override;
-    ;
 };
 
 #endif // AUDACIOUS_PLUGINS_BACKGROUND_MUSIC_PLUGIN_H
