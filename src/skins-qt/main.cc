@@ -522,7 +522,7 @@ void MainWindow::enterEvent (QEvent * event)
 {
     auto enterEvent = static_cast<QEnterEvent *> (event);
 #endif
-    if (! is_shaded() || ! aud_get_bool (nullptr, "show_filepopup_for_tuple"))
+    if (! is_shaded () || ! aud_get_bool ("show_filepopup_for_tuple"))
         return;
 
     if (QtCompat::x (enterEvent) >= 79 * config.scale &&
