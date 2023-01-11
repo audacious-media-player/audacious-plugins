@@ -31,6 +31,8 @@
 #include "skin.h"
 #include "menurow.h"
 
+#include "../ui-common/qt-compat.h"
+
 void MenuRow::draw (QPainter & cr)
 {
     if (m_selected == MENUROW_NONE)
@@ -77,7 +79,7 @@ bool MenuRow::button_press (QMouseEvent * event)
         return false;
 
     m_pushed = true;
-    m_selected = menurow_find_selected (event->x () / config.scale, event->y () / config.scale);
+    m_selected = menurow_find_selected (QtCompat::x (event) / config.scale, QtCompat::y (event) / config.scale);
 
     mainwin_mr_change (m_selected);
 
@@ -107,7 +109,7 @@ bool MenuRow::motion (QMouseEvent * event)
     if (! m_pushed)
         return true;
 
-    m_selected = menurow_find_selected (event->x () / config.scale, event->y () / config.scale);
+    m_selected = menurow_find_selected (QtCompat::x (event) / config.scale, QtCompat::y (event) / config.scale);
 
     mainwin_mr_change (m_selected);
 

@@ -49,6 +49,8 @@
 #include "window.h"
 #include "view.h"
 
+#include "../ui-common/qt-compat.h"
+
 #define PLAYLISTWIN_MIN_WIDTH           MAINWIN_WIDTH
 #define PLAYLISTWIN_MIN_HEIGHT          MAINWIN_HEIGHT
 #define PLAYLISTWIN_WIDTH_SNAP          25
@@ -223,7 +225,7 @@ bool PlWindow::scroll (QWheelEvent * event)
 bool PlWindow::button_press (QMouseEvent * event)
 {
     if (event->button () == Qt::LeftButton &&
-     event->type () == QEvent::MouseButtonDblClick && event->y () < 14)
+     event->type () == QEvent::MouseButtonDblClick && QtCompat::y (event) < 14)
     {
         playlistwin_shade_toggle ();
         return true;
@@ -231,7 +233,7 @@ bool PlWindow::button_press (QMouseEvent * event)
 
     if (event->button () == Qt::RightButton && event->type () == QEvent::MouseButtonPress)
     {
-        menu_popup (UI_MENU_PLAYLIST, event->globalX (), event->globalY (), false, false);
+        menu_popup (UI_MENU_PLAYLIST, QtCompat::globalX (event), QtCompat::globalY (event), false, false);
         return true;
     }
 

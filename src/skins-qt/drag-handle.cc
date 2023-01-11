@@ -22,14 +22,16 @@
 #include "drag-handle.h"
 #include "skins_cfg.h"
 
+#include "../ui-common/qt-compat.h"
+
 bool DragHandle::button_press (QMouseEvent * event)
 {
     if (event->button () != Qt::LeftButton)
         return false;
 
     m_held = true;
-    m_x_origin = event->globalX ();
-    m_y_origin = event->globalY ();
+    m_x_origin = QtCompat::globalX (event);
+    m_y_origin = QtCompat::globalY (event);
 
     if (press)
         press ();
@@ -52,8 +54,8 @@ bool DragHandle::motion (QMouseEvent * event)
         return true;
 
     if (drag)
-        drag ((event->globalX () - m_x_origin) / config.scale,
-         (event->globalY () - m_y_origin) / config.scale);
+        drag ((QtCompat::globalX (event) - m_x_origin) / config.scale,
+         (QtCompat::globalY (event) - m_y_origin) / config.scale);
 
     return true;
 }
