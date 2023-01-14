@@ -25,6 +25,8 @@
 #include <stdexcept>
 #include <type_traits>
 
+#define BACKGROUND_MUSIC_PRINT_DEBUG_MESSAGES
+
 #ifdef BACKGROUND_MUSIC_PRINT_DEBUG_MESSAGES
 #define print_debug(...) printf(__VA_ARGS__);
 static constexpr bool enabled_print_debug = true;
