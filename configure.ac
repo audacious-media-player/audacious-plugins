@@ -19,10 +19,7 @@ AUD_COMMON_PROGS
 
 BUILDSYS_INIT
 BUILDSYS_SHARED_LIB
-
-if test $HAVE_DARWIN = yes ; then
-    BUILDSYS_FRAMEWORK([])
-fi
+BUILDSYS_PLUGIN
 
 dnl gettext
 dnl =======
