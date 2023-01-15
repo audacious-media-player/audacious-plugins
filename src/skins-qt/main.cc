@@ -38,6 +38,7 @@
 #include <libaudqt/libaudqt.h>
 
 #include "../ui-common/dialogs-qt.h"
+#include "../ui-common/qt-compat.h"
 
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
@@ -82,7 +83,12 @@ private:
     void draw (QPainter & cr);
     bool button_press (QMouseEvent * event);
     bool scroll (QWheelEvent * event);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    void enterEvent (QEnterEvent * enterEvent);
+#else
     void enterEvent (QEvent * event);
+#endif
 };
 
 Window * mainwin;
@@ -493,7 +499,7 @@ bool MainWindow::button_press (QMouseEvent * event)
 {
     if (event->button () == Qt::LeftButton &&
      event->type () == QEvent::MouseButtonDblClick &&
-     event->y () < 14 * config.scale)
+     QtCompat::y (event) < 14 * config.scale)
     {
         mainwin_shade_toggle ();
         return true;
@@ -501,21 +507,26 @@ bool MainWindow::button_press (QMouseEvent * event)
 
     if (event->button () == Qt::RightButton && event->type () == QEvent::MouseButtonPress)
     {
-        menu_popup (UI_MENU_MAIN, event->globalX (), event->globalY (), false, false);
+        menu_popup (UI_MENU_MAIN, QtCompat::globalX (event), QtCompat::globalY (event), false, false);
         return true;
     }
 
     return Window::button_press (event);
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void MainWindow::enterEvent (QEnterEvent * enterEvent)
+{
+#else
 void MainWindow::enterEvent (QEvent * event)
 {
-    if (! is_shaded() || ! aud_get_bool (nullptr, "show_filepopup_for_tuple"))
+    auto enterEvent = static_cast<QEnterEvent *> (event);
+#endif
+    if (! is_shaded () || ! aud_get_bool ("show_filepopup_for_tuple"))
         return;
 
-    auto enterEvent = static_cast<QEnterEvent *> (event);
-    if (enterEvent->x () >= 79 * config.scale &&
-        enterEvent->x () <= 157 * config.scale)
+    if (QtCompat::x (enterEvent) >= 79 * config.scale &&
+        QtCompat::x (enterEvent) <= 157 * config.scale)
     {
         audqt::infopopup_show_current ();
     }
@@ -523,7 +534,7 @@ void MainWindow::enterEvent (QEvent * event)
 
 static void mainwin_playback_rpress (Button * button, QMouseEvent * event)
 {
-    menu_popup (UI_MENU_PLAYBACK, event->globalX (), event->globalY (), false, false);
+    menu_popup (UI_MENU_PLAYBACK, QtCompat::globalX (event), QtCompat::globalY (event), false, false);
 }
 
 bool Window::keypress (QKeyEvent * event)
@@ -840,7 +851,7 @@ void mainwin_mr_release (MenuRowItem i, QMouseEvent * event)
     switch (i)
     {
         case MENUROW_OPTIONS:
-            menu_popup (UI_MENU_VIEW, event->globalX (), event->globalY (), false, false);
+            menu_popup (UI_MENU_VIEW, QtCompat::globalX (event), QtCompat::globalY (event), false, false);
             break;
         case MENUROW_ALWAYS:
             view_set_on_top (! aud_get_bool ("skins", "always_on_top"));
@@ -874,7 +885,7 @@ static bool mainwin_info_button_press (QMouseEvent * event)
 {
     if (event->type () == QEvent::MouseButtonPress && event->button () == Qt::RightButton)
     {
-        menu_popup (UI_MENU_PLAYBACK, event->globalX (), event->globalY (), false, false);
+        menu_popup (UI_MENU_PLAYBACK, QtCompat::globalX (event), QtCompat::globalY (event), false, false);
         return true;
     }
 

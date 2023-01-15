@@ -32,6 +32,8 @@
 #include "skin.h"
 #include "eq-slider.h"
 
+#include "../ui-common/qt-compat.h"
+
 void EqSlider::draw (QPainter & cr)
 {
     int frame = 27 - m_pos * 27 / 50;
@@ -68,7 +70,7 @@ bool EqSlider::button_press (QMouseEvent * event)
         return false;
 
     m_pressed = true;
-    moved (event->y () / config.scale - 5);
+    moved (QtCompat::y (event) / config.scale - 5);
     queue_draw ();
     return true;
 }
@@ -82,7 +84,7 @@ bool EqSlider::button_release (QMouseEvent * event)
         return true;
 
     m_pressed = false;
-    moved (event->y () / config.scale - 5);
+    moved (QtCompat::y (event) / config.scale - 5);
     queue_draw ();
     return true;
 }
@@ -92,7 +94,7 @@ bool EqSlider::motion (QMouseEvent * event)
     if (! m_pressed)
         return true;
 
-    moved (event->y () / config.scale - 5);
+    moved (QtCompat::y (event) / config.scale - 5);
     queue_draw ();
     return true;
 }

@@ -34,6 +34,8 @@
 #include <libaudqt/libaudqt.h>
 #include <libaudqt/treeview.h>
 
+#include "../ui-common/qt-compat.h"
+
 class PlaylistManagerQt : public GeneralPlugin
 {
 public:
@@ -295,10 +297,10 @@ void PlaylistsView::dropEvent(QDropEvent * event)
     switch (dropIndicatorPosition())
     {
     case AboveItem:
-        to = indexAt(event->pos()).row();
+        to = indexAt(QtCompat::pos(event)).row();
         break;
     case BelowItem:
-        to = indexAt(event->pos()).row() + 1;
+        to = indexAt(QtCompat::pos(event)).row() + 1;
         break;
     case OnViewport:
         to = Playlist::n_playlists();
