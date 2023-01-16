@@ -467,20 +467,6 @@ static void lyricwiki_playback_began ()
     g_state.title = tuple.get_str (Tuple::Title);
     g_state.artist = tuple.get_str (Tuple::Artist);
 
-    update_lyrics_window_notfound(g_state); // Set default state
-    if (aud_get_bool ("lyricwiki", "use-embedded"))
-    {
-      String embedded_lyrics = tuple.get_str (Tuple::Lyrics);
-      if (embedded_lyrics && embedded_lyrics[0])
-      {
-        g_state.lyrics = embedded_lyrics;
-        g_state.source = LyricsState::Source::Embedded;
-        g_state.error = false;
-        update_lyrics_window(g_state.title, g_state.artist, g_state.lyrics);
-        return;
-      }
-    }
-
     if (aud_get_bool ("lyricwiki", "split-title-on-chars"))
     {
         QString artist = QString (g_state.artist);
@@ -512,6 +498,19 @@ static void lyricwiki_playback_began ()
         }
     }
 
+    if (aud_get_bool ("lyricwiki", "use-embedded"))
+    {
+      String embedded_lyrics = tuple.get_str (Tuple::Lyrics);
+      if (embedded_lyrics && embedded_lyrics[0])
+      {
+        g_state.lyrics = embedded_lyrics;
+        g_state.source = LyricsState::Source::Embedded;
+        g_state.error = false;
+        update_lyrics_window(g_state.title, g_state.artist, g_state.lyrics);
+        return;
+      }
+    }
+
     if (! aud_get_bool ("lyricwiki", "enable-file-provider") || ! file_provider.match (g_state))
     {
         if (! g_state.artist || ! g_state.title)
@@ -522,8 +521,14 @@ static void lyricwiki_playback_began ()
 
         auto rsrc = remote_source ();
         if (rsrc)
-            rsrc->match (g_state);
+        {
+          rsrc->match (g_state);
+          return;
+        }
     }
+
+    // No lyrics source - set default state
+    update_lyrics_window_notfound(g_state);
 }
 
 static void lw_cleanup (QObject * object = nullptr)
