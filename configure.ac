@@ -300,7 +300,7 @@ ENABLE_PLUGIN_WITH_DEP(sid,
     auto,
     INPUT,
     SIDPLAYFP,
-    libsidplayfp >= 1.0)
+    libsidplayfp >= 2.0)
 
 test_console () {
     AC_CHECK_HEADERS(zlib.h, have_console=yes, have_console=no)
