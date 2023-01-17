@@ -140,9 +140,9 @@ bool xs_sidplayfp_init()
     }
 
     /* Load ROMs */
-    VFSFile kernal_file("file://" SIDDATADIR "sidplayfp/kernal", "r");
-    VFSFile basic_file("file://" SIDDATADIR "sidplayfp/basic", "r");
-    VFSFile chargen_file("file://" SIDDATADIR "sidplayfp/chargen", "r");
+    VFSFile kernal_file("file://" SIDDATADIR "/sidplayfp/kernal", "r");
+    VFSFile basic_file("file://" SIDDATADIR "/sidplayfp/basic", "r");
+    VFSFile chargen_file("file://" SIDDATADIR "/sidplayfp/chargen", "r");
 
     if (kernal_file && basic_file && chargen_file)
     {
@@ -155,7 +155,7 @@ bool xs_sidplayfp_init()
     }
 
     /* Load song length database */
-    state.database_loaded = state.database.open(SIDDATADIR "sidplayfp/Songlengths.txt");
+    state.database_loaded = state.database.open(SIDDATADIR "/sidplayfp/Songlengths.md5");
 
     /* Create the sidtune */
     state.currTune = new SidTune(0);
@@ -257,7 +257,7 @@ bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const void *buf, int64_t bufSize)
         for (int i = 0; i < ti.nsubTunes; i++)
         {
             myTune.selectSong(i + 1);
-            ti.subTunes[i].tuneLength = state.database.length(myTune);
+            ti.subTunes[i].tuneLength = state.database.lengthMs(myTune);
         }
 
         pthread_mutex_unlock(&state.database_mutex);

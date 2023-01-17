@@ -156,8 +156,8 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
     /* Check minimum playtime */
     int tmpLength = info.subTunes[subTune - 1].tuneLength;
     if (xs_cfg.playMinTimeEnable && (tmpLength >= 0)) {
-        if (tmpLength < xs_cfg.playMinTime)
-            tmpLength = xs_cfg.playMinTime;
+        if (tmpLength < xs_cfg.playMinTime * 1000)
+            tmpLength = xs_cfg.playMinTime * 1000;
     }
 
     /* Initialize song */
@@ -204,7 +204,7 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
         }
 
         if (tmpLength >= 0) {
-            if (time_played >= tmpLength * 1000)
+            if (time_played >= tmpLength)
                 break;
         }
     }
@@ -231,7 +231,7 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
 
     if (subTune > 0 && subTune <= info.nsubTunes) {
         int tmpInt = info.subTunes[subTune - 1].tuneLength;
-        tuple.set_int (Tuple::Length, (tmpInt < 0) ? -1 : tmpInt * 1000);
+        tuple.set_int (Tuple::Length, (tmpInt < 0) ? -1 : tmpInt);
     } else
         subTune = 1;
 
@@ -248,7 +248,7 @@ static void xs_fill_subtunes(Tuple &tuple, const xs_tuneinfo_t &info)
     for (int count = 0; count < info.nsubTunes; count++) {
         if (count + 1 == info.startTune || !xs_cfg.subAutoMinOnly ||
             info.subTunes[count].tuneLength < 0 ||
-            info.subTunes[count].tuneLength >= xs_cfg.subAutoMinTime)
+            info.subTunes[count].tuneLength >= xs_cfg.subAutoMinTime * 1000)
             subtunes.append (count + 1);
     }
 
