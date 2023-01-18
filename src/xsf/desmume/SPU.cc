@@ -1120,8 +1120,6 @@ static void SPU_MixAudio_Advanced(bool actuallyMix, SPU_struct *SPU, int length)
     s32 mix[2] = {0,0};
     s32 chanout[16];
     s32 submix[32];
-    static int tsamp = 0;
-    ++tsamp;
 
     //generate each channel, and helpfully mix it at the same time
     for (int i = 0; i < 16; i++)
