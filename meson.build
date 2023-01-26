@@ -297,7 +297,6 @@ if meson.version().version_compare('>= 0.53')
   }, section: 'Transports')
 
   summary({
-    'Alarm (requires GTK)': conf.has('USE_GTK'),
     'Ampache browser (requires Qt)': get_variable('have_ampache', false),
     'Delete Files': conf.has('USE_GTK_OR_QT'),
     'Libnotify OSD': get_variable('have_notify', false),
