@@ -79,9 +79,18 @@ static opus_int64 opcb_tell(void * stream)
     return file->ftell();
 }
 
-static inline bool is_stream(VFSFile * file)
+static OggOpusFile * open_file(VFSFile & file)
 {
-    return file->fsize() < 0;
+    bool stream = file.fsize() < 0;
+
+    OpusFileCallbacks opus_callbacks = {
+        opcb_read,
+        stream ? nullptr : opcb_seek,
+        stream ? nullptr : opcb_tell,
+        nullptr,
+    };
+
+    return op_open_callbacks(&file, &opus_callbacks, nullptr, 0, nullptr);
 }
 
 static void read_tags(const OpusTags * tags, Tuple & tuple)
@@ -232,17 +241,7 @@ bool OpusPlugin::is_our_file(const char * filename, VFSFile & file)
 bool OpusPlugin::read_tag(const char * filename, VFSFile & file, Tuple & tuple,
                           Index<char> * image)
 {
-    bool stream = is_stream(&file);
-
-    OpusFileCallbacks opus_callbacks = {
-        opcb_read,
-        stream ? nullptr : opcb_seek,
-        stream ? nullptr : opcb_tell,
-        nullptr,
-    };
-
-    OggOpusFile * opus_file =
-        op_open_callbacks(&file, &opus_callbacks, nullptr, 0, nullptr);
+    OggOpusFile * opus_file = open_file(file);
     if (!opus_file)
     {
         AUDERR("Failed to open Opus file\n");
@@ -269,17 +268,7 @@ bool OpusPlugin::read_tag(const char * filename, VFSFile & file, Tuple & tuple,
 
 bool OpusPlugin::play(const char * filename, VFSFile & file)
 {
-    bool stream = is_stream(&file);
-
-    OpusFileCallbacks opus_callbacks = {
-        opcb_read,
-        stream ? nullptr : opcb_seek,
-        stream ? nullptr : opcb_tell,
-        nullptr,
-    };
-
-    OggOpusFile * opus_file =
-        op_open_callbacks(&file, &opus_callbacks, nullptr, 0, nullptr);
+    OggOpusFile * opus_file = open_file(file);
     if (!opus_file)
     {
         AUDERR("Failed to open Opus file\n");
