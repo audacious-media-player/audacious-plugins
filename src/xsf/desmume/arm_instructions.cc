@@ -2401,7 +2401,7 @@ TEMPLATE static uint32_t FASTCALL OP_UMLAL_S(uint32_t i)
 	cpu->R[REG_POS(i, 12)] += tmp;
 
 	cpu->CPSR.bits.N = BIT31(cpu->R[REG_POS(i, 16)]);
-	cpu->CPSR.bits.Z = !cpu->R[REG_POS(i, 16)] & !cpu->R[REG_POS(i, 12)];
+	cpu->CPSR.bits.Z = !cpu->R[REG_POS(i, 16)] && !cpu->R[REG_POS(i, 12)];
 
 	MUL_UMxxL_END(3);
 }
@@ -2455,7 +2455,7 @@ TEMPLATE static uint32_t FASTCALL OP_SMULL_S(uint32_t i)
 	cpu->R[REG_POS(i, 16)] = static_cast<uint32_t>(res >> 32);
 
 	cpu->CPSR.bits.N = BIT31(cpu->R[REG_POS(i, 16)]);
-	cpu->CPSR.bits.Z = !cpu->R[REG_POS(i, 16)] & !cpu->R[REG_POS(i, 12)];
+	cpu->CPSR.bits.Z = !cpu->R[REG_POS(i, 16)] && !cpu->R[REG_POS(i, 12)];
 
 	MUL_SMxxL_END(2);
 }
@@ -2470,7 +2470,7 @@ TEMPLATE static uint32_t FASTCALL OP_SMLAL_S(uint32_t i)
 	cpu->R[REG_POS(i, 12)] += tmp;
 
 	cpu->CPSR.bits.N = BIT31(cpu->R[REG_POS(i, 16)]);
-	cpu->CPSR.bits.Z = !cpu->R[REG_POS(i, 16)] & !cpu->R[REG_POS(i, 12)];
+	cpu->CPSR.bits.Z = !cpu->R[REG_POS(i, 16)] && !cpu->R[REG_POS(i, 12)];
 
 	MUL_SMxxL_END(3);
 }
