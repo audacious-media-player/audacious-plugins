@@ -500,15 +500,15 @@ static void lyricwiki_playback_began ()
 
     if (aud_get_bool ("lyricwiki", "use-embedded"))
     {
-      String embedded_lyrics = tuple.get_str (Tuple::Lyrics);
-      if (embedded_lyrics && embedded_lyrics[0])
-      {
-        g_state.lyrics = embedded_lyrics;
-        g_state.source = LyricsState::Source::Embedded;
-        g_state.error = false;
-        update_lyrics_window(g_state.title, g_state.artist, g_state.lyrics);
-        return;
-      }
+        String embedded_lyrics = tuple.get_str (Tuple::Lyrics);
+        if (embedded_lyrics && embedded_lyrics[0])
+        {
+            g_state.lyrics = embedded_lyrics;
+            g_state.source = LyricsState::Source::Embedded;
+            g_state.error = false;
+            update_lyrics_window (g_state.title, g_state.artist, g_state.lyrics);
+            return;
+        }
     }
 
     if (! aud_get_bool ("lyricwiki", "enable-file-provider") || ! file_provider.match (g_state))
@@ -528,7 +528,7 @@ static void lyricwiki_playback_began ()
     }
 
     // No lyrics source - set default state
-    update_lyrics_window_notfound(g_state);
+    update_lyrics_window_notfound (g_state);
 }
 
 static void lw_cleanup (QObject * object = nullptr)
