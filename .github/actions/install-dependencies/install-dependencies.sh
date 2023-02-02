@@ -28,8 +28,8 @@ ubuntu_packages='gettext libadplug-dev libasound2-dev libavformat-dev
                  libvorbis-dev libwavpack-dev libxml2-dev qtbase5-dev
                  qtmultimedia5-dev'
 
-macos_packages='faad2 ffmpeg libbs2b libcue libmodplug libnotify libopenmpt
-                libsamplerate libsoxr neon sdl2 wavpack'
+macos_packages='adplug faad2 ffmpeg libbs2b libcue libmms libmodplug libnotify
+                libopenmpt libsamplerate libsoxr neon sdl2 wavpack'
 
 case "$os" in
   ubuntu-20.04)

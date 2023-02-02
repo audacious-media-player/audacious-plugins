@@ -42,8 +42,7 @@ case "$action" in
 
       macos*)
         if [ "$build_system" = 'meson' ]; then
-          meson setup build -D qt6=true -D gtk=false \
-                            -D mac-media-keys=true -D amidiplug=false
+          meson setup build -D qt6=true -D gtk=false -D mac-media-keys=true
         else
           export PATH="/usr/local/opt/qt@5/bin:$PATH"
           export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig:$PKG_CONFIG_PATH"
