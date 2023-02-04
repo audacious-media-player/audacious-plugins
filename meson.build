@@ -26,14 +26,6 @@ if have_darwin
 endif
 
 
-glib_req = '>= 2.32'
-glib_dep = dependency('glib-2.0', version: glib_req, required: true)
-gmodule_dep = dependency('gmodule-2.0', version: glib_req, required: true)
-
-
-zlib_dep = dependency('zlib', required: true)
-
-
 audacious_req = '>= 4.3'
 audacious_dep = dependency('audacious', version: audacious_req, required: true)
 
@@ -59,6 +51,13 @@ audgui_dep = declare_dependency(link_args: [
 ])
 
 
+glib_req = '>= 2.32'
+glib_dep = dependency('glib-2.0', version: glib_req, required: true)
+gmodule_dep = dependency('gmodule-2.0', version: glib_req, required: true)
+zlib_dep = dependency('zlib', required: true)
+
+math_dep = cxx.find_library('m', required: false)
+samplerate_dep = dependency('samplerate', required: false)
 xml_dep = dependency('libxml-2.0', required: false)
 
 
@@ -82,10 +81,6 @@ if get_option('gtk')
     gtk_dep = dependency('gtk+-2.0', version: gtk_req, required: true)
   endif
 endif
-
-
-math_dep = cxx.find_library('m', required: false)
-samplerate_dep = dependency('samplerate', required: false)
 
 
 if cc.get_id() in ['gcc', 'clang']
