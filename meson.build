@@ -84,18 +84,6 @@ if get_option('gtk')
 endif
 
 
-have_cdaudio = false
-if get_option('cdaudio')
-  libcdio_dep = dependency('libcdio', version: '>= 0.70', required: false)
-  libcdio_cdda_dep = dependency('libcdio_cdda', version: '>= 0.70', required: false)
-  libcddb_dep = dependency('libcddb', version: '>= 1.2.1', required: false)
-
-  if libcdio_dep.found() and libcdio_cdda_dep.found() and libcddb_dep.found()
-    have_cdaudio = true
-  endif
-endif
-
-
 math_dep = cxx.find_library('m', required: false)
 samplerate_dep = dependency('samplerate', required: false)
 

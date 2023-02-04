@@ -161,10 +161,6 @@ endif
 
 
 # general plugins
-if have_cdaudio
-  subdir('cd-menu-items')
-endif
-
 if get_option('lirc')
   subdir('lirc')
 endif
@@ -199,8 +195,12 @@ if get_option('amidiplug')
   subdir('amidiplug')
 endif
 
-if have_cdaudio
+if get_option('cdaudio')
   subdir('cdaudio')
+
+  if have_cdaudio
+    subdir('cd-menu-items')
+  endif
 endif
 
 if get_option('ffaudio')
