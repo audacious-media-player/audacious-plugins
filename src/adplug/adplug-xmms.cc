@@ -350,7 +350,7 @@ const PreferencesWidget AdPlugXMMS::widgets[] = {
   WidgetCombo (N_("OPL Emulator:"),
     WidgetInt (CFG_ID, "Emulator"),
     {{plugin_combo}}),
-  WidgetSpin (N_("Sample rate"),
+  WidgetSpin (N_("Sample rate:"),
     WidgetInt (CFG_ID, "Frequency"), {8000, 192000, 50, N_("Hz")}),
   WidgetLabel (N_("<b>Miscellaneous</b>")),
   WidgetCheck (N_("Repeat song in endless loop"),
