@@ -362,35 +362,16 @@ void SoundFontListModel::append (const char * filename)
 void SoundFontListModel::update ()
 {
     String soundfont_file = aud_get_str ("amidiplug", "fsyn_soundfont_file");
+    Index<String> sffiles = str_list_to_index (soundfont_file, ";");
 
-    if (soundfont_file[0])
-    {
-        char ** sffiles = g_strsplit (soundfont_file, ";", 0);
-        int i = 0;
-
-        while (sffiles[i] != nullptr)
-        {
-            append (sffiles[i]);
-            i++;
-        }
-
-        g_strfreev (sffiles);
-    }
+    for (const char * sffile : sffiles)
+        append (sffile);
 }
 
 void SoundFontListModel::commit ()
 {
-    std::string sflist_string;
-
-    for (auto str : m_file_names)
-    {
-        if (sflist_string[0])
-            sflist_string.append (";");
-
-        sflist_string.append (str);
-    }
-
-    aud_set_str ("amidiplug", "fsyn_soundfont_file", sflist_string.c_str ());
+    aud_set_str ("amidiplug", "fsyn_soundfont_file",
+                 index_to_str_list (m_file_names, ";"));
 
     /* reset backend at beginning of next song to apply changes */
     __sync_bool_compare_and_swap (& backend_settings_changed, false, true);
