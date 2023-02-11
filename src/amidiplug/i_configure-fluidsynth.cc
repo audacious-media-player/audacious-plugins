@@ -287,6 +287,7 @@ void * create_soundfont_list ()
 #ifdef USE_QT
 
 #include <QHBoxLayout>
+#include <QHeaderView>
 #include <QVBoxLayout>
 #include <QAbstractListModel>
 #include <QTreeView>
@@ -510,6 +511,12 @@ SoundFontWidget::SoundFontWidget (QWidget * parent) :
 
     m_view->setModel (m_model);
     m_view->setRootIsDecorated (false);
+    m_view->setUniformRowHeights (true);
+
+    QHeaderView * header = m_view->header ();
+    header->setSectionResizeMode (0, QHeaderView::Stretch);
+    header->setSectionResizeMode (1, QHeaderView::Fixed);
+    header->setStretchLastSection (false);
 
     m_vbox_layout->addWidget (m_view);
     m_vbox_layout->addWidget (m_bbox);
