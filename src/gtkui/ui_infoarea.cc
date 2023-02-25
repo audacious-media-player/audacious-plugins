@@ -125,9 +125,11 @@ static void clear (GtkWidget * widget, cairo_t * cr)
     GtkAllocation alloc;
     gtk_widget_get_allocation (widget, & alloc);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
     auto & c = (gtk_widget_get_style (widget))->base[GTK_STATE_NORMAL];
-    cairo_pattern_t * gradient = audgui_dark_bg_gradient (c, alloc.height);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
+    cairo_pattern_t * gradient = audgui_dark_bg_gradient (c, alloc.height);
     cairo_set_source (cr, gradient);
     cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
     cairo_fill (cr);
@@ -165,7 +167,10 @@ static gboolean draw_vis_cb (GtkWidget * widget, GdkEventExpose * event)
 {
     cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
 #endif
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
     auto & c = (gtk_widget_get_style (widget))->base[GTK_STATE_SELECTED];
+G_GNUC_END_IGNORE_DEPRECATIONS
 
     clear (widget, cr);
 

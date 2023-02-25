@@ -109,7 +109,9 @@ static void draw_background (GtkWidget * area, cairo_t * cr)
 
 static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
 {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
     auto & c = (gtk_widget_get_style (widget))->base[GTK_STATE_SELECTED];
+G_GNUC_END_IGNORE_DEPRECATIONS
 
     for (int i = 0; i < bands; i++)
     {

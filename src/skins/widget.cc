@@ -104,7 +104,9 @@ void Widget::draw_now ()
     if (! m_drawable || ! gtk_widget_is_drawable (m_drawable))
         return;
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
     cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (m_drawable));
+G_GNUC_END_IGNORE_DEPRECATIONS
 
     if (! gtk_widget_get_has_window (m_drawable))
     {
