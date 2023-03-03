@@ -313,7 +313,8 @@ bool PlaylistProxyModel::filterAcceptsRow(int source_row,
 
     String strings[] = {tuple.get_str(Tuple::Title),
                         tuple.get_str(Tuple::Artist),
-                        tuple.get_str(Tuple::Album)};
+                        tuple.get_str(Tuple::Album),
+                        tuple.get_str(Tuple::Basename)};
 
     for (auto & term : m_searchTerms)
     {
