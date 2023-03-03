@@ -88,15 +88,15 @@ void VUMeterQtWidget::render_multi_pcm (const float * pcm, int channels)
 {
     nchannels = aud::clamp(channels, 0, max_channels);
 
-    float peaks[channels];
-    for (int channel = 0; channel < channels; channel++)
+    float peaks[nchannels];
+    for (int channel = 0; channel < nchannels; channel++)
     {
         peaks[channel] = fabsf(pcm[channel]);
     }
 
-    for (int i = 0; i < 512 * channels;)
+    for (int i = 0; i < 512 * nchannels;)
     {
-        for (int channel = 0; channel < channels; channel++)
+        for (int channel = 0; channel < nchannels; channel++)
         {
             peaks[channel] = fmaxf(peaks[channel], fabsf(pcm[i++]));
         }
