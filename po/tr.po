@@ -18,6 +18,7 @@
 # Murat Şenel <muratasenel@gmail.com>, 2007
 # Muzaffer Cagda <cagdamuzaffer@gmail.com>, 2016
 # Onur Küçük <onur@pardus.org.tr>, 2007
+# Sabri Ünal <libreajans@gmail.com>, 2023
 # seckin Yılmaz <seckyn@windowslive.com>, 2013
 # seckin Yılmaz <seckyn@windowslive.com>, 2013
 # tarkan255 <t.oguzman@hotmail.com>, 2012
@@ -30,9 +31,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2022-07-09 23:25+0200\n"
+"POT-Creation-Date: 2023-03-05 14:33+0100\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
-"Last-Translator: Yaşar Çiv <yasarciv@protonmail.com>, 2020\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>, 2023\n"
 "Language-Team: Turkish (http://www.transifex.com/audacious/audacious/"
 "language/tr/)\n"
 "Language: tr\n"
@@ -56,15 +57,17 @@ msgstr "sıralı"
 
 #: src/adplug/adplug-xmms.cc:349 src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
-msgstr "<b>Çıktı</b>"
+msgstr "<b>Çıkış</b>"
 
 #: src/adplug/adplug-xmms.cc:350
 msgid "OPL Emulator:"
 msgstr "OPL Emülatorü:"
 
-#: src/adplug/adplug-xmms.cc:353
-msgid "Sample rate"
-msgstr "Örnekleme oranı"
+#: src/adplug/adplug-xmms.cc:353 src/amidiplug/i_configure.cc:153
+#: src/console/plugin.cc:45 src/filewriter/filewriter.cc:481
+#: src/sid/xs_config.cc:65 src/xsf/plugin.cc:446
+msgid "Sample rate:"
+msgstr "Örnekleme oranı:"
 
 #: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:155
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
@@ -88,262 +91,9 @@ msgstr "<b>Karışık</b>"
 msgid "Repeat song in endless loop"
 msgstr "Sonsuz döngüde şarkıyı tekrarla"
 
-#: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
-msgid "Alarm"
-msgstr "Alarm"
-
-#: src/alarm/alarm.cc:782
-msgid "Set Alarm ..."
-msgstr "Alarm ayarla..."
-
-#: src/alarm/alarm.cc:810
-msgid ""
-"A plugin that can be used to start playing at a certain time.\n"
-"\n"
-"Originally written by Adam Feakin and Daniel Stodden."
-msgstr ""
-"Belirli bir zamanda oynatmaya başlamak için kullanılabilen bir eklenti.\n"
-"\n"
-"Aslen Adam Feakin ve Daniel Stodden tarafından yazıldı."
-
-#: src/alarm/interface.cc:28
-msgid ""
-"Time\n"
-"  Alarm at:\n"
-"    The time for the alarm to come on.\n"
-"\n"
-"  Quiet after:\n"
-"    Stop alarm after this amount of time.\n"
-"       (if the wakeup dialog is not closed)\n"
-"\n"
-"\n"
-"Days\n"
-"  Day:\n"
-"    Select the days for the alarm to activate.\n"
-"\n"
-"  Time:\n"
-"    Choose the time for the alarm on each day,\n"
-"    or select the toggle button to use the default\n"
-"    time.\n"
-"\n"
-"\n"
-"Volume\n"
-"  Fading:\n"
-"    Fade the volume up to the chosen volume\n"
-"    for this amount of time.\n"
-"\n"
-"  Start at:\n"
-"    Start fading from this volume.\n"
-"\n"
-"  Final:\n"
-"    The volume to stop fading at.  If the fading\n"
-"    time is 0 then set volume to this and start\n"
-"    playing.\n"
-"\n"
-"\n"
-"Options:\n"
-"  Additional Command:\n"
-"    Run this command at the alarm time.\n"
-"\n"
-"  Playlist:\n"
-"    Load this playlist. If no playlist\n"
-"    is given, the current one will be used.\n"
-"    The URL of an mp3/ogg stream\n"
-"    can also be entered here.\n"
-"\n"
-"  Reminder:\n"
-"    Display a reminder when the alarm goes off.\n"
-"    Type the reminder in the input field and enable\n"
-"    the checkbox if you want it to be shown."
-msgstr ""
-"Zaman\n"
-"Alarm zamanı:\n"
-"Alarmın çalacağı zaman.\n"
-"\n"
-"Sonra kıs:\n"
-"Alarmı bu süre sonunda durdur.\n"
-"(uyandırma diyaloğu kapanmdıysa)\n"
-"\n"
-"\n"
-"Günler\n"
-"Gün:\n"
-"Alarmın çalacağı günleri seçin.\n"
-"\n"
-"Zaman:\n"
-"Hergün için ayrı alarm zamanı ayarlayın.\n"
-"yada geçiş düğmesini kullanarak varsayılan\n"
-"zamanı seçin.\n"
-"\n"
-"\n"
-"Ses\n"
-"Geçiş:\n"
-"Seçilen ses düzeyine belirtilen\n"
-"süre zarfında geçiş yap.\n"
-"\n"
-"Başla:\n"
-"Bu ses düzeyinden geçiş yapmaya başla.\n"
-"\n"
-"Son:\n"
-"Geçişin biteceği ses düzeyi. Geçiş süresi \n"
-"0 isesesi bu düzeye ayarlayın ve oynatın.\n"
-"\n"
-"\n"
-"Ayarlar:\n"
-"Ek Komut:\n"
-"Alarm zamanında bu komutu çalıştır.\n"
-"\n"
-"Oynatma Listesi:\n"
-"Bu oynatma listesini yükle. Oynatma listesi\n"
-"verilmediği takdirde varolan oynatma listesi \n"
-"kullanılır. Mp3/ogg ortam akışı URL'si de buraya\n"
-"girilebilir.\n"
-"\n"
-"Hatırlatma:\n"
-"Alarm çaldığında hatırlatıcı göster.\n"
-"Hatırlatma gösterilmesini istiyorsanız\n"
-"girdi alanına hatırlatmanızı yazın ve onay \n"
-"kutucuğunu doldurun."
-
-#: src/alarm/interface.cc:78
-msgid "This is your wakeup call."
-msgstr "Bu uyandırma çağrısıdır."
-
-#: src/alarm/interface.cc:96
-msgid "Your reminder for today is..."
-msgstr "Bugünkü hatırlatıcınız..."
-
-#: src/alarm/interface.cc:98 src/alarm/interface.cc:372
-msgid "Reminder"
-msgstr "Hatırlatıcı"
-
-#: src/alarm/interface.cc:122
-msgid "Monday"
-msgstr "Pazartesi"
-
-#: src/alarm/interface.cc:122
-msgid "Tuesday"
-msgstr "Salı"
-
-#: src/alarm/interface.cc:122
-msgid "Wednesday"
-msgstr "Çarşamba"
-
-#: src/alarm/interface.cc:123
-msgid "Thursday"
-msgstr "Perşembe"
-
-#: src/alarm/interface.cc:123
-msgid "Friday"
-msgstr "Cuma"
-
-#: src/alarm/interface.cc:123
-msgid "Saturday"
-msgstr "Cumartesi"
-
-#: src/alarm/interface.cc:123
-msgid "Sunday"
-msgstr "Pazar"
-
-#: src/alarm/interface.cc:160 src/alarm/interface.cc:219
-#: src/alarm/interface.cc:234
-msgid "Time"
-msgstr "Zaman"
-
-#: src/alarm/interface.cc:167
-msgid "Alarm at (default):"
-msgstr "Alarm (Varsayılan)"
-
-#: src/alarm/interface.cc:189
-msgid "h"
-msgstr "h"
-
-#: src/alarm/interface.cc:192
-msgid "Quiet after:"
-msgstr "Sonra sessiz:"
-
-#: src/alarm/interface.cc:204
-msgid "hours"
-msgstr "saat"
-
-#: src/alarm/interface.cc:215
-msgid "minutes"
-msgstr "dakika"
-
-#: src/alarm/interface.cc:224
-msgid "Choose the days for the alarm to come on"
-msgstr "Sonraki alarm için günleri seçiniz"
-
-#: src/alarm/interface.cc:231
-msgid "Day"
-msgstr "Gün"
-
-#: src/alarm/interface.cc:248 src/bs2b/plugin.cc:130
-msgid "Default"
-msgstr "Öntanımlı"
-
-#: src/alarm/interface.cc:277
-msgid "Days"
-msgstr "Günler"
-
-#: src/alarm/interface.cc:286
-msgid "Fading"
-msgstr "Bozulma"
-
-#: src/alarm/interface.cc:294 src/console/plugin.cc:41
-#: src/crossfade/crossfade.cc:52 src/crossfade/crossfade.cc:58
-#: src/lirc/lirc.cc:395 src/notify/notify.cc:113 src/sid/xs_config.cc:85
-#: src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
-#: src/vumeter-qt/vumeter_qt.cc:39
-msgid "seconds"
-msgstr "saniye"
-
-#: src/alarm/interface.cc:301 src/alarm/interface.cc:342
-msgid "Volume"
-msgstr "Ses"
-
-#: src/alarm/interface.cc:306
-msgid "Start at"
-msgstr "İle başla"
-
-#: src/alarm/interface.cc:322
-msgid "Final"
-msgstr "Son"
-
-#: src/alarm/interface.cc:335
-msgid "Current"
-msgstr "Şu anda"
-
-#: src/alarm/interface.cc:348
-msgid "Additional Command"
-msgstr "Ek Komut"
-
-#: src/alarm/interface.cc:354 src/alarm/interface.cc:377
-msgid "enable"
-msgstr "izin ver"
-
-#: src/alarm/interface.cc:361
-msgid "Playlist (optional)"
-msgstr "Çalma Listesi (isteğe bağlı)"
-
-#: src/alarm/interface.cc:365
-msgid "Select a playlist"
-msgstr "Çalma listesi Seç"
-
-#: src/alarm/interface.cc:385
-msgid "Options"
-msgstr "Seçenekler"
-
-#: src/alarm/interface.cc:390
-msgid "What do these options mean?"
-msgstr "Bu ayarlar ne anlama geliyor?"
-
-#: src/alarm/interface.cc:404
-msgid "Help"
-msgstr "Yardım"
-
 #: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:35
 msgid "Album Art"
-msgstr "Albüm kapağı"
+msgstr "Albüm Kapağı"
 
 #: src/alsa/alsa.h:64
 msgid "ALSA Output"
@@ -489,89 +239,83 @@ msgstr "<b>SoundFont</b>"
 msgid "<b>Synthesizer</b>"
 msgstr "<b>Sentezleyici</b>"
 
-#: src/amidiplug/i_configure.cc:153 src/console/plugin.cc:45
-#: src/filewriter/filewriter.cc:481 src/sid/xs_config.cc:65
-#: src/xsf/plugin.cc:446
-msgid "Sample rate:"
-msgstr "Örnekleme oranı:"
-
-#: src/amidiplug/i_configure-fluidsynth.cc:57
-#: src/amidiplug/i_configure-fluidsynth.cc:536
+#: src/amidiplug/i_configure-fluidsynth.cc:58
+#: src/amidiplug/i_configure-fluidsynth.cc:527
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - SoundFont dosyası seç"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:60
+#: src/amidiplug/i_configure-fluidsynth.cc:61
 msgid "_Cancel"
 msgstr "_İptal"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:61
+#: src/amidiplug/i_configure-fluidsynth.cc:62
 msgid "_Open"
 msgstr "_Aç"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:230
-#: src/amidiplug/i_configure-fluidsynth.cc:476 src/gtkui/columns.cc:46
+#: src/amidiplug/i_configure-fluidsynth.cc:233
+#: src/amidiplug/i_configure-fluidsynth.cc:461
 msgid "File name"
 msgstr "Dosya adı"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:234
-#: src/amidiplug/i_configure-fluidsynth.cc:479
+#: src/amidiplug/i_configure-fluidsynth.cc:237
+#: src/amidiplug/i_configure-fluidsynth.cc:464
 msgid "Size (bytes)"
 msgstr "Boyut (bayt)"
 
-#: src/amidiplug/i_fileinfo.cc:169
+#: src/amidiplug/i_fileinfo.cc:183
 msgid "Name:"
 msgstr "İsim:"
 
-#: src/amidiplug/i_fileinfo.cc:187
+#: src/amidiplug/i_fileinfo.cc:201
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> MIDI Bilgisi </span>"
 
-#: src/amidiplug/i_fileinfo.cc:201
+#: src/amidiplug/i_fileinfo.cc:215
 msgid "Format:"
 msgstr "Biçim:"
 
-#: src/amidiplug/i_fileinfo.cc:204
+#: src/amidiplug/i_fileinfo.cc:218
 msgid "Length (msec):"
 msgstr "Uzunluk (ms):"
 
-#: src/amidiplug/i_fileinfo.cc:207
+#: src/amidiplug/i_fileinfo.cc:221
 msgid "No. of Tracks:"
 msgstr "Parça Sayısı:"
 
-#: src/amidiplug/i_fileinfo.cc:213
+#: src/amidiplug/i_fileinfo.cc:227
 msgid "variable"
 msgstr "değişken"
 
-#: src/amidiplug/i_fileinfo.cc:215
+#: src/amidiplug/i_fileinfo.cc:229
 msgid "BPM:"
 msgstr "BPM:"
 
-#: src/amidiplug/i_fileinfo.cc:223
+#: src/amidiplug/i_fileinfo.cc:237
 msgid "BPM (wavg):"
 msgstr "BPM (wavg):"
 
-#: src/amidiplug/i_fileinfo.cc:226
+#: src/amidiplug/i_fileinfo.cc:240
 msgid "Time Div:"
 msgstr "Zamanı Böl:"
 
-#: src/amidiplug/i_fileinfo.cc:237
+#: src/amidiplug/i_fileinfo.cc:251
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"smaller\"> MIDI Yorumları ve Sözleri </span>"
 
-#: src/amidiplug/i_fileinfo.cc:284
+#: src/amidiplug/i_fileinfo.cc:298
 msgid "* no comments available in this MIDI file *"
 msgstr "* bu midi dosyasında yorum bulunamadı *"
 
-#: src/amidiplug/i_fileinfo.cc:296
+#: src/amidiplug/i_fileinfo.cc:310
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* bu midi dosyasında şarkı sözü bulunamadı *"
 
-#: src/amidiplug/i_fileinfo.cc:306 src/ladspa/plugin.cc:417
+#: src/amidiplug/i_fileinfo.cc:320 src/ladspa/plugin.cc:418
 #: src/ui-common/dialogs-qt.cc:32
 msgid "_Close"
 msgstr "_Kapat"
 
-#: src/amidiplug/i_fileinfo.cc:331
+#: src/amidiplug/i_fileinfo.cc:345
 msgid "  (invalid UTF-8)"
 msgstr "  (geçersiz UTF-8)"
 
@@ -663,94 +407,94 @@ msgstr "Bekletme Kapalı"
 msgid "Triggers OSD when playback is unpaused."
 msgstr "Çalmaya yeniden başladığında OSD'yi başlatır."
 
-#: src/aosd/aosd_ui.cc:162
+#: src/aosd/aosd_ui.cc:204
 msgid "Placement"
 msgstr "Yerleştirme"
 
-#: src/aosd/aosd_ui.cc:195
+#: src/aosd/aosd_ui.cc:241
 msgid "Relative X offset:"
 msgstr "Değişken X değeri:"
 
-#: src/aosd/aosd_ui.cc:202
+#: src/aosd/aosd_ui.cc:245
 msgid "Relative Y offset:"
 msgstr "Değişken Y değeri:"
 
-#: src/aosd/aosd_ui.cc:209
+#: src/aosd/aosd_ui.cc:249
 msgid "Max OSD width:"
 msgstr "Maksimum OSD genişliği:"
 
-#: src/aosd/aosd_ui.cc:220
+#: src/aosd/aosd_ui.cc:281
 msgid "Multi-Monitor options"
 msgstr "Çoklu Ekran seçenekleri"
 
-#: src/aosd/aosd_ui.cc:224
+#: src/aosd/aosd_ui.cc:285
 msgid "Display OSD using:"
 msgstr "OSD kullanımını göster:"
 
-#: src/aosd/aosd_ui.cc:226
+#: src/aosd/aosd_ui.cc:287
 msgid "all monitors"
 msgstr "tüm ekranlar"
 
-#: src/aosd/aosd_ui.cc:229
+#: src/aosd/aosd_ui.cc:290
 #, c-format
 msgid "monitor %i"
 msgstr "ekran %i"
 
-#: src/aosd/aosd_ui.cc:281
+#: src/aosd/aosd_ui.cc:342
 msgid "Timing (ms)"
 msgstr "Zamanlama (ms)"
 
-#: src/aosd/aosd_ui.cc:286
+#: src/aosd/aosd_ui.cc:347
 msgid "Display:"
 msgstr "Görüntü:"
 
-#: src/aosd/aosd_ui.cc:291
+#: src/aosd/aosd_ui.cc:352
 msgid "Fade in:"
 msgstr "Gecikme:"
 
-#: src/aosd/aosd_ui.cc:296
+#: src/aosd/aosd_ui.cc:357
 msgid "Fade out:"
 msgstr "Kaybolma:"
 
-#: src/aosd/aosd_ui.cc:360
+#: src/aosd/aosd_ui.cc:442
 msgid "Fonts"
 msgstr "Yazı Tipleri"
 
-#: src/aosd/aosd_ui.cc:367
+#: src/aosd/aosd_ui.cc:449
 #, c-format
 msgid "Font %i:"
 msgstr "Yazı tipi %i:"
 
-#: src/aosd/aosd_ui.cc:381
+#: src/aosd/aosd_ui.cc:466
 msgid "Shadow"
 msgstr "Gölge"
 
-#: src/aosd/aosd_ui.cc:485
+#: src/aosd/aosd_ui.cc:589
 msgid "Render Style"
 msgstr "Tarama Biçemi"
 
-#: src/aosd/aosd_ui.cc:501
+#: src/aosd/aosd_ui.cc:605
 msgid "Colors"
 msgstr "Renkler"
 
-#: src/aosd/aosd_ui.cc:512
+#: src/aosd/aosd_ui.cc:616
 #, c-format
 msgid "Color %i:"
 msgstr "Renk %i:"
 
-#: src/aosd/aosd_ui.cc:599
+#: src/aosd/aosd_ui.cc:714
 msgid "Enable trigger"
 msgstr "Tetikleyiciyi etkinleştir"
 
-#: src/aosd/aosd_ui.cc:626
+#: src/aosd/aosd_ui.cc:741
 msgid "Event"
 msgstr "Olay"
 
-#: src/aosd/aosd_ui.cc:653
+#: src/aosd/aosd_ui.cc:768
 msgid "Composite manager detected"
 msgstr "Bileşiklik yöneticisi tespit edildi"
 
-#: src/aosd/aosd_ui.cc:660
+#: src/aosd/aosd_ui.cc:775
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
@@ -760,56 +504,56 @@ msgstr ""
 "Çalışan bir bileşiklik yöneticisinin olduğundan emin değilseniz lütfen "
 "OSD'nin düzgün çalışması için bir bileşiklik yöneticisi çalıştırınız"
 
-#: src/aosd/aosd_ui.cc:668
+#: src/aosd/aosd_ui.cc:783
 msgid "Composite manager not required for fake transparency"
 msgstr "Sahte şeffaflık için bileşiklik yöneticisi gerekli değil"
 
-#: src/aosd/aosd_ui.cc:705
+#: src/aosd/aosd_ui.cc:820
 msgid "Transparency"
 msgstr "Şeffaflık"
 
-#: src/aosd/aosd_ui.cc:711
+#: src/aosd/aosd_ui.cc:826
 msgid "Fake transparency"
 msgstr "Sahte şeffaflık"
 
-#: src/aosd/aosd_ui.cc:713
+#: src/aosd/aosd_ui.cc:828
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "Gerçek Şeffaflık (X Bileşiklik Eklentisi gerekli)"
 
-#: src/aosd/aosd_ui.cc:754
+#: src/aosd/aosd_ui.cc:875
 msgid "Composite extension not loaded"
 msgstr "Bileşiklik eklentisi yüklü değil"
 
-#: src/aosd/aosd_ui.cc:771
+#: src/aosd/aosd_ui.cc:892
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
-#: src/aosd/aosd_ui.cc:834
+#: src/aosd/aosd_ui.cc:955
 msgid "Position"
 msgstr "Konum"
 
-#: src/aosd/aosd_ui.cc:839
+#: src/aosd/aosd_ui.cc:960
 msgid "Animation"
 msgstr "Canlandırma"
 
-#: src/aosd/aosd_ui.cc:844
+#: src/aosd/aosd_ui.cc:965
 msgid "Text"
 msgstr "Metin"
 
-#: src/aosd/aosd_ui.cc:849
+#: src/aosd/aosd_ui.cc:970
 msgid "Decoration"
 msgstr "Dekorasyon"
 
-#: src/aosd/aosd_ui.cc:854
+#: src/aosd/aosd_ui.cc:975
 msgid "Trigger"
 msgstr "Başlat"
 
-#: src/aosd/aosd_ui.cc:859 src/streamtuner/shoutcast-model.cc:202
+#: src/aosd/aosd_ui.cc:980 src/streamtuner/shoutcast-model.cc:202
 msgid "Misc"
 msgstr "Çeşitli"
 
-#: src/aosd/aosd_ui.cc:868
+#: src/aosd/aosd_ui.cc:989
 msgid "Test"
 msgstr "Test"
 
@@ -827,25 +571,25 @@ msgstr "Audacious Çalma Listeleri (audpl)"
 
 #: src/bitcrusher/bitcrusher.cc:33
 msgid "<b>Bitcrusher</b>"
-msgstr ""
+msgstr "<b>Bitcrusher</b>"
 
 #: src/bitcrusher/bitcrusher.cc:34
 msgid "Bit Depth:"
-msgstr ""
+msgstr "Bit Derinliği:"
 
 #: src/bitcrusher/bitcrusher.cc:37
 msgid "Downsample ratio:"
-msgstr ""
+msgstr "Aşağı ölçekleme oranı:"
 
 #: src/bitcrusher/bitcrusher.cc:48
 msgid "Bitcrusher"
-msgstr ""
+msgstr "Bitcrusher"
 
-#: src/blur_scope/blur_scope.cc:39 src/blur_scope-qt/blur_scope.cc:45
+#: src/blur_scope/blur_scope.cc:40 src/blur_scope-qt/blur_scope.cc:45
 msgid "<b>Color</b>"
 msgstr "<b>Renk</b>"
 
-#: src/blur_scope/blur_scope.cc:55 src/blur_scope-qt/blur_scope.cc:158
+#: src/blur_scope/blur_scope.cc:56 src/blur_scope-qt/blur_scope.cc:158
 msgid "Blur Scope"
 msgstr "Bulanıklık Kapsamı"
 
@@ -856,6 +600,10 @@ msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 #: src/bs2b/plugin.cc:129
 msgid "Presets:"
 msgstr "Önayarlar:"
+
+#: src/bs2b/plugin.cc:130
+msgid "Default"
+msgstr "Varsayılan"
 
 #: src/bs2b/plugin.cc:136
 msgid "Feed level:"
@@ -869,7 +617,7 @@ msgstr "x1/10 dB"
 msgid "Cut frequency:"
 msgstr "Kesim frekansı:"
 
-#: src/cairo-spectrum/cairo-spectrum.cc:41 src/qt-spectrum/qt-spectrum.cc:107
+#: src/cairo-spectrum/cairo-spectrum.cc:42 src/qt-spectrum/qt-spectrum.cc:107
 msgid "Spectrum Analyzer"
 msgstr "İzgesel Çözümleyici"
 
@@ -965,50 +713,50 @@ msgstr "Ses CD'si okunurken hata oluştu."
 msgid "Audio CD"
 msgstr "Ses CD'si"
 
-#: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
+#: src/cdaudio/cdaudio-ng.cc:434 src/cdaudio/cdaudio-ng.cc:443
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "%s CD aygıtı açılamadı."
 
-#: src/cdaudio/cdaudio-ng.cc:447
+#: src/cdaudio/cdaudio-ng.cc:446
 msgid "No audio capable CD drive found."
 msgstr "Ses özellikli CD sürücüsü bulunamadı."
 
-#: src/cdaudio/cdaudio-ng.cc:470
+#: src/cdaudio/cdaudio-ng.cc:469
 msgid "Drive is empty."
 msgstr "Sürücü boş."
 
-#: src/cdaudio/cdaudio-ng.cc:472
+#: src/cdaudio/cdaudio-ng.cc:471
 msgid "Unsupported disk type."
 msgstr "Desteklenmeyen disk türü."
 
-#: src/cdaudio/cdaudio-ng.cc:496
+#: src/cdaudio/cdaudio-ng.cc:495
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Açılan CD sürücüsü başlatılamadı."
 
-#: src/cdaudio/cdaudio-ng.cc:509
+#: src/cdaudio/cdaudio-ng.cc:508
 msgid "Failed to retrieve first/last track number."
 msgstr "İlk/son parça numarası alınamadı."
 
-#: src/cdaudio/cdaudio-ng.cc:530
+#: src/cdaudio/cdaudio-ng.cc:529
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "%d parçası için başlangıç/bitiş LSN okunamıyor."
 
-#: src/cdaudio/cdaudio-ng.cc:612
+#: src/cdaudio/cdaudio-ng.cc:611
 msgid "Failed to create the CDDB connection."
 msgstr "CDDB bağlantısı oluşturulamadı."
 
-#: src/cdaudio/cdaudio-ng.cc:678
+#: src/cdaudio/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
 msgstr "CDDB sunucusu sorgulanamadı"
 
-#: src/cdaudio/cdaudio-ng.cc:680
+#: src/cdaudio/cdaudio-ng.cc:679
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "CDDB sunucusu sorgulanamadı: %s"
 
-#: src/cdaudio/cdaudio-ng.cc:704
+#: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
 msgid "Failed to read the CDDB info: %s"
 msgstr "CDDB bilgisi okunamadı: %s"
@@ -1080,6 +828,13 @@ msgstr "Yankı:"
 #: src/console/plugin.cc:39
 msgid "Default song length:"
 msgstr "Varsayılan şarkı uzunluğu:"
+
+#: src/console/plugin.cc:41 src/crossfade/crossfade.cc:52
+#: src/crossfade/crossfade.cc:58 src/lirc/lirc.cc:395 src/notify/notify.cc:113
+#: src/sid/xs_config.cc:85 src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
+#: src/vumeter-qt/vumeter_qt.cc:39
+msgid "seconds"
+msgstr "saniye"
 
 #: src/console/plugin.cc:42 src/modplug/plugin_main.cc:58
 msgid "<b>Resampling</b>"
@@ -1231,7 +986,7 @@ msgid "Delete"
 msgstr "Sil"
 
 #: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
-#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:77
+#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:78
 msgid "Cancel"
 msgstr "İptal"
 
@@ -1286,11 +1041,11 @@ msgstr "Hacim:"
 msgid "Echo"
 msgstr "Yankı"
 
-#: src/ffaudio/ffaudio-core.cc:49
+#: src/ffaudio/ffaudio-core.cc:50
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg Eklentisi"
 
-#: src/ffaudio/ffaudio-core.cc:635
+#: src/ffaudio/ffaudio-core.cc:650
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1350,7 +1105,7 @@ msgstr ""
 
 #: src/filewriter/filewriter.cc:385
 msgid "Output file format:"
-msgstr "Çıktı dosya biçimi:"
+msgstr "Çıkış dosya biçimi:"
 
 #: src/filewriter/filewriter.cc:389
 msgid "Save into original directory"
@@ -1422,67 +1177,67 @@ msgstr "48000 Hz"
 
 #: src/filewriter/filewriter.cc:430
 msgid "8 kbit/s"
-msgstr ""
+msgstr "8 kbit/s"
 
 #: src/filewriter/filewriter.cc:431
 msgid "16 kbit/s"
-msgstr ""
+msgstr "16 kbit/s"
 
 #: src/filewriter/filewriter.cc:432
 msgid "32 kbit/s"
-msgstr ""
+msgstr "32 kbit/s"
 
 #: src/filewriter/filewriter.cc:433
 msgid "40 kbit/s"
-msgstr ""
+msgstr "40 kbit/s"
 
 #: src/filewriter/filewriter.cc:434
 msgid "48 kbit/s"
-msgstr ""
+msgstr "48 kbit/s"
 
 #: src/filewriter/filewriter.cc:435
 msgid "56 kbit/s"
-msgstr ""
+msgstr "56 kbit/s"
 
 #: src/filewriter/filewriter.cc:436
 msgid "64 kbit/s"
-msgstr ""
+msgstr "64 kbit/s"
 
 #: src/filewriter/filewriter.cc:437
 msgid "80 kbit/s"
-msgstr ""
+msgstr "80 kbit/s"
 
 #: src/filewriter/filewriter.cc:438
 msgid "96 kbit/s"
-msgstr ""
+msgstr "96 kbit/s"
 
 #: src/filewriter/filewriter.cc:439
 msgid "112 kbit/s"
-msgstr ""
+msgstr "112 kbit/s"
 
 #: src/filewriter/filewriter.cc:440
 msgid "128 kbit/s"
-msgstr ""
+msgstr "128 kbit/s"
 
 #: src/filewriter/filewriter.cc:441
 msgid "160 kbit/s"
-msgstr ""
+msgstr "160 kbit/s"
 
 #: src/filewriter/filewriter.cc:442
 msgid "192 kbit/s"
-msgstr ""
+msgstr "192 kbit/s"
 
 #: src/filewriter/filewriter.cc:443
 msgid "224 kbit/s"
-msgstr ""
+msgstr "224 kbit/s"
 
 #: src/filewriter/filewriter.cc:444
 msgid "256 kbit/s"
-msgstr ""
+msgstr "256 kbit/s"
 
 #: src/filewriter/filewriter.cc:445
 msgid "320 kbit/s"
-msgstr ""
+msgstr "320 kbit/s"
 
 #: src/filewriter/filewriter.cc:450
 msgid "Joint Stereo"
@@ -1615,11 +1370,11 @@ msgstr "Genel"
 msgid "FLAC Decoder"
 msgstr "FLAC Çözücü"
 
-#: src/flac/metadata.cc:280 src/wavpack/wavpack.cc:215
+#: src/flac/metadata.cc:293 src/wavpack/wavpack.cc:215
 msgid "lossless"
 msgstr "kayıpsız"
 
-#: src/flac/plugin.cc:180
+#: src/flac/plugin.cc:202
 msgid ""
 "Original code by\n"
 "Ralf Ertzinger <ralf@skytale.net>\n"
@@ -1651,7 +1406,7 @@ msgstr "Okuma-ve-ekleme modu desteklenmiyor"
 msgid "Invalid open mode"
 msgstr "Geçersiz açma modu"
 
-#: src/glspectrum/gl-spectrum.cc:51
+#: src/glspectrum/gl-spectrum.cc:52
 msgid ""
 "OpenGL Spectrum Analyzer for Audacious\n"
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
@@ -1671,116 +1426,134 @@ msgstr ""
 "\n"
 "Lisans: GPLv2+"
 
-#: src/glspectrum/gl-spectrum.cc:62 src/qtglspectrum/gl-spectrum.cc:53
+#: src/glspectrum/gl-spectrum.cc:63 src/qtglspectrum/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer"
 msgstr "Opengl İzgesel Çözümleyici"
 
-#: src/gtkui/columns.cc:35
-msgid "Entry number"
-msgstr "Sayı girin"
-
 #: src/gtkui/columns.cc:36 src/moonstone/playlist_model.cc:38
+#: src/qtui/playlist_model.cc:33
+msgid "Entry Number"
+msgstr "Sayı Girin"
+
+#: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:38
 #: src/moonstone/playlist_selection.cc:62
-#: src/playlist-manager/playlist-manager.cc:199
-#: src/playlist-manager-qt/playlist-manager-qt.cc:186
+#: src/playlist-manager/playlist-manager.cc:200
+#: src/playlist-manager-qt/playlist-manager-qt.cc:188
 #: src/qtui/playlist_model.cc:33 src/streamtuner/icecast-model.cc:120
 #: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:122
 msgid "Title"
 msgstr "Başlık"
 
-#: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:39
+#: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:33
 msgid "Artist"
 msgstr "Sanatçı"
 
-#: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
+#: src/gtkui/columns.cc:39 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:33
 msgid "Year"
 msgstr "Yıl"
 
-#: src/gtkui/columns.cc:39 src/moonstone/playlist_model.cc:39
+#: src/gtkui/columns.cc:40 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:34
 msgid "Album"
 msgstr "Albüm"
 
-#: src/gtkui/columns.cc:40
-msgid "Album artist"
-msgstr "Albüm sanatçısı"
-
 #: src/gtkui/columns.cc:41 src/moonstone/playlist_model.cc:40
+#: src/qtui/playlist_model.cc:34
+msgid "Album Artist"
+msgstr "Albüm Sanatçısı"
+
+#: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
 #: src/qtui/playlist_model.cc:34
 msgid "Track"
 msgstr "Parça"
 
-#: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
+#: src/gtkui/columns.cc:43 src/moonstone/playlist_model.cc:40
 #: src/qtui/playlist_model.cc:34 src/streamtuner/icecast-model.cc:123
 #: src/streamtuner/shoutcast-model.cc:125
 #: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
 msgstr "Tür"
 
-#: src/gtkui/columns.cc:43
-msgid "Queue position"
-msgstr "Liste sırası"
-
 #: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
+#: src/qtui/playlist_model.cc:35
+msgid "Queue Position"
+msgstr "Sıra Konumu"
+
+#: src/gtkui/columns.cc:45 src/moonstone/playlist_model.cc:41
 #: src/qtui/playlist_model.cc:35
 msgid "Length"
 msgstr "Uzunluk"
 
-#: src/gtkui/columns.cc:45
-msgid "File path"
-msgstr "Dosya yolu"
+#: src/gtkui/columns.cc:46 src/moonstone/playlist_model.cc:41
+#: src/qtui/playlist_model.cc:35
+msgid "File Path"
+msgstr "Dosya Yolu"
 
-#: src/gtkui/columns.cc:47
-msgid "Custom title"
-msgstr "Özel başlık"
+#: src/gtkui/columns.cc:47 src/moonstone/playlist_model.cc:42
+#: src/qtui/playlist_model.cc:35
+msgid "File Name"
+msgstr "Dosya Adı"
 
 #: src/gtkui/columns.cc:48 src/moonstone/playlist_model.cc:42
+#: src/qtui/playlist_model.cc:36
+msgid "Custom Title"
+msgstr "Özel Başlık"
+
+#: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:42
 #: src/qtui/playlist_model.cc:36 src/streamtuner/icecast-model.cc:129
 #: src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
 msgstr "Bit oranı"
 
-#: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:43
+#: src/gtkui/columns.cc:50 src/moonstone/playlist_model.cc:43
 #: src/qtui/playlist_model.cc:36
 msgid "Comment"
 msgstr "Yorum"
 
-#: src/gtkui/columns.cc:315
+#: src/gtkui/columns.cc:51 src/qtui/playlist_model.cc:36
+msgid "Publisher"
+msgstr "Yayıncı"
+
+#: src/gtkui/columns.cc:52 src/qtui/playlist_model.cc:37
+msgid "Catalog Number"
+msgstr "Kalatog Numarası"
+
+#: src/gtkui/columns.cc:322
 msgid "Available columns"
 msgstr "Kullanılabilir sütunlar"
 
-#: src/gtkui/columns.cc:341
+#: src/gtkui/columns.cc:348
 msgid "Displayed columns"
 msgstr "Görüntülenen sütunlar"
 
-#: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:58
-#: src/search-tool/search-tool.cc:48
+#: src/gtkui/layout.cc:74 src/search-tool-qt/search-tool-qt.cc:58
+#: src/search-tool/search-tool.cc:49
 msgid "Search Tool"
 msgstr "Arama Aracı"
 
-#: src/gtkui/layout.cc:168
+#: src/gtkui/layout.cc:170
 msgid "Dock at Left"
 msgstr "Sola kenetle"
 
-#: src/gtkui/layout.cc:168
+#: src/gtkui/layout.cc:170
 msgid "Dock at Right"
 msgstr "Sağa kenetle"
 
-#: src/gtkui/layout.cc:169
+#: src/gtkui/layout.cc:171
 msgid "Dock at Top"
 msgstr "Üste kenetle"
 
-#: src/gtkui/layout.cc:169
+#: src/gtkui/layout.cc:171
 msgid "Dock at Bottom"
 msgstr "Aşağıya kenetle"
 
-#: src/gtkui/layout.cc:169
+#: src/gtkui/layout.cc:171
 msgid "Undock"
 msgstr "Çıkar"
 
-#: src/gtkui/layout.cc:169 src/ladspa/plugin.cc:534
+#: src/gtkui/layout.cc:171 src/ladspa/plugin.cc:540
 msgid "Disable"
 msgstr "Devre Dışı"
 
@@ -1820,8 +1593,8 @@ msgstr "_Çık"
 
 #: src/gtkui/menus.cc:92 src/gtkui/menus.cc:224
 #: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
-#: src/qtui/playlist_tabs.cc:328 src/search-tool-qt/search-tool-qt.cc:499
-#: src/search-tool/search-tool.cc:343 src/statusicon-qt/statusicon.cc:106
+#: src/qtui/playlist_tabs.cc:330 src/search-tool-qt/search-tool-qt.cc:499
+#: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:106
 #: src/statusicon/statusicon.cc:276
 msgid "_Play"
 msgstr "_Oynat"
@@ -1998,8 +1771,8 @@ msgstr "Kopyaları Kal_dır"
 msgid "Remove _Unavailable Files"
 msgstr "K_ullanılamayan Dosyaları Kaldır"
 
-#: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:218
-#: src/playlist-manager-qt/playlist-manager-qt.cc:346 src/qtui/menus.cc:227
+#: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:219
+#: src/playlist-manager-qt/playlist-manager-qt.cc:348 src/qtui/menus.cc:227
 msgid "_New"
 msgstr "_Yeni"
 
@@ -2009,7 +1782,7 @@ msgstr "_Adlandır ..."
 
 #: src/gtkui/menus.cc:166 src/gtkui/menus.cc:226
 #: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:229
-#: src/qtui/playlist_tabs.cc:333
+#: src/qtui/playlist_tabs.cc:335
 msgid "Remo_ve"
 msgstr "_Kaldır"
 
@@ -2063,7 +1836,7 @@ msgstr "Bilgi Çubuğunu Göster"
 
 #: src/gtkui/menus.cc:189 src/qtui/menus.cc:262
 msgid "Show Info Bar _Album Art"
-msgstr ""
+msgstr "Bilgi Çubuğu _Albüm Resmini Göster"
 
 #: src/gtkui/menus.cc:190 src/qtui/menus.cc:264
 msgid "Show Info Bar Vis_ualization"
@@ -2140,7 +1913,7 @@ msgid "Select _All"
 msgstr "Tümünü_Seç"
 
 #: src/gtkui/menus.cc:225 src/moonstone/playlist_tabs.cc:309
-#: src/qtui/playlist_tabs.cc:331
+#: src/qtui/playlist_tabs.cc:333
 msgid "_Rename ..."
 msgstr "Yeniden adlandı_r ..."
 
@@ -2168,30 +1941,35 @@ msgstr "<b>Çalma Listesi Sütunları</b>"
 msgid "Show column headers"
 msgstr "Sütun başlıklarını göster"
 
-#: src/gtkui/settings.cc:47 src/qtui/settings.cc:82
+#: src/gtkui/settings.cc:47
+msgid "Use symbolic icons in toolbar"
+msgstr "Araç çubuğunda sembolik simgeler kullan"
+
+#: src/gtkui/settings.cc:49 src/qtui/settings.cc:82
 msgid "Scroll on song change"
 msgstr "Şarkı değişikliğinde kaydır"
 
-#: src/gtkui/ui_gtk.cc:74
+#: src/gtkui/ui_gtk.cc:81
 msgid "GTK Interface"
 msgstr "GTK Arayüzü"
 
-#: src/gtkui/ui_gtk.cc:210 src/skins/main.cc:227 src/skins-qt/main.cc:225
+#: src/gtkui/ui_gtk.cc:218 src/skins/main.cc:227 src/skins-qt/main.cc:231
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:184
+#: src/gtkui/ui_gtk.cc:220 src/moonstone/main_window.cc:184
 #: src/qtui/main_window.cc:384
 msgid "Buffering ..."
 msgstr "Arabelleğe alınıyor ..."
 
-#: src/gtkui/ui_gtk.cc:215 src/skins/main.cc:229 src/skins-qt/main.cc:227
+#: src/gtkui/ui_gtk.cc:223 src/pipewire/pipewire.cc:401 src/skins/main.cc:229
+#: src/skins-qt/main.cc:233
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:428 src/gtkui/ui_gtk.cc:459 src/gtkui/ui_gtk.cc:817
-#: src/hotkey/gui.cc:71 src/moonstone/main_window.cc:67
+#: src/gtkui/ui_gtk.cc:444 src/gtkui/ui_gtk.cc:475 src/gtkui/ui_gtk.cc:838
+#: src/hotkey/gui.cc:72 src/moonstone/main_window.cc:67
 #: src/moonstone/main_window.cc:145 src/moonstone/main_window.cc:146
 #: src/notify/osd.cc:85 src/qthotkey/gui.cc:64 src/qtui/main_window.cc:154
 #: src/qtui/main_window.cc:346 src/qtui/main_window.cc:347
@@ -2199,166 +1977,166 @@ msgstr "Audacious"
 msgid "Play"
 msgstr "Çal"
 
-#: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:151
+#: src/gtkui/ui_gtk.cc:444 src/moonstone/main_window.cc:151
 #: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
 #: src/qtui/main_window.cc:352 src/qtui/main_window.cc:353
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Pause"
 msgstr "Duraklat"
 
-#: src/gtkui/ui_gtk.cc:803 src/moonstone/main_window.cc:57
+#: src/gtkui/ui_gtk.cc:824 src/moonstone/main_window.cc:57
 #: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr "Kitaplığı Ara"
 
-#: src/gtkui/ui_gtk.cc:810 src/moonstone/main_window.cc:60
+#: src/gtkui/ui_gtk.cc:831 src/moonstone/main_window.cc:60
 #: src/qtui/main_window.cc:147
 msgid "Open Files"
 msgstr "Dosyaları Aç"
 
-#: src/gtkui/ui_gtk.cc:811 src/moonstone/main_window.cc:62
+#: src/gtkui/ui_gtk.cc:832 src/moonstone/main_window.cc:62
 #: src/qtui/main_window.cc:149
 msgid "Add Files"
 msgstr "Dosyaları Ekle"
 
-#: src/gtkui/ui_gtk.cc:816 src/moonstone/main_window.cc:65
+#: src/gtkui/ui_gtk.cc:837 src/moonstone/main_window.cc:65
 #: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Previous"
 msgstr "Önceki Parça"
 
-#: src/gtkui/ui_gtk.cc:818 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:69
+#: src/gtkui/ui_gtk.cc:839 src/hotkey/gui.cc:74 src/moonstone/main_window.cc:69
 #: src/qthotkey/gui.cc:66 src/qtui/main_window.cc:156 src/skins/menus.cc:111
 #: src/skins-qt/menus.cc:102
 msgid "Stop"
 msgstr "Dur"
 
-#: src/gtkui/ui_gtk.cc:819 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
+#: src/gtkui/ui_gtk.cc:840 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
 #: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
 msgstr "Sonraki Parça"
 
-#: src/gtkui/ui_gtk.cc:821 src/moonstone/main_window.cc:79
+#: src/gtkui/ui_gtk.cc:842 src/moonstone/main_window.cc:79
 #: src/qtui/main_window.cc:166 src/qtui/menus.cc:252 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "Canlı Kayıt"
 
-#: src/gtkui/ui_gtk.cc:854 src/moonstone/main_window.cc:86
+#: src/gtkui/ui_gtk.cc:875 src/moonstone/main_window.cc:86
 #: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
 msgid "Repeat"
 msgstr "Tekrar et"
 
-#: src/gtkui/ui_gtk.cc:857 src/moonstone/main_window.cc:89
+#: src/gtkui/ui_gtk.cc:878 src/moonstone/main_window.cc:89
 #: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
 msgid "Shuffle"
 msgstr "Karıştır"
 
-#: src/gtkui/ui_gtk.cc:1030 src/qtui/main_window.cc:123
+#: src/gtkui/ui_gtk.cc:1061 src/qtui/main_window.cc:123
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
-#: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:155
+#: src/gtkui/ui_statusbar.cc:64 src/qtui/status_bar.cc:155
 msgid "mono"
 msgstr "mono"
 
-#: src/gtkui/ui_statusbar.cc:65 src/qtui/status_bar.cc:157
+#: src/gtkui/ui_statusbar.cc:66 src/qtui/status_bar.cc:157
 msgid "stereo"
 msgstr "stereo"
 
-#: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:160
+#: src/gtkui/ui_statusbar.cc:68 src/qtui/status_bar.cc:160
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
 msgstr[0] "%d kanal"
 msgstr[1] "%d kanallar"
 
-#: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:168
+#: src/gtkui/ui_statusbar.cc:76 src/qtui/status_bar.cc:168
 #, c-format
 msgid "%d kHz"
 msgstr "%d kHz"
 
-#: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:174
+#: src/gtkui/ui_statusbar.cc:82 src/qtui/status_bar.cc:174
 #, c-format
 msgid "%d kbit/s"
-msgstr ""
+msgstr "%d kbit/s"
 
-#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471 src/skins-qt/main.cc:455
+#: src/gtkui/ui_statusbar.cc:108 src/skins/main.cc:471 src/skins-qt/main.cc:461
 msgid "Single mode."
 msgstr "Tekli mod."
 
-#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:473 src/skins-qt/main.cc:457
+#: src/gtkui/ui_statusbar.cc:110 src/skins/main.cc:473 src/skins-qt/main.cc:463
 msgid "Playlist mode."
 msgstr "Çalma Listesi modu"
 
-#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:479 src/skins-qt/main.cc:463
+#: src/gtkui/ui_statusbar.cc:118 src/skins/main.cc:479 src/skins-qt/main.cc:469
 msgid "Stopping after song."
 msgstr "Şarkıdan sonra duruyor."
 
-#: src/hotkey/gui.cc:70 src/qthotkey/gui.cc:63
+#: src/hotkey/gui.cc:71 src/qthotkey/gui.cc:63
 msgid "Previous track"
 msgstr "Önceki parça"
 
-#: src/hotkey/gui.cc:72 src/qthotkey/gui.cc:65
+#: src/hotkey/gui.cc:73 src/qthotkey/gui.cc:65
 msgid "Pause/Resume"
 msgstr "Ara ver/Devam et"
 
-#: src/hotkey/gui.cc:74 src/qthotkey/gui.cc:67
+#: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:67
 msgid "Next track"
 msgstr "Sonraki parça"
 
-#: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:68
+#: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:68
 msgid "Step forward"
 msgstr "İleri git"
 
-#: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:69
+#: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:69
 msgid "Step backward"
 msgstr "Geri git"
 
-#: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:70
+#: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:70
 msgid "Mute"
 msgstr "Sessiz"
 
-#: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:71
+#: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:71
 msgid "Volume up"
 msgstr "Sesi aç"
 
-#: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:72
+#: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:72
 msgid "Volume down"
 msgstr "Sesi kıs"
 
-#: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:73
+#: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:73
 msgid "Jump to file"
 msgstr "Dosyaya Atla"
 
-#: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:74
+#: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:74
 msgid "Toggle player window(s)"
 msgstr "Oynatıcı pencere(leri)si aç"
 
-#: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:75
+#: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:75
 msgid "Show On-Screen-Display"
 msgstr "On-Screen-Display Göster"
 
-#: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:76
+#: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:76
 msgid "Toggle repeat"
 msgstr "Tekrarlama yap"
 
-#: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:77
+#: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:77
 msgid "Toggle shuffle"
 msgstr "Karıştırmayı aç"
 
-#: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:78
+#: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:78
 msgid "Toggle stop after current"
 msgstr "Şimdiki çalmadan sonra durdurmayı aç"
 
-#: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:79
+#: src/hotkey/gui.cc:87 src/qthotkey/gui.cc:79
 msgid "Raise player window(s)"
 msgstr "Oynatma pencere(ler)sini yükselt"
 
-#: src/hotkey/gui.cc:97 src/qthotkey/gui.cc:97
+#: src/hotkey/gui.cc:98 src/qthotkey/gui.cc:97
 msgid "(none)"
 msgstr "(hiçbiri)"
 
-#: src/hotkey/gui.cc:260
+#: src/hotkey/gui.cc:261
 msgid ""
 "It is not recommended to bind the primary mouse buttons without modifiers.\n"
 "\n"
@@ -2368,11 +2146,11 @@ msgstr ""
 "\n"
 "Devam etmek istiyor musunuz?"
 
-#: src/hotkey/gui.cc:263
+#: src/hotkey/gui.cc:264
 msgid "Binding mouse buttons"
 msgstr "Fare düğmeleri bağlaması"
 
-#: src/hotkey/gui.cc:426
+#: src/hotkey/gui.cc:433
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -2380,19 +2158,19 @@ msgstr ""
 "Bir metin alanının içindeki tuş kombinasyonuna basın.\n"
 "Fare düğmelerini de bağlayabilirsiniz."
 
-#: src/hotkey/gui.cc:432 src/qthotkey/gui.cc:167
+#: src/hotkey/gui.cc:443 src/qthotkey/gui.cc:167
 msgid "Hotkeys:"
 msgstr "Kısayollar:"
 
-#: src/hotkey/gui.cc:448 src/qthotkey/gui.cc:169
+#: src/hotkey/gui.cc:456 src/qthotkey/gui.cc:169
 msgid "<b>Action:</b>"
 msgstr "<b>Eylem:</b>"
 
-#: src/hotkey/gui.cc:454 src/qthotkey/gui.cc:170
+#: src/hotkey/gui.cc:460 src/qthotkey/gui.cc:170
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Anahtar Bağlama:</b>"
 
-#: src/hotkey/gui.cc:501 src/qthotkey/gui.cc:172
+#: src/hotkey/gui.cc:517 src/qthotkey/gui.cc:172
 msgid "_Add"
 msgstr "_Ekle"
 
@@ -2429,7 +2207,7 @@ msgstr ""
 
 #: src/jack/jack-ng.cc:54
 msgid "JACK Output"
-msgstr "Jack Çıkış baglantısı"
+msgstr "JACK Çıkışı"
 
 #: src/jack/jack-ng.cc:126
 msgid "Client name:"
@@ -2437,7 +2215,7 @@ msgstr "İstemci adı:"
 
 #: src/jack/jack-ng.cc:128
 msgid "Automatically connect to output ports"
-msgstr "Çıkış bağlantı noktalarına otomatik olarak bağlanma"
+msgstr "Çıkış bağlantı noktalarına otomatik olarak bağlan"
 
 #: src/jack/jack-ng.cc:130
 msgid "Filter ports (regex, use any port if blank):"
@@ -2497,16 +2275,16 @@ msgstr ""
 "çalar. Uyumsuzluğu düzeltmek için lütfen Örnek Hızı Dönüştürücü efekti "
 "kullanın."
 
-#: src/ladspa/plugin.cc:415
+#: src/ladspa/plugin.cc:416
 #, c-format
 msgid "%s Settings"
 msgstr "%s Ayarlar"
 
-#: src/ladspa/plugin.cc:481
+#: src/ladspa/plugin.cc:482
 msgid "Module paths:"
 msgstr "Modül Yolu:"
 
-#: src/ladspa/plugin.cc:486
+#: src/ladspa/plugin.cc:487
 msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
@@ -2517,25 +2295,25 @@ msgstr ""
 "Yeni yollar ekledikten sonra, yeni eklentileri taramak için Enter tuşuna "
 "basın.</small>"
 
-#: src/ladspa/plugin.cc:502
+#: src/ladspa/plugin.cc:508
 msgid "Available plugins:"
 msgstr "Kullanılabilir Eklentiler:"
 
-#: src/ladspa/plugin.cc:515 src/modplug/plugin_main.cc:91
+#: src/ladspa/plugin.cc:521 src/modplug/plugin_main.cc:91
 #: src/modplug/plugin_main.cc:94 src/modplug/plugin_main.cc:97
 #: src/modplug/plugin_main.cc:100
 msgid "Enable"
 msgstr "İzin ver"
 
-#: src/ladspa/plugin.cc:521
+#: src/ladspa/plugin.cc:527
 msgid "Enabled plugins:"
 msgstr "Eklentilere İzin ver:"
 
-#: src/ladspa/plugin.cc:537
+#: src/ladspa/plugin.cc:543
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: src/ladspa/plugin.cc:554
+#: src/ladspa/plugin.cc:560
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
@@ -2593,101 +2371,105 @@ msgstr "LIRC sunucusuna yeniden bağlan"
 msgid "Wait before reconnecting:"
 msgstr "Yeniden bağlanmadan önce bekleyin:"
 
-#: src/lyricwiki-qt/lyricwiki.cc:89
+#: src/lyricwiki-qt/lyricwiki.cc:90
 msgid "Lyrics"
 msgstr "Şarkı sözleri"
 
-#: src/lyricwiki-qt/lyricwiki.cc:116
+#: src/lyricwiki-qt/lyricwiki.cc:118
 msgid "Nowhere"
 msgstr "Nowhere"
 
-#: src/lyricwiki-qt/lyricwiki.cc:117
+#: src/lyricwiki-qt/lyricwiki.cc:119
 msgid "lyrics.ovh"
 msgstr "lyrics.ovh"
 
-#: src/lyricwiki-qt/lyricwiki.cc:121
+#: src/lyricwiki-qt/lyricwiki.cc:123
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
-msgstr ""
+msgstr "<small>Sanatçı başlangıçta kısaltılmış, Başlık -- sonunda</small>"
 
-#: src/lyricwiki-qt/lyricwiki.cc:122
+#: src/lyricwiki-qt/lyricwiki.cc:124
 msgid "Chars to truncate on:"
-msgstr ""
+msgstr "Kısaltılacak karakterler:"
 
-#: src/lyricwiki-qt/lyricwiki.cc:126
+#: src/lyricwiki-qt/lyricwiki.cc:128
 msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
 msgstr ""
 
-#: src/lyricwiki-qt/lyricwiki.cc:127
+#: src/lyricwiki-qt/lyricwiki.cc:129
 msgid "Chars to split on:"
-msgstr ""
+msgstr "Bölünecek karakterler:"
 
-#: src/lyricwiki-qt/lyricwiki.cc:128
+#: src/lyricwiki-qt/lyricwiki.cc:130
 msgid "Further truncate those on chars"
-msgstr ""
+msgstr "Karakterlerde daha fazla kısalt"
 
-#: src/lyricwiki-qt/lyricwiki.cc:134
+#: src/lyricwiki-qt/lyricwiki.cc:136
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Genel</b>"
 
-#: src/lyricwiki-qt/lyricwiki.cc:135
+#: src/lyricwiki-qt/lyricwiki.cc:137
 msgid "Split title into artist and title on chars"
-msgstr ""
+msgstr "Başlığı sanatçıya ve başlığa karakter olarak böl"
 
-#: src/lyricwiki-qt/lyricwiki.cc:138
-msgid "<b>Internet Sources</b>"
-msgstr "<b>Internet Kaynakları</b>"
+#: src/lyricwiki-qt/lyricwiki.cc:140
+msgid "<b>Sources</b>"
+msgstr "<b>Kaynaklar</b>"
 
-#: src/lyricwiki-qt/lyricwiki.cc:139
-msgid "Fetch lyrics from:"
-msgstr "Şuradan şarkı sözleri al:"
+#: src/lyricwiki-qt/lyricwiki.cc:141
+msgid "Use embedded lyrics (from Lyrics tag)"
+msgstr "Gömülü şarkı sözlerini kullan (Lyrics etiketinden)"
 
-#: src/lyricwiki-qt/lyricwiki.cc:142
+#: src/lyricwiki-qt/lyricwiki.cc:143
+msgid "Fetch lyrics from internet:"
+msgstr "İnternetten şarkı sözleri al:"
+
+#: src/lyricwiki-qt/lyricwiki.cc:146
 msgid "Store fetched lyrics in local cache"
 msgstr "Alınan şarkı sözlerini yerel önbellekte depola"
 
-#: src/lyricwiki-qt/lyricwiki.cc:144
+#: src/lyricwiki-qt/lyricwiki.cc:148
 msgid "<b>Local Storage</b>"
 msgstr "<b>Yerel Depolama</b>"
 
-#: src/lyricwiki-qt/lyricwiki.cc:145
+#: src/lyricwiki-qt/lyricwiki.cc:149
 msgid "Load lyric files (.lrc) from local storage"
 msgstr "Yerel depodan şarkı sözü dosyaları (.lrc) yükle"
 
-#: src/lyricwiki-qt/lyricwiki.cc:356
+#: src/lyricwiki-qt/lyricwiki.cc:360
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "%s getirilemiyor"
 
-#: src/lyricwiki-qt/lyricwiki.cc:365
+#: src/lyricwiki-qt/lyricwiki.cc:369
 #, c-format
 msgid "Unable to parse %s"
 msgstr "%s ayrıştırılamıyor"
 
-#: src/lyricwiki-qt/lyricwiki.cc:403
+#: src/lyricwiki-qt/lyricwiki.cc:407
 msgid "Looking for lyrics ..."
 msgstr "Şarkı sözü ara ..."
 
-#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:62
+#: src/lyricwiki-qt/lyricwiki.cc:431 src/ui-common/dialogs-qt.cc:62
 msgid "Error"
 msgstr "Hata"
 
-#: src/lyricwiki-qt/lyricwiki.cc:433
+#: src/lyricwiki-qt/lyricwiki.cc:437
 msgid "Lyrics could not be found."
 msgstr "Şarkı sözleri bulunamadı."
 
-#: src/lyricwiki-qt/lyricwiki.cc:501
+#: src/lyricwiki-qt/lyricwiki.cc:518
 msgid "Missing title and/or artist."
 msgstr "Başlık ve/veya sanatçı eksik."
 
-#: src/lyricwiki-qt/lyricwiki.cc:553
+#: src/lyricwiki-qt/lyricwiki.cc:576
 msgid "Save Locally"
 msgstr "Yerel Olarak Kaydet"
 
-#: src/lyricwiki-qt/lyricwiki.cc:561
+#: src/lyricwiki-qt/lyricwiki.cc:584
 msgid "Refresh"
 msgstr "Yenile"
 
-#: src/m3u/m3u.cc:32
+#: src/m3u/m3u.cc:33
 msgid "M3U Playlists"
 msgstr "M3U Çalma Listeleri"
 
@@ -2852,43 +2634,19 @@ msgstr "Şarkıdan Sonra Durdur"
 
 #: src/moonstone/moonstone.cc:39
 msgid "Moonstone"
-msgstr ""
+msgstr "Moonstone"
 
-#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:251
+#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:256
 msgid "Reset to Defaults"
 msgstr "Varsayılanlara Dön"
 
-#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:225
+#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:230
 msgid "Now Playing"
 msgstr "Şimdi Çalınıyor"
 
-#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_model.cc:33
-msgid "Entry Number"
-msgstr "Sayı Girin"
-
-#: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:34
-msgid "Album Artist"
-msgstr "Albüm Sanatçısı"
-
-#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
-msgid "Queue Position"
-msgstr "Sıra Konumu"
-
-#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
-msgid "File Path"
-msgstr "Dosya Yolu"
-
-#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:35
-msgid "File Name"
-msgstr "Dosya Adı"
-
-#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:36
-msgid "Custom Title"
-msgstr "Özel Başlık"
-
 #: src/moonstone/playlist_selection.cc:64
-#: src/playlist-manager/playlist-manager.cc:200
-#: src/playlist-manager-qt/playlist-manager-qt.cc:188
+#: src/playlist-manager/playlist-manager.cc:201
+#: src/playlist-manager-qt/playlist-manager-qt.cc:190
 msgid "Entries"
 msgstr "Girdiler"
 
@@ -2994,7 +2752,7 @@ msgstr "Bildirimde albüm adını dahil et"
 
 #: src/notify/notify.cc:110
 msgid "Custom notification duration:"
-msgstr ""
+msgstr "Özel bildirim süresi:"
 
 #: src/notify/osd.cc:74
 msgid "Show"
@@ -3004,7 +2762,7 @@ msgstr "Göster"
 msgid "OpenMPT (Module Player)"
 msgstr "OpenMPT (Modül Oynatıcı)"
 
-#: src/openmpt/mpt.cc:133
+#: src/openmpt/mpt.cc:132
 msgid ""
 "Module player based on libopenmpt\n"
 "\n"
@@ -3014,15 +2772,15 @@ msgstr ""
 "\n"
 "Yazan: Chris Spiegel <cspiegel@gmail.com>"
 
-#: src/openmpt/mpt.cc:152
+#: src/openmpt/mpt.cc:151
 msgid "Stereo separation:"
 msgstr "Stereo ayırma:"
 
-#: src/openmpt/mpt.cc:154
+#: src/openmpt/mpt.cc:153
 msgid "%"
 msgstr "%"
 
-#: src/openmpt/mpt.cc:158
+#: src/openmpt/mpt.cc:157
 msgid "Interpolation:"
 msgstr "İnterpolasyon:"
 
@@ -3038,11 +2796,23 @@ msgstr "Kübik"
 msgid "Windowed sinc"
 msgstr "Pencereli sinc"
 
-#: src/oss4/oss.h:75
+#: src/opus/opus.cc:39
+msgid "Opus Decoder"
+msgstr "Opus Çözücü"
+
+#: src/opus/opus.cc:351
+msgid ""
+"Opus Decoder Plugin for Audacious\n"
+"Copyright 2022 Thomas Lange"
+msgstr ""
+"Audacious için Opus Çözücü eklentisi\n"
+"Telif Hakkı 2022 Thomas Lange"
+
+#: src/oss4/oss.h:70
 msgid "OSS4 Output"
 msgstr "OSS4 Çıkışı"
 
-#: src/oss4/oss.h:77
+#: src/oss4/oss.h:72
 msgid "OSS3 Output"
 msgstr "OSS3 Çıkışı"
 
@@ -3084,18 +2854,40 @@ msgstr ""
 "#audacious için emeği insanlara teşekkür etmek isterim, özellikle Tony Vroon "
 "ve John Lindgren ve tabii ki önceki OSS eklentisinin yazarlarına."
 
-#: src/playlist-manager/playlist-manager.cc:37
-#: src/playlist-manager-qt/playlist-manager-qt.cc:40
+#: src/pipewire/pipewire.cc:40
+msgid "PipeWire Output"
+msgstr "PipeWire Çıkışı"
+
+#: src/pipewire/pipewire.cc:114
+msgid ""
+"PipeWire Output Plugin for Audacious\n"
+"Copyright 2022 Thomas Lange\n"
+"\n"
+"Based on the PipeWire Output Plugin for Qmmp\n"
+"Copyright 2021 Ilya Kotov"
+msgstr ""
+"Audacious için PipeWire Çıktı Eklentisi\n"
+"Telif Hakkı 2022 Thomas Lange\n"
+"\n"
+"Qmmp PipeWire Çıktı Eklentisi temelli\n"
+"Telif Hakkı 2021 Ilya Kotov"
+
+#: src/pipewire/pipewire.cc:406 src/skins/menus.cc:88 src/skins-qt/menus.cc:79
+msgid "Playback"
+msgstr "Çal"
+
+#: src/playlist-manager/playlist-manager.cc:38
+#: src/playlist-manager-qt/playlist-manager-qt.cc:42
 msgid "Playlist Manager"
 msgstr "Çalma Listesi Düzenleyici"
 
-#: src/playlist-manager/playlist-manager.cc:220
-#: src/playlist-manager-qt/playlist-manager-qt.cc:354
+#: src/playlist-manager/playlist-manager.cc:221
+#: src/playlist-manager-qt/playlist-manager-qt.cc:356
 msgid "_Remove"
 msgstr "_Sil"
 
-#: src/playlist-manager/playlist-manager.cc:221
-#: src/playlist-manager-qt/playlist-manager-qt.cc:349
+#: src/playlist-manager/playlist-manager.cc:222
+#: src/playlist-manager-qt/playlist-manager-qt.cc:351
 msgid "Ren_ame"
 msgstr "_Adlandır"
 
@@ -3191,10 +2983,19 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"Audacious için OpenGL İsgesel Çözümleyici\n"
+"Telif Hakkı 2013 Christophe Budé, John Lindgren, ve Carlo Bramini\n"
+"Telif Hakkı 2014, 2020 Ariadne Conill\n"
+"\n"
+"XMMS eklentisi temelli:\n"
+"Telif Hakkı 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, "
+"ve 4Front Technologies\n"
+"\n"
+"Lisans: GPLv2+"
 
 #: src/qthotkey/gui.cc:165
 msgid "Press a key combination inside a text field."
-msgstr ""
+msgstr "Metin alanı içinde bir tuş birleşimine bas."
 
 #: src/qthotkey/plugin.cc:103
 msgid ""
@@ -3211,6 +3012,19 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
+"Küresel Kısayol Tuşu Eklentisi\n"
+"Küresel tuş kombinasyonları veya çoklu ortam tuşları ile oynatıcıyı kontrol "
+"edin.\n"
+"\n"
+"Telif Hakkı (C) 2020 i.Dark_Templar <darktemplar@dark-templar-archives.net>\n"
+"Telif Hakkı (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Katkıda bulunanlar:\n"
+"Telif Hakkı (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Telif Hakkı (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/qtui/menus.cc:109
 msgid "_Open Folder ..."
@@ -3232,13 +3046,17 @@ msgstr "_Bul ..."
 msgid "Audio Settings ..."
 msgstr "Ses Ayarları ..."
 
-#: src/qtui/playlist_model.cc:186
-msgid "Q#"
-msgstr ""
-
 #: src/qtui/playlist_model.cc:188
+msgid "Q#"
+msgstr "Q#"
+
+#: src/qtui/playlist_model.cc:190
 msgid "T#"
-msgstr ""
+msgstr "T#"
+
+#: src/qtui/playlist_model.cc:192
+msgid "C#"
+msgstr "C#"
 
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
@@ -3266,7 +3084,7 @@ msgstr "Çalma listesi sekmelerini göster:"
 
 #: src/qtui/settings.cc:78
 msgid "Use bold font for column headers"
-msgstr ""
+msgstr "Sütun başlıkları için kalın yazı tipi kullan"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -3456,30 +3274,30 @@ msgstr ""
 msgid "Library"
 msgstr "Kitaplık"
 
-#: src/search-tool-qt/search-model.cc:49 src/search-tool/search-tool.cc:291
+#: src/search-tool-qt/search-model.cc:44 src/search-tool/search-tool.cc:287
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
 msgstr[0] "%d şarkı"
 msgstr[1] "%d şarkılar"
 
-#: src/search-tool-qt/search-model.cc:58 src/search-tool/search-tool.cc:298
+#: src/search-tool-qt/search-model.cc:53 src/search-tool/search-tool.cc:294
 msgid "of this genre"
 msgstr "bu türün"
 
-#: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
+#: src/search-tool-qt/search-model.h:47 src/search-tool/search-model.h:45
 msgid "on"
 msgstr "üzerinde"
 
-#: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
+#: src/search-tool-qt/search-model.h:47 src/search-tool/search-model.h:45
 msgid "by"
 msgstr "tarafından"
 
-#: src/search-tool-qt/search-tool-qt.cc:165 src/search-tool/search-tool.cc:73
+#: src/search-tool-qt/search-tool-qt.cc:165 src/search-tool/search-tool.cc:74
 msgid "Number of results to show:"
 msgstr "Gösterilecek sonuç sayısı:"
 
-#: src/search-tool-qt/search-tool-qt.cc:168 src/search-tool/search-tool.cc:76
+#: src/search-tool-qt/search-tool-qt.cc:168 src/search-tool/search-tool.cc:77
 msgid "Rescan library at startup"
 msgstr "Başlangıçta kitaplığı yeniden tara"
 
@@ -3487,7 +3305,7 @@ msgstr "Başlangıçta kitaplığı yeniden tara"
 msgid "Monitor library for changes"
 msgstr "Kütüphaneleri değişiklikler için izleyin"
 
-#: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:446
+#: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:450
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -3495,37 +3313,37 @@ msgstr ""
 "Müzik kitaplığınızı Audacious'a aktarmak için bir dizin seçin ve ardından "
 "\"yenileme\" simgesine tıklayın."
 
-#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:455
+#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:459
 msgid "Please wait ..."
 msgstr "Lütfen bekleyin ..."
 
-#: src/search-tool-qt/search-tool-qt.cc:197 src/search-tool/search-tool.cc:483
+#: src/search-tool-qt/search-tool-qt.cc:197 src/search-tool/search-tool.cc:487
 msgid "Choose Folder"
 msgstr "Klasör Seçin"
 
-#: src/search-tool-qt/search-tool-qt.cc:201
+#: src/search-tool-qt/search-tool-qt.cc:201 src/search-tool/search-tool.cc:445
 msgid "Search library"
 msgstr "Kitaplığı ara"
 
-#: src/search-tool-qt/search-tool-qt.cc:327 src/search-tool/search-tool.cc:155
+#: src/search-tool-qt/search-tool-qt.cc:327 src/search-tool/search-tool.cc:156
 #, c-format
 msgid "%d of %d result shown"
 msgid_plural "%d of %d results shown"
 msgstr[0] "%d sonucun %di gösteriliyor"
 msgstr[1] "%d sonuçların %d'si gösteriliyor"
 
-#: src/search-tool-qt/search-tool-qt.cc:331 src/search-tool/search-tool.cc:159
+#: src/search-tool-qt/search-tool-qt.cc:331 src/search-tool/search-tool.cc:160
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
 msgstr[0] "%d sonuç"
 msgstr[1] "%d sonuçlar"
 
-#: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:345
+#: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:341
 msgid "_Create Playlist"
 msgstr "_Çalma Listesi Oluştur"
 
-#: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:347
+#: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:343
 msgid "_Add to Playlist"
 msgstr "Ç_alma Listesine Ekle"
 
@@ -3629,108 +3447,108 @@ msgstr "Tekrarlama noktası A ayarlı"
 msgid "Repeat point B set."
 msgstr "Tekrarlama noktası B ayarlı"
 
-#: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:221
+#: src/skins/equalizer.cc:223 src/skins-qt/equalizer.cc:223
 msgid "Preamp"
 msgstr "Ön güçlendirme"
 
-#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:225
+#: src/skins/equalizer.cc:227 src/skins-qt/equalizer.cc:227
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:268
+#: src/skins/equalizer.cc:270 src/skins-qt/equalizer.cc:270
 msgid "Audacious Equalizer"
 msgstr "Audacious Ekolayzır"
 
-#: src/skins/main.cc:452 src/skins-qt/main.cc:436
+#: src/skins/main.cc:452 src/skins-qt/main.cc:442
 msgid "Recording on"
 msgstr "Kaydetme açık"
 
-#: src/skins/main.cc:454 src/skins-qt/main.cc:438
+#: src/skins/main.cc:454 src/skins-qt/main.cc:444
 msgid "Recording off"
 msgstr "Kaydetme kapalı"
 
-#: src/skins/main.cc:749 src/skins-qt/main.cc:690
+#: src/skins/main.cc:747 src/skins-qt/main.cc:701
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Zıpla %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/main.cc:766 src/skins-qt/main.cc:707
+#: src/skins/main.cc:764 src/skins-qt/main.cc:718
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Ses: %d%%"
 
-#: src/skins/main.cc:779 src/skins-qt/main.cc:720
+#: src/skins/main.cc:777 src/skins-qt/main.cc:731
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Denge: %d%% sol"
 
-#: src/skins/main.cc:781 src/skins-qt/main.cc:722
+#: src/skins/main.cc:779 src/skins-qt/main.cc:733
 msgid "Balance: center"
 msgstr "Denge: merkez"
 
-#: src/skins/main.cc:783 src/skins-qt/main.cc:724
+#: src/skins/main.cc:781 src/skins-qt/main.cc:735
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Denge: %d%% sağ"
 
-#: src/skins/main.cc:875 src/skins-qt/main.cc:816
+#: src/skins/main.cc:873 src/skins-qt/main.cc:827
 msgid "Options Menu"
 msgstr "Seçenekler Menüsü"
 
-#: src/skins/main.cc:879 src/skins-qt/main.cc:820
+#: src/skins/main.cc:877 src/skins-qt/main.cc:831
 msgid "Disable 'Always On Top'"
 msgstr "Devre dışı bırak 'Her Zaman Görünür' "
 
-#: src/skins/main.cc:881 src/skins-qt/main.cc:822
+#: src/skins/main.cc:879 src/skins-qt/main.cc:833
 msgid "Enable 'Always On Top'"
 msgstr "Etkinleştir 'Her Zaman Görünür' "
 
-#: src/skins/main.cc:884 src/skins-qt/main.cc:825
+#: src/skins/main.cc:882 src/skins-qt/main.cc:836
 msgid "File Info Box"
 msgstr "Dosya bilgilendirme kutusu"
 
-#: src/skins/main.cc:887 src/skins/menus.cc:149 src/skins-qt/main.cc:828
+#: src/skins/main.cc:885 src/skins/menus.cc:149 src/skins-qt/main.cc:839
 #: src/skins-qt/menus.cc:142
 msgid "Double Size"
 msgstr "Çift Boyut"
 
-#: src/skins/main.cc:890 src/skins-qt/main.cc:831
+#: src/skins/main.cc:888 src/skins-qt/main.cc:842
 msgid "Visualizations"
 msgstr "Görseller"
 
@@ -3753,10 +3571,6 @@ msgstr "Dosya Aç ..."
 #: src/skins/menus.cc:85 src/skins-qt/menus.cc:76
 msgid "Open URL ..."
 msgstr "URL Aç ..."
-
-#: src/skins/menus.cc:88 src/skins-qt/menus.cc:79
-msgid "Playback"
-msgstr "Çal"
 
 #: src/skins/menus.cc:89 src/skins-qt/menus.cc:80
 msgid "Playlist"
@@ -4044,12 +3858,12 @@ msgstr "Sonunda Yapıştır"
 msgid "Queue/Unqueue"
 msgstr "Kuyruğa Ekle/Kaldır"
 
-#: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:56
+#: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:58
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d 'den %d 'si)"
 
-#: src/skins/playlistwin.cc:491 src/skins-qt/playlistwin.cc:476
+#: src/skins/playlistwin.cc:491 src/skins-qt/playlistwin.cc:478
 msgid "Audacious Playlist Editor"
 msgstr "Audacious Çalma Listesi Düzenleyici"
 
@@ -4065,11 +3879,11 @@ msgstr "Dizin Aç ..."
 msgid "Add Folder ..."
 msgstr "Dizin Ekle ..."
 
-#: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:76
+#: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:77
 msgid "Search entries in active playlist"
 msgstr "Etkin oynatma listesinde arama girişleri"
 
-#: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:82
+#: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:83
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -4081,7 +3895,7 @@ msgstr ""
 "Normal ifadelerin nasıl çalıştığını bilmiyorsanız, aradığınız şeylerin basit "
 "bir kısmını eklemeniz yeterlidir."
 
-#: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:90
+#: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:91
 msgid "Title:"
 msgstr "Başlık:"
 
@@ -4089,27 +3903,27 @@ msgstr "Başlık:"
 msgid "Album:"
 msgstr "Albüm:"
 
-#: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:102
+#: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:101
 msgid "Artist:"
 msgstr "Sanatçı:"
 
-#: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:108
+#: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:106
 msgid "File Name:"
 msgstr "Dosya Adı:"
 
-#: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:116
+#: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:134
 msgid "Clear previous selection before searching"
 msgstr "Önceki aramaları temizle"
 
-#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:119
+#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:137
 msgid "Automatically toggle queue for matching entries"
 msgstr "Eşleşen girişler için sıraya otomatik olarak geçiş yap"
 
-#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:122
+#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:140
 msgid "Create a new playlist with matching entries"
 msgstr "Eşleşen girişlerle yeni bir oynatma listesi oluşturun"
 
-#: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:77
+#: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:78
 msgid "Search"
 msgstr "Ara"
 
@@ -4135,7 +3949,7 @@ msgstr "<b>Kabuk</b>"
 
 #: src/skins-qt/skins_cfg.cc:211
 msgid "Display active titlebar when any window is focused"
-msgstr ""
+msgstr "Herhangi bir pencere odaklandığında aktif başlık çubuğunu görüntüle"
 
 #: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:191
 msgid "<b>Fonts</b>"
@@ -4791,13 +4605,13 @@ msgstr "Bilgi"
 #: src/ui-common/menu-ops-gtk.cc:132 src/ui-common/menu-ops-qt.cc:113
 #, c-format
 msgid "%s does not appear to be a valid folder."
-msgstr ""
+msgstr "%s geçerli bir klasör görünmüyor."
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
 msgstr "Ses yok etme"
 
-#: src/vorbis/vorbis.cc:429
+#: src/vorbis/vorbis.cc:431
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4957,19 +4771,19 @@ msgstr "2SF Çözücü"
 
 #: src/xsf/plugin.cc:429
 msgid "32728 Hz"
-msgstr ""
+msgstr "32728 Hz"
 
 #: src/xsf/plugin.cc:432
 msgid "65456 Hz"
-msgstr ""
+msgstr "65456 Hz"
 
 #: src/xsf/plugin.cc:438
 msgid "Cosine"
-msgstr ""
+msgstr "Kosinüs"
 
 #: src/xsf/plugin.cc:439
 msgid "Sharp"
-msgstr ""
+msgstr "Keskin"
 
 #: src/xsf/plugin.cc:443
 msgid "<b>XSF Configuration</b>"
@@ -4977,11 +4791,11 @@ msgstr "<b>XSF Yapılandırması</b>"
 
 #: src/xsf/plugin.cc:445
 msgid "Default fade time:"
-msgstr ""
+msgstr "Varsayılan ses azalma süresi:"
 
 #: src/xsf/plugin.cc:447
 msgid "Interpolation mode:"
-msgstr ""
+msgstr "Ara değerleme kipi:"
 
 #: src/xspf/xspf.cc:95
 msgid "XML Shareable Playlists (XSPF)"

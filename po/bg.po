@@ -8,6 +8,7 @@
 # Myselus, 2016-2017,2022
 # Pandi3a <pandi3a@gmail.com>, 2012
 # Pandi3a <pandi3a@gmail.com>, 2012
+# Thomas Arlington, 2022
 # Радослав Иванов <reckku@gmail.com>, 2013-2014
 # Радослав Иванов <reckku@gmail.com>, 2013
 # Радослав Иванов <reckku@gmail.com>, 2015-2016
@@ -15,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2022-07-09 23:25+0200\n"
+"POT-Creation-Date: 2023-03-05 14:33+0100\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
-"Last-Translator: Myselus, 2016-2017,2022\n"
+"Last-Translator: Thomas Arlington, 2022\n"
 "Language-Team: Bulgarian (http://www.transifex.com/audacious/audacious/"
 "language/bg/)\n"
 "Language: bg\n"
@@ -47,8 +48,10 @@ msgstr "<b>Изход</b>"
 msgid "OPL Emulator:"
 msgstr "OPL емулатор:"
 
-#: src/adplug/adplug-xmms.cc:353
-msgid "Sample rate"
+#: src/adplug/adplug-xmms.cc:353 src/amidiplug/i_configure.cc:153
+#: src/console/plugin.cc:45 src/filewriter/filewriter.cc:481
+#: src/sid/xs_config.cc:65 src/xsf/plugin.cc:446
+msgid "Sample rate:"
 msgstr "Честота на дискретизация"
 
 #: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:155
@@ -72,260 +75,6 @@ msgstr "<b>Разни</b>"
 #: src/adplug/adplug-xmms.cc:356
 msgid "Repeat song in endless loop"
 msgstr "Повторете песента в безкраен цикъл"
-
-#: src/alarm/alarm.cc:55 src/alarm/interface.cc:79
-msgid "Alarm"
-msgstr "Аларма"
-
-#: src/alarm/alarm.cc:782
-msgid "Set Alarm ..."
-msgstr "Задаване на Аларма ..."
-
-#: src/alarm/alarm.cc:810
-msgid ""
-"A plugin that can be used to start playing at a certain time.\n"
-"\n"
-"Originally written by Adam Feakin and Daniel Stodden."
-msgstr ""
-"Приставка, която може да бъде използвана за\n"
-"започване на изпълнение по конкретно време.\n"
-"\n"
-"Оригинално написана от Adam Feakin и Daniel Stodden."
-
-#: src/alarm/interface.cc:28
-msgid ""
-"Time\n"
-"  Alarm at:\n"
-"    The time for the alarm to come on.\n"
-"\n"
-"  Quiet after:\n"
-"    Stop alarm after this amount of time.\n"
-"       (if the wakeup dialog is not closed)\n"
-"\n"
-"\n"
-"Days\n"
-"  Day:\n"
-"    Select the days for the alarm to activate.\n"
-"\n"
-"  Time:\n"
-"    Choose the time for the alarm on each day,\n"
-"    or select the toggle button to use the default\n"
-"    time.\n"
-"\n"
-"\n"
-"Volume\n"
-"  Fading:\n"
-"    Fade the volume up to the chosen volume\n"
-"    for this amount of time.\n"
-"\n"
-"  Start at:\n"
-"    Start fading from this volume.\n"
-"\n"
-"  Final:\n"
-"    The volume to stop fading at.  If the fading\n"
-"    time is 0 then set volume to this and start\n"
-"    playing.\n"
-"\n"
-"\n"
-"Options:\n"
-"  Additional Command:\n"
-"    Run this command at the alarm time.\n"
-"\n"
-"  Playlist:\n"
-"    Load this playlist. If no playlist\n"
-"    is given, the current one will be used.\n"
-"    The URL of an mp3/ogg stream\n"
-"    can also be entered here.\n"
-"\n"
-"  Reminder:\n"
-"    Display a reminder when the alarm goes off.\n"
-"    Type the reminder in the input field and enable\n"
-"    the checkbox if you want it to be shown."
-msgstr ""
-"Време\n"
-"Алармиране в:\n"
-"Времето в което ще се включи алармата.\n"
-"\n"
-"Затишие след:\n"
-"Спиране на алармата след този период.\n"
-"(ако прозорецът за събуждане не е затворен)\n"
-"\n"
-"\n"
-"Дни\n"
-"Ден:\n"
-"Избиране на дните, в които да се активира алармата.\n"
-"\n"
-"Време:\n"
-"Избете време на алармата за всеки ден\n"
-"или изберете бутона за превключване,\n"
-"за избор на стандартното време.\n"
-"\n"
-"\n"
-"Сила на звука\n"
-"Затихване:\n"
-"Затихване на усилването на звука до избраното,\n"
-"за този период от време.\n"
-"\n"
-"Стартирай от:\n"
-"Стартирай затихване от този момент.\n"
-"\n"
-"Крайно:\n"
-"Сила на звука, при което спира затихването. Ако\n"
-"времето за затихване е 0, тогава се задава тази\n"
-"сила на звука и започва възпроизвежането.\n"
-"\n"
-"\n"
-"Опции:\n"
-"Допълнителна команда:\n"
-"Стартиране на тази команда с алармата.\n"
-"\n"
-"Списък:\n"
-"Зареждане на този списък. Ако не е избран\n"
-"такъв, ще се използва настоящият.\n"
-"Тук може да бъде въведен и Интернет адрес\n"
-"на mp3/ogg поток.\n"
-"\n"
-"Напомняне:\n"
-"Извеждане на напомняне, когато алармата се изключи.\n"
-"Въведете напомнянето в полето за въвеждане и\n"
-"отметнете в кутийката, ако искате да бъде показвано."
-
-#: src/alarm/interface.cc:78
-msgid "This is your wakeup call."
-msgstr "Това е Вашият сигнал за събуждане."
-
-#: src/alarm/interface.cc:96
-msgid "Your reminder for today is..."
-msgstr "Вашето напомняне за днес е..."
-
-#: src/alarm/interface.cc:98 src/alarm/interface.cc:372
-msgid "Reminder"
-msgstr "Напомняне"
-
-#: src/alarm/interface.cc:122
-msgid "Monday"
-msgstr "Понеделник"
-
-#: src/alarm/interface.cc:122
-msgid "Tuesday"
-msgstr "Вторник"
-
-#: src/alarm/interface.cc:122
-msgid "Wednesday"
-msgstr "Сряда"
-
-#: src/alarm/interface.cc:123
-msgid "Thursday"
-msgstr "Четвъртък"
-
-#: src/alarm/interface.cc:123
-msgid "Friday"
-msgstr "Петък"
-
-#: src/alarm/interface.cc:123
-msgid "Saturday"
-msgstr "Събота"
-
-#: src/alarm/interface.cc:123
-msgid "Sunday"
-msgstr "Неделя"
-
-#: src/alarm/interface.cc:160 src/alarm/interface.cc:219
-#: src/alarm/interface.cc:234
-msgid "Time"
-msgstr "Час"
-
-#: src/alarm/interface.cc:167
-msgid "Alarm at (default):"
-msgstr "Алармиране в (по подразбиране):"
-
-#: src/alarm/interface.cc:189
-msgid "h"
-msgstr "ч"
-
-#: src/alarm/interface.cc:192
-msgid "Quiet after:"
-msgstr "Затишие след:"
-
-#: src/alarm/interface.cc:204
-msgid "hours"
-msgstr "часове"
-
-#: src/alarm/interface.cc:215
-msgid "minutes"
-msgstr "минути"
-
-#: src/alarm/interface.cc:224
-msgid "Choose the days for the alarm to come on"
-msgstr "Избор на дни, в които да се активира алармата"
-
-#: src/alarm/interface.cc:231
-msgid "Day"
-msgstr "Ден"
-
-#: src/alarm/interface.cc:248 src/bs2b/plugin.cc:130
-msgid "Default"
-msgstr "По подразбиране"
-
-#: src/alarm/interface.cc:277
-msgid "Days"
-msgstr "Дни"
-
-#: src/alarm/interface.cc:286
-msgid "Fading"
-msgstr "Затихване"
-
-#: src/alarm/interface.cc:294 src/console/plugin.cc:41
-#: src/crossfade/crossfade.cc:52 src/crossfade/crossfade.cc:58
-#: src/lirc/lirc.cc:395 src/notify/notify.cc:113 src/sid/xs_config.cc:85
-#: src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
-#: src/vumeter-qt/vumeter_qt.cc:39
-msgid "seconds"
-msgstr "секунди"
-
-#: src/alarm/interface.cc:301 src/alarm/interface.cc:342
-msgid "Volume"
-msgstr "Сила на звука"
-
-#: src/alarm/interface.cc:306
-msgid "Start at"
-msgstr "Начало"
-
-#: src/alarm/interface.cc:322
-msgid "Final"
-msgstr "Край"
-
-#: src/alarm/interface.cc:335
-msgid "Current"
-msgstr "Текущо"
-
-#: src/alarm/interface.cc:348
-msgid "Additional Command"
-msgstr "Допълнителна команда"
-
-#: src/alarm/interface.cc:354 src/alarm/interface.cc:377
-msgid "enable"
-msgstr "активиране"
-
-#: src/alarm/interface.cc:361
-msgid "Playlist (optional)"
-msgstr "Списък за изпълнение (по избор)"
-
-#: src/alarm/interface.cc:365
-msgid "Select a playlist"
-msgstr "Избор на списък"
-
-#: src/alarm/interface.cc:385
-msgid "Options"
-msgstr "Опции"
-
-#: src/alarm/interface.cc:390
-msgid "What do these options mean?"
-msgstr "Какво означават тези опции?"
-
-#: src/alarm/interface.cc:404
-msgid "Help"
-msgstr "Помощ"
 
 #: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:35
 msgid "Album Art"
@@ -476,89 +225,83 @@ msgstr "<b>Шрифт на звука</b>"
 msgid "<b>Synthesizer</b>"
 msgstr "<b>Синтезатор</b>"
 
-#: src/amidiplug/i_configure.cc:153 src/console/plugin.cc:45
-#: src/filewriter/filewriter.cc:481 src/sid/xs_config.cc:65
-#: src/xsf/plugin.cc:446
-msgid "Sample rate:"
-msgstr "Честота на дискретизация"
-
-#: src/amidiplug/i_configure-fluidsynth.cc:57
-#: src/amidiplug/i_configure-fluidsynth.cc:536
+#: src/amidiplug/i_configure-fluidsynth.cc:58
+#: src/amidiplug/i_configure-fluidsynth.cc:527
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Контакт - избор на файл за звуково изравняване"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:60
+#: src/amidiplug/i_configure-fluidsynth.cc:61
 msgid "_Cancel"
 msgstr "_Отказ"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:61
+#: src/amidiplug/i_configure-fluidsynth.cc:62
 msgid "_Open"
 msgstr "_Отваряне"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:230
-#: src/amidiplug/i_configure-fluidsynth.cc:476 src/gtkui/columns.cc:46
+#: src/amidiplug/i_configure-fluidsynth.cc:233
+#: src/amidiplug/i_configure-fluidsynth.cc:461
 msgid "File name"
 msgstr "Име на файла"
 
-#: src/amidiplug/i_configure-fluidsynth.cc:234
-#: src/amidiplug/i_configure-fluidsynth.cc:479
+#: src/amidiplug/i_configure-fluidsynth.cc:237
+#: src/amidiplug/i_configure-fluidsynth.cc:464
 msgid "Size (bytes)"
 msgstr "Размер (байтове)"
 
-#: src/amidiplug/i_fileinfo.cc:169
+#: src/amidiplug/i_fileinfo.cc:183
 msgid "Name:"
 msgstr "Име:"
 
-#: src/amidiplug/i_fileinfo.cc:187
+#: src/amidiplug/i_fileinfo.cc:201
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> MIDI информация </span>"
 
-#: src/amidiplug/i_fileinfo.cc:201
+#: src/amidiplug/i_fileinfo.cc:215
 msgid "Format:"
 msgstr "Формат:"
 
-#: src/amidiplug/i_fileinfo.cc:204
+#: src/amidiplug/i_fileinfo.cc:218
 msgid "Length (msec):"
 msgstr "Продължителност (милисекунди):"
 
-#: src/amidiplug/i_fileinfo.cc:207
+#: src/amidiplug/i_fileinfo.cc:221
 msgid "No. of Tracks:"
 msgstr "№ на Записи:"
 
-#: src/amidiplug/i_fileinfo.cc:213
+#: src/amidiplug/i_fileinfo.cc:227
 msgid "variable"
 msgstr "променливост"
 
-#: src/amidiplug/i_fileinfo.cc:215
+#: src/amidiplug/i_fileinfo.cc:229
 msgid "BPM:"
 msgstr "УВМ:"
 
-#: src/amidiplug/i_fileinfo.cc:223
+#: src/amidiplug/i_fileinfo.cc:237
 msgid "BPM (wavg):"
 msgstr "УВМ (вълни):"
 
-#: src/amidiplug/i_fileinfo.cc:226
+#: src/amidiplug/i_fileinfo.cc:240
 msgid "Time Div:"
 msgstr "Време Разд.:"
 
-#: src/amidiplug/i_fileinfo.cc:237
+#: src/amidiplug/i_fileinfo.cc:251
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"smaller\"> MIDI Коментари и лирика </span>"
 
-#: src/amidiplug/i_fileinfo.cc:284
+#: src/amidiplug/i_fileinfo.cc:298
 msgid "* no comments available in this MIDI file *"
 msgstr "* няма достъпни коментари за този MIDI файл *"
 
-#: src/amidiplug/i_fileinfo.cc:296
+#: src/amidiplug/i_fileinfo.cc:310
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* няма достъпна лирика за този MIDI файл *"
 
-#: src/amidiplug/i_fileinfo.cc:306 src/ladspa/plugin.cc:417
+#: src/amidiplug/i_fileinfo.cc:320 src/ladspa/plugin.cc:418
 #: src/ui-common/dialogs-qt.cc:32
 msgid "_Close"
 msgstr "_Затваряне"
 
-#: src/amidiplug/i_fileinfo.cc:331
+#: src/amidiplug/i_fileinfo.cc:345
 msgid "  (invalid UTF-8)"
 msgstr "  (невалиден UTF-8)"
 
@@ -653,94 +396,94 @@ msgstr "Временното спиране е деактивирано"
 msgid "Triggers OSD when playback is unpaused."
 msgstr "Задействане на OSD, когато възпроизвеждането продължи."
 
-#: src/aosd/aosd_ui.cc:162
+#: src/aosd/aosd_ui.cc:204
 msgid "Placement"
 msgstr "Местоположение"
 
-#: src/aosd/aosd_ui.cc:195
+#: src/aosd/aosd_ui.cc:241
 msgid "Relative X offset:"
 msgstr "Относителен отстъп за X:"
 
-#: src/aosd/aosd_ui.cc:202
+#: src/aosd/aosd_ui.cc:245
 msgid "Relative Y offset:"
 msgstr "Относителен отстъп за Y:"
 
-#: src/aosd/aosd_ui.cc:209
+#: src/aosd/aosd_ui.cc:249
 msgid "Max OSD width:"
 msgstr "Максимална ширина на OSD:"
 
-#: src/aosd/aosd_ui.cc:220
+#: src/aosd/aosd_ui.cc:281
 msgid "Multi-Monitor options"
 msgstr "Опции за много монитори"
 
-#: src/aosd/aosd_ui.cc:224
+#: src/aosd/aosd_ui.cc:285
 msgid "Display OSD using:"
 msgstr "Извеждай OSD, използвайки:"
 
-#: src/aosd/aosd_ui.cc:226
+#: src/aosd/aosd_ui.cc:287
 msgid "all monitors"
 msgstr "всички монитори"
 
-#: src/aosd/aosd_ui.cc:229
+#: src/aosd/aosd_ui.cc:290
 #, c-format
 msgid "monitor %i"
 msgstr "монитор %i"
 
-#: src/aosd/aosd_ui.cc:281
+#: src/aosd/aosd_ui.cc:342
 msgid "Timing (ms)"
 msgstr "Времетраене (мс)"
 
-#: src/aosd/aosd_ui.cc:286
+#: src/aosd/aosd_ui.cc:347
 msgid "Display:"
 msgstr "Екран:"
 
-#: src/aosd/aosd_ui.cc:291
+#: src/aosd/aosd_ui.cc:352
 msgid "Fade in:"
 msgstr "Проясняване:"
 
-#: src/aosd/aosd_ui.cc:296
+#: src/aosd/aosd_ui.cc:357
 msgid "Fade out:"
 msgstr "Избледняване:"
 
-#: src/aosd/aosd_ui.cc:360
+#: src/aosd/aosd_ui.cc:442
 msgid "Fonts"
 msgstr "Шрифтове"
 
-#: src/aosd/aosd_ui.cc:367
+#: src/aosd/aosd_ui.cc:449
 #, c-format
 msgid "Font %i:"
 msgstr "Шрифт %i:"
 
-#: src/aosd/aosd_ui.cc:381
+#: src/aosd/aosd_ui.cc:466
 msgid "Shadow"
 msgstr "Сянка"
 
-#: src/aosd/aosd_ui.cc:485
+#: src/aosd/aosd_ui.cc:589
 msgid "Render Style"
 msgstr "Създай свой стил"
 
-#: src/aosd/aosd_ui.cc:501
+#: src/aosd/aosd_ui.cc:605
 msgid "Colors"
 msgstr "Цветове"
 
-#: src/aosd/aosd_ui.cc:512
+#: src/aosd/aosd_ui.cc:616
 #, c-format
 msgid "Color %i:"
 msgstr "Цвят %i:"
 
-#: src/aosd/aosd_ui.cc:599
+#: src/aosd/aosd_ui.cc:714
 msgid "Enable trigger"
 msgstr "Активиране на активатора"
 
-#: src/aosd/aosd_ui.cc:626
+#: src/aosd/aosd_ui.cc:741
 msgid "Event"
 msgstr "Събитие"
 
-#: src/aosd/aosd_ui.cc:653
+#: src/aosd/aosd_ui.cc:768
 msgid "Composite manager detected"
 msgstr "Засечен е Композитен мениджър"
 
-#: src/aosd/aosd_ui.cc:660
+#: src/aosd/aosd_ui.cc:775
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
@@ -750,56 +493,56 @@ msgstr ""
 "моля активирайте мениджъра, освен ако вече нямате стартиран, в противен "
 "случай OSD няма да работи правилно"
 
-#: src/aosd/aosd_ui.cc:668
+#: src/aosd/aosd_ui.cc:783
 msgid "Composite manager not required for fake transparency"
 msgstr "Не се изисква композитен мениджър за илюзийна прозрачност"
 
-#: src/aosd/aosd_ui.cc:705
+#: src/aosd/aosd_ui.cc:820
 msgid "Transparency"
 msgstr "Прозрачност"
 
-#: src/aosd/aosd_ui.cc:711
+#: src/aosd/aosd_ui.cc:826
 msgid "Fake transparency"
 msgstr "Илюзийна прозрачност"
 
-#: src/aosd/aosd_ui.cc:713
+#: src/aosd/aosd_ui.cc:828
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "Истинска прозрачност (изисква разширение за X)"
 
-#: src/aosd/aosd_ui.cc:754
+#: src/aosd/aosd_ui.cc:875
 msgid "Composite extension not loaded"
 msgstr "Композитното разширение не е заредено"
 
-#: src/aosd/aosd_ui.cc:771
+#: src/aosd/aosd_ui.cc:892
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
-#: src/aosd/aosd_ui.cc:834
+#: src/aosd/aosd_ui.cc:955
 msgid "Position"
 msgstr "Позиция"
 
-#: src/aosd/aosd_ui.cc:839
+#: src/aosd/aosd_ui.cc:960
 msgid "Animation"
 msgstr "Анимация"
 
-#: src/aosd/aosd_ui.cc:844
+#: src/aosd/aosd_ui.cc:965
 msgid "Text"
 msgstr "Текст"
 
-#: src/aosd/aosd_ui.cc:849
+#: src/aosd/aosd_ui.cc:970
 msgid "Decoration"
 msgstr "Декорация"
 
-#: src/aosd/aosd_ui.cc:854
+#: src/aosd/aosd_ui.cc:975
 msgid "Trigger"
 msgstr "Активатор"
 
-#: src/aosd/aosd_ui.cc:859 src/streamtuner/shoutcast-model.cc:202
+#: src/aosd/aosd_ui.cc:980 src/streamtuner/shoutcast-model.cc:202
 msgid "Misc"
 msgstr "Разни"
 
-#: src/aosd/aosd_ui.cc:868
+#: src/aosd/aosd_ui.cc:989
 msgid "Test"
 msgstr "Тест"
 
@@ -817,25 +560,25 @@ msgstr "Audacious Списъци (audpl)"
 
 #: src/bitcrusher/bitcrusher.cc:33
 msgid "<b>Bitcrusher</b>"
-msgstr ""
+msgstr "<b>Биткръшър</b>"
 
 #: src/bitcrusher/bitcrusher.cc:34
 msgid "Bit Depth:"
-msgstr ""
+msgstr "Дълбочина на битовете:"
 
 #: src/bitcrusher/bitcrusher.cc:37
 msgid "Downsample ratio:"
-msgstr ""
+msgstr "Коефициент на намаляване на дискретизацията:"
 
 #: src/bitcrusher/bitcrusher.cc:48
 msgid "Bitcrusher"
-msgstr ""
+msgstr "Биткръшър"
 
-#: src/blur_scope/blur_scope.cc:39 src/blur_scope-qt/blur_scope.cc:45
+#: src/blur_scope/blur_scope.cc:40 src/blur_scope-qt/blur_scope.cc:45
 msgid "<b>Color</b>"
 msgstr "<b>Цвят</b>"
 
-#: src/blur_scope/blur_scope.cc:55 src/blur_scope-qt/blur_scope.cc:158
+#: src/blur_scope/blur_scope.cc:56 src/blur_scope-qt/blur_scope.cc:158
 msgid "Blur Scope"
 msgstr "Размит осцилоскоп"
 
@@ -846,6 +589,10 @@ msgstr "Bauer Многозвучие-към-двузвучие (BS2B)"
 #: src/bs2b/plugin.cc:129
 msgid "Presets:"
 msgstr "Заготовки:"
+
+#: src/bs2b/plugin.cc:130
+msgid "Default"
+msgstr "По подразбиране"
 
 #: src/bs2b/plugin.cc:136
 msgid "Feed level:"
@@ -859,7 +606,7 @@ msgstr "x1/10 дБ"
 msgid "Cut frequency:"
 msgstr "Честота на срез:"
 
-#: src/cairo-spectrum/cairo-spectrum.cc:41 src/qt-spectrum/qt-spectrum.cc:107
+#: src/cairo-spectrum/cairo-spectrum.cc:42 src/qt-spectrum/qt-spectrum.cc:107
 msgid "Spectrum Analyzer"
 msgstr "Анализ на спектъра"
 
@@ -957,50 +704,50 @@ msgstr "Грешка при четене на audio CD."
 msgid "Audio CD"
 msgstr "Аудио Диск"
 
-#: src/cdaudio/cdaudio-ng.cc:435 src/cdaudio/cdaudio-ng.cc:444
+#: src/cdaudio/cdaudio-ng.cc:434 src/cdaudio/cdaudio-ng.cc:443
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Не може да бъде отворено CD устройство %s."
 
-#: src/cdaudio/cdaudio-ng.cc:447
+#: src/cdaudio/cdaudio-ng.cc:446
 msgid "No audio capable CD drive found."
 msgstr "Не е намерено Audio CD устройство."
 
-#: src/cdaudio/cdaudio-ng.cc:470
+#: src/cdaudio/cdaudio-ng.cc:469
 msgid "Drive is empty."
 msgstr "Устройството е празно."
 
-#: src/cdaudio/cdaudio-ng.cc:472
+#: src/cdaudio/cdaudio-ng.cc:471
 msgid "Unsupported disk type."
 msgstr "Неподдържан диск."
 
-#: src/cdaudio/cdaudio-ng.cc:496
+#: src/cdaudio/cdaudio-ng.cc:495
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Неуспешно приключване на обозначаването на отвореното CD устройство."
 
-#: src/cdaudio/cdaudio-ng.cc:509
+#: src/cdaudio/cdaudio-ng.cc:508
 msgid "Failed to retrieve first/last track number."
 msgstr "Неуспех при извличане на първият/последният номер на запис."
 
-#: src/cdaudio/cdaudio-ng.cc:530
+#: src/cdaudio/cdaudio-ng.cc:529
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "Не може да прочете началото/края на LSN за запис %d."
 
-#: src/cdaudio/cdaudio-ng.cc:612
+#: src/cdaudio/cdaudio-ng.cc:611
 msgid "Failed to create the CDDB connection."
 msgstr "Неуспешно създаване на CDDB връзка."
 
-#: src/cdaudio/cdaudio-ng.cc:678
+#: src/cdaudio/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
 msgstr "Неуспешна заявка към CDDB сървър"
 
-#: src/cdaudio/cdaudio-ng.cc:680
+#: src/cdaudio/cdaudio-ng.cc:679
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Неуспешна заявка към CDDB сървър: %s"
 
-#: src/cdaudio/cdaudio-ng.cc:704
+#: src/cdaudio/cdaudio-ng.cc:703
 #, c-format
 msgid "Failed to read the CDDB info: %s"
 msgstr "Неуспешно четене на CDDB информацията: %s"
@@ -1072,6 +819,13 @@ msgstr "Ехо:"
 #: src/console/plugin.cc:39
 msgid "Default song length:"
 msgstr "Стандартно времетраене за песен:"
+
+#: src/console/plugin.cc:41 src/crossfade/crossfade.cc:52
+#: src/crossfade/crossfade.cc:58 src/lirc/lirc.cc:395 src/notify/notify.cc:113
+#: src/sid/xs_config.cc:85 src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
+#: src/vumeter-qt/vumeter_qt.cc:39
+msgid "seconds"
+msgstr "секунди"
 
 #: src/console/plugin.cc:42 src/modplug/plugin_main.cc:58
 msgid "<b>Resampling</b>"
@@ -1225,7 +979,7 @@ msgid "Delete"
 msgstr "Изтриване"
 
 #: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
-#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:77
+#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:78
 msgid "Cancel"
 msgstr "Отказ"
 
@@ -1279,11 +1033,11 @@ msgstr "Сила на звука:"
 msgid "Echo"
 msgstr "Ехо"
 
-#: src/ffaudio/ffaudio-core.cc:49
+#: src/ffaudio/ffaudio-core.cc:50
 msgid "FFmpeg Plugin"
 msgstr "Приставка за FFmpeg"
 
-#: src/ffaudio/ffaudio-core.cc:635
+#: src/ffaudio/ffaudio-core.cc:650
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1415,67 +1169,67 @@ msgstr "48000 Хц"
 
 #: src/filewriter/filewriter.cc:430
 msgid "8 kbit/s"
-msgstr ""
+msgstr "8 kbit/s"
 
 #: src/filewriter/filewriter.cc:431
 msgid "16 kbit/s"
-msgstr ""
+msgstr "16 kbit/s"
 
 #: src/filewriter/filewriter.cc:432
 msgid "32 kbit/s"
-msgstr ""
+msgstr "32 kbit/s"
 
 #: src/filewriter/filewriter.cc:433
 msgid "40 kbit/s"
-msgstr ""
+msgstr "40 kbit/s"
 
 #: src/filewriter/filewriter.cc:434
 msgid "48 kbit/s"
-msgstr ""
+msgstr "48 kbit/s"
 
 #: src/filewriter/filewriter.cc:435
 msgid "56 kbit/s"
-msgstr ""
+msgstr "56 kbit/s"
 
 #: src/filewriter/filewriter.cc:436
 msgid "64 kbit/s"
-msgstr ""
+msgstr "64 kbit/s"
 
 #: src/filewriter/filewriter.cc:437
 msgid "80 kbit/s"
-msgstr ""
+msgstr "80 kbit/s"
 
 #: src/filewriter/filewriter.cc:438
 msgid "96 kbit/s"
-msgstr ""
+msgstr "96 kbit/s"
 
 #: src/filewriter/filewriter.cc:439
 msgid "112 kbit/s"
-msgstr ""
+msgstr "112 kbit/s"
 
 #: src/filewriter/filewriter.cc:440
 msgid "128 kbit/s"
-msgstr ""
+msgstr "128 kbit/s"
 
 #: src/filewriter/filewriter.cc:441
 msgid "160 kbit/s"
-msgstr ""
+msgstr "160 kbit/s"
 
 #: src/filewriter/filewriter.cc:442
 msgid "192 kbit/s"
-msgstr ""
+msgstr "192 kbit/s"
 
 #: src/filewriter/filewriter.cc:443
 msgid "224 kbit/s"
-msgstr ""
+msgstr "224 kbit/s"
 
 #: src/filewriter/filewriter.cc:444
 msgid "256 kbit/s"
-msgstr ""
+msgstr "256 kbit/s"
 
 #: src/filewriter/filewriter.cc:445
 msgid "320 kbit/s"
-msgstr ""
+msgstr "320 kbit/s"
 
 #: src/filewriter/filewriter.cc:450
 msgid "Joint Stereo"
@@ -1608,11 +1362,11 @@ msgstr "Общи"
 msgid "FLAC Decoder"
 msgstr "Разкодиране на FLAC"
 
-#: src/flac/metadata.cc:280 src/wavpack/wavpack.cc:215
+#: src/flac/metadata.cc:293 src/wavpack/wavpack.cc:215
 msgid "lossless"
 msgstr "по-малко загуби"
 
-#: src/flac/plugin.cc:180
+#: src/flac/plugin.cc:202
 msgid ""
 "Original code by\n"
 "Ralf Ertzinger <ralf@skytale.net>\n"
@@ -1644,7 +1398,7 @@ msgstr "Не се поддържа режим на четене и прикре�
 msgid "Invalid open mode"
 msgstr "Неправилен режим на отваряне"
 
-#: src/glspectrum/gl-spectrum.cc:51
+#: src/glspectrum/gl-spectrum.cc:52
 msgid ""
 "OpenGL Spectrum Analyzer for Audacious\n"
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
@@ -1664,116 +1418,134 @@ msgstr ""
 "\n"
 "Лиценз: GPLv2+"
 
-#: src/glspectrum/gl-spectrum.cc:62 src/qtglspectrum/gl-spectrum.cc:53
+#: src/glspectrum/gl-spectrum.cc:63 src/qtglspectrum/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer"
 msgstr "OpenGL осцилоскоп"
 
-#: src/gtkui/columns.cc:35
-msgid "Entry number"
-msgstr "Номер на запис"
-
 #: src/gtkui/columns.cc:36 src/moonstone/playlist_model.cc:38
+#: src/qtui/playlist_model.cc:33
+msgid "Entry Number"
+msgstr "Номер по ред"
+
+#: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:38
 #: src/moonstone/playlist_selection.cc:62
-#: src/playlist-manager/playlist-manager.cc:199
-#: src/playlist-manager-qt/playlist-manager-qt.cc:186
+#: src/playlist-manager/playlist-manager.cc:200
+#: src/playlist-manager-qt/playlist-manager-qt.cc:188
 #: src/qtui/playlist_model.cc:33 src/streamtuner/icecast-model.cc:120
 #: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:122
 msgid "Title"
 msgstr "Заглавие"
 
-#: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:39
+#: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:33
 msgid "Artist"
 msgstr "Изпълнител"
 
-#: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
+#: src/gtkui/columns.cc:39 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:33
 msgid "Year"
 msgstr "Година"
 
-#: src/gtkui/columns.cc:39 src/moonstone/playlist_model.cc:39
+#: src/gtkui/columns.cc:40 src/moonstone/playlist_model.cc:39
 #: src/qtui/playlist_model.cc:34
 msgid "Album"
 msgstr "Албум"
 
-#: src/gtkui/columns.cc:40
-msgid "Album artist"
-msgstr "Изпълнител на албум"
-
 #: src/gtkui/columns.cc:41 src/moonstone/playlist_model.cc:40
+#: src/qtui/playlist_model.cc:34
+msgid "Album Artist"
+msgstr " Изпълнител на Албум"
+
+#: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
 #: src/qtui/playlist_model.cc:34
 msgid "Track"
 msgstr "Запис"
 
-#: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
+#: src/gtkui/columns.cc:43 src/moonstone/playlist_model.cc:40
 #: src/qtui/playlist_model.cc:34 src/streamtuner/icecast-model.cc:123
 #: src/streamtuner/shoutcast-model.cc:125
 #: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
 msgstr "Жанр"
 
-#: src/gtkui/columns.cc:43
-msgid "Queue position"
+#: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
+#: src/qtui/playlist_model.cc:35
+msgid "Queue Position"
 msgstr "Позиция на опашката"
 
-#: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
+#: src/gtkui/columns.cc:45 src/moonstone/playlist_model.cc:41
 #: src/qtui/playlist_model.cc:35
 msgid "Length"
 msgstr "Времетраене"
 
-#: src/gtkui/columns.cc:45
-msgid "File path"
+#: src/gtkui/columns.cc:46 src/moonstone/playlist_model.cc:41
+#: src/qtui/playlist_model.cc:35
+msgid "File Path"
 msgstr "Път до файла"
 
-#: src/gtkui/columns.cc:47
-msgid "Custom title"
-msgstr "Избрано заглавие"
+#: src/gtkui/columns.cc:47 src/moonstone/playlist_model.cc:42
+#: src/qtui/playlist_model.cc:35
+msgid "File Name"
+msgstr "Име на файла"
 
 #: src/gtkui/columns.cc:48 src/moonstone/playlist_model.cc:42
+#: src/qtui/playlist_model.cc:36
+msgid "Custom Title"
+msgstr "Заглавие по подразбиране"
+
+#: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:42
 #: src/qtui/playlist_model.cc:36 src/streamtuner/icecast-model.cc:129
 #: src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
 msgstr "Честота за бит"
 
-#: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:43
+#: src/gtkui/columns.cc:50 src/moonstone/playlist_model.cc:43
 #: src/qtui/playlist_model.cc:36
 msgid "Comment"
 msgstr "Коментар"
 
-#: src/gtkui/columns.cc:315
+#: src/gtkui/columns.cc:51 src/qtui/playlist_model.cc:36
+msgid "Publisher"
+msgstr ""
+
+#: src/gtkui/columns.cc:52 src/qtui/playlist_model.cc:37
+msgid "Catalog Number"
+msgstr ""
+
+#: src/gtkui/columns.cc:322
 msgid "Available columns"
 msgstr "Налични колони"
 
-#: src/gtkui/columns.cc:341
+#: src/gtkui/columns.cc:348
 msgid "Displayed columns"
 msgstr "Показване колони"
 
-#: src/gtkui/layout.cc:73 src/search-tool-qt/search-tool-qt.cc:58
-#: src/search-tool/search-tool.cc:48
+#: src/gtkui/layout.cc:74 src/search-tool-qt/search-tool-qt.cc:58
+#: src/search-tool/search-tool.cc:49
 msgid "Search Tool"
 msgstr "Инструмент за търсене"
 
-#: src/gtkui/layout.cc:168
+#: src/gtkui/layout.cc:170
 msgid "Dock at Left"
 msgstr "Панел вляво"
 
-#: src/gtkui/layout.cc:168
+#: src/gtkui/layout.cc:170
 msgid "Dock at Right"
 msgstr "Панел вдясно"
 
-#: src/gtkui/layout.cc:169
+#: src/gtkui/layout.cc:171
 msgid "Dock at Top"
 msgstr "Панел отгоре"
 
-#: src/gtkui/layout.cc:169
+#: src/gtkui/layout.cc:171
 msgid "Dock at Bottom"
 msgstr "Панел отдолу"
 
-#: src/gtkui/layout.cc:169
+#: src/gtkui/layout.cc:171
 msgid "Undock"
 msgstr "Без панел"
 
-#: src/gtkui/layout.cc:169 src/ladspa/plugin.cc:534
+#: src/gtkui/layout.cc:171 src/ladspa/plugin.cc:540
 msgid "Disable"
 msgstr "Деактивиране"
 
@@ -1813,8 +1585,8 @@ msgstr "_Изход"
 
 #: src/gtkui/menus.cc:92 src/gtkui/menus.cc:224
 #: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
-#: src/qtui/playlist_tabs.cc:328 src/search-tool-qt/search-tool-qt.cc:499
-#: src/search-tool/search-tool.cc:343 src/statusicon-qt/statusicon.cc:106
+#: src/qtui/playlist_tabs.cc:330 src/search-tool-qt/search-tool-qt.cc:499
+#: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:106
 #: src/statusicon/statusicon.cc:276
 msgid "_Play"
 msgstr "Въ_зпроизвеждане"
@@ -1991,8 +1763,8 @@ msgstr "Премахване на по_втарящи се"
 msgid "Remove _Unavailable Files"
 msgstr "Премахване на _липсващите файлове"
 
-#: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:218
-#: src/playlist-manager-qt/playlist-manager-qt.cc:346 src/qtui/menus.cc:227
+#: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:219
+#: src/playlist-manager-qt/playlist-manager-qt.cc:348 src/qtui/menus.cc:227
 msgid "_New"
 msgstr "_Нов"
 
@@ -2002,7 +1774,7 @@ msgstr "_Преименуване..."
 
 #: src/gtkui/menus.cc:166 src/gtkui/menus.cc:226
 #: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:229
-#: src/qtui/playlist_tabs.cc:333
+#: src/qtui/playlist_tabs.cc:335
 msgid "Remo_ve"
 msgstr "Премах_ване"
 
@@ -2056,7 +1828,7 @@ msgstr "Показване на лента с _информация"
 
 #: src/gtkui/menus.cc:189 src/qtui/menus.cc:262
 msgid "Show Info Bar _Album Art"
-msgstr ""
+msgstr "Показване на информационна лента _Обложка на албум"
 
 #: src/gtkui/menus.cc:190 src/qtui/menus.cc:264
 msgid "Show Info Bar Vis_ualization"
@@ -2133,7 +1905,7 @@ msgid "Select _All"
 msgstr "Избор на _всички"
 
 #: src/gtkui/menus.cc:225 src/moonstone/playlist_tabs.cc:309
-#: src/qtui/playlist_tabs.cc:331
+#: src/qtui/playlist_tabs.cc:333
 msgid "_Rename ..."
 msgstr "П_реименуване..."
 
@@ -2161,30 +1933,35 @@ msgstr "<b>Колони в списъка</b>"
 msgid "Show column headers"
 msgstr "Показване на антетки"
 
-#: src/gtkui/settings.cc:47 src/qtui/settings.cc:82
+#: src/gtkui/settings.cc:47
+msgid "Use symbolic icons in toolbar"
+msgstr ""
+
+#: src/gtkui/settings.cc:49 src/qtui/settings.cc:82
 msgid "Scroll on song change"
 msgstr "Превъртане при смяна на песента"
 
-#: src/gtkui/ui_gtk.cc:74
+#: src/gtkui/ui_gtk.cc:81
 msgid "GTK Interface"
 msgstr "GTK изглед"
 
-#: src/gtkui/ui_gtk.cc:210 src/skins/main.cc:227 src/skins-qt/main.cc:225
+#: src/gtkui/ui_gtk.cc:218 src/skins/main.cc:227 src/skins-qt/main.cc:231
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:212 src/moonstone/main_window.cc:184
+#: src/gtkui/ui_gtk.cc:220 src/moonstone/main_window.cc:184
 #: src/qtui/main_window.cc:384
 msgid "Buffering ..."
 msgstr "Запълване..."
 
-#: src/gtkui/ui_gtk.cc:215 src/skins/main.cc:229 src/skins-qt/main.cc:227
+#: src/gtkui/ui_gtk.cc:223 src/pipewire/pipewire.cc:401 src/skins/main.cc:229
+#: src/skins-qt/main.cc:233
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:428 src/gtkui/ui_gtk.cc:459 src/gtkui/ui_gtk.cc:817
-#: src/hotkey/gui.cc:71 src/moonstone/main_window.cc:67
+#: src/gtkui/ui_gtk.cc:444 src/gtkui/ui_gtk.cc:475 src/gtkui/ui_gtk.cc:838
+#: src/hotkey/gui.cc:72 src/moonstone/main_window.cc:67
 #: src/moonstone/main_window.cc:145 src/moonstone/main_window.cc:146
 #: src/notify/osd.cc:85 src/qthotkey/gui.cc:64 src/qtui/main_window.cc:154
 #: src/qtui/main_window.cc:346 src/qtui/main_window.cc:347
@@ -2192,166 +1969,166 @@ msgstr "Audacious"
 msgid "Play"
 msgstr "Изпълнение"
 
-#: src/gtkui/ui_gtk.cc:428 src/moonstone/main_window.cc:151
+#: src/gtkui/ui_gtk.cc:444 src/moonstone/main_window.cc:151
 #: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
 #: src/qtui/main_window.cc:352 src/qtui/main_window.cc:353
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Pause"
 msgstr "Временно спиране"
 
-#: src/gtkui/ui_gtk.cc:803 src/moonstone/main_window.cc:57
+#: src/gtkui/ui_gtk.cc:824 src/moonstone/main_window.cc:57
 #: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr "Търсене в библиотеката"
 
-#: src/gtkui/ui_gtk.cc:810 src/moonstone/main_window.cc:60
+#: src/gtkui/ui_gtk.cc:831 src/moonstone/main_window.cc:60
 #: src/qtui/main_window.cc:147
 msgid "Open Files"
 msgstr "Отваряне на файлове"
 
-#: src/gtkui/ui_gtk.cc:811 src/moonstone/main_window.cc:62
+#: src/gtkui/ui_gtk.cc:832 src/moonstone/main_window.cc:62
 #: src/qtui/main_window.cc:149
 msgid "Add Files"
 msgstr "Добавяне на файлове"
 
-#: src/gtkui/ui_gtk.cc:816 src/moonstone/main_window.cc:65
+#: src/gtkui/ui_gtk.cc:837 src/moonstone/main_window.cc:65
 #: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Previous"
 msgstr "Предишен"
 
-#: src/gtkui/ui_gtk.cc:818 src/hotkey/gui.cc:73 src/moonstone/main_window.cc:69
+#: src/gtkui/ui_gtk.cc:839 src/hotkey/gui.cc:74 src/moonstone/main_window.cc:69
 #: src/qthotkey/gui.cc:66 src/qtui/main_window.cc:156 src/skins/menus.cc:111
 #: src/skins-qt/menus.cc:102
 msgid "Stop"
 msgstr "Спиране"
 
-#: src/gtkui/ui_gtk.cc:819 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
+#: src/gtkui/ui_gtk.cc:840 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
 #: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
 msgstr "Следващ"
 
-#: src/gtkui/ui_gtk.cc:821 src/moonstone/main_window.cc:79
+#: src/gtkui/ui_gtk.cc:842 src/moonstone/main_window.cc:79
 #: src/qtui/main_window.cc:166 src/qtui/menus.cc:252 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "Запис на поток"
 
-#: src/gtkui/ui_gtk.cc:854 src/moonstone/main_window.cc:86
+#: src/gtkui/ui_gtk.cc:875 src/moonstone/main_window.cc:86
 #: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
 msgid "Repeat"
 msgstr "Повторение"
 
-#: src/gtkui/ui_gtk.cc:857 src/moonstone/main_window.cc:89
+#: src/gtkui/ui_gtk.cc:878 src/moonstone/main_window.cc:89
 #: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
 msgid "Shuffle"
 msgstr "Разбъркване"
 
-#: src/gtkui/ui_gtk.cc:1030 src/qtui/main_window.cc:123
+#: src/gtkui/ui_gtk.cc:1061 src/qtui/main_window.cc:123
 msgid "Menu"
 msgstr "Меню"
 
-#: src/gtkui/ui_statusbar.cc:63 src/qtui/status_bar.cc:155
+#: src/gtkui/ui_statusbar.cc:64 src/qtui/status_bar.cc:155
 msgid "mono"
 msgstr "еднозвучие"
 
-#: src/gtkui/ui_statusbar.cc:65 src/qtui/status_bar.cc:157
+#: src/gtkui/ui_statusbar.cc:66 src/qtui/status_bar.cc:157
 msgid "stereo"
 msgstr "многозвучие"
 
-#: src/gtkui/ui_statusbar.cc:67 src/qtui/status_bar.cc:160
+#: src/gtkui/ui_statusbar.cc:68 src/qtui/status_bar.cc:160
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
 msgstr[0] "%d канал"
 msgstr[1] "%d канали"
 
-#: src/gtkui/ui_statusbar.cc:75 src/qtui/status_bar.cc:168
+#: src/gtkui/ui_statusbar.cc:76 src/qtui/status_bar.cc:168
 #, c-format
 msgid "%d kHz"
 msgstr "%d кХц"
 
-#: src/gtkui/ui_statusbar.cc:81 src/qtui/status_bar.cc:174
+#: src/gtkui/ui_statusbar.cc:82 src/qtui/status_bar.cc:174
 #, c-format
 msgid "%d kbit/s"
-msgstr ""
+msgstr "%dkbit/s"
 
-#: src/gtkui/ui_statusbar.cc:107 src/skins/main.cc:471 src/skins-qt/main.cc:455
+#: src/gtkui/ui_statusbar.cc:108 src/skins/main.cc:471 src/skins-qt/main.cc:461
 msgid "Single mode."
 msgstr "Режим „Единичен“."
 
-#: src/gtkui/ui_statusbar.cc:109 src/skins/main.cc:473 src/skins-qt/main.cc:457
+#: src/gtkui/ui_statusbar.cc:110 src/skins/main.cc:473 src/skins-qt/main.cc:463
 msgid "Playlist mode."
 msgstr "Режим „Списък“."
 
-#: src/gtkui/ui_statusbar.cc:117 src/skins/main.cc:479 src/skins-qt/main.cc:463
+#: src/gtkui/ui_statusbar.cc:118 src/skins/main.cc:479 src/skins-qt/main.cc:469
 msgid "Stopping after song."
 msgstr "Спиране след песента."
 
-#: src/hotkey/gui.cc:70 src/qthotkey/gui.cc:63
+#: src/hotkey/gui.cc:71 src/qthotkey/gui.cc:63
 msgid "Previous track"
 msgstr "Предишен запис"
 
-#: src/hotkey/gui.cc:72 src/qthotkey/gui.cc:65
+#: src/hotkey/gui.cc:73 src/qthotkey/gui.cc:65
 msgid "Pause/Resume"
 msgstr "Временно спиране/Възобновяване"
 
-#: src/hotkey/gui.cc:74 src/qthotkey/gui.cc:67
+#: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:67
 msgid "Next track"
 msgstr "Следващ запис"
 
-#: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:68
+#: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:68
 msgid "Step forward"
 msgstr "Придвижване напред"
 
-#: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:69
+#: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:69
 msgid "Step backward"
 msgstr "Придвижване назад"
 
-#: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:70
+#: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:70
 msgid "Mute"
 msgstr "Заглушаване"
 
-#: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:71
+#: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:71
 msgid "Volume up"
 msgstr "Увеличаване на звука"
 
-#: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:72
+#: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:72
 msgid "Volume down"
 msgstr "Намаляване на звука"
 
-#: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:73
+#: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:73
 msgid "Jump to file"
 msgstr "Прескачане до файл"
 
-#: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:74
+#: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:74
 msgid "Toggle player window(s)"
 msgstr "Превключване между прозорците"
 
-#: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:75
+#: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:75
 msgid "Show On-Screen-Display"
 msgstr "Показване на Прозорец върху екрана"
 
-#: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:76
+#: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:76
 msgid "Toggle repeat"
 msgstr "Превключване на повторение"
 
-#: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:77
+#: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:77
 msgid "Toggle shuffle"
 msgstr "Превключване на разбъркване"
 
-#: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:78
+#: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:78
 msgid "Toggle stop after current"
 msgstr "Превключване на спиране след текущият"
 
-#: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:79
+#: src/hotkey/gui.cc:87 src/qthotkey/gui.cc:79
 msgid "Raise player window(s)"
 msgstr "Издигане на прозорците"
 
-#: src/hotkey/gui.cc:97 src/qthotkey/gui.cc:97
+#: src/hotkey/gui.cc:98 src/qthotkey/gui.cc:97
 msgid "(none)"
 msgstr "(без)"
 
-#: src/hotkey/gui.cc:260
+#: src/hotkey/gui.cc:261
 msgid ""
 "It is not recommended to bind the primary mouse buttons without modifiers.\n"
 "\n"
@@ -2361,11 +2138,11 @@ msgstr ""
 "модификатори.\n"
 "Искате ли да продължите?"
 
-#: src/hotkey/gui.cc:263
+#: src/hotkey/gui.cc:264
 msgid "Binding mouse buttons"
 msgstr "Обвързани бутони на мишката"
 
-#: src/hotkey/gui.cc:426
+#: src/hotkey/gui.cc:433
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -2373,19 +2150,19 @@ msgstr ""
 "Наберете комбинация от клавиши в текстовото поле.\n"
 "Можете да включете и бутони от мишката."
 
-#: src/hotkey/gui.cc:432 src/qthotkey/gui.cc:167
+#: src/hotkey/gui.cc:443 src/qthotkey/gui.cc:167
 msgid "Hotkeys:"
 msgstr "Бързи клавиши:"
 
-#: src/hotkey/gui.cc:448 src/qthotkey/gui.cc:169
+#: src/hotkey/gui.cc:456 src/qthotkey/gui.cc:169
 msgid "<b>Action:</b>"
 msgstr "<b>Действие:</b>"
 
-#: src/hotkey/gui.cc:454 src/qthotkey/gui.cc:170
+#: src/hotkey/gui.cc:460 src/qthotkey/gui.cc:170
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Обвързване на клавиш:</b>"
 
-#: src/hotkey/gui.cc:501 src/qthotkey/gui.cc:172
+#: src/hotkey/gui.cc:517 src/qthotkey/gui.cc:172
 msgid "_Add"
 msgstr "_Добавяне"
 
@@ -2442,7 +2219,7 @@ msgstr "Свързване само към физически портове"
 
 #: src/jack/jack-ng.cc:139
 msgid "Upmix to"
-msgstr ""
+msgstr "Смесване до"
 
 #: src/jack/jack-ng.cc:141
 msgid "ports if input has fewer channels"
@@ -2488,16 +2265,16 @@ msgstr ""
 "възпроизвежда на %d Хц. Моля, използвайте ефектът за Промяна на честотата на "
 "дискретизация, за да поправите несъответствията."
 
-#: src/ladspa/plugin.cc:415
+#: src/ladspa/plugin.cc:416
 #, c-format
 msgid "%s Settings"
 msgstr "%s Настройки"
 
-#: src/ladspa/plugin.cc:481
+#: src/ladspa/plugin.cc:482
 msgid "Module paths:"
 msgstr "Пътища към модул:"
 
-#: src/ladspa/plugin.cc:486
+#: src/ladspa/plugin.cc:487
 msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
@@ -2508,25 +2285,25 @@ msgstr ""
 "След добавяне на тези пътища, натиснете Ентер за сканиране за нови приставки."
 "</small>"
 
-#: src/ladspa/plugin.cc:502
+#: src/ladspa/plugin.cc:508
 msgid "Available plugins:"
 msgstr "Достъпни приставки:"
 
-#: src/ladspa/plugin.cc:515 src/modplug/plugin_main.cc:91
+#: src/ladspa/plugin.cc:521 src/modplug/plugin_main.cc:91
 #: src/modplug/plugin_main.cc:94 src/modplug/plugin_main.cc:97
 #: src/modplug/plugin_main.cc:100
 msgid "Enable"
 msgstr "Активиране"
 
-#: src/ladspa/plugin.cc:521
+#: src/ladspa/plugin.cc:527
 msgid "Enabled plugins:"
 msgstr "Активирани приставки:"
 
-#: src/ladspa/plugin.cc:537
+#: src/ladspa/plugin.cc:543
 msgid "Settings"
 msgstr "Настройки"
 
-#: src/ladspa/plugin.cc:554
+#: src/ladspa/plugin.cc:560
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
@@ -2583,101 +2360,106 @@ msgstr "Повторно свързване към LIRC сървъра"
 msgid "Wait before reconnecting:"
 msgstr "Изчакайте преди да опитате повторно свързване:"
 
-#: src/lyricwiki-qt/lyricwiki.cc:89
+#: src/lyricwiki-qt/lyricwiki.cc:90
 msgid "Lyrics"
 msgstr "Текстове"
 
-#: src/lyricwiki-qt/lyricwiki.cc:116
+#: src/lyricwiki-qt/lyricwiki.cc:118
 msgid "Nowhere"
 msgstr "Никъде"
 
-#: src/lyricwiki-qt/lyricwiki.cc:117
+#: src/lyricwiki-qt/lyricwiki.cc:119
 msgid "lyrics.ovh"
 msgstr "lyrics.ovh"
 
-#: src/lyricwiki-qt/lyricwiki.cc:121
+#: src/lyricwiki-qt/lyricwiki.cc:123
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
 msgstr ""
+"<small>Изпълнителят е съкратен в началото, заглавието -- в края</small>"
 
-#: src/lyricwiki-qt/lyricwiki.cc:122
+#: src/lyricwiki-qt/lyricwiki.cc:124
 msgid "Chars to truncate on:"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:126
-msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:127
-msgid "Chars to split on:"
-msgstr ""
+msgstr "Символи за съкращаване:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:128
+msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
+msgstr "<small>Знаците са ORed в RegExp, заобиколени от интервал</small>"
+
+#: src/lyricwiki-qt/lyricwiki.cc:129
+msgid "Chars to split on:"
+msgstr "Символи за разделяне:"
+
+#: src/lyricwiki-qt/lyricwiki.cc:130
 msgid "Further truncate those on chars"
-msgstr ""
+msgstr "Допълнително съкращение на тези символи"
 
-#: src/lyricwiki-qt/lyricwiki.cc:134
+#: src/lyricwiki-qt/lyricwiki.cc:136
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Главни</b>"
 
-#: src/lyricwiki-qt/lyricwiki.cc:135
+#: src/lyricwiki-qt/lyricwiki.cc:137
 msgid "Split title into artist and title on chars"
+msgstr "Разделете заглавието на изпълнител и заглавие на символи"
+
+#: src/lyricwiki-qt/lyricwiki.cc:140
+msgid "<b>Sources</b>"
 msgstr ""
 
-#: src/lyricwiki-qt/lyricwiki.cc:138
-msgid "<b>Internet Sources</b>"
+#: src/lyricwiki-qt/lyricwiki.cc:141
+msgid "Use embedded lyrics (from Lyrics tag)"
 msgstr ""
 
-#: src/lyricwiki-qt/lyricwiki.cc:139
-msgid "Fetch lyrics from:"
+#: src/lyricwiki-qt/lyricwiki.cc:143
+msgid "Fetch lyrics from internet:"
 msgstr ""
 
-#: src/lyricwiki-qt/lyricwiki.cc:142
+#: src/lyricwiki-qt/lyricwiki.cc:146
 msgid "Store fetched lyrics in local cache"
-msgstr ""
+msgstr "Съхраняване на извлечените текстове в локалния кеш"
 
-#: src/lyricwiki-qt/lyricwiki.cc:144
+#: src/lyricwiki-qt/lyricwiki.cc:148
 msgid "<b>Local Storage</b>"
-msgstr ""
+msgstr "<b>Местно пространство</b>"
 
-#: src/lyricwiki-qt/lyricwiki.cc:145
+#: src/lyricwiki-qt/lyricwiki.cc:149
 msgid "Load lyric files (.lrc) from local storage"
-msgstr ""
+msgstr "Зареждане на текстови файлове (.lrc) от локално пространство"
 
-#: src/lyricwiki-qt/lyricwiki.cc:356
+#: src/lyricwiki-qt/lyricwiki.cc:360
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "Неуспех при извличане на %s"
 
-#: src/lyricwiki-qt/lyricwiki.cc:365
+#: src/lyricwiki-qt/lyricwiki.cc:369
 #, c-format
 msgid "Unable to parse %s"
 msgstr "Неуспех при разделяне на %s"
 
-#: src/lyricwiki-qt/lyricwiki.cc:403
+#: src/lyricwiki-qt/lyricwiki.cc:407
 msgid "Looking for lyrics ..."
 msgstr "Търсене на текст..."
 
-#: src/lyricwiki-qt/lyricwiki.cc:427 src/ui-common/dialogs-qt.cc:62
+#: src/lyricwiki-qt/lyricwiki.cc:431 src/ui-common/dialogs-qt.cc:62
 msgid "Error"
 msgstr "Грешка"
 
-#: src/lyricwiki-qt/lyricwiki.cc:433
+#: src/lyricwiki-qt/lyricwiki.cc:437
 msgid "Lyrics could not be found."
-msgstr ""
+msgstr "Текстът не може да бъде намерен."
 
-#: src/lyricwiki-qt/lyricwiki.cc:501
+#: src/lyricwiki-qt/lyricwiki.cc:518
 msgid "Missing title and/or artist."
-msgstr ""
+msgstr "Липсва заглавие и/или изпълнител."
 
-#: src/lyricwiki-qt/lyricwiki.cc:553
+#: src/lyricwiki-qt/lyricwiki.cc:576
 msgid "Save Locally"
-msgstr ""
+msgstr "Запазете локално"
 
-#: src/lyricwiki-qt/lyricwiki.cc:561
+#: src/lyricwiki-qt/lyricwiki.cc:584
 msgid "Refresh"
-msgstr ""
+msgstr "Опресняване"
 
-#: src/m3u/m3u.cc:32
+#: src/m3u/m3u.cc:33
 msgid "M3U Playlists"
 msgstr "Списък M3U"
 
@@ -2842,43 +2624,19 @@ msgstr "Спиране след тази песен"
 
 #: src/moonstone/moonstone.cc:39
 msgid "Moonstone"
-msgstr ""
+msgstr "Moonstone"
 
-#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:251
+#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:256
 msgid "Reset to Defaults"
 msgstr "Възстановяване на началните настройки"
 
-#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:225
+#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:230
 msgid "Now Playing"
 msgstr "Възпроизвежда се"
 
-#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_model.cc:33
-msgid "Entry Number"
-msgstr "Номер по ред"
-
-#: src/moonstone/playlist_model.cc:40 src/qtui/playlist_model.cc:34
-msgid "Album Artist"
-msgstr " Изпълнител на Албум"
-
-#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
-msgid "Queue Position"
-msgstr "Позиция на опашката"
-
-#: src/moonstone/playlist_model.cc:41 src/qtui/playlist_model.cc:35
-msgid "File Path"
-msgstr "Път до файла"
-
-#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:35
-msgid "File Name"
-msgstr "Име на файла"
-
-#: src/moonstone/playlist_model.cc:42 src/qtui/playlist_model.cc:36
-msgid "Custom Title"
-msgstr "Заглавие по подразбиране"
-
 #: src/moonstone/playlist_selection.cc:64
-#: src/playlist-manager/playlist-manager.cc:200
-#: src/playlist-manager-qt/playlist-manager-qt.cc:188
+#: src/playlist-manager/playlist-manager.cc:201
+#: src/playlist-manager-qt/playlist-manager-qt.cc:190
 msgid "Entries"
 msgstr "Елементи"
 
@@ -2983,7 +2741,7 @@ msgstr "Включи името на албума в уведомленията"
 
 #: src/notify/notify.cc:110
 msgid "Custom notification duration:"
-msgstr ""
+msgstr "Персонализирана продължителност на известието:"
 
 #: src/notify/osd.cc:74
 msgid "Show"
@@ -2991,26 +2749,29 @@ msgstr "Показване"
 
 #: src/openmpt/mpt.cc:50
 msgid "OpenMPT (Module Player)"
-msgstr ""
+msgstr "OpenMPT (Модулен плеър)"
 
-#: src/openmpt/mpt.cc:133
+#: src/openmpt/mpt.cc:132
 msgid ""
 "Module player based on libopenmpt\n"
 "\n"
 "Written by: Chris Spiegel <cspiegel@gmail.com>"
 msgstr ""
+"Модулен плейър, базиран на libopenmpt\n"
+"\n"
+"Написано от: Крис Шпигел <cspiegel@gmail.com>"
 
-#: src/openmpt/mpt.cc:152
+#: src/openmpt/mpt.cc:151
 msgid "Stereo separation:"
-msgstr ""
+msgstr "Стерео разделяне:"
 
-#: src/openmpt/mpt.cc:154
+#: src/openmpt/mpt.cc:153
 msgid "%"
-msgstr ""
+msgstr "%"
 
-#: src/openmpt/mpt.cc:158
+#: src/openmpt/mpt.cc:157
 msgid "Interpolation:"
-msgstr ""
+msgstr "Интерполация:"
 
 #: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189 src/xsf/plugin.cc:437
 msgid "Linear"
@@ -3018,17 +2779,27 @@ msgstr "Линейно"
 
 #: src/openmpt/mptwrap.h:52
 msgid "Cubic"
-msgstr ""
+msgstr "Кубичен"
 
 #: src/openmpt/mptwrap.h:53
 msgid "Windowed sinc"
+msgstr "Windowed sinc"
+
+#: src/opus/opus.cc:39
+msgid "Opus Decoder"
 msgstr ""
 
-#: src/oss4/oss.h:75
+#: src/opus/opus.cc:351
+msgid ""
+"Opus Decoder Plugin for Audacious\n"
+"Copyright 2022 Thomas Lange"
+msgstr ""
+
+#: src/oss4/oss.h:70
 msgid "OSS4 Output"
 msgstr "OSS4 изход"
 
-#: src/oss4/oss.h:77
+#: src/oss4/oss.h:72
 msgid "OSS3 Output"
 msgstr "OSS3 изход"
 
@@ -3070,18 +2841,35 @@ msgstr ""
 "Бих искал да благодаря на хората от #audacious, особено на Tony Vroon и John "
 "Lindgren и, разбира се, на авторите на предишната версия на приставката."
 
-#: src/playlist-manager/playlist-manager.cc:37
-#: src/playlist-manager-qt/playlist-manager-qt.cc:40
+#: src/pipewire/pipewire.cc:40
+msgid "PipeWire Output"
+msgstr ""
+
+#: src/pipewire/pipewire.cc:114
+msgid ""
+"PipeWire Output Plugin for Audacious\n"
+"Copyright 2022 Thomas Lange\n"
+"\n"
+"Based on the PipeWire Output Plugin for Qmmp\n"
+"Copyright 2021 Ilya Kotov"
+msgstr ""
+
+#: src/pipewire/pipewire.cc:406 src/skins/menus.cc:88 src/skins-qt/menus.cc:79
+msgid "Playback"
+msgstr "Възпроизвеждане"
+
+#: src/playlist-manager/playlist-manager.cc:38
+#: src/playlist-manager-qt/playlist-manager-qt.cc:42
 msgid "Playlist Manager"
 msgstr "Мениджър на списъка"
 
-#: src/playlist-manager/playlist-manager.cc:220
-#: src/playlist-manager-qt/playlist-manager-qt.cc:354
+#: src/playlist-manager/playlist-manager.cc:221
+#: src/playlist-manager-qt/playlist-manager-qt.cc:356
 msgid "_Remove"
 msgstr "_Премахване"
 
-#: src/playlist-manager/playlist-manager.cc:221
-#: src/playlist-manager-qt/playlist-manager-qt.cc:349
+#: src/playlist-manager/playlist-manager.cc:222
+#: src/playlist-manager-qt/playlist-manager-qt.cc:351
 msgid "Ren_ame"
 msgstr "Преименуван_е"
 
@@ -3095,7 +2883,7 @@ msgstr "Разкодиране OpenPSF PSF1/PSF2"
 
 #: src/psf/plugin.cc:270
 msgid "<b>OpenPSF Configuration</b>"
-msgstr ""
+msgstr "<b>Конфигурация на OpenPSF</b>"
 
 #: src/psf/plugin.cc:271 src/xsf/plugin.cc:444
 msgid "Ignore length from file"
@@ -3107,11 +2895,11 @@ msgstr "PulseAudio изход"
 
 #: src/pulse/pulse_audio.cc:72
 msgid "Context name:"
-msgstr ""
+msgstr "Име на контекста:"
 
 #: src/pulse/pulse_audio.cc:74
 msgid "Stream name:"
-msgstr ""
+msgstr "Име на поток:"
 
 #: src/pulse/pulse_audio.cc:575
 msgid ""
@@ -3176,10 +2964,19 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"OpenGL спектрален анализатор за Audacious\n"
+"Авторско право 2013 Кристоф Буде, Джон Линдгрен и Карло Брамини\n"
+"Авторско право 2014 г., 2020 г. Ariadne Conill\n"
+"\n"
+"Въз основа на приставката XMMS:\n"
+"Авторско право 1998-2000 г. Питър Алм, Микаел Алм, Оле Халнас, Томас Нилсон "
+"и 4Front Technologies\n"
+"\n"
+"Лиценз: GPLv2+"
 
 #: src/qthotkey/gui.cc:165
 msgid "Press a key combination inside a text field."
-msgstr ""
+msgstr "Натиснете клавишна комбинация в текстово поле."
 
 #: src/qthotkey/plugin.cc:103
 msgid ""
@@ -3196,6 +2993,20 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
+"Плъгин за глобални клавишни комбинации\n"
+"Управлявайте плейъра с глобални клавишни комбинации или мултимедийни "
+"клавиши.\n"
+"\n"
+"Авторско право (C) 2020 i.Dark_Templar <darktemplar@dark-templar-archives."
+"net>\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Сътрудниците включват:\n"
+"Copyright (C) 2006-2007 Владимир Пасков <vlado.paskov@gmail.com>\n"
+"Авторско право (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+"Брин Дейвис <curious@ihug.com.au>,\n"
+"Джонатан А. Дейвис <davis@jdhouse.org>,\n"
+"Джереми Тан <nsx@nsx.homeip.net>"
 
 #: src/qtui/menus.cc:109
 msgid "_Open Folder ..."
@@ -3217,12 +3028,16 @@ msgstr "_Намери ..."
 msgid "Audio Settings ..."
 msgstr "Настройки на звук..."
 
-#: src/qtui/playlist_model.cc:186
-msgid "Q#"
-msgstr ""
-
 #: src/qtui/playlist_model.cc:188
+msgid "Q#"
+msgstr "Q#"
+
+#: src/qtui/playlist_model.cc:190
 msgid "T#"
+msgstr "T#"
+
+#: src/qtui/playlist_model.cc:192
+msgid "C#"
 msgstr ""
 
 #: src/qtui/qtui.cc:40
@@ -3235,23 +3050,23 @@ msgstr "Търсене в списъка"
 
 #: src/qtui/settings.cc:58
 msgid "Always"
-msgstr ""
+msgstr "Винаги"
 
 #: src/qtui/settings.cc:59
 msgid "Auto-hide"
-msgstr ""
+msgstr "Автоматично скриване"
 
 #: src/qtui/settings.cc:60
 msgid "Never"
-msgstr ""
+msgstr "Никога"
 
 #: src/qtui/settings.cc:64
 msgid "Show playlist tabs:"
-msgstr ""
+msgstr "Показване на раздели на плейлист:"
 
 #: src/qtui/settings.cc:78
 msgid "Use bold font for column headers"
-msgstr ""
+msgstr "Използване на удебелен шрифт за заглавките на колоните"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -3444,38 +3259,38 @@ msgstr ""
 msgid "Library"
 msgstr "Библиотека"
 
-#: src/search-tool-qt/search-model.cc:49 src/search-tool/search-tool.cc:291
+#: src/search-tool-qt/search-model.cc:44 src/search-tool/search-tool.cc:287
 #, c-format
 msgid "%d song"
 msgid_plural "%d songs"
 msgstr[0] "%d песен"
 msgstr[1] "%d песни"
 
-#: src/search-tool-qt/search-model.cc:58 src/search-tool/search-tool.cc:298
+#: src/search-tool-qt/search-model.cc:53 src/search-tool/search-tool.cc:294
 msgid "of this genre"
 msgstr "на този жанр"
 
-#: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
+#: src/search-tool-qt/search-model.h:47 src/search-tool/search-model.h:45
 msgid "on"
 msgstr "на"
 
-#: src/search-tool-qt/search-model.cc:64 src/search-tool/search-tool.cc:305
+#: src/search-tool-qt/search-model.h:47 src/search-tool/search-model.h:45
 msgid "by"
 msgstr "от"
 
-#: src/search-tool-qt/search-tool-qt.cc:165 src/search-tool/search-tool.cc:73
+#: src/search-tool-qt/search-tool-qt.cc:165 src/search-tool/search-tool.cc:74
 msgid "Number of results to show:"
 msgstr "Брой на показваните резултати:"
 
-#: src/search-tool-qt/search-tool-qt.cc:168 src/search-tool/search-tool.cc:76
+#: src/search-tool-qt/search-tool-qt.cc:168 src/search-tool/search-tool.cc:77
 msgid "Rescan library at startup"
 msgstr "Сканиране на библиотеката при стартиране"
 
 #: src/search-tool-qt/search-tool-qt.cc:170
 msgid "Monitor library for changes"
-msgstr ""
+msgstr "Наблюдаване на библиотеката за промени"
 
-#: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:446
+#: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:450
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -3483,37 +3298,37 @@ msgstr ""
 "За да внесете музикална библиотека в Audacious, изберете папка и кликнете на "
 "бутона \"Опресняване\"."
 
-#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:455
+#: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:459
 msgid "Please wait ..."
 msgstr "Моля изчакайте..."
 
-#: src/search-tool-qt/search-tool-qt.cc:197 src/search-tool/search-tool.cc:483
+#: src/search-tool-qt/search-tool-qt.cc:197 src/search-tool/search-tool.cc:487
 msgid "Choose Folder"
 msgstr "Избор на папка"
 
-#: src/search-tool-qt/search-tool-qt.cc:201
+#: src/search-tool-qt/search-tool-qt.cc:201 src/search-tool/search-tool.cc:445
 msgid "Search library"
 msgstr "Търсене в библиотека"
 
-#: src/search-tool-qt/search-tool-qt.cc:327 src/search-tool/search-tool.cc:155
+#: src/search-tool-qt/search-tool-qt.cc:327 src/search-tool/search-tool.cc:156
 #, c-format
 msgid "%d of %d result shown"
 msgid_plural "%d of %d results shown"
 msgstr[0] "%d от %d резултат е показан"
 msgstr[1] "%d от %d резултати са показани"
 
-#: src/search-tool-qt/search-tool-qt.cc:331 src/search-tool/search-tool.cc:159
+#: src/search-tool-qt/search-tool-qt.cc:331 src/search-tool/search-tool.cc:160
 #, c-format
 msgid "%d result"
 msgid_plural "%d results"
 msgstr[0] "%d резултат"
 msgstr[1] "%d резултати"
 
-#: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:345
+#: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:341
 msgid "_Create Playlist"
 msgstr "_Създай списък"
 
-#: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:347
+#: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:343
 msgid "_Add to Playlist"
 msgstr "_Добавяне в списък"
 
@@ -3617,108 +3432,108 @@ msgstr "Зададена е начална точка на повторение.
 msgid "Repeat point B set."
 msgstr "Зададена е крайна точка на повторение."
 
-#: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:221
+#: src/skins/equalizer.cc:223 src/skins-qt/equalizer.cc:223
 msgid "Preamp"
 msgstr "Предусилвател"
 
-#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:225
+#: src/skins/equalizer.cc:227 src/skins-qt/equalizer.cc:227
 msgid "31 Hz"
 msgstr "31 Хц"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
 msgid "63 Hz"
 msgstr "63 Хц"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
 msgid "125 Hz"
 msgstr "125 Хц"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
 msgid "250 Hz"
 msgstr "250 Хц"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
 msgid "500 Hz"
 msgstr "500 Хц"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:226
+#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
 msgid "1 kHz"
 msgstr "1 кХц"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
 msgid "2 kHz"
 msgstr "2 кХц"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
 msgid "4 kHz"
 msgstr "4 кХц"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
 msgid "8 kHz"
 msgstr "8 кХц"
 
-#: src/skins/equalizer.cc:230 src/skins-qt/equalizer.cc:227
+#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
 msgid "16 kHz"
 msgstr "16 кХц"
 
-#: src/skins/equalizer.cc:271 src/skins-qt/equalizer.cc:268
+#: src/skins/equalizer.cc:270 src/skins-qt/equalizer.cc:270
 msgid "Audacious Equalizer"
 msgstr "Тонкоректор на Audacious"
 
-#: src/skins/main.cc:452 src/skins-qt/main.cc:436
+#: src/skins/main.cc:452 src/skins-qt/main.cc:442
 msgid "Recording on"
 msgstr "Записване - включено"
 
-#: src/skins/main.cc:454 src/skins-qt/main.cc:438
+#: src/skins/main.cc:454 src/skins-qt/main.cc:444
 msgid "Recording off"
 msgstr "Записване - изключено"
 
-#: src/skins/main.cc:749 src/skins-qt/main.cc:690
+#: src/skins/main.cc:747 src/skins-qt/main.cc:701
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Превъртане до %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/main.cc:766 src/skins-qt/main.cc:707
+#: src/skins/main.cc:764 src/skins-qt/main.cc:718
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Сила на звука: %d%%"
 
-#: src/skins/main.cc:779 src/skins-qt/main.cc:720
+#: src/skins/main.cc:777 src/skins-qt/main.cc:731
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Баланс: %d%% ляво"
 
-#: src/skins/main.cc:781 src/skins-qt/main.cc:722
+#: src/skins/main.cc:779 src/skins-qt/main.cc:733
 msgid "Balance: center"
 msgstr "Баланс: център"
 
-#: src/skins/main.cc:783 src/skins-qt/main.cc:724
+#: src/skins/main.cc:781 src/skins-qt/main.cc:735
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Баланс: %d%% дясно"
 
-#: src/skins/main.cc:875 src/skins-qt/main.cc:816
+#: src/skins/main.cc:873 src/skins-qt/main.cc:827
 msgid "Options Menu"
 msgstr "Меню с опции"
 
-#: src/skins/main.cc:879 src/skins-qt/main.cc:820
+#: src/skins/main.cc:877 src/skins-qt/main.cc:831
 msgid "Disable 'Always On Top'"
 msgstr "Деактивиране на „Винаги отгоре“"
 
-#: src/skins/main.cc:881 src/skins-qt/main.cc:822
+#: src/skins/main.cc:879 src/skins-qt/main.cc:833
 msgid "Enable 'Always On Top'"
 msgstr "Активиране на „Винаги отгоре“"
 
-#: src/skins/main.cc:884 src/skins-qt/main.cc:825
+#: src/skins/main.cc:882 src/skins-qt/main.cc:836
 msgid "File Info Box"
 msgstr "Кутийка с информация за файла"
 
-#: src/skins/main.cc:887 src/skins/menus.cc:149 src/skins-qt/main.cc:828
+#: src/skins/main.cc:885 src/skins/menus.cc:149 src/skins-qt/main.cc:839
 #: src/skins-qt/menus.cc:142
 msgid "Double Size"
 msgstr "Двоен Размер"
 
-#: src/skins/main.cc:890 src/skins-qt/main.cc:831
+#: src/skins/main.cc:888 src/skins-qt/main.cc:842
 msgid "Visualizations"
 msgstr "Визуализации"
 
@@ -3741,10 +3556,6 @@ msgstr "Отваряне на файлове..."
 #: src/skins/menus.cc:85 src/skins-qt/menus.cc:76
 msgid "Open URL ..."
 msgstr "Отваряне на интернет адрес..."
-
-#: src/skins/menus.cc:88 src/skins-qt/menus.cc:79
-msgid "Playback"
-msgstr "Възпроизвеждане"
 
 #: src/skins/menus.cc:89 src/skins-qt/menus.cc:80
 msgid "Playlist"
@@ -4032,12 +3843,12 @@ msgstr "Поставяне на Края"
 msgid "Queue/Unqueue"
 msgstr "На опашка/без опашка"
 
-#: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:56
+#: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:58
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d от %d)"
 
-#: src/skins/playlistwin.cc:491 src/skins-qt/playlistwin.cc:476
+#: src/skins/playlistwin.cc:491 src/skins-qt/playlistwin.cc:478
 msgid "Audacious Playlist Editor"
 msgstr "Audacious Редактор на списъка за изпълнение"
 
@@ -4053,11 +3864,11 @@ msgstr "Отваряне на папка..."
 msgid "Add Folder ..."
 msgstr "Добавяне на папка..."
 
-#: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:76
+#: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:77
 msgid "Search entries in active playlist"
 msgstr "Търсене на записи в активния списък"
 
-#: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:82
+#: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:83
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -4069,7 +3880,7 @@ msgstr ""
 "буквата. Ако не знаете как работи този синтаксис, просто въведете част от "
 "това, което търсите."
 
-#: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:90
+#: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:91
 msgid "Title:"
 msgstr "Заглавие:"
 
@@ -4077,27 +3888,27 @@ msgstr "Заглавие:"
 msgid "Album:"
 msgstr "Албум:"
 
-#: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:102
+#: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:101
 msgid "Artist:"
 msgstr "Изпълнител:"
 
-#: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:108
+#: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:106
 msgid "File Name:"
 msgstr "Име на файл:"
 
-#: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:116
+#: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:134
 msgid "Clear previous selection before searching"
 msgstr "Изчистване на предишния избор преди търсене"
 
-#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:119
+#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:137
 msgid "Automatically toggle queue for matching entries"
 msgstr "Автоматично превключване в опашката за съвпадащите елементи"
 
-#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:122
+#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:140
 msgid "Create a new playlist with matching entries"
 msgstr "Създаване на нов списък със съвпадащите елементи"
 
-#: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:77
+#: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:78
 msgid "Search"
 msgstr "Търсене"
 
@@ -4124,6 +3935,7 @@ msgstr "<b>Кожа</b>"
 #: src/skins-qt/skins_cfg.cc:211
 msgid "Display active titlebar when any window is focused"
 msgstr ""
+"Показване на активната заглавна лента, когато някой прозорец е фокусиран"
 
 #: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:191
 msgid "<b>Fonts</b>"
@@ -4598,39 +4410,39 @@ msgstr "<b>Допълнително многозвучие</b>"
 
 #: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:131
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 #: src/streamtuner/icecast-model.cc:132
 msgid "Current Song"
-msgstr ""
+msgstr "Сегашна песен"
 
 #: src/streamtuner/icecast-model.cc:164
 msgid "Other"
-msgstr ""
+msgstr "Други"
 
 #: src/streamtuner/ihr-model.cc:63
 msgid "Market"
-msgstr ""
+msgstr "Пазар"
 
 #: src/streamtuner/ihr-model.cc:156
 msgid "Call Letters"
-msgstr ""
+msgstr "Повиквателни писма"
 
 #: src/streamtuner/ihr-model.cc:162
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #: src/streamtuner/shoutcast-model.cc:128
 msgid "Listeners"
-msgstr ""
+msgstr "Слушатели"
 
 #: src/streamtuner/shoutcast-model.cc:188
 msgid "Top 500 Stations"
-msgstr ""
+msgstr "Топ 500 станции"
 
 #: src/streamtuner/shoutcast-model.cc:189
 msgid "Alternative"
-msgstr ""
+msgstr "Алтернативно"
 
 #: src/streamtuner/shoutcast-model.cc:190
 msgid "Blues"
@@ -4646,7 +4458,7 @@ msgstr "Кънтри"
 
 #: src/streamtuner/shoutcast-model.cc:193
 msgid "Decades"
-msgstr ""
+msgstr "Десетолетиня"
 
 #: src/streamtuner/shoutcast-model.cc:194
 msgid "Easy Listening"
@@ -4654,7 +4466,7 @@ msgstr "Изи Листънинг"
 
 #: src/streamtuner/shoutcast-model.cc:195
 msgid "Electronic"
-msgstr ""
+msgstr "Електронна"
 
 #: src/streamtuner/shoutcast-model.cc:196
 msgid "Folk"
@@ -4662,11 +4474,11 @@ msgstr "Фолк"
 
 #: src/streamtuner/shoutcast-model.cc:197
 msgid "Inspirational"
-msgstr ""
+msgstr "Вдъхновяваща"
 
 #: src/streamtuner/shoutcast-model.cc:198
 msgid "International"
-msgstr ""
+msgstr "Международна"
 
 #: src/streamtuner/shoutcast-model.cc:199
 msgid "Jazz"
@@ -4674,7 +4486,7 @@ msgstr "Джаз"
 
 #: src/streamtuner/shoutcast-model.cc:200
 msgid "Latin"
-msgstr ""
+msgstr "Латин"
 
 #: src/streamtuner/shoutcast-model.cc:201
 msgid "Metal"
@@ -4690,11 +4502,11 @@ msgstr "Поп"
 
 #: src/streamtuner/shoutcast-model.cc:205
 msgid "Public Radio"
-msgstr ""
+msgstr "Публично ради"
 
 #: src/streamtuner/shoutcast-model.cc:206
 msgid "R&B and Urban"
-msgstr ""
+msgstr "R&B и Urban"
 
 #: src/streamtuner/shoutcast-model.cc:207
 msgid "Rap"
@@ -4710,31 +4522,31 @@ msgstr "Рок"
 
 #: src/streamtuner/shoutcast-model.cc:210
 msgid "Seasonal and Holiday"
-msgstr ""
+msgstr "Сезонни и празнични"
 
 #: src/streamtuner/shoutcast-model.cc:211
 msgid "Soundtracks"
-msgstr ""
+msgstr "Саундтракове"
 
 #: src/streamtuner/shoutcast-model.cc:212
 msgid "Talk"
-msgstr ""
+msgstr "Говорене"
 
 #: src/streamtuner/shoutcast-model.cc:213
 msgid "Themes"
-msgstr ""
+msgstr "Теми"
 
 #: src/streamtuner/streamtuner.cc:59
 msgid "Shoutcast"
-msgstr ""
+msgstr "Шауткаст"
 
 #: src/streamtuner/streamtuner.cc:60
 msgid "Icecast"
-msgstr ""
+msgstr "Айскаст"
 
 #: src/streamtuner/streamtuner.cc:71
 msgid "Stream Tuner"
-msgstr ""
+msgstr "Поточен тунер"
 
 #: src/tonegen/tonegen.cc:45
 msgid "Tone Generator"
@@ -4783,13 +4595,13 @@ msgstr "Информация"
 #: src/ui-common/menu-ops-gtk.cc:132 src/ui-common/menu-ops-qt.cc:113
 #, c-format
 msgid "%s does not appear to be a valid folder."
-msgstr ""
+msgstr "%sне изглежда да е валидна папка."
 
 #: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
 msgstr "Премахване на глас"
 
-#: src/vorbis/vorbis.cc:429
+#: src/vorbis/vorbis.cc:431
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4881,30 +4693,32 @@ msgid ""
 "VU Meter Plugin for Audacious\n"
 "Copyright 2017-2019 Marc Sánchez Fauste"
 msgstr ""
+"Добавка за VU Метър за Audacious\n"
+"Авторско право 2017-2019 Marc Sánchez Fauste"
 
 #: src/vumeter-qt/vumeter_qt.cc:35
 msgid "<b>VU Meter Settings</b>"
-msgstr ""
+msgstr "<b>Настройки за VU Метъра</b>"
 
 #: src/vumeter-qt/vumeter_qt.cc:37
 msgid "Peak hold time:"
-msgstr ""
+msgstr "Пиково време на задържане:"
 
 #: src/vumeter-qt/vumeter_qt.cc:42
 msgid "Fall-off time:"
-msgstr ""
+msgstr "Време на отпадане:"
 
 #: src/vumeter-qt/vumeter_qt.cc:44
 msgid "dB/second"
-msgstr ""
+msgstr "dB/секунда"
 
 #: src/vumeter-qt/vumeter_qt.cc:46
 msgid "Display legend"
-msgstr ""
+msgstr "Показване на легенда"
 
 #: src/vumeter-qt/vumeter_qt.h:37
 msgid "VU Meter"
-msgstr ""
+msgstr "VU Метър"
 
 #: src/waveout/waveout.cc:43
 msgid "Win32 waveOut"
@@ -4946,19 +4760,19 @@ msgstr "Разкодиране 2SF"
 
 #: src/xsf/plugin.cc:429
 msgid "32728 Hz"
-msgstr ""
+msgstr "32728 Hz"
 
 #: src/xsf/plugin.cc:432
 msgid "65456 Hz"
-msgstr ""
+msgstr "65456 Hz"
 
 #: src/xsf/plugin.cc:438
 msgid "Cosine"
-msgstr ""
+msgstr "Косинус"
 
 #: src/xsf/plugin.cc:439
 msgid "Sharp"
-msgstr ""
+msgstr "Острър"
 
 #: src/xsf/plugin.cc:443
 msgid "<b>XSF Configuration</b>"
@@ -4966,11 +4780,11 @@ msgstr "<b>Настройки на XSF</b>"
 
 #: src/xsf/plugin.cc:445
 msgid "Default fade time:"
-msgstr ""
+msgstr "Време за избледняване по подразбиране:"
 
 #: src/xsf/plugin.cc:447
 msgid "Interpolation mode:"
-msgstr ""
+msgstr "Режим на интерполация:"
 
 #: src/xspf/xspf.cc:95
 msgid "XML Shareable Playlists (XSPF)"

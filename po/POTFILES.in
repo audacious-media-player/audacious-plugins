@@ -1,8 +1,6 @@
 # Please don't update this file manually - use ./update-potfiles.sh instead!
 src/aac/aac.cc
 src/adplug/adplug-xmms.cc
-src/alarm/alarm.cc
-src/alarm/interface.cc
 src/albumart/albumart.cc
 src/albumart-qt/albumart.cc
 src/alsa/alsa.h
@@ -130,8 +128,10 @@ src/notify/notify.cc
 src/notify/osd.cc
 src/openmpt/mpt.cc
 src/openmpt/mptwrap.h
+src/opus/opus.cc
 src/oss4/oss.h
 src/oss4/plugin.cc
+src/pipewire/pipewire.cc
 src/playlist-manager/playlist-manager.cc
 src/playlist-manager-qt/playlist-manager-qt.cc
 src/pls/pls.cc
@@ -160,7 +160,9 @@ src/sdlout/sdlout.cc
 src/search-tool/library.cc
 src/search-tool-qt/library.cc
 src/search-tool-qt/search-model.cc
+src/search-tool-qt/search-model.h
 src/search-tool-qt/search-tool-qt.cc
+src/search-tool/search-model.h
 src/search-tool/search-tool.cc
 src/sid/xmms-sid.cc
 src/sid/xs_config.cc
