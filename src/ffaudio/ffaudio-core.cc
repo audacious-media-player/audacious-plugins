@@ -91,9 +91,9 @@ struct ScopedContext
 #endif
 
 #if CHECK_LIBAVCODEC_VERSION(58, 9, 100)
-    ptr->pkt_timebase = cinfo.stream->time_base;
+        ptr->pkt_timebase = cinfo.stream->time_base;
 #else
-    av_codec_set_pkt_timebase (ptr, cinfo.stream->time_base);
+        av_codec_set_pkt_timebase (ptr, cinfo.stream->time_base);
 #endif
     }
 
