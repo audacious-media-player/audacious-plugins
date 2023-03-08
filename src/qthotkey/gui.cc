@@ -40,11 +40,14 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QStringList>
+#include <QtGui/QGuiApplication>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QStyle>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QtX11Extras/QX11Info>
+#endif
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/preferences.h>
@@ -106,8 +109,17 @@ public:
 
             QStringList strings;
 
-            KeySym keysym;
-            keysym = XkbKeycodeToKeysym(QX11Info::display(), key, 0, 0);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 2, 0)
+            Display * xdisplay = reinterpret_cast<Display *>(qApp
+                ->nativeInterface<QNativeInterface::QX11Application>()
+                ->display());
+#elif QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            // should never be reached
+            Display * xdisplay = nullptr;
+#else
+            Display * xdisplay = QX11Info::display();
+#endif
+            KeySym keysym = XkbKeycodeToKeysym(xdisplay, key, 0, 0);
             if (keysym == 0 || keysym == NoSymbol)
             {
                 text = QString::fromLocal8Bit("#%1").arg(key);
