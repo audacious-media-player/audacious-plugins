@@ -42,7 +42,10 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QString>
 #include <QtCore/QTimer>
+#include <QtGui/QGuiApplication>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QtX11Extras/QX11Info>
+#endif
 
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
@@ -95,6 +98,7 @@ static GlobalHotkeysEventFilter event_filter;
 static PluginConfig plugin_cfg;
 
 static int grabbed = 0;
+static Display * xdisplay = nullptr;
 unsigned int numlock_mask = 0;
 unsigned int scrolllock_mask = 0;
 unsigned int capslock_mask = 0;
@@ -336,7 +340,7 @@ void add_hotkey(QList<HotkeyConfiguration> & hotkeys_list, KeySym keysym,
         return;
     }
 
-    keycode = XKeysymToKeycode(QX11Info::display(), keysym);
+    keycode = XKeysymToKeycode(xdisplay, keysym);
     if (keycode == 0)
     {
         return;
@@ -436,12 +440,32 @@ bool GlobalHotkeys::init()
 {
     audqt::init();
 
-    if (!QX11Info::isPlatformX11())
+#if QT_VERSION >= QT_VERSION_CHECK(6, 2, 0) && defined(Q_OS_UNIX)
+    auto * x11_interface =
+        qApp->nativeInterface<QNativeInterface::QX11Application>();
+    bool has_x11 = x11_interface != nullptr;
+#elif QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    // the interface is not implemented
+    bool has_x11 = false;
+#else
+    bool has_x11 = QX11Info::isPlatformX11();
+#endif
+
+    if (!has_x11)
     {
         AUDERR("Global Hotkey plugin only supports X11.\n");
         audqt::cleanup();
         return false;
     }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 2, 0)
+    xdisplay = reinterpret_cast<Display *>(x11_interface->display());
+#elif QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    Q_UNREACHABLE();
+    xdisplay = nullptr;
+#else
+    xdisplay = QX11Info::display();
+#endif
 
     load_config();
     grab_keys();
@@ -610,7 +634,6 @@ void grab_keys()
     PluginConfig * plugin_cfg = get_config();
 
     XErrorHandler old_handler = nullptr;
-    Display * xdisplay = QX11Info::display();
 
     if (grabbed || (!xdisplay))
     {
@@ -704,7 +727,6 @@ void ungrab_keys()
     PluginConfig * plugin_cfg = get_config();
 
     XErrorHandler old_handler = nullptr;
-    Display * xdisplay = QX11Info::display();
 
     if ((!grabbed) || (!xdisplay))
     {
