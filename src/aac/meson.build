@@ -1,6 +1,10 @@
-faad_dep = cxx.find_library('faad', required: false)
-have_aac = faad_dep.found() and cxx.has_header('neaacdec.h')
+faad_dep = dependency('faad2', required: false)
 
+if not faad_dep.found()
+  faad_dep = cxx.find_library('faad', has_headers: 'neaacdec.h', required: false)
+endif
+
+have_aac = faad_dep.found()
 
 if have_aac
   shared_module('aac-raw',
