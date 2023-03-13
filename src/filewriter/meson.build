@@ -34,7 +34,7 @@ endif
 
 
 if get_option('filewriter-mp3')
-  lame_dep = dependency('mp3lame', required: false)
+  lame_dep = dependency('lame', required: false)
 
   if not lame_dep.found()
     lame_dep = cxx.find_library('mp3lame', has_headers: 'lame/lame.h',
