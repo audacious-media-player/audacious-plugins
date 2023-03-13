@@ -2,7 +2,7 @@ lirc_dep = dependency('lirc', required: false)
 
 if not lirc_dep.found()
   lirc_dep = cxx.find_library('lirc_client', has_headers: 'lirc/lirc_client.h',
-                              dirs: ['/usr/local/lib'], required: false)
+                              required: false)
 endif
 have_lirc = lirc_dep.found()
 

@@ -38,7 +38,7 @@ if get_option('filewriter-mp3')
 
   if not lame_dep.found()
     lame_dep = cxx.find_library('mp3lame', has_headers: 'lame/lame.h',
-                                dirs: ['/usr/local/lib'], required: false)
+                                required: false)
   endif
 
   if lame_dep.found()
