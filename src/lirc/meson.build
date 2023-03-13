@@ -6,6 +6,7 @@ if not lirc_dep.found()
 endif
 have_lirc = lirc_dep.found()
 
+
 if have_lirc
   shared_module('lirc',
     'lirc.cc',
