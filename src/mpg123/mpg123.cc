@@ -168,7 +168,7 @@ DecodeState::DecodeState(const char * filename, VFSFile & file, bool probing,
     if (mpg123_open_handle(dec, &file) < 0)
         goto err;
 
-    if (!stream && aud_get_bool("mpg123", "full_scan") && mpg123_scan(dec) < 0)
+    if (!stream && !probing && aud_get_bool("mpg123", "full_scan") && mpg123_scan(dec) < 0)
         goto err;
 
     while (1)
