@@ -149,14 +149,15 @@ DecodeState::DecodeState(const char * filename, VFSFile & file, bool probing,
                          bool stream)
 {
     dec = mpg123_new(nullptr, nullptr);
-    mpg123_param(dec, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
     mpg123_replace_reader_handle(dec, replace_read,
                                  stream ? replace_lseek_dummy : replace_lseek,
                                  nullptr);
 
+    long flags = DECODE_OPTIONS;
     /* be strict about junk data in file during content probe */
     if (probing)
-        mpg123_param(dec, MPG123_RESYNC_LIMIT, 0, 0);
+        flags |= MPG123_NO_RESYNC;
+    mpg123_param(dec, MPG123_ADD_FLAGS, flags, 0);
 
     mpg123_format_none(dec);
 
