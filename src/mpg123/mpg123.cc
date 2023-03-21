@@ -192,6 +192,10 @@ DecodeState::DecodeState(const char * filename, VFSFile & file, bool probing,
         if (mpg123_info(dec, &info) != MPG123_OK)
             goto err;
 
+        // heuristic/sanity check to avoid false positives
+        if (probing && !stream && info.vbr == MPG123_CBR && info.bitrate <= 0)
+            goto err;
+
         return;
     }
 
