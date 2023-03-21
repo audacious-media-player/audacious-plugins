@@ -173,7 +173,7 @@ DecodeState::DecodeState(const char * filename, VFSFile & file, bool probing,
 
     while (1)
     {
-        if (mpg123_getformat(dec, &rate, &channels, &encoding) < 0)
+        if (mpg123_getformat(dec, &rate, &channels, &encoding) != MPG123_OK)
             goto err;
 
         int ret =
@@ -181,10 +181,10 @@ DecodeState::DecodeState(const char * filename, VFSFile & file, bool probing,
 
         if (ret == MPG123_NEW_FORMAT)
             continue;
-        if (ret < 0)
+        if (ret != MPG123_OK)
             goto err;
 
-        if (mpg123_info(dec, &info) < 0)
+        if (mpg123_info(dec, &info) != MPG123_OK)
             goto err;
 
         return;
