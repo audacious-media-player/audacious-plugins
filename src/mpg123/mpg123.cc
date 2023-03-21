@@ -54,7 +54,10 @@ public:
     static constexpr PluginInfo info = {N_("MPG123 Plugin"), PACKAGE, nullptr,
                                         &prefs};
     static constexpr InputInfo iinfo =
-        InputInfo(FlagWritesTag).with_exts(exts).with_mimes(mimes);
+        InputInfo(FlagWritesTag)
+            .with_exts(exts)
+            .with_mimes(mimes)
+            .with_priority(_AUD_PLUGIN_DEFAULT_PRIO + 1); // false positives with content based detection
 
     constexpr MPG123Plugin() : InputPlugin(info, iinfo) {}
 
