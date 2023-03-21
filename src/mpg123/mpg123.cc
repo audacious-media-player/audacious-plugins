@@ -155,8 +155,12 @@ DecodeState::DecodeState(const char * filename, VFSFile & file, bool probing,
 
     long flags = DECODE_OPTIONS;
     /* be strict about junk data in file during content probe */
-    if (probing)
+    if (probing) {
         flags |= MPG123_NO_RESYNC;
+#if MPG123_API_VERSION >= 45
+        flags |= MPG123_NO_FRANKENSTEIN;
+#endif
+    }
     mpg123_param(dec, MPG123_ADD_FLAGS, flags, 0);
 
     mpg123_format_none(dec);
