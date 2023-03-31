@@ -52,6 +52,7 @@ public:
     {
         setObjectName(item->id());
         setWindowTitle(item->name());
+        setWindowRole("manager");
         setWidget(item->widget());
         setContextMenuPolicy(Qt::PreventContextMenu);
 
@@ -195,6 +196,7 @@ MainWindow::MainWindow()
 
     setMenuBar(m_menubar);
     setDockNestingEnabled(true);
+    setWindowRole("manager");
 
     audqt::register_dock_host(this);
 

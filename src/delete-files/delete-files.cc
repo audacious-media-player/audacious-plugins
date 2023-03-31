@@ -228,6 +228,7 @@ static void start_delete ()
         qdialog->setAttribute (Qt::WA_DeleteOnClose);
         qdialog->setIcon (QMessageBox::Question);
         qdialog->setWindowTitle (_("Delete Files"));
+        qdialog->setWindowRole ("message");
         qdialog->setText ((const char *) prompt);
 
         auto remove = new QPushButton (action, qdialog);

@@ -954,6 +954,7 @@ bool GtkUI::init ()
     menu_tab = make_menu_tab (accel);
 
     add_dock_plugins ();
+    gtk_window_set_role ((GtkWindow *) window, "mainwindow");
 
     return true;
 }

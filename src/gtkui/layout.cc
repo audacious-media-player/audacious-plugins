@@ -357,6 +357,7 @@ static void item_add (Item * item)
         NULL_ON_DESTROY (item->window);
 
         gtk_window_set_title ((GtkWindow *) item->window, item->name);
+        gtk_window_set_role ((GtkWindow *) item->window, "manager");
         gtk_container_set_border_width ((GtkContainer *) item->window, 2);
 
         g_signal_connect_swapped (item->window, "delete-event", (GCallback)

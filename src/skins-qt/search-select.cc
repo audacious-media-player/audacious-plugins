@@ -60,6 +60,7 @@ private:
 SearchSelectDialog::SearchSelectDialog (QWidget * parent) : QDialog (parent)
 {
     setWindowTitle (_("Search entries in active playlist"));
+    setWindowRole ("search");
     setContentsMargins (audqt::margins.FourPt);
 
     auto logo = new QLabel;
