@@ -489,7 +489,7 @@ static void playlistwin_create_window ()
 
     playlistwin = new PlWindow (shaded);
     playlistwin->setWindowTitle (_("Audacious Playlist Editor"));
-    playlistwin->setWindowTitle ("editor");
+    playlistwin->setWindowRole ("editor");
 
     GtkWidget * w = playlistwin->gtk ();
     drag_dest_set (w);
