@@ -196,7 +196,7 @@ MainWindow::MainWindow()
 
     setMenuBar(m_menubar);
     setDockNestingEnabled(true);
-    setWindowRole("plugin");
+    setWindowRole("mainwindow");
 
     audqt::register_dock_host(this);
 
