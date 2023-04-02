@@ -798,6 +798,7 @@ bool GtkUI::init ()
     pw_col_init ();
 
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_role ((GtkWindow *) window, "mainwindow");
 
     accel = gtk_accel_group_new ();
     gtk_window_add_accel_group ((GtkWindow *) window, accel);
@@ -954,7 +955,6 @@ bool GtkUI::init ()
     menu_tab = make_menu_tab (accel);
 
     add_dock_plugins ();
-    gtk_window_set_role ((GtkWindow *) window, "mainwindow");
 
     return true;
 }
