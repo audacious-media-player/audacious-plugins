@@ -93,7 +93,6 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
     h *= config.scale;
 
     GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_role ((GtkWindow *) window, "skin");
     gtk_window_set_decorated ((GtkWindow *) window, false);
     gtk_window_set_resizable ((GtkWindow *) window, false);
     gtk_window_move ((GtkWindow *) window, * x, * y);
