@@ -349,7 +349,6 @@ bool i_fileinfo_gui (const char * filename_uri, VFSFile & file)
 
     title = g_path_get_basename (filename_utf8);
     gtk_window_set_title (GTK_WINDOW (fileinfowin), title);
-    gtk_window_set_role (GTK_WINDOW (fileinfowin), "fileinfo");
     g_free (title);
     /* set the text for the filename header too */
     gtk_entry_set_text (GTK_ENTRY (title_name_v_entry), filename_utf8);
