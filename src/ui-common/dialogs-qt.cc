@@ -50,6 +50,7 @@ void DialogWindows::create_progress ()
         m_progress->setAttribute (Qt::WA_DeleteOnClose);
         m_progress->setIcon (QMessageBox::Information);
         m_progress->setWindowTitle (_("Working ..."));
+        m_progress->setWindowRole ("progress");
         m_progress->setWindowModality (Qt::WindowModal);
     }
 }

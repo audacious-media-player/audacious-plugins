@@ -52,6 +52,8 @@ public:
 
     void setWindowTitle (const char * title)
         { gtk_window_set_title ((GtkWindow *) gtk (), title); }
+    void setWindowRole (const char * role)
+        { gtk_window_set_role ((GtkWindow *) gtk (), role); }
     void getPosition (int * x, int * y)
         { gtk_window_get_position ((GtkWindow *) gtk (), x, y); }
     void move (int x, int y)
