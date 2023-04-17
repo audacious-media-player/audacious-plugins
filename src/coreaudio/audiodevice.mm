@@ -89,7 +89,7 @@ OSStatus DefaultListener(AudioObjectID inDevice, UInt32 inChannel, Boolean forIn
                      (unsigned int)inDevice, inClientData ];
     AudioObjectPropertyAddress theAddress = { inPropertyID,
                                               forInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,
-                                              kAudioObjectPropertyElementMaster
+                                              kAudioObjectPropertyElementMain
                                             };
 
     switch (inPropertyID) {
@@ -120,7 +120,7 @@ OSStatus DefaultListener(AudioObjectID inDevice, UInt32 inChannel, Boolean forIn
                     AudioObjectPropertyAddress theAddress = {
                         kAudioHardwarePropertyDefaultOutputDevice,
                         kAudioObjectPropertyScopeGlobal,
-                        kAudioObjectPropertyElementMaster
+                        kAudioObjectPropertyElementMain
                     };
                     if (AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, &defaultDeviceID) == noErr) {
                         if (dev->ID() != defaultDeviceID) {
@@ -188,7 +188,7 @@ static OSStatus DefaultListener(AudioObjectID inObjectID, UInt32 inNumberPropert
                         AudioObjectPropertyAddress theAddress = {
                             kAudioHardwarePropertyDefaultOutputDevice,
                             kAudioObjectPropertyScopeGlobal,
-                            kAudioObjectPropertyElementMaster
+                            kAudioObjectPropertyElementMain
                         };
                         if (AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, &defaultDeviceID) == noErr) {
                             if (dev->ID() != defaultDeviceID) {
@@ -234,7 +234,7 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
 
     AudioObjectPropertyAddress theAddress = { kAudioDevicePropertySafetyOffset,
                                               mForInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,
-                                              kAudioObjectPropertyElementMaster
+                                              kAudioObjectPropertyElementMain
                                             }; // channel
     verify_noerr(AudioObjectGetPropertyData(mID, &theAddress, 0, NULL, &propsize, &mSafetyOffset));
 
@@ -259,7 +259,7 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
 #else
         AudioObjectPropertyAddress prop = { kAudioDevicePropertyActualSampleRate,
                                             kAudioObjectPropertyScopeGlobal,
-                                            kAudioObjectPropertyElementMaster
+                                            kAudioObjectPropertyElementMain
                                           };
         if ((err = AudioObjectAddPropertyListener(mID, &prop, lProc, this)) != noErr) {
             AUDERR ("Couldn't register property listener for actual sample rate: %d (%s)\n", err, OSTStr(err));
@@ -428,7 +428,7 @@ AudioDevice::~AudioDevice()
 #else
             AudioObjectPropertyAddress prop = { kAudioDevicePropertyActualSampleRate,
                                                 kAudioObjectPropertyScopeGlobal,
-                                                kAudioObjectPropertyElementMaster
+                                                kAudioObjectPropertyElementMain
                                               };
             verify_noerr(AudioObjectRemovePropertyListener(mID, &prop, listenerProc, this));
             prop.mElement = kAudioDevicePropertyNominalSampleRate;
@@ -449,7 +449,7 @@ void AudioDevice::SetBufferSize(UInt32 size)
     UInt32 propsize = sizeof(UInt32);
     AudioObjectPropertyAddress theAddress = { kAudioDevicePropertyBufferFrameSize,
                                               mForInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,
-                                              kAudioObjectPropertyElementMaster
+                                              kAudioObjectPropertyElementMain
                                             }; // channel
 
     verify_noerr(AudioObjectSetPropertyData(mID, &theAddress, 0, NULL, propsize, &size));
@@ -462,7 +462,7 @@ OSStatus AudioDevice::NominalSampleRate(Float64 &sampleRate)
     OSStatus err;
     AudioObjectPropertyAddress theAddress = { kAudioDevicePropertyNominalSampleRate,
                                               mForInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,
-                                              kAudioObjectPropertyElementMaster
+                                              kAudioObjectPropertyElementMain
                                             };
     err = AudioObjectGetPropertyData(mID, &theAddress, 0, NULL, &size, &sampleRate);
     if (err == noErr) {
@@ -558,7 +558,7 @@ OSStatus AudioDevice::SetNominalSampleRate(Float64 sampleRate, bool force)
     if (sampleRate2 != currentNominalSR || force) {
         AudioObjectPropertyAddress theAddress = { kAudioDevicePropertyNominalSampleRate,
                                                   mForInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,
-                                                  kAudioObjectPropertyElementMaster
+                                                  kAudioObjectPropertyElementMain
                                                 };
         err = AudioObjectSetPropertyData(mID, &theAddress, 0, NULL, size, &sampleRate2);
         if (err == noErr) {
@@ -584,7 +584,7 @@ OSStatus AudioDevice::ResetNominalSampleRate(bool force)
         listenerSilentFor = 3;
         AudioObjectPropertyAddress theAddress = { kAudioDevicePropertyNominalSampleRate,
                                                   mForInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,
-                                                  kAudioObjectPropertyElementMaster
+                                                  kAudioObjectPropertyElementMain
                                                 };
         err = AudioObjectSetPropertyData(mID, &theAddress, 0, NULL, size, &sampleRate);
         if (err == noErr) {
@@ -601,7 +601,7 @@ OSStatus AudioDevice::SetStreamBasicDescription(AudioStreamBasicDescription *des
     listenerSilentFor = 1;
     AudioObjectPropertyAddress theAddress = { kAudioDevicePropertyStreamFormat,
                                               mForInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,
-                                              kAudioObjectPropertyElementMaster
+                                              kAudioObjectPropertyElementMain
                                             };
     err = AudioObjectSetPropertyData(mID, &theAddress, 0, NULL, size, desc);
     if (err == noErr) {
@@ -619,7 +619,7 @@ OSStatus AudioDevice::GetPropertyDataSize(AudioObjectPropertySelector property, 
     }
     propertyAddress->mSelector = property;
     propertyAddress->mScope = (mForInput) ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput;
-    propertyAddress->mElement = kAudioObjectPropertyElementMaster;
+    propertyAddress->mElement = kAudioObjectPropertyElementMain;
 
     return AudioObjectGetPropertyDataSize(mID, propertyAddress, 0, NULL, size);
 }
@@ -658,7 +658,7 @@ char *AudioDevice::GetName(char *buf, UInt32 maxlen)
     }
     AudioObjectPropertyAddress theAddress = { kAudioDevicePropertyDeviceName,
                                               mForInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,
-                                              kAudioObjectPropertyElementMaster
+                                              kAudioObjectPropertyElementMain
                                             }; // channel
 
     verify_noerr(AudioObjectGetPropertyData(mID, &theAddress, 0, NULL, &maxlen, buf));
@@ -688,7 +688,7 @@ AudioDevice *AudioDevice::GetDefaultDevice(bool forInput, OSStatus &err, AudioDe
     AudioObjectPropertyAddress theAddress = {
         forInput ? kAudioHardwarePropertyDefaultInputDevice : kAudioHardwarePropertyDefaultOutputDevice,
         kAudioObjectPropertyScopeGlobal,
-        kAudioObjectPropertyElementMaster
+        kAudioObjectPropertyElementMain
     };
     err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, &defaultDeviceID);
     if (err == noErr) {

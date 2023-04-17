@@ -223,7 +223,7 @@ bool CoreAudioPlugin::init ()
 
     AudioObjectPropertyAddress prop = { kAudioHardwarePropertyDefaultOutputDevice,
                                         kAudioObjectPropertyScopeGlobal,
-                                        kAudioObjectPropertyElementMaster };
+                                        kAudioObjectPropertyElementMain };
 
     UInt32 size = sizeof(AudioObjectID);
     AudioObjectID defaultOutputDeviceID;
@@ -467,7 +467,7 @@ bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_, String & err
 
         prop.mSelector = kAudioDevicePropertyHogMode;
         prop.mScope    = kAudioObjectPropertyScopeGlobal;
-        prop.mElement  = kAudioObjectPropertyElementMaster;
+        prop.mElement  = kAudioObjectPropertyElementMain;
 
         OSStatus result = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, nullptr, sizeof hog_mode, & hog_mode);
         if (result != noErr)
@@ -515,7 +515,7 @@ void CoreAudioPlugin::close_audio ()
 
         prop.mSelector = kAudioDevicePropertyHogMode;
         prop.mScope    = kAudioObjectPropertyScopeGlobal;
-        prop.mElement  = kAudioObjectPropertyElementMaster;
+        prop.mElement  = kAudioObjectPropertyElementMain;
 
         OSStatus err = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, nullptr, sizeof hog_mode, & hog_mode);
         if (err != noErr)
