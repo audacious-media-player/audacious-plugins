@@ -457,6 +457,8 @@ bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_, String & err
         return 0;
     }
 
+    set_volume (get_volume ());
+
     bool exclusive = aud_get_bool ("coreaudio", "exclusive_mode");
     if (exclusive)
     {
