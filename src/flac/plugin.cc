@@ -166,8 +166,15 @@ bool FLACng::play(const char *filename, VFSFile &file)
 
         int seek_value = check_seek ();
         if (seek_value >= 0)
-            FLAC__stream_decoder_seek_absolute (decoder, (int64_t)
-             seek_value * s_cinfo.sample_rate / 1000);
+        {
+            if (! FLAC__stream_decoder_seek_absolute (decoder, (uint64_t)
+             seek_value * s_cinfo.sample_rate / 1000))
+            {
+                AUDERR("Error while seeking!\n");
+                error = true;
+                break;
+            }
+        }
 
         /* Try to decode a single frame of audio */
         if (FLAC__stream_decoder_process_single(decoder) == false)
