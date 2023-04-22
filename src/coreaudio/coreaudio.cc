@@ -144,7 +144,6 @@ static int block_delay = 0;
 static struct timeval block_time = {0, 0};
 
 static AudioComponent output_comp = nullptr;
-// static AudioComponentInstance output_instance = nullptr;
 static AudioUnit output_instance = nullptr;
 
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -227,7 +226,7 @@ bool CoreAudioPlugin::init ()
 
     UInt32 size = sizeof(AudioObjectID);
     AudioObjectID defaultOutputDeviceID;
-    err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &prop, 0, NULL, &size, &defaultOutputDeviceID);
+    err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &prop, 0, nullptr, &size, &defaultOutputDeviceID);
     if (err == noErr)
     {
         if (coreAudioDevice) {
@@ -237,7 +236,7 @@ bool CoreAudioPlugin::init ()
             coreAudioDevice = nullptr;
         }
         coreAudioDevice = AudioDevice::GetDevice(defaultOutputDeviceID, false, coreAudioDevice, true);
-        if (coreAudioDevice != NULL)
+        if (coreAudioDevice != nullptr)
         {
             coreAudioDevice->installDefaultDeviceChangeHandler(callDefaultDeviceChangeHandler, static_cast<void*>(this));
             coreAudioDevice->setDefaultDevice(true);
