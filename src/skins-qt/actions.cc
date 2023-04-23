@@ -74,6 +74,16 @@ void action_play_folder ()
 void action_play_location ()
     { audqt::urlopener_show (true); }
 
+void action_playback_history()
+{
+    PluginHandle * manager = aud_plugin_lookup_basename("playback-history");
+    if (manager)
+    {
+        aud_plugin_enable(manager, true);
+        focus_plugin_window(manager);
+    }
+}
+
 void action_playlist_manager ()
 {
     PluginHandle * manager = aud_plugin_lookup_basename ("playlist-manager-qt");
