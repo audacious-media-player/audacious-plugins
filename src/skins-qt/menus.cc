@@ -90,6 +90,7 @@ static const audqt::MenuItem main_items[] = {
 
 static const audqt::MenuItem playback_items[] = {
     audqt::MenuCommand ({N_("Song Info ..."), "dialog-information", "I"}, audqt::infowin_show_current),
+    audqt::MenuCommand ({N_("Playback History ..."), "view-history", "H"}, action_playback_history),
     audqt::MenuSep (),
     audqt::MenuToggle ({N_("Repeat"), "media-playlist-repeat", "R"}, {nullptr, "repeat", "set repeat"}),
     audqt::MenuToggle ({N_("Shuffle"), "media-playlist-shuffle", "S"}, {nullptr, "shuffle", "set shuffle"}),
