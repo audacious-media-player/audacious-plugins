@@ -2092,7 +2092,7 @@ static void iop_sprintf(char *out, char *fmt, uint32_t pstart)
 				mips_get_info(curparm, &mipsinfo);
 //				printf("parameter %d = %x\n", curparm-pstart, mipsinfo.i);
 				curparm++;
-				sprintf(temp, tfmt, (int32_t)mipsinfo.i);
+				snprintf(temp, sizeof temp, tfmt, (int32_t)mipsinfo.i);
 			}
 			else
 			{
@@ -2102,7 +2102,7 @@ static void iop_sprintf(char *out, char *fmt, uint32_t pstart)
 				pstr = (char *)psx_ram;
 				pstr += (mipsinfo.i & 0x1fffff);
 
-				sprintf(temp, tfmt, pstr);
+				snprintf(temp, sizeof temp, tfmt, pstr);
 			}
 
 			pstr = &temp[0];
