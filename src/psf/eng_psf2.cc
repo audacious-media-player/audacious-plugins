@@ -399,7 +399,7 @@ static dump_files(int fs, uint8_t *buf, uint32_t buflen)
 				uofs += dlength;
 			}
 
-			sprintf(tfn, "iopfiles/%s", cptr);
+			snprintf(tfn, sizeof tfn, "iopfiles/%s", cptr);
 			f = fopen(tfn, "wb");
 			fwrite(buf, uncomp, 1, f);
 			fclose(f);

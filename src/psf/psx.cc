@@ -209,7 +209,7 @@ static void GTELOG(const char *a,...)
 	va_list va;
 	char s_text[ 1024 ];
 	va_start( va, a );
-	vsprintf( s_text, a, va );
+	vsnprintf( s_text, sizeof s_text, a, va );
 	va_end( va );
 	logerror( "%08x: GTE: %08x %s\n", mipscpu.pc, INS_COFUN( mipscpu.op ), s_text );
 }
@@ -1721,7 +1721,7 @@ static offs_t mips_dasm( char *buffer, offs_t pc )
 #ifdef MAME_DEBUG
 	ret = DasmMIPS( buffer, pc );
 #else
-	sprintf( buffer, "$%08x", cpu_readop32( pc ) );
+	snprintf( buffer, 10, "$%08x", cpu_readop32( pc ) );
 	ret = 4;
 #endif
 	change_pc( mipscpu.pc );
