@@ -167,8 +167,13 @@ bool FLACng::play(const char *filename, VFSFile &file)
         int seek_value = check_seek ();
         if (seek_value >= 0)
         {
-            if (! FLAC__stream_decoder_seek_absolute (decoder, (uint64_t)
-             seek_value * s_cinfo.sample_rate / 1000))
+            uint64_t sample = (uint64_t) seek_value * s_cinfo.sample_rate / 1000;
+
+            /* Avoid error when seeking to a sample >= total_samples */
+            if (s_cinfo.total_samples > 0)
+                sample = aud::min(sample, s_cinfo.total_samples - 1);
+
+            if (! FLAC__stream_decoder_seek_absolute(decoder, sample))
             {
                 AUDERR("Error while seeking!\n");
                 error = true;
