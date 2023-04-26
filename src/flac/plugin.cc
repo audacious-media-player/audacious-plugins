@@ -171,7 +171,7 @@ bool FLACng::play(const char *filename, VFSFile &file)
 
             /* Avoid error when seeking to a sample >= total_samples */
             if (s_cinfo.total_samples > 0)
-                sample = aud::min(sample, s_cinfo.total_samples - 1);
+                sample = aud::min<uint64_t>(sample, s_cinfo.total_samples - 1);
 
             if (! FLAC__stream_decoder_seek_absolute(decoder, sample))
             {
