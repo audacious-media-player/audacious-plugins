@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2023-03-05 14:33+0100\n"
+"POT-Creation-Date: 2023-04-29 21:59+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
 "Last-Translator: Marek Adamski, 2022-2023\n"
 "Language-Team: Polish (http://www.transifex.com/audacious/audacious/language/"
@@ -262,60 +262,60 @@ msgstr "Nazwa pliku"
 msgid "Size (bytes)"
 msgstr "Wielkość (w bajtach)"
 
-#: src/amidiplug/i_fileinfo.cc:183
+#: src/amidiplug/i_fileinfo.cc:184
 msgid "Name:"
 msgstr "Nazwa:"
 
-#: src/amidiplug/i_fileinfo.cc:201
+#: src/amidiplug/i_fileinfo.cc:202
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> Informacje MIDI </span>"
 
-#: src/amidiplug/i_fileinfo.cc:215
+#: src/amidiplug/i_fileinfo.cc:216
 msgid "Format:"
 msgstr "Format:"
 
-#: src/amidiplug/i_fileinfo.cc:218
+#: src/amidiplug/i_fileinfo.cc:219
 msgid "Length (msec):"
 msgstr "Długość (ms):"
 
-#: src/amidiplug/i_fileinfo.cc:221
+#: src/amidiplug/i_fileinfo.cc:222
 msgid "No. of Tracks:"
 msgstr "Liczba ścieżek:"
 
-#: src/amidiplug/i_fileinfo.cc:227
+#: src/amidiplug/i_fileinfo.cc:228
 msgid "variable"
 msgstr "zmienna"
 
-#: src/amidiplug/i_fileinfo.cc:229
+#: src/amidiplug/i_fileinfo.cc:230
 msgid "BPM:"
 msgstr "Uderzenia na minutę:"
 
-#: src/amidiplug/i_fileinfo.cc:237
+#: src/amidiplug/i_fileinfo.cc:238
 msgid "BPM (wavg):"
 msgstr "Uderzenia na minutę (średnia ważona):"
 
-#: src/amidiplug/i_fileinfo.cc:240
+#: src/amidiplug/i_fileinfo.cc:241
 msgid "Time Div:"
 msgstr "Podział czasu:"
 
-#: src/amidiplug/i_fileinfo.cc:251
+#: src/amidiplug/i_fileinfo.cc:252
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"smaller\"> Komentarze i teksty piosenek MIDI </span>"
 
-#: src/amidiplug/i_fileinfo.cc:298
+#: src/amidiplug/i_fileinfo.cc:299
 msgid "* no comments available in this MIDI file *"
 msgstr "* brak dostępnych komentarzy w tym pliku MIDI *"
 
-#: src/amidiplug/i_fileinfo.cc:310
+#: src/amidiplug/i_fileinfo.cc:311
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* brak dostępnego tekstu piosenki w tym pliku MIDI *"
 
-#: src/amidiplug/i_fileinfo.cc:320 src/ladspa/plugin.cc:418
+#: src/amidiplug/i_fileinfo.cc:321 src/ladspa/plugin.cc:418
 #: src/ui-common/dialogs-qt.cc:32
 msgid "_Close"
 msgstr "_Zamknij"
 
-#: src/amidiplug/i_fileinfo.cc:345
+#: src/amidiplug/i_fileinfo.cc:346
 msgid "  (invalid UTF-8)"
 msgstr "  (niepoprawne kodowanie UTF-8)"
 
@@ -871,7 +871,7 @@ msgstr "Dekoder muzyki z konsol gier"
 msgid "CoreAudio output"
 msgstr "Wyjście CoreAudio"
 
-#: src/coreaudio/coreaudio.cc:156
+#: src/coreaudio/coreaudio.cc:155
 msgid ""
 "CoreAudio Output Plugin for Audacious\n"
 "Copyright 2014 William Pitcock\n"
@@ -891,11 +891,11 @@ msgstr ""
 "Oparta na wtyczce wyjścia SDL dla Audacious\n"
 "Prawa autorskie 2010 John Lindgren"
 
-#: src/coreaudio/coreaudio.cc:172
+#: src/coreaudio/coreaudio.cc:171
 msgid "Use exclusive mode"
 msgstr "Użyj trybu wyłączności"
 
-#: src/coreaudio/coreaudio.cc:174
+#: src/coreaudio/coreaudio.cc:173
 msgid "Use bit perfect audio (adapt device sampling rate)"
 msgstr ""
 "Użyj dźwięku bit perfect (dostosuj częstotliwość próbkowania urządzenia)"
@@ -993,20 +993,20 @@ msgstr "Przenieś do kosza"
 msgid "Delete"
 msgstr "Usuń"
 
-#: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
-#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:78
+#: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:235
+#: src/skins-qt/search-select.cc:102 src/skins/search-select.cc:78
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: src/delete-files/delete-files.cc:266
+#: src/delete-files/delete-files.cc:267
 msgid "Delete Selected Files"
 msgstr "Usuń zaznaczone pliki"
 
-#: src/delete-files/delete-files.cc:286
+#: src/delete-files/delete-files.cc:287
 msgid "<b>Delete Method</b>"
 msgstr "<b>Sposób usuwania</b>"
 
-#: src/delete-files/delete-files.cc:287
+#: src/delete-files/delete-files.cc:288
 msgid "Move to trash instead of deleting immediately"
 msgstr "Przesuń do kosza zamiast kasować"
 
@@ -1254,12 +1254,12 @@ msgid "Joint Stereo"
 msgstr "Połączone stereo"
 
 #: src/filewriter/filewriter.cc:451 src/modplug/plugin_main.cc:57
-#: src/mpg123/mpg123.cc:255
+#: src/mpg123/mpg123.cc:259
 msgid "Stereo"
 msgstr "Stereo"
 
 #: src/filewriter/filewriter.cc:452 src/modplug/plugin_main.cc:56
-#: src/mpg123/mpg123.cc:256
+#: src/mpg123/mpg123.cc:260
 msgid "Mono"
 msgstr "Mono"
 
@@ -1384,7 +1384,7 @@ msgstr "Dekoder FLAC"
 msgid "lossless"
 msgstr "bezstratna"
 
-#: src/flac/plugin.cc:202
+#: src/flac/plugin.cc:214
 msgid ""
 "Original code by\n"
 "Ralf Ertzinger <ralf@skytale.net>\n"
@@ -1969,7 +1969,7 @@ msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
 #: src/gtkui/ui_gtk.cc:220 src/moonstone/main_window.cc:184
-#: src/qtui/main_window.cc:384
+#: src/qtui/main_window.cc:386
 msgid "Buffering ..."
 msgstr "Buforowanie..."
 
@@ -1978,70 +1978,70 @@ msgstr "Buforowanie..."
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:444 src/gtkui/ui_gtk.cc:475 src/gtkui/ui_gtk.cc:838
+#: src/gtkui/ui_gtk.cc:444 src/gtkui/ui_gtk.cc:475 src/gtkui/ui_gtk.cc:839
 #: src/hotkey/gui.cc:72 src/moonstone/main_window.cc:67
 #: src/moonstone/main_window.cc:145 src/moonstone/main_window.cc:146
-#: src/notify/osd.cc:85 src/qthotkey/gui.cc:64 src/qtui/main_window.cc:154
-#: src/qtui/main_window.cc:346 src/qtui/main_window.cc:347
+#: src/notify/osd.cc:85 src/qthotkey/gui.cc:67 src/qtui/main_window.cc:155
+#: src/qtui/main_window.cc:348 src/qtui/main_window.cc:349
 #: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
 msgid "Play"
 msgstr "Odtwarzaj"
 
 #: src/gtkui/ui_gtk.cc:444 src/moonstone/main_window.cc:151
 #: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
-#: src/qtui/main_window.cc:352 src/qtui/main_window.cc:353
+#: src/qtui/main_window.cc:354 src/qtui/main_window.cc:355
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Pause"
 msgstr "Wstrzymaj"
 
-#: src/gtkui/ui_gtk.cc:824 src/moonstone/main_window.cc:57
-#: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
+#: src/gtkui/ui_gtk.cc:825 src/moonstone/main_window.cc:57
+#: src/qtui/main_window.cc:146 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr "Przeszukaj bibliotekę"
 
-#: src/gtkui/ui_gtk.cc:831 src/moonstone/main_window.cc:60
-#: src/qtui/main_window.cc:147
+#: src/gtkui/ui_gtk.cc:832 src/moonstone/main_window.cc:60
+#: src/qtui/main_window.cc:148
 msgid "Open Files"
 msgstr "Otwórz pliki"
 
-#: src/gtkui/ui_gtk.cc:832 src/moonstone/main_window.cc:62
-#: src/qtui/main_window.cc:149
+#: src/gtkui/ui_gtk.cc:833 src/moonstone/main_window.cc:62
+#: src/qtui/main_window.cc:150
 msgid "Add Files"
 msgstr "Dodaj pliki"
 
-#: src/gtkui/ui_gtk.cc:837 src/moonstone/main_window.cc:65
-#: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
+#: src/gtkui/ui_gtk.cc:838 src/moonstone/main_window.cc:65
+#: src/qtui/main_window.cc:153 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Previous"
 msgstr "Poprzednie"
 
-#: src/gtkui/ui_gtk.cc:839 src/hotkey/gui.cc:74 src/moonstone/main_window.cc:69
-#: src/qthotkey/gui.cc:66 src/qtui/main_window.cc:156 src/skins/menus.cc:111
+#: src/gtkui/ui_gtk.cc:840 src/hotkey/gui.cc:74 src/moonstone/main_window.cc:69
+#: src/qthotkey/gui.cc:69 src/qtui/main_window.cc:157 src/skins/menus.cc:111
 #: src/skins-qt/menus.cc:102
 msgid "Stop"
 msgstr "Zatrzymaj"
 
-#: src/gtkui/ui_gtk.cc:840 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
-#: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
+#: src/gtkui/ui_gtk.cc:841 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
+#: src/qtui/main_window.cc:164 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
 msgstr "Następne"
 
-#: src/gtkui/ui_gtk.cc:842 src/moonstone/main_window.cc:79
-#: src/qtui/main_window.cc:166 src/qtui/menus.cc:252 src/skins/menus.cc:79
+#: src/gtkui/ui_gtk.cc:843 src/moonstone/main_window.cc:79
+#: src/qtui/main_window.cc:167 src/qtui/menus.cc:252 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "Nagraj strumień"
 
-#: src/gtkui/ui_gtk.cc:875 src/moonstone/main_window.cc:86
-#: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
+#: src/gtkui/ui_gtk.cc:876 src/moonstone/main_window.cc:86
+#: src/qtui/main_window.cc:174 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
 msgid "Repeat"
 msgstr "Powtarzaj"
 
-#: src/gtkui/ui_gtk.cc:878 src/moonstone/main_window.cc:89
-#: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
+#: src/gtkui/ui_gtk.cc:879 src/moonstone/main_window.cc:89
+#: src/qtui/main_window.cc:177 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
 msgid "Shuffle"
 msgstr "Losowa kolejność"
 
-#: src/gtkui/ui_gtk.cc:1061 src/qtui/main_window.cc:123
+#: src/gtkui/ui_gtk.cc:1062 src/qtui/main_window.cc:124
 msgid "Menu"
 msgstr "Menu"
 
@@ -2084,67 +2084,67 @@ msgstr "Tryb listy odtwarzania."
 msgid "Stopping after song."
 msgstr "Zatrzymaj po tej piosence."
 
-#: src/hotkey/gui.cc:71 src/qthotkey/gui.cc:63
+#: src/hotkey/gui.cc:71 src/qthotkey/gui.cc:66
 msgid "Previous track"
 msgstr "Poprzedna ścieżka"
 
-#: src/hotkey/gui.cc:73 src/qthotkey/gui.cc:65
+#: src/hotkey/gui.cc:73 src/qthotkey/gui.cc:68
 msgid "Pause/Resume"
 msgstr "Wstrzymaj/wznów"
 
-#: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:67
+#: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:70
 msgid "Next track"
 msgstr "Następna ścieżka"
 
-#: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:68
+#: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:71
 msgid "Step forward"
 msgstr "Krok do przodu"
 
-#: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:69
+#: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:72
 msgid "Step backward"
 msgstr "Krok do tyłu"
 
-#: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:70
+#: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:73
 msgid "Mute"
 msgstr "Wyciszenie dźwięku"
 
-#: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:71
+#: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:74
 msgid "Volume up"
 msgstr "Zwiększ głośność"
 
-#: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:72
+#: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:75
 msgid "Volume down"
 msgstr "Zmniejsz głośność"
 
-#: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:73
+#: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:76
 msgid "Jump to file"
 msgstr "Przejdź do pliku"
 
-#: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:74
+#: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:77
 msgid "Toggle player window(s)"
 msgstr "Przełącz okno(a) odtwarzacza"
 
-#: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:75
+#: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:78
 msgid "Show On-Screen-Display"
 msgstr "Pokaż menu ekranowe"
 
-#: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:76
+#: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:79
 msgid "Toggle repeat"
 msgstr "Włącz/Wyłącz powtarzanie"
 
-#: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:77
+#: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:80
 msgid "Toggle shuffle"
 msgstr "Włącz/Wyłącz odtwaranie losowe"
 
-#: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:78
+#: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:81
 msgid "Toggle stop after current"
 msgstr "Zatrzymanie po bieżącej ścieżce"
 
-#: src/hotkey/gui.cc:87 src/qthotkey/gui.cc:79
+#: src/hotkey/gui.cc:87 src/qthotkey/gui.cc:82
 msgid "Raise player window(s)"
 msgstr "Przesuń na wierzch okno(a) odtwarzacza"
 
-#: src/hotkey/gui.cc:98 src/qthotkey/gui.cc:97
+#: src/hotkey/gui.cc:98 src/qthotkey/gui.cc:100
 msgid "(none)"
 msgstr "(brak)"
 
@@ -2163,7 +2163,7 @@ msgstr ""
 msgid "Binding mouse buttons"
 msgstr "Przyciski dowiązań myszy"
 
-#: src/hotkey/gui.cc:433
+#: src/hotkey/gui.cc:434
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -2171,23 +2171,23 @@ msgstr ""
 "Proszę wcisnąć kombinację klawiszy wewnątrz pola\n"
 "tekstowego. Można również użyć przycisków myszy."
 
-#: src/hotkey/gui.cc:443 src/qthotkey/gui.cc:167
+#: src/hotkey/gui.cc:444 src/qthotkey/gui.cc:179
 msgid "Hotkeys:"
 msgstr "Skróty klawiszowe:"
 
-#: src/hotkey/gui.cc:456 src/qthotkey/gui.cc:169
+#: src/hotkey/gui.cc:457 src/qthotkey/gui.cc:181
 msgid "<b>Action:</b>"
 msgstr "<b>Czynność:</b>"
 
-#: src/hotkey/gui.cc:460 src/qthotkey/gui.cc:170
+#: src/hotkey/gui.cc:461 src/qthotkey/gui.cc:182
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Kombinacja klawiszy:</b>"
 
-#: src/hotkey/gui.cc:517 src/qthotkey/gui.cc:172
+#: src/hotkey/gui.cc:518 src/qthotkey/gui.cc:184
 msgid "_Add"
 msgstr "_Dodaj"
 
-#: src/hotkey/plugin.cc:61 src/qthotkey/plugin.cc:77
+#: src/hotkey/plugin.cc:61 src/qthotkey/plugin.cc:80
 msgid "Global Hotkeys"
 msgstr "Globalne skróty klawiszowe"
 
@@ -2459,7 +2459,7 @@ msgstr "Nie można odczytać %s"
 msgid "Looking for lyrics ..."
 msgstr "Szukanie tekstu piosenki ..."
 
-#: src/lyricwiki-qt/lyricwiki.cc:431 src/ui-common/dialogs-qt.cc:62
+#: src/lyricwiki-qt/lyricwiki.cc:431 src/ui-common/dialogs-qt.cc:63
 msgid "Error"
 msgstr "Błąd"
 
@@ -2639,7 +2639,7 @@ msgstr ""
 "Poniższe ustawienia zostaną wprowadzone w życie po restarcie Audaciousa."
 
 #: src/moonstone/main_window.cc:72 src/moonstone/main_window.cc:73
-#: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
+#: src/qtui/main_window.cc:160 src/qtui/main_window.cc:161
 #: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
 msgstr "Zatrzymaj odtwarzanie po tej piosence"
@@ -2674,7 +2674,7 @@ msgstr "<b>Zaawansowane</b>"
 msgid "Use accurate length calculation (slow)"
 msgstr "Użyj dokładnego obliczania długości (wolne)"
 
-#: src/mpg123/mpg123.cc:256
+#: src/mpg123/mpg123.cc:260
 msgid "Surround"
 msgstr "Dźwięk przestrzenny"
 
@@ -3008,11 +3008,11 @@ msgstr ""
 "\n"
 "Licencja: GPL wersja 2 i późniejsze"
 
-#: src/qthotkey/gui.cc:165
+#: src/qthotkey/gui.cc:177
 msgid "Press a key combination inside a text field."
 msgstr "Naciśnij kombinację klawiszy w polu tekstowym."
 
-#: src/qthotkey/plugin.cc:103
+#: src/qthotkey/plugin.cc:107
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3905,7 +3905,7 @@ msgstr "Dodaj katalog..."
 msgid "Search entries in active playlist"
 msgstr "Wyszukaj wpisy w aktywnej playliście"
 
-#: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:83
+#: src/skins-qt/search-select.cc:70 src/skins/search-select.cc:83
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3917,35 +3917,35 @@ msgstr ""
 "nie wiesz, jak działają wyrażenia regularne, wpisz po prostu to, czego "
 "szukasz."
 
-#: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:91
+#: src/skins-qt/search-select.cc:75 src/skins/search-select.cc:91
 msgid "Title:"
 msgstr "Tytuł:"
 
-#: src/skins-qt/search-select.cc:78 src/skins/search-select.cc:96
+#: src/skins-qt/search-select.cc:79 src/skins/search-select.cc:96
 msgid "Album:"
 msgstr "Album:"
 
-#: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:101
+#: src/skins-qt/search-select.cc:82 src/skins/search-select.cc:101
 msgid "Artist:"
 msgstr "Artysta:"
 
-#: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:106
+#: src/skins-qt/search-select.cc:85 src/skins/search-select.cc:106
 msgid "File Name:"
 msgstr "Nazwa pliku:"
 
-#: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:134
+#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:134
 msgid "Clear previous selection before searching"
 msgstr "Wyczyść poprzednie zaznaczenie przed szukaniem"
 
-#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:137
+#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:137
 msgid "Automatically toggle queue for matching entries"
 msgstr "Automatycznie przełącz kolejkę dla pasujących wpisów"
 
-#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:140
+#: src/skins-qt/search-select.cc:90 src/skins/search-select.cc:140
 msgid "Create a new playlist with matching entries"
 msgstr "Utwórz nową playlistę z pasującymi wpisami"
 
-#: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:78
+#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:78
 msgid "Search"
 msgstr "Szukaj"
 
@@ -4624,7 +4624,7 @@ msgstr ""
 msgid "Working ..."
 msgstr "Działanie..."
 
-#: src/ui-common/dialogs-qt.cc:72
+#: src/ui-common/dialogs-qt.cc:73
 msgid "Information"
 msgstr "Informacje"
 

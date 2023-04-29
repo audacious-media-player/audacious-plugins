@@ -3,17 +3,17 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Arnold Marko <arnold.marko@gmail.com>, 2021-2022
+# Arnold Marko <arnold.marko@gmail.com>, 2021-2023
 # Nejc Bertoncelj, 2020
 # Nejc Bertoncelj <nejc@bertoncelj.eu.org>, 2020-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2023-03-05 14:33+0100\n"
+"POT-Creation-Date: 2023-04-29 21:59+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
-"Last-Translator: Arnold Marko <arnold.marko@gmail.com>, 2021-2022\n"
-"Language-Team: Slovenian (http://www.transifex.com/audacious/audacious/"
+"Last-Translator: Arnold Marko <arnold.marko@gmail.com>, 2021-2023\n"
+"Language-Team: Slovenian (http://app.transifex.com/audacious/audacious/"
 "language/sl/)\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
@@ -242,60 +242,60 @@ msgstr "Ime datoteke"
 msgid "Size (bytes)"
 msgstr "Velikost (biti)"
 
-#: src/amidiplug/i_fileinfo.cc:183
+#: src/amidiplug/i_fileinfo.cc:184
 msgid "Name:"
 msgstr "Ime:"
 
-#: src/amidiplug/i_fileinfo.cc:201
+#: src/amidiplug/i_fileinfo.cc:202
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> Podatki MIDI </span>"
 
-#: src/amidiplug/i_fileinfo.cc:215
+#: src/amidiplug/i_fileinfo.cc:216
 msgid "Format:"
 msgstr "Vrsta:"
 
-#: src/amidiplug/i_fileinfo.cc:218
+#: src/amidiplug/i_fileinfo.cc:219
 msgid "Length (msec):"
 msgstr "Dolžina (ms):"
 
-#: src/amidiplug/i_fileinfo.cc:221
+#: src/amidiplug/i_fileinfo.cc:222
 msgid "No. of Tracks:"
 msgstr "Št. skladb:"
 
-#: src/amidiplug/i_fileinfo.cc:227
+#: src/amidiplug/i_fileinfo.cc:228
 msgid "variable"
 msgstr "spremenljivo"
 
-#: src/amidiplug/i_fileinfo.cc:229
+#: src/amidiplug/i_fileinfo.cc:230
 msgid "BPM:"
 msgstr "BPM:"
 
-#: src/amidiplug/i_fileinfo.cc:237
+#: src/amidiplug/i_fileinfo.cc:238
 msgid "BPM (wavg):"
 msgstr "BPM (wavg):"
 
-#: src/amidiplug/i_fileinfo.cc:240
+#: src/amidiplug/i_fileinfo.cc:241
 msgid "Time Div:"
 msgstr "Časovni razdelki:"
 
-#: src/amidiplug/i_fileinfo.cc:251
+#: src/amidiplug/i_fileinfo.cc:252
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"smaller\"> MIDI komentarji in besedila </span>"
 
-#: src/amidiplug/i_fileinfo.cc:298
+#: src/amidiplug/i_fileinfo.cc:299
 msgid "* no comments available in this MIDI file *"
 msgstr "* ta MIDI datoteka ne vsebuje komentarjev *"
 
-#: src/amidiplug/i_fileinfo.cc:310
+#: src/amidiplug/i_fileinfo.cc:311
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* ta MIDI datoteka ne vsebuje besedil *"
 
-#: src/amidiplug/i_fileinfo.cc:320 src/ladspa/plugin.cc:418
+#: src/amidiplug/i_fileinfo.cc:321 src/ladspa/plugin.cc:418
 #: src/ui-common/dialogs-qt.cc:32
 msgid "_Close"
 msgstr "_Zapri"
 
-#: src/amidiplug/i_fileinfo.cc:345
+#: src/amidiplug/i_fileinfo.cc:346
 msgid "  (invalid UTF-8)"
 msgstr "  (neveljaven UTF-8)"
 
@@ -842,7 +842,7 @@ msgstr "Dekodirnik glasbe igralnih konzol"
 msgid "CoreAudio output"
 msgstr "CoreAudio"
 
-#: src/coreaudio/coreaudio.cc:156
+#: src/coreaudio/coreaudio.cc:155
 msgid ""
 "CoreAudio Output Plugin for Audacious\n"
 "Copyright 2014 William Pitcock\n"
@@ -862,11 +862,11 @@ msgstr ""
 "Based on SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 
-#: src/coreaudio/coreaudio.cc:172
+#: src/coreaudio/coreaudio.cc:171
 msgid "Use exclusive mode"
 msgstr "Uporabi ekskluzivni način"
 
-#: src/coreaudio/coreaudio.cc:174
+#: src/coreaudio/coreaudio.cc:173
 msgid "Use bit perfect audio (adapt device sampling rate)"
 msgstr "Uporabi bitno točen zvok (prilagodi mero vzorčenja)"
 
@@ -963,20 +963,20 @@ msgstr "Premakni v koš"
 msgid "Delete"
 msgstr "Izbriši"
 
-#: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:234
-#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:78
+#: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:235
+#: src/skins-qt/search-select.cc:102 src/skins/search-select.cc:78
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: src/delete-files/delete-files.cc:266
+#: src/delete-files/delete-files.cc:267
 msgid "Delete Selected Files"
 msgstr "Izbriši izbrane datoteke"
 
-#: src/delete-files/delete-files.cc:286
+#: src/delete-files/delete-files.cc:287
 msgid "<b>Delete Method</b>"
 msgstr "<b>Način brisanja</b>"
 
-#: src/delete-files/delete-files.cc:287
+#: src/delete-files/delete-files.cc:288
 msgid "Move to trash instead of deleting immediately"
 msgstr "Namesto trajnega brisanja premakni v koš"
 
@@ -1222,12 +1222,12 @@ msgid "Joint Stereo"
 msgstr "Združen stereo"
 
 #: src/filewriter/filewriter.cc:451 src/modplug/plugin_main.cc:57
-#: src/mpg123/mpg123.cc:255
+#: src/mpg123/mpg123.cc:259
 msgid "Stereo"
 msgstr "Stereo"
 
 #: src/filewriter/filewriter.cc:452 src/modplug/plugin_main.cc:56
-#: src/mpg123/mpg123.cc:256
+#: src/mpg123/mpg123.cc:260
 msgid "Mono"
 msgstr "Mono"
 
@@ -1352,7 +1352,7 @@ msgstr "Dekodirnik FLAC"
 msgid "lossless"
 msgstr "brezizgubno"
 
-#: src/flac/plugin.cc:202
+#: src/flac/plugin.cc:214
 msgid ""
 "Original code by\n"
 "Ralf Ertzinger <ralf@skytale.net>\n"
@@ -1492,11 +1492,11 @@ msgstr "Komentar"
 
 #: src/gtkui/columns.cc:51 src/qtui/playlist_model.cc:36
 msgid "Publisher"
-msgstr ""
+msgstr "Založnik"
 
 #: src/gtkui/columns.cc:52 src/qtui/playlist_model.cc:37
 msgid "Catalog Number"
-msgstr ""
+msgstr "Kataloška številka"
 
 #: src/gtkui/columns.cc:322
 msgid "Available columns"
@@ -1921,7 +1921,7 @@ msgstr "Prikaži glavo"
 
 #: src/gtkui/settings.cc:47
 msgid "Use symbolic icons in toolbar"
-msgstr ""
+msgstr "V orodni vrstici uporabi simbolične ikone"
 
 #: src/gtkui/settings.cc:49 src/qtui/settings.cc:82
 msgid "Scroll on song change"
@@ -1937,7 +1937,7 @@ msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
 #: src/gtkui/ui_gtk.cc:220 src/moonstone/main_window.cc:184
-#: src/qtui/main_window.cc:384
+#: src/qtui/main_window.cc:386
 msgid "Buffering ..."
 msgstr "Nalagam ..."
 
@@ -1946,70 +1946,70 @@ msgstr "Nalagam ..."
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:444 src/gtkui/ui_gtk.cc:475 src/gtkui/ui_gtk.cc:838
+#: src/gtkui/ui_gtk.cc:444 src/gtkui/ui_gtk.cc:475 src/gtkui/ui_gtk.cc:839
 #: src/hotkey/gui.cc:72 src/moonstone/main_window.cc:67
 #: src/moonstone/main_window.cc:145 src/moonstone/main_window.cc:146
-#: src/notify/osd.cc:85 src/qthotkey/gui.cc:64 src/qtui/main_window.cc:154
-#: src/qtui/main_window.cc:346 src/qtui/main_window.cc:347
+#: src/notify/osd.cc:85 src/qthotkey/gui.cc:67 src/qtui/main_window.cc:155
+#: src/qtui/main_window.cc:348 src/qtui/main_window.cc:349
 #: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
 msgid "Play"
 msgstr "Predvajaj"
 
 #: src/gtkui/ui_gtk.cc:444 src/moonstone/main_window.cc:151
 #: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
-#: src/qtui/main_window.cc:352 src/qtui/main_window.cc:353
+#: src/qtui/main_window.cc:354 src/qtui/main_window.cc:355
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Pause"
 msgstr "Premor"
 
-#: src/gtkui/ui_gtk.cc:824 src/moonstone/main_window.cc:57
-#: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
+#: src/gtkui/ui_gtk.cc:825 src/moonstone/main_window.cc:57
+#: src/qtui/main_window.cc:146 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr "Knjižnica iskanja"
 
-#: src/gtkui/ui_gtk.cc:831 src/moonstone/main_window.cc:60
-#: src/qtui/main_window.cc:147
+#: src/gtkui/ui_gtk.cc:832 src/moonstone/main_window.cc:60
+#: src/qtui/main_window.cc:148
 msgid "Open Files"
 msgstr "Odpri datoteke"
 
-#: src/gtkui/ui_gtk.cc:832 src/moonstone/main_window.cc:62
-#: src/qtui/main_window.cc:149
+#: src/gtkui/ui_gtk.cc:833 src/moonstone/main_window.cc:62
+#: src/qtui/main_window.cc:150
 msgid "Add Files"
 msgstr "Dodaj datoteke"
 
-#: src/gtkui/ui_gtk.cc:837 src/moonstone/main_window.cc:65
-#: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
+#: src/gtkui/ui_gtk.cc:838 src/moonstone/main_window.cc:65
+#: src/qtui/main_window.cc:153 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Previous"
 msgstr "Prejšnja"
 
-#: src/gtkui/ui_gtk.cc:839 src/hotkey/gui.cc:74 src/moonstone/main_window.cc:69
-#: src/qthotkey/gui.cc:66 src/qtui/main_window.cc:156 src/skins/menus.cc:111
+#: src/gtkui/ui_gtk.cc:840 src/hotkey/gui.cc:74 src/moonstone/main_window.cc:69
+#: src/qthotkey/gui.cc:69 src/qtui/main_window.cc:157 src/skins/menus.cc:111
 #: src/skins-qt/menus.cc:102
 msgid "Stop"
 msgstr "Ustavi"
 
-#: src/gtkui/ui_gtk.cc:840 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
-#: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
+#: src/gtkui/ui_gtk.cc:841 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
+#: src/qtui/main_window.cc:164 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
 msgstr "Naslednja"
 
-#: src/gtkui/ui_gtk.cc:842 src/moonstone/main_window.cc:79
-#: src/qtui/main_window.cc:166 src/qtui/menus.cc:252 src/skins/menus.cc:79
+#: src/gtkui/ui_gtk.cc:843 src/moonstone/main_window.cc:79
+#: src/qtui/main_window.cc:167 src/qtui/menus.cc:252 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "Pretočno snemanje"
 
-#: src/gtkui/ui_gtk.cc:875 src/moonstone/main_window.cc:86
-#: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
+#: src/gtkui/ui_gtk.cc:876 src/moonstone/main_window.cc:86
+#: src/qtui/main_window.cc:174 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
 msgid "Repeat"
 msgstr "Ponavljanje"
 
-#: src/gtkui/ui_gtk.cc:878 src/moonstone/main_window.cc:89
-#: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
+#: src/gtkui/ui_gtk.cc:879 src/moonstone/main_window.cc:89
+#: src/qtui/main_window.cc:177 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
 msgid "Shuffle"
 msgstr "Mešaj"
 
-#: src/gtkui/ui_gtk.cc:1061 src/qtui/main_window.cc:123
+#: src/gtkui/ui_gtk.cc:1062 src/qtui/main_window.cc:124
 msgid "Menu"
 msgstr "Meni"
 
@@ -2052,67 +2052,67 @@ msgstr "Način seznama predvajanja."
 msgid "Stopping after song."
 msgstr "Ustavljam po skladbi."
 
-#: src/hotkey/gui.cc:71 src/qthotkey/gui.cc:63
+#: src/hotkey/gui.cc:71 src/qthotkey/gui.cc:66
 msgid "Previous track"
 msgstr "Prejšnja skladba"
 
-#: src/hotkey/gui.cc:73 src/qthotkey/gui.cc:65
+#: src/hotkey/gui.cc:73 src/qthotkey/gui.cc:68
 msgid "Pause/Resume"
 msgstr "Premor/nadaljuj"
 
-#: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:67
+#: src/hotkey/gui.cc:75 src/qthotkey/gui.cc:70
 msgid "Next track"
 msgstr "Naslednja skladba"
 
-#: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:68
+#: src/hotkey/gui.cc:76 src/qthotkey/gui.cc:71
 msgid "Step forward"
 msgstr "Korak naprej"
 
-#: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:69
+#: src/hotkey/gui.cc:77 src/qthotkey/gui.cc:72
 msgid "Step backward"
 msgstr "Korak nazaj"
 
-#: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:70
+#: src/hotkey/gui.cc:78 src/qthotkey/gui.cc:73
 msgid "Mute"
 msgstr "Utišaj"
 
-#: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:71
+#: src/hotkey/gui.cc:79 src/qthotkey/gui.cc:74
 msgid "Volume up"
 msgstr "Zvišaj glasnost"
 
-#: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:72
+#: src/hotkey/gui.cc:80 src/qthotkey/gui.cc:75
 msgid "Volume down"
 msgstr "Znižaj glasnost"
 
-#: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:73
+#: src/hotkey/gui.cc:81 src/qthotkey/gui.cc:76
 msgid "Jump to file"
 msgstr "Skoči na datoteko"
 
-#: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:74
+#: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:77
 msgid "Toggle player window(s)"
 msgstr "Preklopi okna predvajalnika"
 
-#: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:75
+#: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:78
 msgid "Show On-Screen-Display"
 msgstr "Prikaži OSD"
 
-#: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:76
+#: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:79
 msgid "Toggle repeat"
 msgstr "Preklopi ponavljanje"
 
-#: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:77
+#: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:80
 msgid "Toggle shuffle"
 msgstr "Preklopi mešanje"
 
-#: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:78
+#: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:81
 msgid "Toggle stop after current"
 msgstr "Preklopi ustavitev po trenutnem"
 
-#: src/hotkey/gui.cc:87 src/qthotkey/gui.cc:79
+#: src/hotkey/gui.cc:87 src/qthotkey/gui.cc:82
 msgid "Raise player window(s)"
 msgstr "Dvigni okna predvajalnika"
 
-#: src/hotkey/gui.cc:98 src/qthotkey/gui.cc:97
+#: src/hotkey/gui.cc:98 src/qthotkey/gui.cc:100
 msgid "(none)"
 msgstr "(brez)"
 
@@ -2130,7 +2130,7 @@ msgstr ""
 msgid "Binding mouse buttons"
 msgstr "Vežem miškine gumbe"
 
-#: src/hotkey/gui.cc:433
+#: src/hotkey/gui.cc:434
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -2138,23 +2138,23 @@ msgstr ""
 "V besedilno okno vnesite kombinacijo tipk.\n"
 "Uporabite lahko tudi miškine gumbe."
 
-#: src/hotkey/gui.cc:443 src/qthotkey/gui.cc:167
+#: src/hotkey/gui.cc:444 src/qthotkey/gui.cc:179
 msgid "Hotkeys:"
 msgstr "Hitre tipke:"
 
-#: src/hotkey/gui.cc:456 src/qthotkey/gui.cc:169
+#: src/hotkey/gui.cc:457 src/qthotkey/gui.cc:181
 msgid "<b>Action:</b>"
 msgstr "<b>Dejanje:</b>"
 
-#: src/hotkey/gui.cc:460 src/qthotkey/gui.cc:170
+#: src/hotkey/gui.cc:461 src/qthotkey/gui.cc:182
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Tipkovne bližnjice:</b>"
 
-#: src/hotkey/gui.cc:517 src/qthotkey/gui.cc:172
+#: src/hotkey/gui.cc:518 src/qthotkey/gui.cc:184
 msgid "_Add"
 msgstr "_Dodaj"
 
-#: src/hotkey/plugin.cc:61 src/qthotkey/plugin.cc:77
+#: src/hotkey/plugin.cc:61 src/qthotkey/plugin.cc:80
 msgid "Global Hotkeys"
 msgstr "Globalne bližnjice"
 
@@ -2390,15 +2390,15 @@ msgstr "Razdeli naslov v izvajalca in naslov na znakih"
 
 #: src/lyricwiki-qt/lyricwiki.cc:140
 msgid "<b>Sources</b>"
-msgstr ""
+msgstr "<b>Viri</b>"
 
 #: src/lyricwiki-qt/lyricwiki.cc:141
 msgid "Use embedded lyrics (from Lyrics tag)"
-msgstr ""
+msgstr "Uporabni vključena besedilo (z oznake Besedila)"
 
 #: src/lyricwiki-qt/lyricwiki.cc:143
 msgid "Fetch lyrics from internet:"
-msgstr ""
+msgstr "Pridobi besedilo s spleta:"
 
 #: src/lyricwiki-qt/lyricwiki.cc:146
 msgid "Store fetched lyrics in local cache"
@@ -2426,7 +2426,7 @@ msgstr "Napaka pri obdelovanju %s"
 msgid "Looking for lyrics ..."
 msgstr "Iščem besedilo..."
 
-#: src/lyricwiki-qt/lyricwiki.cc:431 src/ui-common/dialogs-qt.cc:62
+#: src/lyricwiki-qt/lyricwiki.cc:431 src/ui-common/dialogs-qt.cc:63
 msgid "Error"
 msgstr "Napaka"
 
@@ -2604,7 +2604,7 @@ msgid "These settings will take effect when Audacious is restarted."
 msgstr "Nastavitve se bodo uveljavile po vnovičnem zagonu programa."
 
 #: src/moonstone/main_window.cc:72 src/moonstone/main_window.cc:73
-#: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
+#: src/qtui/main_window.cc:160 src/qtui/main_window.cc:161
 #: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
 msgstr "Ustavi po tej skladbi"
@@ -2639,7 +2639,7 @@ msgstr "<b>Napredno</b>"
 msgid "Use accurate length calculation (slow)"
 msgstr "Uporabi točen izračun dolžine (počasno)"
 
-#: src/mpg123/mpg123.cc:256
+#: src/mpg123/mpg123.cc:260
 msgid "Surround"
 msgstr "Surround"
 
@@ -2775,13 +2775,15 @@ msgstr "Oknjeni sinc"
 
 #: src/opus/opus.cc:39
 msgid "Opus Decoder"
-msgstr ""
+msgstr "Opus dekodirnik"
 
 #: src/opus/opus.cc:351
 msgid ""
 "Opus Decoder Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange"
 msgstr ""
+"Opus dekodirnik vtičnik za Audacious\n"
+"Avtorstvo 2022 Thomas Lange"
 
 #: src/oss4/oss.h:70
 msgid "OSS4 Output"
@@ -2831,7 +2833,7 @@ msgstr ""
 
 #: src/pipewire/pipewire.cc:40
 msgid "PipeWire Output"
-msgstr ""
+msgstr "PipeWire izhod"
 
 #: src/pipewire/pipewire.cc:114
 msgid ""
@@ -2841,6 +2843,11 @@ msgid ""
 "Based on the PipeWire Output Plugin for Qmmp\n"
 "Copyright 2021 Ilya Kotov"
 msgstr ""
+"PipeWire izhod vtičnik za Audacious\n"
+"Avtorstvo 2022 Thomas Lange\n"
+"\n"
+"Na osnovi  vtičnika PipeWire Output Plugin for Qmmp\n"
+"Avtorstvo 2021 Ilya Kotov"
 
 #: src/pipewire/pipewire.cc:406 src/skins/menus.cc:88 src/skins-qt/menus.cc:79
 msgid "Playback"
@@ -2963,11 +2970,11 @@ msgstr ""
 "\n"
 "License: GPLv2+"
 
-#: src/qthotkey/gui.cc:165
+#: src/qthotkey/gui.cc:177
 msgid "Press a key combination inside a text field."
 msgstr "Vnesite tipkovno kombinacijo v besedilno polje."
 
-#: src/qthotkey/plugin.cc:103
+#: src/qthotkey/plugin.cc:107
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3025,7 +3032,7 @@ msgstr "T#"
 
 #: src/qtui/playlist_model.cc:192
 msgid "C#"
-msgstr ""
+msgstr "C#"
 
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
@@ -3859,7 +3866,7 @@ msgstr "Dodaj mapo"
 msgid "Search entries in active playlist"
 msgstr "Išči v dejavnem seznamu predvajanja"
 
-#: src/skins-qt/search-select.cc:69 src/skins/search-select.cc:83
+#: src/skins-qt/search-select.cc:70 src/skins/search-select.cc:83
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3870,35 +3877,35 @@ msgstr ""
 "se regex, neodvisen od velikosti črk. Če sintakse regex ne poznate, "
 "dobesedno vpišite termine za iskanje."
 
-#: src/skins-qt/search-select.cc:74 src/skins/search-select.cc:91
+#: src/skins-qt/search-select.cc:75 src/skins/search-select.cc:91
 msgid "Title:"
 msgstr "Naslov:"
 
-#: src/skins-qt/search-select.cc:78 src/skins/search-select.cc:96
+#: src/skins-qt/search-select.cc:79 src/skins/search-select.cc:96
 msgid "Album:"
 msgstr "Album:"
 
-#: src/skins-qt/search-select.cc:81 src/skins/search-select.cc:101
+#: src/skins-qt/search-select.cc:82 src/skins/search-select.cc:101
 msgid "Artist:"
 msgstr "Izvajalec:"
 
-#: src/skins-qt/search-select.cc:84 src/skins/search-select.cc:106
+#: src/skins-qt/search-select.cc:85 src/skins/search-select.cc:106
 msgid "File Name:"
 msgstr "Ime datoteke:"
 
-#: src/skins-qt/search-select.cc:87 src/skins/search-select.cc:134
+#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:134
 msgid "Clear previous selection before searching"
 msgstr "Počisti prejšnji izbor pred iskanjem"
 
-#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:137
+#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:137
 msgid "Automatically toggle queue for matching entries"
 msgstr "Samodejno prikaži vrsto za ujemajoče zadetke"
 
-#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:140
+#: src/skins-qt/search-select.cc:90 src/skins/search-select.cc:140
 msgid "Create a new playlist with matching entries"
 msgstr "Ustvari nov seznam predvajanja z ujemajočimi zadetki"
 
-#: src/skins-qt/search-select.cc:100 src/skins/search-select.cc:78
+#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:78
 msgid "Search"
 msgstr "Išči"
 
@@ -4574,7 +4581,7 @@ msgstr ""
 msgid "Working ..."
 msgstr "Nalagam..."
 
-#: src/ui-common/dialogs-qt.cc:72
+#: src/ui-common/dialogs-qt.cc:73
 msgid "Information"
 msgstr "Podatki"
 
@@ -4775,3 +4782,6 @@ msgstr "Način prepletanja:"
 #: src/xspf/xspf.cc:95
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Deljivi seznami predvajanja XML (XSPF)"
+
+#~ msgid "Sample rate"
+#~ msgstr "Frekvenca vzorčenja"
