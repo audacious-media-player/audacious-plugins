@@ -16,6 +16,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <cassert>
 #include <utility>
 
@@ -59,9 +60,10 @@ private:
            "History entries are stored only in memory and are lost\n"
            "on Audacious exit. When the plugin is disabled,\n"
            "playback history is not tracked at all.\n"
-           "History entries are only added, never removed.\n"
-           "The user can restart Audacious or close Playback History\n"
-           "view to disable the plugin and clear the entries.\n\n"
+           "History entries are only added, never removed automatically.\n"
+           "The user can remove selected entries by pressing the Delete key.\n"
+           "Restart Audacious or disable the plugin by closing\n"
+           "Playback History view to clear the entries.\n\n"
 
            "Currently the playback history is actually an album history,\n"
            "designed and tailored for the users of Shuffle by Album mode.\n"
@@ -162,6 +164,9 @@ public:
     int columnCount(const QModelIndex & parent) const override;
     QVariant data(const QModelIndex & index, int role) const override;
 
+    bool removeRows(int row, int count,
+                    const QModelIndex & parent = QModelIndex()) override;
+
 private:
     enum
     {
@@ -173,8 +178,10 @@ private:
 
     // In this class the word "position" refers to an index into m_entries.
 
+    bool isModelRowOutOfBounds(int row) const;
     bool isOutOfBounds(const QModelIndex & index) const;
     int modelRowFromPosition(int position) const;
+    int positionFromModelRow(int row) const;
     int positionFromIndex(const QModelIndex & index) const;
 
     /**
@@ -194,8 +201,8 @@ private:
         "playback ready", this, &HistoryModel::playbackStarted};
 
     Index<HistoryEntry> m_entries;
-    /** the position of the entry that is
-     * currently playing or was played last */
+    /** The position of the entry that is currently playing
+     * or was played last. -1 means "none". */
     int m_playingPosition = -1;
     /** a cached font used to highlight the item that is currently playing */
     QFont m_currentlyPlaingFont;
@@ -379,6 +386,46 @@ QVariant HistoryModel::data(const QModelIndex & index, int role) const
     return QVariant();
 }
 
+bool HistoryModel::removeRows(int row, int count, const QModelIndex & parent)
+{
+    if (count <= 0 || parent.isValid())
+        return false;
+
+    const int lastRowToRemove = row + count - 1;
+    if (isModelRowOutOfBounds(row) || isModelRowOutOfBounds(lastRowToRemove))
+        return false;
+
+    const int pos = std::min(positionFromModelRow(row),
+                             positionFromModelRow(lastRowToRemove));
+    // pos is the lesser of the positions that correspond to the first and last
+    // removed model rows. Remove the range [pos, pos + count) from m_entries.
+
+    beginRemoveRows(QModelIndex(), row, lastRowToRemove);
+
+    if (m_playingPosition >= pos && m_playingPosition < pos + count)
+        m_playingPosition = -1; // unset the playing position before removing it
+    else if (m_playingPosition > pos)
+    {
+        // Shift the playing position to account for the removed range.
+        m_playingPosition -= count;
+    }
+
+    m_entries.remove(pos, count);
+
+    endRemoveRows();
+
+    return true;
+}
+
+bool HistoryModel::isModelRowOutOfBounds(int row) const
+{
+    if (row >= 0 && row < m_entries.len())
+        return false;
+    AUDWARN("Model row is out of bounds: %d is not in the range [0, %d)\n", row,
+            m_entries.len());
+    return true;
+}
+
 bool HistoryModel::isOutOfBounds(const QModelIndex & index) const
 {
     if (!index.isValid())
@@ -407,12 +454,18 @@ int HistoryModel::modelRowFromPosition(int position) const
     return m_entries.len() - 1 - position;
 }
 
+int HistoryModel::positionFromModelRow(int row) const
+{
+    assert(!isModelRowOutOfBounds(row));
+    // modelRowFromPosition() is an involution (self-inverse function),
+    // and thus this inverse function delegates to it.
+    return modelRowFromPosition(row);
+}
+
 int HistoryModel::positionFromIndex(const QModelIndex & index) const
 {
     assert(!isOutOfBounds(index));
-    // modelRowFromPosition() is an involution (self-inverse function),
-    // and thus this inverse function delegates to it.
-    return modelRowFromPosition(index.row());
+    return positionFromModelRow(index.row());
 }
 
 void HistoryModel::updateFontForPosition(int position)
@@ -484,6 +537,9 @@ HistoryView::HistoryView()
     setAllColumnsShowFocus(true);
     setFrameShape(QFrame::NoFrame);
     setIndentation(0);
+
+    // Allow removing multiple items at once by pressing the Delete key.
+    setSelectionMode(ExtendedSelection);
 
     m_model.setFont(font());
     setModel(&m_model);
