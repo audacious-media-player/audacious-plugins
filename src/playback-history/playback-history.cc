@@ -23,6 +23,7 @@
 #include <QAbstractListModel>
 #include <QEvent>
 #include <QFont>
+#include <QMetaObject>
 #include <QPointer>
 
 #include <libaudcore/hook.h>
@@ -103,6 +104,12 @@ public:
     bool assignPlayingEntry();
 
     /**
+     * Gives keyboard focus to the corresponding playlist entry and makes it the
+     * single selected entry in the playlist.
+     */
+    void makeCurrent() const;
+
+    /**
      * Starts playing this entry.
      *
      * @return @c true in case of success.
@@ -131,6 +138,12 @@ private:
      */
     bool retrieveAlbum(String & album) const;
 
+    /**
+     * Returns @c true if @a m_playlist exists and @a m_playlistPosition still
+     * points to the same playlist entry as at the time of last assignment.
+     */
+    bool isAvailable() const;
+
     String m_album;
     Playlist m_playlist; /**< the playlist, in which this entry was played */
     /** The position in @a m_playlist of the first played song from @a m_album.
@@ -153,12 +166,26 @@ public:
     void setFont(const QFont & font);
 
     /**
+     * Gives keyboard focus to the playlist entry that corresponds to the item
+     * at @p index and makes it the single selected entry in the playlist.
+     *
+     * Call this function when the user selects the item at @p index in the
+     * view.
+     */
+    void makeCurrent(const QModelIndex & index) const;
+
+    /**
      * Plays the song of the item at @p index.
      *
      * Call this function when the user activates the item at @p index in the
      * view.
      */
     void activate(const QModelIndex & index);
+
+    /**
+     * Returns @c true if rows are currently being removed from the model.
+     */
+    bool areRowsBeingRemoved() const { return m_areRowsBeingRemoved; }
 
     int rowCount(const QModelIndex & parent) const override;
     int columnCount(const QModelIndex & parent) const override;
@@ -204,9 +231,16 @@ private:
     /** The position of the entry that is currently playing
      * or was played last. -1 means "none". */
     int m_playingPosition = -1;
+    bool m_areRowsBeingRemoved = false;
     /** a cached font used to highlight the item that is currently playing */
     QFont m_currentlyPlaingFont;
 };
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+/** The optimization returns early from duplicate makeCurrent() invocations and
+ * relies on a QMetaObject::invokeMethod() overload introduced in Qt 5.10. */
+#define OPTIMIZE_MAKE_CURRENT
+#endif
 
 class HistoryView : public audqt::TreeView
 {
@@ -215,9 +249,16 @@ public:
 
 protected:
     void changeEvent(QEvent * event) override;
+    void currentChanged(const QModelIndex & current,
+                        const QModelIndex & previous) override;
 
 private:
+    void makeCurrent(const QModelIndex & index);
+
     HistoryModel m_model;
+#ifdef OPTIMIZE_MAKE_CURRENT
+    QModelIndex m_newlyCurrentIndex;
+#endif
 };
 
 bool HistoryEntry::assignPlayingEntry()
@@ -243,43 +284,33 @@ bool HistoryEntry::assignPlayingEntry()
     return retrieveAlbum(m_album);
 }
 
+void HistoryEntry::makeCurrent() const
+{
+    if (!isAvailable())
+        return;
+
+    m_playlist.select_all(false);
+    m_playlist.select_entry(m_playlistPosition, true);
+    m_playlist.set_focus(m_playlistPosition);
+
+    m_playlist.activate();
+}
+
 bool HistoryEntry::play() const
 {
-    if (!m_playlist.exists())
-    {
-        AUDWARN("The activated entry's playlist has been deleted.\n");
+    if (!isAvailable())
         return false;
-    }
-
-    assert(m_playlistPosition >= 0);
-    if (m_playlistPosition >= m_playlist.n_entries())
-    {
-        AUDWARN("The activated entry's position is now out of bounds.\n");
-        return false;
-    }
-
-    String currentAlbumAtPlaylistPosition;
-    if (!retrieveAlbum(currentAlbumAtPlaylistPosition))
-        return false;
-
-    // This check does not guarantee that the first played song from m_album
-    // still resides at m_playlistPosition in m_playlist. In case the user
-    // inserts or removes a few songs above m_playlistPosition, a different song
-    // from the same album or a song from an unrelated album that happens to
-    // have the same name goes undetected. But such coincidences should be much
-    // more rare and less of a problem than the album inequality condition
-    // checked here. Therefore, information that uniquely identifies the
-    // referenced song is not stored in a history entry just for this case.
-    if (currentAlbumAtPlaylistPosition != m_album)
-    {
-        AUDWARN("The album at the activated entry's playlist position has"
-                " changed.\n");
-        return false;
-    }
 
     m_playlist.set_position(m_playlistPosition);
     m_playlist.start_playback();
+
+    // Double-clicking a history entry makes it current just before activation.
+    // In this case m_playlist is already active here. However, m_playlist is
+    // not active here if the user performs the following steps:
+    // 1) select a history entry; 2) activate another playlist;
+    // 3) give focus to History view; 4) press the Enter key.
     m_playlist.activate();
+
     return true;
 }
 
@@ -314,6 +345,43 @@ bool HistoryEntry::retrieveAlbum(String & album) const
     return true;
 }
 
+bool HistoryEntry::isAvailable() const
+{
+    if (!m_playlist.exists())
+    {
+        AUDWARN("The selected entry's playlist has been deleted.\n");
+        return false;
+    }
+
+    assert(m_playlistPosition >= 0);
+    if (m_playlistPosition >= m_playlist.n_entries())
+    {
+        AUDWARN("The selected entry's position is now out of bounds.\n");
+        return false;
+    }
+
+    String currentAlbumAtPlaylistPosition;
+    if (!retrieveAlbum(currentAlbumAtPlaylistPosition))
+        return false;
+
+    // This check does not guarantee that the first played song from m_album
+    // still resides at m_playlistPosition in m_playlist. In case the user
+    // inserts or removes a few songs above m_playlistPosition, a different song
+    // from the same album or a song from an unrelated album that happens to
+    // have the same name goes undetected. But such coincidences should be much
+    // more rare and less of a problem than the album inequality condition
+    // checked here. Therefore, information that uniquely identifies the
+    // referenced song is not stored in a history entry just for this case.
+    if (currentAlbumAtPlaylistPosition != m_album)
+    {
+        AUDWARN("The album at the selected entry's playlist position has"
+                " changed.\n");
+        return false;
+    }
+
+    return true;
+}
+
 void HistoryModel::setFont(const QFont & font)
 {
     m_currentlyPlaingFont = font;
@@ -321,6 +389,14 @@ void HistoryModel::setFont(const QFont & font)
 
     if (m_playingPosition >= 0)
         updateFontForPosition(m_playingPosition);
+}
+
+void HistoryModel::makeCurrent(const QModelIndex & index) const
+{
+    if (isOutOfBounds(index))
+        return;
+    const int pos = positionFromIndex(index);
+    m_entries[pos].makeCurrent();
 }
 
 void HistoryModel::activate(const QModelIndex & index)
@@ -400,6 +476,7 @@ bool HistoryModel::removeRows(int row, int count, const QModelIndex & parent)
     // pos is the lesser of the positions that correspond to the first and last
     // removed model rows. Remove the range [pos, pos + count) from m_entries.
 
+    m_areRowsBeingRemoved = true;
     beginRemoveRows(QModelIndex(), row, lastRowToRemove);
 
     if (m_playingPosition >= pos && m_playingPosition < pos + count)
@@ -413,6 +490,7 @@ bool HistoryModel::removeRows(int row, int count, const QModelIndex & parent)
     m_entries.remove(pos, count);
 
     endRemoveRows();
+    m_areRowsBeingRemoved = false;
 
     return true;
 }
@@ -544,6 +622,17 @@ HistoryView::HistoryView()
     m_model.setFont(font());
     setModel(&m_model);
     connect(this, &QTreeView::activated, &m_model, &HistoryModel::activate);
+
+    // Overriding currentChanged() is not sufficient, because a mouse click on
+    // a current item should make the corresponding playlist entry current but
+    // does not invoke currentChanged().
+    // Connect makeCurrent() to QTreeView::pressed rather than
+    // QTreeView::clicked for two reasons:
+    // 1) Any mouse button click, not only left click,
+    //    makes the clicked history view item current.
+    // 2) The item becomes current during mousePressEvent(),
+    //    not mouseReleaseEvent().
+    connect(this, &QTreeView::pressed, this, &HistoryView::makeCurrent);
 }
 
 void HistoryView::changeEvent(QEvent * event)
@@ -552,6 +641,63 @@ void HistoryView::changeEvent(QEvent * event)
         m_model.setFont(font());
 
     audqt::TreeView::changeEvent(event);
+}
+
+void HistoryView::currentChanged(const QModelIndex & current,
+                                 const QModelIndex & previous)
+{
+    audqt::TreeView::currentChanged(current, previous);
+
+    AUDDBG("currentChanged: %d => %d\n", previous.row(), current.row());
+
+    // currentChanged() is called repeatedly while rows are being removed.
+    // Debug output when there are 4 history entries, the 4th entry is current
+    // and all 4 entries are removed:
+    // currentChanged: 3 => 2
+    // currentChanged: 2 => 1
+    // currentChanged: 1 => 0
+    // currentChanged: 0 => -1
+    // History entry removal is not an explicit selection of an item, and
+    // therefore should not affect playlist focus and selection.
+    if (m_model.areRowsBeingRemoved())
+        return;
+
+    // Connecting makeCurrent() to QTreeView::pressed makes clicked entries
+    // current. This code makes an entry selected via keyboard current.
+    // In case of keyboard navigation, the previous current index is invalid
+    // only when focus is transferred to the history view. A focus transfer is
+    // not an explicit selection of an item, and therefore should not affect
+    // playlist focus and selection.
+    if (previous.isValid() && current.isValid())
+        makeCurrent(current);
+}
+
+void HistoryView::makeCurrent(const QModelIndex & index)
+{
+    // QAbstractItemView::pressed is only emitted when the index is valid.
+    assert(index.isValid());
+
+#ifdef OPTIMIZE_MAKE_CURRENT
+    AUDDBG("makeCurrent: %d => %d\n", m_newlyCurrentIndex.row(), index.row());
+
+    // Clicking on a noncurrent item calls currentChanged() and emits
+    // QTreeView::pressed. This function is invoked twice in a row then.
+    // Return early from the second call to avoid redundant work.
+    if (index == m_newlyCurrentIndex)
+        return;
+    m_newlyCurrentIndex = index;
+
+    // Events are normally not processed between the corresponding
+    // QTreeView::pressed emission and currentChanged() call. So invalidating
+    // m_newlyCurrentIndex when control returns to the event loop works here.
+    [[maybe_unused]] const bool invoked = QMetaObject::invokeMethod(
+        this, [this] { m_newlyCurrentIndex = {}; }, Qt::QueuedConnection);
+    assert(invoked);
+#else
+    AUDDBG("makeCurrent: %d\n", index.row());
+#endif
+
+    m_model.makeCurrent(index);
 }
 
 static QPointer<HistoryView> s_history_view;
