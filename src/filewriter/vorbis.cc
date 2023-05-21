@@ -86,6 +86,9 @@ static bool vorbis_open (VFSFile & file, const format_info & info, const Tuple &
     if ((scrint = tuple.get_int (Tuple::Year)) > 0)
         vorbis_comment_add_tag(&vc, "year", int_to_str (scrint));
 
+    if ((scrint = tuple.get_int (Tuple::Disc)) > 0)
+        vorbis_comment_add_tag(&vc, "discnumber", int_to_str (scrint));
+
     if (vorbis_encode_init_vbr(& vi, info.channels, info.frequency, GET_DOUBLE("base_quality")))
     {
         vorbis_info_clear(&vi);

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2023-04-29 21:59+0200\n"
+"POT-Creation-Date: 2023-05-21 15:37+0100\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
 "Last-Translator: Oihane C, 2021\n"
 "Language-Team: Basque (http://www.transifex.com/audacious/audacious/language/"
@@ -958,7 +958,7 @@ msgstr ""
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg plugina"
 
-#: src/ffaudio/ffaudio-core.cc:650
+#: src/ffaudio/ffaudio-core.cc:651
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1265,7 +1265,7 @@ msgstr "Orokorra"
 msgid "FLAC Decoder"
 msgstr "FLAC Deskodetzailea"
 
-#: src/flac/metadata.cc:293 src/wavpack/wavpack.cc:215
+#: src/flac/metadata.cc:296 src/wavpack/wavpack.cc:215
 msgid "lossless"
 msgstr ""
 
@@ -1401,11 +1401,16 @@ msgstr ""
 msgid "Catalog Number"
 msgstr ""
 
-#: src/gtkui/columns.cc:322
+#: src/gtkui/columns.cc:53 src/moonstone/playlist_model.cc:43
+#: src/qtui/playlist_model.cc:37
+msgid "Disc"
+msgstr ""
+
+#: src/gtkui/columns.cc:325
 msgid "Available columns"
 msgstr "Zutabe erabilgarriak"
 
-#: src/gtkui/columns.cc:348
+#: src/gtkui/columns.cc:351
 msgid "Displayed columns"
 msgstr "Erakutsitako zutabeak"
 
@@ -1472,7 +1477,7 @@ msgstr "_Ezarpenak ..."
 msgid "_Quit"
 msgstr "I_rten"
 
-#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:224
+#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:226
 #: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
 #: src/qtui/playlist_tabs.cc:330 src/search-tool-qt/search-tool-qt.cc:499
 #: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:106
@@ -1530,7 +1535,7 @@ msgstr ""
 msgid "Stop A_fter This Song"
 msgstr ""
 
-#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:208 src/qtui/menus.cc:162
+#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:210 src/qtui/menus.cc:162
 #: src/qtui/menus.cc:292
 msgid "Song _Info ..."
 msgstr "Kantuaren _Informazioa ..."
@@ -1555,7 +1560,7 @@ msgstr ""
 msgid "_Clear Repeat Points"
 msgstr ""
 
-#: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:140
+#: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:141
 #: src/qtui/menus.cc:173 src/qtui/menus.cc:180 src/qtui/menus.cc:197
 msgid "By _Title"
 msgstr "_Izenburuaren arabera"
@@ -1568,232 +1573,237 @@ msgstr "_Fitxategi Izenaren arabera"
 msgid "By File _Path"
 msgstr "Fitxategi _Bidearen arabera"
 
-#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:179
+#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:140 src/qtui/menus.cc:179
 #: src/qtui/menus.cc:196
 msgid "By Track _Number"
 msgstr "Pista zenbakiaren arabera"
 
-#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:181
+#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:142 src/qtui/menus.cc:181
 #: src/qtui/menus.cc:198
 msgid "By _Artist"
 msgstr "_Artistaren arabera"
 
-#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:182
+#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:143 src/qtui/menus.cc:182
 #: src/qtui/menus.cc:199
 msgid "By Al_bum"
 msgstr ""
 
-#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:183
+#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:144 src/qtui/menus.cc:183
 #: src/qtui/menus.cc:200
 msgid "By Albu_m Artist"
 msgstr ""
 
-#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:184
+#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:145 src/qtui/menus.cc:184
 #: src/qtui/menus.cc:201
 msgid "By Release _Date"
 msgstr ""
 
-#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:185
+#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:146 src/qtui/menus.cc:185
 #: src/qtui/menus.cc:202
 msgid "By _Genre"
 msgstr "_Generoaren arabera"
 
-#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:186
+#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:147 src/qtui/menus.cc:186
 #: src/qtui/menus.cc:203
 msgid "By _Length"
 msgstr "_Luzeraren arabera"
 
-#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:187
+#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:148 src/qtui/menus.cc:187
 #: src/qtui/menus.cc:204
 msgid "By _File Path"
 msgstr "_Fitxategi Bidearen arabera"
 
-#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:148 src/qtui/menus.cc:188
+#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:149 src/qtui/menus.cc:188
 #: src/qtui/menus.cc:205
 msgid "By _Custom Title"
 msgstr "Izenburu _Pertsonalizatuen arabera"
 
-#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:189
+#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:150 src/qtui/menus.cc:189
 #: src/qtui/menus.cc:206
 msgid "By C_omment"
 msgstr ""
 
-#: src/gtkui/menus.cc:134 src/gtkui/menus.cc:151 src/qtui/menus.cc:191
+#: src/gtkui/menus.cc:133 src/gtkui/menus.cc:151
+#, fuzzy
+msgid "By D_isc Number"
+msgstr "Pista zenbakiaren arabera"
+
+#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:153 src/qtui/menus.cc:191
 #: src/qtui/menus.cc:208
 msgid "R_everse Order"
 msgstr ""
 
-#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:152 src/qtui/menus.cc:193
+#: src/gtkui/menus.cc:136 src/gtkui/menus.cc:154 src/qtui/menus.cc:193
 #: src/qtui/menus.cc:210
 msgid "_Random Order"
 msgstr "_Ausazko ordena"
 
-#: src/gtkui/menus.cc:156 src/qtui/menus.cc:214
+#: src/gtkui/menus.cc:158 src/qtui/menus.cc:214
 msgid "_Play/Resume"
 msgstr ""
 
-#: src/gtkui/menus.cc:157 src/qtui/menus.cc:216
+#: src/gtkui/menus.cc:159 src/qtui/menus.cc:216
 msgid "_Refresh"
 msgstr "_Freskatu"
 
-#: src/gtkui/menus.cc:159 src/qtui/menus.cc:220
+#: src/gtkui/menus.cc:161 src/qtui/menus.cc:220
 msgid "_Sort"
 msgstr "_Ordenatu"
 
-#: src/gtkui/menus.cc:160 src/qtui/menus.cc:221
+#: src/gtkui/menus.cc:162 src/qtui/menus.cc:221
 msgid "Sort Se_lected"
 msgstr "Ordenatu _Hautatutakoak"
 
-#: src/gtkui/menus.cc:161 src/qtui/menus.cc:223
+#: src/gtkui/menus.cc:163 src/qtui/menus.cc:223
 msgid "Remove _Duplicates"
 msgstr "Kendu _Bikoiztuak"
 
-#: src/gtkui/menus.cc:162 src/qtui/menus.cc:224
+#: src/gtkui/menus.cc:164 src/qtui/menus.cc:224
 msgid "Remove _Unavailable Files"
 msgstr "Ezabatu erabilgarri ez dauden fitxategiak"
 
-#: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:219
+#: src/gtkui/menus.cc:166 src/playlist-manager/playlist-manager.cc:219
 #: src/playlist-manager-qt/playlist-manager-qt.cc:348 src/qtui/menus.cc:227
 msgid "_New"
 msgstr "_Berri"
 
-#: src/gtkui/menus.cc:165 src/qtui/menus.cc:228
+#: src/gtkui/menus.cc:167 src/qtui/menus.cc:228
 msgid "Ren_ame ..."
 msgstr "Izena _aldatu ..."
 
-#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:226
+#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:228
 #: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:229
 #: src/qtui/playlist_tabs.cc:335
 msgid "Remo_ve"
 msgstr "Ezabatu"
 
-#: src/gtkui/menus.cc:168 src/qtui/menus.cc:231
+#: src/gtkui/menus.cc:170 src/qtui/menus.cc:231
 msgid "_Import ..."
 msgstr "_Inportatu ..."
 
-#: src/gtkui/menus.cc:169 src/qtui/menus.cc:232
+#: src/gtkui/menus.cc:171 src/qtui/menus.cc:232
 msgid "_Export ..."
 msgstr "_Esportatu ..."
 
-#: src/gtkui/menus.cc:171 src/qtui/menus.cc:235
+#: src/gtkui/menus.cc:173 src/qtui/menus.cc:235
 msgid "Playlist _Manager ..."
 msgstr "Erreprodukzio-zerrenda _Mudeatzailea ..."
 
-#: src/gtkui/menus.cc:172 src/qtui/menus.cc:237
+#: src/gtkui/menus.cc:174 src/qtui/menus.cc:237
 msgid "_Queue Manager ..."
 msgstr "_Ilara Kudeatzailea..."
 
-#: src/gtkui/menus.cc:176 src/qtui/menus.cc:241
+#: src/gtkui/menus.cc:178 src/qtui/menus.cc:241
 msgid "Volume _Up"
 msgstr "Bolumena _Igo"
 
-#: src/gtkui/menus.cc:177 src/qtui/menus.cc:243
+#: src/gtkui/menus.cc:179 src/qtui/menus.cc:243
 msgid "Volume _Down"
 msgstr "Bolumena _Jaitsi"
 
-#: src/gtkui/menus.cc:179 src/qtui/menus.cc:247
+#: src/gtkui/menus.cc:181 src/qtui/menus.cc:247
 msgid "_Equalizer ..."
 msgstr ""
 
-#: src/gtkui/menus.cc:180 src/qtui/menus.cc:249
+#: src/gtkui/menus.cc:182 src/qtui/menus.cc:249
 msgid "E_ffects ..."
 msgstr "E_fektuak"
 
-#: src/gtkui/menus.cc:182
+#: src/gtkui/menus.cc:184
 msgid "_Record Stream"
 msgstr ""
 
-#: src/gtkui/menus.cc:183
+#: src/gtkui/menus.cc:185
 msgid "Audio _Settings ..."
 msgstr "Audio-ezarpenak ..."
 
-#: src/gtkui/menus.cc:187 src/qtui/menus.cc:258
+#: src/gtkui/menus.cc:189 src/qtui/menus.cc:258
 msgid "Show _Menu Bar"
 msgstr ""
 
-#: src/gtkui/menus.cc:188 src/qtui/menus.cc:260
+#: src/gtkui/menus.cc:190 src/qtui/menus.cc:260
 msgid "Show I_nfo Bar"
 msgstr ""
 
-#: src/gtkui/menus.cc:189 src/qtui/menus.cc:262
+#: src/gtkui/menus.cc:191 src/qtui/menus.cc:262
 msgid "Show Info Bar _Album Art"
 msgstr ""
 
-#: src/gtkui/menus.cc:190 src/qtui/menus.cc:264
+#: src/gtkui/menus.cc:192 src/qtui/menus.cc:264
 msgid "Show Info Bar Vis_ualization"
 msgstr ""
 
-#: src/gtkui/menus.cc:191 src/qtui/menus.cc:266
+#: src/gtkui/menus.cc:193 src/qtui/menus.cc:266
 msgid "Show _Status Bar"
 msgstr ""
 
-#: src/gtkui/menus.cc:193 src/qtui/menus.cc:270
+#: src/gtkui/menus.cc:195 src/qtui/menus.cc:270
 msgid "Show _Remaining Time"
 msgstr "Gelditzen den denbora erakutsi"
 
-#: src/gtkui/menus.cc:195 src/qtui/menus.cc:274 src/skins/menus.cc:157
+#: src/gtkui/menus.cc:197 src/qtui/menus.cc:274 src/skins/menus.cc:157
 #: src/skins-qt/menus.cc:152
 msgid "_Visualizations ..."
 msgstr ""
 
-#: src/gtkui/menus.cc:199 src/qtui/menus.cc:278
+#: src/gtkui/menus.cc:201 src/qtui/menus.cc:278
 msgid "_File"
 msgstr "_Fitxategi"
 
-#: src/gtkui/menus.cc:200 src/qtui/menus.cc:279
+#: src/gtkui/menus.cc:202 src/qtui/menus.cc:279
 msgid "_Playback"
 msgstr ""
 
-#: src/gtkui/menus.cc:201 src/qtui/menus.cc:280
+#: src/gtkui/menus.cc:203 src/qtui/menus.cc:280
 msgid "P_laylist"
 msgstr ""
 
-#: src/gtkui/menus.cc:202 src/gtkui/menus.cc:220 src/qtui/menus.cc:281
+#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:222 src/qtui/menus.cc:281
 #: src/qtui/menus.cc:310
 msgid "_Services"
 msgstr "_Zerbitzuak"
 
-#: src/gtkui/menus.cc:203 src/qtui/menus.cc:282
+#: src/gtkui/menus.cc:205 src/qtui/menus.cc:282
 msgid "_Output"
 msgstr "_Irteera"
 
-#: src/gtkui/menus.cc:204 src/qtui/menus.cc:283
+#: src/gtkui/menus.cc:206 src/qtui/menus.cc:283
 msgid "_View"
 msgstr "_Ikuspegi"
 
-#: src/gtkui/menus.cc:209 src/qtui/menus.cc:294
+#: src/gtkui/menus.cc:211 src/qtui/menus.cc:294
 msgid "_Queue/Unqueue"
 msgstr "_Ilararatu/Ilaratik kendu"
 
-#: src/gtkui/menus.cc:211 src/qtui/menus.cc:297
+#: src/gtkui/menus.cc:213 src/qtui/menus.cc:297
 msgid "_Open Containing Folder"
 msgstr "Barruko Karpeta _Ireki"
 
-#: src/gtkui/menus.cc:212 src/qtui/menus.cc:299
+#: src/gtkui/menus.cc:214 src/qtui/menus.cc:299
 msgid "_Refresh Selected"
 msgstr "Hautatutakoa _Egunertau"
 
-#: src/gtkui/menus.cc:214 src/qtui/menus.cc:302
+#: src/gtkui/menus.cc:216 src/qtui/menus.cc:302
 msgid "Cu_t"
 msgstr "Moztu"
 
-#: src/gtkui/menus.cc:215 src/qtui/menus.cc:303
+#: src/gtkui/menus.cc:217 src/qtui/menus.cc:303
 msgid "_Copy"
 msgstr "_Kopiatu"
 
-#: src/gtkui/menus.cc:216 src/qtui/menus.cc:304
+#: src/gtkui/menus.cc:218 src/qtui/menus.cc:304
 msgid "_Paste"
 msgstr "_Itsatsi"
 
-#: src/gtkui/menus.cc:217 src/qtui/menus.cc:305
+#: src/gtkui/menus.cc:219 src/qtui/menus.cc:305
 msgid "Paste at _End"
 msgstr "_Bukaeran itsatsi"
 
-#: src/gtkui/menus.cc:218 src/qtui/menus.cc:307
+#: src/gtkui/menus.cc:220 src/qtui/menus.cc:307
 msgid "Select _All"
 msgstr "_Dena hautatu"
 
-#: src/gtkui/menus.cc:225 src/moonstone/playlist_tabs.cc:309
+#: src/gtkui/menus.cc:227 src/moonstone/playlist_tabs.cc:309
 #: src/qtui/playlist_tabs.cc:333
 msgid "_Rename ..."
 msgstr "_Izena aldatu ..."
@@ -2472,11 +2482,11 @@ msgstr "Gelditu abesti hau eta gero"
 msgid "Moonstone"
 msgstr ""
 
-#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:256
+#: src/moonstone/playlist_header.cc:212 src/qtui/playlist_header.cc:258
 msgid "Reset to Defaults"
 msgstr "Balio lehenetsietara berrasieratu"
 
-#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:230
+#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:232
 msgid "Now Playing"
 msgstr "Orain erreproduzitzen"
 
@@ -2617,7 +2627,7 @@ msgstr ""
 msgid "Opus Decoder"
 msgstr ""
 
-#: src/opus/opus.cc:351
+#: src/opus/opus.cc:354
 msgid ""
 "Opus Decoder Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange"
@@ -2819,6 +2829,10 @@ msgstr ""
 
 #: src/qtui/playlist_model.cc:192
 msgid "C#"
+msgstr ""
+
+#: src/qtui/playlist_model.cc:194
+msgid "D#"
 msgstr ""
 
 #: src/qtui/qtui.cc:40
@@ -3325,8 +3339,8 @@ msgid "View"
 msgstr "Ikusi"
 
 #: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
-#: src/skins/menus.cc:243 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
-#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:239
+#: src/skins/menus.cc:245 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
+#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:241
 msgid "Services"
 msgstr "Zerbitzuak"
 
@@ -3342,8 +3356,8 @@ msgstr "Ezarpenak ..."
 msgid "Quit"
 msgstr "Irten"
 
-#: src/skins/menus.cc:101 src/skins/menus.cc:233 src/skins-qt/menus.cc:92
-#: src/skins-qt/menus.cc:229
+#: src/skins/menus.cc:101 src/skins/menus.cc:235 src/skins-qt/menus.cc:92
+#: src/skins-qt/menus.cc:231
 msgid "Song Info ..."
 msgstr "Kantuari buruzko informazioa ..."
 
@@ -3455,21 +3469,21 @@ msgstr "Gehitu URLa  ..."
 msgid "Add Files ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:211
+#: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:212
 #: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:192
-#: src/skins-qt/menus.cc:207
+#: src/skins-qt/menus.cc:208
 msgid "By Title"
 msgstr "Tituluaren arabera"
 
-#: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:218
+#: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:219
 #: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:199
-#: src/skins-qt/menus.cc:214
+#: src/skins-qt/menus.cc:215
 msgid "By File Name"
 msgstr "Fitxategi izenaren arabera"
 
-#: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:219
+#: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:220
 #: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
-#: src/skins-qt/menus.cc:215
+#: src/skins-qt/menus.cc:216
 msgid "By File Path"
 msgstr "Fitxategi bidearen arabera"
 
@@ -3513,88 +3527,94 @@ msgstr "Ez hautatu ezer"
 msgid "Select All"
 msgstr "Hautatu denak"
 
-#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:191
-#: src/skins-qt/menus.cc:206
+#: src/skins/menus.cc:195 src/skins/menus.cc:211 src/skins-qt/menus.cc:191
+#: src/skins-qt/menus.cc:207
 msgid "By Track Number"
 msgstr "Pista zenbakiaren arabera"
 
-#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:193
-#: src/skins-qt/menus.cc:208
+#: src/skins/menus.cc:197 src/skins/menus.cc:213 src/skins-qt/menus.cc:193
+#: src/skins-qt/menus.cc:209
 msgid "By Artist"
 msgstr "Artistaren arabera"
 
-#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:194
-#: src/skins-qt/menus.cc:209
+#: src/skins/menus.cc:198 src/skins/menus.cc:214 src/skins-qt/menus.cc:194
+#: src/skins-qt/menus.cc:210
 msgid "By Album"
 msgstr "Diskoaren arabera"
 
-#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:195
-#: src/skins-qt/menus.cc:210
+#: src/skins/menus.cc:199 src/skins/menus.cc:215 src/skins-qt/menus.cc:195
+#: src/skins-qt/menus.cc:211
 msgid "By Album Artist"
 msgstr "Albumeko artistaren arabera"
 
-#: src/skins/menus.cc:200 src/skins/menus.cc:215 src/skins-qt/menus.cc:196
-#: src/skins-qt/menus.cc:211
+#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:196
+#: src/skins-qt/menus.cc:212
 msgid "By Release Date"
 msgstr "Argitaratza dataren arabera"
 
-#: src/skins/menus.cc:201 src/skins/menus.cc:216 src/skins-qt/menus.cc:197
-#: src/skins-qt/menus.cc:212
+#: src/skins/menus.cc:201 src/skins/menus.cc:217 src/skins-qt/menus.cc:197
+#: src/skins-qt/menus.cc:213
 msgid "By Genre"
 msgstr "Generoaren arabera"
 
-#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:198
-#: src/skins-qt/menus.cc:213
+#: src/skins/menus.cc:202 src/skins/menus.cc:218 src/skins-qt/menus.cc:198
+#: src/skins-qt/menus.cc:214
 msgid "By Length"
 msgstr "Luzeraren arabera"
 
-#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:201
-#: src/skins-qt/menus.cc:216
+#: src/skins/menus.cc:205 src/skins/menus.cc:221 src/skins-qt/menus.cc:201
+#: src/skins-qt/menus.cc:217
 msgid "By Custom Title"
 msgstr "Izenburu pertsonalizatuen arabera"
 
-#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:202
-#: src/skins-qt/menus.cc:217
+#: src/skins/menus.cc:206 src/skins/menus.cc:222 src/skins-qt/menus.cc:202
+#: src/skins-qt/menus.cc:218
 msgid "By Comment"
 msgstr "Iruzkinen arabera"
 
-#: src/skins/menus.cc:225 src/skins-qt/menus.cc:221
+#: src/skins/menus.cc:207 src/skins/menus.cc:223 src/skins-qt/menus.cc:203
+#: src/skins-qt/menus.cc:219
+#, fuzzy
+msgid "By Disc Number"
+msgstr "Pista zenbakiaren arabera"
+
+#: src/skins/menus.cc:227 src/skins-qt/menus.cc:223
 msgid "Randomize List"
 msgstr "Nahastu ausaz zerrenda"
 
-#: src/skins/menus.cc:226 src/skins-qt/menus.cc:222
+#: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
 msgid "Reverse List"
 msgstr "Alderantzikatu zerrenda"
 
-#: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
+#: src/skins/menus.cc:230 src/skins-qt/menus.cc:226
 msgid "Sort Selected"
 msgstr "Ordenatu hautatutakoak"
 
-#: src/skins/menus.cc:229 src/skins-qt/menus.cc:225
+#: src/skins/menus.cc:231 src/skins-qt/menus.cc:227
 msgid "Sort List"
 msgstr "Ordenatu zerrenda"
 
-#: src/skins/menus.cc:234 src/skins-qt/menus.cc:230
+#: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
 msgid "Open Containing Folder"
 msgstr "Barruko Karpeta Ireki"
 
-#: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
+#: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
 msgid "Cut"
 msgstr "Moztu"
 
-#: src/skins/menus.cc:237 src/skins-qt/menus.cc:233
+#: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
 msgid "Copy"
 msgstr "Kopiatu"
 
-#: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
+#: src/skins/menus.cc:240 src/skins-qt/menus.cc:236
 msgid "Paste"
 msgstr "Itsatsi"
 
-#: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
 msgid "Paste at End"
 msgstr "Itsasi bukaeran"
 
-#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
+#: src/skins/menus.cc:243 src/skins-qt/menus.cc:239
 msgid "Queue/Unqueue"
 msgstr ""
 
@@ -4291,7 +4311,7 @@ msgstr ""
 msgid "Voice Removal"
 msgstr "Ahotsa ezabatzea"
 
-#: src/vorbis/vorbis.cc:431
+#: src/vorbis/vorbis.cc:433
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"

@@ -52,7 +52,8 @@ static const GType pw_col_types[PW_COLS] =
     G_TYPE_STRING,  // bitrate
     G_TYPE_STRING,  // comment
     G_TYPE_STRING,  // publisher
-    G_TYPE_STRING   // catalog number
+    G_TYPE_STRING,  // catalog number
+    G_TYPE_STRING   // disc
 };
 
 static const int pw_col_min_widths[PW_COLS] = {
@@ -72,7 +73,8 @@ static const int pw_col_min_widths[PW_COLS] = {
     3,   // bitrate
     10,  // comment,
     10,  // publisher
-    3    // catalog number
+    3,   // catalog number
+    2    // disc
 };
 
 static const bool pw_col_label[PW_COLS] = {
@@ -92,7 +94,8 @@ static const bool pw_col_label[PW_COLS] = {
     false,  // bitrate
     true,   // comment
     true,   // publisher
-    false   // catalog number
+    false,  // catalog number
+    false   // disc
 };
 
 static const Playlist::SortType pw_col_sort_types[PW_COLS] = {
@@ -112,7 +115,8 @@ static const Playlist::SortType pw_col_sort_types[PW_COLS] = {
     Playlist::n_sort_types,    // bitrate
     Playlist::Comment,         // comment
     Playlist::Publisher,       // publisher
-    Playlist::CatalogNum       // catalog number
+    Playlist::CatalogNum,      // catalog number
+    Playlist::Disc             // disc
 };
 
 struct PlaylistWidgetData
@@ -222,6 +226,9 @@ static void get_value (void * user, int row, int column, GValue * value)
         break;
     case PW_COL_CATALOG_NUM:
         set_string_from_tuple (value, tuple, Tuple::CatalogNum);
+        break;
+    case PW_COL_DISC:
+        set_int_from_tuple (value, tuple, Tuple::Disc);
         break;
     }
 }

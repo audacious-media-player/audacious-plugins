@@ -47,6 +47,7 @@ public:
         Comment,
         Publisher,
         CatalogNum,
+        Disc,
         n_cols
     };
 

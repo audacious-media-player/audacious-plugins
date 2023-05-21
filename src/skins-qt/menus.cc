@@ -199,7 +199,8 @@ static const audqt::MenuItem sort_items[] = {
     audqt::MenuCommand ({N_("By File Name")}, sort_filename),
     audqt::MenuCommand ({N_("By File Path")}, sort_path),
     audqt::MenuCommand ({N_("By Custom Title")}, sort_custom_title),
-    audqt::MenuCommand ({N_("By Comment")}, sort_comment)
+    audqt::MenuCommand ({N_("By Comment")}, sort_comment),
+    audqt::MenuCommand ({N_("By Disc Number")}, sort_disc)
 };
 
 static const audqt::MenuItem sort_selected_items[] = {
@@ -214,7 +215,8 @@ static const audqt::MenuItem sort_selected_items[] = {
     audqt::MenuCommand ({N_("By File Name")}, sort_sel_filename),
     audqt::MenuCommand ({N_("By File Path")}, sort_sel_path),
     audqt::MenuCommand ({N_("By Custom Title")}, sort_sel_custom_title),
-    audqt::MenuCommand ({N_("By Comment")}, sort_sel_comment)
+    audqt::MenuCommand ({N_("By Comment")}, sort_sel_comment),
+    audqt::MenuCommand ({N_("By Disc Number")}, sort_sel_disc)
 };
 
 static const audqt::MenuItem playlist_sort_items[] = {

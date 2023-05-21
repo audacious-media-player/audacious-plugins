@@ -45,6 +45,7 @@ enum {
     PW_COL_COMMENT,
     PW_COL_PUBLISHER,
     PW_COL_CATALOG_NUM,
+    PW_COL_DISC,
     PW_COLS
 };
 

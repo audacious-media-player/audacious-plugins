@@ -111,6 +111,7 @@ static bool flac_open (VFSFile & file, const format_info & info, const Tuple & t
     insert_vorbis_comment (flac_metadata, "DATE", tuple, Tuple::Date);
     insert_vorbis_comment (flac_metadata, "YEAR", tuple, Tuple::Year);
     insert_vorbis_comment (flac_metadata, "TRACKNUMBER", tuple, Tuple::Track);
+    insert_vorbis_comment (flac_metadata, "DISCNUMBER", tuple, Tuple::Disc);
 
     FLAC__stream_encoder_set_metadata(flac_encoder, &flac_metadata, 1);
 
