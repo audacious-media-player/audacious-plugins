@@ -1865,7 +1865,7 @@ msgstr "_Lecture"
 
 #: src/gtkui/menus.cc:201 src/qtui/menus.cc:280
 msgid "P_laylist"
-msgstr "L_iste de lecture"
+msgstr "Lis_te de lecture"
 
 #: src/gtkui/menus.cc:202 src/gtkui/menus.cc:220 src/qtui/menus.cc:281
 #: src/qtui/menus.cc:310
