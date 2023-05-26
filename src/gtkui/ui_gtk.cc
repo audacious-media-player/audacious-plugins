@@ -377,14 +377,46 @@ static gboolean ui_volume_value_changed_cb (GtkButton *, double volume)
     return true;
 }
 
-static void ui_volume_pressed_cb (GtkButton *)
+static gboolean ui_volume_button_press_cb (GtkWidget *, GdkEvent * event)
 {
-    volume_slider_is_moving = true;
+    static int old_volume = 0;
+    GdkEventButton * button_event = (GdkEventButton *) event;
+
+    /* ignore double and triple clicks */
+    if (button_event->type != GDK_BUTTON_PRESS)
+        return false;
+
+    /* handle left mouse button */
+    if (button_event->button == 1)
+    {
+        volume_slider_is_moving = true;
+        return false;
+    }
+
+    /* (un)mute with middle mouse button */
+    if (button_event->button == 2)
+    {
+        int current_volume = aud_drct_get_volume_main ();
+        if (current_volume)
+        {
+            old_volume = current_volume;
+            aud_drct_set_volume_main (0);
+        }
+        else
+            aud_drct_set_volume_main (old_volume);
+    }
+
+    return false;
 }
 
-static void ui_volume_released_cb (GtkButton *)
+static gboolean ui_volume_button_release_cb (GtkWidget *, GdkEvent * event)
 {
-    volume_slider_is_moving = false;
+    GdkEventButton * button_event = (GdkEventButton *) event;
+
+    if (button_event->button == 1)
+        volume_slider_is_moving = false;
+
+    return false;
 }
 
 static void ui_volume_slider_update (void * button)
@@ -927,8 +959,8 @@ bool GtkUI::init ()
     g_signal_connect (slider, "button-release-event", (GCallback) ui_slider_button_release_cb, nullptr);
 
     volume_change_handler_id = g_signal_connect (volume, "value-changed", (GCallback) ui_volume_value_changed_cb, nullptr);
-    g_signal_connect (volume, "pressed", (GCallback) ui_volume_pressed_cb, nullptr);
-    g_signal_connect (volume, "released", (GCallback) ui_volume_released_cb, nullptr);
+    g_signal_connect (volume, "button-press-event", (GCallback) ui_volume_button_press_cb, nullptr);
+    g_signal_connect (volume, "button-release-event", (GCallback) ui_volume_button_release_cb, nullptr);
 
     timer_add (TimerRate::Hz4, ui_volume_slider_update, volume);
 
