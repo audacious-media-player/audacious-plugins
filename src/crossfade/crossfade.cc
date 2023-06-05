@@ -21,6 +21,7 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
+#include <bits/stdc++.h>
 
 enum
 {
@@ -33,9 +34,14 @@ enum
 
 static const char * const crossfade_defaults[] = {
     "automatic", "TRUE",
-    "length", "5",
+    "length", "6",
     "manual", "TRUE",
     "manual_length", "0.2",
+    "no_fade_in", "TRUE",
+    "fade_out_override", "FALSE",
+    "fade_out_override_length", "4",
+    "use_sigmoid", "TRUE",
+    "sigmoid_steepness", "6",
     nullptr
 };
 
@@ -56,6 +62,20 @@ static const PreferencesWidget crossfade_widgets[] = {
     WidgetSpin (N_("Overlap:"),
         WidgetFloat ("crossfade", "manual_length"),
         {0.1, 3.0, 0.1, N_("seconds")},
+        WIDGET_CHILD),
+    WidgetCheck (N_("No fade in"),
+        WidgetBool ("crossfade", "no_fade_in")),
+    WidgetCheck (N_("Override Fade Out Length"),
+        WidgetBool ("crossfade", "fade_out_override")),
+    WidgetSpin (N_("Fade Out Length:"),
+        WidgetFloat ("crossfade", "fade_out_override_length"),
+        {0.1, 15, 0.1, N_("seconds")},
+        WIDGET_CHILD),
+    WidgetCheck (N_("Use S-Curve for fades"),
+        WidgetBool ("crossfade", "use_sigmoid")),
+    WidgetSpin (N_("S-Curve Steepness:"),
+        WidgetFloat ("crossfade", "sigmoid_steepness"),
+        {2.0, 16, 0.5, N_("(higher is steeper)")},
         WIDGET_CHILD),
     WidgetLabel (N_("<b>Tip</b>")),
     WidgetLabel (N_("For better crossfading, enable\n"
@@ -107,13 +127,48 @@ void Crossfade::cleanup ()
     output.clear ();
 }
 
-static void do_ramp (float * data, int length, float a, float b)
+// Implements a sigmoid or S-Curve ramp function...
+static void do_sramp (float * data, int length, int adjLength, float a, float b)
 {
-    for (int i = 0; i < length; i ++)
-    {
-        * data = (* data) * (a * (length - i) + b * i) / length;
-        data ++;
-    }
+    int direction = 1;
+    double steepness=aud_get_double("crossfade","sigmoid_steepness");
+    if (a < b) // fade out
+        direction = -1;
+
+    if (!(length>adjLength))
+        for (int i = 0; i < length; i ++)
+        {
+            * data = (* data) * 1/(1+exp((direction*steepness)*(2*i-length)/length));
+            data ++;
+        }
+    else
+        for (int i = 0; i < length; i ++)
+        {
+            if (i>adjLength)
+                * data = 0.0;
+            else
+                * data = (* data) * 1/(1+exp((direction*steepness)*(2*i-adjLength)/adjLength));
+            data ++;
+        }
+}
+
+static void do_ramp (float * data, int length, int adjLength, float a, float b)
+{
+    if (length==adjLength)
+        for (int i = 0; i < length; i ++)
+        {
+            * data = (* data) * (a * (length - i) + b * i) / length;
+            data ++;
+        }
+    else
+        for (int i = 0; i < length; i ++)
+        {
+            if (i>adjLength)
+                * data = 0.0;
+            else
+                * data = (* data) * (a * (adjLength - i) + b * i) / adjLength;
+            data ++;
+        }
 }
 
 static void mix (float * data, float * add, int length)
@@ -164,6 +219,29 @@ static int buffer_needed_for_state ()
     return current_channels * (int) (current_rate * overlap);
 }
 
+static int buffer_for_adjusted_fadeout ()
+{
+    double overlap = 0;
+
+    if (state != STATE_FLUSHED)
+    {
+        if (aud_get_bool ("crossfade", "fade_out_override"))
+        {
+            overlap = aud_get_double ("crossfade", "fade_out_override_length");
+				double length = aud_get_double("crossfade", "length");
+				if (overlap > length)
+                overlap = length;
+        }
+        else if (aud_get_bool ("crossfade", "automatic"))
+            overlap = aud_get_double ("crossfade", "length");
+    }
+
+    if (state != STATE_FINISHED && aud_get_bool ("crossfade", "manual"))
+        overlap = aud::max (overlap, aud_get_double ("crossfade", "manual_length"));
+
+    return current_channels * (int) (current_rate * overlap);
+}
+
 static void output_data_as_ready (int buffer_needed, bool exact)
 {
     int copy = buffer.len () - buffer_needed;
@@ -175,6 +253,8 @@ static void output_data_as_ready (int buffer_needed, bool exact)
 
 void Crossfade::start (int & channels, int & rate)
 {
+    AUDINFO( "Crossfade::start called." );
+
     if (state != STATE_OFF)
         reformat (channels, rate);
 
@@ -195,7 +275,14 @@ void Crossfade::start (int & channels, int & rate)
 
 static void run_fadeout ()
 {
-    do_ramp (buffer.begin (), buffer.len (), 1.0, 0.0);
+    void (*ramp) (float*, int, int, float, float) = &do_ramp;
+    if (aud_get_bool("crossfade", "use_sigmoid"))
+        ramp = &do_sramp;
+
+    if (aud_get_bool ("crossfade", "fade_out_override"))
+        ramp (buffer.begin (), buffer.len (), buffer_for_adjusted_fadeout (), 1.0, 0.0);
+    else
+        ramp (buffer.begin (), buffer.len (), buffer.len (), 1.0, 0.0);
 
     state = STATE_FADEIN;
     fadein_point = 0;
@@ -211,7 +298,11 @@ static void run_fadein (Index<float> & data)
         float a = (float) fadein_point / length;
         float b = (float) (fadein_point + copy) / length;
 
-        do_ramp (data.begin (), copy, a, b);
+        if (!aud_get_bool ("crossfade", "no_fade_in"))
+        {
+            do_ramp (data.begin (), copy, copy, a, b);
+        }
+
         mix (& buffer[fadein_point], data.begin (), copy);
         data.remove (0, copy);
 
@@ -246,6 +337,7 @@ Index<float> & Crossfade::process (Index<float> & data)
 
 bool Crossfade::flush (bool force)
 {
+    AUDINFO( "Crossfade::flush called." );
     if (state == STATE_OFF)
         return true;
 
@@ -267,6 +359,8 @@ bool Crossfade::flush (bool force)
 
 Index<float> & Crossfade::finish (Index<float> & data, bool end_of_playlist)
 {
+    AUDINFO( "Crossfade::finish called." );
+
     if (state == STATE_OFF)
         return data;
 
@@ -297,7 +391,11 @@ Index<float> & Crossfade::finish (Index<float> & data, bool end_of_playlist)
 
     if (end_of_playlist && (state == STATE_FINISHED || state == STATE_FLUSHED))
     {
-        do_ramp (buffer.begin (), buffer.len (), 1.0, 0.0);
+        void (*ramp) (float*, int, int, float, float) = &do_ramp;
+        if (aud_get_bool("crossfade", "use_sigmoid"))
+            ramp = &do_sramp;
+
+        ramp (buffer.begin (), buffer.len (), buffer.len (), 1.0, 0.0);
 
         state = STATE_OFF;
         output_data_as_ready (0, true);
