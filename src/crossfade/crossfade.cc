@@ -21,7 +21,7 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
-#include <bits/stdc++.h>
+#include <cmath>
 
 enum
 {
@@ -38,8 +38,6 @@ static const char * const crossfade_defaults[] = {
     "manual", "TRUE",
     "manual_length", "0.2",
     "no_fade_in", "TRUE",
-    "fade_out_override", "FALSE",
-    "fade_out_override_length", "4",
     "use_sigmoid", "TRUE",
     "sigmoid_steepness", "6",
     nullptr
@@ -65,12 +63,6 @@ static const PreferencesWidget crossfade_widgets[] = {
         WIDGET_CHILD),
     WidgetCheck (N_("No fade in"),
         WidgetBool ("crossfade", "no_fade_in")),
-    WidgetCheck (N_("Override Fade Out Length"),
-        WidgetBool ("crossfade", "fade_out_override")),
-    WidgetSpin (N_("Fade Out Length:"),
-        WidgetFloat ("crossfade", "fade_out_override_length"),
-        {0.1, 15, 0.1, N_("seconds")},
-        WIDGET_CHILD),
     WidgetCheck (N_("Use S-Curve for fades"),
         WidgetBool ("crossfade", "use_sigmoid")),
     WidgetSpin (N_("S-Curve Steepness:"),
@@ -225,14 +217,7 @@ static int buffer_for_adjusted_fadeout ()
 
     if (state != STATE_FLUSHED)
     {
-        if (aud_get_bool ("crossfade", "fade_out_override"))
-        {
-            overlap = aud_get_double ("crossfade", "fade_out_override_length");
-				double length = aud_get_double("crossfade", "length");
-				if (overlap > length)
-                overlap = length;
-        }
-        else if (aud_get_bool ("crossfade", "automatic"))
+        if (aud_get_bool ("crossfade", "automatic"))
             overlap = aud_get_double ("crossfade", "length");
     }
 
@@ -279,10 +264,7 @@ static void run_fadeout ()
     if (aud_get_bool("crossfade", "use_sigmoid"))
         ramp = &do_sramp;
 
-    if (aud_get_bool ("crossfade", "fade_out_override"))
-        ramp (buffer.begin (), buffer.len (), buffer_for_adjusted_fadeout (), 1.0, 0.0);
-    else
-        ramp (buffer.begin (), buffer.len (), buffer.len (), 1.0, 0.0);
+    ramp (buffer.begin (), buffer.len (), buffer.len (), 1.0, 0.0);
 
     state = STATE_FADEIN;
     fadein_point = 0;
