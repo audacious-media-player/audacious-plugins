@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#include <math.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
@@ -36,6 +37,9 @@ static const char * const crossfade_defaults[] = {
     "length", "5",
     "manual", "TRUE",
     "manual_length", "0.2",
+    "no_fade_in", "FALSE",
+    "use_sigmoid", "FALSE",
+    "sigmoid_steepness", "6",
     nullptr
 };
 
@@ -56,6 +60,14 @@ static const PreferencesWidget crossfade_widgets[] = {
     WidgetSpin (N_("Overlap:"),
         WidgetFloat ("crossfade", "manual_length"),
         {0.1, 3.0, 0.1, N_("seconds")},
+        WIDGET_CHILD),
+    WidgetCheck (N_("No fade in"),
+        WidgetBool ("crossfade", "no_fade_in")),
+    WidgetCheck (N_("Use S-curve fade"),
+        WidgetBool ("crossfade", "use_sigmoid")),
+    WidgetSpin (N_("S-curve steepness:"),
+        WidgetFloat ("crossfade", "sigmoid_steepness"),
+        {2.0, 16.0, 0.5, N_("(higher is steeper)")},
         WIDGET_CHILD),
     WidgetLabel (N_("<b>Tip</b>")),
     WidgetLabel (N_("For better crossfading, enable\n"
@@ -107,13 +119,28 @@ void Crossfade::cleanup ()
     output.clear ();
 }
 
-static void do_ramp (float * data, int length, float a, float b)
+static void do_linear_ramp (float * data, int length, float a, float b)
 {
     for (int i = 0; i < length; i ++)
+        (* data ++) *= (a * (length - i) + b * i) / length;
+}
+
+static void do_sigmoid_ramp (float * data, int length, float a, float b)
+{
+    float steepness = aud_get_double ("crossfade", "sigmoid_steepness");
+    for (int i = 0; i < length; i ++)
     {
-        * data = (* data) * (a * (length - i) + b * i) / length;
-        data ++;
+        float linear = (a * (length - i) + b * i) / length;
+        (* data ++) *= 0.5f + 0.5f * tanhf (steepness * (linear - 0.5f));
     }
+}
+
+static void do_ramp (float * data, int length, float a, float b)
+{
+    if (aud_get_bool ("crossfade", "use_sigmoid"))
+        do_sigmoid_ramp (data, length, a, b);
+    else
+        do_linear_ramp (data, length, a, b);
 }
 
 static void mix (float * data, float * add, int length)
@@ -211,7 +238,9 @@ static void run_fadein (Index<float> & data)
         float a = (float) fadein_point / length;
         float b = (float) (fadein_point + copy) / length;
 
-        do_ramp (data.begin (), copy, a, b);
+        if (! aud_get_bool ("crossfade", "no_fade_in"))
+            do_ramp (data.begin (), copy, a, b);
+
         mix (& buffer[fadein_point], data.begin (), copy);
         data.remove (0, copy);
 
