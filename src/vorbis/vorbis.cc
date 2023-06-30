@@ -153,7 +153,7 @@ static void read_comment (vorbis_comment * comment, Tuple & tuple)
         tuple.set_int (Tuple::Year, atoi (tmps));
    if ((tmps = vorbis_comment_query (comment, "DISCNUMBER", 0)))
         tuple.set_int (Tuple::Disc, atoi (tmps));
- }
+}
 
 /* try to detect when metadata has changed */
 static bool update_tuple (OggVorbis_File * vf, Tuple & tuple)
