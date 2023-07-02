@@ -188,6 +188,7 @@ bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple
 
     insert_int_tuple_to_vc(vc_block, tuple, Tuple::Year, "DATE");
     insert_int_tuple_to_vc(vc_block, tuple, Tuple::Track, "TRACKNUMBER");
+    insert_int_tuple_to_vc(vc_block, tuple, Tuple::Disc, "DISCNUMBER");
 
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::Publisher, "publisher");
     insert_str_tuple_to_vc(vc_block, tuple, Tuple::CatalogNum, "CATALOGNUMBER");
@@ -265,6 +266,8 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
 
     if (!strcmp_nocase(key, "TRACKNUMBER"))
         tuple.set_int(Tuple::Track, atoi(value));
+    else if (!strcmp_nocase(key, "DISCNUMBER"))
+        tuple.set_int(Tuple::Disc, atoi(value));
     else if (!strcmp_nocase(key, "DATE"))
         tuple.set_int(Tuple::Year, atoi(value));
     else if (!strcmp_nocase(key, "REPLAYGAIN_TRACK_GAIN"))

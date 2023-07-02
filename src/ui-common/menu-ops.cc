@@ -39,6 +39,7 @@ void sort_path () { ACTIVE.sort_entries (Playlist::Path); }
 void sort_filename () { ACTIVE.sort_entries (Playlist::Filename); }
 void sort_custom_title () { ACTIVE.sort_entries (Playlist::FormattedTitle); }
 void sort_comment () { ACTIVE.sort_entries (Playlist::Comment); }
+void sort_disc () { ACTIVE.sort_entries (Playlist::Disc); }
 void sort_reverse () { ACTIVE.reverse_order (); }
 void sort_random () { ACTIVE.randomize_order (); }
 
@@ -54,6 +55,7 @@ void sort_sel_path () { ACTIVE.sort_selected (Playlist::Path); }
 void sort_sel_filename () { ACTIVE.sort_selected (Playlist::Filename); }
 void sort_sel_custom_title () { ACTIVE.sort_selected (Playlist::FormattedTitle); }
 void sort_sel_comment () { ACTIVE.sort_selected (Playlist::Comment); }
+void sort_sel_disc () { ACTIVE.sort_selected (Playlist::Disc); }
 void sort_sel_reverse () { ACTIVE.reverse_selected (); }
 void sort_sel_random () { ACTIVE.randomize_selected (); }
 

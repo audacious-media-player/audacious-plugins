@@ -49,6 +49,7 @@ public:
         CustomTitle,
         Bitrate,
         Comment,
+        Disc,
         n_cols
     };
 

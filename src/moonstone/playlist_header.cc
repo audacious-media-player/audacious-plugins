@@ -36,9 +36,9 @@
 namespace Moonstone {
 
 static const char * const s_col_keys[] = {
-    "playing",      "number", "title",   "artist", "year",   "album",
-    "album-artist", "track",  "genre",   "queued", "length", "path",
-    "filename",     "custom", "bitrate", "comment"};
+    "playing",      "number", "title",   "artist",  "year",   "album",
+    "album-artist", "track",  "genre",   "queued",  "length", "path",
+    "filename",     "custom", "bitrate", "comment", "disc"};
 
 static const int s_default_widths[] = {
     25,  // now playing
@@ -56,7 +56,8 @@ static const int s_default_widths[] = {
     275, // filename
     275, // custom title
     75,  // bitrate
-    275  // comment
+    275, // comment
+    75   // disc
 };
 
 static const Playlist::SortType s_sort_types[] = {
@@ -75,7 +76,8 @@ static const Playlist::SortType s_sort_types[] = {
     Playlist::Filename,       // file name
     Playlist::FormattedTitle, // custom title
     Playlist::n_sort_types,   // bitrate
-    Playlist::Comment         // comment
+    Playlist::Comment,        // comment
+    Playlist::Disc            // disc
 };
 
 static_assert(aud::n_elems(s_col_keys) == PlaylistModel::n_cols,

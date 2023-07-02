@@ -38,6 +38,7 @@ void sort_path ();
 void sort_filename ();
 void sort_custom_title ();
 void sort_comment ();
+void sort_disc ();
 void sort_reverse ();
 void sort_random ();
 
@@ -54,6 +55,7 @@ void sort_sel_path ();
 void sort_sel_filename ();
 void sort_sel_custom_title ();
 void sort_sel_comment ();
+void sort_sel_disc ();
 void sort_sel_reverse ();
 void sort_sel_random ();
 
