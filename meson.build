@@ -13,6 +13,7 @@ copyright = 'Copyright (C) 2001-2023 Audacious developers and others'
 
 have_darwin = host_machine.system() == 'darwin'
 have_windows = host_machine.system() == 'windows'
+have_cygwin = host_machine.system() == 'cygwin'
 
 
 cc = meson.get_compiler('c')
@@ -120,7 +121,7 @@ endif
 
 
 # XXX - investigate to see if we can do better
-if have_windows
+if have_windows or have_cygwin
   conf.set_quoted('PLUGIN_SUFFIX', '.dll')
 elif have_darwin
   conf.set_quoted('PLUGIN_SUFFIX', '.dylib')
