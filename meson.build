@@ -60,6 +60,7 @@ zlib_dep = dependency('zlib', required: true)
 math_dep = cxx.find_library('m', required: false)
 samplerate_dep = dependency('samplerate', required: false)
 xml_dep = dependency('libxml-2.0', required: false)
+x11_dep = dependency('x11', required: false)
 
 
 if get_option('qt')
