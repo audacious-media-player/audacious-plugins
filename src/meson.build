@@ -281,7 +281,7 @@ if get_option('sndio')
   subdir('sndio')
 endif
 
-if have_windows
+if have_windows or have_cygwin
   subdir('waveout')
 endif
 
