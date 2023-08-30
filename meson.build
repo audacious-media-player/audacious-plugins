@@ -266,7 +266,7 @@ if meson.version().version_compare('>= 0.53')
     'PulseAudio': get_variable('have_pulse', false),
     'Simple DirectMedia Layer': get_variable('have_sdlout', false),
     'Sndio': get_variable('have_sndio', false),
-    'Win32 waveOut': have_windows,
+    'Win32 waveOut': have_windows or have_cygwin,
     'FileWriter': get_option('filewriter'),
     '  -> MP3 encoding': conf.has('FILEWRITER_MP3'),
     '  -> Vorbis encoding': conf.has('FILEWRITER_VORBIS'),
