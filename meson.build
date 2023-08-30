@@ -61,6 +61,9 @@ math_dep = cxx.find_library('m', required: false)
 samplerate_dep = dependency('samplerate', required: false)
 xml_dep = dependency('libxml-2.0', required: false)
 
+xrender_dep = dependency('xrender', required: false)
+xcomposite_dep = dependency('xcomposite', required: false)
+
 
 if get_option('qt')
   if get_option('qt6')

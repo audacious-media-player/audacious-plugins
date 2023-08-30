@@ -1,5 +1,7 @@
 x11_dep = dependency('x11', required: false, modules: ['xrender', 'xcomposite'])
-have_aosd = x11_dep.found()
+have_aosd = x11_dep.found() and \
+            xrender_dep.found() and \
+            xcomposite_dep.found()
 
 
 aosd_sources = [
@@ -17,7 +19,7 @@ aosd_sources = [
 if have_aosd
   shared_module('aosd',
     aosd_sources,
-    dependencies: [audacious_dep, audgui_dep, math_dep, gtk_dep, glib_dep, x11_dep],
+    dependencies: [audacious_dep, audgui_dep, math_dep, gtk_dep, glib_dep, x11_dep, xrender_dep, xcomposite_dep],
     name_prefix: '',
     install: true,
     install_dir: general_plugin_dir
