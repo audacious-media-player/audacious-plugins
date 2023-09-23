@@ -23,6 +23,7 @@
 class Detection {
 public:
     [[nodiscard]] virtual int read_ahead() const = 0;
+    virtual void init() = 0;
     virtual void start(int channels, int rate) = 0;
     virtual void update_config() = 0;
     virtual void detect(const Index<float> & frame_in) = 0;

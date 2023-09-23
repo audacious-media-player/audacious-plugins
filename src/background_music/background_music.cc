@@ -69,6 +69,7 @@ public:
     bool after_init() override
     {
         aud_config_set_defaults(CONFIG_SECTION_BACKGROUND_MUSIC, background_music_defaults);
+        detection->init();
         return true;
     }
 };

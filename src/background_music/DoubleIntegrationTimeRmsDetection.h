@@ -21,72 +21,71 @@
  * limitations under the License.
  */
 
-#include <cmath>
 #include "Detection.h"
 #include "Integrator.h"
+#include "Loudness.h"
 #include "basic_config.h"
 #include "utils.h"
+#include <cmath>
 
 class DoubleIntegrationTimeRmsDetection : public Detection
 {
-    static constexpr float SHORT_INTEGRATION = 0.2;
-    static constexpr float LONG_INTEGRATION = 3.2;
-    static constexpr double FUDGE_FACTOR = 2.5;
+    static constexpr float SHORT_INTEGRATION = 0.8;
+    static constexpr float LONG_INTEGRATION = 6.3;
+    static constexpr double FUDGE_FACTOR = 3;
+    static constexpr double BALANCE = 0.3;
 
-    Integrator<double> short_integration;
+    Integrator<double> release_integration;
     Integrator<double> long_integration;
-    double long_integrated = 0, short_integrated = 0;
-    double center = 0.1;
+    PerceptiveRMS perceivedLoudness;
+    double long_integrated = 0, release_integrated = 0;
+    double slow_weight = 0, perceived_weight = 0;
+    double target_level = 0.1;
     double maximum_amplification = 1;
+    double minimum_detection = 1e-6;
     float amplify = 0;
     int read_ahead_ = 0;
 
 public:
     [[nodiscard]] int read_ahead() const override { return read_ahead_; }
-    /**
-     * Determines how fast the step response for the square root of the
-     * integrator reaches 1 - 1/e, the usual characteristic "RC" value for an
-     * integrator.
-     * @param integrator The integrator
-     * @param maximum_samples After how many samples to bail out.
-     * @return The sample count needed to reach teh desired value.
-     */
-    static int get_root_integrate_square_rc_time_samples(
-        const Integrator<double> & integrator, int maximum_samples)
+
+    DoubleIntegrationTimeRmsDetection() : perceivedLoudness(20) {}
+
+    void init() override
     {
-        double integrated = 0;
-        double rc_value = 1.0 - 1.0 / M_E;
-        double sqr_value = rc_value * rc_value;
-        for (int i = 0; i < maximum_samples; i++)
-        {
-            integrated = integrator.get_integrated(integrated, 1);
-            if (integrated >= sqr_value)
-            {
-                return i;
-            }
-        }
-
-        return maximum_samples;
+        update_config();
+        long_integrated = target_level * target_level;
+        release_integrated = long_integrated;
+        minimum_detection = target_level / maximum_amplification;
     }
-
-    constexpr DoubleIntegrationTimeRmsDetection() = default;
 
     void start(int channels, int rate) override
     {
-        center = decibel_level_to_value(conf_target_level.get_value());
-        long_integrated = center * center;
-        short_integrated = long_integrated;
+        update_config();
         // Configure the integrators
-        short_integration = {SHORT_INTEGRATION, rate};
+        release_integration = {SHORT_INTEGRATION, rate};
         long_integration = {LONG_INTEGRATION, rate};
-        // Determine how much we must read ahead for the short integration
-        // period to track signals quickly enough.
-        read_ahead_ = get_root_integrate_square_rc_time_samples(
-            short_integration, static_cast<int>(SHORT_INTEGRATION * 3.0 * static_cast<float >(rate)));
+        perceivedLoudness.set_rate_and_value(rate, target_level);
+        read_ahead_ = perceivedLoudness.latency();
+        minimum_detection = target_level / maximum_amplification;
+        double balance = BALANCE;
+        if (balance < 0)
+        {
+            perceived_weight = 1.0;
+            slow_weight = std::clamp(1.0 + balance, 0.0, 1.0);
+            slow_weight *= slow_weight;
+        }
+        else
+        {
+            slow_weight = 1.0;
+            perceived_weight = std::clamp(1.0 - balance, 0.0, 1.0);
+            perceived_weight *= perceived_weight;
+        }
     }
 
-    void update_config() override {
-        center = decibel_level_to_value(conf_target_level.get_value());
+    void update_config() override
+    {
+        target_level = decibel_level_to_value(conf_target_level.get_value());
         maximum_amplification =
             decibel_level_to_value(conf_maximum_amplification.get_value());
     }
@@ -109,11 +108,21 @@ public:
             square_sum += (sample * sample);
         }
         long_integration.integrate(long_integrated, square_sum);
-        short_integration.integrate(short_integrated, square_sum);
-        double detection = FUDGE_FACTOR *
-            (sqrt(long_integrated) + 0.5 * sqrt(short_integrated)) / 1.5;
-        double ratio = center / aud::max(detection, 1e-6);
-        amplify = static_cast<float>(aud::clamp(ratio, 0.0, maximum_amplification));
+        double perceived = perceivedLoudness.get_mean_squared(square_sum);
+        double weighted = std::max(slow_weight * long_integrated,
+                                   perceived_weight * perceived);
+        double rms = sqrt(weighted) * FUDGE_FACTOR;
+
+        if (rms > release_integrated)
+        {
+            release_integrated = rms;
+        }
+        else
+        {
+            release_integration.integrate(release_integrated, rms);
+        }
+
+        amplify = target_level / std::max(minimum_detection, release_integrated);
     }
 
     void apply_detect(Index<float> & frame_out) override

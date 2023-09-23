@@ -179,4 +179,44 @@ public:
     }
 };
 
+template<typename S>
+class ScaledIntegrator
+{
+    S scale_ = 1.0;
+    S integrated_ = 0;
+    Integrator<S> integrator_;
+
+public:
+    explicit ScaledIntegrator(const Integrator<S> & s) : integrator_(s) {}
+    ScaledIntegrator() = default;
+
+    inline void integrate(S input)
+    {
+        integrator_.integrate(integrated_, input);
+    }
+
+    ScaledIntegrator<S> & operator=(const Integrator<S> & source)
+    {
+        integrator_ = source;
+        return *this;
+    }
+
+    void set_value(S new_value) { integrated_ = new_value; }
+
+    void set_scale(S new_scale)
+    {
+        if (new_scale >= 0 && new_scale <= 1e6)
+        {
+            scale_ = new_scale;
+        }
+    }
+
+    [[nodiscard]] S integrated() const { return scale_ * integrated_; }
+    [[nodiscard]] S scale() const { return scale_; }
+    [[nodiscard]] inline const Integrator<S> & integrator() const
+    {
+        return integrator_;
+    }
+};
+
 #endif // AUDACIOUS_PLUGINS_INTEGRATOR_H
