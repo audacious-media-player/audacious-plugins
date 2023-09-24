@@ -63,8 +63,8 @@ public:
     {
         update_config();
         // Configure the integrators
-        release_integration = {SHORT_INTEGRATION / 2, rate};
-        long_integration = {LONG_INTEGRATION / 2, rate};
+        release_integration = {SHORT_INTEGRATION, rate};
+        long_integration = {LONG_INTEGRATION / 2.0, rate}; // Happens before sqrt
         perceivedLoudness.set_rate_and_value(rate, target_level);
         read_ahead_ = perceivedLoudness.latency();
         minimum_detection = target_level / maximum_amplification;
