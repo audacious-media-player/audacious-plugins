@@ -921,7 +921,12 @@ bool GtkUI::init ()
 
     volume = gtk_volume_button_new ();
     GtkIconSize icon_size = gtk_tool_shell_get_icon_size ((GtkToolShell *) toolbar);
+#ifdef USE_GTK3
+    g_object_set ((GObject *) volume, "size", icon_size,
+     "use-symbolic", aud_get_bool ("gtkui", "symbolic_icons"), nullptr);
+#else
     g_object_set ((GObject *) volume, "size", icon_size, nullptr);
+#endif
     gtk_button_set_relief ((GtkButton *) volume, GTK_RELIEF_NONE);
     int delta = aud_get_int ("volume_delta");
     gtk_scale_button_set_adjustment ((GtkScaleButton *) volume,
@@ -1208,4 +1213,9 @@ void update_toolbar_icons ()
     set_button_icon ((GtkToolButton *) button_record, "media-record");
     set_button_icon ((GtkToolButton *) button_repeat, "media-playlist-repeat");
     set_button_icon ((GtkToolButton *) button_shuffle, "media-playlist-shuffle");
+
+#ifdef USE_GTK3
+    bool use_symbolic = aud_get_bool ("gtkui", "symbolic_icons");
+    g_object_set ((GObject *) volume, "use-symbolic", use_symbolic, nullptr);
+#endif
 }
