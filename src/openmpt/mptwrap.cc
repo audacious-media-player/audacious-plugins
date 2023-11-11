@@ -96,7 +96,7 @@ void MPTWrap::set_interpolator(int interpolator_value)
 
 bool MPTWrap::is_valid_stereo_separation(int separation)
 {
-    return separation >= 0 && separation <= 100;
+    return separation >= 0 && separation <= 200;
 }
 
 void MPTWrap::set_stereo_separation(int separation)
