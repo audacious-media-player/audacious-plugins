@@ -148,9 +148,9 @@ static void values_changed()
 const PreferencesWidget MPTPlugin::widgets[] =
 {
     WidgetSpin(
-            N_("Stereo separation (0=mono, 100=default, 200=full):"),
+            N_("Stereo separation:"),
             WidgetInt(CFG_SECTION, SETTING_STEREO_SEPARATION, values_changed),
-            { 0.0, 200.0, 1.0, "" }
+            { 0.0, 200.0, 1.0, N_("% (0=mono, 100=default, 200=full)") }
     ),
 
     WidgetCombo(
