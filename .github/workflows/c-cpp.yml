@@ -17,10 +17,10 @@ jobs:
 
     steps:
     - name: Checkout audacious-plugins
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Checkout audacious
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: audacious-media-player/audacious
         path: audacious
