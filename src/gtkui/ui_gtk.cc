@@ -404,6 +404,8 @@ static gboolean ui_volume_button_press_cb (GtkWidget *, GdkEvent * event)
         }
         else
             aud_drct_set_volume_main (old_volume);
+
+        return true;
     }
 
     return false;
