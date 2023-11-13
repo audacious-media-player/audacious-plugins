@@ -23,7 +23,7 @@
 #include <algorithm>
 #include <cmath>
 #include "utils.h"
-#include "CircularBuffer.h"
+#include "Delay.h"
 #include "Integrator.h"
 
 /**
@@ -146,7 +146,7 @@ class PerceptiveRMS
         [[nodiscard]] [[maybe_unused]] size_t hold_samples() const { return hold_samples_; }
     };
 
-    CircularBuffer<uint64_t> buffer_;
+    Delay<uint64_t> buffer_;
     WindowedRMS * rms_;
     size_t steps_;
     double input_scale_ = std::numeric_limits<uint32_t>::max();
@@ -192,7 +192,7 @@ public:
     void set_rate_and_value(uint64_t sample_rate, double squared_initial_value)
     {
         init_detection(sample_rate);
-        buffer_.set_size(latency_, 0);
+        buffer_.set_delay(latency_, 0);
 
         for (int i = 0; i <= latency_; i++)
         {
@@ -207,7 +207,7 @@ public:
         uint64_t internal_value =
             squared_value_to_internal_value(squared_input);
 
-        uint64_t oldest = buffer_.get_and_set(internal_value);
+        uint64_t oldest = buffer_.get_oldest_and_set(internal_value);
 
         double max = rms_[0].add_and_take_and_get(internal_value, oldest);
 
@@ -219,7 +219,6 @@ public:
                          internal_value,
                          buffer_.peek_back(rms.window_size())));
         }
-
         return max;
     }
 
