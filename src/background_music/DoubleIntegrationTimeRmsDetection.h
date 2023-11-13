@@ -64,7 +64,8 @@ public:
         update_config();
         // Configure the integrators
         release_integration = {SHORT_INTEGRATION, rate};
-        long_integration = {LONG_INTEGRATION / 2.0, rate}; // Happens before sqrt
+        long_integration = {LONG_INTEGRATION / 2.0,
+                            rate}; // Happens before sqrt
         perceivedLoudness.set_rate_and_value(rate, target_level);
         read_ahead_ = perceivedLoudness.latency();
         minimum_detection = target_level / maximum_amplification;
@@ -85,9 +86,13 @@ public:
 
     void update_config() override
     {
-        target_level = decibel_level_to_value(conf_target_level.get_value());
-        maximum_amplification =
-            decibel_level_to_value(conf_maximum_amplification.get_value());
+        static constexpr auto SECTION = CONFIG_SECTION_BACKGROUND_MUSIC;
+        target_level = decibel_level_to_value(
+            std::clamp(aud_get_double(SECTION, CONF_TARGET_LEVEL_VARIABLE),
+                       CONF_TARGET_LEVEL_MIN, CONF_TARGET_LEVEL_MAX));
+        maximum_amplification = decibel_level_to_value(
+            std::clamp(aud_get_double(SECTION, CONF_MAX_AMPLIFICATION_VARIABLE),
+                       CONF_MAX_AMPLIFICATION_MIN, CONF_MAX_AMPLIFICATION_MAX));
     }
 
     void detect(const Index<float> & frame_in) override
@@ -122,7 +127,8 @@ public:
             release_integration.integrate(release_integrated, rms);
         }
 
-        amplify = target_level / std::max(minimum_detection, release_integrated);
+        amplify =
+            target_level / std::max(minimum_detection, release_integrated);
     }
 
     void apply_detect(Index<float> & frame_out) override

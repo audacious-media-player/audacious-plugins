@@ -22,26 +22,25 @@
  */
 
 #include <libaudcore/i18n.h>
-#include "ConfigValue.h"
 
 static constexpr const char * const CONFIG_SECTION_BACKGROUND_MUSIC =
     "background_music";
 
-static constexpr auto conf_target_level =
-    ConfigDouble(CONFIG_SECTION_BACKGROUND_MUSIC)
-        .withName(N_("Target level (dB):"))
-        .withVariable("target_level")
-        .withMinimum(-30.0)
-        .withDefault(-12, "-12.0")
-        .withMaximum(-6);
+static constexpr const char * CONF_TARGET_LEVEL_LABEL =
+    N_("Target level (dB):");
+static constexpr const char * CONF_TARGET_LEVEL_VARIABLE = "target_level";
+static constexpr const char * CONF_TARGET_LEVEL_DEFAULT_STRING = "-12.0";
+static constexpr const double CONF_TARGET_LEVEL_DEFAULT = -12.0;
+static constexpr const double CONF_TARGET_LEVEL_MIN = -30.0;
+static constexpr const double CONF_TARGET_LEVEL_MAX = -6.0;
 
-static constexpr auto conf_maximum_amplification =
-    ConfigDouble(CONFIG_SECTION_BACKGROUND_MUSIC)
-        .withName(N_("Maximum amplification (dB):"))
-        .withVariable("maximum_amplification")
-        .withMinimum(0.0)
-        .withDefault(0.0, "10.0")
-        .withMaximum(40.0);
-
+static constexpr const char * CONF_MAX_AMPLIFICATION_LABEL =
+    N_("Maximum amplification (dB):");
+static constexpr const char * CONF_MAX_AMPLIFICATION_VARIABLE =
+    "maximum_amplification";
+static constexpr const char * CONF_MAX_AMPLIFICATION_DEFAULT_STRING = "10.0";
+static constexpr const double CONF_MAX_AMPLIFICATION_DEFAULT = 10.0;
+static constexpr const double CONF_MAX_AMPLIFICATION_MIN = 0.0;
+static constexpr const double CONF_MAX_AMPLIFICATION_MAX = 40.0;
 
 #endif // AUDACIOUS_PLUGINS_BASIC_CONFIG_H
