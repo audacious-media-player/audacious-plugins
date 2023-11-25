@@ -10,7 +10,7 @@ static gboolean prepare_data () {
     received_data[received_data_size] = '\0';
     AUDDBG("Data received from last.fm:\n%s\n%%%%End of data%%%%\n", received_data);
 
-    doc = xmlParseMemory(received_data, received_data_size+1);
+    doc = xmlReadMemory(received_data, received_data_size+1, nullptr, nullptr, 0);
     received_data_size = 0;
     if (doc == nullptr) {
         AUDDBG("Document not parsed successfully.\n");
