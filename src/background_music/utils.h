@@ -1,5 +1,5 @@
-#ifndef AUDACIOUS_PLUGINS_UTILS_H
-#define AUDACIOUS_PLUGINS_UTILS_H
+#ifndef AUDACIOUS_PLUGINS_BGM_UTILS_H
+#define AUDACIOUS_PLUGINS_BGM_UTILS_H
 /*
  * Background music (equal loudness) Plugin for Audacious
  * Copyright 2023 Michel Fleur
@@ -69,4 +69,4 @@ static T * allocate_if_valid(size_t elements, size_t limit)
                                 "elements larger than supplied limit");
 }
 
-#endif // AUDACIOUS_PLUGINS_UTILS_H
+#endif // AUDACIOUS_PLUGINS_BGM_UTILS_H

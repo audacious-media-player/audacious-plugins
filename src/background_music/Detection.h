@@ -1,5 +1,5 @@
-#ifndef AUDACIOUS_PLUGINS_DETECTION_H
-#define AUDACIOUS_PLUGINS_DETECTION_H
+#ifndef AUDACIOUS_PLUGINS_BGM_DETECTION_H
+#define AUDACIOUS_PLUGINS_BGM_DETECTION_H
 /*
  * Detection framework.
  * Copyright 2023 Michel Fleur
@@ -31,4 +31,4 @@ public:
     virtual ~Detection() = default;
 };
 
-#endif // AUDACIOUS_PLUGINS_DETECTION_H
+#endif // AUDACIOUS_PLUGINS_BGM_DETECTION_H

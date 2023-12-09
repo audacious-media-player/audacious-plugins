@@ -1,5 +1,5 @@
-#ifndef AUDACIOUS_PLUGINS_BASIC_CONFIG_H
-#define AUDACIOUS_PLUGINS_BASIC_CONFIG_H
+#ifndef AUDACIOUS_PLUGINS_BGM_BASIC_CONFIG_H
+#define AUDACIOUS_PLUGINS_BGM_BASIC_CONFIG_H
 /*
  * audacious-plugins/basic_config.h
  *
@@ -43,4 +43,4 @@ static constexpr const double CONF_MAX_AMPLIFICATION_DEFAULT = 10.0;
 static constexpr const double CONF_MAX_AMPLIFICATION_MIN = 0.0;
 static constexpr const double CONF_MAX_AMPLIFICATION_MAX = 40.0;
 
-#endif // AUDACIOUS_PLUGINS_BASIC_CONFIG_H
+#endif // AUDACIOUS_PLUGINS_BGM_BASIC_CONFIG_H

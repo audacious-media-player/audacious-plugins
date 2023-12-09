@@ -1,5 +1,5 @@
-#ifndef AUDACIOUS_PLUGINS_LOUDNESS_H
-#define AUDACIOUS_PLUGINS_LOUDNESS_H
+#ifndef AUDACIOUS_PLUGINS_BGM_LOUDNESS_H
+#define AUDACIOUS_PLUGINS_BGM_LOUDNESS_H
 /*
  * Perceived loudness tools.
  * Copyright 2023 Michel Fleur
@@ -229,4 +229,4 @@ public:
     ~PerceptiveRMS() { delete[] rms_; }
 };
 
-#endif // AUDACIOUS_PLUGINS_LOUDNESS_H
+#endif // AUDACIOUS_PLUGINS_BGM_LOUDNESS_H
