@@ -30,7 +30,6 @@ static constexpr const char * CONF_TARGET_LEVEL_LABEL =
     N_("Target level (dB):");
 static constexpr const char * CONF_TARGET_LEVEL_VARIABLE = "target_level";
 static constexpr const char * CONF_TARGET_LEVEL_DEFAULT_STRING = "-12.0";
-static constexpr const double CONF_TARGET_LEVEL_DEFAULT = -12.0;
 static constexpr const double CONF_TARGET_LEVEL_MIN = -30.0;
 static constexpr const double CONF_TARGET_LEVEL_MAX = -6.0;
 
@@ -39,7 +38,6 @@ static constexpr const char * CONF_MAX_AMPLIFICATION_LABEL =
 static constexpr const char * CONF_MAX_AMPLIFICATION_VARIABLE =
     "maximum_amplification";
 static constexpr const char * CONF_MAX_AMPLIFICATION_DEFAULT_STRING = "10.0";
-static constexpr const double CONF_MAX_AMPLIFICATION_DEFAULT = 10.0;
 static constexpr const double CONF_MAX_AMPLIFICATION_MIN = 0.0;
 static constexpr const double CONF_MAX_AMPLIFICATION_MAX = 40.0;
 
