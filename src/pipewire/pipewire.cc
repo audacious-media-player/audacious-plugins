@@ -30,6 +30,10 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
+#if !PW_CHECK_VERSION(0, 3, 33)
+  #define PW_KEY_NODE_RATE "node.rate"
+#endif
+
 class PipeWireOutput : public OutputPlugin
 {
 public:
@@ -401,6 +405,7 @@ struct pw_stream * PipeWireOutput::create_stream()
                           PW_KEY_APP_NAME, _("Audacious"),
                           nullptr);
 
+    pw_properties_setf(props, PW_KEY_NODE_RATE, "1/%u", m_rate);
     pw_properties_setf(props, PW_KEY_NODE_LATENCY, "%u/%u", m_frames, m_rate);
 
     return pw_stream_new(m_core, _("Playback"), props);
