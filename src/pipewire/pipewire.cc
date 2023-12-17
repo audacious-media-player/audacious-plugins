@@ -140,22 +140,19 @@ void PipeWireOutput::set_volume(StereoVolume v)
     if (!m_loop)
         return;
 
-    float values[m_channels];
-
-    if (m_channels == 2)
-    {
-        values[0] = v.left / 100.0f;
-        values[1] = v.right / 100.0f;
-    }
-    else
-    {
-        for (unsigned int i = 0; i < m_channels; i++)
-            values[i] = aud::max(v.left, v.right) / 100.0f;
-    }
+    // Re-use libaudcore's decibel-to-linear translation by passing
+    // full-scale PCM values (1.0) to audio_amplify(). This also
+    // translates the StereoVolume to an arbitrary number of channels.
+    float * values = new float[m_channels];
+    for (unsigned int i = 0; i < m_channels; i++)
+        values[i] = 1.0f;
+    audio_amplify(values, m_channels, 1, v);
 
     pw_thread_loop_lock(m_loop);
     pw_stream_set_control(m_stream, SPA_PROP_channelVolumes, m_channels, values, nullptr);
     pw_thread_loop_unlock(m_loop);
+
+    delete[] values;
 }
 
 void PipeWireOutput::pause(bool pause)
