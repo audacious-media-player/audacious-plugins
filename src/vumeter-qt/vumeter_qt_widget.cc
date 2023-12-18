@@ -88,7 +88,7 @@ void VUMeterQtWidget::render_multi_pcm (const float * pcm, int channels)
 {
     nchannels = aud::clamp(channels, 0, max_channels);
 
-    float peaks[nchannels];
+    float * peaks = new float[nchannels];
     for (int channel = 0; channel < nchannels; channel++)
     {
         peaks[channel] = fabsf(pcm[channel]);
@@ -120,6 +120,8 @@ void VUMeterQtWidget::render_multi_pcm (const float * pcm, int channels)
             last_peak_times[i].start();
         }
     }
+
+    delete[] peaks;
 }
 
 void VUMeterQtWidget::redraw_timer_expired()
