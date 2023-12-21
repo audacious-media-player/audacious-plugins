@@ -54,7 +54,7 @@ public:
 
     int styleHint(QStyle::StyleHint hint, const QStyleOption * option = nullptr,
                   const QWidget * widget = nullptr,
-                  QStyleHintReturn * returnData = nullptr) const
+                  QStyleHintReturn * returnData = nullptr) const override
     {
         int styleHint =
             QProxyStyle::styleHint(hint, option, widget, returnData);
