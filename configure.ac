@@ -778,6 +778,7 @@ echo "  Tone Generator:                         yes"
 echo
 echo "  Effects"
 echo "  -------"
+echo "  Background Music                        yes"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
 echo "  Bitcrusher:                             yes"
 echo "  Channel Mixer:                          yes"
