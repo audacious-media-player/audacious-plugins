@@ -449,9 +449,7 @@ static void update_lyrics_window (const char * title, const char * artist, const
     cursor.insertHtml (QString ("<big><b>") + QString (title) + QString ("</b></big>"));
 
     if (artist)
-    {
         cursor.insertHtml (QString ("<br><i>") + QString (artist) + QString ("</i>"));
-    }
 
     cursor.insertHtml ("<br><br>");
     cursor.insertText (lyrics);
@@ -466,6 +464,7 @@ static void lyricwiki_playback_began ()
     Tuple tuple = aud_drct_get_tuple ();
     g_state.title = tuple.get_str (Tuple::Title);
     g_state.artist = tuple.get_str (Tuple::Artist);
+    g_state.lyrics = String ();
 
     if (aud_get_bool ("lyricwiki", "split-title-on-chars"))
     {
@@ -527,8 +526,8 @@ static void lyricwiki_playback_began ()
         }
     }
 
-    // No lyrics source - set default state
-    update_lyrics_window_notfound (g_state);
+    if (! g_state.lyrics)
+        update_lyrics_window_notfound (g_state);
 }
 
 static void lw_cleanup (QObject * object = nullptr)
@@ -536,6 +535,7 @@ static void lw_cleanup (QObject * object = nullptr)
     g_state.filename = String ();
     g_state.title = String ();
     g_state.artist = String ();
+    g_state.lyrics = String ();
 
     hook_dissociate ("tuple change", (HookFunction) lyricwiki_playback_began);
     hook_dissociate ("playback ready", (HookFunction) lyricwiki_playback_began);
