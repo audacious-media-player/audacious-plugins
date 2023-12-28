@@ -17,13 +17,13 @@
  * the use of this software.
  */
 
-#include <libaudcore/i18n.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
-#include <libaudcore/plugin.h>
-#include <libaudcore/runtime.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
+#include <libaudcore/runtime.h>
 
 #include <libaudqt/menu.h>
 
@@ -32,7 +32,8 @@
 #include <QSystemTrayIcon>
 #include <QWheelEvent>
 
-class StatusIcon : public GeneralPlugin {
+class StatusIcon : public GeneralPlugin
+{
 public:
     static const char about[];
     static const char * const defaults[];
@@ -53,6 +54,8 @@ public:
     bool init ();
     void cleanup ();
 
+private:
+    static void update_tooltip (void * data, void * user_data);
     static void window_closed (void * data, void * user_data);
     static void activate (QSystemTrayIcon::ActivationReason);
     static void open_files ();
@@ -161,7 +164,10 @@ bool SystemTrayIcon::event (QEvent * e)
     {
     case QEvent::ToolTip:
         if (! aud_get_bool ("statusicon", "disable_popup"))
+        {
+            setToolTip (QString ()); /* prevent double tooltip */
             audqt::infopopup_show_current ();
+        }
         return true;
 
     case QEvent::Wheel:
@@ -188,6 +194,11 @@ bool StatusIcon::init ()
     tray->setContextMenu (menu);
     tray->show ();
 
+    update_tooltip (nullptr, nullptr);
+
+    hook_associate ("title change", update_tooltip, nullptr);
+    hook_associate ("playback ready", update_tooltip, nullptr);
+    hook_associate ("playback stop", update_tooltip, nullptr);
     hook_associate ("window close", window_closed, nullptr);
 
     return true;
@@ -195,6 +206,9 @@ bool StatusIcon::init ()
 
 void StatusIcon::cleanup ()
 {
+    hook_dissociate ("title change", update_tooltip);
+    hook_dissociate ("playback ready", update_tooltip);
+    hook_dissociate ("playback stop", update_tooltip);
     hook_dissociate ("window close", window_closed);
 
     /* Prevent accidentally hiding the interface by disabling
@@ -209,6 +223,12 @@ void StatusIcon::cleanup ()
     menu = nullptr;
 
     audqt::cleanup ();
+}
+
+void StatusIcon::update_tooltip (void * data, void * user_data)
+{
+    String title = aud_drct_get_title ();
+    tray->setToolTip (QString (title));
 }
 
 void StatusIcon::window_closed (void * data, void * user_data)
