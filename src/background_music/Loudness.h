@@ -35,20 +35,20 @@ public:
      */
     struct Metrics
     {
-        static constexpr double perception_center_seconds = 0.400;
-        static constexpr double perception_peak_seconds = 0.0003;
-        static constexpr double perception_weight_power = 0.25;
+        static constexpr float perception_center_seconds = 0.400;
+        static constexpr float perception_peak_seconds = 0.0003;
+        static constexpr float perception_weight_power = 0.25;
 
-        static constexpr double get_relative_seconds(double seconds)
+        static constexpr float get_relative_seconds(const float seconds)
         {
             return std::clamp(seconds, perception_peak_seconds,
                               perception_center_seconds) /
                    perception_center_seconds;
         }
 
-        static constexpr double get_weight(double seconds)
+        static constexpr float get_weight(const float seconds)
         {
-            return pow(get_relative_seconds(seconds), perception_weight_power);
+            return powf(get_relative_seconds(seconds), perception_weight_power);
         }
     };
     /**
@@ -64,24 +64,24 @@ public:
         /**
          * This returns seconds for step "step" of "of" steps.
          */
-        static double get_seconds(size_t step, size_t of)
+        static float get_seconds(const int step, const int of)
         {
-            static constexpr double peak_perception_ratio =
+            static constexpr float peak_perception_ratio =
                 Metrics::perception_peak_seconds /
                 Metrics::perception_center_seconds;
-            double log_ratio =
-                of > 0 ? static_cast<double>(std::clamp(step, size_t(0), of)) /
-                             static_cast<double>(of)
-                       : 1;
+            const float log_ratio =
+                of > 0 ? static_cast<float>(std::clamp(step, 0, of)) /
+                             static_cast<float>(of)
+                       : 1.0f;
             return Metrics::perception_center_seconds *
-                   pow(peak_perception_ratio, log_ratio);
+                   powf(peak_perception_ratio, log_ratio);
         }
 
         /**
          * This returns seconds and the weight for step "step" of "of" steps.
          */
-        static void set_seconds_and_weight(double & seconds, double & weight,
-                                           size_t step, size_t of)
+        static void set_seconds_and_weight(float & seconds, float & weight,
+                                           int step, int of)
         {
             seconds = get_seconds(step, of);
             weight = Metrics::get_weight(seconds);
@@ -92,24 +92,24 @@ public:
 class PerceptiveRMS
 {
     static constexpr int steps_ = 20;
-    static constexpr double input_scale_ = std::numeric_limits<uint32_t>::max();
+    static constexpr float input_scale_ = 4e9f;
 
     class WindowedRMS
     {
         uint64_t window_sum_ = 0;
-        size_t window_size_ = 0;
-        size_t hold_samples_ = 0;
-        size_t hold_count_ = 0;
-        double window_multiplier_ = 1;
-        ScaledIntegrator<double> release_;
+        int window_size_ = 0;
+        int hold_samples_ = 0;
+        int hold_count_ = 0;
+        float window_multiplier_ = 1;
+        ScaledIntegrator<float> release_;
 
     public:
-        [[nodiscard]] double get() const
+        [[nodiscard]] float get() const
         {
             return window_multiplier_ * release_.integrated();
         }
 
-        double add_and_take_and_get(uint64_t add, uint64_t take)
+        float add_and_take_and_get(uint64_t add, uint64_t take)
         {
             window_sum_ += add;
             window_sum_ -= take;
@@ -117,7 +117,7 @@ class PerceptiveRMS
                 window_sum_ >= static_cast<uint64_t>(release_.integrated()))
             {
                 hold_count_ = hold_samples_;
-                release_.set_value(static_cast<double>(window_sum_));
+                release_.set_value(static_cast<float>(window_sum_));
             }
             else if (hold_count_ > 0)
             {
@@ -125,31 +125,30 @@ class PerceptiveRMS
             }
             else
             {
-                release_.integrate(static_cast<double>(window_sum_));
+                release_.integrate(static_cast<float>(window_sum_));
             }
             return get();
         }
 
-        void set_multiplier(size_t window_size, double weight,
-                            size_t hold_samples)
+        void set_multiplier(int window_size, float weight, int hold_samples)
         {
             window_size_ = window_size;
             window_multiplier_ = window_size > 0
-                                     ? weight / static_cast<double>(window_size)
-                                     : 1.0;
+                                     ? weight / static_cast<float>(window_size)
+                                     : 1.0f;
             hold_samples_ = hold_samples;
-            release_ = Integrator<double>(hold_count_);
+            release_.set_samples(static_cast<float>(hold_count_));
             hold_count_ = 0;
         }
 
         void set_value(uint64_t value)
         {
             window_sum_ = static_cast<uint64_t>(std::round(
-                static_cast<double>(value * window_sum_) / window_multiplier_));
+                static_cast<float>(value * window_sum_) / window_multiplier_));
         }
 
-        [[nodiscard]] size_t window_size() const { return window_size_; }
-        [[nodiscard]] [[maybe_unused]] size_t hold_samples() const
+        [[nodiscard]] int window_size() const { return window_size_; }
+        [[nodiscard]] [[maybe_unused]] int hold_samples() const
         {
             return hold_samples_;
         }
@@ -159,41 +158,44 @@ class PerceptiveRMS
     WindowedRMS rms_[steps_ + 1];
     int latency_ = 0;
 
-    void init_detection(uint64_t sample_rate)
+    void init_detection(const int sample_rate)
     {
-        const size_t max_window = seconds_to_window(
+        const int max_window = seconds_to_window(
             Loudness::Metrics::perception_center_seconds, sample_rate);
         for (int step = 0; step <= steps_; step++)
         {
-            double seconds;
-            double weight;
+            float seconds;
+            float weight;
             Loudness::Spread::set_seconds_and_weight(seconds, weight, step,
                                                      steps_);
-            size_t window_size = seconds_to_window(seconds, sample_rate);
-            WindowedRMS &rms = rms_[step];
+            const int window_size = seconds_to_window(seconds, sample_rate);
+            WindowedRMS & rms = rms_[step];
+            const float effective_weight = weight * weight / input_scale_;
             rms.set_multiplier(window_size,
-                                      weight * weight / input_scale_,
-                                      max_window - window_size);
+                               static_cast<float>(effective_weight),
+                               max_window - window_size);
             rms.set_value(0);
         }
 
         latency_ = static_cast<int>(std::min(
-            max_window, static_cast<size_t>(std::numeric_limits<int>::max())));
+            max_window, static_cast<int>(std::numeric_limits<int>::max())));
     }
 
-    static size_t seconds_to_window(double seconds, uint64_t sample_rate)
+    static int seconds_to_window(const float seconds, const int sample_rate)
     {
-        return static_cast<size_t>(
-            std::round(seconds * static_cast<double>(sample_rate)));
+        return static_cast<int>(
+            std::round(seconds * static_cast<float>(sample_rate)));
     }
 
-    [[nodiscard]] uint64_t squared_value_to_internal_value(double value) const
+    [[nodiscard]] uint64_t static squared_value_to_internal_value(
+        const float squared_value)
     {
-        return static_cast<uint64_t>(fabs(std::round(value * input_scale_)));
+        return static_cast<uint64_t>(
+            fabsf(std::round(squared_value * input_scale_)));
     }
 
 public:
-    void set_rate_and_value(uint64_t sample_rate, double squared_initial_value)
+    void set_rate_and_value(int sample_rate, float squared_initial_value)
     {
         init_detection(sample_rate);
         buffer_.discard();
@@ -206,20 +208,20 @@ public:
         }
     }
 
-    [[nodiscard]] size_t latency() const { return latency_; }
+    [[nodiscard]] int latency() const { return latency_; }
 
-    double get_mean_squared(double squared_input)
+    float get_mean_squared(const float squared_input)
     {
         const uint64_t internal_value =
             squared_value_to_internal_value(squared_input);
         const uint64_t oldest = buffer_.pop();
         buffer_.push(internal_value);
 
-        double max = rms_[0].add_and_take_and_get(internal_value, oldest);
+        float max = rms_[0].add_and_take_and_get(internal_value, oldest);
 
         for (int step = 1; step <= steps_; step++)
         {
-            WindowedRMS &rms = rms_[step];
+            WindowedRMS & rms = rms_[step];
             const auto input = buffer_.nth_from_last(rms.window_size() - 1);
             const auto step_value =
                 rms.add_and_take_and_get(internal_value, input);

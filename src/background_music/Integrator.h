@@ -18,7 +18,6 @@
  * implied. In no event shall the authors be liable for any damages arising from
  * the use of this software.
  */
-#include "utils.h"
 #include <cmath>
 #include <limits>
 #include <stdexcept>
@@ -56,18 +55,20 @@ public:
     /**
      * Returns the history multiplier for integration over the provided number
      * of samples, that can be a fraction. If the fraction is smaller than
-     * {@code minimum_samples}, zero is returned. If the number is bigger than
-     * {@code maximum_samples} the history multiplier for {@code
-     * maximum_samples} is returned.
+     * \c minimum_samples, zero is returned. If the number is bigger than
+     * \c code maximum_samples the history multiplier for \c maximum_samples} is
+     * returned.
      * @param samples The number of samples
-     * @return the history multiplier that lies between [0 .. 1>.
+     * @return The history multiplier that is equal or larger than zero and
+     * smaller than 1.
      */
     static inline S calculate_history_multiplier_from_samples(S samples)
     {
         S absolute = fabs(samples);
-        return absolute < minimum_samples()   ? 0
-               : absolute > maximum_samples() ? exp(-1 / maximum_samples())
-                                              : exp(-1.0 / absolute);
+        return static_cast<S>(absolute < minimum_samples() ? 0.0
+                              : absolute > maximum_samples()
+                                  ? exp(-1.0 / maximum_samples())
+                                  : exp(-1.0 / absolute));
     }
 
     /**
@@ -78,7 +79,7 @@ public:
      */
     [[maybe_unused]] static inline S calculate_other_multiplier(S multiplier)
     {
-        return 1 - multiplier;
+        return static_cast<S>(1) - multiplier;
     }
 
     /**
@@ -96,7 +97,8 @@ public:
         {
             return 0;
         }
-        else if (absolute <= (1 - std::numeric_limits<S>::epsilon()()))
+        else if (absolute <=
+                 (static_cast<S>(1) - std::numeric_limits<S>::epsilon()()))
         {
             return 1.0 / log(absolute);
         }
@@ -118,7 +120,7 @@ public:
     [[maybe_unused]] inline explicit Integrator(S samples)
         : history_multiplier_(
               calculate_history_multiplier_from_samples(samples)),
-          input_multiplier_(1.0 - history_multiplier_)
+          input_multiplier_(calculate_other_multiplier(history_multiplier_))
     {
     }
 
@@ -139,6 +141,17 @@ public:
         // Replace with requires in on C++20 adoption
         static_assert(std::is_arithmetic_v<T1>);
         static_assert(std::is_arithmetic_v<T2>);
+    }
+
+    /**
+     * Creates an integrator over the provided number of samples.
+     * @param samples The number of samples
+     */
+    [[maybe_unused]] inline void set_samples(S samples)
+    {
+        history_multiplier_ =
+            calculate_history_multiplier_from_samples(samples);
+        input_multiplier_ = calculate_other_multiplier(history_multiplier_);
     }
 
     /**
@@ -180,7 +193,7 @@ public:
      */
     [[nodiscard]] [[maybe_unused]] S estimate_integration_samples() const
     {
-        return -1 / log(history_multiplier_);
+        return -1.0 / log(history_multiplier_);
     }
 };
 
@@ -205,6 +218,7 @@ public:
         integrator_ = source;
         return *this;
     }
+    void set_samples(S samples) { integrator_.set_samples(samples); }
 
     void set_value(S new_value) { integrated_ = new_value; }
 

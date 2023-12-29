@@ -21,7 +21,6 @@
 #include "Integrator.h"
 #include "Loudness.h"
 #include "basic_config.h"
-#include "utils.h"
 #include <cmath>
 #include <libaudcore/runtime.h>
 
@@ -29,19 +28,48 @@ class DoubleIntegrationTimeRmsDetection
 {
     static constexpr float SHORT_INTEGRATION = 0.8;
     static constexpr float LONG_INTEGRATION = 6.3;
-    static constexpr double FUDGE_FACTOR = 3;
-    static constexpr double BALANCE = 0.3;
+    /*
+     * This adjusts the RMS measurement so that it's displayed correctly
+     * in the audacious VU meter. It is actually, wrong, but helps with
+     * expectation management, as people are normally not used to RMS.
+     */
+    static constexpr float VU_FUDGE_FACTOR = 3;
 
+    /**
+     * These integrators and integrated values are double floats, as their
+     * integration times are relatively long and that can give accuracy
+     * problems when using ordinary floats.
+     */
     Integrator<double> release_integration;
     Integrator<double> long_integration;
-    PerceptiveRMS perceivedLoudness;
     double long_integrated = 0, release_integrated = 0;
-    double slow_weight = 0, perceived_weight = 0;
-    double target_level = 0.1;
-    double maximum_amplification = 1;
-    double minimum_detection = 1e-6;
+    /**
+     * Perceptive loudness.
+     */
+    PerceptiveRMS perceivedLoudness;
+    float slow_weight = 0, perceived_weight = 0;
+    float target_level = 0.1;
+    float maximum_amplification = 1;
+    float perception_slow_balance = 0.3;
+    float minimum_detection = 1e-6;
     float amplify = 0;
     int read_ahead_ = 0;
+
+    static float get_clamped_value(const char * variable, const double minimum,
+                                   const double maximum)
+    {
+        return static_cast<float>(std::clamp(
+            aud_get_double(CONFIG_SECTION_BACKGROUND_MUSIC, variable),
+            static_cast<double>(minimum), static_cast<double>(maximum)));
+    }
+
+    static float get_clamped_decibel_value(const char * variable,
+                                           const double minimum,
+                                           const double maximum)
+    {
+        const float decibels = get_clamped_value(variable, minimum, maximum);
+        return powf(10.0f, 0.05f * decibels);
+    }
 
 public:
     [[nodiscard]] int read_ahead() const { return read_ahead_; }
@@ -76,35 +104,37 @@ public:
         perceivedLoudness.set_rate_and_value(rate, target_level);
         read_ahead_ = perceivedLoudness.latency();
         minimum_detection = target_level / maximum_amplification;
-        double balance = BALANCE;
-        if (balance < 0)
+        if (perception_slow_balance < 0)
         {
             perceived_weight = 1.0;
-            slow_weight = std::clamp(1.0 + balance, 0.0, 1.0);
+            slow_weight =
+                std::clamp(1.0f + perception_slow_balance, 0.0f, 1.0f);
             slow_weight *= slow_weight;
         }
         else
         {
             slow_weight = 1.0;
-            perceived_weight = std::clamp(1.0 - balance, 0.0, 1.0);
+            perceived_weight =
+                std::clamp(1.0f - perception_slow_balance, 0.0f, 1.0f);
             perceived_weight *= perceived_weight;
         }
     }
 
     void update_config()
     {
-        static constexpr auto SECTION = CONFIG_SECTION_BACKGROUND_MUSIC;
-        target_level = decibel_level_to_value(
-            std::clamp(aud_get_double(SECTION, CONF_TARGET_LEVEL_VARIABLE),
-                       CONF_TARGET_LEVEL_MIN, CONF_TARGET_LEVEL_MAX));
-        maximum_amplification = decibel_level_to_value(
-            std::clamp(aud_get_double(SECTION, CONF_MAX_AMPLIFICATION_VARIABLE),
-                       CONF_MAX_AMPLIFICATION_MIN, CONF_MAX_AMPLIFICATION_MAX));
+        target_level = get_clamped_decibel_value(CONF_TARGET_LEVEL_VARIABLE,
+                                                 CONF_TARGET_LEVEL_MIN,
+                                                 CONF_TARGET_LEVEL_MAX);
+        maximum_amplification = get_clamped_decibel_value(
+            CONF_MAX_AMPLIFICATION_VARIABLE, CONF_MAX_AMPLIFICATION_MIN,
+            CONF_MAX_AMPLIFICATION_MAX);
+        perception_slow_balance = get_clamped_value(
+            CONF_BALANCE_VARIABLE, CONF_BALANCE_MIN, CONF_BALANCE_MAX);
     }
 
     void detect(const Index<float> & frame_in)
     {
-        double square_sum = 0.0;
+        float square_sum = 0.0;
         for (const float sample : frame_in)
         {
             square_sum += (sample * sample);
@@ -112,8 +142,8 @@ public:
         long_integration.integrate(long_integrated, square_sum);
         const double perceived = perceivedLoudness.get_mean_squared(square_sum);
         const double weighted = std::max(slow_weight * long_integrated,
-                                   perceived_weight * perceived);
-        const double rms = sqrt(weighted) * FUDGE_FACTOR;
+                                         perceived_weight * perceived);
+        const double rms = sqrt(weighted) * VU_FUDGE_FACTOR;
         if (rms > release_integrated)
         {
             release_integrated = rms;
@@ -124,7 +154,8 @@ public:
         }
 
         amplify =
-            target_level / std::max(minimum_detection, release_integrated);
+            target_level /
+            std::max(minimum_detection, static_cast<float>(release_integrated));
     }
 
     void apply_detect(Index<float> & frame_out) const

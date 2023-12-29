@@ -18,30 +18,34 @@
  * implied. In no event shall the authors be liable for any damages arising from
  * the use of this software.
  */
-#include <libaudcore/i18n.h>
 
 static constexpr const char * const CONFIG_SECTION_BACKGROUND_MUSIC =
     "background_music";
 
-static constexpr const char * CONF_TARGET_LEVEL_LABEL =
-    N_("Target level (dB):");
 static constexpr const char * CONF_TARGET_LEVEL_VARIABLE = "target_level";
 static constexpr const char * CONF_TARGET_LEVEL_DEFAULT_STRING = "-12.0";
-static constexpr const double CONF_TARGET_LEVEL_MIN = -30.0;
-static constexpr const double CONF_TARGET_LEVEL_MAX = -6.0;
+static constexpr double CONF_TARGET_LEVEL_MIN = -30.0;
+static constexpr double CONF_TARGET_LEVEL_MAX = -6.0;
 
-static constexpr const char * CONF_MAX_AMPLIFICATION_LABEL =
-    N_("Maximum amplification (dB):");
 static constexpr const char * CONF_MAX_AMPLIFICATION_VARIABLE =
     "maximum_amplification";
 static constexpr const char * CONF_MAX_AMPLIFICATION_DEFAULT_STRING = "10.0";
-static constexpr const double CONF_MAX_AMPLIFICATION_MIN = 0.0;
-static constexpr const double CONF_MAX_AMPLIFICATION_MAX = 40.0;
+static constexpr double CONF_MAX_AMPLIFICATION_MIN = 0.0;
+static constexpr double CONF_MAX_AMPLIFICATION_MAX = 40.0;
+
+static constexpr const char * CONF_BALANCE_VARIABLE = "perception_slow_balance";
+static constexpr const char * CONF_BALANCE_DEFAULT_STRING = "0.3";
+static constexpr double CONF_BALANCE_DEFAULT_VALUE = 0.3;
+static constexpr double CONF_BALANCE_MIN = -1.0;
+static constexpr double CONF_BALANCE_MAX = 1.0;
 
 static constexpr const char * const background_music_defaults[] = {
     CONF_TARGET_LEVEL_VARIABLE, CONF_TARGET_LEVEL_DEFAULT_STRING,
+    //
     CONF_MAX_AMPLIFICATION_VARIABLE, CONF_MAX_AMPLIFICATION_DEFAULT_STRING,
+    //
+    CONF_BALANCE_VARIABLE, CONF_BALANCE_DEFAULT_STRING,
+    //
     nullptr};
-
 
 #endif // AUDACIOUS_PLUGINS_BGM_BASIC_CONFIG_H
