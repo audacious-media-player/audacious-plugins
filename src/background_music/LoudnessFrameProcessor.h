@@ -52,7 +52,6 @@ class LoudnessFrameProcessor
     float maximum_amplification = 1;
     float perception_slow_balance = 0.3;
     float minimum_detection = 1e-6;
-    float amplify = 0;
     RingBuf<float> read_ahead_buffer;
     int channels_ = 0;
     int processed_frames = 0;
@@ -74,7 +73,7 @@ class LoudnessFrameProcessor
     }
 
 public:
-    [[nodiscard]] int read_ahead() const { return perceivedLoudness.latency(); }
+    [[nodiscard]] int latency() const { return perceivedLoudness.latency(); }
 
     LoudnessFrameProcessor()
     {
@@ -107,7 +106,7 @@ public:
         long_integration.set_seconds_for_rate(LONG_INTEGRATION / 2.0, rate);
         perceivedLoudness.set_rate_and_value(rate, target_level);
         // As data is added, then fetched, we need 1 extra frame in the buffer.
-        const int alloc_size = channels_ * (read_ahead() + 1);
+        const int alloc_size = channels_ * (latency() + 1);
         
         if (read_ahead_buffer.size() < alloc_size)
         {
@@ -166,27 +165,22 @@ public:
             release_integration.integrate(release_integrated, rms);
         }
 
-        amplify =
+        const double gain =
             target_level /
             std::max(minimum_detection, static_cast<float>(release_integrated));
 
-        if (processed_frames >= read_ahead())
+        if (processed_frames >= latency())
         {
-            apply_detect(frame_out);
+            read_ahead_buffer.move_out(frame_out.begin(), channels_);
+            for (float & sample : frame_out)
+            {
+                sample *= gain;
+            }
             return true;
         }
         processed_frames++;
 
         return false;
-    }
-
-    void apply_detect(Index<float> & frame_out)
-    {
-        for (float & sample : frame_out)
-        {
-            sample *= amplify;
-        }
-        read_ahead_buffer.move_out(frame_out.begin(), channels_);
     }
 
     void discard_buffer()
