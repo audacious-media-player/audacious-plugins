@@ -1,10 +1,9 @@
 #ifndef AUDACIOUS_PLUGINS_BGM_LOUDNESS_H
 #define AUDACIOUS_PLUGINS_BGM_LOUDNESS_H
 /*
- * Perceived loudness tools.
+ * Background music (equal loudness) Plugin for Audacious
  * Copyright 2023 Michel Fleur
  *
- * Heavily inspired by my speakerman and org-simple projects.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
@@ -19,7 +18,6 @@
  * implied. In no event shall the authors be liable for any damages arising from
  * the use of this software.
  */
-
 #include "Integrator.h"
 #include "utils.h"
 #include <algorithm>
@@ -73,7 +71,9 @@ public:
                 Metrics::perception_peak_seconds /
                 Metrics::perception_center_seconds;
             double log_ratio =
-                of > 0 ? static_cast<double>(std::clamp(step, size_t(0), of)) / static_cast<double>(of) : 1;
+                of > 0 ? static_cast<double>(std::clamp(step, size_t(0), of)) /
+                             static_cast<double>(of)
+                       : 1;
             return Metrics::perception_center_seconds *
                    pow(peak_perception_ratio, log_ratio);
         }
@@ -111,7 +111,8 @@ class PerceptiveRMS
         {
             window_sum_ += add;
             window_sum_ -= take;
-            if (hold_samples_ && window_sum_ >= static_cast<uint64_t >(release_.integrated()))
+            if (hold_samples_ &&
+                window_sum_ >= static_cast<uint64_t>(release_.integrated()))
             {
                 hold_count_ = hold_samples_;
                 release_.set_value(static_cast<double>(window_sum_));
@@ -131,7 +132,9 @@ class PerceptiveRMS
                             size_t hold_samples)
         {
             window_size_ = window_size;
-            window_multiplier_ = window_size > 0 ? weight / static_cast<double>(window_size) : 1.0;
+            window_multiplier_ = window_size > 0
+                                     ? weight / static_cast<double>(window_size)
+                                     : 1.0;
             hold_samples_ = hold_samples;
             hold_count_ = 0;
             Integrator<double> i((double)hold_count_);
@@ -140,11 +143,15 @@ class PerceptiveRMS
 
         void set_value(uint64_t value)
         {
-            window_sum_ = static_cast<uint64_t >(std::round(static_cast<double>(value * window_sum_) / window_multiplier_));
+            window_sum_ = static_cast<uint64_t>(std::round(
+                static_cast<double>(value * window_sum_) / window_multiplier_));
         }
 
         [[nodiscard]] size_t window_size() const { return window_size_; }
-        [[nodiscard]] [[maybe_unused]] size_t hold_samples() const { return hold_samples_; }
+        [[nodiscard]] [[maybe_unused]] size_t hold_samples() const
+        {
+            return hold_samples_;
+        }
     };
 
     RingBuf<uint64_t> buffer_;
@@ -170,12 +177,14 @@ class PerceptiveRMS
             rms.set_value(0);
         }
 
-        latency_ = static_cast<int>(std::min(max_window, static_cast<size_t>(std::numeric_limits<int>::max())));
+        latency_ = static_cast<int>(std::min(
+            max_window, static_cast<size_t>(std::numeric_limits<int>::max())));
     }
 
     static size_t seconds_to_window(double seconds, uint64_t sample_rate)
     {
-        return static_cast<size_t>(std::round(seconds * static_cast<double>(sample_rate)));
+        return static_cast<size_t>(
+            std::round(seconds * static_cast<double>(sample_rate)));
     }
 
     [[nodiscard]] uint64_t squared_value_to_internal_value(double value) const
@@ -218,10 +227,9 @@ public:
         for (size_t step = 1; step <= steps_; step++)
         {
             auto & rms = rms_[step];
-            max = std::max(
-                max, rms.add_and_take_and_get(
-                         internal_value,
-                         buffer_.nth_from_last(rms.window_size())));
+            max = std::max(max, rms.add_and_take_and_get(
+                                    internal_value,
+                                    buffer_.nth_from_last(rms.window_size())));
         }
         return max;
     }

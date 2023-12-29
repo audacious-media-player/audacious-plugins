@@ -1,26 +1,23 @@
 #ifndef AUDACIOUS_PLUGINS_BGM_BASIC_CONFIG_H
 #define AUDACIOUS_PLUGINS_BGM_BASIC_CONFIG_H
 /*
- * audacious-plugins/basic_config.h
+ * Background music (equal loudness) Plugin for Audacious
+ * Copyright 2023 Michel Fleur
  *
- * Added by michel on 2023-09-23
- * Copyright (C) 2015-2023 Michel Fleur.
- * Source https://github.com/emmef/audacious-plugins
- * Email audacious-plugins@emmef.org
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions, and the following disclaimer.
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions, and the following disclaimer in the documentation
+ *    provided with the distribution.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This software is provided "as is" and without any warranty, express or
+ * implied. In no event shall the authors be liable for any damages arising from
+ * the use of this software.
  */
-
 #include <libaudcore/i18n.h>
 
 static constexpr const char * const CONFIG_SECTION_BACKGROUND_MUSIC =

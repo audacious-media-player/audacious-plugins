@@ -1,7 +1,7 @@
 #ifndef AUDACIOUS_PLUGINS_BGM_DETECTION_H
 #define AUDACIOUS_PLUGINS_BGM_DETECTION_H
 /*
- * Detection framework.
+ * Background music (equal loudness) Plugin for Audacious
  * Copyright 2023 Michel Fleur
  *
  * Redistribution and use in source and binary forms, with or without
@@ -20,7 +20,8 @@
  */
 #include "utils.h"
 
-class Detection {
+class Detection
+{
 public:
     [[nodiscard]] virtual int read_ahead() const = 0;
     virtual void init() = 0;

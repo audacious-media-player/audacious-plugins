@@ -1,7 +1,7 @@
 #ifndef AUDACIOUS_PLUGINS_BGM_INTEGRATOR_H
 #define AUDACIOUS_PLUGINS_BGM_INTEGRATOR_H
 /*
- * RC-circuit style integrator.
+ * Background music (equal loudness) Plugin for Audacious
  * Copyright 2023 Michel Fleur
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,7 +67,7 @@ public:
         S absolute = fabs(samples);
         return absolute < minimum_samples()   ? 0
                : absolute > maximum_samples() ? exp(-1 / maximum_samples())
-                                            : exp(-1.0 / absolute);
+                                              : exp(-1.0 / absolute);
     }
 
     /**
@@ -109,7 +109,9 @@ public:
      * By default, the integrator does not integrate and just passes-through the
      * input.
      */
-    inline constexpr Integrator() : history_multiplier_(0), input_multiplier_(1) {}
+    inline constexpr Integrator() : history_multiplier_(0), input_multiplier_(1)
+    {
+    }
 
     /**
      * Creates an integrator over the provided number of samples.
@@ -161,13 +163,18 @@ public:
         return history_multiplier_ * history + input_multiplier_ * input;
     }
 
-
     /**
      * Getters
      */
-    [[nodiscard]] [[maybe_unused]] S history_multiplier() const { return history_multiplier_; }
+    [[nodiscard]] [[maybe_unused]] S history_multiplier() const
+    {
+        return history_multiplier_;
+    }
 
-    [[nodiscard]] [[maybe_unused]] S input_multiplier() const { return input_multiplier_; }
+    [[nodiscard]] [[maybe_unused]] S input_multiplier() const
+    {
+        return input_multiplier_;
+    }
 
     /**
      * Returns the number of samples that is integrated over. This is calculated

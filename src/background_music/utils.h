@@ -19,8 +19,8 @@
  * the use of this software.
  */
 #include <cmath>
-#include <stdexcept>
 #include <limits>
+#include <stdexcept>
 
 #ifdef BACKGROUND_MUSIC_PRINT_DEBUG_MESSAGES
 #include <cstddef>
@@ -32,7 +32,8 @@ static constexpr bool enabled_print_debug = false;
 #endif
 
 template<typename T>
-static inline T decibel_level_to_value(T decibel) {
+static inline T decibel_level_to_value(T decibel)
+{
     return pow(10.0, 0.05 * decibel);
 }
 
