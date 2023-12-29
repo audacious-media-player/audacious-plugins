@@ -33,7 +33,7 @@ class LoudnessFrameProcessor
      * in the audacious VU meter. It is actually, wrong, but helps with
      * expectation management, as people are normally not used to RMS.
      */
-    static constexpr float VU_FUDGE_FACTOR = 3;
+    static constexpr float VU_FUDGE_FACTOR = 3.0f;
 
     /**
      * These integrators and integrated values are double floats, as their
@@ -84,8 +84,8 @@ public:
     void init()
     {
         update_config();
-        long_integrated = target_level * target_level;
-        release_integrated = long_integrated;
+        long_integrated = 0;
+        release_integrated = target_level * target_level;
         minimum_detection = target_level / maximum_amplification;
     }
 
@@ -112,22 +112,6 @@ public:
         {
             read_ahead_buffer.alloc(alloc_size);
         }
-
-        minimum_detection = target_level / maximum_amplification;
-        if (perception_slow_balance < 0)
-        {
-            perceived_weight = 1.0;
-            slow_weight =
-                std::clamp(1.0f + perception_slow_balance, 0.0f, 1.0f);
-            slow_weight *= slow_weight;
-        }
-        else
-        {
-            slow_weight = 1.0;
-            perceived_weight =
-                std::clamp(1.0f - perception_slow_balance, 0.0f, 1.0f);
-            perceived_weight *= perceived_weight;
-        }
     }
 
     void update_config()
@@ -140,6 +124,20 @@ public:
             CONF_MAX_AMPLIFICATION_MAX);
         perception_slow_balance = get_clamped_value(
             CONF_BALANCE_VARIABLE, CONF_BALANCE_MIN, CONF_BALANCE_MAX);
+        minimum_detection = target_level / maximum_amplification;
+
+        if (perception_slow_balance < 0)
+        {
+            perceived_weight = 1.0;
+            slow_weight =
+                std::clamp(1.0f + perception_slow_balance, 0.0f, 1.0f);
+        }
+        else
+        {
+            perceived_weight = 1.0;
+            slow_weight = std::clamp(1.0f + perception_slow_balance, 1.0f, 2.0f);
+        }
+        slow_weight *= slow_weight;
     }
 
     bool process_has_output(const Index<float> &frame_in, Index<float> &frame_out)
@@ -165,7 +163,7 @@ public:
             release_integration.integrate(release_integrated, rms);
         }
 
-        const double gain =
+        const float gain =
             target_level /
             std::max(minimum_detection, static_cast<float>(release_integrated));
 
