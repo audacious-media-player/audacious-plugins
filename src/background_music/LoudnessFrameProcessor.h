@@ -1,5 +1,5 @@
-#ifndef AUDACIOUS_PLUGINS_BGM_DOUBLE_INTEGRATION_TIME_RMS_DETECTION_H
-#define AUDACIOUS_PLUGINS_BGM_DOUBLE_INTEGRATION_TIME_RMS_DETECTION_H
+#ifndef AUDACIOUS_PLUGINS_BGM_LOUDNESS_FRAME_PROCESSOR_H
+#define AUDACIOUS_PLUGINS_BGM_LOUDNESS_FRAME_PROCESSOR_H
 /*
  * Background music (equal loudness) Plugin for Audacious
  * Copyright 2023 Michel Fleur
@@ -24,7 +24,7 @@
 #include <cmath>
 #include <libaudcore/runtime.h>
 
-class DoubleIntegrationTimeRmsDetection
+class LoudnessFrameProcessor
 {
     static constexpr float SHORT_INTEGRATION = 0.8;
     static constexpr float LONG_INTEGRATION = 6.3;
@@ -76,7 +76,7 @@ class DoubleIntegrationTimeRmsDetection
 public:
     [[nodiscard]] int read_ahead() const { return perceivedLoudness.latency(); }
 
-    DoubleIntegrationTimeRmsDetection()
+    LoudnessFrameProcessor()
     {
         aud_config_set_defaults(CONFIG_SECTION_BACKGROUND_MUSIC,
                                 background_music_defaults);
@@ -195,4 +195,4 @@ public:
     }
 };
 
-#endif // AUDACIOUS_PLUGINS_BGM_DOUBLE_INTEGRATION_TIME_RMS_DETECTION_H
+#endif // AUDACIOUS_PLUGINS_BGM_LOUDNESS_FRAME_PROCESSOR_H

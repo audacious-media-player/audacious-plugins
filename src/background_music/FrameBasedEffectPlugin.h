@@ -18,9 +18,8 @@
  * implied. In no event shall the authors be liable for any damages arising from
  * the use of this software.
  */
-#include "DoubleIntegrationTimeRmsDetection.h"
+#include "LoudnessFrameProcessor.h"
 #include <libaudcore/plugin.h>
-#include <libaudcore/ringbuf.h>
 
 class FrameBasedEffectPlugin : public EffectPlugin
 {
@@ -28,7 +27,7 @@ class FrameBasedEffectPlugin : public EffectPlugin
     Index<float> frame_out;
     Index<float> output;
     int current_channels = 0, current_rate = 0, channel_last_read = 0;
-    DoubleIntegrationTimeRmsDetection detection;
+    LoudnessFrameProcessor detection;
 
 public:
     FrameBasedEffectPlugin(const PluginInfo & info, int order)
