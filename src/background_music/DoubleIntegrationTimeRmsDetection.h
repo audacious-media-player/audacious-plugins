@@ -40,8 +40,8 @@ class DoubleIntegrationTimeRmsDetection
      * integration times are relatively long and that can give accuracy
      * problems when using ordinary floats.
      */
-    Integrator<double> release_integration;
-    Integrator<double> long_integration;
+    Integrator release_integration;
+    Integrator long_integration;
     double long_integrated = 0, release_integrated = 0;
     /**
      * Perceptive loudness.
@@ -91,7 +91,7 @@ public:
     void start(int channels, int rate)
     {
         update_config();
-        release_integration = {SHORT_INTEGRATION, rate};
+        release_integration.set_seconds_for_rate(SHORT_INTEGRATION, rate);
         /*
          * This RMS (Root-mean-square) calculation integrates squared samples
          * with the RC-style integrator and then draws the square root. This has
@@ -100,7 +100,7 @@ public:
          * for the effective time the signal climbs back up after a peak, we
          * must therefore half the integration time.
          */
-        long_integration = {LONG_INTEGRATION / 2.0, rate};
+        long_integration.set_seconds_for_rate(LONG_INTEGRATION / 2.0, rate);
         perceivedLoudness.set_rate_and_value(rate, target_level);
         read_ahead_ = perceivedLoudness.latency();
         minimum_detection = target_level / maximum_amplification;

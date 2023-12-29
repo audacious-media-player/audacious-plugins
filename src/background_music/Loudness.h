@@ -21,6 +21,7 @@
 #include "Integrator.h"
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 
 #include <libaudcore/ringbuf.h>
 
@@ -101,12 +102,13 @@ class PerceptiveRMS
         int hold_samples_ = 0;
         int hold_count_ = 0;
         float window_multiplier_ = 1;
-        ScaledIntegrator<float> release_;
+        ScaledIntegrator release_;
 
     public:
         [[nodiscard]] float get() const
         {
-            return window_multiplier_ * release_.integrated();
+            return window_multiplier_ *
+                   static_cast<float>(release_.integrated());
         }
 
         float add_and_take_and_get(uint64_t add, uint64_t take)

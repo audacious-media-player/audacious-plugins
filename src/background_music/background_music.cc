@@ -18,7 +18,6 @@
  */
 #include "FrameBasedEffectPlugin.h"
 #include "basic_config.h"
-#include <cstring>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
