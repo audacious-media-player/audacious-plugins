@@ -53,7 +53,9 @@ class DoubleIntegrationTimeRmsDetection
     float perception_slow_balance = 0.3;
     float minimum_detection = 1e-6;
     float amplify = 0;
-    int read_ahead_ = 0;
+    RingBuf<float> read_ahead_buffer;
+    int channels_ = 0;
+    int processed_frames = 0;
 
     static float get_clamped_value(const char * variable, const double minimum,
                                    const double maximum)
@@ -72,7 +74,7 @@ class DoubleIntegrationTimeRmsDetection
     }
 
 public:
-    [[nodiscard]] int read_ahead() const { return read_ahead_; }
+    [[nodiscard]] int read_ahead() const { return perceivedLoudness.latency(); }
 
     DoubleIntegrationTimeRmsDetection()
     {
@@ -88,9 +90,11 @@ public:
         minimum_detection = target_level / maximum_amplification;
     }
 
-    void start(int channels, int rate)
+    void start(const int channels, int rate)
     {
         update_config();
+        channels_ = channels;
+        processed_frames = 0;
         release_integration.set_seconds_for_rate(SHORT_INTEGRATION, rate);
         /*
          * This RMS (Root-mean-square) calculation integrates squared samples
@@ -102,7 +106,14 @@ public:
          */
         long_integration.set_seconds_for_rate(LONG_INTEGRATION / 2.0, rate);
         perceivedLoudness.set_rate_and_value(rate, target_level);
-        read_ahead_ = perceivedLoudness.latency();
+        // As data is added, then fetched, we need 1 extra frame in the buffer.
+        const int alloc_size = channels_ * (read_ahead() + 1);
+        
+        if (read_ahead_buffer.size() < alloc_size)
+        {
+            read_ahead_buffer.alloc(alloc_size);
+        }
+
         minimum_detection = target_level / maximum_amplification;
         if (perception_slow_balance < 0)
         {
@@ -132,8 +143,10 @@ public:
             CONF_BALANCE_VARIABLE, CONF_BALANCE_MIN, CONF_BALANCE_MAX);
     }
 
-    void detect(const Index<float> & frame_in)
+    bool process_has_output(const Index<float> &frame_in, Index<float> &frame_out)
     {
+        read_ahead_buffer.copy_in(frame_in.begin(), channels_);
+
         float square_sum = 0.0;
         for (const float sample : frame_in)
         {
@@ -156,14 +169,29 @@ public:
         amplify =
             target_level /
             std::max(minimum_detection, static_cast<float>(release_integrated));
+
+        if (processed_frames >= read_ahead())
+        {
+            apply_detect(frame_out);
+            return true;
+        }
+        processed_frames++;
+
+        return false;
     }
 
-    void apply_detect(Index<float> & frame_out) const
+    void apply_detect(Index<float> & frame_out)
     {
         for (float & sample : frame_out)
         {
             sample *= amplify;
         }
+        read_ahead_buffer.move_out(frame_out.begin(), channels_);
+    }
+
+    void discard_buffer()
+    {
+        read_ahead_buffer.discard();
     }
 };
 
