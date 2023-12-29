@@ -21,20 +21,14 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/ringbuf.h>
 
-#include "Detection.h"
-
-template<class D>
 class FrameBasedEffectPlugin : public EffectPlugin
 {
-    static_assert(std::is_base_of_v<Detection, D>);
 
 public:
-    constexpr FrameBasedEffectPlugin(const PluginInfo info, int order)
+    FrameBasedEffectPlugin(const PluginInfo &info, int order)
         : EffectPlugin(info, order, true)
     {
     }
-    virtual ~FrameBasedEffectPlugin() = default;
-
     bool init() final;
     void cleanup() final;
 
@@ -45,57 +39,42 @@ public:
     int adjust_delay(int delay) final;
     bool offer_frame_return_if_output();
 
-    virtual bool after_init() { return true; }
-    virtual void before_cleanup() {}
-
     Index<float> frame_in;
     RingBuf<float> read_ahead_buffer;
     Index<float> frame_out;
     Index<float> output;
     int processed_frames = 0;
     int current_channels = 0, current_rate = 0, channel_last_read = 0;
-    D * detection = nullptr;
+    DoubleIntegrationTimeRmsDetection detection;
 };
 
-template<class D>
-bool FrameBasedEffectPlugin<D>::init()
+bool FrameBasedEffectPlugin::init()
 {
-    if (!detection)
-    {
-        detection = new D;
-    }
-    return after_init();
+    detection.init();
+    return true;
 }
 
-template<class D>
-void FrameBasedEffectPlugin<D>::cleanup()
+void FrameBasedEffectPlugin::cleanup()
 {
-    before_cleanup();
     read_ahead_buffer.destroy();
     output.clear();
     frame_in.clear();
     frame_out.clear();
-    if (detection)
-    {
-        delete detection;
-        detection = nullptr;
-    }
 }
 
-template<class D>
-void FrameBasedEffectPlugin<D>::start(int & channels, int & rate)
+void FrameBasedEffectPlugin::start(int & channels, int & rate)
 {
     current_channels = channels;
     current_rate = rate;
     channel_last_read = 0;
     processed_frames = 0;
 
-    detection->start(channels, rate);
+    detection.start(channels, rate);
     // Set the initial values for the integrators to the center value
     // (naturally squared as we integrate squares)
 
     // As data is added, then fetched, we need 1 extra frame in the buffer.
-    int alloc_size = current_channels * (detection->read_ahead() + 1);
+    int alloc_size = current_channels * (detection.read_ahead() + 1);
     if (read_ahead_buffer.size() < alloc_size)
     {
         read_ahead_buffer.alloc(alloc_size);
@@ -107,10 +86,9 @@ void FrameBasedEffectPlugin<D>::start(int & channels, int & rate)
     flush(false);
 }
 
-template<class D>
-Index<float> & FrameBasedEffectPlugin<D>::process(Index<float> & data)
+Index<float> & FrameBasedEffectPlugin::process(Index<float> & data)
 {
-    detection->update_config();
+    detection.update_config();
 
     int output_samples = 0;
     output.resize(0);
@@ -137,22 +115,19 @@ Index<float> & FrameBasedEffectPlugin<D>::process(Index<float> & data)
     return output;
 }
 
-template<class D>
-bool FrameBasedEffectPlugin<D>::flush(bool force)
+bool FrameBasedEffectPlugin::flush(bool force)
 {
     read_ahead_buffer.discard();
     return true;
 }
 
-template<class D>
-Index<float> & FrameBasedEffectPlugin<D>::finish(Index<float> & data,
+Index<float> & FrameBasedEffectPlugin::finish(Index<float> & data,
                                                  bool end_of_playlist)
 {
     return process(data);
 }
 
-template<class D>
-int FrameBasedEffectPlugin<D>::adjust_delay(int delay)
+int FrameBasedEffectPlugin::adjust_delay(int delay)
 {
     auto result = aud::rescale<int64_t>(
         read_ahead_buffer.len() / current_channels - 1, current_rate, 1000);
@@ -160,8 +135,7 @@ int FrameBasedEffectPlugin<D>::adjust_delay(int delay)
     return (int)result;
 }
 
-template<class D>
-bool FrameBasedEffectPlugin<D>::offer_frame_return_if_output()
+bool FrameBasedEffectPlugin::offer_frame_return_if_output()
 {
     /**
      * Add samples to the delay buffer so that the detection can be
@@ -169,12 +143,12 @@ bool FrameBasedEffectPlugin<D>::offer_frame_return_if_output()
      */
     read_ahead_buffer.copy_in(frame_in.begin(), current_channels);
 
-    detection->detect(frame_in);
+    detection.detect(frame_in);
 
-    if (processed_frames >= detection->read_ahead())
+    if (processed_frames >= detection.read_ahead())
     {
         read_ahead_buffer.move_out(frame_out.begin(), current_channels);
-        detection->apply_detect(frame_out);
+        detection.apply_detect(frame_out);
         return true;
     }
     else

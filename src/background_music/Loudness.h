@@ -19,7 +19,6 @@
  * the use of this software.
  */
 #include "Integrator.h"
-#include "utils.h"
 #include <algorithm>
 #include <cmath>
 
@@ -92,6 +91,9 @@ public:
 
 class PerceptiveRMS
 {
+    static constexpr int steps_ = 20;
+    static constexpr double input_scale_ = std::numeric_limits<uint32_t>::max();
+
     class WindowedRMS
     {
         uint64_t window_sum_ = 0;
@@ -136,9 +138,8 @@ class PerceptiveRMS
                                      ? weight / static_cast<double>(window_size)
                                      : 1.0;
             hold_samples_ = hold_samples;
+            release_ = Integrator<double>(hold_count_);
             hold_count_ = 0;
-            Integrator<double> i((double)hold_count_);
-            release_ = i;
         }
 
         void set_value(uint64_t value)
@@ -155,25 +156,24 @@ class PerceptiveRMS
     };
 
     RingBuf<uint64_t> buffer_;
-    WindowedRMS * rms_;
-    size_t steps_;
-    double input_scale_ = std::numeric_limits<uint32_t>::max();
+    WindowedRMS rms_[steps_ + 1];
     int latency_ = 0;
 
     void init_detection(uint64_t sample_rate)
     {
         const size_t max_window = seconds_to_window(
             Loudness::Metrics::perception_center_seconds, sample_rate);
-        for (size_t step = 0; step <= steps_; step++)
+        for (int step = 0; step <= steps_; step++)
         {
             double seconds;
             double weight;
             Loudness::Spread::set_seconds_and_weight(seconds, weight, step,
                                                      steps_);
             size_t window_size = seconds_to_window(seconds, sample_rate);
-            WindowedRMS & rms = rms_[step];
-            rms.set_multiplier(window_size, weight * weight / input_scale_,
-                               max_window - window_size);
+            WindowedRMS &rms = rms_[step];
+            rms.set_multiplier(window_size,
+                                      weight * weight / input_scale_,
+                                      max_window - window_size);
             rms.set_value(0);
         }
 
@@ -193,12 +193,6 @@ class PerceptiveRMS
     }
 
 public:
-    explicit PerceptiveRMS(size_t steps, double scale = 1e6)
-        : rms_(allocate_if_valid<WindowedRMS>(steps + 1, 30)), steps_(steps),
-          input_scale_(std::clamp(scale, 1.0, 1e12))
-    {
-    }
-
     void set_rate_and_value(uint64_t sample_rate, double squared_initial_value)
     {
         init_detection(sample_rate);
@@ -216,25 +210,23 @@ public:
 
     double get_mean_squared(double squared_input)
     {
-        uint64_t internal_value =
+        const uint64_t internal_value =
             squared_value_to_internal_value(squared_input);
-
         const uint64_t oldest = buffer_.pop();
         buffer_.push(internal_value);
 
         double max = rms_[0].add_and_take_and_get(internal_value, oldest);
 
-        for (size_t step = 1; step <= steps_; step++)
+        for (int step = 1; step <= steps_; step++)
         {
-            auto & rms = rms_[step];
-            max = std::max(max, rms.add_and_take_and_get(
-                                    internal_value,
-                                    buffer_.nth_from_last(rms.window_size())));
+            WindowedRMS &rms = rms_[step];
+            const auto input = buffer_.nth_from_last(rms.window_size() - 1);
+            const auto step_value =
+                rms.add_and_take_and_get(internal_value, input);
+            max = std::max(max, step_value);
         }
         return max;
     }
-
-    ~PerceptiveRMS() { delete[] rms_; }
 };
 
 #endif // AUDACIOUS_PLUGINS_BGM_LOUDNESS_H

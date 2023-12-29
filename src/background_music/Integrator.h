@@ -29,8 +29,8 @@ class Integrator
 {
     static_assert(std::is_floating_point_v<S>);
 
-    S history_multiplier_;
-    S input_multiplier_;
+    S history_multiplier_ = 0;
+    S input_multiplier_ = 1;
 
 public:
     /**
@@ -109,9 +109,7 @@ public:
      * By default, the integrator does not integrate and just passes-through the
      * input.
      */
-    inline constexpr Integrator() : history_multiplier_(0), input_multiplier_(1)
-    {
-    }
+    constexpr Integrator() {}
 
     /**
      * Creates an integrator over the provided number of samples.

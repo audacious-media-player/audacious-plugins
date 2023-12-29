@@ -18,14 +18,14 @@
  * implied. In no event shall the authors be liable for any damages arising from
  * the use of this software.
  */
-#include "Detection.h"
 #include "Integrator.h"
 #include "Loudness.h"
 #include "basic_config.h"
 #include "utils.h"
 #include <cmath>
+#include <libaudcore/runtime.h>
 
-class DoubleIntegrationTimeRmsDetection : public Detection
+class DoubleIntegrationTimeRmsDetection
 {
     static constexpr float SHORT_INTEGRATION = 0.8;
     static constexpr float LONG_INTEGRATION = 6.3;
@@ -44,11 +44,15 @@ class DoubleIntegrationTimeRmsDetection : public Detection
     int read_ahead_ = 0;
 
 public:
-    [[nodiscard]] int read_ahead() const override { return read_ahead_; }
+    [[nodiscard]] int read_ahead() const { return read_ahead_; }
 
-    DoubleIntegrationTimeRmsDetection() : perceivedLoudness(20) {}
+    DoubleIntegrationTimeRmsDetection()
+    {
+        aud_config_set_defaults(CONFIG_SECTION_BACKGROUND_MUSIC,
+                                background_music_defaults);
+    }
 
-    void init() override
+    void init()
     {
         update_config();
         long_integrated = target_level * target_level;
@@ -56,13 +60,19 @@ public:
         minimum_detection = target_level / maximum_amplification;
     }
 
-    void start(int channels, int rate) override
+    void start(int channels, int rate)
     {
         update_config();
-        // Configure the integrators
         release_integration = {SHORT_INTEGRATION, rate};
-        long_integration = {LONG_INTEGRATION / 2.0,
-                            rate}; // Happens before sqrt
+        /*
+         * This RMS (Root-mean-square) calculation integrates squared samples
+         * with the RC-style integrator and then draws the square root. This has
+         * the effect that rises in averages are tracked twice as fast while
+         * decreases are tracked twice as slow. As the decrease is what "counts"
+         * for the effective time the signal climbs back up after a peak, we
+         * must therefore half the integration time.
+         */
+        long_integration = {LONG_INTEGRATION / 2.0, rate};
         perceivedLoudness.set_rate_and_value(rate, target_level);
         read_ahead_ = perceivedLoudness.latency();
         minimum_detection = target_level / maximum_amplification;
@@ -81,7 +91,7 @@ public:
         }
     }
 
-    void update_config() override
+    void update_config()
     {
         static constexpr auto SECTION = CONFIG_SECTION_BACKGROUND_MUSIC;
         target_level = decibel_level_to_value(
@@ -92,29 +102,18 @@ public:
                        CONF_MAX_AMPLIFICATION_MIN, CONF_MAX_AMPLIFICATION_MAX));
     }
 
-    void detect(const Index<float> & frame_in) override
+    void detect(const Index<float> & frame_in)
     {
-        /*
-         * Detection is based on a kind-of RMS value. The sum of the squared
-         * sample values in each frame is integrated over two time periods. The
-         * square root of those integrated values is a pretty nice indication of
-         * loudness for a first implementation. The detection does nothing fancy
-         * and just uses a weighted sum of the square roots of both
-         * integrations. In the future it will use multiple frequency bands,
-         * actual RMS, ear-loudness curves and actual perceived weighting of RMS
-         * windows.
-         */
         double square_sum = 0.0;
-        for (float sample : frame_in)
+        for (const float sample : frame_in)
         {
             square_sum += (sample * sample);
         }
         long_integration.integrate(long_integrated, square_sum);
-        double perceived = perceivedLoudness.get_mean_squared(square_sum);
-        double weighted = std::max(slow_weight * long_integrated,
+        const double perceived = perceivedLoudness.get_mean_squared(square_sum);
+        const double weighted = std::max(slow_weight * long_integrated,
                                    perceived_weight * perceived);
-        double rms = sqrt(weighted) * FUDGE_FACTOR;
-
+        const double rms = sqrt(weighted) * FUDGE_FACTOR;
         if (rms > release_integrated)
         {
             release_integrated = rms;
@@ -128,7 +127,7 @@ public:
             target_level / std::max(minimum_detection, release_integrated);
     }
 
-    void apply_detect(Index<float> & frame_out) override
+    void apply_detect(Index<float> & frame_out) const
     {
         for (float & sample : frame_out)
         {

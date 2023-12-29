@@ -19,20 +19,10 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
-#include <libaudcore/runtime.h>
 
 #include "DoubleIntegrationTimeRmsDetection.h"
 #include "FrameBasedEffectPlugin.h"
 #include "basic_config.h"
-
-/*
- * The standard "center" volume is set to 0.25 while the dynamic range is set to
- * zero, meaning all songs will be equally loud according to the detected
- * loudness, that is.
- */
-static constexpr const char * const background_music_defaults[] = {
-    CONF_TARGET_LEVEL_VARIABLE, CONF_TARGET_LEVEL_DEFAULT_STRING,
-    CONF_MAX_AMPLIFICATION_VARIABLE, CONF_MAX_AMPLIFICATION_DEFAULT_STRING};
 
 static constexpr const PreferencesWidget background_music_widgets[] = {
     WidgetLabel(N_("<b>Background music</b>")),
@@ -54,7 +44,7 @@ static constexpr const char background_music_about[] =
        "Copyright 2023 Michel Fleur");
 
 class BackgroundMusicPlugin final
-    : public FrameBasedEffectPlugin<DoubleIntegrationTimeRmsDetection>
+    : public FrameBasedEffectPlugin
 {
 public:
     static constexpr PluginInfo info = {N_("Background music (equal loudness)"),
@@ -62,16 +52,8 @@ public:
                                         &background_music_preferences};
 
     BackgroundMusicPlugin()
-        : FrameBasedEffectPlugin<DoubleIntegrationTimeRmsDetection>(info, 10)
+        : FrameBasedEffectPlugin(info, 10)
     {
-    }
-
-    bool after_init() override
-    {
-        aud_config_set_defaults(CONFIG_SECTION_BACKGROUND_MUSIC,
-                                background_music_defaults);
-        detection->init();
-        return true;
     }
 };
 
