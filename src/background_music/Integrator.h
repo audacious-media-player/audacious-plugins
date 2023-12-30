@@ -21,7 +21,14 @@
 #include <cmath>
 #include <type_traits>
 
-class Integrator
+/**
+ * Implements a classic RC-filter using an recursive filter with one input and
+ * one feedback coefficient.
+ *
+ * Output of the filter is normalized, meaning that for a constant input, the
+ * output will asymptotically approach the same amplitude.
+ */
+class IntegratorCoefficients
 {
     double history_multiplier_ = 0;
     double input_multiplier_ = 1;
@@ -31,17 +38,17 @@ public:
      * By default, the integrator does not integrate and just passes-through the
      * input.
      */
-    constexpr Integrator() = default;
+    constexpr IntegratorCoefficients() = default;
 
     /**
      * Creates an integrator over the provided number of samples.
      * @param samples The number of samples
      */
-    void set_samples(const double samples)
+    void set_samples(const double samples, const double scale = 1.0)
     {
         const double count = fabs(samples);
         history_multiplier_ = count > 0 ? exp(-1.0 / count) : 0.0;
-        input_multiplier_ = 1.0 - history_multiplier_;
+        set_scale(scale);
     }
 
     /**
@@ -50,12 +57,17 @@ public:
      * @param rate The sample rate.
      */
     template<typename Seconds, typename SampleRate>
-    void set_seconds_for_rate(const Seconds seconds, const SampleRate rate)
+    void set_seconds_for_rate(const Seconds seconds, const SampleRate rate,
+                              const double scale = 1.0)
     {
         static_assert(std::is_arithmetic_v<Seconds>);
         static_assert(std::is_arithmetic_v<SampleRate>);
 
-        set_samples(static_cast<double>(seconds) * static_cast<double>(rate));
+        set_samples(static_cast<double>(seconds) * static_cast<double>(rate), scale);
+    }
+
+    void set_scale(const double scale) {
+        input_multiplier_ = fabs(scale) * (1.0 - history_multiplier_);
     }
 
     /**
@@ -69,28 +81,25 @@ public:
     }
 };
 
-class ScaledIntegrator : public Integrator
+class Integrator : public IntegratorCoefficients
 {
-    double scale_ = 1.0;
     double integrated_ = 0;
 
 public:
-    // explicit ScaledIntegrator(const Integrator & s) : integrator_(s) {}
-    ScaledIntegrator() = default;
-
-    void integrate(double input) { Integrator::integrate(integrated_, input); }
+    template<typename T>
+    T integrate(const T input) {
+        static_assert(std::is_arithmetic_v<T>);
+        IntegratorCoefficients::integrate(integrated_, static_cast<double>(input));
+        return static_cast<T>(integrated_);
+    }
 
     void set_value(const double new_value) { integrated_ = new_value; }
 
-    void set_scale(const double new_scale)
-    {
-        if (new_scale >= 0 && new_scale <= 1e6)
-        {
-            scale_ = new_scale;
-        }
+    explicit operator const double() const {
+        return integrated_;
     }
 
-    [[nodiscard]] double integrated() const { return scale_ * integrated_; }
+    [[nodiscard]] double integrated() const { return integrated_; }
 };
 
 #endif // AUDACIOUS_PLUGINS_BGM_INTEGRATOR_H

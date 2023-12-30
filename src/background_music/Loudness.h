@@ -119,7 +119,7 @@ class PerceptiveRMS
         int window_size_ = 0;
         int latency_minus_one = 0;
         float window_multiplier_ = 1;
-        ScaledIntegrator release_;
+        Integrator release_;
 
     public:
         [[nodiscard]] float get() const
@@ -166,7 +166,7 @@ class PerceptiveRMS
     WindowedRMS rms_[steps_ + 1];
     int sample_rate_ = 0;
     int latency_ = 0;
-    Integrator smooth_release_;
+    IntegratorCoefficients smooth_release_;
     double smooth_release_int1_ = 0.0;
     double smooth_release_int2 = 0.0;
     int hold_samples_ = 0;

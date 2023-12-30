@@ -26,8 +26,8 @@
 
 class LoudnessFrameProcessor
 {
-    static constexpr float SHORT_INTEGRATION = 0.8;
-    static constexpr float LONG_INTEGRATION = 6.3;
+    static constexpr float SHORT_INTEGRATION = 0.001;
+    static constexpr float LONG_INTEGRATION = 0.001;
     /*
      * This adjusts the RMS measurement so that it's displayed correctly
      * in the audacious VU meter. It is actually, wrong, but helps with
@@ -35,9 +35,8 @@ class LoudnessFrameProcessor
      */
     static constexpr float VU_FUDGE_FACTOR = 3.0f;
 
-
-    Integrator release_integration;
-    Integrator long_integration;
+    IntegratorCoefficients release_integration;
+    IntegratorCoefficients long_integration;
     double long_integrated = 0, release_integrated = 0;
     /**
      * Perceptive loudness.
