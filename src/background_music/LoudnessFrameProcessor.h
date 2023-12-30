@@ -26,23 +26,19 @@
 
 class LoudnessFrameProcessor
 {
-    static constexpr float SHORT_INTEGRATION = 0.001;
-    static constexpr float LONG_INTEGRATION = 0.001;
+    static constexpr float SHORT_INTEGRATION = 0.4;
+    static constexpr float LONG_INTEGRATION = 6.3;
     /*
-     * This adjusts the RMS measurement so that it's displayed correctly
-     * in the audacious VU meter. It is actually, wrong, but helps with
-     * expectation management, as people are normally not used to RMS.
+     * This adjusts the slow RMS measurement so that it's displayed correctly
+     * in the audacious VU meter. This only helps for expectation management.
      */
-    static constexpr float VU_FUDGE_FACTOR = 3.0f;
+    static constexpr float SLOW_VU_FUDGE_FACTOR = 2.0f;
+    static constexpr float FAST_VU_FUDGE_FACTOR = 3.0f;
 
-    IntegratorCoefficients release_integration;
-    IntegratorCoefficients long_integration;
-    double long_integrated = 0, release_integrated = 0;
-    /**
-     * Perceptive loudness.
-     */
+    Integrator release_integration;
+    Integrator long_integration;
     PerceptiveRMS perceivedLoudness;
-    float slow_weight = 0, perceived_weight = 0;
+    float slow_weight = 0;
     float target_level = 0.1;
     float maximum_amplification = 1;
     float perception_slow_balance = 0.3;
@@ -79,8 +75,8 @@ public:
     void init()
     {
         update_config();
-        long_integrated = 0;
-        release_integrated = target_level * target_level;
+        long_integration.set_output(0);
+        release_integration.set_output(target_level * target_level);
         minimum_detection = target_level / maximum_amplification;
     }
 
@@ -90,6 +86,8 @@ public:
         channels_ = channels;
         processed_frames = 0;
         release_integration.set_seconds_for_rate(SHORT_INTEGRATION, rate);
+        long_integration.set_seconds_for_rate(LONG_INTEGRATION / 2.0, rate,
+                                              slow_weight);
         /*
          * This RMS (Root-mean-square) calculation integrates squared samples
          * with the RC-style integrator and then draws the square root. This has
@@ -98,11 +96,10 @@ public:
          * for the effective time the signal climbs back up after a peak, we
          * must therefore half the integration time.
          */
-        long_integration.set_seconds_for_rate(LONG_INTEGRATION / 2.0, rate);
         perceivedLoudness.set_rate_and_value(rate, target_level);
         // As data is added, then fetched, we need 1 extra frame in the buffer.
         const int alloc_size = channels_ * (latency() + 1);
-        
+
         if (read_ahead_buffer.size() < alloc_size)
         {
             read_ahead_buffer.alloc(alloc_size);
@@ -120,22 +117,23 @@ public:
         perception_slow_balance = get_clamped_value(
             CONF_BALANCE_VARIABLE, CONF_BALANCE_MIN, CONF_BALANCE_MAX);
         minimum_detection = target_level / maximum_amplification;
-
         if (perception_slow_balance < 0)
         {
-            perceived_weight = 1.0;
             slow_weight =
                 std::clamp(1.0f + perception_slow_balance, 0.0f, 1.0f);
         }
         else
         {
-            perceived_weight = 1.0;
-            slow_weight = std::clamp(1.0f + perception_slow_balance, 1.0f, 2.0f);
+            slow_weight =
+                std::clamp(1.0f + perception_slow_balance, 1.0f, 2.0f);
         }
+        slow_weight *= SLOW_VU_FUDGE_FACTOR;
         slow_weight *= slow_weight;
+        long_integration.set_scale(slow_weight);
     }
 
-    bool process_has_output(const Index<float> &frame_in, Index<float> &frame_out)
+    bool process_has_output(const Index<float> & frame_in,
+                            Index<float> & frame_out)
     {
         read_ahead_buffer.copy_in(frame_in.begin(), channels_);
 
@@ -149,23 +147,25 @@ public:
         }
         square_sum /= static_cast<float>(channels_);
         square_sum += square_max;
-        long_integration.integrate(long_integrated, square_sum);
-        const double perceived = perceivedLoudness.get_mean_squared(square_sum);
-        const double weighted = std::max(slow_weight * long_integrated,
-                                         perceived_weight * perceived);
-        const double rms = sqrt(weighted) * VU_FUDGE_FACTOR;
-        if (rms > release_integrated)
+        const float perceived = FAST_VU_FUDGE_FACTOR *
+                                perceivedLoudness.get_mean_squared(square_sum);
+        const double weighted =
+            std::max(long_integration.integrate(square_sum), perceived);
+        const double rms = sqrt(weighted);
+
+        if (rms > release_integration.get_output())
         {
-            release_integrated = rms;
+            release_integration.set_output(rms);
         }
         else
         {
-            release_integration.integrate(release_integrated, rms);
+            release_integration.integrate(rms);
         }
 
         const float gain =
             target_level /
-            std::max(minimum_detection, static_cast<float>(release_integrated));
+            std::max(minimum_detection,
+                     static_cast<float>(release_integration.get_output()));
 
         if (processed_frames >= latency())
         {
@@ -181,10 +181,7 @@ public:
         return false;
     }
 
-    void discard_buffer()
-    {
-        read_ahead_buffer.discard();
-    }
+    void discard_buffer() { read_ahead_buffer.discard(); }
 };
 
 #endif // AUDACIOUS_PLUGINS_BGM_LOUDNESS_FRAME_PROCESSOR_H

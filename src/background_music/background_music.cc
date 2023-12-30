@@ -35,8 +35,7 @@ static constexpr const PreferencesWidget background_music_widgets[] = {
     WidgetSpin(
         N_("Detection Balance\n(-1=perception; 1=slow)"),
         WidgetFloat(CONFIG_SECTION_BACKGROUND_MUSIC, CONF_BALANCE_VARIABLE),
-        {CONF_BALANCE_MIN, CONF_BALANCE_MAX, 0.1})
-};
+        {CONF_BALANCE_MIN, CONF_BALANCE_MAX, 0.1})};
 
 static constexpr const PluginPreferences background_music_preferences = {
     {background_music_widgets}};

@@ -22,148 +22,106 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
-
 #include <libaudcore/ringbuf.h>
 
 /**
  * Tools to detect perceived loudness.
  */
-class Loudness
+struct Loudness
 {
-public:
-    /**
-     * Loudness perception (IBU R128 if I'm correct) based on RMS measurement.
-     */
+    static constexpr float perception_center_seconds = 0.400;
+    static constexpr float perception_fast_seconds = 0.001;
+    static constexpr float perception_peak_seconds = 0.00001;
+    static constexpr float perception_weight_power = 0.25;
+    static constexpr float max_prediction = 0.03;
+    static constexpr float window_percentage = 1.0;
+
     struct Metrics
     {
-        static constexpr float perception_center_seconds = 0.400;
-        static constexpr float perception_peak_seconds = 0.0003;
-        static constexpr float perception_weight_power = 0.25;
-
-        static constexpr float get_relative_seconds(const float seconds)
-        {
-            return std::clamp(seconds, perception_peak_seconds,
-                              perception_center_seconds) /
-                   perception_center_seconds;
-        }
-
-        static constexpr float get_weight(const float seconds)
-        {
-            return powf(get_relative_seconds(seconds), perception_weight_power);
-        }
-    };
-
-    struct WindowMetrics
-    {
         int window_samples = 1;
-        int latency_samples = 1;
+        int latency_samples = 0;
         float weight = 0;
-
-        [[nodiscard]] WindowMetrics
-        squaredAndScaled(const float input_scale) const
-        {
-            return {window_samples, latency_samples,
-                    weight * weight / input_scale};
-        }
     };
 
-    /**
-     * Provides tools to create equidistant RMS window sizes for perceptive
-     * measurement between the perceptive center and perceptive peak. It
-     * provides the seconds and weight for a certain step. Step 0 always
-     * yields the center window and step N, denoted as "of" parameters,
-     * yields the peak window.
-     */
-    struct Spread
+    static constexpr float get_weight(const float seconds)
     {
-        static constexpr float max_prediction = 0.03;
-        static constexpr float window_percentage = 1.0;
+        const float relative = std::clamp(seconds, perception_peak_seconds,
+                                          perception_center_seconds) /
+                               perception_center_seconds;
+        return powf(relative, perception_weight_power);
+    }
+    static int get_samples(const float seconds, const int rate)
+    {
+        return std::max(1, static_cast<int>(
+                               roundf(seconds * static_cast<float>(rate))));
+    }
 
-        static int get_samples(const float seconds, const int rate)
-        {
-            return std::max(1, static_cast<int>(
-                                   roundf(seconds * static_cast<float>(rate))));
-        }
+    static Metrics get_metrics(const int step, const int of,
+                                     const int rate)
+    {
+        static constexpr float peak_perception_ratio =
+            perception_fast_seconds /
+            perception_center_seconds;
 
-        static WindowMetrics get_metrics(const int step, const int of,
-                                         const int rate)
-        {
-            static constexpr float peak_perception_ratio =
-                Metrics::perception_peak_seconds /
-                Metrics::perception_center_seconds;
+        const float log_ratio =
+            of > 0 ? static_cast<float>(std::clamp(step, 0, of)) /
+                         static_cast<float>(of)
+                   : 1.0f;
+        const float seconds = perception_center_seconds *
+                              powf(peak_perception_ratio, log_ratio);
 
-            const float log_ratio =
-                of > 0 ? static_cast<float>(std::clamp(step, 0, of)) /
-                             static_cast<float>(of)
-                       : 1.0f;
-            const float seconds = Metrics::perception_center_seconds *
-                                  powf(peak_perception_ratio, log_ratio);
+        const float latency =
+            std::min(seconds * window_percentage, max_prediction);
 
-            const float latency =
-                std::min(seconds * window_percentage, max_prediction);
-
-            return {get_samples(seconds, rate), get_samples(latency, rate),
-                    Metrics::get_weight(seconds)};
-        }
-    };
+        return {get_samples(seconds, rate), get_samples(latency, rate),
+                get_weight(seconds)};
+    }
 };
 
 class PerceptiveRMS
 {
-    static constexpr int steps_ = 20;
-    static constexpr float input_scale_ = 4e9f;
+    static constexpr int STEPS = 24;
+    static constexpr float INPUT_SCALE = 4e9f;
+    static constexpr float OUTPUT_SCALE = 1.0f / INPUT_SCALE;
 
     class WindowedRMS
     {
         uint64_t window_sum_ = 0;
         int window_size_ = 0;
         int latency_minus_one = 0;
-        float window_multiplier_ = 1;
-        Integrator release_;
+        float scale_;
+        float output_;
 
     public:
-        [[nodiscard]] float get() const
-        {
-            return window_multiplier_ *
-                   static_cast<float>(release_.integrated());
-        }
+        [[nodiscard]] float get() const { return output_; }
 
         float add_and_take_and_get(uint64_t add, uint64_t take)
         {
             window_sum_ += add;
             window_sum_ -= take;
-            const auto sum = static_cast<double>(window_sum_);
-            if (sum > release_.integrated())
-            {
-                release_.set_value(sum);
-            }
-            else
-            {
-                release_.integrate(static_cast<float>(sum));
-            }
-            return get();
+            const auto sum = static_cast<float>(window_sum_);
+            output_ = scale_ * sum;
+            return output_;
         }
 
-        void set_multiplier(const Loudness::WindowMetrics & metrics)
+        void configure(const Loudness::Metrics & metrics)
         {
             window_size_ = metrics.window_samples;
-            window_multiplier_ =
-                metrics.weight / static_cast<float>(window_size_);
             latency_minus_one = std::max(0, metrics.latency_samples - 1);
-            release_.set_samples(static_cast<float>(window_size_));
+            scale_ = metrics.weight * metrics.weight /
+                     static_cast<float>(window_size_);
+            window_sum_ = 0;
+            output_ = 0;
         }
 
-        void set_value(uint64_t value)
+        [[nodiscard]] int delayed_sample_index() const
         {
-            window_sum_ = static_cast<uint64_t>(std::round(
-                static_cast<float>(value * window_sum_) / window_multiplier_));
+            return latency_minus_one;
         }
-
-        [[nodiscard]] int latency() const { return latency_minus_one; }
     };
 
     RingBuf<uint64_t> buffer_;
-    WindowedRMS rms_[steps_ + 1];
+    WindowedRMS rms_[STEPS + 1];
     int sample_rate_ = 0;
     int latency_ = 0;
     IntegratorCoefficients smooth_release_;
@@ -171,33 +129,29 @@ class PerceptiveRMS
     double smooth_release_int2 = 0.0;
     int hold_samples_ = 0;
     int hold_count_ = 0;
+    const float peak_weight_ = Loudness::get_weight(0.0);
 
-    void init_detection()
+        void init_detection()
     {
         const auto max_metrics =
-            Loudness::Spread::get_metrics(0, steps_, sample_rate_);
-
-        for (int step = 0; step <= steps_; step++)
-        {
-            const Loudness::WindowMetrics metrics =
-                Loudness::Spread::get_metrics(step, steps_, sample_rate_)
-                    .squaredAndScaled(input_scale_);
-            WindowedRMS & rms = rms_[step];
-            rms.set_multiplier(metrics);
-            rms.set_value(0);
-        }
-
+            Loudness::get_metrics(0, STEPS, sample_rate_);
         latency_ = max_metrics.latency_samples;
-        smooth_release_.set_samples(0.5 * max_metrics.window_samples);
-        hold_samples_ = max_metrics.window_samples / 2;
+        smooth_release_.set_samples(max_metrics.window_samples);
+        hold_samples_ = max_metrics.window_samples;
         hold_count_ = 0;
+
+        for (int step = 0; step <= STEPS; step++)
+        {
+            rms_[step].configure(
+                Loudness::get_metrics(step, STEPS, sample_rate_));
+        }
     }
 
     [[nodiscard]] uint64_t static squared_value_to_internal_value(
         const float squared_value)
     {
         return static_cast<uint64_t>(
-            fabsf(std::round(squared_value * input_scale_)));
+            fabsf(std::round(squared_value * INPUT_SCALE)));
     }
 
 public:
@@ -229,15 +183,18 @@ public:
         buffer_.push(internal_value);
 
         float max = rms_[0].add_and_take_and_get(internal_value, oldest);
+        max = std::max(max, static_cast<float>(internal_value) * peak_weight_);
 
-        for (int step = 1; step <= steps_; step++)
+        for (int step = 1; step <= STEPS; step++)
         {
             WindowedRMS & rms = rms_[step];
-            const auto input = buffer_.nth_from_last(rms.latency());
+            const auto delayed_input =
+                buffer_.nth_from_last(rms.delayed_sample_index());
             const auto step_value =
-                rms.add_and_take_and_get(internal_value, input);
+                rms.add_and_take_and_get(internal_value, delayed_input);
             max = std::max(max, step_value);
         }
+        max *= OUTPUT_SCALE;
         if (hold_samples_ && max > smooth_release_int2)
         {
             smooth_release_int1_ = smooth_release_int2 = max;
@@ -247,9 +204,11 @@ public:
         {
             hold_count_--;
         }
-        else {
+        else
+        {
             smooth_release_.integrate(smooth_release_int1_, max);
-            smooth_release_.integrate(smooth_release_int2, smooth_release_int1_);
+            smooth_release_.integrate(smooth_release_int2,
+                                      smooth_release_int1_);
         }
         return static_cast<float>(smooth_release_int2);
     }

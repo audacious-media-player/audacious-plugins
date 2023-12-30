@@ -63,10 +63,12 @@ public:
         static_assert(std::is_arithmetic_v<Seconds>);
         static_assert(std::is_arithmetic_v<SampleRate>);
 
-        set_samples(static_cast<double>(seconds) * static_cast<double>(rate), scale);
+        set_samples(static_cast<double>(seconds) * static_cast<double>(rate),
+                    scale);
     }
 
-    void set_scale(const double scale) {
+    void set_scale(const double scale)
+    {
         input_multiplier_ = fabs(scale) * (1.0 - history_multiplier_);
     }
 
@@ -87,19 +89,17 @@ class Integrator : public IntegratorCoefficients
 
 public:
     template<typename T>
-    T integrate(const T input) {
+    T integrate(const T input)
+    {
         static_assert(std::is_arithmetic_v<T>);
-        IntegratorCoefficients::integrate(integrated_, static_cast<double>(input));
+        IntegratorCoefficients::integrate(integrated_,
+                                          static_cast<double>(input));
         return static_cast<T>(integrated_);
     }
 
-    void set_value(const double new_value) { integrated_ = new_value; }
+    void set_output(const double new_value) { integrated_ = new_value; }
 
-    explicit operator const double() const {
-        return integrated_;
-    }
-
-    [[nodiscard]] double integrated() const { return integrated_; }
+    [[nodiscard]] double get_output() const { return integrated_; }
 };
 
 #endif // AUDACIOUS_PLUGINS_BGM_INTEGRATOR_H

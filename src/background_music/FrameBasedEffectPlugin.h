@@ -105,8 +105,8 @@ public:
 
     int adjust_delay(int delay) final
     {
-        auto result = aud::rescale<int64_t>(
-            detection.latency(), current_rate, 1000);
+        auto result =
+            aud::rescale<int64_t>(detection.latency(), current_rate, 1000);
         result += delay;
         return static_cast<int>(result);
     }
