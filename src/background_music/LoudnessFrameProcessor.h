@@ -145,10 +145,15 @@ public:
         read_ahead_buffer.copy_in(frame_in.begin(), channels_);
 
         float square_sum = 0.0;
+        float square_max = 0.0;
         for (const float sample : frame_in)
         {
-            square_sum += (sample * sample);
+            const float square = sample * sample;
+            square_max = std::max(square_max, square);
+            square_sum += square;
         }
+        square_sum /= channels_;
+        square_sum += square_max;
         long_integration.integrate(long_integrated, square_sum);
         const double perceived = perceivedLoudness.get_mean_squared(square_sum);
         const double weighted = std::max(slow_weight * long_integrated,
