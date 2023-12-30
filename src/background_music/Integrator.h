@@ -28,22 +28,6 @@ class Integrator
 
 public:
     /**
-     * Returns the history multiplier for integration over the provided number
-     * of samples, that can be a fraction. If the fraction is smaller than
-     * \c minimum_samples, zero is returned. If the number is bigger than
-     * \c code maximum_samples the history multiplier for \c maximum_samples} is
-     * returned.
-     * @param samples The number of samples
-     * @return The history multiplier that is equal or larger than zero and
-     * smaller than 1.
-     */
-    static inline double
-    calculate_history_multiplier_from_samples(double samples)
-    {
-        return exp(-1.0 / fabs(samples));
-    }
-
-    /**
      * By default, the integrator does not integrate and just passes-through the
      * input.
      */

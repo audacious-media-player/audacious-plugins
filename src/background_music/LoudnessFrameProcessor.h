@@ -35,11 +35,7 @@ class LoudnessFrameProcessor
      */
     static constexpr float VU_FUDGE_FACTOR = 3.0f;
 
-    /**
-     * These integrators and integrated values are double floats, as their
-     * integration times are relatively long and that can give accuracy
-     * problems when using ordinary floats.
-     */
+
     Integrator release_integration;
     Integrator long_integration;
     double long_integrated = 0, release_integrated = 0;
@@ -152,7 +148,7 @@ public:
             square_max = std::max(square_max, square);
             square_sum += square;
         }
-        square_sum /= channels_;
+        square_sum /= static_cast<float>(channels_);
         square_sum += square_max;
         long_integration.integrate(long_integrated, square_sum);
         const double perceived = perceivedLoudness.get_mean_squared(square_sum);

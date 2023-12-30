@@ -159,7 +159,6 @@ class PerceptiveRMS
                 static_cast<float>(value * window_sum_) / window_multiplier_));
         }
 
-        [[nodiscard]] int window_size() const { return window_size_; }
         [[nodiscard]] int latency() const { return latency_minus_one; }
     };
 

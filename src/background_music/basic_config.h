@@ -35,7 +35,6 @@ static constexpr double CONF_MAX_AMPLIFICATION_MAX = 40.0;
 
 static constexpr const char * CONF_BALANCE_VARIABLE = "perception_slow_balance";
 static constexpr const char * CONF_BALANCE_DEFAULT_STRING = "0.3";
-static constexpr double CONF_BALANCE_DEFAULT_VALUE = 0.0;
 static constexpr double CONF_BALANCE_MIN = -1.0;
 static constexpr double CONF_BALANCE_MAX = 1.0;
 

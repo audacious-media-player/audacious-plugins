@@ -19,7 +19,6 @@
 #include "FrameBasedEffectPlugin.h"
 #include "basic_config.h"
 #include <libaudcore/i18n.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
 static constexpr const PreferencesWidget background_music_widgets[] = {
