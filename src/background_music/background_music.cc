@@ -17,7 +17,6 @@
  * the use of this software.
  */
 #include "FrameBasedEffectPlugin.h"
-#include "basic_config.h"
 #include <libaudcore/i18n.h>
 #include <libaudcore/preferences.h>
 

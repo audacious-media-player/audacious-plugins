@@ -52,23 +52,21 @@ struct Loudness
     }
     static int get_samples(const float seconds, const int rate)
     {
-        return std::max(1, static_cast<int>(
-                               roundf(seconds * static_cast<float>(rate))));
+        return std::max(
+            1, static_cast<int>(roundf(seconds * static_cast<float>(rate))));
     }
 
-    static Metrics get_metrics(const int step, const int of,
-                                     const int rate)
+    static Metrics get_metrics(const int step, const int of, const int rate)
     {
         static constexpr float peak_perception_ratio =
-            perception_fast_seconds /
-            perception_center_seconds;
+            perception_fast_seconds / perception_center_seconds;
 
         const float log_ratio =
             of > 0 ? static_cast<float>(std::clamp(step, 0, of)) /
                          static_cast<float>(of)
                    : 1.0f;
-        const float seconds = perception_center_seconds *
-                              powf(peak_perception_ratio, log_ratio);
+        const float seconds =
+            perception_center_seconds * powf(peak_perception_ratio, log_ratio);
 
         const float latency =
             std::min(seconds * window_percentage, max_prediction);
@@ -124,21 +122,15 @@ class PerceptiveRMS
     WindowedRMS rms_[STEPS + 1];
     int sample_rate_ = 0;
     int latency_ = 0;
-    IntegratorCoefficients smooth_release_;
-    double smooth_release_int1_ = 0.0;
-    double smooth_release_int2 = 0.0;
-    int hold_samples_ = 0;
-    int hold_count_ = 0;
+    FastAttackSmoothRelease smooth_release_;
     const float peak_weight_ = Loudness::get_weight(0.0);
 
-        void init_detection()
+    void init_detection()
     {
-        const auto max_metrics =
-            Loudness::get_metrics(0, STEPS, sample_rate_);
+        const auto max_metrics = Loudness::get_metrics(0, STEPS, sample_rate_);
         latency_ = max_metrics.latency_samples;
-        smooth_release_.set_samples(max_metrics.window_samples);
-        hold_samples_ = max_metrics.window_samples;
-        hold_count_ = 0;
+        smooth_release_.set_samples(max_metrics.window_samples,
+                                    max_metrics.window_samples);
 
         for (int step = 0; step <= STEPS; step++)
         {
@@ -195,22 +187,7 @@ public:
             max = std::max(max, step_value);
         }
         max *= OUTPUT_SCALE;
-        if (hold_samples_ && max > smooth_release_int2)
-        {
-            smooth_release_int1_ = smooth_release_int2 = max;
-            hold_count_ = hold_samples_;
-        }
-        else if (hold_count_)
-        {
-            hold_count_--;
-        }
-        else
-        {
-            smooth_release_.integrate(smooth_release_int1_, max);
-            smooth_release_.integrate(smooth_release_int2,
-                                      smooth_release_int1_);
-        }
-        return static_cast<float>(smooth_release_int2);
+        return smooth_release_.get_envelope(max);
     }
 };
 

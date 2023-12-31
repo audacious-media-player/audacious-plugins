@@ -35,7 +35,7 @@ class LoudnessFrameProcessor
     static constexpr float SLOW_VU_FUDGE_FACTOR = 2.0f;
     static constexpr float FAST_VU_FUDGE_FACTOR = 3.0f;
 
-    Integrator release_integration;
+    FastAttackSmoothRelease release_integration;
     Integrator long_integration;
     PerceptiveRMS perceivedLoudness;
     float slow_weight = 0;
@@ -85,7 +85,7 @@ public:
         update_config();
         channels_ = channels;
         processed_frames = 0;
-        release_integration.set_seconds_for_rate(SHORT_INTEGRATION, rate);
+        release_integration.set_seconds_for_rate(SHORT_INTEGRATION, rate, 0);
         long_integration.set_seconds_for_rate(LONG_INTEGRATION / 2.0, rate,
                                               slow_weight);
         /*
@@ -151,21 +151,13 @@ public:
                                 perceivedLoudness.get_mean_squared(square_sum);
         const double weighted =
             std::max(long_integration.integrate(square_sum), perceived);
-        const double rms = sqrt(weighted);
 
-        if (rms > release_integration.get_output())
-        {
-            release_integration.set_output(rms);
-        }
-        else
-        {
-            release_integration.integrate(rms);
-        }
+        const double rms = sqrt(weighted);
 
         const float gain =
             target_level /
             std::max(minimum_detection,
-                     static_cast<float>(release_integration.get_output()));
+                     static_cast<float>(release_integration.get_envelope(rms)));
 
         if (processed_frames >= latency())
         {
