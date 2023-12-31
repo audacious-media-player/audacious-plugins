@@ -97,8 +97,7 @@ public:
          * must therefore half the integration time.
          */
         perceivedLoudness.set_rate_and_value(rate, target_level);
-        // As data is added, then fetched, we need 1 extra frame in the buffer.
-        const int alloc_size = channels_ * (latency() + 1);
+        const int alloc_size = channels_ * latency();
 
         if (read_ahead_buffer.size() < alloc_size)
         {
@@ -135,7 +134,21 @@ public:
     bool process_has_output(const Index<float> & frame_in,
                             Index<float> & frame_out)
     {
+        bool has_output_data = processed_frames >= latency();
+        if (has_output_data)
+        {
+            read_ahead_buffer.move_out(frame_out.begin(), channels_);
+        }
+        else
+        {
+            processed_frames++;
+        }
         read_ahead_buffer.copy_in(frame_in.begin(), channels_);
+
+        /*
+         * Following calculations need to happen to anticipate the (future)
+         * output.
+         */
 
         float square_sum = 0.0;
         float square_max = 0.0;
@@ -159,18 +172,15 @@ public:
             std::max(minimum_detection,
                      static_cast<float>(release_integration.get_envelope(rms)));
 
-        if (processed_frames >= latency())
+        if (has_output_data)
         {
-            read_ahead_buffer.move_out(frame_out.begin(), channels_);
             for (float & sample : frame_out)
             {
                 sample *= gain;
             }
-            return true;
         }
-        processed_frames++;
 
-        return false;
+        return has_output_data;
     }
 
     void discard_buffer() { read_ahead_buffer.discard(); }
