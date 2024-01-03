@@ -98,7 +98,8 @@ void* AmpacheBrowserPlugin::get_qt_widget()
     s_app.capture(new ampache_browser::ApplicationQt);
 
     s_app->setNetworkRequestFunction([](const std::string& url, NetworkCb& networkCb) {
-        vfs_async_file_get_contents(url.c_str(), vfsAsyncCb, &networkCb);
+        using namespace std::placeholders;
+        vfs_async_file_get_contents(url.c_str(), std::bind(vfsAsyncCb, _1, _2, &networkCb));
     });
 
     auto& browser = s_app->getAmpacheBrowser();
