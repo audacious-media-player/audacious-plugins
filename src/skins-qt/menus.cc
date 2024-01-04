@@ -64,7 +64,7 @@ static const audqt::MenuItem output_items[] = {
     audqt::MenuCommand ({N_("Volume Up"), "audio-volume-high", "+"}, skins_volume_up),
     audqt::MenuCommand ({N_("Volume Down"), "audio-volume-low", "-"}, skins_volume_down),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("Effects ...")}, configure_effects),
+    audqt::MenuCommand ({N_("Effects ..."), "preferences-system"}, configure_effects),
     audqt::MenuSep (),
     audqt::MenuToggle ({N_("Record Stream"), "media-record", "D"}, {nullptr, "record", "set record"}),
     audqt::MenuCommand ({N_("Audio Settings ..."), "audio-card"}, configure_output)
@@ -149,7 +149,7 @@ static const audqt::MenuItem view_items[] = {
     audqt::MenuToggle ({N_("Roll Up Playlist Editor"), nullptr, "Shift+Ctrl+W"}, {"skins", "playlist_shaded", "skins set playlist_shaded"}, view_apply_playlist_shaded),
     audqt::MenuToggle ({N_("Roll Up Equalizer"), nullptr, "Ctrl+Alt+W"}, {"skins", "equalizer_shaded", "skins set equalizer_shaded"}, view_apply_equalizer_shaded),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("_Visualizations ...")}, configure_visualizations)
+    audqt::MenuCommand ({N_("_Visualizations ..."), "preferences-system"}, configure_visualizations)
 };
 
 static const audqt::MenuItem playlist_add_items[] = {

@@ -74,7 +74,7 @@ static const AudguiMenuItem output_items[] = {
     MenuCommand (N_("Volume Up"), "audio-volume-high", '+', NO_MOD, skins_volume_up),
     MenuCommand (N_("Volume Down"), "audio-volume-low", '-', NO_MOD, skins_volume_down),
     MenuSep (),
-    MenuCommand (N_("Effects ..."), nullptr, NO_KEY, configure_effects),
+    MenuCommand (N_("Effects ..."), "preferences-system", NO_KEY, configure_effects),
     MenuSep (),
     MenuToggle (N_("Record Stream"), nullptr, 'd', NO_MOD, nullptr, "record", nullptr, "set record"),
     MenuCommand (N_("Audio Settings ..."), "audio-card", NO_KEY, configure_output)
@@ -154,7 +154,7 @@ static const AudguiMenuItem view_items[] = {
     MenuToggle (N_("Roll Up Playlist Editor"), nullptr, 'w', SHIFT_CTRL, "skins", "playlist_shaded", view_apply_playlist_shaded, "skins set playlist_shaded"),
     MenuToggle (N_("Roll Up Equalizer"), nullptr, 'w', CTRL_ALT, "skins", "equalizer_shaded", view_apply_equalizer_shaded, "skins set equalizer_shaded"),
     MenuSep (),
-    MenuCommand (N_("_Visualizations ..."), nullptr, NO_KEY, configure_visualizations)
+    MenuCommand (N_("_Visualizations ..."), "preferences-system", NO_KEY, configure_visualizations)
 };
 
 static const AudguiMenuItem playlist_add_items[] = {
