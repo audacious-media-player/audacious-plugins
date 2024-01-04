@@ -1175,7 +1175,7 @@ static void popup_menu (GtkMenu * menu, const GdkEvent * event)
     gtk_menu_popup_at_pointer (menu, event);
 #else
     GdkEventButton * button_event = (GdkEventButton *) event;
-    gtk_menu_popup ((GtkMenu *) menu, nullptr, nullptr, nullptr, nullptr,
+    gtk_menu_popup (menu, nullptr, nullptr, nullptr, nullptr,
      button_event->button, button_event->time);
 #endif
 }

@@ -179,7 +179,7 @@ static const AudguiMenuItem output_items[] = {
     MenuCommand (N_("Volume _Down"), "audio-volume-low", '-', CTRL, volume_down),
     MenuSep (),
     MenuCommand (N_("_Equalizer ..."), "multimedia-volume-control", 'e', CTRL, audgui_show_equalizer_window),
-    MenuCommand (N_("E_ffects ..."), nullptr, NONE, configure_effects),
+    MenuCommand (N_("E_ffects ..."), "preferences-system", NONE, configure_effects),
     MenuSep (),
     MenuToggle (N_("_Record Stream"), nullptr, 'd', CTRL, nullptr, "record", nullptr, "set record"),
     MenuCommand (N_("Audio _Settings ..."), "audio-card", NONE, configure_output)
@@ -194,7 +194,7 @@ static const AudguiMenuItem view_items[] = {
     MenuSep (),
     MenuToggle (N_("Show _Remaining Time"), nullptr, 'r', SHIFT_CTRL, "gtkui", "show_remaining_time"),
     MenuSep (),
-    MenuCommand (N_("_Visualizations ..."), nullptr, NONE, configure_visualizations)
+    MenuCommand (N_("_Visualizations ..."), "preferences-system", NONE, configure_visualizations)
 };
 
 static const AudguiMenuItem main_items[] = {
