@@ -18,6 +18,8 @@
  * implied. In no event shall the authors be liable for any damages arising from
  * the use of this software.
  */
+
+#include <algorithm>
 #include <cmath>
 #include <type_traits>
 
