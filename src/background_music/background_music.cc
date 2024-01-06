@@ -22,28 +22,42 @@
 
 static constexpr const PreferencesWidget background_music_widgets[] = {
     WidgetLabel(N_("<b>Background music</b>")),
-    WidgetSpin(N_("Target level (dB)"),
+    WidgetSpin(N_("Target level:"),
                WidgetFloat(CONFIG_SECTION_BACKGROUND_MUSIC,
                            CONF_TARGET_LEVEL_VARIABLE),
-               {CONF_TARGET_LEVEL_MIN, CONF_TARGET_LEVEL_MAX, 1.0}),
-    WidgetSpin(N_("Maximum amplification"),
+               {CONF_TARGET_LEVEL_MIN, CONF_TARGET_LEVEL_MAX, 1.0, N_("dB")}),
+    WidgetSpin(N_("Maximum amplification:"),
                WidgetFloat(CONFIG_SECTION_BACKGROUND_MUSIC,
                            CONF_MAX_AMPLIFICATION_VARIABLE),
-               {CONF_MAX_AMPLIFICATION_MIN, CONF_MAX_AMPLIFICATION_MAX, 1.0}),
+               {CONF_MAX_AMPLIFICATION_MIN, CONF_MAX_AMPLIFICATION_MAX, 1.0,
+                N_("dB")}),
     WidgetLabel(N_("<b>Advanced</b>")),
     WidgetSpin(
-        N_("Detection Balance\n(-1=perception; 1=slow)"),
-        WidgetFloat(CONFIG_SECTION_BACKGROUND_MUSIC, CONF_BALANCE_VARIABLE),
-        {CONF_BALANCE_MIN, CONF_BALANCE_MAX, 0.1})};
+        N_("Slow detection weight:"),
+        WidgetFloat(CONFIG_SECTION_BACKGROUND_MUSIC, CONF_SLOW_WEIGHT_VARIABLE),
+        {CONF_SLOW_WEIGHT_MIN, CONF_SLOW_WEIGHT_MAX, 0.1}),
+    WidgetLabel(N_("<b>Hint</b>")),
+    WidgetLabel(
+        N_("Slow detection weight is the relative weight\n"
+           "of a long term average detection when compared\n"
+           "to the actual, faster loudness detection.\n"
+           "A value of zero gives a more radio-like sound\n"
+           "where soft passages get \"pulled up\" more quickly,\n"
+           "a value of two makes the sound feel less compressed."))};
 
 static constexpr const PluginPreferences background_music_preferences = {
     {background_music_widgets}};
 
 static constexpr const char background_music_about[] =
-    N_("Background music (equal loudness) Plugin for Audacious\n"
-       "Copyright 2023 Michel Fleur");
+    N_("Background Music Plugin for Audacious\n"
+       "Copyright 2023;2024 Michel Fleur\n\n"
+       "Controls the volume to make the sound equally loud within and between "
+       "tracks.\n "
+       "It uses accurate loudness measurement and tries to make the volume "
+       "changes sound natural without audible peaks, yet without lowering "
+       "the volume before a peak in advance.");
 
 [[maybe_unused]] EXPORT FrameBasedEffectPlugin
-    aud_plugin_instance({N_("Background music (equal loudness)"), PACKAGE,
+    aud_plugin_instance({N_("Background Music"), PACKAGE,
                          background_music_about, &background_music_preferences},
                         10);

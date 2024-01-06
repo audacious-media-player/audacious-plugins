@@ -33,17 +33,17 @@ static constexpr const char * CONF_MAX_AMPLIFICATION_DEFAULT_STRING = "10.0";
 static constexpr double CONF_MAX_AMPLIFICATION_MIN = 0.0;
 static constexpr double CONF_MAX_AMPLIFICATION_MAX = 40.0;
 
-static constexpr const char * CONF_BALANCE_VARIABLE = "perception_slow_balance";
-static constexpr const char * CONF_BALANCE_DEFAULT_STRING = "0.3";
-static constexpr double CONF_BALANCE_MIN = -1.0;
-static constexpr double CONF_BALANCE_MAX = 1.0;
+static constexpr const char * CONF_SLOW_WEIGHT_VARIABLE = "perception_slow_weight";
+static constexpr const char * CONF_SLOW_WEIGHT_DEFAULT_STRING = "1.0";
+static constexpr double CONF_SLOW_WEIGHT_MIN = 0.0;
+static constexpr double CONF_SLOW_WEIGHT_MAX = 2.0;
 
 static constexpr const char * const background_music_defaults[] = {
     CONF_TARGET_LEVEL_VARIABLE, CONF_TARGET_LEVEL_DEFAULT_STRING,
     //
     CONF_MAX_AMPLIFICATION_VARIABLE, CONF_MAX_AMPLIFICATION_DEFAULT_STRING,
     //
-    CONF_BALANCE_VARIABLE, CONF_BALANCE_DEFAULT_STRING,
+    CONF_SLOW_WEIGHT_VARIABLE, CONF_SLOW_WEIGHT_DEFAULT_STRING,
     //
     nullptr};
 

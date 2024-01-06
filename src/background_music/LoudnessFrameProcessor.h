@@ -114,19 +114,10 @@ public:
             CONF_MAX_AMPLIFICATION_VARIABLE, CONF_MAX_AMPLIFICATION_MIN,
             CONF_MAX_AMPLIFICATION_MAX);
         perception_slow_balance = get_clamped_value(
-            CONF_BALANCE_VARIABLE, CONF_BALANCE_MIN, CONF_BALANCE_MAX);
+            CONF_SLOW_WEIGHT_VARIABLE, CONF_SLOW_WEIGHT_MIN,
+                              CONF_SLOW_WEIGHT_MAX);
         minimum_detection = target_level / maximum_amplification;
-        if (perception_slow_balance < 0)
-        {
-            slow_weight =
-                std::clamp(1.0f + perception_slow_balance, 0.0f, 1.0f);
-        }
-        else
-        {
-            slow_weight =
-                std::clamp(1.0f + perception_slow_balance, 1.0f, 2.0f);
-        }
-        slow_weight *= SLOW_VU_FUDGE_FACTOR;
+        slow_weight = 2.0f * perception_slow_balance * SLOW_VU_FUDGE_FACTOR;
         slow_weight *= slow_weight;
         long_integration.set_scale(slow_weight);
     }
