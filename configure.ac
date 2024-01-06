@@ -68,7 +68,7 @@ dnl ======================
 
 INPUT_PLUGINS="metronom psf tonegen vtx xsf"
 OUTPUT_PLUGINS=""
-EFFECT_PLUGINS="bitcrusher compressor crossfade crystalizer mixer silence-removal stereo_plugin voice_removal echo_plugin background_music"
+EFFECT_PLUGINS="background_music bitcrusher compressor crossfade crystalizer echo_plugin mixer silence-removal stereo_plugin voice_removal"
 GENERAL_PLUGINS=""
 VISUALIZATION_PLUGINS=""
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"

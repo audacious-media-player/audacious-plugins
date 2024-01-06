@@ -95,9 +95,9 @@ public:
 
 /**
  * Implements an envelope function that follows rises in input - attack -
- * immediately and on input that is lowe than the current output, optionally the
- * value for a number of samples and then smoothly integrates towards the lower
- * input value using a double integrator.
+ * immediately and on input that is lower than the current output, optionally
+ * the value for a number of samples and then smoothly integrates towards the
+ * lower input value using a double integrator.
  */
 class FastAttackSmoothRelease
 {
