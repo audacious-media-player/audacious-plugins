@@ -50,6 +50,7 @@ struct Loudness
                                perception_center_seconds;
         return powf(relative, perception_weight_power);
     }
+
     static int get_samples(const float seconds, const int rate)
     {
         return std::max(
@@ -87,11 +88,10 @@ class PerceptiveRMS
         uint64_t window_sum_ = 0;
         int window_size_ = 0;
         int latency_minus_one = 0;
-        float scale_;
-        float output_;
+        float scale_ = 0.0;
+        float output_ = 0.0;
 
     public:
-        [[nodiscard]] float get() const { return output_; }
 
         float add_and_take_and_get(uint64_t add, uint64_t take)
         {
