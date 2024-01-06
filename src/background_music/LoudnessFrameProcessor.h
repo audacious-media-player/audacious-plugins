@@ -174,7 +174,11 @@ public:
         return has_output_data;
     }
 
-    void discard_buffer() { read_ahead_buffer.discard(); }
+    void flush()
+    {
+        processed_frames = 0;
+        read_ahead_buffer.discard();
+    }
 };
 
 #endif // AUDACIOUS_PLUGINS_BGM_LOUDNESS_FRAME_PROCESSOR_H

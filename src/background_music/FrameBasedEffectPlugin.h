@@ -94,7 +94,7 @@ public:
 
     bool flush(bool force) final
     {
-        detection.discard_buffer();
+        detection.flush();
         return true;
     }
 
