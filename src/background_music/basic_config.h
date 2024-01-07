@@ -34,7 +34,7 @@ static constexpr double CONF_MAX_AMPLIFICATION_MIN = 0.0;
 static constexpr double CONF_MAX_AMPLIFICATION_MAX = 40.0;
 
 static constexpr const char * CONF_SLOW_WEIGHT_VARIABLE = "perception_slow_weight";
-static constexpr const char * CONF_SLOW_WEIGHT_DEFAULT_STRING = "1.0";
+static constexpr const char * CONF_SLOW_WEIGHT_DEFAULT_STRING = "0.5";
 static constexpr double CONF_SLOW_WEIGHT_MIN = 0.0;
 static constexpr double CONF_SLOW_WEIGHT_MAX = 2.0;
 
