@@ -28,6 +28,7 @@ endif
 
 
 # effect plugins
+subdir('background_music')
 subdir('bitcrusher')
 subdir('compressor')
 subdir('crossfade')
