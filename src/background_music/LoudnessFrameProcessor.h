@@ -50,7 +50,7 @@ class LoudnessFrameProcessor
     static float get_clamped_value(const char * variable, const double minimum,
                                    const double maximum)
     {
-        return static_cast<float>(std::clamp(
+        return static_cast<float>(aud::clamp(
             aud_get_double(CONFIG_SECTION_BACKGROUND_MUSIC, variable),
             minimum, maximum));
     }

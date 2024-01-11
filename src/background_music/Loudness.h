@@ -45,7 +45,7 @@ struct Loudness
 
     static constexpr float get_weight(const float seconds)
     {
-        const float relative = std::clamp(seconds, perception_peak_seconds,
+        const float relative = aud::clamp(seconds, perception_peak_seconds,
                                           perception_center_seconds) /
                                perception_center_seconds;
         return powf(relative, perception_weight_power);
@@ -63,7 +63,7 @@ struct Loudness
             perception_fast_seconds / perception_center_seconds;
 
         const float log_ratio =
-            of > 0 ? static_cast<float>(std::clamp(step, 0, of)) /
+            of > 0 ? static_cast<float>(aud::clamp(step, 0, of)) /
                          static_cast<float>(of)
                    : 1.0f;
         const float seconds =
