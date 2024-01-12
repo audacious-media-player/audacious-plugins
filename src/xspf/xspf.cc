@@ -177,7 +177,7 @@ static void xspf_add_file (xmlNode * track, const char * filename,
         }
     }
 
-    if (location != nullptr)
+    if (location)
     {
         if (tuple.valid ())
             tuple.set_filename (location);

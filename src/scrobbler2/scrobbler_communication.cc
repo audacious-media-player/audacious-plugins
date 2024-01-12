@@ -146,7 +146,7 @@ static gboolean scrobbler_request_token ()
 
     if (read_token(error_code, error_detail) == false) {
         success = false;
-        if (error_code != nullptr && g_strcmp0(error_code, "8")) {
+        if (error_code && g_strcmp0(error_code, "8")) {
             //error code 8: There was an error granting the request token. Please try again later
             request_token = String();
         }
@@ -162,7 +162,7 @@ static gboolean update_session_key() {
     String error_detail;
 
     if (read_session_key(error_code, error_detail) == false) {
-        if (error_code != nullptr && (
+        if (error_code && (
                 g_strcmp0(error_code,  "4") == 0 || //invalid token
                 g_strcmp0(error_code, "14") == 0 || //token not authorized
                 g_strcmp0(error_code, "15") == 0    //token expired
@@ -230,7 +230,7 @@ static gboolean scrobbler_test_connection() {
     if (read_authentication_test_result(error_code, error_detail) == false) {
         AUDINFO("Error code: %s. Detail: %s.\n", (const char *)error_code,
          (const char *)error_detail);
-        if (error_code != nullptr && (
+        if (error_code && (
                 g_strcmp0(error_code, "4") == 0 || //error code 4: Authentication Failed - You do not have permissions to access the service
                 g_strcmp0(error_code, "9") == 0    //error code 9: Invalid session key - Please re-authenticate
             )) {

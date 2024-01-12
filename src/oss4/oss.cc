@@ -145,9 +145,9 @@ static int open_device()
         flags |= O_EXCL;
     }
 
-    if (aud_get_bool("oss4", "use_alt_device") && alt_device != nullptr)
+    if (aud_get_bool("oss4", "use_alt_device") && alt_device)
         res = open(alt_device, flags);
-    else if (device != nullptr)
+    else if (device)
         res = open(device, flags);
     else
         res = open(DEFAULT_DSP, flags);

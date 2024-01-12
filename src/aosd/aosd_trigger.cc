@@ -180,11 +180,11 @@ aosd_trigger_func_pb_titlechange_cb ( void * plentry_gp , void * prevs_gp )
 
     /* same filename but title changed, useful to detect http stream song changes */
 
-    if ( ( prevs->title != nullptr ) && ( prevs->filename != nullptr ) )
+    if (prevs->title && prevs->filename)
     {
-      if ( ( pl_entry_filename != nullptr ) && ( !strcmp(pl_entry_filename,prevs->filename) ) )
+      if (pl_entry_filename && ! strcmp (pl_entry_filename, prevs->filename))
       {
-        if ( ( pl_entry_title != nullptr ) && ( strcmp(pl_entry_title,prevs->title) ) )
+        if (pl_entry_title && strcmp (pl_entry_title, prevs->title))
         {
           /* string formatting is done here a.t.m. - TODO - improve this area */
           char * markup = g_markup_printf_escaped
