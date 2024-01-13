@@ -7,6 +7,7 @@
  * It is licensed under the GNU General Public License, version 3.
  */
 
+//external includes
 #include <glib/gstdio.h>
 
 //audacious includes
@@ -15,7 +16,6 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
-
 
 //plugin includes
 #include "scrobbler.h"
@@ -52,20 +52,19 @@ pthread_mutex_t log_access_mutex = PTHREAD_MUTEX_INITIALIZER;
 String session_key;
 String request_token;
 
-
 //static (private) variables
 static Tuple playing_track;
+
 //all times are in microseconds
 static  int64_t timestamp           = 0;
 static  int64_t play_started_at     = 0;
 static  int64_t pause_started_at    = 0;
 static  int64_t time_until_scrobble = 0;
-static   unsigned queue_function_ID   = 0;
+static  unsigned queue_function_ID  = 0;
 
 static pthread_t communicator;
 
 static void cleanup_current_track () {
-
     timestamp = 0;
     play_started_at = 0;
     pause_started_at = 0;
@@ -126,11 +125,11 @@ static gboolean queue_track_to_scrobble (void * data) {
         }
         pthread_mutex_unlock(&log_access_mutex);
     }
+
     g_free(queuepath);
     cleanup_current_track();
     return false;
 }
-
 
 static void stopped (void *hook_data, void *user_data) {
     // Called when pressing STOP and when the playlist ends.
@@ -183,7 +182,6 @@ static void ready (void *hook_data, void *user_data) {
     playing_track = std::move (current_track);
 
     queue_function_ID = g_timeout_add_seconds(time_until_scrobble / G_USEC_PER_SEC, (GSourceFunc) queue_track_to_scrobble, nullptr);
-
 }
 
 static void paused (void *hook_data, void *user_data) {
@@ -203,7 +201,6 @@ static void paused (void *hook_data, void *user_data) {
 }
 
 static void unpaused (void *hook_data, void *user_data) {
-
     if (! playing_track.valid()
         || pause_started_at == 0) { //TODO: audacious was started with a paused track.
         return;
@@ -260,6 +257,7 @@ bool Scrobbler::init ()
     hook_associate("playback ready", (HookFunction) ready, nullptr);
     hook_associate("playback pause", (HookFunction) paused, nullptr);
     hook_associate("playback unpause", (HookFunction) unpaused, nullptr);
+
     return true;
 }
 
@@ -290,4 +288,4 @@ void Scrobbler::cleanup ()
 const char Scrobbler::about[] =
  N_("Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n\n"
     "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n\n"
-    "Thanks to John Lindgren for giving me a hand at the beginning of this project.\n\n");
+    "Thanks to John Lindgren for giving me a hand at the beginning of this project.");

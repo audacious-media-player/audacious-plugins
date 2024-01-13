@@ -1,3 +1,11 @@
+/*
+ * Scrobbler Plugin v2.0 for Audacious by Pitxyoki
+ *
+ * Copyright 2012-2013 Luís Picciochi Oliveira <Pitxyoki@Gmail.com>
+ *
+ * This plugin is part of the Audacious Media Player.
+ * It is licensed under the GNU General Public License, version 3.
+ */
 
 //plugin includes
 #include "scrobbler.h"
@@ -24,6 +32,7 @@ static gboolean prepare_data () {
         doc = nullptr;
         return false;
     }
+
     return true;
 }
 
@@ -33,7 +42,6 @@ static void clean_data() {
     context = nullptr;
     doc = nullptr;
 }
-
 
 //returns:
 // nullptr if an error occurs or the attribute was not found
@@ -100,13 +108,11 @@ static String get_node_string (const char *node_expression) {
     return result;
 }
 
-
 //returns:
 // nullptr if an error occurs
 // "true" if the the command succeeded
 // "false" if an error occurred. error_code and error_detail should be checked in this case
 static String check_status (String &error_code, String &error_detail) {
-
     String status = get_attribute_value("/lfm[@status]", "status");
     if (!status) {
         AUDDBG("last.fm not answering according to the API.\n");
@@ -143,7 +149,6 @@ static String check_status (String &error_code, String &error_detail) {
  */
 gboolean read_scrobble_result(String &error_code, String &error_detail,
  gboolean *ignored, String &ignored_code) {
-
     *ignored = false;
 
     gboolean result = true;
@@ -165,7 +170,6 @@ gboolean read_scrobble_result(String &error_code, String &error_detail,
         AUDDBG("Error code: %s. Detail: %s.\n", (const char *)error_code,
          (const char *)error_detail);
         result = false;
-
     } else {
         //TODO: We are assuming that only one track is scrobbled per request! This will have to be
         //re-done to support multiple tracks being scrobbled in batch
@@ -188,7 +192,6 @@ gboolean read_scrobble_result(String &error_code, String &error_detail,
 //returns
 //FALSE if there was an error with the connection
 gboolean read_authentication_test_result (String &error_code, String &error_detail) {
-
     gboolean result = true;
 
     if (!prepare_data()) {
@@ -206,7 +209,6 @@ gboolean read_authentication_test_result (String &error_code, String &error_deta
 
     if (!strcmp(status, "failed")) {
         result = false;
-
     } else {
         username = get_node_string("/lfm/user/name");
         if (!username) {
@@ -219,10 +221,7 @@ gboolean read_authentication_test_result (String &error_code, String &error_deta
     return result;
 }
 
-
-
 gboolean read_token (String &error_code, String &error_detail) {
-
     gboolean result = true;
 
     if (!prepare_data()) {
@@ -259,10 +258,7 @@ gboolean read_token (String &error_code, String &error_detail) {
     return result;
 }
 
-
-
 gboolean read_session_key(String &error_code, String &error_detail) {
-
     gboolean result = true;
 
     if (!prepare_data()) {
@@ -282,7 +278,6 @@ gboolean read_session_key(String &error_code, String &error_detail) {
         AUDDBG("Error code: %s. Detail: %s.\n", (const char *)error_code,
          (const char *)error_detail);
         result = false;
-
     } else {
         session_key = get_node_string("/lfm/session/key");
 

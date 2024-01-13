@@ -27,7 +27,6 @@
 #define SCROBBLER_SHARED_SECRET "716cc0a784bb62835de5bd674e65eb57"
 #define SCROBBLER_URL "https://ws.audioscrobbler.com/2.0/"
 
-
 extern const PluginPreferences configuration;
 
 extern enum permission {
@@ -40,7 +39,6 @@ extern enum permission {
 extern gboolean scrobbler_running;
 extern gboolean scrobbling_enabled;
 
-
 //used to tell the scrobbling thread that there's something to do:
 //A new track is to be scrobbled or a permission check was requested
 extern pthread_mutex_t communication_mutex;
@@ -51,7 +49,7 @@ extern pthread_mutex_t log_access_mutex;
 
 /* All "something"_requested variables are set to TRUE by the requester.
  * The scrobbling thread shall set them to FALSE and invalidate any auxiliary
- *data (such as now_playing_track).
+ * data (such as now_playing_track).
  */
 
 //TRUE when a permission check is being requested
@@ -65,14 +63,9 @@ extern gboolean migrate_config_requested;
 extern gboolean now_playing_requested;
 extern Tuple now_playing_track;
 
-
-
-
 //scrobbler_communication.c
 extern gboolean   scrobbler_communication_init();
 extern void * scrobbling_thread(void * data);
-
-
 
 /* Internal stuff */
 //Data sent to the XML parser
@@ -92,4 +85,5 @@ extern gboolean read_scrobble_result(String &error_code, String &error_detail, g
 
 //scrobbler.c
 extern StringBuf clean_string(const char *string);
+
 #endif /* SCROBBLER_H_ */
