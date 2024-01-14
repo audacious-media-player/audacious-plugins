@@ -534,15 +534,15 @@ SoundFontWidget::SoundFontWidget (QWidget * parent) :
         });
     });
 
-    QObject::connect (m_button_sf_del, & QPushButton::clicked, [=] () {
+    QObject::connect (m_button_sf_del, & QPushButton::clicked, [this] () {
         m_model->delete_selected (m_view->selectionModel ()->selectedIndexes ());
     });
 
-    QObject::connect (m_button_sf_up, & QPushButton::clicked, [=] () {
+    QObject::connect (m_button_sf_up, & QPushButton::clicked, [this] () {
         m_model->shift_selected (m_view->selectionModel ()->selectedIndexes (), -1);
     });
 
-    QObject::connect (m_button_sf_down, & QPushButton::clicked, [=] () {
+    QObject::connect (m_button_sf_down, & QPushButton::clicked, [this] () {
         m_model->shift_selected (m_view->selectionModel ()->selectedIndexes (), 1);
     });
 }
