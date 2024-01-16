@@ -32,13 +32,9 @@
 #include <QMenu>
 #include <QRegularExpression>
 #include <QTextCursor>
-#include <QTextDocument>
 #include <QTextEdit>
 
 #include <libxml/parser.h>
-#include <libxml/tree.h>
-#include <libxml/HTMLparser.h>
-#include <libxml/xpath.h>
 
 #define AUD_GLIB_INTEGRATION
 #include <libaudcore/drct.h>
@@ -63,7 +59,8 @@ struct LyricsState {
         Embedded,
         Local,
         LyricWiki,
-        LyricsOVH
+        LyricsOVH,
+        ChartLyrics
     } source = None;
 
     bool error = false;
@@ -116,7 +113,8 @@ const char * const LyricWikiQt::defaults[] = {
 
 static const ComboItem remote_sources[] = {
     ComboItem(N_("Nowhere"), "nowhere"),
-    ComboItem(N_("lyrics.ovh"), "lyrics.ovh")
+    ComboItem("chartlyrics.com", "chartlyrics.com"),
+    ComboItem("lyrics.ovh", "lyrics.ovh")
 };
 
 static const PreferencesWidget truncate_elements[] = {
@@ -165,7 +163,7 @@ static void update_lyrics_window_error (const char * message);
 static void update_lyrics_window_notfound (LyricsState state);
 
 // LyricProvider encapsulates an entire strategy for fetching lyrics,
-// for example from LyricWiki or local storage.
+// for example from chartlyrics.com, lyrics.ovh or local storage.
 class LyricProvider {
 public:
     virtual bool match (LyricsState state) = 0;
@@ -335,6 +333,209 @@ void FileProvider::save (LyricsState state)
     VFSFile::write_file (path, state.lyrics, strlen (state.lyrics));
 }
 
+// ChartLyricsProvider provides a strategy for fetching lyrics using the API
+// from chartlyrics.com. It uses the two-step approach since the endpoint
+// "SearchLyricDirect" may sometimes return incorrect data. One example is
+// "Metallica - Unforgiven II" which leads to the lyrics of "Unforgiven".
+class ChartLyricsProvider : public LyricProvider
+{
+public:
+    ChartLyricsProvider () {};
+
+    bool match (LyricsState state);
+    void fetch (LyricsState state);
+    String edit_uri (LyricsState state) { return m_lyric_url; }
+
+private:
+    String match_uri (LyricsState state);
+    String fetch_uri (LyricsState state);
+
+    void reset_lyric_metadata ();
+    bool has_match (LyricsState state, xmlNodePtr node);
+
+    int m_lyric_id = -1;
+    String m_lyric_checksum, m_lyric_url, m_lyrics;
+
+    const char * m_base_url = "http://api.chartlyrics.com/apiv1.asmx";
+};
+
+void ChartLyricsProvider::reset_lyric_metadata ()
+{
+    m_lyric_id = -1;
+    m_lyric_checksum = String ();
+    m_lyric_url = String ();
+    m_lyrics = String ();
+}
+
+String ChartLyricsProvider::match_uri (LyricsState state)
+{
+    auto artist = str_copy (state.artist);
+    artist = str_encode_percent (artist, -1);
+
+    auto title = str_copy (state.title);
+    title = str_encode_percent (title, -1);
+
+    return String (str_concat ({m_base_url, "/SearchLyric?artist=", artist, "&song=", title}));
+}
+
+bool ChartLyricsProvider::has_match (LyricsState state, xmlNodePtr node)
+{
+    bool match_found = false;
+    String lyric_id, checksum, url, artist, title;
+
+    for (xmlNodePtr cur_node = node->xmlChildrenNode; cur_node; cur_node = cur_node->next)
+    {
+        if (cur_node->type != XML_ELEMENT_NODE)
+            continue;
+
+        xmlChar * content = xmlNodeGetContent (cur_node);
+
+        if (xmlStrEqual (cur_node->name, (xmlChar *) "LyricId"))
+            lyric_id = String ((const char *) content);
+        else if (xmlStrEqual (cur_node->name, (xmlChar *) "LyricChecksum"))
+            checksum = String ((const char *) content);
+        else if (xmlStrEqual (cur_node->name, (xmlChar *) "SongUrl"))
+            url = String ((const char *) content);
+        else if (xmlStrEqual (cur_node->name, (xmlChar *) "Artist"))
+            artist = String ((const char *) content);
+        else if (xmlStrEqual (cur_node->name, (xmlChar *) "Song"))
+            title = String ((const char *) content);
+
+        xmlFree (content);
+    }
+
+    if (lyric_id && checksum && artist && title) // url is optional
+    {
+        int id = str_to_int (lyric_id);
+
+        if (id > 0 &&
+            ! strcmp_nocase (artist, state.artist) &&
+            ! strcmp_nocase (title, state.title))
+        {
+            m_lyric_id = id;
+            m_lyric_checksum = checksum;
+            m_lyric_url = url;
+
+            match_found = true;
+        }
+    }
+
+    return match_found;
+}
+
+bool ChartLyricsProvider::match (LyricsState state)
+{
+    reset_lyric_metadata ();
+
+    auto handle_result_cb = [=] (const char * uri, const Index<char> & buf) {
+        if (! buf.len ())
+        {
+            update_lyrics_window_error (str_printf (_("Unable to fetch %s"), uri));
+            return;
+        }
+
+        xmlDocPtr doc = xmlReadMemory (buf.begin (), buf.len (), nullptr, nullptr, 0);
+        if (! doc)
+        {
+            update_lyrics_window_error (str_printf (_("Unable to parse %s"), uri));
+            return;
+        }
+
+        xmlNodePtr root = xmlDocGetRootElement (doc);
+
+        for (xmlNodePtr cur_node = root->xmlChildrenNode; cur_node; cur_node = cur_node->next)
+        {
+            if (cur_node->type != XML_ELEMENT_NODE)
+                continue;
+
+            if (has_match (state, cur_node))
+                break;
+        }
+
+        xmlFreeDoc (doc);
+
+        fetch (state);
+    };
+
+    vfs_async_file_get_contents (match_uri (state), handle_result_cb);
+    update_lyrics_window_message (state, _("Looking for lyrics ..."));
+
+    return true;
+}
+
+String ChartLyricsProvider::fetch_uri (LyricsState state)
+{
+    if (m_lyric_id <= 0 || ! m_lyric_checksum)
+        return String ();
+
+    auto id = int_to_str (m_lyric_id);
+    auto checksum = str_copy (m_lyric_checksum);
+    checksum = str_encode_percent (checksum, -1);
+
+    return String (str_concat ({m_base_url, "/GetLyric?lyricId=", id, "&lyricCheckSum=", checksum}));
+}
+
+void ChartLyricsProvider::fetch (LyricsState state)
+{
+    String _fetch_uri = fetch_uri (state);
+    if (! _fetch_uri)
+    {
+        update_lyrics_window_notfound (state);
+        return;
+    }
+
+    auto handle_result_cb = [=] (const char * uri, const Index<char> & buf) {
+        if (! buf.len ())
+        {
+            update_lyrics_window_error (str_printf (_("Unable to fetch %s"), uri));
+            return;
+        }
+
+        xmlDocPtr doc = xmlReadMemory (buf.begin (), buf.len (), nullptr, nullptr, 0);
+        if (! doc)
+        {
+            update_lyrics_window_error (str_printf (_("Unable to parse %s"), uri));
+            return;
+        }
+
+        xmlNodePtr root = xmlDocGetRootElement (doc);
+
+        for (xmlNodePtr cur_node = root->xmlChildrenNode; cur_node; cur_node = cur_node->next)
+        {
+            if (cur_node->type == XML_ELEMENT_NODE &&
+                xmlStrEqual (cur_node->name, (xmlChar *) "Lyric"))
+            {
+                xmlChar * content = xmlNodeGetContent (cur_node);
+                m_lyrics = String ((const char *) content);
+                xmlFree (content);
+                break;
+            }
+        }
+
+        xmlFreeDoc (doc);
+
+        LyricsState new_state = g_state;
+        new_state.lyrics = String ();
+
+        if (! m_lyrics || ! m_lyrics[0])
+        {
+            update_lyrics_window_notfound (new_state);
+            return;
+        }
+
+        new_state.lyrics = m_lyrics;
+        new_state.source = LyricsState::Source::ChartLyrics;
+
+        update_lyrics_window (new_state.title, new_state.artist, new_state.lyrics);
+        persist_state (new_state);
+    };
+
+    vfs_async_file_get_contents (_fetch_uri, handle_result_cb);
+    update_lyrics_window_message (state, _("Looking for lyrics ..."));
+}
+
+static ChartLyricsProvider chart_lyrics_provider;
+
 // LyricsOVHProvider provides a strategy for fetching lyrics using the
 // lyrics.ovh search engine.
 class LyricsOVHProvider : public LyricProvider {
@@ -412,6 +613,9 @@ static LyricsOVHProvider lyrics_ovh_provider;
 static LyricProvider * remote_source ()
 {
     auto source = aud_get_str ("lyricwiki", "remote-source");
+
+    if (! strcmp (source, "chartlyrics.com"))
+        return &chart_lyrics_provider;
 
     if (! strcmp (source, "lyrics.ovh"))
         return &lyrics_ovh_provider;
@@ -568,11 +772,26 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
     if (! g_state.artist || ! g_state.title)
         return QTextEdit::contextMenuEvent (event);
 
+    LyricProvider * remote_provider = remote_source ();
+
     QMenu * menu = createStandardContextMenu ();
     menu->addSeparator ();
 
     if (g_state.lyrics && g_state.source != LyricsState::Source::Local && ! g_state.error)
     {
+        if (remote_provider)
+        {
+            String edit_uri = remote_provider->edit_uri (g_state);
+
+            if (edit_uri && edit_uri[0])
+            {
+                QAction * edit = menu->addAction (_("Edit Lyrics ..."));
+                QObject::connect (edit, & QAction::triggered, [edit_uri] () {
+                    QDesktopServices::openUrl (QUrl ((const char *) edit_uri));
+                });
+            }
+        }
+
         QAction * save = menu->addAction (_("Save Locally"));
         QObject::connect (save, & QAction::triggered, [] () {
             file_provider.save (g_state);
@@ -582,10 +801,9 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
     if (g_state.source == LyricsState::Source::Local || g_state.error)
     {
         QAction * refresh = menu->addAction (_("Refresh"));
-        QObject::connect (refresh, & QAction::triggered, [] () {
-            auto rsrc = remote_source ();
-            if (rsrc)
-                rsrc->match (g_state);
+        QObject::connect (refresh, & QAction::triggered, [remote_provider] () {
+            if (remote_provider)
+                remote_provider->match (g_state);
         });
     }
 

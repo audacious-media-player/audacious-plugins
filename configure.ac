@@ -859,7 +859,7 @@ if test "x$USE_QT" = "xyes" ; then
     echo "  Winamp Classic Interface:               yes"
     echo "  Album Art:                              yes"
     echo "  Blur Scope:                             yes"
-    echo "  LyricWiki viewer:                       yes"
+    echo "  Lyrics Viewer:                          yes"
     echo "  OpenGL Spectrum Analyzer:               $have_qtglspectrum"
     echo "  Playlist Manager:                       yes"
     echo "  Search Tool:                            yes"
