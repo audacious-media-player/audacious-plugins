@@ -177,9 +177,10 @@ class FileProvider : public LyricProvider {
 public:
     FileProvider() {};
 
-    bool match (LyricsState state);
-    void fetch (LyricsState state);
-    String edit_uri (LyricsState state) { return String (); }
+    bool match (LyricsState state) override;
+    void fetch (LyricsState state) override;
+    String edit_uri (LyricsState state) override { return String (); }
+
     void save (LyricsState state);
     void cache (LyricsState state);
     void cache_fetch (LyricsState state);
@@ -342,9 +343,9 @@ class ChartLyricsProvider : public LyricProvider
 public:
     ChartLyricsProvider () {};
 
-    bool match (LyricsState state);
-    void fetch (LyricsState state);
-    String edit_uri (LyricsState state) { return m_lyric_url; }
+    bool match (LyricsState state) override;
+    void fetch (LyricsState state) override;
+    String edit_uri (LyricsState state) override { return m_lyric_url; }
 
 private:
     String match_uri (LyricsState state);
@@ -542,9 +543,9 @@ class LyricsOVHProvider : public LyricProvider {
 public:
     LyricsOVHProvider() {};
 
-    bool match (LyricsState state);
-    void fetch (LyricsState state);
-    String edit_uri (LyricsState state) { return String (); }
+    bool match (LyricsState state) override;
+    void fetch (LyricsState state) override;
+    String edit_uri (LyricsState state) override { return String (); }
 };
 
 bool LyricsOVHProvider::match (LyricsState state)
