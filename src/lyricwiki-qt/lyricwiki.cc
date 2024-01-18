@@ -232,8 +232,11 @@ String FileProvider::cache_uri_for_entry (LyricsState state)
     StringBuf base_path = filename_build ({user_dir, "lyrics"});
     StringBuf artist_path = filename_build ({base_path, state.artist});
 
-    if (g_mkdir_with_parents (artist_path, DIRMODE) < 0)
-        AUDERR ("Failed to create %s: %s\n", (const char *) artist_path, strerror (errno));
+    if (aud_get_bool ("lyricwiki", "enable-cache"))
+    {
+        if (g_mkdir_with_parents (artist_path, DIRMODE) < 0)
+            AUDERR ("Failed to create '%s': %s\n", (const char *) artist_path, strerror (errno));
+    }
 
     StringBuf title_path = str_concat({filename_build({artist_path, state.title}), ".lrc"});
 
