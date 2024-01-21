@@ -361,6 +361,9 @@ bool MPG123Plugin::play(const char * filename, VFSFile & file)
             if (ret == MPG123_DONE || ret == MPG123_ERR_READER)
                 break;
 
+            if (ret == MPG123_NEW_FORMAT)
+                continue;
+
             if (ret < 0)
             {
                 // log only the first error
