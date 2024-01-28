@@ -423,7 +423,8 @@ GtkWidget * ui_playlist_widget_new (Playlist playlist)
         audgui_list_add_column (list, pw_col_label[n] ? _(pw_col_names[n]) :
          nullptr, i, pw_col_types[n], pw_col_min_widths[n]);
 
-        if (pw_col_sort_types[n] < Playlist::n_sort_types)
+        if (aud_get_bool ("gtkui", "playlist_headers_sortable") &&
+            pw_col_sort_types[n] < Playlist::n_sort_types)
         {
             auto column = gtk_tree_view_get_column ((GtkTreeView *) list, i);
             auto sort_type_ptr = aud::to_ptr (pw_col_sort_types[n]);

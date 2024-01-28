@@ -57,6 +57,7 @@ static const char * const gtkui_defaults[] = {
     "autoscroll", "TRUE",
     "playlist_columns", "title artist album queued length",
     "playlist_headers", "TRUE",
+    "playlist_headers_sortable", "TRUE",
     "show_remaining_time", "FALSE",
 
 #ifdef USE_GTK3
