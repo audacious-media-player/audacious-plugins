@@ -40,6 +40,7 @@ const char * const qtui_defaults[] = {
     "playlist_columns", DEFAULT_COLUMNS,
     "playlist_headers", "TRUE",
     "playlist_headers_bold", "FALSE",
+    "playlist_headers_sortable", "TRUE",
     "show_remaining_time", "FALSE",
     // clang-format on
     nullptr};
@@ -78,6 +79,9 @@ static const PreferencesWidget qtui_widgets[] = {
     WidgetCheck(N_("Use bold font for column headers"),
                 WidgetBool("qtui", "playlist_headers_bold",
                            qtui_update_playlist_headers)),
+    WidgetCheck(N_("Make column headers clickable for sorting"),
+                WidgetBool("qtui", "playlist_headers_sortable",
+                           qtui_update_playlist_settings)),
     WidgetLabel(N_("<b>Miscellaneous</b>")),
     WidgetCheck(N_("Scroll on song change"), WidgetBool("qtui", "autoscroll"))};
 

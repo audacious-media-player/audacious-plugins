@@ -50,8 +50,6 @@ PlaylistWidget::PlaylistWidget(QWidget * parent, Playlist playlist)
 
     auto header = new PlaylistHeader(this);
     setHeader(header);
-    /* this has to come after setHeader() to take effect */
-    header->setSectionsClickable(true);
 
     setAllColumnsShowFocus(true);
     setAlternatingRowColors(true);
@@ -541,5 +539,8 @@ void PlaylistWidget::hidePopup()
 
 void PlaylistWidget::updateSettings()
 {
+    header()->setSectionsClickable(
+        aud_get_bool("qtui", "playlist_headers_sortable"));
+
     setHeaderHidden(!aud_get_bool("qtui", "playlist_headers"));
 }
