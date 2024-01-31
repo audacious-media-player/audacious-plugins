@@ -319,7 +319,14 @@ static void aac_seek (VFSFile & file, NeAACDecHandle dec, int time, int len,
     unsigned char chan;
     unsigned long rate;
 
-    if ((used = NeAACDecInit (dec, (unsigned char *) buf, * buflen, & rate, & chan)))
+    if ((used = NeAACDecInit (dec, (unsigned char *) buf, * buflen, & rate, & chan)) < 0)
+    {
+        AUDERR ("Failed to initialize AAC decoder.\n");
+        * buflen = 0;
+        return;
+    }
+
+    if (used)
     {
         * buflen -= used;
         memmove (buf, (char *) buf + used, * buflen);
@@ -388,7 +395,13 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
 
     /* == START DECODING == */
 
-    if ((used = NeAACDecInit (decoder, buf, buflen, & samplerate, & channels)))
+    if ((used = NeAACDecInit (decoder, buf, buflen, & samplerate, & channels)) < 0)
+    {
+        AUDERR ("Failed to initialize AAC decoder.\n");
+        goto ERR_CLOSE_DECODER;
+    }
+
+    if (used)
     {
         buflen -= used;
         memmove (buf, buf + used, buflen);
