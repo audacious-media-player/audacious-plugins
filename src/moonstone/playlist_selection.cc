@@ -19,6 +19,8 @@
 
 #include "playlist_selection.h"
 
+#include "../ui-common/qt-compat.h"
+
 namespace Moonstone {
 
 QVariant PlaylistsModel::data (const QModelIndex & index, int role) const
@@ -162,8 +164,8 @@ void PlaylistsView::dropEvent (QDropEvent * event)
     int to;
     switch (dropIndicatorPosition ())
     {
-        case AboveItem: to = indexAt (event->pos ()).row (); break;
-        case BelowItem: to = indexAt (event->pos ()).row () + 1; break;
+        case AboveItem: to = indexAt (QtCompat::pos(event)).row (); break;
+        case BelowItem: to = indexAt (QtCompat::pos(event)).row () + 1; break;
         case OnViewport: to = Playlist::n_playlists (); break;
         default: return;
     }

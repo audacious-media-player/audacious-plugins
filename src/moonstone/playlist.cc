@@ -33,6 +33,7 @@
 #include "playlist_model.h"
 
 #include "../ui-common/menu-ops.h"
+#include "../ui-common/qt-compat.h"
 
 namespace Moonstone {
 
@@ -224,10 +225,10 @@ void PlaylistWidget::dropEvent(QDropEvent * event)
     switch (dropIndicatorPosition())
     {
     case AboveItem:
-        to = indexToRow(indexAt(event->pos()));
+        to = indexToRow(indexAt(QtCompat::pos(event)));
         break;
     case BelowItem:
-        to = indexToRow(indexAt(event->pos())) + 1;
+        to = indexToRow(indexAt(QtCompat::pos(event))) + 1;
         break;
     case OnViewport:
         to = m_playlist.n_entries();
