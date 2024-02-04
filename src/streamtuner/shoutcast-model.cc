@@ -94,7 +94,7 @@ void ShoutcastTunerModel::process_station (QJsonObject object)
 
 void ShoutcastTunerModel::process_stations (QJsonArray & stations)
 {
-    AUDINFO ("Retrieved %d stations.\n", stations.size ());
+    AUDINFO ("Retrieved %lld stations.\n", (long long int) stations.size ());
 
     beginResetModel ();
 
