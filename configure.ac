@@ -82,7 +82,7 @@ if test "x$USE_GTK" = "xyes" ; then
 fi
 
 if test "x$USE_QT" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playlist-manager-qt search-tool-qt song-info-qt statusicon-qt"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt playback-history playlist-manager-qt search-tool-qt song-info-qt statusicon-qt"
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope-qt qt-spectrum vumeter-qt"
 fi
@@ -861,6 +861,7 @@ if test "x$USE_QT" = "xyes" ; then
     echo "  Blur Scope:                             yes"
     echo "  Lyrics Viewer:                          yes"
     echo "  OpenGL Spectrum Analyzer:               $have_qtglspectrum"
+    echo "  Playback History:                       yes"
     echo "  Playlist Manager:                       yes"
     echo "  Search Tool:                            yes"
     echo "  Song Info:                              yes"

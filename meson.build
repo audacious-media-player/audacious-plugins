@@ -309,6 +309,7 @@ if meson.version().version_compare('>= 0.53')
       'Blur Scope': true,
       'Lyrics Viewer': get_variable('have_lyrics', false),
       'OpenGL Spectrum Analyzer': get_variable('have_qtglspectrum', false),
+      'Playback History': true,
       'Playlist Manager': true,
       'Search Tool': true,
       'Song Info': true,
