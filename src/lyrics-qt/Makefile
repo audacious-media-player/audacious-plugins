@@ -1,6 +1,10 @@
 PLUGIN = lyrics-qt${PLUGIN_SUFFIX}
 
-SRCS = lyrics-qt.cc
+SRCS = ../lyrics-common/chart_lyrics_provider.cc \
+       ../lyrics-common/file_provider.cc \
+       ../lyrics-common/lyrics_ovh_provider.cc \
+       ../lyrics-common/utils.cc \
+       lyrics-qt.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
@@ -11,4 +15,4 @@ LD = ${CXX}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${QT_CFLAGS} ${GLIB_CFLAGS} ${XML_CFLAGS} -I../..
-LIBS += ${QT_LIBS} ${GLIB_LIBS}  ${XML_LIBS}
+LIBS += ${QT_LIBS} ${GLIB_LIBS} ${XML_LIBS}
