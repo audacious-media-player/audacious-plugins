@@ -207,6 +207,10 @@ fi
 
 AC_SUBST(USE_GTK)
 
+if test $USE_GTK = yes ; then
+    PKG_CHECK_MODULES(JSON_GLIB, json-glib-1.0 >= 1.0)
+fi
+
 if test $HAVE_MSWINDOWS = yes ; then
     PKG_CHECK_MODULES(GIO, gio-2.0 >= 2.32)
 else
