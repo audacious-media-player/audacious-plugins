@@ -58,7 +58,6 @@ struct LyricsState {
         None,
         Embedded,
         Local,
-        LyricWiki,
         LyricsOVH,
         ChartLyrics
     } source = None;
@@ -77,7 +76,7 @@ protected:
     void contextMenuEvent (QContextMenuEvent * event);
 };
 
-class LyricWikiQt : public GeneralPlugin
+class LyricsQt : public GeneralPlugin
 {
 public:
     static const char * const defaults[];
@@ -91,15 +90,18 @@ public:
         PluginQtOnly
     };
 
-    constexpr LyricWikiQt () : GeneralPlugin (info, false) {}
+    constexpr LyricsQt () : GeneralPlugin (info, false) {}
 
     bool init ();
     void * get_qt_widget ();
 };
 
-EXPORT LyricWikiQt aud_plugin_instance;
+EXPORT LyricsQt aud_plugin_instance;
 
-const char * const LyricWikiQt::defaults[] = {
+// Use former plugin name to stay backwards compatible
+static constexpr const char * CFG_SECTION = "lyricwiki";
+
+const char * const LyricsQt::defaults[] = {
     "remote-source", "lyrics.ovh",
     "enable-file-provider", "TRUE",
     "enable-cache", "TRUE",
@@ -119,40 +121,40 @@ static const ComboItem remote_sources[] = {
 
 static const PreferencesWidget truncate_elements[] = {
     WidgetLabel(N_("<small>Artist is truncated at the start, Title -- at the end</small>")),
-    WidgetEntry(N_("Chars to truncate on:"), WidgetString ("lyricwiki", "truncate-on-chars"))
+    WidgetEntry(N_("Chars to truncate on:"), WidgetString (CFG_SECTION, "truncate-on-chars"))
 };
 
 static const PreferencesWidget split_elements[] = {
     WidgetLabel(N_("<small>Chars are ORed in RegExp, surrounded by whitespace</small>")),
-    WidgetEntry(N_("Chars to split on:"), WidgetString ("lyricwiki", "split-on-chars")),
+    WidgetEntry(N_("Chars to split on:"), WidgetString (CFG_SECTION, "split-on-chars")),
     WidgetCheck(N_("Further truncate those on chars"),
-        WidgetBool ("lyricwiki", "truncate-fields-on-chars")),
+        WidgetBool (CFG_SECTION, "truncate-fields-on-chars")),
     WidgetTable({{truncate_elements}}, WIDGET_CHILD)
 };
 
-const PreferencesWidget LyricWikiQt::widgets[] = {
+const PreferencesWidget LyricsQt::widgets[] = {
     WidgetLabel(N_("<b>General</b>")),
     WidgetCheck(N_("Split title into artist and title on chars"),
-        WidgetBool ("lyricwiki", "split-title-on-chars")),
+        WidgetBool (CFG_SECTION, "split-title-on-chars")),
     WidgetTable({{split_elements}}, WIDGET_CHILD),
     WidgetLabel(N_("<b>Sources</b>")),
     WidgetCheck(N_("Use embedded lyrics (from Lyrics tag)"),
-        WidgetBool ("lyricwiki", "use-embedded")),
+        WidgetBool (CFG_SECTION, "use-embedded")),
     WidgetCombo(N_("Fetch lyrics from internet:"),
-        WidgetString ("lyricwiki", "remote-source"),
+        WidgetString (CFG_SECTION, "remote-source"),
         {{remote_sources}}),
     WidgetCheck(N_("Store fetched lyrics in local cache"),
-        WidgetBool ("lyricwiki", "enable-cache")),
+        WidgetBool (CFG_SECTION, "enable-cache")),
     WidgetLabel(N_("<b>Local Storage</b>")),
     WidgetCheck(N_("Load lyric files (.lrc) from local storage"),
-        WidgetBool ("lyricwiki", "enable-file-provider"))
+        WidgetBool (CFG_SECTION, "enable-file-provider"))
 };
 
-const PluginPreferences LyricWikiQt::prefs = {{widgets}};
+const PluginPreferences LyricsQt::prefs = {{widgets}};
 
-bool LyricWikiQt::init ()
+bool LyricsQt::init ()
 {
-    aud_config_set_defaults ("lyricwiki", defaults);
+    aud_config_set_defaults (CFG_SECTION, defaults);
 
     return true;
 }
@@ -197,7 +199,7 @@ static void persist_state (LyricsState state)
     g_state = state;
     g_state.error = false;
 
-    if (g_state.source == LyricsState::Source::Local || ! aud_get_bool("lyricwiki", "enable-cache"))
+    if (g_state.source == LyricsState::Source::Local || ! aud_get_bool(CFG_SECTION, "enable-cache"))
         return;
 
     file_provider.cache (state);
@@ -232,7 +234,7 @@ String FileProvider::cache_uri_for_entry (LyricsState state)
     StringBuf base_path = filename_build ({user_dir, "lyrics"});
     StringBuf artist_path = filename_build ({base_path, state.artist});
 
-    if (aud_get_bool ("lyricwiki", "enable-cache"))
+    if (aud_get_bool (CFG_SECTION, "enable-cache"))
     {
         if (g_mkdir_with_parents (artist_path, DIRMODE) < 0)
             AUDERR ("Failed to create '%s': %s\n", (const char *) artist_path, strerror (errno));
@@ -616,7 +618,7 @@ static LyricsOVHProvider lyrics_ovh_provider;
 
 static LyricProvider * remote_source ()
 {
-    auto source = aud_get_str ("lyricwiki", "remote-source");
+    auto source = aud_get_str (CFG_SECTION, "remote-source");
 
     if (! strcmp (source, "chartlyrics.com"))
         return &chart_lyrics_provider;
@@ -663,7 +665,7 @@ static void update_lyrics_window (const char * title, const char * artist, const
     cursor.insertText (lyrics);
 }
 
-static void lyricwiki_playback_began ()
+static void lyrics_playback_began ()
 {
     /* FIXME: cancel previous VFS requests (not possible with current API) */
 
@@ -674,13 +676,13 @@ static void lyricwiki_playback_began ()
     g_state.artist = tuple.get_str (Tuple::Artist);
     g_state.lyrics = String ();
 
-    if (aud_get_bool ("lyricwiki", "split-title-on-chars"))
+    if (aud_get_bool (CFG_SECTION, "split-title-on-chars"))
     {
         QString artist = QString (g_state.artist);
         QString title = QString (g_state.title);
 
         QRegularExpression qre;
-        qre.setPattern (QString ("^(.*)\\s+[") + aud_get_str ("lyricwiki", "split-on-chars") + "]\\s+(.*)$");
+        qre.setPattern (QString ("^(.*)\\s+[") + aud_get_str (CFG_SECTION, "split-on-chars") + "]\\s+(.*)$");
 
         QRegularExpressionMatch qrematch = qre.match (title);
 
@@ -689,12 +691,12 @@ static void lyricwiki_playback_began ()
             artist = qrematch.captured (1);
             title  = qrematch.captured (2);
 
-            if (aud_get_bool ("lyricwiki", "truncate-fields-on-chars"))
+            if (aud_get_bool (CFG_SECTION, "truncate-fields-on-chars"))
             {
-                qre.setPattern (QString ("^.*\\s+[") + aud_get_str ("lyricwiki", "truncate-on-chars") + "]\\s+");
+                qre.setPattern (QString ("^.*\\s+[") + aud_get_str (CFG_SECTION, "truncate-on-chars") + "]\\s+");
                 artist.remove (qre);
 
-                qre.setPattern (QString ("\\s+[") + aud_get_str ("lyricwiki", "truncate-on-chars") + "]\\s+.*$");
+                qre.setPattern (QString ("\\s+[") + aud_get_str (CFG_SECTION, "truncate-on-chars") + "]\\s+.*$");
                 title.remove (qre);
             }
 
@@ -705,7 +707,7 @@ static void lyricwiki_playback_began ()
         }
     }
 
-    if (aud_get_bool ("lyricwiki", "use-embedded"))
+    if (aud_get_bool (CFG_SECTION, "use-embedded"))
     {
         String embedded_lyrics = tuple.get_str (Tuple::Lyrics);
         if (embedded_lyrics && embedded_lyrics[0])
@@ -718,7 +720,7 @@ static void lyricwiki_playback_began ()
         }
     }
 
-    if (! aud_get_bool ("lyricwiki", "enable-file-provider") || ! file_provider.match (g_state))
+    if (! aud_get_bool (CFG_SECTION, "enable-file-provider") || ! file_provider.match (g_state))
     {
         if (! g_state.artist || ! g_state.title)
         {
@@ -738,20 +740,20 @@ static void lyricwiki_playback_began ()
         update_lyrics_window_notfound (g_state);
 }
 
-static void lw_cleanup (QObject * object = nullptr)
+static void lyrics_cleanup (QObject * object = nullptr)
 {
     g_state.filename = String ();
     g_state.title = String ();
     g_state.artist = String ();
     g_state.lyrics = String ();
 
-    hook_dissociate ("tuple change", (HookFunction) lyricwiki_playback_began);
-    hook_dissociate ("playback ready", (HookFunction) lyricwiki_playback_began);
+    hook_dissociate ("tuple change", (HookFunction) lyrics_playback_began);
+    hook_dissociate ("playback ready", (HookFunction) lyrics_playback_began);
 
     textedit = nullptr;
 }
 
-void * LyricWikiQt::get_qt_widget ()
+void * LyricsQt::get_qt_widget ()
 {
     textedit = new TextEdit;
     textedit->setReadOnly (true);
@@ -760,13 +762,13 @@ void * LyricWikiQt::get_qt_widget ()
     textedit->document ()->setDefaultFont (QApplication::font ("QTipLabel"));
 #endif
 
-    hook_associate ("tuple change", (HookFunction) lyricwiki_playback_began, nullptr);
-    hook_associate ("playback ready", (HookFunction) lyricwiki_playback_began, nullptr);
+    hook_associate ("tuple change", (HookFunction) lyrics_playback_began, nullptr);
+    hook_associate ("playback ready", (HookFunction) lyrics_playback_began, nullptr);
 
     if (aud_drct_get_ready ())
-        lyricwiki_playback_began ();
+        lyrics_playback_began ();
 
-    QObject::connect (textedit, & QObject::destroyed, lw_cleanup);
+    QObject::connect (textedit, & QObject::destroyed, lyrics_cleanup);
 
     return textedit;
 }

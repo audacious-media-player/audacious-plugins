@@ -96,7 +96,7 @@ endif
 if conf.has('USE_QT')
   subdir('albumart-qt')
   subdir('blur_scope-qt')
-  subdir('lyricwiki-qt')
+  subdir('lyrics-qt')
   subdir('playlist-manager-qt')
   subdir('qt-spectrum')
   subdir('qtui')

@@ -1,6 +1,6 @@
-PLUGIN = lyricwiki-qt${PLUGIN_SUFFIX}
+PLUGIN = lyrics-qt${PLUGIN_SUFFIX}
 
-SRCS = lyricwiki.cc
+SRCS = lyrics-qt.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

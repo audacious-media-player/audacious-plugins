@@ -2,8 +2,8 @@ have_lyrics = xml_dep.found()
 
 
 if have_lyrics
-  shared_module('lyricwiki-qt',
-    'lyricwiki.cc',
+  shared_module('lyrics-qt',
+    'lyrics-qt.cc',
     dependencies: [audacious_dep, qt_dep, glib_dep, xml_dep, audqt_dep],
     name_prefix: '',
     install: true,
