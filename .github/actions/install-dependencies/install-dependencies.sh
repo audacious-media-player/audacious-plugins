@@ -20,9 +20,10 @@ ubuntu_packages='gettext libadplug-dev libasound2-dev libavformat-dev
                  libbinio-dev libbs2b-dev libcddb2-dev libcdio-cdda-dev
                  libcue-dev libcurl4-gnutls-dev libdbus-glib-1-dev
                  libfaad-dev libflac-dev libfluidsynth-dev libgl1-mesa-dev
-                 libjack-jackd2-dev liblircclient-dev libmms-dev libmodplug-dev
-                 libmp3lame-dev libmpg123-dev libneon27-gnutls-dev libnotify-dev
-                 libopenmpt-dev libopusfile-dev libpulse-dev libqt5opengl5-dev
+                 libjack-jackd2-dev libjson-glib-dev liblircclient-dev
+                 libmms-dev libmodplug-dev libmp3lame-dev libmpg123-dev
+                 libneon27-gnutls-dev libnotify-dev libopenmpt-dev
+                 libopusfile-dev libpulse-dev libqt5opengl5-dev
                  libqt5x11extras5-dev libsamplerate0-dev libsdl2-dev
                  libsidplayfp-dev libsndfile1-dev libsndio-dev libsoxr-dev
                  libvorbis-dev libwavpack-dev libxml2-dev qtbase5-dev
