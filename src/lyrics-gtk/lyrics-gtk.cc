@@ -74,9 +74,7 @@ void update_lyrics_window (const char * title, const char * artist, const char *
         return;
 
     gtk_text_buffer_set_text (textbuffer, "", -1);
-
     gtk_text_buffer_get_start_iter (textbuffer, & iter);
-
     gtk_text_buffer_insert_with_tags_by_name (textbuffer, & iter, title, -1,
      "weight_bold", "scale_large", nullptr);
 

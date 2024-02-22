@@ -140,7 +140,6 @@ void update_lyrics_window_notfound (LyricsState state);
 
 bool try_parse_json (const Index<char> & buf, const char * key, String & output);
 
-void split_title_and_truncate ();
 void lyrics_playback_began ();
 
 #endif // AUDACIOUS_LYRICS_H

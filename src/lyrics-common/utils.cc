@@ -69,7 +69,7 @@ static char * truncate_by_pattern (const char * input, const char * pattern)
     return result;
 }
 
-void split_title_and_truncate ()
+static void split_title_and_truncate ()
 {
     StringBuf split_pattern = str_concat ({
         "^(.*)\\s+[", aud_get_str (CFG_SECTION, "split-on-chars"), "]\\s+(.*)$"
