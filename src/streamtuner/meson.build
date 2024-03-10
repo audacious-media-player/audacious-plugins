@@ -1,7 +1,7 @@
-if get_option('qt6')
-  qtnetwork_dep = dependency('qt6', version: qt_req, required: false, modules: ['Network'])
-else
+if get_option('qt5')
   qtnetwork_dep = dependency('qt5', version: qt_req, required: false, modules: ['Network'])
+else
+  qtnetwork_dep = dependency('qt6', version: qt_req, required: false, modules: ['Network'])
 endif
 
 have_streamtuner = qtnetwork_dep.found()
