@@ -42,6 +42,7 @@ public:
 EXPORT SongChange aud_plugin_instance;
 
 static String cmd_line;
+static String cmd_line_stop;
 static String cmd_line_after;
 static String cmd_line_end;
 static String cmd_line_ttc;
@@ -182,6 +183,11 @@ static void songchange_playback_begin (void *, void *)
     do_command (cmd_line);
 }
 
+static void songchange_playback_stop (void *, void *)
+{
+    do_command (cmd_line_stop);
+}
+
 static void songchange_playback_end (void *, void *)
 {
     do_command (cmd_line_after);
@@ -200,6 +206,7 @@ static void songchange_playlist_eof (void *, void *)
 static void read_config ()
 {
     cmd_line = aud_get_str ("song_change", "cmd_line");
+    cmd_line_stop = aud_get_str ("song_change", "cmd_line_stop");
     cmd_line_after = aud_get_str ("song_change", "cmd_line_after");
     cmd_line_end = aud_get_str ("song_change", "cmd_line_end");
     cmd_line_ttc = aud_get_str ("song_change", "cmd_line_ttc");
@@ -210,6 +217,7 @@ bool SongChange::init ()
     read_config ();
 
     hook_associate ("playback ready", songchange_playback_begin, nullptr);
+    hook_associate ("playback stop", songchange_playback_stop, nullptr);
     hook_associate ("playback end", songchange_playback_end, nullptr);
     hook_associate ("playlist end reached", songchange_playlist_eof, nullptr);
     hook_associate ("title change", songchange_playback_ttc, nullptr);
@@ -220,20 +228,23 @@ bool SongChange::init ()
 void SongChange::cleanup ()
 {
     hook_dissociate ("playback ready", songchange_playback_begin);
+    hook_dissociate ("playback stop", songchange_playback_stop);
     hook_dissociate ("playback end", songchange_playback_end);
     hook_dissociate ("playlist end reached", songchange_playlist_eof);
     hook_dissociate ("title change", songchange_playback_ttc);
 
     cmd_line = String ();
+    cmd_line_stop = String ();
     cmd_line_after = String ();
     cmd_line_end = String ();
     cmd_line_ttc = String ();
 
-    signal_child();
+    signal_child ();
 }
 
 typedef struct {
     String cmd;
+    String cmd_stop;
     String cmd_after;
     String cmd_end;
     String cmd_ttc;
@@ -247,6 +258,9 @@ const PreferencesWidget SongChange::widgets[] = {
     WidgetLabel (N_("Command to run when starting a new song:")),
     WidgetEntry (0, WidgetString (config.cmd)),
 
+    WidgetLabel (N_("Command to run when stopping a song:")),
+    WidgetEntry (0, WidgetString (config.cmd_stop)),
+
     WidgetLabel (N_("Command to run at the end of a song:")),
     WidgetEntry (0, WidgetString (config.cmd_after)),
 
@@ -257,8 +271,8 @@ const PreferencesWidget SongChange::widgets[] = {
     WidgetEntry (0, WidgetString (config.cmd_ttc)),
 
     WidgetLabel (N_("You can use the following format codes, which will be "
-                    "replaced before running the command (not all are useful "
-                    "for the end-of-playlist command):")),
+                    "replaced before running the command.\nNot all are useful "
+                    "though for the song-stopped or end-of-playlist command.")),
     WidgetLabel (N_("%a: Artist\n"
                     "%b: Album\n"
                     "%c: Number of channels\n"
@@ -271,13 +285,14 @@ const PreferencesWidget SongChange::widgets[] = {
                     "%t: Playlist position\n"
                     "%T: Title (unformatted)")),
     WidgetLabel (N_("Parameters passed to the shell should be enclosed in "
-                    "quotation marks.  Unquoted parameters may lead to "
+                    "quotation marks.\nUnquoted parameters may lead to "
                     "unexpected results."))
 };
 
 static void configure_init ()
 {
     config.cmd = cmd_line;
+    config.cmd_stop = cmd_line_stop;
     config.cmd_after = cmd_line_after;
     config.cmd_end = cmd_line_end;
     config.cmd_ttc = cmd_line_ttc;
@@ -286,11 +301,13 @@ static void configure_init ()
 static void configure_ok_cb ()
 {
     aud_set_str ("song_change", "cmd_line", config.cmd);
+    aud_set_str ("song_change", "cmd_line_stop", config.cmd_stop);
     aud_set_str ("song_change", "cmd_line_after", config.cmd_after);
     aud_set_str ("song_change", "cmd_line_end", config.cmd_end);
     aud_set_str ("song_change", "cmd_line_ttc", config.cmd_ttc);
 
     cmd_line = config.cmd;
+    cmd_line_stop = config.cmd_stop;
     cmd_line_after = config.cmd_after;
     cmd_line_end = config.cmd_end;
     cmd_line_ttc = config.cmd_ttc;
@@ -299,6 +316,7 @@ static void configure_ok_cb ()
 static void configure_cleanup ()
 {
     config.cmd = String ();
+    config.cmd_stop = String ();
     config.cmd_after = String ();
     config.cmd_end = String ();
     config.cmd_ttc = String ();
