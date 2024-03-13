@@ -210,20 +210,15 @@ NeonFile::~NeonFile ()
     ne_uri_free (& m_purl);
 }
 
-static bool neon_strcmp (const char * str, const char * cmp)
-{
-    return ! g_ascii_strncasecmp (str, cmp, strlen (cmp));
-}
-
 static void add_icy (struct icy_metadata * m, const char * name, const char * value)
 {
-    if (neon_strcmp (name, "StreamTitle"))
+    if (str_has_prefix_nocase (name, "StreamTitle"))
     {
         AUDDBG ("Found StreamTitle: %s\n", value);
         m->stream_title = String (str_to_utf8 (value, -1));
     }
 
-    if (neon_strcmp (name, "StreamUrl"))
+    if (str_has_prefix_nocase (name, "StreamUrl"))
     {
         AUDDBG ("Found StreamUrl: %s\n", value);
         m->stream_url = String (str_to_utf8 (value, -1));
@@ -370,7 +365,7 @@ void NeonFile::handle_headers ()
     {
         AUDDBG ("HEADER: %s: %s\n", name, value);
 
-        if (neon_strcmp (name, "accept-ranges"))
+        if (str_has_prefix_nocase (name, "accept-ranges"))
         {
             /* The server advertises range capability. we need "bytes" */
             if (strstr (value, "bytes"))
@@ -379,7 +374,7 @@ void NeonFile::handle_headers ()
                 m_can_ranges = true;
             }
         }
-        else if (neon_strcmp (name, "content-length"))
+        else if (str_has_prefix_nocase (name, "content-length"))
         {
             /* The server sent us the content length. Parse and store. */
             char * endptr;
@@ -394,13 +389,13 @@ void NeonFile::handle_headers ()
             else
                 AUDERR ("Invalid content length header: %s\n", value);
         }
-        else if (neon_strcmp (name, "content-type"))
+        else if (str_has_prefix_nocase (name, "content-type"))
         {
             /* The server sent us a content type. Save it for later */
             AUDDBG ("Content-Type: %s\n", value);
             m_icy_metadata.stream_contenttype = String (str_to_utf8 (value, -1));
         }
-        else if (neon_strcmp (name, "icy-metaint"))
+        else if (str_has_prefix_nocase (name, "icy-metaint"))
         {
             /* The server sent us a ICY metaint header. Parse and store. */
             char * endptr;
@@ -416,13 +411,13 @@ void NeonFile::handle_headers ()
             else
                 AUDERR ("Invalid ICY MetaInt header: %s\n", value);
         }
-        else if (neon_strcmp (name, "icy-name"))
+        else if (str_has_prefix_nocase (name, "icy-name"))
         {
             /* The server sent us a ICY name. Save it for later */
             AUDDBG ("ICY stream name: %s\n", value);
             m_icy_metadata.stream_name = String (value);
         }
-        else if (neon_strcmp (name, "icy-br"))
+        else if (str_has_prefix_nocase (name, "icy-br"))
         {
             /* The server sent us a bitrate. We might want to use it. */
             AUDDBG ("ICY bitrate: %d\n", atoi (value));
