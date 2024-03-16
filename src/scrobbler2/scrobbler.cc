@@ -54,13 +54,13 @@ String request_token;
 
 //static (private) variables
 static Tuple playing_track;
+static QueuedFunc scrobble_timer;
 
 //all times are in microseconds
 static  int64_t timestamp           = 0;
 static  int64_t play_started_at     = 0;
 static  int64_t pause_started_at    = 0;
 static  int64_t time_until_scrobble = 0;
-static  unsigned queue_function_ID  = 0;
 
 static pthread_t communicator;
 
@@ -69,14 +69,8 @@ static void cleanup_current_track () {
     play_started_at = 0;
     pause_started_at = 0;
     time_until_scrobble = 0;
-    if (queue_function_ID != 0) {
-        gboolean success = g_source_remove(queue_function_ID);
-        queue_function_ID = 0;
-        if (!success) {
-            AUDDBG("BUG: No success on g_source_remove!\n");
-        }
-    }
-    playing_track = Tuple ();
+    scrobble_timer.stop();
+    playing_track = Tuple();
 }
 
 StringBuf clean_string (const char *string) {
@@ -85,10 +79,10 @@ StringBuf clean_string (const char *string) {
     return temp;
 }
 
-static gboolean queue_track_to_scrobble (void * data) {
+static void queue_track_to_scrobble () {
     AUDDBG("The playing track is going to be ENQUEUED!\n.");
 
-    char *queuepath = g_strconcat(aud_get_path(AudPath::UserDir),"/scrobbler.log", nullptr);
+    StringBuf queue_path = str_concat({aud_get_path(AudPath::UserDir), "/scrobbler.log"});
 
     StringBuf artist = clean_string (playing_track.get_str (Tuple::Artist));
     StringBuf title  = clean_string (playing_track.get_str (Tuple::Title));
@@ -103,7 +97,7 @@ static gboolean queue_track_to_scrobble (void * data) {
         StringBuf track_str = (track > 0) ? int_to_str (track) : StringBuf (0);
 
         pthread_mutex_lock(&log_access_mutex);
-        FILE *f = g_fopen(queuepath, "a");
+        FILE *f = g_fopen(queue_path, "a");
 
         if (f == nullptr) {
             perror("fopen");
@@ -126,9 +120,7 @@ static gboolean queue_track_to_scrobble (void * data) {
         pthread_mutex_unlock(&log_access_mutex);
     }
 
-    g_free(queuepath);
     cleanup_current_track();
-    return false;
 }
 
 static void stopped (void *hook_data, void *user_data) {
@@ -141,18 +133,10 @@ static void ended (void *hook_data, void *user_data) {
 
     //TODO: hic sunt race conditions
     if (playing_track.valid() && (g_get_monotonic_time() > (play_started_at + 30*G_USEC_PER_SEC)) ) {
-      //This is an odd situation when the track's real length doesn't correspond to the length reported by the player.
-      //If we are at the end of the track, it is longer than 30 seconds and it wasn't scrobbled, we scrobble it by then.
-
-      if (queue_function_ID != 0) {
-        gboolean success = g_source_remove(queue_function_ID);
-        queue_function_ID = 0;
-        if (!success) {
-          AUDDBG("BUG or race condition: Could not remove source.\n");
-        } else {
-          queue_track_to_scrobble(nullptr);
-        }
-      }
+        //This is an odd situation when the track's real length doesn't correspond to the length reported by the player.
+        //If we are at the end of the track, it is longer than 30 seconds and it wasn't scrobbled, we scrobble it by then.
+        scrobble_timer.stop();
+        queue_track_to_scrobble();
     }
 
     cleanup_current_track();
@@ -181,7 +165,7 @@ static void ready (void *hook_data, void *user_data) {
     play_started_at = g_get_monotonic_time();
     playing_track = std::move (current_track);
 
-    queue_function_ID = g_timeout_add_seconds(time_until_scrobble / G_USEC_PER_SEC, (GSourceFunc) queue_track_to_scrobble, nullptr);
+    scrobble_timer.queue(1000 * (time_until_scrobble / G_USEC_PER_SEC), queue_track_to_scrobble);
 }
 
 static void paused (void *hook_data, void *user_data) {
@@ -190,13 +174,7 @@ static void paused (void *hook_data, void *user_data) {
         return;
     }
 
-    gboolean success = g_source_remove(queue_function_ID);
-    queue_function_ID = 0;
-    if (!success) {
-        AUDDBG("BUG: Could not remove source.\n");
-        return;
-    }
-
+    scrobble_timer.stop();
     pause_started_at = g_get_monotonic_time();
 }
 
@@ -205,9 +183,9 @@ static void unpaused (void *hook_data, void *user_data) {
         || pause_started_at == 0) { //TODO: audacious was started with a paused track.
         return;
     }
-    time_until_scrobble = time_until_scrobble - (pause_started_at - play_started_at);
 
-    queue_function_ID = g_timeout_add_seconds(time_until_scrobble / G_USEC_PER_SEC, (GSourceFunc) queue_track_to_scrobble, nullptr);
+    time_until_scrobble = time_until_scrobble - (pause_started_at - play_started_at);
+    scrobble_timer.queue(1000 * (time_until_scrobble / G_USEC_PER_SEC), queue_track_to_scrobble);
 
     pause_started_at = 0;
     play_started_at = g_get_monotonic_time();

@@ -19,6 +19,7 @@
 
 //audacious includes
 #include <libaudcore/i18n.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/tuple.h>
