@@ -20,11 +20,13 @@ gboolean          invalidate_session_requested = false;
 enum permission perm_result                  = PERMISSION_UNKNOWN;
 String          username;
 
-static gboolean permission_checker_thread (void *) {
+//static (private) variables
+static QueuedFunc permission_check_timer;
+
+static void permission_checker_thread () {
     if (permission_check_requested == true) {
         //the answer hasn't arrived yet
         hook_call("ui show progress", (void *)N_("Checking Last.fm access ..."));
-        return true;
     } else {
         //the answer has arrived
         hook_call("ui hide progress", nullptr);
@@ -55,7 +57,7 @@ static gboolean permission_checker_thread (void *) {
         }
 
         perm_result = PERMISSION_UNKNOWN;
-        return false;
+        permission_check_timer.stop();
     }
 }
 
@@ -74,7 +76,7 @@ static void permission_checker () {
     pthread_mutex_unlock(&communication_mutex);
 
     //The button is clicked. Wait for the permission check to be done.
-    g_timeout_add(250, permission_checker_thread, nullptr);
+    permission_check_timer.start(250, permission_checker_thread);
 }
 
 static void revoke_permissions () {
