@@ -2,8 +2,8 @@
  *  This file is part of audacious-hotkey plugin for audacious
  *
  *  Copyright (c) 2007 - 2008  Sascha Hlusiak <contact@saschahlusiak.de>
- *  Name: plugin.c
- *  Description: plugin.c
+ *  Name: plugin.cc
+ *  Description: plugin.cc
  *
  *  Part of this code is from itouch-ctrl plugin.
  *  Authors of itouch-ctrl are listed below:
@@ -34,12 +34,6 @@
  * USA.
  */
 
-#include <stdlib.h>
-
-#include <X11/XF86keysym.h>
-
-#include <gdk/gdk.h>
-#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
 #include <libaudcore/drct.h>
@@ -49,9 +43,11 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
+#include "api_hotkey.h"
 #include "grab.h"
 #include "gui.h"
-#include "plugin.h"
+
+extern bool system_up_and_running;
 
 class GlobalHotkeys : public GeneralPlugin
 {
@@ -63,27 +59,28 @@ public:
 
     constexpr GlobalHotkeys() : GeneralPlugin(info, false) {}
 
-    bool init();
-    void cleanup();
+    bool init() override;
+    void cleanup() override;
 };
 
-EXPORT GlobalHotkeys aud_plugin_instance;
-
 /* global vars */
-static PluginConfig plugin_cfg;
+EXPORT GlobalHotkeys aud_plugin_instance;
+PluginConfig plugin_cfg_gtk_global_hk;
 
 const char GlobalHotkeys::about[] =
     N_("Global Hotkey Plugin\n"
-       "Control the player with global key combinations or multimedia keys.\n\n"
+       "Control the player with global key combinations or multimedia "
+       "keys.\n\n"
        "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
        "Contributors include:\n"
+       "Copyright (C) 2020 Domen Mori <domen.mory@gmail.com>\n"
        "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
        "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
        " Bryn Davies <curious@ihug.com.au>,\n"
        " Jonathan A. Davis <davis@jdhouse.org>,\n"
        " Jeremy Tan <nsx@nsx.homeip.net>");
 
-PluginConfig * get_config() { return &plugin_cfg; }
+PluginConfig * get_config() { return &plugin_cfg_gtk_global_hk; }
 
 /*
  * plugin activated
@@ -95,11 +92,13 @@ bool GlobalHotkeys::init()
         AUDERR("GTK+ initialization failed.\n");
         return false;
     }
-
+#ifdef _WIN32
+    win_init();
+#else
     setup_filter();
+#endif
     load_config();
     grab_keys();
-
     return true;
 }
 
@@ -286,57 +285,24 @@ gboolean handle_keyevent(EVENT event)
     return false;
 }
 
-void add_hotkey(HotkeyConfiguration ** pphotkey, KeySym keysym, int mask,
-                int type, EVENT event)
-{
-    KeyCode keycode;
-    HotkeyConfiguration * photkey;
-    if (keysym == 0)
-        return;
-    if (pphotkey == nullptr)
-        return;
-    photkey = *pphotkey;
-    if (photkey == nullptr)
-        return;
-    keycode = XKeysymToKeycode(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()),
-                               keysym);
-    if (keycode == 0)
-        return;
-    if (photkey->key)
-    {
-        photkey->next = g_new(HotkeyConfiguration, 1);
-        photkey = photkey->next;
-        *pphotkey = photkey;
-        photkey->next = nullptr;
-    }
-    photkey->key = (int)keycode;
-    photkey->mask = mask;
-    photkey->event = event;
-    photkey->type = type;
-}
-
 void load_defaults()
 {
     HotkeyConfiguration * hotkey;
 
-    hotkey = &(plugin_cfg.first);
+    hotkey = &(plugin_cfg_gtk_global_hk.first);
 
-    add_hotkey(&hotkey, XF86XK_AudioPrev, 0, TYPE_KEY, EVENT_PREV_TRACK);
-    add_hotkey(&hotkey, XF86XK_AudioPlay, 0, TYPE_KEY, EVENT_PLAY);
-    add_hotkey(&hotkey, XF86XK_AudioPause, 0, TYPE_KEY, EVENT_PAUSE);
-    add_hotkey(&hotkey, XF86XK_AudioStop, 0, TYPE_KEY, EVENT_STOP);
-    add_hotkey(&hotkey, XF86XK_AudioNext, 0, TYPE_KEY, EVENT_NEXT_TRACK);
-
-    /*    add_hotkey(&hotkey, XF86XK_AudioRewind, 0, TYPE_KEY, EVENT_BACKWARD);
-     */
-
-    add_hotkey(&hotkey, XF86XK_AudioMute, 0, TYPE_KEY, EVENT_MUTE);
-    add_hotkey(&hotkey, XF86XK_AudioRaiseVolume, 0, TYPE_KEY, EVENT_VOL_UP);
-    add_hotkey(&hotkey, XF86XK_AudioLowerVolume, 0, TYPE_KEY, EVENT_VOL_DOWN);
-
-    /*    add_hotkey(&hotkey, XF86XK_AudioMedia, 0, TYPE_KEY,
-       EVENT_JUMP_TO_FILE); add_hotkey(&hotkey, XF86XK_Music, 0, TYPE_KEY,
-       EVENT_TOGGLE_WIN); */
+    Hotkey::add_hotkey(&hotkey, OS_KEY_AudioPrev, 0, TYPE_KEY,
+                       EVENT_PREV_TRACK);
+    Hotkey::add_hotkey(&hotkey, OS_KEY_AudioPlay, 0, TYPE_KEY, EVENT_PLAY);
+    Hotkey::add_hotkey(&hotkey, OS_KEY_AudioPause, 0, TYPE_KEY, EVENT_PAUSE);
+    Hotkey::add_hotkey(&hotkey, OS_KEY_AudioStop, 0, TYPE_KEY, EVENT_STOP);
+    Hotkey::add_hotkey(&hotkey, OS_KEY_AudioNext, 0, TYPE_KEY,
+                       EVENT_NEXT_TRACK);
+    Hotkey::add_hotkey(&hotkey, OS_KEY_AudioMute, 0, TYPE_KEY, EVENT_MUTE);
+    Hotkey::add_hotkey(&hotkey, OS_KEY_AudioRaiseVolume, 0, TYPE_KEY,
+                       EVENT_VOL_UP);
+    Hotkey::add_hotkey(&hotkey, OS_KEY_AudioLowerVolume, 0, TYPE_KEY,
+                       EVENT_VOL_DOWN);
 }
 
 /* load plugin configuration */
@@ -345,7 +311,7 @@ void load_config()
     HotkeyConfiguration * hotkey;
     int i, max;
 
-    hotkey = &(plugin_cfg.first);
+    hotkey = &(plugin_cfg_gtk_global_hk.first);
     hotkey->next = nullptr;
     hotkey->key = 0;
     hotkey->mask = 0;
@@ -394,7 +360,7 @@ void save_config()
     int max;
     HotkeyConfiguration * hotkey;
 
-    hotkey = &(plugin_cfg.first);
+    hotkey = &(plugin_cfg_gtk_global_hk.first);
     max = 0;
     while (hotkey)
     {
@@ -427,10 +393,13 @@ void save_config()
 
 void GlobalHotkeys::cleanup()
 {
+#ifdef _WIN32
+    system_up_and_running = false;
+#endif
     HotkeyConfiguration * hotkey;
     ungrab_keys();
     release_filter();
-    hotkey = &(plugin_cfg.first);
+    hotkey = &(plugin_cfg_gtk_global_hk.first);
     hotkey = hotkey->next;
     while (hotkey)
     {
@@ -439,8 +408,8 @@ void GlobalHotkeys::cleanup()
         hotkey = hotkey->next;
         g_free(old);
     }
-    plugin_cfg.first.next = nullptr;
-    plugin_cfg.first.key = 0;
-    plugin_cfg.first.event = (EVENT)0;
-    plugin_cfg.first.mask = 0;
+    plugin_cfg_gtk_global_hk.first.next = nullptr;
+    plugin_cfg_gtk_global_hk.first.key = 0;
+    plugin_cfg_gtk_global_hk.first.event = (EVENT)0;
+    plugin_cfg_gtk_global_hk.first.mask = 0;
 }

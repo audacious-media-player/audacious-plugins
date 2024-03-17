@@ -2,8 +2,8 @@
  *  This file is part of audacious-hotkey plugin for audacious
  *
  *  Copyright (c) 2007 - 2008  Sascha Hlusiak <contact@saschahlusiak.de>
- *  Name: gui.c
- *  Description: gui.c
+ *  Name: gui.cc
+ *  Description: gui.cc
  *
  *  Part of this code is from itouch-ctrl plugin.
  *  Authors of itouch-ctrl are listed below:
@@ -41,11 +41,12 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include <gdk/gdkkeysyms-compat.h>
-#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
-#include <X11/XKBlib.h>
+#include <libaudcore/runtime.h>
+#include <tuple>
 
+#include "api_hotkey.h"
 #include "grab.h"
 #include "gui.h"
 #include "plugin.h"
@@ -89,68 +90,10 @@ static const char * event_desc[] = {N_("Previous track"),
 static_assert(aud::n_elems(event_desc) == EVENT_MAX,
               "event_desc table is not up to date");
 
-static void set_keytext(GtkWidget * entry, int key, int mask, int type)
-{
-    char * text = nullptr;
-
-    if (key == 0 && mask == 0)
-    {
-        text = g_strdup(_("(none)"));
-    }
-    else
-    {
-        static const char * modifier_string[] = {
-            "Control", "Shift", "Alt", "Mod2", "Mod3", "Super", "Mod5"};
-        static const unsigned int modifiers[] = {
-            ControlMask, ShiftMask, Mod1Mask, Mod2Mask,
-            Mod3Mask,    Mod4Mask,  Mod5Mask};
-        const char * strings[9];
-        char * keytext = nullptr;
-        int i, j;
-        if (type == TYPE_KEY)
-        {
-            KeySym keysym;
-            keysym = XkbKeycodeToKeysym(
-                GDK_DISPLAY_XDISPLAY(gdk_display_get_default()), key, 0, 0);
-            if (keysym == 0 || keysym == NoSymbol)
-            {
-                keytext = g_strdup_printf("#%d", key);
-            }
-            else
-            {
-                keytext = g_strdup(XKeysymToString(keysym));
-            }
-        }
-        if (type == TYPE_MOUSE)
-        {
-            keytext = g_strdup_printf("Button%d", key);
-        }
-
-        for (i = 0, j = 0; j < 7; j++)
-        {
-            if (mask & modifiers[j])
-                strings[i++] = modifier_string[j];
-        }
-        if (key != 0)
-            strings[i++] = keytext;
-        strings[i] = nullptr;
-
-        text = g_strjoinv(" + ", (char **)strings);
-        g_free(keytext);
-    }
-
-    gtk_entry_set_text(GTK_ENTRY(entry), text);
-    gtk_editable_set_position(GTK_EDITABLE(entry), -1);
-    if (text)
-        g_free(text);
-}
-
 static gboolean on_entry_key_press_event(GtkWidget * widget,
                                          GdkEventKey * event, void * user_data)
 {
     KeyControls * controls = (KeyControls *)user_data;
-    int is_mod;
-    int mod;
 
     if (event->keyval == GDK_Tab)
         return false;
@@ -158,10 +101,14 @@ static gboolean on_entry_key_press_event(GtkWidget * widget,
         return false;
     if (event->keyval == GDK_Return && ((event->state & ~GDK_LOCK_MASK) == 0))
         return false;
+#ifdef _WIN32
+    if (event->keyval == GDK_Meta_L || event->keyval == GDK_Meta_R)
+        return false;
+#endif
     if (event->keyval == GDK_ISO_Left_Tab)
     {
-        set_keytext(controls->keytext, controls->hotkey.key,
-                    controls->hotkey.mask, controls->hotkey.type);
+        Hotkey::set_keytext(controls->keytext, controls->hotkey.key,
+                            controls->hotkey.mask, controls->hotkey.type);
         return false;
     }
     if (event->keyval == GDK_Up && ((event->state & ~GDK_LOCK_MASK) == 0))
@@ -169,32 +116,8 @@ static gboolean on_entry_key_press_event(GtkWidget * widget,
     if (event->keyval == GDK_Down && ((event->state & ~GDK_LOCK_MASK) == 0))
         return false;
 
-    mod = 0;
-    is_mod = 0;
-
-    if ((event->state & GDK_CONTROL_MASK) |
-        (!is_mod && (is_mod = (event->keyval == GDK_Control_L ||
-                               event->keyval == GDK_Control_R))))
-        mod |= ControlMask;
-
-    if ((event->state & GDK_MOD1_MASK) |
-        (!is_mod &&
-         (is_mod = (event->keyval == GDK_Alt_L || event->keyval == GDK_Alt_R))))
-        mod |= Mod1Mask;
-
-    if ((event->state & GDK_SHIFT_MASK) |
-        (!is_mod && (is_mod = (event->keyval == GDK_Shift_L ||
-                               event->keyval == GDK_Shift_R))))
-        mod |= ShiftMask;
-
-    if ((event->state & GDK_MOD5_MASK) |
-        (!is_mod && (is_mod = (event->keyval == GDK_ISO_Level3_Shift))))
-        mod |= Mod5Mask;
-
-    if ((event->state & GDK_MOD4_MASK) |
-        (!is_mod && (is_mod = (event->keyval == GDK_Super_L ||
-                               event->keyval == GDK_Super_R))))
-        mod |= Mod4Mask;
+    int mod, is_mod;
+    std::tie(mod, is_mod) = Hotkey::get_is_mod(event);
 
     if (!is_mod)
     {
@@ -207,8 +130,10 @@ static gboolean on_entry_key_press_event(GtkWidget * widget,
             gtk_widget_grab_focus(GTK_WIDGET(controls->next->keytext));
     }
 
-    set_keytext(controls->keytext, is_mod ? 0 : event->hardware_keycode, mod,
-                TYPE_KEY);
+    Hotkey::set_keytext(controls->keytext, is_mod ? 0 : event->hardware_keycode,
+                        mod, TYPE_KEY);
+    // Returning TRUE indicates that the event has been handled, and that it
+    // should not propagate further.
     return true;
 }
 
@@ -219,8 +144,8 @@ static gboolean on_entry_key_release_event(GtkWidget * widget,
     KeyControls * controls = (KeyControls *)user_data;
     if (!gtk_widget_is_focus(widget))
         return false;
-    set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask,
-                controls->hotkey.type);
+    Hotkey::set_keytext(controls->keytext, controls->hotkey.key,
+                        controls->hotkey.mask, controls->hotkey.type);
 
     return true;
 }
@@ -230,26 +155,11 @@ static gboolean on_entry_button_press_event(GtkWidget * widget,
                                             void * user_data)
 {
     KeyControls * controls = (KeyControls *)user_data;
-    int mod;
 
     if (!gtk_widget_is_focus(widget))
         return false;
 
-    mod = 0;
-    if (event->state & GDK_CONTROL_MASK)
-        mod |= ControlMask;
-
-    if (event->state & GDK_MOD1_MASK)
-        mod |= Mod1Mask;
-
-    if (event->state & GDK_SHIFT_MASK)
-        mod |= ShiftMask;
-
-    if (event->state & GDK_MOD5_MASK)
-        mod |= Mod5Mask;
-
-    if (event->state & GDK_MOD4_MASK)
-        mod |= Mod4Mask;
+    int mod = Hotkey::calculate_mod(event);
 
     if ((event->button <= 3) && (mod == 0))
     {
@@ -272,8 +182,8 @@ static gboolean on_entry_button_press_event(GtkWidget * widget,
     controls->hotkey.key = event->button;
     controls->hotkey.mask = mod;
     controls->hotkey.type = TYPE_MOUSE;
-    set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask,
-                controls->hotkey.type);
+    Hotkey::set_keytext(controls->keytext, controls->hotkey.key,
+                        controls->hotkey.mask, controls->hotkey.type);
     if (controls->next == nullptr)
         add_callback(nullptr, (void *)controls);
 
@@ -284,26 +194,11 @@ static gboolean on_entry_scroll_event(GtkWidget * widget,
                                       GdkEventScroll * event, void * user_data)
 {
     KeyControls * controls = (KeyControls *)user_data;
-    int mod;
 
     if (!gtk_widget_is_focus(widget))
         return false;
 
-    mod = 0;
-    if (event->state & GDK_CONTROL_MASK)
-        mod |= ControlMask;
-
-    if (event->state & GDK_MOD1_MASK)
-        mod |= Mod1Mask;
-
-    if (event->state & GDK_SHIFT_MASK)
-        mod |= ShiftMask;
-
-    if (event->state & GDK_MOD5_MASK)
-        mod |= Mod5Mask;
-
-    if (event->state & GDK_MOD4_MASK)
-        mod |= Mod4Mask;
+    auto mod = Hotkey::calculate_mod(event);
 
     if (event->direction == GDK_SCROLL_UP)
         controls->hotkey.key = 4;
@@ -318,8 +213,8 @@ static gboolean on_entry_scroll_event(GtkWidget * widget,
 
     controls->hotkey.mask = mod;
     controls->hotkey.type = TYPE_MOUSE;
-    set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask,
-                controls->hotkey.type);
+    Hotkey::set_keytext(controls->keytext, controls->hotkey.key,
+                        controls->hotkey.mask, controls->hotkey.type);
     if (controls->next == nullptr)
         add_callback(nullptr, (void *)controls);
     return true;
@@ -367,8 +262,8 @@ KeyControls * add_event_controls(KeyControls * list, GtkWidget * grid, int row,
     controls->keytext = gtk_entry_new();
     gtk_editable_set_editable(GTK_EDITABLE(controls->keytext), false);
 
-    set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask,
-                controls->hotkey.type);
+    Hotkey::set_keytext(controls->keytext, controls->hotkey.key,
+                        controls->hotkey.mask, controls->hotkey.type);
     g_signal_connect((void *)controls->keytext, "key_press_event",
                      G_CALLBACK(on_entry_key_press_event), controls);
     g_signal_connect((void *)controls->keytext, "key_release_event",
@@ -421,7 +316,6 @@ void * make_config_widget()
     load_config();
 
     plugin_cfg = get_config();
-
     ungrab_keys();
 
     main_vbox = audgui_vbox_new(4);
@@ -532,7 +426,7 @@ static void clear_keyboard(GtkWidget * widget, void * data)
         controls->hotkey.key = 0;
         controls->hotkey.mask = 0;
         controls->hotkey.type = TYPE_KEY;
-        set_keytext(controls->keytext, 0, 0, TYPE_KEY);
+        Hotkey::set_keytext(controls->keytext, 0, 0, TYPE_KEY);
         gtk_combo_box_set_active(GTK_COMBO_BOX(controls->combobox), 0);
         return;
     }
@@ -633,9 +527,7 @@ void add_callback(GtkWidget * widget, void * data)
 void destroy_callback()
 {
     KeyControls * controls = first_controls;
-
     grab_keys();
-
     while (controls)
     {
         KeyControls * old;
