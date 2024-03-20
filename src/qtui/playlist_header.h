@@ -39,6 +39,7 @@ public:
 private:
     PlaylistWidget * m_playlist;
     bool m_inUpdate = false;
+    bool m_inStyleChange = false;
     int m_lastCol = -1;
 
     void sectionClicked(int logicalIndex);
@@ -46,6 +47,7 @@ private:
     void sectionResized(int logicalIndex, int /*oldSize*/, int newSize);
 
     void contextMenuEvent(QContextMenuEvent * event);
+    bool event(QEvent * event);
 
     void updateStyle();
 

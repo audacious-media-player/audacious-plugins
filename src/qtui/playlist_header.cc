@@ -35,10 +35,10 @@
 #include <libaudqt/libaudqt.h>
 
 static const char * const s_col_keys[] = {
-    "number",       "title",    "artist", "year",    "album",
-    "album-artist", "track",    "genre",  "queued",  "length",
-    "path",         "filename", "custom", "bitrate", "comment",
-    "publisher",    "catalog-number",     "disc"};
+    "number",       "title",          "artist", "year",    "album",
+    "album-artist", "track",          "genre",  "queued",  "length",
+    "path",         "filename",       "custom", "bitrate", "comment",
+    "publisher",    "catalog-number", "disc"};
 
 static const int s_default_widths[] = {
     25,  // entry number
@@ -262,6 +262,23 @@ void PlaylistHeader::contextMenuEvent(QContextMenuEvent * event)
     menu->popup(event->globalPos());
 }
 
+bool PlaylistHeader::event(QEvent * event)
+{
+    // Work around Qt 6 resetting column widths during StyleChange
+    // (happens at least with 6.6.2, did not happen with Qt 5.x)
+    m_inStyleChange = (event->type() == QEvent::StyleChange);
+
+    bool ret = QHeaderView::event(event);
+
+    if (m_inStyleChange)
+    {
+        updateColumns();
+        m_inStyleChange = false;
+    }
+
+    return ret;
+}
+
 void PlaylistHeader::updateColumns()
 {
     m_inUpdate = true;
@@ -330,7 +347,7 @@ void PlaylistHeader::sectionClicked(int logicalIndex)
 void PlaylistHeader::sectionMoved(int logicalIndex, int oldVisualIndex,
                                   int newVisualIndex)
 {
-    if (m_inUpdate)
+    if (m_inUpdate || m_inStyleChange)
         return;
 
     int old_pos = oldVisualIndex - 1;
@@ -356,7 +373,7 @@ void PlaylistHeader::sectionMoved(int logicalIndex, int oldVisualIndex,
 void PlaylistHeader::sectionResized(int logicalIndex, int /*oldSize*/,
                                     int newSize)
 {
-    if (m_inUpdate)
+    if (m_inUpdate || m_inStyleChange)
         return;
 
     int col = logicalIndex - 1;
