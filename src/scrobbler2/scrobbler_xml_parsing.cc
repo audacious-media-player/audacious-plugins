@@ -121,7 +121,6 @@ static String check_status (String &error_code, String &error_detail) {
 
     AUDDBG ("status is %s.\n", (const char *)status);
     if (strcmp(status, "ok")) {
-
         error_code = get_attribute_value("/lfm/error[@code]", "code");
         if (!(*error_code)) {
             AUDDBG("Weird API answer. Last.fm says status is %s but there is no error code?\n",

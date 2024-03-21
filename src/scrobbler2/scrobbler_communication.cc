@@ -611,46 +611,10 @@ static void treat_permission_check_request() {
     } //session_key == nullptr || strlen(session_key) == 0
 }
 
-// This is a sister function of scrobbler_request_session, using the getMobileSession
-//API call, for migrating from the old config
-//returns:
-// FALSE if there was a network problem OR a session_key was not obtained
-// TRUE if a new session_key was obtained
-static gboolean treat_migrate_config() {
-    String password = aud_get_str("audioscrobbler","password");
-    String username = aud_get_str("audioscrobbler","username");
-    if (!password[0] || !username[0])
-        return false;
-
-    char *checksumThis = g_strdup_printf("%s%s", (const char *)username, (const char *)password);
-    char *authToken = g_compute_checksum_for_string(G_CHECKSUM_MD5, checksumThis, -1);
-
-    String sessionmsg = create_message_to_lastfm ("auth.getMobileSession", 3,
-     "authToken", authToken, "username", (const char *) username,
-     "api_key", SCROBBLER_API_KEY);
-
-    g_free(checksumThis);
-    g_free(authToken);
-
-    if (send_message_to_lastfm(sessionmsg) == false)
-        return false;
-
-    if (!update_session_key())
-        return false;
-
-    return (session_key && session_key[0]);
-}
-
 //Scrobbling will only be enabled after the first connection test passed
 void * scrobbling_thread (void * input_data) {
     while (scrobbler_running) {
-        if (migrate_config_requested) {
-          if (treat_migrate_config() == false) {
-            aud_ui_show_error(_("Audacious is now using an improved version of the Last.fm Scrobbler.\nPlease check the Preferences for the Scrobbler plugin."));
-          }
-          aud_set_str("scrobbler", "migrated", "true");
-          migrate_config_requested = false;
-        } else if (permission_check_requested) {
+        if (permission_check_requested) {
             treat_permission_check_request();
             permission_check_requested = false;
         } else if (invalidate_session_requested) {

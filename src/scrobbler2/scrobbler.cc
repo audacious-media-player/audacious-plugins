@@ -42,7 +42,6 @@ EXPORT Scrobbler aud_plugin_instance;
 
 //shared variables
 gboolean scrobbler_running        = true;
-gboolean migrate_config_requested = false;
 gboolean now_playing_requested    = false;
 Tuple now_playing_track;
 
@@ -206,27 +205,6 @@ bool Scrobbler::init ()
     session_key = aud_get_str("scrobbler", "session_key");
     if (!session_key[0])
         scrobbling_enabled = false;
-
-    //TODO: Remove this after we are "sure" that noone is using the old scrobbler (from audacious < 3.4)
-    //By Debian's standard, this will probably be by 2020 or so
-    //Migration from the old scrobbler config
-    if (!session_key[0]) {
-      //We haven't been configured yet
-
-      String migrated = aud_get_str("scrobbler", "migrated");
-      if (strcmp(migrated, "true") != 0) {
-        //We haven't been migrated yet
-
-        String oldpass = aud_get_str("audioscrobbler","password");
-        String olduser = aud_get_str("audioscrobbler","username");
-        if (oldpass[0] && olduser[0]) {
-          //And the old scrobbler was configured
-
-          scrobbling_enabled = false;
-          migrate_config_requested = true;
-        }
-      }
-    }
 
     pthread_create(&communicator, nullptr, scrobbling_thread, nullptr);
 

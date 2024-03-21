@@ -57,15 +57,12 @@ extern pthread_mutex_t log_access_mutex;
 extern gboolean permission_check_requested;
 extern gboolean invalidate_session_requested;
 
-//Migrate the settings from the old scrobbler
-extern gboolean migrate_config_requested;
-
 //Send "now playing"
 extern gboolean now_playing_requested;
 extern Tuple now_playing_track;
 
 //scrobbler_communication.c
-extern gboolean   scrobbler_communication_init();
+extern gboolean scrobbler_communication_init();
 extern void * scrobbling_thread(void * data);
 
 /* Internal stuff */
