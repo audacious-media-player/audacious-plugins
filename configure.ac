@@ -63,6 +63,13 @@ else
     PKG_CHECK_MODULES([XML], [libxml-2.0])
 fi
 
+dnl Check for json-glib (required for lyrics-gtk)
+dnl =============================================
+
+if test $USE_GTK = yes ; then
+    PKG_CHECK_MODULES(JSON_GLIB, json-glib-1.0 >= 1.0)
+fi
+
 dnl Default Set of Plugins
 dnl ======================
 
@@ -109,6 +116,12 @@ check_allowed () {
             plugin_allowed=$USE_QT
             if test $plugin_allowed = no -a $2 = yes ; then
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-qt])
+            fi
+            if test $plugin_allowed = yes -a $1 = qtaudio ; then
+                plugin_allowed=$USE_QT5
+                if test $plugin_allowed = no -a $2 = yes ; then
+                    AC_MSG_ERROR([--enable-$1 cannot be used without --enable-qt5])
+                fi
             fi
             if test $plugin_allowed = yes -a $1 = ampache ; then
                 plugin_allowed=$have_neon
@@ -529,23 +542,34 @@ ENABLE_PLUGIN_WITH_DEP(ampache,
     AMPACHE,
     ampache_browser_1)
 
+if test "x$USE_QT5" = "xyes"; then
+    QT_MULTIMEDIA_DEP=Qt5Multimedia
+    QT_NETWORK_DEP=Qt5Network
+    QT_OPENGL_DEP="Qt5OpenGL >= 5.4"
+    QT_X11_DEP=Qt5X11Extras
+else
+    QT_MULTIMEDIA_DEP=Qt6Multimedia
+    QT_NETWORK_DEP=Qt6Network
+    QT_OPENGL_DEP="Qt6OpenGL Qt6OpenGLWidgets"
+    QT_X11_DEP="Qt6Gui >= 6.2"
+fi
+
 ENABLE_PLUGIN_WITH_DEP(qtaudio,
     QtMultimedia output,
     auto,
     OUTPUT,
     QTMULTIMEDIA,
-    Qt5Multimedia)
+    $QT_MULTIMEDIA_DEP)
 
 ENABLE_PLUGIN_WITH_DEP(streamtuner,
     Stream tuner (experimental),
     no,
     GENERAL,
     QTNETWORK,
-    Qt5Network)
+    $QT_NETWORK_DEP)
 
 test_qtglspectrum () {
-    PKG_CHECK_MODULES(QTOPENGL, Qt5OpenGL >= 5.4, [
-        QTOPENGL_CFLAGS="$QTOPENGL_CFLAGS -fPIC"
+    PKG_CHECK_MODULES(QTOPENGL, $QT_OPENGL_DEP, [
         if test $have_glspectrum = yes ; then
             have_qtglspectrum=yes
         elif test $HAVE_MSWINDOWS = yes ; then
@@ -571,7 +595,7 @@ ENABLE_PLUGIN_WITH_DEP(qthotkey,
     auto,
     GENERAL,
     QTX11EXTRAS,
-    Qt5X11Extras)
+    $QT_X11_DEP)
 
 dnl CoreAudio
 dnl =========
@@ -855,7 +879,7 @@ fi
 if test "x$USE_QT" = "xyes" ; then
     echo "  Qt Support"
     echo "  ----------"
-    echo "  Qt Multimedia output:                   $have_qtaudio"
+    echo "  Qt Multimedia output (Qt 5 only):       $have_qtaudio"
     echo "  Qt Interface:                           yes"
     echo "  Winamp Classic Interface:               yes"
     echo "  Album Art:                              yes"
