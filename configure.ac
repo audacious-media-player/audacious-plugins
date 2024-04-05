@@ -551,7 +551,7 @@ else
     QT_MULTIMEDIA_DEP=Qt6Multimedia
     QT_NETWORK_DEP=Qt6Network
     QT_OPENGL_DEP="Qt6OpenGL Qt6OpenGLWidgets"
-    QT_X11_DEP="Qt6Gui >= 6.2"
+    QT_X11_DEP="Qt6Gui >= 6.2 x11 xcb-proto"
 fi
 
 ENABLE_PLUGIN_WITH_DEP(qtaudio,
