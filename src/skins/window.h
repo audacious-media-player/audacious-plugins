@@ -46,7 +46,7 @@ public:
     void set_shapes (GdkRegion * shape, GdkRegion * sshape);
 #endif
     bool is_shaded () { return m_is_shaded; }
-    bool has_focus() { return gtk_window_has_toplevel_focus (gtk ()) }
+    bool has_focus() { return gtk_window_has_toplevel_focus ((GtkWindow *) gtk ()) }
     void set_shaded (bool shaded);
     void put_widget (bool shaded, Widget * widget, int x, int y);
     void move_widget (bool shaded, Widget * widget, int x, int y);
