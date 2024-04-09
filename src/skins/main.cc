@@ -1149,7 +1149,7 @@ void MainWindow::draw (cairo_t * cr)
 {
     int width = is_shaded () ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width;
     int height = is_shaded () ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height;
-    bool focus = has_focus ();
+    bool focus = dock_is_focused ();
     skin_draw_pixbuf (cr, SKIN_MAIN, 0, 0, 0, 0, width, height);
     skin_draw_mainwin_titlebar (cr, is_shaded (), focus);
     if(focus!=had_focus){
