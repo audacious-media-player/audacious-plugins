@@ -363,3 +363,13 @@ void dock_change_scale (int old_scale, int new_scale)
         }
     }
 }
+
+bool dock_is_focused()
+{
+    for (DockWindow & dw : windows)
+    {
+    	if (dw.window==nullptr) continue;
+    	if (dw.window->has_focus()) return true;
+    }
+    return false;
+}
