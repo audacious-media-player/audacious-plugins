@@ -250,12 +250,22 @@ static void equalizerwin_create_widgets ()
 
 void EqWindow::draw (cairo_t * cr)
 {
-    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, is_shaded () ? 14 : 116);
+    bool shaded = is_shaded ();
+    bool focused = dock_is_focused ();
+    int y_off = shaded ? 0 : 134;
+    if(!focused) y_off += 15;
+    
+    static bool was_focused=false;
+    
+    SkinPixmapId tbar_id = shaded ? SKIN_EQ_EX : SKIN_EQMAIN;
+    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, shaded ? 14 : 116);//FIXME eq window is not getting focused when you click any other window
 
-    if (is_shaded ())
-        skin_draw_pixbuf (cr, SKIN_EQ_EX, 0, 0, 0, 0, 275, 14);
-    else
-        skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 134, 0, 0, 275, 14);
+    skin_draw_pixbuf (cr, tbar_id, 0, y_off, 0, 0, 275, 14);
+
+    if (was_focused!=focused){
+    	queue_draw ();
+    	was_focused=focused;
+    }
 }
 
 static void equalizerwin_create_window ()
