@@ -1153,7 +1153,6 @@ void MainWindow::draw (cairo_t * cr)
     skin_draw_pixbuf (cr, SKIN_MAIN, 0, 0, 0, 0, width, height);
     skin_draw_mainwin_titlebar (cr, is_shaded (), focus);
     if(focus!=m_is_drawn_focused){
-        queue_draw ();
         m_is_drawn_focused=focus;
     }
 }
