@@ -83,6 +83,18 @@ Window::~Window ()
 
     g_object_unref (m_normal);
     g_object_unref (m_shaded);
+    
+}
+
+static void focus_cb(GtkWidget *widget , GdkEventFocus *event , Window * win_ptr ){
+	win_ptr->focus_set(!! event->in);
+	refresh_dock_focus();
+}
+void Window::focus_refresh(){
+	
+	if (m_is_drawn_focused==dock_is_focused()) return;
+	queue_draw();
+	m_is_drawn_focused=dock_is_focused();
 }
 
 Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
@@ -136,6 +148,9 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
         gtk_container_add ((GtkContainer *) window, m_normal);
 
     dock_add_window (id, this, x, y, w, h);
+    
+    focus_hook_id1=g_signal_connect(G_OBJECT(window), "focus-out-event", G_CALLBACK(focus_cb), this);
+    focus_hook_id2=g_signal_connect(G_OBJECT(window), "focus-in-event", G_CALLBACK(focus_cb), this);
 }
 
 void Window::resize (int w, int h)

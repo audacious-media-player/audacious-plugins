@@ -46,7 +46,9 @@ public:
     void set_shapes (GdkRegion * shape, GdkRegion * sshape);
 #endif
     bool is_shaded () { return m_is_shaded; }
-    bool has_focus() { return gtk_window_has_toplevel_focus ((GtkWindow *) gtk ()) ;}
+    bool has_focus () { return m_is_focused;}
+    void focus_refresh();
+    void focus_set (bool focus) {m_is_focused=focus;}
     void set_shaded (bool shaded);
     void put_widget (bool shaded, Widget * widget, int x, int y);
     void move_widget (bool shaded, Widget * widget, int x, int y);
@@ -67,14 +69,15 @@ protected:
     bool button_release (GdkEventButton * event);
     bool motion (GdkEventMotion * event);
     bool close ();
-
-    bool had_focus=false;
 private:
     void apply_shape ();
 
+    long focus_hook_id1, focus_hook_id2;
     const int m_id;
     bool m_is_shaded = false;
     bool m_is_moving = false;
+    bool m_is_focused = false;
+    bool m_is_drawn_focused = false;
     GtkWidget * m_normal = nullptr, * m_shaded = nullptr;
 #ifdef USE_GTK3
     SmartPtr<cairo_region_t, cairo_region_destroy> m_shape, m_sshape;
@@ -90,5 +93,6 @@ void dock_move_start (int id, int x, int y);
 void dock_move (int x, int y);
 void dock_change_scale (int old_scale, int new_scale);
 bool dock_is_focused ();
+void refresh_dock_focus();
 
 #endif

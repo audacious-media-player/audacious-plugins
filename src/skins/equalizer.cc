@@ -255,16 +255,14 @@ void EqWindow::draw (cairo_t * cr)
     int y_off = shaded ? 0 : 134;
     if(!focused) y_off += 15;
     
-    static bool was_focused=false;
-    
     SkinPixmapId tbar_id = shaded ? SKIN_EQ_EX : SKIN_EQMAIN;
-    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, shaded ? 14 : 116);//FIXME eq window is not getting focused when you click any other window
+    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, shaded ? 14 : 116);
 
     skin_draw_pixbuf (cr, tbar_id, 0, y_off, 0, 0, 275, 14);
 
-    if (was_focused!=focused){
+    if (m_is_drawn_focused!=focused){
     	queue_draw ();
-    	was_focused=focused;
+    	m_is_drawn_focused=focused;
     }
 }
 
