@@ -373,3 +373,8 @@ bool dock_is_focused()
     }
     return false;
 }
+
+void refresh_dock_focus(){
+	for (DockWindow & dw : windows)
+        { dw.window -> focus_refresh (); }
+}

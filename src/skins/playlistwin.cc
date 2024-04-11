@@ -476,11 +476,16 @@ static void playlistwin_create_widgets ()
 
 void PlWindow::draw (cairo_t * cr)
 {
+    bool focus = dock_is_focused ();
     if (is_shaded ())
-        skin_draw_playlistwin_shaded (cr, config.playlist_width, true);
+        skin_draw_playlistwin_shaded (cr, config.playlist_width, focus);
     else
         skin_draw_playlistwin_frame (cr, config.playlist_width,
-         config.playlist_height, true);
+         config.playlist_height, focus);
+    if (m_is_drawn_focused!=focus){
+    	queue_draw ();
+    	m_is_drawn_focused=focus;
+    }
 }
 
 static void playlistwin_create_window ()

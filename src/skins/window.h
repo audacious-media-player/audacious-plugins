@@ -69,6 +69,7 @@ protected:
     bool button_release (GdkEventButton * event);
     bool motion (GdkEventMotion * event);
     bool close ();
+    bool m_is_drawn_focused = false;
 private:
     void apply_shape ();
 
@@ -77,7 +78,6 @@ private:
     bool m_is_shaded = false;
     bool m_is_moving = false;
     bool m_is_focused = false;
-    bool m_is_drawn_focused = false;
     GtkWidget * m_normal = nullptr, * m_shaded = nullptr;
 #ifdef USE_GTK3
     SmartPtr<cairo_region_t, cairo_region_destroy> m_shape, m_sshape;
