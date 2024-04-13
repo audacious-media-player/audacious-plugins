@@ -7,6 +7,7 @@ if have_neon
     'cert_verification.cc',
     dependencies: [audacious_dep, neon_dep, glib_dep],
     name_prefix: '',
+    link_args: have_windows ? ['-lcrypt32'] : [],
     install: true,
     install_dir: transport_plugin_dir
   )
