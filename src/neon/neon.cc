@@ -39,6 +39,11 @@
 #include <ne_uri.h>
 #include <ne_utils.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#include <wincrypt.h>
+#endif
+
 #include "cert_verification.h"
 
 #define NEON_NETBLKSIZE     (4096)
@@ -544,6 +549,30 @@ int NeonFile::open_request (int64_t startbyte, String * error)
     return -1;
 }
 
+#ifdef _WIN32
+static void trust_win32_root_certs (ne_session * m_session)
+{
+    auto store = CertOpenSystemStore (0, "ROOT");
+    if (! store)
+        return;
+
+    const CERT_CONTEXT * ctx = NULL;
+    while ((ctx = CertEnumCertificatesInStore (store, ctx)))
+    {
+        char * enc = g_base64_encode (ctx->pbCertEncoded, ctx->cbCertEncoded);
+        ne_ssl_certificate * cert = ne_ssl_cert_import (enc);
+        if (cert)
+        {
+            ne_ssl_trust_cert (m_session, cert);
+            ne_ssl_cert_free (cert);
+        }
+        g_free (enc);
+    }
+
+    CertCloseStore (store, 0);
+}
+#endif
+
 int NeonFile::open_handle (int64_t startbyte, String * error)
 {
     int ret;
@@ -628,6 +657,9 @@ int NeonFile::open_handle (int64_t startbyte, String * error)
         if (! strcmp ("https", m_purl.scheme))
         {
             ne_ssl_trust_default_ca (m_session);
+#ifdef _WIN32
+            trust_win32_root_certs (m_session);
+#endif
             ne_ssl_set_verify (m_session,
              neon_vfs_verify_environment_ssl_certs, m_session);
         }

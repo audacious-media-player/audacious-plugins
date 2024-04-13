@@ -13,3 +13,7 @@ LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} ${NEON_CFLAGS} -I../..
 LIBS += ${GLIB_LIBS} ${NEON_LIBS}
+
+ifeq ($(HAVE_MSWINDOWS),yes)
+    LIBS += -lcrypt32
+endif
