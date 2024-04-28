@@ -207,8 +207,8 @@ if meson.version().version_compare('>= 0.53')
   summary({
     'Qt 5 support': get_option('qt5'),
     'Qt 6 support': get_option('qt') and not get_option('qt5'),
-    'GTK2 support': get_option('gtk') and not get_option('gtk3'),
-    'GTK3 support': get_option('gtk3'),
+    'GTK 2 support': get_option('gtk') and not get_option('gtk3'),
+    'GTK 3 support': get_option('gtk3'),
   }, section: 'GUI Toolkits')
 
   summary({
