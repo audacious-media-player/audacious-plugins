@@ -43,7 +43,7 @@ protected:
 
 #ifdef Q_OS_MAC
     /* repaint() causes graphical glitches on OS X
-     * http://redmine.audacious-media-player.org/issues/558 */
+     * https://github.com/audacious-media-player/audacious/issues/694 */
     void draw_now () { update (); }
 #else
     void draw_now () { repaint (); }

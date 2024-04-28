@@ -86,7 +86,7 @@
 
 // Enable experimental silence skipping
 // Currently it is too aggressive, destroying the rhythm of some songs
-// See http://redmine.audacious-media-player.org/issues/201
+// See https://github.com/audacious-media-player/audacious/issues/335
 // #define ENABLE_SILENCE_SKIPPING
 
 //#include "PsxMem.h"
