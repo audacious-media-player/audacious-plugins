@@ -75,12 +75,12 @@ endif
 
 
 if get_option('gtk')
-  if get_option('gtk3')
-    gtk_req = '>= 3.22'
-    gtk_dep = dependency('gtk+-3.0', version: gtk_req, required: true)
-  else
+  if get_option('gtk2')
     gtk_req = '>= 2.24'
     gtk_dep = dependency('gtk+-2.0', version: gtk_req, required: true)
+  else
+    gtk_req = '>= 3.22'
+    gtk_dep = dependency('gtk+-3.0', version: gtk_req, required: true)
   endif
 endif
 
@@ -181,7 +181,7 @@ endif
 
 if get_option('gtk')
   conf.set10('USE_GTK', true)
-  if get_option('gtk3')
+  if not get_option('gtk2')
     conf.set10('USE_GTK3', true)
   endif
 endif
@@ -207,8 +207,8 @@ if meson.version().version_compare('>= 0.53')
   summary({
     'Qt 5 support': get_option('qt5'),
     'Qt 6 support': get_option('qt') and not get_option('qt5'),
-    'GTK 2 support': get_option('gtk') and not get_option('gtk3'),
-    'GTK 3 support': get_option('gtk3'),
+    'GTK 2 support': get_option('gtk2'),
+    'GTK 3 support': get_option('gtk') and not get_option('gtk2'),
   }, section: 'GUI Toolkits')
 
   summary({

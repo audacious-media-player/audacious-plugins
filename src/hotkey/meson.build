@@ -1,7 +1,7 @@
-if get_option('gtk3')
-  gdk_x11_dep = dependency('gdk-x11-3.0', version: gtk_req, required: false)
-else
+if get_option('gtk2')
   gdk_x11_dep = dependency('gdk-x11-2.0', version: gtk_req, required: false)
+else
+  gdk_x11_dep = dependency('gdk-x11-3.0', version: gtk_req, required: false)
 endif
 have_hotkey = gdk_x11_dep.found()
 
