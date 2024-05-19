@@ -24,23 +24,30 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include <iostream>
 #include <string.h>
 #include <libaudcore/objects.h>
+#include <cmath>
 
 #include "skins_cfg.h"
 #include "skin.h"
 #include "vis.h"
 
-static const float vis_afalloff_speeds[] = {0.34, 0.5, 1.0, 1.3, 1.6};
-static const float vis_pfalloff_speeds[] = {1.2, 1.3, 1.4, 1.5, 1.6};
-static const int vis_scope_colors[16] = {22, 22, 21, 21, 20, 10, 19, 19, 18,
- 19, 19, 20, 20, 21, 21, 22};
+static const float vis_afalloff_speeds[] = {0.19, 0.422, 0.75, 1.0, 2.0};
+static const float vis_pfalloff_speeds[] = {1.1, 1.15, 1.25, 1.4, 1.75};
+static const int vis_scope_colors[16] = {21, 21, 20, 20, 19, 19, 18, 18, 19,
+ 19, 20, 20, 21, 21, 22, 22};
 
 #define RGB_SEEK(x,y) (set = rgb + 76 * (y) + (x))
 #define RGB_SET(c) (* set ++ = (c))
 #define RGB_SET_Y(c) do {* set = (c); set += 76;} while (0)
 #define RGB_SET_INDEX(c) RGB_SET (skin.vis_colors[c])
 #define RGB_SET_INDEX_Y(c) RGB_SET_Y (skin.vis_colors[c])
+
+bool SkinnedVis::button_press (QMouseEvent * event)
+{
+    return press ? press (event) : false;
+}
 
 void SkinnedVis::set_colors ()
 {
@@ -105,7 +112,7 @@ void SkinnedVis::draw (QPainter & cr)
             if (bars && (x & 3) == 3)
                 continue;
 
-            int h = m_data[bars ? (x >> 2) : x];
+            int h = m_datafalloff[bars ? (x >> 2) : x];
             h = aud::clamp (h, 0, 16);
             RGB_SEEK (x, 16 - h);
 
@@ -117,23 +124,26 @@ void SkinnedVis::draw (QPainter & cr)
                 break;
             case ANALYZER_FIRE:
                 for (int y = 0; y < h; y ++)
-                    RGB_SET_INDEX_Y (2 + y);
+                    RGB_SET_INDEX_Y (3 + y);
                 break;
             default: /* ANALYZER_VLINES */
                 for (int y = 0; y < h; y ++)
                     RGB_SET_INDEX_Y (18 - h);
                 break;
             }
-
+        
             if (config.analyzer_peaks)
             {
-                int h = m_peak[bars ? (x >> 2) : x];
+                int h;
+                h = m_truepeaks[bars ? (x >> 2) : x];
                 h = aud::clamp (h, 0, 16);
 
                 if (h)
                 {
-                    RGB_SEEK (x, 16 - h);
-                    RGB_SET_INDEX (23);
+                    if (h > 1){
+                        RGB_SEEK (x, 16 - h);
+                        RGB_SET_INDEX (23);
+                    }
                 }
             }
         }
@@ -172,46 +182,51 @@ void SkinnedVis::draw (QPainter & cr)
         case SCOPE_DOT:
             for (int x = 0; x < 75; x ++)
             {
-                int h = aud::clamp ((int) m_data[x], 0, 15);
+                int h = aud::clamp ((int) m_data[x] - 1, 0, 15);
                 RGB_SEEK (x, h);
                 RGB_SET_INDEX (vis_scope_colors[h]);
             }
             break;
         case SCOPE_LINE:
         {
-            for (int x = 0; x < 74; x ++)
+            for (int x = 0; x < 75; x ++)
             {
-                int h = aud::clamp ((int) m_data[x], 0, 15);
-                int h2 = aud::clamp ((int) m_data[x + 1], 0, 15);
+                int h = aud::clamp ((int) m_data[x] - 1, 0, 15);
 
-                if (h < h2)
-                    h2 --;
-                else if (h > h2)
-                {
-                    int temp = h;
-                    h = h2 + 1;
-                    h2 = temp;
+                    if (x == 0) {
+                        last_h = h;
+                    }
+
+                    top = h;
+                    bottom = last_h;
+                    last_h = h;
+
+                    if (bottom < top) {
+                        int temp = bottom;
+                        bottom = top;
+                        top = temp + 1;
+                    }
+
+                for (int y = top; y <= bottom; y ++) {
+                    RGB_SEEK (x, y);
+                    RGB_SET_INDEX_Y (vis_scope_colors[h]);
                 }
-
-                RGB_SEEK (x, h);
-
-                for (int y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (vis_scope_colors[y]);
             }
 
-            int h = aud::clamp ((int) m_data[74], 0, 15);
-            RGB_SEEK (74, h);
-            RGB_SET_INDEX (vis_scope_colors[h]);
+/*             int h = aud::clamp ((int) m_data[5], 0, 15) + 1;
+            RGB_SEEK (75, h);
+            RGB_SET_INDEX (vis_scope_colors[h]); */
             break;
         }
         default: /* SCOPE_SOLID */
             for (int x = 0; x < 75; x ++)
             {
-                int h = aud::clamp ((int) m_data[x], 0, 15);
+                int h = aud::clamp ((int) m_data[x] - 1, 0, 15);
+                int h3 = aud::clamp ((int) m_data[x] - 1, 0, 15); // get full data instead of just one half
                 int h2;
 
                 if (h < 8)
-                    h2 = 8;
+                    h2 = 7;
                 else
                 {
                     h2 = h;
@@ -221,7 +236,7 @@ void SkinnedVis::draw (QPainter & cr)
                 RGB_SEEK (x, h);
 
                 for (int y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (vis_scope_colors[y]);
+                    RGB_SET_INDEX_Y (vis_scope_colors[h3]);
             }
             break;
         }
@@ -230,7 +245,13 @@ void SkinnedVis::draw (QPainter & cr)
 
 DRAW:
     QImage image ((unsigned char *) rgb, 76, 16, 4 * 76, QImage::Format_RGB32);
-    cr.drawImage (0, 0, image);
+    int y;
+    if (config.scale == 1) {
+        y = 2;
+    } else {
+        y = 0;
+    }
+    cr.drawImage (0, y, image);
 }
 
 SkinnedVis::SkinnedVis ()
@@ -245,9 +266,8 @@ void SkinnedVis::clear ()
     m_active = false;
     m_voiceprint_advance = false;
 
-    memset (m_data, 0, sizeof m_data);
-    memset (m_peak, 0, sizeof m_peak);
-    memset (m_peak_speed, 0, sizeof m_peak_speed);
+    memset (m_datafalloff, 0, sizeof m_datafalloff);
+    memset (m_truepeaks, 0, sizeof m_truepeaks);
     memset (m_voiceprint_data, 0, sizeof m_voiceprint_data);
 
     queue_draw ();
@@ -257,47 +277,26 @@ void SkinnedVis::render (const unsigned char * data)
 {
     if (config.vis_type == VIS_ANALYZER)
     {
-        const int n = (config.analyzer_type == ANALYZER_BARS) ? 19 : 75;
-
+    const int n = (config.analyzer_type == ANALYZER_BARS) ? 19 : 75;
         for (int i = 0; i < n; i ++)
         {
-            if (data[i] > m_data[i])
-            {
-                m_data[i] = data[i];
-                if (m_data[i] > m_peak[i])
-                {
-                    m_peak[i] = m_data[i];
-                    m_peak_speed[i] = 0.01;
+            m_data[i] = data[i];
+            m_data[i] = aud::clamp(static_cast<int>(m_data[i]), 0, 15);
+            m_datafalloff[i] -= (vis_afalloff_speeds[config.analyzer_falloff]) * 2;
 
-                }
-                else if (m_peak[i] > 0.0)
-                {
-                    m_peak[i] -= m_peak_speed[i];
-                    m_peak_speed[i] *= vis_pfalloff_speeds[config.peaks_falloff];
-                    if (m_peak[i] < m_data[i])
-                        m_peak[i] = m_data[i];
-                    if (m_peak[i] < 0.0)
-                        m_peak[i] = 0.0;
-                }
+            if (m_datafalloff[i] <= m_data[i]) {
+                m_datafalloff[i] = m_data[i];
             }
-            else
-            {
-                if (m_data[i] > 0.0)
-                {
-                    m_data[i] -= vis_afalloff_speeds[config.analyzer_falloff];
-                    if (m_data[i] < 0.0)
-                        m_data[i] = 0.0;
-                }
-                if (m_peak[i] > 0.0)
-                {
-                    m_peak[i] -= m_peak_speed[i];
-                    m_peak_speed[i] *= vis_pfalloff_speeds[config.peaks_falloff];
-                    if (m_peak[i] < m_data[i])
-                        m_peak[i] = m_data[i];
-                    if (m_peak[i] < 0.0)
-                        m_peak[i] = 0.0;
-                }
+
+            if (m_peak[i] <= (int)((m_datafalloff[i] + 1) * 256)){
+                m_peak[i] = (int)((m_datafalloff[i] + 1) * 256);
+                m_data2[i] = 3.0f;
             }
+
+            m_truepeaks[i] = m_peak[i]/256;
+
+            m_peak[i] -= (int)m_data2[i];
+            m_data2[i] *= (vis_pfalloff_speeds[config.peaks_falloff]);
         }
     }
     else if (config.vis_type == VIS_VOICEPRINT)

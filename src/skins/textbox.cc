@@ -230,7 +230,7 @@ void TextBox::render ()
 
         if (! m_two_way)
         {
-            StringBuf temp = str_printf ("%s --- ", text);
+            StringBuf temp = str_printf ("%s *** ", text);
 
             if (m_font)
                 render_vector (temp);

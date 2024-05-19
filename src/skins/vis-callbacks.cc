@@ -52,8 +52,8 @@ public:
 
 void VisCallbacks::clear ()
 {
-    mainwin_vis->clear ();
-    mainwin_svis->clear ();
+    /*mainwin_vis->clear ();
+    mainwin_svis->clear ();*/
 }
 
 void VisCallbacks::render_mono_pcm (const float * pcm)
@@ -120,6 +120,8 @@ static void make_log_graph (const float * freq, int bands, int db_range,
     static int last_bands = 0;
     static Index<float> xscale;
 
+    bool shaded = aud_get_bool ("skins", "player_shaded");
+
     /* conversion table for the x-axis */
     if (bands != last_bands)
     {
@@ -133,6 +135,17 @@ static void make_log_graph (const float * freq, int bands, int db_range,
         float val = Visualizer::compute_freq_band (freq, & xscale[0], i, bands);
         /* scale (-db_range, 0.0) to (0.0, int_range) */
         val = (1 + val / db_range) * int_range;
+        if (config.vis_type == VIS_VOICEPRINT){
+            // do nothing
+        }
+        else {
+            if (shaded){
+                val = std::pow(10, val / 10.0) * 1.25;
+            } else {
+                val = std::pow(10, val / 10.0) / 1.6;
+            }
+
+        }
         graph[i] = aud::clamp ((int) val, 0, int_range);
     }
 }
@@ -148,7 +161,7 @@ void VisCallbacks::render_freq (const float * freq)
         if (config.analyzer_type == ANALYZER_BARS)
         {
             if (shaded)
-                make_log_graph (freq, 13, 40, 8, data);
+                make_log_graph (freq, 10, 40, 8, data);
             else
                 make_log_graph (freq, 19, 40, 16, data);
         }

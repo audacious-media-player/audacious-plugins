@@ -131,10 +131,19 @@ static void mainwin_position_motion_cb ();
 static void mainwin_position_release_cb ();
 static void seek_timeout (void * rewind);
 
+bool change_vis_type(GdkEventButton * event) {
+    config.vis_type = (config.vis_type + 1) % 4;
+    if (config.vis_type == VIS_OFF){
+        mainwin_vis->clear ();
+        mainwin_svis->clear ();
+    }
+    return true;
+}
+
 /* always returns a 6-character string */
 static StringBuf format_time (int time, int length)
 {
-    bool zero = aud_get_bool ("leading_zero");
+    //bool zero = aud_get_bool ("leading_zero");
     bool remaining = aud_get_bool ("skins", "show_remaining_time");
 
     if (remaining && length > 0)
@@ -143,9 +152,9 @@ static StringBuf format_time (int time, int length)
         time = aud::clamp(0, time, 359999); // 99:59:59
 
         if (time < 60)
-            return str_printf (zero ? "-00:%02d" : " -0:%02d", time);
+            return str_printf ("-00:%02d", time);
         else if (time < 6000)
-            return str_printf (zero ? "%03d:%02d" : "%3d:%02d", -time / 60, time % 60);
+            return str_printf ("%03d:%02d", -time / 60, time % 60);
         else
             return str_printf ("%3d:%02d", -time / 3600, time / 60 % 60);
     }
@@ -155,7 +164,7 @@ static StringBuf format_time (int time, int length)
         time = aud::clamp(0, time, 3599999); // 999:59:59
 
         if (time < 6000)
-            return str_printf (zero ? " %02d:%02d" : " %2d:%02d", time / 60, time % 60);
+            return str_printf (" %02d:%02d", time / 60, time % 60);
         else if (time < 60000)
             return str_printf ("%3d:%02d", time / 60, time % 60);
         else
@@ -874,18 +883,22 @@ void mainwin_mr_change (MenuRowItem i)
             break;
         case MENUROW_ALWAYS:
             if (aud_get_bool ("skins", "always_on_top"))
-                mainwin_lock_info_text (_("Disable 'Always On Top'"));
+                mainwin_lock_info_text (_("Disable Always-On-Top"));
             else
-                mainwin_lock_info_text (_("Enable 'Always On Top'"));
+                mainwin_lock_info_text (_("Enable Always-On-Top"));
             break;
         case MENUROW_FILEINFOBOX:
             mainwin_lock_info_text (_("File Info Box"));
             break;
         case MENUROW_SCALE:
-            mainwin_lock_info_text (_("Double Size"));
+            if (config.scale == 1){
+                mainwin_lock_info_text (_("Enable Doublesize Mode"));
+            } else {
+                mainwin_lock_info_text (_("Disable Doublesize Mode"));
+            }
             break;
         case MENUROW_VISUALIZATION:
-            mainwin_lock_info_text (_("Visualizations"));
+            mainwin_lock_info_text (_("Visualization Window"));
             break;
         default:
             break;
@@ -1069,6 +1082,7 @@ static void mainwin_create_widgets ()
 
     mainwin_vis = new SkinnedVis;
     mainwin->put_widget (false, mainwin_vis, 24, 43);
+    mainwin_vis->on_press (change_vis_type);
 
     mainwin_position = new HSlider (0, 219, SKIN_POSBAR, 248, 10, 0, 0, 29, 10, 248, 0, 278, 0);
     mainwin->put_widget (false, mainwin_position, 16, 72);
@@ -1119,6 +1133,7 @@ static void mainwin_create_widgets ()
 
     mainwin_svis = new SmallVis ();
     mainwin->put_widget (true, mainwin_svis, 79, 5);
+    mainwin_svis->on_press (change_vis_type);
 
     mainwin_sposition = new HSlider (1, 13, SKIN_TITLEBAR, 17, 7, 0, 36, 3, 7, 17, 36, 17, 36);
     mainwin->put_widget (true, mainwin_sposition, 226, 4);
