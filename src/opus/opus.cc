@@ -137,23 +137,22 @@ static Index<char> read_image_from_tags(const OpusTags * tags,
     if (!image)
         return data;
 
-    auto picture_tag = SmartPtr<OpusPictureTag>(new OpusPictureTag);
-    opus_picture_tag_init(picture_tag.get());
-
-    if (opus_picture_tag_parse(picture_tag.get(), image) < 0)
+    OpusPictureTag picture_tag;
+    if (opus_picture_tag_parse(&picture_tag, image) < 0)
     {
         AUDERR("Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
         return data;
     }
 
-    if (picture_tag->format == OP_PIC_FORMAT_JPEG ||
-        picture_tag->format == OP_PIC_FORMAT_PNG ||
-        picture_tag->format == OP_PIC_FORMAT_GIF)
+    if (picture_tag.format == OP_PIC_FORMAT_JPEG ||
+        picture_tag.format == OP_PIC_FORMAT_PNG ||
+        picture_tag.format == OP_PIC_FORMAT_GIF)
     {
-        data.insert(reinterpret_cast<const char *>(picture_tag->data), 0,
-                    picture_tag->data_length);
+        data.insert(reinterpret_cast<const char *>(picture_tag.data), 0,
+                    picture_tag.data_length);
     }
 
+    opus_picture_tag_clear(&picture_tag);
     return data;
 }
 
@@ -246,7 +245,7 @@ bool OpusPlugin::read_tag(const char * filename, VFSFile & file, Tuple & tuple,
     if (tags)
         read_tags(tags, tuple);
     if (image && tags)
-        * image = read_image_from_tags(tags, filename);
+        *image = read_image_from_tags(tags, filename);
 
     op_free(opus_file);
     return true;
