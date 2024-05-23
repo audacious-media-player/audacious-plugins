@@ -424,7 +424,7 @@ static void mainwin_playback_stop ()
     seeking = false;
     timer_remove (TimerRate::Hz10, seek_timeout);
 
-    mainwin_set_song_title (nullptr);
+    //mainwin_set_song_title (nullptr);
 
     mainwin_vis->clear ();
     mainwin_svis->clear ();
@@ -1229,7 +1229,7 @@ void mainwin_create ()
 {
     mainwin_create_window ();
     mainwin_create_widgets ();
-    mainwin_set_song_title (nullptr);
+    //mainwin_set_song_title (nullptr);
 }
 
 static void mainwin_update_volume ()
