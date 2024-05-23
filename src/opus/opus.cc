@@ -237,7 +237,7 @@ bool OpusPlugin::read_tag(const char * filename, VFSFile & file, Tuple & tuple,
     m_bitrate = op_bitrate(opus_file, -1);
     tuple.set_format("Opus", m_channels, sample_rate, m_bitrate / 1000);
 
-    int total_time = op_pcm_total(opus_file, -1);
+    ogg_int64_t total_time = op_pcm_total(opus_file, -1);
     if (total_time > 0)
         tuple.set_int(Tuple::Length, total_time / (sample_rate / 1000));
 
