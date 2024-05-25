@@ -4,6 +4,7 @@
 #
 # ubuntu-20.04:      Qt 5 + GTK 2
 # ubuntu-22.04:      Qt 5 + GTK 3
+# ubuntu-24.04:      Qt 6 + GTK 3
 # Windows:           Qt 6 + GTK 2
 # macOS (Autotools): Qt 5 - GTK
 # macOS (Meson):     Qt 6 - GTK
@@ -20,14 +21,14 @@ ubuntu_packages='gettext libadplug-dev libasound2-dev libavformat-dev
                  libbinio-dev libbs2b-dev libcddb2-dev libcdio-cdda-dev
                  libcue-dev libcurl4-gnutls-dev libdbus-glib-1-dev
                  libfaad-dev libflac-dev libfluidsynth-dev libgl1-mesa-dev
-                 libjack-jackd2-dev libjson-glib-dev liblircclient-dev
-                 libmms-dev libmodplug-dev libmp3lame-dev libmpg123-dev
-                 libneon27-gnutls-dev libnotify-dev libopenmpt-dev
-                 libopusfile-dev libpulse-dev libqt5opengl5-dev
-                 libqt5x11extras5-dev libsamplerate0-dev libsdl2-dev
-                 libsidplayfp-dev libsndfile1-dev libsndio-dev libsoxr-dev
-                 libvorbis-dev libwavpack-dev libxml2-dev qtbase5-dev
-                 qtmultimedia5-dev'
+                 libjack-jackd2-dev libjson-glib-dev libmms-dev libmodplug-dev
+                 libmp3lame-dev libmpg123-dev libneon27-gnutls-dev libnotify-dev
+                 libopenmpt-dev libopusfile-dev libpulse-dev libqt5opengl5-dev
+                 libsamplerate0-dev libsdl2-dev libsidplayfp-dev libsndfile1-dev
+                 libsndio-dev libsoxr-dev libvorbis-dev libwavpack-dev libxml2-dev'
+
+ubuntu_qt5_packages='libqt5x11extras5-dev qtbase5-dev qtmultimedia5-dev'
+ubuntu_qt6_packages='qt6-base-dev'
 
 macos_packages='adplug faad2 ffmpeg libbs2b libcue libmms libmodplug libnotify
                 libopenmpt libsamplerate libsoxr neon sdl2 wavpack'
@@ -35,17 +36,25 @@ macos_packages='adplug faad2 ffmpeg libbs2b libcue libmms libmodplug libnotify
 case "$os" in
   ubuntu-20.04)
     if [ "$build_system" = 'meson' ]; then
-      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages libgtk2.0-dev meson
+      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt5_packages libgtk2.0-dev liblircclient-dev meson
     else
-      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages libgtk2.0-dev
+      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt5_packages libgtk2.0-dev liblircclient-dev
+    fi
+    ;;
+
+  ubuntu-22.04)
+    if [ "$build_system" = 'meson' ]; then
+      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt5_packages libgtk-3-dev liblircclient-dev libpipewire-0.3-dev meson
+    else
+      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt5_packages libgtk-3-dev liblircclient-dev libpipewire-0.3-dev
     fi
     ;;
 
   ubuntu*)
     if [ "$build_system" = 'meson' ]; then
-      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages libgtk-3-dev libpipewire-0.3-dev meson
+      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt6_packages libgtk-3-dev liblirc-dev libpipewire-0.3-dev meson
     else
-      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages libgtk-3-dev libpipewire-0.3-dev
+      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt6_packages libgtk-3-dev liblirc-dev libpipewire-0.3-dev
     fi
     ;;
 
