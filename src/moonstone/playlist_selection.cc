@@ -143,6 +143,8 @@ PlaylistsView::PlaylistsView ()
     setFrameShape (QFrame::NoFrame);
     setIndentation (0);
     setHeaderHidden (true);
+
+    connect (this, &QTreeView::activated, this, &PlaylistsView::activate);
 }
 
 void PlaylistsView::currentChanged (const QModelIndex & current, const QModelIndex & previous)

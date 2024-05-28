@@ -116,7 +116,7 @@ private:
     void update (Playlist::UpdateLevel level);
     void update_sel ();
 
-    void activate (const QModelIndex & index) override
+    void activate (const QModelIndex & index)
     {
         if (index.isValid ())
             Playlist::by_index (index.row ()).start_playback ();
