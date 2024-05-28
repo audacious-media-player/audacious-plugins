@@ -340,6 +340,6 @@ if meson.version().version_compare('>= 0.53')
     summary({
       'CoreAudio Output': get_option('coreaudio'),
       'Media Keys': get_option('mac-media-keys'),
-    }, section: 'Mac OS X Support')
+    }, section: 'macOS Support')
   endif
 endif

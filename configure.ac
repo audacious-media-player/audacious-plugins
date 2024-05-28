@@ -897,8 +897,8 @@ if test "x$USE_QT" = "xyes" ; then
 fi
 
 if test "x$HAVE_DARWIN" = "xyes" ; then
-    echo "  Mac OS X Support"
-    echo "  ----------------"
+    echo "  macOS Support"
+    echo "  -------------"
     echo "  CoreAudio output:                       $have_coreaudio"
     echo "  Media Keys:                             $enable_mac_media_keys"
     echo
