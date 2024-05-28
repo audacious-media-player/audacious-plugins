@@ -31,7 +31,7 @@ ubuntu_qt5_packages='libqt5x11extras5-dev qtbase5-dev qtmultimedia5-dev'
 ubuntu_qt6_packages='qt6-base-dev'
 
 macos_packages='adplug faad2 ffmpeg libbs2b libcue libmms libmodplug libnotify
-                libopenmpt libsamplerate libsoxr neon sdl2 wavpack'
+                libopenmpt libsamplerate libsoxr neon opusfile sdl2 wavpack'
 
 case "$os" in
   ubuntu-20.04)
