@@ -96,6 +96,15 @@ bool GlobalHotkeys::init()
         return false;
     }
 
+#ifdef USE_GTK3
+    /* Check for X11 to prevent segfaults on Wayland, supported since GTK 3 */
+    if (!GDK_IS_X11_DISPLAY(gdk_display_get_default()))
+    {
+        AUDERR("Global Hotkeys plugin only supports X11, not Wayland.\n");
+        return false;
+    }
+#endif
+
     setup_filter();
     load_config();
     grab_keys();
