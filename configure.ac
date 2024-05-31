@@ -244,7 +244,7 @@ ENABLE_PLUGIN_WITH_DEP(opus,
     yes,
     INPUT,
     OPUS,
-    opus >= 1.0.1 opusfile >= 0.4)
+    opusfile >= 0.4)
 
 ENABLE_PLUGIN_WITH_DEP(amidiplug,
     MIDI synthesizer,
