@@ -22,6 +22,7 @@
 #include <glib.h>
 
 #include <QApplication>
+#include <QGuiApplication>
 #include <QPointer>
 
 #include <libaudcore/audstrings.h>
@@ -172,6 +173,14 @@ bool QtSkins::init ()
 
     if (! load_initial_skin ())
     {
+        audqt::cleanup ();
+        return false;
+    }
+
+    if (QGuiApplication::platformName() == "wayland")
+    {
+        AUDERR ("The Winamp interface is not supported on Wayland. "
+                "Please run Audacious via XWayland.\n");
         audqt::cleanup ();
         return false;
     }
