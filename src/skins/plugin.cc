@@ -30,6 +30,10 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
+#ifdef GDK_WINDOWING_WAYLAND
+#include <gdk/gdkwayland.h>
+#endif
+
 #include "menus.h"
 #include "plugin.h"
 #include "plugin-window.h"
@@ -164,6 +168,17 @@ bool SkinnedUI::init ()
         return false;
 
     audgui_init ();
+
+#ifdef GDK_WINDOWING_WAYLAND
+    if (GDK_IS_WAYLAND_DISPLAY (gdk_display_get_default ()))
+    {
+        AUDERR ("The Winamp interface is not supported on Wayland. "
+                "Please run Audacious via XWayland.\n");
+        audgui_cleanup ();
+        return false;
+    }
+#endif
+
     menu_init ();
     skins_init_main (false);
 
