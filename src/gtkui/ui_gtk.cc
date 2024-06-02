@@ -980,7 +980,6 @@ bool GtkUI::init ()
 
     timer_add (TimerRate::Hz4, ui_volume_slider_update, volume);
 
-    g_signal_connect (window, "map-event", (GCallback) pl_notebook_grab_focus, nullptr);
     g_signal_connect (window, "delete-event", (GCallback) window_delete, nullptr);
     g_signal_connect (window, "window-state-event", (GCallback) window_state_cb, nullptr);
     g_signal_connect (window, "key-press-event", (GCallback) window_keypress_cb, nullptr);
