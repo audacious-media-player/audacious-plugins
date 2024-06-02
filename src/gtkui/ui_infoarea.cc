@@ -370,12 +370,6 @@ static void ui_infoarea_playback_stop ()
     timer_add (TimerRate::Hz30, ui_infoarea_do_fade);
 }
 
-static void realize_cb (GtkWidget * widget)
-{
-    /* using a native window avoids redrawing parent widgets */
-    gdk_window_ensure_native (gtk_widget_get_window (widget));
-}
-
 void ui_infoarea_show_art (bool show)
 {
     if (! area)
@@ -397,9 +391,6 @@ void ui_infoarea_show_vis (bool show)
             return;
 
         vis.widget = gtk_drawing_area_new ();
-
-        /* note: "realize" signal must be connected before adding to box */
-        g_signal_connect (vis.widget, "realize", (GCallback) realize_cb, nullptr);
 
         gtk_widget_set_size_request (vis.widget, VIS_WIDTH, HEIGHT);
         gtk_box_pack_start ((GtkBox *) area->box, vis.widget, false, false, 0);
