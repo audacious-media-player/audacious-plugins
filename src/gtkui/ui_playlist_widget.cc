@@ -126,7 +126,10 @@ struct PlaylistWidgetData
     QueuedFunc popup_timer;
 
     void show_popup ()
-        { audgui_infopopup_show (list, popup_pos); }
+    {
+        GtkWindow * parent = get_main_window ();
+        audgui_infopopup_show (parent, list, popup_pos);
+    }
 };
 
 static void set_int_from_tuple (GValue * value, const Tuple & tuple, Tuple::Field field)

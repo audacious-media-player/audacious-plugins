@@ -37,6 +37,7 @@ extern Playlist menu_tab_playlist;
 extern const PluginPreferences gtkui_prefs;
 
 /* ui_gtk.c */
+GtkWindow * get_main_window ();
 void show_hide_menu ();
 void show_hide_infoarea ();
 void show_hide_infoarea_art ();
