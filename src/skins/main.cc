@@ -39,6 +39,7 @@
 #include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
@@ -366,6 +367,12 @@ static void mainwin_set_song_info (int bitrate, int samplerate, int channels)
     mainwin_set_othertext (scratch);
 }
 
+static void mainwin_show_infopopup ()
+{
+    GtkWindow * parent = (GtkWindow *) mainwin->gtk ();
+    audgui_infopopup_show_current (parent);
+}
+
 static void info_change ()
 {
     int bitrate, samplerate, channels;
@@ -531,7 +538,7 @@ bool MainWindow::motion (GdkEventMotion * event)
         if (! m_popup_shown)
         {
             m_popup_timer.queue (aud_get_int ("filepopup_delay") * 100,
-             audgui_infopopup_show_current);
+             mainwin_show_infopopup);
             m_popup_shown = true;
         }
     }
