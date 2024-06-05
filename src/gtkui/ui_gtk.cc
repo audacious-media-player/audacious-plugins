@@ -1031,6 +1031,11 @@ void GtkUI::cleanup ()
     audgui_cleanup ();
 }
 
+GtkWindow * get_main_window ()
+{
+    return (GtkWindow *) window;
+}
+
 #ifndef USE_GTK3
 static void menu_position_cb (GtkMenu *, int * x, int * y, int * push, void * button)
 {
