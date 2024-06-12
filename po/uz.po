@@ -10,11 +10,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
-"Report-Msgid-Bugs-To: https://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2023-04-29 21:59+0200\n"
+"Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
+"issues\n"
+"POT-Creation-Date: 2024-06-12 21:22+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
 "Last-Translator: Umidjon Almasov <umidjon@almasov.uz>, 2022\n"
-"Language-Team: Uzbek (http://www.transifex.com/audacious/audacious/language/"
+"Language-Team: Uzbek (http://app.transifex.com/audacious/audacious/language/"
 "uz/)\n"
 "Language: uz\n"
 "MIME-Version: 1.0\n"
@@ -61,8 +62,8 @@ msgstr "Namuna tezligi:"
 msgid "Hz"
 msgstr "Gts"
 
-#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:46
-#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:81
+#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:48
+#: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:85
 #: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:280
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Turli xil</b>"
@@ -550,6 +551,62 @@ msgstr "ASXv1/ASXv2 pleylistlari"
 msgid "Audacious Playlists (audpl)"
 msgstr "Audacious pleylistlari (audpl)"
 
+#: src/background_music/background_music.cc:24
+msgid "<b>Background music</b>"
+msgstr ""
+
+#: src/background_music/background_music.cc:25
+msgid "Target level:"
+msgstr ""
+
+#: src/background_music/background_music.cc:28
+#: src/background_music/background_music.cc:33
+#: src/silence-removal/silence-removal.cc:70
+msgid "dB"
+msgstr "dB"
+
+#: src/background_music/background_music.cc:29
+msgid "Maximum amplification:"
+msgstr ""
+
+#: src/background_music/background_music.cc:34 src/mpg123/mpg123.cc:81
+msgid "<b>Advanced</b>"
+msgstr "<b>Kengaytirilgan</b>"
+
+#: src/background_music/background_music.cc:36
+msgid "Slow detection weight:"
+msgstr ""
+
+#: src/background_music/background_music.cc:39
+msgid "<b>Hint</b>"
+msgstr ""
+
+#: src/background_music/background_music.cc:41
+msgid ""
+"Slow detection weight is the relative weight\n"
+"of a long term average detection when compared\n"
+"to the actual, faster loudness detection.\n"
+"A value of zero gives a more radio-like sound\n"
+"where soft passages get \"pulled up\" more quickly,\n"
+"a value of two makes the sound feel less compressed."
+msgstr ""
+
+#: src/background_music/background_music.cc:52
+msgid ""
+"Background Music Plugin for Audacious\n"
+"Copyright 2023;2024 Michel Fleur\n"
+"\n"
+"Controls the volume to make the sound equally loud within and between "
+"tracks.\n"
+" It uses accurate loudness measurement and tries to make the volume changes "
+"sound natural without audible peaks, yet without lowering the volume before "
+"a peak in advance."
+msgstr ""
+
+#: src/background_music/background_music.cc:61
+msgid "Background Music"
+msgstr ""
+
 #: src/bitcrusher/bitcrusher.cc:33
 msgid "<b>Bitcrusher</b>"
 msgstr ""
@@ -812,8 +869,8 @@ msgstr "Aks sado:"
 msgid "Default song length:"
 msgstr "Standart qo‘shiq uzunligi:"
 
-#: src/console/plugin.cc:41 src/crossfade/crossfade.cc:52
-#: src/crossfade/crossfade.cc:58 src/lirc/lirc.cc:395 src/notify/notify.cc:113
+#: src/console/plugin.cc:41 src/crossfade/crossfade.cc:56
+#: src/crossfade/crossfade.cc:62 src/lirc/lirc.cc:395 src/notify/notify.cc:113
 #: src/sid/xs_config.cc:85 src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
 #: src/vumeter-qt/vumeter_qt.cc:39
 msgid "seconds"
@@ -877,7 +934,7 @@ msgstr ""
 "Bit mukammal audiodan foydalanish (qurilma namuna olish tezligini "
 "moslashtirish)"
 
-#: src/crossfade/crossfade.cc:43
+#: src/crossfade/crossfade.cc:47
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
@@ -885,27 +942,43 @@ msgstr ""
 "Audacious uchun Crossfade plagini\n"
 "Mualliflik huquqi 2010-2014 Jon Lindgren"
 
-#: src/crossfade/crossfade.cc:47
+#: src/crossfade/crossfade.cc:51
 msgid "<b>Crossfade</b>"
 msgstr "<b>Oʻzaro oʻtish</b>"
 
-#: src/crossfade/crossfade.cc:48
+#: src/crossfade/crossfade.cc:52
 msgid "On automatic song change"
 msgstr "Qo'shiqni avtomatik o'zgartirishda"
 
-#: src/crossfade/crossfade.cc:50 src/crossfade/crossfade.cc:56
+#: src/crossfade/crossfade.cc:54 src/crossfade/crossfade.cc:60
 msgid "Overlap:"
 msgstr "Overlap:"
 
-#: src/crossfade/crossfade.cc:54
+#: src/crossfade/crossfade.cc:58
 msgid "On seek or manual song change"
 msgstr "Qidiruv yoki qo'lda qo'shiqni o'zgartirishda"
 
-#: src/crossfade/crossfade.cc:60
+#: src/crossfade/crossfade.cc:64
+msgid "No fade in"
+msgstr ""
+
+#: src/crossfade/crossfade.cc:66
+msgid "Use S-curve fade"
+msgstr ""
+
+#: src/crossfade/crossfade.cc:68
+msgid "S-curve steepness:"
+msgstr ""
+
+#: src/crossfade/crossfade.cc:70
+msgid "(higher is steeper)"
+msgstr ""
+
+#: src/crossfade/crossfade.cc:72
 msgid "<b>Tip</b>"
 msgstr "<b>Maslahat</b>"
 
-#: src/crossfade/crossfade.cc:61
+#: src/crossfade/crossfade.cc:73
 msgid ""
 "For better crossfading, enable\n"
 "the Silence Removal effect."
@@ -913,7 +986,7 @@ msgstr ""
 "Yaxshiroq oʻzaro oʻtish uchun\n"
 "jimlikni olib tashlash effektini yoqing."
 
-#: src/crossfade/crossfade.cc:71
+#: src/crossfade/crossfade.cc:83
 msgid "Crossfade"
 msgstr "Oʻzaro oʻtish"
 
@@ -1030,7 +1103,7 @@ msgstr "Aks sado"
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg plagini"
 
-#: src/ffaudio/ffaudio-core.cc:650
+#: src/ffaudio/ffaudio-core.cc:651
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1356,7 +1429,7 @@ msgstr "Umumiy"
 msgid "FLAC Decoder"
 msgstr "FLAC dekoder"
 
-#: src/flac/metadata.cc:293 src/wavpack/wavpack.cc:215
+#: src/flac/metadata.cc:296 src/wavpack/wavpack.cc:215
 msgid "lossless"
 msgstr "yo'qotishsiz"
 
@@ -1422,7 +1495,7 @@ msgid "Entry Number"
 msgstr "Kiritish raqami"
 
 #: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:38
-#: src/moonstone/playlist_selection.cc:62
+#: src/moonstone/playlist_selection.cc:64
 #: src/playlist-manager/playlist-manager.cc:200
 #: src/playlist-manager-qt/playlist-manager-qt.cc:188
 #: src/qtui/playlist_model.cc:33 src/streamtuner/icecast-model.cc:120
@@ -1506,11 +1579,16 @@ msgstr ""
 msgid "Catalog Number"
 msgstr ""
 
-#: src/gtkui/columns.cc:322
+#: src/gtkui/columns.cc:53 src/moonstone/playlist_model.cc:43
+#: src/qtui/playlist_model.cc:37
+msgid "Disc"
+msgstr ""
+
+#: src/gtkui/columns.cc:325
 msgid "Available columns"
 msgstr "Mavjud ustunlar"
 
-#: src/gtkui/columns.cc:348
+#: src/gtkui/columns.cc:351
 msgid "Displayed columns"
 msgstr "Ko'rsatilgan ustunlar"
 
@@ -1544,7 +1622,7 @@ msgid "Disable"
 msgstr "Oʻchirish"
 
 #: src/gtkui/menus.cc:79 src/qtui/menus.cc:107
-#: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:282
+#: src/statusicon-qt/statusicon.cc:115 src/statusicon/statusicon.cc:286
 msgid "_Open Files ..."
 msgstr "_Fayllarni ochish..."
 
@@ -1573,35 +1651,35 @@ msgid "_Settings ..."
 msgstr "Sozlamalar..."
 
 #: src/gtkui/menus.cc:88 src/qtui/menus.cc:131
-#: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:284
+#: src/statusicon-qt/statusicon.cc:117 src/statusicon/statusicon.cc:288
 msgid "_Quit"
 msgstr "Chiqish"
 
-#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:224
+#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:226
 #: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
 #: src/qtui/playlist_tabs.cc:330 src/search-tool-qt/search-tool-qt.cc:499
-#: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:106
-#: src/statusicon/statusicon.cc:276
+#: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:109
+#: src/statusicon/statusicon.cc:280
 msgid "_Play"
 msgstr "Ijro ettirish"
 
 #: src/gtkui/menus.cc:93 src/qtui/menus.cc:137
-#: src/statusicon-qt/statusicon.cc:107 src/statusicon/statusicon.cc:277
+#: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:281
 msgid "Paus_e"
 msgstr "Pauza"
 
 #: src/gtkui/menus.cc:94 src/qtui/menus.cc:139
-#: src/statusicon-qt/statusicon.cc:108 src/statusicon/statusicon.cc:278
+#: src/statusicon-qt/statusicon.cc:111 src/statusicon/statusicon.cc:282
 msgid "_Stop"
 msgstr "To'xtatish"
 
 #: src/gtkui/menus.cc:95 src/qtui/menus.cc:141
-#: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:279
+#: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:283
 msgid "Pre_vious"
 msgstr "Oldingi"
 
 #: src/gtkui/menus.cc:96 src/qtui/menus.cc:143
-#: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:280
+#: src/statusicon-qt/statusicon.cc:113 src/statusicon/statusicon.cc:284
 msgid "_Next"
 msgstr "_Keyingi"
 
@@ -1635,8 +1713,8 @@ msgstr "Pleylist harakati yo'q"
 msgid "Stop A_fter This Song"
 msgstr "Ushbu qo'shiqdan keyin to'xtash"
 
-#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:208 src/qtui/menus.cc:162
-#: src/qtui/menus.cc:292
+#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:210 src/qtui/menus.cc:162
+#: src/qtui/menus.cc:294
 msgid "Song _Info ..."
 msgstr "Qo'shiq haqida ma'lumot..."
 
@@ -1660,8 +1738,8 @@ msgstr "B takrorlash nuqtasini sozlash"
 msgid "_Clear Repeat Points"
 msgstr "Takrorlash nuqtalarini tozalash"
 
-#: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:140
-#: src/qtui/menus.cc:173 src/qtui/menus.cc:180 src/qtui/menus.cc:197
+#: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:141
+#: src/qtui/menus.cc:173 src/qtui/menus.cc:180 src/qtui/menus.cc:198
 msgid "By _Title"
 msgstr "Sarlavha bo'yicha"
 
@@ -1673,237 +1751,242 @@ msgstr "Fayl nomi bo'yicha"
 msgid "By File _Path"
 msgstr "Fayl yo'li bo'yicha"
 
-#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:139 src/qtui/menus.cc:179
-#: src/qtui/menus.cc:196
+#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:140 src/qtui/menus.cc:179
+#: src/qtui/menus.cc:197
 msgid "By Track _Number"
 msgstr "Trek raqami bo'yicha"
 
-#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:141 src/qtui/menus.cc:181
-#: src/qtui/menus.cc:198
+#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:142 src/qtui/menus.cc:181
+#: src/qtui/menus.cc:199
 msgid "By _Artist"
 msgstr "Artist bo'yicha"
 
-#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:142 src/qtui/menus.cc:182
-#: src/qtui/menus.cc:199
+#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:143 src/qtui/menus.cc:182
+#: src/qtui/menus.cc:200
 msgid "By Al_bum"
 msgstr "Albom bo'yicha"
 
-#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:143 src/qtui/menus.cc:183
-#: src/qtui/menus.cc:200
+#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:144 src/qtui/menus.cc:183
+#: src/qtui/menus.cc:201
 msgid "By Albu_m Artist"
 msgstr "Albom artisti bo'yicha"
 
-#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:144 src/qtui/menus.cc:184
-#: src/qtui/menus.cc:201
+#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:145 src/qtui/menus.cc:184
+#: src/qtui/menus.cc:202
 msgid "By Release _Date"
 msgstr "Chiqarilgan sana bo'yicha"
 
-#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:145 src/qtui/menus.cc:185
-#: src/qtui/menus.cc:202
+#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:146 src/qtui/menus.cc:185
+#: src/qtui/menus.cc:203
 msgid "By _Genre"
 msgstr "Janr bo'yicha"
 
-#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:146 src/qtui/menus.cc:186
-#: src/qtui/menus.cc:203
+#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:147 src/qtui/menus.cc:186
+#: src/qtui/menus.cc:204
 msgid "By _Length"
 msgstr "Uzunlik bo'yicha"
 
-#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:147 src/qtui/menus.cc:187
-#: src/qtui/menus.cc:204
+#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:148 src/qtui/menus.cc:187
+#: src/qtui/menus.cc:205
 msgid "By _File Path"
 msgstr "Fayl yo'li bo'yicha"
 
-#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:148 src/qtui/menus.cc:188
-#: src/qtui/menus.cc:205
+#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:149 src/qtui/menus.cc:188
+#: src/qtui/menus.cc:206
 msgid "By _Custom Title"
 msgstr "Maxsus sarlavha bo'yicha"
 
-#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:149 src/qtui/menus.cc:189
-#: src/qtui/menus.cc:206
+#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:150 src/qtui/menus.cc:189
+#: src/qtui/menus.cc:207
 msgid "By C_omment"
 msgstr "Izoh bo'yicha"
 
-#: src/gtkui/menus.cc:134 src/gtkui/menus.cc:151 src/qtui/menus.cc:191
+#: src/gtkui/menus.cc:133 src/gtkui/menus.cc:151 src/qtui/menus.cc:190
 #: src/qtui/menus.cc:208
+msgid "By D_isc Number"
+msgstr ""
+
+#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:153 src/qtui/menus.cc:192
+#: src/qtui/menus.cc:210
 msgid "R_everse Order"
 msgstr "Teskari tartib"
 
-#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:152 src/qtui/menus.cc:193
-#: src/qtui/menus.cc:210
+#: src/gtkui/menus.cc:136 src/gtkui/menus.cc:154 src/qtui/menus.cc:194
+#: src/qtui/menus.cc:212
 msgid "_Random Order"
 msgstr "Tasodifiy tartib"
 
-#: src/gtkui/menus.cc:156 src/qtui/menus.cc:214
+#: src/gtkui/menus.cc:158 src/qtui/menus.cc:216
 msgid "_Play/Resume"
 msgstr "Ijro ettirish/Davom etish"
 
-#: src/gtkui/menus.cc:157 src/qtui/menus.cc:216
+#: src/gtkui/menus.cc:159 src/qtui/menus.cc:218
 msgid "_Refresh"
 msgstr "Yangilash"
 
-#: src/gtkui/menus.cc:159 src/qtui/menus.cc:220
+#: src/gtkui/menus.cc:161 src/qtui/menus.cc:222
 msgid "_Sort"
 msgstr "Saralash"
 
-#: src/gtkui/menus.cc:160 src/qtui/menus.cc:221
+#: src/gtkui/menus.cc:162 src/qtui/menus.cc:223
 msgid "Sort Se_lected"
 msgstr "Tanlangan saralash"
 
-#: src/gtkui/menus.cc:161 src/qtui/menus.cc:223
+#: src/gtkui/menus.cc:163 src/qtui/menus.cc:225
 msgid "Remove _Duplicates"
 msgstr "Dublikatlarni olib tashlash"
 
-#: src/gtkui/menus.cc:162 src/qtui/menus.cc:224
+#: src/gtkui/menus.cc:164 src/qtui/menus.cc:226
 msgid "Remove _Unavailable Files"
 msgstr "Mavjud bo'lmagan fayllarni olib tashlash"
 
-#: src/gtkui/menus.cc:164 src/playlist-manager/playlist-manager.cc:219
-#: src/playlist-manager-qt/playlist-manager-qt.cc:348 src/qtui/menus.cc:227
+#: src/gtkui/menus.cc:166 src/playlist-manager/playlist-manager.cc:219
+#: src/playlist-manager-qt/playlist-manager-qt.cc:348 src/qtui/menus.cc:229
 msgid "_New"
 msgstr "Yangi"
 
-#: src/gtkui/menus.cc:165 src/qtui/menus.cc:228
+#: src/gtkui/menus.cc:167 src/qtui/menus.cc:230
 msgid "Ren_ame ..."
 msgstr "Nomini o'zgartirish..."
 
-#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:226
-#: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:229
+#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:228
+#: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:231
 #: src/qtui/playlist_tabs.cc:335
 msgid "Remo_ve"
 msgstr "O'chirish"
 
-#: src/gtkui/menus.cc:168 src/qtui/menus.cc:231
+#: src/gtkui/menus.cc:170 src/qtui/menus.cc:233
 msgid "_Import ..."
 msgstr "Import..."
 
-#: src/gtkui/menus.cc:169 src/qtui/menus.cc:232
+#: src/gtkui/menus.cc:171 src/qtui/menus.cc:234
 msgid "_Export ..."
 msgstr "Eksport..."
 
-#: src/gtkui/menus.cc:171 src/qtui/menus.cc:235
+#: src/gtkui/menus.cc:173 src/qtui/menus.cc:237
 msgid "Playlist _Manager ..."
 msgstr "Pleylist menejeri..."
 
-#: src/gtkui/menus.cc:172 src/qtui/menus.cc:237
+#: src/gtkui/menus.cc:174 src/qtui/menus.cc:239
 msgid "_Queue Manager ..."
 msgstr "Navbat menejeri..."
 
-#: src/gtkui/menus.cc:176 src/qtui/menus.cc:241
+#: src/gtkui/menus.cc:178 src/qtui/menus.cc:243
 msgid "Volume _Up"
 msgstr "Ovozni oshirish"
 
-#: src/gtkui/menus.cc:177 src/qtui/menus.cc:243
+#: src/gtkui/menus.cc:179 src/qtui/menus.cc:245
 msgid "Volume _Down"
 msgstr "Ovozni pasaytirish"
 
-#: src/gtkui/menus.cc:179 src/qtui/menus.cc:247
+#: src/gtkui/menus.cc:181 src/qtui/menus.cc:249
 msgid "_Equalizer ..."
 msgstr "Ekvalayzer..."
 
-#: src/gtkui/menus.cc:180 src/qtui/menus.cc:249
+#: src/gtkui/menus.cc:182 src/qtui/menus.cc:251
 msgid "E_ffects ..."
 msgstr "Effektlar..."
 
-#: src/gtkui/menus.cc:182
+#: src/gtkui/menus.cc:184
 msgid "_Record Stream"
 msgstr "Oqim yozib olish"
 
-#: src/gtkui/menus.cc:183
+#: src/gtkui/menus.cc:185
 msgid "Audio _Settings ..."
 msgstr "Audio sozlamalari..."
 
-#: src/gtkui/menus.cc:187 src/qtui/menus.cc:258
+#: src/gtkui/menus.cc:189 src/qtui/menus.cc:260
 msgid "Show _Menu Bar"
 msgstr "Menyu panelini ko'rsatish"
 
-#: src/gtkui/menus.cc:188 src/qtui/menus.cc:260
+#: src/gtkui/menus.cc:190 src/qtui/menus.cc:262
 msgid "Show I_nfo Bar"
 msgstr "Ma'lumot panelini ko'rsatish"
 
-#: src/gtkui/menus.cc:189 src/qtui/menus.cc:262
+#: src/gtkui/menus.cc:191 src/qtui/menus.cc:264
 msgid "Show Info Bar _Album Art"
 msgstr "Ma'lumot panelidagi albom qoplamasini ko'rsatish"
 
-#: src/gtkui/menus.cc:190 src/qtui/menus.cc:264
+#: src/gtkui/menus.cc:192 src/qtui/menus.cc:266
 msgid "Show Info Bar Vis_ualization"
 msgstr "Ma'lumot paneli vizualizatsiyasini ko'rsatish"
 
-#: src/gtkui/menus.cc:191 src/qtui/menus.cc:266
+#: src/gtkui/menus.cc:193 src/qtui/menus.cc:268
 msgid "Show _Status Bar"
 msgstr "Holat panelini ko‘rsatish"
 
-#: src/gtkui/menus.cc:193 src/qtui/menus.cc:270
+#: src/gtkui/menus.cc:195 src/qtui/menus.cc:272
 msgid "Show _Remaining Time"
 msgstr "Qolgan vaqtni ko'rsatish"
 
-#: src/gtkui/menus.cc:195 src/qtui/menus.cc:274 src/skins/menus.cc:157
+#: src/gtkui/menus.cc:197 src/qtui/menus.cc:276 src/skins/menus.cc:157
 #: src/skins-qt/menus.cc:152
 msgid "_Visualizations ..."
 msgstr "Vizualizatsiya..."
 
-#: src/gtkui/menus.cc:199 src/qtui/menus.cc:278
+#: src/gtkui/menus.cc:201 src/qtui/menus.cc:280
 msgid "_File"
 msgstr "Fayl"
 
-#: src/gtkui/menus.cc:200 src/qtui/menus.cc:279
+#: src/gtkui/menus.cc:202 src/qtui/menus.cc:281
 msgid "_Playback"
 msgstr "Ijro ettirish"
 
-#: src/gtkui/menus.cc:201 src/qtui/menus.cc:280
+#: src/gtkui/menus.cc:203 src/qtui/menus.cc:282
 msgid "P_laylist"
 msgstr "Pleylist"
 
-#: src/gtkui/menus.cc:202 src/gtkui/menus.cc:220 src/qtui/menus.cc:281
-#: src/qtui/menus.cc:310
+#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:222 src/qtui/menus.cc:283
+#: src/qtui/menus.cc:312
 msgid "_Services"
 msgstr "Xizmatlar"
 
-#: src/gtkui/menus.cc:203 src/qtui/menus.cc:282
+#: src/gtkui/menus.cc:205 src/qtui/menus.cc:284
 msgid "_Output"
 msgstr "Chiqarish"
 
-#: src/gtkui/menus.cc:204 src/qtui/menus.cc:283
+#: src/gtkui/menus.cc:206 src/qtui/menus.cc:285
 msgid "_View"
 msgstr "Ko'rinish"
 
-#: src/gtkui/menus.cc:209 src/qtui/menus.cc:294
+#: src/gtkui/menus.cc:211 src/qtui/menus.cc:296
 msgid "_Queue/Unqueue"
 msgstr "Navbat/navbatni bekor qilish"
 
-#: src/gtkui/menus.cc:211 src/qtui/menus.cc:297
+#: src/gtkui/menus.cc:213 src/qtui/menus.cc:299
 msgid "_Open Containing Folder"
 msgstr "O'z ichiga olgan jildni ochish"
 
-#: src/gtkui/menus.cc:212 src/qtui/menus.cc:299
+#: src/gtkui/menus.cc:214 src/qtui/menus.cc:301
 msgid "_Refresh Selected"
 msgstr "Tanlanganni yangilash"
 
-#: src/gtkui/menus.cc:214 src/qtui/menus.cc:302
+#: src/gtkui/menus.cc:216 src/qtui/menus.cc:304
 msgid "Cu_t"
 msgstr "Kesish"
 
-#: src/gtkui/menus.cc:215 src/qtui/menus.cc:303
+#: src/gtkui/menus.cc:217 src/qtui/menus.cc:305
 msgid "_Copy"
 msgstr "Nusxalash"
 
-#: src/gtkui/menus.cc:216 src/qtui/menus.cc:304
+#: src/gtkui/menus.cc:218 src/qtui/menus.cc:306
 msgid "_Paste"
 msgstr "Joylashtirish"
 
-#: src/gtkui/menus.cc:217 src/qtui/menus.cc:305
+#: src/gtkui/menus.cc:219 src/qtui/menus.cc:307
 msgid "Paste at _End"
 msgstr "Oxirida joylashtirish"
 
-#: src/gtkui/menus.cc:218 src/qtui/menus.cc:307
+#: src/gtkui/menus.cc:220 src/qtui/menus.cc:309
 msgid "Select _All"
 msgstr "Hammasini belgilash"
 
-#: src/gtkui/menus.cc:225 src/moonstone/playlist_tabs.cc:309
+#: src/gtkui/menus.cc:227 src/moonstone/playlist_tabs.cc:309
 #: src/qtui/playlist_tabs.cc:333
 msgid "_Rename ..."
 msgstr "Nomini oʻzgartirish..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:63
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:64
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Pleylist yorliqlari</b>"
 
@@ -1911,113 +1994,117 @@ msgstr "<b>Pleylist yorliqlari</b>"
 msgid "Always show tabs"
 msgstr "Har doim yorliqlarni ko'rsatish"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:68
+#: src/gtkui/settings.cc:38 src/qtui/settings.cc:69
 msgid "Show entry counts"
 msgstr "Kiritilgan sonlarni ko'rsatish"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:71
+#: src/gtkui/settings.cc:40 src/qtui/settings.cc:72
 msgid "Show close buttons"
 msgstr "Yopish tugmalarini ko'rsatish"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:74
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:75
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Pleylist ustunlari</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:76
+#: src/gtkui/settings.cc:44 src/qtui/settings.cc:77
 msgid "Show column headers"
 msgstr "Ustun sarlavhalarini ko'rsatish"
 
-#: src/gtkui/settings.cc:47
+#: src/gtkui/settings.cc:46 src/qtui/settings.cc:82
+msgid "Make column headers clickable for sorting"
+msgstr ""
+
+#: src/gtkui/settings.cc:49
 msgid "Use symbolic icons in toolbar"
 msgstr ""
 
-#: src/gtkui/settings.cc:49 src/qtui/settings.cc:82
+#: src/gtkui/settings.cc:51 src/qtui/settings.cc:86
 msgid "Scroll on song change"
 msgstr "Qo'shiqni o'zgartirish uchun aylantiring"
 
-#: src/gtkui/ui_gtk.cc:81
+#: src/gtkui/ui_gtk.cc:82
 msgid "GTK Interface"
 msgstr "GTK interfeysi"
 
-#: src/gtkui/ui_gtk.cc:218 src/skins/main.cc:227 src/skins-qt/main.cc:231
+#: src/gtkui/ui_gtk.cc:219 src/skins/main.cc:228 src/skins-qt/main.cc:231
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:220 src/moonstone/main_window.cc:184
-#: src/qtui/main_window.cc:386
+#: src/gtkui/ui_gtk.cc:221 src/moonstone/main_window.cc:184
+#: src/qtui/main_window.cc:385
 msgid "Buffering ..."
 msgstr "Buferlash..."
 
-#: src/gtkui/ui_gtk.cc:223 src/pipewire/pipewire.cc:401 src/skins/main.cc:229
+#: src/gtkui/ui_gtk.cc:224 src/pipewire/pipewire.cc:402 src/skins/main.cc:230
 #: src/skins-qt/main.cc:233
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:444 src/gtkui/ui_gtk.cc:475 src/gtkui/ui_gtk.cc:839
+#: src/gtkui/ui_gtk.cc:487 src/gtkui/ui_gtk.cc:518 src/gtkui/ui_gtk.cc:882
 #: src/hotkey/gui.cc:72 src/moonstone/main_window.cc:67
 #: src/moonstone/main_window.cc:145 src/moonstone/main_window.cc:146
-#: src/notify/osd.cc:85 src/qthotkey/gui.cc:67 src/qtui/main_window.cc:155
-#: src/qtui/main_window.cc:348 src/qtui/main_window.cc:349
+#: src/notify/osd.cc:85 src/qthotkey/gui.cc:67 src/qtui/main_window.cc:154
+#: src/qtui/main_window.cc:347 src/qtui/main_window.cc:348
 #: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
 msgid "Play"
 msgstr "Ijro ettirish"
 
-#: src/gtkui/ui_gtk.cc:444 src/moonstone/main_window.cc:151
+#: src/gtkui/ui_gtk.cc:487 src/moonstone/main_window.cc:151
 #: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
-#: src/qtui/main_window.cc:354 src/qtui/main_window.cc:355
+#: src/qtui/main_window.cc:353 src/qtui/main_window.cc:354
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Pause"
 msgstr "Pauza"
 
-#: src/gtkui/ui_gtk.cc:825 src/moonstone/main_window.cc:57
-#: src/qtui/main_window.cc:146 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
+#: src/gtkui/ui_gtk.cc:868 src/moonstone/main_window.cc:57
+#: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr "Kutubxonani qidirish"
 
-#: src/gtkui/ui_gtk.cc:832 src/moonstone/main_window.cc:60
-#: src/qtui/main_window.cc:148
+#: src/gtkui/ui_gtk.cc:875 src/moonstone/main_window.cc:60
+#: src/qtui/main_window.cc:147
 msgid "Open Files"
 msgstr "Fayllarni ochish"
 
-#: src/gtkui/ui_gtk.cc:833 src/moonstone/main_window.cc:62
-#: src/qtui/main_window.cc:150
+#: src/gtkui/ui_gtk.cc:876 src/moonstone/main_window.cc:62
+#: src/qtui/main_window.cc:149
 msgid "Add Files"
 msgstr "Fayllarni qo'shish"
 
-#: src/gtkui/ui_gtk.cc:838 src/moonstone/main_window.cc:65
-#: src/qtui/main_window.cc:153 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
+#: src/gtkui/ui_gtk.cc:881 src/moonstone/main_window.cc:65
+#: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Previous"
 msgstr "Oldingi"
 
-#: src/gtkui/ui_gtk.cc:840 src/hotkey/gui.cc:74 src/moonstone/main_window.cc:69
-#: src/qthotkey/gui.cc:69 src/qtui/main_window.cc:157 src/skins/menus.cc:111
+#: src/gtkui/ui_gtk.cc:883 src/hotkey/gui.cc:74 src/moonstone/main_window.cc:69
+#: src/qthotkey/gui.cc:69 src/qtui/main_window.cc:156 src/skins/menus.cc:111
 #: src/skins-qt/menus.cc:102
 msgid "Stop"
 msgstr "To'xtatish"
 
-#: src/gtkui/ui_gtk.cc:841 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
-#: src/qtui/main_window.cc:164 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
+#: src/gtkui/ui_gtk.cc:884 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
+#: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
 msgid "Next"
 msgstr "Keyingi"
 
-#: src/gtkui/ui_gtk.cc:843 src/moonstone/main_window.cc:79
-#: src/qtui/main_window.cc:167 src/qtui/menus.cc:252 src/skins/menus.cc:79
+#: src/gtkui/ui_gtk.cc:886 src/moonstone/main_window.cc:79
+#: src/qtui/main_window.cc:166 src/qtui/menus.cc:254 src/skins/menus.cc:79
 #: src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "Oqim yozib olish"
 
-#: src/gtkui/ui_gtk.cc:876 src/moonstone/main_window.cc:86
-#: src/qtui/main_window.cc:174 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
+#: src/gtkui/ui_gtk.cc:919 src/moonstone/main_window.cc:86
+#: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
 msgid "Repeat"
 msgstr "Takrorlash"
 
-#: src/gtkui/ui_gtk.cc:879 src/moonstone/main_window.cc:89
-#: src/qtui/main_window.cc:177 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
+#: src/gtkui/ui_gtk.cc:922 src/moonstone/main_window.cc:89
+#: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
 msgid "Shuffle"
 msgstr "Aralashtirish"
 
-#: src/gtkui/ui_gtk.cc:1062 src/qtui/main_window.cc:124
+#: src/gtkui/ui_gtk.cc:1114 src/qtui/main_window.cc:123
 msgid "Menu"
 msgstr "Menyu"
 
@@ -2045,15 +2132,15 @@ msgstr "%d kGts"
 msgid "%d kbit/s"
 msgstr ""
 
-#: src/gtkui/ui_statusbar.cc:108 src/skins/main.cc:471 src/skins-qt/main.cc:461
+#: src/gtkui/ui_statusbar.cc:108 src/skins/main.cc:478 src/skins-qt/main.cc:461
 msgid "Single mode."
 msgstr "Yagona rejim."
 
-#: src/gtkui/ui_statusbar.cc:110 src/skins/main.cc:473 src/skins-qt/main.cc:463
+#: src/gtkui/ui_statusbar.cc:110 src/skins/main.cc:480 src/skins-qt/main.cc:463
 msgid "Playlist mode."
 msgstr "Pleylist rejimi."
 
-#: src/gtkui/ui_statusbar.cc:118 src/skins/main.cc:479 src/skins-qt/main.cc:469
+#: src/gtkui/ui_statusbar.cc:118 src/skins/main.cc:486 src/skins-qt/main.cc:469
 msgid "Stopping after song."
 msgstr "Qo'shiqdan keyin to'xtash."
 
@@ -2356,101 +2443,107 @@ msgstr "LIRC serveriga qayta ulanish"
 msgid "Wait before reconnecting:"
 msgstr "Qayta ulanishdan oldin kutish:"
 
-#: src/lyricwiki-qt/lyricwiki.cc:90
-msgid "Lyrics"
-msgstr "Qo'shiq matni"
-
-#: src/lyricwiki-qt/lyricwiki.cc:118
-msgid "Nowhere"
-msgstr "Hech qayerda"
-
-#: src/lyricwiki-qt/lyricwiki.cc:119
-msgid "lyrics.ovh"
-msgstr "lyrics.ovh"
-
-#: src/lyricwiki-qt/lyricwiki.cc:123
-msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
-msgstr "<small>Artist boshida, sarlavha - oxirida qisqartiriladi</small>"
-
-#: src/lyricwiki-qt/lyricwiki.cc:124
-msgid "Chars to truncate on:"
-msgstr "Kesish uchun belgilar:"
-
-#: src/lyricwiki-qt/lyricwiki.cc:128
-msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
-msgstr "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
-
-#: src/lyricwiki-qt/lyricwiki.cc:129
-msgid "Chars to split on:"
-msgstr "Bo'lish uchun belgilar:"
-
-#: src/lyricwiki-qt/lyricwiki.cc:130
-msgid "Further truncate those on chars"
-msgstr "Belgilardagilarni yanada qisqartirish"
-
-#: src/lyricwiki-qt/lyricwiki.cc:136
-msgid "<b>General</b>"
-msgstr "<b>Umumiy</b>"
-
-#: src/lyricwiki-qt/lyricwiki.cc:137
-msgid "Split title into artist and title on chars"
-msgstr "Sarlavhani artistga va sarlavhani belgilarga ajrating"
-
-#: src/lyricwiki-qt/lyricwiki.cc:140
-msgid "<b>Sources</b>"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:141
-msgid "Use embedded lyrics (from Lyrics tag)"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:143
-msgid "Fetch lyrics from internet:"
-msgstr ""
-
-#: src/lyricwiki-qt/lyricwiki.cc:146
-msgid "Store fetched lyrics in local cache"
-msgstr "Olingan qo'shiq matnlarini mahalliy keshda saqlash"
-
-#: src/lyricwiki-qt/lyricwiki.cc:148
-msgid "<b>Local Storage</b>"
-msgstr "<b>Mahalliy saqlash joyi</b>"
-
-#: src/lyricwiki-qt/lyricwiki.cc:149
-msgid "Load lyric files (.lrc) from local storage"
-msgstr "Qo'shiq matnlarini fayllarni (.lrc) mahalliy xotiradan yuklash"
-
-#: src/lyricwiki-qt/lyricwiki.cc:360
+#: src/lyrics-common/chart_lyrics_provider.cc:93
+#: src/lyrics-common/chart_lyrics_provider.cc:150
+#: src/lyrics-common/lyrics_ovh_provider.cc:50
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "%s olib bo‘lmadi"
 
-#: src/lyricwiki-qt/lyricwiki.cc:369
+#: src/lyrics-common/chart_lyrics_provider.cc:100
+#: src/lyrics-common/chart_lyrics_provider.cc:157
+#: src/lyrics-common/lyrics_ovh_provider.cc:57
 #, c-format
 msgid "Unable to parse %s"
 msgstr "%s tahlil qilib boʻlmadi"
 
-#: src/lyricwiki-qt/lyricwiki.cc:407
+#: src/lyrics-common/chart_lyrics_provider.cc:121
+#: src/lyrics-common/chart_lyrics_provider.cc:194
+#: src/lyrics-common/lyrics_ovh_provider.cc:88
 msgid "Looking for lyrics ..."
 msgstr "Qo'shiq matni qidirilmoqda..."
 
-#: src/lyricwiki-qt/lyricwiki.cc:431 src/ui-common/dialogs-qt.cc:63
+#: src/lyrics-common/preferences.h:43
+msgid "Nowhere"
+msgstr "Hech qayerda"
+
+#: src/lyrics-common/preferences.h:49
+msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
+msgstr "<small>Artist boshida, sarlavha - oxirida qisqartiriladi</small>"
+
+#: src/lyrics-common/preferences.h:50
+msgid "Chars to truncate on:"
+msgstr "Kesish uchun belgilar:"
+
+#: src/lyrics-common/preferences.h:54
+msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
+msgstr "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
+
+#: src/lyrics-common/preferences.h:55
+msgid "Chars to split on:"
+msgstr "Bo'lish uchun belgilar:"
+
+#: src/lyrics-common/preferences.h:56
+msgid "Further truncate those on chars"
+msgstr "Belgilardagilarni yanada qisqartirish"
+
+#: src/lyrics-common/preferences.h:62
+msgid "<b>General</b>"
+msgstr "<b>Umumiy</b>"
+
+#: src/lyrics-common/preferences.h:63
+msgid "Split title into artist and title on chars"
+msgstr "Sarlavhani artistga va sarlavhani belgilarga ajrating"
+
+#: src/lyrics-common/preferences.h:66
+msgid "<b>Sources</b>"
+msgstr ""
+
+#: src/lyrics-common/preferences.h:67
+msgid "Use embedded lyrics (from Lyrics tag)"
+msgstr ""
+
+#: src/lyrics-common/preferences.h:69
+msgid "Fetch lyrics from internet:"
+msgstr ""
+
+#: src/lyrics-common/preferences.h:72
+msgid "Store fetched lyrics in local cache"
+msgstr "Olingan qo'shiq matnlarini mahalliy keshda saqlash"
+
+#: src/lyrics-common/preferences.h:74
+msgid "<b>Local Storage</b>"
+msgstr "<b>Mahalliy saqlash joyi</b>"
+
+#: src/lyrics-common/preferences.h:75
+msgid "Load lyric files (.lrc) from local storage"
+msgstr "Qo'shiq matnlarini fayllarni (.lrc) mahalliy xotiradan yuklash"
+
+#: src/lyrics-common/utils.cc:54 src/ui-common/dialogs-qt.cc:63
 msgid "Error"
 msgstr "Xato"
 
-#: src/lyricwiki-qt/lyricwiki.cc:437
+#: src/lyrics-common/utils.cc:60
 msgid "Lyrics could not be found."
 msgstr "Qoʻshiq matni topilmadi."
 
-#: src/lyricwiki-qt/lyricwiki.cc:518
+#: src/lyrics-common/utils.cc:142
 msgid "Missing title and/or artist."
 msgstr "Sarlavha va/yoki artist yetishmayapti."
 
-#: src/lyricwiki-qt/lyricwiki.cc:576
+#: src/lyrics-gtk/lyrics-gtk.cc:37 src/lyrics-qt/lyrics-qt.cc:50
+msgid "Lyrics"
+msgstr "Qo'shiq matni"
+
+#: src/lyrics-gtk/lyrics-gtk.cc:189 src/lyrics-qt/lyrics-qt.cc:171
+msgid "Edit Lyrics ..."
+msgstr ""
+
+#: src/lyrics-gtk/lyrics-gtk.cc:195 src/lyrics-qt/lyrics-qt.cc:178
 msgid "Save Locally"
 msgstr "Mahalliy ravishda saqlash"
 
-#: src/lyricwiki-qt/lyricwiki.cc:584
+#: src/lyrics-gtk/lyrics-gtk.cc:201 src/lyrics-qt/lyrics-qt.cc:186
 msgid "Refresh"
 msgstr "Yangilash"
 
@@ -2612,7 +2705,7 @@ msgid "These settings will take effect when Audacious is restarted."
 msgstr "Ushbu sozlamalar Audacious qayta ishga tushirilganda kuchga kiradi."
 
 #: src/moonstone/main_window.cc:72 src/moonstone/main_window.cc:73
-#: src/qtui/main_window.cc:160 src/qtui/main_window.cc:161
+#: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
 #: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
 msgid "Stop After This Song"
 msgstr "Bu qo'shiqdan keyin to'xtatish"
@@ -2621,15 +2714,15 @@ msgstr "Bu qo'shiqdan keyin to'xtatish"
 msgid "Moonstone"
 msgstr "Moonstone"
 
-#: src/moonstone/playlist_header.cc:210 src/qtui/playlist_header.cc:256
+#: src/moonstone/playlist_header.cc:212 src/qtui/playlist_header.cc:258
 msgid "Reset to Defaults"
 msgstr "Asl holatiga qaytarish"
 
-#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:230
+#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:232
 msgid "Now Playing"
 msgstr "Hozir ijro etilmoqda"
 
-#: src/moonstone/playlist_selection.cc:64
+#: src/moonstone/playlist_selection.cc:66
 #: src/playlist-manager/playlist-manager.cc:201
 #: src/playlist-manager-qt/playlist-manager-qt.cc:190
 msgid "Entries"
@@ -2638,10 +2731,6 @@ msgstr "Yozuvlar"
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
 msgstr "MPG123 plagin"
-
-#: src/mpg123/mpg123.cc:81
-msgid "<b>Advanced</b>"
-msgstr "<b>Kengaytirilgan</b>"
 
 #: src/mpg123/mpg123.cc:82
 msgid "Use accurate length calculation (slow)"
@@ -2655,7 +2744,7 @@ msgstr "Surround"
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 serveri"
 
-#: src/neon/neon.cc:97
+#: src/neon/neon.cc:102
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP/HTTPS plagini"
 
@@ -2667,11 +2756,11 @@ msgstr "Qayta yoʻnaltirishni tahlil qilishda xatolik yuz berdi"
 msgid "Unknown HTTP error"
 msgstr "Noma'lum HTTP xatosi"
 
-#: src/neon/neon.cc:590
+#: src/neon/neon.cc:614
 msgid "Error parsing URL"
 msgstr "URL ni tahlil qilishda xatolik yuz berdi"
 
-#: src/neon/neon.cc:660
+#: src/neon/neon.cc:687
 msgid "Too many redirects"
 msgstr "Yo‘naltirishlar juda ko‘p"
 
@@ -2763,8 +2852,8 @@ msgid "Stereo separation:"
 msgstr "Stereo ajratish:"
 
 #: src/openmpt/mpt.cc:153
-msgid "%"
-msgstr "foiz"
+msgid "% (0=mono, 100=default, 200=full)"
+msgstr ""
 
 #: src/openmpt/mpt.cc:157
 msgid "Interpolation:"
@@ -2786,7 +2875,7 @@ msgstr "Oynali sinc"
 msgid "Opus Decoder"
 msgstr ""
 
-#: src/opus/opus.cc:351
+#: src/opus/opus.cc:336
 msgid ""
 "Opus Decoder Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange"
@@ -2841,11 +2930,11 @@ msgstr ""
 "albatta, avvalgi OSS plaginining mualliflariga minnatdorchilik "
 "bildirmoqchiman. "
 
-#: src/pipewire/pipewire.cc:40
+#: src/pipewire/pipewire.cc:44
 msgid "PipeWire Output"
 msgstr ""
 
-#: src/pipewire/pipewire.cc:114
+#: src/pipewire/pipewire.cc:118
 msgid ""
 "PipeWire Output Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange\n"
@@ -2854,7 +2943,7 @@ msgid ""
 "Copyright 2021 Ilya Kotov"
 msgstr ""
 
-#: src/pipewire/pipewire.cc:406 src/skins/menus.cc:88 src/skins-qt/menus.cc:79
+#: src/pipewire/pipewire.cc:408 src/skins/menus.cc:88 src/skins-qt/menus.cc:79
 msgid "Playback"
 msgstr "Ijro"
 
@@ -3021,11 +3110,11 @@ msgstr "Jild qo'shish..."
 msgid "_Log Inspector ..."
 msgstr "Jurnal inspektori..."
 
-#: src/qtui/menus.cc:218
+#: src/qtui/menus.cc:220
 msgid "_Find ..."
 msgstr "Topish..."
 
-#: src/qtui/menus.cc:254 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
+#: src/qtui/menus.cc:256 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
 msgstr "Audio sozlamalari..."
 
@@ -3041,6 +3130,10 @@ msgstr "T#"
 msgid "C#"
 msgstr ""
 
+#: src/qtui/playlist_model.cc:194
+msgid "D#"
+msgstr ""
+
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
 msgstr "Qt interfeysi"
@@ -3049,23 +3142,23 @@ msgstr "Qt interfeysi"
 msgid "Search playlist"
 msgstr "Pleylistni qidirish"
 
-#: src/qtui/settings.cc:58
+#: src/qtui/settings.cc:59
 msgid "Always"
 msgstr "Har doim"
 
-#: src/qtui/settings.cc:59
+#: src/qtui/settings.cc:60
 msgid "Auto-hide"
 msgstr "Avtomatik yashirish"
 
-#: src/qtui/settings.cc:60
+#: src/qtui/settings.cc:61
 msgid "Never"
 msgstr "Hech qachon"
 
-#: src/qtui/settings.cc:64
+#: src/qtui/settings.cc:65
 msgid "Show playlist tabs:"
 msgstr "Pleylist yorliqlarini ko'rsatish:"
 
-#: src/qtui/settings.cc:78
+#: src/qtui/settings.cc:79
 msgid "Use bold font for column headers"
 msgstr "Ustun sarlavhalari uchun qalin shriftdan foydalanish"
 
@@ -3161,11 +3254,11 @@ msgstr "176.4 kGts:"
 msgid "192 kHz:"
 msgstr "192 kGts:"
 
-#: src/scrobbler2/config_window.cc:19
+#: src/scrobbler2/config_window.cc:29
 msgid "Checking Last.fm access ..."
 msgstr "Last.fm ga kirish tekshirilmoqda..."
 
-#: src/scrobbler2/config_window.cc:27
+#: src/scrobbler2/config_window.cc:35
 msgid ""
 "Your scrobbles are being saved on your computer temporarily.  They will be "
 "submitted as soon as Audacious is allowed access."
@@ -3173,12 +3266,12 @@ msgstr ""
 "Scrobbllar kompyuteringizda vaqtinchalik saqlanmoqda. Ular Audacious ga "
 "kirishga ruxsat berilgan zahoti yuboriladi."
 
-#: src/scrobbler2/config_window.cc:33
+#: src/scrobbler2/config_window.cc:41
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
 msgstr "Ruxsat berildi. %s foydalanuvchi uchun scrobbling."
 
-#: src/scrobbler2/config_window.cc:37
+#: src/scrobbler2/config_window.cc:44
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
@@ -3187,19 +3280,19 @@ msgstr ""
 "hisobingizga kirishga ruxsat bering va “Ruxsatni tekshirish” tugmasini yana "
 "bir marta bosing:"
 
-#: src/scrobbler2/config_window.cc:47
+#: src/scrobbler2/config_window.cc:53
 msgid "There was a problem contacting Last.fm."
 msgstr "Last.fm bilan bog‘lanishda muammo yuz berdi."
 
-#: src/scrobbler2/config_window.cc:86
+#: src/scrobbler2/config_window.cc:92
 msgid "Check Permission"
 msgstr "Ruxsatni tekshiring"
 
-#: src/scrobbler2/config_window.cc:87
+#: src/scrobbler2/config_window.cc:93
 msgid "Revoke Permission"
 msgstr "Ruxsatni bekor qilish"
 
-#: src/scrobbler2/config_window.cc:91
+#: src/scrobbler2/config_window.cc:97
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."
 msgstr ""
 "Audacious ga Last.fm hisobingizga treklarni siljitishga ruxsat berishingiz "
@@ -3209,7 +3302,7 @@ msgstr ""
 msgid "Scrobbler 2.0"
 msgstr "Scrobbler 2.0"
 
-#: src/scrobbler2/scrobbler.cc:226
+#: src/scrobbler2/scrobbler.cc:200
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
@@ -3217,32 +3310,15 @@ msgstr ""
 "Scrobbler plaginini ishga tushirib bo‘lmadi.\n"
 "O'rnatishingizda muammo bo'lishi mumkin."
 
-#: src/scrobbler2/scrobbler.cc:291
+#: src/scrobbler2/scrobbler.cc:245
 msgid ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
 "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "\n"
 "Thanks to John Lindgren for giving me a hand at the beginning of this "
-"project.\n"
-"\n"
+"project."
 msgstr ""
-"itxyoki tomonidan Audacious Scrobbler plagini 2.0,\n"
-"\n"
-"Mualliflik huquqi © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail."
-"com>\n"
-"\n"
-"Ushbu loyihaning boshida menga yordam bergani uchun Jon Lindgrenga rahmat.\n"
-"\n"
-
-#: src/scrobbler2/scrobbler_communication.cc:663
-msgid ""
-"Audacious is now using an improved version of the Last.fm Scrobbler.\n"
-"Please check the Preferences for the Scrobbler plugin."
-msgstr ""
-"Audacious endi Last.fm Scrobblerning takomillashtirilgan versiyasidan "
-"foydalanmoqda.\n"
-"Iltimos, Scrobbler plaginining imkoniyatlarini tekshiring."
 
 #: src/sdlout/sdlout.cc:43
 msgid "SDL Output"
@@ -3415,10 +3491,6 @@ msgstr "<b>Sukunatni olib tashlash</b>"
 msgid "Threshold:"
 msgstr "Chegara:"
 
-#: src/silence-removal/silence-removal.cc:70
-msgid "dB"
-msgstr "dB"
-
 #: src/skins/actions.cc:45 src/skins-qt/actions.cc:43
 msgid "Repeat points cleared."
 msgstr "Takrorlash nuqtalari tozalandi."
@@ -3479,60 +3551,60 @@ msgstr "16 kGts"
 msgid "Audacious Equalizer"
 msgstr "Audacious ekvalayzeri"
 
-#: src/skins/main.cc:452 src/skins-qt/main.cc:442
+#: src/skins/main.cc:459 src/skins-qt/main.cc:442
 msgid "Recording on"
 msgstr "Yozib olish yoqilgan"
 
-#: src/skins/main.cc:454 src/skins-qt/main.cc:444
+#: src/skins/main.cc:461 src/skins-qt/main.cc:444
 msgid "Recording off"
 msgstr "Yozib olish oʻchirilgan"
 
-#: src/skins/main.cc:747 src/skins-qt/main.cc:701
+#: src/skins/main.cc:754 src/skins-qt/main.cc:701
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Izlash  %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/main.cc:764 src/skins-qt/main.cc:718
+#: src/skins/main.cc:771 src/skins-qt/main.cc:718
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Ovoz balandligi: %d%%"
 
-#: src/skins/main.cc:777 src/skins-qt/main.cc:731
+#: src/skins/main.cc:784 src/skins-qt/main.cc:731
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Balans: %d%% chap"
 
-#: src/skins/main.cc:779 src/skins-qt/main.cc:733
+#: src/skins/main.cc:786 src/skins-qt/main.cc:733
 msgid "Balance: center"
 msgstr "Balans: markaz"
 
-#: src/skins/main.cc:781 src/skins-qt/main.cc:735
+#: src/skins/main.cc:788 src/skins-qt/main.cc:735
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Balans: %d%% oʻng"
 
-#: src/skins/main.cc:873 src/skins-qt/main.cc:827
+#: src/skins/main.cc:880 src/skins-qt/main.cc:827
 msgid "Options Menu"
 msgstr "Variantlar menyusi"
 
-#: src/skins/main.cc:877 src/skins-qt/main.cc:831
+#: src/skins/main.cc:884 src/skins-qt/main.cc:831
 msgid "Disable 'Always On Top'"
 msgstr "\"Har doim ustida\" ni o'chirish"
 
-#: src/skins/main.cc:879 src/skins-qt/main.cc:833
+#: src/skins/main.cc:886 src/skins-qt/main.cc:833
 msgid "Enable 'Always On Top'"
 msgstr "“Har doim ustida”ni yoqish"
 
-#: src/skins/main.cc:882 src/skins-qt/main.cc:836
+#: src/skins/main.cc:889 src/skins-qt/main.cc:836
 msgid "File Info Box"
 msgstr "Fayl ma'lumotlar qutisi"
 
-#: src/skins/main.cc:885 src/skins/menus.cc:149 src/skins-qt/main.cc:839
+#: src/skins/main.cc:892 src/skins/menus.cc:149 src/skins-qt/main.cc:839
 #: src/skins-qt/menus.cc:142
 msgid "Double Size"
 msgstr "Ikki o'lchamli"
 
-#: src/skins/main.cc:888 src/skins-qt/main.cc:842
+#: src/skins/main.cc:895 src/skins-qt/main.cc:842
 msgid "Visualizations"
 msgstr "Vizualizatsiya"
 
@@ -3569,8 +3641,8 @@ msgid "View"
 msgstr "Ko'rinish"
 
 #: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
-#: src/skins/menus.cc:243 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
-#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:239
+#: src/skins/menus.cc:245 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
+#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:241
 msgid "Services"
 msgstr "Xizmatlar"
 
@@ -3586,8 +3658,8 @@ msgstr "Sozlamalar..."
 msgid "Quit"
 msgstr "Chiqish"
 
-#: src/skins/menus.cc:101 src/skins/menus.cc:233 src/skins-qt/menus.cc:92
-#: src/skins-qt/menus.cc:229
+#: src/skins/menus.cc:101 src/skins/menus.cc:235 src/skins-qt/menus.cc:92
+#: src/skins-qt/menus.cc:231
 msgid "Song Info ..."
 msgstr "Qo'shiq haqida ma'lumot..."
 
@@ -3699,21 +3771,21 @@ msgstr "URL qo‘shish..."
 msgid "Add Files ..."
 msgstr "Fayllarni qo'shish..."
 
-#: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:211
+#: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:212
 #: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:192
-#: src/skins-qt/menus.cc:207
+#: src/skins-qt/menus.cc:208
 msgid "By Title"
 msgstr "Sarlavha bo'yicha"
 
-#: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:218
+#: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:219
 #: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:199
-#: src/skins-qt/menus.cc:214
+#: src/skins-qt/menus.cc:215
 msgid "By File Name"
 msgstr "Fayl nomi bo'yicha"
 
-#: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:219
+#: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:220
 #: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
-#: src/skins-qt/menus.cc:215
+#: src/skins-qt/menus.cc:216
 msgid "By File Path"
 msgstr "Fayl yo'li bo'yicha"
 
@@ -3757,92 +3829,97 @@ msgstr "Hech birini tanlamaslik"
 msgid "Select All"
 msgstr "Hammasini belgilash"
 
-#: src/skins/menus.cc:195 src/skins/menus.cc:210 src/skins-qt/menus.cc:191
-#: src/skins-qt/menus.cc:206
+#: src/skins/menus.cc:195 src/skins/menus.cc:211 src/skins-qt/menus.cc:191
+#: src/skins-qt/menus.cc:207
 msgid "By Track Number"
 msgstr "Trek raqami bo'yicha"
 
-#: src/skins/menus.cc:197 src/skins/menus.cc:212 src/skins-qt/menus.cc:193
-#: src/skins-qt/menus.cc:208
+#: src/skins/menus.cc:197 src/skins/menus.cc:213 src/skins-qt/menus.cc:193
+#: src/skins-qt/menus.cc:209
 msgid "By Artist"
 msgstr "Artist bo'yicha"
 
-#: src/skins/menus.cc:198 src/skins/menus.cc:213 src/skins-qt/menus.cc:194
-#: src/skins-qt/menus.cc:209
+#: src/skins/menus.cc:198 src/skins/menus.cc:214 src/skins-qt/menus.cc:194
+#: src/skins-qt/menus.cc:210
 msgid "By Album"
 msgstr "Albom bo'yicha"
 
-#: src/skins/menus.cc:199 src/skins/menus.cc:214 src/skins-qt/menus.cc:195
-#: src/skins-qt/menus.cc:210
+#: src/skins/menus.cc:199 src/skins/menus.cc:215 src/skins-qt/menus.cc:195
+#: src/skins-qt/menus.cc:211
 msgid "By Album Artist"
 msgstr "Albom artisti bo'yicha"
 
-#: src/skins/menus.cc:200 src/skins/menus.cc:215 src/skins-qt/menus.cc:196
-#: src/skins-qt/menus.cc:211
+#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:196
+#: src/skins-qt/menus.cc:212
 msgid "By Release Date"
 msgstr "Chiqarilgan sana bo'yicha"
 
-#: src/skins/menus.cc:201 src/skins/menus.cc:216 src/skins-qt/menus.cc:197
-#: src/skins-qt/menus.cc:212
+#: src/skins/menus.cc:201 src/skins/menus.cc:217 src/skins-qt/menus.cc:197
+#: src/skins-qt/menus.cc:213
 msgid "By Genre"
 msgstr "Janr bo'yicha"
 
-#: src/skins/menus.cc:202 src/skins/menus.cc:217 src/skins-qt/menus.cc:198
-#: src/skins-qt/menus.cc:213
+#: src/skins/menus.cc:202 src/skins/menus.cc:218 src/skins-qt/menus.cc:198
+#: src/skins-qt/menus.cc:214
 msgid "By Length"
 msgstr "Uzunlik bo'yicha"
 
-#: src/skins/menus.cc:205 src/skins/menus.cc:220 src/skins-qt/menus.cc:201
-#: src/skins-qt/menus.cc:216
+#: src/skins/menus.cc:205 src/skins/menus.cc:221 src/skins-qt/menus.cc:201
+#: src/skins-qt/menus.cc:217
 msgid "By Custom Title"
 msgstr "Maxsus sarlavha bo'yicha"
 
-#: src/skins/menus.cc:206 src/skins/menus.cc:221 src/skins-qt/menus.cc:202
-#: src/skins-qt/menus.cc:217
+#: src/skins/menus.cc:206 src/skins/menus.cc:222 src/skins-qt/menus.cc:202
+#: src/skins-qt/menus.cc:218
 msgid "By Comment"
 msgstr "Izoh bo'yicha"
 
-#: src/skins/menus.cc:225 src/skins-qt/menus.cc:221
+#: src/skins/menus.cc:207 src/skins/menus.cc:223 src/skins-qt/menus.cc:203
+#: src/skins-qt/menus.cc:219
+msgid "By Disc Number"
+msgstr ""
+
+#: src/skins/menus.cc:227 src/skins-qt/menus.cc:223
 msgid "Randomize List"
 msgstr "Ro'yxatni tasodifiy qilish"
 
-#: src/skins/menus.cc:226 src/skins-qt/menus.cc:222
+#: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
 msgid "Reverse List"
 msgstr "Ro'yxatni teskari qilish"
 
-#: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
+#: src/skins/menus.cc:230 src/skins-qt/menus.cc:226
 msgid "Sort Selected"
 msgstr "Tanlanganlarni saralash"
 
-#: src/skins/menus.cc:229 src/skins-qt/menus.cc:225
+#: src/skins/menus.cc:231 src/skins-qt/menus.cc:227
 msgid "Sort List"
 msgstr "Roʻyxatni saralash"
 
-#: src/skins/menus.cc:234 src/skins-qt/menus.cc:230
+#: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
 msgid "Open Containing Folder"
 msgstr "O'z ichiga olgan jildni ochish"
 
-#: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
+#: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
 msgid "Cut"
 msgstr "Kesish"
 
-#: src/skins/menus.cc:237 src/skins-qt/menus.cc:233
+#: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
 msgid "Copy"
 msgstr "Nusxalash"
 
-#: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
+#: src/skins/menus.cc:240 src/skins-qt/menus.cc:236
 msgid "Paste"
 msgstr "Joylashtirish"
 
-#: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
 msgid "Paste at End"
 msgstr "Oxirida joylashtirish"
 
-#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
+#: src/skins/menus.cc:243 src/skins-qt/menus.cc:239
 msgid "Queue/Unqueue"
 msgstr "Navbat/navbatni bekor qilish"
 
-#: src/skins/playlist-widget.cc:55 src/skins-qt/playlist-widget.cc:58
+#: src/skins/playlist-widget.cc:58 src/skins-qt/playlist-widget.cc:58
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d %d dan)"
@@ -3851,7 +3928,7 @@ msgstr "%s (%d %d dan)"
 msgid "Audacious Playlist Editor"
 msgstr "Audacious pleylist muharriri"
 
-#: src/skins/plugin.cc:49 src/skins-qt/plugin.cc:64
+#: src/skins/plugin.cc:53 src/skins-qt/plugin.cc:65
 msgid "Winamp Classic Interface"
 msgstr "Winamp klassik interfeysi"
 
@@ -4142,33 +4219,38 @@ msgstr ""
 msgid "Song Change"
 msgstr ""
 
-#: src/songchange/song_change.cc:245
+#: src/songchange/song_change.cc:256
 msgid "<b>Commands</b>"
 msgstr ""
 
-#: src/songchange/song_change.cc:247
+#: src/songchange/song_change.cc:258
 msgid "Command to run when starting a new song:"
 msgstr ""
 
-#: src/songchange/song_change.cc:250
+#: src/songchange/song_change.cc:261
+msgid "Command to run when stopping a song:"
+msgstr ""
+
+#: src/songchange/song_change.cc:264
 msgid "Command to run at the end of a song:"
 msgstr ""
 
-#: src/songchange/song_change.cc:253
+#: src/songchange/song_change.cc:267
 msgid "Command to run at the end of the playlist:"
 msgstr ""
 
-#: src/songchange/song_change.cc:256
+#: src/songchange/song_change.cc:270
 msgid "Command to run when song title changes (for network streams):"
 msgstr ""
 
-#: src/songchange/song_change.cc:259
+#: src/songchange/song_change.cc:273
 msgid ""
 "You can use the following format codes, which will be replaced before "
-"running the command (not all are useful for the end-of-playlist command):"
+"running the command.\n"
+"Not all are useful though for the song-stopped or end-of-playlist command."
 msgstr ""
 
-#: src/songchange/song_change.cc:262
+#: src/songchange/song_change.cc:276
 msgid ""
 "%a: Artist\n"
 "%b: Album\n"
@@ -4183,9 +4265,9 @@ msgid ""
 "%T: Title (unformatted)"
 msgstr ""
 
-#: src/songchange/song_change.cc:273
+#: src/songchange/song_change.cc:287
 msgid ""
-"Parameters passed to the shell should be enclosed in quotation marks.  "
+"Parameters passed to the shell should be enclosed in quotation marks.\n"
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
 
@@ -4270,11 +4352,11 @@ msgstr ""
 msgid "<b>Pitch</b>"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:44 src/statusicon/statusicon.cc:47
+#: src/statusicon-qt/statusicon.cc:45 src/statusicon/statusicon.cc:47
 msgid "Status Icon"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:65
+#: src/statusicon-qt/statusicon.cc:68
 msgid ""
 "Status Icon Plugin (partial port for Qt interface)\n"
 "\n"
@@ -4286,39 +4368,39 @@ msgid ""
 "the system tray area of the window manager."
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:86 src/statusicon/statusicon.cc:380
+#: src/statusicon-qt/statusicon.cc:89 src/statusicon/statusicon.cc:384
 msgid "<b>Mouse Scroll Action</b>"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:87 src/statusicon/statusicon.cc:381
+#: src/statusicon-qt/statusicon.cc:90 src/statusicon/statusicon.cc:385
 msgid "Change volume"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:90 src/statusicon/statusicon.cc:384
+#: src/statusicon-qt/statusicon.cc:93 src/statusicon/statusicon.cc:388
 msgid "Change playing song"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:93 src/statusicon/statusicon.cc:387
+#: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:391
 msgid "<b>Other Settings</b>"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:94 src/statusicon/statusicon.cc:388
+#: src/statusicon-qt/statusicon.cc:97 src/statusicon/statusicon.cc:392
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:390
+#: src/statusicon-qt/statusicon.cc:99 src/statusicon/statusicon.cc:394
 msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:98 src/statusicon/statusicon.cc:392
+#: src/statusicon-qt/statusicon.cc:101 src/statusicon/statusicon.cc:396
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:113 src/statusicon/statusicon.cc:283
+#: src/statusicon-qt/statusicon.cc:116 src/statusicon/statusicon.cc:287
 msgid "Se_ttings ..."
 msgstr ""
 
-#: src/statusicon/statusicon.cc:373
+#: src/statusicon/statusicon.cc:377
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -4537,7 +4619,7 @@ msgstr ""
 msgid "Voice Removal"
 msgstr "Ovozni olib tashlash"
 
-#: src/vorbis/vorbis.cc:431
+#: src/vorbis/vorbis.cc:433
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"

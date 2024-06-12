@@ -18,6 +18,7 @@ src/aosd/aosd_ui.cc
 src/asx3/asx3.cc
 src/asx/asx.cc
 src/audpl/audpl.cc
+src/background_music/background_music.cc
 src/bitcrusher/bitcrusher.cc
 src/blur_scope/blur_scope.cc
 src/blur_scope-qt/blur_scope.cc
@@ -106,7 +107,12 @@ src/jack/jack-ng.cc
 src/ladspa/plugin.cc
 src/ladspa/plugin.h
 src/lirc/lirc.cc
-src/lyricwiki-qt/lyricwiki.cc
+src/lyrics-common/chart_lyrics_provider.cc
+src/lyrics-common/lyrics_ovh_provider.cc
+src/lyrics-common/preferences.h
+src/lyrics-common/utils.cc
+src/lyrics-gtk/lyrics-gtk.cc
+src/lyrics-qt/lyrics-qt.cc
 src/m3u/m3u.cc
 src/metronom/metronom.cc
 src/mixer/mixer.cc
@@ -155,7 +161,6 @@ src/qtui/status_bar.cc
 src/resample/resample.cc
 src/scrobbler2/config_window.cc
 src/scrobbler2/scrobbler.cc
-src/scrobbler2/scrobbler_communication.cc
 src/sdlout/sdlout.cc
 src/search-tool/library.cc
 src/search-tool-qt/library.cc
