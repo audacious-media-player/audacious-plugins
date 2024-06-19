@@ -286,7 +286,7 @@ GtkAccelGroup * menu_get_accel_group ()
     return accel;
 }
 
-#ifndef USE_GTK3
+#if !GTK_CHECK_VERSION(3, 22, 0)
 typedef struct {
     int x, y;
     gboolean leftward, upward;
@@ -300,7 +300,12 @@ static void position_menu (GtkMenu * menu, int * x, int * y, gboolean * push_in,
     audgui_get_monitor_geometry (gtk_widget_get_screen ((GtkWidget *) menu), pos->x, pos->y, & geom);
 
     GtkRequisition request;
+#ifdef USE_GTK3
+    gtk_widget_get_preferred_width ((GtkWidget *) menu, NULL, & request.width);
+    gtk_widget_get_preferred_height ((GtkWidget *) menu, NULL, & request.height);
+#else
     gtk_widget_size_request ((GtkWidget *) menu, & request);
+#endif
 
     if (pos->leftward)
         * x = aud::max (pos->x - request.width, geom.x);
@@ -317,7 +322,7 @@ static void position_menu (GtkMenu * menu, int * x, int * y, gboolean * push_in,
 void menu_popup (int id, int x, int y, gboolean leftward, gboolean upward,
  const GdkEventButton * event)
 {
-#ifdef USE_GTK3
+#if GTK_CHECK_VERSION(3, 22, 0)
     gtk_menu_popup_at_pointer ((GtkMenu *) menus[id], (const GdkEvent *) event);
 #else
     const MenuPosition pos = {x, y, leftward, upward};

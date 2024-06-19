@@ -182,7 +182,7 @@ static gboolean menu_cb (GtkWidget * widget, GdkEventButton * event)
 
     gtk_widget_show_all (menu);
 
-#ifdef USE_GTK3
+#if GTK_CHECK_VERSION(3, 22, 0)
     gtk_menu_popup_at_pointer ((GtkMenu *) menu, (const GdkEvent *) event);
 #else
     gtk_menu_popup ((GtkMenu *) menu, nullptr, nullptr, nullptr, nullptr, event->button, event->time);

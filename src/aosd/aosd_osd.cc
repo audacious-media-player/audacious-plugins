@@ -26,7 +26,7 @@
 #include <X11/Xlib.h>
 #include <cairo/cairo.h>
 #include <pango/pangocairo.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
@@ -158,7 +158,7 @@ aosd_osd_create ( void )
     /* adjust coordinates and size according to selected monitor */
     GdkRectangle rect;
 
-#ifdef USE_GTK3
+#if GTK_CHECK_VERSION(3, 22, 0)
     GdkDisplay *display = gdk_screen_get_display( screen );
     GdkMonitor *monitor = gdk_display_get_monitor( display, osd_data->cfg_osd->position.multimon_id );
     gdk_monitor_get_geometry( monitor, &rect );

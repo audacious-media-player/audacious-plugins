@@ -140,9 +140,13 @@ static GtkWidget * make_close_button (GtkWidget * ebox, Playlist list)
 
     g_signal_connect (button, "clicked", (GCallback) close_button_cb, aud::to_ptr (list));
 
-#ifdef USE_GTK3
+#if GTK_CHECK_VERSION(3, 20, 0)
     gtk_widget_set_focus_on_click (button, false);
+#else
+    gtk_button_set_focus_on_click ((GtkButton *) button, false);
+#endif
 
+#ifdef USE_GTK3
     GtkCssProvider * provider = gtk_css_provider_new ();
     gtk_css_provider_load_from_data (provider,
      "#gtkui-tab-close-button {"
@@ -155,8 +159,6 @@ static GtkWidget * make_close_button (GtkWidget * ebox, Playlist list)
      GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     g_object_unref (provider);
 #else
-    gtk_button_set_focus_on_click ((GtkButton *) button, false);
-
     gtk_rc_parse_string (
      "style \"gtkui-tab-close-button-style\" {"
      " GtkButton::default-border = {0, 0, 0, 0}"

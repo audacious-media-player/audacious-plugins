@@ -149,7 +149,7 @@ static void append_separator_to_menu (GtkWidget * menu)
 static void edit_lyrics_cb (GtkMenuItem * menu_item, void * data)
 {
     const char * edit_uri = (const char *) data;
-#ifdef USE_GTK3
+#if GTK_CHECK_VERSION(3, 22, 0)
     gtk_show_uri_on_window (nullptr, edit_uri, GDK_CURRENT_TIME, nullptr);
 #else
     gtk_show_uri (nullptr, edit_uri, GDK_CURRENT_TIME, nullptr);

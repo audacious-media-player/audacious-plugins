@@ -133,7 +133,7 @@ void BlurScope::draw ()
     if (! area || ! gtk_widget_get_window (area))
         return;
 
-#ifdef USE_GTK3
+#if GTK_CHECK_VERSION(3, 22, 0)
     GdkWindow * window = gtk_widget_get_window (area);
     cairo_region_t * cr_region = cairo_region_create ();
 

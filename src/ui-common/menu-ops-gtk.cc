@@ -135,7 +135,7 @@ void pl_open_folder ()
 
     GError * error = nullptr;
 
-#ifdef USE_GTK3
+#if GTK_CHECK_VERSION(3, 22, 0)
     gtk_show_uri_on_window (nullptr, folder, GDK_CURRENT_TIME, & error);
 #else
     gtk_show_uri (gdk_screen_get_default (), folder, GDK_CURRENT_TIME, & error);

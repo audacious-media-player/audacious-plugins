@@ -262,7 +262,7 @@ static gboolean si_cb_tooltip (GtkStatusIcon * icon, int x, int y, gboolean keyb
 static void si_menu_show (GtkStatusIcon * icon, GdkEventButton * event)
 {
     GtkMenu * si_menu = (GtkMenu *) g_object_get_data ((GObject *) icon, "menu");
-#ifdef USE_GTK3
+#if GTK_CHECK_VERSION(3, 22, 0)
     gtk_menu_popup_at_pointer (si_menu, (const GdkEvent *) event);
 #else
     gtk_menu_popup (si_menu, nullptr, nullptr, nullptr, nullptr, event->button, event->time);

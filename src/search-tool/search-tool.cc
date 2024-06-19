@@ -347,7 +347,7 @@ static void list_right_click (void * user, GdkEventButton * event)
     GtkWidget * menu = gtk_menu_new ();
     audgui_menu_init (menu, {items}, nullptr);
 
-#ifdef USE_GTK3
+#if GTK_CHECK_VERSION(3, 22, 0)
     gtk_menu_popup_at_pointer ((GtkMenu *) menu, (const GdkEvent *) event);
 #else
     gtk_menu_popup ((GtkMenu *) menu, nullptr, nullptr, nullptr, nullptr, event->button, event->time);

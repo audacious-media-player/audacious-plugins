@@ -192,7 +192,7 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg )
   GtkWidget *pos_multimon_combobox;
   int i = 0;
 
-#ifdef USE_GTK3
+#if GTK_CHECK_VERSION(3, 22, 0)
   int monitors_num = gdk_display_get_n_monitors ( gdk_display_get_default() );
 #else
   int monitors_num = gdk_screen_get_n_monitors( gdk_screen_get_default() );
