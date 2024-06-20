@@ -62,6 +62,7 @@ static const char * const skins_defaults[] = {
     "vu_mode", aud::numeric_string<VU_SMOOTH>::str,
 
     /* windows */
+    "active_titlebar_any", "TRUE",
     "always_on_top", "FALSE",
     "double_size", "FALSE",
     "equalizer_shaded", "FALSE",
@@ -94,6 +95,7 @@ static const struct skins_cfg_boolent_t {
     /* general */
     {"autoscroll_songname", & config.autoscroll},
     {"mainwin_use_bitmapfont", & config.mainwin_use_bitmapfont},
+    {"active_titlebar_any", & config.active_titlebar_any},
     {"twoway_scroll", & config.twoway_scroll},
 
     /* visualizer */
@@ -188,6 +190,8 @@ static const PreferencesWidget font_table_elements[] = {
 static const PreferencesWidget skins_widgets_general[] = {
     WidgetLabel (N_("<b>Skin</b>")),
     WidgetCustomGTK (create_skin_view),
+    WidgetCheck (N_("Display active titlebar when any window is focused"),
+        WidgetBool (config.active_titlebar_any, nullptr)),
     WidgetLabel (N_("<b>Fonts</b>")),
     WidgetTable ({{font_table_elements}}),
     WidgetCheck (N_("Use bitmap fonts (supports ASCII only)"),

@@ -477,10 +477,10 @@ static void playlistwin_create_widgets ()
 void PlWindow::draw (cairo_t * cr)
 {
     if (is_shaded ())
-        skin_draw_playlistwin_shaded (cr, config.playlist_width, true);
+        skin_draw_playlistwin_shaded (cr, config.playlist_width, is_focused ());
     else
         skin_draw_playlistwin_frame (cr, config.playlist_width,
-         config.playlist_height, true);
+         config.playlist_height, is_focused ());
 }
 
 static void playlistwin_create_window ()

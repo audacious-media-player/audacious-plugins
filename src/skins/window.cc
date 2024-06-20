@@ -136,6 +136,9 @@ Window::Window (int id, int * x, int * y, int w, int h, bool shaded) :
         gtk_container_add ((GtkContainer *) window, m_normal);
 
     dock_add_window (id, this, x, y, w, h);
+
+    g_signal_connect (window, "focus-out-event", (GCallback) focus_cb, this);
+    g_signal_connect (window, "focus-in-event", (GCallback) focus_cb, this);
 }
 
 void Window::resize (int w, int h)
@@ -189,4 +192,22 @@ void Window::move_widget (bool shaded, Widget * widget, int x, int y)
 {
     GtkWidget * fixed = shaded ? m_shaded : m_normal;
     gtk_fixed_move ((GtkFixed *) fixed, widget->gtk (), x * config.scale, y * config.scale);
+}
+
+bool Window::is_focused ()
+{
+    return config.active_titlebar_any ? dock_is_focused () : m_is_focused_window;
+}
+
+/* static */
+gboolean Window::focus_cb (GtkWidget * widget, GdkEventFocus * event, Window * me)
+{
+    me->m_is_focused_window = event->in;
+
+    if (config.active_titlebar_any)
+        dock_draw_all ();
+    else
+        me->queue_draw ();
+
+    return false;
 }
