@@ -563,8 +563,6 @@ bool FFaudio::play (const char * filename, VFSFile & file)
             if (LOG (av_seek_frame, ic.get (), -1, (int64_t) seek_value *
              AV_TIME_BASE / 1000, AVSEEK_FLAG_ANY) >= 0)
                 errcount = 0;
-
-            seek_value = -1;
         }
 
         /* Read next frame (or more) of data */
@@ -595,7 +593,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
         /* Decode and play packet/frame */
 #ifdef SEND_PACKET
-        if ((ret = LOG (avcodec_send_packet, context.ptr, pkt.ptr)) < 0)
+        if (LOG (avcodec_send_packet, context.ptr, pkt.ptr) < 0)
             return false; /* defensive, errors not expected here */
 #else
         /* Make a mutable (shallow) copy of the real packet */
@@ -607,7 +605,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
             ScopedFrame frame;
 
 #ifdef SEND_PACKET
-            if ((ret = LOG (avcodec_receive_frame, context.ptr, frame.ptr)) < 0)
+            if (LOG (avcodec_receive_frame, context.ptr, frame.ptr) < 0)
                 break; /* read next packet (continue past errors) */
 #else
             int decoded = 0;
