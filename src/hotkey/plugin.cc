@@ -34,8 +34,6 @@
  * USA.
  */
 
-#include <stdlib.h>
-
 #include <X11/XF86keysym.h>
 
 #include <gdk/gdk.h>
@@ -117,35 +115,22 @@ gboolean handle_keyevent(EVENT event)
 {
     int current_volume, old_volume;
     static int volume_static = 0;
-    gboolean mute;
 
     /* get current volume */
     current_volume = aud_drct_get_volume_main();
     old_volume = current_volume;
-    if (current_volume)
-    {
-        /* volume is not mute */
-        mute = false;
-    }
-    else
-    {
-        /* volume is mute */
-        mute = true;
-    }
 
     /* mute the playback */
     if (event == EVENT_MUTE)
     {
-        if (!mute)
+        if (current_volume != 0)
         {
             volume_static = current_volume;
             aud_drct_set_volume_main(0);
-            mute = true;
         }
         else
         {
             aud_drct_set_volume_main(volume_static);
-            mute = false;
         }
         return true;
     }
@@ -153,13 +138,6 @@ gboolean handle_keyevent(EVENT event)
     /* decrease volume */
     if (event == EVENT_VOL_DOWN)
     {
-        if (mute)
-        {
-            current_volume = old_volume;
-            old_volume = 0;
-            mute = false;
-        }
-
         if ((current_volume -= aud_get_int("volume_delta")) < 0)
         {
             current_volume = 0;
@@ -170,20 +148,12 @@ gboolean handle_keyevent(EVENT event)
             aud_drct_set_volume_main(current_volume);
         }
 
-        old_volume = current_volume;
         return true;
     }
 
     /* increase volume */
     if (event == EVENT_VOL_UP)
     {
-        if (mute)
-        {
-            current_volume = old_volume;
-            old_volume = 0;
-            mute = false;
-        }
-
         if ((current_volume += aud_get_int("volume_delta")) > 100)
         {
             current_volume = 100;
@@ -194,7 +164,6 @@ gboolean handle_keyevent(EVENT event)
             aud_drct_set_volume_main(current_volume);
         }
 
-        old_volume = current_volume;
         return true;
     }
 

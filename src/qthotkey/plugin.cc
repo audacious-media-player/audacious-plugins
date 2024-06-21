@@ -61,8 +61,6 @@
 #include <X11/keysym.h>
 #include <xcb/xproto.h>
 
-#include <stdlib.h>
-
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 typedef qintptr filter_result_t;
 #else
@@ -123,38 +121,24 @@ bool handle_keyevent(Event event)
 {
     int current_volume, old_volume;
     static int volume_static = 0;
-    bool mute;
 
     /* get current volume */
     current_volume = aud_drct_get_volume_main();
     old_volume = current_volume;
-
-    if (current_volume)
-    {
-        /* volume is not mute */
-        mute = false;
-    }
-    else
-    {
-        /* volume is mute */
-        mute = true;
-    }
 
     switch (event)
     {
     /* mute the playback */
     case Event::Mute:
     {
-        if (!mute)
+        if (current_volume != 0)
         {
             volume_static = current_volume;
             aud_drct_set_volume_main(0);
-            mute = true;
         }
         else
         {
             aud_drct_set_volume_main(volume_static);
-            mute = false;
         }
 
         return true;
@@ -164,13 +148,6 @@ bool handle_keyevent(Event event)
     /* decrease volume */
     case Event::VolumeDown:
     {
-        if (mute)
-        {
-            current_volume = old_volume;
-            old_volume = 0;
-            mute = false;
-        }
-
         if ((current_volume -= aud_get_int("volume_delta")) < 0)
         {
             current_volume = 0;
@@ -181,7 +158,6 @@ bool handle_keyevent(Event event)
             aud_drct_set_volume_main(current_volume);
         }
 
-        old_volume = current_volume;
         return true;
     }
     break;
@@ -189,13 +165,6 @@ bool handle_keyevent(Event event)
     /* increase volume */
     case Event::VolumeUp:
     {
-        if (mute)
-        {
-            current_volume = old_volume;
-            old_volume = 0;
-            mute = false;
-        }
-
         if ((current_volume += aud_get_int("volume_delta")) > 100)
         {
             current_volume = 100;
@@ -206,7 +175,6 @@ bool handle_keyevent(Event event)
             aud_drct_set_volume_main(current_volume);
         }
 
-        old_volume = current_volume;
         return true;
     }
     break;
