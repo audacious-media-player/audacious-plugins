@@ -404,12 +404,19 @@ ENABLE_PLUGIN_WITH_DEP(pulse,
     PULSE,
     libpulse >= 0.9.5)
 
-ENABLE_PLUGIN_WITH_DEP(sndio,
+test_sndio () {
+    PKG_CHECK_MODULES(SNDIO, sndio >= 1.9, [
+        AC_DEFINE(HAVE_SNDIO_1_9, 1, [Define if sndio version is >= 1.9])
+        have_sndio=yes
+    ], [
+        PKG_CHECK_MODULES(SNDIO, sndio, have_sndio=yes, have_sndio=no)
+    ])
+}
+
+ENABLE_PLUGIN_WITH_TEST(sndio,
     Sndio output,
     auto,
-    OUTPUT,
-    SNDIO,
-    sndio)
+    OUTPUT)
 
 test_cue () {
     PKG_CHECK_MODULES(CUE, libcue >= 2.0, [

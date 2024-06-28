@@ -344,7 +344,11 @@ void SndioPlugin::flush ()
 {
     pthread_mutex_lock (& m_mutex);
 
+#if HAVE_SNDIO_1_9
+    sio_flush (m_handle);
+#else
     sio_stop (m_handle);
+#endif
 
     m_frames_buffered = 0;
     m_last_write_time = timeval ();
