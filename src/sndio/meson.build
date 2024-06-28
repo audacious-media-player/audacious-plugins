@@ -1,4 +1,4 @@
-sndio_dep = dependency('sndio', required: false)
+sndio_dep = dependency('sndio', version: '>= 1.9.0', required: false)
 have_sndio = sndio_dep.found()
 
 
