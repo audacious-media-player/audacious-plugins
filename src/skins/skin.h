@@ -83,9 +83,9 @@ struct SkinHints {
     int mainwin_vis_visible = true;
 
     /* Text properties */
-    int mainwin_text_x = 112;
+    int mainwin_text_x = 111;
     int mainwin_text_y = 27;
-    int mainwin_text_width = 153;
+    int mainwin_text_width = 154;
     int mainwin_text_visible = true;
 
     /* Infobar properties */
