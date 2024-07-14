@@ -111,7 +111,7 @@ bool GlobalHotkeys::init()
 }
 
 /* handle keys */
-gboolean handle_keyevent(EVENT event)
+bool handle_keyevent(EVENT event)
 {
     int current_volume, old_volume;
     static int volume_static = 0;

@@ -396,12 +396,10 @@ static GdkFilterReturn gdk_filter(GdkXEvent * xevent, GdkEvent * event,
     return GDK_FILTER_CONTINUE;
 }
 
-gboolean setup_filter()
+void setup_filter()
 {
     gdk_window_add_filter(gdk_screen_get_root_window(gdk_screen_get_default()),
                           gdk_filter, nullptr);
-
-    return true;
 }
 
 void release_filter()

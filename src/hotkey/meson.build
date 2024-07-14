@@ -16,7 +16,7 @@ hotkey_sources = [
 if have_hotkey
   shared_module('hotkey',
     hotkey_sources,
-    dependencies: [audacious_dep, audgui_dep, gtk_dep, glib_dep, gdk_x11_dep, x11_dep],
+    dependencies: [audacious_dep, audgui_dep, gtk_dep, gdk_x11_dep, x11_dep],
     name_prefix: '',
     install: true,
     install_dir: general_plugin_dir

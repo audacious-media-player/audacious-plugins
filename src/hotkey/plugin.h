@@ -1,8 +1,6 @@
 #ifndef _PLUGIN_H_INCLUDED_
 #define _PLUGIN_H_INCLUDED_
 
-#include <glib.h>
-
 #define TYPE_KEY 0
 #define TYPE_MOUSE 1
 
@@ -49,6 +47,6 @@ typedef struct
 void load_config();
 void save_config();
 PluginConfig * get_config();
-gboolean handle_keyevent(EVENT event);
+bool handle_keyevent(EVENT event);
 
 #endif
