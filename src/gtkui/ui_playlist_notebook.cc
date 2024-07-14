@@ -581,6 +581,9 @@ GtkWidget * pl_notebook_new ()
 
 void show_hide_playlist_tabs ()
 {
-    gtk_notebook_set_show_tabs ((GtkNotebook *) pl_notebook, aud_get_bool ("gtkui",
-     "playlist_tabs_visible") || Playlist::n_playlists () > 1);
+    int playlist_tabs_visible = aud_get_int ("gtkui", "playlist_tabs_visible");
+    bool show_tabs = playlist_tabs_visible != PlaylistTabVisibility::Never &&
+                    (playlist_tabs_visible != PlaylistTabVisibility::AutoHide ||
+                     Playlist::n_playlists () > 1);
+    gtk_notebook_set_show_tabs ((GtkNotebook *) pl_notebook, show_tabs);
 }

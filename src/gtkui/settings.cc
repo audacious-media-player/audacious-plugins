@@ -31,10 +31,17 @@ static void redisplay_playlists ()
     pl_notebook_populate ();
 }
 
+static const ComboItem playlist_tabs_options[] = {
+    ComboItem (N_("Always"), PlaylistTabVisibility::Always),
+    ComboItem (N_("Auto-hide"), PlaylistTabVisibility::AutoHide),
+    ComboItem (N_("Never"), PlaylistTabVisibility::Never)
+};
+
 static const PreferencesWidget gtkui_widgets[] = {
     WidgetLabel (N_("<b>Playlist Tabs</b>")),
-    WidgetCheck (N_("Always show tabs"),
-        WidgetBool ("gtkui", "playlist_tabs_visible", show_hide_playlist_tabs)),
+    WidgetCombo (N_("Show playlist tabs:"),
+        WidgetInt ("gtkui", "playlist_tabs_visible", show_hide_playlist_tabs),
+        {{playlist_tabs_options}}),
     WidgetCheck (N_("Show entry counts"),
         WidgetBool ("gtkui", "entry_count_visible", redisplay_playlists)),
     WidgetCheck (N_("Show close buttons"),

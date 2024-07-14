@@ -49,7 +49,7 @@ static const char * const gtkui_defaults[] = {
     "infoarea_show_vis", "TRUE",
     "infoarea_visible", "TRUE",
     "menu_visible", "TRUE",
-    "playlist_tabs_visible", "TRUE",
+    "playlist_tabs_visible", aud::numeric_string<PlaylistTabVisibility::Always>::str,
     "statusbar_visible", "TRUE",
     "entry_count_visible", "FALSE",
     "close_button_visible", "TRUE",
@@ -970,7 +970,7 @@ bool GtkUI::init ()
     AUDDBG ("playlist associate\n");
     pl_notebook_populate ();
 
-    g_signal_connect (slider, "change-value", (GCallback) ui_slider_change_value_cb , nullptr);
+    g_signal_connect (slider, "change-value", (GCallback) ui_slider_change_value_cb, nullptr);
     g_signal_connect (slider, "button-press-event", (GCallback) ui_slider_button_press_cb, nullptr);
     g_signal_connect (slider, "button-release-event", (GCallback) ui_slider_button_release_cb, nullptr);
 

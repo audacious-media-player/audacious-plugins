@@ -24,6 +24,12 @@
 
 class Playlist;
 
+enum PlaylistTabVisibility {
+    Always,
+    AutoHide,
+    Never
+};
+
 extern GtkWidget * pl_notebook;
 
 GtkWidget * pl_notebook_new ();
