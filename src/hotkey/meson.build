@@ -3,7 +3,7 @@ if get_option('gtk2')
 else
   gdk_x11_dep = dependency('gdk-x11-3.0', version: gtk_req, required: false)
 endif
-have_hotkey = gdk_x11_dep.found()
+have_hotkey = x11_dep.found() and gdk_x11_dep.found()
 
 
 hotkey_sources = [
