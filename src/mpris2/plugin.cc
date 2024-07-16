@@ -73,16 +73,26 @@ struct MPRIS2Metadata
     String title;
     String artist;
     String album;
+    String album_artist;
+    String comment;
+    String genre;
+    String composer;
     String file;
+    int32_t track = 0;
     int64_t length = 0;
+    int32_t disc = 0;
     AudArtPtr image;
 
     MPRIS2Metadata() = default;
 
     MPRIS2Metadata(MPRIS2Metadata && other) noexcept
         : title(std::move(other.title)), artist(std::move(other.artist)),
-          album(std::move(other.album)), file(std::move(other.file)),
-          length(other.length), image(std::move(other.image))
+          album(std::move(other.album)),
+          album_artist(std::move(other.album_artist)),
+          comment(std::move(other.comment)), genre(std::move(other.genre)),
+          composer(std::move(other.composer)), file(std::move(other.file)),
+          track(other.track), length(other.length), disc(other.disc),
+          image(std::move(other.image))
     {
     }
 
@@ -93,8 +103,14 @@ struct MPRIS2Metadata
             title = std::move(other.title);
             artist = std::move(other.artist);
             album = std::move(other.album);
+            album_artist = std::move(other.album_artist);
+            comment = std::move(other.comment);
+            genre = std::move(other.genre);
+            composer = std::move(other.composer);
             file = std::move(other.file);
+            track = other.track;
             length = other.length;
+            disc = other.disc;
             image = std::move(other.image);
         }
         return *this;
@@ -103,8 +119,11 @@ struct MPRIS2Metadata
     bool operator==(const MPRIS2Metadata & other) const
     {
         return title == other.title && artist == other.artist &&
-               album == other.album && file == other.file &&
-               length == other.length;
+               album == other.album && album_artist == other.album_artist &&
+               comment == other.comment && genre == other.genre &&
+               composer == other.composer && file == other.file &&
+               track == other.track && length == other.length &&
+               disc == other.disc;
     }
 
     bool operator!=(const MPRIS2Metadata & other) const
@@ -115,15 +134,7 @@ struct MPRIS2Metadata
     MPRIS2Metadata(const MPRIS2Metadata &) = delete;
     MPRIS2Metadata & operator=(const MPRIS2Metadata &) = delete;
 
-    ~MPRIS2Metadata()
-    {
-        title = String();
-        artist = String();
-        album = String();
-        file = String();
-        length = 0;
-        image.clear();
-    }
+    ~MPRIS2Metadata() { image.clear(); }
 };
 
 static MPRIS2Metadata last_meta;
@@ -140,6 +151,15 @@ void add_g_variant_str(const char * key_str, const char * value_str,
         GVariant * var = g_variant_new_variant(str);
         elems.push_back(g_variant_new_dict_entry(key, var));
     }
+}
+
+void add_g_variant_int32(const char * key_str, int32_t value_int,
+                         std::vector<GVariant *> & elems)
+{
+    GVariant * key = g_variant_new_string(key_str);
+    GVariant * num = g_variant_new_int32(value_int);
+    GVariant * var = g_variant_new_variant(num);
+    elems.push_back(g_variant_new_dict_entry(key, var));
 }
 
 void add_g_variant_int64(const char * key_str, int64_t value_int,
@@ -182,7 +202,13 @@ static void update_metadata(void * data, GObject * object)
         meta.title = tuple.get_str(Tuple::Title);
         meta.artist = tuple.get_str(Tuple::Artist);
         meta.album = tuple.get_str(Tuple::Album);
+        meta.album_artist = tuple.get_str(Tuple::AlbumArtist);
+        meta.comment = tuple.get_str(Tuple::Comment);
+        meta.genre = tuple.get_str(Tuple::Genre);
+        meta.composer = tuple.get_str(Tuple::Composer);
+        meta.track = tuple.get_int(Tuple::Track);
         meta.length = tuple.get_int(Tuple::Length);
+        meta.disc = tuple.get_int(Tuple::Disc);
         meta.file = aud_drct_get_filename();
     }
 
@@ -198,8 +224,14 @@ static void update_metadata(void * data, GObject * object)
     add_g_variant_str("xesam:title", meta.title, elems);
     add_g_variant_arr("xesam:artist", {meta.artist}, elems);
     add_g_variant_str("xesam:album", meta.album, elems);
+    add_g_variant_arr("xesam:albumArtist", {meta.album_artist}, elems);
+    add_g_variant_arr("xesam:comment", {meta.comment}, elems);
+    add_g_variant_arr("xesam:genre", {meta.genre}, elems);
+    add_g_variant_arr("xesam:composer", {meta.composer}, elems);
     add_g_variant_str("xesam:url", meta.file, elems);
-    add_g_variant_int64("mpris:length", (int64_t)meta.length * 1000, elems);
+    add_g_variant_int32("xesam:trackNumber", meta.track, elems);
+    add_g_variant_int64("mpris:length", meta.length * 1000, elems);
+    add_g_variant_int32("xesam:discNumber", meta.disc, elems);
 
     auto image_file = meta.image.file();
     add_g_variant_str("mpris:artUrl", image_file, elems);
