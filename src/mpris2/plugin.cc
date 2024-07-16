@@ -19,6 +19,7 @@
 
 #include <math.h>
 #include <stdint.h>
+#include <vector>
 
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
@@ -46,11 +47,7 @@ public:
 };
 
 EXPORT MPRIS2Plugin aud_plugin_instance;
-
 static GObject * object_core, * object_player;
-static String last_title, last_artist, last_album, last_file;
-static int last_length;
-static AudArtPtr image;
 
 static gboolean quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
  void * unused)
@@ -68,96 +65,156 @@ static gboolean raise_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation *
     return true;
 }
 
-static void update_metadata (void * data, GObject * object)
+/**
+ * @brief Struct for MPRIS2 metadata.
+ */
+struct MPRIS2Metadata
 {
-    String title, artist, album, file;
-    int length = 0;
+    String title;
+    String artist;
+    String album;
+    String file;
+    int64_t length = 0;
+    AudArtPtr image;
 
-    if (aud_drct_get_ready ())
+    MPRIS2Metadata() = default;
+
+    MPRIS2Metadata(MPRIS2Metadata && other) noexcept
+        : title(std::move(other.title)), artist(std::move(other.artist)),
+          album(std::move(other.album)), file(std::move(other.file)),
+          length(other.length), image(std::move(other.image))
     {
-        Tuple tuple = aud_drct_get_tuple ();
-
-        title = tuple.get_str (Tuple::Title);
-        artist = tuple.get_str (Tuple::Artist);
-        album = tuple.get_str (Tuple::Album);
-        length = tuple.get_int (Tuple::Length);
-
-        file = aud_drct_get_filename ();
     }
 
-    if (title == last_title && artist == last_artist && album == last_album
-     && file == last_file && length == last_length)
+    MPRIS2Metadata & operator=(MPRIS2Metadata && other) noexcept
+    {
+        if (this != &other)
+        {
+            title = std::move(other.title);
+            artist = std::move(other.artist);
+            album = std::move(other.album);
+            file = std::move(other.file);
+            length = other.length;
+            image = std::move(other.image);
+        }
+        return *this;
+    }
+
+    bool operator==(const MPRIS2Metadata & other) const
+    {
+        return title == other.title && artist == other.artist &&
+               album == other.album && file == other.file &&
+               length == other.length;
+    }
+
+    bool operator!=(const MPRIS2Metadata & other) const
+    {
+        return !(*this == other);
+    }
+
+    MPRIS2Metadata(const MPRIS2Metadata &) = delete;
+    MPRIS2Metadata & operator=(const MPRIS2Metadata &) = delete;
+
+    ~MPRIS2Metadata()
+    {
+        title = String();
+        artist = String();
+        album = String();
+        file = String();
+        length = 0;
+        image.clear();
+    }
+};
+
+static MPRIS2Metadata last_meta;
+
+/* Helper functions to handle GVariant creation */
+
+void add_g_variant_str(const char * key_str, const char * value_str,
+                       std::vector<GVariant *> & elems)
+{
+    if (value_str)
+    {
+        GVariant * key = g_variant_new_string(key_str);
+        GVariant * str = g_variant_new_string(value_str);
+        GVariant * var = g_variant_new_variant(str);
+        elems.push_back(g_variant_new_dict_entry(key, var));
+    }
+}
+
+void add_g_variant_int64(const char * key_str, int64_t value_int,
+                         std::vector<GVariant *> & elems)
+{
+    GVariant * key = g_variant_new_string(key_str);
+    GVariant * num = g_variant_new_int64(value_int);
+    GVariant * var = g_variant_new_variant(num);
+    elems.push_back(g_variant_new_dict_entry(key, var));
+}
+
+void add_g_variant_arr(const char * key_str,
+                       const std::vector<const char *> & value_arr,
+                       std::vector<GVariant *> & elems)
+{
+    if (!value_arr.empty())
+    {
+        GVariant * key = g_variant_new_string(key_str);
+        std::vector<GVariant *> g_variant_array;
+        for (const auto & item : value_arr)
+        {
+            g_variant_array.push_back(g_variant_new_string(item));
+        }
+        GVariant * array =
+            g_variant_new_array(G_VARIANT_TYPE_STRING, g_variant_array.data(),
+                                g_variant_array.size());
+        GVariant * var = g_variant_new_variant(array);
+        elems.push_back(g_variant_new_dict_entry(key, var));
+    }
+}
+
+static void update_metadata(void * data, GObject * object)
+{
+    MPRIS2Metadata meta;
+
+    if (aud_drct_get_ready())
+    {
+        Tuple tuple = aud_drct_get_tuple();
+
+        meta.title = tuple.get_str(Tuple::Title);
+        meta.artist = tuple.get_str(Tuple::Artist);
+        meta.album = tuple.get_str(Tuple::Album);
+        meta.length = tuple.get_int(Tuple::Length);
+        meta.file = aud_drct_get_filename();
+    }
+
+    if (meta == last_meta)
         return;
 
-    if (file != last_file)
-        image = file ? aud_art_request (file, AUD_ART_FILE) : AudArtPtr ();
+    if (meta.file != last_meta.file)
+        meta.image =
+            meta.file ? aud_art_request(meta.file, AUD_ART_FILE) : AudArtPtr();
 
-    last_title = title;
-    last_artist = artist;
-    last_album = album;
-    last_file = file;
-    last_length = length;
+    std::vector<GVariant *> elems;
 
-    GVariant * elems[7];
-    int nelems = 0;
+    add_g_variant_str("xesam:title", meta.title, elems);
+    add_g_variant_arr("xesam:artist", {meta.artist}, elems);
+    add_g_variant_str("xesam:album", meta.album, elems);
+    add_g_variant_str("xesam:url", meta.file, elems);
+    add_g_variant_int64("mpris:length", (int64_t)meta.length * 1000, elems);
 
-    if (title)
-    {
-        GVariant * key = g_variant_new_string ("xesam:title");
-        GVariant * str = g_variant_new_string (title);
-        GVariant * var = g_variant_new_variant (str);
-        elems[nelems ++] = g_variant_new_dict_entry (key, var);
-    }
+    auto image_file = meta.image.file();
+    add_g_variant_str("mpris:artUrl", image_file, elems);
 
-    if (artist)
-    {
-        GVariant * key = g_variant_new_string ("xesam:artist");
-        GVariant * str = g_variant_new_string (artist);
-        GVariant * array = g_variant_new_array (G_VARIANT_TYPE_STRING, & str, 1);
-        GVariant * var = g_variant_new_variant (array);
-        elems[nelems ++] = g_variant_new_dict_entry (key, var);
-    }
+    GVariant * key = g_variant_new_string("mpris:trackid");
+    GVariant * str =
+        g_variant_new_object_path("/org/mpris/MediaPlayer2/CurrentTrack");
+    GVariant * var = g_variant_new_variant(str);
+    elems.push_back(g_variant_new_dict_entry(key, var));
 
-    if (album)
-    {
-        GVariant * key = g_variant_new_string ("xesam:album");
-        GVariant * str = g_variant_new_string (album);
-        GVariant * var = g_variant_new_variant (str);
-        elems[nelems ++] = g_variant_new_dict_entry (key, var);
-    }
+    GVariant * array =
+        g_variant_new_array(G_VARIANT_TYPE("{sv}"), elems.data(), elems.size());
+    g_object_set(object, "metadata", array, nullptr);
 
-    if (file)
-    {
-        GVariant * key = g_variant_new_string ("xesam:url");
-        GVariant * str = g_variant_new_string (file);
-        GVariant * var = g_variant_new_variant (str);
-        elems[nelems ++] = g_variant_new_dict_entry (key, var);
-    }
-
-    if (length > 0)
-    {
-        GVariant * key = g_variant_new_string ("mpris:length");
-        GVariant * val = g_variant_new_int64 ((int64_t) length * 1000);
-        GVariant * var = g_variant_new_variant (val);
-        elems[nelems ++] = g_variant_new_dict_entry (key, var);
-    }
-
-    auto image_file = image.file ();
-    if (image_file)
-    {
-        GVariant * key = g_variant_new_string ("mpris:artUrl");
-        GVariant * str = g_variant_new_string (image_file);
-        GVariant * var = g_variant_new_variant (str);
-        elems[nelems ++] = g_variant_new_dict_entry (key, var);
-    }
-
-    GVariant * key = g_variant_new_string ("mpris:trackid");
-    GVariant * str = g_variant_new_object_path ("/org/mpris/MediaPlayer2/CurrentTrack");
-    GVariant * var = g_variant_new_variant (str);
-    elems[nelems ++] = g_variant_new_dict_entry (key, var);
-
-    GVariant * array = g_variant_new_array (G_VARIANT_TYPE ("{sv}"), elems, nelems);
-    g_object_set (object, "metadata", array, nullptr);
+    last_meta = std::move(meta);
 }
 
 static void volume_changed (GObject * object)
@@ -289,13 +346,7 @@ void MPRIS2Plugin::cleanup ()
     g_object_unref (object_core);
     g_object_unref (object_player);
 
-    last_title = String ();
-    last_artist = String ();
-    last_album = String ();
-    last_file = String ();
-    last_length = 0;
-
-    image.clear ();
+    last_meta = MPRIS2Metadata();
 }
 
 bool MPRIS2Plugin::init ()
