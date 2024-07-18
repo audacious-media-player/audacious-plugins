@@ -85,37 +85,6 @@ struct MPRIS2Metadata
 
     MPRIS2Metadata() = default;
 
-    MPRIS2Metadata(MPRIS2Metadata && other) noexcept
-        : title(std::move(other.title)), artist(std::move(other.artist)),
-          album(std::move(other.album)),
-          album_artist(std::move(other.album_artist)),
-          comment(std::move(other.comment)), genre(std::move(other.genre)),
-          composer(std::move(other.composer)), file(std::move(other.file)),
-          track(other.track), length(other.length), disc(other.disc),
-          image(std::move(other.image))
-    {
-    }
-
-    MPRIS2Metadata & operator=(MPRIS2Metadata && other) noexcept
-    {
-        if (this != &other)
-        {
-            title = std::move(other.title);
-            artist = std::move(other.artist);
-            album = std::move(other.album);
-            album_artist = std::move(other.album_artist);
-            comment = std::move(other.comment);
-            genre = std::move(other.genre);
-            composer = std::move(other.composer);
-            file = std::move(other.file);
-            track = other.track;
-            length = other.length;
-            disc = other.disc;
-            image = std::move(other.image);
-        }
-        return *this;
-    }
-
     bool operator==(const MPRIS2Metadata & other) const
     {
         return title == other.title && artist == other.artist &&
@@ -131,10 +100,11 @@ struct MPRIS2Metadata
         return !(*this == other);
     }
 
+    MPRIS2Metadata(MPRIS2Metadata && other) = default;
+    MPRIS2Metadata & operator=(MPRIS2Metadata && other) = default;
     MPRIS2Metadata(const MPRIS2Metadata &) = delete;
     MPRIS2Metadata & operator=(const MPRIS2Metadata &) = delete;
-
-    ~MPRIS2Metadata() { image.clear(); }
+    ~MPRIS2Metadata() = default;
 };
 
 static MPRIS2Metadata last_meta;
