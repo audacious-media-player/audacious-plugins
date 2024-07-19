@@ -126,7 +126,7 @@ void add_g_variant_str(const char * key_str, const char * value_str,
 void add_g_variant_int32(const char * key_str, int32_t value_int,
                          std::vector<GVariant *> & elems)
 {
-    if (!value_int)
+    if (!value_int || value_int < 0)
         return;
 
     GVariant * key = g_variant_new_string(key_str);
@@ -138,7 +138,7 @@ void add_g_variant_int32(const char * key_str, int32_t value_int,
 void add_g_variant_int64(const char * key_str, int64_t value_int,
                          std::vector<GVariant *> & elems)
 {
-    if (!value_int)
+    if (!value_int || value_int < 0)
         return;
 
     GVariant * key = g_variant_new_string(key_str);
