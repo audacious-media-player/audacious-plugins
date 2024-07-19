@@ -78,9 +78,9 @@ struct MPRIS2Metadata
     String genre;
     String composer;
     String file;
-    int32_t track = 0;
-    int64_t length = 0;
-    int32_t disc = 0;
+    int32_t track = -1;
+    int64_t length = -1;
+    int32_t disc = -1;
     AudArtPtr image;
 
     MPRIS2Metadata() = default;
@@ -114,7 +114,7 @@ static MPRIS2Metadata last_meta;
 void add_g_variant_str(const char * key_str, const char * value_str,
                        std::vector<GVariant *> & elems)
 {
-    if (!value_str)
+    if (!value_str || strlen(value_str) == 0)
         return;
 
     GVariant * key = g_variant_new_string(key_str);
@@ -126,9 +126,6 @@ void add_g_variant_str(const char * key_str, const char * value_str,
 void add_g_variant_int32(const char * key_str, int32_t value_int,
                          std::vector<GVariant *> & elems)
 {
-    if (!value_int || value_int < 0)
-        return;
-
     GVariant * key = g_variant_new_string(key_str);
     GVariant * num = g_variant_new_int32(value_int);
     GVariant * var = g_variant_new_variant(num);
@@ -138,18 +135,15 @@ void add_g_variant_int32(const char * key_str, int32_t value_int,
 void add_g_variant_int64(const char * key_str, int64_t value_int,
                          std::vector<GVariant *> & elems)
 {
-    if (!value_int || value_int < 0)
-        return;
-
     GVariant * key = g_variant_new_string(key_str);
     GVariant * num = g_variant_new_int64(value_int);
     GVariant * var = g_variant_new_variant(num);
     elems.push_back(g_variant_new_dict_entry(key, var));
 }
 
-void add_g_variant_arr(const char * key_str,
-                       const std::vector<const char *> & value_arr,
-                       std::vector<GVariant *> & elems)
+void add_g_variant_arr_str(const char * key_str,
+                           const std::vector<const char *> & value_arr,
+                           std::vector<GVariant *> & elems)
 {
     if (value_arr.empty())
         return;
@@ -158,6 +152,8 @@ void add_g_variant_arr(const char * key_str,
     std::vector<GVariant *> g_variant_array;
     for (const auto & item : value_arr)
     {
+        if (!item || strlen(item) == 0)
+            continue;
         g_variant_array.push_back(g_variant_new_string(item));
     }
     GVariant * array = g_variant_new_array(
@@ -199,24 +195,24 @@ static void update_metadata(void * data, GObject * object)
     if (meta.title)
         add_g_variant_str("xesam:title", meta.title, elems);
     if (meta.artist)
-        add_g_variant_arr("xesam:artist", {meta.artist}, elems);
+        add_g_variant_arr_str("xesam:artist", {meta.artist}, elems);
     if (meta.album)
         add_g_variant_str("xesam:album", meta.album, elems);
     if (meta.album_artist)
-        add_g_variant_arr("xesam:albumArtist", {meta.album_artist}, elems);
+        add_g_variant_arr_str("xesam:albumArtist", {meta.album_artist}, elems);
     if (meta.comment)
-        add_g_variant_arr("xesam:comment", {meta.comment}, elems);
+        add_g_variant_arr_str("xesam:comment", {meta.comment}, elems);
     if (meta.genre)
-        add_g_variant_arr("xesam:genre", {meta.genre}, elems);
+        add_g_variant_arr_str("xesam:genre", {meta.genre}, elems);
     if (meta.composer)
-        add_g_variant_arr("xesam:composer", {meta.composer}, elems);
+        add_g_variant_arr_str("xesam:composer", {meta.composer}, elems);
     if (meta.file)
         add_g_variant_str("xesam:url", meta.file, elems);
-    if (meta.track)
+    if (meta.track > 0)
         add_g_variant_int32("xesam:trackNumber", meta.track, elems);
-    if (meta.length)
+    if (meta.length > 0)
         add_g_variant_int64("mpris:length", meta.length * 1000, elems);
-    if (meta.disc)
+    if (meta.disc > 0)
         add_g_variant_int32("xesam:discNumber", meta.disc, elems);
 
     auto image_file = meta.image.file();
