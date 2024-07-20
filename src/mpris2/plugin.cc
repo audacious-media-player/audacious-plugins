@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include <vector>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -76,6 +77,7 @@ struct MPRIS2Metadata
     String album_artist;
     String comment;
     String genre;
+    String rec_date;
     String composer;
     String file;
     int32_t track = -1;
@@ -90,7 +92,7 @@ struct MPRIS2Metadata
                && comment == other.comment && genre == other.genre
                && composer == other.composer && file == other.file
                && track == other.track && length == other.length
-               && disc == other.disc;
+               && disc == other.disc && rec_date == other.rec_date;
     }
 
     bool operator!= (const MPRIS2Metadata & other) const
@@ -173,6 +175,19 @@ static void update_metadata (void * data, GObject * object)
         meta.length = tuple.get_int (Tuple::Length);
         meta.disc = tuple.get_int (Tuple::Disc);
         meta.file = aud_drct_get_filename ();
+
+        int rec_year = tuple.get_int (Tuple::Year);
+        if (rec_year && rec_year > 0 && rec_year < 10000)
+        {
+            StringBuf rec_year_str = int_to_str (rec_year);
+            if (rec_year < 1000)
+            {
+                int zero_pad = 4 - rec_year_str.len ();
+                for (int i = 0; i < zero_pad; i++)
+                    rec_year_str.insert (0, "0", 1);
+            }
+            meta.rec_date = String (rec_year_str);
+        }
     }
 
     if (meta == last_meta)
@@ -196,6 +211,8 @@ static void update_metadata (void * data, GObject * object)
         add_g_variant_arr_str ("xesam:comment", {meta.comment}, elems);
     if (meta.genre)
         add_g_variant_arr_str ("xesam:genre", {meta.genre}, elems);
+    if (meta.rec_date)
+        add_g_variant_str ("xesam:contentCreated", meta.rec_date, elems);
     if (meta.composer)
         add_g_variant_arr_str ("xesam:composer", {meta.composer}, elems);
     if (meta.file)
