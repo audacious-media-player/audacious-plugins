@@ -83,8 +83,6 @@ struct MPRIS2Metadata
     int32_t disc = -1;
     AudArtPtr image;
 
-    MPRIS2Metadata() = default;
-
     bool operator==(const MPRIS2Metadata & other) const
     {
         return title == other.title && artist == other.artist &&
@@ -99,12 +97,6 @@ struct MPRIS2Metadata
     {
         return !(*this == other);
     }
-
-    MPRIS2Metadata(MPRIS2Metadata && other) = default;
-    MPRIS2Metadata & operator=(MPRIS2Metadata && other) = default;
-    MPRIS2Metadata(const MPRIS2Metadata &) = delete;
-    MPRIS2Metadata & operator=(const MPRIS2Metadata &) = delete;
-    ~MPRIS2Metadata() = default;
 };
 
 static MPRIS2Metadata last_meta;
