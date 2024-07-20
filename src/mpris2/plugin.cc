@@ -79,6 +79,7 @@ struct MPRIS2Metadata
     String genre;
     String rec_date;
     String composer;
+    String lyrics;
     String file;
     int32_t track = -1;
     int64_t length = -1;
@@ -171,6 +172,7 @@ static void update_metadata (void * data, GObject * object)
         meta.comment = tuple.get_str (Tuple::Comment);
         meta.genre = tuple.get_str (Tuple::Genre);
         meta.composer = tuple.get_str (Tuple::Composer);
+        meta.lyrics = tuple.get_str (Tuple::Lyrics);
         meta.track = tuple.get_int (Tuple::Track);
         meta.length = tuple.get_int (Tuple::Length);
         meta.disc = tuple.get_int (Tuple::Disc);
@@ -215,6 +217,8 @@ static void update_metadata (void * data, GObject * object)
         add_g_variant_str ("xesam:contentCreated", meta.rec_date, elems);
     if (meta.composer)
         add_g_variant_arr_str ("xesam:composer", {meta.composer}, elems);
+    if (meta.lyrics)
+        add_g_variant_str ("xesam:asText", meta.lyrics, elems);
     if (meta.file)
         add_g_variant_str ("xesam:url", meta.file, elems);
     if (meta.track > 0)
