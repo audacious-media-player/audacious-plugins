@@ -96,7 +96,7 @@ using s8 = int8_t;
 
 /*----------------------*/
 
-#ifdef __BIG_ENDIAN__
+#if defined(__BIG_ENDIAN__) || (defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__))
 # ifndef WORDS_BIGENDIAN
 #  define WORDS_BIGENDIAN
 # endif
