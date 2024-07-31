@@ -19,12 +19,12 @@
 
 #include <math.h>
 #include <stdint.h>
-#include <vector>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/index.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/probe.h>
@@ -107,7 +107,7 @@ static MPRIS2Metadata last_meta;
 /* Helper functions to handle GVariant creation */
 
 void add_g_variant_str (const char * key_str, const char * value_str,
-                       std::vector<GVariant *> & elems)
+                       Index<GVariant *> & elems)
 {
     if (! value_str || strlen (value_str) == 0)
         return;
@@ -115,46 +115,46 @@ void add_g_variant_str (const char * key_str, const char * value_str,
     GVariant * key = g_variant_new_string (key_str);
     GVariant * str = g_variant_new_string (value_str);
     GVariant * var = g_variant_new_variant (str);
-    elems.push_back (g_variant_new_dict_entry (key, var));
+    elems.append (g_variant_new_dict_entry (key, var));
 }
 
 void add_g_variant_int32 (const char * key_str, int32_t value_int,
-                         std::vector<GVariant *> & elems)
+                         Index<GVariant *> & elems)
 {
     GVariant * key = g_variant_new_string (key_str);
     GVariant * num = g_variant_new_int32 (value_int);
     GVariant * var = g_variant_new_variant (num);
-    elems.push_back (g_variant_new_dict_entry (key, var));
+    elems.append (g_variant_new_dict_entry (key, var));
 }
 
 void add_g_variant_int64 (const char * key_str, int64_t value_int,
-                         std::vector<GVariant *> & elems)
+                         Index<GVariant *> & elems)
 {
     GVariant * key = g_variant_new_string (key_str);
     GVariant * num = g_variant_new_int64 (value_int);
     GVariant * var = g_variant_new_variant (num);
-    elems.push_back (g_variant_new_dict_entry (key, var));
+    elems.append (g_variant_new_dict_entry (key, var));
 }
 
 void add_g_variant_arr_str (const char * key_str,
-                           const std::vector<const char *> & value_arr,
-                           std::vector<GVariant *> & elems)
+                           ArrayRef<String> value_arr,
+                           Index<GVariant *> & elems)
 {
-    if (value_arr.empty ())
+    if (value_arr.len == 0)
         return;
 
     GVariant * key = g_variant_new_string (key_str);
-    std::vector<GVariant *> g_variant_array;
+    Index<GVariant *> g_variant_arr;
     for (const auto & item : value_arr)
     {
         if (! item || strlen (item) == 0)
             continue;
-        g_variant_array.push_back (g_variant_new_string (item));
+        g_variant_arr.append (g_variant_new_string (item));
     }
     GVariant * array = g_variant_new_array (
-        G_VARIANT_TYPE_STRING, g_variant_array.data (), g_variant_array.size ());
+        G_VARIANT_TYPE_STRING, g_variant_arr.begin (), g_variant_arr.len ());
     GVariant * var = g_variant_new_variant (array);
-    elems.push_back (g_variant_new_dict_entry (key, var));
+    elems.append (g_variant_new_dict_entry (key, var));
 }
 
 static void update_metadata (void * data, GObject * object)
@@ -199,24 +199,24 @@ static void update_metadata (void * data, GObject * object)
         meta.image =
             meta.file ? aud_art_request (meta.file, AUD_ART_FILE) : AudArtPtr ();
 
-    std::vector<GVariant *> elems;
+    Index<GVariant *> elems;
 
     if (meta.title)
         add_g_variant_str ("xesam:title", meta.title, elems);
     if (meta.artist)
-        add_g_variant_arr_str ("xesam:artist", {meta.artist}, elems);
+        add_g_variant_arr_str ("xesam:artist", {{meta.artist}}, elems);
     if (meta.album)
         add_g_variant_str ("xesam:album", meta.album, elems);
     if (meta.album_artist)
-        add_g_variant_arr_str ("xesam:albumArtist", {meta.album_artist}, elems);
+        add_g_variant_arr_str ("xesam:albumArtist", {{meta.album_artist}}, elems);
     if (meta.comment)
-        add_g_variant_arr_str ("xesam:comment", {meta.comment}, elems);
+        add_g_variant_arr_str ("xesam:comment", {{meta.comment}}, elems);
     if (meta.genre)
-        add_g_variant_arr_str ("xesam:genre", {meta.genre}, elems);
+        add_g_variant_arr_str ("xesam:genre", {{meta.genre}}, elems);
     if (meta.rec_date)
         add_g_variant_str ("xesam:contentCreated", meta.rec_date, elems);
     if (meta.composer)
-        add_g_variant_arr_str ("xesam:composer", {meta.composer}, elems);
+        add_g_variant_arr_str ("xesam:composer", {{meta.composer}}, elems);
     if (meta.lyrics)
         add_g_variant_str ("xesam:asText", meta.lyrics, elems);
     if (meta.file)
@@ -235,10 +235,10 @@ static void update_metadata (void * data, GObject * object)
     GVariant * str =
         g_variant_new_object_path ("/org/mpris/MediaPlayer2/CurrentTrack");
     GVariant * var = g_variant_new_variant (str);
-    elems.push_back (g_variant_new_dict_entry (key, var));
+    elems.append (g_variant_new_dict_entry (key, var));
 
     GVariant * array =
-        g_variant_new_array (G_VARIANT_TYPE ("{sv}"), elems.data (), elems.size ());
+        g_variant_new_array (G_VARIANT_TYPE ("{sv}"), elems.begin (), elems.len ());
     g_object_set (object, "metadata", array, nullptr);
 
     last_meta = std::move (meta);
