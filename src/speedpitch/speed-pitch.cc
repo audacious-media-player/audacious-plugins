@@ -36,7 +36,7 @@
 #define OVERLAP  3
 
 #define CFGSECT "speed-pitch"
-#define MINSPEED 0.5
+#define MINSPEED 0.25
 #define MAXSPEED 2.0
 #define MINPITCH 0.5
 #define MAXPITCH 2.0
