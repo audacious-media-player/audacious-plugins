@@ -59,6 +59,10 @@ case "$os" in
     ;;
 
   macos*)
+    # Pre-installed Python conflicts with Homebrew Python
+    # https://github.com/actions/runner-images/issues/9966
+    brew install --overwrite python@3.12
+
     if [ "$build_system" = 'meson' ]; then
       brew install $macos_packages qt@6 meson
     else
