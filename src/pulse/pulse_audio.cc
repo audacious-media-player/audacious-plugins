@@ -45,7 +45,19 @@ public:
         & prefs
     };
 
-    constexpr PulseOutput () : OutputPlugin (info, 8) {}
+    /*
+     * Set a higher priority to that of PipeWire. Under a PulseAudio setup,
+     * the PipeWire output may be selected by default, which would promptly
+     * fail to work, as there is no PipeWire server/proxy running.
+     *
+     * On the other hand, under a PipeWire setup, PulseAudio output would
+     * still work normally, as pipewire-pulse acts as a PulseAudio server.
+     *
+     * Making PulseAudio the top preference allows for better compatibility
+     * for different setups, especially for distributions that have not (yet)
+     * switched to PipeWire as the default audio server.
+     */
+    constexpr PulseOutput () : OutputPlugin (info, 9) {}
 
     bool init ();
     void cleanup ();
