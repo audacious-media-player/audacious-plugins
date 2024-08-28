@@ -221,6 +221,7 @@ PlaylistTabBar::PlaylistTabBar(QWidget * parent) : QTabBar(parent)
 {
     setMovable(true);
     setDocumentMode(true);
+    setUsesScrollButtons(true);
     updateSettings();
 
     connect(this, &QTabBar::tabMoved, this, &PlaylistTabBar::tabMoved);
