@@ -30,6 +30,8 @@ option('amidiplug', type: 'boolean', value: true,
        description: 'Whether AMidiPlug plugin is enabled')
 option('cdaudio', type: 'boolean', value: true,
        description: 'Whether CD audio support is enabled')
+option('cdaudio-cddb', type: 'boolean', value: true,
+       description: 'Whether CDDB support for the Audio CD plugin is enabled')
 option('console', type: 'boolean', value: true,
        description: 'Whether Game Music Emu support is enabled')
 option('ffaudio', type: 'boolean', value: true,

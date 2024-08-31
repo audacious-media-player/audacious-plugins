@@ -20,6 +20,7 @@
 
 #include <errno.h>
 #include <pthread.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -39,7 +40,9 @@
 #include <cdio/cdda.h>
 #endif
 
+#ifdef HAVE_LIBCDDB
 #include <cddb/cddb.h>
+#endif
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
@@ -124,11 +127,14 @@ const char CDAudio::about[] =
 const char * const CDAudio::defaults[] = {
  "disc_speed", "2",
  "use_cdtext", "TRUE",
+#ifdef HAVE_LIBCDDB
  "use_cddb", "TRUE",
  "cddbhttp", "FALSE",
  "cddbserver", "gnudb.gnudb.org",
  "cddbport", "8880",
- nullptr};
+#endif
+ nullptr
+};
 
 const PreferencesWidget CDAudio::widgets[] = {
     WidgetLabel (N_("<b>Device</b>")),
@@ -140,6 +146,7 @@ const PreferencesWidget CDAudio::widgets[] = {
     WidgetLabel (N_("<b>Metadata</b>")),
     WidgetCheck (N_("Use CD-Text"),
         WidgetBool ("CDDA", "use_cdtext")),
+#ifdef HAVE_LIBCDDB
     WidgetCheck (N_("Use CDDB"),
         WidgetBool ("CDDA", "use_cddb")),
     WidgetCheck (N_("Use HTTP instead of CDDBP"),
@@ -157,6 +164,7 @@ const PreferencesWidget CDAudio::widgets[] = {
         WidgetInt ("CDDA", "cddbport"),
         {0, 65535, 1},
         WIDGET_CHILD)
+#endif
 };
 
 const PluginPreferences CDAudio::prefs = {{widgets}};
@@ -221,7 +229,9 @@ bool CDAudio::init ()
         return false;
     }
 
+#ifdef HAVE_LIBCDDB
     libcddb_init ();
+#endif
 
     return true;
 }
@@ -345,7 +355,9 @@ void CDAudio::cleanup ()
     reset_trackinfo ();
     purge_func.stop ();
 
+#ifdef HAVE_LIBCDDB
     libcddb_shutdown ();
+#endif
 
     pthread_mutex_unlock (& mutex);
 }
@@ -598,6 +610,7 @@ static bool scan_cd ()
 
     if (!cdtext_was_available)
     {
+#ifdef HAVE_LIBCDDB
         /* initialize de cddb subsystem */
         cddb_conn_t *pcddb_conn = nullptr;
         cddb_disc_t *pcddb_disc = nullptr;
@@ -735,6 +748,7 @@ static bool scan_cd ()
 
         if (pcddb_conn != nullptr)
             cddb_destroy (pcddb_conn);
+#endif /* HAVE_LIBCDDB */
     }
 
     return true;

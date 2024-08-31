@@ -223,6 +223,7 @@ ENABLE_PLUGIN_WITH_DEP(cdaudio,
 
 if test $have_cdaudio = yes ; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS cd-menu-items"
+    AC_DEFINE(HAVE_LIBCDDB, 1, [Define if libcddb is installed])
 fi
 
 ENABLE_PLUGIN_WITH_DEP(flac,
