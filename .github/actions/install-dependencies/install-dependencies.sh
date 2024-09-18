@@ -28,7 +28,7 @@ ubuntu_packages='gettext libadplug-dev libasound2-dev libavformat-dev
                  libsndio-dev libsoxr-dev libvorbis-dev libwavpack-dev libxml2-dev'
 
 ubuntu_qt5_packages='libqt5svg5-dev libqt5x11extras5-dev qtbase5-dev qtmultimedia5-dev'
-ubuntu_qt6_packages='qt6-base-dev qt6-svg-dev'
+ubuntu_qt6_packages='qt6-base-dev qt6-multimedia-dev qt6-svg-dev'
 
 macos_packages='adplug faad2 ffmpeg libbs2b libcue libmms libmodplug libnotify
                 libopenmpt libsamplerate libsoxr neon opusfile sdl2 wavpack'
