@@ -33,6 +33,7 @@
 #include <QAudioOutput>
 
 #define VOLUME_RANGE 40 /* decibels */
+#define NS_PER_SECOND 1000000000
 
 class QtAudio : public OutputPlugin
 {
@@ -64,6 +65,9 @@ public:
 
     void pause (bool pause);
     void flush ();
+
+private:
+    timespec calc_abs_time (const timespec & rel_time);
 };
 
 EXPORT QtAudio aud_plugin_instance;
@@ -210,7 +214,10 @@ void QtAudio::period_wait ()
     pthread_mutex_lock (& mutex);
 
     while (output_instance->bytesFree () < output_instance->periodSize ())
-        pthread_cond_timedwait (& cond, & mutex, & fifty_ms);
+    {
+        timespec ts = calc_abs_time (fifty_ms);
+        pthread_cond_timedwait (& cond, & mutex, & ts);
+    }
 
     pthread_mutex_unlock (& mutex);
 }
@@ -233,7 +240,10 @@ void QtAudio::drain ()
     pthread_mutex_lock (& mutex);
 
     while (output_instance->bytesFree () < output_instance->bufferSize ())
-        pthread_cond_timedwait (& cond, & mutex, & fifty_ms);
+    {
+        timespec ts = calc_abs_time (fifty_ms);
+        pthread_cond_timedwait (& cond, & mutex, & ts);
+    }
 
     pthread_mutex_unlock (& mutex);
 }
@@ -296,4 +306,21 @@ void QtAudio::flush ()
 
     pthread_cond_broadcast (& cond); /* wake up period wait */
     pthread_mutex_unlock (& mutex);
+}
+
+timespec QtAudio::calc_abs_time (const timespec & rel_time)
+{
+    timespec ts {};
+    clock_gettime (CLOCK_REALTIME, & ts);
+
+    ts.tv_sec += rel_time.tv_sec;
+    ts.tv_nsec += rel_time.tv_nsec;
+
+    if (ts.tv_nsec >= NS_PER_SECOND)
+    {
+        ts.tv_sec ++;
+        ts.tv_nsec -= NS_PER_SECOND;
+    }
+
+    return ts;
 }
