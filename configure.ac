@@ -117,12 +117,6 @@ check_allowed () {
             if test $plugin_allowed = no -a $2 = yes ; then
                 AC_MSG_ERROR([--enable-$1 cannot be used without --enable-qt])
             fi
-            if test $plugin_allowed = yes -a $1 = qtaudio ; then
-                plugin_allowed=$USE_QT5
-                if test $plugin_allowed = no -a $2 = yes ; then
-                    AC_MSG_ERROR([--enable-$1 cannot be used without --enable-qt5])
-                fi
-            fi
             if test $plugin_allowed = yes -a $1 = ampache ; then
                 plugin_allowed=$have_neon
                 if test $plugin_allowed = no -a $2 = yes ; then
@@ -887,7 +881,7 @@ fi
 if test "x$USE_QT" = "xyes" ; then
     echo "  Qt Support"
     echo "  ----------"
-    echo "  Qt Multimedia output (Qt 5 only):       $have_qtaudio"
+    echo "  Qt Multimedia output:                   $have_qtaudio"
     echo "  Qt Interface:                           yes"
     echo "  Winamp Classic Interface:               yes"
     echo "  Album Art:                              yes"
