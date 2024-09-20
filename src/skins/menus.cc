@@ -301,8 +301,8 @@ static void position_menu (GtkMenu * menu, int * x, int * y, gboolean * push_in,
 
     GtkRequisition request;
 #ifdef USE_GTK3
-    gtk_widget_get_preferred_width ((GtkWidget *) menu, NULL, & request.width);
-    gtk_widget_get_preferred_height ((GtkWidget *) menu, NULL, & request.height);
+    gtk_widget_get_preferred_width ((GtkWidget *) menu, nullptr, & request.width);
+    gtk_widget_get_preferred_height ((GtkWidget *) menu, nullptr, & request.height);
 #else
     gtk_widget_size_request ((GtkWidget *) menu, & request);
 #endif
