@@ -669,6 +669,9 @@ const char * const FFaudio::exts[] = {
     /* MPEG 2/4 AC3 */
     "ac3",
 
+    /* CRI ADX */
+    "adx",
+
     /* monkey's audio */
     "ape",
 
