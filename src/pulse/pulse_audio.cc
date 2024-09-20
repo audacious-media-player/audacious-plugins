@@ -440,7 +440,16 @@ static bool create_context (aud::mutex::holder & lock)
         return false;
     }
 
-    if (! (context = pa_context_new (pa_mainloop_get_api (mainloop), get_context_name ())))
+    pa_proplist * proplist = pa_proplist_new ();
+    pa_proplist_sets (proplist, PA_PROP_APPLICATION_ID, "audacious");
+    pa_proplist_sets (proplist, PA_PROP_APPLICATION_ICON_NAME, "audacious");
+
+    context = pa_context_new_with_proplist (pa_mainloop_get_api (mainloop),
+     get_context_name (), proplist);
+
+    pa_proplist_free (proplist);
+
+    if (! context)
     {
         AUDERR ("Failed to allocate context\n");
         return false;

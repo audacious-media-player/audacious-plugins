@@ -137,7 +137,7 @@ dnl $2 = long name of plugin (e.g. PulseAudio output plugin)
 dnl $3 = enabled by default (auto/yes/no)
 dnl $4 = type of plugin (e.g. OUTPUT)
 dnl $5 = CFLAGS/LIBS prefix (e.g. PULSE)
-dnl $6 = dependency (e.g. libpulse >= 0.9.5)
+dnl $6 = dependency (e.g. libpulse >= 0.9.11)
 
 AC_DEFUN([ENABLE_PLUGIN_WITH_DEP], [
     AC_ARG_ENABLE($1,
@@ -397,7 +397,7 @@ ENABLE_PLUGIN_WITH_DEP(pulse,
     auto,
     OUTPUT,
     PULSE,
-    libpulse >= 0.9.5)
+    libpulse >= 0.9.11)
 
 test_sndio () {
     PKG_CHECK_MODULES(SNDIO, sndio >= 1.9, [
