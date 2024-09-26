@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+# Cătălin, 2024
 # 3d5ab56b1b83fefceeab671c39a98a6d_999ae54, 2014
 # Cristi <majeru@atheme.org>, 2007
 # Emil Ungurean <emil.ungurean@gmail.com>, 2014
@@ -15,9 +16,9 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2024-06-12 21:22+0200\n"
+"POT-Creation-Date: 2024-09-26 21:54+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
-"Last-Translator: Mihai Michael, 2022\n"
+"Last-Translator: Cătălin, 2024\n"
 "Language-Team: Romanian (http://app.transifex.com/audacious/audacious/"
 "language/ro/)\n"
 "Language: ro\n"
@@ -29,7 +30,7 @@ msgstr ""
 
 #: src/aac/aac.cc:19
 msgid "AAC (Raw) Decoder"
-msgstr "AAC (Raw) Decodor"
+msgstr "Decodor AAC (Raw)"
 
 #: src/adplug/adplug-xmms.cc:70
 msgid "AdPlug (AdLib Player)"
@@ -66,9 +67,9 @@ msgstr "Rată de eșantionare:"
 msgid "Hz"
 msgstr "Hz"
 
-#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:48
+#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:55
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:85
-#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:280
+#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:284
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Diverse</b>"
 
@@ -293,7 +294,7 @@ msgstr "* nici un comentariu disponibil în acest fişier MIDI *"
 
 #: src/amidiplug/i_fileinfo.cc:311
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* versuri ne-disponibile în acest fişier MIDI *"
+msgstr "* versuri indisponibile în acest fişier MIDI *"
 
 #: src/amidiplug/i_fileinfo.cc:321 src/ladspa/plugin.cc:418
 #: src/ui-common/dialogs-qt.cc:32
@@ -573,7 +574,7 @@ msgstr "dB"
 
 #: src/background_music/background_music.cc:29
 msgid "Maximum amplification:"
-msgstr ""
+msgstr "Amplificare maximă:"
 
 #: src/background_music/background_music.cc:34 src/mpg123/mpg123.cc:81
 msgid "<b>Advanced</b>"
@@ -585,7 +586,7 @@ msgstr ""
 
 #: src/background_music/background_music.cc:39
 msgid "<b>Hint</b>"
-msgstr ""
+msgstr "<b>Indiciu</b>"
 
 #: src/background_music/background_music.cc:41
 msgid ""
@@ -611,7 +612,7 @@ msgstr ""
 
 #: src/background_music/background_music.cc:61
 msgid "Background Music"
-msgstr ""
+msgstr "Muzică de Fundal"
 
 #: src/bitcrusher/bitcrusher.cc:33
 msgid "<b>Bitcrusher</b>"
@@ -665,11 +666,11 @@ msgstr "Frecvența de tăiere:"
 msgid "Spectrum Analyzer"
 msgstr "Analizor de spectru"
 
-#: src/cdaudio/cdaudio-ng.cc:71
+#: src/cdaudio/cdaudio-ng.cc:74
 msgid "Audio CD Plugin"
 msgstr "Plugin pentru CD audio"
 
-#: src/cdaudio/cdaudio-ng.cc:118
+#: src/cdaudio/cdaudio-ng.cc:121
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -690,117 +691,117 @@ msgstr ""
 "\n"
 "Acesta a fost un proiect Google Summer of Code din 2007."
 
-#: src/cdaudio/cdaudio-ng.cc:134
+#: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Device</b>"
 msgstr "<b>Dispozitiv</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:135
+#: src/cdaudio/cdaudio-ng.cc:141
 msgid "Read speed:"
 msgstr "Viteză de citire:"
 
-#: src/cdaudio/cdaudio-ng.cc:138
+#: src/cdaudio/cdaudio-ng.cc:144
 msgid "Override device:"
 msgstr "Suprascrie dispozitivul:"
 
-#: src/cdaudio/cdaudio-ng.cc:140
+#: src/cdaudio/cdaudio-ng.cc:146
 msgid "<b>Metadata</b>"
 msgstr "<b>Metadata</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:141
+#: src/cdaudio/cdaudio-ng.cc:147
 msgid "Use CD-Text"
 msgstr "Folosește textul din CD"
 
-#: src/cdaudio/cdaudio-ng.cc:143
+#: src/cdaudio/cdaudio-ng.cc:150
 msgid "Use CDDB"
 msgstr "Folosește CDDB"
 
-#: src/cdaudio/cdaudio-ng.cc:145
+#: src/cdaudio/cdaudio-ng.cc:152
 msgid "Use HTTP instead of CDDBP"
 msgstr "Folosește HTTP în locul CDDBP"
 
-#: src/cdaudio/cdaudio-ng.cc:148
+#: src/cdaudio/cdaudio-ng.cc:155
 msgid "Server:"
 msgstr "Server:"
 
-#: src/cdaudio/cdaudio-ng.cc:152
+#: src/cdaudio/cdaudio-ng.cc:159
 msgid "Path:"
 msgstr "Cale:"
 
-#: src/cdaudio/cdaudio-ng.cc:156
+#: src/cdaudio/cdaudio-ng.cc:163
 msgid "Port:"
 msgstr "Port:"
 
-#: src/cdaudio/cdaudio-ng.cc:220
+#: src/cdaudio/cdaudio-ng.cc:228
 msgid "Failed to initialize cdio subsystem."
 msgstr "Nu s-a putut inițializa subsistemul cdio."
 
-#: src/cdaudio/cdaudio-ng.cc:250
+#: src/cdaudio/cdaudio-ng.cc:260
 #, c-format
 msgid "Invalid URI %s."
 msgstr "URI invalid %s."
 
-#: src/cdaudio/cdaudio-ng.cc:252
+#: src/cdaudio/cdaudio-ng.cc:262
 #, c-format
 msgid "Track %d not found."
 msgstr "Piesa %d nu a fost găsită."
 
-#: src/cdaudio/cdaudio-ng.cc:254
+#: src/cdaudio/cdaudio-ng.cc:264
 #, c-format
 msgid "Track %d is a data track."
 msgstr "Piesa %d este o piesă cu date."
 
-#: src/cdaudio/cdaudio-ng.cc:329
+#: src/cdaudio/cdaudio-ng.cc:339
 msgid "Error reading audio CD."
 msgstr "Eroare citire CD audio."
 
-#: src/cdaudio/cdaudio-ng.cc:398
+#: src/cdaudio/cdaudio-ng.cc:410
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: src/cdaudio/cdaudio-ng.cc:434 src/cdaudio/cdaudio-ng.cc:443
+#: src/cdaudio/cdaudio-ng.cc:446 src/cdaudio/cdaudio-ng.cc:455
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Nu s-a putut deschide unitatea CD %s."
 
-#: src/cdaudio/cdaudio-ng.cc:446
+#: src/cdaudio/cdaudio-ng.cc:458
 msgid "No audio capable CD drive found."
 msgstr "Nu a fost găsită unitatea CD cu capabilități audio."
 
-#: src/cdaudio/cdaudio-ng.cc:469
+#: src/cdaudio/cdaudio-ng.cc:481
 msgid "Drive is empty."
 msgstr "Unitatea este goală."
 
-#: src/cdaudio/cdaudio-ng.cc:471
+#: src/cdaudio/cdaudio-ng.cc:483
 msgid "Unsupported disk type."
 msgstr "Tipul de disc nu este suportat."
 
-#: src/cdaudio/cdaudio-ng.cc:495
+#: src/cdaudio/cdaudio-ng.cc:507
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Nu s-a putut finaliza inițializarea unitatea CD deschisă."
 
-#: src/cdaudio/cdaudio-ng.cc:508
+#: src/cdaudio/cdaudio-ng.cc:520
 msgid "Failed to retrieve first/last track number."
 msgstr "Nu s-au putut obține numerele de ordine aferente pieselor. "
 
-#: src/cdaudio/cdaudio-ng.cc:529
+#: src/cdaudio/cdaudio-ng.cc:541
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "Nu se poate citi începutul și/sau sfârșitul LSN pentru piesa %d."
 
-#: src/cdaudio/cdaudio-ng.cc:611
+#: src/cdaudio/cdaudio-ng.cc:624
 msgid "Failed to create the CDDB connection."
 msgstr "Nu s-a putut creea conexiunea CDDB."
 
-#: src/cdaudio/cdaudio-ng.cc:677
+#: src/cdaudio/cdaudio-ng.cc:690
 msgid "Failed to query the CDDB server"
 msgstr "Nu s-a putut interoga serverul CDDB"
 
-#: src/cdaudio/cdaudio-ng.cc:679
+#: src/cdaudio/cdaudio-ng.cc:692
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Nu s-a putut interoga serverul CDDB: %s"
 
-#: src/cdaudio/cdaudio-ng.cc:703
+#: src/cdaudio/cdaudio-ng.cc:716
 #, c-format
 msgid "Failed to read the CDDB info: %s"
 msgstr "Nu s-au putut citi informațiile CDDB: %s"
@@ -1102,9 +1103,9 @@ msgstr "Ecou"
 
 #: src/ffaudio/ffaudio-core.cc:50
 msgid "FFmpeg Plugin"
-msgstr "FFmpeg Plugin"
+msgstr "Plugin FFmpeg"
 
-#: src/ffaudio/ffaudio-core.cc:651
+#: src/ffaudio/ffaudio-core.cc:649
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1409,7 +1410,7 @@ msgid "Quality (0-1):"
 msgstr "Calitate (0-1):"
 
 #: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:307
-#: src/skins/skins_cfg.cc:285
+#: src/skins/skins_cfg.cc:289
 msgid "General"
 msgstr "General"
 
@@ -1514,7 +1515,7 @@ msgstr "Artist Album"
 #: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
 #: src/qtui/playlist_model.cc:34
 msgid "Track"
-msgstr "Pista"
+msgstr "Pistă"
 
 #: src/gtkui/columns.cc:43 src/moonstone/playlist_model.cc:40
 #: src/qtui/playlist_model.cc:34 src/streamtuner/icecast-model.cc:123
@@ -1536,7 +1537,7 @@ msgstr "Lungime"
 #: src/gtkui/columns.cc:46 src/moonstone/playlist_model.cc:41
 #: src/qtui/playlist_model.cc:35
 msgid "File Path"
-msgstr ""
+msgstr "Calea către fișier"
 
 #: src/gtkui/columns.cc:47 src/moonstone/playlist_model.cc:42
 #: src/qtui/playlist_model.cc:35
@@ -1570,7 +1571,7 @@ msgstr "Numărul de catalog"
 #: src/gtkui/columns.cc:53 src/moonstone/playlist_model.cc:43
 #: src/qtui/playlist_model.cc:37
 msgid "Disc"
-msgstr ""
+msgstr "Disc"
 
 #: src/gtkui/columns.cc:325
 msgid "Available columns"
@@ -1628,7 +1629,7 @@ msgstr "Adaugă URL ..."
 
 #: src/gtkui/menus.cc:84 src/qtui/menus.cc:120
 msgid "Search _Library"
-msgstr "Caută_în_librarie"
+msgstr "Caută_în_bibliotecă"
 
 #: src/gtkui/menus.cc:86 src/qtui/menus.cc:123
 msgid "A_bout ..."
@@ -1645,7 +1646,7 @@ msgstr "_Ieșire"
 
 #: src/gtkui/menus.cc:92 src/gtkui/menus.cc:226
 #: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
-#: src/qtui/playlist_tabs.cc:330 src/search-tool-qt/search-tool-qt.cc:499
+#: src/qtui/playlist_tabs.cc:331 src/search-tool-qt/search-tool-qt.cc:499
 #: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:109
 #: src/statusicon/statusicon.cc:280
 msgid "_Play"
@@ -1792,7 +1793,7 @@ msgstr "După comentariu"
 #: src/gtkui/menus.cc:133 src/gtkui/menus.cc:151 src/qtui/menus.cc:190
 #: src/qtui/menus.cc:208
 msgid "By D_isc Number"
-msgstr ""
+msgstr "După numărul discului"
 
 #: src/gtkui/menus.cc:135 src/gtkui/menus.cc:153 src/qtui/menus.cc:192
 #: src/qtui/menus.cc:210
@@ -1839,7 +1840,7 @@ msgstr "Redenumește"
 
 #: src/gtkui/menus.cc:168 src/gtkui/menus.cc:228
 #: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:231
-#: src/qtui/playlist_tabs.cc:335
+#: src/qtui/playlist_tabs.cc:336
 msgid "Remo_ve"
 msgstr "Elimină"
 
@@ -1970,43 +1971,55 @@ msgid "Select _All"
 msgstr "Selectează tot"
 
 #: src/gtkui/menus.cc:227 src/moonstone/playlist_tabs.cc:309
-#: src/qtui/playlist_tabs.cc:333
+#: src/qtui/playlist_tabs.cc:334
 msgid "_Rename ..."
 msgstr "Redenumește"
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:64
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:59
+msgid "Always"
+msgstr ""
+
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:60
+msgid "Auto-hide"
+msgstr ""
+
+#: src/gtkui/settings.cc:37 src/qtui/settings.cc:61
+msgid "Never"
+msgstr ""
+
+#: src/gtkui/settings.cc:41 src/qtui/settings.cc:64
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Taburile playlistului</b>"
 
-#: src/gtkui/settings.cc:36
-msgid "Always show tabs"
-msgstr "Arată întodeauna taburi"
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:65
+msgid "Show playlist tabs:"
+msgstr ""
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:69
+#: src/gtkui/settings.cc:45 src/qtui/settings.cc:69
 msgid "Show entry counts"
 msgstr "Arată numărul intrăriilor"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:72
+#: src/gtkui/settings.cc:47 src/qtui/settings.cc:72
 msgid "Show close buttons"
 msgstr "Arată butonul de închidere"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:75
+#: src/gtkui/settings.cc:49 src/qtui/settings.cc:75
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Coloanele Playlistului</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:77
+#: src/gtkui/settings.cc:51 src/qtui/settings.cc:77
 msgid "Show column headers"
 msgstr "Arată antetul coloanei"
 
-#: src/gtkui/settings.cc:46 src/qtui/settings.cc:82
+#: src/gtkui/settings.cc:53 src/qtui/settings.cc:82
 msgid "Make column headers clickable for sorting"
 msgstr ""
 
-#: src/gtkui/settings.cc:49
+#: src/gtkui/settings.cc:56
 msgid "Use symbolic icons in toolbar"
 msgstr ""
 
-#: src/gtkui/settings.cc:51 src/qtui/settings.cc:86
+#: src/gtkui/settings.cc:58 src/qtui/settings.cc:86
 msgid "Scroll on song change"
 msgstr "Derulează la schimbarea melodiei"
 
@@ -2048,7 +2061,7 @@ msgstr "Pauză"
 #: src/gtkui/ui_gtk.cc:868 src/moonstone/main_window.cc:57
 #: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
 msgid "Search Library"
-msgstr "Caută în librărie"
+msgstr "Caută în bibliotecă"
 
 #: src/gtkui/ui_gtk.cc:875 src/moonstone/main_window.cc:60
 #: src/qtui/main_window.cc:147
@@ -2237,11 +2250,11 @@ msgstr "<b>Tasta asignată:</b>"
 msgid "_Add"
 msgstr "_Adaugă"
 
-#: src/hotkey/plugin.cc:61 src/qthotkey/plugin.cc:80
+#: src/hotkey/plugin.cc:59 src/qthotkey/plugin.cc:78
 msgid "Global Hotkeys"
 msgstr "Taste rapide globale"
 
-#: src/hotkey/plugin.cc:76
+#: src/hotkey/plugin.cc:74
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -2269,7 +2282,7 @@ msgstr ""
 
 #: src/jack/jack-ng.cc:54
 msgid "JACK Output"
-msgstr "Portul Jack de ieșire"
+msgstr "Portul JACK de ieșire"
 
 #: src/jack/jack-ng.cc:126
 msgid "Client name:"
@@ -2368,7 +2381,7 @@ msgstr "Activează"
 
 #: src/ladspa/plugin.cc:527
 msgid "Enabled plugins:"
-msgstr "Activează plugin-urile:"
+msgstr "Activează pluginurile:"
 
 #: src/ladspa/plugin.cc:543
 msgid "Settings"
@@ -2445,7 +2458,7 @@ msgstr "Nicăieri"
 #: src/lyrics-common/preferences.h:49
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
 msgstr ""
-"<small>NUmele artistului este trunchiat la început, Titlu -- la final</small>"
+"<small>Numele artistului este trunchiat la început, Titlu -- la final</small>"
 
 #: src/lyrics-common/preferences.h:50
 msgid "Chars to truncate on:"
@@ -2473,7 +2486,7 @@ msgstr ""
 
 #: src/lyrics-common/preferences.h:66
 msgid "<b>Sources</b>"
-msgstr ""
+msgstr "<b>Surse</b>"
 
 #: src/lyrics-common/preferences.h:67
 msgid "Use embedded lyrics (from Lyrics tag)"
@@ -2481,7 +2494,7 @@ msgstr ""
 
 #: src/lyrics-common/preferences.h:69
 msgid "Fetch lyrics from internet:"
-msgstr ""
+msgstr "Preia versuri de pe internet:"
 
 #: src/lyrics-common/preferences.h:72
 msgid "Store fetched lyrics in local cache"
@@ -2509,11 +2522,11 @@ msgstr "Titlul și/sau artistul lipsesc."
 
 #: src/lyrics-gtk/lyrics-gtk.cc:37 src/lyrics-qt/lyrics-qt.cc:50
 msgid "Lyrics"
-msgstr "Versui"
+msgstr "Versuri"
 
 #: src/lyrics-gtk/lyrics-gtk.cc:189 src/lyrics-qt/lyrics-qt.cc:171
 msgid "Edit Lyrics ..."
-msgstr ""
+msgstr "Modifică Versuri ..."
 
 #: src/lyrics-gtk/lyrics-gtk.cc:195 src/lyrics-qt/lyrics-qt.cc:178
 msgid "Save Locally"
@@ -2716,7 +2729,7 @@ msgstr ""
 msgid "Surround"
 msgstr "Surround"
 
-#: src/mpris2/plugin.cc:38
+#: src/mpris2/plugin.cc:40
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 Server"
 
@@ -2750,7 +2763,7 @@ msgstr ""
 
 #: src/notify/notify.cc:39
 msgid "Desktop Notifications"
-msgstr ""
+msgstr "Notificări pe desktop"
 
 #: src/notify/notify.cc:57
 msgid ""
@@ -2774,15 +2787,15 @@ msgstr ""
 
 #: src/notify/notify.cc:104
 msgid "Show playback controls"
-msgstr ""
+msgstr "Arată controalele de redare"
 
 #: src/notify/notify.cc:106
 msgid "Always show notification"
-msgstr ""
+msgstr "Afișează întotdeauna notificarea"
 
 #: src/notify/notify.cc:108
 msgid "Include album name in notification"
-msgstr ""
+msgstr "Include numele albumului în notificare"
 
 #: src/notify/notify.cc:110
 msgid "Custom notification duration:"
@@ -2908,19 +2921,19 @@ msgstr "_Elimină"
 #: src/playlist-manager/playlist-manager.cc:222
 #: src/playlist-manager-qt/playlist-manager-qt.cc:351
 msgid "Ren_ame"
-msgstr ""
+msgstr "Reden_umește"
 
 #: src/pls/pls.cc:35
 msgid "PLS Playlists"
-msgstr ""
+msgstr "Playlist-uri PLS"
 
 #: src/psf/plugin.cc:53
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr ""
+msgstr "Decodor OpenPSF PSF1/PSF2"
 
 #: src/psf/plugin.cc:270
 msgid "<b>OpenPSF Configuration</b>"
-msgstr ""
+msgstr "<b>Configurație OpenPSF</b>"
 
 #: src/psf/plugin.cc:271 src/xsf/plugin.cc:444
 msgid "Ignore length from file"
@@ -2930,15 +2943,15 @@ msgstr ""
 msgid "PulseAudio Output"
 msgstr ""
 
-#: src/pulse/pulse_audio.cc:72
+#: src/pulse/pulse_audio.cc:84
 msgid "Context name:"
 msgstr ""
 
-#: src/pulse/pulse_audio.cc:74
+#: src/pulse/pulse_audio.cc:86
 msgid "Stream name:"
-msgstr ""
+msgstr "Nume flux:"
 
-#: src/pulse/pulse_audio.cc:575
+#: src/pulse/pulse_audio.cc:596
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -2957,11 +2970,11 @@ msgid ""
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
-#: src/qtaudio/qtaudio.cc:44
+#: src/qtaudio/qtaudio.cc:53
 msgid "QtMultimedia Output"
 msgstr ""
 
-#: src/qtaudio/qtaudio.cc:72
+#: src/qtaudio/qtaudio.cc:84
 msgid ""
 "QtMultimedia Audio Output Plugin for Audacious\n"
 "Copyright 2014 William Pitcock\n"
@@ -2987,7 +3000,7 @@ msgstr ""
 msgid "Press a key combination inside a text field."
 msgstr ""
 
-#: src/qthotkey/plugin.cc:107
+#: src/qthotkey/plugin.cc:105
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3047,22 +3060,6 @@ msgstr ""
 msgid "Search playlist"
 msgstr ""
 
-#: src/qtui/settings.cc:59
-msgid "Always"
-msgstr ""
-
-#: src/qtui/settings.cc:60
-msgid "Auto-hide"
-msgstr ""
-
-#: src/qtui/settings.cc:61
-msgid "Never"
-msgstr ""
-
-#: src/qtui/settings.cc:65
-msgid "Show playlist tabs:"
-msgstr ""
-
 #: src/qtui/settings.cc:79
 msgid "Use bold font for column headers"
 msgstr ""
@@ -3119,43 +3116,43 @@ msgstr ""
 
 #: src/resample/resample.cc:205
 msgid "8 kHz:"
-msgstr ""
+msgstr "8 kHz:"
 
 #: src/resample/resample.cc:209
 msgid "16 kHz:"
-msgstr ""
+msgstr "16 kHz:"
 
 #: src/resample/resample.cc:213
 msgid "22.05 kHz:"
-msgstr ""
+msgstr "22.05 kHz:"
 
 #: src/resample/resample.cc:217
 msgid "32.0 kHz:"
-msgstr ""
+msgstr "32.0 kHz:"
 
 #: src/resample/resample.cc:221
 msgid "44.1 kHz:"
-msgstr ""
+msgstr "44.1 kHz:"
 
 #: src/resample/resample.cc:225
 msgid "48 kHz:"
-msgstr ""
+msgstr "48 kHz:"
 
 #: src/resample/resample.cc:229
 msgid "88.2 kHz:"
-msgstr ""
+msgstr "88.2 kHz:"
 
 #: src/resample/resample.cc:233
 msgid "96 kHz:"
-msgstr ""
+msgstr "96 kHz:"
 
 #: src/resample/resample.cc:237
 msgid "176.4 kHz:"
-msgstr ""
+msgstr "176.4 kHz:"
 
 #: src/resample/resample.cc:241
 msgid "192 kHz:"
-msgstr ""
+msgstr "192 kHz:"
 
 #: src/scrobbler2/config_window.cc:29
 msgid "Checking Last.fm access ..."
@@ -3227,7 +3224,7 @@ msgstr ""
 #: src/search-tool/library.cc:35 src/search-tool/library.cc:46
 #: src/search-tool-qt/library.cc:35 src/search-tool-qt/library.cc:46
 msgid "Library"
-msgstr ""
+msgstr "Bibliotecă"
 
 #: src/search-tool-qt/search-model.cc:44 src/search-tool/search-tool.cc:287
 #, c-format
@@ -3235,11 +3232,11 @@ msgid "%d song"
 msgid_plural "%d songs"
 msgstr[0] "%dcântec"
 msgstr[1] "%dcântece"
-msgstr[2] "%dcântece"
+msgstr[2] "%d cântece"
 
 #: src/search-tool-qt/search-model.cc:53 src/search-tool/search-tool.cc:294
 msgid "of this genre"
-msgstr ""
+msgstr "din acest gen"
 
 #: src/search-tool-qt/search-model.h:47 src/search-tool/search-model.h:45
 msgid "on"
@@ -3255,21 +3252,23 @@ msgstr ""
 
 #: src/search-tool-qt/search-tool-qt.cc:168 src/search-tool/search-tool.cc:77
 msgid "Rescan library at startup"
-msgstr ""
+msgstr "Rescanează biblioteca la pornire"
 
 #: src/search-tool-qt/search-tool-qt.cc:170
 msgid "Monitor library for changes"
-msgstr ""
+msgstr "Monitorizează biblioteca pentru schimbări"
 
 #: src/search-tool-qt/search-tool-qt.cc:193 src/search-tool/search-tool.cc:450
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
+"Pentru a importa biblioteca ta muzicală în Audacious, alege un director și "
+"apoi apasă iconița de „reîmprospătare”"
 
 #: src/search-tool-qt/search-tool-qt.cc:195 src/search-tool/search-tool.cc:459
 msgid "Please wait ..."
-msgstr ""
+msgstr "Așteptați ..."
 
 #: src/search-tool-qt/search-tool-qt.cc:197 src/search-tool/search-tool.cc:487
 msgid "Choose Folder"
@@ -3443,7 +3442,7 @@ msgstr "16 kHz"
 
 #: src/skins/equalizer.cc:270 src/skins-qt/equalizer.cc:270
 msgid "Audacious Equalizer"
-msgstr ""
+msgstr "Egalizator Audacious"
 
 #: src/skins/main.cc:459 src/skins-qt/main.cc:442
 msgid "Recording on"
@@ -3516,11 +3515,11 @@ msgstr ""
 
 #: src/skins/menus.cc:84 src/skins-qt/menus.cc:74
 msgid "Open Files ..."
-msgstr ""
+msgstr "Deschide Fișiere ..."
 
 #: src/skins/menus.cc:85 src/skins-qt/menus.cc:76
 msgid "Open URL ..."
-msgstr ""
+msgstr "Deschide URL ..."
 
 #: src/skins/menus.cc:89 src/skins-qt/menus.cc:80
 msgid "Playlist"
@@ -3542,7 +3541,7 @@ msgstr "Servicii"
 
 #: src/skins/menus.cc:95 src/skins-qt/menus.cc:86
 msgid "About ..."
-msgstr ""
+msgstr "Despre ..."
 
 #: src/skins/menus.cc:96 src/skins-qt/menus.cc:87
 msgid "Settings ..."
@@ -3878,171 +3877,171 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:180
+#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:182
 msgid "Player:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:182
+#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:184
 msgid "Select main player window font:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:183
+#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:185
 msgid "Playlist:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:185
+#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:187
 msgid "Select playlist font:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:189
+#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:191
 msgid "<b>Skin</b>"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:211
+#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:193
 msgid "Display active titlebar when any window is focused"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:191
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:195
 msgid "<b>Fonts</b>"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:193
+#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
 msgid "Use bitmap fonts (supports ASCII only)"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:195
+#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:199
 msgid "Scroll song title"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:197
+#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:201
 msgid "Scroll song title in both directions"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:202
+#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:206
 msgid "Analyzer"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:203
+#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:207
 msgid "Scope"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:204
+#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:208
 msgid "Voiceprint / VU meter"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:205
+#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:209
 msgid "Off"
 msgstr ""
 
 #: src/skins-qt/skins_cfg.cc:231 src/skins-qt/skins_cfg.cc:256
-#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:209
-#: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
+#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:213
+#: src/skins/skins_cfg.cc:238 src/skins/skins_cfg.cc:244
 msgid "Normal"
 msgstr "Normal"
 
 #: src/skins-qt/skins_cfg.cc:232 src/skins-qt/skins_cfg.cc:257
-#: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
+#: src/skins/skins_cfg.cc:214 src/skins/skins_cfg.cc:239
 msgid "Fire"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:211
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:215
 msgid "Vertical lines"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:215
+#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:219
 msgid "Lines"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:216
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:220
 msgid "Bars"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:220
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
 msgid "Slowest"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:221
+#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:225
 msgid "Slow"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:222
+#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:226
 #: src/soxr/sox-resampler.cc:180
 msgid "Medium"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:223
+#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:227
 msgid "Fast"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:224
+#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:228
 msgid "Fastest"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:228
+#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:232
 msgid "Dots"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:229
+#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:233
 msgid "Line"
 msgstr "Linie"
 
-#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:230
+#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:234
 msgid "Solid"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:236
+#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:240
 msgid "Ice"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:241
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:245
 msgid "Smooth"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:245
+#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:249
 msgid "Coloring:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:248
+#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:252
 msgid "Style:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:251
+#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:255
 msgid "Falloff:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:254
+#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:258
 msgid "Peak falloff:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:260
+#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:264
 msgid "Scope Style:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:263
+#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:267
 msgid "Voiceprint Coloring:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:266
+#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:270
 msgid "VU Meter Style:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:272
+#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:276
 msgid "<b>Type</b>"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:273
+#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
 msgid "Visualization type:"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:276
+#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
 msgid "<b>Analyzer</b>"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:277
+#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:281
 msgid "Show peaks"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:286
+#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:290
 msgid "Visualization"
 msgstr "Vizualizare"
 
@@ -4056,7 +4055,7 @@ msgstr ""
 
 #: src/sndfile/plugin.cc:38
 msgid "Sndfile Plugin"
-msgstr ""
+msgstr "Plugin Sndfile"
 
 #: src/sndfile/plugin.cc:372
 msgid ""
@@ -4354,7 +4353,7 @@ msgstr ""
 
 #: src/streamtuner/shoutcast-model.cc:189
 msgid "Alternative"
-msgstr ""
+msgstr "Alternative"
 
 #: src/streamtuner/shoutcast-model.cc:190
 msgid "Blues"
@@ -4370,7 +4369,7 @@ msgstr "Country"
 
 #: src/streamtuner/shoutcast-model.cc:193
 msgid "Decades"
-msgstr ""
+msgstr "Decenii"
 
 #: src/streamtuner/shoutcast-model.cc:194
 msgid "Easy Listening"
@@ -4398,7 +4397,7 @@ msgstr "Jazz"
 
 #: src/streamtuner/shoutcast-model.cc:200
 msgid "Latin"
-msgstr ""
+msgstr "Latino"
 
 #: src/streamtuner/shoutcast-model.cc:201
 msgid "Metal"

@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2024-06-12 21:22+0200\n"
+"POT-Creation-Date: 2024-09-26 21:54+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
 "Last-Translator: AO <ao@localizationlab.org>, 2019-2024\n"
 "Language-Team: French (http://app.transifex.com/audacious/audacious/language/"
@@ -69,9 +69,9 @@ msgstr "Fréquence d’échantillonnage :"
 msgid "Hz"
 msgstr "Hz"
 
-#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:48
+#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:55
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:85
-#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:280
+#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:284
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Divers</b>"
 
@@ -685,11 +685,11 @@ msgstr "Fréquence de coupure :"
 msgid "Spectrum Analyzer"
 msgstr "Analyseur de spectre"
 
-#: src/cdaudio/cdaudio-ng.cc:71
+#: src/cdaudio/cdaudio-ng.cc:74
 msgid "Audio CD Plugin"
 msgstr "Greffon CD audio"
 
-#: src/cdaudio/cdaudio-ng.cc:118
+#: src/cdaudio/cdaudio-ng.cc:121
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -711,119 +711,119 @@ msgstr ""
 "\n"
 "C’était un projet Google « Summer of Code » de 2007."
 
-#: src/cdaudio/cdaudio-ng.cc:134
+#: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Device</b>"
 msgstr "<b>Lecteur</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:135
+#: src/cdaudio/cdaudio-ng.cc:141
 msgid "Read speed:"
 msgstr "Vitesse de lecture :"
 
-#: src/cdaudio/cdaudio-ng.cc:138
+#: src/cdaudio/cdaudio-ng.cc:144
 msgid "Override device:"
 msgstr "Forcer le lecteur :"
 
-#: src/cdaudio/cdaudio-ng.cc:140
+#: src/cdaudio/cdaudio-ng.cc:146
 msgid "<b>Metadata</b>"
 msgstr "<b>Métadonnées</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:141
+#: src/cdaudio/cdaudio-ng.cc:147
 msgid "Use CD-Text"
 msgstr "Utiliser CD-Text"
 
-#: src/cdaudio/cdaudio-ng.cc:143
+#: src/cdaudio/cdaudio-ng.cc:150
 msgid "Use CDDB"
 msgstr "Utiliser CDDB"
 
-#: src/cdaudio/cdaudio-ng.cc:145
+#: src/cdaudio/cdaudio-ng.cc:152
 msgid "Use HTTP instead of CDDBP"
 msgstr "Utiliser HTTP à la place de CDDBP"
 
-#: src/cdaudio/cdaudio-ng.cc:148
+#: src/cdaudio/cdaudio-ng.cc:155
 msgid "Server:"
 msgstr "Serveur :"
 
-#: src/cdaudio/cdaudio-ng.cc:152
+#: src/cdaudio/cdaudio-ng.cc:159
 msgid "Path:"
 msgstr "Chemin :"
 
-#: src/cdaudio/cdaudio-ng.cc:156
+#: src/cdaudio/cdaudio-ng.cc:163
 msgid "Port:"
 msgstr "Port :"
 
-#: src/cdaudio/cdaudio-ng.cc:220
+#: src/cdaudio/cdaudio-ng.cc:228
 msgid "Failed to initialize cdio subsystem."
 msgstr "Échec d’initialisation du sous-système cdio."
 
-#: src/cdaudio/cdaudio-ng.cc:250
+#: src/cdaudio/cdaudio-ng.cc:260
 #, c-format
 msgid "Invalid URI %s."
 msgstr "URI %s invalide."
 
-#: src/cdaudio/cdaudio-ng.cc:252
+#: src/cdaudio/cdaudio-ng.cc:262
 #, c-format
 msgid "Track %d not found."
 msgstr "La plage %d est introuvable."
 
-#: src/cdaudio/cdaudio-ng.cc:254
+#: src/cdaudio/cdaudio-ng.cc:264
 #, c-format
 msgid "Track %d is a data track."
 msgstr "La plage %d en est une de données."
 
-#: src/cdaudio/cdaudio-ng.cc:329
+#: src/cdaudio/cdaudio-ng.cc:339
 msgid "Error reading audio CD."
 msgstr "Erreur de lecture du CD audio."
 
-#: src/cdaudio/cdaudio-ng.cc:398
+#: src/cdaudio/cdaudio-ng.cc:410
 msgid "Audio CD"
 msgstr "CD audio"
 
-#: src/cdaudio/cdaudio-ng.cc:434 src/cdaudio/cdaudio-ng.cc:443
+#: src/cdaudio/cdaudio-ng.cc:446 src/cdaudio/cdaudio-ng.cc:455
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Échec d’ouverture du lecteur de CD %s."
 
-#: src/cdaudio/cdaudio-ng.cc:446
+#: src/cdaudio/cdaudio-ng.cc:458
 msgid "No audio capable CD drive found."
 msgstr "Aucun lecteur de CD audio n’a été trouvé."
 
-#: src/cdaudio/cdaudio-ng.cc:469
+#: src/cdaudio/cdaudio-ng.cc:481
 msgid "Drive is empty."
 msgstr "Le lecteur est vide."
 
-#: src/cdaudio/cdaudio-ng.cc:471
+#: src/cdaudio/cdaudio-ng.cc:483
 msgid "Unsupported disk type."
 msgstr "Le type de disque n’est pas pris en charge."
 
-#: src/cdaudio/cdaudio-ng.cc:495
+#: src/cdaudio/cdaudio-ng.cc:507
 msgid "Failed to finish initializing opened CD drive."
 msgstr "N’a pu finir d’initialiser le lecteur CD ouvert."
 
-#: src/cdaudio/cdaudio-ng.cc:508
+#: src/cdaudio/cdaudio-ng.cc:520
 msgid "Failed to retrieve first/last track number."
 msgstr "Échec de récupération du premier ou du dernier numéro de plage."
 
-#: src/cdaudio/cdaudio-ng.cc:529
+#: src/cdaudio/cdaudio-ng.cc:541
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr ""
 "Impossible de lire le numéro de secteur logique de début ou de fin pour la "
 "plage %d."
 
-#: src/cdaudio/cdaudio-ng.cc:611
+#: src/cdaudio/cdaudio-ng.cc:624
 msgid "Failed to create the CDDB connection."
 msgstr "Échec de création de la connexion CDDB."
 
-#: src/cdaudio/cdaudio-ng.cc:677
+#: src/cdaudio/cdaudio-ng.cc:690
 msgid "Failed to query the CDDB server"
 msgstr "Échec d’interrogation du serveur CDDB"
 
-#: src/cdaudio/cdaudio-ng.cc:679
+#: src/cdaudio/cdaudio-ng.cc:692
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Échec d’interrogation du serveur CDDB : %s ."
 
-#: src/cdaudio/cdaudio-ng.cc:703
+#: src/cdaudio/cdaudio-ng.cc:716
 #, c-format
 msgid "Failed to read the CDDB info: %s"
 msgstr "Échec de lecture des renseignements de CDDB : %s"
@@ -1131,7 +1131,7 @@ msgstr "Écho"
 msgid "FFmpeg Plugin"
 msgstr "Greffon FFmpeg"
 
-#: src/ffaudio/ffaudio-core.cc:651
+#: src/ffaudio/ffaudio-core.cc:649
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1449,7 +1449,7 @@ msgid "Quality (0-1):"
 msgstr "Qualité (0 à 1) :"
 
 #: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:307
-#: src/skins/skins_cfg.cc:285
+#: src/skins/skins_cfg.cc:289
 msgid "General"
 msgstr "Général"
 
@@ -1685,7 +1685,7 @@ msgstr "_Quitter"
 
 #: src/gtkui/menus.cc:92 src/gtkui/menus.cc:226
 #: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
-#: src/qtui/playlist_tabs.cc:330 src/search-tool-qt/search-tool-qt.cc:499
+#: src/qtui/playlist_tabs.cc:331 src/search-tool-qt/search-tool-qt.cc:499
 #: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:109
 #: src/statusicon/statusicon.cc:280
 msgid "_Play"
@@ -1879,7 +1879,7 @@ msgstr "Re_nommer…"
 
 #: src/gtkui/menus.cc:168 src/gtkui/menus.cc:228
 #: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:231
-#: src/qtui/playlist_tabs.cc:335
+#: src/qtui/playlist_tabs.cc:336
 msgid "Remo_ve"
 msgstr "Enle_ver"
 
@@ -2010,43 +2010,55 @@ msgid "Select _All"
 msgstr "Sélectionner _tout"
 
 #: src/gtkui/menus.cc:227 src/moonstone/playlist_tabs.cc:309
-#: src/qtui/playlist_tabs.cc:333
+#: src/qtui/playlist_tabs.cc:334
 msgid "_Rename ..."
 msgstr "_Renommer…"
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:64
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:59
+msgid "Always"
+msgstr "Toujours"
+
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:60
+msgid "Auto-hide"
+msgstr "Cacher automatiquement"
+
+#: src/gtkui/settings.cc:37 src/qtui/settings.cc:61
+msgid "Never"
+msgstr "Jamais"
+
+#: src/gtkui/settings.cc:41 src/qtui/settings.cc:64
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Onglets de la liste de lecture</b>"
 
-#: src/gtkui/settings.cc:36
-msgid "Always show tabs"
-msgstr "Toujours afficher les onglets"
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:65
+msgid "Show playlist tabs:"
+msgstr "Afficher les onglets des listes de lecture :"
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:69
+#: src/gtkui/settings.cc:45 src/qtui/settings.cc:69
 msgid "Show entry counts"
 msgstr "Afficher le nombre d’entrées"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:72
+#: src/gtkui/settings.cc:47 src/qtui/settings.cc:72
 msgid "Show close buttons"
 msgstr "Afficher les boutons de fermeture"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:75
+#: src/gtkui/settings.cc:49 src/qtui/settings.cc:75
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Colonnes de la liste de lecture</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:77
+#: src/gtkui/settings.cc:51 src/qtui/settings.cc:77
 msgid "Show column headers"
 msgstr "Afficher les en-têtes de colonnes"
 
-#: src/gtkui/settings.cc:46 src/qtui/settings.cc:82
+#: src/gtkui/settings.cc:53 src/qtui/settings.cc:82
 msgid "Make column headers clickable for sorting"
 msgstr "Rendre les en-têtes de colonne cliquables pour le tri"
 
-#: src/gtkui/settings.cc:49
+#: src/gtkui/settings.cc:56
 msgid "Use symbolic icons in toolbar"
 msgstr "Utiliser des icônes symboliques dans la barre d’outils"
 
-#: src/gtkui/settings.cc:51 src/qtui/settings.cc:86
+#: src/gtkui/settings.cc:58 src/qtui/settings.cc:86
 msgid "Scroll on song change"
 msgstr "Se déplacer vers la pièce lue"
 
@@ -2278,11 +2290,11 @@ msgstr "<b>Association de touches :</b>"
 msgid "_Add"
 msgstr "_Ajouter"
 
-#: src/hotkey/plugin.cc:61 src/qthotkey/plugin.cc:80
+#: src/hotkey/plugin.cc:59 src/qthotkey/plugin.cc:78
 msgid "Global Hotkeys"
 msgstr "Raccourcis universels"
 
-#: src/hotkey/plugin.cc:76
+#: src/hotkey/plugin.cc:74
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -2777,7 +2789,7 @@ msgstr "Utiliser un calcul précis de durée (lent)"
 msgid "Surround"
 msgstr "Son ambiophonique"
 
-#: src/mpris2/plugin.cc:38
+#: src/mpris2/plugin.cc:40
 msgid "MPRIS 2 Server"
 msgstr "Serveur MPRIS 2"
 
@@ -3024,15 +3036,15 @@ msgstr "Ignorer la durée donnée par le fichier"
 msgid "PulseAudio Output"
 msgstr "Sortie PulseAudio"
 
-#: src/pulse/pulse_audio.cc:72
+#: src/pulse/pulse_audio.cc:84
 msgid "Context name:"
 msgstr "Nom du contexte :"
 
-#: src/pulse/pulse_audio.cc:74
+#: src/pulse/pulse_audio.cc:86
 msgid "Stream name:"
 msgstr "Nom du flux :"
 
-#: src/pulse/pulse_audio.cc:575
+#: src/pulse/pulse_audio.cc:596
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -3066,11 +3078,11 @@ msgstr ""
 "même temps que ce programme ; sinon, écrivez à Free Software Foundation, "
 "Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA."
 
-#: src/qtaudio/qtaudio.cc:44
+#: src/qtaudio/qtaudio.cc:53
 msgid "QtMultimedia Output"
 msgstr "Sortie QtMultimédia"
 
-#: src/qtaudio/qtaudio.cc:72
+#: src/qtaudio/qtaudio.cc:84
 msgid ""
 "QtMultimedia Audio Output Plugin for Audacious\n"
 "Copyright 2014 William Pitcock\n"
@@ -3110,7 +3122,7 @@ msgid "Press a key combination inside a text field."
 msgstr ""
 "Appuyez sur une combinaison de touches à l’intérieur d’un champ textuel."
 
-#: src/qthotkey/plugin.cc:107
+#: src/qthotkey/plugin.cc:105
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3184,22 +3196,6 @@ msgstr "Interface Qt"
 #: src/qtui/search_bar.cc:46
 msgid "Search playlist"
 msgstr "Chercher dans la liste de lecture"
-
-#: src/qtui/settings.cc:59
-msgid "Always"
-msgstr "Toujours"
-
-#: src/qtui/settings.cc:60
-msgid "Auto-hide"
-msgstr "Cacher automatiquement"
-
-#: src/qtui/settings.cc:61
-msgid "Never"
-msgstr "Jamais"
-
-#: src/qtui/settings.cc:65
-msgid "Show playlist tabs:"
-msgstr "Afficher les onglets des listes de lecture :"
 
 #: src/qtui/settings.cc:79
 msgid "Use bold font for column headers"
@@ -4045,172 +4041,172 @@ msgstr "Créer une nouvelle liste de lecture à partir des entrées trouvées"
 msgid "Search"
 msgstr "Chercher"
 
-#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:180
+#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:182
 msgid "Player:"
 msgstr "Lecteur :"
 
-#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:182
+#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:184
 msgid "Select main player window font:"
 msgstr "Choisir la police de la fenêtre principale du lecteur :"
 
-#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:183
+#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:185
 msgid "Playlist:"
 msgstr "Liste de lecture :"
 
-#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:185
+#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:187
 msgid "Select playlist font:"
 msgstr "Choisir la police de la liste de lecture :"
 
-#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:189
+#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:191
 msgid "<b>Skin</b>"
 msgstr "<b>Habillage</b>"
 
-#: src/skins-qt/skins_cfg.cc:211
+#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:193
 msgid "Display active titlebar when any window is focused"
 msgstr ""
 "Afficher la barre de titre active quand une fenêtre est en premier plan"
 
-#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:191
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:195
 msgid "<b>Fonts</b>"
 msgstr "<b>Polices</b>"
 
-#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:193
+#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
 msgid "Use bitmap fonts (supports ASCII only)"
 msgstr "Utiliser des polices bitmap (seul ASCII est pris en charge)"
 
-#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:195
+#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:199
 msgid "Scroll song title"
 msgstr "Faire défiler le titre de la pièce"
 
-#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:197
+#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:201
 msgid "Scroll song title in both directions"
 msgstr "Faire défiler le titre de la pièce dans les deux sens"
 
-#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:202
+#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:206
 msgid "Analyzer"
 msgstr "Analyseur"
 
-#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:203
+#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:207
 msgid "Scope"
 msgstr "Oscilloscope"
 
-#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:204
+#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:208
 msgid "Voiceprint / VU meter"
 msgstr "Spectrogramme/vumètre"
 
-#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:205
+#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:209
 msgid "Off"
 msgstr "Désactiver"
 
 #: src/skins-qt/skins_cfg.cc:231 src/skins-qt/skins_cfg.cc:256
-#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:209
-#: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
+#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:213
+#: src/skins/skins_cfg.cc:238 src/skins/skins_cfg.cc:244
 msgid "Normal"
 msgstr "Normal"
 
 #: src/skins-qt/skins_cfg.cc:232 src/skins-qt/skins_cfg.cc:257
-#: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
+#: src/skins/skins_cfg.cc:214 src/skins/skins_cfg.cc:239
 msgid "Fire"
 msgstr "Feu"
 
-#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:211
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:215
 msgid "Vertical lines"
 msgstr "Lignes verticales"
 
-#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:215
+#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:219
 msgid "Lines"
 msgstr "Lignes"
 
-#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:216
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:220
 msgid "Bars"
 msgstr "Barres"
 
-#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:220
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
 msgid "Slowest"
 msgstr "La plus lente"
 
-#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:221
+#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:225
 msgid "Slow"
 msgstr "Lente"
 
-#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:222
+#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:226
 #: src/soxr/sox-resampler.cc:180
 msgid "Medium"
 msgstr "Moyenne"
 
-#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:223
+#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:227
 msgid "Fast"
 msgstr "Rapide"
 
-#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:224
+#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:228
 msgid "Fastest"
 msgstr "La plus rapide"
 
-#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:228
+#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:232
 msgid "Dots"
 msgstr "Points"
 
-#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:229
+#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:233
 msgid "Line"
 msgstr "Lignes"
 
-#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:230
+#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:234
 msgid "Solid"
 msgstr "Plein"
 
-#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:236
+#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:240
 msgid "Ice"
 msgstr "Glace"
 
-#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:241
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:245
 msgid "Smooth"
 msgstr "Lissé"
 
-#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:245
+#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:249
 msgid "Coloring:"
 msgstr "Coloration :"
 
-#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:248
+#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:252
 msgid "Style:"
 msgstr "Style :"
 
-#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:251
+#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:255
 msgid "Falloff:"
 msgstr "Retombée :"
 
-#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:254
+#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:258
 msgid "Peak falloff:"
 msgstr "Retombée des crêtes :"
 
-#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:260
+#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:264
 msgid "Scope Style:"
 msgstr "Style oscilloscope :"
 
-#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:263
+#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:267
 msgid "Voiceprint Coloring:"
 msgstr "Coloration du spectrogramme :"
 
-#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:266
+#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:270
 msgid "VU Meter Style:"
 msgstr "Style vumètre :"
 
-#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:272
+#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:276
 msgid "<b>Type</b>"
 msgstr "<b>Type</b>"
 
-#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:273
+#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
 msgid "Visualization type:"
 msgstr "Type de visualisation :"
 
-#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:276
+#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
 msgid "<b>Analyzer</b>"
 msgstr "<b>Analyseur</b>"
 
-#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:277
+#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:281
 msgid "Show peaks"
 msgstr "Afficher les crêtes"
 
-#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:286
+#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:290
 msgid "Visualization"
 msgstr "Visualisation"
 

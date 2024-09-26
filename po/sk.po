@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2024-06-12 21:22+0200\n"
+"POT-Creation-Date: 2024-09-26 21:54+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
 "Last-Translator: awg awg, 2022\n"
 "Language-Team: Slovak (http://app.transifex.com/audacious/audacious/language/"
@@ -68,9 +68,9 @@ msgstr "Vzorkovacia frekvencia:"
 msgid "Hz"
 msgstr "Hz"
 
-#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:48
+#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:55
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:85
-#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:280
+#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:284
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Rôzne</b>"
 
@@ -666,11 +666,11 @@ msgstr "Frekvencia pre vystrihnutie:"
 msgid "Spectrum Analyzer"
 msgstr "Analyzátor spektra"
 
-#: src/cdaudio/cdaudio-ng.cc:71
+#: src/cdaudio/cdaudio-ng.cc:74
 msgid "Audio CD Plugin"
 msgstr "Audio CD zásuvný modul"
 
-#: src/cdaudio/cdaudio-ng.cc:118
+#: src/cdaudio/cdaudio-ng.cc:121
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -690,117 +690,117 @@ msgstr ""
 "\n"
 "Toto bol Google Summer of Code 2007 projekt."
 
-#: src/cdaudio/cdaudio-ng.cc:134
+#: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Device</b>"
 msgstr "Zariadenia"
 
-#: src/cdaudio/cdaudio-ng.cc:135
+#: src/cdaudio/cdaudio-ng.cc:141
 msgid "Read speed:"
 msgstr "Rýchlosť disku:"
 
-#: src/cdaudio/cdaudio-ng.cc:138
+#: src/cdaudio/cdaudio-ng.cc:144
 msgid "Override device:"
 msgstr "Prepísať zariadenie:"
 
-#: src/cdaudio/cdaudio-ng.cc:140
+#: src/cdaudio/cdaudio-ng.cc:146
 msgid "<b>Metadata</b>"
 msgstr "<b>Metadáta</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:141
+#: src/cdaudio/cdaudio-ng.cc:147
 msgid "Use CD-Text"
 msgstr "Použiť CD-Text"
 
-#: src/cdaudio/cdaudio-ng.cc:143
+#: src/cdaudio/cdaudio-ng.cc:150
 msgid "Use CDDB"
 msgstr "Použiť CDDB"
 
-#: src/cdaudio/cdaudio-ng.cc:145
+#: src/cdaudio/cdaudio-ng.cc:152
 msgid "Use HTTP instead of CDDBP"
 msgstr "Namiesto CDDBP použiť HTTP"
 
-#: src/cdaudio/cdaudio-ng.cc:148
+#: src/cdaudio/cdaudio-ng.cc:155
 msgid "Server:"
 msgstr "Server: "
 
-#: src/cdaudio/cdaudio-ng.cc:152
+#: src/cdaudio/cdaudio-ng.cc:159
 msgid "Path:"
 msgstr "Cesta: "
 
-#: src/cdaudio/cdaudio-ng.cc:156
+#: src/cdaudio/cdaudio-ng.cc:163
 msgid "Port:"
 msgstr "Port: "
 
-#: src/cdaudio/cdaudio-ng.cc:220
+#: src/cdaudio/cdaudio-ng.cc:228
 msgid "Failed to initialize cdio subsystem."
 msgstr "Zlyhala inicializácia cdio podsystému."
 
-#: src/cdaudio/cdaudio-ng.cc:250
+#: src/cdaudio/cdaudio-ng.cc:260
 #, c-format
 msgid "Invalid URI %s."
 msgstr "Neplatná URI %s."
 
-#: src/cdaudio/cdaudio-ng.cc:252
+#: src/cdaudio/cdaudio-ng.cc:262
 #, c-format
 msgid "Track %d not found."
 msgstr "Stopa %d sa nenašla."
 
-#: src/cdaudio/cdaudio-ng.cc:254
+#: src/cdaudio/cdaudio-ng.cc:264
 #, c-format
 msgid "Track %d is a data track."
 msgstr "Stopa %d je dátová stopa."
 
-#: src/cdaudio/cdaudio-ng.cc:329
+#: src/cdaudio/cdaudio-ng.cc:339
 msgid "Error reading audio CD."
 msgstr "Chyba pri čítaní audio CD."
 
-#: src/cdaudio/cdaudio-ng.cc:398
+#: src/cdaudio/cdaudio-ng.cc:410
 msgid "Audio CD"
 msgstr "Zvukové CD"
 
-#: src/cdaudio/cdaudio-ng.cc:434 src/cdaudio/cdaudio-ng.cc:443
+#: src/cdaudio/cdaudio-ng.cc:446 src/cdaudio/cdaudio-ng.cc:455
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Zlyhalo CD zariadenie %s."
 
-#: src/cdaudio/cdaudio-ng.cc:446
+#: src/cdaudio/cdaudio-ng.cc:458
 msgid "No audio capable CD drive found."
 msgstr "Nebolo nájdené žiadne vhodné CD zariadenie."
 
-#: src/cdaudio/cdaudio-ng.cc:469
+#: src/cdaudio/cdaudio-ng.cc:481
 msgid "Drive is empty."
 msgstr "Mechanika je prázdna."
 
-#: src/cdaudio/cdaudio-ng.cc:471
+#: src/cdaudio/cdaudio-ng.cc:483
 msgid "Unsupported disk type."
 msgstr "Nepodporovaný typ disku."
 
-#: src/cdaudio/cdaudio-ng.cc:495
+#: src/cdaudio/cdaudio-ng.cc:507
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Zlyhalo dokončenie inicializácie otvorenia CD zariadenia."
 
-#: src/cdaudio/cdaudio-ng.cc:508
+#: src/cdaudio/cdaudio-ng.cc:520
 msgid "Failed to retrieve first/last track number."
 msgstr "Zlyhalo načítanie prvého/posledného čísla skladby."
 
-#: src/cdaudio/cdaudio-ng.cc:529
+#: src/cdaudio/cdaudio-ng.cc:541
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "Nie je možné prečítať začiatok/koniec LSN pre stopu %d."
 
-#: src/cdaudio/cdaudio-ng.cc:611
+#: src/cdaudio/cdaudio-ng.cc:624
 msgid "Failed to create the CDDB connection."
 msgstr "Zlyhalo pripojenie k CDDB databáze"
 
-#: src/cdaudio/cdaudio-ng.cc:677
+#: src/cdaudio/cdaudio-ng.cc:690
 msgid "Failed to query the CDDB server"
 msgstr "Nepodaril sa dotaz na CDDB server"
 
-#: src/cdaudio/cdaudio-ng.cc:679
+#: src/cdaudio/cdaudio-ng.cc:692
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Nepodaril sa dotaz na CDDB server: %s"
 
-#: src/cdaudio/cdaudio-ng.cc:703
+#: src/cdaudio/cdaudio-ng.cc:716
 #, c-format
 msgid "Failed to read the CDDB info: %s"
 msgstr ""
@@ -1096,7 +1096,7 @@ msgstr "Ozvena"
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg zásuvný modul"
 
-#: src/ffaudio/ffaudio-core.cc:651
+#: src/ffaudio/ffaudio-core.cc:649
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1415,7 +1415,7 @@ msgid "Quality (0-1):"
 msgstr "Kvalita (0-1):"
 
 #: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:307
-#: src/skins/skins_cfg.cc:285
+#: src/skins/skins_cfg.cc:289
 msgid "General"
 msgstr "Všeobecné"
 
@@ -1651,7 +1651,7 @@ msgstr "_Koniec"
 
 #: src/gtkui/menus.cc:92 src/gtkui/menus.cc:226
 #: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
-#: src/qtui/playlist_tabs.cc:330 src/search-tool-qt/search-tool-qt.cc:499
+#: src/qtui/playlist_tabs.cc:331 src/search-tool-qt/search-tool-qt.cc:499
 #: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:109
 #: src/statusicon/statusicon.cc:280
 msgid "_Play"
@@ -1845,7 +1845,7 @@ msgstr "Pre_menovať ..."
 
 #: src/gtkui/menus.cc:168 src/gtkui/menus.cc:228
 #: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:231
-#: src/qtui/playlist_tabs.cc:335
+#: src/qtui/playlist_tabs.cc:336
 msgid "Remo_ve"
 msgstr "Od_strániť"
 
@@ -1976,43 +1976,55 @@ msgid "Select _All"
 msgstr "Ozn_ačiť všetko"
 
 #: src/gtkui/menus.cc:227 src/moonstone/playlist_tabs.cc:309
-#: src/qtui/playlist_tabs.cc:333
+#: src/qtui/playlist_tabs.cc:334
 msgid "_Rename ..."
 msgstr "P_remenovať ..."
 
-#: src/gtkui/settings.cc:35 src/qtui/settings.cc:64
+#: src/gtkui/settings.cc:35 src/qtui/settings.cc:59
+msgid "Always"
+msgstr ""
+
+#: src/gtkui/settings.cc:36 src/qtui/settings.cc:60
+msgid "Auto-hide"
+msgstr ""
+
+#: src/gtkui/settings.cc:37 src/qtui/settings.cc:61
+msgid "Never"
+msgstr ""
+
+#: src/gtkui/settings.cc:41 src/qtui/settings.cc:64
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>Panely zoznamu skladieb</b>"
 
-#: src/gtkui/settings.cc:36
-msgid "Always show tabs"
-msgstr "Vždy zobrazovať panely"
+#: src/gtkui/settings.cc:42 src/qtui/settings.cc:65
+msgid "Show playlist tabs:"
+msgstr ""
 
-#: src/gtkui/settings.cc:38 src/qtui/settings.cc:69
+#: src/gtkui/settings.cc:45 src/qtui/settings.cc:69
 msgid "Show entry counts"
 msgstr "Zobrazovať počet skladieb"
 
-#: src/gtkui/settings.cc:40 src/qtui/settings.cc:72
+#: src/gtkui/settings.cc:47 src/qtui/settings.cc:72
 msgid "Show close buttons"
 msgstr "Zobrazovať uzavieracie tlačítko"
 
-#: src/gtkui/settings.cc:42 src/qtui/settings.cc:75
+#: src/gtkui/settings.cc:49 src/qtui/settings.cc:75
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>Stĺpce zoznamu skladieb</b>"
 
-#: src/gtkui/settings.cc:44 src/qtui/settings.cc:77
+#: src/gtkui/settings.cc:51 src/qtui/settings.cc:77
 msgid "Show column headers"
 msgstr "Zobrazovať hlavičky stĺpcov"
 
-#: src/gtkui/settings.cc:46 src/qtui/settings.cc:82
+#: src/gtkui/settings.cc:53 src/qtui/settings.cc:82
 msgid "Make column headers clickable for sorting"
 msgstr ""
 
-#: src/gtkui/settings.cc:49
+#: src/gtkui/settings.cc:56
 msgid "Use symbolic icons in toolbar"
 msgstr ""
 
-#: src/gtkui/settings.cc:51 src/qtui/settings.cc:86
+#: src/gtkui/settings.cc:58 src/qtui/settings.cc:86
 msgid "Scroll on song change"
 msgstr "Posuň pri zmene skladby"
 
@@ -2240,11 +2252,11 @@ msgstr "<b>Priradenie klávesu:</b>"
 msgid "_Add"
 msgstr "Pridať"
 
-#: src/hotkey/plugin.cc:61 src/qthotkey/plugin.cc:80
+#: src/hotkey/plugin.cc:59 src/qthotkey/plugin.cc:78
 msgid "Global Hotkeys"
 msgstr "Globálne klávesové skratky"
 
-#: src/hotkey/plugin.cc:76
+#: src/hotkey/plugin.cc:74
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -2716,7 +2728,7 @@ msgstr "Použiť presný výpočet dĺžky (pomalé)"
 msgid "Surround"
 msgstr "Priestorový zvuk"
 
-#: src/mpris2/plugin.cc:38
+#: src/mpris2/plugin.cc:40
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 Server"
 
@@ -2952,15 +2964,15 @@ msgstr "Ignorovať dĺžku zo súboru"
 msgid "PulseAudio Output"
 msgstr "PulseAudio výstup"
 
-#: src/pulse/pulse_audio.cc:72
+#: src/pulse/pulse_audio.cc:84
 msgid "Context name:"
 msgstr ""
 
-#: src/pulse/pulse_audio.cc:74
+#: src/pulse/pulse_audio.cc:86
 msgid "Stream name:"
 msgstr ""
 
-#: src/pulse/pulse_audio.cc:575
+#: src/pulse/pulse_audio.cc:596
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -2994,11 +3006,11 @@ msgstr ""
 "License. Ak tomu tak nieje napíšte do  Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/qtaudio/qtaudio.cc:44
+#: src/qtaudio/qtaudio.cc:53
 msgid "QtMultimedia Output"
 msgstr "Výstup QtMultimedia"
 
-#: src/qtaudio/qtaudio.cc:72
+#: src/qtaudio/qtaudio.cc:84
 msgid ""
 "QtMultimedia Audio Output Plugin for Audacious\n"
 "Copyright 2014 William Pitcock\n"
@@ -3029,7 +3041,7 @@ msgstr ""
 msgid "Press a key combination inside a text field."
 msgstr ""
 
-#: src/qthotkey/plugin.cc:107
+#: src/qthotkey/plugin.cc:105
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3088,22 +3100,6 @@ msgstr "Qt prostredie"
 #: src/qtui/search_bar.cc:46
 msgid "Search playlist"
 msgstr "Prehľadať zoznam skladieb"
-
-#: src/qtui/settings.cc:59
-msgid "Always"
-msgstr ""
-
-#: src/qtui/settings.cc:60
-msgid "Auto-hide"
-msgstr ""
-
-#: src/qtui/settings.cc:61
-msgid "Never"
-msgstr ""
-
-#: src/qtui/settings.cc:65
-msgid "Show playlist tabs:"
-msgstr ""
 
 #: src/qtui/settings.cc:79
 msgid "Use bold font for column headers"
@@ -3944,171 +3940,171 @@ msgstr "Zo zhodujúcich sa položiek vytvoriť nový zoznam skladieb"
 msgid "Search"
 msgstr "Hľadať"
 
-#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:180
+#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:182
 msgid "Player:"
 msgstr "Prehrávač:"
 
-#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:182
+#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:184
 msgid "Select main player window font:"
 msgstr "Vyberte písmo pre hlavné okno prehrávača:"
 
-#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:183
+#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:185
 msgid "Playlist:"
 msgstr "Zoznam skladieb:"
 
-#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:185
+#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:187
 msgid "Select playlist font:"
 msgstr "Zvoliť písmo pre zoznam skladieb:"
 
-#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:189
+#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:191
 msgid "<b>Skin</b>"
 msgstr "<b>Téma vzhľadu</b>"
 
-#: src/skins-qt/skins_cfg.cc:211
+#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:193
 msgid "Display active titlebar when any window is focused"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:191
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:195
 msgid "<b>Fonts</b>"
 msgstr "<b>Písma</b>"
 
-#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:193
+#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
 msgid "Use bitmap fonts (supports ASCII only)"
 msgstr "Použiť bitmapové písma (podporuje iba ASCII)"
 
-#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:195
+#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:199
 msgid "Scroll song title"
 msgstr "Rolovať názov skladby"
 
-#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:197
+#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:201
 msgid "Scroll song title in both directions"
 msgstr "Rolovať názov skladby obidvoma smermi"
 
-#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:202
+#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:206
 msgid "Analyzer"
 msgstr "Analyzátor"
 
-#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:203
+#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:207
 msgid "Scope"
 msgstr "Osciloskop"
 
-#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:204
+#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:208
 msgid "Voiceprint / VU meter"
 msgstr "Zvukový odtlačok / VU meter"
 
-#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:205
+#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:209
 msgid "Off"
 msgstr "Žiadne"
 
 #: src/skins-qt/skins_cfg.cc:231 src/skins-qt/skins_cfg.cc:256
-#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:209
-#: src/skins/skins_cfg.cc:234 src/skins/skins_cfg.cc:240
+#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:213
+#: src/skins/skins_cfg.cc:238 src/skins/skins_cfg.cc:244
 msgid "Normal"
 msgstr "Normálny"
 
 #: src/skins-qt/skins_cfg.cc:232 src/skins-qt/skins_cfg.cc:257
-#: src/skins/skins_cfg.cc:210 src/skins/skins_cfg.cc:235
+#: src/skins/skins_cfg.cc:214 src/skins/skins_cfg.cc:239
 msgid "Fire"
 msgstr "Oheň"
 
-#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:211
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:215
 msgid "Vertical lines"
 msgstr "Vertikálne čiary"
 
-#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:215
+#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:219
 msgid "Lines"
 msgstr "Čiary"
 
-#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:216
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:220
 msgid "Bars"
 msgstr "Obdĺžniky"
 
-#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:220
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
 msgid "Slowest"
 msgstr "Najpomalšie"
 
-#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:221
+#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:225
 msgid "Slow"
 msgstr "Pomaly"
 
-#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:222
+#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:226
 #: src/soxr/sox-resampler.cc:180
 msgid "Medium"
 msgstr "Stredne"
 
-#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:223
+#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:227
 msgid "Fast"
 msgstr "Rýchlo"
 
-#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:224
+#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:228
 msgid "Fastest"
 msgstr "Najrýchlejšie"
 
-#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:228
+#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:232
 msgid "Dots"
 msgstr "Body"
 
-#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:229
+#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:233
 msgid "Line"
 msgstr "Čiara"
 
-#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:230
+#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:234
 msgid "Solid"
 msgstr "Plná vlnovka"
 
-#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:236
+#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:240
 msgid "Ice"
 msgstr "Ľad"
 
-#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:241
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:245
 msgid "Smooth"
 msgstr "Plynulý"
 
-#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:245
+#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:249
 msgid "Coloring:"
 msgstr "Farebná schéma:"
 
-#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:248
+#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:252
 msgid "Style:"
 msgstr "Štýl:"
 
-#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:251
+#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:255
 msgid "Falloff:"
 msgstr "Klesanie:"
 
-#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:254
+#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:258
 msgid "Peak falloff:"
 msgstr "Klesanie vrcholu:"
 
-#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:260
+#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:264
 msgid "Scope Style:"
 msgstr "Štýl vlnovky:"
 
-#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:263
+#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:267
 msgid "Voiceprint Coloring:"
 msgstr "Farebná schéma zvukového odtlačku:"
 
-#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:266
+#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:270
 msgid "VU Meter Style:"
 msgstr "Štýl VU metera:"
 
-#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:272
+#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:276
 msgid "<b>Type</b>"
 msgstr "<b>Typ</b>"
 
-#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:273
+#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
 msgid "Visualization type:"
 msgstr "Typ vizualizácie:"
 
-#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:276
+#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
 msgid "<b>Analyzer</b>"
 msgstr "<b>Analyzátor</b>"
 
-#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:277
+#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:281
 msgid "Show peaks"
 msgstr "Zobrazovať zvukové špičky"
 
-#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:286
+#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:290
 msgid "Visualization"
 msgstr "Vizualizácia"
 
