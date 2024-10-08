@@ -46,10 +46,10 @@ public:
 
     void set_slider (PlaylistSlider * slider) { m_slider = slider; }
     void resize (int width, int height);
-    void set_font (const char * m_font);
+    void set_font (const char * font);
     void refresh ();
     bool handle_keypress (QKeyEvent * event);
-    void row_info (int * m_rows, int * m_first);
+    void row_info (int * rows, int * first);
     void scroll_to (int row);
     void set_focused (int row);
     void hover (int x, int y);
