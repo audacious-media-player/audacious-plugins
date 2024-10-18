@@ -30,6 +30,9 @@
 
 #include "ui_infoarea.h"
 
+#define ALPHA_STEPS 10
+static inline float TO_ALPHA (int steps) { return (float) steps / ALPHA_STEPS; }
+
 #define VIS_BANDS 12
 #define VIS_DELAY 2 /* delay before falloff in frames */
 #define VIS_FALLOFF 2 /* falloff in decibels per frame */
@@ -56,7 +59,7 @@ typedef struct {
     String title, artist, album;
     String last_title, last_artist, last_album;
     AudguiPixbuf pb, last_pb;
-    float alpha, last_alpha;
+    int alpha_steps, last_alpha_steps;
 
     bool show_art;
     bool stopped;
@@ -207,7 +210,7 @@ static void draw_album_art (cairo_t * cr)
         int left = SPACING + (ICON_SIZE - area->pb.width ()) / 2;
         int top = SPACING + (ICON_SIZE - area->pb.height ()) / 2;
         gdk_cairo_set_source_pixbuf (cr, area->pb.get (), left, top);
-        cairo_paint_with_alpha (cr, area->alpha);
+        cairo_paint_with_alpha (cr, TO_ALPHA (area->alpha_steps));
     }
 
     if (area->last_pb)
@@ -215,7 +218,7 @@ static void draw_album_art (cairo_t * cr)
         int left = SPACING + (ICON_SIZE - area->last_pb.width ()) / 2;
         int top = SPACING + (ICON_SIZE - area->last_pb.height ()) / 2;
         gdk_cairo_set_source_pixbuf (cr, area->last_pb.get (), left, top);
-        cairo_paint_with_alpha (cr, area->last_alpha);
+        cairo_paint_with_alpha (cr, TO_ALPHA (area->last_alpha_steps));
     }
 }
 
@@ -230,25 +233,27 @@ static void draw_title (cairo_t * cr)
     int y_offset1 = ICON_SIZE / 2;
     int y_offset2 = ICON_SIZE * 3 / 4;
     int width = alloc.width - x;
+    float alpha = TO_ALPHA (area->alpha_steps);
+    float last_alpha = TO_ALPHA (area->last_alpha_steps);
 
     if (area->title)
-        draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, area->alpha,
+        draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, alpha,
          "18", area->title);
     if (area->last_title)
-        draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, area->last_alpha,
+        draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, last_alpha,
          "18", area->last_title);
     if (area->artist)
         draw_text (area->main, cr, x, SPACING + y_offset1, width, 1, 1, 1,
-         area->alpha, "9", area->artist);
+         alpha, "9", area->artist);
     if (area->last_artist)
         draw_text (area->main, cr, x, SPACING + y_offset1, width, 1, 1, 1,
-         area->last_alpha, "9", area->last_artist);
+         last_alpha, "9", area->last_artist);
     if (area->album)
         draw_text (area->main, cr, x, SPACING + y_offset2, width, 0.7,
-         0.7, 0.7, area->alpha, "9", area->album);
+         0.7, 0.7, alpha, "9", area->album);
     if (area->last_album)
         draw_text (area->main, cr, x, SPACING + y_offset2, width, 0.7,
-         0.7, 0.7, area->last_alpha, "9", area->last_album);
+         0.7, 0.7, last_alpha, "9", area->last_album);
 }
 
 #ifdef USE_GTK3
@@ -276,15 +281,15 @@ static void ui_infoarea_do_fade (void *)
     g_return_if_fail (area);
     bool done = true;
 
-    if (aud_drct_get_playing () && area->alpha < 1)
+    if (aud_drct_get_playing () && area->alpha_steps < ALPHA_STEPS)
     {
-        area->alpha += 0.1;
+        area->alpha_steps ++;
         done = false;
     }
 
-    if (area->last_alpha > 0)
+    if (area->last_alpha_steps > 0)
     {
-        area->last_alpha -= 0.1;
+        area->last_alpha_steps --;
         done = false;
     }
 
@@ -340,8 +345,8 @@ static void infoarea_next ()
     area->last_album = std::move (area->album);
     area->last_pb = std::move (area->pb);
 
-    area->last_alpha = area->alpha;
-    area->alpha = 0;
+    area->last_alpha_steps = area->alpha_steps;
+    area->alpha_steps = 0;
 
     gtk_widget_queue_draw (area->main);
 }
@@ -457,7 +462,7 @@ GtkWidget * ui_infoarea_new ()
         set_album_art ();
 
         /* skip fade-in */
-        area->alpha = 1;
+        area->alpha_steps = ALPHA_STEPS;
     }
 
     GtkWidget * frame = gtk_frame_new (nullptr);
