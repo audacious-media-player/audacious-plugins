@@ -143,6 +143,12 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 static void draw_text (GtkWidget * widget, cairo_t * cr, int x, int y, int
  width, float r, float g, float b, float a, int font_size, const char * text)
 {
+    /* The visibility of Unicode characters like emoji is not affected by the
+     * alpha channel. Make sure to hide them when fading-out track information.
+     * See also: #1491 */
+    if (a <= 0)
+        return;
+
     cairo_move_to (cr, x, y);
     cairo_set_source_rgba (cr, r, g, b, a);
 
