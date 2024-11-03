@@ -99,11 +99,13 @@ bool xs_sidplayfp_init()
         return false;
     }
 
+#if (LIBSIDPLAYFP_VERSION_MAJ << 8) + LIBSIDPLAYFP_VERSION_MIN < 0x020A
     state.currBuilder->filter(xs_cfg.emulateFilters);
     if (!state.currBuilder->getStatus()) {
         AUDERR("reSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
         return false;
     }
+#endif
 
     config.sidEmulation = state.currBuilder;
 
@@ -138,6 +140,13 @@ bool xs_sidplayfp_init()
         AUDERR("[SIDPlayFP] Emulator engine configuration failed!\n");
         return false;
     }
+
+#if (LIBSIDPLAYFP_VERSION_MAJ << 8) + LIBSIDPLAYFP_VERSION_MIN >= 0x020A
+    /* Call filter() after config() to have an effect */
+    state.currEng->filter(0, xs_cfg.emulateFilters);
+    state.currEng->filter(1, xs_cfg.emulateFilters);
+    state.currEng->filter(2, xs_cfg.emulateFilters);
+#endif
 
     /* Load ROMs */
     VFSFile kernal_file("file://" SIDDATADIR "/sidplayfp/kernal", "r");
