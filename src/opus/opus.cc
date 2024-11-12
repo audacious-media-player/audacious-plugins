@@ -237,12 +237,13 @@ static bool update_replay_gain(OggOpusFile * opus_file,
             rg_info->album_peak = str_to_double(album_peak);
             rg_info->track_peak = str_to_double(track_peak);
         }
+        
+        AUDDBG("Album peak: %s (%f)\n", album_peak, rg_info->album_peak);
+        AUDDBG("Track peak: %s (%f)\n", track_peak, rg_info->track_peak);
     }
 
     AUDDBG("Album gain: %s (%f)\n", album_gain, rg_info->album_gain);
-    AUDDBG("Track gain: %s (%f)\n", track_gain, rg_info->track_gain);
-    AUDDBG("Album peak: %s (%f)\n", album_peak, rg_info->album_peak);
-    AUDDBG("Track peak: %s (%f)\n", track_peak, rg_info->track_peak);
+    AUDDBG("Track gain: %s (%f)\n", track_gain, rg_info->track_gain);    
 
     return true;
 }
