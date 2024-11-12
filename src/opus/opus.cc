@@ -179,14 +179,14 @@ static bool update_replay_gain(OggOpusFile * opus_file,
     if (!tags)
         return false;
 
+    /* try to read R128 tags */
     const char * album_gain = opus_tags_query(tags, "R128_ALBUM_GAIN", 0);
     const char * track_gain = opus_tags_query(tags, "R128_TRACK_GAIN", 0);
-    bool got_r128 = true;
+    bool has_r128_tags = (album_gain || track_gain);
 
-    /* try to read RG tags if R128 didn't work*/
-    if (!album_gain && !track_gain)
-    {
-        got_r128 = false;
+    /* try to read RG tags if R128 didn't work */
+    if (!has_r128_tags)
+    {        
         album_gain = opus_tags_query(tags, "REPLAYGAIN_ALBUM_GAIN", 0);
         track_gain = opus_tags_query(tags, "REPLAYGAIN_TRACK_GAIN", 0);        
     }
@@ -201,7 +201,7 @@ static bool update_replay_gain(OggOpusFile * opus_file,
     if (!track_gain)
         track_gain = album_gain;
 
-    if (got_r128)
+    if (has_r128_tags)
     {
         /* Q7.8 number to float .. 2^8 = 256 */
         /* EBU-R128 (-23 LUFS) to RG 2.0 (-18 LUFS) .. +5 dB */
@@ -241,6 +241,8 @@ static bool update_replay_gain(OggOpusFile * opus_file,
 
     AUDDBG("Album gain: %s (%f)\n", album_gain, rg_info->album_gain);
     AUDDBG("Track gain: %s (%f)\n", track_gain, rg_info->track_gain);
+    AUDDBG("Album peak: %s (%f)\n", album_peak, rg_info->album_peak);
+    AUDDBG("Track peak: %s (%f)\n", track_peak, rg_info->track_peak);
 
     return true;
 }
