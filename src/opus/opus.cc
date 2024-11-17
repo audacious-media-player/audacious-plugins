@@ -179,8 +179,17 @@ static bool update_replay_gain(OggOpusFile * opus_file,
     if (!tags)
         return false;
 
+    /* try to read R128 tags */
     const char * album_gain = opus_tags_query(tags, "R128_ALBUM_GAIN", 0);
     const char * track_gain = opus_tags_query(tags, "R128_TRACK_GAIN", 0);
+    bool has_r128_tags = (album_gain || track_gain);
+
+    /* try to read RG tags if R128 didn't work */
+    if (!has_r128_tags)
+    {
+        album_gain = opus_tags_query(tags, "REPLAYGAIN_ALBUM_GAIN", 0);
+        track_gain = opus_tags_query(tags, "REPLAYGAIN_TRACK_GAIN", 0);
+    }
 
     /* stop if we have no gain values */
     if (!album_gain && !track_gain)
@@ -192,14 +201,46 @@ static bool update_replay_gain(OggOpusFile * opus_file,
     if (!track_gain)
         track_gain = album_gain;
 
-    /* Q7.8 number to float .. 2^8 = 256 */
-    /* EBU-R128 (-23 LUFS) to RG 2.0 (-18 LUFS) .. +5 dB */
-    rg_info->album_gain = str_to_double(album_gain) / 256 + 5.0f;
-    rg_info->track_gain = str_to_double(track_gain) / 256 + 5.0f;
+    if (has_r128_tags)
+    {
+        /* Q7.8 number to float .. 2^8 = 256 */
+        /* EBU-R128 (-23 LUFS) to RG 2.0 (-18 LUFS) .. +5 dB */
+        rg_info->album_gain = str_to_double(album_gain) / 256 + 5.0f;
+        rg_info->track_gain = str_to_double(track_gain) / 256 + 5.0f;
 
-    /* Opus intentionally does not support peak tags */
-    rg_info->album_peak = 0;
-    rg_info->track_peak = 0;
+        /* Opus intentionally does not support peak tags */
+        rg_info->album_peak = 0;
+        rg_info->track_peak = 0;
+    }
+    else
+    {
+        rg_info->album_gain = str_to_double(album_gain);
+        rg_info->track_gain = str_to_double(track_gain);
+
+        const char * album_peak = opus_tags_query(tags, "REPLAYGAIN_ALBUM_PEAK", 0);
+        const char * track_peak = opus_tags_query(tags, "REPLAYGAIN_TRACK_PEAK", 0);
+
+        if (!album_peak && !track_peak)
+        {
+            /* okay, we have gain but no peak values */
+            rg_info->album_peak = 0;
+            rg_info->track_peak = 0;
+        }
+        else
+        {
+            /* fill in missing values if we can */
+            if (!album_peak)
+                album_peak = track_peak;
+            if (!track_peak)
+                track_peak = album_peak;
+
+            rg_info->album_peak = str_to_double(album_peak);
+            rg_info->track_peak = str_to_double(track_peak);
+        }
+
+        AUDDBG("Album peak: %s (%f)\n", album_peak, rg_info->album_peak);
+        AUDDBG("Track peak: %s (%f)\n", track_peak, rg_info->track_peak);
+    }
 
     AUDDBG("Album gain: %s (%f)\n", album_gain, rg_info->album_gain);
     AUDDBG("Track gain: %s (%f)\n", track_gain, rg_info->track_gain);
