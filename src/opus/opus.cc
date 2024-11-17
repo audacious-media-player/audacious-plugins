@@ -186,9 +186,9 @@ static bool update_replay_gain(OggOpusFile * opus_file,
 
     /* try to read RG tags if R128 didn't work */
     if (!has_r128_tags)
-    {        
+    {
         album_gain = opus_tags_query(tags, "REPLAYGAIN_ALBUM_GAIN", 0);
-        track_gain = opus_tags_query(tags, "REPLAYGAIN_TRACK_GAIN", 0);        
+        track_gain = opus_tags_query(tags, "REPLAYGAIN_TRACK_GAIN", 0);
     }
 
     /* stop if we have no gain values */
