@@ -39,6 +39,7 @@
 #include <QBoxLayout>
 #include <QCloseEvent>
 #include <QDockWidget>
+#include <QGuiApplication>
 #include <QLabel>
 #include <QMenuBar>
 #include <QSettings>
@@ -224,14 +225,12 @@ MainWindow::MainWindow()
     m_playlist_tabs->currentPlaylistWidget()->setFocus(Qt::OtherFocusReason);
 
 #ifdef Q_OS_MAC
-    QObject::connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, [](auto state){
-        if (state == Qt::ApplicationState::ApplicationActive) {
+    QObject::connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, [](auto state) {
+        if (state == Qt::ApplicationState::ApplicationActive)
             aud_ui_show(true);
-        }
     });
 #endif
 }
-
 
 MainWindow::~MainWindow()
 {
