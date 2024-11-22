@@ -21,7 +21,6 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/interface.h>
 #include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
 
@@ -39,7 +38,6 @@
 #include <QBoxLayout>
 #include <QCloseEvent>
 #include <QDockWidget>
-#include <QGuiApplication>
 #include <QLabel>
 #include <QMenuBar>
 #include <QSettings>
@@ -223,13 +221,6 @@ MainWindow::MainWindow()
 
     /* set initial keyboard focus on the playlist */
     m_playlist_tabs->currentPlaylistWidget()->setFocus(Qt::OtherFocusReason);
-
-#ifdef Q_OS_MAC
-    QObject::connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, [](auto state) {
-        if (state == Qt::ApplicationState::ApplicationActive)
-            aud_ui_show(true);
-    });
-#endif
 }
 
 MainWindow::~MainWindow()
