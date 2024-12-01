@@ -32,10 +32,6 @@
 #include <libaudcore/ringbuf.h>
 #include <libaudcore/runtime.h>
 
-#if !PW_CHECK_VERSION(0, 3, 33)
-#define PW_KEY_NODE_RATE "node.rate"
-#endif
-
 #if !PW_CHECK_VERSION(0, 3, 50)
 static inline int pw_stream_get_time_n(struct pw_stream * stream,
                                        struct pw_time * time, size_t size)
