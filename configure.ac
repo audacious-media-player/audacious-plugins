@@ -390,7 +390,7 @@ ENABLE_PLUGIN_WITH_DEP(pipewire,
     auto,
     OUTPUT,
     PIPEWIRE,
-    libpipewire-0.3 >= 0.3.26 libspa-0.2 >= 0.2)
+    libpipewire-0.3 >= 0.3.33 libspa-0.2 >= 0.2)
 
 ENABLE_PLUGIN_WITH_DEP(pulse,
     PulseAudio output,

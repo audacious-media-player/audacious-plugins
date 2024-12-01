@@ -1,4 +1,4 @@
-pipewire_dep = dependency('libpipewire-0.3', version: '>= 0.3.26', required: false)
+pipewire_dep = dependency('libpipewire-0.3', version: '>= 0.3.33', required: false)
 spa_dep = dependency('libspa-0.2', version: '>= 0.2', required: false)
 have_pipewire = pipewire_dep.found() and spa_dep.found()
 
