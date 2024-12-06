@@ -43,7 +43,7 @@ struct Loudness
         float weight = 0;
     };
 
-    static constexpr float get_weight(const float seconds)
+    static float get_weight(const float seconds)
     {
         const float relative = aud::clamp(seconds, perception_peak_seconds,
                                           perception_center_seconds) /
