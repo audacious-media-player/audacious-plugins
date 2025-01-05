@@ -147,6 +147,7 @@ if conf.has('USE_GTK')
   subdir('search-tool')
   subdir('skins')
   subdir('statusicon')
+  subdir('vumeter')
 
   if get_option('aosd')
     subdir('aosd')
