@@ -23,12 +23,9 @@
 
 #include <gtk/gtk.h>
 
-#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudgui/gtk-compat.h>
-#include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #define MAX_BANDS   (256)
@@ -76,7 +73,7 @@ void CairoSpectrum::render_freq (const float * freq)
         bars[i] -= aud::max (0, VIS_FALLOFF - delay[i]);
 
         if (delay[i])
-            delay[i]--;
+            delay[i] --;
 
         if (x > bars[i])
         {
@@ -103,17 +100,17 @@ static void draw_background (GtkWidget * area, cairo_t * cr)
     GtkAllocation alloc;
     gtk_widget_get_allocation (area, & alloc);
 
-    cairo_rectangle(cr, 0, 0, alloc.width, alloc.height);
+    cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
     cairo_fill (cr);
 }
 
-static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
+static void draw_visualizer (GtkWidget * widget, cairo_t * cr)
 {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
     auto & c = (gtk_widget_get_style (widget))->base[GTK_STATE_SELECTED];
 G_GNUC_END_IGNORE_DEPRECATIONS
 
-    for (int i = 0; i < bands; i++)
+    for (int i = 0; i < bands; i ++)
     {
         int x = ((width / bands) * i) + 2;
         float r, g, b;
@@ -130,44 +127,39 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
 {
     width = event->width;
     height = event->height;
-    gtk_widget_queue_draw(widget);
+    gtk_widget_queue_draw (widget);
 
     bands = width / 10;
-    bands = aud::clamp(bands, 12, MAX_BANDS);
+    bands = aud::clamp (bands, 12, MAX_BANDS);
     Visualizer::compute_log_xscale (xscale, bands);
 
     return true;
 }
 
 #ifdef USE_GTK3
-static gboolean draw_event (GtkWidget * widget, cairo_t * cr, GtkWidget * area)
+static gboolean draw_event (GtkWidget * widget, cairo_t * cr)
 {
-    draw_background (widget, cr);
-    draw_visualizer (widget, cr);
-
-    return true;
-}
 #else
 static gboolean draw_event (GtkWidget * widget)
 {
     cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
-
+#endif
     draw_background (widget, cr);
     draw_visualizer (widget, cr);
-
+#ifndef USE_GTK3
     cairo_destroy (cr);
+#endif
     return true;
 }
-#endif
 
 void * CairoSpectrum::get_gtk_widget ()
 {
-    GtkWidget *area = gtk_drawing_area_new();
+    GtkWidget * area = gtk_drawing_area_new ();
     spect_widget = area;
 
-    g_signal_connect(area, AUDGUI_DRAW_SIGNAL, (GCallback) draw_event, nullptr);
-    g_signal_connect(area, "configure-event", (GCallback) configure_event, nullptr);
-    g_signal_connect(area, "destroy", (GCallback) gtk_widget_destroyed, & spect_widget);
+    g_signal_connect (area, AUDGUI_DRAW_SIGNAL, (GCallback) draw_event, nullptr);
+    g_signal_connect (area, "configure-event", (GCallback) configure_event, nullptr);
+    g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed, & spect_widget);
 
     GtkWidget * frame = gtk_frame_new (nullptr);
     gtk_frame_set_shadow_type ((GtkFrame *) frame, GTK_SHADOW_IN);
