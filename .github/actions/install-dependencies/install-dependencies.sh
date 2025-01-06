@@ -6,8 +6,8 @@
 # ubuntu-22.04:      Qt 5 + GTK 3
 # ubuntu-24.04:      Qt 6 + GTK 3
 # Windows:           Qt 6 + GTK 2
-# macOS (Autotools): Qt 5 - GTK
-# macOS (Meson):     Qt 6 - GTK
+# macOS 13:          Qt 5 - GTK
+# macOS 15:          Qt 6 - GTK
 
 os=$(tr '[:upper:]' '[:lower:]' <<< "$1")
 build_system=$(tr '[:upper:]' '[:lower:]' <<< "$2")
@@ -58,11 +58,19 @@ case "$os" in
     fi
     ;;
 
+  macos-13)
+    if [ "$build_system" = 'meson' ]; then
+      brew install $macos_packages qt@5 meson
+    else
+      brew install $macos_packages qt@5 automake
+    fi
+    ;;
+
   macos*)
     if [ "$build_system" = 'meson' ]; then
       brew install $macos_packages qt@6 meson
     else
-      brew install $macos_packages qt@5 automake
+      brew install $macos_packages qt@6 automake libiconv
     fi
     ;;
 
