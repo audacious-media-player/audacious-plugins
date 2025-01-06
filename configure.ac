@@ -873,6 +873,7 @@ if test "x$USE_GTK" = "xyes" ; then
     echo "  Search Tool:                            yes"
     echo "  Spectrum Analyzer (2D):                 yes"
     echo "  Status Icon:                            yes"
+    echo "  VU Meter:                               yes"
     echo "  X11 Global Hotkeys:                     $have_hotkey"
     echo "  X11 On-Screen Display (aosd):           $have_aosd"
     echo

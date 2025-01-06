@@ -300,9 +300,7 @@ static void draw_legend (cairo_t * cr)
 
         if (i > -30)
             draw_vu_legend_line (cr, i - 0.5, 0.5);
-        else if (i > -40) {}
-            // no-op
-        else if (i >= -60)
+        else if (i <= -40)
             i -= 1;
     }
 

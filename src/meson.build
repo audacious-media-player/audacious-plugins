@@ -147,7 +147,6 @@ if conf.has('USE_GTK')
   subdir('search-tool')
   subdir('skins')
   subdir('statusicon')
-  subdir('vumeter')
 
   if get_option('aosd')
     subdir('aosd')
@@ -159,6 +158,10 @@ if conf.has('USE_GTK')
 
   if get_option('hotkey')
     subdir('hotkey')
+  endif
+
+  if get_option('vumeter')
+    subdir('vumeter')
   endif
 endif
 

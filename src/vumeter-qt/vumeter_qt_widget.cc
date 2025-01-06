@@ -36,40 +36,24 @@ float VUMeterQtWidget::get_db_on_range(float db)
 
 float VUMeterQtWidget::get_db_factor(float db)
 {
-    float factor = 0.0f;
+    float factor;
 
     if (db < -db_range)
-    {
         factor = 0.0f;
-    }
     else if (db < -60.0f)
-    {
         factor = (db + db_range) * 2.5f/(db_range-60);
-    }
     else if (db < -50.0f)
-    {
         factor = (db + 60.0f) * 0.5f + 2.5f;
-    }
     else if (db < -40.0f)
-    {
         factor = (db + 50.0f) * 0.75f + 7.5f;
-    }
     else if (db < -30.0f)
-    {
         factor = (db + 40.0f) * 1.5f + 15.0f;
-    }
     else if (db < -20.0f)
-    {
         factor = (db + 30.0f) * 2.0f + 30.0f;
-    }
     else if (db < 0.0f)
-    {
         factor = (db + 20.0f) * 2.5f + 50.0f;
-    }
     else
-    {
         factor = 100.0f;
-    }
 
     return factor / 100.0f;
 }
@@ -86,7 +70,7 @@ float VUMeterQtWidget::get_y_from_db(float db)
 
 void VUMeterQtWidget::render_multi_pcm (const float * pcm, int channels)
 {
-    nchannels = aud::clamp(channels, 0, max_channels);
+    nchannels = aud::clamp(channels, 1, max_channels);
 
     float * peaks = new float[nchannels];
     for (int channel = 0; channel < nchannels; channel++)
@@ -105,9 +89,7 @@ void VUMeterQtWidget::render_multi_pcm (const float * pcm, int channels)
     for (int i = 0; i < nchannels; i++)
     {
         float n = peaks[i];
-
-        float db = 20 * log10f(n);
-        db = get_db_on_range(db);
+        float db = get_db_on_range(20 * log10f(n));
 
         if (db > channels_db_level[i])
         {
@@ -195,20 +177,12 @@ void VUMeterQtWidget::draw_vu_legend(QPainter & p)
     p.setPen(pen);
     for (int i = 0; i >= -60; i--)
     {
+        draw_vu_legend_line(p, i);
+
         if (i > -30)
-        {
-            draw_vu_legend_line(p, i);
             draw_vu_legend_line(p, i - 0.5, 0.5);
-        }
-        else if (i > -40)
-        {
-            draw_vu_legend_line(p, i);
-        }
-        else if (i >= -60)
-        {
-            draw_vu_legend_line(p, i);
+        else if (i <= -40)
             i -= 1;
-        }
     }
     draw_vu_legend_line(p, -db_range);
 }
@@ -310,17 +284,11 @@ void VUMeterQtWidget::draw_visualizer(QPainter & p)
 QString VUMeterQtWidget::format_db(const float val)
 {
     if (val > -10)
-    {
         return QString::number(val, 'f', 1);
-    }
     else if (val > -db_range)
-    {
         return QString::number(val, 'f', 0);
-    }
     else
-    {
         return QString("-inf");
-    }
 }
 
 float VUMeterQtWidget::get_bar_width(int channels)
