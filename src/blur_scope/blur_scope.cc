@@ -130,20 +130,12 @@ void BlurScope::draw_to_cairo (cairo_t * cr)
 
 void BlurScope::draw ()
 {
+#ifdef USE_GTK3
+    if (area)
+        gtk_widget_queue_draw (area);
+#else
     if (! area || ! gtk_widget_get_window (area))
         return;
-
-#if GTK_CHECK_VERSION(3, 22, 0)
-    GdkWindow * window = gtk_widget_get_window (area);
-    cairo_region_t * cr_region = cairo_region_create ();
-
-    GdkDrawingContext * drawing_context = gdk_window_begin_draw_frame (window, cr_region);
-    cairo_t * cr = gdk_drawing_context_get_cairo_context (drawing_context);
-    draw_to_cairo (cr);
-    gdk_window_end_draw_frame (window, drawing_context);
-
-    cairo_region_destroy (cr_region);
-#else
     cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (area));
     draw_to_cairo (cr);
     cairo_destroy (cr);
