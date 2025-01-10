@@ -136,7 +136,7 @@ MainWindow::MainWindow()
       m_center_layout(audqt::make_vbox(m_center_widget, 0)),
       m_infobar(new InfoBar(this)), m_statusbar(new StatusBar(this)),
       m_search_tool(aud_plugin_lookup_basename("search-tool-qt")),
-      m_playback_history(aud_plugin_lookup_basename("playback-history")),
+      m_playback_history(aud_plugin_lookup_basename("playback-history-qt")),
       m_playlist_manager(aud_plugin_lookup_basename("playlist-manager-qt"))
 {
     auto slider = new TimeSlider(this);
@@ -424,7 +424,7 @@ void MainWindow::add_dock_item(audqt::DockItem * item)
 
     if (!restoreDockWidget(w))
     {
-        if (!strcmp(item->id(), "playback-history"))
+        if (!strcmp(item->id(), "playback-history-qt"))
             addDockWidget(Qt::BottomDockWidgetArea, w);
         else
         {

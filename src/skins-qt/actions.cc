@@ -76,11 +76,11 @@ void action_play_location ()
 
 void action_playback_history()
 {
-    PluginHandle * manager = aud_plugin_lookup_basename("playback-history");
-    if (manager)
+    PluginHandle * history = aud_plugin_lookup_basename ("playback-history-qt");
+    if (history)
     {
-        aud_plugin_enable(manager, true);
-        focus_plugin_window(manager);
+        aud_plugin_enable (history, true);
+        focus_plugin_window (history);
     }
 }
 
