@@ -136,6 +136,7 @@ MainWindow::MainWindow()
       m_center_layout(audqt::make_vbox(m_center_widget, 0)),
       m_infobar(new InfoBar(this)), m_statusbar(new StatusBar(this)),
       m_search_tool(aud_plugin_lookup_basename("search-tool-qt")),
+      m_playback_history(aud_plugin_lookup_basename("playback-history-qt")),
       m_playlist_manager(aud_plugin_lookup_basename("playlist-manager-qt"))
 {
     auto slider = new TimeSlider(this);
@@ -423,10 +424,15 @@ void MainWindow::add_dock_item(audqt::DockItem * item)
 
     if (!restoreDockWidget(w))
     {
-        addDockWidget(Qt::LeftDockWidgetArea, w);
-        // only the search tool is docked by default
-        if (strcmp(item->id(), "search-tool-qt"))
-            w->setFloating(true);
+        if (!strcmp(item->id(), "playback-history-qt"))
+            addDockWidget(Qt::BottomDockWidgetArea, w);
+        else
+        {
+            addDockWidget(Qt::LeftDockWidgetArea, w);
+            // only the search tool and playback history are docked by default
+            if (strcmp(item->id(), "search-tool-qt"))
+                w->setFloating(true);
+        }
     }
 
     /* workaround for QTBUG-89144 */

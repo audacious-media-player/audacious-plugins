@@ -74,25 +74,22 @@ void action_play_folder ()
 void action_play_location ()
     { audqt::urlopener_show (true); }
 
-void action_playlist_manager ()
+static void enable_and_focus_plugin (const char * name)
 {
-    PluginHandle * manager = aud_plugin_lookup_basename ("playlist-manager-qt");
-    if (manager)
+    PluginHandle * plugin = aud_plugin_lookup_basename (name);
+    if (plugin)
     {
-        aud_plugin_enable (manager, true);
-        focus_plugin_window (manager);
+        aud_plugin_enable (plugin, true);
+        focus_plugin_window (plugin);
     }
 }
 
+void action_playback_history ()
+    { enable_and_focus_plugin ("playback-history-qt"); }
+void action_playlist_manager ()
+    { enable_and_focus_plugin ("playlist-manager-qt"); }
 void action_search_tool ()
-{
-    PluginHandle * search = aud_plugin_lookup_basename ("search-tool-qt");
-    if (search)
-    {
-        aud_plugin_enable (search, true);
-        focus_plugin_window (search);
-    }
-}
+    { enable_and_focus_plugin ("search-tool-qt"); }
 
 void action_playlist_rename ()
     { audqt::playlist_show_rename (ACTIVE); }

@@ -81,6 +81,10 @@ static void configure_visualizations()
 }
 
 static void show_search_tool() { hook_call("qtui show search tool", nullptr); }
+static void show_playback_history()
+{
+    hook_call("qtui show playback history", nullptr);
+}
 static void show_playlist_manager()
 {
     hook_call("qtui show playlist manager", nullptr);
@@ -161,6 +165,9 @@ QMenuBar * qtui_build_menubar(QWidget * parent)
         audqt::MenuCommand(
             {N_("Song _Info ..."), "dialog-information", "Ctrl+I"},
             audqt::infowin_show_current),
+        audqt::MenuCommand(
+            {N_("Playback Histor_y ..."), nullptr, "Ctrl+H"},
+            show_playback_history),
         audqt::MenuSep(),
         audqt::MenuCommand({N_("Set Repeat Point _A"), nullptr, "Ctrl+1"},
                            set_ab_repeat_a),

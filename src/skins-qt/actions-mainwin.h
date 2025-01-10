@@ -25,6 +25,7 @@ void action_ab_set ();
 void action_play_file ();
 void action_play_folder ();
 void action_play_location ();
+void action_playback_history ();
 void action_playlist_manager ();
 void action_search_tool ();
 
