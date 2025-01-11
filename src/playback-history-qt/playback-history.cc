@@ -26,6 +26,7 @@
 #include <QMetaObject>
 #include <QPointer>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
@@ -42,14 +43,6 @@ static const char * printable(const String & str)
 {
     // Printing nullptr invokes undefined behavior.
     return str ? str : "";
-}
-
-static QString toQString(const String & str)
-{
-    // The explicit cast to const char * is necessary to compile with Qt 6,
-    // because otherwise two implicit conversions would be necessary: from
-    // String to const char * and from const char * to QByteArrayView.
-    return QString::fromUtf8(static_cast<const char *>(str));
 }
 
 class PlaybackHistory : public GeneralPlugin
@@ -525,17 +518,19 @@ QVariant HistoryModel::data(const QModelIndex & index, int role) const
     switch (role)
     {
     case Qt::DisplayRole:
-        return toQString(m_entries[pos].text());
+        return QString(m_entries[pos].text());
     case Qt::ToolTipRole:
     {
         const auto & entry = m_entries[pos];
         // The playlist title and entry number are rarely interesting and
         // therefore shown only in the tooltip.
-        return QString::fromUtf8(_("<b>%1:</b> %2<br><b>Playlist:</b> %3"
-                                   "<br><b>Entry Number:</b> %4"))
-            .arg(QString::fromUtf8(entry.translatedTextDesignation()),
-                 toQString(entry.text()), toQString(entry.playlistTitle()),
-                 QString::number(entry.entryNumber()));
+        return QString(
+            str_printf(_("<b>%s:</b> %s<br><b>Playlist:</b> %s<br>"
+                         "<b>Entry Number:</b> %d"),
+                       entry.translatedTextDesignation(),
+                       static_cast<const char *>(entry.text()),
+                       static_cast<const char *>(entry.playlistTitle()),
+                       entry.entryNumber()));
     }
     case Qt::FontRole:
         if (pos == m_playingPosition)
