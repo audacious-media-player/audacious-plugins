@@ -166,7 +166,7 @@ QMenuBar * qtui_build_menubar(QWidget * parent)
             {N_("Song _Info ..."), "dialog-information", "Ctrl+I"},
             audqt::infowin_show_current),
         audqt::MenuCommand(
-            {N_("Playback Histor_y ..."), nullptr, "Ctrl+H"},
+            {N_("Playback Histor_y ..."), "view-history", "Ctrl+H"},
             show_playback_history),
         audqt::MenuSep(),
         audqt::MenuCommand({N_("Set Repeat Point _A"), nullptr, "Ctrl+1"},
