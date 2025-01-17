@@ -313,7 +313,7 @@ QMenu * qtui_build_pl_menu(QWidget * parent)
         audqt::MenuCommand({N_("_Paste"), "edit-paste", "Ctrl+V"}, pl_paste),
         audqt::MenuCommand({N_("Paste at _End"), "edit-paste", "Shift+Ctrl+V"},
                            pl_paste_end),
-        audqt::MenuCommand({N_("Select _All"), "edit-select-all"},
+        audqt::MenuCommand({N_("Select _All"), "edit-select-all", "Ctrl+A"},
                            pl_select_all),
         audqt::MenuSep(),
         audqt::MenuSub({N_("_Services")}, services_menu_pl)};
