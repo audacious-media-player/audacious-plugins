@@ -330,7 +330,7 @@ static void create_tab (int list_idx, Playlist list)
 
     GtkWidget * hbox = audgui_hbox_new (2);
 
-    GtkWidget * label = gtk_label_new ("");
+    GtkWidget * label = gtk_label_new (nullptr);
     update_tab_label ((GtkLabel *) label, list);
     gtk_box_pack_start ((GtkBox *) hbox, label, false, false, 0);
 
