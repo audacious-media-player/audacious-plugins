@@ -118,10 +118,6 @@ if conf.has('USE_QT')
     subdir('qthotkey')
   endif
 
-  if get_option('moonstone')
-    subdir('moonstone')
-  endif
-
   if get_option('qtaudio')
     subdir('qtaudio')
   endif
