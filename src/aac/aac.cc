@@ -49,7 +49,7 @@ const char * const AACDecoder::mimes[] = {"audio/aac", nullptr};
 /// \param num (out) number of audio frames in this ADTS frame
 /// \return size of the ADTS frame in bytes
 /// aac_parse_frames needs a buffer at least 8 bytes long
-int aac_parse_frame (unsigned char * buf, int *srate, int *num)
+static int aac_parse_frame (unsigned char * buf, int * srate, int * num)
 {
     int i = 0, sr, fl = 0;
     static int srates[] =
