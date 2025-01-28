@@ -167,7 +167,7 @@ bool Metronome::play (const char * filename, VFSFile &)
 
     if (!metronom_get_cp(filename, &pmetronom, desc))
     {
-        AUDERR ("Invalid metronom tact parameters in URI %s", filename);
+        AUDERR ("Invalid metronom tact parameters in URI %s\n", filename);
         return false;
     }
 

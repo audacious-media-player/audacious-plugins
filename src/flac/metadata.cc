@@ -377,7 +377,7 @@ bool FLACng::read_tag (const char * filename, VFSFile & file, Tuple & tuple, Ind
 
                     if (metadata->data.picture.type == FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER)
                     {
-                        AUDDBG("FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER found.");
+                        AUDDBG("FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER found.\n");
                         image->insert((const char *) metadata->data.picture.data, 0,
                          metadata->data.picture.data_length);
                     }

@@ -520,7 +520,7 @@ void CoreAudioPlugin::close_audio ()
 
         OSStatus err = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, nullptr, sizeof hog_mode, & hog_mode);
         if (err != noErr)
-            AUDWARN ("Failed to release device from exclusive mode, continuing anyway...");
+            AUDWARN ("Failed to release device from exclusive mode, continuing anyway...\n");
 
         is_exclusive = false;
     }

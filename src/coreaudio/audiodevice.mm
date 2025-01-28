@@ -363,7 +363,7 @@ void AudioDevice::Init(AudioPropertyListenerProc lProc)
                               minNominalSR, maxNominalSR, currentNominalSR);
                     }
                 } else {
-                    AUDINFO ("Using audio device %u \"%s\", %u sample rates in %lu range(s); [%g,%g] %s; current sample rate %gHz",
+                    AUDINFO ("Using audio device %u \"%s\", %u sample rates in %lu range(s); [%g,%g] %s; current sample rate %gHz\n",
                           mID, GetName(), nominalSampleRates, propsize / sizeof(AudioValueRange),
                           minNominalSR, maxNominalSR, (discreteSampleRateList) ? "" : "continuous", currentNominalSR);
                 }
@@ -440,7 +440,7 @@ AudioDevice::~AudioDevice()
         if (nominalSampleRateList) {
             delete nominalSampleRateList;
         }
-        AUDDBG ("AudioDevice %s (%u) released", mDevName, devId);
+        AUDDBG ("AudioDevice %s (%u) released\n", mDevName, devId);
     }
 }
 
@@ -554,7 +554,7 @@ OSStatus AudioDevice::SetNominalSampleRate(Float64 sampleRate, bool force)
     }
     listenerSilentFor = 3;
     Float64 sampleRate2 = ClosestNominalSampleRate(sampleRate);
-    AUDINFO ("SetNominalSampleRate(%g) setting rate to %gHz", sampleRate, sampleRate2);
+    AUDINFO ("SetNominalSampleRate(%g) setting rate to %gHz\n", sampleRate, sampleRate2);
     if (sampleRate2 != currentNominalSR || force) {
         AudioObjectPropertyAddress theAddress = { kAudioDevicePropertyNominalSampleRate,
                                                   mForInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput,

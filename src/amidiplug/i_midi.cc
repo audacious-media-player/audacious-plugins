@@ -31,7 +31,7 @@
 
 #define WARNANDBREAK(...) { AUDERR (__VA_ARGS__); break; }
 
-#define ERRMSG_MIDITRACK() { AUDERR ("%s: invalid MIDI data (offset %#x)", \
+#define ERRMSG_MIDITRACK() { AUDERR ("%s: invalid MIDI data (offset %#x)\n", \
     (const char *) file_name, file_offset); return false; }
 
 

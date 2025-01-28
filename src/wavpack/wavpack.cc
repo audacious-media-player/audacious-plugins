@@ -131,7 +131,7 @@ bool WavpackPlugin::play (const char * filename, VFSFile & file)
 
     if (! wv_attach (filename, file, wvc_input, & ctx, nullptr, OPEN_TAGS | OPEN_WVC))
     {
-        AUDERR ("Error opening Wavpack file '%s'.", filename);
+        AUDERR ("Error opening Wavpack file '%s'.\n", filename);
         return false;
     }
 
