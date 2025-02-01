@@ -312,6 +312,17 @@ bool PipeWireOutput::init()
 {
     aud_config_set_defaults("pipewire", defaults);
     pw_init(nullptr, nullptr);
+
+    /* try to create main loop to test if pipewire is available */
+    auto loop = pw_thread_loop_new("pipewire-main-loop", nullptr);
+    if (!loop)
+    {
+        AUDERR("PipeWireOutput: unable to create main loop\n");
+        pw_deinit();
+        return false;
+    }
+
+    pw_thread_loop_destroy(loop);
     return true;
 }
 
