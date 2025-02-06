@@ -19,6 +19,7 @@
 
 #include <math.h>
 #include <stdint.h>
+#include <string.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
