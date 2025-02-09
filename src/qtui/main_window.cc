@@ -361,7 +361,7 @@ void MainWindow::title_change_cb()
     auto title = aud_drct_get_title();
     if (title)
     {
-        set_title(QString(title) + QString(" - Audacious"));
+        set_title(QString("%1 - %2").arg((const char *)title, _("Audacious")));
         m_buffering_timer.stop();
     }
 }
@@ -397,7 +397,7 @@ void MainWindow::pause_cb()
 
 void MainWindow::playback_stop_cb()
 {
-    set_title("Audacious");
+    set_title(_("Audacious"));
     m_buffering_timer.stop();
 
     update_play_pause();
