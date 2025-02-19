@@ -161,9 +161,9 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
 
             if (same_file)
             {
-                int end = (int64_t) track_get_start (next) * 1000 / 75;
-                tuple.set_int (Tuple::EndTime, end);
-                tuple.set_int (Tuple::Length, end - begin);
+                int len = (int64_t) track_get_length (cur) * 1000 / 75;
+                tuple.set_int (Tuple::EndTime, begin + len);
+                tuple.set_int (Tuple::Length, len);
             }
             else
             {
