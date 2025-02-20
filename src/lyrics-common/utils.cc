@@ -29,6 +29,9 @@ LyricProvider * remote_source ()
     if (! strcmp (source, "chartlyrics.com"))
         return & chart_lyrics_provider;
 
+    if (! strcmp (source, "lrclib.net"))
+        return & lrclib_provider;
+
     if (! strcmp (source, "lyrics.ovh"))
         return & lyrics_ovh_provider;
 

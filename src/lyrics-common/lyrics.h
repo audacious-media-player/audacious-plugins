@@ -43,7 +43,8 @@ struct LyricsState {
         Embedded,
         Local,
         LyricsOVH,
-        ChartLyrics
+        ChartLyrics,
+        LrcLib
     } source = None;
 
     bool error = false;
@@ -109,6 +110,21 @@ private:
 };
 
 
+// LrcLibProvider provides a strategy for fetching lyrics using the LRCLIB API.
+class LrcLibProvider : public LyricProvider
+{
+public:
+    LrcLibProvider () {};
+
+    bool match (LyricsState state) override;
+    void fetch (LyricsState state) override;
+    String edit_uri (LyricsState state) override { return String (); }
+
+private:
+    const char * m_base_url = "https://lrclib.net";
+};
+
+
 // LyricsOVHProvider provides a strategy for fetching lyrics using the
 // lyrics.ovh search engine.
 class LyricsOVHProvider : public LyricProvider
@@ -127,6 +143,7 @@ private:
 
 extern FileProvider file_provider;
 extern ChartLyricsProvider chart_lyrics_provider;
+extern LrcLibProvider lrclib_provider;
 extern LyricsOVHProvider lyrics_ovh_provider;
 LyricProvider * remote_source ();
 

@@ -6,6 +6,7 @@ lyrics_deps = [audacious_dep, audgui_dep, gtk_dep, glib_dep, json_glib_dep, xml_
 lyrics_src = [
   '../lyrics-common/chart_lyrics_provider.cc',
   '../lyrics-common/file_provider.cc',
+  '../lyrics-common/lrclib_provider.cc',
   '../lyrics-common/lyrics_ovh_provider.cc',
   '../lyrics-common/utils.cc',
   'lyrics-gtk.cc'

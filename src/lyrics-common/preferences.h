@@ -42,6 +42,7 @@ static const char * const defaults[] = {
 static const ComboItem remote_sources[] = {
     ComboItem (N_("Nowhere"), "nowhere"),
     ComboItem ("chartlyrics.com", "chartlyrics.com"),
+    ComboItem ("lrclib.net", "lrclib.net"),
     ComboItem ("lyrics.ovh", "lyrics.ovh")
 };
 

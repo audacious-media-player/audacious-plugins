@@ -2,6 +2,7 @@ PLUGIN = lyrics-qt${PLUGIN_SUFFIX}
 
 SRCS = ../lyrics-common/chart_lyrics_provider.cc \
        ../lyrics-common/file_provider.cc \
+       ../lyrics-common/lrclib_provider.cc \
        ../lyrics-common/lyrics_ovh_provider.cc \
        ../lyrics-common/utils.cc \
        lyrics-qt.cc
