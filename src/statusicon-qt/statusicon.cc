@@ -77,8 +77,14 @@ enum {
     SI_CFG_SCROLL_ACTION_SKIP
 };
 
+enum {
+    SI_CFG_MIDDLE_CLICK_ACTION_PAUSE,
+    SI_CFG_MIDDLE_CLICK_ACTION_NEXT
+};
+
 const char * const StatusIcon::defaults[] = {
     "scroll_action", aud::numeric_string<SI_CFG_SCROLL_ACTION_VOLUME>::str,
+    "middle_click_action", aud::numeric_string<SI_CFG_MIDDLE_CLICK_ACTION_PAUSE>::str,
     "disable_popup", "FALSE",
     "close_to_tray", "FALSE",
     "reverse_scroll", "FALSE",
@@ -93,6 +99,13 @@ const PreferencesWidget StatusIcon::widgets[] = {
     WidgetRadio (N_("Change playing song"),
         WidgetInt ("statusicon", "scroll_action"),
         {SI_CFG_SCROLL_ACTION_SKIP}),
+    WidgetLabel (N_("<b>Middle Click Action</b>")),
+    WidgetRadio (N_("Pause/Resume playback"),
+        WidgetInt ("statusicon", "middle_click_action"),
+        {SI_CFG_MIDDLE_CLICK_ACTION_PAUSE}),
+    WidgetRadio (N_("Play next song"),
+        WidgetInt ("statusicon", "middle_click_action"),
+        {SI_CFG_MIDDLE_CLICK_ACTION_NEXT}),
     WidgetLabel (N_("<b>Other Settings</b>")),
     WidgetCheck (N_("Disable the popup window"),
         WidgetBool ("statusicon", "disable_popup")),
@@ -242,22 +255,30 @@ void StatusIcon::window_closed (void * data, void * user_data)
     }
 }
 
-void StatusIcon::activate(QSystemTrayIcon::ActivationReason reason)
+void StatusIcon::activate (QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason)
     {
 #ifndef Q_OS_MAC
-        case QSystemTrayIcon::Trigger:
-            toggle_aud_ui ();
-            break;
+    case QSystemTrayIcon::Trigger:
+        toggle_aud_ui ();
+        break;
 #endif
-
-        case QSystemTrayIcon::MiddleClick:
+    case QSystemTrayIcon::MiddleClick:
+        switch (aud_get_int ("statusicon", "middle_click_action"))
+        {
+        case SI_CFG_MIDDLE_CLICK_ACTION_PAUSE:
             aud_drct_pause ();
             break;
 
-        default:
+        case SI_CFG_MIDDLE_CLICK_ACTION_NEXT:
+            aud_drct_pl_next ();
             break;
+        }
+        break;
+
+    default:
+        break;
     }
 }
 
