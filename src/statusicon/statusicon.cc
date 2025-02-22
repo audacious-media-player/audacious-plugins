@@ -67,6 +67,11 @@ enum {
     SI_CFG_SCROLL_ACTION_SKIP
 };
 
+enum {
+    SI_CFG_MIDDLE_CLICK_ACTION_PAUSE,
+    SI_CFG_MIDDLE_CLICK_ACTION_NEXT
+};
+
 static void si_popup_timer_start (GtkStatusIcon * icon);
 static void si_popup_timer_stop (GtkStatusIcon * icon);
 static void si_menu_show (GtkStatusIcon * icon, GdkEventButton * event);
@@ -74,6 +79,7 @@ static void si_popup_hide (GtkStatusIcon * icon);
 
 const char * const StatusIcon::defaults[] = {
     "scroll_action", aud::numeric_string<SI_CFG_SCROLL_ACTION_VOLUME>::str,
+    "middle_click_action", aud::numeric_string<SI_CFG_MIDDLE_CLICK_ACTION_PAUSE>::str,
     "disable_popup", "FALSE",
     "close_to_tray", "FALSE",
     "reverse_scroll", "FALSE",
@@ -118,7 +124,15 @@ static gboolean si_cb_btpress (GtkStatusIcon * icon, GdkEventButton * event)
           break;
 
       case 2:
-          aud_drct_pause ();
+          switch (aud_get_int ("statusicon", "middle_click_action"))
+          {
+            case SI_CFG_MIDDLE_CLICK_ACTION_PAUSE:
+                aud_drct_pause ();
+                break;
+            case SI_CFG_MIDDLE_CLICK_ACTION_NEXT:
+                aud_drct_pl_next ();
+                break;
+          }
           break;
 
       case 3:
@@ -155,23 +169,23 @@ static gboolean si_cb_btscroll (GtkStatusIcon * icon, GdkEventScroll * event)
 
       case GDK_SCROLL_DOWN:
       {
-        switch (aud_get_int ("statusicon", "scroll_action"))
-        {
-          case SI_CFG_SCROLL_ACTION_VOLUME:
-              si_volume_change (-aud_get_int ("volume_delta"));
-              break;
-          case SI_CFG_SCROLL_ACTION_SKIP:
-              if (aud_get_bool ("statusicon", "reverse_scroll"))
-                  aud_drct_pl_prev ();
-              else
-                  aud_drct_pl_next ();
-              break;
-        }
-        break;
+          switch (aud_get_int ("statusicon", "scroll_action"))
+          {
+            case SI_CFG_SCROLL_ACTION_VOLUME:
+                si_volume_change (-aud_get_int ("volume_delta"));
+                break;
+            case SI_CFG_SCROLL_ACTION_SKIP:
+                if (aud_get_bool ("statusicon", "reverse_scroll"))
+                    aud_drct_pl_prev ();
+                else
+                    aud_drct_pl_next ();
+                break;
+          }
+          break;
       }
 
       default:
-        break;
+          break;
     }
 
     return false;
@@ -388,6 +402,13 @@ const PreferencesWidget StatusIcon::widgets[] = {
     WidgetRadio (N_("Change playing song"),
         WidgetInt ("statusicon", "scroll_action"),
         {SI_CFG_SCROLL_ACTION_SKIP}),
+    WidgetLabel (N_("<b>Middle Click Action</b>")),
+    WidgetRadio (N_("Pause/Resume playback"),
+        WidgetInt ("statusicon", "middle_click_action"),
+        {SI_CFG_MIDDLE_CLICK_ACTION_PAUSE}),
+    WidgetRadio (N_("Play next song"),
+        WidgetInt ("statusicon", "middle_click_action"),
+        {SI_CFG_MIDDLE_CLICK_ACTION_NEXT}),
     WidgetLabel (N_("<b>Other Settings</b>")),
     WidgetCheck (N_("Disable the popup window"),
         WidgetBool ("statusicon", "disable_popup")),
