@@ -59,9 +59,12 @@ public:
     void set_colors ();
     void clear ();
     void render (const unsigned char * data);
+    typedef bool (* PressCB) (QMouseEvent *);
+    void on_press (PressCB callback) { press = callback; }
 
 private:
     void draw (QPainter & cr);
+    virtual bool button_press (QMouseEvent * event);
 
     uint32_t m_voice_color[256];
     uint32_t m_voice_color_fire[256];
@@ -69,8 +72,15 @@ private:
     uint32_t m_pattern_fill[76 * 2];
 
     bool m_active, m_voiceprint_advance;
-    float m_data[75], m_peak[75], m_peak_speed[75];
+    float m_data[75] = {0};
+    float m_peak[75] = {0};
+    float m_data2[75] = {0};
+    float m_datafalloff[75] = {0};
+    float m_data4[75] = {0};
+    float m_truepeaks[75] = {0};
+    int top, bottom, last_h;
     unsigned char m_voiceprint_data[76 * 16];
+    PressCB press = nullptr;
 };
 
 class SmallVis : public Widget
@@ -79,12 +89,22 @@ public:
     SmallVis ();
     void clear ();
     void render (const unsigned char * data);
+    typedef bool (* PressCB) (QMouseEvent *);
+    void on_press (PressCB callback) { press = callback; }
 
 private:
     void draw (QPainter & cr);
+    virtual bool button_press (QMouseEvent * event);
 
     bool m_active;
-    int m_data[75];
+    float m_data[75] = {0};
+    float m_peak[75] = {0};
+    float m_data2[75] = {0};
+    float m_datafalloff[75] = {0};
+    float m_data4[75] = {0};
+    float m_truepeaks[75] = {0};
+    int top, bottom, last_h;
+    PressCB press = nullptr;
 };
 
 #endif
