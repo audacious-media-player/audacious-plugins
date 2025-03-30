@@ -38,6 +38,7 @@ class SIDPlugin : public InputPlugin
 {
 public:
     static const char *const exts[];
+    static const char *const mimes[];
 
     static constexpr PluginInfo info = {
         N_("SID Player"),
@@ -48,6 +49,7 @@ public:
 
     constexpr SIDPlugin() : InputPlugin(info, InputInfo(FlagSubtunes)
         .with_priority(5) /* medium priority (slow to initialize) */
+        .with_mimes (mimes)
         .with_exts(exts)) {}
 
     bool init()
@@ -284,3 +286,4 @@ bool SIDPlugin::read_tag(const char *filename, VFSFile &file, Tuple &tuple, Inde
  * Plugin header
  */
 const char *const SIDPlugin::exts[] = { "sid", "psid", nullptr };
+const char *const SIDPlugin::mimes[] = { "audio/prs.sid", nullptr };
