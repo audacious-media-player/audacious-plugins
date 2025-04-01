@@ -666,6 +666,9 @@ const char * const FFaudio::exts[] = {
     /* atrac3 */
     "aa3", "oma",
 
+    /* Advanced Audio Coding */
+    "aac",
+
     /* MPEG 2/4 AC3 */
     "ac3",
 
@@ -708,6 +711,7 @@ const char * const FFaudio::exts[] = {
 
 const char * const FFaudio::mimes[] = {
     "application/ogg",
+    "audio/aac",
     "audio/mp4",
     "audio/ogg",
     nullptr
