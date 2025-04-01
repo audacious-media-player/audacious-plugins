@@ -690,9 +690,6 @@ const char * const FFaudio::exts[] = {
     /* Handle OGG streams (FLAC/Vorbis etc.) */
     "ogg", "oga",
 
-    /* Opus */
-    "opus",
-
     /* Speex */
     "spx",
 
