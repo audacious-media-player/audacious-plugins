@@ -2,7 +2,6 @@
 
 # --- Dependency configuration ---
 #
-# ubuntu-20.04:      Qt 5 + GTK 2
 # ubuntu-22.04:      Qt 5 + GTK 3
 # ubuntu-24.04:      Qt 6 + GTK 3
 # Windows:           Qt 6 + GTK 2
@@ -32,7 +31,7 @@ ubuntu_qt5_packages='libqt5opengl5-dev libqt5svg5-dev libqt5x11extras5-dev
 ubuntu_qt6_packages='qt6-base-dev qt6-multimedia-dev qt6-svg-dev'
 
 macos_packages='adplug faad2 ffmpeg libbs2b libcue libmms libmodplug libnotify
-                libopenmpt libsamplerate libsoxr neon opusfile sdl2 wavpack'
+                libopenmpt libsamplerate libsoxr neon opusfile sdl3 wavpack'
 
 case "$os" in
   ubuntu-22.04)

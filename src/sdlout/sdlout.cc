@@ -22,8 +22,11 @@
 #include <string.h>
 #include <sys/time.h>
 
+#if HAVE_LIBSDL3
+#include <SDL3/SDL.h>
+#else
 #include <SDL.h>
-#include <SDL_audio.h>
+#endif
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
@@ -73,9 +76,10 @@ const char SDLOutput::about[] =
     "Copyright 2010 John Lindgren");
 
 const char * const SDLOutput::defaults[] = {
- "vol_left", "100",
- "vol_right", "100",
- nullptr};
+    "vol_left", "100",
+    "vol_right", "100",
+    nullptr
+};
 
 static pthread_mutex_t sdlout_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t sdlout_cond = PTHREAD_COND_INITIALIZER;
@@ -83,6 +87,10 @@ static pthread_cond_t sdlout_cond = PTHREAD_COND_INITIALIZER;
 static volatile int vol_left, vol_right;
 
 static int sdlout_chan, sdlout_rate;
+
+#if HAVE_LIBSDL3
+static SDL_AudioStream * sdlout_stream;
+#endif
 
 static RingBuf<unsigned char> buffer;
 
@@ -98,7 +106,11 @@ bool SDLOutput::init ()
     vol_left = aud_get_int ("sdlout", "vol_left");
     vol_right = aud_get_int ("sdlout", "vol_right");
 
+#if HAVE_LIBSDL3
+    if (! SDL_Init (SDL_INIT_AUDIO))
+#else
     if (SDL_Init (SDL_INIT_AUDIO) < 0)
+#endif
     {
         AUDERR ("Failed to init SDL: %s.\n", SDL_GetError ());
         return false;
@@ -186,6 +198,23 @@ static void callback (void * user, unsigned char * buf, int len)
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
+#if HAVE_LIBSDL3
+static void SDLCALL sdl3_callback (void * user, SDL_AudioStream * stream,
+                                   int additional_amount, int total_amount)
+{
+    if (additional_amount <= 0)
+        return;
+
+    Uint8 * data = SDL_stack_alloc (Uint8, additional_amount);
+    if (! data)
+        return;
+
+    callback (user, data, additional_amount);
+    SDL_PutAudioStreamData (stream, data, additional_amount);
+    SDL_stack_free (data);
+}
+#endif
+
 bool SDLOutput::open_audio (int format, int rate, int chan, String & error)
 {
     if (format != FMT_S16_NE)
@@ -205,8 +234,14 @@ bool SDLOutput::open_audio (int format, int rate, int chan, String & error)
     prebuffer_flag = true;
     paused_flag = false;
 
-    SDL_AudioSpec spec = {0};
+#if HAVE_LIBSDL3
+    const SDL_AudioSpec spec = { SDL_AUDIO_S16, chan, rate };
+    sdlout_stream = SDL_OpenAudioDeviceStream (
+     SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, & spec, sdl3_callback, nullptr);
 
+    if (! sdlout_stream)
+#else
+    SDL_AudioSpec spec = {0};
     spec.freq = rate;
     spec.format = AUDIO_S16;
     spec.channels = chan;
@@ -214,6 +249,7 @@ bool SDLOutput::open_audio (int format, int rate, int chan, String & error)
     spec.callback = callback;
 
     if (SDL_OpenAudio (& spec, nullptr) < 0)
+#endif
     {
         error = String (str_printf
          ("SDL error: Failed to open audio stream: %s.", SDL_GetError ()));
@@ -227,7 +263,14 @@ bool SDLOutput::open_audio (int format, int rate, int chan, String & error)
 void SDLOutput::close_audio ()
 {
     AUDDBG ("Closing audio.\n");
+
+#if HAVE_LIBSDL3
+    SDL_DestroyAudioStream (sdlout_stream);
+    sdlout_stream = nullptr;
+#else
     SDL_CloseAudio ();
+#endif
+
     buffer.destroy ();
 }
 
@@ -239,7 +282,12 @@ static void check_started ()
     AUDDBG ("Starting playback.\n");
     prebuffer_flag = false;
     block_delay = 0;
+
+#if HAVE_LIBSDL3
+    SDL_ResumeAudioStreamDevice (sdlout_stream);
+#else
     SDL_PauseAudio (0);
+#endif
 }
 
 void SDLOutput::period_wait ()
@@ -311,7 +359,16 @@ void SDLOutput::pause (bool pause)
     paused_flag = pause;
 
     if (! prebuffer_flag)
+    {
+#if HAVE_LIBSDL3
+        if (pause)
+            SDL_PauseAudioStreamDevice (sdlout_stream);
+        else
+            SDL_ResumeAudioStreamDevice (sdlout_stream);
+#else
         SDL_PauseAudio (pause);
+#endif
+    }
 
     pthread_cond_broadcast (& sdlout_cond); /* wake up period wait */
     pthread_mutex_unlock (& sdlout_mutex);

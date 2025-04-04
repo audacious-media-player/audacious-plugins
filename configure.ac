@@ -622,17 +622,23 @@ dnl SDL Output
 dnl ==========
 
 AC_ARG_WITH(libsdl,
- AS_HELP_STRING([--with-libsdl=1,2], [select which SDL version to use (default=auto)]),
+ AS_HELP_STRING([--with-libsdl=2,3], [select which SDL version to use (default=auto)]),
  [with_libsdl=$withval], [with_libsdl=auto])
 
 test_sdlout () {
-    if test "x$with_libsdl" = "x1"; then
-        PKG_CHECK_MODULES(SDL, sdl >= 1.2.11, have_sdlout=yes, have_sdlout=no)
-    elif test "x$with_libsdl" = "x2"; then
+    if test "x$with_libsdl" = "x2"; then
         PKG_CHECK_MODULES(SDL, sdl2 >= 2.0, have_sdlout=yes, have_sdlout=no)
+    elif test "x$with_libsdl" = "x3"; then
+        PKG_CHECK_MODULES(SDL, sdl3 >= 3.2.0, [
+            AC_DEFINE(HAVE_LIBSDL3, 1, [Define if libsdl version is >= 3.2.0])
+            have_sdlout=yes
+        ], [have_sdlout=no])
     else
-        PKG_CHECK_MODULES(SDL, sdl2 >= 2.0, have_sdlout=yes, [
-            PKG_CHECK_MODULES(SDL, sdl >= 1.2.11, have_sdlout=yes, have_sdlout=no)
+        PKG_CHECK_MODULES(SDL, sdl3 >= 3.2.0, [
+            AC_DEFINE(HAVE_LIBSDL3, 1, [Define if libsdl version is >= 3.2.0])
+            have_sdlout=yes
+        ], [
+            PKG_CHECK_MODULES(SDL, sdl2 >= 2.0, have_sdlout=yes, have_sdlout=no)
         ])
     fi
 }

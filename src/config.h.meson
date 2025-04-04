@@ -30,6 +30,7 @@
 
 #mesondefine HAVE_LIBCDDB
 #mesondefine HAVE_LIBCUE2
+#mesondefine HAVE_LIBSDL3
 #mesondefine HAVE_SNDIO_1_9
 
 #mesondefine HAVE_ADPLUG_NEMUOPL_H
