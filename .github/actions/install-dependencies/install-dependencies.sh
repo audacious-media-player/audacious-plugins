@@ -52,17 +52,17 @@ case "$os" in
 
   macos-13)
     if [ "$build_system" = 'meson' ]; then
-      brew install $macos_packages qt@5 meson
+      brew update -q && brew install $macos_packages qt@5 meson
     else
-      brew install $macos_packages qt@5 automake
+      brew update -q && brew install $macos_packages qt@5 automake
     fi
     ;;
 
   macos*)
     if [ "$build_system" = 'meson' ]; then
-      brew install $macos_packages qt@6 meson
+      brew update -q && brew install $macos_packages qt@6 meson
     else
-      brew install $macos_packages qt@6 automake libiconv
+      brew update -q && brew install $macos_packages qt@6 automake libiconv
     fi
     ;;
 
