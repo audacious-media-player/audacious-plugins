@@ -107,6 +107,10 @@ bool SDLOutput::init ()
     vol_right = aud_get_int ("sdlout", "vol_right");
 
 #if HAVE_LIBSDL3
+    SDL_SetHint (SDL_HINT_APP_NAME, _("Audacious"));
+    SDL_SetHint (SDL_HINT_AUDIO_DEVICE_APP_ICON_NAME, "audacious");
+    SDL_SetHint (SDL_HINT_AUDIO_DEVICE_STREAM_NAME, _("Playback"));
+
     if (! SDL_Init (SDL_INIT_AUDIO))
 #else
     if (SDL_Init (SDL_INIT_AUDIO) < 0)
