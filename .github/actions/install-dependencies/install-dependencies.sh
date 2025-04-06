@@ -2,7 +2,7 @@
 
 # --- Dependency configuration ---
 #
-# ubuntu-22.04:      Qt 5 + GTK 3
+# ubuntu-22.04:      Qt 5 + GTK 2
 # ubuntu-24.04:      Qt 6 + GTK 3
 # Windows:           Qt 6 + GTK 2
 # macOS 13:          Qt 5 - GTK

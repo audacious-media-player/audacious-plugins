@@ -1,5 +1,4 @@
-opusfile_dep = dependency('opusfile', version: '>= 0.4', required: false)
-
+opusfile_dep = dependency('opusfile', version: '>= 0.4', required: get_option('opus'))
 have_opus = opusfile_dep.found()
 
 

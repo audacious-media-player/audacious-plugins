@@ -1,7 +1,7 @@
-ogg_dep = dependency('ogg', version: '>= 1.0', required: false)
-vorbis_dep = dependency('vorbis', version: '>= 1.0', required: false)
-vorbisenc_dep = dependency('vorbisenc', version: '>= 1.0', required: false)
-vorbisfile_dep = dependency('vorbisfile', version: '>= 1.0', required: false)
+ogg_dep = dependency('ogg', version: '>= 1.0', required: get_option('vorbis'))
+vorbis_dep = dependency('vorbis', version: '>= 1.0', required: get_option('vorbis'))
+vorbisenc_dep = dependency('vorbisenc', version: '>= 1.0', required: get_option('vorbis'))
+vorbisfile_dep = dependency('vorbisfile', version: '>= 1.0', required: get_option('vorbis'))
 
 have_vorbis = ogg_dep.found() and \
               vorbis_dep.found() and \

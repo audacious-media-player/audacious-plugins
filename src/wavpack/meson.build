@@ -1,4 +1,4 @@
-wavpack_dep = dependency('wavpack', version: '>= 4.31', required: false)
+wavpack_dep = dependency('wavpack', version: '>= 4.31', required: get_option('wavpack'))
 have_wavpack = wavpack_dep.found()
 
 

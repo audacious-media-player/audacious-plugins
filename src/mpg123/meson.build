@@ -1,4 +1,4 @@
-mpg123_dep = dependency('libmpg123', version: '>= 1.12', required: false)
+mpg123_dep = dependency('libmpg123', version: '>= 1.12', required: get_option('mpg123'))
 have_mpg123 = mpg123_dep.found()
 
 

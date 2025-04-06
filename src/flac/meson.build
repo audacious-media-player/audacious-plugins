@@ -1,4 +1,4 @@
-flac_dep = dependency('flac', version: '>= 1.2.1', required: false)
+flac_dep = dependency('flac', version: '>= 1.2.1', required: get_option('flac'))
 have_flac = flac_dep.found()
 
 
