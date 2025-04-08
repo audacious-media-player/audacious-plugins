@@ -56,14 +56,14 @@ static const PreferencesWidget split_elements[] = {
     WidgetEntry (N_("Chars to split on:"), WidgetString (CFG_SECTION, "split-on-chars")),
     WidgetCheck (N_("Further truncate those on chars"),
         WidgetBool (CFG_SECTION, "truncate-fields-on-chars")),
-    WidgetTable ({{truncate_elements}}, WIDGET_CHILD)
+    WidgetBox ({{truncate_elements}}, WIDGET_CHILD)
 };
 
 static const PreferencesWidget widgets[] = {
     WidgetLabel (N_("<b>General</b>")),
     WidgetCheck (N_("Split title into artist and title on chars"),
         WidgetBool (CFG_SECTION, "split-title-on-chars")),
-    WidgetTable ({{split_elements}}, WIDGET_CHILD),
+    WidgetBox ({{split_elements}}, WIDGET_CHILD),
     WidgetLabel (N_("<b>Sources</b>")),
     WidgetCheck (N_("Use embedded lyrics (from Lyrics tag)"),
         WidgetBool (CFG_SECTION, "use-embedded")),
