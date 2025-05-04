@@ -35,23 +35,20 @@
 
 void MenuRow::draw (QPainter & cr)
 {
+    if (m_pushed)
+        skin_draw_pixbuf (cr, SKIN_TITLEBAR, 304, 0, 0, 0, 8, 43);
+    else
+        skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 0, 0, 0, 8, 43);
+
     if (m_selected == MENUROW_NONE)
-    {
-        if (m_pushed)
-            skin_draw_pixbuf (cr, SKIN_TITLEBAR, 304, 0, 0, 0, 8, 43);
-        else
-            skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 0, 0, 0, 8, 43);
-    }
+        skin_draw_pixbuf (cr, SKIN_TITLEBAR, 304, 0, 0, 0, 8, 43);
     else
         skin_draw_pixbuf (cr, SKIN_TITLEBAR, 304 + 8 * (m_selected - 1), 44, 0, 0, 8, 43);
 
-    if (m_pushed)
-    {
-        if (aud_get_bool ("skins", "always_on_top"))
-            skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 54, 0, 10, 8, 8);
-        if (aud_get_bool ("skins", "double_size"))
-            skin_draw_pixbuf (cr, SKIN_TITLEBAR, 328, 70, 0, 26, 8, 8);
-    }
+    if (aud_get_bool ("skins", "always_on_top"))
+        skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 54, 0, 10, 8, 8);
+    if (aud_get_bool ("skins", "double_size"))
+        skin_draw_pixbuf (cr, SKIN_TITLEBAR, 328, 70, 0, 26, 8, 8);
 }
 
 static MenuRowItem menurow_find_selected (int x, int y)
