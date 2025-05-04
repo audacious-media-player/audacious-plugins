@@ -1,0 +1,5 @@
+[Text]
+Normal=#00FF00
+Current=#FFFFFF
+NormalBG=#000000
+SelectedBG=#0000C6
