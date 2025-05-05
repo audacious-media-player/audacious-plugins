@@ -230,7 +230,8 @@ void TextBox::render ()
 
         if (! m_two_way)
         {
-            StringBuf temp = str_printf ("%s --- ", text);
+            StringBuf temp = str_printf ("%s %s ", text,
+             config.mainwin_use_bitmapfont ? "***" : "---");
 
             if (m_font)
                 render_vector (temp);

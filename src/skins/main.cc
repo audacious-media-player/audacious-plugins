@@ -889,7 +889,10 @@ void mainwin_mr_change (MenuRowItem i)
             mainwin_lock_info_text (_("File Info Box"));
             break;
         case MENUROW_SCALE:
-            mainwin_lock_info_text (_("Double Size"));
+            if (aud_get_bool ("skins", "double_size"))
+                mainwin_lock_info_text (_("Disable 'Double Size'"));
+            else
+                mainwin_lock_info_text (_("Enable 'Double Size'"));
             break;
         case MENUROW_VISUALIZATION:
             mainwin_lock_info_text (_("Visualizations"));
