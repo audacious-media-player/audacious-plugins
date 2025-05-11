@@ -55,6 +55,23 @@ DATA = Skins/Classic/balance.png	\
        Skins/Default/titlebar.png	\
        Skins/Default/viscolor.txt	\
        Skins/Default/volume.png		\
+       Skins/Glare/balance.png		\
+       Skins/Glare/cbuttons.png		\
+       Skins/Glare/eq_ex.png		\
+       Skins/Glare/eqmain.png		\
+       Skins/Glare/main.png			\
+       Skins/Glare/monoster.png		\
+       Skins/Glare/nums_ex.png		\
+       Skins/Glare/playpaus.png		\
+       Skins/Glare/pledit.png		\
+       Skins/Glare/pledit.txt		\
+       Skins/Glare/posbar.png		\
+       Skins/Glare/readme.txt		\
+       Skins/Glare/shufrep.png		\
+       Skins/Glare/text.png			\
+       Skins/Glare/titlebar.png		\
+       Skins/Glare/viscolor.txt		\
+       Skins/Glare/volume.png		\
        Skins/Ivory/balance.png		\
        Skins/Ivory/cbuttons.png		\
        Skins/Ivory/eq_ex.png		\
