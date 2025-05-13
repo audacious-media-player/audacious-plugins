@@ -37,9 +37,12 @@
 class MPRIS2Plugin : public GeneralPlugin
 {
 public:
+    static const char about[];
+
     static constexpr PluginInfo info = {
         N_("MPRIS 2 Server"),
-        PACKAGE
+        PACKAGE,
+        about
     };
 
     constexpr MPRIS2Plugin () : GeneralPlugin (info, true) {}
@@ -354,6 +357,14 @@ static gboolean stop_cb (MprisMediaPlayer2Player * object, GDBusMethodInvocation
     mpris_media_player2_player_complete_stop (object, call);
     return true;
 }
+
+const char MPRIS2Plugin::about[] =
+ N_("MPRIS Plugin for Audacious\n"
+    "Copyright 2011-2012 John Lindgren\n\n"
+    "This plugin implements the MPRIS D-Bus interface. It provides a mechanism "
+    "for querying track information and basic playback control. Necessary for "
+    "media controls in desktop environments, Bluetooth headsets and tools like "
+    "\"playerctl\".");
 
 void MPRIS2Plugin::cleanup ()
 {
