@@ -107,8 +107,8 @@ static MPRIS2Metadata last_meta;
 
 /* Helper functions to handle GVariant creation */
 
-void add_g_variant_str (const char * key_str, const char * value_str,
-                       Index<GVariant *> & elems)
+static void add_g_variant_str (const char * key_str, const char * value_str,
+                               Index<GVariant *> & elems)
 {
     if (! value_str || strlen (value_str) == 0)
         return;
@@ -119,8 +119,8 @@ void add_g_variant_str (const char * key_str, const char * value_str,
     elems.append (g_variant_new_dict_entry (key, var));
 }
 
-void add_g_variant_int32 (const char * key_str, int32_t value_int,
-                         Index<GVariant *> & elems)
+static void add_g_variant_int32 (const char * key_str, int32_t value_int,
+                                 Index<GVariant *> & elems)
 {
     GVariant * key = g_variant_new_string (key_str);
     GVariant * num = g_variant_new_int32 (value_int);
@@ -128,8 +128,8 @@ void add_g_variant_int32 (const char * key_str, int32_t value_int,
     elems.append (g_variant_new_dict_entry (key, var));
 }
 
-void add_g_variant_int64 (const char * key_str, int64_t value_int,
-                         Index<GVariant *> & elems)
+static void add_g_variant_int64 (const char * key_str, int64_t value_int,
+                                 Index<GVariant *> & elems)
 {
     GVariant * key = g_variant_new_string (key_str);
     GVariant * num = g_variant_new_int64 (value_int);
@@ -137,9 +137,9 @@ void add_g_variant_int64 (const char * key_str, int64_t value_int,
     elems.append (g_variant_new_dict_entry (key, var));
 }
 
-void add_g_variant_arr_str (const char * key_str,
-                           ArrayRef<String> value_arr,
-                           Index<GVariant *> & elems)
+static void add_g_variant_arr_str (const char * key_str,
+                                   ArrayRef<String> value_arr,
+                                   Index<GVariant *> & elems)
 {
     if (value_arr.len == 0)
         return;
@@ -374,7 +374,7 @@ void MPRIS2Plugin::cleanup ()
     g_object_unref (object_core);
     g_object_unref (object_player);
 
-    last_meta = MPRIS2Metadata();
+    last_meta = MPRIS2Metadata ();
 }
 
 bool MPRIS2Plugin::init ()
