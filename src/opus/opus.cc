@@ -87,7 +87,7 @@ static OggOpusFile * open_file(VFSFile & file)
         opcb_read,
         stream ? nullptr : opcb_seek,
         stream ? nullptr : opcb_tell,
-        nullptr,
+        nullptr
     };
 
     return op_open_callbacks(&file, &opus_callbacks, nullptr, 0, nullptr);
@@ -269,10 +269,7 @@ bool OpusPlugin::read_tag(const char * filename, VFSFile & file, Tuple & tuple,
 {
     OggOpusFile * opus_file = open_file(file);
     if (!opus_file)
-    {
-        AUDERR("Failed to open Opus file\n");
         return false;
-    }
 
     m_channels = op_channel_count(opus_file, -1);
     m_bitrate = op_bitrate(opus_file, -1);
@@ -296,10 +293,7 @@ bool OpusPlugin::play(const char * filename, VFSFile & file)
 {
     OggOpusFile * opus_file = open_file(file);
     if (!opus_file)
-    {
-        AUDERR("Failed to open Opus file\n");
         return false;
-    }
 
     Index<float> pcm_out;
     pcm_out.resize(pcm_bufsize * sizeof(float));
