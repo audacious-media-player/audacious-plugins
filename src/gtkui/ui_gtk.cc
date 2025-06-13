@@ -136,7 +136,7 @@ static GtkWidget * window, * vbox_outer, * menu_box, * menu, * toolbar, * vbox,
  * infoarea, * statusbar;
 static GtkToolItem * menu_button, * search_button, * button_open, * button_add,
  * button_prev, * button_play, * button_stop, * button_next, * button_record,
- * button_repeat, * button_shuffle;
+ * button_no_playlist_advance, * button_repeat, * button_shuffle;
 static GtkWidget * slider, * label_time;
 static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
@@ -694,10 +694,17 @@ static void update_toggles (void * = nullptr, void * = nullptr)
 
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_record,
      aud_get_bool ("record"));
+    gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_no_playlist_advance,
+     aud_get_bool ("no_playlist_advance"));
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_repeat,
      aud_get_bool ("repeat"));
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_shuffle,
      aud_get_bool ("shuffle"));
+}
+
+static void toggle_no_playlist_advance (GtkToggleToolButton * button)
+{
+    aud_set_bool ("no_playlist_advance", gtk_toggle_tool_button_get_active (button));
 }
 
 static void toggle_repeat (GtkToggleToolButton * button)
@@ -916,6 +923,9 @@ bool GtkUI::init ()
     gtk_toolbar_insert ((GtkToolbar *) toolbar, gtk_separator_tool_item_new (), -1);
 
     /* repeat and shuffle buttons */
+    button_no_playlist_advance = toggle_button_new ("no-playlist-advance",
+     _("No Playlist Advance"), toggle_no_playlist_advance, aud_get_bool ("no-playlist-advance"));
+    gtk_toolbar_insert ((GtkToolbar *) toolbar, button_no_playlist_advance, -1);
     button_repeat = toggle_button_new ("media-playlist-repeat", _("Repeat"),
      toggle_repeat, aud_get_bool ("repeat"));
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_repeat, -1);
