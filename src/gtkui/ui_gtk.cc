@@ -136,7 +136,7 @@ static GtkWidget * window, * vbox_outer, * menu_box, * menu, * toolbar, * vbox,
  * infoarea, * statusbar;
 static GtkToolItem * menu_button, * search_button, * button_open, * button_add,
  * button_prev, * button_play, * button_stop, * button_next, * button_record,
- * button_repeat, * button_shuffle;
+ * button_repeat, * button_shuffle, * button_no_playlist_advance;
 static GtkWidget * slider, * label_time;
 static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
@@ -473,6 +473,9 @@ static void set_menu_button_icon (GtkToolButton * button)
 
 static void set_button_icon (GtkToolButton * button, const char * icon)
 {
+    if (! icon)
+        return;
+
     if (aud_get_bool ("gtkui", "symbolic_icons"))
         gtk_tool_button_set_icon_name (button, str_concat ({icon, "-symbolic"}));
     else
@@ -698,6 +701,8 @@ static void update_toggles (void * = nullptr, void * = nullptr)
      aud_get_bool ("repeat"));
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_shuffle,
      aud_get_bool ("shuffle"));
+    gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_no_playlist_advance,
+     aud_get_bool ("no_playlist_advance"));
 }
 
 static void toggle_repeat (GtkToggleToolButton * button)
@@ -708,6 +713,11 @@ static void toggle_repeat (GtkToggleToolButton * button)
 static void toggle_shuffle (GtkToggleToolButton * button)
 {
     aud_set_bool ("shuffle", gtk_toggle_tool_button_get_active (button));
+}
+
+static void toggle_no_playlist_advance (GtkToggleToolButton * button)
+{
+    aud_set_bool ("no_playlist_advance", gtk_toggle_tool_button_get_active (button));
 }
 
 static void toggle_record (GtkToggleToolButton * button)
@@ -754,8 +764,9 @@ static void ui_hooks_associate ()
     hook_associate ("playlist position", pl_notebook_set_position, nullptr);
     hook_associate ("enable record", update_toggles, nullptr);
     hook_associate ("set record", update_toggles, nullptr);
-    hook_associate ("set shuffle", update_toggles, nullptr);
     hook_associate ("set repeat", update_toggles, nullptr);
+    hook_associate ("set shuffle", update_toggles, nullptr);
+    hook_associate ("set no_playlist_advance", update_toggles, nullptr);
     hook_associate ("set step_size", (HookFunction) update_step_size, nullptr);
     hook_associate ("set volume_delta", (HookFunction) update_volume_delta, nullptr);
     hook_associate ("config save", (HookFunction) config_save, nullptr);
@@ -775,8 +786,9 @@ static void ui_hooks_disassociate ()
     hook_dissociate ("playlist position", pl_notebook_set_position);
     hook_dissociate ("enable record", update_toggles);
     hook_dissociate ("set record", update_toggles);
-    hook_dissociate ("set shuffle", update_toggles);
     hook_dissociate ("set repeat", update_toggles);
+    hook_dissociate ("set shuffle", update_toggles);
+    hook_dissociate ("set no_playlist_advance", update_toggles);
     hook_dissociate ("set step_size", (HookFunction) update_step_size);
     hook_dissociate ("set volume_delta", (HookFunction) update_volume_delta);
     hook_dissociate ("config save", (HookFunction) config_save);
@@ -922,6 +934,11 @@ bool GtkUI::init ()
     button_shuffle = toggle_button_new ("media-playlist-shuffle", _("Shuffle"),
      toggle_shuffle, aud_get_bool ("shuffle"));
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_shuffle, -1);
+
+    button_no_playlist_advance = toggle_button_new (nullptr, _("No Playlist Advance"),
+     toggle_no_playlist_advance, aud_get_bool ("no_playlist_advance"));
+    gtk_tool_button_set_label ((GtkToolButton *) button_no_playlist_advance, "①");
+    gtk_toolbar_insert ((GtkToolbar *) toolbar, button_no_playlist_advance, -1);
 
     /* volume button */
     GtkToolItem * boxitem2 = gtk_tool_item_new ();
