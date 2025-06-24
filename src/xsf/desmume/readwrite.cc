@@ -33,7 +33,7 @@ int read32le(uint32_t *Bufo, EMUFILE *fp)
 #ifdef LOCAL_LE
 	*Bufo = buf;
 #else
-	*Bufo = ((buf & 0xFF) << 24) | ((buf & 0xFF00) << 8) | ((buf & 0xFF0000) >> 8) | ((buf & 0xFF000000) >> 24);
+	*Bufo = LE_TO_LOCAL_32(buf);
 #endif
 	return 1;
 }
