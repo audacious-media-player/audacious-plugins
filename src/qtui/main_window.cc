@@ -171,6 +171,9 @@ MainWindow::MainWindow()
         ToolBarCustom(slider->label()),
         ToolBarSeparator(),
         ToolBarAction(
+            "no-playlist-advance", N_("No Playlist Advance"), N_("No Playlist Advance"),
+            [](bool on) { aud_set_bool("no_playlist_advance", on); }, &m_no_playlist_advance_action),
+        ToolBarAction(
             "media-playlist-repeat", N_("Repeat"), N_("Repeat"),
             [](bool on) { aud_set_bool("repeat", on); }, &m_repeat_action),
         ToolBarAction(
@@ -326,6 +329,7 @@ void MainWindow::update_toggles()
     m_record_action->setVisible(aud_drct_get_record_enabled());
     m_record_action->setChecked(aud_get_bool("record"));
 
+    m_no_playlist_advance_action->setChecked(aud_get_bool("no_playlist_advance"));
     m_repeat_action->setChecked(aud_get_bool("repeat"));
     m_shuffle_action->setChecked(aud_get_bool("shuffle"));
 }
