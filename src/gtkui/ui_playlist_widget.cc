@@ -164,6 +164,17 @@ static void set_length (GValue * value, const Tuple & tuple)
         g_value_set_string (value, "");
 }
 
+static void set_filename (GValue * value, const Tuple & tuple)
+{
+    String basename = tuple.get_str (Tuple::Basename);
+    String suffix = tuple.get_str (Tuple::Suffix);
+
+    if (suffix)
+        g_value_set_string (value, str_concat ({basename ? basename : "", ".", suffix}));
+    else
+        g_value_set_string (value, basename);
+}
+
 static void get_value (void * user, int row, int column, GValue * value)
 {
     PlaylistWidgetData * data = (PlaylistWidgetData *) user;
@@ -210,7 +221,7 @@ static void get_value (void * user, int row, int column, GValue * value)
         set_length (value, tuple);
         break;
     case PW_COL_FILENAME:
-        set_string_from_tuple (value, tuple, Tuple::Basename);
+        set_filename (value, tuple);
         break;
     case PW_COL_PATH:
         set_string_from_tuple (value, tuple, Tuple::Path);
