@@ -83,6 +83,7 @@ private:
 
     QVariant alignment(int col) const;
     QString queuePos(int row) const;
+    QString filename(const Tuple & tuple) const;
 };
 
 class PlaylistProxyModel : public QSortFilterProxyModel
