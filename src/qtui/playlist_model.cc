@@ -120,15 +120,15 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
         switch (col)
         {
         case EntryNumber:
-            return QString("%1").arg(index.row() + 1);
+            return QString::number(index.row() + 1);
         case QueuePos:
             return queuePos(index.row());
         case Length:
             return QString(str_format_time(val));
         case Bitrate:
-            return QString("%1 kbit/s").arg(val);
+            return QString(str_printf(_("%d kbit/s"), val));
         default:
-            return QString("%1").arg(val);
+            return QString::number(val);
         }
 
     case Qt::FontRole:
@@ -147,7 +147,6 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
             if (m_playlist == Playlist::playing_playlist())
                 icon_name = aud_drct_get_paused() ? "media-playback-pause"
                                                   : "media-playback-start";
-
             return QIcon::fromTheme(icon_name);
         }
         else if (col == m_playing_col)
