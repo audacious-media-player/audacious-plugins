@@ -105,6 +105,9 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
         {
             tuple = m_playlist.entry_tuple(index.row(), Playlist::NoWait);
 
+            if (col == Filename)
+                return filename(tuple);
+
             switch (tuple.get_value_type(s_fields[col]))
             {
             case Tuple::Empty:
@@ -294,6 +297,19 @@ QString PlaylistModel::queuePos(int row) const
         return QString();
     else
         return QString("#%1").arg(at + 1);
+}
+
+QString PlaylistModel::filename(const Tuple & tuple) const
+{
+    String basename = tuple.get_str(Tuple::Basename);
+    String suffix = tuple.get_str(Tuple::Suffix);
+
+    if (suffix)
+        return QString("%1.%2").arg(
+            static_cast<const char *>(basename),
+            static_cast<const char *>(suffix));
+
+    return QString(basename);
 }
 
 /* ---------------------------------- */
