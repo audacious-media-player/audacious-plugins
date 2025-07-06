@@ -123,7 +123,7 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
         switch (col)
         {
         case EntryNumber:
-            return QString::number(index.row() + 1);
+            return QVariant(index.row() + 1);
         case QueuePos:
             return queuePos(index.row());
         case Length:
@@ -131,7 +131,7 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
         case Bitrate:
             return QString(str_printf(_("%d kbit/s"), val));
         default:
-            return QString::number(val);
+            return QVariant(val);
         }
 
     case Qt::FontRole:
