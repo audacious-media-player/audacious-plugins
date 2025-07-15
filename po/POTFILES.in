@@ -108,6 +108,7 @@ src/ladspa/plugin.cc
 src/ladspa/plugin.h
 src/lirc/lirc.cc
 src/lyrics-common/chart_lyrics_provider.cc
+src/lyrics-common/lrclib_provider.cc
 src/lyrics-common/lyrics_ovh_provider.cc
 src/lyrics-common/preferences.h
 src/lyrics-common/utils.cc
@@ -120,12 +121,6 @@ src/mms/mms.cc
 src/modplug/modplugbmp.cc
 src/modplug/modplugbmp.h
 src/modplug/plugin_main.cc
-src/moonstone/main_window.cc
-src/moonstone/moonstone.cc
-src/moonstone/playlist_header.cc
-src/moonstone/playlist_model.cc
-src/moonstone/playlist_selection.cc
-src/moonstone/playlist_tabs.cc
 src/mpg123/mpg123.cc
 src/mpris2/plugin.cc
 src/neon/neon.cc
@@ -138,6 +133,7 @@ src/opus/opus.cc
 src/oss4/oss.h
 src/oss4/plugin.cc
 src/pipewire/pipewire.cc
+src/playback-history-qt/playback-history.cc
 src/playlist-manager/playlist-manager.cc
 src/playlist-manager-qt/playlist-manager-qt.cc
 src/pls/pls.cc
@@ -216,6 +212,7 @@ src/vtx/info.cc
 src/vtx/vtx.cc
 src/vumeter-qt/vumeter_qt.cc
 src/vumeter-qt/vumeter_qt.h
+src/vumeter/vumeter.cc
 src/waveout/waveout.cc
 src/wavpack/wavpack.cc
 src/xsf/desmume/arm_instructions.cc

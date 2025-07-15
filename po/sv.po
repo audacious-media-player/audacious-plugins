@@ -7,22 +7,22 @@
 # Bo Serrander <bserrander@gmail.com>, 2013,2016
 # cb445fb3dfd1fe3c2b9f58ac5638f478, 2015-2016
 # Henrik Mattsson-Mårn <h@reglage.net>, 2015
-# Jonatan Nyberg, 2021-2022
+# Jonatan Nyberg, 2021-2022,2025
 # Jonatan Nyberg, 2018-2021
 # efef6ec5b435a041fce803c7f8af77d2_2341d43, 2017-2018
 # Josef Gottlander <josef.gottlander@gmail.com>, 2020
 # Kristoffer Grundström <lovaren@gmail.com>, 2016
 # Luna Jernberg <droidbittin@gmail.com>, 2020-2024
-# Luna Jernberg <droidbittin@gmail.com>, 2024
+# Luna Jernberg <droidbittin@gmail.com>, 2024-2025
 # Luna Jernberg <droidbittin@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2024-09-26 21:54+0200\n"
+"POT-Creation-Date: 2025-07-16 00:23+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
-"Last-Translator: Luna Jernberg <droidbittin@gmail.com>, 2024\n"
+"Last-Translator: Luna Jernberg <droidbittin@gmail.com>, 2024-2025\n"
 "Language-Team: Swedish (http://app.transifex.com/audacious/audacious/"
 "language/sv/)\n"
 "Language: sv\n"
@@ -39,26 +39,26 @@ msgstr "AAC (Raw)-avkodare"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib spelare)"
 
-#: src/adplug/adplug-xmms.cc:167 src/modplug/modplugbmp.cc:321
+#: src/adplug/adplug-xmms.cc:168 src/modplug/modplugbmp.cc:321
 #: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:204
 msgid "sequenced"
 msgstr "sekvensierad"
 
-#: src/adplug/adplug-xmms.cc:349 src/sid/xs_config.cc:61
+#: src/adplug/adplug-xmms.cc:350 src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
 msgstr "<b>Utgång</b>"
 
-#: src/adplug/adplug-xmms.cc:350
+#: src/adplug/adplug-xmms.cc:351
 msgid "OPL Emulator:"
 msgstr "OPL Emulator:"
 
-#: src/adplug/adplug-xmms.cc:353 src/amidiplug/i_configure.cc:153
+#: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:153
 #: src/console/plugin.cc:45 src/filewriter/filewriter.cc:481
 #: src/sid/xs_config.cc:65 src/xsf/plugin.cc:446
 msgid "Sample rate:"
 msgstr "Samplingsfrekvens:"
 
-#: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:155
+#: src/adplug/adplug-xmms.cc:355 src/amidiplug/i_configure.cc:155
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
 #: src/modplug/plugin_main.cc:77 src/resample/resample.cc:201
 #: src/resample/resample.cc:207 src/resample/resample.cc:211
@@ -70,13 +70,13 @@ msgstr "Samplingsfrekvens:"
 msgid "Hz"
 msgstr "Hz"
 
-#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:55
+#: src/adplug/adplug-xmms.cc:356 src/gtkui/settings.cc:55
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:85
 #: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:284
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Diverse</b>"
 
-#: src/adplug/adplug-xmms.cc:356
+#: src/adplug/adplug-xmms.cc:357
 msgid "Repeat song in endless loop"
 msgstr "Upprepa låt i ändlös slinga"
 
@@ -675,7 +675,7 @@ msgstr "x1/10 dB"
 msgid "Cut frequency:"
 msgstr "Klippfrekvens:"
 
-#: src/cairo-spectrum/cairo-spectrum.cc:42 src/qt-spectrum/qt-spectrum.cc:107
+#: src/cairo-spectrum/cairo-spectrum.cc:39 src/qt-spectrum/qt-spectrum.cc:107
 msgid "Spectrum Analyzer"
 msgstr "Spektrumanalysator"
 
@@ -836,7 +836,7 @@ msgstr "<b>Komprimering</b>"
 
 #: src/compressor/compressor.cc:46
 msgid "Center volume:"
-msgstr "Mittenvolym:"
+msgstr "Centrumvolym:"
 
 #: src/compressor/compressor.cc:49
 msgid "Dynamic range:"
@@ -889,7 +889,7 @@ msgstr "Standard låtlängd:"
 #: src/console/plugin.cc:41 src/crossfade/crossfade.cc:56
 #: src/crossfade/crossfade.cc:62 src/lirc/lirc.cc:395 src/notify/notify.cc:113
 #: src/sid/xs_config.cc:85 src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
-#: src/vumeter-qt/vumeter_qt.cc:39
+#: src/vumeter-qt/vumeter_qt.cc:39 src/vumeter/vumeter.cc:77
 msgid "seconds"
 msgstr "sekunder"
 
@@ -1443,7 +1443,7 @@ msgstr "Allmänt"
 msgid "FLAC Decoder"
 msgstr "FLAC-avkodare"
 
-#: src/flac/metadata.cc:296 src/wavpack/wavpack.cc:215
+#: src/flac/metadata.cc:296 src/wavpack/wavpack.cc:205
 msgid "lossless"
 msgstr "felfri kompression"
 
@@ -1503,13 +1503,11 @@ msgstr ""
 msgid "OpenGL Spectrum Analyzer"
 msgstr "OpenGL Spectrum Analyzer"
 
-#: src/gtkui/columns.cc:36 src/moonstone/playlist_model.cc:38
-#: src/qtui/playlist_model.cc:33
+#: src/gtkui/columns.cc:36 src/qtui/playlist_model.cc:33
 msgid "Entry Number"
 msgstr "Ingångsnummer"
 
-#: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:38
-#: src/moonstone/playlist_selection.cc:64
+#: src/gtkui/columns.cc:37 src/playback-history-qt/playback-history.cc:372
 #: src/playlist-manager/playlist-manager.cc:200
 #: src/playlist-manager-qt/playlist-manager-qt.cc:188
 #: src/qtui/playlist_model.cc:33 src/streamtuner/icecast-model.cc:120
@@ -1517,71 +1515,60 @@ msgstr "Ingångsnummer"
 msgid "Title"
 msgstr "Titel"
 
-#: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
-#: src/qtui/playlist_model.cc:33
+#: src/gtkui/columns.cc:38 src/qtui/playlist_model.cc:33
 msgid "Artist"
 msgstr "Artist"
 
-#: src/gtkui/columns.cc:39 src/moonstone/playlist_model.cc:39
-#: src/qtui/playlist_model.cc:33
+#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:33
 msgid "Year"
 msgstr "År"
 
-#: src/gtkui/columns.cc:40 src/moonstone/playlist_model.cc:39
+#: src/gtkui/columns.cc:40 src/playback-history-qt/playback-history.cc:374
+#: src/playback-history-qt/playback-history.cc:837
 #: src/qtui/playlist_model.cc:34
 msgid "Album"
 msgstr "Album"
 
-#: src/gtkui/columns.cc:41 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:34
+#: src/gtkui/columns.cc:41 src/qtui/playlist_model.cc:34
 msgid "Album Artist"
 msgstr "Albumartist"
 
-#: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:34
+#: src/gtkui/columns.cc:42 src/qtui/playlist_model.cc:34
 msgid "Track"
 msgstr "Spår"
 
-#: src/gtkui/columns.cc:43 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:34 src/streamtuner/icecast-model.cc:123
-#: src/streamtuner/shoutcast-model.cc:125
+#: src/gtkui/columns.cc:43 src/qtui/playlist_model.cc:34
+#: src/streamtuner/icecast-model.cc:123 src/streamtuner/shoutcast-model.cc:125
 #: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
 msgstr "Genre"
 
-#: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
-#: src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:44 src/qtui/playlist_model.cc:35
 msgid "Queue Position"
 msgstr "Köplats"
 
-#: src/gtkui/columns.cc:45 src/moonstone/playlist_model.cc:41
-#: src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:45 src/qtui/playlist_model.cc:35
 msgid "Length"
 msgstr "Längd"
 
-#: src/gtkui/columns.cc:46 src/moonstone/playlist_model.cc:41
-#: src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:46 src/qtui/playlist_model.cc:35
 msgid "File Path"
 msgstr "Sökväg"
 
-#: src/gtkui/columns.cc:47 src/moonstone/playlist_model.cc:42
-#: src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:47 src/qtui/playlist_model.cc:35
 msgid "File Name"
 msgstr "Filnamn"
 
-#: src/gtkui/columns.cc:48 src/moonstone/playlist_model.cc:42
-#: src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:48 src/qtui/playlist_model.cc:36
 msgid "Custom Title"
 msgstr "Anpassad titel"
 
-#: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:42
-#: src/qtui/playlist_model.cc:36 src/streamtuner/icecast-model.cc:129
-#: src/streamtuner/shoutcast-model.cc:134
+#: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:36
+#: src/streamtuner/icecast-model.cc:129 src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
 msgstr "Överföringskapacitet"
 
-#: src/gtkui/columns.cc:50 src/moonstone/playlist_model.cc:43
-#: src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:50 src/qtui/playlist_model.cc:36
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -1593,8 +1580,7 @@ msgstr "Utgivare"
 msgid "Catalog Number"
 msgstr "Katalognummer"
 
-#: src/gtkui/columns.cc:53 src/moonstone/playlist_model.cc:43
-#: src/qtui/playlist_model.cc:37
+#: src/gtkui/columns.cc:53 src/qtui/playlist_model.cc:37
 msgid "Disc"
 msgstr "Skiva"
 
@@ -1635,100 +1621,99 @@ msgstr "Avdocka"
 msgid "Disable"
 msgstr "Inaktivera"
 
-#: src/gtkui/menus.cc:79 src/qtui/menus.cc:107
-#: src/statusicon-qt/statusicon.cc:115 src/statusicon/statusicon.cc:286
+#: src/gtkui/menus.cc:79 src/qtui/menus.cc:111
+#: src/statusicon-qt/statusicon.cc:128 src/statusicon/statusicon.cc:300
 msgid "_Open Files ..."
 msgstr "_Öppna filer ..."
 
-#: src/gtkui/menus.cc:80 src/qtui/menus.cc:111
+#: src/gtkui/menus.cc:80 src/qtui/menus.cc:115
 msgid "Open _URL ..."
-msgstr "Öppna _webbadress ..."
+msgstr "Öppna _URL ..."
 
-#: src/gtkui/menus.cc:81 src/qtui/menus.cc:113
+#: src/gtkui/menus.cc:81 src/qtui/menus.cc:117
 msgid "_Add Files ..."
 msgstr "_Lägg till filer ..."
 
-#: src/gtkui/menus.cc:82 src/qtui/menus.cc:118
+#: src/gtkui/menus.cc:82 src/qtui/menus.cc:122
 msgid "Add U_RL ..."
 msgstr "Lägg till U_RL ..."
 
-#: src/gtkui/menus.cc:84 src/qtui/menus.cc:120
+#: src/gtkui/menus.cc:84 src/qtui/menus.cc:124
 msgid "Search _Library"
 msgstr "Sök i _bibliotek"
 
-#: src/gtkui/menus.cc:86 src/qtui/menus.cc:123
+#: src/gtkui/menus.cc:86 src/qtui/menus.cc:127
 msgid "A_bout ..."
 msgstr "O_m ..."
 
-#: src/gtkui/menus.cc:87 src/qtui/menus.cc:125
+#: src/gtkui/menus.cc:87 src/qtui/menus.cc:129
 msgid "_Settings ..."
 msgstr "_Inställningar ..."
 
-#: src/gtkui/menus.cc:88 src/qtui/menus.cc:131
-#: src/statusicon-qt/statusicon.cc:117 src/statusicon/statusicon.cc:288
+#: src/gtkui/menus.cc:88 src/qtui/menus.cc:135
+#: src/statusicon-qt/statusicon.cc:130 src/statusicon/statusicon.cc:302
 msgid "_Quit"
 msgstr "_Avsluta"
 
-#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:226
-#: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
+#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:226 src/qtui/menus.cc:139
 #: src/qtui/playlist_tabs.cc:331 src/search-tool-qt/search-tool-qt.cc:499
-#: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:109
-#: src/statusicon/statusicon.cc:280
+#: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:122
+#: src/statusicon/statusicon.cc:294
 msgid "_Play"
 msgstr "_Spela"
 
-#: src/gtkui/menus.cc:93 src/qtui/menus.cc:137
-#: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:281
+#: src/gtkui/menus.cc:93 src/qtui/menus.cc:141
+#: src/statusicon-qt/statusicon.cc:123 src/statusicon/statusicon.cc:295
 msgid "Paus_e"
 msgstr "Paus_a"
 
-#: src/gtkui/menus.cc:94 src/qtui/menus.cc:139
-#: src/statusicon-qt/statusicon.cc:111 src/statusicon/statusicon.cc:282
+#: src/gtkui/menus.cc:94 src/qtui/menus.cc:143
+#: src/statusicon-qt/statusicon.cc:124 src/statusicon/statusicon.cc:296
 msgid "_Stop"
 msgstr "_Stoppa"
 
-#: src/gtkui/menus.cc:95 src/qtui/menus.cc:141
-#: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:283
+#: src/gtkui/menus.cc:95 src/qtui/menus.cc:145
+#: src/statusicon-qt/statusicon.cc:125 src/statusicon/statusicon.cc:297
 msgid "Pre_vious"
 msgstr "Före_gående"
 
-#: src/gtkui/menus.cc:96 src/qtui/menus.cc:143
-#: src/statusicon-qt/statusicon.cc:113 src/statusicon/statusicon.cc:284
+#: src/gtkui/menus.cc:96 src/qtui/menus.cc:147
+#: src/statusicon-qt/statusicon.cc:126 src/statusicon/statusicon.cc:298
 msgid "_Next"
 msgstr "_Nästa"
 
-#: src/gtkui/menus.cc:97 src/qtui/menus.cc:145 src/skins/menus.cc:114
-#: src/skins-qt/menus.cc:105
+#: src/gtkui/menus.cc:97 src/qtui/menus.cc:149 src/skins/menus.cc:114
+#: src/skins-qt/menus.cc:106
 msgid "Previous Album"
 msgstr "Föregående album"
 
-#: src/gtkui/menus.cc:98 src/qtui/menus.cc:146 src/skins/menus.cc:115
-#: src/skins-qt/menus.cc:106
+#: src/gtkui/menus.cc:98 src/qtui/menus.cc:150 src/skins/menus.cc:115
+#: src/skins-qt/menus.cc:107
 msgid "Next Album"
 msgstr "Nästa album"
 
-#: src/gtkui/menus.cc:100 src/qtui/menus.cc:148
+#: src/gtkui/menus.cc:100 src/qtui/menus.cc:152
 msgid "_Repeat"
 msgstr "_Upprepa"
 
-#: src/gtkui/menus.cc:101 src/qtui/menus.cc:150
+#: src/gtkui/menus.cc:101 src/qtui/menus.cc:154
 msgid "S_huffle"
 msgstr "B_landa"
 
-#: src/gtkui/menus.cc:102 src/qtui/menus.cc:152
+#: src/gtkui/menus.cc:102 src/qtui/menus.cc:156
 msgid "Shuffle by Albu_m"
 msgstr "Blanda på albu_m"
 
-#: src/gtkui/menus.cc:103 src/qtui/menus.cc:155
+#: src/gtkui/menus.cc:103 src/qtui/menus.cc:159
 msgid "N_o Playlist Advance"
 msgstr "I_ngen spellista avancera"
 
-#: src/gtkui/menus.cc:104 src/qtui/menus.cc:157
+#: src/gtkui/menus.cc:104 src/qtui/menus.cc:161
 msgid "Stop A_fter This Song"
 msgstr "Stoppa e_fter denna låt"
 
-#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:210 src/qtui/menus.cc:162
-#: src/qtui/menus.cc:294
+#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:210 src/qtui/menus.cc:166
+#: src/qtui/menus.cc:301
 msgid "Song _Info ..."
 msgstr "Låt_information ..."
 
@@ -1740,164 +1725,163 @@ msgstr "Hoppa till _tid ..."
 msgid "_Jump to Song ..."
 msgstr "_Hoppa till låt ..."
 
-#: src/gtkui/menus.cc:110 src/qtui/menus.cc:165
+#: src/gtkui/menus.cc:110 src/qtui/menus.cc:172
 msgid "Set Repeat Point _A"
 msgstr "Ställ in upprepningspunkt _A"
 
-#: src/gtkui/menus.cc:111 src/qtui/menus.cc:167
+#: src/gtkui/menus.cc:111 src/qtui/menus.cc:174
 msgid "Set Repeat Point _B"
 msgstr "Ställ in upprepningspunkt _B"
 
-#: src/gtkui/menus.cc:112 src/qtui/menus.cc:169
+#: src/gtkui/menus.cc:112 src/qtui/menus.cc:176
 msgid "_Clear Repeat Points"
 msgstr "_Rensa upprepningspunkter"
 
 #: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:141
-#: src/qtui/menus.cc:173 src/qtui/menus.cc:180 src/qtui/menus.cc:198
+#: src/qtui/menus.cc:180 src/qtui/menus.cc:187 src/qtui/menus.cc:205
 msgid "By _Title"
 msgstr "Efter _titel"
 
-#: src/gtkui/menus.cc:117 src/qtui/menus.cc:174
+#: src/gtkui/menus.cc:117 src/qtui/menus.cc:181
 msgid "By _File Name"
 msgstr "Efter _filnamn"
 
-#: src/gtkui/menus.cc:118 src/qtui/menus.cc:175
+#: src/gtkui/menus.cc:118 src/qtui/menus.cc:182
 msgid "By File _Path"
 msgstr "Efter fil_sökväg"
 
-#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:140 src/qtui/menus.cc:179
-#: src/qtui/menus.cc:197
+#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:140 src/qtui/menus.cc:186
+#: src/qtui/menus.cc:204
 msgid "By Track _Number"
 msgstr "Efter spår_nummer"
 
-#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:142 src/qtui/menus.cc:181
-#: src/qtui/menus.cc:199
+#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:142 src/qtui/menus.cc:188
+#: src/qtui/menus.cc:206
 msgid "By _Artist"
 msgstr "Efter _artist"
 
-#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:143 src/qtui/menus.cc:182
-#: src/qtui/menus.cc:200
+#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:143 src/qtui/menus.cc:189
+#: src/qtui/menus.cc:207
 msgid "By Al_bum"
 msgstr "Efter al_bum"
 
-#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:144 src/qtui/menus.cc:183
-#: src/qtui/menus.cc:201
+#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:144 src/qtui/menus.cc:190
+#: src/qtui/menus.cc:208
 msgid "By Albu_m Artist"
 msgstr "Efter albu_msartist"
 
-#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:145 src/qtui/menus.cc:184
-#: src/qtui/menus.cc:202
+#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:145 src/qtui/menus.cc:191
+#: src/qtui/menus.cc:209
 msgid "By Release _Date"
 msgstr "Efter utgivnings_datum"
 
-#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:146 src/qtui/menus.cc:185
-#: src/qtui/menus.cc:203
+#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:146 src/qtui/menus.cc:192
+#: src/qtui/menus.cc:210
 msgid "By _Genre"
 msgstr "Efter _genre"
 
-#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:147 src/qtui/menus.cc:186
-#: src/qtui/menus.cc:204
+#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:147 src/qtui/menus.cc:193
+#: src/qtui/menus.cc:211
 msgid "By _Length"
 msgstr "Efter _längd"
 
-#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:148 src/qtui/menus.cc:187
-#: src/qtui/menus.cc:205
+#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:148 src/qtui/menus.cc:194
+#: src/qtui/menus.cc:212
 msgid "By _File Path"
 msgstr "Efter _filsökväg"
 
-#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:149 src/qtui/menus.cc:188
-#: src/qtui/menus.cc:206
+#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:149 src/qtui/menus.cc:195
+#: src/qtui/menus.cc:213
 msgid "By _Custom Title"
 msgstr "Efter _anpassad titel"
 
-#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:150 src/qtui/menus.cc:189
-#: src/qtui/menus.cc:207
+#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:150 src/qtui/menus.cc:196
+#: src/qtui/menus.cc:214
 msgid "By C_omment"
 msgstr "Efter k_ommentar"
 
-#: src/gtkui/menus.cc:133 src/gtkui/menus.cc:151 src/qtui/menus.cc:190
-#: src/qtui/menus.cc:208
+#: src/gtkui/menus.cc:133 src/gtkui/menus.cc:151 src/qtui/menus.cc:197
+#: src/qtui/menus.cc:215
 msgid "By D_isc Number"
 msgstr "Efter S_kivnummer"
 
-#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:153 src/qtui/menus.cc:192
-#: src/qtui/menus.cc:210
+#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:153 src/qtui/menus.cc:199
+#: src/qtui/menus.cc:217
 msgid "R_everse Order"
 msgstr "Omvänd o_rdning"
 
-#: src/gtkui/menus.cc:136 src/gtkui/menus.cc:154 src/qtui/menus.cc:194
-#: src/qtui/menus.cc:212
+#: src/gtkui/menus.cc:136 src/gtkui/menus.cc:154 src/qtui/menus.cc:201
+#: src/qtui/menus.cc:219
 msgid "_Random Order"
 msgstr "_Slumpmässig ordning"
 
-#: src/gtkui/menus.cc:158 src/qtui/menus.cc:216
+#: src/gtkui/menus.cc:158 src/qtui/menus.cc:223
 msgid "_Play/Resume"
-msgstr "_Spela/Återuppta"
+msgstr "_Spela/återuppta"
 
-#: src/gtkui/menus.cc:159 src/qtui/menus.cc:218
+#: src/gtkui/menus.cc:159 src/qtui/menus.cc:225
 msgid "_Refresh"
 msgstr "_Uppdatera"
 
-#: src/gtkui/menus.cc:161 src/qtui/menus.cc:222
+#: src/gtkui/menus.cc:161 src/qtui/menus.cc:229
 msgid "_Sort"
 msgstr "_Sortera"
 
-#: src/gtkui/menus.cc:162 src/qtui/menus.cc:223
+#: src/gtkui/menus.cc:162 src/qtui/menus.cc:230
 msgid "Sort Se_lected"
 msgstr "Sortera va_lda"
 
-#: src/gtkui/menus.cc:163 src/qtui/menus.cc:225
+#: src/gtkui/menus.cc:163 src/qtui/menus.cc:232
 msgid "Remove _Duplicates"
 msgstr "Ta bort _dubbletter"
 
-#: src/gtkui/menus.cc:164 src/qtui/menus.cc:226
+#: src/gtkui/menus.cc:164 src/qtui/menus.cc:233
 msgid "Remove _Unavailable Files"
 msgstr "Ta bort _otillgängliga filer"
 
 #: src/gtkui/menus.cc:166 src/playlist-manager/playlist-manager.cc:219
-#: src/playlist-manager-qt/playlist-manager-qt.cc:348 src/qtui/menus.cc:229
+#: src/playlist-manager-qt/playlist-manager-qt.cc:348 src/qtui/menus.cc:236
 msgid "_New"
 msgstr "_Ny"
 
-#: src/gtkui/menus.cc:167 src/qtui/menus.cc:230
+#: src/gtkui/menus.cc:167 src/qtui/menus.cc:237
 msgid "Ren_ame ..."
 msgstr "Byt n_amn ..."
 
-#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:228
-#: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:231
+#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:228 src/qtui/menus.cc:238
 #: src/qtui/playlist_tabs.cc:336
 msgid "Remo_ve"
 msgstr "Ta bor_t"
 
-#: src/gtkui/menus.cc:170 src/qtui/menus.cc:233
+#: src/gtkui/menus.cc:170 src/qtui/menus.cc:240
 msgid "_Import ..."
 msgstr "_Importera ..."
 
-#: src/gtkui/menus.cc:171 src/qtui/menus.cc:234
+#: src/gtkui/menus.cc:171 src/qtui/menus.cc:241
 msgid "_Export ..."
 msgstr "_Exportera ..."
 
-#: src/gtkui/menus.cc:173 src/qtui/menus.cc:237
+#: src/gtkui/menus.cc:173 src/qtui/menus.cc:244
 msgid "Playlist _Manager ..."
 msgstr "Spellists_hanterare ..."
 
-#: src/gtkui/menus.cc:174 src/qtui/menus.cc:239
+#: src/gtkui/menus.cc:174 src/qtui/menus.cc:246
 msgid "_Queue Manager ..."
 msgstr "_Köhanterare ..."
 
-#: src/gtkui/menus.cc:178 src/qtui/menus.cc:243
+#: src/gtkui/menus.cc:178 src/qtui/menus.cc:250
 msgid "Volume _Up"
-msgstr "Volym _Upp"
+msgstr "Volym _upp"
 
-#: src/gtkui/menus.cc:179 src/qtui/menus.cc:245
+#: src/gtkui/menus.cc:179 src/qtui/menus.cc:252
 msgid "Volume _Down"
-msgstr "Volym _Ner"
+msgstr "Volym _ner"
 
-#: src/gtkui/menus.cc:181 src/qtui/menus.cc:249
+#: src/gtkui/menus.cc:181 src/qtui/menus.cc:256
 msgid "_Equalizer ..."
 msgstr "_Frekvenskorrigerare ..."
 
-#: src/gtkui/menus.cc:182 src/qtui/menus.cc:251
+#: src/gtkui/menus.cc:182 src/qtui/menus.cc:258
 msgid "E_ffects ..."
 msgstr "E_ffekter ..."
 
@@ -1909,94 +1893,93 @@ msgstr "_Spela in ström"
 msgid "Audio _Settings ..."
 msgstr "Ljud_inställningar ..."
 
-#: src/gtkui/menus.cc:189 src/qtui/menus.cc:260
+#: src/gtkui/menus.cc:189 src/qtui/menus.cc:267
 msgid "Show _Menu Bar"
 msgstr "Visa _menyfält"
 
-#: src/gtkui/menus.cc:190 src/qtui/menus.cc:262
+#: src/gtkui/menus.cc:190 src/qtui/menus.cc:269
 msgid "Show I_nfo Bar"
 msgstr "Visa i_nformationsfält"
 
-#: src/gtkui/menus.cc:191 src/qtui/menus.cc:264
+#: src/gtkui/menus.cc:191 src/qtui/menus.cc:271
 msgid "Show Info Bar _Album Art"
 msgstr "Visa informationsfält _Skivomslag"
 
-#: src/gtkui/menus.cc:192 src/qtui/menus.cc:266
+#: src/gtkui/menus.cc:192 src/qtui/menus.cc:273
 msgid "Show Info Bar Vis_ualization"
 msgstr "Visa infofältsvisualisering"
 
-#: src/gtkui/menus.cc:193 src/qtui/menus.cc:268
+#: src/gtkui/menus.cc:193 src/qtui/menus.cc:275
 msgid "Show _Status Bar"
 msgstr "Visa _statusfält"
 
-#: src/gtkui/menus.cc:195 src/qtui/menus.cc:272
+#: src/gtkui/menus.cc:195 src/qtui/menus.cc:279
 msgid "Show _Remaining Time"
 msgstr "Visa _återstående tid"
 
-#: src/gtkui/menus.cc:197 src/qtui/menus.cc:276 src/skins/menus.cc:157
-#: src/skins-qt/menus.cc:152
+#: src/gtkui/menus.cc:197 src/qtui/menus.cc:283 src/skins/menus.cc:157
+#: src/skins-qt/menus.cc:153
 msgid "_Visualizations ..."
 msgstr "_Visualiseringar ..."
 
-#: src/gtkui/menus.cc:201 src/qtui/menus.cc:280
+#: src/gtkui/menus.cc:201 src/qtui/menus.cc:287
 msgid "_File"
 msgstr "_Arkiv"
 
-#: src/gtkui/menus.cc:202 src/qtui/menus.cc:281
+#: src/gtkui/menus.cc:202 src/qtui/menus.cc:288
 msgid "_Playback"
 msgstr "_Uppspelning"
 
-#: src/gtkui/menus.cc:203 src/qtui/menus.cc:282
+#: src/gtkui/menus.cc:203 src/qtui/menus.cc:289
 msgid "P_laylist"
 msgstr "Spe_llista"
 
-#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:222 src/qtui/menus.cc:283
-#: src/qtui/menus.cc:312
+#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:222 src/qtui/menus.cc:290
+#: src/qtui/menus.cc:319
 msgid "_Services"
 msgstr "_Tjänster"
 
-#: src/gtkui/menus.cc:205 src/qtui/menus.cc:284
+#: src/gtkui/menus.cc:205 src/qtui/menus.cc:291
 msgid "_Output"
 msgstr "_Utgång"
 
-#: src/gtkui/menus.cc:206 src/qtui/menus.cc:285
+#: src/gtkui/menus.cc:206 src/qtui/menus.cc:292
 msgid "_View"
 msgstr "_Visa"
 
-#: src/gtkui/menus.cc:211 src/qtui/menus.cc:296
+#: src/gtkui/menus.cc:211 src/qtui/menus.cc:303
 msgid "_Queue/Unqueue"
 msgstr "_Lägg till i kö/Ta bort från kö"
 
-#: src/gtkui/menus.cc:213 src/qtui/menus.cc:299
+#: src/gtkui/menus.cc:213 src/qtui/menus.cc:306
 msgid "_Open Containing Folder"
 msgstr "_Öppna innehållande mapp"
 
-#: src/gtkui/menus.cc:214 src/qtui/menus.cc:301
+#: src/gtkui/menus.cc:214 src/qtui/menus.cc:308
 msgid "_Refresh Selected"
 msgstr "_Uppdatera valda"
 
-#: src/gtkui/menus.cc:216 src/qtui/menus.cc:304
+#: src/gtkui/menus.cc:216 src/qtui/menus.cc:311
 msgid "Cu_t"
 msgstr "Klipp _ut"
 
-#: src/gtkui/menus.cc:217 src/qtui/menus.cc:305
+#: src/gtkui/menus.cc:217 src/qtui/menus.cc:312
 msgid "_Copy"
 msgstr "_Kopiera"
 
-#: src/gtkui/menus.cc:218 src/qtui/menus.cc:306
+#: src/gtkui/menus.cc:218 src/qtui/menus.cc:313
 msgid "_Paste"
 msgstr "_Klistra in"
 
-#: src/gtkui/menus.cc:219 src/qtui/menus.cc:307
+#: src/gtkui/menus.cc:219 src/qtui/menus.cc:314
 msgid "Paste at _End"
 msgstr "Klistra in i _slutet"
 
-#: src/gtkui/menus.cc:220 src/qtui/menus.cc:309
+#: src/gtkui/menus.cc:220 src/qtui/menus.cc:316
 msgid "Select _All"
 msgstr "Välj _alla"
 
-#: src/gtkui/menus.cc:227 src/moonstone/playlist_tabs.cc:309
-#: src/qtui/playlist_tabs.cc:334
+#: src/gtkui/menus.cc:227 src/qtui/playlist_tabs.cc:334
 msgid "_Rename ..."
 msgstr "_Byt namn ..."
 
@@ -2022,7 +2005,7 @@ msgstr "Visa spellistflikar:"
 
 #: src/gtkui/settings.cc:45 src/qtui/settings.cc:69
 msgid "Show entry counts"
-msgstr "Visa inmatningsantal"
+msgstr "Visa ingångsantal"
 
 #: src/gtkui/settings.cc:47 src/qtui/settings.cc:72
 msgid "Show close buttons"
@@ -2057,76 +2040,68 @@ msgstr "GTK-gränssnitt"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:221 src/moonstone/main_window.cc:184
-#: src/qtui/main_window.cc:385
+#: src/gtkui/ui_gtk.cc:221 src/qtui/main_window.cc:386
 msgid "Buffering ..."
 msgstr "Buffrar ..."
 
-#: src/gtkui/ui_gtk.cc:224 src/pipewire/pipewire.cc:402 src/skins/main.cc:230
-#: src/skins-qt/main.cc:233
+#: src/gtkui/ui_gtk.cc:224 src/pipewire/pipewire.cc:450
+#: src/qtui/main_window.cc:364 src/qtui/main_window.cc:400
+#: src/sdlout/sdlout.cc:110 src/skins/main.cc:230 src/skins-qt/main.cc:233
 msgid "Audacious"
 msgstr "Audacious"
 
 #: src/gtkui/ui_gtk.cc:487 src/gtkui/ui_gtk.cc:518 src/gtkui/ui_gtk.cc:882
-#: src/hotkey/gui.cc:72 src/moonstone/main_window.cc:67
-#: src/moonstone/main_window.cc:145 src/moonstone/main_window.cc:146
-#: src/notify/osd.cc:85 src/qthotkey/gui.cc:67 src/qtui/main_window.cc:154
-#: src/qtui/main_window.cc:347 src/qtui/main_window.cc:348
-#: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
+#: src/hotkey/gui.cc:72 src/notify/osd.cc:85 src/qthotkey/gui.cc:67
+#: src/qtui/main_window.cc:155 src/qtui/main_window.cc:348
+#: src/qtui/main_window.cc:349 src/skins/menus.cc:109 src/skins-qt/menus.cc:101
 msgid "Play"
 msgstr "Spela"
 
-#: src/gtkui/ui_gtk.cc:487 src/moonstone/main_window.cc:151
-#: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
-#: src/qtui/main_window.cc:353 src/qtui/main_window.cc:354
-#: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
+#: src/gtkui/ui_gtk.cc:487 src/notify/osd.cc:82 src/qtui/main_window.cc:354
+#: src/qtui/main_window.cc:355 src/skins/menus.cc:110 src/skins-qt/menus.cc:102
 msgid "Pause"
 msgstr "Pausa"
 
-#: src/gtkui/ui_gtk.cc:868 src/moonstone/main_window.cc:57
-#: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
+#: src/gtkui/ui_gtk.cc:868 src/qtui/main_window.cc:146 src/skins/menus.cc:86
+#: src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr "Sök i bibliotek"
 
-#: src/gtkui/ui_gtk.cc:875 src/moonstone/main_window.cc:60
-#: src/qtui/main_window.cc:147
+#: src/gtkui/ui_gtk.cc:875 src/qtui/main_window.cc:148
 msgid "Open Files"
 msgstr "Öppna filer"
 
-#: src/gtkui/ui_gtk.cc:876 src/moonstone/main_window.cc:62
-#: src/qtui/main_window.cc:149
+#: src/gtkui/ui_gtk.cc:876 src/qtui/main_window.cc:150
 msgid "Add Files"
 msgstr "Lägg till filer"
 
-#: src/gtkui/ui_gtk.cc:881 src/moonstone/main_window.cc:65
-#: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
+#: src/gtkui/ui_gtk.cc:881 src/qtui/main_window.cc:153 src/skins/menus.cc:112
+#: src/skins-qt/menus.cc:104
 msgid "Previous"
 msgstr "Föregående"
 
-#: src/gtkui/ui_gtk.cc:883 src/hotkey/gui.cc:74 src/moonstone/main_window.cc:69
-#: src/qthotkey/gui.cc:69 src/qtui/main_window.cc:156 src/skins/menus.cc:111
-#: src/skins-qt/menus.cc:102
+#: src/gtkui/ui_gtk.cc:883 src/hotkey/gui.cc:74 src/qthotkey/gui.cc:69
+#: src/qtui/main_window.cc:157 src/skins/menus.cc:111 src/skins-qt/menus.cc:103
 msgid "Stop"
 msgstr "Stoppa"
 
-#: src/gtkui/ui_gtk.cc:884 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
-#: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
+#: src/gtkui/ui_gtk.cc:884 src/notify/osd.cc:89 src/qtui/main_window.cc:164
+#: src/skins/menus.cc:113 src/skins-qt/menus.cc:105
 msgid "Next"
 msgstr "Nästa"
 
-#: src/gtkui/ui_gtk.cc:886 src/moonstone/main_window.cc:79
-#: src/qtui/main_window.cc:166 src/qtui/menus.cc:254 src/skins/menus.cc:79
-#: src/skins-qt/menus.cc:69
+#: src/gtkui/ui_gtk.cc:886 src/qtui/main_window.cc:167 src/qtui/menus.cc:261
+#: src/skins/menus.cc:79 src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "Spela in ström"
 
-#: src/gtkui/ui_gtk.cc:919 src/moonstone/main_window.cc:86
-#: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
+#: src/gtkui/ui_gtk.cc:919 src/qtui/main_window.cc:174 src/skins/menus.cc:103
+#: src/skins-qt/menus.cc:95
 msgid "Repeat"
 msgstr "Upprepa"
 
-#: src/gtkui/ui_gtk.cc:922 src/moonstone/main_window.cc:89
-#: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
+#: src/gtkui/ui_gtk.cc:922 src/qtui/main_window.cc:177 src/skins/menus.cc:104
+#: src/skins-qt/menus.cc:96
 msgid "Shuffle"
 msgstr "Blanda"
 
@@ -2154,7 +2129,8 @@ msgstr[1] "%d kanaler"
 msgid "%d kHz"
 msgstr "%d kHz"
 
-#: src/gtkui/ui_statusbar.cc:82 src/qtui/status_bar.cc:174
+#: src/gtkui/ui_statusbar.cc:82 src/qtui/playlist_model.cc:132
+#: src/qtui/status_bar.cc:174
 #, c-format
 msgid "%d kbit/s"
 msgstr "%d kbit/s"
@@ -2355,8 +2331,8 @@ msgid ""
 "JACK supports only floating-point audio.  You must change the output bit "
 "depth to floating-point in Audacious settings."
 msgstr ""
-"JACK stöder endast flyttal-ljud. Du måste ändra utmatningsbitdjupet till "
-"flyttal i Audacious-inställningar."
+"JACK stöder endast flyttalsljud. Du måste ändra utgångsbitdjupet till "
+"flyttal i Audacious-inställningarna."
 
 #: src/jack/jack-ng.cc:245
 msgid "Failed to connect to the JACK server; is it running?"
@@ -2424,7 +2400,7 @@ msgstr "LADSPA Host"
 
 #: src/lirc/lirc.cc:55
 msgid "LIRC Plugin"
-msgstr "LIRC Plugin"
+msgstr "LIRC-insticksmodul"
 
 #: src/lirc/lirc.cc:379
 msgid ""
@@ -2469,21 +2445,24 @@ msgstr "Vänta innan du ansluter igen:"
 
 #: src/lyrics-common/chart_lyrics_provider.cc:93
 #: src/lyrics-common/chart_lyrics_provider.cc:150
-#: src/lyrics-common/lyrics_ovh_provider.cc:50
+#: src/lyrics-common/lrclib_provider.cc:34
+#: src/lyrics-common/lyrics_ovh_provider.cc:35
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "Det gick inte att hämta %s"
 
 #: src/lyrics-common/chart_lyrics_provider.cc:100
 #: src/lyrics-common/chart_lyrics_provider.cc:157
-#: src/lyrics-common/lyrics_ovh_provider.cc:57
+#: src/lyrics-common/lrclib_provider.cc:41
+#: src/lyrics-common/lyrics_ovh_provider.cc:42
 #, c-format
 msgid "Unable to parse %s"
 msgstr "Kan inte tolka %s"
 
 #: src/lyrics-common/chart_lyrics_provider.cc:121
 #: src/lyrics-common/chart_lyrics_provider.cc:194
-#: src/lyrics-common/lyrics_ovh_provider.cc:88
+#: src/lyrics-common/lrclib_provider.cc:70
+#: src/lyrics-common/lyrics_ovh_provider.cc:70
 msgid "Looking for lyrics ..."
 msgstr "Letar efter låttexter ..."
 
@@ -2491,67 +2470,67 @@ msgstr "Letar efter låttexter ..."
 msgid "Nowhere"
 msgstr "Ingenstans"
 
-#: src/lyrics-common/preferences.h:49
+#: src/lyrics-common/preferences.h:50
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
 msgstr "<small>Artist är avkortad i början, Titel -- i slutet</small>"
 
-#: src/lyrics-common/preferences.h:50
+#: src/lyrics-common/preferences.h:51
 msgid "Chars to truncate on:"
 msgstr "Tecken att avkorta vid:"
 
-#: src/lyrics-common/preferences.h:54
+#: src/lyrics-common/preferences.h:55
 msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
 msgstr "<small>Tecken är ORed i RegExp, omgivet av mellanrum</small>"
 
-#: src/lyrics-common/preferences.h:55
+#: src/lyrics-common/preferences.h:56
 msgid "Chars to split on:"
 msgstr "Tecken att uppdela vid: "
 
-#: src/lyrics-common/preferences.h:56
+#: src/lyrics-common/preferences.h:57
 msgid "Further truncate those on chars"
 msgstr "Ytterligare avkorta vid dessa tecken"
 
-#: src/lyrics-common/preferences.h:62
+#: src/lyrics-common/preferences.h:63
 msgid "<b>General</b>"
 msgstr "<b>Allmänt</b>"
 
-#: src/lyrics-common/preferences.h:63
+#: src/lyrics-common/preferences.h:64
 msgid "Split title into artist and title on chars"
 msgstr "Dela upp titel i artist och titel vid tecken"
 
-#: src/lyrics-common/preferences.h:66
+#: src/lyrics-common/preferences.h:67
 msgid "<b>Sources</b>"
 msgstr "<b>Källor</b>"
 
-#: src/lyrics-common/preferences.h:67
+#: src/lyrics-common/preferences.h:68
 msgid "Use embedded lyrics (from Lyrics tag)"
 msgstr "Använd inbäddade sångtexter (från Låttexter-taggen)"
 
-#: src/lyrics-common/preferences.h:69
+#: src/lyrics-common/preferences.h:70
 msgid "Fetch lyrics from internet:"
 msgstr "Hämta låttexter från internet:"
 
-#: src/lyrics-common/preferences.h:72
+#: src/lyrics-common/preferences.h:73
 msgid "Store fetched lyrics in local cache"
 msgstr "Lagra hämtade låttexter i lokal cache"
 
-#: src/lyrics-common/preferences.h:74
+#: src/lyrics-common/preferences.h:75
 msgid "<b>Local Storage</b>"
 msgstr "<b>Lokal lagring</b>"
 
-#: src/lyrics-common/preferences.h:75
+#: src/lyrics-common/preferences.h:76
 msgid "Load lyric files (.lrc) from local storage"
 msgstr "Läs in låttext-filer (.lrc) från lokal lagring"
 
-#: src/lyrics-common/utils.cc:54 src/ui-common/dialogs-qt.cc:63
+#: src/lyrics-common/utils.cc:57 src/ui-common/dialogs-qt.cc:63
 msgid "Error"
 msgstr "Fel"
 
-#: src/lyrics-common/utils.cc:60
+#: src/lyrics-common/utils.cc:63
 msgid "Lyrics could not be found."
 msgstr "Låttexter kunde inte hittas."
 
-#: src/lyrics-common/utils.cc:142
+#: src/lyrics-common/utils.cc:145
 msgid "Missing title and/or artist."
 msgstr "Saknar titel och/eller artist."
 
@@ -2559,15 +2538,15 @@ msgstr "Saknar titel och/eller artist."
 msgid "Lyrics"
 msgstr "Låttexter"
 
-#: src/lyrics-gtk/lyrics-gtk.cc:189 src/lyrics-qt/lyrics-qt.cc:171
+#: src/lyrics-gtk/lyrics-gtk.cc:190 src/lyrics-qt/lyrics-qt.cc:172
 msgid "Edit Lyrics ..."
 msgstr "Redigera låttexter ..."
 
-#: src/lyrics-gtk/lyrics-gtk.cc:195 src/lyrics-qt/lyrics-qt.cc:178
+#: src/lyrics-gtk/lyrics-gtk.cc:196 src/lyrics-qt/lyrics-qt.cc:179
 msgid "Save Locally"
 msgstr "Spara lokalt"
 
-#: src/lyrics-gtk/lyrics-gtk.cc:201 src/lyrics-qt/lyrics-qt.cc:186
+#: src/lyrics-gtk/lyrics-gtk.cc:202 src/lyrics-qt/lyrics-qt.cc:187
 msgid "Refresh"
 msgstr "Uppdatera"
 
@@ -2599,7 +2578,7 @@ msgid ""
 msgstr ""
 "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
-"För att använda det, lägg till en webbadress: tact://beats*num/den\n"
+"För att använda det, lägg till en URL: tact://beats*num/den\n"
 "t.ex. tact://77 för att spela 77 slag per minut\n"
 "eller tact://60*3/4 för att spela 60 slag per minut i 3/4 takt"
 
@@ -2728,30 +2707,6 @@ msgstr "För att upprepa för evigt, ställ in upprepningsantalet till -1."
 msgid "These settings will take effect when Audacious is restarted."
 msgstr "Dessa inställningar träder i kraft när Audacious startas om."
 
-#: src/moonstone/main_window.cc:72 src/moonstone/main_window.cc:73
-#: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
-#: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
-msgid "Stop After This Song"
-msgstr "Sluta efter den här låten"
-
-#: src/moonstone/moonstone.cc:39
-msgid "Moonstone"
-msgstr "Månsten"
-
-#: src/moonstone/playlist_header.cc:212 src/qtui/playlist_header.cc:258
-msgid "Reset to Defaults"
-msgstr "Återställ till standardvärden"
-
-#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:232
-msgid "Now Playing"
-msgstr "Spelar nu"
-
-#: src/moonstone/playlist_selection.cc:66
-#: src/playlist-manager/playlist-manager.cc:201
-#: src/playlist-manager-qt/playlist-manager-qt.cc:190
-msgid "Entries"
-msgstr "Poster"
-
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
 msgstr "MPG123 Plugin"
@@ -2764,9 +2719,27 @@ msgstr "Använd exakt längdberäkning (långsam)"
 msgid "Surround"
 msgstr "Surround"
 
-#: src/mpris2/plugin.cc:40
+#: src/mpris2/plugin.cc:43
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 Server"
+
+#: src/mpris2/plugin.cc:362
+msgid ""
+"MPRIS Plugin for Audacious\n"
+"Copyright 2011-2012 John Lindgren\n"
+"\n"
+"This plugin implements the MPRIS D-Bus interface. It provides a mechanism "
+"for querying track information and basic playback control. Necessary for "
+"media controls in desktop environments, Bluetooth headsets and tools like "
+"\"playerctl\"."
+msgstr ""
+"MPRIS Plugin för Audacious\n"
+"Copyright 2011-2012 John Lindgren\n"
+"\n"
+"Denna plugin implementerar MPRIS D-Bus-gränssnittet. Det tillhandahåller en "
+"mekanism för att fråga efter spårinformation och grundläggande "
+"uppspelningskontroller. Nödvändigt för mediekontroller i skrivbordsmiljöer, "
+"Bluetooth-headset och verktyg som \"playerctl\"."
 
 #: src/neon/neon.cc:102
 msgid "Neon HTTP/HTTPS Plugin"
@@ -2782,7 +2755,7 @@ msgstr "Okänt HTTP-fel"
 
 #: src/neon/neon.cc:614
 msgid "Error parsing URL"
-msgstr "Det gick inte att tolka webbadressen"
+msgstr "Det gick inte att tolka URL:n"
 
 #: src/neon/neon.cc:687
 msgid "Too many redirects"
@@ -2856,11 +2829,11 @@ msgstr "Anpassad aviseringstid:"
 msgid "Show"
 msgstr "Visa"
 
-#: src/openmpt/mpt.cc:50
+#: src/openmpt/mpt.cc:52
 msgid "OpenMPT (Module Player)"
 msgstr "OpenMPT (Modulspelare)"
 
-#: src/openmpt/mpt.cc:132
+#: src/openmpt/mpt.cc:136
 msgid ""
 "Module player based on libopenmpt\n"
 "\n"
@@ -2870,15 +2843,15 @@ msgstr ""
 "\n"
 "Skriven av: Chris Spiegel <cspiegel@gmail.com>"
 
-#: src/openmpt/mpt.cc:151
+#: src/openmpt/mpt.cc:155
 msgid "Stereo separation:"
 msgstr "Stereo separation:"
 
-#: src/openmpt/mpt.cc:153
+#: src/openmpt/mpt.cc:157
 msgid "% (0=mono, 100=default, 200=full)"
 msgstr "% (0=mono, 100=standard, 200=fullständig)"
 
-#: src/openmpt/mpt.cc:157
+#: src/openmpt/mpt.cc:160
 msgid "Interpolation:"
 msgstr "Interpolation:"
 
@@ -2898,7 +2871,7 @@ msgstr "Fönsterfönster"
 msgid "Opus Decoder"
 msgstr "Opus-avkodare"
 
-#: src/opus/opus.cc:336
+#: src/opus/opus.cc:371
 msgid ""
 "Opus Decoder Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange"
@@ -2953,11 +2926,11 @@ msgstr ""
 "Jag skulle vilja tacka folk på #audacious, särskilt Tony Vroon och John "
 "Lindgren och naturligtvis författarna till den tidigare OSS-insticksmodulen."
 
-#: src/pipewire/pipewire.cc:44
+#: src/pipewire/pipewire.cc:59
 msgid "PipeWire Output"
 msgstr "Pipewire utgång"
 
-#: src/pipewire/pipewire.cc:118
+#: src/pipewire/pipewire.cc:132
 msgid ""
 "PipeWire Output Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange\n"
@@ -2971,14 +2944,80 @@ msgstr ""
 "Baserad på Pipewire utgång plugin för Qmmp\n"
 "Copyright 2021 Ilya Kotov "
 
-#: src/pipewire/pipewire.cc:408 src/skins/menus.cc:88 src/skins-qt/menus.cc:79
+#: src/pipewire/pipewire.cc:456 src/sdlout/sdlout.cc:112 src/skins/menus.cc:88
+#: src/skins-qt/menus.cc:79
 msgid "Playback"
 msgstr "Uppspelning"
+
+#: src/playback-history-qt/playback-history.cc:52
+msgid ""
+"Playback History Plugin\n"
+"\n"
+"Copyright 2023-2024 Igor Kushnir <igorkuo@gmail.com>\n"
+"\n"
+"This plugin tracks and provides access to playback history.\n"
+"\n"
+"History entries are stored only in memory and are lost\n"
+"on Audacious exit. When the plugin is disabled,\n"
+"playback history is not tracked at all.\n"
+"History entries are only added, never removed automatically.\n"
+"The user can remove selected entries by pressing the Delete key.\n"
+"Restart Audacious or disable the plugin by closing\n"
+"Playback History view to clear the entries.\n"
+"\n"
+"Two history item granularities (modes) are supported.\n"
+"The user can select a mode in the plugin's settings.\n"
+"The Song mode is the default. Each played song is stored\n"
+"in history. Song titles are displayed in the list.\n"
+"When the Album mode is selected and multiple songs from\n"
+"a single album are played in a row, a single album entry\n"
+"is stored in history. Album names are displayed in the list."
+msgstr ""
+"Plugin för uppspelningshistorik\n"
+"\n"
+"Copyright 2023-2024 Igor Kushnir <igorkuo@gmail.com>\n"
+"\n"
+"Detta plugin spårar och ger åtkomst till uppspelningshistorik.\n"
+"\n"
+"Historikposter lagras endast i minnet och går förlorade när Audacious "
+"avslutas. När plugin-programmet är inaktiverat spåras inte "
+"uppspelningshistoriken alls. Historikposter läggs bara till, tas aldrig bort "
+"automatiskt. Användaren kan ta bort valda poster genom att trycka på Delete-"
+"tangenten. Starta om Audacious eller inaktivera plugin-programmet genom att "
+"stänga vyn Uppspelningshistorik för att rensa posterna.\n"
+"\n"
+"Två granulariteter (lägen) för historikobjekt stöds. Användaren kan välja "
+"ett läge i plugin-programmets inställningar. Låtläget är standard. Varje "
+"spelad låt lagras i historiken. Låttitlar visas i listan. När albumläget är "
+"valt och flera låtar från ett enda album spelas i rad, lagras en enda "
+"albumpost i historiken. Albumnamn visas i listan."
+
+#: src/playback-history-qt/playback-history.cc:77
+msgid "Playback History"
+msgstr "Uppspelningshistorik"
+
+#: src/playback-history-qt/playback-history.cc:528
+#, c-format
+msgid "<b>%s:</b> %s<br><b>Playlist:</b> %s<br><b>Entry Number:</b> %d"
+msgstr "<b>%s:</b> %s<br><b>Spellista:</b> %s<br><b>Ingångsnummer:</b> %d"
+
+#: src/playback-history-qt/playback-history.cc:834
+msgid "<b>History Item Granularity</b>"
+msgstr "<b>Historikobjektens granularitet</b>"
+
+#: src/playback-history-qt/playback-history.cc:835
+msgid "Song"
+msgstr "Låt"
 
 #: src/playlist-manager/playlist-manager.cc:38
 #: src/playlist-manager-qt/playlist-manager-qt.cc:42
 msgid "Playlist Manager"
 msgstr "Spellisthanterare"
+
+#: src/playlist-manager/playlist-manager.cc:201
+#: src/playlist-manager-qt/playlist-manager-qt.cc:190
+msgid "Entries"
+msgstr "Poster"
 
 #: src/playlist-manager/playlist-manager.cc:221
 #: src/playlist-manager-qt/playlist-manager-qt.cc:356
@@ -3010,15 +3049,15 @@ msgstr "Ignorera längd från fil"
 msgid "PulseAudio Output"
 msgstr "PulseAudio-utgång"
 
-#: src/pulse/pulse_audio.cc:84
+#: src/pulse/pulse_audio.cc:72
 msgid "Context name:"
 msgstr "Kontext namn:"
 
-#: src/pulse/pulse_audio.cc:86
+#: src/pulse/pulse_audio.cc:74
 msgid "Stream name:"
-msgstr "Ström namn:"
+msgstr "Strömnamn:"
 
-#: src/pulse/pulse_audio.cc:596
+#: src/pulse/pulse_audio.cc:584
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -3124,39 +3163,56 @@ msgstr ""
 "Jonathan A. Davis <davis@jdhouse.org>,\n"
 "Jeremy Tan <nsx@nsx.homeip.net>"
 
-#: src/qtui/menus.cc:109
+#: src/qtui/main_window.cc:160 src/qtui/main_window.cc:161
+#: src/skins/menus.cc:107 src/skins-qt/menus.cc:99
+msgid "Stop After This Song"
+msgstr "Sluta efter den här låten"
+
+#: src/qtui/menus.cc:113
 msgid "_Open Folder ..."
 msgstr "_Öppna mapp ..."
 
-#: src/qtui/menus.cc:115
+#: src/qtui/menus.cc:119
 msgid "_Add Folder ..."
 msgstr "_Lägg till mapp"
 
-#: src/qtui/menus.cc:128
+#: src/qtui/menus.cc:132
 msgid "_Log Inspector ..."
 msgstr "_Logginspektör ..."
 
-#: src/qtui/menus.cc:220
+#: src/qtui/menus.cc:169
+msgid "Playback Histor_y ..."
+msgstr "Uppspelningshistori_k ..."
+
+#: src/qtui/menus.cc:227
 msgid "_Find ..."
 msgstr "_Hitta ..."
 
-#: src/qtui/menus.cc:256 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
+#: src/qtui/menus.cc:263 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
 msgstr "Ljudinställlningar ..."
 
-#: src/qtui/playlist_model.cc:188
+#: src/qtui/playlist_header.cc:232
+msgid "Now Playing"
+msgstr "Spelar nu"
+
+#: src/qtui/playlist_header.cc:258
+msgid "Reset to Defaults"
+msgstr "Återställ till standardvärden"
+
+#: src/qtui/playlist_model.cc:190
 msgid "Q#"
 msgstr "Q#"
 
-#: src/qtui/playlist_model.cc:190
+#: src/qtui/playlist_model.cc:192
 msgid "T#"
 msgstr "T#"
 
-#: src/qtui/playlist_model.cc:192
+#: src/qtui/playlist_model.cc:194
 msgid "C#"
 msgstr "C#"
 
-#: src/qtui/playlist_model.cc:194
+#: src/qtui/playlist_model.cc:196
 msgid "D#"
 msgstr "D#"
 
@@ -3286,7 +3342,7 @@ msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
-"Åtkomst nekad. Öppna följande webbadress i en webbläsare, tillåt Audacious "
+"Åtkomst nekad. Öppna följande URL:n i en webbläsare, tillåt Audacious "
 "tillgång till ditt konto och klicka sedan på \"Kontrollera tillåtelse\" igen:"
 
 #: src/scrobbler2/config_window.cc:53
@@ -3333,11 +3389,11 @@ msgstr ""
 "Tack till John Lindgren som gav mig en hjälpande hand i början av detta "
 "projekt."
 
-#: src/sdlout/sdlout.cc:43
+#: src/sdlout/sdlout.cc:46
 msgid "SDL Output"
 msgstr "SDL-utgång"
 
-#: src/sdlout/sdlout.cc:72
+#: src/sdlout/sdlout.cc:75
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
@@ -3423,7 +3479,7 @@ msgstr "_Skapa spellista"
 msgid "_Add to Playlist"
 msgstr "_Lägg till spellista"
 
-#: src/sid/xmms-sid.cc:43
+#: src/sid/xmms-sid.cc:44
 msgid "SID Player"
 msgstr "SID-spelare"
 
@@ -3615,22 +3671,25 @@ msgstr "Aktivera \"Alltid överst\""
 msgid "File Info Box"
 msgstr "Filinforuta"
 
-#: src/skins/main.cc:892 src/skins/menus.cc:149 src/skins-qt/main.cc:839
-#: src/skins-qt/menus.cc:142
-msgid "Double Size"
-msgstr "Dubbel storlek"
+#: src/skins/main.cc:893 src/skins-qt/main.cc:840
+msgid "Disable 'Double Size'"
+msgstr "Inaktivera 'Dubbel storlek'"
 
 #: src/skins/main.cc:895 src/skins-qt/main.cc:842
+msgid "Enable 'Double Size'"
+msgstr "Aktivera 'Dubbel storlek'"
+
+#: src/skins/main.cc:898 src/skins-qt/main.cc:845
 msgid "Visualizations"
 msgstr "Visualiseringar"
 
 #: src/skins/menus.cc:74 src/skins-qt/menus.cc:64
 msgid "Volume Up"
-msgstr "Volym Upp"
+msgstr "Volym upp"
 
 #: src/skins/menus.cc:75 src/skins-qt/menus.cc:65
 msgid "Volume Down"
-msgstr "Volym Ner"
+msgstr "Volym ner"
 
 #: src/skins/menus.cc:77 src/skins-qt/menus.cc:67
 msgid "Effects ..."
@@ -3642,7 +3701,7 @@ msgstr "Öppna filer ..."
 
 #: src/skins/menus.cc:85 src/skins-qt/menus.cc:76
 msgid "Open URL ..."
-msgstr "Öppna webbadress ..."
+msgstr "Öppna URL ..."
 
 #: src/skins/menus.cc:89 src/skins-qt/menus.cc:80
 msgid "Playlist"
@@ -3657,8 +3716,8 @@ msgid "View"
 msgstr "Visa"
 
 #: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
-#: src/skins/menus.cc:245 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
-#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:241
+#: src/skins/menus.cc:245 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:157
+#: src/skins-qt/menus.cc:171 src/skins-qt/menus.cc:242
 msgid "Services"
 msgstr "Tjänster"
 
@@ -3675,263 +3734,267 @@ msgid "Quit"
 msgstr "Avsluta"
 
 #: src/skins/menus.cc:101 src/skins/menus.cc:235 src/skins-qt/menus.cc:92
-#: src/skins-qt/menus.cc:231
+#: src/skins-qt/menus.cc:232
 msgid "Song Info ..."
 msgstr "Låtinformation ..."
 
-#: src/skins/menus.cc:105 src/skins-qt/menus.cc:96
+#: src/skins/menus.cc:105 src/skins-qt/menus.cc:97
 msgid "Shuffle by Album"
 msgstr "Blanda album"
 
-#: src/skins/menus.cc:106 src/skins-qt/menus.cc:97
+#: src/skins/menus.cc:106 src/skins-qt/menus.cc:98
 msgid "No Playlist Advance"
 msgstr "Ingen spellista avancera"
 
-#: src/skins/menus.cc:117 src/skins-qt/menus.cc:108
+#: src/skins/menus.cc:117 src/skins-qt/menus.cc:109
 msgid "Set A-B Repeat"
 msgstr "Ställ in A-B-upprepning"
 
-#: src/skins/menus.cc:118 src/skins-qt/menus.cc:109
+#: src/skins/menus.cc:118 src/skins-qt/menus.cc:110
 msgid "Clear A-B Repeat"
 msgstr "Rensa A-B-upprepning"
 
-#: src/skins/menus.cc:120 src/skins-qt/menus.cc:111
+#: src/skins/menus.cc:120 src/skins-qt/menus.cc:112
 msgid "Jump to Song ..."
 msgstr "Hoppa till låt ..."
 
-#: src/skins/menus.cc:121 src/skins-qt/menus.cc:113
+#: src/skins/menus.cc:121 src/skins-qt/menus.cc:114
 msgid "Jump to Time ..."
 msgstr "Hoppa till tid ..."
 
-#: src/skins/menus.cc:125 src/skins-qt/menus.cc:118
+#: src/skins/menus.cc:125 src/skins-qt/menus.cc:119
 msgid "Play/Resume"
-msgstr "Spela/Återuppta"
+msgstr "Spela/återuppta"
 
-#: src/skins/menus.cc:127 src/skins-qt/menus.cc:120
+#: src/skins/menus.cc:127 src/skins-qt/menus.cc:121
 msgid "New Playlist"
 msgstr "Ny spellista"
 
-#: src/skins/menus.cc:128 src/skins-qt/menus.cc:121
+#: src/skins/menus.cc:128 src/skins-qt/menus.cc:122
 msgid "Rename Playlist ..."
 msgstr "Byt namn på spellista ..."
 
-#: src/skins/menus.cc:129 src/skins-qt/menus.cc:122
+#: src/skins/menus.cc:129 src/skins-qt/menus.cc:123
 msgid "Remove Playlist"
 msgstr "Ta bort spellista"
 
-#: src/skins/menus.cc:131 src/skins-qt/menus.cc:124
+#: src/skins/menus.cc:131 src/skins-qt/menus.cc:125
 msgid "Previous Playlist"
 msgstr "Föregående spellista"
 
-#: src/skins/menus.cc:132 src/skins-qt/menus.cc:125
+#: src/skins/menus.cc:132 src/skins-qt/menus.cc:126
 msgid "Next Playlist"
 msgstr "Nästa spellista"
 
-#: src/skins/menus.cc:134 src/skins-qt/menus.cc:127
+#: src/skins/menus.cc:134 src/skins-qt/menus.cc:128
 msgid "Import Playlist ..."
 msgstr "Importera spellista ..."
 
-#: src/skins/menus.cc:135 src/skins-qt/menus.cc:128
+#: src/skins/menus.cc:135 src/skins-qt/menus.cc:129
 msgid "Export Playlist ..."
 msgstr "Exportera spellista ..."
 
-#: src/skins/menus.cc:137 src/skins-qt/menus.cc:130
+#: src/skins/menus.cc:137 src/skins-qt/menus.cc:131
 msgid "Playlist Manager ..."
 msgstr "Spellistahanterare ..."
 
-#: src/skins/menus.cc:138 src/skins-qt/menus.cc:131
+#: src/skins/menus.cc:138 src/skins-qt/menus.cc:132
 msgid "Queue Manager ..."
 msgstr "Köhanterare ..."
 
-#: src/skins/menus.cc:140 src/skins-qt/menus.cc:133
+#: src/skins/menus.cc:140 src/skins-qt/menus.cc:134
 msgid "Refresh Playlist"
 msgstr "Uppdatera spellista"
 
-#: src/skins/menus.cc:144 src/skins-qt/menus.cc:137
+#: src/skins/menus.cc:144 src/skins-qt/menus.cc:138
 msgid "Show Playlist Editor"
 msgstr "Visa redigerare för spellista"
 
-#: src/skins/menus.cc:145 src/skins-qt/menus.cc:138
+#: src/skins/menus.cc:145 src/skins-qt/menus.cc:139
 msgid "Show Equalizer"
 msgstr "Visa frekvenskorrigerare"
 
-#: src/skins/menus.cc:147 src/skins-qt/menus.cc:140
+#: src/skins/menus.cc:147 src/skins-qt/menus.cc:141
 msgid "Show Remaining Time"
 msgstr "Visa återstående tid"
 
-#: src/skins/menus.cc:150 src/skins-qt/menus.cc:143
+#: src/skins/menus.cc:149 src/skins-qt/menus.cc:143
+msgid "Double Size"
+msgstr "Dubbel storlek"
+
+#: src/skins/menus.cc:150 src/skins-qt/menus.cc:144
 msgid "Always on Top"
 msgstr "Alltid överst"
 
-#: src/skins/menus.cc:151 src/skins-qt/menus.cc:145
+#: src/skins/menus.cc:151 src/skins-qt/menus.cc:146
 msgid "On All Workspaces"
 msgstr "På alla arbetsytor"
 
-#: src/skins/menus.cc:153 src/skins-qt/menus.cc:148
+#: src/skins/menus.cc:153 src/skins-qt/menus.cc:149
 msgid "Roll Up Player"
 msgstr "Rulla upp spelare"
 
-#: src/skins/menus.cc:154 src/skins-qt/menus.cc:149
+#: src/skins/menus.cc:154 src/skins-qt/menus.cc:150
 msgid "Roll Up Playlist Editor"
 msgstr "Rulla upp spellistsredigerare"
 
-#: src/skins/menus.cc:155 src/skins-qt/menus.cc:150
+#: src/skins/menus.cc:155 src/skins-qt/menus.cc:151
 msgid "Roll Up Equalizer"
 msgstr "Rulla upp frekvenskorrigeraren"
 
-#: src/skins/menus.cc:163 src/skins-qt/menus.cc:158
+#: src/skins/menus.cc:163 src/skins-qt/menus.cc:159
 msgid "Add URL ..."
-msgstr "Lägg till webbadress ..."
+msgstr "Lägg till URL ..."
 
-#: src/skins/menus.cc:164 src/skins-qt/menus.cc:160
+#: src/skins/menus.cc:164 src/skins-qt/menus.cc:161
 msgid "Add Files ..."
 msgstr "Lägg till filer ..."
 
 #: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:212
-#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:192
-#: src/skins-qt/menus.cc:208
+#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:193
+#: src/skins-qt/menus.cc:209
 msgid "By Title"
 msgstr "Efter titel"
 
 #: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:219
-#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:199
-#: src/skins-qt/menus.cc:215
+#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
+#: src/skins-qt/menus.cc:216
 msgid "By File Name"
 msgstr "Efter filnamn"
 
 #: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:220
-#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
-#: src/skins-qt/menus.cc:216
+#: src/skins-qt/menus.cc:167 src/skins-qt/menus.cc:201
+#: src/skins-qt/menus.cc:217
 msgid "By File Path"
 msgstr "Efter sökväg"
 
-#: src/skins/menus.cc:176 src/skins-qt/menus.cc:172
+#: src/skins/menus.cc:176 src/skins-qt/menus.cc:173
 msgid "Remove All"
 msgstr "Ta bort alla"
 
-#: src/skins/menus.cc:177 src/skins-qt/menus.cc:173
+#: src/skins/menus.cc:177 src/skins-qt/menus.cc:174
 msgid "Clear Queue"
 msgstr "Rensa kö"
 
-#: src/skins/menus.cc:179 src/skins-qt/menus.cc:175
+#: src/skins/menus.cc:179 src/skins-qt/menus.cc:176
 msgid "Remove Unavailable Files"
 msgstr "Ta bort otillgängliga filer"
 
-#: src/skins/menus.cc:180 src/skins-qt/menus.cc:176
+#: src/skins/menus.cc:180 src/skins-qt/menus.cc:177
 msgid "Remove Duplicates"
 msgstr "Ta bort dubbletter"
 
-#: src/skins/menus.cc:182 src/skins-qt/menus.cc:178
+#: src/skins/menus.cc:182 src/skins-qt/menus.cc:179
 msgid "Remove Unselected"
 msgstr "Ta bort ovalda"
 
-#: src/skins/menus.cc:183 src/skins-qt/menus.cc:179
+#: src/skins/menus.cc:183 src/skins-qt/menus.cc:180
 msgid "Remove Selected"
 msgstr "Ta bort valda"
 
-#: src/skins/menus.cc:187 src/skins-qt/menus.cc:183
+#: src/skins/menus.cc:187 src/skins-qt/menus.cc:184
 msgid "Search and Select"
 msgstr "Sök och välj"
 
-#: src/skins/menus.cc:189 src/skins-qt/menus.cc:185
+#: src/skins/menus.cc:189 src/skins-qt/menus.cc:186
 msgid "Invert Selection"
 msgstr "Invertera valet"
 
-#: src/skins/menus.cc:190 src/skins-qt/menus.cc:186
+#: src/skins/menus.cc:190 src/skins-qt/menus.cc:187
 msgid "Select None"
 msgstr "Välj ingen"
 
-#: src/skins/menus.cc:191 src/skins-qt/menus.cc:187
+#: src/skins/menus.cc:191 src/skins-qt/menus.cc:188
 msgid "Select All"
 msgstr "Välj alla"
 
-#: src/skins/menus.cc:195 src/skins/menus.cc:211 src/skins-qt/menus.cc:191
-#: src/skins-qt/menus.cc:207
+#: src/skins/menus.cc:195 src/skins/menus.cc:211 src/skins-qt/menus.cc:192
+#: src/skins-qt/menus.cc:208
 msgid "By Track Number"
 msgstr "Efter spårnummer"
 
-#: src/skins/menus.cc:197 src/skins/menus.cc:213 src/skins-qt/menus.cc:193
-#: src/skins-qt/menus.cc:209
+#: src/skins/menus.cc:197 src/skins/menus.cc:213 src/skins-qt/menus.cc:194
+#: src/skins-qt/menus.cc:210
 msgid "By Artist"
 msgstr "Efter artist"
 
-#: src/skins/menus.cc:198 src/skins/menus.cc:214 src/skins-qt/menus.cc:194
-#: src/skins-qt/menus.cc:210
+#: src/skins/menus.cc:198 src/skins/menus.cc:214 src/skins-qt/menus.cc:195
+#: src/skins-qt/menus.cc:211
 msgid "By Album"
 msgstr "Efter album"
 
-#: src/skins/menus.cc:199 src/skins/menus.cc:215 src/skins-qt/menus.cc:195
-#: src/skins-qt/menus.cc:211
+#: src/skins/menus.cc:199 src/skins/menus.cc:215 src/skins-qt/menus.cc:196
+#: src/skins-qt/menus.cc:212
 msgid "By Album Artist"
 msgstr "Efter albumartist"
 
-#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:196
-#: src/skins-qt/menus.cc:212
+#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:197
+#: src/skins-qt/menus.cc:213
 msgid "By Release Date"
 msgstr "Efter utgivningsdatum"
 
-#: src/skins/menus.cc:201 src/skins/menus.cc:217 src/skins-qt/menus.cc:197
-#: src/skins-qt/menus.cc:213
+#: src/skins/menus.cc:201 src/skins/menus.cc:217 src/skins-qt/menus.cc:198
+#: src/skins-qt/menus.cc:214
 msgid "By Genre"
 msgstr "Efter genre"
 
-#: src/skins/menus.cc:202 src/skins/menus.cc:218 src/skins-qt/menus.cc:198
-#: src/skins-qt/menus.cc:214
+#: src/skins/menus.cc:202 src/skins/menus.cc:218 src/skins-qt/menus.cc:199
+#: src/skins-qt/menus.cc:215
 msgid "By Length"
 msgstr "Efter längd"
 
-#: src/skins/menus.cc:205 src/skins/menus.cc:221 src/skins-qt/menus.cc:201
-#: src/skins-qt/menus.cc:217
+#: src/skins/menus.cc:205 src/skins/menus.cc:221 src/skins-qt/menus.cc:202
+#: src/skins-qt/menus.cc:218
 msgid "By Custom Title"
 msgstr "Efter anpassad titel"
 
-#: src/skins/menus.cc:206 src/skins/menus.cc:222 src/skins-qt/menus.cc:202
-#: src/skins-qt/menus.cc:218
+#: src/skins/menus.cc:206 src/skins/menus.cc:222 src/skins-qt/menus.cc:203
+#: src/skins-qt/menus.cc:219
 msgid "By Comment"
 msgstr "Efter kommentar"
 
-#: src/skins/menus.cc:207 src/skins/menus.cc:223 src/skins-qt/menus.cc:203
-#: src/skins-qt/menus.cc:219
+#: src/skins/menus.cc:207 src/skins/menus.cc:223 src/skins-qt/menus.cc:204
+#: src/skins-qt/menus.cc:220
 msgid "By Disc Number"
 msgstr "Efter Skivnummer"
 
-#: src/skins/menus.cc:227 src/skins-qt/menus.cc:223
+#: src/skins/menus.cc:227 src/skins-qt/menus.cc:224
 msgid "Randomize List"
 msgstr "Slumpmässig lista"
 
-#: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
+#: src/skins/menus.cc:228 src/skins-qt/menus.cc:225
 msgid "Reverse List"
 msgstr "Omvänd lista"
 
-#: src/skins/menus.cc:230 src/skins-qt/menus.cc:226
+#: src/skins/menus.cc:230 src/skins-qt/menus.cc:227
 msgid "Sort Selected"
 msgstr "Sortera valda"
 
-#: src/skins/menus.cc:231 src/skins-qt/menus.cc:227
+#: src/skins/menus.cc:231 src/skins-qt/menus.cc:228
 msgid "Sort List"
 msgstr "Sortera lista"
 
-#: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
+#: src/skins/menus.cc:236 src/skins-qt/menus.cc:233
 msgid "Open Containing Folder"
 msgstr "Öppna innehållande mapp"
 
-#: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
+#: src/skins/menus.cc:238 src/skins-qt/menus.cc:235
 msgid "Cut"
 msgstr "Klipp"
 
-#: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
+#: src/skins/menus.cc:239 src/skins-qt/menus.cc:236
 msgid "Copy"
 msgstr "Kopiera"
 
-#: src/skins/menus.cc:240 src/skins-qt/menus.cc:236
+#: src/skins/menus.cc:240 src/skins-qt/menus.cc:237
 msgid "Paste"
 msgstr "Klistra in"
 
-#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:238
 msgid "Paste at End"
 msgstr "Klistra in i slutet"
 
-#: src/skins/menus.cc:243 src/skins-qt/menus.cc:239
+#: src/skins/menus.cc:243 src/skins-qt/menus.cc:240
 msgid "Queue/Unqueue"
 msgstr "Lägg till i kö/Ta bort från kö"
 
@@ -3952,7 +4015,11 @@ msgstr "Winamps klassiska gränssnitt"
 msgid "Open Folder ..."
 msgstr "Öppna mapp ..."
 
-#: src/skins-qt/menus.cc:159
+#: src/skins-qt/menus.cc:93
+msgid "Playback History ..."
+msgstr "Uppspelningshistorik ..."
+
+#: src/skins-qt/menus.cc:160
 msgid "Add Folder ..."
 msgstr "Lägg till mapp ..."
 
@@ -4435,39 +4502,51 @@ msgstr ""
 "Denna insticksmodul ger en statusikon, placerad i\n"
 "systemfältet av fönsterhanteraren."
 
-#: src/statusicon-qt/statusicon.cc:89 src/statusicon/statusicon.cc:384
+#: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:398
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Musrullningsåtgärd</b>"
 
-#: src/statusicon-qt/statusicon.cc:90 src/statusicon/statusicon.cc:385
+#: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:399
 msgid "Change volume"
 msgstr "Ändra volym"
 
-#: src/statusicon-qt/statusicon.cc:93 src/statusicon/statusicon.cc:388
+#: src/statusicon-qt/statusicon.cc:99 src/statusicon/statusicon.cc:402
 msgid "Change playing song"
 msgstr "Ändra spelande låt"
 
-#: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:391
+#: src/statusicon-qt/statusicon.cc:102 src/statusicon/statusicon.cc:405
+msgid "<b>Middle Click Action</b>"
+msgstr "<b>Åtgärd för mittenklick</b>"
+
+#: src/statusicon-qt/statusicon.cc:103 src/statusicon/statusicon.cc:406
+msgid "Pause/Resume playback"
+msgstr "Pausa/Återuppta uppspelning"
+
+#: src/statusicon-qt/statusicon.cc:106 src/statusicon/statusicon.cc:409
+msgid "Play next song"
+msgstr "Spela nästa låt"
+
+#: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:412
 msgid "<b>Other Settings</b>"
 msgstr "<b>Andra inställningar</b>"
 
-#: src/statusicon-qt/statusicon.cc:97 src/statusicon/statusicon.cc:392
+#: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:413
 msgid "Disable the popup window"
 msgstr "Inaktivera popup-fönstret"
 
-#: src/statusicon-qt/statusicon.cc:99 src/statusicon/statusicon.cc:394
+#: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:415
 msgid "Close to the system tray"
 msgstr "Stäng till systemfältet"
 
-#: src/statusicon-qt/statusicon.cc:101 src/statusicon/statusicon.cc:396
+#: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:417
 msgid "Advance in playlist when scrolling upward"
 msgstr "Förväg i spellistan när du bläddrar uppåt"
 
-#: src/statusicon-qt/statusicon.cc:116 src/statusicon/statusicon.cc:287
+#: src/statusicon-qt/statusicon.cc:129 src/statusicon/statusicon.cc:301
 msgid "Se_ttings ..."
 msgstr "Ins_tällningar ..."
 
-#: src/statusicon/statusicon.cc:377
+#: src/statusicon/statusicon.cc:391
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -4667,8 +4746,8 @@ msgstr ""
 "Sine tone generator av Håvard Kvålen <havardk@xmms.org>\n"
 "Ändrad av Daniel J. Peng <danielpeng@bigfoot.com>\n"
 "\n"
-"För att använda det, lägg till en webbadress: tone://frequency1;frequency2;"
-"frequency3;...\n"
+"För att använda det, lägg till en URL: tone://"
+"frequency1;frequency2;frequency3;...\n"
 "t.ex. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 
 #: src/ui-common/dialogs-qt.cc:40
@@ -4783,7 +4862,7 @@ msgstr ""
 "Baserat på in_vtx.dll av Roman Sherbakov <v_soft@microfor.ru>  \n"
 "Audacious-insticksmodul av Pavel Vymetalek <pvymetalek@seznam.cz>"
 
-#: src/vumeter-qt/vumeter_qt.cc:31
+#: src/vumeter-qt/vumeter_qt.cc:31 src/vumeter/vumeter.cc:69
 msgid ""
 "VU Meter Plugin for Audacious\n"
 "Copyright 2017-2019 Marc Sánchez Fauste"
@@ -4791,27 +4870,27 @@ msgstr ""
 "VU Meter Plugin för Audacious\n"
 "Copyright 2017-2019 Marc Sánchez Fauste"
 
-#: src/vumeter-qt/vumeter_qt.cc:35
+#: src/vumeter-qt/vumeter_qt.cc:35 src/vumeter/vumeter.cc:73
 msgid "<b>VU Meter Settings</b>"
-msgstr "<b>VU Meter inställningar</b>"
+msgstr "<b>VU Meter-inställningar</b>"
 
-#: src/vumeter-qt/vumeter_qt.cc:37
+#: src/vumeter-qt/vumeter_qt.cc:37 src/vumeter/vumeter.cc:75
 msgid "Peak hold time:"
 msgstr "Högsta hålltid:"
 
-#: src/vumeter-qt/vumeter_qt.cc:42
+#: src/vumeter-qt/vumeter_qt.cc:42 src/vumeter/vumeter.cc:80
 msgid "Fall-off time:"
 msgstr "Reduktionstid:"
 
-#: src/vumeter-qt/vumeter_qt.cc:44
+#: src/vumeter-qt/vumeter_qt.cc:44 src/vumeter/vumeter.cc:82
 msgid "dB/second"
 msgstr "dB/sekund"
 
-#: src/vumeter-qt/vumeter_qt.cc:46
+#: src/vumeter-qt/vumeter_qt.cc:46 src/vumeter/vumeter.cc:85
 msgid "Display legend"
 msgstr "Visningslegend"
 
-#: src/vumeter-qt/vumeter_qt.h:37
+#: src/vumeter-qt/vumeter_qt.h:37 src/vumeter/vumeter.cc:47
 msgid "VU Meter"
 msgstr "VU-mätare"
 
@@ -4831,15 +4910,15 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "WavPack-avkodare"
 
-#: src/wavpack/wavpack.cc:217
+#: src/wavpack/wavpack.cc:207
 msgid "lossy (hybrid)"
 msgstr "destruktiv komprimering (hybrid)"
 
-#: src/wavpack/wavpack.cc:219
+#: src/wavpack/wavpack.cc:209
 msgid "lossy"
 msgstr "destruktiv komprimering"
 
-#: src/wavpack/wavpack.cc:259
+#: src/wavpack/wavpack.cc:247
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2024-09-26 21:54+0200\n"
+"POT-Creation-Date: 2025-07-16 00:23+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
 "Last-Translator: 趙惟倫 <bluebat@member.fsf.org>, 2013\n"
 "Language-Team: Chinese (Mandarin) (http://app.transifex.com/audacious/"
@@ -29,26 +29,26 @@ msgstr ""
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib 播放器)"
 
-#: src/adplug/adplug-xmms.cc:167 src/modplug/modplugbmp.cc:321
+#: src/adplug/adplug-xmms.cc:168 src/modplug/modplugbmp.cc:321
 #: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:204
 msgid "sequenced"
 msgstr "編曲機"
 
-#: src/adplug/adplug-xmms.cc:349 src/sid/xs_config.cc:61
+#: src/adplug/adplug-xmms.cc:350 src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:350
+#: src/adplug/adplug-xmms.cc:351
 msgid "OPL Emulator:"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:353 src/amidiplug/i_configure.cc:153
+#: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:153
 #: src/console/plugin.cc:45 src/filewriter/filewriter.cc:481
 #: src/sid/xs_config.cc:65 src/xsf/plugin.cc:446
 msgid "Sample rate:"
 msgstr ""
 
-#: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:155
+#: src/adplug/adplug-xmms.cc:355 src/amidiplug/i_configure.cc:155
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
 #: src/modplug/plugin_main.cc:77 src/resample/resample.cc:201
 #: src/resample/resample.cc:207 src/resample/resample.cc:211
@@ -60,13 +60,13 @@ msgstr ""
 msgid "Hz"
 msgstr "Hz"
 
-#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:55
+#: src/adplug/adplug-xmms.cc:356 src/gtkui/settings.cc:55
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:85
 #: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:284
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>其他選項</b>"
 
-#: src/adplug/adplug-xmms.cc:356
+#: src/adplug/adplug-xmms.cc:357
 msgid "Repeat song in endless loop"
 msgstr ""
 
@@ -620,7 +620,7 @@ msgstr ""
 msgid "Cut frequency:"
 msgstr "截斷頻率："
 
-#: src/cairo-spectrum/cairo-spectrum.cc:42 src/qt-spectrum/qt-spectrum.cc:107
+#: src/cairo-spectrum/cairo-spectrum.cc:39 src/qt-spectrum/qt-spectrum.cc:107
 msgid "Spectrum Analyzer"
 msgstr "頻譜分析儀"
 
@@ -832,7 +832,7 @@ msgstr "預設歌曲長度："
 #: src/console/plugin.cc:41 src/crossfade/crossfade.cc:56
 #: src/crossfade/crossfade.cc:62 src/lirc/lirc.cc:395 src/notify/notify.cc:113
 #: src/sid/xs_config.cc:85 src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
-#: src/vumeter-qt/vumeter_qt.cc:39
+#: src/vumeter-qt/vumeter_qt.cc:39 src/vumeter/vumeter.cc:77
 msgid "seconds"
 msgstr "秒"
 
@@ -1355,7 +1355,7 @@ msgstr "一般"
 msgid "FLAC Decoder"
 msgstr "FLAC 解碼器"
 
-#: src/flac/metadata.cc:296 src/wavpack/wavpack.cc:215
+#: src/flac/metadata.cc:296 src/wavpack/wavpack.cc:205
 msgid "lossless"
 msgstr "無損"
 
@@ -1407,13 +1407,11 @@ msgstr ""
 msgid "OpenGL Spectrum Analyzer"
 msgstr "OpenGL 頻譜分析儀"
 
-#: src/gtkui/columns.cc:36 src/moonstone/playlist_model.cc:38
-#: src/qtui/playlist_model.cc:33
+#: src/gtkui/columns.cc:36 src/qtui/playlist_model.cc:33
 msgid "Entry Number"
 msgstr ""
 
-#: src/gtkui/columns.cc:37 src/moonstone/playlist_model.cc:38
-#: src/moonstone/playlist_selection.cc:64
+#: src/gtkui/columns.cc:37 src/playback-history-qt/playback-history.cc:372
 #: src/playlist-manager/playlist-manager.cc:200
 #: src/playlist-manager-qt/playlist-manager-qt.cc:188
 #: src/qtui/playlist_model.cc:33 src/streamtuner/icecast-model.cc:120
@@ -1421,71 +1419,60 @@ msgstr ""
 msgid "Title"
 msgstr "標題"
 
-#: src/gtkui/columns.cc:38 src/moonstone/playlist_model.cc:39
-#: src/qtui/playlist_model.cc:33
+#: src/gtkui/columns.cc:38 src/qtui/playlist_model.cc:33
 msgid "Artist"
 msgstr "演出者"
 
-#: src/gtkui/columns.cc:39 src/moonstone/playlist_model.cc:39
-#: src/qtui/playlist_model.cc:33
+#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:33
 msgid "Year"
 msgstr "年分"
 
-#: src/gtkui/columns.cc:40 src/moonstone/playlist_model.cc:39
+#: src/gtkui/columns.cc:40 src/playback-history-qt/playback-history.cc:374
+#: src/playback-history-qt/playback-history.cc:837
 #: src/qtui/playlist_model.cc:34
 msgid "Album"
 msgstr "專輯"
 
-#: src/gtkui/columns.cc:41 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:34
+#: src/gtkui/columns.cc:41 src/qtui/playlist_model.cc:34
 msgid "Album Artist"
 msgstr ""
 
-#: src/gtkui/columns.cc:42 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:34
+#: src/gtkui/columns.cc:42 src/qtui/playlist_model.cc:34
 msgid "Track"
 msgstr "音軌"
 
-#: src/gtkui/columns.cc:43 src/moonstone/playlist_model.cc:40
-#: src/qtui/playlist_model.cc:34 src/streamtuner/icecast-model.cc:123
-#: src/streamtuner/shoutcast-model.cc:125
+#: src/gtkui/columns.cc:43 src/qtui/playlist_model.cc:34
+#: src/streamtuner/icecast-model.cc:123 src/streamtuner/shoutcast-model.cc:125
 #: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
 msgstr "類型"
 
-#: src/gtkui/columns.cc:44 src/moonstone/playlist_model.cc:41
-#: src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:44 src/qtui/playlist_model.cc:35
 msgid "Queue Position"
 msgstr ""
 
-#: src/gtkui/columns.cc:45 src/moonstone/playlist_model.cc:41
-#: src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:45 src/qtui/playlist_model.cc:35
 msgid "Length"
 msgstr "長度"
 
-#: src/gtkui/columns.cc:46 src/moonstone/playlist_model.cc:41
-#: src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:46 src/qtui/playlist_model.cc:35
 msgid "File Path"
 msgstr ""
 
-#: src/gtkui/columns.cc:47 src/moonstone/playlist_model.cc:42
-#: src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:47 src/qtui/playlist_model.cc:35
 msgid "File Name"
 msgstr ""
 
-#: src/gtkui/columns.cc:48 src/moonstone/playlist_model.cc:42
-#: src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:48 src/qtui/playlist_model.cc:36
 msgid "Custom Title"
 msgstr ""
 
-#: src/gtkui/columns.cc:49 src/moonstone/playlist_model.cc:42
-#: src/qtui/playlist_model.cc:36 src/streamtuner/icecast-model.cc:129
-#: src/streamtuner/shoutcast-model.cc:134
+#: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:36
+#: src/streamtuner/icecast-model.cc:129 src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
 msgstr "位元率"
 
-#: src/gtkui/columns.cc:50 src/moonstone/playlist_model.cc:43
-#: src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:50 src/qtui/playlist_model.cc:36
 msgid "Comment"
 msgstr "備註"
 
@@ -1497,8 +1484,7 @@ msgstr ""
 msgid "Catalog Number"
 msgstr ""
 
-#: src/gtkui/columns.cc:53 src/moonstone/playlist_model.cc:43
-#: src/qtui/playlist_model.cc:37
+#: src/gtkui/columns.cc:53 src/qtui/playlist_model.cc:37
 msgid "Disc"
 msgstr ""
 
@@ -1539,100 +1525,99 @@ msgstr "解除嵌入"
 msgid "Disable"
 msgstr "關閉"
 
-#: src/gtkui/menus.cc:79 src/qtui/menus.cc:107
-#: src/statusicon-qt/statusicon.cc:115 src/statusicon/statusicon.cc:286
+#: src/gtkui/menus.cc:79 src/qtui/menus.cc:111
+#: src/statusicon-qt/statusicon.cc:128 src/statusicon/statusicon.cc:300
 msgid "_Open Files ..."
 msgstr "開啟檔案(_O)…"
 
-#: src/gtkui/menus.cc:80 src/qtui/menus.cc:111
+#: src/gtkui/menus.cc:80 src/qtui/menus.cc:115
 msgid "Open _URL ..."
 msgstr "開啟網址(_U)…"
 
-#: src/gtkui/menus.cc:81 src/qtui/menus.cc:113
+#: src/gtkui/menus.cc:81 src/qtui/menus.cc:117
 msgid "_Add Files ..."
 msgstr "加入檔案(_A)… "
 
-#: src/gtkui/menus.cc:82 src/qtui/menus.cc:118
+#: src/gtkui/menus.cc:82 src/qtui/menus.cc:122
 msgid "Add U_RL ..."
 msgstr "加入網址(_R)…"
 
-#: src/gtkui/menus.cc:84 src/qtui/menus.cc:120
+#: src/gtkui/menus.cc:84 src/qtui/menus.cc:124
 msgid "Search _Library"
 msgstr ""
 
-#: src/gtkui/menus.cc:86 src/qtui/menus.cc:123
+#: src/gtkui/menus.cc:86 src/qtui/menus.cc:127
 msgid "A_bout ..."
 msgstr "關於(_B)…"
 
-#: src/gtkui/menus.cc:87 src/qtui/menus.cc:125
+#: src/gtkui/menus.cc:87 src/qtui/menus.cc:129
 msgid "_Settings ..."
 msgstr ""
 
-#: src/gtkui/menus.cc:88 src/qtui/menus.cc:131
-#: src/statusicon-qt/statusicon.cc:117 src/statusicon/statusicon.cc:288
+#: src/gtkui/menus.cc:88 src/qtui/menus.cc:135
+#: src/statusicon-qt/statusicon.cc:130 src/statusicon/statusicon.cc:302
 msgid "_Quit"
 msgstr "離開(_Q)"
 
-#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:226
-#: src/moonstone/playlist_tabs.cc:306 src/qtui/menus.cc:135
+#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:226 src/qtui/menus.cc:139
 #: src/qtui/playlist_tabs.cc:331 src/search-tool-qt/search-tool-qt.cc:499
-#: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:109
-#: src/statusicon/statusicon.cc:280
+#: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:122
+#: src/statusicon/statusicon.cc:294
 msgid "_Play"
 msgstr "播放(_P)"
 
-#: src/gtkui/menus.cc:93 src/qtui/menus.cc:137
-#: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:281
+#: src/gtkui/menus.cc:93 src/qtui/menus.cc:141
+#: src/statusicon-qt/statusicon.cc:123 src/statusicon/statusicon.cc:295
 msgid "Paus_e"
 msgstr "暫停(_E)"
 
-#: src/gtkui/menus.cc:94 src/qtui/menus.cc:139
-#: src/statusicon-qt/statusicon.cc:111 src/statusicon/statusicon.cc:282
+#: src/gtkui/menus.cc:94 src/qtui/menus.cc:143
+#: src/statusicon-qt/statusicon.cc:124 src/statusicon/statusicon.cc:296
 msgid "_Stop"
 msgstr "停止(_S)"
 
-#: src/gtkui/menus.cc:95 src/qtui/menus.cc:141
-#: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:283
+#: src/gtkui/menus.cc:95 src/qtui/menus.cc:145
+#: src/statusicon-qt/statusicon.cc:125 src/statusicon/statusicon.cc:297
 msgid "Pre_vious"
 msgstr "上一首(_V)"
 
-#: src/gtkui/menus.cc:96 src/qtui/menus.cc:143
-#: src/statusicon-qt/statusicon.cc:113 src/statusicon/statusicon.cc:284
+#: src/gtkui/menus.cc:96 src/qtui/menus.cc:147
+#: src/statusicon-qt/statusicon.cc:126 src/statusicon/statusicon.cc:298
 msgid "_Next"
 msgstr "下一首(_N)"
 
-#: src/gtkui/menus.cc:97 src/qtui/menus.cc:145 src/skins/menus.cc:114
-#: src/skins-qt/menus.cc:105
+#: src/gtkui/menus.cc:97 src/qtui/menus.cc:149 src/skins/menus.cc:114
+#: src/skins-qt/menus.cc:106
 msgid "Previous Album"
 msgstr ""
 
-#: src/gtkui/menus.cc:98 src/qtui/menus.cc:146 src/skins/menus.cc:115
-#: src/skins-qt/menus.cc:106
+#: src/gtkui/menus.cc:98 src/qtui/menus.cc:150 src/skins/menus.cc:115
+#: src/skins-qt/menus.cc:107
 msgid "Next Album"
 msgstr ""
 
-#: src/gtkui/menus.cc:100 src/qtui/menus.cc:148
+#: src/gtkui/menus.cc:100 src/qtui/menus.cc:152
 msgid "_Repeat"
 msgstr "重複"
 
-#: src/gtkui/menus.cc:101 src/qtui/menus.cc:150
+#: src/gtkui/menus.cc:101 src/qtui/menus.cc:154
 msgid "S_huffle"
 msgstr "隨機"
 
-#: src/gtkui/menus.cc:102 src/qtui/menus.cc:152
+#: src/gtkui/menus.cc:102 src/qtui/menus.cc:156
 msgid "Shuffle by Albu_m"
 msgstr ""
 
-#: src/gtkui/menus.cc:103 src/qtui/menus.cc:155
+#: src/gtkui/menus.cc:103 src/qtui/menus.cc:159
 msgid "N_o Playlist Advance"
 msgstr "不要切換播放列表"
 
-#: src/gtkui/menus.cc:104 src/qtui/menus.cc:157
+#: src/gtkui/menus.cc:104 src/qtui/menus.cc:161
 msgid "Stop A_fter This Song"
 msgstr "播放完目前歌曲後停止(_F)"
 
-#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:210 src/qtui/menus.cc:162
-#: src/qtui/menus.cc:294
+#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:210 src/qtui/menus.cc:166
+#: src/qtui/menus.cc:301
 msgid "Song _Info ..."
 msgstr "歌曲資訊(_I)…"
 
@@ -1644,164 +1629,163 @@ msgstr "跳至時間(_T)…"
 msgid "_Jump to Song ..."
 msgstr "跳至歌曲(_J)…"
 
-#: src/gtkui/menus.cc:110 src/qtui/menus.cc:165
+#: src/gtkui/menus.cc:110 src/qtui/menus.cc:172
 msgid "Set Repeat Point _A"
 msgstr "設定重複點 _A"
 
-#: src/gtkui/menus.cc:111 src/qtui/menus.cc:167
+#: src/gtkui/menus.cc:111 src/qtui/menus.cc:174
 msgid "Set Repeat Point _B"
 msgstr "設定重複點 _B"
 
-#: src/gtkui/menus.cc:112 src/qtui/menus.cc:169
+#: src/gtkui/menus.cc:112 src/qtui/menus.cc:176
 msgid "_Clear Repeat Points"
 msgstr "清除重複點(_C)"
 
 #: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:141
-#: src/qtui/menus.cc:173 src/qtui/menus.cc:180 src/qtui/menus.cc:198
+#: src/qtui/menus.cc:180 src/qtui/menus.cc:187 src/qtui/menus.cc:205
 msgid "By _Title"
 msgstr "標題(_T)"
 
-#: src/gtkui/menus.cc:117 src/qtui/menus.cc:174
+#: src/gtkui/menus.cc:117 src/qtui/menus.cc:181
 msgid "By _File Name"
 msgstr ""
 
-#: src/gtkui/menus.cc:118 src/qtui/menus.cc:175
+#: src/gtkui/menus.cc:118 src/qtui/menus.cc:182
 msgid "By File _Path"
 msgstr "檔案路徑(_P)"
 
-#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:140 src/qtui/menus.cc:179
-#: src/qtui/menus.cc:197
+#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:140 src/qtui/menus.cc:186
+#: src/qtui/menus.cc:204
 msgid "By Track _Number"
 msgstr "音軌編號(_N)"
 
-#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:142 src/qtui/menus.cc:181
-#: src/qtui/menus.cc:199
+#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:142 src/qtui/menus.cc:188
+#: src/qtui/menus.cc:206
 msgid "By _Artist"
 msgstr "演出者(_A)"
 
-#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:143 src/qtui/menus.cc:182
-#: src/qtui/menus.cc:200
+#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:143 src/qtui/menus.cc:189
+#: src/qtui/menus.cc:207
 msgid "By Al_bum"
 msgstr "專輯(_B)"
 
-#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:144 src/qtui/menus.cc:183
-#: src/qtui/menus.cc:201
+#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:144 src/qtui/menus.cc:190
+#: src/qtui/menus.cc:208
 msgid "By Albu_m Artist"
 msgstr ""
 
-#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:145 src/qtui/menus.cc:184
-#: src/qtui/menus.cc:202
+#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:145 src/qtui/menus.cc:191
+#: src/qtui/menus.cc:209
 msgid "By Release _Date"
 msgstr "釋出日期(_D)"
 
-#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:146 src/qtui/menus.cc:185
-#: src/qtui/menus.cc:203
+#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:146 src/qtui/menus.cc:192
+#: src/qtui/menus.cc:210
 msgid "By _Genre"
 msgstr ""
 
-#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:147 src/qtui/menus.cc:186
-#: src/qtui/menus.cc:204
+#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:147 src/qtui/menus.cc:193
+#: src/qtui/menus.cc:211
 msgid "By _Length"
 msgstr "長度(_L)"
 
-#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:148 src/qtui/menus.cc:187
-#: src/qtui/menus.cc:205
+#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:148 src/qtui/menus.cc:194
+#: src/qtui/menus.cc:212
 msgid "By _File Path"
 msgstr "檔案路徑(_F)"
 
-#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:149 src/qtui/menus.cc:188
-#: src/qtui/menus.cc:206
+#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:149 src/qtui/menus.cc:195
+#: src/qtui/menus.cc:213
 msgid "By _Custom Title"
 msgstr "自訂標題(_C)"
 
-#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:150 src/qtui/menus.cc:189
-#: src/qtui/menus.cc:207
+#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:150 src/qtui/menus.cc:196
+#: src/qtui/menus.cc:214
 msgid "By C_omment"
 msgstr ""
 
-#: src/gtkui/menus.cc:133 src/gtkui/menus.cc:151 src/qtui/menus.cc:190
-#: src/qtui/menus.cc:208
+#: src/gtkui/menus.cc:133 src/gtkui/menus.cc:151 src/qtui/menus.cc:197
+#: src/qtui/menus.cc:215
 msgid "By D_isc Number"
 msgstr ""
 
-#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:153 src/qtui/menus.cc:192
-#: src/qtui/menus.cc:210
+#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:153 src/qtui/menus.cc:199
+#: src/qtui/menus.cc:217
 msgid "R_everse Order"
 msgstr "反向順序(_E)"
 
-#: src/gtkui/menus.cc:136 src/gtkui/menus.cc:154 src/qtui/menus.cc:194
-#: src/qtui/menus.cc:212
+#: src/gtkui/menus.cc:136 src/gtkui/menus.cc:154 src/qtui/menus.cc:201
+#: src/qtui/menus.cc:219
 msgid "_Random Order"
 msgstr "隨機順序(_R)"
 
-#: src/gtkui/menus.cc:158 src/qtui/menus.cc:216
+#: src/gtkui/menus.cc:158 src/qtui/menus.cc:223
 msgid "_Play/Resume"
 msgstr ""
 
-#: src/gtkui/menus.cc:159 src/qtui/menus.cc:218
+#: src/gtkui/menus.cc:159 src/qtui/menus.cc:225
 msgid "_Refresh"
 msgstr "重新整理(_R)"
 
-#: src/gtkui/menus.cc:161 src/qtui/menus.cc:222
+#: src/gtkui/menus.cc:161 src/qtui/menus.cc:229
 msgid "_Sort"
 msgstr "排序(_S)"
 
-#: src/gtkui/menus.cc:162 src/qtui/menus.cc:223
+#: src/gtkui/menus.cc:162 src/qtui/menus.cc:230
 msgid "Sort Se_lected"
 msgstr "排序所選(_L)"
 
-#: src/gtkui/menus.cc:163 src/qtui/menus.cc:225
+#: src/gtkui/menus.cc:163 src/qtui/menus.cc:232
 msgid "Remove _Duplicates"
 msgstr "移除重複的項目(_D)"
 
-#: src/gtkui/menus.cc:164 src/qtui/menus.cc:226
+#: src/gtkui/menus.cc:164 src/qtui/menus.cc:233
 msgid "Remove _Unavailable Files"
 msgstr "移除不存在的檔案(_U)"
 
 #: src/gtkui/menus.cc:166 src/playlist-manager/playlist-manager.cc:219
-#: src/playlist-manager-qt/playlist-manager-qt.cc:348 src/qtui/menus.cc:229
+#: src/playlist-manager-qt/playlist-manager-qt.cc:348 src/qtui/menus.cc:236
 msgid "_New"
 msgstr "新增(_N)"
 
-#: src/gtkui/menus.cc:167 src/qtui/menus.cc:230
+#: src/gtkui/menus.cc:167 src/qtui/menus.cc:237
 msgid "Ren_ame ..."
 msgstr "重新命名(_A)…"
 
-#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:228
-#: src/moonstone/playlist_tabs.cc:311 src/qtui/menus.cc:231
+#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:228 src/qtui/menus.cc:238
 #: src/qtui/playlist_tabs.cc:336
 msgid "Remo_ve"
 msgstr ""
 
-#: src/gtkui/menus.cc:170 src/qtui/menus.cc:233
+#: src/gtkui/menus.cc:170 src/qtui/menus.cc:240
 msgid "_Import ..."
 msgstr "匯入(_I)…"
 
-#: src/gtkui/menus.cc:171 src/qtui/menus.cc:234
+#: src/gtkui/menus.cc:171 src/qtui/menus.cc:241
 msgid "_Export ..."
 msgstr "匯出(_E)…"
 
-#: src/gtkui/menus.cc:173 src/qtui/menus.cc:237
+#: src/gtkui/menus.cc:173 src/qtui/menus.cc:244
 msgid "Playlist _Manager ..."
 msgstr "播放列表管理(_M)…"
 
-#: src/gtkui/menus.cc:174 src/qtui/menus.cc:239
+#: src/gtkui/menus.cc:174 src/qtui/menus.cc:246
 msgid "_Queue Manager ..."
 msgstr "佇列管理(_Q)…"
 
-#: src/gtkui/menus.cc:178 src/qtui/menus.cc:243
+#: src/gtkui/menus.cc:178 src/qtui/menus.cc:250
 msgid "Volume _Up"
 msgstr "提高音量(_U)"
 
-#: src/gtkui/menus.cc:179 src/qtui/menus.cc:245
+#: src/gtkui/menus.cc:179 src/qtui/menus.cc:252
 msgid "Volume _Down"
 msgstr "降低音量(_D)"
 
-#: src/gtkui/menus.cc:181 src/qtui/menus.cc:249
+#: src/gtkui/menus.cc:181 src/qtui/menus.cc:256
 msgid "_Equalizer ..."
 msgstr ""
 
-#: src/gtkui/menus.cc:182 src/qtui/menus.cc:251
+#: src/gtkui/menus.cc:182 src/qtui/menus.cc:258
 msgid "E_ffects ..."
 msgstr ""
 
@@ -1813,94 +1797,93 @@ msgstr ""
 msgid "Audio _Settings ..."
 msgstr ""
 
-#: src/gtkui/menus.cc:189 src/qtui/menus.cc:260
+#: src/gtkui/menus.cc:189 src/qtui/menus.cc:267
 msgid "Show _Menu Bar"
 msgstr "顯示選單列(_M)"
 
-#: src/gtkui/menus.cc:190 src/qtui/menus.cc:262
+#: src/gtkui/menus.cc:190 src/qtui/menus.cc:269
 msgid "Show I_nfo Bar"
 msgstr "顯示資訊列(_N)"
 
-#: src/gtkui/menus.cc:191 src/qtui/menus.cc:264
+#: src/gtkui/menus.cc:191 src/qtui/menus.cc:271
 msgid "Show Info Bar _Album Art"
 msgstr ""
 
-#: src/gtkui/menus.cc:192 src/qtui/menus.cc:266
+#: src/gtkui/menus.cc:192 src/qtui/menus.cc:273
 msgid "Show Info Bar Vis_ualization"
 msgstr "顯示資訊列的視覺特效(_U)"
 
-#: src/gtkui/menus.cc:193 src/qtui/menus.cc:268
+#: src/gtkui/menus.cc:193 src/qtui/menus.cc:275
 msgid "Show _Status Bar"
 msgstr "顯示狀態列(_S)"
 
-#: src/gtkui/menus.cc:195 src/qtui/menus.cc:272
+#: src/gtkui/menus.cc:195 src/qtui/menus.cc:279
 msgid "Show _Remaining Time"
 msgstr "顯示剩餘時間(_R)"
 
-#: src/gtkui/menus.cc:197 src/qtui/menus.cc:276 src/skins/menus.cc:157
-#: src/skins-qt/menus.cc:152
+#: src/gtkui/menus.cc:197 src/qtui/menus.cc:283 src/skins/menus.cc:157
+#: src/skins-qt/menus.cc:153
 msgid "_Visualizations ..."
 msgstr ""
 
-#: src/gtkui/menus.cc:201 src/qtui/menus.cc:280
+#: src/gtkui/menus.cc:201 src/qtui/menus.cc:287
 msgid "_File"
 msgstr "檔案(_F)"
 
-#: src/gtkui/menus.cc:202 src/qtui/menus.cc:281
+#: src/gtkui/menus.cc:202 src/qtui/menus.cc:288
 msgid "_Playback"
 msgstr "播放(_P)"
 
-#: src/gtkui/menus.cc:203 src/qtui/menus.cc:282
+#: src/gtkui/menus.cc:203 src/qtui/menus.cc:289
 msgid "P_laylist"
 msgstr "播放列表(_L)"
 
-#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:222 src/qtui/menus.cc:283
-#: src/qtui/menus.cc:312
+#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:222 src/qtui/menus.cc:290
+#: src/qtui/menus.cc:319
 msgid "_Services"
 msgstr "服務(_S)"
 
-#: src/gtkui/menus.cc:205 src/qtui/menus.cc:284
+#: src/gtkui/menus.cc:205 src/qtui/menus.cc:291
 msgid "_Output"
 msgstr "輸出(_O)"
 
-#: src/gtkui/menus.cc:206 src/qtui/menus.cc:285
+#: src/gtkui/menus.cc:206 src/qtui/menus.cc:292
 msgid "_View"
 msgstr "檢視(_V)"
 
-#: src/gtkui/menus.cc:211 src/qtui/menus.cc:296
+#: src/gtkui/menus.cc:211 src/qtui/menus.cc:303
 msgid "_Queue/Unqueue"
 msgstr "排入／移出佇列(_Q)"
 
-#: src/gtkui/menus.cc:213 src/qtui/menus.cc:299
+#: src/gtkui/menus.cc:213 src/qtui/menus.cc:306
 msgid "_Open Containing Folder"
 msgstr ""
 
-#: src/gtkui/menus.cc:214 src/qtui/menus.cc:301
+#: src/gtkui/menus.cc:214 src/qtui/menus.cc:308
 msgid "_Refresh Selected"
 msgstr ""
 
-#: src/gtkui/menus.cc:216 src/qtui/menus.cc:304
+#: src/gtkui/menus.cc:216 src/qtui/menus.cc:311
 msgid "Cu_t"
 msgstr "剪下(_T)"
 
-#: src/gtkui/menus.cc:217 src/qtui/menus.cc:305
+#: src/gtkui/menus.cc:217 src/qtui/menus.cc:312
 msgid "_Copy"
 msgstr "拷貝(_C)"
 
-#: src/gtkui/menus.cc:218 src/qtui/menus.cc:306
+#: src/gtkui/menus.cc:218 src/qtui/menus.cc:313
 msgid "_Paste"
 msgstr "貼上(_P)"
 
-#: src/gtkui/menus.cc:219 src/qtui/menus.cc:307
+#: src/gtkui/menus.cc:219 src/qtui/menus.cc:314
 msgid "Paste at _End"
 msgstr ""
 
-#: src/gtkui/menus.cc:220 src/qtui/menus.cc:309
+#: src/gtkui/menus.cc:220 src/qtui/menus.cc:316
 msgid "Select _All"
 msgstr "選擇全部(_A)"
 
-#: src/gtkui/menus.cc:227 src/moonstone/playlist_tabs.cc:309
-#: src/qtui/playlist_tabs.cc:334
+#: src/gtkui/menus.cc:227 src/qtui/playlist_tabs.cc:334
 msgid "_Rename ..."
 msgstr "重新命名(_R)…"
 
@@ -1961,76 +1944,68 @@ msgstr "GTK 介面"
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:221 src/moonstone/main_window.cc:184
-#: src/qtui/main_window.cc:385
+#: src/gtkui/ui_gtk.cc:221 src/qtui/main_window.cc:386
 msgid "Buffering ..."
 msgstr "緩衝中…"
 
-#: src/gtkui/ui_gtk.cc:224 src/pipewire/pipewire.cc:402 src/skins/main.cc:230
-#: src/skins-qt/main.cc:233
+#: src/gtkui/ui_gtk.cc:224 src/pipewire/pipewire.cc:450
+#: src/qtui/main_window.cc:364 src/qtui/main_window.cc:400
+#: src/sdlout/sdlout.cc:110 src/skins/main.cc:230 src/skins-qt/main.cc:233
 msgid "Audacious"
 msgstr "Audacious"
 
 #: src/gtkui/ui_gtk.cc:487 src/gtkui/ui_gtk.cc:518 src/gtkui/ui_gtk.cc:882
-#: src/hotkey/gui.cc:72 src/moonstone/main_window.cc:67
-#: src/moonstone/main_window.cc:145 src/moonstone/main_window.cc:146
-#: src/notify/osd.cc:85 src/qthotkey/gui.cc:67 src/qtui/main_window.cc:154
-#: src/qtui/main_window.cc:347 src/qtui/main_window.cc:348
-#: src/skins/menus.cc:109 src/skins-qt/menus.cc:100
+#: src/hotkey/gui.cc:72 src/notify/osd.cc:85 src/qthotkey/gui.cc:67
+#: src/qtui/main_window.cc:155 src/qtui/main_window.cc:348
+#: src/qtui/main_window.cc:349 src/skins/menus.cc:109 src/skins-qt/menus.cc:101
 msgid "Play"
 msgstr "播放"
 
-#: src/gtkui/ui_gtk.cc:487 src/moonstone/main_window.cc:151
-#: src/moonstone/main_window.cc:152 src/notify/osd.cc:82
-#: src/qtui/main_window.cc:353 src/qtui/main_window.cc:354
-#: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
+#: src/gtkui/ui_gtk.cc:487 src/notify/osd.cc:82 src/qtui/main_window.cc:354
+#: src/qtui/main_window.cc:355 src/skins/menus.cc:110 src/skins-qt/menus.cc:102
 msgid "Pause"
 msgstr "暫停"
 
-#: src/gtkui/ui_gtk.cc:868 src/moonstone/main_window.cc:57
-#: src/qtui/main_window.cc:145 src/skins/menus.cc:86 src/skins-qt/menus.cc:77
+#: src/gtkui/ui_gtk.cc:868 src/qtui/main_window.cc:146 src/skins/menus.cc:86
+#: src/skins-qt/menus.cc:77
 msgid "Search Library"
 msgstr ""
 
-#: src/gtkui/ui_gtk.cc:875 src/moonstone/main_window.cc:60
-#: src/qtui/main_window.cc:147
+#: src/gtkui/ui_gtk.cc:875 src/qtui/main_window.cc:148
 msgid "Open Files"
 msgstr "開啟檔案"
 
-#: src/gtkui/ui_gtk.cc:876 src/moonstone/main_window.cc:62
-#: src/qtui/main_window.cc:149
+#: src/gtkui/ui_gtk.cc:876 src/qtui/main_window.cc:150
 msgid "Add Files"
 msgstr "加入檔案"
 
-#: src/gtkui/ui_gtk.cc:881 src/moonstone/main_window.cc:65
-#: src/qtui/main_window.cc:152 src/skins/menus.cc:112 src/skins-qt/menus.cc:103
+#: src/gtkui/ui_gtk.cc:881 src/qtui/main_window.cc:153 src/skins/menus.cc:112
+#: src/skins-qt/menus.cc:104
 msgid "Previous"
 msgstr "上一個"
 
-#: src/gtkui/ui_gtk.cc:883 src/hotkey/gui.cc:74 src/moonstone/main_window.cc:69
-#: src/qthotkey/gui.cc:69 src/qtui/main_window.cc:156 src/skins/menus.cc:111
-#: src/skins-qt/menus.cc:102
+#: src/gtkui/ui_gtk.cc:883 src/hotkey/gui.cc:74 src/qthotkey/gui.cc:69
+#: src/qtui/main_window.cc:157 src/skins/menus.cc:111 src/skins-qt/menus.cc:103
 msgid "Stop"
 msgstr "停止"
 
-#: src/gtkui/ui_gtk.cc:884 src/moonstone/main_window.cc:76 src/notify/osd.cc:89
-#: src/qtui/main_window.cc:163 src/skins/menus.cc:113 src/skins-qt/menus.cc:104
+#: src/gtkui/ui_gtk.cc:884 src/notify/osd.cc:89 src/qtui/main_window.cc:164
+#: src/skins/menus.cc:113 src/skins-qt/menus.cc:105
 msgid "Next"
 msgstr "下一個"
 
-#: src/gtkui/ui_gtk.cc:886 src/moonstone/main_window.cc:79
-#: src/qtui/main_window.cc:166 src/qtui/menus.cc:254 src/skins/menus.cc:79
-#: src/skins-qt/menus.cc:69
+#: src/gtkui/ui_gtk.cc:886 src/qtui/main_window.cc:167 src/qtui/menus.cc:261
+#: src/skins/menus.cc:79 src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr ""
 
-#: src/gtkui/ui_gtk.cc:919 src/moonstone/main_window.cc:86
-#: src/qtui/main_window.cc:173 src/skins/menus.cc:103 src/skins-qt/menus.cc:94
+#: src/gtkui/ui_gtk.cc:919 src/qtui/main_window.cc:174 src/skins/menus.cc:103
+#: src/skins-qt/menus.cc:95
 msgid "Repeat"
 msgstr "重複"
 
-#: src/gtkui/ui_gtk.cc:922 src/moonstone/main_window.cc:89
-#: src/qtui/main_window.cc:176 src/skins/menus.cc:104 src/skins-qt/menus.cc:95
+#: src/gtkui/ui_gtk.cc:922 src/qtui/main_window.cc:177 src/skins/menus.cc:104
+#: src/skins-qt/menus.cc:96
 msgid "Shuffle"
 msgstr "隨機"
 
@@ -2057,7 +2032,8 @@ msgstr[0] "%d 聲道"
 msgid "%d kHz"
 msgstr ""
 
-#: src/gtkui/ui_statusbar.cc:82 src/qtui/status_bar.cc:174
+#: src/gtkui/ui_statusbar.cc:82 src/qtui/playlist_model.cc:132
+#: src/qtui/status_bar.cc:174
 #, c-format
 msgid "%d kbit/s"
 msgstr ""
@@ -2350,21 +2326,24 @@ msgstr "重新連線前的等待時間："
 
 #: src/lyrics-common/chart_lyrics_provider.cc:93
 #: src/lyrics-common/chart_lyrics_provider.cc:150
-#: src/lyrics-common/lyrics_ovh_provider.cc:50
+#: src/lyrics-common/lrclib_provider.cc:34
+#: src/lyrics-common/lyrics_ovh_provider.cc:35
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "無法取得 %s"
 
 #: src/lyrics-common/chart_lyrics_provider.cc:100
 #: src/lyrics-common/chart_lyrics_provider.cc:157
-#: src/lyrics-common/lyrics_ovh_provider.cc:57
+#: src/lyrics-common/lrclib_provider.cc:41
+#: src/lyrics-common/lyrics_ovh_provider.cc:42
 #, c-format
 msgid "Unable to parse %s"
 msgstr "無法分析 %s"
 
 #: src/lyrics-common/chart_lyrics_provider.cc:121
 #: src/lyrics-common/chart_lyrics_provider.cc:194
-#: src/lyrics-common/lyrics_ovh_provider.cc:88
+#: src/lyrics-common/lrclib_provider.cc:70
+#: src/lyrics-common/lyrics_ovh_provider.cc:70
 msgid "Looking for lyrics ..."
 msgstr "尋找歌詞中…"
 
@@ -2372,67 +2351,67 @@ msgstr "尋找歌詞中…"
 msgid "Nowhere"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:49
+#: src/lyrics-common/preferences.h:50
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:50
+#: src/lyrics-common/preferences.h:51
 msgid "Chars to truncate on:"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:54
+#: src/lyrics-common/preferences.h:55
 msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:55
+#: src/lyrics-common/preferences.h:56
 msgid "Chars to split on:"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:56
+#: src/lyrics-common/preferences.h:57
 msgid "Further truncate those on chars"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:62
+#: src/lyrics-common/preferences.h:63
 msgid "<b>General</b>"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:63
+#: src/lyrics-common/preferences.h:64
 msgid "Split title into artist and title on chars"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:66
+#: src/lyrics-common/preferences.h:67
 msgid "<b>Sources</b>"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:67
+#: src/lyrics-common/preferences.h:68
 msgid "Use embedded lyrics (from Lyrics tag)"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:69
+#: src/lyrics-common/preferences.h:70
 msgid "Fetch lyrics from internet:"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:72
+#: src/lyrics-common/preferences.h:73
 msgid "Store fetched lyrics in local cache"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:74
+#: src/lyrics-common/preferences.h:75
 msgid "<b>Local Storage</b>"
 msgstr ""
 
-#: src/lyrics-common/preferences.h:75
+#: src/lyrics-common/preferences.h:76
 msgid "Load lyric files (.lrc) from local storage"
 msgstr ""
 
-#: src/lyrics-common/utils.cc:54 src/ui-common/dialogs-qt.cc:63
+#: src/lyrics-common/utils.cc:57 src/ui-common/dialogs-qt.cc:63
 msgid "Error"
 msgstr "錯誤"
 
-#: src/lyrics-common/utils.cc:60
+#: src/lyrics-common/utils.cc:63
 msgid "Lyrics could not be found."
 msgstr ""
 
-#: src/lyrics-common/utils.cc:142
+#: src/lyrics-common/utils.cc:145
 msgid "Missing title and/or artist."
 msgstr ""
 
@@ -2440,15 +2419,15 @@ msgstr ""
 msgid "Lyrics"
 msgstr ""
 
-#: src/lyrics-gtk/lyrics-gtk.cc:189 src/lyrics-qt/lyrics-qt.cc:171
+#: src/lyrics-gtk/lyrics-gtk.cc:190 src/lyrics-qt/lyrics-qt.cc:172
 msgid "Edit Lyrics ..."
 msgstr ""
 
-#: src/lyrics-gtk/lyrics-gtk.cc:195 src/lyrics-qt/lyrics-qt.cc:178
+#: src/lyrics-gtk/lyrics-gtk.cc:196 src/lyrics-qt/lyrics-qt.cc:179
 msgid "Save Locally"
 msgstr ""
 
-#: src/lyrics-gtk/lyrics-gtk.cc:201 src/lyrics-qt/lyrics-qt.cc:186
+#: src/lyrics-gtk/lyrics-gtk.cc:202 src/lyrics-qt/lyrics-qt.cc:187
 msgid "Refresh"
 msgstr ""
 
@@ -2609,30 +2588,6 @@ msgstr "將重複次數設定為 -1 表示永遠重複播放。"
 msgid "These settings will take effect when Audacious is restarted."
 msgstr ""
 
-#: src/moonstone/main_window.cc:72 src/moonstone/main_window.cc:73
-#: src/qtui/main_window.cc:159 src/qtui/main_window.cc:160
-#: src/skins/menus.cc:107 src/skins-qt/menus.cc:98
-msgid "Stop After This Song"
-msgstr ""
-
-#: src/moonstone/moonstone.cc:39
-msgid "Moonstone"
-msgstr ""
-
-#: src/moonstone/playlist_header.cc:212 src/qtui/playlist_header.cc:258
-msgid "Reset to Defaults"
-msgstr ""
-
-#: src/moonstone/playlist_model.cc:38 src/qtui/playlist_header.cc:232
-msgid "Now Playing"
-msgstr "正在播放"
-
-#: src/moonstone/playlist_selection.cc:66
-#: src/playlist-manager/playlist-manager.cc:201
-#: src/playlist-manager-qt/playlist-manager-qt.cc:190
-msgid "Entries"
-msgstr "數量"
-
 #: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
 msgstr "MPG123 外掛程式"
@@ -2645,9 +2600,20 @@ msgstr ""
 msgid "Surround"
 msgstr "環繞"
 
-#: src/mpris2/plugin.cc:40
+#: src/mpris2/plugin.cc:43
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 伺服器"
+
+#: src/mpris2/plugin.cc:362
+msgid ""
+"MPRIS Plugin for Audacious\n"
+"Copyright 2011-2012 John Lindgren\n"
+"\n"
+"This plugin implements the MPRIS D-Bus interface. It provides a mechanism "
+"for querying track information and basic playback control. Necessary for "
+"media controls in desktop environments, Bluetooth headsets and tools like "
+"\"playerctl\"."
+msgstr ""
 
 #: src/neon/neon.cc:102
 msgid "Neon HTTP/HTTPS Plugin"
@@ -2734,26 +2700,26 @@ msgstr ""
 msgid "Show"
 msgstr "顯示"
 
-#: src/openmpt/mpt.cc:50
+#: src/openmpt/mpt.cc:52
 msgid "OpenMPT (Module Player)"
 msgstr ""
 
-#: src/openmpt/mpt.cc:132
+#: src/openmpt/mpt.cc:136
 msgid ""
 "Module player based on libopenmpt\n"
 "\n"
 "Written by: Chris Spiegel <cspiegel@gmail.com>"
 msgstr ""
 
-#: src/openmpt/mpt.cc:151
+#: src/openmpt/mpt.cc:155
 msgid "Stereo separation:"
 msgstr ""
 
-#: src/openmpt/mpt.cc:153
+#: src/openmpt/mpt.cc:157
 msgid "% (0=mono, 100=default, 200=full)"
 msgstr ""
 
-#: src/openmpt/mpt.cc:157
+#: src/openmpt/mpt.cc:160
 msgid "Interpolation:"
 msgstr ""
 
@@ -2773,7 +2739,7 @@ msgstr ""
 msgid "Opus Decoder"
 msgstr ""
 
-#: src/opus/opus.cc:336
+#: src/opus/opus.cc:371
 msgid ""
 "Opus Decoder Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange"
@@ -2825,11 +2791,11 @@ msgstr ""
 "我想要謝謝 #audacious 上的人們，特別是 Tony Vroon 與 John Lindgren，當然還有"
 "前一個 OSS 外掛程式的作者。"
 
-#: src/pipewire/pipewire.cc:44
+#: src/pipewire/pipewire.cc:59
 msgid "PipeWire Output"
 msgstr ""
 
-#: src/pipewire/pipewire.cc:118
+#: src/pipewire/pipewire.cc:132
 msgid ""
 "PipeWire Output Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange\n"
@@ -2838,14 +2804,62 @@ msgid ""
 "Copyright 2021 Ilya Kotov"
 msgstr ""
 
-#: src/pipewire/pipewire.cc:408 src/skins/menus.cc:88 src/skins-qt/menus.cc:79
+#: src/pipewire/pipewire.cc:456 src/sdlout/sdlout.cc:112 src/skins/menus.cc:88
+#: src/skins-qt/menus.cc:79
 msgid "Playback"
 msgstr "播放"
+
+#: src/playback-history-qt/playback-history.cc:52
+msgid ""
+"Playback History Plugin\n"
+"\n"
+"Copyright 2023-2024 Igor Kushnir <igorkuo@gmail.com>\n"
+"\n"
+"This plugin tracks and provides access to playback history.\n"
+"\n"
+"History entries are stored only in memory and are lost\n"
+"on Audacious exit. When the plugin is disabled,\n"
+"playback history is not tracked at all.\n"
+"History entries are only added, never removed automatically.\n"
+"The user can remove selected entries by pressing the Delete key.\n"
+"Restart Audacious or disable the plugin by closing\n"
+"Playback History view to clear the entries.\n"
+"\n"
+"Two history item granularities (modes) are supported.\n"
+"The user can select a mode in the plugin's settings.\n"
+"The Song mode is the default. Each played song is stored\n"
+"in history. Song titles are displayed in the list.\n"
+"When the Album mode is selected and multiple songs from\n"
+"a single album are played in a row, a single album entry\n"
+"is stored in history. Album names are displayed in the list."
+msgstr ""
+
+#: src/playback-history-qt/playback-history.cc:77
+msgid "Playback History"
+msgstr ""
+
+#: src/playback-history-qt/playback-history.cc:528
+#, c-format
+msgid "<b>%s:</b> %s<br><b>Playlist:</b> %s<br><b>Entry Number:</b> %d"
+msgstr ""
+
+#: src/playback-history-qt/playback-history.cc:834
+msgid "<b>History Item Granularity</b>"
+msgstr ""
+
+#: src/playback-history-qt/playback-history.cc:835
+msgid "Song"
+msgstr ""
 
 #: src/playlist-manager/playlist-manager.cc:38
 #: src/playlist-manager-qt/playlist-manager-qt.cc:42
 msgid "Playlist Manager"
 msgstr "播放列表管理"
+
+#: src/playlist-manager/playlist-manager.cc:201
+#: src/playlist-manager-qt/playlist-manager-qt.cc:190
+msgid "Entries"
+msgstr "數量"
 
 #: src/playlist-manager/playlist-manager.cc:221
 #: src/playlist-manager-qt/playlist-manager-qt.cc:356
@@ -2877,15 +2891,15 @@ msgstr ""
 msgid "PulseAudio Output"
 msgstr "PulseAudio 輸出"
 
-#: src/pulse/pulse_audio.cc:84
+#: src/pulse/pulse_audio.cc:72
 msgid "Context name:"
 msgstr ""
 
-#: src/pulse/pulse_audio.cc:86
+#: src/pulse/pulse_audio.cc:74
 msgid "Stream name:"
 msgstr ""
 
-#: src/pulse/pulse_audio.cc:596
+#: src/pulse/pulse_audio.cc:584
 msgid ""
 "Audacious PulseAudio Output Plugin\n"
 "\n"
@@ -2950,39 +2964,56 @@ msgid ""
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
 
-#: src/qtui/menus.cc:109
+#: src/qtui/main_window.cc:160 src/qtui/main_window.cc:161
+#: src/skins/menus.cc:107 src/skins-qt/menus.cc:99
+msgid "Stop After This Song"
+msgstr ""
+
+#: src/qtui/menus.cc:113
 msgid "_Open Folder ..."
 msgstr ""
 
-#: src/qtui/menus.cc:115
+#: src/qtui/menus.cc:119
 msgid "_Add Folder ..."
 msgstr ""
 
-#: src/qtui/menus.cc:128
+#: src/qtui/menus.cc:132
 msgid "_Log Inspector ..."
 msgstr ""
 
-#: src/qtui/menus.cc:220
+#: src/qtui/menus.cc:169
+msgid "Playback Histor_y ..."
+msgstr ""
+
+#: src/qtui/menus.cc:227
 msgid "_Find ..."
 msgstr ""
 
-#: src/qtui/menus.cc:256 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
+#: src/qtui/menus.cc:263 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
 msgstr ""
 
-#: src/qtui/playlist_model.cc:188
-msgid "Q#"
+#: src/qtui/playlist_header.cc:232
+msgid "Now Playing"
+msgstr "正在播放"
+
+#: src/qtui/playlist_header.cc:258
+msgid "Reset to Defaults"
 msgstr ""
 
 #: src/qtui/playlist_model.cc:190
-msgid "T#"
+msgid "Q#"
 msgstr ""
 
 #: src/qtui/playlist_model.cc:192
-msgid "C#"
+msgid "T#"
 msgstr ""
 
 #: src/qtui/playlist_model.cc:194
+msgid "C#"
+msgstr ""
+
+#: src/qtui/playlist_model.cc:196
 msgid "D#"
 msgstr ""
 
@@ -3149,11 +3180,11 @@ msgid ""
 "project."
 msgstr ""
 
-#: src/sdlout/sdlout.cc:43
+#: src/sdlout/sdlout.cc:46
 msgid "SDL Output"
 msgstr "SDL 輸出"
 
-#: src/sdlout/sdlout.cc:72
+#: src/sdlout/sdlout.cc:75
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
@@ -3235,7 +3266,7 @@ msgstr "建立播放列表(_C)"
 msgid "_Add to Playlist"
 msgstr "加入至播放列表(_A)"
 
-#: src/sid/xmms-sid.cc:43
+#: src/sid/xmms-sid.cc:44
 msgid "SID Player"
 msgstr ""
 
@@ -3425,12 +3456,15 @@ msgstr "啟用置頂"
 msgid "File Info Box"
 msgstr "檔案資訊視窗"
 
-#: src/skins/main.cc:892 src/skins/menus.cc:149 src/skins-qt/main.cc:839
-#: src/skins-qt/menus.cc:142
-msgid "Double Size"
+#: src/skins/main.cc:893 src/skins-qt/main.cc:840
+msgid "Disable 'Double Size'"
 msgstr ""
 
 #: src/skins/main.cc:895 src/skins-qt/main.cc:842
+msgid "Enable 'Double Size'"
+msgstr ""
+
+#: src/skins/main.cc:898 src/skins-qt/main.cc:845
 msgid "Visualizations"
 msgstr ""
 
@@ -3467,8 +3501,8 @@ msgid "View"
 msgstr "檢視"
 
 #: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
-#: src/skins/menus.cc:245 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:156
-#: src/skins-qt/menus.cc:170 src/skins-qt/menus.cc:241
+#: src/skins/menus.cc:245 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:157
+#: src/skins-qt/menus.cc:171 src/skins-qt/menus.cc:242
 msgid "Services"
 msgstr ""
 
@@ -3485,263 +3519,267 @@ msgid "Quit"
 msgstr ""
 
 #: src/skins/menus.cc:101 src/skins/menus.cc:235 src/skins-qt/menus.cc:92
-#: src/skins-qt/menus.cc:231
+#: src/skins-qt/menus.cc:232
 msgid "Song Info ..."
 msgstr ""
 
-#: src/skins/menus.cc:105 src/skins-qt/menus.cc:96
+#: src/skins/menus.cc:105 src/skins-qt/menus.cc:97
 msgid "Shuffle by Album"
 msgstr ""
 
-#: src/skins/menus.cc:106 src/skins-qt/menus.cc:97
+#: src/skins/menus.cc:106 src/skins-qt/menus.cc:98
 msgid "No Playlist Advance"
 msgstr "不要切換播放列表"
 
-#: src/skins/menus.cc:117 src/skins-qt/menus.cc:108
+#: src/skins/menus.cc:117 src/skins-qt/menus.cc:109
 msgid "Set A-B Repeat"
 msgstr ""
 
-#: src/skins/menus.cc:118 src/skins-qt/menus.cc:109
+#: src/skins/menus.cc:118 src/skins-qt/menus.cc:110
 msgid "Clear A-B Repeat"
 msgstr ""
 
-#: src/skins/menus.cc:120 src/skins-qt/menus.cc:111
+#: src/skins/menus.cc:120 src/skins-qt/menus.cc:112
 msgid "Jump to Song ..."
 msgstr ""
 
-#: src/skins/menus.cc:121 src/skins-qt/menus.cc:113
+#: src/skins/menus.cc:121 src/skins-qt/menus.cc:114
 msgid "Jump to Time ..."
 msgstr ""
 
-#: src/skins/menus.cc:125 src/skins-qt/menus.cc:118
+#: src/skins/menus.cc:125 src/skins-qt/menus.cc:119
 msgid "Play/Resume"
 msgstr ""
 
-#: src/skins/menus.cc:127 src/skins-qt/menus.cc:120
+#: src/skins/menus.cc:127 src/skins-qt/menus.cc:121
 msgid "New Playlist"
 msgstr "新增播放列表"
 
-#: src/skins/menus.cc:128 src/skins-qt/menus.cc:121
+#: src/skins/menus.cc:128 src/skins-qt/menus.cc:122
 msgid "Rename Playlist ..."
 msgstr ""
 
-#: src/skins/menus.cc:129 src/skins-qt/menus.cc:122
+#: src/skins/menus.cc:129 src/skins-qt/menus.cc:123
 msgid "Remove Playlist"
 msgstr ""
 
-#: src/skins/menus.cc:131 src/skins-qt/menus.cc:124
+#: src/skins/menus.cc:131 src/skins-qt/menus.cc:125
 msgid "Previous Playlist"
 msgstr ""
 
-#: src/skins/menus.cc:132 src/skins-qt/menus.cc:125
+#: src/skins/menus.cc:132 src/skins-qt/menus.cc:126
 msgid "Next Playlist"
 msgstr ""
 
-#: src/skins/menus.cc:134 src/skins-qt/menus.cc:127
+#: src/skins/menus.cc:134 src/skins-qt/menus.cc:128
 msgid "Import Playlist ..."
 msgstr ""
 
-#: src/skins/menus.cc:135 src/skins-qt/menus.cc:128
+#: src/skins/menus.cc:135 src/skins-qt/menus.cc:129
 msgid "Export Playlist ..."
 msgstr ""
 
-#: src/skins/menus.cc:137 src/skins-qt/menus.cc:130
+#: src/skins/menus.cc:137 src/skins-qt/menus.cc:131
 msgid "Playlist Manager ..."
 msgstr ""
 
-#: src/skins/menus.cc:138 src/skins-qt/menus.cc:131
+#: src/skins/menus.cc:138 src/skins-qt/menus.cc:132
 msgid "Queue Manager ..."
 msgstr ""
 
-#: src/skins/menus.cc:140 src/skins-qt/menus.cc:133
+#: src/skins/menus.cc:140 src/skins-qt/menus.cc:134
 msgid "Refresh Playlist"
 msgstr ""
 
-#: src/skins/menus.cc:144 src/skins-qt/menus.cc:137
+#: src/skins/menus.cc:144 src/skins-qt/menus.cc:138
 msgid "Show Playlist Editor"
 msgstr "顯示播放列表編輯器"
 
-#: src/skins/menus.cc:145 src/skins-qt/menus.cc:138
+#: src/skins/menus.cc:145 src/skins-qt/menus.cc:139
 msgid "Show Equalizer"
 msgstr "顯示等化器"
 
-#: src/skins/menus.cc:147 src/skins-qt/menus.cc:140
+#: src/skins/menus.cc:147 src/skins-qt/menus.cc:141
 msgid "Show Remaining Time"
 msgstr ""
 
-#: src/skins/menus.cc:150 src/skins-qt/menus.cc:143
+#: src/skins/menus.cc:149 src/skins-qt/menus.cc:143
+msgid "Double Size"
+msgstr ""
+
+#: src/skins/menus.cc:150 src/skins-qt/menus.cc:144
 msgid "Always on Top"
 msgstr "永遠在最上層"
 
-#: src/skins/menus.cc:151 src/skins-qt/menus.cc:145
+#: src/skins/menus.cc:151 src/skins-qt/menus.cc:146
 msgid "On All Workspaces"
 msgstr ""
 
-#: src/skins/menus.cc:153 src/skins-qt/menus.cc:148
+#: src/skins/menus.cc:153 src/skins-qt/menus.cc:149
 msgid "Roll Up Player"
 msgstr ""
 
-#: src/skins/menus.cc:154 src/skins-qt/menus.cc:149
+#: src/skins/menus.cc:154 src/skins-qt/menus.cc:150
 msgid "Roll Up Playlist Editor"
 msgstr ""
 
-#: src/skins/menus.cc:155 src/skins-qt/menus.cc:150
+#: src/skins/menus.cc:155 src/skins-qt/menus.cc:151
 msgid "Roll Up Equalizer"
 msgstr ""
 
-#: src/skins/menus.cc:163 src/skins-qt/menus.cc:158
+#: src/skins/menus.cc:163 src/skins-qt/menus.cc:159
 msgid "Add URL ..."
 msgstr ""
 
-#: src/skins/menus.cc:164 src/skins-qt/menus.cc:160
+#: src/skins/menus.cc:164 src/skins-qt/menus.cc:161
 msgid "Add Files ..."
 msgstr ""
 
 #: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:212
-#: src/skins-qt/menus.cc:164 src/skins-qt/menus.cc:192
-#: src/skins-qt/menus.cc:208
+#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:193
+#: src/skins-qt/menus.cc:209
 msgid "By Title"
 msgstr "標題"
 
 #: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:219
-#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:199
-#: src/skins-qt/menus.cc:215
+#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
+#: src/skins-qt/menus.cc:216
 msgid "By File Name"
 msgstr ""
 
 #: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:220
-#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
-#: src/skins-qt/menus.cc:216
+#: src/skins-qt/menus.cc:167 src/skins-qt/menus.cc:201
+#: src/skins-qt/menus.cc:217
 msgid "By File Path"
 msgstr ""
 
-#: src/skins/menus.cc:176 src/skins-qt/menus.cc:172
+#: src/skins/menus.cc:176 src/skins-qt/menus.cc:173
 msgid "Remove All"
 msgstr "全部移除"
 
-#: src/skins/menus.cc:177 src/skins-qt/menus.cc:173
+#: src/skins/menus.cc:177 src/skins-qt/menus.cc:174
 msgid "Clear Queue"
 msgstr "清除佇列"
 
-#: src/skins/menus.cc:179 src/skins-qt/menus.cc:175
+#: src/skins/menus.cc:179 src/skins-qt/menus.cc:176
 msgid "Remove Unavailable Files"
 msgstr "移除無法使用的檔案"
 
-#: src/skins/menus.cc:180 src/skins-qt/menus.cc:176
+#: src/skins/menus.cc:180 src/skins-qt/menus.cc:177
 msgid "Remove Duplicates"
 msgstr "移除重複的項目"
 
-#: src/skins/menus.cc:182 src/skins-qt/menus.cc:178
+#: src/skins/menus.cc:182 src/skins-qt/menus.cc:179
 msgid "Remove Unselected"
 msgstr "移除未選擇的項目"
 
-#: src/skins/menus.cc:183 src/skins-qt/menus.cc:179
+#: src/skins/menus.cc:183 src/skins-qt/menus.cc:180
 msgid "Remove Selected"
 msgstr "移除選擇的項目"
 
-#: src/skins/menus.cc:187 src/skins-qt/menus.cc:183
+#: src/skins/menus.cc:187 src/skins-qt/menus.cc:184
 msgid "Search and Select"
 msgstr "搜尋並選擇"
 
-#: src/skins/menus.cc:189 src/skins-qt/menus.cc:185
+#: src/skins/menus.cc:189 src/skins-qt/menus.cc:186
 msgid "Invert Selection"
 msgstr "反向選擇"
 
-#: src/skins/menus.cc:190 src/skins-qt/menus.cc:186
+#: src/skins/menus.cc:190 src/skins-qt/menus.cc:187
 msgid "Select None"
 msgstr "取消選擇"
 
-#: src/skins/menus.cc:191 src/skins-qt/menus.cc:187
+#: src/skins/menus.cc:191 src/skins-qt/menus.cc:188
 msgid "Select All"
 msgstr "選擇全部"
 
-#: src/skins/menus.cc:195 src/skins/menus.cc:211 src/skins-qt/menus.cc:191
-#: src/skins-qt/menus.cc:207
+#: src/skins/menus.cc:195 src/skins/menus.cc:211 src/skins-qt/menus.cc:192
+#: src/skins-qt/menus.cc:208
 msgid "By Track Number"
 msgstr "音軌編號"
 
-#: src/skins/menus.cc:197 src/skins/menus.cc:213 src/skins-qt/menus.cc:193
-#: src/skins-qt/menus.cc:209
+#: src/skins/menus.cc:197 src/skins/menus.cc:213 src/skins-qt/menus.cc:194
+#: src/skins-qt/menus.cc:210
 msgid "By Artist"
 msgstr "演出者"
 
-#: src/skins/menus.cc:198 src/skins/menus.cc:214 src/skins-qt/menus.cc:194
-#: src/skins-qt/menus.cc:210
+#: src/skins/menus.cc:198 src/skins/menus.cc:214 src/skins-qt/menus.cc:195
+#: src/skins-qt/menus.cc:211
 msgid "By Album"
 msgstr "專輯"
 
-#: src/skins/menus.cc:199 src/skins/menus.cc:215 src/skins-qt/menus.cc:195
-#: src/skins-qt/menus.cc:211
+#: src/skins/menus.cc:199 src/skins/menus.cc:215 src/skins-qt/menus.cc:196
+#: src/skins-qt/menus.cc:212
 msgid "By Album Artist"
 msgstr ""
 
-#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:196
-#: src/skins-qt/menus.cc:212
+#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:197
+#: src/skins-qt/menus.cc:213
 msgid "By Release Date"
 msgstr ""
 
-#: src/skins/menus.cc:201 src/skins/menus.cc:217 src/skins-qt/menus.cc:197
-#: src/skins-qt/menus.cc:213
+#: src/skins/menus.cc:201 src/skins/menus.cc:217 src/skins-qt/menus.cc:198
+#: src/skins-qt/menus.cc:214
 msgid "By Genre"
 msgstr ""
 
-#: src/skins/menus.cc:202 src/skins/menus.cc:218 src/skins-qt/menus.cc:198
-#: src/skins-qt/menus.cc:214
+#: src/skins/menus.cc:202 src/skins/menus.cc:218 src/skins-qt/menus.cc:199
+#: src/skins-qt/menus.cc:215
 msgid "By Length"
 msgstr ""
 
-#: src/skins/menus.cc:205 src/skins/menus.cc:221 src/skins-qt/menus.cc:201
-#: src/skins-qt/menus.cc:217
+#: src/skins/menus.cc:205 src/skins/menus.cc:221 src/skins-qt/menus.cc:202
+#: src/skins-qt/menus.cc:218
 msgid "By Custom Title"
 msgstr ""
 
-#: src/skins/menus.cc:206 src/skins/menus.cc:222 src/skins-qt/menus.cc:202
-#: src/skins-qt/menus.cc:218
+#: src/skins/menus.cc:206 src/skins/menus.cc:222 src/skins-qt/menus.cc:203
+#: src/skins-qt/menus.cc:219
 msgid "By Comment"
 msgstr ""
 
-#: src/skins/menus.cc:207 src/skins/menus.cc:223 src/skins-qt/menus.cc:203
-#: src/skins-qt/menus.cc:219
+#: src/skins/menus.cc:207 src/skins/menus.cc:223 src/skins-qt/menus.cc:204
+#: src/skins-qt/menus.cc:220
 msgid "By Disc Number"
 msgstr ""
 
-#: src/skins/menus.cc:227 src/skins-qt/menus.cc:223
+#: src/skins/menus.cc:227 src/skins-qt/menus.cc:224
 msgid "Randomize List"
 msgstr "列表隨機排序"
 
-#: src/skins/menus.cc:228 src/skins-qt/menus.cc:224
+#: src/skins/menus.cc:228 src/skins-qt/menus.cc:225
 msgid "Reverse List"
 msgstr "列表反向排序"
 
-#: src/skins/menus.cc:230 src/skins-qt/menus.cc:226
+#: src/skins/menus.cc:230 src/skins-qt/menus.cc:227
 msgid "Sort Selected"
 msgstr "排序選擇的項目"
 
-#: src/skins/menus.cc:231 src/skins-qt/menus.cc:227
+#: src/skins/menus.cc:231 src/skins-qt/menus.cc:228
 msgid "Sort List"
 msgstr "排序列表"
 
-#: src/skins/menus.cc:236 src/skins-qt/menus.cc:232
+#: src/skins/menus.cc:236 src/skins-qt/menus.cc:233
 msgid "Open Containing Folder"
 msgstr ""
 
-#: src/skins/menus.cc:238 src/skins-qt/menus.cc:234
+#: src/skins/menus.cc:238 src/skins-qt/menus.cc:235
 msgid "Cut"
 msgstr "剪下"
 
-#: src/skins/menus.cc:239 src/skins-qt/menus.cc:235
+#: src/skins/menus.cc:239 src/skins-qt/menus.cc:236
 msgid "Copy"
 msgstr "拷貝"
 
-#: src/skins/menus.cc:240 src/skins-qt/menus.cc:236
+#: src/skins/menus.cc:240 src/skins-qt/menus.cc:237
 msgid "Paste"
 msgstr "貼上"
 
-#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:238
 msgid "Paste at End"
 msgstr ""
 
-#: src/skins/menus.cc:243 src/skins-qt/menus.cc:239
+#: src/skins/menus.cc:243 src/skins-qt/menus.cc:240
 msgid "Queue/Unqueue"
 msgstr ""
 
@@ -3762,7 +3800,11 @@ msgstr "Winamp 傳統介面"
 msgid "Open Folder ..."
 msgstr ""
 
-#: src/skins-qt/menus.cc:159
+#: src/skins-qt/menus.cc:93
+msgid "Playback History ..."
+msgstr ""
+
+#: src/skins-qt/menus.cc:160
 msgid "Add Folder ..."
 msgstr ""
 
@@ -4217,39 +4259,51 @@ msgid ""
 "the system tray area of the window manager."
 msgstr ""
 
-#: src/statusicon-qt/statusicon.cc:89 src/statusicon/statusicon.cc:384
+#: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:398
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>滑鼠滾輪動作</b>"
 
-#: src/statusicon-qt/statusicon.cc:90 src/statusicon/statusicon.cc:385
+#: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:399
 msgid "Change volume"
 msgstr "調整音量"
 
-#: src/statusicon-qt/statusicon.cc:93 src/statusicon/statusicon.cc:388
+#: src/statusicon-qt/statusicon.cc:99 src/statusicon/statusicon.cc:402
 msgid "Change playing song"
 msgstr "切換播放歌曲"
 
-#: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:391
+#: src/statusicon-qt/statusicon.cc:102 src/statusicon/statusicon.cc:405
+msgid "<b>Middle Click Action</b>"
+msgstr ""
+
+#: src/statusicon-qt/statusicon.cc:103 src/statusicon/statusicon.cc:406
+msgid "Pause/Resume playback"
+msgstr ""
+
+#: src/statusicon-qt/statusicon.cc:106 src/statusicon/statusicon.cc:409
+msgid "Play next song"
+msgstr ""
+
+#: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:412
 msgid "<b>Other Settings</b>"
 msgstr "<b>其他設定</b>"
 
-#: src/statusicon-qt/statusicon.cc:97 src/statusicon/statusicon.cc:392
+#: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:413
 msgid "Disable the popup window"
 msgstr "關閉彈出式視窗"
 
-#: src/statusicon-qt/statusicon.cc:99 src/statusicon/statusicon.cc:394
+#: src/statusicon-qt/statusicon.cc:112 src/statusicon/statusicon.cc:415
 msgid "Close to the system tray"
 msgstr "縮到系統列"
 
-#: src/statusicon-qt/statusicon.cc:101 src/statusicon/statusicon.cc:396
+#: src/statusicon-qt/statusicon.cc:114 src/statusicon/statusicon.cc:417
 msgid "Advance in playlist when scrolling upward"
 msgstr "以與滑鼠滾輪的反方向切換歌曲"
 
-#: src/statusicon-qt/statusicon.cc:116 src/statusicon/statusicon.cc:287
+#: src/statusicon-qt/statusicon.cc:129 src/statusicon/statusicon.cc:301
 msgid "Se_ttings ..."
 msgstr ""
 
-#: src/statusicon/statusicon.cc:377
+#: src/statusicon/statusicon.cc:391
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -4552,33 +4606,33 @@ msgstr ""
 "基於 invtx(_V).dll 編寫自 Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious 外掛程式編寫自 Pavel Vymetalek <pvymetalek@seznam.cz>"
 
-#: src/vumeter-qt/vumeter_qt.cc:31
+#: src/vumeter-qt/vumeter_qt.cc:31 src/vumeter/vumeter.cc:69
 msgid ""
 "VU Meter Plugin for Audacious\n"
 "Copyright 2017-2019 Marc Sánchez Fauste"
 msgstr ""
 
-#: src/vumeter-qt/vumeter_qt.cc:35
+#: src/vumeter-qt/vumeter_qt.cc:35 src/vumeter/vumeter.cc:73
 msgid "<b>VU Meter Settings</b>"
 msgstr ""
 
-#: src/vumeter-qt/vumeter_qt.cc:37
+#: src/vumeter-qt/vumeter_qt.cc:37 src/vumeter/vumeter.cc:75
 msgid "Peak hold time:"
 msgstr ""
 
-#: src/vumeter-qt/vumeter_qt.cc:42
+#: src/vumeter-qt/vumeter_qt.cc:42 src/vumeter/vumeter.cc:80
 msgid "Fall-off time:"
 msgstr ""
 
-#: src/vumeter-qt/vumeter_qt.cc:44
+#: src/vumeter-qt/vumeter_qt.cc:44 src/vumeter/vumeter.cc:82
 msgid "dB/second"
 msgstr ""
 
-#: src/vumeter-qt/vumeter_qt.cc:46
+#: src/vumeter-qt/vumeter_qt.cc:46 src/vumeter/vumeter.cc:85
 msgid "Display legend"
 msgstr ""
 
-#: src/vumeter-qt/vumeter_qt.h:37
+#: src/vumeter-qt/vumeter_qt.h:37 src/vumeter/vumeter.cc:47
 msgid "VU Meter"
 msgstr ""
 
@@ -4596,15 +4650,15 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "WavPack 解碼器"
 
-#: src/wavpack/wavpack.cc:217
+#: src/wavpack/wavpack.cc:207
 msgid "lossy (hybrid)"
 msgstr "失真 (混合)"
 
-#: src/wavpack/wavpack.cc:219
+#: src/wavpack/wavpack.cc:209
 msgid "lossy"
 msgstr "失真"
 
-#: src/wavpack/wavpack.cc:259
+#: src/wavpack/wavpack.cc:247
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
