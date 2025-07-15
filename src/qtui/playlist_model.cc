@@ -316,8 +316,17 @@ QString PlaylistModel::filename(const Tuple & tuple) const
 
 void PlaylistProxyModel::setFilter(const char * filter)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+    beginFilterChange();
+#endif
+
     m_searchTerms = str_list_to_index(filter, " ");
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+    endFilterChange(QSortFilterProxyModel::Direction::Rows);
+#else
     invalidateFilter();
+#endif
 }
 
 bool PlaylistProxyModel::filterAcceptsRow(int source_row,
