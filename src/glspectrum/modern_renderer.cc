@@ -417,7 +417,7 @@ ModernRenderer::ModernRenderer (
 
     glEnable (GL_TEXTURE);
     glEnable (GL_DEPTH_TEST);
-    glDisable (GL_CULL_FACE);
+    glEnable (GL_CULL_FACE);
 
     glClearColor (0, 0, 0, 1);
 
