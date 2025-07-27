@@ -495,18 +495,36 @@ dnl Optional plugins (GTK-only)
 dnl ===========================
 
 test_glspectrum () {
-    if test $HAVE_DARWIN = yes ; then
+    PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.16], [have_gtk_3_16=yes], [have_gtk_3_16=no])
+    PKG_CHECK_MODULES(EPOXY, epoxy, [have_epoxy=yes], [have_epoxy=no])
+    AC_LANG_PUSH([C++])
+    AC_CHECK_HEADER([glm/glm.hpp], [have_glm=yes], [have_glm=no])
+    AC_LANG_POP([C++])
+
+    GL_LIBS=""
+
+    if test $have_glm = yes && test $have_epoxy = yes ; then
+        GL_LIBS="$EPOXY_LIBS"
+        AC_DEFINE(USE_MODERNGL, [1], [Define if Modern GL should be used])
+    fi
+
+    if test "x$USE_MODERNGL" = "xyes" && test "x$USE_GTK2" = "xno" && test $have_gtk_3_16 = yes ; then
+        have_glspectrum=yes
+        GL_LIBS="$GL_LIBS -lGL"
+        AC_DEFINE(USE_GTKGLAREA, [1], [Define if GtkGLArea should be used])
+    elif test $HAVE_DARWIN = yes ; then
         have_glspectrum=no
     elif test $HAVE_MSWINDOWS = yes ; then
         have_glspectrum=yes
-        GL_LIBS="-lopengl32"
+        GL_LIBS="$GL_LIBS -lopengl32"
     else
         AC_CHECK_LIB(GL, glXCreateContext, [
             have_glspectrum=yes
-            GL_LIBS="-lGL -lX11"
+            GL_LIBS="$GL_LIBS -lGL -lX11"
         ], [have_glspectrum=no])
     fi
     AC_SUBST(GL_LIBS)
+    AC_SUBST(GL_CFLAGS, [$EPOXY_CFLAGS])
 }
 
 ENABLE_PLUGIN_WITH_TEST(glspectrum,
