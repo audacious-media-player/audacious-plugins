@@ -1,6 +1,6 @@
 /*
- * playlist-manager-qt.cc
- * Copyright 2015 John Lindgren
+ * filesystem-qt.cc
+ * Produced 2025 Hans Dijkema
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -16,13 +16,6 @@
  * implied. In no event shall the authors be liable for any damages arising from
  * the use of this software.
  */
-
-//#define FS_TEST_VERSION
-
-#ifdef FS_TEST_VERSION
-#define PACKAGE "audacious-test"
-#define EXPORT
-#endif
 
 #include <QAbstractItemModel>
 #include <QBoxLayout>
@@ -50,13 +43,13 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
-#ifndef FS_TEST_VERSION
 #include <libaudqt/libaudqt.h>
-#endif
 #include <libaudqt/treeview.h>
 
-//#include "../ui-common/qt-compat.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// FilesystemQt Plugin Class
+/////////////////////////////////////////////////////////////////////////////////////////
 
 class FilesystemQt : public GeneralPlugin
 {
@@ -86,12 +79,14 @@ const char FilesystemQt::about[] =
 
 EXPORT FilesystemQt aud_plugin_instance;
 
-#ifdef FS_TEST_VERSION
 QWidget *pluginWidget()
 {
     return (QWidget *) aud_plugin_instance.get_qt_widget();
 }
-#endif
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Internal datastructure to hold directories and files. 
+/////////////////////////////////////////////////////////////////////////////////////////
 
 class FilesystemTree
 {
@@ -118,13 +113,12 @@ class FilesystemTree
     public:
         FilesystemTree(int kind, const QString & p, int idx, FilesystemTree *parent)
         {
-            _sep = "/";
+            _sep = "/";					// This might also work on Windows in Qt. 
             _fi = QFileInfo(p);
             _kind = kind;
             _parent_index = idx;
             _parent = parent;
             _loaded = false;
-            //qDebug() << _fi << " - " << path() << " - " << _kind;
         }
 
         ~FilesystemTree() {
@@ -140,7 +134,7 @@ class FilesystemTree
         FilesystemTree *entry(int row) {
             load();
             if (row >= _entries.size()) {
-                qDebug() << "Unexpected: " << row << " - " << _entries.size();
+                qDebug() << "Unexpected!: " << row << " - " << _entries.size();
                 return nullptr;
             }
             return _entries[row];
@@ -167,7 +161,10 @@ class FilesystemTree
                 QDir d(_fi.absoluteFilePath());
 
                 QStringList filters;
-                filters << "*.mp3" << "*.flac" << "*.ogg";
+                filters << "*.mp3" << "*.flac" << "*.ogg" <<
+                           "*.m4a" << "*.ape" << "*.wav" <<
+                           "*.aac" << "*.wma" << "*.aiff" <<
+                           "*.opus";							// This should probably be done configurable 
                 d.setNameFilters(filters);
 
                 QDir::Filters d_filters = QDir::AllDirs | QDir::NoDot | QDir::NoDotDot | QDir::Files | QDir::Readable;
@@ -195,11 +192,15 @@ class FilesystemTree
 QString FilesystemTree::_sep;
 
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// FilesystemModel interfaces with the QTreeView framework of Qt
+/////////////////////////////////////////////////////////////////////////////////////////
+
 class FilesystemModel : public QAbstractItemModel
 {
 private:
-	QString 		 _base_dir;
-        FilesystemTree          *_tree;
+    QString          _base_dir;
+    FilesystemTree  *_tree;
 	
 public:
     enum
@@ -326,6 +327,10 @@ public:
     }
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// FilesystemView implements a TreeView for a folder structure
+/////////////////////////////////////////////////////////////////////////////////////////
+
 class FilesystemView : public audqt::TreeView
 {
 private:
@@ -356,9 +361,6 @@ public:
     void playThis(bool checked);
     void addThis(bool checked);
     void insertEntries(Playlist &list, bool play);
-
-protected slots:
-    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 };
 
 void FilesystemView::contextMenuEvent(QContextMenuEvent *evt)
@@ -390,28 +392,26 @@ void assembleFiles(FilesystemTree *e, QStringList &l, int & count, int max)
 
 void FilesystemView::playThis(bool checked)
 {
-    //qDebug() << "REPLACE";
-#ifndef FS_TEST_VERSION
     auto list = Playlist::active_playlist();
     list.remove_all_entries();
     insertEntries(list, true);
-#endif
 }
 
 void FilesystemView::addThis(bool checked)
 {
-#ifndef FS_TEST_VERSION
-    //qDebug() << "ADD";
     auto list = Playlist::active_playlist();
     insertEntries(list, false);
-#endif
 }
 
 void FilesystemView::insertEntries(Playlist &list, bool do_play)
 {
+    // Get the currently selected files / directories
+
     QItemSelection sel = this->selectionModel()->selection();
     QModelIndexList l = sel.indexes();
     current_selected = m_model.get(l);
+
+    // Assemble the files to a maximum of 'max_files_to_add', which is configurable.
 
     QStringList files;
     int count = 0;
@@ -420,7 +420,9 @@ void FilesystemView::insertEntries(Playlist &list, bool do_play)
         assembleFiles(current_selected[i], files, count, max_files_to_add);
     }
 
-#ifndef FS_TEST_VERSION
+   // Add the files to the current playlist or replace the contents of the playlist.
+   // if do_play == true, the first added entry will also be played.
+
     for(i = 0; i < files.size(); i++) {
         QUrl u;
         u = u.fromLocalFile(files[i]);
@@ -428,16 +430,7 @@ void FilesystemView::insertEntries(Playlist &list, bool do_play)
         list.insert_entry(-1, f.toUtf8(), Tuple(), do_play);
         if (do_play) { do_play = false; }
     }
-#endif
 }
-
-void FilesystemView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
-{
-    QTreeView::selectionChanged(selected, deselected);
-    //QModelIndexList l = selected.indexes();
-    //current_selected = m_model.get(l);
-}
-
 
 FilesystemView::FilesystemView()
 {
@@ -524,6 +517,10 @@ void FilesystemView::connectConfigButtons(QPushButton *configLib, QPushButton *c
 }
 
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Make the Plugin Work.
+/////////////////////////////////////////////////////////////////////////////////////////
+
 static QPointer<FilesystemView> s_filesystem_view;
 
 void * FilesystemQt::get_qt_widget()
@@ -552,7 +549,6 @@ void * FilesystemQt::get_qt_widget()
 
 int FilesystemQt::take_message(const char * code, const void *p, int n)
 {
-    qDebug() << code << " - " << n;
     if (!strcmp(code, "grab focus") && s_filesystem_view)
     {
         s_filesystem_view->setFocus(Qt::OtherFocusReason);
