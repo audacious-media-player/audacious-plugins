@@ -83,13 +83,13 @@ TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
     EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
-    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart lyrics-gtk playlist-manager search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart lyrics-gtk playlist-manager fsearch-tool statusicon"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope cairo-spectrum vumeter"
 fi
 
 if test "x$USE_QT" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyrics-qt playback-history-qt playlist-manager-qt search-tool-qt song-info-qt statusicon-qt"
+	GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyrics-qt playback-history-qt playlist-manager-qt filesystem-qt search-tool-qt song-info-qt statusicon-qt"
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui skins-qt"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope-qt qt-spectrum vumeter-qt"
 fi
@@ -896,6 +896,7 @@ if test "x$USE_QT" = "xyes" ; then
     echo "  OpenGL Spectrum Analyzer:               $have_qtglspectrum"
     echo "  Playback History:                       yes"
     echo "  Playlist Manager:                       yes"
+    echo "  Filesystem View:                        yes"
     echo "  Search Tool:                            yes"
     echo "  Song Info:                              yes"
     echo "  Spectrum Analyzer (2D):                 yes"
