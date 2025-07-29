@@ -30,8 +30,6 @@ out vec4 vertexColor;
 
 void main()
 {
-    ivec2 texture_size = textureSize (s_bars, 0);
-
     vec2 uv = vec2
     (
         mod (float (id), ${num_bands}.0) + 0.5,
