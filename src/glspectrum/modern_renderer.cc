@@ -26,7 +26,7 @@ uniform int s_pos;
 uniform mat4 mvp;
 uniform sampler2D s_bars;
 
-out vec4 vertexColor;
+varying out vec4 vertexColor;
 
 void main()
 {
@@ -36,7 +36,7 @@ void main()
         mod (float ((id / ${num_bands}) + s_pos), ${num_bands}.0) + 0.5
     );
 
-    float height = texture (s_bars, uv / ${num_bands}.0).r * 1.6;
+    float height = texture2D (s_bars, uv / ${num_bands}.0).r * 1.6;
 
     gl_Position = mvp * vec4 (position.x, position.y * height, position.z, 1.0);
     vertexColor = vec4 (color * (0.2 + 0.8 * height), 1.0);
@@ -49,7 +49,7 @@ R"(#version ${version_string}
 precision mediump float;
 in vec4 vertexColor;
 
-out vec4 outputColor;
+varying out vec4 outputColor;
 
 void main() {
     outputColor = vertexColor;
@@ -115,7 +115,7 @@ bool ModernRenderer::init_shaders ()
 
     bool es = !epoxy_is_desktop_gl ();
 
-    const gchar * version_str = es ? "300 es" : "130";
+    const gchar * version_str = es ? "300 es" : "120";
 
     AUDINFO
     (
