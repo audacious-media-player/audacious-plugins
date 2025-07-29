@@ -164,7 +164,7 @@ class FilesystemTree
                 filters << "*.mp3" << "*.flac" << "*.ogg" <<
                            "*.m4a" << "*.ape" << "*.wav" <<
                            "*.aac" << "*.wma" << "*.aiff" <<
-                           "*.opus";							// This should probably be done configurable 
+                           "*.opus" << "*.dsf";							// This should probably be done configurable 
                 d.setNameFilters(filters);
 
                 QDir::Filters d_filters = QDir::AllDirs | QDir::NoDot | QDir::NoDotDot | QDir::Files | QDir::Readable;
