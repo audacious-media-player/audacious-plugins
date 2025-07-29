@@ -6,8 +6,7 @@ if epoxy_dep.found() and glm_dep.found()
   conf.set10('USE_MODERNGL', true)
 endif
 
-if conf.has('USE_GTK3') and gtk_dep.version() >= '3.16' and \
-    conf.has('USE_MODERNGL')
+if conf.has('USE_GTK3') and conf.has('USE_MODERNGL')
   conf.set10('USE_GTKGLAREA', true)
 endif
 
