@@ -390,7 +390,7 @@ ModernRenderer::ModernRenderer (
         has_ext ? "has" : "doesn't have"
     );
 
-    if (!(gl_version > 30 || (gl_version > 21 && has_ext)))
+    if (!(gl_version >= 30 || (gl_version >= 21 && has_ext)))
     {
         return;
     }
