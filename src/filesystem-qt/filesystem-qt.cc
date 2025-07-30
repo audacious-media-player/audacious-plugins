@@ -1,4 +1,4 @@
-/*
+﻿/*
  * filesystem-qt.cc
  * Produced 2025 Hans Dijkema
  *
@@ -38,6 +38,7 @@
 #include <QSpinBox>
 #include <QSpacerItem>
 #include <QScrollBar>
+#include <QDesktopServices>
 
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -45,24 +46,55 @@
 #include <libaudcore/plugin.h>
 #include <libaudqt/libaudqt.h>
 #include <libaudqt/treeview.h>
-
+#include <libaudcore/preferences.h>
+#include <libaudcore/runtime.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // FilesystemQt Plugin Class
 /////////////////////////////////////////////////////////////////////////////////////////
+
+#define CFG_ID "FilesystemQt"
+#define CFG_MAX_FILES "max_files_to_add"
+#define CFG_MUSIC_LIBRARY "music_library_folder"
+#define CFG_MUSIC_EXTS "music_file_extenstions"
+#define CFG_DEFAULT_EXTS "mp3|flac|ogg|m4a|ape|wav|aac|aiff|opus|dsf"
+
+#define PLUGIN_BASENAME "filesystem-qt"
+
+static void callback_folder();
+static void callback_max_files_to_add();
+static void callback_exts();
+
+#define AUD_LOGGING
+//#define EXPORT
+
+#ifdef AUD_LOGGING
+#define LOGINFO AUDINFO
+#define LOGDBG  AUDDBG
+#define LOGWARN AUDWARN
+#else
+#define LOGBASE(kind, ...) fprintf(stderr, "%s:%d (%s) - %s:", __FILE__, __LINE__, __FUNCTION__, kind)
+#define LOGINFO(...) { LOGBASE("Info   ");fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); }
+#define LOGDBG(...)  { LOGBASE("Debug  ");fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); }
+#define LOGWARN(...) { LOGBASE("Warning");fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); }
+#endif
 
 class FilesystemQt : public GeneralPlugin
 {
 public:
     static const char * const defaults[];
     static const char about[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
 
     static constexpr PluginInfo info = {N_("Filesystem Manager"), PACKAGE,
                                         about, // about
-                                        nullptr, // prefs
+                                        &prefs, // prefs
                                         PluginQtOnly};
 
-    constexpr FilesystemQt() : GeneralPlugin(info, false) {}
+    constexpr FilesystemQt() : GeneralPlugin(info, true)
+    {
+    }
 
     void * get_qt_widget();
     int take_message(const char * code, const void *, int);
@@ -71,11 +103,27 @@ public:
 const char FilesystemQt::about[] =
     N_("(p) 2025 Hans Dijkema\n\n"
        "The FilesystemQt plugin gives a dockable widget that can be used\n"
-       "to browse folders for music files (mp3|flac|ogg)\n"
+       "to browse folders for music files (mp3|flac|ogg|etc.)\n"
        "\n"
        "Right mouse on a folder or file and these can be added to, or replace\n"
        "the current playlist."
        );
+
+const static WidgetVFileEntry dir_entry = { FileSelectMode::Folder };
+
+const PreferencesWidget FilesystemQt::widgets[] = {
+    WidgetLabel(N_("Standard options")),
+    WidgetLabel("--------------------------------------------------------------------------------------------------------------------------------------------------"),
+    WidgetFileEntry (N_("Music folder:"), WidgetString(CFG_ID, CFG_MUSIC_LIBRARY, callback_folder), dir_entry),
+    WidgetSpin(N_("Maximum files to add to playlist:"), WidgetInt(CFG_ID, CFG_MAX_FILES, callback_max_files_to_add), { 10, 500, 1, N_("files") }),
+    WidgetLabel(""),
+    WidgetLabel(N_("Advanced options")),
+    WidgetLabel("--------------------------------------------------------------------------------------------------------------------------------------------------"),
+    WidgetEntry(N_("Music file extensions to browse:"), WidgetString(CFG_ID, CFG_MUSIC_EXTS, callback_exts))
+};
+
+const PluginPreferences FilesystemQt::prefs = {{widgets}};
+
 
 EXPORT FilesystemQt aud_plugin_instance;
 
@@ -94,6 +142,7 @@ class FilesystemTree
         static const int DIR = 1;
         static const int FILE = 2;
         static QString _sep;
+        static QString _exts;
     private:
         QFileInfo                       _fi;
         int                             _kind;
@@ -111,9 +160,10 @@ class FilesystemTree
             _entries.clear();
         }
     public:
-        FilesystemTree(int kind, const QString & p, int idx, FilesystemTree *parent)
+        FilesystemTree(int kind, const QString & p, const QString & exts, int idx, FilesystemTree *parent)
         {
-            _sep = "/";					// This might also work on Windows in Qt. 
+            _sep = "/";					// This might also work on Windows in Qt.
+            _exts = exts;
             _fi = QFileInfo(p);
             _kind = kind;
             _parent_index = idx;
@@ -139,11 +189,25 @@ class FilesystemTree
             }
             return _entries[row];
         }
+        QString validExts() { return _exts; }
 
     public:
         void setPath(const QString &p)
         {
             _fi = QFileInfo(p);
+            reload();
+        }
+
+        void setValidExts(const QString &e)
+        {
+            _exts = e;
+            reload();
+        }
+
+        void setPathAndExts(const QString &p, const QString &e)
+        {
+            _fi = QFileInfo(p);
+            _exts = e;
             reload();
         }
     public:
@@ -161,10 +225,13 @@ class FilesystemTree
                 QDir d(_fi.absoluteFilePath());
 
                 QStringList filters;
-                filters << "*.mp3" << "*.flac" << "*.ogg" <<
-                           "*.m4a" << "*.ape" << "*.wav" <<
-                           "*.aac" << "*.wma" << "*.aiff" <<
-                           "*.opus" << "*.dsf";							// This should probably be done configurable 
+                {
+                    QStringList exts = validExts().split("|");
+                    int i;
+                    for(i = 0; i < exts.size(); i++) {
+                        filters.append(QString("*.") + exts[i].trimmed().toLower());
+                    }
+                }
                 d.setNameFilters(filters);
 
                 QDir::Filters d_filters = QDir::AllDirs | QDir::NoDot | QDir::NoDotDot | QDir::Files | QDir::Readable;
@@ -175,11 +242,14 @@ class FilesystemTree
                 QString p = path();
                 int i;
                 for(i = 0; i < l.size(); i++) {
-                    QString new_file = p + _sep + l[i];
-                    QFileInfo f(new_file);
-                    int k = (f.isDir()) ? DIR : FILE;
-                    //qDebug() << i << " - " << new_file << " - " << k;
-                    _entries.append(new FilesystemTree(k, new_file, i, this));
+                    if (l[i] != "lost+found") {
+                        QString new_file = p + _sep + l[i];
+
+                        QFileInfo f(new_file);
+                        int k = (f.isDir()) ? DIR : FILE;
+
+                        _entries.append(new FilesystemTree(k, new_file, _exts, i, this));
+                    }
                 }
             }
         }
@@ -190,6 +260,7 @@ class FilesystemTree
 };
 
 QString FilesystemTree::_sep;
+QString FilesystemTree::_exts;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -200,7 +271,9 @@ class FilesystemModel : public QAbstractItemModel
 {
 private:
     QString          _base_dir;
+    QString          _valid_exts;
     FilesystemTree  *_tree;
+    bool             _in_config;
 	
 public:
     enum
@@ -209,10 +282,12 @@ public:
         NColumns
     };
 
-    FilesystemModel()
+    FilesystemModel(const QString &base_dir, const QString &valid_exts)
     {
-        _base_dir = "";
-        _tree = new FilesystemTree(FilesystemTree::DIR, _base_dir, -1, nullptr);
+        _base_dir = base_dir;
+        _valid_exts = valid_exts;
+        _in_config = false;
+        _tree = new FilesystemTree(FilesystemTree::DIR, _base_dir, _valid_exts, -1, nullptr);
     }
     
     ~FilesystemModel()
@@ -221,13 +296,35 @@ public:
     }
 
 public:
+    void beginConfig()
+    {
+        _in_config = true;
+        this->beginResetModel();
+    }
+
+    void endConfig()
+    {
+        _in_config = false;
+        this->endResetModel();
+    }
+
     void setLibraryPath(const QString &library_path)
     {
         _base_dir = library_path;
         if (_base_dir != _tree->path()) {
-            this->beginResetModel();
+            if (!_in_config) { this->beginResetModel(); }
             _tree->setPath(_base_dir);
-            this->endResetModel();
+            if (!_in_config) { this->endResetModel(); }
+        }
+    }
+
+    void setValidExts(const QString &valid_exts)
+    {
+        _valid_exts = valid_exts;
+        if (_valid_exts != _tree->validExts()) {
+            if (!_in_config) { this->beginResetModel(); }
+            _tree->setValidExts(_valid_exts);
+            if (!_in_config) { this->endResetModel(); }
         }
     }
 
@@ -340,19 +437,21 @@ private:
 private:
     int max_files_to_add;
     QString library_path;
+    QString valid_exts;
+
+public slots:
+    void config();
 
 public:
     FilesystemView();
 
-public slots:
-    void configMusicLibrary();
-    void configMaxFiles();
-
 public:
-    void connectConfigButtons(QPushButton *configLib, QPushButton *configMaxFiles);
+    void setMusicLibrary(const QUrl &folder);
+    void setMaxFilesToAdd(int max);
+    void setMusicExts(const QString &exts);
 
 private:
-    FilesystemModel m_model;
+    FilesystemModel *m_model;
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
@@ -360,20 +459,26 @@ protected:
 public:
     void playThis(bool checked);
     void addThis(bool checked);
+    void openThis(bool checked);
     void insertEntries(Playlist &list, bool play);
 };
 
 void FilesystemView::contextMenuEvent(QContextMenuEvent *evt)
 {
     QMenu *menu = new QMenu(this);
-    QString play = QString("Replace current playlist && play");
-    QString add = QString("Add to current playlist");
+    QString play = QString(N_("Replace current playlist and play"));
+    QString add = QString(N_("Add to current playlist"));
+    QString open = QString(N_("Open containing folder"));
     QAction *action_play = new QAction(play);
     QAction *action_add = new QAction(add);
+    QAction *action_open = new QAction(open);
     connect(action_play, &QAction::triggered, this, &FilesystemView::playThis);
     connect(action_add, &QAction::triggered, this, &FilesystemView::addThis);
+    connect(action_open, &QAction::triggered, this, &FilesystemView::openThis);
     menu->addAction(action_play);
     menu->addAction(action_add);
+    menu->addSeparator();
+    menu->addAction(action_open);
     menu->popup(evt->globalPos());
 }
 
@@ -403,13 +508,48 @@ void FilesystemView::addThis(bool checked)
     insertEntries(list, false);
 }
 
+void FilesystemView::openThis(bool checked)
+{
+    // Get the currently selected files / directories
+
+    QItemSelection sel = this->selectionModel()->selection();
+    QModelIndexList l = sel.indexes();
+    current_selected = m_model->get(l);
+
+    if (current_selected.size() > 1) {
+        QMessageBox::warning(this,
+                             N_("Too many selected entries"),
+                             N_("Cannot determine where to open the filenmanager / explorer\n"
+                                "Please select one entry")
+                             );
+    } else if (current_selected.size() == 0) {
+        QMessageBox::warning(this,
+                             N_("No selected entries"),
+                             N_("Cannot determine where to open the filenmanager / explorer\n"
+                                "Please select one entry")
+                             );
+    } else {
+        FilesystemTree *s = current_selected[0];
+        QString where = s->path();
+        if (s->kind() == FilesystemTree::FILE) {
+            QFileInfo fi(s->path());
+            where = fi.canonicalPath();
+        }
+        QDir w(where);
+        if (w.exists()) {
+            QUrl wu = QUrl().fromLocalFile(where);
+            QDesktopServices::openUrl(wu);
+        }
+    }
+}
+
 void FilesystemView::insertEntries(Playlist &list, bool do_play)
 {
     // Get the currently selected files / directories
 
     QItemSelection sel = this->selectionModel()->selection();
     QModelIndexList l = sel.indexes();
-    current_selected = m_model.get(l);
+    current_selected = m_model->get(l);
 
     // Assemble the files to a maximum of 'max_files_to_add', which is configurable.
 
@@ -432,11 +572,30 @@ void FilesystemView::insertEntries(Playlist &list, bool do_play)
     }
 }
 
+static QString correctExts(QString exts, bool &correct);
+
+void FilesystemView::config()
+{
+    LOGDBG("configuration called");
+    PluginHandle *h = aud_plugin_lookup_basename(PLUGIN_BASENAME);
+    if (h != nullptr) {
+        audqt::plugin_prefs(h);
+    } else {
+        LOGWARN("Plugin lookup failed for plugin: %s", PLUGIN_BASENAME);
+        QString msg;
+        msg = msg.asprintf(N_("Plugin lookup for '%s' failed\n\n"
+                              "Please configure this plugin via the normale plugin configuration way"),
+                           PLUGIN_BASENAME);
+        QMessageBox::warning(this,
+                             N_("Plugin Lookup Failed"),
+                             msg);
+    }
+}
+
 FilesystemView::FilesystemView()
 {
-    setModel(&m_model);
-
-    QSettings s("filesystem", "audacious");
+    // Configuration Defaults
+    LOGDBG("config defaults");
 
     QString std_music_loc;
     QStringList std_music_locs = QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
@@ -445,14 +604,59 @@ FilesystemView::FilesystemView()
     } else {
         QStringList l = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
         if (l.size() > 0) { std_music_loc = l[0]; }
+        else {
+            LOGWARN(N_("No default music location found! Configure it by hand!"));
+        }
     }
 
-    max_files_to_add = s.value("max_files_to_add", 100).toInt();
-    library_path = s.value("library_path", std_music_loc).toString();
-    m_model.setLibraryPath(library_path);
+    const char *default_music_loc = std_music_loc.toUtf8();
+    LOGINFO("Standard Music Locatio Found: %s", default_music_loc);
+
+    const char * const cfg_filesystem_defaults [] = {
+        CFG_MAX_FILES, "100",
+        CFG_MUSIC_LIBRARY, default_music_loc,
+        CFG_MUSIC_EXTS, CFG_DEFAULT_EXTS,
+        nullptr
+    };
+
+    aud_config_set_defaults(CFG_ID, cfg_filesystem_defaults);
+
+    // Get configuration settings
+    LOGDBG("Config settings");
+
+    max_files_to_add = aud_get_int(CFG_ID, CFG_MAX_FILES);
+
+    const char *aud_music_lib = aud_get_str(CFG_ID, CFG_MUSIC_LIBRARY);
+    QString path = QString(aud_music_lib);
+    if (!path.startsWith("file:")) {
+        library_path = path;
+    } else {
+        library_path = QUrl(aud_music_lib).toLocalFile();
+    }
+
+    const char *aud_valid_exts = aud_get_str(CFG_ID, CFG_MUSIC_EXTS);
+    bool correct_exts = false;
+    valid_exts = correctExts(QString(aud_valid_exts), correct_exts);
+
+    if (!correct_exts) {
+        LOGWARN("configured music file extensions: %s, are not correct", aud_valid_exts);
+        LOGWARN("they have been reset to %s", valid_exts.toUtf8().data());
+    }
+
+    LOGINFO("max_files_to_add = %d", max_files_to_add);
+    LOGINFO("library_path     = %s", library_path.toUtf8().data());
+    LOGINFO("valid_exts       = %s", valid_exts.toUtf8().data());
+
+    // Initialize Model
+    LOGDBG("Model Init");
+    m_model = new FilesystemModel(library_path, valid_exts);
+    setModel(m_model);
+
+    // Initialize View
+    LOGDBG("View Init");
 
     setAllColumnsShowFocus(true);
-    setFrameShape(QFrame::NoFrame);
+    //setFrameShape(QFrame::NoFrame);
 
     horizontalScrollBar()->setEnabled(true);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -464,58 +668,22 @@ FilesystemView::FilesystemView()
     setSelectionMode(ExtendedSelection);
 }
 
-void FilesystemView::configMusicLibrary()
+void FilesystemView::setMusicLibrary(const QUrl &folder)
 {
-    QString n_lib_path = QFileDialog::getExistingDirectory(this, N_("Select a folder as Music Library"), library_path, QFileDialog::ShowDirsOnly);
-    if (n_lib_path != "") {
-        QSettings s("filesystem", "audacious");
-        library_path = n_lib_path;
-        s.setValue("library_path", library_path);
-        m_model.setLibraryPath(library_path);
-    }
+    library_path = folder.toLocalFile();
+    m_model->setLibraryPath(library_path);
 }
 
-void FilesystemView::configMaxFiles()
+void FilesystemView::setMaxFilesToAdd(int m)
 {
-    QSettings s("filesystem", "audacious");
-    QDialog *dlg = new QDialog(this);
-    dlg->setModal(true);
-    dlg->setWindowTitle(N_("Maximum Files to a Playlist"));
-    QHBoxLayout *hbox = new QHBoxLayout();
-    hbox->addWidget(new QLabel(N_("Maximum number of files to add from library to playlist at once:")));
-
-    QSpinBox *sp = new QSpinBox();
-    sp->setMaximum(500);
-    sp->setMinimum(10);
-    sp->setValue(s.value("max_files_to_add", max_files_to_add).toInt());
-    hbox->addWidget(sp, 1);
-
-    connect(sp, &QSpinBox::valueChanged, [this](int v) {
-                                                max_files_to_add = v;
-                                                QSettings s("filesystem", "audacious");
-                                                s.setValue("max_files_to_add", max_files_to_add);
-                                         });
-
-    QPushButton *ok = new QPushButton(N_("Close"));
-    connect(ok, &QPushButton::clicked, dlg, &QDialog::close);
-    QHBoxLayout *hbox1 = new QHBoxLayout();
-    hbox1->addStretch(1);
-    hbox1->addWidget(ok);
-
-    QVBoxLayout *vbox = new QVBoxLayout();
-    vbox->addLayout(hbox);
-    vbox->addLayout(hbox1);
-
-    dlg->setLayout(vbox);
-    dlg->exec();
+    max_files_to_add = m;
 }
 
-void FilesystemView::connectConfigButtons(QPushButton *configLib, QPushButton *configMaxFiles)
+void FilesystemView::setMusicExts(const QString &exts)
 {
-    connect(configLib, &QPushButton::clicked, this, &FilesystemView::configMusicLibrary);
-    connect(configMaxFiles, &QPushButton::clicked,this, &FilesystemView::configMaxFiles);
+    valid_exts = exts;
+    m_model->setValidExts(valid_exts);
 }
-
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Make the Plugin Work.
@@ -523,27 +691,36 @@ void FilesystemView::connectConfigButtons(QPushButton *configLib, QPushButton *c
 
 static QPointer<FilesystemView> s_filesystem_view;
 
+static FilesystemView *getMyWidget()
+{
+    return s_filesystem_view;
+}
+
 void * FilesystemQt::get_qt_widget()
 {
     s_filesystem_view = new FilesystemView;
 
-#ifndef FS_TEST_VERSION
-    auto hbox = audqt::make_hbox(nullptr);
-    hbox->setContentsMargins(audqt::margins.TwoPt);
+    QWidget *widget = new QWidget();
+    QVBoxLayout *vbox = new QVBoxLayout();
+    QPushButton *config = new QPushButton(N_("Configure"));
+    QHBoxLayout *hbox = new QHBoxLayout();
+    hbox->addStretch(1);
+    hbox->addWidget(config);
+    FilesystemView::connect(config, &QPushButton::clicked, s_filesystem_view, &FilesystemView::config);
 
-    QPushButton *fbtn = new QPushButton(N_("Max files to add"));
-    QPushButton *btn = new QPushButton(N_("Set Music Library Folder"));
-    s_filesystem_view->connectConfigButtons(btn, fbtn);
-    hbox->addWidget(fbtn);
-    hbox->addWidget(btn);
+    QFrame *frm = new QFrame();
+    frm->setFrameStyle(QFrame::NoFrame);
+    frm->setLineWidth(1);
+    frm->setLayout(hbox);
+    hbox->setContentsMargins(0, 0, 0, 0);
 
-    auto widget = new QWidget;
-    auto vbox = audqt::make_vbox(widget, 0);
+    vbox->setContentsMargins(0, 0, 0,0);
+
     vbox->addWidget(s_filesystem_view, 1);
-    vbox->addLayout(hbox);
-#else
-    QWidget *widget = s_filesystem_view;
-#endif
+    vbox->addWidget(frm);
+
+    widget->setLayout(vbox);
+
     return widget;
 }
 
@@ -557,3 +734,85 @@ int FilesystemQt::take_message(const char * code, const void *p, int n)
 
     return -1;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Preferences
+/////////////////////////////////////////////////////////////////////////////////////////
+
+static void callback_folder()
+{
+    const char *c_folder = aud_get_str(CFG_ID, CFG_MUSIC_LIBRARY);
+    QString folder(c_folder);
+    QUrl folder_url(folder);
+
+    FilesystemView *view = getMyWidget();
+    view->setMusicLibrary(folder_url);
+}
+
+static void callback_max_files_to_add()
+{
+    int max_files = aud_get_int(CFG_ID, CFG_MAX_FILES);
+    FilesystemView *view = getMyWidget();
+    view->setMaxFilesToAdd(max_files);
+}
+
+static QString correctExts(QString exts, bool &correct)
+{
+    QRegularExpression re("^\\s*[A-Za-z0-9]+(\\s*[|]\\s*[A-Za-z0-9]*)*\\s*$");
+    QRegularExpressionMatch m = re.match(exts);
+    if (m.hasMatch()) {
+        QStringList l_exts = exts.split("|");
+
+        int i;
+        exts = "";
+        for(i = 0; i < l_exts.size(); i++) {
+            l_exts[i] = l_exts[i].trimmed().toLower();
+        }
+        exts = l_exts.join("|");
+
+        correct = true;
+
+        return exts;
+    } else {
+        correct = false;
+        return CFG_DEFAULT_EXTS;
+    }
+}
+
+static void callback_exts()
+{
+    FilesystemView *view = getMyWidget();
+
+    const char *c_exts = aud_get_str(CFG_ID, CFG_MUSIC_EXTS);
+    QString exts(c_exts);
+    bool correct = false;
+    QString real_exts = correctExts(exts, correct);
+
+    if (correct) {
+        LOGDBG("New music file extensions: %s", exts.toUtf8().data());
+        view->setMusicExts(real_exts);
+    } else {
+        LOGWARN("Music file extensions are not correctly given: %s", exts.toUtf8().data());
+
+        QRegularExpression re("([^a-zA-Z0-9|]+)");
+        exts = exts.replace(re, "<font color=\"red\"><b>\\1</b></font>");
+        LOGDBG("%s", exts.toUtf8().data());
+
+        QString msg = N_("The given music file extensions:"
+                         "<ul><li>%s</li></ul>"
+                         "Only characters and numbers are valid (a .. z and 0 .. 9)<br><br>"
+                         "The file extensions for browsing will be set to the default:"
+                         "<ul><li>%s</li></ul>"
+                         );
+        QMessageBox box(view);
+        box.setWindowTitle(N_("Music file extensions wrong"));
+        box.setTextFormat(Qt::TextFormat::RichText);
+        box.setText(msg.asprintf(msg.toUtf8(), exts.toUtf8().data(), real_exts.toUtf8().data()));
+        box.addButton(QMessageBox::StandardButton::Ok);
+        box.setDefaultButton(QMessageBox::StandardButton::Ok);
+        box.exec();
+
+        view->setMusicExts(real_exts);
+    }
+}
+
