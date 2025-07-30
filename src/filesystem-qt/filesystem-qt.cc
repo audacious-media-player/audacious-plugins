@@ -318,6 +318,13 @@ public:
         this->endResetModel();
     }
 
+    void refresh()
+    {
+        beginConfig();
+        _tree = new FilesystemTree(FilesystemTree::DIR, _base_dir, _valid_exts, -1, nullptr);
+        endConfig();
+    }
+
     void setLibraryPath(const QString &library_path)
     {
         _base_dir = library_path;
@@ -459,6 +466,7 @@ private:
 
 public slots:
     void config();
+    void refresh();
 
 public:
     FilesystemView();
@@ -676,6 +684,11 @@ void FilesystemView::config()
     }
 }
 
+void FilesystemView::refresh()
+{
+    m_model->refresh();
+}
+
 FilesystemView::FilesystemView()
 {
     // Configuration Defaults
@@ -807,10 +820,13 @@ void * FilesystemQt::get_qt_widget()
     QWidget *widget = new QWidget();
     QVBoxLayout *vbox = new QVBoxLayout();
     QPushButton *config = new QPushButton(N_("Configure"));
+    QPushButton *refresh = new QPushButton(N_("Refresh Library"));
     QHBoxLayout *hbox = new QHBoxLayout();
     hbox->addStretch(1);
+    hbox->addWidget(refresh);
     hbox->addWidget(config);
     FilesystemView::connect(config, &QPushButton::clicked, s_filesystem_view, &FilesystemView::config);
+    FilesystemView::connect(refresh, &QPushButton::clicked, s_filesystem_view, &FilesystemView::refresh);
 
     QFrame *frm = new QFrame();
     frm->setFrameStyle(QFrame::NoFrame);
