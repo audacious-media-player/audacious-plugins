@@ -20,7 +20,7 @@ R"(#version ${version_string}
 
 in vec3 position;
 in vec3 color;
-in int id;
+in float id;
 
 uniform int s_pos;
 uniform mat4 mvp;
@@ -32,8 +32,8 @@ void main()
 {
     vec2 uv = vec2
     (
-        mod (float (id), ${num_bands}.0) + 0.5,
-        mod (float ((id / ${num_bands}) + s_pos), ${num_bands}.0) + 0.5
+        mod (id, ${num_bands}.0) + 0.5,
+        mod (float ((int (id) / ${num_bands}) + s_pos), ${num_bands}.0) + 0.5
     );
 
     float height = texture2D (s_bars, uv / ${num_bands}.0).r * 1.6;
@@ -256,10 +256,11 @@ ModernRenderer::update_vbo (const triangle * triangle_buffer,
 
     /* enable and set the id attribute */
     glEnableVertexAttribArray (id_pointer);
-    glVertexAttribIPointer (
+    glVertexAttribPointer (
     id_pointer,
         1,
         GL_INT,
+        GL_FALSE,
         sizeof (struct vertex),
         (GLvoid *) (G_STRUCT_OFFSET (struct vertex, id))
     );
