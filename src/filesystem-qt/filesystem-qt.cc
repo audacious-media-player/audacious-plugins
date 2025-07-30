@@ -53,17 +53,25 @@
 // FilesystemQt Plugin Class
 /////////////////////////////////////////////////////////////////////////////////////////
 
-#define CFG_ID "FilesystemQt"
-#define CFG_MAX_FILES "max_files_to_add"
-#define CFG_MUSIC_LIBRARY "music_library_folder"
-#define CFG_MUSIC_EXTS "music_file_extenstions"
-#define CFG_DEFAULT_EXTS "mp3|flac|ogg|m4a|ape|wav|aac|aiff|opus|dsf"
+#define CFG_ID              "FilesystemQt"
 
-#define PLUGIN_BASENAME "filesystem-qt"
+#define CFG_MAX_FILES       "max_files_to_add"
+#define CFG_MUSIC_LIBRARY   "music_library_folder"
+#define CFG_MUSIC_EXTS      "music_file_extenstions"
+#define CFG_COVER_FILES     "music_cover_files"
+#define CFG_BOOKLET_FILE    "music_booklet"
+
+#define CFG_DEFAULT_BOOKLET "booklet.pdf"
+#define CFG_DEFAULT_COVERS  "cover.jpg|folder.jpg|cover.png|folder.png"
+#define CFG_DEFAULT_EXTS    "mp3|flac|ogg|m4a|ape|wav|aac|aiff|opus|dsf"
+
+#define PLUGIN_BASENAME     "filesystem-qt"
 
 static void callback_folder();
 static void callback_max_files_to_add();
 static void callback_exts();
+static void callback_booklet();
+static void callback_covers();
 
 #define AUD_LOGGING
 //#define EXPORT
@@ -119,7 +127,9 @@ const PreferencesWidget FilesystemQt::widgets[] = {
     WidgetLabel(""),
     WidgetLabel(N_("Advanced options")),
     WidgetLabel("--------------------------------------------------------------------------------------------------------------------------------------------------"),
-    WidgetEntry(N_("Music file extensions to browse:"), WidgetString(CFG_ID, CFG_MUSIC_EXTS, callback_exts))
+    WidgetEntry(N_("Music file extensions to browse               :"), WidgetString(CFG_ID, CFG_MUSIC_EXTS, callback_exts)),
+    WidgetEntry(N_("Booklet files to recognize                    :"), WidgetString(CFG_ID, CFG_BOOKLET_FILE, callback_booklet)),
+    WidgetEntry(N_("Cover art files (e.g. folder.jpg) to recognize:"), WidgetString(CFG_ID, CFG_COVER_FILES, callback_covers))
 };
 
 const PluginPreferences FilesystemQt::prefs = {{widgets}};
@@ -438,6 +448,14 @@ private:
     int max_files_to_add;
     QString library_path;
     QString valid_exts;
+    QString booklet_file;
+    QString cover_files;
+
+    QString booklet_file_to_open;
+    QString cover_file_to_open;
+
+private:
+    QDir folderForSelection(bool &ok);
 
 public slots:
     void config();
@@ -449,6 +467,8 @@ public:
     void setMusicLibrary(const QUrl &folder);
     void setMaxFilesToAdd(int max);
     void setMusicExts(const QString &exts);
+    void setCoverFiles(const QString &files);
+    void setBookletFile(const QString &file);
 
 private:
     FilesystemModel *m_model;
@@ -479,6 +499,47 @@ void FilesystemView::contextMenuEvent(QContextMenuEvent *evt)
     menu->addAction(action_add);
     menu->addSeparator();
     menu->addAction(action_open);
+
+    // Check for booklet
+    bool has_selected;
+    bool separator_added = false;
+    QDir d = this->folderForSelection(has_selected);
+    if (has_selected) {
+        if (d.exists(booklet_file)) {
+            booklet_file_to_open = d.filePath(booklet_file);
+            QAction *action_open_booklet = new QAction(N_("Open booklet"));
+            connect(action_open_booklet, &QAction::triggered, this, [this]() {
+                QUrl f;
+                f = f.fromLocalFile(this->booklet_file_to_open);
+                QDesktopServices::openUrl(f);
+            });
+            menu->addSeparator();
+            separator_added = true;
+            menu->addAction(action_open_booklet);
+        }
+
+        QStringList covers = cover_files.split("|");
+        QString file = "";
+        int i;
+        for(i = 0; i < covers.size() && file == ""; i++) {
+            QString cover = covers[i].trimmed();
+            if (d.exists(cover)) {
+                file = d.filePath(cover);
+            }
+        }
+        if (file != "") {
+            cover_file_to_open = file;
+            QAction *action_open_cover = new QAction(N_("Open Cover Art"));
+            connect(action_open_cover, &QAction::triggered, this, [this]() {
+                QUrl f;
+                f = f.fromLocalFile(this->cover_file_to_open);
+                QDesktopServices::openUrl(f);
+            });
+            if (!separator_added) { menu->addSeparator(); }
+            menu->addAction(action_open_cover);
+        }
+    }
+
     menu->popup(evt->globalPos());
 }
 
@@ -574,6 +635,29 @@ void FilesystemView::insertEntries(Playlist &list, bool do_play)
 
 static QString correctExts(QString exts, bool &correct);
 
+QDir FilesystemView::folderForSelection(bool &ok)
+{
+    QItemSelection sel = this->selectionModel()->selection();
+    QModelIndexList l = sel.indexes();
+    current_selected = m_model->get(l);
+
+    if (current_selected.size() == 1) {
+        ok = true;
+
+        FilesystemTree *s = current_selected[0];
+        QString where = s->path();
+        if (s->kind() == FilesystemTree::FILE) {
+            QFileInfo fi(s->path());
+            where = fi.canonicalPath();
+        }
+
+        return QDir(where);
+    } else {
+        ok = false;
+        return QDir();
+    }
+}
+
 void FilesystemView::config()
 {
     LOGDBG("configuration called");
@@ -616,6 +700,8 @@ FilesystemView::FilesystemView()
         CFG_MAX_FILES, "100",
         CFG_MUSIC_LIBRARY, default_music_loc,
         CFG_MUSIC_EXTS, CFG_DEFAULT_EXTS,
+        CFG_BOOKLET_FILE, CFG_DEFAULT_BOOKLET,
+        CFG_COVER_FILES, CFG_DEFAULT_COVERS,
         nullptr
     };
 
@@ -638,6 +724,12 @@ FilesystemView::FilesystemView()
     bool correct_exts = false;
     valid_exts = correctExts(QString(aud_valid_exts), correct_exts);
 
+    const char *aud_booklet_file = aud_get_str(CFG_ID, CFG_BOOKLET_FILE);
+    booklet_file = QString(aud_booklet_file);
+
+    const char *aud_conver_files = aud_get_str(CFG_ID, CFG_COVER_FILES);
+    cover_files = QString(aud_conver_files);
+
     if (!correct_exts) {
         LOGWARN("configured music file extensions: %s, are not correct", aud_valid_exts);
         LOGWARN("they have been reset to %s", valid_exts.toUtf8().data());
@@ -646,6 +738,8 @@ FilesystemView::FilesystemView()
     LOGINFO("max_files_to_add = %d", max_files_to_add);
     LOGINFO("library_path     = %s", library_path.toUtf8().data());
     LOGINFO("valid_exts       = %s", valid_exts.toUtf8().data());
+    LOGINFO("booklet file     = %s", booklet_file.toUtf8().data());
+    LOGINFO("cover files      = %s", cover_files.toUtf8().data());
 
     // Initialize Model
     LOGDBG("Model Init");
@@ -683,6 +777,16 @@ void FilesystemView::setMusicExts(const QString &exts)
 {
     valid_exts = exts;
     m_model->setValidExts(valid_exts);
+}
+
+void FilesystemView::setCoverFiles(const QString &files)
+{
+    cover_files = files;
+}
+
+void FilesystemView::setBookletFile(const QString &file)
+{
+    booklet_file = file;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -739,6 +843,23 @@ int FilesystemQt::take_message(const char * code, const void *p, int n)
 // Preferences
 /////////////////////////////////////////////////////////////////////////////////////////
 
+
+static void callback_booklet()
+{
+    const char *c_booklet = aud_get_str(CFG_ID, CFG_BOOKLET_FILE);
+    QString booklet(c_booklet);
+    FilesystemView *view = getMyWidget();
+    view->setBookletFile(booklet);
+}
+
+static void callback_covers()
+{
+    const char *c_covers = aud_get_str(CFG_ID, CFG_BOOKLET_FILE);
+    QString covers(c_covers);
+    FilesystemView *view = getMyWidget();
+    view->setCoverFiles(covers);
+}
+
 static void callback_folder()
 {
     const char *c_folder = aud_get_str(CFG_ID, CFG_MUSIC_LIBRARY);
@@ -755,6 +876,7 @@ static void callback_max_files_to_add()
     FilesystemView *view = getMyWidget();
     view->setMaxFilesToAdd(max_files);
 }
+
 
 static QString correctExts(QString exts, bool &correct)
 {
