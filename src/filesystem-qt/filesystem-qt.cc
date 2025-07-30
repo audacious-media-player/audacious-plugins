@@ -127,9 +127,9 @@ const PreferencesWidget FilesystemQt::widgets[] = {
     WidgetLabel(""),
     WidgetLabel(N_("Advanced options")),
     WidgetLabel("--------------------------------------------------------------------------------------------------------------------------------------------------"),
-    WidgetEntry(N_("Music file extensions to browse               :"), WidgetString(CFG_ID, CFG_MUSIC_EXTS, callback_exts)),
-    WidgetEntry(N_("Booklet files to recognize                    :"), WidgetString(CFG_ID, CFG_BOOKLET_FILE, callback_booklet)),
-    WidgetEntry(N_("Cover art files (e.g. folder.jpg) to recognize:"), WidgetString(CFG_ID, CFG_COVER_FILES, callback_covers))
+    WidgetEntry(N_("Music file extensions to browse                       :"), WidgetString(CFG_ID, CFG_MUSIC_EXTS, callback_exts)),
+    WidgetEntry(N_("Booklet files to recognize                                  :"), WidgetString(CFG_ID, CFG_BOOKLET_FILE, callback_booklet)),
+    WidgetEntry(N_("Cover art files (e.g. folder.jpg) to recognize :"), WidgetString(CFG_ID, CFG_COVER_FILES, callback_covers))
 };
 
 const PluginPreferences FilesystemQt::prefs = {{widgets}};
