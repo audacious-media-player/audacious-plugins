@@ -22,11 +22,15 @@
 
 #include <opus/opusfile.h>
 
+#define AUD_GLIB_INTEGRATION
 #define WANT_VFS_STDIO_COMPAT
+#define WANT_AUD_BSWAP
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
+
+#include <glib.h>
 
 class OpusPlugin : public InputPlugin
 {
@@ -137,22 +141,30 @@ static Index<char> read_image_from_tags(const OpusTags * tags,
     if (!image)
         return data;
 
-    OpusPictureTag picture_tag;
-    if (opus_picture_tag_parse(&picture_tag, image) < 0)
-    {
-        AUDERR("Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
-        return data;
-    }
+    unsigned mime_length, desc_length, length;
 
-    if (picture_tag.format == OP_PIC_FORMAT_JPEG ||
-        picture_tag.format == OP_PIC_FORMAT_PNG ||
-        picture_tag.format == OP_PIC_FORMAT_GIF)
-    {
-        data.insert(reinterpret_cast<const char *>(picture_tag.data), 0,
-                    picture_tag.data_length);
-    }
+    size_t length2;
+    CharPtr data2 ((char *) g_base64_decode (image, & length2));
+    if (! data2 || length2 < 8)
+        goto PARSE_ERR;
 
-    opus_picture_tag_clear(&picture_tag);
+    mime_length = FROM_BE32 (* (uint32_t *) (data2 + 4));
+    if (length2 < 8 + mime_length + 4)
+        goto PARSE_ERR;
+
+    desc_length = FROM_BE32 (* (uint32_t *) (data2 + 8 + mime_length));
+    if (length2 < 8 + mime_length + 4 + desc_length + 20)
+        goto PARSE_ERR;
+
+    length = FROM_BE32 (* (uint32_t *) (data2 + 8 + mime_length + 4 + desc_length + 16));
+    if (length2 < 8 + mime_length + 4 + desc_length + 20 + length)
+        goto PARSE_ERR;
+
+    data.insert (data2 + 8 + mime_length + 4 + desc_length + 20, 0, length);
+    return data;
+
+PARSE_ERR:
+    AUDERR ("Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
     return data;
 }
 
