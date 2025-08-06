@@ -247,19 +247,23 @@ class FilesystemTree
                 QDir::Filters d_filters = QDir::AllDirs | QDir::NoDot | QDir::NoDotDot | QDir::Files | QDir::Readable;
                 d.setFilter(d_filters);
 
-                QStringList l = d.entryList(filters, d_filters, QDir::SortFlag::IgnoreCase);
+                QStringList l_e = d.entryList(filters, d_filters, QDir::SortFlag::IgnoreCase);
+		QStringList l;
+                int i;
+		for(i = 0; i < l_e.size(); i++) {
+                   if (l_e[i] != "lost+found") { 
+                      l.append(l_e[i]);
+		   }
+		}
 
                 QString p = path();
-                int i;
                 for(i = 0; i < l.size(); i++) {
-                    if (l[i] != "lost+found") {
-                        QString new_file = p + _sep + l[i];
+                   QString new_file = p + _sep + l[i];
 
-                        QFileInfo f(new_file);
-                        int k = (f.isDir()) ? DIR : FILE;
+                   QFileInfo f(new_file);
+                   int k = (f.isDir()) ? DIR : FILE;
 
-                        _entries.append(new FilesystemTree(k, new_file, _exts, i, this));
-                    }
+                   _entries.append(new FilesystemTree(k, new_file, _exts, i, this));
                 }
             }
         }
@@ -537,7 +541,7 @@ void FilesystemView::contextMenuEvent(QContextMenuEvent *evt)
         }
         if (file != "") {
             cover_file_to_open = file;
-            QAction *action_open_cover = new QAction(N_("Open Cover Art"));
+            QAction *action_open_cover = new QAction(N_("Open cover art"));
             connect(action_open_cover, &QAction::triggered, this, [this]() {
                 QUrl f;
                 f = f.fromLocalFile(this->cover_file_to_open);
