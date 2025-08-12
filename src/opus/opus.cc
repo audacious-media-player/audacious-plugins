@@ -20,8 +20,11 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <glib.h>
 #include <opus/opusfile.h>
 
+#define AUD_GLIB_INTEGRATION
+#define WANT_AUD_BSWAP
 #define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
@@ -128,6 +131,35 @@ static void read_tags(const OpusTags * tags, Tuple & tuple)
         tuple.set_int(Tuple::Year, std::atoi(date));
 }
 
+/*
+ * Adopted from Ogg Vorbis decoder plugin
+ * Used as less strict fallback if opusfile rejects an image tag
+ */
+static bool parse_vorbis_image(Index<char> & data, const char * image)
+{
+    unsigned mime_length, desc_length, length;
+    size_t data_length;
+
+    CharPtr img_data((char *)g_base64_decode(image, &data_length));
+    if (!img_data || data_length < 8)
+        return false;
+
+    mime_length = FROM_BE32(*(uint32_t *)(img_data + 4));
+    if (data_length < 8 + mime_length + 4)
+        return false;
+
+    desc_length = FROM_BE32(*(uint32_t *)(img_data + 8 + mime_length));
+    if (data_length < 8 + mime_length + 4 + desc_length + 20)
+        return false;
+
+    length = FROM_BE32(*(uint32_t *)(img_data + 8 + mime_length + 4 + desc_length + 16));
+    if (data_length < 8 + mime_length + 4 + desc_length + 20 + length)
+        return false;
+
+    data.insert(img_data + 8 + mime_length + 4 + desc_length + 20, 0, length);
+    return true;
+}
+
 static Index<char> read_image_from_tags(const OpusTags * tags,
                                         const char * filename)
 {
@@ -140,7 +172,8 @@ static Index<char> read_image_from_tags(const OpusTags * tags,
     OpusPictureTag picture_tag;
     if (opus_picture_tag_parse(&picture_tag, image) < 0)
     {
-        AUDERR("Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
+        if (!parse_vorbis_image(data, image))
+            AUDERR("Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
         return data;
     }
 
