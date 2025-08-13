@@ -24,14 +24,16 @@ ubuntu_packages='gettext libadplug-dev libasound2-dev libavformat-dev
                  libmpg123-dev libneon27-gnutls-dev libnotify-dev libopenmpt-dev
                  libopusfile-dev libpipewire-0.3-dev libpulse-dev
                  libsamplerate0-dev libsdl2-dev libsidplayfp-dev libsndfile1-dev
-                 libsndio-dev libsoxr-dev libvorbis-dev libwavpack-dev libxml2-dev'
+                 libsndio-dev libsoxr-dev libvorbis-dev libwavpack-dev libxml2-dev
+                 libepoxy-dev libglm-dev'
 
 ubuntu_qt5_packages='libqt5opengl5-dev libqt5svg5-dev libqt5x11extras5-dev
                      qtbase5-dev qtmultimedia5-dev'
 ubuntu_qt6_packages='qt6-base-dev qt6-multimedia-dev qt6-svg-dev'
 
 macos_packages='adplug faad2 ffmpeg libbs2b libcue libmms libmodplug libnotify
-                libopenmpt libsamplerate libsoxr neon opusfile sdl3 wavpack'
+                libopenmpt libsamplerate libsoxr neon opusfile sdl3 wavpack
+                libepoxy glm'
 
 case "$os" in
   ubuntu-22.04)
