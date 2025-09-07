@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2025-07-16 00:23+0200\n"
+"POT-Creation-Date: 2025-08-13 01:16+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
 "Last-Translator: AO <ao@localizationlab.org>, 2019-2025\n"
 "Language-Team: French (http://app.transifex.com/audacious/audacious/language/"
@@ -733,11 +733,11 @@ msgstr "Utiliser CD-Text"
 
 #: src/cdaudio/cdaudio-ng.cc:150
 msgid "Use CDDB"
-msgstr "Utiliser CDDB"
+msgstr "CDDB"
 
 #: src/cdaudio/cdaudio-ng.cc:152
 msgid "Use HTTP instead of CDDBP"
-msgstr "Utiliser HTTP à la place de CDDBP"
+msgstr "HTTP au lieu de CDDBP"
 
 #: src/cdaudio/cdaudio-ng.cc:155
 msgid "Server:"
@@ -826,7 +826,7 @@ msgstr "Échec d’interrogation du serveur CDDB : %s ."
 #: src/cdaudio/cdaudio-ng.cc:716
 #, c-format
 msgid "Failed to read the CDDB info: %s"
-msgstr "Échec de lecture des renseignements de CDDB : %s"
+msgstr "Échec de lecture des données CDDB : %s"
 
 #: src/cd-menu-items/cd-menu-items.cc:33
 msgid "Audio CD Menu Items"
@@ -954,13 +954,13 @@ msgstr ""
 
 #: src/coreaudio/coreaudio.cc:171
 msgid "Use exclusive mode"
-msgstr "Utiliser le mode exclusif"
+msgstr "Mode exclusif"
 
 #: src/coreaudio/coreaudio.cc:173
 msgid "Use bit perfect audio (adapt device sampling rate)"
 msgstr ""
-"Utiliser la reproduction du son au bit près (adapter la fréquence "
-"d’échantillonnage du périphérique)"
+"Reproduction du son au bit près (adapter la fréquence d’échantillonnage du "
+"périphérique)"
 
 #: src/crossfade/crossfade.cc:47
 msgid ""
@@ -1729,7 +1729,7 @@ msgstr "Arrêter après cette p_ièce"
 #: src/gtkui/menus.cc:106 src/gtkui/menus.cc:210 src/qtui/menus.cc:166
 #: src/qtui/menus.cc:301
 msgid "Song _Info ..."
-msgstr "Renseignements sur la _pièce…"
+msgstr "Détails de la _pièce…"
 
 #: src/gtkui/menus.cc:107
 msgid "Jump to _Time ..."
@@ -1831,7 +1831,7 @@ msgstr "Ordre _aléatoire"
 
 #: src/gtkui/menus.cc:158 src/qtui/menus.cc:223
 msgid "_Play/Resume"
-msgstr "_Lire/Reprendre"
+msgstr "_Lire, reprendre"
 
 #: src/gtkui/menus.cc:159 src/qtui/menus.cc:225
 msgid "_Refresh"
@@ -1963,7 +1963,7 @@ msgstr "_Affichage"
 
 #: src/gtkui/menus.cc:211 src/qtui/menus.cc:303
 msgid "_Queue/Unqueue"
-msgstr "_Ajouter/retirer de la file d’attente"
+msgstr "_Ajouter, supprimer de la file d’attente"
 
 #: src/gtkui/menus.cc:213 src/qtui/menus.cc:306
 msgid "_Open Containing Folder"
@@ -2039,7 +2039,7 @@ msgstr "Rendre les en-têtes de colonne cliquables pour le tri"
 
 #: src/gtkui/settings.cc:56
 msgid "Use symbolic icons in toolbar"
-msgstr "Utiliser des icônes symboliques dans la barre d’outils"
+msgstr "Icônes symboliques dans la barre d’outils"
 
 #: src/gtkui/settings.cc:58 src/qtui/settings.cc:86
 msgid "Scroll on song change"
@@ -2200,7 +2200,7 @@ msgstr "Sauter au fichier"
 
 #: src/hotkey/gui.cc:82 src/qthotkey/gui.cc:77
 msgid "Toggle player window(s)"
-msgstr "Afficher/cacher les fenêtres du lecteur"
+msgstr "Afficher/cacher les fenêtres du lecteu, "
 
 #: src/hotkey/gui.cc:83 src/qthotkey/gui.cc:78
 msgid "Show On-Screen-Display"
@@ -2208,15 +2208,15 @@ msgstr "Activer l’affichage à l’écran"
 
 #: src/hotkey/gui.cc:84 src/qthotkey/gui.cc:79
 msgid "Toggle repeat"
-msgstr "Activer/désactiver la répétition"
+msgstr "Activer, désactiver la répétition"
 
 #: src/hotkey/gui.cc:85 src/qthotkey/gui.cc:80
 msgid "Toggle shuffle"
-msgstr "Activer/désactiver la lecture aléatoire"
+msgstr "Activer, désactiver la lecture aléatoire"
 
 #: src/hotkey/gui.cc:86 src/qthotkey/gui.cc:81
 msgid "Toggle stop after current"
-msgstr "Activer/désactiver l’arrêt après la pièce en cours"
+msgstr "Activer, désactiver l’arrêt après la pièce en cours"
 
 #: src/hotkey/gui.cc:87 src/qthotkey/gui.cc:82
 msgid "Raise player window(s)"
@@ -2313,8 +2313,8 @@ msgstr "Se connecter automatiquement aux ports de sortie"
 #: src/jack/jack-ng.cc:130
 msgid "Filter ports (regex, use any port if blank):"
 msgstr ""
-"Filtrer les ports (expression rationnelle, utiliser n’importe quel ports si "
-"laissé vide) :"
+"Filtrer les ports (expression rationnelle, n’importe quel ports si laissé "
+"vide) :"
 
 #: src/jack/jack-ng.cc:136
 msgid "Connect to physical ports only"
@@ -2528,7 +2528,7 @@ msgstr "<b>Sources</b>"
 
 #: src/lyrics-common/preferences.h:68
 msgid "Use embedded lyrics (from Lyrics tag)"
-msgstr "Utiliser des paroles intégrées (de la balise Lyrics)"
+msgstr "Paroles intégrées (de la balise Lyrics)"
 
 #: src/lyrics-common/preferences.h:70
 msgid "Fetch lyrics from internet:"
@@ -2737,7 +2737,7 @@ msgstr "Greffon MPG123"
 
 #: src/mpg123/mpg123.cc:82
 msgid "Use accurate length calculation (slow)"
-msgstr "Utiliser un calcul précis de durée (lent)"
+msgstr "Calcul précis de durée (lent)"
 
 #: src/mpg123/mpg123.cc:260
 msgid "Surround"
@@ -2892,11 +2892,11 @@ msgstr "Cubique"
 msgid "Windowed sinc"
 msgstr "Sinus cardinal fenêtrée"
 
-#: src/opus/opus.cc:39
+#: src/opus/opus.cc:42
 msgid "Opus Decoder"
 msgstr "Décodeur Opus"
 
-#: src/opus/opus.cc:371
+#: src/opus/opus.cc:404
 msgid ""
 "Opus Decoder Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange"
@@ -3262,7 +3262,7 @@ msgstr "Chercher dans la liste de lecture"
 
 #: src/qtui/settings.cc:79
 msgid "Use bold font for column headers"
-msgstr "Utiliser une police grasse pour les en-têtes de colonne"
+msgstr "Police grasse pour les en-têtes de colonne"
 
 #: src/resample/resample.cc:43
 msgid "Sample Rate Converter"
@@ -3278,7 +3278,7 @@ msgstr ""
 
 #: src/resample/resample.cc:187
 msgid "Skip/repeat samples"
-msgstr "Sauter/répéter les échantillons"
+msgstr "Sauter, répéter les échantillons"
 
 #: src/resample/resample.cc:188
 msgid "Linear interpolation"
@@ -3314,7 +3314,7 @@ msgstr "<b>Mappages des fréquences</b>"
 
 #: src/resample/resample.cc:203
 msgid "Use rate mappings"
-msgstr "Utiliser les mappages des fréquences"
+msgstr "Mappages des fréquences"
 
 #: src/resample/resample.cc:205
 msgid "8 kHz:"
@@ -3711,7 +3711,7 @@ msgstr "Activer « Toujours au premier plan »"
 
 #: src/skins/main.cc:889 src/skins-qt/main.cc:836
 msgid "File Info Box"
-msgstr "Boîte de renseignements sur le fichier"
+msgstr "Boîte de détails du fichier"
 
 #: src/skins/main.cc:893 src/skins-qt/main.cc:840
 msgid "Disable 'Double Size'"
@@ -3778,7 +3778,7 @@ msgstr "Quitter"
 #: src/skins/menus.cc:101 src/skins/menus.cc:235 src/skins-qt/menus.cc:92
 #: src/skins-qt/menus.cc:232
 msgid "Song Info ..."
-msgstr "Renseignements sur la pièce…"
+msgstr "Détails de la pièce…"
 
 #: src/skins/menus.cc:105 src/skins-qt/menus.cc:97
 msgid "Shuffle by Album"
@@ -3806,7 +3806,7 @@ msgstr "Sauter à la positon (temps)…"
 
 #: src/skins/menus.cc:125 src/skins-qt/menus.cc:119
 msgid "Play/Resume"
-msgstr "Lire/Reprendre"
+msgstr "Lire, reprendre"
 
 #: src/skins/menus.cc:127 src/skins-qt/menus.cc:121
 msgid "New Playlist"
@@ -4038,7 +4038,7 @@ msgstr "Coller à la fin"
 
 #: src/skins/menus.cc:243 src/skins-qt/menus.cc:240
 msgid "Queue/Unqueue"
-msgstr "Ajouter/retirer de la file d’attente"
+msgstr "Ajouter, supprimer de la file d’attente"
 
 #: src/skins/playlist-widget.cc:58 src/skins-qt/playlist-widget.cc:58
 #, c-format
@@ -4146,7 +4146,7 @@ msgstr "<b>Polices</b>"
 
 #: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Utiliser des polices bitmap (seul ASCII est pris en charge)"
+msgstr "Polices bitmap (seul ASCII est pris en charge)"
 
 #: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:199
 msgid "Scroll song title"
@@ -4166,7 +4166,7 @@ msgstr "Oscilloscope"
 
 #: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:208
 msgid "Voiceprint / VU meter"
-msgstr "Spectrogramme/vumètre"
+msgstr "Spectrogramme, vumètre"
 
 #: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:209
 msgid "Off"
@@ -4444,7 +4444,7 @@ msgstr ""
 
 #: src/song-info-qt/song-info.cc:30
 msgid "Song Info"
-msgstr "Renseignements sur la pièce"
+msgstr "Détails de la pièce"
 
 #: src/soxr/sox-resampler.cc:44
 msgid "SoX Resampler"
@@ -4506,7 +4506,7 @@ msgstr "Permettre une distorsion"
 
 #: src/soxr/sox-resampler.cc:202
 msgid "Use steep filter"
-msgstr "Utiliser un filtre abrupte"
+msgstr "Filtre abrupte"
 
 #: src/speedpitch/speed-pitch.cc:54
 msgid "Speed and Pitch"
@@ -4811,11 +4811,11 @@ msgstr ""
 
 #: src/ui-common/dialogs-qt.cc:52
 msgid "Working ..."
-msgstr "Traitement en cours…"
+msgstr "Traitement…"
 
 #: src/ui-common/dialogs-qt.cc:73
 msgid "Information"
-msgstr "Renseignements"
+msgstr "Détails"
 
 #: src/ui-common/menu-ops-gtk.cc:132 src/ui-common/menu-ops-qt.cc:113
 #, c-format

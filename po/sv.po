@@ -7,8 +7,9 @@
 # Bo Serrander <bserrander@gmail.com>, 2013,2016
 # cb445fb3dfd1fe3c2b9f58ac5638f478, 2015-2016
 # Henrik Mattsson-Mårn <h@reglage.net>, 2015
-# Jonatan Nyberg, 2021-2022,2025
-# Jonatan Nyberg, 2018-2021
+# Daniel, 2025
+# Daniel, 2021-2022,2025
+# Daniel, 2018-2021
 # efef6ec5b435a041fce803c7f8af77d2_2341d43, 2017-2018
 # Josef Gottlander <josef.gottlander@gmail.com>, 2020
 # Kristoffer Grundström <lovaren@gmail.com>, 2016
@@ -20,9 +21,9 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2025-07-16 00:23+0200\n"
+"POT-Creation-Date: 2025-08-13 01:16+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
-"Last-Translator: Luna Jernberg <droidbittin@gmail.com>, 2024-2025\n"
+"Last-Translator: Daniel, 2025\n"
 "Language-Team: Swedish (http://app.transifex.com/audacious/audacious/"
 "language/sv/)\n"
 "Language: sv\n"
@@ -2867,11 +2868,11 @@ msgstr "Kubisk"
 msgid "Windowed sinc"
 msgstr "Fönsterfönster"
 
-#: src/opus/opus.cc:39
+#: src/opus/opus.cc:42
 msgid "Opus Decoder"
 msgstr "Opus-avkodare"
 
-#: src/opus/opus.cc:371
+#: src/opus/opus.cc:404
 msgid ""
 "Opus Decoder Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange"
@@ -3335,15 +3336,15 @@ msgstr ""
 #: src/scrobbler2/config_window.cc:41
 #, c-format
 msgid "Permission granted.  Scrobbling for user %s."
-msgstr "Tillstånd beviljat. Skrobbling för användare %s."
+msgstr "Tillstånd beviljad.  Skrobbling för användare %s."
 
 #: src/scrobbler2/config_window.cc:44
 msgid ""
 "Permission denied.  Open the following URL in a browser, allow Audacious "
 "access to your account, and then click 'Check Permission' again:"
 msgstr ""
-"Åtkomst nekad. Öppna följande URL:n i en webbläsare, tillåt Audacious "
-"tillgång till ditt konto och klicka sedan på \"Kontrollera tillåtelse\" igen:"
+"Tillstånd nekad. Öppna följande URL i en webbläsare, ge Audacious åtkomst "
+"till ditt konto och klicka sedan på \"Kontrollera tillstånd\" igen:"
 
 #: src/scrobbler2/config_window.cc:53
 msgid "There was a problem contacting Last.fm."
@@ -3351,11 +3352,11 @@ msgstr "Det var ett problem med att kontakta Last.fm."
 
 #: src/scrobbler2/config_window.cc:92
 msgid "Check Permission"
-msgstr "Kontrollera behörighet"
+msgstr "Kontrollera tillstånd"
 
 #: src/scrobbler2/config_window.cc:93
 msgid "Revoke Permission"
-msgstr "Återkalla behörighet"
+msgstr "Återkalla tillstånd"
 
 #: src/scrobbler2/config_window.cc:97
 msgid "You need to allow Audacious to scrobble tracks to your Last.fm account."

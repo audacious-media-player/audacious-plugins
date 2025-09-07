@@ -9,6 +9,7 @@
 # yinsigan <ganweiliang886@gmail.com>, 2012
 # Mingcong Bai <jeffbai@aosc.xyz>, 2014
 # Mingcong Bai <jeffbai@aosc.xyz>, 2014
+# Li Yang, 2025
 # Luke <runningwaterpro@gmail.com>, 2012
 # Michael Jay Tong <michaeljayt@gmail.com>, 2013
 # Michael Jay Tong <michaeljayt@gmail.com>, 2013-2014
@@ -31,9 +32,9 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2025-07-16 00:23+0200\n"
+"POT-Creation-Date: 2025-08-13 01:16+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
-"Last-Translator: 玉堂白鹤 <yjwork@qq.com>, 2021,2025\n"
+"Last-Translator: Li Yang, 2025\n"
 "Language-Team: Chinese (China) (http://app.transifex.com/audacious/audacious/"
 "language/zh_CN/)\n"
 "Language: zh_CN\n"
@@ -834,7 +835,7 @@ msgstr "播放 CD (_Y)"
 
 #: src/cd-menu-items/cd-menu-items.cc:45
 msgid "_Add CD"
-msgstr "_添加 CD"
+msgstr "添加 CD (_A)"
 
 #: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
@@ -1805,7 +1806,7 @@ msgstr "根据评论(_O)"
 #: src/gtkui/menus.cc:133 src/gtkui/menus.cc:151 src/qtui/menus.cc:197
 #: src/qtui/menus.cc:215
 msgid "By D_isc Number"
-msgstr ""
+msgstr "按唱片编号(_I)"
 
 #: src/gtkui/menus.cc:135 src/gtkui/menus.cc:153 src/qtui/menus.cc:199
 #: src/qtui/menus.cc:217
@@ -1885,7 +1886,7 @@ msgstr "均衡器... (_E)"
 
 #: src/gtkui/menus.cc:182 src/qtui/menus.cc:258
 msgid "E_ffects ..."
-msgstr "音效 ... (_E)"
+msgstr "音效... (_F)"
 
 #: src/gtkui/menus.cc:184
 msgid "_Record Stream"
@@ -1934,7 +1935,7 @@ msgstr "回放(_P)"
 
 #: src/gtkui/menus.cc:203 src/qtui/menus.cc:289
 msgid "P_laylist"
-msgstr "播放列表(_l)"
+msgstr "播放列表(_L)"
 
 #: src/gtkui/menus.cc:204 src/gtkui/menus.cc:222 src/qtui/menus.cc:290
 #: src/qtui/menus.cc:319
@@ -2023,11 +2024,11 @@ msgstr "显示列头"
 
 #: src/gtkui/settings.cc:53 src/qtui/settings.cc:82
 msgid "Make column headers clickable for sorting"
-msgstr ""
+msgstr "点击列标题可进行排序"
 
 #: src/gtkui/settings.cc:56
 msgid "Use symbolic icons in toolbar"
-msgstr ""
+msgstr "在工具栏中使用符号图标"
 
 #: src/gtkui/settings.cc:58 src/qtui/settings.cc:86
 msgid "Scroll on song change"
@@ -2493,15 +2494,15 @@ msgstr "用字符将标题分割为艺术家名称和标题"
 
 #: src/lyrics-common/preferences.h:67
 msgid "<b>Sources</b>"
-msgstr ""
+msgstr "<b>来源</b>"
 
 #: src/lyrics-common/preferences.h:68
 msgid "Use embedded lyrics (from Lyrics tag)"
-msgstr ""
+msgstr "使用嵌入歌词（来自歌词标签）"
 
 #: src/lyrics-common/preferences.h:70
 msgid "Fetch lyrics from internet:"
-msgstr ""
+msgstr "从网络获取歌词："
 
 #: src/lyrics-common/preferences.h:73
 msgid "Store fetched lyrics in local cache"
@@ -2726,6 +2727,11 @@ msgid ""
 "media controls in desktop environments, Bluetooth headsets and tools like "
 "\"playerctl\"."
 msgstr ""
+"Audacious 的 MPRIS 插件 \n"
+"Copyright 2011-2012 John Lindgren\n"
+"\n"
+"此插件实现了 MPRIS D-Bus 接口，它提供了查询音轨信息和基本播放控制的机制，这对"
+"于桌面环境、蓝牙耳机以及“playerctl”等工具中的媒体控制而言必不可少。"
 
 #: src/neon/neon.cc:102
 msgid "Neon HTTP/HTTPS Plugin"
@@ -2835,7 +2841,7 @@ msgstr "立体声分离："
 
 #: src/openmpt/mpt.cc:157
 msgid "% (0=mono, 100=default, 200=full)"
-msgstr ""
+msgstr "% (0=单声道, 100=默认, 200=完全)"
 
 #: src/openmpt/mpt.cc:160
 msgid "Interpolation:"
@@ -2853,15 +2859,17 @@ msgstr "立方函数"
 msgid "Windowed sinc"
 msgstr "Sinc 窗函数滤波"
 
-#: src/opus/opus.cc:39
+#: src/opus/opus.cc:42
 msgid "Opus Decoder"
-msgstr ""
+msgstr "Opus 解码器"
 
-#: src/opus/opus.cc:371
+#: src/opus/opus.cc:404
 msgid ""
 "Opus Decoder Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange"
 msgstr ""
+"Audacious 的 Opus 解码器插件\n"
+"Copyright 2022 Thomas Lange"
 
 #: src/oss4/oss.h:70
 msgid "OSS4 Output"
@@ -2921,6 +2929,11 @@ msgid ""
 "Based on the PipeWire Output Plugin for Qmmp\n"
 "Copyright 2021 Ilya Kotov"
 msgstr ""
+"Audacious 的 PipeWire 输出插件 \n"
+"Copyright 2022 Thomas Lange\n"
+"\n"
+"基于 Qmmp 的 PipeWire 输出插件\n"
+"Copyright 2021 Ilya Kotov"
 
 #: src/pipewire/pipewire.cc:456 src/sdlout/sdlout.cc:112 src/skins/menus.cc:88
 #: src/skins-qt/menus.cc:79
@@ -2951,23 +2964,39 @@ msgid ""
 "a single album are played in a row, a single album entry\n"
 "is stored in history. Album names are displayed in the list."
 msgstr ""
+"播放历史插件\n"
+"\n"
+"Copyright 2023-2024 Igor Kushnir <igorkuo@gmail.com>\n"
+"\n"
+"此插件跟踪并提供对播放历史的访问。\n"
+"历史记录条目仅存储在内存中，在 Audacious 退出时丢失。当禁用插件时，将不跟踪任"
+"何播放历史。\n"
+"历史记录条目仅添加，从不自动删除。用户可以通过按下删除键删除选定的条目。\n"
+"要清除条目，请重新启动 Audacious 或通过关闭播放历史视图来禁用该插件。\n"
+"\n"
+"支持两种历史记录条目粒度（模式）。\n"
+"用户可以在插件设置中选择一种模式。\n"
+"“歌曲”模式是默认模式。 播放的每首歌曲都存储在历史记录中。 歌曲标题显示在列表"
+"中。\n"
+"当选择“专辑”模式并且连续播放单个专辑中的多首歌曲时，单个专辑条目将存储在历史"
+"记录中。 专辑名称显示在列表中。"
 
 #: src/playback-history-qt/playback-history.cc:77
 msgid "Playback History"
-msgstr ""
+msgstr "播放历史"
 
 #: src/playback-history-qt/playback-history.cc:528
 #, c-format
 msgid "<b>%s:</b> %s<br><b>Playlist:</b> %s<br><b>Entry Number:</b> %d"
-msgstr ""
+msgstr "<b>%s:</b> %s<br><b>播放列表:</b> %s<br><b>条目编号:</b> %d"
 
 #: src/playback-history-qt/playback-history.cc:834
 msgid "<b>History Item Granularity</b>"
-msgstr ""
+msgstr "<b>历史条目的粒度</b>"
 
 #: src/playback-history-qt/playback-history.cc:835
 msgid "Song"
-msgstr ""
+msgstr "歌曲"
 
 #: src/playlist-manager/playlist-manager.cc:38
 #: src/playlist-manager-qt/playlist-manager-qt.cc:42
@@ -3133,7 +3162,7 @@ msgstr "打开文件夹 ... (&O)"
 
 #: src/qtui/menus.cc:119
 msgid "_Add Folder ..."
-msgstr "添加文件夹 ... (Add)"
+msgstr "添加文件夹 ... (_A)"
 
 #: src/qtui/menus.cc:132
 msgid "_Log Inspector ..."
@@ -3141,7 +3170,7 @@ msgstr "日志监视(_L) ..."
 
 #: src/qtui/menus.cc:169
 msgid "Playback Histor_y ..."
-msgstr ""
+msgstr "播放历史...(_Y)"
 
 #: src/qtui/menus.cc:227
 msgid "_Find ..."
@@ -3169,11 +3198,11 @@ msgstr "T#"
 
 #: src/qtui/playlist_model.cc:194
 msgid "C#"
-msgstr ""
+msgstr "C#"
 
 #: src/qtui/playlist_model.cc:196
 msgid "D#"
-msgstr ""
+msgstr "D#"
 
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
@@ -3341,6 +3370,11 @@ msgid ""
 "Thanks to John Lindgren for giving me a hand at the beginning of this "
 "project."
 msgstr ""
+"Audacious 播放器的 Scrobbler 插件 2.0，由 Pitxyoki 开发\n"
+"\n"
+"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"感谢 John Lindgren 在项目初期给予我的帮助。 "
 
 #: src/sdlout/sdlout.cc:46
 msgid "SDL Output"
@@ -3375,7 +3409,7 @@ msgstr "在"
 
 #: src/search-tool-qt/search-model.h:47 src/search-tool/search-model.h:45
 msgid "by"
-msgstr "-"
+msgstr "by"
 
 #: src/search-tool-qt/search-tool-qt.cc:165 src/search-tool/search-tool.cc:74
 msgid "Number of results to show:"
@@ -3621,11 +3655,11 @@ msgstr "文件信息"
 
 #: src/skins/main.cc:893 src/skins-qt/main.cc:840
 msgid "Disable 'Double Size'"
-msgstr ""
+msgstr "禁用双倍大小"
 
 #: src/skins/main.cc:895 src/skins-qt/main.cc:842
 msgid "Enable 'Double Size'"
-msgstr ""
+msgstr "启用双倍大小"
 
 #: src/skins/main.cc:898 src/skins-qt/main.cc:845
 msgid "Visualizations"
@@ -3904,7 +3938,7 @@ msgstr "根据评论"
 #: src/skins/menus.cc:207 src/skins/menus.cc:223 src/skins-qt/menus.cc:204
 #: src/skins-qt/menus.cc:220
 msgid "By Disc Number"
-msgstr ""
+msgstr "按唱片编号"
 
 #: src/skins/menus.cc:227 src/skins-qt/menus.cc:224
 msgid "Randomize List"
@@ -3965,7 +3999,7 @@ msgstr "打开文件夹 ..."
 
 #: src/skins-qt/menus.cc:93
 msgid "Playback History ..."
-msgstr ""
+msgstr "播放历史..."
 
 #: src/skins-qt/menus.cc:160
 msgid "Add Folder ..."
@@ -4280,7 +4314,7 @@ msgstr "开始播放新歌曲时运行命令："
 
 #: src/songchange/song_change.cc:261
 msgid "Command to run when stopping a song:"
-msgstr ""
+msgstr "歌曲停止时运行命令："
 
 #: src/songchange/song_change.cc:264
 msgid "Command to run at the end of a song:"
@@ -4300,6 +4334,8 @@ msgid ""
 "running the command.\n"
 "Not all are useful though for the song-stopped or end-of-playlist command."
 msgstr ""
+"您可以使用以下格式代码，这些代码将在运行命令之前被替换。\n"
+"但并非所有代码都对停止歌曲或结束播放列表的命令生效。"
 
 #: src/songchange/song_change.cc:276
 msgid ""
@@ -4332,6 +4368,8 @@ msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.\n"
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
+"传递给命令行的参数应该包含在引号中。\n"
+"未加引号的参数可能会导致意外的结果。"
 
 #: src/song-info-qt/song-info.cc:30
 msgid "Song Info"
@@ -4373,7 +4411,7 @@ msgstr "非常高"
 
 #: src/soxr/sox-resampler.cc:183
 msgid "Ultra High"
-msgstr "非常高"
+msgstr "极高"
 
 #: src/soxr/sox-resampler.cc:187
 msgid "Minimum"
@@ -4457,15 +4495,15 @@ msgstr "改变歌曲"
 
 #: src/statusicon-qt/statusicon.cc:102 src/statusicon/statusicon.cc:405
 msgid "<b>Middle Click Action</b>"
-msgstr ""
+msgstr "<b>中键点击动作</b>"
 
 #: src/statusicon-qt/statusicon.cc:103 src/statusicon/statusicon.cc:406
 msgid "Pause/Resume playback"
-msgstr ""
+msgstr "暂停/继续播放"
 
 #: src/statusicon-qt/statusicon.cc:106 src/statusicon/statusicon.cc:409
 msgid "Play next song"
-msgstr ""
+msgstr "播放下一首歌曲"
 
 #: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:412
 msgid "<b>Other Settings</b>"

@@ -5,6 +5,7 @@
 # Translators:
 # Alexandro Casanova <shorterfire@gmail.com>, 2012
 # Bruno Martins <bmomartins@gmail.com>, 2011
+# Bruno Miguel, 2025
 # Miguel Diaz Gonçalves, 2022-2023
 # Pitxyoki <Pitxyoki@gmail.com>, 2013
 # Pitxyoki <Pitxyoki@gmail.com>, 2013
@@ -15,9 +16,9 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2025-07-16 00:23+0200\n"
+"POT-Creation-Date: 2025-08-13 01:16+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
-"Last-Translator: Miguel Diaz Gonçalves, 2022-2023\n"
+"Last-Translator: Bruno Miguel, 2025\n"
 "Language-Team: Portuguese (Portugal) (http://app.transifex.com/audacious/"
 "audacious/language/pt_PT/)\n"
 "Language: pt_PT\n"
@@ -557,11 +558,11 @@ msgstr "Listas de reprodução Audacious (audpl)"
 
 #: src/background_music/background_music.cc:24
 msgid "<b>Background music</b>"
-msgstr ""
+msgstr "<b>Música de fundo</b>"
 
 #: src/background_music/background_music.cc:25
 msgid "Target level:"
-msgstr ""
+msgstr "Nível alvo:"
 
 #: src/background_music/background_music.cc:28
 #: src/background_music/background_music.cc:33
@@ -571,7 +572,7 @@ msgstr "dB"
 
 #: src/background_music/background_music.cc:29
 msgid "Maximum amplification:"
-msgstr ""
+msgstr "Amplificação máxima:"
 
 #: src/background_music/background_music.cc:34 src/mpg123/mpg123.cc:81
 msgid "<b>Advanced</b>"
@@ -579,11 +580,11 @@ msgstr "<b>Avançado</b>"
 
 #: src/background_music/background_music.cc:36
 msgid "Slow detection weight:"
-msgstr ""
+msgstr "Peso da deteção lenta:"
 
 #: src/background_music/background_music.cc:39
 msgid "<b>Hint</b>"
-msgstr ""
+msgstr "<b>Dica</b>"
 
 #: src/background_music/background_music.cc:41
 msgid ""
@@ -594,6 +595,12 @@ msgid ""
 "where soft passages get \"pulled up\" more quickly,\n"
 "a value of two makes the sound feel less compressed."
 msgstr ""
+"O peso da deteção lenta é o peso relativo de uma\n"
+"deteção média de longo prazo quando comparado\n"
+"com a deteção de volume real e mais rápida. Um valor de\n"
+"zero oferece um som semelhante a um rádio, onde\n"
+"passagens suaves são \"puxadas\" mais rapidamente;\n"
+"um valor de dois faz o som soar menos comprimido."
 
 #: src/background_music/background_music.cc:52
 msgid ""
@@ -606,10 +613,17 @@ msgid ""
 "sound natural without audible peaks, yet without lowering the volume before "
 "a peak in advance."
 msgstr ""
+"Background Music Plugin for Audacious\n"
+"Copyright 2023;2024 Michel Fleur\n"
+"\n"
+"Controla o volume para tornar o som igualmente alto dentro e entre faixas.\n"
+"Usa medições precisas de volume e tenta fazer com que as mudanças soem "
+"naturais e sem picos audíveis, mas sem diminuir o volume antes de um pico "
+"com antecedência."
 
 #: src/background_music/background_music.cc:61
 msgid "Background Music"
-msgstr ""
+msgstr "Música de Fundo"
 
 #: src/bitcrusher/bitcrusher.cc:33
 msgid "<b>Bitcrusher</b>"
@@ -960,19 +974,19 @@ msgstr "Ao procurar ou mudar manualmente a faixa"
 
 #: src/crossfade/crossfade.cc:64
 msgid "No fade in"
-msgstr ""
+msgstr "Sem fade in"
 
 #: src/crossfade/crossfade.cc:66
 msgid "Use S-curve fade"
-msgstr ""
+msgstr "Usar fade de curva S"
 
 #: src/crossfade/crossfade.cc:68
 msgid "S-curve steepness:"
-msgstr ""
+msgstr "Inclinação da curva S:"
 
 #: src/crossfade/crossfade.cc:70
 msgid "(higher is steeper)"
-msgstr ""
+msgstr "(mais alto é mais íngreme)"
 
 #: src/crossfade/crossfade.cc:72
 msgid "<b>Tip</b>"
@@ -1566,7 +1580,7 @@ msgstr "Número de catálogo"
 
 #: src/gtkui/columns.cc:53 src/qtui/playlist_model.cc:37
 msgid "Disc"
-msgstr ""
+msgstr "Disco"
 
 #: src/gtkui/columns.cc:325
 msgid "Available columns"
@@ -1787,7 +1801,7 @@ msgstr "Por c_omentário"
 #: src/gtkui/menus.cc:133 src/gtkui/menus.cc:151 src/qtui/menus.cc:197
 #: src/qtui/menus.cc:215
 msgid "By D_isc Number"
-msgstr ""
+msgstr "Por número de d_isco"
 
 #: src/gtkui/menus.cc:135 src/gtkui/menus.cc:153 src/qtui/menus.cc:199
 #: src/qtui/menus.cc:217
@@ -2005,7 +2019,7 @@ msgstr "Mostrar título das colunas"
 
 #: src/gtkui/settings.cc:53 src/qtui/settings.cc:82
 msgid "Make column headers clickable for sorting"
-msgstr ""
+msgstr "Permite clicar nos cabeçalhos das colunas para organizar a informação"
 
 #: src/gtkui/settings.cc:56
 msgid "Use symbolic icons in toolbar"
@@ -2529,7 +2543,7 @@ msgstr "Letras"
 
 #: src/lyrics-gtk/lyrics-gtk.cc:190 src/lyrics-qt/lyrics-qt.cc:172
 msgid "Edit Lyrics ..."
-msgstr ""
+msgstr "Editar Letras..."
 
 #: src/lyrics-gtk/lyrics-gtk.cc:196 src/lyrics-qt/lyrics-qt.cc:179
 msgid "Save Locally"
@@ -2722,6 +2736,13 @@ msgid ""
 "media controls in desktop environments, Bluetooth headsets and tools like "
 "\"playerctl\"."
 msgstr ""
+"MPRIS Plugin for Audacious\n"
+"Copyright 2011-2012 John Lindgren\n"
+"\n"
+"Este suplemento implementa o interface MPRIS D-Bus. Ele disponibiliza um "
+"mecanismo para consultar informação de uma faixa e controlo básico de "
+"reprodução. É necessário para controlos de media em ambientes gráficos, "
+"auscultadores Bluetooth e ferramentas como \"playerctl\"."
 
 #: src/neon/neon.cc:102
 msgid "Neon HTTP/HTTPS Plugin"
@@ -2831,7 +2852,7 @@ msgstr "Separação estéreo:"
 
 #: src/openmpt/mpt.cc:157
 msgid "% (0=mono, 100=default, 200=full)"
-msgstr ""
+msgstr "% (0=mono, 100=padrão, 200=completo)"
 
 #: src/openmpt/mpt.cc:160
 msgid "Interpolation:"
@@ -2849,11 +2870,11 @@ msgstr "Cúbica"
 msgid "Windowed sinc"
 msgstr "Sinc em janela"
 
-#: src/opus/opus.cc:39
+#: src/opus/opus.cc:42
 msgid "Opus Decoder"
 msgstr "Descodificador Opus"
 
-#: src/opus/opus.cc:371
+#: src/opus/opus.cc:404
 msgid ""
 "Opus Decoder Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange"
@@ -2954,23 +2975,47 @@ msgid ""
 "a single album are played in a row, a single album entry\n"
 "is stored in history. Album names are displayed in the list."
 msgstr ""
+"Playback History Plugin\n"
+"\n"
+"Copyright 2023-2024 Igor Kushnir <igorkuo@gmail.com>\n"
+"\n"
+"Este suplemento rastreia e fornece acesso ao histórico de reprodução.\n"
+"\n"
+"As entradas do histórico são apenas armazenadas na memória\n"
+"e são perdidas ao sair do Audacious. Quando o plugin é desativado,\n"
+"o histórico de reprodução não é rastreado.\n"
+"As entradas do histórico são apenas adicionadas, nunca removidas\n"
+"automaticamente. O utilizador pode remover as entradas selecionadas\n"
+"premindo a tecla Delete.\n"
+"Reinicie o Audacious ou desative o plugin fechando a vista do Histórico\n"
+"de Reprodução para limpar as entradas.\n"
+"\n"
+"São suportadas duas granularidades (modos) de itens do histórico.\n"
+"O utilizador pode selecionar um modo nas definições do plugin.\n"
+"O modo Música é o predefinido. Cada música reproduzida é\n"
+"armazenada no histórico.\n"
+"Os títulos das músicas são apresentados na lista. Quando o modo\n"
+"Álbum é selecionado e várias músicas de um único álbum são\n"
+"reproduzidas em sequência, uma única entrada do álbum é guardada\n"
+"no histórico.\n"
+"Os nomes dos álbuns são apresentados na lista."
 
 #: src/playback-history-qt/playback-history.cc:77
 msgid "Playback History"
-msgstr ""
+msgstr "Histórico de Reprodução"
 
 #: src/playback-history-qt/playback-history.cc:528
 #, c-format
 msgid "<b>%s:</b> %s<br><b>Playlist:</b> %s<br><b>Entry Number:</b> %d"
-msgstr ""
+msgstr "<b>%s</b>%s<br><b>Lista</b>%s<br><b>Entrada Número:</b>%d"
 
 #: src/playback-history-qt/playback-history.cc:834
 msgid "<b>History Item Granularity</b>"
-msgstr ""
+msgstr "<b>Granularidade de Itens do Histórico</b>"
 
 #: src/playback-history-qt/playback-history.cc:835
 msgid "Song"
-msgstr ""
+msgstr "Música"
 
 #: src/playlist-manager/playlist-manager.cc:38
 #: src/playlist-manager-qt/playlist-manager-qt.cc:42
@@ -3147,7 +3192,7 @@ msgstr "Insp_etor de registos..."
 
 #: src/qtui/menus.cc:169
 msgid "Playback Histor_y ..."
-msgstr ""
+msgstr "Histórico de _Reprodução"
 
 #: src/qtui/menus.cc:227
 msgid "_Find ..."
@@ -3179,7 +3224,7 @@ msgstr "C#"
 
 #: src/qtui/playlist_model.cc:196
 msgid "D#"
-msgstr ""
+msgstr "D#"
 
 #: src/qtui/qtui.cc:40
 msgid "Qt Interface"
@@ -3350,6 +3395,11 @@ msgid ""
 "Thanks to John Lindgren for giving me a hand at the beginning of this "
 "project."
 msgstr ""
+"Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
+"\n"
+"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"Agradecimentos a John Lindgren pela ajuda no início deste projeto."
 
 #: src/sdlout/sdlout.cc:46
 msgid "SDL Output"
@@ -3638,11 +3688,11 @@ msgstr "Caixa de informações de ficheiro"
 
 #: src/skins/main.cc:893 src/skins-qt/main.cc:840
 msgid "Disable 'Double Size'"
-msgstr ""
+msgstr "Desativar 'Tamanho Duplo'"
 
 #: src/skins/main.cc:895 src/skins-qt/main.cc:842
 msgid "Enable 'Double Size'"
-msgstr ""
+msgstr "Ativar 'Tamanho Duplo'"
 
 #: src/skins/main.cc:898 src/skins-qt/main.cc:845
 msgid "Visualizations"
@@ -3921,7 +3971,7 @@ msgstr "Por comentário"
 #: src/skins/menus.cc:207 src/skins/menus.cc:223 src/skins-qt/menus.cc:204
 #: src/skins-qt/menus.cc:220
 msgid "By Disc Number"
-msgstr ""
+msgstr "Por Número de Disco"
 
 #: src/skins/menus.cc:227 src/skins-qt/menus.cc:224
 msgid "Randomize List"
@@ -3982,7 +4032,7 @@ msgstr "Abrir pasta..."
 
 #: src/skins-qt/menus.cc:93
 msgid "Playback History ..."
-msgstr ""
+msgstr "Histórico de Reprodução"
 
 #: src/skins-qt/menus.cc:160
 msgid "Add Folder ..."
@@ -4300,7 +4350,7 @@ msgstr "Comando a executar ao inicar uma nova faixa:"
 
 #: src/songchange/song_change.cc:261
 msgid "Command to run when stopping a song:"
-msgstr ""
+msgstr "Comando a correr ao parar uma música:"
 
 #: src/songchange/song_change.cc:264
 msgid "Command to run at the end of a song:"
@@ -4320,6 +4370,9 @@ msgid ""
 "running the command.\n"
 "Not all are useful though for the song-stopped or end-of-playlist command."
 msgstr ""
+"Pode usar os seguintes códigos de formatação, que serão substituídos antes "
+"de executar o comando.\n"
+"Nem todos são úteis para os comandos song-stopped ou end-of-playlist."
 
 #: src/songchange/song_change.cc:276
 msgid ""
@@ -4352,6 +4405,8 @@ msgid ""
 "Parameters passed to the shell should be enclosed in quotation marks.\n"
 "Unquoted parameters may lead to unexpected results."
 msgstr ""
+"Parâmetros passados para a shell devem ser colocados entre aspas.\n"
+"Parâmetros sem aspas podem levar a resultados inesperados."
 
 #: src/song-info-qt/song-info.cc:30
 msgid "Song Info"
@@ -4477,15 +4532,15 @@ msgstr "Alterar faixa reproduzida"
 
 #: src/statusicon-qt/statusicon.cc:102 src/statusicon/statusicon.cc:405
 msgid "<b>Middle Click Action</b>"
-msgstr ""
+msgstr "<b>Ação de Clique na Roda do Rato</b>"
 
 #: src/statusicon-qt/statusicon.cc:103 src/statusicon/statusicon.cc:406
 msgid "Pause/Resume playback"
-msgstr ""
+msgstr "Pausar/Retomar reprodução"
 
 #: src/statusicon-qt/statusicon.cc:106 src/statusicon/statusicon.cc:409
 msgid "Play next song"
-msgstr ""
+msgstr "Ir para a faixa seguinte"
 
 #: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:412
 msgid "<b>Other Settings</b>"
