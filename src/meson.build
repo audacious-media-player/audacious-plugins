@@ -81,6 +81,7 @@ endif
 # Qt-specific plugins
 if conf.has('USE_QT')
   subdir('albumart-qt')
+  subdir('filesystem-qt')
   subdir('blur_scope-qt')
   subdir('lyrics-qt')
   subdir('playback-history-qt')

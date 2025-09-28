@@ -1,6 +1,6 @@
 ﻿/*
  * filesystem-qt.cc
- * Produced 2025 Hans Dijkema
+ * Copyright 2025 Hans Dijkema
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -96,8 +96,8 @@ public:
     static const PluginPreferences prefs;
 
     static constexpr PluginInfo info = {N_("Filesystem Manager"), PACKAGE,
-                                        about, // about
-                                        &prefs, // prefs
+                                        about,
+                                        &prefs,
                                         PluginQtOnly};
 
     constexpr FilesystemQt() : GeneralPlugin(info, true)
@@ -120,16 +120,13 @@ const char FilesystemQt::about[] =
 const static WidgetVFileEntry dir_entry = { FileSelectMode::Folder };
 
 const PreferencesWidget FilesystemQt::widgets[] = {
-    WidgetLabel(N_("Standard options")),
-    WidgetLabel("--------------------------------------------------------------------------------------------------------------------------------------------------"),
-    WidgetFileEntry (N_("Music folder:"), WidgetString(CFG_ID, CFG_MUSIC_LIBRARY, callback_folder), dir_entry),
+    WidgetLabel(N_("<b>Standard options</b>")),
+    WidgetFileEntry(N_("Music folder:"), WidgetString(CFG_ID, CFG_MUSIC_LIBRARY, callback_folder), dir_entry),
     WidgetSpin(N_("Maximum files to add to playlist:"), WidgetInt(CFG_ID, CFG_MAX_FILES, callback_max_files_to_add), { 10, 500, 1, N_("files") }),
-    WidgetLabel(""),
-    WidgetLabel(N_("Advanced options")),
-    WidgetLabel("--------------------------------------------------------------------------------------------------------------------------------------------------"),
-    WidgetEntry(N_("Music file extensions to browse                       :"), WidgetString(CFG_ID, CFG_MUSIC_EXTS, callback_exts)),
-    WidgetEntry(N_("Booklet files to recognize                                  :"), WidgetString(CFG_ID, CFG_BOOKLET_FILE, callback_booklet)),
-    WidgetEntry(N_("Cover art files (e.g. folder.jpg) to recognize :"), WidgetString(CFG_ID, CFG_COVER_FILES, callback_covers))
+    WidgetLabel(N_("<b>Advanced options</b>")),
+    WidgetEntry(N_("Music file extensions to browse:"), WidgetString(CFG_ID, CFG_MUSIC_EXTS, callback_exts)),
+    WidgetEntry(N_("Booklet files to recognize:"), WidgetString(CFG_ID, CFG_BOOKLET_FILE, callback_booklet)),
+    WidgetEntry(N_("Cover art files (e.g. folder.jpg) to recognize:"), WidgetString(CFG_ID, CFG_COVER_FILES, callback_covers))
 };
 
 const PluginPreferences FilesystemQt::prefs = {{widgets}};
@@ -143,7 +140,7 @@ QWidget *pluginWidget()
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Internal datastructure to hold directories and files. 
+// Internal datastructure to hold directories and files.
 /////////////////////////////////////////////////////////////////////////////////////////
 
 class FilesystemTree
@@ -248,13 +245,13 @@ class FilesystemTree
                 d.setFilter(d_filters);
 
                 QStringList l_e = d.entryList(filters, d_filters, QDir::SortFlag::IgnoreCase);
-		QStringList l;
+                QStringList l;
                 int i;
-		for(i = 0; i < l_e.size(); i++) {
-                   if (l_e[i] != "lost+found") { 
-                      l.append(l_e[i]);
-		   }
-		}
+                for(i = 0; i < l_e.size(); i++) {
+                    if (l_e[i] != "lost+found") {
+                        l.append(l_e[i]);
+                    }
+                }
 
                 QString p = path();
                 for(i = 0; i < l.size(); i++) {
@@ -276,7 +273,6 @@ class FilesystemTree
 QString FilesystemTree::_sep;
 QString FilesystemTree::_exts;
 
-
 /////////////////////////////////////////////////////////////////////////////////////////
 // FilesystemModel interfaces with the QTreeView framework of Qt
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -288,7 +284,7 @@ private:
     QString          _valid_exts;
     FilesystemTree  *_tree;
     bool             _in_config;
-	
+
 public:
     enum
     {
@@ -303,7 +299,7 @@ public:
         _in_config = false;
         _tree = new FilesystemTree(FilesystemTree::DIR, _base_dir, _valid_exts, -1, nullptr);
     }
-    
+
     ~FilesystemModel()
     {
         delete _tree;
@@ -633,8 +629,8 @@ void FilesystemView::insertEntries(Playlist &list, bool do_play)
         assembleFiles(current_selected[i], files, count, max_files_to_add);
     }
 
-   // Add the files to the current playlist or replace the contents of the playlist.
-   // if do_play == true, the first added entry will also be played.
+    // Add the files to the current playlist or replace the contents of the playlist.
+    // if do_play == true, the first added entry will also be played.
 
     for(i = 0; i < files.size(); i++) {
         QUrl u;
@@ -767,7 +763,7 @@ FilesystemView::FilesystemView()
     LOGDBG("View Init");
 
     setAllColumnsShowFocus(true);
-    //setFrameShape(QFrame::NoFrame);
+    setFrameShape(QFrame::NoFrame);
 
     horizontalScrollBar()->setEnabled(true);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -863,7 +859,6 @@ int FilesystemQt::take_message(const char * code, const void *p, int n)
 // Preferences
 /////////////////////////////////////////////////////////////////////////////////////////
 
-
 static void callback_booklet()
 {
     const char *c_booklet = aud_get_str(CFG_ID, CFG_BOOKLET_FILE);
@@ -896,7 +891,6 @@ static void callback_max_files_to_add()
     FilesystemView *view = getMyWidget();
     view->setMaxFilesToAdd(max_files);
 }
-
 
 static QString correctExts(QString exts, bool &correct)
 {
@@ -957,4 +951,3 @@ static void callback_exts()
         view->setMusicExts(real_exts);
     }
 }
-
