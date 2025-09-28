@@ -33,8 +33,6 @@
 
 /* this is needed to retrieve information */
 #include "i_midi.h"
-/* icon from gnome-mime-audio-midi.png of the GNOME ICON SET */
-#include "amidi-plug.midiicon.xpm"
 
 
 void i_fileinfo_ev_close (GtkWidget * button, void * fileinfowin)
@@ -130,7 +128,6 @@ bool i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     GtkWidget * lyrics_frame, *lyrics_tv, *lyrics_tv_sw;
     GtkTextBuffer * text_tb, *lyrics_tb;
     GtkWidget * footer_hbbox, *footer_bclose;
-    GdkPixbuf * title_icon_pixbuf;
     PangoAttrList * pangoattrlist;
     PangoAttribute * pangoattr;
     GString * value_gstring;
@@ -173,9 +170,7 @@ bool i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     title_hbox = audgui_hbox_new (5);
     gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), title_hbox, false, false, 0);
 
-    title_icon_pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) amidiplug_xpm_midiicon);
-    title_icon_image = gtk_image_new_from_pixbuf (title_icon_pixbuf);
-    g_object_unref (title_icon_pixbuf);
+    title_icon_image = gtk_image_new_from_icon_name ("audio-x-generic", GTK_ICON_SIZE_DIALOG);
 #ifndef USE_GTK3
     gtk_misc_set_alignment (GTK_MISC (title_icon_image), 0, 0);
 #endif
@@ -185,7 +180,7 @@ bool i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     gtk_label_set_attributes (GTK_LABEL (title_name_f_label), pangoattrlist);
     gtk_box_pack_start (GTK_BOX (title_hbox), title_name_f_label, false, false, 0);
 
-    title_name_v_entry = gtk_entry_new();
+    title_name_v_entry = gtk_entry_new ();
     gtk_editable_set_editable (GTK_EDITABLE (title_name_v_entry), false);
     gtk_widget_set_size_request (GTK_WIDGET (title_name_v_entry), 200, -1);
     gtk_box_pack_start (GTK_BOX (title_hbox), title_name_v_entry, true, true, 0);
@@ -198,7 +193,7 @@ bool i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     midiinfoboxes_vbox = audgui_vbox_new (2);
     gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, false, false, 0);
 
-    info_frame_tl = gtk_label_new ("");
+    info_frame_tl = gtk_label_new (nullptr);
     gtk_label_set_markup (GTK_LABEL (info_frame_tl), _("<span size=\"smaller\"> MIDI Info </span>"));
     gtk_box_pack_start (GTK_BOX (midiinfoboxes_vbox), info_frame_tl, false, false, 0);
 
@@ -247,7 +242,7 @@ bool i_fileinfo_gui (const char * filename_uri, VFSFile & file)
     miditextboxes_vbox = audgui_vbox_new (2);
     gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), miditextboxes_vbox, true, true, 0);
 
-    text_frame_tl = gtk_label_new ("");
+    text_frame_tl = gtk_label_new (nullptr);
     gtk_label_set_markup (GTK_LABEL (text_frame_tl),
                           _("<span size=\"smaller\"> MIDI Comments and Lyrics </span>"));
     gtk_box_pack_start (GTK_BOX (miditextboxes_vbox), text_frame_tl, false, false, 0);
