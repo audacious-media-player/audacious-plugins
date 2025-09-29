@@ -32,7 +32,6 @@
 #include "vis.h"
 
 static const int svis_analyzer_colors[] = {14, 11, 8, 5, 2};
-static const int svis_scope_colors[] = {20, 19, 18, 19, 20};
 static const int svis_vu_normal_colors[] = {16, 14, 12, 10, 8, 6, 4, 2};
 
 #define RGB_SEEK(x,y) (set = rgb + 38 * (y) + (x))

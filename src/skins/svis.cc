@@ -33,7 +33,6 @@
 #include "vis.h"
 
 static const int svis_analyzer_colors[] = {14, 11, 8, 5, 2};
-static const int svis_scope_colors[] = {20, 19, 18, 19, 20};
 static const int svis_vu_normal_colors[] = {16, 14, 12, 10, 8, 6, 4, 2};
 
 #define RGB_SEEK(x,y) (set = rgb + 38 * (y) + (x))
@@ -125,7 +124,7 @@ void SmallVis::draw (cairo_t * cr)
             {
                 int h = scale[aud::clamp (m_data[2 * x], 0, 16)];
                 RGB_SEEK (x, h);
-                RGB_SET_INDEX (svis_scope_colors[h]);
+                RGB_SET_INDEX (18);
             }
             break;
         case SCOPE_LINE:
@@ -140,12 +139,12 @@ void SmallVis::draw (cairo_t * cr)
 
                 RGB_SEEK (x, h);
                 for (int y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (svis_scope_colors[y]);
+                    RGB_SET_INDEX_Y (18);
             }
 
             int h = scale[aud::clamp (m_data[74], 0, 16)];
             RGB_SEEK (37, h);
-            RGB_SET_INDEX (svis_scope_colors[h]);
+            RGB_SET_INDEX (18);
             break;
         }
         default: /* SCOPE_SOLID */
@@ -164,7 +163,7 @@ void SmallVis::draw (cairo_t * cr)
 
                 RGB_SEEK (x, h);
                 for (int y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (svis_scope_colors[y]);
+                    RGB_SET_INDEX_Y (18);
             }
             break;
         }
