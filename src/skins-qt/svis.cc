@@ -124,7 +124,7 @@ void SmallVis::draw (QPainter & cr)
             {
                 int h = scale[aud::clamp (m_data[2 * x], 0, 16)];
                 RGB_SEEK (x, h);
-                RGB_SET_INDEX (svis_scope_colors[h]);
+                RGB_SET_INDEX (18);
             }
             break;
         case SCOPE_LINE:
@@ -134,17 +134,16 @@ void SmallVis::draw (QPainter & cr)
                 int h = scale[aud::clamp (m_data[2 * x], 0, 16)];
                 int h2 = scale[aud::clamp (m_data[2 * (x + 1)], 0, 16)];
 
-                if (h < h2) h2 --;
-                else if (h > h2) {int temp = h; h = h2 + 1; h2 = temp;}
+                if (h > h2) {int temp = h; h = h2; h2 = temp;}
 
                 RGB_SEEK (x, h);
                 for (int y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (svis_scope_colors[y]);
+                    RGB_SET_INDEX_Y (18);
             }
 
             int h = scale[aud::clamp (m_data[74], 0, 16)];
             RGB_SEEK (37, h);
-            RGB_SET_INDEX (svis_scope_colors[h]);
+            RGB_SET_INDEX (18);
             break;
         }
         default: /* SCOPE_SOLID */
@@ -163,7 +162,7 @@ void SmallVis::draw (QPainter & cr)
 
                 RGB_SEEK (x, h);
                 for (int y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (svis_scope_colors[y]);
+                    RGB_SET_INDEX_Y (18);
             }
             break;
         }
