@@ -210,8 +210,8 @@ void SkinnedVis::draw (cairo_t * cr)
                 int h = aud::clamp ((int) m_data[x], 0, 15);
                 int h2;
 
-                if (h < 8)
-                    h2 = 8;
+                if (h <= 7)
+                    h2 = 7;
                 else
                 {
                     h2 = h;
