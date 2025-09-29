@@ -221,7 +221,7 @@ void SkinnedVis::draw (QPainter & cr)
                 RGB_SEEK (x, h);
 
                 for (int y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (vis_scope_colors[y]);
+                    RGB_SET_INDEX_Y (vis_scope_colors[(h <= 7) ? h : h2]);
             }
             break;
         }
