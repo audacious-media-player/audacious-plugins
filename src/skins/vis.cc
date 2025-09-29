@@ -33,8 +33,8 @@
 
 static const float vis_afalloff_speeds[] = {0.34, 0.5, 1.0, 1.3, 1.6};
 static const float vis_pfalloff_speeds[] = {1.2, 1.3, 1.4, 1.5, 1.6};
-static const int vis_scope_colors[16] = {22, 22, 21, 21, 20, 20, 19, 19, 18,
- 18, 19, 19, 20, 20, 21, 21};
+static const int vis_scope_colors[16] = {21, 21, 20, 20, 19, 19, 18, 18, 19,
+ 19, 20, 20, 21, 21, 22, 22};
 int last_h = 0;
 int h2 = 0;
 
@@ -200,7 +200,7 @@ void SkinnedVis::draw (cairo_t * cr)
                 RGB_SEEK (x, h);
 
                 for (int y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (vis_scope_colors[(h2 < h) ? h : h2]);
+                    RGB_SET_INDEX_Y (vis_scope_colors[(h2 > h) ? h : h2]);
             }
 
             int h = aud::clamp ((int) m_data[74]-1, 0, 15);
