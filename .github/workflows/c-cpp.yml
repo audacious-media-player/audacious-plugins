@@ -11,21 +11,21 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-22.04, ubuntu-24.04,
-             macos-13, macos-15,
+             macos-15-intel, macos-26,
              windows-2022]
         build-system: [autotools, meson]
         exclude:
-          - os: macos-15
+          - os: macos-26
             build-system: autotools
       fail-fast: false
     runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout audacious-plugins
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Checkout audacious
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: audacious-media-player/audacious
         path: audacious

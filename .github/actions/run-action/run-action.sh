@@ -5,8 +5,8 @@
 # ubuntu-22.04:      Qt 5 + GTK 2
 # ubuntu-24.04:      Qt 6 + GTK 3
 # Windows:           Qt 6 + GTK 2
-# macOS 13:          Qt 5 - GTK
-# macOS 15:          Qt 6 - GTK
+# macOS 15:          Qt 5 - GTK
+# macOS 26:          Qt 6 - GTK
 
 action=$(tr '[:upper:]' '[:lower:]' <<< "$1")
 os=$(tr '[:upper:]' '[:lower:]' <<< "$2")
@@ -40,14 +40,17 @@ case "$action" in
         fi
         ;;
 
-      macos-13)
+      macos-15*)
         export PATH="/usr/local/opt/qt@5/bin:$PATH"
         export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig:$PKG_CONFIG_PATH"
 
         if [ "$build_system" = 'meson' ]; then
           meson setup build -D qt5=true -D gtk=false -D mac-media-keys=true
         else
-          autoreconf -I "/usr/local/share/gettext/m4" && ./configure --enable-qt5 --disable-gtk --enable-mac-media-keys
+          export LDFLAGS="-L/usr/local/opt/libiconv/lib"
+          export CPPFLAGS="-I/usr/local/opt/libiconv/include"
+          autoreconf -I "/usr/local/share/gettext/m4" &&
+          ./configure --enable-qt5 --disable-gtk --enable-mac-media-keys
         fi
         ;;
 
@@ -60,7 +63,8 @@ case "$action" in
         else
           export LDFLAGS="-L/opt/homebrew/opt/libiconv/lib"
           export CPPFLAGS="-I/opt/homebrew/opt/libiconv/include"
-          autoreconf -I "/opt/homebrew/opt/gettext/share/gettext/m4" && ./configure --disable-gtk --enable-mac-media-keys
+          autoreconf -I "/opt/homebrew/opt/gettext/share/gettext/m4" &&
+          ./configure --disable-gtk --enable-mac-media-keys
         fi
         ;;
 
