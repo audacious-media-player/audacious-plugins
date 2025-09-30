@@ -106,7 +106,7 @@ void SmallVis::draw (QPainter & cr)
                 if (y == 2)
                     continue;
 
-                int h = (m_data[y / 3] * 8 + 19) / 38;
+                int h = (m_falloff[y / 3] * 8 + 19) / 38;
                 h = aud::clamp (h, 0, 8);
                 RGB_SEEK (0, y);
 
@@ -125,7 +125,7 @@ void SmallVis::draw (QPainter & cr)
                 if (y == 2)
                     continue;
 
-                int h = m_data[y / 3];
+                int h = m_falloff[y / 3];
                 h = aud::clamp (h, 0, 38);
                 RGB_SEEK (0, y);
 
@@ -258,8 +258,16 @@ void SmallVis::render (const unsigned char * data)
     }
     else if (config.vis_type == VIS_VOICEPRINT)
     {
-        for (int i = 0; i < 2; i ++)
+        for (int i = 0; i < 2; i ++) {
             m_data[i] = data[i];
+
+            m_falloff[i] -= vis_afalloff_speeds[config.analyzer_falloff];
+            if (m_falloff[i] <= m_data[i]){
+                m_falloff[i] = m_data[i];
+            }
+            if (m_falloff[i] < 0.0)
+                m_falloff[i] = 0.0;
+        }
     }
     else
     {
