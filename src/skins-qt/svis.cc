@@ -64,8 +64,21 @@ void SmallVis::draw (QPainter & cr)
             h = aud::clamp (h, 0, 5);
             RGB_SEEK (x, 5 - h);
 
-            for (int y = 0; y < h; y ++)
-                RGB_SET_INDEX_Y (svis_analyzer_colors[h - 1 - y]);
+            switch (config.analyzer_mode)
+            {
+                case ANALYZER_NORMAL:
+                    for (int y = 0; y < h; y ++)
+                        RGB_SET_INDEX_Y (svis_analyzer_colors[h - 1 - y]);
+                break;
+                case ANALYZER_FIRE:
+                    for (int y = 0; y < h; y ++)
+                        RGB_SET_INDEX_Y (svis_analyzer_colors[4-y]);
+                break;
+                default: /* ANALYZER_VLINES */
+                    for (int y = 0; y < h; y ++)
+                        RGB_SET_INDEX_Y (svis_analyzer_colors[h-1]);
+                break;
+            }
         }
 
         break;
