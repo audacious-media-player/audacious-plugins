@@ -110,8 +110,8 @@ void SmallVis::draw (QPainter & cr)
         break;
     case VIS_SCOPE:
     {
-        static const int scale[17] = {0, 0, 0, 0, 0, 0, 1, 1, 2, 3, 3, 4,
-         4, 4, 4, 4, 4};
+        static const int scale[17] = {0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3,
+         3, 3, 3, 4, 4};
 
         if (! m_active)
             goto DRAW;
