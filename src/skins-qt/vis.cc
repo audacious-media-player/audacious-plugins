@@ -132,7 +132,7 @@ void SkinnedVis::draw (QPainter & cr)
                 int h = m_peak[bars ? (x >> 2) : x];
                 h = aud::clamp (h, 0, 16);
 
-                if (h)
+                if (h > 1)
                 {
                     RGB_SEEK (x, 16 - h);
                     RGB_SET_INDEX (23);
