@@ -84,7 +84,7 @@ private:
     void draw (cairo_t * cr);
 
     bool m_active;
-    int m_data[75];
+    float m_data[75], m_falloff[75], m_peak[75], m_peak_speed[75];
 };
 
 #endif
