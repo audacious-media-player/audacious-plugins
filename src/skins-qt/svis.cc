@@ -55,7 +55,7 @@ void SmallVis::draw (QPainter & cr)
     {
         bool bars = (config.analyzer_type == ANALYZER_BARS);
 
-        for (int x = 0; x < 38; x ++)
+        for (int x = 0; x < 37; x ++)
         {
             if (bars && (x % 3) == 2)
                 continue;
