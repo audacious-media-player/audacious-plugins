@@ -32,6 +32,8 @@
 #include "skin.h"
 #include "vis.h"
 
+static const float vis_afalloff_speeds[] = {0.34, 0.5, 1.0, 1.3, 1.6};
+static const float vis_pfalloff_speeds[] = {1.2, 1.3, 1.4, 1.5, 1.6};
 static const int svis_analyzer_colors[] = {17, 14, 11, 8, 4};
 static const int svis_vu_normal_colors[] = {16, 14, 12, 10, 8, 6, 4, 2};
 
@@ -61,12 +63,37 @@ void SmallVis::draw (cairo_t * cr)
             if (bars && (x % 3) == 2)
                 continue;
 
-            int h = m_data[bars ? (x / 3) : x];
+            int h = m_falloff[bars ? (x / 3) : x];
             h = aud::clamp (h, 0, 5);
             RGB_SEEK (x, 5 - h);
 
-            for (int y = 0; y < h; y ++)
-                RGB_SET_INDEX_Y (svis_analyzer_colors[h - 1 - y]);
+            switch (config.analyzer_mode)
+            {
+                case ANALYZER_NORMAL:
+                    for (int y = 0; y < h; y ++)
+                        RGB_SET_INDEX_Y (svis_analyzer_colors[h - 1 - y]);
+                break;
+                case ANALYZER_FIRE:
+                    for (int y = 0; y < h; y ++)
+                        RGB_SET_INDEX_Y (svis_analyzer_colors[4-y]);
+                break;
+                default: /* ANALYZER_VLINES */
+                    for (int y = 0; y < h; y ++)
+                        RGB_SET_INDEX_Y (svis_analyzer_colors[h-1]);
+                break;
+            }
+
+            if (config.analyzer_peaks)
+            {
+                int h = m_peak[bars ? (x / 3) : x];
+                h = aud::clamp (h, 0, 5);
+
+                if (h >= 5)
+                    continue;
+                RGB_SEEK (x, 4 - h);
+                RGB_SET_INDEX (23);
+
+            }
         }
 
         break;
@@ -122,7 +149,7 @@ void SmallVis::draw (cairo_t * cr)
         case SCOPE_DOT:
             for (int x = 0; x < 38; x ++)
             {
-                int h = scale[aud::clamp (m_data[2 * x], 0, 16)];
+                int h = scale[aud::clamp ((int) m_data[2 * x], 0, 16)];
                 RGB_SEEK (x, h);
                 RGB_SET_INDEX (18);
             }
@@ -131,18 +158,17 @@ void SmallVis::draw (cairo_t * cr)
         {
             for (int x = 0; x < 37; x ++)
             {
-                int h = scale[aud::clamp (m_data[2 * x], 0, 16)];
-                int h2 = scale[aud::clamp (m_data[2 * (x + 1)], 0, 16)];
+                int h = scale[aud::clamp ((int) m_data[2 * x], 0, 16)];
+                int h2 = scale[aud::clamp ((int) m_data[2 * (x + 1)], 0, 16)];
 
-                if (h < h2) h2 --;
-                else if (h > h2) {int temp = h; h = h2 + 1; h2 = temp;}
+                if (h > h2) {int temp = h; h = h2; h2 = temp;}
 
                 RGB_SEEK (x, h);
                 for (int y = h; y <= h2; y ++)
                     RGB_SET_INDEX_Y (18);
             }
 
-            int h = scale[aud::clamp (m_data[74], 0, 16)];
+            int h = scale[aud::clamp ((int) m_data[74], 0, 16)];
             RGB_SEEK (37, h);
             RGB_SET_INDEX (18);
             break;
@@ -150,7 +176,7 @@ void SmallVis::draw (cairo_t * cr)
         default: /* SCOPE_SOLID */
             for (int x = 0; x < 38; x ++)
             {
-                int h = scale[aud::clamp (m_data[2 * x], 0, 16)];
+                int h = scale[aud::clamp ((int) m_data[2 * x], 0, 16)];
                 int h2;
 
                 if (h < 2)
@@ -191,12 +217,51 @@ void SmallVis::clear ()
 {
     m_active = false;
     memset (m_data, 0, sizeof m_data);
+    memset (m_falloff, 0, sizeof m_falloff);
+    memset (m_peak, 0, sizeof m_peak);
+    memset (m_peak_speed, 0, sizeof m_peak_speed);
     queue_draw ();
 }
 
 void SmallVis::render (const unsigned char * data)
 {
-    if (config.vis_type == VIS_VOICEPRINT)
+    if (config.vis_type == VIS_ANALYZER)
+    {
+        const int n = (config.analyzer_type == ANALYZER_BARS) ? 19 : 75;
+
+        for (int i = 0; i < n; i ++)
+        {
+            m_data[i] = data[i];
+
+            if (m_falloff[i] >= 5.0){
+                m_falloff[i] = 5.0;
+            }
+
+            m_falloff[i] -= vis_afalloff_speeds[config.analyzer_falloff] / 4;
+            if (m_falloff[i] <= m_data[i]){
+                m_falloff[i] = m_data[i];
+            }
+            if (m_falloff[i] < 0.0)
+                m_falloff[i] = 0.0;
+
+            if (m_falloff[i] > m_peak[i])
+            {
+                m_peak[i] = m_falloff[i];
+                m_peak_speed[i] = 0.01;
+
+            }
+
+            {
+                m_peak[i] -= m_peak_speed[i] / 4;
+                m_peak_speed[i] *= vis_pfalloff_speeds[config.peaks_falloff];
+                if (m_peak[i] <= m_falloff[i])
+                    m_peak[i] = m_falloff[i];
+                if (m_peak[i] < 0.0)
+                    m_peak[i] = 0.0;
+            }
+        }
+    }
+    else if (config.vis_type == VIS_VOICEPRINT)
     {
         for (int i = 0; i < 2; i ++)
             m_data[i] = data[i];
