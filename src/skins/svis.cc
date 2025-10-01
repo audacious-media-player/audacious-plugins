@@ -235,8 +235,8 @@ void SmallVis::render (const unsigned char * data)
         {
             m_data[i] = data[i];
 
-            if (m_falloff[i] >= 5.0){
-                m_falloff[i] = 5.0;
+            if (m_data[i] >= 5.0){
+                m_data[i] = 5.0;
             }
 
             m_falloff[i] -= vis_afalloff_speeds[config.analyzer_falloff] / 4;

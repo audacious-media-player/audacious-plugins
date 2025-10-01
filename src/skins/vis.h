@@ -69,7 +69,7 @@ private:
     uint32_t m_pattern_fill[76 * 2];
 
     bool m_active, m_voiceprint_advance;
-    float m_data[75], m_peak[75], m_peak_speed[75];
+    float m_data[75], m_falloff[75], m_peak[75], m_peak_speed[75];
     unsigned char m_voiceprint_data[76 * 16];
 };
 

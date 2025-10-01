@@ -107,7 +107,7 @@ void SkinnedVis::draw (cairo_t * cr)
             if (bars && (x & 3) == 3)
                 continue;
 
-            int h = m_data[bars ? (x >> 2) : x];
+            int h = m_falloff[bars ? (x >> 2) : x];
             h = aud::clamp (h, 0, 16);
             RGB_SEEK (x, 16 - h);
 
@@ -132,9 +132,9 @@ void SkinnedVis::draw (cairo_t * cr)
                 int h = m_peak[bars ? (x >> 2) : x];
                 h = aud::clamp (h, 0, 16);
 
-                if (h > 1)
+                if (h)
                 {
-                    RGB_SEEK (x, 16 - h);
+                    RGB_SEEK (x, 15 - h);
                     RGB_SET_INDEX (23);
                 }
             }
@@ -254,6 +254,7 @@ void SkinnedVis::clear ()
     m_voiceprint_advance = false;
 
     memset (m_data, 0, sizeof m_data);
+    memset (m_falloff, 0, sizeof m_falloff);
     memset (m_peak, 0, sizeof m_peak);
     memset (m_peak_speed, 0, sizeof m_peak_speed);
     memset (m_voiceprint_data, 0, sizeof m_voiceprint_data);
@@ -269,42 +270,33 @@ void SkinnedVis::render (const unsigned char * data)
 
         for (int i = 0; i < n; i ++)
         {
-            if (data[i] > m_data[i])
-            {
-                m_data[i] = data[i];
-                if (m_data[i] > m_peak[i])
-                {
-                    m_peak[i] = m_data[i];
-                    m_peak_speed[i] = 0.01;
+            m_data[i] = data[i];
 
-                }
-                else if (m_peak[i] > 0.0)
-                {
-                    m_peak[i] -= m_peak_speed[i];
-                    m_peak_speed[i] *= vis_pfalloff_speeds[config.peaks_falloff];
-                    if (m_peak[i] < m_data[i])
-                        m_peak[i] = m_data[i];
-                    if (m_peak[i] < 0.0)
-                        m_peak[i] = 0.0;
-                }
+            if (m_data[i] >= 15.0){
+                m_data[i] = 15.0;
             }
-            else
+
+            m_falloff[i] -= vis_afalloff_speeds[config.analyzer_falloff];
+            if (m_falloff[i] <= m_data[i]){
+                m_falloff[i] = m_data[i];
+            }
+            if (m_falloff[i] < 0.0)
+                m_falloff[i] = 0.0;
+
+            if (m_falloff[i] > m_peak[i])
             {
-                if (m_data[i] > 0.0)
-                {
-                    m_data[i] -= vis_afalloff_speeds[config.analyzer_falloff];
-                    if (m_data[i] < 0.0)
-                        m_data[i] = 0.0;
-                }
-                if (m_peak[i] > 0.0)
-                {
-                    m_peak[i] -= m_peak_speed[i];
-                    m_peak_speed[i] *= vis_pfalloff_speeds[config.peaks_falloff];
-                    if (m_peak[i] < m_data[i])
-                        m_peak[i] = m_data[i];
-                    if (m_peak[i] < 0.0)
-                        m_peak[i] = 0.0;
-                }
+                m_peak[i] = m_falloff[i];
+                m_peak_speed[i] = 0.01;
+
+            }
+
+            {
+                m_peak[i] -= m_peak_speed[i];
+                m_peak_speed[i] *= vis_pfalloff_speeds[config.peaks_falloff];
+                if (m_peak[i] <= m_falloff[i])
+                    m_peak[i] = m_falloff[i];
+                if (m_peak[i] < 0.0)
+                    m_peak[i] = 0.0;
             }
         }
     }
