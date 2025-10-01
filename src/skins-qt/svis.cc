@@ -26,6 +26,7 @@
 
 #include <string.h>
 #include <libaudcore/objects.h>
+#include <libaudcore/drct.h>
 
 #include "skins_cfg.h"
 #include "skin.h"
@@ -87,11 +88,12 @@ void SmallVis::draw (QPainter & cr)
                 int h = m_peak[bars ? (x / 3) : x];
                 h = aud::clamp (h, 0, 5);
 
-                if (h >= 5)
-                    continue;
-                RGB_SEEK (x, 4 - h);
-                RGB_SET_INDEX (23);
-
+                if (aud_drct_get_playing ()) {
+                    if (h >= 5)
+                        continue;
+                    RGB_SEEK (x, 4 - h);
+                    RGB_SET_INDEX (23);
+                }
             }
         }
 
