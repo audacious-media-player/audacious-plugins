@@ -70,17 +70,18 @@ private:
                            QItemSelection & deselected);
     void updateSelection(int rowsBefore, int rowsAfter);
 
-    void changeEvent(QEvent * event);
-    void contextMenuEvent(QContextMenuEvent * event);
-    void keyPressEvent(QKeyEvent * event);
-    void mouseMoveEvent(QMouseEvent * event);
-    void leaveEvent(QEvent * event);
-    void dragMoveEvent(QDragMoveEvent * event);
-    void dropEvent(QDropEvent * event);
+    void changeEvent(QEvent * event) override;
+    void contextMenuEvent(QContextMenuEvent * event) override;
+    void keyPressEvent(QKeyEvent * event) override;
+    void mouseMoveEvent(QMouseEvent * event) override;
+    void leaveEvent(QEvent * event) override;
+    void dragMoveEvent(QDragMoveEvent * event) override;
+    void dropEvent(QDropEvent * event) override;
     void currentChanged(const QModelIndex & current,
-                        const QModelIndex & previous);
+                        const QModelIndex & previous) override;
     void selectionChanged(const QItemSelection & selected,
-                          const QItemSelection & deselected);
+                          const QItemSelection & deselected) override;
+    QRect visualRect(const QModelIndex & index) const override;
 
     void showPopup();
     void triggerPopup(int pos);

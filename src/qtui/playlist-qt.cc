@@ -274,6 +274,21 @@ void PlaylistWidget::selectionChanged(const QItemSelection & selected,
     }
 }
 
+QRect PlaylistWidget::visualRect(const QModelIndex & index) const
+{
+    if (index.column() == 0)
+    {
+        // workaround for Qt 6.8 regression (commit 52c908fdb50e,
+        // "QAbstractItemView: implement full-row drop indicator")
+        // where QAbstractItemView::dragMoveEvent() uses visualRect()
+        // of column #0 to compute drop indicator geometry, which is
+        // invalid if column #0 is hidden
+        auto visibleIndex = index.siblingAtColumn(firstVisibleColumn);
+        return audqt::TreeView::visualRect(visibleIndex);
+    }
+    return audqt::TreeView::visualRect(index);
+}
+
 /* returns true if the focus changed or the playlist scrolled */
 bool PlaylistWidget::scrollToCurrent(bool force)
 {
