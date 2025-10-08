@@ -314,6 +314,7 @@ if meson.version().version_compare('>= 0.53')
       'Winamp Classic Interface': true,
       'Album Art': true,
       'Blur Scope': true,
+      'File Browser': true,
       'OpenGL Spectrum Analyzer': get_variable('have_qtglspectrum', false),
       'Playback History': true,
       'Playlist Manager': true,

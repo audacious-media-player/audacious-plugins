@@ -82,6 +82,7 @@ endif
 if conf.has('USE_QT')
   subdir('albumart-qt')
   subdir('blur_scope-qt')
+  subdir('filebrowser-qt')
   subdir('lyrics-qt')
   subdir('playback-history-qt')
   subdir('playlist-manager-qt')
