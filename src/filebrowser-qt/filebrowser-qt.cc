@@ -30,6 +30,7 @@
 #include <QPointer>
 #include <QSortFilterProxyModel>
 #include <QStandardPaths>
+#include <QToolButton>
 #include <QTreeView>
 
 #include <libaudcore/i18n.h>
@@ -41,8 +42,6 @@
 
 #define CFG_ID "filebrowser-qt"
 #define CFG_FILE_PATH "file_path"
-#define CFG_SHOW_FILTER "show_filter"
-#define CFG_USE_TREE_VIEW "use_tree_view"
 
 class FileBrowserQt : public GeneralPlugin
 {
@@ -64,8 +63,6 @@ EXPORT FileBrowserQt aud_plugin_instance;
 
 const char * const FileBrowserQt::defaults[] = {
     CFG_FILE_PATH, "",
-    CFG_SHOW_FILTER, "TRUE",
-    CFG_USE_TREE_VIEW, "TRUE",
     nullptr
 };
 
@@ -111,7 +108,6 @@ private:
     void addToPlaylist();
     void openFolder();
     void openCover();
-    void changeMusicDirectory();
 
     bool hasMultiSelection() const;
     bool searchCover(QString & result) const;
@@ -121,15 +117,14 @@ private:
 
     void initMusicDirectory();
     void setCurrentDirectory(const QString & path);
-    void setTreeViewMode(bool enabled);
     void onTreeViewActivated(const QModelIndex & index);
     void onTreeViewDoubleClicked(const QModelIndex & index);
 
     QTreeView * m_treeView;
     QFileSystemModel * m_fileSystemModel;
     FileSystemFilterProxyModel * m_proxyModel;
+    QToolButton * m_upButton;
     QLineEdit * m_filterLineEdit;
-    QAction * m_treeModeAction, * m_showFilterAction;
     QString m_coverPath;
 };
 
@@ -143,14 +138,14 @@ FileBrowserWidget::FileBrowserWidget()
     m_treeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     m_filterLineEdit = new QLineEdit(this);
-    m_filterLineEdit->setContentsMargins(5, 5, 5, 5);
+    m_filterLineEdit->setContentsMargins(0, 5, 5, 5);
     m_filterLineEdit->setClearButtonEnabled(true);
-    m_filterLineEdit->setVisible(aud_get_bool(CFG_ID, CFG_SHOW_FILTER));
 
     m_fileSystemModel = new QFileSystemModel(this);
     m_fileSystemModel->setNameFilterDisables(false);
     m_fileSystemModel->setNameFilters(supportedFileExtensions());
-    m_fileSystemModel->setFilter(QDir::AllDirs | QDir::Files | QDir::NoDot);
+    m_fileSystemModel->setFilter(QDir::AllDirs | QDir::Files |
+                                 QDir::NoDotAndDotDot);
 
     m_proxyModel = new FileSystemFilterProxyModel(this);
     m_proxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -164,21 +159,20 @@ FileBrowserWidget::FileBrowserWidget()
     m_treeView->setUniformRowHeights(true);
     m_treeView->header()->setStretchLastSection(false);
     m_treeView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
-    setTreeViewMode(aud_get_bool(CFG_ID, CFG_USE_TREE_VIEW));
+
+    auto upAction = new QAction(QIcon::fromTheme("go-up"),
+                                QString(_("Show the parent folder")), this);
+    m_upButton = new QToolButton(this);
+    m_upButton->setAutoRaise(true);
+    m_upButton->setDefaultAction(upAction);
+
+    QHBoxLayout * hbox = audqt::make_hbox(nullptr, audqt::sizes.TwoPt);
+    hbox->addWidget(m_upButton);
+    hbox->addWidget(m_filterLineEdit);
 
     QVBoxLayout * vbox = audqt::make_vbox(this, 0);
-    vbox->addWidget(m_filterLineEdit);
+    vbox->addLayout(hbox);
     vbox->addWidget(m_treeView);
-
-    m_treeModeAction =
-        new QAction(audqt::translate_str(N_("_Tree View Mode")), this);
-    m_treeModeAction->setCheckable(true);
-    m_treeModeAction->setChecked(aud_get_bool(CFG_ID, CFG_USE_TREE_VIEW));
-
-    m_showFilterAction =
-        new QAction(audqt::translate_str(N_("Quick _Search")), this);
-    m_showFilterAction->setCheckable(true);
-    m_showFilterAction->setChecked(aud_get_bool(CFG_ID, CFG_SHOW_FILTER));
 
     connect(m_treeView, &QTreeView::activated, this,
             &FileBrowserWidget::onTreeViewActivated);
@@ -186,25 +180,16 @@ FileBrowserWidget::FileBrowserWidget()
     connect(m_treeView, &QTreeView::doubleClicked, this,
             &FileBrowserWidget::onTreeViewDoubleClicked);
 
-    connect(m_treeModeAction, &QAction::toggled, [this](bool checked) {
-        aud_set_bool(CFG_ID, CFG_USE_TREE_VIEW, checked);
-        setTreeViewMode(checked);
-    });
-
-    connect(m_showFilterAction, &QAction::toggled, [this](bool checked) {
-        aud_set_bool(CFG_ID, CFG_SHOW_FILTER, checked);
-        m_filterLineEdit->setVisible(checked);
-        if (checked)
-            m_filterLineEdit->setFocus(Qt::OtherFocusReason);
-    });
-
-    connect(m_showFilterAction, &QAction::triggered, m_filterLineEdit,
-            &QLineEdit::clear);
-
     connect(m_filterLineEdit, &QLineEdit::textChanged,
             [this](const QString & text) {
                 m_proxyModel->setFilterFixedString(text);
             });
+
+    connect(upAction, &QAction::triggered, [this]() {
+        QDir dir = m_fileSystemModel->rootDirectory();
+        if (dir.cdUp())
+            setCurrentDirectory(dir.path());
+    });
 
     initMusicDirectory();
 }
@@ -235,12 +220,6 @@ void FileBrowserWidget::contextMenuEvent(QContextMenuEvent * event)
     if (searchCover(m_coverPath))
         menu->addAction(newAction(N_("Open Co_ver Art"), "image-x-generic",
                                   menu, &FileBrowserWidget::openCover));
-    menu->addSeparator();
-
-    menu->addAction(m_treeModeAction);
-    menu->addAction(m_showFilterAction);
-    menu->addAction(newAction(N_("Change _Music Folder ..."), "folder-music",
-                              menu, &FileBrowserWidget::changeMusicDirectory));
 
     menu->setAttribute(Qt::WA_DeleteOnClose);
     menu->popup(event->globalPos());
@@ -288,14 +267,6 @@ void FileBrowserWidget::openCover()
 {
     if (QFile(m_coverPath).exists())
         QDesktopServices::openUrl(QUrl::fromLocalFile(m_coverPath));
-}
-
-void FileBrowserWidget::changeMusicDirectory()
-{
-    QString oldDir = m_fileSystemModel->rootDirectory().canonicalPath();
-    QString newDir = QFileDialog::getExistingDirectory(
-        this, _("Choose Folder"), oldDir, QFileDialog::ShowDirsOnly);
-    setCurrentDirectory(newDir);
 }
 
 bool FileBrowserWidget::hasMultiSelection() const
@@ -356,10 +327,6 @@ QStringList FileBrowserWidget::selectedPaths() const
             continue;
 
         QModelIndex sourceIndex = m_proxyModel->mapToSource(index);
-        QString name = m_fileSystemModel->fileName(sourceIndex);
-        if (name == QLatin1String(".."))
-            continue;
-
         paths << m_fileSystemModel->filePath(sourceIndex);
     }
 
@@ -404,37 +371,23 @@ void FileBrowserWidget::setCurrentDirectory(const QString & path)
     if (!index.isValid())
         return;
 
+    m_upButton->setEnabled(!info.isRoot());
     m_treeView->setRootIndex(m_proxyModel->mapFromSource(index));
 
-    QDir root = m_fileSystemModel->rootDirectory();
-    QString cleanPath = root.canonicalPath();
-    QString dirName = root.dirName();
+    QString dirName = info.baseName();
+    QString cleanPath = m_fileSystemModel->rootDirectory().canonicalPath();
 
     m_filterLineEdit->clear();
     m_filterLineEdit->setPlaceholderText(
-        dirName.isEmpty() || dirName == QLatin1String("..")
-            ? QString(_("Search"))
-            : QString(_("Search in %1")).arg(dirName));
+        dirName.isEmpty() ? QString(_("Search"))
+                          : QString(_("Search in %1")).arg(dirName));
 
     aud_set_str(CFG_ID, CFG_FILE_PATH, cleanPath.toUtf8().constData());
 }
 
-void FileBrowserWidget::setTreeViewMode(bool enabled)
-{
-    QDir::Filters filter = m_fileSystemModel->filter();
-
-    if (enabled)
-        m_fileSystemModel->setFilter(filter | QDir::NoDotDot);
-    else
-        m_fileSystemModel->setFilter(filter & ~QDir::NoDotDot);
-
-    m_treeView->setRootIsDecorated(enabled);
-    m_treeView->collapseAll();
-}
-
 void FileBrowserWidget::onTreeViewActivated(const QModelIndex & index)
 {
-    if (!index.isValid() || m_treeView->rootIsDecorated())
+    if (!index.isValid())
         return;
 
     QModelIndex sourceIndex = m_proxyModel->mapToSource(index);
