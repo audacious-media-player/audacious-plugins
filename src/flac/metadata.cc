@@ -253,6 +253,7 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
         {"musicbrainz_trackid", Tuple::MusicBrainzID},
         {"publisher", Tuple::Publisher},
         {"CATALOGNUMBER", Tuple::CatalogNum},
+        {"UNSYNCEDLYRICS", Tuple::Lyrics},
     };
 
     for (auto & tfield : tfields)
