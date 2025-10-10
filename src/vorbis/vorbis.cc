@@ -146,6 +146,7 @@ static void read_comment (vorbis_comment * comment, Tuple & tuple)
     set_tuple_str (tuple, Tuple::MusicBrainzID, comment, "musicbrainz_trackid");
     set_tuple_str (tuple, Tuple::Publisher, comment, "publisher");
     set_tuple_str (tuple, Tuple::CatalogNum, comment, "CATALOGNUMBER");
+    set_tuple_str (tuple, Tuple::Lyrics, comment, "UNSYNCEDLYRICS");
 
     if ((tmps = vorbis_comment_query (comment, "TRACKNUMBER", 0)))
         tuple.set_int (Tuple::Track, atoi (tmps));
