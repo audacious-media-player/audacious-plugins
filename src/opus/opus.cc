@@ -108,6 +108,7 @@ static void read_tags(const OpusTags * tags, Tuple & tuple)
     const char * music_brainz_id = opus_tags_query(tags, "musicbrainz_trackid", 0);
     const char * publisher = opus_tags_query(tags, "publisher", 0);
     const char * catalog_num = opus_tags_query(tags, "CATALOGNUMBER", 0);
+    const char * lyrics = opus_tags_query(tags, "UNSYNCEDLYRICS", 0);
     const char * track = opus_tags_query(tags, "TRACKNUMBER", 0);
     const char * disc = opus_tags_query(tags, "DISCNUMBER", 0);
     const char * date = opus_tags_query(tags, "DATE", 0);
@@ -122,6 +123,7 @@ static void read_tags(const OpusTags * tags, Tuple & tuple)
     tuple.set_str(Tuple::MusicBrainzID, music_brainz_id);
     tuple.set_str(Tuple::Publisher, publisher);
     tuple.set_str(Tuple::CatalogNum, catalog_num);
+    tuple.set_str(Tuple::Lyrics, lyrics);
 
     if (track)
         tuple.set_int(Tuple::Track, std::atoi(track));
