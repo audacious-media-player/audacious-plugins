@@ -545,6 +545,27 @@ bool FFaudio::play (const char * filename, VFSFile & file)
     int channels = context->channels;
 #endif
 
+    /* Apply ReplayGain if found */
+    if (ic->metadata)
+    {
+        ReplayGainInfo rg_info;
+        const AVDictionaryEntry *tg, *tp, *ag, *ap;
+        tg = av_dict_get(ic->metadata, "REPLAYGAIN_TRACK_GAIN", NULL, 0);
+        tp = av_dict_get(ic->metadata, "REPLAYGAIN_TRACK_PEAK", NULL, 0);
+        ag = av_dict_get(ic->metadata, "REPLAYGAIN_ALBUM_GAIN", NULL, 0);
+        ap = av_dict_get(ic->metadata, "REPLAYGAIN_ALBUM_PEAK", NULL, 0);
+        
+        rg_info.track_gain = rg_info.track_peak = rg_info.album_gain = rg_info.album_peak = 0;
+
+        if (tg && tg->value) rg_info.track_gain = str_to_double(tg->value);
+        if (tp && tp->value) rg_info.track_peak = str_to_double(tp->value);
+        if (ag && ag->value) rg_info.album_gain = str_to_double(ag->value);
+        if (ap && ap->value) rg_info.album_peak = str_to_double(ap->value);
+        
+        if (rg_info.track_gain || rg_info.track_peak || rg_info.album_gain || rg_info.album_peak)
+            set_replay_gain(rg_info);
+    }
+
     /* Open audio output */
     set_stream_bitrate(ic->bit_rate);
     open_audio(out_fmt, context->sample_rate, channels);
