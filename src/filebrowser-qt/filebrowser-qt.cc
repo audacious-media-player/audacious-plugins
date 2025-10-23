@@ -46,7 +46,6 @@
 class FileBrowserQt : public GeneralPlugin
 {
 public:
-    static const char * const defaults[];
     static const char about[];
 
     static constexpr PluginInfo info = {N_("File Browser"), PACKAGE, about,
@@ -54,17 +53,11 @@ public:
 
     constexpr FileBrowserQt() : GeneralPlugin(info, false) {}
 
-    bool init();
     void * get_qt_widget();
     int take_message(const char * code, const void * data, int size);
 };
 
 EXPORT FileBrowserQt aud_plugin_instance;
-
-const char * const FileBrowserQt::defaults[] = {
-    CFG_FILE_PATH, "",
-    nullptr
-};
 
 const char FileBrowserQt::about[] =
  N_("A dockable plugin that can be used to browse folders for music files. "
@@ -118,7 +111,6 @@ private:
     void initMusicDirectory();
     void setCurrentDirectory(const QString & path);
     void onTreeViewActivated(const QModelIndex & index);
-    void onTreeViewDoubleClicked(const QModelIndex & index);
 
     QTreeView * m_treeView;
     QFileSystemModel * m_fileSystemModel;
@@ -176,9 +168,6 @@ FileBrowserWidget::FileBrowserWidget()
 
     connect(m_treeView, &QTreeView::activated, this,
             &FileBrowserWidget::onTreeViewActivated);
-
-    connect(m_treeView, &QTreeView::doubleClicked, this,
-            &FileBrowserWidget::onTreeViewDoubleClicked);
 
     connect(m_filterLineEdit, &QLineEdit::textChanged,
             [this](const QString & text) {
@@ -391,21 +380,12 @@ void FileBrowserWidget::onTreeViewActivated(const QModelIndex & index)
         return;
 
     QModelIndex sourceIndex = m_proxyModel->mapToSource(index);
-    QString path = m_fileSystemModel->filePath(sourceIndex);
-    setCurrentDirectory(path);
-}
+    QFileInfo info = m_fileSystemModel->fileInfo(sourceIndex);
 
-void FileBrowserWidget::onTreeViewDoubleClicked(const QModelIndex & index)
-{
-    QModelIndex sourceIndex = m_proxyModel->mapToSource(index);
-    if (!m_fileSystemModel->isDir(sourceIndex))
+    if (info.isDir())
+        setCurrentDirectory(info.filePath());
+    else
         replacePlaylist();
-}
-
-bool FileBrowserQt::init()
-{
-    aud_config_set_defaults(CFG_ID, defaults);
-    return true;
 }
 
 void * FileBrowserQt::get_qt_widget()
