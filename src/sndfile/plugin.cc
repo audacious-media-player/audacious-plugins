@@ -361,7 +361,7 @@ bool SndfilePlugin::is_our_file (const char * filename, VFSFile & file)
     if (!tmp_sndfile)
         return false;
 
-    /* It can so close file and return true. */
+    /* It can, so close file and return true. */
     sf_close (tmp_sndfile);
     tmp_sndfile = nullptr;
 
@@ -384,5 +384,20 @@ const char SndfilePlugin::about[] =
     "along with this program; if not, write to the Free Software "
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.");
 
-const char * const SndfilePlugin::exts[] = { "aiff", "au", "raw", "wav", nullptr };
-const char * const SndfilePlugin::mimes[] = { "audio/wav", "audio/x-wav", nullptr };
+const char * const SndfilePlugin::exts[] = {
+    "aif",
+    "aifc",
+    "aiff",
+    "au",
+    "raw",
+    "wav",
+    nullptr
+};
+
+const char * const SndfilePlugin::mimes[] = {
+    "audio/aiff",
+    "audio/x-aiff",
+    "audio/wav",
+    "audio/x-wav",
+    nullptr
+};
