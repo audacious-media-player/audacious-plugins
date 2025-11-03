@@ -160,7 +160,7 @@ static void xspf_add_file (xmlNode * track, const char * filename,
                     break;
 
                 case Tuple::Int:
-                    tuple.set_int (entry.tupleField, atol ((char *) str));
+                    tuple.set_int (entry.tupleField, atoi ((char *) str));
                     tuple.set_state (Tuple::Valid);
                     break;
 
