@@ -416,6 +416,10 @@ static const struct {
     {Tuple::String, Tuple::Genre, {"genre", "WM/Genre", nullptr}},
     {Tuple::String, Tuple::Comment, {"comment", nullptr}},
     {Tuple::String, Tuple::Composer, {"composer", nullptr}},
+    {Tuple::String, Tuple::AlbumGain, {"replaygain_album_gain", nullptr}},
+    {Tuple::String, Tuple::AlbumPeak, {"replaygain_album_peak", nullptr}},
+    {Tuple::String, Tuple::TrackGain, {"replaygain_track_gain", nullptr}},
+    {Tuple::String, Tuple::TrackPeak, {"replaygain_track_peak", nullptr}},
     {Tuple::Int, Tuple::Year, {"year", "WM/Year", "date", nullptr}},
     {Tuple::Int, Tuple::Track, {"track", "WM/TrackNumber", nullptr}},
     {Tuple::Int, Tuple::Disc, {"disc", "WM/PartOfSet", nullptr}},
@@ -432,7 +436,11 @@ static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
 
         if (entry && entry->value)
         {
-            if (meta.ttype == Tuple::String)
+            if (meta.field == Tuple::AlbumGain || meta.field == Tuple::TrackGain)
+                tuple.set_gain (meta.field, Tuple::GainDivisor, entry->value);
+            else if (meta.field == Tuple::AlbumPeak || meta.field == Tuple::TrackPeak)
+                tuple.set_gain (meta.field, Tuple::PeakDivisor, entry->value);
+            else if (meta.ttype == Tuple::String)
                 tuple.set_str (meta.field, entry->value);
             else if (meta.ttype == Tuple::Int)
                 tuple.set_int (meta.field, atoi (entry->value));
