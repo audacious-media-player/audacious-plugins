@@ -113,10 +113,10 @@ static void xspf_add_file (xmlNode * track, const char * filename,
         if (xmlStrEqual (nptr->name, (xmlChar *) "location"))
         {
             /* Location is a special case */
-            char * str = (char *) xmlNodeGetContent (nptr);
+            xmlChar * str = xmlNodeGetContent (nptr);
 
-            if (strstr (str, "://"))
-                location = String (str);
+            if (strstr ((char *) str, "://"))
+                location = String ((char *) str);
             else if (str[0] == '/' && base)
             {
                 const char * colon = strstr (base, "://");
@@ -226,7 +226,7 @@ bool XSPFLoader::load (const char * filename, VFSFile & file, String & title,
          ! xmlStrEqual (nptr->name, (xmlChar *) "playlist"))
             continue;
 
-        char * base = (char *) xmlNodeGetBase (doc, nptr);
+        xmlChar * base = xmlNodeGetBase (doc, nptr);
 
         for (xmlNode * nptr2 = nptr->children; nptr2; nptr2 = nptr2->next)
         {
@@ -241,7 +241,7 @@ bool XSPFLoader::load (const char * filename, VFSFile & file, String & title,
                 xmlFree (xml_title);
             }
             else if (xmlStrEqual (nptr2->name, (xmlChar *) "trackList"))
-                xspf_find_track (nptr2, filename, base, items);
+                xspf_find_track (nptr2, filename, (char *) base, items);
         }
 
         xmlFree (base);
