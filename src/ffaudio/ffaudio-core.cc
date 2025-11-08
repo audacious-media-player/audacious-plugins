@@ -268,6 +268,11 @@ static void create_extension_dict ()
         for (auto & ext : extlist)
             extension_dict.add (ext, std::move (f));
     }
+
+    /* FFmpeg has two decoders for Musepack files. Since the SV8 format
+     * may also use the mpc extension, our 1:1 mapping won't work here.
+     * Rely on content probing as workaround. */
+    extension_dict.remove (String ("mpc"));
 }
 
 static AVInputFormat * get_format_by_extension (const char * name)
