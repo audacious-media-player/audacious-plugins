@@ -425,7 +425,7 @@ static const struct {
     {Tuple::Int, Tuple::Disc, {"disc", "WM/PartOfSet", nullptr}},
 };
 
-static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
+static void read_metadata_dict (Tuple & tuple, const AVDictionary * dict)
 {
     for (auto & meta : metaentries)
     {
