@@ -202,8 +202,6 @@ FAILED:
 
 VFSImpl * GIOTransport::fopen (const char * filename, const char * mode, String & error)
 {
-    g_type_init ();
-
     try { return new GIOFile (filename, mode); }
     catch (GIOFile::OpenError & ex)
     {

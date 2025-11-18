@@ -52,7 +52,7 @@ audgui_dep = declare_dependency(link_args: [
 ])
 
 
-glib_req = '>= 2.32'
+glib_req = '>= 2.36'
 glib_dep = dependency('glib-2.0', version: glib_req, required: true)
 gmodule_dep = dependency('gmodule-2.0', version: glib_req, required: true)
 zlib_dep = dependency('zlib', required: true)

@@ -259,8 +259,6 @@ const char * const DeleteFiles::defaults[] = {
 
 bool DeleteFiles::init ()
 {
-    g_type_init ();
-
     aud_config_set_defaults ("delete_files", defaults);
 
     for (AudMenuID menu : menus)

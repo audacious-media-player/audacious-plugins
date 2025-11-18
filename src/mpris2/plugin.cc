@@ -390,8 +390,6 @@ void MPRIS2Plugin::cleanup ()
 
 bool MPRIS2Plugin::init ()
 {
-    g_type_init ();
-
     GError * error = nullptr;
     GDBusConnection * bus = g_bus_get_sync (G_BUS_TYPE_SESSION, nullptr, & error);
 
