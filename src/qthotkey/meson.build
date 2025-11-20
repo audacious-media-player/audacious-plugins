@@ -5,7 +5,7 @@ else
   qtx11_dep = dependency('qt6', version: [qt_req, '>= 6.2'], private_headers: true, required: false, modules: ['Core', 'Gui'])
 endif
 
-have_qthotkey = x11_dep.found() and qtx11_dep.found() and not (have_darwin or have_windows)
+have_qthotkey = x11_dep.found() and qtx11_dep.found()
 
 
 if have_qthotkey

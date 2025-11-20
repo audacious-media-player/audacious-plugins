@@ -553,7 +553,7 @@ else
     QT_MULTIMEDIA_DEP=Qt6Multimedia
     QT_NETWORK_DEP=Qt6Network
     QT_OPENGL_DEP="Qt6OpenGL Qt6OpenGLWidgets"
-    QT_X11_DEP="Qt6Gui >= 6.2 x11 xcb-proto"
+    QT_X11_DEP="Qt6Gui >= 6.2 x11"
 fi
 
 ENABLE_PLUGIN_WITH_DEP(qtaudio,
@@ -592,12 +592,18 @@ ENABLE_PLUGIN_WITH_TEST(qtglspectrum,
     auto,
     VISUALIZATION)
 
-ENABLE_PLUGIN_WITH_DEP(qthotkey,
+test_qthotkey () {
+    if test "x$HAVE_DARWIN" = "xyes" -o "x$HAVE_MSWINDOWS" = "xyes" ; then
+        have_qthotkey=no
+    else
+        PKG_CHECK_MODULES(QTX11EXTRAS, $QT_X11_DEP, have_qthotkey=yes, have_qthotkey=no)
+    fi
+}
+
+ENABLE_PLUGIN_WITH_TEST(qthotkey,
     global hotkeys (X11),
     auto,
-    GENERAL,
-    QTX11EXTRAS,
-    $QT_X11_DEP)
+    GENERAL)
 
 dnl CoreAudio
 dnl =========

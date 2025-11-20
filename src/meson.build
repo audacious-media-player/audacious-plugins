@@ -101,7 +101,7 @@ if conf.has('USE_QT')
     subdir('qtglspectrum')
   endif
 
-  if get_option('hotkey')
+  if get_option('hotkey') and not (have_darwin or have_windows or have_cygwin)
     subdir('qthotkey')
   endif
 
