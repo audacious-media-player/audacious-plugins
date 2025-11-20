@@ -20,7 +20,6 @@
  * the use of this software.
  */
 
-#include <cmath>
 #include <ctime>
 
 #include <pipewire/pipewire.h>
