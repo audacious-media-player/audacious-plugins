@@ -87,7 +87,7 @@ bool ChartLyricsProvider::match (LyricsState state)
 {
     reset_lyric_metadata ();
 
-    auto handle_result_cb = [=] (const char * uri, const Index<char> & buf) {
+    auto handle_result_cb = [this, state] (const char * uri, const Index<char> & buf) {
         if (! buf.len ())
         {
             update_lyrics_window_error (str_printf (_("Unable to fetch %s"), uri));
@@ -144,7 +144,7 @@ void ChartLyricsProvider::fetch (LyricsState state)
         return;
     }
 
-    auto handle_result_cb = [=] (const char * uri, const Index<char> & buf) {
+    auto handle_result_cb = [this] (const char * uri, const Index<char> & buf) {
         if (! buf.len ())
         {
             update_lyrics_window_error (str_printf (_("Unable to fetch %s"), uri));
