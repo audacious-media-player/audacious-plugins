@@ -30,18 +30,18 @@
 #include "playlist_model.h"
 
 const char * const PlaylistModel::labels[] = {
-    N_("Entry Number"),   N_("Title"),        N_("Artist"),    N_("Year"),
-    N_("Album"),          N_("Album Artist"), N_("Track"),     N_("Genre"),
-    N_("Queue Position"), N_("Length"),       N_("File Path"), N_("File Name"),
-    N_("Custom Title"),   N_("Bitrate"),      N_("Comment"),   N_("Publisher"),
-    N_("Catalog Number"), N_("Disc")};
+    N_("Entry Number"),   N_("Title"),         N_("Artist"),         N_("Year"),
+    N_("Album"),          N_("Album Artist"),  N_("Track"),          N_("Genre"),
+    N_("Queue Position"), N_("Length"),        N_("File Path"),      N_("File Name"),
+    N_("File Created"),   N_("File Modified"), N_("Custom Title"),   N_("Bitrate"),
+    N_("Comment"),        N_("Publisher"),     N_("Catalog Number"), N_("Disc")};
 
 static const Tuple::Field s_fields[] = {
-    Tuple::Invalid,        Tuple::Title,       Tuple::Artist, Tuple::Year,
-    Tuple::Album,          Tuple::AlbumArtist, Tuple::Track,  Tuple::Genre,
-    Tuple::Invalid,        Tuple::Length,      Tuple::Path,   Tuple::Basename,
-    Tuple::FormattedTitle, Tuple::Bitrate,     Tuple::Comment, Tuple::Publisher,
-    Tuple::CatalogNum,     Tuple::Disc};
+    Tuple::Invalid, Tuple::Title,       Tuple::Artist,         Tuple::Year,
+    Tuple::Album,   Tuple::AlbumArtist, Tuple::Track,          Tuple::Genre,
+    Tuple::Invalid, Tuple::Length,      Tuple::Path,           Tuple::Basename,
+    Tuple::Created, Tuple::Modified,    Tuple::FormattedTitle, Tuple::Bitrate,
+    Tuple::Comment, Tuple::Publisher,   Tuple::CatalogNum,     Tuple::Disc};
 
 static_assert(aud::n_elems(PlaylistModel::labels) == PlaylistModel::n_cols,
               "update PlaylistModel::labels");
@@ -117,6 +117,16 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
             case Tuple::Int:
                 val = tuple.get_int(s_fields[col]);
                 break;
+            case Tuple::DateTime:
+                time_t t = tuple.get_dt(s_fields[col]);
+                if (t > 0) {
+                    struct tm tm_val;
+                    char buf[64];
+                    localtime_r (&t, &tm_val);
+                    strftime (buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &tm_val);
+                    return QString(buf);
+                }
+                return QString();
             }
         }
 

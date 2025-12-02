@@ -45,6 +45,8 @@ const char * const pw_col_names[PW_COLS] = {
     N_("Length"),
     N_("File Path"),
     N_("File Name"),
+    N_("File Created"),
+    N_("File Modified"),
     N_("Custom Title"),
     N_("Bitrate"),
     N_("Comment"),
@@ -70,6 +72,8 @@ static const char * const pw_col_keys[PW_COLS] = {
     "length",
     "path",
     "filename",
+    "created",
+    "modified",
     "custom",
     "bitrate",
     "comment",
@@ -91,6 +95,8 @@ static const int pw_default_widths[PW_COLS] = {
     10,   // length
     275,  // path
     275,  // filename
+    50,   // created
+    50,   // modified
     275,  // custom title
     10,   // bitrate
     275,  // comment
