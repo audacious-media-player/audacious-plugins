@@ -123,7 +123,7 @@ static void update_sizes ()
         legend_width = 0;
         vumeter_top_padding = 0;
         vumeter_bottom_padding = 0;
-        vumeter_width = width / nchannels;
+        vumeter_width = (float) width / nchannels;
         vumeter_height = height;
     }
 }
@@ -371,7 +371,7 @@ static StringBuf format_db (const float val)
     else if (val > -DB_RANGE)
         return str_printf ("%.0f", val);
     else
-        return str_printf ("-inf");
+        return str_copy ("-inf");
 }
 
 static void draw_visualizer_peak_legend (cairo_t * cr)
