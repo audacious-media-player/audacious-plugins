@@ -159,8 +159,10 @@ void SkinnedVis::draw (QPainter & cr)
         set = rgb;
 
         for (int y = 0; y < 16; y ++)
-        for (int x = 0; x < 76; x ++)
-            RGB_SET (colors[* get ++]);
+        {
+            for (int x = 0; x < 76; x ++)
+                RGB_SET (colors[* get ++]);
+        }
         break;
     }
     case VIS_SCOPE:
