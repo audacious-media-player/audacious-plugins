@@ -5,7 +5,7 @@ have_mms = mms_dep.found()
 if have_mms
   shared_module('mms',
     'mms.cc',
-    dependencies: [audacious_dep, mms_dep, glib_dep],
+    dependencies: [audacious_dep, mms_dep],
     name_prefix: '',
     install: true,
     install_dir: transport_plugin_dir

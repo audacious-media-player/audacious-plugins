@@ -9,6 +9,6 @@ plugindir := ${plugindir}/${TRANSPORT_PLUGIN_DIR}
 
 LD = ${CXX}
 
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MMS_CFLAGS} -I../.. -Wall
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MMS_CFLAGS} -I../..
 CFLAGS += ${PLUGIN_CFLAGS}
 LIBS += ${MMS_LIBS}
