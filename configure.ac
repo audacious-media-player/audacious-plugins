@@ -720,6 +720,17 @@ if test "x$enable_mac_media_keys" != "xno"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS mac-media-keys"
 fi
 
+dnl Mac Now Playing
+dnl ============
+
+AC_ARG_ENABLE(mac_now_playing,
+ [AS_HELP_STRING([--enable-mac-now-playing], [enable Mac Now Playing])],
+ [enable_mac_now_playing=$enableval], [enable_mac_now_playing="no"])
+
+if test "x$enable_mac_now_playing" != "xno"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS mac-now-playing"
+fi
+
 dnl *** End of all plugin checks ***
 
 plugindir=`pkg-config audacious --variable=plugin_dir`
@@ -918,5 +929,6 @@ if test "x$HAVE_DARWIN" = "xyes" ; then
     echo "  -------------"
     echo "  CoreAudio output:                       $have_coreaudio"
     echo "  Media Keys:                             $enable_mac_media_keys"
+    echo "  Now Playing:                            $enable_mac_now_playing"
     echo
 fi
