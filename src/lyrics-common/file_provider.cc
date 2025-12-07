@@ -19,6 +19,8 @@
  */
 
 #include <errno.h>
+#include <string.h>
+
 #include <glib/gstdio.h>
 
 #include "lyrics.h"

@@ -28,8 +28,6 @@
 #include "main.h"
 #include "plugin-window.h"
 
-#include "../ui-common/menu-ops.h"
-
 #include <gtk/gtk.h>
 
 #include <libaudcore/drct.h>

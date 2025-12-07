@@ -22,10 +22,12 @@
 
 #include "oss.h"
 
+#include <errno.h>
+#include <poll.h>
+#include <string.h>
+
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
-
-#include <poll.h>
 
 constexpr StereoVolume to_stereo_volume(int vol)
     { return {vol & 0x00ff, vol >> 8}; }

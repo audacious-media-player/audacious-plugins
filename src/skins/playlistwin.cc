@@ -42,7 +42,6 @@
 #include "dnd.h"
 #include "drag-handle.h"
 #include "menus.h"
-#include "plugin.h"
 #include "skins_cfg.h"
 #include "main.h"
 #include "playlistwin.h"

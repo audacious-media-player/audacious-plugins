@@ -28,6 +28,8 @@
 
 #include <gtk/gtk.h>
 
+#include <libaudcore/templates.h>
+
 /* Designate dropped data types that we know and care about */
 enum {
     DROP_STRING,

@@ -25,6 +25,8 @@
 
 #include <libaudcore/playlist.h>
 
+class QFont;
+
 class PlaylistModel : public QAbstractListModel
 {
 public:

@@ -19,6 +19,9 @@
 
 #include "oss.h"
 
+#include <errno.h>
+#include <string.h>
+
 #include <libaudcore/audstrings.h>
 
 const char *oss_format_to_text(int format)

@@ -29,7 +29,6 @@
 #include <libaudcore/runtime.h>
 
 #include "plugin.h"
-#include "skin.h"
 #include "skinselector.h"
 #include "skins_util.h"
 

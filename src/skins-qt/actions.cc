@@ -28,8 +28,6 @@
 #include "main.h"
 #include "plugin-window.h"
 
-#include "../ui-common/menu-ops.h"
-
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>

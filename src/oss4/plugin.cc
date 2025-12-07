@@ -19,6 +19,8 @@
 
 #include "oss.h"
 
+#include <string.h>
+
 #include <libaudcore/audstrings.h>
 #include <libaudcore/preferences.h>
 

@@ -20,8 +20,6 @@
  * the use of this software.
  */
 
-#include <ctime>
-
 #include <pipewire/pipewire.h>
 #include <spa/param/audio/format-utils.h>
 #include <spa/param/props.h>
@@ -40,6 +38,7 @@ static inline int pw_stream_get_time_n(struct pw_stream * stream,
 #endif
 
 #if !PW_CHECK_VERSION(1, 0, 4)
+#include <ctime>
 static uint64_t pw_stream_get_nsec(struct pw_stream * stream)
 {
     struct timespec ts;

@@ -13,7 +13,6 @@
 #include <sys/time.h>
 #include <sys/poll.h>
 #include <string.h>
-#include <time.h>
 #include <unistd.h>
 #include <errno.h>
 #include <gdk/gdk.h>

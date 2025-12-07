@@ -9,11 +9,9 @@
  */
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <cairo/cairo-xlib-xrender.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
-
 #include <X11/extensions/Xcomposite.h>
 
 #include <glib.h>

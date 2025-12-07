@@ -21,6 +21,7 @@
 #ifndef _I_AOSD_H
 #define _I_AOSD_H 1
 
+#include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
 struct PreferencesWidget;

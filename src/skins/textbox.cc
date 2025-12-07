@@ -25,8 +25,6 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include <string.h>
-
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/objects.h>

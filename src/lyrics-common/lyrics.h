@@ -22,7 +22,6 @@
 #ifndef AUDACIOUS_LYRICS_H
 #define AUDACIOUS_LYRICS_H
 
-#include <string.h>
 #include <libxml/parser.h>
 
 #define AUD_GLIB_INTEGRATION

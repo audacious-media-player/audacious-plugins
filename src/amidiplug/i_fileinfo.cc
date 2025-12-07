@@ -24,7 +24,6 @@
 
 #include <limits.h>
 #include <stdlib.h>
-#include <string.h>
 #include <gtk/gtk.h>
 
 #include <libaudcore/i18n.h>

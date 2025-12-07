@@ -41,7 +41,6 @@
 #include "skins_cfg.h"
 #include "equalizer.h"
 #include "main.h"
-#include "vis-callbacks.h"
 #include "playlistwin.h"
 #include "skin.h"
 #include "window.h"

@@ -19,14 +19,11 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include <string.h>
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
 
-#include "dnd.h"
 #include "skins_cfg.h"
 #include "main.h"
 #include "vis-callbacks.h"
@@ -36,7 +33,6 @@
 #include "textbox.h"
 #include "skinselector.h"
 #include "vis.h"
-#include "skins_util.h"
 #include "view.h"
 
 static const char * const skins_defaults[] = {

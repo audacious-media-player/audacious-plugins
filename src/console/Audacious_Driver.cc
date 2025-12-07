@@ -7,8 +7,6 @@
  */
 
 #include <math.h>
-#include <stdio.h>
-#include <string.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>

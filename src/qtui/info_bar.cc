@@ -17,10 +17,7 @@
  * the use of this software.
  */
 
-#include <cmath>
-
 #include "info_bar.h"
-#include "settings.h"
 
 #include <libaudcore/drct.h>
 #include <libaudcore/interface.h>

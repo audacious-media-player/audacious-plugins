@@ -18,9 +18,7 @@
 */
 
 #include <algorithm>
-#include <sstream>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <adplug/adplug.h>
@@ -40,8 +38,8 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
-#include <libaudcore/runtime.h>
 #include <libaudcore/preferences.h>
+#include <libaudcore/runtime.h>
 
 #include "adplug-xmms.h"
 
@@ -123,6 +121,7 @@ static struct {
 #ifdef DEBUG
 
 #include <stdarg.h>
+#include <stdio.h>
 
 static void
 dbg_printf (const char *fmt, ...)

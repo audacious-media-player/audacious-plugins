@@ -6,7 +6,6 @@
 
 #include "modplugbmp.h"
 
-#include <fstream>
 #include <stdint.h>
 #include <sys/types.h>
 #include <math.h>

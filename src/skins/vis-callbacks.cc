@@ -29,14 +29,7 @@
 #include "skins_cfg.h"
 #include "main.h"
 #include "vis-callbacks.h"
-#include "skin.h"
-#include "button.h"
-#include "hslider.h"
-#include "number.h"
-#include "playstatus.h"
-#include "textbox.h"
 #include "vis.h"
-#include "skins_util.h"
 
 class VisCallbacks : public Visualizer
 {

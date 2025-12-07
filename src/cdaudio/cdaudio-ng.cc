@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses>.
  */
 
-#include <errno.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -22,6 +22,8 @@
 
 #include <gtk/gtk.h>
 
+class PluginHandle;
+
 void layout_load ();
 void layout_save ();
 void layout_cleanup ();

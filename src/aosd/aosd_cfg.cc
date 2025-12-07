@@ -19,11 +19,9 @@
 */
 
 #include "aosd_cfg.h"
-#include "aosd_style.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>

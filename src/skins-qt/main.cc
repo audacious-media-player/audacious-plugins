@@ -41,8 +41,6 @@
 #include "../ui-common/qt-compat.h"
 
 #include "actions-mainwin.h"
-#include "actions-playlist.h"
-#include "dnd.h"
 #include "menus.h"
 #include "plugin.h"
 #include "skins_cfg.h"
@@ -60,7 +58,6 @@
 #include "textbox.h"
 #include "window.h"
 #include "vis.h"
-#include "skins_util.h"
 #include "view.h"
 
 #define SEEK_THRESHOLD 200 /* milliseconds */

@@ -19,6 +19,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <string.h>
+
 #include "lyrics.h"
 #include "preferences.h"
 

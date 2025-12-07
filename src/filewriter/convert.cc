@@ -2,6 +2,9 @@
 
 #include <string.h>
 
+#include <libaudcore/audio.h>
+#include <libaudcore/index.h>
+
 static int in_fmt;
 static int out_fmt;
 

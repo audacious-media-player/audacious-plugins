@@ -19,7 +19,6 @@
 */
 
 #include <stdlib.h>
-#include <string.h>
 
 #include <fluidsynth.h>
 
@@ -29,7 +28,6 @@
 #include <libaudcore/runtime.h>
 
 #include "../i_backend.h"
-#include "../i_configure.h"
 #include "../i_midievent.h"
 
 typedef struct

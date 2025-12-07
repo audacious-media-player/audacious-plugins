@@ -21,7 +21,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <type_traits>
 
 /**
  * Implements a classic RC-filter using an recursive filter with one input and

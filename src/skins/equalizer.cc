@@ -23,7 +23,6 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#include <string.h>
 #include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
@@ -36,7 +35,6 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "menus.h"
-#include "plugin.h"
 #include "skins_cfg.h"
 #include "equalizer.h"
 #include "main.h"
@@ -45,7 +43,6 @@
 #include "eq-slider.h"
 #include "hslider.h"
 #include "window.h"
-#include "skins_util.h"
 #include "view.h"
 
 class EqWindow : public Window

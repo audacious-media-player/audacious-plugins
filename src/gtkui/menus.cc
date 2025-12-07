@@ -33,7 +33,6 @@
 
 #include "gtkui.h"
 #include "ui_playlist_notebook.h"
-#include "ui_playlist_widget.h"
 
 #include "../ui-common/menu-ops.h"
 

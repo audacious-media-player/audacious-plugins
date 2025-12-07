@@ -23,8 +23,6 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#include <string.h>
-
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/equalizer.h>
@@ -34,7 +32,6 @@
 #include <libaudqt/libaudqt.h>
 
 #include "menus.h"
-#include "plugin.h"
 #include "skins_cfg.h"
 #include "equalizer.h"
 #include "main.h"
@@ -43,7 +40,6 @@
 #include "eq-slider.h"
 #include "hslider.h"
 #include "window.h"
-#include "skins_util.h"
 #include "view.h"
 
 #include "../ui-common/qt-compat.h"

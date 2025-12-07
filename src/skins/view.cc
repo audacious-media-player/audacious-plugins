@@ -19,8 +19,6 @@
  * using our public API to be a derived work.
  */
 
-#include "view.h"
-
 #include <libaudcore/hook.h>
 #include <libaudcore/mainloop.h>
 #include <libaudcore/runtime.h>
@@ -33,11 +31,10 @@
 #include "vis-callbacks.h"
 #include "playlistwin.h"
 #include "button.h"
-#include "eq-graph.h"
 #include "textbox.h"
 #include "menurow.h"
+#include "view.h"
 #include "window.h"
-#include "vis.h"
 
 void view_show_player (bool show)
 {

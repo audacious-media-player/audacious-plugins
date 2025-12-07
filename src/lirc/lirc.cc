@@ -29,7 +29,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
-#include <signal.h>
 #include <stdlib.h>
 
 #include <glib.h>
