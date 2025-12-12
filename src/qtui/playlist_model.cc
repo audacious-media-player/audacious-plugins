@@ -117,8 +117,11 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
             case Tuple::Int:
                 val = tuple.get_int(s_fields[col]);
                 break;
+            case Tuple::Int64:
+                val = tuple.get_int(s_fields[col]);
+                break;
             case Tuple::DateTime:
-                time_t t = tuple.get_dt(s_fields[col]);
+                time_t t = (time_t)tuple.get_int64(s_fields[col]);
                 if (t > 0) {
                     struct tm tm_val;
                     char buf[64];
