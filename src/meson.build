@@ -159,6 +159,10 @@ if get_option('mac-media-keys') and have_darwin
   subdir('mac-media-keys')
 endif
 
+if get_option('mac-now-playing') and have_darwin
+  subdir('mac-now-playing')
+endif
+
 if get_option('mpris2') and not have_windows
   subdir('mpris2')
 endif
