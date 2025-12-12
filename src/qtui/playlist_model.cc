@@ -124,9 +124,9 @@ QVariant PlaylistModel::data(const QModelIndex & index, int role) const
                 time_t t = (time_t)tuple.get_int64(s_fields[col]);
                 if (t > 0) {
                     struct tm tm_val;
-                    char buf[64];
-                    localtime_r (&t, &tm_val);
-                    strftime (buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &tm_val);
+                    char buf[128];
+                    localtime_r(&t, &tm_val);
+                    strftime(buf, sizeof(buf), "%c", &tm_val); // "%c" = locale’s default date+time format
                     return QString(buf);
                 }
                 return QString();
