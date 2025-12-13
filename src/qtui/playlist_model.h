@@ -44,6 +44,8 @@ public:
         Length,
         Path,
         Filename,
+        Created,
+        Modified,
         CustomTitle,
         Bitrate,
         Comment,
