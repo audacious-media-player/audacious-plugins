@@ -149,7 +149,7 @@ static void set_int_from_tuple (GValue * value, const Tuple & tuple, Tuple::Fiel
 
 static void set_datetime_from_tuple (GValue * value, const Tuple & tuple, Tuple::Field field)
 {
-    time_t t = (time_t) tuple.get_int64 (field);
+    int64_t t = (int64_t) tuple.get_int64 (field);
 
     if (t > 0) {
         struct tm tm_val;
