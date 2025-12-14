@@ -17,6 +17,8 @@
  * the use of this software.
  */
 
+#include <string.h>
+
 #include <QAbstractListModel>
 #include <QBoxLayout>
 #include <QFont>

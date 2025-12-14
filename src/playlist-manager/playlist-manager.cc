@@ -17,6 +17,8 @@
  * the use of this software.
  */
 
+#include <string.h>
+
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -28,8 +30,6 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
-
-#include <string.h>
 
 class PlaylistManager : public GeneralPlugin
 {

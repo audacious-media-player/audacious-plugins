@@ -19,6 +19,8 @@
 
 #include "menu-ops.h"
 
+#include <string.h>
+
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
