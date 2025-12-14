@@ -48,8 +48,8 @@ public:
 
     constexpr PlaylistManagerQt() : GeneralPlugin(info, false) {}
 
-    void * get_qt_widget();
-    int take_message(const char * code, const void *, int);
+    void * get_qt_widget() override;
+    int take_message(const char * code, const void *, int) override;
 };
 
 EXPORT PlaylistManagerQt aud_plugin_instance;
@@ -82,16 +82,16 @@ public:
     void update(Playlist::UpdateLevel level);
 
 protected:
-    int rowCount(const QModelIndex & parent) const
+    int rowCount(const QModelIndex & parent) const override
     {
         return parent.isValid() ? 0 : m_rows;
     }
 
-    int columnCount(const QModelIndex & parent) const { return NColumns; }
+    int columnCount(const QModelIndex & parent) const override { return NColumns; }
 
-    Qt::DropActions supportedDropActions() const { return Qt::MoveAction; }
+    Qt::DropActions supportedDropActions() const override { return Qt::MoveAction; }
 
-    Qt::ItemFlags flags(const QModelIndex & index) const
+    Qt::ItemFlags flags(const QModelIndex & index) const override
     {
         if (index.isValid())
             return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled |
@@ -101,9 +101,9 @@ protected:
                    Qt::ItemIsEnabled;
     }
 
-    QVariant data(const QModelIndex & index, int role) const;
+    QVariant data(const QModelIndex & index, int role) const override;
     QVariant headerData(int section, Qt::Orientation orientation,
-                        int role) const;
+                        int role) const override;
 
 private:
     void update_rows(int row, int count);

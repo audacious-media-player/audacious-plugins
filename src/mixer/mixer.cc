@@ -49,11 +49,11 @@ public:
     /* order #2: must be before crossfade */
     constexpr ChannelMixer () : EffectPlugin (info, 2, false) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    void start (int & channels, int & rate);
-    Index<float> & process (Index<float> & data);
+    void start (int & channels, int & rate) override;
+    Index<float> & process (Index<float> & data) override;
 };
 
 EXPORT ChannelMixer aud_plugin_instance;

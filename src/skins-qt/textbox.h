@@ -55,8 +55,8 @@ public:
     static void update_all ();
 
 private:
-    virtual void draw (QPainter & cr);
-    virtual bool button_press (QMouseEvent * event);
+    virtual void draw (QPainter & cr) override;
+    virtual bool button_press (QMouseEvent * event) override;
 
     void scroll_timeout ();
     void render_vector (const char * text);

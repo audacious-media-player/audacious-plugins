@@ -37,7 +37,7 @@ public:
 
     constexpr AlbumArtPlugin () : GeneralPlugin (info, false) {}
 
-    void * get_gtk_widget ();
+    void * get_gtk_widget () override;
 };
 
 EXPORT AlbumArtPlugin aud_plugin_instance;

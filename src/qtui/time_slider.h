@@ -34,7 +34,7 @@ public:
     ~TimeSliderLabel();
 
 protected:
-    void mouseDoubleClickEvent(QMouseEvent * event);
+    void mouseDoubleClickEvent(QMouseEvent * event) override;
 };
 
 class TimeSlider : public QSlider
@@ -45,7 +45,7 @@ public:
     TimeSliderLabel * label() { return m_label; }
 
 protected:
-    void wheelEvent(QWheelEvent * event);
+    void wheelEvent(QWheelEvent * event) override;
 
 private:
     void set_label(int time, int length);

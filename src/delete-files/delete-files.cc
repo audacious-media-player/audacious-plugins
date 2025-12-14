@@ -57,8 +57,8 @@ public:
 
     constexpr DeleteFiles () : GeneralPlugin (info, false) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 };
 
 EXPORT DeleteFiles aud_plugin_instance;

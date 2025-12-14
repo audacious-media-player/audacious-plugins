@@ -43,9 +43,9 @@ public:
 
     constexpr GIOTransport () : TransportPlugin (info, gio_schemes) {}
 
-    VFSImpl * fopen (const char * path, const char * mode, String & error);
-    VFSFileTest test_file (const char * filename, VFSFileTest test, String & error);
-    Index<String> read_folder (const char * filename, String & error);
+    VFSImpl * fopen (const char * path, const char * mode, String & error) override;
+    VFSFileTest test_file (const char * filename, VFSFileTest test, String & error) override;
+    Index<String> read_folder (const char * filename, String & error) override;
 };
 
 EXPORT GIOTransport aud_plugin_instance;
@@ -54,7 +54,7 @@ class GIOFile : public VFSImpl
 {
 public:
     GIOFile (const char * filename, const char * mode);
-    ~GIOFile ();
+    ~GIOFile () override;
 
     // exception
     struct OpenError {
@@ -62,17 +62,17 @@ public:
     };
 
 protected:
-    int64_t fread (void * ptr, int64_t size, int64_t nmemb);
-    int64_t fwrite (const void * buf, int64_t size, int64_t nitems);
+    int64_t fread (void * ptr, int64_t size, int64_t nmemb) override;
+    int64_t fwrite (const void * buf, int64_t size, int64_t nitems) override;
 
-    int fseek (int64_t offset, VFSSeekType whence);
-    int64_t ftell ();
-    bool feof ();
+    int fseek (int64_t offset, VFSSeekType whence) override;
+    int64_t ftell () override;
+    bool feof () override;
 
-    int ftruncate (int64_t length);
-    int64_t fsize ();
+    int ftruncate (int64_t length) override;
+    int64_t fsize () override;
 
-    int fflush ();
+    int fflush () override;
 
 private:
     String m_filename;

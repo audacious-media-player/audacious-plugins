@@ -37,7 +37,7 @@ public:
     void set_num_channels (int num_channels);
 
 private:
-    void draw (cairo_t * cr);
+    void draw (cairo_t * cr) override;
 
     int m_num_channels = 0;
 };

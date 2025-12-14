@@ -40,7 +40,7 @@ public:
     };
 
     constexpr AlbumArtQt () : GeneralPlugin (info, false) {}
-    void * get_qt_widget ();
+    void * get_qt_widget () override;
 };
 
 class ArtLabel : public QLabel {

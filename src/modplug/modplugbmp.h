@@ -64,11 +64,11 @@ public:
         .with_priority(_AUD_PLUGIN_DEFAULT_PRIO + 1) // prefer openmpt
         .with_exts (exts)) {}
 
-    bool init ();
+    bool init () override;
 
-    bool is_our_file (const char * filename, VFSFile & file);
-    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
-    bool play (const char * filename, VFSFile & file);
+    bool is_our_file (const char * filename, VFSFile & file) override;
+    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image) override;
+    bool play (const char * filename, VFSFile & file) override;
 
 private:
     unsigned char * mBuffer = nullptr;

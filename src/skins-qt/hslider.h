@@ -48,10 +48,10 @@ public:
     void on_release (void (* callback) ()) { release = callback; }
 
 private:
-    void draw (QPainter & cr);
-    bool button_press (QMouseEvent * event);
-    bool button_release (QMouseEvent * event);
-    bool motion (QMouseEvent * event);
+    void draw (QPainter & cr) override;
+    bool button_press (QMouseEvent * event) override;
+    bool button_release (QMouseEvent * event) override;
+    bool motion (QMouseEvent * event) override;
 
     int m_min, m_max;
     SkinPixmapId m_si;

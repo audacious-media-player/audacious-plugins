@@ -30,9 +30,9 @@ public:
     DragHandle (int w, int h, void (* press) (), void (* drag) (int x, int y));
 
 private:
-    bool button_press (GdkEventButton * event);
-    bool button_release (GdkEventButton * event);
-    bool motion (GdkEventMotion * event);
+    bool button_press (GdkEventButton * event) override;
+    bool button_release (GdkEventButton * event) override;
+    bool motion (GdkEventMotion * event) override;
 
     void (* press) ();
     void (* drag) (int x_offset, int y_offset);

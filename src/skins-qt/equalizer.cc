@@ -52,8 +52,8 @@ public:
          shaded ? 14 : 116, shaded) {}
 
 private:
-    void draw (QPainter & cr);
-    bool button_press (QMouseEvent * event);
+    void draw (QPainter & cr) override;
+    bool button_press (QMouseEvent * event) override;
 };
 
 Window * equalizerwin;

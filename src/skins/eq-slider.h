@@ -36,11 +36,11 @@ public:
     void set_value (float value);
 
 private:
-    void draw (cairo_t * cr);
-    bool button_press (GdkEventButton * event);
-    bool button_release (GdkEventButton * event);
-    bool scroll (GdkEventScroll * event);
-    bool motion (GdkEventMotion * event);
+    void draw (cairo_t * cr) override;
+    bool button_press (GdkEventButton * event) override;
+    bool button_release (GdkEventButton * event) override;
+    bool scroll (GdkEventScroll * event) override;
+    bool motion (GdkEventMotion * event) override;
 
     void moved (int pos);
 

@@ -64,10 +64,10 @@ public:
     ShoutcastTunerModel (QObject * parent = nullptr);
     ~ShoutcastTunerModel ();
 
-    int columnCount (const QModelIndex &parent = QModelIndex()) const;
-    int rowCount (const QModelIndex &parent = QModelIndex()) const;
-    QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    QVariant data (const QModelIndex &index, int role = Qt::DisplayRole) const;
+    int columnCount (const QModelIndex &parent = QModelIndex()) const override;
+    int rowCount (const QModelIndex &parent = QModelIndex()) const override;
+    QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    QVariant data (const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     void fetch_stations (String genre = String ());
 
@@ -85,10 +85,10 @@ class ShoutcastGenreModel : public QAbstractListModel {
 public:
     ShoutcastGenreModel (QObject * parent = nullptr);
 
-    int columnCount (const QModelIndex &parent = QModelIndex()) const;
-    int rowCount (const QModelIndex &parent = QModelIndex()) const;
-    QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    QVariant data (const QModelIndex &index, int role = Qt::DisplayRole) const;
+    int columnCount (const QModelIndex &parent = QModelIndex()) const override;
+    int rowCount (const QModelIndex &parent = QModelIndex()) const override;
+    QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    QVariant data (const QModelIndex &index, int role = Qt::DisplayRole) const override;
 };
 
 #endif

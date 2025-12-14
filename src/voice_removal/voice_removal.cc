@@ -31,8 +31,8 @@ public:
 
     constexpr VoiceRemoval () : EffectPlugin (info, 0, true) {}
 
-    void start (int & channels, int & rate);
-    Index<float> & process (Index<float> & data);
+    void start (int & channels, int & rate) override;
+    Index<float> & process (Index<float> & data) override;
 };
 
 EXPORT VoiceRemoval aud_plugin_instance;

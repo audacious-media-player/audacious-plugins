@@ -59,9 +59,9 @@ private:
     Button (Type type, int w, int h, int nx, int ny, int px, int py, int pnx,
      int pny, int ppx, int ppy, SkinPixmapId si1, SkinPixmapId si2);
 
-    void draw (QPainter & cr);
-    bool button_press (QMouseEvent * event);
-    bool button_release (QMouseEvent * event);
+    void draw (QPainter & cr) override;
+    bool button_press (QMouseEvent * event) override;
+    bool button_release (QMouseEvent * event) override;
 
     Type m_type;
     int m_w, m_h;

@@ -62,13 +62,13 @@ public:
 
     constexpr BlurScope () : VisPlugin (info, Visualizer::MonoPCM) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    void * get_gtk_widget ();
+    void * get_gtk_widget () override;
 
-    void clear ();
-    void render_mono_pcm (const float * pcm);
+    void clear () override;
+    void render_mono_pcm (const float * pcm) override;
 
 private:
     void resize (int w, int h);

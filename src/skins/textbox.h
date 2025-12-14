@@ -54,8 +54,8 @@ public:
     static void update_all ();
 
 private:
-    virtual void draw (cairo_t * cr);
-    virtual bool button_press (GdkEventButton * event);
+    virtual void draw (cairo_t * cr) override;
+    virtual bool button_press (GdkEventButton * event) override;
 
     void scroll_timeout ();
     void render_vector (const char * text);

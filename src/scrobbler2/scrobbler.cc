@@ -34,8 +34,8 @@ public:
 
     constexpr Scrobbler () : GeneralPlugin (info, false) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 };
 
 EXPORT Scrobbler aud_plugin_instance;

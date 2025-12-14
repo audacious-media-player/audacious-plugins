@@ -43,8 +43,8 @@ public:
 
     constexpr LyricsGtk () : GeneralPlugin (info, false) {}
 
-    bool init ();
-    void * get_gtk_widget ();
+    bool init () override;
+    void * get_gtk_widget () override;
 };
 
 EXPORT LyricsGtk aud_plugin_instance;

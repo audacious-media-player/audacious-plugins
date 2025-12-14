@@ -75,8 +75,8 @@ public:
     float bars[VIS_BANDS] {};
     char delay[VIS_BANDS] {};
 
-    void clear ();
-    void render_freq (const float * freq);
+    void clear () override;
+    void render_freq (const float * freq) override;
 };
 
 static InfoAreaVis vis;

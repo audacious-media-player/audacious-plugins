@@ -41,7 +41,7 @@ public:
       err |= NotFound;
   }
 
-  Byte getByte()
+  Byte getByte() override
   {
     Byte b = (Byte)-1;
     if (fd->fread(&b, 1, 1) != 1)
@@ -49,14 +49,14 @@ public:
     return b;
   }
 
-  void seek(long pos, Offset offs = Set)
+  void seek(long pos, Offset offs = Set) override
   {
     VFSSeekType wh = (offs == Add) ? VFS_SEEK_CUR : (offs == End) ? VFS_SEEK_END : VFS_SEEK_SET;
     if (fd->fseek (pos, wh))
       err |= Eof;
   }
 
-  long pos()
+  long pos() override
   {
     return fd->ftell ();
   }
@@ -77,7 +77,7 @@ public:
   CFileVFSProvider(VFSFile &file) :
     m_file(file) {}
 
-  binistream *open(std::string filename) const
+  binistream *open(std::string filename) const override
   {
     binistream *f;
 
@@ -94,7 +94,7 @@ public:
     return f;
   }
 
-  void close(binistream *f) const
+  void close(binistream *f) const override
   {
     delete f;
   }

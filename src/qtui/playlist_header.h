@@ -46,8 +46,8 @@ private:
     void sectionMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex);
     void sectionResized(int logicalIndex, int /*oldSize*/, int newSize);
 
-    void contextMenuEvent(QContextMenuEvent * event);
-    bool event(QEvent * event);
+    void contextMenuEvent(QContextMenuEvent * event) override;
+    bool event(QEvent * event) override;
 
     void updateStyle();
 

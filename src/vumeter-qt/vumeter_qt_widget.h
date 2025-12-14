@@ -83,8 +83,8 @@ public:
     void toggle_display_legend();
 
 protected:
-    void resizeEvent (QResizeEvent *);
-    void paintEvent (QPaintEvent *);
+    void resizeEvent (QResizeEvent *) override;
+    void paintEvent (QPaintEvent *) override;
 };
 
 #endif

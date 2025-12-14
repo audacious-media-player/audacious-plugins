@@ -59,9 +59,9 @@ private:
     Button (Type type, int w, int h, int nx, int ny, int px, int py, int pnx,
      int pny, int ppx, int ppy, SkinPixmapId si1, SkinPixmapId si2);
 
-    void draw (cairo_t * cr);
-    bool button_press (GdkEventButton * event);
-    bool button_release (GdkEventButton * event);
+    void draw (cairo_t * cr) override;
+    bool button_press (GdkEventButton * event) override;
+    bool button_release (GdkEventButton * event) override;
 
     Type m_type;
     int m_w, m_h;

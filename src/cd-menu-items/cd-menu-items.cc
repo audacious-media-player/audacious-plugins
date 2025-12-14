@@ -36,8 +36,8 @@ public:
 
     constexpr CDMenuItems () : GeneralPlugin (info, true) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 };
 
 EXPORT CDMenuItems aud_plugin_instance;

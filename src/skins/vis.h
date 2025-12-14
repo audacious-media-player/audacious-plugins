@@ -61,7 +61,7 @@ public:
     void render (const unsigned char * data);
 
 private:
-    void draw (cairo_t * cr);
+    void draw (cairo_t * cr) override;
 
     uint32_t m_voice_color[256];
     uint32_t m_voice_color_fire[256];
@@ -81,7 +81,7 @@ public:
     void render (const unsigned char * data);
 
 private:
-    void draw (cairo_t * cr);
+    void draw (cairo_t * cr) override;
 
     bool m_active;
     int m_data[75];

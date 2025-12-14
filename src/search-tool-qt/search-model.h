@@ -89,15 +89,15 @@ public:
     void do_search (const Index<String> & terms, int max_results);
 
 protected:
-    int rowCount (const QModelIndex & parent) const
+    int rowCount (const QModelIndex & parent) const override
     {
         return parent.isValid() ? 0 : m_rows;
     }
 
-    int columnCount (const QModelIndex & parent) const { return 1; }
-    QVariant data (const QModelIndex & index, int role) const;
+    int columnCount (const QModelIndex & parent) const override { return 1; }
+    QVariant data (const QModelIndex & index, int role) const override;
 
-    Qt::ItemFlags flags (const QModelIndex & index) const
+    Qt::ItemFlags flags (const QModelIndex & index) const override
     {
         if (index.isValid ())
             return Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsEnabled;
@@ -105,12 +105,12 @@ protected:
             return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
     }
 
-    QStringList mimeTypes () const
+    QStringList mimeTypes () const override
     {
         return QStringList ("text/uri-list");
     }
 
-    QMimeData * mimeData (const QModelIndexList & indexes) const;
+    QMimeData * mimeData (const QModelIndexList & indexes) const override;
 
 private:
     void add_to_database (int entry, std::initializer_list<Key> keys);

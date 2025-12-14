@@ -33,7 +33,7 @@ public:
 
     constexpr MMSTransport () : TransportPlugin (info, mms_schemes) {}
 
-    VFSImpl * fopen (const char * path, const char * mode, String & error);
+    VFSImpl * fopen (const char * path, const char * mode, String & error) override;
 };
 
 EXPORT MMSTransport aud_plugin_instance;
@@ -45,19 +45,19 @@ public:
         m_mms (mms),
         m_mmsh (mmsh) {}
 
-    ~MMSFile ();
+    ~MMSFile () override;
 
     class OpenError {};  // exception
 
-    int64_t fread (void * ptr, int64_t size, int64_t nmemb);
-    int64_t fwrite (const void * ptr, int64_t size, int64_t nmemb);
+    int64_t fread (void * ptr, int64_t size, int64_t nmemb) override;
+    int64_t fwrite (const void * ptr, int64_t size, int64_t nmemb) override;
 
-    int fseek (int64_t offset, VFSSeekType whence);
-    int64_t ftell ();
-    int64_t fsize ();
-    bool feof ();
-    int ftruncate (int64_t size);
-    int fflush ();
+    int fseek (int64_t offset, VFSSeekType whence) override;
+    int64_t ftell () override;
+    int64_t fsize () override;
+    bool feof () override;
+    int ftruncate (int64_t size) override;
+    int fflush () override;
 
 private:
     mms_t * m_mms;

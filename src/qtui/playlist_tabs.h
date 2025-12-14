@@ -43,7 +43,7 @@ public:
     void tabEditedTrigger();
 
 protected:
-    bool eventFilter(QObject * obj, QEvent * e);
+    bool eventFilter(QObject * obj, QEvent * e) override;
 
 private:
     QMenu * m_pl_menu;

@@ -77,14 +77,14 @@ private:
     int m_scroll_delta_x = 0;
     int m_scroll_delta_y = 0;
 
-    void draw (QPainter & cr);
-    bool button_press (QMouseEvent * event);
-    bool scroll (QWheelEvent * event);
+    void draw (QPainter & cr) override;
+    bool button_press (QMouseEvent * event) override;
+    bool scroll (QWheelEvent * event) override;
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    void enterEvent (QEnterEvent * enterEvent);
+    void enterEvent (QEnterEvent * enterEvent) override;
 #else
-    void enterEvent (QEvent * event);
+    void enterEvent (QEvent * event) override;
 #endif
 };
 

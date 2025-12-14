@@ -43,7 +43,7 @@ public:
     void set_status (PStatus status);
 
 private:
-    void draw (cairo_t * cr);
+    void draw (cairo_t * cr) override;
 
     PStatus m_status = STATUS_STOP;
 };

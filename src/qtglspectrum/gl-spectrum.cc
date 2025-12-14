@@ -59,12 +59,12 @@ public:
 
     constexpr GLSpectrumQt () : VisPlugin (info, Visualizer::Freq) {}
 
-    bool init ();
+    bool init () override;
 
-    void * get_qt_widget ();
+    void * get_qt_widget () override;
 
-    void clear ();
-    void render_freq (const float * freq);
+    void clear () override;
+    void render_freq (const float * freq) override;
 };
 
 EXPORT GLSpectrumQt aud_plugin_instance;
@@ -83,9 +83,9 @@ public:
     ~GLSpectrumWidget ();
 
 private:
-    void paintGL ();
-    void resizeGL (int w, int h);
-    void initializeGL ();
+    void paintGL () override;
+    void resizeGL (int w, int h) override;
+    void initializeGL () override;
 
     void draw_bars ();
     void draw_bar (float x, float z, float h, float r, float g, float b);

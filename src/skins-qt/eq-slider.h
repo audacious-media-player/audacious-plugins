@@ -36,11 +36,11 @@ public:
     void set_value (float value);
 
 private:
-    void draw (QPainter & cr);
-    bool button_press (QMouseEvent * event);
-    bool button_release (QMouseEvent * event);
-    bool scroll (QWheelEvent * event);
-    bool motion (QMouseEvent * event);
+    void draw (QPainter & cr) override;
+    bool button_press (QMouseEvent * event) override;
+    bool button_release (QMouseEvent * event) override;
+    bool scroll (QWheelEvent * event) override;
+    bool motion (QMouseEvent * event) override;
 
     void moved (int pos);
 

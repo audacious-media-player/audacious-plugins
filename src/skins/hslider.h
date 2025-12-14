@@ -48,10 +48,10 @@ public:
     void on_release (void (* callback) ()) { release = callback; }
 
 private:
-    void draw (cairo_t * cr);
-    bool button_press (GdkEventButton * event);
-    bool button_release (GdkEventButton * event);
-    bool motion (GdkEventMotion * event);
+    void draw (cairo_t * cr) override;
+    bool button_press (GdkEventButton * event) override;
+    bool button_release (GdkEventButton * event) override;
+    bool motion (GdkEventMotion * event) override;
 
     int m_min, m_max;
     SkinPixmapId m_si;

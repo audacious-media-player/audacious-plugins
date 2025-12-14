@@ -37,7 +37,7 @@ public:
     void refresh () { queue_draw (); }
 
 private:
-    void draw (QPainter & cr);
+    void draw (QPainter & cr) override;
 };
 
 #endif

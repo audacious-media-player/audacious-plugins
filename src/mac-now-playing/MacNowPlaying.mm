@@ -29,8 +29,8 @@ public:
 
     constexpr MacNowPlayingPlugin() : GeneralPlugin(info, true) {}
 
-    bool init();
-    void cleanup();
+    bool init() override;
+    void cleanup() override;
 };
 
 EXPORT MacNowPlayingPlugin aud_plugin_instance;
@@ -244,6 +244,7 @@ bool MacNowPlayingPlugin::init()
     hook_associate("tuple change", update_metadata, nullptr);
     hook_associate("playback ready", update_position, nullptr);
     hook_associate("playback seek", update_position, nullptr);
+
     return true;
 }
 

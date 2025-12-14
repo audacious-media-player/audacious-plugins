@@ -66,8 +66,8 @@ public:
     void draw_vert_line (int x, int y1, int y2);
 
 protected:
-    void resizeEvent (QResizeEvent *);
-    void paintEvent (QPaintEvent *);
+    void resizeEvent (QResizeEvent *) override;
+    void paintEvent (QPaintEvent *) override;
 
 private:
     int m_width = 0, m_height = 0, m_image_size = 0;
@@ -164,13 +164,13 @@ public:
 
     constexpr BlurScopeQt () : VisPlugin (info, Visualizer::MonoPCM) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    void * get_qt_widget ();
+    void * get_qt_widget () override;
 
-    void clear ();
-    void render_mono_pcm (const float * pcm);
+    void clear () override;
+    void render_mono_pcm (const float * pcm) override;
 };
 
 EXPORT BlurScopeQt aud_plugin_instance;

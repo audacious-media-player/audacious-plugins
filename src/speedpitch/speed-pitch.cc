@@ -59,16 +59,16 @@ public:
 
     constexpr SpeedPitch () : EffectPlugin (info, 0, true) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    void start (int & channels, int & rate);
-    bool flush (bool force);
-    int adjust_delay (int delay);
+    void start (int & channels, int & rate) override;
+    bool flush (bool force) override;
+    int adjust_delay (int delay) override;
 
-    Index<float> & process (Index<float> & samples)
+    Index<float> & process (Index<float> & samples) override
         { return process (samples, false); }
-    Index<float> & finish (Index<float> & samples, bool end_of_playlist)
+    Index<float> & finish (Index<float> & samples, bool end_of_playlist) override
         { return process (samples, true); }
 
 private:

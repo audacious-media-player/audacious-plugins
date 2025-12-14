@@ -30,9 +30,9 @@ public:
     DragHandle (int w, int h, void (* press) (), void (* drag) (int x, int y));
 
 private:
-    bool button_press (QMouseEvent * event);
-    bool button_release (QMouseEvent * event);
-    bool motion (QMouseEvent * event);
+    bool button_press (QMouseEvent * event) override;
+    bool button_release (QMouseEvent * event) override;
+    bool motion (QMouseEvent * event) override;
 
     void (* press) ();
     void (* drag) (int x_offset, int y_offset);

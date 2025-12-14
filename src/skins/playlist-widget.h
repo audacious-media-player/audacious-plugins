@@ -56,11 +56,11 @@ public:
     int hover_end ();
 
 private:
-    void draw (cairo_t * cr);
-    bool button_press (GdkEventButton * event);
-    bool button_release (GdkEventButton * event);
-    bool motion (GdkEventMotion * event);
-    bool leave ();
+    void draw (cairo_t * cr) override;
+    bool button_press (GdkEventButton * event) override;
+    bool button_release (GdkEventButton * event) override;
+    bool motion (GdkEventMotion * event) override;
+    bool leave () override;
 
     void update_title ();
     void calc_layout ();

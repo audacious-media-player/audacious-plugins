@@ -53,8 +53,8 @@ public:
 
     constexpr StatusIcon () : GeneralPlugin (info, false) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 };
 
 EXPORT StatusIcon aud_plugin_instance;

@@ -83,13 +83,13 @@ public:
 
     constexpr LADSPAHost () : EffectPlugin (info, 0, true) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    void start (int & channels, int & rate);
-    Index<float> & process (Index<float> & data);
-    bool flush (bool force);
-    Index<float> & finish (Index<float> & data, bool end_of_playlist);
+    void start (int & channels, int & rate) override;
+    Index<float> & process (Index<float> & data) override;
+    bool flush (bool force) override;
+    Index<float> & finish (Index<float> & data, bool end_of_playlist) override;
 };
 
 /* plugin.c */

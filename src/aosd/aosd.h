@@ -44,8 +44,8 @@ public:
 
     constexpr AOSD () : GeneralPlugin (info, false) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 };
 
 #endif /* !_I_AOSD_H */

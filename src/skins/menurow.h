@@ -46,10 +46,10 @@ public:
     void refresh () { queue_draw (); }
 
 private:
-    virtual void draw (cairo_t * cr);
-    virtual bool button_press (GdkEventButton * event);
-    virtual bool button_release (GdkEventButton * event);
-    virtual bool motion (GdkEventMotion * event);
+    virtual void draw (cairo_t * cr) override;
+    virtual bool button_press (GdkEventButton * event) override;
+    virtual bool button_release (GdkEventButton * event) override;
+    virtual bool motion (GdkEventMotion * event) override;
 
     MenuRowItem m_selected = MENUROW_NONE;
     bool m_pushed = false;

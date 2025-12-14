@@ -92,9 +92,9 @@ public:
     constexpr XSPFLoader () : PlaylistPlugin (info, xspf_exts, true) {}
 
     bool load (const char * filename, VFSFile & file, String & title,
-     Index<PlaylistAddItem> & items);
+     Index<PlaylistAddItem> & items) override;
     bool save (const char * filename, VFSFile & file, const char * title,
-     const Index<PlaylistAddItem> & items);
+     const Index<PlaylistAddItem> & items) override;
 };
 
 EXPORT XSPFLoader aud_plugin_instance;

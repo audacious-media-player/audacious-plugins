@@ -69,12 +69,12 @@ public:
 
     constexpr GLSpectrum () : VisPlugin (info, Visualizer::Freq) {}
 
-    bool init ();
+    bool init () override;
 
-    void * get_gtk_widget ();
+    void * get_gtk_widget () override;
 
-    void clear ();
-    void render_freq (const float * freq);
+    void clear () override;
+    void render_freq (const float * freq) override;
 };
 
 EXPORT GLSpectrum aud_plugin_instance;

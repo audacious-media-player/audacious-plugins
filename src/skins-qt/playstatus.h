@@ -43,7 +43,7 @@ public:
     void set_status (PStatus status);
 
 private:
-    void draw (QPainter & cr);
+    void draw (QPainter & cr) override;
 
     PStatus m_status = STATUS_STOP;
 };

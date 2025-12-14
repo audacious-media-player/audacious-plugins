@@ -60,23 +60,24 @@ public:
         OutputPlugin (info, 5)
     {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
+
     void handle_new_default_device(AudioObjectID newID);
 
-    StereoVolume get_volume ();
-    void set_volume (StereoVolume vol);
+    StereoVolume get_volume () override;
+    void set_volume (StereoVolume vol) override;
 
-    bool open_audio (int format, int rate_, int chan_, String & err);
-    void close_audio ();
+    bool open_audio (int format, int rate_, int chan_, String & err) override;
+    void close_audio () override;
 
-    void period_wait ();
-    int write_audio (const void * data, int len);
-    void drain ();
+    void period_wait () override;
+    int write_audio (const void * data, int len) override;
+    void drain () override;
 
-    int get_delay ();
-    void pause (bool paused);
-    void flush ();
+    int get_delay () override;
+    void pause (bool paused) override;
+    void flush () override;
 
 protected:
     static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);

@@ -5,7 +5,7 @@
  *
  * Based on libayemu
  * AY/YM sound chip emulator and music file loader
- * Copyright (C) 2003-2004 Sashnov Alexander
+ * Copyright (C) 2003-2004 Alexander Sashnov <asashnov@rambler.ru>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,13 +49,13 @@ public:
     constexpr VTXPlugin() : InputPlugin(info, InputInfo()
         .with_exts(exts)) {}
 
-    bool is_our_file(const char *filename, VFSFile &file);
+    bool is_our_file(const char *filename, VFSFile &file) override;
     bool read_tag(const char *filename, VFSFile &file, Tuple &tuple,
-                  Index<char> *image);
-    bool play(const char *filename, VFSFile &file);
+                  Index<char> *image) override;
+    bool play(const char *filename, VFSFile &file) override;
 
 #ifdef USE_GTK
-    bool file_info_box(const char * filename, VFSFile & file)
+    bool file_info_box(const char * filename, VFSFile & file) override
     {
         vtx_file_info(filename, file);
         return true;

@@ -37,10 +37,10 @@ public:
     constexpr VisCallbacks () :
         Visualizer (MonoPCM | MultiPCM | Freq) {}
 
-    void clear ();
-    void render_mono_pcm (const float * pcm);
-    void render_multi_pcm (const float * pcm, int channels);
-    void render_freq (const float * freq);
+    void clear () override;
+    void render_mono_pcm (const float * pcm) override;
+    void render_multi_pcm (const float * pcm, int channels) override;
+    void render_freq (const float * freq) override;
 };
 
 void VisCallbacks::clear ()

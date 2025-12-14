@@ -53,11 +53,11 @@ public:
 
     constexpr VUMeter () : VisPlugin (info, Visualizer::MultiPCM) {}
 
-    bool init ();
-    void * get_gtk_widget ();
+    bool init () override;
+    void * get_gtk_widget () override;
 
-    void clear ();
-    void render_multi_pcm (const float * pcm, int channels);
+    void clear () override;
+    void render_multi_pcm (const float * pcm, int channels) override;
 
 private:
     static void toggle_display_legend ();

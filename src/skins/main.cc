@@ -76,11 +76,11 @@ public:
          shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height, shaded) {}
 
 private:
-    void draw (cairo_t * cr);
-    bool button_press (GdkEventButton * event);
-    bool scroll (GdkEventScroll * event);
-    bool motion (GdkEventMotion * event);
-    bool leave ();
+    void draw (cairo_t * cr) override;
+    bool button_press (GdkEventButton * event) override;
+    bool scroll (GdkEventScroll * event) override;
+    bool motion (GdkEventMotion * event) override;
+    bool leave () override;
 
     QueuedFunc m_popup_timer;
     bool m_popup_shown = false;

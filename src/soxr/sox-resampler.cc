@@ -50,12 +50,12 @@ public:
     /* order #2: must be before crossfade */
     constexpr SoXResampler () : EffectPlugin (info, 2, false) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    void start (int & channels, int & rate);
-    Index<float> & process (Index<float> & data);
-    bool flush (bool force);
+    void start (int & channels, int & rate) override;
+    Index<float> & process (Index<float> & data) override;
+    bool flush (bool force) override;
 };
 
 EXPORT SoXResampler aud_plugin_instance;

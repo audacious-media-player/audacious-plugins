@@ -45,10 +45,10 @@ public:
 
     constexpr CairoSpectrum () : VisPlugin (info, Visualizer::Freq) {}
 
-    void * get_gtk_widget ();
+    void * get_gtk_widget () override;
 
-    void clear ();
-    void render_freq (const float * freq);
+    void clear () override;
+    void render_freq (const float * freq) override;
 };
 
 EXPORT CairoSpectrum aud_plugin_instance;

@@ -48,12 +48,12 @@ public:
 
     constexpr Crystalizer () : EffectPlugin (info, 0, true) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    void start (int & channels, int & rate);
-    Index<float> & process (Index<float> & data);
-    bool flush (bool force);
+    void start (int & channels, int & rate) override;
+    Index<float> & process (Index<float> & data) override;
+    bool flush (bool force) override;
 };
 
 EXPORT Crystalizer aud_plugin_instance;

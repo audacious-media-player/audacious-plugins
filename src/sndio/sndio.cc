@@ -48,24 +48,24 @@ public:
 
     constexpr SndioPlugin () : OutputPlugin (info, 5) {}
 
-    bool init ();
+    bool init () override;
 
-    StereoVolume get_volume ();
-    void set_volume (StereoVolume v);
+    StereoVolume get_volume () override;
+    void set_volume (StereoVolume v) override;
 
-    bool open_audio (int format, int rate, int channels, String & error);
-    void close_audio ();
+    bool open_audio (int format, int rate, int channels, String & error) override;
+    void close_audio () override;
 
-    void period_wait ();
-    int write_audio (const void * data, int size);
-    void drain ();
+    void period_wait () override;
+    int write_audio (const void * data, int size) override;
+    void drain () override;
 
-    int get_delay ();
+    int get_delay () override;
 
-    void flush ();
+    void flush () override;
 
     // not implemented
-    void pause (bool pause) {}
+    void pause (bool pause) override {}
 
 private:
     bool poll_locked ();

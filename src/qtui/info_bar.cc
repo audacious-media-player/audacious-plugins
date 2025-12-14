@@ -67,11 +67,11 @@ public:
     const PixelSizes & pixelSizes() const { return ps; }
 
 protected:
-    void render_freq(const float * freq);
-    void clear();
+    void render_freq(const float * freq) override;
+    void clear() override;
 
-    void changeEvent(QEvent * event);
-    void paintEvent(QPaintEvent *);
+    void changeEvent(QEvent * event) override;
+    void paintEvent(QPaintEvent *) override;
 
 private:
     void update_colors();

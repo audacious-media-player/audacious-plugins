@@ -37,20 +37,20 @@ public:
 
     virtual ~FrameBasedEffectPlugin() = default;
 
-    bool init() final
+    bool init() override
     {
         detection.init();
         return true;
     }
 
-    void cleanup() final
+    void cleanup() override
     {
         output.clear();
         frame_in.clear();
         frame_out.clear();
     }
 
-    void start(int & channels, int & rate) final
+    void start(int & channels, int & rate) override
     {
         current_channels = channels;
         current_rate = rate;
@@ -63,7 +63,7 @@ public:
         flush(false);
     }
 
-    Index<float> & process(Index<float> & data) final
+    Index<float> & process(Index<float> & data) override
     {
         detection.update_config();
 
@@ -92,18 +92,18 @@ public:
         return output;
     }
 
-    bool flush(bool force) final
+    bool flush(bool force) override
     {
         detection.flush();
         return true;
     }
 
-    Index<float> & finish(Index<float> & data, bool end_of_playlist) final
+    Index<float> & finish(Index<float> & data, bool end_of_playlist) override
     {
         return process(data);
     }
 
-    int adjust_delay(int delay) final
+    int adjust_delay(int delay) override
     {
         auto result =
             aud::rescale<int64_t>(detection.latency(), current_rate, 1000);

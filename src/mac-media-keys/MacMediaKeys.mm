@@ -95,8 +95,8 @@ public:
 
     constexpr MacMediaKeysPlugin () : GeneralPlugin (info, false) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
 private:
     MacMediaKeys * m_obj = nullptr;

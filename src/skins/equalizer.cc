@@ -53,8 +53,8 @@ public:
          shaded ? 14 : 116, shaded) {}
 
 private:
-    void draw (cairo_t * cr);
-    bool button_press (GdkEventButton * event);
+    void draw (cairo_t * cr) override;
+    bool button_press (GdkEventButton * event) override;
 };
 
 Window * equalizerwin;

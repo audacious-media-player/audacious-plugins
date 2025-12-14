@@ -69,9 +69,9 @@ public:
      config.playlist_height, shaded) {}
 
 private:
-    void draw (cairo_t * cr);
-    bool button_press (GdkEventButton * event);
-    bool scroll (GdkEventScroll * event);
+    void draw (cairo_t * cr) override;
+    bool button_press (GdkEventButton * event) override;
+    bool scroll (GdkEventScroll * event) override;
 };
 
 Window * playlistwin;

@@ -24,10 +24,10 @@ public:
 
     constexpr ExtraStereo () : EffectPlugin (info, 0, true) {}
 
-    bool init ();
+    bool init () override;
 
-    void start (int & channels, int & rate);
-    Index<float> & process (Index<float> & data);
+    void start (int & channels, int & rate) override;
+    Index<float> & process (Index<float> & data) override;
 };
 
 EXPORT ExtraStereo aud_plugin_instance;

@@ -64,9 +64,9 @@ public:
 
     constexpr SearchToolQt () : GeneralPlugin (info, false) {}
 
-    bool init ();
-    void * get_qt_widget ();
-    int take_message (const char * code, const void *, int);
+    bool init () override;
+    void * get_qt_widget () override;
+    int take_message (const char * code, const void *, int) override;
 };
 
 EXPORT SearchToolQt aud_plugin_instance;
@@ -77,7 +77,7 @@ public:
     QTreeView * list = nullptr;
 
 protected:
-    void keyPressEvent (QKeyEvent * event)
+    void keyPressEvent (QKeyEvent * event) override
     {
         auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
         if (list && ! (event->modifiers () & CtrlShiftAlt) && event->key () == Qt::Key_Down)
@@ -96,7 +96,7 @@ public:
     QWidget * entry = nullptr;
 
 protected:
-    void keyPressEvent (QKeyEvent * event)
+    void keyPressEvent (QKeyEvent * event) override
     {
         auto CtrlShiftAlt = Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
         if (entry && ! (event->modifiers () & CtrlShiftAlt) &&

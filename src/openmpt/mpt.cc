@@ -60,7 +60,7 @@ public:
 
     constexpr MPTPlugin() : InputPlugin(info, iinfo) { }
 
-    bool init()
+    bool init() override
     {
         static constexpr const char * defaults[] =
         {
@@ -74,13 +74,13 @@ public:
         return true;
     }
 
-    bool is_our_file(const char *filename, VFSFile &file)
+    bool is_our_file(const char *filename, VFSFile &file) override
     {
         MPTWrap mpt;
         return mpt.open(file);
     }
 
-    bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *)
+    bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *) override
     {
         MPTWrap mpt;
         if (!mpt.open(file))
@@ -97,7 +97,7 @@ public:
         return true;
     }
 
-    bool play(const char *filename, VFSFile &file)
+    bool play(const char *filename, VFSFile &file) override
     {
         MPTWrap mpt;
         if (!mpt.open(file))

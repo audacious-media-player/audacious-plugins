@@ -41,7 +41,7 @@ public:
     {
     }
 
-    bool init()
+    bool init() override
     {
         audqt::init();
         aud_config_set_defaults("qtui", qtui_defaults);
@@ -49,15 +49,15 @@ public:
         return true;
     }
 
-    void cleanup()
+    void cleanup() override
     {
         delete window;
         audqt::cleanup();
     }
 
-    void run() { QApplication::exec(); }
+    void run() override { QApplication::exec(); }
 
-    void show(bool show)
+    void show(bool show) override
     {
         if (!window)
             return;
@@ -71,7 +71,7 @@ public:
         }
     }
 
-    void quit()
+    void quit() override
     {
         QObject::connect(window.data(), &QObject::destroyed, QApplication::quit);
         window->deleteLater();

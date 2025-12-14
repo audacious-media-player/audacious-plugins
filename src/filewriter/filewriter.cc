@@ -53,24 +53,23 @@ public:
 
     constexpr FileWriter () : OutputPlugin (info, 0, true) {}
 
-    bool init ();
+    bool init () override;
 
-    StereoVolume get_volume () { return {0, 0}; }
-    void set_volume (StereoVolume v) {}
+    StereoVolume get_volume () override { return {0, 0}; }
+    void set_volume (StereoVolume v) override {}
 
-    void set_info (const char * filename, const Tuple & tuple);
-    bool open_audio (int fmt, int rate, int nch, String & error);
-    void close_audio ();
+    void set_info (const char * filename, const Tuple & tuple) override;
+    bool open_audio (int fmt, int rate, int nch, String & error) override;
+    void close_audio () override;
 
-    void period_wait () {}
-    int write_audio (const void * ptr, int length);
-    void drain () {}
+    void period_wait () override {}
+    int write_audio (const void * ptr, int length) override;
+    void drain () override {}
 
-    int get_delay ()
-        { return 0; }
+    int get_delay () override { return 0; }
 
-    void pause (bool pause) {}
-    void flush () {}
+    void pause (bool pause) override {}
+    void flush () override {}
 };
 
 EXPORT FileWriter aud_plugin_instance;

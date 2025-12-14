@@ -57,18 +57,18 @@ public:
 
     PlaylistModel(QObject * parent, Playlist playlist);
 
-    int rowCount(const QModelIndex & parent = QModelIndex()) const;
-    int columnCount(const QModelIndex & parent = QModelIndex()) const;
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+    int rowCount(const QModelIndex & parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex & parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation,
-                        int role = Qt::DisplayRole) const;
+                        int role = Qt::DisplayRole) const override;
 
-    Qt::ItemFlags flags(const QModelIndex & index) const;
+    Qt::ItemFlags flags(const QModelIndex & index) const override;
 
-    QStringList mimeTypes() const;
-    QMimeData * mimeData(const QModelIndexList & indexes) const;
+    QStringList mimeTypes() const override;
+    QMimeData * mimeData(const QModelIndexList & indexes) const override;
     bool dropMimeData(const QMimeData * data, Qt::DropAction action, int row,
-                      int column, const QModelIndex & parent);
+                      int column, const QModelIndex & parent) override;
 
     void entriesAdded(int row, int count);
     void entriesRemoved(int row, int count);
@@ -99,7 +99,7 @@ public:
     void setFilter(const char * filter);
 
 private:
-    bool filterAcceptsRow(int source_row, const QModelIndex &) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &) const override;
 
     Playlist m_playlist;
     Index<String> m_searchTerms;

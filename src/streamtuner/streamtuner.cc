@@ -77,7 +77,7 @@ public:
 
     constexpr StreamTunerPlugin () : GeneralPlugin (info, false) { }
 
-    void * get_qt_widget ();
+    void * get_qt_widget () override;
 };
 
 EXPORT StreamTunerPlugin aud_plugin_instance;

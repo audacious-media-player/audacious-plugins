@@ -66,9 +66,9 @@ public:
      config.playlist_height, shaded) {}
 
 private:
-    void draw (QPainter & cr);
-    bool button_press (QMouseEvent * event);
-    bool scroll (QWheelEvent * event);
+    void draw (QPainter & cr) override;
+    bool button_press (QMouseEvent * event) override;
+    bool scroll (QWheelEvent * event) override;
 };
 
 Window * playlistwin;

@@ -35,8 +35,8 @@ public:
 
     constexpr SongChange () : GeneralPlugin (info, false) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 };
 
 EXPORT SongChange aud_plugin_instance;

@@ -37,7 +37,7 @@ public:
     void set_num_channels (int num_channels);
 
 private:
-    void draw (QPainter & cr);
+    void draw (QPainter & cr) override;
 
     int m_num_channels = 0;
 };

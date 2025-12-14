@@ -35,7 +35,7 @@ public:
     };
 
     constexpr SongInfo () : GeneralPlugin (info, false) {}
-    void * get_qt_widget ();
+    void * get_qt_widget () override;
 };
 
 class SongInfoWidget : public audqt::InfoWidget

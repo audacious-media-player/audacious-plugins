@@ -53,8 +53,8 @@ public:
 
     constexpr FileBrowserQt() : GeneralPlugin(info, false) {}
 
-    void * get_qt_widget();
-    int take_message(const char * code, const void * data, int size);
+    void * get_qt_widget() override;
+    int take_message(const char * code, const void * data, int size) override;
 };
 
 EXPORT FileBrowserQt aud_plugin_instance;

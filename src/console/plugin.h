@@ -32,14 +32,14 @@ public:
     constexpr ConsolePlugin () : InputPlugin (info, InputInfo (FlagSubtunes)
         .with_exts (exts)) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    bool is_our_file (const char * filename, VFSFile & file)
+    bool is_our_file (const char * filename, VFSFile & file) override
         { return false; }
 
-    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
-    bool play (const char * filename, VFSFile & file);
+    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image) override;
+    bool play (const char * filename, VFSFile & file) override;
 };
 
 #endif // CONSOLE_PLUGIN_H

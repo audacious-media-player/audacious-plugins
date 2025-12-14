@@ -61,8 +61,8 @@ public:
 
     constexpr GlobalHotkeys() : GeneralPlugin(info, false) {}
 
-    bool init();
-    void cleanup();
+    bool init() override;
+    void cleanup() override;
 };
 
 EXPORT GlobalHotkeys aud_plugin_instance;

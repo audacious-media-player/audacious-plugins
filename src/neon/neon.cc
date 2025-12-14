@@ -103,10 +103,10 @@ public:
 
     constexpr NeonTransport () : TransportPlugin (info, neon_schemes) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    VFSImpl * fopen (const char * path, const char * mode, String & error);
+    VFSImpl * fopen (const char * path, const char * mode, String & error) override;
 };
 
 EXPORT NeonTransport aud_plugin_instance;
@@ -133,23 +133,23 @@ class NeonFile : public VFSImpl
 {
 public:
     NeonFile (const char * url);
-    ~NeonFile ();
+    ~NeonFile () override;
 
     int open_handle (int64_t startbyte, String * error = nullptr);
 
 protected:
-    int64_t fread (void * ptr, int64_t size, int64_t nmemb);
-    int fseek (int64_t offset, VFSSeekType whence);
+    int64_t fread (void * ptr, int64_t size, int64_t nmemb) override;
+    int fseek (int64_t offset, VFSSeekType whence) override;
 
-    int64_t ftell ();
-    int64_t fsize ();
-    bool feof ();
+    int64_t ftell () override;
+    int64_t fsize () override;
+    bool feof () override;
 
-    int64_t fwrite (const void * ptr, int64_t size, int64_t nmemb);
-    int ftruncate (int64_t length);
-    int fflush ();
+    int64_t fwrite (const void * ptr, int64_t size, int64_t nmemb) override;
+    int ftruncate (int64_t length) override;
+    int fflush () override;
 
-    String get_metadata (const char * field);
+    String get_metadata (const char * field) override;
 
 private:
     String m_url;               /* The URL, as passed to us */

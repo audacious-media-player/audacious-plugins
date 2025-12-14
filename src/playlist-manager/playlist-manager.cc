@@ -44,8 +44,8 @@ public:
 
     constexpr PlaylistManager () : GeneralPlugin (info, false) {}
 
-    void * get_gtk_widget ();
-    int take_message (const char * code, const void * data, int size);
+    void * get_gtk_widget () override;
+    int take_message (const char * code, const void * data, int size) override;
 };
 
 EXPORT PlaylistManager aud_plugin_instance;

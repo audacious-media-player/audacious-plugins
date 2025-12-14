@@ -70,23 +70,23 @@ public:
 
     constexpr QtSkins () : audqt::QtIfacePlugin (info) {}
 
-    bool init ();
+    bool init () override;
 
-    void cleanup ()
+    void cleanup () override
     {
         delete proxy;
         audqt::cleanup ();
     }
 
-    void run () { QApplication::exec (); }
+    void run () override { QApplication::exec (); }
 
-    void quit ()
+    void quit () override
     {
         QObject::connect (proxy.data (), & QObject::destroyed, QApplication::quit);
         proxy->deleteLater ();
     }
 
-    void show (bool show)
+    void show (bool show) override
     {
         if (proxy)
             view_show_player (show);

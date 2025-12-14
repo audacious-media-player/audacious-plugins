@@ -43,7 +43,7 @@ public:
     constexpr CueLoader () : PlaylistPlugin (info, cue_exts, false) {}
 
     bool load (const char * filename, VFSFile & file, String & title,
-     Index<PlaylistAddItem> & items);
+     Index<PlaylistAddItem> & items) override;
 };
 
 EXPORT CueLoader aud_plugin_instance;

@@ -35,7 +35,7 @@ public:
     constexpr ASXLoader () : PlaylistPlugin (info, asx_exts, false) {}
 
     bool load (const char * filename, VFSFile & file, String & title,
-     Index<PlaylistAddItem> & items);
+     Index<PlaylistAddItem> & items) override;
 };
 
 EXPORT ASXLoader aud_plugin_instance;
@@ -53,10 +53,10 @@ private:
     Index<PlaylistAddItem> & items;
     bool valid_heading;
 
-    void handle_heading (const char * heading)
+    void handle_heading (const char * heading) override
         { valid_heading = ! strcmp_nocase (heading, "reference"); }
 
-    void handle_entry (const char * key, const char * value)
+    void handle_entry (const char * key, const char * value) override
     {
         if (! valid_heading || ! str_has_prefix_nocase (key, "ref"))
             return;

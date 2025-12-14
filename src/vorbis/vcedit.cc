@@ -7,6 +7,7 @@
  *
  * Somewhat cleaned up for C++ by John Lindgren, 2015.
  */
+
 #include <stdlib.h>
 #include <string.h>
 #include <ogg/ogg.h>

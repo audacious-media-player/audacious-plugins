@@ -50,23 +50,23 @@ public:
 
     constexpr SDLOutput () : OutputPlugin (info, 1) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    StereoVolume get_volume ();
-    void set_volume (StereoVolume v);
+    StereoVolume get_volume () override;
+    void set_volume (StereoVolume v) override;
 
-    bool open_audio (int aud_format, int rate, int chans, String & error);
-    void close_audio ();
+    bool open_audio (int aud_format, int rate, int chans, String & error) override;
+    void close_audio () override;
 
-    void period_wait ();
-    int write_audio (const void * data, int size);
-    void drain ();
+    void period_wait () override;
+    int write_audio (const void * data, int size) override;
+    void drain () override;
 
-    int get_delay ();
+    int get_delay () override;
 
-    void pause (bool pause);
-    void flush ();
+    void pause (bool pause) override;
+    void flush () override;
 };
 
 EXPORT SDLOutput aud_plugin_instance;

@@ -37,7 +37,7 @@ public:
     void refresh () { queue_draw (); }
 
 private:
-    void draw (cairo_t * cr);
+    void draw (cairo_t * cr) override;
 };
 
 #endif

@@ -31,8 +31,8 @@ public:
     void set (char c);
 
 private:
-    virtual void draw (QPainter & cr);
-    virtual bool button_press (QMouseEvent * event);
+    virtual void draw (QPainter & cr) override;
+    virtual bool button_press (QMouseEvent * event) override;
 
     int m_num = 0;
 };

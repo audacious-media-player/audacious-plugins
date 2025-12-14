@@ -33,8 +33,8 @@ class InfoBar : public QWidget
 public:
     InfoBar(QWidget * parent = nullptr);
 
-    void resizeEvent(QResizeEvent *);
-    void paintEvent(QPaintEvent *);
+    void resizeEvent(QResizeEvent *) override;
+    void paintEvent(QPaintEvent *) override;
 
 private:
     void update_title();

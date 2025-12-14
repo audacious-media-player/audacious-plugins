@@ -51,15 +51,15 @@ public:
         { * xp = x (); * yp = y (); }
 
 protected:
-    bool keypress (QKeyEvent * event);
-    bool button_press (QMouseEvent * event);
-    bool button_release (QMouseEvent * event);
-    bool motion (QMouseEvent * event);
-    bool close ();
+    bool keypress (QKeyEvent * event) override;
+    bool button_press (QMouseEvent * event) override;
+    bool button_release (QMouseEvent * event) override;
+    bool motion (QMouseEvent * event) override;
+    bool close () override;
 
 private:
     void apply_shape ();
-    void changeEvent (QEvent * event);
+    void changeEvent (QEvent * event) override;
 
     const int m_id;
     bool m_is_shaded = false;

@@ -44,11 +44,11 @@ public:
 
     constexpr EchoPlugin () : EffectPlugin (info, 0, true) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    void start (int & channels, int & rate);
-    Index<float> & process (Index<float> & data);
+    void start (int & channels, int & rate) override;
+    Index<float> & process (Index<float> & data) override;
 };
 
 EXPORT EchoPlugin aud_plugin_instance;

@@ -44,8 +44,8 @@ public:
 
     constexpr NotifyPlugin () : GeneralPlugin (info, false) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
 private:
     static void reinit ();

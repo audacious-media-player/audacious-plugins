@@ -47,8 +47,8 @@ public:
 
     constexpr MPRIS2Plugin () : GeneralPlugin (info, true) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 };
 
 EXPORT MPRIS2Plugin aud_plugin_instance;

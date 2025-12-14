@@ -48,15 +48,15 @@ public:
         .with_exts(exts)
         .with_mimes(mimes)) {}
 
-    bool is_our_file(const char * filename, VFSFile & file);
+    bool is_our_file(const char * filename, VFSFile & file) override;
     bool read_tag(const char * filename, VFSFile & file, Tuple & tuple,
-                  Index<char> * image);
-    bool play(const char * filename, VFSFile & file);
+                  Index<char> * image) override;
+    bool play(const char * filename, VFSFile & file) override;
 
 private:
-    static const int pcm_frames = 1024;
-    static const int pcm_bufsize = 2 * pcm_frames;
-    static const int sample_rate = 48000; /* Opus supports 48 kHz only */
+    static constexpr int pcm_frames = 1024;
+    static constexpr int pcm_bufsize = 2 * pcm_frames;
+    static constexpr int sample_rate = 48000; /* Opus supports 48 kHz only */
 
     int m_bitrate = 0;
     int m_channels = 0;

@@ -31,7 +31,7 @@ public:
     SearchBar(QWidget * parent, PlaylistWidget * playlistWidget);
 
 private:
-    void keyPressEvent(QKeyEvent * event);
+    void keyPressEvent(QKeyEvent * event) override;
 
     PlaylistWidget * m_playlistWidget;
     QLineEdit * m_entry;

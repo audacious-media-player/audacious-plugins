@@ -49,15 +49,15 @@ public:
     /* order #2: must be before crossfade */
     constexpr Resampler () : EffectPlugin (info, 2, false) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    void start (int & channels, int & rate);
-    bool flush (bool force);
+    void start (int & channels, int & rate) override;
+    bool flush (bool force) override;
 
-    Index<float> & process (Index<float> & data)
+    Index<float> & process (Index<float> & data) override
         { return resample (data, false); }
-    Index<float> & finish (Index<float> & data, bool end_of_playlist)
+    Index<float> & finish (Index<float> & data, bool end_of_playlist) override
         { return resample (data, true); }
 
 private:

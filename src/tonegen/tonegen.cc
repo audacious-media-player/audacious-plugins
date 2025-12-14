@@ -50,9 +50,9 @@ public:
     constexpr ToneGen() : InputPlugin(info, InputInfo()
         .with_schemes(schemes)) {}
 
-    bool is_our_file(const char *filename, VFSFile &file);
-    bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image);
-    bool play(const char *filename, VFSFile &file);
+    bool is_our_file(const char *filename, VFSFile &file) override;
+    bool read_tag(const char *filename, VFSFile &file, Tuple &tuple, Index<char> *image) override;
+    bool play(const char *filename, VFSFile &file) override;
 };
 
 EXPORT ToneGen aud_plugin_instance;

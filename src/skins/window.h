@@ -64,12 +64,12 @@ public:
         { gtk_window_move ((GtkWindow *) gtk (), x, y); }
 
 protected:
-    void realize ();
-    bool keypress (GdkEventKey * event);  // in main.cc
-    bool button_press (GdkEventButton * event);
-    bool button_release (GdkEventButton * event);
-    bool motion (GdkEventMotion * event);
-    bool close ();
+    void realize () override;
+    bool keypress (GdkEventKey * event) override;  // in main.cc
+    bool button_press (GdkEventButton * event) override;
+    bool button_release (GdkEventButton * event) override;
+    bool motion (GdkEventMotion * event) override;
+    bool close () override;
 
 private:
     static gboolean focus_cb (GtkWidget * widget, GdkEventFocus * event, Window * me);

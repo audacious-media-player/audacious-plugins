@@ -49,15 +49,15 @@ public:
         .with_exts (exts)
         .with_mimes (mimes)) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    bool is_our_file (const char * filename, VFSFile & file);
-    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image);
-    bool play (const char * filename, VFSFile & file);
+    bool is_our_file (const char * filename, VFSFile & file) override;
+    bool read_tag (const char * filename, VFSFile & file, Tuple & tuple, Index<char> * image) override;
+    bool play (const char * filename, VFSFile & file) override;
 
 #ifdef USE_GTK
-    bool file_info_box (const char * filename, VFSFile & file)
+    bool file_info_box (const char * filename, VFSFile & file) override
         { return i_fileinfo_gui (filename, file); }
 #endif
 

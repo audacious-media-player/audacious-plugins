@@ -51,8 +51,8 @@ public:
 
     constexpr StatusIcon () : GeneralPlugin (info, false) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
 private:
     static void update_tooltip (void * data, void * user_data);

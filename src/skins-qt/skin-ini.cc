@@ -112,10 +112,10 @@ class HintsParser : public IniParser
 private:
     bool valid_heading = false;
 
-    void handle_heading (const char * heading)
+    void handle_heading (const char * heading) override
         { valid_heading = ! g_ascii_strcasecmp (heading, "skin"); }
 
-    void handle_entry (const char * key, const char * value)
+    void handle_entry (const char * key, const char * value) override
     {
         if (! valid_heading)
             return;
@@ -148,10 +148,10 @@ public:
 private:
     bool valid_heading;
 
-    void handle_heading (const char * heading)
+    void handle_heading (const char * heading) override
         { valid_heading = ! g_ascii_strcasecmp (heading, "text"); }
 
-    void handle_entry (const char * key, const char * value)
+    void handle_entry (const char * key, const char * value) override
     {
         if (! valid_heading)
             return;
@@ -197,7 +197,7 @@ public:
 private:
     SkinMaskId current_id = SkinMaskId (-1);
 
-    void handle_heading (const char * heading)
+    void handle_heading (const char * heading) override
     {
         if (! g_ascii_strcasecmp (heading, "normal"))
             current_id = SKIN_MASK_MAIN;
@@ -211,7 +211,7 @@ private:
             current_id = (SkinMaskId) -1;
     }
 
-    void handle_entry (const char * key, const char * value)
+    void handle_entry (const char * key, const char * value) override
     {
         if (current_id == (SkinMaskId) -1)
             return;

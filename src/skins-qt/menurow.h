@@ -46,10 +46,10 @@ public:
     void refresh () { queue_draw (); }
 
 private:
-    virtual void draw (QPainter & cr);
-    virtual bool button_press (QMouseEvent * event);
-    virtual bool button_release (QMouseEvent * event);
-    virtual bool motion (QMouseEvent * event);
+    virtual void draw (QPainter & cr) override;
+    virtual bool button_press (QMouseEvent * event) override;
+    virtual bool button_release (QMouseEvent * event) override;
+    virtual bool motion (QMouseEvent * event) override;
 
     MenuRowItem m_selected = MENUROW_NONE;
     bool m_pushed = false;

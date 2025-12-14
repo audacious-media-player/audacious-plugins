@@ -46,8 +46,8 @@ public:
     ~SpectrumWidget ();
 
 protected:
-    void resizeEvent (QResizeEvent *);
-    void paintEvent (QPaintEvent *);
+    void resizeEvent (QResizeEvent *) override;
+    void paintEvent (QPaintEvent *) override;
 
 private:
     void paint_background (QPainter &);
@@ -113,10 +113,10 @@ public:
 
     constexpr QtSpectrum () : VisPlugin (info, Visualizer::Freq) {}
 
-    void * get_qt_widget ();
+    void * get_qt_widget () override;
 
-    void clear ();
-    void render_freq (const float * freq);
+    void clear () override;
+    void render_freq (const float * freq) override;
 };
 
 EXPORT QtSpectrum aud_plugin_instance;

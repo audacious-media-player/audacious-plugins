@@ -39,7 +39,7 @@ public:
     TextEdit (QWidget * parent = nullptr) : QTextEdit (parent) {}
 
 protected:
-    void contextMenuEvent (QContextMenuEvent * event);
+    void contextMenuEvent (QContextMenuEvent * event) override;
 };
 
 class LyricsQt : public GeneralPlugin
@@ -56,8 +56,8 @@ public:
 
     constexpr LyricsQt () : GeneralPlugin (info, false) {}
 
-    bool init ();
-    void * get_qt_widget ();
+    bool init () override;
+    void * get_qt_widget () override;
 };
 
 EXPORT LyricsQt aud_plugin_instance;

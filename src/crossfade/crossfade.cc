@@ -89,14 +89,14 @@ public:
     /* order #5: must be after resample and mixer */
     constexpr Crossfade () : EffectPlugin (info, 5, true) {}
 
-    bool init ();
-    void cleanup ();
+    bool init () override;
+    void cleanup () override;
 
-    void start (int & channels, int & rate);
-    Index<float> & process (Index<float> & data);
-    bool flush (bool force);
-    Index<float> & finish (Index<float> & data, bool end_of_playlist);
-    int adjust_delay (int delay);
+    void start (int & channels, int & rate) override;
+    Index<float> & process (Index<float> & data) override;
+    bool flush (bool force) override;
+    Index<float> & finish (Index<float> & data, bool end_of_playlist) override;
+    int adjust_delay (int delay) override;
 };
 
 EXPORT Crossfade aud_plugin_instance;
