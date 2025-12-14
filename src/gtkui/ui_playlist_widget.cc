@@ -46,8 +46,8 @@ static const GType pw_col_types[PW_COLS] =
     G_TYPE_STRING,  // length
     G_TYPE_STRING,  // path
     G_TYPE_STRING,  // file name
-    G_TYPE_STRING,  // created
-    G_TYPE_STRING,  // modified
+    G_TYPE_STRING,  // file created
+    G_TYPE_STRING,  // file modified
     G_TYPE_STRING,  // custom title
     G_TYPE_STRING,  // bitrate
     G_TYPE_STRING,  // comment
@@ -69,8 +69,8 @@ static const int pw_col_min_widths[PW_COLS] = {
     7,   // length
     10,  // path
     10,  // file name
-    10,  // created
-    10,  // modified
+    10,  // file created
+    10,  // file modified
     10,  // custom title
     3,   // bitrate
     10,  // comment,
@@ -92,8 +92,8 @@ static const bool pw_col_label[PW_COLS] = {
     false,  // length
     true,   // path
     true,   // file name
-    true,   // created
-    true,   // modified
+    true,   // file created
+    true,   // file modified
     true,   // custom title
     false,  // bitrate
     true,   // comment
@@ -115,8 +115,8 @@ static const Playlist::SortType pw_col_sort_types[PW_COLS] = {
     Playlist::Length,          // length
     Playlist::Path,            // path
     Playlist::Filename,        // file name
-    Playlist::Created,         // created
-    Playlist::Modified,        // modified
+    Playlist::FileCreated,     // file created
+    Playlist::FileModified,    // file modified
     Playlist::FormattedTitle,  // custom title
     Playlist::n_sort_types,    // bitrate
     Playlist::Comment,         // comment
@@ -247,11 +247,11 @@ static void get_value (void * user, int row, int column, GValue * value)
     case PW_COL_PATH:
         set_string_from_tuple (value, tuple, Tuple::Path);
         break;
-    case PW_COL_CREATED:
-        set_datetime_from_tuple (value, tuple, Tuple::Created);
+    case PW_COL_FILE_CREATED:
+        set_datetime_from_tuple (value, tuple, Tuple::FileCreated);
         break;
-    case PW_COL_MODIFIED:
-        set_datetime_from_tuple (value, tuple, Tuple::Modified);
+    case PW_COL_FILE_MODIFIED:
+        set_datetime_from_tuple (value, tuple, Tuple::FileModified);
         break;
     case PW_COL_CUSTOM:
         set_string_from_tuple (value, tuple, Tuple::FormattedTitle);

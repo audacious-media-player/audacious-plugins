@@ -37,11 +37,11 @@ const char * const PlaylistModel::labels[] = {
     N_("Comment"),        N_("Publisher"),     N_("Catalog Number"), N_("Disc")};
 
 static const Tuple::Field s_fields[] = {
-    Tuple::Invalid, Tuple::Title,       Tuple::Artist,         Tuple::Year,
-    Tuple::Album,   Tuple::AlbumArtist, Tuple::Track,          Tuple::Genre,
-    Tuple::Invalid, Tuple::Length,      Tuple::Path,           Tuple::Basename,
-    Tuple::Created, Tuple::Modified,    Tuple::FormattedTitle, Tuple::Bitrate,
-    Tuple::Comment, Tuple::Publisher,   Tuple::CatalogNum,     Tuple::Disc};
+    Tuple::Invalid,     Tuple::Title,        Tuple::Artist,         Tuple::Year,
+    Tuple::Album,       Tuple::AlbumArtist,  Tuple::Track,          Tuple::Genre,
+    Tuple::Invalid,     Tuple::Length,       Tuple::Path,           Tuple::Basename,
+    Tuple::FileCreated, Tuple::FileModified, Tuple::FormattedTitle, Tuple::Bitrate,
+    Tuple::Comment,     Tuple::Publisher,    Tuple::CatalogNum,     Tuple::Disc};
 
 static_assert(aud::n_elems(PlaylistModel::labels) == PlaylistModel::n_cols,
               "update PlaylistModel::labels");

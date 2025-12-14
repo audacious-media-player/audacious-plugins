@@ -35,10 +35,10 @@
 #include <libaudqt/libaudqt.h>
 
 static const char * const s_col_keys[] = {
-    "number",       "title",    "artist",    "year",           "album",
-    "album-artist", "track",    "genre",     "queued",         "length",
-    "path",         "filename", "created",   "modified",       "custom",
-    "bitrate",      "comment",  "publisher", "catalog-number", "disc"};
+    "number",       "title",    "artist",       "year",           "album",
+    "album-artist", "track",    "genre",        "queued",         "length",
+    "path",         "filename", "file-created", "file-modified",  "custom",
+    "bitrate",      "comment",  "publisher",    "catalog-number", "disc"};
 
 static const int s_default_widths[] = {
     25,  // entry number
@@ -53,8 +53,8 @@ static const int s_default_widths[] = {
     75,  // length
     275, // path
     275, // filename
-    100, // created
-    100, // modified
+    100, // file created
+    100, // file modified
     275, // custom title
     75,  // bitrate
     275, // comment
@@ -76,8 +76,8 @@ static const Playlist::SortType s_sort_types[] = {
     Playlist::Length,         // length
     Playlist::Path,           // path
     Playlist::Filename,       // file name
-    Playlist::Created,        // created
-    Playlist::Modified,       // modified
+    Playlist::FileCreated,    // file created
+    Playlist::FileModified,   // file modified
     Playlist::FormattedTitle, // custom title
     Playlist::n_sort_types,   // bitrate
     Playlist::Comment,        // comment,
