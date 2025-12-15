@@ -155,10 +155,6 @@ if get_option('lirc')
   subdir('lirc')
 endif
 
-if get_option('mac-media-keys') and have_darwin
-  subdir('mac-media-keys')
-endif
-
 if get_option('mac-now-playing') and have_darwin
   subdir('mac-now-playing')
 endif

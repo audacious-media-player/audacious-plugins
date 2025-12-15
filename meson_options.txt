@@ -94,8 +94,6 @@ option('hotkey', type: 'boolean', value: true,
        description: 'Whether the global hotkey plugin (X11) is enabled')
 option('lirc', type: 'boolean', value: true,
        description: 'Whether the LIRC plugin is enabled')
-option('mac-media-keys', type: 'boolean', value: false,
-       description: 'Whether the Mac Media Keys plugin is enabled')
 option('mac-now-playing', type: 'boolean', value: true,
        description: 'Whether the Mac Now Playing plugin is enabled')
 option('mpris2', type: 'boolean', value: true,

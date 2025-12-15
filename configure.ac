@@ -709,19 +709,8 @@ fi
 AC_SUBST(FILEWRITER_CFLAGS)
 AC_SUBST(FILEWRITER_LIBS)
 
-dnl Mac Media Keys
-dnl ============
-
-AC_ARG_ENABLE(mac_media_keys,
- [AS_HELP_STRING([--enable-mac-media-keys], [enable Mac Media Keys])],
- [enable_mac_media_keys=$enableval], [enable_mac_media_keys="no"])
-
-if test "x$enable_mac_media_keys" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS mac-media-keys"
-fi
-
 dnl Mac Now Playing
-dnl ============
+dnl ===============
 
 AC_ARG_ENABLE(mac_now_playing,
  [AS_HELP_STRING([--disable-mac-now-playing], [disable Mac Now Playing (default=enabled)])],
@@ -930,7 +919,6 @@ if test "x$HAVE_DARWIN" = "xyes" ; then
     echo "  macOS Support"
     echo "  -------------"
     echo "  CoreAudio output:                       $have_coreaudio"
-    echo "  Media Keys:                             $enable_mac_media_keys"
     echo "  Now Playing:                            $enable_mac_now_playing"
     echo
 fi

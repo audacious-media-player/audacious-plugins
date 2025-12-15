@@ -45,12 +45,12 @@ case "$action" in
         export PKG_CONFIG_PATH="/usr/local/opt/qt@5/lib/pkgconfig:$PKG_CONFIG_PATH"
 
         if [ "$build_system" = 'meson' ]; then
-          meson setup build -D qt5=true -D gtk=false -D mac-media-keys=true
+          meson setup build -D qt5=true -D gtk=false
         else
           export LDFLAGS="-L/usr/local/opt/libiconv/lib"
           export CPPFLAGS="-I/usr/local/opt/libiconv/include"
           autoreconf -I "/usr/local/share/gettext/m4" &&
-          ./configure --enable-qt5 --disable-gtk --enable-mac-media-keys
+          ./configure --enable-qt5 --disable-gtk
         fi
         ;;
 
@@ -59,12 +59,12 @@ case "$action" in
         export PKG_CONFIG_PATH="/opt/homebrew/opt/qt@6/libexec/lib/pkgconfig:$PKG_CONFIG_PATH"
 
         if [ "$build_system" = 'meson' ]; then
-          meson setup build -D gtk=false -D mac-media-keys=true
+          meson setup build -D gtk=false
         else
           export LDFLAGS="-L/opt/homebrew/opt/libiconv/lib"
           export CPPFLAGS="-I/opt/homebrew/opt/libiconv/include"
           autoreconf -I "/opt/homebrew/opt/gettext/share/gettext/m4" &&
-          ./configure --disable-gtk --enable-mac-media-keys
+          ./configure --disable-gtk
         fi
         ;;
 

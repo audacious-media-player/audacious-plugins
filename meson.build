@@ -351,7 +351,6 @@ if meson.version().version_compare('>= 0.53')
   if have_darwin
     summary({
       'CoreAudio Output': get_option('coreaudio'),
-      'Media Keys': get_option('mac-media-keys'),
       'Now Playing': get_option('mac-now-playing'),
     }, section: 'macOS Support')
   endif
