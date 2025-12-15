@@ -32,12 +32,11 @@
 #include <QImage>
 #include <QPainter>
 
-#include "libaudqt/colorbutton.h"
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
+#include <libaudqt/colorbutton.h>
 
 static void /* QWidget */ * bscope_get_color_chooser ();
 
