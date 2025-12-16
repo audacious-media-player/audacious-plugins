@@ -176,6 +176,10 @@ MainWindow::MainWindow()
         ToolBarAction(
             "media-playlist-shuffle", N_("Shuffle"), N_("Shuffle"),
             [](bool on) { aud_set_bool("shuffle", on); }, &m_shuffle_action),
+        ToolBarAction(
+            nullptr, "①", N_("No Playlist Advance"),
+            [](bool on) { aud_set_bool("no_playlist_advance", on); },
+            &m_no_playlist_advance_action),
         ToolBarCustom(audqt::volume_button_new(this))};
 
     auto toolbar = new ToolBar(this, items);
@@ -328,6 +332,8 @@ void MainWindow::update_toggles()
 
     m_repeat_action->setChecked(aud_get_bool("repeat"));
     m_shuffle_action->setChecked(aud_get_bool("shuffle"));
+    m_no_playlist_advance_action->setChecked(
+        aud_get_bool("no_playlist_advance"));
 }
 
 void MainWindow::update_visibility()
