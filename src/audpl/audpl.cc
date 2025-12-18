@@ -109,6 +109,8 @@ private:
                      str_decode_percent (value));
                 else if (type == Tuple::Int)
                     tuple.set_int (field, atoi (value));
+                else if (type == Tuple::Int64 || type == Tuple::DateTime)
+                    tuple.set_int64 (field, str_to_int64 (value));
 
                 /* state is implicitly Valid if any field is present */
                 tuple.set_state (Tuple::Valid);
@@ -175,6 +177,14 @@ bool AudPlaylistLoader::save (const char * path, VFSFile & file,
                         return false;
 
                     keys ++;
+                }
+                else if (type == Tuple::Int64 || type == Tuple::DateTime)
+                {
+                    int64_t val = item.tuple.get_int64(f);
+                    if (! inifile_write_entry(file, key, int64_to_str(val)))
+                        return false;
+
+                    keys++;
                 }
             }
 
