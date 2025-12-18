@@ -131,6 +131,8 @@ static const AudguiMenuItem sort_items[] = {
     MenuCommand (N_("By _Custom Title"), nullptr, NONE, sort_custom_title),
     MenuCommand (N_("By C_omment"), nullptr, NONE, sort_comment),
     MenuCommand (N_("By D_isc Number"), nullptr, NONE, sort_disc),
+    MenuCommand (N_("By File C_reated"), nullptr, NONE, sort_file_created),
+    MenuCommand (N_("By File Modifi_ed"), nullptr, NONE, sort_file_modified),
     MenuSep (),
     MenuCommand (N_("R_everse Order"), "view-sort-descending", NONE, sort_reverse),
     MenuCommand (N_("_Random Order"), nullptr, NONE, sort_random)
@@ -149,6 +151,8 @@ static const AudguiMenuItem sort_sel_items[] = {
     MenuCommand (N_("By _Custom Title"), nullptr, NONE, sort_sel_custom_title),
     MenuCommand (N_("By C_omment"), nullptr, NONE, sort_sel_comment),
     MenuCommand (N_("By D_isc Number"), nullptr, NONE, sort_sel_disc),
+    MenuCommand (N_("By File C_reated"), nullptr, NONE, sort_sel_file_created),
+    MenuCommand (N_("By File Modifi_ed"), nullptr, NONE, sort_sel_file_modified),
     MenuSep (),
     MenuCommand (N_("R_everse Order"), "view-sort-descending", NONE, sort_sel_reverse),
     MenuCommand (N_("_Random Order"), nullptr, NONE, sort_sel_random)
