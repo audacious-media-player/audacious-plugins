@@ -33,6 +33,7 @@
 #include <QToolButton>
 #include <QTreeView>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
@@ -40,7 +41,7 @@
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
 
-#define CFG_ID "filebrowser-qt"
+#define CFG_ID "filebrowser"
 #define CFG_FILE_PATH "file_path"
 
 class FileBrowserQt : public GeneralPlugin
@@ -365,11 +366,13 @@ void FileBrowserWidget::setCurrentDirectory(const QString & path)
 
     QString dirName = info.baseName();
     QString cleanPath = m_fileSystemModel->rootDirectory().canonicalPath();
+    StringBuf text =
+        dirName.isEmpty()
+            ? str_copy(_("Search"))
+            : str_printf(_("Search in %s"), dirName.toUtf8().constData());
 
+    m_filterLineEdit->setPlaceholderText(QString(text));
     m_filterLineEdit->clear();
-    m_filterLineEdit->setPlaceholderText(
-        dirName.isEmpty() ? QString(_("Search"))
-                          : QString(_("Search in %1")).arg(dirName));
 
     aud_set_str(CFG_ID, CFG_FILE_PATH, cleanPath.toUtf8().constData());
 }

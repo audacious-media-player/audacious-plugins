@@ -8,6 +8,6 @@ include ../../extra.mk
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
 LD = ${CXX}
-CPPFLAGS += -I../.. ${QT_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${QT_CFLAGS}
 LIBS += ${QT_LIBS} -laudqt
