@@ -1,7 +1,6 @@
 gnome = import('gnome')
 
 
-gio_dep = dependency('gio-2.0', version: glib_req, required: true)
 aud_dbus_deps = [gio_dep]
 
 
