@@ -123,6 +123,7 @@ endif
 if conf.has('USE_GTK')
   subdir('albumart')
   subdir('blur_scope')
+  subdir('filebrowser')
   subdir('cairo-spectrum')
   subdir('gtkui')
   subdir('ladspa')
