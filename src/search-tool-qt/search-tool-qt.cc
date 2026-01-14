@@ -17,8 +17,6 @@
  * the use of this software.
  */
 
-#include <glib.h>
-
 #include <QApplication>
 #include <QBoxLayout>
 #include <QContextMenuEvent>
@@ -30,6 +28,7 @@
 #include <QMenu>
 #include <QPointer>
 #include <QPushButton>
+#include <QStandardPaths>
 #include <QTreeView>
 
 #include <libaudcore/i18n.h>
@@ -182,11 +181,12 @@ static String get_uri ()
     if (path1[0])
         return strstr (path1, "://") ? path1 : to_uri (path1);
 
-    StringBuf path2 = filename_build ({g_get_home_dir (), "Music"});
-    if (g_file_test (path2, G_FILE_TEST_EXISTS))
-        return to_uri (path2);
+    QStringList locations = QStandardPaths::standardLocations (QStandardPaths::MusicLocation);
+    QString path2 = locations.value (0, QString ());
+    if (! path2.isEmpty () && QFile::exists (path2))
+        return to_uri (path2.toUtf8 ().constData ());
 
-    return to_uri (g_get_home_dir ());
+    return to_uri (QDir::homePath ().toUtf8 ().constData ());
 }
 
 SearchWidget::SearchWidget () :
