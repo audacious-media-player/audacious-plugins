@@ -98,7 +98,7 @@ static String get_uri ()
     if (path1[0])
         return strstr (path1, "://") ? path1 : to_uri (path1);
 
-    StringBuf path2 = filename_build ({g_get_home_dir (), "Music"});
+    const char * path2 = g_get_user_special_dir (G_USER_DIRECTORY_MUSIC);
     if (g_file_test (path2, G_FILE_TEST_EXISTS))
         return to_uri (path2);
 
