@@ -571,7 +571,7 @@ static void navigate_to_directory(const char * filepath)
         return;
     }
 
-    bool is_root = !strcmp(filepath, G_DIR_SEPARATOR_S);
+    bool is_root = !filename_get_parent(filepath);
     gtk_widget_set_sensitive(nav_button, !is_root);
     gtk_entry_set_text(filter_entry, "");
     gtk_tree_store_clear(tree_store);
