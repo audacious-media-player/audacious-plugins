@@ -27,11 +27,21 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudgui/gtk-compat.h>
+#include <libaudcore/runtime.h>
 
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
 #include <GL/gl.h>
+
+#ifdef USE_MODERNGL
+#include "modern_renderer.h"
+#endif
+
+#ifdef USE_GTKGLAREA
+#undef GDK_WINDOWING_X11
+#undef GDK_WINDOWING_WIN32
+#endif
 
 #ifdef GDK_WINDOWING_X11
 #include <GL/glx.h>
@@ -81,6 +91,10 @@ EXPORT GLSpectrum aud_plugin_instance;
 
 static float logscale[NUM_BANDS + 1];
 static float colors[NUM_BANDS][NUM_BANDS][3];
+
+#ifdef USE_MODERNGL
+static ModernRenderer * modern_renderer = nullptr;
+#endif
 
 #ifdef GDK_WINDOWING_X11
 static Display * s_display;
@@ -265,7 +279,16 @@ static gboolean draw_cb (GtkWidget * widget)
 
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    draw_bars ();
+#ifdef USE_MODERNGL
+    if (modern_renderer)
+    {
+        modern_renderer->render ((float *)s_bars, s_pos, s_angle);
+    }
+    else
+#endif
+    {
+        draw_bars ();
+    }
 
 #ifdef GDK_WINDOWING_X11
     glXSwapBuffers (s_display, s_xwindow);
@@ -281,16 +304,26 @@ static gboolean draw_cb (GtkWidget * widget)
 static void aspect_viewport(GLint width, GLint height)
 {
     glViewport (0, 0, width, height);
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    glFrustum (-1.1f, 1, -1.5f, 1, 2, 10);
-    glMatrixMode (GL_MODELVIEW);
-    glLoadIdentity ();
+
+#ifdef USE_GTKGLAREA
+    if (!modern_renderer)
+#endif
+    {
+        glMatrixMode (GL_PROJECTION);
+        glLoadIdentity ();
+        glFrustum (-1.1f, 1, -1.5f, 1, 2, 10);
+        glMatrixMode (GL_MODELVIEW);
+        glLoadIdentity ();
+    }
 }
 
 static void widget_realized ()
 {
+#ifdef USE_GTKGLAREA
+    gtk_gl_area_make_current ((GtkGLArea *) s_widget);
+#else
     GdkWindow * window = gtk_widget_get_window (s_widget);
+#endif
 
 #ifdef GDK_WINDOWING_X11
     GdkScreen * screen = gdk_window_get_screen (window);
@@ -364,22 +397,49 @@ static void widget_realized ()
     wglMakeCurrent (s_hdc, s_glrc);
 #endif
 
-    /* Initialize OpenGL */
-    GtkAllocation alloc;
-    gtk_widget_get_allocation (s_widget, & alloc);
+#ifdef USE_MODERNGL
+    ModernRenderer* renderer =
+        new ModernRenderer (NUM_BANDS, BAR_SPACING, BAR_WIDTH, (float *)colors);
 
-    aspect_viewport (alloc.width, alloc.height);
+    if (renderer->is_initialized ())
+    {
+        modern_renderer = renderer;
+    }
+    else
+    {
+        delete renderer;
 
-    glEnable (GL_DEPTH_TEST);
-    glDepthFunc (GL_LESS);
-    glDepthMask (GL_TRUE);
-    glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-    glClearColor (0, 0, 0, 1);
+        AUDWARN ("Falling back to legacy OpenGL.\n");
+    }
+
+    if (!modern_renderer)
+#endif
+    {
+        /* Initialize OpenGL */
+        GtkAllocation alloc;
+        gtk_widget_get_allocation (s_widget, & alloc);
+
+        aspect_viewport (alloc.width, alloc.height);
+
+        glEnable (GL_DEPTH_TEST);
+        glDepthFunc (GL_LESS);
+        glDepthMask (GL_TRUE);
+        glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+        glClearColor (0, 0, 0, 1);
+    }
 }
 
 static void widget_destroyed ()
 {
     s_widget = nullptr;
+
+#if defined(USE_MODERNGL) && !defined(USE_GTKGLAREA)
+    if (modern_renderer)
+    {
+        delete modern_renderer;
+        modern_renderer = nullptr;
+    }
+#endif
 
 #ifdef GDK_WINDOWING_X11
     if (s_context)
@@ -415,14 +475,38 @@ static void widget_resize (GtkWidget * widget, GdkEvent * event, gpointer data)
     aspect_viewport (event->configure.width, event->configure.height);
 }
 
+#ifdef USE_GTKGLAREA
+static void widget_unrealized (GtkGLArea * s_widget)
+{
+    /* Make sure that GL context is active before deleting OpenGL stuff */
+    gtk_gl_area_make_current (s_widget);
+
+    if (modern_renderer)
+    {
+        delete modern_renderer;
+        modern_renderer = nullptr;
+    }
+}
+#endif
+
 void * GLSpectrum::get_gtk_widget ()
 {
     if (s_widget)
         return s_widget;
 
-    s_widget = gtk_drawing_area_new ();
+    s_widget =
+#ifdef USE_GTKGLAREA
+        gtk_gl_area_new ();
+
+    gtk_gl_area_set_has_depth_buffer((GtkGLArea *) s_widget, true);
+
+    g_signal_connect (s_widget, "render", (GCallback) draw_cb, nullptr);
+    g_signal_connect (s_widget, "unrealize", (GCallback) widget_unrealized, nullptr);
+#else
+        gtk_drawing_area_new ();
 
     g_signal_connect (s_widget, AUDGUI_DRAW_SIGNAL, (GCallback) draw_cb, nullptr);
+#endif
     g_signal_connect (s_widget, "realize", (GCallback) widget_realized, nullptr);
     g_signal_connect (s_widget, "destroy", (GCallback) widget_destroyed, nullptr);
     g_signal_connect (s_widget, "configure-event", (GCallback) widget_resize, nullptr);

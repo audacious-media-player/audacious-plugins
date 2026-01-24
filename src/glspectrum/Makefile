@@ -1,6 +1,6 @@
 PLUGIN = gl-spectrum${PLUGIN_SUFFIX}
 
-SRCS = gl-spectrum.cc
+SRCS = gl-spectrum.cc modern_renderer.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
@@ -8,6 +8,6 @@ include ../../extra.mk
 plugindir := ${plugindir}/${VISUALIZATION_PLUGIN_DIR}
 
 LD = ${CXX}
-CFLAGS += ${PLUGIN_CFLAGS}
+CFLAGS += ${PLUGIN_CFLAGS} ${GL_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${GTK_CFLAGS}
 LIBS += -lm ${GTK_LIBS} ${GL_LIBS}
