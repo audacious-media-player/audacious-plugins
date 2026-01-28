@@ -33,8 +33,10 @@
 
 static const float vis_afalloff_speeds[] = {0.34, 0.5, 1.0, 1.3, 1.6};
 static const float vis_pfalloff_speeds[] = {1.2, 1.3, 1.4, 1.5, 1.6};
-static const int vis_scope_colors[16] = {22, 22, 21, 21, 20, 10, 19, 19, 18,
- 19, 19, 20, 20, 21, 21, 22};
+static const int vis_scope_colors[16] = {21, 21, 20, 20, 19, 19, 18, 18, 19,
+ 19, 20, 20, 21, 21, 22, 22};
+int last_h = 0;
+int h2 = 0;
 
 #define RGB_SEEK(x,y) (set = rgb + 76 * (y) + (x))
 #define RGB_SET(c) (* set ++ = (c))
@@ -105,7 +107,7 @@ void SkinnedVis::draw (QPainter & cr)
             if (bars && (x & 3) == 3)
                 continue;
 
-            int h = m_data[bars ? (x >> 2) : x];
+            int h = m_falloff[bars ? (x >> 2) : x];
             h = aud::clamp (h, 0, 16);
             RGB_SEEK (x, 16 - h);
 
@@ -132,7 +134,7 @@ void SkinnedVis::draw (QPainter & cr)
 
                 if (h)
                 {
-                    RGB_SEEK (x, 16 - h);
+                    RGB_SEEK (x, 15 - h);
                     RGB_SET_INDEX (23);
                 }
             }
@@ -174,34 +176,36 @@ void SkinnedVis::draw (QPainter & cr)
         case SCOPE_DOT:
             for (int x = 0; x < 75; x ++)
             {
-                int h = aud::clamp ((int) m_data[x], 0, 15);
+                int h = aud::clamp ((int) m_data[x]-1, 0, 15);
                 RGB_SEEK (x, h);
                 RGB_SET_INDEX (vis_scope_colors[h]);
             }
             break;
         case SCOPE_LINE:
         {
-            for (int x = 0; x < 74; x ++)
+            for (int x = 0; x < 75; x ++)
             {
-                int h = aud::clamp ((int) m_data[x], 0, 15);
-                int h2 = aud::clamp ((int) m_data[x + 1], 0, 15);
+                int h = aud::clamp ((int) m_data[x]-1, 0, 15);
 
-                if (h < h2)
-                    h2 --;
-                else if (h > h2)
-                {
-                    int temp = h;
-                    h = h2 + 1;
-                    h2 = temp;
+                if (x == 0)
+                    last_h = h;
+
+                h2 = last_h;
+                last_h = h;
+
+                if (h2 < h) {
+                    int temp = h2;
+                    h2 = h;
+                    h = temp + 1;
                 }
 
                 RGB_SEEK (x, h);
 
                 for (int y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (vis_scope_colors[y]);
+                    RGB_SET_INDEX_Y (vis_scope_colors[(h2 > h) ? h : h2]);
             }
 
-            int h = aud::clamp ((int) m_data[74], 0, 15);
+            int h = aud::clamp ((int) m_data[74]-1, 0, 15);
             RGB_SEEK (74, h);
             RGB_SET_INDEX (vis_scope_colors[h]);
             break;
@@ -209,11 +213,11 @@ void SkinnedVis::draw (QPainter & cr)
         default: /* SCOPE_SOLID */
             for (int x = 0; x < 75; x ++)
             {
-                int h = aud::clamp ((int) m_data[x], 0, 15);
+                int h = aud::clamp ((int) m_data[x]-1, 0, 15);
                 int h2;
 
-                if (h < 8)
-                    h2 = 8;
+                if (h <= 7)
+                    h2 = 7;
                 else
                 {
                     h2 = h;
@@ -223,7 +227,7 @@ void SkinnedVis::draw (QPainter & cr)
                 RGB_SEEK (x, h);
 
                 for (int y = h; y <= h2; y ++)
-                    RGB_SET_INDEX_Y (vis_scope_colors[y]);
+                    RGB_SET_INDEX_Y (vis_scope_colors[(h <= 7) ? h : h2]);
             }
             break;
         }
@@ -248,6 +252,7 @@ void SkinnedVis::clear ()
     m_voiceprint_advance = false;
 
     memset (m_data, 0, sizeof m_data);
+    memset (m_falloff, 0, sizeof m_falloff);
     memset (m_peak, 0, sizeof m_peak);
     memset (m_peak_speed, 0, sizeof m_peak_speed);
     memset (m_voiceprint_data, 0, sizeof m_voiceprint_data);
@@ -263,42 +268,33 @@ void SkinnedVis::render (const unsigned char * data)
 
         for (int i = 0; i < n; i ++)
         {
-            if (data[i] > m_data[i])
-            {
-                m_data[i] = data[i];
-                if (m_data[i] > m_peak[i])
-                {
-                    m_peak[i] = m_data[i];
-                    m_peak_speed[i] = 0.01;
+            m_data[i] = data[i];
 
-                }
-                else if (m_peak[i] > 0.0)
-                {
-                    m_peak[i] -= m_peak_speed[i];
-                    m_peak_speed[i] *= vis_pfalloff_speeds[config.peaks_falloff];
-                    if (m_peak[i] < m_data[i])
-                        m_peak[i] = m_data[i];
-                    if (m_peak[i] < 0.0)
-                        m_peak[i] = 0.0;
-                }
+            if (m_data[i] >= 15.0){
+                m_data[i] = 15.0;
             }
-            else
+
+            m_falloff[i] -= vis_afalloff_speeds[config.analyzer_falloff];
+            if (m_falloff[i] <= m_data[i]){
+                m_falloff[i] = m_data[i];
+            }
+            if (m_falloff[i] < 0.0)
+                m_falloff[i] = 0.0;
+
+            if (m_falloff[i] > m_peak[i])
             {
-                if (m_data[i] > 0.0)
-                {
-                    m_data[i] -= vis_afalloff_speeds[config.analyzer_falloff];
-                    if (m_data[i] < 0.0)
-                        m_data[i] = 0.0;
-                }
-                if (m_peak[i] > 0.0)
-                {
-                    m_peak[i] -= m_peak_speed[i];
-                    m_peak_speed[i] *= vis_pfalloff_speeds[config.peaks_falloff];
-                    if (m_peak[i] < m_data[i])
-                        m_peak[i] = m_data[i];
-                    if (m_peak[i] < 0.0)
-                        m_peak[i] = 0.0;
-                }
+                m_peak[i] = m_falloff[i];
+                m_peak_speed[i] = 0.01;
+
+            }
+
+            {
+                m_peak[i] -= m_peak_speed[i];
+                m_peak_speed[i] *= vis_pfalloff_speeds[config.peaks_falloff];
+                if (m_peak[i] <= m_falloff[i])
+                    m_peak[i] = m_falloff[i];
+                if (m_peak[i] < 0.0)
+                    m_peak[i] = 0.0;
             }
         }
     }
