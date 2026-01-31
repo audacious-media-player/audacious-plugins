@@ -305,7 +305,7 @@ if meson.version().version_compare('>= 0.53')
     'Delete Files': conf.has('USE_GTK_OR_QT'),
     'Libnotify OSD': get_variable('have_notify', false),
     'Linux Infrared Remote Control (LIRC)': get_variable('have_lirc', false),
-    'Lyrics Viewer': get_variable('have_lyrics', false),
+    'Lyrics Viewer': true,
     'MPRIS 2 Server': get_variable('have_mpris2', false),
     'Scrobbler 2.0': get_variable('have_scrobbler2', false),
     'Song Change': get_option('songchange'),

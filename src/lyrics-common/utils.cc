@@ -28,9 +28,6 @@ LyricProvider * remote_source ()
 {
     String source = aud_get_str (CFG_SECTION, "remote-source");
 
-    if (! strcmp (source, "chartlyrics.com"))
-        return & chart_lyrics_provider;
-
     if (! strcmp (source, "lrclib.net"))
         return & lrclib_provider;
 

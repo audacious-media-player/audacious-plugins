@@ -65,7 +65,6 @@ EXPORT LyricsQt aud_plugin_instance;
 const PluginPreferences LyricsQt::prefs = {{widgets}};
 
 FileProvider file_provider;
-ChartLyricsProvider chart_lyrics_provider;
 LrcLibProvider lrclib_provider;
 LyricsOVHProvider lyrics_ovh_provider;
 

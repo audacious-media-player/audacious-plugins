@@ -22,8 +22,6 @@
 #ifndef AUDACIOUS_LYRICS_H
 #define AUDACIOUS_LYRICS_H
 
-#include <libxml/parser.h>
-
 #define AUD_GLIB_INTEGRATION
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
@@ -42,7 +40,6 @@ struct LyricsState {
         Embedded,
         Local,
         LyricsOVH,
-        ChartLyrics,
         LrcLib
     } source = None;
 
@@ -51,7 +48,7 @@ struct LyricsState {
 
 
 // LyricProvider encapsulates an entire strategy for fetching lyrics,
-// for example from chartlyrics.com, lyrics.ovh or local storage.
+// for example from lrclib.net, lyrics.ovh or local storage.
 class LyricProvider
 {
 public:
@@ -79,33 +76,6 @@ public:
 private:
     String local_uri_for_entry (LyricsState state);
     String cache_uri_for_entry (LyricsState state);
-};
-
-
-// ChartLyricsProvider provides a strategy for fetching lyrics using the API
-// from chartlyrics.com. It uses the two-step approach since the endpoint
-// "SearchLyricDirect" may sometimes return incorrect data. One example is
-// "Metallica - Unforgiven II" which leads to the lyrics of "Unforgiven".
-class ChartLyricsProvider : public LyricProvider
-{
-public:
-    ChartLyricsProvider () {};
-
-    bool match (LyricsState state) override;
-    void fetch (LyricsState state) override;
-    String edit_uri (LyricsState state) override { return m_lyric_url; }
-
-private:
-    String match_uri (LyricsState state);
-    String fetch_uri (LyricsState state);
-
-    void reset_lyric_metadata ();
-    bool has_match (LyricsState state, xmlNodePtr node);
-
-    int m_lyric_id = -1;
-    String m_lyric_checksum, m_lyric_url, m_lyrics;
-
-    const char * m_base_url = "http://api.chartlyrics.com/apiv1.asmx";
 };
 
 
@@ -141,7 +111,6 @@ private:
 
 
 extern FileProvider file_provider;
-extern ChartLyricsProvider chart_lyrics_provider;
 extern LrcLibProvider lrclib_provider;
 extern LyricsOVHProvider lyrics_ovh_provider;
 LyricProvider * remote_source ();
