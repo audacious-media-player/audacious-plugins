@@ -176,10 +176,11 @@ bool QtSkins::init ()
         return false;
     }
 
-    if (QGuiApplication::platformName() == "wayland")
+    if (QGuiApplication::platformName () == "wayland" &&
+        qgetenv ("DISPLAY").isEmpty ())
     {
-        AUDERR ("The Winamp interface is not supported on Wayland. "
-                "Please run Audacious via XWayland.\n");
+        AUDERR ("The Winamp interface is not supported on Wayland, and "
+            "XWayland does not appear to be available on this system.\n");
         audqt::cleanup ();
         return false;
     }

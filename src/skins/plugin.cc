@@ -169,10 +169,11 @@ bool SkinnedUI::init ()
     audgui_init ();
 
 #ifdef GDK_WINDOWING_WAYLAND
-    if (GDK_IS_WAYLAND_DISPLAY (gdk_display_get_default ()))
+    if (GDK_IS_WAYLAND_DISPLAY (gdk_display_get_default ()) &&
+        ! g_getenv ("DISPLAY"))
     {
-        AUDERR ("The Winamp interface is not supported on Wayland. "
-                "Please run Audacious via XWayland.\n");
+        AUDERR ("The Winamp interface is not supported on Wayland, and "
+            "XWayland does not appear to be available on this system.\n");
         audgui_cleanup ();
         return false;
     }

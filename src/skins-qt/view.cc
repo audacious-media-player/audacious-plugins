@@ -20,9 +20,15 @@
  */
 
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/mainloop.h>
 #include <libaudcore/runtime.h>
+#include <libaudqt/libaudqt.h>
 
+#include <QGuiApplication>
+#include <QMessageBox>
+#include <QPointer>
+#include <QPushButton>
 #include <QWindow>
 
 #include "plugin.h"
@@ -38,8 +44,53 @@
 #include "view.h"
 #include "window.h"
 
+class QuitOnCloseMessageBox : public QMessageBox
+{
+protected:
+    void closeEvent (QCloseEvent *) override {
+        aud_quit ();
+    }
+};
+
 void view_show_player (bool show)
 {
+    static QPointer<QuitOnCloseMessageBox> dialog;
+
+    if (show && QGuiApplication::platformName () == "wayland")
+    {
+        if (! dialog)
+        {
+            dialog = new QuitOnCloseMessageBox;
+
+            auto restart = new QPushButton (audqt::translate_str (N_("Restart")), dialog);
+            auto quit = new QPushButton (audqt::translate_str (N_("Quit")), dialog);
+
+            restart->setIcon (QIcon::fromTheme ("view-refresh"));
+            quit->setIcon (QIcon::fromTheme ("application-exit"));
+
+            QObject::connect (restart, & QPushButton::clicked, aud_request_restart);
+            QObject::connect (quit, & QPushButton::clicked, aud_quit);
+
+            dialog->setIcon (QMessageBox::Warning);
+            dialog->setWindowTitle (_("Please Restart"));
+            dialog->setText
+                (_("The Winamp interface requires windowing system features not "
+                "supported by Wayland. Audacious will attempt to use XWayland "
+                "compatibility mode after restart."));
+
+            dialog->addButton (restart, QMessageBox::AcceptRole);
+            dialog->addButton (quit, QMessageBox::RejectRole);
+            dialog->setDefaultButton (restart);
+        }
+
+        dialog->show ();
+        show = false; // don't show main window
+    }
+    else if (dialog)
+    {
+        delete dialog.data ();
+    }
+
     if (show)
     {
         mainwin->show ();
