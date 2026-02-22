@@ -79,6 +79,7 @@ public:
 
     constexpr PlaybackHistory() : GeneralPlugin(info, false) {}
 
+    bool init() override;
     void * get_qt_widget() override;
     int take_message(const char * code, const void *, int) override;
 };
@@ -806,6 +807,12 @@ void HistoryView::makeCurrent(const QModelIndex & index)
 }
 
 static QPointer<HistoryView> s_history_view;
+
+bool PlaybackHistory::init()
+{
+    aud_config_set_defaults(configSection, defaults);
+    return true;
+}
 
 void * PlaybackHistory::get_qt_widget()
 {
