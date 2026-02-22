@@ -83,7 +83,7 @@ TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
     EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
-    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart filebrowser lyrics-gtk playlist-manager search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart filebrowser lyrics-gtk playback-history playlist-manager search-tool statusicon"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope cairo-spectrum vumeter"
 fi
@@ -884,6 +884,7 @@ if test "x$USE_GTK" = "xyes" ; then
     echo "  Blur Scope:                             yes"
     echo "  File Browser:                           yes"
     echo "  OpenGL Spectrum Analyzer:               $have_glspectrum"
+    echo "  Playback History:                       yes"
     echo "  Playlist Manager:                       yes"
     echo "  Search Tool:                            yes"
     echo "  Spectrum Analyzer (2D):                 yes"

@@ -340,6 +340,7 @@ if meson.version().version_compare('>= 0.53')
       'Blur Scope': true,
       'File Browser': true,
       'OpenGL Spectrum Analyzer': get_variable('have_glspectrum', false),
+      'Playback History': true,
       'Playlist Manager': true,
       'Search Tool': true,
       'Spectrum Analyzer (2D)': true,
