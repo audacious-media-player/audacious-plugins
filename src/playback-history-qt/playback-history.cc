@@ -16,8 +16,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <algorithm>
 #include <cassert>
+#include <cstring>
 #include <utility>
 
 #include <QAbstractListModel>
@@ -29,163 +29,34 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/playlist.h>
+#include <libaudcore/index.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/templates.h>
 #include <libaudqt/treeview.h>
 
-/**
- * Returns a representation of @p str suitable for printing via audlog::log().
- */
-static const char * printable(const String & str)
-{
-    // Printing nullptr invokes undefined behavior.
-    return str ? str : "";
-}
+#include "../playback-history/history-entry.h"
+#include "../playback-history/preferences.h"
 
-class PlaybackHistory : public GeneralPlugin
+class PlaybackHistoryQt : public GeneralPlugin
 {
 private:
-    static constexpr const char * aboutText =
-        N_("Playback History Plugin\n\n"
-           "Copyright 2023-2024 Igor Kushnir <igorkuo@gmail.com>\n\n"
-           "This plugin tracks and provides access to playback history.\n\n"
-
-           "History entries are stored only in memory and are lost\n"
-           "on Audacious exit. When the plugin is disabled,\n"
-           "playback history is not tracked at all.\n"
-           "History entries are only added, never removed automatically.\n"
-           "The user can remove selected entries by pressing the Delete key.\n"
-           "Restart Audacious or disable the plugin by closing\n"
-           "Playback History view to clear the entries.\n\n"
-
-           "Two history item granularities (modes) are supported.\n"
-           "The user can select a mode in the plugin's settings.\n"
-           "The Song mode is the default. Each played song is stored\n"
-           "in history. Song titles are displayed in the list.\n"
-           "When the Album mode is selected and multiple songs from\n"
-           "a single album are played in a row, a single album entry\n"
-           "is stored in history. Album names are displayed in the list.");
-
-    static const char * const defaults[];
-    static const PreferencesWidget widgets[];
+    static constexpr const char * about = aboutText;
     static const PluginPreferences prefs;
 
 public:
     static constexpr PluginInfo info = {N_("Playback History"), PACKAGE,
-                                        aboutText, &prefs, PluginQtOnly};
+                                        about, &prefs, PluginQtOnly};
 
-    constexpr PlaybackHistory() : GeneralPlugin(info, false) {}
+    constexpr PlaybackHistoryQt() : GeneralPlugin(info, false) {}
 
     bool init() override;
     void * get_qt_widget() override;
     int take_message(const char * code, const void *, int) override;
 };
 
-EXPORT PlaybackHistory aud_plugin_instance;
-
-static constexpr const char * configSection = "playback-history";
-static constexpr const char * configEntryType = "entry_type";
-
-class HistoryEntry
-{
-public:
-    enum class Type
-    {
-        Song = Tuple::Field::Title,
-        Album = Tuple::Field::Album
-    };
-    static constexpr Type defaultType = Type::Song;
-
-    /**
-     * Creates an invalid entry that can only be assigned to or destroyed.
-     */
-    HistoryEntry() = default;
-
-    /**
-     * Stores the currently playing entry in @c this.
-     *
-     * Call this function when a song playback starts.
-     * @return @c true if the entry was retrieved and assigned successfully.
-     * @note @c this remains or becomes invalid if @c false is returned.
-     */
-    bool assignPlayingEntry();
-
-    /**
-     * Gives keyboard focus to the corresponding playlist entry and makes it the
-     * single selected entry in the playlist.
-     */
-    void makeCurrent() const;
-
-    /**
-     * Starts playing this entry.
-     *
-     * @return @c true in case of success.
-     */
-    bool play() const;
-
-    /**
-     * Prints @c this using @c AUDDBG.
-     *
-     * @param prefix a possibly empty string to be printed before @c this.
-     *               A nonempty @p prefix should end with whitespace.
-     */
-    void debugPrint(const char * prefix) const;
-
-    Type type() const { return m_type; }
-    /**
-     * Returns a translated human-readable designation of text() based on
-     * type().
-     */
-    const char * translatedTextDesignation() const;
-    /**
-     * Returns this entry's song title if type() is Song or its album name if
-     * type() is Album.
-     */
-    const String & text() const { return m_text; }
-
-    Playlist playlist() const { return m_playlist; }
-    String playlistTitle() const { return m_playlist.get_title(); }
-    /** Returns the playlist Entry Number of this entry. */
-    int entryNumber() const;
-
-private:
-    /**
-     * Returns an untranslated human-readable designation of text() based on
-     * type().
-     */
-    const char * untranslatedTextDesignation() const;
-
-    /**
-     * Retrieves the song title if type() is Song or the album name if type() is
-     * Album at @a m_playlistPosition in @a m_playlist and assigns it to
-     * @p text.
-     *
-     * @return @c true if the text was retrieved successfully.
-     */
-    bool retrieveText(String & text) const;
-
-    /**
-     * Returns @c true if @a m_playlist exists and @a m_playlistPosition still
-     * points to the same playlist entry as at the time of last assignment.
-     */
-    bool isAvailable() const;
-
-    String m_text;
-    Playlist m_playlist; /**< the playlist, in which this entry was played */
-    /** The position in @a m_playlist of the song titled text() if type() is
-     * Song or of the first played song from the album named text() if type() is
-     * Album.
-     * When the user modifies the playlist, positions shift, but this should
-     * happen rarely enough and therefore doesn't have to be handled perfectly.
-     * A linear search for a song title or an album name equal to text() in
-     * @a m_playlist is inefficient, and thus is never performed by this plugin.
-     */
-    int m_playlistPosition = -1;
-    Type m_type = defaultType;
-};
+EXPORT PlaybackHistoryQt aud_plugin_instance;
 
 class HistoryModel : public QAbstractListModel
 {
@@ -292,168 +163,6 @@ private:
 #endif
 };
 
-bool HistoryEntry::assignPlayingEntry()
-{
-    m_playlist = Playlist::playing_playlist();
-    if (!m_playlist.exists())
-    {
-        AUDWARN("Playback just started but no playlist is playing.\n");
-        return false;
-    }
-
-    m_playlistPosition = m_playlist.get_position();
-    if (m_playlistPosition == -1)
-    {
-        AUDWARN("Playback just started but the playing playlist %s "
-                "has no playing entry.\n",
-                printable(playlistTitle()));
-        return false;
-    }
-    assert(m_playlistPosition >= 0);
-    assert(m_playlistPosition < m_playlist.n_entries());
-
-    const auto entryType = aud_get_int(configSection, configEntryType);
-    if (entryType == static_cast<int>(Type::Song) ||
-        entryType == static_cast<int>(Type::Album))
-    {
-        m_type = static_cast<Type>(entryType);
-    }
-    else
-    {
-        AUDWARN("Invalid %s.%s config value: %d.\n", configSection,
-                configEntryType, entryType);
-        m_type = defaultType;
-    }
-
-    return retrieveText(m_text);
-}
-
-void HistoryEntry::makeCurrent() const
-{
-    if (!isAvailable())
-        return;
-
-    m_playlist.select_all(false);
-    m_playlist.select_entry(m_playlistPosition, true);
-    m_playlist.set_focus(m_playlistPosition);
-
-    m_playlist.activate();
-}
-
-bool HistoryEntry::play() const
-{
-    if (!isAvailable())
-        return false;
-
-    m_playlist.set_position(m_playlistPosition);
-    m_playlist.start_playback();
-
-    // Double-clicking a history entry makes it current just before activation.
-    // In this case m_playlist is already active here. However, m_playlist is
-    // not active here if the user performs the following steps:
-    // 1) select a history entry; 2) activate another playlist;
-    // 3) give focus to History view; 4) press the Enter key.
-    m_playlist.activate();
-
-    return true;
-}
-
-void HistoryEntry::debugPrint(const char * prefix) const
-{
-    AUDDBG("%s%s=\"%s\", playlist=\"%s\", entry number=%d\n", prefix,
-           untranslatedTextDesignation(), printable(m_text),
-           printable(playlistTitle()), entryNumber());
-}
-
-const char * HistoryEntry::translatedTextDesignation() const
-{
-    switch (m_type)
-    {
-    case Type::Song:
-        return _("Title");
-    case Type::Album:
-        return _("Album");
-    }
-    Q_UNREACHABLE();
-}
-
-int HistoryEntry::entryNumber() const
-{
-    // Add 1 because a playlist position is 0-based
-    // but an Entry Number in the UI is 1-based.
-    return m_playlistPosition + 1;
-}
-
-const char * HistoryEntry::untranslatedTextDesignation() const
-{
-    switch (m_type)
-    {
-    case Type::Song:
-        return "title";
-    case Type::Album:
-        return "album";
-    }
-    Q_UNREACHABLE();
-}
-
-bool HistoryEntry::retrieveText(String & text) const
-{
-    String errorMessage;
-    const auto tuple = m_playlist.entry_tuple(m_playlistPosition,
-                                              Playlist::Wait, &errorMessage);
-    if (errorMessage || tuple.state() != Tuple::Valid)
-    {
-        AUDWARN("Failed to retrieve metadata of entry #%d in playlist %s: %s\n",
-                entryNumber(), printable(playlistTitle()),
-                errorMessage ? printable(errorMessage)
-                             : "Song info could not be read");
-        return false;
-    }
-
-    text = tuple.get_str(static_cast<Tuple::Field>(m_type));
-    return true;
-}
-
-bool HistoryEntry::isAvailable() const
-{
-    if (!m_playlist.exists())
-    {
-        AUDWARN("The selected entry's playlist has been deleted.\n");
-        return false;
-    }
-
-    assert(m_playlistPosition >= 0);
-    if (m_playlistPosition >= m_playlist.n_entries())
-    {
-        AUDWARN("The selected entry's position is now out of bounds.\n");
-        return false;
-    }
-
-    String currentTextAtPlaylistPosition;
-    if (!retrieveText(currentTextAtPlaylistPosition))
-        return false;
-
-    // Text equality does not guarantee that the song, for which this history
-    // entry was created, still resides at m_playlistPosition in m_playlist. In
-    // case the user inserts or removes a few songs above m_playlistPosition:
-    // * if type() is Song, a different song with the same title is unnoticed;
-    // * if type() is Album, a different song from the same album or a song from
-    //   an unrelated album that happens to have the same name goes undetected.
-    // But such coincidences should be much more rare
-    // and less of a problem than the text inequality condition
-    // checked here. Therefore, information that uniquely identifies the
-    // referenced song is not stored in a history entry just for this case.
-    if (currentTextAtPlaylistPosition != m_text)
-    {
-        AUDWARN("The %s at the selected entry's playlist position has"
-                " changed.\n",
-                untranslatedTextDesignation());
-        return false;
-    }
-
-    return true;
-}
-
 void HistoryModel::setFont(const QFont & font)
 {
     m_currentlyPlaingFont = font;
@@ -526,12 +235,16 @@ QVariant HistoryModel::data(const QModelIndex & index, int role) const
         // The playlist title and entry number are rarely interesting and
         // therefore shown only in the tooltip.
         return QString(
-            str_printf(_("<b>%s:</b> %s<br><b>Playlist:</b> %s<br>"
-                         "<b>Entry Number:</b> %d"),
-                       entry.translatedTextDesignation(),
-                       static_cast<const char *>(entry.text()),
-                       static_cast<const char *>(entry.playlistTitle()),
-                       entry.entryNumber()));
+                   str_printf(_("<b>%s:</b> %s\n"
+                                "<b>Playlist:</b> %s\n"
+                                "<b>Entry Number:</b> %d"),
+                              entry.translatedTextDesignation(),
+                              static_cast<const char *>(entry.text()),
+                              static_cast<const char *>(entry.playlistTitle()),
+                              entry.entryNumber()))
+            // Make life easier for translators by sharing the markup template.
+            // GTK and Qt use different line breaks though, so replace them.
+            .replace("\n", "<br>");
     }
     case Qt::FontRole:
         if (pos == m_playingPosition)
@@ -551,7 +264,7 @@ bool HistoryModel::removeRows(int row, int count, const QModelIndex & parent)
     if (isModelRowOutOfBounds(row) || isModelRowOutOfBounds(lastRowToRemove))
         return false;
 
-    const int pos = std::min(positionFromModelRow(row),
+    const int pos = aud::min(positionFromModelRow(row),
                              positionFromModelRow(lastRowToRemove));
     // pos is the lesser of the positions that correspond to the first and last
     // removed model rows. Remove the range [pos, pos + count) from m_entries.
@@ -648,50 +361,17 @@ void HistoryModel::playbackStarted()
     if (!entry.assignPlayingEntry())
         return;
 
+    int n_entries = m_entries.len();
     entry.debugPrint("Started playing ");
     AUDDBG("playing position=%d, entry count=%d\n", m_playingPosition,
-           m_entries.len());
+           n_entries);
 
-    const auto shouldAppendEntry = [this, &entry] {
-        if (m_playingPosition < 0)
-            return true;
+    if (m_playingPosition >= 0 && m_playingPosition < n_entries)
+    {
         const auto & prevPlayingEntry = m_entries[m_playingPosition];
-
-        if (prevPlayingEntry.type() != entry.type() ||
-            prevPlayingEntry.playlist() != entry.playlist())
-        {
-            return true; // the two entries are very different indeed
-        }
-
-        // When the entry numbers differ, either the entries point to two
-        // different songs or the user has modified the playlist and playlist
-        // positions have shifted, which invalidated prevPlayingEntry. Either
-        // way, the entry should be appended if the type is Song.
-        if (entry.type() == HistoryEntry::Type::Song &&
-            prevPlayingEntry.entryNumber() != entry.entryNumber())
-        {
-            return true;
-        }
-
-        // If the type is Song, equal entry numbers but differing song titles
-        // mean that the user has modified the playlist and playlist positions
-        // have shifted. Append the entry in this case, because it is not the
-        // same as the previous one.
-        // If the type is Album, let us assume the Shuffle by Album playback
-        // mode is enabled. Then equal album names, in all probability,
-        // mean that a song from the same album started playing, in which case
-        // the entry should not be appended. Much less likely, a different
-        // album with the same name, separated by other albums from the
-        // previously played one, was just randomly selected.
-        // Ignore this possibility here. The users concerned about such an
-        // occurrence are advised to edit metadata in their music collections
-        // and ensure unique album names. The unique album names would also
-        // prevent Audacious from erroneously playing same-name albums
-        // in order if they happen to end up adjacent in a playlist.
-        return prevPlayingEntry.text() != entry.text();
-    }();
-    if (!shouldAppendEntry)
-        return;
+        if (!entry.shouldAppendEntry(prevPlayingEntry))
+            return;
+    }
 
     const int prevPlayingPosition = m_playingPosition;
 
@@ -808,20 +488,20 @@ void HistoryView::makeCurrent(const QModelIndex & index)
 
 static QPointer<HistoryView> s_history_view;
 
-bool PlaybackHistory::init()
+bool PlaybackHistoryQt::init()
 {
     aud_config_set_defaults(configSection, defaults);
     return true;
 }
 
-void * PlaybackHistory::get_qt_widget()
+void * PlaybackHistoryQt::get_qt_widget()
 {
     assert(!s_history_view);
     s_history_view = new HistoryView;
     return s_history_view;
 }
 
-int PlaybackHistory::take_message(const char * code, const void *, int)
+int PlaybackHistoryQt::take_message(const char * code, const void *, int)
 {
     if (!strcmp(code, "grab focus") && s_history_view)
     {
@@ -832,16 +512,4 @@ int PlaybackHistory::take_message(const char * code, const void *, int)
     return -1;
 }
 
-const char * const PlaybackHistory::defaults[] = {
-    configEntryType,
-    aud::numeric_string<static_cast<int>(HistoryEntry::defaultType)>::str,
-    nullptr};
-
-const PreferencesWidget PlaybackHistory::widgets[] = {
-    WidgetLabel(N_("<b>History Item Granularity</b>")),
-    WidgetRadio(N_("Song"), WidgetInt(configSection, configEntryType),
-                {static_cast<int>(HistoryEntry::Type::Song)}),
-    WidgetRadio(N_("Album"), WidgetInt(configSection, configEntryType),
-                {static_cast<int>(HistoryEntry::Type::Album)})};
-
-const PluginPreferences PlaybackHistory::prefs = {{widgets}};
+const PluginPreferences PlaybackHistoryQt::prefs = {{widgets}};

@@ -1,6 +1,7 @@
 PLUGIN = playback-history-qt${PLUGIN_SUFFIX}
 
-SRCS = playback-history.cc
+SRCS = ../playback-history/history-entry.cc \
+       playback-history.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
