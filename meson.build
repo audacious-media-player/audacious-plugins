@@ -66,7 +66,7 @@ x11_dep = dependency('x11', required: false)
 
 if get_option('qt')
   if get_option('qt5')
-    qt_req = '>= 5.2'
+    qt_req = '>= 5.12'
     qt_dep = dependency('qt5', version: qt_req, required: true, modules: ['Core', 'Widgets', 'Gui'])
   else
     qt_req = '>= 6.0'

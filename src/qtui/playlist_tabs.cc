@@ -407,17 +407,14 @@ void PlaylistTabBar::tabMoved(int from, int to)
 
 void PlaylistTabBar::updateSettings()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
     setAutoHide(false);
-#endif
 
     switch (aud_get_int("qtui", "playlist_tabs_visible"))
     {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
     case PlaylistTabVisibility::AutoHide:
         setAutoHide(true);
         break;
-#endif
+
     case PlaylistTabVisibility::Always:
         show();
         break;

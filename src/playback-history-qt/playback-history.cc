@@ -138,12 +138,6 @@ private:
     QFont m_currentlyPlaingFont;
 };
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-/** The optimization returns early from duplicate makeCurrent() invocations and
- * relies on a QMetaObject::invokeMethod() overload introduced in Qt 5.10. */
-#define OPTIMIZE_MAKE_CURRENT
-#endif
-
 class HistoryView : public audqt::TreeView
 {
 public:
@@ -158,9 +152,7 @@ private:
     void makeCurrent(const QModelIndex & index);
 
     HistoryModel m_model;
-#ifdef OPTIMIZE_MAKE_CURRENT
     QModelIndex m_newlyCurrentIndex;
-#endif
 };
 
 void HistoryModel::setFont(const QFont & font)
@@ -463,7 +455,6 @@ void HistoryView::makeCurrent(const QModelIndex & index)
     // QAbstractItemView::pressed is only emitted when the index is valid.
     assert(index.isValid());
 
-#ifdef OPTIMIZE_MAKE_CURRENT
     AUDDBG("makeCurrent: %d => %d\n", m_newlyCurrentIndex.row(), index.row());
 
     // Clicking on a noncurrent item calls currentChanged() and emits
@@ -479,9 +470,6 @@ void HistoryView::makeCurrent(const QModelIndex & index)
     [[maybe_unused]] const bool invoked = QMetaObject::invokeMethod(
         this, [this] { m_newlyCurrentIndex = {}; }, Qt::QueuedConnection);
     assert(invoked);
-#else
-    AUDDBG("makeCurrent: %d\n", index.row());
-#endif
 
     m_model.makeCurrent(index);
 }

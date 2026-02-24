@@ -47,20 +47,14 @@ public:
 class ArtLabel : public QLabel
 {
 public:
-#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
-    ArtLabel (QWidget * parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags ()) : QLabel (parent, f)
-#else
-    ArtLabel (QWidget * parent = nullptr, Qt::WindowFlags f = 0) : QLabel (parent, f)
-#endif
+    ArtLabel (QWidget * parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags ())
+        : QLabel (parent, f)
     {
         init ();
     }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
-    ArtLabel (const QString & text, QWidget * parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags ()) : QLabel (text, parent, f)
-#else
-    ArtLabel (const QString & text, QWidget * parent = nullptr, Qt::WindowFlags f = 0) : QLabel (text, parent, f)
-#endif
+    ArtLabel (const QString & text, QWidget * parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags ())
+        : QLabel (text, parent, f)
     {
         init ();
     }
