@@ -277,7 +277,7 @@ ENABLE_PLUGIN_WITH_DEP(ffaudio,
     auto,
     INPUT,
     FFMPEG,
-    libavcodec >= 56.60.100 libavformat >= 56.40.101 libavutil >= 54.31.100)
+    libavcodec >= 58.54.100 libavformat >= 58.29.100 libavutil >= 56.31.100)
 
 ENABLE_PLUGIN_WITH_DEP(sndfile,
     libsndfile decoder,

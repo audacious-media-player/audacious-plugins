@@ -1,6 +1,6 @@
-libavcodec_dep = dependency('libavcodec', version: '>= 56.60.100', required: false)
-libavformat_dep = dependency('libavformat', version: '>= 56.40.101', required: false)
-libavutil_dep = dependency('libavutil', version: '>= 54.31.100', required: false)
+libavcodec_dep = dependency('libavcodec', version: '>= 58.54.100', required: false)
+libavformat_dep = dependency('libavformat', version: '>= 58.29.100', required: false)
+libavutil_dep = dependency('libavutil', version: '>= 56.31.100', required: false)
 
 
 have_ffaudio = libavcodec_dep.found() and \

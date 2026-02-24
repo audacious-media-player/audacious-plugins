@@ -24,21 +24,12 @@
 #include "ffaudio-stdinc.h"
 
 #include <limits.h>
-#include <pthread.h>
 
 #include <audacious/audtag.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
-
-#if CHECK_LIBAVFORMAT_VERSION (57, 33, 100)
-#define ALLOC_CONTEXT 1
-#endif
-
-#if CHECK_LIBAVCODEC_VERSION (57, 37, 100)
-#define SEND_PACKET 1
-#endif
 
 class FFaudio : public InputPlugin
 {
@@ -83,25 +74,12 @@ struct ScopedContext
 
     ScopedContext (const CodecInfo & cinfo)
     {
-#ifdef ALLOC_CONTEXT
         ptr = avcodec_alloc_context3 (cinfo.codec);
         avcodec_parameters_to_context (ptr, cinfo.stream->codecpar);
-#else
-        ptr = cinfo.stream->codec;
-#endif
-
-#if CHECK_LIBAVCODEC_VERSION(58, 9, 100)
         ptr->pkt_timebase = cinfo.stream->time_base;
-#else
-        av_codec_set_pkt_timebase (ptr, cinfo.stream->time_base);
-#endif
     }
 
-#ifdef ALLOC_CONTEXT
     ~ScopedContext () { avcodec_free_context (& ptr); }
-#else
-    ~ScopedContext () { avcodec_close (ptr); }
-#endif
 };
 
 struct ScopedPacket
@@ -109,7 +87,6 @@ struct ScopedPacket
     AVPacket * ptr;
     AVPacket * operator-> () { return ptr; }
 
-#if CHECK_LIBAVCODEC_VERSION(57, 12, 100)
     ScopedPacket () { ptr = av_packet_alloc (); }
     ~ScopedPacket () { av_packet_free (& ptr); }
 
@@ -118,26 +95,6 @@ struct ScopedPacket
         av_packet_free (& ptr);
         ptr = av_packet_alloc ();
     }
-#else
-    ScopedPacket ()
-    {
-        ptr = new AVPacket ();
-        av_init_packet (ptr);
-    }
-
-    ~ScopedPacket ()
-    {
-        av_packet_unref (ptr);
-        delete ptr;
-    }
-
-    void clear ()
-    {
-        av_packet_unref (ptr);
-        * ptr = AVPacket ();
-        av_init_packet (ptr);
-    }
-#endif
 };
 
 struct ScopedFrame
@@ -150,31 +107,6 @@ struct ScopedFrame
 static SimpleHash<String, AVInputFormat *> extension_dict;
 
 static void create_extension_dict ();
-
-#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100)
-static int lockmgr (void * * mutexp, enum AVLockOp op)
-{
-    switch (op)
-    {
-    case AV_LOCK_CREATE:
-        * mutexp = new pthread_mutex_t;
-        pthread_mutex_init ((pthread_mutex_t *) * mutexp, nullptr);
-        break;
-    case AV_LOCK_OBTAIN:
-        pthread_mutex_lock ((pthread_mutex_t *) * mutexp);
-        break;
-    case AV_LOCK_RELEASE:
-        pthread_mutex_unlock ((pthread_mutex_t *) * mutexp);
-        break;
-    case AV_LOCK_DESTROY:
-        pthread_mutex_destroy ((pthread_mutex_t *) * mutexp);
-        delete (pthread_mutex_t *) * mutexp;
-        break;
-    }
-
-    return 0;
-}
-#endif
 
 static void ffaudio_log_cb (void * avcl, int av_level, const char * fmt, va_list va)
 {
@@ -210,27 +142,14 @@ static void ffaudio_log_cb (void * avcl, int av_level, const char * fmt, va_list
 
 bool FFaudio::init ()
 {
-#if ! CHECK_LIBAVFORMAT_VERSION(58, 9, 100)
-    av_register_all();
-#endif
-#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100)
-    av_lockmgr_register (lockmgr);
-#endif
-
     create_extension_dict ();
-
     av_log_set_callback (ffaudio_log_cb);
-
     return true;
 }
 
 void FFaudio::cleanup ()
 {
     extension_dict.clear ();
-
-#if ! CHECK_LIBAVCODEC_VERSION(58, 9, 100)
-    av_lockmgr_register (nullptr);
-#endif
 }
 
 static int log_result (const char * func, int ret)
@@ -252,12 +171,8 @@ static int log_result (const char * func, int ret)
 static void create_extension_dict ()
 {
     AVInputFormat * f;
-#if CHECK_LIBAVFORMAT_VERSION(58, 9, 100)
     void * iter = nullptr;
     while ((f = const_cast<AVInputFormat *> (av_demuxer_iterate (& iter))))
-#else
-    for (f = av_iformat_next (nullptr); f; f = av_iformat_next (f))
-#endif
     {
         if (! f->extensions)
             continue;
@@ -380,9 +295,6 @@ static bool find_codec (AVFormatContext * c, CodecInfo * cinfo)
     {
         AVStream * stream = c->streams[i];
 
-#ifndef ALLOC_CONTEXT
-#define codecpar codec
-#endif
         if (stream && stream->codecpar && stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
         {
             AVCodec * codec = (AVCodec *) avcodec_find_decoder (stream->codecpar->codec_id);
@@ -396,7 +308,6 @@ static bool find_codec (AVFormatContext * c, CodecInfo * cinfo)
                 return true;
             }
         }
-#undef codecpar
     }
 
     return false;
@@ -605,39 +516,15 @@ bool FFaudio::play (const char * filename, VFSFile & file)
         }
 
         /* Decode and play packet/frame */
-#ifdef SEND_PACKET
         if (LOG (avcodec_send_packet, context.ptr, pkt.ptr) < 0)
             return false; /* defensive, errors not expected here */
-#else
-        /* Make a mutable (shallow) copy of the real packet */
-        AVPacket tmp = * pkt.ptr;
-#endif
 
         while (! check_stop ())
         {
             ScopedFrame frame;
 
-#ifdef SEND_PACKET
             if (LOG (avcodec_receive_frame, context.ptr, frame.ptr) < 0)
                 break; /* read next packet (continue past errors) */
-#else
-            int decoded = 0;
-            int len = LOG (avcodec_decode_audio4, context.ptr, frame.ptr, & decoded, & tmp);
-
-            if (len < 0)
-                break; /* read next packet (continue past errors) */
-
-            tmp.size -= len;
-            tmp.data += len;
-
-            if (! decoded)
-            {
-                if (tmp.size > 0)
-                    continue; /* process more of current packet */
-
-                break; /* read next packet */
-            }
-#endif
 
             int size = FMT_SIZEOF (out_fmt) * channels * frame->nb_samples;
 
