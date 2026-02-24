@@ -59,8 +59,6 @@ public:
 
 EXPORT PlaybackHistory aud_plugin_instance;
 
-const PluginPreferences PlaybackHistory::prefs = {{widgets}};
-
 static GtkWidget * m_treeview = nullptr;
 static Index<HistoryEntry> m_entries;
 static int m_playing_position = -1;
@@ -253,7 +251,6 @@ static GtkWidget * build_widget()
     audgui_list_add_column(m_treeview, nullptr, 0, G_TYPE_STRING, -1);
     gtk_widget_set_has_tooltip(m_treeview, true);
     gtk_tree_view_set_headers_visible((GtkTreeView *)m_treeview, false);
-    gtk_tree_view_set_fixed_height_mode((GtkTreeView *)m_treeview, true);
     g_signal_connect(m_treeview, "query-tooltip", (GCallback)tooltip_cb, nullptr);
     g_signal_connect(m_treeview, "key-press-event", (GCallback)keypress_cb, nullptr);
 
@@ -300,3 +297,5 @@ int PlaybackHistory::take_message(const char * code, const void *, int)
 
     return -1;
 }
+
+const PluginPreferences PlaybackHistory::prefs = {{widgets}};
