@@ -17,9 +17,7 @@
  * the use of this software.
  */
 
-#include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #include <gio/gio.h>
 #include <glib/gstdio.h>
@@ -91,7 +89,7 @@ static bool delete_uri (const char * uri, bool use_trash)
         g_error_free (gerror);
     }
 
-    g_object_unref ((GObject *) gfile);
+    g_object_unref (gfile);
     return success;
 }
 
@@ -171,7 +169,7 @@ public:
 
         /* make sure selection matches what we actually deleted */
         int num_entries = m_playlist.n_entries ();
-        for (int i = 0; i < num_entries; i++)
+        for (int i = 0; i < num_entries; i ++)
         {
             int j = deleted.bsearch (m_playlist.entry_filename (i), string_compare);
             m_playlist.select_entry (i, (j >= 0));
