@@ -1055,7 +1055,7 @@ GtkWindow * get_main_window ()
     return (GtkWindow *) window;
 }
 
-#if !GTK_CHECK_VERSION(3, 22, 0)
+#ifndef USE_GTK3
 static void menu_position_cb (GtkMenu *, int * x, int * y, int * push, void * button)
 {
     GtkAllocation alloc;
@@ -1079,7 +1079,7 @@ static void menu_button_cb ()
         return;
     }
 
-#if GTK_CHECK_VERSION(3, 22, 0)
+#ifdef USE_GTK3
     gtk_menu_popup_at_widget ((GtkMenu *) menu_main, (GtkWidget *) menu_button,
      GDK_GRAVITY_SOUTH_WEST, GDK_GRAVITY_STATIC, nullptr);
 #else
@@ -1195,7 +1195,7 @@ void show_hide_statusbar ()
 
 static void popup_menu (GtkMenu * menu, const GdkEvent * event)
 {
-#if GTK_CHECK_VERSION(3, 22, 0)
+#ifdef USE_GTK3
     gtk_menu_popup_at_pointer (menu, event);
 #else
     GdkEventButton * button_event = (GdkEventButton *) event;

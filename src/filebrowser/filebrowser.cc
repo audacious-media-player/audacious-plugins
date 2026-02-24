@@ -335,7 +335,7 @@ static void open_uri(const char * uri, VFSFileTest sanity_check)
         return;
     }
 
-#if GTK_CHECK_VERSION(3, 22, 0)
+#ifdef USE_GTK3
     gtk_show_uri_on_window(nullptr, uri, GDK_CURRENT_TIME, &error);
 #else
     gtk_show_uri(gdk_screen_get_default(), uri, GDK_CURRENT_TIME, &error);
@@ -545,7 +545,7 @@ static void show_context_menu(GdkEventButton * event)
     menu_append_optional_items(menu);
     gtk_widget_show_all(menu);
 
-#if GTK_CHECK_VERSION(3, 22, 0)
+#ifdef USE_GTK3
     gtk_menu_popup_at_pointer((GtkMenu *)menu, (const GdkEvent *)event);
 #else
     gtk_menu_popup((GtkMenu *)menu, nullptr, nullptr, nullptr, nullptr,
