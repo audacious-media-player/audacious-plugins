@@ -26,6 +26,7 @@
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 #include <libaudgui/gtk-compat.h>
 
 #include <gdk/gdk.h>
@@ -36,6 +37,10 @@
 #ifdef GDK_WINDOWING_X11
 #include <GL/glx.h>
 #include <gdk/gdkx.h>
+#endif
+
+#ifdef GDK_WINDOWING_WAYLAND
+#include <gdk/gdkwayland.h>
 #endif
 
 #ifdef GDK_WINDOWING_WIN32
@@ -102,6 +107,14 @@ static float s_bars[NUM_BANDS][NUM_BANDS];
 
 bool GLSpectrum::init ()
 {
+#ifdef GDK_WINDOWING_WAYLAND
+    if (GDK_IS_WAYLAND_DISPLAY (gdk_display_get_default ()))
+    {
+        AUDERR ("OpenGL Spectrum Analyzer only supports X11, not Wayland.\n");
+        return false;
+    }
+#endif
+
     for (int i = 0; i <= NUM_BANDS; i ++)
         logscale[i] = powf (256, (float) i / NUM_BANDS) - 0.5f;
 
