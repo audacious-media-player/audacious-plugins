@@ -31,7 +31,7 @@ static void get_value (void * user, int row, int column, GValue * value)
 
 static bool get_selected (void * user, int row)
 {
-    g_return_val_if_fail (row >= 0 && row < plugins.len (), 0);
+    g_return_val_if_fail (row >= 0 && row < plugins.len (), false);
 
     return plugins[row]->selected;
 }
@@ -60,7 +60,7 @@ GtkWidget * create_plugin_list ()
 {
     GtkWidget * list = audgui_list_new (& callbacks, nullptr, plugins.len ());
     audgui_list_add_column (list, nullptr, 0, G_TYPE_STRING, -1);
-    gtk_tree_view_set_headers_visible ((GtkTreeView *) list, 0);
+    gtk_tree_view_set_headers_visible ((GtkTreeView *) list, false);
     return list;
 }
 

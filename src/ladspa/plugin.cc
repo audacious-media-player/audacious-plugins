@@ -416,7 +416,7 @@ static void configure_plugin (LoadedPlugin & loaded)
     StringBuf title = str_printf (_("%s Settings"), plugin.desc.Name);
     loaded.settings_win = gtk_dialog_new_with_buttons (title, nullptr,
      (GtkDialogFlags) 0, _("_Close"), GTK_RESPONSE_CLOSE, nullptr);
-    gtk_window_set_resizable ((GtkWindow *) loaded.settings_win, 0);
+    gtk_window_set_resizable ((GtkWindow *) loaded.settings_win, false);
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) loaded.settings_win);
 
@@ -426,24 +426,24 @@ static void configure_plugin (LoadedPlugin & loaded)
         ControlData & control = plugin.controls[i];
 
         GtkWidget * hbox = audgui_hbox_new (6);
-        gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
+        gtk_box_pack_start ((GtkBox *) vbox, hbox, false, false, 0);
 
         if (control.is_toggle)
         {
             GtkWidget * toggle = gtk_check_button_new_with_label (control.name);
             gtk_toggle_button_set_active ((GtkToggleButton *) toggle, (loaded.values[i] > 0) ? 1 : 0);
-            gtk_box_pack_start ((GtkBox *) hbox, toggle, 0, 0, 0);
+            gtk_box_pack_start ((GtkBox *) hbox, toggle, false, false, 0);
 
             g_signal_connect (toggle, "toggled", (GCallback) control_toggled, & loaded.values[i]);
         }
         else
         {
             GtkWidget * label = gtk_label_new (str_printf ("%s:", (const char *) control.name));
-            gtk_box_pack_start ((GtkBox *) hbox, label, 0, 0, 0);
+            gtk_box_pack_start ((GtkBox *) hbox, label, false, false, 0);
 
             GtkWidget * spin = gtk_spin_button_new_with_range (control.min, control.max, 0.01);
             gtk_spin_button_set_value ((GtkSpinButton *) spin, loaded.values[i]);
-            gtk_box_pack_start ((GtkBox *) hbox, spin, 0, 0, 0);
+            gtk_box_pack_start ((GtkBox *) hbox, spin, false, false, 0);
 
             g_signal_connect (spin, "value-changed", (GCallback) control_changed, & loaded.values[i]);
         }
@@ -477,12 +477,12 @@ static void * make_config_widget ()
     gtk_widget_set_size_request (vbox, 5 * dpi, 4 * dpi);
 
     GtkWidget * hbox = audgui_hbox_new (6);
-    gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, hbox, false, false, 0);
 
     GtkWidget * label = gtk_label_new (_("Module paths:"));
-    gtk_box_pack_start ((GtkBox *) hbox, label, 0, 0, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, label, false, false, 0);
 
-    label = gtk_label_new (0);
+    label = gtk_label_new (nullptr);
     gtk_label_set_markup ((GtkLabel *) label,
      _("<small>Separate multiple paths with a colon.\n"
      "These paths are searched in addition to LADSPA_PATH.\n"
@@ -494,54 +494,54 @@ static void * make_config_widget ()
     gtk_misc_set_padding ((GtkMisc *) label, 12, 6);
     gtk_misc_set_alignment ((GtkMisc *) label, 0, 0);
 #endif
-    gtk_box_pack_start ((GtkBox *) vbox, label, 0, 0, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, label, false, false, 0);
 
     GtkWidget * entry = gtk_entry_new ();
-    gtk_box_pack_start ((GtkBox *) hbox, entry, 1, 1, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, entry, true, true, 0);
 
     hbox = audgui_hbox_new (6);
-    gtk_box_pack_start ((GtkBox *) vbox, hbox, 1, 1, 0);
+    gtk_box_pack_start ((GtkBox *) vbox, hbox, true, true, 0);
 
     GtkWidget * vbox2 = audgui_vbox_new (6);
-    gtk_box_pack_start ((GtkBox *) hbox, vbox2, 1, 1, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, vbox2, true, true, 0);
 
     label = gtk_label_new (_("Available plugins:"));
-    gtk_box_pack_start ((GtkBox *) vbox2, label, 0, 0, 0);
+    gtk_box_pack_start ((GtkBox *) vbox2, label, false, false, 0);
 
     GtkWidget * scrolled = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
-    gtk_box_pack_start ((GtkBox *) vbox2, scrolled, 1, 1, 0);
+    gtk_box_pack_start ((GtkBox *) vbox2, scrolled, true, true, 0);
 
     plugin_list = create_plugin_list ();
     gtk_container_add ((GtkContainer *) scrolled, plugin_list);
 
     GtkWidget * hbox2 = audgui_hbox_new (6);
-    gtk_box_pack_start ((GtkBox *) vbox2, hbox2, 0, 0, 0);
+    gtk_box_pack_start ((GtkBox *) vbox2, hbox2, false, false, 0);
 
     GtkWidget * enable_button = gtk_button_new_with_label (_("Enable"));
-    gtk_box_pack_end ((GtkBox *) hbox2, enable_button, 0, 0, 0);
+    gtk_box_pack_end ((GtkBox *) hbox2, enable_button, false, false, 0);
 
     vbox2 = audgui_vbox_new (6);
-    gtk_box_pack_start ((GtkBox *) hbox, vbox2, 1, 1, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, vbox2, true, true, 0);
 
     label = gtk_label_new (_("Enabled plugins:"));
-    gtk_box_pack_start ((GtkBox *) vbox2, label, 0, 0, 0);
+    gtk_box_pack_start ((GtkBox *) vbox2, label, false, false, 0);
 
     scrolled = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
-    gtk_box_pack_start ((GtkBox *) vbox2, scrolled, 1, 1, 0);
+    gtk_box_pack_start ((GtkBox *) vbox2, scrolled, true, true, 0);
 
     loaded_list = create_loaded_list ();
     gtk_container_add ((GtkContainer *) scrolled, loaded_list);
 
     hbox2 = audgui_hbox_new (6);
-    gtk_box_pack_start ((GtkBox *) vbox2, hbox2, 0, 0, 0);
+    gtk_box_pack_start ((GtkBox *) vbox2, hbox2, false, false, 0);
 
     GtkWidget * disable_button = gtk_button_new_with_label (_("Disable"));
-    gtk_box_pack_end ((GtkBox *) hbox2, disable_button, 0, 0, 0);
+    gtk_box_pack_end ((GtkBox *) hbox2, disable_button, false, false, 0);
 
     GtkWidget * settings_button = gtk_button_new_with_label (_("Settings"));
-    gtk_box_pack_end ((GtkBox *) hbox2, settings_button, 0, 0, 0);
+    gtk_box_pack_end ((GtkBox *) hbox2, settings_button, false, false, 0);
 
     if (module_path)
         gtk_entry_set_text ((GtkEntry *) entry, module_path);
