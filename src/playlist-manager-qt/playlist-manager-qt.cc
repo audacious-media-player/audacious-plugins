@@ -87,9 +87,15 @@ protected:
         return parent.isValid() ? 0 : m_rows;
     }
 
-    int columnCount(const QModelIndex & parent) const override { return NColumns; }
+    int columnCount(const QModelIndex & parent) const override
+    {
+        return NColumns;
+    }
 
-    Qt::DropActions supportedDropActions() const override { return Qt::MoveAction; }
+    Qt::DropActions supportedDropActions() const override
+    {
+        return Qt::MoveAction;
+    }
 
     Qt::ItemFlags flags(const QModelIndex & index) const override
     {
@@ -122,14 +128,7 @@ public:
     PlaylistsView();
 
 protected:
-    void changeEvent(QEvent * event) override
-    {
-        if (event->type() == QEvent::FontChange)
-            m_model.setFont(font());
-
-        audqt::TreeView::changeEvent(event);
-    }
-
+    void changeEvent(QEvent * event) override;
     void currentChanged(const QModelIndex & current,
                         const QModelIndex & previous) override;
     void dropEvent(QDropEvent * event) override;
@@ -276,6 +275,14 @@ PlaylistsView::PlaylistsView()
         if (index.isValid())
             Playlist::by_index(index.row()).start_playback();
     });
+}
+
+void PlaylistsView::changeEvent(QEvent * event)
+{
+    if (event->type() == QEvent::FontChange)
+        m_model.setFont(font());
+
+    audqt::TreeView::changeEvent(event);
 }
 
 void PlaylistsView::currentChanged(const QModelIndex & current,
