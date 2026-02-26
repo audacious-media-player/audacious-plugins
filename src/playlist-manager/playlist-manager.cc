@@ -19,6 +19,9 @@
 
 #include <string.h>
 
+#include <gdk/gdkkeysyms.h>
+#include <gtk/gtk.h>
+
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
