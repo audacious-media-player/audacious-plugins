@@ -44,9 +44,9 @@ private:
 
     static bool filter_cb (const char * filename, void *);
 
-    void add_complete (void);
-    void scan_complete (void);
-    void playlist_update (void);
+    void add_complete ();
+    void scan_complete ();
+    void playlist_update ();
 
     static void signal_update (); /* implemented externally */
 

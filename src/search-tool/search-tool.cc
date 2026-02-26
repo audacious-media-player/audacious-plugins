@@ -181,7 +181,7 @@ void Library::signal_update ()
         s_model.destroy_database ();
         s_selection.clear ();
         audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
-        gtk_label_set_text ((GtkLabel *) stats_label, "");
+        gtk_label_set_text ((GtkLabel *) stats_label, nullptr);
     }
 
     show_hide_widgets ();
@@ -475,7 +475,7 @@ void * SearchTool::get_gtk_widget ()
     audgui_list_add_column (results_list, nullptr, 0, G_TYPE_STRING, -1, true);
     gtk_container_add ((GtkContainer *) scrolled, results_list);
 
-    stats_label = gtk_label_new ("");
+    stats_label = gtk_label_new (nullptr);
     g_signal_connect (stats_label, "destroy", (GCallback) gtk_widget_destroyed, & stats_label);
     gtk_widget_set_no_show_all (stats_label, true);
     gtk_box_pack_start ((GtkBox *) vbox, stats_label, false, false, 0);
