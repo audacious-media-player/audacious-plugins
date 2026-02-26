@@ -52,8 +52,6 @@ EXPORT PlaylistManager aud_plugin_instance;
 
 static GtkWidget * focus_widget;
 
-static void activate_row (void * user, int row);
-
 static void rename_cb (void * unused)
 {
     audgui_show_playlist_rename (Playlist::active_playlist ());
@@ -182,6 +180,26 @@ static void position_hook (void * data, void * list_)
     audgui_list_set_highlight (list, Playlist::playing_playlist ().index ());
 }
 
+static gboolean keypress_cb (GtkWidget * widget, GdkEventKey * event)
+{
+    if ((event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)))
+        return false;
+
+    switch (event->keyval)
+    {
+    case GDK_KEY_Delete:
+        delete_cb (nullptr);
+        return true;
+
+    case GDK_KEY_F2:
+        rename_cb (nullptr);
+        return true;
+
+    default:
+        return false;
+    }
+}
+
 static void destroy_cb (GtkWidget * window)
 {
     hook_dissociate ("playlist update", update_hook);
@@ -228,6 +246,7 @@ void * PlaylistManager::get_gtk_widget ()
 
     focus_widget = playman_pl_lv;
 
+    g_signal_connect (playman_pl_lv, "key-press-event", (GCallback) keypress_cb, nullptr);
     g_signal_connect (playman_vbox, "destroy", (GCallback) destroy_cb, nullptr);
 
     return playman_vbox;

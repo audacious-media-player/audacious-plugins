@@ -132,6 +132,7 @@ protected:
     void currentChanged(const QModelIndex & current,
                         const QModelIndex & previous) override;
     void dropEvent(QDropEvent * event) override;
+    void keyPressEvent(QKeyEvent * event) override;
 
 private:
     PlaylistsModel m_model;
@@ -320,6 +321,28 @@ void PlaylistsView::dropEvent(QDropEvent * event)
 
     Playlist::reorder_playlists(from, (to > from) ? to - 1 : to, 1);
     event->acceptProposedAction();
+}
+
+void PlaylistsView::keyPressEvent(QKeyEvent * event)
+{
+    auto CtrlShiftAlt =
+        Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier;
+
+    if (!(event->modifiers() & CtrlShiftAlt))
+    {
+        switch (event->key())
+        {
+        case Qt::Key_Delete:
+            audqt::playlist_confirm_delete(Playlist::active_playlist());
+            return;
+
+        case Qt::Key_F2:
+            audqt::playlist_show_rename(Playlist::active_playlist());
+            return;
+        }
+    }
+
+    audqt::TreeView::keyPressEvent(event);
 }
 
 void PlaylistsView::update(Playlist::UpdateLevel level)
