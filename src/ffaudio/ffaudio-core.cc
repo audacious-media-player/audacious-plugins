@@ -24,6 +24,8 @@
 #include "ffaudio-stdinc.h"
 
 #include <limits.h>
+#include <stdio.h>
+#include <string.h>
 
 #include <audacious/audtag.h>
 #include <libaudcore/audstrings.h>
