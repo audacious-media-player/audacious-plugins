@@ -9,9 +9,8 @@
 # macOS 26:          Qt 6 - GTK
 
 os=$(tr '[:upper:]' '[:lower:]' <<< "$1")
-build_system=$(tr '[:upper:]' '[:lower:]' <<< "$2")
 
-if [ -z "$os" ] || [ -z "$build_system" ]; then
+if [ -z "$os" ]; then
   echo 'Invalid or missing input parameters'
   exit 1
 fi
@@ -24,46 +23,31 @@ ubuntu_packages='gettext libadplug-dev libasound2-dev libavformat-dev
                  libmpg123-dev libneon27-gnutls-dev libnotify-dev libopenmpt-dev
                  libopusfile-dev libpipewire-0.3-dev libpulse-dev
                  libsamplerate0-dev libsdl2-dev libsidplayfp-dev libsndfile1-dev
-                 libsndio-dev libsoxr-dev libvorbis-dev libwavpack-dev libxml2-dev'
+                 libsndio-dev libsoxr-dev libvorbis-dev libwavpack-dev libxml2-dev
+                 meson'
 
 ubuntu_qt5_packages='libqt5opengl5-dev libqt5svg5-dev libqt5x11extras5-dev
                      qtbase5-dev qtmultimedia5-dev'
 ubuntu_qt6_packages='qt6-base-dev qt6-multimedia-dev qt6-svg-dev'
 
 macos_packages='adplug faad2 ffmpeg libbs2b libcue libmms libmodplug libnotify
-                libopenmpt libsamplerate libsoxr neon opusfile sdl3 wavpack'
+                libopenmpt libsamplerate libsoxr meson neon opusfile sdl3 wavpack'
 
 case "$os" in
   ubuntu-22.04)
-    if [ "$build_system" = 'meson' ]; then
-      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt5_packages libgtk2.0-dev liblircclient-dev meson
-    else
-      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt5_packages libgtk2.0-dev liblircclient-dev
-    fi
+    sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt5_packages libgtk2.0-dev liblircclient-dev
     ;;
 
   ubuntu*)
-    if [ "$build_system" = 'meson' ]; then
-      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt6_packages libgtk-3-dev liblirc-dev meson
-    else
-      sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt6_packages libgtk-3-dev liblirc-dev
-    fi
+    sudo apt-get -qq update && sudo apt-get install $ubuntu_packages $ubuntu_qt6_packages libgtk-3-dev liblirc-dev
     ;;
 
   macos-15*)
-    if [ "$build_system" = 'meson' ]; then
-      brew update -q && brew install $macos_packages qt@5 meson
-    else
-      brew update -q && brew install $macos_packages qt@5 automake libiconv
-    fi
+    brew update -q && brew install $macos_packages qt@5
     ;;
 
   macos*)
-    if [ "$build_system" = 'meson' ]; then
-      brew update -q && brew install $macos_packages qt@6 meson
-    else
-      brew update -q && brew install $macos_packages qt@6 automake libiconv
-    fi
+    brew update -q && brew install $macos_packages qt@6
     ;;
 
   windows*)

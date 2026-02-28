@@ -13,19 +13,15 @@ jobs:
         os: [ubuntu-22.04, ubuntu-24.04,
              macos-15-intel, macos-26,
              windows-2022]
-        build-system: [autotools, meson]
-        exclude:
-          - os: macos-26
-            build-system: autotools
       fail-fast: false
     runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout audacious-plugins
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: Checkout audacious
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         repository: audacious-media-player/audacious
         path: audacious
@@ -34,46 +30,39 @@ jobs:
       uses: ./.github/actions/install-dependencies
       with:
         os: ${{ matrix.os }}
-        build-system: ${{ matrix.build-system }}
 
     - name: Configure audacious
       uses: ./audacious/.github/actions/run-action
       with:
         action: 'configure'
         os: ${{ matrix.os }}
-        build-system: ${{ matrix.build-system }}
 
     - name: Build audacious
       uses: ./audacious/.github/actions/run-action
       with:
         action: 'build'
         os: ${{ matrix.os }}
-        build-system: ${{ matrix.build-system }}
 
     - name: Install audacious
       uses: ./audacious/.github/actions/run-action
       with:
         action: 'install'
         os: ${{ matrix.os }}
-        build-system: ${{ matrix.build-system }}
 
     - name: Configure audacious-plugins
       uses: ./.github/actions/run-action
       with:
         action: 'configure'
         os: ${{ matrix.os }}
-        build-system: ${{ matrix.build-system }}
 
     - name: Build audacious-plugins
       uses: ./.github/actions/run-action
       with:
         action: 'build'
         os: ${{ matrix.os }}
-        build-system: ${{ matrix.build-system }}
 
     - name: Install audacious-plugins
       uses: ./.github/actions/run-action
       with:
         action: 'install'
         os: ${{ matrix.os }}
-        build-system: ${{ matrix.build-system }}
