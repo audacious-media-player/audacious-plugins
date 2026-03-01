@@ -130,6 +130,7 @@ void LIRCPlugin::cleanup ()
             input_tag = 0;
         }
 
+        lirc_freeconfig (config);
         config = nullptr;
     }
 
