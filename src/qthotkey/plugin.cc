@@ -70,7 +70,7 @@ typedef long filter_result_t;
 namespace GlobalHotkeys
 {
 
-class GlobalHotkeys : public GeneralPlugin
+class GlobalHotkeysQt : public GeneralPlugin
 {
 public:
     static const char about[];
@@ -78,7 +78,7 @@ public:
     static constexpr PluginInfo info = {N_("Global Hotkeys"), PACKAGE, about,
                                         &hotkey_prefs, PluginQtOnly};
 
-    constexpr GlobalHotkeys() : GeneralPlugin(info, false) {}
+    constexpr GlobalHotkeysQt() : GeneralPlugin(info, false) {}
 
     bool init() override;
     void cleanup() override;
@@ -101,7 +101,7 @@ unsigned int numlock_mask = 0;
 unsigned int scrolllock_mask = 0;
 unsigned int capslock_mask = 0;
 
-const char GlobalHotkeys::about[] =
+const char GlobalHotkeysQt::about[] =
     N_("Global Hotkey Plugin\n"
        "Control the player with global key combinations or multimedia keys.\n\n"
        "Copyright (C) 2020 i.Dark_Templar "
@@ -420,7 +420,7 @@ void save_config()
     aud_set_int("globalHotkey", "NumHotkeys", max);
 }
 
-bool GlobalHotkeys::init()
+bool GlobalHotkeysQt::init()
 {
     audqt::init();
 
@@ -458,7 +458,7 @@ bool GlobalHotkeys::init()
     return true;
 }
 
-void GlobalHotkeys::cleanup()
+void GlobalHotkeysQt::cleanup()
 {
     QCoreApplication::instance()->removeNativeEventFilter(&event_filter);
     ungrab_keys();
@@ -738,4 +738,4 @@ void ungrab_keys()
 
 } /* namespace GlobalHotkeys */
 
-EXPORT GlobalHotkeys::GlobalHotkeys aud_plugin_instance;
+EXPORT GlobalHotkeys::GlobalHotkeysQt aud_plugin_instance;
