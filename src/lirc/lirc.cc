@@ -100,16 +100,16 @@ void init_lirc ()
         return;
     }
 
-    input_tag =
-        g_io_add_watch (g_io_channel_unix_new (lirc_fd), G_IO_IN,
-                        lirc_input_callback, nullptr);
-
     fcntl (lirc_fd, F_SETOWN, getpid ());
     flags = fcntl (lirc_fd, F_GETFL, 0);
     if (flags != -1)
     {
         fcntl (lirc_fd, F_SETFL, flags | O_NONBLOCK);
     }
+
+    GIOChannel * channel = g_io_channel_unix_new (lirc_fd);
+    input_tag = g_io_add_watch (channel, G_IO_IN, lirc_input_callback, nullptr);
+    g_io_channel_unref (channel);
 }
 
 bool LIRCPlugin::init ()
@@ -133,7 +133,10 @@ void LIRCPlugin::cleanup ()
     if (config)
     {
         if (input_tag)
+        {
             g_source_remove (input_tag);
+            input_tag = 0;
+        }
 
         config = nullptr;
     }
