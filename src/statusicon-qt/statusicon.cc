@@ -32,7 +32,7 @@
 #include <QSystemTrayIcon>
 #include <QWheelEvent>
 
-class StatusIcon : public GeneralPlugin
+class StatusIconQt : public GeneralPlugin
 {
 public:
     static const char about[];
@@ -49,7 +49,7 @@ public:
         PluginQtOnly
     };
 
-    constexpr StatusIcon () : GeneralPlugin (info, false) {}
+    constexpr StatusIconQt () : GeneralPlugin (info, false) {}
 
     bool init () override;
     void cleanup () override;
@@ -62,9 +62,9 @@ private:
     static void toggle_aud_ui ();
 };
 
-EXPORT StatusIcon aud_plugin_instance;
+EXPORT StatusIconQt aud_plugin_instance;
 
-const char StatusIcon::about[] =
+const char StatusIconQt::about[] =
  N_("Status Icon Plugin (partial port for Qt interface)\n\n"
     "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
     "Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
@@ -82,7 +82,7 @@ enum {
     SI_CFG_MIDDLE_CLICK_ACTION_NEXT
 };
 
-const char * const StatusIcon::defaults[] = {
+const char * const StatusIconQt::defaults[] = {
     "scroll_action", aud::numeric_string<SI_CFG_SCROLL_ACTION_VOLUME>::str,
     "middle_click_action", aud::numeric_string<SI_CFG_MIDDLE_CLICK_ACTION_PAUSE>::str,
     "disable_popup", "FALSE",
@@ -91,7 +91,7 @@ const char * const StatusIcon::defaults[] = {
     nullptr
 };
 
-const PreferencesWidget StatusIcon::widgets[] = {
+const PreferencesWidget StatusIconQt::widgets[] = {
     WidgetLabel (N_("<b>Mouse Scroll Action</b>")),
     WidgetRadio (N_("Change volume"),
         WidgetInt ("statusicon", "scroll_action"),
@@ -115,9 +115,9 @@ const PreferencesWidget StatusIcon::widgets[] = {
         WidgetBool ("statusicon", "reverse_scroll"))
 };
 
-const PluginPreferences StatusIcon::prefs = {{widgets}};
+const PluginPreferences StatusIconQt::prefs = {{widgets}};
 
-const audqt::MenuItem StatusIcon::items[] =
+const audqt::MenuItem StatusIconQt::items[] =
 {
     audqt::MenuCommand ({N_("_Play"), "media-playback-start"}, aud_drct_play),
     audqt::MenuCommand ({N_("Paus_e"), "media-playback-pause"}, aud_drct_pause),
@@ -125,7 +125,7 @@ const audqt::MenuItem StatusIcon::items[] =
     audqt::MenuCommand ({N_("Pre_vious"), "media-skip-backward"}, aud_drct_pl_prev),
     audqt::MenuCommand ({N_("_Next"), "media-skip-forward"}, aud_drct_pl_next),
     audqt::MenuSep (),
-    audqt::MenuCommand ({N_("_Open Files ..."), "document-open"}, StatusIcon::open_files),
+    audqt::MenuCommand ({N_("_Open Files ..."), "document-open"}, StatusIconQt::open_files),
     audqt::MenuCommand ({N_("Se_ttings ..."), "preferences-system"}, audqt::prefswin_show),
     audqt::MenuCommand ({N_("_Quit"), "application-exit"}, aud_quit),
 };
@@ -195,7 +195,7 @@ bool SystemTrayIcon::event (QEvent * e)
 static SystemTrayIcon * tray = nullptr;
 static QMenu * menu = nullptr;
 
-bool StatusIcon::init ()
+bool StatusIconQt::init ()
 {
     aud_config_set_defaults ("statusicon", defaults);
 
@@ -217,7 +217,7 @@ bool StatusIcon::init ()
     return true;
 }
 
-void StatusIcon::cleanup ()
+void StatusIconQt::cleanup ()
 {
     hook_dissociate ("title change", update_tooltip);
     hook_dissociate ("playback ready", update_tooltip);
@@ -238,13 +238,13 @@ void StatusIcon::cleanup ()
     audqt::cleanup ();
 }
 
-void StatusIcon::update_tooltip (void * data, void * user_data)
+void StatusIconQt::update_tooltip (void * data, void * user_data)
 {
     String title = aud_drct_get_title ();
     tray->setToolTip (QString (title));
 }
 
-void StatusIcon::window_closed (void * data, void * user_data)
+void StatusIconQt::window_closed (void * data, void * user_data)
 {
     bool * handled = (bool *) data;
 
@@ -255,7 +255,7 @@ void StatusIcon::window_closed (void * data, void * user_data)
     }
 }
 
-void StatusIcon::activate (QSystemTrayIcon::ActivationReason reason)
+void StatusIconQt::activate (QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason)
     {
@@ -282,12 +282,12 @@ void StatusIcon::activate (QSystemTrayIcon::ActivationReason reason)
     }
 }
 
-void StatusIcon::open_files ()
+void StatusIconQt::open_files ()
 {
     audqt::fileopener_show (audqt::FileMode::Open);
 }
 
-void StatusIcon::toggle_aud_ui ()
+void StatusIconQt::toggle_aud_ui ()
 {
     aud_ui_show (! aud_ui_is_shown ());
 }
