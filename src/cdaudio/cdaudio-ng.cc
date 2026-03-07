@@ -32,12 +32,7 @@
 #include <cdio/audio.h>
 #include <cdio/sector.h>
 #include <cdio/cd_types.h>
-
-#if LIBCDIO_VERSION_NUM >= 90
 #include <cdio/paranoia/cdda.h>
-#else
-#include <cdio/cdda.h>
-#endif
 
 #ifdef HAVE_LIBCDDB
 #include <cddb/cddb.h>
@@ -551,66 +546,33 @@ static bool scan_cd ()
     if (aud_get_bool ("CDDA", "use_cdtext"))
     {
         AUDDBG ("getting cd-text information for disc\n");
-#if LIBCDIO_VERSION_NUM >= 90
         pcdtext = cdio_get_cdtext (pcdrom_drive->p_cdio);
         if (pcdtext == nullptr)
-#else
-        pcdtext = cdio_get_cdtext (pcdrom_drive->p_cdio, 0);
-        if (pcdtext == nullptr || pcdtext->field[CDTEXT_TITLE] == nullptr)
-#endif
         {
             AUDDBG ("no cd-text available for disc\n");
         }
         else
         {
-#if LIBCDIO_VERSION_NUM >= 90
             trackinfo[0].performer = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_PERFORMER, 0));
             trackinfo[0].name = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_TITLE, 0));
             trackinfo[0].genre = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_GENRE, 0));
-#else
-            trackinfo[0].performer = String (pcdtext->field[CDTEXT_PERFORMER]);
-            trackinfo[0].name = String (pcdtext->field[CDTEXT_TITLE]);
-            trackinfo[0].genre = String (pcdtext->field[CDTEXT_GENRE]);
-#endif
         }
     }
 
     /* get track information from cdtext */
-    bool cdtext_was_available = false;
-    for (int trackno = firsttrackno; trackno <= lasttrackno; trackno++)
+    if (pcdtext != nullptr)
     {
-#if LIBCDIO_VERSION_NUM < 90
-        if (aud_get_bool ("CDDA", "use_cdtext"))
+        for (int trackno = firsttrackno; trackno <= lasttrackno; trackno++)
         {
-            AUDDBG ("getting cd-text information for track %d\n", trackno);
-            pcdtext = cdio_get_cdtext (pcdrom_drive->p_cdio, trackno);
-            if (pcdtext == nullptr || pcdtext->field[CDTEXT_PERFORMER] == nullptr)
-            {
-                AUDDBG ("no cd-text available for track %d\n", trackno);
-                pcdtext = nullptr;
-            }
-        }
-#endif
-
-        if (pcdtext != nullptr)
-        {
-#if LIBCDIO_VERSION_NUM >= 90
             trackinfo[trackno].performer = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_PERFORMER, trackno));
             trackinfo[trackno].name = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_TITLE, trackno));
             trackinfo[trackno].genre = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_GENRE, trackno));
-#else
-            trackinfo[trackno].performer = String (pcdtext->field[CDTEXT_PERFORMER]);
-            trackinfo[trackno].name = String (pcdtext->field[CDTEXT_TITLE]);
-            trackinfo[trackno].genre = String (pcdtext->field[CDTEXT_GENRE]);
-#endif
-            cdtext_was_available = true;
         }
     }
-
-    if (!cdtext_was_available)
-    {
 #ifdef HAVE_LIBCDDB
-        /* initialize de cddb subsystem */
+    else
+    {
+        /* initialize the cddb subsystem */
         cddb_conn_t *pcddb_conn = nullptr;
         cddb_disc_t *pcddb_disc = nullptr;
         cddb_track_t *pcddb_track = nullptr;
@@ -747,8 +709,8 @@ static bool scan_cd ()
 
         if (pcddb_conn != nullptr)
             cddb_destroy (pcddb_conn);
-#endif /* HAVE_LIBCDDB */
     }
+#endif /* HAVE_LIBCDDB */
 
     return true;
 }

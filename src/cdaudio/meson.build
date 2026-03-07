@@ -1,5 +1,5 @@
-libcdio_dep = dependency('libcdio', version: '>= 0.70', required: false)
-libcdio_cdda_dep = dependency('libcdio_cdda', version: '>= 0.70', required: false)
+libcdio_dep = dependency('libcdio', version: '>= 0.90', required: false)
+libcdio_cdda_dep = dependency('libcdio_cdda', version: '>= 0.90', required: false)
 
 have_cdaudio = libcdio_dep.found() and libcdio_cdda_dep.found()
 cdaudio_deps = [audacious_dep, libcdio_dep, libcdio_cdda_dep]
