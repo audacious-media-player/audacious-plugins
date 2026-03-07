@@ -1,4 +1,4 @@
-openmpt_dep = dependency('libopenmpt', version: '>= 0.2', required: false)
+openmpt_dep = dependency('libopenmpt', version: '>= 0.3', required: false)
 have_openmpt = openmpt_dep.found()
 
 
