@@ -6,6 +6,7 @@
  * http://www.slack.net/~ant/libs/
  */
 
+#include <cstring>
 #include <math.h>
 
 #include <libaudcore/audstrings.h>
@@ -120,24 +121,22 @@ int ConsoleFileHandler::load(int sample_rate)
 
     log_warning(m_emu);
 
-#if 0
-    // load .m3u from same directory( replace/add extension with ".m3u")
-    char *m3u_path = g_strdup(m_path);
-    char *ext = strrchr(m3u_path, '.');
-    if (ext == nullptr)
-    {
-        ext = g_strdup_printf("%s.m3u", m3u_path);
-        g_free(m3u_path);
-        m3u_path = ext;
-    }
+    // load companion .m3u or .m3u8 from same directory
+    StringBuf base_path = str_copy(m_path);
+    const char *dot = strrchr(base_path, '.');
+    if (dot)
+        base_path.resize(dot - base_path);
 
     Vfs_File_Reader m3u;
+    StringBuf m3u_path = str_concat({base_path, ".m3u8"});
+    if (m3u.open(m3u_path))
+        m3u_path = str_concat({base_path, ".m3u"});
+
     if (!m3u.open(m3u_path))
     {
-        if (log_err(m_emu->load_m3u(m3u))) // TODO: fail if m3u can't be loaded?
-            log_warning(m_emu); // this will log line number of first problem in m3u
+        if (log_err(m_emu->load_m3u(m3u)))
+            log_warning(m_emu);
     }
-#endif
 
     return 0;
 }
