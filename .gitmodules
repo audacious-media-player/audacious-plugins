@@ -1,0 +1,4 @@
+[submodule "src/kss-libkss/libkss"]
+	path = src/kss-libkss/libkss
+	url = https://github.com/ramonsmits/libkss.git
+	branch = per-channel-pan

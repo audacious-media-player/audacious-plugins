@@ -12,6 +12,10 @@ if get_option('console')
   subdir('console')
 endif
 
+if get_option('kss-libkss')
+  subdir('kss-libkss')
+endif
+
 
 # effect plugins
 subdir('background_music')
