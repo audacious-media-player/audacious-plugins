@@ -241,6 +241,7 @@ static void guess_element ()
 const char * const ALSAPlugin::defaults[] = {
     "pcm", "default",
     "mixer", "default",
+    "sample-rate-delay", "0",
     nullptr
 };
 
@@ -301,7 +302,10 @@ const PreferencesWidget ALSAPlugin::widgets[] = {
         {nullptr, mixer_combo_fill}),
     WidgetCombo (N_("Mixer element:"),
         WidgetString ("alsa", "mixer-element", element_changed, "alsa mixer changed"),
-        {nullptr, element_combo_fill})
+        {nullptr, element_combo_fill}),
+    WidgetSpin (N_("Sample rate change delay:"),
+        WidgetInt ("alsa", "sample-rate-delay"),
+        {0, 10000, 10, N_("ms")})
 };
 
 static void alsa_prefs_init ()

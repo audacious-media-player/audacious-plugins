@@ -87,6 +87,8 @@ static pollfd * poll_handles;
 static bool pump_quit;
 static pthread_t pump_thread;
 
+static int alsa_rate_change_silence_ms;
+
 static snd_mixer_t * alsa_mixer;
 static snd_mixer_elem_t * alsa_mixer_element;
 
@@ -237,10 +239,45 @@ static void pump_stop ()
     pump_quit = false;
 }
 
+static void write_silence_locked (int ms)
+{
+    int frames = aud::rescale<int64_t> (ms, 1000, alsa_rate);
+    int period_frames = aud::rescale<int64_t> (alsa_period, 1000, alsa_rate);
+
+    if (frames <= 0 || period_frames <= 0)
+        return;
+
+    int buf_bytes = snd_pcm_frames_to_bytes (alsa_handle, period_frames);
+    char * silence = new char[buf_bytes]();
+
+    int remaining = frames;
+    while (remaining > 0)
+    {
+        int written = snd_pcm_writei (alsa_handle, silence,
+         aud::min (remaining, period_frames));
+        if (written < 0)
+        {
+            written = snd_pcm_recover (alsa_handle, written, 0);
+            if (written < 0)
+                break;
+            continue;
+        }
+        remaining -= written;
+    }
+
+    delete[] silence;
+}
+
 static void start_playback ()
 {
     AUDDBG ("Starting playback.\n");
     CHECK (snd_pcm_prepare, alsa_handle);
+
+    if (alsa_rate_change_silence_ms > 0)
+    {
+        write_silence_locked (alsa_rate_change_silence_ms);
+        alsa_rate_change_silence_ms = 0;
+    }
 
 FAILED:
     alsa_prebuffer = false;
@@ -317,6 +354,8 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels, String & er
 
     pthread_mutex_lock (& alsa_mutex);
 
+    int prev_rate = alsa_rate;
+
     assert (! alsa_handle);
 
     String pcm = aud_get_str ("alsa", "pcm");
@@ -376,6 +415,14 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels, String & er
         goto FAILED;
 
     pump_start ();
+
+    alsa_rate_change_silence_ms = 0;
+    if (prev_rate != rate)
+    {
+        int ms = aud_get_int ("alsa", "sample-rate-delay");
+        if (ms > 0)
+            alsa_rate_change_silence_ms = ms;
+    }
 
     pthread_mutex_unlock (& alsa_mutex);
     return true;
