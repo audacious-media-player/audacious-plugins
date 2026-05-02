@@ -77,7 +77,7 @@ static const Playlist::SortType s_sort_types[] = {
     Playlist::Path,           // path
     Playlist::Filename,       // file name
     Playlist::FormattedTitle, // custom title
-    Playlist::n_sort_types,   // bitrate
+    Playlist::Bitrate,        // bitrate
     Playlist::Comment,        // comment,
     Playlist::Publisher,      // publisher
     Playlist::CatalogNum,     // catalog number
