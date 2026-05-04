@@ -240,7 +240,7 @@ static void title_change ()
     if (aud_drct_get_ready ())
         mainwin_set_song_title (aud_drct_get_title ());
     else
-        mainwin_set_song_title ("Buffering ...");
+        mainwin_set_song_title (_("Buffering ..."));
 }
 
 static void setup_widget (Widget * widget, int x, int y, bool show)
