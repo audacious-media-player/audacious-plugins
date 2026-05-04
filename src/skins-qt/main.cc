@@ -60,6 +60,9 @@
 #include "vis.h"
 #include "view.h"
 
+#include <QDragEnterEvent>
+#include <QMimeData>
+
 #define SEEK_THRESHOLD 200 /* milliseconds */
 #define SEEK_SPEED 50 /* milliseconds per pixel */
 
@@ -70,7 +73,10 @@ public:
         Window (WINDOW_MAIN, & config.player_x, & config.player_y,
          shaded ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width,
          shaded ? MAINWIN_SHADED_HEIGHT : skin.hints.mainwin_height, shaded),
-        m_dialogs (this) {}
+        m_dialogs (this)
+    {
+        setAcceptDrops (true);
+    }
 
 private:
     DialogWindows m_dialogs;
@@ -80,6 +86,8 @@ private:
     void draw (QPainter & cr) override;
     bool button_press (QMouseEvent * event) override;
     bool scroll (QWheelEvent * event) override;
+    void dragEnterEvent (QDragEnterEvent * event) override;
+    void dropEvent (QDropEvent * event) override;
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     void enterEvent (QEnterEvent * enterEvent) override;
@@ -555,6 +563,30 @@ bool Window::keypress (QKeyEvent * event)
     }
 
     return true;
+}
+
+void MainWindow::dragEnterEvent (QDragEnterEvent * event)
+{
+    if (event->mimeData ()->hasUrls ())
+        event->acceptProposedAction ();
+}
+
+void MainWindow::dropEvent (QDropEvent * event)
+{
+    const QMimeData * mimedata = event->mimeData ();
+    if (! mimedata->hasUrls ())
+        return;
+
+    Index<PlaylistAddItem> files;
+
+    for (const auto & url : mimedata->urls ())
+        files.append (String (url.toEncoded ()));
+
+    if (! files.len ())
+        return;
+
+    aud_drct_pl_open_list (std::move (files));
+    event->acceptProposedAction ();
 }
 
 #if 0
