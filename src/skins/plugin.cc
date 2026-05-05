@@ -173,7 +173,7 @@ bool SkinnedUI::init ()
         ! g_getenv ("DISPLAY"))
     {
         AUDERR ("The Winamp interface is not supported on Wayland, and "
-            "XWayland does not appear to be available on this system.\n");
+                "Xwayland does not appear to be available on this system.\n");
         audgui_cleanup ();
         return false;
     }

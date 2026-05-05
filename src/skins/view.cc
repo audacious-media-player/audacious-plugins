@@ -23,7 +23,6 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/mainloop.h>
 #include <libaudcore/runtime.h>
-#include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #ifdef GDK_WINDOWING_WAYLAND
@@ -52,19 +51,26 @@ void view_show_player (bool show)
     {
         if (! dialog)
         {
-            auto restart = audgui_button_new (_("Restart"), "view-refresh",
-                [] (void *) { aud_request_restart (); }, nullptr);
-            auto quit = audgui_button_new (_("Quit"), "application-exit",
-                [] (void *) { aud_quit (); }, nullptr);
+            auto restart = audgui_button_new (_("Restart"), "view-refresh", [] (void *) {
+                aud_set_bool ("use_xwayland", true);
+                aud_request_restart ();
+            }, nullptr);
 
-            dialog = audgui_dialog_new (GTK_MESSAGE_WARNING, _("Please Restart"),
+            auto quit = audgui_button_new (_("Quit"), "application-exit", [] (void *) {
+                aud_set_bool ("use_xwayland", true);
+                aud_quit ();
+            }, nullptr);
+
+            dialog = audgui_dialog_new (GTK_MESSAGE_WARNING, _("Compatibility Issue"),
                 _("The Winamp interface requires windowing system features not "
-                "supported by Wayland. Audacious will attempt to use XWayland "
-                "compatibility mode after restart."),
+                "supported by Wayland. Audacious will attempt to enable Xwayland "
+                "compatibility mode after restart.\n\n"
+                "With the GTK or Qt interface you may disable this setting "
+                "again in the “Advanced” category of the Audacious settings."),
                 restart, quit);
 
-            g_signal_connect (dialog, "delete-event", aud_quit, nullptr);
-            g_signal_connect (dialog, "destroy", [] () { dialog = nullptr; }, nullptr);
+            g_signal_connect (dialog, "delete-event", (GCallback) aud_quit, nullptr);
+            g_signal_connect (dialog, "destroy", (GCallback) gtk_widget_destroyed, & dialog);
         }
 
         gtk_widget_show_all (dialog);

@@ -47,7 +47,8 @@
 class QuitOnCloseMessageBox : public QMessageBox
 {
 protected:
-    void closeEvent (QCloseEvent *) override {
+    void closeEvent (QCloseEvent *) override
+    {
         aud_quit ();
     }
 };
@@ -68,15 +69,23 @@ void view_show_player (bool show)
             restart->setIcon (QIcon::fromTheme ("view-refresh"));
             quit->setIcon (QIcon::fromTheme ("application-exit"));
 
-            QObject::connect (restart, & QPushButton::clicked, aud_request_restart);
-            QObject::connect (quit, & QPushButton::clicked, aud_quit);
+            QObject::connect (restart, & QPushButton::clicked, [] () {
+                aud_set_bool ("use_xwayland", true);
+                aud_request_restart ();
+            });
+            QObject::connect (quit, & QPushButton::clicked, [] () {
+                aud_set_bool ("use_xwayland", true);
+                aud_quit ();
+            });
 
             dialog->setIcon (QMessageBox::Warning);
-            dialog->setWindowTitle (_("Please Restart"));
-            dialog->setText
-                (_("The Winamp interface requires windowing system features not "
-                "supported by Wayland. Audacious will attempt to use XWayland "
-                "compatibility mode after restart."));
+            dialog->setWindowTitle (_("Compatibility Issue"));
+            dialog->setText(
+              _("The Winamp interface requires windowing system features not "
+                "supported by Wayland. Audacious will attempt to enable Xwayland "
+                "compatibility mode after restart.\n\n"
+                "With the GTK or Qt interface you may disable this setting "
+                "again in the “Advanced” category of the Audacious settings."));
 
             dialog->addButton (restart, QMessageBox::AcceptRole);
             dialog->addButton (quit, QMessageBox::RejectRole);

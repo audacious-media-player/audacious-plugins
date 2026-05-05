@@ -177,10 +177,10 @@ bool QtSkins::init ()
     }
 
     if (QGuiApplication::platformName () == "wayland" &&
-        qgetenv ("DISPLAY").isEmpty ())
+        ! qEnvironmentVariableIsSet ("DISPLAY"))
     {
         AUDERR ("The Winamp interface is not supported on Wayland, and "
-            "XWayland does not appear to be available on this system.\n");
+                "Xwayland does not appear to be available on this system.\n");
         audqt::cleanup ();
         return false;
     }
