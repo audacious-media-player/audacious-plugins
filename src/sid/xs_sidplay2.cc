@@ -37,6 +37,14 @@
 #include <sidplayfp/SidTuneInfo.h>
 #include <sidplayfp/builders/residfp.h>
 
+#ifndef LIBSIDPLAYFP_CHECK_VERSION
+#define LIBSIDPLAYFP_CHECK_VERSION(major,minor,micro)                               \
+    (LIBSIDPLAYFP_VERSION_MAJ > (major) ||                                          \
+     (LIBSIDPLAYFP_VERSION_MAJ == (major) && LIBSIDPLAYFP_VERSION_MIN > (minor)) || \
+     (LIBSIDPLAYFP_VERSION_MAJ == (major) && LIBSIDPLAYFP_VERSION_MIN == (minor) && \
+      LIBSIDPLAYFP_VERSION_LEV >= (micro)))
+#endif
+
 #include <libaudcore/runtime.h>
 #include <libaudcore/vfs.h>
 
@@ -99,7 +107,7 @@ bool xs_sidplayfp_init()
         return false;
     }
 
-#if (LIBSIDPLAYFP_VERSION_MAJ << 8) + LIBSIDPLAYFP_VERSION_MIN < 0x020A
+#if !LIBSIDPLAYFP_CHECK_VERSION(2, 10, 0)
     state.currBuilder->filter(xs_cfg.emulateFilters);
     if (!state.currBuilder->getStatus()) {
         AUDERR("reSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
@@ -141,7 +149,7 @@ bool xs_sidplayfp_init()
         return false;
     }
 
-#if (LIBSIDPLAYFP_VERSION_MAJ << 8) + LIBSIDPLAYFP_VERSION_MIN >= 0x020A
+#if LIBSIDPLAYFP_CHECK_VERSION(2, 10, 0)
     /* Call filter() after config() to have an effect */
     state.currEng->filter(0, xs_cfg.emulateFilters);
     state.currEng->filter(1, xs_cfg.emulateFilters);
@@ -212,6 +220,11 @@ bool xs_sidplayfp_initsong(int subtune)
         return false;
     }
 
+#if LIBSIDPLAYFP_CHECK_VERSION(2, 15, 0)
+    bool stereo = xs_cfg.audioChannels == XS_CHN_STEREO;
+    state.currEng->initMixer(stereo);
+#endif
+
     return true;
 }
 
@@ -220,7 +233,15 @@ bool xs_sidplayfp_initsong(int subtune)
  */
 unsigned xs_sidplayfp_fillbuffer(char * audioBuffer, unsigned audioBufSize)
 {
+#if LIBSIDPLAYFP_CHECK_VERSION(2, 15, 0)
+    int samples = state.currEng->play(audioBufSize / 2);
+    if (samples < 0)
+        return 0;
+
+    return state.currEng->mix((short *)audioBuffer, samples) * 2;
+#else
     return state.currEng->play((short *)audioBuffer, audioBufSize / 2) * 2;
+#endif
 }
 
 
