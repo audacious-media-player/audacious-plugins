@@ -82,6 +82,7 @@ bool xs_sidplayfp_init()
     /* Get current configuration */
     SidConfig config = state.currEng->config();
 
+#if !LIBSIDPLAYFP_CHECK_VERSION(3, 0, 0)
     /* Configure channels and stuff */
     switch (xs_cfg.audioChannels)
     {
@@ -93,6 +94,7 @@ bool xs_sidplayfp_init()
         config.playback = SidConfig::MONO;
         break;
     }
+#endif
 
     /* Audio parameters sanity checking and setup */
     config.frequency = xs_cfg.audioFrequency;
@@ -100,12 +102,14 @@ bool xs_sidplayfp_init()
     /* Initialize builder object */
     state.currBuilder = new ReSIDfpBuilder("ReSIDfp builder");
 
+#if !LIBSIDPLAYFP_CHECK_VERSION(3, 0, 0)
     /* Builder object created, initialize it */
     state.currBuilder->create(state.currEng->info().maxsids());
     if (!state.currBuilder->getStatus()) {
         AUDERR("reSID->create() failed.\n");
         return false;
     }
+#endif
 
 #if !LIBSIDPLAYFP_CHECK_VERSION(2, 10, 0)
     state.currBuilder->filter(xs_cfg.emulateFilters);

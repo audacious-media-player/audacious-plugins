@@ -1,6 +1,18 @@
 sidplayfp_dep = dependency('libsidplayfp', version: '>= 2.0', required: false)
-have_sid = sidplayfp_dep.found()
 
+# libsidplayfp 3.0 moved the ReSIDfp engine to an external library (libresidfp).
+# It is optional for libsidplayfp, but the SID plugin for Audacious requires it.
+if sidplayfp_dep.version().version_compare('>= 3.0')
+  residfp_dep = dependency('libresidfp', version: '>= 1.0', required: false)
+  if not residfp_dep.found()
+    warning('The SID plugin was disabled because your libsidplayfp installation ' +
+            'lacks ReSIDfp support. Make sure it was built with the optional ' +
+            'libresidfp dependency.')
+  endif
+  have_sid = sidplayfp_dep.found() and residfp_dep.found()
+else
+  have_sid = sidplayfp_dep.found()
+endif
 
 if have_sid
   sid_datadir = join_paths(get_option('prefix'), get_option('datadir'))
