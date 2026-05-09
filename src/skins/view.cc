@@ -20,8 +20,14 @@
  */
 
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/mainloop.h>
 #include <libaudcore/runtime.h>
+#include <libaudgui/libaudgui-gtk.h>
+
+#ifdef GDK_WINDOWING_WAYLAND
+#include <gdk/gdkwayland.h>
+#endif
 
 #include "plugin.h"
 #include "plugin-window.h"
@@ -38,6 +44,44 @@
 
 void view_show_player (bool show)
 {
+#ifdef GDK_WINDOWING_WAYLAND
+    static GtkWidget * dialog;
+
+    if (show && GDK_IS_WAYLAND_DISPLAY (gdk_display_get_default ()))
+    {
+        if (! dialog)
+        {
+            auto restart = audgui_button_new (_("Restart"), "view-refresh", [] (void *) {
+                aud_set_bool ("use_xwayland", true);
+                aud_request_restart ();
+            }, nullptr);
+
+            auto quit = audgui_button_new (_("Quit"), "application-exit", [] (void *) {
+                aud_set_bool ("use_xwayland", true);
+                aud_quit ();
+            }, nullptr);
+
+            dialog = audgui_dialog_new (GTK_MESSAGE_WARNING, _("Compatibility Issue"),
+                _("The Winamp interface requires windowing system features not "
+                "supported by Wayland. Audacious will attempt to enable Xwayland "
+                "compatibility mode after restart.\n\n"
+                "With the GTK or Qt interface you may disable this setting "
+                "again in the “Advanced” category of the Audacious settings."),
+                restart, quit);
+
+            g_signal_connect (dialog, "delete-event", (GCallback) aud_quit, nullptr);
+            g_signal_connect (dialog, "destroy", (GCallback) gtk_widget_destroyed, & dialog);
+        }
+
+        gtk_widget_show_all (dialog);
+        show = false; // don't show main window
+    }
+    else if (dialog)
+    {
+        gtk_widget_destroy (dialog);
+    }
+#endif
+
     if (show)
     {
         // "Move" the window to the position it's already at. This seems
