@@ -108,6 +108,7 @@ private:
 	Nes_Apu& operator = ( const Nes_Apu& );
 
 	Nes_Osc*            oscs [osc_count];
+	Nes_Square::Synth   square_synth; // shared by squares
 	Nes_Square          square1;
 	Nes_Square          square2;
 	Nes_Noise           noise;
@@ -127,7 +128,6 @@ private:
 	bool irq_flag;
 	void (*irq_notifier_)( void* user_data );
 	void* irq_data;
-	Nes_Square::Synth square_synth; // shared by squares
 
 	void irq_changed();
 	void state_restored();
