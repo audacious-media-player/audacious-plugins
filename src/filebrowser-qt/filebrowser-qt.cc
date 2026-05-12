@@ -208,7 +208,7 @@ void FileBrowserWidget::contextMenuEvent(QContextMenuEvent * event)
         menu->addAction(newAction(N_("_Open Folder Externally"), "folder", menu,
                                   &FileBrowserWidget::openFolder));
     if (searchCover(m_coverPath))
-        menu->addAction(newAction(N_("Open Co_ver Art"), "image-x-generic",
+        menu->addAction(newAction(N_("Open Al_bum Art"), "image-x-generic",
                                   menu, &FileBrowserWidget::openCover));
 
     menu->setAttribute(Qt::WA_DeleteOnClose);

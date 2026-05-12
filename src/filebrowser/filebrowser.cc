@@ -473,7 +473,7 @@ static void menu_append_open_folder_item(GtkWidget * menu, const char * uri)
 
 static void menu_append_open_cover_item(GtkWidget * menu, const char * uri)
 {
-    menu_append_item(_("Open Co_ver Art"), "image-x-generic",
+    menu_append_item(_("Open Al_bum Art"), "image-x-generic",
                      (GCallback)open_cover, g_strdup(uri), menu);
 }
 
