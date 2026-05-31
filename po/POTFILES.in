@@ -88,6 +88,8 @@ src/cue/cue.cc
 src/delete-files/delete-files.cc
 src/echo_plugin/echo.cc
 src/ffaudio/ffaudio-core.cc
+src/filebrowser/filebrowser.cc
+src/filebrowser-qt/filebrowser-qt.cc
 src/filewriter/filewriter.cc
 src/flac/flacng.h
 src/flac/metadata.cc
@@ -107,7 +109,6 @@ src/jack/jack-ng.cc
 src/ladspa/plugin.cc
 src/ladspa/plugin.h
 src/lirc/lirc.cc
-src/lyrics-common/chart_lyrics_provider.cc
 src/lyrics-common/lrclib_provider.cc
 src/lyrics-common/lyrics_ovh_provider.cc
 src/lyrics-common/preferences.h
@@ -115,6 +116,7 @@ src/lyrics-common/utils.cc
 src/lyrics-gtk/lyrics-gtk.cc
 src/lyrics-qt/lyrics-qt.cc
 src/m3u/m3u.cc
+src/mac-now-playing/MacNowPlaying.mm
 src/metronom/metronom.cc
 src/mixer/mixer.cc
 src/mms/mms.cc
@@ -133,6 +135,9 @@ src/opus/opus.cc
 src/oss4/oss.h
 src/oss4/plugin.cc
 src/pipewire/pipewire.cc
+src/playback-history/history-entry.cc
+src/playback-history/playback-history.cc
+src/playback-history/preferences.h
 src/playback-history-qt/playback-history.cc
 src/playlist-manager/playlist-manager.cc
 src/playlist-manager-qt/playlist-manager-qt.cc
@@ -185,9 +190,11 @@ src/skins-qt/plugin.cc
 src/skins-qt/search-select.cc
 src/skins-qt/skins_cfg.cc
 src/skins-qt/skinselector.cc
+src/skins-qt/view.cc
 src/skins/search-select.cc
 src/skins/skins_cfg.cc
 src/skins/skinselector.cc
+src/skins/view.cc
 src/sndfile/plugin.cc
 src/sndio/sndio.cc
 src/songchange/song_change.cc

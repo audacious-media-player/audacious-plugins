@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2025-07-16 00:23+0200\n"
+"POT-Creation-Date: 2026-05-31 21:45+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
 "Last-Translator: Nareshwar Raju Vaneshwar <rajnareshwar@gmail.com>, 2013\n"
 "Language-Team: Tamil (http://app.transifex.com/audacious/audacious/language/"
@@ -27,30 +27,30 @@ msgstr ""
 msgid "AAC (Raw) Decoder"
 msgstr "aac (மூல) டிகோடர்"
 
-#: src/adplug/adplug-xmms.cc:70
+#: src/adplug/adplug-xmms.cc:68
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib Player)"
 
-#: src/adplug/adplug-xmms.cc:168 src/modplug/modplugbmp.cc:321
-#: src/psf/plugin.cc:161 src/vtx/vtx.cc:89 src/xsf/plugin.cc:204
+#: src/adplug/adplug-xmms.cc:167 src/modplug/modplugbmp.cc:320
+#: src/psf/plugin.cc:159 src/vtx/vtx.cc:102 src/xsf/plugin.cc:203
 msgid "sequenced"
 msgstr "வரிசைப்படுத்தப்பட்ட"
 
-#: src/adplug/adplug-xmms.cc:350 src/sid/xs_config.cc:61
+#: src/adplug/adplug-xmms.cc:349 src/sid/xs_config.cc:61
 msgid "<b>Output</b>"
 msgstr "<b> வெளியீடு </b>"
 
-#: src/adplug/adplug-xmms.cc:351
+#: src/adplug/adplug-xmms.cc:350
 msgid "OPL Emulator:"
 msgstr "opl முன்மாதிரி:"
 
-#: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:153
-#: src/console/plugin.cc:45 src/filewriter/filewriter.cc:481
-#: src/sid/xs_config.cc:65 src/xsf/plugin.cc:446
+#: src/adplug/adplug-xmms.cc:353 src/amidiplug/i_configure.cc:153
+#: src/console/plugin.cc:45 src/filewriter/filewriter.cc:480
+#: src/sid/xs_config.cc:65 src/xsf/plugin.cc:445
 msgid "Sample rate:"
 msgstr "மாதிரி விகிதம்:"
 
-#: src/adplug/adplug-xmms.cc:355 src/amidiplug/i_configure.cc:155
+#: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:155
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
 #: src/modplug/plugin_main.cc:77 src/resample/resample.cc:201
 #: src/resample/resample.cc:207 src/resample/resample.cc:211
@@ -62,17 +62,17 @@ msgstr "மாதிரி விகிதம்:"
 msgid "Hz"
 msgstr "Hz"
 
-#: src/adplug/adplug-xmms.cc:356 src/gtkui/settings.cc:55
+#: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:55
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:85
-#: src/skins-qt/skins_cfg.cc:302 src/skins/skins_cfg.cc:284
+#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:284
 msgid "<b>Miscellaneous</b>"
 msgstr "<b> இதர </b>"
 
-#: src/adplug/adplug-xmms.cc:357
+#: src/adplug/adplug-xmms.cc:356
 msgid "Repeat song in endless loop"
 msgstr "முடிவில்லாத வளையத்தில் பாடலை மீண்டும் செய்யவும்"
 
-#: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:35
+#: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:36
 msgid "Album Art"
 msgstr "குறுவட்டு வரைவு "
 
@@ -243,60 +243,60 @@ msgstr "கோப்பின் பெயர் "
 msgid "Size (bytes)"
 msgstr "அளவு (பயிட்ச்)"
 
-#: src/amidiplug/i_fileinfo.cc:184
+#: src/amidiplug/i_fileinfo.cc:178
 msgid "Name:"
 msgstr "பெயர்: "
 
-#: src/amidiplug/i_fileinfo.cc:202
+#: src/amidiplug/i_fileinfo.cc:196
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> MIDI செய்தி </span>"
 
-#: src/amidiplug/i_fileinfo.cc:216
+#: src/amidiplug/i_fileinfo.cc:210
 msgid "Format:"
 msgstr "வடிவமைப்பு: "
 
-#: src/amidiplug/i_fileinfo.cc:219
+#: src/amidiplug/i_fileinfo.cc:213
 msgid "Length (msec):"
 msgstr "நீளம் (மில்லி வினாடிகள்): "
 
-#: src/amidiplug/i_fileinfo.cc:222
+#: src/amidiplug/i_fileinfo.cc:216
 msgid "No. of Tracks:"
 msgstr "பாடல்களின் இலக்கங்கள்:"
 
-#: src/amidiplug/i_fileinfo.cc:228
+#: src/amidiplug/i_fileinfo.cc:222
 msgid "variable"
 msgstr "மாறி "
 
-#: src/amidiplug/i_fileinfo.cc:230
+#: src/amidiplug/i_fileinfo.cc:224
 msgid "BPM:"
 msgstr "துடிப்புகள் ஒரு நிமிடத்திற்கு: "
 
-#: src/amidiplug/i_fileinfo.cc:238
+#: src/amidiplug/i_fileinfo.cc:232
 msgid "BPM (wavg):"
 msgstr "துடிப்புகள் ஒரு நிமிடத்திற்கு (wavg): "
 
-#: src/amidiplug/i_fileinfo.cc:241
+#: src/amidiplug/i_fileinfo.cc:235
 msgid "Time Div:"
 msgstr "நேரப் பிரிவு:"
 
-#: src/amidiplug/i_fileinfo.cc:252
+#: src/amidiplug/i_fileinfo.cc:246
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"smaller\"> MIDI பின்னூட்டுகள் மற்றும் பாடல் வரிகள் </span>"
 
-#: src/amidiplug/i_fileinfo.cc:299
+#: src/amidiplug/i_fileinfo.cc:293
 msgid "* no comments available in this MIDI file *"
 msgstr "*இந்த MIDI கோப்பிற்கான எந்தவொரு பின்னூட்டும் கிடைக்கப்படவில்லை * "
 
-#: src/amidiplug/i_fileinfo.cc:311
+#: src/amidiplug/i_fileinfo.cc:305
 msgid "* no lyrics available in this MIDI file *"
 msgstr "*இந்த MIDI கோப்பிற்கான எந்தவொரு பாடல்வரிகளும் கிடைக்கப்படவில்லை * "
 
-#: src/amidiplug/i_fileinfo.cc:321 src/ladspa/plugin.cc:418
+#: src/amidiplug/i_fileinfo.cc:315 src/ladspa/plugin.cc:418
 #: src/ui-common/dialogs-qt.cc:32
 msgid "_Close"
 msgstr "_மூடவும்"
 
-#: src/amidiplug/i_fileinfo.cc:346
+#: src/amidiplug/i_fileinfo.cc:340
 msgid "  (invalid UTF-8)"
 msgstr "(செல்லுபடியற்ற UTF-8 )"
 
@@ -336,7 +336,7 @@ msgstr ""
 " இவான் மார்ட்டினின் கோச்ட் நூலகத்தை அடிப்படையாகக் கொண்டது: \n"
 " http://neugierig.org/software/ghosd/"
 
-#: src/aosd/aosd.h:37
+#: src/aosd/aosd.h:38
 msgid "AOSD (On-Screen Display)"
 msgstr " AOSD ( திரையில் தோன்றும் காட்சி)"
 
@@ -352,7 +352,7 @@ msgstr "வட்ட வடிவிலான செவ்வகம் "
 msgid "Concave Rectangle"
 msgstr "குழிவான செவ்வகம் "
 
-#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:50 src/xsf/plugin.cc:436
+#: src/aosd/aosd_style.cc:69 src/openmpt/mptwrap.h:49 src/xsf/plugin.cc:435
 msgid "None"
 msgstr "ஏதுமில்லை "
 
@@ -636,11 +636,11 @@ msgstr "குறைந்த மாதிரி விகிதம்:"
 msgid "Bitcrusher"
 msgstr "பிட்ரூசர்"
 
-#: src/blur_scope/blur_scope.cc:40 src/blur_scope-qt/blur_scope.cc:45
+#: src/blur_scope/blur_scope.cc:40 src/blur_scope-qt/blur_scope.cc:44
 msgid "<b>Color</b>"
 msgstr "<b>நிறம்</b>"
 
-#: src/blur_scope/blur_scope.cc:56 src/blur_scope-qt/blur_scope.cc:158
+#: src/blur_scope/blur_scope.cc:56 src/blur_scope-qt/blur_scope.cc:157
 msgid "Blur Scope"
 msgstr "மங்கலான குறியிலக்கம்"
 
@@ -672,11 +672,11 @@ msgstr "குறை அதிர்வெண்:"
 msgid "Spectrum Analyzer"
 msgstr "நிறமாலை பகுப்பாய்வி "
 
-#: src/cdaudio/cdaudio-ng.cc:74
+#: src/cdaudio/cdaudio-ng.cc:68
 msgid "Audio CD Plugin"
 msgstr "ஒலி இறுவட்டு சொருகி"
 
-#: src/cdaudio/cdaudio-ng.cc:121
+#: src/cdaudio/cdaudio-ng.cc:115
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -696,117 +696,117 @@ msgstr ""
 "\n"
 " இது கூகிள் சம்மர் ஆஃப் கோட் 2007 திட்டமாகும்."
 
-#: src/cdaudio/cdaudio-ng.cc:140
+#: src/cdaudio/cdaudio-ng.cc:134
 msgid "<b>Device</b>"
 msgstr "<b>சாதனம்</b>"
 
-#: src/cdaudio/cdaudio-ng.cc:141
+#: src/cdaudio/cdaudio-ng.cc:135
 msgid "Read speed:"
 msgstr "வாசிக்கும் விரைவு :"
 
-#: src/cdaudio/cdaudio-ng.cc:144
+#: src/cdaudio/cdaudio-ng.cc:138
 msgid "Override device:"
 msgstr "சாதனம் மேலெழுது:"
 
-#: src/cdaudio/cdaudio-ng.cc:146
+#: src/cdaudio/cdaudio-ng.cc:140
 msgid "<b>Metadata</b>"
 msgstr "<b>மீத்தரவு </b>"
 
-#: src/cdaudio/cdaudio-ng.cc:147
+#: src/cdaudio/cdaudio-ng.cc:141
 msgid "Use CD-Text"
 msgstr "இறுவட்டு எழுத்துகளை உபயோகிக்க"
 
-#: src/cdaudio/cdaudio-ng.cc:150
+#: src/cdaudio/cdaudio-ng.cc:144
 msgid "Use CDDB"
 msgstr "CDDB இனை உபயோகிக்க"
 
-#: src/cdaudio/cdaudio-ng.cc:152
+#: src/cdaudio/cdaudio-ng.cc:146
 msgid "Use HTTP instead of CDDBP"
 msgstr "CDDBP இற்கு பதிலாக HTTP இனை பயன்படுத்துக "
 
-#: src/cdaudio/cdaudio-ng.cc:155
+#: src/cdaudio/cdaudio-ng.cc:149
 msgid "Server:"
 msgstr "சேவையகம்:"
 
-#: src/cdaudio/cdaudio-ng.cc:159
+#: src/cdaudio/cdaudio-ng.cc:153
 msgid "Path:"
 msgstr "வழி :"
 
-#: src/cdaudio/cdaudio-ng.cc:163
+#: src/cdaudio/cdaudio-ng.cc:157
 msgid "Port:"
 msgstr "துறைமுகம் :"
 
-#: src/cdaudio/cdaudio-ng.cc:228
+#: src/cdaudio/cdaudio-ng.cc:222
 msgid "Failed to initialize cdio subsystem."
 msgstr "சி.டி.ஐ.ஓ துணை அமைப்பைத் தொடங்குவதில் தோல்வி."
 
-#: src/cdaudio/cdaudio-ng.cc:260
+#: src/cdaudio/cdaudio-ng.cc:254
 #, c-format
 msgid "Invalid URI %s."
 msgstr "தவறான யூரி %s."
 
-#: src/cdaudio/cdaudio-ng.cc:262
+#: src/cdaudio/cdaudio-ng.cc:256
 #, c-format
 msgid "Track %d not found."
 msgstr "ட்ராக் %d கண்டுபிடிக்கப்படவில்லை."
 
-#: src/cdaudio/cdaudio-ng.cc:264
+#: src/cdaudio/cdaudio-ng.cc:258
 #, c-format
 msgid "Track %d is a data track."
 msgstr "ட்ராக் %d என்பது தரவு பாடல்."
 
-#: src/cdaudio/cdaudio-ng.cc:339
+#: src/cdaudio/cdaudio-ng.cc:333
 msgid "Error reading audio CD."
 msgstr "ஆடியோ சிடியை வாசிப்பதில் பிழை."
 
-#: src/cdaudio/cdaudio-ng.cc:410
+#: src/cdaudio/cdaudio-ng.cc:404
 msgid "Audio CD"
 msgstr "ஒலி இறுவட்டு"
 
-#: src/cdaudio/cdaudio-ng.cc:446 src/cdaudio/cdaudio-ng.cc:455
+#: src/cdaudio/cdaudio-ng.cc:440 src/cdaudio/cdaudio-ng.cc:449
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "குறுவட்டு சாதனம் %s திறக்கத் தவறிவிட்டது."
 
-#: src/cdaudio/cdaudio-ng.cc:458
+#: src/cdaudio/cdaudio-ng.cc:452
 msgid "No audio capable CD drive found."
 msgstr "ஆடியோ திறன் கொண்ட சிடி இயக்கி எதுவும் கிடைக்கவில்லை."
 
-#: src/cdaudio/cdaudio-ng.cc:481
+#: src/cdaudio/cdaudio-ng.cc:475
 msgid "Drive is empty."
 msgstr "வட்டு வெறுமையாக உள்ளது."
 
-#: src/cdaudio/cdaudio-ng.cc:483
+#: src/cdaudio/cdaudio-ng.cc:477
 msgid "Unsupported disk type."
 msgstr "ஆதரவற்ற வட்டு வகை."
 
-#: src/cdaudio/cdaudio-ng.cc:507
+#: src/cdaudio/cdaudio-ng.cc:501
 msgid "Failed to finish initializing opened CD drive."
 msgstr "திறந்த குறுவட்டு இயக்ககத்தைத் தொடங்குவதில் தோல்வி."
 
-#: src/cdaudio/cdaudio-ng.cc:520
+#: src/cdaudio/cdaudio-ng.cc:514
 msgid "Failed to retrieve first/last track number."
 msgstr "முதல்/கடைசி தட எண்ணை மீட்டெடுப்பதில் தோல்வி."
 
-#: src/cdaudio/cdaudio-ng.cc:541
+#: src/cdaudio/cdaudio-ng.cc:535
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "ட்ராக் %d க்கு start/end lsn ஐப் படிக்க முடியாது."
 
-#: src/cdaudio/cdaudio-ng.cc:624
+#: src/cdaudio/cdaudio-ng.cc:585
 msgid "Failed to create the CDDB connection."
 msgstr "சி.டி.டி.பி இணைப்பை உருவாக்குவதில் தோல்வி."
 
-#: src/cdaudio/cdaudio-ng.cc:690
+#: src/cdaudio/cdaudio-ng.cc:651
 msgid "Failed to query the CDDB server"
 msgstr "சி.டி.டி.பி சேவையகத்தை வினவுவதில் தோல்வி"
 
-#: src/cdaudio/cdaudio-ng.cc:692
+#: src/cdaudio/cdaudio-ng.cc:653
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "சி.டி.டி.பி சேவையகத்தை வினவுவதில் தோல்வி: %s"
 
-#: src/cdaudio/cdaudio-ng.cc:716
+#: src/cdaudio/cdaudio-ng.cc:677
 #, c-format
 msgid "Failed to read the CDDB info: %s"
 msgstr "சி.டி.டி.பி தகவலைப் படிக்கத் தவறிவிட்டது: %s"
@@ -823,19 +823,19 @@ msgstr "pla_y குறுவட்டு"
 msgid "_Add CD"
 msgstr "_add cd"
 
-#: src/compressor/compressor.cc:45
+#: src/compressor/compressor.cc:44
 msgid "<b>Compression</b>"
 msgstr "<b>சுருக்கம்</b>"
 
-#: src/compressor/compressor.cc:46
+#: src/compressor/compressor.cc:45
 msgid "Center volume:"
 msgstr "மைய சத்தம்: "
 
-#: src/compressor/compressor.cc:49
+#: src/compressor/compressor.cc:48
 msgid "Dynamic range:"
 msgstr "நிலைமாறும் வரம்பாக: "
 
-#: src/compressor/compressor.cc:57
+#: src/compressor/compressor.cc:56
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2014 John Lindgren"
@@ -843,7 +843,7 @@ msgstr ""
 "துணிச்சலுக்கான மாறும் ரேஞ்ச் சுருக்க சொருகி \n"
 " பதிப்புரிமை 2010-2014 சான் லிண்ட்கிரென்"
 
-#: src/compressor/compressor.cc:64
+#: src/compressor/compressor.cc:63
 msgid "Dynamic Range Compressor"
 msgstr "நிலைமாறும் வரம்பு சுருக்கி "
 
@@ -880,7 +880,7 @@ msgid "Default song length:"
 msgstr "இயல்புநிலை பாடல் நீளம்:"
 
 #: src/console/plugin.cc:41 src/crossfade/crossfade.cc:56
-#: src/crossfade/crossfade.cc:62 src/lirc/lirc.cc:395 src/notify/notify.cc:113
+#: src/crossfade/crossfade.cc:62 src/lirc/lirc.cc:375 src/notify/notify.cc:113
 #: src/sid/xs_config.cc:85 src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
 #: src/vumeter-qt/vumeter_qt.cc:39 src/vumeter/vumeter.cc:77
 msgid "seconds"
@@ -914,7 +914,7 @@ msgstr "விளையாட்டு பணியக இசை குறிவ
 msgid "CoreAudio output"
 msgstr "கோரியுடியோ வெளியீடு"
 
-#: src/coreaudio/coreaudio.cc:155
+#: src/coreaudio/coreaudio.cc:156
 msgid ""
 "CoreAudio Output Plugin for Audacious\n"
 "Copyright 2014 William Pitcock\n"
@@ -934,11 +934,11 @@ msgstr ""
 " துணிச்சலுக்கான எச்.டி.எல் வெளியீட்டு சொருகி அடிப்படையில் \n"
 " பதிப்புரிமை 2010 சான் லிண்ட்கிரென்"
 
-#: src/coreaudio/coreaudio.cc:171
+#: src/coreaudio/coreaudio.cc:172
 msgid "Use exclusive mode"
 msgstr "பிரத்யேக பயன்முறையைப் பயன்படுத்தவும்"
 
-#: src/coreaudio/coreaudio.cc:173
+#: src/coreaudio/coreaudio.cc:174
 msgid "Use bit perfect audio (adapt device sampling rate)"
 msgstr "பிட் சரியான ஆடியோவைப் பயன்படுத்தவும் (சாதன மாதிரி விகிதத்தை மாற்றியமைக்கவும்)"
 
@@ -1014,57 +1014,57 @@ msgstr "palinguruvaathal"
 msgid "Cue Sheet Plugin"
 msgstr "கோல் தாள் செருகுநிரல்"
 
-#: src/delete-files/delete-files.cc:53 src/delete-files/delete-files.cc:215
-#: src/delete-files/delete-files.cc:230
+#: src/delete-files/delete-files.cc:50 src/delete-files/delete-files.cc:212
+#: src/delete-files/delete-files.cc:227
 msgid "Delete Files"
 msgstr "கோப்புகளை நீக்கு"
 
-#: src/delete-files/delete-files.cc:120
+#: src/delete-files/delete-files.cc:117
 msgid "No files are selected."
 msgstr "கோப்புகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை."
 
-#: src/delete-files/delete-files.cc:125
+#: src/delete-files/delete-files.cc:122
 #, c-format
 msgid "Do you want to move %s to the trash?"
 msgstr "நீங்கள் %s குப்பைக்கு நகர்த்த விரும்புகிறீர்களா?"
 
-#: src/delete-files/delete-files.cc:126
+#: src/delete-files/delete-files.cc:123
 #, c-format
 msgid "Do you want to permanently delete %s?"
 msgstr "%s நிரந்தரமாக நீக்க விரும்புகிறீர்களா?"
 
-#: src/delete-files/delete-files.cc:133
+#: src/delete-files/delete-files.cc:130
 #, c-format
 msgid "Do you want to move %d files to the trash?"
 msgstr "%d கோப்புகளை குப்பைக்கு நகர்த்த விரும்புகிறீர்களா?"
 
-#: src/delete-files/delete-files.cc:134
+#: src/delete-files/delete-files.cc:131
 #, c-format
 msgid "Do you want to permanently delete %d files?"
 msgstr "%d கோப்புகளை நிரந்தரமாக நீக்க விரும்புகிறீர்களா?"
 
-#: src/delete-files/delete-files.cc:146
+#: src/delete-files/delete-files.cc:143
 msgid "Move to trash"
 msgstr "குப்பைக்கு நகர்த்தவும்"
 
-#: src/delete-files/delete-files.cc:146
+#: src/delete-files/delete-files.cc:143
 msgid "Delete"
 msgstr "அழிக்குக "
 
-#: src/delete-files/delete-files.cc:213 src/delete-files/delete-files.cc:235
+#: src/delete-files/delete-files.cc:210 src/delete-files/delete-files.cc:232
 #: src/skins-qt/search-select.cc:102 src/skins/search-select.cc:78
 msgid "Cancel"
 msgstr "ரத்து செய்க "
 
-#: src/delete-files/delete-files.cc:267
+#: src/delete-files/delete-files.cc:262
 msgid "Delete Selected Files"
 msgstr "தேர்ந்தெடுக்கப்பட்ட கோப்புகளை நீக்கு"
 
-#: src/delete-files/delete-files.cc:287
+#: src/delete-files/delete-files.cc:282
 msgid "<b>Delete Method</b>"
 msgstr "<b> முறை நீக்கு </b>"
 
-#: src/delete-files/delete-files.cc:288
+#: src/delete-files/delete-files.cc:283
 msgid "Move to trash instead of deleting immediately"
 msgstr "உடனடியாக நீக்குவதற்கு பதிலாக குப்பைக்கு நகர்த்தவும்"
 
@@ -1091,7 +1091,7 @@ msgid "Delay:"
 msgstr "நேரந்தவறுகை :"
 
 #: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:72
-#: src/modplug/plugin_main.cc:82 src/xsf/plugin.cc:445
+#: src/modplug/plugin_main.cc:82 src/xsf/plugin.cc:444
 msgid "ms"
 msgstr "ms"
 
@@ -1107,11 +1107,11 @@ msgstr "ஒலி அளவு "
 msgid "Echo"
 msgstr "எதிரொலி "
 
-#: src/ffaudio/ffaudio-core.cc:50
+#: src/ffaudio/ffaudio-core.cc:43
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg நீட்சி"
 
-#: src/ffaudio/ffaudio-core.cc:649
+#: src/ffaudio/ffaudio-core.cc:551
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1127,11 +1127,66 @@ msgstr ""
 " வில்லியம் பிட்காக் <nenolod@nenolod.net> \n"
 " matti hämäläinen <ccr@tnsp.org>"
 
+#: src/filebrowser/filebrowser.cc:48 src/filebrowser-qt/filebrowser-qt.cc:52
+msgid "File Browser"
+msgstr ""
+
+#: src/filebrowser/filebrowser.cc:63 src/filebrowser-qt/filebrowser-qt.cc:64
+msgid ""
+"A dockable plugin that can be used to browse folders for music files. Right-"
+"click on a folder or file for supported actions.\n"
+"\n"
+"Copyright 2025 Thomas Lange\n"
+"\n"
+"Based on the implementation for Qmmp\n"
+"Copyright 2021-2025 Ilya Kotov"
+msgstr ""
+
+#: src/filebrowser/filebrowser.cc:470 src/filebrowser-qt/filebrowser-qt.cc:208
+msgid "_Open Folder Externally"
+msgstr ""
+
+#: src/filebrowser/filebrowser.cc:476 src/filebrowser-qt/filebrowser-qt.cc:211
+msgid "Open Al_bum Art"
+msgstr ""
+
+#: src/filebrowser/filebrowser.cc:539 src/filebrowser-qt/filebrowser-qt.cc:199
+#: src/gtkui/menus.cc:93 src/gtkui/menus.cc:238 src/qtui/menus.cc:147
+#: src/qtui/playlist_tabs.cc:339 src/search-tool-qt/search-tool-qt.cc:499
+#: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:122
+#: src/statusicon/statusicon.cc:294
+msgid "_Play"
+msgstr "_இயக்குக "
+
+#: src/filebrowser/filebrowser.cc:541 src/filebrowser-qt/filebrowser-qt.cc:201
+#: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:341
+msgid "_Create Playlist"
+msgstr "பாடல் பட்டியலொன்றை _உருவாக்குக "
+
+#: src/filebrowser/filebrowser.cc:543 src/filebrowser-qt/filebrowser-qt.cc:203
+#: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:343
+msgid "_Add to Playlist"
+msgstr "பாடல் பட்டியலிற்கு _சேர்க்க "
+
+#: src/filebrowser/filebrowser.cc:560 src/filebrowser-qt/filebrowser-qt.cc:371
+#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:78
+msgid "Search"
+msgstr "தேடல்"
+
+#: src/filebrowser/filebrowser.cc:561 src/filebrowser-qt/filebrowser-qt.cc:372
+#, c-format
+msgid "Search in %s"
+msgstr ""
+
+#: src/filebrowser/filebrowser.cc:825 src/filebrowser-qt/filebrowser-qt.cc:157
+msgid "Show the parent folder"
+msgstr ""
+
 #: src/filewriter/filewriter.cc:48
 msgid "FileWriter Plugin"
 msgstr "FileWriter நீட்சி "
 
-#: src/filewriter/filewriter.cc:316
+#: src/filewriter/filewriter.cc:315
 #, c-format
 msgid ""
 "Error opening %s:\n"
@@ -1140,7 +1195,7 @@ msgstr ""
 "பிழை திறப்பது %s: \n"
 " %s"
 
-#: src/filewriter/filewriter.cc:358
+#: src/filewriter/filewriter.cc:357
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1169,265 +1224,265 @@ msgstr ""
 "இல்லையென்றால், இலவச மென்பொருள் அறக்கட்டளை, இன்க்., 51 பிராங்க்ளின் தெரு, ஐந்தாவது மாடி, "
 "பாச்டன், எம்.ஏ 02110-1301, அமெரிக்கா."
 
-#: src/filewriter/filewriter.cc:385
+#: src/filewriter/filewriter.cc:384
 msgid "Output file format:"
 msgstr "வெளியீட்டு கோப்பு வடிவம்:"
 
-#: src/filewriter/filewriter.cc:389
+#: src/filewriter/filewriter.cc:388
 msgid "Save into original directory"
 msgstr "அசல் கோப்பகத்தில் சேமிக்கவும்"
 
-#: src/filewriter/filewriter.cc:392
+#: src/filewriter/filewriter.cc:391
 msgid "Save into custom directory:"
 msgstr "தனிப்பயன் கோப்பகத்தில் சேமிக்கவும்:"
 
-#: src/filewriter/filewriter.cc:400
+#: src/filewriter/filewriter.cc:399
 msgid "Generate file name from:"
 msgstr "இதிலிருந்து கோப்பு பெயரை உருவாக்குங்கள்:"
 
-#: src/filewriter/filewriter.cc:401
+#: src/filewriter/filewriter.cc:400
 msgid "Original file name"
 msgstr "அசல் கோப்பு பெயர்"
 
-#: src/filewriter/filewriter.cc:404
+#: src/filewriter/filewriter.cc:403
 msgid "Original file name (no suffix)"
 msgstr "அசல் கோப்பு பெயர் (பின்னொட்டு இல்லை)"
 
-#: src/filewriter/filewriter.cc:407
+#: src/filewriter/filewriter.cc:406
 msgid "Original file tag"
 msgstr "அசல் கோப்பு குறிச்சொல்"
 
-#: src/filewriter/filewriter.cc:411
+#: src/filewriter/filewriter.cc:410
 msgid "Prepend track number to file name"
 msgstr "கோப்பு பெயருக்கு டிராக் எண்ணைத் தயாரிக்கவும்"
 
-#: src/filewriter/filewriter.cc:417 src/filewriter/filewriter.cc:449
+#: src/filewriter/filewriter.cc:416 src/filewriter/filewriter.cc:448
 msgid "Auto"
 msgstr "தானியங்கு"
 
-#: src/filewriter/filewriter.cc:418
+#: src/filewriter/filewriter.cc:417
 msgid "8000 Hz"
 msgstr "8000 எர்ட்ச்"
 
-#: src/filewriter/filewriter.cc:419
+#: src/filewriter/filewriter.cc:418
 msgid "11025 Hz"
 msgstr "11025 எர்ட்ச்"
 
-#: src/filewriter/filewriter.cc:420
+#: src/filewriter/filewriter.cc:419
 msgid "12000 Hz"
 msgstr "12000 எர்ட்ச்"
 
-#: src/filewriter/filewriter.cc:421
+#: src/filewriter/filewriter.cc:420
 msgid "16000 Hz"
 msgstr "16000 எர்ட்ச்"
 
-#: src/filewriter/filewriter.cc:422
+#: src/filewriter/filewriter.cc:421
 msgid "22050 Hz"
 msgstr "22050 எர்ட்ச்"
 
-#: src/filewriter/filewriter.cc:423
+#: src/filewriter/filewriter.cc:422
 msgid "24000 Hz"
 msgstr "24000 எர்ட்ச்"
 
-#: src/filewriter/filewriter.cc:424
+#: src/filewriter/filewriter.cc:423
 msgid "32000 Hz"
 msgstr "32000 எர்ட்ச்"
 
-#: src/filewriter/filewriter.cc:425 src/xsf/plugin.cc:430
+#: src/filewriter/filewriter.cc:424 src/xsf/plugin.cc:429
 msgid "44100 Hz"
 msgstr "44100 எர்ட்ச்"
 
-#: src/filewriter/filewriter.cc:426 src/xsf/plugin.cc:431
+#: src/filewriter/filewriter.cc:425 src/xsf/plugin.cc:430
 msgid "48000 Hz"
 msgstr "48000 எர்ட்ச்"
 
-#: src/filewriter/filewriter.cc:430
+#: src/filewriter/filewriter.cc:429
 msgid "8 kbit/s"
 msgstr "8 kbit/s"
 
-#: src/filewriter/filewriter.cc:431
+#: src/filewriter/filewriter.cc:430
 msgid "16 kbit/s"
 msgstr "16 kbit/s"
 
-#: src/filewriter/filewriter.cc:432
+#: src/filewriter/filewriter.cc:431
 msgid "32 kbit/s"
 msgstr "32 kbit/s"
 
-#: src/filewriter/filewriter.cc:433
+#: src/filewriter/filewriter.cc:432
 msgid "40 kbit/s"
 msgstr "40 kbit/s"
 
-#: src/filewriter/filewriter.cc:434
+#: src/filewriter/filewriter.cc:433
 msgid "48 kbit/s"
 msgstr "48 kbit/s"
 
-#: src/filewriter/filewriter.cc:435
+#: src/filewriter/filewriter.cc:434
 msgid "56 kbit/s"
 msgstr "56 kbit/s"
 
-#: src/filewriter/filewriter.cc:436
+#: src/filewriter/filewriter.cc:435
 msgid "64 kbit/s"
 msgstr "64 kbit/s"
 
-#: src/filewriter/filewriter.cc:437
+#: src/filewriter/filewriter.cc:436
 msgid "80 kbit/s"
 msgstr "80 kbit/s"
 
-#: src/filewriter/filewriter.cc:438
+#: src/filewriter/filewriter.cc:437
 msgid "96 kbit/s"
 msgstr "96 kbit/s"
 
-#: src/filewriter/filewriter.cc:439
+#: src/filewriter/filewriter.cc:438
 msgid "112 kbit/s"
 msgstr "112 kbit/s"
 
-#: src/filewriter/filewriter.cc:440
+#: src/filewriter/filewriter.cc:439
 msgid "128 kbit/s"
 msgstr "128 kbit/s"
 
-#: src/filewriter/filewriter.cc:441
+#: src/filewriter/filewriter.cc:440
 msgid "160 kbit/s"
 msgstr "160 kbit/s"
 
-#: src/filewriter/filewriter.cc:442
+#: src/filewriter/filewriter.cc:441
 msgid "192 kbit/s"
 msgstr "192 kbit/s"
 
-#: src/filewriter/filewriter.cc:443
+#: src/filewriter/filewriter.cc:442
 msgid "224 kbit/s"
 msgstr "224 kbit/s"
 
-#: src/filewriter/filewriter.cc:444
+#: src/filewriter/filewriter.cc:443
 msgid "256 kbit/s"
 msgstr "256 kbit/s"
 
-#: src/filewriter/filewriter.cc:445
+#: src/filewriter/filewriter.cc:444
 msgid "320 kbit/s"
 msgstr "320 kbit/s"
 
-#: src/filewriter/filewriter.cc:450
+#: src/filewriter/filewriter.cc:449
 msgid "Joint Stereo"
 msgstr "கூட்டு பேரொலி"
 
-#: src/filewriter/filewriter.cc:451 src/modplug/plugin_main.cc:57
+#: src/filewriter/filewriter.cc:450 src/modplug/plugin_main.cc:57
 #: src/mpg123/mpg123.cc:259
 msgid "Stereo"
 msgstr "பேரொலி"
 
-#: src/filewriter/filewriter.cc:452 src/modplug/plugin_main.cc:56
+#: src/filewriter/filewriter.cc:451 src/modplug/plugin_main.cc:56
 #: src/mpg123/mpg123.cc:260
 msgid "Mono"
 msgstr "ஒற்றை"
 
-#: src/filewriter/filewriter.cc:456
+#: src/filewriter/filewriter.cc:455
 msgid "VBR"
 msgstr "vbr"
 
-#: src/filewriter/filewriter.cc:457
+#: src/filewriter/filewriter.cc:456
 msgid "ABR"
 msgstr "அப்"
 
-#: src/filewriter/filewriter.cc:478
+#: src/filewriter/filewriter.cc:477
 msgid "Algorithm quality:"
 msgstr "வழிமுறை தரம்:"
 
-#: src/filewriter/filewriter.cc:484
+#: src/filewriter/filewriter.cc:483
 msgid "Bitrate:"
 msgstr "Bit வீதம் "
 
-#: src/filewriter/filewriter.cc:491
+#: src/filewriter/filewriter.cc:490
 msgid "Compression ratio:"
 msgstr "அழுத்த விகிதம்:"
 
-#: src/filewriter/filewriter.cc:498
+#: src/filewriter/filewriter.cc:497
 msgid "Audio mode:"
 msgstr "ஆடியோ பயன்முறை:"
 
-#: src/filewriter/filewriter.cc:501
+#: src/filewriter/filewriter.cc:500
 msgid "Enforce strict ISO compliance"
 msgstr "கடுமையான ஐஎச்ஓ இணக்கத்தை செயல்படுத்தவும்"
 
-#: src/filewriter/filewriter.cc:503
+#: src/filewriter/filewriter.cc:502
 msgid "Error protection"
 msgstr "தவறு பாதுகாப்பு"
 
-#: src/filewriter/filewriter.cc:508
+#: src/filewriter/filewriter.cc:507
 msgid "Enable VBR/ABR"
 msgstr "VBR/ABR இனை செயல்படுத்துக "
 
-#: src/filewriter/filewriter.cc:510
+#: src/filewriter/filewriter.cc:509
 msgid "Type:"
 msgstr "வகை:"
 
-#: src/filewriter/filewriter.cc:514
+#: src/filewriter/filewriter.cc:513
 msgid "Minimum bitrate:"
 msgstr "குறைந்தபட்ச பிட்ரேட்:"
 
-#: src/filewriter/filewriter.cc:518
+#: src/filewriter/filewriter.cc:517
 msgid "Maximum bitrate:"
 msgstr "அதிகபட்ச பிட்ரேட்:"
 
-#: src/filewriter/filewriter.cc:522
+#: src/filewriter/filewriter.cc:521
 msgid "Average bitrate:"
 msgstr "சராசரி பிட்ரேட்:"
 
-#: src/filewriter/filewriter.cc:526
+#: src/filewriter/filewriter.cc:525
 msgid "VBR quality level:"
 msgstr "VBR தர நிலை:"
 
-#: src/filewriter/filewriter.cc:530
+#: src/filewriter/filewriter.cc:529
 msgid "Strictly enforce minimum bitrate"
 msgstr "கண்டிப்பாக குறைந்த பிட்வீதத்தை செயல்படுத்துக "
 
-#: src/filewriter/filewriter.cc:533
+#: src/filewriter/filewriter.cc:532
 msgid "Omit Xing VBR header"
 msgstr "xing vbr தலைப்பைத் தவிர்க்கவும்"
 
-#: src/filewriter/filewriter.cc:539
+#: src/filewriter/filewriter.cc:538
 msgid "<b>Frame Headers</b>"
 msgstr "<b> பிரேம் தலைப்புகள் </b>"
 
-#: src/filewriter/filewriter.cc:540
+#: src/filewriter/filewriter.cc:539
 msgid "Mark as copyright"
 msgstr "பதிப்புரிமை என குறிக்குக "
 
-#: src/filewriter/filewriter.cc:542
+#: src/filewriter/filewriter.cc:541
 msgid "Mark as original"
 msgstr "அசலென குriக்குக"
 
-#: src/filewriter/filewriter.cc:544
+#: src/filewriter/filewriter.cc:543
 msgid "<b>ID3 Tags</b>"
 msgstr "<b> ஐடி 3 குறிச்சொற்கள் </b>"
 
-#: src/filewriter/filewriter.cc:545
+#: src/filewriter/filewriter.cc:544
 msgid "Force addition of version 2 tag"
 msgstr "பதிப்பு 2 குறியை பலமாக உள்ளடக்குக "
 
-#: src/filewriter/filewriter.cc:547
+#: src/filewriter/filewriter.cc:546
 msgid "Only add v1 tag"
 msgstr "பதிப்பு 1 குறியை மாத்திரம் உள்ளடக்குக "
 
-#: src/filewriter/filewriter.cc:549
+#: src/filewriter/filewriter.cc:548
 msgid "Only add v2 tag"
 msgstr "பதிப்பு 2 குறியை மாத்திரம் உள்ளடக்குக "
 
-#: src/filewriter/filewriter.cc:554
+#: src/filewriter/filewriter.cc:553
 msgid "Quality"
 msgstr "தகுதி "
 
-#: src/filewriter/filewriter.cc:555
+#: src/filewriter/filewriter.cc:554
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/filewriter.cc:556
+#: src/filewriter/filewriter.cc:555
 msgid "Tags"
 msgstr "குறி "
 
-#: src/filewriter/filewriter.cc:566
+#: src/filewriter/filewriter.cc:565
 msgid "Quality (0-1):"
 msgstr "தகுதி (0-1):"
 
-#: src/filewriter/filewriter.cc:573 src/skins-qt/skins_cfg.cc:307
+#: src/filewriter/filewriter.cc:572 src/skins-qt/skins_cfg.cc:303
 #: src/skins/skins_cfg.cc:289
 msgid "General"
 msgstr "பொதுவான"
@@ -1436,7 +1491,7 @@ msgstr "பொதுவான"
 msgid "FLAC Decoder"
 msgstr "FLAC குறிவிலக்கி "
 
-#: src/flac/metadata.cc:296 src/wavpack/wavpack.cc:205
+#: src/flac/metadata.cc:297 src/wavpack/wavpack.cc:204
 msgid "lossless"
 msgstr "இழப்பற்றது"
 
@@ -1472,7 +1527,7 @@ msgstr "வாசிப்பு மற்றும் இடர் பயன்
 msgid "Invalid open mode"
 msgstr "தவறான திறந்த பயன்முறை"
 
-#: src/glspectrum/gl-spectrum.cc:52
+#: src/glspectrum/gl-spectrum.cc:57
 msgid ""
 "OpenGL Spectrum Analyzer for Audacious\n"
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
@@ -1492,100 +1547,107 @@ msgstr ""
 "\n"
 " உரிமம்: gplv2+"
 
-#: src/glspectrum/gl-spectrum.cc:63 src/qtglspectrum/gl-spectrum.cc:53
+#: src/glspectrum/gl-spectrum.cc:68 src/qtglspectrum/gl-spectrum.cc:53
 msgid "OpenGL Spectrum Analyzer"
 msgstr "OpenGL நிறமாலை பகுப்பாய்வி"
 
-#: src/gtkui/columns.cc:36 src/qtui/playlist_model.cc:33
+#: src/gtkui/columns.cc:36 src/qtui/playlist_model.cc:35
 msgid "Entry Number"
 msgstr "நுழைவு எண்"
 
-#: src/gtkui/columns.cc:37 src/playback-history-qt/playback-history.cc:372
-#: src/playlist-manager/playlist-manager.cc:200
-#: src/playlist-manager-qt/playlist-manager-qt.cc:188
-#: src/qtui/playlist_model.cc:33 src/streamtuner/icecast-model.cc:120
+#: src/gtkui/columns.cc:37 src/playback-history/history-entry.cc:119
+#: src/playlist-manager/playlist-manager.cc:221
+#: src/playlist-manager-qt/playlist-manager-qt.cc:190
+#: src/qtui/playlist_model.cc:35 src/streamtuner/icecast-model.cc:120
 #: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:122
 msgid "Title"
 msgstr "தலைப்பு"
 
-#: src/gtkui/columns.cc:38 src/qtui/playlist_model.cc:33
+#: src/gtkui/columns.cc:38 src/qtui/playlist_model.cc:35
 msgid "Artist"
 msgstr "பாடகர்"
 
-#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:33
+#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:35
 msgid "Year"
 msgstr "வருடம்"
 
-#: src/gtkui/columns.cc:40 src/playback-history-qt/playback-history.cc:374
-#: src/playback-history-qt/playback-history.cc:837
-#: src/qtui/playlist_model.cc:34
+#: src/gtkui/columns.cc:40 src/playback-history/history-entry.cc:119
+#: src/playback-history/preferences.h:40 src/qtui/playlist_model.cc:36
 msgid "Album"
 msgstr "குறுவட்டு"
 
-#: src/gtkui/columns.cc:41 src/qtui/playlist_model.cc:34
+#: src/gtkui/columns.cc:41 src/qtui/playlist_model.cc:36
 msgid "Album Artist"
 msgstr "செருகேடு கலைஞர் "
 
-#: src/gtkui/columns.cc:42 src/qtui/playlist_model.cc:34
+#: src/gtkui/columns.cc:42 src/qtui/playlist_model.cc:36
 msgid "Track"
 msgstr "பாடல் "
 
-#: src/gtkui/columns.cc:43 src/qtui/playlist_model.cc:34
+#: src/gtkui/columns.cc:43 src/qtui/playlist_model.cc:36
 #: src/streamtuner/icecast-model.cc:123 src/streamtuner/shoutcast-model.cc:125
 #: src/streamtuner/shoutcast-model.cc:236
 msgid "Genre"
 msgstr "இலக்கியநடை"
 
-#: src/gtkui/columns.cc:44 src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:44 src/qtui/playlist_model.cc:37
 msgid "Queue Position"
 msgstr "வரிசை நிலை"
 
-#: src/gtkui/columns.cc:45 src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:45 src/qtui/playlist_model.cc:37
 msgid "Length"
 msgstr "நீளம்"
 
-#: src/gtkui/columns.cc:46 src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:46 src/qtui/playlist_model.cc:37
 msgid "File Path"
 msgstr "கோப்பு பாதை"
 
-#: src/gtkui/columns.cc:47 src/qtui/playlist_model.cc:35
+#: src/gtkui/columns.cc:47 src/qtui/playlist_model.cc:37
 msgid "File Name"
 msgstr "கோப்பு பெயர்"
 
-#: src/gtkui/columns.cc:48 src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:48 src/qtui/playlist_model.cc:38
 msgid "Custom Title"
 msgstr "தனிப்பயன் தலைப்பு"
 
-#: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:38
 #: src/streamtuner/icecast-model.cc:129 src/streamtuner/shoutcast-model.cc:134
 msgid "Bitrate"
 msgstr "பிட்வீதம்"
 
-#: src/gtkui/columns.cc:50 src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:50 src/qtui/playlist_model.cc:38
 msgid "Comment"
 msgstr "பின்னூட்டம்"
 
-#: src/gtkui/columns.cc:51 src/qtui/playlist_model.cc:36
+#: src/gtkui/columns.cc:51 src/qtui/playlist_model.cc:38
 msgid "Publisher"
 msgstr "பதிப்பகத்தார்"
 
-#: src/gtkui/columns.cc:52 src/qtui/playlist_model.cc:37
+#: src/gtkui/columns.cc:52 src/qtui/playlist_model.cc:39
 msgid "Catalog Number"
 msgstr "அட்டவணை எண்"
 
-#: src/gtkui/columns.cc:53 src/qtui/playlist_model.cc:37
+#: src/gtkui/columns.cc:53 src/qtui/playlist_model.cc:39
 msgid "Disc"
 msgstr "வட்டு"
 
-#: src/gtkui/columns.cc:325
+#: src/gtkui/columns.cc:54 src/qtui/playlist_model.cc:39
+msgid "File Created"
+msgstr ""
+
+#: src/gtkui/columns.cc:55 src/qtui/playlist_model.cc:39
+msgid "File Modified"
+msgstr ""
+
+#: src/gtkui/columns.cc:331
 msgid "Available columns"
 msgstr "கிடைக்கும் நெடுவரிசைகள்"
 
-#: src/gtkui/columns.cc:351
+#: src/gtkui/columns.cc:357
 msgid "Displayed columns"
 msgstr "காட்டப்பட்ட நெடுவரிசைகள்"
 
-#: src/gtkui/layout.cc:74 src/search-tool-qt/search-tool-qt.cc:58
+#: src/gtkui/layout.cc:74 src/search-tool-qt/search-tool-qt.cc:57
 #: src/search-tool/search-tool.cc:49
 msgid "Search Tool"
 msgstr "தேடல் கருவி"
@@ -1614,365 +1676,380 @@ msgstr "தரையிறக்க வேண்டாம் "
 msgid "Disable"
 msgstr "முடக்குக "
 
-#: src/gtkui/menus.cc:79 src/qtui/menus.cc:111
+#: src/gtkui/menus.cc:78 src/qtui/menus.cc:117
 #: src/statusicon-qt/statusicon.cc:128 src/statusicon/statusicon.cc:300
 msgid "_Open Files ..."
 msgstr "_கோப்புக்களைத் திற ..."
 
-#: src/gtkui/menus.cc:80 src/qtui/menus.cc:115
+#: src/gtkui/menus.cc:79 src/qtui/menus.cc:121
 msgid "Open _URL ..."
 msgstr "முகவரியை_திற ..."
 
-#: src/gtkui/menus.cc:81 src/qtui/menus.cc:117
+#: src/gtkui/menus.cc:80 src/qtui/menus.cc:123
 msgid "_Add Files ..."
 msgstr "கோப்புக்களை _சேர் ..."
 
-#: src/gtkui/menus.cc:82 src/qtui/menus.cc:122
+#: src/gtkui/menus.cc:81 src/qtui/menus.cc:128
 msgid "Add U_RL ..."
 msgstr "முகவரியை சேர் ..."
 
-#: src/gtkui/menus.cc:84 src/qtui/menus.cc:124
+#: src/gtkui/menus.cc:84 src/qtui/menus.cc:131
 msgid "Search _Library"
 msgstr "தேடல் _ லைப்ரரியை"
 
-#: src/gtkui/menus.cc:86 src/qtui/menus.cc:127
+#: src/gtkui/menus.cc:87 src/qtui/menus.cc:135
 msgid "A_bout ..."
 msgstr "பற்றி ..."
 
-#: src/gtkui/menus.cc:87 src/qtui/menus.cc:129
+#: src/gtkui/menus.cc:88 src/qtui/menus.cc:137
 msgid "_Settings ..."
 msgstr "_செட்டிங்ச் ..."
 
-#: src/gtkui/menus.cc:88 src/qtui/menus.cc:135
+#: src/gtkui/menus.cc:89 src/qtui/menus.cc:143
 #: src/statusicon-qt/statusicon.cc:130 src/statusicon/statusicon.cc:302
 msgid "_Quit"
 msgstr "_விலகு "
 
-#: src/gtkui/menus.cc:92 src/gtkui/menus.cc:226 src/qtui/menus.cc:139
-#: src/qtui/playlist_tabs.cc:331 src/search-tool-qt/search-tool-qt.cc:499
-#: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:122
-#: src/statusicon/statusicon.cc:294
-msgid "_Play"
-msgstr "_இயக்குக "
-
-#: src/gtkui/menus.cc:93 src/qtui/menus.cc:141
+#: src/gtkui/menus.cc:94 src/qtui/menus.cc:149
 #: src/statusicon-qt/statusicon.cc:123 src/statusicon/statusicon.cc:295
 msgid "Paus_e"
 msgstr "_இடைநிறுத்து"
 
-#: src/gtkui/menus.cc:94 src/qtui/menus.cc:143
+#: src/gtkui/menus.cc:95 src/qtui/menus.cc:151
 #: src/statusicon-qt/statusicon.cc:124 src/statusicon/statusicon.cc:296
 msgid "_Stop"
 msgstr "_நிறுத்துga"
 
-#: src/gtkui/menus.cc:95 src/qtui/menus.cc:145
+#: src/gtkui/menus.cc:96 src/qtui/menus.cc:153
 #: src/statusicon-qt/statusicon.cc:125 src/statusicon/statusicon.cc:297
 msgid "Pre_vious"
 msgstr "_முந்தைய"
 
-#: src/gtkui/menus.cc:96 src/qtui/menus.cc:147
+#: src/gtkui/menus.cc:97 src/qtui/menus.cc:155
 #: src/statusicon-qt/statusicon.cc:126 src/statusicon/statusicon.cc:298
 msgid "_Next"
 msgstr "_அடுத்து "
 
-#: src/gtkui/menus.cc:97 src/qtui/menus.cc:149 src/skins/menus.cc:114
-#: src/skins-qt/menus.cc:106
+#: src/gtkui/menus.cc:98 src/qtui/menus.cc:157 src/skins/menus.cc:119
+#: src/skins-qt/menus.cc:110
 msgid "Previous Album"
 msgstr "முந்தைய ஆல்பம்"
 
-#: src/gtkui/menus.cc:98 src/qtui/menus.cc:150 src/skins/menus.cc:115
-#: src/skins-qt/menus.cc:107
+#: src/gtkui/menus.cc:99 src/qtui/menus.cc:158 src/skins/menus.cc:120
+#: src/skins-qt/menus.cc:111
 msgid "Next Album"
 msgstr "அடுத்த ஆல்பம்"
 
-#: src/gtkui/menus.cc:100 src/qtui/menus.cc:152
+#: src/gtkui/menus.cc:101 src/qtui/menus.cc:160
 msgid "_Repeat"
 msgstr "_மறுபடியும்"
 
-#: src/gtkui/menus.cc:101 src/qtui/menus.cc:154
+#: src/gtkui/menus.cc:102 src/qtui/menus.cc:162
 msgid "S_huffle"
 msgstr "குலுக்குக "
 
-#: src/gtkui/menus.cc:102 src/qtui/menus.cc:156
+#: src/gtkui/menus.cc:103 src/qtui/menus.cc:164
 msgid "Shuffle by Albu_m"
 msgstr "அல்பு_எம் மூலம் கலக்கவும்"
 
-#: src/gtkui/menus.cc:103 src/qtui/menus.cc:159
+#: src/gtkui/menus.cc:104 src/qtui/menus.cc:167
 msgid "N_o Playlist Advance"
 msgstr "முன்னோக்கிய பாடல் பட்டியல் alla"
 
-#: src/gtkui/menus.cc:104 src/qtui/menus.cc:161
+#: src/gtkui/menus.cc:105 src/qtui/menus.cc:169
 msgid "Stop A_fter This Song"
 msgstr "இந்த பாடலுக்குப் பிறகு நிறுத்துங்கள்"
 
-#: src/gtkui/menus.cc:106 src/gtkui/menus.cc:210 src/qtui/menus.cc:166
-#: src/qtui/menus.cc:301
+#: src/gtkui/menus.cc:107 src/gtkui/menus.cc:222 src/qtui/menus.cc:174
+#: src/qtui/menus.cc:319
 msgid "Song _Info ..."
 msgstr "பாடல் செய்தி "
 
-#: src/gtkui/menus.cc:107
+#: src/gtkui/menus.cc:109 src/qtui/menus.cc:178
+msgid "Playback Histor_y ..."
+msgstr "பின்னணி வரலாறு_ஒய் ..."
+
+#: src/gtkui/menus.cc:111
 msgid "Jump to _Time ..."
 msgstr "_நேரத்திற்கு தாவவும் "
 
-#: src/gtkui/menus.cc:108
+#: src/gtkui/menus.cc:112
 msgid "_Jump to Song ..."
 msgstr "பாடலுக்கு _தாவவும்"
 
-#: src/gtkui/menus.cc:110 src/qtui/menus.cc:172
+#: src/gtkui/menus.cc:114 src/qtui/menus.cc:182
 msgid "Set Repeat Point _A"
 msgstr "மீண்டும் புள்ளியை அமைக்கவும் _a"
 
-#: src/gtkui/menus.cc:111 src/qtui/menus.cc:174
+#: src/gtkui/menus.cc:115 src/qtui/menus.cc:184
 msgid "Set Repeat Point _B"
 msgstr "மீண்டும் புள்ளியை அமைக்கவும் b"
 
-#: src/gtkui/menus.cc:112 src/qtui/menus.cc:176
+#: src/gtkui/menus.cc:116 src/qtui/menus.cc:186
 msgid "_Clear Repeat Points"
 msgstr "_ கூல் மீண்டும் புள்ளிகள்"
 
-#: src/gtkui/menus.cc:116 src/gtkui/menus.cc:123 src/gtkui/menus.cc:141
-#: src/qtui/menus.cc:180 src/qtui/menus.cc:187 src/qtui/menus.cc:205
+#: src/gtkui/menus.cc:120 src/gtkui/menus.cc:127 src/gtkui/menus.cc:148
+#: src/qtui/menus.cc:190 src/qtui/menus.cc:197 src/qtui/menus.cc:218
 msgid "By _Title"
 msgstr "_தலைப்பு  அடிப்படையில்"
 
-#: src/gtkui/menus.cc:117 src/qtui/menus.cc:181
+#: src/gtkui/menus.cc:121 src/qtui/menus.cc:191
 msgid "By _File Name"
 msgstr "_ பைல் பெயர்"
 
-#: src/gtkui/menus.cc:118 src/qtui/menus.cc:182
+#: src/gtkui/menus.cc:122 src/qtui/menus.cc:192
 msgid "By File _Path"
 msgstr "கோப்பு _ பாத்"
 
-#: src/gtkui/menus.cc:122 src/gtkui/menus.cc:140 src/qtui/menus.cc:186
-#: src/qtui/menus.cc:204
+#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:147 src/qtui/menus.cc:196
+#: src/qtui/menus.cc:217
 msgid "By Track _Number"
 msgstr "பாடல் _இலக்க அடிப்படையில்  "
 
-#: src/gtkui/menus.cc:124 src/gtkui/menus.cc:142 src/qtui/menus.cc:188
-#: src/qtui/menus.cc:206
+#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:149 src/qtui/menus.cc:198
+#: src/qtui/menus.cc:219
 msgid "By _Artist"
 msgstr "_பாடகர்  அடிப்படையில்"
 
-#: src/gtkui/menus.cc:125 src/gtkui/menus.cc:143 src/qtui/menus.cc:189
-#: src/qtui/menus.cc:207
+#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:150 src/qtui/menus.cc:199
+#: src/qtui/menus.cc:220
 msgid "By Al_bum"
 msgstr "வழங்கியவர் அல்_பம்"
 
-#: src/gtkui/menus.cc:126 src/gtkui/menus.cc:144 src/qtui/menus.cc:190
-#: src/qtui/menus.cc:208
+#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:151 src/qtui/menus.cc:200
+#: src/qtui/menus.cc:221
 msgid "By Albu_m Artist"
 msgstr "எழுதியவர் அல்பு_எம் கலைஞர்"
 
-#: src/gtkui/menus.cc:127 src/gtkui/menus.cc:145 src/qtui/menus.cc:191
-#: src/qtui/menus.cc:209
+#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:152 src/qtui/menus.cc:201
+#: src/qtui/menus.cc:222
 msgid "By Release _Date"
 msgstr "வெளியிட்ட திகதி அடிப்படையில்"
 
-#: src/gtkui/menus.cc:128 src/gtkui/menus.cc:146 src/qtui/menus.cc:192
-#: src/qtui/menus.cc:210
+#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:153 src/qtui/menus.cc:202
+#: src/qtui/menus.cc:223
 msgid "By _Genre"
 msgstr "வழங்கியவர் _சென்ரே"
 
-#: src/gtkui/menus.cc:129 src/gtkui/menus.cc:147 src/qtui/menus.cc:193
-#: src/qtui/menus.cc:211
+#: src/gtkui/menus.cc:133 src/gtkui/menus.cc:154 src/qtui/menus.cc:203
+#: src/qtui/menus.cc:224
 msgid "By _Length"
 msgstr "மூலம் _ நீளம்"
 
-#: src/gtkui/menus.cc:130 src/gtkui/menus.cc:148 src/qtui/menus.cc:194
-#: src/qtui/menus.cc:212
+#: src/gtkui/menus.cc:134 src/gtkui/menus.cc:155 src/qtui/menus.cc:204
+#: src/qtui/menus.cc:225
 msgid "By _File Path"
 msgstr "_கோப்பு வழி அடிப்படையில்"
 
-#: src/gtkui/menus.cc:131 src/gtkui/menus.cc:149 src/qtui/menus.cc:195
-#: src/qtui/menus.cc:213
+#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:156 src/qtui/menus.cc:205
+#: src/qtui/menus.cc:226
 msgid "By _Custom Title"
 msgstr "_விருப்ப தலைப்பு அடிப்படையில்"
 
-#: src/gtkui/menus.cc:132 src/gtkui/menus.cc:150 src/qtui/menus.cc:196
-#: src/qtui/menus.cc:214
+#: src/gtkui/menus.cc:136 src/gtkui/menus.cc:157 src/qtui/menus.cc:206
+#: src/qtui/menus.cc:227
 msgid "By C_omment"
 msgstr "c_omment மூலம்"
 
-#: src/gtkui/menus.cc:133 src/gtkui/menus.cc:151 src/qtui/menus.cc:197
-#: src/qtui/menus.cc:215
+#: src/gtkui/menus.cc:137 src/gtkui/menus.cc:158 src/qtui/menus.cc:207
+#: src/qtui/menus.cc:228
 msgid "By D_isc Number"
 msgstr "மூலம் d_isc எண்"
 
-#: src/gtkui/menus.cc:135 src/gtkui/menus.cc:153 src/qtui/menus.cc:199
-#: src/qtui/menus.cc:217
+#: src/gtkui/menus.cc:138 src/gtkui/menus.cc:159 src/qtui/menus.cc:208
+#: src/qtui/menus.cc:229 src/skins/menus.cc:215 src/skins/menus.cc:234
+#: src/skins-qt/menus.cc:211 src/skins-qt/menus.cc:230
+msgid "By Bitrate"
+msgstr ""
+
+#: src/gtkui/menus.cc:139 src/gtkui/menus.cc:160 src/qtui/menus.cc:209
+#: src/qtui/menus.cc:230 src/skins/menus.cc:216 src/skins/menus.cc:235
+#: src/skins-qt/menus.cc:212 src/skins-qt/menus.cc:231
+msgid "By File Created"
+msgstr ""
+
+#: src/gtkui/menus.cc:140 src/gtkui/menus.cc:161 src/qtui/menus.cc:210
+#: src/qtui/menus.cc:231 src/skins/menus.cc:217 src/skins/menus.cc:236
+#: src/skins-qt/menus.cc:213 src/skins-qt/menus.cc:232
+msgid "By File Modified"
+msgstr ""
+
+#: src/gtkui/menus.cc:142 src/gtkui/menus.cc:163 src/qtui/menus.cc:212
+#: src/qtui/menus.cc:233
 msgid "R_everse Order"
 msgstr "தலைகீழ் ஒழுங்கு"
 
-#: src/gtkui/menus.cc:136 src/gtkui/menus.cc:154 src/qtui/menus.cc:201
-#: src/qtui/menus.cc:219
+#: src/gtkui/menus.cc:143 src/gtkui/menus.cc:164 src/qtui/menus.cc:214
+#: src/qtui/menus.cc:235
 msgid "_Random Order"
 msgstr "_தற்போக்கு ஒழுங்கு"
 
-#: src/gtkui/menus.cc:158 src/qtui/menus.cc:223
+#: src/gtkui/menus.cc:168 src/qtui/menus.cc:239
 msgid "_Play/Resume"
 msgstr "_ பிளே/விண்ணப்பம்"
 
-#: src/gtkui/menus.cc:159 src/qtui/menus.cc:225
+#: src/gtkui/menus.cc:169 src/qtui/menus.cc:241
 msgid "_Refresh"
 msgstr "_புதுப்பிக்குக "
 
-#: src/gtkui/menus.cc:161 src/qtui/menus.cc:229
+#: src/gtkui/menus.cc:171 src/qtui/menus.cc:245
 msgid "_Sort"
 msgstr "_வரிசைப்படுத்துக "
 
-#: src/gtkui/menus.cc:162 src/qtui/menus.cc:230
+#: src/gtkui/menus.cc:172 src/qtui/menus.cc:246
 msgid "Sort Se_lected"
 msgstr "se_lected வரிசைப்படுத்துதல்"
 
-#: src/gtkui/menus.cc:163 src/qtui/menus.cc:232
+#: src/gtkui/menus.cc:173 src/qtui/menus.cc:248
 msgid "Remove _Duplicates"
 msgstr "_duplicates ஐ அகற்று"
 
-#: src/gtkui/menus.cc:164 src/qtui/menus.cc:233
+#: src/gtkui/menus.cc:174 src/qtui/menus.cc:249
 msgid "Remove _Unavailable Files"
 msgstr "_கிடைக்கப்பெறாத கோப்புகளை அகற்றுக"
 
-#: src/gtkui/menus.cc:166 src/playlist-manager/playlist-manager.cc:219
-#: src/playlist-manager-qt/playlist-manager-qt.cc:348 src/qtui/menus.cc:236
+#: src/gtkui/menus.cc:176 src/playlist-manager/playlist-manager.cc:240
+#: src/playlist-manager-qt/playlist-manager-qt.cc:380 src/qtui/menus.cc:252
 msgid "_New"
 msgstr "_புதிய "
 
-#: src/gtkui/menus.cc:167 src/qtui/menus.cc:237
+#: src/gtkui/menus.cc:177 src/qtui/menus.cc:253
 msgid "Ren_ame ..."
 msgstr "ren_ame ..."
 
-#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:228 src/qtui/menus.cc:238
-#: src/qtui/playlist_tabs.cc:336
+#: src/gtkui/menus.cc:178 src/gtkui/menus.cc:240 src/qtui/menus.cc:254
+#: src/qtui/playlist_tabs.cc:344
 msgid "Remo_ve"
 msgstr "remo_ve"
 
-#: src/gtkui/menus.cc:170 src/qtui/menus.cc:240
+#: src/gtkui/menus.cc:180 src/qtui/menus.cc:256
 msgid "_Import ..."
 msgstr "_இறக்குமதி ..."
 
-#: src/gtkui/menus.cc:171 src/qtui/menus.cc:241
+#: src/gtkui/menus.cc:181 src/qtui/menus.cc:257
 msgid "_Export ..."
 msgstr "_ஏற்றுமதி ..."
 
-#: src/gtkui/menus.cc:173 src/qtui/menus.cc:244
+#: src/gtkui/menus.cc:184 src/qtui/menus.cc:261
 msgid "Playlist _Manager ..."
 msgstr "பிளேலிச்ட் _ மேனேசர் ..."
 
-#: src/gtkui/menus.cc:174 src/qtui/menus.cc:246
+#: src/gtkui/menus.cc:186 src/qtui/menus.cc:264
 msgid "_Queue Manager ..."
 msgstr "_வரிசை நிர்வாகி ..."
 
-#: src/gtkui/menus.cc:178 src/qtui/menus.cc:250
+#: src/gtkui/menus.cc:190 src/qtui/menus.cc:268
 msgid "Volume _Up"
 msgstr "ஒலிஉரப்பான் _அதிகரிக்குக "
 
-#: src/gtkui/menus.cc:179 src/qtui/menus.cc:252
+#: src/gtkui/menus.cc:191 src/qtui/menus.cc:270
 msgid "Volume _Down"
 msgstr "ஒலிஉரப்பான் _குறைக்குக "
 
-#: src/gtkui/menus.cc:181 src/qtui/menus.cc:256
+#: src/gtkui/menus.cc:193 src/qtui/menus.cc:274
 msgid "_Equalizer ..."
 msgstr "_ சமநிலை ..."
 
-#: src/gtkui/menus.cc:182 src/qtui/menus.cc:258
+#: src/gtkui/menus.cc:194 src/qtui/menus.cc:276
 msgid "E_ffects ..."
 msgstr "விளைவுகள் ..."
 
-#: src/gtkui/menus.cc:184
+#: src/gtkui/menus.cc:196
 msgid "_Record Stream"
 msgstr "_ ரெக்கார்ட் ச்ட்ரீம்"
 
-#: src/gtkui/menus.cc:185
+#: src/gtkui/menus.cc:197
 msgid "Audio _Settings ..."
 msgstr "ஆடியோ _செட்டிங்ச் ..."
 
-#: src/gtkui/menus.cc:189 src/qtui/menus.cc:267
+#: src/gtkui/menus.cc:201 src/qtui/menus.cc:285
 msgid "Show _Menu Bar"
 msgstr "_பட்டியல் பட்டியை காண்பிக்குக "
 
-#: src/gtkui/menus.cc:190 src/qtui/menus.cc:269
+#: src/gtkui/menus.cc:202 src/qtui/menus.cc:287
 msgid "Show I_nfo Bar"
 msgstr "செய்தி பட்டியை காண்பிக்குக "
 
-#: src/gtkui/menus.cc:191 src/qtui/menus.cc:271
+#: src/gtkui/menus.cc:203 src/qtui/menus.cc:289
 msgid "Show Info Bar _Album Art"
 msgstr "செய்தி பட்டி _ ஆல்பம் கலையைக் காட்டு"
 
-#: src/gtkui/menus.cc:192 src/qtui/menus.cc:273
+#: src/gtkui/menus.cc:204 src/qtui/menus.cc:291
 msgid "Show Info Bar Vis_ualization"
 msgstr "செய்தி பட்டி காட்சியாக்கத்தை காண்பிக்குக "
 
-#: src/gtkui/menus.cc:193 src/qtui/menus.cc:275
+#: src/gtkui/menus.cc:205 src/qtui/menus.cc:293
 msgid "Show _Status Bar"
 msgstr "_நிலைமை பட்டியை காண்பிக்குக"
 
-#: src/gtkui/menus.cc:195 src/qtui/menus.cc:279
+#: src/gtkui/menus.cc:207 src/qtui/menus.cc:297
 msgid "Show _Remaining Time"
 msgstr "மீதமுள்ள நேரத்தைக் காட்டு"
 
-#: src/gtkui/menus.cc:197 src/qtui/menus.cc:283 src/skins/menus.cc:157
-#: src/skins-qt/menus.cc:153
+#: src/gtkui/menus.cc:209 src/qtui/menus.cc:301 src/skins/menus.cc:164
+#: src/skins-qt/menus.cc:159
 msgid "_Visualizations ..."
 msgstr "_visualizations ..."
 
-#: src/gtkui/menus.cc:201 src/qtui/menus.cc:287
+#: src/gtkui/menus.cc:213 src/qtui/menus.cc:305
 msgid "_File"
 msgstr "கோப்பு "
 
-#: src/gtkui/menus.cc:202 src/qtui/menus.cc:288
+#: src/gtkui/menus.cc:214 src/qtui/menus.cc:306
 msgid "_Playback"
 msgstr "_மீள்இயக்குக "
 
-#: src/gtkui/menus.cc:203 src/qtui/menus.cc:289
+#: src/gtkui/menus.cc:215 src/qtui/menus.cc:307
 msgid "P_laylist"
 msgstr "பாடல் பட்டியல் "
 
-#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:222 src/qtui/menus.cc:290
-#: src/qtui/menus.cc:319
+#: src/gtkui/menus.cc:216 src/gtkui/menus.cc:234 src/qtui/menus.cc:308
+#: src/qtui/menus.cc:337
 msgid "_Services"
 msgstr "_சேவைகள் "
 
-#: src/gtkui/menus.cc:205 src/qtui/menus.cc:291
+#: src/gtkui/menus.cc:217 src/qtui/menus.cc:309
 msgid "_Output"
 msgstr "_வெளியீடு"
 
-#: src/gtkui/menus.cc:206 src/qtui/menus.cc:292
+#: src/gtkui/menus.cc:218 src/qtui/menus.cc:310
 msgid "_View"
 msgstr "_paarvayiduga"
 
-#: src/gtkui/menus.cc:211 src/qtui/menus.cc:303
+#: src/gtkui/menus.cc:223 src/qtui/menus.cc:321
 msgid "_Queue/Unqueue"
 msgstr "_வரிசைப்படுத்துக/வரிசைப்படுத்தலை அகற்றுக "
 
-#: src/gtkui/menus.cc:213 src/qtui/menus.cc:306
+#: src/gtkui/menus.cc:225 src/qtui/menus.cc:324
 msgid "_Open Containing Folder"
 msgstr "_ கோப்புறை கொண்ட ஓபன்"
 
-#: src/gtkui/menus.cc:214 src/qtui/menus.cc:308
+#: src/gtkui/menus.cc:226 src/qtui/menus.cc:326
 msgid "_Refresh Selected"
 msgstr "_refresh தேர்ந்தெடுக்கப்பட்டது"
 
-#: src/gtkui/menus.cc:216 src/qtui/menus.cc:311
+#: src/gtkui/menus.cc:228 src/qtui/menus.cc:329
 msgid "Cu_t"
 msgstr "வெட்டுக "
 
-#: src/gtkui/menus.cc:217 src/qtui/menus.cc:312
+#: src/gtkui/menus.cc:229 src/qtui/menus.cc:330
 msgid "_Copy"
 msgstr "நகலெடுக்க "
 
-#: src/gtkui/menus.cc:218 src/qtui/menus.cc:313
+#: src/gtkui/menus.cc:230 src/qtui/menus.cc:331
 msgid "_Paste"
 msgstr "_ஒட்டவும்"
 
-#: src/gtkui/menus.cc:219 src/qtui/menus.cc:314
+#: src/gtkui/menus.cc:231 src/qtui/menus.cc:332
 msgid "Paste at _End"
 msgstr "_end இல் ஒட்டவும்"
 
-#: src/gtkui/menus.cc:220 src/qtui/menus.cc:316
+#: src/gtkui/menus.cc:232 src/qtui/menus.cc:334
 msgid "Select _All"
 msgstr "_அனைத்தையும் தேர்ந்தெடுக்குக "
 
-#: src/gtkui/menus.cc:227 src/qtui/playlist_tabs.cc:334
+#: src/gtkui/menus.cc:239 src/qtui/playlist_tabs.cc:342
 msgid "_Rename ..."
 msgstr "மறுபெயர்"
 
@@ -2024,81 +2101,82 @@ msgstr "கருவிப்பட்டியில் குறியீட�
 msgid "Scroll on song change"
 msgstr "பாடல் மாற்றத்தை உருட்டவும்"
 
-#: src/gtkui/ui_gtk.cc:82
+#: src/gtkui/ui_gtk.cc:83
 msgid "GTK Interface"
 msgstr "GTK இடைமுகம் "
 
-#: src/gtkui/ui_gtk.cc:219 src/skins/main.cc:228 src/skins-qt/main.cc:231
+#: src/gtkui/ui_gtk.cc:220 src/skins/main.cc:226 src/skins-qt/main.cc:236
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - ஔடகிவச்"
 
-#: src/gtkui/ui_gtk.cc:221 src/qtui/main_window.cc:386
+#: src/gtkui/ui_gtk.cc:222 src/qtui/main_window.cc:386 src/skins/main.cc:243
+#: src/skins-qt/main.cc:253
 msgid "Buffering ..."
 msgstr "இடைநிலைப்படுத்துகிறது ..."
 
-#: src/gtkui/ui_gtk.cc:224 src/pipewire/pipewire.cc:450
+#: src/gtkui/ui_gtk.cc:225 src/pipewire/pipewire.cc:450
 #: src/qtui/main_window.cc:364 src/qtui/main_window.cc:400
-#: src/sdlout/sdlout.cc:110 src/skins/main.cc:230 src/skins-qt/main.cc:233
+#: src/sdlout/sdlout.cc:110 src/skins/main.cc:228 src/skins-qt/main.cc:238
 msgid "Audacious"
 msgstr "ஔடகிவச்"
 
-#: src/gtkui/ui_gtk.cc:487 src/gtkui/ui_gtk.cc:518 src/gtkui/ui_gtk.cc:882
+#: src/gtkui/ui_gtk.cc:509 src/gtkui/ui_gtk.cc:540 src/gtkui/ui_gtk.cc:923
 #: src/hotkey/gui.cc:72 src/notify/osd.cc:85 src/qthotkey/gui.cc:67
 #: src/qtui/main_window.cc:155 src/qtui/main_window.cc:348
-#: src/qtui/main_window.cc:349 src/skins/menus.cc:109 src/skins-qt/menus.cc:101
+#: src/qtui/main_window.cc:349 src/skins/menus.cc:114 src/skins-qt/menus.cc:105
 msgid "Play"
 msgstr "இயக்குக "
 
-#: src/gtkui/ui_gtk.cc:487 src/notify/osd.cc:82 src/qtui/main_window.cc:354
-#: src/qtui/main_window.cc:355 src/skins/menus.cc:110 src/skins-qt/menus.cc:102
+#: src/gtkui/ui_gtk.cc:509 src/notify/osd.cc:82 src/qtui/main_window.cc:354
+#: src/qtui/main_window.cc:355 src/skins/menus.cc:115 src/skins-qt/menus.cc:106
 msgid "Pause"
 msgstr "இடைநிறுத்துக "
 
-#: src/gtkui/ui_gtk.cc:868 src/qtui/main_window.cc:146 src/skins/menus.cc:86
-#: src/skins-qt/menus.cc:77
+#: src/gtkui/ui_gtk.cc:909 src/qtui/main_window.cc:146 src/skins/menus.cc:87
+#: src/skins-qt/menus.cc:78
 msgid "Search Library"
 msgstr "தேடல் நூலகம்"
 
-#: src/gtkui/ui_gtk.cc:875 src/qtui/main_window.cc:148
+#: src/gtkui/ui_gtk.cc:916 src/qtui/main_window.cc:148
 msgid "Open Files"
 msgstr "கோப்புக்களைத் திறkkavum"
 
-#: src/gtkui/ui_gtk.cc:876 src/qtui/main_window.cc:150
+#: src/gtkui/ui_gtk.cc:917 src/qtui/main_window.cc:150
 msgid "Add Files"
 msgstr "கோப்புக்களை சேர்kkavum"
 
-#: src/gtkui/ui_gtk.cc:881 src/qtui/main_window.cc:153 src/skins/menus.cc:112
-#: src/skins-qt/menus.cc:104
+#: src/gtkui/ui_gtk.cc:922 src/qtui/main_window.cc:153 src/skins/menus.cc:117
+#: src/skins-qt/menus.cc:108
 msgid "Previous"
 msgstr "முந்தைய"
 
-#: src/gtkui/ui_gtk.cc:883 src/hotkey/gui.cc:74 src/qthotkey/gui.cc:69
-#: src/qtui/main_window.cc:157 src/skins/menus.cc:111 src/skins-qt/menus.cc:103
+#: src/gtkui/ui_gtk.cc:924 src/hotkey/gui.cc:74 src/qthotkey/gui.cc:69
+#: src/qtui/main_window.cc:157 src/skins/menus.cc:116 src/skins-qt/menus.cc:107
 msgid "Stop"
 msgstr "நிறுத்துக "
 
-#: src/gtkui/ui_gtk.cc:884 src/notify/osd.cc:89 src/qtui/main_window.cc:164
-#: src/skins/menus.cc:113 src/skins-qt/menus.cc:105
+#: src/gtkui/ui_gtk.cc:925 src/notify/osd.cc:89 src/qtui/main_window.cc:164
+#: src/skins/menus.cc:118 src/skins-qt/menus.cc:109
 msgid "Next"
 msgstr "அடுத்தது "
 
-#: src/gtkui/ui_gtk.cc:886 src/qtui/main_window.cc:167 src/qtui/menus.cc:261
+#: src/gtkui/ui_gtk.cc:927 src/qtui/main_window.cc:167 src/qtui/menus.cc:279
 #: src/skins/menus.cc:79 src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "பதிவு ச்ட்ரீம்"
 
-#: src/gtkui/ui_gtk.cc:919 src/qtui/main_window.cc:174 src/skins/menus.cc:103
-#: src/skins-qt/menus.cc:95
+#: src/gtkui/ui_gtk.cc:960 src/qtui/main_window.cc:174 src/skins/menus.cc:108
+#: src/skins-qt/menus.cc:99
 msgid "Repeat"
 msgstr "மறுமுறை"
 
-#: src/gtkui/ui_gtk.cc:922 src/qtui/main_window.cc:177 src/skins/menus.cc:104
-#: src/skins-qt/menus.cc:96
+#: src/gtkui/ui_gtk.cc:963 src/qtui/main_window.cc:177 src/skins/menus.cc:109
+#: src/skins-qt/menus.cc:100
 msgid "Shuffle"
 msgstr "குலுக்குக "
 
-#: src/gtkui/ui_gtk.cc:1114 src/qtui/main_window.cc:123
+#: src/gtkui/ui_gtk.cc:1155 src/qtui/main_window.cc:123
 msgid "Menu"
 msgstr "பட்டியல்"
 
@@ -2122,21 +2200,21 @@ msgstr[1] "%d சேனல்கள்"
 msgid "%d kHz"
 msgstr "%d khz"
 
-#: src/gtkui/ui_statusbar.cc:82 src/qtui/playlist_model.cc:132
+#: src/gtkui/ui_statusbar.cc:82 src/qtui/playlist_model.cc:142
 #: src/qtui/status_bar.cc:174
 #, c-format
 msgid "%d kbit/s"
 msgstr "%d kbit/s"
 
-#: src/gtkui/ui_statusbar.cc:108 src/skins/main.cc:478 src/skins-qt/main.cc:461
+#: src/gtkui/ui_statusbar.cc:108 src/skins/main.cc:476 src/skins-qt/main.cc:466
 msgid "Single mode."
 msgstr "ஒற்றை முறை."
 
-#: src/gtkui/ui_statusbar.cc:110 src/skins/main.cc:480 src/skins-qt/main.cc:463
+#: src/gtkui/ui_statusbar.cc:110 src/skins/main.cc:478 src/skins-qt/main.cc:468
 msgid "Playlist mode."
 msgstr "பாடல் பட்டியல் murai"
 
-#: src/gtkui/ui_statusbar.cc:118 src/skins/main.cc:486 src/skins-qt/main.cc:469
+#: src/gtkui/ui_statusbar.cc:118 src/skins/main.cc:484 src/skins-qt/main.cc:474
 msgid "Stopping after song."
 msgstr "பாடலின் பின்னர் நிறுத்துக."
 
@@ -2200,11 +2278,19 @@ msgstr "மின்னோட்டத்திற்குப் பிறக�
 msgid "Raise player window(s)"
 msgstr "பிளேயர் சாளரங்களை உயர்த்தவும்)"
 
-#: src/hotkey/gui.cc:98 src/qthotkey/gui.cc:100
+#: src/hotkey/gui.cc:88 src/qthotkey/gui.cc:83
+msgid "Previous album"
+msgstr ""
+
+#: src/hotkey/gui.cc:89 src/qthotkey/gui.cc:84
+msgid "Next album"
+msgstr ""
+
+#: src/hotkey/gui.cc:100 src/qthotkey/gui.cc:102
 msgid "(none)"
 msgstr "(எதுவுமல்ல)"
 
-#: src/hotkey/gui.cc:261
+#: src/hotkey/gui.cc:262
 msgid ""
 "It is not recommended to bind the primary mouse buttons without modifiers.\n"
 "\n"
@@ -2214,11 +2300,11 @@ msgstr ""
 "\n"
 " நீங்கள் தொடர விரும்புகிறீர்களா?"
 
-#: src/hotkey/gui.cc:264
+#: src/hotkey/gui.cc:265
 msgid "Binding mouse buttons"
 msgstr "சுட்டி பொத்தான்களை பிணைத்தல்"
 
-#: src/hotkey/gui.cc:434
+#: src/hotkey/gui.cc:435
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -2226,19 +2312,19 @@ msgstr ""
 "எழுத்து புலத்தில் ஒரு விசை சேர்க்கையை அழுத்தவும்.⏎\n"
 "உங்களுக்கு சுட்டி பொத்தான்களை பிணைக்கவும் முடியும்."
 
-#: src/hotkey/gui.cc:444 src/qthotkey/gui.cc:179
+#: src/hotkey/gui.cc:445 src/qthotkey/gui.cc:181
 msgid "Hotkeys:"
 msgstr "குறுக்குவிசைகள்:"
 
-#: src/hotkey/gui.cc:457 src/qthotkey/gui.cc:181
+#: src/hotkey/gui.cc:458 src/qthotkey/gui.cc:183
 msgid "<b>Action:</b>"
 msgstr "<b>நடவடிக்கை: </b>"
 
-#: src/hotkey/gui.cc:461 src/qthotkey/gui.cc:182
+#: src/hotkey/gui.cc:462 src/qthotkey/gui.cc:184
 msgid "<b>Key Binding:</b>"
 msgstr "<b>சாவி பிணைத்தல்:</b>"
 
-#: src/hotkey/gui.cc:518 src/qthotkey/gui.cc:184
+#: src/hotkey/gui.cc:519 src/qthotkey/gui.cc:186
 msgid "_Add"
 msgstr "_சேர் "
 
@@ -2389,11 +2475,11 @@ msgstr ""
 msgid "LADSPA Host"
 msgstr "LADSPA "
 
-#: src/lirc/lirc.cc:55
+#: src/lirc/lirc.cc:51
 msgid "LIRC Plugin"
 msgstr "LIRC "
 
-#: src/lirc/lirc.cc:379
+#: src/lirc/lirc.cc:359
 msgid ""
 "A simple plugin to control Audacious using the LIRC remote control daemon\n"
 "\n"
@@ -2422,36 +2508,30 @@ msgstr ""
 "\n"
 " lirc பற்றிய கூடுதல் தகவலுக்கு, http://lirc.org ஐப் பார்க்கவும்."
 
-#: src/lirc/lirc.cc:390
+#: src/lirc/lirc.cc:370
 msgid "<b>Connection</b>"
 msgstr "<b> இணைப்பு </b>"
 
-#: src/lirc/lirc.cc:391
+#: src/lirc/lirc.cc:371
 msgid "Reconnect to LIRC server"
 msgstr "LIRC சேவைகயத்துக்கு மீள் இணைக்குக "
 
-#: src/lirc/lirc.cc:393
+#: src/lirc/lirc.cc:373
 msgid "Wait before reconnecting:"
 msgstr "மீள் இணைக்க முன் பொறுக்க :"
 
-#: src/lyrics-common/chart_lyrics_provider.cc:93
-#: src/lyrics-common/chart_lyrics_provider.cc:150
 #: src/lyrics-common/lrclib_provider.cc:34
 #: src/lyrics-common/lyrics_ovh_provider.cc:35
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "%s பெற முடியவில்லை"
 
-#: src/lyrics-common/chart_lyrics_provider.cc:100
-#: src/lyrics-common/chart_lyrics_provider.cc:157
 #: src/lyrics-common/lrclib_provider.cc:41
 #: src/lyrics-common/lyrics_ovh_provider.cc:42
 #, c-format
 msgid "Unable to parse %s"
 msgstr "%s ஐ பாகுபடுத்த முடியவில்லை"
 
-#: src/lyrics-common/chart_lyrics_provider.cc:121
-#: src/lyrics-common/chart_lyrics_provider.cc:194
 #: src/lyrics-common/lrclib_provider.cc:70
 #: src/lyrics-common/lyrics_ovh_provider.cc:70
 msgid "Looking for lyrics ..."
@@ -2461,69 +2541,69 @@ msgstr "பாடல் தேடுகிறது ..."
 msgid "Nowhere"
 msgstr "எங்கும்"
 
-#: src/lyrics-common/preferences.h:50
+#: src/lyrics-common/preferences.h:49
 msgid "<small>Artist is truncated at the start, Title -- at the end</small>"
 msgstr "<mall> கலைஞர் தொடக்கத்தில் துண்டிக்கப்பட்டுள்ளார், தலைப்பு - இறுதியில் </சிறிய>"
 
-#: src/lyrics-common/preferences.h:51
+#: src/lyrics-common/preferences.h:50
 msgid "Chars to truncate on:"
 msgstr "துண்டிக்க எழுத்துக்கள்:"
 
-#: src/lyrics-common/preferences.h:55
+#: src/lyrics-common/preferences.h:54
 msgid "<small>Chars are ORed in RegExp, surrounded by whitespace</small>"
 msgstr ""
 "<small> எழுத்துக்கள் regexp இல் ஓரெச் செய்யப்படுகின்றன, அவை வைட்ச்பேசால் சூழப்பட்டுள்ளன </"
 "small>"
 
-#: src/lyrics-common/preferences.h:56
+#: src/lyrics-common/preferences.h:55
 msgid "Chars to split on:"
 msgstr "பிரிக்க சார்ச்:"
 
-#: src/lyrics-common/preferences.h:57
+#: src/lyrics-common/preferences.h:56
 msgid "Further truncate those on chars"
 msgstr "எழுத்தில் உள்ளவர்களை மேலும் துண்டிக்கவும்"
 
-#: src/lyrics-common/preferences.h:63
+#: src/lyrics-common/preferences.h:62
 msgid "<b>General</b>"
 msgstr "<b> பொது </b>"
 
-#: src/lyrics-common/preferences.h:64
+#: src/lyrics-common/preferences.h:63
 msgid "Split title into artist and title on chars"
 msgstr "பட்டத்தை கலைஞராகப் பிரிக்கவும், தலைப்பில் தலைப்பு"
 
-#: src/lyrics-common/preferences.h:67
+#: src/lyrics-common/preferences.h:66
 msgid "<b>Sources</b>"
 msgstr "<b> ஆதாரங்கள் </b>"
 
-#: src/lyrics-common/preferences.h:68
+#: src/lyrics-common/preferences.h:67
 msgid "Use embedded lyrics (from Lyrics tag)"
 msgstr "உட்பொதிக்கப்பட்ட பாடல்களைப் பயன்படுத்தவும் (பாடல் குறிச்சொல்லிலிருந்து)"
 
-#: src/lyrics-common/preferences.h:70
+#: src/lyrics-common/preferences.h:69
 msgid "Fetch lyrics from internet:"
 msgstr "இணையத்திலிருந்து வரிகளை பெறுங்கள்:"
 
-#: src/lyrics-common/preferences.h:73
+#: src/lyrics-common/preferences.h:72
 msgid "Store fetched lyrics in local cache"
 msgstr "உள்ளக தற்காலிக சேமிப்பில் கடை பெறப்பட்ட பாடல்"
 
-#: src/lyrics-common/preferences.h:75
+#: src/lyrics-common/preferences.h:74
 msgid "<b>Local Storage</b>"
 msgstr "<b> உள்ளக சேமிப்பு </b>"
 
-#: src/lyrics-common/preferences.h:76
+#: src/lyrics-common/preferences.h:75
 msgid "Load lyric files (.lrc) from local storage"
 msgstr "உள்ளக சேமிப்பகத்திலிருந்து பாடல் கோப்புகளை (.lrc) ஏற்றவும்"
 
-#: src/lyrics-common/utils.cc:57 src/ui-common/dialogs-qt.cc:63
+#: src/lyrics-common/utils.cc:56 src/ui-common/dialogs-qt.cc:63
 msgid "Error"
 msgstr "thavaruthal"
 
-#: src/lyrics-common/utils.cc:63
+#: src/lyrics-common/utils.cc:62
 msgid "Lyrics could not be found."
 msgstr "பாடல் வரிகளைக் கண்டுபிடிக்க முடியவில்லை."
 
-#: src/lyrics-common/utils.cc:145
+#: src/lyrics-common/utils.cc:144
 msgid "Missing title and/or artist."
 msgstr "தலைப்பு மற்றும்/அல்லது கலைஞரைக் காணவில்லை."
 
@@ -2531,21 +2611,35 @@ msgstr "தலைப்பு மற்றும்/அல்லது கலை
 msgid "Lyrics"
 msgstr "பாடல் வரிகள்"
 
-#: src/lyrics-gtk/lyrics-gtk.cc:190 src/lyrics-qt/lyrics-qt.cc:172
+#: src/lyrics-gtk/lyrics-gtk.cc:189 src/lyrics-qt/lyrics-qt.cc:171
 msgid "Edit Lyrics ..."
 msgstr "பாடல் திருத்து ..."
 
-#: src/lyrics-gtk/lyrics-gtk.cc:196 src/lyrics-qt/lyrics-qt.cc:179
+#: src/lyrics-gtk/lyrics-gtk.cc:195 src/lyrics-qt/lyrics-qt.cc:178
 msgid "Save Locally"
 msgstr "உள்ளூரில் சேமிக்கவும்"
 
-#: src/lyrics-gtk/lyrics-gtk.cc:202 src/lyrics-qt/lyrics-qt.cc:187
+#: src/lyrics-gtk/lyrics-gtk.cc:201 src/lyrics-qt/lyrics-qt.cc:186
 msgid "Refresh"
 msgstr "புதுப்பிப்பு"
 
 #: src/m3u/m3u.cc:33
 msgid "M3U Playlists"
 msgstr "M3U பாடல் பட்டியல்"
+
+#: src/mac-now-playing/MacNowPlaying.mm:28
+msgid "Mac Now Playing"
+msgstr ""
+
+#: src/mac-now-playing/MacNowPlaying.mm:226
+msgid ""
+"Now Playing Plugin for Audacious\n"
+"Copyright 2025 Yves Ndiaye\n"
+"\n"
+"This plugin implements the Apple Now Playing interface. It allows Audacious "
+"to be controlled through media keys, to show the current album artwork and "
+"to seek the playback."
+msgstr ""
 
 #: src/metronom/metronom.cc:44
 msgid "Tact Generator"
@@ -2595,11 +2689,11 @@ msgstr "<b>தட கலவை</b>"
 msgid "Output channels:"
 msgstr "வெளியீட்டு thadangal"
 
-#: src/mms/mms.cc:35
+#: src/mms/mms.cc:32
 msgid "MMS Plugin"
 msgstr "MMS நீட்சி"
 
-#: src/mms/mms.cc:82
+#: src/mms/mms.cc:79
 msgid "Error connecting to MMS server"
 msgstr "எம்.எம்.எச் சேவையகத்துடன் இணைப்பதில் பிழை"
 
@@ -2847,23 +2941,23 @@ msgstr "% (0 = மோனோ, 100 = இயல்புநிலை, 200 = மு�
 msgid "Interpolation:"
 msgstr "இடைக்கணிப்பு:"
 
-#: src/openmpt/mptwrap.h:51 src/soxr/sox-resampler.cc:189 src/xsf/plugin.cc:437
+#: src/openmpt/mptwrap.h:50 src/soxr/sox-resampler.cc:189 src/xsf/plugin.cc:436
 msgid "Linear"
 msgstr "நேரியல்"
 
-#: src/openmpt/mptwrap.h:52
+#: src/openmpt/mptwrap.h:51
 msgid "Cubic"
 msgstr "கன"
 
-#: src/openmpt/mptwrap.h:53
+#: src/openmpt/mptwrap.h:52
 msgid "Windowed sinc"
 msgstr "சாளர சின்க்"
 
-#: src/opus/opus.cc:39
+#: src/opus/opus.cc:42
 msgid "Opus Decoder"
 msgstr "ஓபச் டிகோடர்"
 
-#: src/opus/opus.cc:371
+#: src/opus/opus.cc:406
 msgid ""
 "Opus Decoder Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange"
@@ -2871,39 +2965,39 @@ msgstr ""
 "துணிச்சலுக்கான ஓபச் டிகோடர் சொருகி \n"
 " பதிப்புரிமை 2022 தாமச் லாங்கே"
 
-#: src/oss4/oss.h:70
+#: src/oss4/oss.h:68
 msgid "OSS4 Output"
 msgstr "OSS4 வெளியீடு "
 
-#: src/oss4/oss.h:72
+#: src/oss4/oss.h:70
 msgid "OSS3 Output"
 msgstr "oss3 வெளியீடு"
 
-#: src/oss4/plugin.cc:35
+#: src/oss4/plugin.cc:37
 msgid "Default device"
 msgstr "இயல்புநிலை சாதனம்"
 
-#: src/oss4/plugin.cc:78
+#: src/oss4/plugin.cc:80
 msgid "Audio device:"
 msgstr "ஒலி சாதனம்:"
 
-#: src/oss4/plugin.cc:81
+#: src/oss4/plugin.cc:83
 msgid "Use alternate device:"
 msgstr "மாற்று சாதனம் பயன்படுத்துக:"
 
-#: src/oss4/plugin.cc:85
+#: src/oss4/plugin.cc:87
 msgid "Save volume between sessions."
 msgstr "அமர்வுகள் இடையே ஒலி அளவை சேமிக்குக."
 
-#: src/oss4/plugin.cc:87
+#: src/oss4/plugin.cc:89
 msgid "Enable format conversions made by the OSS software."
 msgstr "OSS மென்பொருள் மூலம் வடிவமைப்பு மாற்றத்தை செயல்படுத்துக."
 
-#: src/oss4/plugin.cc:89
+#: src/oss4/plugin.cc:91
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr "மெய்நிகர் கலப்பினை தடுக்க பிரத்யேக முறையினை செயல்படுத்துக."
 
-#: src/oss4/plugin.cc:101
+#: src/oss4/plugin.cc:103
 msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010-2012 Michał Lipski\n"
@@ -2935,12 +3029,34 @@ msgstr ""
 " qmmp க்கான பைப்வைர் வெளியீட்டு சொருகி அடிப்படையில் \n"
 " பதிப்புரிமை 2021 இலியா கோட்டோவ்"
 
-#: src/pipewire/pipewire.cc:456 src/sdlout/sdlout.cc:112 src/skins/menus.cc:88
-#: src/skins-qt/menus.cc:79
+#: src/pipewire/pipewire.cc:456 src/sdlout/sdlout.cc:112 src/skins/menus.cc:90
+#: src/skins-qt/menus.cc:81
 msgid "Playback"
 msgstr "மீள் இயக்கு"
 
-#: src/playback-history-qt/playback-history.cc:52
+#: src/playback-history/playback-history.cc:50
+#: src/playback-history-qt/playback-history.cc:49
+msgid "Playback History"
+msgstr "பின்னணி வரலாறு"
+
+#: src/playback-history/playback-history.cc:218
+#: src/playback-history-qt/playback-history.cc:230
+#, c-format
+msgid ""
+"<b>%s:</b> %s\n"
+"<b>Playlist:</b> %s\n"
+"<b>Entry Number:</b> %d"
+msgstr ""
+
+#: src/playback-history/preferences.h:37
+msgid "<b>History Item Granularity</b>"
+msgstr "<b> வரலாறு உருப்படி கிரானுலாரிட்டி </b>"
+
+#: src/playback-history/preferences.h:38
+msgid "Song"
+msgstr "பாடல்"
+
+#: src/playback-history/preferences.h:44
 msgid ""
 "Playback History Plugin\n"
 "\n"
@@ -2986,56 +3102,39 @@ msgstr ""
 "ஒற்றை ஆல்பம் ஒரு வரிசையில் இசைக்கப்படுகிறது, ஒரு ஆல்பம் நுழைவு \n"
 "வரலாற்றில் சேமிக்கப்படுகிறது. ஆல்பத்தின் பெயர்கள் பட்டியலில் காட்டப்படும்."
 
-#: src/playback-history-qt/playback-history.cc:77
-msgid "Playback History"
-msgstr "பின்னணி வரலாறு"
-
-#: src/playback-history-qt/playback-history.cc:528
-#, c-format
-msgid "<b>%s:</b> %s<br><b>Playlist:</b> %s<br><b>Entry Number:</b> %d"
-msgstr "<b> %s: </b> %s <br> <b> பிளேலிச்ட்: </b> %s <br> <b> நுழைவு எண்: </b> %d"
-
-#: src/playback-history-qt/playback-history.cc:834
-msgid "<b>History Item Granularity</b>"
-msgstr "<b> வரலாறு உருப்படி கிரானுலாரிட்டி </b>"
-
-#: src/playback-history-qt/playback-history.cc:835
-msgid "Song"
-msgstr "பாடல்"
-
-#: src/playlist-manager/playlist-manager.cc:38
-#: src/playlist-manager-qt/playlist-manager-qt.cc:42
+#: src/playlist-manager/playlist-manager.cc:41
+#: src/playlist-manager-qt/playlist-manager-qt.cc:44
 msgid "Playlist Manager"
 msgstr "பாடல் பட்டிய நிர்வாகி "
 
-#: src/playlist-manager/playlist-manager.cc:201
-#: src/playlist-manager-qt/playlist-manager-qt.cc:190
+#: src/playlist-manager/playlist-manager.cc:222
+#: src/playlist-manager-qt/playlist-manager-qt.cc:192
 msgid "Entries"
 msgstr "varavugal"
 
-#: src/playlist-manager/playlist-manager.cc:221
-#: src/playlist-manager-qt/playlist-manager-qt.cc:356
+#: src/playlist-manager/playlist-manager.cc:242
+#: src/playlist-manager-qt/playlist-manager-qt.cc:388
 msgid "_Remove"
 msgstr "நீக்கு "
 
-#: src/playlist-manager/playlist-manager.cc:222
-#: src/playlist-manager-qt/playlist-manager-qt.cc:351
+#: src/playlist-manager/playlist-manager.cc:243
+#: src/playlist-manager-qt/playlist-manager-qt.cc:383
 msgid "Ren_ame"
 msgstr "ren_ame"
 
-#: src/pls/pls.cc:35
+#: src/pls/pls.cc:32
 msgid "PLS Playlists"
 msgstr "PLS பாடல் பட்டியல்"
 
-#: src/psf/plugin.cc:53
+#: src/psf/plugin.cc:52
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "OpenPSF PSF1/PSF2 குறிவிலக்கி "
 
-#: src/psf/plugin.cc:270
+#: src/psf/plugin.cc:268
 msgid "<b>OpenPSF Configuration</b>"
 msgstr "<b> openpsf உள்ளமைவு </b>"
 
-#: src/psf/plugin.cc:271 src/xsf/plugin.cc:444
+#: src/psf/plugin.cc:269 src/xsf/plugin.cc:443
 msgid "Ignore length from file"
 msgstr "கோப்பிலிருந்து நீளத்தை புறக்கணிக்கவும்"
 
@@ -3124,7 +3223,7 @@ msgstr ""
 "\n"
 " உரிமம்: gplv2+"
 
-#: src/qthotkey/gui.cc:177
+#: src/qthotkey/gui.cc:179
 msgid "Press a key combination inside a text field."
 msgstr "உரை புலத்திற்குள் ஒரு முக்கிய கலவையை அழுத்தவும்."
 
@@ -3158,55 +3257,51 @@ msgstr ""
 "  செர்மி டான் <nsx@nsx.homeip.net>"
 
 #: src/qtui/main_window.cc:160 src/qtui/main_window.cc:161
-#: src/skins/menus.cc:107 src/skins-qt/menus.cc:99
+#: src/skins/menus.cc:112 src/skins-qt/menus.cc:103
 msgid "Stop After This Song"
 msgstr "இந்த பாடலுக்குப் பிறகு நிறுத்துங்கள்"
 
-#: src/qtui/menus.cc:113
+#: src/qtui/menus.cc:119
 msgid "_Open Folder ..."
 msgstr "_ திறந்த கோப்புறை ..."
 
-#: src/qtui/menus.cc:119
+#: src/qtui/menus.cc:125
 msgid "_Add Folder ..."
 msgstr "_add கோப்புறை ..."
 
-#: src/qtui/menus.cc:132
+#: src/qtui/menus.cc:140
 msgid "_Log Inspector ..."
 msgstr "_ லாக் இன்ச்பெக்டர் ..."
 
-#: src/qtui/menus.cc:169
-msgid "Playback Histor_y ..."
-msgstr "பின்னணி வரலாறு_ஒய் ..."
-
-#: src/qtui/menus.cc:227
+#: src/qtui/menus.cc:243
 msgid "_Find ..."
 msgstr "_ ஃபைண்ட் ..."
 
-#: src/qtui/menus.cc:263 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
+#: src/qtui/menus.cc:281 src/skins/menus.cc:80 src/skins-qt/menus.cc:70
 msgid "Audio Settings ..."
 msgstr "ஆடியோ அமைப்புகள் ..."
 
-#: src/qtui/playlist_header.cc:232
+#: src/qtui/playlist_header.cc:236
 msgid "Now Playing"
 msgstr "தற்போது இயக்கப்படுவது"
 
-#: src/qtui/playlist_header.cc:258
+#: src/qtui/playlist_header.cc:262
 msgid "Reset to Defaults"
 msgstr "இயல்புநிலைகளுக்கு மீட்டமைக்கவும்"
 
-#: src/qtui/playlist_model.cc:190
+#: src/qtui/playlist_model.cc:200
 msgid "Q#"
 msgstr "கே#"
 
-#: src/qtui/playlist_model.cc:192
+#: src/qtui/playlist_model.cc:202
 msgid "T#"
 msgstr "டி#"
 
-#: src/qtui/playlist_model.cc:194
+#: src/qtui/playlist_model.cc:204
 msgid "C#"
 msgstr "சி#"
 
-#: src/qtui/playlist_model.cc:196
+#: src/qtui/playlist_model.cc:206
 msgid "D#"
 msgstr "டி#"
 
@@ -3418,15 +3513,15 @@ msgstr "ஆன்"
 msgid "by"
 msgstr "மூலம்"
 
-#: src/search-tool-qt/search-tool-qt.cc:165 src/search-tool/search-tool.cc:74
+#: src/search-tool-qt/search-tool-qt.cc:164 src/search-tool/search-tool.cc:74
 msgid "Number of results to show:"
 msgstr "காட்ட வேண்டிய முடிவுகளின் எண்ணிக்கை:"
 
-#: src/search-tool-qt/search-tool-qt.cc:168 src/search-tool/search-tool.cc:77
+#: src/search-tool-qt/search-tool-qt.cc:167 src/search-tool/search-tool.cc:77
 msgid "Rescan library at startup"
 msgstr "தொடக்கத்தில் ரெச்கான் நூலகம்"
 
-#: src/search-tool-qt/search-tool-qt.cc:170
+#: src/search-tool-qt/search-tool-qt.cc:169
 msgid "Monitor library for changes"
 msgstr "மாற்றங்களுக்கு நூலகத்தை கண்காணிக்கவும்"
 
@@ -3464,15 +3559,7 @@ msgid_plural "%d results"
 msgstr[0] "%d முடிவு"
 msgstr[1] "%d முடிவுகள்"
 
-#: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:341
-msgid "_Create Playlist"
-msgstr "பாடல் பட்டியலொன்றை _உருவாக்குக "
-
-#: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:343
-msgid "_Add to Playlist"
-msgstr "பாடல் பட்டியலிற்கு _சேர்க்க "
-
-#: src/sid/xmms-sid.cc:44
+#: src/sid/xmms-sid.cc:43
 msgid "SID Player"
 msgstr "sid பிளேயர்"
 
@@ -3556,123 +3643,123 @@ msgstr "<b> ம silence னம் அகற்றுதல் </b>"
 msgid "Threshold:"
 msgstr "வாசல்:"
 
-#: src/skins/actions.cc:45 src/skins-qt/actions.cc:43
+#: src/skins/actions.cc:43 src/skins-qt/actions.cc:41
 msgid "Repeat points cleared."
 msgstr "புள்ளிகள் அழிக்க மீண்டும்."
 
-#: src/skins/actions.cc:60 src/skins-qt/actions.cc:58
+#: src/skins/actions.cc:58 src/skins-qt/actions.cc:56
 msgid "Repeat point A set."
 msgstr "ஒரு தொகுப்பை மீண்டும் செய்யவும்."
 
-#: src/skins/actions.cc:65 src/skins-qt/actions.cc:63
+#: src/skins/actions.cc:63 src/skins-qt/actions.cc:61
 msgid "Repeat point B set."
 msgstr "புள்ளி b கணம் ஐ மீண்டும் செய்யவும்."
 
-#: src/skins/equalizer.cc:223 src/skins-qt/equalizer.cc:223
+#: src/skins/equalizer.cc:220 src/skins-qt/equalizer.cc:219
 msgid "Preamp"
 msgstr "முன் விரிவாக்கி "
 
-#: src/skins/equalizer.cc:227 src/skins-qt/equalizer.cc:227
+#: src/skins/equalizer.cc:224 src/skins-qt/equalizer.cc:223
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
+#: src/skins/equalizer.cc:225 src/skins-qt/equalizer.cc:224
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
+#: src/skins/equalizer.cc:225 src/skins-qt/equalizer.cc:224
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
+#: src/skins/equalizer.cc:225 src/skins-qt/equalizer.cc:224
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
+#: src/skins/equalizer.cc:225 src/skins-qt/equalizer.cc:224
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/equalizer.cc:228 src/skins-qt/equalizer.cc:228
+#: src/skins/equalizer.cc:225 src/skins-qt/equalizer.cc:224
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
+#: src/skins/equalizer.cc:226 src/skins-qt/equalizer.cc:225
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
+#: src/skins/equalizer.cc:226 src/skins-qt/equalizer.cc:225
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
+#: src/skins/equalizer.cc:226 src/skins-qt/equalizer.cc:225
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/equalizer.cc:229 src/skins-qt/equalizer.cc:229
+#: src/skins/equalizer.cc:226 src/skins-qt/equalizer.cc:225
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/equalizer.cc:270 src/skins-qt/equalizer.cc:270
+#: src/skins/equalizer.cc:267 src/skins-qt/equalizer.cc:266
 msgid "Audacious Equalizer"
 msgstr "ஔடகிவச் சமமாக்கி "
 
-#: src/skins/main.cc:459 src/skins-qt/main.cc:442
+#: src/skins/main.cc:457 src/skins-qt/main.cc:447
 msgid "Recording on"
 msgstr "பதிவுசெய்தல்"
 
-#: src/skins/main.cc:461 src/skins-qt/main.cc:444
+#: src/skins/main.cc:459 src/skins-qt/main.cc:449
 msgid "Recording off"
 msgstr "பதிவுசெய்தல்"
 
-#: src/skins/main.cc:754 src/skins-qt/main.cc:701
+#: src/skins/main.cc:752 src/skins-qt/main.cc:730
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "%d:%-2.2d / %d:%-2.2d இனை நாடுக"
 
-#: src/skins/main.cc:771 src/skins-qt/main.cc:718
+#: src/skins/main.cc:769 src/skins-qt/main.cc:747
 #, c-format
 msgid "Volume: %d%%"
 msgstr "ஒலி அளவு: %d%%"
 
-#: src/skins/main.cc:784 src/skins-qt/main.cc:731
+#: src/skins/main.cc:782 src/skins-qt/main.cc:760
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "சமநிலை:% d%% இடது"
 
-#: src/skins/main.cc:786 src/skins-qt/main.cc:733
+#: src/skins/main.cc:784 src/skins-qt/main.cc:762
 msgid "Balance: center"
 msgstr "சமநிலை:மத்தி "
 
-#: src/skins/main.cc:788 src/skins-qt/main.cc:735
+#: src/skins/main.cc:786 src/skins-qt/main.cc:764
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "சமநிலை:% d%% வலது "
 
-#: src/skins/main.cc:880 src/skins-qt/main.cc:827
+#: src/skins/main.cc:878 src/skins-qt/main.cc:856
 msgid "Options Menu"
 msgstr "தேர்வு பட்டியல்"
 
-#: src/skins/main.cc:884 src/skins-qt/main.cc:831
+#: src/skins/main.cc:882 src/skins-qt/main.cc:860
 msgid "Disable 'Always On Top'"
 msgstr "'எப்போதும் மேலே' என்பதை முடக்குக "
 
-#: src/skins/main.cc:886 src/skins-qt/main.cc:833
+#: src/skins/main.cc:884 src/skins-qt/main.cc:862
 msgid "Enable 'Always On Top'"
 msgstr "'எப்போதும் மேலே' என்பதை செயற்படுத்துக "
 
-#: src/skins/main.cc:889 src/skins-qt/main.cc:836
+#: src/skins/main.cc:887 src/skins-qt/main.cc:865
 msgid "File Info Box"
 msgstr "கோப்பு செய்தி பெட்டி"
 
-#: src/skins/main.cc:893 src/skins-qt/main.cc:840
+#: src/skins/main.cc:891 src/skins-qt/main.cc:869
 msgid "Disable 'Double Size'"
 msgstr "'இரட்டை அளவு' முடக்கு"
 
-#: src/skins/main.cc:895 src/skins-qt/main.cc:842
+#: src/skins/main.cc:893 src/skins-qt/main.cc:871
 msgid "Enable 'Double Size'"
 msgstr "'இரட்டை அளவு' இயக்கவும்"
 
-#: src/skins/main.cc:898 src/skins-qt/main.cc:845
+#: src/skins/main.cc:896 src/skins-qt/main.cc:874
 msgid "Visualizations"
 msgstr "காட்சிப்படுத்தல்"
 
@@ -3696,298 +3783,303 @@ msgstr "கோப்புகளைத் திறக்கவும் ..."
 msgid "Open URL ..."
 msgstr "திறந்த முகவரி ..."
 
-#: src/skins/menus.cc:89 src/skins-qt/menus.cc:80
+#: src/skins/menus.cc:91 src/skins-qt/menus.cc:82
 msgid "Playlist"
 msgstr "பாடல் பட்டியல்"
 
-#: src/skins/menus.cc:90 src/skins-qt/menus.cc:81
+#: src/skins/menus.cc:92 src/skins-qt/menus.cc:83
 msgid "Output"
 msgstr "வெளியீடு"
 
-#: src/skins/menus.cc:91 src/skins-qt/menus.cc:82
+#: src/skins/menus.cc:93 src/skins-qt/menus.cc:84
 msgid "View"
 msgstr "பார்வையிடுக "
 
-#: src/skins/menus.cc:93 src/skins/menus.cc:161 src/skins/menus.cc:174
-#: src/skins/menus.cc:245 src/skins-qt/menus.cc:84 src/skins-qt/menus.cc:157
-#: src/skins-qt/menus.cc:171 src/skins-qt/menus.cc:242
+#: src/skins/menus.cc:95 src/skins/menus.cc:168 src/skins/menus.cc:181
+#: src/skins/menus.cc:258 src/skins-qt/menus.cc:86 src/skins-qt/menus.cc:163
+#: src/skins-qt/menus.cc:177 src/skins-qt/menus.cc:254
 msgid "Services"
 msgstr "சேவைகள் "
 
-#: src/skins/menus.cc:95 src/skins-qt/menus.cc:86
+#: src/skins/menus.cc:97 src/skins-qt/menus.cc:88
 msgid "About ..."
 msgstr "பற்றி ..."
 
-#: src/skins/menus.cc:96 src/skins-qt/menus.cc:87
+#: src/skins/menus.cc:98 src/skins-qt/menus.cc:89
 msgid "Settings ..."
 msgstr "அமைப்புகள் ..."
 
-#: src/skins/menus.cc:97 src/skins-qt/menus.cc:88
+#: src/skins/menus.cc:99 src/skins-qt/menus.cc:90 src/skins-qt/view.cc:67
+#: src/skins/view.cc:59
 msgid "Quit"
 msgstr "வெளியேறு"
 
-#: src/skins/menus.cc:101 src/skins/menus.cc:235 src/skins-qt/menus.cc:92
-#: src/skins-qt/menus.cc:232
+#: src/skins/menus.cc:103 src/skins/menus.cc:248 src/skins-qt/menus.cc:94
+#: src/skins-qt/menus.cc:244
 msgid "Song Info ..."
 msgstr "பாடல் செய்தி ..."
 
-#: src/skins/menus.cc:105 src/skins-qt/menus.cc:97
+#: src/skins/menus.cc:105 src/skins-qt/menus.cc:96
+msgid "Playback History ..."
+msgstr "பின்னணி வரலாறு ..."
+
+#: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Shuffle by Album"
 msgstr "ஆல்பத்தால் கலக்கு"
 
-#: src/skins/menus.cc:106 src/skins-qt/menus.cc:98
+#: src/skins/menus.cc:111 src/skins-qt/menus.cc:102
 msgid "No Playlist Advance"
 msgstr "முன்னோக்கிய பாடல் பட்டியலுக்கு செல்ல வேண்டாம்"
 
-#: src/skins/menus.cc:117 src/skins-qt/menus.cc:109
+#: src/skins/menus.cc:122 src/skins-qt/menus.cc:113
 msgid "Set A-B Repeat"
 msgstr "a-b மீண்டும் அமைக்கவும்"
 
-#: src/skins/menus.cc:118 src/skins-qt/menus.cc:110
+#: src/skins/menus.cc:123 src/skins-qt/menus.cc:114
 msgid "Clear A-B Repeat"
 msgstr "a-b ஐ மீண்டும் அழிக்கவும்"
 
-#: src/skins/menus.cc:120 src/skins-qt/menus.cc:112
+#: src/skins/menus.cc:125 src/skins-qt/menus.cc:116
 msgid "Jump to Song ..."
 msgstr "பாடலுக்கு செல்லவும் ..."
 
-#: src/skins/menus.cc:121 src/skins-qt/menus.cc:114
+#: src/skins/menus.cc:126 src/skins-qt/menus.cc:118
 msgid "Jump to Time ..."
 msgstr "சரியான நேரத்தில் செல்லவும் ..."
 
-#: src/skins/menus.cc:125 src/skins-qt/menus.cc:119
+#: src/skins/menus.cc:130 src/skins-qt/menus.cc:123
 msgid "Play/Resume"
 msgstr "விளையாடு/மீண்டும் தொடங்கவும்"
 
-#: src/skins/menus.cc:127 src/skins-qt/menus.cc:121
+#: src/skins/menus.cc:132 src/skins-qt/menus.cc:125
 msgid "New Playlist"
 msgstr "புதிய பாடல் பட்டியல்"
 
-#: src/skins/menus.cc:128 src/skins-qt/menus.cc:122
+#: src/skins/menus.cc:133 src/skins-qt/menus.cc:126
 msgid "Rename Playlist ..."
 msgstr "பிளேலிச்ட்டை மறுபெயரிடுங்கள் ..."
 
-#: src/skins/menus.cc:129 src/skins-qt/menus.cc:123
+#: src/skins/menus.cc:134 src/skins-qt/menus.cc:127
 msgid "Remove Playlist"
 msgstr "பாடல் பட்டியலை நீக்கு "
 
-#: src/skins/menus.cc:131 src/skins-qt/menus.cc:125
+#: src/skins/menus.cc:136 src/skins-qt/menus.cc:129
 msgid "Previous Playlist"
 msgstr "முந்தைய பிளேலிச்ட்"
 
-#: src/skins/menus.cc:132 src/skins-qt/menus.cc:126
+#: src/skins/menus.cc:137 src/skins-qt/menus.cc:130
 msgid "Next Playlist"
 msgstr "அடுத்த பிளேலிச்ட்"
 
-#: src/skins/menus.cc:134 src/skins-qt/menus.cc:128
+#: src/skins/menus.cc:139 src/skins-qt/menus.cc:132
 msgid "Import Playlist ..."
 msgstr "பிளேலிச்ட்டை இறக்குமதி செய்யுங்கள் ..."
 
-#: src/skins/menus.cc:135 src/skins-qt/menus.cc:129
+#: src/skins/menus.cc:140 src/skins-qt/menus.cc:133
 msgid "Export Playlist ..."
 msgstr "ஏற்றுமதி பிளேலிச்ட் ..."
 
-#: src/skins/menus.cc:137 src/skins-qt/menus.cc:131
+#: src/skins/menus.cc:143 src/skins-qt/menus.cc:136
 msgid "Playlist Manager ..."
 msgstr "பிளேலிச்ட் மேலாளர் ..."
 
-#: src/skins/menus.cc:138 src/skins-qt/menus.cc:132
+#: src/skins/menus.cc:145 src/skins-qt/menus.cc:138
 msgid "Queue Manager ..."
 msgstr "வரிசை மேலாளர் ..."
 
-#: src/skins/menus.cc:140 src/skins-qt/menus.cc:134
+#: src/skins/menus.cc:147 src/skins-qt/menus.cc:140
 msgid "Refresh Playlist"
 msgstr "பிளேலிச்ட்டைப் புதுப்பிக்கவும்"
 
-#: src/skins/menus.cc:144 src/skins-qt/menus.cc:138
+#: src/skins/menus.cc:151 src/skins-qt/menus.cc:144
 msgid "Show Playlist Editor"
 msgstr "பாடல் பட்டியல் திருத்தியை காண்பிக்க "
 
-#: src/skins/menus.cc:145 src/skins-qt/menus.cc:139
+#: src/skins/menus.cc:152 src/skins-qt/menus.cc:145
 msgid "Show Equalizer"
 msgstr "சமமாக்கியை காண்பிக்க "
 
-#: src/skins/menus.cc:147 src/skins-qt/menus.cc:141
+#: src/skins/menus.cc:154 src/skins-qt/menus.cc:147
 msgid "Show Remaining Time"
 msgstr "மீதமுள்ள நேரத்தைக் காட்டு"
 
-#: src/skins/menus.cc:149 src/skins-qt/menus.cc:143
+#: src/skins/menus.cc:156 src/skins-qt/menus.cc:149
 msgid "Double Size"
 msgstr "இரட்டை அளவு"
 
-#: src/skins/menus.cc:150 src/skins-qt/menus.cc:144
+#: src/skins/menus.cc:157 src/skins-qt/menus.cc:150
 msgid "Always on Top"
 msgstr "எப்பொழுதும் மேலே "
 
-#: src/skins/menus.cc:151 src/skins-qt/menus.cc:146
+#: src/skins/menus.cc:158 src/skins-qt/menus.cc:152
 msgid "On All Workspaces"
 msgstr "அனைத்து பணியிடங்களிலும்"
 
-#: src/skins/menus.cc:153 src/skins-qt/menus.cc:149
+#: src/skins/menus.cc:160 src/skins-qt/menus.cc:155
 msgid "Roll Up Player"
 msgstr "பிளேயரை உருட்டவும்"
 
-#: src/skins/menus.cc:154 src/skins-qt/menus.cc:150
+#: src/skins/menus.cc:161 src/skins-qt/menus.cc:156
 msgid "Roll Up Playlist Editor"
 msgstr "பிளேலிச்ட் எடிட்டரை உருட்டவும்"
 
-#: src/skins/menus.cc:155 src/skins-qt/menus.cc:151
+#: src/skins/menus.cc:162 src/skins-qt/menus.cc:157
 msgid "Roll Up Equalizer"
 msgstr "சமநிலைப்படுத்தியை உருட்டவும்"
 
-#: src/skins/menus.cc:163 src/skins-qt/menus.cc:159
+#: src/skins/menus.cc:170 src/skins-qt/menus.cc:165
 msgid "Add URL ..."
 msgstr "முகவரி ஐச் சேர்க்கவும் ..."
 
-#: src/skins/menus.cc:164 src/skins-qt/menus.cc:161
+#: src/skins/menus.cc:171 src/skins-qt/menus.cc:167
 msgid "Add Files ..."
 msgstr "கோப்புகளைச் சேர்க்கவும் ..."
 
-#: src/skins/menus.cc:168 src/skins/menus.cc:196 src/skins/menus.cc:212
-#: src/skins-qt/menus.cc:165 src/skins-qt/menus.cc:193
-#: src/skins-qt/menus.cc:209
+#: src/skins/menus.cc:175 src/skins/menus.cc:203 src/skins/menus.cc:222
+#: src/skins-qt/menus.cc:171 src/skins-qt/menus.cc:199
+#: src/skins-qt/menus.cc:218
 msgid "By Title"
 msgstr "தலைப்பின் படி "
 
-#: src/skins/menus.cc:169 src/skins/menus.cc:203 src/skins/menus.cc:219
-#: src/skins-qt/menus.cc:166 src/skins-qt/menus.cc:200
-#: src/skins-qt/menus.cc:216
+#: src/skins/menus.cc:176 src/skins/menus.cc:210 src/skins/menus.cc:229
+#: src/skins-qt/menus.cc:172 src/skins-qt/menus.cc:206
+#: src/skins-qt/menus.cc:225
 msgid "By File Name"
 msgstr "கோப்பு பெயர் மூலம்"
 
-#: src/skins/menus.cc:170 src/skins/menus.cc:204 src/skins/menus.cc:220
-#: src/skins-qt/menus.cc:167 src/skins-qt/menus.cc:201
-#: src/skins-qt/menus.cc:217
+#: src/skins/menus.cc:177 src/skins/menus.cc:211 src/skins/menus.cc:230
+#: src/skins-qt/menus.cc:173 src/skins-qt/menus.cc:207
+#: src/skins-qt/menus.cc:226
 msgid "By File Path"
 msgstr "கோப்பு பாதை மூலம்"
 
-#: src/skins/menus.cc:176 src/skins-qt/menus.cc:173
+#: src/skins/menus.cc:183 src/skins-qt/menus.cc:179
 msgid "Remove All"
 msgstr "அனைத்தையும் அகற்றுக. "
 
-#: src/skins/menus.cc:177 src/skins-qt/menus.cc:174
+#: src/skins/menus.cc:184 src/skins-qt/menus.cc:180
 msgid "Clear Queue"
 msgstr "வரிசையினை அழிக்குக. "
 
-#: src/skins/menus.cc:179 src/skins-qt/menus.cc:176
+#: src/skins/menus.cc:186 src/skins-qt/menus.cc:182
 msgid "Remove Unavailable Files"
 msgstr "கிடைக்கப்பெறாத கோப்புகளை அகற்றுக. "
 
-#: src/skins/menus.cc:180 src/skins-qt/menus.cc:177
+#: src/skins/menus.cc:187 src/skins-qt/menus.cc:183
 msgid "Remove Duplicates"
 msgstr "போலிகளை அகற்றுக "
 
-#: src/skins/menus.cc:182 src/skins-qt/menus.cc:179
+#: src/skins/menus.cc:189 src/skins-qt/menus.cc:185
 msgid "Remove Unselected"
 msgstr "தெரிவுசெய்யாதவற்றை அகற்றுக. "
 
-#: src/skins/menus.cc:183 src/skins-qt/menus.cc:180
+#: src/skins/menus.cc:190 src/skins-qt/menus.cc:186
 msgid "Remove Selected"
 msgstr "தெரிவுசெய்தவற்றை அகற்றுக"
 
-#: src/skins/menus.cc:187 src/skins-qt/menus.cc:184
+#: src/skins/menus.cc:194 src/skins-qt/menus.cc:190
 msgid "Search and Select"
 msgstr "தேடி தேர்ந்தெடுக்கவும்"
 
-#: src/skins/menus.cc:189 src/skins-qt/menus.cc:186
+#: src/skins/menus.cc:196 src/skins-qt/menus.cc:192
 msgid "Invert Selection"
 msgstr "தலைகீழ் தேர்ந்தெடுப்பு"
 
-#: src/skins/menus.cc:190 src/skins-qt/menus.cc:187
+#: src/skins/menus.cc:197 src/skins-qt/menus.cc:193
 msgid "Select None"
 msgstr "எதனையும் தேர்ந்தெடுக்க வேண்டாம்."
 
-#: src/skins/menus.cc:191 src/skins-qt/menus.cc:188
+#: src/skins/menus.cc:198 src/skins-qt/menus.cc:194
 msgid "Select All"
 msgstr "அனைத்தையும் தேர்ந்தெடுக்குக "
 
-#: src/skins/menus.cc:195 src/skins/menus.cc:211 src/skins-qt/menus.cc:192
-#: src/skins-qt/menus.cc:208
+#: src/skins/menus.cc:202 src/skins/menus.cc:221 src/skins-qt/menus.cc:198
+#: src/skins-qt/menus.cc:217
 msgid "By Track Number"
 msgstr "பாடல் இலக்க அடிப்படையில்  "
 
-#: src/skins/menus.cc:197 src/skins/menus.cc:213 src/skins-qt/menus.cc:194
-#: src/skins-qt/menus.cc:210
+#: src/skins/menus.cc:204 src/skins/menus.cc:223 src/skins-qt/menus.cc:200
+#: src/skins-qt/menus.cc:219
 msgid "By Artist"
 msgstr "பாடகர்களின் படி "
 
-#: src/skins/menus.cc:198 src/skins/menus.cc:214 src/skins-qt/menus.cc:195
-#: src/skins-qt/menus.cc:211
+#: src/skins/menus.cc:205 src/skins/menus.cc:224 src/skins-qt/menus.cc:201
+#: src/skins-qt/menus.cc:220
 msgid "By Album"
 msgstr "குறுவட்டின் படி "
 
-#: src/skins/menus.cc:199 src/skins/menus.cc:215 src/skins-qt/menus.cc:196
-#: src/skins-qt/menus.cc:212
+#: src/skins/menus.cc:206 src/skins/menus.cc:225 src/skins-qt/menus.cc:202
+#: src/skins-qt/menus.cc:221
 msgid "By Album Artist"
 msgstr "ஆல்பம் கலைஞரால்"
 
-#: src/skins/menus.cc:200 src/skins/menus.cc:216 src/skins-qt/menus.cc:197
-#: src/skins-qt/menus.cc:213
+#: src/skins/menus.cc:207 src/skins/menus.cc:226 src/skins-qt/menus.cc:203
+#: src/skins-qt/menus.cc:222
 msgid "By Release Date"
 msgstr "வெளியீட்டு தேதி மூலம்"
 
-#: src/skins/menus.cc:201 src/skins/menus.cc:217 src/skins-qt/menus.cc:198
-#: src/skins-qt/menus.cc:214
+#: src/skins/menus.cc:208 src/skins/menus.cc:227 src/skins-qt/menus.cc:204
+#: src/skins-qt/menus.cc:223
 msgid "By Genre"
 msgstr "வகையால்"
 
-#: src/skins/menus.cc:202 src/skins/menus.cc:218 src/skins-qt/menus.cc:199
-#: src/skins-qt/menus.cc:215
+#: src/skins/menus.cc:209 src/skins/menus.cc:228 src/skins-qt/menus.cc:205
+#: src/skins-qt/menus.cc:224
 msgid "By Length"
 msgstr "நீளத்தால்"
 
-#: src/skins/menus.cc:205 src/skins/menus.cc:221 src/skins-qt/menus.cc:202
-#: src/skins-qt/menus.cc:218
+#: src/skins/menus.cc:212 src/skins/menus.cc:231 src/skins-qt/menus.cc:208
+#: src/skins-qt/menus.cc:227
 msgid "By Custom Title"
 msgstr "தனிப்பயன் தலைப்பு மூலம்"
 
-#: src/skins/menus.cc:206 src/skins/menus.cc:222 src/skins-qt/menus.cc:203
-#: src/skins-qt/menus.cc:219
+#: src/skins/menus.cc:213 src/skins/menus.cc:232 src/skins-qt/menus.cc:209
+#: src/skins-qt/menus.cc:228
 msgid "By Comment"
 msgstr "கருத்து மூலம்"
 
-#: src/skins/menus.cc:207 src/skins/menus.cc:223 src/skins-qt/menus.cc:204
-#: src/skins-qt/menus.cc:220
+#: src/skins/menus.cc:214 src/skins/menus.cc:233 src/skins-qt/menus.cc:210
+#: src/skins-qt/menus.cc:229
 msgid "By Disc Number"
 msgstr "வட்டு எண் மூலம்"
 
-#: src/skins/menus.cc:227 src/skins-qt/menus.cc:224
+#: src/skins/menus.cc:240 src/skins-qt/menus.cc:236
 msgid "Randomize List"
 msgstr "பட்டியலினை தற்போக்காக தோன்றச்செய்க "
 
-#: src/skins/menus.cc:228 src/skins-qt/menus.cc:225
+#: src/skins/menus.cc:241 src/skins-qt/menus.cc:237
 msgid "Reverse List"
 msgstr "பட்டியலினை தலைகீழாக்குக"
 
-#: src/skins/menus.cc:230 src/skins-qt/menus.cc:227
+#: src/skins/menus.cc:243 src/skins-qt/menus.cc:239
 msgid "Sort Selected"
 msgstr "வரிசையானவற்றை தெரிக."
 
-#: src/skins/menus.cc:231 src/skins-qt/menus.cc:228
+#: src/skins/menus.cc:244 src/skins-qt/menus.cc:240
 msgid "Sort List"
 msgstr "பட்டியலை வரிசையாக்குக "
 
-#: src/skins/menus.cc:236 src/skins-qt/menus.cc:233
+#: src/skins/menus.cc:249 src/skins-qt/menus.cc:245
 msgid "Open Containing Folder"
 msgstr "கோப்புறை கொண்ட திறந்த"
 
-#: src/skins/menus.cc:238 src/skins-qt/menus.cc:235
+#: src/skins/menus.cc:251 src/skins-qt/menus.cc:247
 msgid "Cut"
 msgstr "வெட்டுக "
 
-#: src/skins/menus.cc:239 src/skins-qt/menus.cc:236
+#: src/skins/menus.cc:252 src/skins-qt/menus.cc:248
 msgid "Copy"
 msgstr "நகleடுக்குக"
 
-#: src/skins/menus.cc:240 src/skins-qt/menus.cc:237
+#: src/skins/menus.cc:253 src/skins-qt/menus.cc:249
 msgid "Paste"
 msgstr "ஒட்டுக "
 
-#: src/skins/menus.cc:241 src/skins-qt/menus.cc:238
+#: src/skins/menus.cc:254 src/skins-qt/menus.cc:250
 msgid "Paste at End"
 msgstr "இறுதியில் ஒட்டவும்"
 
-#: src/skins/menus.cc:243 src/skins-qt/menus.cc:240
+#: src/skins/menus.cc:256 src/skins-qt/menus.cc:252
 msgid "Queue/Unqueue"
 msgstr "வரிசை/அவிழ்த்து"
 
@@ -3996,11 +4088,11 @@ msgstr "வரிசை/அவிழ்த்து"
 msgid "%s (%d of %d)"
 msgstr "%s (%d இன் %d)"
 
-#: src/skins/playlistwin.cc:491 src/skins-qt/playlistwin.cc:478
+#: src/skins/playlistwin.cc:490 src/skins-qt/playlistwin.cc:476
 msgid "Audacious Playlist Editor"
 msgstr "ஔடகிவச் பாடல் பட்டியல் திருத்தி"
 
-#: src/skins/plugin.cc:53 src/skins-qt/plugin.cc:65
+#: src/skins/plugin.cc:52 src/skins-qt/plugin.cc:64
 msgid "Winamp Classic Interface"
 msgstr "Winamp பாரம்பரிய இடைமுகம்"
 
@@ -4008,11 +4100,7 @@ msgstr "Winamp பாரம்பரிய இடைமுகம்"
 msgid "Open Folder ..."
 msgstr "திறந்த கோப்புறை ..."
 
-#: src/skins-qt/menus.cc:93
-msgid "Playback History ..."
-msgstr "பின்னணி வரலாறு ..."
-
-#: src/skins-qt/menus.cc:160
+#: src/skins-qt/menus.cc:166
 msgid "Add Folder ..."
 msgstr "கோப்புறையைச் சேர்க்கவும் ..."
 
@@ -4059,185 +4147,199 @@ msgstr "தேர்வடையும் பதிவுகளை தானா�
 msgid "Create a new playlist with matching entries"
 msgstr "தேர்வடையும் பதிவுகளுக்கு புதிய பாடல் பட்டியலொன்றை உருவாக்குக."
 
-#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:78
-msgid "Search"
-msgstr "தேடல்"
-
-#: src/skins-qt/skins_cfg.cc:198 src/skins/skins_cfg.cc:182
+#: src/skins-qt/skins_cfg.cc:194 src/skins/skins_cfg.cc:182
 msgid "Player:"
 msgstr "ஆட்டக்காரர்:"
 
-#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:184
+#: src/skins-qt/skins_cfg.cc:196 src/skins/skins_cfg.cc:184
 msgid "Select main player window font:"
 msgstr "முதன்மையான இயக்கி சாளரத்தின் எழுத்துருவை தெரிவு செய்க :"
 
-#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:185
+#: src/skins-qt/skins_cfg.cc:197 src/skins/skins_cfg.cc:185
 msgid "Playlist:"
 msgstr "பிளேலிச்ட்:"
 
-#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:187
+#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:187
 msgid "Select playlist font:"
 msgstr "பாடல் பட்டியலின் எழுத்துருவை தெரிவு செய்க :"
 
-#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:191
+#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:191
 msgid "<b>Skin</b>"
 msgstr "<b> தோல் </b>"
 
-#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:193
+#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:193
 msgid "Display active titlebar when any window is focused"
 msgstr "எந்த சாளரமும் கவனம் செலுத்தும்போது செயலில் உள்ள தலைப்பைக் காண்பி"
 
-#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:195
+#: src/skins-qt/skins_cfg.cc:209 src/skins/skins_cfg.cc:195
 msgid "<b>Fonts</b>"
 msgstr "<b> எழுத்துருக்கள் </b>"
 
-#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:197
+#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:197
 msgid "Use bitmap fonts (supports ASCII only)"
 msgstr "பிட்மாப் பட எழுத்துருக்களை உபயோகிக்க (ASCII இணை மட்டும் ஆதரிக்கிறது)"
 
-#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:199
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:199
 msgid "Scroll song title"
 msgstr "உருள் பாடல் தலைப்பு"
 
-#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:201
+#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:201
 msgid "Scroll song title in both directions"
 msgstr "இரு திசைகளிலும் பாடல் தலைப்பை ururavaikkuga "
 
-#: src/skins-qt/skins_cfg.cc:224 src/skins/skins_cfg.cc:206
+#: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:206
 msgid "Analyzer"
 msgstr "பகுப்பாய்வி "
 
-#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:207
+#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:207
 msgid "Scope"
 msgstr "குறியிலக்கம்"
 
-#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:208
+#: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:208
 msgid "Voiceprint / VU meter"
 msgstr "குரல் பிரிண்ட் / வு மீட்டர்"
 
-#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:209
+#: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:209
 msgid "Off"
 msgstr "அணைக்குக "
 
-#: src/skins-qt/skins_cfg.cc:231 src/skins-qt/skins_cfg.cc:256
-#: src/skins-qt/skins_cfg.cc:262 src/skins/skins_cfg.cc:213
+#: src/skins-qt/skins_cfg.cc:227 src/skins-qt/skins_cfg.cc:252
+#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:213
 #: src/skins/skins_cfg.cc:238 src/skins/skins_cfg.cc:244
 msgid "Normal"
 msgstr "இயல்பான"
 
-#: src/skins-qt/skins_cfg.cc:232 src/skins-qt/skins_cfg.cc:257
+#: src/skins-qt/skins_cfg.cc:228 src/skins-qt/skins_cfg.cc:253
 #: src/skins/skins_cfg.cc:214 src/skins/skins_cfg.cc:239
 msgid "Fire"
 msgstr "நெருப்பு "
 
-#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:215
+#: src/skins-qt/skins_cfg.cc:229 src/skins/skins_cfg.cc:215
 msgid "Vertical lines"
 msgstr "செங்குத்து கோடுகள்"
 
-#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:219
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:219
 msgid "Lines"
 msgstr "கோடுகள் "
 
-#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:220
+#: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:220
 msgid "Bars"
 msgstr "பட்டைகள்"
 
-#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:224
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:224
 msgid "Slowest"
 msgstr "மெதுவான "
 
-#: src/skins-qt/skins_cfg.cc:243 src/skins/skins_cfg.cc:225
+#: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:225
 msgid "Slow"
 msgstr "மெதுவாய் "
 
-#: src/skins-qt/skins_cfg.cc:244 src/skins/skins_cfg.cc:226
+#: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:226
 #: src/soxr/sox-resampler.cc:180
 msgid "Medium"
 msgstr "நடுத்தரம் "
 
-#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:227
+#: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:227
 msgid "Fast"
 msgstr "விரைவு "
 
-#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:228
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:228
 msgid "Fastest"
 msgstr "மிக விரைவாக "
 
-#: src/skins-qt/skins_cfg.cc:250 src/skins/skins_cfg.cc:232
+#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:232
 msgid "Dots"
 msgstr "புள்ளிகள்"
 
-#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:233
+#: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:233
 msgid "Line"
 msgstr "வரி"
 
-#: src/skins-qt/skins_cfg.cc:252 src/skins/skins_cfg.cc:234
+#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:234
 msgid "Solid"
 msgstr "திட"
 
-#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:240
+#: src/skins-qt/skins_cfg.cc:254 src/skins/skins_cfg.cc:240
 msgid "Ice"
 msgstr "பனி "
 
-#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:245
+#: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:245
 msgid "Smooth"
 msgstr "மிருதுவான "
 
-#: src/skins-qt/skins_cfg.cc:267 src/skins/skins_cfg.cc:249
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:249
 msgid "Coloring:"
 msgstr "வண்ணமயமாக்கல்:"
 
-#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:252
+#: src/skins-qt/skins_cfg.cc:266 src/skins/skins_cfg.cc:252
 msgid "Style:"
 msgstr "ச்டைல்:"
 
-#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:255
+#: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:255
 msgid "Falloff:"
 msgstr "வீழ்ச்சி:"
 
-#: src/skins-qt/skins_cfg.cc:276 src/skins/skins_cfg.cc:258
+#: src/skins-qt/skins_cfg.cc:272 src/skins/skins_cfg.cc:258
 msgid "Peak falloff:"
 msgstr "உச்ச வீழ்ச்சி:"
 
-#: src/skins-qt/skins_cfg.cc:282 src/skins/skins_cfg.cc:264
+#: src/skins-qt/skins_cfg.cc:278 src/skins/skins_cfg.cc:264
 msgid "Scope Style:"
 msgstr "நோக்கம் நடை:"
 
-#: src/skins-qt/skins_cfg.cc:285 src/skins/skins_cfg.cc:267
+#: src/skins-qt/skins_cfg.cc:281 src/skins/skins_cfg.cc:267
 msgid "Voiceprint Coloring:"
 msgstr "குரல் பிரிண்ட் வண்ணம்:"
 
-#: src/skins-qt/skins_cfg.cc:288 src/skins/skins_cfg.cc:270
+#: src/skins-qt/skins_cfg.cc:284 src/skins/skins_cfg.cc:270
 msgid "VU Meter Style:"
 msgstr "வு மீட்டர் பாணி:"
 
-#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:276
+#: src/skins-qt/skins_cfg.cc:290 src/skins/skins_cfg.cc:276
 msgid "<b>Type</b>"
 msgstr "<b> வகை </b>"
 
-#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:277
+#: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:277
 msgid "Visualization type:"
 msgstr "காட்சிப்படுத்தல் வகை:"
 
-#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:280
+#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:280
 msgid "<b>Analyzer</b>"
 msgstr "<b> அனலைசர் </b>"
 
-#: src/skins-qt/skins_cfg.cc:299 src/skins/skins_cfg.cc:281
+#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:281
 msgid "Show peaks"
 msgstr "சிகரங்களைக் காட்டு"
 
-#: src/skins-qt/skins_cfg.cc:308 src/skins/skins_cfg.cc:290
+#: src/skins-qt/skins_cfg.cc:304 src/skins/skins_cfg.cc:290
 msgid "Visualization"
 msgstr "உருவக காட்சிப்படுத்தல் "
 
-#: src/skins-qt/skinselector.cc:98 src/skins/skinselector.cc:111
+#: src/skins-qt/skinselector.cc:97 src/skins/skinselector.cc:111
 msgid "Archived Winamp 2.x skin"
 msgstr "ஆவணப்படுத்தப்பட்ட Winamp 2.x தோல் "
 
-#: src/skins-qt/skinselector.cc:102 src/skins/skinselector.cc:115
+#: src/skins-qt/skinselector.cc:101 src/skins/skinselector.cc:115
 msgid "Unarchived Winamp 2.x skin"
 msgstr "ஆவணப்படுத்தப்படாத Winamp 2.x தோல் "
+
+#: src/skins-qt/view.cc:66 src/skins/view.cc:54
+msgid "Restart"
+msgstr ""
+
+#: src/skins-qt/view.cc:82 src/skins/view.cc:64
+msgid "Compatibility Issue"
+msgstr ""
+
+#: src/skins-qt/view.cc:84 src/skins/view.cc:65
+msgid ""
+"The Winamp interface requires windowing system features not supported by "
+"Wayland. Audacious will attempt to enable Xwayland compatibility mode after "
+"restart.\n"
+"\n"
+"With the GTK or Qt interface you may disable this setting again in the "
+"“Advanced” category of the Audacious settings."
+msgstr ""
 
 #: src/sndfile/plugin.cc:38
 msgid "Sndfile Plugin"
@@ -4757,7 +4859,7 @@ msgstr "வேலை ..."
 msgid "Information"
 msgstr "செய்தி "
 
-#: src/ui-common/menu-ops-gtk.cc:132 src/ui-common/menu-ops-qt.cc:113
+#: src/ui-common/menu-ops-gtk.cc:132 src/ui-common/menu-ops-qt.cc:115
 #, c-format
 msgid "%s does not appear to be a valid folder."
 msgstr "%s செல்லுபடியாகும் கோப்புறையாகத் தெரியவில்லை."
@@ -4766,7 +4868,7 @@ msgstr "%s செல்லுபடியாகும் கோப்புற�
 msgid "Voice Removal"
 msgstr "குரல் நீக்கம்"
 
-#: src/vorbis/vorbis.cc:433
+#: src/vorbis/vorbis.cc:434
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4808,12 +4910,12 @@ msgstr ""
 msgid "Ogg Vorbis Decoder"
 msgstr "ஓக் வோர்பிச் டிகோடர்"
 
-#: src/vtx/info.cc:24
+#: src/vtx/info.cc:22
 #, c-format
 msgid "Details about %s"
 msgstr "%s பற்றிய விவரங்கள்"
 
-#: src/vtx/info.cc:26
+#: src/vtx/info.cc:23
 msgid ""
 "Title: %t\n"
 "Author: %a\n"
@@ -4839,11 +4941,11 @@ msgstr ""
 " பிளேயர் ஃப்ரீக்: %ப \n"
 " ஆண்டு: %y"
 
-#: src/vtx/vtx.cc:38
+#: src/vtx/vtx.cc:44
 msgid "VTX Decoder"
 msgstr "வி.டி.எக்ச் டிகோடர்"
 
-#: src/vtx/vtx.cc:178
+#: src/vtx/vtx.cc:192
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
@@ -4897,19 +4999,19 @@ msgstr ""
 "துணிச்சலான win32 அலைவரிசை சொருகி \n"
 " பதிப்புரிமை 2016 சான் லிண்ட்கிரென்"
 
-#: src/wavpack/wavpack.cc:25
+#: src/wavpack/wavpack.cc:24
 msgid "WavPack Decoder"
 msgstr "wavpack degoder"
 
-#: src/wavpack/wavpack.cc:207
+#: src/wavpack/wavpack.cc:206
 msgid "lossy (hybrid)"
 msgstr "இழப்பு (கலப்பின)"
 
-#: src/wavpack/wavpack.cc:209
+#: src/wavpack/wavpack.cc:208
 msgid "lossy"
 msgstr "இழப்பு"
 
-#: src/wavpack/wavpack.cc:247
+#: src/wavpack/wavpack.cc:246
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
@@ -4919,38 +5021,38 @@ msgstr ""
 "\n"
 " சில சொருகி குறியீடு மைல்ச் ஏகன்."
 
-#: src/xsf/plugin.cc:74
+#: src/xsf/plugin.cc:73
 msgid "2SF Decoder"
 msgstr "2sf டிகோடர்"
 
-#: src/xsf/plugin.cc:429
+#: src/xsf/plugin.cc:428
 msgid "32728 Hz"
 msgstr "32728 எர்ட்ச்"
 
-#: src/xsf/plugin.cc:432
+#: src/xsf/plugin.cc:431
 msgid "65456 Hz"
 msgstr "65456 எர்ட்ச்"
 
-#: src/xsf/plugin.cc:438
+#: src/xsf/plugin.cc:437
 msgid "Cosine"
 msgstr "துணைசெவ்வளைவு"
 
-#: src/xsf/plugin.cc:439
+#: src/xsf/plugin.cc:438
 msgid "Sharp"
 msgstr "கூர்மையான"
 
-#: src/xsf/plugin.cc:443
+#: src/xsf/plugin.cc:442
 msgid "<b>XSF Configuration</b>"
 msgstr "<b> xsf உள்ளமைவு </b>"
 
-#: src/xsf/plugin.cc:445
+#: src/xsf/plugin.cc:444
 msgid "Default fade time:"
 msgstr "இயல்புநிலை மங்கல் நேரம்:"
 
-#: src/xsf/plugin.cc:447
+#: src/xsf/plugin.cc:446
 msgid "Interpolation mode:"
 msgstr "இடைக்கணிப்பு முறை:"
 
-#: src/xspf/xspf.cc:95
+#: src/xspf/xspf.cc:90
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "எக்ச்எம்எல் சேபிள் பிளேலிச்ட்கள் (எக்ச்எச்பிஎஃப்)"
