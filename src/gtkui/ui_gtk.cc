@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#include <math.h>
 #include <string.h>
 
 #include <gdk/gdkkeysyms.h>
@@ -335,23 +336,45 @@ static gboolean ui_slider_change_value_cb (GtkRange *, GtkScrollType, double val
     return false;
 }
 
-/* return an object property if it exists, otherwise false */
-static bool get_boolean_prop (void * obj, const char * prop)
+static gboolean has_primary_warps_enabled (GtkWidget * widget)
 {
-    gboolean value = false;
-    if (g_object_class_find_property (G_OBJECT_GET_CLASS (obj), prop))
-        g_object_get (obj, prop, & value, nullptr);
-
-    return value;
+    gboolean primary_warps = false;
+    g_object_get (gtk_widget_get_settings (widget),
+     "gtk-primary-button-warps-slider", & primary_warps, nullptr);
+    return primary_warps;
 }
+
+#ifdef USE_GTK3
+static void scroll_to_clicked_position (GtkWidget * widget, GdkEventButton * event)
+{
+    GtkAllocation alloc;
+    gtk_widget_get_allocation (widget, & alloc);
+
+    /* Clicking slightly above/under the slider may cause incorrect behavior
+     * with themes like Greybird. The slider then scrolls but jumps back again
+     * without a value change. Pretend the trough to be taller to avoid this. */
+    if (fabs (event->y - (alloc.height / 2.0)) < 18)
+        event->y = alloc.height / 2.0;
+
+    GtkAdjustment * adj = gtk_range_get_adjustment ((GtkRange *) widget);
+    double lower = gtk_adjustment_get_lower (adj);
+    double upper = gtk_adjustment_get_upper (adj);
+    double frac = event->x / alloc.width;
+    double value = lower + frac * (upper - lower);
+    gtk_range_set_value ((GtkRange *) widget, value);
+}
+#endif
 
 static gboolean ui_slider_button_press_cb (GtkWidget * widget, GdkEventButton * event)
 {
-    bool primary_warps = get_boolean_prop (gtk_widget_get_settings (widget),
-     "gtk-primary-button-warps-slider");
-
-    if (event->button == 1 && ! primary_warps)
+    if (event->button == 1 && ! has_primary_warps_enabled (widget))
+    {
+#ifdef USE_GTK3
+        scroll_to_clicked_position (widget, event);
+#else
         event->button = 2;
+#endif
+    }
 
     slider_is_moving = true;
     return false;
@@ -359,11 +382,10 @@ static gboolean ui_slider_button_press_cb (GtkWidget * widget, GdkEventButton * 
 
 static gboolean ui_slider_button_release_cb (GtkWidget * widget, GdkEventButton * event)
 {
-    bool primary_warps = get_boolean_prop (gtk_widget_get_settings (widget),
-     "gtk-primary-button-warps-slider");
-
-    if (event->button == 1 && ! primary_warps)
+#ifndef USE_GTK3
+    if (event->button == 1 && ! has_primary_warps_enabled (widget))
         event->button = 2;
+#endif
 
     if (slider_seek_time != -1)
         do_seek (slider_seek_time);
