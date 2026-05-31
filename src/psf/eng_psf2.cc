@@ -286,6 +286,10 @@ static uint32_t load_file_ex(uint8_t *top, uint8_t *start, uint32_t len, const c
 
 	for (i = 0; i < numfiles; i++)
 	{
+		// Ensure the entire 48-byte entry is within this block
+		if ((cptr < start) || (cptr + 48 > start + len))
+			return 0xffffffff;
+
 		offs = cptr[36] | cptr[37]<<8 | cptr[38]<<16 | cptr[39]<<24;
 		uncomp = cptr[40] | cptr[41]<<8 | cptr[42]<<16 | cptr[43]<<24;
 		bsize = cptr[44] | cptr[45]<<8 | cptr[46]<<16 | cptr[47]<<24;
@@ -511,7 +515,7 @@ int32_t psf2_start(uint8_t *buffer, uint32_t length)
 	}
 	free(buf);
 
-	if (initialPC == 0xffffffff)
+	if (irx_len == 0xffffffff || initialPC == 0xffffffff)
 	{
 		return AO_FAIL;
 	}
