@@ -1,5 +1,5 @@
 project('audacious-plugins', 'c', 'cpp',
-        version: '4.6',
+        version: '4.6.1',
         meson_version: '>= 0.53',
         default_options: [
           'c_std=gnu99',
@@ -27,7 +27,7 @@ if have_darwin
 endif
 
 
-audacious_req = '>= 4.6'
+audacious_req = '>= 4.6.1'
 audacious_dep = dependency('audacious', version: audacious_req, required: true)
 
 
