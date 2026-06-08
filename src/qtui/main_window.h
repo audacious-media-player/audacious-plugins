@@ -56,7 +56,7 @@ private:
     QAction *m_menu_action, *m_search_action;
     QAction *m_play_pause_action, *m_stop_action, *m_stop_after_action;
     QAction * m_record_action;
-    QAction *m_repeat_action, *m_shuffle_action;
+    QAction *m_repeat_action, *m_shuffle_action, *m_no_playlist_advance_action;
 
     QueuedFunc m_buffering_timer;
     Playlist m_last_playing;
@@ -116,13 +116,14 @@ private:
         hook9{"set record", this, &MainWindow::update_toggles},
         hook10{"set repeat", this, &MainWindow::update_toggles},
         hook11{"set shuffle", this, &MainWindow::update_toggles},
-        hook12{"qtui toggle menubar", this, &MainWindow::update_visibility},
-        hook13{"qtui toggle infoarea", this, &MainWindow::update_visibility},
-        hook14{"qtui toggle statusbar", this, &MainWindow::update_visibility},
-        hook15{"qtui show search tool", this, &MainWindow::show_search_tool},
-        hook16{"qtui show playback history", this,
+        hook12{"set no_playlist_advance", this, &MainWindow::update_toggles},
+        hook13{"qtui toggle menubar", this, &MainWindow::update_visibility},
+        hook14{"qtui toggle infoarea", this, &MainWindow::update_visibility},
+        hook15{"qtui toggle statusbar", this, &MainWindow::update_visibility},
+        hook16{"qtui show search tool", this, &MainWindow::show_search_tool},
+        hook17{"qtui show playback history", this,
                &MainWindow::show_playback_history},
-        hook17{"qtui show playlist manager", this,
+        hook18{"qtui show playlist manager", this,
                &MainWindow::show_playlist_manager};
 };
 
