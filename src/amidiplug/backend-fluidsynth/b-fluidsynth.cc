@@ -19,6 +19,7 @@
 */
 
 #include <stdlib.h>
+#include <string>
 
 #include <fluidsynth.h>
 
@@ -201,27 +202,29 @@ void backend_audio_info (int * channels, int * bitdepth, int * samplerate)
 static void i_soundfont_load ()
 {
     String soundfont_file = aud_get_str ("amidiplug", "fsyn_soundfont_file");
-
-    if (soundfont_file[0])
-    {
-        Index<String> sffiles = str_list_to_index (soundfont_file, ";");
-
-        for (const char * sffile : sffiles)
-        {
-            AUDDBG ("loading soundfont %s\n", sffile);
-            int sf_id = fluid_synth_sfload (sc.synth, sffile, 0);
-
-            if (sf_id == -1)
-                AUDWARN ("unable to load SoundFont file %s\n", sffile);
-            else
-            {
-                AUDDBG ("soundfont %s successfully loaded\n", sffile);
-                sc.soundfont_ids.append (sf_id);
-            }
-        }
-
-        fluid_synth_system_reset (sc.synth);
+    std::string const default_soundfont_file("/usr/share/soundfonts/default.sf2");
+    if (!(soundfont_file[0])) {
+        auto const warnmsg =
+            std::string("FluidSynth backend was selected, but no SoundFont has "
+              "been specified.\nTrying default one:")
+              + default_soundfont_file.c_str() + "\n";
+        AUDWARN("%s", warnmsg.c_str());
+        soundfont_file = String(default_soundfont_file.c_str());
     }
-    else
-        AUDWARN ("FluidSynth backend was selected, but no SoundFont has been specified\n");
+    Index<String> sffiles = str_list_to_index (soundfont_file, ";");
+
+    for (const char * sffile : sffiles)
+    {
+        AUDDBG ("loading soundfont %s\n", sffile);
+        int sf_id = fluid_synth_sfload (sc.synth, sffile, 0);
+
+        if (sf_id == -1)
+            AUDWARN ("unable to load SoundFont file %s\n", sffile);
+        else
+        {
+            AUDDBG ("soundfont %s successfully loaded\n", sffile);
+            sc.soundfont_ids.append (sf_id);
+        }
+    }
+    fluid_synth_system_reset (sc.synth);
 }
