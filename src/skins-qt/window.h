@@ -75,6 +75,7 @@ void dock_remove_window (int id);
 void dock_set_size (int id, int w, int h);
 void dock_move_start (int id, int x, int y);
 void dock_move (int x, int y);
+void dock_move_to_visible_area (int id);
 void dock_change_scale (int old_scale, int new_scale);
 void dock_draw_all ();
 bool dock_is_focused ();
