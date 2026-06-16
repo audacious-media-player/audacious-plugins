@@ -67,6 +67,54 @@ static inline int least_abs (int a, int b)
     return (abs (a) < abs (b)) ? a : b;
 }
 
+static int screen_overlap_area (const QRect & window_rect, const QRect & screen_rect)
+{
+    QRect overlap = window_rect.intersected (screen_rect);
+    if (overlap.isEmpty ())
+        return 0;
+
+    return overlap.width () * overlap.height ();
+}
+
+static bool clamp_window_to_visible_area (DockWindow & dw)
+{
+    auto screens = QGuiApplication::screens ();
+    if (screens.isEmpty ())
+        return false;
+
+    QRect window_rect (* dw.x, * dw.y, dw.w, dw.h);
+
+    QScreen * best_screen = screens[0];
+    int best_area = -1;
+
+    for (QScreen * screen : screens)
+    {
+        QRect screen_rect = screen->availableGeometry ();
+        int area = screen_overlap_area (window_rect, screen_rect);
+
+        if (area > best_area)
+        {
+            best_area = area;
+            best_screen = screen;
+        }
+    }
+
+    QRect screen_rect = best_screen->availableGeometry ();
+
+    int max_x = screen_rect.x () + screen_rect.width () - dw.w;
+    int max_y = screen_rect.y () + screen_rect.height () - dw.h;
+
+    int clamped_x = qBound (screen_rect.x (), * dw.x, max_x);
+    int clamped_y = qBound (screen_rect.y (), * dw.y, max_y);
+
+    if (clamped_x == * dw.x && clamped_y == * dw.y)
+        return false;
+
+    * dw.x = clamped_x;
+    * dw.y = clamped_y;
+    return true;
+}
+
 void dock_add_window (int id, Window * window, int * x, int * y, int w, int h)
 {
     DockWindow & dw = windows[id];
@@ -350,6 +398,17 @@ void dock_change_scale (int old_scale, int new_scale)
             * dw.y = * main.y + (* dw.y - * main.y) * new_scale / old_scale;
         }
     }
+}
+
+void dock_move_to_visible_area (int id)
+{
+    DockWindow & dw = windows[id];
+
+    if (! dw.window)
+        return;
+
+    if (clamp_window_to_visible_area (dw))
+        dw.window->move (* dw.x, * dw.y);
 }
 
 void dock_draw_all ()
