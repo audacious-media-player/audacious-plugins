@@ -59,6 +59,8 @@
 #include "window.h"
 #include "vis.h"
 #include "view.h"
+#include "skin.h"
+#include "skinselector.h"
 
 #include <QDragEnterEvent>
 #include <QMimeData>
@@ -577,16 +579,47 @@ void MainWindow::dropEvent (QDropEvent * event)
     if (! mimedata->hasUrls ())
         return;
 
-    Index<PlaylistAddItem> files;
+    Index<PlaylistAddItem> playlist_files;
+    bool installed_skin = false;
 
     for (const auto & url : mimedata->urls ())
-        files.append (String (url.toEncoded ()));
+    {
+        if (url.isLocalFile ())
+        {
+            String path = String ((const char *) url.toLocalFile ().toUtf8 ());
 
-    if (! files.len ())
-        return;
+            if (str_has_suffix_nocase (path, ".wsz") || str_has_suffix_nocase (path, ".zip"))
+            {
+                AUDDBG ("Attempting to load dropped skin: %s\n", (const char *) path);
 
-    aud_drct_pl_open_list (std::move (files));
-    event->acceptProposedAction ();
+                if (! skin_load (path))
+                    continue;
+
+                view_apply_skin ();
+                skin_install_skin (path);
+                installed_skin = true;
+                continue;
+            }
+        }
+
+        playlist_files.append (String (url.toEncoded ()));
+    }
+
+    if (installed_skin)
+    {
+        skinlist_update ();
+        mainwin_show_status_message (_("Skin installed."));
+    }
+
+    if (playlist_files.len ())
+    {
+        aud_drct_pl_open_list (std::move (playlist_files));
+        event->acceptProposedAction ();
+    }
+    else if (installed_skin)
+    {
+        event->acceptProposedAction ();
+    }
 }
 
 #if 0
