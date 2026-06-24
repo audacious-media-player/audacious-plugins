@@ -25,6 +25,7 @@
 #include <math.h>
 #include <pthread.h>
 #include <sys/stat.h>
+#include <vector>
 
 #include <QCoreApplication>
 #include <QDir>
@@ -52,17 +53,23 @@ extern "C" {
 
 #define NUM_BUCKETS 2000
 
+/* per-bucket band intensities, 0-255, normalized independently per band so
+ * each color channel uses the full range (this is what gives quiet
+ * high-hats/cymbals visible color instead of bass just drowning them out) */
 struct TrackPeaks
 {
     int16_t * mins;
     int16_t * maxs;
+    uint8_t * low;  /* bass energy,  -> red channel   */
+    uint8_t * mid;  /* mid energy,   -> green channel */
+    uint8_t * high; /* treble energy -> blue channel  */
     int32_t num_buckets;
     int32_t global_peak;
     double duration_sec;
 
     TrackPeaks()
-        : mins(nullptr), maxs(nullptr), num_buckets(0), global_peak(1),
-          duration_sec(0)
+        : mins(nullptr), maxs(nullptr), low(nullptr), mid(nullptr),
+          high(nullptr), num_buckets(0), global_peak(1), duration_sec(0)
     {
     }
 
@@ -70,15 +77,24 @@ struct TrackPeaks
     {
         delete[] mins;
         delete[] maxs;
+        delete[] low;
+        delete[] mid;
+        delete[] high;
     }
 
     void resize(int32_t n)
     {
         delete[] mins;
         delete[] maxs;
+        delete[] low;
+        delete[] mid;
+        delete[] high;
         num_buckets = n;
         mins = new int16_t[n]();
         maxs = new int16_t[n]();
+        low = new uint8_t[n]();
+        mid = new uint8_t[n]();
+        high = new uint8_t[n]();
     }
 };
 
@@ -114,21 +130,27 @@ static char * cache_path_for(const char * filename)
     return path;
 }
 
+#define CACHE_MAGIC 0x57434232
+
 static bool load_cache(const char * path, TrackPeaks * out)
 {
     FILE * f = fopen(path, "rb");
     if (!f)
         return false;
 
-    int32_t n = 0;
-    bool ok = fread(&n, sizeof n, 1, f) == 1 && n == NUM_BUCKETS;
+    int32_t magic = 0, n = 0;
+    bool ok = fread(&magic, sizeof magic, 1, f) == 1 && magic == CACHE_MAGIC &&
+              fread(&n, sizeof n, 1, f) == 1 && n == NUM_BUCKETS;
     if (ok)
     {
         out->resize(n);
         ok = fread(&out->global_peak, sizeof out->global_peak, 1, f) == 1 &&
              fread(&out->duration_sec, sizeof out->duration_sec, 1, f) == 1 &&
              fread(out->mins, sizeof(int16_t), n, f) == (size_t)n &&
-             fread(out->maxs, sizeof(int16_t), n, f) == (size_t)n;
+             fread(out->maxs, sizeof(int16_t), n, f) == (size_t)n &&
+             fread(out->low, sizeof(uint8_t), n, f) == (size_t)n &&
+             fread(out->mid, sizeof(uint8_t), n, f) == (size_t)n &&
+             fread(out->high, sizeof(uint8_t), n, f) == (size_t)n;
     }
     fclose(f);
     return ok;
@@ -139,12 +161,17 @@ static void save_cache(const char * path, const TrackPeaks * in)
     FILE * f = fopen(path, "wb");
     if (!f)
         return;
+    int32_t magic = CACHE_MAGIC;
     int32_t n = in->num_buckets;
+    fwrite(&magic, sizeof magic, 1, f);
     fwrite(&n, sizeof n, 1, f);
     fwrite(&in->global_peak, sizeof in->global_peak, 1, f);
     fwrite(&in->duration_sec, sizeof in->duration_sec, 1, f);
     fwrite(in->mins, sizeof(int16_t), n, f);
     fwrite(in->maxs, sizeof(int16_t), n, f);
+    fwrite(in->low, sizeof(uint8_t), n, f);
+    fwrite(in->mid, sizeof(uint8_t), n, f);
+    fwrite(in->high, sizeof(uint8_t), n, f);
     fclose(f);
 }
 
@@ -184,6 +211,82 @@ static void pump_frame(AVFrame * fr, PumpContext * ctx)
         memcpy(ctx->samples + ctx->samples_count, ctx->conv_buf,
                got * sizeof(int16_t));
         ctx->samples_count += got;
+    }
+}
+
+/* Splits the mono signal into bass/mid/treble via two simple one-pole
+ * filters (cheap, stable, no FFT needed -- this is the same order of
+ * rigor as the bass/mid/treble split used in most cheap VU-style
+ * visualizers, not a precise crossover).
+ * For each bucket, records the peak |amplitude| seen in each
+ * band, then normalizes each band independently against its own
+ * track-wide max so quiet hi-hats show up just as vividly as loud bass,
+ * instead of bass just visually dominating everything. */
+static void compute_band_peaks(const int16_t * samples, size_t count,
+                               int sample_rate, int num_buckets,
+                               uint8_t * low_out, uint8_t * mid_out,
+                               uint8_t * high_out)
+{
+    const float fc_low = 250.0f; /* below this = "low" band */
+    const float fc_high =
+        4000.0f; /* above this = "high" band; in between = "mid" */
+    float alpha_low = expf(-2.0f * (float)M_PI * fc_low / sample_rate);
+    float alpha_high = expf(-2.0f * (float)M_PI * fc_high / sample_rate);
+
+    std::vector<float> low_peak(num_buckets, 0.0f);
+    std::vector<float> mid_peak(num_buckets, 0.0f);
+    std::vector<float> high_peak(num_buckets, 0.0f);
+
+    float low_state = 0.0f, high_state = 0.0f, prev_x = 0.0f;
+
+    for (size_t i = 0; i < count; i++)
+    {
+        float x = (float)samples[i];
+
+        low_state = alpha_low * low_state + (1.0f - alpha_low) * x;
+        high_state = alpha_high * (high_state + x - prev_x);
+        prev_x = x;
+
+        float low_val = low_state;
+        float high_val = high_state;
+        float mid_val = x - low_val - high_val;
+
+        int b = (int)((double)i / count * num_buckets);
+        if (b >= num_buckets)
+            b = num_buckets - 1;
+
+        float la = fabsf(low_val), ma = fabsf(mid_val), ha = fabsf(high_val);
+        if (la > low_peak[b])
+            low_peak[b] = la;
+        if (ma > mid_peak[b])
+            mid_peak[b] = ma;
+        if (ha > high_peak[b])
+            high_peak[b] = ha;
+    }
+
+    /* IMPORTANT: normalize against ONE shared max across all three bands,
+     * not each band's own max independently. Per-band normalization would
+     * make a pure bass tone's tiny mid/high residual energy *also* read
+     * as "fully lit" (since it's roughly constant across buckets, and
+     * constant/its-own-max ~= 1 everywhere) -- which defeats the purpose:
+     * we want color to reflect which band actually dominates at a given
+     * moment, not just each band's variation over time. */
+    float shared_max = 1.0f;
+    for (int b = 0; b < num_buckets; b++)
+    {
+        if (low_peak[b] > shared_max)
+            shared_max = low_peak[b];
+        if (mid_peak[b] > shared_max)
+            shared_max = mid_peak[b];
+        if (high_peak[b] > shared_max)
+            shared_max = high_peak[b];
+    }
+
+    for (int b = 0; b < num_buckets; b++)
+    {
+        low_out[b] = (uint8_t)(255.0f * low_peak[b] / shared_max);
+        mid_out[b] = (uint8_t)(255.0f * mid_peak[b] / shared_max);
+        high_out[b] = (uint8_t)(255.0f * high_peak[b] / shared_max);
     }
 }
 
@@ -358,6 +461,9 @@ static bool decode_peaks(const char * filename, TrackPeaks * out)
             out->global_peak = mx;
     }
 
+    compute_band_peaks(pctx.samples, pctx.samples_count, sample_rate,
+                       NUM_BUCKETS, out->low, out->mid, out->high);
+
     delete[] pctx.samples;
     delete[] pctx.conv_buf;
     return true;
@@ -439,6 +545,12 @@ void WaveformWidget::paint_waveform(QPainter & p)
                g_peaks->num_buckets * sizeof(int16_t));
         memcpy(local_peaks.maxs, g_peaks->maxs,
                g_peaks->num_buckets * sizeof(int16_t));
+        memcpy(local_peaks.low, g_peaks->low,
+               g_peaks->num_buckets * sizeof(uint8_t));
+        memcpy(local_peaks.mid, g_peaks->mid,
+               g_peaks->num_buckets * sizeof(uint8_t));
+        memcpy(local_peaks.high, g_peaks->high,
+               g_peaks->num_buckets * sizeof(uint8_t));
     }
     pthread_mutex_unlock(&g_mutex);
 
@@ -456,7 +568,9 @@ void WaveformWidget::paint_waveform(QPainter & p)
     int n = local_peaks.num_buckets;
 
     p.setPen(Qt::NoPen);
-    p.setBrush(QColor(64, 200, 255));
+
+    /* keep quiet bands faintly visible rather than pure black */
+    const int floor_c = 40;
 
     for (int x = 0; x < w; x++)
     {
@@ -471,6 +585,13 @@ void WaveformWidget::paint_waveform(QPainter & p)
             top = bot;
             bot = tmp;
         }
+
+        /* low -> red, mid -> green, high -> blue, the same convention */
+        int r = floor_c + (255 - floor_c) * local_peaks.low[idx] / 255;
+        int g = floor_c + (255 - floor_c) * local_peaks.mid[idx] / 255;
+        int b = floor_c + (255 - floor_c) * local_peaks.high[idx] / 255;
+
+        p.setBrush(QColor(r, g, b));
         p.drawRect(QRectF(x, top, 1.0, bot - top + 1.0));
     }
 }
