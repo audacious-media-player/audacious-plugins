@@ -228,10 +228,13 @@ static bool decode_peaks(const char * filename, TrackPeaks * out)
         return false;
     }
 
+    SwrContext * swr = nullptr;
+
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 37, 100)
+    /* Modern FFmpeg (>= 5.1) Channel Layout API */
     AVChannelLayout out_layout;
     av_channel_layout_default(&out_layout, 1);
 
-    SwrContext * swr = nullptr;
     if (swr_alloc_set_opts2(&swr, &out_layout, AV_SAMPLE_FMT_S16,
                             ctx->sample_rate, &ctx->ch_layout, ctx->sample_fmt,
                             ctx->sample_rate, 0, nullptr) < 0 ||
@@ -241,6 +244,27 @@ static bool decode_peaks(const char * filename, TrackPeaks * out)
         avformat_close_input(&fmt_ctx);
         return false;
     }
+#else
+    /* Legacy FFmpeg (< 5.1) Channel Layout API */
+    uint64_t out_layout = AV_CH_LAYOUT_MONO;
+    uint64_t in_layout = ctx->channel_layout;
+
+    if (!in_layout)
+        in_layout = av_get_default_channel_layout(ctx->channels);
+
+    swr = swr_alloc_set_opts(nullptr, out_layout, AV_SAMPLE_FMT_S16,
+                             ctx->sample_rate, in_layout, ctx->sample_fmt,
+                             ctx->sample_rate, 0, nullptr);
+
+    if (!swr || swr_init(swr) < 0)
+    {
+        if (swr)
+            swr_free(&swr);
+        avcodec_free_context(&ctx);
+        avformat_close_input(&fmt_ctx);
+        return false;
+    }
+#endif
 
     PumpContext pctx;
     pctx.samples_capacity = (size_t)ctx->sample_rate * 60 * 4;
