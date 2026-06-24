@@ -27,6 +27,7 @@
 #include <sys/stat.h>
 
 #include <QCoreApplication>
+#include <QDir>
 #include <QMetaObject>
 #include <QMouseEvent>
 #include <QPainter>
@@ -103,7 +104,7 @@ static char * cache_path_for(const char * filename)
     char * dir = new char[dir_len];
     snprintf(dir, dir_len, "%s/waveform_cache", user_dir);
 
-    mkdir(dir, 0755);
+    QDir().mkpath(QString::fromUtf8(dir));
 
     int path_len = strlen(dir) + 24;
     char * path = new char[path_len];
