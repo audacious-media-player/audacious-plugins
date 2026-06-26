@@ -18,6 +18,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <atomic>
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
@@ -25,14 +26,19 @@
 #include <math.h>
 #include <pthread.h>
 #include <sys/stat.h>
+#include <thread>
 #include <vector>
 
 #include <QCoreApplication>
 #include <QDir>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QMetaObject>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPushButton>
 #include <QTimer>
+#include <QVBoxLayout>
 #include <QWidget>
 
 #include <libaudcore/audstrings.h>
@@ -40,7 +46,9 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
 
@@ -469,9 +477,152 @@ static bool decode_peaks(const char * filename, TrackPeaks * out)
     return true;
 }
 
+// Playlist preload
+static std::atomic<bool> g_preload_running{false};
+static std::atomic<int> g_preload_total{0};
+static std::atomic<int> g_preload_done{0};
+
+static bool preload_one_file(const char * filename)
+{
+    TrackPeaks peaks;
+    char * cpath = cache_path_for(filename);
+
+    bool ok = load_cache(cpath, &peaks);
+    if (!ok)
+    {
+        StringBuf local = uri_to_filename(filename);
+        const char * decode_path = local ? (const char *)local : filename;
+
+        ok = decode_peaks(decode_path, &peaks);
+        if (ok)
+            save_cache(cpath, &peaks);
+    }
+
+    delete[] cpath;
+    return ok;
+}
+
+static void run_playlist_preload()
+{
+    if (g_preload_running.exchange(true))
+        return; /* already running */
+
+    Playlist pl = Playlist::active_playlist();
+    int n = pl.n_entries();
+
+    g_preload_total = n;
+    g_preload_done = 0;
+
+    if (n <= 0)
+    {
+        g_preload_running = false;
+        return;
+    }
+
+    auto * filenames = new std::vector<char *>();
+    filenames->reserve(n);
+    for (int i = 0; i < n; i++)
+    {
+        String fn = pl.entry_filename(i);
+        filenames->push_back(strdup(fn ? (const char *)fn : ""));
+    }
+
+    std::thread([filenames]() {
+        unsigned n_threads = std::thread::hardware_concurrency();
+        if (n_threads == 0)
+            n_threads = 1; /* hardware_concurrency() can return 0; fall back */
+
+        size_t total = filenames->size();
+        if (n_threads > total)
+            n_threads = (unsigned)total;
+
+        std::atomic<size_t> next_idx{0};
+
+        std::vector<std::thread> workers;
+        workers.reserve(n_threads);
+        for (unsigned t = 0; t < n_threads; t++)
+        {
+            workers.emplace_back([filenames, &next_idx, total]() {
+                for (;;)
+                {
+                    size_t idx = next_idx.fetch_add(1);
+                    if (idx >= total)
+                        break;
+
+                    const char * fn = (*filenames)[idx];
+                    if (fn && fn[0])
+                        preload_one_file(fn);
+
+                    g_preload_done.fetch_add(1);
+                }
+            });
+        }
+
+        for (auto & w : workers)
+            w.join();
+
+        for (char * fn : *filenames)
+            free(fn);
+        delete filenames;
+
+        g_preload_running = false;
+    }).detach();
+}
+
 class WaveformWidget;
 static WaveformWidget * spect_widget = nullptr;
+static QWidget * g_container =
+    nullptr; /* outer widget: controls bar + waveform */
 static void load_track_async(const char * filename);
+
+class WaveformControls : public QWidget
+{
+public:
+    explicit WaveformControls(QWidget * parent = nullptr) : QWidget(parent)
+    {
+        auto * layout = new QHBoxLayout(this);
+        layout->setContentsMargins(4, 2, 4, 2);
+
+        m_button = new QPushButton(_("Preload Playlist Waveforms"), this);
+        m_label = new QLabel(this);
+        m_label->setMinimumWidth(90);
+
+        layout->addWidget(m_button);
+        layout->addWidget(m_label);
+        layout->addStretch(1);
+
+        QObject::connect(m_button, &QPushButton::clicked, this,
+                         []() { run_playlist_preload(); });
+
+        m_timer = new QTimer(this);
+        QObject::connect(m_timer, &QTimer::timeout, this,
+                         [this]() { refresh(); });
+        m_timer->start(150);
+
+        refresh();
+    }
+
+private:
+    void refresh()
+    {
+        bool running = g_preload_running.load();
+        int done = g_preload_done.load();
+        int total = g_preload_total.load();
+
+        m_button->setEnabled(!running);
+
+        if (running)
+            m_label->setText(QString("%1/%2").arg(done).arg(total));
+        else if (total > 0)
+            m_label->setText(QString(_("Done (%1/%2)")).arg(done).arg(total));
+        else
+            m_label->setText(QString());
+    }
+
+    QPushButton * m_button;
+    QLabel * m_label;
+    QTimer * m_timer;
+};
 
 class WaveformWidget : public QWidget
 {
@@ -514,7 +665,11 @@ WaveformWidget::WaveformWidget(QWidget * parent) : QWidget(parent)
     }
 }
 
-WaveformWidget::~WaveformWidget() { spect_widget = nullptr; }
+WaveformWidget::~WaveformWidget()
+{
+    spect_widget = nullptr;
+    g_container = nullptr;
+}
 
 void WaveformWidget::apply_peaks(const char * filename, TrackPeaks * peaks)
 {
@@ -737,11 +892,18 @@ static void on_playback_ready(void *, void *)
         load_track_async((const char *)fn);
 }
 
+static void * waveform_get_controls_widget() { return new WaveformControls(); }
+
+static const PreferencesWidget waveform_widgets[] = {
+    WidgetCustomQt(waveform_get_controls_widget)};
+
+static const PluginPreferences waveform_prefs = {{waveform_widgets}};
+
 class QtWaveform : public VisPlugin
 {
 public:
     static constexpr PluginInfo info = {N_("Waveform"), PACKAGE, nullptr,
-                                        nullptr, PluginQtOnly};
+                                        &waveform_prefs, PluginQtOnly};
 
     constexpr QtWaveform() : VisPlugin(info, Visualizer::Freq) {}
 
@@ -781,9 +943,17 @@ void QtWaveform::clear()
 
 void * QtWaveform::get_qt_widget()
 {
-    if (spect_widget)
-        return spect_widget;
+    if (g_container)
+        return g_container;
 
-    spect_widget = new WaveformWidget();
-    return spect_widget;
+    auto * container = new QWidget();
+    auto * layout = new QVBoxLayout(container);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
+
+    auto * waveform = new WaveformWidget();
+    layout->addWidget(waveform);
+
+    g_container = container;
+    return container;
 }
