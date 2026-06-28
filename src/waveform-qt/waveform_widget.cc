@@ -22,6 +22,7 @@
 
 #include <cstdlib>
 
+#include <QCoreApplication>
 #include <QMetaObject>
 #include <QMouseEvent>
 #include <QPainter>
