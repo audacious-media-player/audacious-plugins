@@ -46,7 +46,7 @@ msgstr "OPL Emulator:"
 #: src/console/plugin.cc:45 src/filewriter/filewriter.cc:480
 #: src/sid/xs_config.cc:65 src/xsf/plugin.cc:445
 msgid "Sample rate:"
-msgstr "Örnekleme hızı:"
+msgstr "Sample rate:"
 
 #: src/adplug/adplug-xmms.cc:354 src/amidiplug/i_configure.cc:155
 #: src/bs2b/plugin.cc:141 src/console/plugin.cc:47
@@ -64,15 +64,15 @@ msgstr "Hz"
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:85
 #: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:284
 msgid "<b>Miscellaneous</b>"
-msgstr "<b>Çeşitli</b>"
+msgstr "<b>Miscellaneous</b>"
 
 #: src/adplug/adplug-xmms.cc:356
 msgid "Repeat song in endless loop"
-msgstr "Şarkıyı sürekli tekrar et"
+msgstr "Repeat song in endless loop"
 
 #: src/albumart/albumart.cc:31 src/albumart-qt/albumart.cc:36
 msgid "Album Art"
-msgstr "Albüm Kapağı"
+msgstr "Album Art"
 
 #: src/alsa/alsa.h:64
 msgid "ALSA Output"
