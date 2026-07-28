@@ -309,31 +309,3 @@ static const PreferencesWidget skins_widgets[] = {
 };
 
 const PluginPreferences skins_prefs = {{skins_widgets}};
-
-#if 0
-void on_skin_view_drag_data_received (GtkWidget * widget, GdkDragContext * context,
- int x, int y, GtkSelectionData * selection_data, unsigned info, unsigned time, void *)
-{
-    const char * data = (const char *) gtk_selection_data_get_data (selection_data);
-    g_return_if_fail (data);
-
-    const char * end = strchr (data, '\r');
-    if (! end)
-        end = strchr (data, '\n');
-    if (! end)
-        end = data + strlen (data);
-
-    StringBuf path = uri_to_filename (str_copy (data, end - data));
-    if (path && file_is_archive (path))
-    {
-        if (! skin_load (path))
-            return;
-
-        view_apply_skin ();
-        skin_install_skin (path);
-
-        if (skin_view)
-            skin_view_update ((GtkTreeView *) skin_view);
-    }
-}
-#endif

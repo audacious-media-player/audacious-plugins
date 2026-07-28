@@ -55,6 +55,7 @@
 #include "number.h"
 #include "playlist-widget.h"
 #include "playstatus.h"
+#include "skin.h"
 #include "textbox.h"
 #include "window.h"
 #include "vis.h"
@@ -578,39 +579,39 @@ void MainWindow::dropEvent (QDropEvent * event)
         return;
 
     Index<PlaylistAddItem> files;
+    bool installed_skin = false;
 
     for (const auto & url : mimedata->urls ())
-        files.append (String (url.toEncoded ()));
-
-    if (! files.len ())
-        return;
-
-    aud_drct_pl_open_list (std::move (files));
-    event->acceptProposedAction ();
-}
-
-#if 0
-void mainwin_drag_data_received (GtkWidget * widget, GdkDragContext * context,
- int x, int y, GtkSelectionData * selection_data, unsigned info, unsigned time, void *)
-{
-    g_return_if_fail (selection_data != nullptr);
-
-    const char * data = (const char *) gtk_selection_data_get_data (selection_data);
-    g_return_if_fail (data);
-
-    if (str_has_prefix_nocase (data, "file:///"))
     {
-        if (str_has_suffix_nocase (data, ".wsz\r\n") || str_has_suffix_nocase
-         (data, ".zip\r\n"))
+        if (url.isLocalFile ())
         {
-            on_skin_view_drag_data_received (0, context, x, y, selection_data, info, time, 0);
-            return;
+            QByteArray local_file = url.toLocalFile ().toUtf8 ();
+            const char * path = local_file.constData ();
+
+            if (str_has_suffix_nocase (path, ".wsz") ||
+                str_has_suffix_nocase (path, ".zip"))
+            {
+                if (! skin_load (path))
+                    continue;
+
+                view_apply_skin ();
+                skin_install_skin (path);
+                installed_skin = true;
+                continue;
+            }
         }
+
+        files.append (String (url.toEncoded ()));
     }
 
-    audgui_urilist_open (data);
+    if (files.len ())
+    {
+        aud_drct_pl_open_list (std::move (files));
+        event->acceptProposedAction ();
+    }
+    else if (installed_skin)
+        event->acceptProposedAction ();
 }
-#endif
 
 static int time_now ()
 {
