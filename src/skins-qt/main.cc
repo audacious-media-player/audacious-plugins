@@ -55,12 +55,11 @@
 #include "number.h"
 #include "playlist-widget.h"
 #include "playstatus.h"
+#include "skin.h"
 #include "textbox.h"
 #include "window.h"
 #include "vis.h"
 #include "view.h"
-#include "skin.h"
-#include "skinselector.h"
 
 #include <QDragEnterEvent>
 #include <QMimeData>
@@ -579,19 +578,19 @@ void MainWindow::dropEvent (QDropEvent * event)
     if (! mimedata->hasUrls ())
         return;
 
-    Index<PlaylistAddItem> playlist_files;
+    Index<PlaylistAddItem> files;
     bool installed_skin = false;
 
     for (const auto & url : mimedata->urls ())
     {
         if (url.isLocalFile ())
         {
-            String path = String ((const char *) url.toLocalFile ().toUtf8 ());
+            QByteArray local_file = url.toLocalFile ().toUtf8 ();
+            const char * path = local_file.constData ();
 
-            if (str_has_suffix_nocase (path, ".wsz") || str_has_suffix_nocase (path, ".zip"))
+            if (str_has_suffix_nocase (path, ".wsz") ||
+                str_has_suffix_nocase (path, ".zip"))
             {
-                AUDDBG ("Attempting to load dropped skin: %s\n", (const char *) path);
-
                 if (! skin_load (path))
                     continue;
 
@@ -602,48 +601,17 @@ void MainWindow::dropEvent (QDropEvent * event)
             }
         }
 
-        playlist_files.append (String (url.toEncoded ()));
+        files.append (String (url.toEncoded ()));
     }
 
-    if (installed_skin)
+    if (files.len ())
     {
-        skinlist_update ();
-        mainwin_show_status_message (_("Skin installed."));
-    }
-
-    if (playlist_files.len ())
-    {
-        aud_drct_pl_open_list (std::move (playlist_files));
+        aud_drct_pl_open_list (std::move (files));
         event->acceptProposedAction ();
     }
     else if (installed_skin)
-    {
         event->acceptProposedAction ();
-    }
 }
-
-#if 0
-void mainwin_drag_data_received (GtkWidget * widget, GdkDragContext * context,
- int x, int y, GtkSelectionData * selection_data, unsigned info, unsigned time, void *)
-{
-    g_return_if_fail (selection_data != nullptr);
-
-    const char * data = (const char *) gtk_selection_data_get_data (selection_data);
-    g_return_if_fail (data);
-
-    if (str_has_prefix_nocase (data, "file:///"))
-    {
-        if (str_has_suffix_nocase (data, ".wsz\r\n") || str_has_suffix_nocase
-         (data, ".zip\r\n"))
-        {
-            on_skin_view_drag_data_received (0, context, x, y, selection_data, info, time, 0);
-            return;
-        }
-    }
-
-    audgui_urilist_open (data);
-}
-#endif
 
 static int time_now ()
 {
