@@ -199,6 +199,19 @@ bool Window::is_focused ()
     return config.active_titlebar_any ? dock_is_focused () : m_is_focused_window;
 }
 
+void Window::set_stay_on_top (bool enable)
+{
+    gtk_window_set_keep_above ((GtkWindow *) gtk (), enable);
+}
+
+void Window::set_sticky (bool enable)
+{
+    if (enable)
+        gtk_window_stick ((GtkWindow *) gtk ());
+    else
+        gtk_window_unstick ((GtkWindow *) gtk ());
+}
+
 /* static */
 gboolean Window::focus_cb (GtkWidget * widget, GdkEventFocus * event, Window * me)
 {

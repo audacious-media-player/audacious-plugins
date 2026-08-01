@@ -148,8 +148,6 @@ static void skins_init_main (bool restart)
     playlistwin_create ();
 
     view_apply_skin ();
-    view_apply_on_top ();
-    view_apply_sticky ();
 
     if (aud_drct_get_playing ())
         mainwin_playback_begin ();

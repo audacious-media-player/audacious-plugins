@@ -100,6 +100,9 @@ void view_show_player (bool show)
     view_apply_show_playlist ();
     view_apply_show_equalizer ();
 
+    view_apply_on_top ();
+    view_apply_sticky ();
+
     start_stop_visual (false);
 }
 
@@ -248,9 +251,9 @@ void view_apply_on_top ()
 {
     bool on_top = aud_get_bool ("skins", "always_on_top");
 
-    gtk_window_set_keep_above ((GtkWindow *) mainwin->gtk (), on_top);
-    gtk_window_set_keep_above ((GtkWindow *) equalizerwin->gtk (), on_top);
-    gtk_window_set_keep_above ((GtkWindow *) playlistwin->gtk (), on_top);
+    mainwin->set_stay_on_top (on_top);
+    equalizerwin->set_stay_on_top (on_top);
+    playlistwin->set_stay_on_top (on_top);
 
     mainwin_menurow->refresh ();
 }
@@ -267,18 +270,9 @@ void view_apply_sticky ()
 {
     bool sticky = aud_get_bool ("skins", "sticky");
 
-    if (sticky)
-    {
-        gtk_window_stick ((GtkWindow *) mainwin->gtk ());
-        gtk_window_stick ((GtkWindow *) equalizerwin->gtk ());
-        gtk_window_stick ((GtkWindow *) playlistwin->gtk ());
-    }
-    else
-    {
-        gtk_window_unstick ((GtkWindow *) mainwin->gtk ());
-        gtk_window_unstick ((GtkWindow *) equalizerwin->gtk ());
-        gtk_window_unstick ((GtkWindow *) playlistwin->gtk ());
-    }
+    mainwin->set_sticky (sticky);
+    equalizerwin->set_sticky (sticky);
+    playlistwin->set_sticky (sticky);
 }
 
 void view_set_show_remaining (bool remaining)

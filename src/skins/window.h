@@ -53,6 +53,8 @@ public:
     void set_shaded (bool shaded);
     void put_widget (bool shaded, Widget * widget, int x, int y);
     void move_widget (bool shaded, Widget * widget, int x, int y);
+    void set_stay_on_top (bool enable);
+    void set_sticky (bool enable);
 
     void setWindowTitle (const char * title)
         { gtk_window_set_title ((GtkWindow *) gtk (), title); }
