@@ -148,7 +148,7 @@ static const audqt::MenuItem view_items[] = {
     audqt::MenuSep (),
     audqt::MenuToggle ({N_("Double Size"), nullptr, "Ctrl+D"}, {"skins", "double_size", "skins set double_size"}, view_apply_double_size),
     audqt::MenuToggle ({N_("Always on Top"), nullptr, "Ctrl+O"}, {"skins", "always_on_top", "skins set always_on_top"}, view_apply_on_top),
-#if 0
+#ifdef HAVE_QT_X11
     audqt::MenuToggle ({N_("On All Workspaces"), nullptr, "Ctrl+S"}, {"skins", "sticky", "skins set sticky"}, view_apply_sticky),
 #endif
     audqt::MenuSep (),

@@ -29,6 +29,7 @@
 #include <QMessageBox>
 #include <QPointer>
 #include <QPushButton>
+#include <QTimer>
 #include <QWindow>
 
 #include "plugin.h"
@@ -114,6 +115,10 @@ void view_show_player (bool show)
 
     view_apply_show_playlist ();
     view_apply_show_equalizer ();
+
+    view_apply_on_top ();
+    // Window managers may ignore state flags when sent too quickly
+    QTimer::singleShot (100, view_apply_sticky);
 
     start_stop_visual (false);
 }
@@ -255,29 +260,11 @@ void view_set_on_top (bool on_top)
 
 void view_apply_on_top ()
 {
-    bool mainwin_visible = mainwin->isVisible ();
-    bool equalizer_visible = equalizerwin->isVisible ();
-    bool playlist_visible = playlistwin->isVisible ();
+    bool on_top = aud_get_bool ("skins", "always_on_top");
 
-    if (aud_get_bool ("skins", "always_on_top"))
-    {
-        mainwin->setWindowFlags (mainwin->windowFlags () | Qt::WindowStaysOnTopHint);
-        equalizerwin->setWindowFlags (equalizerwin->windowFlags () | Qt::WindowStaysOnTopHint);
-        playlistwin->setWindowFlags (playlistwin->windowFlags () | Qt::WindowStaysOnTopHint);
-    }
-    else
-    {
-        mainwin->setWindowFlags (mainwin->windowFlags () & ~Qt::WindowStaysOnTopHint);
-        equalizerwin->setWindowFlags (equalizerwin->windowFlags () & ~Qt::WindowStaysOnTopHint);
-        playlistwin->setWindowFlags (playlistwin->windowFlags () & ~Qt::WindowStaysOnTopHint);
-    }
-
-    if (mainwin_visible)
-        mainwin->show ();
-    if (equalizer_visible)
-        equalizerwin->show ();
-    if (playlist_visible)
-        playlistwin->show ();
+    mainwin->set_stay_on_top (on_top);
+    equalizerwin->set_stay_on_top (on_top);
+    playlistwin->set_stay_on_top (on_top);
 
     mainwin_menurow->refresh ();
 }
@@ -292,22 +279,11 @@ void view_set_sticky (bool sticky)
 
 void view_apply_sticky ()
 {
-#if 0
     bool sticky = aud_get_bool ("skins", "sticky");
 
-    if (sticky)
-    {
-        gtk_window_stick ((GtkWindow *) mainwin->gtk ());
-        gtk_window_stick ((GtkWindow *) equalizerwin->gtk ());
-        gtk_window_stick ((GtkWindow *) playlistwin->gtk ());
-    }
-    else
-    {
-        gtk_window_unstick ((GtkWindow *) mainwin->gtk ());
-        gtk_window_unstick ((GtkWindow *) equalizerwin->gtk ());
-        gtk_window_unstick ((GtkWindow *) playlistwin->gtk ());
-    }
-#endif
+    mainwin->set_sticky (sticky);
+    equalizerwin->set_sticky (sticky);
+    playlistwin->set_sticky (sticky);
 }
 
 void view_set_show_remaining (bool remaining)

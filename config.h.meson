@@ -32,6 +32,7 @@
 #mesondefine HAVE_LIBCUE2
 #mesondefine HAVE_LIBSDL3
 #mesondefine HAVE_SNDIO_1_9
+#mesondefine HAVE_QT_X11
 
 #mesondefine HAVE_PLAYBACK_HISTORY
 #mesondefine HAVE_PLAYLIST_MANAGER

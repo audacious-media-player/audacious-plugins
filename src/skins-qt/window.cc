@@ -23,6 +23,10 @@
 #include "plugin.h"
 #include "skins_cfg.h"
 
+#ifdef HAVE_QT_X11
+#include "x11-utils.h"
+#endif
+
 #include "../ui-common/qt-compat.h"
 
 void Window::apply_shape ()
@@ -176,4 +180,23 @@ void Window::move_widget (bool shaded, Widget * widget, int x, int y)
 bool Window::is_focused ()
 {
     return config.active_titlebar_any ? dock_is_focused () : isActiveWindow ();
+}
+
+void Window::set_stay_on_top (bool enable)
+{
+#ifdef HAVE_QT_X11
+    x11_window_set_stay_on_top (this, enable);
+#else
+    bool visible = isVisible ();
+    setWindowFlag (Qt::WindowStaysOnTopHint, enable);
+    if (visible)
+        show ();
+#endif
+}
+
+void Window::set_sticky (bool enable)
+{
+#ifdef HAVE_QT_X11
+    x11_window_set_sticky (this, enable);
+#endif
 }

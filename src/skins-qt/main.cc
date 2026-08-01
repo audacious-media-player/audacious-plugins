@@ -1121,19 +1121,6 @@ static void mainwin_create_widgets ()
     mainwin_stime_sec->on_press (change_timer_mode_cb);
 }
 
-#if 0
-static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event, void *)
-{
-    if (event->changed_mask & GDK_WINDOW_STATE_STICKY)
-        view_set_sticky (!! (event->new_window_state & GDK_WINDOW_STATE_STICKY));
-
-    if (event->changed_mask & GDK_WINDOW_STATE_ABOVE)
-        view_set_on_top (!! (event->new_window_state & GDK_WINDOW_STATE_ABOVE));
-
-    return true;
-}
-#endif
-
 void MainWindow::draw (QPainter & cr)
 {
     int width = is_shaded () ? MAINWIN_SHADED_WIDTH : skin.hints.mainwin_width;
@@ -1149,14 +1136,6 @@ static void mainwin_create_window ()
 
     mainwin = new MainWindow (shaded);
     mainwin->setWindowRole("mainwindow");
-
-#if 0
-    GtkWidget * w = mainwin->gtk ();
-    drag_dest_set (w);
-
-    g_signal_connect (w, "drag-data-received", (GCallback) mainwin_drag_data_received, nullptr);
-    g_signal_connect (w, "window-state-event", (GCallback) state_cb, nullptr);
-#endif
 
     hook_associate ("playback begin", (HookFunction) mainwin_playback_begin, nullptr);
     hook_associate ("playback ready", (HookFunction) mainwin_playback_begin, nullptr);
