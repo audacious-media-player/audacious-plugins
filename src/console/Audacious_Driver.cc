@@ -127,15 +127,19 @@ int ConsoleFileHandler::load(int sample_rate)
     if (dot)
         base_path.resize(dot - base_path);
 
-    Vfs_File_Reader m3u;
+    // Check for existence before opening.
     StringBuf m3u_path = str_concat({base_path, ".m3u8"});
-    if (m3u.open(m3u_path))
+    if (!VFSFile::test_file(m3u_path, VFS_EXISTS))
         m3u_path = str_concat({base_path, ".m3u"});
 
-    if (!m3u.open(m3u_path))
+    if (VFSFile::test_file(m3u_path, VFS_EXISTS))
     {
-        if (log_err(m_emu->load_m3u(m3u)))
-            log_warning(m_emu);
+        Vfs_File_Reader m3u;
+        if (!m3u.open(m3u_path))
+        {
+            if (log_err(m_emu->load_m3u(m3u)))
+                log_warning(m_emu);
+        }
     }
 
     return 0;
