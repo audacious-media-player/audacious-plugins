@@ -103,6 +103,7 @@ void view_show_player (bool show)
 
     if (show)
     {
+        dock_move_to_visible_area (WINDOW_MAIN);
         mainwin->show ();
         mainwin->activateWindow ();
         show_plugin_windows ();
@@ -137,6 +138,7 @@ void view_apply_show_playlist ()
 
     if (show && mainwin->isVisible ())
     {
+        dock_move_to_visible_area (WINDOW_PLAYLIST);
         playlistwin->winId ();
         playlistwin->windowHandle ()->setTransientParent (mainwin->windowHandle ());
         playlistwin->show ();
@@ -162,6 +164,7 @@ void view_apply_show_equalizer ()
 
     if (show && mainwin->isVisible ())
     {
+        dock_move_to_visible_area (WINDOW_EQ);
         equalizerwin->winId ();
         equalizerwin->windowHandle ()->setTransientParent (mainwin->windowHandle ());
         equalizerwin->show ();
