@@ -24,6 +24,7 @@
 #include <assert.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <string>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
@@ -225,6 +226,12 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
     tuple.set_str (Tuple::Artist, info.sidComposer);
     tuple.set_str (Tuple::Copyright, info.sidCopyright);
     tuple.set_str (Tuple::Codec, info.sidFormat);
+    if (info.nSIDs > 1) {
+        std::string comment = std::string(info.sidModel) + " (" + std::to_string(info.nSIDs) + "SID)";
+        tuple.set_str (Tuple::Comment, comment.c_str());
+    } else {
+        tuple.set_str (Tuple::Comment, info.sidModel);
+    }
 
     /* Get sub-tune information, if available */
     if (subTune < 0 || info.startTune > info.nsubTunes)
