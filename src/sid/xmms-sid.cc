@@ -24,6 +24,7 @@
 #include <assert.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
@@ -224,6 +225,26 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
     tuple.set_str (Tuple::Title, info.sidName);
     tuple.set_str (Tuple::Artist, info.sidComposer);
     tuple.set_str (Tuple::Copyright, info.sidCopyright);
+
+    // parse separate year and publisher tuples from copyright
+    // note: year range like 1991-93 becomes 1991, year strings like 198? and 19?? are ignored
+    int len = strlen (info.sidCopyright);
+    int idx = 4;
+    if (len >= 4) {
+        StringBuf yearS = str_copy (info.sidCopyright, 4);
+        int year = atoi (yearS);
+        if (year > 1900)
+            tuple.set_int (Tuple::Year, year);
+        // skip space after year
+        while (idx < len)
+            if (info.sidCopyright[idx++] == ' ')
+                break;
+    }
+    if (idx < len) {
+        StringBuf publisher = str_copy (info.sidCopyright + idx, len - idx);
+        tuple.set_str (Tuple::Publisher, publisher);
+    }
+
     tuple.set_str (Tuple::Codec, info.sidFormat);
 
     /* Get sub-tune information, if available */
