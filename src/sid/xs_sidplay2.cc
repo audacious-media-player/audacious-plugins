@@ -209,6 +209,14 @@ void xs_sidplayfp_close()
         state.database.close();
 }
 
+/* Reset SIDPlayFP engine
+ */
+void xs_sidplayfp_reset()
+{
+    if (state.currEng) {
+        state.currEng->reset();
+    }
+}
 
 /* Initialize current song and sub-tune
  */

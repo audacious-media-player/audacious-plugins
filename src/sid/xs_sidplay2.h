@@ -7,6 +7,7 @@
 
 bool xs_sidplayfp_probe(const void *buf, int64_t bufSize);
 void xs_sidplayfp_close();
+void xs_sidplayfp_reset();
 bool xs_sidplayfp_init();
 bool xs_sidplayfp_initsong(int subtune);
 unsigned xs_sidplayfp_fillbuffer(char *, unsigned);

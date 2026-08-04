@@ -181,8 +181,29 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
 
     while (! check_stop ())
     {
-        if (check_seek () >= 0)
-            AUDWARN ("Seeking is not implemented, ignoring.\n");
+        // no seek API currently available: https://github.com/libsidplayfp/libsidplayfp/issues/247
+        int seek = check_seek ();
+        if (seek >= 0) {
+            int current_time = aud::rescale<int64_t> (bytes_played,
+              xs_cfg.audioFrequency * xs_cfg.audioChannels * 2, 1000);
+            if (seek < current_time) {
+                // backwards seek, restart playback from beginning
+                xs_sidplayfp_reset();
+                current_time = 0;
+                bytes_played = 0;
+            }
+            int bytes_to_skip = aud::rescale<int64_t> (seek - current_time,
+              1000, xs_cfg.audioFrequency * xs_cfg.audioChannels * 2);
+            while (bytes_to_skip > 0) {
+                int bytes_skipped = xs_sidplayfp_fillbuffer(audioBuffer, audioBufSize);
+                if (bytes_skipped <= 0)
+                    break;
+                if (bytes_skipped > bytes_to_skip)
+                    bytes_skipped = bytes_to_skip;
+                bytes_played += bytes_skipped;
+                bytes_to_skip -= bytes_skipped;
+            }              
+        }
 
         int bufRemaining = xs_sidplayfp_fillbuffer(audioBuffer, audioBufSize);
 
