@@ -43,8 +43,8 @@ struct xs_subtuneinfo_t
 
 struct xs_tuneinfo_t
 {
-    String sidName, sidComposer, sidCopyright, sidFormat;
-    int nsubTunes, startTune;
+    String sidName, sidComposer, sidCopyright, sidFormat, sidModel;
+    int nsubTunes, startTune, nSIDs;
     Index<xs_subtuneinfo_t> subTunes;
 };
 

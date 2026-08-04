@@ -225,6 +225,9 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
     tuple.set_str (Tuple::Artist, info.sidComposer);
     tuple.set_str (Tuple::Copyright, info.sidCopyright);
     tuple.set_str (Tuple::Codec, info.sidFormat);
+    tuple.set_str (Tuple::Comment, info.nSIDs > 1
+        ? str_printf ("%s (%dSID)", (const char *) info.sidModel, info.nSIDs)
+        : info.sidModel);
 
     /* Get sub-tune information, if available */
     if (subTune < 0 || info.startTune > info.nsubTunes)

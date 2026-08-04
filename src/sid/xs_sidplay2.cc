@@ -279,6 +279,14 @@ bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const void *buf, int64_t bufSize)
 
     ti.sidFormat = String (myInfo->formatString());
 
+    ti.nSIDs = myInfo->sidChips();
+    if (myInfo->sidModel(0) == SidTuneInfo::SIDMODEL_6581)
+        ti.sidModel = String ("MOS6581");
+    else if (myInfo->sidModel(0) == SidTuneInfo::SIDMODEL_8580)
+        ti.sidModel = String ("CSG8580");
+    else
+        ti.sidModel = String ();
+
     /* Fill in subtune information */
     ti.subTunes.insert(0, ti.nsubTunes);
 
