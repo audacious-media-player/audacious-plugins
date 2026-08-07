@@ -96,6 +96,7 @@
 //*************************************************************************//
 
 #include "stdafx.h"
+#include <stdint.h>
 
 #define _IN_SPU
 
@@ -456,16 +457,20 @@ static void *MAINThread(void (*update)(const void *, int))
 
              // A channel with no valid stop/loop flag in its stream (or one
              // whose stream ran out without being refilled) would otherwise
-             // have pCurr walk straight off the end of the 2MB spuMem
-             // buffer with no bounds check at all, reading whatever memory
-             // happens to follow it in the process. Treat running outside
-             // the buffer the same as the explicit stop sentinel above.
+             // have pCurr walk straight off the end of the 2MB spuMem buffer
+             // with no bounds check at all, reading whatever memory happens
+             // to follow it in the process. spuMem is addressed by real SPU2
+             // hardware as fixed-size RAM whose address naturally wraps on
+             // overflow, so mirror that instead of stopping the channel:
+             // wrapping is what lets a streaming driver's own read-ahead
+             // logic (which polls the voice's address via sceSdGetAddr to
+             // decide when to request more data) keep seeing progress.
              if (start < spuMemC || start >= spuMemC + sizeof(spuMem))
               {
-               s_chan[ch].bOn=0;
-               s_chan[ch].ADSRX.lVolume=0;
-               s_chan[ch].ADSRX.EnvelopeVol=0;
-               goto ENDX;
+               uintptr_t off = (uintptr_t)(start - spuMemC);
+               off &= (sizeof(spuMem) - 1);
+               start = spuMemC + off;
+               s_chan[ch].pCurr = start;
               }
 
              s_chan[ch].iSBPos=0;
