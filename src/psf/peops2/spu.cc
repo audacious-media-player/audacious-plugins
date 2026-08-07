@@ -454,6 +454,20 @@ static void *MAINThread(void (*update)(const void *, int))
                goto ENDX;                              // -> and done for this channel
               }
 
+             // A channel with no valid stop/loop flag in its stream (or one
+             // whose stream ran out without being refilled) would otherwise
+             // have pCurr walk straight off the end of the 2MB spuMem
+             // buffer with no bounds check at all, reading whatever memory
+             // happens to follow it in the process. Treat running outside
+             // the buffer the same as the explicit stop sentinel above.
+             if (start < spuMemC || start >= spuMemC + sizeof(spuMem))
+              {
+               s_chan[ch].bOn=0;
+               s_chan[ch].ADSRX.lVolume=0;
+               s_chan[ch].ADSRX.EnvelopeVol=0;
+               goto ENDX;
+              }
+
              s_chan[ch].iSBPos=0;
 
              //////////////////////////////////////////// spu irq handler here? mmm... do it later
@@ -779,19 +793,24 @@ ENDX:   ;
    }
   else if((((u8*)pS)-((u8*)pSpuBuffer)) == (735*4))
    {
+    // Check each stereo channel's silence independently: a block should
+    // only be dropped as "not worth delivering" if BOTH channels are
+    // mostly silent. Checking the interleaved L+R buffer as one pool (as
+    // this used to) means one channel being legitimately silent (e.g. a
+    // mono voice, or a channel that has run out of streamed data) is
+    // enough on its own to discard the other channel's live audio too.
     short *pSilenceIter = (short *)pSpuBuffer;
-    int iSilenceCount = 0;
+    int iSilenceCountL = 0, iSilenceCountR = 0;
 
-    for(; pSilenceIter < pS; pSilenceIter++)
+    for(; pSilenceIter < pS; pSilenceIter += 2)
      {
-      if(*pSilenceIter == 0)
-       iSilenceCount++;
-
-      if(iSilenceCount > 20)
-       break;
+      if(pSilenceIter[0] == 0)
+       iSilenceCountL++;
+      if(pSilenceIter[1] == 0)
+       iSilenceCountR++;
      }
 
-    if(iSilenceCount < 20)
+    if(iSilenceCountL < 20 || iSilenceCountR < 20)
      update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer);
 
     pS=(short *)pSpuBuffer;
