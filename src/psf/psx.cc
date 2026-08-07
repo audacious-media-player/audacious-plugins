@@ -252,7 +252,11 @@ static inline void mips_set_cp0r( int reg, uint32_t value )
 
 static inline void mips_commit_delayed_load( void )
 {
-	if( mipscpu.delayr != 0 )
+	// delayr can also hold the REGPC sentinel (a pending delayed *branch*,
+	// not a pending register load) - mips_delayed_branch() calls this
+	// unconditionally when a branch sits in another branch's delay slot,
+	// so this must not treat REGPC as a real register index.
+	if( mipscpu.delayr != 0 && mipscpu.delayr != REGPC )
 	{
 		mipscpu.r[ mipscpu.delayr ] = mipscpu.delayv;
 		mipscpu.delayr = 0;
