@@ -805,25 +805,18 @@ ENDX:   ;
    }
   else if((((u8*)pS)-((u8*)pSpuBuffer)) == (735*4))
    {
-    // Check each stereo channel's silence independently: a block should
-    // only be dropped as "not worth delivering" if BOTH channels are
-    // mostly silent. Checking the interleaved L+R buffer as one pool (as
-    // this used to) means one channel being legitimately silent (e.g. a
-    // mono voice, or a channel that has run out of streamed data) is
-    // enough on its own to discard the other channel's live audio too.
-    short *pSilenceIter = (short *)pSpuBuffer;
-    int iSilenceCountL = 0, iSilenceCountR = 0;
-
-    for(; pSilenceIter < pS; pSilenceIter += 2)
-     {
-      if(pSilenceIter[0] == 0)
-       iSilenceCountL++;
-      if(pSilenceIter[1] == 0)
-       iSilenceCountR++;
-     }
-
-    if(iSilenceCountL < 20 || iSilenceCountR < 20)
-     update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer);
+    // Always deliver every block, silent or not. Skipping a block - even a
+    // genuinely, fully silent one - doesn't just mute it, it erases that
+    // block's worth of time from the output entirely: playback progress is
+    // tracked by how much audio has been delivered, not a fixed wall-clock
+    // timer, so any dropped block shortens the track. A real rest in the
+    // music still takes real time to "play" on real hardware; the previous
+    // discard heuristic (originally a "don't bother sending silence"
+    // optimization, and before that even cruder - checking the combined
+    // L+R buffer as one pool) caused a systematic, cumulative duration
+    // shortfall for any track with real pauses/quiet passages, scattered
+    // throughout the track rather than just at its start or end.
+    update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer);
 
     pS=(short *)pSpuBuffer;
    }
