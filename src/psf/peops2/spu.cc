@@ -459,19 +459,26 @@ static void *MAINThread(void (*update)(const void *, int))
              // whose stream ran out without being refilled) would otherwise
              // have pCurr walk straight off the end of the 2MB spuMem buffer
              // with no bounds check at all, reading whatever memory happens
-             // to follow it in the process. spuMem is addressed by real SPU2
-             // hardware as fixed-size RAM whose address naturally wraps on
-             // overflow, so mirror that instead of stopping the channel:
-             // wrapping is what lets a streaming driver's own read-ahead
-             // logic (which polls the voice's address via sceSdGetAddr to
-             // decide when to request more data) keep seeing progress.
-             if (start < spuMemC || start >= spuMemC + sizeof(spuMem))
-              {
-               uintptr_t off = (uintptr_t)(start - spuMemC);
-               off &= (sizeof(spuMem) - 1);
-               start = spuMemC + off;
-               s_chan[ch].pCurr = start;
-              }
+             // to follow it in the process. Streaming drivers built around
+             // sceSdGetAddr-style read-ahead accounting (this one included)
+             // expect a voice's reported address to stay within its own
+             // buffer window, anchored at pStart - letting it grow across
+             // the whole 2MB spuMem array (even just as a safety wrap) feeds
+             // that accounting values far outside the range it was designed
+             // for, which can saturate a driver's own clamped arithmetic and
+             // stall its refill logic indefinitely. Wrapping within pStart's
+             // own window keeps the reported address sane instead.
+             {
+              const uintptr_t ring_size = 0x20000;
+              if (start < s_chan[ch].pStart || start >= s_chan[ch].pStart + ring_size
+                  || start < spuMemC || start >= spuMemC + sizeof(spuMem))
+               {
+                uintptr_t off = (uintptr_t)(start - s_chan[ch].pStart);
+                off &= (ring_size - 1);
+                start = s_chan[ch].pStart + off;
+                s_chan[ch].pCurr = start;
+               }
+             }
 
              s_chan[ch].iSBPos=0;
 
