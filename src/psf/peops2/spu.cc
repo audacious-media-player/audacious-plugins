@@ -476,6 +476,27 @@ static void *MAINThread(void (*update)(const void *, int))
                 uintptr_t off = (uintptr_t)(start - s_chan[ch].pStart);
                 off &= (ring_size - 1);
                 start = s_chan[ch].pStart + off;
+
+                // pStart itself is driver/register-controlled (a real, in-spec
+                // 20-bit start address can legitimately sit as little as 2
+                // bytes from the end of the 2MB spuMem array), so pStart's own
+                // ring_size window can extend past the real buffer even after
+                // the wrap above. There's no sane data to continue decoding
+                // from in that case (wrapping to some arbitrary offset in
+                // spuMem would just play back whatever unrelated bytes happen
+                // to live there, likely never hitting a real stop/loop flag -
+                // a stuck/hung note instead of a crash). Treat it the same as
+                // the sentinel stop condition instead: it's a genuine
+                // out-of-range address, not a legitimate case to keep playing.
+                if (start < spuMemC || start >= spuMemC + sizeof(spuMem))
+                 {
+                  s_chan[ch].bOn=0;
+                  s_chan[ch].ADSRX.lVolume=0;
+                  s_chan[ch].ADSRX.EnvelopeVol=0;
+                  s_chan[ch].pCurr=(unsigned char*)-1;
+                  goto ENDX;
+                 }
+
                 s_chan[ch].pCurr = start;
                }
              }
