@@ -992,12 +992,16 @@ static void call_irq_routine(uint32_t routine, uint32_t parameter)
 		// at 100% CPU with no way for the user to recover short of killing
 		// the process (FFX-2's Crimson Squad hits this). Cap the
 		// wait so a misbehaving handler is abandoned instead of hanging
-		// for ever - real handlers return within a tiny fraction of this.
+		// for ever. The budget needs to stay generous, though: a smaller
+		// 10000-cycle cap tried initially cut off legitimately slow (but
+		// working) handlers mid-execution, which silenced FFX-2's Game
+		// Over and Good Night for the rest of playback even though they
+		// play back correctly given enough cycles to finish.
 		uint64_t softcall_cycles = 0;
 		while (!softcall_target)
 		{
 			softcall_cycles += mips_execute(10);
-			if (softcall_cycles > 10000)
+			if (softcall_cycles > 40960)
 			{
 				fprintf(stderr, "IOP: ERROR! IRQ handler at %08x never returned - abandoning softcall\n", routine);
 				break;
@@ -1078,7 +1082,7 @@ static void psx_bios_exception(uint32_t pc)
 						while (!softcall_target)
 						{
 							softcall_cycles += mips_execute(10);
-							if (softcall_cycles > 10000)
+							if (softcall_cycles > 40960)
 							{
 								fprintf(stderr, "IOP: ERROR! VBlank handler never returned - abandoning softcall\n");
 								break;
@@ -1119,7 +1123,7 @@ static void psx_bios_exception(uint32_t pc)
 								while (!softcall_target)
 								{
 									softcall_cycles += mips_execute(10);
-									if (softcall_cycles > 10000)
+									if (softcall_cycles > 40960)
 									{
 										fprintf(stderr, "IOP: ERROR! root counter %d handler never returned - abandoning softcall\n", i);
 										break;
