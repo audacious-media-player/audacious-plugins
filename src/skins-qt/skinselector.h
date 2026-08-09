@@ -23,15 +23,51 @@
 #ifndef SKINS_UI_SKINSELECTOR_H
 #define SKINS_UI_SKINSELECTOR_H
 
-#include <libaudcore/index.h>
-#include <libaudcore/objects.h>
+#include <QListView>
+#include <QStandardItemModel>
+#include <QStyledItemDelegate>
 
-struct SkinNode {
-    String name, desc, path;
+class SkinSelectorModel : public QStandardItemModel
+{
+public:
+    explicit SkinSelectorModel (QObject * parent = nullptr);
+
+    void setActiveIndex (const QModelIndex & index);
+    QModelIndex activeIndex () const;
+    void refresh ();
+
+private:
+    QStandardItem * m_active_item = nullptr;
 };
 
-extern Index<SkinNode> skinlist;
+class SkinSelectorView : public QListView
+{
+public:
+    explicit SkinSelectorView (QWidget * parent = nullptr);
+    void refresh ();
 
-void skinlist_update ();
+protected:
+    QSize sizeHint () const override;
+    void dragEnterEvent (QDragEnterEvent * event) override;
+    void dragMoveEvent (QDragMoveEvent * event) override;
+    void dropEvent (QDropEvent * event) override;
+    void currentChanged (const QModelIndex & current,
+                         const QModelIndex & previous) override;
+private:
+    SkinSelectorModel * m_model;
+};
+
+class SkinSelectorItemDelegate : public QStyledItemDelegate
+{
+public:
+    explicit SkinSelectorItemDelegate (QObject * parent = nullptr);
+
+    void paint (QPainter * painter,
+                const QStyleOptionViewItem & option,
+                const QModelIndex & index) const override;
+
+    QSize sizeHint (const QStyleOptionViewItem & option,
+                    const QModelIndex & index) const override;
+};
 
 #endif /* SKINS_UI_SKINSELECTOR_H */

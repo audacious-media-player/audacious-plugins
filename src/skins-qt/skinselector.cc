@@ -22,22 +22,43 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include <glib.h>
+
+#include <QApplication>
+#include <QDragEnterEvent>
+#include <QMimeData>
+#include <QPainter>
+#include <QPixmap>
+#include <QStandardItem>
+#include <QTimer>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
+#include <libaudqt/libaudqt.h>
 
 #include "plugin.h"
+#include "skin.h"
 #include "skinselector.h"
 #include "skins_util.h"
+#include "view.h"
 
-Index<SkinNode> skinlist;
+struct SkinNode {
+    String name, desc, path;
+};
 
-#if 0
-static AudguiPixbuf skin_get_preview (const char * path)
+enum SkinSelectorRoles {
+    PixmapRole = Qt::UserRole + 1,
+    TitleRole,
+    SubtitleRole
+};
+
+static Index<SkinNode> skinlist;
+
+static QPixmap skin_get_preview (const char * path)
 {
-    AudguiPixbuf preview;
+    QPixmap preview;
 
     StringBuf archive_path;
     if (file_is_archive (path))
@@ -51,7 +72,7 @@ static AudguiPixbuf skin_get_preview (const char * path)
 
     StringBuf preview_path = skin_pixmap_locate (path, "main");
     if (preview_path)
-        preview.capture (gdk_pixbuf_new_from_file (preview_path, nullptr));
+        preview.load ((const char *) preview_path);
 
     if (archive_path)
         del_directory (archive_path);
@@ -59,34 +80,38 @@ static AudguiPixbuf skin_get_preview (const char * path)
     return preview;
 }
 
-static AudguiPixbuf skin_get_thumbnail (const char * path)
+static QPixmap skin_get_thumbnail (const char * path)
 {
     StringBuf base = filename_get_base (path);
+    constexpr const char * format = "PNG";
     base.insert (-1, ".png");
 
     StringBuf thumbname = filename_build ({skins_get_skin_thumb_dir (), base});
-    AudguiPixbuf thumb;
+    QPixmap thumb;
 
     if (g_file_test (thumbname, G_FILE_TEST_EXISTS))
-        thumb.capture (gdk_pixbuf_new_from_file (thumbname, nullptr));
+        thumb.load ((const char *) thumbname, format);
 
-    if (! thumb)
+    if (thumb.isNull ())
     {
         thumb = skin_get_preview (path);
 
-        if (thumb)
+        if (! thumb.isNull ())
         {
             make_directory (skins_get_skin_thumb_dir ());
-            gdk_pixbuf_save (thumb.get (), thumbname, "png", nullptr, nullptr);
+            thumb.save ((const char *) thumbname, format);
         }
     }
 
-    if (thumb)
-        audgui_pixbuf_scale_within (thumb, audgui_get_dpi () * 3 / 2);
+    if (! thumb.isNull ())
+    {
+        return thumb.scaledToWidth (
+            audqt::sizes.OneInch * 3 / 2,
+            Qt::SmoothTransformation);
+    }
 
     return thumb;
 }
-#endif
 
 static void scan_skindir_func (const char * path, const char * basename)
 {
@@ -101,7 +126,7 @@ static void scan_skindir_func (const char * path, const char * basename)
          String (_("Unarchived Winamp 2.x skin")), String (path));
 }
 
-void skinlist_update ()
+static void skinlist_update ()
 {
     skinlist.clear ();
 
@@ -121,4 +146,258 @@ void skinlist_update ()
 
     skinlist.sort ([] (const SkinNode & a, const SkinNode & b)
         { return str_compare (a.name, b.name); });
+}
+
+SkinSelectorItemDelegate::SkinSelectorItemDelegate (QObject * parent)
+    : QStyledItemDelegate (parent)
+{
+}
+
+QSize SkinSelectorItemDelegate::sizeHint (const QStyleOptionViewItem & option,
+                                          const QModelIndex & index) const
+{
+    return QSize (350, 65);
+}
+
+void SkinSelectorItemDelegate::paint (QPainter * painter,
+                                      const QStyleOptionViewItem & option,
+                                      const QModelIndex & index) const
+{
+    painter->save ();
+
+    QStyleOptionViewItem opt (option);
+    QApplication::style ()->drawPrimitive (
+        QStyle::PE_PanelItemViewItem,
+        & opt,
+        painter);
+
+    QPixmap pixmap = index.data (PixmapRole).value<QPixmap> ();
+    QString title = index.data (TitleRole).toString ();
+    QString subtitle = index.data (SubtitleRole).toString ();
+
+    QRect rect = option.rect;
+
+    constexpr int margin = 2;
+    constexpr int spacing = 4;
+    constexpr int image_width = 144;
+    constexpr int image_height = 61;
+
+    QRect image_rect (
+        rect.left () + margin,
+        rect.top () + (rect.height () - image_height) / 2,
+        image_width,
+        image_height);
+
+    QRect text_rect (
+        image_rect.right () + 4 * spacing,
+        rect.top (),
+        rect.right () - image_rect.right (),
+        rect.height ());
+
+    if (! pixmap.isNull ())
+    {
+        painter->drawPixmap (
+            rect.left () + margin,
+            rect.top () + (rect.height () - pixmap.height ()) / 2,
+            pixmap);
+    }
+
+    QFont title_font = option.font;
+    title_font.setBold (true);
+
+    QFont subtitle_font = option.font;
+    subtitle_font.setItalic (true);
+
+    QFontMetrics title_fm (title_font);
+    QFontMetrics subtitle_fm (subtitle_font);
+
+    int total_height = title_fm.height () + spacing + subtitle_fm.height ();
+    int y = rect.top () + (rect.height () - total_height) / 2;
+
+    QColor title_color = (option.state & QStyle::State_Selected)
+        ? option.palette.highlightedText ().color ()
+        : option.palette.text ().color ();
+
+    QColor subtitle_color = (option.state & QStyle::State_Selected)
+        ? option.palette.highlightedText ().color ()
+        : option.palette.placeholderText ().color ();
+
+    painter->setFont (title_font);
+    painter->setPen (title_color);
+
+    painter->drawText (
+        QRect (text_rect.left (), y,
+               text_rect.width (), title_fm.height ()),
+        Qt::AlignLeft | Qt::AlignVCenter,
+        title);
+
+    painter->setFont (subtitle_font);
+    painter->setPen (subtitle_color);
+
+    painter->drawText (
+        QRect (text_rect.left (),
+               y + title_fm.height () + spacing,
+               text_rect.width (),
+               subtitle_fm.height ()),
+        Qt::AlignLeft | Qt::AlignVCenter,
+        subtitle);
+
+    painter->restore ();
+}
+
+SkinSelectorView::SkinSelectorView (QWidget * parent) :
+    QListView (parent),
+    m_model (new SkinSelectorModel (this))
+{
+    setModel (m_model);
+    setItemDelegate (new SkinSelectorItemDelegate (this));
+
+    setDragDropMode (QAbstractItemView::DropOnly);
+    setEditTriggers (QAbstractItemView::NoEditTriggers);
+    setSelectionBehavior (QAbstractItemView::SelectRows);
+    setSelectionMode (QAbstractItemView::SingleSelection);
+    setVerticalScrollMode (QAbstractItemView::ScrollPerPixel);
+
+    setMinimumHeight (sizeHint ().height ());
+    setAlternatingRowColors (true);
+    setUniformItemSizes (true);
+
+    refresh ();
+}
+
+void SkinSelectorView::refresh ()
+{
+    skinlist_update ();
+    m_model->refresh ();
+
+    QModelIndex index = m_model->activeIndex ();
+    if (! index.isValid ())
+        return;
+
+    QSignalBlocker blocker (selectionModel ());
+    setCurrentIndex (index);
+    blocker.unblock ();
+
+    QTimer::singleShot (0, this, [this] {
+        QModelIndex index = m_model->activeIndex ();
+        if (index.isValid ())
+            scrollTo (index, QAbstractItemView::PositionAtCenter);
+    });
+}
+
+QSize SkinSelectorView::sizeHint () const
+{
+    QSize size = QListView::sizeHint ();
+    size.setHeight (audqt::sizes.OneInch * 3 / 2);
+    return size;
+}
+
+void SkinSelectorView::dragEnterEvent (QDragEnterEvent * event)
+{
+    dragMoveEvent (event);
+}
+
+void SkinSelectorView::dragMoveEvent (QDragMoveEvent * event)
+{
+    if (event->mimeData ()->hasUrls ())
+        event->acceptProposedAction ();
+}
+
+void SkinSelectorView::dropEvent (QDropEvent * event)
+{
+    const QMimeData * mimedata = event->mimeData ();
+    if (! mimedata->hasUrls ())
+        return;
+
+    bool installed_skin = false;
+
+    for (const auto & url : mimedata->urls ())
+    {
+        if (! url.isLocalFile ())
+            continue;
+
+        QByteArray local_file = url.toLocalFile ().toUtf8 ();
+        const char * path = local_file.constData ();
+
+        if (str_has_suffix_nocase (path, ".wsz") ||
+            str_has_suffix_nocase (path, ".zip"))
+        {
+            if (! skin_load (path))
+                continue;
+
+            view_apply_skin ();
+            skin_install_skin (path);
+            installed_skin = true;
+        }
+    }
+
+    if (installed_skin)
+    {
+        refresh ();
+        event->acceptProposedAction ();
+    }
+}
+
+void SkinSelectorView::currentChanged (const QModelIndex & current,
+                                       const QModelIndex & previous)
+{
+    QListView::currentChanged (current, previous);
+
+    int row = current.row ();
+    if (row < 0 || row >= skinlist.len ())
+        return;
+
+    if (! skin_load (skinlist[row].path))
+        return;
+
+    view_apply_skin ();
+    m_model->setActiveIndex (current);
+}
+
+SkinSelectorModel::SkinSelectorModel (QObject * parent) :
+    QStandardItemModel (parent)
+{
+}
+
+void SkinSelectorModel::setActiveIndex (const QModelIndex & index)
+{
+    m_active_item = index.isValid () ? itemFromIndex (index) : nullptr;
+}
+
+QModelIndex SkinSelectorModel::activeIndex () const
+{
+    return m_active_item ? indexFromItem (m_active_item) : QModelIndex ();
+}
+
+void SkinSelectorModel::refresh ()
+{
+    beginResetModel ();
+
+    m_active_item = nullptr;
+    removeRows (0, rowCount ());
+
+    int active_row = -1;
+    String current_path = aud_get_str ("skins", "skin");
+    int n_skins = skinlist.len ();
+
+    for (int i = 0; i < n_skins; i ++)
+    {
+        const SkinNode & node = skinlist[i];
+        auto * item = new QStandardItem;
+
+        item->setData (skin_get_thumbnail ((const char *) node.path), PixmapRole);
+        item->setData (QString::fromUtf8 ((const char *) node.name), TitleRole);
+        item->setData (QString::fromUtf8 ((const char *) node.desc), SubtitleRole);
+
+        appendRow (item);
+
+        if (active_row < 0 && ! strcmp (current_path, skinlist[i].path))
+            active_row = i;
+    }
+
+    QModelIndex index = this->index (active_row, 0);
+    if (index.isValid ())
+        setActiveIndex (index);
+
+    endResetModel ();
 }

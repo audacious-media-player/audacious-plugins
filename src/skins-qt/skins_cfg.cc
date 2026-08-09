@@ -28,12 +28,10 @@
 #include "main.h"
 #include "vis-callbacks.h"
 #include "playlistwin.h"
-#include "skin.h"
 #include "playlist-widget.h"
 #include "textbox.h"
 #include "skinselector.h"
 #include "vis.h"
-#include "view.h"
 
 static const char * const skins_defaults[] = {
     /* general */
@@ -120,9 +118,6 @@ static const struct {
     {"playlist_height", & config.playlist_height}
 };
 
-static String selected_skin;
-static Index<ComboItem> skin_combo;
-
 void skins_cfg_load ()
 {
     aud_config_set_defaults ("skins", skins_defaults);
@@ -141,25 +136,6 @@ void skins_cfg_save ()
 
     for (auto & nument : skins_numents)
         aud_set_int ("skins", nument.name, * nument.ptr);
-}
-
-static ArrayRef<ComboItem> skin_combo_fill ()
-{
-    selected_skin = aud_get_str ("skins", "skin");
-
-    skin_combo.clear ();
-    skinlist_update ();
-
-    for (auto & node : skinlist)
-        skin_combo.append (node.name, node.path);
-
-    return {skin_combo.begin (), skin_combo.len ()};
-}
-
-static void skin_select_cb ()
-{
-    if (skin_load (selected_skin))
-        view_apply_skin ();
 }
 
 static void mainwin_font_set_cb ()
@@ -190,6 +166,11 @@ static void vis_reset_cb ()
     start_stop_visual (false);
 }
 
+static void * create_skin_view ()
+{
+    return new SkinSelectorView;
+}
+
 static const PreferencesWidget font_table_elements[] = {
     WidgetFonts (N_("Player:"),
         WidgetString ("skins", "mainwin_font", mainwin_font_set_cb),
@@ -201,9 +182,7 @@ static const PreferencesWidget font_table_elements[] = {
 
 static const PreferencesWidget skins_widgets_general[] = {
     WidgetLabel (N_("<b>Skin</b>")),
-    WidgetCombo (nullptr,
-        WidgetString (selected_skin, skin_select_cb),
-        {nullptr, skin_combo_fill}),
+    WidgetCustomQt (create_skin_view),
     WidgetCheck (N_("Display active titlebar when any window is focused"),
         WidgetBool (config.active_titlebar_any, nullptr)),
     WidgetLabel (N_("<b>Fonts</b>")),
