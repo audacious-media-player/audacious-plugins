@@ -162,7 +162,7 @@ void skin_view_update (GtkTreeView * treeview)
          SKIN_VIEW_COL_FORMATTEDNAME, (const char *) formattedname,
          SKIN_VIEW_COL_NAME, (const char *) node.name, -1);
 
-        if (! current_skin && strstr (current_path, node.name))
+        if (! current_skin && ! strcmp (current_path, node.path))
             current_skin = gtk_tree_model_get_path ((GtkTreeModel *) store, & iter);
     }
 
