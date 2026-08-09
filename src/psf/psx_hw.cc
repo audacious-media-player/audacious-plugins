@@ -182,6 +182,7 @@ typedef struct
 static Counter root_cnts[4];	// 4 of the bastards
 
 #define CLOCK_DIV	(8)	// 33 MHz / this = what we run the R3000 at to keep the CPU usage not insane
+#define IOP_CYCLES_PER_SAMPLE	(836)	// raw (undivided) IOP clock cycles per PS2 audio sample: 36864000 Hz (768*48000) / 44100 Hz
 
 // counter modes
 #define RC_EN		(0x0001)	// halt
@@ -872,7 +873,7 @@ void ps2_hw_slice(void)
 
 	if (iCurThread != -1)
 	{
-		mips_execute(836/CLOCK_DIV);
+		mips_execute(IOP_CYCLES_PER_SAMPLE/CLOCK_DIV);
 	}
 	else	// no thread, don't run CPU, just update counters
 	{
@@ -882,8 +883,8 @@ void ps2_hw_slice(void)
 
 			if (iCurThread != -1)
 			{
-				mips_execute((836/CLOCK_DIV)-i);
-				i = (836/CLOCK_DIV);
+				mips_execute((IOP_CYCLES_PER_SAMPLE/CLOCK_DIV)-i);
+				i = (IOP_CYCLES_PER_SAMPLE/CLOCK_DIV);
 			}
 		}
 	}
@@ -1892,7 +1893,7 @@ void psx_hw_runcounters(void)
 			}
 		}
 
-		sys_time += 836;
+		sys_time += IOP_CYCLES_PER_SAMPLE;
 
 		if (iNumTimers > 0)
 		{
@@ -1900,7 +1901,7 @@ void psx_hw_runcounters(void)
 			{
 				if (iop_timers[i].iActive > 0)
 				{
-					iop_timers[i].count += 836;
+					iop_timers[i].count += IOP_CYCLES_PER_SAMPLE;
 					if (iop_timers[i].count >= iop_timers[i].target)
 					{
 						iop_timers[i].count -= iop_timers[i].target;
