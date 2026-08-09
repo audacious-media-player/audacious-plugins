@@ -108,9 +108,15 @@ EXPORT_GCC void CALLBACK SPU2writeDMA4Mem(u32 usPSXMem,int iSize)
   {
    spuMem[spuAddr2[0]] = ram16[usPSXMem>>1];                 // spu addr 0 got by writeregister
    usPSXMem+=2;
+   {
+    u32 written_end = (spuAddr2[0]+1)*2;
+    if (written_end > g_spuMem_write_high) g_spuMem_write_high = written_end;
+   }
    spuAddr2[0]++;                                      // inc spu addr
    if(spuAddr2[0]>0xfffff) spuAddr2[0]=0;              // wrap
   }
+
+ g_last_spu2_dma_sampcount = sampcount;
 
  iSpuAsyncWait=0;
 
@@ -126,9 +132,15 @@ EXPORT_GCC void CALLBACK SPU2writeDMA7Mem(u32 usPSXMem,int iSize)
  for(i=0;i<iSize;i++)
   {
    spuMem[spuAddr2[1]] = ram16[usPSXMem>>1];           // spu addr 1 got by writeregister
+   {
+    u32 written_end = (spuAddr2[1]+1)*2;
+    if (written_end > g_spuMem_write_high) g_spuMem_write_high = written_end;
+   }
    spuAddr2[1]++;                                      // inc spu addr
    if(spuAddr2[1]>0xfffff) spuAddr2[1]=0;              // wrap
   }
+
+ g_last_spu2_dma_sampcount = sampcount;
 
  iSpuAsyncWait=0;
 

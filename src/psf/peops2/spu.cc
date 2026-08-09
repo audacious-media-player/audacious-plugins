@@ -326,7 +326,22 @@ static inline void StartSound(int ch)
 // basically the whole sound processing is done in this fat func!
 ////////////////////////////////////////////////////////////////////////
 
-static u32 sampcount;
+u32 sampcount;
+
+// Song-time (in sampcount units) of the most recent SPU2 DMA write, updated
+// from dma.cc. Used by the ADPCM ring-wrap logic below to tell an actively-
+// streamed voice (fresh data still arriving) apart from a fully-preloaded
+// one whose data simply ran out.
+u32 g_last_spu2_dma_sampcount = 0;
+
+// Running high-water mark (byte offset into spuMemC) of the furthest point
+// any SPU2 DMA write has ever reached, updated from dma.cc. Lets the
+// ADPCM ring-wrap logic below tell "genuinely never-written memory" apart
+// from "real data that was written a while ago" - DMA write recency alone
+// isn't enough, since a normal fully-preloaded track has its whole body
+// written once, long before decode reaches the end of it.
+u32 g_spuMem_write_high = 0;
+
 static u32 decaybegin;
 static u32 decayend;
 
@@ -468,36 +483,94 @@ static void *MAINThread(void (*update)(const void *, int))
              // for, which can saturate a driver's own clamped arithmetic and
              // stall its refill logic indefinitely. Wrapping within pStart's
              // own window keeps the reported address sane instead.
+             //
+             // But this only makes sense while the channel's data is
+             // genuinely being actively streamed in (fresh DMA writes still
+             // landing, as with the hacked Corlett streaming driver this was
+             // written for). A normal, fully-preloaded one-shot track (the common case -
+             // its whole body DMA'd in once, up front) has no more data
+             // coming, but "no recent DMA writes" does NOT mean "no more
+             // real data exists" - the entire track's content, however
+             // large, was typically already written in one early burst.
+             // Wrapping (or worse, stopping) purely because DMA has been
+             // quiet for a couple of seconds cuts a track off as soon as
+             // decode passes the 128KB mark even though hundreds of KB of
+             // legitimate, already-loaded audio still follow it (an earlier
+             // version of this fix that used DMA recency alone cut FFX-2's
+             // "Game Over"/"Good Night" off at ~9s instead of their real
+             // ~15s).
+             //
+             // The two cases need genuinely different handling, not just a
+             // blended condition - a single global "has anything, anywhere,
+             // ever been written this far into spuMem" watermark isn't
+             // enough on its own either: unrelated data elsewhere in spuMem
+             // (e.g. other channels' own preloaded samples) can push that
+             // watermark well past an actively-streamed channel's own real
+             // window, which then never gets its small-window wrap at all -
+             // silencing it instead (this broke FFIV's streaming fix on the
+             // first attempt at this approach). So: while DMA is
+             // actively landing, keep exactly the original pStart-relative
+             // window wrap unconditionally, unrelated to any watermark.
+             // Only once DMA has been idle for a while - meaning nothing
+             // will ever refill this window again - fall back to the
+             // watermark to tell "more of this track's own preloaded data
+             // follows" apart from "genuinely nothing left, stop".
              {
               const uintptr_t ring_size = 0x20000;
-              if (start < s_chan[ch].pStart || start >= s_chan[ch].pStart + ring_size
-                  || start < spuMemC || start >= spuMemC + sizeof(spuMem))
-               {
-                uintptr_t off = (uintptr_t)(start - s_chan[ch].pStart);
-                off &= (ring_size - 1);
-                start = s_chan[ch].pStart + off;
+              const u32 dma_idle_samples = 2*44100;
+              bool dma_recently_active = (sampcount - g_last_spu2_dma_sampcount) < dma_idle_samples;
 
-                // pStart itself is driver/register-controlled (a real, in-spec
-                // 20-bit start address can legitimately sit as little as 2
-                // bytes from the end of the 2MB spuMem array), so pStart's own
-                // ring_size window can extend past the real buffer even after
-                // the wrap above. There's no sane data to continue decoding
-                // from in that case (wrapping to some arbitrary offset in
-                // spuMem would just play back whatever unrelated bytes happen
-                // to live there, likely never hitting a real stop/loop flag -
-                // a stuck/hung note instead of a crash). Treat it the same as
-                // the sentinel stop condition instead: it's a genuine
-                // out-of-range address, not a legitimate case to keep playing.
-                if (start < spuMemC || start >= spuMemC + sizeof(spuMem))
+              if (dma_recently_active)
+               {
+                bool out_of_window = (start < s_chan[ch].pStart || start >= s_chan[ch].pStart + ring_size
+                    || start < spuMemC || start >= spuMemC + sizeof(spuMem));
+                if (out_of_window)
                  {
+                  uintptr_t off = (uintptr_t)(start - s_chan[ch].pStart);
+                  off &= (ring_size - 1);
+                  start = s_chan[ch].pStart + off;
+
+                  // pStart itself is driver/register-controlled (a real, in-spec
+                  // 20-bit start address can legitimately sit as little as 2
+                  // bytes from the end of the 2MB spuMem array), so pStart's own
+                  // ring_size window can extend past the real buffer even after
+                  // the wrap above. There's no sane data to continue decoding
+                  // from in that case (wrapping to some arbitrary offset in
+                  // spuMem would just play back whatever unrelated bytes happen
+                  // to live there, likely never hitting a real stop/loop flag -
+                  // a stuck/hung note instead of a crash). Treat it the same as
+                  // the sentinel stop condition instead: it's a genuine
+                  // out-of-range address, not a legitimate case to keep playing.
+                  if (start < spuMemC || start >= spuMemC + sizeof(spuMem))
+                   {
+                    s_chan[ch].bOn=0;
+                    s_chan[ch].ADSRX.lVolume=0;
+                    s_chan[ch].ADSRX.EnvelopeVol=0;
+                    s_chan[ch].pCurr=(unsigned char*)-1;
+                    goto ENDX;
+                   }
+
+                  s_chan[ch].pCurr = start;
+                 }
+               }
+              else
+               {
+                bool beyond_written_data = (start < spuMemC) || (start >= spuMemC + sizeof(spuMem))
+                    || ((u32)(start - spuMemC) >= g_spuMem_write_high);
+                if (beyond_written_data)
+                 {
+                  // Nothing has ever been written this far into spuMem, and
+                  // no new data has landed recently either - there's
+                  // genuinely nothing left to read. End the channel
+                  // cleanly, same as the sentinel stop condition above.
                   s_chan[ch].bOn=0;
                   s_chan[ch].ADSRX.lVolume=0;
                   s_chan[ch].ADSRX.EnvelopeVol=0;
                   s_chan[ch].pCurr=(unsigned char*)-1;
                   goto ENDX;
                  }
-
-                s_chan[ch].pCurr = start;
+                // else: real, already-written data still follows - keep
+                // reading it as-is, no wrap needed.
                }
              }
 
