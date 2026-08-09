@@ -984,9 +984,25 @@ static void call_irq_routine(uint32_t routine, uint32_t parameter)
 
 	softcall_target = 0;
 	oldICount = mips_get_icount();
-	while (!softcall_target)
 	{
-		mips_execute(10);
+		// A softcall hands the interpreter straight to driver code with a
+		// synthetic $ra trap and just spins until that trap fires. A driver
+		// routine that derails (e.g. runs off into non-code memory and never
+		// executes the trap instruction) turns this into an unbounded spin
+		// at 100% CPU with no way for the user to recover short of killing
+		// the process (FFX-2's Crimson Squad hits this). Cap the
+		// wait so a misbehaving handler is abandoned instead of hanging
+		// for ever - real handlers return within a tiny fraction of this.
+		uint64_t softcall_cycles = 0;
+		while (!softcall_target)
+		{
+			softcall_cycles += mips_execute(10);
+			if (softcall_cycles > 10000)
+			{
+				fprintf(stderr, "IOP: ERROR! IRQ handler at %08x never returned - abandoning softcall\n", routine);
+				break;
+			}
+		}
 	}
 	mips_set_icount(oldICount);
 
@@ -1056,9 +1072,18 @@ static void psx_bios_exception(uint32_t pc)
 
 					softcall_target = 0;
 					oldICount = mips_get_icount();
-					while (!softcall_target)
 					{
-						mips_execute(10);
+						// See the matching comment in call_irq_routine().
+						uint64_t softcall_cycles = 0;
+						while (!softcall_target)
+						{
+							softcall_cycles += mips_execute(10);
+							if (softcall_cycles > 10000)
+							{
+								fprintf(stderr, "IOP: ERROR! VBlank handler never returned - abandoning softcall\n");
+								break;
+							}
+						}
 					}
 					mips_set_icount(oldICount);
 
@@ -1088,9 +1113,18 @@ static void psx_bios_exception(uint32_t pc)
 
 							softcall_target = 0;
 							oldICount = mips_get_icount();
-							while (!softcall_target)
 							{
-								mips_execute(10);
+								// See the matching comment in call_irq_routine().
+								uint64_t softcall_cycles = 0;
+								while (!softcall_target)
+								{
+									softcall_cycles += mips_execute(10);
+									if (softcall_cycles > 10000)
+									{
+										fprintf(stderr, "IOP: ERROR! root counter %d handler never returned - abandoning softcall\n", i);
+										break;
+									}
+								}
 							}
 							mips_set_icount(oldICount);
 
