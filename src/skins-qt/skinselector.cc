@@ -391,13 +391,12 @@ void SkinSelectorModel::refresh ()
 
         appendRow (item);
 
-        if (active_row < 0 && ! strcmp (current_path, skinlist[i].path))
+        if (active_row < 0 && ! strcmp (current_path, node.path))
             active_row = i;
     }
 
     QModelIndex index = this->index (active_row, 0);
-    if (index.isValid ())
-        setActiveIndex (index);
+    setActiveIndex (index);
 
     endResetModel ();
 }
