@@ -251,15 +251,8 @@ static bool read_mpg123_info(const char * filename, VFSFile & file,
     if (!s.valid())
         return false;
 
-    tuple.set_int(Tuple::Bitrate, s.info.bitrate);
-    tuple.set_str(Tuple::Codec, make_format_string(&s.info));
-    tuple.set_int(Tuple::Channels, s.channels);
-
-    const char * chan_str = (s.channels == 2)
-                                ? _("Stereo")
-                                : (s.channels > 2) ? _("Surround") : _("Mono");
-    tuple.set_str(Tuple::Quality,
-                  str_printf("%s, %d Hz", chan_str, (int)s.rate));
+    StringBuf fmt = make_format_string(&s.info);
+    tuple.set_format(fmt, s.channels, s.rate, s.info.bitrate);
 
     if (!stream && s.rate > 0)
     {
