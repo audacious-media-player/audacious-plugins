@@ -222,11 +222,14 @@ bool WavpackPlugin::read_tag (const char * filename, VFSFile & file, Tuple & tup
 
     AUDDBG ("starting probe of %s\n", file.filename ());
 
-    tuple.set_int (Tuple::Length,
-        ((uint64_t) WavpackGetNumSamples (ctx) * 1000) / (uint64_t) WavpackGetSampleRate (ctx));
-    tuple.set_str (Tuple::Codec, "WavPack");
+    int channels = WavpackGetNumChannels (ctx);
+    unsigned samplerate = WavpackGetSampleRate (ctx);
+    unsigned num_samples = WavpackGetNumSamples (ctx);
+    double bitrate = WavpackGetAverageBitrate (ctx, channels) / 1000;
+
+    tuple.set_format ("WavPack", channels, samplerate, (int) bitrate);
+    tuple.set_int (Tuple::Length, ((uint64_t) num_samples * 1000) / (uint64_t) samplerate);
     tuple.set_str (Tuple::Quality, wv_get_quality (ctx));
-    tuple.set_int (Tuple::Channels, WavpackGetNumChannels (ctx));
 
     WavpackCloseFile (ctx);
 
