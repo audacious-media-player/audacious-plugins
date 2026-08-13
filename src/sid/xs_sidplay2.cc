@@ -38,11 +38,9 @@
 #include <sidplayfp/builders/residfp.h>
 
 #ifndef LIBSIDPLAYFP_CHECK_VERSION
-#define LIBSIDPLAYFP_CHECK_VERSION(major,minor,micro)                               \
-    (LIBSIDPLAYFP_VERSION_MAJ > (major) ||                                          \
-     (LIBSIDPLAYFP_VERSION_MAJ == (major) && LIBSIDPLAYFP_VERSION_MIN > (minor)) || \
-     (LIBSIDPLAYFP_VERSION_MAJ == (major) && LIBSIDPLAYFP_VERSION_MIN == (minor) && \
-      LIBSIDPLAYFP_VERSION_LEV >= (micro)))
+#define LIBSIDPLAYFP_CHECK_VERSION(major,minor)                                   \
+    (LIBSIDPLAYFP_VERSION_MAJ > (major) ||                                        \
+    (LIBSIDPLAYFP_VERSION_MAJ == (major) && LIBSIDPLAYFP_VERSION_MIN >= (minor)))
 #endif
 
 #include <libaudcore/runtime.h>
@@ -82,7 +80,7 @@ bool xs_sidplayfp_init()
     /* Get current configuration */
     SidConfig config = state.currEng->config();
 
-#if !LIBSIDPLAYFP_CHECK_VERSION(3, 0, 0)
+#if !LIBSIDPLAYFP_CHECK_VERSION(3, 0)
     /* Configure channels and stuff */
     switch (xs_cfg.audioChannels)
     {
@@ -102,7 +100,7 @@ bool xs_sidplayfp_init()
     /* Initialize builder object */
     state.currBuilder = new ReSIDfpBuilder("ReSIDfp builder");
 
-#if !LIBSIDPLAYFP_CHECK_VERSION(3, 0, 0)
+#if !LIBSIDPLAYFP_CHECK_VERSION(3, 0)
     /* Builder object created, initialize it */
     state.currBuilder->create(state.currEng->info().maxsids());
     if (!state.currBuilder->getStatus()) {
@@ -111,7 +109,7 @@ bool xs_sidplayfp_init()
     }
 #endif
 
-#if !LIBSIDPLAYFP_CHECK_VERSION(2, 10, 0)
+#if !LIBSIDPLAYFP_CHECK_VERSION(2, 10)
     state.currBuilder->filter(xs_cfg.emulateFilters);
     if (!state.currBuilder->getStatus()) {
         AUDERR("reSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
@@ -153,7 +151,7 @@ bool xs_sidplayfp_init()
         return false;
     }
 
-#if LIBSIDPLAYFP_CHECK_VERSION(2, 10, 0)
+#if LIBSIDPLAYFP_CHECK_VERSION(2, 10)
     /* Call filter() after config() to have an effect */
     state.currEng->filter(0, xs_cfg.emulateFilters);
     state.currEng->filter(1, xs_cfg.emulateFilters);
@@ -224,7 +222,7 @@ bool xs_sidplayfp_initsong(int subtune)
         return false;
     }
 
-#if LIBSIDPLAYFP_CHECK_VERSION(2, 15, 0)
+#if LIBSIDPLAYFP_CHECK_VERSION(2, 15)
     bool stereo = xs_cfg.audioChannels == XS_CHN_STEREO;
     state.currEng->initMixer(stereo);
 #endif
@@ -237,7 +235,7 @@ bool xs_sidplayfp_initsong(int subtune)
  */
 unsigned xs_sidplayfp_fillbuffer(char * audioBuffer, unsigned audioBufSize)
 {
-#if LIBSIDPLAYFP_CHECK_VERSION(2, 15, 0)
+#if LIBSIDPLAYFP_CHECK_VERSION(2, 15)
     int samples = state.currEng->play(audioBufSize / 2);
     if (samples < 0)
         return 0;
