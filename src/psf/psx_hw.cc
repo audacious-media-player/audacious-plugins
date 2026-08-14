@@ -263,6 +263,34 @@ static void FreezeThread(int32_t iThread, int flag)
 	}
 	threads[iThread].save_regs[34] = mipsinfo.i;
 
+	// Every HLE syscall that can freeze its own thread (flag=1) is only
+	// ever reached through psx_iop_call(), which is itself only ever
+	// invoked from the interpreter's "addiu $0,N with rt==0" special case
+	// - and by this codebase's own generated-code convention, that
+	// instruction is always the delay slot of an immediately-preceding
+	// "jr $ra" (the return half of every IOP export-table stub: "jr $ra;
+	// addiu $0,callnum"). So whenever a blocking syscall (DelayThread,
+	// WaitSema, SleepThread, etc.) fires from exactly this position,
+	// mipscpu.delayr is already REGPC (a still-uncommitted pending branch
+	// from that jr) and mipscpu.delayv already equals $ra - the same
+	// value just captured above into save_regs[34]. The delayr/delayv
+	// snapshot taken above therefore describes a branch that's redundant
+	// with the resume PC we're about to restore on thaw, not a second,
+	// independent piece of state: left in place, ThawThread() correctly
+	// sets PC to save_regs[34] but ALSO restores this stale "still
+	// pending" branch, which then wrongly re-fires on the very next
+	// instruction's delay-slot commit instead of letting execution
+	// advance normally - silently diverting control flow into whatever
+	// memory that references, including non-code data if the resumed
+	// thread wasn't expecting a jump there at all. Clear it in this
+	// specific, provably-safe case - the resume PC already captures its
+	// effect.
+	if (flag && threads[iThread].save_regs[36] == 32)	// 32 == psx.cc's REGPC sentinel, not exposed via psx.h
+	{
+		threads[iThread].save_regs[35] = 0;
+		threads[iThread].save_regs[36] = 0;
+	}
+
 	#if DEBUG_THREADING
 	{
 		char buffer[256];
