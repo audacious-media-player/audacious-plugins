@@ -2675,6 +2675,13 @@ static void psx_iop_call_impl(uint32_t pc, uint32_t callnum)
 					if ((threads[i].iState == TS_WAITSEMA) && (threads[i].waitparm == a0))
 					{
 						threads[i].iState = TS_READY;
+						// The woken thread's own WaitSema call is finally
+						// completing successfully - set its saved $v0
+						// directly (it's not the live/current thread right
+						// now), so it sees the correct return value once
+						// actually thawed. See WaitSema's own comment for
+						// why this can no longer be set from there.
+						threads[i].save_regs[2] = 0;
 						semaphores[a0].threadsWaiting--;
 						foundthread = 1;
 						break;
@@ -2709,6 +2716,8 @@ static void psx_iop_call_impl(uint32_t pc, uint32_t callnum)
 					if ((threads[i].iState == TS_WAITSEMA) && (threads[i].waitparm == a0))
 					{
 						threads[i].iState = TS_READY;
+						// See the matching comment in SignalSema.
+						threads[i].save_regs[2] = 0;
 						semaphores[a0].threadsWaiting--;
 						foundthread = 1;
 						break;
@@ -2741,17 +2750,24 @@ static void psx_iop_call_impl(uint32_t pc, uint32_t callnum)
 				if (semaphores[a0].current > 0)
 				{
 					semaphores[a0].current--;
+
+					mipsinfo.i = 0;
+					mips_set_info(CPUINFO_INT_REGISTER + MIPS_R2, &mipsinfo);
 				}
 				else
 				{
+					// Don't set $v0 here: ps2_reschedule() may already have
+					// switched mipscpu to a completely different thread, in
+					// which case this would silently stomp whatever THAT
+					// thread was doing instead of the one that actually
+					// called WaitSema. The blocked thread's own return value
+					// is set directly on its saved state by SignalSema/
+					// iSignalSema when it's actually woken, instead.
 					FreezeThread(iCurThread, 1);
 					threads[iCurThread].iState = TS_WAITSEMA;
 					threads[iCurThread].waitparm = a0;
 					ps2_reschedule();
 				}
-
-				mipsinfo.i = 0;
-				mips_set_info(CPUINFO_INT_REGISTER + MIPS_R2, &mipsinfo);
 				break;
 
 			default:
