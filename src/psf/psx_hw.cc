@@ -142,6 +142,16 @@ typedef struct
 	uint32_t waitparm;	// what we're waiting on if in one the TS_WAIT* states
 
 	uint32_t save_regs[37];	// CPU registers belonging to this thread
+
+	// Which FreezeThread() flag last froze this thread: 1 means its real
+	// resume point is $ra (save_regs[34] already correct, independent of
+	// whatever pc/delayr the interpreter happened to be sitting on); 0
+	// means save_regs[34] is exactly whatever mipscpu.pc was at freeze
+	// time, which - if this thread was mid-HLE-dispatch - can be a
+	// still-pending "target-4" jump the caller's own mips_advance_pc()
+	// hasn't yet completed with a final +4 (see psx_iop_call()'s wrapper
+	// in this file for why this distinction matters).
+	int32_t lastFreezeFlag;
 } Thread;
 
 static int32_t iNumThreads, iCurThread;
@@ -290,6 +300,13 @@ static void FreezeThread(int32_t iThread, int flag)
 		threads[iThread].save_regs[35] = 0;
 		threads[iThread].save_regs[36] = 0;
 	}
+
+	// Record which kind of freeze this was - see the Thread struct's own
+	// comment on lastFreezeFlag for why psx_iop_call()'s wrapper needs
+	// this to decide whether a deferred HLE-dispatch "+4" still needs
+	// completing for this specific thread after control has moved on to
+	// someone else.
+	threads[iThread].lastFreezeFlag = flag;
 
 	#if DEBUG_THREADING
 	{
@@ -2188,7 +2205,7 @@ static void iop_sprintf(char *out, char *fmt, uint32_t pstart)
 }
 
 // PS2 IOP callbacks
-void psx_iop_call(uint32_t pc, uint32_t callnum)
+static void psx_iop_call_impl(uint32_t pc, uint32_t callnum)
 {
 	uint32_t scan;
 	char *mname, *str1, name[9], out[512];
@@ -3577,5 +3594,66 @@ void psx_iop_call(uint32_t pc, uint32_t callnum)
 
 		printf("IOP: Unhandled service %d for module %s\n", callnum, name);
 	}
+}
+
+// psx_iop_call_impl()'s registered-library and ELF-loader dispatch paths
+// (search this file for "NOTE: we get called in the delay slot!") set
+// mipscpu's PC to (target - 4), deliberately relying on the caller
+// (psx.cc's OP_ADDIU case) to complete the jump with its own subsequent
+// mips_advance_pc() call, which adds the final +4. That works as long as
+// mipscpu still belongs to the SAME thread that made this call by the
+// time the caller's advance runs.
+//
+// But psx_iop_call_impl() can also, via a blocking syscall (DelayThread,
+// WaitSema, SleepThread, etc.) OR via any HLE handler that itself calls
+// ps2_reschedule() as routine bookkeeping (e.g. waking a higher-priority
+// thread), end up freezing the calling thread and switching to a
+// DIFFERENT one entirely - at which point mipscpu belongs to that other
+// thread, not the caller. Blindly letting the caller's mips_advance_pc()
+// run in that case corrupts whichever thread is now active (this is what
+// permanently truncated Vegnagun Starting's table-copy loop: the extra
+// advance skipped that thread's own pending loop-continuation branch
+// without ever evaluating it). But blindly SKIPPING the caller's advance
+// whenever any switch happens is ALSO wrong (this was tried and caused
+// total silence): if the calling thread got frozen via the generic
+// flag=0 path (not a $ra-based blocking syscall), its OWN saved PC is
+// exactly the pending "target-4" state above, still missing its +4 - and
+// if nothing ever completes that +4, the thread resumes 4 bytes short
+// the next time it's thawed.
+//
+// So: track whether a switch happened, and if so, look at how the
+// calling thread was actually frozen (recorded in Thread::lastFreezeFlag
+// by FreezeThread() itself) to decide what to do with ITS OWN saved
+// state specifically, independent of whichever thread is now live:
+//   - flag=1 (syscall/$ra-based): the calling thread's real resume point
+//     is $ra, already fully correct - the pending "target-4" pc doesn't
+//     matter to it at all. Nothing to fix.
+//   - flag=0 (generic/pc-based): the calling thread's saved pc IS the
+//     pending "target-4" state - complete it directly on its saved
+//     registers, since mipscpu no longer represents it.
+// Either way, tell the caller NOT to run its own mips_advance_pc(), since
+// mipscpu now belongs to a different thread than the one that made this
+// call, and that thread's own execution must not be touched by it.
+uint32_t psx_iop_call(uint32_t pc, uint32_t callnum)
+{
+	int32_t origThread = iCurThread;
+
+	psx_iop_call_impl(pc, callnum);
+
+	if (iCurThread == origThread)
+	{
+		// No net switch away from the calling thread (including having
+		// been frozen and thawed straight back to itself) - mipscpu is
+		// still (or once again) its own context, so the caller's normal
+		// mips_advance_pc() applies correctly, exactly as before.
+		return 1;
+	}
+
+	if (origThread >= 0 && threads[origThread].lastFreezeFlag == 0)
+	{
+		threads[origThread].save_regs[34] += 4;
+	}
+
+	return 0;
 }
 

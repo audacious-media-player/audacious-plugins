@@ -761,8 +761,16 @@ int mips_execute( int cycles )
 		case OP_ADDIU:
 			if (INS_RT( mipscpu.op ) == 0)
 			{
-				psx_iop_call(mipscpu.pc, INS_IMMEDIATE(mipscpu.op));
-				mips_advance_pc();
+				// psx_iop_call() may switch mipscpu to a different thread
+				// entirely (see its own comment in psx_hw.cc); in that
+				// case it returns 0 and has already handled whatever
+				// bookkeeping the ORIGINAL calling thread needed, so we
+				// must not call mips_advance_pc() here - it would apply
+				// to whichever thread is now live instead.
+				if (psx_iop_call(mipscpu.pc, INS_IMMEDIATE(mipscpu.op)))
+				{
+					mips_advance_pc();
+				}
 			}
 			else
 			{
