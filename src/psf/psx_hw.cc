@@ -137,7 +137,11 @@ typedef struct
 	uint32_t routine;		// start of code for the thread
 	uint32_t stackloc;	// stack location in IOP RAM
 	uint32_t stacksize;	// stack size
-	uint32_t refCon;		// user value passed in at CreateThread time
+	// IOP thread priority as passed to CreateThread (lower = more urgent,
+	// matching real PS2 IOP convention). Previously read into an unused
+	// "refCon" field and never consulted - ps2_reschedule() now uses it
+	// to pick the most urgent ready thread instead of pure round-robin.
+	uint32_t priority;
 
 	uint32_t waitparm;	// what we're waiting on if in one the TS_WAIT* states
 
@@ -383,6 +387,7 @@ static void ThawThread(int32_t iThread)
 static void ps2_reschedule(void)
 {
 	int i, starti, iNextThread;
+	uint32_t bestPriority = 0xffffffff;
 
 	iNextThread = -1;
 
@@ -395,36 +400,53 @@ static void ps2_reschedule(void)
 
 	starti = i;
 
-	// starting with the next thread after this one,
-	// see who wants to run
+	// Starting with the next thread after this one, scan the whole
+	// thread list (wrapping around) for the most urgent (lowest
+	// priority value) ready thread. Round-robin scan order is the
+	// tie-break among equal priorities (strict "<" below means an
+	// equal-priority later candidate never displaces an earlier one),
+	// matching prior behavior when priority doesn't distinguish them.
 	while (i < iNumThreads)
 	{
 		if (i != iCurThread)
 		{
-			if (threads[i].iState == TS_READY)
+			if (threads[i].iState == TS_READY && threads[i].priority < bestPriority)
 			{
 			  	iNextThread = i;
-				break;
+				bestPriority = threads[i].priority;
 			}
 		}
 
 		i++;
 	}
 
-	// if we started above thread 0 and didn't pick one,
-	// go around and try from zero
-	if ((starti > 0) && (iNextThread == -1))
+	if (starti > 0)
 	{
-		for (i = 0; i < iNumThreads; i++)
+		for (i = 0; i < starti; i++)
 		{
 			if (i != iCurThread)
 			{
-				if (threads[i].iState == TS_READY)
+				if (threads[i].iState == TS_READY && threads[i].priority < bestPriority)
 				{
 				  	iNextThread = i;
-					break;
+					bestPriority = threads[i].priority;
 				}
 			}
+		}
+	}
+
+	// A thread that's still actively running (hasn't voluntarily
+	// blocked/slept/exited before this call) only yields to a
+	// STRICTLY more urgent candidate - an equal-or-less-urgent ready
+	// thread waits its turn instead of preempting mid-work. A thread
+	// that already left TS_RUNNING (blocked itself before calling
+	// this) still switches to the best available candidate
+	// unconditionally, same as prior behavior for that case.
+	if (iNextThread != -1 && iCurThread != -1 && threads[iCurThread].iState == TS_RUNNING)
+	{
+		if (bestPriority >= threads[iCurThread].priority)
+		{
+			iNextThread = -1;
 		}
 	}
 
@@ -2345,7 +2367,7 @@ static void psx_iop_call_impl(uint32_t pc, uint32_t callnum)
 				threads[iNumThreads].flags = LE32(psx_ram[a0]);
 				threads[iNumThreads].routine = LE32(psx_ram[a0+2]);
 				threads[iNumThreads].stacksize = LE32(psx_ram[a0+3]);
-				threads[iNumThreads].refCon = LE32(psx_ram[a0+4]);
+				threads[iNumThreads].priority = LE32(psx_ram[a0+4]);
 
 				mipsinfo.i = iNumThreads;
 				iNumThreads++;
