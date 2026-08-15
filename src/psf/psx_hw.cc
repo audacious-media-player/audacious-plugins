@@ -1982,9 +1982,15 @@ void psx_hw_runcounters(void)
 		{
 			if (threads[i].iState == TS_WAITDELAY)
 			{
-				if (threads[i].waitparm > CLOCK_DIV)
+				// waitparm is set (in DelayThread) in raw IOP clock
+				// cycles at the true 36864000 Hz rate; each sample
+				// represents IOP_CYCLES_PER_SAMPLE of those, not
+				// CLOCK_DIV - the latter was off by ~104x, making
+				// every delay-based wait take that much longer than
+				// requested.
+				if (threads[i].waitparm > IOP_CYCLES_PER_SAMPLE)
 				{
-					threads[i].waitparm -= CLOCK_DIV;
+					threads[i].waitparm -= IOP_CYCLES_PER_SAMPLE;
 				}
 				else	// time's up
 				{
