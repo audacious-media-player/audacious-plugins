@@ -335,11 +335,11 @@ u32 sampcount;
 u32 g_last_spu2_dma_sampcount = 0;
 
 // Running high-water mark (byte offset into spuMemC) of the furthest point
-// any SPU2 DMA write has ever reached, updated from dma.cc. Lets the
-// ADPCM ring-wrap logic below tell "genuinely never-written memory" apart
-// from "real data that was written a while ago" - DMA write recency alone
-// isn't enough, since a normal fully-preloaded track has its whole body
-// written once, long before decode reaches the end of it.
+// any SPU2 DMA write has ever reached, updated from dma.cc. Lets the ADPCM
+// ring-wrap logic below tell 'genuinely never-written memory' apart from
+// 'real data that was written a while ago' - DMA write recency alone isn't
+// enough, since a normal fully-preloaded track has its whole body written
+// once, long before decode reaches the end of it.
 u32 g_spuMem_write_high = 0;
 
 static u32 decaybegin;
@@ -484,37 +484,35 @@ static void *MAINThread(void (*update)(const void *, int))
              // stall its refill logic indefinitely. Wrapping within pStart's
              // own window keeps the reported address sane instead.
              //
-             // But this only makes sense while the channel's data is
-             // genuinely being actively streamed in (fresh DMA writes still
-             // landing, as with the hacked Corlett streaming driver this was
-             // written for). A normal, fully-preloaded one-shot track (the common case -
-             // its whole body DMA'd in once, up front) has no more data
-             // coming, but "no recent DMA writes" does NOT mean "no more
-             // real data exists" - the entire track's content, however
-             // large, was typically already written in one early burst.
-             // Wrapping (or worse, stopping) purely because DMA has been
-             // quiet for a couple of seconds cuts a track off as soon as
-             // decode passes the 128KB mark even though hundreds of KB of
-             // legitimate, already-loaded audio still follow it (an earlier
-             // version of this fix that used DMA recency alone cut FFX-2's
-             // "Game Over"/"Good Night" off at ~9s instead of their real
-             // ~15s).
+             // But this only makes sense while the channel's data is genuinely
+             // being actively streamed in (fresh DMA writes still incoming, as
+             // with the hacked Corlett streaming driver this was written for).
+             // A normal, fully-preloaded one-shot track (the common case - its
+             // whole body DMA'd in once, up front) has no more data coming,
+             // but 'no recent DMA writes' does *not* mean 'no more real data
+             // exists' - the entire track's content, however large, was
+             // typically already written in one early burst. Wrapping (or
+             // worse, stopping) purely because DMA has been quiet for a couple
+             // of seconds cuts a track off as soon as decode passes the 128KB
+             // mark even though hundreds of KB of legitimate, already-loaded
+             // audio still follow it (an earlier version of this fix that used
+             // DMA recency alone cut short, non-looping tracks early, eg Final
+             // Fantasy X-2's Good Night and Game Over).
              //
              // The two cases need genuinely different handling, not just a
-             // blended condition - a single global "has anything, anywhere,
-             // ever been written this far into spuMem" watermark isn't
+             // blended condition - a single global 'has anything, anywhere,
+             // ever been written this far into spuMem' watermark isn't
              // enough on its own either: unrelated data elsewhere in spuMem
-             // (e.g. other channels' own preloaded samples) can push that
+             // (eg other channels' own preloaded samples) can push that
              // watermark well past an actively-streamed channel's own real
              // window, which then never gets its small-window wrap at all -
-             // silencing it instead (this broke FFIV's streaming fix on the
-             // first attempt at this approach). So: while DMA is
-             // actively landing, keep exactly the original pStart-relative
-             // window wrap unconditionally, unrelated to any watermark.
-             // Only once DMA has been idle for a while - meaning nothing
-             // will ever refill this window again - fall back to the
-             // watermark to tell "more of this track's own preloaded data
-             // follows" apart from "genuinely nothing left, stop".
+             // silencing it instead. So: while DMA is actively incoming, keep
+             // exactly the original pStart-relative window wrap
+             // unconditionally, unrelated to any watermark. Only once DMA has
+             // been idle for a while - meaning nothing will ever refill this
+             // window again - fall back to the watermark to tell 'more of this
+             // track's own preloaded data follows' apart from 'genuinely
+             // nothing left, stop'.
              {
               const uintptr_t ring_size = 0x20000;
               const u32 dma_idle_samples = 2*44100;
@@ -904,12 +902,17 @@ ENDX:   ;
     // block's worth of time from the output entirely: playback progress is
     // tracked by how much audio has been delivered, not a fixed wall-clock
     // timer, so any dropped block shortens the track. A real rest in the
-    // music still takes real time to "play" on real hardware; the previous
-    // discard heuristic (originally a "don't bother sending silence"
-    // optimization, and before that even cruder - checking the combined
+    // music still takes real time to 'play' on real hardware; the previous
+    // discard heuristic (originally a 'don't bother sending silence'
+    // optimisation, and before that even cruder - checking the combined
     // L+R buffer as one pool) caused a systematic, cumulative duration
     // shortfall for any track with real pauses/quiet passages, scattered
     // throughout the track rather than just at its start or end.
+
+    // Side-effect as yet unresolved: the drop-silence heuristic was masking a
+    // deficiency in scheduler fairness that resulted in cycles being spent
+    // stuck idle, resulting in start-up silence of the order of 1-3 seconds
+    // for most tracks.
     update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer);
 
     pS=(short *)pSpuBuffer;

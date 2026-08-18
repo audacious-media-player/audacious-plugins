@@ -277,28 +277,26 @@ static void FreezeThread(int32_t iThread, int flag)
 	}
 	threads[iThread].save_regs[34] = mipsinfo.i;
 
-	// Every HLE syscall that can freeze its own thread (flag=1) is only
-	// ever reached through psx_iop_call(), which is itself only ever
-	// invoked from the interpreter's "addiu $0,N with rt==0" special case
-	// - and by this codebase's own generated-code convention, that
-	// instruction is always the delay slot of an immediately-preceding
-	// "jr $ra" (the return half of every IOP export-table stub: "jr $ra;
-	// addiu $0,callnum"). So whenever a blocking syscall (DelayThread,
-	// WaitSema, SleepThread, etc.) fires from exactly this position,
-	// mipscpu.delayr is already REGPC (a still-uncommitted pending branch
-	// from that jr) and mipscpu.delayv already equals $ra - the same
-	// value just captured above into save_regs[34]. The delayr/delayv
-	// snapshot taken above therefore describes a branch that's redundant
-	// with the resume PC we're about to restore on thaw, not a second,
-	// independent piece of state: left in place, ThawThread() correctly
-	// sets PC to save_regs[34] but ALSO restores this stale "still
+	// Every HLE syscall that can freeze its own thread (flag=1) is only ever
+	// reached through psx_iop_call(), which is itself only ever invoked from
+	// the interpreter's "addiu $0,N with rt==0" special case - and by this
+	// code base's own generated-code convention, that instruction is always
+	// the delay slot of an immediately-preceding "jr $ra" (the return half of
+	// every IOP export-table stub: "jr $ra; addiu $0,callnum"). So whenever a
+	// blocking syscall (DelayThread, WaitSema, SleepThread, etc.) fires from
+	// exactly this position, mipscpu.delayr is already REGPC (a still-
+	// uncommitted pending branch from that jr) and mipscpu.delayv already
+	// equals $ra - the same value just captured above into save_regs[34]. The
+	// delayr/delayv snapshot taken above therefore describes a branch that's
+	// redundant with the resume PC we're about to restore on thaw, not a
+	// second, independent piece of state: left in place, ThawThread()
+	// correctly sets PC to save_regs[34] but ALSO restores this stale "still
 	// pending" branch, which then wrongly re-fires on the very next
-	// instruction's delay-slot commit instead of letting execution
-	// advance normally - silently diverting control flow into whatever
-	// memory that references, including non-code data if the resumed
-	// thread wasn't expecting a jump there at all. Clear it in this
-	// specific, provably-safe case - the resume PC already captures its
-	// effect.
+	// instruction's delay-slot commit instead of letting execution advance
+	// normally - silently diverting control flow into whatever memory that
+	// references, including non-code data if the resumed thread wasn't
+	// expecting a jump there at all. Clear it in this specific, provably-safe
+	// case - the resume PC already captures its effect.
 	if (flag && threads[iThread].save_regs[36] == 32)	// 32 == psx.cc's REGPC sentinel, not exposed via psx.h
 	{
 		threads[iThread].save_regs[35] = 0;
@@ -400,12 +398,12 @@ static void ps2_reschedule(void)
 
 	starti = i;
 
-	// Starting with the next thread after this one, scan the whole
-	// thread list (wrapping around) for the most urgent (lowest
-	// priority value) ready thread. Round-robin scan order is the
-	// tie-break among equal priorities (strict "<" below means an
-	// equal-priority later candidate never displaces an earlier one),
-	// matching prior behavior when priority doesn't distinguish them.
+	// Starting with the next thread after this one, scan the whole thread list
+	// (wrapping around) for the most urgent (lowest priority value) ready
+	// thread. Round-robin scan order is the tie-break among equal priorities
+	// (strict "<" below means an equal-priority later candidate never
+	// displaces an earlier one), matching prior behaviour when priority
+	// doesn't distinguish them.
 	while (i < iNumThreads)
 	{
 		if (i != iCurThread)
@@ -435,13 +433,13 @@ static void ps2_reschedule(void)
 		}
 	}
 
-	// A thread that's still actively running (hasn't voluntarily
-	// blocked/slept/exited before this call) only yields to a
-	// STRICTLY more urgent candidate - an equal-or-less-urgent ready
-	// thread waits its turn instead of preempting mid-work. A thread
-	// that already left TS_RUNNING (blocked itself before calling
-	// this) still switches to the best available candidate
-	// unconditionally, same as prior behavior for that case.
+	// A thread that's still actively running (hasn't voluntarily blocked/
+	// slept/exited before this call) only yields to a *strictly* more
+	// urgent candidate - an equal-or-less-urgent ready thread waits its
+	// turn instead of pre-empting mid-work. A thread that already left
+	// TS_RUNNING (blocked itself before calling this) still switches to the
+	// best available candidate unconditionally, same as prior behaviour for
+	// that case.
 	if (iNextThread != -1 && iCurThread != -1 && threads[iCurThread].iState == TS_RUNNING)
 	{
 		if (bestPriority >= threads[iCurThread].priority)
@@ -1054,16 +1052,16 @@ static void call_irq_routine(uint32_t routine, uint32_t parameter)
 	{
 		// A softcall hands the interpreter straight to driver code with a
 		// synthetic $ra trap and just spins until that trap fires. A driver
-		// routine that derails (e.g. runs off into non-code memory and never
+		// routine that derails (eg runs off into non-code memory and never
 		// executes the trap instruction) turns this into an unbounded spin
 		// at 100% CPU with no way for the user to recover short of killing
-		// the process (FFX-2's Crimson Squad hits this). Cap the
-		// wait so a misbehaving handler is abandoned instead of hanging
-		// for ever. The budget needs to stay generous, though: a smaller
-		// 10000-cycle cap tried initially cut off legitimately slow (but
-		// working) handlers mid-execution, which silenced FFX-2's Game
-		// Over and Good Night for the rest of playback even though they
-		// play back correctly given enough cycles to finish.
+		// the process (for example, the entire Final Fantasy X set, and Final
+		// Fantasy X-2's Crimson Squad). Cap the wait so a misbehaving handler
+		// is abandoned instead of hanging for ever. The budget needs to stay
+		// generous, though: a smaller 10000-cycle cap tried initially cut off
+		// legitimately slow (but working) handlers mid-execution, which
+		// silenced FFX-2's Game Over and Good Night for the rest of playback
+		// even though they play back correctly given enough cycles to finish.
 		uint64_t softcall_cycles = 0;
 		while (!softcall_target)
 		{
@@ -1982,12 +1980,11 @@ void psx_hw_runcounters(void)
 		{
 			if (threads[i].iState == TS_WAITDELAY)
 			{
-				// waitparm is set (in DelayThread) in raw IOP clock
-				// cycles at the true 36864000 Hz rate; each sample
-				// represents IOP_CYCLES_PER_SAMPLE of those, not
-				// CLOCK_DIV - the latter was off by ~104x, making
-				// every delay-based wait take that much longer than
-				// requested.
+				// waitparm is set (in DelayThread) in raw IOP clock cycles at
+				// the true 36864000 Hz rate; each sample represents
+				// IOP_CYCLES_PER_SAMPLE of those, not CLOCK_DIV - the latter
+				// was off by ~104x, making every delay-based wait take that
+				// much longer than requested.
 				if (threads[i].waitparm > IOP_CYCLES_PER_SAMPLE)
 				{
 					threads[i].waitparm -= IOP_CYCLES_PER_SAMPLE;
@@ -2704,11 +2701,11 @@ static void psx_iop_call_impl(uint32_t pc, uint32_t callnum)
 					{
 						threads[i].iState = TS_READY;
 						// The woken thread's own WaitSema call is finally
-						// completing successfully - set its saved $v0
-						// directly (it's not the live/current thread right
-						// now), so it sees the correct return value once
-						// actually thawed. See WaitSema's own comment for
-						// why this can no longer be set from there.
+						// completing successfully - set its saved $v0 directly
+						// (it's not the live/current thread right now), so it
+						// sees the correct return value once actually thawed.
+						// See WaitSema's own comment for why this can no
+						// longer be set from there.
 						threads[i].save_regs[2] = 0;
 						semaphores[a0].threadsWaiting--;
 						foundthread = 1;
@@ -3642,42 +3639,41 @@ static void psx_iop_call_impl(uint32_t pc, uint32_t callnum)
 
 // psx_iop_call_impl()'s registered-library and ELF-loader dispatch paths
 // (search this file for "NOTE: we get called in the delay slot!") set
-// mipscpu's PC to (target - 4), deliberately relying on the caller
-// (psx.cc's OP_ADDIU case) to complete the jump with its own subsequent
+// mipscpu's PC to (target - 4), deliberately relying on the caller (psx.cc's
+// OP_ADDIU case) to complete the jump with its own subsequent
 // mips_advance_pc() call, which adds the final +4. That works as long as
-// mipscpu still belongs to the SAME thread that made this call by the
-// time the caller's advance runs.
+// mipscpu still belongs to the SAME thread that made this call by the time the
+// caller's advance runs.
 //
 // But psx_iop_call_impl() can also, via a blocking syscall (DelayThread,
 // WaitSema, SleepThread, etc.) OR via any HLE handler that itself calls
-// ps2_reschedule() as routine bookkeeping (e.g. waking a higher-priority
-// thread), end up freezing the calling thread and switching to a
-// DIFFERENT one entirely - at which point mipscpu belongs to that other
-// thread, not the caller. Blindly letting the caller's mips_advance_pc()
-// run in that case corrupts whichever thread is now active (this is what
-// permanently truncated Vegnagun Starting's table-copy loop: the extra
-// advance skipped that thread's own pending loop-continuation branch
-// without ever evaluating it). But blindly SKIPPING the caller's advance
-// whenever any switch happens is ALSO wrong (this was tried and caused
-// total silence): if the calling thread got frozen via the generic
-// flag=0 path (not a $ra-based blocking syscall), its OWN saved PC is
-// exactly the pending "target-4" state above, still missing its +4 - and
-// if nothing ever completes that +4, the thread resumes 4 bytes short
-// the next time it's thawed.
+// ps2_reschedule() as routine bookkeeping (eg waking a higher-priority
+// thread), end up freezing the calling thread and switching to a DIFFERENT one
+// entirely - at which point mipscpu belongs to that other thread, not the
+// caller. Blindly letting the caller's mips_advance_pc() run in that case
+// corrupts whichever thread is now active (this is what permanently truncated
+// Final Fantasy X-2's Vegnagun Starting's table-copy loop: the extra advance
+// skipped that thread's own pending loop-continuation branch without ever
+// evaluating it). But blindly SKIPPING the caller's advance whenever any
+// switch happens is ALSO wrong (this was tried and caused total silence): if
+// the calling thread got frozen via the generic flag=0 path (not a $ra-based
+// blocking syscall), its OWN saved PC is exactly the pending "target-4" state
+// above, still missing its +4 - and if nothing ever completes that +4, the
+// thread resumes 4 bytes short the next time it's thawed.
 //
-// So: track whether a switch happened, and if so, look at how the
-// calling thread was actually frozen (recorded in Thread::lastFreezeFlag
-// by FreezeThread() itself) to decide what to do with ITS OWN saved
-// state specifically, independent of whichever thread is now live:
-//   - flag=1 (syscall/$ra-based): the calling thread's real resume point
-//     is $ra, already fully correct - the pending "target-4" pc doesn't
-//     matter to it at all. Nothing to fix.
-//   - flag=0 (generic/pc-based): the calling thread's saved pc IS the
-//     pending "target-4" state - complete it directly on its saved
-//     registers, since mipscpu no longer represents it.
+// So: track whether a switch happened, and if so, look at how the calling
+// thread was actually frozen (recorded in Thread::lastFreezeFlag by
+// FreezeThread() itself) to decide what to do with ITS OWN saved state
+// specifically, independent of whichever thread is now live:
+//   - flag=1 (syscall/$ra-based): the calling thread's real resume point is
+//     $ra, already fully correct - the pending "target-4" pc doesn't matter
+//     to it at all. Nothing to fix.
+//   - flag=0 (generic/pc-based): the calling thread's saved pc IS the pending
+//     "target-4" state - complete it directly on its saved registers, since
+//     mipscpu no longer represents it.
 // Either way, tell the caller NOT to run its own mips_advance_pc(), since
-// mipscpu now belongs to a different thread than the one that made this
-// call, and that thread's own execution must not be touched by it.
+// mipscpu now belongs to a different thread than the one that made this call,
+// and that thread's own execution must not be touched by it.
 uint32_t psx_iop_call(uint32_t pc, uint32_t callnum)
 {
 	int32_t origThread = iCurThread;
@@ -3686,9 +3682,9 @@ uint32_t psx_iop_call(uint32_t pc, uint32_t callnum)
 
 	if (iCurThread == origThread)
 	{
-		// No net switch away from the calling thread (including having
-		// been frozen and thawed straight back to itself) - mipscpu is
-		// still (or once again) its own context, so the caller's normal
+		// No net switch away from the calling thread (including having been
+		// frozen and thawed straight back to itself) - mipscpu is still (or
+		// once again) its own context, so the caller's normal
 		// mips_advance_pc() applies correctly, exactly as before.
 		return 1;
 	}
@@ -3700,4 +3696,3 @@ uint32_t psx_iop_call(uint32_t pc, uint32_t callnum)
 
 	return 0;
 }
-

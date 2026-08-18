@@ -104,20 +104,19 @@ EXPORT_GCC void CALLBACK SPU2writeDMA4Mem(u32 usPSXMem,int iSize)
  int i;
  u16 *ram16 = (u16 *)&psx_ram[0];
 
- // Some streaming drivers (such as FFIV's generic PS2 streaming
- // driver) kick a single DMA transfer covering two back-to-back 16KB
- // per-channel halves read from one shared read-ahead buffer, but
- // only refill that buffer's first 16KB with genuinely fresh data each
- // cycle - the second half is whatever was last (never, for a freshly
- // allocated buffer) written there. Past the first 8192 words (16KB) of
- // any transfer landing in a channel's own ring, treat an exact-zero
- // source sample as "not actually new data" and leave the existing
- // spuMem content alone rather than overwriting real audio with a
- // spurious zero - the correct data for that position typically arrives
- // one refill cycle later via the next kick's own first half anyway.
- // Titles using >16KB transfers for genuinely fresh per-channel data
- // never have an exactly-zero tail, so they are unaffected - this only
- // skips the specific uninitialised-RAM-over-read case.
+ // Some streaming drivers (such as the generic PS2 streaming driver used for
+ // Final Fantasy IV) kick a single DMA transfer covering two back-to-back 16KB
+ // per-channel halves read from one shared read-ahead buffer, but only refill
+ // that buffer's first 16KB with genuinely fresh data each cycle - the second
+ // half is whatever was last (never, for a freshly allocated buffer) written
+ // there. Past the first 8192 words (16KB) of any transfer landing in a
+ // channel's own ring, treat an exact-zero source sample as 'not actually new
+ // data' and leave the existing spuMem content alone rather than overwriting
+ // real audio with a spurious zero - the correct data for that position
+ // typically arrives one refill cycle later via the next kick's own first half
+ // anyway. Titles using >16KB transfers for genuinely fresh per-channel data
+ // never have an exactly-zero tail, so they are unaffected - this only skips
+ // the specific uninitialised-RAM-over-read case.
  bool ch_ring_overlap = false;
  {
   u32 dest_start = spuAddr2[0]*2;
