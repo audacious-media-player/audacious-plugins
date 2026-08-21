@@ -29,6 +29,11 @@ typedef struct {
 
 static CURL *curlHandle = nullptr;     //global handle holding cURL options
 
+// tracks whether we set proxy options on the curl handle ourselves,
+// so that disabling the proxy in the preferences takes effect
+// without clobbering libcurl's default (environment variable) handling
+static bool proxy_applied = false;
+
 gboolean scrobbling_enabled = true;
 
 //shared variables
@@ -120,9 +125,70 @@ static String create_message_to_lastfm (const char * method_name, int n_args, ..
     return String (buf);
 }
 
+static void apply_proxy_settings ()
+{
+    if (! aud_get_bool ("use_proxy"))
+    {
+        if (proxy_applied)
+        {
+            curl_easy_setopt (curlHandle, CURLOPT_PROXY, "");
+            curl_easy_setopt (curlHandle, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+            curl_easy_setopt (curlHandle, CURLOPT_PROXYUSERNAME, nullptr);
+            curl_easy_setopt (curlHandle, CURLOPT_PROXYPASSWORD, nullptr);
+            proxy_applied = false;
+        }
+        return;
+    }
+
+    String proxy_host = aud_get_str ("proxy_host");
+    if (! proxy_host || ! proxy_host[0])
+    {
+        if (proxy_applied)
+        {
+            curl_easy_setopt (curlHandle, CURLOPT_PROXY, "");
+            proxy_applied = false;
+        }
+        return;
+    }
+
+    AUDDBG ("Using proxy: %s:%d\n", (const char *) proxy_host,
+     aud_get_int ("proxy_port"));
+
+    proxy_applied = true;
+
+    curl_easy_setopt (curlHandle, CURLOPT_PROXY, (const char *) proxy_host);
+    curl_easy_setopt (curlHandle, CURLOPT_PROXYPORT,
+     (long) aud_get_int ("proxy_port"));
+
+    if (aud_get_bool ("socks_proxy"))
+    {
+        curl_easy_setopt (curlHandle, CURLOPT_PROXYTYPE,
+         aud_get_int ("socks_type") == 0 ? CURLPROXY_SOCKS4A : CURLPROXY_SOCKS5);
+    }
+    else
+        curl_easy_setopt (curlHandle, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+
+    if (aud_get_bool ("use_proxy_auth"))
+    {
+        String proxy_user = aud_get_str ("proxy_user");
+        String proxy_pass = aud_get_str ("proxy_pass");
+
+        curl_easy_setopt (curlHandle, CURLOPT_PROXYUSERNAME, (const char *) proxy_user);
+        curl_easy_setopt (curlHandle, CURLOPT_PROXYPASSWORD, (const char *) proxy_pass);
+    }
+    else
+    {
+        /* clear credentials possibly set earlier, so that toggling
+         * "use authentication with proxy" off takes effect immediately */
+        curl_easy_setopt (curlHandle, CURLOPT_PROXYUSERNAME, nullptr);
+        curl_easy_setopt (curlHandle, CURLOPT_PROXYPASSWORD, nullptr);
+    }
+}
+
 static gboolean send_message_to_lastfm (const char * data)
 {
     AUDDBG("This message will be sent to last.fm:\n%s\n%%%%End of message%%%%\n", data);//Enter?\n", data);
+    apply_proxy_settings ();
     curl_easy_setopt(curlHandle, CURLOPT_POSTFIELDS, data);
     CURLcode curl_requests_result = curl_easy_perform(curlHandle);
 
@@ -269,6 +335,9 @@ gboolean scrobbler_communication_init() {
         AUDDBG("Could not initialize libCURL.\n");
         return false;
     }
+
+    // the fresh handle carries no proxy options yet
+    proxy_applied = false;
 
     curl_requests_result = curl_easy_setopt(curlHandle, CURLOPT_URL, SCROBBLER_URL);
     if (curl_requests_result != CURLE_OK) {
