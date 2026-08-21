@@ -37,12 +37,6 @@
 #include <sidplayfp/SidTuneInfo.h>
 #include <sidplayfp/builders/residfp.h>
 
-#ifndef LIBSIDPLAYFP_CHECK_VERSION
-#define LIBSIDPLAYFP_CHECK_VERSION(major,minor)                                   \
-    (LIBSIDPLAYFP_VERSION_MAJ > (major) ||                                        \
-    (LIBSIDPLAYFP_VERSION_MAJ == (major) && LIBSIDPLAYFP_VERSION_MIN >= (minor)))
-#endif
-
 #include <libaudcore/runtime.h>
 #include <libaudcore/vfs.h>
 
@@ -207,6 +201,16 @@ void xs_sidplayfp_close()
         state.database.close();
 }
 
+/* Reset SIDPlayFP engine
+ */
+void xs_sidplayfp_reset()
+{
+#if LIBSIDPLAYFP_CHECK_VERSION(2, 15)
+    if (state.currEng) {
+        state.currEng->reset();
+    }
+#endif
+}
 
 /* Initialize current song and sub-tune
  */
