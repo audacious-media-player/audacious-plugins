@@ -90,7 +90,7 @@ bool GlobalHotkeys::init()
 {
     if (!gtk_init_check(nullptr, nullptr))
     {
-        AUDERR("GTK+ initialization failed.\n");
+        AUDERR("GTK initialization failed.\n");
         return false;
     }
 
@@ -98,7 +98,8 @@ bool GlobalHotkeys::init()
     /* Check for X11 to prevent segfaults on Wayland, supported since GTK 3 */
     if (!GDK_IS_X11_DISPLAY(gdk_display_get_default()))
     {
-        AUDERR("Global Hotkeys plugin only supports X11, not Wayland.\n");
+        AUDERR("Global Hotkeys plugin only supports X11, not Wayland.\n"
+               "You may enable Xwayland in the advanced settings of Audacious.\n");
         return false;
     }
 #endif
