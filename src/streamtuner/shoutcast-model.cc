@@ -21,6 +21,7 @@
 
 #include <QAbstractListModel>
 #include <QNetworkAccessManager>
+#include <QNetworkProxy>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QJsonDocument>
@@ -29,10 +30,41 @@
 
 #include "shoutcast-model.h"
 
+/* applies the proxy settings from the Network preferences page */
+static void apply_proxy_settings (QNetworkAccessManager * qnam)
+{
+    if (! aud_get_bool ("use_proxy"))
+        return;
+
+    String host = aud_get_str ("proxy_host");
+
+    if (! host || ! host[0])
+        return;
+
+    QNetworkProxy proxy;
+
+    /* note: Qt supports SOCKS5 only; most SOCKS v4a servers
+     * accept SOCKS5 clients as well */
+    proxy.setType (aud_get_bool ("socks_proxy") ?
+     QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy);
+    proxy.setHostName (QString (host));
+    proxy.setPort (aud_get_int ("proxy_port"));
+
+    if (aud_get_bool ("use_proxy_auth"))
+    {
+        proxy.setUser (QString (aud_get_str ("proxy_user")));
+        proxy.setPassword (QString (aud_get_str ("proxy_pass")));
+    }
+
+    qnam->setProxy (proxy);
+}
+
 ShoutcastTunerModel::ShoutcastTunerModel (QObject * parent) :
     QAbstractListModel (parent)
 {
     m_qnam = new QNetworkAccessManager (this);
+
+    apply_proxy_settings (m_qnam);
 
     fetch_stations ();
 }
