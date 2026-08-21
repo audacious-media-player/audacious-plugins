@@ -110,7 +110,8 @@ bool GLSpectrum::init ()
 #ifdef GDK_WINDOWING_WAYLAND
     if (GDK_IS_WAYLAND_DISPLAY (gdk_display_get_default ()))
     {
-        AUDERR ("OpenGL Spectrum Analyzer only supports X11, not Wayland.\n");
+        AUDERR ("OpenGL Spectrum Analyzer only supports X11, not Wayland.\n"
+                "You may enable Xwayland in the advanced settings of Audacious.\n");
         return false;
     }
 #endif
