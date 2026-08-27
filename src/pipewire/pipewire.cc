@@ -473,9 +473,13 @@ bool PipeWireOutput::connect_stream(enum spa_audio_format format)
     const struct spa_pod * params[1];
     params[0] = spa_format_audio_raw_build(&b, SPA_PARAM_EnumFormat, &audio_info);
 
-    auto stream_flags = static_cast<pw_stream_flags>(PW_STREAM_FLAG_AUTOCONNECT |
-                                                     PW_STREAM_FLAG_MAP_BUFFERS |
-                                                     PW_STREAM_FLAG_RT_PROCESS);
+    auto stream_flags = static_cast<pw_stream_flags>(
+        PW_STREAM_FLAG_AUTOCONNECT |
+#if PW_CHECK_VERSION(0, 3, 81)
+        PW_STREAM_FLAG_EARLY_PROCESS |
+#endif
+        PW_STREAM_FLAG_MAP_BUFFERS
+    );
 
     return pw_stream_connect(m_stream, PW_DIRECTION_OUTPUT, PW_ID_ANY,
                              stream_flags, params, aud::n_elems(params)) == 0;
