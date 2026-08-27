@@ -114,6 +114,7 @@ private:
     bool m_inited = false;
     bool m_has_sinks = false;
     bool m_ignore_state_change = false;
+    bool m_drained = false;
 
     int m_aud_format = 0;
     int m_core_init_seq = 0;
@@ -205,19 +206,15 @@ void PipeWireOutput::drain()
 {
     pw_thread_loop_lock(m_loop);
 
-    int buflen;
-    while ((buflen = m_buffer.len()) > 0)
-    {
-        pw_thread_loop_timed_wait(m_loop, 1);
-        if (buflen <= m_buffer.len())
-        {
-            AUDERR("PipeWireOutput: buffer drain lock\n");
-            break;
-        }
-    }
+    while (m_buffer.len() > 0)
+        pw_thread_loop_wait(m_loop);
 
+    m_drained = false;
     pw_stream_flush(m_stream, true);
-    pw_thread_loop_timed_wait(m_loop, 1); // trigger on_drained() callback
+
+    while (!m_drained)
+        pw_thread_loop_wait(m_loop);
+
     pw_thread_loop_unlock(m_loop);
 }
 
@@ -225,8 +222,8 @@ void PipeWireOutput::flush()
 {
     pw_thread_loop_lock(m_loop);
     m_buffer.discard();
-    pw_thread_loop_unlock(m_loop);
     pw_stream_flush(m_stream, false);
+    pw_thread_loop_unlock(m_loop);
 }
 
 void PipeWireOutput::period_wait()
@@ -577,6 +574,7 @@ void PipeWireOutput::on_process(void * data)
 void PipeWireOutput::on_drained(void * data)
 {
     PipeWireOutput * o = static_cast<PipeWireOutput *>(data);
+    o->m_drained = true;
     pw_thread_loop_signal(o->m_loop, false);
 }
 
