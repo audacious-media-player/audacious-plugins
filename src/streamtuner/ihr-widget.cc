@@ -29,11 +29,15 @@ IHRListingWidget::IHRListingWidget (QWidget * parent) :
 
     setModel (m_model);
     setRootIsDecorated (false);
+
+    connect (this, & QTreeView::activated, [this] (const QModelIndex & index) {
+        activate (index);
+    });
 }
 
 void IHRListingWidget::activate (const QModelIndex & index)
 {
-    if (index.row () < 0)
+    if (! index.isValid ())
         return;
 
     Playlist::temporary_playlist ().activate ();

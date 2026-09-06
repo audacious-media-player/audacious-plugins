@@ -31,9 +31,9 @@ class IHRListingWidget : public audqt::TreeView {
 public:
      IHRListingWidget(QWidget * parent = nullptr);
 
+private:
      void activate (const QModelIndex & index);
 
-private:
      IHRTunerModel *m_model;
 };
 

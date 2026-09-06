@@ -36,11 +36,15 @@ ShoutcastListingWidget::ShoutcastListingWidget (QWidget * parent) :
     auto hdr = header ();
     hdr->setStretchLastSection (false);
     hdr->setSectionResizeMode (0, QHeaderView::Stretch);
+
+    connect (this, & QTreeView::activated, [this] (const QModelIndex & index) {
+        activate (index);
+    });
 }
 
 void ShoutcastListingWidget::activate (const QModelIndex & index)
 {
-    if (index.row () < 0)
+    if (! index.isValid ())
         return;
 
     Playlist::temporary_playlist ().activate ();

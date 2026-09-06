@@ -31,9 +31,9 @@ class IcecastListingWidget : public audqt::TreeView {
 public:
      IcecastListingWidget(QWidget * parent = nullptr);
 
+private:
      void activate (const QModelIndex & index);
 
-private:
      IcecastTunerModel *m_model;
 };
 

@@ -30,9 +30,9 @@ class ShoutcastListingWidget : public audqt::TreeView {
 public:
      ShoutcastListingWidget(QWidget * parent = nullptr);
 
+private:
      void activate (const QModelIndex & index);
 
-private:
      ShoutcastTunerModel *m_model;
 };
 

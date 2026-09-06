@@ -31,7 +31,6 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
-#include "shoutcast-model.h"
 #include "shoutcast-widget.h"
 #include "icecast-widget.h"
 #include "ihr-widget.h"
