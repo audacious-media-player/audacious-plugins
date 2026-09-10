@@ -1,7 +1,7 @@
 #ifndef _PLUGIN_H_INCLUDED_
 #define _PLUGIN_H_INCLUDED_
 
-#include <QtCore/QList>
+#include <QList>
 
 namespace GlobalHotkeys
 {

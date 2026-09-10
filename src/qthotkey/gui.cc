@@ -38,15 +38,15 @@
 #include "gui.h"
 #include "plugin.h"
 
-#include <QtCore/QMap>
-#include <QtCore/QStringList>
-#include <QtGui/QGuiApplication>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QMouseEvent>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QStyle>
+#include <QApplication>
+#include <QGuiApplication>
+#include <QKeyEvent>
+#include <QLineEdit>
+#include <QMap>
+#include <QStringList>
+#include <QStyle>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-#include <QtX11Extras/QX11Info>
+#include <QX11Info>
 #endif
 
 #include <libaudcore/i18n.h>

@@ -1,17 +1,16 @@
 #ifndef _GUI_H_INCLUDED_
 #define _GUI_H_INCLUDED_
 
-#include <QtCore/QList>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QWidget>
+#include <QComboBox>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QList>
+#include <QPushButton>
+#include <QToolButton>
+#include <QVBoxLayout>
+#include <QWidget>
 
 #include "plugin.h"
 

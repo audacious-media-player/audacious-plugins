@@ -38,13 +38,12 @@
 #include "plugin.h"
 #include "gui.h"
 
-#include <QtCore/QAbstractNativeEventFilter>
-#include <QtCore/QCoreApplication>
-#include <QtCore/QString>
-#include <QtCore/QTimer>
-#include <QtGui/QGuiApplication>
+#include <QAbstractNativeEventFilter>
+#include <QCoreApplication>
+#include <QGuiApplication>
+#include <QString>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-#include <QtX11Extras/QX11Info>
+#include <QX11Info>
 #endif
 
 #include <libaudcore/drct.h>
