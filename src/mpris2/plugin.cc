@@ -296,6 +296,14 @@ static gboolean next_cb (MprisMediaPlayer2Player * object, GDBusMethodInvocation
     return true;
 }
 
+static gboolean open_uri_cb (MprisMediaPlayer2Player * object,
+ GDBusMethodInvocation * call, const char * uri, void * unused)
+{
+    aud_drct_pl_open (uri);
+    mpris_media_player2_player_complete_open_uri (object, call);
+    return true;
+}
+
 static gboolean pause_cb (MprisMediaPlayer2Player * object,
  GDBusMethodInvocation * call, void * unused)
 {
@@ -452,6 +460,7 @@ bool MPRIS2Plugin::init ()
     timer_add (TimerRate::Hz4, update, object_player);
 
     g_signal_connect (object_player, "handle-next", (GCallback) next_cb, nullptr);
+    g_signal_connect (object_player, "handle-open-uri", (GCallback) open_uri_cb, nullptr);
     g_signal_connect (object_player, "handle-pause", (GCallback) pause_cb, nullptr);
     g_signal_connect (object_player, "handle-play", (GCallback) play_cb, nullptr);
     g_signal_connect (object_player, "handle-play-pause", (GCallback) play_pause_cb, nullptr);

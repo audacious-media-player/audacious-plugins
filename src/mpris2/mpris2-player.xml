@@ -13,6 +13,9 @@
         </property>
         <property name="Volume" type="d" access="readwrite"/>
         <method name="Next"/>
+        <method name="OpenUri">
+            <arg name="Uri" type="s" direction="in"/>
+        </method>
         <method name="Pause"/>
         <method name="Play"/>
         <method name="PlayPause"/>
