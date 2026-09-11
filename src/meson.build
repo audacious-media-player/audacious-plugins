@@ -190,6 +190,10 @@ if conf.has('USE_QT')
   if get_option('vumeter')
     subdir('vumeter-qt')
   endif
+
+  if get_option('waveform')
+    subdir('waveform-qt')
+  endif
 endif
 
 
@@ -258,6 +262,8 @@ if conf.has('USE_GTK')
   if get_option('vumeter')
     subdir('vumeter')
   endif
+
+  # TODO: add waveform for GTK
 endif
 
 
