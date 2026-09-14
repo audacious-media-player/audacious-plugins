@@ -14,6 +14,8 @@ option('gtkui', type: 'boolean', value: true,
        description: 'Whether the GTK interface is enabled')
 option('qtui', type: 'boolean', value: true,
        description: 'Whether the Qt interface is enabled')
+option('kirigamiui', type: 'boolean', value: false,
+       description: 'Whether the Kirigami mobile interface is enabled (requires Qt 6)')
 option('skins', type: 'boolean', value: true,
        description: 'Whether the Winamp interface is enabled')
 
