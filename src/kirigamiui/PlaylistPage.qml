@@ -134,17 +134,18 @@ Kirigami.Page {
                     contentItem: RowLayout {
                         spacing: Kirigami.Units.smallSpacing
 
-                        Kirigami.Icon {
-                            source: rowDelegate.playing
-                                    ? (rowDelegate.controller.paused
-                                       ? "media-playback-pause"
-                                       : "media-playback-start")
-                                    : "audio-x-generic"
-                            implicitWidth: Kirigami.Units.iconSizes.medium
-                            implicitHeight: implicitWidth
-                            color: rowDelegate.playing
-                                   ? Kirigami.Theme.highlightColor
-                                   : Kirigami.Theme.textColor
+                        Item {
+                            Layout.preferredWidth: Kirigami.Units.iconSizes.medium
+                            Layout.preferredHeight: width
+
+                            Kirigami.Icon {
+                                anchors.fill: parent
+                                source: rowDelegate.controller.paused
+                                        ? "media-playback-pause"
+                                        : "media-playback-start"
+                                color: Kirigami.Theme.highlightColor
+                                visible: rowDelegate.playing
+                            }
                         }
 
                         ColumnLayout {
