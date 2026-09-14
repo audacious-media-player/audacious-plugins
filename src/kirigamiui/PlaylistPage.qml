@@ -217,8 +217,13 @@ Kirigami.Page {
                 Controls.ScrollIndicator.vertical: Controls.ScrollIndicator {}
             }
 
-            KirigamiPrimitives.ShadowedRectangle {
+            KirigamiPrimitives.ShadowedImage {
                 id: miniPlayer
+
+                readonly property color baseColor: Kirigami.Theme.backgroundColor
+                readonly property real baseLuminance:
+                    baseColor.r * 0.2126 + baseColor.g * 0.7152
+                    + baseColor.b * 0.0722
 
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -228,7 +233,15 @@ Kirigami.Page {
                 height: Kirigami.Units.gridUnit * 4
                 visible: root.backend.playing
                          || root.backend.title.length > 0
-                color: Kirigami.Theme.backgroundColor
+                source: root.backend.albumArtBackground.length > 0
+                        ? root.backend.albumArtBackground + "#"
+                          + root.backend.activePlaylistIndex + "-"
+                          + root.backend.playingEntry
+                        : ""
+                fillMode: Image.Stretch
+                asynchronous: true
+                mipmap: true
+                color: baseColor
                 radius: Kirigami.Units.largeSpacing
 
                 border.width: 1
@@ -239,8 +252,26 @@ Kirigami.Page {
                 shadow.color: Qt.rgba(0, 0, 0, 0.35)
                 shadow.yOffset: 2
 
+                KirigamiPrimitives.ShadowedRectangle {
+                    anchors.fill: parent
+                    z: 1
+                    radius: miniPlayer.radius
+                    color: miniPlayer.baseColor
+                    opacity: miniPlayer.status === Image.Ready
+                             ? (miniPlayer.baseLuminance < 0.5 ? 0.58 : 0.65)
+                             : 1
+
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: 250
+                            easing.type: Easing.InOutQuad
+                        }
+                    }
+                }
+
                 MouseArea {
                     anchors.fill: parent
+                    z: 2
                     onClicked: root.showPlaying()
 
                     RowLayout {
