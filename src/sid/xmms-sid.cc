@@ -66,9 +66,12 @@ public:
 
 private:
     bool delayed_init();
+    void seek(int seek_value);
 
+    Index<char> m_buffer;
     bool m_initialized = false;
     bool m_init_failed = false;
+    int64_t m_bytes_played = 0;
 };
 
 EXPORT SIDPlugin aud_plugin_instance;
@@ -96,6 +99,37 @@ bool SIDPlugin::delayed_init()
     return m_initialized;
 }
 
+/*
+* Seek implementation.
+* no seek API in libsidplayfp currently:
+* https://github.com/libsidplayfp/libsidplayfp/issues/247
+*/
+void SIDPlugin::seek(int seek_value)
+{
+#if LIBSIDPLAYFP_CHECK_VERSION(2, 15) // needs reset() added in 2.15
+    int64_t current_time = aud::rescale<int64_t> (m_bytes_played,
+      xs_cfg.audioFrequency * xs_cfg.audioChannels * 2, 1000);
+    if (seek_value < current_time) {
+        // backwards seek, restart playback from beginning
+        xs_sidplayfp_reset();
+        current_time = 0;
+        m_bytes_played = 0;
+    }
+    int64_t bytes_to_skip = aud::rescale<int64_t> (seek_value - current_time,
+      1000, xs_cfg.audioFrequency * xs_cfg.audioChannels * 2);
+    while (bytes_to_skip > 0) {
+        int64_t bytes_skipped = xs_sidplayfp_fillbuffer(m_buffer.begin(), m_buffer.len());
+        if (bytes_skipped <= 0)
+            break;
+        if (bytes_skipped > bytes_to_skip)
+            bytes_skipped = bytes_to_skip;
+        m_bytes_played += bytes_skipped;
+        bytes_to_skip -= bytes_skipped;
+    }
+#else
+    AUDWARN ("Seeking requires libsidplayfp 2.15 or later, ignoring.\n");
+#endif
+}
 
 /*
  * Shut down XMMS-SID
@@ -177,21 +211,23 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
     if (audioBufSize < 512)
         audioBufSize = 512;
 
-    char *audioBuffer = new char[audioBufSize];
-    int64_t bytes_played = 0;
+    m_buffer.resize(audioBufSize);
+    m_bytes_played = 0;
 
     while (! check_stop ())
     {
-        if (check_seek () >= 0)
-            AUDWARN ("Seeking is not implemented, ignoring.\n");
+        int seek_value = check_seek ();
+        if (seek_value >= 0) {
+            seek(seek_value);
+        }
 
-        int bufRemaining = xs_sidplayfp_fillbuffer(audioBuffer, audioBufSize);
+        int bufRemaining = xs_sidplayfp_fillbuffer(m_buffer.begin(), m_buffer.len());
 
-        write_audio (audioBuffer, bufRemaining);
-        bytes_played += bufRemaining;
+        write_audio (m_buffer.begin(), bufRemaining);
+        m_bytes_played += bufRemaining;
 
         /* Check if we have played enough */
-        int time_played = aud::rescale<int64_t> (bytes_played,
+        int time_played = aud::rescale<int64_t> (m_bytes_played,
          xs_cfg.audioFrequency * xs_cfg.audioChannels * 2, 1000);
 
         if (xs_cfg.playMaxTimeEnable) {
@@ -210,8 +246,6 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
                 break;
         }
     }
-
-    delete[] audioBuffer;
 
     return true;
 }
