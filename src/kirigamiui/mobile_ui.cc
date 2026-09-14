@@ -49,9 +49,9 @@ QString toQString(const String & string)
 
 QString entryTitle(Playlist playlist, int entry, const Tuple & tuple)
 {
-    auto title = tuple.get_str(Tuple::FormattedTitle);
+    auto title = tuple.get_str(Tuple::Title);
     if (!title)
-        title = tuple.get_str(Tuple::Title);
+        title = tuple.get_str(Tuple::FormattedTitle);
     if (title)
         return QString::fromUtf8((const char *)title);
 

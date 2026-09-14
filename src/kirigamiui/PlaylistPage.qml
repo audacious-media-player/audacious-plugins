@@ -23,12 +23,12 @@ Kirigami.Page {
            : qsTr("Playlist")
     padding: 0
 
-    function trackDetails() {
+    function metadataDetails(artist, album) {
         var details = []
-        if (root.backend.artist.length > 0)
-            details.push(root.backend.artist)
-        if (root.backend.album.length > 0)
-            details.push(root.backend.album)
+        if (artist.length > 0)
+            details.push(artist)
+        if (album.length > 0)
+            details.push(album)
         return details.join(" · ")
     }
 
@@ -145,9 +145,8 @@ Kirigami.Page {
 
                             Controls.Label {
                                 Layout.fillWidth: true
-                                text: rowDelegate.artist.length > 0
-                                      ? rowDelegate.artist
-                                      : rowDelegate.album
+                                text: root.metadataDetails(rowDelegate.artist,
+                                                           rowDelegate.album)
                                 color: Kirigami.Theme.disabledTextColor
                                 elide: Text.ElideRight
                                 visible: text.length > 0
@@ -287,7 +286,9 @@ Kirigami.Page {
 
                                     Controls.Label {
                                         Layout.fillWidth: true
-                                        text: root.trackDetails()
+                                        text: root.metadataDetails(
+                                                  root.backend.artist,
+                                                  root.backend.album)
                                         color: Kirigami.Theme.disabledTextColor
                                         elide: Text.ElideRight
                                         visible: text.length > 0
