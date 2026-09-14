@@ -35,7 +35,7 @@ Kirigami.ApplicationWindow {
         return minutes + ":" + (seconds < 10 ? "0" : "") + seconds
     }
 
-    function showMobilePage(source, objectName) {
+    function showMobilePage(source, objectName, properties) {
         root.visible = true
 
         for (var index = 1; index < root.pageStack.depth; ++index) {
@@ -46,7 +46,9 @@ Kirigami.ApplicationWindow {
             }
         }
 
-        root.pageStack.push(source, {"backend": root.backend})
+        var pageProperties = properties || {}
+        pageProperties.backend = root.backend
+        root.pageStack.push(source, pageProperties)
     }
 
     function hideMobilePage(objectName) {
@@ -69,7 +71,10 @@ Kirigami.ApplicationWindow {
 
     function showPlaylistPage() {
         root.showMobilePage(Qt.resolvedUrl("PlaylistPage.qml"),
-                            "mobilePlaylistPage")
+                            "mobilePlaylistPage",
+                            {"showPlaying": function() {
+                                root.pageStack.pop(null)
+                            }})
     }
 
     onClosing: function(close) {

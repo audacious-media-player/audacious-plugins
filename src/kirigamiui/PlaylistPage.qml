@@ -7,6 +7,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15 as Controls
 import QtQuick.Layouts 1.15
 import org.kde.kirigami 2.20 as Kirigami
+import org.kde.kirigami.primitives 2.11 as KirigamiPrimitives
 
 // The C++ interface plugin injects "player" as a context property.
 // qmllint disable unqualified
@@ -14,12 +15,22 @@ Kirigami.Page {
     id: root
 
     required property var backend
+    required property var showPlaying
 
     objectName: "mobilePlaylistPage"
     title: root.backend.playlistTitle.length > 0
            ? root.backend.playlistTitle
            : qsTr("Playlist")
     padding: 0
+
+    function trackDetails() {
+        var details = []
+        if (root.backend.artist.length > 0)
+            details.push(root.backend.artist)
+        if (root.backend.album.length > 0)
+            details.push(root.backend.album)
+        return details.join(" · ")
+    }
 
     actions: [
         Kirigami.Action {
@@ -81,6 +92,10 @@ Kirigami.Page {
                 model: root.backend.playlistModel
                 currentIndex: -1
                 boundsBehavior: Flickable.StopAtBounds
+                bottomMargin: miniPlayer.visible
+                              ? miniPlayer.height
+                                + Kirigami.Units.largeSpacing * 2
+                              : 0
 
                 delegate: Controls.ItemDelegate {
                     id: rowDelegate
@@ -185,6 +200,133 @@ Kirigami.Page {
                 }
 
                 Controls.ScrollIndicator.vertical: Controls.ScrollIndicator {}
+            }
+
+            KirigamiPrimitives.ShadowedRectangle {
+                id: miniPlayer
+
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.margins: Kirigami.Units.largeSpacing
+                z: 2
+                height: Kirigami.Units.gridUnit * 4
+                visible: root.backend.playing
+                         || root.backend.title.length > 0
+                color: Kirigami.Theme.backgroundColor
+                radius: Kirigami.Units.largeSpacing
+
+                border.width: 1
+                border.color: Qt.rgba(Kirigami.Theme.textColor.r,
+                                      Kirigami.Theme.textColor.g,
+                                      Kirigami.Theme.textColor.b, 0.18)
+                shadow.size: Kirigami.Units.largeSpacing
+                shadow.color: Qt.rgba(0, 0, 0, 0.35)
+                shadow.yOffset: 2
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: root.showPlaying()
+
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.margins: Kirigami.Units.smallSpacing
+                        spacing: Kirigami.Units.smallSpacing
+
+                        Controls.AbstractButton {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            Layout.minimumWidth: 0
+                            text: qsTr("Now playing")
+                            Accessible.name: text
+                            background: Item {}
+                            onClicked: root.showPlaying()
+
+                            contentItem: RowLayout {
+                                spacing: Kirigami.Units.smallSpacing
+
+                                Rectangle {
+                                    Layout.preferredWidth: parent.height
+                                    Layout.preferredHeight: width
+                                    radius: Kirigami.Units.smallSpacing
+                                    color: Kirigami.Theme.alternateBackgroundColor
+
+                                    Kirigami.Icon {
+                                        anchors.centerIn: parent
+                                        width: parent.width / 2
+                                        height: width
+                                        source: "media-optical-audio"
+                                        color: Kirigami.Theme.disabledTextColor
+                                        visible: miniCover.status !== Image.Ready
+                                    }
+
+                                    Image {
+                                        id: miniCover
+
+                                        anchors.fill: parent
+                                        source: root.backend.albumArt
+                                        fillMode: Image.PreserveAspectCrop
+                                        asynchronous: true
+                                        cache: false
+                                    }
+                                }
+
+                                ColumnLayout {
+                                    Layout.fillWidth: true
+                                    Layout.minimumWidth: 0
+                                    spacing: 0
+
+                                    Controls.Label {
+                                        Layout.fillWidth: true
+                                        text: root.backend.title.length > 0
+                                              ? root.backend.title
+                                              : qsTr("Nothing playing")
+                                        font.bold: true
+                                        elide: Text.ElideRight
+                                    }
+
+                                    Controls.Label {
+                                        Layout.fillWidth: true
+                                        text: root.trackDetails()
+                                        color: Kirigami.Theme.disabledTextColor
+                                        elide: Text.ElideRight
+                                        visible: text.length > 0
+                                    }
+                                }
+                            }
+                        }
+
+                        Controls.ToolButton {
+                            text: qsTr("Previous")
+                            icon.name: "media-skip-backward"
+                            display: Controls.AbstractButton.IconOnly
+                            onClicked: root.backend.previous()
+                            Controls.ToolTip.visible: hovered
+                            Controls.ToolTip.text: text
+                        }
+
+                        Controls.ToolButton {
+                            text: root.backend.playing && !root.backend.paused
+                                  ? qsTr("Pause") : qsTr("Play")
+                            icon.name: root.backend.playing && !root.backend.paused
+                                       ? "media-playback-pause"
+                                       : "media-playback-start"
+                            display: Controls.AbstractButton.IconOnly
+                            onClicked: root.backend.playPause()
+                            Controls.ToolTip.visible: hovered
+                            Controls.ToolTip.text: text
+                        }
+
+                        Controls.ToolButton {
+                            text: qsTr("Next")
+                            icon.name: "media-skip-forward"
+                            display: Controls.AbstractButton.IconOnly
+                            onClicked: root.backend.next()
+                            Controls.ToolTip.visible: hovered
+                            Controls.ToolTip.text: text
+                        }
+                    }
+                }
             }
 
             ColumnLayout {
