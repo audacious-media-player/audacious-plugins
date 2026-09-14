@@ -90,12 +90,28 @@ Kirigami.Page {
                 anchors.fill: parent
                 clip: true
                 model: root.backend.playlistModel
-                currentIndex: -1
+                currentIndex: root.backend.playingEntry
                 boundsBehavior: Flickable.StopAtBounds
                 bottomMargin: miniPlayer.visible
                               ? miniPlayer.height
                                 + Kirigami.Units.largeSpacing * 2
                               : 0
+
+                function focusCurrentTrack() {
+                    if (currentIndex < 0 || currentIndex >= count)
+                        return
+
+                    positionViewAtIndex(currentIndex, ListView.Center)
+                }
+
+                onCurrentIndexChanged: Qt.callLater(focusCurrentTrack)
+                onCountChanged: Qt.callLater(focusCurrentTrack)
+                onContentHeightChanged: Qt.callLater(focusCurrentTrack)
+                onVisibleChanged: {
+                    if (visible)
+                        Qt.callLater(focusCurrentTrack)
+                }
+                Component.onCompleted: Qt.callLater(focusCurrentTrack)
 
                 delegate: Controls.ItemDelegate {
                     id: rowDelegate
@@ -113,7 +129,6 @@ Kirigami.Page {
                     width: ListView.view.width
                     height: Math.max(implicitHeight,
                                      Kirigami.Units.gridUnit * 4)
-                    highlighted: playing
                     onClicked: controller.playEntry(index)
 
                     contentItem: RowLayout {

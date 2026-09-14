@@ -73,6 +73,7 @@ class MobileUiController : public QObject
     Q_PROPERTY(QString albumArtBackground READ albumArtBackground NOTIFY
                    metadataChanged)
 
+    Q_PROPERTY(int playingEntry READ playingEntry NOTIFY playingEntryChanged)
     Q_PROPERTY(bool playing READ playing NOTIFY playbackChanged)
     Q_PROPERTY(bool ready READ ready NOTIFY playbackChanged)
     Q_PROPERTY(bool paused READ paused NOTIFY playbackChanged)
@@ -98,6 +99,7 @@ public:
     QString albumArt() const { return m_album_art; }
     QString albumArtBackground() const { return m_album_art_background; }
 
+    int playingEntry() const { return m_playing_entry; }
     bool playing() const { return m_playing; }
     bool ready() const { return m_ready; }
     bool paused() const { return m_paused; }
@@ -140,6 +142,7 @@ public:
 signals:
     void playlistsChanged();
     void metadataChanged();
+    void playingEntryChanged();
     void playbackChanged();
     void positionChanged();
     void volumeChanged();
@@ -167,6 +170,7 @@ private:
     QString m_album;
     QString m_album_art;
     QString m_album_art_background;
+    int m_playing_entry = -1;
     bool m_playing = false;
     bool m_ready = false;
     bool m_paused = false;

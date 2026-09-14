@@ -552,15 +552,24 @@ void MobileUiController::refreshPlayback()
     const bool playing = aud_drct_get_playing();
     const bool ready = aud_drct_get_ready();
     const bool paused = aud_drct_get_paused();
+    const Playlist active_playlist = Playlist::active_playlist();
+    const int playing_entry =
+        playing && active_playlist == Playlist::playing_playlist()
+            ? active_playlist.get_position()
+            : -1;
     const bool changed =
         playing != m_playing || ready != m_ready || paused != m_paused;
+    const bool entry_changed = playing_entry != m_playing_entry;
 
     m_playing = playing;
     m_ready = ready;
     m_paused = paused;
+    m_playing_entry = playing_entry;
 
     if (changed)
         emit playbackChanged();
+    if (entry_changed)
+        emit playingEntryChanged();
 
     m_playlist_model.refreshPlayback();
     refreshMetadata();
@@ -605,7 +614,11 @@ void MobileUiController::refreshSettings()
     emit settingsChanged();
 }
 
-void MobileUiController::playlistActivated() { refreshPlaylists(); }
+void MobileUiController::playlistActivated()
+{
+    refreshPlaylists();
+    refreshPlayback();
+}
 
 void MobileUiController::playlistUpdated(Playlist::UpdateLevel level)
 {
