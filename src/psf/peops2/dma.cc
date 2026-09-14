@@ -104,13 +104,50 @@ EXPORT_GCC void CALLBACK SPU2writeDMA4Mem(u32 usPSXMem,int iSize)
  int i;
  u16 *ram16 = (u16 *)&psx_ram[0];
 
+ // Some streaming drivers (such as the generic PS2 streaming driver used for
+ // Final Fantasy IV) kick a single DMA transfer covering two back-to-back 16KB
+ // per-channel halves read from one shared read-ahead buffer, but only refill
+ // that buffer's first 16KB with genuinely fresh data each cycle - the second
+ // half is whatever was last (never, for a freshly allocated buffer) written
+ // there. Past the first 8192 words (16KB) of any transfer landing in a
+ // channel's own ring, treat an exact-zero source sample as 'not actually new
+ // data' and leave the existing spuMem content alone rather than overwriting
+ // real audio with a spurious zero - the correct data for that position
+ // typically arrives one refill cycle later via the next kick's own first half
+ // anyway. Titles using >16KB transfers for genuinely fresh per-channel data
+ // never have an exactly-zero tail, so they are unaffected - this only skips
+ // the specific uninitialised-RAM-over-read case.
+ bool ch_ring_overlap = false;
+ {
+  u32 dest_start = spuAddr2[0]*2;
+  u32 dest_end = dest_start + (u32)iSize*2;
+  for (int c = 0; c < 2; c++)
+   {
+    uintptr_t pStart_off = (uintptr_t)(s_chan[c].pStart - spuMemC);
+    if (dest_end > pStart_off && dest_start < pStart_off + 0x20000)
+     {
+      ch_ring_overlap = true;
+     }
+   }
+ }
+
  for(i=0;i<iSize;i++)
   {
-   spuMem[spuAddr2[0]] = ram16[usPSXMem>>1];                 // spu addr 0 got by writeregister
+   u16 srcVal = ram16[usPSXMem>>1];
+   if (!(i >= 8192 && ch_ring_overlap && srcVal == 0))
+    {
+     spuMem[spuAddr2[0]] = srcVal;                            // spu addr 0 got by writeregister
+    }
    usPSXMem+=2;
+   {
+    u32 written_end = (spuAddr2[0]+1)*2;
+    if (written_end > g_spuMem_write_high) g_spuMem_write_high = written_end;
+   }
    spuAddr2[0]++;                                      // inc spu addr
    if(spuAddr2[0]>0xfffff) spuAddr2[0]=0;              // wrap
   }
+
+ g_last_spu2_dma_sampcount = sampcount;
 
  iSpuAsyncWait=0;
 
@@ -126,9 +163,15 @@ EXPORT_GCC void CALLBACK SPU2writeDMA7Mem(u32 usPSXMem,int iSize)
  for(i=0;i<iSize;i++)
   {
    spuMem[spuAddr2[1]] = ram16[usPSXMem>>1];           // spu addr 1 got by writeregister
+   {
+    u32 written_end = (spuAddr2[1]+1)*2;
+    if (written_end > g_spuMem_write_high) g_spuMem_write_high = written_end;
+   }
    spuAddr2[1]++;                                      // inc spu addr
    if(spuAddr2[1]>0xfffff) spuAddr2[1]=0;              // wrap
   }
+
+ g_last_spu2_dma_sampcount = sampcount;
 
  iSpuAsyncWait=0;
 
