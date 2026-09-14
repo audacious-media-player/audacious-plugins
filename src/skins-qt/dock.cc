@@ -37,6 +37,9 @@
  */
 
 #include <QGuiApplication>
+#include <QList>
+#include <QMetaObject>
+#include <QObject>
 #include <QScreen>
 
 #include "window.h"
@@ -61,10 +64,241 @@ typedef struct {
 
 static DockWindow windows[N_WINDOWS];
 static int last_x, last_y;
+class DockGeometryWatcher;
+static DockGeometryWatcher * geometry_watcher = nullptr;
 
 static inline int least_abs (int a, int b)
 {
     return (abs (a) < abs (b)) ? a : b;
+}
+
+static void dock_sync ();
+static void clear_docked ();
+static void find_docked (DockWindow & base, int type);
+
+static int screen_overlap_area (const QRect & window_rect, const QRect & screen_rect)
+{
+    QRect overlap = window_rect.intersected (screen_rect);
+    if (overlap.isEmpty ())
+        return 0;
+
+    return overlap.width () * overlap.height ();
+}
+
+static bool clamp_window_to_visible_area (DockWindow & dw)
+{
+    auto screens = QGuiApplication::screens ();
+    if (screens.isEmpty ())
+        return false;
+
+    QRect window_rect (* dw.x, * dw.y, dw.w, dw.h);
+
+    QScreen * best_screen = screens[0];
+    int best_area = -1;
+
+    for (QScreen * screen : screens)
+    {
+        QRect screen_rect = screen->availableGeometry ();
+        int area = screen_overlap_area (window_rect, screen_rect);
+
+        if (area > best_area)
+        {
+            best_area = area;
+            best_screen = screen;
+        }
+    }
+
+    QRect screen_rect = best_screen->availableGeometry ();
+
+    int max_x = screen_rect.x () + screen_rect.width () - dw.w;
+    int max_y = screen_rect.y () + screen_rect.height () - dw.h;
+
+    int clamped_x = qBound (screen_rect.x (), * dw.x, max_x);
+    int clamped_y = qBound (screen_rect.y (), * dw.y, max_y);
+
+    if (clamped_x == * dw.x && clamped_y == * dw.y)
+        return false;
+
+    * dw.x = clamped_x;
+    * dw.y = clamped_y;
+    return true;
+}
+
+static bool move_group_to_visible_area (const bool group[])
+{
+    auto screens = QGuiApplication::screens ();
+    if (screens.isEmpty ())
+        return false;
+
+    bool any = false;
+    int left = 0, top = 0, right = 0, bottom = 0;
+
+    for (int i = 0; i < N_WINDOWS; i ++)
+    {
+        DockWindow & dw = windows[i];
+        if (! group[i] || ! dw.window)
+            continue;
+
+        if (! any)
+        {
+            left = * dw.x;
+            top = * dw.y;
+            right = * dw.x + dw.w;
+            bottom = * dw.y + dw.h;
+            any = true;
+        }
+        else
+        {
+            left = qMin (left, * dw.x);
+            top = qMin (top, * dw.y);
+            right = qMax (right, * dw.x + dw.w);
+            bottom = qMax (bottom, * dw.y + dw.h);
+        }
+    }
+
+    if (! any)
+        return false;
+
+    QRect group_rect (left, top, right - left, bottom - top);
+
+    QScreen * best_screen = screens[0];
+    int best_area = -1;
+
+    for (QScreen * screen : screens)
+    {
+        int area = screen_overlap_area (group_rect, screen->availableGeometry ());
+
+        if (area > best_area)
+        {
+            best_area = area;
+            best_screen = screen;
+        }
+    }
+
+    QRect screen_rect = best_screen->availableGeometry ();
+
+    int max_x = screen_rect.x () + screen_rect.width () - group_rect.width ();
+    int max_y = screen_rect.y () + screen_rect.height () - group_rect.height ();
+
+    int clamped_x = qBound (screen_rect.x (), group_rect.x (), max_x);
+    int clamped_y = qBound (screen_rect.y (), group_rect.y (), max_y);
+
+    int delta_x = clamped_x - group_rect.x ();
+    int delta_y = clamped_y - group_rect.y ();
+
+    if (! delta_x && ! delta_y)
+        return false;
+
+    for (int i = 0; i < N_WINDOWS; i ++)
+    {
+        DockWindow & dw = windows[i];
+        if (! group[i] || ! dw.window)
+            continue;
+
+        * dw.x += delta_x;
+        * dw.y += delta_y;
+        dw.window->move (* dw.x, * dw.y);
+    }
+
+    return true;
+}
+
+void dock_move_all_to_visible_area ()
+{
+    dock_sync ();
+
+    bool handled[N_WINDOWS] = {};
+
+    for (int i = 0; i < N_WINDOWS; i ++)
+    {
+        DockWindow & seed = windows[i];
+        if (! seed.window || handled[i])
+            continue;
+
+        clear_docked ();
+        seed.docked = true;
+        find_docked (seed, DOCK_TYPE_ANY);
+
+        bool group[N_WINDOWS] = {};
+        for (int j = 0; j < N_WINDOWS; j ++)
+        {
+            group[j] = windows[j].window && windows[j].docked;
+            if (group[j])
+                handled[j] = true;
+        }
+
+        move_group_to_visible_area (group);
+    }
+}
+
+class DockGeometryWatcher : public QObject
+{
+public:
+    DockGeometryWatcher ()
+    {
+        update_screen_connections ();
+
+        m_app_connections.append (QObject::connect (qApp,
+         & QGuiApplication::screenAdded, this, [this] (QScreen *) {
+            update_screen_connections ();
+            dock_move_all_to_visible_area ();
+        }));
+
+        m_app_connections.append (QObject::connect (qApp,
+         & QGuiApplication::screenRemoved, this, [this] (QScreen *) {
+            update_screen_connections ();
+            dock_move_all_to_visible_area ();
+        }));
+    }
+
+    ~DockGeometryWatcher ()
+    {
+        clear_connections (m_screen_connections);
+        clear_connections (m_app_connections);
+    }
+
+private:
+    void update_screen_connections ()
+    {
+        clear_connections (m_screen_connections);
+
+        for (QScreen * screen : QGuiApplication::screens ())
+        {
+            m_screen_connections.append (QObject::connect (screen,
+             & QScreen::availableGeometryChanged, this,
+             [] (const QRect &) { dock_move_all_to_visible_area (); }));
+
+            m_screen_connections.append (QObject::connect (screen,
+             & QScreen::geometryChanged, this,
+             [] (const QRect &) { dock_move_all_to_visible_area (); }));
+        }
+    }
+
+    static void clear_connections (QList<QMetaObject::Connection> & conns)
+    {
+        for (const auto & conn : conns)
+            QObject::disconnect (conn);
+
+        conns.clear ();
+    }
+
+    QList<QMetaObject::Connection> m_screen_connections;
+    QList<QMetaObject::Connection> m_app_connections;
+};
+
+void dock_enable_geometry_monitoring ()
+{
+    if (geometry_watcher)
+        return;
+
+    geometry_watcher = new DockGeometryWatcher;
+    dock_move_all_to_visible_area ();
+}
+
+void dock_disable_geometry_monitoring ()
+{
+    delete geometry_watcher;
+    geometry_watcher = nullptr;
 }
 
 void dock_add_window (int id, Window * window, int * x, int * y, int w, int h)
@@ -350,6 +584,17 @@ void dock_change_scale (int old_scale, int new_scale)
             * dw.y = * main.y + (* dw.y - * main.y) * new_scale / old_scale;
         }
     }
+}
+
+void dock_move_to_visible_area (int id)
+{
+    DockWindow & dw = windows[id];
+
+    if (! dw.window)
+        return;
+
+    if (clamp_window_to_visible_area (dw))
+        dw.window->move (* dw.x, * dw.y);
 }
 
 void dock_draw_all ()
