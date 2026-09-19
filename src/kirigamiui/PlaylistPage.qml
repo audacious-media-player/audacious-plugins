@@ -45,6 +45,76 @@ Kirigami.Page {
         }
     ]
 
+    footer: Controls.ToolBar {
+        id: navigationBar
+
+        implicitHeight: Kirigami.Units.gridUnit * 3.5
+
+        RowLayout {
+            anchors.fill: parent
+            spacing: 0
+
+            Controls.ToolButton {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: qsTr("Playlist")
+                icon.name: "view-media-playlist"
+                display: Controls.AbstractButton.TextUnderIcon
+                checkable: true
+                checked: true
+                autoExclusive: true
+                onClicked: playlistView.forceActiveFocus()
+            }
+
+            Controls.ToolButton {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: qsTr("Preferences")
+                icon.name: "configure"
+                display: Controls.AbstractButton.TextUnderIcon
+                onClicked: root.backend.showPreferences()
+            }
+
+            Controls.ToolButton {
+                id: menuButton
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: qsTr("More")
+                icon.name: "overflow-menu"
+                display: Controls.AbstractButton.TextUnderIcon
+                onClicked: navigationMenu.open()
+
+                Controls.Menu {
+                    id: navigationMenu
+
+                    x: menuButton.width - width
+                    y: -implicitHeight
+
+                    Controls.MenuItem {
+                        text: qsTr("New playlist")
+                        icon.name: "tab-new"
+                        onTriggered: root.backend.newPlaylist()
+                    }
+
+                    Controls.MenuSeparator {}
+
+                    Controls.MenuItem {
+                        text: qsTr("About Audacious")
+                        icon.name: "help-about"
+                        onTriggered: root.backend.showAbout()
+                    }
+
+                    Controls.MenuItem {
+                        text: qsTr("Quit")
+                        icon.name: "application-exit"
+                        onTriggered: root.backend.requestQuit()
+                    }
+                }
+            }
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 0

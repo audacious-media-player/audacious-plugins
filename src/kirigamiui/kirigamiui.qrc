@@ -2,6 +2,7 @@
   <qresource prefix="/org/audacious/kirigamiui">
     <file>AboutPage.qml</file>
     <file>Main.qml</file>
+    <file>PlayingPage.qml</file>
     <file>PlaylistPage.qml</file>
     <file>PreferencesPage.qml</file>
   </qresource>
