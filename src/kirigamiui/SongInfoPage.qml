@@ -14,6 +14,7 @@ Kirigami.ScrollablePage {
     required property var backend
     required property int entry
     required property var dismiss
+    required property var restorePreviousView
 
     property var details: ({})
     property var fieldValues: ({})
@@ -98,7 +99,15 @@ Kirigami.ScrollablePage {
         root.initializeValues()
     }
 
-    Component.onDestruction: root.closeSession()
+    Component.onDestruction: {
+        root.closeSession()
+        root.restorePreviousView()
+    }
+
+    onBackRequested: function(event) {
+        event.accepted = true
+        root.dismiss()
+    }
 
     footer: Controls.ToolBar {
         visible: root.details.canWrite === true && !root.hasError

@@ -76,12 +76,16 @@ Kirigami.ApplicationWindow {
                             "mobileAboutPage")
     }
 
-    function showSongInfoPage(entry) {
+    function showSongInfoPage(entry, returnToPlayer) {
         root.pageStack.push(Qt.resolvedUrl("SongInfoPage.qml"),
                             {"backend": root.backend,
                              "entry": entry,
                              "dismiss": function() {
                                  root.pageStack.pop()
+                             },
+                             "restorePreviousView": function() {
+                                 if (returnToPlayer === true)
+                                     Qt.callLater(root.showPlayingPage)
                              }})
     }
 
@@ -134,7 +138,7 @@ Kirigami.ApplicationWindow {
             }
             showSongInfo: function(entry) {
                 playingDrawer.close()
-                root.showSongInfoPage(entry)
+                root.showSongInfoPage(entry, true)
             }
         }
     }
@@ -145,7 +149,7 @@ Kirigami.ApplicationWindow {
             root.showPlayingPage()
         }
         showSongInfo: function(entry) {
-            root.showSongInfoPage(entry)
+            root.showSongInfoPage(entry, false)
         }
     }
 }
