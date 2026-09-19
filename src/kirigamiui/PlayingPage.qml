@@ -236,9 +236,28 @@ Kirigami.Page {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.topMargin: Kirigami.Units.smallSpacing
-                spacing: Kirigami.Units.largeSpacing
+                spacing: Kirigami.Units.smallSpacing
 
                 Item { Layout.fillWidth: true }
+
+                Controls.ToolButton {
+                    text: qsTr("Shuffle")
+                    icon.name: "media-playlist-shuffle"
+
+                    // I am not sure why the icon size needs to be set for the shuffle/repeat
+                    // actions but the other tool buttons are fine.
+                    icon.width: Kirigami.Units.iconSizes.medium
+                    icon.height: Kirigami.Units.iconSizes.medium
+
+                    display: Controls.AbstractButton.IconOnly
+                    checkable: true
+                    checked: root.backend.shuffle
+                    onToggled: root.backend.setShuffle(checked)
+                    implicitWidth: Kirigami.Units.gridUnit * 3
+                    implicitHeight: implicitWidth
+                    Controls.ToolTip.visible: hovered
+                    Controls.ToolTip.text: text
+                }
 
                 Controls.ToolButton {
                     text: qsTr("Previous")
@@ -275,22 +294,30 @@ Kirigami.Page {
                     Controls.ToolTip.text: text
                 }
 
+                Controls.ToolButton {
+                    text: qsTr("Repeat")
+                    icon.name: "media-playlist-repeat"
+
+                    // I am not sure why the icon size needs to be set for the shuffle/repeat
+                    // actions but the other tool buttons are fine.
+                    icon.width: Kirigami.Units.iconSizes.medium
+                    icon.height: Kirigami.Units.iconSizes.medium
+
+                    display: Controls.AbstractButton.IconOnly
+                    checkable: true
+                    checked: root.backend.repeat
+                    onToggled: root.backend.setRepeat(checked)
+                    implicitWidth: Kirigami.Units.gridUnit * 3
+                    implicitHeight: implicitWidth
+                    Controls.ToolTip.visible: hovered
+                    Controls.ToolTip.text: text
+                }
+
                 Item { Layout.fillWidth: true }
             }
 
             RowLayout {
                 Layout.fillWidth: true
-
-                Controls.ToolButton {
-                    text: qsTr("Shuffle")
-                    icon.name: "media-playlist-shuffle"
-                    display: Controls.AbstractButton.IconOnly
-                    checkable: true
-                    checked: root.backend.shuffle
-                    onToggled: root.backend.setShuffle(checked)
-                    Controls.ToolTip.visible: hovered
-                    Controls.ToolTip.text: text
-                }
 
                 Kirigami.Icon {
                     source: "audio-volume-medium"
@@ -305,17 +332,6 @@ Kirigami.Page {
                     value: root.backend.volume
                     onMoved: root.backend.setVolume(value)
                     Accessible.name: qsTr("Volume")
-                }
-
-                Controls.ToolButton {
-                    text: qsTr("Repeat")
-                    icon.name: "media-playlist-repeat"
-                    display: Controls.AbstractButton.IconOnly
-                    checkable: true
-                    checked: root.backend.repeat
-                    onToggled: root.backend.setRepeat(checked)
-                    Controls.ToolTip.visible: hovered
-                    Controls.ToolTip.text: text
                 }
             }
         }
