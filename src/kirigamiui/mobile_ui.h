@@ -17,11 +17,54 @@
 #ifndef AUDACIOUS_KIRIGAMI_MOBILE_UI_H
 #define AUDACIOUS_KIRIGAMI_MOBILE_UI_H
 
+#include <vector>
+
 #include <QAbstractListModel>
 #include <QStringList>
+#include <QVariant>
 
 #include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
+#include <libaudcore/preferences.h>
+
+class PluginHandle;
+
+class MobilePluginModel : public QAbstractListModel
+{
+    Q_OBJECT
+
+public:
+    enum Role
+    {
+        NameRole = Qt::UserRole + 1,
+        BasenameRole,
+        CategoryRole,
+        EnabledRole,
+        HasPreferencesRole,
+        HasAboutRole
+    };
+
+    explicit MobilePluginModel(QObject * parent = nullptr);
+    ~MobilePluginModel() override;
+
+    int rowCount(const QModelIndex & parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex & index, int role) const override;
+    QHash<int, QByteArray> roleNames() const override;
+
+    bool setEnabled(int row, bool enabled);
+
+private:
+    struct Entry
+    {
+        PluginHandle * plugin;
+        QString category;
+    };
+
+    static bool pluginChanged(PluginHandle * plugin, void * data);
+    void refreshPlugin(PluginHandle * plugin);
+
+    std::vector<Entry> m_entries;
+};
 
 class MobilePlaylistModel : public QAbstractListModel
 {
@@ -60,6 +103,7 @@ class MobileUiController : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QAbstractItemModel * playlistModel READ playlistModel CONSTANT)
+    Q_PROPERTY(QAbstractItemModel * pluginModel READ pluginModel CONSTANT)
     Q_PROPERTY(
         QStringList playlistNames READ playlistNames NOTIFY playlistsChanged)
     Q_PROPERTY(int activePlaylistIndex READ activePlaylistIndex NOTIFY
@@ -87,8 +131,10 @@ class MobileUiController : public QObject
 
 public:
     explicit MobileUiController(QObject * parent = nullptr);
+    ~MobileUiController() override;
 
     QAbstractItemModel * playlistModel() { return &m_playlist_model; }
+    QAbstractItemModel * pluginModel() { return &m_plugin_model; }
     QStringList playlistNames() const { return m_playlist_names; }
     int activePlaylistIndex() const;
     QString playlistTitle() const;
@@ -139,6 +185,14 @@ public:
     Q_INVOKABLE void setBoolSetting(const QString & name, bool value);
     Q_INVOKABLE void setIntSetting(const QString & name, int value);
 
+    Q_INVOKABLE bool setPluginEnabled(int row, bool enabled);
+    Q_INVOKABLE QVariantMap openPluginPreferences(const QString & basename);
+    Q_INVOKABLE QVariantMap pluginPreferenceValues() const;
+    Q_INVOKABLE void setPluginPreference(int id, const QVariant & value);
+    Q_INVOKABLE void activatePluginPreference(int id);
+    Q_INVOKABLE void closePluginPreferences(const QString & basename,
+                                            bool apply);
+
 signals:
     void playlistsChanged();
     void metadataChanged();
@@ -153,6 +207,14 @@ signals:
     void aboutDismissed();
 
 private:
+    struct PreferenceBinding
+    {
+        const PreferencesWidget * widget;
+        QVariantList choices;
+    };
+
+    QVariant preferenceValue(const PreferenceBinding & binding) const;
+
     void refreshPlaylists(bool reset_model = true);
     void refreshMetadata();
     void refreshPlayback();
@@ -164,6 +226,7 @@ private:
     void playlistPositionChanged(Playlist playlist);
 
     MobilePlaylistModel m_playlist_model;
+    MobilePluginModel m_plugin_model;
     QStringList m_playlist_names;
     QString m_title;
     QString m_artist;
@@ -179,6 +242,10 @@ private:
     int m_volume = 0;
     bool m_repeat = false;
     bool m_shuffle = false;
+
+    PluginHandle * m_preferences_plugin = nullptr;
+    const PluginPreferences * m_plugin_preferences = nullptr;
+    std::vector<PreferenceBinding> m_preference_bindings;
 
     Timer<MobileUiController> m_timer{TimerRate::Hz4, this,
                                       &MobileUiController::refreshPosition};

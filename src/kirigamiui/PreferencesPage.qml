@@ -12,6 +12,7 @@ Kirigami.ScrollablePage {
     id: root
 
     required property var backend
+    required property var showPlugins
 
     objectName: "mobilePreferencesPage"
     title: qsTr("Preferences")
@@ -25,6 +26,14 @@ Kirigami.ScrollablePage {
             visible: true
             text: qsTr("Changes are saved automatically.")
             type: Kirigami.MessageType.Information
+        }
+
+        Controls.Button {
+            Kirigami.FormData.isSection: true
+            Layout.fillWidth: true
+            text: qsTr("Plugins")
+            icon.name: "preferences-plugin"
+            onClicked: root.showPlugins()
         }
 
         Kirigami.Separator {

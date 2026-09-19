@@ -48,7 +48,27 @@ Kirigami.ApplicationWindow {
 
     function showPreferencesPage() {
         root.showMobilePage(Qt.resolvedUrl("PreferencesPage.qml"),
-                            "mobilePreferencesPage")
+                            "mobilePreferencesPage",
+                            {"showPlugins": function() {
+                                root.showPluginsPage()
+                            }})
+    }
+
+    function showPluginsPage() {
+        root.showMobilePage(Qt.resolvedUrl("PluginsPage.qml"),
+                            "mobilePluginsPage",
+                            {"showPlugin": function(basename) {
+                                root.showPluginPreferencesPage(basename)
+                            }})
+    }
+
+    function showPluginPreferencesPage(basename) {
+        root.pageStack.push(Qt.resolvedUrl("PluginPreferencesPage.qml"),
+                            {"backend": root.backend,
+                             "basename": basename,
+                             "dismiss": function() {
+                                 root.pageStack.pop()
+                             }})
     }
 
     function showAboutPage() {
@@ -77,6 +97,8 @@ Kirigami.ApplicationWindow {
         }
 
         function onPreferencesDismissed() {
+            root.hideMobilePage("mobilePluginPreferencesPage")
+            root.hideMobilePage("mobilePluginsPage")
             root.hideMobilePage("mobilePreferencesPage")
         }
 
