@@ -77,11 +77,7 @@ Kirigami.ApplicationWindow {
     }
 
     function showPlayingPage() {
-        root.showMobilePage(Qt.resolvedUrl("PlayingPage.qml"),
-                            "mobilePlayingPage",
-                            {"dismiss": function() {
-                                root.pageStack.pop()
-                            }})
+        playingDrawer.open()
     }
 
     onClosing: function(close) {
@@ -108,6 +104,25 @@ Kirigami.ApplicationWindow {
 
         function onAboutDismissed() {
             root.hideMobilePage("mobileAboutPage")
+        }
+    }
+
+    Kirigami.OverlayDrawer {
+        id: playingDrawer
+
+        edge: Qt.BottomEdge
+        width: root.width
+        height: root.height
+        padding: 0
+        modal: true
+        dim: false
+        handleVisible: false
+
+        contentItem: PlayingPage {
+            backend: root.backend
+            dismiss: function() {
+                playingDrawer.close()
+            }
         }
     }
 
