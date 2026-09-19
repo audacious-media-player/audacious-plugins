@@ -127,41 +127,6 @@ Kirigami.Page {
             }
 
             Item { Layout.fillWidth: true }
-
-            Controls.ToolButton {
-                id: moreButton
-
-                Layout.alignment: Qt.AlignVCenter
-                implicitWidth: Kirigami.Units.gridUnit * 2.5
-                implicitHeight: implicitWidth
-                opacity: pressed ? 1 : 0.9
-                text: qsTr("More options")
-                icon.name: "overflow-menu"
-                display: Controls.AbstractButton.IconOnly
-                background: Item {}
-                contentItem: Item {
-                    Kirigami.Icon {
-                        anchors.centerIn: parent
-                        anchors.horizontalCenterOffset: 1
-                        anchors.verticalCenterOffset: 2
-                        width: Kirigami.Units.iconSizes.medium
-                        height: width
-                        source: moreButton.icon.name
-                        color: Qt.rgba(0, 0, 0, 0.75)
-                    }
-
-                    Kirigami.Icon {
-                        anchors.centerIn: parent
-                        width: Kirigami.Units.iconSizes.medium
-                        height: width
-                        source: moreButton.icon.name
-                        color: "white"
-                    }
-                }
-                onClicked: playingMenu.open()
-                Controls.ToolTip.visible: hovered
-                Controls.ToolTip.text: text
-            }
         }
 
         Item {
@@ -366,30 +331,4 @@ Kirigami.Page {
         }
     }
 
-    Controls.Menu {
-        id: playingMenu
-
-        x: root.width - width - Kirigami.Units.largeSpacing
-        y: moreButton.mapToItem(root, 0, moreButton.height).y
-           + Kirigami.Units.smallSpacing
-
-        Controls.MenuItem {
-            text: qsTr("Open files")
-            icon.name: "document-open"
-            onTriggered: root.backend.openFiles()
-        }
-
-        Controls.MenuItem {
-            text: qsTr("Add files")
-            icon.name: "list-add"
-            onTriggered: root.backend.addFiles()
-        }
-
-        Controls.MenuItem {
-            text: qsTr("Stop playback")
-            icon.name: "media-playback-stop"
-            enabled: root.backend.playing
-            onTriggered: root.backend.stop()
-        }
-    }
 }
