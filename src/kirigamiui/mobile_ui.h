@@ -17,90 +17,15 @@
 #ifndef AUDACIOUS_KIRIGAMI_MOBILE_UI_H
 #define AUDACIOUS_KIRIGAMI_MOBILE_UI_H
 
-#include <vector>
-
-#include <QAbstractListModel>
-#include <QPointer>
 #include <QQuickItem>
 #include <QStringList>
 #include <QVariant>
 
-#include <libaudcore/hook.h>
-#include <libaudcore/playlist.h>
-#include <libaudcore/preferences.h>
-#include <libaudcore/tuple.h>
-
-class PluginHandle;
-class QWidget;
-
-class MobilePluginModel : public QAbstractListModel
-{
-    Q_OBJECT
-
-public:
-    enum Role
-    {
-        NameRole = Qt::UserRole + 1,
-        BasenameRole,
-        CategoryRole,
-        EnabledRole,
-        HasPreferencesRole,
-        HasAboutRole
-    };
-
-    explicit MobilePluginModel(QObject * parent = nullptr);
-    ~MobilePluginModel() override;
-
-    int rowCount(const QModelIndex & parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex & index, int role) const override;
-    QHash<int, QByteArray> roleNames() const override;
-
-    bool setEnabled(int row, bool enabled);
-
-private:
-    struct Entry
-    {
-        PluginHandle * plugin;
-        QString category;
-    };
-
-    static bool pluginChanged(PluginHandle * plugin, void * data);
-    void refreshPlugin(PluginHandle * plugin);
-
-    std::vector<Entry> m_entries;
-};
-
-class MobilePlaylistModel : public QAbstractListModel
-{
-    Q_OBJECT
-
-public:
-    enum Role
-    {
-        TitleRole = Qt::UserRole + 1,
-        ArtistRole,
-        AlbumRole,
-        DurationRole,
-        PlayingRole,
-        QueuePositionRole
-    };
-
-    explicit MobilePlaylistModel(QObject * parent = nullptr);
-
-    int rowCount(const QModelIndex & parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex & index, int role) const override;
-    QHash<int, QByteArray> roleNames() const override;
-
-    void setPlaylist(Playlist playlist);
-    void refresh();
-    void applyPendingUpdate();
-    void refreshPlayback();
-    void refreshEntry(int entry);
-
-private:
-    Playlist m_playlist;
-    int m_rows = 0;
-};
+#include "playback_controller.h"
+#include "playlist_controller.h"
+#include "plugin_controller.h"
+#include "settings_controller.h"
+#include "song_info_controller.h"
 
 class MobileUiController : public QObject
 {
@@ -135,29 +60,31 @@ class MobileUiController : public QObject
 
 public:
     explicit MobileUiController(QObject * parent = nullptr);
-    ~MobileUiController() override;
 
-    QAbstractItemModel * playlistModel() { return &m_playlist_model; }
-    QAbstractItemModel * pluginModel() { return &m_plugin_model; }
-    QStringList playlistNames() const { return m_playlist_names; }
-    int activePlaylistIndex() const;
-    QString playlistTitle() const;
+    QAbstractItemModel * playlistModel() { return m_playlists.model(); }
+    QAbstractItemModel * pluginModel() { return m_plugins.model(); }
+    QStringList playlistNames() const { return m_playlists.names(); }
+    int activePlaylistIndex() const { return m_playlists.activeIndex(); }
+    QString playlistTitle() const { return m_playlists.title(); }
 
-    QString title() const { return m_title; }
-    QString artist() const { return m_artist; }
-    QString album() const { return m_album; }
-    QString albumArt() const { return m_album_art; }
-    QString albumArtBackground() const { return m_album_art_background; }
+    QString title() const { return m_playback.title(); }
+    QString artist() const { return m_playback.artist(); }
+    QString album() const { return m_playback.album(); }
+    QString albumArt() const { return m_playback.albumArt(); }
+    QString albumArtBackground() const
+    {
+        return m_playback.albumArtBackground();
+    }
 
-    int playingEntry() const { return m_playing_entry; }
-    bool playing() const { return m_playing; }
-    bool ready() const { return m_ready; }
-    bool paused() const { return m_paused; }
-    int position() const { return m_position; }
-    int duration() const { return m_duration; }
-    int volume() const { return m_volume; }
-    bool repeat() const { return m_repeat; }
-    bool shuffle() const { return m_shuffle; }
+    int playingEntry() const { return m_playback.playingEntry(); }
+    bool playing() const { return m_playback.playing(); }
+    bool ready() const { return m_playback.ready(); }
+    bool paused() const { return m_playback.paused(); }
+    int position() const { return m_playback.position(); }
+    int duration() const { return m_playback.duration(); }
+    int volume() const { return m_playback.volume(); }
+    bool repeat() const { return m_playback.repeat(); }
+    bool shuffle() const { return m_playback.shuffle(); }
     QString applicationVersion() const;
     QString copyrightText() const;
 
@@ -216,86 +143,11 @@ signals:
     void aboutDismissed();
 
 private:
-    struct PreferenceBinding
-    {
-        const PreferencesWidget * widget;
-        QVariantList choices;
-        QPointer<QWidget> native_widget;
-    };
-
-    QVariant preferenceValue(const PreferenceBinding & binding) const;
-    void destroyNativePreferenceWidgets();
-
-    void refreshPlaylists(bool reset_model = true);
-    void refreshMetadata();
-    void refreshPlayback();
-    void refreshPosition();
-    void refreshVolume();
-    void refreshSettings();
-    void playlistActivated();
-    void playlistUpdated(Playlist::UpdateLevel level);
-    void playlistPositionChanged(Playlist playlist);
-
-    MobilePlaylistModel m_playlist_model;
-    MobilePluginModel m_plugin_model;
-    QStringList m_playlist_names;
-    QString m_title;
-    QString m_artist;
-    QString m_album;
-    QString m_album_art;
-    QString m_album_art_background;
-    int m_playing_entry = -1;
-    bool m_playing = false;
-    bool m_ready = false;
-    bool m_paused = false;
-    int m_position = 0;
-    int m_duration = 0;
-    int m_volume = 0;
-    bool m_repeat = false;
-    bool m_shuffle = false;
-
-    int m_next_song_info_session = 0;
-    int m_song_info_session = 0;
-    QString m_song_info_filename;
-    PluginHandle * m_song_info_decoder = nullptr;
-    Tuple m_song_info_tuple;
-    bool m_song_info_can_write = false;
-
-    PluginHandle * m_preferences_plugin = nullptr;
-    const PluginPreferences * m_plugin_preferences = nullptr;
-    std::vector<PreferenceBinding> m_preference_bindings;
-
-    Timer<MobileUiController> m_timer{TimerRate::Hz4, this,
-                                      &MobileUiController::refreshPosition};
-
-    const HookReceiver<MobileUiController> m_activate_hook{
-        "playlist activate", this, &MobileUiController::playlistActivated};
-    const HookReceiver<MobileUiController, Playlist::UpdateLevel> m_update_hook{
-        "playlist update", this, &MobileUiController::playlistUpdated};
-    const HookReceiver<MobileUiController, Playlist> m_position_hook{
-        "playlist position", this,
-        &MobileUiController::playlistPositionChanged};
-
-    const HookReceiver<MobileUiController> m_playback_begin_hook{
-        "playback begin", this, &MobileUiController::refreshPlayback};
-    const HookReceiver<MobileUiController> m_playback_ready_hook{
-        "playback ready", this, &MobileUiController::refreshPlayback};
-    const HookReceiver<MobileUiController> m_playback_pause_hook{
-        "playback pause", this, &MobileUiController::refreshPlayback};
-    const HookReceiver<MobileUiController> m_playback_unpause_hook{
-        "playback unpause", this, &MobileUiController::refreshPlayback};
-    const HookReceiver<MobileUiController> m_playback_stop_hook{
-        "playback stop", this, &MobileUiController::refreshPlayback};
-    const HookReceiver<MobileUiController> m_title_hook{
-        "title change", this, &MobileUiController::refreshMetadata};
-    const HookReceiver<MobileUiController> m_tuple_hook{
-        "tuple change", this, &MobileUiController::refreshMetadata};
-    const HookReceiver<MobileUiController> m_info_hook{
-        "info change", this, &MobileUiController::refreshMetadata};
-    const HookReceiver<MobileUiController> m_repeat_hook{
-        "set repeat", this, &MobileUiController::refreshSettings};
-    const HookReceiver<MobileUiController> m_shuffle_hook{
-        "set shuffle", this, &MobileUiController::refreshSettings};
+    MobilePlaylistController m_playlists;
+    MobilePlaybackController m_playback;
+    MobilePluginController m_plugins;
+    MobileSongInfoController m_song_info;
+    MobileSettingsController m_settings;
 };
 
 #endif
