@@ -21,6 +21,7 @@
 #include <QStringList>
 #include <QVariant>
 
+#include "about_controller.h"
 #include "playback_controller.h"
 #include "playlist_controller.h"
 #include "plugin_controller.h"
@@ -57,6 +58,8 @@ class MobileUiController : public QObject
     Q_PROPERTY(bool shuffle READ shuffle NOTIFY settingsChanged)
     Q_PROPERTY(QString applicationVersion READ applicationVersion CONSTANT)
     Q_PROPERTY(QString copyrightText READ copyrightText CONSTANT)
+    Q_PROPERTY(QString creditsText READ creditsText CONSTANT)
+    Q_PROPERTY(QString licenseText READ licenseText CONSTANT)
 
 public:
     explicit MobileUiController(QObject * parent = nullptr);
@@ -85,8 +88,10 @@ public:
     int volume() const { return m_playback.volume(); }
     bool repeat() const { return m_playback.repeat(); }
     bool shuffle() const { return m_playback.shuffle(); }
-    QString applicationVersion() const;
-    QString copyrightText() const;
+    QString applicationVersion() const { return m_about.applicationVersion(); }
+    QString copyrightText() const { return m_about.copyrightText(); }
+    QString creditsText() const { return m_about.creditsText(); }
+    QString licenseText() const { return m_about.licenseText(); }
 
     Q_INVOKABLE void playPause();
     Q_INVOKABLE void stop();
@@ -143,6 +148,7 @@ signals:
     void aboutDismissed();
 
 private:
+    MobileAboutController m_about;
     MobilePlaylistController m_playlists;
     MobilePlaybackController m_playback;
     MobilePluginController m_plugins;

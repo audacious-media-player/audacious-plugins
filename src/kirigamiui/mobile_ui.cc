@@ -10,8 +10,8 @@
 #include <libaudqt/libaudqt.h>
 
 MobileUiController::MobileUiController(QObject * parent)
-    : QObject(parent), m_playlists(this), m_playback(this), m_plugins(this),
-      m_song_info(this), m_settings(this)
+    : QObject(parent), m_about(this), m_playlists(this), m_playback(this),
+      m_plugins(this), m_song_info(this), m_settings(this)
 {
     connect(&m_playlists, &MobilePlaylistController::playlistsChanged, this,
             &MobileUiController::playlistsChanged);
@@ -30,16 +30,6 @@ MobileUiController::MobileUiController(QObject * parent)
 
     connect(&m_playback, &MobilePlaybackController::playbackChanged,
             &m_playlists, &MobilePlaylistController::refreshPlayback);
-}
-
-QString MobileUiController::applicationVersion() const
-{
-    return QStringLiteral(VERSION);
-}
-
-QString MobileUiController::copyrightText() const
-{
-    return QStringLiteral(COPYRIGHT);
 }
 
 void MobileUiController::playPause() { m_playback.playPause(); }

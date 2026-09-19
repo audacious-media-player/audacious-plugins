@@ -19,6 +19,7 @@ kirigamiui_generated = qt6_module.preprocess(
 
 shared_module('kirigamiui',
   'kirigamiui.cc',
+  'about_controller.cc',
   'mobile_ui.cc',
   'native_widget_item.cc',
   'playback_controller.cc',
