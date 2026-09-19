@@ -22,6 +22,7 @@ Kirigami.Page {
            ? root.backend.playlistTitle
            : qsTr("Playlist")
     padding: 0
+    globalToolBarStyle: Kirigami.ApplicationHeaderStyle.None
 
     function metadataDetails(artist, album) {
         var details = []
@@ -31,19 +32,6 @@ Kirigami.Page {
             details.push(album)
         return details.join(" · ")
     }
-
-    actions: [
-        Kirigami.Action {
-            text: qsTr("Add files")
-            icon.name: "list-add"
-            onTriggered: root.backend.addFiles()
-        },
-        Kirigami.Action {
-            text: qsTr("New playlist")
-            icon.name: "tab-new"
-            onTriggered: root.backend.newPlaylist()
-        }
-    ]
 
     footer: Controls.ToolBar {
         id: navigationBar
