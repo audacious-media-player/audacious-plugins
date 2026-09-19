@@ -78,6 +78,14 @@ else
   endif
 endif
 
+if get_option('kirigamiui')
+  if not meson.version().version_compare('>= 0.57')
+    error('The Kirigami mobile interface requires Meson 0.57 or newer.')
+  elif not get_option('qt') or get_option('qt5')
+    error('The Kirigami mobile interface requires Qt 6 support.')
+  endif
+endif
+
 
 if get_option('gtk')
   if get_option('gtk2')
@@ -321,6 +329,7 @@ summary({
 if conf.has('USE_QT')
   summary({
     'Qt Interface': get_option('qtui'),
+    'Kirigami Mobile Interface': get_option('kirigamiui'),
     'Winamp Classic Interface': get_option('skins'),
     'Album Art': get_option('albumart'),
     'Blur Scope': get_option('blurscope'),
