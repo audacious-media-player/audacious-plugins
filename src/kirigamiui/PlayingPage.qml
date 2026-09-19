@@ -68,7 +68,7 @@ Kirigami.Page {
             anchors.fill: parent
             color: playingBackdrop.baseColor
             opacity: backdropImage.status === Image.Ready
-                     ? (playingBackdrop.baseLuminance < 0.5 ? 0.44 : 0.60)
+                     ? (playingBackdrop.baseLuminance < 0.5 ? 0.44 : 0.52)
                      : 0
 
             Behavior on opacity {
