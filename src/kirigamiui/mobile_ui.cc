@@ -25,6 +25,7 @@
 #include <QImage>
 #include <QPainter>
 #include <QPainterPath>
+#include <QWidget>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
@@ -34,6 +35,8 @@
 #include <libaudcore/runtime.h>
 #include <libaudcore/tuple.h>
 #include <libaudqt/libaudqt.h>
+
+#include "native_widget_item.h"
 
 namespace
 {
@@ -108,37 +111,6 @@ QVariantList dependenciesVariant(const std::vector<int> & dependencies)
     for (int id : dependencies)
         list.append(id);
     return list;
-}
-
-bool preferencesHaveCustomQt(ArrayRef<PreferencesWidget> widgets)
-{
-    for (const PreferencesWidget & widget : widgets)
-    {
-        switch (widget.type)
-        {
-        case PreferencesWidget::CustomQt:
-            return true;
-        case PreferencesWidget::Box:
-            if (preferencesHaveCustomQt(widget.data.box.widgets))
-                return true;
-            break;
-        case PreferencesWidget::Table:
-            if (preferencesHaveCustomQt(widget.data.table.widgets))
-                return true;
-            break;
-        case PreferencesWidget::Notebook:
-            for (const NotebookTab & tab : widget.data.notebook.tabs)
-            {
-                if (preferencesHaveCustomQt(tab.widgets))
-                    return true;
-            }
-            break;
-        default:
-            break;
-        }
-    }
-
-    return false;
 }
 
 QString entryTitle(Playlist playlist, int entry, const Tuple & tuple)
@@ -536,6 +508,7 @@ MobileUiController::MobileUiController(QObject * parent)
 
 MobileUiController::~MobileUiController()
 {
+    destroyNativePreferenceWidgets();
     if (m_plugin_preferences && m_plugin_preferences->cleanup)
         m_plugin_preferences->cleanup();
 }
@@ -709,12 +682,8 @@ QVariantMap MobileUiController::openPluginPreferences(const QString & basename)
     if (!header)
         return details;
 
-    const PluginPreferences * preferences = header->info.prefs;
-    const bool native_preferences =
-        preferences && preferencesHaveCustomQt(preferences->widgets);
-
     m_preferences_plugin = plugin;
-    m_plugin_preferences = native_preferences ? nullptr : preferences;
+    m_plugin_preferences = header->info.prefs;
     m_preference_bindings.clear();
 
     if (m_plugin_preferences && m_plugin_preferences->init)
@@ -722,8 +691,7 @@ QVariantMap MobileUiController::openPluginPreferences(const QString & basename)
 
     details["name"] = translatedText(header->info.name, header->info.domain);
     details["about"] = translatedText(header->info.about, header->info.domain);
-    details["hasPreferences"] = (preferences != nullptr);
-    details["nativePreferences"] = native_preferences;
+    details["hasPreferences"] = (m_plugin_preferences != nullptr);
     details["requiresApply"] =
         (m_plugin_preferences && m_plugin_preferences->apply);
 
@@ -755,9 +723,11 @@ QVariantMap MobileUiController::openPluginPreferences(const QString & basename)
 
             const QString label = translatedLabel(widget.label, domain);
 
-            auto addBinding = [this, &widget](QVariantList choices = {}) {
+            auto addBinding = [this, &widget](QVariantList choices = {},
+                                              QWidget * native_widget = nullptr) {
                 const int id = (int)m_preference_bindings.size();
-                m_preference_bindings.push_back({&widget, choices});
+                m_preference_bindings.push_back(
+                    {&widget, choices, native_widget});
                 return id;
             };
 
@@ -889,10 +859,17 @@ QVariantMap MobileUiController::openPluginPreferences(const QString & basename)
                 addDescription(description);
                 break;
             case PreferencesWidget::CustomQt:
-                description["type"] = "unsupported";
-                description["label"] = QString::fromUtf8(
-                    _("This plugin uses a custom desktop settings widget."));
-                addDescription(description);
+                if (widget.data.populate)
+                {
+                    auto native_widget =
+                        static_cast<QWidget *>(widget.data.populate());
+                    if (native_widget)
+                    {
+                        description["type"] = "native";
+                        description["id"] = addBinding({}, native_widget);
+                        addDescription(description);
+                    }
+                }
                 break;
             case PreferencesWidget::CustomGTK:
                 // As in the desktop Qt builder, ignore GTK-only widgets.
@@ -908,19 +885,19 @@ QVariantMap MobileUiController::openPluginPreferences(const QString & basename)
     return details;
 }
 
-void MobileUiController::openNativePluginPreferences(const QString & basename)
+QQuickItem *
+MobileUiController::createNativePreferenceItem(QQuickItem * parent, int id)
 {
-    PluginHandle * plugin =
-        aud_plugin_lookup_basename(basename.toUtf8().constData());
-    if (!plugin || !aud_plugin_get_enabled(plugin))
-        return;
+    if (id < 0 || id >= (int)m_preference_bindings.size())
+        return nullptr;
 
-    auto header = (Plugin *)aud_plugin_get_header(plugin);
-    if (!header || !header->info.prefs ||
-        !preferencesHaveCustomQt(header->info.prefs->widgets))
-        return;
+    QWidget * widget = m_preference_bindings[id].native_widget.data();
+    if (!widget)
+        return nullptr;
 
-    audqt::plugin_prefs(plugin);
+    auto item = new NativeWidgetItem(parent);
+    item->setWidget(widget);
+    return item;
 }
 
 QVariant
@@ -1043,14 +1020,26 @@ void MobileUiController::closePluginPreferences(const QString & basename,
         return;
 
     const PluginPreferences * preferences = m_plugin_preferences;
+    if (apply && preferences && preferences->apply)
+        preferences->apply();
+
+    destroyNativePreferenceWidgets();
+
     m_preferences_plugin = nullptr;
     m_plugin_preferences = nullptr;
     m_preference_bindings.clear();
 
-    if (apply && preferences && preferences->apply)
-        preferences->apply();
     if (preferences && preferences->cleanup)
         preferences->cleanup();
+}
+
+void MobileUiController::destroyNativePreferenceWidgets()
+{
+    for (PreferenceBinding & binding : m_preference_bindings)
+    {
+        if (binding.native_widget)
+            delete binding.native_widget.data();
+    }
 }
 
 void MobileUiController::refreshPlaylists(bool reset_model)

@@ -62,8 +62,8 @@ Kirigami.ScrollablePage {
         case "file":
         case "font": return stringComponent;
         case "combo": return comboComponent;
+        case "native": return nativeComponent;
         case "separator": return separatorComponent;
-        case "unsupported": return unsupportedComponent;
         default: return null;
         }
     }
@@ -136,25 +136,6 @@ Kirigami.ScrollablePage {
             visible: root.details.hasPreferences === true
             text: qsTr("Settings")
             level: 2
-        }
-
-        Kirigami.InlineMessage {
-            Layout.fillWidth: true
-            visible: root.details.nativePreferences === true
-            text: qsTr("This plugin uses native desktop settings.")
-            type: Kirigami.MessageType.Information
-        }
-
-        Controls.Button {
-            Layout.fillWidth: true
-            visible: root.details.nativePreferences === true
-            text: qsTr("Open native settings")
-            icon.name: "preferences-system"
-            onClicked: {
-                root.closeSession(false);
-                root.backend.openNativePluginPreferences(root.basename);
-                root.dismiss();
-            }
         }
 
         Repeater {
@@ -467,18 +448,44 @@ Kirigami.ScrollablePage {
     }
 
     Component {
-        id: unsupportedComponent
+        id: nativeComponent
 
-        Kirigami.InlineMessage {
-            id: unsupportedMessage
+        Item {
+            id: nativeContainer
 
             property var preference: ({})
             property var page: null
+            property Item nativeItem: null
 
-            width: parent.width
-            visible: true
-            text: unsupportedMessage.preference.label || ""
-            type: Kirigami.MessageType.Information
+            implicitWidth: nativeItem ? nativeItem.implicitWidth : 0
+            implicitHeight: nativeItem ? nativeItem.implicitHeight : 0
+            width: nativeContainer.parent ? nativeContainer.parent.width : 0
+            clip: true
+
+            function ensureNativeItem() {
+                if (nativeContainer.nativeItem || !nativeContainer.page
+                        || nativeContainer.preference.id === undefined)
+                    return;
+
+                nativeContainer.nativeItem =
+                    nativeContainer.page.backend.createNativePreferenceItem(
+                        nativeContainer, nativeContainer.preference.id);
+                nativeContainer.syncNativeItem();
+            }
+
+            function syncNativeItem() {
+                if (!nativeContainer.nativeItem)
+                    return;
+
+                nativeContainer.nativeItem.width = nativeContainer.width;
+                nativeContainer.nativeItem.height = nativeContainer.height;
+            }
+
+            onPageChanged: ensureNativeItem()
+            onPreferenceChanged: ensureNativeItem()
+            onWidthChanged: syncNativeItem()
+            onHeightChanged: syncNativeItem()
+            Component.onCompleted: ensureNativeItem()
         }
     }
 }

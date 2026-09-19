@@ -15,6 +15,7 @@ kirigamiui_generated = qt6_module.preprocess(
 shared_module('kirigamiui',
   'kirigamiui.cc',
   'mobile_ui.cc',
+  'native_widget_item.cc',
   kirigamiui_generated,
   dependencies: [audacious_dep, qt_dep, qt_quick_dep, audqt_dep],
   name_prefix: '',

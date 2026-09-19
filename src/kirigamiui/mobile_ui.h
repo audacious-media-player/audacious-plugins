@@ -20,6 +20,8 @@
 #include <vector>
 
 #include <QAbstractListModel>
+#include <QPointer>
+#include <QQuickItem>
 #include <QStringList>
 #include <QVariant>
 
@@ -28,6 +30,7 @@
 #include <libaudcore/preferences.h>
 
 class PluginHandle;
+class QWidget;
 
 class MobilePluginModel : public QAbstractListModel
 {
@@ -187,12 +190,13 @@ public:
 
     Q_INVOKABLE bool setPluginEnabled(int row, bool enabled);
     Q_INVOKABLE QVariantMap openPluginPreferences(const QString & basename);
-    Q_INVOKABLE void openNativePluginPreferences(const QString & basename);
     Q_INVOKABLE QVariantMap pluginPreferenceValues() const;
     Q_INVOKABLE void setPluginPreference(int id, const QVariant & value);
     Q_INVOKABLE void activatePluginPreference(int id);
     Q_INVOKABLE void closePluginPreferences(const QString & basename,
                                             bool apply);
+    Q_INVOKABLE QQuickItem * createNativePreferenceItem(QQuickItem * parent,
+                                                        int id);
 
 signals:
     void playlistsChanged();
@@ -212,9 +216,11 @@ private:
     {
         const PreferencesWidget * widget;
         QVariantList choices;
+        QPointer<QWidget> native_widget;
     };
 
     QVariant preferenceValue(const PreferenceBinding & binding) const;
+    void destroyNativePreferenceWidgets();
 
     void refreshPlaylists(bool reset_model = true);
     void refreshMetadata();
