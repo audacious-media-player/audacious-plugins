@@ -1,0 +1,12 @@
+<RCC>
+  <qresource prefix="/org/audacious/kirigamiui">
+    <file>AboutPage.qml</file>
+    <file>Main.qml</file>
+    <file>PlayingPage.qml</file>
+    <file>PlaylistPage.qml</file>
+    <file>PluginPreferencesPage.qml</file>
+    <file>PluginsPage.qml</file>
+    <file>PreferencesPage.qml</file>
+    <file>SongInfoPage.qml</file>
+  </qresource>
+</RCC>
