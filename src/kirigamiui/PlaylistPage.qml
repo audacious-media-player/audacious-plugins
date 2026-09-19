@@ -16,6 +16,7 @@ Kirigami.Page {
 
     required property var backend
     required property var showPlaying
+    required property var showSongInfo
 
     objectName: "mobilePlaylistPage"
     title: root.backend.playlistTitle.length > 0
@@ -249,6 +250,16 @@ Kirigami.Page {
                                 id: trackMenu
 
                                 y: parent.height
+
+                                Controls.MenuItem {
+                                    text: qsTr("Song Info")
+                                    icon.name: "showinfo"
+                                    icon.color: Kirigami.Theme.textColor
+                                    onTriggered: root.showSongInfo(
+                                                     rowDelegate.index)
+                                }
+
+                                Controls.MenuSeparator {}
 
                                 Controls.MenuItem {
                                     text: rowDelegate.queuePosition > 0

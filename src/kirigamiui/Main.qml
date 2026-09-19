@@ -76,6 +76,15 @@ Kirigami.ApplicationWindow {
                             "mobileAboutPage")
     }
 
+    function showSongInfoPage(entry) {
+        root.pageStack.push(Qt.resolvedUrl("SongInfoPage.qml"),
+                            {"backend": root.backend,
+                             "entry": entry,
+                             "dismiss": function() {
+                                 root.pageStack.pop()
+                             }})
+    }
+
     function showPlayingPage() {
         playingDrawer.open()
     }
@@ -123,6 +132,10 @@ Kirigami.ApplicationWindow {
             dismiss: function() {
                 playingDrawer.close()
             }
+            showSongInfo: function(entry) {
+                playingDrawer.close()
+                root.showSongInfoPage(entry)
+            }
         }
     }
 
@@ -130,6 +143,9 @@ Kirigami.ApplicationWindow {
         backend: root.backend
         showPlaying: function() {
             root.showPlayingPage()
+        }
+        showSongInfo: function(entry) {
+            root.showSongInfoPage(entry)
         }
     }
 }

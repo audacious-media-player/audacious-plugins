@@ -13,6 +13,7 @@ Kirigami.Page {
 
     required property var backend
     required property var dismiss
+    required property var showSongInfo
 
     objectName: "mobilePlayingPage"
     title: qsTr("Playing")
@@ -99,7 +100,7 @@ Kirigami.Page {
                 implicitHeight: implicitWidth
                 opacity: pressed ? 1 : 0.9
                 text: qsTr("Back to playlist")
-            icon.name: "go-down"
+                icon.name: "go-down"
                 display: Controls.AbstractButton.IconOnly
                 background: Item {}
                 contentItem: Item {
@@ -121,12 +122,50 @@ Kirigami.Page {
                         color: "white"
                     }
                 }
-            onClicked: root.dismiss()
+                onClicked: root.dismiss()
                 Controls.ToolTip.visible: hovered
                 Controls.ToolTip.text: text
             }
 
             Item { Layout.fillWidth: true }
+
+            Controls.ToolButton {
+                id: songInfoButton
+
+                Layout.alignment: Qt.AlignVCenter
+                implicitWidth: Kirigami.Units.gridUnit * 2.5
+                implicitHeight: implicitWidth
+                opacity: pressed ? 1 : 0.9
+                text: qsTr("Song Info")
+                icon.name: "showinfo"
+                display: Controls.AbstractButton.IconOnly
+                enabled: root.backend.ready
+                background: Item {}
+                contentItem: Item {
+                    Kirigami.Icon {
+                        anchors.centerIn: parent
+                        anchors.horizontalCenterOffset: 1
+                        anchors.verticalCenterOffset: 2
+                        width: Kirigami.Units.iconSizes.medium
+                        height: width
+                        source: songInfoButton.icon.name
+                        isMask: true
+                        color: Qt.rgba(0, 0, 0, 0.75)
+                    }
+
+                    Kirigami.Icon {
+                        anchors.centerIn: parent
+                        width: Kirigami.Units.iconSizes.medium
+                        height: width
+                        source: songInfoButton.icon.name
+                        isMask: true
+                        color: "white"
+                    }
+                }
+                onClicked: root.showSongInfo(-1)
+                Controls.ToolTip.visible: hovered
+                Controls.ToolTip.text: text
+            }
         }
 
         Item {

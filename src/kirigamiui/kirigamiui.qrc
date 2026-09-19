@@ -7,5 +7,6 @@
     <file>PluginPreferencesPage.qml</file>
     <file>PluginsPage.qml</file>
     <file>PreferencesPage.qml</file>
+    <file>SongInfoPage.qml</file>
   </qresource>
 </RCC>

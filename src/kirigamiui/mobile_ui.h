@@ -28,6 +28,7 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/preferences.h>
+#include <libaudcore/tuple.h>
 
 class PluginHandle;
 class QWidget;
@@ -172,6 +173,9 @@ public:
     Q_INVOKABLE void playEntry(int entry);
     Q_INVOKABLE void toggleQueued(int entry);
     Q_INVOKABLE void removeEntry(int entry);
+    Q_INVOKABLE QVariantMap openSongInfo(int entry);
+    Q_INVOKABLE bool saveSongInfo(int session, const QVariantMap & values);
+    Q_INVOKABLE void closeSongInfo(int session);
     Q_INVOKABLE void activatePlaylist(int index);
     Q_INVOKABLE void newPlaylist();
 
@@ -249,6 +253,13 @@ private:
     int m_volume = 0;
     bool m_repeat = false;
     bool m_shuffle = false;
+
+    int m_next_song_info_session = 0;
+    int m_song_info_session = 0;
+    QString m_song_info_filename;
+    PluginHandle * m_song_info_decoder = nullptr;
+    Tuple m_song_info_tuple;
+    bool m_song_info_can_write = false;
 
     PluginHandle * m_preferences_plugin = nullptr;
     const PluginPreferences * m_plugin_preferences = nullptr;
