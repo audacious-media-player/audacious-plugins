@@ -110,6 +110,37 @@ QVariantList dependenciesVariant(const std::vector<int> & dependencies)
     return list;
 }
 
+bool preferencesHaveCustomQt(ArrayRef<PreferencesWidget> widgets)
+{
+    for (const PreferencesWidget & widget : widgets)
+    {
+        switch (widget.type)
+        {
+        case PreferencesWidget::CustomQt:
+            return true;
+        case PreferencesWidget::Box:
+            if (preferencesHaveCustomQt(widget.data.box.widgets))
+                return true;
+            break;
+        case PreferencesWidget::Table:
+            if (preferencesHaveCustomQt(widget.data.table.widgets))
+                return true;
+            break;
+        case PreferencesWidget::Notebook:
+            for (const NotebookTab & tab : widget.data.notebook.tabs)
+            {
+                if (preferencesHaveCustomQt(tab.widgets))
+                    return true;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    return false;
+}
+
 QString entryTitle(Playlist playlist, int entry, const Tuple & tuple)
 {
     auto title = tuple.get_str(Tuple::Title);
@@ -678,8 +709,12 @@ QVariantMap MobileUiController::openPluginPreferences(const QString & basename)
     if (!header)
         return details;
 
+    const PluginPreferences * preferences = header->info.prefs;
+    const bool native_preferences =
+        preferences && preferencesHaveCustomQt(preferences->widgets);
+
     m_preferences_plugin = plugin;
-    m_plugin_preferences = header->info.prefs;
+    m_plugin_preferences = native_preferences ? nullptr : preferences;
     m_preference_bindings.clear();
 
     if (m_plugin_preferences && m_plugin_preferences->init)
@@ -687,7 +722,8 @@ QVariantMap MobileUiController::openPluginPreferences(const QString & basename)
 
     details["name"] = translatedText(header->info.name, header->info.domain);
     details["about"] = translatedText(header->info.about, header->info.domain);
-    details["hasPreferences"] = (m_plugin_preferences != nullptr);
+    details["hasPreferences"] = (preferences != nullptr);
+    details["nativePreferences"] = native_preferences;
     details["requiresApply"] =
         (m_plugin_preferences && m_plugin_preferences->apply);
 
@@ -870,6 +906,21 @@ QVariantMap MobileUiController::openPluginPreferences(const QString & basename)
 
     details["preferences"] = descriptions;
     return details;
+}
+
+void MobileUiController::openNativePluginPreferences(const QString & basename)
+{
+    PluginHandle * plugin =
+        aud_plugin_lookup_basename(basename.toUtf8().constData());
+    if (!plugin || !aud_plugin_get_enabled(plugin))
+        return;
+
+    auto header = (Plugin *)aud_plugin_get_header(plugin);
+    if (!header || !header->info.prefs ||
+        !preferencesHaveCustomQt(header->info.prefs->widgets))
+        return;
+
+    audqt::plugin_prefs(plugin);
 }
 
 QVariant

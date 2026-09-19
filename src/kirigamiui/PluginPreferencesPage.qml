@@ -138,6 +138,25 @@ Kirigami.ScrollablePage {
             level: 2
         }
 
+        Kirigami.InlineMessage {
+            Layout.fillWidth: true
+            visible: root.details.nativePreferences === true
+            text: qsTr("This plugin uses native desktop settings.")
+            type: Kirigami.MessageType.Information
+        }
+
+        Controls.Button {
+            Layout.fillWidth: true
+            visible: root.details.nativePreferences === true
+            text: qsTr("Open native settings")
+            icon.name: "preferences-system"
+            onClicked: {
+                root.closeSession(false);
+                root.backend.openNativePluginPreferences(root.basename);
+                root.dismiss();
+            }
+        }
+
         Repeater {
             id: preferenceRepeater
 

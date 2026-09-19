@@ -187,6 +187,7 @@ public:
 
     Q_INVOKABLE bool setPluginEnabled(int row, bool enabled);
     Q_INVOKABLE QVariantMap openPluginPreferences(const QString & basename);
+    Q_INVOKABLE void openNativePluginPreferences(const QString & basename);
     Q_INVOKABLE QVariantMap pluginPreferenceValues() const;
     Q_INVOKABLE void setPluginPreference(int id, const QVariant & value);
     Q_INVOKABLE void activatePluginPreference(int id);
