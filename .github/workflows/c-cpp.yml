@@ -11,17 +11,17 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-22.04, ubuntu-24.04, ubuntu-26.04, ubuntu-26.04-arm,
-             macos-15-intel, macos-26,
+             macos-15, macos-26,
              windows-2025]
       fail-fast: false
     runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout audacious-plugins
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
 
     - name: Checkout audacious
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         repository: audacious-media-player/audacious
         path: audacious
