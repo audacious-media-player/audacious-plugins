@@ -225,8 +225,8 @@ void PipeWireOutput::flush()
 {
     pw_thread_loop_lock(m_loop);
     m_buffer.discard();
-    pw_thread_loop_unlock(m_loop);
     pw_stream_flush(m_stream, false);
+    pw_thread_loop_unlock(m_loop);
 }
 
 void PipeWireOutput::period_wait()
