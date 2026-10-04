@@ -114,6 +114,7 @@ private:
     bool m_inited = false;
     bool m_has_sinks = false;
     bool m_ignore_state_change = false;
+    bool m_drained = false;
 
     int m_aud_format = 0;
     int m_core_init_seq = 0;
@@ -205,19 +206,42 @@ void PipeWireOutput::drain()
 {
     pw_thread_loop_lock(m_loop);
 
-    int buflen;
-    while ((buflen = m_buffer.len()) > 0)
+    // Give the stream extra time to start up, since a short file that
+    // fits into the buffer completely is drained right after opening.
+    struct timespec deadline;
+    pw_thread_loop_get_time(m_loop, &deadline, 2 * SPA_NSEC_PER_SEC);
+
+    int buflen = m_buffer.len();
+    while (buflen > 0)
     {
-        pw_thread_loop_timed_wait(m_loop, 1);
-        if (buflen <= m_buffer.len())
+        int res = pw_thread_loop_timed_wait_full(m_loop, &deadline);
+        int remaining = m_buffer.len();
+
+        // State changes can wake us before the process callback consumes data.
+        // Only restart the timeout when the buffer actually makes progress.
+        if (remaining < buflen)
+            pw_thread_loop_get_time(m_loop, &deadline, SPA_NSEC_PER_SEC);
+        else if (res < 0)
         {
-            AUDERR("PipeWireOutput: buffer drain lock\n");
-            break;
+            // The stream is stuck, no need to wait for on_drained()
+            AUDERR("PipeWireOutput: buffer drain timeout\n");
+            pw_thread_loop_unlock(m_loop);
+            return;
         }
+
+        buflen = remaining;
     }
 
+    m_drained = false;
     pw_stream_flush(m_stream, true);
-    pw_thread_loop_timed_wait(m_loop, 1); // trigger on_drained() callback
+
+    pw_thread_loop_get_time(m_loop, &deadline, SPA_NSEC_PER_SEC);
+    while (!m_drained)
+    {
+        if (pw_thread_loop_timed_wait_full(m_loop, &deadline) < 0)
+            break;
+    }
+
     pw_thread_loop_unlock(m_loop);
 }
 
@@ -577,6 +601,7 @@ void PipeWireOutput::on_process(void * data)
 void PipeWireOutput::on_drained(void * data)
 {
     PipeWireOutput * o = static_cast<PipeWireOutput *>(data);
+    o->m_drained = true;
     pw_thread_loop_signal(o->m_loop, false);
 }
 
