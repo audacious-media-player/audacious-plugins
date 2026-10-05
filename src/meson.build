@@ -163,6 +163,10 @@ if conf.has('USE_QT')
     subdir('qtui')
   endif
 
+  if get_option('kirigamiui')
+    subdir('kirigamiui')
+  endif
+
   if get_option('searchtool')
     subdir('search-tool-qt')
   endif
