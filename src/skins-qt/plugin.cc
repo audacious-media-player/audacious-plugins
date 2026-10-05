@@ -140,6 +140,7 @@ static void skins_init_main (bool restart)
     mainwin_create ();
     equalizerwin_create ();
     playlistwin_create ();
+    dock_enable_geometry_monitoring ();
 
     menu_init (mainwin);
 
@@ -194,6 +195,8 @@ bool QtSkins::init ()
 
 static void skins_cleanup_main ()
 {
+    dock_disable_geometry_monitoring ();
+
     mainwin_unhook ();
     equalizerwin_unhook ();
     playlistwin_unhook ();
