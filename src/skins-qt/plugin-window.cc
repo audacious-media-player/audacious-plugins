@@ -46,7 +46,7 @@ public:
     {
         setWindowFlags (Qt::Dialog);
         setWindowTitle (item->name ());
-        setWindowRole ("plugin");
+        setWindowRole (QString ("plugin-") + item->id ());
 
         item->set_host_data (this);
 
