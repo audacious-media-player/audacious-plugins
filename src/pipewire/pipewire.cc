@@ -179,6 +179,8 @@ void PipeWireOutput::pause(bool pause)
 
 int PipeWireOutput::get_delay()
 {
+    pw_thread_loop_lock(m_loop);
+
     int buff_time = ((m_buffer.len() / m_stride) * 1000) / m_rate;
     int pw_buff_time = ((m_pw_buffer_size / m_stride) * 1000) / m_rate;
     int time_diff = 0;
@@ -199,6 +201,7 @@ int PipeWireOutput::get_delay()
             add_delay += time.delay * 1000 * time.rate.num / time.rate.denom;
     }
 
+    pw_thread_loop_unlock(m_loop);
     return buff_time + pw_buff_time - time_diff + add_delay;
 }
 
@@ -255,11 +258,9 @@ void PipeWireOutput::flush()
 
 void PipeWireOutput::period_wait()
 {
-    if (m_buffer.space())
-        return;
-
     pw_thread_loop_lock(m_loop);
-    pw_thread_loop_timed_wait(m_loop, 1);
+    if (!m_buffer.space())
+        pw_thread_loop_timed_wait(m_loop, 1);
     pw_thread_loop_unlock(m_loop);
 }
 
