@@ -589,8 +589,10 @@ static gboolean window_keypress_cb (GtkWidget *, GdkEventKey * event)
             return false;
         }
 
-        /* single-key shortcuts; must not interfere with text entry */
-        if (focused && GTK_IS_ENTRY (focused))
+        /* single-key shortcuts:
+         * must not interfere with text entries (rename playlist, search tool)
+         * or toolbar buttons (allowing to navigate them with arrow keys) */
+        if (focused && (GTK_IS_ENTRY (focused) || GTK_IS_BUTTON (focused)))
             return false;
 
         switch (event->keyval)
@@ -983,7 +985,6 @@ bool GtkUI::init ()
     int delta = aud_get_int ("volume_delta");
     gtk_scale_button_set_adjustment ((GtkScaleButton *) volume,
      (GtkAdjustment *) gtk_adjustment_new (0, 0, 100, delta, delta, 0));
-    gtk_widget_set_can_focus (volume, false);
 
     gtk_scale_button_set_value ((GtkScaleButton *) volume, aud_drct_get_volume_main ());
 
