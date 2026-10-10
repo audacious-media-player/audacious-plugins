@@ -206,9 +206,8 @@ void xs_sidplayfp_close()
 void xs_sidplayfp_reset()
 {
 #if LIBSIDPLAYFP_CHECK_VERSION(2, 15)
-    if (state.currEng) {
+    if (state.currEng)
         state.currEng->reset();
-    }
 #endif
 }
 

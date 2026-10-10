@@ -99,15 +99,16 @@ bool SIDPlugin::delayed_init()
     return m_initialized;
 }
 
+
 /*
-* Seek implementation.
-* no seek API in libsidplayfp currently:
-* https://github.com/libsidplayfp/libsidplayfp/issues/247
-*/
+ * Custom seek implementation
+ * There is no seek API in libsidplayfp currently:
+ * https://github.com/libsidplayfp/libsidplayfp/issues/247
+ */
 void SIDPlugin::seek(int seek_value)
 {
 #if LIBSIDPLAYFP_CHECK_VERSION(2, 15) // needs reset() added in 2.15
-    int64_t current_time = aud::rescale<int64_t> (m_bytes_played,
+    int64_t current_time = aud::rescale<int64_t>(m_bytes_played,
       xs_cfg.audioFrequency * xs_cfg.audioChannels * 2, 1000);
     if (seek_value < current_time) {
         // backwards seek, restart playback from beginning
@@ -115,7 +116,7 @@ void SIDPlugin::seek(int seek_value)
         current_time = 0;
         m_bytes_played = 0;
     }
-    int64_t bytes_to_skip = aud::rescale<int64_t> (seek_value - current_time,
+    int64_t bytes_to_skip = aud::rescale<int64_t>(seek_value - current_time,
       1000, xs_cfg.audioFrequency * xs_cfg.audioChannels * 2);
     while (bytes_to_skip > 0) {
         int64_t bytes_skipped = xs_sidplayfp_fillbuffer(m_buffer.begin(), m_buffer.len());
@@ -127,9 +128,10 @@ void SIDPlugin::seek(int seek_value)
         bytes_to_skip -= bytes_skipped;
     }
 #else
-    AUDWARN ("Seeking requires libsidplayfp 2.15 or later, ignoring.\n");
+    AUDWARN("Seeking requires libsidplayfp 2.15 or later, ignoring.\n");
 #endif
 }
+
 
 /*
  * Shut down XMMS-SID
@@ -143,6 +145,7 @@ void SIDPlugin::cleanup()
     }
 
     m_init_failed = false;
+    m_buffer.clear();
 }
 
 
@@ -216,10 +219,9 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
 
     while (! check_stop ())
     {
-        int seek_value = check_seek ();
-        if (seek_value >= 0) {
+        int seek_value = check_seek();
+        if (seek_value >= 0)
             seek(seek_value);
-        }
 
         int bufRemaining = xs_sidplayfp_fillbuffer(m_buffer.begin(), m_buffer.len());
 
