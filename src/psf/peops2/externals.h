@@ -260,6 +260,10 @@ extern unsigned char * spuMemC;
 extern unsigned char * pSpuIrq[];
 extern unsigned char * pSpuBuffer;
 
+extern u32 sampcount;
+extern u32 g_last_spu2_dma_sampcount;
+extern u32 g_spuMem_write_high;
+
 // user settings
 
 extern int        iUseXA;
