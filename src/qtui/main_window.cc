@@ -180,6 +180,8 @@ MainWindow::MainWindow()
 
     auto toolbar = new ToolBar(this, items);
     addToolBar(Qt::TopToolBarArea, toolbar);
+    for (auto button : toolbar->findChildren<QToolButton *>())
+        button->setFocusPolicy(Qt::TabFocus);
 
     if (m_search_tool)
         aud_plugin_add_watch(m_search_tool, plugin_watcher, this);
