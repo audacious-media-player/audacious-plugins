@@ -134,7 +134,6 @@ bool AACDecoder::is_our_file (const char * filename, VFSFile & stream)
 
 /* Quick search for an ADTS or ADIF header in the first <len> bytes of <buf>.
  * Returns the byte offset of the header or <len> if none is found. */
-
 static int aac_probe (unsigned char * buf, int len)
 {
     for (int i = 0; i <= len - 4; i ++)
@@ -265,10 +264,10 @@ bool AACDecoder::read_tag (const char * filename, VFSFile & file, Tuple & tuple,
 
     if (length > 0)
         tuple.set_int (Tuple::Length, length);
+    else
+        tuple.fetch_stream_info (file);
 
     tuple.set_format ("MPEG-2/4 AAC", channels, samplerate, bitrate);
-    tuple.fetch_stream_info (file);
-
     return true;
 }
 
@@ -335,9 +334,10 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
     NeAACDecConfigurationPtr decoder_config;
     unsigned long samplerate = 0;
     unsigned char channels = 0;
+    int bitrate = 0;
 
+    bool stream = (file.fsize () < 0);
     Tuple tuple = get_playback_tuple ();
-    int bitrate = 1000 * aud::max (0, tuple.get_int (Tuple::Bitrate));
 
     if ((decoder = NeAACDecOpen ()) == nullptr)
     {
@@ -405,10 +405,12 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
 
     /* == CHECK FOR METADATA == */
 
-    if (tuple.fetch_stream_info (file))
+    if (stream && tuple.fetch_stream_info (file))
         set_playback_tuple (tuple.ref ());
 
-    set_stream_bitrate (bitrate);
+    bitrate = aud::max (0, tuple.get_int (Tuple::Bitrate));
+    tuple.set_format (nullptr, channels, samplerate, bitrate);
+    set_stream_bitrate (1000 * bitrate);
 
     /* == START PLAYBACK == */
 
@@ -436,7 +438,7 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
 
         /* == CHECK FOR METADATA == */
 
-        if (tuple.fetch_stream_info (file))
+        if (stream && tuple.fetch_stream_info (file))
             set_playback_tuple (tuple.ref ());
 
         /* == DECODE A FRAME == */
