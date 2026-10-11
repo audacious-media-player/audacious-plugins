@@ -276,6 +276,12 @@ static GtkWidget * paned_new (bool vertical, bool after, int w, int h)
     return paned;
 }
 
+static gboolean configure_cb (GtkWidget * widget, GdkEventConfigure * event, Item * item)
+{
+    gtk_window_get_position ((GtkWindow *) widget, & item->x, & item->y);
+    return false;
+}
+
 static gboolean delete_cb (GtkWidget * widget)
 {
     layout_disable (widget);
@@ -360,6 +366,8 @@ static void item_add (Item * item)
         gtk_window_set_role ((GtkWindow *) item->window, "plugin");
         gtk_container_set_border_width ((GtkContainer *) item->window, 2);
 
+        g_signal_connect (item->window, "configure-event", (GCallback)
+         configure_cb, item);
         g_signal_connect_swapped (item->window, "delete-event", (GCallback)
          delete_cb, item->widget);
         g_signal_connect_swapped (item->window, "key-press-event", (GCallback)
@@ -480,12 +488,6 @@ static void size_changed_cb (GtkWidget * widget, GdkRectangle * rect, Item * ite
 {
     item->w = rect->width;
     item->h = rect->height;
-
-    if (item->dock < 0)
-    {
-        g_return_if_fail (item->window);
-        gtk_window_get_position ((GtkWindow *) item->window, & item->x, & item->y);
-    }
 }
 
 void layout_add (PluginHandle * plugin, GtkWidget * widget)
