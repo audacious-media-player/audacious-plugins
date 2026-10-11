@@ -436,7 +436,9 @@ bool GlobalHotkeysQt::init()
 
     if (!has_x11)
     {
-        AUDERR("Global Hotkey plugin only supports X11.\n");
+        AUDERR(
+            "Global Hotkeys plugin only supports X11, not Wayland.\n"
+            "You may enable Xwayland in the advanced settings of Audacious.\n");
         audqt::cleanup();
         return false;
     }
