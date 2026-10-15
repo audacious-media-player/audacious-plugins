@@ -25,10 +25,17 @@
 #include <QJsonObject>
 #include <QMenu>
 #include <QTextEdit>
+#include <QTimer>
 
 #include <libaudcore/hook.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/plugins.h>
+
+#include <algorithm>
+#include <regex>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include "../lyrics-common/lyrics.h"
 #include "../lyrics-common/preferences.h"
@@ -41,6 +48,14 @@ public:
 protected:
     void contextMenuEvent (QContextMenuEvent * event) override;
 };
+
+struct TimedLyricLine
+{
+    int timestamp_ms;
+    String text;
+};
+
+static std::vector<TimedLyricLine> timed_lyrics;
 
 class LyricsQt : public GeneralPlugin
 {
@@ -78,6 +93,59 @@ bool LyricsQt::init ()
     return true;
 }
 
+static void highlight_lyrics (int current_time_ms)
+{
+    if (!textedit)
+        return;
+
+    if (!aud_get_bool (CFG_SECTION, "sync_lyrics"))
+        return;
+
+    textedit->document ()->clear ();
+
+    std::vector<TimedLyricLine> lines_to_display;
+
+    for (size_t i = 0; i < timed_lyrics.size (); ++i)
+    {
+        if (timed_lyrics[i].timestamp_ms >= current_time_ms)
+        {
+            size_t start_index = (i > 1) ? i - 2 : 0;
+            size_t end_index = std::min (i + 2, timed_lyrics.size () - 1);
+
+            size_t line_count = 0;
+
+            for (size_t j = start_index; j <= end_index && line_count < 4; ++j)
+            {
+                lines_to_display.push_back (timed_lyrics[j]);
+                line_count++;
+            }
+            break;
+        }
+    }
+
+    QTextCursor cursor (textedit->document ());
+
+    for (size_t i = 0; i < lines_to_display.size(); ++i)
+    {
+        const TimedLyricLine & line = lines_to_display[i];
+        QTextCharFormat format;
+
+        if (i == 1)
+        {
+            format.setFontPointSize(16);
+            format.setForeground (Qt::white);
+        }
+        else
+        {
+            format.setForeground (Qt::white);
+        }
+
+        cursor.setCharFormat (format);
+        cursor.insertText(QString ((const char *) line.text));
+        cursor.insertHtml("<br>");
+    }
+}
+
 void update_lyrics_window (const char * title, const char * artist, const char * lyrics)
 {
     if (! textedit)
@@ -93,6 +161,97 @@ void update_lyrics_window (const char * title, const char * artist, const char *
 
     cursor.insertHtml ("<br><br>");
     cursor.insertText (lyrics);
+        cursor.insertHtml(QString("<br><i>") + QString (artist) +
+                          QString("</i>"));
+
+    timed_lyrics.clear ();
+    std::istringstream iss (lyrics);
+    std::string line;
+
+    // Default offset is 0
+    int global_offset = 0;
+
+    // Matches standard time tags: [mm:ss.xx]
+    std::regex time_re(R"(\[\s*(\d+)\s*:\s*(\d+(?:\.\d+)?)\s*\])");
+    // Matches the offset ID tag: [offset:+1000] or [offset:-500]
+    std::regex offset_re(R"(\[\s*offset\s*:\s*([+-]?\d+)\s*\])",
+                         std::regex_constants::icase);
+
+    while (std::getline (iss, line))
+    {
+        // Sanitize the line: remove leading/trailing spaces and carriage return
+        line.erase (0, line.find_first_not_of(" \t\r"));
+        line.erase (line.find_last_not_of(" \t\r") + 1);
+
+        if (line.empty ())
+            continue;
+
+        // 1. Check for the global offset tag
+        std::smatch offset_match;
+        if (std::regex_search (line, offset_match, offset_re))
+        {
+            global_offset = std::stoi (offset_match[1].str ());
+            continue;
+        }
+
+        // 2. Extract MULTIPLE time tags from a single line
+        std::sregex_iterator it (line.begin (), line.end (), time_re);
+        std::sregex_iterator end;
+
+        std::vector<int> timestamps;
+        size_t last_pos = 0;
+
+        for (; it != end; ++it)
+        {
+            int minutes = std::stoi(it->str (1));
+            float seconds = std::stof(it->str (2));
+            int timestamp_ms =
+                static_cast<int> ((minutes * 60 + seconds) * 1000);
+
+            timestamps.push_back (timestamp_ms);
+            last_pos =
+                it->position () + it->length (); // Track where the tag ends
+        }
+
+        // 3. If timestamps were found, attach the remaining text to all of them
+        if (!timestamps.empty ())
+        {
+            // The text is whatever exists after the very last time tag
+            std::string text = line.substr (last_pos);
+            text.erase(0,
+                       text.find_first_not_of (
+                           " \t")); // Trim leading spaces from the lyric text
+
+            for (int ts : timestamps)
+            {
+                TimedLyricLine timed_line;
+                timed_line.timestamp_ms = ts;
+                timed_line.text = String (text.c_str ());
+
+                timed_lyrics.push_back (timed_line);
+            }
+        }
+    }
+
+    // 4. Apply offsets and sort chronologically
+    if (!timed_lyrics.empty ())
+    {
+        for (auto & t_line : timed_lyrics)
+        {
+            // A "+" offset means lyrics appear sooner, so we SUBTRACT it from
+            // the timestamp A "-" offset means lyrics appear later, subtracting
+            // a negative ADDS it.
+            t_line.timestamp_ms -= global_offset;
+        }
+
+        // Because multi-timestamp tags (e.g. repeated chorus lines) push
+        // timestamps out of order, we must sort the vector so your
+        // 'highlight_lyrics' binary/linear search functions correctly.
+        std::sort (timed_lyrics.begin (), timed_lyrics.end (),
+                  [](const TimedLyricLine & a, const TimedLyricLine & b) {
+                      return a.timestamp_ms < b.timestamp_ms;
+                  });
+    }
 }
 
 bool try_parse_json (const Index<char> & buf, const char * key, String & output)
@@ -128,6 +287,13 @@ static void lyrics_cleanup (QObject * object = nullptr)
     hook_dissociate ("playback ready", (HookFunction) lyrics_playback_began);
 
     textedit = nullptr;
+    timed_lyrics.clear ();
+}
+
+static void update_lyrics_display ()
+{
+    int current_time_ms = aud_drct_get_time();
+    highlight_lyrics(current_time_ms);
 }
 
 void * LyricsQt::get_qt_widget ()
@@ -144,6 +310,12 @@ void * LyricsQt::get_qt_widget ()
 
     if (aud_drct_get_ready ())
         lyrics_playback_began ();
+
+
+    QTimer * timer = new QTimer(textedit);
+    timer->setInterval(100);
+    QObject::connect(timer, &QTimer::timeout, update_lyrics_display);
+    timer->start();
 
     QObject::connect (textedit, & QObject::destroyed, lyrics_cleanup);
 
