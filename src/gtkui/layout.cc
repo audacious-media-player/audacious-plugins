@@ -486,8 +486,16 @@ static void item_remove (Item * item)
 
 static void size_changed_cb (GtkWidget * widget, GdkRectangle * rect, Item * item)
 {
-    item->w = rect->width;
-    item->h = rect->height;
+    if (item->window)
+    {
+        /* more precise than the sizes in the GdkRectangle parameter */
+        gtk_window_get_size ((GtkWindow *) item->window, & item->w, & item->h);
+    }
+    else
+    {
+        item->w = rect->width;
+        item->h = rect->height;
+    }
 }
 
 void layout_add (PluginHandle * plugin, GtkWidget * widget)
