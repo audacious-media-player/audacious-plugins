@@ -100,8 +100,11 @@ void view_show_player (bool show)
     view_apply_show_playlist ();
     view_apply_show_equalizer ();
 
-    view_apply_on_top ();
-    view_apply_sticky ();
+    if (show)
+    {
+        view_apply_on_top ();
+        view_apply_sticky ();
+    }
 
     start_stop_visual (false);
 }

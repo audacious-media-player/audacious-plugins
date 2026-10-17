@@ -116,9 +116,12 @@ void view_show_player (bool show)
     view_apply_show_playlist ();
     view_apply_show_equalizer ();
 
-    view_apply_on_top ();
-    // Window managers may ignore state flags when sent too quickly
-    QTimer::singleShot (100, view_apply_sticky);
+    if (show)
+    {
+        view_apply_on_top ();
+        // Window managers may ignore state flags when sent too quickly
+        QTimer::singleShot (100, view_apply_sticky);
+    }
 
     start_stop_visual (false);
 }
