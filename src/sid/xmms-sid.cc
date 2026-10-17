@@ -249,6 +249,8 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
         }
     }
 
+    m_buffer.clear();
+
     return true;
 }
 
