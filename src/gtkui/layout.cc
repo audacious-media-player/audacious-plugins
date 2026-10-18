@@ -23,6 +23,7 @@
 #include <gtk/gtk.h>
 
 #define AUD_GLIB_INTEGRATION
+#include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugins.h>
@@ -46,7 +47,7 @@ enum {
  gtk_widget_destroyed, & (w))
 
 typedef struct {
-    String name;
+    String id, name;
     PluginHandle * plugin;
     GtkWidget * widget, * vbox, * paned, * window;
     int dock, x, y, w, h;
@@ -64,6 +65,7 @@ static Item * item_new (const char * name)
     int dpi = audgui_get_dpi ();
 
     Item * item = new Item ();
+    item->id = String (); /* not yet known in layout_load() */
     item->name = String (name);
     item->plugin = nullptr;
     item->widget = item->vbox = item->paned = item->window = nullptr;
@@ -348,16 +350,17 @@ static GtkWidget * item_get_parent (Item * item)
 
 static void item_add (Item * item)
 {
-    g_return_if_fail (item->name && item->widget && item->vbox && ! item->paned
-     && ! item->window && item->dock < DOCKS);
+    g_return_if_fail (item->id && item->name && item->widget && item->vbox
+     && ! item->paned && ! item->window && item->dock < DOCKS);
 
     if (item->dock < 0)
     {
         item->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
         NULL_ON_DESTROY (item->window);
 
+        StringBuf role = str_concat ({"plugin-", item->id});
+        gtk_window_set_role ((GtkWindow *) item->window, role);
         gtk_window_set_title ((GtkWindow *) item->window, item->name);
-        gtk_window_set_role ((GtkWindow *) item->window, "plugin");
         gtk_container_set_border_width ((GtkContainer *) item->window, 2);
 
         g_signal_connect_swapped (item->window, "delete-event", (GCallback)
@@ -492,6 +495,9 @@ void layout_add (PluginHandle * plugin, GtkWidget * widget)
 {
     g_return_if_fail (layout && center && plugin && widget);
 
+    const char * id = aud_plugin_get_basename (plugin);
+    g_return_if_fail (id);
+
     const char * name = aud_plugin_get_name (plugin);
     g_return_if_fail (name);
 
@@ -507,6 +513,7 @@ void layout_add (PluginHandle * plugin, GtkWidget * widget)
     else
         item = item_new (name);
 
+    item->id = String (id);
     item->plugin = plugin;
     item->widget = widget;
     NULL_ON_DESTROY (item->widget);

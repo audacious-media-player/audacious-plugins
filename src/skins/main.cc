@@ -1167,7 +1167,7 @@ static void mainwin_create_window ()
     bool shaded = aud_get_bool ("skins", "player_shaded");
 
     mainwin = new MainWindow (shaded);
-    mainwin->setWindowRole("mainwindow");
+    mainwin->setWindowRole ("mainwindow");
 
     GtkWidget * w = mainwin->gtk ();
     drag_dest_set (w);
