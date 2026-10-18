@@ -60,9 +60,11 @@ static void add_dock_plugin (PluginHandle * plugin, void * unused)
 
     if (widget)
     {
+        const char * basename = aud_plugin_get_basename (plugin);
+
         GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_role ((GtkWindow *) window, str_concat ({"plugin-", basename}));
         gtk_window_set_title ((GtkWindow *) window, aud_plugin_get_name (plugin));
-        gtk_window_set_role ((GtkWindow *) window, "plugin");
         gtk_window_set_transient_for ((GtkWindow *) window, (GtkWindow *) mainwin->gtk ());
         gtk_container_set_border_width ((GtkContainer *) window, 2);
         gtk_container_add ((GtkContainer *) window, widget);
@@ -73,7 +75,6 @@ static void add_dock_plugin (PluginHandle * plugin, void * unused)
 
         windows = g_list_prepend (windows, window);
 
-        const char * basename = aud_plugin_get_basename (plugin);
         String pos_str = aud_get_str ("skins-layout", basename);
         int pos[4];
 

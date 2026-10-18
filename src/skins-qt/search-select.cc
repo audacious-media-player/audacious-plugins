@@ -33,6 +33,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QPointer>
 #include <QPushButton>
 
 #include <libaudcore/i18n.h>
@@ -60,7 +61,7 @@ private:
 SearchSelectDialog::SearchSelectDialog (QWidget * parent) : QDialog (parent)
 {
     setWindowTitle (_("Search entries in active playlist"));
-    setWindowRole ("search");
+    setWindowRole ("search-select");
     setContentsMargins (audqt::margins.FourPt);
 
     auto logo = new QLabel;
@@ -204,9 +205,15 @@ void SearchSelectDialog::search ()
     close ();
 }
 
+static QPointer<SearchSelectDialog> s_dialog;
+
 void action_playlist_search_and_select ()
 {
-    auto dialog = new SearchSelectDialog;
-    dialog->setAttribute (Qt::WA_DeleteOnClose);
-    dialog->show ();
+    if (! s_dialog)
+    {
+        s_dialog = new SearchSelectDialog;
+        s_dialog->setAttribute (Qt::WA_DeleteOnClose);
+    }
+
+    audqt::window_bring_to_front (s_dialog);
 }

@@ -51,7 +51,7 @@ public:
     {
         setObjectName(item->id());
         setWindowTitle(item->name());
-        setWindowRole("plugin");
+        setWindowRole(QString("plugin-") + item->id());
         setWidget(item->widget());
         setContextMenuPolicy(Qt::PreventContextMenu);
 
