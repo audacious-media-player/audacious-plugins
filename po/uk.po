@@ -23,6 +23,7 @@
 # f6d3887df5c5bcb13fc1d4fb04e37f17, 2017-2018
 # Vitaliy Perevertun <vitalik.perevertun@gmail.com>, 2025
 # Yuri Chornoivan <yurchor@ukr.net>, 2012
+# Олександр С <aleniksenin@gmail.com>, 2026
 # Олександр С <aleniksenin@gmail.com>, 2016
 # Ярослав Смук <Smuk.Slavko@yandex.ua>, 2018
 msgid ""
@@ -30,9 +31,9 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2026-05-31 21:45+0200\n"
+"POT-Creation-Date: 2026-10-18 15:16+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
-"Last-Translator: Vitaliy Perevertun <vitalik.perevertun@gmail.com>, 2025\n"
+"Last-Translator: Олександр С <aleniksenin@gmail.com>, 2026\n"
 "Language-Team: Ukrainian (http://app.transifex.com/audacious/audacious/"
 "language/uk/)\n"
 "Language: uk\n"
@@ -46,7 +47,7 @@ msgstr ""
 
 #: src/aac/aac.cc:19
 msgid "AAC (Raw) Decoder"
-msgstr "Декодер AAC (Сирий)"
+msgstr "Декодер AAC (Raw)"
 
 #: src/adplug/adplug-xmms.cc:68
 msgid "AdPlug (AdLib Player)"
@@ -85,7 +86,7 @@ msgstr "Гц"
 
 #: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:55
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:85
-#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:284
+#: src/skins-qt/skins_cfg.cc:277 src/skins/skins_cfg.cc:284
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Різне</b>"
 
@@ -143,7 +144,7 @@ msgstr "Елемент мікшеру:"
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (MIDI-програвач)"
 
-#: src/amidiplug/amidi-plug.cc:445
+#: src/amidiplug/amidi-plug.cc:448
 msgid ""
 "AMIDI-Plug\n"
 "modular MIDI music player\n"
@@ -550,7 +551,7 @@ msgstr "Оздоблення"
 msgid "Trigger"
 msgstr "Події"
 
-#: src/aosd/aosd_ui.cc:980 src/streamtuner/shoutcast-model.cc:202
+#: src/aosd/aosd_ui.cc:980 src/streamtuner/shoutcast-model.cc:234
 msgid "Misc"
 msgstr "Різне"
 
@@ -586,7 +587,7 @@ msgstr "дБ"
 
 #: src/background_music/background_music.cc:29
 msgid "Maximum amplification:"
-msgstr ""
+msgstr "Максимальне посилення:"
 
 #: src/background_music/background_music.cc:34 src/mpg123/mpg123.cc:81
 msgid "<b>Advanced</b>"
@@ -1058,20 +1059,20 @@ msgstr "Перемістити до смітника"
 msgid "Delete"
 msgstr "Видалити"
 
-#: src/delete-files/delete-files.cc:210 src/delete-files/delete-files.cc:232
-#: src/skins-qt/search-select.cc:102 src/skins/search-select.cc:78
+#: src/delete-files/delete-files.cc:210 src/delete-files/delete-files.cc:231
+#: src/skins-qt/search-select.cc:103 src/skins/search-select.cc:78
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: src/delete-files/delete-files.cc:262
+#: src/delete-files/delete-files.cc:261
 msgid "Delete Selected Files"
 msgstr "Видалити обрані файли"
 
-#: src/delete-files/delete-files.cc:282
+#: src/delete-files/delete-files.cc:281
 msgid "<b>Delete Method</b>"
 msgstr "<b>Метод видалення</b>"
 
-#: src/delete-files/delete-files.cc:283
+#: src/delete-files/delete-files.cc:282
 msgid "Move to trash instead of deleting immediately"
 msgstr "Перемістити до смітника замість негайного видалення"
 
@@ -1148,15 +1149,15 @@ msgid ""
 "Copyright 2021-2025 Ilya Kotov"
 msgstr ""
 
-#: src/filebrowser/filebrowser.cc:470 src/filebrowser-qt/filebrowser-qt.cc:208
+#: src/filebrowser/filebrowser.cc:469 src/filebrowser-qt/filebrowser-qt.cc:208
 msgid "_Open Folder Externally"
 msgstr ""
 
-#: src/filebrowser/filebrowser.cc:476 src/filebrowser-qt/filebrowser-qt.cc:211
+#: src/filebrowser/filebrowser.cc:475 src/filebrowser-qt/filebrowser-qt.cc:211
 msgid "Open Al_bum Art"
 msgstr ""
 
-#: src/filebrowser/filebrowser.cc:539 src/filebrowser-qt/filebrowser-qt.cc:199
+#: src/filebrowser/filebrowser.cc:538 src/filebrowser-qt/filebrowser-qt.cc:199
 #: src/gtkui/menus.cc:93 src/gtkui/menus.cc:238 src/qtui/menus.cc:147
 #: src/qtui/playlist_tabs.cc:339 src/search-tool-qt/search-tool-qt.cc:499
 #: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:122
@@ -1164,27 +1165,27 @@ msgstr ""
 msgid "_Play"
 msgstr "_Відтворити"
 
-#: src/filebrowser/filebrowser.cc:541 src/filebrowser-qt/filebrowser-qt.cc:201
+#: src/filebrowser/filebrowser.cc:540 src/filebrowser-qt/filebrowser-qt.cc:201
 #: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:341
 msgid "_Create Playlist"
 msgstr "_Створити список відтворення"
 
-#: src/filebrowser/filebrowser.cc:543 src/filebrowser-qt/filebrowser-qt.cc:203
+#: src/filebrowser/filebrowser.cc:542 src/filebrowser-qt/filebrowser-qt.cc:203
 #: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:343
 msgid "_Add to Playlist"
 msgstr "_Додати до списку відтворення"
 
-#: src/filebrowser/filebrowser.cc:560 src/filebrowser-qt/filebrowser-qt.cc:371
-#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:78
+#: src/filebrowser/filebrowser.cc:559 src/filebrowser-qt/filebrowser-qt.cc:371
+#: src/skins-qt/search-select.cc:102 src/skins/search-select.cc:78
 msgid "Search"
 msgstr "Пошук"
 
-#: src/filebrowser/filebrowser.cc:561 src/filebrowser-qt/filebrowser-qt.cc:372
+#: src/filebrowser/filebrowser.cc:560 src/filebrowser-qt/filebrowser-qt.cc:372
 #, c-format
 msgid "Search in %s"
 msgstr ""
 
-#: src/filebrowser/filebrowser.cc:825 src/filebrowser-qt/filebrowser-qt.cc:157
+#: src/filebrowser/filebrowser.cc:824 src/filebrowser-qt/filebrowser-qt.cc:157
 msgid "Show the parent folder"
 msgstr ""
 
@@ -1373,12 +1374,10 @@ msgid "Joint Stereo"
 msgstr "Об’єднане стерео"
 
 #: src/filewriter/filewriter.cc:450 src/modplug/plugin_main.cc:57
-#: src/mpg123/mpg123.cc:259
 msgid "Stereo"
 msgstr "Стерео"
 
 #: src/filewriter/filewriter.cc:451 src/modplug/plugin_main.cc:56
-#: src/mpg123/mpg123.cc:260
 msgid "Mono"
 msgstr "Моно"
 
@@ -1490,7 +1489,7 @@ msgstr "Теги"
 msgid "Quality (0-1):"
 msgstr "Якість (0-1):"
 
-#: src/filewriter/filewriter.cc:572 src/skins-qt/skins_cfg.cc:303
+#: src/filewriter/filewriter.cc:572 src/skins-qt/skins_cfg.cc:282
 #: src/skins/skins_cfg.cc:289
 msgid "General"
 msgstr "Загальне"
@@ -1567,7 +1566,7 @@ msgstr "Номер запису"
 #: src/playlist-manager/playlist-manager.cc:221
 #: src/playlist-manager-qt/playlist-manager-qt.cc:190
 #: src/qtui/playlist_model.cc:35 src/streamtuner/icecast-model.cc:120
-#: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:122
+#: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:154
 msgid "Title"
 msgstr "Назва"
 
@@ -1593,8 +1592,8 @@ msgid "Track"
 msgstr "Доріжка"
 
 #: src/gtkui/columns.cc:43 src/qtui/playlist_model.cc:36
-#: src/streamtuner/icecast-model.cc:123 src/streamtuner/shoutcast-model.cc:125
-#: src/streamtuner/shoutcast-model.cc:236
+#: src/streamtuner/icecast-model.cc:123 src/streamtuner/shoutcast-model.cc:157
+#: src/streamtuner/shoutcast-model.cc:268
 msgid "Genre"
 msgstr "Жанр"
 
@@ -1619,7 +1618,7 @@ msgid "Custom Title"
 msgstr "Користувацько-налаштовна назва"
 
 #: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:38
-#: src/streamtuner/icecast-model.cc:129 src/streamtuner/shoutcast-model.cc:134
+#: src/streamtuner/icecast-model.cc:129 src/streamtuner/shoutcast-model.cc:166
 msgid "Bitrate"
 msgstr "Бітова швидкість"
 
@@ -1655,32 +1654,32 @@ msgstr "Доступні колонки"
 msgid "Displayed columns"
 msgstr "Відображені колонки"
 
-#: src/gtkui/layout.cc:74 src/search-tool-qt/search-tool-qt.cc:57
+#: src/gtkui/layout.cc:76 src/search-tool-qt/search-tool-qt.cc:57
 #: src/search-tool/search-tool.cc:49
 msgid "Search Tool"
 msgstr "Пошуковий інструмент"
 
-#: src/gtkui/layout.cc:170
+#: src/gtkui/layout.cc:172
 msgid "Dock at Left"
 msgstr "Прикріпити зліва"
 
-#: src/gtkui/layout.cc:170
+#: src/gtkui/layout.cc:172
 msgid "Dock at Right"
 msgstr "Прикріпити справа"
 
-#: src/gtkui/layout.cc:171
+#: src/gtkui/layout.cc:173
 msgid "Dock at Top"
 msgstr "Прикріпити вгорі"
 
-#: src/gtkui/layout.cc:171
+#: src/gtkui/layout.cc:173
 msgid "Dock at Bottom"
 msgstr "Прикріпити внизу"
 
-#: src/gtkui/layout.cc:171
+#: src/gtkui/layout.cc:173
 msgid "Undock"
 msgstr "Відкріпити"
 
-#: src/gtkui/layout.cc:171 src/ladspa/plugin.cc:540
+#: src/gtkui/layout.cc:173 src/ladspa/plugin.cc:540
 msgid "Disable"
 msgstr "Вимкнути"
 
@@ -2113,78 +2112,78 @@ msgstr "Прокручувати плейлист при зміні доріжк
 msgid "GTK Interface"
 msgstr "Інтерфейс GTK"
 
-#: src/gtkui/ui_gtk.cc:220 src/skins/main.cc:226 src/skins-qt/main.cc:236
+#: src/gtkui/ui_gtk.cc:220 src/skins/main.cc:226 src/skins-qt/main.cc:237
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:222 src/qtui/main_window.cc:386 src/skins/main.cc:243
-#: src/skins-qt/main.cc:253
+#: src/gtkui/ui_gtk.cc:222 src/qtui/main_window.cc:388 src/skins/main.cc:243
+#: src/skins-qt/main.cc:254
 msgid "Buffering ..."
 msgstr "Буферизація ..."
 
-#: src/gtkui/ui_gtk.cc:225 src/pipewire/pipewire.cc:450
-#: src/qtui/main_window.cc:364 src/qtui/main_window.cc:400
-#: src/sdlout/sdlout.cc:110 src/skins/main.cc:228 src/skins-qt/main.cc:238
+#: src/gtkui/ui_gtk.cc:225 src/pipewire/pipewire.cc:475
+#: src/qtui/main_window.cc:366 src/qtui/main_window.cc:402
+#: src/sdlout/sdlout.cc:110 src/skins/main.cc:228 src/skins-qt/main.cc:239
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:509 src/gtkui/ui_gtk.cc:540 src/gtkui/ui_gtk.cc:923
+#: src/gtkui/ui_gtk.cc:509 src/gtkui/ui_gtk.cc:540 src/gtkui/ui_gtk.cc:925
 #: src/hotkey/gui.cc:72 src/notify/osd.cc:85 src/qthotkey/gui.cc:67
-#: src/qtui/main_window.cc:155 src/qtui/main_window.cc:348
-#: src/qtui/main_window.cc:349 src/skins/menus.cc:114 src/skins-qt/menus.cc:105
+#: src/qtui/main_window.cc:155 src/qtui/main_window.cc:350
+#: src/qtui/main_window.cc:351 src/skins/menus.cc:114 src/skins-qt/menus.cc:105
 msgid "Play"
 msgstr "Відтворити"
 
-#: src/gtkui/ui_gtk.cc:509 src/notify/osd.cc:82 src/qtui/main_window.cc:354
-#: src/qtui/main_window.cc:355 src/skins/menus.cc:115 src/skins-qt/menus.cc:106
+#: src/gtkui/ui_gtk.cc:509 src/notify/osd.cc:82 src/qtui/main_window.cc:356
+#: src/qtui/main_window.cc:357 src/skins/menus.cc:115 src/skins-qt/menus.cc:106
 msgid "Pause"
 msgstr "Призупинити відтворення"
 
-#: src/gtkui/ui_gtk.cc:909 src/qtui/main_window.cc:146 src/skins/menus.cc:87
+#: src/gtkui/ui_gtk.cc:911 src/qtui/main_window.cc:146 src/skins/menus.cc:87
 #: src/skins-qt/menus.cc:78
 msgid "Search Library"
 msgstr "Шукати бібліотеку"
 
-#: src/gtkui/ui_gtk.cc:916 src/qtui/main_window.cc:148
+#: src/gtkui/ui_gtk.cc:918 src/qtui/main_window.cc:148
 msgid "Open Files"
 msgstr "Відкрити файли"
 
-#: src/gtkui/ui_gtk.cc:917 src/qtui/main_window.cc:150
+#: src/gtkui/ui_gtk.cc:919 src/qtui/main_window.cc:150
 msgid "Add Files"
 msgstr "Додати файли"
 
-#: src/gtkui/ui_gtk.cc:922 src/qtui/main_window.cc:153 src/skins/menus.cc:117
+#: src/gtkui/ui_gtk.cc:924 src/qtui/main_window.cc:153 src/skins/menus.cc:117
 #: src/skins-qt/menus.cc:108
 msgid "Previous"
 msgstr "Попередня доріжка"
 
-#: src/gtkui/ui_gtk.cc:924 src/hotkey/gui.cc:74 src/qthotkey/gui.cc:69
+#: src/gtkui/ui_gtk.cc:926 src/hotkey/gui.cc:74 src/qthotkey/gui.cc:69
 #: src/qtui/main_window.cc:157 src/skins/menus.cc:116 src/skins-qt/menus.cc:107
 msgid "Stop"
 msgstr "Зупинити"
 
-#: src/gtkui/ui_gtk.cc:925 src/notify/osd.cc:89 src/qtui/main_window.cc:164
+#: src/gtkui/ui_gtk.cc:927 src/notify/osd.cc:89 src/qtui/main_window.cc:164
 #: src/skins/menus.cc:118 src/skins-qt/menus.cc:109
 msgid "Next"
 msgstr "Наступна доріжка"
 
-#: src/gtkui/ui_gtk.cc:927 src/qtui/main_window.cc:167 src/qtui/menus.cc:279
+#: src/gtkui/ui_gtk.cc:929 src/qtui/main_window.cc:167 src/qtui/menus.cc:279
 #: src/skins/menus.cc:79 src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "Записування потоку"
 
-#: src/gtkui/ui_gtk.cc:960 src/qtui/main_window.cc:174 src/skins/menus.cc:108
+#: src/gtkui/ui_gtk.cc:962 src/qtui/main_window.cc:174 src/skins/menus.cc:108
 #: src/skins-qt/menus.cc:99
 msgid "Repeat"
 msgstr "Повторювати"
 
-#: src/gtkui/ui_gtk.cc:963 src/qtui/main_window.cc:177 src/skins/menus.cc:109
+#: src/gtkui/ui_gtk.cc:965 src/qtui/main_window.cc:177 src/skins/menus.cc:109
 #: src/skins-qt/menus.cc:100
 msgid "Shuffle"
 msgstr "Випадково"
 
-#: src/gtkui/ui_gtk.cc:1155 src/qtui/main_window.cc:123
+#: src/gtkui/ui_gtk.cc:1156 src/qtui/main_window.cc:123
 msgid "Menu"
 msgstr "Меню"
 
@@ -2216,15 +2215,15 @@ msgstr "%d кГц"
 msgid "%d kbit/s"
 msgstr "%d кб/с"
 
-#: src/gtkui/ui_statusbar.cc:108 src/skins/main.cc:476 src/skins-qt/main.cc:466
+#: src/gtkui/ui_statusbar.cc:108 src/skins/main.cc:476 src/skins-qt/main.cc:467
 msgid "Single mode."
 msgstr "Одиночний режим."
 
-#: src/gtkui/ui_statusbar.cc:110 src/skins/main.cc:478 src/skins-qt/main.cc:468
+#: src/gtkui/ui_statusbar.cc:110 src/skins/main.cc:478 src/skins-qt/main.cc:469
 msgid "Playlist mode."
 msgstr "Режим плейлисту."
 
-#: src/gtkui/ui_statusbar.cc:118 src/skins/main.cc:484 src/skins-qt/main.cc:474
+#: src/gtkui/ui_statusbar.cc:118 src/skins/main.cc:484 src/skins-qt/main.cc:475
 msgid "Stopping after song."
 msgstr "Зупинити після цієї пісні."
 
@@ -2314,7 +2313,7 @@ msgstr ""
 msgid "Binding mouse buttons"
 msgstr "Зв’язування кнопок миші"
 
-#: src/hotkey/gui.cc:435
+#: src/hotkey/gui.cc:434
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -2323,23 +2322,23 @@ msgstr ""
 "поля.\n"
 "Можна також прив’язувати кнопки миші."
 
-#: src/hotkey/gui.cc:445 src/qthotkey/gui.cc:181
+#: src/hotkey/gui.cc:444 src/qthotkey/gui.cc:181
 msgid "Hotkeys:"
 msgstr "Гарячі клавіші:"
 
-#: src/hotkey/gui.cc:458 src/qthotkey/gui.cc:183
+#: src/hotkey/gui.cc:457 src/qthotkey/gui.cc:183
 msgid "<b>Action:</b>"
 msgstr "<b>Дія:</b>"
 
-#: src/hotkey/gui.cc:462 src/qthotkey/gui.cc:184
+#: src/hotkey/gui.cc:461 src/qthotkey/gui.cc:184
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Прив’язка до клавіш:</b>"
 
-#: src/hotkey/gui.cc:519 src/qthotkey/gui.cc:186
+#: src/hotkey/gui.cc:518 src/qthotkey/gui.cc:186
 msgid "_Add"
 msgstr "_Додати"
 
-#: src/hotkey/plugin.cc:59 src/qthotkey/plugin.cc:78
+#: src/hotkey/plugin.cc:59 src/qthotkey/plugin.cc:77
 msgid "Global Hotkeys"
 msgstr "Гарячі клавіші"
 
@@ -2814,15 +2813,11 @@ msgstr "Модуль MPG123"
 msgid "Use accurate length calculation (slow)"
 msgstr "Використовувати точне підрахування часу (повільно)"
 
-#: src/mpg123/mpg123.cc:260
-msgid "Surround"
-msgstr "Об’ємний звук"
-
 #: src/mpris2/plugin.cc:43
 msgid "MPRIS 2 Server"
 msgstr "Сервер MPRIS 2"
 
-#: src/mpris2/plugin.cc:362
+#: src/mpris2/plugin.cc:370
 msgid ""
 "MPRIS Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren\n"
@@ -3023,7 +3018,7 @@ msgstr ""
 msgid "PipeWire Output"
 msgstr "Вивід PipeWire"
 
-#: src/pipewire/pipewire.cc:132
+#: src/pipewire/pipewire.cc:133
 msgid ""
 "PipeWire Output Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange\n"
@@ -3037,7 +3032,7 @@ msgstr ""
 "Оснований на модулі виводу PipeWire для Qmmp\n"
 "Copyright 2021 Ilya Kotov"
 
-#: src/pipewire/pipewire.cc:456 src/sdlout/sdlout.cc:112 src/skins/menus.cc:90
+#: src/pipewire/pipewire.cc:481 src/sdlout/sdlout.cc:112 src/skins/menus.cc:90
 #: src/skins-qt/menus.cc:81
 msgid "Playback"
 msgstr "Відтворення"
@@ -3216,7 +3211,7 @@ msgstr ""
 msgid "Press a key combination inside a text field."
 msgstr "Натисніть комбінацію клавіш всередині текстового поля."
 
-#: src/qthotkey/plugin.cc:105
+#: src/qthotkey/plugin.cc:104
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3539,7 +3534,7 @@ msgstr[1] "%dрезультати"
 msgstr[2] "%dрезультатів"
 msgstr[3] "%d результатів"
 
-#: src/sid/xmms-sid.cc:43
+#: src/sid/xmms-sid.cc:44
 msgid "SID Player"
 msgstr "Програвач SID"
 
@@ -3683,63 +3678,63 @@ msgstr "16 кГц"
 msgid "Audacious Equalizer"
 msgstr "Еквалайзер Audacious"
 
-#: src/skins/main.cc:457 src/skins-qt/main.cc:447
+#: src/skins/main.cc:457 src/skins-qt/main.cc:448
 msgid "Recording on"
 msgstr "Увімкнути записування"
 
-#: src/skins/main.cc:459 src/skins-qt/main.cc:449
+#: src/skins/main.cc:459 src/skins-qt/main.cc:450
 msgid "Recording off"
 msgstr "Вимкнути записування"
 
-#: src/skins/main.cc:752 src/skins-qt/main.cc:730
+#: src/skins/main.cc:752 src/skins-qt/main.cc:731
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Перехід до %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/main.cc:769 src/skins-qt/main.cc:747
+#: src/skins/main.cc:769 src/skins-qt/main.cc:748
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Гучність: %d%%"
 
-#: src/skins/main.cc:782 src/skins-qt/main.cc:760
+#: src/skins/main.cc:782 src/skins-qt/main.cc:761
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Баланс: %d%% вліво"
 
-#: src/skins/main.cc:784 src/skins-qt/main.cc:762
+#: src/skins/main.cc:784 src/skins-qt/main.cc:763
 msgid "Balance: center"
 msgstr "Баланс: центр"
 
-#: src/skins/main.cc:786 src/skins-qt/main.cc:764
+#: src/skins/main.cc:786 src/skins-qt/main.cc:765
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Баланс: %d%% вправо"
 
-#: src/skins/main.cc:878 src/skins-qt/main.cc:856
+#: src/skins/main.cc:878 src/skins-qt/main.cc:857
 msgid "Options Menu"
 msgstr "Меню опцій"
 
-#: src/skins/main.cc:882 src/skins-qt/main.cc:860
+#: src/skins/main.cc:882 src/skins-qt/main.cc:861
 msgid "Disable 'Always On Top'"
 msgstr "Вимкнути відображення над іншими вікнами"
 
-#: src/skins/main.cc:884 src/skins-qt/main.cc:862
+#: src/skins/main.cc:884 src/skins-qt/main.cc:863
 msgid "Enable 'Always On Top'"
 msgstr "Відображати над іншими вікнами"
 
-#: src/skins/main.cc:887 src/skins-qt/main.cc:865
+#: src/skins/main.cc:887 src/skins-qt/main.cc:866
 msgid "File Info Box"
 msgstr "Редактор інформації про доріжку"
 
-#: src/skins/main.cc:891 src/skins-qt/main.cc:869
+#: src/skins/main.cc:891 src/skins-qt/main.cc:870
 msgid "Disable 'Double Size'"
 msgstr "Вимкнути 'Подвійний розмір'"
 
-#: src/skins/main.cc:893 src/skins-qt/main.cc:871
+#: src/skins/main.cc:893 src/skins-qt/main.cc:872
 msgid "Enable 'Double Size'"
 msgstr "Увімкнути 'Подвійний розмір'"
 
-#: src/skins/main.cc:896 src/skins-qt/main.cc:874
+#: src/skins/main.cc:896 src/skins-qt/main.cc:875
 msgid "Visualizations"
 msgstr "Візерунки"
 
@@ -3789,7 +3784,7 @@ msgstr "Про ..."
 msgid "Settings ..."
 msgstr "Налаштування ..."
 
-#: src/skins/menus.cc:99 src/skins-qt/menus.cc:90 src/skins-qt/view.cc:67
+#: src/skins/menus.cc:99 src/skins-qt/menus.cc:90 src/skins-qt/view.cc:68
 #: src/skins/view.cc:59
 msgid "Quit"
 msgstr "Вихід"
@@ -4068,7 +4063,7 @@ msgstr "В чергу/З черги"
 msgid "%s (%d of %d)"
 msgstr "%s (%d із %d)"
 
-#: src/skins/playlistwin.cc:490 src/skins-qt/playlistwin.cc:476
+#: src/skins/playlistwin.cc:490 src/skins-qt/playlistwin.cc:440
 msgid "Audacious Playlist Editor"
 msgstr "Редактор списків відтворення Audacious"
 
@@ -4084,11 +4079,11 @@ msgstr "Відкрити каталог ..."
 msgid "Add Folder ..."
 msgstr "Додати каталог ..."
 
-#: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:77
+#: src/skins-qt/search-select.cc:63 src/skins/search-select.cc:77
 msgid "Search entries in active playlist"
 msgstr "Пошук у чинному плейлисті"
 
-#: src/skins-qt/search-select.cc:70 src/skins/search-select.cc:83
+#: src/skins-qt/search-select.cc:71 src/skins/search-select.cc:84
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -4100,219 +4095,219 @@ msgstr ""
 "ви не знаєте як працюють регулярні вирази, просто вставте частину букв того, "
 "що ви шукаєте."
 
-#: src/skins-qt/search-select.cc:75 src/skins/search-select.cc:91
+#: src/skins-qt/search-select.cc:76 src/skins/search-select.cc:92
 msgid "Title:"
 msgstr "Назва:"
 
-#: src/skins-qt/search-select.cc:79 src/skins/search-select.cc:96
+#: src/skins-qt/search-select.cc:80 src/skins/search-select.cc:97
 msgid "Album:"
 msgstr "Альбом:"
 
-#: src/skins-qt/search-select.cc:82 src/skins/search-select.cc:101
+#: src/skins-qt/search-select.cc:83 src/skins/search-select.cc:102
 msgid "Artist:"
 msgstr "Виконавець:"
 
-#: src/skins-qt/search-select.cc:85 src/skins/search-select.cc:106
+#: src/skins-qt/search-select.cc:86 src/skins/search-select.cc:107
 msgid "File Name:"
 msgstr "Назва файлу:"
 
-#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:134
+#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:135
 msgid "Clear previous selection before searching"
 msgstr "Зняти попереднє виділення перед пошуком"
 
-#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:137
+#: src/skins-qt/search-select.cc:90 src/skins/search-select.cc:138
 msgid "Automatically toggle queue for matching entries"
 msgstr "Автоматично перемикати стан черги знайдених елементів"
 
-#: src/skins-qt/search-select.cc:90 src/skins/search-select.cc:140
+#: src/skins-qt/search-select.cc:91 src/skins/search-select.cc:141
 msgid "Create a new playlist with matching entries"
 msgstr "Виділити знайдене в новий список відтворення"
 
-#: src/skins-qt/skins_cfg.cc:194 src/skins/skins_cfg.cc:182
+#: src/skins-qt/skins_cfg.cc:175 src/skins/skins_cfg.cc:182
 msgid "Player:"
 msgstr "Програвач:"
 
-#: src/skins-qt/skins_cfg.cc:196 src/skins/skins_cfg.cc:184
+#: src/skins-qt/skins_cfg.cc:177 src/skins/skins_cfg.cc:184
 msgid "Select main player window font:"
 msgstr "Шрифт основного вікна програвача"
 
-#: src/skins-qt/skins_cfg.cc:197 src/skins/skins_cfg.cc:185
+#: src/skins-qt/skins_cfg.cc:178 src/skins/skins_cfg.cc:185
 msgid "Playlist:"
 msgstr "Плейлист:"
 
-#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:187
+#: src/skins-qt/skins_cfg.cc:180 src/skins/skins_cfg.cc:187
 msgid "Select playlist font:"
 msgstr "Шрифт списку відтворення:"
 
-#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:191
+#: src/skins-qt/skins_cfg.cc:184 src/skins/skins_cfg.cc:191
 msgid "<b>Skin</b>"
 msgstr "<b>Оболонка</b>"
 
-#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:193
+#: src/skins-qt/skins_cfg.cc:186 src/skins/skins_cfg.cc:193
 msgid "Display active titlebar when any window is focused"
 msgstr ""
 
-#: src/skins-qt/skins_cfg.cc:209 src/skins/skins_cfg.cc:195
+#: src/skins-qt/skins_cfg.cc:188 src/skins/skins_cfg.cc:195
 msgid "<b>Fonts</b>"
 msgstr "<b>Шрифти</b>"
 
-#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:197
+#: src/skins-qt/skins_cfg.cc:190 src/skins/skins_cfg.cc:197
 msgid "Use bitmap fonts (supports ASCII only)"
 msgstr "Використовувати растрові шрифти (підтримується тільки ASCII)"
 
-#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:199
+#: src/skins-qt/skins_cfg.cc:192 src/skins/skins_cfg.cc:199
 msgid "Scroll song title"
 msgstr "Прокручувати назву пісні"
 
-#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:201
+#: src/skins-qt/skins_cfg.cc:194 src/skins/skins_cfg.cc:201
 msgid "Scroll song title in both directions"
 msgstr "Прокручувати назву пісні в обох напрямках"
 
-#: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:206
+#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:206
 msgid "Analyzer"
 msgstr "Аналізатор"
 
-#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:207
+#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:207
 msgid "Scope"
 msgstr "Осцилограф"
 
-#: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:208
+#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:208
 msgid "Voiceprint / VU meter"
 msgstr "Спектрограма / VU-вимірювач"
 
-#: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:209
+#: src/skins-qt/skins_cfg.cc:202 src/skins/skins_cfg.cc:209
 msgid "Off"
 msgstr "Вимкнено"
 
-#: src/skins-qt/skins_cfg.cc:227 src/skins-qt/skins_cfg.cc:252
-#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:213
+#: src/skins-qt/skins_cfg.cc:206 src/skins-qt/skins_cfg.cc:231
+#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:213
 #: src/skins/skins_cfg.cc:238 src/skins/skins_cfg.cc:244
 msgid "Normal"
 msgstr "Звичайний"
 
-#: src/skins-qt/skins_cfg.cc:228 src/skins-qt/skins_cfg.cc:253
+#: src/skins-qt/skins_cfg.cc:207 src/skins-qt/skins_cfg.cc:232
 #: src/skins/skins_cfg.cc:214 src/skins/skins_cfg.cc:239
 msgid "Fire"
 msgstr "Вогонь"
 
-#: src/skins-qt/skins_cfg.cc:229 src/skins/skins_cfg.cc:215
+#: src/skins-qt/skins_cfg.cc:208 src/skins/skins_cfg.cc:215
 msgid "Vertical lines"
 msgstr "Вертикальні лінії"
 
-#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:219
+#: src/skins-qt/skins_cfg.cc:212 src/skins/skins_cfg.cc:219
 msgid "Lines"
 msgstr "Лінії"
 
-#: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:220
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:220
 msgid "Bars"
 msgstr "Стовпчики"
 
-#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:224
+#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:224
 msgid "Slowest"
 msgstr "Дуже повільне"
 
-#: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:225
+#: src/skins-qt/skins_cfg.cc:218 src/skins/skins_cfg.cc:225
 msgid "Slow"
 msgstr "Повільне"
 
-#: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:226
+#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:226
 #: src/soxr/sox-resampler.cc:180
 msgid "Medium"
 msgstr "Помірне"
 
-#: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:227
+#: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:227
 msgid "Fast"
 msgstr "Швидке"
 
-#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:228
+#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:228
 msgid "Fastest"
 msgstr "Дуже швидко"
 
-#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:232
+#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:232
 msgid "Dots"
 msgstr "Точки"
 
-#: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:233
+#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:233
 msgid "Line"
 msgstr "Лінія"
 
-#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:234
+#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:234
 msgid "Solid"
 msgstr "Суцільна"
 
-#: src/skins-qt/skins_cfg.cc:254 src/skins/skins_cfg.cc:240
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:240
 msgid "Ice"
 msgstr "Лід"
 
-#: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:245
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:245
 msgid "Smooth"
 msgstr "Плавний"
 
-#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:249
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:249
 msgid "Coloring:"
 msgstr "Забарвлення:"
 
-#: src/skins-qt/skins_cfg.cc:266 src/skins/skins_cfg.cc:252
+#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:252
 msgid "Style:"
 msgstr "Стиль:"
 
-#: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:255
+#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:255
 msgid "Falloff:"
 msgstr "Спад"
 
-#: src/skins-qt/skins_cfg.cc:272 src/skins/skins_cfg.cc:258
+#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:258
 msgid "Peak falloff:"
 msgstr "Спадання часового піку"
 
-#: src/skins-qt/skins_cfg.cc:278 src/skins/skins_cfg.cc:264
+#: src/skins-qt/skins_cfg.cc:257 src/skins/skins_cfg.cc:264
 msgid "Scope Style:"
 msgstr "Стиль осцилограми:"
 
-#: src/skins-qt/skins_cfg.cc:281 src/skins/skins_cfg.cc:267
+#: src/skins-qt/skins_cfg.cc:260 src/skins/skins_cfg.cc:267
 msgid "Voiceprint Coloring:"
 msgstr "Забарвлення спектрограми:"
 
-#: src/skins-qt/skins_cfg.cc:284 src/skins/skins_cfg.cc:270
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:270
 msgid "VU Meter Style:"
 msgstr "Стиль VU-вимірювача:"
 
-#: src/skins-qt/skins_cfg.cc:290 src/skins/skins_cfg.cc:276
+#: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:276
 msgid "<b>Type</b>"
 msgstr "<b>Тип</b>"
 
-#: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:277
+#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:277
 msgid "Visualization type:"
 msgstr "Тип візуалізації:"
 
-#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:280
+#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:280
 msgid "<b>Analyzer</b>"
 msgstr "<b>Аналізатор</b>"
 
-#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:281
+#: src/skins-qt/skins_cfg.cc:274 src/skins/skins_cfg.cc:281
 msgid "Show peaks"
 msgstr "Показувати піки часу"
 
-#: src/skins-qt/skins_cfg.cc:304 src/skins/skins_cfg.cc:290
+#: src/skins-qt/skins_cfg.cc:283 src/skins/skins_cfg.cc:290
 msgid "Visualization"
 msgstr "Візуалізація"
 
-#: src/skins-qt/skinselector.cc:97 src/skins/skinselector.cc:111
+#: src/skins-qt/skinselector.cc:122 src/skins/skinselector.cc:111
 msgid "Archived Winamp 2.x skin"
 msgstr "Заархівлений жупан Winamp 2.x"
 
-#: src/skins-qt/skinselector.cc:101 src/skins/skinselector.cc:115
+#: src/skins-qt/skinselector.cc:126 src/skins/skinselector.cc:115
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Розархівлений жупан Winamp 2.x"
 
-#: src/skins-qt/view.cc:66 src/skins/view.cc:54
+#: src/skins-qt/view.cc:67 src/skins/view.cc:54
 msgid "Restart"
 msgstr ""
 
-#: src/skins-qt/view.cc:82 src/skins/view.cc:64
+#: src/skins-qt/view.cc:83 src/skins/view.cc:64
 msgid "Compatibility Issue"
 msgstr ""
 
-#: src/skins-qt/view.cc:84 src/skins/view.cc:65
+#: src/skins-qt/view.cc:85 src/skins/view.cc:65
 msgid ""
 "The Winamp interface requires windowing system features not supported by "
 "Wayland. Audacious will attempt to enable Xwayland compatibility mode after "
@@ -4656,7 +4651,7 @@ msgstr ""
 msgid "<b>Extra Stereo</b>"
 msgstr "<b>Розширене стерео</b>"
 
-#: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:131
+#: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:163
 msgid "Type"
 msgstr "Вид"
 
@@ -4680,119 +4675,119 @@ msgstr "Позивні знаки"
 msgid "Description"
 msgstr "Опис"
 
-#: src/streamtuner/shoutcast-model.cc:128
+#: src/streamtuner/shoutcast-model.cc:160
 msgid "Listeners"
 msgstr "Слухачів"
 
-#: src/streamtuner/shoutcast-model.cc:188
+#: src/streamtuner/shoutcast-model.cc:220
 msgid "Top 500 Stations"
 msgstr "Топ 500 станцій"
 
-#: src/streamtuner/shoutcast-model.cc:189
+#: src/streamtuner/shoutcast-model.cc:221
 msgid "Alternative"
 msgstr "Альтернатива"
 
-#: src/streamtuner/shoutcast-model.cc:190
+#: src/streamtuner/shoutcast-model.cc:222
 msgid "Blues"
 msgstr "Блюз"
 
-#: src/streamtuner/shoutcast-model.cc:191
+#: src/streamtuner/shoutcast-model.cc:223
 msgid "Classical"
 msgstr "Класична музика"
 
-#: src/streamtuner/shoutcast-model.cc:192
+#: src/streamtuner/shoutcast-model.cc:224
 msgid "Country"
 msgstr "Кантрі"
 
-#: src/streamtuner/shoutcast-model.cc:193
+#: src/streamtuner/shoutcast-model.cc:225
 msgid "Decades"
 msgstr "Десятиріччя"
 
-#: src/streamtuner/shoutcast-model.cc:194
+#: src/streamtuner/shoutcast-model.cc:226
 msgid "Easy Listening"
 msgstr "Легка музика"
 
-#: src/streamtuner/shoutcast-model.cc:195
+#: src/streamtuner/shoutcast-model.cc:227
 msgid "Electronic"
 msgstr "Електронна"
 
-#: src/streamtuner/shoutcast-model.cc:196
+#: src/streamtuner/shoutcast-model.cc:228
 msgid "Folk"
 msgstr "Народна музика"
 
-#: src/streamtuner/shoutcast-model.cc:197
+#: src/streamtuner/shoutcast-model.cc:229
 msgid "Inspirational"
 msgstr "Яка надихає"
 
-#: src/streamtuner/shoutcast-model.cc:198
+#: src/streamtuner/shoutcast-model.cc:230
 msgid "International"
 msgstr "Міжнаціональна"
 
-#: src/streamtuner/shoutcast-model.cc:199
+#: src/streamtuner/shoutcast-model.cc:231
 msgid "Jazz"
 msgstr "Джаз"
 
-#: src/streamtuner/shoutcast-model.cc:200
+#: src/streamtuner/shoutcast-model.cc:232
 msgid "Latin"
 msgstr "Латинська"
 
-#: src/streamtuner/shoutcast-model.cc:201
+#: src/streamtuner/shoutcast-model.cc:233
 msgid "Metal"
 msgstr "Метал"
 
-#: src/streamtuner/shoutcast-model.cc:203
+#: src/streamtuner/shoutcast-model.cc:235
 msgid "New Age"
 msgstr "Ню-ейдж"
 
-#: src/streamtuner/shoutcast-model.cc:204
+#: src/streamtuner/shoutcast-model.cc:236
 msgid "Pop"
 msgstr "Поп-музика"
 
-#: src/streamtuner/shoutcast-model.cc:205
+#: src/streamtuner/shoutcast-model.cc:237
 msgid "Public Radio"
 msgstr "Громадське радіо"
 
-#: src/streamtuner/shoutcast-model.cc:206
+#: src/streamtuner/shoutcast-model.cc:238
 msgid "R&B and Urban"
 msgstr "Сучасна та R&B"
 
-#: src/streamtuner/shoutcast-model.cc:207
+#: src/streamtuner/shoutcast-model.cc:239
 msgid "Rap"
 msgstr "Реп"
 
-#: src/streamtuner/shoutcast-model.cc:208
+#: src/streamtuner/shoutcast-model.cc:240
 msgid "Reggae"
 msgstr "Реґей"
 
-#: src/streamtuner/shoutcast-model.cc:209
+#: src/streamtuner/shoutcast-model.cc:241
 msgid "Rock"
 msgstr "Рок"
 
-#: src/streamtuner/shoutcast-model.cc:210
+#: src/streamtuner/shoutcast-model.cc:242
 msgid "Seasonal and Holiday"
 msgstr "Святкова та сезонна"
 
-#: src/streamtuner/shoutcast-model.cc:211
+#: src/streamtuner/shoutcast-model.cc:243
 msgid "Soundtracks"
 msgstr "Саундтреки"
 
-#: src/streamtuner/shoutcast-model.cc:212
+#: src/streamtuner/shoutcast-model.cc:244
 msgid "Talk"
 msgstr "Розмовне"
 
-#: src/streamtuner/shoutcast-model.cc:213
+#: src/streamtuner/shoutcast-model.cc:245
 msgid "Themes"
 msgstr "Теми"
 
-#: src/streamtuner/streamtuner.cc:59
+#: src/streamtuner/streamtuner.cc:58
 msgid "Shoutcast"
 msgstr "Shoutcast"
 
-#: src/streamtuner/streamtuner.cc:60
+#: src/streamtuner/streamtuner.cc:59
 msgid "Icecast"
 msgstr "Icecast"
 
-#: src/streamtuner/streamtuner.cc:71
+#: src/streamtuner/streamtuner.cc:70
 msgid "Stream Tuner"
 msgstr "Stream Tuner"
 
@@ -4996,7 +4991,7 @@ msgstr "з втратами (гібрид)"
 msgid "lossy"
 msgstr "з втратами"
 
-#: src/wavpack/wavpack.cc:246
+#: src/wavpack/wavpack.cc:249
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
@@ -5041,3 +5036,6 @@ msgstr "Режим інтерполяції"
 #: src/xspf/xspf.cc:90
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML-списки відтворення (XSPF)"
+
+#~ msgid "Surround"
+#~ msgstr "Об’ємний звук"

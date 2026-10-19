@@ -10,7 +10,7 @@
 # Fabiano Ramos <fabiano.suporteinfo@gmail.com>, 2018
 # F Marcelo O Amarante <marcelo.amarante@hotmail.com>, 2015
 # Fuad Saud <fuadksd@gmail.com>, 2012
-# Fúlvio Alves <fga.fulvio@gmail.com>, 2020-2025
+# Fúlvio Alves <fga.fulvio@gmail.com>, 2020-2026
 # mcnd2 <glauber_gf@hotmail.com>, 2012
 # Iuri Suzano <isuzano@netkings.cc>, 2017
 # John_Norum <john.norum4@gmail.com>, 2012
@@ -32,9 +32,9 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: https://github.com/audacious-media-player/audacious/"
 "issues\n"
-"POT-Creation-Date: 2026-05-31 21:45+0200\n"
+"POT-Creation-Date: 2026-10-18 15:16+0200\n"
 "PO-Revision-Date: 2011-10-10 17:43+0000\n"
-"Last-Translator: Fúlvio Alves <fga.fulvio@gmail.com>, 2020-2025\n"
+"Last-Translator: Fúlvio Alves <fga.fulvio@gmail.com>, 2020-2026\n"
 "Language-Team: Portuguese (Brazil) (http://app.transifex.com/audacious/"
 "audacious/language/pt_BR/)\n"
 "Language: pt_BR\n"
@@ -85,7 +85,7 @@ msgstr "Hz"
 
 #: src/adplug/adplug-xmms.cc:355 src/gtkui/settings.cc:55
 #: src/modplug/plugin_main.cc:105 src/qtui/settings.cc:85
-#: src/skins-qt/skins_cfg.cc:298 src/skins/skins_cfg.cc:284
+#: src/skins-qt/skins_cfg.cc:277 src/skins/skins_cfg.cc:284
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>Diversos</b>"
 
@@ -145,7 +145,7 @@ msgstr "Elemento mixer:"
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (Reprodutor MIDI)"
 
-#: src/amidiplug/amidi-plug.cc:445
+#: src/amidiplug/amidi-plug.cc:448
 msgid ""
 "AMIDI-Plug\n"
 "modular MIDI music player\n"
@@ -553,7 +553,7 @@ msgstr "Decoração"
 msgid "Trigger"
 msgstr "Gatilho"
 
-#: src/aosd/aosd_ui.cc:980 src/streamtuner/shoutcast-model.cc:202
+#: src/aosd/aosd_ui.cc:980 src/streamtuner/shoutcast-model.cc:234
 msgid "Misc"
 msgstr "Vários"
 
@@ -1075,20 +1075,20 @@ msgstr "Mover para a lixeira"
 msgid "Delete"
 msgstr "Excluir"
 
-#: src/delete-files/delete-files.cc:210 src/delete-files/delete-files.cc:232
-#: src/skins-qt/search-select.cc:102 src/skins/search-select.cc:78
+#: src/delete-files/delete-files.cc:210 src/delete-files/delete-files.cc:231
+#: src/skins-qt/search-select.cc:103 src/skins/search-select.cc:78
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/delete-files/delete-files.cc:262
+#: src/delete-files/delete-files.cc:261
 msgid "Delete Selected Files"
 msgstr "Excluir Arquivos Selecionados"
 
-#: src/delete-files/delete-files.cc:282
+#: src/delete-files/delete-files.cc:281
 msgid "<b>Delete Method</b>"
 msgstr "<b>Excluir Método</b>"
 
-#: src/delete-files/delete-files.cc:283
+#: src/delete-files/delete-files.cc:282
 msgid "Move to trash instead of deleting immediately"
 msgstr "Mover para a lixeira ao invés de excluir imediatamente"
 
@@ -1153,7 +1153,7 @@ msgstr ""
 
 #: src/filebrowser/filebrowser.cc:48 src/filebrowser-qt/filebrowser-qt.cc:52
 msgid "File Browser"
-msgstr ""
+msgstr "Navegador de Arquivos"
 
 #: src/filebrowser/filebrowser.cc:63 src/filebrowser-qt/filebrowser-qt.cc:64
 msgid ""
@@ -1165,16 +1165,24 @@ msgid ""
 "Based on the implementation for Qmmp\n"
 "Copyright 2021-2025 Ilya Kotov"
 msgstr ""
+"Um plugin acoplável que pode ser usado para navegar por pastas em busca de "
+"arquivos de música. Clique com o botão direito do mouse em uma pasta ou "
+"arquivo para ver as ações disponíveis.\n"
+"\n"
+"Copyright 2025 Thomas Lange\n"
+"\n"
+"Baseado na implementação para Qmmp\n"
+"Copyright 2021-2025 Ilya Kotov"
 
-#: src/filebrowser/filebrowser.cc:470 src/filebrowser-qt/filebrowser-qt.cc:208
+#: src/filebrowser/filebrowser.cc:469 src/filebrowser-qt/filebrowser-qt.cc:208
 msgid "_Open Folder Externally"
-msgstr ""
+msgstr "Abrir Pasta _Externamente"
 
-#: src/filebrowser/filebrowser.cc:476 src/filebrowser-qt/filebrowser-qt.cc:211
+#: src/filebrowser/filebrowser.cc:475 src/filebrowser-qt/filebrowser-qt.cc:211
 msgid "Open Al_bum Art"
-msgstr ""
+msgstr "Abrir Arte do Ál_bum"
 
-#: src/filebrowser/filebrowser.cc:539 src/filebrowser-qt/filebrowser-qt.cc:199
+#: src/filebrowser/filebrowser.cc:538 src/filebrowser-qt/filebrowser-qt.cc:199
 #: src/gtkui/menus.cc:93 src/gtkui/menus.cc:238 src/qtui/menus.cc:147
 #: src/qtui/playlist_tabs.cc:339 src/search-tool-qt/search-tool-qt.cc:499
 #: src/search-tool/search-tool.cc:339 src/statusicon-qt/statusicon.cc:122
@@ -1182,29 +1190,29 @@ msgstr ""
 msgid "_Play"
 msgstr "_Reproduzir"
 
-#: src/filebrowser/filebrowser.cc:541 src/filebrowser-qt/filebrowser-qt.cc:201
+#: src/filebrowser/filebrowser.cc:540 src/filebrowser-qt/filebrowser-qt.cc:201
 #: src/search-tool-qt/search-tool-qt.cc:501 src/search-tool/search-tool.cc:341
 msgid "_Create Playlist"
 msgstr "_Criar Lista de Reprodução"
 
-#: src/filebrowser/filebrowser.cc:543 src/filebrowser-qt/filebrowser-qt.cc:203
+#: src/filebrowser/filebrowser.cc:542 src/filebrowser-qt/filebrowser-qt.cc:203
 #: src/search-tool-qt/search-tool-qt.cc:503 src/search-tool/search-tool.cc:343
 msgid "_Add to Playlist"
 msgstr "_Adicionar à Lista de Reprodução"
 
-#: src/filebrowser/filebrowser.cc:560 src/filebrowser-qt/filebrowser-qt.cc:371
-#: src/skins-qt/search-select.cc:101 src/skins/search-select.cc:78
+#: src/filebrowser/filebrowser.cc:559 src/filebrowser-qt/filebrowser-qt.cc:371
+#: src/skins-qt/search-select.cc:102 src/skins/search-select.cc:78
 msgid "Search"
 msgstr "Pesquisar"
 
-#: src/filebrowser/filebrowser.cc:561 src/filebrowser-qt/filebrowser-qt.cc:372
+#: src/filebrowser/filebrowser.cc:560 src/filebrowser-qt/filebrowser-qt.cc:372
 #, c-format
 msgid "Search in %s"
-msgstr ""
+msgstr "Pesquisar em %s"
 
-#: src/filebrowser/filebrowser.cc:825 src/filebrowser-qt/filebrowser-qt.cc:157
+#: src/filebrowser/filebrowser.cc:824 src/filebrowser-qt/filebrowser-qt.cc:157
 msgid "Show the parent folder"
-msgstr ""
+msgstr "Mostrar a pasta pai"
 
 #: src/filewriter/filewriter.cc:48
 msgid "FileWriter Plugin"
@@ -1390,12 +1398,10 @@ msgid "Joint Stereo"
 msgstr "Joint Stereo"
 
 #: src/filewriter/filewriter.cc:450 src/modplug/plugin_main.cc:57
-#: src/mpg123/mpg123.cc:259
 msgid "Stereo"
 msgstr "Stereo"
 
 #: src/filewriter/filewriter.cc:451 src/modplug/plugin_main.cc:56
-#: src/mpg123/mpg123.cc:260
 msgid "Mono"
 msgstr "Mono"
 
@@ -1507,7 +1513,7 @@ msgstr "Tags"
 msgid "Quality (0-1):"
 msgstr "Qualidade (0-1):"
 
-#: src/filewriter/filewriter.cc:572 src/skins-qt/skins_cfg.cc:303
+#: src/filewriter/filewriter.cc:572 src/skins-qt/skins_cfg.cc:282
 #: src/skins/skins_cfg.cc:289
 msgid "General"
 msgstr "Geral"
@@ -1584,7 +1590,7 @@ msgstr "Número de Entrada"
 #: src/playlist-manager/playlist-manager.cc:221
 #: src/playlist-manager-qt/playlist-manager-qt.cc:190
 #: src/qtui/playlist_model.cc:35 src/streamtuner/icecast-model.cc:120
-#: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:122
+#: src/streamtuner/ihr-model.cc:159 src/streamtuner/shoutcast-model.cc:154
 msgid "Title"
 msgstr "Título"
 
@@ -1610,8 +1616,8 @@ msgid "Track"
 msgstr "Faixa"
 
 #: src/gtkui/columns.cc:43 src/qtui/playlist_model.cc:36
-#: src/streamtuner/icecast-model.cc:123 src/streamtuner/shoutcast-model.cc:125
-#: src/streamtuner/shoutcast-model.cc:236
+#: src/streamtuner/icecast-model.cc:123 src/streamtuner/shoutcast-model.cc:157
+#: src/streamtuner/shoutcast-model.cc:268
 msgid "Genre"
 msgstr "Gênero"
 
@@ -1636,7 +1642,7 @@ msgid "Custom Title"
 msgstr "Título personalizado"
 
 #: src/gtkui/columns.cc:49 src/qtui/playlist_model.cc:38
-#: src/streamtuner/icecast-model.cc:129 src/streamtuner/shoutcast-model.cc:134
+#: src/streamtuner/icecast-model.cc:129 src/streamtuner/shoutcast-model.cc:166
 msgid "Bitrate"
 msgstr "Taxa de bits"
 
@@ -1658,11 +1664,11 @@ msgstr "Disco"
 
 #: src/gtkui/columns.cc:54 src/qtui/playlist_model.cc:39
 msgid "File Created"
-msgstr ""
+msgstr "Arquivo Criado"
 
 #: src/gtkui/columns.cc:55 src/qtui/playlist_model.cc:39
 msgid "File Modified"
-msgstr ""
+msgstr "Arquivo Modificado"
 
 #: src/gtkui/columns.cc:331
 msgid "Available columns"
@@ -1672,32 +1678,32 @@ msgstr "Colunas disponíveis"
 msgid "Displayed columns"
 msgstr "Colunas visíveis"
 
-#: src/gtkui/layout.cc:74 src/search-tool-qt/search-tool-qt.cc:57
+#: src/gtkui/layout.cc:76 src/search-tool-qt/search-tool-qt.cc:57
 #: src/search-tool/search-tool.cc:49
 msgid "Search Tool"
 msgstr "Ferramenta de Busca"
 
-#: src/gtkui/layout.cc:170
+#: src/gtkui/layout.cc:172
 msgid "Dock at Left"
 msgstr "Apontar na esquerda"
 
-#: src/gtkui/layout.cc:170
+#: src/gtkui/layout.cc:172
 msgid "Dock at Right"
 msgstr "Apontar na direita"
 
-#: src/gtkui/layout.cc:171
+#: src/gtkui/layout.cc:173
 msgid "Dock at Top"
 msgstr "Apontar no topo"
 
-#: src/gtkui/layout.cc:171
+#: src/gtkui/layout.cc:173
 msgid "Dock at Bottom"
 msgstr "Apontar na parte inferior"
 
-#: src/gtkui/layout.cc:171
+#: src/gtkui/layout.cc:173
 msgid "Undock"
 msgstr "Desencaixar"
 
-#: src/gtkui/layout.cc:171 src/ladspa/plugin.cc:540
+#: src/gtkui/layout.cc:173 src/ladspa/plugin.cc:540
 msgid "Disable"
 msgstr "Desabilitar"
 
@@ -1792,7 +1798,7 @@ msgstr "_Informações da faixa ..."
 
 #: src/gtkui/menus.cc:109 src/qtui/menus.cc:178
 msgid "Playback Histor_y ..."
-msgstr ""
+msgstr "Histórico de _Reprodução ..."
 
 #: src/gtkui/menus.cc:111
 msgid "Jump to _Time ..."
@@ -1886,19 +1892,19 @@ msgstr "Por número de d_isco"
 #: src/qtui/menus.cc:229 src/skins/menus.cc:215 src/skins/menus.cc:234
 #: src/skins-qt/menus.cc:211 src/skins-qt/menus.cc:230
 msgid "By Bitrate"
-msgstr ""
+msgstr "Por taxa de bits"
 
 #: src/gtkui/menus.cc:139 src/gtkui/menus.cc:160 src/qtui/menus.cc:209
 #: src/qtui/menus.cc:230 src/skins/menus.cc:216 src/skins/menus.cc:235
 #: src/skins-qt/menus.cc:212 src/skins-qt/menus.cc:231
 msgid "By File Created"
-msgstr ""
+msgstr "Por arquivo criado"
 
 #: src/gtkui/menus.cc:140 src/gtkui/menus.cc:161 src/qtui/menus.cc:210
 #: src/qtui/menus.cc:231 src/skins/menus.cc:217 src/skins/menus.cc:236
 #: src/skins-qt/menus.cc:213 src/skins-qt/menus.cc:232
 msgid "By File Modified"
-msgstr ""
+msgstr "Por arquivo modificado"
 
 #: src/gtkui/menus.cc:142 src/gtkui/menus.cc:163 src/qtui/menus.cc:212
 #: src/qtui/menus.cc:233
@@ -2130,78 +2136,78 @@ msgstr "Deslocar ao mudar de faixa"
 msgid "GTK Interface"
 msgstr "Interface GTK"
 
-#: src/gtkui/ui_gtk.cc:220 src/skins/main.cc:226 src/skins-qt/main.cc:236
+#: src/gtkui/ui_gtk.cc:220 src/skins/main.cc:226 src/skins-qt/main.cc:237
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.cc:222 src/qtui/main_window.cc:386 src/skins/main.cc:243
-#: src/skins-qt/main.cc:253
+#: src/gtkui/ui_gtk.cc:222 src/qtui/main_window.cc:388 src/skins/main.cc:243
+#: src/skins-qt/main.cc:254
 msgid "Buffering ..."
 msgstr "A processar ..."
 
-#: src/gtkui/ui_gtk.cc:225 src/pipewire/pipewire.cc:450
-#: src/qtui/main_window.cc:364 src/qtui/main_window.cc:400
-#: src/sdlout/sdlout.cc:110 src/skins/main.cc:228 src/skins-qt/main.cc:238
+#: src/gtkui/ui_gtk.cc:225 src/pipewire/pipewire.cc:475
+#: src/qtui/main_window.cc:366 src/qtui/main_window.cc:402
+#: src/sdlout/sdlout.cc:110 src/skins/main.cc:228 src/skins-qt/main.cc:239
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.cc:509 src/gtkui/ui_gtk.cc:540 src/gtkui/ui_gtk.cc:923
+#: src/gtkui/ui_gtk.cc:509 src/gtkui/ui_gtk.cc:540 src/gtkui/ui_gtk.cc:925
 #: src/hotkey/gui.cc:72 src/notify/osd.cc:85 src/qthotkey/gui.cc:67
-#: src/qtui/main_window.cc:155 src/qtui/main_window.cc:348
-#: src/qtui/main_window.cc:349 src/skins/menus.cc:114 src/skins-qt/menus.cc:105
+#: src/qtui/main_window.cc:155 src/qtui/main_window.cc:350
+#: src/qtui/main_window.cc:351 src/skins/menus.cc:114 src/skins-qt/menus.cc:105
 msgid "Play"
 msgstr "Reproduzir"
 
-#: src/gtkui/ui_gtk.cc:509 src/notify/osd.cc:82 src/qtui/main_window.cc:354
-#: src/qtui/main_window.cc:355 src/skins/menus.cc:115 src/skins-qt/menus.cc:106
+#: src/gtkui/ui_gtk.cc:509 src/notify/osd.cc:82 src/qtui/main_window.cc:356
+#: src/qtui/main_window.cc:357 src/skins/menus.cc:115 src/skins-qt/menus.cc:106
 msgid "Pause"
 msgstr "Pausa"
 
-#: src/gtkui/ui_gtk.cc:909 src/qtui/main_window.cc:146 src/skins/menus.cc:87
+#: src/gtkui/ui_gtk.cc:911 src/qtui/main_window.cc:146 src/skins/menus.cc:87
 #: src/skins-qt/menus.cc:78
 msgid "Search Library"
 msgstr "Procurar Biblioteca"
 
-#: src/gtkui/ui_gtk.cc:916 src/qtui/main_window.cc:148
+#: src/gtkui/ui_gtk.cc:918 src/qtui/main_window.cc:148
 msgid "Open Files"
 msgstr "Abrir arquivos"
 
-#: src/gtkui/ui_gtk.cc:917 src/qtui/main_window.cc:150
+#: src/gtkui/ui_gtk.cc:919 src/qtui/main_window.cc:150
 msgid "Add Files"
 msgstr "Adicionar arquivos"
 
-#: src/gtkui/ui_gtk.cc:922 src/qtui/main_window.cc:153 src/skins/menus.cc:117
+#: src/gtkui/ui_gtk.cc:924 src/qtui/main_window.cc:153 src/skins/menus.cc:117
 #: src/skins-qt/menus.cc:108
 msgid "Previous"
 msgstr "Anterior"
 
-#: src/gtkui/ui_gtk.cc:924 src/hotkey/gui.cc:74 src/qthotkey/gui.cc:69
+#: src/gtkui/ui_gtk.cc:926 src/hotkey/gui.cc:74 src/qthotkey/gui.cc:69
 #: src/qtui/main_window.cc:157 src/skins/menus.cc:116 src/skins-qt/menus.cc:107
 msgid "Stop"
 msgstr "Parar"
 
-#: src/gtkui/ui_gtk.cc:925 src/notify/osd.cc:89 src/qtui/main_window.cc:164
+#: src/gtkui/ui_gtk.cc:927 src/notify/osd.cc:89 src/qtui/main_window.cc:164
 #: src/skins/menus.cc:118 src/skins-qt/menus.cc:109
 msgid "Next"
 msgstr "Próxima"
 
-#: src/gtkui/ui_gtk.cc:927 src/qtui/main_window.cc:167 src/qtui/menus.cc:279
+#: src/gtkui/ui_gtk.cc:929 src/qtui/main_window.cc:167 src/qtui/menus.cc:279
 #: src/skins/menus.cc:79 src/skins-qt/menus.cc:69
 msgid "Record Stream"
 msgstr "Fluxo do arquivo"
 
-#: src/gtkui/ui_gtk.cc:960 src/qtui/main_window.cc:174 src/skins/menus.cc:108
+#: src/gtkui/ui_gtk.cc:962 src/qtui/main_window.cc:174 src/skins/menus.cc:108
 #: src/skins-qt/menus.cc:99
 msgid "Repeat"
 msgstr "Repetir"
 
-#: src/gtkui/ui_gtk.cc:963 src/qtui/main_window.cc:177 src/skins/menus.cc:109
+#: src/gtkui/ui_gtk.cc:965 src/qtui/main_window.cc:177 src/skins/menus.cc:109
 #: src/skins-qt/menus.cc:100
 msgid "Shuffle"
 msgstr "Embaralhar"
 
-#: src/gtkui/ui_gtk.cc:1155 src/qtui/main_window.cc:123
+#: src/gtkui/ui_gtk.cc:1156 src/qtui/main_window.cc:123
 msgid "Menu"
 msgstr "Menu"
 
@@ -2232,15 +2238,15 @@ msgstr "%d kHz"
 msgid "%d kbit/s"
 msgstr "%d kbit/s"
 
-#: src/gtkui/ui_statusbar.cc:108 src/skins/main.cc:476 src/skins-qt/main.cc:466
+#: src/gtkui/ui_statusbar.cc:108 src/skins/main.cc:476 src/skins-qt/main.cc:467
 msgid "Single mode."
 msgstr "Modo simples."
 
-#: src/gtkui/ui_statusbar.cc:110 src/skins/main.cc:478 src/skins-qt/main.cc:468
+#: src/gtkui/ui_statusbar.cc:110 src/skins/main.cc:478 src/skins-qt/main.cc:469
 msgid "Playlist mode."
 msgstr "Modo Lista de Reprodução."
 
-#: src/gtkui/ui_statusbar.cc:118 src/skins/main.cc:484 src/skins-qt/main.cc:474
+#: src/gtkui/ui_statusbar.cc:118 src/skins/main.cc:484 src/skins-qt/main.cc:475
 msgid "Stopping after song."
 msgstr "Parar após faixa"
 
@@ -2306,11 +2312,11 @@ msgstr "Aumentar janela(s) do player"
 
 #: src/hotkey/gui.cc:88 src/qthotkey/gui.cc:83
 msgid "Previous album"
-msgstr ""
+msgstr "Álbum anterior"
 
 #: src/hotkey/gui.cc:89 src/qthotkey/gui.cc:84
 msgid "Next album"
-msgstr ""
+msgstr "Próximo álbum"
 
 #: src/hotkey/gui.cc:100 src/qthotkey/gui.cc:102
 msgid "(none)"
@@ -2331,7 +2337,7 @@ msgstr ""
 msgid "Binding mouse buttons"
 msgstr "Associação do botão do mouse"
 
-#: src/hotkey/gui.cc:435
+#: src/hotkey/gui.cc:434
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -2339,23 +2345,23 @@ msgstr ""
 "Pressionar uma combinação de teclas no campo de texto.\n"
 "Você também pode associar os botoes do mouse."
 
-#: src/hotkey/gui.cc:445 src/qthotkey/gui.cc:181
+#: src/hotkey/gui.cc:444 src/qthotkey/gui.cc:181
 msgid "Hotkeys:"
 msgstr "Hotkeys:"
 
-#: src/hotkey/gui.cc:458 src/qthotkey/gui.cc:183
+#: src/hotkey/gui.cc:457 src/qthotkey/gui.cc:183
 msgid "<b>Action:</b>"
 msgstr "<b>Ação:</b>"
 
-#: src/hotkey/gui.cc:462 src/qthotkey/gui.cc:184
+#: src/hotkey/gui.cc:461 src/qthotkey/gui.cc:184
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Combinação de Teclas:</b>"
 
-#: src/hotkey/gui.cc:519 src/qthotkey/gui.cc:186
+#: src/hotkey/gui.cc:518 src/qthotkey/gui.cc:186
 msgid "_Add"
 msgstr "_Adicionar"
 
-#: src/hotkey/plugin.cc:59 src/qthotkey/plugin.cc:78
+#: src/hotkey/plugin.cc:59 src/qthotkey/plugin.cc:77
 msgid "Global Hotkeys"
 msgstr "Global Hotkeys"
 
@@ -2663,7 +2669,7 @@ msgstr "Listas de Reproduções M3U"
 
 #: src/mac-now-playing/MacNowPlaying.mm:28
 msgid "Mac Now Playing"
-msgstr ""
+msgstr "Mac Now Playing"
 
 #: src/mac-now-playing/MacNowPlaying.mm:226
 msgid ""
@@ -2674,6 +2680,12 @@ msgid ""
 "to be controlled through media keys, to show the current album artwork and "
 "to seek the playback."
 msgstr ""
+"Plugin Now Playing para Audacious\n"
+"Copyright 2025 Yves Ndiaye\n"
+"\n"
+"Este plugin implementa a interface Now Playing da Apple. Ele permite "
+"controlar o Audacious por meio das teclas de mídia, exibir a capa do álbum "
+"atual e navegar pela reprodução."
 
 #: src/metronom/metronom.cc:44
 msgid "Tact Generator"
@@ -2836,15 +2848,11 @@ msgstr "Plugin MPG123"
 msgid "Use accurate length calculation (slow)"
 msgstr "Usar cálculo preciso da duração (lento)"
 
-#: src/mpg123/mpg123.cc:260
-msgid "Surround"
-msgstr "Surround"
-
 #: src/mpris2/plugin.cc:43
 msgid "MPRIS 2 Server"
 msgstr "Servidor MPRIS 2"
 
-#: src/mpris2/plugin.cc:362
+#: src/mpris2/plugin.cc:370
 msgid ""
 "MPRIS Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren\n"
@@ -2854,6 +2862,13 @@ msgid ""
 "media controls in desktop environments, Bluetooth headsets and tools like "
 "\"playerctl\"."
 msgstr ""
+"Plugin MPRIS para Audacious\n"
+"Copyright 2011-2012 John Lindgren\n"
+"\n"
+"Este plugin implementa a inteface MPRIS D-Bus. Ele fornece um mecanismo para "
+"consultar informações sobre a faixa e realizar o controle básico de "
+"reprodução. É necessário para controles de mídia em ambientes de desktop, "
+"fones de ouvido Bluetooth e ferramentas como o \"playerctl\"."
 
 #: src/neon/neon.cc:102
 msgid "Neon HTTP/HTTPS Plugin"
@@ -3042,7 +3057,7 @@ msgstr ""
 msgid "PipeWire Output"
 msgstr "Saída PipeWire"
 
-#: src/pipewire/pipewire.cc:132
+#: src/pipewire/pipewire.cc:133
 msgid ""
 "PipeWire Output Plugin for Audacious\n"
 "Copyright 2022 Thomas Lange\n"
@@ -3056,7 +3071,7 @@ msgstr ""
 "Baseado no Plugin de Saída PipeWire para Qmmp\n"
 "Copyright 2021 Ilya Kotov"
 
-#: src/pipewire/pipewire.cc:456 src/sdlout/sdlout.cc:112 src/skins/menus.cc:90
+#: src/pipewire/pipewire.cc:481 src/sdlout/sdlout.cc:112 src/skins/menus.cc:90
 #: src/skins-qt/menus.cc:81
 msgid "Playback"
 msgstr "Reprodução:"
@@ -3064,7 +3079,7 @@ msgstr "Reprodução:"
 #: src/playback-history/playback-history.cc:50
 #: src/playback-history-qt/playback-history.cc:49
 msgid "Playback History"
-msgstr ""
+msgstr "Histórico de Reprodução"
 
 #: src/playback-history/playback-history.cc:218
 #: src/playback-history-qt/playback-history.cc:230
@@ -3074,14 +3089,17 @@ msgid ""
 "<b>Playlist:</b> %s\n"
 "<b>Entry Number:</b> %d"
 msgstr ""
+"<b>%s:</b> %s\n"
+"<b>Lista de Reprodução:</b> %s\n"
+"<b>Número da Entrada:</b> %d"
 
 #: src/playback-history/preferences.h:37
 msgid "<b>History Item Granularity</b>"
-msgstr ""
+msgstr "<b>Granularidades de Itens do Histórico</b>"
 
 #: src/playback-history/preferences.h:38
 msgid "Song"
-msgstr ""
+msgstr "Música"
 
 #: src/playback-history/preferences.h:44
 msgid ""
@@ -3107,6 +3125,28 @@ msgid ""
 "a single album are played in a row, a single album entry\n"
 "is stored in history. Album names are displayed in the list."
 msgstr ""
+"Plugin de Histórico de Reprodução\n"
+"\n"
+"Copyright 2023-2024 Igor Kushnir <igorkuo@gmail.com>\n"
+"\n"
+"Este plugin registra e fornece acesso ao histórico de reprodução.\n"
+"\n"
+"Os itens do histórico são armazenados apenas na memória e são\n"
+"perdidos ao sair do Audacious. Quando o plugin está desativado,\n"
+"o histórico de reprodução não é rastreado. Os itens do histórico\n"
+"são apenas adicionados, nunca removidos automaticamente.\n"
+"Reinicie o Audacious ou desative o plugin fechando a\n"
+"visualização do Histórico de Reprodução para limpar os itens.\n"
+"\n"
+"Há suporte para dois níveis de granularidade (modos) dos itens\n"
+"do histórico. O usuário pode selecionar um modo nas\n"
+"configurações do plugin. O modo Música é o padrão.\n"
+"Cada música reproduzida é armazenada no histórico. Os títulos\n"
+"das músicas são exibidos na lista. Quando o modo Álbum é\n"
+"selecionado e várias músicas de um mesmo álbum são\n"
+"reproduzidas em sequência, apenas um registro do álbum é\n"
+"armazenado no histórico. Os nomes dos álbuns são\n"
+"exibidos na lista."
 
 #: src/playlist-manager/playlist-manager.cc:41
 #: src/playlist-manager-qt/playlist-manager-qt.cc:44
@@ -3235,7 +3275,7 @@ msgstr ""
 msgid "Press a key combination inside a text field."
 msgstr "Pressione uma combinação de teclas dentro de um campo de texto."
 
-#: src/qthotkey/plugin.cc:105
+#: src/qthotkey/plugin.cc:104
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -3572,7 +3612,7 @@ msgstr[0] "%d resultado"
 msgstr[1] "%d resultados"
 msgstr[2] "%d resultados"
 
-#: src/sid/xmms-sid.cc:43
+#: src/sid/xmms-sid.cc:44
 msgid "SID Player"
 msgstr "Decodificador SID"
 
@@ -3716,63 +3756,63 @@ msgstr "16 kHz"
 msgid "Audacious Equalizer"
 msgstr "Equalizador do Audacious"
 
-#: src/skins/main.cc:457 src/skins-qt/main.cc:447
+#: src/skins/main.cc:457 src/skins-qt/main.cc:448
 msgid "Recording on"
 msgstr "Iniciar gravação"
 
-#: src/skins/main.cc:459 src/skins-qt/main.cc:449
+#: src/skins/main.cc:459 src/skins-qt/main.cc:450
 msgid "Recording off"
 msgstr "Encerrar gravação"
 
-#: src/skins/main.cc:752 src/skins-qt/main.cc:730
+#: src/skins/main.cc:752 src/skins-qt/main.cc:731
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Ir para %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/main.cc:769 src/skins-qt/main.cc:747
+#: src/skins/main.cc:769 src/skins-qt/main.cc:748
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Volume: %d%%"
 
-#: src/skins/main.cc:782 src/skins-qt/main.cc:760
+#: src/skins/main.cc:782 src/skins-qt/main.cc:761
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Equilíbrio: %d%% esquerda"
 
-#: src/skins/main.cc:784 src/skins-qt/main.cc:762
+#: src/skins/main.cc:784 src/skins-qt/main.cc:763
 msgid "Balance: center"
 msgstr "Equilíbrio centro"
 
-#: src/skins/main.cc:786 src/skins-qt/main.cc:764
+#: src/skins/main.cc:786 src/skins-qt/main.cc:765
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Equilíbrio: %d%% direita"
 
-#: src/skins/main.cc:878 src/skins-qt/main.cc:856
+#: src/skins/main.cc:878 src/skins-qt/main.cc:857
 msgid "Options Menu"
 msgstr "Menu de Opções"
 
-#: src/skins/main.cc:882 src/skins-qt/main.cc:860
+#: src/skins/main.cc:882 src/skins-qt/main.cc:861
 msgid "Disable 'Always On Top'"
 msgstr "Desativar 'Sempre No Topo'"
 
-#: src/skins/main.cc:884 src/skins-qt/main.cc:862
+#: src/skins/main.cc:884 src/skins-qt/main.cc:863
 msgid "Enable 'Always On Top'"
 msgstr "Ativar 'Sempre No Topo'"
 
-#: src/skins/main.cc:887 src/skins-qt/main.cc:865
+#: src/skins/main.cc:887 src/skins-qt/main.cc:866
 msgid "File Info Box"
 msgstr "Caixa de Informações do Arquivo"
 
-#: src/skins/main.cc:891 src/skins-qt/main.cc:869
+#: src/skins/main.cc:891 src/skins-qt/main.cc:870
 msgid "Disable 'Double Size'"
-msgstr ""
+msgstr "Desativar 'Tamanho Duplo'"
 
-#: src/skins/main.cc:893 src/skins-qt/main.cc:871
+#: src/skins/main.cc:893 src/skins-qt/main.cc:872
 msgid "Enable 'Double Size'"
-msgstr ""
+msgstr "Ativar 'Tamanho Duplo'"
 
-#: src/skins/main.cc:896 src/skins-qt/main.cc:874
+#: src/skins/main.cc:896 src/skins-qt/main.cc:875
 msgid "Visualizations"
 msgstr "Visualizações"
 
@@ -3822,7 +3862,7 @@ msgstr "Sobre ..."
 msgid "Settings ..."
 msgstr "Configurações ..."
 
-#: src/skins/menus.cc:99 src/skins-qt/menus.cc:90 src/skins-qt/view.cc:67
+#: src/skins/menus.cc:99 src/skins-qt/menus.cc:90 src/skins-qt/view.cc:68
 #: src/skins/view.cc:59
 msgid "Quit"
 msgstr "Sair"
@@ -3834,7 +3874,7 @@ msgstr "Informações da Faixa ..."
 
 #: src/skins/menus.cc:105 src/skins-qt/menus.cc:96
 msgid "Playback History ..."
-msgstr ""
+msgstr "Histórico de Reprodução ..."
 
 #: src/skins/menus.cc:110 src/skins-qt/menus.cc:101
 msgid "Shuffle by Album"
@@ -4101,7 +4141,7 @@ msgstr "Adicionar/Remover da Fila de Reprodução"
 msgid "%s (%d of %d)"
 msgstr "%s (%d de %d)"
 
-#: src/skins/playlistwin.cc:490 src/skins-qt/playlistwin.cc:476
+#: src/skins/playlistwin.cc:490 src/skins-qt/playlistwin.cc:440
 msgid "Audacious Playlist Editor"
 msgstr "Editor de lista de reprodução do Audacious"
 
@@ -4117,11 +4157,11 @@ msgstr "Abrir Pasta ..."
 msgid "Add Folder ..."
 msgstr "Adicionar Pasta ..."
 
-#: src/skins-qt/search-select.cc:62 src/skins/search-select.cc:77
+#: src/skins-qt/search-select.cc:63 src/skins/search-select.cc:77
 msgid "Search entries in active playlist"
 msgstr "Procurar entradas na lista de reprodução ativa"
 
-#: src/skins-qt/search-select.cc:70 src/skins/search-select.cc:83
+#: src/skins-qt/search-select.cc:71 src/skins/search-select.cc:84
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -4133,220 +4173,220 @@ msgstr ""
 "minúsculas. Se não sabe o que são expressões regulares, basta inserir uma "
 "parte do que pretende procurar."
 
-#: src/skins-qt/search-select.cc:75 src/skins/search-select.cc:91
+#: src/skins-qt/search-select.cc:76 src/skins/search-select.cc:92
 msgid "Title:"
 msgstr "Título:"
 
-#: src/skins-qt/search-select.cc:79 src/skins/search-select.cc:96
+#: src/skins-qt/search-select.cc:80 src/skins/search-select.cc:97
 msgid "Album:"
 msgstr "Álbum:"
 
-#: src/skins-qt/search-select.cc:82 src/skins/search-select.cc:101
+#: src/skins-qt/search-select.cc:83 src/skins/search-select.cc:102
 msgid "Artist:"
 msgstr "Artista:"
 
-#: src/skins-qt/search-select.cc:85 src/skins/search-select.cc:106
+#: src/skins-qt/search-select.cc:86 src/skins/search-select.cc:107
 msgid "File Name:"
 msgstr "Nome do Arquivo:"
 
-#: src/skins-qt/search-select.cc:88 src/skins/search-select.cc:134
+#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:135
 msgid "Clear previous selection before searching"
 msgstr "Apagar seleção anterior antes de pesquisar"
 
-#: src/skins-qt/search-select.cc:89 src/skins/search-select.cc:137
+#: src/skins-qt/search-select.cc:90 src/skins/search-select.cc:138
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 "Automaticamente habilitar/desabilitar fila para as entradas coincidentes"
 
-#: src/skins-qt/search-select.cc:90 src/skins/search-select.cc:140
+#: src/skins-qt/search-select.cc:91 src/skins/search-select.cc:141
 msgid "Create a new playlist with matching entries"
 msgstr "Criar uma nova lista de reprodução com as entradas correspondentes"
 
-#: src/skins-qt/skins_cfg.cc:194 src/skins/skins_cfg.cc:182
+#: src/skins-qt/skins_cfg.cc:175 src/skins/skins_cfg.cc:182
 msgid "Player:"
 msgstr "Reprodutor:"
 
-#: src/skins-qt/skins_cfg.cc:196 src/skins/skins_cfg.cc:184
+#: src/skins-qt/skins_cfg.cc:177 src/skins/skins_cfg.cc:184
 msgid "Select main player window font:"
 msgstr "Selecionar o tipo de letra do player:"
 
-#: src/skins-qt/skins_cfg.cc:197 src/skins/skins_cfg.cc:185
+#: src/skins-qt/skins_cfg.cc:178 src/skins/skins_cfg.cc:185
 msgid "Playlist:"
 msgstr "Lista de Reprodução:"
 
-#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:187
+#: src/skins-qt/skins_cfg.cc:180 src/skins/skins_cfg.cc:187
 msgid "Select playlist font:"
 msgstr "Selecionar o tipo de letra da lista de reprodução:"
 
-#: src/skins-qt/skins_cfg.cc:203 src/skins/skins_cfg.cc:191
+#: src/skins-qt/skins_cfg.cc:184 src/skins/skins_cfg.cc:191
 msgid "<b>Skin</b>"
 msgstr "<b>Aparência</b>"
 
-#: src/skins-qt/skins_cfg.cc:207 src/skins/skins_cfg.cc:193
+#: src/skins-qt/skins_cfg.cc:186 src/skins/skins_cfg.cc:193
 msgid "Display active titlebar when any window is focused"
 msgstr "Exibir barra de título ativa quando qualquer janela estiver focada"
 
-#: src/skins-qt/skins_cfg.cc:209 src/skins/skins_cfg.cc:195
+#: src/skins-qt/skins_cfg.cc:188 src/skins/skins_cfg.cc:195
 msgid "<b>Fonts</b>"
 msgstr "<b>Fontes</b>"
 
-#: src/skins-qt/skins_cfg.cc:211 src/skins/skins_cfg.cc:197
+#: src/skins-qt/skins_cfg.cc:190 src/skins/skins_cfg.cc:197
 msgid "Use bitmap fonts (supports ASCII only)"
 msgstr "Usar fontes bitmap (suporta somente ASCII)"
 
-#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:199
+#: src/skins-qt/skins_cfg.cc:192 src/skins/skins_cfg.cc:199
 msgid "Scroll song title"
 msgstr "Rolar o título da faixa"
 
-#: src/skins-qt/skins_cfg.cc:215 src/skins/skins_cfg.cc:201
+#: src/skins-qt/skins_cfg.cc:194 src/skins/skins_cfg.cc:201
 msgid "Scroll song title in both directions"
 msgstr "Rolar o título da faixa em ambas as direções"
 
-#: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:206
+#: src/skins-qt/skins_cfg.cc:199 src/skins/skins_cfg.cc:206
 msgid "Analyzer"
 msgstr "Analisador"
 
-#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:207
+#: src/skins-qt/skins_cfg.cc:200 src/skins/skins_cfg.cc:207
 msgid "Scope"
 msgstr "Escopo"
 
-#: src/skins-qt/skins_cfg.cc:222 src/skins/skins_cfg.cc:208
+#: src/skins-qt/skins_cfg.cc:201 src/skins/skins_cfg.cc:208
 msgid "Voiceprint / VU meter"
 msgstr "Gravador de Voz / medidor de VU"
 
-#: src/skins-qt/skins_cfg.cc:223 src/skins/skins_cfg.cc:209
+#: src/skins-qt/skins_cfg.cc:202 src/skins/skins_cfg.cc:209
 msgid "Off"
 msgstr "Desligado"
 
-#: src/skins-qt/skins_cfg.cc:227 src/skins-qt/skins_cfg.cc:252
-#: src/skins-qt/skins_cfg.cc:258 src/skins/skins_cfg.cc:213
+#: src/skins-qt/skins_cfg.cc:206 src/skins-qt/skins_cfg.cc:231
+#: src/skins-qt/skins_cfg.cc:237 src/skins/skins_cfg.cc:213
 #: src/skins/skins_cfg.cc:238 src/skins/skins_cfg.cc:244
 msgid "Normal"
 msgstr "Normal"
 
-#: src/skins-qt/skins_cfg.cc:228 src/skins-qt/skins_cfg.cc:253
+#: src/skins-qt/skins_cfg.cc:207 src/skins-qt/skins_cfg.cc:232
 #: src/skins/skins_cfg.cc:214 src/skins/skins_cfg.cc:239
 msgid "Fire"
 msgstr "Fogo"
 
-#: src/skins-qt/skins_cfg.cc:229 src/skins/skins_cfg.cc:215
+#: src/skins-qt/skins_cfg.cc:208 src/skins/skins_cfg.cc:215
 msgid "Vertical lines"
 msgstr "Linhas Verticais"
 
-#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:219
+#: src/skins-qt/skins_cfg.cc:212 src/skins/skins_cfg.cc:219
 msgid "Lines"
 msgstr "Linhas"
 
-#: src/skins-qt/skins_cfg.cc:234 src/skins/skins_cfg.cc:220
+#: src/skins-qt/skins_cfg.cc:213 src/skins/skins_cfg.cc:220
 msgid "Bars"
 msgstr "Barras"
 
-#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:224
+#: src/skins-qt/skins_cfg.cc:217 src/skins/skins_cfg.cc:224
 msgid "Slowest"
 msgstr "Mais Lento"
 
-#: src/skins-qt/skins_cfg.cc:239 src/skins/skins_cfg.cc:225
+#: src/skins-qt/skins_cfg.cc:218 src/skins/skins_cfg.cc:225
 msgid "Slow"
 msgstr "Lento"
 
-#: src/skins-qt/skins_cfg.cc:240 src/skins/skins_cfg.cc:226
+#: src/skins-qt/skins_cfg.cc:219 src/skins/skins_cfg.cc:226
 #: src/soxr/sox-resampler.cc:180
 msgid "Medium"
 msgstr "Médio"
 
-#: src/skins-qt/skins_cfg.cc:241 src/skins/skins_cfg.cc:227
+#: src/skins-qt/skins_cfg.cc:220 src/skins/skins_cfg.cc:227
 msgid "Fast"
 msgstr "Rápido"
 
-#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:228
+#: src/skins-qt/skins_cfg.cc:221 src/skins/skins_cfg.cc:228
 msgid "Fastest"
 msgstr "Muito Rápido"
 
-#: src/skins-qt/skins_cfg.cc:246 src/skins/skins_cfg.cc:232
+#: src/skins-qt/skins_cfg.cc:225 src/skins/skins_cfg.cc:232
 msgid "Dots"
 msgstr "Dots"
 
-#: src/skins-qt/skins_cfg.cc:247 src/skins/skins_cfg.cc:233
+#: src/skins-qt/skins_cfg.cc:226 src/skins/skins_cfg.cc:233
 msgid "Line"
 msgstr "Linha"
 
-#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:234
+#: src/skins-qt/skins_cfg.cc:227 src/skins/skins_cfg.cc:234
 msgid "Solid"
 msgstr "Solido"
 
-#: src/skins-qt/skins_cfg.cc:254 src/skins/skins_cfg.cc:240
+#: src/skins-qt/skins_cfg.cc:233 src/skins/skins_cfg.cc:240
 msgid "Ice"
 msgstr "Gelo"
 
-#: src/skins-qt/skins_cfg.cc:259 src/skins/skins_cfg.cc:245
+#: src/skins-qt/skins_cfg.cc:238 src/skins/skins_cfg.cc:245
 msgid "Smooth"
 msgstr "Suave"
 
-#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:249
+#: src/skins-qt/skins_cfg.cc:242 src/skins/skins_cfg.cc:249
 msgid "Coloring:"
 msgstr "Coloração:"
 
-#: src/skins-qt/skins_cfg.cc:266 src/skins/skins_cfg.cc:252
+#: src/skins-qt/skins_cfg.cc:245 src/skins/skins_cfg.cc:252
 msgid "Style:"
 msgstr "Estilo:"
 
-#: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:255
+#: src/skins-qt/skins_cfg.cc:248 src/skins/skins_cfg.cc:255
 msgid "Falloff:"
 msgstr "Queda:"
 
-#: src/skins-qt/skins_cfg.cc:272 src/skins/skins_cfg.cc:258
+#: src/skins-qt/skins_cfg.cc:251 src/skins/skins_cfg.cc:258
 msgid "Peak falloff:"
 msgstr "Queda Máxima:"
 
-#: src/skins-qt/skins_cfg.cc:278 src/skins/skins_cfg.cc:264
+#: src/skins-qt/skins_cfg.cc:257 src/skins/skins_cfg.cc:264
 msgid "Scope Style:"
 msgstr "Estilo do Escopo"
 
-#: src/skins-qt/skins_cfg.cc:281 src/skins/skins_cfg.cc:267
+#: src/skins-qt/skins_cfg.cc:260 src/skins/skins_cfg.cc:267
 msgid "Voiceprint Coloring:"
 msgstr "Coloração do Gravador de Voz:"
 
-#: src/skins-qt/skins_cfg.cc:284 src/skins/skins_cfg.cc:270
+#: src/skins-qt/skins_cfg.cc:263 src/skins/skins_cfg.cc:270
 msgid "VU Meter Style:"
 msgstr "Estilo do Medidor de VU"
 
-#: src/skins-qt/skins_cfg.cc:290 src/skins/skins_cfg.cc:276
+#: src/skins-qt/skins_cfg.cc:269 src/skins/skins_cfg.cc:276
 msgid "<b>Type</b>"
 msgstr "<b>Tipo</b>"
 
-#: src/skins-qt/skins_cfg.cc:291 src/skins/skins_cfg.cc:277
+#: src/skins-qt/skins_cfg.cc:270 src/skins/skins_cfg.cc:277
 msgid "Visualization type:"
 msgstr "Tipo de Visualização:"
 
-#: src/skins-qt/skins_cfg.cc:294 src/skins/skins_cfg.cc:280
+#: src/skins-qt/skins_cfg.cc:273 src/skins/skins_cfg.cc:280
 msgid "<b>Analyzer</b>"
 msgstr "<b>Analisador</b>"
 
-#: src/skins-qt/skins_cfg.cc:295 src/skins/skins_cfg.cc:281
+#: src/skins-qt/skins_cfg.cc:274 src/skins/skins_cfg.cc:281
 msgid "Show peaks"
 msgstr "Mostrar picos"
 
-#: src/skins-qt/skins_cfg.cc:304 src/skins/skins_cfg.cc:290
+#: src/skins-qt/skins_cfg.cc:283 src/skins/skins_cfg.cc:290
 msgid "Visualization"
 msgstr "Visualização"
 
-#: src/skins-qt/skinselector.cc:97 src/skins/skinselector.cc:111
+#: src/skins-qt/skinselector.cc:122 src/skins/skinselector.cc:111
 msgid "Archived Winamp 2.x skin"
 msgstr "Tema Winamp 2.x arquivado"
 
-#: src/skins-qt/skinselector.cc:101 src/skins/skinselector.cc:115
+#: src/skins-qt/skinselector.cc:126 src/skins/skinselector.cc:115
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Tema Winamp 2.x não arquivado"
 
-#: src/skins-qt/view.cc:66 src/skins/view.cc:54
+#: src/skins-qt/view.cc:67 src/skins/view.cc:54
 msgid "Restart"
-msgstr ""
+msgstr "Reiniciar"
 
-#: src/skins-qt/view.cc:82 src/skins/view.cc:64
+#: src/skins-qt/view.cc:83 src/skins/view.cc:64
 msgid "Compatibility Issue"
-msgstr ""
+msgstr "Problema de Compatibilidade"
 
-#: src/skins-qt/view.cc:84 src/skins/view.cc:65
+#: src/skins-qt/view.cc:85 src/skins/view.cc:65
 msgid ""
 "The Winamp interface requires windowing system features not supported by "
 "Wayland. Audacious will attempt to enable Xwayland compatibility mode after "
@@ -4355,6 +4395,12 @@ msgid ""
 "With the GTK or Qt interface you may disable this setting again in the "
 "“Advanced” category of the Audacious settings."
 msgstr ""
+"A interface do Winamp requer recursos do sistema de janelas que não são "
+"suportados pelo Wayland. O Audacious tentará ativar o modo de "
+"compatibilidade Xwayland após a reinicialização.\n"
+"\n"
+"Com a interface GTK ou Qt, você pode desativar essa configuração novamente "
+"na categoria “Avançado” nos ajustes do Audacious."
 
 #: src/sndfile/plugin.cc:38
 msgid "Sndfile Plugin"
@@ -4617,7 +4663,7 @@ msgstr ""
 
 #: src/statusicon-qt/statusicon.cc:95 src/statusicon/statusicon.cc:398
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "<b>Ação do Mouse no botão do meio</b>"
+msgstr "<b>Ação da Roda do Mouse</b>"
 
 #: src/statusicon-qt/statusicon.cc:96 src/statusicon/statusicon.cc:399
 msgid "Change volume"
@@ -4629,19 +4675,19 @@ msgstr "Mudar de faixa"
 
 #: src/statusicon-qt/statusicon.cc:102 src/statusicon/statusicon.cc:405
 msgid "<b>Middle Click Action</b>"
-msgstr ""
+msgstr "<b>Ação de Clique na Roda do Mouse</b>"
 
 #: src/statusicon-qt/statusicon.cc:103 src/statusicon/statusicon.cc:406
 msgid "Pause/Resume playback"
-msgstr ""
+msgstr "Pausar/Retomar reprodução"
 
 #: src/statusicon-qt/statusicon.cc:106 src/statusicon/statusicon.cc:409
 msgid "Play next song"
-msgstr ""
+msgstr "Reproduzir próxima música"
 
 #: src/statusicon-qt/statusicon.cc:109 src/statusicon/statusicon.cc:412
 msgid "<b>Other Settings</b>"
-msgstr "<b>Outras Configuraçoes</b>"
+msgstr "<b>Outras Configurações</b>"
 
 #: src/statusicon-qt/statusicon.cc:110 src/statusicon/statusicon.cc:413
 msgid "Disable the popup window"
@@ -4695,7 +4741,7 @@ msgstr ""
 msgid "<b>Extra Stereo</b>"
 msgstr "<b>Stereo Extra</b>"
 
-#: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:131
+#: src/streamtuner/icecast-model.cc:126 src/streamtuner/shoutcast-model.cc:163
 msgid "Type"
 msgstr "Tipo"
 
@@ -4719,119 +4765,119 @@ msgstr "Indicativo"
 msgid "Description"
 msgstr "Descrição"
 
-#: src/streamtuner/shoutcast-model.cc:128
+#: src/streamtuner/shoutcast-model.cc:160
 msgid "Listeners"
 msgstr "Ouvintes"
 
-#: src/streamtuner/shoutcast-model.cc:188
+#: src/streamtuner/shoutcast-model.cc:220
 msgid "Top 500 Stations"
 msgstr "Estações Top 500"
 
-#: src/streamtuner/shoutcast-model.cc:189
+#: src/streamtuner/shoutcast-model.cc:221
 msgid "Alternative"
 msgstr "Alternativa"
 
-#: src/streamtuner/shoutcast-model.cc:190
+#: src/streamtuner/shoutcast-model.cc:222
 msgid "Blues"
 msgstr "Blues"
 
-#: src/streamtuner/shoutcast-model.cc:191
+#: src/streamtuner/shoutcast-model.cc:223
 msgid "Classical"
 msgstr "Clássica"
 
-#: src/streamtuner/shoutcast-model.cc:192
+#: src/streamtuner/shoutcast-model.cc:224
 msgid "Country"
 msgstr "Country"
 
-#: src/streamtuner/shoutcast-model.cc:193
+#: src/streamtuner/shoutcast-model.cc:225
 msgid "Decades"
 msgstr "Décadas"
 
-#: src/streamtuner/shoutcast-model.cc:194
+#: src/streamtuner/shoutcast-model.cc:226
 msgid "Easy Listening"
 msgstr "Easy Listening"
 
-#: src/streamtuner/shoutcast-model.cc:195
+#: src/streamtuner/shoutcast-model.cc:227
 msgid "Electronic"
 msgstr "Eletrônica"
 
-#: src/streamtuner/shoutcast-model.cc:196
+#: src/streamtuner/shoutcast-model.cc:228
 msgid "Folk"
 msgstr "Folk"
 
-#: src/streamtuner/shoutcast-model.cc:197
+#: src/streamtuner/shoutcast-model.cc:229
 msgid "Inspirational"
 msgstr "Inspirada"
 
-#: src/streamtuner/shoutcast-model.cc:198
+#: src/streamtuner/shoutcast-model.cc:230
 msgid "International"
 msgstr "Internacional"
 
-#: src/streamtuner/shoutcast-model.cc:199
+#: src/streamtuner/shoutcast-model.cc:231
 msgid "Jazz"
 msgstr "Jazz"
 
-#: src/streamtuner/shoutcast-model.cc:200
+#: src/streamtuner/shoutcast-model.cc:232
 msgid "Latin"
 msgstr "Latina"
 
-#: src/streamtuner/shoutcast-model.cc:201
+#: src/streamtuner/shoutcast-model.cc:233
 msgid "Metal"
 msgstr "Metal"
 
-#: src/streamtuner/shoutcast-model.cc:203
+#: src/streamtuner/shoutcast-model.cc:235
 msgid "New Age"
 msgstr "New Age"
 
-#: src/streamtuner/shoutcast-model.cc:204
+#: src/streamtuner/shoutcast-model.cc:236
 msgid "Pop"
 msgstr "Pop"
 
-#: src/streamtuner/shoutcast-model.cc:205
+#: src/streamtuner/shoutcast-model.cc:237
 msgid "Public Radio"
 msgstr "Rádio Pública"
 
-#: src/streamtuner/shoutcast-model.cc:206
+#: src/streamtuner/shoutcast-model.cc:238
 msgid "R&B and Urban"
 msgstr "R&B e Urbana"
 
-#: src/streamtuner/shoutcast-model.cc:207
+#: src/streamtuner/shoutcast-model.cc:239
 msgid "Rap"
 msgstr "Rap"
 
-#: src/streamtuner/shoutcast-model.cc:208
+#: src/streamtuner/shoutcast-model.cc:240
 msgid "Reggae"
 msgstr "Reggae"
 
-#: src/streamtuner/shoutcast-model.cc:209
+#: src/streamtuner/shoutcast-model.cc:241
 msgid "Rock"
 msgstr "Rock"
 
-#: src/streamtuner/shoutcast-model.cc:210
+#: src/streamtuner/shoutcast-model.cc:242
 msgid "Seasonal and Holiday"
 msgstr "Sazonais e Férias"
 
-#: src/streamtuner/shoutcast-model.cc:211
+#: src/streamtuner/shoutcast-model.cc:243
 msgid "Soundtracks"
 msgstr "Trilhas Sonoras"
 
-#: src/streamtuner/shoutcast-model.cc:212
+#: src/streamtuner/shoutcast-model.cc:244
 msgid "Talk"
 msgstr "Talk"
 
-#: src/streamtuner/shoutcast-model.cc:213
+#: src/streamtuner/shoutcast-model.cc:245
 msgid "Themes"
 msgstr "Temas"
 
-#: src/streamtuner/streamtuner.cc:59
+#: src/streamtuner/streamtuner.cc:58
 msgid "Shoutcast"
 msgstr "Shoutcast"
 
-#: src/streamtuner/streamtuner.cc:60
+#: src/streamtuner/streamtuner.cc:59
 msgid "Icecast"
 msgstr "Icecast"
 
-#: src/streamtuner/streamtuner.cc:71
+#: src/streamtuner/streamtuner.cc:70
 msgid "Stream Tuner"
 msgstr "Stream Tuner"
 
@@ -5032,7 +5078,7 @@ msgstr "com perdas (híbrido)"
 msgid "lossy"
 msgstr "com perdas"
 
-#: src/wavpack/wavpack.cc:246
+#: src/wavpack/wavpack.cc:249
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
@@ -5077,3 +5123,6 @@ msgstr "Modo de interpolação:"
 #: src/xspf/xspf.cc:90
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Lista de Reprodução Compartilhável XML (XSPF)"
+
+#~ msgid "Surround"
+#~ msgstr "Surround"
