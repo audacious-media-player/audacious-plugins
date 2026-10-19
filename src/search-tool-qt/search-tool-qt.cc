@@ -219,7 +219,7 @@ SearchWidget::SearchWidget () :
     m_stats_label.setAlignment (Qt::AlignCenter);
     m_stats_label.setContentsMargins (audqt::margins.TwoPt);
 
-#ifdef Q_OS_MAC  // Mac-specific font tweaks
+#ifdef Q_OS_DARWIN  // Mac-specific font tweaks
     m_search_entry.setFont (QApplication::font ("QTreeView"));
     m_stats_label.setFont (QApplication::font ("QSmallFont"));
 #endif

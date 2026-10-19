@@ -259,7 +259,7 @@ void StatusIconQt::activate (QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason)
     {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     case QSystemTrayIcon::Trigger:
         toggle_aud_ui ();
         break;

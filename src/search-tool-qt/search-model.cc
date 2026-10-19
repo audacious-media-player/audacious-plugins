@@ -33,7 +33,7 @@ static QString create_item_label (const Item & item)
 
     string += end_tags[item.field];
 
-#ifdef Q_OS_MAC  // Mac-specific font tweaks
+#ifdef Q_OS_DARWIN  // Mac-specific font tweaks
     string += "<br>&nbsp;";
 #else
     string += "<br><small>&nbsp;";
@@ -63,7 +63,7 @@ static QString create_item_label (const Item & item)
         string += end_tags[parent->field];
     }
 
-#ifndef Q_OS_MAC  // Mac-specific font tweaks
+#ifndef Q_OS_DARWIN  // Mac-specific font tweaks
     string += "</small>";
 #endif
 

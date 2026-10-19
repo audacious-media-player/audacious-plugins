@@ -41,7 +41,7 @@ protected:
     void set_scale (int scale) { m_scale = scale; }
     void resize (int w, int h) { QWidget::resize (w * m_scale, h * m_scale); }
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     /* repaint() causes graphical glitches on OS X
      * https://github.com/audacious-media-player/audacious/issues/694 */
     void draw_now () { update (); }

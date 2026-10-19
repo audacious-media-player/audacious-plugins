@@ -143,7 +143,7 @@ private:
                                           Qt::SmoothTransformation));
         }
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
         repaint ();
 #endif
     }
