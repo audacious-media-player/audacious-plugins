@@ -247,7 +247,7 @@ summary({
 summary({
   'AdLib synthesizer (adplug)': get_variable('have_adplug', false),
   'Commodore 64 audio (sid)': get_variable('have_sid', false),
-  'Game Music Emu (spc, nsf, gbs, etc.)': get_option('console'),
+  'Game Music Emu (spc, nsf, gbs, etc.)': get_variable('have_console', false),
   'ModPlug': get_variable('have_modplug', false),
   'OpenMPT': get_variable('have_openmpt', false),
   'Nintendo DS audio (xsf)': get_option('xsf'),
