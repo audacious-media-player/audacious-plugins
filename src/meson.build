@@ -211,7 +211,7 @@ if conf.has('USE_GTK')
     subdir('filebrowser')
   endif
 
-  if get_option('gl-spectrum') and not have_darwin
+  if get_option('gl-spectrum')
     subdir('glspectrum')
   endif
 
