@@ -21,7 +21,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <math.h>
 #include <string.h>
 
 #include <libaudcore/i18n.h>
@@ -116,8 +115,7 @@ bool GLSpectrum::init ()
     }
 #endif
 
-    for (int i = 0; i <= NUM_BANDS; i ++)
-        logscale[i] = powf (256, (float) i / NUM_BANDS) - 0.5f;
+    compute_log_xscale (logscale, NUM_BANDS);
 
     for (int y = 0; y < NUM_BANDS; y ++)
     {
@@ -136,47 +134,17 @@ bool GLSpectrum::init ()
     return true;
 }
 
-/* stolen from the skins plugin */
-/* convert linear frequency graph to logarithmic one */
-static void make_log_graph (const float * freq, float * graph)
-{
-    for (int i = 0; i < NUM_BANDS; i ++)
-    {
-        /* sum up values in freq array between logscale[i] and logscale[i + 1],
-           including fractional parts */
-        int a = ceilf (logscale[i]);
-        int b = floorf (logscale[i + 1]);
-        float sum = 0;
-
-        if (b < a)
-            sum += freq[b] * (logscale[i + 1] - logscale[i]);
-        else
-        {
-            if (a > 0)
-                sum += freq[a - 1] * (a - logscale[i]);
-            for (; a < b; a ++)
-                sum += freq[a];
-            if (b < 256)
-                sum += freq[b] * (logscale[i + 1] - b);
-        }
-
-        /* fudge factor to make the graph have the same overall height as a
-           12-band one no matter how many bands there are */
-        sum *= (float) NUM_BANDS / 12;
-
-        /* convert to dB */
-        float val = 20 * log10f (sum);
-
-        /* scale (-DB_RANGE, 0.0) to (0.0, 1.0) */
-        val = 1 + val / DB_RANGE;
-
-        graph[i] = aud::clamp (val, 0.0f, 1.0f);
-    }
-}
-
 void GLSpectrum::render_freq (const float * freq)
 {
-    make_log_graph (freq, s_bars[s_pos]);
+    float * bars = s_bars[s_pos];
+
+    for (int i = 0; i < NUM_BANDS; i ++)
+    {
+        /* scale (-DB_RANGE, 0.0) to (0.0, 1.0) */
+        float val = 1 + compute_freq_band (freq, logscale, i, NUM_BANDS) / DB_RANGE;
+        bars[i] = aud::clamp (val, 0.0f, 1.0f);
+    }
+
     s_pos = (s_pos + 1) % NUM_BANDS;
 
     s_angle += s_anglespeed;
