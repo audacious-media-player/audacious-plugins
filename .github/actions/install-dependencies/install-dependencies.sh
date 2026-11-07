@@ -19,7 +19,7 @@ fi
 ubuntu_packages='gettext libadplug-dev libasound2-dev libavformat-dev
                  libbinio-dev libbs2b-dev libcddb2-dev libcdio-cdda-dev
                  libcue-dev libcurl4-gnutls-dev libfaad-dev libflac-dev
-                 libfluidsynth-dev libgl1-mesa-dev libjack-jackd2-dev
+                 libfluidsynth-dev libgl1-mesa-dev libgme-dev libjack-jackd2-dev
                  libjson-glib-dev libmms-dev libmodplug-dev libmp3lame-dev
                  libmpg123-dev libneon27-gnutls-dev libnotify-dev libopenmpt-dev
                  libopusfile-dev libpipewire-0.3-dev libpulse-dev
@@ -31,8 +31,9 @@ ubuntu_qt5_packages='libqt5opengl5-dev libqt5svg5-dev libqt5x11extras5-dev
                      qtbase5-dev qtmultimedia5-dev'
 ubuntu_qt6_packages='qt6-base-dev qt6-multimedia-dev qt6-svg-dev'
 
-macos_packages='adplug faad2 ffmpeg libbs2b libcue libmms libmodplug libnotify
-                libopenmpt libsamplerate libsoxr meson neon opusfile sdl3 wavpack'
+macos_packages='adplug faad2 ffmpeg libbs2b libcue libgme libmms libmodplug
+                libnotify libopenmpt libsamplerate libsoxr meson neon opusfile
+                sdl3 wavpack'
 
 case "$os" in
   ubuntu-22.04)
