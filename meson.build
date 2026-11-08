@@ -336,6 +336,7 @@ if conf.has('USE_QT')
     'Stream Tuner (experimental)': get_variable('have_streamtuner', false),
     'VU Meter': get_option('vumeter'),
     'X11 Global Hotkeys': get_variable('have_qthotkey', false),
+    'Waveform': true,
   }, section: 'Qt Support')
 endif
 
