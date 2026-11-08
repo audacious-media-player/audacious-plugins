@@ -106,6 +106,7 @@ src/gtkui/ui_statusbar.cc
 src/hotkey/gui.cc
 src/hotkey/plugin.cc
 src/jack/jack-ng.cc
+src/kirigamiui/kirigamiui.cc
 src/ladspa/plugin.cc
 src/ladspa/plugin.h
 src/lirc/lirc.cc
