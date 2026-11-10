@@ -23,6 +23,17 @@
 
 #define ACTIVE Playlist::active_playlist ()
 
+void repeat_toggled ()
+{
+    aud_set_bool ("repeat_one", false);
+}
+
+void repeat_one_toggled ()
+{
+    if (aud_get_bool ("repeat_one"))
+        aud_set_bool ("repeat", false);
+}
+
 void rm_dupes_title () { ACTIVE.remove_duplicates (Playlist::Title); }
 void rm_dupes_filename () { ACTIVE.remove_duplicates (Playlist::Filename); }
 void rm_dupes_path () { ACTIVE.remove_duplicates (Playlist::Path); }

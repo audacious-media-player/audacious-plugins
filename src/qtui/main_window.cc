@@ -114,6 +114,26 @@ static void toggle_search_tool(bool enable)
     }
 }
 
+// cycle through: no repeat -> repeat playlist -> repeat one song
+static void cycle_repeat()
+{
+    bool repeat = aud_get_bool("repeat");
+    bool repeat_one = aud_get_bool("repeat_one");
+
+    if (!repeat && !repeat_one)
+        aud_set_bool("repeat", true);
+    else if (repeat && !repeat_one)
+    {
+        aud_set_bool("repeat", false);
+        aud_set_bool("repeat_one", true);
+    }
+    else
+    {
+        aud_set_bool("repeat", false);
+        aud_set_bool("repeat_one", false);
+    }
+}
+
 static QToolButton * create_menu_button(QWidget * parent, QMenuBar * menubar)
 {
     auto button = new QToolButton(parent);
@@ -171,14 +191,15 @@ MainWindow::MainWindow()
         ToolBarCustom(slider->label()),
         ToolBarSeparator(),
         ToolBarAction(
-            "media-playlist-repeat", N_("Repeat"), N_("Repeat"),
-            [](bool on) { aud_set_bool("repeat", on); }, &m_repeat_action),
+            "media-playlist-repeat", N_("Repeat"), N_("Repeat"), cycle_repeat,
+            &m_repeat_action),
         ToolBarAction(
             "media-playlist-shuffle", N_("Shuffle"), N_("Shuffle"),
             [](bool on) { aud_set_bool("shuffle", on); }, &m_shuffle_action),
         ToolBarCustom(audqt::volume_button_new(this))};
 
     auto toolbar = new ToolBar(this, items);
+    m_repeat_action->setCheckable(true);
     addToolBar(Qt::TopToolBarArea, toolbar);
     for (auto button : toolbar->findChildren<QToolButton *>())
         button->setFocusPolicy(Qt::TabFocus);
@@ -328,7 +349,13 @@ void MainWindow::update_toggles()
     m_record_action->setVisible(aud_drct_get_record_enabled());
     m_record_action->setChecked(aud_get_bool("record"));
 
-    m_repeat_action->setChecked(aud_get_bool("repeat"));
+    bool repeat = aud_get_bool("repeat");
+    bool repeat_one = aud_get_bool("repeat_one");
+    m_repeat_action->setChecked(repeat || repeat_one);
+    m_repeat_action->setIcon(QIcon::fromTheme(
+        repeat_one ? "media-playlist-repeat-song" : "media-playlist-repeat",
+        QIcon::fromTheme("media-playlist-repeat")));
+    m_repeat_action->setToolTip(repeat_one ? _("Repeat One") : _("Repeat"));
     m_shuffle_action->setChecked(aud_get_bool("shuffle"));
 }
 
