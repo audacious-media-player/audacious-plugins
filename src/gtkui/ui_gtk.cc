@@ -143,6 +143,7 @@ static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
 static bool slider_is_moving = false;
 static int slider_seek_time = -1;
+static bool updating_toggles = false;
 static QueuedFunc delayed_title_change;
 
 static void save_window_size ()
@@ -501,6 +502,25 @@ static void set_button_icon (GtkToolButton * button, const char * icon)
         gtk_tool_button_set_icon_name (button, icon);
 }
 
+static void set_repeat_icon ()
+{
+    if (aud_get_bool ("repeat_one"))
+    {
+        const char * icon = aud_get_bool ("gtkui", "symbolic_icons")
+         ? "media-playlist-repeat-song-symbolic"
+         : "media-playlist-repeat-song";
+
+        if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), icon))
+        {
+            gtk_tool_button_set_icon_name ((GtkToolButton *) button_repeat,
+             icon);
+            return;
+        }
+    }
+
+    set_button_icon ((GtkToolButton *) button_repeat, "media-playlist-repeat");
+}
+
 static void pause_cb ()
 {
     bool paused = aud_drct_get_paused ();
@@ -735,17 +755,43 @@ static void update_toggles (void * = nullptr, void * = nullptr)
 {
     gtk_widget_set_visible ((GtkWidget *) button_record, aud_drct_get_record_enabled ());
 
+    updating_toggles = true;
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_record,
      aud_get_bool ("record"));
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_repeat,
-     aud_get_bool ("repeat"));
+     aud_get_bool ("repeat") || aud_get_bool ("repeat_one"));
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) button_shuffle,
      aud_get_bool ("shuffle"));
+    updating_toggles = false;
+
+    set_repeat_icon ();
+    gtk_tool_item_set_tooltip_text (button_repeat, aud_get_bool ("repeat_one")
+     ? _("Repeat One") : _("Repeat"));
 }
 
-static void toggle_repeat (GtkToggleToolButton * button)
+// cycle through: no repeat -> repeat playlist -> repeat one song
+static void toggle_repeat (GtkToggleToolButton *)
 {
-    aud_set_bool ("repeat", gtk_toggle_tool_button_get_active (button));
+    if (updating_toggles)
+        return;
+
+    bool repeat = aud_get_bool ("repeat");
+    bool repeat_one = aud_get_bool ("repeat_one");
+
+    if (! repeat && ! repeat_one)
+        aud_set_bool ("repeat", true);
+    else if (repeat && ! repeat_one)
+    {
+        aud_set_bool ("repeat", false);
+        aud_set_bool ("repeat_one", true);
+    }
+    else
+    {
+        aud_set_bool ("repeat", false);
+        aud_set_bool ("repeat_one", false);
+    }
+
+    update_toggles ();
 }
 
 static void toggle_shuffle (GtkToggleToolButton * button)
@@ -799,6 +845,7 @@ static void ui_hooks_associate ()
     hook_associate ("set record", update_toggles, nullptr);
     hook_associate ("set shuffle", update_toggles, nullptr);
     hook_associate ("set repeat", update_toggles, nullptr);
+    hook_associate ("set repeat_one", update_toggles, nullptr);
     hook_associate ("set step_size", (HookFunction) update_step_size, nullptr);
     hook_associate ("set volume_delta", (HookFunction) update_volume_delta, nullptr);
     hook_associate ("config save", (HookFunction) config_save, nullptr);
@@ -820,6 +867,7 @@ static void ui_hooks_disassociate ()
     hook_dissociate ("set record", update_toggles);
     hook_dissociate ("set shuffle", update_toggles);
     hook_dissociate ("set repeat", update_toggles);
+    hook_dissociate ("set repeat_one", update_toggles);
     hook_dissociate ("set step_size", (HookFunction) update_step_size);
     hook_dissociate ("set volume_delta", (HookFunction) update_volume_delta);
     hook_dissociate ("config save", (HookFunction) config_save);
@@ -960,8 +1008,9 @@ bool GtkUI::init ()
 
     /* repeat and shuffle buttons */
     button_repeat = toggle_button_new ("media-playlist-repeat", _("Repeat"),
-     toggle_repeat, aud_get_bool ("repeat"));
+     toggle_repeat, aud_get_bool ("repeat") || aud_get_bool ("repeat_one"));
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_repeat, -1);
+    set_repeat_icon ();
     button_shuffle = toggle_button_new ("media-playlist-shuffle", _("Shuffle"),
      toggle_shuffle, aud_get_bool ("shuffle"));
     gtk_toolbar_insert ((GtkToolbar *) toolbar, button_shuffle, -1);
@@ -1287,7 +1336,7 @@ void update_toolbar_icons ()
     set_button_icon ((GtkToolButton *) button_stop, "media-playback-stop");
     set_button_icon ((GtkToolButton *) button_next, "media-skip-forward");
     set_button_icon ((GtkToolButton *) button_record, "media-record");
-    set_button_icon ((GtkToolButton *) button_repeat, "media-playlist-repeat");
+    set_repeat_icon ();
     set_button_icon ((GtkToolButton *) button_shuffle, "media-playlist-shuffle");
 
 #ifdef USE_GTK3
