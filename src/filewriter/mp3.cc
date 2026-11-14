@@ -178,28 +178,27 @@ static bool mp3_open (VFSFile & file, const format_info & info, const Tuple & tu
 static void mp3_write (VFSFile & file, const void * data, int length)
 {
     int encoded;
+    int nsamples = length / ((channels == 1 ? 1 : 2) * sizeof (float));
 
-    if (! write_buffer.len ())
-        write_buffer.resize (8192);
+    /* LAME may consume part of the input before failing with
+     * LAME_MP3BUFFER_TOOSMALL, so the call cannot be retried with the same
+     * data.  Allocate the worst-case size documented in lame.h up front. */
+    int needed = nsamples * 5 / 4 + 7200;
+    if (write_buffer.len () < needed)
+        write_buffer.resize (needed);
 
-    while (1)
-    {
-        if (channels == 1)
-            encoded = lame_encode_buffer_ieee_float (gfp, (const float *) data,
-             (const float *) data, length / sizeof (float),
-             write_buffer.begin (), write_buffer.len ());
-        else
-            encoded = lame_encode_buffer_interleaved_ieee_float (gfp,
-             (const float *) data, length / (2 * sizeof (float)),
-             write_buffer.begin (), write_buffer.len ());
+    if (channels == 1)
+        encoded = lame_encode_buffer_ieee_float (gfp, (const float *) data,
+         (const float *) data, nsamples,
+         write_buffer.begin (), write_buffer.len ());
+    else
+        encoded = lame_encode_buffer_interleaved_ieee_float (gfp,
+         (const float *) data, nsamples,
+         write_buffer.begin (), write_buffer.len ());
 
-        if (encoded != -1)
-            break;
-
-        write_buffer.resize (write_buffer.len () * 2);
-    }
-
-    if (encoded > 0 && file.fwrite (write_buffer.begin (), 1, encoded) != encoded)
+    if (encoded < 0)
+        AUDERR ("lame encoding error %d\n", encoded);
+    else if (encoded > 0 && file.fwrite (write_buffer.begin (), 1, encoded) != encoded)
         AUDERR ("write error\n");
 
     numsamples += length / (2 * channels);
