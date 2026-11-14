@@ -8,19 +8,21 @@
 
 #include <cstring>
 #include <math.h>
+#include <vector>
+#include <zlib.h>
+
+#include <gme/gme.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
 
 #include "configure.h"
 #include "plugin.h"
-#include "Music_Emu.h"
-#include "Gzip_Reader.h"
 
 static const int fade_threshold = 10 * 1000;
 static const int fade_length    = 8 * 1000;
 
-static bool log_err(blargg_err_t err)
+static bool log_err(gme_err_t err)
 {
     if (err)
         AUDERR("%s\n", err);
@@ -29,42 +31,87 @@ static bool log_err(blargg_err_t err)
 
 static void log_warning(Music_Emu * emu)
 {
-    const char *str = emu->warning();
+    const char *str = gme_warning(emu);
     if (str)
         AUDWARN("%s\n", str);
 }
 
-/* Handles URL parsing, file opening and identification, and file
- * loading. Keeps file header around when loading rest of file to
- * avoid seeking and re-reading.
- */
+/* Gzip-compressed formats such as VGZ are inflated here. libgme's
+ * in-memory loader does not decompress the file itself. */
+static bool inflate_gzip(Index<char> &data)
+{
+    if (data.len() < 2)
+        return true;
+
+    const unsigned char *header = (const unsigned char *)data.begin();
+    if (header[0] != 0x1f || header[1] != 0x8b)
+        return true;
+
+    z_stream strm;
+    std::memset(&strm, 0, sizeof strm);
+    if (inflateInit2(&strm, 16 + MAX_WBITS) != Z_OK)
+        return false;
+
+    if (data.len() > (int)UINT_MAX)
+    {
+        inflateEnd(&strm);
+        return false;
+    }
+
+    std::vector<unsigned char> out(data.len() * 4 + 64);
+    strm.next_in = (Bytef *)data.begin();
+    strm.avail_in = (uInt)data.len();
+
+    int ret;
+    do
+    {
+        if (strm.total_out >= out.size())
+            out.resize(out.size() * 2);
+
+        strm.next_out = out.data() + strm.total_out;
+        strm.avail_out = (uInt)(out.size() - strm.total_out);
+        ret = inflate(&strm, Z_NO_FLUSH);
+    }
+    while (ret == Z_OK);
+
+    unsigned long size = strm.total_out;
+    inflateEnd(&strm);
+
+    if (ret != Z_STREAM_END || size > (unsigned long)INT_MAX)
+        return false;
+
+    Index<char> inflated;
+    inflated.insert((const char *)out.data(), 0, (int)size);
+    data = std::move(inflated);
+    return true;
+}
+
+/* Handles URL parsing, file opening and identification, and file loading. */
 class ConsoleFileHandler {
 public:
     String m_path;            // path without track number specification
     int m_track;             // track number (0 = first track)
-    Music_Emu* m_emu;         // set to 0 to take ownership
+    Music_Emu * m_emu;
     gme_type_t m_type;
 
     // Parses path and identifies file type
-    ConsoleFileHandler(const char* path, VFSFile &fd);
+    ConsoleFileHandler(const char * path, VFSFile &fd);
 
     // Creates emulator and returns 0. If this wasn't a music file or
     // emulator couldn't be created, returns 1.
     int load(int sample_rate);
 
-    // Deletes owned emu and closes file
+    // Deletes owned emu
     ~ConsoleFileHandler();
 
 private:
-    char m_header[4];
-    Vfs_File_Reader vfs_in;
-    Gzip_Reader gzip_in;
+    Index<char> m_data;
 };
 
 ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile &fd)
 {
     m_emu   = nullptr;
-    m_type  = 0;
+    m_type  = nullptr;
     m_track = -1;
 
     const char * sub;
@@ -73,23 +120,25 @@ ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile &fd)
 
     m_track -= 1;
 
-    // open vfs
-    vfs_in.reset(fd);
+    m_data = fd.read_all();
+    if (!inflate_gzip(m_data))
+    {
+        log_err("Corrupt gzip file");
+        m_data.clear();
+        return;
+    }
 
-    // now open gzip_reader on top of vfs
-    if (log_err(gzip_in.open(&vfs_in)))
+    if (m_data.len() < 4)
         return;
 
-    // read and identify header
-    if (!log_err(gzip_in.read(m_header, sizeof(m_header))))
+    char header[4];
+    std::memcpy(header, m_data.begin(), sizeof header);
+    m_type = gme_identify_extension(gme_identify_header(header));
+    if (!m_type)
     {
-        m_type = gme_identify_extension(gme_identify_header(m_header));
-        if (!m_type)
-        {
-            m_type = gme_identify_extension(m_path);
-            if (m_type != gme_gym_type) // only trust file extension for headerless .gym files
-                m_type = 0;
-        }
+        m_type = gme_identify_extension(m_path);
+        if (m_type != gme_gym_type) // only trust file extension for headerless .gym files
+            m_type = nullptr;
     }
 }
 
@@ -110,15 +159,10 @@ int ConsoleFileHandler::load(int sample_rate)
         return 1;
     }
 
-    // combine header with remaining file data
-    Remaining_Reader reader(m_header, sizeof(m_header), &gzip_in);
-    if (log_err(m_emu->load(reader)))
+    if (log_err(gme_load_data(m_emu, m_data.begin(), m_data.len())))
         return 1;
 
-    // files can be closed now
-    gzip_in.close();
-    vfs_in.close();
-
+    m_data.clear();
     log_warning(m_emu);
 
     // load companion .m3u or .m3u8 from same directory
@@ -134,10 +178,11 @@ int ConsoleFileHandler::load(int sample_rate)
 
     if (VFSFile::test_file(m3u_path, VFS_EXISTS))
     {
-        Vfs_File_Reader m3u;
-        if (!m3u.open(m3u_path))
+        VFSFile m3u(m3u_path, "r");
+        if (m3u)
         {
-            if (log_err(m_emu->load_m3u(m3u)))
+            Index<char> text = m3u.read_all();
+            if (text.len() > 0 && log_err(gme_load_m3u_data(m_emu, text.begin(), text.len())))
                 log_warning(m_emu);
         }
     }
@@ -145,7 +190,7 @@ int ConsoleFileHandler::load(int sample_rate)
     return 0;
 }
 
-static int get_track_length(const track_info_t &info)
+static int get_track_length(const gme_info_t &info)
 {
     int length = info.length;
     if (length <= 0)
@@ -169,39 +214,41 @@ bool ConsolePlugin::read_tag(const char *filename, VFSFile &file, Tuple &tuple, 
     if (fh.load(gme_info_only))
         return false;
 
-    track_info_t info;
-    if (log_err(fh.m_emu->track_info(&info, fh.m_track < 0 ? 0 : fh.m_track)))
+    int track = fh.m_track < 0 ? 0 : fh.m_track;
+    gme_info_t *info = nullptr;
+    if (log_err(gme_track_info(fh.m_emu, &info, track)))
         return false;
 
     auto set_str = [&tuple](Tuple::Field f, const char *s)
         { if (s[0]) tuple.set_str(f, s); };
 
-    set_str(Tuple::Artist, info.author);
-    set_str(Tuple::Album, info.game);
-    set_str(Tuple::Title, info.song);
-    set_str(Tuple::Copyright, info.copyright);
-    set_str(Tuple::Codec, info.system);
-    set_str(Tuple::Comment, info.comment);
+    set_str(Tuple::Artist, info->author);
+    set_str(Tuple::Album, info->game);
+    set_str(Tuple::Title, info->song);
+    set_str(Tuple::Copyright, info->copyright);
+    set_str(Tuple::Codec, info->system);
+    set_str(Tuple::Comment, info->comment);
 
+    int track_count = gme_track_count(fh.m_emu);
     if (fh.m_track >= 0)
     {
         tuple.set_int(Tuple::Track, fh.m_track + 1);
         tuple.set_int(Tuple::Subtune, fh.m_track + 1);
-        tuple.set_int(Tuple::NumSubtunes, info.track_count);
+        tuple.set_int(Tuple::NumSubtunes, track_count);
     }
     else
-        tuple.set_subtunes(info.track_count, nullptr);
+        tuple.set_subtunes(track_count, nullptr);
 
-    tuple.set_int (Tuple::Length, get_track_length (info));
+    tuple.set_int (Tuple::Length, get_track_length (*info));
     tuple.set_int (Tuple::Channels, 2);
 
+    gme_free_info(info);
     return true;
 }
 
 bool ConsolePlugin::play(const char *filename, VFSFile &file)
 {
     int length, sample_rate;
-    track_info_t info;
 
     // identify file
     ConsoleFileHandler fh(filename, file);
@@ -230,7 +277,7 @@ bool ConsolePlugin::play(const char *filename, VFSFile &file)
     // set equalizer
     if (audcfg.treble || audcfg.bass)
     {
-        Music_Emu::equalizer_t eq;
+        gme_equalizer_t eq = {};
 
         // bass - logarithmic, 2 to 8194 Hz
         double bass = 1.0 - (audcfg.bass / 200.0 + 0.5);
@@ -240,51 +287,54 @@ bool ConsolePlugin::play(const char *filename, VFSFile &file)
         double treble = audcfg.treble / 100.0;
         eq.treble = treble * (treble < 0 ? 50.0 : 5.0);
 
-        fh.m_emu->set_equalizer(eq);
+        gme_set_equalizer(fh.m_emu, &eq);
     }
 
     // get info
     length = -1;
-    if (!log_err(fh.m_emu->track_info(&info, fh.m_track)))
+    gme_info_t *info = nullptr;
+    if (!log_err(gme_track_info(fh.m_emu, &info, fh.m_track)))
     {
         if (fh.m_type == gme_spc_type && audcfg.ignore_spc_length)
-            info.length = -1;
+            info->length = -1;
 
-        length = get_track_length(info);
-        set_stream_bitrate(fh.m_emu->voice_count() * 1000);
+        length = get_track_length(*info);
+        set_stream_bitrate(gme_voice_count(fh.m_emu) * 1000);
+        gme_free_info(info);
     }
 
     // start track
-    if (log_err(fh.m_emu->start_track(fh.m_track)))
+    if (log_err(gme_start_track(fh.m_emu, fh.m_track)))
         return false;
 
     log_warning(fh.m_emu);
 
     open_audio(FMT_S16_NE, sample_rate, 2);
 
-    // set fade time
+    // set fade time. libgme fades over 8000 ms, matching fade_length.
     if (length <= 0)
         length = audcfg.loop_length * 1000;
     if (length >= fade_threshold + fade_length)
         length -= fade_length / 2;
-    fh.m_emu->set_fade(length, fade_length);
+    gme_set_fade(fh.m_emu, length);
 
     while (!check_stop())
     {
         /* Perform seek, if requested */
         int seek_value = check_seek();
         if (seek_value >= 0)
-            fh.m_emu->seek(seek_value);
+            log_err(gme_seek(fh.m_emu, seek_value));
 
         /* Fill and play buffer of audio */
         int const buf_size = 1024;
-        Music_Emu::sample_t buf[buf_size];
+        short buf[buf_size];
 
-        fh.m_emu->play(buf_size, buf);
+        if (log_err(gme_play(fh.m_emu, buf_size, buf)))
+            break;
 
-        write_audio(buf, sizeof(buf));
+        write_audio(buf, sizeof buf);
 
-        if (fh.m_emu->track_ended())
+        if (gme_track_ended(fh.m_emu))
             break;
     }
 

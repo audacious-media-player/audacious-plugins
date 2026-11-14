@@ -12,11 +12,12 @@
 EXPORT ConsolePlugin aud_plugin_instance;
 
 const char ConsolePlugin::about[] =
- N_("Console music decoder engine based on Game_Music_Emu 0.5.2\n"
+ N_("Console music decoder engine based on Game_Music_Emu\n"
     "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n\n"
     "Audacious plugin by:\n"
     "William Pitcock <nenolod@dereferenced.org>\n"
-    "Shay Green <gblargg@gmail.com>");
+    "Shay Green <gblargg@gmail.com>\n"
+    "Cristiano Fraga G. Nunes <cfgnunes@gmail.com>");
 
 const char * const ConsolePlugin::exts[] = {
     "ay", "gbs", "gym",
