@@ -56,11 +56,11 @@ support for this: http://www.smspower.org/forums/viewtopic.php?t=9321
 
 Source code notes
 -----------------
-Game_Music_Emu library configuration is in blargg_config.h. See
-gme_readme.txt and gme.txt for library documentation.
+The plugin links the external libgme library and uses its C API
+(gme/gme.h). See the Game_Music_Emu documentation for library details.
 
-* See TODO comments in Audacious_Config.cxx and Audacious_Driver.cxx for
-things which would be good to address.
+* See TODO comments in Audacious_Driver.cc for things which would be
+good to address.
 
 * C++ exceptions and RTTI are not used or needed.
 
