@@ -95,8 +95,7 @@ public:
 
     void run () override
         { gtk_main (); }
-    void quit () override
-        { gtk_main_quit (); }
+    void quit () override;
 
     void show_about_window () override
         { audgui_show_about_window (); }
@@ -229,6 +228,22 @@ static void title_change ()
         str_append_printf (title, " (%d)", instance);
 
     gtk_window_set_title ((GtkWindow *) window, title);
+}
+
+void GtkUI::quit ()
+{
+#ifdef USE_GTK3
+    /* Workaround for GTK issue #8554:
+     * Avoid a GTK 3 Wayland deadlock in gdk_flush() by using a
+     * lower event priority than our mainloop from libaudcore,
+     * making 'pkill audacious' and 'audtool shutdown' work. */
+    g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, [] (void *) -> gboolean {
+        gtk_main_quit ();
+        return G_SOURCE_REMOVE;
+    }, nullptr, nullptr);
+#else
+    gtk_main_quit ();
+#endif
 }
 
 void GtkUI::show (bool show)
