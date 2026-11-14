@@ -8,8 +8,6 @@
 
 #include <cstring>
 #include <math.h>
-#include <vector>
-#include <zlib.h>
 
 #include <gme/gme.h>
 
@@ -34,56 +32,6 @@ static void log_warning(Music_Emu * emu)
     const char *str = gme_warning(emu);
     if (str)
         AUDWARN("%s\n", str);
-}
-
-/* Gzip-compressed formats such as VGZ are inflated here. libgme's
- * in-memory loader does not decompress the file itself. */
-static bool inflate_gzip(Index<char> &data)
-{
-    if (data.len() < 2)
-        return true;
-
-    const unsigned char *header = (const unsigned char *)data.begin();
-    if (header[0] != 0x1f || header[1] != 0x8b)
-        return true;
-
-    z_stream strm;
-    std::memset(&strm, 0, sizeof strm);
-    if (inflateInit2(&strm, 16 + MAX_WBITS) != Z_OK)
-        return false;
-
-    if (data.len() > (int)UINT_MAX)
-    {
-        inflateEnd(&strm);
-        return false;
-    }
-
-    std::vector<unsigned char> out(data.len() * 4 + 64);
-    strm.next_in = (Bytef *)data.begin();
-    strm.avail_in = (uInt)data.len();
-
-    int ret;
-    do
-    {
-        if (strm.total_out >= out.size())
-            out.resize(out.size() * 2);
-
-        strm.next_out = out.data() + strm.total_out;
-        strm.avail_out = (uInt)(out.size() - strm.total_out);
-        ret = inflate(&strm, Z_NO_FLUSH);
-    }
-    while (ret == Z_OK);
-
-    unsigned long size = strm.total_out;
-    inflateEnd(&strm);
-
-    if (ret != Z_STREAM_END || size > (unsigned long)INT_MAX)
-        return false;
-
-    Index<char> inflated;
-    inflated.insert((const char *)out.data(), 0, (int)size);
-    data = std::move(inflated);
-    return true;
 }
 
 /* Handles URL parsing, file opening and identification, and file loading. */
@@ -121,12 +69,6 @@ ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile &fd)
     m_track -= 1;
 
     m_data = fd.read_all();
-    if (!inflate_gzip(m_data))
-    {
-        log_err("Corrupt gzip file");
-        m_data.clear();
-        return;
-    }
 
     if (m_data.len() < 4)
         return;
