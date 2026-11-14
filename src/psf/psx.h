@@ -347,6 +347,6 @@ void program_write_byte_32le(offs_t address, uint8_t data);
 void program_write_word_32le(offs_t address, uint16_t data);
 void program_write_dword_32le(offs_t address, uint32_t data);
 
-void psx_iop_call(uint32_t pc, uint32_t callnum);
+uint32_t psx_iop_call(uint32_t pc, uint32_t callnum);
 
 #endif
