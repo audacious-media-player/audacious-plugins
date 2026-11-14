@@ -18,15 +18,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <math.h>
 #include <string.h>
 
-#include <QWidget>
 #include <QPainter>
+#include <QWidget>
 
-#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudqt/libaudqt.h>
 
@@ -74,20 +71,24 @@ void SpectrumWidget::paint_background (QPainter & p)
 
 void SpectrumWidget::paint_spectrum (QPainter & p)
 {
-    for (int i = 0; i < bands; i++)
-    {
-        int x = ((width () / bands) * i) + 2;
-        auto color = audqt::vis_bar_color (palette ().color (QPalette::Highlight), i, bands);
+    int width = this->width ();
+    int height = this->height ();
+    auto & hue = palette ().color (QPalette::Highlight);
 
-        p.fillRect (x + 1, height () - (bars[i] * height () / 40),
-         (width () / bands) - 1, (bars[i] * height () / 40), color);
+    for (int i = 0; i < bands; i ++)
+    {
+        int x = ((width / bands) * i) + 2;
+        auto color = audqt::vis_bar_color (hue, i, bands);
+
+        p.fillRect (x + 1, height - (bars[i] * height / 40),
+         (width / bands) - 1, (bars[i] * height / 40), color);
     }
 }
 
 void SpectrumWidget::resizeEvent (QResizeEvent * event)
 {
     bands = width () / 10;
-    bands = aud::clamp(bands, 12, MAX_BANDS);
+    bands = aud::clamp (bands, 12, MAX_BANDS);
     Visualizer::compute_log_xscale (xscale, bands);
     update ();
 }
@@ -135,7 +136,7 @@ void QtSpectrum::render_freq (const float * freq)
         bars[i] -= aud::max (0, VIS_FALLOFF - delay[i]);
 
         if (delay[i])
-            delay[i]--;
+            delay[i] --;
 
         if (x > bars[i])
         {
@@ -159,9 +160,8 @@ void QtSpectrum::clear ()
 
 void * QtSpectrum::get_qt_widget ()
 {
-    if (spect_widget)
-        return spect_widget;
+    if (! spect_widget)
+        spect_widget = new SpectrumWidget ();
 
-    spect_widget = new SpectrumWidget ();
     return spect_widget;
 }
