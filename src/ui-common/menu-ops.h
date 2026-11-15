@@ -94,6 +94,10 @@ void pl_paste_end ();
 void pl_song_info ();
 void pl_open_folder ();
 
+// repeat modes
+void repeat_toggled ();
+void repeat_one_toggled ();
+
 // A-B repeat
 void set_ab_repeat_a ();
 void set_ab_repeat_b ();

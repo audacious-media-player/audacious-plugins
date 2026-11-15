@@ -123,7 +123,8 @@ private:
         hook16{"qtui show playback history", this,
                &MainWindow::show_playback_history},
         hook17{"qtui show playlist manager", this,
-               &MainWindow::show_playlist_manager};
+               &MainWindow::show_playlist_manager},
+        hook18{"set repeat_one", this, &MainWindow::update_toggles};
 };
 
 #endif
