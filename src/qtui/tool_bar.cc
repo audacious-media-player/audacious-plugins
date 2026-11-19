@@ -45,9 +45,10 @@ ToolBar::ToolBar(QWidget * parent, ArrayRef<ToolBarItem> items)
             a = addWidget(item.widget);
         else if (item.sep)
             a = addSeparator();
-        else if (item.icon_name)
+        else if (item.icon_name || item.name)
         {
-            a = new QAction(QIcon::fromTheme(item.icon_name),
+            a = new QAction(item.icon_name ? QIcon::fromTheme(item.icon_name)
+                                           : QIcon(),
                             audqt::translate_str(item.name), this);
 
             if (item.tooltip_text)
