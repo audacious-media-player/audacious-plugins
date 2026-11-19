@@ -199,3 +199,5 @@ option('spectrum-analyzer', type: 'boolean', value: true,
        description: 'Whether the Spectrum Analyzer (2D) plugin is enabled')
 option('vumeter', type: 'boolean', value: true,
        description: 'Whether the VU Meter visualization plugin is enabled')
+option('waveform', type: 'boolean', value: true,
+       description: 'Whether the Waveform visualization plugin is enabled')
