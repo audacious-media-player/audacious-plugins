@@ -71,6 +71,8 @@ static const PreferencesWidget widgets[] = {
         {{remote_sources}}),
     WidgetCheck (N_("Store fetched lyrics in local cache"),
         WidgetBool (CFG_SECTION, "enable-cache")),
+    WidgetCheck(N_("Enable lyric synchronization"),                
+        WidgetBool("lyricwiki", "sync_lyrics")),
     WidgetLabel (N_("<b>Local Storage</b>")),
     WidgetCheck (N_("Load lyric files (.lrc) from local storage"),
         WidgetBool (CFG_SECTION, "enable-file-provider"))
