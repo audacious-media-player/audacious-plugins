@@ -97,7 +97,7 @@ QMimeData * SearchModel::mimeData (const QModelIndexList & indexes) const
 
         for (int entry : m_items[row]->matches)
         {
-            urls.append (QString (m_playlist.entry_filename (entry)));
+            urls.append (QUrl (QString (m_playlist.entry_filename (entry))));
             m_playlist.select_entry (entry, true);
         }
     }

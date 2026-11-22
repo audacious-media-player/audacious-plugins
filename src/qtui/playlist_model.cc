@@ -242,7 +242,7 @@ QMimeData * PlaylistModel::mimeData(const QModelIndexList & indexes) const
         int row = index.row();
         if (row != prev) /* skip multiple cells in same row */
         {
-            urls.append(QString(m_playlist.entry_filename(row)));
+            urls.append(QUrl(QString(m_playlist.entry_filename(row))));
             prev = row;
         }
     }

@@ -48,7 +48,7 @@ void pl_copy ()
     for (int i = 0; i < entries; i ++)
     {
         if (list.entry_selected (i))
-            urls.append (QString (list.entry_filename (i)));
+            urls.append (QUrl (QString (list.entry_filename (i))));
     }
 
     auto data = new QMimeData;
@@ -116,5 +116,5 @@ void pl_open_folder ()
         return;
     }
 
-    QDesktopServices::openUrl (QString (folder));
+    QDesktopServices::openUrl (QUrl (QString (folder)));
 }
