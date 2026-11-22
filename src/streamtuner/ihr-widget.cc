@@ -30,9 +30,7 @@ IHRListingWidget::IHRListingWidget (QWidget * parent) :
     setModel (m_model);
     setRootIsDecorated (false);
 
-    connect (this, & QTreeView::activated, [this] (const QModelIndex & index) {
-        activate (index);
-    });
+    connect (this, & QTreeView::activated, this, & IHRListingWidget::activate);
 }
 
 void IHRListingWidget::activate (const QModelIndex & index)
@@ -43,9 +41,9 @@ void IHRListingWidget::activate (const QModelIndex & index)
     Playlist::temporary_playlist ().activate ();
     auto entry = m_model->station_for_idx (index);
 
-    AUDINFO ("Play radio entry %s [%s].\n", (const char *) entry.title.toLocal8Bit (), (const char *) entry.stream_uri.toLocal8Bit ());
+    AUDINFO ("Play radio entry %s [%s].\n", entry.title.toLocal8Bit ().constData (), entry.stream_uri.toLocal8Bit ().constData ());
 
-    Playlist::temporary_playlist ().insert_entry (-1, entry.stream_uri.toUtf8 (), Tuple (), true);
+    Playlist::temporary_playlist ().insert_entry (-1, entry.stream_uri.toUtf8 ().constData (), Tuple (), true);
 }
 
 IHRMarketWidget::IHRMarketWidget (QWidget * parent) :
@@ -74,7 +72,7 @@ IHRTunerWidget::IHRTunerWidget (QWidget * parent) :
     m_layout->addWidget (m_splitter);
 
     auto market_selection_model = m_markets->selectionModel ();
-    connect(market_selection_model, &QItemSelectionModel::selectionChanged, [&] (const QItemSelection &selected, const QItemSelection &) {
+    connect(market_selection_model, &QItemSelectionModel::selectionChanged, this, [&] (const QItemSelection &selected, const QItemSelection &) {
         // this should never happen, but just to be sure...
         if (! selected.indexes ().length ())
             return;

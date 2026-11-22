@@ -218,7 +218,7 @@ PrefWidget::PrefWidget(QWidget * parent)
     main_widget_layout->addWidget(group_box);
     main_widget_layout->addLayout(add_button_layout);
 
-    QObject::connect(add_button, &QPushButton::clicked,
+    QObject::connect(add_button, &QPushButton::clicked, this,
                      [this]() { add_event_control(nullptr); });
 
     last_instance = this;
@@ -294,10 +294,11 @@ void PrefWidget::add_event_control(const HotkeyConfiguration * hotkey)
     group_box_layout->addWidget(control->keytext, row, 1);
     group_box_layout->addWidget(control->button, row, 2);
 
-    QObject::connect(control->button, &QToolButton::clicked, [this, control]() {
-        controls_list.removeAll(control);
-        delete control;
-    });
+    QObject::connect(control->button, &QToolButton::clicked, this,
+                     [this, control]() {
+                         controls_list.removeAll(control);
+                         delete control;
+                     });
 }
 
 QList<HotkeyConfiguration> PrefWidget::getConfig() const

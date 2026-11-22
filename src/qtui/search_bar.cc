@@ -59,17 +59,18 @@ SearchBar::SearchBar(QWidget * parent, PlaylistWidget * playlistWidget)
 
     setFocusProxy(m_entry);
 
-    connect(m_entry, &QLineEdit::textChanged, [this](const QString & text) {
-        m_playlistWidget->setFilter(text.toUtf8());
-    });
+    connect(m_entry, &QLineEdit::textChanged, this,
+            [this](const QString & text) {
+                m_playlistWidget->setFilter(text.toUtf8().constData());
+            });
 
-    connect(upButton, &QPushButton::clicked,
+    connect(upButton, &QPushButton::clicked, this,
             [this](bool) { m_playlistWidget->moveFocus(-1); });
 
-    connect(downButton, &QPushButton::clicked,
+    connect(downButton, &QPushButton::clicked, this,
             [this](bool) { m_playlistWidget->moveFocus(1); });
 
-    connect(closeButton, &QPushButton::clicked, [this](bool) {
+    connect(closeButton, &QPushButton::clicked, this, [this](bool) {
         m_entry->clear();
         m_playlistWidget->setFocus();
         hide();

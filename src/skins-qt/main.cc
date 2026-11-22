@@ -601,7 +601,7 @@ void MainWindow::dropEvent (QDropEvent * event)
             }
         }
 
-        files.append (String (url.toEncoded ()));
+        files.append (String (url.toEncoded ().constData ()));
     }
 
     if (files.len ())

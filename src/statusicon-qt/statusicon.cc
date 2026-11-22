@@ -202,7 +202,7 @@ bool StatusIconQt::init ()
     audqt::init ();
 
     tray = new SystemTrayIcon (qApp->windowIcon ());
-    QObject::connect (tray, & QSystemTrayIcon::activated, activate);
+    QObject::connect (tray, & QSystemTrayIcon::activated, tray, activate);
     menu = audqt::menu_build (items);
     tray->setContextMenu (menu);
     tray->show ();

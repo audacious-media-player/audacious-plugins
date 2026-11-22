@@ -70,11 +70,11 @@ void view_show_player (bool show)
             restart->setIcon (QIcon::fromTheme ("view-refresh"));
             quit->setIcon (QIcon::fromTheme ("application-exit"));
 
-            QObject::connect (restart, & QPushButton::clicked, [] () {
+            QObject::connect (restart, & QPushButton::clicked, restart, [] () {
                 aud_set_bool ("use_xwayland", true);
                 aud_request_restart ();
             });
-            QObject::connect (quit, & QPushButton::clicked, [] () {
+            QObject::connect (quit, & QPushButton::clicked, quit, [] () {
                 aud_set_bool ("use_xwayland", true);
                 aud_quit ();
             });

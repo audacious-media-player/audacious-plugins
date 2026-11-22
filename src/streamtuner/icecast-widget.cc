@@ -18,9 +18,8 @@ IcecastListingWidget::IcecastListingWidget (QWidget * parent) :
     setModel (m_model);
     setRootIsDecorated (false);
 
-    connect (this, & QTreeView::activated, [this] (const QModelIndex & index) {
-        activate (index);
-    });
+    connect (this, & QTreeView::activated,
+     this, & IcecastListingWidget::activate);
 }
 
 void IcecastListingWidget::activate (const QModelIndex & index)
@@ -31,7 +30,7 @@ void IcecastListingWidget::activate (const QModelIndex & index)
     Playlist::temporary_playlist ().activate ();
     auto entry = m_model->entry (index.row ());
 
-    AUDINFO ("Play radio entry %s [%s].\n", (const char *) entry.title.toLocal8Bit (), (const char *) entry.stream_uri.toLocal8Bit ());
+    AUDINFO ("Play radio entry %s [%s].\n", entry.title.toLocal8Bit ().constData (), entry.stream_uri.toLocal8Bit ().constData ());
 
-    Playlist::temporary_playlist ().insert_entry (-1, entry.stream_uri.toUtf8 (), Tuple (), true);
+    Playlist::temporary_playlist ().insert_entry (-1, entry.stream_uri.toUtf8 ().constData (), Tuple (), true);
 }

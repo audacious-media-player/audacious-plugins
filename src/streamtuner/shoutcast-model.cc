@@ -95,7 +95,7 @@ void ShoutcastTunerModel::fetch_stations (String genre)
     request.setHeader (QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
     QNetworkReply * reply = m_qnam->post (request, (const char *) post_data);
-    QObject::connect (reply, &QNetworkReply::finished, [reply, this] () {
+    QObject::connect (reply, &QNetworkReply::finished, this, [reply, this] () {
         if (200 != reply->attribute (QNetworkRequest::HttpStatusCodeAttribute))
             return;
 

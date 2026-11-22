@@ -37,9 +37,8 @@ ShoutcastListingWidget::ShoutcastListingWidget (QWidget * parent) :
     hdr->setStretchLastSection (false);
     hdr->setSectionResizeMode (0, QHeaderView::Stretch);
 
-    connect (this, & QTreeView::activated, [this] (const QModelIndex & index) {
-        activate (index);
-    });
+    connect (this, & QTreeView::activated,
+     this, & ShoutcastListingWidget::activate);
 }
 
 void ShoutcastListingWidget::activate (const QModelIndex & index)
@@ -50,7 +49,7 @@ void ShoutcastListingWidget::activate (const QModelIndex & index)
     Playlist::temporary_playlist ().activate ();
     auto entry = m_model->entry (index.row ());
 
-    AUDINFO ("Play radio entry %s [%d].\n", (const char *) entry.title.toLocal8Bit (), entry.station_id);
+    AUDINFO ("Play radio entry %s [%d].\n", entry.title.toLocal8Bit ().constData (), entry.station_id);
 
     StringBuf playlist_uri = str_printf ("https://yp.shoutcast.com/sbin/tunein-station.m3u?id=%d", entry.station_id);
 
@@ -95,7 +94,7 @@ ShoutcastTunerWidget::ShoutcastTunerWidget (QWidget * parent) :
     m_layout->addWidget (m_tuner);
 
     auto genre_selection_model = m_genre->selectionModel ();
-    connect(genre_selection_model, &QItemSelectionModel::selectionChanged, [&] (const QItemSelection &selected, const QItemSelection &) {
+    connect(genre_selection_model, &QItemSelectionModel::selectionChanged, this, [&] (const QItemSelection &selected, const QItemSelection &) {
         // this should never happen, but just to be sure...
         if (! selected.indexes ().length ())
             return;
@@ -106,7 +105,7 @@ ShoutcastTunerWidget::ShoutcastTunerWidget (QWidget * parent) :
         model->fetch_stations (String (ShoutcastTunerModel::genres [idx.row ()]));
     });
 
-    connect(m_tuner->model (), &QAbstractItemModel::modelReset, [&] () {
+    connect(m_tuner->model (), &QAbstractItemModel::modelReset, this, [&] () {
         auto model = m_tuner->model ();
         m_tuner->scrollTo (model->index (0,0));
         for (int i=1; i < model->columnCount (); i++)

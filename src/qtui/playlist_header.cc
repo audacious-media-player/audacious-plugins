@@ -236,7 +236,7 @@ void PlaylistHeader::contextMenuEvent(QContextMenuEvent * event)
     auto playing = new QAction(_("Now Playing"), menu);
     playing->setCheckable(true);
     playing->setChecked(s_show_playing);
-    connect(playing, &QAction::toggled, toggleShowPlaying);
+    connect(playing, &QAction::toggled, playing, toggleShowPlaying);
     menu->addAction(playing);
 
     QAction * actions[PlaylistModel::n_cols];
@@ -246,7 +246,7 @@ void PlaylistHeader::contextMenuEvent(QContextMenuEvent * event)
         actions[col] = new QAction(_(PlaylistModel::labels[col]), menu);
         actions[col]->setCheckable(true);
 
-        connect(actions[col], &QAction::toggled,
+        connect(actions[col], &QAction::toggled, actions[col],
                 [col](bool on) { toggleColumn(col, on); });
 
         menu->addAction(actions[col]);
@@ -260,7 +260,7 @@ void PlaylistHeader::contextMenuEvent(QContextMenuEvent * event)
     menu->addAction(sep);
 
     auto reset = new QAction(_("Reset to Defaults"), menu);
-    connect(reset, &QAction::triggered, resetToDefaults);
+    connect(reset, &QAction::triggered, reset, resetToDefaults);
     menu->addAction(reset);
 
     menu->popup(event->globalPos());

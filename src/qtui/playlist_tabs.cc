@@ -233,7 +233,7 @@ PlaylistTabBar::PlaylistTabBar(QWidget * parent) : QTabBar(parent)
     updateSettings();
 
     connect(this, &QTabBar::tabMoved, this, &PlaylistTabBar::tabMoved);
-    connect(this, &QTabBar::tabCloseRequested, [](int idx) {
+    connect(this, &QTabBar::tabCloseRequested, this, [](int idx) {
         audqt::playlist_confirm_delete(Playlist::by_index(idx));
     });
 }
@@ -270,10 +270,11 @@ void PlaylistTabBar::startRename(Playlist playlist)
     {
         edit = new QLineEdit((const char *)playlist.get_title());
 
-        connect(edit, &QLineEdit::returnPressed, [this, playlist, edit]() {
-            playlist.set_title(edit->text().toUtf8());
-            cancelRename();
-        });
+        connect(edit, &QLineEdit::returnPressed, this,
+                [this, playlist, edit]() {
+                    playlist.set_title(edit->text().toUtf8().constData());
+                    cancelRename();
+                });
 
         setupTab(idx, edit, &m_leftbtn);
         updateIcons();
@@ -343,13 +344,13 @@ void PlaylistTabBar::contextMenuEvent(QContextMenuEvent * e)
     auto remove_act = new QAction(QIcon::fromTheme("edit-delete"),
                                   audqt::translate_str(N_("Remo_ve")), menu);
 
-    QObject::connect(play_act, &QAction::triggered,
+    QObject::connect(play_act, &QAction::triggered, play_act,
                      [playlist]() { playlist.start_playback(); });
-    QObject::connect(rename_act, &QAction::triggered, [this, playlist]() {
+    QObject::connect(rename_act, &QAction::triggered, this, [this, playlist]() {
         if (playlist.exists())
             startRename(playlist);
     });
-    QObject::connect(remove_act, &QAction::triggered, [playlist]() {
+    QObject::connect(remove_act, &QAction::triggered, remove_act, [playlist]() {
         if (playlist.exists())
             audqt::playlist_confirm_delete(playlist);
     });

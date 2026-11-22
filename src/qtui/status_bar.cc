@@ -53,13 +53,14 @@ StatusBar::StatusBar(QWidget * parent)
     audlog::subscribe(log_handler, audlog::Warning);
 
     /* redisplay codec info when message is cleared */
-    connect(this, &QStatusBar::messageChanged, [this](const QString & text) {
-        if (text.isEmpty())
-        {
-            setStyleSheet(normal_css);
-            update_codec();
-        }
-    });
+    connect(this, &QStatusBar::messageChanged, this,
+            [this](const QString & text) {
+                if (text.isEmpty())
+                {
+                    setStyleSheet(normal_css);
+                    update_codec();
+                }
+            });
 }
 
 StatusBar::~StatusBar()

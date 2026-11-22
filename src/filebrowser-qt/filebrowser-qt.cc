@@ -170,12 +170,12 @@ FileBrowserWidget::FileBrowserWidget()
     connect(m_treeView, &QTreeView::activated, this,
             &FileBrowserWidget::onTreeViewActivated);
 
-    connect(m_filterLineEdit, &QLineEdit::textChanged,
+    connect(m_filterLineEdit, &QLineEdit::textChanged, this,
             [this](const QString & text) {
                 m_proxyModel->setFilterFixedString(text);
             });
 
-    connect(upAction, &QAction::triggered, [this]() {
+    connect(upAction, &QAction::triggered, this, [this]() {
         QDir dir = m_fileSystemModel->rootDirectory();
         if (dir.cdUp())
             setCurrentDirectory(dir.path());

@@ -91,11 +91,11 @@ SearchSelectDialog::SearchSelectDialog (QWidget * parent) : QDialog (parent)
     m_checkbox_newplaylist = new QCheckBox (_("Create a new playlist with matching entries"));
     m_checkbox_clearprevsel->setCheckState (Qt::Checked);
 
-    QObject::connect (m_checkbox_autoenqueue, & QAbstractButton::toggled, [this] () {
+    QObject::connect (m_checkbox_autoenqueue, & QAbstractButton::toggled, this, [this] () {
         toggle_related_checkbox (m_checkbox_autoenqueue, m_checkbox_newplaylist);
     });
 
-    QObject::connect (m_checkbox_newplaylist, & QAbstractButton::toggled, [this] () {
+    QObject::connect (m_checkbox_newplaylist, & QAbstractButton::toggled, this, [this] () {
         toggle_related_checkbox (m_checkbox_newplaylist, m_checkbox_autoenqueue);
     });
 
@@ -177,10 +177,14 @@ void SearchSelectDialog::search ()
 
     /* create a tuple with user search data */
     Tuple tuple;
-    tuple.set_str (Tuple::Title, m_entry_title->text ().toUtf8 ());
-    tuple.set_str (Tuple::Album, m_entry_album->text ().toUtf8 ());
-    tuple.set_str (Tuple::Artist, m_entry_artist->text ().toUtf8 ());
-    tuple.set_str (Tuple::Basename, m_entry_file_name->text ().toUtf8 ());
+    tuple.set_str (Tuple::Title,
+     m_entry_title->text ().toUtf8 ().constData ());
+    tuple.set_str (Tuple::Album,
+     m_entry_album->text ().toUtf8 ().constData ());
+    tuple.set_str (Tuple::Artist,
+     m_entry_artist->text ().toUtf8 ().constData ());
+    tuple.set_str (Tuple::Basename,
+     m_entry_file_name->text ().toUtf8 ().constData ());
 
     /* check if previous selection should be cleared before searching */
     if (m_checkbox_clearprevsel->isChecked ())

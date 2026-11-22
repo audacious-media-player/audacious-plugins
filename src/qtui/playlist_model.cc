@@ -242,7 +242,7 @@ QMimeData * PlaylistModel::mimeData(const QModelIndexList & indexes) const
         int row = index.row();
         if (row != prev) /* skip multiple cells in same row */
         {
-            urls.append(QString(m_playlist.entry_filename(row)));
+            urls.append(QUrl(QString(m_playlist.entry_filename(row))));
             prev = row;
         }
     }
@@ -261,7 +261,7 @@ bool PlaylistModel::dropMimeData(const QMimeData * data, Qt::DropAction action,
 
     Index<PlaylistAddItem> items;
     for (auto & url : data->urls())
-        items.append(String(url.toEncoded()));
+        items.append(String(url.toEncoded().constData()));
 
     m_playlist.insert_items(row, std::move(items), false);
     return true;
