@@ -18,9 +18,8 @@ IcecastListingWidget::IcecastListingWidget (QWidget * parent) :
     setModel (m_model);
     setRootIsDecorated (false);
 
-    connect (this, & QTreeView::activated, [this] (const QModelIndex & index) {
-        activate (index);
-    });
+    connect (this, & QTreeView::activated,
+     this, & IcecastListingWidget::activate);
 }
 
 void IcecastListingWidget::activate (const QModelIndex & index)

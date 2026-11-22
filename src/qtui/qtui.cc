@@ -73,7 +73,8 @@ public:
 
     void quit() override
     {
-        QObject::connect(window.data(), &QObject::destroyed, QApplication::quit);
+        QObject::connect(window.data(), &QObject::destroyed, window.data(),
+                         QApplication::quit);
         window->deleteLater();
     }
 };

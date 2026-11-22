@@ -91,11 +91,11 @@ SearchSelectDialog::SearchSelectDialog (QWidget * parent) : QDialog (parent)
     m_checkbox_newplaylist = new QCheckBox (_("Create a new playlist with matching entries"));
     m_checkbox_clearprevsel->setCheckState (Qt::Checked);
 
-    QObject::connect (m_checkbox_autoenqueue, & QAbstractButton::toggled, [this] () {
+    QObject::connect (m_checkbox_autoenqueue, & QAbstractButton::toggled, this, [this] () {
         toggle_related_checkbox (m_checkbox_autoenqueue, m_checkbox_newplaylist);
     });
 
-    QObject::connect (m_checkbox_newplaylist, & QAbstractButton::toggled, [this] () {
+    QObject::connect (m_checkbox_newplaylist, & QAbstractButton::toggled, this, [this] () {
         toggle_related_checkbox (m_checkbox_newplaylist, m_checkbox_autoenqueue);
     });
 

@@ -30,9 +30,7 @@ IHRListingWidget::IHRListingWidget (QWidget * parent) :
     setModel (m_model);
     setRootIsDecorated (false);
 
-    connect (this, & QTreeView::activated, [this] (const QModelIndex & index) {
-        activate (index);
-    });
+    connect (this, & QTreeView::activated, this, & IHRListingWidget::activate);
 }
 
 void IHRListingWidget::activate (const QModelIndex & index)
@@ -74,7 +72,7 @@ IHRTunerWidget::IHRTunerWidget (QWidget * parent) :
     m_layout->addWidget (m_splitter);
 
     auto market_selection_model = m_markets->selectionModel ();
-    connect(market_selection_model, &QItemSelectionModel::selectionChanged, [&] (const QItemSelection &selected, const QItemSelection &) {
+    connect(market_selection_model, &QItemSelectionModel::selectionChanged, this, [&] (const QItemSelection &selected, const QItemSelection &) {
         // this should never happen, but just to be sure...
         if (! selected.indexes ().length ())
             return;

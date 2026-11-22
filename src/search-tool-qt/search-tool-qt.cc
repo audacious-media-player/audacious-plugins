@@ -257,9 +257,9 @@ SearchWidget::SearchWidget () :
     QObject::connect (& m_results_list, & QTreeView::activated, this, & SearchWidget::action_play);
 
     QObject::connect (& m_results_list, & QWidget::customContextMenuRequested,
-     [this] (const QPoint & pos) { show_context_menu (m_results_list.mapToGlobal (pos)); });
+     this, [this] (const QPoint & pos) { show_context_menu (m_results_list.mapToGlobal (pos)); });
 
-    QObject::connect (m_file_entry, & QLineEdit::textChanged, [this] (const QString & text)
+    QObject::connect (m_file_entry, & QLineEdit::textChanged, this, [this] (const QString & text)
         { m_refresh_btn.setDisabled (text.isEmpty ()); });
 
     QObject::connect (m_file_entry, & QLineEdit::returnPressed, this, & SearchWidget::location_changed);
@@ -405,7 +405,7 @@ void SearchWidget::setup_monitor ()
     m_watcher_paths.clear ();
 
     QObject::connect (m_watcher.get (), & QFileSystemWatcher::directoryChanged,
-     [this] (const QString &)
+     this, [this] (const QString &)
     {
         AUDINFO ("Library directory changed, refreshing library.\n");
 

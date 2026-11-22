@@ -82,7 +82,7 @@ public:
 
     void quit () override
     {
-        QObject::connect (proxy.data (), & QObject::destroyed, QApplication::quit);
+        QObject::connect (proxy.data (), & QObject::destroyed, proxy.data (), QApplication::quit);
         proxy->deleteLater ();
     }
 

@@ -145,7 +145,7 @@ void * LyricsQt::get_qt_widget ()
     if (aud_drct_get_ready ())
         lyrics_playback_began ();
 
-    QObject::connect (textedit, & QObject::destroyed, lyrics_cleanup);
+    QObject::connect (textedit, & QObject::destroyed, textedit, lyrics_cleanup);
 
     return textedit;
 }
@@ -169,14 +169,14 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
             if (edit_uri && edit_uri[0])
             {
                 QAction * edit = menu->addAction (_("Edit Lyrics ..."));
-                QObject::connect (edit, & QAction::triggered, [edit_uri] () {
+                QObject::connect (edit, & QAction::triggered, edit, [edit_uri] () {
                     QDesktopServices::openUrl (QUrl ((const char *) edit_uri));
                 });
             }
         }
 
         QAction * save = menu->addAction (_("Save Locally"));
-        QObject::connect (save, & QAction::triggered, [] () {
+        QObject::connect (save, & QAction::triggered, save, [] () {
             file_provider.save (g_state);
         });
     }
@@ -184,7 +184,7 @@ void TextEdit::contextMenuEvent (QContextMenuEvent * event)
     if (g_state.source == LyricsState::Source::Local || g_state.error)
     {
         QAction * refresh = menu->addAction (_("Refresh"));
-        QObject::connect (refresh, & QAction::triggered, [remote_provider] () {
+        QObject::connect (refresh, & QAction::triggered, refresh, [remote_provider] () {
             if (remote_provider)
                 remote_provider->match (g_state);
         });

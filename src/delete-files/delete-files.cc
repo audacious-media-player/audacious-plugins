@@ -236,10 +236,10 @@ static void start_delete ()
         qdialog->addButton (remove, QMessageBox::AcceptRole);
         qdialog->addButton (cancel, QMessageBox::RejectRole);
 
-        QObject::connect (remove, & QPushButton::clicked, [op] () {
+        QObject::connect (remove, & QPushButton::clicked, remove, [op] () {
             op->run ();
         });
-        QObject::connect (qdialog, & QObject::destroyed, [op] () {
+        QObject::connect (qdialog, & QObject::destroyed, qdialog, [op] () {
             qdialog = nullptr;
             delete op;
         });

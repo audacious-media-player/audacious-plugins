@@ -272,7 +272,7 @@ PlaylistsView::PlaylistsView()
     setFrameShape(QFrame::NoFrame);
     setIndentation(0);
 
-    connect(this, &QTreeView::activated, [](const QModelIndex & index) {
+    connect(this, &QTreeView::activated, this, [](const QModelIndex & index) {
         if (index.isValid())
             Playlist::by_index(index.row()).start_playback();
     });
@@ -378,15 +378,16 @@ void * PlaylistManagerQt::get_qt_widget()
     s_playlists_view = new PlaylistsView;
 
     auto new_button = new_tool_button(N_("_New"), "document-new");
-    QObject::connect(new_button, &QToolButton::clicked, Playlist::new_playlist);
+    QObject::connect(new_button, &QToolButton::clicked, new_button,
+                     Playlist::new_playlist);
 
     auto rename_button = new_tool_button(N_("Ren_ame"), "insert-text");
-    QObject::connect(rename_button, &QToolButton::clicked, []() {
+    QObject::connect(rename_button, &QToolButton::clicked, rename_button, []() {
         audqt::playlist_show_rename(Playlist::active_playlist());
     });
 
     auto remove_button = new_tool_button(N_("_Remove"), "edit-delete");
-    QObject::connect(remove_button, &QToolButton::clicked, []() {
+    QObject::connect(remove_button, &QToolButton::clicked, remove_button, []() {
         audqt::playlist_confirm_delete(Playlist::active_playlist());
     });
 

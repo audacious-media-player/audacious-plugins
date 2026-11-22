@@ -68,13 +68,14 @@ PlaylistWidget::PlaylistWidget(QWidget * parent, Playlist playlist)
     updateSelection(0, 0);
     inUpdate = false;
 
-    connect(this, &QTreeView::activated, [this](const QModelIndex & index) {
-        if (index.isValid())
-        {
-            m_playlist.set_position(indexToRow(index));
-            m_playlist.start_playback();
-        }
-    });
+    connect(this, &QTreeView::activated, this,
+            [this](const QModelIndex & index) {
+                if (index.isValid())
+                {
+                    m_playlist.set_position(indexToRow(index));
+                    m_playlist.start_playback();
+                }
+            });
 }
 
 PlaylistWidget::~PlaylistWidget()
