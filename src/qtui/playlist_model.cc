@@ -261,7 +261,7 @@ bool PlaylistModel::dropMimeData(const QMimeData * data, Qt::DropAction action,
 
     Index<PlaylistAddItem> items;
     for (auto & url : data->urls())
-        items.append(String(url.toEncoded()));
+        items.append(String(url.toEncoded().constData()));
 
     m_playlist.insert_items(row, std::move(items), false);
     return true;

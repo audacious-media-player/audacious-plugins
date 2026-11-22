@@ -773,7 +773,7 @@ void PlaylistWidget::dropEvent (QDropEvent * event)
         Index<PlaylistAddItem> files;
 
         for (const auto &url: mimedata->urls())
-            files.append (String (url.toEncoded ()));
+            files.append (String (url.toEncoded ().constData ()));
 
         aud_drct_pl_add_list (std::move (files), hover_end ());
         event->acceptProposedAction ();

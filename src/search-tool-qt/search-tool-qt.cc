@@ -308,7 +308,7 @@ void SearchWidget::show_hide_widgets ()
 void SearchWidget::search_timeout ()
 {
     auto text = m_search_entry.text ().toUtf8 ();
-    auto terms = str_list_to_index (str_tolower_utf8 (text), " ");
+    auto terms = str_list_to_index (str_tolower_utf8 (text.constData ()), " ");
     m_model.do_search (terms, aud_get_int (CFG_ID, "max_results"));
     m_model.update ();
 

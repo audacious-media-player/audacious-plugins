@@ -271,7 +271,7 @@ void PlaylistTabBar::startRename(Playlist playlist)
         edit = new QLineEdit((const char *)playlist.get_title());
 
         connect(edit, &QLineEdit::returnPressed, [this, playlist, edit]() {
-            playlist.set_title(edit->text().toUtf8());
+            playlist.set_title(edit->text().toUtf8().constData());
             cancelRename();
         });
 

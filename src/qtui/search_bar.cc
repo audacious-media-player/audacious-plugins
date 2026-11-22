@@ -60,7 +60,7 @@ SearchBar::SearchBar(QWidget * parent, PlaylistWidget * playlistWidget)
     setFocusProxy(m_entry);
 
     connect(m_entry, &QLineEdit::textChanged, [this](const QString & text) {
-        m_playlistWidget->setFilter(text.toUtf8());
+        m_playlistWidget->setFilter(text.toUtf8().constData());
     });
 
     connect(upButton, &QPushButton::clicked,

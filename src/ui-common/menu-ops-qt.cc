@@ -70,7 +70,7 @@ static void paste_to (Playlist list, int pos)
 
     Index<PlaylistAddItem> items;
     for (auto & url : data->urls ())
-        items.append (String (url.toEncoded ()));
+        items.append (String (url.toEncoded ().constData ()));
 
     list.insert_items (pos, std::move (items), false);
 }

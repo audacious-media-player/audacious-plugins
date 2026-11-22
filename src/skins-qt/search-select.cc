@@ -177,10 +177,14 @@ void SearchSelectDialog::search ()
 
     /* create a tuple with user search data */
     Tuple tuple;
-    tuple.set_str (Tuple::Title, m_entry_title->text ().toUtf8 ());
-    tuple.set_str (Tuple::Album, m_entry_album->text ().toUtf8 ());
-    tuple.set_str (Tuple::Artist, m_entry_artist->text ().toUtf8 ());
-    tuple.set_str (Tuple::Basename, m_entry_file_name->text ().toUtf8 ());
+    tuple.set_str (Tuple::Title,
+     m_entry_title->text ().toUtf8 ().constData ());
+    tuple.set_str (Tuple::Album,
+     m_entry_album->text ().toUtf8 ().constData ());
+    tuple.set_str (Tuple::Artist,
+     m_entry_artist->text ().toUtf8 ().constData ());
+    tuple.set_str (Tuple::Basename,
+     m_entry_file_name->text ().toUtf8 ().constData ());
 
     /* check if previous selection should be cleared before searching */
     if (m_checkbox_clearprevsel->isChecked ())

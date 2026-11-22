@@ -43,9 +43,9 @@ void IHRListingWidget::activate (const QModelIndex & index)
     Playlist::temporary_playlist ().activate ();
     auto entry = m_model->station_for_idx (index);
 
-    AUDINFO ("Play radio entry %s [%s].\n", (const char *) entry.title.toLocal8Bit (), (const char *) entry.stream_uri.toLocal8Bit ());
+    AUDINFO ("Play radio entry %s [%s].\n", entry.title.toLocal8Bit ().constData (), entry.stream_uri.toLocal8Bit ().constData ());
 
-    Playlist::temporary_playlist ().insert_entry (-1, entry.stream_uri.toUtf8 (), Tuple (), true);
+    Playlist::temporary_playlist ().insert_entry (-1, entry.stream_uri.toUtf8 ().constData (), Tuple (), true);
 }
 
 IHRMarketWidget::IHRMarketWidget (QWidget * parent) :
