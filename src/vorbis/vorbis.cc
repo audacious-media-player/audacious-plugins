@@ -227,13 +227,26 @@ static bool update_replay_gain (OggVorbis_File * vf, ReplayGainInfo * rg_info)
     return true;
 }
 
+/* Vorbis channel order (Vorbis I spec, 4.3.9) -> WAV/Audacious order. */
+static const unsigned char vorbis_to_wav[8][8] = {
+    { 0 },                       /* 1: Mono                          */
+    { 0, 1 },                    /* 2: L R                           */
+    { 0, 2, 1 },                 /* 3: L C R      -> L R C           */
+    { 0, 1, 2, 3 },              /* 4: FL FR RL RR (identical)       */
+    { 0, 2, 1, 3, 4 },           /* 5: FL C FR RL RR -> FL FR C RL RR */
+    { 0, 2, 1, 5, 3, 4 },        /* 6: FL C FR RL RR LFE -> FL FR C LFE RL RR */
+    { 0, 2, 1, 6, 5, 3, 4 },     /* 7: FL C FR SL SR RC LFE -> FL FR C LFE RC SL SR */
+    { 0, 2, 1, 7, 5, 6, 3, 4 },  /* 8: FL C FR SL SR RL RR LFE -> FL FR C LFE RL RR SL SR */
+};
+
 static long
 vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
 {
-    int i, j;
-    for (i = 0; i < samples; i++)
-        for (j = 0; j < ch; j++)
-            *pcmout++ = pcm[j][i];
+    const unsigned char *map = (ch >= 1 && ch <= 8) ? vorbis_to_wav[ch - 1] : nullptr;
+
+    for (int i = 0; i < samples; i++)
+        for (int j = 0; j < ch; j++)
+            *pcmout++ = pcm[map ? map[j] : j][i];
 
     return ch * samples * sizeof(float);
 }
