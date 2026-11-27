@@ -641,34 +641,37 @@ enum spa_audio_format PipeWireOutput::to_pipewire_format(int format)
 
 void PipeWireOutput::set_channel_map(struct spa_audio_info_raw * info, int channels)
 {
-    switch (channels)
+    /* Fixed channel positions per channel count (WAV/WAVEFORMATEXTENSIBLE layout). */
+    static const uint32_t layouts[9][9] = {
+        /* 1 */ { SPA_AUDIO_CHANNEL_MONO },
+        /* 2 */ { SPA_AUDIO_CHANNEL_FL, SPA_AUDIO_CHANNEL_FR },
+        /* 3 */ { SPA_AUDIO_CHANNEL_FL, SPA_AUDIO_CHANNEL_FR, SPA_AUDIO_CHANNEL_FC },
+        /* 4 */ { SPA_AUDIO_CHANNEL_FL, SPA_AUDIO_CHANNEL_FR,
+                  SPA_AUDIO_CHANNEL_RL, SPA_AUDIO_CHANNEL_RR },
+        /* 5 */ { SPA_AUDIO_CHANNEL_FL, SPA_AUDIO_CHANNEL_FR, SPA_AUDIO_CHANNEL_FC,
+                  SPA_AUDIO_CHANNEL_RL, SPA_AUDIO_CHANNEL_RR },
+        /* 6 */ { SPA_AUDIO_CHANNEL_FL, SPA_AUDIO_CHANNEL_FR, SPA_AUDIO_CHANNEL_FC,
+                  SPA_AUDIO_CHANNEL_LFE, SPA_AUDIO_CHANNEL_RL, SPA_AUDIO_CHANNEL_RR },
+        /* 7 */ { SPA_AUDIO_CHANNEL_FL, SPA_AUDIO_CHANNEL_FR, SPA_AUDIO_CHANNEL_FC,
+                  SPA_AUDIO_CHANNEL_LFE, SPA_AUDIO_CHANNEL_RC,
+                  SPA_AUDIO_CHANNEL_SL, SPA_AUDIO_CHANNEL_SR },
+        /* 8 */ { SPA_AUDIO_CHANNEL_FL, SPA_AUDIO_CHANNEL_FR, SPA_AUDIO_CHANNEL_FC,
+                  SPA_AUDIO_CHANNEL_LFE, SPA_AUDIO_CHANNEL_RL, SPA_AUDIO_CHANNEL_RR,
+                  SPA_AUDIO_CHANNEL_SL, SPA_AUDIO_CHANNEL_SR },
+        /* 9 */ { SPA_AUDIO_CHANNEL_FL, SPA_AUDIO_CHANNEL_FR, SPA_AUDIO_CHANNEL_FC,
+                  SPA_AUDIO_CHANNEL_LFE, SPA_AUDIO_CHANNEL_RL, SPA_AUDIO_CHANNEL_RR,
+                  SPA_AUDIO_CHANNEL_FLC, SPA_AUDIO_CHANNEL_FRC, SPA_AUDIO_CHANNEL_RC },
+    };
+
+    if (channels >= 1 && channels <= 9)
     {
-        case 9:
-            info->position[8] = SPA_AUDIO_CHANNEL_RC;
-            // Fall through
-        case 8:
-        case 7:
-            info->position[6] = SPA_AUDIO_CHANNEL_FLC;
-            info->position[7] = SPA_AUDIO_CHANNEL_FRC;
-            // Fall through
-        case 6:
-        case 5:
-            info->position[4] = SPA_AUDIO_CHANNEL_RL;
-            info->position[5] = SPA_AUDIO_CHANNEL_RR;
-            // Fall through
-        case 4:
-            if (channels != 5 && channels != 7)
-                info->position[3] = SPA_AUDIO_CHANNEL_LFE;
-            // Fall through
-        case 3:
-            info->position[2] = SPA_AUDIO_CHANNEL_FC;
-            // Fall through
-        case 2:
-            info->position[0] = SPA_AUDIO_CHANNEL_FL;
-            info->position[1] = SPA_AUDIO_CHANNEL_FR;
-            break;
-        case 1:
-            info->position[0] = SPA_AUDIO_CHANNEL_MONO;
-            break;
+        for (int i = 0; i < channels; i++)
+            info->position[i] = layouts[channels - 1][i];
+    }
+    else
+    {
+        /* No standard layout: emit as auxiliary channels without positions */
+        for (int i = 0; i < channels && i < (int)SPA_AUDIO_MAX_CHANNELS; i++)
+            info->position[i] = SPA_AUDIO_CHANNEL_AUX0 + i;
     }
 }
